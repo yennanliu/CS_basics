@@ -51,6 +51,30 @@ n == grid[i].length
 #   NOTE : m * n <= 5 * 10^4 and k <= 50 -> 2.5 * 10^6 states, fine.
 #          keep only the previous row so the memory stays O(n * k).
 #
+"""
+
+DP def
+    dp[i][j][r]: number of paths from (0,0) to (i,j) whose sum % k == r
+
+                 -> the running remainder is carried as an extra state axis
+
+DP eq
+
+     dp[i][j][r] = dp[i-1][j][r'] + dp[i][j-1][r']
+
+                   with r' = (r - grid[i][j]) % k
+
+
+    -> e.g. equivalently, push forward:
+              dp[i][j][(r + grid[i][j]) % k] += dp[i-1][j][r] + dp[i][j-1][r]
+
+     NOTE !!! m * n <= 5 * 10^4 and k <= 50 -> 2.5 * 10^6 states, fine;
+              keep only the previous row so memory stays O(n * k)
+
+     init: dp[0][0][grid[0][0] % k] = 1
+     ans = dp[m-1][n-1][0] % (10^9 + 7)
+
+"""
 # time = O(m * n * k), space = O(n * k)
 class Solution(object):
     def numberOfPaths(self, grid, k):

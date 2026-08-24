@@ -62,6 +62,32 @@ Constraints:
 #   (j-1)-part solution can never be beaten by a worse one, which is what
 #   makes the plain minimisation over t correct.
 #
+"""
+
+DP def
+    dp[j][i]: the SMALLEST achievable "maximum segment xor" when the first
+
+              i elements are cut into exactly j parts
+
+    pre[]   : prefix xor, so xor(nums[t..i-1]) = pre[i] ^ pre[t]
+
+DP eq
+
+     dp[j][i] = min over t in [j-1, i) of
+
+                   max( dp[j-1][t], pre[i] ^ pre[t] )
+
+
+    -> e.g. the objective is a MAX, so it composes cleanly - extending an
+              optimal (j-1)-part solution can never be beaten by a worse
+              one, which is what makes the plain minimisation over t correct
+
+     an early break once best == 0 (nothing can be lower)
+
+     init: dp[0][0] = 0
+     ans = dp[k][n]
+
+"""
 # time = O(k * n^2), space = O(n)
 class Solution(object):
     def minXor(self, nums, k):

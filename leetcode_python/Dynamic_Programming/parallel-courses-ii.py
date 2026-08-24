@@ -59,6 +59,40 @@ The given graph is a directed acyclic graph.
 #   NOTE : greedily taking "the most-unlocking" k courses is WRONG here,
 #          which is why we must brute force the subsets.
 #
+"""
+
+DP def
+    (BITMASK state + BFS over subsets, n <= 15)
+
+    pre[i]: bitmask of course i's prerequisites
+
+    state `cur`: bitmask of the courses already finished
+
+    dp[cur] (implicit, via BFS level): MIN semesters to reach `cur`
+
+             -> BFS by semester, so the FIRST time the full mask is reached
+                the count is minimal
+
+DP eq
+
+     from `cur`, the newly available courses are
+
+        avail = { i : pre[i] SUBSET of cur }  MINUS cur
+
+     if popcount(avail) <= k : take them ALL (never hurts)
+
+     else                    : enumerate every k-sized subset of avail
+                               (the classic  sub = (sub - 1) & avail  walk)
+
+     next state = cur | chosen,  semester + 1
+
+
+    -> e.g. NOTE !!! greedily taking "the most-unlocking" k courses is WRONG
+              here, which is why the subsets must be brute-forced
+
+     ans = the semester count at which the full mask is first reached
+
+"""
 # time = O(3^n) worst case, space = O(2^n)
 from collections import deque
 def popcount(x):

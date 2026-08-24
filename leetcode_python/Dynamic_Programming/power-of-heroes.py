@@ -58,6 +58,39 @@ Constraints:
 #   NOTE : iterate from the RIGHT so p is already the value for the current i.
 #   NOTE : take the modulo everywhere - a[i]^3 alone can hit 10^27.
 #
+"""
+
+DP def
+    only the MAX and MIN of a group matter, so the order of nums is
+    irrelevant -> SORT ascending first.
+
+    fix a[i] as the group MINIMUM (ties broken by index, so every group is
+    counted exactly once); the group is a[i] plus any subset of a[i+1:]:
+
+        subset empty        -> max = a[i]         -> a[i]^3
+        subset has max a[j] -> the elements strictly between i and j are FREE
+                               (2^(j-i-1) ways)   -> a[i] * a[j]^2 * 2^(j-i-1)
+
+    p_i = sum over j > i of  2^(j-i-1) * a[j]^2
+
+DP eq
+
+     ans = sum over i of ( a[i]^3 + a[i] * p_i )
+
+     and p has a clean BACKWARDS recurrence - the whole trick:
+
+        p_{i-1} = a[i]^2 + 2 * p_i
+
+
+    -> e.g. so ONE right-to-left sweep computes everything in O(n)
+
+     NOTE !!! iterate from the RIGHT so p already holds the value for the
+              current i; and take the modulo everywhere - a[i]^3 alone can
+              hit 10^27
+
+     ans mod 10^9 + 7
+
+"""
 # time = O(n * log(n)) (dominated by the sort), space = O(1) extra
 class Solution(object):
     def sumOfPower(self, nums):

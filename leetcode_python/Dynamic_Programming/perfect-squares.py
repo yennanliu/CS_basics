@@ -1,5 +1,26 @@
 # V0
 # IDEA : BFS
+"""
+
+DP def
+    dp[i]: MINIMUM number of perfect squares summing to i
+
+DP eq
+
+     dp[i] = 1 + min( dp[i - s] )   over every perfect square s <= i
+
+
+    -> e.g. an unbounded coin-change over the "coins" 1, 4, 9, 16, ...
+
+     the same state graph can be walked with BFS instead: level t holds the
+     values reachable with t squares, so the first time 0 is reached gives
+     the minimum - identical states, different traversal order
+
+     init: dp[0] = 0
+     ans = dp[n]
+           (Lagrange's four-square theorem also caps the answer at 4)
+
+"""
 # time = O(n * sqrt(n))
 # space = O(n)
 class Solution(object):
@@ -28,6 +49,27 @@ class Solution(object):
 
 # V1 
 # http://bookshadow.com/weblog/2015/09/09/leetcode-perfect-squares/
+"""
+
+DP def
+    dp[i]: MINIMUM number of perfect squares summing to i
+
+DP eq
+
+     dp[i] = 1 + min( dp[i - s] )   over every perfect square s <= i
+
+
+    -> e.g. an unbounded coin-change over the "coins" 1, 4, 9, 16, ...
+
+     the same state graph can be walked with BFS instead: level t holds the
+     values reachable with t squares, so the first time 0 is reached gives
+     the minimum - identical states, different traversal order
+
+     init: dp[0] = 0
+     ans = dp[n]
+           (Lagrange's four-square theorem also caps the answer at 4)
+
+"""
 # time out error
 # time = O(n * sqrt(n))
 # space = O(n)
@@ -56,6 +98,27 @@ class Solution(object):
 # IDEA : DP
 # http://bookshadow.com/weblog/2015/09/09/leetcode-perfect-squares/
 # https://leetcode.com/problems/perfect-squares/discuss/71512/Static-DP-C%2B%2B-12-ms-Python-172-ms-Ruby-384-ms
+"""
+
+DP def
+    dp[i]: MINIMUM number of perfect squares summing to i
+
+DP eq
+
+     dp[i] = 1 + min( dp[i - s] )   over every perfect square s <= i
+
+
+    -> e.g. an unbounded coin-change over the "coins" 1, 4, 9, 16, ...
+
+     the same state graph can be walked with BFS instead: level t holds the
+     values reachable with t squares, so the first time 0 is reached gives
+     the minimum - identical states, different traversal order
+
+     init: dp[0] = 0
+     ans = dp[n]
+           (Lagrange's four-square theorem also caps the answer at 4)
+
+"""
 # time = O(n * sqrt(n))
 # space = O(n)
 class Solution(object):
@@ -70,6 +133,27 @@ class Solution(object):
 # IDEA : BFS
 # https://leetcode.com/problems/perfect-squares/discuss/71475/Short-Python-solution-using-BFS
 # IDEA : -> CHECK the LC discussion pic (BFS)
+"""
+
+DP def
+    dp[i]: MINIMUM number of perfect squares summing to i
+
+DP eq
+
+     dp[i] = 1 + min( dp[i - s] )   over every perfect square s <= i
+
+
+    -> e.g. an unbounded coin-change over the "coins" 1, 4, 9, 16, ...
+
+     the same state graph can be walked with BFS instead: level t holds the
+     values reachable with t squares, so the first time 0 is reached gives
+     the minimum - identical states, different traversal order
+
+     init: dp[0] = 0
+     ans = dp[n]
+           (Lagrange's four-square theorem also caps the answer at 4)
+
+"""
 # time = O(n * sqrt(n))
 # space = O(n)
 class Solution(object):
@@ -97,6 +181,27 @@ class Solution(object):
         return cnt
 
 # V2
+"""
+
+DP def
+    dp[i]: MINIMUM number of perfect squares summing to i
+
+DP eq
+
+     dp[i] = 1 + min( dp[i - s] )   over every perfect square s <= i
+
+
+    -> e.g. an unbounded coin-change over the "coins" 1, 4, 9, 16, ...
+
+     the same state graph can be walked with BFS instead: level t holds the
+     values reachable with t squares, so the first time 0 is reached gives
+     the minimum - identical states, different traversal order
+
+     init: dp[0] = 0
+     ans = dp[n]
+           (Lagrange's four-square theorem also caps the answer at 4)
+
+"""
 # time = O(n * sqrt(n))
 # space = O(n)
 class Solution(object):

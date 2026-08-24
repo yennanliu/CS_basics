@@ -189,6 +189,29 @@ class Solution(object):
 
 # V0-1
 # IDEA: 1D DP
+"""
+
+DP def
+    two equal subsets means each sums to total / 2, so an ODD total is
+    immediately False -> this is a 0/1 subset-sum knapsack
+
+    dp[j]: can the sum j be made using the numbers seen so far?
+
+DP eq
+
+     for each val in nums:
+         for j from target DOWN to val:
+
+             dp[j] = dp[j] or dp[j - val]
+
+
+    -> e.g. NOTE !!! the j loop goes BACKWARDS so each val is used at most
+              ONCE (0/1 knapsack, not unbounded)
+
+     init: dp[0] = True, target = sum(nums) // 2
+     ans = dp[target]
+
+"""
 # time = O(n * s), n = len(nums), s = sum(nums) // 2 (target)
 # space = O(s)
 class Solution(object):
@@ -232,6 +255,29 @@ class Solution(object):
 # V1
 # IDEA : brute force (TLE)
 # https://leetcode.com/problems/partition-equal-subset-sum/solution/
+"""
+
+DP def
+    two equal subsets means each sums to total / 2, so an ODD total is
+    immediately False -> this is a 0/1 subset-sum knapsack
+
+    dp[j]: can the sum j be made using the numbers seen so far?
+
+DP eq
+
+     for each val in nums:
+         for j from target DOWN to val:
+
+             dp[j] = dp[j] or dp[j - val]
+
+
+    -> e.g. NOTE !!! the j loop goes BACKWARDS so each val is used at most
+              ONCE (0/1 knapsack, not unbounded)
+
+     init: dp[0] = True, target = sum(nums) // 2
+     ans = dp[target]
+
+"""
 # time = O(2^n), n = len(nums)
 # space = O(n)
 class Solution:
@@ -260,6 +306,29 @@ class Solution:
 # V1'
 # IDEA : Top Down Dynamic Programming - Memoization
 # https://leetcode.com/problems/partition-equal-subset-sum/solution/
+"""
+
+DP def
+    two equal subsets means each sums to total / 2, so an ODD total is
+    immediately False -> this is a 0/1 subset-sum knapsack
+
+    dp[j]: can the sum j be made using the numbers seen so far?
+
+DP eq
+
+     for each val in nums:
+         for j from target DOWN to val:
+
+             dp[j] = dp[j] or dp[j - val]
+
+
+    -> e.g. NOTE !!! the j loop goes BACKWARDS so each val is used at most
+              ONCE (0/1 knapsack, not unbounded)
+
+     init: dp[0] = True, target = sum(nums) // 2
+     ans = dp[target]
+
+"""
 # time = O(n * s), n = len(nums), s = sum(nums) // 2 (subset_sum)
 # space = O(n * s)
 class Solution:
@@ -289,6 +358,29 @@ class Solution:
 # V1''
 # IDEA : Bottom Up Dynamic Programming
 # https://leetcode.com/problems/partition-equal-subset-sum/solution/
+"""
+
+DP def
+    two equal subsets means each sums to total / 2, so an ODD total is
+    immediately False -> this is a 0/1 subset-sum knapsack
+
+    dp[j]: can the sum j be made using the numbers seen so far?
+
+DP eq
+
+     for each val in nums:
+         for j from target DOWN to val:
+
+             dp[j] = dp[j] or dp[j - val]
+
+
+    -> e.g. NOTE !!! the j loop goes BACKWARDS so each val is used at most
+              ONCE (0/1 knapsack, not unbounded)
+
+     init: dp[0] = True, target = sum(nums) // 2
+     ans = dp[target]
+
+"""
 # time = O(n * s), n = len(nums), s = sum(nums) // 2 (subset_sum)
 # space = O(n * s)
 class Solution:
@@ -317,6 +409,29 @@ class Solution:
 # V1'''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79787425
 # DFS
+"""
+
+DP def
+    two equal subsets means each sums to total / 2, so an ODD total is
+    immediately False -> this is a 0/1 subset-sum knapsack
+
+    dp[j]: can the sum j be made using the numbers seen so far?
+
+DP eq
+
+     for each val in nums:
+         for j from target DOWN to val:
+
+             dp[j] = dp[j] or dp[j - val]
+
+
+    -> e.g. NOTE !!! the j loop goes BACKWARDS so each val is used at most
+              ONCE (0/1 knapsack, not unbounded)
+
+     init: dp[0] = True, target = sum(nums) // 2
+     ans = dp[target]
+
+"""
 # time = O(2^n), n = len(nums)
 # space = O(n)
 class Solution:
@@ -343,6 +458,29 @@ class Solution:
 # V1'''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79787425
 # dp[j] = dp[j] || dp[j - nums[i]]
+"""
+
+DP def
+    two equal subsets means each sums to total / 2, so an ODD total is
+    immediately False -> this is a 0/1 subset-sum knapsack
+
+    dp[j]: can the sum j be made using the numbers seen so far?
+
+DP eq
+
+     for each val in nums:
+         for j from target DOWN to val:
+
+             dp[j] = dp[j] or dp[j - val]
+
+
+    -> e.g. NOTE !!! the j loop goes BACKWARDS so each val is used at most
+              ONCE (0/1 knapsack, not unbounded)
+
+     init: dp[0] = True, target = sum(nums) // 2
+     ans = dp[target]
+
+"""
 # time = O(n * s), n = len(nums), s = sum(nums)
 # space = O(s)
 class Solution(object):
@@ -360,6 +498,29 @@ class Solution(object):
         return sums / 2 in nset
 
 # V2
+"""
+
+DP def
+    two equal subsets means each sums to total / 2, so an ODD total is
+    immediately False -> this is a 0/1 subset-sum knapsack
+
+    dp[j]: can the sum j be made using the numbers seen so far?
+
+DP eq
+
+     for each val in nums:
+         for j from target DOWN to val:
+
+             dp[j] = dp[j] or dp[j - val]
+
+
+    -> e.g. NOTE !!! the j loop goes BACKWARDS so each val is used at most
+              ONCE (0/1 knapsack, not unbounded)
+
+     init: dp[0] = True, target = sum(nums) // 2
+     ans = dp[target]
+
+"""
 # time = O(n * s), s is the sum of nums
 # space = O(s)
 class Solution(object):

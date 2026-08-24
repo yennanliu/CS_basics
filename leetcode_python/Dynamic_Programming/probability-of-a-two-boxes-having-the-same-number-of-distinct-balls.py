@@ -61,6 +61,38 @@ sum(balls) is even.
 #   a colour gives +1, taking none gives -1, a partial take gives 0.
 #   a split counts iff box 1 ends exactly full (j == 0) and diff == 0.
 #
+"""
+
+DP def
+    a uniform shuffle cut in half is the same as CHOOSING which n of the 2n
+    positions land in box 1, so
+
+        P = (weighted number of valid colour splits) / C(2n, n)
+
+    dfs(i, j, diff): weighted count over colours i.. , where
+
+        j    - slots still free in box 1
+        diff - (#distinct colours in box 1) - (#distinct in box 2)
+
+DP eq
+
+     for x = 0 .. balls[i] balls of colour i placed in box 1:
+
+        d = +1 if x == balls[i]     # colour appears ONLY in box 1
+            -1 if x == 0            # colour appears ONLY in box 2
+             0 otherwise            # a partial take -> present in both
+
+        dfs(i, j, diff) += C(balls[i], x) * dfs(i+1, j-x, diff + d)
+
+
+    -> e.g. the C(balls[i], x) factor counts WHICH of that colour's
+              positions go left - that is what makes the count weighted
+              correctly against C(2n, n)
+
+     base: i == k -> 1 if (j == 0 and diff == 0) else 0
+     ans = dfs(0, n, 0) / C(2n, n)
+
+"""
 # time = O(k * n * k * maxBalls), space = O(k * n * k)
 from math import factorial
 from functools import lru_cache

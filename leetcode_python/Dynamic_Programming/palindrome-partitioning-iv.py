@@ -45,6 +45,32 @@ s consists only of lowercase English letters.
 #   test all pairs, but skip the whole j-loop as soon as s[0..i] is not a
 #   palindrome - that prunes most of the O(n^2) pairs in practice.
 #
+"""
+
+DP def
+    pal[i][j]: is s[i..j] a palindrome?
+
+DP eq
+
+     pal[i][j] = (s[i] == s[j]) and ( j - i < 2 or pal[i+1][j-1] )
+
+
+    -> e.g. the recurrence reads pal[i+1][j-1], a SHORTER interval one row
+              below, so sweep i from n-1 DOWN to 0 and j upward - then the
+              needed value is always already filled
+
+         length 0 and 1 intervals are palindromes by definition, which is
+         why the table starts all-True
+
+     then a 3-way split is fixed by two cuts i < j:
+        s[0..i], s[i+1..j], s[j+1..n-1]
+
+     test all pairs, but SKIP the whole j-loop as soon as s[0..i] is not a
+     palindrome - that prunes most of the O(n^2) pairs in practice
+
+     ans = True if any such (i, j) works
+
+"""
 # time = O(n^2), space = O(n^2)
 class Solution(object):
     def checkPartitioning(self, s):

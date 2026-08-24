@@ -47,6 +47,33 @@ s only contains lowercase English letters.
 #
 #  answer = dp[n][k]
 #
+"""
+
+DP def
+    (2-stage DP)
+
+    cost[i][j]: number of character changes to turn s[i..j] into a palindrome
+
+    dp[i][j]  : MIN changes to split the prefix s[0..i-1] into j palindromes
+
+DP eq
+
+     1) cost[i][j] = cost[i+1][j-1] + (s[i] != s[j])
+
+     2) dp[i][j] = min over m in [j-1, i-1] of
+
+                      dp[m][j-1] + cost[m][i-1]
+
+
+    -> e.g. cost is filled by increasing substring length (i downward,
+              j upward) so cost[i+1][j-1] is always ready
+
+     edge: k >= n -> 0 (every character is its own palindrome)
+
+     init: dp[0][0] = 0
+     ans = dp[n][k]
+
+"""
 # time = O(n^2 * k)
 # space = O(n^2)
 class Solution(object):
