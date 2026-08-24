@@ -16,6 +16,9 @@
 		- 1D DP (ok)
 		- slide window (ok)
 		- 2D DP (doing)
+		- stack (ok)
+		- binary search (ok)
+		- linked list (todo)
 
 	- LC Top 100 like
 		- https://leetcode.com/studyplan/top-100-liked/
