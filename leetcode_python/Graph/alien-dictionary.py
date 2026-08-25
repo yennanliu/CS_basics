@@ -1,3 +1,6 @@
+# https://leetcode.ca/all/269.html
+
+
 """
 
 269. Alien Dictionary
@@ -195,6 +198,202 @@ class Solution(object):
             return ""
 
         return "".join(res)
+
+
+# V1-1
+# IDEA: TOPOLOGICAL SORT
+# https://leetcode.ca/2016-08-25-269-Alien-Dictionary/
+from collections import defaultdict, deque
+from typing import Dict, List, Set
+
+class Solution:
+    def alienOrder(self, words: List[str]) -> str:
+        graph = defaultdict(set)
+        inDegree = defaultdict(int)
+
+        self._buildGraph(graph, words, inDegree)
+        return self._topology(graph, inDegree)
+
+    def _buildGraph(self, graph: Dict[str, Set[str]], words: List[str], inDegree: Dict[str, int]) -> None:
+        # Create a node for each character in each word
+        for word in words:
+            for c in word:
+                inDegree[c] = 0  # necessary for final char counting
+
+        for first, second in zip(words, words[1:]): # or pairwise(words)
+            length = min(len(first), len(second))
+            for j in range(length):
+                u = first[j]
+                v = second[j]
+                if u != v:
+                    if v not in graph[u]:
+                        graph[u].add(v)
+                        inDegree[v] += 1
+                    break  # Later characters' order is meaningless
+                if j == length - 1 and len(first) > len(second):
+                    # If 'ab' comes before 'a', it's an invalid order
+                    graph.clear()
+                    return
+
+    def _topology(self, graph: Dict[str, Set[str]], inDegree: Dict[str, int]) -> str:
+        result = ''
+        q = deque([c for c in inDegree if inDegree[c] == 0])
+
+        while q:
+            u = q.popleft()
+            result += u
+            for v in graph[u]:
+                inDegree[v] -= 1
+                if inDegree[v] == 0:
+                    q.append(v)
+
+        # If there are remaining characters in inDegree, it means there's a cycle
+        if any(inDegree.values()):
+            return ''
+
+        # Words = ['z', 'x', 'y', 'x']
+        return result if len(result) == len(indegree) else ''
+
+
+
+# V1-2
+# IDEA:
+# https://leetcode.ca/2016-08-25-269-Alien-Dictionary/
+
+import collections
+
+
+class Node(object):
+  def __init__(self, val):
+    self.val = val
+    self.neighbors = []
+
+  def connect(self, node):
+    self.neighbors.append(node)
+
+  def getNbrs(self):
+    return self.neighbors
+
+
+class Solution(object):
+  def alienOrder(self, words):
+    """
+    :type words: List[str]
+    :rtype: str
+    """
+
+    def dfs(root, graph, visited):
+      visited[root] = 1
+      for nbr in graph[root].getNbrs():
+        if visited[nbr.val] == 0:
+          if not dfs(nbr.val, graph, visited):
+            return False
+        elif visited[nbr.val] == 1:
+          return False
+
+      visited[root] = 2
+      self.ans += root
+      return True
+
+    self.ans = ""
+    graph = {}
+    visited = collections.defaultdict(int)
+    self.topNum = 0
+    for i in range(0, len(words) - 1):
+      a = words[i]
+      b = words[i + 1]
+      i = 0
+      while i < len(a) and i < len(b):
+        if a[i] != b[i]:
+          nodeA = nodeB = None
+          if a[i] not in graph:
+            nodeA = Node(a[i])
+            graph[a[i]] = nodeA
+          else:
+            nodeA = graph[a[i]]
+          if b[i] not in graph:
+            nodeB = Node(b[i])
+            graph[b[i]] = nodeB
+          else:
+            nodeB = graph[b[i]]
+          nodeA.connect(nodeB)
+          break
+        i += 1
+      if i < len(a) and i >= len(b):
+        return ""
+
+    for c in graph:
+      if visited[c] == 0:
+        if not dfs(c, graph, visited):
+          return ""
+
+    unUsedSet = set()
+    for word in words:
+      for c in word:
+        unUsedSet.add(c)
+
+    for c in unUsedSet:
+      if c not in graph:
+        self.ans += c
+    return self.ans[::-1]
+
+
+# V1-3
+# IDEA:
+# https://leetcode.ca/2016-08-25-269-Alien-Dictionary/
+class Solution:
+    def alienOrder(self, words: List[str]) -> str:
+        g = [[False] * 26 for _ in range(26)]
+        s = [False] * 26
+        cnt = 0
+        n = len(words)
+        for i in range(n - 1):
+            for c in words[i]:
+                if cnt == 26:
+                    break
+                o = ord(c) - ord('a')
+                if not s[o]:
+                    cnt += 1
+                    s[o] = True
+            m = len(words[i])
+            for j in range(m):
+                if j >= len(words[i + 1]):
+                    return ''
+                c1, c2 = words[i][j], words[i + 1][j]
+                if c1 == c2:
+                    continue
+                o1, o2 = ord(c1) - ord('a'), ord(c2) - ord('a')
+                if g[o2][o1]:
+                    return ''
+                g[o1][o2] = True
+                break
+        for c in words[n - 1]:
+            if cnt == 26:
+                break
+            o = ord(c) - ord('a')
+            if not s[o]:
+                cnt += 1
+                s[o] = True
+
+        indegree = [0] * 26
+        for i in range(26):
+            for j in range(26):
+                if i != j and s[i] and s[j] and g[i][j]:
+                    indegree[j] += 1
+        q = deque()
+        ans = []
+        for i in range(26):
+            if s[i] and indegree[i] == 0:
+                q.append(i)
+        while q:
+            t = q.popleft()
+            ans.append(chr(t + ord('a')))
+            for i in range(26):
+                if s[i] and i != t and g[t][i]:
+                    indegree[i] -= 1
+                    if indegree[i] == 0:
+                        q.append(i)
+        return '' if len(ans) < cnt else ''.join(ans)
 
 
 # V1
