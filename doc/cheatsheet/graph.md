@@ -1,7 +1,8 @@
 # Graph Algorithms
 
 > **Scope** — Graph representation, traversal, connectivity, cycle detection and the general graph-problem catalogue.
-> **See also**: [shortest_path_comparison.md](./shortest_path_comparison.md) — **choosing** a weighted shortest-path algorithm; [Dijkstra.md](./Dijkstra.md) — non-negative weights; [Bellman-Ford.md](./Bellman-Ford.md) — negative weights / bounded hops; [Floyd-Warshall.md](./Floyd-Warshall.md) — all-pairs; [topology_sorting.md](./topology_sorting.md) — DAG ordering; [union_find.md](./union_find.md) — undirected connectivity.
+> **See also** — *deep dives split out of this file*: [graph_advanced.md](./graph_advanced.md) — Tarjan (SCC, bridges, articulation points), Euler circuits, max flow / min cut, bipartite matching and k-colouring; [graph_examples.md](./graph_examples.md) — the worked-solution archive (LC 133 / 200 / 207 / 323 / 329 / 399 / 695 / 742 / 802 / 815 / 886 / 947 / 1319).
+> *Neighbouring sheets*: [bfs.md](./bfs.md) — breadth-first traversal; [dfs.md](./dfs.md) — depth-first traversal; [topology_sorting.md](./topology_sorting.md) — DAG ordering; [union_find.md](./union_find.md) — undirected connectivity; [shortest_path_comparison.md](./shortest_path_comparison.md) — **choosing** a weighted shortest-path algorithm; [Dijkstra.md](./Dijkstra.md) — non-negative weights; [Bellman-Ford.md](./Bellman-Ford.md) — negative weights / bounded hops; [Floyd-Warshall.md](./Floyd-Warshall.md) — all-pairs.
 
 ## LeetCode Problem Lists
 
@@ -11,8 +12,7 @@
 **Graph algorithms** are techniques for solving problems on graph data structures consisting of vertices (nodes) and edges (connections between nodes).
 
 ### Key Properties
-- **Time Complexity**: O(V + E) for traversal, varies for other algorithms
-- **Space Complexity**: O(V) for adjacency list, O(V²) for matrix
+- **Complexity**: see the [Complexity Quick Reference](#complexity-quick-reference) table in the summary
 - **Core Idea**: Model relationships and connections between entities
 - **When to Use**: Network problems, dependencies, paths, connectivity
 - **Key Algorithms**: BFS, DFS, Dijkstra, Union-Find, Topological Sort
@@ -22,11 +22,6 @@
 - **Weighted vs Unweighted**: Edges with or without costs
 - **Cyclic vs Acyclic**: Contains cycles or not
 - **Connected vs Disconnected**: All nodes reachable or not
-
-### Graph Representations ⭐⭐⭐⭐⭐
-- **Adjacency List**: Space O(V + E), efficient for sparse graphs
-- **Adjacency Matrix**: Space O(V²), efficient for dense graphs
-- **Edge List**: Space O(E), simple but less efficient
 
 <p align="center"><img src="../pic/graph_processing_problem.png"></p>
 
@@ -64,16 +59,137 @@
 
 ## Templates & Algorithms
 
-### Template Comparison Table
-| Template Type | Use Case | Time Complexity | When to Use |
-|---------------|----------|-----------------|-------------|
-| **BFS** | Level-order, shortest path | O(V + E) | Unweighted shortest path |
-| **DFS** | All paths, cycle detection | O(V + E) | Explore all possibilities |
-| **Union-Find** | Connected components | O(α(n)) | Dynamic connectivity |
-| **Dijkstra** | Weighted shortest path | O((V+E)logV) | Non-negative weights |
-| **Topological** | Dependencies | O(V + E) | DAG ordering |
+### Which Sheet Owns Which Algorithm ⭐⭐⭐⭐⭐
+
+This sheet owns **representation, traversal, connectivity and cycle detection**. Every
+weighted or ordering algorithm has a dedicated sheet — go there for the implementation
+rather than re-deriving it here.
+
+| Need | Template here | Owning sheet |
+|---|---|---|
+| Build a graph from an LC input format | Graph Representations, below | this sheet |
+| Visit every node, count components | Template 1 / Template 2 | [bfs.md](./bfs.md), [dfs.md](./dfs.md) |
+| Shortest path, **unweighted** | Template 1 (BFS) | [bfs.md](./bfs.md) |
+| Shortest path, **weighted** | — | see the table below |
+| Order nodes with dependencies | Template 4 (Kahn) | [topology_sorting.md](./topology_sorting.md) |
+| Dynamic connectivity, merge sets | Template 3 (DSU) | [union_find.md](./union_find.md) |
+| Detect a cycle | Template 5 | this sheet |
+| Two groups / conflict colouring | Template 6 | this sheet |
+| SCC, bridges, articulation points, Euler circuit, max flow, k-colouring | — | [graph_advanced.md](./graph_advanced.md) |
+| One worked solution per problem | — | [graph_examples.md](./graph_examples.md) |
+
+#### Weighted shortest path — see the dedicated docs
+
+These have full docs of their own; re-stating their implementations here is what let
+`graph.md` drift out of sync with them.
+
+| Need | Doc | Complexity | Anchor LC |
+|---|---|---|---|
+| Single source, **non-negative** weights | [Dijkstra.md](./Dijkstra.md) | O((V+E) log V) | LC 743 |
+| Single source, **negative** weights / bounded hops / negative-cycle detection | [Bellman-Ford.md](./Bellman-Ford.md) | O(V·E) | LC 787 |
+| **All pairs**, dense graph | [Floyd-Warshall.md](./Floyd-Warshall.md) | O(V³) | LC 1334 |
+| Unweighted, or 0-1 weights | [bfs.md](./bfs.md) — plain BFS / 0-1 BFS with a deque | O(V+E) | LC 1091, LC 1368 |
+
+Not sure which? → [shortest_path_comparison.md](./shortest_path_comparison.md).
+
+### Graph Representations — How to Build Them ⭐⭐⭐⭐⭐
+
+Almost every LC graph problem hands you one of a handful of input shapes. Recognising the
+shape and converting it is the first thirty seconds of the solution.
+
+| LC input shape | Build | Typical problems |
+|---|---|---|
+| `edges = [[u,v], ...]` | adjacency list, **both** directions if undirected | LC 323, 684, 1971 |
+| `edges = [[u,v,w], ...]` | adjacency list of `(neighbor, weight)` pairs | LC 743, 787 |
+| `isConnected[i][j]` / `graph[i][j]` | already an adjacency **matrix** | LC 547, 1334 |
+| `graph[i] = [neighbors]` | already an adjacency **list** | LC 785, 797, 802 |
+| a grid `char[][]` / `int[][]` | **implicit** — cell = node, 4 or 8 neighbours = edges | LC 200, 695, 1091 |
+| a `Node` object with `neighbors` | pointer graph — traverse with a `{original: copy}` map | LC 133 |
+| pairs of strings (`["a","b"]`) | implicit — discover nodes from the input into a `defaultdict` | LC 399, 721 |
+
+**Which representation**
+
+| | Space | `u→v` edge test | Iterate neighbours of `u` | Use when |
+|---|---|---|---|---|
+| Adjacency list | O(V + E) | O(deg u) | O(deg u) | sparse — the LC default |
+| Adjacency matrix | O(V²) | O(1) | O(V) | dense, or `V` small (Floyd-Warshall) |
+| Edge list | O(E) | O(E) | O(E) | Kruskal, Bellman-Ford — algorithms that sweep edges |
+
+An **edge list** needs no build step at all: `edges` as handed to you *is* the
+representation. Sort it for Kruskal, iterate it `V-1` times for Bellman-Ford.
+
+#### **Adjacency List**
+```python
+# For edges list
+graph = defaultdict(list)
+for u, v in edges:
+    graph[u].append(v)
+    graph[v].append(u)  # Undirected
+
+# For weighted edges
+graph = defaultdict(list)
+for u, v, w in edges:
+    graph[u].append((v, w))
+```
+
+#### **Adjacency Matrix**
+```python
+# For unweighted
+graph = [[0] * n for _ in range(n)]
+for u, v in edges:
+    graph[u][v] = 1
+    graph[v][u] = 1  # Undirected
+
+# For weighted
+graph = [[float('inf')] * n for _ in range(n)]
+for u, v, w in edges:
+    graph[u][v] = w
+```
+
+#### **Grid as Graph**
+```python
+# 4-directional movement
+directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+
+# 8-directional movement
+directions = [(0, 1), (1, 0), (0, -1), (-1, 0),
+              (1, 1), (1, -1), (-1, 1), (-1, -1)]
+
+# Check bounds
+def is_valid(r, c, rows, cols):
+    return 0 <= r < rows and 0 <= c < cols
+```
+
+#### **Directed vs Undirected, and In/Out-Degree**
+```python
+# undirected: add BOTH directions -- forgetting this is the most common graph bug
+for u, v in edges:
+    graph[u].append(v)
+    graph[v].append(u)
+
+# directed: one direction only, and degree splits into two counts
+out_deg = [0] * n
+in_deg = [0] * n
+for u, v in edges:
+    graph[u].append(v)
+    out_deg[u] += 1
+    in_deg[v] += 1
+```
+
+- **Undirected**: `sum(degrees) == 2 * E`. A tree has exactly `V - 1` edges and no cycle.
+- **Directed**: sources have `in_deg == 0` (Kahn's starting set, Template 4); sinks have
+  `out_deg == 0` (LC 802 eventual safe states).
+- Some problems are answered by the degrees alone, with no traversal — LC 997 Find the
+  Town Judge (`in == n-1 and out == 0`), LC 1361 Validate Binary Tree Nodes.
+
+<p align="center"><img src="../pic/graph_rep1.png"></p>
+
+<p align="center"><img src="../pic/graph_rep2.png"></p>
 
 ### Universal Graph Template
+
+*An outline, not runnable code — `process_component` stands for whatever the problem asks you to do with each component (count it, collect it, aggregate over it):*
+
 ```python
 def graph_algorithm(n, edges):
     # Build adjacency list
@@ -94,6 +210,32 @@ def graph_algorithm(n, edges):
             result += 1
     
     return result
+```
+
+### Visited-Set Discipline ⭐⭐⭐⭐
+
+*Where* you mark a node decides whether the traversal terminates and whether it is correct.
+
+- **Mark on enqueue, not on dequeue** (BFS). Marking on dequeue lets the same node enter
+  the queue many times — still correct, but quadratic in the worst case.
+- **Count or reach a node** → one shared `visited` set; each node is processed once.
+- **Enumerate paths** → no shared set; push on the way down and **pop on the way up**
+  (Template 2's LC 797 variation).
+- **Directed cycle detection** → three states, not a boolean (Template 5).
+- On a grid you may mutate the input instead of allocating `visited` (`grid[r][c] = '0'`) —
+  O(1) extra space, but it destroys the input; say so out loud in an interview.
+
+#### **Three ways to record it**
+```python
+# Set for simple visited
+visited = set()
+
+# Array for state tracking
+# 0: unvisited, 1: visiting, 2: visited
+state = [0] * n
+
+# Dictionary for path reconstruction
+parent = {}
 ```
 
 ### Template 1: BFS Traversal — LC 102
@@ -239,42 +381,10 @@ class UnionFind:
         return self.find(x) == self.find(y)
 ```
 
-### Template 4: Topological Sort (DFS) — LC 207
-```python
-def topological_sort_dfs(n, edges):
-    """Topological sort using DFS"""
-    graph = collections.defaultdict(list)
-    for u, v in edges:
-        graph[u].append(v)
-    
-    # 0: unvisited, 1: visiting, 2: visited
-    state = [0] * n
-    result = []
-    
-    def dfs(node):
-        if state[node] == 1:  # Cycle detected
-            return False
-        if state[node] == 2:  # Already processed
-            return True
-        
-        state[node] = 1  # Mark as visiting
-        for neighbor in graph[node]:
-            if not dfs(neighbor):
-                return False
-        
-        state[node] = 2  # Mark as visited
-        result.append(node)
-        return True
-    
-    for i in range(n):
-        if state[i] == 0:
-            if not dfs(i):
-                return []  # Cycle exists
-    
-    return result[::-1]
-```
+### Template 4: Topological Sort (Kahn's BFS) — LC 207 ⭐⭐⭐⭐⭐
 
-### Template 5: Topological Sort (BFS/Kahn's) — LC 207 ⭐⭐⭐⭐⭐
+> Ordering variants — lexicographic order, all orders, parallel scheduling, tree centroid, DP on the DAG — live in [topology_sorting.md](./topology_sorting.md).
+
 ```python
 def topological_sort_bfs(n, edges):
     """Kahn's algorithm for topological sort"""
@@ -302,7 +412,43 @@ def topological_sort_bfs(n, edges):
     return result if len(result) == n else []
 ```
 
-### Template 6: Bipartite Graph Checking — LC 785
+### Template 5: Cycle Detection — Directed vs Undirected ⭐⭐⭐⭐
+
+The directed case needs **three** states, because a node that already finished is not a cycle — only a node still on the current DFS path is. The undirected case needs no states at all: an edge joining two nodes already in the same component *is* the cycle.
+
+*Both are outlines — `n` and `graph` come from the enclosing solution, and the directed sketch shows only the recursive core:*
+
+```python
+# Directed graph - DFS with states
+def has_cycle_directed(graph):
+    # 0: unvisited, 1: visiting, 2: visited
+    state = [0] * n
+    
+    def dfs(node):
+        if state[node] == 1:  # Back edge
+            return True
+        if state[node] == 2:
+            return False
+        
+        state[node] = 1
+        for neighbor in graph[node]:
+            if dfs(neighbor):
+                return True
+        state[node] = 2
+        return False
+
+# Undirected graph - Union-Find
+def has_cycle_undirected(edges):
+    uf = UnionFind(n)
+    for u, v in edges:
+        if not uf.union(u, v):
+            return True  # Already connected
+    return False
+```
+
+**Connected components** are the same walk, counted rather than searched — run the traversal from every still-unvisited node and increment a counter (the Universal Graph Template above is exactly this). Worked out for LC 323, LC 547 and LC 1319 in [graph_examples.md](./graph_examples.md).
+
+### Template 6: Bipartite Check (2-Coloring) — LC 785 ⭐⭐⭐⭐
 
 **Definition**: A graph is bipartite if its vertices can be colored using only two colors such that no two adjacent vertices have the same color. Equivalent to checking if the graph has no odd-length cycles.
 
@@ -385,223 +531,7 @@ def is_bipartite_dfs(graph):
     return True
 ```
 
-#### **Approach 3: Union-Find (Advanced)**
-```python
-def is_bipartite_union_find(n, edges):
-    """Check bipartite using Union-Find for conflict detection"""
-
-    class UnionFind:
-        def __init__(self, n):
-            self.parent = list(range(2 * n))  # 2n for opposite groups
-
-        def find(self, x):
-            if self.parent[x] != x:
-                self.parent[x] = self.find(self.parent[x])
-            return self.parent[x]
-
-        def union(self, x, y):
-            px, py = self.find(x), self.find(y)
-            if px != py:
-                self.parent[px] = py
-
-        def connected(self, x, y):
-            return self.find(x) == self.find(y)
-
-    uf = UnionFind(n)
-
-    # For each edge (u,v), union u with opposite of v, and v with opposite of u
-    for u, v in edges:
-        if uf.connected(u, v):  # Same group conflict
-            return False
-
-        # u should be in opposite group of v
-        uf.union(u, v + n)  # u with opposite of v
-        uf.union(v, u + n)  # v with opposite of u
-
-    return True
-```
-
-> See BFS/DFS bipartite templates above.
-
-#### **Related Problems & Examples**
-
-**LC 785: Is Graph Bipartite**
-```python
-def isBipartite(self, graph):
-    """LC 785 - Standard bipartite check"""
-    n = len(graph)
-    colors = {}
-
-    def dfs(node, color):
-        colors[node] = color
-        for neighbor in graph[node]:
-            if neighbor in colors:
-                if colors[neighbor] == colors[node]:
-                    return False
-            else:
-                if not dfs(neighbor, 1 - color):
-                    return False
-        return True
-
-    for i in range(n):
-        if i not in colors:
-            if not dfs(i, 0):
-                return False
-    return True
-```
-
-**LC 886: Possible Bipartition**
-```python
-def possibleBipartition(self, n, dislikes):
-    """LC 886 - Build graph from dislike relationships"""
-    from collections import defaultdict
-
-    # Build adjacency list from dislikes
-    graph = defaultdict(list)
-    for u, v in dislikes:
-        graph[u].append(v)
-        graph[v].append(u)
-
-    colors = {}
-
-    def dfs(node, color):
-        colors[node] = color
-        for neighbor in graph[node]:
-            if neighbor in colors:
-                if colors[neighbor] == colors[node]:
-                    return False
-            else:
-                if not dfs(neighbor, 1 - color):
-                    return False
-        return True
-
-    for i in range(1, n + 1):
-        if i not in colors:
-            if not dfs(i, 0):
-                return False
-    return True
-```
-
-#### **Applications & Variations**
-
-**1. Maximum Bipartite Matching**
-```python
-def max_bipartite_matching(graph, n, m):
-    """Find maximum matching in bipartite graph"""
-    match = [-1] * m
-
-    def dfs(u, visited):
-        for v in graph[u]:
-            if not visited[v]:
-                visited[v] = True
-                if match[v] == -1 or dfs(match[v], visited):
-                    match[v] = u
-                    return True
-        return False
-
-    result = 0
-    for u in range(n):
-        visited = [False] * m
-        if dfs(u, visited):
-            result += 1
-
-    return result
-```
-
-**2. Bipartite Graph Validation with Custom Logic**
-```python
-def validate_bipartite_assignment(assignments, conflicts):
-    """
-    Validate if assignment is bipartite given conflict pairs
-    assignments: list of items to assign
-    conflicts: list of (item1, item2) that cannot be in same group
-    """
-    from collections import defaultdict
-
-    graph = defaultdict(list)
-    for u, v in conflicts:
-        graph[u].append(v)
-        graph[v].append(u)
-
-    colors = {}
-
-    def can_color(item, color):
-        if item in colors:
-            return colors[item] == color
-
-        colors[item] = color
-        for conflict_item in graph[item]:
-            if not can_color(conflict_item, 1 - color):
-                return False
-        return True
-
-    for item in assignments:
-        if item not in colors:
-            if not can_color(item, 0):
-                return False, {}
-
-    # Return partition
-    group_a = [item for item, color in colors.items() if color == 0]
-    group_b = [item for item, color in colors.items() if color == 1]
-
-    return True, {"Group A": group_a, "Group B": group_b}
-```
-
-**3. Greedy k-Coloring (when 2 colors are not enough) — LC 1042**
-
-*Twist on bipartite*: with `k` colors and a guarantee that every vertex has degree `< k`, no search/backtracking is needed at all — just walk the vertices in order and pick any color not used by an already-colored neighbour. LC 1042 guarantees degree ≤ 3 with 4 colors available, so a greedy pass always succeeds.
-
-```python
-# python
-# LC 1042 - Flower Planting With No Adjacent
-# IDEA: degree <= 3 and 4 colors available => a free color ALWAYS exists.
-#       greedy single pass, no bipartite check / no backtracking needed.
-# time = O(V + E), space = O(V + E)
-from collections import defaultdict
-
-class Solution(object):
-    def gardenNoAdj(self, n, paths):
-        g = defaultdict(list)
-        for a, b in paths:
-            g[a].append(b)
-            g[b].append(a)
-
-        res = [0] * n                      # res[i-1] = flower type of garden i
-        for i in range(1, n + 1):
-            used = {res[j - 1] for j in g[i]}   # 0 = "not yet colored"
-            res[i - 1] = next(c for c in (1, 2, 3, 4) if c not in used)
-        return res
-```
-
-```java
-// java
-// LC 1042 - Flower Planting With No Adjacent
-// time = O(V + E), space = O(V + E)
-public int[] gardenNoAdj(int n, int[][] paths) {
-    List<List<Integer>> g = new ArrayList<>();
-    for (int i = 0; i <= n; i++) {
-        g.add(new ArrayList<>());
-    }
-    for (int[] p : paths) {
-        g.get(p[0]).add(p[1]);
-        g.get(p[1]).add(p[0]);
-    }
-
-    int[] res = new int[n];
-    for (int i = 1; i <= n; i++) {
-        boolean[] used = new boolean[5];
-        for (int nb : g.get(i)) {
-            used[res[nb - 1]] = true;      // res = 0 for uncolored, harmless
-        }
-        for (int c = 1; c <= 4; c++) {
-            if (!used[c]) { res[i - 1] = c; break; }
-        }
-    }
-    return res;
-}
-```
-
-**Key distinction**: 2-coloring (bipartite) needs BFS/DFS propagation because a color choice **forces** the neighbours. With `k > max_degree` colors, choices never conflict, so greedy is optimal — say this out loud instead of reaching for backtracking.
+> Union-Find bipartite detection, maximum bipartite matching and greedy k-colouring are in [graph_advanced.md](./graph_advanced.md); LC 886 Possible Bipartition is worked in [graph_examples.md](./graph_examples.md).
 
 #### **Performance Comparison**
 
@@ -633,2039 +563,11 @@ public int[] gardenNoAdj(int n, int[][] paths) {
 - Self-loops (not bipartite if exists)
 - Disconnected components (check all)
 
-<p align="center"><img src="../pic/graph_rep1.png"></p>
-
-<p align="center"><img src="../pic/graph_rep2.png"></p>
-
 ---
 
-### Template 7: Shortest Path Algorithms — LC 743 ⭐⭐⭐⭐
+## Summary & Quick Reference
 
-#### Overview: Shortest Path Algorithm Comparison
-
-| Algorithm | Time | Space | Edge Weights | Use Case | Best For |
-|-----------|------|-------|--------------|----------|----------|
-| **BFS** | O(V+E) | O(V) | Unweighted | Single source | Unweighted graphs |
-| **Dijkstra** | O((V+E)logV) | O(V) | Non-negative | Single source | Non-negative weights |
-| **Bellman-Ford** | **O(V⋅E)** | **O(V)** | **Any (including negative)** | **Single source** | **Negative edges, detect cycles** |
-| **Floyd-Warshall** | **O(V³)** | **O(V²)** | **Any (including negative)** | **All pairs** | **Dense graphs, all-pairs** |
-| **SPFA** | O(V⋅E) avg | O(V) | Any | Single source | Sparse graphs with negative |
-
-**When to Use Each:**
-- **BFS**: Unweighted graphs, shortest path in terms of number of edges
-- **Dijkstra**: Non-negative weights, need optimal performance
-- **Bellman-Ford**: Negative weights exist, need to detect negative cycles
-- **Floyd-Warshall**: Need all-pairs shortest paths, small dense graph
-- **SPFA (Shortest Path Faster Algorithm)**: Bellman-Ford optimization, average O(E)
-
----
-
-#### 7.1) Bellman-Ford Algorithm
-
-**Core Concept:**
-Bellman-Ford finds shortest paths from a single source to all vertices, even with **negative edge weights**. It can also **detect negative cycles**.
-
-**Key Insight:**
-- Relaxes all edges V-1 times (V = number of vertices)
-- After V-1 iterations, shortest paths are found (if no negative cycle)
-- One more iteration detects negative cycles
-
-**Algorithm Steps:**
-1. Initialize distances: `dist[source] = 0`, all others = ∞
-2. Relax all edges V-1 times:
-   - For each edge (u, v, weight):
-     - If `dist[u] + weight < dist[v]`: update `dist[v]`
-3. Check for negative cycles:
-   - If any edge can still be relaxed, negative cycle exists
-
-**Why V-1 Iterations?**
-```text
-In a graph with V vertices, the shortest path between any two vertices
-contains at most V-1 edges (no cycles).
-
-After k iterations, we have the shortest path using at most k edges.
-After V-1 iterations, we have the shortest paths for all pairs.
-```
-
-##### Python Implementation
-
-```python
-# Bellman-Ford Algorithm
-def bellman_ford(n, edges, source):
-    """
-    Find shortest paths from source to all vertices.
-    Can handle negative weights and detect negative cycles.
-
-    Args:
-        n: number of vertices (0 to n-1)
-        edges: list of (u, v, weight) tuples
-        source: starting vertex
-
-    Returns:
-        dist: array of shortest distances (or None if negative cycle)
-
-    Time: O(V⋅E)
-    Space: O(V)
-    """
-    # Initialize distances
-    dist = [float('inf')] * n
-    dist[source] = 0
-
-    # Relax all edges V-1 times
-    for _ in range(n - 1):
-        updated = False
-        for u, v, weight in edges:
-            if dist[u] != float('inf') and dist[u] + weight < dist[v]:
-                dist[v] = dist[u] + weight
-                updated = True
-
-        # Early termination if no updates
-        if not updated:
-            break
-
-    # Check for negative cycles
-    for u, v, weight in edges:
-        if dist[u] != float('inf') and dist[u] + weight < dist[v]:
-            return None  # Negative cycle detected
-
-    return dist
-
-# Example usage:
-# edges = [(0, 1, 4), (0, 2, 5), (1, 2, -3), (2, 3, 4)]
-# result = bellman_ford(4, edges, 0)
-# Output: [0, 4, 1, 5] (shortest distances from vertex 0)
-```
-
-##### Java Implementation
-
-```java
-// Bellman-Ford Algorithm
-/**
- * LC 787 - Cheapest Flights Within K Stops (Bellman-Ford variant)
- *
- * time = O(V⋅E) or O(K⋅E) for K iterations
- * space = O(V)
- */
-class Solution {
-    public int[] bellmanFord(int n, int[][] edges, int src) {
-        // Initialize distances
-        int[] dist = new int[n];
-        Arrays.fill(dist, Integer.MAX_VALUE);
-        dist[src] = 0;
-
-        // Relax edges V-1 times
-        for (int i = 0; i < n - 1; i++) {
-            boolean updated = false;
-
-            for (int[] edge : edges) {
-                int u = edge[0];
-                int v = edge[1];
-                int weight = edge[2];
-
-                if (dist[u] != Integer.MAX_VALUE && dist[u] + weight < dist[v]) {
-                    dist[v] = dist[u] + weight;
-                    updated = true;
-                }
-            }
-
-            // Early termination
-            if (!updated) break;
-        }
-
-        // Check for negative cycle
-        for (int[] edge : edges) {
-            int u = edge[0];
-            int v = edge[1];
-            int weight = edge[2];
-
-            if (dist[u] != Integer.MAX_VALUE && dist[u] + weight < dist[v]) {
-                return null;  // Negative cycle detected
-            }
-        }
-
-        return dist;
-    }
-}
-```
-
-##### Visual Example
-
-```text
-Graph with negative edge:
-    0 --4--> 1
-    |       / |
-    5     -3  |
-    |   /     4
-    v v       v
-    2 --------> 3
-
-Edges: [(0,1,4), (0,2,5), (1,2,-3), (2,3,4)]
-
-Iteration 0 (Initial):
-dist = [0, ∞, ∞, ∞]
-
-Iteration 1:
-Edge (0,1,4): dist[1] = 0 + 4 = 4
-Edge (0,2,5): dist[2] = 0 + 5 = 5
-Edge (1,2,-3): dist[2] = min(5, 4-3) = 1
-Edge (2,3,4): dist[3] = 1 + 4 = 5
-dist = [0, 4, 1, 5]
-
-Iteration 2:
-Edge (1,2,-3): dist[2] = min(1, 4-3) = 1 (no change)
-Edge (2,3,4): dist[3] = min(5, 1+4) = 5 (no change)
-No updates → Early termination
-
-Final: dist = [0, 4, 1, 5] ✓
-```
-
-##### Negative Cycle Detection
-
-```python
-# Example with negative cycle
-def detect_negative_cycle(n, edges):
-    """
-    Detect if graph contains a negative cycle.
-
-    Time: O(V⋅E)
-    Space: O(V)
-    """
-    # Pick arbitrary source (negative cycle affects all paths)
-    source = 0
-    dist = [float('inf')] * n
-    dist[source] = 0
-
-    # Relax V-1 times
-    for _ in range(n - 1):
-        for u, v, weight in edges:
-            if dist[u] != float('inf') and dist[u] + weight < dist[v]:
-                dist[v] = dist[u] + weight
-
-    # Check if can still relax
-    for u, v, weight in edges:
-        if dist[u] != float('inf') and dist[u] + weight < dist[v]:
-            return True  # Negative cycle exists
-
-    return False
-
-# Example: edges = [(0,1,1), (1,2,-3), (2,0,1)]
-# Forms cycle: 0→1→2→0 with total weight 1-3+1 = -1
-# Returns: True
-```
-
----
-
-#### 7.2) Floyd-Warshall Algorithm
-
-**Core Concept:**
-Floyd-Warshall finds **all-pairs shortest paths** in a weighted graph using dynamic programming. Works with negative weights but not negative cycles.
-
-**Key Insight:**
-- DP approach: For each pair (i, j), try all intermediate vertices k
-- `dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])`
-- After considering all k, we have shortest paths for all pairs
-
-**Algorithm Steps:**
-1. Initialize `dist[i][j]`:
-   - `dist[i][i] = 0` (same vertex)
-   - `dist[i][j] = weight(i, j)` if edge exists
-   - `dist[i][j] = ∞` otherwise
-2. For each intermediate vertex k (0 to n-1):
-   - For each pair (i, j):
-     - `dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])`
-
-**Why It Works:**
-```text
-After considering vertices {0, 1, ..., k} as intermediate:
-dist[i][j] = shortest path from i to j using only vertices {0...k}
-
-When k = n-1, we've considered all possible intermediates
-→ dist[i][j] = shortest path from i to j
-```
-
-##### Python Implementation
-
-```python
-# Floyd-Warshall Algorithm
-def floyd_warshall(n, edges):
-    """
-    Find all-pairs shortest paths.
-
-    Args:
-        n: number of vertices (0 to n-1)
-        edges: list of (u, v, weight) tuples
-
-    Returns:
-        dist: 2D array where dist[i][j] = shortest path from i to j
-
-    Time: O(V³)
-    Space: O(V²)
-    """
-    # Initialize distance matrix
-    dist = [[float('inf')] * n for _ in range(n)]
-
-    # Distance from vertex to itself is 0
-    for i in range(n):
-        dist[i][i] = 0
-
-    # Fill in edge weights
-    for u, v, weight in edges:
-        dist[u][v] = weight
-        # For undirected graphs, uncomment:
-        # dist[v][u] = weight
-
-    # Dynamic programming: try all intermediate vertices
-    for k in range(n):
-        for i in range(n):
-            for j in range(n):
-                # Can we improve path i→j by going through k?
-                if dist[i][k] != float('inf') and dist[k][j] != float('inf'):
-                    dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
-
-    # Check for negative cycles
-    for i in range(n):
-        if dist[i][i] < 0:
-            return None  # Negative cycle detected
-
-    return dist
-
-# Example usage:
-# edges = [(0,1,3), (1,2,1), (0,2,7), (2,3,2)]
-# result = floyd_warshall(4, edges)
-# result[i][j] = shortest distance from i to j
-```
-
-##### Java Implementation
-
-```java
-// Floyd-Warshall Algorithm
-/**
- * LC 1334 - Find the City With the Smallest Number of Neighbors
- *
- * time = O(V³)
- * space = O(V²)
- */
-class Solution {
-    public int[][] floydWarshall(int n, int[][] edges) {
-        // Initialize distance matrix
-        int[][] dist = new int[n][n];
-
-        // Fill with infinity
-        for (int i = 0; i < n; i++) {
-            Arrays.fill(dist[i], Integer.MAX_VALUE / 2);  // Avoid overflow
-            dist[i][i] = 0;  // Distance to self is 0
-        }
-
-        // Add edge weights
-        for (int[] edge : edges) {
-            int u = edge[0];
-            int v = edge[1];
-            int weight = edge[2];
-            dist[u][v] = weight;
-            dist[v][u] = weight;  // For undirected graph
-        }
-
-        // Floyd-Warshall: try all intermediate vertices
-        for (int k = 0; k < n; k++) {
-            for (int i = 0; i < n; i++) {
-                for (int j = 0; j < n; j++) {
-                    // Relax through vertex k
-                    dist[i][j] = Math.min(dist[i][j], dist[i][k] + dist[k][j]);
-                }
-            }
-        }
-
-        return dist;
-    }
-}
-```
-
-##### Visual Example
-
-```text
-Graph:
-  0 --3--> 1
-  |        |
-  7        1
-  |        |
-  v        v
-  2 <--2-- 3
-
-Initial distance matrix:
-     0   1   2   3
-0 [  0   3   7   ∞ ]
-1 [  ∞   0   ∞   1 ]
-2 [  ∞   ∞   0   ∞ ]
-3 [  ∞   ∞   2   0 ]
-
-After k=0 (intermediate vertex 0):
-No changes (0 is only source, not intermediate)
-
-After k=1 (intermediate vertex 1):
-dist[0][3] = min(∞, dist[0][1] + dist[1][3]) = min(∞, 3+1) = 4
-     0   1   2   3
-0 [  0   3   7   4 ]
-1 [  ∞   0   ∞   1 ]
-2 [  ∞   ∞   0   ∞ ]
-3 [  ∞   ∞   2   0 ]
-
-After k=2:
-No improvements
-
-After k=3 (intermediate vertex 3):
-dist[0][2] = min(7, dist[0][3] + dist[3][2]) = min(7, 4+2) = 6
-dist[1][2] = min(∞, dist[1][3] + dist[3][2]) = min(∞, 1+2) = 3
-
-Final:
-     0   1   2   3
-0 [  0   3   6   4 ]
-1 [  ∞   0   3   1 ]
-2 [  ∞   ∞   0   ∞ ]
-3 [  ∞   ∞   2   0 ]
-```
-
-##### Path Reconstruction
-
-```python
-# Floyd-Warshall with path reconstruction
-def floyd_warshall_with_path(n, edges):
-    """
-    Find all-pairs shortest paths and reconstruct paths.
-
-    Returns:
-        dist: shortest distances
-        next_vertex: for path reconstruction
-    """
-    dist = [[float('inf')] * n for _ in range(n)]
-    next_vertex = [[None] * n for _ in range(n)]
-
-    # Initialize
-    for i in range(n):
-        dist[i][i] = 0
-
-    for u, v, weight in edges:
-        dist[u][v] = weight
-        next_vertex[u][v] = v
-
-    # Floyd-Warshall
-    for k in range(n):
-        for i in range(n):
-            for j in range(n):
-                if dist[i][k] + dist[k][j] < dist[i][j]:
-                    dist[i][j] = dist[i][k] + dist[k][j]
-                    next_vertex[i][j] = next_vertex[i][k]
-
-    return dist, next_vertex
-
-def reconstruct_path(next_vertex, start, end):
-    """Reconstruct shortest path from start to end."""
-    if next_vertex[start][end] is None:
-        return []
-
-    path = [start]
-    current = start
-
-    while current != end:
-        current = next_vertex[current][end]
-        path.append(current)
-
-    return path
-
-# Example:
-# dist, next_v = floyd_warshall_with_path(4, edges)
-# path = reconstruct_path(next_v, 0, 3)
-# Output: [0, 1, 3] (path from 0 to 3)
-```
-
----
-
-#### 7.3) Classic LeetCode Problems
-
-| Problem | LC# | Algorithm | Difficulty | Key Insight |
-|---------|-----|-----------|------------|-------------|
-| **Network Delay Time** | **743** | **Bellman-Ford / Dijkstra** | **Medium** | Single source shortest path |
-| **Cheapest Flights K Stops** | **787** | **Bellman-Ford (K iterations)** | **Medium** | Limit iterations to K+1 |
-| Find the City | 1334 | Floyd-Warshall | Medium | All-pairs, count neighbors |
-| Course Schedule III | 630 | Bellman-Ford variant | Hard | With constraints |
-| Minimum Cost to Reach Destination | 1928 | Bellman-Ford / Dijkstra | Hard | Modified edge costs |
-| Bellman-Ford | 1724 | Bellman-Ford | Medium | Check negative cycles |
-
----
-
-#### 7.4) Performance Comparison & When to Use
-
-**Bellman-Ford vs Dijkstra:**
-
-| Aspect | Bellman-Ford | Dijkstra |
-|--------|--------------|----------|
-| **Time** | O(V⋅E) slower | O((V+E)logV) faster |
-| **Edge Weights** | Any (including negative) | Non-negative only |
-| **Negative Cycles** | Can detect | Cannot handle |
-| **Implementation** | Simpler | More complex (priority queue) |
-| **Use Case** | Negative weights, cycle detection | Optimal for non-negative |
-
-**Floyd-Warshall vs Running Dijkstra V times:**
-
-| Aspect | Floyd-Warshall | V × Dijkstra |
-|--------|----------------|--------------|
-| **Time** | O(V³) | O(V²⋅E⋅logV) |
-| **Space** | O(V²) | O(V) |
-| **Code Complexity** | Simple (3 loops) | More complex |
-| **Best For** | Dense graphs, small V | Sparse graphs, large V |
-
-**Decision Tree:**
-```text
-Need shortest paths?
-├─ Single source
-│  ├─ Negative weights? → Bellman-Ford
-│  └─ Non-negative? → Dijkstra (faster)
-│
-└─ All pairs
-   ├─ Dense graph or small V? → Floyd-Warshall
-   └─ Sparse graph or large V? → Run Dijkstra V times
-```
-
----
-
-#### 7.5) Interview Tips
-
-**1. Algorithm Selection:**
-```text
-Q: "Find shortest path from A to B"
-→ Clarify: Negative weights? → Bellman-Ford : Dijkstra
-
-Q: "Find shortest paths between all pairs"
-→ Ask: Graph density? → Dense: Floyd-Warshall, Sparse: Dijkstra×V
-
-Q: "Detect if negative cycle exists"
-→ Use: Bellman-Ford (only algorithm that detects this)
-```
-
-**2. Common Mistakes:**
-- **Bellman-Ford**: Forgetting to check `dist[u] != INF` before relaxation
-- **Floyd-Warshall**: Wrong loop order (must be k→i→j, not i→j→k)
-- **Both**: Not handling unreachable vertices (dist = INF)
-- **Negative cycles**: Not checking after main algorithm
-
-**3. Optimization Tips:**
-```python
-# Bellman-Ford: Early termination
-for iteration in range(n - 1):
-    updated = False
-    for edge in edges:
-        if relax(edge):
-            updated = True
-    if not updated:
-        break  # No more improvements possible
-
-# Floyd-Warshall: Only update if improves
-if dist[i][k] + dist[k][j] < dist[i][j]:
-    dist[i][j] = dist[i][k] + dist[k][j]
-```
-
-**4. Edge Cases:**
-- Graph with no edges (all distances = INF except self)
-- Negative cycle (Bellman-Ford returns None)
-- Disconnected graph (some distances remain INF)
-- Self-loops with negative weight (negative cycle)
-
-**5. Talking Points:**
-- "Bellman-Ford trades time for flexibility with negative weights"
-- "Floyd-Warshall is DP: optimal substructure through intermediate vertices"
-- "V-1 iterations because longest simple path has V-1 edges"
-- "Floyd-Warshall is simple but O(V³) limits scalability"
-
----
-
-### Template 8: Tarjan's Algorithm (Graph Connectivity) — LC 1192
-
-**Overview:**
-Tarjan's algorithm is a DFS-based technique for finding critical graph structures:
-1. **Strongly Connected Components (SCC)** - Maximal sets of mutually reachable vertices (directed graphs)
-2. **Bridges** - Edges whose removal disconnects the graph (undirected graphs)
-3. **Articulation Points (Cut Vertices)** - Vertices whose removal disconnects the graph (undirected graphs)
-
-**Core Concept:**
-Uses DFS with two key arrays:
-- `disc[v]`: Discovery time of vertex v (when first visited)
-- `low[v]`: Lowest discovery time reachable from v's subtree
-
-**Time Complexity**: O(V + E) - single DFS traversal
-**Space Complexity**: O(V) - recursion stack + arrays
-
----
-
-#### 8.1) Strongly Connected Components (SCC)
-
-**Definition**: In a directed graph, an SCC is a maximal set of vertices where every vertex is reachable from every other vertex in the set.
-
-**Key Insight:**
-- Use a stack to track vertices in current DFS path
-- When `low[v] == disc[v]`, v is the root of an SCC
-- Pop all vertices from stack until v to get complete SCC
-
-**Algorithm Steps:**
-1. Initialize `disc[]`, `low[]`, and stack
-2. DFS from each unvisited vertex
-3. For each vertex v:
-   - Set `disc[v] = low[v] = timer++`
-   - Push v onto stack
-   - For each neighbor u:
-     - If unvisited: DFS(u), update `low[v] = min(low[v], low[u])`
-     - If u on stack: update `low[v] = min(low[v], disc[u])`
-   - If `low[v] == disc[v]`: pop stack until v to form SCC
-
-##### Python Implementation
-
-```python
-# Tarjan's Algorithm for SCC
-def tarjan_scc(n, graph):
-    """
-    Find all strongly connected components using Tarjan's algorithm.
-
-    Args:
-        n: number of vertices (0 to n-1)
-        graph: adjacency list (directed graph)
-
-    Returns:
-        List of SCCs, where each SCC is a list of vertices
-
-    Time: O(V + E)
-    Space: O(V)
-    """
-    disc = [-1] * n  # Discovery times
-    low = [-1] * n   # Lowest reachable
-    on_stack = [False] * n
-    stack = []
-    sccs = []
-    timer = [0]  # Use list for mutability
-
-    def dfs(v):
-        # Initialize discovery time and low value
-        disc[v] = low[v] = timer[0]
-        timer[0] += 1
-        stack.append(v)
-        on_stack[v] = True
-
-        # Explore neighbors
-        for u in graph[v]:
-            if disc[u] == -1:
-                # Unvisited neighbor
-                dfs(u)
-                low[v] = min(low[v], low[u])
-            elif on_stack[u]:
-                # Back edge to vertex on stack
-                low[v] = min(low[v], disc[u])
-
-        # If v is a root of SCC, pop the SCC
-        if low[v] == disc[v]:
-            scc = []
-            while True:
-                u = stack.pop()
-                on_stack[u] = False
-                scc.append(u)
-                if u == v:
-                    break
-            sccs.append(scc)
-
-    # Run DFS from each unvisited vertex
-    for i in range(n):
-        if disc[i] == -1:
-            dfs(i)
-
-    return sccs
-
-# Example:
-# graph = {0: [1], 1: [2], 2: [0, 3], 3: [4], 4: [5], 5: [3]}
-#    0 → 1 → 2
-#    ↑       ↓
-#    └───────┘    3 ⇄ 4 → 5
-#                     ↑   ↓
-#                     └───┘
-# SCCs: [[0, 2, 1], [3, 5, 4]]
-```
-
-##### Java Implementation
-
-```java
-// Tarjan's SCC Algorithm
-/**
- * LC 1192 - Critical Connections in a Network (related)
- *
- * time = O(V + E)
- * space = O(V)
- */
-class TarjanSCC {
-    private int timer = 0;
-    private int[] disc;
-    private int[] low;
-    private boolean[] onStack;
-    private Stack<Integer> stack;
-    private List<List<Integer>> sccs;
-
-    public List<List<Integer>> findSCCs(int n, List<List<Integer>> graph) {
-        disc = new int[n];
-        low = new int[n];
-        onStack = new boolean[n];
-        stack = new Stack<>();
-        sccs = new ArrayList<>();
-
-        Arrays.fill(disc, -1);
-        Arrays.fill(low, -1);
-
-        // DFS from each unvisited vertex
-        for (int i = 0; i < n; i++) {
-            if (disc[i] == -1) {
-                dfs(i, graph);
-            }
-        }
-
-        return sccs;
-    }
-
-    private void dfs(int v, List<List<Integer>> graph) {
-        // Initialize
-        disc[v] = low[v] = timer++;
-        stack.push(v);
-        onStack[v] = true;
-
-        // Explore neighbors
-        for (int u : graph.get(v)) {
-            if (disc[u] == -1) {
-                // Unvisited
-                dfs(u, graph);
-                low[v] = Math.min(low[v], low[u]);
-            } else if (onStack[u]) {
-                // Back edge
-                low[v] = Math.min(low[v], disc[u]);
-            }
-        }
-
-        // Root of SCC found
-        if (low[v] == disc[v]) {
-            List<Integer> scc = new ArrayList<>();
-            while (true) {
-                int u = stack.pop();
-                onStack[u] = false;
-                scc.add(u);
-                if (u == v) break;
-            }
-            sccs.add(scc);
-        }
-    }
-}
-```
-
----
-
-#### 8.2) Finding Bridges (Critical Connections)
-
-**Definition**: A bridge is an edge whose removal increases the number of connected components (disconnects the graph).
-
-**Key Insight:**
-- Edge (u, v) is a bridge if `low[v] > disc[u]`
-- Means v cannot reach any vertex discovered before u without using edge (u, v)
-
-**Algorithm Steps:**
-1. Run DFS with `disc[]` and `low[]`
-2. For each edge (u, v) in DFS tree:
-   - If `low[v] > disc[u]`: (u, v) is a bridge
-
-##### Python Implementation
-
-```python
-# Tarjan's Algorithm for Bridges
-def find_bridges(n, edges):
-    """
-    Find all bridges (critical connections) in an undirected graph.
-
-    Args:
-        n: number of vertices
-        edges: list of [u, v] edges
-
-    Returns:
-        List of bridges (critical edges)
-
-    Time: O(V + E)
-    Space: O(V + E)
-    """
-    # Build adjacency list
-    graph = [[] for _ in range(n)]
-    for u, v in edges:
-        graph[u].append(v)
-        graph[v].append(u)
-
-    disc = [-1] * n
-    low = [-1] * n
-    bridges = []
-    timer = [0]
-
-    def dfs(v, parent):
-        disc[v] = low[v] = timer[0]
-        timer[0] += 1
-
-        for u in graph[v]:
-            if u == parent:
-                # Skip edge to parent (undirected graph)
-                continue
-
-            if disc[u] == -1:
-                # Unvisited neighbor
-                dfs(u, v)
-                low[v] = min(low[v], low[u])
-
-                # Check if (v, u) is a bridge
-                if low[u] > disc[v]:
-                    bridges.append([v, u])
-            else:
-                # Back edge
-                low[v] = min(low[v], disc[u])
-
-    # Run DFS from each component
-    for i in range(n):
-        if disc[i] == -1:
-            dfs(i, -1)
-
-    return bridges
-
-# Example:
-# n = 4, edges = [[0,1],[1,2],[2,0],[1,3]]
-#
-#    0 --- 1 --- 3
-#     \   /
-#      \ /
-#       2
-#
-# Bridge: [1, 3] (removing this disconnects 3 from rest)
-```
-
-##### Java Implementation
-
-```java
-// LC 1192 - Critical Connections in a Network
-/**
- * time = O(V + E)
- * space = O(V + E)
- */
-class Solution {
-    private int timer = 0;
-    private int[] disc;
-    private int[] low;
-    private List<List<Integer>> bridges;
-
-    public List<List<Integer>> criticalConnections(int n, List<List<Integer>> connections) {
-        // Build adjacency list
-        List<List<Integer>> graph = new ArrayList<>();
-        for (int i = 0; i < n; i++) {
-            graph.add(new ArrayList<>());
-        }
-        for (List<Integer> conn : connections) {
-            int u = conn.get(0);
-            int v = conn.get(1);
-            graph.get(u).add(v);
-            graph.get(v).add(u);
-        }
-
-        disc = new int[n];
-        low = new int[n];
-        bridges = new ArrayList<>();
-        Arrays.fill(disc, -1);
-
-        // DFS from vertex 0 (graph is connected in this problem)
-        dfs(0, -1, graph);
-
-        return bridges;
-    }
-
-    private void dfs(int v, int parent, List<List<Integer>> graph) {
-        disc[v] = low[v] = timer++;
-
-        for (int u : graph.get(v)) {
-            if (u == parent) continue;  // Skip parent edge
-
-            if (disc[u] == -1) {
-                // Unvisited
-                dfs(u, v, graph);
-                low[v] = Math.min(low[v], low[u]);
-
-                // Check for bridge
-                if (low[u] > disc[v]) {
-                    bridges.add(Arrays.asList(v, u));
-                }
-            } else {
-                // Back edge
-                low[v] = Math.min(low[v], disc[u]);
-            }
-        }
-    }
-}
-```
-
----
-
-#### 8.3) Finding Articulation Points (Cut Vertices)
-
-**Definition**: An articulation point is a vertex whose removal increases the number of connected components.
-
-**Key Insight:**
-- Vertex u is an articulation point if:
-  - **Root of DFS tree**: has 2+ children
-  - **Non-root**: has a child v where `low[v] >= disc[u]`
-
-**Algorithm Steps:**
-1. Run DFS with `disc[]` and `low[]`
-2. For each vertex u:
-   - If root: count children, articulation point if ≥ 2
-   - If non-root: check if any child v has `low[v] >= disc[u]`
-
-##### Python Implementation
-
-```python
-# Tarjan's Algorithm for Articulation Points
-def find_articulation_points(n, edges):
-    """
-    Find all articulation points (cut vertices).
-
-    Args:
-        n: number of vertices
-        edges: list of [u, v] edges
-
-    Returns:
-        Set of articulation points
-
-    Time: O(V + E)
-    Space: O(V + E)
-    """
-    # Build adjacency list
-    graph = [[] for _ in range(n)]
-    for u, v in edges:
-        graph[u].append(v)
-        graph[v].append(u)
-
-    disc = [-1] * n
-    low = [-1] * n
-    ap = set()  # Articulation points
-    timer = [0]
-
-    def dfs(v, parent):
-        children = 0
-        disc[v] = low[v] = timer[0]
-        timer[0] += 1
-
-        for u in graph[v]:
-            if u == parent:
-                continue
-
-            if disc[u] == -1:
-                # Unvisited child
-                children += 1
-                dfs(u, v)
-                low[v] = min(low[v], low[u])
-
-                # Check if v is articulation point
-                # Case 1: Root with 2+ children
-                if parent == -1 and children > 1:
-                    ap.add(v)
-
-                # Case 2: Non-root with child that can't reach ancestor
-                if parent != -1 and low[u] >= disc[v]:
-                    ap.add(v)
-            else:
-                # Back edge
-                low[v] = min(low[v], disc[u])
-
-    # Run DFS from each component
-    for i in range(n):
-        if disc[i] == -1:
-            dfs(i, -1)
-
-    return list(ap)
-
-# Example:
-# n = 5, edges = [[0,1],[1,2],[2,0],[1,3],[3,4]]
-#
-#    0 --- 1 --- 3 --- 4
-#     \   /
-#      \ /
-#       2
-#
-# Articulation points: [1, 3]
-# (Removing 1 disconnects {0,2} from {3,4})
-# (Removing 3 disconnects 4 from rest)
-```
-
-##### Java Implementation
-
-```java
-// Articulation Points Algorithm
-/**
- * time = O(V + E)
- * space = O(V + E)
- */
-class ArticulationPoints {
-    private int timer = 0;
-    private int[] disc;
-    private int[] low;
-    private Set<Integer> ap;
-
-    public List<Integer> findArticulationPoints(int n, int[][] edges) {
-        // Build adjacency list
-        List<List<Integer>> graph = new ArrayList<>();
-        for (int i = 0; i < n; i++) {
-            graph.add(new ArrayList<>());
-        }
-        for (int[] edge : edges) {
-            int u = edge[0];
-            int v = edge[1];
-            graph.get(u).add(v);
-            graph.get(v).add(u);
-        }
-
-        disc = new int[n];
-        low = new int[n];
-        ap = new HashSet<>();
-        Arrays.fill(disc, -1);
-
-        // DFS from each component
-        for (int i = 0; i < n; i++) {
-            if (disc[i] == -1) {
-                dfs(i, -1, graph);
-            }
-        }
-
-        return new ArrayList<>(ap);
-    }
-
-    private void dfs(int v, int parent, List<List<Integer>> graph) {
-        int children = 0;
-        disc[v] = low[v] = timer++;
-
-        for (int u : graph.get(v)) {
-            if (u == parent) continue;
-
-            if (disc[u] == -1) {
-                children++;
-                dfs(u, v, graph);
-                low[v] = Math.min(low[v], low[u]);
-
-                // Root with 2+ children
-                if (parent == -1 && children > 1) {
-                    ap.add(v);
-                }
-
-                // Non-root with blocking child
-                if (parent != -1 && low[u] >= disc[v]) {
-                    ap.add(v);
-                }
-            } else {
-                // Back edge
-                low[v] = Math.min(low[v], disc[u]);
-            }
-        }
-    }
-}
-```
-
----
-
-#### 8.4) Visual Example: Tarjan's Algorithm Walkthrough
-
-```text
-Graph (Directed):
-    0 → 1 → 2
-    ↑       ↓
-    └───────┘     3 ⇄ 4
-                  ↓   ↑
-                  5 ──┘
-
-DFS Traversal:
-
-Step 1: Start at 0
-  disc[0] = low[0] = 0
-  stack = [0]
-
-Step 2: Visit 1 from 0
-  disc[1] = low[1] = 1
-  stack = [0, 1]
-
-Step 3: Visit 2 from 1
-  disc[2] = low[2] = 2
-  stack = [0, 1, 2]
-
-Step 4: Back edge 2→0 (0 already on stack)
-  low[2] = min(2, disc[0]) = 0
-  Backtrack to 1: low[1] = min(1, low[2]) = 0
-  Backtrack to 0: low[0] = min(0, low[1]) = 0
-
-Step 5: At 0, low[0] == disc[0] → SCC found!
-  Pop stack: [2, 1, 0]
-  SCC #1: {0, 1, 2}
-
-Step 6: Start at 3
-  disc[3] = low[3] = 3
-  stack = [3]
-
-Step 7: Visit 4 from 3
-  disc[4] = low[4] = 4
-  stack = [3, 4]
-
-Step 8: Visit 5 from 4
-  disc[5] = low[5] = 5
-  stack = [3, 4, 5]
-
-Step 9: Edge 5→3 (back edge)
-  low[5] = min(5, disc[3]) = 3
-  Backtrack to 4: low[4] = min(4, low[5]) = 3
-  Backtrack to 3: low[3] = min(3, low[4]) = 3
-
-Step 10: At 3, low[3] == disc[3] → SCC found!
-  Pop stack: [5, 4, 3]
-  SCC #2: {3, 4, 5}
-
-Final SCCs: [{0,1,2}, {3,4,5}]
-```
-
----
-
-#### 8.5) Classic LeetCode Problems
-
-| Problem | LC# | Variant | Difficulty | Key Insight |
-|---------|-----|---------|------------|-------------|
-| **Critical Connections in Network** | **1192** | **Bridges** | **Hard** | Find all bridges using Tarjan |
-| Number of Provinces | 547 | Basic connectivity | Medium | Count connected components |
-| Redundant Connection | 684 | Cycle detection | Medium | Find edge creating cycle |
-| Redundant Connection II | 685 | Directed graph | Hard | SCC + cycle in directed graph |
-| Minimum Number of Vertices | 1557 | SCC sources | Medium | Find vertices with no incoming |
-
----
-
-#### 8.6) Comparison: Tarjan vs Kosaraju for SCC
-
-| Aspect | Tarjan's Algorithm | Kosaraju's Algorithm |
-|--------|-------------------|---------------------|
-| **Passes** | Single DFS | Two DFS passes |
-| **Time** | O(V + E) | O(V + E) |
-| **Space** | O(V) stack | O(V) + transpose graph |
-| **Complexity** | More complex (one pass) | Simpler (two passes) |
-| **Extra Space** | Stack for SCC | Reversed graph |
-| **Preference** | More efficient (one pass) | Easier to understand |
-
----
-
-#### 8.7) Interview Tips
-
-**1. Recognition Patterns:**
-```text
-"critical connections" → Bridges (Tarjan)
-"strongly connected" → SCC (Tarjan or Kosaraju)
-"cut vertices" → Articulation points (Tarjan)
-"remove vertex/edge disconnects graph" → Articulation/Bridge
-```
-
-**2. Key Differences:**
-```text
-SCC: Directed graph, maximal mutually reachable sets
-Bridges: Undirected graph, critical edges
-Articulation Points: Undirected graph, critical vertices
-
-low[v] == disc[v] → Root of SCC (directed)
-low[v] > disc[u] → (u,v) is bridge (undirected)
-low[v] >= disc[u] → u is articulation point (undirected)
-```
-
-**3. Common Mistakes:**
-- Forgetting to skip parent edge in undirected graphs
-- Wrong condition for articulation point (root vs non-root)
-- Not using `on_stack` array for SCC (leads to incorrect SCCs)
-- Confusing `disc[u]` vs `low[u]` in back edge updates
-
-**4. Template to Memorize:**
-```python
-def tarjan_template(v, parent=-1):
-    disc[v] = low[v] = timer
-    timer += 1
-
-    for u in graph[v]:
-        if u == parent:  # Undirected graphs only
-            continue
-
-        if disc[u] == -1:
-            # Tree edge
-            dfs(u, v)
-            low[v] = min(low[v], low[u])
-            # Check condition here (bridge, AP, etc.)
-        else:
-            # Back edge
-            low[v] = min(low[v], disc[u])  # Or check on_stack for SCC
-```
-
-**5. Talking Points:**
-- "Tarjan's uses single DFS with discovery times"
-- "low[v] tracks earliest reachable vertex from v's subtree"
-- "Bridges/APs indicate critical graph structure"
-- "SCCs represent maximal strongly connected regions"
-
----
-
-### Template 9: Euler Path / Circuit (Hierholzer) — LC 753
-
-**Key Idea**: An **Euler circuit** uses every *edge* exactly once (contrast: Hamiltonian path uses every *vertex* once). Hierholzer's algorithm is a DFS that appends a node/edge to the output **after** all its outgoing edges are exhausted, then reverses.
-
-**Existence conditions**:
-
-| Graph | Euler circuit | Euler path |
-|-------|---------------|------------|
-| Undirected | every vertex has even degree | exactly 0 or 2 odd-degree vertices |
-| Directed | `in == out` for every vertex | one vertex `out-in==1` (start), one `in-out==1` (end) |
-
-**Modeling trick for LC 753**: don't search all `k^n` strings. Build a **de Bruijn graph** — node = last `n-1` digits, edge = appending one digit (there are `k` per node, so every node has `in == out == k` → an Euler circuit always exists). Walking the circuit emits a string in which **every** length-`n` password appears exactly once.
-
-```java
-// java
-// LC 753 - Cracking the Safe
-// IDEA: de Bruijn graph + Hierholzer Euler circuit.
-//       node = (n-1)-digit prefix, edge = one appended digit.
-// time = O(k^n), space = O(k^n)
-import java.util.*;
-
-public class Solution {
-    private Set<String> seen;      // visited EDGES (the n-digit strings)
-    private StringBuilder sb;
-
-    public String crackSafe(int n, int k) {
-        seen = new HashSet<>();
-        sb = new StringBuilder();
-
-        StringBuilder s = new StringBuilder();
-        for (int i = 0; i < n - 1; i++) {
-            s.append('0');
-        }
-        String start = s.toString();
-
-        dfs(start, k);
-        // post-order emission => append the starting node back at the end
-        return sb.toString() + start;
-    }
-
-    private void dfs(String node, int k) {
-        for (int d = 0; d < k; d++) {
-            String edge = node + d;          // the n-digit password = an edge
-            if (seen.add(edge)) {            // add() returns false if already used
-                dfs(edge.substring(1), k);   // move to next node = drop first digit
-                sb.append(d);                // emit AFTER exhausting the subtree
-            }
-        }
-    }
-}
-```
-
-```python
-# python
-# LC 753 - Cracking the Safe
-# IDEA: de Bruijn graph + Hierholzer Euler circuit
-# time = O(k^n), space = O(k^n)
-class Solution(object):
-    def crackSafe(self, n, k):
-        seen = set()      # visited EDGES (n-digit strings)
-        out = []
-
-        def dfs(node):
-            for d in map(str, range(k)):
-                edge = node + d
-                if edge not in seen:
-                    seen.add(edge)
-                    dfs(edge[1:])     # next node = drop the first digit
-                    out.append(d)     # emit AFTER the subtree is exhausted
-
-        start = "0" * (n - 1)
-        dfs(start)
-        return "".join(out) + start
-
-# crackSafe(2, 2) -> "01100"  (contains 00, 01, 10, 11)
-# length is always k^n + n - 1
-```
-
-**Iterative Hierholzer (same idea, no recursion — used by LC 332 Reconstruct Itinerary)**:
-```python
-# python
-# time = O(E log E) with sorting, space = O(E)
-def euler_path(graph, start):
-    """graph: node -> list of next nodes (mutable, consumed as we walk)"""
-    stack, route = [start], []
-    while stack:
-        while graph[stack[-1]]:
-            stack.append(graph[stack[-1]].pop())   # walk until stuck
-        route.append(stack.pop())                  # stuck => this node is final
-    return route[::-1]
-```
-
-**Interview signal**: "use every edge / every transition exactly once", "shortest string containing all combinations" → Euler, not Hamiltonian / not brute force.
-
----
-
-### Template 10: DFS on a Weighted (Ratio) Graph — LC 399
-
-**Key Idea**: When the input is a list of *relations* (`a / b = 2.0`), the graph is **implicit** — the nodes are strings you discover from the input. Store the weight in **both** directions (`w` and `1/w`) and multiply weights along the DFS path; a query is just "is there a path, and what is its product?".
-
-```java
-// java
-// LC 399 - Evaluate Division
-// IDEA: build a bidirectional weighted graph (a->b = v, b->a = 1/v),
-//       then DFS accumulating the product. -1.0 = unreachable / unknown var.
-// time = O(Q * (V + E)), space = O(V + E)
-import java.util.*;
-
-public class Solution {
-    public double[] calcEquation(List<List<String>> equations, double[] values,
-                                 List<List<String>> queries) {
-        // 1) build adjacency: node -> (neighbor -> weight)
-        Map<String, Map<String, Double>> g = new HashMap<>();
-        for (int i = 0; i < equations.size(); i++) {
-            String a = equations.get(i).get(0);
-            String b = equations.get(i).get(1);
-            g.computeIfAbsent(a, x -> new HashMap<>()).put(b, values[i]);
-            g.computeIfAbsent(b, x -> new HashMap<>()).put(a, 1.0 / values[i]);
-        }
-
-        // 2) answer each query with an independent DFS
-        double[] res = new double[queries.size()];
-        for (int i = 0; i < queries.size(); i++) {
-            String a = queries.get(i).get(0);
-            String b = queries.get(i).get(1);
-            // unknown variable -> -1.0 (note: "x/x" is NOT 1.0 if x is unseen)
-            if (!g.containsKey(a) || !g.containsKey(b)) {
-                res[i] = -1.0;
-            } else {
-                res[i] = dfs(g, a, b, 1.0, new HashSet<>());
-            }
-        }
-        return res;
-    }
-
-    private double dfs(Map<String, Map<String, Double>> g, String cur, String target,
-                       double acc, Set<String> visited) {
-        if (cur.equals(target)) {
-            return acc;                      // covers "a/a" = 1.0 when a exists
-        }
-        visited.add(cur);
-        for (Map.Entry<String, Double> e : g.get(cur).entrySet()) {
-            if (visited.contains(e.getKey())) {
-                continue;
-            }
-            double r = dfs(g, e.getKey(), target, acc * e.getValue(), visited);
-            if (r != -1.0) {
-                return r;
-            }
-        }
-        return -1.0;
-    }
-}
-```
-
-```python
-# python
-# LC 399 - Evaluate Division
-# IDEA: bidirectional weighted graph + DFS multiplying edge weights
-# time = O(Q * (V + E)), space = O(V + E)
-from collections import defaultdict
-
-class Solution(object):
-    def calcEquation(self, equations, values, queries):
-        g = defaultdict(dict)
-        for (a, b), v in zip(equations, values):
-            g[a][b] = v
-            g[b][a] = 1.0 / v
-
-        def dfs(cur, target, acc, visited):
-            if cur == target:
-                return acc                 # handles "a/a" = 1.0
-            visited.add(cur)
-            for nxt, w in g[cur].items():
-                if nxt in visited:
-                    continue
-                r = dfs(nxt, target, acc * w, visited)
-                if r != -1.0:
-                    return r
-            return -1.0
-
-        res = []
-        for a, b in queries:
-            # unknown variable => -1.0, even for "x/x"
-            if a not in g or b not in g:
-                res.append(-1.0)
-            else:
-                res.append(dfs(a, b, 1.0, set()))
-        return res
-
-# equations = [["a","b"],["b","c"]], values = [2.0, 3.0]
-# queries   = [["a","c"],["b","a"],["a","e"],["a","a"],["x","x"]]
-# -> [6.0, 0.5, -1.0, 1.0, -1.0]
-```
-
-**Gotchas**:
-- `a / a` is `1.0` only if `a` appeared in the equations; an unseen variable is always `-1.0`.
-- The multiplicative weight makes this a **weighted union-find** problem too (store `weight[x] = value of x / value of parent[x]`), which is the O(1)-per-query variant.
-
-**Interview signal**: "given ratios / conversions / exchange rates, answer queries" → weighted graph DFS (or weighted DSU).
-
----
-
-### Template 11: DFS + Memoization on an Implicit DAG — LC 329
-
-**Key Idea**: A grid where you may only move to a **strictly larger** value is a **DAG** (no cycles are possible, because values strictly increase). On a DAG you can memoize: `dp[cell] = longest increasing path starting here`. Without the "strictly increasing" guarantee this would need cycle handling — this is exactly the DFS-vs-DP boundary interviewers probe.
-
-**Why no `visited` set is needed**: the strict inequality already prevents revisiting a cell on the current path, so the memo array doubles as both cache and visited marker.
-
-```java
-// java
-// LC 329 - Longest Increasing Path in a Matrix
-// IDEA: the "move only to a bigger value" rule makes the grid a DAG,
-//       so plain DFS + memo (top-down DP) works; each cell is computed once.
-// time = O(m * n), space = O(m * n)
-public class Solution {
-    private static final int[][] DIRS = {{1,0},{-1,0},{0,1},{0,-1}};
-
-    public int longestIncreasingPath(int[][] matrix) {
-        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
-            return 0;
-        }
-        int m = matrix.length, n = matrix[0].length, best = 0;
-        int[][] memo = new int[m][n];   // 0 = not computed yet
-
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                best = Math.max(best, dfs(matrix, i, j, memo));
-            }
-        }
-        return best;
-    }
-
-    private int dfs(int[][] mat, int i, int j, int[][] memo) {
-        if (memo[i][j] != 0) {
-            return memo[i][j];
-        }
-        int best = 1;                    // the cell itself
-        for (int[] d : DIRS) {
-            int x = i + d[0], y = j + d[1];
-            if (x >= 0 && x < mat.length && y >= 0 && y < mat[0].length
-                    && mat[x][y] > mat[i][j]) {          // strictly increasing => DAG edge
-                best = Math.max(best, 1 + dfs(mat, x, y, memo));
-            }
-        }
-        memo[i][j] = best;
-        return best;
-    }
-}
-```
-
-```python
-# python
-# LC 329 - Longest Increasing Path in a Matrix
-# IDEA: implicit DAG (edges only go to strictly larger values) + memoized DFS
-# time = O(m * n), space = O(m * n)
-class Solution(object):
-    def longestIncreasingPath(self, matrix):
-        if not matrix or not matrix[0]:
-            return 0
-        m, n = len(matrix), len(matrix[0])
-        memo = [[0] * n for _ in range(m)]
-
-        def dfs(i, j):
-            if memo[i][j]:
-                return memo[i][j]
-            best = 1
-            for di, dj in ((1, 0), (-1, 0), (0, 1), (0, -1)):
-                x, y = i + di, j + dj
-                if 0 <= x < m and 0 <= y < n and matrix[x][y] > matrix[i][j]:
-                    best = max(best, 1 + dfs(x, y))
-            memo[i][j] = best
-            return best
-
-        return max(dfs(i, j) for i in range(m) for j in range(n))
-
-# [[9,9,4],[6,6,8],[2,1,1]] -> 4   (1 -> 2 -> 6 -> 9)
-```
-
-**Alternative (topological / peeling)**: treat cells with out-degree 0 as sinks and run Kahn's algorithm on the reverse DAG; the number of BFS levels is the answer. Same O(m·n), no recursion depth risk.
-
-**Interview signal**: "longest path" is NP-hard in general graphs but **linear on a DAG** — always say out loud why the graph is acyclic before claiming O(V+E).
-
----
-
-### Template 12: Union-Find on an Implicit Graph (union by shared attribute) — LC 947
-
-**Key Idea**: Sometimes edges are not given — two items are connected because they **share an attribute** (same row, same column, same email, same equation variable). Naively comparing all pairs is O(n²). Instead, **make the attribute itself a DSU node** and union `item ↔ attribute`. Items sharing an attribute land in the same component transitively, in near-linear time.
-
-**Namespace trick**: rows and columns are both integers, so they must not collide. Use `~c` (or `c + OFFSET`, or a tuple/string key) for columns.
-
-**LC 947 insight**: within one connected component of `k` stones you can always remove `k - 1` of them (peel them off in reverse-DFS order, leaving one behind), so the answer is `n - (number of components)`.
-
-```java
-// java
-// LC 947 - Most Stones Removed with Same Row or Column
-// IDEA: union stone's row with stone's column (~col avoids id collision).
-//       answer = n - #components. No O(n^2) pairwise comparison needed.
-// time = O(n log n) (path halving only; O(n * alpha(n)) needs union by size/rank too), space = O(n)
-import java.util.*;
-
-public class Solution {
-    private Map<Integer, Integer> parent = new HashMap<>();
-
-    private int find(int x) {
-        parent.putIfAbsent(x, x);
-        while (parent.get(x) != x) {
-            parent.put(x, parent.get(parent.get(x)));   // path halving
-            x = parent.get(x);
-        }
-        return x;
-    }
-
-    private void union(int a, int b) {
-        int ra = find(a), rb = find(b);
-        if (ra != rb) {
-            parent.put(ra, rb);
-        }
-    }
-
-    public int removeStones(int[][] stones) {
-        parent = new HashMap<>();
-        // key trick: row id = r, column id = ~c  (negative, cannot clash with rows)
-        for (int[] s : stones) {
-            union(s[0], ~s[1]);
-        }
-        Set<Integer> roots = new HashSet<>();
-        for (int[] s : stones) {
-            roots.add(find(s[0]));
-        }
-        return stones.length - roots.size();
-    }
-}
-```
-
-```python
-# python
-# LC 947 - Most Stones Removed with Same Row or Column
-# IDEA: DSU over (row, col) attribute nodes; answer = n - #components
-# time = O(n log n) (path halving only; O(n * alpha(n)) needs union by size/rank too), space = O(n)
-class Solution(object):
-    def removeStones(self, stones):
-        parent = {}
-
-        def find(x):
-            parent.setdefault(x, x)
-            while parent[x] != x:
-                parent[x] = parent[parent[x]]     # path halving
-                x = parent[x]
-            return x
-
-        def union(a, b):
-            ra, rb = find(a), find(b)
-            if ra != rb:
-                parent[ra] = rb
-
-        # tagged keys keep the two namespaces apart
-        for r, c in stones:
-            union(("row", r), ("col", c))
-
-        roots = {find(("row", r)) for r, c in stones}
-        return len(stones) - len(roots)
-
-# [[0,0],[0,1],[1,0],[1,2],[2,1],[2,2]] -> 5  (1 component of 6 stones)
-# [[0,0],[0,2],[1,1],[2,0],[2,2]]       -> 3  (2 components: 4 + 1 stones)
-```
-
-#### Variation: count components + spare edges — LC 1319
-
-*Twist*: instead of "how many can I remove", the question is "how many **redundant** edges do I have, and are there enough to link the components".
-
-```python
-# python
-# LC 1319 - Number of Operations to Make Network Connected
-# IDEA: a redundant cable is an edge whose endpoints are already connected.
-#       need >= n-1 cables total; then answer = (#components - 1).
-# time = O(E log n) (path halving only; O(E * alpha(n)) needs union by size/rank too), space = O(n)
-class Solution(object):
-    def makeConnected(self, n, connections):
-        if len(connections) < n - 1:
-            return -1                      # impossible: a tree needs n-1 edges
-
-        parent = list(range(n))
-
-        def find(x):
-            while parent[x] != x:
-                parent[x] = parent[parent[x]]
-                x = parent[x]
-            return x
-
-        comps = n
-        for a, b in connections:
-            ra, rb = find(a), find(b)
-            if ra != rb:
-                parent[ra] = rb
-                comps -= 1                 # a useful edge merges 2 components
-        return comps - 1                   # k components need k-1 cables to join
-```
-
-```java
-// java
-// LC 1319 - Number of Operations to Make Network Connected
-// time = O(E log n) (path halving only; O(E * alpha(n)) needs union by size/rank too), space = O(n)
-public int makeConnected(int n, int[][] connections) {
-    if (connections.length < n - 1) {
-        return -1;
-    }
-    int[] p = new int[n];
-    for (int i = 0; i < n; i++) {
-        p[i] = i;
-    }
-    int comps = n;
-    for (int[] c : connections) {
-        int ra = find(p, c[0]), rb = find(p, c[1]);
-        if (ra != rb) {
-            p[ra] = rb;
-            comps--;
-        }
-    }
-    return comps - 1;
-}
-
-private int find(int[] p, int x) {
-    while (p[x] != x) {
-        p[x] = p[p[x]];
-        x = p[x];
-    }
-    return x;
-}
-```
-
-**Interview signal**: "connected because they share X" (row/column, email, account, variable) → make X a DSU node instead of building O(n²) edges. Same trick powers LC 721 Accounts Merge and LC 990 Satisfiability of Equality Equations.
-
----
-
-## Problems by Pattern
-
-### **Graph Traversal Problems**
-| Problem | LC # | Key Technique | Difficulty |
-|---------|------|---------------|------------|
-| Number of Islands | 200 | DFS/BFS on grid | Medium |
-| Max Area of Island | 695 | DFS with counting | Medium |
-| Clone Graph | 133 | BFS/DFS with map | Medium |
-| Pacific Atlantic Water | 417 | Multi-source DFS | Medium |
-| Word Ladder | 127 | BFS shortest path | Hard |
-| Surrounded Regions | 130 | DFS from boundary | Medium |
-| Evaluate Division | 399 | Weighted DFS (ratio graph) — Template 10 | Medium |
-| Longest Increasing Path in Matrix | 329 | DFS + memo on implicit DAG — Template 11 | Hard |
-| All Paths From Source to Target | 797 | DFS backtracking on a DAG | Medium |
-| Keys and Rooms | 841 | Plain DFS/BFS reachability from node 0 | Medium |
-| Find if Path Exists in Graph | 1971 | BFS/DFS or Union-Find connectivity | Easy |
-| Find the Town Judge | 997 | In-degree/out-degree counting, no adjacency list needed | Easy |
-
-### **Shortest Path Problems**
-| Problem | LC # | Key Technique | Difficulty |
-|---------|------|---------------|------------|
-| Network Delay Time | 743 | Dijkstra | Medium |
-| Cheapest Flights K Stops | 787 | Modified Dijkstra | Medium |
-| Path with Min Effort | 1631 | Dijkstra on grid | Medium |
-| Bus Routes | 815 | BFS on routes | Hard |
-| Shortest Path Binary Matrix | 1091 | BFS | Medium |
-
-### **Union-Find Problems**
-| Problem | LC # | Key Technique | Difficulty |
-|---------|------|---------------|------------|
-| Number of Connected Components | 323 | Basic Union-Find | Medium |
-| Redundant Connection | 684 | Detect cycle | Medium |
-| Accounts Merge | 721 | Union-Find with map | Medium |
-| Number of Provinces | 547 | Union-Find or DFS | Medium |
-| Satisfiability of Equality | 990 | Union-Find | Medium |
-| Most Stones Removed | 947 | DSU on shared row/col attribute — Template 12 | Medium |
-| Make Network Connected | 1319 | DSU: components + spare edges | Medium |
-
-### **Topological Sort Problems**
-| Problem | LC # | Key Technique | Difficulty |
-|---------|------|---------------|------------|
-| Course Schedule | 207 | Cycle detection | Medium |
-| Course Schedule II | 210 | Topological order | Medium |
-| Alien Dictionary | 269 | Build graph + sort | Hard |
-| Minimum Height Trees | 310 | Leaf removal | Medium |
-| Parallel Courses | 1136 | Level-wise BFS | Medium |
-
-### **Bipartite Problems**
-| Problem | LC # | Key Technique | Difficulty |
-|---------|------|---------------|------------|
-| Is Graph Bipartite | 785 | BFS coloring | Medium |
-| Possible Bipartition | 886 | DFS coloring | Medium |
-| Flower Planting With No Adjacent | 1042 | Greedy k-coloring (degree < k) | Medium |
-
-### **Advanced Graph Problems**
-| Problem | LC # | Key Technique | Difficulty |
-|---------|------|---------------|------------|
-| Critical Connections | 1192 | Tarjan's algorithm | Hard |
-| Find Eventual Safe States | 802 | Cycle detection | Medium |
-| Reconstruct Itinerary | 332 | Hierholzer's algorithm | Hard |
-| Cracking the Safe | 753 | de Bruijn graph + Euler circuit — Template 9 | Hard |
-| Minimum Spanning Tree | 1135 | Kruskal/Prim | Medium |
-
-#### 1-1-1) Number of Islands
-
-- LC 200
-
-```java
-// java
-void dfs(char[][] grid, int r, int c){
-    int nr = grid.length;
-    int nc = grid[0].length;
-
-    if (r < 0 || c < 0 || r >= nr || c >= nc || grid[r][c] == '0') {
-        return;
-    }
-
-    grid[r][c] = '0';
-
-    /** NOTE here !!!*/
-    dfs(grid, r - 1, c);
-    dfs(grid, r + 1, c);
-    dfs(grid, r, c - 1);
-    dfs(grid, r, c + 1);
-}
-
-public int numIslands_1(char[][] grid) {
-    if (grid == null || grid.length == 0) {
-        return 0;
-    }
-
-    int nr = grid.length;
-    int nc = grid[0].length;
-    int num_islands = 0;
-
-    for (int r = 0; r < nr; ++r) {
-        for (int c = 0; c < nc; ++c) {
-            if (grid[r][c] == '1') {
-                ++num_islands;
-                dfs(grid, r, c);
-            }
-        }
-    }
-
-    return num_islands;
-}
-
-```
-
-
-#### 1-1-2) Max Area of Island
-
-- LC 695
-
-```java
-// java
-int[][] grid;
-boolean[][] seen;
-
-public int area(int r, int c) {
-    if (r < 0 || r >= grid.length || c < 0 || c >= grid[0].length ||
-            seen[r][c] || grid[r][c] == 0)
-        return 0;
-    seen[r][c] = true;
-
-    /** NOTE !!!*/
-    return (1 + area(r+1, c) + area(r-1, c)
-            + area(r, c-1) + area(r, c+1));
-}
-
-public int maxAreaOfIsland_1(int[][] grid) {
-    this.grid = grid;
-    seen = new boolean[grid.length][grid[0].length];
-    int ans = 0;
-    for (int r = 0; r < grid.length; r++) {
-        for (int c = 0; c < grid[0].length; c++) {
-            ans = Math.max(ans, area(r, c));
-        }
-    }
-    return ans;
-}
-```
-
-## 2) LC Example
-
-### 2-1) Closest Leaf in a Binary Tree — LC 742
-```python 
-# 742 Closest Leaf in a Binary Tree
-import collections
-class Solution:
-    # search via DFS
-    def findClosestLeaf(self, root, k):
-        self.start = None
-        self.buildGraph(root, None, k)
-        q, visited = [root], set()
-        #q, visited = [self.start], set() # need to validate this
-        self.graph = collections.defaultdict(list)
-        while q:
-            for i in range(len(q)):
-                cur = q.pop(0) # this is dfs
-                # add cur to visited, NOT to visit this node again
-                visited.add(cur)
-                ### NOTICE HERE 
-                # if not cur.left and not cur.right: means this is the leaf (HAS NO ANY left/right node) of the tree
-                # so the first value of this is what we want, just return cur.val as answer directly
-                if not cur.left and not cur.right:
-                    # return the answer
-                    return cur.val
-                # if not find the leaf, then go through all neighbors of current node, and search again
-                for node in self.graph:
-                    if node not in visited: # need to check if "if node not in visited" or "if node in visited"
-                        q.append(node)
-
-    # build graph via DFS
-    # node : current node
-    # parent : parent of current node
-    def buildGraph(self, node, parent, k):
-        if not node:
-            return
-        # if node.val == k, THEN GET THE start point FROM current "node",
-        # then build graph based on above
-        if node.val == k:
-            self.start = node
-        if parent:
-            self.graph[node].append(parent)
-            self.graph[parent].append(node)
-        self.buildGraph(node.left, node, k)
-        self.buildGraph(node.right, node, k)
-
-```
-
-### 2-2) Number of Connected Components in an Undirected Graph — LC 323
-```python
-# LC 323 Number of Connected Components in an Undirected Graph
-# V0
-# IDEA : DFS
-class Solution:
-    def countComponents(self, n, edges):
-        def helper(u):
-            if u in pair:
-                for v in pair[u]:
-                    if v not in visited:
-                        visited.add(v)
-                        helper(v)
-            
-        pair = collections.defaultdict(set)
-        for u,v in edges:
-            pair[u].add(v)
-            pair[v].add(u)
-        count = 0
-        visited = set()
-        for i in range(n):
-            if i not in visited:
-                helper(i)
-                count+=1
-        return count
-```
-
-### 2-3) Clone Graph — LC 133 ⭐⭐⭐⭐
-```python
-# LC 133. Clone Graph
-
-# V0
-# IDEA : BFS
-class Solution(object):
-    def cloneGraph(self, node):
-        if not node:
-            return
-        q = [node]
-        """
-        NOTE !!! : we init res as Node(node.val, [])
-          -> since Node has structure as below :
-
-          class Node:
-            def __init__(self, val = 0, neighbors = None):
-                self.val = val
-                self.neighbors = neighbors if neighbors is not None else []
-        """
-        res = Node(node.val, [])
-        """
-        NOTE !!! : we use dict as visited,
-                   and we use node as visited dict key 
-        """
-        visited = dict()
-        visited[node] = res
-        while q:
-            #t = q.pop(0) # this works as well
-            t = q.pop(-1)
-            if not t:
-                continue
-            for n in t.neighbors:
-                if n not in visited:
-                    """
-                    NOTE !!! : we need to 
-                         -> use n as visited key
-                         -> use Node(n.val, []) as visited value
-                    """
-                    visited[n] = Node(n.val, [])
-                    q.append(n)
-                """
-                NOTE !!! 
-                    -> we need to append visited[n] to visited[t].neighbors
-                """
-                visited[t].neighbors.append(visited[n])
-        return res
-
-# V0
-# IDEA : DFS
-# NOTE :
-#  -> 1) we init node via : node_copy = Node(node.val, [])
-#  -> 2) we copy graph via dict
-class Solution(object):
-    def cloneGraph(self, node):
-        """
-        :type node: Node
-        :rtype: Node
-        """
-        node_copy = self.dfs(node, dict())
-        return node_copy
-    
-    def dfs(self, node, hashd):
-        if not node: return None
-        if node in hashd: return hashd[node]
-        node_copy = Node(node.val, [])
-        hashd[node] = node_copy
-        for n in node.neighbors:
-            n_copy = self.dfs(n, hashd)
-            if n_copy:
-                node_copy.neighbors.append(n_copy)
-        return node_copy
-```
-
-
-### 2-4) Bus Routes — LC 815
-```python
-# LC 815. Bus Routes
-# V0
-# IDEA : BFS + GRAPH
-class Solution(object):
-    def numBusesToDestination(self, routes, S, T):
-        # edge case:
-        if S == T:
-            return 0
-        to_routes = collections.defaultdict(set)
-        for i, route in enumerate(routes):
-            for j in route:
-                to_routes[j].add(i)
-        bfs = [(S, 0)]
-        seen = set([S])
-        for stop, bus in bfs:
-            if stop == T:
-                return bus
-            for i in to_routes[stop]:
-                for j in routes[i]:
-                    if j not in seen:
-                        bfs.append((j, bus + 1))
-                        seen.add(j)
-                routes[i] = []  # seen route
-        return -1
-```
-
-### 2-5) Course Schedule — LC 207
-```java
-// java
-// V0
-// IDEA : DFS (fix by gpt) (NOTE : there is also TOPOLOGICAL SORT solution)
-// NOTE !!! instead of maintain status (0,1,2), below video offers a simpler approach
-//      -> e.g. use a set, recording the current visiting course, if ANY duplicated (already in set) course being met,
-//      -> means "cyclic", so return false directly
-// https://www.youtube.com/watch?v=EgI5nU9etnU
-public boolean canFinish(int numCourses, int[][] prerequisites) {
-    // Initialize adjacency list for storing prerequisites
-    /**
-     *  NOTE !!!
-     *
-     *  init prerequisites map
-     *  {course : [prerequisites_array]}
-     *  below init map with null array as first step
-     */
-    Map<Integer, List<Integer>> preMap = new HashMap<>();
-    for (int i = 0; i < numCourses; i++) {
-        preMap.put(i, new ArrayList<>());
-    }
-
-    // Populate the adjacency list with prerequisites
-    /**
-     *  NOTE !!!
-     *
-     *  update prerequisites map
-     *  {course : [prerequisites_array]}
-     *  so we go through prerequisites,
-     *  then append each course's prerequisites to preMap
-     */
-    for (int[] pair : prerequisites) {
-        int crs = pair[0];
-        int pre = pair[1];
-        preMap.get(crs).add(pre);
-    }
-
-    /** NOTE !!!
-     *
-     *  init below set for checking if there is "cyclic" case
-     */
-    // Set for tracking courses during the current DFS path
-    Set<Integer> visiting = new HashSet<>();
-
-    // Recursive DFS function
-    for (int c = 0; c < numCourses; c++) {
-        if (!dfs(c, preMap, visiting)) {
-            return false;
-        }
-    }
-    return true;
-}
-
-private boolean dfs(int crs, Map<Integer, List<Integer>> preMap, Set<Integer> visiting) {
-    /** NOTE !!!
-     *
-     *  if visiting contains current course,
-     *  means there is a "cyclic",
-     *  (e.g. : needs to take course a, then can take course b, and needs to take course b, then can take course a)
-     *  so return false directly
-     */
-    if (visiting.contains(crs)) {
-        return false;
-    }
-    /**
-     *  NOTE !!!
-     *
-     *  if such course has NO preRequisite,
-     *  return true directly
-     */
-    if (preMap.get(crs).isEmpty()) {
-        return true;
-    }
-
-    /**
-     *  NOTE !!!
-     *
-     *  add current course to set (Set<Integer> visiting)
-     */
-    visiting.add(crs);
-    for (int pre : preMap.get(crs)) {
-        if (!dfs(pre, preMap, visiting)) {
-            return false;
-        }
-    }
-    /**
-     *  NOTE !!!
-     *
-     *  remove current course from set,
-     *  since already finish visiting
-     *
-     *  e.g. undo changes
-     */
-    visiting.remove(crs);
-    preMap.get(crs).clear(); // Clear prerequisites as the course is confirmed to be processed
-    return true;
-}
-```
-
-## Decision Framework
-
-### Pattern Selection Strategy
+### Decision Table — Which Graph Pattern?
 
 ```text
 Graph Algorithm Selection Flowchart:
@@ -2700,20 +602,6 @@ Graph Algorithm Selection Flowchart:
    └── Grid → Treat as implicit graph
 ```
 
-### Algorithm Selection Guide
-
-| Problem Type | Best Algorithm | Time | When to Use |
-|-------------|---------------|------|-------------|
-| Single-source shortest (unweighted) | BFS | O(V+E) | Simple shortest path |
-| Single-source shortest (weighted) | Dijkstra | O((V+E)logV) | Non-negative weights |
-| All-pairs shortest | Floyd-Warshall | O(V³) | Dense graphs |
-| Cycle detection | DFS | O(V+E) | Directed graphs |
-| Connected components | Union-Find | O(α(n)) | Dynamic connectivity |
-| Topological order | Kahn's/DFS | O(V+E) | Task scheduling |
-| Minimum spanning tree | Kruskal/Prim | O(ElogE) | Network design |
-
-## Summary & Quick Reference
-
 ### Complexity Quick Reference
 | Algorithm | Time Complexity | Space Complexity | Notes |
 |-----------|-----------------|------------------|-------|
@@ -2724,93 +612,86 @@ Graph Algorithm Selection Flowchart:
 | Union-Find | O(α(n)) | O(V) | Near constant |
 | Topological Sort | O(V + E) | O(V) | Linear time |
 
-### Graph Building Patterns ⭐⭐⭐⭐
+### Interview Signal → Pattern
 
-#### **Adjacency List**
-```python
-# For edges list
-graph = defaultdict(list)
-for u, v in edges:
-    graph[u].append(v)
-    graph[v].append(u)  # Undirected
+| Signal | Pattern |
+|--------|---------|
+| "shortest path, non-negative weights" | Dijkstra |
+| "shortest path, negative weights / cycles" | Bellman-Ford |
+| "all-pairs shortest path" | Floyd-Warshall |
+| "course prerequisites, ordering" | Topological sort (Kahn's BFS) |
+| "connected components, union" | Union-Find |
+| "remove edge/vertex disconnects graph" | Bridges/Articulation (Tarjan) |
+| "max flow, bipartite matching" | Ford-Fulkerson / Edmonds-Karp |
+| "island counting, flood fill" | DFS/BFS on grid |
+| "use every edge/transition exactly once" | Euler circuit — Hierholzer (LC 753, 332) |
+| "ratios / conversions / exchange-rate queries" | Weighted DFS or weighted Union-Find (LC 399) |
+| "longest path, but moves are strictly increasing" | Implicit DAG → DFS + memo (LC 329) |
+| "connected because they share a row/email/attribute" | Make the attribute a DSU node (LC 947, 721) |
+| "enumerate every path, not just reachability" | DFS + backtracking, no shared visited set (LC 797) |
 
-# For weighted edges
-graph = defaultdict(list)
-for u, v, w in edges:
-    graph[u].append((v, w))
-```
+### Problems by Pattern
 
-#### **Adjacency Matrix**
-```python
-# For unweighted
-graph = [[0] * n for _ in range(n)]
-for u, v in edges:
-    graph[u][v] = 1
-    graph[v][u] = 1  # Undirected
+#### **Graph Traversal Problems**
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Number of Islands | 200 | DFS/BFS on grid | Medium |
+| Max Area of Island | 695 | DFS with counting | Medium |
+| Clone Graph | 133 | BFS/DFS with map | Medium |
+| Pacific Atlantic Water | 417 | Multi-source DFS | Medium |
+| Word Ladder | 127 | BFS shortest path | Hard |
+| Surrounded Regions | 130 | DFS from boundary | Medium |
+| Evaluate Division | 399 | Weighted DFS (ratio graph) — [graph_examples.md](./graph_examples.md#2-9-evaluate-division--lc-399) | Medium |
+| Longest Increasing Path in Matrix | 329 | DFS + memo on implicit DAG — [graph_examples.md](./graph_examples.md#2-10-longest-increasing-path-in-a-matrix--lc-329) | Hard |
+| All Paths From Source to Target | 797 | DFS backtracking on a DAG | Medium |
+| Keys and Rooms | 841 | Plain DFS/BFS reachability from node 0 | Medium |
+| Find if Path Exists in Graph | 1971 | BFS/DFS or Union-Find connectivity | Easy |
+| Find the Town Judge | 997 | In-degree/out-degree counting, no adjacency list needed | Easy |
 
-# For weighted
-graph = [[float('inf')] * n for _ in range(n)]
-for u, v, w in edges:
-    graph[u][v] = w
-```
+#### **Shortest Path Problems**
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Network Delay Time | 743 | Dijkstra | Medium |
+| Cheapest Flights K Stops | 787 | Modified Dijkstra | Medium |
+| Path with Min Effort | 1631 | Dijkstra on grid | Medium |
+| Bus Routes | 815 | BFS on routes | Hard |
+| Shortest Path Binary Matrix | 1091 | BFS | Medium |
 
-### Common Patterns & Tricks
+#### **Union-Find Problems**
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Number of Connected Components | 323 | Basic Union-Find | Medium |
+| Redundant Connection | 684 | Detect cycle | Medium |
+| Accounts Merge | 721 | Union-Find with map | Medium |
+| Number of Provinces | 547 | Union-Find or DFS | Medium |
+| Satisfiability of Equality | 990 | Union-Find | Medium |
+| Most Stones Removed | 947 | DSU on shared row/col attribute — [graph_examples.md](./graph_examples.md#2-11-most-stones-removed-with-same-row-or-column--lc-947) | Medium |
+| Make Network Connected | 1319 | DSU: components + spare edges | Medium |
 
-#### **Visited Tracking**
-```python
-# Set for simple visited
-visited = set()
+#### **Topological Sort Problems**
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Course Schedule | 207 | Cycle detection | Medium |
+| Course Schedule II | 210 | Topological order | Medium |
+| Alien Dictionary | 269 | Build graph + sort | Hard |
+| Minimum Height Trees | 310 | Leaf removal | Medium |
+| Parallel Courses | 1136 | Level-wise BFS | Medium |
 
-# Array for state tracking
-# 0: unvisited, 1: visiting, 2: visited
-state = [0] * n
+#### **Bipartite Problems**
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Is Graph Bipartite | 785 | BFS coloring | Medium |
+| Possible Bipartition | 886 | DFS coloring | Medium |
+| Flower Planting With No Adjacent | 1042 | Greedy k-coloring (degree < k) | Medium |
 
-# Dictionary for path reconstruction
-parent = {}
-```
-
-#### **Grid as Graph**
-```python
-# 4-directional movement
-directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
-
-# 8-directional movement
-directions = [(0, 1), (1, 0), (0, -1), (-1, 0),
-              (1, 1), (1, -1), (-1, 1), (-1, -1)]
-
-# Check bounds
-def is_valid(r, c, rows, cols):
-    return 0 <= r < rows and 0 <= c < cols
-```
-
-#### **Cycle Detection Patterns**
-```python
-# Directed graph - DFS with states
-def has_cycle_directed(graph):
-    # 0: unvisited, 1: visiting, 2: visited
-    state = [0] * n
-    
-    def dfs(node):
-        if state[node] == 1:  # Back edge
-            return True
-        if state[node] == 2:
-            return False
-        
-        state[node] = 1
-        for neighbor in graph[node]:
-            if dfs(neighbor):
-                return True
-        state[node] = 2
-        return False
-
-# Undirected graph - Union-Find
-def has_cycle_undirected(edges):
-    uf = UnionFind(n)
-    for u, v in edges:
-        if not uf.union(u, v):
-            return True  # Already connected
-    return False
-```
+#### **Advanced Graph Problems**
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Critical Connections | 1192 | Tarjan bridges — [graph_advanced.md](./graph_advanced.md#template-1-tarjans-low-link-dfs--scc-bridges-articulation-points--lc-1192-) | Hard |
+| Find Eventual Safe States | 802 | Cycle detection | Medium |
+| Reconstruct Itinerary | 332 | Hierholzer's algorithm | Hard |
+| Cracking the Safe | 753 | de Bruijn graph + Euler circuit — [graph_advanced.md](./graph_advanced.md#template-2-euler-path--circuit-hierholzer--lc-753-) | Hard |
+| Minimum Spanning Tree | 1135 | Kruskal ([union_find.md](./union_find.md)) / Prim ([heap.md](./heap.md)) | Medium |
 
 ### Problem-Solving Steps
 1. **Identify graph type**: Directed/undirected, weighted/unweighted
@@ -2850,230 +731,3 @@ def has_cycle_undirected(edges):
 - **Greedy Algorithms**: MST algorithms
 - **Heap/Priority Queue**: Used in Dijkstra, Prim's
 - **Recursion/Backtracking**: DFS implementation
-
-### 2-6) Find Eventual Safe States — LC 802
-```java
-// java
-// LC 802
-
-// V1-0
-// IDEA : DFS
-// KEY : check if there is a "cycle" on a node
-// https://www.youtube.com/watch?v=v5Ni_3bHjzk
-// https://zxi.mytechroad.com/blog/graph/leetcode-802-find-eventual-safe-states/
-public List<Integer> eventualSafeNodes(int[][] graph) {
-    // init
-    int n = graph.length;
-    State[] states = new State[n];
-    for (int i = 0; i < n; i++) {
-        states[i] = State.UNKNOWN;
-    }
-
-    List<Integer> result = new ArrayList<>();
-    for (int i = 0; i < n; i++) {
-        // if node is with SAFE state, add to result
-        if (dfs(graph, i, states) == State.SAFE) {
-            result.add(i);
-        }
-    }
-    return result;
-}
-
-private enum State {
-    UNKNOWN, VISITING, SAFE, UNSAFE
-}
-
-private State dfs(int[][] graph, int node, State[] states) {
-    /**
-     * NOTE !!!
-     *  if a node with "VISITING" state,
-     *  but is visited again (within the other iteration)
-     *  -> there must be a cycle
-     *  -> this node is UNSAFE
-     */
-    if (states[node] == State.VISITING) {
-        return states[node] = State.UNSAFE;
-    }
-    /**
-     * NOTE !!!
-     *  if a node is not with "UNKNOWN" state,
-     *  -> update its state
-     */
-    if (states[node] != State.UNKNOWN) {
-        return states[node];
-    }
-
-    /**
-     * NOTE !!!
-     *  update node state as VISITING
-     */
-    states[node] = State.VISITING;
-    for (int next : graph[node]) {
-        /**
-         * NOTE !!!
-         *   for every sub node, if any one them
-         *   has UNSAFE state,
-         *   -> set and return node state as UNSAFE directly
-         */
-        if (dfs(graph, next, states) == State.UNSAFE) {
-            return states[node] = State.UNSAFE;
-        }
-    }
-
-    /**
-     * NOTE !!!
-     *   if can pass all above checks
-     *   -> this is node has SAFE state
-     */
-    return states[node] = State.SAFE;
-}
-```
-
----
-
-## Advanced Graph Algorithms — Tarjan, Kahn, Max Flow
-
-### Weighted shortest path — see the dedicated docs
-
-These three have full docs of their own; re-stating their implementations here is what let
-`graph.md` drift out of sync with them.
-
-| Need | Doc | Complexity | Anchor LC |
-|---|---|---|---|
-| Single source, **non-negative** weights | [Dijkstra.md](./Dijkstra.md) | O((V+E) log V) | LC 743 |
-| Single source, **negative** weights / bounded hops / negative-cycle detection | [Bellman-Ford.md](./Bellman-Ford.md) | O(V·E) | LC 787 |
-| **All pairs**, dense graph | [Floyd-Warshall.md](./Floyd-Warshall.md) | O(V³) | LC 1334 |
-| Unweighted, or 0-1 weights | [bfs.md](./bfs.md) — plain BFS / 0-1 BFS with a deque | O(V+E) | LC 1091, LC 1368 |
-
-Not sure which? → [shortest_path_comparison.md](./shortest_path_comparison.md).
-
-### Articulation Points vs Bridges (Tarjan)
-
-```python
-def find_bridges(n, edges):
-    """Find all bridge edges using Tarjan's algorithm."""
-    graph = defaultdict(list)
-    for u, v in edges:
-        graph[u].append(v)
-        graph[v].append(u)
-
-    disc = [-1] * n   # discovery time
-    low = [0] * n     # lowest reachable disc time
-    bridges = []
-    timer = [0]
-
-    def dfs(u, parent):
-        disc[u] = low[u] = timer[0]; timer[0] += 1
-        for v in graph[u]:
-            if disc[v] == -1:
-                dfs(v, u)
-                low[u] = min(low[u], low[v])
-                if low[v] > disc[u]:   # bridge condition
-                    bridges.append((u, v))
-            elif v != parent:
-                low[u] = min(low[u], disc[v])
-
-    for i in range(n):
-        if disc[i] == -1:
-            dfs(i, -1)
-    return bridges
-
-# Articulation point condition (different from bridge):
-# u is articulation point if: disc[u] <= low[v] for any child v in DFS tree
-# (u is root and has ≥ 2 DFS children, OR u is non-root with the above condition)
-```
-
-| | Articulation Point | Bridge |
-|--|-------------------|--------|
-| What | Vertex whose removal disconnects graph | Edge whose removal disconnects graph |
-| Condition | `low[v] >= disc[u]` (for non-root) | `low[v] > disc[u]` |
-| LC | 1192 (Critical Connections = bridges) | 1192 |
-
-### Topological Sort — Kahn's Algorithm (BFS) — LC 207
-
-```python
-from collections import defaultdict, deque
-
-def topoSort(n, prerequisites):
-    graph = defaultdict(list)
-    in_degree = [0] * n
-    for a, b in prerequisites:
-        graph[b].append(a)
-        in_degree[a] += 1
-
-    queue = deque(i for i in range(n) if in_degree[i] == 0)
-    order = []
-    while queue:
-        u = queue.popleft()
-        order.append(u)
-        for v in graph[u]:
-            in_degree[v] -= 1
-            if in_degree[v] == 0:
-                queue.append(v)
-    return order if len(order) == n else []   # empty = cycle detected
-
-# LC 207 Course Schedule, LC 210 Course Schedule II
-```
-
-### Max Flow / Min Cut — Ford-Fulkerson (BFS / Edmonds-Karp)
-**Min Cut = Max Flow** (by max-flow min-cut theorem).
-
-```python
-from collections import defaultdict, deque
-
-def max_flow(graph, source, sink, n):
-    """graph[u][v] = capacity. Returns max flow from source to sink."""
-    def bfs(source, sink, parent):
-        visited = set([source])
-        queue = deque([source])
-        while queue:
-            u = queue.popleft()
-            for v in range(n):
-                if v not in visited and graph[u][v] > 0:
-                    visited.add(v)
-                    parent[v] = u
-                    if v == sink: return True
-                    queue.append(v)
-        return False
-
-    flow = 0
-    while True:
-        parent = [-1] * n
-        if not bfs(source, sink, parent):
-            break
-        # Find min capacity along the path
-        path_flow = float('inf')
-        s = sink
-        while s != source:
-            u = parent[s]
-            path_flow = min(path_flow, graph[u][s])
-            s = parent[s]
-        # Update capacities
-        s = sink
-        while s != source:
-            u = parent[s]
-            graph[u][s] -= path_flow
-            graph[s][u] += path_flow
-            s = parent[s]
-        flow += path_flow
-    return flow
-```
-
-**Time**: O(VE²) Edmonds-Karp. **Use for**: network capacity, matching, crew scheduling.
-
-### Interview tips — graph
-| Signal | Pattern |
-|--------|---------|
-| "shortest path, non-negative weights" | Dijkstra |
-| "shortest path, negative weights / cycles" | Bellman-Ford |
-| "all-pairs shortest path" | Floyd-Warshall |
-| "course prerequisites, ordering" | Topological sort (Kahn's BFS) |
-| "connected components, union" | Union-Find |
-| "remove edge/vertex disconnects graph" | Bridges/Articulation (Tarjan) |
-| "max flow, bipartite matching" | Ford-Fulkerson / Edmonds-Karp |
-| "island counting, flood fill" | DFS/BFS on grid |
-| "use every edge/transition exactly once" | Euler circuit — Hierholzer (LC 753, 332) |
-| "ratios / conversions / exchange-rate queries" | Weighted DFS or weighted Union-Find (LC 399) |
-| "longest path, but moves are strictly increasing" | Implicit DAG → DFS + memo (LC 329) |
-| "connected because they share a row/email/attribute" | Make the attribute a DSU node (LC 947, 721) |
-| "enumerate every path, not just reachability" | DFS + backtracking, no shared visited set (LC 797) |

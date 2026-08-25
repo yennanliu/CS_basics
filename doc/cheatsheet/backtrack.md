@@ -1,7 +1,7 @@
 # Backtracking
 
-> **Scope** — Systematic search with undo — subsets, permutations, combinations, partitioning, and constraint satisfaction. Owns the choose/explore/un-choose skeleton and pruning.
-> **See also**: [dfs.md](./dfs.md) — traversal without the undo step; [recursion.md](./recursion.md) — recursion mechanics; [tree_backtrack.md](./tree_backtrack.md) — root→leaf path problems; [dp.md](./dp.md) — when memoising the search beats exploring it.
+> **Scope** — Systematic search with undo: the choose/explore/un-choose skeleton, `start_idx` control, duplicate skipping, pruning, and exactly one canonical template per must-know shape — the long tail of worked solutions and the hard-tier state-carrying templates live in its two satellites.
+> **See also**: [backtrack_examples.md](./backtrack_examples.md) — the worked LC solutions for these templates; [backtrack_advanced.md](./backtrack_advanced.md) — Trie-pruned grid search, expression building, deletion budgets, memoised partitioning; [dfs.md](./dfs.md) — traversal without the undo step; [recursion.md](./recursion.md) — recursion mechanics; [tree_backtrack.md](./tree_backtrack.md) — root→leaf path problems; [dp.md](./dp.md) — when memoising the search beats exploring it.
 
 ## LeetCode Problem Lists
 
@@ -22,6 +22,8 @@ the go-to pattern for generating **all** subsets / permutations / combinations, 
 - **Space Complexity**: `O(d)` recursion depth (excluding the output list)
 - **When to Use**: the problem asks for *all* / *every* / *how many* configurations, or to *place / fill / partition* under constraints
 - **Optimization path**: Backtrack (brute force) → add **pruning** → often → **DP** (memoize overlapping subproblems)
+- **Algorithm**: DFS + recursion
+- **Common data structures**: `dict` (counter for dedup), `set` (visited / constraints), `array`/`list` (the route)
 
 ### The 3 things every backtrack tracks
 
@@ -33,26 +35,8 @@ the go-to pattern for generating **all** subsets / permutations / combinations, 
 
 <p align="center"><img src="../pic/backtrack1.png"></p>
 
-### Universal Template ⭐⭐⭐⭐⭐
-
-```python
-# python
-result = []
-
-def backtrack(route, choices):
-    if end_condition:          # reached a leaf
-        result.append(route[:])  # snapshot (copy!) the route
-        return
-
-    for choice in choices:
-        route.append(choice)   # 1) make choice
-        backtrack(route, choices)  # 2) explore
-        route.pop()            # 3) undo choice (backtrack)
-```
-
-Two knobs turn this template into every variant:
-- **`start_idx`** — controls the search space (combinations/subsets vs permutations)
-- **early quit / pruning** — cut branches that cannot lead to a valid answer
+> The three rows above map onto [Template 1](#template-1-choose--explore--un-choose-) —
+> `path` is the route, the `for` loop is the choice list, the `if` at the top is the end condition.
 
 ### Time Complexity by Problem Type
 
@@ -77,851 +61,75 @@ Two knobs turn this template into every variant:
     - [Partition to k equal sum subsets](https://labuladong.online/algo/practice-in-action/partition-to-k-equal-sum-subsets/)
 - [LeetCode — A general approach to backtracking (Java)](https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/)
 
-## 0) Concept
-
-- **Algorithm**: DFS + recursion
-- **Common data structures**: `dict` (counter for dedup), `set` (visited / constraints), `array`/`list` (the route)
-
-### 0-0) `start_idx` — When & Why? ⭐⭐⭐⭐⭐
-
-`start_idx` (or `index`, or similar) is **used to control the search space** — to **avoid duplicates** and maintain order in the generated result.
-
--> Use `start_idx` when:
-
-- You're generating **combinations/subsets**
-- You want to **avoid duplicates**
-- You want to **preserve order** of choices
-
-
----
-
-### ✅ **Problems that NEED `start_idx`**
-
-These typically involve **combinations**, **subsets**, or **multi-use elements**, where:
-
-- Order doesn't matter (e.g., `[2,3]` is same as `[3,2]`)
-- You want to `AVOID` revisiting earlier choices
-- You may reuse elements **or** pick each element **once**
-
-#### 🔹 Examples:
-| Problem | Use of `start_idx` | Why? |
-|--------|------------------|------|
-| `Subsets` (Leetcode 78) | ✅ Yes | To avoid duplicate subsets |
-| `Combination Sum` (Leetcode 39) | ✅ Yes | Reuse allowed, but in order |
-| `Combination Sum II` (Leetcode 40) | ✅ Yes | No reuse, skip duplicates |
-| `Combinations` (Leetcode 77) | ✅ Yes | Choose k out of n, in order |
-| `Palindrome Partitioning` | ✅ Yes | Explore substrings from `start` |
-
----
-
-### ❌ **Problems that DO NOT use `start_idx`**
-
-These are often **permutation problems**, where:
-
-- Order **does** matter
-- You want to try **all possible orders**
-- You **should revisit** earlier choices (sometimes)
-
-
--> Don’t use `start_idx` when:
-- You're generating **permutations**
-- You need **all orderings**
-- Choices are not sequential (e.g., trying all positions)
-
-#### 🔹 Examples:
-| Problem | Use of `start_idx` | Why Not? |
-|--------|------------------|---------|
-| `Permutations` (Leetcode 46) | ❌ No | All orderings are valid |
-| `Permutations II` (Leetcode 47) | ❌ No | Just skip duplicates smartly |
-| `N-Queens` | ❌ No | One row per recursion depth |
-| `Word Break II` | ❌ No | Choices depend on substring matches |
-
-
----
-
-## 🧭 Summary Table
-
-| Problem Type      | Use `start_idx`? | Example Problem |
-|-------------------|------------------|-----------------|
-| Subsets           | ✅ Yes           | Leetcode 78     |
-| Combinations      | ✅ Yes           | Leetcode 77     |
-| Combination Sum   | ✅ Yes           | Leetcode 39     |
-| Permutations      | ❌ No            | Leetcode 46     |
-| N-Queens          | ❌ No            | Leetcode 51     |
-| Partitioning      | ✅ Yes           | Leetcode 131    |
-
----
-
-
-### 0-1) `i` vs `i + 1` as the next `start_idx` in the recursive call ⭐⭐⭐⭐⭐
-
-Once you've decided you need a `start_idx`, the next question is **what to pass as the
-next start index** — `i` (reuse the current element) or `i + 1` (move past it).
-
-| Pass | Meaning | Analogy | Examples |
-| ---- | ------- | ------- | -------- |
-| `i`     | Reuse the **same element again** | **Unbounded knapsack** (infinite supply) | LC 39 (Combination Sum), LC 518 (Coin Change II), LC 377 |
-| `i + 1` | Use **each element at most once** | **0/1 knapsack**, subsets | LC 40 (Combination Sum II), LC 78/90 (Subsets), LC 131, LC 494 |
-
-> Permutations use neither — they revisit earlier elements, so they track a `visited[]`
-> array / `contains` check instead of a `start_idx` (see [0-2) Problem Types](#0-2-problem-types)).
-
-```java
-// LC 39 Combination Sum — reuse allowed → pass i
-for (int i = start; i < candidates.length; i++) {
-    backtrack(i, remain - candidates[i]);      // can pick candidates[i] again
-}
-
-// LC 40 Combination Sum II — each used once → pass i + 1
-for (int i = start; i < candidates.length; i++) {
-    backtrack(i + 1, remain - candidates[i]);  // move past candidates[i]
-}
-```
-
-> **Key takeaway**: reuse allowed → `i`; use once → `i + 1`.
-
----
-
-### 0-2) Problem Types
-
-- Conclusion:
-    -  `NO` NEED `start idx` : 全排列 (`Permutations`)
-        - Permutations (排列組合)
-
-    - NEED `start idx` : other backtrack problems
-        - Subsets (子集)
-        - Combinations (組成)
-        - combination Sum (LC 39)
-        - partitioning
-
-- Problems types
-
-    - Type 1) : `Subsets` (子集)
-        - Problems : LC 78, 90, 17
-        - [代碼隨想錄 - 0078.子集](https://github.com/youngyangyang04/leetcode-master/blob/master/problems/0078.%E5%AD%90%E9%9B%86.md)
-        - (for loop call help func) +  start_idx + for loop + pop(-1)
-        - backtrack. find minumum case. transform the problem to `tree-problem`. via `start` remove already used numbers and return all cases
-        - Need `!cur.contains(nums[i])` -> to NOT add duplicated element
-        ```python
-        # V1
-        # ...
-        cur = []
-        res = []
-        def help(start_idx, cur):
-            # ....
-            """
-            NOTE !!! start_idx
-
-            we need start_idx here to AVOID re-select previous element
-            """
-            for i in range(start_idx, len(wordDict)):
-                cur.append(wordDict[i])
-
-                
-                help(i + 1, cur)
-                """
-                NOTE !!! pop(-1)
-                """
-                cur.pop(-1)
-        # ...
-        ```
-        ```java
-        // java
-        public List<List<Integer>> subsets(int[] nums) {
-            // ...
-            this.getSubSet(start_idx, nums, cur, res);
-            //System.out.println("(after) res = " + res);
-            return res;
-        }
-
-        public void getSubSet(int start_idx, int[] nums, List<Integer> cur, List<List<Integer>> res){
-
-            if (!res.contains(cur)){
-                // NOTE !!! init new list via below
-                res.add(new ArrayList<>(cur));
-            }
-
-            if (cur.size() > nums.length){
-                return;
-            }
-
-            for (int i = start_idx; i < nums.length; i++){
-                /**
-                 * NOTE !!!
-                 *
-                 *  for subset,
-                 *  we need "!cur.contains(nums[i])"
-                 *  -> to NOT add duplicated element
-                 */
-                if (!cur.contains(nums[i])){
-                    cur.add(nums[i]);
-                    /**
-                     *  NOTE !!!
-                     *
-                     *   at LC 78 subset, we need to use `i+1` idx
-                     *   in recursive call
-                     *
-                     *   while at LC 39 Combination Sum,
-                     *   we use `i` directly
-                     *
-                     *
-                     *   e.g. next start_idx is ` i+1`
-                     */
-                    this.getSubSet(i+1, nums, cur, res);
-                    // undo
-                    cur.remove(cur.size()-1);
-                }
-            }
-        }
-        ```
-
-    - `Subsets I`
-        - LC 78
-        - start idx + backtrack (see the `Type 1) Subsets` Java code above, and the full
-          walkthrough in [2-4) Subsets — LC 78](#2-4-subsets--lc-78))
-
-    - `Subsets II`
-        - LC 90
-        - start idx + backtrack + dedup (seen)
-        - dedup : can use dict counter or idx
-        ```java
-        // java
-        // LC 90
-        private void backtrack(List<List<Integer>> list, List<Integer> tempList, int [] nums, int start){
-            list.add(new ArrayList<>(tempList));
-            for(int i = start; i < nums.length; i++){
-                // skip duplicates
-                /**
-                 *  NOTE !!!
-                 *
-                 *   below is the key shows how to simply skip duplicates
-                 *   (instead of using hashmap counter)
-                 */
-                if(i > start && nums[i] == nums[i-1]){
-                    continue;
-                }
-                tempList.add(nums[i]);
-                backtrack(list, tempList, nums, i + 1);
-                tempList.remove(tempList.size() - 1);
-            }
-        }
-        ```
-
-    - Type 2) : `Permutations (排列組合)` (全排列)
-        - Problems : LC 46, 47
-        - (for loop call help func) + contains + pop(-1)
-        - backtrack. via `contains` remove already used numbers and return all cases
-        - `NO NEED` to use start_idx
-        ```python
-        # ...
-        res = []
-        cur = []
-        def help(cur):
-            if len(cur) == len(s):
-                res.append(cur[:])
-                return
-            if len(cur) > len(s):
-                return
-            for i in nums:
-                # NOTE this !!!
-                if i not in cur:
-                    cur.append(i)
-                    help(cur)
-                    cur.pop(-1)
-        # ...
-        ```
-
-    - `Permutations I (排列組合)`
-        - LC 46
-        ```python
-        # python
-        class Solution(object):
-            def permute(self, nums):
-                def help(cur):
-                    if len(cur) == n_len:
-                        if cur not in res:
-                            res.append(list(cur))
-                            return
-                    if len(cur) > n_len:
-                        return
-                    for i in nums:
-                        #print ("i = " + str(i) + " cur = " + str(cur))
-                        if i not in cur:
-                            cur.append(i)
-                            help(cur)
-                            """
-                            NOTE !!! : we UNDO the last op we just made (pop last element we put into array)
-                            """
-                            cur.pop(-1)
-                # edge case
-                if not nums:
-                    return [[]]
-                n_len = len(nums)
-                res = []
-                help([])
-                #print ("res = " + str(res))
-                return res
-            ```
-
-    - `Permutations II (排列組合)`
-        - LC 47
-        ```python
-        # python
-        class Solution(object):
-            def permuteUnique(self, nums):
-                def help(res, cur, cnt):
-                    if len(cur) == len(nums):
-                        if cur not in res:
-                            res.append(cur[:])
-                            return
-                    if len(cur) > len(nums):
-                        return
-                    for x in _cnt:
-                        #print ("i = " + str(i) + " cur = " + str(cur))
-                        #if i not in cur:
-                        if _cnt[x] > 0:
-                            cur.append(x)
-                            _cnt[x] -= 1
-                            help(res, cur, _cnt)
-                            """
-                            NOTE !!! : we UNDO the last op we just made (pop last element we put into array)
-                            """
-                            cur.pop(-1)
-                            _cnt[x] += 1
-                # edge case
-                if not nums:
-                    return [[]]
-                _cnt = Counter(nums)
-                #print ("_cnt = " + str(_cnt))
-                res = []
-                cur = []
-                help(res, cur, _cnt)
-                return res
-        ```
-
-    - Type 3) : `Combinations (組成)` 
-        - LC 77
-        - (for loop call help func) +  start_idx + for loop + + check if len == k + pop(-1)
-        ```python
-        # ...
-        cur = []
-        res = []
-        def help(idx, cur):
-            if len(cur) == k:
-                res.append(cur)
-                return
-            for i in range(idx, n+1):
-                cur.append(i)
-                help(idx+1, cur)
-                cur.pop(-1)
-        # ...
-        ```
-
-    - Type 4) : `Others`
-
-    - Parentheses (括弧)
-        - LC 20, LC 22
-
-    - Combination Sum
-        - LC 39
-        ```java
-        // java
-        // https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/
-        public List<List<Integer>> combinationSum(int[] nums, int target) {
-            List<List<Integer>> list = new ArrayList<>();
-            Arrays.sort(nums);
-            backtrack(list, new ArrayList<>(), nums, target, 0);
-            return list;
-        }
-
-        private void backtrack(List<List<Integer>> list, List<Integer> tempList, int [] nums, int remain, int start){
-            if(remain < 0) return;
-            else if(remain == 0) list.add(new ArrayList<>(tempList));
-            else{ 
-                for(int i = start; i < nums.length; i++){
-                    tempList.add(nums[i]);
-                    /** NOTE !!!
-                     *
-                     *   use i, since we need to use start from current (i) index in recursion call
-                     *    (reuse current index)
-                     */
-                    backtrack(list, tempList, nums, remain - nums[i], i);
-                    tempList.remove(tempList.size() - 1);
-                }
-            }
-        }
-        ```
-
-    - Combination Sum II
-        - LC 40
-        ```java
-        // java
-        // https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/
-         public List<List<Integer>> combinationSum2(int[] nums, int target) {
-            List<List<Integer>> list = new ArrayList<>();
-            Arrays.sort(nums);
-            backtrack(list, new ArrayList<>(), nums, target, 0);
-            return list;
-            
-        }
-
-        private void backtrack(List<List<Integer>> list, List<Integer> tempList, int [] nums, int remain, int start){
-            if(remain < 0) return;
-            else if(remain == 0) list.add(new ArrayList<>(tempList));
-            else{
-                for(int i = start; i < nums.length; i++){
-                    if(i > start && nums[i] == nums[i-1]) continue; // skip duplicates
-                    tempList.add(nums[i]);
-                    backtrack(list, tempList, nums, remain - nums[i], i + 1);
-                    tempList.remove(tempList.size() - 1); 
-                }
-            }
-        }        
-        ```
-
-    - Palindrome Partitioning
-        - LC 131
-        ```java
-        // java
-        // https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/
-        public List<List<String>> partition(String s) {
-           List<List<String>> list = new ArrayList<>();
-           backtrack(list, new ArrayList<>(), s, 0);
-           return list;
-        }
-
-        public void backtrack(List<List<String>> list, List<String> tempList, String s, int start){
-           if(start == s.length())
-              list.add(new ArrayList<>(tempList));
-           else{
-              for(int i = start; i < s.length(); i++){
-                 if(isPalindrome(s, start, i)){
-                    tempList.add(s.substring(start, i + 1));
-
-                    // NOTE !!! `i+1`
-                    backtrack(list, tempList, s, i + 1);
-                    tempList.remove(tempList.size() - 1);
-                 }
-              }
-           }
-        }
-
-        public boolean isPalindrome(String s, int low, int high){
-           while(low < high)
-              if(s.charAt(low++) != s.charAt(high--)) return false;
-           return true;
-        } 
-        ```
-
-
-### 0-3) Pruning & Partitioning Patterns ⭐⭐⭐⭐
-
-#### **Pruning Techniques**
-
-**Definition**: Optimization methods to reduce the search space by eliminating branches that cannot lead to valid solutions.
-
-**Types of Pruning**:
-
-**1. Constraint-based Pruning**
-- Early termination when constraints are violated
-- Check validity before recursive calls
-
-**2. Bound-based Pruning**
-- Use upper/lower bounds to eliminate suboptimal paths
-- Branch and bound technique
-
-**3. Symmetry Pruning**
-- Skip equivalent states to avoid duplicates
-- Sort inputs to handle permutations
-
-**4. Memoization Pruning**
-- Cache results of subproblems
-- Avoid recomputing same states
-
-**Common Pruning Patterns**:
-
-```python
-def backtrack_with_pruning(path, choices, target):
-    # Early termination (constraint pruning)
-    if current_sum > target:
-        return  # No need to continue
-
-    # Bound pruning
-    if current_sum + min_remaining > target:
-        return  # Cannot reach target
-
-    # Base case
-    if len(path) == target_length:
-        if is_valid(path):
-            result.append(path[:])
-        return
-
-    # Symmetry pruning
-    for i in range(start_idx, len(choices)):
-        # Skip duplicates (symmetry pruning)
-        if i > start_idx and choices[i] == choices[i-1]:
-            continue
-
-        # Make choice
-        path.append(choices[i])
-
-        # Recursive call with pruning
-        backtrack_with_pruning(path, choices, target)
-
-        # Undo choice
-        path.pop()
-```
-
-**Pruning Examples**:
-
-**1. Sum-based Pruning (LC 39 Combination Sum)**:
-```python
-def combinationSum(candidates, target):
-    def backtrack(start, path, current_sum):
-        # Pruning: if current sum exceeds target
-        if current_sum > target:
-            return
-
-        if current_sum == target:
-            result.append(path[:])
-            return
-
-        for i in range(start, len(candidates)):
-            # Pruning: if adding current number exceeds target
-            if current_sum + candidates[i] > target:
-                break  # Since array is sorted
-
-            path.append(candidates[i])
-            backtrack(i, path, current_sum + candidates[i])
-            path.pop()
-
-    candidates.sort()  # Enable break pruning
-    result = []
-    backtrack(0, [], 0)
-    return result
-```
-
-**2. Duplicate Pruning (LC 40 Combination Sum II)**:
-```python
-def combinationSum2(candidates, target):
-    def backtrack(start, path, current_sum):
-        if current_sum == target:
-            result.append(path[:])
-            return
-
-        for i in range(start, len(candidates)):
-            # Pruning: skip duplicates at same level
-            if i > start and candidates[i] == candidates[i-1]:
-                continue
-
-            # Pruning: early termination
-            if current_sum + candidates[i] > target:
-                break
-
-            path.append(candidates[i])
-            backtrack(i + 1, path, current_sum + candidates[i])
-            path.pop()
-
-    candidates.sort()
-    result = []
-    backtrack(0, [], 0)
-    return result
-```
-
-**3. Bound Pruning (LC 698 Partition to K Equal Sum Subsets)**:
-```python
-def canPartitionKSubsets(nums, k):
-    total = sum(nums)
-    if total % k != 0:
-        return False
-
-    target = total // k
-    nums.sort(reverse=True)  # Pruning: try larger numbers first
-
-    def backtrack(index, buckets):
-        if index == len(nums):
-            return all(bucket == target for bucket in buckets)
-
-        for i in range(k):
-            # Pruning: skip if adding exceeds target
-            if buckets[i] + nums[index] > target:
-                continue
-
-            # Pruning: avoid duplicate empty buckets
-            if i > 0 and buckets[i] == buckets[i-1]:
-                continue
-
-            buckets[i] += nums[index]
-            if backtrack(index + 1, buckets):
-                return True
-            buckets[i] -= nums[index]
-
-        return False
-
-    return backtrack(0, [0] * k)
-```
-
-#### **Partitioning Patterns**
-
-**Definition**: Divide input into groups or segments based on certain criteria.
-
-**Common Partitioning Types**:
-
-**1. Equal Sum Partitioning**
-- Divide array into groups with equal sums
-- Examples: LC 416 (Partition Equal Subset Sum), LC 698 (K Equal Sum Subsets)
-
-**2. Palindromic Partitioning**
-- Split string into palindromic substrings
-- Examples: LC 131 (Palindrome Partitioning), LC 132 (Palindrome Partitioning II)
-
-**3. Subset Partitioning**
-- Group elements based on constraints
-- Examples: LC 90 (Subsets II), LC 47 (Permutations II)
-
-**Partitioning Templates**:
-
-**1. String Partitioning Template**:
-```python
-def partition_string(s, is_valid_partition):
-    def backtrack(start, current_partition):
-        if start == len(s):
-            result.append(current_partition[:])
-            return
-
-        for end in range(start + 1, len(s) + 1):
-            substring = s[start:end]
-            if is_valid_partition(substring):
-                current_partition.append(substring)
-                backtrack(end, current_partition)
-                current_partition.pop()
-
-    result = []
-    backtrack(0, [])
-    return result
-```
-
-**2. Array Partitioning Template**:
-```python
-def partition_array(nums, k, target_sum):
-    def backtrack(index, groups):
-        if index == len(nums):
-            return all(sum(group) == target_sum for group in groups)
-
-        for i in range(k):
-            if sum(groups[i]) + nums[index] <= target_sum:
-                groups[i].append(nums[index])
-                if backtrack(index + 1, groups):
-                    return True
-                groups[i].pop()
-
-                # Pruning: if current group is empty, no need to try other empty groups
-                if not groups[i]:
-                    break
-
-        return False
-
-    return backtrack(0, [[] for _ in range(k)])
-```
-
-**Partitioning Examples**:
-
-**1. Palindrome Partitioning (LC 131)**:
-```python
-def partition(s):
-    def is_palindrome(string):
-        return string == string[::-1]
-
-    def backtrack(start, path):
-        if start == len(s):
-            result.append(path[:])
-            return
-
-        for end in range(start + 1, len(s) + 1):
-            substring = s[start:end]
-            if is_palindrome(substring):
-                path.append(substring)
-                backtrack(end, path)
-                path.pop()
-
-    result = []
-    backtrack(0, [])
-    return result
-```
-
-**2. Partition Equal Subset Sum (LC 416)**:
-```python
-def canPartition(nums):
-    total = sum(nums)
-    if total % 2 != 0:
-        return False
-
-    target = total // 2
-
-    def backtrack(index, current_sum):
-        if current_sum == target:
-            return True
-        if index >= len(nums) or current_sum > target:
-            return False
-
-        # Include current number
-        if backtrack(index + 1, current_sum + nums[index]):
-            return True
-
-        # Exclude current number
-        return backtrack(index + 1, current_sum)
-
-    return backtrack(0, 0)
-```
-
-**3. Partition to K Equal Sum Subsets (LC 698)**:
-```python
-def canPartitionKSubsets(nums, k):
-    total = sum(nums)
-    if total % k != 0:
-        return False
-
-    target = total // k
-    nums.sort(reverse=True)  # Start with larger numbers
-
-    def backtrack(index, buckets):
-        if index == len(nums):
-            return True
-
-        for i in range(k):
-            # Pruning techniques
-            if buckets[i] + nums[index] > target:
-                continue
-            if i > 0 and buckets[i] == buckets[i-1]:
-                continue
-
-            buckets[i] += nums[index]
-            if backtrack(index + 1, buckets):
-                return True
-            buckets[i] -= nums[index]
-
-        return False
-
-    return backtrack(0, [0] * k)
-```
-
-> **Variation — LC 473 (Matchsticks to Square)**: *the exact same k-bucket template with `k`
-> hard-coded to 4* and `target = perimeter // 4`. Same three prunings apply: fail fast if
-> `sum % 4 != 0` or `max(nums) > target`, sort **descending** first, and `if buckets[i] == 0:
-> break` after an undo (trying a second *empty* bucket only relabels the same partition).
-
-**Advanced Partitioning Techniques**:
-
-**1. Memoized Partitioning**:
-```python
-def partition_with_memo(nums):
-    memo = {}
-
-    def backtrack(index, state_tuple):
-        if index == len(nums):
-            return check_valid_partition(state_tuple)
-
-        if state_tuple in memo:
-            return memo[state_tuple]
-
-        result = False
-        for choice in get_choices(index, state_tuple):
-            new_state = update_state(state_tuple, choice)
-            if backtrack(index + 1, new_state):
-                result = True
-                break
-
-        memo[state_tuple] = result
-        return result
-
-    return backtrack(0, initial_state)
-```
-
-**2. Optimized Partitioning with Early Termination**:
-```python
-def optimized_partition(nums, k):
-    def backtrack(index, groups, remaining_sum):
-        if index == len(nums):
-            return remaining_sum == 0
-
-        # Pruning: if remaining sum is too small
-        if remaining_sum < 0:
-            return False
-
-        for i in range(len(groups)):
-            groups[i].append(nums[index])
-            if backtrack(index + 1, groups, remaining_sum - nums[index]):
-                return True
-            groups[i].pop()
-
-            # Important pruning: don't try other empty groups
-            if len(groups[i]) == 0:
-                break
-
-        return False
-
-    return backtrack(0, [[] for _ in range(k)], sum(nums))
-```
-
-**Pruning and Partitioning Comparison**:
-
-| Technique | Purpose | When to Use | Complexity Impact |
-|-----------|---------|-------------|-------------------|
-| **Constraint Pruning** | Early termination | Invalid states | Reduces branches significantly |
-| **Bound Pruning** | Eliminate suboptimal paths | Optimization problems | O(2^n) → O(n!) potential |
-| **Symmetry Pruning** | Avoid duplicates | Permutation problems | Eliminates factorial duplicates |
-| **Equal Sum Partition** | Divide into equal groups | Subset sum problems | Exponential to polynomial |
-| **String Partition** | Split by criteria | String segmentation | O(2^n) worst case |
-
-### 0-4) Advanced Backtracking Patterns
-
-```python
-# python pseudo code 1
-# https://leetcode.com/explore/learn/card/recursion-ii/472/backtracking/2793/
-def backtrack(candidate):
-    if find_solution(candidate):
-        output(candidate)
-        return
-    
-    # iterate all possible candidates.
-    for next_candidate in list_of_candidates:
-        if is_valid(next_candidate):
-            # try this partial candidate solution
-            place(next_candidate)
-            # given the candidate, explore further.
-            backtrack(next_candidate)
-            # backtrack
-            remove(next_candidate)
-```
-
-```python
-# python pseudo code 2
-for choice in choice_list:
-    # do choice
-    routes.add(choice)
-    backtrack(routes, choice_list)
-    # undo choice
-    routes.remove(choice)
-```
-
-```python
-# python pseudo code 3
-result = []
-def backtrack(route, choice_list):
-    if end_condition:
-        result.add(route)
-        return
-    
-    for choice in choice_list:
-        ### core of backtrack
-        do_choice   ### this one is necessary
-        backtrack(route, choice_list)
-        undo_choice ### this one is necessary
-```
-
-## 1) General form
-
-### 1-1) Basic OP
+## Problem Categories
+
+Four shapes cover almost every backtracking question. The taxonomy below decides **which
+template you reach for**; the code for each lives in [Templates & Algorithms](#templates--algorithms)
+and the fully worked solutions in [backtrack_examples.md](./backtrack_examples.md).
+
+| # | Shape | `start_idx`? | Canonical template | LC |
+|---|-------|--------------|--------------------|----|
+| 1 | Subsets (子集) | ✅ `i + 1` | [Template 3](#template-3-subsets--lc-78-) / [Template 4](#template-4-subsets-ii-skip-same-level-duplicates--lc-90-) | 78, 90 |
+| 2 | Permutations (排列組合) | ❌ `visited[]` | [Template 5](#template-5-permutations--lc-46-) | 46, 47 |
+| 3 | Combinations (組成) | ✅ `i + 1` | [Template 6](#template-6-combinations--lc-77) | 77, 216 |
+| 4 | Combination Sum | ✅ `i` (reuse) or `i + 1` | [Template 7](#template-7-combination-sum--lc-39--lc-40-) | 39, 40 |
+| 5 | Partitioning | ✅ `i + 1` on a substring / bucket | [Template 8](#template-8-palindrome-partitioning--lc-131-) / [Template 13](#template-13-k-bucket-partitioning--lc-698--lc-473) | 131, 698, 473 |
+| 6 | Grid / word search | ❌ mark-and-restore the cell | [Template 9](#template-9-grid--word-search--lc-79-) | 79, 980, 1219 |
+| 7 | Constraint satisfaction | ❌ one row / cell per depth | [Template 10](#template-10-n-queens--lc-51) / [Template 11](#template-11-sudoku-solver--lc-37) | 51, 37 |
+| 8 | Parentheses / string building | ❌ counters as constraints | [backtrack_examples.md](./backtrack_examples.md#8-generate-parentheses--lc-22) | 20, 22, 93 |
+
+### Type Notes
+
+Working notes per shape — the mnemonic for the loop body, and the gotcha.
+
+- Type 1) : `Subsets` (子集)
+    - Problems : LC 78, 90, 17
+    - [代碼隨想錄 - 0078.子集](https://github.com/youngyangyang04/leetcode-master/blob/master/problems/0078.%E5%AD%90%E9%9B%86.md)
+    - (for loop call help func) +  start_idx + for loop + pop(-1)
+    - backtrack. find minumum case. transform the problem to `tree-problem`. via `start` remove already used numbers and return all cases
+    - Need `!cur.contains(nums[i])` -> to NOT add duplicated element
+- `Subsets II`
+    - LC 90
+    - start idx + backtrack + dedup (seen)
+    - dedup : can use dict counter or idx
+
+- Type 2) : `Permutations (排列組合)` (全排列)
+    - Problems : LC 46, 47
+    - (for loop call help func) + contains + pop(-1)
+    - backtrack. via `contains` remove already used numbers and return all cases
+    - `NO NEED` to use start_idx
+
+- Type 3) : `Combinations (組成)` 
+    - LC 77
+    - (for loop call help func) +  start_idx + for loop + + check if len == k + pop(-1)
+
+- Type 4) : `Others`
+
+- Parentheses (括弧)
+    - LC 20, LC 22
+
+## Templates & Algorithms
+
+### Template Comparison Table
+
+| Template | Shape | Loop / next index | Undo | LC |
+|---|---|---|---|---|
+| 1 | choose → explore → un-choose | `for i in start..n` | `path.pop()` | — |
+| 2 | `start_idx` control | `i` (reuse) vs `i + 1` (once) | — | 39 vs 40 |
+| 3 | Subsets | record at **every** node, `i + 1` | `remove(last)` | 78 |
+| 4 | Subsets II | `i > start && a[i] == a[i-1]` skip | `remove(last)` | 90 |
+| 5 | Permutations | scan **all**, skip `visited[i]` | `pop()` + `visited[i] = False` | 46, 47 |
+| 6 | Combinations | stop at `len(path) == k` | `pop()` | 77 |
+| 7 | Combination Sum | `i` reuse / `i + 1` once + `break` prune | `pop()` | 39, 40 |
+| 8 | Palindrome partition | `for end in start+1..n`, palindrome gate | `remove(last)` | 131 |
+| 9 | Grid / word search | 4-way from each cell | restore the cell | 79 |
+| 10 | N-Queens | one row per depth, 3 constraint sets | remove from all 3 sets | 51 |
+| 11 | Sudoku | one empty cell per depth, row/col/box sets | reset cell + sets | 37 |
+| 12 | Pruning | `break` / `continue` before recursing | — | 39, 40 |
+| 13 | k-bucket partition | for each bucket, sorted desc | `buckets[i] -= v` | 698, 473 |
+| 14 | Mutable vs immutable state | — | undo **only** mutable state | 113, 1740 |
+
+### Template 1: choose → explore → un-choose ⭐⭐⭐⭐⭐
 
 The canonical `choose → explore → un-choose` skeleton, ready to adapt:
 
@@ -955,32 +163,14 @@ private void backtrack(int startIdx, List<Integer> path, int[] nums, List<List<I
 }
 ```
 
-### 1-2) Trick
+Two knobs turn this template into every variant:
+- **`start_idx`** — controls the search space (combinations/subsets vs permutations)
+- **early quit / pruning** — cut branches that cannot lead to a valid answer
 
+#### Duplicate skipping — the same-level skip rule ⭐⭐⭐⭐⭐
 
-#### 1-2-1) append to cache with idx
-
-```python
-# LC 131. Palindrome Partitioning
-
-# ...
-def help(s, res, path):
-    if not s:
-        res.append(path)
-        return
-    for i in range(1, len(s) + 1):   # NOTE: +1 so the whole remaining string can be the last piece
-        if s[:i] == s[:i][::-1]:
-            """
-            NOTE below !!!
-                -> we call help recursively with s[i:] subset
-                -> we append [s[:i]] to tmp cache (path) 
-            """
-            help(s[i:], res, path + [s[:i]])
-# ...
-```
-
-#### 1-2-2) avoid add `duplicated` element in `same level` (same recursion call)
-
+We do **not** skip every duplicate — only a duplicate appearing at the *same recursion level*.
+Three spellings of the same rule (fragments, not runnable classes):
 
 ```java
 // LC 40
@@ -1034,7 +224,735 @@ if (i > 0 && nums[i] == nums[i - 1] && !used[i - 1])
 // ...
 ```
 
-#### 1-2-3) NOT do `undo` on primary variable
+### Template 2: `start_idx` — `i` vs `i + 1` ⭐⭐⭐⭐⭐
+
+`start_idx` (or `index`, or similar) is **used to control the search space** — to **avoid duplicates** and maintain order in the generated result.
+
+-> Use `start_idx` when:
+
+- You're generating **combinations/subsets**
+- You want to **avoid duplicates**
+- You want to **preserve order** of choices
+
+Once you've decided you need a `start_idx`, the next question is **what to pass as the
+next start index** — `i` (reuse the current element) or `i + 1` (move past it).
+
+| Pass | Meaning | Analogy | Examples |
+| ---- | ------- | ------- | -------- |
+| `i`     | Reuse the **same element again** | **Unbounded knapsack** (infinite supply) | LC 39 (Combination Sum), LC 518 (Coin Change II), LC 377 |
+| `i + 1` | Use **each element at most once** | **0/1 knapsack**, subsets | LC 40 (Combination Sum II), LC 78/90 (Subsets), LC 131, LC 494 |
+
+> Permutations use neither — they revisit earlier elements, so they track a `visited[]`
+> array / `contains` check instead of a `start_idx` (see [Problem Categories](#problem-categories)).
+
+```java
+// LC 39 Combination Sum — reuse allowed → pass i
+for (int i = start; i < candidates.length; i++) {
+    backtrack(i, remain - candidates[i]);      // can pick candidates[i] again
+}
+
+// LC 40 Combination Sum II — each used once → pass i + 1
+for (int i = start; i < candidates.length; i++) {
+    backtrack(i + 1, remain - candidates[i]);  // move past candidates[i]
+}
+```
+
+> **Key takeaway**: reuse allowed → `i`; use once → `i + 1`.
+
+### Template 3: Subsets — LC 78 ⭐⭐⭐⭐⭐
+
+Record the path at **every** node (pre-order), and pass `i + 1` so each element is used once.
+The `// ...` lines are elided boilerplate, not code.
+
+```java
+// java
+// LC 78 - Subsets
+public List<List<Integer>> subsets(int[] nums) {
+    // ...
+    this.getSubSet(start_idx, nums, cur, res);
+    //System.out.println("(after) res = " + res);
+    return res;
+}
+
+public void getSubSet(int start_idx, int[] nums, List<Integer> cur, List<List<Integer>> res){
+
+    if (!res.contains(cur)){
+        // NOTE !!! init new list via below
+        res.add(new ArrayList<>(cur));
+    }
+
+    if (cur.size() > nums.length){
+        return;
+    }
+
+    for (int i = start_idx; i < nums.length; i++){
+        /**
+         * NOTE !!!
+         *
+         *  for subset,
+         *  we need "!cur.contains(nums[i])"
+         *  -> to NOT add duplicated element
+         */
+        if (!cur.contains(nums[i])){
+            cur.add(nums[i]);
+            /**
+             *  NOTE !!!
+             *
+             *   at LC 78 subset, we need to use `i+1` idx
+             *   in recursive call
+             *
+             *   while at LC 39 Combination Sum,
+             *   we use `i` directly
+             *
+             *
+             *   e.g. next start_idx is ` i+1`
+             */
+            this.getSubSet(i+1, nums, cur, res);
+            // undo
+            cur.remove(cur.size()-1);
+        }
+    }
+}
+```
+
+```python
+# python
+# LC 78 - Subsets
+# IDEA : DFS
+class Solution(object):
+    def subsets(self, nums):
+        def dfs(layer, start, tmp):
+            if tmp not in res:
+                res.append(tmp)
+            if layer == len(nums):
+                return
+            ### NOTE : we have if condition first, then for loop
+            for i in range(start, len(nums)):
+                ### NOTE below can make loop start `start idx` updated each time
+                dfs(layer+1, i+1, tmp + [nums[i]])
+        nums.sort()
+        res = []
+        dfs(0, 0, [])
+        return res
+```
+
+### Template 4: Subsets II (skip same-level duplicates) — LC 90 ⭐⭐⭐⭐⭐
+
+```java
+// java
+// LC 90
+private void backtrack(List<List<Integer>> list, List<Integer> tempList, int [] nums, int start){
+    list.add(new ArrayList<>(tempList));
+    for(int i = start; i < nums.length; i++){
+        // skip duplicates
+        /**
+         *  NOTE !!!
+         *
+         *   below is the key shows how to simply skip duplicates
+         *   (instead of using hashmap counter)
+         */
+        if(i > start && nums[i] == nums[i-1]){
+            continue;
+        }
+        tempList.add(nums[i]);
+        backtrack(list, tempList, nums, i + 1);
+        tempList.remove(tempList.size() - 1);
+    }
+}
+```
+
+### Template 5: Permutations — LC 46 ⭐⭐⭐⭐⭐
+
+```python
+# python
+# LC 46 - Permutations
+# IDEA : BACKTRACK with a `visited` array (instead of `contains`)
+class Solution(object):
+    def permute(self, nums):
+        res = []
+        visited = [False] * len(nums)
+
+        def dfs(path):
+            if len(path) == len(nums):
+                res.append(path[:])          # NOTE: copy the path
+                return
+            for i in range(len(nums)):
+                if visited[i]:
+                    continue
+                visited[i] = True            # choose
+                path.append(nums[i])
+                dfs(path)                    # explore
+                path.pop()                   # un-choose
+                visited[i] = False
+
+        dfs([])
+        return res
+```
+
+```java
+// java
+// LC 46. Permutations
+    List<List<Integer>> ans = new ArrayList<>();
+
+    // IDEA : BACKTRACK
+    public List<List<Integer>> permute(int[] nums) {
+
+        if (nums.length == 1){
+            List<List<Integer>> _ans = new ArrayList<>();
+            List<Integer> cur = new ArrayList<>();
+            cur.add(nums[0]);
+            _ans.add(cur);
+            return _ans;
+        }
+
+        List<Integer> cur = new ArrayList<>();
+        /** NOTE !!! we don't need to set idx param */
+        helper(nums, cur);
+
+        return this.ans;
+    }
+
+    private void helper(int[] nums, List<Integer> cur){
+
+        if (cur.size() > nums.length){
+            return;
+        }
+
+        if (!this.ans.contains(cur) && cur.size() == nums.length){
+
+            /** NOTE !!! we use below to add current ArrayList instance to ans */
+            this.ans.add(new ArrayList<>(cur));
+        }
+
+        
+        for (int i = 0; i < nums.length; i++){
+            int val = nums[i];
+            // input nums is array with distinct integers
+            /** NOTE !!! ONLY do recursive, backtrack when meet distinct element */
+            if(!cur.contains(val)){
+                cur.add(val);
+                // recursive call
+                helper(nums, cur);
+                // undo last op
+                cur.remove(cur.size()-1); // NOTE !!! remove last element
+            }
+        }
+    }
+```
+
+#### Permutations with duplicates — LC 47
+
+A `Counter` replaces `visited[]`: decrement on choose, increment back on un-choose. The
+alternative (sort + `i > 0 and a[i] == a[i-1] and not used[i-1]`) is the Java snippet in
+[Duplicate skipping](#duplicate-skipping--the-same-level-skip-rule-).
+
+```python
+# python
+# LC 47 - Permutations II
+# IDEA : BACKTRACK with a Counter (decrement on choose, increment back on un-choose)
+class Solution(object):
+    def permuteUnique(self, nums):
+        def help(res, cur, cnt):
+            if len(cur) == len(nums):
+                if cur not in res:
+                    res.append(cur[:])
+                    return
+            if len(cur) > len(nums):
+                return
+            for x in _cnt:
+                #print ("i = " + str(i) + " cur = " + str(cur))
+                #if i not in cur:
+                if _cnt[x] > 0:
+                    cur.append(x)
+                    _cnt[x] -= 1
+                    help(res, cur, _cnt)
+                    """
+                    NOTE !!! : we UNDO the last op we just made (pop last element we put into array)
+                    """
+                    cur.pop(-1)
+                    _cnt[x] += 1
+        # edge case
+        if not nums:
+            return [[]]
+        _cnt = Counter(nums)
+        #print ("_cnt = " + str(_cnt))
+        res = []
+        cur = []
+        help(res, cur, _cnt)
+        return res
+```
+
+### Template 6: Combinations — LC 77
+
+`start_idx` + a size gate. Stop as soon as `len(path) == k`.
+
+```python
+# python
+# LC 77. Combinations
+# IDEA : BACKTRACK
+class Solution(object):
+    def combine(self, n, k): 
+        def dfs(current, start):
+            if(len(current) == k):
+                """
+                Both of below approach are OK
+                
+                list(current) : transform current reference to list
+                current[:] : shallow copy
+                """
+                result.append(list(current))
+                return
+            
+            for i in range(start, n + 1):
+                current.append(i)
+                dfs(current, i + 1)
+                current.pop()
+            
+        result = []
+        dfs([], 1)
+        return result
+
+```
+
+### Template 7: Combination Sum — LC 39 / LC 40 ⭐⭐⭐⭐
+
+`i` in the recursive call means *reuse allowed* (LC 39); `i + 1` means *use once* (LC 40).
+LC 40 additionally needs the same-level duplicate skip.
+
+```java
+// java
+// https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/
+// LC 39 - Combination Sum
+public List<List<Integer>> combinationSum(int[] nums, int target) {
+    List<List<Integer>> list = new ArrayList<>();
+    Arrays.sort(nums);
+    backtrack(list, new ArrayList<>(), nums, target, 0);
+    return list;
+}
+
+private void backtrack(List<List<Integer>> list, List<Integer> tempList, int [] nums, int remain, int start){
+    if(remain < 0) return;
+    else if(remain == 0) list.add(new ArrayList<>(tempList));
+    else{ 
+        for(int i = start; i < nums.length; i++){
+            tempList.add(nums[i]);
+            /** NOTE !!!
+             *
+             *   use i, since we need to use start from current (i) index in recursion call
+             *    (reuse current index)
+             */
+            backtrack(list, tempList, nums, remain - nums[i], i);
+            tempList.remove(tempList.size() - 1);
+        }
+    }
+}
+```
+
+```java
+// java
+// https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/
+// LC 40 - Combination Sum II
+ public List<List<Integer>> combinationSum2(int[] nums, int target) {
+    List<List<Integer>> list = new ArrayList<>();
+    Arrays.sort(nums);
+    backtrack(list, new ArrayList<>(), nums, target, 0);
+    return list;
+    
+}
+
+private void backtrack(List<List<Integer>> list, List<Integer> tempList, int [] nums, int remain, int start){
+    if(remain < 0) return;
+    else if(remain == 0) list.add(new ArrayList<>(tempList));
+    else{
+        for(int i = start; i < nums.length; i++){
+            if(i > start && nums[i] == nums[i-1]) continue; // skip duplicates
+            tempList.add(nums[i]);
+            backtrack(list, tempList, nums, remain - nums[i], i + 1);
+            tempList.remove(tempList.size() - 1); 
+        }
+    }
+}        
+```
+
+**Python — LC 40 with both prunings** (`sort()` first, so `break` is legal):
+
+```python
+# python
+# LC 40 - Combination Sum II
+def combinationSum2(candidates, target):
+    def backtrack(start, path, current_sum):
+        if current_sum == target:
+            result.append(path[:])
+            return
+
+        for i in range(start, len(candidates)):
+            # Pruning: skip duplicates at same level
+            if i > start and candidates[i] == candidates[i-1]:
+                continue
+
+            # Pruning: early termination
+            if current_sum + candidates[i] > target:
+                break
+
+            path.append(candidates[i])
+            backtrack(i + 1, path, current_sum + candidates[i])
+            path.pop()
+
+    candidates.sort()
+    result = []
+    backtrack(0, [], 0)
+    return result
+```
+
+### Template 8: Palindrome Partitioning — LC 131 ⭐⭐⭐⭐
+
+The partition shape: loop `end` from `start + 1` to `n`, gate on a validity predicate
+(`isPalindrome`), recurse from `end`. Swap the predicate and you get IP-address restoration
+(LC 93) or word break (LC 140).
+
+```java
+// java
+// https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/
+// LC 131 - Palindrome Partitioning
+public List<List<String>> partition(String s) {
+   List<List<String>> list = new ArrayList<>();
+   backtrack(list, new ArrayList<>(), s, 0);
+   return list;
+}
+
+public void backtrack(List<List<String>> list, List<String> tempList, String s, int start){
+   if(start == s.length())
+      list.add(new ArrayList<>(tempList));
+   else{
+      for(int i = start; i < s.length(); i++){
+         if(isPalindrome(s, start, i)){
+            tempList.add(s.substring(start, i + 1));
+
+            // NOTE !!! `i+1`
+            backtrack(list, tempList, s, i + 1);
+            tempList.remove(tempList.size() - 1);
+         }
+      }
+   }
+}
+
+public boolean isPalindrome(String s, int low, int high){
+   while(low < high)
+      if(s.charAt(low++) != s.charAt(high--)) return false;
+   return true;
+} 
+```
+
+```python
+# python
+# LC 131 Palindrome Partitioning
+# IDEA : BACKTRCK, similar as LC 046 permutations
+class Solution(object):
+    def partition(self, s):
+        def help(s, res, path):
+            if not s:
+                res.append(path)
+                return
+            for i in range(1, len(s)+1):
+                if s[:i] == s[:i][::-1]:
+                    help(s[i:], res, path + [s[:i]])
+        # edge case
+        if not s:
+            return
+        res = []
+        path = []
+        help(s, res, path)
+        return res
+```
+
+### Template 9: Grid / Word Search — LC 79 ⭐⭐⭐⭐
+
+Mark the cell, recurse 4-ways, restore the cell. The `visited[][]` matrix variant and the
+count/max variants (LC 980, LC 1219) are in
+[backtrack_examples.md §3](./backtrack_examples.md#3-word-search--lc-79-).
+
+```python
+# python
+# LC 079 Word Search
+# IDEA : DFS + backtracking
+class Solution(object):
+    def exist(self, board, word):
+        if not board or not board[0]:
+            return False
+
+        self.rows = len(board)
+        self.cols = len(board[0])
+
+        for r in range(self.rows):
+            for c in range(self.cols):
+                if self.dfs(board, word, r, c, 0):
+                    return True
+
+        return False
+
+    def dfs(self, board, word, r, c, idx):
+        if r < 0 or r >= self.rows or c < 0 or c >= self.cols:
+            return False
+        if board[r][c] != word[idx]:
+            return False
+        if idx == len(word) - 1:
+            return True
+
+        # Mark current cell as visited
+        temp = board[r][c]
+        board[r][c] = "#"
+
+        # Explore 4 directions
+        found = (
+            self.dfs(board, word, r + 1, c, idx + 1) or
+            self.dfs(board, word, r - 1, c, idx + 1) or
+            self.dfs(board, word, r, c + 1, idx + 1) or
+            self.dfs(board, word, r, c - 1, idx + 1)
+        )
+
+        # NOTE !!! MUST save `found` first, THEN backtrack, THEN return found.
+        # -> The restore (backtrack) must happen before return.
+        # -> Returning directly from the recursive call skips the restore:
+        #
+        #   WRONG pattern:
+        #     board[r][c] = "#"
+        #     return (self.dfs(...) or self.dfs(...) or ...)
+        #     board[r][c] = temp   # NEVER REACHED
+        #
+        #   CORRECT pattern:
+        #     board[r][c] = "#"
+        #     found = (self.dfs(...) or ...)   # collect result
+        #     board[r][c] = temp               # backtrack (restore)
+        #     return found                     # return after restore
+
+        # Backtrack: restore original value
+        board[r][c] = temp
+
+        return found
+
+```
+
+### Template 10: N-Queens — LC 51
+
+Classic backtracking with O(n!) search space, pruned by column/diagonal tracking.
+
+```python
+# python
+# LC 51 - N-Queens
+def solveNQueens(n):
+    result = []
+    cols = set()
+    diag1 = set()   # row - col (top-left to bottom-right)
+    diag2 = set()   # row + col (top-right to bottom-left)
+
+    def backtrack(row, board):
+        if row == n:
+            result.append(["".join(r) for r in board])
+            return
+        for col in range(n):
+            if col in cols or (row - col) in diag1 or (row + col) in diag2:
+                continue
+            cols.add(col); diag1.add(row - col); diag2.add(row + col)
+            board[row][col] = 'Q'
+            backtrack(row + 1, board)
+            board[row][col] = '.'; cols.remove(col)
+            diag1.remove(row - col); diag2.remove(row + col)
+
+    backtrack(0, [['.']*n for _ in range(n)])
+    return result
+```
+
+**Key pruning**: Three O(1) sets replace the O(n) column/diagonal scans. Time: O(n!), Space: O(n).
+
+### Template 11: Sudoku Solver — LC 37
+
+Backtrack cell by cell; prune using row/col/box sets.
+
+```python
+# python
+# LC 37 - Sudoku Solver
+def solveSudoku(board):
+    rows = [set() for _ in range(9)]
+    cols = [set() for _ in range(9)]
+    boxes = [set() for _ in range(9)]
+
+    empty = []
+    for r in range(9):
+        for c in range(9):
+            if board[r][c] != '.':
+                d = board[r][c]
+                rows[r].add(d); cols[c].add(d); boxes[(r//3)*3+c//3].add(d)
+            else:
+                empty.append((r, c))
+
+    def backtrack(idx):
+        if idx == len(empty): return True
+        r, c = empty[idx]
+        box = (r//3)*3 + c//3
+        for d in '123456789':
+            if d in rows[r] or d in cols[c] or d in boxes[box]: continue
+            board[r][c] = d
+            rows[r].add(d); cols[c].add(d); boxes[box].add(d)
+            if backtrack(idx + 1): return True
+            board[r][c] = '.'; rows[r].remove(d); cols[c].remove(d); boxes[box].remove(d)
+        return False
+
+    backtrack(0)
+```
+
+> Pushing this further — eliminating a digit from peer cells the moment it is placed, and
+> failing as soon as a cell has zero candidates — is **constraint propagation**, in
+> [backtrack_advanced.md](./backtrack_advanced.md#template-4-constraint-propagation-early-termination).
+
+### Template 12: Pruning Techniques ⭐⭐⭐⭐
+
+**Definition**: Optimization methods to reduce the search space by eliminating branches that cannot lead to valid solutions.
+
+**Types of Pruning**:
+
+**1. Constraint-based Pruning**
+- Early termination when constraints are violated
+- Check validity before recursive calls
+
+**2. Bound-based Pruning**
+- Use upper/lower bounds to eliminate suboptimal paths
+- Branch and bound technique
+
+**3. Symmetry Pruning**
+- Skip equivalent states to avoid duplicates
+- Sort inputs to handle permutations
+
+**4. Memoization Pruning**
+- Cache results of subproblems
+- Avoid recomputing same states
+
+**Common Pruning Patterns** — an outline, not runnable code: `current_sum`, `target_length`,
+`is_valid` and `result` stand in for whatever the problem supplies.
+
+```python
+# python
+def backtrack_with_pruning(path, choices, target):
+    # Early termination (constraint pruning)
+    if current_sum > target:
+        return  # No need to continue
+
+    # Bound pruning
+    if current_sum + min_remaining > target:
+        return  # Cannot reach target
+
+    # Base case
+    if len(path) == target_length:
+        if is_valid(path):
+            result.append(path[:])
+        return
+
+    # Symmetry pruning
+    for i in range(start_idx, len(choices)):
+        # Skip duplicates (symmetry pruning)
+        if i > start_idx and choices[i] == choices[i-1]:
+            continue
+
+        # Make choice
+        path.append(choices[i])
+
+        # Recursive call with pruning
+        backtrack_with_pruning(path, choices, target)
+
+        # Undo choice
+        path.pop()
+```
+
+**Worked pruning — LC 39 Combination Sum** (`sort()` enables the `break`):
+
+```python
+# python
+# LC 39 - Combination Sum (with sum + sorted-break pruning)
+def combinationSum(candidates, target):
+    def backtrack(start, path, current_sum):
+        # Pruning: if current sum exceeds target
+        if current_sum > target:
+            return
+
+        if current_sum == target:
+            result.append(path[:])
+            return
+
+        for i in range(start, len(candidates)):
+            # Pruning: if adding current number exceeds target
+            if current_sum + candidates[i] > target:
+                break  # Since array is sorted
+
+            path.append(candidates[i])
+            backtrack(i, path, current_sum + candidates[i])
+            path.pop()
+
+    candidates.sort()  # Enable break pruning
+    result = []
+    backtrack(0, [], 0)
+    return result
+```
+
+### Template 13: k-Bucket Partitioning — LC 698 / LC 473
+
+Assign each number to one of `k` buckets. Three prunings make it tractable: fail fast on
+`sum % k != 0`, sort **descending** so large numbers fail early, and `break` instead of
+trying a second *empty* bucket (it only relabels the same partition).
+
+```python
+# python
+# LC 698 - Partition to K Equal Sum Subsets
+def canPartitionKSubsets(nums, k):
+    total = sum(nums)
+    if total % k != 0:
+        return False
+
+    target = total // k
+    nums.sort(reverse=True)  # Start with larger numbers
+
+    def backtrack(index, buckets):
+        if index == len(nums):
+            return True
+
+        for i in range(k):
+            # Pruning techniques
+            if buckets[i] + nums[index] > target:
+                continue
+            if i > 0 and buckets[i] == buckets[i-1]:
+                continue
+
+            buckets[i] += nums[index]
+            if backtrack(index + 1, buckets):
+                return True
+            buckets[i] -= nums[index]
+
+        return False
+
+    return backtrack(0, [0] * k)
+```
+
+> **Variation — LC 473 (Matchsticks to Square)**: *the exact same k-bucket template with `k`
+> hard-coded to 4* and `target = perimeter // 4`. Same three prunings apply: fail fast if
+> `sum % 4 != 0` or `max(nums) > target`, sort **descending** first, and `if buckets[i] == 0:
+> break` after an undo (trying a second *empty* bucket only relabels the same partition).
+
+#### Return `true` up the stack immediately
+
+A decision problem ("*can* it be partitioned?") returns as soon as one branch succeeds —
+do not keep looping after a `true`:
+
+```java
+// java
+// LC  698
+
+// ...
+if (backtrack_(nums, j + 1, k, subsetSum + nums[j], used)){
+            return true;
+        }
+
+// ...
+```
+
+### Template 14: When to Undo — Mutable vs Immutable State ⭐⭐⭐⭐
 
 ```java
 // java
@@ -1095,37 +1013,6 @@ private int getPathLen(TreeNode root, int target, int dist) {
 | Mutable objects (`List`, `Set`, `Map`, `StringBuilder`, etc.) | ✅ Yes | Passed by reference; modifications affect all recursive calls |
 | Immutable objects (`String`, `Integer`, etc.) | ❌ No | Modifications create new instances |
 
-**Example: When Backtracking IS Needed**:
-```java
-// Mutable shared state - NEEDS backtracking
-void backtrack(List<Integer> path, int[] nums) {
-    if (path.size() == nums.length) {
-        result.add(new ArrayList<>(path));
-        return;
-    }
-    for (int num : nums) {
-        path.add(num);              // modify shared state
-        backtrack(path, nums);      // recursive call
-        path.remove(path.size()-1); // MUST undo - backtrack!
-    }
-}
-```
-
-**Example: When Backtracking is NOT Needed**:
-```java
-// Primitive types - NO backtracking needed
-int dfs(TreeNode root, int depth) {
-    if (root == null) return depth;
-
-    int left = dfs(root.left, depth + 1);   // depth + 1 creates a NEW value
-    int right = dfs(root.right, depth + 1); // depth is unchanged for right call
-
-    // No need to do: depth -= 1;
-    // because depth was passed by value
-    return Math.max(left, right);
-}
-```
-
 **Python equivalent — `int` accumulator vs `list` path (LC 113 Path Sum II)** ⭐
 
 The same rule holds in Python. In a DFS that carries **both** a running sum (`cur_sum`,
@@ -1177,1704 +1064,7 @@ class Solution(object):
 
 > See also [python_trick.md §1-54](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/python_trick.md) — `str`/`tuple`/`int` (immutable, no backtrack) vs `list.append` (mutable, needs `pop`).
 
-### 1-3)  if `true`, return true right after recursive call
-
-```java
-// java
-// LC  698
-
-// ...
-if (backtrack_(nums, j + 1, k, subsetSum + nums[j], used)){
-            return true;
-        }
-
-// ...
-```
-
-## 2) LC Example
-
-### 2-1) Letter Combinations of a Phone Number — LC 17
-
-```java
-// java
-// LC 17
-// V0
-// IDEA: BACKTRACK + start_idx (on digit)
-List<String> _res = new ArrayList<String>();
-public List<String> letterCombinations(String _digits) {
-
-    if (_digits.length() == 0){
-        return new ArrayList<>();
-    }
-
-    HashMap<java.lang.String, java.lang.String> letters = new HashMap<>();
-    letters.put("2", "abc");
-    letters.put("3", "def");
-    letters.put("4", "ghi");
-    letters.put("5", "jkl");
-    letters.put("6", "mno");
-    letters.put("7", "pqrs");
-    letters.put("8", "tuv");
-    letters.put("9", "wxyz");
-
-    _letter_builder(letters, 0, _digits, new StringBuilder());
-    return this._res;
-}
-
-private void _letter_builder(HashMap<String, String> map, int start_idx, String digits, StringBuilder builder){
-
-    /**
-     *  NOTE !!!
-     *
-     *   if builder (StringBuilder) length equals digits length,
-     *   -> means we first one of the `all digit visit`
-     *   -> we should add this cur to our result
-     */
-    if (builder.length() == digits.length()){
-        this._res.add(builder.toString()); // NOTE this
-        return;
-    }
-
-    /**
-     *  NOTE !!!
-     *
-     *
-     *   1) the `start_idx`  is for `digits` .
-     *   e.g.
-     *
-     *    -> if digits = "23",
-     *       the start_idx is 0,
-     *       and could become 1, ...
-     *
-     *
-     *   2) via `start_idx` we can focus on specific digit (e.g. "2" only, from "23")
-     *      then we can loop over its `alphabet` in recursive call
-     *      e.g. "abc" for "2"
-     *
-     *      letters.put("2", "abc");
-     *
-     */
-    String _digit = String.valueOf(digits.toCharArray()[start_idx]); // NOTE this
-    String _alphabets = map.get(_digit);
-
-    // backtrack
-    /**
-     *  NOTE !!!
-     *
-     *   we loop over `_alphabets` (digit with idx),
-     *   (instead of digit)
-     *
-     *   -> so we can build our cur string accordingly
-     *
-     */
-    for (char a : _alphabets.toCharArray()){
-        builder.append(a);
-        _letter_builder(map, start_idx + 1, digits, builder);
-
-
-        // undo
-        // builder.deleteCharAt(0); // NOTE !!! in backtrack, we remove LAST element (idx = len - 1), instead of first element
-        builder.deleteCharAt(builder.toString().length() - 1);
-        // no need to `undo` start_idx, since it's primary type
-        // in java, it is copied as `new var` when pass the recursive call
-        // https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/backtrack.md#1-2-3-not-do-undo-on-primary-variable
-        // start_idx -= 1; // this is WRONG!!!
-    }
-}
-```
-
-```python
-# 017   Letter Combinations of a Phone Number
-# V0
-# IDEA : backtracking
-class Solution(object):
-    def letterCombinations(self, digits):
-        # help func
-        def help(idx, cur):
-            if len(cur) == len(digits):
-                tmp = "".join(cur[:])
-                res.append(tmp)
-                cur = []
-                return
-            if len(cur) > len(digits):
-                cur = []
-                return
-            for a in d[digits[idx]]:
-                cur.append(a)
-                help(idx+1, cur)
-                cur.pop(-1)  # NOTE this !!! : we pop last element
-        # edge case
-        if not digits:
-            return []
-        res = []
-        cur = []
-        idx = 0
-        d =  {'2': 'abc', '3': 'def', '4': 'ghi', '5': 'jkl', '6': 'mno', '7': 'pqrs', '8': 'tuv', '9': 'wxyz'}
-        help(idx, cur)
-        return res
-
-# V0'
-# IDEA : dfs + backtracking
-class Solution(object):
-    def letterCombinations(self, digits):
-
-        def dfs(idx, tmp):
-
-            """
-            NOTE : if idx == len(digits)
-               -> if tmp is not null, then we append tmp to our result (res)
-               -> and we out of the loop
-            """
-            if idx == len(digits):
-                if tmp != "":
-                    res.append(tmp)
-                return
-
-            ### NOTE : we loop alphabets in d map per number rather than loop over number !!!
-            for alpha in d[digits[idx]]:
-                """
-                NOTE !!!!
-                idx+1     : move to next digit
-                tmp+alpha : collect current update
-                """
-                dfs(idx + 1, tmp + alpha)
-
-        # edge case
-        if not digits:
-            return []
-        d = {'2' : "abc", '3' : "def", '4' : "ghi", '5' : "jkl", '6' : "mno", '7' : "pqrs", '8' : "tuv", '9' : "wxyz"}
-        res = []
-        dfs(0, "")
-        return res   # NOTE: return res (not None)
-
-# V1 
-# idea : for loop
-class Solution(object):
-    def letterCombinations(self, digits):
-        """
-        :type digits: str
-        :rtype: List[str]
-        """
-        if digits == "": return []
-        d = {'2' : "abc", '3' : "def", '4' : "ghi", '5' : "jkl", '6' : "mno", '7' : "pqrs", '8' : "tuv", '9' : "wxyz"}
-        res = ['']
-        for e in digits:
-            res = [w + c for c in d[e] for w in res]
-        return res
-```
-
-### 2-2) combination-sum — LC 39 ⭐⭐⭐⭐
-
-> **V0** below is correct but **wasteful**: with no `start_idx` it explores every *ordering*
-> (e.g. `[2,3]` and `[3,2]`), then dedups via `sort()` + `tmp not in res`.
-> Prefer **V1** (start_idx, pass `i` to allow reuse) — it never generates duplicates.
-
-```python
-# LC 039 combination-sum
-# V0 (brute + dedup — correct but slow)
-# IDEA : DFS + BACKTRACK
-class Solution(object):
-    def combinationSum(self, candidates, target):
-
-        def dfs(tmp):
-            if sum(tmp) == target:
-                tmp.sort()
-                if tmp not in res:
-                    res.append(tmp)
-                return
-            if sum(tmp) > target:
-                return
-            for c in candidates:
-                dfs(tmp + [c])
-
-        res = []
-        tmp = []
-        dfs(tmp)
-        return res
-
-# V1 (start_idx — preferred)
-# IDEA : DFS + BACKTRACK + start_idx (pass `i` to allow reuse)
-class Solution(object):
-    def combinationSum(self, candidates, target):
-
-        def dfs(start, tmp, total):
-            if total == target:
-                res.append(tmp[:])
-                return
-            if total > target:
-                return
-            for i in range(start, len(candidates)):
-                tmp.append(candidates[i])
-                # NOTE: pass `i` (NOT i+1) -> candidates[i] can be reused
-                dfs(i, tmp, total + candidates[i])
-                tmp.pop()
-
-        res = []
-        dfs(0, [], 0)
-        return res
-``` 
-
-**Visual trace (recursion tree)** — `candidates = [2, 3, 6, 7]`, `target = 7` → answer `[[2,2,3],[7]]`
-
-> Each node is a call `dfs(start, path, total)`. We pass **`i`** (not `i+1`) so a candidate
-> can be **reused**. A branch is pruned (`✗`) as soon as `total > target`; recorded (`✅`) when `total == target`.
-
-```text
-dfs(0, [], 0)
-├─ pick 2 → dfs(0, [2], 2)
-│  ├─ pick 2 → dfs(0, [2,2], 4)
-│  │  ├─ pick 2 → dfs(0, [2,2,2], 6)
-│  │  │  ├─ pick 2 → total=8  ✗ prune
-│  │  │  └─ pick 3 → total=9  ✗ prune
-│  │  ├─ pick 3 → dfs(1, [2,2,3], 7)   ✅ record [2,2,3]
-│  │  ├─ pick 6 → total=10 ✗
-│  │  └─ pick 7 → total=11 ✗
-│  ├─ pick 3 → dfs(1, [2,3], 5)
-│  │  ├─ pick 3 → total=8  ✗
-│  │  ├─ pick 6 → total=11 ✗
-│  │  └─ pick 7 → total=12 ✗
-│  ├─ pick 6 → total=8  ✗
-│  └─ pick 7 → total=9  ✗
-├─ pick 3 → dfs(1, [3], 3)
-│  ├─ pick 3 → dfs(1, [3,3], 6)
-│  │  └─ (3→9 ✗, 6→12 ✗, 7→13 ✗)   ✗
-│  ├─ pick 6 → total=9  ✗
-│  └─ pick 7 → total=10 ✗
-├─ pick 6 → dfs(2, [6], 6)
-│  └─ (6→12 ✗, 7→13 ✗)              ✗
-└─ pick 7 → dfs(3, [7], 7)          ✅ record [7]
-```
-
-> **Reading the tree**: depth = how many numbers are in `path`; the `start` index (0/1/2/3)
-> shrinks the choice list going down so we never revisit an earlier candidate → no duplicate
-> combinations. Switching the recursive call to `i + 1` (use-once) turns this into LC 40.
-
-#### 2-2') Variation — Combination Sum III (LC 216)
-
-**Twist**: the candidate pool is the *implicit* sorted list `1..9`, and there are now **two**
-stop conditions — `len(path) == k` **and** `total == n`. Because the pool is sorted, `break`
-(not `continue`) on overflow prunes the whole tail of the loop.
-
-```python
-# python
-# LC 216 - Combination Sum III
-# time = O(C(9,k) * k), space = O(k)
-# IDEA: LC 39/40 template, pool = 1..9, pass i+1 (each digit used at most once),
-#       size check `len(path) == k` on top of the sum check.
-class Solution:
-    def combinationSum3(self, k, n):
-        res = []
-
-        def backtrack(start, path, total):
-            ### NOTE !!! size condition comes FIRST -> return regardless of sum
-            if len(path) == k:
-                if total == n:
-                    res.append(path[:])
-                return
-
-            for i in range(start, 10):
-                ### NOTE !!! pool is sorted -> break (kills the rest), not continue
-                if total + i > n:
-                    break
-                path.append(i)
-                backtrack(i + 1, path, total + i)   # i+1 -> digit used once
-                path.pop()
-
-        backtrack(1, [], 0)
-        return res
-```
-
-### 2-3) Word Search — LC 79 ⭐⭐⭐⭐
-```python
-# LC 079 Word Search
-
-# V0
-# IDEA : DFS + backtracking
-class Solution(object):
-    def exist(self, board, word):
-        if not board or not board[0]:
-            return False
-
-        self.rows = len(board)
-        self.cols = len(board[0])
-
-        for r in range(self.rows):
-            for c in range(self.cols):
-                if self.dfs(board, word, r, c, 0):
-                    return True
-
-        return False
-
-    def dfs(self, board, word, r, c, idx):
-        if r < 0 or r >= self.rows or c < 0 or c >= self.cols:
-            return False
-        if board[r][c] != word[idx]:
-            return False
-        if idx == len(word) - 1:
-            return True
-
-        # Mark current cell as visited
-        temp = board[r][c]
-        board[r][c] = "#"
-
-        # Explore 4 directions
-        found = (
-            self.dfs(board, word, r + 1, c, idx + 1) or
-            self.dfs(board, word, r - 1, c, idx + 1) or
-            self.dfs(board, word, r, c + 1, idx + 1) or
-            self.dfs(board, word, r, c - 1, idx + 1)
-        )
-
-        # NOTE !!! MUST save `found` first, THEN backtrack, THEN return found.
-        # -> The restore (backtrack) must happen before return.
-        # -> Returning directly from the recursive call skips the restore:
-        #
-        #   WRONG pattern:
-        #     board[r][c] = "#"
-        #     return (self.dfs(...) or self.dfs(...) or ...)
-        #     board[r][c] = temp   # NEVER REACHED
-        #
-        #   CORRECT pattern:
-        #     board[r][c] = "#"
-        #     found = (self.dfs(...) or ...)   # collect result
-        #     board[r][c] = temp               # backtrack (restore)
-        #     return found                     # return after restore
-
-        # Backtrack: restore original value
-        board[r][c] = temp
-
-        return found
-
-
-# V0' (visited matrix variant)
-# IDEA : DFS + backtracking
-class Solution(object):
- 
-    def exist(self, board, word):
-        ### NOTE : construct the visited matrix
-        visited = [[False for j in range(len(board[0]))] for i in range(len(board))]
-
-        ### NOTE : we visit every element in board and trigger the dfs
-        for i in range(len(board)):
-            for j in range(len(board[0])):
-                if self.dfs(board, word, 0, i, j, visited):
-                    return True
-
-        return False
-
-    def dfs(self, board, word, cur, i, j, visited):
-        # if "not false" till cur == len(word), means we already found the wprd in board
-        if cur == len(word):
-            return True
-
-        ### NOTE this condition
-        # 1) if idx out of range
-        # 2) if already visited
-        # 3) if board[i][j] != word[cur] -> not possible to be as same as word
-        if i < 0 or i >= len(board) or j < 0 or j >= len(board[0]) or visited[i][j] or board[i][j] != word[cur]:
-            return False
-
-        # mark as visited
-        visited[i][j] = True
-        ### NOTE THIS TRICK (run the existRecu on 4 directions on the same time)
-        result = self.dfs(board, word, cur + 1, i + 1, j, visited) or\
-                 self.dfs(board, word, cur + 1, i - 1, j, visited) or\
-                 self.dfs(board, word, cur + 1, i, j + 1, visited) or\
-                 self.dfs(board, word, cur + 1, i, j - 1, visited)
-        # mark as non-visited
-        visited[i][j] = False
-
-        return result
-```
-
-```java
-// java
-// LC 079
-// V0'
-// IDEA : DFS + BACKTRACK (modified by GPT)
-public boolean exist_0(char[][] board, String word) {
-    if (board == null || board.length == 0) {
-        return false;
-    }
-
-    int l = board.length;
-    int w = board[0].length;
-
-    boolean[][] visited = new boolean[l][w];
-
-    for (int i = 0; i < l; i++) {
-        for (int j = 0; j < w; j++) {
-            if (dfs_(board, i, j, 0, word, visited)) {
-                return true;
-            }
-        }
-    }
-
-    return false;
-}
-
-private boolean dfs_(char[][] board, int y, int x, int idx, String word, boolean[][] visited) {
-
-    if (idx == word.length()) {
-        return true;
-    }
-
-    int l = board.length;
-    int w = board[0].length;
-
-    if (y < 0 || y >= l || x < 0 || x >= w || visited[y][x] || board[y][x] != word.charAt(idx)) {
-        return false;
-    }
-
-    /** NOTE !!! we update visited on x, y here */
-    visited[y][x] = true;
-
-    int[][] dirs = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
-    /**
-     *  NOTE !!!
-     *
-     *   instead of below structure:
-     *
-     *       boolean didFindNextCharacter =
-     *                 dfs2(row + 1, col, word, lvl + 1, visited, board) ||
-     *                 dfs2(row - 1, col, word, lvl + 1, visited, board) ||
-     *                 dfs2(row, col + 1, word, lvl + 1, visited, board) ||
-     *                 dfs2(row, col - 1, word, lvl + 1, visited, board);
-     *
-     *   we can use below logic as well:
-     *
-     *          for (int[] dir : dirs) {
-     *             if (dfs_(board, y + dir[0], x + dir[1], idx + 1, word, visited)) {
-     *                 return true;
-     *             }
-     *         }
-     *
-     */
-    for (int[] dir : dirs) {
-        if (dfs_(board, y + dir[0], x + dir[1], idx + 1, word, visited)) {
-            return true;
-        }
-    }
-
-    /** NOTE !!! we undo (backtrack) updated x, y here */
-    visited[y][x] = false;
-
-    return false;
-}
-```
-
-#### 2-3') Variations — same grid template, different return value
-
-LC 79 returns a **boolean** and short-circuits (`if dfs(...): return True`). The two problems
-below reuse the identical *mark → 4-way recurse → unmark* skeleton but must **explore every
-path to the end**, so there is no early exit — they accumulate a count / a maximum instead.
-
-| LC | Returns | Mark trick | No-early-exit reason |
-|----|---------|-----------|----------------------|
-| 79 Word Search | `bool` | `visited[][]` or `board[r][c]='#'` | first match wins |
-| 980 Unique Paths III | `int` count | set cell to `-1` (obstacle value) | must count **all** valid paths |
-| 1219 Path with Maximum Gold | `int` max | set cell to `0` (empty value) | must compare **all** paths |
-
-**Twist (LC 980)** — the "visited all cells" condition becomes an extra `remain` counter
-threaded through the recursion; reaching the end cell only counts when `remain == 0`.
-
-```python
-# python
-# LC 980 - Unique Paths III
-# time = O(4^(M*N)), space = O(M*N) recursion depth
-# IDEA: LC 79 grid backtrack, but COUNT paths instead of early-return.
-#       reuse the obstacle value (-1) as the "visited" mark -> no extra matrix.
-class Solution:
-    def uniquePathsIII(self, grid):
-        rows, cols = len(grid), len(grid[0])
-
-        ### NOTE !!! todo = number of walkable cells (start + end + empties)
-        todo = sum(v != -1 for row in grid for v in row)
-        for r in range(rows):
-            for c in range(cols):
-                if grid[r][c] == 1:
-                    sr, sc = r, c
-
-        self.res = 0
-
-        def dfs(r, c, remain):
-            if grid[r][c] == 2:
-                ### NOTE !!! end cell only counts if EVERY walkable cell was used
-                if remain == 0:
-                    self.res += 1
-                return
-
-            tmp = grid[r][c]
-            grid[r][c] = -1                 # mark visited (as obstacle)
-            for nr, nc in ((r+1, c), (r-1, c), (r, c+1), (r, c-1)):
-                if 0 <= nr < rows and 0 <= nc < cols and grid[nr][nc] != -1:
-                    dfs(nr, nc, remain - 1)
-            grid[r][c] = tmp                # undo (backtrack)
-
-        dfs(sr, sc, todo - 1)
-        return self.res
-```
-
-**Twist (LC 1219)** — no fixed start, so the DFS is launched from **every** cell; the recursion
-*returns* the best sub-path value rather than writing into a shared list.
-
-```python
-# python
-# LC 1219 - Path with Maximum Gold
-# time = O(M*N*4^(M*N)), space = O(M*N) recursion depth
-# IDEA: LC 79 grid backtrack, start from EVERY cell, return max instead of bool.
-#       gold value 0 doubles as the "visited / blocked" mark.
-class Solution:
-    def getMaximumGold(self, grid):
-        rows, cols = len(grid), len(grid[0])
-
-        def dfs(r, c):
-            ### NOTE !!! 0 means empty cell OR currently-on-path cell -> stop
-            if not (0 <= r < rows and 0 <= c < cols) or grid[r][c] == 0:
-                return 0
-
-            gold = grid[r][c]
-            grid[r][c] = 0                  # mark visited
-            best = max(dfs(r+1, c), dfs(r-1, c), dfs(r, c+1), dfs(r, c-1))
-            grid[r][c] = gold               # undo (backtrack)
-            return gold + best
-
-        return max(dfs(r, c) for r in range(rows) for c in range(cols))
-```
-
-> See also **4-1) LC 212 Word Search II** — the multi-word version of this grid template,
-> where a **Trie node** replaces the `idx` cursor into a single word.
-
-### 2-4) Subsets — LC 78 ⭐⭐⭐⭐⭐
-```python
-# LC 078 Subsets
-# V0
-# IDEA : Backtracking
-class Solution:
-    def subsets(self, nums):
-        def backtrack(first = 0, curr = []):
-            # if the combination is done
-            if len(curr) == k:  
-                output.append(curr[:])
-                return
-            for i in range(first, n):
-                # add nums[i] into the current combination
-                curr.append(nums[i])
-                # use next integers to complete the combination
-                backtrack(i + 1, curr)
-                # backtrack
-                curr.pop()
-        
-        output = []
-        n = len(nums)
-        for k in range(n + 1):
-            backtrack()
-        return output
-
-# V0'
-# brack tracking
-class Solution(object):
-    def subsets(self, nums):
-        def help(start, tmp, res):
-            tmp.sort()
-            if tmp not in res:
-                res.append(tmp)
-            for i in range(start, len(nums)):
-                if nums[i] not in tmp:
-                    help(start+1, tmp + [nums[i]], res)
-        res = []
-        start = 0
-        tmp = []
-        if len(nums) == 1:
-            res = [[]]
-            res.append(nums)
-            return res
-        help(start, tmp, res)
-        return res
-
-# V0''
-# IDEA : DFS 
-class Solution(object):
-    def subsets(self, nums):
-        def dfs(layer, start, tmp):
-            if tmp not in res:
-                res.append(tmp)
-            if layer == len(nums):
-                return
-            ### NOTE : we have if condition first, then for loop
-            for i in range(start, len(nums)):
-                ### NOTE below can make loop start `start idx` updated each time
-                dfs(layer+1, i+1, tmp + [nums[i]])
-        nums.sort()
-        res = []
-        dfs(0, 0, [])
-        return res
-```
-
-**Visual trace (recursion tree)** — `nums = [1, 2, 3]` → `2^3 = 8` subsets
-
-> Node = a call `backtrack(start, path)`. Unlike combination/permutation problems, subsets
-> **record the `path` at EVERY node** (pre-order), not only at leaves. `start` only ever
-> moves forward (`i + 1`), so each element is used at most once and no duplicate subset appears.
-
-```text
-backtrack(start=0, path=[])            record []
-├─ i=0 pick 1 → (start=1, [1])         record [1]
-│  ├─ i=1 pick 2 → (start=2, [1,2])    record [1,2]
-│  │  └─ i=2 pick 3 → (start=3, [1,2,3]) record [1,2,3]
-│  └─ i=2 pick 3 → (start=3, [1,3])    record [1,3]
-├─ i=1 pick 2 → (start=2, [2])         record [2]
-│  └─ i=2 pick 3 → (start=3, [2,3])    record [2,3]
-└─ i=2 pick 3 → (start=3, [3])         record [3]
-
-result = [] [1] [1,2] [1,2,3] [1,3] [2] [2,3] [3]   → 8 subsets
-```
-
-> **Key contrast**: no `end_condition` gate before recording — a subset is valid at every
-> depth. The binary "include / exclude" view (see the Java `helper` below) draws the same
-> `2^n` leaves as a full binary tree of height `n`.
-
-```java
-// java
-// LC 78
-// V0'
-// IDEA : Backtracking
-// https://leetcode.com/problems/subsets/editorial/
-    List<List<Integer>> output = new ArrayList();
-    int n, k;
-
-    public void backtrack(int first, ArrayList<Integer> curr, int[] nums) {
-        // if the combination is done
-        if (curr.size() == k) {
-            output.add(new ArrayList(curr));
-            return;
-        }
-        /** NOTE HERE !!!
-         *
-         *  ++i : i+1 first,  then do op
-         *  i++ : do op first, then i+1
-         *
-         *  -> i++ or ++i is both OK here
-         */
-        for (int i = first; i < n; i++) {
-            // add i into the current combination
-            curr.add(nums[i]);
-            // use next integers to complete the combination
-            backtrack(i + 1, curr, nums);
-            // backtrack
-            curr.remove(curr.size() - 1);
-        }
-    }
-
-    public List<List<Integer>> subsets(int[] nums) {
-        n = nums.length;
-        /** NOTE HERE !!!
-         *
-         *  ++k : k+1 first,  then do op
-         *  k++ : do op first, then k+1
-         *
-         *  -> k++ or ++k is both OK here
-         */
-        for (k = 0; k < n + 1; k++) {
-            backtrack(0, new ArrayList<Integer>(), nums);
-        }
-        return output;
-    }
-
-
-
-// V1
-// IDEA : BACKTRACK
-// https://www.youtube.com/watch?v=REOH22Xwdkk&t=4s
-// https://github.com/neetcode-gh/leetcode/blob/main/java/0078-subsets.java
-    public List<List<Integer>> subsets_1_2(int[] nums) {
-        List<List<Integer>> ans = new ArrayList<>();
-        List<Integer> list = new ArrayList<>();
-        helper(ans, 0, nums, list);
-        return ans;
-    }
-
-    public void helper(
-            List<List<Integer>> ans,
-            int start,
-            int[] nums,
-            List<Integer> list
-    ) {
-        if (start >= nums.length) {
-            ans.add(new ArrayList<>(list));
-        } else {
-
-            // decision tree :  add the element and start the  recursive call
-            list.add(nums[start]);
-            helper(ans, start + 1, nums, list);
-
-            // decision tree :  remove the element and do the backtracking call.
-            list.remove(list.size() - 1);
-            helper(ans, start + 1, nums, list);
-        }
-    }    
-```
-
-```c++
-// c++
-// backtrack
-// (algorithm book (labu) p.303)
-
-// save all subset
-vector<vector<int>> res;
-
-/* main func */
-vector<vector<int>> subsets(vector<int> & nums){
-    // record visited routes
-    vector<int> track;
-    backtrack(nums, 0, track);
-    return res;
-}
-
-/* use backtrack pattern */
-void backtrack(vector<int> & nums, int start, vector<int> & track){
-    // pre-order tranverse
-    res.push_back(track);
-    // start from `start`, avoid duplivated subset
-    for (int i = start; i < nums.size(); i++){
-        // make choice
-        track.push_back(nums[i]);
-        // iteration backtrack
-        backtrack(nums, i+1, track);
-        // undo choice
-        track.pop_back();
-    }
-}
-```
-
-### 2-4') Subsets II — LC 90
-```python
-# LC 90 Subsets II
-# V0
-# IDEA : BACKTRACKING + LC 078 Subsets
-from collections import Counter
-class Solution(object):
-    def subsetsWithDup(self, nums):
-        def help(start, tmp, _cnt):
-            tmp.sort()
-            if tmp not in res:
-                res.append(tmp)
-            if start >= len(nums):
-                return
-            for i in range(start, len(nums)):
-                if _cnt[nums[i]]  > 0:
-                    _cnt[nums[i]] -= 1
-                    help(start+1, tmp + [nums[i]], _cnt)
-                    """
-                    NOTE : here we "undo" the "_cnt[nums[i]] -= 1" op,
-                          -> so next recursive can still have the "capacity" of such element
-                    """
-                    _cnt[nums[i]] += 1
-
-        # edge case
-        if not nums:
-            return []
-
-        # edge case
-        if len(nums) == 1:
-            res = [[]]
-            res.append([nums[0]])
-            return res
-
-        res = [[]]
-        _cnt = Counter(nums)
-        help(0, [], _cnt)
-        print ("res = " + str(res))
-        return res
-
-# V0
-# IDEA : BRUTE FORCE
-class Solution:
-    def subsetsWithDup(self, nums):
-        # small trick (init with a null array)
-        ans=[[]]
-        for i in nums:
-            for l in list(ans):
-                # sorted here, since we want to the "non-duplicated" power set
-                temp=sorted(l+[i])
-                # avoid duplicated
-                if temp not in ans:
-                    ans.append(temp) 
-        return ans
-
-```
-
-### 2-5) Combinations — LC 77
-```python
-# LC 77. Combinations
-# V0
-# BACKTRACK
-class Solution(object):
-    def combine(self, n, k): 
-        def dfs(current, start):
-            if(len(current) == k):
-                """
-                Both of below approach are OK
-                
-                list(current) : transform current reference to list
-                current[:] : shallow copy
-                """
-                result.append(list(current))
-                return
-            
-            for i in range(start, n + 1):
-                current.append(i)
-                dfs(current, i + 1)
-                current.pop()
-            
-        result = []
-        dfs([], 1)
-        return result
-
-# V0'
-# IDEA : BACKTRACK
-class Solution:
-    def combine(self, n, k):
-        res=[]
-        def go(i,ma,ans):
-            if ma==k:
-                res.append(list(ans))
-                return
-            if i>n:
-                return
-            ans.append(i)
-            go(i+1,ma+1,ans)
-            ans.pop()
-            go(i+1,ma,ans)
-        go(1,0,[])
-        return res
-```
-```c++
-// c++
-// backtrack
-// (algorithm book (labu) p.305)
-
-// record all combinations
-vector<vector<int>> res;
-
-/* main func */
-vector<vector<int>> combine(int n, int k){
-    if (k <= 0 || n <= 0) return res;
-    vector<int> track;
-    backtrack(n, k, 1, track);
-    return res;
-}
-
-/* use backtrack pattern */
-void backtrack(int n, int k, int start, vector<int> & track){
-    // not update res till visit leaf node
-    if (k == track.size()){
-        res.push_back(track);
-        return;
-    }
-
-    // increase from i
-    for (int i = start; i <= n; i ++){
-        // do choice
-        track.push_back(i);
-        // backtrack
-        backtrack(n, k, i+1, track);
-        // undo choice
-        track.pop_back();
-    }
-}
-```
-
-### 2-6) Permutations — LC 46 ⭐⭐⭐⭐⭐
-```python
-# LC 46. Permutations
-# V0
-# IDEA : BACKTRACK, 
-# similar idea as LC 77 -> difference : contains VS start
-class Solution(object):
-    def permute(self, nums):
-        def help(cur):
-            if len(cur) == n_len:
-                if cur not in res:
-                    res.append(list(cur))
-                    return
-            if len(cur) > n_len:
-                return
-            for i in nums:
-                #print ("i = " + str(i) + " cur = " + str(cur))
-                if i not in cur:
-                    cur.append(i)
-                    help(cur)
-                    cur.pop(-1)
-        # edge case
-        if not nums:
-            return [[]]
-        n_len = len(nums)
-        res = []
-        help([])
-        #print ("res = " + str(res))
-        return res
-
-# V0' (visited[] variant)
-# IDEA : BACKTRACK with a `visited` array (instead of `contains`)
-class Solution(object):
-    def permute(self, nums):
-        res = []
-        visited = [False] * len(nums)
-
-        def dfs(path):
-            if len(path) == len(nums):
-                res.append(path[:])          # NOTE: copy the path
-                return
-            for i in range(len(nums)):
-                if visited[i]:
-                    continue
-                visited[i] = True            # choose
-                path.append(nums[i])
-                dfs(path)                    # explore
-                path.pop()                   # un-choose
-                visited[i] = False
-
-        dfs([])
-        return res
-```
-
-**Visual trace (recursion tree)** — `nums = [1, 2, 3]` → `3! = 6` permutations
-
-> Node = a call `dfs(path)` carrying a `visited` set. Permutations use **no `start_idx`** —
-> at every level we scan **all** `nums` and only skip elements already in `visited`. A `path`
-> is recorded (`✅`) only at a **leaf**, where `len(path) == len(nums)`.
-
-```text
-dfs([])                       visited={}
-├─ 1 → dfs([1])               visited={1}
-│  ├─ 2 → dfs([1,2])          visited={1,2}
-│  │  └─ 3 → [1,2,3] ✅
-│  └─ 3 → dfs([1,3])          visited={1,3}
-│     └─ 2 → [1,3,2] ✅
-├─ 2 → dfs([2])               visited={2}
-│  ├─ 1 → [2,1] → 3 → [2,1,3] ✅
-│  └─ 3 → [2,3] → 1 → [2,3,1] ✅
-└─ 3 → dfs([3])               visited={3}
-   ├─ 1 → [3,1] → 2 → [3,1,2] ✅
-   └─ 2 → [3,2] → 1 → [3,2,1] ✅
-```
-
-> **Key contrast with subsets**: the branching factor **shrinks** each level (3 → 2 → 1) as
-> `visited` grows, and results appear **only at leaves** — giving `n!` leaves instead of `2^n` nodes.
-
-```java
-// LC 46. Permutations
-    List<List<Integer>> ans = new ArrayList<>();
-
-    // V0
-    // IDEA : BACKTRACK
-    public List<List<Integer>> permute(int[] nums) {
-
-        if (nums.length == 1){
-            List<List<Integer>> _ans = new ArrayList<>();
-            List<Integer> cur = new ArrayList<>();
-            cur.add(nums[0]);
-            _ans.add(cur);
-            return _ans;
-        }
-
-        List<Integer> cur = new ArrayList<>();
-        /** NOTE !!! we don't need to set idx param */
-        helper(nums, cur);
-
-        return this.ans;
-    }
-
-    private void helper(int[] nums, List<Integer> cur){
-
-        if (cur.size() > nums.length){
-            return;
-        }
-
-        if (!this.ans.contains(cur) && cur.size() == nums.length){
-
-            /** NOTE !!! we use below to add current ArrayList instance to ans */
-            this.ans.add(new ArrayList<>(cur));
-        }
-
-        
-        for (int i = 0; i < nums.length; i++){
-            int val = nums[i];
-            // input nums is array with distinct integers
-            /** NOTE !!! ONLY do recursive, backtrack when meet distinct element */
-            if(!cur.contains(val)){
-                cur.add(val);
-                // recursive call
-                helper(nums, cur);
-                // undo last op
-                cur.remove(cur.size()-1); // NOTE !!! remove last element
-            }
-        }
-    }
-```
-
-#### 2-6') Variations — the permutation loop with one extra `if`
-
-Every problem below is the LC 46 skeleton (`for each unused value → pick → recurse → unpick`).
-The only thing that changes is the **guard** added inside the loop:
-
-| LC | Extra guard inside the loop | What it buys |
-|----|-----------------------------|--------------|
-| 46 Permutations | *(none)* | all `n!` orders |
-| 47 Permutations II | `i > 0 and a[i] == a[i-1] and not used[i-1]` | skip duplicate values at the same level |
-| 526 Beautiful Arrangement | `v % pos == 0 or pos % v == 0` | prunes the tree to ~few thousand nodes for n=15 |
-| 996 Number of Squareful Arrays | both of the above + `is_square(path[-1] + a[i])` | dedup **and** adjacency constraint |
-
-**Twist (LC 526)** — recurse over **positions** (`pos = 1..n`) and loop over *values*, so the
-divisibility constraint can be checked the moment a value is placed. Only the **count** is
-needed, so no `path` list is built at all.
-
-```python
-# python
-# LC 526 - Beautiful Arrangement
-# time = O(k) where k = #valid arrangements (far below n! due to pruning), space = O(n)
-# IDEA: LC 46 backtrack driven by POSITION; used[] marks consumed values.
-#       constraint (v % pos == 0 or pos % v == 0) is checked BEFORE recursing -> heavy pruning.
-class Solution:
-    def countArrangement(self, n):
-        used = [False] * (n + 1)
-
-        def backtrack(pos):
-            ### NOTE !!! filled every position -> 1 valid arrangement
-            if pos > n:
-                return 1
-
-            cnt = 0
-            for v in range(1, n + 1):
-                ### NOTE !!! prune BEFORE recursing (this is the whole optimization)
-                if not used[v] and (v % pos == 0 or pos % v == 0):
-                    used[v] = True
-                    cnt += backtrack(pos + 1)
-                    used[v] = False       # undo (backtrack)
-            return cnt
-
-        return backtrack(1)
-```
-
-**Twist (LC 996)** — stacks the LC 47 dedup rule *on top of* an adjacency constraint. Note the
-dedup rule needs the array **sorted** and reads `not used[i-1]` (the equal predecessor is not
-on the current path → we are at the same tree level → skip).
-
-```python
-# python
-# LC 996 - Number of Squareful Arrays
-# time = O(n!) worst case (heavily pruned in practice), space = O(n)
-# IDEA: LC 47 (permutations with duplicates) + a pairwise constraint.
-#       sort -> `i>0 and a[i]==a[i-1] and not used[i-1]` kills same-level duplicates.
-class Solution:
-    def numSquarefulPerms(self, nums):
-        nums.sort()                        # NOTE !!! sort enables the dedup rule
-        n = len(nums)
-        used = [False] * n
-        self.res = 0
-
-        def is_square(x):
-            r = int(x ** 0.5)
-            return any((r + d) * (r + d) == x for d in (-1, 0, 1))
-
-        def backtrack(path):
-            if len(path) == n:
-                self.res += 1
-                return
-
-            for i in range(n):
-                if used[i]:
-                    continue
-                ### NOTE !!! same-level duplicate skip (identical to LC 47 / LC 90)
-                if i > 0 and nums[i] == nums[i-1] and not used[i-1]:
-                    continue
-                ### NOTE !!! adjacency constraint -> prune before recursing
-                if path and not is_square(path[-1] + nums[i]):
-                    continue
-
-                used[i] = True
-                path.append(nums[i])
-                backtrack(path)
-                path.pop()                 # undo (backtrack)
-                used[i] = False
-
-        backtrack([])
-        return self.res
-```
-
-**Twist (LC 784, Letter Case Permutation)** — *not* a permutation at all: the order is fixed and
-we branch **per index**, 2 ways on a letter and 1 way on a digit. It is the LC 78 subsets shape
-(binary choice per position) wearing a "permutation" name.
-
-```python
-# python
-# LC 784 - Letter Case Permutation
-# time = O(2^L * n) where L = #letters, space = O(n) recursion depth
-# IDEA: fixed order, branch per index: letter -> {lower, upper}, digit -> single branch.
-class Solution:
-    def letterCasePermutation(self, s):
-        res = []
-
-        def backtrack(i, path):
-            if i == len(s):
-                res.append("".join(path))
-                return
-
-            ch = s[i]
-            if ch.isalpha():
-                ### NOTE !!! 2 branches on a letter
-                backtrack(i + 1, path + [ch.lower()])
-                backtrack(i + 1, path + [ch.upper()])
-            else:
-                backtrack(i + 1, path + [ch])   # digit -> no choice
-
-        backtrack(0, [])
-        return res
-```
-
-### 2-7) Generate Parentheses — LC 22
-```python
-# python
-# LC 022 Generate Parentheses
-# V0
-# IDEA : bracktrack + Valid Parentheses (LC 020)
-class Solution(object):
-    def generateParenthesis(self, n):
-        # help func for backtracking
-        def help(tmp, res, n):
-            if len(tmp) == n * 2 and check(tmp):
-                res.append(tmp)
-                return
-            if len(tmp) == n * 2:
-                return
-            for l in _list:
-                print ("l = " + str(l))
-                help(tmp + l, res, n)
-
-        """
-        LC 020 Valid Parentheses
-        """
-        def check(s):
-            lookup = {"(":")", "[":"]", "{":"}"}
-            q = []
-            for i in s:
-                if i not in lookup and len(q) == 0:
-                    return False
-                elif i in lookup:
-                    q.append(i)
-                else:
-                    tmp = q.pop()
-                    if lookup[tmp] != i:
-                        return False
-            return True if len(q) == 0 else False
-
-        _list = ['(', ')']
-        if n == 1:
-            return ["()"]
-        res = []
-        help("", res, n)
-        return res
-
-# V0'
-# https://blog.csdn.net/fuxuemingzhu/article/details/79362373
-# IDEA: BACKTRACKING + DFS 
-# NOTE : KEEP DFS WHEN MEAT 2 CONDTIONS:
-#  1) len(path) < n 
-#  2) # of "("  > # of ")" (means it's still possible to form a "paratheses" as expected)
-class Solution(object):
-    def generateParenthesis(self, n):
-        res = []
-        self.dfs(res, n, n, '')
-        return res
-        
-    def dfs(self, res, left, right, path):
-        if left == 0 and right == 0:
-            res.append(path)
-            return
-        if left > 0:
-            self.dfs(res, left - 1, right, path + '(')
-        if left < right:
-            self.dfs(res, left, right - 1, path + ')')
-```
-```c++
-// c++
-// LC 022 Generate Parentheses
-// (algorithm book (labu) p.316)
-
-/* main func */
-vector<string> generateParentheses(int n){
-    if (n == 0) return {};
-    // record all legal collections
-    vector<string> res;
-    // backtrack the routes (in process)
-    string track;
-    // init : available left Parentheses and right Parentheses counts as n
-    backtrack(n, n, track, res);
-    return res;
-}
-
-/* remain left Parentheses count : left ;.. remain right Parentheses : right */
-void backtrack(int left, int right, string& track, vector<string> & res){
-    // if count < 0 : illegal
-    if (left < 0 || right < 0) return;
-    // if remain  left Parentheses count >  right Parentheses count : illegal
-    if (right < left) return;
-    // if all Parentheses are used : legal, we got one OK solution
-    if (left == 0 && right == 0){
-        res.push_back(track);
-        return;
-    }
-
-    // add one more left Parentheses
-    track.push_back('('); // do choice
-    backtrack(left - 1, right, track, res);
-    track.pop_back(); // undo choice
-
-    // add one more right Parentheses
-    track.push_back(')'); // do choice
-    backtrack(left, right - 1, track, res);
-    track.pop_back(); // undo choice
-}
-```
-
-```java
-// java
-// V2
-// IDEA :  Backtracking, Keep Candidate Valid
-// https://leetcode.com/problems/generate-parentheses/editorial/
-public List<String> generateParenthesis_3(int n) {
-    List<String> answer = new ArrayList<>();
-    backtracking(answer, new StringBuilder(), 0, 0, n);
-
-    return answer;
-}
-
-private void backtracking(List<String> answer, StringBuilder curString, int leftCount, int rightCount, int n) {
-    if (curString.length() == 2 * n) {
-        answer.add(curString.toString());
-        return;
-    }
-    if (leftCount < n) {
-        curString.append("(");
-        backtracking(answer, curString, leftCount + 1, rightCount, n);
-        curString.deleteCharAt(curString.length() - 1);
-    }
-    if (leftCount > rightCount) {
-        curString.append(")");
-        backtracking(answer, curString, leftCount, rightCount + 1, n);
-        curString.deleteCharAt(curString.length() - 1);
-    }
-}
-```
-
-### 2-8) Palindrome Partitioning — LC 131
-
-```java
-// java
-// LC 131
-// V0-1
-// IDEA: BACKTRACK + start_idx (fixed by gpt)
-List<List<String>> partitionRes = new ArrayList<>();
-
-public List<List<String>> partition_0_1(String s) {
-    if (s == null || s.isEmpty()) {
-        return new ArrayList<>();
-    }
-
-    backtrack(s, 0, new ArrayList<>());
-    return partitionRes;
-}
-
-private void backtrack(String s, int start, List<String> currentList) {
-/**
- *
- *  •   This is the base case of the recursion.
- *
- *  •   It means: “If we’ve reached the end of the string,
- *       then the current list of substrings (currentList)
- *       forms a valid full partition of s into palindromes.”
- *
- *  •   -> So we add a copy of currentList into
- *         the final result list partitionRes.
- */
-/**
- *  - Why start == s.length()?
- *
- *  •   Because start is the index from which
- *      we’re currently trying to partition.
- *
- *  •   If start == s.length(), it means we’ve
- *       used up all characters in s, and currentList is now a full,
- *       valid partition.
- */
-if (start == s.length()) {
-        partitionRes.add(new ArrayList<>(currentList));
-        return;
-    }
-
-/**
-*  NOTE !!!
-*
-*   1) we loop from `start + 1` to `s.length()`
-*   2) get sub string via s.substring(a, b)
-*   3) check if current sub string is Palindrome
-*       - if yes,
-*          - add sub string to current cache
-*          - recursive call backtrack
-*          - undo cache add
-*/
-for (int end = start + 1; end <= s.length(); end++) {
-        String sub = s.substring(start, end);
-        if (isPalindrome(sub)) {
-            currentList.add(sub);
-            backtrack(s, end, currentList);
-            currentList.remove(currentList.size() - 1); // undo
-        }
-    }
-
-}
-
-// helper func check if a string is `Palindrome`
-public boolean isPalindrome(String x) {
-    int l = 0;
-    int r = x.length() - 1;
-    while (r > l) {
-        if (x.charAt(l) != x.charAt(r)) {
-            return false;
-        }
-        r--;
-        l++;
-    }
-    return true;
-}
-```
-
-```python
-# LC 131 Palindrome Partitioning
-# V0
-# IDEA : BACKTRCK, similar as LC 046 permutations
-class Solution(object):
-    def partition(self, s):
-        def help(s, res, path):
-            if not s:
-                res.append(path)
-                return
-            for i in range(1, len(s)+1):
-                if s[:i] == s[:i][::-1]:
-                    help(s[i:], res, path + [s[:i]])
-        # edge case
-        if not s:
-            return
-        res = []
-        path = []
-        help(s, res, path)
-        return res
-
-# V0'
-# IDEA : BACKTRCK, similar as LC 046 permutations
-class Solution(object):
-    def partition(self, s):
-        res = []
-        self.helper(s, res, [])
-        return res
-        
-    def helper(self, s, res, path):
-        if not s:
-            res.append(path)
-            return
-        # beware of the start and the end index
-        for i in range(1, len(s) + 1): 
-            if self.isPalindrome(s[:i]):
-                """
-                ### backtrcking 
-                if s[:i] is palindrome, then check if there is palindrome in s[i:] as well
-                e.g.  
-                    a a b b a 
-                  => 
-                    if 'aa' (<-) is palindrome, then check a b b a (->)
-                """
-                self.helper(s[i:], res, path + [s[:i]])
-
-    def isPalindrome(self, x):
-        return x == x[::-1]
-```
-
-### 2-9) Restore IP Addresses — LC 93
-```python
-# 093 Restore IP Addresses
-# V0 
-# IDEA : DFS
-class Solution(object):
-    def restoreIpAddresses(self, s):
-        # if not valid input form (ip address length should < 12)
-        if len(s) > 12:
-            return []
-        res = []
-        self.dfs(s, [], res)
-        return res
-        
-    def dfs(self, s, path, res):
-        # if not remaining elments (not s) and path is in "xxx.xxx.xxx.xxx" form
-        if not s and len(path) == 4:
-            res.append('.'.join(path))
-            return
-        for i in [1,2,3]:
-            # avoid "out of index" error
-            if i > len(s):
-                continue
-            number = int(s[:i])
-            # str(number) == s[:i] for checking if digit is not starting from "0"
-            # e.g. 030 is not accepted form, while 30 is OK
-            if str(number) == s[:i] and number <= 255:
-                self.dfs(s[i:], path + [s[:i]], res)
-```
-
-### 2-10) Word Break — LC 139
-```python
-# LC 139 Word Break
-# V0
-# IDEA : BFS
-class Solution:
-    def wordBreak(self, s, wordDict):
-        if not s or not wordDict:
-            return
-        q = collections.deque()
-        q.append(0)
-        visited = [None]*len(s)
-        while q:
-            i = q.popleft()
-            if not visited[i]:
-                for j in range(i+1,len(s)+1):                 
-                    if s[i:j] in wordDict:                    
-                        if j == len(s):
-                            return True  
-                        q.append(j)
-                visited[i]=True
-```
-
-### 2-11) Word Break II — LC 140
-```python
-# LC 140 Word Break II
-# NOTE : there is also dfs, dp approaches
-# V0
-# IDEA : BACKTRCK, LC 078 Subsets
-class Solution(object):
-    def wordBreak(self, s, wordDict):
-        def help(cur):
-            """
-            NOTE this !!! : 
-                -> shallow copy cur[:]
-            """
-            if "".join(cur[:]) == s:
-                res.append(" ".join(cur[:]))
-                return
-            if len("".join(cur[:])) > len(s):
-                return
-            for i in range(len(wordDict)):
-                cur.append(wordDict[i])
-                help(cur)
-                # NOTE this
-                cur.pop()
-
-        # edge case
-        if not wordDict:
-            return []
-        res = []
-        cur = []
-        cnt = 0
-        help(cur)
-        print ("res = " + str(res))
-        return res
-
-# V1
-# IDEA : RECURSION
-# https://leetcode.com/problems/word-break-ii/discuss/1426014/Python-interview-friendly-simple-recursion
-class Solution:
-    def wordBreak(self, s: str, wordDict: List[str]) -> List[str]:
-        def recur(s, path):
-            if not s:
-                out.append(' '.join(path))
-                return
-            for i in range(1,len(s)+1):
-                w,new_s = s[:i], s[i:]
-                if w in wordDict:
-                    recur(new_s, path + [w])
-        wordDict, out = set(wordDict), []
-        recur(s,[])
-        return out
-
-# V1'
-# IDEA : BACKTRCK
-# https://leetcode.com/problems/word-break-ii/discuss/44404/Python-backtracking
-class Solution:
-    def wordBreak(self, s, dic):
-        if not dic:
-            return []
-        n = max(len(d) for d in dic)
-        stack, parents = [0], collections.defaultdict(set)
-        while stack:
-            parent = stack.pop()
-            for child in range(parent+1, parent+n+1):
-                if s[parent:child] in dic:
-                    if child not in parents:
-                        stack.append(child)
-                    parents[child].add(parent)
-        stack, res = [[len(s)]], []
-        while stack:
-            r = stack.pop()
-            if r[0] == 0:
-                r = [s[i:j] for i, j in zip(r[:-1], r[1:])]
-                res.append(' '.join(r))
-            for parent in parents[r[0]]:
-                stack.append([parent]+r)
-        return res
-```
-
-### 2-12) Course Schedule — LC 207
-```java
-// java
-// LC 207
-// V0
-// IDEA : DFS (fix by gpt)
-// NOTE !!! instead of maintain status (0,1,2), below video offers a simpler approach
-//      -> e.g. use a set, recording the current visiting course, if ANY duplicated (already in set) course being met,
-//      -> means "cyclic", so return false directly
-// https://www.youtube.com/watch?v=EgI5nU9etnU
-public boolean canFinish(int numCourses, int[][] prerequisites) {
-    // Initialize adjacency list for storing prerequisites
-    /**
-     *  NOTE !!!
-     *
-     *  init prerequisites map
-     *  {course : [prerequisites_array]}
-     *  below init map with null array as first step
-     */
-    Map<Integer, List<Integer>> preMap = new HashMap<>();
-    for (int i = 0; i < numCourses; i++) {
-        preMap.put(i, new ArrayList<>());
-    }
-
-    // Populate the adjacency list with prerequisites
-    /**
-     *  NOTE !!!
-     *
-     *  update prerequisites map
-     *  {course : [prerequisites_array]}
-     *  so we go through prerequisites,
-     *  then append each course's prerequisites to preMap
-     */
-    for (int[] pair : prerequisites) {
-        int crs = pair[0];
-        int pre = pair[1];
-        preMap.get(crs).add(pre);
-    }
-
-    /** NOTE !!!
-     *
-     *  init below set for checking if there is "cyclic" case
-     */
-    // Set for tracking courses during the current DFS path
-    Set<Integer> visiting = new HashSet<>();
-
-    // Recursive DFS function
-    for (int c = 0; c < numCourses; c++) {
-        if (!dfs(c, preMap, visiting)) {
-            return false;
-        }
-    }
-    return true;
-}
-
-private boolean dfs(int crs, Map<Integer, List<Integer>> preMap, Set<Integer> visiting) {
-    /** NOTE !!!
-     *
-     *  if visiting contains current course,
-     *  means there is a "cyclic",
-     *  (e.g. : needs to take course a, then can take course b, and needs to take course b, then can take course a)
-     *  so return false directly
-     */
-    if (visiting.contains(crs)) {
-        return false;
-    }
-    /**
-     *  NOTE !!!
-     *
-     *  if such course has NO preRequisite,
-     *  return true directly
-     */
-    if (preMap.get(crs).isEmpty()) {
-        return true;
-    }
-
-    /**
-     *  NOTE !!!
-     *
-     *  add current course to set (Set<Integer> visiting)
-     */
-    visiting.add(crs);
-    for (int pre : preMap.get(crs)) {
-        if (!dfs(pre, preMap, visiting)) {
-            return false;
-        }
-    }
-    /**
-     *  NOTE !!!
-     *
-     *  remove current course from set,
-     *  since already finish visiting
-     *
-     *  e.g. undo changes
-     */
-    visiting.remove(crs);
-    preMap.get(crs).clear(); // Clear prerequisites as the course is confirmed to be processed
-    return true;
-}
-```
-
-### 2-13) Path Sum II — LC 113
-
-- Tree DFS that collects **all root-to-leaf paths** whose sum equals `targetSum`.
-- Great example of **why backtrack (`cache.pop()`) is needed for a mutable list, but NOT for the primitive `cur_sum`**.
-    - `cache` (a `list`) is **shared by reference** across recursive calls → must `pop()` to undo before returning to the parent.
-    - `cur_sum` (an `int`) is **immutable / passed by value** → each call gets its own copy, so NO undo needed.
-- See also [1-2-3) NOT do `undo` on primary variable](#1-2-3-not-do-undo-on-primary-variable) and the `When to Use Backtracking` table.
-
-```python
-# python
-# LC 113 Path Sum II
-# V0
-# IDEA: DFS (post order) + backtrack
-class Solution(object):
-    def pathSum(self, root, targetSum):
-        self.res = []
-        if not root:
-            return self.res
-        self.helper(root, targetSum, 0, [])
-        return self.res
-
-    def helper(self, root, targetSum, cur_sum, cache):
-        if not root:
-            return
-
-        # do choice
-        cur_sum += root.val      # `int` -> immutable, gets a fresh copy per call
-        cache.append(root.val)   # `list` -> mutable, SAME copy shared in recursion
-
-        # found a valid root-to-leaf path
-        if not root.left and not root.right and cur_sum == targetSum:
-            self.res.append(cache[:])   # NOTE !!! shallow copy `cache[:]`
-
-        self.helper(root.left, targetSum, cur_sum, cache)
-        self.helper(root.right, targetSum, cur_sum, cache)
-
-        # NOTE !!! Backtrack (undo)
-        #   -> `cache` MUST be restored (mutable, shared by reference)
-        #   -> `cur_sum` does NOT need restore (int is immutable / passed by value)
-        cache.pop()
-```
-
-**Why `cache.pop()` is necessary**
+**Why `cache.pop()` is necessary** — walk a 3-node tree:
 
 Suppose the tree is:
 
@@ -2902,109 +1092,62 @@ return -> pop() => [1]
 visit 3: cache = [1,3]     # Correct
 ```
 
-This is the standard DFS backtracking pattern:
+> **Alternative (no explicit pop):** pass a *new* list each call (`path + [node.val]`) so every branch owns its own copy — then no `pop()` is needed; that is the form [tree_backtrack.md](./tree_backtrack.md) uses. The trade-off is extra copying vs. one shared list with backtrack.
+
+## Summary & Quick Reference
+
+### Decision Table — which backtrack shape? ⭐⭐⭐⭐⭐
+
+| Problem Type      | Use `start_idx`? | Example Problem |
+|-------------------|------------------|-----------------|
+| Subsets           | ✅ Yes           | Leetcode 78     |
+| Combinations      | ✅ Yes           | Leetcode 77     |
+| Combination Sum   | ✅ Yes           | Leetcode 39     |
+| Permutations      | ❌ No            | Leetcode 46     |
+| N-Queens          | ❌ No            | Leetcode 51     |
+| Partitioning      | ✅ Yes           | Leetcode 131    |
+
+#### Sort, dedup, prune — when
+
+| Question | Answer |
+|---|---|
+| Sort the input first? | Yes whenever you must **skip duplicates** (LC 40, 47, 90, 996) or want a `break` prune on a sorted candidate pool (LC 39, 216) |
+| Skip duplicates how? | Same level only: `i > start && a[i] == a[i-1]` (index-based, LC 40/90) or `i > 0 && a[i] == a[i-1] && !used[i-1]` (visited-based, LC 47/996); a `Counter` is the third spelling |
+| `break` or `continue`? | `break` when the pool is **sorted** and overflowing kills the whole tail (LC 39, 216); `continue` when only this one candidate is invalid (LC 698 bucket full) |
+| Prune where? | **Before** recursing — check the constraint at the choice, not at the leaf (LC 526, 996) |
+| When to stop pruning and memoise? | When the same *state* (not the same path) recurs — that is the [DP](./dp.md) boundary |
+
+#### Problems that need `start_idx`
+
+Combinations, subsets and multi-use elements: order does not matter, earlier choices must not
+be revisited.
+
+| Problem | Use of `start_idx` | Why? |
+|--------|------------------|------|
+| `Subsets` (Leetcode 78) | ✅ Yes | To avoid duplicate subsets |
+| `Combination Sum` (Leetcode 39) | ✅ Yes | Reuse allowed, but in order |
+| `Combination Sum II` (Leetcode 40) | ✅ Yes | No reuse, skip duplicates |
+| `Combinations` (Leetcode 77) | ✅ Yes | Choose k out of n, in order |
+| `Palindrome Partitioning` | ✅ Yes | Explore substrings from `start` |
+
+#### Problems that do not use `start_idx`
+
+Permutation-shaped problems: order matters, every ordering is a distinct answer, and earlier
+choices are revisited.
+
+| Problem | Use of `start_idx` | Why Not? |
+|--------|------------------|---------|
+| `Permutations` (Leetcode 46) | ❌ No | All orderings are valid |
+| `Permutations II` (Leetcode 47) | ❌ No | Just skip duplicates smartly |
+| `N-Queens` | ❌ No | One row per recursion depth |
+| `Word Break II` | ❌ No | Choices depend on substring matches |
+
+### Termination Condition Patterns
+
+Three shapes of base case (fragments — pick the one the problem's "done" condition matches):
 
 ```python
-cache.append(...)
-dfs(...)   # left
-dfs(...)   # right
-cache.pop()
-```
-
-| Variable  | Type           | Need undo (backtrack)? | Reason                                              |
-|-----------|----------------|------------------------|----------------------------------------------------|
-| `cache`   | `list` (mutable) | ✅ Yes (`cache.pop()`) | Shared by reference across recursive calls         |
-| `cur_sum` | `int` (immutable) | ❌ No                  | Passed by value; each call gets its own copy       |
-
-> **Alternative (no explicit pop):** pass a *new* list each call (`path + [node.val]`) so every branch owns its own copy — then no `pop()` is needed (see `V1`/`V1'` in the source). The trade-off is extra copying vs. one shared list with backtrack.
-
----
-
-## 3) Constraint-Satisfaction Patterns (Interview Favorites)
-
-### 3-1) N-Queens — LC 51
-Classic backtracking with O(n!) search space, pruned by column/diagonal tracking.
-
-```python
-def solveNQueens(n):
-    result = []
-    cols = set()
-    diag1 = set()   # row - col (top-left to bottom-right)
-    diag2 = set()   # row + col (top-right to bottom-left)
-
-    def backtrack(row, board):
-        if row == n:
-            result.append(["".join(r) for r in board])
-            return
-        for col in range(n):
-            if col in cols or (row - col) in diag1 or (row + col) in diag2:
-                continue
-            cols.add(col); diag1.add(row - col); diag2.add(row + col)
-            board[row][col] = 'Q'
-            backtrack(row + 1, board)
-            board[row][col] = '.'; cols.remove(col)
-            diag1.remove(row - col); diag2.remove(row + col)
-
-    backtrack(0, [['.']*n for _ in range(n)])
-    return result
-```
-
-**Key pruning**: Three O(1) sets replace the O(n) column/diagonal scans. Time: O(n!), Space: O(n).
-
-### 3-2) Sudoku Solver — LC 37
-Backtrack cell by cell; prune using row/col/box sets.
-
-```python
-def solveSudoku(board):
-    rows = [set() for _ in range(9)]
-    cols = [set() for _ in range(9)]
-    boxes = [set() for _ in range(9)]
-
-    empty = []
-    for r in range(9):
-        for c in range(9):
-            if board[r][c] != '.':
-                d = board[r][c]
-                rows[r].add(d); cols[c].add(d); boxes[(r//3)*3+c//3].add(d)
-            else:
-                empty.append((r, c))
-
-    def backtrack(idx):
-        if idx == len(empty): return True
-        r, c = empty[idx]
-        box = (r//3)*3 + c//3
-        for d in '123456789':
-            if d in rows[r] or d in cols[c] or d in boxes[box]: continue
-            board[r][c] = d
-            rows[r].add(d); cols[c].add(d); boxes[box].add(d)
-            if backtrack(idx + 1): return True
-            board[r][c] = '.'; rows[r].remove(d); cols[c].remove(d); boxes[box].remove(d)
-        return False
-
-    backtrack(0)
-```
-
-### 3-3) Constraint Propagation (Early Termination)
-Beyond simple bound-checking, propagate constraints forward before recursing. This is the key insight separating O(n!) brute force from practical backtracking.
-
-```text
-Standard backtracking:   try → recurse → undo
-With propagation:        try → propagate constraints → if valid: recurse → undo
-```
-
-Example: In Sudoku, after placing a digit, immediately eliminate it from peer cells. If any cell has zero candidates, backtrack immediately without reaching deeper levels.
-
-### 3-4) Backtracking Complexity Cheat Sheet
-| Problem | Branching Factor | Depth | Pruning | Worst Case |
-|---------|----------------|-------|---------|------------|
-| Subsets | 2 | n | None | O(2^n) |
-| Permutations | n, n-1, ... | n | Used-set | O(n!) |
-| Combinations | n-k+1 | k | Start index | O(C(n,k)) |
-| N-Queens | n | n | 3 sets | O(n!) → much better in practice |
-| Sudoku | 9 | 81 | Row/col/box | O(9^81) → O(1) per board in practice |
-
-### 3-5) Termination Condition Patterns
-```python
+# python
 if len(current) == target_length:   # fixed-size result (permutations, combinations of size k)
     result.append(current[:])
     return
@@ -3019,7 +1162,21 @@ if index == len(input):             # exhausted input (string partition, IP addr
     return
 ```
 
-### 3-6) Interview Signal → Pattern
+### Branching Factor & Pruning Reference
+
+| Problem | Branching Factor | Depth | Pruning | Worst Case |
+|---------|----------------|-------|---------|------------|
+| Subsets | 2 | n | None | O(2^n) |
+| Permutations | n, n-1, ... | n | Used-set | O(n!) |
+| Combinations | n-k+1 | k | Start index | O(C(n,k)) |
+| N-Queens | n | n | 3 sets | O(n!) → much better in practice |
+| Sudoku | 9 | 81 | Row/col/box | O(9^81) → O(1) per board in practice |
+
+> Worst-case classes are in the [Time Complexity by Problem Type](#time-complexity-by-problem-type)
+> table above; this table is about **what prunes them**.
+
+### Interview Signal → Pattern
+
 | When you hear… | Reach for… |
 |--------|---------|
 | "all possible combinations/permutations" | Standard backtracking + result.append(copy) |
@@ -3029,395 +1186,10 @@ if index == len(input):             # exhausted input (string partition, IP addr
 | "generate valid parentheses" | Track open/close counts as constraints |
 | "too slow? prune harder" | Propagate constraints before recursing |
 
----
-
-## 4) Advanced Templates (Hard-tier interview favorites)
-
-Three templates that do **not** reduce to "pick / skip over an index". Each one carries an
-extra piece of state through the recursion — a **Trie node**, the **previous operand**, or a
-**deletion budget** — and that extra state is the whole trick.
-
-| Template | Extra state carried | Worked example |
-|----------|--------------------|----------------|
-| Trie-pruned grid search | current `TrieNode` | LC 212 Word Search II |
-| Expression building | `prev` operand (for `*` precedence) | LC 282 Expression Add Operators |
-| Deletion-budget backtracking | `(l, r)` chars still removable | LC 301 Remove Invalid Parentheses |
-
-### 4-1) Trie + Grid Backtracking — LC 212 Word Search II
-
-**Key Idea**: LC 79 asks for *one* word — re-running it per word is `O(W · M · N · 4^L)`.
-Instead push **all words into a Trie** and walk the grid **once**, carrying the current Trie
-node alongside `(r, c)`. A cell branch dies the moment the Trie has no child for that letter.
-
-**Three moves that matter**
-1. **Trie node as the "index"** — replaces `idx` into a single word; one DFS covers all words.
-2. **In-place marking** (`board[r][c] = '#'`, restore after) — no `visited` matrix needed.
-3. **Leaf pruning** — after recursing, if a node has no children left, unlink it from its
-   parent. This keeps the Trie shrinking and is what makes the worst case tolerable.
-
-**Dedup twist**: set `node.word = null` right after collecting it, instead of using a `Set`.
-
-```java
-// java
-// LC 212 - Word Search II
-// time = O(M*N*4^(L-1)), space = O(K) where K = total chars in words, L = max word len
-// IDEA: build a Trie of all words, then ONE DFS over the grid carrying the Trie node.
-//       in-place '#' marking for visited + prune dead Trie leaves after backtracking.
-class TrieNode {
-    TrieNode[] next = new TrieNode[26];
-    String word = null;   // non-null ONLY at the end of a word
-}
-
-class Solution {
-    private List<String> res = new ArrayList<>();
-    private char[][] board;
-
-    public List<String> findWords(char[][] board, String[] words) {
-        this.board = board;
-
-        /** NOTE !!! build Trie first -> all words share one traversal */
-        TrieNode root = new TrieNode();
-        for (String w : words) {
-            TrieNode node = root;
-            for (char ch : w.toCharArray()) {
-                int i = ch - 'a';
-                if (node.next[i] == null) node.next[i] = new TrieNode();
-                node = node.next[i];
-            }
-            node.word = w;
-        }
-
-        for (int r = 0; r < board.length; r++)
-            for (int c = 0; c < board[0].length; c++)
-                dfs(r, c, root);
-
-        return res;
-    }
-
-    private void dfs(int r, int c, TrieNode parent) {
-        char ch = board[r][c];
-
-        /** NOTE !!! double exit: already visited ('#') OR Trie has no such branch */
-        if (ch == '#' || parent.next[ch - 'a'] == null) return;
-
-        TrieNode node = parent.next[ch - 'a'];
-        if (node.word != null) {
-            res.add(node.word);
-            node.word = null;   // dedup: collect each word only once (no Set needed)
-        }
-
-        board[r][c] = '#';      // mark (in-place, saves the visited matrix)
-        int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
-        for (int[] d : dirs) {
-            int nr = r + d[0], nc = c + d[1];
-            if (nr >= 0 && nr < board.length && nc >= 0 && nc < board[0].length)
-                dfs(nr, nc, node);
-        }
-        board[r][c] = ch;       // undo (backtrack)
-
-        /** NOTE !!! prune: a fully-consumed leaf can never match again -> unlink it */
-        boolean dead = node.word == null;
-        for (TrieNode t : node.next) if (t != null) { dead = false; break; }
-        if (dead) parent.next[ch - 'a'] = null;
-    }
-}
-```
-
-```python
-# python
-# LC 212 - Word Search II
-# time = O(M*N*4^(L-1)), space = O(K) where K = total chars in words, L = max word len
-# IDEA: Trie of all words + ONE grid DFS carrying the Trie node.
-#       in-place '#' marking + drop dead Trie leaves after backtracking.
-class TrieNode:
-    def __init__(self):
-        self.children = {}
-        self.word = None      # non-None ONLY at the end of a word
-
-class Solution:
-    def findWords(self, board, words):
-        root = TrieNode()
-        for w in words:
-            node = root
-            for ch in w:
-                node = node.children.setdefault(ch, TrieNode())
-            node.word = w
-
-        rows, cols = len(board), len(board[0])
-        res = []
-
-        def dfs(r, c, parent):
-            ch = board[r][c]
-
-            ### NOTE !!! Trie decides whether this branch is alive
-            node = parent.children.get(ch)
-            if not node:
-                return
-
-            if node.word:
-                res.append(node.word)
-                node.word = None          # dedup without a set
-
-            board[r][c] = '#'             # mark visited (in-place)
-            for nr, nc in ((r+1, c), (r-1, c), (r, c+1), (r, c-1)):
-                if 0 <= nr < rows and 0 <= nc < cols and board[nr][nc] != '#':
-                    dfs(nr, nc, node)
-            board[r][c] = ch              # undo (backtrack)
-
-            ### NOTE !!! prune dead leaf -> Trie shrinks as words are found
-            if not node.children:
-                parent.children.pop(ch)
-
-        for r in range(rows):
-            for c in range(cols):
-                dfs(r, c, root)
-        return res
-```
-
-> **Contrast with LC 79**: LC 79 returns `True` up the stack the instant it matches (early
-> exit). LC 212 must keep exploring after a hit, because a longer word may extend the same path.
-
-### 4-2) Expression Building (operator insertion) — LC 282 Expression Add Operators
-
-**Key Idea**: at every gap between digits, branch on `+ | - | *` (and on how many digits the
-current operand eats). The only hard part is `*` **precedence**: you cannot just multiply into
-the running total, because `2 + 3 * 2` must be `8`, not `10`.
-
-**The `prev` trick** — carry the *last operand as it was applied*:
-
-```text
-choose '+' v :   cur = cur + v            prev = +v
-choose '-' v :   cur = cur - v            prev = -v
-choose '*' v :   cur = cur - prev + prev*v   prev = prev*v
-                       ^^^^^^^^^ undo the last operand, re-apply it multiplied
-```
-
-**Two guards you must not forget**
-- **Leading zero**: `if j > idx and num[idx] == '0': break` → `"05"` is never a valid operand.
-- **Overflow**: use `long` in Java — intermediate products blow past `int`.
-
-```java
-// java
-// LC 282 - Expression Add Operators
-// time = O(4^N * N), space = O(N) recursion depth (+ output)
-// IDEA: at each split point try every operand length, then branch on + - * .
-//       carry `prev` (last applied operand) so '*' can UNDO it and re-apply multiplied.
-class Solution {
-    private List<String> res = new ArrayList<>();
-    private String num;
-    private long target;
-
-    public List<String> addOperators(String num, int target) {
-        this.num = num;
-        this.target = target;
-        if (num == null || num.isEmpty()) return res;
-        dfs(0, new StringBuilder(), 0L, 0L);
-        return res;
-    }
-
-    // cur  = value of the expression built so far
-    // prev = last operand AS APPLIED (already signed / already multiplied)
-    private void dfs(int idx, StringBuilder expr, long cur, long prev) {
-        if (idx == num.length()) {
-            if (cur == target) res.add(expr.toString());
-            return;
-        }
-
-        for (int j = idx; j < num.length(); j++) {
-
-            /** NOTE !!! no leading zero -> "0" ok, "05" not */
-            if (j > idx && num.charAt(idx) == '0') break;
-
-            String s = num.substring(idx, j + 1);
-            long v = Long.parseLong(s);   // NOTE !!! long, int overflows
-            int len = expr.length();      // remember length -> cheap backtrack
-
-            if (idx == 0) {
-                // first operand: no operator in front of it
-                dfs(j + 1, expr.append(s), v, v);
-                expr.setLength(len);
-            } else {
-                dfs(j + 1, expr.append('+').append(s), cur + v, v);
-                expr.setLength(len);
-
-                dfs(j + 1, expr.append('-').append(s), cur - v, -v);
-                expr.setLength(len);
-
-                /** NOTE !!! '*' : remove prev from cur, then add prev*v back */
-                dfs(j + 1, expr.append('*').append(s), cur - prev + prev * v, prev * v);
-                expr.setLength(len);
-            }
-        }
-    }
-}
-```
-
-```python
-# python
-# LC 282 - Expression Add Operators
-# time = O(4^N * N), space = O(N) recursion depth (+ output)
-# IDEA: try every operand length at each split, branch on + - * .
-#       carry `prev` (last applied operand) so '*' can UNDO it and re-apply multiplied.
-class Solution:
-    def addOperators(self, num, target):
-        res = []
-        n = len(num)
-
-        # cur  : value of expression so far
-        # prev : last operand AS APPLIED (already signed / already multiplied)
-        def dfs(idx, expr, cur, prev):
-            if idx == n:
-                if cur == target:
-                    res.append(expr)
-                return
-
-            for j in range(idx, n):
-
-                ### NOTE !!! no leading zero -> "0" ok, "05" not
-                if j > idx and num[idx] == '0':
-                    break
-
-                s = num[idx:j+1]
-                v = int(s)
-
-                if idx == 0:
-                    dfs(j + 1, s, v, v)                 # first operand: no operator
-                else:
-                    dfs(j + 1, expr + '+' + s, cur + v, v)
-                    dfs(j + 1, expr + '-' + s, cur - v, -v)
-                    ### NOTE !!! '*' : undo prev, re-apply as prev*v
-                    dfs(j + 1, expr + '*' + s, cur - prev + prev * v, prev * v)
-
-        if num:
-            dfs(0, "", 0, 0)
-        return res
-```
-
-> **Same shape, different problem**: LC 679 (24 Game) is the other "build an expression"
-> backtrack — there you pick **two operands out of the list**, apply an op, recurse on the
-> shrunken list (and use a float epsilon compare instead of `==`).
-
-### 4-3) Deletion-Budget Backtracking — LC 301 Remove Invalid Parentheses
-
-**Key Idea**: "remove the **minimum** number of chars" → don't search all removals. First
-**count** exactly how many `(` and `)` are surplus in one pass, then backtrack with that count
-as a **budget**. Any string reaching the end with `budget == 0` is automatically minimal.
-
-**Counting the surplus** (one pass):
-```text
-'('  -> l++
-')'  -> if l > 0: l--   (matched)   else: r++   (unmatched close)
-end  -> l = surplus '(' , r = surplus ')'
-```
-
-**Per char, exactly two branches**: *delete it* (only if its budget is > 0) or *keep it*
-(keep `)` only while `open > 0`, else the prefix is already invalid → prune).
-
-```java
-// java
-// LC 301 - Remove Invalid Parentheses
-// time = O(2^N), space = O(N) recursion depth (+ output)
-// IDEA: 1st pass counts surplus '(' = l and ')' = r  ->  that is the DELETION BUDGET.
-//       then per char: branch "delete" (budget--) vs "keep"; a full string with
-//       l == r == open == 0 is guaranteed minimal. HashSet dedups equal results.
-class Solution {
-    private Set<String> res = new HashSet<>();
-    private String s;
-
-    public List<String> removeInvalidParentheses(String s) {
-        this.s = s;
-
-        /** NOTE !!! count surplus brackets FIRST -> that fixes the removal count */
-        int l = 0, r = 0;
-        for (char ch : s.toCharArray()) {
-            if (ch == '(') l++;
-            else if (ch == ')') {
-                if (l > 0) l--;   // matched
-                else r++;         // unmatched ')'
-            }
-        }
-
-        dfs(0, l, r, 0, new StringBuilder());
-        return new ArrayList<>(res);
-    }
-
-    // l, r  = '(' and ')' still allowed to be DELETED
-    // open  = unmatched '(' currently kept in path
-    private void dfs(int i, int l, int r, int open, StringBuilder path) {
-        if (i == s.length()) {
-            if (l == 0 && r == 0 && open == 0) res.add(path.toString());
-            return;
-        }
-
-        char ch = s.charAt(i);
-
-        // ---- branch 1 : DELETE current char (only if budget remains) ----
-        if (ch == '(' && l > 0) dfs(i + 1, l - 1, r, open, path);
-        else if (ch == ')' && r > 0) dfs(i + 1, l, r - 1, open, path);
-
-        // ---- branch 2 : KEEP current char ----
-        int len = path.length();
-        path.append(ch);
-        if (ch != '(' && ch != ')') dfs(i + 1, l, r, open, path);
-        else if (ch == '(') dfs(i + 1, l, r, open + 1, path);
-        /** NOTE !!! keep ')' ONLY when it can be matched -> prunes invalid prefixes */
-        else if (open > 0) dfs(i + 1, l, r, open - 1, path);
-        path.setLength(len);   // undo (backtrack)
-    }
-}
-```
-
-```python
-# python
-# LC 301 - Remove Invalid Parentheses
-# time = O(2^N), space = O(N) recursion depth (+ output)
-# IDEA: count surplus '(' = l and ')' = r first -> DELETION BUDGET.
-#       per char branch "delete" (budget--) vs "keep"; end state l==r==open==0 is minimal.
-class Solution:
-    def removeInvalidParentheses(self, s):
-
-        ### NOTE !!! step 1 : how many brackets MUST be removed
-        l = r = 0
-        for ch in s:
-            if ch == '(':
-                l += 1
-            elif ch == ')':
-                if l > 0:
-                    l -= 1      # matched
-                else:
-                    r += 1      # unmatched ')'
-
-        res = set()             # set -> dedup identical strings
-
-        # l, r : '(' and ')' still allowed to be DELETED
-        # open : unmatched '(' currently kept in path
-        def dfs(i, l, r, open_cnt, path):
-            if i == len(s):
-                if l == 0 and r == 0 and open_cnt == 0:
-                    res.add(path)
-                return
-
-            ch = s[i]
-
-            # ---- branch 1 : DELETE current char (only if budget remains) ----
-            if ch == '(' and l > 0:
-                dfs(i + 1, l - 1, r, open_cnt, path)
-            elif ch == ')' and r > 0:
-                dfs(i + 1, l, r - 1, open_cnt, path)
-
-            # ---- branch 2 : KEEP current char ----
-            if ch not in '()':
-                dfs(i + 1, l, r, open_cnt, path + ch)
-            elif ch == '(':
-                dfs(i + 1, l, r, open_cnt + 1, path + ch)
-            ### NOTE !!! keep ')' ONLY when matchable -> prunes invalid prefixes early
-            elif open_cnt > 0:
-                dfs(i + 1, l, r, open_cnt - 1, path + ch)
-
-        dfs(0, l, r, 0, "")
-        return list(res)
-```
-
-> **Set-free variant**: instead of a `HashSet`, when you delete a char skip **all identical
-> consecutive chars** at once (`while i+1 < n and s[i+1] == s[i]: i++`) — the same
-> `i > start && a[i] == a[i-1]` dedup idea used in LC 40 / LC 90, applied to deletions.
+### Related Topics
+
+- [backtrack_examples.md](./backtrack_examples.md) — worked LC solutions for every template here
+- [backtrack_advanced.md](./backtrack_advanced.md) — Trie-pruned grid search (LC 212), expression building (LC 282), deletion budgets (LC 301), memoised / generic partitioning
+- [tree_backtrack.md](./tree_backtrack.md) — root→leaf path backtracking on an explicit tree
+- [dfs.md](./dfs.md) — DFS traversal without the undo step
+- [dp.md](./dp.md) / [knapsack.md](./knapsack.md) — the memoised end of the same search
