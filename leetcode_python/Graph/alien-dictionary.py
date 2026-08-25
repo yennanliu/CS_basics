@@ -40,9 +40,72 @@ words[i] consists of only lowercase English letters.
 """
 
 # V0
+# IDEA: TOPOLOGICAL SORT (gpt)
+from collections import deque
+
 class Solution(object):
     def alienOrder(self, words):
-        pass
+        # {char: [next_char_1, next_char_2, ...]}
+        graph = {c: [] for word in words for c in word}
+
+        # indegree[char] = number of prerequisites
+        in_degree = {c: 0 for c in graph}
+
+        # Build graph from adjacent words
+        for i in range(1, len(words)):
+            prev_w = words[i - 1]
+            cur_w = words[i]
+
+            # Find the first different character
+            found_diff = False
+
+            for j in range(min(len(prev_w), len(cur_w))):
+                prev = prev_w[j]
+                cur = cur_w[j]
+
+                if prev != cur:
+                    # prev must come before cur
+                    #
+                    # prev -> cur
+                    if cur not in graph[prev]:
+                        graph[prev].append(cur)
+                        in_degree[cur] += 1
+
+                    found_diff = True
+                    break
+
+            # Invalid case:
+            # ["abc", "ab"]
+            #
+            # Longer word comes before its prefix.
+            if not found_diff and len(prev_w) > len(cur_w):
+                return ""
+
+        # BFS Topological Sort
+        q = deque()
+
+        for char in graph:
+            if in_degree[char] == 0:
+                q.append(char)
+
+        res = []
+
+        while q:
+            node = q.popleft()
+            res.append(node)
+
+            for next_char in graph[node]:
+                in_degree[next_char] -= 1
+
+                if in_degree[next_char] == 0:
+                    q.append(next_char)
+
+        # If not all characters are processed,
+        # there is a cycle.
+        if len(res) != len(graph):
+            return ""
+
+        return "".join(res)
 
 
 # V0-1
@@ -62,6 +125,7 @@ class Solution(object):
         # 1. Initialize graph and in_degree
         # -----------------------------------
 
+        # NOTE !!! we init `graph`, and `in_degree` as dict
         graph = {ch: [] for word in words for ch in word}
         in_degree = {ch: 0 for ch in graph}
 
