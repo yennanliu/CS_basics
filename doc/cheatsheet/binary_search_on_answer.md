@@ -40,14 +40,14 @@ Instead of searching for a value IN an array, we binary search on a **range of p
 
 ## Problem Categories
 
-**Pattern 1: Minimize Maximum** ⭐⭐⭐
+**Pattern 1: Minimize Maximum**
 - Goal: Find smallest X where some maximum value ≤ X
 - Update: `if valid: right = mid` (try smaller)
 - Examples: LC 410, 1011, 1482, **2616**
 - Key: Sort first (if applicable) + greedy validation
 - **Why BS works**: Monotonic property — larger X is always easier to satisfy
 
-**Pattern 2: Maximize Minimum** ⭐⭐⭐
+**Pattern 2: Maximize Minimum**
 - Goal: Find largest X where some minimum value ≥ X
 - Update: `if valid: left = mid + 1` (try larger), use `mid = (l + r + 1) / 2`
 - Examples: **LC 1231** (Divide Chocolate), LC 1552, LC 2064, LC 2226

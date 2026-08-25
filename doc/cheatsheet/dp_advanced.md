@@ -288,39 +288,33 @@ class Solution:
         return ans
 ```
 
-#### Re-rooting DP Template (General)
+#### Re-rooting DP — When and How
 
-```java
-/**
- * RE-ROOTING DP TEMPLATE
- *
- * Use when: "compute some aggregate for EVERY node as root" on a tree
- *
- * Pattern:
- *   1. Post-order DFS: compute answer for one fixed root (node 0)
- *   2. Pre-order DFS: re-root from parent → child using a transition formula
- *
- * The transition formula depends on the problem:
- *   LC 834: ans[v] = ans[u] - count[v] + (n - count[v])
- *   General: ans[child] = f(ans[parent], subtree_info[child], n)
- *
- * Time:  O(N)
- * Space: O(N)
- *
- * SIMILAR PROBLEMS:
- * | Problem                                  | LC #  | Re-rooting Formula / Key Idea                    |
- * |------------------------------------------|-------|--------------------------------------------------|
- * | Sum of Distances in Tree                 | 834   | ans[v] = ans[u] - count[v] + (n - count[v])     |
- * | Count Number of Possible Root Nodes      | 2581  | Track "good" edges, adjust count when re-rooting |
- * | Minimum Edge Weight Equilibrium Queries   | 2846  | Re-root with edge frequency tracking             |
- * | Sum of Prefix Scores of Strings (on Trie)| 2416  | Similar two-pass idea on trie structure           |
- *
- * WHEN TO SUSPECT RE-ROOTING:
- * - "For every node, compute ..." on a tree
- * - Naive per-node DFS/BFS gives O(N²) → need O(N)
- * - Answer for child can be derived from parent's answer
- */
+**Use when**: the problem asks for "some aggregate for **every** node as root" on a tree, and a naive per-node DFS/BFS would be O(N²).
+
+**The two passes**:
+
+1. **Post-order DFS** — compute the answer for one fixed root (node `0`), collecting each subtree's size and contribution on the way up.
+2. **Pre-order DFS** — re-root from parent to child, deriving the child's answer from the parent's with a transition formula.
+
+```text
+ans[child] = f(ans[parent], subtree_info[child], n)
+
+LC 834:  ans[v] = ans[u] - count[v] + (n - count[v])
+         moving the root across edge u->v pulls count[v] nodes one step
+         closer and pushes the other (n - count[v]) one step further
 ```
+
+`O(N)` time, `O(N)` space — two linear passes replace N separate traversals.
+
+| Problem | LC # | Re-rooting formula / key idea |
+|---------|------|-------------------------------|
+| Sum of Distances in Tree | 834 | `ans[v] = ans[u] - count[v] + (n - count[v])` |
+| Count Number of Possible Root Nodes | 2581 | track "good" edges, adjust the count when re-rooting |
+| Minimum Edge Weight Equilibrium Queries | 2846 | re-root with edge-frequency tracking |
+| Sum of Prefix Scores of Strings | 2416 | the same two-pass idea, on a trie |
+
+**When to suspect re-rooting**: the question says "for every node, compute …" on a tree; the naive per-node traversal is O(N²); and the answer for a child is derivable from its parent's.
 
 ## Interval DP Deep Dives
 
@@ -1167,7 +1161,7 @@ def grid_dp_optimized(grid):
    - States: `hold`, `cash`
    - Example: LC 122 (unlimited transactions)
 
-2. **3-State Machine** (Buy/Sell with cooldown) ⭐
+2. **3-State Machine** (Buy/Sell with cooldown)
    - States: `hold`, `sold`, `rest`
    - Example: LC 309 (cooldown after sell)
    - Key: `rest` state prevents immediate buy after sell

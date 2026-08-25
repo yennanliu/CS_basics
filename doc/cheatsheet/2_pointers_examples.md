@@ -2358,7 +2358,7 @@ pointing at the "currently active" interval. At every step we ask **two** questi
    -> intersection is `[max(s1, s2), min(e1, e2)]`, valid iff `max(start) <= min(end)`
 
 2. **Which pointer moves?**
-   -> **ALWAYS advance the interval that ENDS FIRST** ⭐ (the critical trick)
+   -> **ALWAYS advance the interval that ENDS FIRST** (the critical trick)
 
 **Why "ends first" is correct**: the interval with the smaller end can never reach any
 *later* interval in the other list (those all start after the current one, since the
