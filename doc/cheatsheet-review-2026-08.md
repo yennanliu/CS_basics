@@ -4,6 +4,8 @@ A structural review of all 74 markdown files in [`doc/cheatsheet/`](cheatsheet/)
 
 This document exists so the same drift can be recognised early next time. The rules distilled from it now live in [`CLAUDE.md`](../CLAUDE.md#cheatsheet-style-guide) and [`doc/cheatsheet/00_template.md`](cheatsheet/00_template.md).
 
+> **Follow-up** — the two items left under [Not done](#not-done), plus the file-size problem this review never addressed, are planned in [`cheatsheet-split-plan-2026-08.md`](cheatsheet-split-plan-2026-08.md).
+
 ---
 
 ## Verdict
