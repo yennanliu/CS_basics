@@ -87,6 +87,7 @@
     "monotonic_queue":                  { "category": "Hashing, Stacks & Queues", "tier": 3 },
 
     "linked_list":                      { "category": "Linked Lists", "tier": 5 },
+    "linked_list_examples":             { "category": "Linked Lists", "tier": 4, "title": "Linked List — Worked Examples" },
     "2_pointers_linkedlist":            { "category": "Linked Lists", "tier": 4, "title": "Two Pointers — Linked List" },
 
     "binary_tree":                      { "category": "Trees & Heaps", "tier": 5 },
