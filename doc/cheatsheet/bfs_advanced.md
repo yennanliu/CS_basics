@@ -154,7 +154,7 @@ Calculate shortest distance from each cell to ANY source cell in a grid.
    ```
 
 3. **Why First Visit = Shortest Distance:**
-   ```
+   ```text
    BFS expands in layers (level-by-level):
    Layer 0: All sources (distance = 0)
    Layer 1: All cells 1 step away (distance = 1)

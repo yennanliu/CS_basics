@@ -1,6 +1,6 @@
 # QuickSelect (Kth Element by Partition)
 
-> **Scope** — Partition-based selection: finding the Kth largest, Kth smallest or K closest element in O(n) average time by recursing into only one side of a QuickSort partition, including pivot strategies and the O(n) worst-case Median of Medians.
+> **Scope** — Partition-based selection: finding the Kth largest, Kth smallest or K closest element in O(n) average time by recursing into only one side of a QuickSort partition, including pivot strategies and an outline of the O(n) worst-case Median of Medians.
 > **See also**: [2_pointers.md](./2_pointers.md) — the two-pointer sheet this was split out of, since a partition scan looks like two pointers but is a selection algorithm; [sort.md](./sort.md) — QuickSort itself, and where sorting beats selecting; [heap.md](./heap.md) — the size-K heap alternative, O(n log k) but streaming-friendly; [advanced_divide_and_conquer.md](./advanced_divide_and_conquer.md) — quickselect as a divide-and-conquer recurrence.
 
 ## LeetCode Problem Lists
@@ -395,13 +395,21 @@ def partition_lomuto(nums, left, right):
 
 ---
 
-### Advanced: Median of Medians (O(n) Worst-Case)
+### Advanced: Median of Medians (O(n) Worst-Case) — Outline Only
+
+> ⚠️ **This is a sketch, not a runnable solution.** The pivot-selection half is spelled out;
+> `partition`, the driver loop and the `median_of_medians_list` recursion are left as `pass`.
+> Do not copy it expecting it to run — it always returns `None`. It is here to show *where*
+> the O(n) guarantee comes from, which is the only part an interviewer asks about.
 
 ```python
 def findKthLargest_median_of_medians(nums, k):
     """
-    Guaranteed O(n) worst-case using Median of Medians pivot selection.
-    More complex but theoretically optimal.
+    OUTLINE of the guaranteed O(n) worst-case pivot strategy — incomplete.
+
+    The idea: pick the pivot as the median of the group-of-5 medians. That pivot
+    is guaranteed to discard at least 30% of the array each round, which turns
+    the O(n^2) worst case into O(n).
 
     Time: O(n) worst-case
     Space: O(log n) recursion
@@ -419,16 +427,17 @@ def findKthLargest_median_of_medians(nums, k):
             medians.append(median)
 
         # Recursively find median of medians
+        # NOTE: median_of_medians_list is NOT defined here — it would recurse
+        # on `medians` the same way this function recurses on `nums`.
         return median_of_medians_list(medians)
 
     def partition(left, right, pivot_value):
-        # Partition around pivot_value
-        # ... implementation ...
-        pass
+        # Partition around pivot_value — same three-way scan as Template 1 above
+        pass                      # left as an exercise
 
-    # Main quickselect with median of medians pivot
-    # ... implementation ...
-    pass
+    # Main quickselect loop, using median_of_medians() for the pivot instead of
+    # a random index — otherwise identical to Template 1.
+    pass                          # left as an exercise
 ```
 
 **Note:** Median of Medians is rarely implemented in interviews due to complexity. Randomized QuickSelect is preferred in practice.
