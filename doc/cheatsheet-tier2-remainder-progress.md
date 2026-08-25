@@ -8,26 +8,26 @@ Working log for the ten Tier 2 sheets that [`cheatsheet-split-plan-2026-08.md`](
 
 ## Why this branch exists
 
-Tier 2 was scoped at sixteen sheets. [PR #116](https://github.com/yennanliu/CS_basics/pull/116) delivered **six** — `bst`, `string`, `stack`, `backtrack`, `sliding_window`, `graph` — and batches 2 and 3 were never launched. Ten sheets remain, and they are not the leftovers: four of them are larger than anything in Tier 3, and two hold the worst duplication measured anywhere in the corpus.
+Tier 2 was scoped at sixteen sheets. [PR #116](https://github.com/yennanliu/CS_basics/pull/116) delivered **six** — `bst`, `string`, `stack`, `backtrack`, `sliding_window`, `graph` — and batches 2 and 3 were never launched. Ten sheets remain, and they are not the leftovers: **every one of them is larger than every sheet in Tier 3** — the smallest, `matrix` at 2,034, clears Tier 3's largest, `union_find` at 1,882 — and two hold the worst duplication measured anywhere in the corpus.
 
 Measured on `c46a1dece` (the PR #116 merge):
 
 | file | lines | example-tail | share | dec | dup LC | `V0/V1` | skeleton |
 |---|---:|---:|---:|---:|---:|---:|:--|
 | `python_trick` | 3,672 | 0 | 0% | 0 | 0 | 5 | *neither* |
-| `java_trick` | 3,419 | 0 | 0% | 1 | 0 | 6 | B |
-| `linked_list` | 2,868 | 1,419 | 49% | **0** | 0 | 21 | A |
+| `java_trick` | 3,418 | 0 | 0% | 1 | 0 | 6 | B |
+| `linked_list` | 2,867 | 1,419 | 49% | **0** | 0 | 21 | A |
 | `design` | 2,647 | 1,308 | 49% | **0** | 0 | 21 | A |
 | `array` | 2,474 | 689 | 27% | **0** | 1 | 28 | A |
 | `topology_sorting` | 2,454 | 1,266 | 51% | 2 | 0 | 20 | **MIXED** |
-| `tree2` | 2,426 | 47 | 1% | 2 | 3 | 0 | B |
+| `tree2` | 2,425 | 47 | 1% | 2 | 3 | 0 | B |
 | `Dijkstra` | 2,359 | 1,338 | 56% | 3 | **8** | 4 | B |
-| `prefix_sum` | 2,317 | 812 | 35% | 2 | **14** | 9 | **MIXED** |
-| `matrix` | 2,035 | 1,185 | 58% | 1 | 2 | 10 | B |
+| `prefix_sum` | 2,316 | 812 | 35% | 2 | **14** | 9 | **MIXED** |
+| `matrix` | 2,034 | 1,185 | 58% | 1 | 2 | 10 | B |
 
-**26,671 lines.** `dec` counts top-level decision-or-summary sections: **0 means the sheet cannot answer "which technique does this problem want"** — true of `linked_list`, `design` and `array`, so those sections get *written*, not merged. `dup LC` counts distinct LC numbers appearing in more than one `###` heading: `prefix_sum` at 14 is the worst in the corpus and `Dijkstra` solves LC 1631 **eight times**.
+**26,666 lines.** `dec` counts top-level decision-or-summary sections: **0 means the sheet cannot answer "which technique does this problem want"** — true of `linked_list`, `design` and `array`, so those sections get *written*, not merged. `dup LC` counts distinct LC numbers appearing in more than one `###` heading: `prefix_sum` at 14 is the worst in the corpus and `Dijkstra` solves LC 1631 **eight times**.
 
-For comparison, Tier 3 — deliberately deferred until this is done — is twelve sheets totalling 18,014 lines, none over 1,900, so per the plan it is a **dedup-only** pass with no satellites. Its hot spots are `binary_indexed_tree` (87% example tail), `bit_manipulation` (74%), `greedy` (71%) and `monotonic_stack` (9 duplicates).
+For comparison, Tier 3 — deliberately deferred until this is done — is twelve sheets totalling 18,012 lines, none over 1,900 (`union_find` 1,882 is the largest), so per the plan it is a **dedup-only** pass with no satellites. Its hot spots are `binary_indexed_tree` (87% example tail), `bit_manipulation` (74%), `greedy` (71%) and `monotonic_stack` (9 duplicates).
 
 ---
 
@@ -80,9 +80,35 @@ Each item is a defect an earlier tier actually hit:
 ## Central pass per batch
 
 1. Register the new sheets in [`data/cheatsheet_meta.json`](../data/cheatsheet_meta.json).
-2. Content-preservation diff — LC coverage per family, plus a code-body provenance check with comments stripped.
-3. Repair inbound anchors the batch broke. Already known: `linked_list.md` has at least four (`#1-1-1-reverse-linked-list-iteration--lc-206`, `#1-1-4-reverse-nodes-in-k-group--linked-list-iteration--lc-25`, `#2-4-reverse-linked-list-ii--lc-92`, `#2-9-reorder-list--lc-143`) and `python_trick.md` two (`#1-32-collectionsdeque-double-ended-queue`, `#1-11-multi-key-tuple-sort-keylambda-x-x0-x1`), all from files the owning agents may not edit.
-4. `SKIP_FONTS=1 bash site/build.sh`.
+2. **Content-preservation diff — three inventories, not one.** LC coverage alone passes a batch that
+   silently drops prose, and these sheets are exactly the ones where the non-LC material *is* the
+   content: `array.md`'s chooser table, `python_trick.md`'s library reference, `java_trick.md`'s two
+   dissolved catch-alls. So compare before/after on all three:
+   - **LC numbers** per family — every number in the source appears in the parent or a named satellite.
+   - **Code bodies**, comments stripped and whitespace normalised — provenance for each block.
+   - **Headings and non-LC blocks** — every `###`+ heading and every non-code block of the source is
+     accounted for as *kept*, *moved to `<file>`*, or *deleted as a duplicate of `<heading>`*. A
+     heading that appears in no column is the bug this catches; "deleted" needs the duplicate named.
+3. Repair inbound anchors the batch broke, and check them against **both** slug rules. Already known:
+   `linked_list.md` has at least four (`#1-1-1-reverse-linked-list-iteration--lc-206`,
+   `#1-1-4-reverse-nodes-in-k-group--linked-list-iteration--lc-25`, `#2-4-reverse-linked-list-ii--lc-92`,
+   `#2-9-reorder-list--lc-143`) and `python_trick.md` two
+   (`#1-32-collectionsdeque-double-ended-queue`, `#1-11-multi-key-tuple-sort-keylambda-x-x0-x1`),
+   all from files the owning agents may not edit.
+
+   The two rules disagree, so a link can only be verified against the one its reader uses:
+   `site/build-lib.js:19` collapses *every* run of non-alphanumerics to a single `-`, so ` — ` → `-`,
+   where GitHub gives `--`. Contract item 1 is the GitHub rule; the site is the divergent one, and
+   fixing it is the one-line change already listed under *Outstanding*. Until that lands, a link like
+   `#2-4-reverse-linked-list-ii--lc-92` resolves on GitHub and 404s on the published page — so the
+   batch's link check must resolve each anchor under GitHub's rule **and** report which anchors the two
+   rules disagree on, rather than rewriting anchors to match whichever renderer was tested last.
+4. **Moved headings keep their inbound links.** When a section leaves the parent for a satellite, the
+   parent keeps a one-line pointer under a heading with the *same text*, so the old anchor still lands
+   somewhere that names the new home. This is what Tier 2's `graph.md` did; it costs a line per moved
+   section and is the only redirect mechanism the site has — there is no alias table, and
+   `build.sh` starts with `rm -rf _site`, so a moved page leaves no orphan behind to catch the link.
+5. `SKIP_FONTS=1 bash site/build.sh`.
 
 ## Outstanding from earlier tiers
 
