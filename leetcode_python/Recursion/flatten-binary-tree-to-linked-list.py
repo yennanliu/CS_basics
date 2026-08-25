@@ -63,6 +63,80 @@ class Solution(object):
 
 # V0-1
 # IDEA: Reverse Preorder DFS (gpt)
+"""
+
+1. 
+
+CORE IDEA:
+
+
+(Reverse Preorder)
+
+right
+  ↓
+left
+  ↓
+root
+  ↓
+connect to prev
+
+
+2.
+
+
+DFS 的 traversal 確實是 reverse preorder：right → left → root。
+
+但最後建立的 linked list 不是 reverse。
+
+關鍵就在於：我們是「反方向 traversal，但用 node.right = prev 把 pointer 往正向接」。
+
+
+->
+
+可以把它想成「倒著蓋鏈結串列」
+
+
+-> example:
+
+
+        正常情況你可能會想：
+
+        1 → 2 → 3 → 4 → 5 → 6
+
+        從左到右建立。
+
+        但這個 algorithm 是：
+
+        從尾巴開始建立。
+
+        第一個建立：
+
+        6
+
+        然後：
+
+        5 → 6
+
+        再：
+
+        4 → 5 → 6
+
+        再：
+
+        3 → 4 → 5 → 6
+
+        再：
+
+        2 → 3 → 4 → 5 → 6
+
+        最後：
+
+        1 → 2 → 3 → 4 → 5 → 6
+
+        所以它根本不需要「reverse back」。
+
+
+"""
 class Solution(object):
     def flatten(self, root):
         """
@@ -164,7 +238,9 @@ class Solution(object):
         # Cache the head of the right side before it gets overwritten
         right_head_cache = root.right
         
-        # 1. Flatten the subtrees and retrieve their absolute tail nodes
+        # 1. Flatten the subtrees and retrieve their `absolute tail nodes`
+        # NOTE !!!
+        #  -> _left, _right are the `tail node` (NOT path)
         _left = self.helper(root.left)
         _right = self.helper(root.right)
         
@@ -229,6 +305,13 @@ class Solution(object):
 
         """
             
+        """
+        NOTE !!!
+
+        below design to make sure the `ordering`
+
+            -> e.g.  right_tail -> left_tail -> root
+        """
         # 3. Return the absolute tail of this newly flattened sequence
         # The priority order for the true tail is: right_tail -> left_tail -> root
         if _right:
