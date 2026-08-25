@@ -60,3 +60,66 @@ class Solution(object):
         first = grid[0]
         flipped = [1 - x for x in first]
         return all(row == first or row == flipped for row in grid)
+
+
+# V0-1
+# IDEA : CONSTRUCTIVE SIMULATION — ACTUALLY PERFORM THE FORCED FLIPS
+#
+#   instead of reasoning about the invariant, just do the flips the greedy
+#   argument forces and look at what is left :
+#
+#     1) flip every column j with grid[0][j] == 1  -> row 0 becomes all zeros
+#     2) flip every row i whose first cell is now 1
+#     3) the grid is clearable iff it is now entirely zeros
+#
+#   step 1 is forced (row 0 has to be cleared somehow, and a row flip on row 0
+#   only swaps which columns need flipping), and once the columns are fixed the
+#   row flips are forced too — so if this greedy plan fails, no plan works.
+#
+#   NOTE : works on a copy, so the caller's grid is not mutated.
+#
+# time = O(m * n), space = O(m * n)
+class Solution(object):
+    def removeOnes(self, grid):
+        m, n = len(grid), len(grid[0])
+        g = [row[:] for row in grid]
+
+        for j in range(n):
+            if g[0][j] == 1:
+                for i in range(m):
+                    g[i][j] ^= 1
+
+        for i in range(m):
+            if g[i][0] == 1:
+                for j in range(n):
+                    g[i][j] ^= 1
+
+        return all(v == 0 for row in g for v in row)
+
+
+# V0-2
+# IDEA : BITMASK — PACK EACH ROW INTO AN INTEGER
+#
+#   a row of n binary cells is just an n-bit integer, and "flip this whole row"
+#   is a single XOR with the all-ones mask.  the condition of V0 then becomes
+#
+#       mask_i == mask_0   or   mask_i == mask_0 ^ full
+#
+#   which is one XOR + one compare per row instead of an element-wise list
+#   comparison, and the whole grid is stored in m machine-word-ish ints.
+#
+# time = O(m * n), space = O(m)  (m packed ints, O(1) machine words if n <= 64)
+class Solution(object):
+    def removeOnes(self, grid):
+        n = len(grid[0])
+        full = (1 << n) - 1
+
+        masks = []
+        for row in grid:
+            v = 0
+            for bit in row:
+                v = (v << 1) | bit
+            masks.append(v)
+
+        base = masks[0]
+        return all(v == base or v == (base ^ full) for v in masks)
