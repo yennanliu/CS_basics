@@ -456,7 +456,7 @@ private int burst(int[] balloons, int left, int right, int[][] dp) {
 - 2D DP table of size `(n+2) × (n+2)`
 - Can be optimized in some cases, but generally requires O(n²)
 
-**Reference**: See `leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/BurstBalloons.java` for multiple implementation variants.
+**Reference**: See `leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/BurstBalloons.java` for multiple implementation variants. The canonical LC 312 template is in [dp.md](./dp.md).
 
 ### Recognition checklist and common mistakes
 
@@ -534,11 +534,11 @@ return dp[0][n - 1];
 
 **Why NOT `length`-based outer loop here?**
 
-The length-based loop (Template 3) also works, but the backward-i + forward-j approach is more intuitive when the transition naturally reads as "expand/shrink boundaries" rather than "try a split point k".
+The length-based loop (the interval DP template in [dp.md](./dp.md)) also works, but the backward-i + forward-j approach is more intuitive when the transition naturally reads as "expand/shrink boundaries" rather than "try a split point k".
 
 | Approach | Outer Loop | Use When |
 |---|---|---|
-| Length-based (Template 3) | `length: 2 → n` | Split-point `k` problems (burst balloons, matrix chain) |
+| Length-based ([dp.md](./dp.md)) | `length: 2 → n` | Split-point `k` problems (burst balloons, matrix chain) |
 | Backward-i + Forward-j (this template) | `i: n-1 → 0` | Boundary expand/shrink problems (palindrome, LCS on same string) |
 
 **Similar LeetCode Problems**:
@@ -551,7 +551,35 @@ The length-based loop (Template 3) also works, but the backward-i + forward-j ap
 
 ---
 
-### Matrix-chain style interval template
+### Generic interval-DP skeletons
+
+The split-point form, with `cost(i, j)` left abstract:
+
+```python
+def interval_dp(arr):
+    """DP for interval/subarray problems"""
+    n = len(arr)
+    # dp[i][j] = optimal value for interval [i, j]
+    dp = [[0] * n for _ in range(n)]
+
+    # Base case: single elements
+    for i in range(n):
+        dp[i][i] = arr[i]
+
+    # Iterate by interval length
+    for length in range(2, n + 1):
+        for i in range(n - length + 1):
+            j = i + length - 1
+            # Try all split points
+            for k in range(i, j):
+                dp[i][j] = max(dp[i][j],
+                              dp[i][k] + dp[k+1][j] + cost(i, j))
+
+    return dp[0][n-1]
+```
+
+
+The matrix-chain specialisation of the same skeleton:
 
 #### **Interval DP Template**:
 ```python
@@ -606,6 +634,8 @@ def minCostClimbingStairs(cost):
 
     return dp[n]  # The top floor is at position n
 ```
+
+#### Coin Change array sizing — LC 322 vs LC 518
 
 
 **Key Insight**: For problems involving a **target value** (amount, sum, etc.), the DP array size must be `target + 1` to accommodate all values from `0` to `target` inclusive.
@@ -881,6 +911,8 @@ LC 322 asks for the *minimum count*, not *how many ways* — so whether you coun
 
 **為什麼叫 0/1？** 每個 item 只有兩種選擇：`0` 不拿、`1` 拿，而且**不能拿第二次**。
 
+#### 0/1 背包速記：DP 定義、方向與變形
+
 ##### 最常見的 DP 定義
 
 `dp[j]` = 容量最多為 `j` 時，可以得到的最大 value。對每個 item `(weight, value)`：
@@ -891,7 +923,7 @@ for each item:
         dp[j] = max(dp[j], dp[j - weight] + value)
 ```
 
-**關鍵是 `j` 要倒著跑**。倒序的原因：你不希望同一個 item 在這一輪被重複使用——倒序時 `dp[j - weight]` 讀到的是 **上一輪（還沒用過這個 item）** 的值；正序時 `dp[j - weight]` 已經被本輪更新過，等於允許同一個 item 被選多次。詳細推導見本節上方的 **💡 Why Must the Inner Loop Go Backward?**（含 `nums = [3], target = 6` 的逐步 trace）。
+**關鍵是 `j` 要倒著跑**。倒序的原因：你不希望同一個 item 在這一輪被重複使用——倒序時 `dp[j - weight]` 讀到的是 **上一輪（還沒用過這個 item）** 的值；正序時 `dp[j - weight]` 已經被本輪更新過，等於允許同一個 item 被選多次。詳細推導見 [dp.md](./dp.md) 的 **💡 Why Must the Inner Loop Go Backward?**（含 `nums = [3], target = 6` 的逐步 trace）。
 
 ##### 跟其他 Knapsack 的區別
 
@@ -928,6 +960,7 @@ def knapsack_01(weights, values, capacity):
                                dp[i-1][w - weights[i-1]] + values[i-1])  # take
     return dp[n][capacity]
 ```
+
 ### What knapsack.md covers
 
 
@@ -1034,7 +1067,7 @@ private int helper(int[][] grid, int m, int n, int[][] dp) {
 
 **Key Insight**: Recurse from `(m-1, n-1)` down to `(0, 0)`. Base cases handle the first row/column (only one direction possible). Cache with `dp[m][n] != -1` guard.
 
-#### **Approach Comparison**
+#### **Approach Comparison** — LC 64
 
 | Approach | Space | Modifies Input | Notes |
 |----------|-------|----------------|-------|
@@ -1093,6 +1126,7 @@ def grid_dp(grid):
 ```
 
 **File Reference**: `leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/MinimumPathSum.java`
+
 ### Python rolling-row template
 
 **Template for 2D DP with Space Optimization**:
@@ -1123,6 +1157,7 @@ def grid_dp_optimized(grid):
 
     return prev[n-1]
 ```
+
 ## State Machine DP — Extended
 
 ### Sub-patterns by transaction constraint
@@ -1173,7 +1208,7 @@ def grid_dp_optimized(grid):
 
 ### Edit Distance — pattern recognition and the three operations
 
-#### 🎯 **Pattern Recognition**
+#### 🎯 **Pattern Recognition** — LC 72
 
 **When to use Edit Distance DP:**
 - ✅ Converting one string to another with insert/delete/replace operations
@@ -1307,9 +1342,11 @@ Explanation:
   - Delete 'e': "ros"
 ```
 
+#### Key insights — the three neighbours
+
 
 1. **Three Operations Visualization**:
-   ```
+   ```text
    dp[i-1][j]      dp[i-1][j-1]
        ↓            ↘
    dp[i][j-1] →   dp[i][j]
@@ -1332,7 +1369,7 @@ Explanation:
    - Characters **match** → no cost, inherit from diagonal
    - This greedy choice at each step leads to global optimum
 
-#### **Pattern Recognition Checklist** ✅
+#### **Pattern Recognition Checklist** ✅ — LC 72
 
 Use this pattern when you see:
 - "Minimum number of operations" + two strings → Edit Distance
@@ -1377,12 +1414,12 @@ Use this pattern when you see:
 - **Java Implementations**: `leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/EditDistance.java`
   - Multiple solution approaches (bottom-up, top-down, space-optimized)
   - Well-commented with detailed DP transition explanations
-- **Related**: See also Template 8 (Longest Common Subsequence) for the comparison-maximization variant
+- **Related**: See the LCS template in [dp.md](./dp.md) for the comparison-maximization variant
 
 ### One Edit Distance — LC 161, the exactly-1-edit variant
 
 
-#### 🎯 **Pattern Recognition**
+#### 🎯 **Pattern Recognition** — LC 161
 
 **This is NOT the same as Edit Distance (LC 72).**
 
@@ -1998,7 +2035,7 @@ private boolean isOneOff(String a, String b) {
 }
 ```
 
-#### **Approach Comparison**
+#### **Approach Comparison** — LC 1048
 
 | | Bottom-up DP (Approach 1) | Top-down DFS (Approach 2) |
 |---|---|---|
@@ -2025,7 +2062,7 @@ private boolean isOneOff(String a, String b) {
 - LC 1048 vs LC 127: 1048 inserts a char (length changes); 127 replaces a char (length fixed) → BFS for shortest path
 - LC 1048 vs LC 128: 1048 allows inserting anywhere; 128 requires consecutive integers
 
-#### **Pattern Recognition Checklist** ✅
+#### **Pattern Recognition Checklist** ✅ — LC 1048
 
 Use this pattern when:
 - ✅ Building chains where each element is exactly one operation away from the next
@@ -2051,7 +2088,7 @@ Use this pattern when:
 
 > **Pattern**: items are *intervals* with a value; picking one forbids every interval that overlaps it. Sorting by **end time** turns "which items are still compatible?" into a **binary search** on a prefix of the DP array.
 
-#### 🎯 Pattern Recognition
+#### 🎯 Pattern Recognition — LC 1235
 
 | Signal | Meaning |
 |--------|---------|
@@ -2062,7 +2099,7 @@ Use this pattern when:
 
 > ⚠️ Classic greedy "pick earliest finishing" only works when every interval is worth the same. With weights you must compare *take* vs *skip*.
 
-#### 💡 Core Idea
+#### 💡 Core Idea — LC 1235
 
 ```text
 sort jobs by endTime
@@ -2180,13 +2217,13 @@ def maxValue(events, k):
 
 > **Pattern**: split an array into exactly `k` **contiguous** blocks and optimise a cost that is `sum / max` over blocks. Distinct from Interval DP (Template 3): here the split points are the decision, and the blocks must cover the array left to right.
 
-#### 🎯 Pattern Recognition
+#### 🎯 Pattern Recognition — LC 1335
 
 - "divide into `d` days / `k` subarrays / `m` segments"
 - Order of elements is fixed (no reordering, no skipping)
 - Cost of a block is computable incrementally while scanning (`max`, prefix sum)
 
-#### 💡 Core Idea
+#### 💡 Core Idea — LC 1335
 
 ```text
 dp[k][i] = best cost to cover jobs[i:] using exactly k blocks
@@ -2300,14 +2337,14 @@ def splitArray(nums, k):
 
 > **Pattern**: position alone is **not** a valid state — what you can do next depends on *how you got here*. Add the last transition to the state: `dp[position][lastMove]`. Whenever a naive `dp[i]` gives wrong answers because "the same cell is reachable in different ways with different futures", this is the fix.
 
-#### 🎯 Pattern Recognition
+#### 🎯 Pattern Recognition — LC 403
 
 | Signal | Extra dimension to add |
 |--------|------------------------|
 | "next jump must be k-1, k or k+1" | last jump size |
 | "cannot use the same direction twice" | last direction |
 | "at most 2 in a row" | run length so far |
-| "cooldown after selling" | last action (see Template 5-2) |
+| "cooldown after selling" | last action (see the state machine template in [dp.md](./dp.md)) |
 
 #### 💡 Core Idea (LC 403 Frog Jump)
 
@@ -2390,7 +2427,7 @@ def canCross(stones):
 
 > **Pattern**: a **small state graph** (10 phone keys, an n×n board, a 1D array) plus a **fixed number of moves**. Answer = "how many ways / with what probability am I at each state after `t` steps". The DP layer is the step count, so you always roll one layer at a time.
 
-#### 💡 Core Idea
+#### 💡 Core Idea — LC 935
 
 ```text
 dp[t][v] = ways (or probability) to be at state v after t steps

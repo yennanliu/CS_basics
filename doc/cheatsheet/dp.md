@@ -3,6 +3,7 @@
 > **Scope** — The main DP sheet — state design, the pattern catalogue, and one canonical template per must-know DP family; the worked-solution archive, the rare techniques, and the five heaviest sub-topics live in their own sheets and are linked from here.
 > **See also** — *split out of this file*: [dp_examples.md](./dp_examples.md) — the worked LC solution archive and the problems-by-pattern index; [dp_advanced.md](./dp_advanced.md) — game theory, tree DP, interval and string deep dives, probability DP; [knapsack.md](./knapsack.md) — 0/1 vs unbounded, subset sum, combinations vs permutations ([knapsack_01_zh.md](./knapsack_01_zh.md) — 0/1 背包的中文詳解版); [dp_string.md](./dp_string.md) — the two-sequence grid family; [dp_bitmask.md](./dp_bitmask.md) — state compression; [dp_digit.md](./dp_digit.md) — counting numbers by digit; [dp_monotonic_stack.md](./dp_monotonic_stack.md) — stack-carried DP values.
 > *Neighbouring sheets*: [dp_pattern.md](./dp_pattern.md) — terse template index, one section per classic pattern; [recursion_to_dp.md](./recursion_to_dp.md) — converting a working recursion into DP step by step; [kadane_algorithm.md](./kadane_algorithm.md) — the maximum-subarray family in depth; [stock_trading.md](./stock_trading.md) — the LC 121/122/188/309/714 state machine.
+
 ## LeetCode Problem Lists
 
 - [Dynamic Programming](https://leetcode.com/problem-list/dynamic-programming/)
@@ -68,6 +69,7 @@ Step 4. get the result
 - **Examples**: LC 337 (House Robber III), LC 968 (Binary Tree Cameras)
 - **Pattern**: State at each node depends on children
 - **📚 Implementation**: Tree DP problems use DFS traversal for implementation. See **dfs.md Template 6 (Bottom-up DFS)** for the DFS traversal patterns used in tree DP solutions
+
 - **Sub-patterns**: bottom-up (post-order) tree DP and re-rooting DP (two-pass DFS) — both in [dp_advanced.md](./dp_advanced.md)
 
 ### **Category 5: State Machine DP**
@@ -142,6 +144,7 @@ def dp_solution(input_data):
 ```
 
 ### Template 1: 1-D Linear DP ⭐⭐⭐⭐⭐ — LC 53
+
 ```python
 def linear_dp(nums):
     """Classic 1D DP for sequence problems"""
@@ -177,11 +180,12 @@ it needs no table at all. [**kadane_algorithm.md**](./kadane_algorithm.md) cover
 LC 53, LC 152 (max product), LC 918 (circular), LC 1191 (repeated array) — including index tracking
 and the divide-and-conquer variant.
 
-### 1D DP: Array Sizing and Loop Bounds (`n` vs `n+1`)
+### Template 1a: 1-D Array Sizing and Loop Bounds (`n` vs `n+1`)
 
 **Key Question**: Why do some 1D DP problems loop from `0 to n`, while others loop from `0 to n+1`?
 
-The difference comes down to **what a single index in your DP array represents**. Here are the three main reasons:
+The difference comes down to **what a single index in your DP array represents**. Two reasons cover almost
+every problem; the third — physical "steps" vs "goals", LC 746 — is in [dp_advanced.md](./dp_advanced.md).
 
 #### **1. "Indices" vs "Count" (The Offset)**
 
@@ -225,7 +229,7 @@ def rob_v2(nums):
     return dp[n]  # Answer at position n
 ```
 
-#### **3. Handling the "Empty" Base Case**
+#### **2. Handling the "Empty" Base Case**
 
 Many DP problems need a base case representing "nothing" (target sum = 0, empty string, etc.).
 
@@ -297,7 +301,7 @@ def climbStairs_v2(n):
 - Step `n` is the goal, so `dp[n]` is the answer
 - Avoids the mental overhead of mapping "step i" to "index i-1"
 
-### Template 2: 2-D Grid DP ⭐⭐⭐⭐⭐ — LC 62 / LC 64
+### Template 2: 2-D Grid DP ⭐⭐⭐⭐⭐ — LC 64
 
 #### 🎯 Pattern (LC 64 — Minimum Path Sum)
 
@@ -320,7 +324,7 @@ def climbStairs_v2(n):
 - Each cell is computed exactly once in row-major order
 - DP fills naturally from top-left to bottom-right
 
-#### **Approach 1: 2D DP** (Standard)
+#### The 2-D DP implementation (standard)
 
 ```java
 public int minPathSum(int[][] grid) {
@@ -372,31 +376,10 @@ public int minPathSum(int[][] grid) {
 
 > The Python transcription, the in-place variant, the O(m) rolling-row form, the top-down memoised
 > form, the four-approach comparison table, the similar-problem map and the
-> `[[1,3,1],[1,5,1],[4,2,1]]` trace are in [dp_advanced.md](./dp_advanced.md).
+> `[[1,3,1],[1,5,1],[4,2,1]]` trace are in [dp_advanced.md](./dp_advanced.md); the counting twin
+> LC 62 (Unique Paths) is worked in [dp_examples.md](./dp_examples.md).
 
-### Template 3: Interval DP — LC 516 / LC 312
-```python
-def interval_dp(arr):
-    """DP for interval/subarray problems"""
-    n = len(arr)
-    # dp[i][j] = optimal value for interval [i, j]
-    dp = [[0] * n for _ in range(n)]
-
-    # Base case: single elements
-    for i in range(n):
-        dp[i][i] = arr[i]
-
-    # Iterate by interval length
-    for length in range(2, n + 1):
-        for i in range(n - length + 1):
-            j = i + length - 1
-            # Try all split points
-            for k in range(i, j):
-                dp[i][j] = max(dp[i][j],
-                              dp[i][k] + dp[k+1][j] + cost(i, j))
-
-    return dp[0][n-1]
-```
+### Template 3: Interval DP — LC 312
 
 
 **🎯 Key Insight**: Think about which element to process **LAST**, not first!
@@ -497,6 +480,7 @@ public int maxCoins(int[] nums) {
     return dp[0][n + 1];
 }
 ```
+
 #### **Key Characteristics of This Pattern**
 
 | Aspect | Detail |
@@ -520,8 +504,9 @@ public int maxCoins(int[] nums) {
 | **Strange Printer** | 664 | Last character to print | Hard |
 
 > The inclusive-boundary variant, the top-down memoised form, the worked `nums = [3,1,5,8]` trace,
-> the recognition checklist, the common mistakes, the O(n³)/O(n²) derivation and the
-> backward-i + forward-j loop-order rule are in [dp_advanced.md](./dp_advanced.md).
+> the recognition checklist, the common mistakes, the O(n³)/O(n²) derivation, the abstract
+> split-point / matrix-chain skeletons and the backward-i + forward-j loop-order rule are in
+> [dp_advanced.md](./dp_advanced.md).
 
 ### Template 4: 0/1 Knapsack ⭐⭐⭐⭐⭐ — LC 416
 
@@ -707,6 +692,7 @@ direction the inner loop runs**. Memorise this table; the reasoning behind every
 
 **Quick rule**: *cannot* reuse an item → 0/1, backward inner loop. *Can* reuse → unbounded, forward
 inner loop; then ask whether order matters to pick the loop nesting.
+
 ---
 
 > **Going deeper** — the subset-sum reduction (LC 416 / 494 / 1049), the unbounded and bounded
@@ -714,6 +700,7 @@ inner loop; then ask whether order matters to pick the loop nesting.
 > [**knapsack.md**](./knapsack.md); a Traditional Chinese walkthrough of the 0/1 case is in
 > [**knapsack_01_zh.md**](./knapsack_01_zh.md). This template plus the recognition table above is the
 > part worth memorising; the rest is reference.
+
 ### Template 5: State Machine DP — LC 121 / LC 309
 
 > The whole LC 121/122/123/188/309/714 family — every variant, every state count — is worked in
@@ -740,6 +727,7 @@ def state_machine_dp(prices, fee=0):
 ```
 
 #### With a cooldown — LC 309
+
 ```python
 def state_machine_with_cooldown(prices):
     """
@@ -776,12 +764,14 @@ def state_machine_with_cooldown(prices):
     # Max profit when not holding stock
     return max(sold, rest)
 ```
+
 ### Template 6: Memoization → Tabulation → Rolling Variables ⭐⭐⭐⭐⭐ — LC 198
 
 > The space-optimisation ladder: write the recursion, cache it, flip it to a table, then collapse the
 > table to `k` variables. [recursion_to_dp.md](./recursion_to_dp.md) walks the first two rungs in detail.
 
 #### Step 1 — top-down memoization
+
 ```python
 def top_down_dp(nums):
     """Top-down DP with memoization"""
@@ -915,6 +905,7 @@ public int rob(int[] nums) {
                  // -> returns 0 for n == 2 instead of the real answer
 }
 ```
+
 #### Rolling-variable checklist
 
 | Step | Question to ask |
@@ -933,7 +924,8 @@ public int rob(int[] nums) {
 
 ### Template 7: Longest Increasing Subsequence ⭐⭐⭐⭐ — LC 300
 
-> O(n log n): maintain tails array with binary search; tails[i] = smallest tail of LIS of length i+1.
+> `dp[i]` = length of the LIS ending at index `i`, answer = `max(dp)`. The O(n log n) follow-up keeps a
+> `tails` array and binary-searches the insert position instead.
 
 ```java
 // java
@@ -1138,6 +1130,7 @@ public int minDistance(String word1, String word2) {
 | **DP Transition** | `dp[i][j] = 1 + min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1])` | `dp[i][j] = dp[i-1][j-1] + 1` or `max(dp[i-1][j], dp[i][j-1])` |
 
 ### Template 9: Longest Common Subsequence — LC 1143
+
 ```python
 def lcs_dp(text1, text2):
     """LCS pattern for string matching"""
@@ -1173,8 +1166,7 @@ characters of `s1` and the first `j` characters of `s2`. Only the transition cha
 | Distinct Subsequences | 115 | `dp[i-1][j-1] + dp[i-1][j]` | `dp[i-1][j]` |
 | Interleaving String | 97 | `dp[i-1][j] && s1[i-1]==s3[i+j-1]` (or the `s2` side) | `False` |
 
-The templates for LC 72 and LC 1143 stay above ([Template 7](#template-7-string-dp-edit-distance--levenshtein-distance--lc-72),
-[Template 8](#template-8-longest-common-subsequence-lcs--lc-1143)).
+The templates for LC 72 and LC 1143 stay above (Template 8 — Edit Distance, Template 9 — LCS).
 
 ### Template 10: Palindrome Substring DP ⭐⭐⭐⭐⭐ — LC 5
 
@@ -1185,10 +1177,10 @@ The templates for LC 72 and LC 1143 stay above ([Template 7](#template-7-string-
 | Approach | Time | Space | When to Use |
 |---|---|---|---|
 | Brute Force | O(n³) | O(1) | Never in interviews |
-| 2D DP (length-based) | O(n²) | O(n²) | Need full dp table for other queries |
+| 2D DP (length-based) — [dp_advanced.md](./dp_advanced.md) | O(n²) | O(n²) | Need full dp table for other queries |
 | 2D DP (backward-i) | O(n²) | O(n²) | Same as above, slightly cleaner |
 | **Two Pointers (expand center)** ⭐ | O(n²) | **O(1)** | **Default — simpler, space-optimal** |
-| Manacher's Algorithm | O(n) | O(n) | Competitive programming / optimal |
+| Manacher's Algorithm — [dp_advanced.md](./dp_advanced.md) | O(n) | O(n) | Competitive programming / optimal |
 
 ---
 
@@ -1235,7 +1227,7 @@ def countSubstrings_dp_backward(s):
 
 ---
 
-#### Approach 3: Two Pointers — Expand Around Center ⭐⭐ (Recommended)
+#### Approach 2: Two Pointers — Expand Around Center ⭐⭐ (Recommended)
 
 **Key insight**: every palindrome has a center. Expand outward from each possible center and count.
 - **Odd-length** palindrome: center is one character — expand from `(i, i)`
@@ -1286,8 +1278,8 @@ Total = 6  ✓
 
 ```text
 Need the full dp[i][j] table? (e.g., for partitioning / further DP)
-  YES → Use 2D DP (Approach 1 or 2)
-  NO  → Use Two Pointers (Approach 3) — simpler + O(1) space
+  YES → Use 2D DP (Approach 1)
+  NO  → Use Two Pointers (Approach 2) — simpler + O(1) space
 ```
 
 ---
@@ -1398,6 +1390,7 @@ DP Problem Identification Flowchart:
 | Greedy choice property | ❌ | ✅ | Greedy |
 
 ### Which DP Pattern?
+
 #### Quick Pattern Selection Table
 
 | Problem Type | Recognition Keywords | DP Category | Example Problems |
@@ -1430,6 +1423,7 @@ DP Problem Identification Flowchart:
 | "count numbers with digit constraint" | Digit DP: (pos, tight, accumulator) |
 | "break string into valid words" | Memoized DP + word set |
 | "stock buy/sell variants" | State machine (held/sold/rest) |
+| "edit distance, LCS, interleaving" | 2D DP → 1D space optimization |
 
 ### Complexity Quick Reference
 | Pattern | Time Complexity | Space Complexity | Space Optimization |

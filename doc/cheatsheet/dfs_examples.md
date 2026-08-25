@@ -34,7 +34,7 @@ Small self-contained recursions worth being able to write from memory.
 #### 0-1) DFS traversal form (act, then recurse by comparison)
 ```python
 # python
-# form I : tree transversal
+# DFS traversal form: act on the node, then recurse by comparison
 def dfs(root, target):
 
     if root.val == target:
@@ -139,7 +139,7 @@ def dfs(root):
 
 #### 0-8) Serialize and Deserialize Binary Tree
 
-> Python version: [2-20) LC 297](#2-20-serialize-and-deserialize-binary-tree--lc-297) below.
+> Python version: [2-20) LC 297](#2-20-serialize-and-deserialize-binary-tree-lc-297) below.
 
 ```java
 // java
@@ -403,6 +403,7 @@ public void insertNodeHelper(TreeNode root, int val) {
     }
 }
 ```
+
 ```python
 # python
 # 701 Insert into a Binary Search Tree
@@ -587,7 +588,6 @@ private TreeNode findMin_0(TreeNode node) {
 
 ### 2-4) Find Duplicate Subtrees — LC 652
 ```python
-# form IV : check if duplicated SUBTREES in tree
 # LC 652 Find Duplicate Subtrees
 # python
 m = collections.defaultdict(int)   # { subtree_signature : count }
@@ -606,13 +606,14 @@ def dfs(root, m, res):
     return path                     # return signature so PARENT can build its own signature
 ```
 
-#### ⭐ LC 652 — Find Duplicate Subtrees (deep dive)
+#### Deep dive — subtree signature + hashmap, not a path problem ⭐⭐⭐⭐
 
 > "I think this is a tree *path* problem?" — **No.** A path problem (LC 112 / 113 / 257)
 > tracks a *root → leaf* line of nodes. LC 652 instead asks whether two **whole subtrees**
 > are structurally identical. The trick is to give every subtree a **canonical signature**
 > and let a hashmap count how many times each signature appears. It belongs to
-> **Pattern 8 (Path Signatures / Shape Encoding)** — the tree analogue of "distinct islands".
+> **[dfs.md Template 8 — Path Signatures / Shape Encoding](./dfs.md#template-8-path-signature-shape-encoding-lc-694)**
+> — the tree analogue of "distinct islands".
 
 **1) Core Idea**
 
@@ -1202,7 +1203,7 @@ class Solution(object):
         return True
 ```
 
-#### ⭐ LC 737 — Sentence Similarity II (deep dive)
+#### Deep dive — transitive similarity is graph connectivity ⭐⭐⭐⭐
 
 > Despite the "sentence / words" framing, this is a **graph connectivity** problem,
 > NOT a string problem. Each `similarPair` is an **undirected edge**; similarity is
@@ -1271,7 +1272,7 @@ Don't forget: w1 == w2 short-circuits TRUE even if the word isn't in the graph.
 | 684 | Redundant Connection | detect the edge that creates a cycle (Union-Find) |
 | 399 | Evaluate Division | connectivity + weighted (ratio) edges |
 
-**4) Concept — why an "early `return False`" does NOT break the overall DFS** ⭐⭐⭐⭐⭐
+**4) Concept — why an "early `return False`" does NOT break the overall DFS**
 
 > A very common confusion with this template:
 > ```python
@@ -1877,7 +1878,7 @@ boolean isPerfect = left.isPerfect && right.isPerfect
 - **Recognition**: "equality equations", "variables are equal/not equal", "satisfiability", "group by equivalence then detect contradiction", relations that are **transitive** (`a==b`, `b==c` ⟹ `a==c`)
 - **Key Technique**: **Two-phase** processing — (1) build an **undirected** graph from all `==` relations; (2) for each `!=` relation, DFS to check reachability. If two "must-be-different" variables are connected → contradiction → return False.
 - **Examples**: LC 990 (Satisfiability of Equality Equations)
-- **Core Algorithm Idea** (⭐⭐⭐⭐⭐):
+- **Core Algorithm Idea**:
   1. **Graph Construction**: for every `x==y`, add **both** `x→y` and `y→x` (undirected). The `==` relation is symmetric AND transitive, so connected components = equivalence classes.
   2. **Contradiction Scan**: for every `x!=y`, run DFS from `x`; if it can reach `y`, the two are forced equal by the graph but required unequal → **unsatisfiable**.
   3. Process **all `==` first**, then **all `!=`** — a `!=` seen before its group is fully built would give a wrong answer.
@@ -1894,7 +1895,7 @@ boolean isPerfect = left.isPerfect && right.isPerfect
   - LC 200 - Number of Islands (connectivity grouping on a grid)
   - LC 721 - Accounts Merge (merge by shared email → components)
   - LC 684 - Redundant Connection (detect the edge that creates a cycle — Union-Find)
-  - LC 399 - Evaluate Division (transitive relations, weighted variant — [dfs.md Template 10](./dfs.md#template-10-weighted-graph-dfs-divisionratio-queries--lc-399))
+  - LC 399 - Evaluate Division (transitive relations, weighted variant — [dfs.md Template 10](./dfs.md#template-10-weighted-graph-dfs-division-ratio-queries-lc-399))
   - LC 785 - Is Graph Bipartite? (2-coloring = a "different-group" constraint check)
 
 ```python
@@ -2162,7 +2163,7 @@ depth == 1 case: brand-new node becomes root, whole old tree hangs on its LEFT.
 | 654 | Maximum Binary Tree | build nodes during DFS and return them upward |
 | 971 | Flip Binary Tree To Match Preorder | mutate left/right links mid-traversal |
 | 116 / 117 | Populating Next Right Pointers | pointer rewiring, but per level (BFS-friendly) |
-| 655 | Print Binary Tree | [2-28)](#2-28-print-binary-tree--lc-655) — DFS carrying a derived depth/offset downward |
+| 655 | Print Binary Tree | [2-28)](#2-28-print-binary-tree-lc-655) — DFS carrying a derived depth/offset downward |
 | 111 / 104 | Min / Max Depth of Binary Tree | the depth-counting recursion this builds on |
 
 > **Pattern takeaway**: "do X at depth `d`" ⇒ recurse with `d - 1` and act at **`d == 2`**, because
@@ -2176,7 +2177,7 @@ depth == 1 case: brand-new node becomes root, whole old tree hangs on its LEFT.
 
 ### Pattern-Based Problem Classification
 
-`Template N` refers to [dfs.md → Templates & Algorithms](./dfs.md#templates--algorithms);
+`Template N` refers to [dfs.md → Templates & Algorithms](./dfs.md#templates-algorithms);
 `*adv* TN` refers to [dfs_advanced.md](./dfs_advanced.md).
 
 #### **Pattern 1: Tree Traversal Problems**
@@ -2362,7 +2363,7 @@ completeness, no new technique.
 
 | Looking for | Go to |
 |---|---|
-| the technique behind any solution here | [dfs.md → Templates & Algorithms](./dfs.md#templates--algorithms) |
+| the technique behind any solution here | [dfs.md → Templates & Algorithms](./dfs.md#templates-algorithms) |
 | which template a problem belongs to | the [Problems by Pattern](#problems-by-pattern) index above |
 | a rare pattern (Euler path, Tarjan, trie DFS, `parent[]` trees) | [dfs_advanced.md](./dfs_advanced.md) |
 | the BFS solution to the same grid/tree problem | [bfs.md](./bfs.md) |

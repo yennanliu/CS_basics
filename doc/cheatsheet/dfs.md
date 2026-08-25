@@ -31,16 +31,16 @@ the index into them: match the recognition keywords, then jump to the template.
 
 | # | Pattern | Recognition keywords | Template | Canonical LC | Also |
 |---|---------|----------------------|----------|--------------|------|
-| 1 | Tree traversal | "traverse", "visit all", "print tree", "serialize" | [T1](#template-1-tree-traversal--lc-94) | LC 94 | 144, 145, 297, 449, 100 |
-| 2 | Graph / grid traversal, components | "connected components", "islands", "cycle detection" | [T2](#template-2-graph--grid-dfs-flood-fill--lc-200) | LC 200 | 695, 133, 207, 210, 419 |
-| 3 | Path problems | "path sum", "root to leaf", "all paths", "does a path exist" | [T3](#template-3-path-finding--lc-112) | LC 112 | 113, 257, 129, 1971 |
-| 4 | Backtracking | "all combinations", "permutations", "subsets" | [T4](#template-4-backtracking--lc-46) | LC 46 | 78, 39, 17, 22, 51, 79 |
-| 5 | Tree modification | "delete", "insert", "trim", "convert" | [T5](#template-5-tree-modification--lc-450) | LC 450 | 701, 669, 538, 226, 114 |
-| 6 | Subtree aggregation & LCA | "subtree sum", "duplicate subtrees", "LCA", "deepest leaves" | [T6](#template-6-bottom-up-post-order-dfs--lc-543) | LC 543 | 124, 236, 508, 652, 663, 2049 |
-| 7 | Boundary elimination (2 passes) | "closed islands", "surrounded regions", "captured" | [T7](#template-7-2-pass-dfs-boundary-elimination--lc-1254) | LC 1254 | 130, 417, 1020 |
-| 8 | Path signatures (shape encoding) | "distinct islands", "unique shapes", "same shape after translation" | [T8](#template-8-path-signature-shape-encoding--lc-694) | LC 694 | 711, 652 |
-| 9 | Grid DFS + backtracking | "one path", "collect the most", "cannot revisit a cell" | [T9](#template-9-grid-dfs--backtracking--3-styles-compared-lc-1219-path-with-maximum-gold) | LC 1219 | 79, 329, 980 |
-| 10 | Weighted-edge DFS (ratio queries) | "evaluate division", "exchange rates", "transitive ratios" | [T10](#template-10-weighted-graph-dfs-divisionratio-queries--lc-399) | LC 399 | 721, 1101, 737 |
+| 1 | Tree traversal | "traverse", "visit all", "print tree", "serialize" | [T1](#template-1-tree-traversal-lc-94) | LC 94 | 144, 145, 297, 449, 100 |
+| 2 | Graph / grid traversal, components | "connected components", "islands", "cycle detection" | [T2](#template-2-graph-grid-dfs-flood-fill-lc-200) | LC 200 | 695, 133, 207, 210, 419 |
+| 3 | Path problems | "path sum", "root to leaf", "all paths", "does a path exist" | [T3](#template-3-path-finding-lc-112) | LC 112 | 113, 257, 129, 1971 |
+| 4 | Backtracking | "all combinations", "permutations", "subsets" | [T4](#template-4-backtracking-lc-46) | LC 46 | 78, 39, 17, 22, 51, 79 |
+| 5 | Tree modification | "delete", "insert", "trim", "convert" | [T5](#template-5-tree-modification-lc-450) | LC 450 | 701, 669, 538, 226, 114 |
+| 6 | Subtree aggregation & LCA | "subtree sum", "duplicate subtrees", "LCA", "deepest leaves" | [T6](#template-6-bottom-up-post-order-dfs-lc-543) | LC 543 | 124, 236, 508, 652, 663, 2049 |
+| 7 | Boundary elimination (2 passes) | "closed islands", "surrounded regions", "captured" | [T7](#template-7-2-pass-dfs-boundary-elimination-lc-1254) | LC 1254 | 130, 417, 1020 |
+| 8 | Path signatures (shape encoding) | "distinct islands", "unique shapes", "same shape after translation" | [T8](#template-8-path-signature-shape-encoding-lc-694) | LC 694 | 711, 652 |
+| 9 | Grid DFS + backtracking | "one path", "collect the most", "cannot revisit a cell" | [T9](#template-9-grid-dfs-backtracking-3-styles-compared-lc-1219-path-with-maximum-gold) | LC 1219 | 79, 329, 980 |
+| 10 | Weighted-edge DFS (ratio queries) | "evaluate division", "exchange rates", "transitive ratios" | [T10](#template-10-weighted-graph-dfs-division-ratio-queries-lc-399) | LC 399 | 721, 1101, 737 |
 
 **Not on this sheet** — these live in [dfs_advanced.md](./dfs_advanced.md): two-grid validation (LC 1905),
 edge-direction tracking (LC 1466), component pair counting (LC 2316), Euler paths (LC 332, 753), Tarjan
@@ -455,7 +455,7 @@ dfs(next);  // Don't return early - need to explore all branches
 
 ---
 
-### Template 4: Backtracking — LC 46 ⭐⭐⭐⭐
+### Template 4: Backtracking — LC 46
 - **Description**: Try all possibilities, undo choices
 - **Recognition**: "All combinations", "permutations", "subsets"
 - **Examples**: LC 46, LC 78, LC 39, LC 17
@@ -622,8 +622,7 @@ class Solution:
 - **Recognition**: "remove node and edges → tree splits into subtrees", "product/sum of component sizes", "score of a node", "tree given as `parents[]` array"
 - **Key Technique**: One DFS returns `subtree_size = 1 + Σ child_subtree_size`. When node is removed, the components are (a) each child's subtree, and (b) the **parent side** = `n - subtree_size`. Aggregate these on the fly.
 - **Examples**: LC 2049 (Count Nodes With the Highest Score)
-- **Template**: Use Bottom-up DFS (Template 6) — return subtree size, aggregate at each node
-- **Core Idea** (⭐⭐⭐⭐⭐):
+- **Core Idea**:
   - Removing node `x` cuts it into `len(children[x])` child components **plus** the "above" component (everything outside x's subtree).
   - `child component size` = subtree size of each child (returned by DFS).
   - `parent / above component size` = `n - subtree_size(x)` (only counts if `> 0`, i.e. x is not the root).
@@ -644,7 +643,7 @@ class Solution:
   - LC 124 - Binary Tree Maximum Path Sum (return subtree value, aggregate global max)
   - LC 834 - Sum of Distances in Tree (subtree size + reroot DP, advanced follow-up)
 
-### Template 7: 2-Pass DFS (Boundary Elimination) — LC 1254 ⭐⭐⭐⭐
+### Template 7: 2-Pass DFS (Boundary Elimination) — LC 1254
 - **Description**: Eliminate boundary-connected cells first, then process interior
 - **Recognition**: "Closed islands", "surrounded regions", "captured pieces"
 - **Examples**: LC 1254, LC 130, LC 417
@@ -757,7 +756,7 @@ def closedIsland(grid):
     return count
 ```
 
-### Template 8: Path Signature (Shape Encoding) — LC 694 ⭐⭐⭐⭐
+### Template 8: Path Signature (Shape Encoding) — LC 694
 - **Description**: Encode the shape/structure of islands or subtrees using unique path signatures
 - **Recognition**: "Distinct islands", "unique shapes", "count different structures", "same shape after translation"
 - **Key Technique**: Record directional movements during DFS traversal to create a canonical signature

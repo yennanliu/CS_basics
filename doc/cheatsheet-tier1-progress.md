@@ -2,7 +2,9 @@
 
 Execution log for Tier 1 of [`cheatsheet-split-plan-2026-08.md`](cheatsheet-split-plan-2026-08.md): the eight tier-5 cheatsheets over 4,000 lines.
 
-**Status: work-in-progress snapshot.** Committed on branch `cheatsheet-tier1-wip`, taken while the per-file passes were still finishing, so this is a checkpoint rather than a reviewed result. The verification steps listed under [Not done yet](#not-done-yet) — most importantly the `data/cheatsheet_meta.json` registration, without which the site build fails on purpose — have **not** been run.
+**Status: Tier 1 complete and the site build passes.** Registration, anchor repair and build verification are done; what remains is human review of the deletion calls and the cross-file phase. See [Verification](#verification) and [Still open](#still-open).
+
+Two of the eight passes (`dfs`, `dp`) terminated early on an API session limit before running their own verification. Their output was checked centrally instead — both files were structurally complete, and both pass every check below.
 
 ---
 
@@ -42,16 +44,48 @@ Eight files, one independent pass each, run in parallel. Every pass worked under
 - **`bfs.md`** — LC 994 collapsed from four treatments to one, LC 542 and 127 from three. Four overlapping tail sections merged into one summary.
 - **`hash_map.md`** — un-mixed the skeletons: `0) Concept` and `1) General form` dissolved out of what is otherwise a Skeleton B document. `Virtual Map (Remapping) Pattern` folded in as the remapping template the Scope line already claimed. The `🔥 Google-Specific Patterns` catch-all heading is gone.
 
-## Not done yet
+## Verification
 
-1. **`data/cheatsheet_meta.json` registration for all 18 new files.** The build fails without it, by design. Each pass reported a recommended `category` / `tier` / `title` entry; these need to be applied centrally in one edit.
-2. **Inbound anchor repair.** Each pass listed the headings it moved out of its parent. Links from *other* sheets into those headings are now stale and need a repo-wide `](#...)` and `](./x.md#...)` sweep. One pre-existing broken link was found in passing: a `./tree.md#1-1-22-tree--string-codec-pattern-` target that never existed; its content is now in `tree_codec.md`.
-3. **Build verification** — `SKIP_FONTS=1 bash site/build.sh`, which cannot pass until (1) is done.
-4. **Cross-file consolidation.** Every pass was forbidden from touching its neighbours, so the cross-file duplication measured in the plan is untouched and in some cases now concentrated in the `_examples` sheets: `tree.md` × `tree2.md` 21 shared problems, `dfs.md` × the tree/BST sheets ~23, `dp.md` × `dp_pattern.md` 13, `stack.md` × `monotonic_stack.md` 12, `bfs.md` × `graph.md` 7. This is its own phase.
+All 26 files were checked centrally with one script, so the two passes that died on a session limit are covered on the same terms as the six that reported:
 
-   One finding from that phase arrived early and changes a decision above: `advanced_divide_and_conquer.md` **already owns QuickSelect in depth** (`Template 5: Quickselect`, Java + Python, Hoare and 3-way partition variants, an LC 973 variation and a variations table). The new `2_pointers_quickselect.md` largely restates it in Python. The right end state is probably to fold that satellite into `advanced_divide_and_conquer.md` rather than register it as a new sheet — `sort.md:497` also carries a `Quick Select — LC 215` template. Decide this before step 1.
-5. **Review of the judgement calls.** Roughly 755 lines were deleted from `tree.md` alone as verified duplicates, each with a stated reason. Those reasons are worth reading before this is merged — the plan flags this as the one genuinely risky part of the work.
-6. **Skeleton A vs B for the small satellites.** `tree_construction.md` (382 lines) and `2_pointers_quickselect.md` (522) are under `CLAUDE.md`'s ~800-line threshold, where Skeleton A is the right shape, but were written with Skeleton B for consistency across the batch. Worth a second look.
+| check | result |
+|---|---|
+| Exactly one H1 per file | ✅ 26/26 |
+| Untagged or unclosed code fences | ✅ 0 |
+| Heading-level jumps (`h2`→`h4`) | ✅ 0 |
+| Headings stating one LC number twice | ✅ 0 |
+| Duplicate LC solution headings **at section level** | ✅ 0 |
+| Broken intra-file `](#…)` anchors | ✅ 0 |
+| Broken cross-file `](./x.md#…)` anchors | ✅ 0 after repair |
+| `data/cheatsheet_meta.json` coverage | ✅ 98 sheets, every `.md` registered, every entry has a file |
+| `SKIP_FONTS=1 bash site/build.sh` | ✅ 98 cheatsheet pages, 417 files in `_site/` |
+
+Registration applied — 18 entries. `binary_search_on_answer` went in at **tier 5**, not 4: the `Search & Sort` category blurb in `cheatsheet_meta.json` already says binary search on the answer is "the single most under-practised tier-5 skill". `heap_language_apis` is filed under `Trees & Heaps` rather than `Language Toolkit` so the four heap sheets sort together, and is the only new sheet needing a `title` override (its H1 contains backticks).
+
+Inbound links repaired — three in `priority_queue.md`'s redirect table (`#2-lc-example` → `heap_examples.md#lc-examples`, `#problems-by-pattern` → `heap.md#decision-table--which-heap-pattern`, and the API row now points at `heap_language_apis.md`), one in `scanning_line.md`, and one in `union_find.md` that a repo-wide sweep caught: it pointed at `dfs.md#pattern-18-…`, now `dfs_advanced.md#template-11-…`.
+
+### Two anchor conventions live in this repo
+
+Worth knowing before the next phase, because it nearly caused a bad edit here. Anchor links across `doc/cheatsheet/` resolve under **two different slug rules**:
+
+- **GitHub's** — strip punctuation, replace *each* space with `-`, keep trailing dashes. So `### 1.5) Find Boundaries (LC 34) ⭐⭐⭐⭐⭐` → `#15-find-boundaries-lc-34-`, and ` — ` becomes `--`.
+- **the site's** — [`site/build-lib.js`](../site/build-lib.js) `slugify()`, which collapses every non-alphanumeric run to a single `-` and trims. Same heading → `#1-5-find-boundaries-lc-34`.
+
+93 anchors follow GitHub's rule, 74 follow the site's. GitHub's is the majority and is what untouched sheets use (`Dijkstra.md`, `linked_list.md`, `bit_manipulation.md`, `hashing.md`), so **the 93 are correct when browsing the repo and silently broken on the published site.** Only 4 anchors repo-wide resolve under neither rule, all pre-existing in files this work did not touch: `00_template.md`, `backtrack.md`, `stack.md`, `tree2.md`.
+
+The cheap fix is one change in `site/build-lib.js` — make `slugify()` match GitHub's rule — which repairs ~93 site links at once and costs nothing elsewhere. It is build tooling rather than content, so it was left out of this pass.
+
+## Still open
+
+1. **Cross-file consolidation.** Every pass was forbidden from touching its neighbours, so the cross-file duplication measured in the plan is untouched and in some cases now concentrated in the `_examples` sheets: `tree.md` × `tree2.md` 21 shared problems, `dfs.md` × the tree/BST sheets ~23, `dp.md` × `dp_pattern.md` 13, `stack.md` × `monotonic_stack.md` 12, `bfs.md` × `graph.md` 7, `hash_map.md` × `prefix_sum.md` (LC 560, 1248, 303, 325, 523, 525, 930, 974, 724). This is its own phase.
+
+   One finding from that phase arrived early and is the first thing to settle: `advanced_divide_and_conquer.md` **already owns QuickSelect in depth** (`Template 5: Quickselect`, Java + Python, Hoare and 3-way partition variants, an LC 973 variation and a variations table). The new `2_pointers_quickselect.md` largely restates it in Python, and `sort.md:497` carries a `Quick Select — LC 215` template too. It is registered for now — that is reversible — but the likely end state is folding it into `advanced_divide_and_conquer.md`.
+
+2. **Review of the judgement calls.** Roughly 755 lines were deleted from `tree.md` alone as verified duplicates, and ~1,204 from `binary_search.md` — the largest of the batch. Each deletion has a stated reason. Those reasons are worth reading before this merges; the plan flags this as the one genuinely risky part of the work. Two worth knowing: `binary_search.md` §4.9 (LC 410) was an **empty stub** — a fence containing one comment — and its LC 278 copy was both duplicate *and* buggy (`end = mid` never used), with the correct twin surviving.
+
+3. **Skeleton A vs B for the small satellites.** `tree_construction.md` (382 lines) and `2_pointers_quickselect.md` (522) are under `CLAUDE.md`'s ~800-line threshold, where Skeleton A is the right shape, but were written with Skeleton B for consistency across the batch. Worth a second look.
+
+4. **The site slugify fix** described above — one line in `site/build-lib.js`, repairs ~93 anchors on the published site.
 
 ## Next
 

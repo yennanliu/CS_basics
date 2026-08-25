@@ -2,13 +2,13 @@
 
 > **Scope** — The rare and hard DFS techniques a first pass should skip: two-grid validation, edge-direction tracking, cross-component pair counting, Euler paths, Tarjan low-link bridges, trie-backed wildcard search, depth-indexed stack DFS, and the post-order rollups on N-ary and parent-array trees.
 > **See also** — *parent sheet*: [dfs.md](./dfs.md) — the ten core DFS templates, the recognition table and the pattern-selection flowchart; [dfs_examples.md](./dfs_examples.md) — the worked-solution archive for the core templates.
-> *Neighbouring sheets*: [trie.md](./trie.md) — the trie structure itself, without the branching query; [union_find.md](./union_find.md) — the DSU alternative to a connectivity DFS; [graph.md](./graph.md) — graph representation and traversal order; [tree.md](./tree.md) — the full tree ⟷ string codec write-up; [bfs.md](./bfs.md) — the breadth-first counterpart.
+> *Neighbouring sheets*: [trie.md](./trie.md) — the trie structure itself, without the branching query; [union_find.md](./union_find.md) — the DSU alternative to a connectivity DFS; [graph.md](./graph.md) — graph representation and traversal order; [tree_codec.md](./tree_codec.md) — the full tree ⟷ string codec write-up; [bfs.md](./bfs.md) — the breadth-first counterpart.
 
 ## LeetCode Problem Lists
 
 - [Depth-First Search](https://leetcode.com/problem-list/depth-first-search/)
-- [Eulerian Circuit](https://leetcode.com/tag/eulerian-circuit/)
-- [Biconnected Component](https://leetcode.com/tag/biconnected-component/)
+- [Graph Theory](https://leetcode.com/problem-list/graph/)
+- [Eulerian Circuit](https://leetcode.com/problem-list/eulerian-circuit/)
 - [Trie](https://leetcode.com/problem-list/trie/)
 
 ## Overview
@@ -1069,7 +1069,7 @@ class WordDictionary:
 **Gotchas**
 - With a dict-trie, always skip the `'$'` sentinel when iterating children — otherwise `.` "matches"
   the end marker and you recurse into `True`.
-- **Early return** the moment a branch succeeds (see [dfs.md → DFS Early Return Pattern](./dfs.md#dfs-early-return-pattern--return-true-eagerly-false-lazily));
+- **Early return** the moment a branch succeeds (see [dfs.md → DFS Early Return Pattern](./dfs.md#dfs-early-return-pattern-return-true-eagerly-false-lazily));
   looping all 26 children without returning turns an `O(26^d)` worst case into a guaranteed one.
 
 #### Variation: exact-one-mismatch DFS — LC 676 Implement Magic Dictionary
@@ -1277,7 +1277,7 @@ class Solution:
 | Binary Tree Maximum Path Sum | 124 | return best downward value, combine left+right at node (LCA join) |
 | Diameter of Binary Tree | 543 | return subtree depth, `left_depth + right_depth` joined at node |
 | Longest Univalue Path | 687 | return one-side length, combine both sides at each node |
-| Count Nodes With the Highest Score | 2049 | post-order subtree size, aggregate at each node ([dfs.md Template 6](./dfs.md#template-6-bottom-up-post-order-dfs--lc-543)) |
+| Count Nodes With the Highest Score | 2049 | post-order subtree size, aggregate at each node ([dfs.md Template 6](./dfs.md#template-6-bottom-up-post-order-dfs-lc-543)) |
 | Sum of Distances in Tree | 834 | post-order subtree counts + reroot DP (advanced follow-up) |
 ---
 
@@ -1347,7 +1347,7 @@ class Solution:
 | Maximum Depth of N-ary Tree | 559 | `1 + max(child depths)` — N-ary post-order max rollup |
 | N-ary Tree Postorder Traversal | 590 | canonical post-order visit of an N-ary tree |
 | Time Needed to Inform All Employees | 1376 | rooted tree via manager array, `max(child times) + own` |
-| Count Nodes With the Highest Score | 2049 | post-order subtree aggregation ([dfs.md Template 6](./dfs.md#template-6-bottom-up-post-order-dfs--lc-543)) |
+| Count Nodes With the Highest Score | 2049 | post-order subtree aggregation ([dfs.md Template 6](./dfs.md#template-6-bottom-up-post-order-dfs-lc-543)) |
 ---
 
 ### Template 10: DFS that Returns / Consumes a String (Tree ⟷ String Codec) — LC 606 / LC 536
@@ -1403,7 +1403,7 @@ Two mirror-image DFS shapes. Both are pre-order; they differ only in **what the 
 | Recover a Tree From Preorder Traversal | 1028 | depth prefix as the delimiter + stack decode |
 
 > **Full write-up** (encode/decode symmetry table, LC 606 case analysis + visual trace, LC 536 both
-> parser styles, Java versions): [`tree.md` → section 1-1-22) Tree ⟷ String Codec Pattern](./tree.md#1-1-22-tree--string-codec-pattern-)
+> parser styles, Java versions): [`tree_codec.md` → Tree ⟷ String Codec Pattern](./tree_codec.md#3-tree-string-codec-pattern)
 ---
 
 ### Template 11: Parent-Array Tree — Memoized Upward Depth — LC 4015
@@ -1499,14 +1499,14 @@ def get_depth(x, parent, depth):
 - Input is `parent` / `manager` / `parents` — an **array of ancestors**, with `-1` marking the root.
 - The answer needs **depth, height, or an ancestor** — not subtree aggregates. (Needing subtree sums
   or child min/max flips you back to top-down: invert to a children list, then
-  [Template 9](#template-9-n-ary-tree-post-order-value-aggregation-child-minmax-rollup--lc-3965).)
+  [Template 9](#template-9-n-ary-tree-post-order-value-aggregation-child-min-max-rollup-lc-3965).)
 - `n` up to `10^5` with a possible path-shaped tree → the memo is required, and in Python so is the
   iterative form.
 
 > **Contrast with Union-Find:** the climb-and-memo is structurally the same walk as DSU `find()` with
 > path compression, and `parent[]` even looks like a DSU array — but there is **no `union()`**, no
 > merging, and the tree is fixed. Reaching for a DSU here adds `α(N)` bookkeeping for nothing. See
-> [union_find.md → When NOT to use Union Find](./union_find.md#3-tips--pitfalls).
+> [union_find.md → When NOT to use Union Find](./union_find.md#3-tips-pitfalls).
 
 **c. Similar LC**
 
@@ -1568,7 +1568,7 @@ sys.setrecursionlimit(10000)
 
 #### Java: pass-by-reference path recording with `StringBuilder`
 
-Used by [dfs.md Template 8 (Path Signature)](./dfs.md#template-8-path-signature-shape-encoding--lc-694):
+Used by [dfs.md Template 8 (Path Signature)](./dfs.md#template-8-path-signature-shape-encoding-lc-694):
 the signature is accumulated into one shared `StringBuilder` rather than returned up the stack.
 
 

@@ -211,21 +211,7 @@ class Solution:
 ```python
 # NOTE : there is also brute force approach
 # V0
-# IDEA : brute force + product
-class Solution(object):
-    def maxProduct(self, A):
-        global_max, local_max, local_min = float("-inf"), 1, 1
-        for x in A:
-            local_max = max(1, local_max)
-            if x > 0:
-                local_max, local_min = local_max * x, local_min * x
-            else:
-                local_max, local_min = local_min * x, local_max * x
-            global_max = max(global_max, local_max)
-        return global_max
-
-# V1
-# IDEA : BRUTE FORCE (TLE)
+# IDEA : BRUTE FORCE (TLE) — the O(n^2) baseline
 # https://leetcode.com/problems/maximum-product-subarray/solution/
 class Solution:
     def maxProduct(self, nums: List[int]) -> int:
@@ -243,9 +229,8 @@ class Solution:
         return result
 
 # V1
-# IDEA : DP
+# IDEA : DP (canonical — track running max AND min, a negative flips them)
 # https://leetcode.com/problems/maximum-product-subarray/solution/
-# LC 152
 class Solution:
     def maxProduct(self, nums: List[int]) -> int:
         if len(nums) == 0:
