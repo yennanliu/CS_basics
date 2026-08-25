@@ -1556,7 +1556,7 @@ public int maxEvents(int[][] events) {
 | 502 | IPO | Sort by one key, heap by another | Two-heap greedy (capital → max heap of profit) |
 | 871 | Min Number of Refueling Stops | Push reachable options, greedily pop best | Max heap of fuel, pop only when stuck |
 
-> **Cross-ref**: full heap-side write-up in [`heap.md` § 2-7](./heap.md#2-7-maximum-number-of-events-that-can-be-attended--lc-1353)
+> **Cross-ref**: full heap-side write-up in [`heap_examples.md` § 7](./heap_examples.md#7-maximum-number-of-events-that-can-be-attended--lc-1353)
 
 ### 2-7) Interval List Intersections (LC 986) — Intersection Sweep (coverage == 2) ⭐⭐⭐⭐
 

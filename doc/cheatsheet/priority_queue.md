@@ -11,14 +11,14 @@
 
 ## Where things went
 
-| You were looking for | Now in `heap.md` |
+| You were looking for | Now in |
 |---|---|
-| PQ problem patterns 1–8 | [Problem Categories](./heap.md#problem-categories) |
-| Java `PriorityQueue` templates 1–12 | [Java Template Library](./heap.md#java-template-library-priorityqueue) — paired with the Python templates |
-| Python `heapq` templates | [Specific Pattern Templates](./heap.md#specific-pattern-templates) |
-| `PriorityQueue` API / peek without popping | [Language APIs](./heap.md#language-apis) |
-| Classic LC problems with Java solutions | [LC Example](./heap.md#2-lc-example) |
-| PQ pattern → problem mapping | [Problems by Pattern](./heap.md#problems-by-pattern) |
+| PQ problem patterns 1–8 | [heap.md → Problem Categories](./heap.md#problem-categories) |
+| Java `PriorityQueue` templates 1–12 | [heap.md → Java Template Library](./heap.md#java-template-library-priorityqueue) — paired with the Python templates |
+| Python `heapq` templates | [heap.md → Specific Pattern Templates](./heap.md#specific-pattern-templates) |
+| `PriorityQueue` API / peek without popping | [heap_language_apis.md](./heap_language_apis.md#java-priorityqueue) — the full API reference; [heap.md → Language APIs](./heap.md#language-apis) keeps the one-screen table |
+| Classic LC problems with Java solutions | [heap_examples.md → LC Examples](./heap_examples.md#lc-examples) |
+| PQ pattern → problem mapping | [heap.md → Decision Table](./heap.md#decision-table--which-heap-pattern) |
 
 ## See also
 
