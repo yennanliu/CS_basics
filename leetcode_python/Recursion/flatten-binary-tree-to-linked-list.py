@@ -37,6 +37,20 @@ Follow up: Can you flatten the tree in-place (with O(1) extra space)?
 """
 
 
+"""
+
+NOTE !!!
+
+
+need to output as `pre-order`. e.g. root -> left -> right
+
+and modify root `in-place`
+
+-> NO NEED to return `root`
+
+"""
+
+
 # V0
 class Solution(object):
     def flatten(self, root):
@@ -60,6 +74,7 @@ class Solution(object):
 
         self.helper(root)
 
+
     def helper(self, node):
         if not node:
             return
@@ -81,6 +96,42 @@ class Solution(object):
 # IDEA: DFS (post-order) (GEMINI)
 # time = O(n)
 # space = O(h), h is height of binary tree (recursion stack)
+"""
+NOTE !!
+
+
+what this helper func is doing, and returning.
+
+->
+
+把 root 為根的 subtree flatten，並且 return flatten 後的 tail node。
+
+
+-> example:
+
+
+        2
+       / \
+      3   4
+
+
+->  (flatten)
+
+2 → 3 → 4
+
+
+-> so it returns
+
+```
+4
+```
+
+
+-> e.g. helper(2) = 4 
+
+
+
+"""
 class Solution(object):
     def flatten(self, root):
         """
@@ -89,6 +140,18 @@ class Solution(object):
         """
         self.helper(root)
 
+    """
+    NOTE !!!
+
+
+    1. we have 2 `if _left:`
+
+    2. 
+
+         -> 第一個 if _left：負責「重新接線」
+
+         -> 第二個 if _left：負責「return tail」
+    """
     def helper(self, root):
         # Base Case 1: Empty nodes have no tail
         if not root:
