@@ -1,7 +1,8 @@
 # BFS (Breadth-First Search)
 
-> **Scope** — Level-order expansion and why it yields shortest paths on unweighted graphs — the queue templates, level tracking, multi-source, bidirectional, and 0-1 BFS.
-> **See also**: [dfs.md](./dfs.md) — the depth-first counterpart and how to choose; [graph.md](./graph.md) — representation and the graph catalogue; [Dijkstra.md](./Dijkstra.md) — once edges have weights; [topology_sorting.md](./topology_sorting.md) — Kahn's algorithm is BFS.
+> **Scope** — The main BFS reference: the queue templates, level-by-level expansion, grid and multi-source BFS, and why first visit equals shortest path on an unweighted graph; the heavier variants and the long tail of worked problems live in their own sheets.
+> **See also** — *deep dives split out of this file*: [bfs_advanced.md](./bfs_advanced.md) — bidirectional BFS, 0-1 BFS with a deque, state-space / implicit-graph BFS, all-shortest-path DAG enumeration, and the multi-source vs independent-runs distinction; [bfs_examples.md](./bfs_examples.md) — the worked-solution archive (LC 130 / 207 / 279 / 286 / 310 / 417 / 623 / 742 / 752 / 909 / 116-117 …) plus the LC 994 timing walkthrough.
+> *Neighbouring sheets*: [dfs.md](./dfs.md) — the depth-first counterpart and how to choose; [graph.md](./graph.md) — representation and the graph catalogue; [Dijkstra.md](./Dijkstra.md) — once edges have weights; [topology_sorting.md](./topology_sorting.md) — Kahn's algorithm is BFS.
 
 ## LeetCode Problem Lists
 
@@ -14,8 +15,7 @@ Breadth-First Search is a graph traversal algorithm that explores nodes level by
 ### Key Properties
 - **Complete**: Always finds a solution if one exists
 - **Optimal**: Finds shortest path in `unweighted` graphs
-- **Space Complex**: O(b^d) where b=branching factor, d=depth
-- **Time Complex**: O(V + E) for graphs, O(n) for trees
+- **Complexity**: see the [Time & Space Complexity](#time--space-complexity) table below
 
 ### Core Characteristics
 - Uses **Queue** data structure (FIFO - First In, First Out)
@@ -23,14 +23,12 @@ Breadth-First Search is a graph traversal algorithm that explores nodes level by
 - Explores nodes **level by level** (breadth first, then depth)
 - Memory intensive compared to DFS
 
-## Fundamental Concepts
-
-### 1. Node States (for cycle detection)
+### Node States (for cycle detection)
 - **State 0**: Not visited (white)
 - **State 1**: Currently being processed (gray) 
 - **State 2**: Completely processed (black)
 
-### 2. BFS vs DFS Comparison
+### BFS vs DFS
 
 #### 🔹 BFS (Breadth-First Search)
 - Uses a **Queue**
@@ -53,9 +51,93 @@ Breadth-First Search is a graph traversal algorithm that explores nodes level by
 | Complete | ✅ Yes | ❌ No (infinite spaces) |
 | When to Use | Shortest path, level traversal | Explore all paths, topological sort, cycle detection |
 
+## Time & Space Complexity
+
+### BFS Time Complexity Analysis
+
+BFS time complexity depends on the graph representation:
+
+#### 🔹 Graph Representations
+
+**Adjacency List (most common in practice):**
+- Each vertex is enqueued/dequeued once → O(V)
+- Each edge is explored at most once → O(E)
+- ✅ **Total = O(V + E)**
+
+**Adjacency Matrix:**
+- Checking all neighbors of a vertex costs O(V)
+- Doing this for all vertices costs O(V²)
+- ✅ **Total = O(V²)**
+
+#### Detailed Breakdown by Data Structure
+
+**Tree BFS**
+- **Time**: O(n) - visit each node once
+- **Space**: O(w) - maximum width of tree
+- **Explanation**: Each node visited exactly once, queue stores at most one level
+
+**Graph BFS (Adjacency List)**
+- **Time**: O(V + E) - visit each vertex and edge once
+- **Space**: O(V) - queue and visited set
+- **Explanation**:
+  - Vertex processing: Each vertex enqueued/dequeued once = O(V)
+  - Edge processing: Each edge examined once = O(E)
+  - Queue space: At most O(V) vertices
+  - Visited set: O(V) vertices
+
+**Graph BFS (Adjacency Matrix)**
+- **Time**: O(V²) - check all possible edges
+- **Space**: O(V) - queue and visited set
+- **Explanation**:
+  - For each vertex, check all V possible neighbors
+  - Total vertices × neighbors per vertex = V × V = O(V²)
+
+**Grid BFS**
+- **Time**: O(m × n) - visit each cell once
+- **Space**: O(m × n) - worst case queue size
+- **Explanation**:
+  - Each cell visited at most once
+  - Queue can contain at most all cells in worst case
+  - Grid is essentially a graph with m×n vertices and 4-directional edges
+
+#### Performance Comparison Table
+
+| Graph Type | Representation | Time Complexity | Space Complexity | Best For |
+|------------|----------------|-----------------|------------------|----------|
+| **Sparse Graph** | Adjacency List | O(V + E) | O(V) | E << V² |
+| **Dense Graph** | Adjacency Matrix | O(V²) | O(V²) | E ≈ V² |
+| **Tree** | Parent-Child Links | O(n) | O(w) | Hierarchical data |
+| **Grid** | 2D Array | O(m × n) | O(m × n) | Spatial problems |
+
+#### Why O(V + E) for Adjacency List?
+
+```python
+# Detailed analysis of BFS with adjacency list
+def bfs_analysis(graph, start):
+    queue = deque([start])        # O(1)
+    visited = {start}             # O(1)
+
+    while queue:                  # Executes at most V times
+        vertex = queue.popleft()  # O(1) - each vertex dequeued once
+
+        # This inner loop runs exactly deg(vertex) times
+        for neighbor in graph[vertex]:  # Total across all vertices = E
+            if neighbor not in visited:  # O(1) with set
+                visited.add(neighbor)    # O(1) - each vertex added once
+                queue.append(neighbor)   # O(1) - each vertex enqueued once
+
+    # Analysis:
+    # - Outer while loop: O(V) iterations
+    # - Inner for loop: Sum of deg(v) for all v = 2E (undirected) or E (directed)
+    # - Each operation inside: O(1)
+    # Total: O(V + E)
+```
+
 ## Implementation Patterns
 
-### Pattern 1: Basic Tree BFS — LC 102
+> Pattern numbering is kept stable across the three BFS sheets. **Patterns 4.5, 4.6, 6, 8, 8.5, 9, 10, 12, 14 and 15** are deep dives that live in [bfs_advanced.md](./bfs_advanced.md); the `§2-N` worked examples live in [bfs_examples.md](./bfs_examples.md).
+
+### Pattern 1: Basic Tree BFS
 ```python
 from collections import deque
 
@@ -78,7 +160,7 @@ def bfs_tree(root):
     return result
 ```
 
-### Pattern 2: Level-by-Level BFS — LC 102
+### Pattern 2: Level-by-Level BFS — LC 102 ⭐⭐⭐⭐⭐
 ```python
 def bfs_levels(root):
     if not root:
@@ -105,64 +187,7 @@ def bfs_levels(root):
     return levels
 ```
 
-#### Variation A: carry a **heap index** with each node — LC 662 (Maximum Width of Binary Tree)
-
-> **Twist**: the queue holds `(node, index)` where a node at index `i` has children `2i` / `2i+1`. Width of a level = `lastIndex - firstIndex + 1`, counting the `null` gaps without ever storing them. **Normalize** each level by subtracting the level's first index, otherwise the index overflows `int` on a skewed tree of depth ~60.
-
-```java
-// java
-// LC 662 - Maximum Width of Binary Tree
-// time = O(N), space = O(W)   W = max level width
-// IDEA: level BFS carrying a heap index; width = last - first + 1 (nulls counted implicitly)
-public int widthOfBinaryTree(TreeNode root) {
-    if (root == null) return 0;
-    int ans = 0;
-    Queue<TreeNode> nodes = new LinkedList<>();
-    Queue<Integer> idxs = new LinkedList<>();
-    nodes.offer(root); idxs.offer(0);
-    while (!nodes.isEmpty()) {
-        int size = nodes.size(), first = 0, last = 0;
-        for (int i = 0; i < size; i++) {
-            TreeNode node = nodes.poll();
-            int id = idxs.poll();
-            if (i == 0) first = id;
-            id -= first;                    // re-base the level at 0 -> no overflow
-            last = id;
-            if (node.left  != null) { nodes.offer(node.left);  idxs.offer(2 * id); }
-            if (node.right != null) { nodes.offer(node.right); idxs.offer(2 * id + 1); }
-        }
-        ans = Math.max(ans, last + 1);      // last is already relative to first
-    }
-    return ans;
-}
-```
-
-```python
-# python
-# LC 662 - Maximum Width of Binary Tree
-# time = O(N), space = O(W)
-# IDEA: queue holds (node, index); re-base index per level to keep numbers small
-def widthOfBinaryTree(root):
-    if not root:
-        return 0
-    ans = 0
-    q = deque([(root, 0)])
-    while q:
-        first = q[0][1]
-        last = first
-        for _ in range(len(q)):
-            node, idx = q.popleft()
-            idx -= first                    # normalize against this level's start
-            last = idx
-            if node.left:
-                q.append((node.left, 2 * idx))
-            if node.right:
-                q.append((node.right, 2 * idx + 1))
-        ans = max(ans, last + 1)
-    return ans
-```
-
-#### Variation B: **return at the first leaf popped** — LC 111 (Minimum Depth of Binary Tree)
+#### Variation: **return at the first leaf popped** — LC 111 (Minimum Depth of Binary Tree)
 
 > **Twist**: don't traverse the whole tree — BFS reaches the shallowest leaf first, so return the moment a node with no children is dequeued. On a long left-skewed spine DFS visits every node; BFS quits at the first leaf. (Contrast with LC 104 Maximum Depth, where you *must* see every level, so DFS recursion is the cleaner tool.)
 
@@ -189,29 +214,7 @@ def minDepth(root):
     return depth
 ```
 
-#### Variation C: **enqueue the `null` children too** — LC 958 (Check Completeness of a Binary Tree)
-
-> **Twist**: pushing `null`s makes the queue a literal array-representation of the tree. A complete tree has all its `null`s at the tail, so: once you pop a `null`, no non-`null` may follow. This is also the shape of level-order **serialization** (LC 297 / LC 449 write `null` markers for exactly this reason).
-
-```python
-# python
-# LC 958 - Check Completeness of a Binary Tree
-# time = O(N), space = O(W)
-# IDEA: push nulls; after the first null pops, any real node means "not complete"
-def isCompleteTree(root):
-    q = deque([root])
-    seen_null = False
-    while q:
-        node = q.popleft()
-        if node is None:
-            seen_null = True
-        else:
-            if seen_null:
-                return False        # a real node after a gap -> not complete
-            q.append(node.left)     # push children unconditionally, nulls included
-            q.append(node.right)
-    return True
-```
+> Two further level-BFS variations — carrying a **heap index** (LC 662) and **enqueuing the `null` children** (LC 958) — are in [bfs_examples.md](./bfs_examples.md).
 
 ### Pattern 3: Graph BFS with Visited Set — LC 200
 ```python
@@ -232,7 +235,156 @@ def bfs_graph(start, graph):
     return result
 ```
 
-### Pattern 4: Multi-Source BFS (Distance Calculation) — LC 542
+### Pattern 3.1: The Visited-Set Placement Rule — Mark Before Enqueue ⭐⭐⭐⭐⭐
+
+A critical BFS implementation detail: **always mark a cell as visited (update grid status and counters) BEFORE adding it to the queue**, not when you dequeue it.
+
+#### The Rule
+
+```text
+Mark visited + update count → THEN add to queue
+```
+
+**General BFS template (canonical form):**
+```python
+visited = {start}
+q.append(start)
+
+while q:
+    node = q.popleft()
+
+    for nei in neighbors(node):
+        if nei not in visited:
+            visited.add(nei)    # <-- before enqueue
+            q.append(nei)
+```
+
+**3-step pattern when state update is non-trivial (grid mutation, counters):**
+```python
+# 1. Validate the neighbor
+if neighbor_is_valid and neighbor_not_visited:
+
+    # 2. Update state IMMEDIATELY (mark visited / mutate grid / decrement counter)
+    mark_as_visited(neighbor)
+
+    # 3. Enqueue the neighbor
+    queue.append(neighbor)
+```
+
+```java
+// ✅ CORRECT: Mark BEFORE enqueue
+if (grid[nr][nc] == 1) {
+    grid[nr][nc] = 2;       // mark immediately
+    freshOrange--;           // update count immediately
+    q.add(new int[]{nr, nc});
+}
+
+// ❌ WRONG: Mark AFTER dequeue
+int[] cur = q.poll();
+grid[cur[0]][cur[1]] = 2;   // too late! duplicates already in queue
+```
+
+#### Why This Matters
+
+If you defer marking until dequeue, **multiple neighbors can enqueue the same cell** before any of them processes it:
+
+```text
+BFS Layer 1: Cells A and B are both neighbors of cell X (fresh orange)
+
+Thread of execution:
+  1. Process A → sees X is fresh → enqueues X
+  2. Process B → sees X is STILL fresh (not marked yet!) → enqueues X AGAIN
+  3. Dequeue X → mark as rotten, freshOrange--
+  4. Dequeue X again → already rotten, but freshOrange-- happens again! (WRONG)
+```
+
+**Result**: Double-counting, incorrect answers, or wasted processing.
+
+#### Mark-Before-Enqueue guarantees:
+
+| Guarantee | Explanation |
+|-----------|-------------|
+| **No duplicates in queue** | Cell is marked visited before any other neighbor can see it |
+| **Correct counting** | Each cell counted exactly once |
+| **O(m x n) time** | Each cell enqueued at most once |
+| **Correct BFS layers** | Layer boundaries remain accurate for timing/distance |
+
+#### Cases Where This Applies
+
+| Scenario | Why mark-before-enqueue matters |
+|----------|-------------------------------|
+| **Counting** (fresh oranges, infections) | Prevents double-decrement of counters |
+| **Timing / distance** (minutes elapsed) | Ensures cell is assigned to correct BFS layer |
+| **Grid mutation** (spreading rot, flood fill) | Prevents same cell being processed multiple times |
+| **Visited tracking via grid values** | Grid itself serves as visited set; must mark before enqueue |
+
+#### When Using a Separate `visited` Set
+
+The same principle applies — add to `visited` **when enqueuing**, not when dequeuing:
+
+```java
+// CORRECT
+if (!visited[nr][nc]) {
+    visited[nr][nc] = true;          // mark BEFORE enqueue
+    queue.offer(new int[]{nr, nc});
+}
+
+// WRONG
+int[] cur = queue.poll();
+visited[cur[0]][cur[1]] = true;      // too late
+```
+
+#### Related LeetCode Problems
+
+| Problem | Why mark-before-enqueue is critical |
+|---------|-------------------------------------|
+| **LC 994** - Rotting Oranges | Counter `freshOrange--` must happen exactly once per cell |
+| **LC 542** - 01 Matrix | Distance assignment must happen on first (shortest) visit |
+| **LC 286** - Walls and Gates | Room distance must not be overwritten by longer path |
+| **LC 1162** - As Far from Land as Possible | Same multi-source BFS, distance must be set on first reach |
+| **LC 200** - Number of Islands | Marking on enqueue prevents re-visiting same land cell |
+| **LC 934** - Shortest Bridge | Expanding island boundary must not double-count water cells |
+| **LC 127** - Word Ladder | Words must be marked visited on enqueue to avoid duplicate paths |
+
+#### Summary — mark before vs after enqueue
+
+> In BFS, **the moment you decide a neighbor should enter the queue is the moment you commit** — mark it visited, update your counters, mutate the grid. Never defer state changes to dequeue time. This is not an optimization; it is a **correctness requirement**.
+
+### Pattern 3.2: Grid BFS with a Direction Array — LC 1091
+> BFS from top-left to bottom-right through 0-cells (8-directional).
+>
+> **The idiom**: hoist the moves into a `dirs` array and loop it — `int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}}`
+> for the usual 4-neighbour grid (see **Pattern 4**), the 8 entries below when diagonals count. Bounds-check,
+> then mark-before-enqueue (**Pattern 3.1**) — here the grid itself is the visited set.
+
+```java
+// LC 1091 - Shortest Path in Binary Matrix
+// IDEA: BFS — shortest path in unweighted graph
+// time = O(N^2), space = O(N^2)
+public int shortestPathBinaryMatrix(int[][] grid) {
+    int n = grid.length;
+    if (grid[0][0] == 1 || grid[n-1][n-1] == 1) return -1;
+    int[][] dirs = {{0,1},{1,0},{0,-1},{-1,0},{1,1},{1,-1},{-1,1},{-1,-1}};
+    Queue<int[]> queue = new LinkedList<>();
+    queue.offer(new int[]{0, 0, 1});
+    grid[0][0] = 1; // mark visited
+    while (!queue.isEmpty()) {
+        int[] curr = queue.poll();
+        int r = curr[0], c = curr[1], dist = curr[2];
+        if (r == n-1 && c == n-1) return dist;
+        for (int[] d : dirs) {
+            int nr = r + d[0], nc = c + d[1];
+            if (nr >= 0 && nr < n && nc >= 0 && nc < n && grid[nr][nc] == 0) {
+                grid[nr][nc] = 1;
+                queue.offer(new int[]{nr, nc, dist + 1});
+            }
+        }
+    }
+    return -1;
+}
+```
+
+### Pattern 4: Multi-Source BFS (Distance Calculation) — LC 542 / LC 994 ⭐⭐⭐⭐⭐
 ```python
 def multi_source_bfs(grid, sources):
     """Start BFS from multiple sources simultaneously"""
@@ -251,155 +403,126 @@ def multi_source_bfs(grid, sources):
                 queue.append((nx, ny))
 ```
 
-**Java Implementation (LC 542 - 01 Matrix Pattern):**
-```java
-/**
- * Pattern: Multi-Source BFS for Distance Calculation
- * Use case: Calculate shortest distance from each cell to any source cell
- * Key insight: Start BFS from ALL sources simultaneously - first visit guarantees shortest path
- *
- * Time: O(m × n) - each cell visited at most once
- * Space: O(m × n) - queue can hold entire grid in worst case
- */
-public int[][] multiSourceBFS(int[][] mat) {
-    int rows = mat.length;
-    int cols = mat[0].length;
-    Queue<int[]> queue = new LinkedList<>();
+#### Canonical: Rotting Oranges — multi-source, level = minute
+> Spread rot from all initial rotten oranges simultaneously level by level.
 
-    // Step 1: Initialize - Add all sources (0s) to queue, mark others as unvisited
-    for (int r = 0; r < rows; r++) {
+```java
+// LC 994 - Rotting Oranges
+// IDEA: Multi-source BFS
+// time = O(M*N), space = O(M*N)
+public int orangesRotting(int[][] grid) {
+    int rows = grid.length, cols = grid[0].length;
+    Queue<int[]> queue = new LinkedList<>();
+    int fresh = 0;
+    for (int r = 0; r < rows; r++)
         for (int c = 0; c < cols; c++) {
-            if (mat[r][c] == 0) {
-                queue.offer(new int[]{r, c});  // Multi-source starting points
-            } else {
-                // Mark as unvisited - two common approaches:
-                // Option A: mat[r][c] = -1 (easier to check)
-                // Option B: mat[r][c] = Integer.MAX_VALUE (easier for min comparison)
-                mat[r][c] = -1;
+            if (grid[r][c] == 2) queue.offer(new int[]{r, c});
+            else if (grid[r][c] == 1) fresh++;
+        }
+    if (fresh == 0) return 0;
+    int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
+    int minutes = 0;
+    while (!queue.isEmpty() && fresh > 0) {
+        minutes++;
+        int size = queue.size();
+        for (int i = 0; i < size; i++) {
+            int[] cell = queue.poll();
+            for (int[] d : dirs) {
+                int nr = cell[0] + d[0], nc = cell[1] + d[1];
+                if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && grid[nr][nc] == 1) {
+                    grid[nr][nc] = 2;
+                    fresh--;
+                    queue.offer(new int[]{nr, nc});
+                }
             }
         }
     }
+    return fresh == 0 ? minutes : -1;
+}
+```
 
-    int[][] dirs = {{1,0}, {-1,0}, {0,1}, {0,-1}};
+**Python Implementation — LC 994:**
+```python
+# IDEA: MULTI SRC BFS
+# time = O(m × n), space = O(m × n)
+from collections import deque
 
-    // Step 2: BFS expansion from all sources
+def orangesRotting(grid):
+    l = len(grid)
+    w = len(grid[0])
+    fresh = 0
+    q = deque()
+
+    for y in range(l):
+        for x in range(w):
+            if grid[y][x] == 1:
+                fresh += 1
+            elif grid[y][x] == 2:
+                q.append([x, y])
+
+    if fresh == 0:
+        return 0
+    if not q:
+        return -1
+
+    dirs = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+    time = 0
+
+    while q and fresh > 0:
+        size = len(q)
+
+        for _ in range(size):
+            x, y = q.popleft()
+
+            for dx, dy in dirs:
+                x_ = x + dx
+                y_ = y + dy
+
+                if 0 <= x_ < w and 0 <= y_ < l and grid[y_][x_] == 1:
+                    # NOTE: update RIGHT AWAY — before enqueue
+                    # to avoid the same fresh orange being rotten several times
+                    # (two rotten neighbors in the same layer would both see it as fresh
+                    #  and enqueue it twice, causing fresh to go negative)
+                    grid[y_][x_] = 2
+                    fresh -= 1
+                    q.append([x_, y_])
+
+        time += 1  # increment AFTER processing the full level (Approach B)
+
+    return time if fresh == 0 else -1
+```
+
+If we deferred `grid[nr][nc] = 2` (Java) / `grid[y_][x_] = 2` (Python) until dequeue, two rotten neighbors processing in the same layer could both enqueue the same fresh orange, leading to `fresh` going negative and returning a wrong answer.
+
+#### Distance variant: 01 Matrix — distance to the nearest source
+> Start BFS from all 0-cells simultaneously; distance propagates outward.
+
+```java
+// LC 542 - 01 Matrix
+// IDEA: Multi-source BFS — enqueue all 0s first, then expand
+// time = O(M*N), space = O(M*N)
+public int[][] updateMatrix(int[][] mat) {
+    int m = mat.length, n = mat[0].length;
+    int[][] dist = new int[m][n];
+    Queue<int[]> queue = new LinkedList<>();
+    for (int i = 0; i < m; i++)
+        for (int j = 0; j < n; j++) {
+            if (mat[i][j] == 0) queue.offer(new int[]{i, j});
+            else dist[i][j] = Integer.MAX_VALUE;
+        }
+    int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
     while (!queue.isEmpty()) {
-        int[] cur = queue.poll();
-        int r = cur[0], c = cur[1];
-
+        int[] cell = queue.poll();
         for (int[] d : dirs) {
-            int nr = r + d[0];
-            int nc = c + d[1];
-
-            // Only process unvisited cells
-            if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && mat[nr][nc] == -1) {
-                // KEY: Distance = parent's distance + 1
-                mat[nr][nc] = mat[r][c] + 1;
+            int nr = cell[0]+d[0], nc = cell[1]+d[1];
+            if (nr>=0 && nr<m && nc>=0 && nc<n && dist[nr][nc] > dist[cell[0]][cell[1]]+1) {
+                dist[nr][nc] = dist[cell[0]][cell[1]] + 1;
                 queue.offer(new int[]{nr, nc});
             }
         }
     }
-
-    return mat;
+    return dist;
 }
-```
-
-**Alternative: Using MAX_VALUE for initialization (allows for optimization)**
-```java
-public int[][] multiSourceBFS_optimized(int[][] mat) {
-    int rows = mat.length;
-    int cols = mat[0].length;
-    Queue<int[]> queue = new LinkedList<>();
-
-    // Initialize with MAX_VALUE for non-sources
-    for (int r = 0; r < rows; r++) {
-        for (int c = 0; c < cols; c++) {
-            if (mat[r][c] == 0) {
-                queue.offer(new int[]{r, c});
-            } else {
-                mat[r][c] = Integer.MAX_VALUE;  // Treat as infinity
-            }
-        }
-    }
-
-    int[][] dirs = {{1,0}, {-1,0}, {0,1}, {0,-1}};
-
-    while (!queue.isEmpty()) {
-        int[] cur = queue.poll();
-        int r = cur[0], c = cur[1];
-
-        for (int[] d : dirs) {
-            /** NOTE !!!
-             * 
-             * - mat[r][c] + 1: 
-             * This is the "new potential distance" you just calculated
-             * by walking from your current cell (r, c) to its neighbor (nr, nc).
-             *  
-             * 
-             * - mat[nr][nc]: 
-             * This is the "best distance found so far" for that neighb
-             * 
-             */
-            int nr = r + d[0];
-            int nc = c + d[1];
-
-            if (nr < 0 || nr >= rows || nc < 0 || nc >= cols) continue;
-
-            /**
-             * KEY OPTIMIZATION: Only update when new distance is shorter
-             * Why this works:
-             * - In unweighted BFS, first visit = shortest distance
-             * - If mat[nr][nc] <= mat[r][c] + 1, cell already has better/equal path
-             * - No need to re-process cells that won't improve
-             *
-             * This prevents redundant enqueuing and guarantees O(m×n) time
-             */
-            /** e.g.
-             * 
-             * "If the existing distance at the neighbor is worse than the one I just found, update the neighbor and put it in the queue."
-             */
-            if (mat[nr][nc] > mat[r][c] + 1) {
-                mat[nr][nc] = mat[r][c] + 1;
-                queue.offer(new int[]{nr, nc});
-            }
-        }
-    }
-
-    return mat;
-}
-```
-
-**Concrete Example: LC 542 - 01 Matrix**
-```text
-Problem: Find distance to nearest 0 for each cell
-Input:  [[0,0,0],     Output: [[0,0,0],
-         [0,1,0],              [0,1,0],
-         [1,1,1]]              [1,2,1]]
-
-Execution trace:
-Step 1 - Initialize:
-  Queue: [(0,0), (0,1), (0,2), (1,0), (1,2)]  ← All 0s
-  Grid:  [[0, 0, 0],
-          [0, -1, 0],
-          [-1, -1, -1]]
-
-Step 2 - BFS Layer 1 (distance = 1):
-  Process (0,0): Check (1,0) - already 0, skip
-  Process (0,1): Check (1,1) - is -1, update to 1, enqueue
-  Process (1,0): Check (2,0) - is -1, update to 1, enqueue
-
-  Grid:  [[0, 0, 0],
-          [0, 1, 0],
-          [1, -1, -1]]
-  Queue: [(1,1), (2,0), ...]
-
-Step 3 - BFS Layer 2 (distance = 2):
-  Process (1,1): Check (2,1) - is -1, update to 2, enqueue
-  Process (2,0): Check (2,1) - is -1, update to 2, enqueue (redundant)
-
-  Final: [[0, 0, 0],
-          [0, 1, 0],
-          [1, 2, 1]]
 ```
 
 **Why This Pattern Works:**
@@ -413,415 +536,9 @@ Step 3 - BFS Layer 2 (distance = 2):
 - ✅ Starting from all 0s → Single BFS pass → O(m×n) total time
 - **Principle**: Flip the problem - instead of "how far is this 1 from any 0?", ask "how far can all 0s reach?"
 
-### Pattern 4.5: DFS + Multi-Source BFS (Island Expansion) — LC 934
-```java
-/**
- * Pattern: DFS to identify first component, then Multi-Source BFS to find shortest distance to second component
- * Use case: Find shortest bridge between two islands, connect two separate regions
- * Key insight: DFS marks entire first island, BFS expands from ALL cells of first island simultaneously
- *
- * Time: O(m × n) - each cell visited at most once by DFS + once by BFS
- * Space: O(m × n) - queue can hold entire island boundary
- */
-public int dfsMarkThenMultiSourceBFS(int[][] grid) {
-    int n = grid.length;
-    Queue<int[]> queue = new LinkedList<>();
-    boolean found = false;
+> **Where to increment time — rule of thumb:** if you use `time++` at the **beginning** of a level, you MUST have an early-exit condition in the while loop (`&& fresh > 0`). Otherwise use `time++` at the **end** with a flag. Full A-vs-B walkthrough: [bfs_examples.md](./bfs_examples.md) → *When to Increment Time/Distance*.
 
-    // Step 1: DFS to find and mark first island (change 1 → 2)
-    // Add ALL cells of first island to queue for multi-source BFS
-    for (int y = 0; y < n && !found; y++) {
-        for (int x = 0; x < n && !found; x++) {
-            if (grid[y][x] == 1) {
-                dfsMarkIsland(grid, x, y, queue);
-                found = true;
-            }
-        }
-    }
-
-    // Step 2: Multi-Source BFS from entire first island
-    // Expand outward layer by layer until reaching second island
-    int[][] dirs = {{1,0}, {-1,0}, {0,1}, {0,-1}};
-    int steps = 0;
-    boolean[][] visited = new boolean[n][n];
-
-    while (!queue.isEmpty()) {
-        int size = queue.size();
-
-        for (int i = 0; i < size; i++) {
-            int[] cur = queue.poll();
-            int x = cur[0], y = cur[1];
-
-            for (int[] d : dirs) {
-                int nx = x + d[0];
-                int ny = y + d[1];
-
-                if (nx >= 0 && nx < n && ny >= 0 && ny < n && !visited[ny][nx]) {
-                    visited[ny][nx] = true;
-
-                    if (grid[ny][nx] == 1) {
-                        return steps; // Reached second island
-                    }
-
-                    if (grid[ny][nx] == 0) {
-                        queue.add(new int[]{nx, ny});
-                    }
-                }
-            }
-        }
-        steps++;
-    }
-
-    return -1;
-}
-
-// DFS helper: Mark all cells of first island and add to queue
-void dfsMarkIsland(int[][] grid, int x, int y, Queue<int[]> queue) {
-    int n = grid.length;
-    if (x < 0 || x >= n || y < 0 || y >= n || grid[y][x] != 1) {
-        return;
-    }
-
-    grid[y][x] = 2; // Mark as visited (part of first island)
-    queue.add(new int[]{x, y}); // Add to BFS queue
-
-    // Recursively mark all connected cells
-    dfsMarkIsland(grid, x + 1, y, queue);
-    dfsMarkIsland(grid, x - 1, y, queue);
-    dfsMarkIsland(grid, x, y + 1, queue);
-    dfsMarkIsland(grid, x, y - 1, queue);
-}
-```
-
-**Concrete Example: LC 934 - Shortest Bridge**
-```text
-Problem: Connect two islands with minimum number of flips (0→1)
-Grid: [[0,1],     Two islands: Island A at (0,1), Island B at (1,0)
-       [1,0]]     Need to flip 1 cell to connect them
-
-Step 1 - DFS marks Island A:
-Original: [0,1]  →  After DFS: [0,2]  (2 = marked as first island)
-          [1,0]                [1,0]
-Queue: [(1,0)] - all cells of first island
-
-Step 2 - BFS Layer 0 (from first island):
-Check neighbors of (1,0):
-- (0,0): water, add to queue → Queue: [(0,0)]
-- (1,1): water, add to queue → Queue: [(0,0), (1,1)]
-After Layer 0: steps = 0
-
-Step 3 - BFS Layer 1:
-Process (0,0):
-  - (1,0): already visited (marked as 2)
-  - (0,1): FOUND Island B (value = 1)! Return steps = 0
-
-Result: 1 flip needed (but we count layers, answer may vary based on problem definition)
-
-Key insight:
-- DFS ensures we mark ENTIRE first island (not just one cell)
-- Multi-source BFS expands from ALL boundary cells simultaneously
-- This guarantees we find the absolute shortest bridge
-```
-
-**Why This Pattern Works:**
-1. **Complete Coverage**: DFS ensures we find the entire first island, not just part of it
-2. **Optimal Distance**: Multi-source BFS from all island cells guarantees shortest path
-3. **No Redundant Work**: Each cell visited at most once in DFS + once in BFS
-4. **Natural Layering**: BFS level corresponds to bridge length
-
-**Pattern Characteristics:**
-- **DFS Phase**: O(m × n) worst case - mark entire first island
-- **BFS Phase**: O(m × n) worst case - expand to entire grid
-- **Total Time**: O(m × n) - each cell visited constant times
-- **Space**: O(m × n) - recursion stack + queue + visited array
-
-**When to Use This Pattern:**
-- Find shortest connection between two separate components
-- One component needs complete identification before distance calculation
-- Problem requires expanding from entire boundary of a region
-- Grid has exactly two distinct regions/islands
-
-**Key Variations:**
-1. **Boundary-Only BFS**: Only add island boundary cells to queue (optimization)
-2. **Bidirectional BFS**: Expand from both islands simultaneously (faster)
-3. **Modified Grid**: Mark visited cells in original grid (space optimization)
-4. **Different Marking**: Use different values (2, -1) based on problem requirements
-
-**Similar Problems:**
-- LC 934: Shortest Bridge (connect two islands)
-- LC 1162: As Far from Land as Possible (distance from any land cell)
-- LC 542: 01 Matrix (distance to nearest 0 from each 1)
-- LC 286: Walls and Gates (distance from gates to rooms)
-- LC 1020: Number of Enclaves (count land cells not connected to boundary)
-
-### Pattern 4.6: Multi-Source BFS vs Independent BFS Runs (Critical Distinction)
-
-**🚨 IMPORTANT: This is the #1 source of confusion in multi-source BFS problems!**
-
-Many students confuse these two fundamentally different patterns:
-
-#### **Type 1: Simultaneous Multi-Source BFS** (Patterns 4, 4.5)
-- **Goal**: Find distance to the **NEAREST** source from each cell
-- **Setup**: Add ALL sources to queue at `time = 0`
-- **Visited**: ONE shared `visited` array/set for entire BFS
-- **Logic**: All sources expand simultaneously, layer by layer
-- **Result**: Each cell knows its distance to the **closest** source
-
-**Example Problems:**
-- LC 542 (01 Matrix): Distance to nearest 0
-- LC 994 (Rotting Oranges): Time for infection to spread
-- LC 1162 (As Far from Land): Distance to nearest land
-
-```java
-// Simultaneous Multi-Source BFS Template
-public int[][] simultaneousMultiSourceBFS(int[][] grid) {
-    Queue<int[]> queue = new LinkedList<>();
-    boolean[][] visited = new boolean[rows][cols];
-
-    // Add ALL sources to queue at once
-    for (int r = 0; r < rows; r++) {
-        for (int c = 0; c < cols; c++) {
-            if (grid[r][c] == SOURCE) {
-                queue.offer(new int[]{r, c});
-                visited[r][c] = true;  // ONE shared visited array
-            }
-        }
-    }
-
-    // Single BFS run - all sources expand together
-    while (!queue.isEmpty()) {
-        int[] cur = queue.poll();
-        // Process neighbors...
-        // First visit to any cell = shortest distance from ANY source
-    }
-}
-```
-
-#### **Type 2: Independent BFS Runs** (One BFS per source)
-- **Goal**: Find **SUM of distances** or **aggregate metric** across ALL sources
-- **Setup**: Run separate BFS for EACH source, one at a time
-- **Visited**: FRESH `visited` array for EACH BFS run
-- **Logic**: Each source independently explores the entire reachable space
-- **Result**: Each cell accumulates distances/metrics from ALL sources
-
-**Example Problem:**
-- LC 317 (Shortest Distance from All Buildings): Sum of distances to all buildings
-
-```java
-// Independent BFS Runs Template - LC 317 Pattern
-public int independentBFSRuns(int[][] grid) {
-    int rows = grid.length;
-    int cols = grid[0].length;
-
-    // Global accumulator - each BFS adds to this
-    int[][] totalDist = new int[rows][cols];
-    int[][] reachCount = new int[rows][cols];
-
-    int buildingCount = 0;
-
-    // Run SEPARATE BFS for each source
-    for (int r = 0; r < rows; r++) {
-        for (int c = 0; c < cols; c++) {
-            if (grid[r][c] == 1) {  // Found a building (source)
-                buildingCount++;
-
-                // FRESH visited array for this building's BFS
-                boolean[][] visited = new boolean[rows][cols];
-
-                bfsSingleSource(grid, r, c, visited, totalDist, reachCount);
-            }
-        }
-    }
-
-    // Find best cell that was reached by ALL buildings
-    int minDist = Integer.MAX_VALUE;
-    for (int r = 0; r < rows; r++) {
-        for (int c = 0; c < cols; c++) {
-            if (grid[r][c] == 0 && reachCount[r][c] == buildingCount) {
-                minDist = Math.min(minDist, totalDist[r][c]);
-            }
-        }
-    }
-
-    return minDist == Integer.MAX_VALUE ? -1 : minDist;
-}
-
-// BFS from single source - accumulates distances
-private void bfsSingleSource(int[][] grid, int sr, int sc,
-                             boolean[][] visited,
-                             int[][] totalDist,
-                             int[][] reachCount) {
-    Queue<int[]> queue = new LinkedList<>();
-    queue.offer(new int[]{sr, sc});
-    visited[sr][sc] = true;
-
-    int[][] dirs = {{0,1}, {0,-1}, {1,0}, {-1,0}};
-    int dist = 0;
-
-    while (!queue.isEmpty()) {
-        int size = queue.size();
-        dist++;
-
-        for (int i = 0; i < size; i++) {
-            int[] cur = queue.poll();
-            int r = cur[0], c = cur[1];
-
-            for (int[] d : dirs) {
-                int nr = r + d[0];
-                int nc = c + d[1];
-
-                if (nr >= 0 && nr < grid.length && nc >= 0 && nc < grid[0].length
-                    && !visited[nr][nc] && grid[nr][nc] == 0) {
-
-                    visited[nr][nc] = true;
-
-                    // Accumulate distance from this building
-                    totalDist[nr][nc] += dist;
-                    reachCount[nr][nc]++;
-
-                    queue.offer(new int[]{nr, nc});
-                }
-            }
-        }
-    }
-}
-```
-
-#### **Comparison Table**
-
-| Aspect | Simultaneous Multi-Source | Independent BFS Runs |
-|--------|---------------------------|----------------------|
-| **Queue Init** | Add ALL sources at once | Each source starts its own BFS |
-| **Visited Array** | ONE shared across entire BFS | FRESH for each BFS run |
-| **Time Complexity** | O(m×n) - single pass | O(k × m×n) where k = # sources |
-| **First Visit Means** | Distance to NEAREST source | Distance from CURRENT source |
-| **Use Case** | Find nearest/closest | Find sum/aggregate across all |
-| **Example** | LC 542, 994, 1162 | LC 317 |
-
-#### **Why Fresh Visited Arrays in Independent BFS?**
-
-**The Key Question:** *"Why can't we reuse the visited array across different buildings in LC 317?"*
-
-**The Answer:**
-```text
-Building A runs BFS:
-  - Visits land cell (2,3) and marks it visited ✓
-  - Calculates: distance from A to (2,3) = 5 steps
-
-Building B runs BFS:
-  - If we reuse visited array, cell (2,3) is still marked as visited!
-  - We would SKIP (2,3) and never calculate distance from B to (2,3) ❌
-
-But we NEED both distances because:
-  - totalDist[2][3] = distFromA + distFromB + distFromC + ...
-```
-
-**Each building needs to "see" every empty cell independently** to contribute its distance.
-
-#### **Common Mistake Example**
-
-```java
-// ❌ WRONG - Reusing visited array
-boolean[][] visited = new boolean[rows][cols];  // Created ONCE
-
-for (Building b : allBuildings) {
-    bfs(b, visited);  // All buildings share same visited array
-    // Later buildings can't visit cells that earlier buildings marked!
-}
-
-// ✅ CORRECT - Fresh visited array
-for (Building b : allBuildings) {
-    boolean[][] visited = new boolean[rows][cols];  // Fresh each time
-    bfs(b, visited);  // Each building can visit all reachable cells
-}
-```
-
-#### **Optimization: Grid Value Trick** (Space-efficient alternative)
-
-Instead of creating fresh `boolean[][] visited` arrays, modify the grid itself:
-
-```java
-// LC 317 Optimization: Decrement empty cells for each building
-public int shortestDistance(int[][] grid) {
-    int[][] totalDist = new int[rows][cols];
-    int emptyValue = 0;  // Changes with each BFS: 0 → -1 → -2 → -3...
-    int buildingCount = 0;
-
-    for (int r = 0; r < rows; r++) {
-        for (int c = 0; c < cols; c++) {
-            if (grid[r][c] == 1) {
-                buildingCount++;
-
-                // BFS from this building, only visit cells with value = emptyValue
-                bfsWithGridMarking(grid, r, c, emptyValue, totalDist);
-
-                emptyValue--;  // Next building looks for different value
-            }
-        }
-    }
-
-    // Find best cell with value = (emptyValue + 1)
-    // That cell was reached by ALL buildings
-}
-
-private void bfsWithGridMarking(int[][] grid, int sr, int sc,
-                               int targetValue, int[][] totalDist) {
-    // Only process cells with grid[r][c] == targetValue
-    // After processing, change to (targetValue - 1)
-    // This ensures cell must be reached by ALL previous buildings
-}
-```
-
-**How Grid Trick Works:**
-```text
-Initial grid: All empty cells = 0
-
-Building 1 BFS:
-  - Visit cells with value 0
-  - Change them to -1 after visiting
-  - Now empty cells = -1
-
-Building 2 BFS:
-  - Only visit cells with value -1
-  - Change them to -2 after visiting
-  - Now only cells reachable by BOTH buildings = -2
-
-Building 3 BFS:
-  - Only visit cells with value -2
-  - Change them to -3
-  - Only cells reachable by ALL 3 buildings = -3
-```
-
-**Benefits:**
-- ✅ No need for `boolean[][] visited` arrays (saves space)
-- ✅ Automatically filters cells unreachable by earlier buildings
-- ✅ Final value indicates how many buildings reached that cell
-
-#### **When to Use Which Pattern?**
-
-**Use Simultaneous Multi-Source (Pattern 4) when:**
-- ✅ Need distance to **nearest** source
-- ✅ Only care about the **closest** one
-- ✅ Problem asks: "minimum distance to ANY..."
-- ✅ Want O(m×n) time complexity
-
-**Use Independent BFS Runs (Pattern 4.6) when:**
-- ✅ Need **sum** of distances to **all** sources
-- ✅ Need to know if cell is reachable from **every** source
-- ✅ Problem asks: "find position that minimizes total distance..."
-- ✅ Willing to accept O(k × m×n) time complexity
-
-#### **Quick Recognition Guide**
-
-| Problem Statement Contains... | Pattern to Use |
-|-------------------------------|----------------|
-| "distance to **nearest** building" | Simultaneous Multi-Source |
-| "**sum** of distances to all buildings" | Independent BFS Runs |
-| "infection spreads from all sources" | Simultaneous Multi-Source |
-| "all friends can reach in **minimum total** time" | Independent BFS Runs |
-| "find the cell **closest** to any land" | Simultaneous Multi-Source |
-
-### Pattern 5: BFS with Path Tracking — LC 127
+### Pattern 5: BFS with Path Tracking (carry the path, not the distance)
 ```python
 def bfs_with_path(start, target):
     queue = deque([(start, [start])])
@@ -841,155 +558,7 @@ def bfs_with_path(start, target):
     return None
 ```
 
-### Pattern 6: Sort + Repeated BFS (Sequential Shortest Paths) — LC 675
-```java
-/**
- * Pattern: Sort targets by priority, then repeatedly call BFS to find shortest paths
- * Use case: Visit multiple targets in specific order, minimize total travel distance
- * Key insight: BFS guarantees shortest path between each pair of consecutive targets
- *
- * Time: O(k × m × n) where k = number of targets, m×n = grid size
- * Space: O(m × n) for visited array in each BFS call
- */
-public int sortAndBFS(List<List<Integer>> grid) {
-    int rows = grid.size();
-    int cols = grid.get(0).size();
-
-    // Step 1: Collect all targets and sort by priority (e.g., value)
-    List<int[]> targets = new ArrayList<>();
-    for (int r = 0; r < rows; r++) {
-        for (int c = 0; c < cols; c++) {
-            if (grid.get(r).get(c) > 1) {
-                // Store [value, row, col]
-                targets.add(new int[]{grid.get(r).get(c), r, c});
-            }
-        }
-    }
-
-    // Sort by value (ascending) - defines visit order
-    targets.sort(Comparator.comparingInt(a -> a[0]));
-
-    // Step 2: Sequentially visit each target using BFS
-    int totalSteps = 0;
-    int startR = 0, startC = 0; // Starting position
-
-    for (int[] target : targets) {
-        int targetR = target[1];
-        int targetC = target[2];
-
-        // Find shortest path from current position to next target
-        int steps = bfs(grid, startR, startC, targetR, targetC);
-
-        if (steps == -1) {
-            return -1; // Target unreachable
-        }
-
-        totalSteps += steps;
-
-        // Update starting position for next iteration
-        startR = targetR;
-        startC = targetC;
-    }
-
-    return totalSteps;
-}
-
-/**
- * Standard BFS to find shortest path in grid
- * Returns minimum steps from (sr, sc) to (tr, tc), or -1 if unreachable
- */
-private int bfs(List<List<Integer>> grid, int sr, int sc, int tr, int tc) {
-    if (sr == tr && sc == tc) return 0;
-
-    int rows = grid.size();
-    int cols = grid.get(0).size();
-
-    Queue<int[]> queue = new LinkedList<>();
-    queue.offer(new int[]{sr, sc});
-
-    boolean[][] visited = new boolean[rows][cols];
-    visited[sr][sc] = true;
-
-    int[][] dirs = {{0,1}, {0,-1}, {1,0}, {-1,0}};
-    int steps = 0;
-
-    while (!queue.isEmpty()) {
-        int size = queue.size();
-        steps++;
-
-        for (int i = 0; i < size; i++) {
-            int[] cur = queue.poll();
-            int r = cur[0], c = cur[1];
-
-            for (int[] dir : dirs) {
-                int nr = r + dir[0];
-                int nc = c + dir[1];
-
-                // Check bounds and obstacles
-                if (nr < 0 || nr >= rows || nc < 0 || nc >= cols
-                    || visited[nr][nc] || grid.get(nr).get(nc) == 0) {
-                    continue;
-                }
-
-                // Found target
-                if (nr == tr && nc == tc) {
-                    return steps;
-                }
-
-                visited[nr][nc] = true;
-                queue.offer(new int[]{nr, nc});
-            }
-        }
-    }
-
-    return -1; // Unreachable
-}
-```
-
-**Concrete Example: LC 675 - Cut Off Trees for Golf Event**
-```text
-Problem: Cut trees in forest from shortest to tallest, return minimum steps
-Grid: [[1,2,3],    Trees: (0,1)=2, (0,2)=3, (1,2)=4, (2,0)=7, (2,1)=6, (2,2)=5
-       [0,0,4],    Sorted: 2→3→4→5→6→7
-       [7,6,5]]
-
-Path: (0,0) →[1 step]→ (0,1) cut 2
-      (0,1) →[2 steps]→ (0,2) cut 3
-      (0,2) →[1 step]→ (1,2) cut 4
-      (1,2) →[1 step]→ (2,2) cut 5
-      (2,2) →[1 step]→ (2,1) cut 6
-      (2,1) →[1 step]→ (2,0) cut 7
-Total: 1+2+1+1+1+1 = 7 steps (Note: Problem statement has different expected output)
-
-Key insight: Must cut in sorted order, BFS finds shortest path between each pair
-```
-
-**Pattern Characteristics:**
-- **Sort Phase**: O(k log k) where k = number of targets
-- **BFS Phase**: O(k) iterations, each BFS is O(m×n) for grid
-- **Total Time**: O(k log k + k×m×n) ≈ O(k×m×n) when k << m×n
-- **Space**: O(m×n) for visited array (created fresh each BFS)
-
-**When to Use This Pattern:**
-- Must visit targets in specific order (sorted by value, priority, etc.)
-- Need shortest path between consecutive targets
-- Targets are sparse in the space
-- Cannot use dynamic programming due to order constraints
-
-**Key Variations:**
-1. **Different Sort Criteria**: Sort by distance, value, custom priority
-2. **Modified Grid**: Update grid after visiting target (set to 1, remove obstacle)
-3. **Early Termination**: Return immediately if any target unreachable
-4. **Optimization**: Use A* instead of BFS for large grids
-
-**Similar Problems:**
-- LC 675: Cut Off Trees for Golf Event (sort trees by height)
-- LC 1293: Shortest Path with Obstacles Elimination (BFS with state)
-- LC 864: Shortest Path to Get All Keys (BFS with key collection state)
-- LC 1091: Shortest Path in Binary Matrix (basic BFS shortest path)
-- LC 317: Shortest Distance from All Buildings (multi-source BFS)
-
-### Pattern 7: BFS + Backtracking (State Space Exploration) — LC 127
+### Pattern 7: Shortest Path on an Unweighted Graph — BFS + In-Place State Mutation — LC 127 ⭐⭐⭐⭐⭐
 ```java
 /**
  * Pattern: BFS + Backtracking for exploring transformations
@@ -1094,778 +663,7 @@ public int bfsWithBacktracking(String beginWord, String endWord, List<String> wo
 }
 ```
 
-**Concrete Example: LC 127 - Word Ladder**
-
-```text
-Problem: Transform "hit" → "cog" using dictionary ["hot","dot","dog","lot","log","cog"]
-Expected: 5 (hit → hot → dot → dog → cog)
-
-BFS + Backtracking Execution:
-
-Layer 0: Queue = [hit], steps = 1
-  Process "hit":
-    Position 0: h→a,b,c,...,z  (none in dict)
-    Position 1: i→a,b,c,...,o,... → "hot" ✓ add to queue
-    Position 2: t→a,b,c,...,g,... (none in dict besides "hit" itself)
-  After Layer 0: Queue = [hot]
-
-Layer 1: Queue = [hot], steps = 2
-  Process "hot":
-    Position 0: h→a,b,c,...,d → "dot" ✓, "lot" ✓
-    Position 1: o→... (backtrack, restore 'o')
-    Position 2: t→... (none found)
-  After Layer 1: Queue = [dot, lot]
-
-Layer 2: Queue = [dot, lot], steps = 3
-  Process "dot":
-    Position 0: d→... (none found)
-    Position 1: o→... (none found)
-    Position 2: t→g → "dog" ✓
-  Process "lot":
-    Position 0: l→... (none found)
-    Position 1: o→... (none found)
-    Position 2: t→g → "log" ✓
-  After Layer 2: Queue = [dog, log]
-
-Layer 3: Queue = [dog, log], steps = 4
-  Process "dog":
-    Position 0: d→... (none found)
-    Position 1: o→... (none found)
-    Position 2: g→... (none found)
-  Process "log":
-    Position 0: l→... (none found)
-    Position 1: o→... (none found)
-    Position 2: g→c → "cog" ✓
-  After Layer 3: Queue = [cog]
-
-Layer 4: Queue = [cog], steps = 5
-  Process "cog":
-    cur.equals(endWord) == true
-  RETURN steps = 5 ✓
-```
-
-**Why Backtracking is Essential Here:**
-
-```text
-❌ Naive Approach (without backtracking):
-   For each position, generate ONE new word per letter
-   Problem: Must process all positions with CORRECT base state
-
-✅ Backtracking Approach:
-   1. Modify position 0 → try all 26 letters
-   2. Restore position 0 to original
-   3. Modify position 1 → try all 26 letters (with position 0 restored!)
-   4. Restore position 1 to original
-   5. Continue to position 2, etc.
-
-   Result: Each position explored independently with correct base state
-```
-
-**Pattern Characteristics:**
-
-- **State Modification**: In-place modification of mutable state (char array)
-- **Exploration**: Try all possibilities at each "decision point" (position)
-- **Restoration**: Undo changes before moving to next decision point
-- **BFS Integration**: Process states level-by-level to find shortest path
-- **Visited Tracking**: Prevent re-exploring same state (before enqueue)
-
-**When to Use This Pattern:**
-
-- ✅ Word transformation problems (Word Ladder, Word Ladder II)
-- ✅ State space exploration where state can be modified in-place
-- ✅ Need to try ALL neighbors systematically
-- ✅ Neighbors differ by exactly ONE element (one char, one digit, one bit, etc.)
-- ✅ Want to find shortest path through state space
-
-**Key Implementation Details:**
-
-1. **Mark Before Enqueue**: Add to visited set BEFORE adding to queue
-   - Prevents duplicate processing
-   - Ensures O(state_space) time complexity
-
-2. **Restore After Inner Loop**: Restore state after trying all variations at one position
-   - Ensures correct base state for next position
-   - This is the "backtracking" aspect
-
-3. **Efficient State Creation**: Use char array modification instead of string concatenation
-   - Reuse same array object
-   - Only recreate string when needed
-   - Much faster than substring operations
-
-4. **Early Exit**: Check for target when dequeuing (not after modification)
-   - Allows immediate return when target found
-   - Saves unnecessary exploration
-
-**Comparison with Other Patterns:**
-
-| Pattern | State Modification | Restoration | Use Case |
-|---------|-------------------|-------------|----------|
-| **BFS + Backtracking** | ✓ In-place | ✓ Required | Word transformations, state exploration |
-| **BFS + Queue Pairs** | ✗ Create new | N/A | Simple shortest path without transformation |
-| **DFS + Backtracking** | ✓ In-place | ✓ Required | All paths, permutations, combinations |
-| **Standard BFS** | ✗ Create new | N/A | Graph traversal with pre-built adjacency |
-
-**Similar Problems:**
-
-- LC 127: Word Ladder (find shortest transformation sequence)
-- LC 126: Word Ladder II (find ALL shortest transformation sequences - use DFS + backtracking instead)
-- LC 752: Open the Lock (similar BFS pattern on digit combinations)
-- LC 1008: Construct Binary Search Tree from Preorder Traversal (different pattern)
-
-### Pattern 8: BFS on Abstract Graph (Route-Level BFS) — LC 815
-```java
-/**
- * Pattern: BFS where nodes are ROUTES (buses/lines), not physical locations
- * Use case: Find minimum number of transfers/buses to reach a destination
- * Key insight: Build stop→routes mapping, BFS on routes with two visited sets (buses + stops)
- *
- * Time: O(N * M) where N = number of routes, M = avg stops per route
- * Space: O(N * M) for the stop-to-routes map and visited sets
- */
-public int routeLevelBFS(int[][] routes, int source, int target) {
-    if (source == target) return 0;
-
-    // Step 1: Build mapping from stop → list of route IDs
-    Map<Integer, List<Integer>> stopToRoutes = new HashMap<>();
-    for (int i = 0; i < routes.length; i++) {
-        for (int stop : routes[i]) {
-            stopToRoutes.computeIfAbsent(stop, k -> new ArrayList<>()).add(i);
-        }
-    }
-
-    // Step 2: BFS on route IDs (not stops!)
-    Queue<Integer> queue = new LinkedList<>();
-    Set<Integer> visitedRoutes = new HashSet<>();
-    Set<Integer> visitedStops = new HashSet<>();
-
-    // Seed: all routes that pass through the source stop
-    for (int routeId : stopToRoutes.getOrDefault(source, new ArrayList<>())) {
-        queue.offer(routeId);
-        visitedRoutes.add(routeId);
-    }
-
-    int busCount = 1; // Already on the first bus
-
-    while (!queue.isEmpty()) {
-        int size = queue.size();
-        for (int i = 0; i < size; i++) {
-            int currRoute = queue.poll();
-
-            // Check all stops on this route
-            for (int stop : routes[currRoute]) {
-                if (stop == target) return busCount;
-
-                if (visitedStops.contains(stop)) continue;
-                visitedStops.add(stop);
-
-                // Transfer: enqueue all OTHER routes at this stop
-                for (int nextRoute : stopToRoutes.getOrDefault(stop, new ArrayList<>())) {
-                    if (!visitedRoutes.contains(nextRoute)) {
-                        visitedRoutes.add(nextRoute);
-                        queue.offer(nextRoute);
-                    }
-                }
-            }
-        }
-        busCount++;
-    }
-
-    return -1;
-}
-```
-
-**Concrete Example: LC 815 - Bus Routes**
-```text
-Problem: Find minimum buses to travel from source=1 to target=6
-Routes: [[1,2,7], [3,6,7]]
-  Route 0: stops 1→2→7→1→...
-  Route 1: stops 3→6→7→3→...
-
-Step 1 - Build stop→routes map:
-  1 → [Route 0]
-  2 → [Route 0]
-  7 → [Route 0, Route 1]   ← transfer point!
-  3 → [Route 1]
-  6 → [Route 1]
-
-Step 2 - BFS:
-  Source stop = 1 → seed Route 0 into queue
-  Queue: [Route 0], busCount = 1
-
-  Layer 1 (busCount = 1):
-    Process Route 0 → check stops [1, 2, 7]:
-      Stop 1: not target. Routes at stop 1 = [Route 0] (already visited)
-      Stop 2: not target. Routes at stop 2 = [Route 0] (already visited)
-      Stop 7: not target. Routes at stop 7 = [Route 0, Route 1]
-        → Route 1 not visited → enqueue Route 1
-    Queue: [Route 1]
-
-  busCount++ → busCount = 2
-
-  Layer 2 (busCount = 2):
-    Process Route 1 → check stops [3, 6, 7]:
-      Stop 3: not target
-      Stop 6: == target! → return busCount = 2 ✓
-```
-
-**Why Two Visited Sets?**
-```text
-visitedRoutes: Prevents boarding the same bus twice (infinite loop)
-visitedStops:  Prevents re-processing transfer points
-               (stop 7 connects Routes 0 and 1, but once explored, no need to revisit)
-
-Without visitedStops: Every stop would re-check all its routes
-  → Redundant work, potentially O(N²*M) instead of O(N*M)
-```
-
-**Why BFS on Routes, Not Stops?**
-```text
-❌ BFS on stops: Queue = [stop1, stop2, ...]
-   Problem: How do you define "neighbors" of a stop?
-   All other stops on the SAME route → huge adjacency list
-   Loses the concept of "how many buses taken"
-
-✅ BFS on routes: Queue = [route0, route1, ...]
-   Each BFS layer = one bus ride
-   Transfer = finding a new route at a shared stop
-   busCount directly maps to BFS depth
-```
-
-**When to Use This Pattern:**
-- Minimum number of transfers/vehicles/connections
-- Nodes in BFS are abstract entities (routes, lines, groups), not physical locations
-- Problem involves shared stops/stations between routes
-- Need to count transitions between groups, not individual steps
-
-**Similar Problems:**
-- LC 815: Bus Routes (minimum buses to reach target)
-- LC 127: Word Ladder (can be seen as BFS on word groups — Pattern 7 is more natural)
-- LC 841: Keys and Rooms (BFS/DFS on rooms accessed via keys)
-- LC 1197: Minimum Knight Moves (BFS on chess positions)
-
----
-
-### Pattern 8.5: BFS + DFS (Find All Shortest Paths - DAG Enumeration) — LC 126
-```java
-/**
- * Pattern: BFS to build shortest-path DAG, then DFS to enumerate all paths
- * Use case: Find ALL shortest transformation sequences (not just one)
- * Key insight: BFS builds a reverse graph of predecessors, DFS reconstructs all valid paths
- *
- * Time: O(N * M * 26 + paths) where N=words, M=length, paths=output size
- * Space: O(N * M) for graph + O(M) for DFS recursion stack
- */
-public List<List<String>> findAllShortestPaths(String beginWord, String endWord, List<String> wordList) {
-    List<List<String>> result = new ArrayList<>();
-    Set<String> wordSet = new HashSet<>(wordList);
-
-    if (!wordSet.contains(endWord))
-        return result;
-
-    // Map to store: word → list of predecessors (parents) at shortest distance
-    Map<String, List<String>> parents = new HashMap<>();
-
-    // Map to store: word → shortest distance from beginWord
-    Map<String, Integer> distances = new HashMap<>();
-
-    // ========== PHASE 1: BFS to build shortest-path DAG ==========
-    Queue<String> queue = new LinkedList<>();
-    queue.add(beginWord);
-    distances.put(beginWord, 0);
-
-    boolean found = false;
-    String alpha = "abcdefghijklmnopqrstuvwxyz";
-
-    while (!queue.isEmpty() && !found) {
-        int size = queue.size();
-
-        /**
-         * CRITICAL: Use levelVisited to allow multiple parents at same distance
-         *
-         * Why separate from main visited set?
-         * - Allows a word to be reached from multiple neighbors in same level
-         * - We record ALL parents that reach it in shortest distance
-         * - Main visited updated AFTER processing entire level
-         *
-         * Without this, we'd lose valid shortest paths!
-         */
-        Set<String> levelVisited = new HashSet<>();
-
-        for (int i = 0; i < size; i++) {
-            String word = queue.poll();
-            char[] chars = word.toCharArray();
-
-            for (int j = 0; j < chars.length; j++) {
-                char original = chars[j];
-
-                for (char c : alpha.toCharArray()) {
-                    if (c == original)
-                        continue;
-
-                    chars[j] = c;
-                    String nextWord = new String(chars);
-
-                    // Skip words not in dictionary
-                    if (!wordSet.contains(nextWord))
-                        continue;
-
-                    int newDistance = distances.get(word) + 1;
-
-                    /**
-                     * KEY LOGIC: Record ALL predecessors at shortest distance
-                     *
-                     * Case 1: First time reaching nextWord
-                     * - Set distance
-                     * - Add current word as first predecessor
-                     * - Enqueue for next level
-                     *
-                     * Case 2: Reaching nextWord again at SAME distance (same level)
-                     * - Add current word as ANOTHER predecessor
-                     * - Don't enqueue again (already enqueued in this level)
-                     *
-                     * Case 3: Reaching nextWord at LONGER distance
-                     * - Ignore (we only want shortest paths)
-                     */
-                    if (!distances.containsKey(nextWord)) {
-                        // Case 1: First time reaching this word
-                        distances.put(nextWord, newDistance);
-                        parents.computeIfAbsent(nextWord, k -> new ArrayList<>()).add(word);
-
-                        if (!levelVisited.contains(nextWord)) {
-                            levelVisited.add(nextWord);
-                            queue.add(nextWord);
-                        }
-
-                        if (nextWord.equals(endWord)) {
-                            found = true;
-                        }
-                    } else if (distances.get(nextWord) == newDistance) {
-                        // Case 2: Same distance from another parent
-                        parents.computeIfAbsent(nextWord, k -> new ArrayList<>()).add(word);
-                    }
-                    // Case 3: Longer distance - ignore
-                }
-
-                chars[j] = original;  // Restore after exploring all letters
-            }
-        }
-    }
-
-    // ========== PHASE 2: DFS to enumerate all paths ==========
-    if (distances.containsKey(endWord)) {
-        List<String> path = new LinkedList<>();
-        dfsEnumeratePaths(endWord, beginWord, parents, path, result);
-    }
-
-    return result;
-}
-
-/**
- * DFS backtracking to reconstruct all paths from endWord to beginWord
- *
- * Why backward (from endWord to beginWord)?
- * - parents map stores: word → predecessors
- * - Easier to traverse backward from target to source
- * - Build path in reverse, then it's already correct order when we reach beginWord
- */
-private void dfsEnumeratePaths(String current, String beginWord,
-                               Map<String, List<String>> parents,
-                               List<String> path, List<List<String>> result) {
-    // Add current word to path (building backward)
-    path.add(0, current);
-
-    // Base case: reached the beginning
-    if (current.equals(beginWord)) {
-        result.add(new ArrayList<>(path));
-    } else {
-        // Recursive case: explore all predecessors
-        List<String> predecessors = parents.get(current);
-        if (predecessors != null) {
-            for (String prev : predecessors) {
-                dfsEnumeratePaths(prev, beginWord, parents, path, result);
-            }
-        }
-    }
-
-    // Backtrack: remove current word before returning
-    path.remove(0);
-}
-```
-
-**Concrete Example: LC 126 - Word Ladder II**
-
-```text
-Problem: Find ALL shortest paths from "hit" to "cog"
-Dictionary: ["hot","dot","dog","lot","log","cog"]
-Expected: [["hit","hot","dot","dog","cog"], ["hit","hot","lot","log","cog"]]
-
-========== BFS PHASE ==========
-
-Level 0: Queue = [hit], distances = {hit:0}
-  Process "hit":
-    Neighbors: "hot" (only one in dict differing by 1 letter)
-    distances[hot] = 1, parents[hot] = [hit]
-    levelVisited = {hot}
-  After level: visited = {hit, hot}
-
-Level 1: Queue = [hot], distances = {hit:0, hot:1}
-  Process "hot":
-    Neighbors: "dot", "lot", "hit" (hit already visited at distance 0, skip)
-    distances[dot] = 2, parents[dot] = [hot]
-    distances[lot] = 2, parents[lot] = [hot]
-    levelVisited = {dot, lot}
-  After level: visited = {hit, hot, dot, lot}
-
-Level 2: Queue = [dot, lot], distances = {hit:0, hot:1, dot:2, lot:2}
-  Process "dot":
-    Neighbors: "dog", "hot" (hot at distance 1, skip)
-    distances[dog] = 3, parents[dog] = [dot]
-  Process "lot":
-    Neighbors: "log", "hot" (hot at distance 1, skip)
-    distances[log] = 3, parents[log] = [lot]
-    levelVisited = {dog, log}
-  After level: visited = {hit, hot, dot, lot, dog, log}
-
-Level 3: Queue = [dog, log], distances = {hit:0, hot:1, dot:2, lot:2, dog:3, log:3}
-  Process "dog":
-    Neighbors: "cog", "dot" (dot at distance 2, skip)
-    distances[cog] = 4, parents[cog] = [dog]
-    found = true
-  Process "log":
-    Neighbors: "cog", "lot" (lot at distance 2, skip)
-    cog already has distance 4, same as current+1!
-    parents[cog] = [dog, log]  ← KEY: multiple parents!
-  After level: visited = {hit, hot, dot, lot, dog, log, cog}
-
-STOP BFS (found = true after finishing level)
-
-Final parents map:
-  cog → [dog, log]
-  dog → [dot]
-  log → [lot]
-  dot → [hot]
-  lot → [hot]
-  hot → [hit]
-
-========== DFS PHASE ==========
-
-DFS from "cog" to "hit":
-
-dfs(cog):
-  path = [cog]
-  predecessors = [dog, log]
-
-  dfs(dog):
-    path = [dog, cog]
-    predecessors = [dot]
-
-    dfs(dot):
-      path = [dot, dog, cog]
-      predecessors = [hot]
-
-      dfs(hot):
-        path = [hot, dot, dog, cog]
-        predecessors = [hit]
-
-        dfs(hit):
-          path = [hit, hot, dot, dog, cog]
-          hit == beginWord → FOUND PATH!
-          result = [[hit, hot, dot, dog, cog]]
-
-  dfs(log):
-    path = [log, cog]
-    predecessors = [lot]
-
-    dfs(lot):
-      path = [lot, log, cog]
-      predecessors = [hot]
-
-      dfs(hot):
-        path = [hot, lot, log, cog]
-        predecessors = [hit]
-
-        dfs(hit):
-          path = [hit, hot, lot, log, cog]
-          hit == beginWord → FOUND PATH!
-          result = [[hit, hot, dot, dog, cog], [hit, hot, lot, log, cog]]
-
-Final result: 2 paths found ✓
-```
-
-**Why This Pattern Works:**
-
-1. **BFS Phase - Build the Graph**:
-   - Level-order traversal ensures first reach = shortest distance
-   - `Map<String, List<String>> parents` records ALL predecessors at shortest distance
-   - `Set<String> levelVisited` allows multiple parents from same level
-   - Stop after finding endWord (ensures only shortest paths in graph)
-
-2. **DFS Phase - Enumerate Paths**:
-   - Walk backward from endWord to beginWord
-   - At each node, recursively explore all predecessors
-   - This generates ALL valid combinations of shortest paths
-   - Backtrack to explore alternative paths
-
-3. **Avoiding Duplicates & TLE**:
-   - BFS only records shortest distances
-   - DFS only traverses the shortest-path DAG
-   - No redundant paths or longer paths explored
-   - Graph structure is minimal
-
-**Critical Implementation Details:**
-
-| Detail | Why Important | What Happens Without |
-|--------|---|---|
-| **`levelVisited` separate from `visited`** | Allows multiple parents in same level | Lose valid shortest paths |
-| **Update `visited` after level** | Records all same-level predecessors | Incorrectly skip valid parents |
-| **Stop BFS after finding endWord** | Prevents longer paths from being recorded | Include suboptimal paths |
-| **Use Map for predecessors** | Records all predecessors (not just one) | Find only some paths, not all |
-| **DFS backward traversal** | Can follow multiple predecessor chains | Can't enumerate all combinations |
-
-**Pattern Characteristics:**
-
-- **Two-Phase Algorithm**: BFS phase, then DFS phase (sequential, not simultaneous)
-- **Graph Construction**: Build a reverse DAG of predecessors during BFS
-- **Path Enumeration**: Use DFS with backtracking to traverse all paths in the DAG
-- **Distance Tracking**: Essential for determining shortest distance and stopping BFS
-- **Multiple Parents**: A node can have multiple predecessors at the same distance
-
-**When to Use This Pattern:**
-
-- ✅ Find ALL shortest paths (not just one)
-- ✅ Multiple valid paths of same minimum length exist
-- ✅ Need to enumerate all combinations
-- ✅ Must avoid exploring longer paths (TLE prevention)
-- ✅ Word transformation, graph traversal problems
-
-**When NOT to Use:**
-
-- ❌ Only need one shortest path (use Pattern 7 or simpler BFS)
-- ❌ Unique shortest path guaranteed (unnecessary complexity)
-- ❌ Need to find longest paths or all paths (use DFS alone)
-
-**Key Variations:**
-
-1. **Distance Map Variant**: Store distances explicitly (see V0-3 in code)
-2. **Early Termination**: Stop BFS immediately upon reaching endWord (current approach)
-3. **Bidirectional BFS**: Expand from both ends to reduce search space
-4. **Neighbor Precomputation**: Pre-compute all valid neighbors to avoid regenerating (optimization)
-
-**Similar Problems:**
-
-- **LC 126: Word Ladder II** (find all shortest word transformation sequences)
-- **LC 913: Cat and Mouse** (find all game strategies in shortest time)
-- **LC 1585: Check If String Is Transformable With Substring Sort Operations** (enumerate transformations)
-- **LC 1948: Delete the Middle Node of a Linked List** (not similar, but similar pattern in graph problems)
-- **LC 2115: Find All Recipes from Given Supplies** (topological sort variant, similar enumeration pattern)
-
-**Comparison with Pattern 7 (BFS + Backtracking):**
-
-| Aspect | Pattern 7 (BFS + Backtracking) | Pattern 8.5 (BFS + DFS) |
-|--------|---|---|
-| **Goal** | Find ONE shortest path | Find ALL shortest paths |
-| **Graph Building** | On-the-fly neighbor generation | Explicit parent map construction |
-| **Visited Tracking** | Standard visited set | levelVisited + visited (2-tier) |
-| **Enumeration** | Early exit on found | DFS backtracks through all paths |
-| **Memory** | O(M) for char array | O(N*M) for full parent graph |
-| **Example** | LC 127 | LC 126 |
-
----
-
-### Pattern 9: BFS-Style Cartesian Product Generation (Level-by-Level Combination Building) — LC 1087
-
-**Core idea:** Use a queue of partial strings (prefixes). Each independent "group" of options maps to one BFS depth level. For every level, drain the current queue and expand every prefix with every option in that group — producing the full Cartesian product one layer at a time.
-
-This is **not** BFS over a graph with visited-node tracking. It is the BFS traversal structure applied to combination enumeration: process all nodes at depth `k`, generate all nodes at depth `k+1`, repeat.
-
-#### When to Use
-
-| Signal | Reason |
-|--------|--------|
-| Output must enumerate **all combinations** from independent choice groups | Cartesian product = one choice per group |
-| Groups are **independent** (no constraint between them) | No pruning needed; every combination is valid |
-| Want **lexicographic order** | Sort each group before BFS; row-major queue output is already sorted |
-| Prefer **iterative** over recursive | BFS loop replaces DFS/backtracking recursion |
-
-**Why NOT DFS/backtracking?** Both work, but BFS avoids recursion depth limits and naturally produces combinations in group-order. Backtracking is better when choices within groups have cross-constraints (e.g., no duplicate characters in path).
-
-#### How the Queue Evolves (Cartesian Product Visualization)
-
-```text
-Input: s = "{a,b}c{d,e}f"
-Parsed groups: [["a","b"], ["c"], ["d","e"], ["f"]]
-
-Start:
-  queue = [""]
-
-After group ["a","b"]  (level 1):
-  Drain "" → append "a", "b"
-  queue = ["a", "b"]
-
-After group ["c"]      (level 2):
-  Drain "a" → "ac"
-  Drain "b" → "bc"
-  queue = ["ac", "bc"]
-
-After group ["d","e"]  (level 3):
-  Drain "ac" → "acd", "ace"
-  Drain "bc" → "bcd", "bce"
-  queue = ["acd", "ace", "bcd", "bce"]
-
-After group ["f"]      (level 4):
-  queue = ["acdf", "acef", "bcdf", "bcef"]   ← final result
-```
-
-Each level multiplies the queue size by the group's option count.  
-Total combinations = `|group_0| × |group_1| × ... × |group_k|` (the Cartesian product size).
-
-#### Template (Java)
-
-```java
-// Pattern 9: BFS-Style Cartesian Product Generation
-// Time: O(G * |result|) where G = number of groups, |result| = total combinations
-// Space: O(|result|) for the queue at the final level
-public String[] cartesianBFS(List<List<String>> groups) {
-    Queue<String> queue = new LinkedList<>();
-    queue.add("");  // seed: one empty prefix at depth 0
-
-    for (List<String> group : groups) {
-        int size = queue.size();  // snapshot current layer size
-        for (int k = 0; k < size; k++) {
-            String prefix = queue.poll();
-            for (String option : group) {
-                queue.add(prefix + option);  // expand: prefix × option
-            }
-        }
-        // After the loop: queue holds exactly one layer deeper
-    }
-
-    String[] res = new String[queue.size()];
-    int idx = 0;
-    while (!queue.isEmpty()) res[idx++] = queue.poll();
-    return res;
-}
-```
-
-**Key invariant:** after processing group `i`, every string in the queue has length `i + 1` (one char per group so far). The queue holds exactly the complete Cartesian product of groups `[0..i]`.
-
-#### Variant: Explicit State Object (more canonical BFS)
-
-```java
-// Use State(prefix, groupIndex) so the BFS loop drives termination
-Queue<State> queue = new LinkedList<>();
-queue.add(new State("", 0));
-
-while (!queue.isEmpty()) {
-    State cur = queue.poll();
-    if (cur.groupIndex == groups.size()) {
-        result.add(cur.prefix);  // leaf: complete combination
-        continue;
-    }
-    for (String opt : groups.get(cur.groupIndex))
-        queue.add(new State(cur.prefix + opt, cur.groupIndex + 1));
-}
-```
-
-Both variants are correct; the snapshot-size version is more concise; the State version makes the "BFS tree" structure explicit.
-
-#### Comparison: BFS vs Backtracking for Cartesian Products
-
-| Aspect | BFS (Pattern 9) | Backtracking / DFS |
-|--------|-----------------|---------------------|
-| **Control flow** | Iterative loop, one group per iteration | Recursive, one group per call frame |
-| **Ordering** | Natural row-major order if groups pre-sorted | Same if groups pre-sorted |
-| **Memory peak** | Full final layer (all combinations) | O(depth) recursion stack |
-| **Pruning** | Not straightforward | Easy to add |
-| **Constraint between groups?** | Hard to express | Easy (check at each step) |
-| **Best for** | Enumerate all, no cross-group constraints | Constrained search (e.g., sum ≤ target) |
-
-#### Similar Problems
-
-| Problem | LC # | How Cartesian BFS Applies |
-|---------|------|---------------------------|
-| Brace Expansion | 1087 | Each `{a,b}` or single char = one group |
-| Letter Combinations of a Phone Number | 17 | Each digit maps to a letter group |
-| Letter Case Permutation | 784 | Each char has 1 (digit) or 2 (letter) options |
-| Word Squares | 425 | Each position in the word is a group |
-| Generalized Abbreviation | 320 | Each char = keep or abbreviate (2-option group) |
-
-> **Rule of thumb**: if you can parse the input into `k` independent groups and need **all** length-`k` strings formed by picking one element from each group, use BFS-style Cartesian product generation. If groups have cross-constraints, switch to backtracking.
-
----
-
-### Pattern 10: Tree → Undirected Graph + Per-Leaf Bounded BFS — LC 1530
-
-**a. Core idea**
-
-A tree only lets you walk *down* (parent → child). But the shortest path between two **leaf** nodes goes **up** to their lowest common ancestor and then **down** again — you need to traverse edges in *both* directions. So convert the tree into an **undirected graph** (add both `parent→child` and `child→parent` edges), then the leaf-to-leaf shortest path becomes a plain graph distance you can measure with BFS.
-
-For LC 1530 (count pairs of leaves whose shortest path ≤ `distance`):
-1. **One DFS/traversal** to (a) collect all leaf nodes and (b) build the undirected adjacency map.
-2. **Run a bounded BFS from each leaf**, expanding only while `dist < distance`. Every *other* leaf reached is a good pair.
-3. Each pair `A–B` is discovered twice (once from `A`, once from `B`) → **divide the final count by 2**.
-
-**b. Pattern**
-
-```python
-# python — Tree → Graph conversion + per-leaf bounded BFS (LC 1530)
-# time  = O(L * (V + E)) = O(L * N)   L = #leaves, N = #nodes
-# space = O(N)                        adjacency map + queue/visited
-from collections import deque, defaultdict
-
-class Solution:
-    def countPairs(self, root, distance):
-        leaves = []
-        graph = defaultdict(list)
-
-        # Step 1: collect leaves + build UNDIRECTED graph
-        def build(node, parent=None):
-            if not node:
-                return
-            if not node.left and not node.right:   # leaf
-                leaves.append(node)
-            if parent:                              # bidirectional edge
-                graph[node].append(parent)
-                graph[parent].append(node)
-            build(node.left, node)
-            build(node.right, node)
-        build(root)
-
-        cnt = 0
-        # Step 2: bounded BFS from every leaf
-        for leaf in leaves:
-            queue = deque([(leaf, 0)])              # (node, dist)
-            visited = {leaf}
-            while queue:
-                cur, d = queue.popleft()
-                if cur != leaf and not cur.left and not cur.right:
-                    cnt += 1                         # reached another leaf
-                if d < distance:                     # only expand within limit
-                    for nxt in graph[cur]:
-                        if nxt not in visited:
-                            visited.add(nxt)
-                            queue.append((nxt, d + 1))
-        return cnt // 2                              # each pair counted twice
-```
-
-**Recognition signals**
-- Problem talks about the **distance / shortest path between leaf (or arbitrary) nodes** of a tree.
-- Path must go **up and then down** → downward-only tree recursion is insufficient.
-- Small constraints (`distance ≤ 10`, `N ≤ 2^10`) make the bounded-BFS-per-leaf cost acceptable.
-
-> **Alternative (often preferred):** a single **post-order DFS** that returns a bucket array of leaf-distances and combines left/right subtrees at each node — O(N) with no graph. See **DFS Pattern 15**. Use BFS when the "convert-to-graph, then measure distance" mental model is clearer or when non-tree edges exist.
-
-**c. Similar LC**
-
-| Problem | LC # | Link to this pattern |
-|---------|------|----------------------|
-| Number of Good Leaf Nodes Pairs | 1530 | canonical tree→graph + per-leaf bounded BFS |
-| All Nodes Distance K in Binary Tree | 863 | tree→graph, then BFS `k` steps from a target node — see **Pattern 11** (cheaper: parent map only) |
-| Amount of Time for Binary Tree to Be Infected | 2385 | tree→graph, BFS "infection spread" = max distance |
-| Step-By-Step Directions From a Binary Tree Node | 2096 | shortest node-to-node path via LCA (up-then-down) |
-| Closest Leaf in a Binary Tree | 742 | tree→graph, multi-source/target BFS to nearest leaf |
-
----
+> The line-by-line walkthrough of this template — the execution trace, why the restore step is mandatory, and how it compares with the other BFS shapes — is in [bfs_advanced.md](./bfs_advanced.md).
 
 ### Pattern 11: Parent Map + BFS Radiating Outward from a Target — LC 863 ⭐⭐⭐⭐⭐
 
@@ -1987,7 +785,7 @@ private void buildParents(TreeNode node, TreeNode parent, Map<TreeNode, TreeNode
 - The answer set can include **ancestors** or nodes in a **sibling subtree**.
 - Phrasing like "distance `k` from `target`", "spread / infect from node `start`", "closest X to node `k`".
 
-**Variant: level-BFS `k` times, then dump the queue** — no `dist` in the tuple; after `k` expansions the queue *is* the answer set. See §2-18.
+**Variant: level-BFS `k` times, then dump the queue** — no `dist` in the tuple; after `k` expansions the queue *is* the answer set. Full code, an A-vs-B comparison and the pitfall table: [bfs_examples.md](./bfs_examples.md) §2-18.
 
 > **DFS alternative ("percolate distance")**: a post-order DFS returns the depth of `target` in each subtree; at the node `d` edges above the target you collect nodes `k - d` levels down the *other* child. Also O(n) and O(1) extra beyond recursion — but far easier to get wrong. **BFS + parent map is the interview-safe answer.**
 
@@ -2014,91 +812,10 @@ private void buildParents(TreeNode node, TreeNode parent, Map<TreeNode, TreeNode
 | All Possible Full Binary Trees / LCA 236 | 236 | LCA is the "turning point" of the up-then-down path |
 | Minimum Height Trees | 310 | undirected-tree BFS, trimming inward instead of radiating out (§2-10) |
 
----
-
-### Pattern 12: BFS over String States — Stop at the First Fruitful Level — LC 301 ⭐⭐⭐⭐⭐
-
-**Key Idea**: when the question is *"remove the **minimum** number of X"*, make **one removal = one BFS level**. Level `k` holds every string reachable by exactly `k` deletions. The **first level that contains any valid string** is the answer level — collect all valid strings on it and return immediately. No counting, no backtracking, no "how many to remove" pre-pass.
-
-**Why BFS beats DFS here**: DFS finds *some* valid string but you'd still have to prove minimality; BFS gets minimality for free from the level number, and returns **all** answers of that length in one shot.
-
-**Two rules that keep it from exploding**:
-1. **Dedupe with a `visited` set** — `"(())"` is reachable by many different deletion orders.
-2. **Stop expanding as soon as one valid string is found in the level** — still finish scanning the rest of that level (there may be several answers), but never build level `k+1`.
-
-```java
-// java
-// LC 301 - Remove Invalid Parentheses
-// time = O(2^n * n)  worst case every subset of chars; n per validity check
-// space = O(2^n)     visited set + queue
-// IDEA: 1 BFS level = 1 deletion. First level containing a valid string is the answer level.
-public List<String> removeInvalidParentheses(String s) {
-    List<String> res = new ArrayList<>();
-    Set<String> visited = new HashSet<>();
-    Queue<String> q = new LinkedList<>();
-    q.offer(s);
-    visited.add(s);
-    boolean found = false;
-    while (!q.isEmpty()) {
-        int size = q.size();
-        for (int i = 0; i < size; i++) {
-            String cur = q.poll();
-            if (isValid(cur)) { res.add(cur); found = true; }
-            if (found) continue;               // drain this level, but stop expanding
-            for (int j = 0; j < cur.length(); j++) {
-                char c = cur.charAt(j);
-                if (c != '(' && c != ')') continue;   // only parens are removable
-                String next = cur.substring(0, j) + cur.substring(j + 1);
-                if (visited.add(next)) q.offer(next); // add() returns false if dup
-            }
-        }
-        if (found) return res;                 // this level is minimal -> done
-    }
-    return res;
-}
-
-private boolean isValid(String t) {
-    int cnt = 0;
-    for (char c : t.toCharArray()) {
-        if (c == '(') cnt++;
-        else if (c == ')' && --cnt < 0) return false;  // ')' before its '('
-    }
-    return cnt == 0;
-}
-```
-
-```python
-# python
-# LC 301 - Remove Invalid Parentheses
-# time = O(2^n * n), space = O(2^n)
-# IDEA: level = number of deletions; return the first level that has valid strings
-def removeInvalidParentheses(s):
-    def valid(t):
-        cnt = 0
-        for ch in t:
-            if ch == '(':
-                cnt += 1
-            elif ch == ')':
-                cnt -= 1
-                if cnt < 0:
-                    return False
-        return cnt == 0
-
-    level = {s}                       # a set IS the visited-dedup for this level
-    while level:
-        found = [t for t in level if valid(t)]
-        if found:
-            return found              # minimal deletions -> all answers of this size
-        nxt = set()
-        for t in level:
-            for i, ch in enumerate(t):
-                if ch in '()':        # letters are never removed
-                    nxt.add(t[:i] + t[i + 1:])
-        level = nxt
-    return [""]
-```
-
-**Recognize this pattern when**: "minimum number of removals/edits/changes to make X valid", answer must list **all** optimal results, and the state is small enough to hash (a string).
+> **Pattern takeaway**: the instant a tree problem measures something **from a node other than
+> the root**, stop thinking "tree recursion" and think **"undirected graph"** — add parent links
+> (`{node: parent}` map, or `node.par` annotation), then it is an ordinary BFS where each node
+> has 3 neighbors and `visited` is non-negotiable.
 
 ---
 
@@ -2168,817 +885,9 @@ def isBipartite(graph):
 
 ---
 
-### Pattern 14: BFS Carrying an Accumulated Value Along the Path — LC 399 ⭐⭐⭐⭐
+## Summary & Quick Reference
 
-**Key Idea**: the queue entry is `(node, valueSoFar)` instead of `(node, distance)`. Every edge carries a weight and you **combine** it (multiply here, could be add/min/max) as you expand. BFS is still valid because the question is *"is there **a** path, and what does it evaluate to"* — not *"the cheapest path"*. In `a/b = 2` the graph is `a --2--> b` and `b --1/2--> a`, so any path from `x` to `y` gives the same product and the first one BFS finds is fine.
-
-**Guard rails**: return `-1.0` if either endpoint was never seen in the equations (an unknown variable, *not* a disconnected one), and `1.0` for `x/x` **only when `x` is known**.
-
-```java
-// java
-// LC 399 - Evaluate Division
-// time = O(Q * (V + E)), space = O(V + E)     Q = #queries
-// IDEA: weighted graph a->b = v, b->a = 1/v; BFS carries the running product
-public double[] calcEquation(List<List<String>> equations, double[] values,
-                             List<List<String>> queries) {
-    Map<String, Map<String, Double>> g = new HashMap<>();
-    for (int i = 0; i < values.length; i++) {
-        String a = equations.get(i).get(0), b = equations.get(i).get(1);
-        g.computeIfAbsent(a, k -> new HashMap<>()).put(b, values[i]);
-        g.computeIfAbsent(b, k -> new HashMap<>()).put(a, 1.0 / values[i]);
-    }
-    double[] res = new double[queries.size()];
-    for (int i = 0; i < queries.size(); i++)
-        res[i] = bfs(g, queries.get(i).get(0), queries.get(i).get(1));
-    return res;
-}
-
-private double bfs(Map<String, Map<String, Double>> g, String src, String dst) {
-    if (!g.containsKey(src) || !g.containsKey(dst)) return -1.0;  // unknown variable
-    if (src.equals(dst)) return 1.0;
-    Queue<Object[]> q = new LinkedList<>();
-    Set<String> seen = new HashSet<>();
-    q.offer(new Object[]{src, 1.0});
-    seen.add(src);
-    while (!q.isEmpty()) {
-        Object[] cur = q.poll();
-        String node = (String) cur[0];
-        double prod = (double) cur[1];
-        for (Map.Entry<String, Double> e : g.get(node).entrySet()) {
-            if (e.getKey().equals(dst)) return prod * e.getValue();
-            if (seen.add(e.getKey()))
-                q.offer(new Object[]{e.getKey(), prod * e.getValue()});
-        }
-    }
-    return -1.0;   // known variables, but no path connects them
-}
-```
-
-```python
-# python
-# LC 399 - Evaluate Division
-# time = O(Q * (V + E)), space = O(V + E)
-# IDEA: queue holds (node, product_so_far) instead of (node, distance)
-from collections import deque, defaultdict
-
-def calcEquation(equations, values, queries):
-    g = defaultdict(dict)
-    for (a, b), v in zip(equations, values):
-        g[a][b] = v
-        g[b][a] = 1.0 / v
-
-    def bfs(src, dst):
-        if src not in g or dst not in g:
-            return -1.0                     # variable never appeared
-        if src == dst:
-            return 1.0
-        q = deque([(src, 1.0)])
-        seen = {src}
-        while q:
-            node, prod = q.popleft()
-            for nxt, w in g[node].items():
-                if nxt == dst:
-                    return prod * w
-                if nxt not in seen:
-                    seen.add(nxt)
-                    q.append((nxt, prod * w))
-        return -1.0
-
-    return [bfs(a, b) for a, b in queries]
-```
-
-**Generalizes to**: any "propagate a value along edges" question — swap the `*` for `+` (accumulate cost), `min`/`max` (bottleneck path), or a boolean (reachability). The queue payload is the only thing that changes.
-
----
-
-### Pattern 15: 0-1 BFS with a Deque — LC 1368 ⭐⭐⭐⭐
-
-**Key Idea**: when every edge costs **0 or 1**, you don't need Dijkstra's heap. Use a **deque**:
-- cost-0 edge → `addFirst` (same "layer", process before anything costlier)
-- cost-1 edge → `addLast` (next layer)
-
-The deque stays sorted by distance with at most two distinct values in it, so the first pop of a node is its final distance — Dijkstra's guarantee at **O(V + E)** instead of `O(E log V)`.
-
-**LC 1368**: the grid tells you the "free" direction of each cell. Following the arrow costs `0`; any other of the 4 moves costs `1` (one sign change).
-
-```java
-// java
-// LC 1368 - Minimum Cost to Make at Least One Valid Path in a Grid
-// time = O(m*n), space = O(m*n)
-// IDEA: 0-1 BFS. Following grid[r][c]'s arrow costs 0 -> push FRONT; turning costs 1 -> push BACK.
-public int minCost(int[][] grid) {
-    int m = grid.length, n = grid[0].length;
-    int[][] dirs = {{0,1},{0,-1},{1,0},{-1,0}};    // index k <-> grid value k+1
-    int[][] dist = new int[m][n];
-    for (int[] row : dist) Arrays.fill(row, Integer.MAX_VALUE);
-    dist[0][0] = 0;
-    Deque<int[]> dq = new ArrayDeque<>();
-    dq.offerFirst(new int[]{0, 0});
-    while (!dq.isEmpty()) {
-        int[] cur = dq.pollFirst();
-        int r = cur[0], c = cur[1];
-        for (int k = 0; k < 4; k++) {
-            int nr = r + dirs[k][0], nc = c + dirs[k][1];
-            if (nr < 0 || nr >= m || nc < 0 || nc >= n) continue;
-            int cost = (grid[r][c] == k + 1) ? 0 : 1;
-            if (dist[r][c] + cost < dist[nr][nc]) {
-                dist[nr][nc] = dist[r][c] + cost;
-                if (cost == 0) dq.offerFirst(new int[]{nr, nc});   // 0-weight: front
-                else           dq.offerLast(new int[]{nr, nc});    // 1-weight: back
-            }
-        }
-    }
-    return dist[m - 1][n - 1];
-}
-```
-
-```python
-# python
-# LC 1368 - Minimum Cost to Make at Least One Valid Path in a Grid
-# time = O(m*n), space = O(m*n)
-# IDEA: deque BFS - appendleft for 0-cost moves, append for 1-cost moves
-def minCost(grid):
-    m, n = len(grid), len(grid[0])
-    dirs = [(0, 1), (0, -1), (1, 0), (-1, 0)]      # grid value 1,2,3,4
-    INF = float('inf')
-    dist = [[INF] * n for _ in range(m)]
-    dist[0][0] = 0
-    dq = deque([(0, 0)])
-    while dq:
-        r, c = dq.popleft()
-        for k, (dr, dc) in enumerate(dirs):
-            nr, nc = r + dr, c + dc
-            if not (0 <= nr < m and 0 <= nc < n):
-                continue
-            cost = 0 if grid[r][c] == k + 1 else 1
-            if dist[r][c] + cost < dist[nr][nc]:
-                dist[nr][nc] = dist[r][c] + cost
-                if cost == 0:
-                    dq.appendleft((nr, nc))        # free move -> front
-                else:
-                    dq.append((nr, nc))            # paid move -> back
-    return dist[m - 1][n - 1]
-```
-
-**BFS vs 0-1 BFS vs Dijkstra**
-
-| Edge weights | Structure | Push rule | Time |
-|---|---|---|---|
-| all 1 | Queue | always back | O(V + E) |
-| 0 or 1 | **Deque** | 0 → front, 1 → back | O(V + E) |
-| arbitrary ≥ 0 | PriorityQueue | by distance | O(E log V) |
-
-**Similar 0-1 BFS problems**: LC 1263 Minimum Moves to Move a Box to Their Target Location (pushing the box costs 1, walking the player around costs 0 — state is `(box, player)`), and any "minimum obstacles to remove / minimum sign flips" grid question. Compare with LC 1730 (already in this doc) where every move costs 1 → plain queue is enough.
-
----
-
-## Problem Categories
-
-### 1. Tree Traversal Problems
-- **Level Order Traversal**: LC 102, 107, 103
-- **Binary Tree Paths**: LC 257, 1022
-- **Right Side View**: LC 199
-- **Vertical Order**: LC 314
-- **Level-wise Tree Mutation**: LC 623 (Add One Row), LC 116/117 (Next Right Pointers)
-- **Distance from an arbitrary node (Pattern 11 — parent map + radiate out)**: LC 863 (Distance K), LC 2385 (Tree Infection), LC 742 (Closest Leaf), LC 1740 (Find Distance)
-
-### 2. Shortest Path Problems
-- **Unweighted Graphs**: LC 127 (Word Ladder)
-- **Grid Navigation**: LC 1730 (Shortest Path to Food), LC 1091 (Shortest Path in Binary Matrix)
-- **Simultaneous Multi-source Distance (Pattern 4)**:
-  - **LC 542 (01 Matrix)** - Distance to nearest 0 from each cell
-  - LC 1162 (As Far from Land) - Distance to nearest land from each water cell
-  - LC 286 (Walls and Gates) - Distance from gates to rooms
-  - LC 994 (Rotting Oranges) - Time for infection to spread
-- **Independent BFS Runs (Pattern 4.6)**:
-  - **LC 317 (Shortest Distance from All Buildings)** - Sum of distances to all buildings (use fresh visited for each)
-- **DFS + Multi-source BFS (Pattern 4.5)**: LC 934 (Shortest Bridge - mark one component, expand to find other)
-- **Sequential Targets (Pattern 6)**: LC 675 (Cut Off Trees for Golf Event - Sort + Repeated BFS)
-- **Route-Level BFS (Pattern 8)**: LC 815 (Bus Routes - minimum buses/transfers to reach target)
-- **State-Based BFS**: LC 864 (Shortest Path to Get All Keys), LC 1293 (Shortest Path with Obstacles Elimination)
-
-### 3. Graph Structure Problems
-- **Cycle Detection**: LC 207 (Course Schedule)
-- **Connected Components**: LC 200 (Number of Islands)
-- **Graph Validation**: LC 261 (Graph Valid Tree)
-- **Clone Graph**: LC 133
-
-### 4. Matrix/Grid Problems
-- **Surrounded Regions**: LC 130
-- **Walls and Gates**: LC 286
-- **Maze Problems**: LC 490
-
-### 5. Combination Enumeration Problems (Pattern 9 — BFS-Style Cartesian Product)
-- **Brace Expansion (LC 1087)** — parse into groups, BFS layer-by-layer
-- **Letter Combinations of a Phone Number (LC 17)** — digit → letter group, Cartesian BFS
-- **Letter Case Permutation (LC 784)** — per-char 1-or-2 option groups
-- **Generalized Abbreviation (LC 320)** — keep-or-skip groups per character
-
-## Time & Space Complexity
-
-### BFS Time Complexity Analysis
-
-BFS time complexity depends on the graph representation:
-
-#### 🔹 Graph Representations
-
-**Adjacency List (most common in practice):**
-- Each vertex is enqueued/dequeued once → O(V)
-- Each edge is explored at most once → O(E)
-- ✅ **Total = O(V + E)**
-
-**Adjacency Matrix:**
-- Checking all neighbors of a vertex costs O(V)
-- Doing this for all vertices costs O(V²)
-- ✅ **Total = O(V²)**
-
-#### Detailed Breakdown by Data Structure
-
-**Tree BFS**
-- **Time**: O(n) - visit each node once
-- **Space**: O(w) - maximum width of tree
-- **Explanation**: Each node visited exactly once, queue stores at most one level
-
-**Graph BFS (Adjacency List)**
-- **Time**: O(V + E) - visit each vertex and edge once
-- **Space**: O(V) - queue and visited set
-- **Explanation**:
-  - Vertex processing: Each vertex enqueued/dequeued once = O(V)
-  - Edge processing: Each edge examined once = O(E)
-  - Queue space: At most O(V) vertices
-  - Visited set: O(V) vertices
-
-**Graph BFS (Adjacency Matrix)**
-- **Time**: O(V²) - check all possible edges
-- **Space**: O(V) - queue and visited set
-- **Explanation**:
-  - For each vertex, check all V possible neighbors
-  - Total vertices × neighbors per vertex = V × V = O(V²)
-
-**Grid BFS**
-- **Time**: O(m × n) - visit each cell once
-- **Space**: O(m × n) - worst case queue size
-- **Explanation**:
-  - Each cell visited at most once
-  - Queue can contain at most all cells in worst case
-  - Grid is essentially a graph with m×n vertices and 4-directional edges
-
-#### Performance Comparison Table
-
-| Graph Type | Representation | Time Complexity | Space Complexity | Best For |
-|------------|----------------|-----------------|------------------|----------|
-| **Sparse Graph** | Adjacency List | O(V + E) | O(V) | E << V² |
-| **Dense Graph** | Adjacency Matrix | O(V²) | O(V²) | E ≈ V² |
-| **Tree** | Parent-Child Links | O(n) | O(w) | Hierarchical data |
-| **Grid** | 2D Array | O(m × n) | O(m × n) | Spatial problems |
-
-#### Why O(V + E) for Adjacency List?
-
-```python
-# Detailed analysis of BFS with adjacency list
-def bfs_analysis(graph, start):
-    queue = deque([start])        # O(1)
-    visited = {start}             # O(1)
-
-    while queue:                  # Executes at most V times
-        vertex = queue.popleft()  # O(1) - each vertex dequeued once
-
-        # This inner loop runs exactly deg(vertex) times
-        for neighbor in graph[vertex]:  # Total across all vertices = E
-            if neighbor not in visited:  # O(1) with set
-                visited.add(neighbor)    # O(1) - each vertex added once
-                queue.append(neighbor)   # O(1) - each vertex enqueued once
-
-    # Analysis:
-    # - Outer while loop: O(V) iterations
-    # - Inner for loop: Sum of deg(v) for all v = 2E (undirected) or E (directed)
-    # - Each operation inside: O(1)
-    # Total: O(V + E)
-```
-
-## Common Mistakes & Tips
-
-### ❌ Common Mistakes
-1. Using `queue.pop()` instead of `queue.popleft()` with list
-2. Not handling visited set in graphs (infinite loops)
-3. Forgetting level-by-level processing when needed
-4. Incorrect boundary checking in grid problems
-
-### ✅ Best Practices
-1. Use `collections.deque` for better performance
-2. Always use visited set for graph problems
-3. Check boundaries before adding to queue in grid problems
-4. Consider multi-source BFS for optimization
-5. Track level/distance when needed for shortest path
-6. **Mark state BEFORE enqueue, not after dequeue** — update grid/visited/counters the moment you decide to enqueue a neighbor; deferring until dequeue lets multiple neighbors re-enqueue the same cell (see "When to Update Grid Status & Count" section below)
-
-### When to Update Grid Status & Count (Mark Before vs After Enqueue)
-
-A critical BFS implementation detail: **always mark a cell as visited (update grid status and counters) BEFORE adding it to the queue**, not when you dequeue it.
-
-#### The Rule
-
-```text
-Mark visited + update count → THEN add to queue
-```
-
-**General BFS template (canonical form):**
-```python
-visited = {start}
-q.append(start)
-
-while q:
-    node = q.popleft()
-
-    for nei in neighbors(node):
-        if nei not in visited:
-            visited.add(nei)    # <-- before enqueue
-            q.append(nei)
-```
-
-**3-step pattern when state update is non-trivial (grid mutation, counters):**
-```python
-# 1. Validate the neighbor
-if neighbor_is_valid and neighbor_not_visited:
-
-    # 2. Update state IMMEDIATELY (mark visited / mutate grid / decrement counter)
-    mark_as_visited(neighbor)
-
-    # 3. Enqueue the neighbor
-    queue.append(neighbor)
-```
-
-```java
-// ✅ CORRECT: Mark BEFORE enqueue
-if (grid[nr][nc] == 1) {
-    grid[nr][nc] = 2;       // mark immediately
-    freshOrange--;           // update count immediately
-    q.add(new int[]{nr, nc});
-}
-
-// ❌ WRONG: Mark AFTER dequeue
-int[] cur = q.poll();
-grid[cur[0]][cur[1]] = 2;   // too late! duplicates already in queue
-```
-
-#### Why This Matters
-
-If you defer marking until dequeue, **multiple neighbors can enqueue the same cell** before any of them processes it:
-
-```text
-BFS Layer 1: Cells A and B are both neighbors of cell X (fresh orange)
-
-Thread of execution:
-  1. Process A → sees X is fresh → enqueues X
-  2. Process B → sees X is STILL fresh (not marked yet!) → enqueues X AGAIN
-  3. Dequeue X → mark as rotten, freshOrange--
-  4. Dequeue X again → already rotten, but freshOrange-- happens again! (WRONG)
-```
-
-**Result**: Double-counting, incorrect answers, or wasted processing.
-
-#### Mark-Before-Enqueue guarantees:
-
-| Guarantee | Explanation |
-|-----------|-------------|
-| **No duplicates in queue** | Cell is marked visited before any other neighbor can see it |
-| **Correct counting** | Each cell counted exactly once |
-| **O(m x n) time** | Each cell enqueued at most once |
-| **Correct BFS layers** | Layer boundaries remain accurate for timing/distance |
-
-#### Concrete Example: LC 994 Rotting Oranges — marking visited
-
-```java
-// From RottingOranges.java - V0 solution
-while (!q.isEmpty() && freshOrange > 0) {
-    int size = q.size();
-    time++;
-
-    for (int i = 0; i < size; i++) {
-        int[] cur = q.poll();
-        int r = cur[0], c = cur[1];
-
-        for (int[] m : moves) {
-            int nr = r + m[0];
-            int nc = c + m[1];
-
-            if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && grid[nr][nc] == 1) {
-                // CRITICAL: Mark rotten and decrement count BEFORE enqueue
-                grid[nr][nc] = 2;
-                freshOrange--;
-                q.add(new int[] { nr, nc });
-            }
-        }
-    }
-}
-```
-
-**Python Implementation (LC 994 - Rotting Oranges):**
-```python
-# IDEA: MULTI SRC BFS
-# time = O(m × n), space = O(m × n)
-from collections import deque
-
-def orangesRotting(grid):
-    l = len(grid)
-    w = len(grid[0])
-    fresh = 0
-    q = deque()
-
-    for y in range(l):
-        for x in range(w):
-            if grid[y][x] == 1:
-                fresh += 1
-            elif grid[y][x] == 2:
-                q.append([x, y])
-
-    if fresh == 0:
-        return 0
-    if not q:
-        return -1
-
-    dirs = [[0, 1], [0, -1], [1, 0], [-1, 0]]
-    time = 0
-
-    while q and fresh > 0:
-        size = len(q)
-
-        for _ in range(size):
-            x, y = q.popleft()
-
-            for dx, dy in dirs:
-                x_ = x + dx
-                y_ = y + dy
-
-                if 0 <= x_ < w and 0 <= y_ < l and grid[y_][x_] == 1:
-                    # NOTE: update RIGHT AWAY — before enqueue
-                    # to avoid the same fresh orange being rotten several times
-                    # (two rotten neighbors in the same layer would both see it as fresh
-                    #  and enqueue it twice, causing fresh to go negative)
-                    grid[y_][x_] = 2
-                    fresh -= 1
-                    q.append([x_, y_])
-
-        time += 1  # increment AFTER processing the full level (Approach B)
-
-    return time if fresh == 0 else -1
-```
-
-If we deferred `grid[nr][nc] = 2` (Java) / `grid[y_][x_] = 2` (Python) until dequeue, two rotten neighbors processing in the same layer could both enqueue the same fresh orange, leading to `fresh` going negative and returning a wrong answer.
-
-#### Cases Where This Applies
-
-| Scenario | Why mark-before-enqueue matters |
-|----------|-------------------------------|
-| **Counting** (fresh oranges, infections) | Prevents double-decrement of counters |
-| **Timing / distance** (minutes elapsed) | Ensures cell is assigned to correct BFS layer |
-| **Grid mutation** (spreading rot, flood fill) | Prevents same cell being processed multiple times |
-| **Visited tracking via grid values** | Grid itself serves as visited set; must mark before enqueue |
-
-#### When Using a Separate `visited` Set
-
-The same principle applies — add to `visited` **when enqueuing**, not when dequeuing:
-
-```java
-// CORRECT
-if (!visited[nr][nc]) {
-    visited[nr][nc] = true;          // mark BEFORE enqueue
-    queue.offer(new int[]{nr, nc});
-}
-
-// WRONG
-int[] cur = queue.poll();
-visited[cur[0]][cur[1]] = true;      // too late
-```
-
-#### Related LeetCode Problems
-
-| Problem | Why mark-before-enqueue is critical |
-|---------|-------------------------------------|
-| **LC 994** - Rotting Oranges | Counter `freshOrange--` must happen exactly once per cell |
-| **LC 542** - 01 Matrix | Distance assignment must happen on first (shortest) visit |
-| **LC 286** - Walls and Gates | Room distance must not be overwritten by longer path |
-| **LC 1162** - As Far from Land as Possible | Same multi-source BFS, distance must be set on first reach |
-| **LC 200** - Number of Islands | Marking on enqueue prevents re-visiting same land cell |
-| **LC 934** - Shortest Bridge | Expanding island boundary must not double-count water cells |
-| **LC 127** - Word Ladder | Words must be marked visited on enqueue to avoid duplicate paths |
-
-#### Summary — mark before vs after enqueue
-
-> In BFS, **the moment you decide a neighbor should enter the queue is the moment you commit** — mark it visited, update your counters, mutate the grid. Never defer state changes to dequeue time. This is not an optimization; it is a **correctness requirement**.
-
-### When to Increment Time/Distance: Beginning vs End of BFS Level
-
-A common source of bugs in level-by-level BFS is **where to place the time/distance increment**. There are two valid approaches, each with different trade-offs.
-
-#### The Two Approaches
-
-**Approach A: Increment at BEGINNING of level (before processing)**
-```java
-// From LC 994 - RottingOranges.java V0
-while (!queue.isEmpty() && freshOrange > 0) {  // NOTE: extra condition!
-    int size = queue.size();
-    time++;  // Increment FIRST - we're about to process a "minute" level
-
-    for (int i = 0; i < size; i++) {
-        int[] cur = queue.poll();
-        // process neighbors, infect fresh oranges...
-    }
-}
-return freshOrange == 0 ? time : -1;
-```
-
-**Approach B: Increment at END of level (only if work was done)**
-```java
-// From LC 994 - RottingOranges.java V0-0-2, V0-1, V0-4
-while (!queue.isEmpty()) {
-    int size = queue.size();
-    boolean rottedThisMinute = false;
-
-    for (int i = 0; i < size; i++) {
-        int[] cur = queue.poll();
-        // process neighbors...
-        if (/* infected a fresh neighbor */) {
-            rottedThisMinute = true;
-        }
-    }
-
-    if (rottedThisMinute) time++;  // Only count if actual infection happened
-}
-return freshOrange == 0 ? time : -1;
-```
-
-#### Detailed Comparison
-
-| Aspect | Approach A (Beginning) | Approach B (End with Flag) |
-|--------|------------------------|---------------------------|
-| **When to increment** | Before processing level | After processing, only if work done |
-| **Extra while condition?** | Yes: `freshOrange > 0` | No, flag handles edge cases |
-| **Risk** | Over-counting if condition missing | None if flag used correctly |
-| **Code complexity** | Simpler loop body | Requires tracking boolean flag |
-| **When returns 0?** | Natural if no fresh oranges | Natural: no work = no increment |
-
-#### Why Approach A Needs `freshOrange > 0` in While Condition
-
-**The Problem:** If we only check `!queue.isEmpty()`, we'll increment time for processing already-rotten cells that have nothing left to infect.
-
-```text
-Scenario: After all oranges are infected
-
-Layer N: Queue = [(2,1)], freshOrange = 1
-  - time++ → time = 4
-  - Process (2,1): infect (2,2)
-  - freshOrange = 0, Queue = [(2,2)]
-
-Layer N+1: Queue = [(2,2)], freshOrange = 0
-  - WITHOUT `freshOrange > 0`: time++ → time = 5 (WRONG! over-count)
-  - WITH `freshOrange > 0`: Exit loop, return time = 4 (CORRECT!)
-```
-
-**The Key Insight:** When `freshOrange == 0`, all oranges are ALREADY infected (marked as 2). The queue may still contain rotten cells, but they have no fresh neighbors to infect. Processing them would waste time and over-count.
-
-```java
-// CORRECT: Exit early when nothing left to infect
-while (!queue.isEmpty() && freshOrange > 0) {
-    time++;
-    // ...
-}
-```
-
-#### Why Approach B Naturally Handles Edge Cases
-
-```java
-while (!queue.isEmpty()) {
-    int size = queue.size();
-    boolean rottedThisMinute = false;
-
-    for (int i = 0; i < size; i++) {
-        // process...
-        if (/* infected a neighbor */) {
-            rottedThisMinute = true;
-        }
-    }
-
-    if (rottedThisMinute) time++;  // Only count if actual infection happened
-}
-```
-
-**Why it works:**
-- Even if queue has items (previously infected cells)
-- If they don't infect any NEW cells → `rottedThisMinute = false`
-- No increment → no over-counting
-
-#### Concrete Example: LC 994 Rotting Oranges — where to increment time
-
-```text
-Grid: [[2,1,1],    Initial: 6 fresh oranges, 1 rotten at (0,0)
-       [1,1,0],
-       [0,1,1]]    Expected answer: 4 minutes
-```
-
-**Approach A Trace (time++ at beginning with `freshOrange > 0`):**
-
-```text
-Initial: Queue=[(0,0)], fresh=6, time=0
-
-Check: queue not empty && fresh>0 → TRUE
-  time++ → time=1
-  Process (0,0): infect (0,1), (1,0)
-  fresh=4, Queue=[(0,1),(1,0)]
-
-Check: queue not empty && fresh>0 → TRUE
-  time++ → time=2
-  Process (0,1): infect (0,2), (1,1)
-  Process (1,0): nothing new
-  fresh=2, Queue=[(0,2),(1,1)]
-
-Check: queue not empty && fresh>0 → TRUE
-  time++ → time=3
-  Process (0,2): nothing (neighbor (1,2)=0)
-  Process (1,1): infect (2,1)
-  fresh=1, Queue=[(2,1)]
-
-Check: queue not empty && fresh>0 → TRUE
-  time++ → time=4
-  Process (2,1): infect (2,2)
-  fresh=0, Queue=[(2,2)]
-
-Check: queue not empty && fresh>0 → FALSE (fresh=0)
-  EXIT LOOP
-  Return fresh==0 ? time : -1 → time=4 ✓ CORRECT!
-```
-
-**What if we removed `freshOrange > 0` from while condition?**
-
-```text
-...continuing from above...
-
-Check: queue not empty → TRUE (Queue=[(2,2)])
-  time++ → time=5  ← WRONG! Over-counting
-  Process (2,2): no fresh neighbors
-  Queue=[]
-
-Return time=5 ✗ WRONG!
-```
-
-#### Decision Guide: Which Approach to Use?
-
-**Use Approach A (time++ at beginning) when:**
-- ✅ You have a clear "completion" condition (e.g., `freshOrange == 0`)
-- ✅ You want simpler loop body without tracking flags
-- ✅ Problem semantics: "time passes, THEN infection spreads"
-- ⚠️ MUST add completion condition to while loop!
-
-**Use Approach B (time++ at end with flag) when:**
-- ✅ No clear completion condition available
-- ✅ Want to be safe from over-counting
-- ✅ Problem semantics: "infection spreads, THEN time passes"
-- ✅ Multiple different "work" types need tracking
-
-#### Common Patterns in LC 994 Solutions
-
-| Version | Strategy | Key Code |
-|---------|----------|----------|
-| V0, V0-0-1 | time++ at beginning | `while (!q.isEmpty() && freshOrange > 0) { time++; ... }` |
-| V0-0-2, V0-1, V0-4 | time++ at end with flag | `if (rottedThisMinute) time++;` |
-| V1-1 | time++ at end (no flag) | `while (fresh > 0 && !q.isEmpty()) { ... } time++;` |
-
-#### Summary — incrementing time at the start vs end of a level
-
-| Scenario | Recommended Approach |
-|----------|---------------------|
-| Have completion counter (fresh oranges, keys collected) | Approach A with counter in while condition |
-| No completion counter | Approach B with boolean flag |
-| Want simplest correct code | Approach B (harder to get wrong) |
-| Want most efficient code | Approach A (no flag overhead) |
-
-> **Rule of Thumb:** If you use `time++` at the BEGINNING, you MUST have an early-exit condition in the while loop. Otherwise, use `time++` at the END with a flag.
-
----
-
-## Advanced Techniques
-
-### Bidirectional BFS
-```python
-def bidirectional_bfs(start, end):
-    """Meet in the middle - faster for long paths"""
-    if start == end:
-        return 0
-    
-    forward = {start: 0}
-    backward = {end: 0}
-    queue_forward = deque([start])
-    queue_backward = deque([end])
-    
-    while queue_forward or queue_backward:
-        # Expand smaller frontier
-        if len(forward) <= len(backward):
-            if expand_level(queue_forward, forward, backward):
-                return True
-        else:
-            if expand_level(queue_backward, backward, forward):
-                return True
-    
-    return False
-```
-
-### BFS with Priority (Dijkstra-like)
-```python
-import heapq
-
-def weighted_bfs(start, end, graph):
-    """BFS variant for weighted graphs"""
-    heap = [(0, start)]
-    distances = {start: 0}
-    
-    while heap:
-        dist, node = heapq.heappop(heap)
-        
-        if node == end:
-            return dist
-            
-        if dist > distances.get(node, float('inf')):
-            continue
-            
-        for neighbor, weight in graph[node]:
-            new_dist = dist + weight
-            if new_dist < distances.get(neighbor, float('inf')):
-                distances[neighbor] = new_dist
-                heapq.heappush(heap, (new_dist, neighbor))
-    
-    return -1
-```
-
-## Core Concepts Summary
-
-### Multi-Source BFS Distance Calculation (LC 542 Pattern)
-
-**The Problem Type:**
-Calculate shortest distance from each cell to ANY source cell in a grid.
-
-**Why Multi-Source BFS?**
-```text
-❌ Naive Approach: Start BFS from each target cell
-   - For each 1, run BFS to find nearest 0
-   - Time: O(m×n) targets × O(m×n) BFS = O(m²×n²) ❌
-
-✅ Multi-Source Approach: Start BFS from ALL sources simultaneously
-   - Add all 0s to queue initially
-   - Run single BFS that expands from all sources
-   - Time: O(m×n) - each cell visited once ✅
-```
-
-**Key Implementation Details:**
-
-1. **Initialization Strategy:**
-   ```java
-   // Option A: Use sentinel value -1
-   mat[r][c] = -1;  // Easier to check: if (mat[nr][nc] == -1)
-
-   // Option B: Use MAX_VALUE
-   mat[r][c] = Integer.MAX_VALUE;  // Easier for comparison: if (mat[nr][nc] > mat[r][c] + 1)
-   ```
-
-2. **The Update Condition:**
-   ```java
-   // Why only update when new distance is shorter?
-   if (mat[nr][nc] > mat[r][c] + 1) {
-       mat[nr][nc] = mat[r][c] + 1;
-       queue.offer(new int[]{nr, nc});
-   }
-
-   // Explanation:
-   // - In unweighted BFS, first visit = shortest path
-   // - If cell already has distance ≤ current + 1, it has a better path
-   // - Prevents redundant re-processing and ensures O(m×n) time
-   ```
-
-3. **Why First Visit = Shortest Distance:**
-   ```
-   BFS expands in layers (level-by-level):
-   Layer 0: All sources (distance = 0)
-   Layer 1: All cells 1 step away (distance = 1)
-   Layer 2: All cells 2 steps away (distance = 2)
-   ...
-
-   When BFS first reaches a cell, it MUST be via the shortest path
-   because all shorter paths were explored in earlier layers.
-   ```
-
-**Pattern Recognition - Use Multi-Source BFS When:**
-- Need distance from each cell to ANY source (not a specific source)
-- Multiple sources exist naturally in the problem
-- Problem asks for "nearest/closest" among multiple options
-- Can "flip" the problem (start from targets instead of sources)
-
-**Similar Problems Using This Pattern:**
-- LC 542: 01 Matrix (distance to nearest 0)
-- LC 1162: As Far from Land as Possible (distance to nearest land)
-- LC 286: Walls and Gates (distance from gates to rooms)
-- LC 994: Rotting Oranges (time for all oranges to rot)
-- LC 1765: Map of Highest Peak (assign heights with constraints)
-
-## Quick Reference
+> `Pattern 4.5 / 4.6 / 6 / 8 / 8.5 / 9 / 10 / 12 / 14 / 15` below live in [bfs_advanced.md](./bfs_advanced.md); `§2-N` references live in [bfs_examples.md](./bfs_examples.md).
 
 ### When to Use BFS
 - Finding shortest path in unweighted graphs
@@ -2988,6 +897,12 @@ Calculate shortest distance from each cell to ANY source cell in a grid.
 - Web crawling (breadth-first exploration)
 - **Simultaneous multi-source distance calculations** (Pattern 4) - distance to nearest source
 - **Independent BFS runs from multiple sources** (Pattern 4.6) - sum of distances to all sources
+
+### When NOT to Use BFS
+- Deep trees/graphs with limited memory
+- Only need to find ANY path (not shortest)
+- Weighted graphs with varying costs (use Dijkstra instead)
+- Need to explore all paths (use DFS)
 
 ### BFS vs Dijkstra — When to Use Which
 
@@ -3008,21 +923,73 @@ Calculate shortest distance from each cell to ANY source cell in a grid.
 
 **0-1 BFS special case**: If edges are weighted 0 or 1 only, use a **deque** — push weight-0 edges to front, weight-1 edges to back. O(V+E) like BFS, handles two weights correctly.
 
-### When NOT to Use BFS
-- Deep trees/graphs with limited memory
-- Only need to find ANY path (not shortest)
-- Weighted graphs with varying costs (use Dijkstra instead)
-- Need to explore all paths (use DFS)
+### Common Mistakes & Best Practices
+
+#### ❌ Common Mistakes
+1. Using `queue.pop()` instead of `queue.popleft()` with list
+2. Not handling visited set in graphs (infinite loops)
+3. Forgetting level-by-level processing when needed
+4. Incorrect boundary checking in grid problems
+
+#### ✅ Best Practices
+1. Use `collections.deque` for better performance
+2. Always use visited set for graph problems
+3. Check boundaries before adding to queue in grid problems
+4. Consider multi-source BFS for optimization
+5. Track level/distance when needed for shortest path
+6. **Mark state BEFORE enqueue, not after dequeue** — update grid/visited/counters the moment you decide to enqueue a neighbor; deferring until dequeue lets multiple neighbors re-enqueue the same cell (see **Pattern 3.1** above)
+
+### Problems by Category
+
+#### 1. Tree Traversal Problems
+- **Level Order Traversal**: LC 102, 107, 103
+- **Binary Tree Paths**: LC 257, 1022
+- **Right Side View**: LC 199
+- **Vertical Order**: LC 314
+- **Level-wise Tree Mutation**: LC 623 (Add One Row), LC 116/117 (Next Right Pointers)
+- **Distance from an arbitrary node (Pattern 11 — parent map + radiate out)**: LC 863 (Distance K), LC 2385 (Tree Infection), LC 742 (Closest Leaf), LC 1740 (Find Distance)
+
+#### 2. Shortest Path Problems
+- **Unweighted Graphs**: LC 127 (Word Ladder)
+- **Grid Navigation**: LC 1730 (Shortest Path to Food), LC 1091 (Shortest Path in Binary Matrix)
+- **Simultaneous Multi-source Distance (Pattern 4)**:
+  - **LC 542 (01 Matrix)** - Distance to nearest 0 from each cell
+  - LC 1162 (As Far from Land) - Distance to nearest land from each water cell
+  - LC 286 (Walls and Gates) - Distance from gates to rooms
+  - LC 994 (Rotting Oranges) - Time for infection to spread
+- **Independent BFS Runs (Pattern 4.6)**:
+  - **LC 317 (Shortest Distance from All Buildings)** - Sum of distances to all buildings (use fresh visited for each)
+- **DFS + Multi-source BFS (Pattern 4.5)**: LC 934 (Shortest Bridge - mark one component, expand to find other)
+- **Sequential Targets (Pattern 6)**: LC 675 (Cut Off Trees for Golf Event - Sort + Repeated BFS)
+- **Route-Level BFS (Pattern 8)**: LC 815 (Bus Routes - minimum buses/transfers to reach target)
+- **State-Based BFS**: LC 864 (Shortest Path to Get All Keys), LC 1293 (Shortest Path with Obstacles Elimination)
+
+#### 3. Graph Structure Problems
+- **Cycle Detection**: LC 207 (Course Schedule)
+- **Connected Components**: LC 200 (Number of Islands)
+- **Graph Validation**: LC 261 (Graph Valid Tree)
+- **Clone Graph**: LC 133
+
+#### 4. Matrix/Grid Problems
+- **Surrounded Regions**: LC 130
+- **Walls and Gates**: LC 286
+- **Maze Problems**: LC 490
+
+#### 5. Combination Enumeration Problems (Pattern 9 — BFS-Style Cartesian Product)
+- **Brace Expansion (LC 1087)** — parse into groups, BFS layer-by-layer
+- **Letter Combinations of a Phone Number (LC 17)** — digit → letter group, Cartesian BFS
+- **Letter Case Permutation (LC 784)** — per-char 1-or-2 option groups
+- **Generalized Abbreviation (LC 320)** — keep-or-skip groups per character
 
 ### Key LeetCode Problems
 | Difficulty | Problem | Key Concept | Core Pattern |
 |------------|---------|-------------|--------------|
 | Easy | LC 102 | Level-order traversal | Pattern 2 (Level-by-Level) |
-| **Medium** | **LC 127** | **Shortest path transformation - Word Ladder** | **Pattern 7 (BFS + Backtracking)** |
+| **Medium** | **LC 127** | **Shortest path transformation - Word Ladder** | **Pattern 7 (Unweighted Shortest Path)** |
 | Medium | LC 200 | Connected components | Pattern 3 (Graph BFS) |
-| Medium | LC 742 | Closest leaf (tree → undirected graph) | §2-15 (Tree → Graph + BFS) |
-| Medium | LC 863 | Distance `k` from a **target node** (parent map, 3 neighbors) | Pattern 11 / §2-18 (Radiate Outward) |
-| Medium | LC 623 | Level BFS to `depth - 1`, rewire child pointers | §2-17 (Add One Row to Tree) |
+| Medium | LC 742 | Closest leaf (tree → undirected graph) | `bfs_examples.md` §2-15 (Tree → Graph + BFS) |
+| Medium | LC 863 | Distance `k` from a **target node** (parent map, 3 neighbors) | Pattern 11 (Radiate Outward); shape B in `bfs_examples.md` §2-18 |
+| Medium | LC 623 | Level BFS to `depth - 1`, rewire child pointers | `bfs_examples.md` §2-17 (Add One Row to Tree) |
 | **Medium** | **LC 542** | **Simultaneous multi-source - 01 Matrix** | **Pattern 4 (Simultaneous Multi-Source)** |
 | Medium | LC 934 | DFS + Multi-source BFS (island expansion) | Pattern 4.5 (DFS + Multi-Source) |
 | Medium | LC 1162 | As Far from Land as Possible | Pattern 4 (Simultaneous Multi-Source) |
@@ -3030,7 +997,7 @@ Calculate shortest distance from each cell to ANY source cell in a grid.
 | Hard | LC 286 | Walls and Gates | Pattern 4 (Simultaneous Multi-Source) |
 | **Hard** | **LC 317** | **Independent BFS runs (sum of distances)** | **Pattern 4.6 (Independent BFS Runs)** |
 | Hard | LC 675 | Sort + Repeated BFS (sequential targets) | Pattern 6 (Sort + Repeated BFS) |
-| **Hard** | **LC 752** | **BFS + Backtracking on state space - Open the Lock** | **Pattern 7 (BFS + Backtracking)** |
+| **Hard** | **LC 752** | **BFS on state space - Open the Lock** | **Pattern 7 (Unweighted Shortest Path); worked in `bfs_examples.md` §2-6** |
 | **Hard** | **LC 815** | **Route-level BFS (minimum buses)** | **Pattern 8 (Route-Level BFS)** |
 | Hard | LC 864 | BFS with state (key collection) | Pattern 3 + State |
 | Hard | LC 1293 | BFS with state (obstacle elimination) | Pattern 3 + State |
@@ -3039,7 +1006,7 @@ Calculate shortest distance from each cell to ANY source cell in a grid.
 
 | LC | Problem | Which template it reuses |
 |----|---------|--------------------------|
-| 297 / 449 | Serialize and Deserialize Binary Tree / BST | Pattern 2 level BFS writing `null` markers; deserialize = same queue read back (see Variation C above) |
+| 297 / 449 | Serialize and Deserialize Binary Tree / BST | Pattern 2 level BFS writing `null` markers; deserialize = same queue read back (see Variation C in [bfs_examples.md](./bfs_examples.md)) |
 | 104 | Maximum Depth of Binary Tree | Pattern 2 — count levels; DFS recursion is shorter here, BFS wins only for LC 111 |
 | 101 | Symmetric Tree | Pattern 2 with a **pair queue** — enqueue `(left, right)` mirrored and compare on pop |
 | 637 / 515 | Average of Levels / Largest Value in Each Tree Row | Pattern 2 — swap "collect the level" for "aggregate the level" (avg / max) |
@@ -3050,1207 +1017,3 @@ Calculate shortest distance from each cell to ANY source cell in a grid.
 | 787 | Cheapest Flights Within K Stops | BFS **level-bounded relaxation** (Bellman-Ford flavored): run exactly `k+1` levels and **do not use a global visited** — a node may be re-entered with a cheaper cost. See `Dijkstra.md`. |
 | 329 | Longest Increasing Path in a Matrix | Not a BFS problem — DFS + memo, or Kahn's BFS on the DAG (see `topology_sorting.md`) |
 | 721 / 947 / 684 / 839 | Accounts Merge / Stones Removed / Redundant Connection / Similar String Groups | Connectivity, not shortest path — Union-Find is the expected answer (BFS flood-fill also works) |
-
-## LC Examples
-
-### 2-1) Rotting Oranges (LC 994) — Multi-source BFS
-> Spread rot from all initial rotten oranges simultaneously level by level.
-
-```java
-// LC 994 - Rotting Oranges
-// IDEA: Multi-source BFS
-// time = O(M*N), space = O(M*N)
-public int orangesRotting(int[][] grid) {
-    int rows = grid.length, cols = grid[0].length;
-    Queue<int[]> queue = new LinkedList<>();
-    int fresh = 0;
-    for (int r = 0; r < rows; r++)
-        for (int c = 0; c < cols; c++) {
-            if (grid[r][c] == 2) queue.offer(new int[]{r, c});
-            else if (grid[r][c] == 1) fresh++;
-        }
-    if (fresh == 0) return 0;
-    int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
-    int minutes = 0;
-    while (!queue.isEmpty() && fresh > 0) {
-        minutes++;
-        int size = queue.size();
-        for (int i = 0; i < size; i++) {
-            int[] cell = queue.poll();
-            for (int[] d : dirs) {
-                int nr = cell[0] + d[0], nc = cell[1] + d[1];
-                if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && grid[nr][nc] == 1) {
-                    grid[nr][nc] = 2;
-                    fresh--;
-                    queue.offer(new int[]{nr, nc});
-                }
-            }
-        }
-    }
-    return fresh == 0 ? minutes : -1;
-}
-```
-
-### 2-2) Word Ladder (LC 127) — BFS Shortest Transformation
-> BFS on word graph; each edge connects words differing by one letter.
-
-```java
-// LC 127 - Word Ladder
-// IDEA: BFS level by level on word transformations
-// time = O(M^2 * N), space = O(M^2 * N)  M=word length, N=wordList size
-public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-    Set<String> wordSet = new HashSet<>(wordList);
-    if (!wordSet.contains(endWord)) return 0;
-    Queue<String> queue = new LinkedList<>();
-    queue.offer(beginWord);
-    int steps = 1;
-    while (!queue.isEmpty()) {
-        int size = queue.size();
-        for (int i = 0; i < size; i++) {
-            String word = queue.poll();
-            char[] chars = word.toCharArray();
-            for (int j = 0; j < chars.length; j++) {
-                char orig = chars[j];
-                for (char c = 'a'; c <= 'z'; c++) {
-                    chars[j] = c;
-                    String next = new String(chars);
-                    if (next.equals(endWord)) return steps + 1;
-                    if (wordSet.remove(next)) queue.offer(next);
-                }
-                chars[j] = orig;
-            }
-        }
-        steps++;
-    }
-    return 0;
-}
-```
-
-### 2-3) Word Ladder II (LC 126) — BFS + DFS All Shortest Paths
-> BFS builds a DAG of shortest-path predecessors; DFS enumerates all valid paths.
-
-```java
-// LC 126 - Word Ladder II
-// IDEA: BFS to build predecessors map, then DFS to reconstruct all shortest paths
-// time = O(N * M * 26 + output), space = O(N * M)
-public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
-    List<List<String>> result = new ArrayList<>();
-    Set<String> wordSet = new HashSet<>(wordList);
-    if (!wordSet.contains(endWord)) return result;
-
-    // Map: word → list of predecessors (parents) at shortest distance
-    Map<String, List<String>> parents = new HashMap<>();
-    // BFS to build the parent graph
-    Queue<String> queue = new LinkedList<>();
-    Set<String> visited = new HashSet<>();
-    queue.offer(beginWord);
-    visited.add(beginWord);
-
-    boolean found = false;
-    while (!queue.isEmpty() && !found) {
-        int size = queue.size();
-        Set<String> levelVisited = new HashSet<>();  // Critical: track nodes at this level
-
-        for (int i = 0; i < size; i++) {
-            String word = queue.poll();
-            char[] chars = word.toCharArray();
-
-            for (int j = 0; j < chars.length; j++) {
-                char orig = chars[j];
-                for (char c = 'a'; c <= 'z'; c++) {
-                    if (c == orig) continue;
-                    chars[j] = c;
-                    String next = new String(chars);
-
-                    if (!wordSet.contains(next)) continue;
-
-                    if (!visited.contains(next)) {
-                        parents.computeIfAbsent(next, k -> new ArrayList<>()).add(word);
-                        levelVisited.add(next);
-                        if (next.equals(endWord)) found = true;
-                    }
-                }
-                chars[j] = orig;
-            }
-        }
-
-        // Update visited after entire level (allows multiple parents from same level)
-        visited.addAll(levelVisited);
-        for (String node : levelVisited) {
-            queue.offer(node);
-        }
-    }
-
-    // DFS to enumerate all paths
-    if (found) {
-        List<String> path = new LinkedList<>();
-        dfsEnumerate(endWord, beginWord, parents, path, result);
-    }
-
-    return result;
-}
-
-private void dfsEnumerate(String word, String beginWord, Map<String, List<String>> parents,
-                          List<String> path, List<List<String>> result) {
-    path.add(0, word);
-    if (word.equals(beginWord)) {
-        result.add(new ArrayList<>(path));
-    } else if (parents.containsKey(word)) {
-        for (String prev : parents.get(word)) {
-            dfsEnumerate(prev, beginWord, parents, path, result);
-        }
-    }
-    path.remove(0);
-}
-```
-
-**Key Differences from LC 127:**
-- **LC 127 (Pattern 7)**: BFS + Backtracking → Find ONE shortest path, early exit
-- **LC 126 (Pattern 8.5)**: BFS + DFS → Find ALL shortest paths, use parent map, DFS enumeration
-- **Critical Detail**: `levelVisited` allows multiple parents from same BFS level (essential for finding all paths)
-
----
-
-### 2-4) Shortest Path in Binary Matrix (LC 1091) — BFS Shortest Path
-> BFS from top-left to bottom-right through 0-cells (8-directional).
-
-```java
-// LC 1091 - Shortest Path in Binary Matrix
-// IDEA: BFS — shortest path in unweighted graph
-// time = O(N^2), space = O(N^2)
-public int shortestPathBinaryMatrix(int[][] grid) {
-    int n = grid.length;
-    if (grid[0][0] == 1 || grid[n-1][n-1] == 1) return -1;
-    int[][] dirs = {{0,1},{1,0},{0,-1},{-1,0},{1,1},{1,-1},{-1,1},{-1,-1}};
-    Queue<int[]> queue = new LinkedList<>();
-    queue.offer(new int[]{0, 0, 1});
-    grid[0][0] = 1; // mark visited
-    while (!queue.isEmpty()) {
-        int[] curr = queue.poll();
-        int r = curr[0], c = curr[1], dist = curr[2];
-        if (r == n-1 && c == n-1) return dist;
-        for (int[] d : dirs) {
-            int nr = r + d[0], nc = c + d[1];
-            if (nr >= 0 && nr < n && nc >= 0 && nc < n && grid[nr][nc] == 0) {
-                grid[nr][nc] = 1;
-                queue.offer(new int[]{nr, nc, dist + 1});
-            }
-        }
-    }
-    return -1;
-}
-```
-
-### 2-5) 01 Matrix (LC 542) — Multi-source BFS from All Zeros
-> Start BFS from all 0-cells simultaneously; distance propagates outward.
-
-```java
-// LC 542 - 01 Matrix
-// IDEA: Multi-source BFS — enqueue all 0s first, then expand
-// time = O(M*N), space = O(M*N)
-public int[][] updateMatrix(int[][] mat) {
-    int m = mat.length, n = mat[0].length;
-    int[][] dist = new int[m][n];
-    Queue<int[]> queue = new LinkedList<>();
-    for (int i = 0; i < m; i++)
-        for (int j = 0; j < n; j++) {
-            if (mat[i][j] == 0) queue.offer(new int[]{i, j});
-            else dist[i][j] = Integer.MAX_VALUE;
-        }
-    int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
-    while (!queue.isEmpty()) {
-        int[] cell = queue.poll();
-        for (int[] d : dirs) {
-            int nr = cell[0]+d[0], nc = cell[1]+d[1];
-            if (nr>=0 && nr<m && nc>=0 && nc<n && dist[nr][nc] > dist[cell[0]][cell[1]]+1) {
-                dist[nr][nc] = dist[cell[0]][cell[1]] + 1;
-                queue.offer(new int[]{nr, nc});
-            }
-        }
-    }
-    return dist;
-}
-```
-
-### 2-6) Open the Lock (LC 752) — BFS on State Space
-> Model each lock combination as a node; BFS finds minimum turns to reach target.
-
-```java
-// LC 752 - Open the Lock
-// IDEA: BFS on 4-digit combinations; each turn = 1 step
-// time = O(10^4 * 4 * 2), space = O(10^4)
-public int openLock(String[] deadends, String target) {
-    Set<String> dead = new HashSet<>(Arrays.asList(deadends));
-    Set<String> visited = new HashSet<>();
-    Queue<String> queue = new LinkedList<>();
-    String start = "0000";
-    if (dead.contains(start)) return -1;
-    queue.offer(start);
-    visited.add(start);
-    int steps = 0;
-    while (!queue.isEmpty()) {
-        int size = queue.size();
-        for (int i = 0; i < size; i++) {
-            String curr = queue.poll();
-            if (curr.equals(target)) return steps;
-            char[] chars = curr.toCharArray();
-            for (int j = 0; j < 4; j++) {
-                char orig = chars[j];
-                for (int delta : new int[]{1, -1}) {
-                    chars[j] = (char)((orig - '0' + delta + 10) % 10 + '0');
-                    String next = new String(chars);
-                    if (!visited.contains(next) && !dead.contains(next)) {
-                        visited.add(next); queue.offer(next);
-                    }
-                    chars[j] = orig;
-                }
-            }
-        }
-        steps++;
-    }
-    return -1;
-}
-```
-
-#### Variation: Sliding Puzzle (LC 773) — same state-space BFS, board flattened to a string
-
-> **Twist**: identical skeleton to LC 752 — only the *state encoding* and the *neighbor rule* change. Serialize the 2×3 board to `"123450"`, and precompute which indices the blank (`'0'`) can swap with, so "generate neighbors" is a table lookup instead of 2D bounds math. Target `"123450"`; unreachable → `-1` (only half of the 6! = 720 permutations are reachable).
-
-```text
-index layout      swap table (neighbors of each index)
- 0 1 2            0:[1,3]  1:[0,2,4]  2:[1,5]
- 3 4 5            3:[0,4]  4:[1,3,5]  5:[2,4]
-```
-
-```java
-// java
-// LC 773 - Sliding Puzzle
-// time = O(6! * 6), space = O(6!)   at most 720 board states
-// IDEA: state = flattened board string; BFS levels = number of moves
-public int slidingPuzzle(int[][] board) {
-    StringBuilder sb = new StringBuilder();
-    for (int[] row : board) for (int v : row) sb.append(v);
-    String start = sb.toString(), target = "123450";
-    int[][] nbr = {{1,3},{0,2,4},{1,5},{0,4},{1,3,5},{2,4}};   // precomputed adjacency
-    Queue<String> q = new LinkedList<>();
-    Set<String> seen = new HashSet<>();
-    q.offer(start); seen.add(start);
-    int steps = 0;
-    while (!q.isEmpty()) {
-        int size = q.size();
-        for (int i = 0; i < size; i++) {
-            String cur = q.poll();
-            if (cur.equals(target)) return steps;
-            int zero = cur.indexOf('0');
-            for (int j : nbr[zero]) {              // slide a tile into the blank
-                char[] arr = cur.toCharArray();
-                char tmp = arr[zero]; arr[zero] = arr[j]; arr[j] = tmp;
-                String next = new String(arr);
-                if (seen.add(next)) q.offer(next);
-            }
-        }
-        steps++;
-    }
-    return -1;                                     // target permutation unreachable
-}
-```
-
-```python
-# python
-# LC 773 - Sliding Puzzle
-# time = O(6! * 6), space = O(6!)
-# IDEA: BFS on the flattened board string, blank '0' swaps with its table neighbors
-def slidingPuzzle(board):
-    start = "".join(str(x) for row in board for x in row)
-    target = "123450"
-    nbr = [[1,3], [0,2,4], [1,5], [0,4], [1,3,5], [2,4]]
-    q = deque([start])
-    seen = {start}
-    steps = 0
-    while q:
-        for _ in range(len(q)):
-            cur = q.popleft()
-            if cur == target:
-                return steps
-            i = cur.index('0')
-            for j in nbr[i]:
-                lst = list(cur)
-                lst[i], lst[j] = lst[j], lst[i]
-                nxt = "".join(lst)
-                if nxt not in seen:
-                    seen.add(nxt)
-                    q.append(nxt)
-        steps += 1
-    return -1
-```
-
-**Takeaway**: LC 752, LC 773 and LC 433 are the same template — *hash the state, define a `neighbors(state)` function, count BFS levels*. Interview value is in spotting that a puzzle/word/lock is really an implicit graph.
-
-### 2-7) Surrounded Regions (LC 130) — BFS from Border
-> BFS from all border 'O' cells; mark reachable ones safe; flip the rest.
-
-```java
-// LC 130 - Surrounded Regions
-// IDEA: BFS from border O-cells to find non-surrounded regions
-// time = O(M*N), space = O(M*N)
-public void solve(char[][] board) {
-    int m = board.length, n = board[0].length;
-    Queue<int[]> queue = new LinkedList<>();
-    for (int i = 0; i < m; i++)
-        for (int j = 0; j < n; j++)
-            if ((i==0||i==m-1||j==0||j==n-1) && board[i][j]=='O') {
-                board[i][j] = 'S'; queue.offer(new int[]{i,j});
-            }
-    int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
-    while (!queue.isEmpty()) {
-        int[] c = queue.poll();
-        for (int[] d : dirs) {
-            int nr=c[0]+d[0], nc=c[1]+d[1];
-            if (nr>=0&&nr<m&&nc>=0&&nc<n&&board[nr][nc]=='O') {
-                board[nr][nc]='S'; queue.offer(new int[]{nr,nc});
-            }
-        }
-    }
-    for (int i=0;i<m;i++) for (int j=0;j<n;j++)
-        board[i][j] = board[i][j]=='S' ? 'O' : (board[i][j]=='O' ? 'X' : board[i][j]);
-}
-```
-
-### 2-8) Course Schedule (LC 207) — BFS Topological Sort (Kahn's)
-> Build in-degree array; BFS processes nodes with zero in-degree iteratively.
-
-```java
-// LC 207 - Course Schedule
-// IDEA: Kahn's BFS topological sort — detect cycle in directed graph
-// time = O(V+E), space = O(V+E)
-public boolean canFinish(int numCourses, int[][] prerequisites) {
-    int[] inDegree = new int[numCourses];
-    List<List<Integer>> adj = new ArrayList<>();
-    for (int i = 0; i < numCourses; i++) adj.add(new ArrayList<>());
-    for (int[] pre : prerequisites) {
-        adj.get(pre[1]).add(pre[0]);
-        inDegree[pre[0]]++;
-    }
-    Queue<Integer> queue = new LinkedList<>();
-    for (int i = 0; i < numCourses; i++) if (inDegree[i] == 0) queue.offer(i);
-    int processed = 0;
-    while (!queue.isEmpty()) {
-        int course = queue.poll();
-        processed++;
-        for (int next : adj.get(course))
-            if (--inDegree[next] == 0) queue.offer(next);
-    }
-    return processed == numCourses;
-}
-```
-
-### 2-9) Walls and Gates (LC 286) — Multi-source BFS
-> Start BFS from all gates (0s) simultaneously; fill rooms with shortest distance.
-
-```java
-// LC 286 - Walls and Gates
-// IDEA: Multi-source BFS from all gates — propagate distances
-// time = O(M*N), space = O(M*N)
-public void wallsAndGates(int[][] rooms) {
-    int m = rooms.length, n = rooms[0].length;
-    int INF = Integer.MAX_VALUE;
-    Queue<int[]> queue = new LinkedList<>();
-    for (int i = 0; i < m; i++)
-        for (int j = 0; j < n; j++)
-            if (rooms[i][j] == 0) queue.offer(new int[]{i, j});
-    int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
-    while (!queue.isEmpty()) {
-        int[] cell = queue.poll();
-        for (int[] d : dirs) {
-            int nr = cell[0]+d[0], nc = cell[1]+d[1];
-            if (nr>=0&&nr<m&&nc>=0&&nc<n&&rooms[nr][nc]==INF) {
-                rooms[nr][nc] = rooms[cell[0]][cell[1]] + 1;
-                queue.offer(new int[]{nr, nc});
-            }
-        }
-    }
-}
-```
-
-### 2-10) Minimum Height Trees (LC 310) — BFS Leaf Trimming
-> Repeatedly remove leaf nodes; the remaining 1-2 nodes are the roots of MHTs.
-
-**Core Idea — BFS / Layer Trimming (Onion Peeling):**
-- Think of the tree like an **onion**. The MHT roots are in the innermost layer
-- This is **multi-source BFS from leaves inward** — NOT BFS from a single root
-- Leaves = nodes with degree 1. Remove all leaves simultaneously → their neighbors may become new leaves
-- Repeat until ≤ 2 nodes remain. These are the **centroids** (MHT roots)
-- Why ≤ 2? A tree has at most 2 centroids (diameter even → 2, diameter odd → 1)
-
-```text
-Example: 0 - 1 - 2 - 3 - 4
-
-Layer 1: remove 0, 4  (leaves)
-Layer 2: remove 1, 3  (new leaves)
-Result:  [2] ✅        (centroid)
-```
-
-**Why NOT brute force?**
-- BFS from every node to compute height → O(N²) → TLE
-- Leaf trimming → O(N) — each node and edge processed once
-
-**Pattern — When to Recognize This:**
-
-| Signal | Meaning |
-|--------|---------|
-| Undirected tree + find optimal root | Leaf trimming |
-| Minimize max distance to any leaf | Find centroid |
-| "Peel layers from outside inward" | Multi-source BFS |
-| Degree-based processing on tree | Similar to Kahn's on DAG |
-
-**Two Implementation Styles:**
-
-Style 1 — `int[] degree` array (simpler, preferred):
-```java
-// LC 310 - Minimum Height Trees
-// IDEA: BFS leaf trimming with degree array
-// time = O(N), space = O(N)
-public List<Integer> findMinHeightTrees(int n, int[][] edges) {
-    if (n == 1) return Collections.singletonList(0);
-
-    List<List<Integer>> graph = new ArrayList<>();
-    for (int i = 0; i < n; i++) graph.add(new ArrayList<>());
-    int[] degree = new int[n];
-
-    for (int[] e : edges) {
-        graph.get(e[0]).add(e[1]);
-        graph.get(e[1]).add(e[0]);
-        degree[e[0]]++;
-        degree[e[1]]++;
-    }
-
-    Queue<Integer> leaves = new LinkedList<>();
-    for (int i = 0; i < n; i++)
-        if (degree[i] == 1) leaves.offer(i);
-
-    int remaining = n;
-    while (remaining > 2) {
-        int size = leaves.size();
-        remaining -= size;
-        for (int i = 0; i < size; i++) {
-            int leaf = leaves.poll();
-            for (int nei : graph.get(leaf)) {
-                degree[nei]--;
-                if (degree[nei] == 1) leaves.offer(nei);
-            }
-        }
-    }
-    return new ArrayList<>(leaves);
-}
-```
-
-Style 2 — `Set<Integer>` adjacency (O(1) removal, tracks actual edges):
-```java
-// LC 310 - Using Set for adjacency
-// time = O(N), space = O(N)
-public List<Integer> findMinHeightTrees_set(int n, int[][] edges) {
-    if (n == 1) return Collections.singletonList(0);
-    List<Set<Integer>> adj = new ArrayList<>();
-    for (int i = 0; i < n; i++) adj.add(new HashSet<>());
-    for (int[] e : edges) { adj.get(e[0]).add(e[1]); adj.get(e[1]).add(e[0]); }
-    Queue<Integer> leaves = new LinkedList<>();
-    for (int i = 0; i < n; i++) if (adj.get(i).size() == 1) leaves.offer(i);
-    int remaining = n;
-    while (remaining > 2) {
-        int size = leaves.size();
-        remaining -= size;
-        for (int i = 0; i < size; i++) {
-            int leaf = leaves.poll();
-            int neighbor = adj.get(leaf).iterator().next();
-            adj.get(neighbor).remove(leaf);
-            if (adj.get(neighbor).size() == 1) leaves.offer(neighbor);
-        }
-    }
-    return new ArrayList<>(leaves);
-}
-```
-
-**Classic Similar LCs:**
-
-| LC # | Problem | Connection |
-|------|---------|------------|
-| 310 | Minimum Height Trees | Core leaf trimming problem |
-| 207 | Course Schedule | Kahn's algo — same BFS + degree pattern on DAG |
-| 210 | Course Schedule II | Kahn's with ordering output |
-| 834 | Sum of Distances in Tree | Tree centroid / rerooting DP |
-| 1245 | Tree Diameter | Diameter → centroid is at midpoint |
-| 2603 | Collect Coins in a Tree | Leaf trimming to prune unnecessary nodes |
-| 863 | All Nodes Distance K in Binary Tree | BFS on tree structure |
-| 994 | Rotting Oranges | Multi-source BFS (same layer-by-layer pattern) |
-| 542 | 01 Matrix | Multi-source BFS from all zeros |
-
-### 2-11) Snakes and Ladders (LC 909) — BFS on Board
-> Model board as graph; BFS finds minimum dice rolls to reach final square.
-
-```java
-// LC 909 - Snakes and Ladders
-// IDEA: BFS — each square is a node, dice roll = edges
-// time = O(N^2), space = O(N^2)
-public int snakesAndLadders(int[][] board) {
-    int n = board.length;
-    int[] flat = new int[n * n + 1];
-    int idx = 1; boolean leftToRight = true;
-    for (int r = n-1; r >= 0; r--) {
-        if (leftToRight) for (int c = 0; c < n; c++) flat[idx++] = board[r][c];
-        else for (int c = n-1; c >= 0; c--) flat[idx++] = board[r][c];
-        leftToRight = !leftToRight;
-    }
-    boolean[] visited = new boolean[n*n+1];
-    Queue<int[]> queue = new LinkedList<>();
-    queue.offer(new int[]{1, 0});
-    visited[1] = true;
-    while (!queue.isEmpty()) {
-        int[] curr = queue.poll();
-        int pos = curr[0], steps = curr[1];
-        for (int dice = 1; dice <= 6 && pos+dice <= n*n; dice++) {
-            int next = pos + dice;
-            if (flat[next] != -1) next = flat[next];
-            if (next == n*n) return steps + 1;
-            if (!visited[next]) { visited[next] = true; queue.offer(new int[]{next, steps+1}); }
-        }
-    }
-    return -1;
-}
-```
-
-### 2-12) Bus Routes (LC 815) — Route-Level BFS
-> Map stops to routes; BFS on route IDs counts minimum buses to reach target.
-
-```java
-// LC 815 - Bus Routes
-// IDEA: BFS on bus route IDs — each layer = one bus ride
-// time = O(N*M), space = O(N*M)  N=routes, M=avg stops per route
-public int numBusesToDestination(int[][] routes, int source, int target) {
-    if (source == target) return 0;
-    // stop -> list of route IDs
-    Map<Integer, List<Integer>> stopToRoutes = new HashMap<>();
-    for (int i = 0; i < routes.length; i++)
-        for (int stop : routes[i])
-            stopToRoutes.computeIfAbsent(stop, k -> new ArrayList<>()).add(i);
-
-    Queue<Integer> queue = new LinkedList<>();
-    Set<Integer> visitedRoutes = new HashSet<>();
-    Set<Integer> visitedStops = new HashSet<>();
-
-    // seed all routes passing through source
-    for (int r : stopToRoutes.getOrDefault(source, new ArrayList<>())) {
-        queue.offer(r);
-        visitedRoutes.add(r);
-    }
-    int buses = 1;
-    while (!queue.isEmpty()) {
-        int size = queue.size();
-        for (int i = 0; i < size; i++) {
-            int route = queue.poll();
-            for (int stop : routes[route]) {
-                if (stop == target) return buses;
-                if (visitedStops.contains(stop)) continue;
-                visitedStops.add(stop);
-                for (int nextRoute : stopToRoutes.getOrDefault(stop, new ArrayList<>())) {
-                    if (!visitedRoutes.contains(nextRoute)) {
-                        visitedRoutes.add(nextRoute);
-                        queue.offer(nextRoute);
-                    }
-                }
-            }
-        }
-        buses++;
-    }
-    return -1;
-}
-```
-
-### 2-13) Pacific Atlantic Water Flow (LC 417) — BFS from Both Oceans
-> BFS backward from Pacific and Atlantic borders; cells in both sets can flow to both.
-
-```java
-// LC 417 - Pacific Atlantic Water Flow
-// IDEA: BFS from Pacific border + Atlantic border; intersection = answer
-// time = O(M*N), space = O(M*N)
-public List<List<Integer>> pacificAtlantic(int[][] heights) {
-    int m = heights.length, n = heights[0].length;
-    boolean[][] pac = new boolean[m][n], atl = new boolean[m][n];
-    Queue<int[]> pq = new LinkedList<>(), aq = new LinkedList<>();
-    for (int i = 0; i < m; i++) {
-        pq.offer(new int[]{i,0}); pac[i][0]=true;
-        aq.offer(new int[]{i,n-1}); atl[i][n-1]=true;
-    }
-    for (int j = 0; j < n; j++) {
-        pq.offer(new int[]{0,j}); pac[0][j]=true;
-        aq.offer(new int[]{m-1,j}); atl[m-1][j]=true;
-    }
-    bfs(heights, pq, pac, m, n);
-    bfs(heights, aq, atl, m, n);
-    List<List<Integer>> res = new ArrayList<>();
-    for (int i=0;i<m;i++) for (int j=0;j<n;j++)
-        if (pac[i][j]&&atl[i][j]) res.add(Arrays.asList(i,j));
-    return res;
-}
-private void bfs(int[][] h, Queue<int[]> q, boolean[][] visited, int m, int n) {
-    int[][] dirs={{1,0},{-1,0},{0,1},{0,-1}};
-    while (!q.isEmpty()) {
-        int[] c=q.poll();
-        for (int[] d:dirs) {
-            int nr=c[0]+d[0],nc=c[1]+d[1];
-            if (nr>=0&&nr<m&&nc>=0&&nc<n&&!visited[nr][nc]&&h[nr][nc]>=h[c[0]][c[1]]) {
-                visited[nr][nc]=true; q.offer(new int[]{nr,nc});
-            }
-        }
-    }
-}
-```
-
-### 2-14) Perfect Squares (LC 279) — BFS on Abstract Graph (Number Decomposition)
-> BFS from `n` toward `0`; each level subtracts a perfect square. First time we reach 0 = minimum count.
-
-```java
-// LC 279 - Perfect Squares
-// IDEA: BFS — treat each number as a node, edges = subtracting a perfect square
-// time = O(N * sqrt(N)), space = O(N)
-public int numSquares(int n) {
-    // Pre-calculate perfect squares up to n
-    List<Integer> squares = new ArrayList<>();
-    for (int i = 1; i * i <= n; i++) {
-        squares.add(i * i);
-    }
-
-    Queue<Integer> queue = new LinkedList<>();
-    Set<Integer> visited = new HashSet<>();
-
-    queue.offer(n);
-    visited.add(n);
-
-    int level = 0;
-
-    while (!queue.isEmpty()) {
-        level++;
-        int size = queue.size();
-
-        for (int i = 0; i < size; i++) {
-            int remaining = queue.poll();
-
-            for (int square : squares) {
-                int nextVal = remaining - square;
-
-                if (nextVal == 0)
-                    return level; // Found shortest path
-                if (nextVal < 0)
-                    break; // Squares are sorted, so we can stop
-
-                if (!visited.contains(nextVal)) {
-                    visited.add(nextVal);
-                    queue.offer(nextVal);
-                }
-            }
-        }
-    }
-    return -1;
-}
-```
-
-### 2-15) Closest Leaf in a Binary Tree (LC 742) — Tree → Graph + BFS ⭐⭐⭐⭐
-> "Closest" = fewest **edges** on a binary tree. The catch: from the target you may need
-> to walk **upward** (to a parent) as well as downward (to children). A plain tree only
-> has child pointers, so first **convert the tree into an undirected graph** (each node ↔
-> its parent and children), then run a normal BFS from the target — the **first leaf
-> popped is the answer** (BFS on an unweighted graph gives shortest #edges).
-
-**1) Core Idea**
-
-- **DFS to build an undirected graph** + record the `target` node + collect `leaves`.
-  - For each node, add edges *both ways*: `graph[node]→parent` and `graph[parent]→node`.
-  - This is the crucial step — it makes the parent reachable, so "going up" becomes a normal edge.
-- **BFS from the target node**; the first node popped that is a leaf (no children) is closest.
-  - Equal-weight edges ⇒ BFS guarantees minimal edge count; no need to track distances.
-
-```python
-# python — LC 742 (DFS build graph + BFS from target)
-from collections import defaultdict, deque
-
-class Solution(object):
-    def findClosestLeaf(self, root, k):
-        graph = defaultdict(list)   # node -> [neighbors]  (undirected)
-        leaves = set()
-        target = [None]
-
-        def build(node, parent):
-            if not node:
-                return
-            if node.val == k:
-                target[0] = node
-            if parent:                          # connect BOTH directions
-                graph[node].append(parent)
-                graph[parent].append(node)
-            if not node.left and not node.right: # leaf = no children
-                leaves.add(node)
-            build(node.left, node)
-            build(node.right, node)
-
-        build(root, None)
-
-        # BFS from target; first leaf reached is the closest
-        q = deque([target[0]])
-        visited = {target[0]}
-        while q:
-            node = q.popleft()
-            if node in leaves:
-                return node.val                  # earliest pop = fewest edges
-            for nei in graph[node]:
-                if nei not in visited:
-                    visited.add(nei)
-                    q.append(nei)
-```
-
-**2) Why BFS (not DFS)?**
-
-| | |
-|---|---|
-| Goal | **minimum #edges** target → any leaf |
-| Edge weights | all equal (1) ⇒ BFS layer = exact distance |
-| Why graph, not tree | answer leaf may be *above* the target → need parent edges |
-| Why "first leaf wins" | BFS pops nodes in nondecreasing distance order |
-
-```text
-Tree (k=2):                 As undirected graph, BFS from 2:
-       1                    dist 0: 2
-      / \                   dist 1: 4, 1
-     2   3   (leaf)         dist 2: 5, 3(leaf) <- returned (3 closer than the 5→6 chain)
-    /
-   4
-  /
- 5
-/
-6 (leaf)
-```
-
-**3) Similar LC**
-
-| LC | Problem | Relation |
-|----|---------|----------|
-| 742 | Closest Leaf in a Binary Tree | this — tree→graph, BFS to nearest leaf |
-| 863 | All Nodes Distance K in Binary Tree | same tree→graph trick, BFS K levels out — Pattern 11 / §2-18 |
-| 1192 | Critical Connections | tree/graph as undirected, edge traversal |
-| 994 | Rotting Oranges | multi-source BFS, "first reach = min dist" idea |
-| 542 | 01 Matrix | BFS shortest distance on unweighted grid |
-
-> **Pattern takeaway**: whenever a *tree* problem needs movement **upward (toward parent)**,
-> convert it to an **undirected graph** (add parent links via DFS) and switch to graph BFS/DFS.
-> This "tree → graph" reframing is the key to LC 742 and LC 863.
-
-### 2-16) Populating Next Right Pointers (LC 116 / 117) — Level BFS wires the `next` links ⭐⭐⭐⭐
-
-> Each node has a `next` pointer that should point to the node **immediately to its right on
-> the same level** (or `NULL` if it's the rightmost). This is just a **level-order BFS**: while
-> processing one level, chain each node to the one dequeued after it. The follow-up ("O(1)
-> extra space") reuses the `next` pointers you just built as a **linked list of the level above**
-> to wire the level below — no queue needed.
-
-**1) Core Idea**
-
-- **`next` = "the node to my right on the same level."** So process the tree **level by level**
-  and, inside each level, link `prev.next = cur` as you pop nodes off the queue.
-- The **last node of every level** gets `next = None` (queue is emptied per level, so it never
-  points into the next level).
-- Works for both LC 116 (perfect tree) and LC 117 (any binary tree) — BFS doesn't care about
-  the tree shape; children are simply enqueued when they exist.
-- **O(1)-space follow-up**: once level *L* is fully linked, walk it via `next` pointers as if it
-  were a linked list and set the `next` pointers of level *L+1* — recycling the structure you
-  already built instead of a queue.
-
-**2) Pattern**
-
-```python
-# python — LC 116/117: BFS by layer, chain nodes via prev pointer
-from collections import deque
-
-class Solution(object):
-    def connect(self, root):
-        # time = O(N), space = O(W)  (W = max width / one level)
-        if not root:
-            return None
-
-        q = deque([root])
-        while q:
-            size = len(q)
-            prev = None
-            for _ in range(size):          # one full level per outer iteration
-                cur = q.popleft()
-                if prev:                    # link previous node -> current
-                    prev.next = cur
-                prev = cur
-                if cur.left:
-                    q.append(cur.left)
-                if cur.right:
-                    q.append(cur.right)
-            prev.next = None                # last node of the level -> NULL
-        return root
-```
-
-**Alternative (peek at queue front instead of tracking `prev`):**
-
-```python
-# python — same BFS, use i < size - 1 to point at the next node still in queue
-for i in range(size):
-    cur = q.popleft()
-    if i < size - 1:
-        cur.next = q[0]                     # front of queue = node to the right
-    if cur.left:  q.append(cur.left)
-    if cur.right: q.append(cur.right)
-```
-
-**Follow-up — O(1) space (perfect tree, LC 116):** reuse `next` links, no queue.
-
-```python
-# python — walk each level as a linked list to wire the next level
-class Solution(object):
-    def connect(self, root):
-        # time = O(N), space = O(1)
-        if not root:
-            return None
-        leftmost = root
-        while leftmost.left:               # stop once we reach the leaf level
-            head = leftmost
-            while head:
-                head.left.next = head.right             # (1) same parent
-                if head.next:
-                    head.right.next = head.next.left    # (2) across parents
-                head = head.next                        # move right via existing links
-            leftmost = leftmost.left        # drop to next level's leftmost
-        return root
-```
-
-```text
-Visual (LC 116):
-        1 -> NULL
-      /   \
-     2  -> 3 -> NULL
-    / \   / \
-   4-> 5->6->7 -> NULL
-
-BFS level 2: prev walks 4→5→6→7, chaining next; last (7) -> NULL.
-O(1) trick: from level [2,3], (1) 2.left→2.right = 4→5, (2) 2.right→2.next.left = 5→6, ...
-```
-
-**3) Similar LC**
-
-| LC | Problem | Relation |
-|----|---------|----------|
-| 116 | Populating Next Right Pointers in Each Node | this — **perfect** tree, BFS or O(1) `next`-reuse |
-| 117 | Populating Next Right Pointers II | same BFS; tree **not** perfect, so O(1) version needs a dummy head per level |
-| 102 | Binary Tree Level Order Traversal | the base level-BFS this is built on |
-| 199 | Binary Tree Right Side View | rightmost node per level = last node before `next = None` |
-| 314 | Binary Tree Vertical Order Traversal | level BFS grouping, but keyed by column not by `next` |
-
-> **Pattern takeaway**: "point to the node on my right" ⇒ **level-order BFS**, linking nodes in
-> dequeue order and terminating each level with `next = None`. For O(1) space, treat the
-> already-linked level as a linked list to build the one below.
-
-### 2-17) Add One Row to Tree (LC 623) — Level BFS stops at `depth - 1` and rewires ⭐⭐⭐⭐
-
-> Insert a row of `val` nodes at `depth`. The trick: you don't act at `depth`, you act at
-> **`depth - 1`** — that's the *parent* row whose pointers must be rewired. So run a plain
-> level-order BFS, counting levels, and **stop as soon as `cur_depth == depth - 1`**; for every
-> node in that level, splice in two new nodes and **reattach the original subtrees**
-> (`old_left` under `new_left.left`, `old_right` under `new_right.right`).
-
-**1) Core Idea**
-
-- **BFS is a natural fit** because the operation is defined *per level* — exactly what
-  level-by-level BFS (`size = len(q)`) gives you. No parent pointers, no recursion depth needed.
-- **Edge case first: `depth == 1`.** There is no level 0 to rewire, so create a new root and
-  hang the whole original tree as its **left** child, then return the new root.
-- **Cache before overwrite.** `node.left = TreeNode(val)` destroys the original pointer, so
-  save `old_left`/`old_right` *first*. This is the one line that breaks the solution if skipped.
-- **Asymmetric reattach**: original left subtree goes to `new_left.left`, original right subtree
-  goes to `new_right.right` — the outer sides — so the tree keeps its left/right shape.
-- **Return / break immediately** after rewiring the level. Continuing the BFS would walk into the
-  brand-new nodes and (worse) the queue no longer reflects the pre-insert tree.
-- Nodes with `None` children still get **two** new children (whose own children are `None`) —
-  the rule applies to every non-null node at `depth - 1`, not just to nodes that had children.
-
-**2) Pattern**
-
-```python
-# python — LC 623 Add One Row to Tree (level BFS, stop at depth-1)
-# time = O(N), space = O(W)   N = #nodes, W = max level width
-from collections import deque
-
-class Solution(object):
-    def addOneRow(self, root, val, depth):
-        # (1) no `depth - 1` row exists -> new node becomes the new root
-        if depth == 1:
-            new_root = TreeNode(val)
-            new_root.left = root
-            return new_root
-
-        q = deque([root])
-        cur_depth = 1                       # root is at depth 1 (NOT 0)
-
-        while q:
-            size = len(q)
-
-            # NOTE !!! treat `cur_depth == depth - 1` as a SEPARATE path:
-            #          inside it we rewire instead of descending, then stop
-            if cur_depth == depth - 1:
-                for _ in range(size):
-                    node = q.popleft()
-
-                    old_left = node.left     # (2) cache BEFORE overwriting
-                    old_right = node.right
-
-                    node.left = TreeNode(val)   # (3) splice the new row in
-                    node.right = TreeNode(val)
-
-                    node.left.left = old_left   # (4) reattach on OUTER sides
-                    node.right.right = old_right
-                break                        # (5) done — never descend further
-
-            # otherwise: ordinary level-order descent
-            for _ in range(size):
-                node = q.popleft()
-                if node.left:
-                    q.append(node.left)
-                if node.right:
-                    q.append(node.right)
-
-            cur_depth += 1
-
-        return root
-```
-
-**Variant — single loop, `if/else` inside** (same logic, one pass over the level):
-
-```python
-# python — branch per node instead of per level; break after the level finishes
-while q:
-    size = len(q)
-    for _ in range(size):
-        node = q.popleft()
-        if cur_depth == depth - 1:
-            old_left, old_right = node.left, node.right
-            node.left, node.right = TreeNode(val), TreeNode(val)
-            node.left.left = old_left
-            node.right.right = old_right
-        else:
-            if node.left:  q.append(node.left)
-            if node.right: q.append(node.right)
-
-    if cur_depth == depth - 1:   # break AFTER the whole level is rewired
-        break
-    cur_depth += 1
-```
-
-**Alternative — DFS recursion** (shorter, but O(h) stack — full treatment in [dfs.md §2-31](./dfs.md)):
-
-```python
-# python — recurse down to d == 2, then rewire that node's children
-# time = O(N), space = O(h)
-class Solution(object):
-    def addOneRow(self, root, v, d):
-        if not root:
-            return None
-        if d == 1:                                   # new root
-            new_root = TreeNode(v)
-            new_root.left = root
-            return new_root
-        if d == 2:                                   # root IS the depth-1 parent
-            root.left,  root.left.left   = TreeNode(v), root.left
-            root.right, root.right.right = TreeNode(v), root.right
-            return root
-        root.left  = self.addOneRow(root.left,  v, d - 1)
-        root.right = self.addOneRow(root.right, v, d - 1)
-        return root
-```
-
-```text
-Visual — root = [4,2,6,3,1,5], val = 1, depth = 2   (rewire level depth-1 = 1, i.e. node 4)
-
-before                    cache 4's children       after (new row of 1s)
-      4                   old_left  = 2                  4
-     / \                  old_right = 6                 / \
-    2   6                                              1   1
-   / \   \                4.left  = new 1              /     \
-  3   1   5               4.right = new 1             2       6
-                          1.left  = 2  (outer)       / \       \
-                          1.right = 6  (outer)      3   1       5
-
-depth == 1 case: brand-new node becomes root, whole old tree hangs on its LEFT.
-```
-
-**Common pitfalls**
-
-| Pitfall | Why it breaks |
-|---|---|
-| Stopping at `cur_depth == depth` | too late — the pointers to rewire live on the **parent** row |
-| Overwriting `node.left` before caching | original subtree is lost (unreachable) forever |
-| `new_left.right = old_left` (inner sides) | mirrors the tree; must be `new_left.left` / `new_right.right` |
-| Forgetting `depth == 1` | `depth - 1 == 0` is never reached, so nothing is inserted |
-| Not breaking after the rewire | BFS descends into the freshly created `val` nodes |
-| Starting `cur_depth = 0` | off-by-one — problem defines the **root as depth 1** |
-
-**3) Similar LC**
-
-| LC | Problem | Relation |
-|----|---------|----------|
-| 623 | Add One Row to Tree | this — level BFS to `depth - 1`, then rewire pointers |
-| 102 | Binary Tree Level Order Traversal | the base level-BFS loop (`size = len(q)`) |
-| 199 | Binary Tree Right Side View | same level loop, pick last node per level |
-| 116 / 117 | Populating Next Right Pointers | §2-16 — level BFS that also **mutates pointers** |
-| 971 | Flip Binary Tree To Match Preorder | swap left/right children while traversing |
-| 226 | Invert Binary Tree | cache-then-swap child pointers (same aliasing hazard) |
-
-> **Pattern takeaway**: when a tree problem says "do X at depth `d`", the row you actually
-> **mutate is `d - 1`** — level BFS there, cache the old children before assigning, reattach
-> them on the **outer** sides, and stop immediately so you never traverse your own new nodes.
-
-### 2-18) All Nodes Distance K in Binary Tree (LC 863) — Parent map + BFS radiating outward ⭐⭐⭐⭐⭐
-
-> Distance is measured from **`target`**, not from the root, so the answer can lie **below**,
-> **above**, or in a **sibling subtree** of the target. Record `{node: parent}` with one DFS to
-> supply the missing "up" edge, then BFS from `target` where each node has **3 neighbors:
-> `left`, `right`, `parent`**. Every edge costs 1 ⇒ BFS level == tree distance.
-> Full write-up: **Pattern 11**.
-
-**1) Core Idea**
-
-- **Step 1 — DFS `add_parents(node, parent)`**: `parents[node] = parent`. The tree is now effectively **undirected**.
-- **Step 2 — BFS from `target`**: expand `(node.left, node.right, parents[node])`, guard with `visited` (undirected ⇒ you *will* bounce back without it).
-- **Collect at `dist == k` and `continue`** — never expand a node already `k` away.
-
-**2) Two equivalent BFS shapes**
-
-```python
-# python — shape A: carry the distance in the queue (collect when dist == k)
-# time = O(n), space = O(n)
-import collections
-
-class Solution(object):
-    def distanceK(self, root, target, k):
-        parents = {}
-        def add_parents(node, parent):
-            if not node:
-                return
-            parents[node] = parent
-            add_parents(node.left, node)
-            add_parents(node.right, node)
-        add_parents(root, None)
-
-        q = collections.deque([(target, 0)])
-        visited = {target}
-        ans = []
-        while q:
-            node, dist = q.popleft()
-            if dist == k:
-                ans.append(node.val)
-                continue                       # k reached: do NOT go further
-            for nxt in (node.left, node.right, parents[node]):
-                if nxt and nxt not in visited:
-                    visited.add(nxt)
-                    q.append((nxt, dist + 1))
-        return ans
-```
-
-```python
-# python — shape B: expand exactly k levels, then the queue IS the answer
-# (no distance stored; naturally returns [] when the tree is smaller than k)
-# time = O(n), space = O(n)
-class Solution(object):
-    def distanceK(self, root, target, k):
-        parents = {}
-        def add_parents(node, parent):
-            if not node:
-                return
-            parents[node] = parent
-            add_parents(node.left, node)
-            add_parents(node.right, node)
-        add_parents(root, None)
-
-        q = collections.deque([target])
-        visited = {target}
-        for _ in range(k):                     # k full level expansions
-            for _ in range(len(q)):            # snapshot the level size FIRST
-                node = q.popleft()
-                for nxt in (node.left, node.right, parents[node]):
-                    if nxt and nxt not in visited:
-                        visited.add(nxt)
-                        q.append(nxt)
-        return [node.val for node in q]        # everything left is exactly k away
-```
-
-```java
-// java — shape B: k level expansions, remaining queue = answer
-// LC 863 - All Nodes Distance K in Binary Tree
-// time = O(n), space = O(n)
-public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
-    Map<TreeNode, TreeNode> parents = new HashMap<>();
-    build(root, null, parents);
-
-    Queue<TreeNode> q = new LinkedList<>();
-    q.offer(target);
-    Set<TreeNode> visited = new HashSet<>();
-    visited.add(target);
-
-    for (int step = 0; step < k; step++) {
-        int size = q.size();                    // snapshot: level boundary
-        for (int i = 0; i < size; i++) {
-            TreeNode node = q.poll();
-            for (TreeNode nei : new TreeNode[]{node.left, node.right, parents.get(node)}) {
-                if (nei != null && visited.add(nei)) q.offer(nei);
-            }
-        }
-    }
-    List<Integer> ans = new ArrayList<>();
-    for (TreeNode node : q) ans.add(node.val);  // may be empty → correct
-    return ans;
-}
-
-private void build(TreeNode node, TreeNode parent, Map<TreeNode, TreeNode> parents) {
-    if (node == null) return;
-    parents.put(node, parent);
-    build(node.left, node, parents);
-    build(node.right, node, parents);
-}
-```
-
-| | Shape A `(node, dist)` | Shape B `k` level expansions |
-|---|---|---|
-| Distance tracking | stored per queue entry | implicit in the loop counter |
-| Collect answer | when `dist == k` | whatever remains in the queue |
-| `k = 0` | returns `[target.val]` ✅ | loop skipped, queue = `[target]` ✅ |
-| `k >` tree height | naturally `[]` ✅ | queue drains to empty → `[]` ✅ |
-| Best for | also need distances / early exit | terse, matches "level = distance" intuition |
-
-**3) Common pitfalls**
-
-| Pitfall | Why it breaks |
-|---|---|
-| No `visited` set | parent edge makes it undirected → `5 → 3 → 5 → 3 …` infinite bounce |
-| Marking visited **at pop** instead of at enqueue | same node enqueued via 2 paths ⇒ duplicates in the answer |
-| Expanding after `dist == k` | wasted work; with a sloppy `visited` it also collects nodes at `k+1` |
-| Keying the map/`visited` by `node.val` | fine here (values are unique per constraints) but **breaks on duplicate values** — prefer node identity |
-| `parents[node]` on a node never DFS'd | `KeyError` — build parents from `root`, not from `target` |
-| Forgetting `k = 0` | answer is `[target.val]`, not `[]` |
-| Recomputing `len(q)` inside the level loop (shape B) | queue grows mid-level → mixes distances `k` and `k+1` |
-
-**4) Similar LC**
-
-| LC | Problem | Relation |
-|----|---------|----------|
-| 863 | All Nodes Distance K in Binary Tree | this — parent map + BFS `k` steps out |
-| 2385 | Amount of Time for Binary Tree to Be Infected | identical setup; answer = number of BFS levels (max distance) |
-| 742 | Closest Leaf in a Binary Tree | §2-15 — BFS out from target, first leaf popped wins |
-| 1740 | Find Distance in a Binary Tree | BFS from node `p` until `q` pops out |
-| 1530 | Number of Good Leaf Nodes Pairs | Pattern 10 — bounded BFS from every leaf |
-| 993 | Cousins in Binary Tree | parent + depth per node (no radiation needed) |
-| 236 | LCA of a Binary Tree | the LCA is where the up-then-down path turns around |
-| 542 / 994 | 01 Matrix / Rotting Oranges | same "BFS layer == distance" engine on a grid |
-
-> **Pattern takeaway**: the instant a tree problem measures something **from a node other than
-> the root**, stop thinking "tree recursion" and think **"undirected graph"** — add parent links
-> (`{node: parent}` map, or `node.par` annotation), then it is an ordinary BFS where each node
-> has 3 neighbors and `visited` is non-negotiable.
