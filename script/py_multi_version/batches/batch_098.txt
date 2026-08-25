@@ -1,0 +1,6 @@
+String/crawler-log-folder.py	(has 1 impl, need 2 more)
+String/decrypt-string-from-alphabet-to-integer-mapping.py	(has 1 impl, need 2 more)
+String/delete-characters-to-make-fancy-string.py	(has 1 impl, need 2 more)
+String/determine-if-string-halves-are-alike.py	(has 1 impl, need 2 more)
+String/divide-a-string-into-groups-of-size-k.py	(has 1 impl, need 2 more)
+String/existence-of-a-substring-in-a-string-and-its-reverse.py	(has 1 impl, need 2 more)

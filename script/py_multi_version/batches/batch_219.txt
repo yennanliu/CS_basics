@@ -1,0 +1,6 @@
+Greedy/make-the-prefix-sum-non-negative.py	(has 1 impl, need 2 more)
+Greedy/max-difference-you-can-get-from-changing-an-integer.py	(has 1 impl, need 2 more)
+Greedy/maximize-happiness-of-selected-children.py	(has 1 impl, need 2 more)
+Greedy/maximize-number-of-subsequences-in-a-string.py	(has 1 impl, need 2 more)
+Greedy/maximize-subarray-sum-after-removing-all-occurrences-of-one-element.py	(has 1 impl, need 2 more)
+Greedy/maximize-sum-of-array-after-k-negations.py	(has 1 impl, need 2 more)

@@ -1,0 +1,6 @@
+Math/find-the-index-of-permutation.py	(has 1 impl, need 2 more)
+Math/find-the-k-th-lucky-number.py	(has 1 impl, need 2 more)
+Math/find-the-key-of-the-numbers.py	(has 1 impl, need 2 more)
+Math/find-the-least-frequent-digit.py	(has 1 impl, need 2 more)
+Math/find-the-maximum-factor-score-of-array.py	(has 1 impl, need 2 more)
+Math/find-the-number-of-good-pairs-ii.py	(has 1 impl, need 2 more)

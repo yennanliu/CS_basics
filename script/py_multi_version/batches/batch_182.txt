@@ -1,0 +1,6 @@
+Depth-First-Search/kth-smallest-path-xor-sum.py	(has 1 impl, need 2 more)
+Depth-First-Search/linked-list-in-binary-tree.py	(has 1 impl, need 2 more)
+Depth-First-Search/longest-path-with-different-adjacent-characters.py	(has 1 impl, need 2 more)
+Depth-First-Search/lowest-common-ancestor-of-a-binary-tree-iv.py	(has 1 impl, need 2 more)
+Depth-First-Search/maximize-sum-of-weights-after-edge-removals.py	(has 1 impl, need 2 more)
+Depth-First-Search/maximum-path-quality-of-a-graph.py	(has 1 impl, need 2 more)

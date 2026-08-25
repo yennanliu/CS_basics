@@ -1,0 +1,6 @@
+Heap/mark-elements-on-array-by-performing-queries.py	(has 1 impl, need 2 more)
+Heap/maximal-score-after-applying-k-operations.py	(has 1 impl, need 2 more)
+Heap/maximize-sum-of-at-most-k-distinct-elements.py	(has 1 impl, need 2 more)
+Heap/maximum-average-pass-ratio.py	(has 1 impl, need 2 more)
+Heap/minimum-cost-to-hire-k-workers.py	(has 1 impl, need 2 more)
+Heap/minimum-difference-in-sums-after-removal-of-elements.py	(has 1 impl, need 2 more)

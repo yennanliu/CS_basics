@@ -1,0 +1,6 @@
+Array/the-employee-that-worked-on-the-longest-task.py	(has 1 impl, need 2 more)
+Array/the-k-strongest-values-in-an-array.py	(has 1 impl, need 2 more)
+Array/three-consecutive-odds.py	(has 1 impl, need 2 more)
+Array/three-equal-parts.py	(has 1 impl, need 2 more)
+Array/time-taken-to-cross-the-door.py	(has 1 impl, need 2 more)
+Array/time-to-cross-a-bridge.py	(has 1 impl, need 2 more)

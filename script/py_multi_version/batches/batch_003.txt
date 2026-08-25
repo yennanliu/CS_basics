@@ -1,0 +1,6 @@
+Array/array-transformation.py	(has 1 impl, need 2 more)
+Array/available-captures-for-rook.py	(has 1 impl, need 2 more)
+Array/average-salary-excluding-the-minimum-and-maximum-salary.py	(has 1 impl, need 2 more)
+Array/average-waiting-time.py	(has 1 impl, need 2 more)
+Array/best-meeting-point.py	(has 1 impl, need 2 more)
+Array/best-time-to-buy-and-sell-stock-using-strategy.py	(has 1 impl, need 2 more)

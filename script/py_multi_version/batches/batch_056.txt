@@ -1,0 +1,6 @@
+Dynamic_Programming/find-all-good-strings.py	(has 1 impl, need 2 more)
+Dynamic_Programming/find-all-possible-stable-binary-arrays-i.py	(has 1 impl, need 2 more)
+Dynamic_Programming/find-all-possible-stable-binary-arrays-ii.py	(has 1 impl, need 2 more)
+Dynamic_Programming/find-maximum-removals-from-source-string.py	(has 1 impl, need 2 more)
+Dynamic_Programming/find-sum-of-array-product-of-magical-sequences.py	(has 1 impl, need 2 more)
+Dynamic_Programming/find-the-count-of-monotonic-pairs-i.py	(has 1 impl, need 2 more)

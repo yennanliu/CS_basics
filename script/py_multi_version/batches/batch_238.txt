@@ -1,0 +1,6 @@
+Greedy/minimum-subsequence-in-non-increasing-order.py	(has 1 impl, need 2 more)
+Greedy/minimum-sum-of-four-digit-number-after-splitting-digits.py	(has 1 impl, need 2 more)
+Greedy/minimum-swaps-to-arrange-a-binary-grid.py	(has 1 impl, need 2 more)
+Greedy/minimum-swaps-to-make-strings-equal.py	(has 1 impl, need 2 more)
+Greedy/minimum-time-to-build-blocks.py	(has 1 impl, need 2 more)
+Greedy/minimum-time-to-complete-all-tasks.py	(has 1 impl, need 2 more)

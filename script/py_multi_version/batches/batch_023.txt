@@ -1,0 +1,6 @@
+Array/left-and-right-sum-differences.py	(has 1 impl, need 2 more)
+Array/library-late-fee-calculator.py	(has 1 impl, need 2 more)
+Array/longer-contiguous-segments-of-ones-than-zeros.py	(has 1 impl, need 2 more)
+Array/longest-common-subsequence-between-sorted-arrays.py	(has 1 impl, need 2 more)
+Array/longest-even-odd-subarray-with-threshold.py	(has 1 impl, need 2 more)
+Array/longest-increasing-subsequence-ii.py	(has 1 impl, need 2 more)

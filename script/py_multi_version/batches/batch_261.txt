@@ -1,0 +1,6 @@
+Math/find-the-pivot-integer.py	(has 1 impl, need 2 more)
+Math/find-the-sum-of-encrypted-integers.py	(has 1 impl, need 2 more)
+Math/find-the-winner-of-the-circular-game.py	(has 1 impl, need 2 more)
+Math/find-the-winning-player-in-coin-game.py	(has 1 impl, need 2 more)
+Math/find-three-consecutive-integers-that-sum-to-a-given-number.py	(has 1 impl, need 2 more)
+Math/find-triangular-sum-of-an-array.py	(has 1 impl, need 2 more)

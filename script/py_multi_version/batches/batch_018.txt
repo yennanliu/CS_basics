@@ -1,0 +1,6 @@
+Array/find-n-unique-integers-sum-up-to-zero.py	(has 1 impl, need 2 more)
+Array/find-nearest-point-that-has-the-same-x-or-y-coordinate.py	(has 1 impl, need 2 more)
+Array/find-original-array-from-doubled-array.py	(has 1 impl, need 2 more)
+Array/find-subsequence-of-length-k-with-the-largest-sum.py	(has 1 impl, need 2 more)
+Array/find-the-first-player-to-win-k-games-in-a-row.py	(has 1 impl, need 2 more)
+Array/find-the-grid-of-region-average.py	(has 1 impl, need 2 more)

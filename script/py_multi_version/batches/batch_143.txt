@@ -1,0 +1,6 @@
+Tree/maximum-genetic-difference-query.py	(has 1 impl, need 2 more)
+Tree/minimum-weighted-subgraph-with-the-required-paths-ii.py	(has 1 impl, need 2 more)
+Tree/move-sub-tree-of-n-ary-tree.py	(has 1 impl, need 2 more)
+Tree/number-of-good-paths.py	(has 1 impl, need 2 more)
+Tree/number-of-nodes-in-the-sub-tree-with-the-same-label.py	(has 1 impl, need 2 more)
+Tree/number-of-ways-to-assign-edge-weights-i.py	(has 1 impl, need 2 more)

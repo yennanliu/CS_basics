@@ -1,0 +1,6 @@
+Dynamic_Programming/maximum-vacation-days.py	(has 1 impl, need 2 more)
+Dynamic_Programming/maximum-value-of-k-coins-from-piles.py	(has 1 impl, need 2 more)
+Dynamic_Programming/maximum-walls-destroyed-by-robots.py	(has 1 impl, need 2 more)
+Dynamic_Programming/maximum-weight-in-two-bags.py	(has 1 impl, need 2 more)
+Dynamic_Programming/maximum-weighted-k-edge-path.py	(has 1 impl, need 2 more)
+Dynamic_Programming/maximum-xor-score-subarray-queries.py	(has 1 impl, need 2 more)

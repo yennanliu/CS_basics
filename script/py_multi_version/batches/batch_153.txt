@@ -1,0 +1,6 @@
+Two_Pointers/maximum-total-beauty-of-the-gardens.py	(has 1 impl, need 2 more)
+Two_Pointers/merge-two-2d-arrays-by-summing-values.py	(has 1 impl, need 2 more)
+Two_Pointers/minimum-common-value.py	(has 1 impl, need 2 more)
+Two_Pointers/minimum-discards-to-balance-inventory.py	(has 1 impl, need 2 more)
+Two_Pointers/minimum-length-of-string-after-deleting-similar-ends.py	(has 1 impl, need 2 more)
+Two_Pointers/minimum-operations-to-make-subarray-elements-equal.py	(has 1 impl, need 2 more)

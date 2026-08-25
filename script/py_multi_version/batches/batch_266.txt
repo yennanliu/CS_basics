@@ -1,0 +1,6 @@
+Math/maximum-score-from-removing-stones.py	(has 1 impl, need 2 more)
+Math/maximum-subarray-with-equal-products.py	(has 1 impl, need 2 more)
+Math/minimize-length-of-array-using-operations.py	(has 1 impl, need 2 more)
+Math/minimum-cost-path-with-alternating-directions-i.py	(has 1 impl, need 2 more)
+Math/minimum-cuts-to-divide-a-circle.py	(has 1 impl, need 2 more)
+Math/minimum-deletions-to-make-array-divisible.py	(has 1 impl, need 2 more)

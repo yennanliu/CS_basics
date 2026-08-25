@@ -1,0 +1,6 @@
+Hash_table/check-whether-two-strings-are-almost-equivalent.py	(has 1 impl, need 2 more)
+Hash_table/count-almost-equal-pairs-i.py	(has 1 impl, need 2 more)
+Hash_table/count-almost-equal-pairs-ii.py	(has 1 impl, need 2 more)
+Hash_table/count-artifacts-that-can-be-extracted.py	(has 1 impl, need 2 more)
+Hash_table/count-common-words-with-one-occurrence.py	(has 1 impl, need 2 more)
+Hash_table/count-covered-buildings.py	(has 1 impl, need 2 more)

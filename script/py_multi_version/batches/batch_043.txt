@@ -1,0 +1,6 @@
+Array/sum-of-beauty-in-the-array.py	(has 1 impl, need 2 more)
+Array/sum-of-digits-in-the-minimum-number.py	(has 1 impl, need 2 more)
+Array/sum-of-even-numbers-after-queries.py	(has 1 impl, need 2 more)
+Array/sum-of-special-evenly-spaced-elements-in-array.py	(has 1 impl, need 2 more)
+Array/sum-of-variable-length-subarrays.py	(has 1 impl, need 2 more)
+Array/teemo-attacking.py	(has 1 impl, need 2 more)

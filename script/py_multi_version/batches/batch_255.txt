@@ -1,0 +1,6 @@
+Math/count-the-digits-that-divide-a-number.py	(has 1 impl, need 2 more)
+Math/count-the-hidden-sequences.py	(has 1 impl, need 2 more)
+Math/count-the-number-of-arrays-with-k-matching-adjacent-elements.py	(has 1 impl, need 2 more)
+Math/count-the-number-of-computer-unlocking-permutations.py	(has 1 impl, need 2 more)
+Math/count-the-number-of-good-subsequences.py	(has 1 impl, need 2 more)
+Math/count-the-number-of-houses-at-a-certain-distance-ii.py	(has 1 impl, need 2 more)

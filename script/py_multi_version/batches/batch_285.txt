@@ -1,0 +1,6 @@
+Sort/coordinate-with-maximum-network-quality.py	(has 1 impl, need 2 more)
+Sort/count-days-without-meetings.py	(has 1 impl, need 2 more)
+Sort/count-nodes-that-are-great-enough.py	(has 1 impl, need 2 more)
+Sort/count-odd-numbers-in-an-interval-range.py	(has 1 impl, need 2 more)
+Sort/count-of-matches-in-tournament.py	(has 1 impl, need 2 more)
+Sort/find-target-indices-after-sorting-array.py	(has 1 impl, need 2 more)

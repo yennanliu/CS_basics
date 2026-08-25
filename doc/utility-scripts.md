@@ -85,6 +85,40 @@ Two traps the parser has to dodge, both of which silently inflate coverage:
 - `1. Populate the graph map` in a mid-function comment is not an LC id. The id scan stops at the first type declaration, and a candidate title must look like a title (short noun phrase, no operators or quotes).
 - `check with LC 542` is a cross-reference, not a solution. A `// LC n` tag counts only when it sits alone on its line and a problem url follows within a few lines — the shape `LCWeekly/*.java` uses to hold a whole contest.
 
+## py_multi_version/
+
+Tooling for the `leetcode_python/` multi-version clean-up (see
+[`branch-progress.md`](./branch-progress.md) for what it is and how far it has got).
+
+```bash
+# audit + (re)generate the batch work-list
+python3 script/py_multi_version/audit.py
+
+# gate a batch: does every file meet the definition of done?
+python3 script/py_multi_version/verify.py script/py_multi_version/batches/batch_007.txt
+
+# gate a single file
+python3 script/py_multi_version/verify.py Array/two-sum.py
+
+# regenerate doc/branch-progress.md from real repo state
+python3 script/py_multi_version/gen_progress.py
+```
+
+| File | Role |
+|------|------|
+| `SPEC.md` | the contract every batch worker follows — marker naming, the 4-line block header, what counts as a genuinely different approach, and the requirement that each solution is run against the problem's docstring examples |
+| `audit.py` | scans `leetcode_python/`, counts real implementations per file, writes `batches/` |
+| `verify.py` | the gate: >=3 real impls, complexity comments on each, no duplicate blocks, `ast`-parses, and no tabs/trailing-whitespace/py2 constructs **on added lines only** |
+| `gen_progress.py` | regenerates `doc/branch-progress.md`; never hand-edit that file |
+| `state.json` | which batches are dispatched and which have reported back |
+| `batches/` | the 345 batch work-lists, 6 files each |
+
+`verify.py` audits its own checkout by default; set `PMV_WORKTREE=/path/to/worktree` to
+report on a different branch's worktree (this is how the docs branch reports on the work
+branch), and `PMV_BASE` to diff against something other than `master`.
+
+Exit code is non-zero if any file fails, so it drops straight into a loop or CI step.
+
 ## Other Scripts
 
 | Script | Purpose |

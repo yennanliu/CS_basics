@@ -1,0 +1,6 @@
+Dynamic_Programming/distribute-repeating-integers.py	(has 1 impl, need 2 more)
+Dynamic_Programming/dungeon-game.py	(has 1 impl, need 2 more)
+Dynamic_Programming/equalize-strings-by-adding-or-removing-characters-at-ends.py	(has 1 impl, need 2 more)
+Dynamic_Programming/fair-distribution-of-cookies.py	(has 1 impl, need 2 more)
+Dynamic_Programming/filling-bookcase-shelves.py	(has 1 impl, need 2 more)
+Dynamic_Programming/find-all-good-indices.py	(has 1 impl, need 2 more)

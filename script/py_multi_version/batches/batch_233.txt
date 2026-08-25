@@ -1,0 +1,6 @@
+Greedy/minimum-number-of-changes-to-make-binary-string-beautiful.py	(has 1 impl, need 2 more)
+Greedy/minimum-number-of-frogs-croaking.py	(has 1 impl, need 2 more)
+Greedy/minimum-number-of-increments-on-subarrays-to-form-a-target-array.py	(has 1 impl, need 2 more)
+Greedy/minimum-number-of-k-consecutive-bit-flips.py	(has 1 impl, need 2 more)
+Greedy/minimum-number-of-keypresses.py	(has 1 impl, need 2 more)
+Greedy/minimum-number-of-moves-to-make-palindrome.py	(has 1 impl, need 2 more)

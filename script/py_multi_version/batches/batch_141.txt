@@ -1,0 +1,6 @@
+Tree/create-sorted-array-through-instructions.py	(has 1 impl, need 2 more)
+Tree/delete-duplicate-folders-in-system.py	(has 1 impl, need 2 more)
+Tree/encode-n-ary-tree-to-binary-tree.py	(has 1 impl, need 2 more)
+Tree/falling-squares.py	(has 1 impl, need 2 more)
+Tree/find-all-the-lonely-nodes.py	(has 1 impl, need 2 more)
+Tree/find-root-of-n-ary-tree.py	(has 1 impl, need 2 more)

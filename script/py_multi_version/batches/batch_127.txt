@@ -1,0 +1,6 @@
+Hash_table/find-the-number-of-distinct-colors-among-the-balls.py	(has 1 impl, need 2 more)
+Hash_table/find-the-number-of-winning-players.py	(has 1 impl, need 2 more)
+Hash_table/find-valid-pair-of-adjacent-digits-in-string.py	(has 1 impl, need 2 more)
+Hash_table/find-words-that-can-be-formed-by-characters.py	(has 1 impl, need 2 more)
+Hash_table/find-x-sum-of-all-k-long-subarrays-i.py	(has 1 impl, need 2 more)
+Hash_table/finding-the-users-active-minutes.py	(has 1 impl, need 2 more)

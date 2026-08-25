@@ -1,0 +1,6 @@
+Queue/jump-game-vi.py	(has 1 impl, need 2 more)
+Queue/maximum-number-of-robots-within-budget.py	(has 1 impl, need 2 more)
+Geometry/best-position-for-a-service-centre.py	(has 1 impl, need 2 more)
+Geometry/detonate-the-maximum-bombs.py	(has 1 impl, need 2 more)
+Geometry/erect-the-fence-ii.py	(has 1 impl, need 2 more)
+Geometry/find-maximum-area-of-a-triangle.py	(has 1 impl, need 2 more)

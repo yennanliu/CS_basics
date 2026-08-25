@@ -1,0 +1,6 @@
+Design/design-a-text-editor.py	(has 1 impl, need 2 more)
+Design/design-a-todo-list.py	(has 1 impl, need 2 more)
+Design/design-an-atm-machine.py	(has 1 impl, need 2 more)
+Design/design-an-ordered-stream.py	(has 1 impl, need 2 more)
+Design/design-bitset.py	(has 1 impl, need 2 more)
+Design/design-circular-deque.py	(has 1 impl, need 2 more)

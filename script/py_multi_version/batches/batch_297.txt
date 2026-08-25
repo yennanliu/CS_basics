@@ -1,0 +1,6 @@
+Design/fancy-sequence.py	(has 1 impl, need 2 more)
+Design/find-consecutive-integers-from-a-data-stream.py	(has 1 impl, need 2 more)
+Design/finding-mk-average.py	(has 1 impl, need 2 more)
+Design/finding-pairs-with-a-certain-sum.py	(has 1 impl, need 2 more)
+Design/frequency-tracker.py	(has 1 impl, need 2 more)
+Design/implement-router.py	(has 1 impl, need 2 more)

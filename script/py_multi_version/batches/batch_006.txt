@@ -1,0 +1,6 @@
+Array/check-if-it-is-possible-to-split-array.py	(has 1 impl, need 2 more)
+Array/check-if-matrix-is-x-matrix.py	(has 1 impl, need 2 more)
+Array/check-if-move-is-legal.py	(has 1 impl, need 2 more)
+Array/check-if-n-and-its-double-exist.py	(has 1 impl, need 2 more)
+Array/check-if-word-can-be-placed-in-crossword.py	(has 1 impl, need 2 more)
+Array/check-knight-tour-configuration.py	(has 1 impl, need 2 more)

@@ -1,0 +1,6 @@
+Dynamic_Programming/maximize-the-number-of-partitions-after-operations.py	(has 1 impl, need 2 more)
+Dynamic_Programming/maximize-the-profit-as-the-salesman.py	(has 1 impl, need 2 more)
+Dynamic_Programming/maximize-total-tastiness-of-purchased-fruits.py	(has 1 impl, need 2 more)
+Dynamic_Programming/maximum-amount-of-money-robot-can-earn.py	(has 1 impl, need 2 more)
+Dynamic_Programming/maximum-array-hopping-score-i.py	(has 1 impl, need 2 more)
+Dynamic_Programming/maximum-cost-of-trip-with-k-highways.py	(has 1 impl, need 2 more)

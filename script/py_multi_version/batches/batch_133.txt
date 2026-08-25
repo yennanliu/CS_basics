@@ -1,0 +1,6 @@
+Hash_table/minimum-length-of-string-after-operations.py	(has 1 impl, need 2 more)
+Hash_table/minimum-number-of-operations-to-make-elements-in-array-distinct.py	(has 1 impl, need 2 more)
+Hash_table/minimum-number-of-operations-to-make-word-k-periodic.py	(has 1 impl, need 2 more)
+Hash_table/minimum-operations-to-make-array-values-equal-to-k.py	(has 1 impl, need 2 more)
+Hash_table/minimum-operations-to-make-the-array-alternating.py	(has 1 impl, need 2 more)
+Hash_table/minimum-seconds-to-equalize-a-circular-array.py	(has 1 impl, need 2 more)

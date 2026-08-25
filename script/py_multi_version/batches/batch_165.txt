@@ -1,0 +1,6 @@
+Binary_Search/minimize-the-maximum-of-two-arrays.py	(has 1 impl, need 2 more)
+Binary_Search/minimized-maximum-of-products-distributed-to-any-store.py	(has 1 impl, need 2 more)
+Binary_Search/minimum-absolute-sum-difference.py	(has 1 impl, need 2 more)
+Binary_Search/minimum-cost-to-make-array-equal.py	(has 1 impl, need 2 more)
+Binary_Search/minimum-number-of-increasing-subsequence-to-be-removed.py	(has 1 impl, need 2 more)
+Binary_Search/minimum-number-of-removals-to-make-mountain-array.py	(has 1 impl, need 2 more)

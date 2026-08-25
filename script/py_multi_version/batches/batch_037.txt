@@ -1,0 +1,6 @@
+Array/number-of-ways-to-split-array.py	(has 1 impl, need 2 more)
+Array/partition-array-into-three-parts-with-equal-sum.py	(has 1 impl, need 2 more)
+Array/partition-array-into-two-arrays-to-minimize-sum-difference.py	(has 1 impl, need 2 more)
+Array/perform-string-shifts.py	(has 1 impl, need 2 more)
+Array/plates-between-candles.py	(has 1 impl, need 2 more)
+Array/points-that-intersect-with-cars.py	(has 1 impl, need 2 more)

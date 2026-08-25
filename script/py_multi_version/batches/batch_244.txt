@@ -1,0 +1,6 @@
+Greedy/smallest-string-with-a-given-numeric-value.py	(has 1 impl, need 2 more)
+Greedy/smallest-value-of-the-rearranged-number.py	(has 1 impl, need 2 more)
+Greedy/sort-array-by-moving-items-to-empty-space.py	(has 1 impl, need 2 more)
+Greedy/split-a-string-in-balanced-strings.py	(has 1 impl, need 2 more)
+Greedy/split-two-strings-to-make-palindrome.py	(has 1 impl, need 2 more)
+Greedy/split-with-minimum-sum.py	(has 1 impl, need 2 more)

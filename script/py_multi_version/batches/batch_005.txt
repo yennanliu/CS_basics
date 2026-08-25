@@ -1,0 +1,6 @@
+Array/car-pooling.py	(has 1 impl, need 2 more)
+Array/cells-in-a-range-on-an-excel-sheet.py	(has 1 impl, need 2 more)
+Array/change-data-type.py	(has 1 impl, need 2 more)
+Array/check-if-all-1s-are-at-least-length-k-places-away.py	(has 1 impl, need 2 more)
+Array/check-if-array-is-sorted-and-rotated.py	(has 1 impl, need 2 more)
+Array/check-if-grid-satisfies-conditions.py	(has 1 impl, need 2 more)

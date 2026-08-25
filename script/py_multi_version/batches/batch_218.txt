@@ -1,0 +1,6 @@
+Greedy/make-array-non-decreasing-or-non-increasing.py	(has 1 impl, need 2 more)
+Greedy/make-array-non-decreasing.py	(has 1 impl, need 2 more)
+Greedy/make-costs-of-paths-equal-in-a-binary-tree.py	(has 1 impl, need 2 more)
+Greedy/make-k-subarray-sums-equal.py	(has 1 impl, need 2 more)
+Greedy/make-string-a-subsequence-using-cyclic-increments.py	(has 1 impl, need 2 more)
+Greedy/make-string-anti-palindrome.py	(has 1 impl, need 2 more)

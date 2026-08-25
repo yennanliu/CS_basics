@@ -1,0 +1,6 @@
+Bit_Manipulation/subarrays-with-xor-at-least-k.py	(has 1 impl, need 2 more)
+Bit_Manipulation/sum-of-values-at-indices-with-k-set-bits.py	(has 1 impl, need 2 more)
+Bit_Manipulation/xor-queries-of-a-subarray.py	(has 1 impl, need 2 more)
+Recursion/beautiful-pairs.py	(has 1 impl, need 2 more)
+Recursion/binary-tree-longest-consecutive-sequence-ii.py	(has 1 impl, need 2 more)
+Recursion/binary-tree-upside-down.py	(has 1 impl, need 2 more)

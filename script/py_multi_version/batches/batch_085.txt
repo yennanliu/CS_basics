@@ -1,0 +1,6 @@
+Dynamic_Programming/scramble-string.py	(has 1 impl, need 2 more)
+Dynamic_Programming/select-cells-in-grid-with-maximum-score.py	(has 1 impl, need 2 more)
+Dynamic_Programming/selling-pieces-of-wood.py	(has 1 impl, need 2 more)
+Dynamic_Programming/shortest-common-supersequence.py	(has 1 impl, need 2 more)
+Dynamic_Programming/shortest-distance-to-target-color.py	(has 1 impl, need 2 more)
+Dynamic_Programming/shortest-path-visiting-all-nodes.py	(has 1 impl, need 2 more)

@@ -1,0 +1,6 @@
+Greedy/maximum-score-from-removing-substrings.py	(has 1 impl, need 2 more)
+Greedy/maximum-score-of-a-good-subarray.py	(has 1 impl, need 2 more)
+Greedy/maximum-score-of-spliced-array.py	(has 1 impl, need 2 more)
+Greedy/maximum-size-of-a-set-after-removals.py	(has 1 impl, need 2 more)
+Greedy/maximum-split-of-positive-even-integers.py	(has 1 impl, need 2 more)
+Greedy/maximum-strength-of-a-group.py	(has 1 impl, need 2 more)

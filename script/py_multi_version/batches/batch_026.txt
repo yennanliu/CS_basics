@@ -1,0 +1,6 @@
+Array/maximum-average-subarray-ii.py	(has 1 impl, need 2 more)
+Array/maximum-consecutive-floors-without-special-floors.py	(has 1 impl, need 2 more)
+Array/maximum-difference-between-adjacent-elements-in-a-circular-array.py	(has 1 impl, need 2 more)
+Array/maximum-difference-between-increasing-elements.py	(has 1 impl, need 2 more)
+Array/maximum-fruits-harvested-after-at-most-k-steps.py	(has 1 impl, need 2 more)
+Array/maximum-number-of-balls-in-a-box.py	(has 1 impl, need 2 more)

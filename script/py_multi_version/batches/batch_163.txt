@@ -1,0 +1,6 @@
+Binary_Search/maximize-the-minimum-powered-city.py	(has 1 impl, need 2 more)
+Binary_Search/maximum-candies-allocated-to-k-children.py	(has 1 impl, need 2 more)
+Binary_Search/maximum-count-of-positive-integer-and-negative-integer.py	(has 1 impl, need 2 more)
+Binary_Search/maximum-font-to-fit-a-sentence-in-a-screen.py	(has 1 impl, need 2 more)
+Binary_Search/maximum-frequency-of-an-element-after-performing-operations-ii.py	(has 1 impl, need 2 more)
+Binary_Search/maximum-increasing-triplet-value.py	(has 1 impl, need 2 more)

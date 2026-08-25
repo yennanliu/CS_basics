@@ -1,0 +1,6 @@
+Hash_table/count-special-triplets.py	(has 1 impl, need 2 more)
+Hash_table/count-square-sum-triples.py	(has 1 impl, need 2 more)
+Hash_table/count-subarrays-with-median-k.py	(has 1 impl, need 2 more)
+Hash_table/count-the-number-of-beautiful-subarrays.py	(has 1 impl, need 2 more)
+Hash_table/decode-the-message.py	(has 1 impl, need 2 more)
+Hash_table/destroy-sequential-targets.py	(has 1 impl, need 2 more)

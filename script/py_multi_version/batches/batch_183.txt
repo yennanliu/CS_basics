@@ -1,0 +1,6 @@
+Depth-First-Search/maximum-subtree-of-the-same-color.py	(has 1 impl, need 2 more)
+Depth-First-Search/minimize-hamming-distance-after-swap-operations.py	(has 1 impl, need 2 more)
+Depth-First-Search/minimum-fuel-cost-to-report-to-the-capital.py	(has 1 impl, need 2 more)
+Depth-First-Search/minimum-increments-to-equalize-leaf-paths.py	(has 1 impl, need 2 more)
+Depth-First-Search/minimum-score-after-removals-on-a-tree.py	(has 1 impl, need 2 more)
+Depth-First-Search/most-profitable-path-in-a-tree.py	(has 1 impl, need 2 more)

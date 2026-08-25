@@ -1,0 +1,6 @@
+Math/reaching-points.py	(has 1 impl, need 2 more)
+Math/rectangle-area.py	(has 1 impl, need 2 more)
+Math/remove-9.py	(has 1 impl, need 2 more)
+Math/removing-minimum-and-maximum-from-array.py	(has 1 impl, need 2 more)
+Math/removing-minimum-number-of-magic-beans.py	(has 1 impl, need 2 more)
+Math/reverse-subarray-to-maximize-array-value.py	(has 1 impl, need 2 more)

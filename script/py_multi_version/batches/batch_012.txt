@@ -1,0 +1,6 @@
+Array/detect-cycles-in-2d-grid.py	(has 1 impl, need 2 more)
+Array/detect-pattern-of-length-m-repeated-k-or-more-times.py	(has 1 impl, need 2 more)
+Array/determine-if-a-cell-is-reachable-at-a-given-time.py	(has 1 impl, need 2 more)
+Array/determine-if-two-events-have-conflict.py	(has 1 impl, need 2 more)
+Array/determine-the-minimum-sum-of-a-k-avoiding-array.py	(has 1 impl, need 2 more)
+Array/determine-the-winner-of-a-bowling-game.py	(has 1 impl, need 2 more)

@@ -1,0 +1,6 @@
+Dynamic_Programming/the-earliest-and-latest-rounds-where-players-compete.py	(has 1 impl, need 2 more)
+Dynamic_Programming/the-most-similar-path-in-a-graph.py	(has 1 impl, need 2 more)
+Dynamic_Programming/the-number-of-beautiful-subsets.py	(has 1 impl, need 2 more)
+Dynamic_Programming/the-number-of-good-subsets.py	(has 1 impl, need 2 more)
+Dynamic_Programming/the-number-of-ways-to-make-the-sum.py	(has 1 impl, need 2 more)
+Dynamic_Programming/the-score-of-students-solving-math-expression.py	(has 1 impl, need 2 more)

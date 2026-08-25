@@ -1,0 +1,6 @@
+Two_Pointers/count-substrings-without-repeating-character.py	(has 1 impl, need 2 more)
+Two_Pointers/count-the-number-of-fair-pairs.py	(has 1 impl, need 2 more)
+Two_Pointers/count-the-number-of-good-subarrays.py	(has 1 impl, need 2 more)
+Two_Pointers/count-vowel-substrings-of-a-string.py	(has 1 impl, need 2 more)
+Two_Pointers/count-zero-request-servers.py	(has 1 impl, need 2 more)
+Two_Pointers/delivering-boxes-from-storage-to-ports.py	(has 1 impl, need 2 more)

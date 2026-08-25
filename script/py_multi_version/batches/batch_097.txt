@@ -1,0 +1,6 @@
+String/count-symmetric-integers.py	(has 1 impl, need 2 more)
+String/count-the-number-of-consistent-strings.py	(has 1 impl, need 2 more)
+String/count-the-number-of-vowel-strings-in-range.py	(has 1 impl, need 2 more)
+String/count-words-obtained-after-adding-a-letter.py	(has 1 impl, need 2 more)
+String/counting-words-with-a-given-prefix.py	(has 1 impl, need 2 more)
+String/coupon-code-validator.py	(has 1 impl, need 2 more)

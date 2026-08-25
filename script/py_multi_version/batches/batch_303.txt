@@ -1,0 +1,6 @@
+Backtracking/number-of-squareful-arrays.py	(has 1 impl, need 2 more)
+Backtracking/number-of-valid-move-combinations-on-chessboard.py	(has 1 impl, need 2 more)
+Backtracking/permutations-iii.py	(has 1 impl, need 2 more)
+Backtracking/sequential-grid-path-cover.py	(has 1 impl, need 2 more)
+Backtracking/smallest-greater-multiple-made-of-two-digits.py	(has 1 impl, need 2 more)
+Backtracking/special-permutations.py	(has 1 impl, need 2 more)

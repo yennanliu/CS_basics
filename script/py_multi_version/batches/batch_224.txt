@@ -1,0 +1,6 @@
+Greedy/maximum-number-of-ones.py	(has 1 impl, need 2 more)
+Greedy/maximum-number-of-operations-to-move-ones-to-the-end.py	(has 1 impl, need 2 more)
+Greedy/maximum-number-of-potholes-that-can-be-fixed.py	(has 1 impl, need 2 more)
+Greedy/maximum-number-of-tasks-you-can-assign.py	(has 1 impl, need 2 more)
+Greedy/maximum-number-of-weeks-for-which-you-can-work.py	(has 1 impl, need 2 more)
+Greedy/maximum-or.py	(has 1 impl, need 2 more)

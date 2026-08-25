@@ -1,0 +1,6 @@
+Greedy/minimum-adjacent-swaps-to-alternate-parity.py	(has 1 impl, need 2 more)
+Greedy/minimum-adjacent-swaps-to-make-a-valid-array.py	(has 1 impl, need 2 more)
+Greedy/minimum-adjacent-swaps-to-reach-the-kth-smallest-number.py	(has 1 impl, need 2 more)
+Greedy/minimum-changes-to-make-alternating-binary-string.py	(has 1 impl, need 2 more)
+Greedy/minimum-cost-for-cutting-cake-i.py	(has 1 impl, need 2 more)
+Greedy/minimum-cost-for-cutting-cake-ii.py	(has 1 impl, need 2 more)

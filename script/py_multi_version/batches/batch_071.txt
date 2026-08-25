@@ -1,0 +1,6 @@
+Dynamic_Programming/merge-operations-for-minimum-travel-time.py	(has 1 impl, need 2 more)
+Dynamic_Programming/minimize-the-difference-between-target-and-chosen-elements.py	(has 1 impl, need 2 more)
+Dynamic_Programming/minimum-array-sum.py	(has 1 impl, need 2 more)
+Dynamic_Programming/minimum-ascii-delete-sum-for-two-strings.py	(has 1 impl, need 2 more)
+Dynamic_Programming/minimum-cost-good-caption.py	(has 1 impl, need 2 more)
+Dynamic_Programming/minimum-cost-path-with-alternating-directions-ii.py	(has 1 impl, need 2 more)

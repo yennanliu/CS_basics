@@ -1,0 +1,6 @@
+String/minimum-time-to-revert-word-to-initial-state-ii.py	(has 1 impl, need 2 more)
+String/minimum-time-to-type-word-using-special-typewriter.py	(has 1 impl, need 2 more)
+String/next-greater-numerically-balanced-number.py	(has 1 impl, need 2 more)
+String/number-of-changing-keys.py	(has 1 impl, need 2 more)
+String/number-of-different-integers-in-a-string.py	(has 1 impl, need 2 more)
+String/number-of-distinct-substrings-in-a-string.py	(has 1 impl, need 2 more)

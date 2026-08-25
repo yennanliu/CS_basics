@@ -1,0 +1,6 @@
+Two_Pointers/count-non-decreasing-subarrays-after-k-operations.py	(has 1 impl, need 2 more)
+Two_Pointers/count-pairs-in-two-arrays.py	(has 1 impl, need 2 more)
+Two_Pointers/count-pairs-whose-sum-is-less-than-target.py	(has 1 impl, need 2 more)
+Two_Pointers/count-strictly-increasing-subarrays.py	(has 1 impl, need 2 more)
+Two_Pointers/count-subarrays-with-fixed-bounds.py	(has 1 impl, need 2 more)
+Two_Pointers/count-subarrays-with-score-less-than-k.py	(has 1 impl, need 2 more)

@@ -1,0 +1,6 @@
+Dynamic_Programming/k-concatenation-maximum-sum.py	(has 1 impl, need 2 more)
+Dynamic_Programming/largest-1-bordered-square.py	(has 1 impl, need 2 more)
+Dynamic_Programming/largest-color-value-in-a-directed-graph.py	(has 1 impl, need 2 more)
+Dynamic_Programming/least-operators-to-express-number.py	(has 1 impl, need 2 more)
+Dynamic_Programming/lexicographically-smallest-string-after-adjacent-removals.py	(has 1 impl, need 2 more)
+Dynamic_Programming/longest-arithmetic-sequence.py	(has 1 impl, need 2 more)

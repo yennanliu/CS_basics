@@ -1,0 +1,6 @@
+Math/find-unique-binary-string.py	(has 1 impl, need 2 more)
+Math/find-xor-sum-of-all-pairs-bitwise-and.py	(has 1 impl, need 2 more)
+Math/four-divisors.py	(has 1 impl, need 2 more)
+Math/furthest-point-from-origin.py	(has 1 impl, need 2 more)
+Math/gcd-of-odd-and-even-sums.py	(has 1 impl, need 2 more)
+Math/get-the-maximum-score.py	(has 1 impl, need 2 more)

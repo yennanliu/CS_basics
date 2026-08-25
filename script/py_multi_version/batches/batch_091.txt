@@ -1,0 +1,6 @@
+Dynamic_Programming/visit-array-positions-to-maximize-score.py	(has 1 impl, need 2 more)
+Dynamic_Programming/ways-to-express-an-integer-as-sum-of-powers.py	(has 1 impl, need 2 more)
+Dynamic_Programming/ways-to-make-a-fair-array.py	(has 1 impl, need 2 more)
+String/adding-spaces-to-a-string.py	(has 1 impl, need 2 more)
+String/apply-discount-to-prices.py	(has 1 impl, need 2 more)
+String/better-compression-of-string.py	(has 1 impl, need 2 more)

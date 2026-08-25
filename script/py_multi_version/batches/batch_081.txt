@@ -1,0 +1,6 @@
+Dynamic_Programming/number-of-ways-to-select-buildings.py	(has 1 impl, need 2 more)
+Dynamic_Programming/number-of-ways-to-separate-numbers.py	(has 1 impl, need 2 more)
+Dynamic_Programming/number-of-ways-to-stay-in-the-same-place-after-some-steps.py	(has 1 impl, need 2 more)
+Dynamic_Programming/number-of-ways-to-wear-different-hats-to-each-other.py	(has 1 impl, need 2 more)
+Dynamic_Programming/odd-even-jump.py	(has 1 impl, need 2 more)
+Dynamic_Programming/once-twice.py	(has 1 impl, need 2 more)

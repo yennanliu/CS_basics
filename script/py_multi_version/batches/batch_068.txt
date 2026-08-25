@@ -1,0 +1,6 @@
+Dynamic_Programming/maximum-profit-from-trading-stocks-with-discounts.py	(has 1 impl, need 2 more)
+Dynamic_Programming/maximum-profit-from-trading-stocks.py	(has 1 impl, need 2 more)
+Dynamic_Programming/maximum-profit-from-valid-topological-order-in-dag.py	(has 1 impl, need 2 more)
+Dynamic_Programming/maximum-score-from-performing-multiplication-operations.py	(has 1 impl, need 2 more)
+Dynamic_Programming/maximum-score-of-non-overlapping-intervals.py	(has 1 impl, need 2 more)
+Dynamic_Programming/maximum-strength-of-k-disjoint-subarrays.py	(has 1 impl, need 2 more)

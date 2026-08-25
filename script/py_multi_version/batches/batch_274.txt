@@ -1,0 +1,6 @@
+Math/play-with-chips.py	(has 1 impl, need 2 more)
+Math/power-of-three.py	(has 1 impl, need 2 more)
+Math/prime-arrangements.py	(has 1 impl, need 2 more)
+Math/prime-pairs-with-target-sum.py	(has 1 impl, need 2 more)
+Math/queries-on-number-of-points-inside-a-circle.py	(has 1 impl, need 2 more)
+Math/range-addition-ii.py	(has 1 impl, need 2 more)

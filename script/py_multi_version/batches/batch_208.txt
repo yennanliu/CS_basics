@@ -1,0 +1,6 @@
+Greedy/apple-redistribution-into-boxes.py	(has 1 impl, need 2 more)
+Greedy/apply-operations-to-make-all-array-elements-equal-to-zero.py	(has 1 impl, need 2 more)
+Greedy/avoid-flood-in-the-city.py	(has 1 impl, need 2 more)
+Greedy/broken-calculator.py	(has 1 impl, need 2 more)
+Greedy/buildings-with-an-ocean-view.py	(has 1 impl, need 2 more)
+Greedy/change-minimum-characters-to-satisfy-one-of-three-conditions.py	(has 1 impl, need 2 more)

@@ -1,0 +1,6 @@
+Array/get-biggest-three-rhombus-sums-in-a-grid.py	(has 1 impl, need 2 more)
+Array/get-maximum-in-generated-array.py	(has 1 impl, need 2 more)
+Array/grumpy-bookstore-owner.py	(has 1 impl, need 2 more)
+Array/guess-the-majority-in-a-hidden-array.py	(has 1 impl, need 2 more)
+Array/handling-sum-queries-after-update.py	(has 1 impl, need 2 more)
+Array/increment-submatrices-by-one.py	(has 1 impl, need 2 more)

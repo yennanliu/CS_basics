@@ -1,0 +1,6 @@
+Math/super-palindromes.py	(has 1 impl, need 2 more)
+Math/the-k-th-lexicographical-string-of-all-happy-strings-of-length-n.py	(has 1 impl, need 2 more)
+Math/the-number-of-full-rounds-you-have-played.py	(has 1 impl, need 2 more)
+Math/three-divisors.py	(has 1 impl, need 2 more)
+Math/time-needed-to-buy-tickets.py	(has 1 impl, need 2 more)
+Math/total-appeal-of-a-string.py	(has 1 impl, need 2 more)

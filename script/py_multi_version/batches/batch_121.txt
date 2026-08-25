@@ -1,0 +1,6 @@
+Hash_table/count-elements-with-maximum-frequency.py	(has 1 impl, need 2 more)
+Hash_table/count-good-meals.py	(has 1 impl, need 2 more)
+Hash_table/count-nice-pairs-in-an-array.py	(has 1 impl, need 2 more)
+Hash_table/count-number-of-bad-pairs.py	(has 1 impl, need 2 more)
+Hash_table/count-number-of-distinct-integers-after-reverse-operations.py	(has 1 impl, need 2 more)
+Hash_table/count-number-of-pairs-with-absolute-difference-k.py	(has 1 impl, need 2 more)

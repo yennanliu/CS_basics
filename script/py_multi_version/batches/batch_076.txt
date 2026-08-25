@@ -1,0 +1,6 @@
+Dynamic_Programming/minimum-time-to-make-array-sum-at-most-x.py	(has 1 impl, need 2 more)
+Dynamic_Programming/minimum-time-to-remove-all-cars-containing-illegal-goods.py	(has 1 impl, need 2 more)
+Dynamic_Programming/minimum-total-distance-traveled.py	(has 1 impl, need 2 more)
+Dynamic_Programming/minimum-total-space-wasted-with-k-resizing-operations.py	(has 1 impl, need 2 more)
+Dynamic_Programming/minimum-white-tiles-after-covering-with-carpets.py	(has 1 impl, need 2 more)
+Dynamic_Programming/new-21-game.py	(has 1 impl, need 2 more)

@@ -1,0 +1,6 @@
+Greedy/minimum-operations-to-make-array-equal-ii.py	(has 1 impl, need 2 more)
+Greedy/minimum-operations-to-make-array-equal-to-target.py	(has 1 impl, need 2 more)
+Greedy/minimum-operations-to-make-columns-strictly-increasing.py	(has 1 impl, need 2 more)
+Greedy/minimum-operations-to-make-the-array-increasing.py	(has 1 impl, need 2 more)
+Greedy/minimum-operations-to-reduce-an-integer-to-0.py	(has 1 impl, need 2 more)
+Greedy/minimum-penalty-for-a-shop.py	(has 1 impl, need 2 more)

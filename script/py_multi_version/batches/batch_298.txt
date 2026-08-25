@@ -1,0 +1,6 @@
+Design/implement-stack-using-queues.py	(has 1 impl, need 2 more)
+Design/implement-trie-ii-prefix-tree.py	(has 1 impl, need 2 more)
+Design/insert-delete-getrandom-o1-duplicates-allowed.py	(has 1 impl, need 2 more)
+Design/kth-ancestor-of-a-tree-node.py	(has 1 impl, need 2 more)
+Design/longest-uploaded-prefix.py	(has 1 impl, need 2 more)
+Design/maximum-sum-of-subsequence-with-non-adjacent-elements.py	(has 1 impl, need 2 more)

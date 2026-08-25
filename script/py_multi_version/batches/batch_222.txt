@@ -1,0 +1,6 @@
+Greedy/maximum-manhattan-distance-after-k-changes.py	(has 1 impl, need 2 more)
+Greedy/maximum-matching-of-players-with-trainers.py	(has 1 impl, need 2 more)
+Greedy/maximum-matrix-sum.py	(has 1 impl, need 2 more)
+Greedy/maximum-median-sum-of-subsequences-of-size-3.py	(has 1 impl, need 2 more)
+Greedy/maximum-nesting-depth-of-two-valid-parentheses-strings.py	(has 1 impl, need 2 more)
+Greedy/maximum-number-of-consecutive-values-you-can-make.py	(has 1 impl, need 2 more)

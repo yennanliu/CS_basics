@@ -1,0 +1,6 @@
+Dynamic_Programming/maximum-height-by-stacking-cuboids.py	(has 1 impl, need 2 more)
+Dynamic_Programming/maximum-multiplication-score.py	(has 1 impl, need 2 more)
+Dynamic_Programming/maximum-non-negative-product-in-a-matrix.py	(has 1 impl, need 2 more)
+Dynamic_Programming/maximum-number-of-events-that-can-be-attended-ii.py	(has 1 impl, need 2 more)
+Dynamic_Programming/maximum-number-of-jumps-to-reach-the-last-index.py	(has 1 impl, need 2 more)
+Dynamic_Programming/maximum-number-of-operations-with-the-same-score-ii.py	(has 1 impl, need 2 more)

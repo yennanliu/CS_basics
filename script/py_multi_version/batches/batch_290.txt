@@ -1,0 +1,6 @@
+Sort/sort-array-by-absolute-value.py	(has 1 impl, need 2 more)
+Sort/sort-array-by-increasing-frequency.py	(has 1 impl, need 2 more)
+Sort/sort-even-and-odd-indices-independently.py	(has 1 impl, need 2 more)
+Sort/sort-features-by-popularity.py	(has 1 impl, need 2 more)
+Sort/sort-the-jumbled-numbers.py	(has 1 impl, need 2 more)
+Sort/sort-the-people.py	(has 1 impl, need 2 more)

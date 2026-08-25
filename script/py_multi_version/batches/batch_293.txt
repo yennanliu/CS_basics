@@ -1,0 +1,6 @@
+Design/binary-search-tree-iterator-ii.py	(has 1 impl, need 2 more)
+Design/block-placement-queries.py	(has 1 impl, need 2 more)
+Design/booking-concert-tickets-in-groups.py	(has 1 impl, need 2 more)
+Design/count-integers-in-intervals.py	(has 1 impl, need 2 more)
+Design/design-a-food-rating-system.py	(has 1 impl, need 2 more)
+Design/design-a-number-container-system.py	(has 1 impl, need 2 more)

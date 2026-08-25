@@ -1,0 +1,6 @@
+String/find-substring-with-given-hash-value.py	(has 1 impl, need 2 more)
+String/find-the-divisibility-array-of-a-string.py	(has 1 impl, need 2 more)
+String/find-the-encrypted-string.py	(has 1 impl, need 2 more)
+String/find-the-k-beauty-of-a-number.py	(has 1 impl, need 2 more)
+String/find-the-longest-substring-containing-vowels-in-even-counts.py	(has 1 impl, need 2 more)
+String/find-the-occurrence-of-first-almost-equal-substring.py	(has 1 impl, need 2 more)

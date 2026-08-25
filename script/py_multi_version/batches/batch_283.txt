@@ -1,0 +1,6 @@
+Math/valid-number.py	(has 1 impl, need 2 more)
+Math/vowels-of-all-substrings.py	(has 1 impl, need 2 more)
+Math/water-bottles-ii.py	(has 1 impl, need 2 more)
+Math/ways-to-split-array-into-good-subarrays.py	(has 1 impl, need 2 more)
+Math/xor-operation-in-an-array.py	(has 1 impl, need 2 more)
+Sort/amount-of-new-area-painted-each-day.py	(has 1 impl, need 2 more)

@@ -1,0 +1,6 @@
+String/groups-of-strings.py	(has 1 impl, need 2 more)
+String/hash-divided-string.py	(has 1 impl, need 2 more)
+String/hexspeak.py	(has 1 impl, need 2 more)
+String/increasing-decreasing-string.py	(has 1 impl, need 2 more)
+String/ip-to-cidr.py	(has 1 impl, need 2 more)
+String/keyboard-row.py	(has 1 impl, need 2 more)

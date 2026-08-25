@@ -1,0 +1,6 @@
+Dynamic_Programming/pizza-with-3n-slices.py	(has 1 impl, need 2 more)
+Dynamic_Programming/power-of-heroes.py	(has 1 impl, need 2 more)
+Dynamic_Programming/probability-of-a-two-boxes-having-the-same-number-of-distinct-balls.py	(has 1 impl, need 2 more)
+Dynamic_Programming/remove-all-ones-with-row-and-column-flips-ii.py	(has 1 impl, need 2 more)
+Dynamic_Programming/remove-boxes.py	(has 1 impl, need 2 more)
+Dynamic_Programming/restore-the-array.py	(has 1 impl, need 2 more)
