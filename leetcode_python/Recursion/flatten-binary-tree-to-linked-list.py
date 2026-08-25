@@ -37,6 +37,45 @@ Follow up: Can you flatten the tree in-place (with O(1) extra space)?
 """
 
 
+# V0
+class Solution(object):
+    def flatten(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: None Do not return anything, modify root in-place instead.
+        """    
+        pass
+
+
+# V0-1
+# IDEA: Reverse Preorder DFS (gpt)
+class Solution(object):
+    def flatten(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: None
+        """
+
+        self.prev = None
+
+        self.helper(root)
+
+    def helper(self, node):
+        if not node:
+            return
+
+        # Reverse preorder:
+        # right -> left -> root
+        self.helper(node.right)
+        self.helper(node.left)
+
+        # Connect current node to previously processed node
+        node.right = self.prev
+        node.left = None
+
+        # Move prev to current node
+        self.prev = node
+
 
 # V0
 # IDEA: DFS (post-order) (GEMINI)
