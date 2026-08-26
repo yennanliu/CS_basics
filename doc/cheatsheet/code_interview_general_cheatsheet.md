@@ -1,33 +1,10 @@
-# Coding Interview Cheatsheet In General
+# Coding Interview Process
 
-> **Scope** — The **process**, not the algorithms — the six-step loop from clarifying the question to discussing follow-ups. Read once before your first mock, not during revision.
-> **See also**: [lc_pattern.md](./lc_pattern.md) — which pattern a question wants; [complexity_cheatsheet.md](./complexity_cheatsheet.md) — the complexity you will be asked to state.
+> **Scope** — Redirect. The six-step interview loop moved into [lc_pattern.md](./lc_pattern.md), which is the page you actually open when starting a problem.
+> **See also**: [lc_pattern.md](./lc_pattern.md) — the six steps, then the pattern map itself; [complexity_cheatsheet.md](./complexity_cheatsheet.md) — the complexity you will be asked to state in step 5.
 
-## Answering Steps 
-- 1) Understand the questions (requirement, IO, accepted form)
-- 2) Ask the 
-	- scope 
-		- scale of data
-		- range of number
-	- limitation
-		- boundary of the questions
-		- expected space & time complexity
-- 3) Come up with V1 approaches
-	- Algorithm ideas 
-	- brute force is fine, but explain the ideas
-	- come up with V2 solutions, explain the ideas, the Algorithm & data structure
-	- Write pseudo code 
-	- Discuss the edge cases
-	- Discuss with interviewer, if OK, start coding 
-- 4) Write the code
-	- clean code, explain, easy-to-understand variable names
-	- write `test cases`
-- 5) Run the code 
-	- solve bugs
-	- Explain time & space complexity
-	- validate the test cases
-- 6) Following up session 
-	- optimize time & space complexity
-	- if input is scalable
-	- if input is in stream (rather than batch)
-	- if input can not fit the server memory 
+## Where it went
+
+A 33-line checklist on its own page is a page nobody opens. It now leads
+[**lc_pattern.md**](./lc_pattern.md#-0-before-you-pick-a-pattern--the-six-step-loop), where choosing
+the pattern is step 3 of the six — which is the point the checklist was making.
