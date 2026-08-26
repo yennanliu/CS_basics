@@ -62,6 +62,8 @@
     "2_pointers":                       { "category": "Arrays & Strings", "tier": 5, "title": "Two Pointers" },
     "sliding_window":                   { "category": "Arrays & Strings", "tier": 5 },
     "prefix_sum":                       { "category": "Arrays & Strings", "tier": 4, "title": "Prefix Sum" },
+    "prefix_sum_advanced":              { "category": "Arrays & Strings", "tier": 4, "title": "Prefix Sum — Advanced Templates" },
+    "prefix_sum_examples":              { "category": "Arrays & Strings", "tier": 3, "title": "Prefix Sum — Worked Examples" },
     "n_sum":                            { "category": "Arrays & Strings", "tier": 4, "title": "N Sum (2Sum → kSum)" },
     "palindrome":                       { "category": "Arrays & Strings", "tier": 4, "title": "Palindrome" },
     "matrix":                           { "category": "Arrays & Strings", "tier": 4, "title": "Matrix / 2D Grid" },
