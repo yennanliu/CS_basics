@@ -190,6 +190,6 @@
     "time_space_complexity":            { "category": "Interview Meta", "tier": 4, "title": "Time & Space Complexity" },
     "code_interview_general_cheatsheet":{ "category": "Interview Meta", "tier": 4, "title": "Coding Interview Process" },
     "complexity_drills":                { "category": "Interview Meta", "tier": 3, "title": "Complexity Drills" },
-    "lc_category":                      { "category": "Interview Meta", "tier": 2, "kind": "reference", "title": "LC Category Index (wisdompeak)" }
+    "lc_category":                      { "category": "Interview Meta", "tier": 2, "kind": "stub", "title": "LC Category Index (wisdompeak)" }
   }
 }
