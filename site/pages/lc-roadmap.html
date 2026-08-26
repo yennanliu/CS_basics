@@ -54,6 +54,26 @@
     .summary-bar > i { display: block; height: 100%; width: 0; background: var(--edge-live); transition: width 0.25s; }
     .summary-bar-label { font-size: 0.75rem; color: var(--text-light); margin-top: 0.4rem; }
 
+    /* ── List picker ── */
+    .list-picker { display: flex; align-items: center; gap: 0.5rem; }
+    .list-picker label {
+      font-size: 0.7rem; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--text-light);
+    }
+    .list-picker select {
+      background: var(--bg); color: var(--text);
+      border: 1px solid var(--border); border-radius: 6px;
+      padding: 0.42rem 0.6rem; font-family: inherit; font-size: 0.85rem;
+      font-weight: 700; cursor: pointer; max-width: 15rem;
+    }
+    .list-picker select:hover { border-color: var(--text); }
+    .list-picker select:focus-visible { outline: 2px solid var(--edge-live); outline-offset: 2px; }
+
+    .list-blurb {
+      margin: 0.5rem 0 1.25rem; padding: 0 0.2rem;
+      color: var(--text-light); font-size: 0.8rem; line-height: 1.5;
+    }
+
     .btn {
       background: var(--bg); color: var(--text);
       border: 1px solid var(--border); border-radius: 6px;
@@ -114,6 +134,10 @@
     /* Opaque, not transparent: a locked box still has to hide the edges that
        pass behind it, or long curves read as strikethroughs across the title. */
     .node.locked { color: var(--locked-ink); background: var(--bg); border-style: dashed; }
+    /* A topic the selected list has nothing filed under. Distinct from locked:
+       there is nothing to unlock, so it fades rather than dashing. */
+    .node.empty { background: var(--bg); opacity: 0.42; }
+    .node.empty .node-bar { visibility: hidden; }
     .node.done { border-color: var(--edge-live); }
 
     .node-head { display: flex; align-items: baseline; justify-content: space-between; gap: 0.5rem; }
@@ -183,6 +207,11 @@
       padding: 0.1rem 0.35rem; font-size: 0.68rem; text-decoration: none; color: var(--text-light);
     }
     .prob-links a:hover { border-color: var(--text); color: var(--text); }
+    /* Holds the column's width so rows stay aligned when a problem has no
+       solution in this repo — the imported lists reach past what is solved. */
+    .prob-gap { color: var(--locked-ink); font-size: 0.68rem; padding: 0.1rem 0.5rem; }
+
+    .drawer-empty { margin: 0; color: var(--text-light); font-size: 0.82rem; line-height: 1.55; }
 
     .diff-badge {
       padding: 0.12rem 0.45rem; border-radius: 4px;
@@ -233,6 +262,10 @@
     </div>
 
     <div class="summary" id="summary" hidden>
+      <div class="list-picker">
+        <label for="listSelect">list</label>
+        <select id="listSelect"></select>
+      </div>
       <div class="summary-figure"><b id="statProblems">–</b><span>problems</span></div>
       <div class="summary-figure"><b id="statTopics">–</b><span>topics done</span></div>
       <div class="summary-bar-wrap">
@@ -241,6 +274,7 @@
       </div>
       <button class="btn" id="resetBtn" type="button">reset progress</button>
     </div>
+    <p class="list-blurb" id="listBlurb"></p>
 
     <div class="next-up" id="nextUp" hidden></div>
 
@@ -254,10 +288,14 @@
 
     <p class="note" id="note" hidden>
       Click a topic to see its problems, its prerequisites and the cheatsheets that cover it.
-      A topic unlocks once everything it depends on is finished — the lock is a suggested order,
-      not a gate, so you can always open it anyway. Progress is stored in this browser only and
-      is never uploaded. A problem that two topics both list (LC 323 sits in both Graphs and
-      Union Find) is one tick, counted once.
+      The <strong>list</strong> picker swaps which problems each topic shows — the curated
+      roadmap path, or one of the well-known sets filed onto the same topics. Only the roadmap
+      path has a teaching order, so only it shows locks: a topic unlocks once everything it
+      depends on is finished, and the lock is a suggestion, not a gate. A faded topic is one the
+      selected list has nothing filed under, and a <span class="prob-gap">·</span> in place of a
+      language link means this repo has no solution for that problem yet.
+      Progress is keyed by problem, so a tick counts on every list and every topic the problem
+      appears on — it is stored in this browser only and is never uploaded.
     </p>
   </main>
 

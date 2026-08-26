@@ -25,7 +25,7 @@ CS_basics is a comprehensive computer science fundamentals repository containing
   - `build.sh` - **The** build recipe: builds the whole `_site/` tree. Both workflows call it
   - `build-site.js` - Builds HTML pages from markdown docs
   - `build-leetcode.js` - Generates LeetCode JSON data for the LC Explorer
-  - `build-roadmap.js` - Resolves [`data/roadmap.json`](data/roadmap.json) against `README.md` into the Study Roadmap's data; fails the build on a bad topic id, cheatsheet slug or LC number
+  - `build-roadmap.js` - Resolves [`data/roadmap.json`](data/roadmap.json) against `README.md` and [`data/problem_lists.json`](data/problem_lists.json) into the Study Roadmap's data; fails the build on a bad topic id, cheatsheet slug, LC number or list mapping
   - `pages/` - Hand-maintained static pages (LC Explorer/Similar/Review-Plan/Random-Picker/Roadmap, 404)
   - `nav.js` / `roadmap.js` - Browser scripts copied to `_site/`; unit-tested under `site/test/`
   - `style.css` - Site stylesheet
@@ -179,6 +179,24 @@ Titles, difficulty and links to this repo's solutions come from `README.md` at b
 - the prereqs contain a cycle, or an edge the graph **already implies** — the roadmap has to stay a transitive reduction, or the drawing turns into spaghetti.
 
 Within a row, topics are drawn in the order they appear in the file, so put a topic near the column its prerequisite sits in to keep the edges short.
+
+### The roadmap's list picker
+
+The page shows one problem set at a time. `roadmap` is the curated path above; the rest are well-known lists filed onto the same topics. All of them are declared in `data/roadmap.json`:
+
+- **`lists`** — the picker's entries. `from` says where membership comes from: `curated` (the ids on the nodes), `list:<flag>` (a flag in [`data/problem_lists.json`](data/problem_lists.json)), or `readme:<field>` (`google` / `must`, read straight out of README's tag and status columns).
+- **`topicSources`** — each source files problems under its own taxonomy (NeetCode's `Arrays & Hashing`, LeetCode's plan group `Hashing`, README's `## Array` heading). These maps put them on roadmap topics; `null` means *deliberately* off the roadmap (SQL, shell, JavaScript-only exercises). A list's `topicFrom` names which taxonomies to try, in order, so a coarse group falls through to a finer one.
+
+Only the curated list has a teaching order, so only it renders locks and prerequisites.
+
+`data/problem_lists.json` is **vendored, not built** — Blind 75 / NeetCode 150 / 250 / All are extracted from the neetcode.io app bundle, and Top 100 Liked from LeetCode's GraphQL. Refresh it by hand; the site build never touches the network:
+
+```bash
+python3 script/fetch_problem_lists.py           # rewrite the file
+python3 script/fetch_problem_lists.py --check   # exit 1 if it is stale
+```
+
+The build fails on a taxonomy key that is missing, points at an unknown topic, or is mapped but unused — so a renamed upstream category cannot silently drop a whole group of problems. Watch the per-list "shown of" tally it prints.
 
 ### Formatting Rules
 

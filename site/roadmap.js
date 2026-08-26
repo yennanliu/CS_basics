@@ -6,10 +6,17 @@
    are finished. `_site/data/roadmap.json` (built by site/build-roadmap.js) is
    the only input; progress lives in localStorage and never leaves the browser.
 
+   The page shows one *list* at a time — the curated roadmap path by default,
+   or one of the imported sets (Blind 75, NeetCode 150/250/all, LeetCode's Top
+   100 Liked, the repo's own google / MUST tags). Switching lists changes which
+   problems each topic shows and counts; it does not change the graph, and it
+   does not change your progress, which is keyed by problem rather than by
+   (list, problem) so a tick counts everywhere the problem appears.
+
    Loaded as a plain script next to nav.js, and required directly by
    site/test/roadmap.test.js — everything above `init` is a pure function of
-   (nodes, solved) so the unlock and counting rules can be tested without a
-   rendered page.
+   (nodes, view, solved) so the unlock and counting rules can be tested without
+   a rendered page.
    ───────────────────────────────────────────────────────────────────────── */
 (function (root, factory) {
   if (typeof module === 'object' && module.exports) module.exports = factory();
@@ -17,13 +24,16 @@
 })(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
 
-  // Progress is keyed by LeetCode id, not by (topic, id): a problem that two
-  // topics both list is one problem to solve, so ticking it in one place must
-  // tick it in the other.
+  // Solved problems are keyed by LeetCode id, not by (list, id) or (topic, id):
+  // the same problem shows up under several topics and on several lists on
+  // purpose, and ticking it in one place should tick it everywhere.
   var STORE_KEY = 'cs:roadmap:solved';
+  var LIST_KEY = 'cs:roadmap:list';
 
   var state = {
     roadmap: null, byId: {}, solved: Object.create(null),
+    // The list currently on screen, as { list, curated, problems } — see view().
+    view: null,
     openId: null,
     // The element focus should go back to when the drawer closes.
     returnFocus: null
@@ -33,10 +43,22 @@
 
   // Wrapped because Safari's private mode throws on localStorage access rather
   // than returning null, which would otherwise break the whole page.
+  function readStored(key) {
+    try {
+      return (typeof localStorage !== 'undefined' && localStorage.getItem(key)) || null;
+    } catch (e) { return null; }
+  }
+
+  function writeStored(key, value) {
+    try {
+      if (typeof localStorage !== 'undefined') localStorage.setItem(key, value);
+    } catch (e) { /* storage unavailable — the page still works for this visit */ }
+  }
+
   function readSolved() {
     var solved = Object.create(null);
     try {
-      var raw = typeof localStorage !== 'undefined' && localStorage.getItem(STORE_KEY);
+      var raw = readStored(STORE_KEY);
       var ids = raw ? JSON.parse(raw) : [];
       if (Array.isArray(ids)) {
         for (var i = 0; i < ids.length; i++) solved[String(ids[i])] = true;
@@ -46,11 +68,35 @@
   }
 
   function writeSolved(solved) {
-    try {
-      if (typeof localStorage !== 'undefined') {
-        localStorage.setItem(STORE_KEY, JSON.stringify(Object.keys(solved)));
+    writeStored(STORE_KEY, JSON.stringify(Object.keys(solved)));
+  }
+
+  // ── The current view ────────────────────────────────────────────────────
+
+  /**
+   * Bundles everything the render functions need to know about which list is
+   * showing: its id, whether it is the curated path (only that one has a
+   * prerequisite order worth locking on), and the shared problem dictionary.
+   */
+  function view(roadmap, listId) {
+    var chosen = null;
+    for (var i = 0; i < roadmap.lists.length; i++) {
+      if (roadmap.lists[i].id === listId) chosen = roadmap.lists[i];
+    }
+    if (!chosen) {
+      for (var j = 0; j < roadmap.lists.length; j++) {
+        if (roadmap.lists[j].id === roadmap.defaultList) chosen = roadmap.lists[j];
       }
-    } catch (e) { /* storage unavailable — the page still works for this visit */ }
+    }
+    if (!chosen) chosen = roadmap.lists[0];
+    return {
+      list: chosen.id,
+      label: chosen.label,
+      blurb: chosen.blurb,
+      curated: Boolean(chosen.curated),
+      shown: chosen.shown,
+      problems: roadmap.problems || {}
+    };
   }
 
   // ── Derived state ───────────────────────────────────────────────────────
@@ -67,71 +113,96 @@
     return byId;
   }
 
-  function statsFor(node, solved) {
-    var done = 0;
-    for (var i = 0; i < node.problems.length; i++) {
-      if (solved[node.problems[i].id]) done++;
-    }
-    return { done: done, total: node.problems.length };
+  /** The problem ids this topic contributes to the list on screen. */
+  function idsFor(node, view) {
+    return (node.lists && node.lists[view.list]) || [];
   }
 
-  function isDone(node, solved) {
-    var s = statsFor(node, solved);
+  function statsFor(node, view, solved) {
+    var ids = idsFor(node, view);
+    var done = 0;
+    for (var i = 0; i < ids.length; i++) if (solved[ids[i]]) done++;
+    return { done: done, total: ids.length };
+  }
+
+  // A topic with nothing on the current list is neither done nor pending — it
+  // is simply not part of this list, and says so rather than showing "0/0".
+  function isEmpty(node, view) {
+    return idsFor(node, view).length === 0;
+  }
+
+  function isDone(node, view, solved) {
+    var s = statsFor(node, view, solved);
     return s.total > 0 && s.done === s.total;
   }
 
   function percent(s) { return s.total ? Math.round((s.done / s.total) * 100) : 0; }
 
-  // A topic is unlocked once every prerequisite is finished. An unknown prereq
-  // id counts as met so a data slip cannot strand a branch — build-roadmap.js
-  // already fails the build on one.
-  function isUnlocked(node, byId, solved) {
-    var prereqs = node.prereqs || [];
-    for (var i = 0; i < prereqs.length; i++) {
-      var parent = byId[prereqs[i]];
-      if (parent && !isDone(parent, solved)) return false;
-    }
-    return true;
+  /**
+   * Prerequisite topics that are not finished yet.
+   *
+   * Only meaningful on the curated path: the imported lists are catalogues with
+   * no teaching order, so the caller passes a view whose `curated` is false and
+   * gets an empty list back. An unknown prereq id counts as met so a data slip
+   * cannot strand a branch — build-roadmap.js already fails the build on one.
+   * A prereq that contributes nothing to the current list also counts as met,
+   * since there is nothing there to finish.
+   */
+  function unmetPrereqs(node, view, byId, solved) {
+    if (!view.curated) return [];
+    return (node.prereqs || []).filter(function (id) {
+      var parent = byId[id];
+      return parent && !isEmpty(parent, view) && !isDone(parent, view, solved);
+    });
   }
 
-  function unmetPrereqs(node, byId, solved) {
-    return (node.prereqs || []).filter(function (id) {
-      return byId[id] && !isDone(byId[id], solved);
-    });
+  function isUnlocked(node, view, byId, solved) {
+    return unmetPrereqs(node, view, byId, solved).length === 0;
   }
 
   // Counted distinctly: a problem two topics share is one tick, so summing the
   // per-topic totals would overstate both the numerator and the denominator.
-  function distinctSolved(nodes, solved) {
+  function distinctSolved(nodes, view, solved) {
     var seen = Object.create(null);
     for (var i = 0; i < nodes.length; i++) {
-      var problems = nodes[i].problems;
-      for (var j = 0; j < problems.length; j++) {
-        if (solved[problems[j].id]) seen[problems[j].id] = true;
-      }
+      var ids = idsFor(nodes[i], view);
+      for (var j = 0; j < ids.length; j++) if (solved[ids[j]]) seen[ids[j]] = true;
     }
     return Object.keys(seen).length;
   }
 
   /**
-   * The shallowest unlocked, unfinished topic and its first unsolved problem —
-   * an answer to "what do I do next?" that does not require reading the graph.
+   * The shallowest topic with unsolved problems on the current list, and its
+   * first unsolved problem — an answer to "what do I do next?" that does not
+   * require reading the graph. On the curated path locked topics are skipped;
+   * on an imported list nothing is locked, so the shallowest wins outright.
    * Ties go to the topic authored first, which is the left-most box in its row.
    */
-  function nextUp(nodes, byId, solved) {
+  function nextUp(nodes, view, byId, solved) {
     var best = null;
     for (var i = 0; i < nodes.length; i++) {
       var node = nodes[i];
-      if (isDone(node, solved) || !isUnlocked(node, byId, solved)) continue;
+      if (isEmpty(node, view) || isDone(node, view, solved)) continue;
+      if (!isUnlocked(node, view, byId, solved)) continue;
       if (best && node.row >= best.row) continue;
       best = node;
     }
     if (!best) return null;
+    var ids = idsFor(best, view);
     var problem = null;
-    for (var j = 0; j < best.problems.length; j++) {
-      if (!solved[best.problems[j].id]) { problem = best.problems[j]; break; }
+    for (var j = 0; j < ids.length; j++) {
+      if (!solved[ids[j]]) { problem = resolve(ids[j], view); break; }
     }
     return { node: best, problem: problem };
+  }
+
+  /** id → the shared problem record, with the id folded back in. */
+  function resolve(id, view) {
+    var record = view.problems[id] || { title: '#' + id, url: '', difficulty: 'Unknown', solutions: {} };
+    return {
+      id: id, title: record.title, url: record.url,
+      difficulty: record.difficulty, solutions: record.solutions || {}
+    };
   }
 
   // ── Markup ──────────────────────────────────────────────────────────────
@@ -141,29 +212,35 @@
    * "after X" line — printing it on all 29 boxes buried the graph in repeated
    * labels. The waiting list lives in the tooltip and in the drawer instead.
    */
-  function lockLabel(node, byId, solved) {
-    var unmet = unmetPrereqs(node, byId, solved);
+  function lockLabel(node, view, byId, solved) {
+    var unmet = unmetPrereqs(node, view, byId, solved);
     if (!unmet.length) return '';
     return 'Finish first: ' + unmet.map(function (id) { return byId[id].title; }).join(', ');
   }
 
-  function nodeHTML(node, byId, solved) {
-    var s = statsFor(node, solved);
-    var lock = lockLabel(node, byId, solved);
-    var cls = 'node' + (isDone(node, solved) ? ' done' : '') + (lock ? ' locked' : '');
-    var label = node.title + ' — ' + s.done + ' of ' + s.total + ' solved' + (lock ? '. ' + lock : '');
+  function nodeHTML(node, view, byId, solved) {
+    var s = statsFor(node, view, solved);
+    var empty = isEmpty(node, view);
+    var lock = lockLabel(node, view, byId, solved);
+    var cls = 'node' +
+      (isDone(node, view, solved) ? ' done' : '') +
+      (lock ? ' locked' : '') +
+      (empty ? ' empty' : '');
+    var label = empty
+      ? node.title + ' — nothing on this list'
+      : node.title + ' — ' + s.done + ' of ' + s.total + ' solved' + (lock ? '. ' + lock : '');
 
     return '<button type="button" class="' + cls + '" data-id="' + esc(node.id) + '"' +
       ' title="' + esc(label) + '" aria-label="' + esc(label) + '">' +
       '<span class="node-head">' +
         '<span class="node-title">' + esc(node.title) + '</span>' +
-        '<span class="node-count">' + s.done + '/' + s.total + '</span>' +
+        '<span class="node-count">' + (empty ? '—' : s.done + '/' + s.total) + '</span>' +
       '</span>' +
       '<span class="node-bar"><i style="width:' + percent(s) + '%"></i></span>' +
     '</button>';
   }
 
-  function graphHTML(nodes, byId, solved) {
+  function graphHTML(nodes, view, byId, solved) {
     var rows = {};
     for (var i = 0; i < nodes.length; i++) {
       (rows[nodes[i].row] = rows[nodes[i].row] || []).push(nodes[i]);
@@ -171,16 +248,21 @@
     return Object.keys(rows).map(Number).sort(function (a, b) { return a - b; })
       .map(function (row) {
         return '<div class="row" data-row="' + row + '">' + rows[row].map(function (node) {
-          return nodeHTML(node, byId, solved);
+          return nodeHTML(node, view, byId, solved);
         }).join('') + '</div>';
       }).join('');
   }
 
   function problemHTML(problem, solved) {
-    var links = Object.keys(problem.solutions || {}).map(function (lang) {
-      return '<a href="' + esc(problem.solutions[lang]) + '" target="_blank" rel="noopener" ' +
-        'title="' + esc(lang) + ' solution in this repo">' + esc(lang.slice(0, 2)) + '</a>';
-    }).join('');
+    var langs = Object.keys(problem.solutions || {});
+    var links = langs.length
+      ? langs.map(function (lang) {
+          return '<a href="' + esc(problem.solutions[lang]) + '" target="_blank" rel="noopener" ' +
+            'title="' + esc(lang) + ' solution in this repo">' + esc(lang.slice(0, 2)) + '</a>';
+        }).join('')
+      // Imported lists reach past what this repo has solved. Saying so beats an
+      // empty gap that reads as a rendering bug.
+      : '<span class="prob-gap" title="No solution in this repo yet">·</span>';
 
     return '<div class="prob' + (solved[problem.id] ? ' solved' : '') + '">' +
       '<input type="checkbox" data-check="' + esc(problem.id) + '"' +
@@ -194,16 +276,17 @@
     '</div>';
   }
 
-  function drawerBodyHTML(node, byId, solved) {
-    var s = statsFor(node, solved);
+  function drawerBodyHTML(node, view, byId, solved) {
+    var s = statsFor(node, view, solved);
+    var ids = idsFor(node, view);
     var html = '';
 
-    if ((node.prereqs || []).length) {
+    if ((node.prereqs || []).length && view.curated) {
       html += '<div class="drawer-section"><h3>Prerequisites</h3><div class="chips">' +
         node.prereqs.map(function (id) {
           var parent = byId[id];
           if (!parent) return '';
-          var met = isDone(parent, solved);
+          var met = isEmpty(parent, view) || isDone(parent, view, solved);
           return '<button type="button" class="chip' + (met ? ' met' : '') + '" data-open="' +
             esc(id) + '">' + (met ? '✓ ' : '') + esc(parent.title) + '</button>';
         }).join('') + '</div></div>';
@@ -216,17 +299,27 @@
         }).join('') + '</div></div>';
     }
 
+    if (!ids.length) {
+      return html + '<div class="drawer-section"><h3>Problems</h3>' +
+        '<p class="drawer-empty">' + esc(view.label) + ' has nothing filed under this topic.</p></div>';
+    }
+
     return html +
       '<div class="drawer-section">' +
-        '<h3>Problems — ' + s.done + ' / ' + s.total + '</h3>' +
+        '<h3>' + esc(view.label) + ' — ' + s.done + ' / ' + s.total + '</h3>' +
         '<div class="chips bulk">' +
           '<button type="button" class="chip" data-bulk="all">tick all</button>' +
           '<button type="button" class="chip" data-bulk="none">clear all</button>' +
         '</div>' +
-        node.problems.map(function (problem) {
-          return problemHTML(problem, solved);
-        }).join('') +
+        ids.map(function (id) { return problemHTML(resolve(id, view), solved); }).join('') +
       '</div>';
+  }
+
+  function listOptionsHTML(lists, current) {
+    return lists.map(function (list) {
+      return '<option value="' + esc(list.id) + '"' + (list.id === current ? ' selected' : '') + '>' +
+        esc(list.label) + ' (' + list.shown + ')</option>';
+    }).join('');
   }
 
   // A cubic curve that leaves the parent box downward and enters the child box
@@ -268,7 +361,8 @@
         var parentEl = graph.querySelector(selectorFor(prereqId));
         if (!parentEl) return;
         var parent = parentEl.getBoundingClientRect();
-        var live = state.byId[prereqId] && isDone(state.byId[prereqId], state.solved);
+        var parentNode = state.byId[prereqId];
+        var live = parentNode && isDone(parentNode, state.view, state.solved);
         paths += '<path class="' + (live ? 'live' : '') + '"' +
           ' data-from="' + esc(prereqId) + '" data-to="' + esc(node.id) + '" d="' + edgePath(
             parent.left - base.left + parent.width / 2, parent.bottom - base.top,
@@ -294,18 +388,20 @@
 
   function renderSummary() {
     var nodes = state.roadmap.nodes;
-    var done = distinctSolved(nodes, state.solved);
-    var total = state.roadmap.stats.problems;
-    var topicsDone = nodes.filter(function (n) { return isDone(n, state.solved); }).length;
+    var done = distinctSolved(nodes, state.view, state.solved);
+    var total = state.view.shown;
+    var topicsWith = nodes.filter(function (n) { return !isEmpty(n, state.view); });
+    var topicsDone = topicsWith.filter(function (n) { return isDone(n, state.view, state.solved); }).length;
     var pct = total ? Math.round((done / total) * 100) : 0;
 
     $('statProblems').textContent = done + ' / ' + total;
-    $('statTopics').textContent = topicsDone + ' / ' + nodes.length;
+    $('statTopics').textContent = topicsDone + ' / ' + topicsWith.length;
     $('summaryFill').style.width = pct + '%';
-    $('summaryLabel').textContent = pct + '% of the roadmap solved';
+    $('summaryLabel').textContent = pct + '% of ' + state.view.label + ' solved';
+    $('listBlurb').textContent = state.view.blurb || '';
 
     var hint = $('nextUp');
-    var next = nextUp(nodes, state.byId, state.solved);
+    var next = nextUp(nodes, state.view, state.byId, state.solved);
     hint.hidden = false;
     hint.innerHTML = next
       ? '<span class="label">next up</span>' +
@@ -316,8 +412,8 @@
             'target="_blank" rel="noopener">#' + esc(next.problem.id) + ' ' +
             esc(next.problem.title) + '</a></span>'
           : '')
-      : '<span class="label">next up</span><span>Every topic is complete — ' +
-        'nothing left on the roadmap.</span>';
+      : '<span class="label">next up</span><span>Nothing left on ' +
+        esc(state.view.label) + '.</span>';
   }
 
   // Repaints the boxes in place instead of rebuilding the graph, so nothing
@@ -326,14 +422,18 @@
     state.roadmap.nodes.forEach(function (node) {
       var el = document.querySelector(selectorFor(node.id));
       if (!el) return;
-      var s = statsFor(node, state.solved);
-      var lock = lockLabel(node, state.byId, state.solved);
-      var label = node.title + ' — ' + s.done + ' of ' + s.total + ' solved' + (lock ? '. ' + lock : '');
-      el.classList.toggle('done', isDone(node, state.solved));
+      var s = statsFor(node, state.view, state.solved);
+      var empty = isEmpty(node, state.view);
+      var lock = lockLabel(node, state.view, state.byId, state.solved);
+      var label = empty
+        ? node.title + ' — nothing on this list'
+        : node.title + ' — ' + s.done + ' of ' + s.total + ' solved' + (lock ? '. ' + lock : '');
+      el.classList.toggle('done', isDone(node, state.view, state.solved));
       el.classList.toggle('locked', lock !== '');
+      el.classList.toggle('empty', empty);
       el.setAttribute('title', label);
       el.setAttribute('aria-label', label);
-      el.querySelector('.node-count').textContent = s.done + '/' + s.total;
+      el.querySelector('.node-count').textContent = empty ? '—' : s.done + '/' + s.total;
       el.querySelector('.node-bar > i').style.width = percent(s) + '%';
     });
   }
@@ -344,8 +444,18 @@
     renderSummary();
     drawEdges();
     if (state.openId) {
-      $('drawerBody').innerHTML = drawerBodyHTML(state.byId[state.openId], state.byId, state.solved);
+      $('drawerBody').innerHTML =
+        drawerBodyHTML(state.byId[state.openId], state.view, state.byId, state.solved);
     }
+  }
+
+  /** Switches which list is on screen, keeping the graph and progress intact. */
+  function selectList(listId) {
+    state.view = view(state.roadmap, listId);
+    writeStored(LIST_KEY, state.view.list);
+    var select = $('listSelect');
+    if (select && select.value !== state.view.list) select.value = state.view.list;
+    afterChange();
   }
 
   /**
@@ -365,7 +475,7 @@
     state.openId = id;
     $('drawerTitle').textContent = node.title;
     $('drawerBlurb').textContent = node.blurb || '';
-    $('drawerBody').innerHTML = drawerBodyHTML(node, state.byId, state.solved);
+    $('drawerBody').innerHTML = drawerBodyHTML(node, state.view, state.byId, state.solved);
     $('drawer').classList.add('open');
     $('drawer').setAttribute('aria-hidden', 'false');
     $('overlay').classList.add('open');
@@ -420,6 +530,10 @@
       if (event.target.closest('.node')) highlightEdges(null);
     });
 
+    $('listSelect').addEventListener('change', function (event) {
+      selectList(event.target.value);
+    });
+
     $('overlay').addEventListener('click', closeDrawer);
     $('drawerClose').addEventListener('click', closeDrawer);
     document.addEventListener('keydown', function (event) {
@@ -437,7 +551,7 @@
       var bulk = event.target.closest('[data-bulk]');
       if (bulk && state.openId) {
         var on = bulk.getAttribute('data-bulk') === 'all';
-        state.byId[state.openId].problems.forEach(function (p) { setSolved(p.id, on); });
+        idsFor(state.byId[state.openId], state.view).forEach(function (id) { setSolved(id, on); });
         afterChange();
         return;
       }
@@ -468,6 +582,7 @@
     state.roadmap = roadmap;
     state.byId = indexNodes(roadmap.nodes);
     state.solved = readSolved();
+    state.view = view(roadmap, readStored(LIST_KEY) || roadmap.defaultList);
     // A browser renders once per page load, but `state` outlives a re-render.
     // Carrying an open topic — or a focus target belonging to the previous
     // document — over into a fresh render leaves both pointing at dead nodes.
@@ -479,8 +594,10 @@
       document.title = roadmap.meta.title + ' - CS Basics';
     }
     $('pageIntro').textContent = (roadmap.meta && roadmap.meta.intro) || '';
+    $('listSelect').innerHTML = listOptionsHTML(roadmap.lists, state.view.list);
 
-    $('graph').insertAdjacentHTML('beforeend', graphHTML(roadmap.nodes, state.byId, state.solved));
+    $('graph').insertAdjacentHTML('beforeend',
+      graphHTML(roadmap.nodes, state.view, state.byId, state.solved));
     $('loading').hidden = true;
     $('summary').hidden = false;
     $('note').hidden = false;
@@ -505,25 +622,32 @@
 
   return {
     STORE_KEY: STORE_KEY,
+    LIST_KEY: LIST_KEY,
     esc: esc,
+    view: view,
     indexNodes: indexNodes,
+    idsFor: idsFor,
+    resolve: resolve,
     statsFor: statsFor,
+    isEmpty: isEmpty,
     isDone: isDone,
     percent: percent,
     isUnlocked: isUnlocked,
+    unmetPrereqs: unmetPrereqs,
     lockLabel: lockLabel,
     highlightEdges: highlightEdges,
-    unmetPrereqs: unmetPrereqs,
     distinctSolved: distinctSolved,
     nextUp: nextUp,
     nodeHTML: nodeHTML,
     graphHTML: graphHTML,
     problemHTML: problemHTML,
     drawerBodyHTML: drawerBodyHTML,
+    listOptionsHTML: listOptionsHTML,
     edgePath: edgePath,
     readSolved: readSolved,
     writeSolved: writeSolved,
     drawEdges: drawEdges,
+    selectList: selectList,
     openDrawer: openDrawer,
     closeDrawer: closeDrawer,
     render: render,

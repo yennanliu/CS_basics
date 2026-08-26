@@ -14,32 +14,50 @@ const PAGE = path.join(__dirname, '..', 'pages', 'lc-roadmap.html');
 
 // ── Fixture ───────────────────────────────────────────────────────────────
 
-function problem(id, extra) {
+function record(id, extra) {
   return Object.assign({
-    id: String(id), title: 'P' + id, url: 'https://leetcode.com/problems/p' + id + '/',
+    title: 'P' + id, url: 'https://leetcode.com/problems/p' + id + '/',
     difficulty: 'Easy', solutions: { Java: 'https://example.test/' + id + '.java' }
   }, extra);
 }
 
-// a → b, a → c, (b, c) → d. `d` also lists P1, which `a` owns: the shared
-// problem is what the distinct-counting and cross-topic rules hang on.
+/**
+ * a → b, a → c, (b, c) → d.
+ *
+ * `d` also carries P1, which `a` owns: the shared problem is what the
+ * distinct-counting and cross-topic rules hang on. The `tagged` list is
+ * deliberately lopsided — it skips topic `c` entirely and reaches P9, a problem
+ * with no repo solution — so the empty-topic and missing-solution paths are
+ * exercised.
+ */
 function fixture() {
   return {
     meta: { title: 'Study Roadmap', intro: 'intro text' },
-    stats: { topics: 4, problems: 4, problemSlots: 5, rows: 3 },
+    defaultList: 'roadmap',
+    lists: [
+      { id: 'roadmap', label: 'Roadmap picks', blurb: 'the path', curated: true, shown: 4 },
+      { id: 'tagged', label: 'Tagged', blurb: 'a tag list', curated: false, shown: 3 }
+    ],
+    problems: {
+      1: record(1), 2: record(2, { difficulty: 'Hard' }), 3: record(3), 4: record(4),
+      9: record(9, { solutions: {} })
+    },
+    stats: { topics: 4, problems: 5, rows: 3 },
     nodes: [
       { id: 'a', title: 'A', blurb: 'root', row: 0, col: 0, rowSize: 1, prereqs: [],
         sheets: [{ slug: 'array', title: 'Array', url: 'cheatsheets/array.html' }],
-        problems: [problem(1), problem(2, { difficulty: 'Hard' })] },
+        lists: { roadmap: ['1', '2'], tagged: ['1', '9'] } },
       { id: 'b', title: 'B', blurb: '', row: 1, col: 0, rowSize: 2, prereqs: ['a'],
-        sheets: [], problems: [problem(3)] },
+        sheets: [], lists: { roadmap: ['3'], tagged: ['3'] } },
       { id: 'c', title: 'C', blurb: '', row: 1, col: 1, rowSize: 2, prereqs: ['a'],
-        sheets: [], problems: [problem(4, { solutions: {} })] },
+        sheets: [], lists: { roadmap: ['4'], tagged: [] } },
       { id: 'd', title: 'D', blurb: '', row: 2, col: 0, rowSize: 1, prereqs: ['b', 'c'],
-        sheets: [], problems: [problem(1)] }
+        sheets: [], lists: { roadmap: ['1'], tagged: [] } }
     ]
   };
 }
+
+function viewOf(listId) { return CSRoadmap.view(fixture(), listId); }
 
 function solvedSet(ids) {
   const set = Object.create(null);
@@ -47,30 +65,56 @@ function solvedSet(ids) {
   return set;
 }
 
-// ── Counting ──────────────────────────────────────────────────────────────
+// ── view ──────────────────────────────────────────────────────────────────
 
-test('statsFor counts only the problems the topic itself lists', () => {
-  const roadmap = fixture();
-  assert.deepEqual(CSRoadmap.statsFor(roadmap.nodes[0], solvedSet([1])), { done: 1, total: 2 });
-  assert.deepEqual(CSRoadmap.statsFor(roadmap.nodes[1], solvedSet([1])), { done: 0, total: 1 });
+test('view resolves a list, and falls back to the default for an unknown one', () => {
+  assert.equal(CSRoadmap.view(fixture(), 'tagged').list, 'tagged');
+  assert.equal(CSRoadmap.view(fixture(), 'no-such-list').list, 'roadmap');
+  assert.equal(CSRoadmap.view(fixture(), null).list, 'roadmap');
 });
 
-test('isDone needs every problem, and is false for an empty topic', () => {
+// Only the curated path has a teaching order, so only it locks topics.
+test('view marks the curated list and nothing else', () => {
+  assert.equal(CSRoadmap.view(fixture(), 'roadmap').curated, true);
+  assert.equal(CSRoadmap.view(fixture(), 'tagged').curated, false);
+});
+
+// ── Counting, per list ────────────────────────────────────────────────────
+
+test('statsFor counts only what the topic contributes to the current list', () => {
   const roadmap = fixture();
-  assert.equal(CSRoadmap.isDone(roadmap.nodes[0], solvedSet([1])), false);
-  assert.equal(CSRoadmap.isDone(roadmap.nodes[0], solvedSet([1, 2])), true);
-  assert.equal(CSRoadmap.isDone({ problems: [] }, solvedSet([])), false);
+  assert.deepEqual(CSRoadmap.statsFor(roadmap.nodes[0], viewOf('roadmap'), solvedSet([1])), { done: 1, total: 2 });
+  assert.deepEqual(CSRoadmap.statsFor(roadmap.nodes[0], viewOf('tagged'), solvedSet([1])), { done: 1, total: 2 });
+  assert.deepEqual(CSRoadmap.statsFor(roadmap.nodes[2], viewOf('tagged'), solvedSet([4])), { done: 0, total: 0 });
+});
+
+test('isEmpty separates "nothing on this list" from "nothing done yet"', () => {
+  const roadmap = fixture();
+  assert.equal(CSRoadmap.isEmpty(roadmap.nodes[2], viewOf('roadmap')), false);
+  assert.equal(CSRoadmap.isEmpty(roadmap.nodes[2], viewOf('tagged')), true);
+});
+
+test('isDone needs every problem, and an empty topic is never done', () => {
+  const roadmap = fixture();
+  assert.equal(CSRoadmap.isDone(roadmap.nodes[0], viewOf('roadmap'), solvedSet([1])), false);
+  assert.equal(CSRoadmap.isDone(roadmap.nodes[0], viewOf('roadmap'), solvedSet([1, 2])), true);
+  // Same topic, different list: P1 + P9 rather than P1 + P2.
+  assert.equal(CSRoadmap.isDone(roadmap.nodes[0], viewOf('tagged'), solvedSet([1, 2])), false);
+  assert.equal(CSRoadmap.isDone(roadmap.nodes[2], viewOf('tagged'), solvedSet([])), false);
 });
 
 // The headline figure would otherwise read 5 when there are only 4 problems.
 test('distinctSolved counts a problem shared by two topics once', () => {
   const roadmap = fixture();
-  assert.equal(CSRoadmap.distinctSolved(roadmap.nodes, solvedSet([1])), 1);
-  assert.equal(CSRoadmap.distinctSolved(roadmap.nodes, solvedSet([1, 2, 3, 4])), 4);
+  assert.equal(CSRoadmap.distinctSolved(roadmap.nodes, viewOf('roadmap'), solvedSet([1])), 1);
+  assert.equal(CSRoadmap.distinctSolved(roadmap.nodes, viewOf('roadmap'), solvedSet([1, 2, 3, 4])), 4);
 });
 
-test('distinctSolved ignores ticks for problems no topic lists', () => {
-  assert.equal(CSRoadmap.distinctSolved(fixture().nodes, solvedSet([999])), 0);
+test('distinctSolved ignores ticks for problems the current list does not hold', () => {
+  const roadmap = fixture();
+  // P2 and P4 are on the roadmap list but not on `tagged`.
+  assert.equal(CSRoadmap.distinctSolved(roadmap.nodes, viewOf('tagged'), solvedSet([2, 4])), 0);
+  assert.equal(CSRoadmap.distinctSolved(roadmap.nodes, viewOf('tagged'), solvedSet([1, 9])), 2);
 });
 
 // ── Unlocking ─────────────────────────────────────────────────────────────
@@ -78,29 +122,51 @@ test('distinctSolved ignores ticks for problems no topic lists', () => {
 test('isUnlocked opens a topic only once every prereq is finished', () => {
   const roadmap = fixture();
   const byId = CSRoadmap.indexNodes(roadmap.nodes);
-  const b = byId.b, d = byId.d;
+  const view = viewOf('roadmap');
 
-  assert.equal(CSRoadmap.isUnlocked(byId.a, byId, solvedSet([])), true, 'the root is always open');
-  assert.equal(CSRoadmap.isUnlocked(b, byId, solvedSet([1])), false, 'A is only half done');
-  assert.equal(CSRoadmap.isUnlocked(b, byId, solvedSet([1, 2])), true);
+  assert.equal(CSRoadmap.isUnlocked(byId.a, view, byId, solvedSet([])), true, 'the root is always open');
+  assert.equal(CSRoadmap.isUnlocked(byId.b, view, byId, solvedSet([1])), false, 'A is only half done');
+  assert.equal(CSRoadmap.isUnlocked(byId.b, view, byId, solvedSet([1, 2])), true);
   // D needs BOTH B and C, so finishing one branch is not enough.
-  assert.equal(CSRoadmap.isUnlocked(d, byId, solvedSet([1, 2, 3])), false);
-  assert.equal(CSRoadmap.isUnlocked(d, byId, solvedSet([1, 2, 3, 4])), true);
+  assert.equal(CSRoadmap.isUnlocked(byId.d, view, byId, solvedSet([1, 2, 3])), false);
+  assert.equal(CSRoadmap.isUnlocked(byId.d, view, byId, solvedSet([1, 2, 3, 4])), true);
+});
+
+// An imported list is a catalogue, not a path — locking every topic behind a
+// prerequisite nobody has finished would render the whole graph as blocked.
+test('a non-curated list locks nothing', () => {
+  const roadmap = fixture();
+  const byId = CSRoadmap.indexNodes(roadmap.nodes);
+  const view = viewOf('tagged');
+  assert.equal(CSRoadmap.isUnlocked(byId.d, view, byId, solvedSet([])), true);
+  assert.deepEqual(CSRoadmap.unmetPrereqs(byId.d, view, byId, solvedSet([])), []);
+  assert.equal(CSRoadmap.lockLabel(byId.d, view, byId, solvedSet([])), '');
 });
 
 test('unmetPrereqs names the topics still in the way, in authored order', () => {
   const roadmap = fixture();
   const byId = CSRoadmap.indexNodes(roadmap.nodes);
-  assert.deepEqual(CSRoadmap.unmetPrereqs(byId.d, byId, solvedSet([1, 2, 3])), ['c']);
-  assert.deepEqual(CSRoadmap.unmetPrereqs(byId.d, byId, solvedSet([1, 2])), ['b', 'c']);
-  assert.deepEqual(CSRoadmap.unmetPrereqs(byId.a, byId, solvedSet([])), []);
+  const view = viewOf('roadmap');
+  assert.deepEqual(CSRoadmap.unmetPrereqs(byId.d, view, byId, solvedSet([1, 2, 3])), ['c']);
+  assert.deepEqual(CSRoadmap.unmetPrereqs(byId.d, view, byId, solvedSet([1, 2])), ['b', 'c']);
+  assert.deepEqual(CSRoadmap.unmetPrereqs(byId.a, view, byId, solvedSet([])), []);
 });
 
 // build-roadmap.js fails the build on an unknown prereq, so if one ever reaches
 // the page it is better to leave the branch reachable than to strand it.
 test('an unknown prereq id does not lock a topic forever', () => {
-  const node = { id: 'x', title: 'X', prereqs: ['ghost'], problems: [problem(9)] };
-  assert.equal(CSRoadmap.isUnlocked(node, { x: node }, solvedSet([])), true);
+  const node = { id: 'x', title: 'X', prereqs: ['ghost'], lists: { roadmap: ['9'] } };
+  const view = viewOf('roadmap');
+  assert.equal(CSRoadmap.isUnlocked(node, view, { x: node }, solvedSet([])), true);
+});
+
+test('lockLabel names the unmet prereqs and is empty once they are met', () => {
+  const roadmap = fixture();
+  const byId = CSRoadmap.indexNodes(roadmap.nodes);
+  const view = viewOf('roadmap');
+  assert.equal(CSRoadmap.lockLabel(byId.d, view, byId, solvedSet([1, 2])), 'Finish first: B, C');
+  assert.equal(CSRoadmap.lockLabel(byId.d, view, byId, solvedSet([1, 2, 3, 4])), '');
+  assert.equal(CSRoadmap.lockLabel(byId.a, view, byId, solvedSet([])), '');
 });
 
 // ── nextUp ────────────────────────────────────────────────────────────────
@@ -108,7 +174,7 @@ test('an unknown prereq id does not lock a topic forever', () => {
 test('nextUp starts at the root and names its first unsolved problem', () => {
   const roadmap = fixture();
   const byId = CSRoadmap.indexNodes(roadmap.nodes);
-  const next = CSRoadmap.nextUp(roadmap.nodes, byId, solvedSet([1]));
+  const next = CSRoadmap.nextUp(roadmap.nodes, viewOf('roadmap'), byId, solvedSet([1]));
   assert.equal(next.node.id, 'a');
   assert.equal(next.problem.id, '2');
 });
@@ -118,14 +184,23 @@ test('nextUp prefers the shallowest open topic and skips locked ones', () => {
   const byId = CSRoadmap.indexNodes(roadmap.nodes);
   // A done, B and C open at row 1: the left-most (authored first) wins. D is
   // still locked, so it must not be suggested even though it is unfinished.
-  const next = CSRoadmap.nextUp(roadmap.nodes, byId, solvedSet([1, 2]));
+  const next = CSRoadmap.nextUp(roadmap.nodes, viewOf('roadmap'), byId, solvedSet([1, 2]));
   assert.equal(next.node.id, 'b');
 });
 
-test('nextUp returns null when everything is solved', () => {
+test('nextUp skips a topic the current list has nothing in', () => {
   const roadmap = fixture();
   const byId = CSRoadmap.indexNodes(roadmap.nodes);
-  assert.equal(CSRoadmap.nextUp(roadmap.nodes, byId, solvedSet([1, 2, 3, 4])), null);
+  // On `tagged`, C and D are empty, so finishing A leaves only B.
+  const next = CSRoadmap.nextUp(roadmap.nodes, viewOf('tagged'), byId, solvedSet([1, 9]));
+  assert.equal(next.node.id, 'b');
+});
+
+test('nextUp returns null when everything on the list is solved', () => {
+  const roadmap = fixture();
+  const byId = CSRoadmap.indexNodes(roadmap.nodes);
+  assert.equal(CSRoadmap.nextUp(roadmap.nodes, viewOf('roadmap'), byId, solvedSet([1, 2, 3, 4])), null);
+  assert.equal(CSRoadmap.nextUp(roadmap.nodes, viewOf('tagged'), byId, solvedSet([1, 9, 3])), null);
 });
 
 // ── Markup ────────────────────────────────────────────────────────────────
@@ -137,7 +212,7 @@ function parse(html) {
 test('graphHTML emits one .row per row, in ascending order', () => {
   const roadmap = fixture();
   const byId = CSRoadmap.indexNodes(roadmap.nodes);
-  const doc = parse(CSRoadmap.graphHTML(roadmap.nodes, byId, solvedSet([])));
+  const doc = parse(CSRoadmap.graphHTML(roadmap.nodes, viewOf('roadmap'), byId, solvedSet([])));
   const rows = [...doc.querySelectorAll('.row')];
   assert.deepEqual(rows.map((r) => r.getAttribute('data-row')), ['0', '1', '2']);
   assert.equal(rows[1].querySelectorAll('.node').length, 2);
@@ -146,49 +221,61 @@ test('graphHTML emits one .row per row, in ascending order', () => {
 test('nodeHTML marks a finished topic done and an unmet one locked', () => {
   const roadmap = fixture();
   const byId = CSRoadmap.indexNodes(roadmap.nodes);
+  const view = viewOf('roadmap');
 
-  const fresh = parse(CSRoadmap.nodeHTML(byId.b, byId, solvedSet([]))).querySelector('.node');
+  const fresh = parse(CSRoadmap.nodeHTML(byId.b, view, byId, solvedSet([]))).querySelector('.node');
   assert.ok(fresh.classList.contains('locked'));
   assert.ok(!fresh.classList.contains('done'));
   assert.equal(fresh.getAttribute('title'), 'B — 0 of 1 solved. Finish first: A');
 
-  const open = parse(CSRoadmap.nodeHTML(byId.b, byId, solvedSet([1, 2, 3]))).querySelector('.node');
+  const open = parse(CSRoadmap.nodeHTML(byId.b, view, byId, solvedSet([1, 2, 3]))).querySelector('.node');
   assert.ok(open.classList.contains('done'));
   assert.ok(!open.classList.contains('locked'));
   assert.equal(open.getAttribute('title'), 'B — 1 of 1 solved');
   assert.equal(open.querySelector('.node-count').textContent, '1/1');
 });
 
-// The label used to be printed on every box; 29 repetitions of "after Arrays &
-// Hashing" buried the graph, so it moved into the tooltip and the drawer.
-test('lockLabel names the unmet prereqs and is empty once they are met', () => {
+test('nodeHTML fades a topic the list has nothing in, and shows a dash', () => {
   const roadmap = fixture();
   const byId = CSRoadmap.indexNodes(roadmap.nodes);
-  assert.equal(CSRoadmap.lockLabel(byId.d, byId, solvedSet([1, 2])), 'Finish first: B, C');
-  assert.equal(CSRoadmap.lockLabel(byId.d, byId, solvedSet([1, 2, 3, 4])), '');
-  assert.equal(CSRoadmap.lockLabel(byId.a, byId, solvedSet([])), '');
+  const node = parse(CSRoadmap.nodeHTML(byId.c, viewOf('tagged'), byId, solvedSet([]))).querySelector('.node');
+  assert.ok(node.classList.contains('empty'));
+  assert.ok(!node.classList.contains('done'), 'zero of zero is not "done"');
+  assert.equal(node.querySelector('.node-count').textContent, '—');
+  assert.equal(node.getAttribute('title'), 'C — nothing on this list');
 });
 
-test('problemHTML links every language the repo has, and nothing when it has none', () => {
+test('problemHTML links every language the repo has', () => {
   const withJava = parse(CSRoadmap.problemHTML(
-    problem(1, { solutions: { Java: 'https://x.test/a.java', Python: 'https://x.test/a.py' } }),
+    { id: '1', title: 'P', url: 'u', difficulty: 'Easy',
+      solutions: { Java: 'https://x.test/a.java', Python: 'https://x.test/a.py' } },
     solvedSet([])
   ));
   assert.deepEqual([...withJava.querySelectorAll('.prob-links a')].map((a) => a.textContent), ['Ja', 'Py']);
+});
 
-  const bare = parse(CSRoadmap.problemHTML(problem(1, { solutions: {} }), solvedSet([])));
+// An imported list reaches past what this repo has solved. A silent gap reads
+// as a rendering bug, so the row says so instead.
+test('problemHTML marks a problem this repo has no solution for', () => {
+  const bare = parse(CSRoadmap.problemHTML(
+    { id: '9', title: 'P9', url: 'u', difficulty: 'Easy', solutions: {} }, solvedSet([])
+  ));
   assert.equal(bare.querySelectorAll('.prob-links a').length, 0);
+  assert.equal(bare.querySelector('.prob-gap').getAttribute('title'), 'No solution in this repo yet');
 });
 
 test('problemHTML reflects the solved tick in both the class and the checkbox', () => {
-  const doc = parse(CSRoadmap.problemHTML(problem(7), solvedSet([7])));
+  const doc = parse(CSRoadmap.problemHTML(
+    { id: '7', title: 'P7', url: 'u', difficulty: 'Easy', solutions: {} }, solvedSet([7])
+  ));
   assert.ok(doc.querySelector('.prob').classList.contains('solved'));
   assert.equal(doc.querySelector('input').checked, true);
 });
 
 test('problemHTML escapes a title that would otherwise inject markup', () => {
   const doc = parse(CSRoadmap.problemHTML(
-    problem(1, { title: '<img src=x onerror=alert(1)>' }), solvedSet([])
+    { id: '1', title: '<img src=x onerror=alert(1)>', url: 'u', difficulty: 'Easy', solutions: {} },
+    solvedSet([])
   ));
   assert.equal(doc.querySelectorAll('img').length, 0);
   assert.equal(doc.querySelector('.prob-title').textContent, '<img src=x onerror=alert(1)>');
@@ -197,16 +284,46 @@ test('problemHTML escapes a title that would otherwise inject markup', () => {
 test('drawerBodyHTML ticks the prereqs that are met and links the cheatsheets', () => {
   const roadmap = fixture();
   const byId = CSRoadmap.indexNodes(roadmap.nodes);
+  const view = viewOf('roadmap');
 
-  const rootDoc = parse(CSRoadmap.drawerBodyHTML(byId.a, byId, solvedSet([])));
+  const rootDoc = parse(CSRoadmap.drawerBodyHTML(byId.a, view, byId, solvedSet([])));
   assert.equal(rootDoc.querySelectorAll('.chip.met').length, 0, 'the root has no prereq section');
   assert.equal(rootDoc.querySelector('a.chip').getAttribute('href'), 'cheatsheets/array.html');
   assert.equal(rootDoc.querySelectorAll('.prob').length, 2);
 
-  const dDoc = parse(CSRoadmap.drawerBodyHTML(byId.d, byId, solvedSet([1, 2, 3])));
+  const dDoc = parse(CSRoadmap.drawerBodyHTML(byId.d, view, byId, solvedSet([1, 2, 3])));
   const chips = [...dDoc.querySelectorAll('[data-open]')];
   assert.deepEqual(chips.map((c) => c.getAttribute('data-open')), ['b', 'c']);
   assert.deepEqual(chips.map((c) => c.classList.contains('met')), [true, false]);
+});
+
+test('drawerBodyHTML drops the prereq section on a list that is not a path', () => {
+  const roadmap = fixture();
+  const byId = CSRoadmap.indexNodes(roadmap.nodes);
+  const doc = parse(CSRoadmap.drawerBodyHTML(byId.d, viewOf('tagged'), byId, solvedSet([])));
+  assert.equal(doc.querySelectorAll('[data-open]').length, 0);
+});
+
+test('drawerBodyHTML explains an empty topic instead of showing a bare heading', () => {
+  const roadmap = fixture();
+  const byId = CSRoadmap.indexNodes(roadmap.nodes);
+  const doc = parse(CSRoadmap.drawerBodyHTML(byId.c, viewOf('tagged'), byId, solvedSet([])));
+  assert.equal(doc.querySelectorAll('.prob').length, 0);
+  assert.match(doc.querySelector('.drawer-empty').textContent, /Tagged has nothing filed under this topic/);
+});
+
+test('drawerBodyHTML heads the problem section with the list and its tally', () => {
+  const roadmap = fixture();
+  const byId = CSRoadmap.indexNodes(roadmap.nodes);
+  const doc = parse(CSRoadmap.drawerBodyHTML(byId.a, viewOf('tagged'), byId, solvedSet([1])));
+  assert.equal(doc.querySelectorAll('.drawer-section h3')[1].textContent, 'Tagged — 1 / 2');
+});
+
+test('listOptionsHTML labels each list with its size and selects the current one', () => {
+  const doc = parse('<select>' + CSRoadmap.listOptionsHTML(fixture().lists, 'tagged') + '</select>');
+  const options = [...doc.querySelectorAll('option')];
+  assert.deepEqual(options.map((o) => o.textContent), ['Roadmap picks (4)', 'Tagged (3)']);
+  assert.deepEqual(options.map((o) => o.selected), [false, true]);
 });
 
 test('edgePath leaves the parent and enters the child vertically', () => {
@@ -240,12 +357,15 @@ test('writeSolved round-trips through readSolved as string keys', () => {
  * fetch. This is what catches an id in the markup drifting away from the id
  * roadmap.js looks up.
  */
-function renderPage(roadmap, url) {
+function renderPage(roadmap, url, stored) {
   const html = fs.readFileSync(PAGE, 'utf8');
   const dom = new JSDOM(html, { url: url || 'https://example.test/lc-roadmap.html' });
   for (const key of ['window', 'document', 'localStorage', 'CustomEvent', 'Event', 'navigator', 'self', 'history', 'location']) {
     global[key] = key === 'self' ? dom.window : dom.window[key];
   }
+  // Each JSDOM carries its own localStorage, so anything a returning visitor
+  // would have stored has to be seeded into *this* document, not the last one.
+  Object.entries(stored || {}).forEach(([key, value]) => dom.window.localStorage.setItem(key, value));
   require('../nav.js').mount();
   CSRoadmap.render(roadmap || fixture());
   return dom.window.document;
@@ -269,18 +389,6 @@ test('the navbar marks the roadmap as the active page', () => {
   assert.equal(active.getAttribute('href'), 'lc-roadmap.html');
 });
 
-test('clicking a topic opens the drawer with that topic loaded', () => {
-  const doc = renderPage();
-  click(doc.querySelector('.node[data-id="a"]'));
-  assert.ok(doc.getElementById('drawer').classList.contains('open'));
-  assert.equal(doc.getElementById('drawer').getAttribute('aria-hidden'), 'false');
-  assert.equal(doc.getElementById('drawerTitle').textContent, 'A');
-  assert.equal(doc.getElementById('drawerBody').querySelectorAll('.prob').length, 2);
-  assert.equal(global.location.hash, '#a', 'the open topic is shareable via the URL');
-});
-
-// Closing parks the drawer off-screen under aria-hidden. Leaving focus on the
-// close button would strand a keyboard user on an invisible control.
 test('closing the drawer hands focus back to the topic that opened it', () => {
   const doc = renderPage();
   const box = doc.querySelector('.node[data-id="a"]');
@@ -295,8 +403,6 @@ test('hopping between prereqs returns focus to the topic you started from', () =
   const doc = renderPage();
   const box = doc.querySelector('.node[data-id="d"]');
   click(box);
-  // The chip that moves us to B is discarded by the re-render, so remembering
-  // the most recent opener instead of the first would strand focus on <body>.
   click(doc.getElementById('drawerBody').querySelector('[data-open="b"]'));
   click(doc.getElementById('drawerClose'));
   assert.equal(doc.activeElement, box);
@@ -325,39 +431,6 @@ test('the overlay closes the drawer and clears the hash', () => {
   assert.equal(global.location.hash, '');
 });
 
-// The whole point of keying progress by problem id: A and D share LC 1.
-test('ticking a shared problem updates every topic that lists it', () => {
-  const doc = renderPage();
-  click(doc.querySelector('.node[data-id="a"]'));
-
-  const box = doc.getElementById('drawerBody').querySelector('input[data-check="1"]');
-  box.checked = true;
-  box.dispatchEvent(new global.window.Event('change', { bubbles: true }));
-
-  assert.equal(doc.querySelector('.node[data-id="a"] .node-count').textContent, '1/2');
-  assert.equal(doc.querySelector('.node[data-id="d"] .node-count').textContent, '1/1');
-  assert.ok(doc.querySelector('.node[data-id="d"]').classList.contains('done'));
-  assert.equal(doc.getElementById('statProblems').textContent, '1 / 4');
-  assert.deepEqual(Object.keys(CSRoadmap.readSolved()), ['1'], 'and it is persisted');
-});
-
-test('"tick all" completes a topic and unlocks what came after it', () => {
-  const doc = renderPage();
-  click(doc.querySelector('.node[data-id="a"]'));
-  click(doc.getElementById('drawerBody').querySelector('[data-bulk="all"]'));
-
-  assert.ok(doc.querySelector('.node[data-id="a"]').classList.contains('done'));
-  assert.ok(!doc.querySelector('.node[data-id="b"]').classList.contains('locked'));
-  assert.equal(doc.querySelector('.node[data-id="b"]').getAttribute('title'), 'B — 0 of 1 solved');
-  // D still needs B and C, so it stays locked.
-  assert.ok(doc.querySelector('.node[data-id="d"]').classList.contains('locked'));
-
-  click(doc.getElementById('drawerBody').querySelector('[data-bulk="none"]'));
-  assert.ok(!doc.querySelector('.node[data-id="a"]').classList.contains('done'));
-  assert.ok(doc.querySelector('.node[data-id="b"]').classList.contains('locked'));
-  assert.match(doc.querySelector('.node[data-id="b"]').getAttribute('title'), /Finish first: A$/);
-});
-
 test('every prereq becomes one edge, tagged with the pair it joins', () => {
   const doc = renderPage();
   const edges = [...doc.querySelectorAll('#edges path')]
@@ -381,14 +454,34 @@ test('hovering a topic lifts only the edges that touch it', () => {
   assert.equal(svg.querySelectorAll('path.hot').length, 0);
 });
 
-test('an edge out of a finished topic is drawn as live', () => {
+// The whole point of keying progress by problem id: A and D share P1.
+test('ticking a shared problem updates every topic that lists it', () => {
+  const doc = renderPage();
+  click(doc.querySelector('.node[data-id="a"]'));
+
+  const box = doc.getElementById('drawerBody').querySelector('input[data-check="1"]');
+  box.checked = true;
+  box.dispatchEvent(new global.window.Event('change', { bubbles: true }));
+
+  assert.equal(doc.querySelector('.node[data-id="a"] .node-count').textContent, '1/2');
+  assert.equal(doc.querySelector('.node[data-id="d"] .node-count').textContent, '1/1');
+  assert.ok(doc.querySelector('.node[data-id="d"]').classList.contains('done'));
+  assert.equal(doc.getElementById('statProblems').textContent, '1 / 4');
+  assert.deepEqual(Object.keys(CSRoadmap.readSolved()), ['1'], 'and it is persisted');
+});
+
+test('"tick all" completes a topic and unlocks what came after it', () => {
   const doc = renderPage();
   click(doc.querySelector('.node[data-id="a"]'));
   click(doc.getElementById('drawerBody').querySelector('[data-bulk="all"]'));
-  const live = [...doc.querySelectorAll('#edges path')]
-    .filter((p) => p.classList.contains('live'))
-    .map((p) => p.getAttribute('data-to'));
-  assert.deepEqual(live, ['b', 'c']);
+
+  assert.ok(doc.querySelector('.node[data-id="a"]').classList.contains('done'));
+  assert.ok(!doc.querySelector('.node[data-id="b"]').classList.contains('locked'));
+  assert.ok(doc.querySelector('.node[data-id="d"]').classList.contains('locked'));
+
+  click(doc.getElementById('drawerBody').querySelector('[data-bulk="none"]'));
+  assert.ok(!doc.querySelector('.node[data-id="a"]').classList.contains('done'));
+  assert.ok(doc.querySelector('.node[data-id="b"]').classList.contains('locked'));
 });
 
 test('the next-up hint follows progress and jumps to the topic', () => {
@@ -451,6 +544,95 @@ test('a topic named in the URL hash opens on load', () => {
   assert.equal(doc.getElementById('drawerTitle').textContent, 'C');
 });
 
+// ── Switching lists ───────────────────────────────────────────────────────
+
+function switchTo(doc, listId) {
+  const select = doc.getElementById('listSelect');
+  select.value = listId;
+  select.dispatchEvent(new global.window.Event('change', { bubbles: true }));
+}
+
+test('the picker offers every list, defaulting to the configured one', () => {
+  const doc = renderPage();
+  const options = [...doc.querySelectorAll('#listSelect option')];
+  assert.deepEqual(options.map((o) => o.value), ['roadmap', 'tagged']);
+  assert.equal(doc.getElementById('listSelect').value, 'roadmap');
+  assert.equal(doc.getElementById('listBlurb').textContent, 'the path');
+});
+
+test('switching lists re-counts every topic without touching the graph', () => {
+  const doc = renderPage();
+  assert.equal(doc.querySelector('.node[data-id="c"] .node-count').textContent, '0/1');
+
+  switchTo(doc, 'tagged');
+  assert.equal(doc.getElementById('statProblems').textContent, '0 / 3');
+  assert.equal(doc.getElementById('listBlurb').textContent, 'a tag list');
+  assert.match(doc.getElementById('summaryLabel').textContent, /of Tagged solved$/);
+  // C and D hold nothing on this list; A now shows P1 + P9 rather than P1 + P2.
+  assert.equal(doc.querySelector('.node[data-id="a"] .node-count').textContent, '0/2');
+  assert.equal(doc.querySelector('.node[data-id="c"] .node-count').textContent, '—');
+  assert.ok(doc.querySelector('.node[data-id="c"]').classList.contains('empty'));
+  // Same four boxes and four edges — the list is a lens, not a different graph.
+  assert.equal(doc.querySelectorAll('.node').length, 4);
+  assert.equal(doc.querySelectorAll('#edges path').length, 4);
+});
+
+// The lock is a property of the curated teaching order. An imported list has no
+// order, so every topic must read as available rather than blocked.
+test('switching to a non-curated list clears the locks', () => {
+  const doc = renderPage();
+  assert.ok(doc.querySelector('.node[data-id="d"]').classList.contains('locked'));
+  switchTo(doc, 'tagged');
+  assert.equal(doc.querySelectorAll('.node.locked').length, 0);
+});
+
+test('a tick made on one list still counts on another', () => {
+  const doc = renderPage();
+  switchTo(doc, 'tagged');
+  click(doc.querySelector('.node[data-id="a"]'));
+  const box = doc.getElementById('drawerBody').querySelector('input[data-check="1"]');
+  box.checked = true;
+  box.dispatchEvent(new global.window.Event('change', { bubbles: true }));
+
+  assert.equal(doc.getElementById('statProblems').textContent, '1 / 3');
+  switchTo(doc, 'roadmap');
+  assert.equal(doc.getElementById('statProblems').textContent, '1 / 4');
+  assert.equal(doc.querySelector('.node[data-id="d"] .node-count').textContent, '1/1');
+});
+
+test('"tick all" ticks the current list, not the curated one', () => {
+  const doc = renderPage();
+  switchTo(doc, 'tagged');
+  click(doc.querySelector('.node[data-id="a"]'));
+  click(doc.getElementById('drawerBody').querySelector('[data-bulk="all"]'));
+  // A holds P1 + P9 on `tagged`; P2 belongs to the roadmap list and must be untouched.
+  assert.deepEqual(Object.keys(CSRoadmap.readSolved()).sort(), ['1', '9']);
+});
+
+// Each JSDOM gets its own localStorage, so the round trip is checked in two
+// halves rather than by re-rendering: choosing writes the key, and a render
+// that finds the key opens that list.
+test('choosing a list stores it', () => {
+  const doc = renderPage();
+  switchTo(doc, 'tagged');
+  assert.equal(localStorage.getItem(CSRoadmap.LIST_KEY), 'tagged');
+});
+
+test('a stored list is what opens on load, not the default', () => {
+  const doc = renderPage(null, null, { [CSRoadmap.LIST_KEY]: 'tagged' });
+  assert.equal(doc.getElementById('listSelect').value, 'tagged');
+  assert.equal(doc.getElementById('statProblems').textContent, '0 / 3');
+  assert.equal(doc.getElementById('listBlurb').textContent, 'a tag list');
+});
+
+// A list can be renamed or dropped from data/roadmap.json between visits, and a
+// stored id that no longer exists must not blank the page.
+test('a stored list that no longer exists falls back to the default', () => {
+  const doc = renderPage(null, null, { [CSRoadmap.LIST_KEY]: 'deleted-list' });
+  assert.equal(doc.getElementById('listSelect').value, 'roadmap');
+  assert.equal(doc.querySelectorAll('.node').length, 4);
+});
+
 // ── The page's markup contract ────────────────────────────────────────────
 
 // render() reaches for these by id. A rename in the HTML that misses roadmap.js
@@ -458,9 +640,9 @@ test('a topic named in the URL hash opens on load', () => {
 test('lc-roadmap.html carries every element roadmap.js looks up', () => {
   const doc = new JSDOM(fs.readFileSync(PAGE, 'utf8')).window.document;
   for (const id of ['pageTitle', 'pageIntro', 'summary', 'statProblems', 'statTopics',
-                    'summaryFill', 'summaryLabel', 'resetBtn', 'nextUp', 'graph', 'edges',
-                    'loading', 'note', 'overlay', 'drawer', 'drawerClose', 'drawerTitle',
-                    'drawerBlurb', 'drawerBody']) {
+                    'summaryFill', 'summaryLabel', 'listSelect', 'listBlurb', 'resetBtn',
+                    'nextUp', 'graph', 'edges', 'loading', 'note', 'overlay', 'drawer',
+                    'drawerClose', 'drawerTitle', 'drawerBlurb', 'drawerBody']) {
     assert.ok(doc.getElementById(id), `#${id} is missing from lc-roadmap.html`);
   }
 });

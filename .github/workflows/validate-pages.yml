@@ -4,6 +4,7 @@ on:
   push:
     branches: [ master ]
     paths:
+      - 'data/problem_lists.json'
       - 'data/roadmap.json'
       - 'doc/**'
       - 'README.md'
@@ -26,6 +27,7 @@ on:
   pull_request:
     branches: [ master ]
     paths:
+      - 'data/problem_lists.json'
       - 'data/roadmap.json'
       - 'doc/**'
       - 'README.md'
