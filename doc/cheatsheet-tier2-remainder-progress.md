@@ -2,7 +2,7 @@
 
 Working log for the ten Tier 2 sheets that [`cheatsheet-split-plan-2026-08.md`](cheatsheet-split-plan-2026-08.md) lists but the first Tier 2 pass did not reach. **Delete this file before the PR merges** — same as the Tier 1 and Tier 2 logs; its findings belong in commit messages, not the repo.
 
-**Status: measured and planned; batch A of 2 is in flight.** No `doc/cheatsheet/*.md` has changed yet.
+**Status: batch A landed (5 sheets → 13); batch B queued.** Batch A's results are recorded below the plan that produced them, including the three places the outcome differs from it.
 
 ---
 
@@ -31,7 +31,7 @@ For comparison, Tier 3 — deliberately deferred until this is done — is twelv
 
 ---
 
-## Batch A — in flight
+## Batch A — landed
 
 | file | → target | satellites |
 |---|---:|---|
@@ -48,6 +48,50 @@ Three of these get treatment the plan doc did not specify, because the measureme
 **`python_trick.md` needs a structure, not a split.** 3,672 lines under a *single* `## 1) Examples` heading, 68 `###` entries numbered `0-1)`, `1-11''')`, `1-27-3)` in no thematic order. It is the only sheet in the corpus matching neither skeleton. The job is categorisation into themed headings plus a lookup table, with the library-by-library reference (`heapq` 365 lines, `SortedDict` 269, `itertools` 105, `bisect` 98) and the index-arithmetic deep dives (`Insert into array` 251, `Index distance vs element count` 186) moved out.
 
 **`java_trick.md`'s two catch-alls get dissolved, not renamed.** `6) Other tricks` (527 lines) and `9) Others` (286) are exactly what `CLAUDE.md` forbids. The Aug 2026 review's first attempt at the eleven `Missing Google Patterns` sections renamed them to one generic heading and was sent back in code review for merely relocating the catch-all — so every item here is filed under the topic it belongs to, and no replacement generic heading is allowed.
+
+### What batch A actually produced
+
+15,078 lines in 5 files → 15,418 in 13. The net is roughly flat because only `linked_list`
+held real duplication (317 lines); the other four were filing and scope problems, and the
+growth is the chooser tables, group headings and Scope blocks none of them had. The number
+that moved is the *largest* file: 3,672 → 2,085.
+
+| source | → | satellites |
+|---|---|---|
+| `linked_list` 2,867 | 1,382 | `linked_list_examples` 1,361 |
+| `design` 2,647 | 265 | `design_examples` 1,361, `design_patterns` 1,150 |
+| `array` 2,474 | 1,583 | `array_examples` 772 |
+| `java_trick` 3,418 | 1,501 | `java_trick_collections` 1,160, `java_trick_strings_sorting` 843 |
+| `python_trick` 3,672 | 2,085 | `python_trick_stdlib` 1,144, `python_trick_indexing` 811 |
+
+Three outcomes differ from the plan above, each because the file turned out to be a different
+shape than the measurement implied:
+
+- **`design` came out at 265, not 1,000.** Its concept half was always 210 lines and every
+  other line was one of the two satellites. Padding it to a target would mean re-deriving
+  material the satellites now own. The split was scope-driven anyway: `## 3)` held 1,128 lines
+  of consistent hashing, rate limiters and load balancing — not LeetCode problems, and not in
+  the file's own Scope line.
+- **`python_trick` came out at 2,085, not 1,200**, and 230 of those arrived *after* the split:
+  `array.md`'s multi-key sort essay moved in, replacing a 40-line subset of itself. Seven
+  themed groups behind an "I want to…" table is the structure that file needed; the line count
+  was never its problem.
+- **`array` came out at 1,583, not 1,000.** Two of the four language-idiom sections it was
+  holding are resolved (multi-key sort → `python_trick`, the misfiled LC 670 → `array_examples`);
+  `1-1-5) Sort Array` and `1-1-6) Flatten Array` stay, because whether they belong with
+  `sort.md` is a cross-file call.
+
+Two contract items were added by what batch A hit, and apply to batch B:
+
+7. **GitHub does not trim the slug it builds**, so a heading ending in a star run keeps a
+   trailing `-` — 74 anchors under `doc/cheatsheet` already depend on that. The first checker
+   written for this batch stripped the run before slugifying and so accepted eight bad links in
+   the `design` family and missed seven in `linked_list`, one of which was already broken in the
+   source. Item 1's rule is right; the mistake was in implementing it.
+8. **Re-filing creates duplicate sibling headings.** Sections that were far apart arrive next to
+   each other and bring generic h4s with them — `The Rule`, `Summary Table`, `Core Idea`,
+   `Similar LC problems` all collided this way. The per-batch check now fails on a repeated
+   heading under the same h2, and each collision is qualified with the section it belongs to.
 
 ## Batch B — queued
 
@@ -117,3 +161,5 @@ Each item is a defect an earlier tier actually hit:
 - **~25 pre-existing correctness bugs** from the PR #114 review, verified as untouched-by-Tier-1 code: un-seeded BFS queues, undefined identifiers, missing null guards, Hoare's return value used as a pivot index.
 - **One inconsistency Tier 2 introduced**: `stack.md`'s surviving `Common Mistakes #5` recommends the LC 394 typed-stack form whose code block was deleted as a duplicate.
 - **The site slugify fix** — one line in `site/build-lib.js`, repairs ~93 anchors on the published site.
+- **52 broken anchors elsewhere in `doc/cheatsheet`**, found by a repo-wide sweep under GitHub's rule at the end of batch A. None is in a file this branch touched — all 13 of those are clean — and none was introduced by it. Most look like the star-run trailing `-` case from contract item 7.
+- **`array.md`'s `1-1-5) Sort Array` and `1-1-6) Flatten Array`** — 270 lines of language-level array operations that may belong with `sort.md`. Left in place deliberately; it is a cross-file call.
