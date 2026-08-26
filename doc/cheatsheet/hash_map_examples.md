@@ -18,7 +18,7 @@ This file is the long tail of [hash_map.md](./hash_map.md). It holds three kinds
 
 ### Key Properties
 - **Complexity**: see the [Time Complexity](./hash_map.md#time-complexity) table in the main sheet
-- **Core Idea**: every section here is an application of one of the [templates](./hash_map.md#templates-algorithms) in the main sheet — the template is the thing to memorise, these are the rehearsals
+- **Core Idea**: every section here is an application of one of the [templates](./hash_map.md#templates--algorithms) in the main sheet — the template is the thing to memorise, these are the rehearsals
 - **When to Use**: after you know which template a problem needs and want to see it written out in full
 
 ## Templates & Algorithms
@@ -2704,9 +2704,9 @@ class Solution(object):
 
 | Looking for | Go to |
 |---|---|
-| Which template a problem needs | [hash_map.md → Problem → Pattern Decision Table](./hash_map.md#problem-pattern-decision-table) |
-| A canonical template to memorise | [hash_map.md → Templates & Algorithms](./hash_map.md#templates-algorithms) |
+| Which template a problem needs | [hash_map.md → Problem → Pattern Decision Table](./hash_map.md#problem--pattern-decision-table) |
+| A canonical template to memorise | [hash_map.md → Templates & Algorithms](./hash_map.md#templates--algorithms) |
 | A full worked solution | [LC Examples](#lc-examples) above |
 | Every problem in a category | [Problems by Pattern](#problems-by-pattern) above |
-| Sorted-map operations (floor/ceiling/range) | [Ordered Map — Java TreeMap / Python SortedDict](#ordered-map-java-treemap-python-sorteddict) above |
-| Interview tips and common mistakes | [hash_map.md → Summary & Quick Reference](./hash_map.md#summary-quick-reference) |
+| Sorted-map operations (floor/ceiling/range) | [Ordered Map — Java TreeMap / Python SortedDict](#ordered-map--java-treemap--python-sorteddict) above |
+| Interview tips and common mistakes | [hash_map.md → Summary & Quick Reference](./hash_map.md#summary--quick-reference) |

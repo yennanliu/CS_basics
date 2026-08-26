@@ -207,7 +207,7 @@ In [6]:
 | 10 | Virtual map (remapping) | `{badIndex: goodIndex}` | "pick at random, excluding ..." | 710 |
 | 11 | Map + another structure | map + heap / stack / second map | "top-K with a heap", "next greater" | 347, 496, 739 |
 
-> Patterns that are really a deep dive on one or two problems — bucket sort for O(n) top-K, rolling hash, split-and-probe pair lookup, max-frequency arithmetic, and the ordered map (`TreeMap` / `SortedDict`) — live in [hash_map_examples.md](./hash_map_examples.md#templates-algorithms).
+> Patterns that are really a deep dive on one or two problems — bucket sort for O(n) top-K, rolling hash, split-and-probe pair lookup, max-frequency arithmetic, and the ordered map (`TreeMap` / `SortedDict`) — live in [hash_map_examples.md](./hash_map_examples.md#templates--algorithms).
 
 ### Template 1: Frequency Counter
 ```python
@@ -726,7 +726,7 @@ class CacheTemplate:
 # Examples: LC 146 (LRU), LC 460 (LFU)
 ```
 
-> Top-down DP with a dict keyed on the subproblem state (LC 139, 1048, 322) is the same template — worked out in [hash_map_examples.md → Hash Map + Memoization / DP](./hash_map_examples.md#hash-map-memoization-dp).
+> Top-down DP with a dict keyed on the subproblem state (LC 139, 1048, 322) is the same template — worked out in [hash_map_examples.md → Hash Map + Memoization / DP](./hash_map_examples.md#hash-map--memoization--dp).
 
 ---
 
@@ -938,7 +938,7 @@ def top_k_frequent(nums, k):
     return result
 ```
 
-> For the O(n) heap-free answer to top-K, see [Bucket Sort via Hash Map](./hash_map_examples.md#bucket-sort-via-hash-map-top-k-frequency-o-n); for `next greater` answers keyed by a monotonic stack, see [Monotonic Stack + Hash Map](./hash_map_examples.md#monotonic-stack-hash-map).
+> For the O(n) heap-free answer to top-K, see [Bucket Sort via Hash Map](./hash_map_examples.md#bucket-sort-via-hash-map-top-k-frequency-on); for `next greater` answers keyed by a monotonic stack, see [Monotonic Stack + Hash Map](./hash_map_examples.md#monotonic-stack--hash-map).
 
 ## Summary & Quick Reference
 
@@ -949,11 +949,11 @@ def top_k_frequent(nums, k):
 | Frequency of elements, characters or patterns; "most frequent", "anagram", duplicates | Counting / frequency map | [T1](#template-1-frequency-counter) | O(n) / O(n) | 242, 49, 451, 347, 692, 387, 819, 811, 1207, 383, 299, 349, 350 |
 | A pair, triplet or complement that hits a target; "two sum", "k-diff", "divisible by 60" | Seen-before index map | [T2](#template-2-seen-before-index-map-two-sum-shape) | O(n) / O(n) | 1, 15, 16, 18, 167, 532, 653, 1010, 1679, 1711, 2006 |
 | Items that belong together under some *derived* form; "group", "same line", "same row or column" | Grouping by a computed key | [T3](#template-3-grouping-by-a-computed-key) | O(n·k) / O(n) | 49, 149, 609, 939, 947, 987 |
-| A subarray property: sum equals k, sum divisible by k, equal 0s and 1s, exactly k odds | Prefix sum → count map | [T4](#template-4-prefix-sum-count-map) | O(n) / O(n) | 560, 325, 523, 525, 930, 974, 1248, 724 |
+| A subarray property: sum equals k, sum divisible by k, equal 0s and 1s, exactly k odds | Prefix sum → count map | [T4](#template-4-prefix-sum--count-map-) | O(n) / O(n) | 560, 325, 523, 525, 930, 974, 1248, 724 |
 | A window that grows and shrinks on a condition over characters | Sliding window + char counts | [T5](#template-5-sliding-window-with-hash-map) | O(n) / O(k) | 3, 76, 424, 438, 567, 159, 340, 904, 1004, 1208, 1234 |
-| "According to the order given in ...", a custom alphabet, a permutation, an index split | Rank map | [T6](#template-6-rank-map-value-to-position) | O(n) / O(n) | 953, 791, 105, 106 |
+| "According to the order given in ...", a custom alphabet, a permutation, an index split | Rank map | [T6](#template-6-rank-map--value-to-position-) | O(n) / O(n) | 953, 791, 105, 106 |
 | A mapping that must be one-to-one in **both** directions | Bijection (two maps) | [T7](#template-7-bijection-two-way-mapping) | O(n) / O(n) | 205, 290 |
-| "Design a cache", O(1) get + put, eviction, or a recursion worth memoizing | Caching / memoization | [T8](#template-8-hash-map-for-caching-memoization) | O(1) amortised / O(n) | 146, 460, 705, 706, 380, 381, 432, 355, 981, 1244, 139, 322, 1048 |
+| "Design a cache", O(1) get + put, eviction, or a recursion worth memoizing | Caching / memoization | [T8](#template-8-hash-map-for-caching--memoization) | O(1) amortised / O(n) | 146, 460, 705, 706, 380, 381, 432, 355, 981, 1244, 139, 322, 1048 |
 | Node relationships: clone, parent pointers, subtree signatures, equations as edges | Graph / tree node map | [T9](#template-9-graph-problems-with-hash-map) | O(n) / O(n) | 133, 138, 652, 721, 734, 399, 947, 1257 |
 | "Pick uniformly at random, but never these values" | Virtual map (remapping) | [T10](#template-10-virtual-map-remapping) | O(1) per pick / O(B) | 710, 398, 528, 384 |
 | The map alone is not enough — you also need order, a heap, or a stack | Map + another structure | [T11](#template-11-combining-hash-maps-with-other-structures) | varies | 347, 496, 503, 739, 853, 729, 846, 352 |

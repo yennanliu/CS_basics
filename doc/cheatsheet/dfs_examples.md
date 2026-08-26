@@ -139,7 +139,7 @@ def dfs(root):
 
 #### 0-8) Serialize and Deserialize Binary Tree
 
-> Python version: [2-20) LC 297](#2-20-serialize-and-deserialize-binary-tree-lc-297) below.
+> Python version: [2-20) LC 297](#2-20-serialize-and-deserialize-binary-tree--lc-297) below.
 
 ```java
 // java
@@ -612,7 +612,7 @@ def dfs(root, m, res):
 > tracks a *root → leaf* line of nodes. LC 652 instead asks whether two **whole subtrees**
 > are structurally identical. The trick is to give every subtree a **canonical signature**
 > and let a hashmap count how many times each signature appears. It belongs to
-> **[dfs.md Template 8 — Path Signatures / Shape Encoding](./dfs.md#template-8-path-signature-shape-encoding-lc-694)**
+> **[dfs.md Template 8 — Path Signatures / Shape Encoding](./dfs.md#template-8-path-signature-shape-encoding--lc-694)**
 > — the tree analogue of "distinct islands".
 
 **1) Core Idea**
@@ -1895,7 +1895,7 @@ boolean isPerfect = left.isPerfect && right.isPerfect
   - LC 200 - Number of Islands (connectivity grouping on a grid)
   - LC 721 - Accounts Merge (merge by shared email → components)
   - LC 684 - Redundant Connection (detect the edge that creates a cycle — Union-Find)
-  - LC 399 - Evaluate Division (transitive relations, weighted variant — [dfs.md Template 10](./dfs.md#template-10-weighted-graph-dfs-division-ratio-queries-lc-399))
+  - LC 399 - Evaluate Division (transitive relations, weighted variant — [dfs.md Template 10](./dfs.md#template-10-weighted-graph-dfs-divisionratio-queries--lc-399))
   - LC 785 - Is Graph Bipartite? (2-coloring = a "different-group" constraint check)
 
 ```python
@@ -2163,7 +2163,7 @@ depth == 1 case: brand-new node becomes root, whole old tree hangs on its LEFT.
 | 654 | Maximum Binary Tree | build nodes during DFS and return them upward |
 | 971 | Flip Binary Tree To Match Preorder | mutate left/right links mid-traversal |
 | 116 / 117 | Populating Next Right Pointers | pointer rewiring, but per level (BFS-friendly) |
-| 655 | Print Binary Tree | [2-28)](#2-28-print-binary-tree-lc-655) — DFS carrying a derived depth/offset downward |
+| 655 | Print Binary Tree | [2-28)](#2-28-print-binary-tree--lc-655) — DFS carrying a derived depth/offset downward |
 | 111 / 104 | Min / Max Depth of Binary Tree | the depth-counting recursion this builds on |
 
 > **Pattern takeaway**: "do X at depth `d`" ⇒ recurse with `d - 1` and act at **`d == 2`**, because
@@ -2177,7 +2177,7 @@ depth == 1 case: brand-new node becomes root, whole old tree hangs on its LEFT.
 
 ### Pattern-Based Problem Classification
 
-`Template N` refers to [dfs.md → Templates & Algorithms](./dfs.md#templates-algorithms);
+`Template N` refers to [dfs.md → Templates & Algorithms](./dfs.md#templates--algorithms);
 `*adv* TN` refers to [dfs_advanced.md](./dfs_advanced.md).
 
 #### **Pattern 1: Tree Traversal Problems**
@@ -2363,7 +2363,7 @@ completeness, no new technique.
 
 | Looking for | Go to |
 |---|---|
-| the technique behind any solution here | [dfs.md → Templates & Algorithms](./dfs.md#templates-algorithms) |
+| the technique behind any solution here | [dfs.md → Templates & Algorithms](./dfs.md#templates--algorithms) |
 | which template a problem belongs to | the [Problems by Pattern](#problems-by-pattern) index above |
 | a rare pattern (Euler path, Tarjan, trie DFS, `parent[]` trees) | [dfs_advanced.md](./dfs_advanced.md) |
 | the BFS solution to the same grid/tree problem | [bfs.md](./bfs.md) |
