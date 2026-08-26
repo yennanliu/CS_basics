@@ -192,7 +192,7 @@ people.sort(key=lambda x: (-x[0], x[1]))
 ```
 
 > Related: the sort key itself is section
-> [1-11'') Multi-key tuple sort](./python_trick.md#multi-key-tuple-sort-keylambda-x-x0-x1).
+> [1-11'') Multi-key tuple sort](./python_trick.md#multi-key-tuple-sort-keylambda-x-x0-x1-).
 
 #### **Use case 2 — insert while keeping the array SORTED (`bisect.insort`)**
 

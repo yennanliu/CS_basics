@@ -351,6 +351,36 @@ class Solution(object):
         return int("".join(digits))
 ```
 
+> **Baseline for contrast** — the O(n²) brute force. It is worth seeing once because it is
+> where the `A[:]` shallow-copy idiom earns its keep: `A` is mutated and restored on every
+> iteration, so the running best has to be a *copy*, not a reference.
+
+```python
+# LC 670
+# V0'
+# IDEA : BRUTE FORCE
+# NOTE : there is also 2 pointers solution : 
+#        -> https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/maximum-swap.py#L49
+# NOTE : ans = A[:]
+#        A[:] is a `shallow copy` syntax in python,
+#        it will copy "parent obj" (not child obj) to the other instance
+#        so the changes ("parent obj" only) in original instance will NOT affect the copied instance
+# https://stackoverflow.com/questions/4081561/what-is-the-difference-between-list-and-list-in-python
+# https://github.com/yennanliu/til#20210923
+class Solution(object):
+    def maximumSwap(self, num):
+        A = list(str(num))
+        ans = A[:]
+        for i in range(len(A)):
+            for j in range(i+1, len(A)):
+                A[i], A[j] = A[j], A[i]
+                if A > ans: 
+                    ans = A[:]
+                A[i], A[j] = A[j], A[i]
+
+        return int("".join(ans))
+```
+
 ## Scanning & Running State
 
 ### 5) Best Time to Buy and Sell Stock — LC 121 ⭐⭐⭐⭐
