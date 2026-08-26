@@ -234,6 +234,13 @@ class WordDictionary(object):
         return self.helper(word, idx + 1, node.child[ch])
 ```
 
+**Second idiom — `defaultdict(Node)` instead of an explicit dict.** Same trie, same recursion;
+the difference is that `children` auto-creates a child on access, so `addWord` has no
+`if ch not in ...` branch and the wildcard walk can hand `node.children[ch]` straight to the
+recursion. Worth seeing because it is the form most Python solutions on the site use, and
+because the auto-creation is also its trap: a *lookup* on a missing key silently inserts one,
+so `search` must never index `children` outside a guarded branch.
+
 ```python
 # python
 # LC 211
@@ -528,6 +535,40 @@ class Solution(object):
 
         return result
 ```
+```java
+// java
+// LC 79 - Word Search
+// IDEA: DFS + backtracking. Mark the cell in place with a sentinel instead of a visited[][]
+//       -- one fewer allocation, and the undo is a single assignment.
+// time = O(m * n * 4^L), space = O(L)   L = word.length()
+public boolean exist(char[][] board, String word) {
+    int m = board.length, n = board[0].length;
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            if (dfs(board, word, 0, i, j)) return true;
+        }
+    }
+    return false;
+}
+
+private boolean dfs(char[][] board, String word, int cur, int i, int j) {
+    /** NOTE !!! the success test comes FIRST -- otherwise a word ending on the last
+     *  cell is rejected by the bounds check on the following call. */
+    if (cur == word.length()) return true;
+    if (i < 0 || i >= board.length || j < 0 || j >= board[0].length) return false;
+    if (board[i][j] != word.charAt(cur)) return false;
+
+    char c = board[i][j];
+    board[i][j] = '#';                       // mark visited in place
+    boolean found = dfs(board, word, cur + 1, i + 1, j)
+                 || dfs(board, word, cur + 1, i - 1, j)
+                 || dfs(board, word, cur + 1, i, j + 1)
+                 || dfs(board, word, cur + 1, i, j - 1);
+    board[i][j] = c;                         // un-choose
+
+    return found;
+}
+```
 
 ### 5) Word Search II — LC 212 — the trie is what makes it tractable ⭐⭐⭐⭐
 
@@ -573,6 +614,61 @@ class Solution(object):
                 if board[row][col] in trie:
                     self.checkList(board, row, col, "", trie, rList)
         return list(rList)
+```
+
+```java
+// java
+// LC 212 - Word Search II
+// IDEA: one trie over ALL words, then ONE grid walk instead of a separate LC 79 run per word.
+//       The node stores the whole word at its terminal, so a hit needs no string building.
+// time = O(m * n * 4^L), space = O(total chars in words)   L = longest word
+class TrieNode {
+    TrieNode[] next = new TrieNode[26];
+    String word;                             // non-null only at a word end
+}
+
+public List<String> findWords(char[][] board, String[] words) {
+    TrieNode root = new TrieNode();
+    for (String w : words) {
+        TrieNode node = root;
+        for (char c : w.toCharArray()) {
+            int k = c - 'a';
+            if (node.next[k] == null) node.next[k] = new TrieNode();
+            node = node.next[k];
+        }
+        node.word = w;
+    }
+
+    List<String> res = new ArrayList<>();
+    for (int i = 0; i < board.length; i++)
+        for (int j = 0; j < board[0].length; j++)
+            dfs(board, i, j, root, res);
+    return res;
+}
+
+private void dfs(char[][] board, int i, int j, TrieNode node, List<String> res) {
+    if (i < 0 || i >= board.length || j < 0 || j >= board[0].length) return;
+    char c = board[i][j];
+    if (c == '#' || node.next[c - 'a'] == null) return;
+
+    node = node.next[c - 'a'];
+    if (node.word != null) {
+        res.add(node.word);
+        /** NOTE !!! null it out rather than de-duplicating later -- the same word can be
+         *  reached by several paths, and this also prunes the branch that just matched. */
+        node.word = null;
+    }
+
+    board[i][j] = '#';
+    dfs(board, i + 1, j, node, res);
+    dfs(board, i - 1, j, node, res);
+    dfs(board, i, j + 1, node, res);
+    dfs(board, i, j - 1, node, res);
+    board[i][j] = c;                         // un-choose
+}
+```
+
+```python
 
 # V1
 # IDEA : Backtracking with Trie

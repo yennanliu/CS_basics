@@ -622,6 +622,26 @@ public int longestConsecutive(int[] nums) {
     return longest;
 }
 ```
+```python
+# python
+# LC 128 - Longest Consecutive Sequence
+# IDEA: a set, and only ever extend a run from its START element -- so across the whole
+#       scan the inner while-loop touches each element at most once
+# time = O(N), space = O(N)
+class Solution(object):
+    def longestConsecutive(self, nums):
+        pool = set(nums)
+        longest = 0
+        for n in pool:
+            ### NOTE !!! without this guard the inner loop reruns per element -> O(N^2)
+            if n - 1 in pool:
+                continue                      # not a run start
+            length = 1
+            while n + length in pool:
+                length += 1
+            longest = max(longest, length)
+        return longest
+```
 
 ## Grids
 
@@ -657,6 +677,45 @@ public int numIslands(char[][] grid) {
     return islands;
 }
 ```
+```python
+# python
+# LC 200 - Number of Islands (union-find)
+# IDEA: count every '1' as its own island up front, then subtract one per SUCCESSFUL union
+# time = O(M*N*alpha(M*N)), space = O(M*N)
+class Solution(object):
+    def numIslands(self, grid):
+        if not grid or not grid[0]:
+            return 0
+        rows, cols = len(grid), len(grid[0])
+        parent = list(range(rows * cols))
+
+        def find(x):
+            while parent[x] != x:
+                parent[x] = parent[parent[x]]     # path halving
+                x = parent[x]
+            return x
+
+        def union(a, b):
+            ra, rb = find(a), find(b)
+            if ra == rb:
+                return False                      # already joined -> not a merge
+            parent[rb] = ra
+            return True
+
+        islands = 0
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] != '1':
+                    continue
+                islands += 1
+                ### NOTE !!! right and down only -- each neighbouring pair is then seen once
+                for dr, dc in ((0, 1), (1, 0)):
+                    nr, nc = r + dr, c + dc
+                    if nr < rows and nc < cols and grid[nr][nc] == '1':
+                        if union(r * cols + c, nr * cols + nc):
+                            islands -= 1
+        return islands
+```
 
 ### 11) Surrounded Regions — LC 130 — a virtual border node
 
@@ -684,6 +743,48 @@ public void solve(char[][] board) {
 }
 private int find(int[] p, int x) { return p[x]==x ? x : (p[x]=find(p,p[x])); }
 private void union(int[] p, int x, int y) { p[find(p,x)] = find(p,y); }
+```
+
+```python
+# python
+# LC 130 - Surrounded Regions
+# IDEA: one VIRTUAL node stands for "the border". Every 'O' reachable from an edge
+#       ends up in its component; everything else is enclosed and flips to 'X'.
+# time = O(M*N*alpha(M*N)), space = O(M*N)
+class Solution(object):
+    def solve(self, board):
+        if not board or not board[0]:
+            return
+        m, n = len(board), len(board[0])
+        virtual = m * n                       # the extra node, index m*n
+        parent = list(range(virtual + 1))
+
+        def find(x):
+            while parent[x] != x:
+                parent[x] = parent[parent[x]]
+                x = parent[x]
+            return x
+
+        def union(a, b):
+            parent[find(a)] = find(b)
+
+        for i in range(m):
+            for j in range(n):
+                if board[i][j] != 'O':
+                    continue
+                idx = i * n + j
+                if i in (0, m - 1) or j in (0, n - 1):
+                    union(idx, virtual)       # touches the border
+                else:
+                    for di, dj in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                        if board[i + di][j + dj] == 'O':
+                            union(idx, (i + di) * n + (j + dj))
+
+        ### NOTE !!! LC 130 mutates in place and returns nothing
+        for i in range(m):
+            for j in range(n):
+                if board[i][j] == 'O' and find(i * n + j) != find(virtual):
+                    board[i][j] = 'X'
 ```
 
 > **Variation — LC 959 Regions Cut By Slashes**: the DSU node is *sub-cell*, not cell. Split every cell into 4 triangles (`0`=top, `1`=right, `2`=bottom, `3`=left, id = `4*(r*n+c)+k`). Inside a cell: `'/'` → union(0,3) & union(1,2); `'\'` → union(0,1) & union(2,3); `' '` → union all four. Across cells: union this cell's `1` with the right neighbor's `3`, and this cell's `2` with the bottom neighbor's `0`. Answer = component count.
@@ -869,6 +970,49 @@ public double[] calcEquation(List<List<String>> equations,
     }
     return results;
 }
+```
+```python
+# python
+# LC 399 - Evaluate Division (weighted union-find)
+# IDEA: ratio[x] = x / parent[x]. Path compression MULTIPLIES the ratios it collapses,
+#       so after find(x) the stored ratio is x / root directly.
+# time = O((E + Q) * alpha(N)), space = O(N)
+class WeightedUnionFind(object):
+    def __init__(self):
+        self.parent = {}
+        self.ratio = {}          # ratio[x] = x / parent[x]
+
+    def find(self, x):
+        if x not in self.parent:
+            self.parent[x] = x
+            self.ratio[x] = 1.0
+        if self.parent[x] != x:
+            original = self.parent[x]
+            self.parent[x] = self.find(original)
+            ### NOTE !!! multiply on the way back up -- this is what makes ratio[x] = x / root
+            self.ratio[x] *= self.ratio[original]
+        return self.parent[x]
+
+    def union(self, x, y, value):        # x / y == value
+        rx, ry = self.find(x), self.find(y)
+        if rx != ry:
+            self.parent[rx] = ry
+            self.ratio[rx] = value * self.ratio[y] / self.ratio[x]
+
+    def query(self, x, y):
+        if x not in self.parent or y not in self.parent:
+            return -1.0                  # an unseen variable is unanswerable
+        if self.find(x) != self.find(y):
+            return -1.0                  # different components -> no path
+        return self.ratio[x] / self.ratio[y]
+
+
+class Solution(object):
+    def calcEquation(self, equations, values, queries):
+        uf = WeightedUnionFind()
+        for (a, b), v in zip(equations, values):
+            uf.union(a, b, v)
+        return [uf.query(c, d) for c, d in queries]
 ```
 
 ### 14) Path With Minimum Effort — LC 1631 — sorted-edge (Kruskal-style)
@@ -1217,6 +1361,42 @@ private void union(Map<String, String> parent, String x, String y) {
     parent.put(find(parent, x), find(parent, y));
 }
 ```
+```python
+# python
+# LC 721 - Accounts Merge
+# IDEA: union every email in an account to the account's FIRST email, then group by root.
+#       The name is looked up from any email in the group.
+# time = O(N*M*alpha + N*M log(N*M)) for the sort, space = O(N*M)
+class Solution(object):
+    def accountsMerge(self, accounts):
+        parent = {}
+        email_to_name = {}
+
+        def find(x):
+            parent.setdefault(x, x)
+            while parent[x] != x:
+                parent[x] = parent[parent[x]]
+                x = parent[x]
+            return x
+
+        def union(a, b):
+            parent[find(a)] = find(b)
+
+        for acc in accounts:
+            name, emails = acc[0], acc[1:]
+            for e in emails:
+                parent.setdefault(e, e)
+                email_to_name[e] = name
+                ### NOTE !!! union to the FIRST email, which links the whole account in one pass
+                union(emails[0], e)
+
+        groups = {}
+        for e in parent:
+            groups.setdefault(find(e), []).append(e)
+
+        return [[email_to_name[root]] + sorted(mails)
+                for root, mails in groups.items()]
+```
 
 > **Variation — LC 839 Similar String Groups**: same "union then group by root" shape, but the edges are *not given*. All strings are anagrams, so run the O(N² · L) pairwise check — `union(i, j)` iff `s[i] == s[j]` or they differ at **exactly 2** positions — then the answer is the component count.
 
@@ -1248,6 +1428,39 @@ public String smallestStringWithSwaps(String s, List<List<Integer>> pairs) {
 private int find(int[] p, int x) { return p[x]==x ? x : (p[x]=find(p,p[x])); }
 private void union(int[] p, int x, int y) { p[find(p,x)] = find(p,y); }
 ```
+```python
+# python
+# LC 1202 - Smallest String with Swaps
+# IDEA: any two indices in the same component can be swapped freely, so the characters of a
+#       component can be permuted arbitrarily -- sort them and write them back in index order
+# time = O(N log N), space = O(N)
+class Solution(object):
+    def smallestStringWithSwaps(self, s, pairs):
+        n = len(s)
+        parent = list(range(n))
+
+        def find(x):
+            while parent[x] != x:
+                parent[x] = parent[parent[x]]
+                x = parent[x]
+            return x
+
+        for a, b in pairs:
+            parent[find(a)] = find(b)
+
+        groups = {}
+        for i in range(n):
+            groups.setdefault(find(i), []).append(i)
+
+        res = list(s)
+        for idxs in groups.values():
+            ### NOTE !!! idxs is already ascending; sorting the CHARS and zipping them back
+            ###          in that order is what yields the lexicographically smallest result
+            chars = sorted(res[i] for i in idxs)
+            for i, ch in zip(idxs, chars):
+                res[i] = ch
+        return ''.join(res)
+```
 
 ### 18) Most Stones Removed with Same Row or Column — LC 947
 
@@ -1271,6 +1484,31 @@ public int removeStones(int[][] stones) {
 }
 private int find(int[] p, int x) { return p[x]==x ? x : (p[x]=find(p,p[x])); }
 private void union(int[] p, int x, int y) { p[find(p,x)] = find(p,y); }
+```
+```python
+# python
+# LC 947 - Most Stones Removed with Same Row or Column
+# IDEA: stones sharing a row or column are one component; a component of size k can be
+#       reduced to a single stone, so the answer is n - (number of components)
+# time = O(N^2 * alpha(N)), space = O(N)
+class Solution(object):
+    def removeStones(self, stones):
+        n = len(stones)
+        parent = list(range(n))
+
+        def find(x):
+            while parent[x] != x:
+                parent[x] = parent[parent[x]]
+                x = parent[x]
+            return x
+
+        for i in range(n):
+            for j in range(i + 1, n):
+                if stones[i][0] == stones[j][0] or stones[i][1] == stones[j][1]:
+                    parent[find(i)] = find(j)
+
+        ### NOTE !!! count ROOTS, not unions -- a component of any size contributes exactly 1
+        return n - len({find(i) for i in range(n)})
 ```
 
 > **Variation — LC 765 Couples Holding Hands**: union by **couple id** instead of person id — for each seat pair `(2i, 2i+1)` do `union(row[2i]/2, row[2i+1]/2)`. Answer = `n_couples − components` (a component of size `k` needs `k−1` swaps). Same "components → answer" arithmetic as LC 947.
@@ -1311,4 +1549,38 @@ public TreeNode subtreeWithAllDeepest(TreeNode root) {
     }
     return set.iterator().next();
 }
+```
+```python
+# python
+# LC 865 - Smallest Subtree with all the Deepest Nodes  (same problem as LC 1123)
+# IDEA: BFS to the deepest level while recording each node's parent, then walk every
+#       deepest node upward in lockstep until the set collapses to one node -- the LCA
+# time = O(N), space = O(N)
+from collections import deque
+
+class Solution(object):
+    def subtreeWithAllDeepest(self, root):
+        if not root:
+            return None
+        parent = {root: None}
+        q = deque([root])
+        level = [root]
+
+        while q:
+            level = []
+            for _ in range(len(q)):
+                cur = q.popleft()
+                level.append(cur)
+                for child in (cur.left, cur.right):
+                    if child:
+                        parent[child] = cur
+                        q.append(child)
+        # `level` now holds the LAST level visited = the deepest nodes
+
+        ### NOTE !!! climbing in LOCKSTEP is what makes this correct -- all nodes are at the
+        ###          same depth, so they reach their common ancestor on the same step
+        nodes = set(level)
+        while len(nodes) > 1:
+            nodes = {parent[n] for n in nodes}
+        return nodes.pop()
 ```
