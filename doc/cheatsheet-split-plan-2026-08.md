@@ -195,17 +195,36 @@ Two contract items were added by defects these passes hit, and hold for any futu
 
 `greedy.md`, `union_find.md`, `set.md`, `bit_manipulation.md`, `monotonic_stack.md`, `intervals.md`, `binary_indexed_tree.md`, `segment_tree.md`, `scanning_line.md`, `sort.md`, `trie.md`, `math.md`. High tail share, but small enough that Rule 2 alone fixes them.
 
+Re-measured at the end of Tier 2 — **12 sheets, 18,012 lines, none over 1,882**. Two things changed from what this plan assumed:
+
+| file | lines | example tail | dup LC |
+|---|---:|---:|---:|
+| `union_find` | 1,882 | 61% | **18** |
+| `math` | 1,804 | 12% | 3 |
+| `scanning_line` | 1,797 | 39% | **15** |
+| `trie` | 1,792 | 67% | 8 |
+| `sort` | 1,781 | 28% | 6 |
+| `greedy` | 1,660 | **83%** | 7 |
+| `monotonic_stack` | 1,500 | 55% | 11 |
+| `set` | 1,381 | 79% | 1 |
+| `segment_tree` | 1,317 | 53% | 11 |
+| `bit_manipulation` | 1,289 | **88%** | 2 |
+| `intervals` | 1,023 | 39% | 10 |
+| `binary_indexed_tree` | 786 | **93%** | 5 |
+
+- **The duplication hot spots are `union_find` (18 distinct LC numbers in more than one `###` heading) and `scanning_line` (15)** — both worse than `prefix_sum`'s 14, which was the worst measured before this pass. `monotonic_stack` at 11 is not the leader this plan expected.
+- **`greedy`, `bit_manipulation` and `binary_indexed_tree` are 83–93% example tail.** At those shares "dedup only" is the wrong instruction: what is left after Rule 2 is a sheet that is almost entirely worked solutions, so they want the same parent/satellite split the earlier tiers used, not a trim.
+
 ### No action
 
 The ~30 sheets under ~1,200 lines that are already right: `knapsack.md`, `kadane_algorithm.md`, `palindrome.md`, `hashing.md`, `dp_string.md`, `dp_digit.md`, `dp_bitmask.md`, `dp_monotonic_stack.md`, `monotonic_queue.md`, `iterator.md`, `n_sum.md`, `add_x_sum.md`, `difference_array.md`, `complexity_*`, `Bellman-Ford.md`, `Floyd-Warshall.md`, `shortest_path_comparison.md`, `string_matching_kmp_rolling_hash.md`, `python_gotchas.md`, `ood_design.md`, `concurrency_patterns.md`, `diff_toposort_quickunion.md`, `array_overlap_explaination.md`, `recursion.md`, `recursion_to_dp.md`, `advanced_*`, `streaming_algorithms.md`, `knapsack_01_zh.md`, `tree_backtrack.md`.
 
 ### Carried forward from Tier 2
 
-- **Cross-file consolidation — the phase every tier feeds and none finishes.** The first named item is now measured: **`tree.md` and `tree2.md` both hold traversal templates**, and on normalised code `tree.md`'s Level-Order template and `tree2.md`'s `1.4)` are identical statement for statement, LC 987 shares 70%, and preorder / inorder / postorder share 48–59% each. Resolving it means deciding which of the two sheets owns traversal templates at all. Other hard numbers: LC 449 byte-identical between `bst_examples` and `dfs_examples`; LC 701 duplicated in both languages; LC 98 in five files; LC 49 in four; `stack_examples` holds 10 of the 12 problems `monotonic_stack.md` owns; ~350–400 lines recoverable in the graph family alone.
+- **Cross-file consolidation — the phase every tier feeds and none finishes.** The first named item is now measured: **`tree.md` and `tree2.md` both hold traversal templates**, and on normalised code `tree.md`'s Level-Order template and `tree2.md`'s `1.4)` are identical statement for statement, LC 987 shares 70%, and preorder / inorder / postorder share 48–59% each. Resolving it means deciding which of the two sheets owns traversal templates at all. Other hard numbers, re-measured at the end of Tier 2: one LC 449 code block is byte-identical between `bst_examples` and `dfs_examples`; LC 701 is duplicated in both languages; LC 98 is named in 9 sheets and LC 49 in 9; `monotonic_stack.md` and `stack_examples.md` share 16 LC numbers. The LC-name counts include index and table mentions, so they bound the work rather than measure it — each pair needs the same before/after check the Tier 2 batches used.
 - **`array.md`'s `1-1-5) Sort Array` and `1-1-6) Flatten Array`** — 270 lines of language-level array operations that may belong with `sort.md`. Left in place deliberately; it is a cross-file call.
 - **`2_pointers_quickselect.md` vs `advanced_divide_and_conquer.md`** — the latter owns QuickSelect in more depth; the satellite is registered but should probably be folded in.
 - **~25 pre-existing correctness bugs** from the PR #114 review, verified as untouched by Tier 1: un-seeded BFS queues, undefined identifiers, missing null guards, Hoare's return value used as a pivot index.
-- **One inconsistency Tier 2 introduced**: `stack.md`'s surviving `Common Mistakes #5` recommends the LC 394 typed-stack form whose code block was deleted as a duplicate.
 - **The site slugify fix** — one line in `site/build-lib.js`. It collapses every run of non-alphanumerics to a single `-`, so ` — ` becomes `-` where GitHub gives `--`; ~93 anchors resolve on GitHub and 404 on the published page.
 - **52 broken anchors elsewhere in `doc/cheatsheet`**, found by a repo-wide sweep under GitHub's rule at the end of Tier 2. None is in a file Tier 2 touched. Most look like the trailing-`-` star-run case above.
 
