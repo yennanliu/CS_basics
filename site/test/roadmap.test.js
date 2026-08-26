@@ -240,9 +240,9 @@ test('writeSolved round-trips through readSolved as string keys', () => {
  * fetch. This is what catches an id in the markup drifting away from the id
  * roadmap.js looks up.
  */
-function renderPage(roadmap) {
+function renderPage(roadmap, url) {
   const html = fs.readFileSync(PAGE, 'utf8');
-  const dom = new JSDOM(html, { url: 'https://example.test/lc-roadmap.html' });
+  const dom = new JSDOM(html, { url: url || 'https://example.test/lc-roadmap.html' });
   for (const key of ['window', 'document', 'localStorage', 'CustomEvent', 'Event', 'navigator', 'self', 'history', 'location']) {
     global[key] = key === 'self' ? dom.window : dom.window[key];
   }
@@ -277,6 +277,44 @@ test('clicking a topic opens the drawer with that topic loaded', () => {
   assert.equal(doc.getElementById('drawerTitle').textContent, 'A');
   assert.equal(doc.getElementById('drawerBody').querySelectorAll('.prob').length, 2);
   assert.equal(global.location.hash, '#a', 'the open topic is shareable via the URL');
+});
+
+// Closing parks the drawer off-screen under aria-hidden. Leaving focus on the
+// close button would strand a keyboard user on an invisible control.
+test('closing the drawer hands focus back to the topic that opened it', () => {
+  const doc = renderPage();
+  const box = doc.querySelector('.node[data-id="a"]');
+  click(box);
+  assert.equal(doc.activeElement, doc.getElementById('drawerClose'));
+
+  click(doc.getElementById('overlay'));
+  assert.equal(doc.activeElement, box);
+});
+
+test('hopping between prereqs returns focus to the topic you started from', () => {
+  const doc = renderPage();
+  const box = doc.querySelector('.node[data-id="d"]');
+  click(box);
+  // The chip that moves us to B is discarded by the re-render, so remembering
+  // the most recent opener instead of the first would strand focus on <body>.
+  click(doc.getElementById('drawerBody').querySelector('[data-open="b"]'));
+  click(doc.getElementById('drawerClose'));
+  assert.equal(doc.activeElement, box);
+});
+
+// `state` outlives a render. A second render that inherited the previous
+// document's open topic silently kept a focus target pointing at a dead node.
+test('a fresh render starts with the drawer shut', () => {
+  const first = renderPage();
+  click(first.querySelector('.node[data-id="a"]'));
+  assert.ok(first.getElementById('drawer').classList.contains('open'));
+
+  const second = renderPage();
+  assert.ok(!second.getElementById('drawer').classList.contains('open'));
+  const box = second.querySelector('.node[data-id="b"]');
+  click(box);
+  click(second.getElementById('drawerClose'));
+  assert.equal(second.activeElement, box, 'focus returns inside the current document');
 });
 
 test('the overlay closes the drawer and clears the hash', () => {
@@ -373,25 +411,44 @@ test('a prereq chip in the drawer navigates to that prereq', () => {
 
 test('reset clears every tick and the stored value', () => {
   const doc = renderPage();
-  global.window.confirm = () => true;
+  // roadmap.js calls the bare `confirm`, which resolves against the Node
+  // global here — not `window`. Stubbing the wrong one leaves the guard
+  // short-circuited and this test silently skips the dialog branch.
+  let asked = 0;
+  global.confirm = () => { asked++; return true; };
   click(doc.querySelector('.node[data-id="a"]'));
   click(doc.getElementById('drawerBody').querySelector('[data-bulk="all"]'));
   assert.equal(doc.getElementById('statProblems').textContent, '2 / 4');
 
   click(doc.getElementById('resetBtn'));
+  assert.equal(asked, 1, 'reset must ask before wiping progress');
   assert.equal(doc.getElementById('statProblems').textContent, '0 / 4');
   assert.deepEqual(Object.keys(CSRoadmap.readSolved()), []);
 });
 
+test('declining the confirm leaves progress untouched', () => {
+  const doc = renderPage();
+  global.confirm = () => false;
+  click(doc.querySelector('.node[data-id="a"]'));
+  click(doc.getElementById('drawerBody').querySelector('[data-bulk="all"]'));
+
+  click(doc.getElementById('resetBtn'));
+  assert.equal(doc.getElementById('statProblems').textContent, '2 / 4');
+  assert.deepEqual(Object.keys(CSRoadmap.readSolved()).sort(), ['1', '2']);
+});
+
+// Reset on an untouched board should not pop a dialog asking to clear nothing.
+test('reset does not ask when there is nothing to clear', () => {
+  const doc = renderPage();
+  let asked = 0;
+  global.confirm = () => { asked++; return true; };
+  click(doc.getElementById('resetBtn'));
+  assert.equal(asked, 0);
+});
+
 test('a topic named in the URL hash opens on load', () => {
-  const html = fs.readFileSync(PAGE, 'utf8');
-  const dom = new JSDOM(html, { url: 'https://example.test/lc-roadmap.html#c' });
-  for (const key of ['window', 'document', 'localStorage', 'CustomEvent', 'Event', 'navigator', 'self', 'history', 'location']) {
-    global[key] = key === 'self' ? dom.window : dom.window[key];
-  }
-  require('../nav.js').mount();
-  CSRoadmap.render(fixture());
-  assert.equal(dom.window.document.getElementById('drawerTitle').textContent, 'C');
+  const doc = renderPage(null, 'https://example.test/lc-roadmap.html#c');
+  assert.equal(doc.getElementById('drawerTitle').textContent, 'C');
 });
 
 // ── The page's markup contract ────────────────────────────────────────────
@@ -406,6 +463,21 @@ test('lc-roadmap.html carries every element roadmap.js looks up', () => {
                     'drawerBlurb', 'drawerBody']) {
     assert.ok(doc.getElementById(id), `#${id} is missing from lc-roadmap.html`);
   }
+});
+
+// validate-pages.yml runs its HTML-structure check over every entry in its
+// requiredFiles list, and that check demands a footer. This page is on the
+// list, so a missing footer fails CI rather than merely looking odd.
+test('lc-roadmap.html carries the site footer CI requires', () => {
+  const html = fs.readFileSync(PAGE, 'utf8');
+  assert.ok(html.includes('<footer>'), 'validate-pages.yml greps for a literal <footer>');
+  const doc = new JSDOM(html).window.document;
+  const links = [...doc.querySelectorAll('footer a')].map((a) => a.getAttribute('href'));
+  assert.deepEqual(links, [
+    'https://github.com/yennanliu/CS_basics',
+    'https://github.com/yennanliu/CS_basics/tree/master/doc',
+    'https://github.com/yennanliu/CS_basics/issues'
+  ]);
 });
 
 test('lc-roadmap.html loads roadmap.js and tells the navbar which page it is', () => {

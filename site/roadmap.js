@@ -22,7 +22,12 @@
   // tick it in the other.
   var STORE_KEY = 'cs:roadmap:solved';
 
-  var state = { roadmap: null, byId: {}, solved: Object.create(null), openId: null };
+  var state = {
+    roadmap: null, byId: {}, solved: Object.create(null),
+    openId: null,
+    // The element focus should go back to when the drawer closes.
+    returnFocus: null
+  };
 
   // ── Storage ─────────────────────────────────────────────────────────────
 
@@ -343,9 +348,20 @@
     }
   }
 
-  function openDrawer(id) {
+  /**
+   * Shows `node`'s problems, prerequisites and cheatsheets.
+   *
+   * `opener` is the control that asked for it, remembered so closing can hand
+   * focus back. It is passed in rather than read off `document.activeElement`
+   * because a click does not reliably leave focus on the thing clicked. Only
+   * the first open records it: hopping prereq → prereq inside the drawer should
+   * still return you to the box you started from, not to a chip the next render
+   * has already thrown away.
+   */
+  function openDrawer(id, opener) {
     var node = state.byId[id];
     if (!node) return;
+    if (!state.openId) state.returnFocus = opener || null;
     state.openId = id;
     $('drawerTitle').textContent = node.title;
     $('drawerBlurb').textContent = node.blurb || '';
@@ -364,6 +380,12 @@
     $('drawer').setAttribute('aria-hidden', 'true');
     $('overlay').classList.remove('open');
     setHash(null);
+    // The close button we were sitting on is now inside an aria-hidden panel
+    // parked off-screen. Without this a keyboard or screen-reader user is left
+    // focused on nothing and has to tab in from the top of the document.
+    var opener = state.returnFocus;
+    state.returnFocus = null;
+    if (opener && opener.isConnected && typeof opener.focus === 'function') opener.focus();
   }
 
   // replaceState rather than assigning location.hash: the drawer is not a
@@ -384,7 +406,7 @@
   function wire() {
     $('graph').addEventListener('click', function (event) {
       var el = event.target.closest('.node');
-      if (el) openDrawer(el.getAttribute('data-id'));
+      if (el) openDrawer(el.getAttribute('data-id'), el);
     });
 
     // Twenty-nine boxes make for a lot of crossing lines. Hovering a topic
@@ -425,7 +447,7 @@
 
     $('nextUp').addEventListener('click', function (event) {
       var jump = event.target.closest('[data-open]');
-      if (jump) openDrawer(jump.getAttribute('data-open'));
+      if (jump) openDrawer(jump.getAttribute('data-open'), jump);
     });
 
     $('resetBtn').addEventListener('click', function () {
@@ -446,6 +468,11 @@
     state.roadmap = roadmap;
     state.byId = indexNodes(roadmap.nodes);
     state.solved = readSolved();
+    // A browser renders once per page load, but `state` outlives a re-render.
+    // Carrying an open topic — or a focus target belonging to the previous
+    // document — over into a fresh render leaves both pointing at dead nodes.
+    state.openId = null;
+    state.returnFocus = null;
 
     if (roadmap.meta && roadmap.meta.title) {
       $('pageTitle').textContent = roadmap.meta.title;

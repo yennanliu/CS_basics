@@ -350,7 +350,10 @@ function main() {
   fs.mkdirSync('_site/data', { recursive: true });
   fs.writeFileSync('_site/data/roadmap.json', JSON.stringify(built));
   console.log(
-    `✓ Created data/roadmap.json (${built.stats.topics} topics over ${built.stats.rows} rows, ` +
+    // Fully qualified on purpose: `data/roadmap.json` is the hand-authored
+    // input, so logging that path for the output reads as "your source file
+    // was overwritten".
+    `✓ Created _site/data/roadmap.json (${built.stats.topics} topics over ${built.stats.rows} rows, ` +
     `${built.stats.problems} distinct problems in ${built.stats.problemSlots} slots)`
   );
 }

@@ -197,6 +197,17 @@
     [data-theme="dark"] .diff-badge.Medium { background: #92400e; }
     [data-theme="dark"] .diff-badge.Hard   { background: #991b1b; }
 
+    /* Mirrors the generated pages' footer (site/style.css), which this page
+       cannot reuse — the hand-maintained tools carry their own tokens. */
+    footer {
+      background: var(--surface); border-top: 1px solid var(--border);
+      padding: 1.5rem 0; text-align: center; color: var(--text-light);
+    }
+    footer p { margin: 0.25rem 0; font-size: 0.85rem; }
+    footer a { color: var(--text-light); margin: 0 0.5rem; text-decoration: none; }
+    footer a:hover { color: var(--text); }
+    footer .container { margin: 0 auto; }
+
     .loading { color: var(--text-light); text-align: center; padding: 2rem 0; }
     .note {
       color: var(--text-light); font-size: 0.78rem;
@@ -249,6 +260,17 @@
       Union Find) is one tick, counted once.
     </p>
   </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics — computer science fundamentals &amp; interview preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">github</a> |
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+        <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
+      </p>
+    </div>
+  </footer>
 
   <div class="overlay" id="overlay"></div>
   <aside class="drawer" id="drawer" role="dialog" aria-hidden="true" aria-labelledby="drawerTitle">
