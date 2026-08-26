@@ -56,7 +56,84 @@ tasks[i] is an uppercase English letter.
 """
 
 
+"""
+NOTE !!!
+
+in this LC, we DON'T need to `pop 1st` and `pop 1st, 2nd` like algorithm,
+    -> just a simple `cool down queue + big PQ`
+
+
+
+    -> e.g. this LC is DIFFERENT from LC 767
+    - https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Greedy/reorganize-string.py
+
+
+"""
+
+
 # V0
+# IDEA: BIG PQ + QUEUE + counter (map)
+# time = O(n)   # n = len(tasks); heap/queue bounded by 26-letter alphabet
+# space = O(1)
+from collections import Counter, deque
+import heapq
+
+
+class Solution(object):
+    def leastInterval(self, tasks, n):
+        """
+        :type tasks: List[str]
+        :type n: int
+        :rtype: int
+        """
+
+        # Count frequency of each task
+        count = Counter(tasks)
+
+        # Python heapq is a MIN heap.
+        # Use negative count to simulate MAX heap.
+        pq = [-freq for freq in count.values()]
+        heapq.heapify(pq)
+
+        # (ready_time, remaining_count)
+        cooldown = deque()
+
+        time = 0
+
+        while pq or cooldown:
+
+            time += 1
+
+            # ------------------------------------------------
+            # 1. Move tasks whose cooldown has finished
+            #    back to the heap
+            # ------------------------------------------------
+            while cooldown and cooldown[0][0] <= time:
+                ready_time, neg_count = cooldown.popleft()
+                heapq.heappush(pq, neg_count)
+
+            # ------------------------------------------------
+            # 2. Execute the task with the highest frequency
+            # ------------------------------------------------
+            if pq:
+                neg_count = heapq.heappop(pq)
+
+                # Execute once
+                neg_count += 1
+
+                # Still has remaining executions
+                if neg_count < 0:
+                    cooldown.append((time + n + 1, neg_count))
+
+            # ------------------------------------------------
+            # 3. Otherwise, this time slot is idle
+            # ------------------------------------------------
+
+        return time
+
+
+
+# V0-0-1
 # IDEA: BIG PQ + QUEUE + counter (map)
 # time = O(n)   # n = len(tasks); heap/queue bounded by 26-letter alphabet
 # space = O(1)
