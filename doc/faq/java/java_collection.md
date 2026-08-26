@@ -5,7 +5,7 @@
 
 ## 1) The Collection Hierarchy
 
-```
+```text
 Iterable
  └─ Collection
      ├─ List      → ordered, indexed, allows duplicates
@@ -54,7 +54,7 @@ choice; use `ArrayDeque` for stack/queue needs instead.
 Backed by an **array of buckets** (`Node[] table`). Each bucket holds entries
 whose keys hash to that index.
 
-```
+```text
 index = (n - 1) & hash(key)     // n = table length (always a power of 2)
 ```
 

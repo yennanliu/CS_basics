@@ -66,7 +66,7 @@ while pq and -pq[0][0] != c_map[pq[0][1]]:      # 3. pop stale tops until top is
 > We leave **ALL other stale entries in the heap untouched** — they may never be popped at all.
 > Cleaning is *lazy*: pay the cost only for the entries that actually block the answer.
 >
-> ```
+> ```text
 > pq (max-heap by count):  [5:A]  [4:B]  [3:A]  [2:C]  [1:B]  ...
 >                            ^stale (A is really 3 now)
 >                            |

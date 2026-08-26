@@ -372,7 +372,7 @@ These classic contests are highly recommended for **virtual practice** — probl
 ## How to Use Classic Contests for Practice
 
 ### Virtual Contest Strategy
-```
+```text
 1. Go to: leetcode.com/contest/weekly-contest-XXX
 2. Click "Virtual Contest"
 3. Treat it as a real contest (90 min timer, no hints)

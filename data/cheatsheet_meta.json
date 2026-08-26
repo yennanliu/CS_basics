@@ -88,6 +88,7 @@
     "stack_expression_parsing":         { "category": "Hashing, Stacks & Queues", "tier": 4 },
     "hashing":                          { "category": "Hashing, Stacks & Queues", "tier": 3 },
     "set":                              { "category": "Hashing, Stacks & Queues", "tier": 3 },
+    "set_examples":                     { "category": "Hashing, Stacks & Queues", "tier": 3, "title": "Set — Worked Examples" },
     "monotonic_queue":                  { "category": "Hashing, Stacks & Queues", "tier": 3 },
 
     "linked_list":                      { "category": "Linked Lists", "tier": 5 },
@@ -101,6 +102,7 @@
     "tree_lca_distance":                { "category": "Trees & Heaps", "tier": 5 },
     "tree2":                            { "category": "Trees & Heaps", "tier": 4, "title": "Tree Pattern Templates" },
     "trie":                             { "category": "Trees & Heaps", "tier": 4 },
+    "trie_examples":                    { "category": "Trees & Heaps", "tier": 3, "title": "Trie — Worked Examples" },
     "tree_codec":                       { "category": "Trees & Heaps", "tier": 4 },
     "tree_construction":                { "category": "Trees & Heaps", "tier": 4 },
     "heap_examples":                    { "category": "Trees & Heaps", "tier": 4 },
@@ -124,6 +126,7 @@
     "topology_sorting":                 { "category": "Graphs", "tier": 4, "title": "Topological Sort" },
     "topology_sorting_examples":        { "category": "Graphs", "tier": 4, "title": "Topological Sorting — Worked Examples" },
     "union_find":                       { "category": "Graphs", "tier": 4, "title": "Union Find (Disjoint Set)" },
+    "union_find_examples":              { "category": "Graphs", "tier": 3, "title": "Union Find — Worked Examples" },
     "Dijkstra":                         { "category": "Graphs", "tier": 4 },
     "Dijkstra_examples":                { "category": "Graphs", "tier": 4, "title": "Dijkstra — Worked Examples" },
     "shortest_path_comparison":         { "category": "Graphs", "tier": 3, "title": "Shortest Path — Which Algorithm?" },
@@ -157,8 +160,10 @@
     "dp_digit":                         { "category": "Dynamic Programming & Recursion", "tier": 2, "title": "Digit DP" },
 
     "greedy":                           { "category": "Greedy & Intervals", "tier": 4, "title": "Greedy Algorithms" },
+    "greedy_examples":                  { "category": "Greedy & Intervals", "tier": 3, "title": "Greedy — Worked Examples" },
     "intervals":                        { "category": "Greedy & Intervals", "tier": 4 },
     "scanning_line":                    { "category": "Greedy & Intervals", "tier": 3, "title": "Sweep Line" },
+    "scanning_line_examples":           { "category": "Greedy & Intervals", "tier": 3, "title": "Sweep Line — Worked Examples" },
     "array_overlap_explaination":       { "category": "Greedy & Intervals", "tier": 2, "title": "Interval Overlap Predicate" },
 
     "segment_tree":                     { "category": "Range Queries & Advanced Structures", "tier": 3, "title": "Segment Tree" },
@@ -167,6 +172,7 @@
 
     "math":                             { "category": "Math & Bits", "tier": 3 },
     "bit_manipulation":                 { "category": "Math & Bits", "tier": 3 },
+    "bit_manipulation_examples":        { "category": "Math & Bits", "tier": 3, "title": "Bit Manipulation — Worked Examples" },
     "combinatorics_math_patterns":      { "category": "Math & Bits", "tier": 2, "title": "Combinatorics & Number Theory" },
 
     "design":                           { "category": "Design & Simulation", "tier": 4, "title": "Design (LC \"Design a X\")" },
@@ -188,7 +194,7 @@
     "lc_pattern":                       { "category": "Interview Meta", "tier": 5, "title": "LeetCode Pattern Guide" },
     "complexity_cheatsheet":            { "category": "Interview Meta", "tier": 5, "title": "Complexity Cheat Sheet" },
     "time_space_complexity":            { "category": "Interview Meta", "tier": 4, "title": "Time & Space Complexity" },
-    "code_interview_general_cheatsheet":{ "category": "Interview Meta", "tier": 4, "title": "Coding Interview Process" },
+    "code_interview_general_cheatsheet":{ "category": "Interview Meta", "tier": 2, "kind": "stub", "title": "Coding Interview Process" },
     "complexity_drills":                { "category": "Interview Meta", "tier": 3, "title": "Complexity Drills" },
     "lc_category":                      { "category": "Interview Meta", "tier": 2, "kind": "stub", "title": "LC Category Index (wisdompeak)" }
   }

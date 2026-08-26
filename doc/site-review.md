@@ -34,7 +34,7 @@ The homepage is `README.md` (371 KB of markdown) rendered wholesale into one HTM
 that is a multi-second parse before anything is interactive, and the reading-progress bar becomes
 meaningless. Several cheatsheets are 100–250 KB of markdown each and land in the same bucket:
 
-```
+```text
 243179  doc/cheatsheet/dp.md
 194805  doc/cheatsheet/tree.md
 194022  doc/cheatsheet/lc_category.md

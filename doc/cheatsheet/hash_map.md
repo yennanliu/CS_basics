@@ -72,7 +72,7 @@ Hash Map (Hash Table/Dictionary) is a fundamental data structure that provides e
 ### Basic Operations
 
 - `get` : get value from dict with default value if key not existed
-```python
+```text
 In [10]: d = {'a': 1, 'b': 2}
     ...: d['a']
 Out[10]: 1
@@ -164,7 +164,7 @@ class Solution(object):
         return res
 ```
 
-```python
+```text
 # dict values -> array
 In [6]:
    ...: mydict = {'a':['a1','a2','a3'], 'b':['b1','b2','b3']}
@@ -996,7 +996,7 @@ if count[key] == 0:
 
 # 5. Use enumerate when you need both index and value
 for i, val in enumerate(arr):
-    # Use both i and val
+    ...        # use both i and val
 ```
 
 #### Java Best Practices

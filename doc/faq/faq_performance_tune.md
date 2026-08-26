@@ -21,7 +21,7 @@ Only after you have (1) a reproducible workload, (2) a metric, and (3) a baselin
 
 A repeatable loop:
 
-```
+```text
 1. Reproduce   → capture a realistic, repeatable workload
 2. Measure     → get a baseline (latency, throughput, CPU, memory)
 3. Locate      → profile to find the hot spot
@@ -92,7 +92,7 @@ and data is reused.
 - **Invalidation**: the hard part. Options: TTL expiry, write-through,
   write-behind, explicit invalidation on write.
 - **Cache-aside pattern** (most common):
-  ```
+  ```text
   read: check cache → miss → read DB → populate cache → return
   write: write DB → invalidate/update cache
   ```

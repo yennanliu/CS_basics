@@ -33,7 +33,7 @@ things by what they do.
 - https://www.runoob.com/w3cnote/python-understanding-dict-copy-shallow-or-deep.html
 - https://iter01.com/578999.html
 - Type of copy : deep copy, shallow copy, reference copy
-```python
+```text
 # LC 138
 
 #-------------------------------------------------
@@ -594,7 +594,7 @@ for i in range(len(x) - 1, 0, -1):   # compares x[i] vs x[i-1]; never i-1 = -1
 
 ### `sort` with a `lambda` key
 
-```python
+```text
 # example 1
 # LC 973. K Closest Points to Origin
 # IDEA : sort + lambda
@@ -614,7 +614,7 @@ In [28]: def my_func(x):
 [0, 1, 2, -4, -5, 5]
 ```
 
-```python
+```text
 # LC 937
 # https://leetcode.com/problems/reorder-data-in-log-files/solution/
 def my_func(input):
@@ -1067,7 +1067,7 @@ abs(3+4j)  # 5.0  (complex magnitude)
 
 ### Quotient and remainder together — `divmod`
 
-```python
+```text
 In [1]: x,y = divmod(100, 3)
 
 In [2]: x
@@ -1079,7 +1079,7 @@ Out[3]: 1
 
 ### Remainder when divided by a number
 
-```python
+```text
 #-----------------
 # V1 : %=
 #-----------------
@@ -1144,7 +1144,7 @@ class Solution(object):
 
 ### `math.ceil`
 
-```python
+```text
 # https://www.runoob.com/python/func-number-ceil.html
 # https://www.runoob.com/python/func-number-ceil.html
 
@@ -1181,7 +1181,7 @@ else:
 
 ### `math.floor`
 
-```python
+```text
 # https://www.geeksforgeeks.org/floor-ceil-function-python/
 
 """
@@ -1420,7 +1420,7 @@ print(idx_map)  # {'a': 4, 'b': 3, 'c': 2}  (last occurrence)
 
 ### `zip()`
 
-```python
+```text
 # python
 In [1]: for x, y in zip([-1, 1, 0, 0], [0, 0, -1, 1]):
    ...:     print (x, y)
@@ -1466,7 +1466,7 @@ for v in d.values():
 
 ### Starred (`*`) expressions
 
-```python
+```text
 # Extended Iterable Unpacking
 
 # https://www.python.org/dev/peps/pep-3132/
@@ -1514,7 +1514,7 @@ print (range(*args))
 
 ### `filter()`
 
-```python
+```text
 # https://www.runoob.com/python/python-func-filter.html
 
 #-----------------------------------------------
@@ -1558,7 +1558,7 @@ Out[16]: [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
 
 ### List comprehensions
 
-```python
+```text
 #----------------------------
 # example 1
 #----------------------------
@@ -1677,7 +1677,7 @@ fs = frozenset([1, 2, 3])
 
 ### Testing "either element exists" with `or`
 
-```python
+```text
 In [8]: def test(l1, l2):
    ...:     if l1 or l2:
    ...:         return l1 or l2
@@ -1878,7 +1878,7 @@ h, s, p = info              # tuple unpacking also works
 > **Rule of thumb:** if you *mutate* a shared container (`append`/`add`), you must undo it (`pop`/`remove`). If you create a *new* object each call (string concat, `tmp + [x]`, tuple), the copy IS the backtrack — there's nothing to undo. See also [0-2) assignment vs shallow/deep copy](#assignment-vs-shallow-copy-vs-deep-copy).
 ### `eval()`
 
-```python
+```text
 # https://www.runoob.com/python/python-func-eval.html
 # https://www.programiz.com/python-programming/methods/built-in/eval
 # The eval() method parses the expression passed to this method and runs python expression (code) within the program.
@@ -2045,7 +2045,7 @@ class Solution(object):
 ### Worked pair — LC 445 Add Two Numbers II and LC 394 Decode String
 
 - String -> Int
-```python
+```text
 # 445 Add Two Numbers II
 # 394 Decode String
 def str_2_int(x):

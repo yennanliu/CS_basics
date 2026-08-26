@@ -970,7 +970,7 @@ return dist
 
 ### Core Algorithm Structure
 
-```python
+```text
 # Standard Bellman-Ford Pattern
 dist[src] = 0
 for _ in range(V - 1):                    # V-1 iterations

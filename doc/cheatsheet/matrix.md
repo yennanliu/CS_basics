@@ -826,7 +826,7 @@ Matrix Problem Analysis Flowchart:
 top, bottom = 0, rows - 1
 left, right = 0, cols - 1
 while top <= bottom and left <= right:
-    # Process boundaries and update them
+    ...        # process boundaries, then move them inward
 ```
 
 #### **Direction Vectors**

@@ -209,7 +209,7 @@ def build_tree_post(inorder, postorder):
 
 > Reference: `leetcode_python/Tree/construct-binary-tree-from-string.py`
 >
-> ```
+> ```text
 > Input:  "4(2(3)(1))(6(5))"
 >
 >        4

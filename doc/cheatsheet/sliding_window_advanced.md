@@ -375,12 +375,12 @@ def exactly_k(nums, k):
 # Wrong: Using "exactly K" transformation for max length
 def longest_k_distinct(s, k):
     # This gives COUNT, not LENGTH!
-    return at_most_k(s, k) - at_most_k(s, k - 1)  ❌
+    return at_most_k(s, k) - at_most_k(s, k - 1)  # ❌
 
 # Right: Direct at_most_k for max length
 def longest_k_distinct(s, k):
     # Track max window size during at_most_k
-    return at_most_k_max_length(s, k)  ✓
+    return at_most_k_max_length(s, k)  # ✓
 ```
 
 **3. Confusing Count vs Length:**

@@ -57,7 +57,7 @@
 # so -> 01 XOR 100 =  101 -> 5 
 1 ^ 4 = 5 
 
-```
+```text
 
 
 ## Example 3
@@ -72,7 +72,7 @@ Output : 7
 Input : n = 7
 Output : 0
 // 1 ^ 2 ^ 3 ^ 4 ^ 5 ^ 6 ^ 7 = 0
-```
+```text
 ```python
 # Python 3 Program to find 
 # XOR of numbers from 1 to n. 
@@ -109,7 +109,7 @@ if __name__ == "__main__" :
         
 # This code is contributed by ANKITRAI1 
 
-```
+```text
 
 - https://www.geeksforgeeks.org/calculate-xor-1-n/
 
@@ -139,7 +139,7 @@ def main():
     print('Missing number is:' + str(find_missing_number(arr)))
 
 main()
-```
+```text
 
 
 

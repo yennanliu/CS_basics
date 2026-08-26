@@ -135,6 +135,7 @@ The canonical `choose → explore → un-choose` skeleton, ready to adapt:
 
 ```python
 # python
+# time = O(b^d * w), space = O(d)   b = branching factor, d = depth, w = work done at a leaf
 def backtrack(start_idx, path):
     if end_condition:            # e.g. len(path) == k, or start_idx == len(s)
         res.append(path[:])      # NOTE: copy the path, not the reference
@@ -150,6 +151,7 @@ backtrack(0, [])
 
 ```java
 // java
+// time = O(b^d * w), space = O(d)   b = branching factor, d = depth, w = work done at a leaf
 private void backtrack(int startIdx, List<Integer> path, int[] nums, List<List<Integer>> res) {
     if (endCondition) {                       // e.g. path.size() == k
         res.add(new ArrayList<>(path));       // NOTE: copy the path, not the reference
@@ -173,6 +175,7 @@ We do **not** skip every duplicate — only a duplicate appearing at the *same r
 Three spellings of the same rule (fragments, not runnable classes):
 
 ```java
+// time = O(2^n * n), space = O(n)   every subset, each copied out
 // LC 40
 // java
 // ...
@@ -193,6 +196,7 @@ if (i > startIdx && candidates[i] == candidates[i - 1]) {
 ```
 
 ```java
+// time = O(2^n * n), space = O(n)   every subset, each copied out
 // LC 90
 // java
 
@@ -214,6 +218,7 @@ for (int j = i; j < nums.length; j++) {
 
 ```java
 // java
+// time = O(n! * n), space = O(n)    every permutation, each copied out
 // LC 47
 // ...
 
@@ -246,6 +251,7 @@ next start index** — `i` (reuse the current element) or `i + 1` (move past it)
 > array / `contains` check instead of a `start_idx` (see [Problem Categories](#problem-categories)).
 
 ```java
+// time = O(n^(T/M + 1)), space = O(T/M)   T = target, M = smallest candidate
 // LC 39 Combination Sum — reuse allowed → pass i
 for (int i = start; i < candidates.length; i++) {
     backtrack(i, remain - candidates[i]);      // can pick candidates[i] again
@@ -266,6 +272,7 @@ The `// ...` lines are elided boilerplate, not code.
 
 ```java
 // java
+// time = O(2^n * n), space = O(n)   2^n subsets, O(n) to copy each
 // LC 78 - Subsets
 public List<List<Integer>> subsets(int[] nums) {
     // ...
@@ -317,6 +324,7 @@ public void getSubSet(int start_idx, int[] nums, List<Integer> cur, List<List<In
 
 ```python
 # python
+# time = O(2^n * n), space = O(n)   2^n subsets, O(n) to copy each
 # LC 78 - Subsets
 # IDEA : DFS
 class Solution(object):
@@ -340,6 +348,7 @@ class Solution(object):
 
 ```java
 // java
+// time = O(2^n * n), space = O(n)   the sort is O(n log n) and is dominated
 // LC 90
 private void backtrack(List<List<Integer>> list, List<Integer> tempList, int [] nums, int start){
     list.add(new ArrayList<>(tempList));
@@ -365,6 +374,7 @@ private void backtrack(List<List<Integer>> list, List<Integer> tempList, int [] 
 
 ```python
 # python
+# time = O(n! * n), space = O(n)     n! permutations, O(n) to copy each
 # LC 46 - Permutations
 # IDEA : BACKTRACK with a `visited` array (instead of `contains`)
 class Solution(object):
@@ -391,6 +401,7 @@ class Solution(object):
 
 ```java
 // java
+// time = O(n! * n), space = O(n)    n! permutations, O(n) to copy each
 // LC 46. Permutations
     List<List<Integer>> ans = new ArrayList<>();
 
@@ -448,6 +459,7 @@ alternative (sort + `i > 0 and a[i] == a[i-1] and not used[i-1]`) is the Java sn
 
 ```python
 # python
+# time = O(n! * n), space = O(n)     duplicates only prune, they do not change the bound
 # LC 47 - Permutations II
 # IDEA : BACKTRACK with a Counter (decrement on choose, increment back on un-choose)
 class Solution(object):
@@ -488,6 +500,7 @@ class Solution(object):
 
 ```python
 # python
+# time = O(C(n,k) * k), space = O(k) one copy per combination
 # LC 77. Combinations
 # IDEA : BACKTRACK
 class Solution(object):
@@ -521,6 +534,7 @@ LC 40 additionally needs the same-level duplicate skip.
 
 ```java
 // java
+// time = O(n^(T/M + 1)), space = O(T/M)   reuse allowed, so depth is bounded by T/M
 // https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/
 // LC 39 - Combination Sum
 public List<List<Integer>> combinationSum(int[] nums, int target) {
@@ -550,6 +564,7 @@ private void backtrack(List<List<Integer>> list, List<Integer> tempList, int [] 
 
 ```java
 // java
+// time = O(2^n * n), space = O(n)   each candidate used at most once
 // https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/
 // LC 40 - Combination Sum II
  public List<List<Integer>> combinationSum2(int[] nums, int target) {
@@ -578,6 +593,7 @@ private void backtrack(List<List<Integer>> list, List<Integer> tempList, int [] 
 
 ```python
 # python
+# time = O(2^n * n), space = O(n)    each candidate used at most once
 # LC 40 - Combination Sum II
 def combinationSum2(candidates, target):
     def backtrack(start, path, current_sum):
@@ -612,6 +628,7 @@ The partition shape: loop `end` from `start + 1` to `n`, gate on a validity pred
 
 ```java
 // java
+// time = O(2^n * n), space = O(n)   2^(n-1) cut positions, O(n) per palindrome check+copy
 // https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/
 // LC 131 - Palindrome Partitioning
 public List<List<String>> partition(String s) {
@@ -645,6 +662,7 @@ public boolean isPalindrome(String s, int low, int high){
 
 ```python
 # python
+# time = O(2^n * n), space = O(n)    2^(n-1) cut positions, O(n) per palindrome check+copy
 # LC 131 Palindrome Partitioning
 # IDEA : BACKTRCK, similar as LC 046 permutations
 class Solution(object):
@@ -673,6 +691,7 @@ count/max variants (LC 980, LC 1219) are in
 
 ```python
 # python
+# time = O(m * n * 4^L), space = O(L)   L = len(word); 4 directions, minus the one we came from
 # LC 079 Word Search
 # IDEA : DFS + backtracking
 class Solution(object):
@@ -738,6 +757,7 @@ Classic backtracking with O(n!) search space, pruned by column/diagonal tracking
 
 ```python
 # python
+# time = O(n!), space = O(n^2)       n choices, then n-1, ...; the board is the space
 # LC 51 - N-Queens
 def solveNQueens(n):
     result = []
@@ -770,6 +790,7 @@ Backtrack cell by cell; prune using row/col/box sets.
 
 ```python
 # python
+# time = O(9^m), space = O(1)        m = blank cells; the board is a fixed 81 slots
 # LC 37 - Sudoku Solver
 def solveSudoku(board):
     rows = [set() for _ in range(9)]
@@ -866,6 +887,7 @@ def backtrack_with_pruning(path, choices, target):
 
 ```python
 # python
+# time = O(n^(T/M + 1)), space = O(T/M)   sorting first is what makes the early break sound
 # LC 39 - Combination Sum (with sum + sorted-break pruning)
 def combinationSum(candidates, target):
     def backtrack(start, path, current_sum):
@@ -900,6 +922,7 @@ trying a second *empty* bucket (it only relabels the same partition).
 
 ```python
 # python
+# time = O(k * 2^n), space = O(2^n)  memoised on the used-mask; O(k^n) without it
 # LC 698 - Partition to K Equal Sum Subsets
 def canPartitionKSubsets(nums, k):
     total = sum(nums)
@@ -942,6 +965,7 @@ do not keep looping after a `true`:
 
 ```java
 // java
+// time = O(k * 2^n), space = O(2^n)  memoised on the used-mask; O(k^n) without it
 // LC  698
 
 // ...
@@ -956,6 +980,7 @@ if (backtrack_(nums, j + 1, k, subsetSum + nums[j], used)){
 
 ```java
 // java
+// time = O(m * n * 4^L), space = O(L)   L = len(word)
 // LC 79
 
 // https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/BackTrack/WordSearch.java#L133
@@ -975,6 +1000,7 @@ if (backtrack_(nums, j + 1, k, subsetSum + nums[j], used)){
 **Important Note: When Backtracking is NOT Needed**
 
 ```java
+// time = O(n), space = O(h)         one pass over the tree, h = height
 // LC 1740
 // NOTE !!! we don't need a `backtrack` below,
 // since `int` is a `primitive dtype in java
@@ -1028,6 +1054,7 @@ an `int`) **and** a path (`cache`, a `list`), we `cache.pop()` but never "un-add
 
 ```python
 # python
+# time = O(n^2), space = O(n)        O(n) root-to-leaf paths, O(n) to copy each
 # LC 113 - Path Sum II
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Depth-First-Search/path-sum-ii.py
 class Solution(object):

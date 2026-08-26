@@ -108,7 +108,7 @@
 
 ## Decision Flowchart
 
-```
+```text
 Is input SORTED or can you sort it?
 ├── YES → Is it "find target"? → Binary Search
 │         Is it "find pair"? → Two Pointers

@@ -9,7 +9,7 @@ makes it pass. Tests drive the design, not just verify it.
 
 ## 1) The Red-Green-Refactor Cycle
 
-```
+```text
    ┌─────────────────────────────────────┐
    │                                     │
    ▼                                     │

@@ -7,7 +7,7 @@
 
 ## Current Architecture
 
-```
+```text
 push to master
   └─ deploy-pages.yml (always runs)
        ├─ npm install (markdown-it, markdown-it-anchor)

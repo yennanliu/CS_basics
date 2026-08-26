@@ -10,7 +10,7 @@ The site converts markdown docs in `doc/` into a static HTML site deployed via G
 
 ## Directory Layout
 
-```
+```text
 site/
   build-site.js       # Converts doc/**/*.md → _site/**/*.html
   build-leetcode.js   # Generates LeetCode JSON data

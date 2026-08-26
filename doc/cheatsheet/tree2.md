@@ -1,6 +1,6 @@
 # Tree Pattern Templates - Comprehensive Guide
 
-> **Scope** — A numbered, copy-paste **template** per tree pattern, in Python *and* Java. Template-first, no theory.
+> **Scope** — A numbered, copy-paste **template** per tree pattern, in Python *and* Java — the single home for tree templates. Template-first, no theory: which traversal a problem wants is [tree.md](./tree.md)'s question.
 > **See also**: [tree.md](./tree.md) — concepts, tree types, when to use which traversal; [tree_lca_distance.md](./tree_lca_distance.md) — LCA, node distance and root-to-leaf paths, which this sheet defers to entirely; [tree_construction.md](./tree_construction.md) and [tree_codec.md](./tree_codec.md) — building a tree from an encoding, and serialising it back; [binary_tree.md](./binary_tree.md) — how DFS state flows through a binary tree; [bst.md](./bst.md) — ordered trees.
 
 > **Note:** This file contains detailed traversal templates and implementation code. For tree concepts, types, and algorithm patterns, see [tree.md](./tree.md).
@@ -1594,7 +1594,22 @@ def connect(root):
 - LC 117: Populating Next Right Pointers in Each Node II (Medium)
 - LC 116: Populating Next Right Pointers in Each Node (Medium)
 
----
+
+**Why the dummy head**: children may be missing (LC 117 is a *general* binary tree, not a perfect
+one), so you cannot compute "the next node" by position. The dummy + `tail` pointer skips holes
+automatically — which is exactly why the *same* code solves LC 116 and LC 117.
+
+**Trace** (`root = [1,2,3,4,5,null,7]`):
+
+```text
+level 1:  1                      dummy -> 2 -> 3
+level 2:  2 -> 3                 dummy -> 4 -> 5 -> 7   (3 has no left child; dummy skips the hole)
+level 3:  4 -> 5 -> 7            dummy -> null  -> stop
+```
+
+**When to reuse this**: any "connect / compare nodes on the same level" question where the node
+carries a spare pointer (LC 116, LC 117). If the node has **no** `next` field, fall back to the
+queue BFS in [1.4)](#14-bfs-template-level-order--lc-102-).
 
 ### 8.2) Postorder Tree DP (Pair Return) Template — LC 337 ⭐⭐⭐⭐
 

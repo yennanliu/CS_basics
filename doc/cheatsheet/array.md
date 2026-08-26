@@ -51,7 +51,7 @@
 ### 1-1) Basic OP
 
 #### 1-1-0) Split Array
-```python
+```text
 # https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/python_trick.md
 
 #-----------------------------------------------------------------------------------------------------
@@ -126,7 +126,7 @@ Out[11]: [[7, 0], [6, 1], [5, 0], [5, 2], [4, 4], [0, 0]]
 
 > \* CPython's Timsort may need an O(n) temp buffer in the worst case, but **no new list object is allocated**.
 
-```python
+```text
 # Pattern :
 # V1 : IN PLACE, returns None
 _array.sort(key = lambda x : <your_sorting_func>)

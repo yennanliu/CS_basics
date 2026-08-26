@@ -1,0 +1,1136 @@
+# Greedy — Worked Examples
+
+> **Scope** — The worked-solution archive behind [greedy.md](./greedy.md): fourteen problems grouped by the shape of the greedy choice — extend a reach, accumulate and reset, interleave by frequency, sort and take, or commit while scanning.
+> **See also**: [greedy.md](./greedy.md) — the parent sheet: the six templates, the exchange argument, the decision framework and the cases where greedy fails; [intervals.md](./intervals.md) — the interval greedy family in its own right; [heap.md](./heap.md) — the structure behind the frequency group; [monotonic_stack.md](./monotonic_stack.md) — the theory behind LC 402; [dp.md](./dp.md) — what to fall back to when the exchange argument breaks.
+
+## LeetCode Problem Lists
+
+- [Greedy](https://leetcode.com/problem-list/greedy/)
+
+## Overview
+
+This is the long tail of [greedy.md](./greedy.md). The parent keeps the templates, the proof
+technique and the decision framework; this file keeps the problems that *apply* them.
+
+### Key Properties
+- **Complexity**: O(n) after any required sort, which is O(n log n) — stated per solution where it differs
+- **Core Idea**: a greedy solution is one sentence plus a proof that the sentence is safe. These are grouped by that sentence, because recognising it is the whole difficulty
+- **When to Use**: after the parent's decision framework has told you the exchange argument holds — see [When Greedy Fails](./greedy.md#when-greedy-fails--know-the-escape-hatch) for when it does not
+
+
+## Reach & Jump
+
+### 1) Jump Game — LC 55 ⭐⭐⭐⭐⭐
+
+> Track farthest reachable index; if current index exceeds it, return false.
+
+```java
+// LC 55 - Jump Game
+// IDEA: Greedy — track max reachable index; fail if current index exceeds it
+// time = O(N), space = O(1)
+public boolean canJump(int[] nums) {
+    int maxReach = 0;
+    for (int i = 0; i < nums.length; i++) {
+        if (i > maxReach) return false;
+        maxReach = Math.max(maxReach, i + nums[i]);
+    }
+    return true;
+}
+```
+
+```python
+# 055 Jump Game
+# V0
+class Solution(object):
+    def canJump(self, nums):
+        # edge case
+        if not nums:
+            return True
+        cur = 0
+        for i in range(len(nums)):
+            if cur < i:
+                return False
+            cur = max(cur, i + nums[i])
+        return True
+```
+
+### 2) Jump Game II — LC 45 — the jump window
+
+> Expand the current jump window; when boundary is reached, take a jump and advance window.
+
+```java
+// LC 45 - Jump Game II
+// IDEA: Greedy — track current window end and farthest; jump when window end reached
+// time = O(N), space = O(1)
+public int jump(int[] nums) {
+    int jumps = 0, curEnd = 0, farthest = 0;
+    for (int i = 0; i < nums.length - 1; i++) {
+        farthest = Math.max(farthest, i + nums[i]);
+        if (i == curEnd) { jumps++; curEnd = farthest; }
+    }
+    return jumps;
+}
+```
+
+```python
+# 045 Jump Game II
+# V0
+# IDEA : GREEDY
+"""
+Steps:
+    step 1) Initialize three integer variables: jumps to count the number of jumps, currentJumpEnd to mark the end of the range that we can jump to, and farthest to mark the farthest place that we can reach. Set each variable to zero
+    step 2) terate over nums. Note that we exclude the last element from our iteration because as soon as we reach the last element, we do not need to jump anymore.
+            - Update farthest to i + nums[i] if the latter is larger.
+            - If we reach currentJumpEnd, it means we finished the current jump, and can begin checking the next jump by setting currentJumpEnd = farthest.
+    step 3) return jumps
+"""
+class Solution:
+    def jump(self, nums: List[int]) -> int:
+            jumps = 0
+            current_jump_end = 0
+            farthest = 0
+            for i in range(len(nums) - 1):
+                # we continuously find the how far we can reach in the current jump
+                farthest = max(farthest, i + nums[i])
+                # if we have come to the end of the current jump,
+                # we need to make another jump
+                if i == current_jump_end:
+                    jumps += 1
+                    current_jump_end = farthest
+            return jumps
+
+# V1
+# IDEA : GREEDY
+# https://leetcode.com/problems/jump-game-ii/discuss/1672485/Python-Greedy
+class Solution:
+    def jump(self, nums: List[int]) -> int:
+        l = r = res = farthest = 0
+        while r < len(nums) - 1:
+            for idx in range(l, r+1):
+                farthest = max(farthest, idx + nums[idx])
+            l = r+1
+            r = farthest 
+            res += 1
+        return res
+```
+
+### 3) Minimum Number of Taps to Water a Garden — LC 1326 — LC 45 in disguise
+
+
+> **Variation of Template 4 / LC 45.** The twist: intervals are given as `(center, radius)` instead of "reach from index `i`". **Bucket each interval by its left endpoint, keeping the max right endpoint**, and the problem collapses into the identical `curEnd` / `farthest` jump-window loop.
+
+**Key Idea**: `maxReach[l] = max right endpoint among intervals starting at l`. Then "minimum taps" == "minimum jumps from 0 to n" — the greedy that in each round extends to the farthest reachable point is optimal because a round-`t` frontier of the greedy is `>=` any other strategy's round-`t` frontier (**greedy stays ahead**).
+
+```text
+n = 5, ranges = [3,4,1,1,0,0]
+tap i covers [i-r, i+r] clipped to [0, n]:
+  i=0 r=3 -> [0,3]
+  i=1 r=4 -> [0,5]   <- maxReach[0] = 5
+  i=2 r=1 -> [1,3]
+  i=3 r=1 -> [2,4]
+  i=4 r=0 -> [4,4]
+maxReach = [5, 3, 4, 4, 4, 0]
+i=0: farthest=5, i==curEnd(0) -> taps=1, curEnd=5  => covers the whole garden. Answer 1
+```
+
+```java
+// java
+// LC 1326 - Minimum Number of Taps to Open to Water a Garden
+// IDEA: convert (center,radius) -> intervals, bucket by left end, then run Jump Game II window greedy
+// time = O(N), space = O(N)
+public int minTaps(int n, int[] ranges) {
+    int[] maxReach = new int[n + 1];
+    for (int i = 0; i <= n; i++) {
+        int l = Math.max(0, i - ranges[i]);
+        maxReach[l] = Math.max(maxReach[l], Math.min(n, i + ranges[i]));
+    }
+    int taps = 0, curEnd = 0, farthest = 0;
+    for (int i = 0; i < n; i++) {
+        farthest = Math.max(farthest, maxReach[i]);
+        if (i == farthest) return -1;              // stuck: a gap the taps can't cross
+        if (i == curEnd) { taps++; curEnd = farthest; }
+    }
+    return taps;
+}
+```
+
+```python
+# python
+# LC 1326 - Minimum Number of Taps to Open to Water a Garden
+# IDEA: (center,radius) -> intervals bucketed by left end, then Jump Game II window greedy
+# time = O(N), space = O(N)
+class Solution(object):
+    def minTaps(self, n, ranges):
+        reach = [0] * (n + 1)
+        for i, r in enumerate(ranges):
+            l = max(0, i - r)
+            reach[l] = max(reach[l], min(n, i + r))
+
+        taps, cur_end, farthest = 0, 0, 0
+        for i in range(n):
+            farthest = max(farthest, reach[i])
+            if i == farthest:        # can't move past i -> impossible
+                return -1
+            if i == cur_end:         # window exhausted -> open one more tap
+                taps += 1
+                cur_end = farthest
+        return taps
+```
+
+**Similar Problems:**
+- LC 45 Jump Game II (the base template, section 2-2)
+- LC 1024 Video Stitching (**identical** shape: clips `[start,end]` → bucket by start, jump to `time T`)
+- LC 55 Jump Game (feasibility only, section 2-1)
+
+---
+
+## Accumulate & Reset
+
+### 4) Best Time to Buy and Sell Stock II — LC 122 — take every rise ⭐⭐⭐⭐
+
+> Accumulate every positive price difference — buy and sell every rising day.
+
+```java
+// LC 122 - Best Time to Buy and Sell Stock II
+// IDEA: Greedy — sum all positive consecutive differences
+// time = O(N), space = O(1)
+public int maxProfit(int[] prices) {
+    int profit = 0;
+    for (int i = 1; i < prices.length; i++)
+        if (prices[i] > prices[i-1]) profit += prices[i] - prices[i-1];
+    return profit;
+}
+```
+
+```python
+# 122 Best Time to Buy and Sell Stock II
+class Solution:
+    def maxProfit(self, prices):
+        profit = 0
+        for i in range(0,len(prices)-1):
+            if prices[i+1] > prices[i]:
+                # have to sale last stock, then buy a new one
+                # and sum up the price difference into profit
+                profit += prices[i+1] - prices[i]
+        return profit
+
+```
+
+### 5) Gas Station — LC 134 — reset the start on a deficit ⭐⭐⭐⭐
+
+> If tank goes negative, reset start to next station; valid solution exists iff total surplus ≥ 0.
+
+```java
+// LC 134 - Gas Station
+// IDEA: Greedy — reset start when cumulative surplus goes negative; check total >= 0
+// time = O(N), space = O(1)
+public int canCompleteCircuit(int[] gas, int[] cost) {
+    int total = 0, remain = 0, start = 0;
+    for (int i = 0; i < gas.length; i++) {
+        int diff = gas[i] - cost[i];
+        total += diff; remain += diff;
+        if (remain < 0) { start = i + 1; remain = 0; }
+    }
+    return total >= 0 ? start : -1;
+}
+```
+
+```python
+# 134 Gas Station
+# V0
+# IDEA : GREEDY
+# IDEA : if sum(gas) - sum(cost) > 0, => THERE MUST BE A SOLUTION
+# IDEA : since it's circular (symmetry), we can maintain "total" (e.g. total += gas[i] - cost[i]) of (gas[i], cost[i]) for each index as their "current sum"
+class Solution(object):
+    def canCompleteCircuit(self, gas, cost):
+        start = remain = total = 0
+        for i in range(len(gas)):
+            remain += gas[i] - cost[i]
+            total += gas[i] - cost[i]
+            if remain < 0:
+                remain = 0
+                start = i + 1
+        return -1 if total < 0 else start
+```
+
+### 6) Max Non-Overlapping Subarrays With Sum = Target — LC 1546
+
+> The moment a valid subarray is found, **lock it in and clear all history** — earliest-ending choice leaves the most room for future subarrays.
+
+#### The Greedy Clear Idea
+
+```python
+# Check if there is a matching complement prefix sum
+if (running_prefix - target) in seen_prefixes:
+    cnt += 1
+
+    # GREEDY RESET: Clear everything to prevent overlaps
+    seen_prefixes.clear()
+    running_prefix = 0
+```
+
+**Why clear / reset works (the greedy argument):**
+
+- We use **prefix sums**: a subarray `nums[i+1..j]` sums to `target` iff `prefix[j] - prefix[i] == target`, i.e. `prefix[j] - target` was a prefix sum we've seen before.
+- The instant we detect such a match, we've found a valid subarray **ending as early as possible** at the current index `j`.
+- **Greedy choice property:** taking the *earliest-ending* valid subarray is never worse than waiting for a later one. An earlier finish frees up the maximum number of remaining elements for future subarrays — it can only help, never hurt, the total count. (This is the same "sort by end time" intuition as interval scheduling — here the end time is discovered on the fly.)
+- To guarantee the **next** subarray does not overlap the one we just took, everything before/at index `j` must become invisible. Clearing `seen_prefixes` and resetting `running_prefix = 0` makes index `j` the new "virtual start" — future matches can only use complements formed **after** `j`.
+
+> ⚠️ **Order matters:** you must re-add the base `0` before continuing. In the V1-1 style it's `seen = set([0])` on reset; in the V1-2 style `seen_prefixes.clear()` is immediately followed (after the `if`) by `seen_prefixes.add(running_prefix)` where `running_prefix` is now `0` — so `0` re-enters the set. Without a `0` in the fresh set, the very next subarray starting right after `j` could never be detected.
+
+#### Visualization
+
+```text
+nums = [-1, 3, 5, 1, 4, 2, -9],  target = 6
+
+Legend: prefix = running prefix sum
+        complement = prefix - target  (what we look for in `seen`)
+        seen = prefix sums since the LAST reset
+
+┌─────┬────────┬────────────┬────────┬─────┬──────────────────┐
+│ num │ prefix │ complement │ found? │ cnt │ seen (this seg)  │
+├─────┼────────┼────────────┼────────┼─────┼──────────────────┤
+│ init│   0    │     -      │   -    │  0  │ {0}              │
+│ -1  │  -1    │    -7      │  No    │  0  │ {0,-1}           │
+│  3  │   2    │    -4      │  No    │  0  │ {0,-1,2}         │
+│  5  │   7    │     1      │  No    │  0  │ {0,-1,2,7}       │
+│  1  │   8    │     2      │  YES   │  1  │ RESET → {0}      │  ← subarray [5,1] sums to 6
+│  4  │   4    │    -2      │  No    │  1  │ {0,4}            │
+│  2  │   6    │     0      │  YES   │  2  │ RESET → {0}      │  ← subarray [4,2] sums to 6
+│ -9  │  -9    │   -15      │  No    │  2  │ {0,-9}           │
+└─────┴────────┴────────────┴────────┴─────┴──────────────────┘
+
+Answer: cnt = 2   (subarrays [5,1] and [4,2] are non-overlapping)
+```
+
+```text
+Why NOT wait for a bigger subarray?
+
+Full array [3,5,1,4,2,-9] also sums to 6, but choosing it would
+"swallow" indices that could otherwise host BOTH [5,1] and [4,2]:
+
+  [-1,  3,  5,  1,  4,  2, -9]
+            └──6──┘                ← take EARLY  →  1 subarray, rest still free
+                     └──6──┘       ← then take another →  total = 2  ✅
+
+  [-1,  3,  5,  1,  4,  2, -9]
+        └──────── 6 ────────┘      ← greedy-late swallows everything → total = 1  ❌
+```
+
+```java
+// java
+// LC 1546 - Max Non-Overlapping Subarrays With Sum = Target
+// IDEA: Greedy + prefix sum + hashset; on match, count and RESET history
+// time = O(N), space = O(N)
+public int maxNonOverlapping(int[] nums, int target) {
+    Set<Integer> seen = new HashSet<>();
+    seen.add(0);                 // base prefix
+    int running = 0, cnt = 0;
+    for (int num : nums) {
+        running += num;
+        if (seen.contains(running - target)) {
+            cnt++;
+            seen.clear();        // GREEDY RESET: prevent overlap
+            running = 0;
+        }
+        seen.add(running);       // re-adds 0 right after a reset
+    }
+    return cnt;
+}
+```
+
+```python
+# python
+# LC 1546 - Max Non-Overlapping Subarrays With Sum = Target
+# IDEA: Greedy + prefix sum + hashset; on match, count and RESET history
+# time = O(N), space = O(N)
+class Solution(object):
+    def maxNonOverlapping(self, nums, target):
+        seen_prefixes = set([0])   # base prefix
+        running_prefix = 0
+        cnt = 0
+        for num in nums:
+            running_prefix += num
+            if (running_prefix - target) in seen_prefixes:
+                cnt += 1
+                # GREEDY RESET: clear everything to prevent overlaps
+                seen_prefixes.clear()
+                running_prefix = 0
+            seen_prefixes.add(running_prefix)  # re-adds 0 right after a reset
+        return cnt
+```
+
+**Similar Problems:**
+- LC 560 Subarray Sum Equals K (count ALL subarrays — no reset, keep full history)
+- LC 974 Subarray Sums Divisible by K (prefix-sum + hashmap on remainders)
+- LC 134 Gas Station (greedy start reset when running total goes negative)
+- LC 435 Non-overlapping Intervals (same earliest-end greedy, but intervals given upfront)
+
+### 7) Minimum Add to Make Parentheses Valid — LC 921 — a balance counter
+
+
+> **Pattern**: one left→right pass with a counter of *unmatched opens*. A `)` that has no open to match **must** be fixed at that instant — no future information can rescue it.
+
+**Why greedy is safe**: matching a `)` with the **most recent** unmatched `(` is never worse (parenthesis matchings can always be "uncrossed" by an exchange argument). And a deficit detected at index `i` is unfixable later, so counting it immediately is forced, not a choice.
+
+```java
+// java
+// LC 921 - Minimum Add to Make Parentheses Valid
+// IDEA: GREEDY balance counter — unmatched ')' must be fixed now; leftover '(' fixed at the end
+// time = O(N), space = O(1)
+public int minAddToMakeValid(String s) {
+    int open = 0, add = 0;
+    for (char c : s.toCharArray()) {
+        if (c == '(') open++;
+        else if (open > 0) open--;   // match with the most recent '('
+        else add++;                  // orphan ')' -> must insert a '(' right here
+    }
+    return add + open;               // + leftover unmatched '('
+}
+```
+
+```python
+# python
+# LC 921 - Minimum Add to Make Parentheses Valid
+# IDEA: GREEDY balance counter
+# time = O(N), space = O(1)
+class Solution(object):
+    def minAddToMakeValid(self, s):
+        open_, add = 0, 0
+        for c in s:
+            if c == '(':
+                open_ += 1
+            elif open_ > 0:
+                open_ -= 1
+            else:
+                add += 1        # orphan ')'
+        return add + open_
+```
+
+**Variation — LC 678 Valid Parenthesis String** *(twist: `*` is a wildcard, so track a **range** `[lo, hi]` of possible open counts instead of a single number — this is greedy-with-an-interval, and it replaces an O(N²) DP)*
+
+```java
+// java
+// LC 678 - Valid Parenthesis String
+// IDEA: GREEDY range — lo = min possible open count, hi = max possible; valid iff hi never < 0 and lo can hit 0
+// time = O(N), space = O(1)
+public boolean checkValidString(String s) {
+    int lo = 0, hi = 0;
+    for (char c : s.toCharArray()) {
+        if (c == '(')      { lo++; hi++; }
+        else if (c == ')') { lo--; hi--; }
+        else               { lo--; hi++; }   // '*' -> ')' , '' , or '('
+        if (hi < 0) return false;            // too many ')' even if every '*' is '('
+        lo = Math.max(lo, 0);                // can't owe a negative number of opens
+    }
+    return lo == 0;                          // 0 is reachable in [lo, hi]
+}
+```
+
+```python
+# python
+# LC 678 - Valid Parenthesis String
+# IDEA: GREEDY range [lo, hi] of possible unmatched '(' counts
+# time = O(N), space = O(1)
+class Solution(object):
+    def checkValidString(self, s):
+        lo = hi = 0
+        for c in s:
+            if c == '(':
+                lo, hi = lo + 1, hi + 1
+            elif c == ')':
+                lo, hi = lo - 1, hi - 1
+            else:                       # '*'
+                lo, hi = lo - 1, hi + 1
+            if hi < 0:
+                return False            # unrecoverable
+            lo = max(lo, 0)             # clamp: open count can't go below 0
+        return lo == 0
+```
+
+> **Why clamping `lo` at 0 is the whole trick:** `lo` is the *minimum* open count if every `*` becomes `)`. Since a `*` may also become the empty string, we are free to stop consuming — clamping models exactly that. Forgetting the clamp makes `"(*)"`-style inputs fail.
+
+**Similar Problems:**
+- LC 921 Minimum Add to Make Parentheses Valid (count the fixes)
+- LC 678 Valid Parenthesis String (wildcard → range counter `[lo, hi]`)
+- LC 420 Strong Password Checker (same "fix what is forced, defer what is free" counting greedy, much heavier case analysis)
+
+---
+
+## Frequency & Heap Interleaving
+
+### 8) Reorganize String — LC 767 — max-heap interleave ⭐⭐⭐
+
+> Always pick the most frequent character that differs from the last placed character.
+
+```java
+// LC 767 - Reorganize String
+// IDEA: Max-heap by frequency; always pick top that differs from last placed char
+// time = O(N log K), space = O(K)  K = distinct chars
+public String reorganizeString(String s) {
+    int[] freq = new int[26];
+    for (char c : s.toCharArray()) freq[c - 'a']++;
+    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> b[1] - a[1]);
+    for (int i = 0; i < 26; i++) if (freq[i] > 0) pq.offer(new int[]{i, freq[i]});
+    StringBuilder sb = new StringBuilder();
+    int[] prev = null;
+    while (!pq.isEmpty()) {
+        int[] curr = pq.poll();
+        sb.append((char)('a' + curr[0]));
+        if (prev != null) pq.offer(prev);
+        curr[1]--;
+        prev = curr[1] > 0 ? curr : null;
+    }
+    return sb.length() == s.length() ? sb.toString() : "";
+}
+```
+
+```python
+# LC 767. Reorganize String
+
+# V0 
+# IDEA : GREEDY + COUNTER
+# IDEA : 
+#  step 1) order exists count (big -> small)
+#  step 2) select the element which is "most remaining" and DIFFERENT from last ans element and append such element to the end of ans
+#  step 3) if can't find such element, return ""
+class Solution(object):
+    def reorganizeString(self, S):
+        cnt = collections.Counter(S)
+        # Be aware of it : ans = "#" -> not to have error in ans[-1] when first loop
+        ans = '#'
+        while cnt:
+            stop = True
+            for v, c in cnt.most_common():
+                """
+                NOTE !!! trick here
+
+                1) we only compare last element in ans and current key (v), if they are different, then append
+                2) we break at the end of each for loop -> MAKE SURE two adjacent characters are not the same.
+                3) we use a flag "stop", to decide whether should stop while loop or not
+                """
+                if v != ans[-1]:
+                    stop = False
+                    ans += v
+                    cnt[v] -= 1
+                    if not cnt[v]:
+                        del cnt[v]
+                    """
+                    NOTE !!!
+                     -> we BREAK right after each op, since we want to get next NEW most common element from "updated" cnt.most_common()
+                    """
+                    break
+            # Be aware of it : if there is no valid "v", then the while loop will break automatically at this condition (stop = True)
+            if stop:
+                break
+        return ans[1:] if len(ans[1:]) == len(S) else ''
+```
+
+### 9) String Without AAA or BBB — LC 984 — a consecutive counter
+
+> Force a switch when 2 consecutive same chars; otherwise always write the higher-count char.
+
+```java
+// LC 984 - String Without AAA or BBB
+// IDEA: Greedy — write higher-count char unless 2 consecutive, then must switch
+// time = O(A+B), space = O(1)
+public String strWithout3a3b(int a, int b) {
+    StringBuilder res = new StringBuilder();
+    int continueA = 0;
+    int continueB = 0;
+
+    while (a > 0 || b > 0) {
+        boolean writeA = false;
+
+        // Priority 1: Must switch if 2 consecutive
+        if (continueB == 2) {
+            writeA = true;
+        } else if (continueA == 2) {
+            writeA = false;
+        } else {
+            // Priority 2: Greedy - write the one with more remaining
+            writeA = a >= b;
+        }
+
+        if (writeA) {
+            res.append("a");
+            a--;
+            continueA++;
+            continueB = 0; // Reset other counter
+        } else {
+            res.append("b");
+            b--;
+            continueB++;
+            continueA = 0; // Reset other counter
+        }
+    }
+    return res.toString();
+}
+
+// V1: Using last 2 characters check (Editorial)
+public String strWithout3a3b_v1(int A, int B) {
+    StringBuilder ans = new StringBuilder();
+    while (A > 0 || B > 0) {
+        boolean writeA = false;
+        int L = ans.length();
+        // Check last 2 chars
+        if (L >= 2 && ans.charAt(L-1) == ans.charAt(L-2)) {
+            if (ans.charAt(L-1) == 'b') writeA = true;
+        } else {
+            if (A >= B) writeA = true;
+        }
+
+        if (writeA) { A--; ans.append('a'); }
+        else { B--; ans.append('b'); }
+    }
+    return ans.toString();
+}
+
+// V2: PQ approach (similar to Reorganize String)
+// Max heap: always pick char with highest remaining count
+// If blocked by consecutive constraint, pick second highest
+```
+
+**Similar Problems:**
+- LC 767: Reorganize String (no 2 adjacent same)
+- LC 1405: Longest Happy String (max a, b, c with no 3 consecutive)
+- LC 358: Rearrange String K Distance Apart (k distance constraint)
+
+### 10) Task Scheduler — LC 621 — the idle-time formula ⭐⭐⭐⭐
+
+> Min time = max((maxFreq−1)*(n+1) + countOfMaxFreq, totalTasks).
+
+```java
+// LC 621 - Task Scheduler
+// IDEA: Greedy formula — (maxFreq-1)*(n+1) + #tasks_with_maxFreq; also can't be less than total
+// time = O(N), space = O(1)
+public int leastInterval(char[] tasks, int n) {
+    int[] freq = new int[26];
+    for (char t : tasks) freq[t - 'A']++;
+    int maxFreq = 0;
+    for (int f : freq) maxFreq = Math.max(maxFreq, f);
+    int countMax = 0;
+    for (int f : freq) if (f == maxFreq) countMax++;
+    return Math.max(tasks.length, (maxFreq - 1) * (n + 1) + countMax);
+}
+```
+
+```python
+# LC 621. Task Scheduler
+# V0
+# pattern :
+#    =============================================================================
+#    -> task_time = (max_mission_count - 1) * (n + 1) + (number_of_max_mission)
+#    =============================================================================
+#   
+#    -> Example 1) :
+#    ->  AAAABBBBCCD, n=3
+#    => THE EXPECTED tuned missions is like : ABXXABXXABXXAB
+#    -> (4 - 1) * (3 + 1) + 2 = 14
+#    -> 4 is the "how many missions the max mission has" (AAAA or BBBB)
+#    -> 3 is n
+#    -> 2 is "how many mission have max mission count" -> A and B. so it's 2
+#    -> in sum,
+#    -> (4 - 1) * (3 + 1) is for ABXXABXXABXX
+#    -> and 2 is for AB
+#
+#   -> Example 2) :
+#   -> AAABBB, n = 2
+#   -> THE EXPECTED tuned missions is like : ABXABXAB
+#   -> (3 - 1) * (2 + 1) + (2) = 8
+class Solution(object):
+    def leastInterval(self, tasks, n):
+        count = collections.Counter(tasks)
+        most = count.most_common()[0][1]
+        num_most = len([i for i, v in count.items() if v == most])
+        """
+        example 1 : tasks = ["A","A","A","B","B","B"], n = 2
+            -> we can split tasks as : A -> B -> idle -> A -> B -> idle -> A -> B
+               -> 1) so there are 3-1 group. e.g. (A -> B -> idle), (A -> B -> idle)
+                     and each group has (n+1) elements. e.g. (A -> B -> idle)
+               -> 2) and the remain element is num_most. e.g. (A, B)
+               -> 3) so total cnt = (3-1) * (2+1) + 2 = 8
+    
+        example 2 : tasks = ["A","A","A","A","A","A","B","C","D","E","F","G"], n = 2
+            -> we can split tasks as A -> B -> C -> A -> D -> E -> A -> F -> G -> A -> idle -> idle -> A -> idle -> idle -> A
+                -> 1) so there are 6-1 group. e.g. (A -> B -> C), (A -> D -> E), (A -> F -> G), (A -> idle -> idle), (A -> idle -> idle)
+                      and each group has (n+1) elements. e.g. (A,B,C) .... (as above)
+                -> 2) and the remain element is num_most. e.g. (A) 
+                -> 3) so total cnt = (6-1)*(2+1) + 1 =  16
+        """
+        time = (most - 1) * (n + 1) + num_most
+        return max(time, len(tasks)) # when idle slots go negative, just run all tasks sequentially
+```
+
+## Sort, Then Take
+
+### 11) Maximum Units on a Truck — LC 1710 — sort by unit value
+
+> Sort box types by units per box descending; greedily fill truck with highest-value boxes first.
+
+```java
+// LC 1710 - Maximum Units on a Truck
+// IDEA: Sort by units descending; greedily load boxes until truck is full
+// time = O(N log N), space = O(1)
+public int maximumUnits(int[][] boxTypes, int truckSize) {
+    Arrays.sort(boxTypes, (a, b) -> b[1] - a[1]);
+    int total = 0;
+    for (int[] box : boxTypes) {
+        int take = Math.min(box[0], truckSize);
+        total += take * box[1];
+        truckSize -= take;
+        if (truckSize == 0) break;
+    }
+    return total;
+}
+```
+
+```python
+# LC 1710. Maximum Units on a Truck
+# V0
+# IDEA : GREEDY + sorting
+class Solution(object):
+    def maximumUnits(self, boxTypes, truckSize):
+        # boxTypes[i] = [numberOfBoxesi, numberOfUnitsPerBoxi]:
+        # edge case
+        if not boxTypes or not truckSize:
+            return 0
+        """
+        NOTE : we sort on sort(key=lambda x : -x[1])
+
+            -> if unit is bigger, we can get bigger aggregated result (n * unit)
+        """
+        boxTypes.sort(key=lambda x : -x[1])
+        res = 0
+        for n, unit in boxTypes:
+            # case 1 : truckSize == 0, break for loop and return ans
+            if truckSize == 0:
+                break
+            # case 2 : truckSize < n, we CAN'T add all n to truck, but CAN only add (truckSize * unit) amount to truck
+            elif truckSize < n:
+                res += (truckSize * unit)
+                truckSize = 0
+                break
+            # case 3 : normal case, it's OK to put all (n * unit) to truck once
+            else:      
+                res += (n * unit)
+                truckSize -= n
+        return res
+
+# V1
+# IDEA : GREEDY
+# https://leetcode.com/problems/maximum-units-on-a-truck/discuss/1045318/Python-solution
+class Solution(object):
+    def maximumUnits(self, boxTypes, truckSize):
+        boxTypes.sort(key = lambda x: -x[1])
+        n = len(boxTypes)
+        result = 0
+        i = 0
+        while truckSize >= boxTypes[i][0]:
+            result += boxTypes[i][1] * boxTypes[i][0]
+            truckSize -= boxTypes[i][0]
+            i += 1
+            if i == n:
+                return result
+        result += truckSize * boxTypes[i][1]
+        return result
+```
+
+### 12) Minimum Adjacent Swaps to Partition Array — LC 3994 — group key + index sum
+
+
+> Don't simulate swaps. **Relabel each element into a group key `0/1/2`, then count inversions** — with only 3 keys, two running counters do it in one O(N) pass.
+
+#### The Core Idea
+
+Every element belongs to exactly one bucket, decided **independently** of the others:
+
+```text
+Group 0:  num < a          → must end up in the LEFT part
+Group 1:  a <= num <= b    → must end up in the MIDDLE part
+Group 2:  num > b          → must end up in the RIGHT part
+```
+
+Two observations turn this into pure counting:
+
+1. **The target is unique.** Since each element's group is fixed, the "good" array is just the original array with keys in non-decreasing order `0...0 1...1 2...2`. There are no split points to choose — no search, no DP.
+2. **Min adjacent swaps to sort == number of inversions.** One adjacent swap fixes at most one inversion, and whenever an inversion exists some *adjacent* pair is inverted — so the bound is exactly tight.
+
+And the greedy piece: **elements in the same group never need to swap with each other.** Their relative order is irrelevant to validity, so the optimal target is the *stable* arrangement — which is why the plain inversion count (not "min over all permutations") is the answer.
+
+**The counting trick:** with only 3 distinct keys you don't need merge sort or a BIT. Sweep left→right, and for each element add the number of **strictly larger keys already seen**:
+
+```text
+see Group 0  →  swaps += count_1 + count_2   (must cross every 1 and 2 to its left)
+see Group 1  →  swaps += count_2             (must cross every 2 to its left)
+see Group 2  →  swaps += 0                   (already right-most group)
+```
+
+Note `count_0` is never needed — nothing has to cross a Group 0.
+
+#### Visual Trace
+
+```text
+nums = [9, 7, 5, 3],  a = 4, b = 8
+keys =  2  1  1  0        (9>8 → 2;  7,5 ∈ [4,8] → 1;  3<4 → 0)
+
+┌─────┬─────┬───────────────────────┬───────┬─────────┬─────────┐
+│ num │ key │ swaps +=              │ swaps │ count_1 │ count_2 │
+├─────┼─────┼───────────────────────┼───────┼─────────┼─────────┤
+│  9  │  2  │ 0                     │   0   │    0    │    1    │
+│  7  │  1  │ count_2 = 1           │   1   │    1    │    1    │
+│  5  │  1  │ count_2 = 1           │   2   │    2    │    1    │
+│  3  │  0  │ count_1+count_2 = 2+1 │   5   │    2    │    1    │
+└─────┴─────┴───────────────────────┴───────┴─────────┴─────────┘
+
+Answer = 5   (matches the 5-swap sequence in the problem statement)
+
+Why 5? The `3` alone must cross 9, 7, 5 → 3 swaps.
+Each of 7 and 5 must cross the 9 → 2 swaps.  Total 3 + 2 = 5.
+Note 7 and 5 never swap with each other — same group, order doesn't matter.
+```
+
+#### Pattern
+
+```python
+# python
+# LC 3994 - Minimum Adjacent Swaps to Partition Array
+# IDEA: GREEDY — map to group key 0/1/2, count inversions with running counters
+# time = O(N), space = O(1)
+class Solution(object):
+    def minAdjacentSwaps(self, nums, a, b):
+        MOD = 10**9 + 7
+        count_1 = 0      # of Group 1 seen so far
+        count_2 = 0      # of Group 2 seen so far
+        swaps = 0
+
+        for num in nums:
+            if num < a:
+                # Group 0: must jump over every Group 1 and Group 2 to its left
+                swaps = (swaps + count_1 + count_2) % MOD
+            elif num <= b:
+                # Group 1: must jump over every Group 2 to its left
+                swaps = (swaps + count_2) % MOD
+                count_1 += 1
+            else:
+                # Group 2: already in the right-most group -> 0 swaps
+                count_2 += 1
+
+        return swaps
+```
+
+```java
+// java
+// LC 3994 - Minimum Adjacent Swaps to Partition Array
+// IDEA: GREEDY — map to group key 0/1/2, count inversions with running counters
+// time = O(N), space = O(1)
+public int minAdjacentSwaps(int[] nums, int a, int b) {
+    final int MOD = 1_000_000_007;
+    long count1 = 0, count2 = 0, swaps = 0;   // NOTE: long — raw answer can reach ~N^2/2 (5e9)
+
+    for (int num : nums) {
+        if (num < a) {
+            swaps = (swaps + count1 + count2) % MOD;
+        } else if (num <= b) {
+            swaps = (swaps + count2) % MOD;
+            count1++;
+        } else {
+            count2++;
+        }
+    }
+    return (int) swaps;
+}
+```
+
+> ⚠️ **Overflow gotcha:** with `N = 1e5`, the true swap count can be ~`N²/2 = 5e9` — overflows a 32-bit `int`. Python is safe, but in Java/C++ accumulate in `long`. Taking `% MOD` inside the loop is fine here because we only ever **add** (no comparison or subtraction on the modded value).
+
+**Generalizing to K groups:** the same sweep works for any number of ordered buckets — keep a running count per key and add the counts of all **strictly larger** keys seen so far:
+
+```python
+# K ordered groups -> O(N*K) time, O(K) space
+cnt = [0] * K
+swaps = 0
+for key in keys:                       # key in 0..K-1
+    swaps += sum(cnt[key + 1:])        # everything larger sitting to the left
+    cnt[key] += 1
+```
+
+When `K` is large (e.g. keys are the values themselves), drop the counters and use a **BIT / merge sort** for O(N log N) inversion counting instead — see LC 315 / LC 493.
+
+**Similar Problems:**
+| Problem | LC # | Relationship |
+|---------|------|--------------|
+| Minimum Adjacent Swaps to Partition Array | 3994 | 3 group keys, 2 running counters, O(N) |
+| Separate Black and White Balls | 2938 | **The 2-group case** — for each `0`, `swaps += #1s seen so far` |
+| Sort Colors | 75 | Same 0/1/2 classification, but **arbitrary** swaps → Dutch-flag 3-way partition, not inversions |
+| Count of Smaller Numbers After Self | 315 | General inversion counting when keys aren't O(1)-many → BIT |
+| Reverse Pairs | 493 | Inversion counting via merge sort (modified pair condition) |
+| Minimum Adjacent Swaps to Make a Valid Array | 2340 | Adjacent swaps = index distance; watch the crossing correction |
+| Minimum Swaps to Arrange a Binary Grid | 1536 | Greedy adjacent-**row** swaps, count moves to satisfy a suffix-zero requirement |
+| Couples Holding Hands | 765 | Min swaps but **arbitrary** positions → greedy/union-find; contrast with adjacent-only |
+
+**Recognition signal:** *"minimum **adjacent** swaps"* + *"elements fall into a few ordered categories"* → relabel to keys and count inversions. If swaps are **not** restricted to adjacent, it's a different problem (cycle decomposition / Dutch flag), and the inversion count is an over-estimate.
+
+## Build the Answer While Scanning
+
+### 13) Partition Labels — LC 763 — partition at the last occurrence ⭐⭐⭐⭐⭐
+
+
+> **Pattern**: precompute each element's **last occurrence**, then sweep once keeping a **running boundary** `end = max(end, last[x])`. Every time `i == end`, cut. No sorting needed — the "end time" is discovered on the fly.
+
+**Key Idea**: a char cannot be split across two parts, so any legal cut point must be `>= last[c]` for **every** `c` seen so far. `end` is exactly that lower bound.
+
+**Why greedy is safe (exchange argument)**: suppose an optimal answer `OPT` makes its first cut at index `j > end` (it cannot cut before `end`). Cutting at `end` instead splits `OPT`'s first block into `[start..end]` plus `[end+1..j]`, and both halves are still valid (no char straddles `end`). So the greedy cut yields **at least as many** parts — never fewer. Induct on the remaining suffix ⇒ greedy is optimal.
+
+```text
+s = "ababcbacadefegdehijhklij"
+       a...........a      -> last['a'] = 8
+     b.....b              -> last['b'] = 5
+         c...c            -> last['c'] = 7
+
+i:  0 1 2 3 4 5 6 7 8 ...
+    a b a b c b a c a
+end 8 8 8 8 8 8 8 8 8   <- i == end at i=8  => cut, size 9
+```
+
+```java
+// java
+// LC 763 - Partition Labels
+// IDEA: GREEDY — record last index of each char; extend a running boundary, cut when i == end
+// time = O(N), space = O(1)   (26-slot table)
+public List<Integer> partitionLabels(String s) {
+    int[] last = new int[26];
+    for (int i = 0; i < s.length(); i++) last[s.charAt(i) - 'a'] = i;
+
+    List<Integer> res = new ArrayList<>();
+    int start = 0, end = 0;
+    for (int i = 0; i < s.length(); i++) {
+        end = Math.max(end, last[s.charAt(i) - 'a']);   // boundary must cover this char
+        if (i == end) {                                 // nothing pending -> safe to cut
+            res.add(end - start + 1);
+            start = i + 1;
+        }
+    }
+    return res;
+}
+```
+
+```python
+# python
+# LC 763 - Partition Labels
+# IDEA: GREEDY — record last index of each char; extend a running boundary, cut when i == end
+# time = O(N), space = O(1)
+class Solution(object):
+    def partitionLabels(self, s):
+        last = {c: i for i, c in enumerate(s)}   # last occurrence of every char
+        res, start, end = [], 0, 0
+        for i, c in enumerate(s):
+            end = max(end, last[c])              # boundary must cover this char
+            if i == end:                         # nothing pending -> safe to cut
+                res.append(end - start + 1)
+                start = i + 1
+        return res
+```
+
+**Variation — LC 769 Max Chunks To Make Sorted** *(twist: values are a permutation of `0..n-1`, so the boundary is the running **prefix max** instead of a last-occurrence table)*
+
+```java
+// java
+// LC 769 - Max Chunks To Make Sorted   (arr is a permutation of 0..n-1)
+// IDEA: chunk can close at i iff max(arr[0..i]) == i  (everything <= i already placed)
+// time = O(N), space = O(1)
+public int maxChunksToSorted(int[] arr) {
+    int chunks = 0, mx = 0;
+    for (int i = 0; i < arr.length; i++) {
+        mx = Math.max(mx, arr[i]);
+        if (mx == i) chunks++;
+    }
+    return chunks;
+}
+```
+
+```python
+# python
+# LC 769 - Max Chunks To Make Sorted
+# time = O(N), space = O(1)
+class Solution(object):
+    def maxChunksToSorted(self, arr):
+        chunks, mx = 0, 0
+        for i, v in enumerate(arr):
+            mx = max(mx, v)
+            if mx == i:
+                chunks += 1
+        return chunks
+```
+
+> **LC 768 Max Chunks To Make Sorted II** (duplicates / arbitrary values) breaks the `mx == i` shortcut — compare running `prefixMax[i] <= suffixMin[i+1]` instead.
+
+**Similar Problems:**
+| Problem | LC # | Relationship |
+|---------|------|--------------|
+| Partition Labels | 763 | Boundary = max last-occurrence |
+| Max Chunks To Make Sorted | 769 | Boundary = prefix max, values are `0..n-1` |
+| Max Chunks To Make Sorted II | 768 | Duplicates → prefixMax vs suffixMin |
+| Merge Intervals | 56 | Same "extend running end, close when gap" sweep |
+| Max Non-Overlapping Subarrays Sum=Target | 1546 | Same earliest-end greedy (see 2-9) |
+
+---
+
+### 14) Remove K Digits — LC 402 — monotonic-stack greedy construction ⭐⭐⭐
+
+
+> **Pattern**: build the answer left-to-right on a **stack**; before pushing `c`, pop while the stack top is "worse" than `c` **and** you still have removal budget. This is the greedy engine behind almost every *"delete/pick k characters to make the smallest / largest string"* problem.
+
+**Key Idea**: the result is compared **lexicographically**, so the **leftmost** digit dominates every digit after it. Therefore fixing an early position is always worth more than any gain later.
+
+**Why greedy is safe (exchange argument)**: if `d[i] > d[i+1]`, then deleting `d[i]` strictly lowers the number (the shorter prefix now starts with a smaller digit), while deleting anything later leaves that larger digit in a more significant position. So an optimal solution that keeps `d[i]` can be exchanged for one that deletes it without getting worse. Each digit is pushed/popped at most once ⇒ O(N).
+
+```text
+num = "1432219", k = 3
+
+c=1  stack=[1]
+c=4  stack=[1,4]
+c=3  4>3, pop 4 (k=2)      stack=[1,3]
+c=2  3>2, pop 3 (k=1)      stack=[1,2]
+c=2  2>2? no               stack=[1,2,2]
+c=1  2>1, pop 2 (k=0)      stack=[1,2,1]
+c=9  budget spent          stack=[1,2,1,9]  -> "1219"
+```
+
+```java
+// java
+// LC 402 - Remove K Digits
+// IDEA: GREEDY + MONOTONIC (non-decreasing) STACK — pop bigger digits while budget remains
+// time = O(N), space = O(N)
+public String removeKdigits(String num, int k) {
+    StringBuilder st = new StringBuilder();          // acts as the stack
+    for (char c : num.toCharArray()) {
+        while (k > 0 && st.length() > 0 && st.charAt(st.length() - 1) > c) {
+            st.deleteCharAt(st.length() - 1);        // a bigger digit sits in a MORE significant slot
+            k--;
+        }
+        st.append(c);
+    }
+    st.setLength(Math.max(0, st.length() - k));      // leftover budget -> chop from the tail (already increasing)
+
+    int i = 0;
+    while (i < st.length() && st.charAt(i) == '0') i++;   // strip leading zeros
+    String res = st.substring(i);
+    return res.isEmpty() ? "0" : res;
+}
+```
+
+```python
+# python
+# LC 402 - Remove K Digits
+# IDEA: GREEDY + MONOTONIC (non-decreasing) STACK — pop bigger digits while budget remains
+# time = O(N), space = O(N)
+class Solution(object):
+    def removeKdigits(self, num, k):
+        st = []
+        for c in num:
+            while k and st and st[-1] > c:
+                st.pop()          # bigger digit in a more significant slot -> drop it
+                k -= 1
+            st.append(c)
+        if k:
+            st = st[:-k]          # leftover budget -> chop the tail (stack is non-decreasing)
+        return ''.join(st).lstrip('0') or '0'
+```
+
+> ⚠️ **Two classic traps:** (1) leftover `k` after the loop — the stack is already non-decreasing so the *tail* is the most significant thing to drop; (2) leading zeros and the empty-result case → return `"0"`.
+
+**Variation — LC 316 Remove Duplicate Letters** *(twist: no fixed budget — you may only pop a char if it **reappears later**, and each char must appear exactly once)*
+
+```java
+// java
+// LC 316 - Remove Duplicate Letters
+// IDEA: monotonic stack, but pop only if the top char occurs again later; skip chars already in stack
+// time = O(N), space = O(1)  (26 slots)
+public String removeDuplicateLetters(String s) {
+    int[] last = new int[26];
+    for (int i = 0; i < s.length(); i++) last[s.charAt(i) - 'a'] = i;
+    boolean[] inStack = new boolean[26];
+    StringBuilder st = new StringBuilder();
+
+    for (int i = 0; i < s.length(); i++) {
+        char c = s.charAt(i);
+        if (inStack[c - 'a']) continue;                       // already placed, and placing it earlier is better
+        while (st.length() > 0 && st.charAt(st.length() - 1) > c
+                && last[st.charAt(st.length() - 1) - 'a'] > i) {   // safe: it comes back later
+            inStack[st.charAt(st.length() - 1) - 'a'] = false;
+            st.deleteCharAt(st.length() - 1);
+        }
+        st.append(c);
+        inStack[c - 'a'] = true;
+    }
+    return st.toString();
+}
+```
+
+```python
+# python
+# LC 316 - Remove Duplicate Letters
+# IDEA: monotonic stack; pop top only if it appears again later; skip chars already in stack
+# time = O(N), space = O(1)
+class Solution(object):
+    def removeDuplicateLetters(self, s):
+        last = {c: i for i, c in enumerate(s)}
+        st, in_st = [], set()
+        for i, c in enumerate(s):
+            if c in in_st:
+                continue
+            while st and st[-1] > c and last[st[-1]] > i:   # top reappears later -> safe to drop
+                in_st.remove(st.pop())
+            st.append(c)
+            in_st.add(c)
+        return ''.join(st)
+```
+
+**Variation — LC 738 Monotone Increasing Digits** *(twist: you cannot delete — you **borrow**: on a descent, decrement the left digit and flood everything after it with `9`; scan right→left so cascades like `100 → 99` are handled)*
+
+```java
+// java
+// LC 738 - Monotone Increasing Digits
+// IDEA: GREEDY right->left — on d[i-1] > d[i], borrow 1 from d[i-1] and mark everything from i as '9'
+// time = O(log N), space = O(log N)
+public int monotoneIncreasingDigits(int n) {
+    char[] d = String.valueOf(n).toCharArray();
+    int mark = d.length;                     // first index that becomes '9'
+    for (int i = d.length - 1; i > 0; i--) {
+        if (d[i - 1] > d[i]) { d[i - 1]--; mark = i; }   // right->left so 3-3-2 / 1-0-0 cascade correctly
+    }
+    for (int i = mark; i < d.length; i++) d[i] = '9';    // maximize the suffix
+    return Integer.parseInt(new String(d));
+}
+```
+
+```python
+# python
+# LC 738 - Monotone Increasing Digits
+# IDEA: GREEDY right->left — borrow on a descent, then flood the suffix with '9'
+# time = O(log N), space = O(log N)
+class Solution(object):
+    def monotoneIncreasingDigits(self, n):
+        d = list(str(n))
+        mark = len(d)
+        for i in range(len(d) - 1, 0, -1):
+            if d[i - 1] > d[i]:
+                d[i - 1] = str(int(d[i - 1]) - 1)
+                mark = i
+        for i in range(mark, len(d)):
+            d[i] = '9'
+        return int(''.join(d))
+```
+
+**Similar Problems:**
+| Problem | LC # | Twist vs LC 402 |
+|---------|------|-----------------|
+| Remove K Digits | 402 | Fixed budget `k`, minimize |
+| Remove Duplicate Letters | 316 | Budget = "char reappears later"; each char must appear once |
+| Monotone Increasing Digits | 738 | Borrow instead of delete; scan right→left |
+| Maximum Swap | 670 | Exactly **one** swap → for each digit, swap with the *last* occurrence of the largest digit to its right |
+| Create Maximum Number | 321 | Pick `k` from each of 2 arrays with this stack, then merge greedily |
+| Largest Number | 179 | Not a stack — greedy **custom comparator** `a+b vs b+a` |
+
+---
