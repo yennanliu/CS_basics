@@ -57,6 +57,7 @@
 
   "sheets": {
     "array":                            { "category": "Arrays & Strings", "tier": 5 },
+    "array_examples":                   { "category": "Arrays & Strings", "tier": 4, "title": "Array — Worked Examples" },
     "string":                           { "category": "Arrays & Strings", "tier": 5, "title": "Strings" },
     "2_pointers":                       { "category": "Arrays & Strings", "tier": 5, "title": "Two Pointers" },
     "sliding_window":                   { "category": "Arrays & Strings", "tier": 5 },
