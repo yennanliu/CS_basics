@@ -149,6 +149,56 @@ class Solution(object):
         return root
 ```
 
+**The same split, in Java** — a `HashMap` from value to in-order index turns the
+`inorder.index(...)` scan into O(1), which is what takes the whole build from O(n²) to O(n):
+
+```java
+// Java - Build Tree from Preorder and Inorder
+private int preIndex = 0;
+private Map<Integer, Integer> inorderMap = new HashMap<>();
+
+public TreeNode buildTree(int[] preorder, int[] inorder) {
+    for (int i = 0; i < inorder.length; i++) {
+        inorderMap.put(inorder[i], i);
+    }
+    return build(preorder, 0, inorder.length - 1);
+}
+
+private TreeNode build(int[] preorder, int left, int right) {
+    if (left > right) return null;
+
+    int rootVal = preorder[preIndex++];
+    TreeNode root = new TreeNode(rootVal);
+
+    int index = inorderMap.get(rootVal);
+
+    root.left = build(preorder, left, index - 1);
+    root.right = build(preorder, index + 1, right);
+
+    return root;
+}
+```
+
+**Inorder + postorder — LC 106.** The only change is where the root comes from: the *last*
+element of post-order instead of the first of pre-order, so the two child slices shift by one.
+
+```python
+def build_tree_post(inorder, postorder):
+    if not inorder or not postorder:
+        return None
+
+    # Last element in postorder is root
+    root_val = postorder[-1]
+    root = TreeNode(root_val)
+
+    root_index = inorder.index(root_val)
+
+    root.left = build_tree_post(inorder[:root_index], postorder[:root_index])
+    root.right = build_tree_post(inorder[root_index+1:], postorder[root_index:-1])
+
+    return root
+```
+
 ### 3) Construct Binary Tree from String — LC 536 (Recursive Descent Parsing) ⭐⭐⭐⭐
 
 > Reference: `leetcode_python/Tree/construct-binary-tree-from-string.py`
