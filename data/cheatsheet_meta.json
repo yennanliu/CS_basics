@@ -65,6 +65,7 @@
     "n_sum":                            { "category": "Arrays & Strings", "tier": 4, "title": "N Sum (2Sum → kSum)" },
     "palindrome":                       { "category": "Arrays & Strings", "tier": 4, "title": "Palindrome" },
     "matrix":                           { "category": "Arrays & Strings", "tier": 4, "title": "Matrix / 2D Grid" },
+    "matrix_examples":                  { "category": "Arrays & Strings", "tier": 4, "title": "Matrix — Worked Examples" },
     "2_pointers_examples":              { "category": "Arrays & Strings", "tier": 4 },
     "sliding_window_examples":          { "category": "Arrays & Strings", "tier": 4 },
     "sliding_window_advanced":          { "category": "Arrays & Strings", "tier": 4 },
