@@ -621,10 +621,13 @@ private int getDistance(TreeNode node, int target) {
     if (node == null) return -1;
     if (node.val == target) return 0;
 
+    /** NOTE !!! check left BEFORE recursing right -- this is the short-circuit the
+     *  walkthrough below describes. Evaluating both first still returns the right
+     *  answer, but it visits the whole right subtree after the target was found. */
     int leftDist = getDistance(node.left, target);
-    int rightDist = getDistance(node.right, target);
-
     if (leftDist != -1) return leftDist + 1;
+
+    int rightDist = getDistance(node.right, target);
     if (rightDist != -1) return rightDist + 1;
     return -1;
 }
@@ -673,14 +676,16 @@ class Solution:
         if root.val == target:
             return dist        # <-- found: dist = # edges from LCA to here
 
+        # NOTE !!! the right recursion is INSIDE the else path -- that is what makes
+        #          the short-circuit real. Calling both first and then testing `left`
+        #          walks the right subtree even when the target was already found.
         left = self.get_dist(root.left, target, dist + 1)
-        right = self.get_dist(root.right, target, dist + 1)
-
-        # If the left subtree found the target, pass that valid distance up
         if left != -1:
+            # left subtree found the target -- pass that valid distance up, skip right
             return left
-        # Otherwise return whatever the right subtree found (a valid dist, or -1)
-        return right
+
+        # Otherwise return whatever the right subtree finds (a valid dist, or -1)
+        return self.get_dist(root.right, target, dist + 1)
 ```
 
 **Why `-1` and not `0` for "not found"?**

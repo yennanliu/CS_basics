@@ -330,8 +330,10 @@ public boolean isSubtree(TreeNode root, TreeNode subRoot) {
     String rootPath = serialize(root);
     String subPath = serialize(subRoot);
 
-    // Check if subPath is substring of rootPath
-    return rootPath.contains("," + subPath + ",");
+    // NOTE !!! serialize() already wraps every node in commas, so subPath arrives
+    //          delimited on both sides. Adding another pair searches for ",,...,,"
+    //          and returns false even for root = [1], subRoot = [1].
+    return rootPath.contains(subPath);
 }
 
 private String serialize(TreeNode node) {
@@ -840,6 +842,7 @@ String serialize(TreeNode root){
     StringBuilder sb = new StringBuilder();
     serialize(root, sb);
     return sb.toString();
+}
 
 /* help func : put binary tree to StringBuilder */
 void serialize(TreeNode root, StringBuilder sb){
@@ -847,15 +850,13 @@ void serialize(TreeNode root, StringBuilder sb){
         sb.append(NULL).append(SEP);
         return;
     }
-}
 
-/********* pre-order traverse *********/
-sb.append(root.val).append(SEP);
-/**************************************/
+    /********* pre-order traverse *********/
+    sb.append(root.val).append(SEP);
+    /**************************************/
 
-
-serialize(root.left, sb);
-serialize(root.right, sb);
+    serialize(root.left, sb);
+    serialize(root.right, sb);
 }
 ``` 
 
@@ -1004,7 +1005,7 @@ TreeNode deserlialize(String data){
     String[] nodes = data.split(SEP);
 
     // root's value = 1st element's value
-    TreeNode root = new TreeNode(Integer.parseInt(node[0]));
+    TreeNode root = new TreeNode(Integer.parseInt(nodes[0]));
 
     // queue records parent node, put root into queue
     Queue<TreeNode> q = new LinkedList<>();

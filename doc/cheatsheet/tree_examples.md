@@ -39,6 +39,10 @@ patterns in [tree.md](./tree.md); the pattern itself is explained there and is n
 // LC 199
 List<Integer> res = new ArrayList<>();
 Queue<TreeNode> q = new LinkedList<>();
+/** NOTE !!! seed the queue -- without this the loop never runs and res comes back empty */
+if (root != null) {
+    q.offer(root);
+}
 while (!q.isEmpty()) {
     TreeNode rightSide = null;
     int qLen = q.size();
@@ -143,7 +147,10 @@ class Solution(object):
                 if tmp.right:
                     q.append([tmp.right, layer+1, idx*2+1])
         #print ("res = " + str(res))
-        _res = [max(res[x]) - min(res[x]) + 1 for x in list(res.keys()) if res[x] > 1]
+        # NOTE: res[x] is the LIST of indices on level x, so compare its LENGTH.
+        #       Every level contributes -- dropping single-node levels leaves max()
+        #       with an empty sequence on a one-node tree.
+        _res = [max(res[x]) - min(res[x]) + 1 for x in res if len(res[x]) >= 1]
         #print ("_res = " + str(_res))
         return max(_res)
 ```
@@ -296,8 +303,8 @@ public int countNodes(TreeNode root){
     int hr = 0;
 
     while (l != null){
-        l = l = left;
-        h1 += 1;
+        l = l.left;
+        hl += 1;
     }
 
     while (r != null){
@@ -912,7 +919,7 @@ q = [[layer, root]]
 res = []
 while q:
     # NOTE !!! FIFO, so we pop first added element (new element added at right hand side)
-    layer, tmp = root.pop(0)
+    layer, tmp = q.pop(0)      # NOTE: pop from the QUEUE, not from the tree node
     """
     KEY here !!!!
     """

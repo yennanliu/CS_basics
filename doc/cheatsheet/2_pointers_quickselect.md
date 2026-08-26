@@ -377,6 +377,11 @@ def findKthLargest_randomized(nums, k):
 ### Partition Algorithm Variants
 
 **1. Hoare Partition (Two-Pointer from Ends):**
+
+> ⚠️ It returns a **split boundary**, not the pivot's final index — `nums[j]` need not be the
+> pivot. So the `p == target` test that works with Lomuto is invalid here; narrow the window
+> instead (`target <= j` → `hi = j`, else `lo = j + 1`) and loop until `lo == hi`. See variant 3.
+
 ```python
 def partition_hoare(nums, left, right):
     """
