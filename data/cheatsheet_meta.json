@@ -161,6 +161,7 @@
     "greedy_examples":                  { "category": "Greedy & Intervals", "tier": 3, "title": "Greedy — Worked Examples" },
     "intervals":                        { "category": "Greedy & Intervals", "tier": 4 },
     "scanning_line":                    { "category": "Greedy & Intervals", "tier": 3, "title": "Sweep Line" },
+    "scanning_line_examples":           { "category": "Greedy & Intervals", "tier": 3, "title": "Sweep Line — Worked Examples" },
     "array_overlap_explaination":       { "category": "Greedy & Intervals", "tier": 2, "title": "Interval Overlap Predicate" },
 
     "segment_tree":                     { "category": "Range Queries & Advanced Structures", "tier": 3, "title": "Segment Tree" },
