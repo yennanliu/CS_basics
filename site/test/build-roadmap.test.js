@@ -213,41 +213,240 @@ test('validateGraph surfaces a redundant edge as an error', () => {
 
 // ── buildRoadmap ──────────────────────────────────────────────────────────
 
-test('buildRoadmap resolves problems and stamps the layout position', () => {
-  const problems = new Map([
-    ['1', { id: '1', title: 'Two Sum', url: 'u1', difficulty: 'Easy', solutions: { Java: 'j' }, section: 'Array' }],
-    ['2', { id: '2', title: 'Add Two', url: 'u2', difficulty: 'Medium', solutions: {}, section: 'Linked list' }]
-  ]);
-  const built = lib.buildRoadmap(
-    { meta: { title: 'T' }, nodes: [
-      { id: 'a', title: 'A', row: 0, prereqs: [], sheets: ['array'], problems: [1] },
-      { id: 'b', title: 'B', row: 1, prereqs: ['a'], sheets: [], problems: [1, 2] },
-      { id: 'c', title: 'C', row: 1, prereqs: ['a'], sheets: [], problems: [2] }
-    ] },
-    problems,
-    new Map([['array', 'Array']])
-  );
+// A three-topic graph plus one imported list, wired the way data/roadmap.json
+// is: the curated ids sit on the nodes, and the imported list is placed by
+// taxonomy. #9 exists only on the imported list, so it also covers a problem
+// this repo has no README row for.
+function scenario() {
+  return {
+    roadmap: {
+      meta: { title: 'T' },
+      defaultList: 'roadmap',
+      lists: [
+        { id: 'roadmap', label: 'Roadmap picks', from: 'curated' },
+        { id: 'tagged', label: 'Tagged', from: 'list:tagged', topicFrom: ['neetcode', 'readme'] },
+        { id: 'must', label: 'MUST', from: 'readme:must', topicFrom: ['readme'] }
+      ],
+      topicSources: {
+        neetcode: { 'Arrays & Hashing': 'a', 'Linked List': 'b', JavaScript: null },
+        leetcodePlan: {},
+        readme: { Array: 'a', 'Linked list': 'b', SQL: null }
+      },
+      nodes: [
+        { id: 'a', title: 'A', row: 0, prereqs: [], sheets: ['array'], problems: [1] },
+        { id: 'b', title: 'B', row: 1, prereqs: ['a'], sheets: [], problems: [1, 2] },
+        { id: 'c', title: 'C', row: 1, prereqs: ['a'], sheets: [], problems: [2] }
+      ]
+    },
+    readme: new Map([
+      ['1', { id: '1', title: 'Two Sum', url: 'u1', difficulty: 'Easy', solutions: { Java: 'j' }, section: 'Array', must: true }],
+      ['2', { id: '2', title: 'Add Two', url: 'u2', difficulty: 'Medium', solutions: {}, section: 'Linked list', must: false }],
+      ['7', { id: '7', title: 'Query', url: 'u7', difficulty: 'Hard', solutions: {}, section: 'SQL', must: true }]
+    ]),
+    listed: [
+      { id: '1', title: 'Two Sum', slug: 'two-sum', difficulty: 'Easy', groups: { neetcode: 'Arrays & Hashing' }, lists: ['tagged'] },
+      { id: '9', title: 'Nine', slug: 'nine', difficulty: 'Hard', groups: { neetcode: 'Linked List' }, lists: ['tagged'] },
+      { id: '8', title: 'Eight', slug: 'eight', difficulty: 'Easy', groups: { neetcode: 'JavaScript' }, lists: ['tagged'] }
+    ]
+  };
+}
 
+function buildScenario() {
+  const { roadmap, readme, listed } = scenario();
+  return lib.buildRoadmap(roadmap, readme, new Map([['array', 'Array']]), listed);
+}
+
+test('buildRoadmap stamps the layout position and resolves sheet titles', () => {
+  const built = buildScenario();
   assert.equal(built.meta.title, 'T');
+  assert.equal(built.defaultList, 'roadmap');
   assert.deepEqual(built.nodes.map(n => [n.row, n.col, n.rowSize]), [[0, 0, 1], [1, 0, 2], [1, 1, 2]]);
   assert.deepEqual(built.nodes[0].sheets, [{ slug: 'array', title: 'Array', url: 'cheatsheets/array.html' }]);
-  // The `section` field is README bookkeeping and has no business shipping.
-  assert.deepEqual(Object.keys(built.nodes[0].problems[0]).sort(),
-    ['difficulty', 'id', 'solutions', 'title', 'url']);
+});
+
+// The same problem sits on up to seven lists. Repeating its title, difficulty
+// and solution links on each would triple the payload, so nodes carry ids and
+// the records live once at the top level.
+test('buildRoadmap emits ids on the nodes and the records once', () => {
+  const built = buildScenario();
+  assert.deepEqual(built.nodes[0].lists.roadmap, ['1']);
+  assert.deepEqual(Object.keys(built.problems).sort((x, y) => Number(x) - Number(y)), ['1', '2', '9']);
+  // `section` and `must` are README bookkeeping and have no business shipping.
+  assert.deepEqual(Object.keys(built.problems['1']).sort(),
+    ['difficulty', 'solutions', 'title', 'url']);
 });
 
 // LC 323 is listed under both Graphs and Union Find. It is one problem to
 // solve, so the headline count must not double it.
-test('buildRoadmap counts a shared problem once, and its slots twice', () => {
-  const problems = new Map([['1', { id: '1', title: 'x', url: 'u', difficulty: 'Easy', solutions: {} }]]);
-  const built = lib.buildRoadmap({ nodes: [
-    { id: 'a', title: 'A', row: 0, problems: [1] },
-    { id: 'b', title: 'B', row: 1, prereqs: ['a'], problems: [1] }
-  ] }, problems);
-  assert.equal(built.stats.problems, 1);
-  assert.equal(built.stats.problemSlots, 2);
-  assert.equal(built.stats.topics, 2);
+test('buildRoadmap counts a shared problem once and its slots twice', () => {
+  const built = buildScenario();
+  const roadmapList = built.lists.find(l => l.id === 'roadmap');
+  // The curated list holds #1 twice (topics a and b) and #2 twice (b and c).
+  assert.equal(roadmapList.shown, 2);
+  assert.equal(roadmapList.slots, 4);
+  assert.equal(built.stats.topics, 3);
   assert.equal(built.stats.rows, 2);
+});
+
+test('buildRoadmap keeps the curated order but sorts an imported list by difficulty', () => {
+  const { roadmap, readme, listed } = scenario();
+  roadmap.nodes[1].problems = [2, 1];
+  listed.push({ id: '3', title: 'Three', slug: 'three', difficulty: 'Easy',
+                groups: { neetcode: 'Linked List' }, lists: ['tagged'] });
+  const built = lib.buildRoadmap(roadmap, readme, new Map(), listed);
+
+  assert.deepEqual(built.nodes[1].lists.roadmap, ['2', '1'], 'teaching order survives');
+  // Topic b gathers #9 (Hard) and #3 (Easy) from the imported list.
+  assert.deepEqual(built.nodes[1].lists.tagged, ['3', '9'], 'easiest first');
+});
+
+// A problem on an imported list that this repo has never solved still has to
+// render — with a LeetCode link built from the list's own slug.
+test('buildRoadmap falls back to the list data for a problem README lacks', () => {
+  const built = buildScenario();
+  assert.deepEqual(built.problems['9'], {
+    title: 'Nine',
+    url: 'https://leetcode.com/problems/nine/',
+    difficulty: 'Hard',
+    solutions: {}
+  });
+});
+
+test('buildRoadmap reports what a list could not place', () => {
+  const built = buildScenario();
+  const tagged = built.lists.find(l => l.id === 'tagged');
+  // #8 is a JavaScript-only exercise, mapped to null on purpose.
+  assert.equal(tagged.total, 3);
+  assert.equal(tagged.placed, 2);
+  assert.equal(tagged.dropped, 1);
+  assert.equal(tagged.curated, false);
+});
+
+// The curated list is the only one with a teaching order, and the page keys its
+// lock rendering off exactly this flag.
+test('buildRoadmap marks only the curated list as curated', () => {
+  const built = buildScenario();
+  assert.deepEqual(built.lists.map(l => [l.id, l.curated]),
+    [['roadmap', true], ['tagged', false], ['must', false]]);
+});
+
+// SQL maps to null, so a MUST-marked SQL problem is dropped rather than landing
+// in whatever topic happened to be first.
+test('buildRoadmap drops a problem whose section is deliberately unmapped', () => {
+  const built = buildScenario();
+  const must = built.lists.find(l => l.id === 'must');
+  assert.equal(must.total, 2, '#1 and #7 carry the marker');
+  assert.equal(must.shown, 1);
+  assert.equal(must.dropped, 1);
+  assert.ok(!built.problems['7'], 'and it never reaches the page');
+});
+
+// ── membersOf / resolveTopic ──────────────────────────────────────────────
+
+test('membersOf reads each kind of list from the right place', () => {
+  const { roadmap, readme, listed } = scenario();
+  const context = { roadmap, readme, listed };
+  assert.deepEqual([...lib.membersOf(roadmap.lists[0], context)].sort(), ['1', '2']);
+  assert.deepEqual([...lib.membersOf(roadmap.lists[1], context)].sort(), ['1', '8', '9']);
+  assert.deepEqual([...lib.membersOf(roadmap.lists[2], context)].sort(), ['1', '7']);
+});
+
+test('membersOf refuses a "from" it does not understand', () => {
+  const { roadmap, readme, listed } = scenario();
+  assert.throws(
+    () => lib.membersOf({ id: 'x', from: 'nonsense' }, { roadmap, readme, listed }),
+    /unrecognised "from"/
+  );
+});
+
+// LeetCode files ten of its Top 100 under a catch-all "Misc" group that maps to
+// nothing. Falling through to NeetCode's finer classification is what stops
+// them being dropped.
+test('resolveTopic falls through to the next taxonomy when one does not map', () => {
+  const { roadmap, readme, listed } = scenario();
+  const context = {
+    readme,
+    listedById: new Map(listed.map(p => [p.id, p])),
+    topicSources: Object.assign({}, roadmap.topicSources, { leetcodePlan: { Misc: null } })
+  };
+  context.listedById.get('9').groups.leetcodePlan = 'Misc';
+  assert.equal(lib.resolveTopic('9', ['leetcodePlan', 'neetcode'], context), 'b');
+  assert.equal(lib.resolveTopic('9', ['leetcodePlan'], context), null);
+});
+
+test('resolveTopic returns null when nothing places the problem', () => {
+  const { roadmap, readme, listed } = scenario();
+  const context = {
+    readme, listedById: new Map(listed.map(p => [p.id, p])), topicSources: roadmap.topicSources
+  };
+  assert.equal(lib.resolveTopic('8', ['neetcode', 'readme'], context), null);
+});
+
+// ── validateLists ─────────────────────────────────────────────────────────
+
+function listContext(overrides) {
+  const { roadmap, readme, listed } = scenario();
+  return { roadmap: Object.assign(roadmap, overrides || {}), listed, readme };
+}
+
+test('validateLists accepts the scenario as authored', () => {
+  const { roadmap, listed, readme } = listContext();
+  assert.deepEqual(lib.validateLists(roadmap, { listed, readme }), []);
+});
+
+// A taxonomy key nobody mapped would silently drop every problem filed under
+// it — a whole "Sliding Window" group vanishing with nothing to show for it.
+test('validateLists rejects a taxonomy key that nothing maps', () => {
+  const { roadmap, listed, readme } = listContext();
+  delete roadmap.topicSources.neetcode['Linked List'];
+  const errors = lib.validateLists(roadmap, { listed, readme });
+  assert.equal(errors.length, 1);
+  assert.match(errors[0], /does not map "Linked List"/);
+});
+
+test('validateLists rejects a mapping that points at an unknown topic', () => {
+  const { roadmap, listed, readme } = listContext();
+  roadmap.topicSources.readme.Array = 'ghost-topic';
+  const errors = lib.validateLists(roadmap, { listed, readme });
+  assert.equal(errors.length, 1);
+  assert.match(errors[0], /points at unknown topic "ghost-topic"/);
+});
+
+// A stale entry is the tell that an upstream category was renamed, which is
+// exactly when the other half of the pair goes missing too.
+test('validateLists rejects a mapping nothing uses', () => {
+  const { roadmap, listed, readme } = listContext();
+  roadmap.topicSources.neetcode['Old Name'] = 'a';
+  const errors = lib.validateLists(roadmap, { listed, readme });
+  assert.equal(errors.length, 1);
+  assert.match(errors[0], /maps "Old Name", which no problem uses/);
+});
+
+test('validateLists rejects a list whose flag no problem carries', () => {
+  const { roadmap, listed, readme } = listContext();
+  roadmap.lists[1].from = 'list:neverPublished';
+  const errors = lib.validateLists(roadmap, { listed, readme });
+  assert.ok(errors.some(e => /selects "neverPublished"/.test(e)));
+});
+
+test('validateLists rejects duplicate ids, bad "from" values and a stray default', () => {
+  const { listed, readme } = listContext();
+  const roadmap = {
+    defaultList: 'nowhere',
+    nodes: [{ id: 'a' }],
+    topicSources: { neetcode: {}, leetcodePlan: {}, readme: {} },
+    lists: [
+      { id: 'dup', label: 'One', from: 'curated' },
+      { id: 'dup', label: 'Two', from: 'sideways' },
+      { id: 'noTopics', label: 'Three', from: 'readme:must' }
+    ]
+  };
+  const errors = lib.validateLists(roadmap, { listed: [], readme: new Map() });
+  assert.ok(errors.some(e => /duplicate list id "dup"/.test(e)));
+  assert.ok(errors.some(e => /unrecognised "from"/.test(e)));
+  assert.ok(errors.some(e => /needs a "topicFrom"/.test(e)));
+  assert.ok(errors.some(e => /defaultList "nowhere"/.test(e)));
+  assert.ok(listed && readme);
 });
 
 // ── buildSheetTitles ──────────────────────────────────────────────────────
@@ -269,27 +468,74 @@ test('buildSheetTitles prefers the meta override, then the H1, and skips the tem
 
 // data/roadmap.json is hand-authored, so the checks above only pay off if they
 // actually run against it. This is the same gate site/build-roadmap.js applies.
-test('the checked-in roadmap passes every validation against the real README', () => {
+function realInputs() {
   const roadmap = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/roadmap.json'), 'utf8'));
   const problems = lib.parseReadmeProblems(fs.readFileSync(path.join(ROOT, 'README.md'), 'utf8'));
   const sheetTitles = lib.buildSheetTitles(
     path.join(ROOT, 'doc/cheatsheet'),
     JSON.parse(fs.readFileSync(path.join(ROOT, 'data/cheatsheet_meta.json'), 'utf8'))
   );
-  const errors = lib.validateGraph(roadmap.nodes, {
+  const listed = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/problem_lists.json'), 'utf8')).problems;
+  return { roadmap, problems, sheetTitles, listed };
+}
+
+test('the checked-in roadmap passes every validation against the real inputs', () => {
+  const { roadmap, problems, sheetTitles, listed } = realInputs();
+  assert.deepEqual(lib.validateGraph(roadmap.nodes, {
     problems,
     sheetSlugs: new Set(sheetTitles.keys())
-  });
-  assert.deepEqual(errors, []);
+  }), []);
+  assert.deepEqual(lib.validateLists(roadmap, { listed, readme: problems }), []);
+});
 
-  // Every roadmap problem should link to a solution in this repo — that link is
-  // the whole reason the roadmap reads from README instead of a curated list.
-  const built = lib.buildRoadmap(roadmap, problems, sheetTitles);
+test('every problem on the curated path links to a solution in this repo', () => {
+  const { roadmap, problems, sheetTitles, listed } = realInputs();
+  const built = lib.buildRoadmap(roadmap, problems, sheetTitles, listed);
+  // That link is the whole reason the curated list is drawn from README rather
+  // than from an imported set — the imported ones reach further and are
+  // allowed to include problems this repo has not solved.
   const unlinked = [];
-  built.nodes.forEach(node => node.problems.forEach(p => {
-    if (!Object.keys(p.solutions).length) unlinked.push(`${node.id} #${p.id}`);
+  built.nodes.forEach(node => node.lists.roadmap.forEach(id => {
+    if (!Object.keys(built.problems[id].solutions).length) unlinked.push(`${node.id} #${id}`);
   }));
   assert.deepEqual(unlinked, []);
+});
+
+// The whole point of the picker. A list that placed almost nothing means its
+// taxonomy mapping is broken, and the page would show a graph of empty boxes.
+test('every list places nearly all of its problems onto topics', () => {
+  const { roadmap, problems, sheetTitles, listed } = realInputs();
+  const built = lib.buildRoadmap(roadmap, problems, sheetTitles, listed);
+
+  const thin = built.lists.filter(list => list.shown < list.total * 0.95);
+  assert.deepEqual(thin.map(l => `${l.id}: ${l.shown}/${l.total}`), []);
+
+  // Every list must reach the page with something in it.
+  assert.deepEqual(built.lists.filter(l => !l.shown).map(l => l.id), []);
+});
+
+/**
+ * The MUST marker is the repo's own, and `script/extract_must_lc.py` owns its
+ * definition. parseReadmeProblems reimplements that rule in JS, so this pins
+ * the two together against `doc/must_lc_list.md`, which the script generates.
+ *
+ * Checked in one direction only. The doc is a checked-in snapshot that goes
+ * stale whenever README gains a marker and nobody re-runs the script — it is
+ * currently one problem behind, which says nothing about this build. What must
+ * never happen is the reverse: a problem the script found that the roadmap
+ * misses would mean the JS rule had quietly narrowed.
+ */
+test('the MUST list contains everything script/extract_must_lc.py found', () => {
+  const doc = path.join(ROOT, 'doc/must_lc_list.md');
+  if (!fs.existsSync(doc)) return; // the generated doc is optional
+  const fromDoc = [...fs.readFileSync(doc, 'utf8').matchAll(/^\| *(\d+) *\|/gm)]
+    .map(m => String(Number(m[1])));
+  assert.ok(fromDoc.length > 100, 'the doc parsed to something usable');
+
+  const { problems } = realInputs();
+  const fromBuild = new Set([...problems.values()].filter(p => p.must).map(p => p.id));
+  assert.deepEqual(fromDoc.filter(id => !fromBuild.has(id)), [],
+    'the JS MUST rule has drifted narrower than script/extract_must_lc.py');
 });
 
 // The page reads `roadmap.nodes[].prereqs` to decide what is unlocked, so a

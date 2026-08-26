@@ -6,6 +6,147 @@
     "intro": "A dependency graph over the topics in this repo. Start at the top, unlock a topic once its prerequisites are done, and tick problems off as you solve them — progress is stored in your browser."
   },
 
+  "_lists_comment": "The problem sets the page's dropdown offers. `from` says where membership comes from: `curated` = the ids on the nodes below; `list:<flag>` = a flag in data/problem_lists.json (refresh with script/fetch_problem_lists.py); `readme:<field>` = a marker in README.md's own tables. `topicFrom` names the taxonomies, in order, that decide which topic each problem lands in — the first one that maps wins, so a coarse source can fall through to a finer one.",
+
+  "defaultList": "roadmap",
+
+  "lists": [
+    {
+      "id": "roadmap",
+      "label": "Roadmap picks",
+      "blurb": "The curated path — a handful of problems per topic, in teaching order.",
+      "from": "curated"
+    },
+    {
+      "id": "blind75",
+      "label": "Blind 75",
+      "blurb": "The original Blind list: 75 problems chosen for coverage, not volume.",
+      "from": "list:blind75",
+      "topicFrom": ["neetcode", "readme"]
+    },
+    {
+      "id": "neetcode150",
+      "label": "NeetCode 150",
+      "blurb": "Blind 75 widened to 150 — the usual full-coverage target.",
+      "from": "list:neetcode150",
+      "topicFrom": ["neetcode", "readme"]
+    },
+    {
+      "id": "neetcode250",
+      "label": "NeetCode 250",
+      "blurb": "NeetCode 150 plus 100 more, for a second pass on the weaker patterns.",
+      "from": "list:neetcode250",
+      "topicFrom": ["neetcode", "readme"]
+    },
+    {
+      "id": "neetcodeAll",
+      "label": "NeetCode (all)",
+      "blurb": "Everything NeetCode has filed under a pattern. Far more than an interview loop needs.",
+      "from": "list:neetcodeAll",
+      "topicFrom": ["neetcode", "readme"]
+    },
+    {
+      "id": "top100liked",
+      "label": "LC Top 100 Liked",
+      "blurb": "LeetCode's own most-liked study plan.",
+      "from": "list:top100liked",
+      "topicFrom": ["leetcodePlan", "neetcode", "readme"]
+    },
+    {
+      "id": "google",
+      "label": "Google-tagged",
+      "blurb": "Every problem this repo's README tags `google`.",
+      "from": "readme:google",
+      "topicFrom": ["readme", "neetcode"]
+    },
+    {
+      "id": "must",
+      "label": "MUST",
+      "blurb": "The repo's own must-know marker — the same set as doc/must_lc_list.md.",
+      "from": "readme:must",
+      "topicFrom": ["readme", "neetcode"]
+    }
+  ],
+
+  "_topicSources_comment": "Each source files problems under its own taxonomy; these maps put them on roadmap topics. `null` means \"deliberately not on the roadmap\" (SQL, shell, JavaScript-only exercises). The build fails on a key that is missing, points at an unknown topic, or is mapped but unused — so a new upstream category cannot silently drop a whole group of problems.",
+
+  "topicSources": {
+    "neetcode": {
+      "Arrays & Hashing": "arrays-hashing",
+      "Two Pointers": "two-pointers",
+      "Sliding Window": "sliding-window",
+      "Stack": "stack",
+      "Binary Search": "binary-search",
+      "Linked List": "linked-list",
+      "Trees": "trees",
+      "Tries": "tries",
+      "Heap / Priority Queue": "heap",
+      "Backtracking": "backtracking",
+      "Graphs": "graphs",
+      "Advanced Graphs": "advanced-graphs",
+      "1-D Dynamic Programming": "dp-1d",
+      "2-D Dynamic Programming": "dp-2d",
+      "Greedy": "greedy",
+      "Intervals": "intervals",
+      "Math & Geometry": "math",
+      "Bit Manipulation": "bit-manipulation",
+      "JavaScript": null
+    },
+
+    "leetcodePlan": {
+      "Hashing": "arrays-hashing",
+      "Two Pointers": "two-pointers",
+      "Sliding Window": "sliding-window",
+      "Stack": "stack",
+      "Binary Search": "binary-search",
+      "Linked Lists": "linked-list",
+      "Binary Tree": "trees",
+      "Trie": "tries",
+      "Heap": "heap",
+      "Backtracking": "backtracking",
+      "Graph": "graphs",
+      "Dynamic Programming": "dp-1d",
+      "Greedy": "greedy",
+      "Matrix": "matrix",
+      "Misc": null
+    },
+
+    "readme": {
+      "Array": "arrays-hashing",
+      "Set": "arrays-hashing",
+      "Hash Table": "arrays-hashing",
+      "String": "arrays-hashing",
+      "Slide Window": "sliding-window",
+      "Two Pointers": "two-pointers",
+      "Prefix Sum": "prefix-sum",
+      "Stack": "stack",
+      "Queue": "stack",
+      "Linked list": "linked-list",
+      "Tree": "trees",
+      "Binary Search Tree": "trees",
+      "Heap": "heap",
+      "Binary Heap": "heap",
+      "Binary Search": "binary-search",
+      "Sort": "sorting",
+      "Recursion": "backtracking",
+      "Backtracking": "backtracking",
+      "Breadth-First Search": "graphs",
+      "Depth-First Search": "graphs",
+      "Graph": "graphs",
+      "Dynamic Programming": "dp-1d",
+      "Greedy": "greedy",
+      "Scan Line": "intervals",
+      "Design": "design",
+      "Math": "math",
+      "Geometry": "math",
+      "Bit Manipulation": "bit-manipulation",
+      "Simulation": null,
+      "Concurrency": null,
+      "SQL": null,
+      "Shell Script": null
+    }
+  },
+
   "nodes": [
     {
       "id": "arrays-hashing",
