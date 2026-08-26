@@ -29,7 +29,7 @@ and the code is a by-product of it:
 |---|---|---|
 | 206 | Reverse Linked List | it *is* the basic operation — [1-1-1) / 1-1-2)](./linked_list.md#1-1-1-reverse-linked-list-iteration--lc-206) |
 | 19 | Remove Nth Node From End | the dummy-node case analysis is the point — [Why Dummy Node?](./linked_list.md#why-dummy-node-visual-comparison-lc-19). Only the two Java forms are below |
-| 92 | Reverse Linked List II | the Python form is the reverse-k helper applied once — [Reverse K Nodes Helper Pattern](./linked_list.md#reverse-k-nodes-helper-pattern). Only the inline Java is below |
+| 92 | Reverse Linked List II | the Python form is the reverse-k helper applied once — [Reverse K Nodes Helper Pattern](./linked_list.md#reverse-k-nodes-helper-pattern-). Only the inline Java is below |
 
 
 ## Reversal & Reordering
@@ -38,7 +38,7 @@ and the code is a by-product of it:
 
 > **Core idea**: *locate* the node before position `left`, *reverse* `right - left + 1`
 > nodes, then *reconnect* both boundaries. The Python form is the
-> [Reverse K Nodes Helper Pattern](./linked_list.md#reverse-k-nodes-helper-pattern) in the
+> [Reverse K Nodes Helper Pattern](./linked_list.md#reverse-k-nodes-helper-pattern-) in the
 > parent sheet; the Java below is the same walk written inline, without the helper.
 
 ```java

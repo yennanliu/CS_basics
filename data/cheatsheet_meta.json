@@ -164,6 +164,8 @@
     "combinatorics_math_patterns":      { "category": "Math & Bits", "tier": 2, "title": "Combinatorics & Number Theory" },
 
     "design":                           { "category": "Design & Simulation", "tier": 4, "title": "Design (LC \"Design a X\")" },
+    "design_examples":                  { "category": "Design & Simulation", "tier": 4, "title": "Design — Worked Examples" },
+    "design_patterns":                  { "category": "Design & Simulation", "tier": 3, "title": "System Design Coding Patterns" },
     "ood_design":                       { "category": "Design & Simulation", "tier": 4, "title": "OOD / Low-Level Design" },
     "iterator":                         { "category": "Design & Simulation", "tier": 3 },
     "advanced_simulation":              { "category": "Design & Simulation", "tier": 2, "title": "Simulation" },
