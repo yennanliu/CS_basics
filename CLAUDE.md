@@ -25,7 +25,9 @@ CS_basics is a comprehensive computer science fundamentals repository containing
   - `build.sh` - **The** build recipe: builds the whole `_site/` tree. Both workflows call it
   - `build-site.js` - Builds HTML pages from markdown docs
   - `build-leetcode.js` - Generates LeetCode JSON data for the LC Explorer
-  - `pages/` - Hand-maintained static pages (LC Explorer/Similar/Review-Plan/Random-Picker, 404)
+  - `build-roadmap.js` - Resolves [`data/roadmap.json`](data/roadmap.json) against `README.md` into the Study Roadmap's data; fails the build on a bad topic id, cheatsheet slug or LC number
+  - `pages/` - Hand-maintained static pages (LC Explorer/Similar/Review-Plan/Random-Picker/Roadmap, 404)
+  - `nav.js` / `roadmap.js` - Browser scripts copied to `_site/`; unit-tested under `site/test/`
   - `style.css` - Site stylesheet
   - `package.json` / `package-lock.json` - Node.js dependencies (markdown-it, highlight.js)
 
@@ -153,6 +155,30 @@ A new `doc/cheatsheet/*.md` must also get an entry in [`data/cheatsheet_meta.jso
 - `title` — only when the H1 is too long or too literal for a card.
 - `kind` — `"stub"` for a redirect file, `"reference"` for an imported index. Omit for a normal sheet.
 - Add it to `startHere` only if it belongs in the beginner reading ladder.
+
+### Adding a topic to the Study Roadmap
+
+The roadmap page (`lc-roadmap.html`) is driven entirely by [`data/roadmap.json`](data/roadmap.json) — one entry per topic:
+
+```json
+{
+  "id": "monotonic-stack",
+  "title": "Monotonic Stack",
+  "row": 2,
+  "prereqs": ["stack"],
+  "sheets": ["monotonic_stack", "monotonic_queue"],
+  "blurb": "One sentence on what the topic buys you.",
+  "problems": [496, 503, 85, 901, 907]
+}
+```
+
+Titles, difficulty and links to this repo's solutions come from `README.md` at build time — never repeat them here. `site/build-roadmap.js` fails the build if:
+
+- a `problems` id is not in a README table, or a `sheets` slug is not a file in `doc/cheatsheet/`;
+- `row` is not strictly greater than every prereq's `row` (edges must point downward);
+- the prereqs contain a cycle, or an edge the graph **already implies** — the roadmap has to stay a transitive reduction, or the drawing turns into spaghetti.
+
+Within a row, topics are drawn in the order they appear in the file, so put a topic near the column its prerequisite sits in to keep the edges short.
 
 ### Formatting Rules
 

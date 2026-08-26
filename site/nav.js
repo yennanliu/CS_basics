@@ -35,23 +35,29 @@
 
   // Entries rendered inline in the bar.
   var PRIMARY = [
-    { id: 'home',             label: 'home',        href: 'index.html' },
-    { id: 'search',           label: 'search',      href: 'search.html' },
-    { id: 'cheatsheets',      label: 'cheatsheets', href: 'cheatsheets.html' },
-    { id: 'faqs',             label: 'faqs',        href: 'faqs.html' },
-    { id: 'lc-explorer',      label: 'lc-explorer', href: 'lc-explorer.html' },
-    { id: 'lc-random-picker', label: 'random',      href: 'lc-random-picker.html' },
-    { id: 'visualizer',       label: 'visualizer',  href: 'algo_demo/index.html' }
+    { id: 'home',        label: 'home',        href: 'index.html' },
+    { id: 'search',      label: 'search',      href: 'search.html' },
+    { id: 'lc-roadmap',  label: 'roadmap',     href: 'lc-roadmap.html' },
+    { id: 'cheatsheets', label: 'cheatsheets', href: 'cheatsheets.html' },
+    { id: 'faqs',        label: 'faqs',        href: 'faqs.html' },
+    { id: 'lc-explorer', label: 'lc-explorer', href: 'lc-explorer.html' },
+    { id: 'visualizer',  label: 'visualizer',  href: 'algo_demo/index.html' }
   ];
 
   // Secondary entries, collapsed behind the "more" dropdown. The button lights
   // up when the current page is one of them, so the trail survives collapsing.
+  //
+  // The inline row is capacity-bound, not preference-bound: eight entries
+  // overflow the bar between 768px and 1024px. The roadmap took the slot the
+  // random picker held, since the picker's siblings (similar, review) already
+  // live down here.
   var MORE = [
-    { id: 'patterns',       label: 'patterns',  href: 'patterns.html' },
-    { id: 'lc-similar',     label: 'similar',   href: 'lc-similar.html' },
-    { id: 'lc-review-plan', label: 'review',    href: 'lc-review-plan.html' },
-    { id: 'resources',      label: 'resources', href: 'resources.html' },
-    { id: 'github',         label: 'github',    href: 'https://github.com/yennanliu/CS_basics', external: true }
+    { id: 'patterns',         label: 'patterns',  href: 'patterns.html' },
+    { id: 'lc-similar',       label: 'similar',   href: 'lc-similar.html' },
+    { id: 'lc-review-plan',   label: 'review',    href: 'lc-review-plan.html' },
+    { id: 'lc-random-picker', label: 'random',    href: 'lc-random-picker.html' },
+    { id: 'resources',        label: 'resources', href: 'resources.html' },
+    { id: 'github',           label: 'github',    href: 'https://github.com/yennanliu/CS_basics', external: true }
   ];
 
   // ── Markup ──────────────────────────────────────────────────────────────
