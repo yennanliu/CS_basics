@@ -482,7 +482,7 @@ class linkedistToStack(object):
 
     def pop(self):
         top = self.top
-        is self.isEmpty():
+        if self.isEmpty():
             print ('stack is blank')
             return -1 
         else:
@@ -508,7 +508,7 @@ class Solution(object):
         result = []
         idx1, idx2, carry = len(num1), len(num2), 0 
         while idx1 or idx2 or carry: # while there is still non-add digit in num1, and num2; or there is non-zero carry 
-            digit = carry:
+            digit = carry
             if idx1:
                 idx1 -= 1 # add from rightest digit (inverse from num1 )
                 digit += int(num1[idx1])

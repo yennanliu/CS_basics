@@ -78,7 +78,7 @@ func_to_decorate()
 
 - The idea of generators is to calculate a series of results one-by-one on demand (on the fly). In the simplest case, a generator can be used as a list, where each element is calculated lazily. Lets compare a list and a generator that do the same thing - return powers of two:
 
-```python 
+```text
 
 >>> # First, we define a list
 >>> the_list = [2**x for x in range(5)]

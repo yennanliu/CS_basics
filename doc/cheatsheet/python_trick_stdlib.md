@@ -705,7 +705,7 @@ def containsNearbyAlmostDuplicate(nums, indexDiff, valueDiff):
 ### `bisect_left` and `bisect_right`
 
 - algorithm for `NOT sorting an array eveytime` whenever there is a new inserted element 
-```python
+```text
 # https://docs.python.org/zh-tw/3/library/bisect.html
 # src code : https://github.com/python/cpython/blob/3.10/Lib/bisect.py
 # https://myapollo.com.tw/zh-tw/python-bisect/
@@ -942,7 +942,7 @@ def maxSlidingWindow(nums, k):
 
 ### `itertools` — product, permutations, combinations, accumulate
 
-```python
+```text
 # https://docs.python.org/zh-cn/3/library/itertools.html
 # https://docs.python.org/zh-tw/3/library/itertools.html
 

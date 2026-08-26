@@ -58,7 +58,7 @@ class Solution(object):
 > **Dropped as a duplicate**: `str_2_int_v2` — the same digit accumulation written as `(res + int(i) % 10) * 10` then divided back down.
 
 - String -> Int
-```python
+```text
 # 445 Add Two Numbers II
 # 394 Decode String
 def str_2_int(x):

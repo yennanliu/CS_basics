@@ -192,14 +192,19 @@ def helper(node):
 In LC 298 (and every "longest run of X" tree problem) a broken streak must **restart at 1**, never terminate the recursion:
 
 ```python
-# ✅ correct - streak breaks, but keep exploring
-else:
-    curr_len = 1
-    dfs(node.left, node, curr_len)
+def dfs(node, parent, curr_len):
+    if node is None:
+        return
+    if parent and node.val == parent.val + 1:
+        curr_len += 1
+    # ✅ correct - streak breaks, but keep exploring
+    else:
+        curr_len = 1
+        dfs(node.left, node, curr_len)
 
-# 🚫 wrong - a longer streak may start deeper in this same subtree
-else:
-    return
+    # 🚫 wrong - a longer streak may start deeper in this same subtree
+    # else:
+    #     return
 ```
 
 Verified on 4000 random trees: Styles A, B and C agree with brute force on every case, including the zigzag tree below — the path `1→2→3→4` alternates left/right and is still valid, because **the only rule is parent → child**.

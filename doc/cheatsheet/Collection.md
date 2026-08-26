@@ -120,7 +120,7 @@ Out[94]: Counter({1: 2, 2: 1})
 ```
 
 #### 1-5) `OrderedDict` ( hashmap + linked list) — LC 146
-```python
+```text
 # LC 146 LRU Cache
 
 # There is a structure called ordered dictionary, it combines behind both hashmap and linked list. In Python this structure is called OrderedDict and in Java LinkedHashMap.

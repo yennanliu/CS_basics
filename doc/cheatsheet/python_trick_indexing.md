@@ -23,7 +23,7 @@ a list, and index distance vs element count — are about the same thing from op
 
 ### Insert into a list, in place ⭐⭐⭐⭐⭐
 
-```python
+```text
 
 # syntax : 
 # arr.insert(<index>,<value>)
@@ -294,7 +294,7 @@ Out[6]: [-1, 0, 1, 2, 3]
 
 ### Moving an element to the rightmost / leftmost position
 
-```python
+```text
 # LC 146 LRU Cache
 In [18]: x
 Out[18]: [1, 3, 2]

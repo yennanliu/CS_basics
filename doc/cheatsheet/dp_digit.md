@@ -603,7 +603,7 @@ from functools import lru_cache
 
 @lru_cache(None)
 def dp(pos, tight, state):
-    # ...
+    ...        # the per-problem transition goes here
 ```
 
 **6. Talking Points:**
