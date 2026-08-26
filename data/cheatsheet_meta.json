@@ -169,6 +169,7 @@
 
     "math":                             { "category": "Math & Bits", "tier": 3 },
     "bit_manipulation":                 { "category": "Math & Bits", "tier": 3 },
+    "bit_manipulation_examples":        { "category": "Math & Bits", "tier": 3, "title": "Bit Manipulation — Worked Examples" },
     "combinatorics_math_patterns":      { "category": "Math & Bits", "tier": 2, "title": "Combinatorics & Number Theory" },
 
     "design":                           { "category": "Design & Simulation", "tier": 4, "title": "Design (LC \"Design a X\")" },
