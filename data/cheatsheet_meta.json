@@ -124,6 +124,7 @@
     "topology_sorting":                 { "category": "Graphs", "tier": 4, "title": "Topological Sort" },
     "topology_sorting_examples":        { "category": "Graphs", "tier": 4, "title": "Topological Sorting — Worked Examples" },
     "union_find":                       { "category": "Graphs", "tier": 4, "title": "Union Find (Disjoint Set)" },
+    "union_find_examples":              { "category": "Graphs", "tier": 3, "title": "Union Find — Worked Examples" },
     "Dijkstra":                         { "category": "Graphs", "tier": 4 },
     "Dijkstra_examples":                { "category": "Graphs", "tier": 4, "title": "Dijkstra — Worked Examples" },
     "shortest_path_comparison":         { "category": "Graphs", "tier": 3, "title": "Shortest Path — Which Algorithm?" },
