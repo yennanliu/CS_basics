@@ -215,15 +215,47 @@ Re-measured at the end of Tier 2 — **12 sheets, 18,012 lines, none over 1,882*
 - **The duplication hot spots are `union_find` (18 distinct LC numbers in more than one `###` heading) and `scanning_line` (15)** — both worse than `prefix_sum`'s 14, which was the worst measured before this pass. `monotonic_stack` at 11 is not the leader this plan expected.
 - **`greedy`, `bit_manipulation` and `binary_indexed_tree` are 83–93% example tail.** At those shares "dedup only" is the wrong instruction: what is left after Rule 2 is a sheet that is almost entirely worked solutions, so they want the same parent/satellite split the earlier tiers used, not a trim.
 
+#### What Tier 3 delivered
+
+Seven of the twelve were changed; five were measured and deliberately left.
+
+| file | before | after | satellite |
+|---|---:|---:|---|
+| `union_find` | 1,882 | 569 | `union_find_examples` 1,296 |
+| `scanning_line` | 1,797 | 1,115 | `scanning_line_examples` 678 |
+| `trie` | 1,792 | 1,161 | `trie_examples` 678 |
+| `greedy` | 1,660 | 579 | `greedy_examples` 1,136 |
+| `set` | 1,381 | 487 | `set_examples` 946 |
+| `bit_manipulation` | 1,289 | 603 | `bit_manipulation_examples` 740 |
+| `binary_indexed_tree` | 786 | 810 | *(restructured, not split)* |
+
+The two that argued with the plan's assumptions:
+
+- **`binary_indexed_tree` was not split.** 93% example tail on a 786-line file would have left a
+  ~150-line stub. Three of its "examples" were the sheet's only teaching material — the BIT class,
+  the `i & -i` mechanics, and the BIT-over-positions technique — so moving those into a real
+  Templates section took the tail to 59% without inventing a satellite.
+- **`union_find` and `scanning_line`'s duplicate-LC counts were mostly index mentions.** Checked
+  block by block on normalised code, `union_find` had one byte-identical pair (LC 865) plus three
+  patterns re-solving problems the examples already covered, and `scanning_line` had exactly one
+  (LC 1124). The other pairs are different implementations and both survive.
+
+**Left alone, with the reason:** `monotonic_stack` (55% tail), `segment_tree` (53%),
+`intervals` (39%), `sort` (28%) and `math` (12%) have **zero** identical code blocks between
+sections. There is nothing to dedup, and none is over the ~60% tail share that justified the
+splits above. `monotonic_stack` shares 16 LC numbers with `stack_examples.md`, which is a
+cross-file call, not a Tier 3 one.
+
 ### No action
 
 The ~30 sheets under ~1,200 lines that are already right: `knapsack.md`, `kadane_algorithm.md`, `palindrome.md`, `hashing.md`, `dp_string.md`, `dp_digit.md`, `dp_bitmask.md`, `dp_monotonic_stack.md`, `monotonic_queue.md`, `iterator.md`, `n_sum.md`, `add_x_sum.md`, `difference_array.md`, `complexity_*`, `Bellman-Ford.md`, `Floyd-Warshall.md`, `shortest_path_comparison.md`, `string_matching_kmp_rolling_hash.md`, `python_gotchas.md`, `ood_design.md`, `concurrency_patterns.md`, `diff_toposort_quickunion.md`, `array_overlap_explaination.md`, `recursion.md`, `recursion_to_dp.md`, `advanced_*`, `streaming_algorithms.md`, `knapsack_01_zh.md`, `tree_backtrack.md`.
 
 ### Carried forward from Tier 2
 
-- **Cross-file consolidation — the phase every tier feeds and none finishes.** The first named item is now measured: **`tree.md` and `tree2.md` both hold traversal templates**, and on normalised code `tree.md`'s Level-Order template and `tree2.md`'s `1.4)` are identical statement for statement, LC 987 shares 70%, and preorder / inorder / postorder share 48–59% each. Resolving it means deciding which of the two sheets owns traversal templates at all. Other hard numbers, re-measured at the end of Tier 2: one LC 449 code block is byte-identical between `bst_examples` and `dfs_examples`; LC 701 is duplicated in both languages; LC 98 is named in 9 sheets and LC 49 in 9; `monotonic_stack.md` and `stack_examples.md` share 16 LC numbers. The LC-name counts include index and table mentions, so they bound the work rather than measure it — each pair needs the same before/after check the Tier 2 batches used.
+- **Cross-file consolidation — the phase every tier feeds and none finishes.** Its first item is **done**: `tree.md` and `tree2.md` both held traversal templates and their Scope lines contradicted each other about it. tree2 owns templates now; tree.md owns the choice of traversal plus the techniques that are not per-pattern templates. Remaining hard numbers, re-measured at the end of Tier 2: one LC 449 code block is byte-identical between `bst_examples` and `dfs_examples`; LC 701 is duplicated in both languages; LC 98 is named in 9 sheets and LC 49 in 9; `monotonic_stack.md` and `stack_examples.md` share 16 LC numbers. The LC-name counts include index and table mentions, so they bound the work rather than measure it — each pair needs the same before/after check the Tier 2 batches used.
 - **`array.md`'s `1-1-5) Sort Array` and `1-1-6) Flatten Array`** — 270 lines of language-level array operations that may belong with `sort.md`. Left in place deliberately; it is a cross-file call.
-- **32 unparseable Python blocks** across the corpus's 1,648, found by an `ast.parse` sweep after the PR #114 correctness pass. None is in that review's finding list; they are schematics, excerpts and fragments tagged ` ```python ` that do not stand alone. Either make them parse or caption them as outlines, per contract item 3.
+- **`monotonic_stack.md` and `stack_examples.md` share 16 LC numbers** — the next cross-file pair after the tree one, and the largest remaining.
+- **`time = O(...)` coverage is 47%** of 2,889 Java/Python blocks of four lines or more — up from the review's 35%, which Tier 1 and Tier 2 moved. The metric over-counts: `java_trick` and `python_trick` sit near 0% and should, since a complexity note on `Arrays.asList(...)` is noise. The gap that matters is algorithm sheets — `dfs` 13%, `graph` 13%, `linked_list` 14%, `tree` 17%, `bst` 21%, `hash_map` 21% are the tier-5 sheets still under a quarter covered. `backtrack` was 0% and is now 27 of 29.
 
 ### Still open from the Aug review
 
