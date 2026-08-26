@@ -158,6 +158,7 @@
     "dp_digit":                         { "category": "Dynamic Programming & Recursion", "tier": 2, "title": "Digit DP" },
 
     "greedy":                           { "category": "Greedy & Intervals", "tier": 4, "title": "Greedy Algorithms" },
+    "greedy_examples":                  { "category": "Greedy & Intervals", "tier": 3, "title": "Greedy — Worked Examples" },
     "intervals":                        { "category": "Greedy & Intervals", "tier": 4 },
     "scanning_line":                    { "category": "Greedy & Intervals", "tier": 3, "title": "Sweep Line" },
     "array_overlap_explaination":       { "category": "Greedy & Intervals", "tier": 2, "title": "Interval Overlap Predicate" },
