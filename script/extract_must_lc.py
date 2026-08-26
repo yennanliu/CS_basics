@@ -70,8 +70,13 @@ def parse(readme_path):
         if not re.match(r"^\d+$", num):
             continue  # skip non-data rows (separators, prose, etc.)
 
-        # last non-empty column = the trailing AGAIN/MUST status marker
-        status = next((c for c in reversed(cols) if c), "")
+        # The trailing pair: `| ... | tags | status |`. Read the status by
+        # position, not as "the last non-empty column" — 155 rows leave it
+        # blank, and that search then walks back onto the tags cell, where the
+        # case-insensitive rule below would treat ordinary prose ("window must
+        # be non-decreasing") as a marker and defeat MUST_TAG_TOKEN.
+        # site/build-roadmap.js mirrors this rule for the roadmap page.
+        status = cols[-1] if cols else ""
         tags = cols[-2] if len(cols) >= 2 else ""
         if not (MUST_ANY_CASE.search(status) or MUST_TAG_TOKEN.search(tags)):
             continue

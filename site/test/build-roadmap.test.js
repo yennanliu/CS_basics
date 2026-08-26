@@ -65,6 +65,62 @@ test('parseReadmeProblems keeps a row whose difficulty column is malformed', () 
   assert.equal(problems.get('1242').difficulty, 'Unknown');
 });
 
+// ── The MUST / google markers ─────────────────────────────────────────────
+
+const ROW = (tags, status) =>
+  `| 42 | [Trapping Rain Water](https://leetcode.com/problems/trapping-rain-water/) ` +
+  `| [Java](./J.java) | _O(n)_ | _O(1)_ | Hard | ${tags} | ${status} |`;
+
+test('the status column marks MUST in any casing', () => {
+  for (const status of ['MUST', 'must', '(MUST again)', 'AGAIN*** (5) (MUST)']) {
+    assert.equal(lib.parseReadmeProblems(ROW('**array**', status)).get('42').must, true, status);
+  }
+  assert.equal(lib.parseReadmeProblems(ROW('**array**', 'AGAIN (2)')).get('42').must, false);
+});
+
+test('the tags column marks MUST only as a standalone all-caps token', () => {
+  assert.equal(lib.parseReadmeProblems(ROW('**array**, MUST, `fb`', '')).get('42').must, true);
+  assert.equal(lib.parseReadmeProblems(ROW('**array**, MUSTARD', '')).get('42').must, false);
+});
+
+/**
+ * 155 README rows leave the trailing status cell blank. Taking "the last
+ * non-empty cell" as the status walked back onto the tags cell, where the
+ * case-insensitive status rule then classified ordinary prose as a marker —
+ * silently widening the MUST list and defeating the strict tag-token rule.
+ * `script/extract_must_lc.py` had the same slip and was fixed alongside.
+ */
+test('an empty status cell does not turn tag prose into a MUST marker', () => {
+  const row = ROW('**array**, the window must be non-decreasing', '');
+  assert.equal(lib.parseReadmeProblems(row).get('42').must, false);
+});
+
+test('the trailing columns are read from the end, so a stray pipe cannot shift them', () => {
+  // README carries one row with an extra pipe in the solutions column.
+  const row = '| 42 | [Trapping Rain Water](https://leetcode.com/problems/trapping-rain-water/) ' +
+    '| [Java](./J.java) | + \\ | extra | _O(n)_ | _O(1)_ | Hard | **array**, `google` | MUST |';
+  const problem = lib.parseReadmeProblems(row).get('42');
+  assert.equal(problem.must, true);
+  assert.equal(problem.google, true);
+});
+
+test('the google marker is a company tag, not the word inside prose', () => {
+  assert.equal(lib.parseReadmeProblems(ROW('**array**, `google`', '')).get('42').google, true);
+  assert.equal(lib.parseReadmeProblems(ROW('**array**, google, `fb`', '')).get('42').google, true);
+  assert.equal(lib.parseReadmeProblems(ROW('**array**, googler', '')).get('42').google, false);
+});
+
+// LC 322 is listed twice and only the second row carries its MUST marker.
+// Testing the deduplicated representative would drop it.
+test('google and must are unioned across every row for an id', () => {
+  const problems = lib.parseReadmeProblems([
+    ROW('**array**', ''),
+    ROW('**array**, MUST, `google`', '')
+  ].join('\n'));
+  assert.equal(problems.get('42').must, true);
+  assert.equal(problems.get('42').google, true);
+});
+
 test('parseReadmeProblems skips separator rows and rows with no linked title', () => {
   const problems = lib.parseReadmeProblems([
     '| # | Problem |',

@@ -82,9 +82,9 @@ function parseReadmeProblems(markdown) {
 
     const id = String(parseInt(rawId, 10));
     const solutions = parseSolutionLinks(cells[3] || '');
-    const tags = cells[7] || '';
+    const { tags, status } = trailingCells(line);
     const google = GOOGLE_TAG.test(tags);
-    const must = isMustRow(cells);
+    const must = isMustRow(tags, status);
 
     const existing = problems.get(id);
     if (existing) {
@@ -119,10 +119,29 @@ const GOOGLE_TAG = /(?<![a-z])google(?![a-z])/i;
 const MUST_ANY_CASE = /must/i;
 const MUST_TAG_TOKEN = /(?<![A-Za-z])MUST(?![A-Za-z])/;
 
-function isMustRow(cells) {
-  const populated = cells.filter(cell => cell !== '');
-  const status = populated[populated.length - 1] || '';
-  return MUST_ANY_CASE.test(status) || MUST_TAG_TOKEN.test(cells[7] || '');
+/**
+ * The trailing `| tags | status |` pair, read from the END of the row.
+ *
+ * Positionally, and relative to the end, for two reasons. Taking "the last
+ * *non-empty* cell" as the status is wrong: 155 README rows leave the status
+ * blank, and the search then walks back onto the tags cell, where the
+ * case-insensitive status rule would classify ordinary prose ("window must be
+ * non-decreasing") as a MUST marker — defeating the whole point of the
+ * stricter tag-token rule below. And relative to the end rather than at a
+ * fixed index because one row carries a stray extra pipe, which shifts every
+ * absolute index after it; this is also how `script/extract_must_lc.py` reads
+ * the tags column, so the two agree on that row too.
+ */
+function trailingCells(line) {
+  const inner = line.trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map(cell => cell.trim());
+  return {
+    tags: inner.length >= 2 ? inner[inner.length - 2] : '',
+    status: inner[inner.length - 1] || ''
+  };
+}
+
+function isMustRow(tags, status) {
+  return MUST_ANY_CASE.test(status) || MUST_TAG_TOKEN.test(tags);
 }
 
 /**
