@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <title>Study Roadmap - CS Basics</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🗺️</text></svg>">
+  <link rel="stylesheet" href="nav.css">
+  <!-- Blocking on purpose: nav.js restores the stored theme before first paint. -->
+  <script src="nav.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    :root {
+      --bg: #ffffff; --surface: #f0f0f0; --text: #000000;
+      --text-light: #555555; --border: #cccccc; --radius: 0px; --accent: #000000;
+      --edge: #bbbbbb; --edge-live: #1e7e34; --locked-ink: #8a8a8a;
+    }
+    [data-theme="dark"] {
+      --bg: #000000; --surface: #111111; --text: #ffffff;
+      --text-light: #8a8a8a; --border: #1f1f1f; --accent: #ffffff;
+      --edge: #333333; --edge-live: #2f9e4f; --locked-ink: #5a5a5a;
+    }
+    body {
+      margin: 0; padding: 0;
+      font-family: 'SF Mono','JetBrains Mono','IBM Plex Mono',ui-monospace,'Menlo',monospace;
+      background: var(--bg); color: var(--text);
+      transition: background 0.2s, color 0.2s; font-size: 13px;
+    }
+    a { color: inherit; }
+
+    .container { max-width: 1200px; margin: 2rem auto 4rem; padding: 0 1.5rem; }
+
+    /* ── Header ── */
+    .page-header { text-align: center; margin-bottom: 1.75rem; }
+    .page-header h1 { margin: 0 0 0.4rem; font-size: 2rem; }
+    .page-header p { color: var(--text-light); margin: 0 auto; font-size: 0.95rem; max-width: 64ch; line-height: 1.6; }
+
+    .summary {
+      display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1rem;
+    }
+    .summary-figure { display: flex; flex-direction: column; gap: 0.15rem; }
+    .summary-figure b { font-size: 1.35rem; line-height: 1.1; white-space: nowrap; }
+    .summary-figure span {
+      font-size: 0.7rem; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--text-light);
+    }
+    .summary-bar-wrap { flex: 1 1 200px; min-width: 160px; }
+    .summary-bar { height: 8px; background: var(--border); border-radius: 999px; overflow: hidden; }
+    .summary-bar > i { display: block; height: 100%; width: 0; background: var(--edge-live); transition: width 0.25s; }
+    .summary-bar-label { font-size: 0.75rem; color: var(--text-light); margin-top: 0.4rem; }
+
+    .btn {
+      background: var(--bg); color: var(--text);
+      border: 1px solid var(--border); border-radius: 6px;
+      padding: 0.4rem 0.8rem; font-size: 0.78rem; font-family: inherit;
+      cursor: pointer; transition: border-color 0.15s, opacity 0.15s;
+    }
+    .btn:hover { border-color: var(--text); }
+    .btn-primary { background: var(--text); color: var(--bg); border-color: var(--text); font-weight: 700; }
+    .btn-primary:hover { opacity: 0.85; }
+
+    /* ── Next-up hint ── */
+    .next-up {
+      display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;
+      border: 1px dashed var(--border); border-radius: 10px;
+      padding: 0.7rem 1rem; margin-bottom: 1.5rem; font-size: 0.85rem;
+    }
+    .next-up .label {
+      text-transform: uppercase; letter-spacing: 0.08em;
+      font-size: 0.7rem; color: var(--text-light);
+    }
+    .next-up .where { color: var(--text-light); }
+
+    /* ── Graph ── */
+    .graph-scroll { overflow-x: auto; padding-bottom: 0.5rem; }
+    .graph { position: relative; min-width: 940px; padding: 0.5rem 0 1rem; }
+    .graph-edges { position: absolute; top: 0; left: 0; pointer-events: none; }
+    .graph-edges path {
+      fill: none; stroke: var(--edge); stroke-width: 1.5;
+      transition: opacity 0.15s, stroke 0.15s;
+    }
+    .graph-edges path.live { stroke: var(--edge-live); stroke-width: 2; }
+    /* Hovering a topic pulls its own edges out of the tangle. */
+    .graph-edges.focused path { opacity: 0.18; }
+    .graph-edges.focused path.hot { opacity: 1; stroke: var(--text); stroke-width: 2.5; }
+    .graph-edges.focused path.hot.live { stroke: var(--edge-live); }
+
+    .row {
+      position: relative; z-index: 1;
+      display: flex; justify-content: center; gap: 1rem;
+      margin-bottom: 2.6rem;
+    }
+    .row:last-child { margin-bottom: 0; }
+
+    .node {
+      /* display:flex, not the button default: a stretched <button> lays its
+         content out from an anonymous box that does not grow with it, which
+         pushed the progress bar outside the border. */
+      display: flex; flex-direction: column; justify-content: space-between;
+      flex: 0 1 190px; max-width: 230px; text-align: left;
+      background: var(--surface); color: var(--text);
+      border: 1px solid var(--border); border-radius: 10px;
+      padding: 0.7rem 0.8rem 0.75rem;
+      font-family: inherit; font-size: 0.82rem;
+      cursor: pointer; transition: border-color 0.15s, transform 0.15s, background 0.15s;
+    }
+    .node:hover { border-color: var(--text); transform: translateY(-2px); }
+    .node:focus-visible { outline: 2px solid var(--edge-live); outline-offset: 2px; }
+    /* Opaque, not transparent: a locked box still has to hide the edges that
+       pass behind it, or long curves read as strikethroughs across the title. */
+    .node.locked { color: var(--locked-ink); background: var(--bg); border-style: dashed; }
+    .node.done { border-color: var(--edge-live); }
+
+    .node-head { display: flex; align-items: baseline; justify-content: space-between; gap: 0.5rem; }
+    .node-title { font-weight: 700; line-height: 1.35; }
+    .node-count { font-size: 0.72rem; color: var(--text-light); white-space: nowrap; }
+    .node.done .node-count { color: var(--edge-live); }
+    .node-bar { height: 4px; background: var(--edge); border-radius: 999px; margin-top: 0.65rem; overflow: hidden; }
+    .node-bar > i { display: block; height: 100%; width: 0; background: var(--text); transition: width 0.25s; }
+    .node.done .node-bar > i { background: var(--edge-live); }
+
+    /* ── Drawer ── */
+    .overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.45);
+      opacity: 0; pointer-events: none; transition: opacity 0.2s; z-index: 200;
+    }
+    .overlay.open { opacity: 1; pointer-events: auto; }
+
+    .drawer {
+      position: fixed; top: 0; right: 0; bottom: 0; width: min(480px, 100%);
+      background: var(--bg); border-left: 1px solid var(--border);
+      transform: translateX(100%); transition: transform 0.22s ease;
+      z-index: 201; display: flex; flex-direction: column;
+    }
+    .drawer.open { transform: none; }
+    .drawer-head { position: relative; padding: 1.1rem 3rem 0.9rem 1.25rem; border-bottom: 1px solid var(--border); }
+    .drawer-head h2 { margin: 0 0 0.35rem; font-size: 1.1rem; }
+    .drawer-head p { margin: 0; color: var(--text-light); font-size: 0.82rem; line-height: 1.55; }
+    .drawer-close {
+      position: absolute; top: 0.7rem; right: 0.85rem;
+      background: none; border: none; color: var(--text-light);
+      font-size: 1.5rem; line-height: 1; cursor: pointer; font-family: inherit;
+    }
+    .drawer-close:hover { color: var(--text); }
+    /* Opening the drawer moves focus here, so the ring is seen often enough
+       that the UA default (bright blue) reads as an error against this palette. */
+    .drawer-close:focus-visible { outline: 2px solid var(--edge-live); outline-offset: 2px; border-radius: 4px; }
+    .drawer-body { flex: 1; overflow-y: auto; padding: 1rem 1.25rem 2.5rem; }
+    .drawer-section { margin-bottom: 1.4rem; }
+    .drawer-section h3 {
+      margin: 0 0 0.5rem; font-size: 0.7rem; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--text-light); font-weight: 700;
+    }
+    .chips { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+    .chips.bulk { margin-bottom: 0.6rem; }
+    .chip {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      border: 1px solid var(--border); border-radius: 999px;
+      padding: 0.22rem 0.6rem; font-size: 0.74rem; font-family: inherit;
+      background: none; color: var(--text-light); text-decoration: none; cursor: pointer;
+    }
+    .chip:hover { border-color: var(--text); color: var(--text); }
+    .chip.met { border-color: var(--edge-live); color: var(--edge-live); }
+
+    .prob {
+      display: flex; align-items: center; gap: 0.55rem;
+      padding: 0.42rem 0; border-bottom: 1px solid var(--border);
+    }
+    .prob:last-child { border-bottom: none; }
+    .prob input { width: 15px; height: 15px; accent-color: var(--edge-live); cursor: pointer; flex-shrink: 0; }
+    .prob-id { font-size: 0.72rem; color: var(--text-light); width: 3.2rem; flex-shrink: 0; }
+    .prob-title { flex: 1; min-width: 0; font-size: 0.82rem; text-decoration: none; line-height: 1.35; }
+    .prob-title:hover { text-decoration: underline; }
+    .prob.solved .prob-title { color: var(--text-light); text-decoration: line-through; }
+    .prob-links { display: flex; gap: 0.3rem; flex-shrink: 0; }
+    .prob-links a {
+      border: 1px solid var(--border); border-radius: 4px;
+      padding: 0.1rem 0.35rem; font-size: 0.68rem; text-decoration: none; color: var(--text-light);
+    }
+    .prob-links a:hover { border-color: var(--text); color: var(--text); }
+
+    .diff-badge {
+      padding: 0.12rem 0.45rem; border-radius: 4px;
+      font-size: 0.62rem; font-weight: 700; flex-shrink: 0;
+      text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap;
+    }
+    .diff-badge.Easy    { background: #1e7e34; color: #fff; }
+    .diff-badge.Medium  { background: #b45309; color: #fff; }
+    .diff-badge.Hard    { background: #b91c1c; color: #fff; }
+    .diff-badge.Unknown { background: var(--border); color: var(--text-light); }
+    [data-theme="dark"] .diff-badge.Easy   { background: #166534; }
+    [data-theme="dark"] .diff-badge.Medium { background: #92400e; }
+    [data-theme="dark"] .diff-badge.Hard   { background: #991b1b; }
+
+    .loading { color: var(--text-light); text-align: center; padding: 2rem 0; }
+    .note {
+      color: var(--text-light); font-size: 0.78rem;
+      line-height: 1.6; padding-top: 1.75rem; margin: 0;
+      border-top: 1px solid var(--border); margin-top: 2rem;
+    }
+
+    @media (max-width: 700px) {
+      .container { padding: 0 1rem; }
+      .page-header h1 { font-size: 1.5rem; }
+      .drawer { width: 100%; border-left: none; }
+    }
+  </style>
+</head>
+<body>
+  <div id="site-nav" data-page="lc-roadmap" data-base=""></div>
+  <script>CSNav.mount();</script>
+
+  <main class="container">
+    <div class="page-header">
+      <h1 id="pageTitle">Study Roadmap</h1>
+      <p id="pageIntro"></p>
+    </div>
+
+    <div class="summary" id="summary" hidden>
+      <div class="summary-figure"><b id="statProblems">–</b><span>problems</span></div>
+      <div class="summary-figure"><b id="statTopics">–</b><span>topics done</span></div>
+      <div class="summary-bar-wrap">
+        <div class="summary-bar"><i id="summaryFill"></i></div>
+        <div class="summary-bar-label" id="summaryLabel"></div>
+      </div>
+      <button class="btn" id="resetBtn" type="button">reset progress</button>
+    </div>
+
+    <div class="next-up" id="nextUp" hidden></div>
+
+    <div class="graph-scroll">
+      <div class="graph" id="graph">
+        <svg class="graph-edges" id="edges" aria-hidden="true"></svg>
+      </div>
+    </div>
+
+    <div class="loading" id="loading">Loading roadmap…</div>
+
+    <p class="note" id="note" hidden>
+      Click a topic to see its problems, its prerequisites and the cheatsheets that cover it.
+      A topic unlocks once everything it depends on is finished — the lock is a suggested order,
+      not a gate, so you can always open it anyway. Progress is stored in this browser only and
+      is never uploaded. A problem that two topics both list (LC 323 sits in both Graphs and
+      Union Find) is one tick, counted once.
+    </p>
+  </main>
+
+  <div class="overlay" id="overlay"></div>
+  <aside class="drawer" id="drawer" role="dialog" aria-hidden="true" aria-labelledby="drawerTitle">
+    <div class="drawer-head">
+      <button class="drawer-close" id="drawerClose" type="button" aria-label="Close">×</button>
+      <h2 id="drawerTitle"></h2>
+      <p id="drawerBlurb"></p>
+    </div>
+    <div class="drawer-body" id="drawerBody"></div>
+  </aside>
+
+  <script src="roadmap.js"></script>
+  <script>CSRoadmap.init();</script>
+</body>
+</html>

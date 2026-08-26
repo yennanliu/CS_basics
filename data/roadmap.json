@@ -1,0 +1,278 @@
+{
+  "_comment": "Drives the study roadmap page (site/build-roadmap.js -> _site/data/roadmap.json, rendered by site/pages/lc-roadmap.html). Each node is one topic in the dependency graph: `prereqs` are the topics you should have done first (these become the drawn edges), `row` is the layer it sits on (must be greater than every prereq's row — the build enforces it), `sheets` are doc/cheatsheet slugs, and `problems` are LeetCode ids that must exist in README.md's tables. Titles, difficulty and repo solution links are resolved from README.md at build time, so they are never duplicated here.",
+
+  "meta": {
+    "title": "Study Roadmap",
+    "intro": "A dependency graph over the topics in this repo. Start at the top, unlock a topic once its prerequisites are done, and tick problems off as you solve them — progress is stored in your browser."
+  },
+
+  "nodes": [
+    {
+      "id": "arrays-hashing",
+      "title": "Arrays & Hashing",
+      "row": 0,
+      "prereqs": [],
+      "sheets": ["array", "hash_map", "set", "string"],
+      "blurb": "The root of everything: index arithmetic, and trading space for O(1) lookup.",
+      "problems": [1, 217, 242, 49, 347, 238, 271, 36, 128]
+    },
+
+    {
+      "id": "two-pointers",
+      "title": "Two Pointers",
+      "row": 1,
+      "prereqs": ["arrays-hashing"],
+      "sheets": ["2_pointers", "n_sum", "palindrome"],
+      "blurb": "Converging, trailing and fast/slow pointers — the cheapest way to drop a nested loop.",
+      "problems": [125, 167, 15, 11, 42, 680, 26]
+    },
+    {
+      "id": "stack",
+      "title": "Stack",
+      "row": 1,
+      "prereqs": ["arrays-hashing"],
+      "sheets": ["stack", "stack_expression_parsing"],
+      "blurb": "LIFO discipline: matching, nesting and expression evaluation.",
+      "problems": [20, 155, 150, 22, 739, 84, 853]
+    },
+    {
+      "id": "prefix-sum",
+      "title": "Prefix Sum",
+      "row": 1,
+      "prereqs": ["arrays-hashing"],
+      "sheets": ["prefix_sum", "prefix_sum_advanced", "difference_array"],
+      "blurb": "Precompute once, answer any range in O(1). Pair it with a hash map for subarray counting.",
+      "problems": [303, 304, 560, 523, 325, 974, 930]
+    },
+    {
+      "id": "bit-manipulation",
+      "title": "Bit Manipulation",
+      "row": 1,
+      "prereqs": ["arrays-hashing"],
+      "sheets": ["bit_manipulation", "bit_manipulation_examples"],
+      "blurb": "XOR tricks, masks and the lowest set bit. Small topic, occasionally decisive.",
+      "problems": [136, 191, 338, 190, 268, 371, 7]
+    },
+    {
+      "id": "math",
+      "title": "Math & Number Theory",
+      "row": 1,
+      "prereqs": ["arrays-hashing"],
+      "sheets": ["math", "combinatorics_math_patterns"],
+      "blurb": "Digit handling, overflow, primes and modular arithmetic.",
+      "problems": [50, 66, 69, 166, 172, 204, 233]
+    },
+
+    {
+      "id": "sliding-window",
+      "title": "Sliding Window",
+      "row": 2,
+      "prereqs": ["two-pointers"],
+      "sheets": ["sliding_window", "sliding_window_advanced"],
+      "blurb": "Expand on a condition, contract when it breaks. A whole question family with one template.",
+      "problems": [121, 3, 424, 567, 76, 239, 340]
+    },
+    {
+      "id": "binary-search",
+      "title": "Binary Search",
+      "row": 2,
+      "prereqs": ["two-pointers"],
+      "sheets": ["binary_search", "binary_search_examples"],
+      "blurb": "Halving a monotonic space. Get the boundary templates exact and the variants fall out.",
+      "problems": [35, 74, 153, 33, 981, 4, 162]
+    },
+    {
+      "id": "linked-list",
+      "title": "Linked List",
+      "row": 2,
+      "prereqs": ["two-pointers"],
+      "sheets": ["linked_list", "2_pointers_linkedlist"],
+      "blurb": "Pointer surgery. Low conceptual depth, high implementation-precision bar.",
+      "problems": [206, 21, 143, 19, 138, 2, 141, 23, 25]
+    },
+    {
+      "id": "monotonic-stack",
+      "title": "Monotonic Stack",
+      "row": 2,
+      "prereqs": ["stack"],
+      "sheets": ["monotonic_stack", "monotonic_queue"],
+      "blurb": "\"Next greater / previous smaller\" in one pass, by keeping the stack sorted.",
+      "problems": [496, 503, 85, 901, 907, 316, 402]
+    },
+    {
+      "id": "matrix",
+      "title": "Matrix / 2D Grid",
+      "row": 2,
+      "prereqs": ["prefix-sum"],
+      "sheets": ["matrix", "matrix_examples"],
+      "blurb": "Row/column indexing, in-place rotation, and 2D range sums.",
+      "problems": [48, 54, 59, 73, 240, 289, 766]
+    },
+
+    {
+      "id": "string-algorithms",
+      "title": "String Algorithms",
+      "row": 3,
+      "prereqs": ["sliding-window"],
+      "sheets": ["string_matching_kmp_rolling_hash", "advanced_string_algorithms", "palindrome"],
+      "blurb": "Substring search beyond the naive scan: KMP, rolling hash, and expand-around-centre.",
+      "problems": [28, 214, 459, 686, 5, 647]
+    },
+    {
+      "id": "trees",
+      "title": "Trees & BST",
+      "row": 3,
+      "prereqs": ["binary-search", "linked-list"],
+      "sheets": ["binary_tree", "tree", "bst", "tree_lca_distance"],
+      "blurb": "How DFS state flows down and back up. The single largest interview surface after arrays.",
+      "problems": [226, 104, 543, 110, 100, 572, 235, 102, 199, 98, 230, 105, 124, 297]
+    },
+    {
+      "id": "sorting",
+      "title": "Sorting & Selection",
+      "row": 3,
+      "prereqs": ["binary-search"],
+      "sheets": ["sort", "2_pointers_quickselect", "advanced_divide_and_conquer"],
+      "blurb": "What sorting buys you, custom comparators, and quickselect for top-k without a heap.",
+      "problems": [912, 75, 215, 148, 179, 274, 1057]
+    },
+    {
+      "id": "binary-search-answer",
+      "title": "Binary Search on the Answer",
+      "row": 3,
+      "prereqs": ["binary-search"],
+      "sheets": ["binary_search_on_answer"],
+      "blurb": "Guess the answer, write a monotone feasibility check, binary search on it. The most under-practised tier-5 skill.",
+      "problems": [875, 1011, 410, 1231, 1482, 774, 1552]
+    },
+
+    {
+      "id": "heap",
+      "title": "Heap & Priority Queue",
+      "row": 4,
+      "prereqs": ["trees", "sorting"],
+      "sheets": ["heap", "heap_advanced", "heap_language_apis"],
+      "blurb": "\"Repeatedly take the best\" and top-k. Two heaps give you a running median.",
+      "problems": [703, 1046, 973, 621, 355, 295, 767]
+    },
+    {
+      "id": "tries",
+      "title": "Trie",
+      "row": 4,
+      "prereqs": ["trees"],
+      "sheets": ["trie", "trie_examples"],
+      "blurb": "Prefix trees: shared-prefix lookup, wildcard matching, and word-search pruning.",
+      "problems": [208, 211, 212, 648, 820]
+    },
+    {
+      "id": "backtracking",
+      "title": "Backtracking",
+      "row": 4,
+      "prereqs": ["trees"],
+      "sheets": ["backtrack", "backtrack_advanced", "recursion"],
+      "blurb": "Choose, recurse, un-choose. Subsets, permutations, and the pruning that makes them tractable.",
+      "problems": [78, 39, 46, 90, 40, 79, 131, 17, 51]
+    },
+    {
+      "id": "graphs",
+      "title": "Graphs (BFS / DFS)",
+      "row": 4,
+      "prereqs": ["trees"],
+      "sheets": ["graph", "bfs", "dfs"],
+      "blurb": "Traversal and connectivity on grids and adjacency lists. BFS on an unweighted graph is shortest path.",
+      "problems": [200, 133, 695, 417, 130, 994, 286, 261, 323, 127]
+    },
+    {
+      "id": "greedy",
+      "title": "Greedy",
+      "row": 4,
+      "prereqs": ["sorting"],
+      "sheets": ["greedy", "greedy_examples"],
+      "blurb": "Sort, then take the locally best choice — and be ready to justify it with an exchange argument.",
+      "problems": [53, 55, 45, 122, 134, 763, 678]
+    },
+
+    {
+      "id": "design",
+      "title": "Design a X",
+      "row": 5,
+      "prereqs": ["heap"],
+      "sheets": ["design", "ood_design", "iterator"],
+      "blurb": "Compose the structures you already know to hit a per-operation complexity target.",
+      "problems": [146, 155, 232, 380, 706, 1206, 348]
+    },
+    {
+      "id": "dp-1d",
+      "title": "1-D Dynamic Programming",
+      "row": 5,
+      "prereqs": ["backtracking"],
+      "sheets": ["dp", "recursion_to_dp", "kadane_algorithm", "dp_pattern"],
+      "blurb": "Start from the recursion you wrote for backtracking, memoise it, then flatten to a table.",
+      "problems": [70, 746, 198, 213, 91, 322, 152, 139, 300]
+    },
+    {
+      "id": "union-find",
+      "title": "Union Find",
+      "row": 5,
+      "prereqs": ["graphs"],
+      "sheets": ["union_find", "union_find_examples", "diff_toposort_quickunion"],
+      "blurb": "Disjoint sets with path compression — connectivity under incremental merges.",
+      "problems": [547, 684, 721, 839, 990, 305, 323]
+    },
+    {
+      "id": "topological-sort",
+      "title": "Topological Sort",
+      "row": 5,
+      "prereqs": ["graphs"],
+      "sheets": ["topology_sorting", "topology_sorting_examples"],
+      "blurb": "Kahn's in-degree peeling on a DAG. Also how you detect a cycle in a dependency graph.",
+      "problems": [207, 210, 269, 310, 444, 2115]
+    },
+    {
+      "id": "intervals",
+      "title": "Intervals & Sweep Line",
+      "row": 5,
+      "prereqs": ["greedy"],
+      "sheets": ["intervals", "scanning_line", "array_overlap_explaination"],
+      "blurb": "Sort by start or end, then sweep. Get the overlap predicate right once and reuse it.",
+      "problems": [57, 56, 435, 252, 253, 1851, 452]
+    },
+
+    {
+      "id": "advanced-structures",
+      "title": "Segment Tree & Fenwick",
+      "row": 6,
+      "prereqs": ["prefix-sum", "binary-search"],
+      "sheets": ["segment_tree", "binary_indexed_tree", "streaming_algorithms"],
+      "blurb": "Reach for these only when you need range queries *and* point updates — otherwise a prefix sum is enough.",
+      "problems": [307, 315, 327, 493, 308]
+    },
+    {
+      "id": "dp-2d",
+      "title": "2-D Dynamic Programming",
+      "row": 6,
+      "prereqs": ["dp-1d", "matrix"],
+      "sheets": ["dp_advanced", "dp_string", "dp_examples"],
+      "blurb": "Two indices, one table. Grid paths, two-string alignment, and interval DP.",
+      "problems": [62, 1143, 309, 97, 329, 115, 72, 312, 10]
+    },
+    {
+      "id": "knapsack",
+      "title": "Knapsack DP",
+      "row": 6,
+      "prereqs": ["dp-1d"],
+      "sheets": ["knapsack", "knapsack_01_zh"],
+      "blurb": "0/1 vs unbounded, and the loop order that separates them. Recognise it and the rest is mechanical.",
+      "problems": [416, 494, 518, 377, 1049, 879]
+    },
+    {
+      "id": "advanced-graphs",
+      "title": "Advanced Graphs",
+      "row": 6,
+      "prereqs": ["union-find", "topological-sort", "heap"],
+      "sheets": ["Dijkstra", "shortest_path_comparison", "Bellman-Ford", "Floyd-Warshall"],
+      "blurb": "Weighted shortest paths, MST and Eulerian paths. Mostly L5+ territory — know which algorithm fits.",
+      "problems": [332, 1584, 743, 778, 269, 787]
+    }
+  ]
+}

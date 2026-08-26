@@ -33,9 +33,10 @@ cp -r doc/pic _site/doc/pic
 # ── Generated pages ───────────────────────────────────────────────────────────
 node site/build-site.js       # doc/**.md      -> HTML pages + search index
 node site/build-leetcode.js   # leetcode_*/**  -> _site/data/lc-problems.json
+node site/build-roadmap.js    # data/roadmap.json + README.md -> _site/data/roadmap.json
 
 # ── Shared CSS + JS ───────────────────────────────────────────────────────────
-cp site/style.css site/nav.css site/nav.js site/site.js _site/
+cp site/style.css site/nav.css site/nav.js site/site.js site/roadmap.js _site/
 
 # ── Hand-maintained static pages (LC tools, 404) ──────────────────────────────
 cp site/pages/*.html _site/

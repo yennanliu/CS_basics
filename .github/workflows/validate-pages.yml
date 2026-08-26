@@ -4,6 +4,7 @@ on:
   push:
     branches: [ master ]
     paths:
+      - 'data/roadmap.json'
       - 'doc/**'
       - 'README.md'
       - '.github/workflows/deploy-pages.yml'
@@ -15,6 +16,7 @@ on:
       - 'site/ensure-nav-pages.js'
       - 'site/nav.js'
       - 'site/nav.css'
+      - 'site/roadmap.js'
       - 'site/site.js'
       - 'site/test/**'
       - 'site/package.json'
@@ -24,6 +26,7 @@ on:
   pull_request:
     branches: [ master ]
     paths:
+      - 'data/roadmap.json'
       - 'doc/**'
       - 'README.md'
       - '.github/workflows/deploy-pages.yml'
@@ -35,6 +38,7 @@ on:
       - 'site/ensure-nav-pages.js'
       - 'site/nav.js'
       - 'site/nav.css'
+      - 'site/roadmap.js'
       - 'site/site.js'
       - 'site/test/**'
       - 'site/package.json'
@@ -99,6 +103,9 @@ jobs:
           '_site/style.css',
           '_site/nav.css',
           '_site/nav.js',
+          '_site/roadmap.js',
+          '_site/lc-roadmap.html',
+          '_site/data/roadmap.json',
           '_site/site.js'
         ];
 
