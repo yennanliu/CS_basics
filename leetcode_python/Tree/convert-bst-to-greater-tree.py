@@ -46,6 +46,30 @@ Note: This question is the same as 1038: https://leetcode.com/problems/binary-se
 # IDEA: BST PROPERTY + DFS (gemini)
 # time = O(n)
 # space = O(h)
+"""
+NOTE !!!
+
+
+1. DFS (right -> root -> left)
+
+
+2. ONLY need `self.running_sum`,
+    
+    -> DON'T setup something like below
+
+    (below is WRONG !!!!)
+
+    ```
+
+    _right = self.helper(root.right)
+
+    ...
+
+    _left = self.helper(root.left)
+
+
+    ```
+"""
 class Solution(object):
     def convertBST(self, root):
         """
