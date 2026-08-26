@@ -223,16 +223,14 @@ The ~30 sheets under ~1,200 lines that are already right: `knapsack.md`, `kadane
 
 - **Cross-file consolidation — the phase every tier feeds and none finishes.** The first named item is now measured: **`tree.md` and `tree2.md` both hold traversal templates**, and on normalised code `tree.md`'s Level-Order template and `tree2.md`'s `1.4)` are identical statement for statement, LC 987 shares 70%, and preorder / inorder / postorder share 48–59% each. Resolving it means deciding which of the two sheets owns traversal templates at all. Other hard numbers, re-measured at the end of Tier 2: one LC 449 code block is byte-identical between `bst_examples` and `dfs_examples`; LC 701 is duplicated in both languages; LC 98 is named in 9 sheets and LC 49 in 9; `monotonic_stack.md` and `stack_examples.md` share 16 LC numbers. The LC-name counts include index and table mentions, so they bound the work rather than measure it — each pair needs the same before/after check the Tier 2 batches used.
 - **`array.md`'s `1-1-5) Sort Array` and `1-1-6) Flatten Array`** — 270 lines of language-level array operations that may belong with `sort.md`. Left in place deliberately; it is a cross-file call.
-- **`2_pointers_quickselect.md` vs `advanced_divide_and_conquer.md`** — the latter owns QuickSelect in more depth; the satellite is registered but should probably be folded in.
-- **~25 pre-existing correctness bugs** from the PR #114 review, verified as untouched by Tier 1: un-seeded BFS queues, undefined identifiers, missing null guards, Hoare's return value used as a pivot index.
-- **The site slugify fix** — one line in `site/build-lib.js`. It collapses every run of non-alphanumerics to a single `-`, so ` — ` becomes `-` where GitHub gives `--`; ~93 anchors resolve on GitHub and 404 on the published page.
-- **52 broken anchors elsewhere in `doc/cheatsheet`**, found by a repo-wide sweep under GitHub's rule at the end of Tier 2. None is in a file Tier 2 touched. Most look like the trailing-`-` star-run case above.
+- **32 unparseable Python blocks** across the corpus's 1,648, found by an `ast.parse` sweep after the PR #114 correctness pass. None is in that review's finding list; they are schematics, excerpts and fragments tagged ` ```python ` that do not stand alone. Either make them parse or caption them as outlines, per contract item 3.
 
 ### Still open from the Aug review
 
-- `lc_category.md` — 1,516 lines, a verbatim paste of an external GitHub README including 12 `TODO` markers that are not this repo's. Should be a link.
 - `code_interview_general_cheatsheet.md` — 33 lines, belongs inside another doc.
 - `time = O(...)` coverage is 35% of ~3,177 code blocks.
+
+Closed since: `lc_category.md` is a link plus a category map rather than a 1,515-line mirror; the site slug rule now matches GitHub's, taking the 217 in-repo anchors from 71 resolving to all 217; the ~22 correctness findings from the PR #114 review are fixed; and quickselect has one owner instead of two.
 
 ---
 
