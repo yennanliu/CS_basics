@@ -1,7 +1,7 @@
 # Advanced Divide and Conquer
 
 > **Scope** — Divide-and-conquer beyond merge sort — the recursion-with-merge shapes (count-while-sorting, closest pair, matrix D&C, D&C on expressions) and their recurrences.
-> **See also**: [sort.md](./sort.md) — merge sort and quickselect as sorting algorithms; [binary_search.md](./binary_search.md) — halving without a merge step; [recursion.md](./recursion.md) — recursion mechanics; [segment_tree.md](./segment_tree.md) — D&C frozen into a data structure.
+> **See also**: [2_pointers_quickselect.md](./2_pointers_quickselect.md) — quickselect in full, which this sheet defers to; [sort.md](./sort.md) — merge sort and quickselect as sorting algorithms; [binary_search.md](./binary_search.md) — halving without a merge step; [recursion.md](./recursion.md) — recursion mechanics; [segment_tree.md](./segment_tree.md) — D&C frozen into a data structure.
 
 ## LeetCode Problem Lists
 
@@ -324,137 +324,12 @@ private int partition(int[] a, int lo, int hi, int pivotIdx) {
 private void swap(int[] a, int i, int j) { int t = a[i]; a[i] = a[j]; a[j] = t; }
 ```
 
-```python
-# python
-# LC 215 - Kth Largest Element in an Array
-# time = O(N) expected / O(N^2) worst, space = O(1)
-import random
-
-def findKthLargest(nums, k):
-    target = len(nums) - k                      # k-th largest == index (n-k) ascending
-
-    def partition(lo, hi, pivot_idx):
-        pivot = nums[pivot_idx]
-        nums[pivot_idx], nums[hi] = nums[hi], nums[pivot_idx]
-        store = lo
-        for i in range(lo, hi):
-            if nums[i] < pivot:
-                nums[store], nums[i] = nums[i], nums[store]
-                store += 1
-        nums[store], nums[hi] = nums[hi], nums[store]
-        return store
-
-    lo, hi = 0, len(nums) - 1
-    while True:
-        if lo == hi:
-            return nums[lo]
-        p = partition(lo, hi, random.randint(lo, hi))
-        if p == target:
-            return nums[p]
-        elif p < target:
-            lo = p + 1                          # keep the RIGHT side only
-        else:
-            hi = p - 1                          # keep the LEFT side only
-```
-
-#### **Hoare partition** — fewer swaps, but returns a *split point*, not the pivot's index
-> The twist: `hoare()` guarantees `a[lo..j] <= pivot <= a[j+1..hi]`, so you can **not** test `p == target`; you narrow the window with `target <= j` and loop until `lo == hi`.
-
-```java
-// java
-// LC 215 - Kth Largest Element in an Array (Hoare partition variant)
-// time = O(N) expected, space = O(1)
-public int findKthLargestHoare(int[] nums, int k) {
-    int target = nums.length - k;
-    int lo = 0, hi = nums.length - 1;
-    while (lo < hi) {
-        int j = hoare(nums, lo, hi);
-        if (target <= j) hi = j; else lo = j + 1;
-    }
-    return nums[lo];
-}
-private int hoare(int[] a, int lo, int hi) {
-    int pivot = a[lo + rnd.nextInt(hi - lo + 1)];   // pivot by VALUE, chosen at random
-    int i = lo - 1, j = hi + 1;
-    while (true) {
-        do { i++; } while (a[i] < pivot);
-        do { j--; } while (a[j] > pivot);
-        if (i >= j) return j;
-        swap(a, i, j);
-    }
-}
-```
-
-#### **3-way (Dutch-flag) partition** — the fix for heavy duplicates
-> The twist: a random pivot does **not** save Lomuto on `[2,2,2,…,2]` — every partition still peels off one element, giving O(n²). Partitioning into `< / == / >` collapses all equal keys in one pass.
-
-```python
-# python
-# LC 215 - Kth Largest Element in an Array (3-way partition; safe on many duplicates)
-# time = O(N) expected even when almost all values are equal, space = O(1)
-import random
-
-def findKthLargest(nums, k):
-    target = len(nums) - k
-    lo, hi = 0, len(nums) - 1
-    while True:
-        pivot = nums[random.randint(lo, hi)]
-        lt, i, gt = lo, lo, hi
-        while i <= gt:                          # invariant: [lo,lt) < pivot, [lt,i) == pivot, (gt,hi] > pivot
-            if nums[i] < pivot:
-                nums[lt], nums[i] = nums[i], nums[lt]
-                lt += 1
-                i += 1
-            elif nums[i] > pivot:
-                nums[i], nums[gt] = nums[gt], nums[i]
-                gt -= 1
-            else:
-                i += 1
-        if target < lt:
-            hi = lt - 1
-        elif target > gt:
-            lo = gt + 1
-        else:
-            return pivot                        # target fell inside the equal band
-```
-
-#### **Variation: LC 973 — K Closest Points to Origin**
-> The twist: the *ordering key* becomes squared distance and you stop as soon as the pivot lands at index `k-1` — the first `k` slots are then the answer **in any order**, which is exactly what the problem allows. Beats the O(N log k) heap.
-
-```java
-// java
-// LC 973 - K Closest Points to Origin
-// IDEA: quickselect on squared distance; once the pivot sits at index k-1, points[0..k-1] IS the answer
-// time = O(N) expected, space = O(1)
-public int[][] kClosest(int[][] points, int k) {
-    int lo = 0, hi = points.length - 1;
-    while (lo < hi) {
-        int p = partitionPts(points, lo, hi, lo + rnd.nextInt(hi - lo + 1));
-        if (p == k - 1) break;
-        else if (p < k - 1) lo = p + 1;
-        else hi = p - 1;
-    }
-    return Arrays.copyOfRange(points, 0, k);
-}
-private long d(int[] p) { return (long) p[0] * p[0] + (long) p[1] * p[1]; }   // no sqrt needed
-private int partitionPts(int[][] a, int lo, int hi, int pivotIdx) {
-    long pivot = d(a[pivotIdx]);
-    int[] t = a[pivotIdx]; a[pivotIdx] = a[hi]; a[hi] = t;
-    int store = lo;
-    for (int i = lo; i < hi; i++)
-        if (d(a[i]) < pivot) { int[] x = a[store]; a[store] = a[i]; a[i] = x; store++; }
-    int[] x = a[store]; a[store] = a[hi]; a[hi] = x;
-    return store;
-}
-```
-
-#### **Other quickselect variations (same skeleton, different key)**
-| Problem | LC # | The twist |
-|---------|------|-----------|
-| Top K Frequent Elements | 347 | Quickselect over the *entries* of a frequency map keyed on count. Bucket sort by frequency is the true O(N) answer — mention both. |
-| Find the Kth Largest Integer in the Array | 1985 | Values are numeric **strings**; only the comparator changes: shorter string is smaller, else lexicographic. |
-| Wiggle Sort II | 324 | Quickselect the **median**, then 3-way partition, then write into *virtual indices* `(1 + 2*i) % (n | 1)` so equal medians end up far apart. |
-| Kth Largest XOR Coordinate Value | 1738 | Build the 2-D prefix-XOR grid first (`O(mn)`), then quickselect the k-th largest over the `m*n` values. |
+> The Python form, the Hoare and 3-way partitions, the LC 973 variation and the
+> Median-of-Medians outline are all in
+> [2_pointers_quickselect.md](./2_pointers_quickselect.md), which owns this algorithm.
+> What belongs *here* is only its shape: it is the one divide-and-conquer template that
+> recurses into a **single** side, which is why its recurrence is `T(n) = T(n/2) + O(n)`
+> and its total is O(n) rather than the O(n log n) every other template on this sheet pays.
 
 ---
 
