@@ -97,6 +97,8 @@ class Solution(object):
 # IDEA: DFS (gpt)
 class Solution(object):
     def addOneRow(self, root, val, depth):
+        # NOTE !!!
+        # ONLY do `depth == 1` special handling here
         if depth == 1:
             new_root = TreeNode(val)
             new_root.left = root
@@ -105,11 +107,32 @@ class Solution(object):
         self.dfs(root, val, 1, depth)
         return root
 
+    """
+    NOTE !!!
+
+
+    1. helper func (DFS) has NO return val !!!!
+
+        -> traverse on nodes and re-connect on `cur_depth == target_depth - 1`
+
+
+    2. `return` directly in `cur_depth == target_depth - 1` branch
+
+
+    3. apart from case above, still need to traver over all nodes
+
+        -> so 
+
+            self.dfs(node.left, val, cur_depth + 1, target_depth)
+            self.dfs(node.right, val, cur_depth + 1, target_depth)
+
+    """
     def dfs(self, node, val, cur_depth, target_depth):
         if not node:
             return
 
         if cur_depth == target_depth - 1:
+            # need to cache left, right node first
             old_left = node.left
             old_right = node.right
 
