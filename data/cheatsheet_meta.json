@@ -173,6 +173,8 @@
     "concurrency_patterns":             { "category": "Design & Simulation", "tier": 2, "title": "Concurrency (Java)" },
 
     "java_trick":                       { "category": "Language Toolkit", "tier": 4, "title": "Java Tricks & Idioms" },
+    "java_trick_collections":           { "category": "Language Toolkit", "tier": 4, "title": "Java Collections & Arrays" },
+    "java_trick_strings_sorting":       { "category": "Language Toolkit", "tier": 4, "title": "Java Strings & Sorting" },
     "python_trick":                     { "category": "Language Toolkit", "tier": 4, "title": "Python Tricks & Idioms" },
     "python_gotchas":                   { "category": "Language Toolkit", "tier": 3, "title": "Python Gotchas" },
 
