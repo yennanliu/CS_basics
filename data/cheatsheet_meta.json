@@ -176,6 +176,8 @@
     "java_trick_collections":           { "category": "Language Toolkit", "tier": 4, "title": "Java Collections & Arrays" },
     "java_trick_strings_sorting":       { "category": "Language Toolkit", "tier": 4, "title": "Java Strings & Sorting" },
     "python_trick":                     { "category": "Language Toolkit", "tier": 4, "title": "Python Tricks & Idioms" },
+    "python_trick_stdlib":              { "category": "Language Toolkit", "tier": 4, "title": "Python Standard Library" },
+    "python_trick_indexing":            { "category": "Language Toolkit", "tier": 4, "title": "Python Insertion, Slicing & Index Arithmetic" },
     "python_gotchas":                   { "category": "Language Toolkit", "tier": 3, "title": "Python Gotchas" },
 
     "lc_pattern":                       { "category": "Interview Meta", "tier": 5, "title": "LeetCode Pattern Guide" },
