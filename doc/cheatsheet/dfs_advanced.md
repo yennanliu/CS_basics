@@ -1403,7 +1403,7 @@ Two mirror-image DFS shapes. Both are pre-order; they differ only in **what the 
 | Recover a Tree From Preorder Traversal | 1028 | depth prefix as the delimiter + stack decode |
 
 > **Full write-up** (encode/decode symmetry table, LC 606 case analysis + visual trace, LC 536 both
-> parser styles, Java versions): [`tree_codec.md` → Tree ⟷ String Codec Pattern](./tree_codec.md#3-tree-string-codec-pattern)
+> parser styles, Java versions): [`tree_codec.md` → Tree ⟷ String Codec Pattern](./tree_codec.md#3-tree--string-codec-pattern-)
 ---
 
 ### Template 11: Parent-Array Tree — Memoized Upward Depth — LC 4015

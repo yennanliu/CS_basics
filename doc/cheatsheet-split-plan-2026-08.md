@@ -173,9 +173,23 @@ Where a satellite already exists (`tree2.md`, `monotonic_stack.md`, `dp_pattern.
 | `bfs.md` | 4,256 | ~1,200 | `bfs_examples.md`; `bfs_advanced.md` (multi-source, bidirectional, 0-1 BFS) |
 | `hash_map.md` | 4,119 | ~1,200 | un-mix the skeletons; `hash_map_examples.md` |
 
-### Tier 2 — same treatment, smaller files
+### Tier 2 — same treatment, smaller files ✅ **done**
 
 `bst.md`, `string.md`, `stack.md` (single largest tail share), `backtrack.md`, `sliding_window.md`, `graph.md`, `linked_list.md`, `design.md`, `array.md`, `topology_sorting.md`, `tree2.md`, `Dijkstra.md`, `prefix_sum.md`, `matrix.md`, and the two language sheets (`python_trick.md`, `java_trick.md` — categorise the flat dump, delete `Other tricks` / `Others`).
+
+Delivered in three passes: six sheets in [PR #116](https://github.com/yennanliu/CS_basics/pull/116), then the remaining ten in [PR #117](https://github.com/yennanliu/CS_basics/pull/117) as batch A (`linked_list`, `design`, `array`, `java_trick`, `python_trick`) and batch B (`topology_sorting`, `matrix`, `prefix_sum`, `Dijkstra`, `tree2`). **Ten sheets became twenty-four**; the largest file in the set went from 3,672 lines to 2,085.
+
+Four targets were missed on purpose, and each is a judgement worth keeping:
+
+- **`design.md` 265** — its concept half was always 210 lines; every other line was one of its two satellites. Padding it back to 1,000 would mean re-deriving what the satellites own.
+- **`python_trick.md` 2,085** — 230 of those arrived *after* the split, when `array.md`'s multi-key sort essay moved in and replaced a 40-line subset of itself. The file's problem was never length; it was 68 entries under a single heading in no order.
+- **`array.md` 1,556** — a hub now, routing to the eight families that own most array-tagged problems.
+- **`tree2.md` 1,935** — the rest of its reduction depends on a cross-file call, below.
+
+Two contract items were added by defects these passes hit, and hold for any future tier:
+
+1. **GitHub does not trim the slug it builds.** A heading ending in a star run keeps a trailing `-`; 74 anchors under `doc/cheatsheet` already depend on that. A checker that strips the star run before slugifying will wave broken links through.
+2. **Re-filing creates duplicate sibling headings.** Sections that were far apart arrive next to each other carrying generic `h4`s — `The Rule`, `Summary Table`, `Core Idea`, `Similar LC problems` all collided this way. Fail the batch on a repeated heading under the same parent, and qualify each collision with the section it belongs to.
 
 ### Tier 3 — dedup only, no split
 
@@ -184,6 +198,16 @@ Where a satellite already exists (`tree2.md`, `monotonic_stack.md`, `dp_pattern.
 ### No action
 
 The ~30 sheets under ~1,200 lines that are already right: `knapsack.md`, `kadane_algorithm.md`, `palindrome.md`, `hashing.md`, `dp_string.md`, `dp_digit.md`, `dp_bitmask.md`, `dp_monotonic_stack.md`, `monotonic_queue.md`, `iterator.md`, `n_sum.md`, `add_x_sum.md`, `difference_array.md`, `complexity_*`, `Bellman-Ford.md`, `Floyd-Warshall.md`, `shortest_path_comparison.md`, `string_matching_kmp_rolling_hash.md`, `python_gotchas.md`, `ood_design.md`, `concurrency_patterns.md`, `diff_toposort_quickunion.md`, `array_overlap_explaination.md`, `recursion.md`, `recursion_to_dp.md`, `advanced_*`, `streaming_algorithms.md`, `knapsack_01_zh.md`, `tree_backtrack.md`.
+
+### Carried forward from Tier 2
+
+- **Cross-file consolidation — the phase every tier feeds and none finishes.** The first named item is now measured: **`tree.md` and `tree2.md` both hold traversal templates**, and on normalised code `tree.md`'s Level-Order template and `tree2.md`'s `1.4)` are identical statement for statement, LC 987 shares 70%, and preorder / inorder / postorder share 48–59% each. Resolving it means deciding which of the two sheets owns traversal templates at all. Other hard numbers: LC 449 byte-identical between `bst_examples` and `dfs_examples`; LC 701 duplicated in both languages; LC 98 in five files; LC 49 in four; `stack_examples` holds 10 of the 12 problems `monotonic_stack.md` owns; ~350–400 lines recoverable in the graph family alone.
+- **`array.md`'s `1-1-5) Sort Array` and `1-1-6) Flatten Array`** — 270 lines of language-level array operations that may belong with `sort.md`. Left in place deliberately; it is a cross-file call.
+- **`2_pointers_quickselect.md` vs `advanced_divide_and_conquer.md`** — the latter owns QuickSelect in more depth; the satellite is registered but should probably be folded in.
+- **~25 pre-existing correctness bugs** from the PR #114 review, verified as untouched by Tier 1: un-seeded BFS queues, undefined identifiers, missing null guards, Hoare's return value used as a pivot index.
+- **One inconsistency Tier 2 introduced**: `stack.md`'s surviving `Common Mistakes #5` recommends the LC 394 typed-stack form whose code block was deleted as a duplicate.
+- **The site slugify fix** — one line in `site/build-lib.js`. It collapses every run of non-alphanumerics to a single `-`, so ` — ` becomes `-` where GitHub gives `--`; ~93 anchors resolve on GitHub and 404 on the published page.
+- **52 broken anchors elsewhere in `doc/cheatsheet`**, found by a repo-wide sweep under GitHub's rule at the end of Tier 2. None is in a file Tier 2 touched. Most look like the trailing-`-` star-run case above.
 
 ### Still open from the Aug review
 
