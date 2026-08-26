@@ -92,7 +92,7 @@ class Solution:
                 for b in B:
                     # both of below are OK
                     #j = bisect.bisect(A, b, i)
-                    # https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/python_trick.md#1-27-bisect--bisect_right-bisect_left-array-bisection-algorithm
+                    # https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/python_trick_stdlib.md#bisect_left-and-bisect_right
                     j = bisect.bisect_right(A, b, i)
                     cur += b * (j - i)
                     i = j

@@ -18,7 +18,7 @@ This file is the long tail of [hash_map.md](./hash_map.md). It holds three kinds
 
 ### Key Properties
 - **Complexity**: see the [Time Complexity](./hash_map.md#time-complexity) table in the main sheet
-- **Core Idea**: every section here is an application of one of the [templates](./hash_map.md#templates-algorithms) in the main sheet — the template is the thing to memorise, these are the rehearsals
+- **Core Idea**: every section here is an application of one of the [templates](./hash_map.md#templates--algorithms) in the main sheet — the template is the thing to memorise, these are the rehearsals
 - **When to Use**: after you know which template a problem needs and want to see it written out in full
 
 ## Templates & Algorithms
@@ -1570,62 +1570,42 @@ class Solution(object):
                     return False
         return True
 ```
+> **Note**: LC 36 asks only whether the board *as given* is valid — it does not ask you to
+> solve it. A backtracking solver answers a different question (that is LC 37) and can call an
+> invalid board valid, because it never checks the pre-filled cells against each other.
+
 ```java
 // java
-// LC 036 Valid Sudoku
-// backtrack
-// (algorithm book (labu) p.311)
-boolean backtrack(char[][] board, int i, int j){
-
-    int m = 9, n = 9;
-    
-    if (j == n){
-        // if visit last col, start from next row
-        return backtrack(board, i + 1, 0);
+// LC 36 Valid Sudoku
+// IDEA: one pass, three sets per index -- row, column and 3x3 box.
+//       The box index is (r/3)*3 + c/3, which is the whole trick.
+// time = O(81) = O(1), space = O(81) = O(1)
+public boolean isValidSudoku(char[][] board) {
+    Set<Character>[] rows = new HashSet[9];
+    Set<Character>[] cols = new HashSet[9];
+    Set<Character>[] boxes = new HashSet[9];
+    for (int i = 0; i < 9; i++) {
+        rows[i] = new HashSet<>();
+        cols[i] = new HashSet<>();
+        boxes[i] = new HashSet<>();
     }
 
-    if (i == m){
-        // found one solution, trigger base case
-        return true;
-    }
+    for (int r = 0; r < 9; r++) {
+        for (int c = 0; c < 9; c++) {
+            char v = board[r][c];
+            if (v == '.') continue;
 
-    if (board[i][j] != '.'){
-        // if there id default number, then no need to looping
-        return backtrack(board, i, j + 1);
-    }
+            /** NOTE !!! the box a cell belongs to */
+            int b = (r / 3) * 3 + c / 3;
 
-    for (char ch = '1'; ch <= '9'; ch++){
-        // if there is no valid number, negelect it
-        if (!isValid(board, i, j, ch)){
-            continue;
+            // Set.add returns false when the value was already there -> duplicate
+            if (!rows[r].add(v) || !cols[c].add(v) || !boxes[b].add(v)) {
+                return false;
+            }
         }
-
-        board[i][j] = ch;
-
-        // if found one solution, return it and terminate the program
-        if (backtrack(board, i, j+1)){
-            return true;
-        }
-
-        board[i][j] = '.';
-    }
-
-    // if looping 1 ~ 9, still can't find a solution
-    // -> change a number to loop
-    return false;
-}
-
-boolean isValid(char[][] board, int r, int c, char n){
-    for (int i = 0; i < 9; i++){
-        // check if row has duplicate
-        if (board[r][i] == n) return false;
-        // check if col has duplicate
-        if (board[i][c] == n) return false;
-        // check if "3 x 3 matrix" has duplicate
-        if (board[ (r/3) * 3 + i / 3 ][ (c/3) * 3 + i % 3] == n) return false;
     }
     return true;
-}  
+}
 ```
 
 ### 2-6) Pairs of Songs With Total Durations Divisible by 60 — LC 1010
@@ -2704,9 +2684,9 @@ class Solution(object):
 
 | Looking for | Go to |
 |---|---|
-| Which template a problem needs | [hash_map.md → Problem → Pattern Decision Table](./hash_map.md#problem-pattern-decision-table) |
-| A canonical template to memorise | [hash_map.md → Templates & Algorithms](./hash_map.md#templates-algorithms) |
+| Which template a problem needs | [hash_map.md → Problem → Pattern Decision Table](./hash_map.md#problem--pattern-decision-table) |
+| A canonical template to memorise | [hash_map.md → Templates & Algorithms](./hash_map.md#templates--algorithms) |
 | A full worked solution | [LC Examples](#lc-examples) above |
 | Every problem in a category | [Problems by Pattern](#problems-by-pattern) above |
-| Sorted-map operations (floor/ceiling/range) | [Ordered Map — Java TreeMap / Python SortedDict](#ordered-map-java-treemap-python-sorteddict) above |
-| Interview tips and common mistakes | [hash_map.md → Summary & Quick Reference](./hash_map.md#summary-quick-reference) |
+| Sorted-map operations (floor/ceiling/range) | [Ordered Map — Java TreeMap / Python SortedDict](#ordered-map--java-treemap--python-sorteddict) above |
+| Interview tips and common mistakes | [hash_map.md → Summary & Quick Reference](./hash_map.md#summary--quick-reference) |

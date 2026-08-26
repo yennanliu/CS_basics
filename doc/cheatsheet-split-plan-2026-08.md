@@ -173,23 +173,64 @@ Where a satellite already exists (`tree2.md`, `monotonic_stack.md`, `dp_pattern.
 | `bfs.md` | 4,256 | ~1,200 | `bfs_examples.md`; `bfs_advanced.md` (multi-source, bidirectional, 0-1 BFS) |
 | `hash_map.md` | 4,119 | ~1,200 | un-mix the skeletons; `hash_map_examples.md` |
 
-### Tier 2 — same treatment, smaller files
+### Tier 2 — same treatment, smaller files ✅ **done**
 
 `bst.md`, `string.md`, `stack.md` (single largest tail share), `backtrack.md`, `sliding_window.md`, `graph.md`, `linked_list.md`, `design.md`, `array.md`, `topology_sorting.md`, `tree2.md`, `Dijkstra.md`, `prefix_sum.md`, `matrix.md`, and the two language sheets (`python_trick.md`, `java_trick.md` — categorise the flat dump, delete `Other tricks` / `Others`).
+
+Delivered in three passes: six sheets in [PR #116](https://github.com/yennanliu/CS_basics/pull/116), then the remaining ten in [PR #117](https://github.com/yennanliu/CS_basics/pull/117) as batch A (`linked_list`, `design`, `array`, `java_trick`, `python_trick`) and batch B (`topology_sorting`, `matrix`, `prefix_sum`, `Dijkstra`, `tree2`). **Ten sheets became twenty-four**; the largest file in the set went from 3,672 lines to 2,085.
+
+Four targets were missed on purpose, and each is a judgement worth keeping:
+
+- **`design.md` 265** — its concept half was always 210 lines; every other line was one of its two satellites. Padding it back to 1,000 would mean re-deriving what the satellites own.
+- **`python_trick.md` 2,085** — 230 of those arrived *after* the split, when `array.md`'s multi-key sort essay moved in and replaced a 40-line subset of itself. The file's problem was never length; it was 68 entries under a single heading in no order.
+- **`array.md` 1,556** — a hub now, routing to the eight families that own most array-tagged problems.
+- **`tree2.md` 1,935** — the rest of its reduction depends on a cross-file call, below.
+
+Two contract items were added by defects these passes hit, and hold for any future tier:
+
+1. **GitHub does not trim the slug it builds.** A heading ending in a star run keeps a trailing `-`; 74 anchors under `doc/cheatsheet` already depend on that. A checker that strips the star run before slugifying will wave broken links through.
+2. **Re-filing creates duplicate sibling headings.** Sections that were far apart arrive next to each other carrying generic `h4`s — `The Rule`, `Summary Table`, `Core Idea`, `Similar LC problems` all collided this way. Fail the batch on a repeated heading under the same parent, and qualify each collision with the section it belongs to.
 
 ### Tier 3 — dedup only, no split
 
 `greedy.md`, `union_find.md`, `set.md`, `bit_manipulation.md`, `monotonic_stack.md`, `intervals.md`, `binary_indexed_tree.md`, `segment_tree.md`, `scanning_line.md`, `sort.md`, `trie.md`, `math.md`. High tail share, but small enough that Rule 2 alone fixes them.
 
+Re-measured at the end of Tier 2 — **12 sheets, 18,012 lines, none over 1,882**. Two things changed from what this plan assumed:
+
+| file | lines | example tail | dup LC |
+|---|---:|---:|---:|
+| `union_find` | 1,882 | 61% | **18** |
+| `math` | 1,804 | 12% | 3 |
+| `scanning_line` | 1,797 | 39% | **15** |
+| `trie` | 1,792 | 67% | 8 |
+| `sort` | 1,781 | 28% | 6 |
+| `greedy` | 1,660 | **83%** | 7 |
+| `monotonic_stack` | 1,500 | 55% | 11 |
+| `set` | 1,381 | 79% | 1 |
+| `segment_tree` | 1,317 | 53% | 11 |
+| `bit_manipulation` | 1,289 | **88%** | 2 |
+| `intervals` | 1,023 | 39% | 10 |
+| `binary_indexed_tree` | 786 | **93%** | 5 |
+
+- **The duplication hot spots are `union_find` (18 distinct LC numbers in more than one `###` heading) and `scanning_line` (15)** — both worse than `prefix_sum`'s 14, which was the worst measured before this pass. `monotonic_stack` at 11 is not the leader this plan expected.
+- **`greedy`, `bit_manipulation` and `binary_indexed_tree` are 83–93% example tail.** At those shares "dedup only" is the wrong instruction: what is left after Rule 2 is a sheet that is almost entirely worked solutions, so they want the same parent/satellite split the earlier tiers used, not a trim.
+
 ### No action
 
 The ~30 sheets under ~1,200 lines that are already right: `knapsack.md`, `kadane_algorithm.md`, `palindrome.md`, `hashing.md`, `dp_string.md`, `dp_digit.md`, `dp_bitmask.md`, `dp_monotonic_stack.md`, `monotonic_queue.md`, `iterator.md`, `n_sum.md`, `add_x_sum.md`, `difference_array.md`, `complexity_*`, `Bellman-Ford.md`, `Floyd-Warshall.md`, `shortest_path_comparison.md`, `string_matching_kmp_rolling_hash.md`, `python_gotchas.md`, `ood_design.md`, `concurrency_patterns.md`, `diff_toposort_quickunion.md`, `array_overlap_explaination.md`, `recursion.md`, `recursion_to_dp.md`, `advanced_*`, `streaming_algorithms.md`, `knapsack_01_zh.md`, `tree_backtrack.md`.
 
+### Carried forward from Tier 2
+
+- **Cross-file consolidation — the phase every tier feeds and none finishes.** The first named item is now measured: **`tree.md` and `tree2.md` both hold traversal templates**, and on normalised code `tree.md`'s Level-Order template and `tree2.md`'s `1.4)` are identical statement for statement, LC 987 shares 70%, and preorder / inorder / postorder share 48–59% each. Resolving it means deciding which of the two sheets owns traversal templates at all. Other hard numbers, re-measured at the end of Tier 2: one LC 449 code block is byte-identical between `bst_examples` and `dfs_examples`; LC 701 is duplicated in both languages; LC 98 is named in 9 sheets and LC 49 in 9; `monotonic_stack.md` and `stack_examples.md` share 16 LC numbers. The LC-name counts include index and table mentions, so they bound the work rather than measure it — each pair needs the same before/after check the Tier 2 batches used.
+- **`array.md`'s `1-1-5) Sort Array` and `1-1-6) Flatten Array`** — 270 lines of language-level array operations that may belong with `sort.md`. Left in place deliberately; it is a cross-file call.
+- **32 unparseable Python blocks** across the corpus's 1,648, found by an `ast.parse` sweep after the PR #114 correctness pass. None is in that review's finding list; they are schematics, excerpts and fragments tagged ` ```python ` that do not stand alone. Either make them parse or caption them as outlines, per contract item 3.
+
 ### Still open from the Aug review
 
-- `lc_category.md` — 1,516 lines, a verbatim paste of an external GitHub README including 12 `TODO` markers that are not this repo's. Should be a link.
 - `code_interview_general_cheatsheet.md` — 33 lines, belongs inside another doc.
 - `time = O(...)` coverage is 35% of ~3,177 code blocks.
+
+Closed since: `lc_category.md` is a link plus a category map rather than a 1,515-line mirror; the site slug rule now matches GitHub's, taking the 217 in-repo anchors from 71 resolving to all 217; the ~22 correctness findings from the PR #114 review are fixed; and quickselect has one owner instead of two.
 
 ---
 

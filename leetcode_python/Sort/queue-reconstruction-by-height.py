@@ -51,7 +51,7 @@ class Solution(object):
             """
             py insert syntax
             # syntax :
-            # https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/python_trick.md#1-6-insert-into-array-in-place
+            # https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/python_trick_indexing.md#insert-into-a-list-in-place-
 
             # arr.insert(<index>,<value>)
             """
@@ -85,7 +85,7 @@ class Solution(object):
         """
         py insert syntax
         # syntax : 
-        # https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/python_trick.md#1-6-insert-into-array-in-place
+        # https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/python_trick_indexing.md#insert-into-a-list-in-place-
 
         # arr.insert(<index>,<value>)
         """

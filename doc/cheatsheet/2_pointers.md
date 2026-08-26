@@ -116,13 +116,13 @@
 
 | Signal in the problem | Template | Worked in |
 |---|---|---|
-| in-place remove / deduplicate, order matters | [Template 1](#template-1-fast-slow-read-write-compaction-lc-26-lc-27) | LC 26, LC 27, LC 80, LC 283 |
-| sorted array, look for a pair / squeeze a range | [Template 2](#template-2-converging-bidirectional-pointers) | LC 11, LC 125, LC 167, LC 344 |
-| count / find palindromic substrings | [Template 3](#template-3-expand-from-centre-lc-5-lc-647) | LC 5, LC 647, LC 680 |
-| "is A a subsequence of B", pattern matching | [Template 4](#template-4-subsequence-matching-one-pointer-always-moves-lc-392) | LC 392, LC 524, LC 1023, LC 809 |
-| merge two sorted sequences in place | [Template 5](#template-5-merge-two-sorted-arrays-fill-from-the-back-lc-88) | LC 88, LC 986, LC 977 |
-| rearrange into 3 groups / partition by value | [Template 6](#template-6-three-way-partition-dutch-national-flag-lc-75) | LC 75, LC 905, LC 86 |
-| cycle in a linked list, find the duplicate | [Template 7](#template-7-fast-slow-cycle-detection-lc-141-lc-142) | LC 141, LC 142, LC 287 |
+| in-place remove / deduplicate, order matters | [Template 1](#template-1-fastslow-read-write-compaction--lc-26-lc-27-) | LC 26, LC 27, LC 80, LC 283 |
+| sorted array, look for a pair / squeeze a range | [Template 2](#template-2-converging-bidirectional-pointers-) | LC 11, LC 125, LC 167, LC 344 |
+| count / find palindromic substrings | [Template 3](#template-3-expand-from-centre--lc-5-lc-647-) | LC 5, LC 647, LC 680 |
+| "is A a subsequence of B", pattern matching | [Template 4](#template-4-subsequence-matching-one-pointer-always-moves--lc-392-) | LC 392, LC 524, LC 1023, LC 809 |
+| merge two sorted sequences in place | [Template 5](#template-5-merge-two-sorted-arrays-fill-from-the-back--lc-88-) | LC 88, LC 986, LC 977 |
+| rearrange into 3 groups / partition by value | [Template 6](#template-6-three-way-partition-dutch-national-flag--lc-75-) | LC 75, LC 905, LC 86 |
+| cycle in a linked list, find the duplicate | [Template 7](#template-7-fastslow-cycle-detection--lc-141-lc-142-) | LC 141, LC 142, LC 287 |
 | window that grows on one condition, shrinks on another | [Template 8](#template-8-advance-right-then-advance-left-condition-driven) | LC 209, LC 567 (see [sliding_window.md](./sliding_window.md)) |
 | kth largest / k closest (select, do not sort) | [2_pointers_quickselect.md](./2_pointers_quickselect.md) | LC 215, LC 973 |
 

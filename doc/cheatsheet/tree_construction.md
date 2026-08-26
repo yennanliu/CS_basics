@@ -130,7 +130,13 @@ class Solution:
 ```python
 #  Construct Binary Tree from Preorder and Inorder Traversal
 # V0
-# IDEA : BST property
+# IDEA: the pre-order head is the root; its position in in-order splits the
+#       remaining elements into the two subtrees. LC 105 builds a GENERAL binary
+#       tree -- no BST ordering is assumed or required.
+# time = O(N^2), space = O(N^2)
+#   -> `inorder.index` rescans the range on every call and each recursion copies
+#      four slices. Readable, but NOT the O(N) the table above quotes -- that is
+#      the Java form below, which passes index bounds and a value -> index map.
 class Solution(object):
     def buildTree(self, preorder, inorder):
         if len(preorder) == 0:
@@ -143,10 +149,60 @@ class Solution(object):
         index = inorder.index(root.val)  # the index of root at inorder, and we can also get the length of left-sub-tree, right-sub-tree ( preorder[1:index+1]) for following using
         # recursion for root.left
         #### NOTE : preorder[1 : index + 1] (for left sub tree)
-        root.left = self.buildTree(preorder[1 : index + 1], inorder[ : index]) ### since the BST is symmery so the length of left-sub-tree is same in both Preorder and Inorder, so we can use the index to get the left-sub-tree of Preorder as well
+        root.left = self.buildTree(preorder[1 : index + 1], inorder[ : index]) ### the two traversals cover the SAME elements, so the left subtree has the same length in both -- that is what lets one index split both arrays
         # recursion for root.right 
-        root.right = self.buildTree(preorder[index + 1 : ], inorder[index + 1 :]) ### since the BST is symmery so the length of left-sub-tree is same in both Preorder and Inorder, so we can use the index to get the right-sub-tree of Preorder as well
+        root.right = self.buildTree(preorder[index + 1 : ], inorder[index + 1 :]) ### same on the right: everything after `index` in in-order is the right subtree
         return root
+```
+
+**The same split, in Java** — a `HashMap` from value to in-order index turns the
+`inorder.index(...)` scan into O(1), which is what takes the whole build from O(n²) to O(n):
+
+```java
+// Java - Build Tree from Preorder and Inorder
+private int preIndex = 0;
+private Map<Integer, Integer> inorderMap = new HashMap<>();
+
+public TreeNode buildTree(int[] preorder, int[] inorder) {
+    for (int i = 0; i < inorder.length; i++) {
+        inorderMap.put(inorder[i], i);
+    }
+    return build(preorder, 0, inorder.length - 1);
+}
+
+private TreeNode build(int[] preorder, int left, int right) {
+    if (left > right) return null;
+
+    int rootVal = preorder[preIndex++];
+    TreeNode root = new TreeNode(rootVal);
+
+    int index = inorderMap.get(rootVal);
+
+    root.left = build(preorder, left, index - 1);
+    root.right = build(preorder, index + 1, right);
+
+    return root;
+}
+```
+
+**Inorder + postorder — LC 106.** The only change is where the root comes from: the *last*
+element of post-order instead of the first of pre-order, so the two child slices shift by one.
+
+```python
+def build_tree_post(inorder, postorder):
+    if not inorder or not postorder:
+        return None
+
+    # Last element in postorder is root
+    root_val = postorder[-1]
+    root = TreeNode(root_val)
+
+    root_index = inorder.index(root_val)
+
+    root.left = build_tree_post(inorder[:root_index], postorder[:root_index])
+    root.right = build_tree_post(inorder[root_index+1:], postorder[root_index:-1])
+
+    return root
 ```
 
 ### 3) Construct Binary Tree from String — LC 536 (Recursive Descent Parsing) ⭐⭐⭐⭐

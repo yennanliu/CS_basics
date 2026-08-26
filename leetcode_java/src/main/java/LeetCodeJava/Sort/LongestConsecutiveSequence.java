@@ -276,7 +276,7 @@ public class LongestConsecutiveSequence {
          *
          *  NOTE !!! sort array via Arrays.sort()
          *
-         *   https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/java_trick.md#1-4-3-sort-list-vs-array
+         *   https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/java_trick_strings_sorting.md#in-place-vs-stream-sorting
          */
         Arrays.sort(nums);
 

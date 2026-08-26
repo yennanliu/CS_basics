@@ -17,15 +17,15 @@ One section per problem. Each problem appears exactly once, filed under the temp
 
 | Group | Problems |
 |---|---|
-| [In-Place Rewriting (Fast/Slow)](#in-place-rewriting-fast-slow) | LC 80, LC 283 |
+| [In-Place Rewriting (Fast/Slow)](#in-place-rewriting-fastslow) | LC 80, LC 283 |
 | [Converging Bidirectional Pointers](#converging-bidirectional-pointers) | LC 15, LC 16, LC 31, LC 42, LC 128, LC 344, LC 942 |
 | [Expand from Centre](#expand-from-centre) | LC 5, LC 214, LC 647, LC 680, LC 845 |
-| [Subsequence & Two-String Matching](#subsequence-two-string-matching) | LC 161, LC 165, LC 271, LC 524, LC 809, LC 953, LC 1023 |
+| [Subsequence & Two-String Matching](#subsequence--two-string-matching) | LC 161, LC 165, LC 271, LC 524, LC 809, LC 953, LC 1023 |
 | [Pointers over Intervals, Matrices and Partitions](#pointers-over-intervals-matrices-and-partitions) | LC 57, LC 240, LC 763, LC 986, LC 2104 |
 
 ## In-Place Rewriting (Fast/Slow)
 
-> Template: [Template 1 — Fast/Slow Read-Write Compaction](./2_pointers.md#template-1-fast-slow-read-write-compaction-lc-26-lc-27).
+> Template: [Template 1 — Fast/Slow Read-Write Compaction](./2_pointers.md#template-1-fastslow-read-write-compaction--lc-26-lc-27-).
 
 ### Remove Duplicates from Sorted Array II — LC 80
 
@@ -351,7 +351,7 @@ class Solution(object):
 
 ## Converging Bidirectional Pointers
 
-> Template: [Template 2 — Converging Bidirectional Pointers](./2_pointers.md#template-2-converging-bidirectional-pointers).
+> Template: [Template 2 — Converging Bidirectional Pointers](./2_pointers.md#template-2-converging-bidirectional-pointers-).
 
 ### Next Permutation — LC 31
 
@@ -973,7 +973,7 @@ public void reverseString(char[] s) {
 
 ## Expand from Centre
 
-> Template: [Template 3 — Expand from Centre](./2_pointers.md#template-3-expand-from-centre-lc-5-lc-647).
+> Template: [Template 3 — Expand from Centre](./2_pointers.md#template-3-expand-from-centre--lc-5-lc-647-).
 
 ### Longest Palindromic Substring — LC 5
 ```python
@@ -1559,7 +1559,7 @@ private boolean isPalindrome(String s, int l, int r) {
 
 ## Subsequence & Two-String Matching
 
-> Template: [Template 4 — Subsequence Matching](./2_pointers.md#template-4-subsequence-matching-one-pointer-always-moves-lc-392).
+> Template: [Template 4 — Subsequence Matching](./2_pointers.md#template-4-subsequence-matching-one-pointer-always-moves--lc-392-).
 
 ### Longest Word in Dictionary through Deleting — LC 524 ⭐⭐⭐⭐
 
@@ -2345,7 +2345,7 @@ class Solution(object):
 
 ## Pointers over Intervals, Matrices and Partitions
 
-> Templates: [Template 5 — Merge Two Sorted Arrays](./2_pointers.md#template-5-merge-two-sorted-arrays-fill-from-the-back-lc-88) and [Template 6 — Three-Way Partition](./2_pointers.md#template-6-three-way-partition-dutch-national-flag-lc-75).
+> Templates: [Template 5 — Merge Two Sorted Arrays](./2_pointers.md#template-5-merge-two-sorted-arrays-fill-from-the-back--lc-88-) and [Template 6 — Three-Way Partition](./2_pointers.md#template-6-three-way-partition-dutch-national-flag--lc-75-).
 
 ### Interval List Intersections — LC 986 ⭐⭐⭐⭐
 

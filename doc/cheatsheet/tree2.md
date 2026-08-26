@@ -1,7 +1,7 @@
 # Tree Pattern Templates - Comprehensive Guide
 
 > **Scope** — A numbered, copy-paste **template** per tree pattern, in Python *and* Java. Template-first, no theory.
-> **See also**: [tree.md](./tree.md) — concepts, tree types, when to use which traversal; [binary_tree.md](./binary_tree.md) — how DFS state flows through a binary tree; [bst.md](./bst.md) — ordered trees.
+> **See also**: [tree.md](./tree.md) — concepts, tree types, when to use which traversal; [tree_lca_distance.md](./tree_lca_distance.md) — LCA, node distance and root-to-leaf paths, which this sheet defers to entirely; [tree_construction.md](./tree_construction.md) and [tree_codec.md](./tree_codec.md) — building a tree from an encoding, and serialising it back; [binary_tree.md](./binary_tree.md) — how DFS state flows through a binary tree; [bst.md](./bst.md) — ordered trees.
 
 > **Note:** This file contains detailed traversal templates and implementation code. For tree concepts, types, and algorithm patterns, see [tree.md](./tree.md).
 
@@ -712,6 +712,124 @@ public boolean isSameTree(TreeNode p, TreeNode q) {
 
 ---
 
+### 2.6) Minimum Depth — the recursive form and its single-child trap
+
+> `2.2)` above solves LC 111 with BFS, which is the better answer because it stops at the
+> first leaf. The recursive form is worth knowing anyway, because it is where the classic
+> mistake lives: `1 + min(left, right)` is wrong for a node with **one** child — the missing
+> side returns 0 and the node is reported as a leaf. The two guards below are the fix.
+
+**Pattern**: Find minimum depth to leaf
+**Use Case**: Shortest path to leaf
+**Time Complexity**: O(n)
+**Space Complexity**: O(h)
+
+#### Template Code
+
+```python
+# Python - Minimum Depth DFS
+def min_depth(root):
+    if not root:
+        return 0
+
+    # If one child is missing, only consider the other
+    if not root.left:
+        return 1 + min_depth(root.right)
+    if not root.right:
+        return 1 + min_depth(root.left)
+
+    return 1 + min(min_depth(root.left), min_depth(root.right))
+```
+
+```java
+// Java - Minimum Depth DFS
+public int minDepth(TreeNode root) {
+    if (root == null) return 0;
+
+    if (root.left == null) {
+        return 1 + minDepth(root.right);
+    }
+    if (root.right == null) {
+        return 1 + minDepth(root.left);
+    }
+
+    return 1 + Math.min(minDepth(root.left), minDepth(root.right));
+}
+```
+
+#### LeetCode Problems
+- LC 111: Minimum Depth of Binary Tree (Easy)
+
+---
+
+
+### 2.7) Leftmost Value at Maximum Depth — LC 513
+
+**Pattern**: Find leftmost node at maximum depth
+**Use Case**: Bottom-left tree value
+**Time Complexity**: O(n)
+**Space Complexity**: O(w)
+
+#### Template Code
+
+```python
+# Python - Find Bottom Left Tree Value
+from collections import deque
+
+def find_bottom_left_value(root):
+    queue = deque([root])
+    leftmost = root.val
+
+    while queue:
+        level_size = len(queue)
+
+        for i in range(level_size):
+            node = queue.popleft()
+
+            # First node of level
+            if i == 0:
+                leftmost = node.val
+
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+
+    return leftmost
+```
+
+```java
+// Java - Find Bottom Left Tree Value
+public int findBottomLeftValue(TreeNode root) {
+    Queue<TreeNode> queue = new LinkedList<>();
+    queue.offer(root);
+    int leftmost = root.val;
+
+    while (!queue.isEmpty()) {
+        int levelSize = queue.size();
+
+        for (int i = 0; i < levelSize; i++) {
+            TreeNode node = queue.poll();
+
+            if (i == 0) {
+                leftmost = node.val;
+            }
+
+            if (node.left != null) queue.offer(node.left);
+            if (node.right != null) queue.offer(node.right);
+        }
+    }
+
+    return leftmost;
+}
+```
+
+#### LeetCode Problems
+- LC 513: Find Bottom Left Tree Value (Medium)
+
+---
+
+
 ## 3) Path-Based Templates
 
 ### 3.1) Global Max Update Template — LC 124 ⭐⭐⭐⭐
@@ -1189,642 +1307,37 @@ private int dfs(TreeNode node) {
 
 ## 4) Distance and LCA Templates
 
-### 4.1) LCA Standard Template — LC 236 ⭐⭐⭐⭐⭐
+These four templates moved out of this sheet. [tree_lca_distance.md](./tree_lca_distance.md)
+owns them and teaches each one at several times the length this sheet had room for:
+
+| What this section used to hold | Where it lives now |
+|---|---|
+| 4.1) LCA Standard Template — LC 236 | [LCA — LC 236](./tree_lca_distance.md#1-lowest-common-ancestor-lca--lc-236), plus the LC 865 / 1123 deepest-nodes variant |
+| 4.2) Value Comparison Template — LC 235 | the same section — LC 235 is the BST shortcut on the same template |
+| 4.3) Path Distance Template — LC 1740 | [Distance Between Nodes — LC 1740](./tree_lca_distance.md#3-distance-between-nodes--lc-1740) |
+| 4.4) Tree to Graph Template — LC 863 | [Move Parent Pattern](./tree_lca_distance.md#2-move-parent-pattern---bidirectional-tree-traversal), which is the general form — LC 863 and LC 742 are both instances |
+
+**The idea worth carrying away from here**: every "distance" question on a tree is an LCA
+question in disguise, because the only path between two nodes runs through their lowest common
+ancestor — `dist(p, q) = depth(p) + depth(q) - 2·depth(lca)`. When you also need to walk
+*upward*, add parent pointers and treat the tree as an undirected graph.
 
-**Pattern**: Find lowest common ancestor using postorder
-**Use Case**: Find LCA in binary tree
-**Time Complexity**: O(n)
-**Space Complexity**: O(h)
-
-#### Template Code
-
-```python
-# Python - Lowest Common Ancestor
-def lowest_common_ancestor(root, p, q):
-    if not root or root == p or root == q:
-        return root
-
-    left = lowest_common_ancestor(root.left, p, q)
-    right = lowest_common_ancestor(root.right, p, q)
-
-    # Found both in different subtrees
-    if left and right:
-        return root
-
-    # Return non-null child
-    return left if left else right
-```
-
-```java
-// Java - Lowest Common Ancestor
-public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-    if (root == null || root == p || root == q) {
-        return root;
-    }
-
-    TreeNode left = lowestCommonAncestor(root.left, p, q);
-    TreeNode right = lowestCommonAncestor(root.right, p, q);
-
-    if (left != null && right != null) {
-        return root;
-    }
-
-    return left != null ? left : right;
-}
-```
-
-#### LeetCode Problems
-- LC 236: Lowest Common Ancestor of a Binary Tree (Medium)
-
----
-
-### 4.2) Value Comparison Template — LC 235
-
-**Pattern**: Use BST property for LCA
-**Use Case**: Find LCA in BST
-**Time Complexity**: O(h)
-**Space Complexity**: O(1) iterative
-
-#### Template Code
-
-```python
-# Python - LCA of BST
-def lowest_common_ancestor_bst(root, p, q):
-    while root:
-        # Both in left subtree
-        if p.val < root.val and q.val < root.val:
-            root = root.left
-        # Both in right subtree
-        elif p.val > root.val and q.val > root.val:
-            root = root.right
-        else:
-            # Found split point
-            return root
-
-    return None
-```
-
-```java
-// Java - LCA of BST
-public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-    while (root != null) {
-        if (p.val < root.val && q.val < root.val) {
-            root = root.left;
-        } else if (p.val > root.val && q.val > root.val) {
-            root = root.right;
-        } else {
-            return root;
-        }
-    }
-
-    return null;
-}
-```
-
-#### LeetCode Problems
-- LC 235: Lowest Common Ancestor of a Binary Search Tree (Easy)
-
----
-
-### 4.3) Path Distance Template — LC 1740
-
-**Pattern**: Find distance using LCA
-**Use Case**: Distance between two nodes
-**Time Complexity**: O(n)
-**Space Complexity**: O(h)
-
-#### Template Code
-
-```python
-# Python - Find Distance in Binary Tree
-def find_distance(root, p, q):
-    def find_lca(node, p, q):
-        if not node or node.val == p or node.val == q:
-            return node
-
-        left = find_lca(node.left, p, q)
-        right = find_lca(node.right, p, q)
-
-        if left and right:
-            return node
-        return left if left else right
-
-    def get_distance(node, target):
-        if not node:
-            return -1
-        if node.val == target:
-            return 0
-
-        left_dist = get_distance(node.left, target)
-        right_dist = get_distance(node.right, target)
-
-        if left_dist != -1:
-            return left_dist + 1
-        if right_dist != -1:
-            return right_dist + 1
-        return -1
-
-    lca = find_lca(root, p, q)
-    return get_distance(lca, p) + get_distance(lca, q)
-```
-
-```java
-// Java - Find Distance in Binary Tree
-public int findDistance(TreeNode root, int p, int q) {
-    TreeNode lca = findLCA(root, p, q);
-    return getDistance(lca, p) + getDistance(lca, q);
-}
-
-private TreeNode findLCA(TreeNode node, int p, int q) {
-    if (node == null || node.val == p || node.val == q) {
-        return node;
-    }
-
-    TreeNode left = findLCA(node.left, p, q);
-    TreeNode right = findLCA(node.right, p, q);
-
-    if (left != null && right != null) return node;
-    return left != null ? left : right;
-}
-
-private int getDistance(TreeNode node, int target) {
-    if (node == null) return -1;
-    if (node.val == target) return 0;
-
-    int leftDist = getDistance(node.left, target);
-    int rightDist = getDistance(node.right, target);
-
-    if (leftDist != -1) return leftDist + 1;
-    if (rightDist != -1) return rightDist + 1;
-    return -1;
-}
-```
-
-#### LeetCode Problems
-- LC 1740: Find Distance in a Binary Tree (Medium)
-
----
-
-### 4.4) Tree to Graph Template — LC 863
-
-**Pattern**: Convert tree to graph for distance queries
-**Use Case**: Find nodes at distance K
-**Time Complexity**: O(n)
-**Space Complexity**: O(n)
-
-#### Template Code
-
-```python
-# Python - All Nodes Distance K
-from collections import defaultdict, deque
-
-def distance_k(root, target, k):
-    # Build graph
-    graph = defaultdict(list)
-
-    def build_graph(parent, child):
-        if parent and child:
-            graph[parent.val].append(child.val)
-            graph[child.val].append(parent.val)
-
-        if child.left:
-            build_graph(child, child.left)
-        if child.right:
-            build_graph(child, child.right)
-
-    build_graph(None, root)
-
-    # BFS from target
-    result = []
-    visited = {target.val}
-    queue = deque([(target.val, 0)])
-
-    while queue:
-        node, distance = queue.popleft()
-
-        if distance == k:
-            result.append(node)
-            continue
-
-        for neighbor in graph[node]:
-            if neighbor not in visited:
-                visited.add(neighbor)
-                queue.append((neighbor, distance + 1))
-
-    return result
-```
-
-```java
-// Java - All Nodes Distance K
-Map<Integer, List<Integer>> graph = new HashMap<>();
-
-public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
-    buildGraph(null, root);
-
-    List<Integer> result = new ArrayList<>();
-    Set<Integer> visited = new HashSet<>();
-    Queue<int[]> queue = new LinkedList<>();
-
-    queue.offer(new int[]{target.val, 0});
-    visited.add(target.val);
-
-    while (!queue.isEmpty()) {
-        int[] current = queue.poll();
-        int node = current[0];
-        int distance = current[1];
-
-        if (distance == k) {
-            result.add(node);
-            continue;
-        }
-
-        for (int neighbor : graph.getOrDefault(node, new ArrayList<>())) {
-            if (!visited.contains(neighbor)) {
-                visited.add(neighbor);
-                queue.offer(new int[]{neighbor, distance + 1});
-            }
-        }
-    }
-
-    return result;
-}
-
-private void buildGraph(TreeNode parent, TreeNode child) {
-    if (parent != null && child != null) {
-        graph.computeIfAbsent(parent.val, k -> new ArrayList<>()).add(child.val);
-        graph.computeIfAbsent(child.val, k -> new ArrayList<>()).add(parent.val);
-    }
-
-    if (child != null) {
-        if (child.left != null) buildGraph(child, child.left);
-        if (child.right != null) buildGraph(child, child.right);
-    }
-}
-```
-
-#### LeetCode Problems
-- LC 863: All Nodes Distance K in Binary Tree (Medium)
-
----
-
-## 5) Height and Depth Templates
-
-### 5.1) Height Calculation Template — LC 104
-
-**Pattern**: Bottom-up height calculation
-**Use Case**: Get tree height
-**Time Complexity**: O(n)
-**Space Complexity**: O(h)
-
-#### Template Code
-
-```python
-# Python - Height Calculation
-def height(root):
-    if not root:
-        return 0
-
-    return 1 + max(height(root.left), height(root.right))
-```
-
-```java
-// Java - Height Calculation
-public int height(TreeNode root) {
-    if (root == null) {
-        return 0;
-    }
-
-    return 1 + Math.max(height(root.left), height(root.right));
-}
-```
-
-#### LeetCode Problems
-- LC 104: Maximum Depth of Binary Tree (Easy)
-
----
-
-### 5.2) Depth to Leaf Template — LC 111
-
-**Pattern**: Find minimum depth to leaf
-**Use Case**: Shortest path to leaf
-**Time Complexity**: O(n)
-**Space Complexity**: O(h)
-
-#### Template Code
-
-```python
-# Python - Minimum Depth DFS
-def min_depth(root):
-    if not root:
-        return 0
-
-    # If one child is missing, only consider the other
-    if not root.left:
-        return 1 + min_depth(root.right)
-    if not root.right:
-        return 1 + min_depth(root.left)
-
-    return 1 + min(min_depth(root.left), min_depth(root.right))
-```
-
-```java
-// Java - Minimum Depth DFS
-public int minDepth(TreeNode root) {
-    if (root == null) return 0;
-
-    if (root.left == null) {
-        return 1 + minDepth(root.right);
-    }
-    if (root.right == null) {
-        return 1 + minDepth(root.left);
-    }
-
-    return 1 + Math.min(minDepth(root.left), minDepth(root.right));
-}
-```
-
-#### LeetCode Problems
-- LC 111: Minimum Depth of Binary Tree (Easy)
-
----
-
-### 5.3) Balance Check Template — LC 110
-
-**Pattern**: Check balance during height calculation
-**Use Case**: Validate tree balance
-**Time Complexity**: O(n)
-**Space Complexity**: O(h)
-
-#### Template Code
-
-> Identical to [2.3) Height Validation Template — LC 110](#23-height-validation-template--lc-110): compute height bottom-up and propagate `-1` upward once any subtree is unbalanced.
-
-#### LeetCode Problems
-- LC 110: Balanced Binary Tree (Easy)
-
----
-
-### 5.4) Leftmost at Depth Template — LC 513
-
-**Pattern**: Find leftmost node at maximum depth
-**Use Case**: Bottom-left tree value
-**Time Complexity**: O(n)
-**Space Complexity**: O(w)
-
-#### Template Code
-
-```python
-# Python - Find Bottom Left Tree Value
-from collections import deque
-
-def find_bottom_left_value(root):
-    queue = deque([root])
-    leftmost = root.val
-
-    while queue:
-        level_size = len(queue)
-
-        for i in range(level_size):
-            node = queue.popleft()
-
-            # First node of level
-            if i == 0:
-                leftmost = node.val
-
-            if node.left:
-                queue.append(node.left)
-            if node.right:
-                queue.append(node.right)
-
-    return leftmost
-```
-
-```java
-// Java - Find Bottom Left Tree Value
-public int findBottomLeftValue(TreeNode root) {
-    Queue<TreeNode> queue = new LinkedList<>();
-    queue.offer(root);
-    int leftmost = root.val;
-
-    while (!queue.isEmpty()) {
-        int levelSize = queue.size();
-
-        for (int i = 0; i < levelSize; i++) {
-            TreeNode node = queue.poll();
-
-            if (i == 0) {
-                leftmost = node.val;
-            }
-
-            if (node.left != null) queue.offer(node.left);
-            if (node.right != null) queue.offer(node.right);
-        }
-    }
-
-    return leftmost;
-}
-```
-
-#### LeetCode Problems
-- LC 513: Find Bottom Left Tree Value (Medium)
-
----
 
 ## 6) Tree Construction Templates
 
-### 6.1) Tree Building Template — LC 105 ⭐⭐⭐⭐
+Construction moved out of this sheet as well; two Tier 1 sheets own it between them:
 
-**Pattern**: Build tree from traversal arrays
-**Use Case**: Construct from preorder/inorder or inorder/postorder
-**Time Complexity**: O(n)
-**Space Complexity**: O(n)
+| What this section used to hold | Where it lives now |
+|---|---|
+| 6.1) Tree Building Template — LC 105 / 106 | [tree_construction.md](./tree_construction.md#2-construct-binary-tree-from-preorder-and-inorder-traversal--lc-105) — this sheet's Java template and its LC 106 post-order variant were merged in |
+| 6.2) String Conversion Template — LC 297 | [tree_codec.md](./tree_codec.md) — the whole codec family, LC 297 / 449 / 331 |
+| 6.3) String Construction Template — LC 606 | [tree_codec.md](./tree_codec.md) — the parenthesis format and the pair-omission rule |
 
-#### Template Code
+**The idea worth carrying away from here**: every construction problem is the same recursion —
+identify the root from the encoding, work out how much of the input belongs to each subtree, and
+recurse. Only the first step differs: the pre-order head, the post-order tail, the maximum of a
+range, or the token before the first `(`.
 
-```python
-# Python - Build Tree from Preorder and Inorder
-def build_tree(preorder, inorder):
-    if not preorder or not inorder:
-        return None
-
-    # First element in preorder is root
-    root_val = preorder[0]
-    root = TreeNode(root_val)
-
-    # Find root in inorder to split left/right
-    root_index = inorder.index(root_val)
-
-    # Recursively build subtrees
-    root.left = build_tree(preorder[1:root_index+1], inorder[:root_index])
-    root.right = build_tree(preorder[root_index+1:], inorder[root_index+1:])
-
-    return root
-
-# Python - Build Tree from Inorder and Postorder
-def build_tree_post(inorder, postorder):
-    if not inorder or not postorder:
-        return None
-
-    # Last element in postorder is root
-    root_val = postorder[-1]
-    root = TreeNode(root_val)
-
-    root_index = inorder.index(root_val)
-
-    root.left = build_tree_post(inorder[:root_index], postorder[:root_index])
-    root.right = build_tree_post(inorder[root_index+1:], postorder[root_index:-1])
-
-    return root
-```
-
-```java
-// Java - Build Tree from Preorder and Inorder
-private int preIndex = 0;
-private Map<Integer, Integer> inorderMap = new HashMap<>();
-
-public TreeNode buildTree(int[] preorder, int[] inorder) {
-    for (int i = 0; i < inorder.length; i++) {
-        inorderMap.put(inorder[i], i);
-    }
-    return build(preorder, 0, inorder.length - 1);
-}
-
-private TreeNode build(int[] preorder, int left, int right) {
-    if (left > right) return null;
-
-    int rootVal = preorder[preIndex++];
-    TreeNode root = new TreeNode(rootVal);
-
-    int index = inorderMap.get(rootVal);
-
-    root.left = build(preorder, left, index - 1);
-    root.right = build(preorder, index + 1, right);
-
-    return root;
-}
-```
-
-#### LeetCode Problems
-- LC 105: Construct Binary Tree from Preorder and Inorder Traversal (Medium)
-- LC 106: Construct Binary Tree from Inorder and Postorder Traversal (Medium)
-- LC 654: Maximum Binary Tree (Medium) — **variation**: no second array; the root of each range is the **max element** of that range, then recurse on the two halves
-
----
-
-### 6.2) String Conversion Template — LC 297
-
-**Pattern**: Serialize/deserialize tree
-**Use Case**: Tree persistence, transmission
-**Time Complexity**: O(n)
-**Space Complexity**: O(n)
-
-#### Template Code
-
-```python
-# Python - Serialize and Deserialize
-class Codec:
-    def serialize(self, root):
-        if not root:
-            return "#"
-
-        return f"{root.val},{self.serialize(root.left)},{self.serialize(root.right)}"
-
-    def deserialize(self, data):
-        def build():
-            val = next(values)
-            if val == "#":
-                return None
-
-            node = TreeNode(int(val))
-            node.left = build()
-            node.right = build()
-            return node
-
-        values = iter(data.split(","))
-        return build()
-```
-
-```java
-// Java - Serialize and Deserialize
-public class Codec {
-    public String serialize(TreeNode root) {
-        if (root == null) {
-            return "#";
-        }
-
-        return root.val + "," + serialize(root.left) + "," + serialize(root.right);
-    }
-
-    public TreeNode deserialize(String data) {
-        Queue<String> queue = new LinkedList<>(Arrays.asList(data.split(",")));
-        return build(queue);
-    }
-
-    private TreeNode build(Queue<String> queue) {
-        String val = queue.poll();
-        if (val.equals("#")) {
-            return null;
-        }
-
-        TreeNode node = new TreeNode(Integer.parseInt(val));
-        node.left = build(queue);
-        node.right = build(queue);
-        return node;
-    }
-}
-```
-
-#### LeetCode Problems
-- LC 297: Serialize and Deserialize Binary Tree (Hard)
-- LC 449: Serialize and Deserialize BST (Medium)
-
----
-
-### 6.3) String Construction Template — LC 606
-
-**Pattern**: Build string representation
-**Use Case**: Tree to string conversion
-**Time Complexity**: O(n)
-**Space Complexity**: O(h)
-
-#### Template Code
-
-```python
-# Python - Construct String from Binary Tree
-def tree2str(root):
-    if not root:
-        return ""
-
-    if not root.left and not root.right:
-        return str(root.val)
-
-    if not root.right:
-        return f"{root.val}({tree2str(root.left)})"
-
-    return f"{root.val}({tree2str(root.left)})({tree2str(root.right)})"
-```
-
-```java
-// Java - Construct String from Binary Tree
-public String tree2str(TreeNode root) {
-    if (root == null) return "";
-
-    if (root.left == null && root.right == null) {
-        return String.valueOf(root.val);
-    }
-
-    if (root.right == null) {
-        return root.val + "(" + tree2str(root.left) + ")";
-    }
-
-    return root.val + "(" + tree2str(root.left) + ")(" + tree2str(root.right) + ")";
-}
-```
-
-#### LeetCode Problems
-- LC 606: Construct String from Binary Tree (Easy)
-
----
 
 ## 7) Tree Modification Templates
 
@@ -2298,17 +1811,15 @@ def count_nodes(root):
 | **Path State Tracking** | Track max in path | O(n) | O(h) | LC 1448 |
 | **Longest Path** | Diameter calculation | O(n) | O(h) | LC 543 |
 | **Same Value Path** | Univalue path | O(n) | O(h) | LC 687 |
-| **LCA Standard** | Find LCA | O(n) | O(h) | LC 236 |
-| **Value Comparison** | BST LCA | O(h) | O(1) | LC 235 |
-| **Path Distance** | Distance via LCA | O(n) | O(h) | LC 1740 |
-| **Tree to Graph** | Convert for queries | O(n) | O(n) | LC 863 |
-| **Height Calculation** | Calculate height | O(n) | O(h) | LC 104 |
-| **Depth to Leaf** | Min depth to leaf | O(n) | O(h) | LC 111 |
-| **Balance Check** | Validate balance | O(n) | O(h) | LC 110 |
+| **LCA Standard** → [tree_lca_distance.md](./tree_lca_distance.md#1-lowest-common-ancestor-lca--lc-236) | Find LCA | O(n) | O(h) | LC 236 |
+| **Value Comparison** → [tree_lca_distance.md](./tree_lca_distance.md#1-lowest-common-ancestor-lca--lc-236) | BST LCA | O(h) | O(1) | LC 235 |
+| **Path Distance** → [tree_lca_distance.md](./tree_lca_distance.md#3-distance-between-nodes--lc-1740) | Distance via LCA | O(n) | O(h) | LC 1740 |
+| **Tree to Graph** → [tree_lca_distance.md](./tree_lca_distance.md#2-move-parent-pattern---bidirectional-tree-traversal) | Convert for queries | O(n) | O(n) | LC 863, 742 |
+| **Min Depth (recursive)** | Single-child guard | O(n) | O(h) | LC 111 |
 | **Leftmost at Depth** | Bottom-left value | O(n) | O(w) | LC 513 |
-| **Tree Building** | Build from arrays | O(n) | O(n) | LC 105, 106 |
-| **String Conversion** | Serialize/deserialize | O(n) | O(n) | LC 297, 449 |
-| **String Construction** | Tree to string | O(n) | O(h) | LC 606 |
+| **Tree Building** → [tree_construction.md](./tree_construction.md#2-construct-binary-tree-from-preorder-and-inorder-traversal--lc-105) | Build from arrays | O(n) | O(n) | LC 105, 106 |
+| **String Conversion** → [tree_codec.md](./tree_codec.md) | Serialize/deserialize | O(n) | O(n) | LC 297, 449 |
+| **String Construction** → [tree_codec.md](./tree_codec.md) | Tree to string | O(n) | O(h) | LC 606 |
 | **Tree Inversion** | Mirror tree | O(n) | O(h) | LC 226 |
 | **Tree Flattening** | Flatten to list | O(n) | O(h) | LC 114 |
 | **Tree Merging** | Merge two trees | O(n) | O(h) | LC 617 |
@@ -2328,11 +1839,11 @@ def count_nodes(root):
 3. **Need children data for parent?** → Use Postorder Template
 4. **Need level-by-level processing?** → Use BFS Template
 5. **Need to track path sum/values?** → Use Path Tracking Templates
-6. **Need to find LCA?** → Use LCA Standard or Value Comparison
-7. **Need to build tree from arrays?** → Use Tree Building Template
+6. **Need to find LCA?** → [tree_lca_distance.md](./tree_lca_distance.md)
+7. **Need to build tree from arrays?** → [tree_construction.md](./tree_construction.md)
 8. **Need to modify tree structure?** → Use Tree Modification Templates
 9. **Need to validate tree properties?** → Use Validation Templates
-10. **Need distance/path information?** → Use Path Distance Templates
+10. **Need distance between two nodes?** → [tree_lca_distance.md](./tree_lca_distance.md)
 
 ---
 
@@ -2422,4 +1933,3 @@ public List<Integer> rightSideView(TreeNode root) {
     return res;
 }
 ```
-

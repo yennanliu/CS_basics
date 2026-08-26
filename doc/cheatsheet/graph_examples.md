@@ -115,10 +115,12 @@ class Solution:
     # search via DFS
     def findClosestLeaf(self, root, k):
         self.start = None
+        ### NOTE !!! the graph has to exist BEFORE buildGraph writes to it --
+        ###          initialising it after the call raises AttributeError on the
+        ###          first edge, and would discard the graph even if it did not.
+        self.graph = collections.defaultdict(list)
         self.buildGraph(root, None, k)
         q, visited = [root], set()
-        #q, visited = [self.start], set() # need to validate this
-        self.graph = collections.defaultdict(list)
         while q:
             for i in range(len(q)):
                 cur = q.pop(0) # this is dfs
@@ -131,8 +133,11 @@ class Solution:
                     # return the answer
                     return cur.val
                 # if not find the leaf, then go through all neighbors of current node, and search again
-                for node in self.graph:
-                    if node not in visited: # need to check if "if node not in visited" or "if node in visited"
+                ### NOTE !!! walk the NEIGHBOURS of cur -- `for node in self.graph`
+                ###          iterates every key in the graph, which visits the whole
+                ###          tree in arbitrary order instead of expanding outward.
+                for node in self.graph[cur]:
+                    if node not in visited:
                         q.append(node)
 
     # build graph via DFS

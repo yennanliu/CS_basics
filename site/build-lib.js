@@ -16,8 +16,23 @@
 })(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
 
+  // GitHub's heading-slug rule, which is the one the markdown in doc/ is written
+  // against. Three details matter and the old implementation got all three wrong:
+  //   - each dropped character leaves its surrounding spaces behind, so ' — ' becomes
+  //     '--' rather than '-';
+  //   - the result is NOT trimmed, so a heading ending in a ⭐ run keeps a trailing '-'
+  //     (74 anchors under doc/cheatsheet already rely on that);
+  //   - non-ASCII letters survive, so a heading like '前缀和' keeps its characters
+  //     instead of collapsing to ''.
+  // Star runs are lifted out of headings only AFTER ids are assigned (see
+  // annotatePriorityHeadings), so the id is built from the star-bearing text.
   function slugify(text) {
-    return text.toLowerCase().replace(/<[^>]*>/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    return text
+      .replace(/<[^>]*>/g, '')
+      .toLowerCase()
+      .trim()
+      .replace(/[^\p{L}\p{N}_\- ]+/gu, '')
+      .replace(/ /g, '-');
   }
 
   // ── Priority (⭐) markers ─────────────────────────────────────────────────────

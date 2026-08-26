@@ -1,7 +1,7 @@
 # LeetCode Pattern Guide
 
 > **Scope** — The top-level map: given a problem, which pattern (and therefore which cheatsheet) does it want. Index and triage only — no templates here.
-> **See also**: [lc_category.md](./lc_category.md) — a broader imported taxonomy; [code_interview_general_cheatsheet.md](./code_interview_general_cheatsheet.md) — the interview process itself.
+> **See also**: [lc_category.md](./lc_category.md) — the wisdompeak taxonomy, and which sheet here covers each of its categories; [code_interview_general_cheatsheet.md](./code_interview_general_cheatsheet.md) — the interview process itself.
 
 ⸻
 

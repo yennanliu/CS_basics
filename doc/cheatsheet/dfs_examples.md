@@ -34,19 +34,24 @@ Small self-contained recursions worth being able to write from memory.
 #### 0-1) DFS traversal form (act, then recurse by comparison)
 ```python
 # python
-# DFS traversal form: act on the node, then recurse by comparison
+# DFS traversal form: act on the node, then recurse by comparison.
+# NOTE: comparing target against root.val to pick a side only works on a BST --
+#       on a general binary tree you must recurse into BOTH children.
 def dfs(root, target):
+    # base case: a missing child ends the walk. Without it root.val raises AttributeError.
+    if not root:
+        return
 
     if root.val == target:
-       # do sth
+        pass          # do sth
 
     if root.val < target:
-       dfs(root.left, target)
-       # do sth
+        dfs(root.left, target)
+        pass          # do sth
 
     if root.val > target:
-       dfs(root.right, target)
-       # do sth
+        dfs(root.right, target)
+        pass          # do sth
 ```
 
 #### 0-2) Add 1 to all node.value in Binary tree?
@@ -71,7 +76,7 @@ def dfs(root1, root2):
     if root1 is None and root2 is not None:
         return False 
     else:
-        if root1.val != root2.value:
+        if root1.val != root2.val:
             return False 
     return dfs(root1.left, root2.left) \
            and dfs(root1.right, root2.right)
@@ -104,14 +109,20 @@ def dfs(root, value):
 ```python
 # get sum of sub tree
 # LC 508 Most Frequent Subtree Sum
-def get_sum(root):
+# NOTE: `res` must exist before the first call -- pass it in rather than relying
+#       on a module-level name, or the recursion raises NameError.
+def get_sum(root, res):
     if not root:
         return 0
     ### NOTE THIS !!!
     #  -> we need to do get_sum(root.left), get_sum(root.right) on the same time
-    s = get_sum(root.left) + root.val + get_sum(root.right)
+    s = get_sum(root.left, res) + root.val + get_sum(root.right, res)
     res.append(s)
     return s
+
+# caller
+res = []
+get_sum(root, res)
 ```
 
 #### 0-6) get `aggregated sum` for every node in tree
@@ -129,8 +140,14 @@ def _sum(root):
 ```python
 # Convert BST to Greater Tree 
 # LC 538
+# NOTE: `_sum` is read AND written, so it must be declared global -- without the
+#       declaration `_sum += root.val` makes it local and raises UnboundLocalError.
+#       The base case is what stops the walk at a missing child.
 _sum = 0
 def dfs(root):
+    global _sum
+    if not root:
+        return
     dfs(root.right)
     _sum += root.val
     root.val = _sum
@@ -139,7 +156,7 @@ def dfs(root):
 
 #### 0-8) Serialize and Deserialize Binary Tree
 
-> Python version: [2-20) LC 297](#2-20-serialize-and-deserialize-binary-tree-lc-297) below.
+> Python version: [2-20) LC 297](#2-20-serialize-and-deserialize-binary-tree--lc-297) below.
 
 ```java
 // java
@@ -335,8 +352,12 @@ def test():
     y = 100
     z = []
     func(x)
-test()
-print (z)
+    # NOTE: `z` is local to test(), so it has to be returned -- reading it at module
+    #       scope raises NameError. That is the point: the closure can *see* z, but
+    #       the caller cannot.
+    return z
+
+print(test())   # [0, 1, 2]
 ```
 
 ### 2-1) Validate Binary Search Tree — LC 98
@@ -572,7 +593,7 @@ private TreeNode deleteNodeHelper_0(TreeNode root, int key) {
          */
         TreeNode minNode = findMin_0(root.right);
         root.val = minNode.val; // copy value
-        root.right = deleteNodeHelper(root.right, minNode.val); // delete successor
+        root.right = deleteNodeHelper_0(root.right, minNode.val); // delete successor
     }
 
     return root;
@@ -612,7 +633,7 @@ def dfs(root, m, res):
 > tracks a *root → leaf* line of nodes. LC 652 instead asks whether two **whole subtrees**
 > are structurally identical. The trick is to give every subtree a **canonical signature**
 > and let a hashmap count how many times each signature appears. It belongs to
-> **[dfs.md Template 8 — Path Signatures / Shape Encoding](./dfs.md#template-8-path-signature-shape-encoding-lc-694)**
+> **[dfs.md Template 8 — Path Signatures / Shape Encoding](./dfs.md#template-8-path-signature-shape-encoding--lc-694)**
 > — the tree analogue of "distinct islands".
 
 **1) Core Idea**
@@ -1360,7 +1381,9 @@ class Codec:
                 l.pop(0)
                 return None
                 
-            root = TreeNode(l[0])
+            # NOTE: the token is text -- without int() every node value is a str,
+            #       and any later comparison or arithmetic on the rebuilt tree is wrong.
+            root = TreeNode(int(l[0]))
             l.pop(0)
             root.left = rdeserialize(l)
             root.right = rdeserialize(l)
@@ -1895,7 +1918,7 @@ boolean isPerfect = left.isPerfect && right.isPerfect
   - LC 200 - Number of Islands (connectivity grouping on a grid)
   - LC 721 - Accounts Merge (merge by shared email → components)
   - LC 684 - Redundant Connection (detect the edge that creates a cycle — Union-Find)
-  - LC 399 - Evaluate Division (transitive relations, weighted variant — [dfs.md Template 10](./dfs.md#template-10-weighted-graph-dfs-division-ratio-queries-lc-399))
+  - LC 399 - Evaluate Division (transitive relations, weighted variant — [dfs.md Template 10](./dfs.md#template-10-weighted-graph-dfs-divisionratio-queries--lc-399))
   - LC 785 - Is Graph Bipartite? (2-coloring = a "different-group" constraint check)
 
 ```python
@@ -2097,11 +2120,16 @@ class Solution(object):
 **Variant — mutate in place, ignore the return value** (also correct, and why):
 
 ```python
-# python — recursive calls are NOT reassigned
-else:
-    self.addOneRow(root.left,  v, d - 1)
-    self.addOneRow(root.right, v, d - 1)
-return root
+# python — the (3) branch of the function above, with the recursive calls
+#          NOT reassigned. Shown with its enclosing method so it parses on its own.
+class Solution(object):
+    def addOneRow(self, root, v, d):
+        # ... branches (1) and (2) unchanged, see above ...
+
+        # (3) still above the target row -> count down
+        self.addOneRow(root.left,  v, d - 1)
+        self.addOneRow(root.right, v, d - 1)
+        return root
 ```
 
 This works because the only branch that *replaces* a node (rather than mutating it) is
@@ -2163,7 +2191,7 @@ depth == 1 case: brand-new node becomes root, whole old tree hangs on its LEFT.
 | 654 | Maximum Binary Tree | build nodes during DFS and return them upward |
 | 971 | Flip Binary Tree To Match Preorder | mutate left/right links mid-traversal |
 | 116 / 117 | Populating Next Right Pointers | pointer rewiring, but per level (BFS-friendly) |
-| 655 | Print Binary Tree | [2-28)](#2-28-print-binary-tree-lc-655) — DFS carrying a derived depth/offset downward |
+| 655 | Print Binary Tree | [2-28)](#2-28-print-binary-tree--lc-655) — DFS carrying a derived depth/offset downward |
 | 111 / 104 | Min / Max Depth of Binary Tree | the depth-counting recursion this builds on |
 
 > **Pattern takeaway**: "do X at depth `d`" ⇒ recurse with `d - 1` and act at **`d == 2`**, because
@@ -2177,7 +2205,7 @@ depth == 1 case: brand-new node becomes root, whole old tree hangs on its LEFT.
 
 ### Pattern-Based Problem Classification
 
-`Template N` refers to [dfs.md → Templates & Algorithms](./dfs.md#templates-algorithms);
+`Template N` refers to [dfs.md → Templates & Algorithms](./dfs.md#templates--algorithms);
 `*adv* TN` refers to [dfs_advanced.md](./dfs_advanced.md).
 
 #### **Pattern 1: Tree Traversal Problems**
@@ -2363,7 +2391,7 @@ completeness, no new technique.
 
 | Looking for | Go to |
 |---|---|
-| the technique behind any solution here | [dfs.md → Templates & Algorithms](./dfs.md#templates-algorithms) |
+| the technique behind any solution here | [dfs.md → Templates & Algorithms](./dfs.md#templates--algorithms) |
 | which template a problem belongs to | the [Problems by Pattern](#problems-by-pattern) index above |
 | a rare pattern (Euler path, Tarjan, trie DFS, `parent[]` trees) | [dfs_advanced.md](./dfs_advanced.md) |
 | the BFS solution to the same grid/tree problem | [bfs.md](./bfs.md) |

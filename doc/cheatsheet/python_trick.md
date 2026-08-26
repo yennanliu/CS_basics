@@ -1,64 +1,35 @@
-# Python Tricks
+# Python Tricks & Idioms
 
-> **Scope** — Python idioms for timed coding — slicing, comprehensions, `collections`, sorting keys, unpacking, and string building. Language mechanics, not algorithms.
-> **See also**: [python_gotchas.md](./python_gotchas.md) — the same language's traps; [java_trick.md](./java_trick.md) — the Java counterpart; [Collection.md](./Collection.md) — structure choice.
+> **Scope** — The Python language idioms that come up while solving problems — copying, string handling, sort keys, integer arithmetic, comprehensions and scope — grouped by what you are trying to do. The standard library and the index arithmetic have their own sheets.
+> **See also**: [python_trick_stdlib.md](./python_trick_stdlib.md) — `heapq`, `bisect`, `SortedDict`, `collections`, `itertools`, `functools`; [python_trick_indexing.md](./python_trick_indexing.md) — insertion, slicing and the off-by-one arithmetic behind them; [python_gotchas.md](./python_gotchas.md) — the behaviours that are surprising rather than merely useful; [java_trick.md](./java_trick.md) — the same ground in Java.
 
-## 1) Examples
+## LeetCode Problem Lists
 
-### 0-1) inverse looping elements in string
+- [Python](https://leetcode.com/problemset/all/?languageTags=python3)
 
-**Key difference: stop value is EXCLUSIVE in `range()`**
+## Overview
 
-```python
-x = "332"   # indices: 0, 1, 2
+This sheet used to be 3,672 lines under a single `## 1) Examples` heading, with 68 entries
+numbered `0-1)`, `1-11''')` and `1-27-3)` in no particular order. The numbers are gone; find
+things by what they do.
 
-# ── Form 1: range(len(x)-1, -1, -1)  → stop = -1 (exclusive) → covers 2, 1, 0 (ALL indices)
-for i in range(len(x)-1, -1, -1):
-    print(i)
-# 2
-# 1
-# 0   ← index 0 IS included
+| I want to… | Go to |
+|---|---|
+| copy a list or dict without the copy being an alias | [Copying & References](#copying--references) |
+| slice, pad, strip, split or rebuild a string | [Strings](#strings) |
+| sort by something other than the natural order | [Sorting & Comparison](#sorting--comparison) |
+| divide, round, take a remainder, or avoid overflow surprises | [Numbers & Math](#numbers--math) |
+| loop over two things at once, or build a list in one line | [Iteration, Comprehensions & Functional Tools](#iteration-comprehensions--functional-tools) |
+| count things, or use a default instead of a `KeyError` | [Dicts & Sets](#dicts--sets), or `Counter` / `defaultdict` in [python_trick_stdlib.md](./python_trick_stdlib.md) |
+| write to a variable from inside a nested function | [Structure, Scope & Return Values](#structure-scope--return-values) |
+| use a heap, a binary search, an ordered map, or `itertools` | [python_trick_stdlib.md](./python_trick_stdlib.md) |
+| insert into a list, slice a subarray, or get an off-by-one right | [python_trick_indexing.md](./python_trick_indexing.md) |
 
-# ── Form 2: range(len(x)-1, 0, -1)   → stop = 0 (exclusive) → covers 2, 1 (MISSES index 0)
-for i in range(len(x)-1, 0, -1):
-    print(i)
-# 2
-# 1   ← index 0 is NOT included
-```
 
-| Form | Stop value | Indices visited | Includes index 0? |
-|------|-----------|-----------------|-------------------|
-| `range(len(x)-1, -1, -1)` | `-1` (exclusive) | `len-1 … 0` | **Yes** |
-| `range(len(x)-1,  0, -1)` | ` 0` (exclusive) | `len-1 … 1` | **No** |
+## Copying & References
 
-**Rule of thumb:** to loop ALL indices in reverse, always use `-1` as the stop value.
+### Assignment vs shallow copy vs deep copy
 
-```python
-# Equivalent ways to iterate a string/array in reverse (all indices)
-x = "abc"
-
-# Form A: range
-for i in range(len(x) - 1, -1, -1):
-    print(x[i])
-
-# Form B: reversed() — cleaner, no index needed
-for ch in reversed(x):
-    print(ch)
-
-# Form C: slice — creates a reversed copy
-for ch in x[::-1]:
-    print(ch)
-```
-
-**When you DO want to skip index 0** (e.g. comparing `x[i]` with `x[i-1]`):
-```python
-# Safe to start from index 1 in forward loops, or stop before 0 in reverse loops
-for i in range(len(x) - 1, 0, -1):   # compares x[i] vs x[i-1]; never i-1 = -1
-    if x[i] == x[i - 1]:
-        print(f"duplicate at {i}")
-```
-
-### 0-2) assignment VS shallow copy VS deep copy
 - https://www.runoob.com/w3cnote/python-understanding-dict-copy-shallow-or-deep.html
 - https://iter01.com/578999.html
 - Type of copy : deep copy, shallow copy, reference copy
@@ -181,7 +152,8 @@ In [33]: x
 Out[33]: [1, 2, 3, 4]
 ```
 
-### 0-2') Which copy `duplicates` an INDEPENDENT object (NOT affected by updating the original)?
+### Which copy gives an INDEPENDENT object
+
 
 **The question:** how do we make a copy so that mutating the *original* does NOT
 affect the *copy* (and vice versa)?
@@ -247,361 +219,10 @@ print(deep)                   # inner list unchanged  ✅
 > *current* path so later `current.pop()` / `current.append()` don't corrupt the saved
 > result — works because path elements are immutable ints.
 
-### 1-1) Or logic for either existed element
-```python
-In [8]: def test(l1, l2):
-   ...:     if l1 or l2:
-   ...:         return l1 or l2
-   ...:
-   ...: res = test("l1", None)
-   ...: print (res)
-   ...:
-   ...: res2 = test(None, "l2")
-   ...: print (res2)
-l1
-l2
-```
+## Strings
 
-### 1-2) swap for longer array
-```python
-if len(l1) < len(l2):
-   l1, l2 = l2, l1
-```
+### Sorting the characters of a string
 
-### 1-3) fina numeric items from a string
-```python
-# LC 008
-s = '4193 with words'
-res = re.search('(^[\+\-]?\d+)', s).group()
-print (res)
-```
-
-### 1-4) transform N based integer to 10 based
-```python
-# https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/math.md
-
-# How does int(x[,base]) work?
-# -> https://stackoverflow.com/questions/33664451/how-does-intx-base-work
-# -> int(string, base) accepts an arbitrary base. You are probably familiar with binary and hexadecimal, and perhaps octal; these are just ways of noting an integer number in different bases:
-# exmaple :
-# In [76]: int('10',2)      # transform '10' from 2 based to 10 based                                                  
-# Out[76]: 2
-#
-# In [77]: int('11',2)      # # transform '11' from 2 based to 10 based                                                 
-# Out[77]: 3
-#
-# In [78]: int('100',2)     # # transform '100' from 2 based to 10 based                                                 
-# Out[78]: 4
-
-# LC 089
-```
-
-### 1-5) Sort freq on dict
-```python
-# LC 451 Sort Characters By Frequency
-# V1
-import collections
-class Solution(object):
-    def frequencySort(self, s):
-        d = collections.Counter(s)
-        d_dict = dict(d)
-        res = []
-        for x in sorted(d_dict, key=lambda k : -d_dict[k]):
-            res.append(x)
-        return res
-
-x= [1, 2, 3, 1, 2, 1, 2, 1]
-s = Solution()
-r = s.frequencySort(x)
-
-# V2
-# https://stackoverflow.com/questions/613183/how-do-i-sort-a-dictionary-by-value
-import collections
-class Solution(object):
-    def frequencySort(self, s):
-        d = collections.Counter(s)
-        d_dict = dict(d)
-        res = []
-        #for x in sorted(d_dict.items(), key=lambda items: -items[1]):
-        for _ in sorted(d_dict.items(), key=lambda x: -x[1]):
-            res.append(_)
-        return res
-
-x= [1, 2, 3, 1, 2, 1, 2, 1]
-s = Solution()
-r = s.frequencySort(x)
-```
-
-### 1-6) Insert into array (in place)
-```python
-
-# syntax : 
-# arr.insert(<index>,<value>)
-In [12]: x = [1,2,3]
-    ...: x.insert(2,77)
-
-In [13]: x
-Out[13]: [1, 2, 77, 3]
-```
-
-#### **Core Idea**
-
-```text
-arr.insert(idx, val)
-   -> val is placed AT index `idx`  (i.e. inserted BEFORE the old arr[idx])
-   -> everything from old arr[idx] onward SHIFTS RIGHT by 1
-   -> mutates IN PLACE and returns None   (NOT a new list!)
-   -> time = O(n)  (because of the shifting), space = O(1)
-```
-
-```text
-x = [1, 2, 3]        x.insert(2, 77)
-
- idx:  0    1    2                idx:  0    1    2     3
-     [ 1 ][ 2 ][ 3 ]     ───►         [ 1 ][ 2 ][ 77 ][ 3 ]
-                ^                                ^     ^
-           insert HERE                       new val   old x[2] pushed right
-```
-
-**Key property (why LC 406 works):** after `insert(k, v)`, the value `v` sits at
-**exactly index `k`** — so `insert` is the tool when you must *place an element at a
-specific position* rather than just append.
-
-#### **Edge cases / behaviors**
-
-```python
-#----------------------------
-# 1) index == len(arr)  -> same as append
-#----------------------------
-In [1]: x = [1,2,3]; x.insert(3, 99); x
-Out[1]: [1, 2, 3, 99]
-
-#----------------------------
-# 2) index > len(arr)   -> NO IndexError, clamped to the end (append)
-#----------------------------
-In [2]: x = [1,2,3]; x.insert(100, 99); x
-Out[2]: [1, 2, 3, 99]
-
-#----------------------------
-# 3) index == 0         -> insert at FRONT (see 1-6')
-#----------------------------
-In [3]: x = [1,2,3]; x.insert(0, 0); x
-Out[3]: [0, 1, 2, 3]
-
-#----------------------------
-# 4) NEGATIVE index     -> counts from the END, inserts BEFORE that element
-#----------------------------
-In [4]: x = [1,2,3]; x.insert(-1, 99); x
-Out[4]: [1, 2, 99, 3]        # before the LAST element, NOT at the end
-
-In [5]: x = [1,2,3]; x.insert(-100, 99); x
-Out[5]: [99, 1, 2, 3]        # clamped to the front
-
-#----------------------------
-# 5) returns None (IN-PLACE!) -> classic bug
-#----------------------------
-In [6]: x = [1,2,3]
-In [7]: y = x.insert(1, 9)   # ❌ y is None
-In [8]: print(y, x)
-None [1, 9, 2, 3]
-```
-
-**❌ Common bugs**
-
-```python
-arr = arr.insert(0, x)        # ❌ arr becomes None  (insert returns None)
-arr.insert(0, x)              # ✅ just call it
-
-# ❌ mutating the list you are iterating -> infinite loop / skipped items
-for v in arr:
-    arr.insert(0, v)          # ❌ never do this
-res = []                      # ✅ build a NEW list instead
-for v in arr:
-    res.insert(pos, v)
-```
-
-#### **`insert` vs `append` vs `extend` vs `+`**
-
-| Op | Effect | Time | Returns |
-|----|--------|------|---------|
-| `arr.append(v)` | add ONE item at the end | `O(1)` amortized | `None` (in place) |
-| `arr.insert(i, v)` | add ONE item at index `i`, shift right | `O(n)` | `None` (in place) |
-| `arr.insert(0, v)` | add at FRONT (worst case shift) | `O(n)` | `None` (in place) |
-| `arr.extend([a,b])` | add MANY items at the end | `O(k)` | `None` (in place) |
-| `arr = arr + [v]` | build a NEW list | `O(n)` | new list |
-| `arr[i:i] = [a,b]` | slice-insert MANY items at index `i` | `O(n+k)` | `None` (in place) |
-| `deque.appendleft(v)` | add at FRONT | **`O(1)`** | `None` (in place) |
-| `bisect.insort(arr, v)` | insert keeping array SORTED | `O(n)` (search `O(log n)`) | `None` (in place) |
-
-```python
-# bulk insert via slice assignment (insert MANY at once)
-In [9]: x = [1, 2, 5]
-In [10]: x[2:2] = [3, 4]      # insert [3,4] AT index 2, nothing removed
-In [11]: x
-Out[11]: [1, 2, 3, 4, 5]
-```
-
-> **Performance note**: `insert` shifts every element after `idx`, so it is `O(n)`.
-> Calling it inside a loop → `O(n²)`. That is acceptable for LC constraints like
-> `n <= 2000` (LC 406), but if you only ever insert at the FRONT, use
-> `collections.deque.appendleft()` (`O(1)`) — see [1-32) deque](#1-32-collectionsdeque-double-ended-queue).
-
-#### **Use case 1 — LC 406 Queue Reconstruction by Height ⭐⭐⭐⭐⭐**
-
-`people[i] = [h, k]` = height `h`, with exactly `k` people **taller or equal** in front.
-
-**Key insight**: sort by height **DESC**, then by `k` **ASC**; now insert each person at
-index `k`. Since everyone already placed is **taller or equal**, "index `k`" literally
-means "`k` taller-or-equal people in front" — and inserting a **shorter** person later
-never breaks an earlier person's count (shorter people don't count toward `k`).
-
-```python
-# LC 406 Queue Reconstruction by Height
-# time = O(n^2)   (n inserts × O(n) shift)
-# space = O(n)
-class Solution(object):
-    def reconstructQueue(self, people):
-        # sort: height DESC (-x[0]), then k ASC (x[1])
-        people.sort(key=lambda x: (-x[0], x[1]))
-
-        # py insert syntax:
-        # python_trick.html#1-6-insert-into-array-in-place
-        # arr.insert(<index>, <value>)
-        res = []
-        for p in people:
-            res.insert(p[1], p)   # place person AT index k
-        return res
-```
-
-**Visual trace** — `people = [[7,0],[4,4],[7,1],[5,0],[6,1],[5,2]]`
-
-```text
-after sort (h DESC, k ASC):
-  [[7,0], [7,1], [6,1], [5,0], [5,2], [4,4]]
-
-step | person | insert(k, p)  | res
------+--------+---------------+------------------------------------------
-  1  | [7,0]  | insert(0, ..) | [[7,0]]
-  2  | [7,1]  | insert(1, ..) | [[7,0], [7,1]]
-  3  | [6,1]  | insert(1, ..) | [[7,0], [6,1], [7,1]]
-  4  | [5,0]  | insert(0, ..) | [[5,0], [7,0], [6,1], [7,1]]
-  5  | [5,2]  | insert(2, ..) | [[5,0], [7,0], [5,2], [6,1], [7,1]]
-  6  | [4,4]  | insert(4, ..) | [[5,0], [7,0], [5,2], [6,1], [4,4], [7,1]]
-                                                              ^ landed at idx 4
-```
-
-**Why the two sort keys matter**
-
-```python
-people.sort(key=lambda x: (-x[0], x[1]))
-#                          ^^^^^  ^^^^
-#  -x[0] : TALLEST first  -> everyone already in `res` is >= current height,
-#                            so "index k" == "k taller-or-equal in front"
-#   x[1] : k ASC on ties  -> among SAME height, smaller k inserted first,
-#                            otherwise [7,1] before [7,0] would misplace [7,0]
-```
-
-> Related: the sort key itself is section
-> [1-11'') Multi-key tuple sort](#1-11-multi-key-tuple-sort-keylambda-x-x0-x1).
-
-#### **Use case 2 — insert while keeping the array SORTED (`bisect.insort`)**
-
-Don't hand-roll "find the position, then insert" — `bisect` does the search for you.
-
-```python
-import bisect
-
-# manual (2 steps)
-idx = bisect.bisect_left(a, val)
-a.insert(idx, val)
-
-# one-liner (identical result)
-bisect.insort_left(a, val)
-```
-
-```python
-# LC 315 Count of Smaller Numbers After Self — scan right → left,
-# keep a sorted list of seen values; the insert position IS the answer
-def countSmaller(nums):
-    seen, res = [], []
-    for n in reversed(nums):
-        idx = bisect.bisect_left(seen, n)   # how many seen values are < n
-        res.append(idx)
-        seen.insert(idx, n)                 # keep `seen` sorted
-    return res[::-1]
-```
-
-> See [1-27) bisect](#1-27-bisect--bisect_right-bisect_left-array-bisection-algorithm).
-
-#### **Use case 3 — insert at the FRONT (build result in reverse)**
-
-Common when you walk a path/linked-list backwards but want forward output.
-
-```python
-# BFS/DFS: walk parent pointers backwards, insert(0, ..) to get the path in order
-path = []
-while node:
-    path.insert(0, node.val)   # O(n) each -> O(n^2) total
-    node = parent[node]
-
-# ✅ FASTER equivalents
-path.append(node.val); ...; path = path[::-1]      # append then reverse — O(n)
-from collections import deque
-path = deque(); path.appendleft(node.val)          # O(1) per push
-```
-
-#### **Use case 4 — LC 57 Insert Interval (insert into a sorted-by-start list)**
-
-```python
-# find where the new interval starts, then insert & merge
-import bisect
-
-def insert(intervals, newInterval):
-    idx = bisect.bisect_left(intervals, newInterval)
-    intervals.insert(idx, newInterval)      # now list is still sorted by start
-    # ... then do the standard merge pass
-    res = []
-    for it in intervals:
-        if res and res[-1][1] >= it[0]:
-            res[-1][1] = max(res[-1][1], it[1])
-        else:
-            res.append(it)
-    return res
-```
-
-#### **Similar LC problems**
-
-| LC # | Problem | How `insert` is used |
-|------|---------|----------------------|
-| 406 | Queue Reconstruction by Height | `res.insert(k, person)` after height-DESC sort ⭐ |
-| 57 | Insert Interval | insert at sorted position, then merge |
-| 315 | Count of Smaller Numbers After Self | `bisect` position + `insert` to keep sorted |
-| 220 | Contains Duplicate III | sorted window (`SortedList.add` = insert) |
-| 148 | Sort List | insertion-sort variant on a list |
-| 147 | Insertion Sort List | linked-list version of the same idea |
-| 146 | LRU Cache | `remove` + `append` to move to the end (see [1-21](#1-21-move-array-element-to-rightmostleftmost--remove-append)) |
-| 155 | Min Stack | `append` / `pop` at the end only — `O(1)`, no insert needed |
-| 622 | Design Circular Queue | why you avoid `insert(0, ..)` → use `deque` |
-
-### 1-6') add new element to begin of array (in place)
-```python
-In [1]: x = [1,2,3]
-
-In [2]: x
-Out[2]: [1, 2, 3]
-
-In [3]: x.insert(0,0)
-
-In [4]: x
-Out[4]: [0, 1, 2, 3]
-
-In [5]: x.insert(0,-1)
-
-In [6]: x
-Out[6]: [-1, 0, 1, 2, 3]
-```
-
-### 1-7) sort string
 ```python
 def _sort(x):
     _x = list(x)
@@ -614,7 +235,8 @@ x_ = _sort(x)
 print (x_)
 ```
 
-### 1-7') update / replace a char in a string BY INDEX (slice + concat)
+### Replacing a character by index (slice + concat)
+
 
 **Key point: Python strings are IMMUTABLE** — you CANNOT do `s[i] = ch`
 (that raises `TypeError: 'str' object does not support item assignment`).
@@ -668,312 +290,8 @@ for i in range(len(cur_gene)):
 > in-place index assignment works and avoids repeated string rebuilds.
 > For a single edit, the slice idiom above is the cleanest.
 
-### 1-8) get Quotient, Remainder of a integer with dividend
-```python
-In [1]: x,y = divmod(100, 3)
+### `split`
 
-In [2]: x
-Out[2]: 33
-
-In [3]: y
-Out[3]: 1
-```
-
-### 1-9) *all* operator
-- Will return Boolean (true or false) per condition for ALL elements in a list
-```python
-# example 1
-In [36]: a = "000"
-
-In [37]: all( i == "0" for i in a )
-Out[37]: True
-
-# example 2
-In [38]: b = "abc123"
-
-In [39]: all ( i == "a" for i in b )
-Out[39]: False
-
-# LC 763. Partition Labels
-class Solution(object):
-    def partitionLabels(self, s):
-        d = {val:idx for idx, val in enumerate(list(s))}
-        #print (d)
-        res = []
-        tmp = set()
-        for idx, val in enumerate(s):
-            """
-            NOTE : below condition
-            """
-            if idx == d[val] and all(idx >= d[t] for t in tmp):
-                res.append(idx+1)
-            else:
-                tmp.add(val)
-        _res = [res[0]] + [ res[i] - res[i-1] for i in range(1, len(res)) ]
-        return _res
-```
-
-### 1-10) `not` logic
-```python
-#----------------------------
-# can be either None, [], ""
-#----------------------------
-In [32]: x = None
-
-In [34]: not x
-Out[34]: True
-
-In [35]: y = []
-
-In [36]: not y
-Out[36]: True
-
-In [37]: z = ""
-
-In [38]: not z
-Out[38]: True
-```
-
-### 1-11) `sort` on a `lambda func`
-```python
-# example 1
-# LC 973. K Closest Points to Origin
-# IDEA : sort + lambda
-class Solution(object):
-    def kClosest(self, points, K):
-        points.sort(key = lambda x : x[0]**2 +  x[1]**2)
-        return points[:K]
-
-
-# example 2
-In [28]: def my_func(x):
-    ...:     return x**2
-    ...:
-    ...: x = [-4,-5,0,1,2,5]
-    ...: x.sort(key=lambda x: my_func(x))
-    ...: print (x)
-[0, 1, 2, -4, -5, 5]
-```
-
-```python
-# LC 937
-# https://leetcode.com/problems/reorder-data-in-log-files/solution/
-def my_func(input):
-    # do sth
-    if condition:
-        return key1, key2, key3....
-    else:
-        return key4, key5, key6....
-
-my_array=["a1 9 2 3 1","g1 act car","zo4 4 7","ab1 off key dog","a8 act zoo"]
-my_array.sort(key=lambda x : my_func(x))
-```
-
-### 1-11') Descending sort: `key=lambda x: -x[0]` vs `reverse=True` vs `[::-1]`
-
-Three ways to sort descending — each has a distinct use case.
-
-```python
-# ── Context: LC 853 Car Fleet ──
-# We have pos_speed = [[pos, speed, time], ...] and want to sort by position DESC.
-
-# ── Form 1: negate the key  (in-place, fine-grained control) ──
-pos_speed.sort(key=lambda x: -x[0])
-# Use when:
-#   • You need MIXED direction: primary DESC, secondary ASC
-#     e.g. sort(key=lambda x: (-x[0], x[1]))  ← impossible with reverse=True alone
-#   • Works for int and float keys
-
-# ── Form 2: reverse=True  (cleaner for single-direction reversal) ──
-pos_speed.sort(key=lambda x: x[0], reverse=True)
-sorted_cars = sorted(cars, reverse=True)   # creates a NEW list
-# Use when:
-#   • ALL keys go the same direction (all DESC)
-#   • More readable for simple cases
-#   • sorted() is preferred over sort() when you need to keep the original
-
-# ── Form 3: sort ASC then reverse/slice  (separate steps) ──
-times = [(target - pos) / spe for pos, spe in sorted(cars)]   # ASC sort
-for time in times[::-1]:        # iterate in reverse  — does NOT mutate list
-    ...
-# -- or --
-for time in reversed(times):    # same effect, no extra list copy
-    ...
-# Use when:
-#   • You want to keep the sorted-ASC list around for other uses
-#   • reversed() is O(1) memory; [::-1] creates a new list copy
-
-# ── Quick comparison ──
-# Method              | In-place? | New list? | Mixed direction? | Readability
-# -x[0]               |   yes     |    no     |      YES         |  moderate
-# reverse=True        |   yes     |    no     |      no          |  high
-# sorted(reverse=True)|   no      |    YES    |      no          |  high
-# sort ASC + reversed |   yes     |    no     |      no          |  moderate
-
-# ── Multi-key mixed direction example (only negation works here) ──
-# Sort by position DESC, then by speed ASC as tiebreaker:
-data.sort(key=lambda x: (-x[0], x[1]))
-```
-
-### 1-11'') Multi-key tuple sort: `key=lambda x: (x[0], x[1])`
-
-Sort by multiple fields using a tuple key — Python compares tuples element-by-element (left to right), so the first key is primary, second is tiebreaker, and so on.
-
-```python
-# ── Syntax ──
-event_list.sort(key=lambda x: (x[0], x[1]))
-# Primary sort: x[0] ASC; tiebreaker: x[1] ASC
-
-# ── Common LC patterns ──
-
-# 1. Sort intervals by start time, then by end time (LC 56 Merge Intervals, LC 252/253 Meeting Rooms)
-intervals.sort(key=lambda x: (x[0], x[1]))
-
-# 2. Sort by one field ASC, another DESC  (use negation for DESC)
-events.sort(key=lambda x: (x[0], -x[1]))   # primary ASC, secondary DESC
-
-# 3. Three-key sort
-tasks.sort(key=lambda x: (x[0], x[1], x[2]))
-
-# 4. Sort list of dicts
-people.sort(key=lambda x: (x['age'], x['name']))
-
-# ── Why tuple sorting works ──
-# Python tuple comparison:  (a0, a1) < (b0, b1)
-#   → True if a0 < b0, OR (a0 == b0 AND a1 < b1)
-# This is exactly "sort by a0 first; break ties by a1".
-
-# ── sorted() variant (returns new list) ──
-sorted_events = sorted(event_list, key=lambda x: (x[0], x[1]))
-
-# ── Quick comparison table ──
-# Goal                          | Key
-# -----------------------------|----------------------------------
-# Primary ASC, tiebreak ASC    | (x[0], x[1])
-# Primary ASC, tiebreak DESC   | (x[0], -x[1])
-# Primary DESC, tiebreak ASC   | (-x[0], x[1])
-# Primary DESC, tiebreak DESC  | (-x[0], -x[1])
-```
-
-### 1-11''') Custom comparison via a named `key` function (conditional tuple keys)
-
-When the sort key depends on a **condition** (group A vs group B, valid vs invalid,
-etc.), a one-line lambda gets unreadable. Write a **named `key` function that returns
-a tuple** — the tuple is still compared element-by-element (left → right), so the
-first field becomes the primary sort, the next the tiebreaker, and so on.
-
-**Pattern: leading "group tag" + per-group ordering**
-
-```python
-# Return a tuple of sort keys; the FIRST element groups items,
-# the rest order items WITHIN each group.
-def compare(item):
-    if condition:
-        return (0, item.value, item.name)   # group 0 first; ASC by value, then name
-    else:
-        return (1, -item.priority, item.id)  # group 1 next; DESC by priority, ASC by id
-
-items.sort(key=compare)        # in-place
-# items = sorted(items, key=compare)   # or build a new list
-```
-
-**Why the leading `0` / `1`?** It is a **group tag** — every group-0 item sorts before
-every group-1 item (because tuple comparison checks the first element first). The
-remaining tuple fields only matter *within* the same group, so each group can use its
-own ordering rules (ASC, DESC via negation, different fields entirely).
-
-**Key rules**
-- All branches must return a tuple of the **same length** with **comparable types**
-  position-by-position (don't mix `str` and `int` in the same slot).
-- Negate a numeric field (`-item.priority`) to sort that field DESC while keeping the
-  rest ASC — same trick as section [1-11'].
-- The `key` function is called **once per element** (Schwartzian transform), so it's
-  efficient even with heavier logic inside.
-
-**Classic LC use — LC 937 Reorder Data in Log Files** (letter-logs grouped before
-digit-logs, letter-logs sorted by content then id):
-
-```python
-class Solution:
-    def reorderLogFiles(self, logs):
-        def compare(log):
-            id_, rest = log.split(" ", 1)
-            if rest[0].isalpha():
-                return (0, rest, id_)   # letter-logs: group 0, by content, then id
-            else:
-                return (1,)             # digit-logs: group 1, keep original order
-
-        return sorted(logs, key=compare)
-```
-
-> **Rule of thumb**: reach for a named tuple-returning `key` function the moment the
-> ordering has *branches* — it reads far better than cramming `if/else` into a lambda.
-
-### 1-12) get remainder (residual) when divided by a number
-```python
-#-----------------
-# V1 : %=
-#-----------------
-
-In [7]: x = 100
-
-In [8]: x %= 60
-
-In [9]: x
-Out[9]: 40
-
-In [10]: y = 120
-
-In [11]: y %= 60
-
-In [12]: y
-Out[12]: 0
-
-#-----------------
-# V2 : divmod
-#-----------------
-In [13]: a = 100
-
-In [14]: q, r = divmod(a, 60)
-
-In [15]: q
-Out[15]: 1
-
-In [16]: r
-Out[16]: 40
-
-In [17]: b = 120
-
-In [18]: q2, r2 = divmod(b, 60)
-
-In [19]: q2
-Out[19]: 2
-
-In [20]: r2
-Out[20]: 0
-```
-
-```python
-# LC 1010
-# V0
-# IDEA : dict
-class Solution(object):
-    def numPairsDivisibleBy60(self, time):
-        rem = {}
-        pairs = 0
-        for t in time:
-            #print ("rem = " + str(rem))
-            t %= 60
-            if (60 - t) % 60 in rem:
-                pairs += rem[(60 - t) % 60]
-            if t not in rem:
-                rem[t] = 1
-            else:
-                rem[t] += 1
-        return pairs
-```
-
-### 1-13) `split` method
 ```python
 # python
 # syntax : split(separator, number_of_split_result) 
@@ -1014,1292 +332,8 @@ class Solution:
 ```
 
 
-### 1-13') array `extend`
-```python
-# LC 969. Pancake Sorting
+### Zero-padding a string
 
-In [10]: x = [1,2,3]
-
-In [11]: x.extend([4])
-
-In [12]: x
-Out[12]: [1, 2, 3, 4]
-
-In [13]: x = [1,2,3]
-
-In [14]: x = x + [4]
-
-In [15]: x
-Out[15]: [1, 2, 3, 4]
-```
-
-
-### 1-14) math `ceil`
-```python
-# https://www.runoob.com/python/func-number-ceil.html
-# https://www.runoob.com/python/func-number-ceil.html
-
-"""
-The method ceil(x) in Python returns a ceiling value of x 
--> i.e., the SMALLEST integer GREATER than or EQUAL to x.
-"""
-In [9]:
-   ...: import math
-   ...:
-   ...: # prints the ceil using ceil() method
-   ...: print ("math.ceil(-23.11) : ", math.ceil(-23.11))
-   ...: print ("math.ceil(300.16) : ", math.ceil(300.16))
-   ...: print ("math.ceil(300.72) : ", math.ceil(300.72))
-math.ceil(-23.11) :  -23
-math.ceil(300.16) :  301
-math.ceil(300.72) :  301
-
-
-# LC 875. Koko Eating Bananas
-#...
-# Iterate over the piles and calculate hour_spent.
-# We increase the hour_spent by ceil(pile / middle)
-for pile in piles:
-    # python ceil : https://www.runoob.com/python/func-number-ceil.html
-    hour_spent += math.ceil(pile / middle)
-# Check if middle is a workable speed, and cut the search space by half.
-if hour_spent <= h:
-    right = middle
-else:
-    left = middle + 1
-#...
-```
-
-### 1-15) math `floor`
-```python
-# https://www.geeksforgeeks.org/floor-ceil-function-python/
-
-"""
-floor() method in Python returns the floor of x 
--> i.e., the LARGEST integer NOT GREATER than x. 
-"""
-
-# This will import math module
-import math   
-  
-In [8]: import math
-   ...:
-   ...: # prints the ceil using floor() method
-   ...: print ("math.floor(-23.11) : ", math.floor(-23.11))
-   ...: print ("math.floor(300.16) : ", math.floor(300.16))
-   ...: print ("math.floor(300.72) : ", math.floor(300.72))
-math.floor(-23.11) :  -24
-math.floor(300.16) :  300
-math.floor(300.72) :  300
-```
-
-### 1-15') for loop dict
-```python
-d = {'a':1, 'b':2, 'c': 3}
-# loop over key, value
-for k, v in d.items():
-    print (k, v)
-
-# loop over key
-for k in d.keys():
-    print (k)
-
-# loop over value
-for v in d.values():
-    print (v)
-```
-
-### 1-16) `zip()`
-```python
-# python
-In [1]: for x, y in zip([-1, 1, 0, 0], [0, 0, -1, 1]):
-   ...:     print (x, y)
-   ...:
--1 0
-1 0
-0 -1
-0 1
-
-In [2]: for x, y, z in zip([-1, 1, 0, 0], [0, 0, -1, 1], [0,0,0,0]):
-   ...:     print (x,y,z)
-   ...:
--1 0 0
-1 0 0
-0 -1 0
-0 1 0
-
-In [3]: for x, y, z, u in zip([-1, 1, 0, 0], [0, 0, -1, 1], [0,0,0,0], [9,9,9,9]):
-   ...:     print (x,y,z,u)
-   ...:
--1 0 0 9
-1 0 0 9
-0 -1 0 9
-0 1 0 9
-```
-
-### 1-17) `eval()`
-```python
-# https://www.runoob.com/python/python-func-eval.html
-# https://www.programiz.com/python-programming/methods/built-in/eval
-# The eval() method parses the expression passed to this method and runs python expression (code) within the program.
-
-# LC 640
-# LC 150
-
-# syntax : eval(expression[, globals[, locals]])
-
-# eample
-In [51]: x = 7
-    ...: eval('3 * x')
-    ...:
-Out[51]: 21
-
-In [52]: eval ('2 + 2')
-    ...:
-Out[52]: 4
-
-In [53]: n = 81
-    ...: eval('n + 4')
-Out[53]: 85
-```
-
-### 1-18) starred ("`*`") expression
-```python
-# Extended Iterable Unpacking
-
-# https://www.python.org/dev/peps/pep-3132/
-# http://swaywang.blogspot.com/2012/01/pythonstarred-expression.html
-
-# example 1
-In [38]: a, *b, c = range(5)
-
-In [39]: a
-Out[39]: 0
-
-In [40]: b
-Out[40]: [1, 2, 3]
-
-In [41]: c
-Out[41]: 4
-
-# example 2
-In [43]: for a, *b in [(1, 2, 3), (4, 5, 6, 7)]:
-    ...:     print ("a = " + str(a) + " b = " + str(b))
-    ...:
-a = 1 b = [2, 3]
-a = 4 b = [5, 6, 7]
-
-# example 3
-In [44]: first, *rest = [1, 2, 3, 4, 5]
-
-In [45]: first
-Out[45]: 1
-
-In [46]: rest
-Out[46]: [2, 3, 4, 5]
-
-# example 4
-In [47]: *directories, executable = "/usr/local/bin/vim".split("/")
-    ...: print (directories)
-    ...: print (executable)
-['', 'usr', 'local', 'bin']
-vim
-
-# example 5
-args = [1,3]
-print (range(*args))
-```
-
-### 1-19) `datetime() <-> string()`
-```python
-# LC 681.Next Closest Time
-# https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/next-closest-time.py
-
-from datetime import datetime, timedelta
-
-x = "10:20"
-
-#--------------------------------------
-# strptime : string -> datetime 
-# (Return a datetime corresponding to date_string, parsed according to format.)
-#--------------------------------------
-x_datetime =  datetime.strptime(x, "%H:%M")
-print (x_datetime)
-# 1900-01-01 10:20:00
-
-
-#--------------------------------------
-# strftime : datetime -> string 
-# (Return a string representing the date)
-#--------------------------------------
-x_str = x_datetime.strftime("%H:%M")
-print (x_str)
-# 10:20
-
-# eatra : timedelta
-tmp = x_datetime + timedelta(minutes=10)
-print (tmp)
-# 1900-01-01 10:30:00
-```
-
-### 1-20) `itertools`
-```python
-# https://docs.python.org/zh-cn/3/library/itertools.html
-# https://docs.python.org/zh-tw/3/library/itertools.html
-
-# itertools — Functions creating iterators for efficient looping
-
-#-----------------------------------------------------------------------------------------------------
-# example 1 : itertools.accumulate : Aggregated sum
-#-----------------------------------------------------------------------------------------------------
-In [10]: import itertools
-    ...: x = itertools.accumulate(range(10))
-    ...: print (list(x))
-[0, 1, 3, 6, 10, 15, 21, 28, 36, 45]
-
-#-----------------------------------------------------------------------------------------------------
-# example 2 : itertools.combinations : get NON-duplicated elements from collections (with given len)
-#-----------------------------------------------------------------------------------------------------
-In [15]:  x = itertools.combinations(range(4), 3)
-
-In [16]: print (list(x))
-[(0, 1, 2), (0, 1, 3), (0, 2, 3), (1, 2, 3)]
-
-In [17]: x = itertools.combinations(range(4), 4)
-
-In [18]: print (list(x))
-[(0, 1, 2, 3)]
-
-#-----------------------------------------------------------------------------------------------------
-# example 3 : itertools.combinations_with_replacement : get duplicated or non-duplicated elements from collections (with given len)
-#-----------------------------------------------------------------------------------------------------
-In [19]: x = itertools.combinations_with_replacement('ABC', 2)
-
-In [20]: print(list(x))
-[('A', 'A'), ('A', 'B'), ('A', 'C'), ('B', 'B'), ('B', 'C'), ('C', 'C')]
-
-In [21]: x = itertools.combinations_with_replacement('ABC', 1)
-
-In [22]: print(list(x))
-[('A',), ('B',), ('C',)]
-
-In [24]: x = itertools.combinations_with_replacement([1,2,2,1], 2)
-
-In [25]: print (list(x))
-[(1, 1), (1, 2), (1, 2), (1, 1), (2, 2), (2, 2), (2, 1), (2, 2), (2, 1), (1, 1)]
-
-#-----------------------------------------------------------------------------------------------------
-# example 4 : itertools.compress : filter elements by True/False
-#-----------------------------------------------------------------------------------------------------
-In [26]: x = itertools.compress(range(5), (True, False, True, True, False))
-
-In [27]: print (list(x))
-[0, 2, 3]
-
-#-----------------------------------------------------------------------------------------------------
-# example 5 : itertools.count : a counter, can define start point and path len
-#-----------------------------------------------------------------------------------------------------
-# NOTE THIS !!!!
-In [2]: x = itertools.count(start=20, step=-1)
-
-In [3]: print(list(itertools.islice(x, 0, 10, 1)))
-[20, 19, 18, 17, 16, 15, 14, 13, 12, 11]
-
-#-----------------------------------------------------------------------------------------------------
-# example 6 : itertools.groupby : group by lists by value
-#-----------------------------------------------------------------------------------------------------
-In [4]: x = itertools.groupby(range(10), lambda x: x < 5 or x > 8)
-
-In [5]: for condition, numbers in x:
-   ...:     print(condition, list(numbers))
-   ...:
-True [0, 1, 2, 3, 4]
-False [5, 6, 7, 8]
-True [9]
-
-#-----------------------------------------------------------------------------------------------------
-# example 7 : itertools.islice : slice on iterator
-#-----------------------------------------------------------------------------------------------------
-# https://docs.python.org/3/library/itertools.html#itertools.islice
-# syntax : itertools.islice(seq, [start,] stop [, step])
-
-In [6]:  x = itertools.islice(range(10), 0, 9, 2)
-
-In [7]: print (list(x))
-[0, 2, 4, 6, 8]
-
-#-----------------------------------------------------------------------------------------------------
-# example 8 : itertools.permutations : generate all combinations (ordering mattered)
-#-----------------------------------------------------------------------------------------------------
-
-In [9]: x = itertools.permutations(range(4), 3)
-
-In [10]: print(list(x))
-[(0, 1, 2), (0, 1, 3), (0, 2, 1), (0, 2, 3), (0, 3, 1), (0, 3, 2), (1, 0, 2), (1, 0, 3), (1, 2, 0), (1, 2, 3), (1, 3, 0), (1, 3, 2), (2, 0, 1), (2, 0, 3), (2, 1, 0), (2, 1, 3), (2, 3, 0), (2, 3, 1), (3, 0, 1), (3, 0, 2), (3, 1, 0), (3, 1, 2), (3, 2, 0), (3, 2, 1)]
-
-#-----------------------------------------------------------------------------------------------------
-# example 9 : itertools.product : generate multiple lists, and iterators's product
-#-----------------------------------------------------------------------------------------------------
-
-In [11]:  x = itertools.product('ABC', range(3))
-
-In [12]: print(list(x))
-[('A', 0), ('A', 1), ('A', 2), ('B', 0), ('B', 1), ('B', 2), ('C', 0), ('C', 1), ('C', 2)]
-```
-
-### 1-21) move array element to rightmost/leftmost : `remove`, `append`
-```python
-# LC 146 LRU Cache
-In [18]: x
-Out[18]: [1, 3, 2]
-
-In [19]: x = [1,2,3]
-
-# NOTE this !!!!
-# LC 146
-In [20]: x.remove(2)
-#x
-#[1,2]
-
-In [21]: x.append(2)
-
-In [22]: x
-Out[22]: [1, 3, 2]
-
-In [23]:
-
-In [23]: x.remove(1)
-
-In [24]: x.append(1)
-
-In [25]: x
-Out[25]: [3, 2, 1]
-```
-
-### 1-22) `OrderedDict ` ( hashmap + linked list)
-- check [Collection.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/Collection.md)
-
-### 1-23) `filter()`
-```python
-# https://www.runoob.com/python/python-func-filter.html
-
-#-----------------------------------------------
-# syntax : filter(<filter_func>, <iterable>)
-#-----------------------------------------------
-
-# note !!! : in py 3, it will return iterable instance; while in py 2, it will return a list directly
-
-#----------------------------
-# example 1
-#----------------------------
-In [13]: def is_odd(n):
-    ...:     return n % 2 == 1
-    ...:
-    ...: newlist = filter(is_odd, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-    ...: print(newlist)
-<filter object at 0x7fc71c3dced0>
-
-In [14]:
-
-In [14]: list(newlist)
-Out[14]: [1, 3, 5, 7, 9]
-
-
-#----------------------------
-# example 2
-#----------------------------
-In [15]: import math
-    ...: def is_sqr(x):
-    ...:     return math.sqrt(x) % 1 == 0
-    ...:
-    ...: newlist = filter(is_sqr, range(1, 101))
-    ...: print(newlist)
-<filter object at 0x7fc71bb10450>
-
-In [16]:
-
-In [16]: list(newlist)
-Out[16]: [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
-```
-
-### 1-24) list comprehension
-```python
-#----------------------------
-# example 1
-#----------------------------
-# https://stackoverflow.com/questions/4260280/if-else-in-a-list-comprehension
-
-In [8]: [ x for x in range(5) ]
-Out[8]: [0, 1, 2, 3, 4]
-
-# NOTE this !!!!
-In [9]: [ x if x % 2 == 0 else -1 for x in range(5) ]
-   ...:
-   ...:
-Out[9]: [0, -1, 2, -1, 4]
-
-In [10]: def my_func(x):
-    ...:     if x % 2 ==0:
-    ...:         return True
-    ...:     return False
-    ...:
-    ...: [ x if my_func(x) else 999  for x in range(5)]
-Out[10]: [0, 999, 2, 999, 4]
-```
-
-### 1-26) Add Two Numbers II,  Decode String
-- String -> Int
-```python
-# 445 Add Two Numbers II
-# 394 Decode String
-def str_2_int(x):
-    r=0
-    for i in x:
-        r = int(r)*10 + int(i)
-        print (i, r)
-    return r
-
-def str_2_int_v2(x):
-    res = 0
-    for i in x:
-        res = (res + int(i) % 10) * 10
-    return int(res / 10)
-
-# example 1
-x="131"
-r=str_2_int(x)
-print (r)
-# 1 1
-# 3 13
-# 1 131
-# 131
-
-# examle 2
-In [62]: z
-Out[62]: '5634'
-
-In [63]: ans = 0
-
-In [64]: for i in z:
-    ...:     ans = 10 * ans + int(i)
-    ...:
-
-In [65]: ans
-Out[65]: 5634
-```
-
-### 1-27) bisect : bisect_right, bisect_left (Array bisection algorithm)
-- algorithm for `NOT sorting an array eveytime` whenever there is a new inserted element 
-```python
-# https://docs.python.org/zh-tw/3/library/bisect.html
-# src code : https://github.com/python/cpython/blob/3.10/Lib/bisect.py
-# https://myapollo.com.tw/zh-tw/python-bisect/
-# https://www.liujiangblog.com/course/python/57
-
-
-"""
-NOTE !!! before using bisect, we need SORT the array
-"""
-
-#-------------------------------
-# bisect_left
-#-------------------------------
-# will return an idx for inserting new element a, and keep the new array sorted, if element a already existed in array, will insert to "original" a's left idx
-
-# example 1
-In [3]: import bisect
-   ...: a = [2,4,6]
-   ...: idx = bisect.bisect_left(a, 3)
-   ...: print (idx)
-   ...:
-   ...: a.insert(idx, 3)
-   ...: print (a)
-   ...:
-1
-[2, 3, 4, 6]
-
-
-# example 2
-In [4]: import bisect
-   ...: a = [2, 4, 6]
-   ...: idx = bisect.bisect_left(a, 4)
-   ...: print (idx)
-   ...:
-   ...: a.insert(idx, 4)
-   ...: print (a)
-1
-[2, 4, 4, 6]
-
-#-------------------------------
-# bisect_right
-#-------------------------------
-# will return an idx for inserting new element a, and keep the new array sorted, if element a already existed in array, will insert to "original" a's right idx
-
-In [5]:
-   ...: import bisect
-   ...: a = a = [2, 2, 4, 4, 6, 6, 8, 8]
-   ...: idx = bisect.bisect_right(a, 4)
-   ...: print (idx)
-   ...:
-   ...: a.insert(idx, 4)
-   ...: print (a)
-4
-[2, 2, 4, 4, 4, 6, 6, 8, 8]
-
-#-------------------------------
-# bisect
-#-------------------------------
-# bisect.bisect : 
-#   -> similar as bisect.bisect_right
-#   -> similar as bisect.bisect_left, but will insert to element RIGHT instead
-# https://docs.python.org/zh-tw/3/library/bisect.html
-# https://blog.csdn.net/qq_34914551/article/details/100062973
-
-# example 1
-# In [3]: import bisect
-#    ...: a = [2, 4, 6, 8]
-#    ...: idx = bisect.bisect(a, 7)
-#    ...: print (idx)
-#    ...: a.insert(idx, 7)
-#    ...: print (a)
-# 3
-# [2, 4, 6, 7, 8]
-
-#-------------------------------
-# insort, insort_right, insort_left
-#-------------------------------
-# insort, insort_right, insort_left : will get idx and insert to array  (with idx) directly
-
-# example 1
-In [8]: import bisect
-   ...: a = [2, 4, 6, 8]
-   ...: bisect.insort_left(a, 4)
-   ...: print (a)
-   ...:
-[2, 4, 4, 6, 8]
-
-# exmaple 2
-In [7]: import bisect
-   ...: a = [2, 4, 6, 8]
-   ...: bisect.insort_right(a, 4)
-   ...: print (a)
-[2, 4, 4, 6, 8]
-```
-
-### 1-27-1) heapq : Priority Queue (Min Heap by default)
-
-**heapq** - Heap queue algorithm (priority queue)
-- Min Heap by default (smallest element at index 0)
-- For Max Heap, negate values or use custom comparison
-- Common interview use cases: Top K elements, Kth largest/smallest, merge K sorted lists
-
-**References:**
-- https://docs.python.org/3/library/heapq.html
-- https://github.com/python/cpython/blob/3.10/Lib/heapq.py
-
-#### **heapq main operations (complexity cheat table)**
-
-| Operation | Time | Space | What it does / why that cost |
-|-----------|------|-------|------------------------------|
-| `heapq.heapify(lst)` | **O(n)** | O(1) *(in-place)* | Turns an arbitrary list into a valid min heap **in place**. Cheap because it sifts **bottom-up** (see note below), NOT n × push |
-| `heapq.heappush(h, x)` | **O(log n)** | O(1) | Append at the end, then **sift up** at most `log n` levels |
-| `heapq.heappop(h)` | **O(log n)** | O(1) | Move last element to root, then **sift down** at most `log n` levels |
-| `h[0]` (peek) | **O(1)** | O(1) | Heap invariant guarantees the min sits at index 0. `heapq` has **no** `peek()` |
-| `heapq.heappushpop(h, x)` | **O(log n)** | O(1) | Push then pop, **1 sift** instead of 2. Free (`O(1)`) when `x <= h[0]` |
-| `heapq.heapreplace(h, x)` | **O(log n)** | O(1) | Pop then push, **1 sift**. Heap must be **non-empty** (else `IndexError`) |
-| `heapq.nsmallest(k, it)` | **O(n log k)** | O(k) | Keeps a size-k heap while scanning. Falls back to `sorted()` when k is close to n |
-| `heapq.nlargest(k, it)` | **O(n log k)** | O(k) | Same, with a reversed comparison |
-| `heapq.merge(*iters)` | **O(N log k)** | O(k) | Lazily merges k **already sorted** iterables; returns a generator, does NOT build a list |
-| `len(h)` | **O(1)** | O(1) | A heap is just a plain `list` |
-| build via n × `heappush` | **O(n log n)** | O(1) | ❌ The slow way to build a heap — use `heapify` when you already have all elements |
-
-**Why is `heapify()` O(n) and not O(n log n)?**
-
-- `heapify` uses **bottom-up heap construction** (Floyd's algorithm): it walks from the last non-leaf node (`n//2 - 1`) down to index 0 and sifts each node **down**.
-- The trick is that **most nodes are near the bottom** and barely move: ~n/2 leaves cost 0 work, ~n/4 nodes sift at most 1 level, ~n/8 at most 2 levels ...
-- Total work = `Σ (n / 2^(h+1)) * h` for h = 0..log n, which converges to **2n → O(n)**.
-- By contrast, pushing one-by-one sifts **up** from the bottom, where most nodes live → each push really can cost `log n` → **O(n log n)**.
-
-```text
-n = 15 (complete tree, 4 levels)
-
-level        shape           #nodes   max sift-down   work
-  0            o                1           3           3
-  1          o   o              2           2           4
-  2         o o o o             4           1           4
-  3       o o o o o o o o       8           0           0   <- half the nodes, FREE
-                                                      ----
-                                              total =  11   (< 2n = 30)
-```
-
-**Practical rule:** got all elements up front? → `heapify` (O(n)). Elements arrive one at a time (streaming)? → `heappush` (O(log n) each).
-
-```python
-import heapq
-
-#-------------------------------
-# Basic Heap Operations
-#-------------------------------
-
-# Create empty heap
-heap = []
-
-# heappush: Add element to heap
-# Time: O(log n)
-heapq.heappush(heap, 5)
-heapq.heappush(heap, 3)
-heapq.heappush(heap, 7)
-heapq.heappush(heap, 1)
-print(heap)  # [1, 3, 7, 5] - min heap property maintained
-
-# heappop: Remove and return smallest element
-# Time: O(log n)
-smallest = heapq.heappop(heap)
-print(smallest)  # 1
-print(heap)      # [3, 5, 7]
-
-# heappushpop: Push then pop (more efficient than separate operations)
-# Time: O(log n)
-result = heapq.heappushpop(heap, 2)  # Push 2, then pop smallest
-print(result)  # 2
-print(heap)    # [3, 5, 7]
-
-# heapreplace: Pop then push (more efficient than separate operations)
-# Time: O(log n)
-result = heapq.heapreplace(heap, 4)  # Pop smallest, then push 4
-print(result)  # 3
-print(heap)    # [4, 5, 7]
-
-#-------------------------------
-# PEEK : get TOP element WITHOUT popping  ***
-#-------------------------------
-
-# !!! heapq has NO peek() function
-# -> the heap IS a plain python list, and the heap invariant guarantees
-#    the SMALLEST element sits at index 0  =>  heap[0] IS the peek
-# Time: O(1)
-
-top = heap[0]
-print(top)   # 4  -> heap NOT modified
-print(heap)  # [4, 5, 7]
-
-# safe peek (heap[0] raises IndexError when heap is empty)
-top = heap[0] if heap else None
-
-# max heap : push NEGATED values, negate back when peeking
-max_heap = []
-for v in [5, 3, 7]:
-    heapq.heappush(max_heap, -v)
-largest = -max_heap[0]   # 7   (peek, NOT pop)
-
-# ── other ways to peek, and why they are WORSE ──
-#   heap[0]                    -> O(1)   ✅ idiomatic
-#   heapq.nsmallest(1, heap)[0]-> O(n)   ❌ scans whole list
-#   min(heap)                  -> O(n)   ❌ ignores heap structure
-#   pq.queue[0]                -> O(1)   only for queue.PriorityQueue (thread-safe wrapper)
-
-# ── ⚠️ GOTCHA 1 : ONLY index 0 is meaningful ──
-h = [1, 3, 9, 7, 5]   # a VALID min heap
-h[0]    # 1  ✅ guaranteed smallest
-h[1]    # 3  ❌ NOT necessarily the 2nd smallest
-h[-1]   # 5  ❌ NOT the largest
-# a heap is only PARTIALLY ordered! for the 2nd smallest -> sorted(h)[1] (O(n log n))
-
-# ── ⚠️ GOTCHA 2 : IndexError on empty heap -> guard FIRST (short-circuit) ──
-pq = []
-while pq and pq[0] < 10:   # ✅ `pq and ...` must come first
-    heapq.heappop(pq)
-# while pq[0] < 10 and pq:  # ❌ IndexError
-
-# ── classic use : LAZY DELETION (peek -> drop stale tops) ──
-# LC 3092 Most Frequent IDs / LC 218 Skyline / LC 1834 Single-Threaded CPU
-# heapq can NOT remove an element from the middle, so we mark entries stale
-# and pop them only when they surface at the top.
-#
-#   while pq and -pq[0][0] != c_map[pq[0][1]]:   # peek, compare, discard
-#       heapq.heappop(pq)
-#   ans = -pq[0][0] if pq else 0                 # now the top is VALID
-
-# ── avoid a separate peek when you REPLACE the top anyway ──
-# heapq.heapreplace(h, x)   # pop then push -> 1 sift (heap must be non-empty)
-# heapq.heappushpop(h, x)   # push then pop -> cheaper when x <= h[0]
-
-# ── java comparison ──
-#   python : heap[0]      -> IndexError if empty  (NO peek() exists)
-#   java   : pq.peek()    -> null if empty
-#            pq.element() -> throws NoSuchElementException if empty
-
-#-------------------------------
-# Convert List to Heap
-#-------------------------------
-
-# heapify: Transform list into heap in-place
-# Time: O(n) - more efficient than n × heappush
-nums = [5, 7, 9, 1, 3]
-heapq.heapify(nums)
-print(nums)  # [1, 3, 9, 7, 5] - min heap
-
-#-------------------------------
-# Top K Elements (Most Common Interview Pattern)
-#-------------------------------
-
-# nsmallest: Find k smallest elements
-# Time: O(n log k)
-nums = [5, 7, 9, 1, 3, 4, 6, 8, 2]
-k_smallest = heapq.nsmallest(3, nums)
-print(k_smallest)  # [1, 2, 3]
-
-# nlargest: Find k largest elements
-# Time: O(n log k)
-k_largest = heapq.nlargest(3, nums)
-print(k_largest)  # [9, 8, 7]
-
-# With key function (common in LC problems)
-people = [(1, 'Alice'), (3, 'Bob'), (2, 'Charlie')]
-top_2_by_id = heapq.nsmallest(2, people, key=lambda x: x[0])
-print(top_2_by_id)  # [(1, 'Alice'), (2, 'Charlie')]
-
-#-------------------------------
-# Max Heap Pattern (Negate Values)
-#-------------------------------
-
-# Python heapq is min heap, for max heap: negate values
-max_heap = []
-for val in [5, 7, 9, 1, 3]:
-    heapq.heappush(max_heap, -val)  # Negate for max heap
-
-# Get largest element
-largest = -heapq.heappop(max_heap)
-print(largest)  # 9
-
-# Example: Top K Frequent Elements
-from collections import Counter
-def topKFrequent(nums, k):
-    count = Counter(nums)
-    # Use negative frequency for max heap
-    return heapq.nlargest(k, count.keys(), key=count.get)
-
-#-------------------------------
-# Merge K Sorted Lists/Arrays
-#-------------------------------
-
-# merge: Merge multiple sorted iterables
-# Time: O(n log k) where k = number of iterables
-list1 = [1, 3, 5]
-list2 = [2, 4, 6]
-list3 = [0, 7, 8]
-merged = list(heapq.merge(list1, list2, list3))
-print(merged)  # [0, 1, 2, 3, 4, 5, 6, 7, 8]
-
-# Custom comparison for merge
-# Example: Merge by second element of tuple
-data1 = [(1, 'a'), (3, 'c')]
-data2 = [(2, 'b'), (4, 'd')]
-merged = list(heapq.merge(data1, data2, key=lambda x: x[0]))
-print(merged)  # [(1, 'a'), (2, 'b'), (3, 'c'), (4, 'd')]
-
-#-------------------------------
-# Common LeetCode Patterns
-#-------------------------------
-
-# Pattern 1: Kth Largest Element (LC 215)
-def findKthLargest(nums, k):
-    # Use min heap of size k
-    heap = nums[:k]
-    heapq.heapify(heap)
-
-    for num in nums[k:]:
-        if num > heap[0]:
-            heapq.heapreplace(heap, num)
-
-    return heap[0]
-
-# Pattern 2: Top K Frequent Elements (LC 347)
-def topKFrequent(nums, k):
-    count = Counter(nums)
-    return heapq.nlargest(k, count.keys(), key=count.get)
-
-# Pattern 3: Kth Smallest in Sorted Matrix (LC 378)
-def kthSmallest(matrix, k):
-    """
-    Use heap to track smallest elements across rows
-    """
-    n = len(matrix)
-    heap = []
-
-    # Add first element from each row
-    for r in range(min(k, n)):
-        heapq.heappush(heap, (matrix[r][0], r, 0))
-
-    result = 0
-    for _ in range(k):
-        result, r, c = heapq.heappop(heap)
-        if c + 1 < len(matrix[0]):
-            heapq.heappush(heap, (matrix[r][c+1], r, c+1))
-
-    return result
-
-# Pattern 4: Merge K Sorted Lists (LC 23)
-def mergeKLists(lists):
-    """
-    Merge k sorted linked lists
-    """
-    heap = []
-    # Initialize heap with first node from each list
-    for i, lst in enumerate(lists):
-        if lst:
-            heapq.heappush(heap, (lst.val, i, lst))
-
-    dummy = ListNode(0)
-    current = dummy
-
-    while heap:
-        val, i, node = heapq.heappop(heap)
-        current.next = node
-        current = current.next
-
-        if node.next:
-            heapq.heappush(heap, (node.next.val, i, node.next))
-
-    return dummy.next
-
-# Pattern 5: Sliding Window Maximum (LC 239)
-# Note: Usually solved with deque, but can use heap
-def maxSlidingWindow(nums, k):
-    """
-    Use max heap (negate values) with index tracking
-    """
-    heap = []
-    result = []
-
-    for i, num in enumerate(nums):
-        # Add to max heap (negate for max heap)
-        heapq.heappush(heap, (-num, i))
-
-        # Remove elements outside window
-        while heap[0][1] <= i - k:
-            heapq.heappop(heap)
-
-        # Window is full
-        if i >= k - 1:
-            result.append(-heap[0][0])
-
-    return result
-
-#-------------------------------
-# Advanced: Custom Comparison with Classes
-#-------------------------------
-
-# For complex objects, use tuples or dataclass with functools.total_ordering
-from dataclasses import dataclass
-from functools import total_ordering
-
-@total_ordering
-@dataclass
-class Task:
-    priority: int
-    name: str
-
-    def __lt__(self, other):
-        return self.priority < other.priority
-
-# Use with heapq
-task_heap = []
-heapq.heappush(task_heap, Task(3, "Low priority"))
-heapq.heappush(task_heap, Task(1, "High priority"))
-heapq.heappush(task_heap, Task(2, "Medium priority"))
-
-top_task = heapq.heappop(task_heap)
-print(top_task)  # Task(priority=1, name='High priority')
-
-#-------------------------------
-# Performance Tips
-#-------------------------------
-
-# 1. Use heapify() instead of repeated heappush() - O(n) vs O(n log n)
-# SLOW:
-heap = []
-for num in nums:
-    heapq.heappush(heap, num)  # O(n log n)
-
-# FAST:
-heap = nums[:]
-heapq.heapify(heap)  # O(n)
-
-# 2. Use nsmallest/nlargest for small k
-# When k << n: nsmallest/nlargest are optimized
-# When k ≈ n: just sort the array
-
-# 3. For Top K problems with streaming data: maintain heap of size k
-```
-
-**Common Interview Problems Using heapq:**
-- LC 215: Kth Largest Element in an Array
-- LC 347: Top K Frequent Elements
-- LC 373: Find K Pairs with Smallest Sums
-- LC 378: Kth Smallest Element in a Sorted Matrix
-- LC 23: Merge k Sorted Lists
-- LC 295: Find Median from Data Stream (use 2 heaps)
-- LC 253: Meeting Rooms II (interval scheduling)
-- LC 767: Reorganize String (greedy + heap)
-
-**Summary:**
-- ✅ heapq provides efficient min heap (priority queue)
-- ✅ O(log n) for push/pop, O(1) for peek (heap[0])
-- ✅ O(n) for heapify, O(n log k) for nsmallest/nlargest
-- ✅ For max heap: negate values or use `-val`
-- ✅ For custom comparison: use tuple ordering or implement `__lt__`
-
-
-### 1-27-2) Big PQ (Max Heap via negation)
-
-Python's `heapq` only implements a **min heap** — there is no `reverse=True` option for `heapify()`.
-
-To simulate a **max heap**, negate the priority key:
-
-```python
-# Instead of storing (dist, x, y), store (-dist, x, y)
-
-from heapq import heapify, heappop
-
-pq = [(-10, "A"), (-5, "B"), (-20, "C")]
-heapify(pq)
-
-print(heappop(pq))  # (-20, 'C')  ← largest original dist (20) comes out first
-print(heappop(pq))  # (-10, 'A')
-print(heappop(pq))  # (-5,  'B')
-```
-
-**Push pattern:**
-```python
-import heapq
-
-max_heap = []
-heapq.heappush(max_heap, (-priority, value))
-
-# Pop: negate back to get original value
-neg_pri, val = heapq.heappop(max_heap)
-print(-neg_pri, val)
-```
-
-**Multi-key example (primary DESC, secondary ASC):**
-```python
-# Sort by dist descending; on tie, by name ascending
-heapq.heappush(pq, (-dist, name))
-```
-
-> **Rule of thumb**: negate whichever field(s) you want in descending order; leave the rest unchanged.
-
-### 1-27-3) `SortedDict` / `SortedList` — Python's TreeMap (ordered map)
-
-**Idea**
-
-Python has **no built-in `TreeMap`** (Java's `java.util.TreeMap`). The standard
-replacement is **`sortedcontainers`** — a pure-Python library that keeps keys in
-**sorted order** while supporting `O(log n)` insert / delete / lookup and `O(log n)`
-floor / ceiling / range queries. Internally it's a list-of-lists (not a tree), but the
-**API and Big-O behave like a balanced BST**, so it's the go-to "TreeMap" for LC.
-
-- `SortedDict` ↔ Java `TreeMap` (sorted **key → value** map)
-- `SortedList` ↔ Java `TreeSet` / multiset (sorted values; duplicates allowed)
-- Keys/values stay sorted automatically — **no re-sorting on every insert** (the win
-  over `list.sort()`), unlike `bisect` on a plain list where `insert` is `O(n)`.
-
-**`SortedDict` vs `TreeMap` — they are NOT the same data structure** ⭐⭐⭐⭐
-
-| | Python `SortedDict` | Java `TreeMap` |
-|---|---|---|
-| **Source** | `pip install sortedcontainers` — **NOT stdlib** (preinstalled on LeetCode) | `java.util`, built-in |
-| **Implementation** | `dict` + `SortedList` of keys (list-of-lists, B-tree-ish) | Red-black tree (self-balancing BST) |
-| **`d[k]` / `get(k)`** | **`O(1)`** — plain hash lookup | **`O(log n)`** — tree descent |
-| **insert / delete** | `O(log n)` amortized | `O(log n)` |
-| **floor / ceiling** | `O(log n)` via `bisect_*` → returns an **index** | `O(log n)` via `floorKey/ceilingKey` → returns a **key** or `null` |
-| **k-th smallest key** | **`O(log n)`** — `d.keys()[k]` ✅ | ❌ not supported (`O(n)` iteration) |
-| **Custom ordering** | `SortedDict(key_func)` — a key **transform** only | `Comparator` — arbitrary 2-arg logic |
-| **Duplicate keys** | ❌ | ❌ |
-
-> **Takeaway:** `SortedDict` is *faster* than `TreeMap` for value lookups (hash, not tree walk),
-> and it can do **index access** (`keys()[k]`) that `TreeMap` simply cannot.
-> `TreeMap`'s `Comparator` is the one thing that's strictly more expressive.
-
-**Core API**
-
-```python
-from sortedcontainers import SortedDict, SortedList
-
-# ---------------- SortedDict (TreeMap) ----------------
-sd = SortedDict()
-
-# O(log n) basic ops
-sd[key] = value          # insert / update
-v = sd.get(key)          # lookup (None if missing)
-del sd[key]              # delete
-key in sd                # membership
-
-# Ordered access — keys() is an indexable sorted view
-sd.keys()[0]             # min key
-sd.keys()[-1]            # max key
-sd.peekitem(0)           # (min_key, val)
-sd.peekitem(-1)          # (max_key, val)
-
-# Floor / Ceiling via bisect methods on the keys (THE TreeMap superpower)
-keys = sd.keys()
-i = sd.bisect_left(target)    # first index with key >= target
-j = sd.bisect_right(target)   # first index with key >  target
-#   ceiling(target) = keys[i]      if i < len(sd)      (smallest key >= target)
-#   floor(target)   = keys[j - 1]  if j > 0            (largest  key <= target)
-
-# Range query: iterate keys in [lo, hi)
-lo_i = sd.bisect_left(lo)
-hi_i = sd.bisect_left(hi)
-for k in sd.keys()[lo_i:hi_i]:
-    process(k, sd[k])
-
-# Range query, cleaner: irange (inclusive both ends by default)
-for k in sd.irange(lo, hi):
-    process(k, sd[k])
-
-sd.popitem(0)            # pollFirstEntry()
-sd.popitem(-1)           # pollLastEntry()
-
-# ---------------- SortedList (TreeSet / multiset) ----------------
-sl = SortedList()
-sl.add(x)                # O(log n) insert, stays sorted
-sl.remove(x)             # O(log n) delete one occurrence
-sl[0], sl[-1]            # min / max
-i = sl.bisect_left(x)    # floor/ceiling index, same idea as above
-```
-
-**Java `TreeMap` → Python `SortedDict` cheat table** ⭐⭐⭐⭐⭐
-
-| Java `TreeMap` | Python `SortedDict` | Guard needed |
-|---|---|---|
-| `firstKey()` / `lastKey()` | `d.keys()[0]` / `d.keys()[-1]` | non-empty |
-| `firstEntry()` / `lastEntry()` | `d.peekitem(0)` / `d.peekitem(-1)` | non-empty |
-| `floorKey(x)` — largest ≤ x | `d.keys()[d.bisect_right(x) - 1]` | `idx >= 0` |
-| `ceilingKey(x)` — smallest ≥ x | `d.keys()[d.bisect_left(x)]` | `idx < len(d)` |
-| `lowerKey(x)` — strictly < x | `d.keys()[d.bisect_left(x) - 1]` | `idx >= 0` |
-| `higherKey(x)` — strictly > x | `d.keys()[d.bisect_right(x)]` | `idx < len(d)` |
-| `subMap(lo, true, hi, true)` | `d.irange(lo, hi)` | — |
-| `headMap(hi, true)` / `tailMap(lo, true)` | `d.irange(maximum=hi)` / `d.irange(minimum=lo)` | — |
-| `pollFirstEntry()` / `pollLastEntry()` | `d.popitem(0)` / `d.popitem(-1)` | non-empty |
-| `descendingMap()` | `reversed(d)` | — |
-| `new TreeMap<>(comparator)` | `SortedDict(key_func)` | transform, not comparator |
-
-⚠️ **The #1 gotcha — index, not key.** Java's `floorKey/ceilingKey` return a key
-(or `null`); Python's `bisect_*` return an **index** that can be `-1` or `len(d)`.
-Because `keys()[-1]` silently returns the **MAX key**, a missing guard is a *silent
-wrong answer*, not a crash:
-
-```python
-# ✅ the safe floor / ceiling idiom — memorize this
-i = d.bisect_left(x)
-ceil_key = d.keys()[i] if i < len(d) else None       # ceilingKey(x)
-
-j = d.bisect_right(x) - 1
-floor_key = d.keys()[j] if j >= 0 else None          # floorKey(x)
-```
-
-⚠️ **Don't rebuild the key list.** `bisect.bisect_left(list(sd.keys()), x)` copies
-every key = `O(n)`, destroying the `O(log n)` win. Use `sd.bisect_left(x)`.
-
-**When to use**
-
-| Need | Use |
-|------|-----|
-| Fast `O(1)` lookup, **no ordering** | plain `dict` / `set` |
-| Sorted, but **inserted once then read** | sort a `list` (`O(n log n)` once) |
-| **Repeated inserts/deletes** + need order / floor / ceiling / range | **`SortedDict` / `SortedList`** |
-| Sorted **values with duplicates** (multiset) | **`SortedList`** |
-| Only need min/max (no ordering between) | `heapq` |
-
-> Reach for `SortedContainers` the moment the data **mutates over time** *and* you need
-> "closest key", "next greater key", or "all keys in `[a, b]`". If the array is static,
-> a one-time sort + `bisect` is simpler and faster.
-
-**Use example — LC 729 My Calendar I (floor/ceiling overlap check)**
-
-The canonical "how do I port this Java `TreeMap` code to Python?" question.
-Java original:
-
-```java
-// java
-// LC 729 - My Calendar I
-TreeMap<Integer, Integer> calendar = new TreeMap<>();
-
-public boolean book(int start, int end) {
-    Integer prev = calendar.floorKey(start);    // largest start <= start
-    Integer next = calendar.ceilingKey(start);  // smallest start >= start
-
-    if ((prev == null || calendar.get(prev) <= start) &&
-        (next == null || end <= next)) {
-        calendar.put(start, end);
-        return true;
-    }
-    return false;
-}
-```
-
-**V1) Closest 1:1 port — `SortedDict` + explicit floor/ceiling**
-
-```python
-# python
-# LC 729 - My Calendar I
-# IDEA: mirror floorKey / ceilingKey with bisect_right / bisect_left, then guard the index
-from sortedcontainers import SortedDict
-
-class MyCalendar:
-    # time = O(log N) per booking, space = O(N)
-    def __init__(self):
-        self.calendar = SortedDict()   # {start: end}
-
-    def book(self, start: int, end: int) -> bool:
-        keys = self.calendar.keys()
-
-        # floorKey(start): largest key <= start
-        i = self.calendar.bisect_right(start)
-        prev = keys[i - 1] if i > 0 else None
-
-        # ceilingKey(start): smallest key >= start
-        j = self.calendar.bisect_left(start)
-        nxt = keys[j] if j < len(keys) else None
-
-        if (prev is None or self.calendar[prev] <= start) and \
-           (nxt is None or end <= nxt):
-            self.calendar[start] = end
-            return True
-        return False
-```
-
-**V2) More idiomatic Python — `SortedList` of `(start, end)` tuples** ⭐ *interview pick*
-
-One sorted structure instead of a key/value split, and the overlap condition reads directly:
-
-```python
-# python
-# LC 729 - My Calendar I
-# IDEA: keep intervals sorted as tuples; only the neighbours at the insert
-#       position can possibly overlap
-from sortedcontainers import SortedList
-
-class MyCalendar:
-    # time = O(log N) per booking, space = O(N)
-    def __init__(self):
-        self.books = SortedList()      # sorted (start, end) tuples
-
-    def book(self, start: int, end: int) -> bool:
-        i = self.books.bisect_left((start, end))
-        if i > 0 and self.books[i - 1][1] > start:            # prev spills into us
-            return False
-        if i < len(self.books) and end > self.books[i][0]:    # we spill into next
-            return False
-        self.books.add((start, end))
-        return True
-```
-
-**V3) Zero-dependency fallback — stdlib `bisect` only**
-
-If imports are restricted to stdlib: search stays `O(log N)`, but `list.insert()`
-shifts elements → `O(N)` per booking. Fine for LC 729 (≤ 1000 calls).
-
-```python
-# python
-# LC 729 - My Calendar I
-import bisect
-
-class MyCalendar:
-    # time = O(N) per booking (list shifting), space = O(N)
-    def __init__(self):
-        self.books = []                # sorted (start, end) tuples
-
-    def book(self, start: int, end: int) -> bool:
-        i = bisect.bisect_left(self.books, (start, end))
-        if i > 0 and self.books[i - 1][1] > start:
-            return False
-        if i < len(self.books) and end > self.books[i][0]:
-            return False
-        self.books.insert(i, (start, end))
-        return True
-```
-
-**Use example — LC 220 Contains Duplicate III (range query via `SortedList`)**
-
-```python
-from sortedcontainers import SortedList
-
-def containsNearbyAlmostDuplicate(nums, indexDiff, valueDiff):
-    # keep a sliding window of the last `indexDiff` values, kept sorted
-    window = SortedList()
-    for i, num in enumerate(nums):
-        # ceiling: smallest value >= num - valueDiff
-        pos = window.bisect_left(num - valueDiff)
-        if pos < len(window) and window[pos] <= num + valueDiff:
-            return True
-        window.add(num)
-        if len(window) > indexDiff:        # evict the value that falls out of window
-            window.remove(nums[i - indexDiff])
-    return False
-```
-
-**Relative LeetCode problems**
-
-| Problem | LC# | TreeMap operation |
-|---------|-----|-------------------|
-| My Calendar I | 729 | floor/ceiling for overlap check |
-| My Calendar II | 731 | count overlaps with ordered map |
-| My Calendar III | 732 | max overlapping (diff array on ordered keys) |
-| Contains Duplicate III | 220 | ceiling + range check in sliding window |
-| Time Based Key-Value Store | 981 | floor on timestamp |
-| Data Stream as Disjoint Intervals | 352 | merge intervals via floor/ceiling |
-| Count of Smaller Numbers After Self | 315 | `SortedList` + `bisect` while scanning right→left |
-| Sliding Window Median | 480 | `SortedList` add/remove, index middle |
-| The Skyline Problem | 218 | multiset of heights (`SortedList`) |
-
-> See the **TreeMap Pattern (Template 7)** in
-> [hash_map.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/hash_map.md)
-> for the Java `TreeMap` side-by-side comparison.
-
-### 1-28) useful `functools` modules
-- functools.lru_cache
-    - implement cache via LRU (Least Recently Used (LRU) cache) in py
-- ref
-    - https://walkonnet.com/archives/451257
-    - https://docs.python.org/3/library/functools.html
-```python
-# example 1
-@lru_cache
-def count_vowels(sentence):
-    return sum(sentence.count(vowel) for vowel in 'AEIOUaeiou')
-
-# example 2
-@lru_cache(maxsize=32)
-def get_pep(num):
-    'Retrieve text of a Python Enhancement Proposal'
-    resource = 'https://www.python.org/dev/peps/pep-%04d/' % num
-    try:
-        with urllib.request.urlopen(resource) as s:
-            return s.read()
-    except urllib.error.HTTPError:
-        return 'Not Found'
-
-# example 3
-@lru_cache(maxsize=None)
-def fib(n):
-    if n < 2:
-        return n
-    return fib(n-1) + fib(n-2)
-
-# example 4
-@api.route("/user/info", methods=["GET"])
-@functools.lru_cache()
-@login_require
-def get_userinfo_list():
-    userinfos = UserInfo.query.all()
-    userinfo_list = [user.to_dict() for user in userinfos]
-    return jsonify(userinfo_list)
-```
-
-### 1-29) fill "0" to String
 ```python
 # LC 67. Add Binary
 #NOTE : zfill syntax
@@ -2321,7 +355,8 @@ In [14]: x.zfill(10)
 Out[14]: '0000000001'
 ```
 
-### 1-29') strip leading / trailing chars : `lstrip`, `rstrip`, `strip`
+### `lstrip` / `rstrip` / `strip`
+
 
 ```python
 # python
@@ -2401,177 +436,11 @@ return res if res else "0"         # handle the all-zero / empty case
 
 > **Rule of thumb**: `lstrip('0')` is the idiomatic way to normalize a numeric string
 > (drop leading zeros) — but always guard the **empty-string** result (`res or "0"`),
-> since `"0"`/`"0000"` strip down to `""`. See also [`zfill`](#1-29-fill-0-to-string)
+> since `"0"`/`"0000"` strip down to `""`. See also [`zfill`](#zero-padding-a-string)
 > for the inverse (padding zeros).
 
-### 1-30) `collections.defaultdict`
-```python
-# defaultdict never raises KeyError — returns a default value for missing keys
-from collections import defaultdict
+### `ord()`, `chr()`, `isalpha()`, `isdigit()`
 
-#----------------------------
-# example 1 : int (default 0)
-#----------------------------
-d = defaultdict(int)
-for ch in "aabbbc":
-    d[ch] += 1
-print(dict(d))  # {'a': 2, 'b': 3, 'c': 1}
-
-#----------------------------
-# example 2 : list (default [])
-#----------------------------
-graph = defaultdict(list)
-edges = [(0,1),(0,2),(1,3)]
-for u, v in edges:
-    graph[u].append(v)
-    graph[v].append(u)
-# graph[0] -> [1, 2],  graph[99] -> []  (no KeyError)
-
-#----------------------------
-# example 3 : set (default set())
-#----------------------------
-d = defaultdict(set)
-d['key'].add(1)
-d['key'].add(2)
-print(d['key'])  # {1, 2}
-
-#----------------------------
-# example 4 : nested defaultdict (adjacency matrix with weights)
-#----------------------------
-dist = defaultdict(lambda: defaultdict(lambda: float('inf')))
-dist[0][1] = 5
-print(dist[0][1])   # 5
-print(dist[0][99])  # inf
-```
-
-### 1-31) `collections.Counter`
-```python
-from collections import Counter
-
-#----------------------------
-# basic usage
-#----------------------------
-c = Counter("aabbbc")
-print(c)            # Counter({'b': 3, 'a': 2, 'c': 1})
-print(c['b'])       # 3
-print(c['z'])       # 0  (no KeyError, returns 0)
-
-# most_common(k) : top k frequent elements
-print(c.most_common(2))   # [('b', 3), ('a', 2)]
-
-# Counter arithmetic
-c1 = Counter("aab")
-c2 = Counter("abc")
-print(c1 + c2)  # Counter({'a': 3, 'b': 2, 'c': 1})
-print(c1 - c2)  # Counter({'a': 1})  (only positive counts)
-print(c1 & c2)  # Counter({'a': 1, 'b': 1})  intersection (min)
-print(c1 | c2)  # Counter({'a': 2, 'b': 1, 'c': 1})  union (max)
-
-# update (add) vs subtract
-c = Counter({'a': 3})
-c.update({'a': 1, 'b': 2})
-print(c)    # Counter({'a': 4, 'b': 2})
-c.subtract({'a': 2})
-print(c)    # Counter({'a': 2, 'b': 2})
-
-# LC 347 Top K Frequent Elements
-from collections import Counter
-def topKFrequent(nums, k):
-    return [x for x, _ in Counter(nums).most_common(k)]
-```
-
-### 1-32) `collections.deque` (Double-Ended Queue)
-```python
-from collections import deque
-
-# deque() vs deque([]) — both produce an empty deque, functionally identical
-q = deque()    # preferred: no unnecessary empty list created
-q = deque([])  # equivalent but verbose; the [] is an extra throwaway object
-
-# O(1) append/pop from BOTH ends (list.pop(0) is O(n))
-d = deque([1, 2, 3])
-
-d.append(4)       # [1, 2, 3, 4]
-d.appendleft(0)   # [0, 1, 2, 3, 4]
-d.pop()           # removes 4  -> [0, 1, 2, 3]
-d.popleft()       # removes 0  -> [1, 2, 3]
-
-# maxlen: auto-evicts oldest element (sliding window)
-d = deque(maxlen=3)
-for i in range(5):
-    d.append(i)
-print(d)  # deque([2, 3, 4], maxlen=3)
-
-#----------------------------
-# BFS template with deque
-#----------------------------
-def bfs(graph, start):
-    visited = set([start])
-    queue = deque([start])
-    while queue:
-        node = queue.popleft()
-        for neighbor in graph[node]:
-            if neighbor not in visited:
-                visited.add(neighbor)
-                queue.append(neighbor)
-
-#----------------------------
-# Monotonic deque (LC 239 Sliding Window Maximum)
-#----------------------------
-def maxSlidingWindow(nums, k):
-    d = deque()   # stores indices, decreasing order of values
-    result = []
-    for i, num in enumerate(nums):
-        while d and nums[d[-1]] <= num:
-            d.pop()
-        d.append(i)
-        if d[0] == i - k:   # front out of window
-            d.popleft()
-        if i >= k - 1:
-            result.append(nums[d[0]])
-    return result
-```
-
-### 1-33) `any()` operator
-```python
-# Returns True if ANY element in iterable is True (short-circuits)
-In [1]: any([False, False, True])
-Out[1]: True
-
-In [2]: any([False, False, False])
-Out[2]: False
-
-In [3]: any(x > 3 for x in [1, 2, 5])
-Out[3]: True
-
-# Complement to all():
-# all() -> every element must be True
-# any() -> at least one element must be True
-```
-
-### 1-34) `enumerate()`
-```python
-# Returns (index, value) pairs — avoids manual index tracking
-fruits = ['apple', 'banana', 'cherry']
-
-for i, v in enumerate(fruits):
-    print(i, v)
-# 0 apple
-# 1 banana
-# 2 cherry
-
-# start parameter
-for i, v in enumerate(fruits, start=1):
-    print(i, v)
-# 1 apple  2 banana  3 cherry
-
-# Build index map (very common in LC)
-s = "abcba"
-idx_map = {v: i for i, v in enumerate(s)}
-print(idx_map)  # {'a': 4, 'b': 3, 'c': 2}  (last occurrence)
-```
-
-### 1-35) String character operations: `ord()`, `chr()`, `isalpha()`, `isdigit()`
 ```python
 #-------------------------------
 # ord() : char -> ASCII int
@@ -2617,218 +486,8 @@ def isPalindrome(s):
 fixed_s = ''.join(c.lower() for c in s if c.isalnum())
 ```
 
-### 1-36) Set operations
-```python
-a = {1, 2, 3, 4}
-b = {3, 4, 5, 6}
+### String methods cheatsheet
 
-# Basic ops
-a | b    # union        {1, 2, 3, 4, 5, 6}
-a & b    # intersection {3, 4}
-a - b    # difference   {1, 2}
-a ^ b    # symmetric diff {1, 2, 5, 6}
-
-# Membership: O(1) average
-3 in a   # True
-
-# Mutation
-a.add(5)
-a.discard(99)   # no error if missing (vs remove() which raises KeyError)
-a.remove(1)     # raises KeyError if missing
-
-# NOTE: can directly remove a specific element from a set by value (not index)
-# Common in sliding window problems (LC 3)
-seen = set()
-seen.add('a')
-seen.remove('a')   # removes 'a' directly — no index needed
-
-# Set comprehension
-squares = {x**2 for x in range(5)}   # {0, 1, 4, 9, 16}
-
-# Freeze (hashable, usable as dict key)
-fs = frozenset([1, 2, 3])
-```
-
-### 1-37) Dict `get()`, `setdefault()`, comprehension
-```python
-d = {'a': 1, 'b': 2}
-
-# get(key, default) — safe access
-d.get('c', 0)     # 0  (no KeyError)
-d.get('a', 0)     # 1
-
-# setdefault(key, default) — insert if missing, return value
-d.setdefault('c', []).append(3)   # d['c'] = [3]
-d.setdefault('c', []).append(4)   # d['c'] = [3, 4]
-
-# dict comprehension
-squares = {x: x**2 for x in range(5)}
-# {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}
-
-# invert a dict (assuming unique values)
-inv = {v: k for k, v in squares.items()}
-
-# filter dict
-evens = {k: v for k, v in squares.items() if v % 2 == 0}
-```
-
-### 1-38) Infinity and boundary values
-```python
-# Use float('inf') / float('-inf') instead of sys.maxsize for clarity
-INF = float('inf')
-NEG_INF = float('-inf')
-
-# Works with min/max comparisons
-min_val = float('inf')
-for x in [3, 1, 4, 1, 5]:
-    min_val = min(min_val, x)
-print(min_val)  # 1
-
-# Common in DP initialization
-dp = [[float('inf')] * n for _ in range(m)]
-
-# Python int has no overflow — safe to use large numbers
-# But float('inf') is cleaner for "unbounded" semantics
-```
-
-### 1-39) 2D array (matrix) initialization
-```python
-#-------------------------------------------------
-# CORRECT way — use list comprehension (independent rows)
-#-------------------------------------------------
-m, n = 3, 4
-grid = [[0] * n for _ in range(m)]
-grid[0][0] = 1
-# Only grid[0][0] is changed
-
-#-------------------------------------------------
-# WRONG way — all rows share the same list!
-#-------------------------------------------------
-bad = [[0] * n] * m
-bad[0][0] = 1
-# ALL rows become [1, 0, 0, 0]  — common bug!
-
-#-------------------------------------------------
-# Common DP patterns
-#-------------------------------------------------
-# 1D DP
-dp = [0] * (n + 1)
-
-# 2D DP (m rows, n cols, filled with False)
-dp = [[False] * (n + 1) for _ in range(m + 1)]
-
-# Fill with infinity
-dp = [[float('inf')] * n for _ in range(m)]
-```
-
-### 1-40) `nonlocal` and `global` in nested functions
-```python
-# nonlocal: modify a variable in the ENCLOSING (not global) scope
-def outer():
-    count = 0
-    def inner():
-        nonlocal count
-        count += 1
-    inner()
-    inner()
-    print(count)  # 2
-
-# Without nonlocal, count += 1 raises UnboundLocalError
-
-# global: modify a module-level variable inside a function
-total = 0
-def add(x):
-    global total
-    total += x
-
-# Common LC pattern: DFS with mutable result
-def maxDepth(root):
-    res = [0]
-    def dfs(node, depth):
-        if not node:
-            return
-        res[0] = max(res[0], depth)  # list trick avoids nonlocal
-        dfs(node.left, depth + 1)
-        dfs(node.right, depth + 1)
-    dfs(root, 1)
-    return res[0]
-```
-
-### 1-41) `min()` / `max()` with `key`
-```python
-# key= works exactly like sort's key= parameter
-nums = [-3, -1, 2, 4]
-print(max(nums, key=abs))   # -3  (largest absolute value)
-print(min(nums, key=abs))   # -1  (smallest absolute value)
-
-# With iterable of tuples
-points = [(1, 5), (3, 2), (2, 8)]
-print(max(points, key=lambda p: p[1]))  # (2, 8)
-
-# min/max with default (avoids error on empty iterable)
-print(min([], default=0))   # 0
-
-# clamp a value between lo and hi
-val = max(lo, min(val, hi))
-```
-
-### 1-42) Ternary (conditional) expression
-```python
-# syntax: <value_if_true> if <condition> else <value_if_false>
-x = 5
-result = "even" if x % 2 == 0 else "odd"   # "odd"
-
-# Nested ternary (keep shallow — hard to read beyond two levels)
-sign = "positive" if x > 0 else ("zero" if x == 0 else "negative")
-
-# Common LC use
-ans = left if left else right          # return whichever is not None
-val = node.val if node else 0
-```
-
-### 1-43) `pow(x, n, mod)` — fast modular exponentiation
-```python
-# Built-in 3-arg pow is O(log n), much faster than (x**n) % mod
-MOD = 10**9 + 7
-
-print(pow(2, 10, MOD))    # 1024
-print(pow(2, 100, MOD))   # 976371285  (computed efficiently)
-
-# Modular inverse (when mod is prime): pow(a, mod-2, mod)
-inv = pow(3, MOD - 2, MOD)   # modular inverse of 3
-
-# LC 50 Pow(x, n) — manual fast power
-def myPow(x, n):
-    if n < 0:
-        x, n = 1 / x, -n
-    res = 1
-    while n:
-        if n % 2 == 1:
-            res *= x
-        x *= x
-        n //= 2
-    return res
-```
-
-### 1-44) `reduce()` from functools
-```python
-from functools import reduce
-
-# reduce(func, iterable[, initializer])
-# Applies func cumulatively: func(func(a, b), c) ...
-
-product = reduce(lambda a, b: a * b, [1, 2, 3, 4])   # 24
-total   = reduce(lambda a, b: a + b, [1, 2, 3, 4], 0) # 10
-
-# XOR all elements (LC 136 Single Number)
-from functools import reduce
-import operator
-result = reduce(operator.xor, [4, 1, 2, 1, 2])  # 4
-# equivalent to:
-result = reduce(lambda a, b: a ^ b, [4, 1, 2, 1, 2])
-```
-
-### 1-45) String methods cheatsheet
 ```python
 s = "  Hello, World!  "
 
@@ -2868,7 +527,513 @@ def is_palindrome(s):
     return s == s[::-1]
 ```
 
-### 1-46) Useful built-ins: `sorted()`, `reversed()`, `sum()`, `abs()`
+### Pulling the numeric characters out of a string
+
+```python
+# LC 008
+s = '4193 with words'
+res = re.search('(^[\+\-]?\d+)', s).group()
+print (res)
+```
+
+### Looping a string in reverse
+
+
+**Key difference: stop value is EXCLUSIVE in `range()`**
+
+```python
+x = "332"   # indices: 0, 1, 2
+
+# ── Form 1: range(len(x)-1, -1, -1)  → stop = -1 (exclusive) → covers 2, 1, 0 (ALL indices)
+for i in range(len(x)-1, -1, -1):
+    print(i)
+# 2
+# 1
+# 0   ← index 0 IS included
+
+# ── Form 2: range(len(x)-1, 0, -1)   → stop = 0 (exclusive) → covers 2, 1 (MISSES index 0)
+for i in range(len(x)-1, 0, -1):
+    print(i)
+# 2
+# 1   ← index 0 is NOT included
+```
+
+| Form | Stop value | Indices visited | Includes index 0? |
+|------|-----------|-----------------|-------------------|
+| `range(len(x)-1, -1, -1)` | `-1` (exclusive) | `len-1 … 0` | **Yes** |
+| `range(len(x)-1,  0, -1)` | ` 0` (exclusive) | `len-1 … 1` | **No** |
+
+**Rule of thumb:** to loop ALL indices in reverse, always use `-1` as the stop value.
+
+```python
+# Equivalent ways to iterate a string/array in reverse (all indices)
+x = "abc"
+
+# Form A: range
+for i in range(len(x) - 1, -1, -1):
+    print(x[i])
+
+# Form B: reversed() — cleaner, no index needed
+for ch in reversed(x):
+    print(ch)
+
+# Form C: slice — creates a reversed copy
+for ch in x[::-1]:
+    print(ch)
+```
+
+**When you DO want to skip index 0** (e.g. comparing `x[i]` with `x[i-1]`):
+```python
+# Safe to start from index 1 in forward loops, or stop before 0 in reverse loops
+for i in range(len(x) - 1, 0, -1):   # compares x[i] vs x[i-1]; never i-1 = -1
+    if x[i] == x[i - 1]:
+        print(f"duplicate at {i}")
+```
+
+## Sorting & Comparison
+
+### `sort` with a `lambda` key
+
+```python
+# example 1
+# LC 973. K Closest Points to Origin
+# IDEA : sort + lambda
+class Solution(object):
+    def kClosest(self, points, K):
+        points.sort(key = lambda x : x[0]**2 +  x[1]**2)
+        return points[:K]
+
+
+# example 2
+In [28]: def my_func(x):
+    ...:     return x**2
+    ...:
+    ...: x = [-4,-5,0,1,2,5]
+    ...: x.sort(key=lambda x: my_func(x))
+    ...: print (x)
+[0, 1, 2, -4, -5, 5]
+```
+
+```python
+# LC 937
+# https://leetcode.com/problems/reorder-data-in-log-files/solution/
+def my_func(input):
+    # do sth
+    if condition:
+        return key1, key2, key3....
+    else:
+        return key4, key5, key6....
+
+my_array=["a1 9 2 3 1","g1 act car","zo4 4 7","ab1 off key dog","a8 act zoo"]
+my_array.sort(key=lambda x : my_func(x))
+```
+
+### Descending: `key=lambda x: -x[0]` vs `reverse=True` vs `[::-1]`
+
+
+Three ways to sort descending — each has a distinct use case.
+
+```python
+# ── Context: LC 853 Car Fleet ──
+# We have pos_speed = [[pos, speed, time], ...] and want to sort by position DESC.
+
+# ── Form 1: negate the key  (in-place, fine-grained control) ──
+pos_speed.sort(key=lambda x: -x[0])
+# Use when:
+#   • You need MIXED direction: primary DESC, secondary ASC
+#     e.g. sort(key=lambda x: (-x[0], x[1]))  ← impossible with reverse=True alone
+#   • Works for int and float keys
+
+# ── Form 2: reverse=True  (cleaner for single-direction reversal) ──
+pos_speed.sort(key=lambda x: x[0], reverse=True)
+sorted_cars = sorted(cars, reverse=True)   # creates a NEW list
+# Use when:
+#   • ALL keys go the same direction (all DESC)
+#   • More readable for simple cases
+#   • sorted() is preferred over sort() when you need to keep the original
+
+# ── Form 3: sort ASC then reverse/slice  (separate steps) ──
+times = [(target - pos) / spe for pos, spe in sorted(cars)]   # ASC sort
+for time in times[::-1]:        # iterate in reverse  — does NOT mutate list
+    ...
+# -- or --
+for time in reversed(times):    # same effect, no extra list copy
+    ...
+# Use when:
+#   • You want to keep the sorted-ASC list around for other uses
+#   • reversed() is O(1) memory; [::-1] creates a new list copy
+
+# ── Quick comparison ──
+# Method              | In-place? | New list? | Mixed direction? | Readability
+# -x[0]               |   yes     |    no     |      YES         |  moderate
+# reverse=True        |   yes     |    no     |      no          |  high
+# sorted(reverse=True)|   no      |    YES    |      no          |  high
+# sort ASC + reversed |   yes     |    no     |      no          |  moderate
+
+# ── Multi-key mixed direction example (only negation works here) ──
+# Sort by position DESC, then by speed ASC as tiebreaker:
+data.sort(key=lambda x: (-x[0], x[1]))
+```
+
+### Multi-key tuple sort: `key=lambda x: (x[0], x[1])` ⭐⭐⭐⭐⭐
+
+**Key Idea**: return a **tuple** from `key`. Python compares tuples **left → right**, short-circuiting on the first unequal element. So `(-x[0], x[1])` means *"primary: x[0] DESC, tie-break: x[1] ASC"*.
+
+**Quick Decision Table**
+
+| Goal | Pattern |
+|------|---------|
+| key1 ASC | `key = lambda x : x[0]` |
+| key1 DESC | `key = lambda x : -x[0]` **(numeric only)** or `reverse = True` |
+| key1 ASC, key2 ASC | `key = lambda x : (x[0], x[1])` |
+| key1 DESC, key2 DESC | `key = lambda x : (x[0], x[1]), reverse = True` |
+| key1 DESC, key2 ASC | `key = lambda x : (-x[0], x[1])` **(key1 numeric)** |
+| key1 ASC, key2 DESC | `key = lambda x : (x[0], -x[1])` **(key2 numeric)** |
+| mixed dir, **non-numeric** key | **2 stable sorts** — sort by the *last* key first (see below) |
+| pairwise custom rule | `functools.cmp_to_key(my_cmp)` |
+
+```python
+# python
+y = [[7,0], [4,4], [7,1], [5,0], [6,1], [5,2]]
+print (y)
+# sort by x[0] DESC, then x[1] ASC
+y.sort(key = lambda x : (-x[0], x[1]))
+print (y)
+# [[7, 0], [4, 4], [7, 1], [5, 0], [6, 1], [5, 2]]
+# [[7, 0], [7, 1], [6, 1], [5, 0], [5, 2], [4, 4]]
+```
+
+**Visual Trace** — how the tuple key orders the above:
+
+```text
+elem     | key = (-x[0], x[1])
+---------------------------------
+[7,0]    | (-7, 0)
+[7,1]    | (-7, 1)
+[6,1]    | (-6, 1)
+[5,0]    | (-5, 0)
+[5,2]    | (-5, 2)
+[4,4]    | (-4, 4)
+
+sort keys ASC  ->  (-7,0) < (-7,1) < (-6,1) < (-5,0) < (-5,2) < (-4,4)
+                    ^^^^^^^^^^^^^^ 1st slot tied (-7) -> compare 2nd slot (0 < 1)
+=> [[7,0], [7,1], [6,1], [5,0], [5,2], [4,4]]
+```
+
+#### **`reverse = True` vs negating the key**
+
+```python
+# python
+arr = [[1,'b'], [1,'a'], [2,'a']]
+
+# (a) reverse=True flips the WHOLE ordering (every key), not just the 1st
+sorted(arr, key = lambda x : (x[0], x[1]), reverse = True)
+# [[2,'a'], [1,'b'], [1,'a']]   <-- x[0] DESC *and* x[1] DESC
+
+# (b) negation flips only the negated slot
+sorted(arr, key = lambda x : (-x[0], x[1]))
+# [[2,'a'], [1,'a'], [1,'b']]   <-- x[0] DESC, x[1] ASC
+
+# NOTE !!! `-` only works on numbers
+sorted(arr, key = lambda x : (-x[0], -x[1]))   # ❌ TypeError : bad operand type for unary -: 'str'
+```
+
+#### **Mixed direction with a NON-numeric key → 2 stable sorts**
+
+Timsort is **stable**, so you can chain sorts. Rule: **sort by the LAST (least significant) key first.**
+
+```python
+# python
+# want : len(s) ASC, then s DESC  (can't do -s)
+words = ["bb", "a", "ab", "c", "ba"]
+
+words.sort(reverse = True)          # step 1 : least significant key (s DESC)
+words.sort(key = len)               # step 2 : most  significant key (len ASC) - stable
+print (words)
+# ['c', 'a', 'bb', 'ba', 'ab']
+#  ^^^^^^^^ len 1, DESC        ^^^^^^^^^^^^^^ len 2, DESC
+```
+
+> ⚠️ Do **NOT** reverse the order of the two passes — sorting by `len` first then by `s` would throw the `len` grouping away.
+
+#### **`functools.cmp_to_key` — when no key function exists**
+
+Use when ordering depends on **comparing two elements together** (no per-element value can express it).
+
+```python
+# python
+# LC 179 Largest Number : concat digits to form the biggest number
+# rule : a before b  iff  a+b > b+a  -> not expressible as a single key
+import functools
+
+class Solution(object):
+    def largestNumber(self, nums):
+        # time = O(n log n * k), space = O(n)   (k = digit length)
+        def cmp(a, b):
+            if a + b > b + a:
+                return -1      # a comes FIRST
+            elif a + b < b + a:
+                return 1       # b comes FIRST
+            return 0
+
+        strs = [str(x) for x in nums]
+        strs.sort(key = functools.cmp_to_key(cmp))
+        res = "".join(strs)
+        return "0" if res[0] == "0" else res
+
+# nums = [3,30,34,5,9] -> "9534330"
+```
+
+#### **Other handy sort keys**
+
+```python
+# python
+# 1) sort dict by VALUE desc, then KEY asc  (LC 692 Top K Frequent Words)
+from collections import Counter
+cnt = Counter(["i","love","leetcode","i","love","coding"])
+res = sorted(cnt.keys(), key = lambda w : (-cnt[w], w))
+# ['i', 'love', 'coding', 'leetcode']
+
+# 2) sort by "distance" (LC 973 K Closest Points to Origin)
+points = [[1,3],[-2,2],[5,8],[0,1]]
+points.sort(key = lambda p : p[0]**2 + p[1]**2)
+# [[0,1], [-2,2], [1,3], [5,8]]
+
+# 3) sort intervals by start (LC 56 / 57 / 253 / 435)
+intervals = [[1,3],[8,10],[2,6],[15,18]]
+intervals.sort(key = lambda x : x[0])
+# [[1,3], [2,6], [8,10], [15,18]]
+
+# 4) sort by end   (LC 435 Non-overlapping Intervals - greedy)
+intervals.sort(key = lambda x : x[1])
+
+# 5) sort chars of a string as the canonical key (LC 49 Group Anagrams)
+"".join(sorted("tea"))    # 'aet'
+
+# 6) sort with index preserved (need original position afterwards)
+nums = [5,2,8]
+idx_sorted = sorted(range(len(nums)), key = lambda i : nums[i])
+# [1, 0, 2]   <-- indices in value order
+
+# 7) sort intervals by BOTH ends (LC 56 Merge Intervals, LC 252 / 253 Meeting Rooms)
+intervals.sort(key = lambda x : (x[0], x[1]))
+
+# 8) primary ASC, secondary DESC -- negate only the secondary slot
+events.sort(key = lambda x : (x[0], -x[1]))
+
+# 9) sort a list of dicts by two fields
+people = [{"age": 30, "name": "bob"}, {"age": 30, "name": "amy"}]
+people.sort(key = lambda p : (p["age"], p["name"]))
+
+# 10) three keys, same rule -- tuples compare left to right for any length
+tasks.sort(key = lambda t : (t[0], t[1], t[2]))
+
+# 11) sorted() returns a NEW list; .sort() mutates in place and returns None
+sorted_events = sorted(event_list, key = lambda x : (x[0], x[1]))
+```
+
+**Note on Java equivalent:**
+
+```java
+// java
+int[][] people = {{7,0},{4,4},{7,1},{5,0},{6,1},{5,2}};
+
+// V1 : explicit comparator - x[0] DESC, tie-break x[1] ASC
+Arrays.sort(people, (a, b) -> {
+    if (a[0] != b[0]) {
+        return b[0] - a[0];   // NOTE !!! b - a  => DESC
+    }
+    return a[1] - b[1];       //          a - b  => ASC
+});
+
+// V2 : Comparator chaining (more readable, Java 8+)
+Arrays.sort(people,
+        Comparator.<int[]>comparingInt(a -> a[0]).reversed()   // key1 DESC
+                  .thenComparingInt(a -> a[1]));               // key2 ASC
+
+// List version
+List<int[]> list = new ArrayList<>();
+list.sort(Comparator.<int[]>comparingInt(a -> a[0]).reversed()
+                    .thenComparingInt(a -> a[1]));
+
+// ⚠️ `b[0] - a[0]` can OVERFLOW for large/negative values
+//    -> use Integer.compare(b[0], a[0]) instead
+Arrays.sort(people, (a, b) -> Integer.compare(b[0], a[0]));
+
+// ⚠️ `.reversed()` after `.thenComparing(...)` reverses the WHOLE chain
+//    (same trap as python's reverse=True)
+Comparator.comparingInt((int[] a) -> a[0])
+          .thenComparingInt(a -> a[1])
+          .reversed();          // <-- key1 DESC *and* key2 DESC
+```
+
+**🚫 Common Mistakes:**
+
+```python
+# 1) Expecting reverse=True to flip only the primary key
+arr.sort(key = lambda x : (x[0], x[1]), reverse = True)   # ❌ flips BOTH keys
+arr.sort(key = lambda x : (-x[0], x[1]))                  # ✅ only key1 DESC
+
+# 2) Negating a string / tuple
+arr.sort(key = lambda x : (-x[0], -x[1]))   # ❌ TypeError if x[1] is str
+# ✅ use 2 stable sorts, or cmp_to_key
+
+# 3) Comparing mixed types inside the key
+sorted([1, "a"])            # ❌ TypeError : '<' not supported between 'str' and 'int'
+
+# 4) Multi-pass sorts in the WRONG order
+words.sort(key = len); words.sort(reverse = True)   # ❌ len grouping destroyed
+words.sort(reverse = True); words.sort(key = len)   # ✅ least significant key FIRST
+
+# 5) Forgetting the sort is what makes the greedy/2-pointer step valid
+#    -> for interval problems, ALWAYS state which key you sorted on
+```
+
+**💡 Interview Tips:**
+
+- Say it out loud as *"sort by A descending, break ties by B ascending"* → then write the tuple key.
+- **Complexity**: `O(n log n)` comparisons; each tuple-key build is `O(k)` for k keys → `O(n log n * k)`.
+- Both `list.sort()` and `sorted()` are **stable** — this is what makes the multi-pass trick and `LC 406`-style insert work.
+- If you can't express the rule as a per-element key, that's the signal for `cmp_to_key` (py) / a custom `Comparator` (java).
+
+**Related LeetCode Problems:**
+
+| Problem | LC# | Sort key |
+|---------|-----|----------|
+| **Queue Reconstruction by Height** | **406** | `(-h, k)` — tall first, then k ASC |
+| Largest Number | 179 | `cmp_to_key(a+b vs b+a)` |
+| Top K Frequent Words | 692 | `(-count, word)` |
+| K Closest Points to Origin | 973 | `x² + y²` |
+| Merge Intervals | 56 | `start` ASC |
+| Meeting Rooms II | 253 | `start` ASC (+ min-heap on end) |
+| Non-overlapping Intervals | 435 | `end` ASC (greedy) |
+| Group Anagrams | 49 | `"".join(sorted(word))` |
+| Custom Sort String | 791 | `order.index(ch)` |
+| Sort Array By Parity | 905 | `x % 2` |
+| Relative Sort Array | 1122 | `(rank.get(x, len), x)` |
+| Car Fleet | 853 | `position` DESC (+ stack) |
+| Boats to Save People | 881 | `weight` ASC (+ 2 pointers) |
+
+**Summary:**
+- ✅ Tuple key = multi-key sort, compared **left → right**
+- ✅ `-key` flips one slot (**numeric only**); `reverse=True` flips **all** slots
+- ✅ Mixed direction on non-numeric → **2 stable sorts, least significant key first**
+- ✅ No per-element key expressible → `functools.cmp_to_key` / java `Comparator`
+- ✅ Java: `Integer.compare(b, a)` over `b - a` to dodge overflow; `.reversed()` applies to the whole chain
+
+### Conditional tuple keys via a named `key` function
+
+
+When the sort key depends on a **condition** (group A vs group B, valid vs invalid,
+etc.), a one-line lambda gets unreadable. Write a **named `key` function that returns
+a tuple** — the tuple is still compared element-by-element (left → right), so the
+first field becomes the primary sort, the next the tiebreaker, and so on.
+
+**Pattern: leading "group tag" + per-group ordering**
+
+```python
+# Return a tuple of sort keys; the FIRST element groups items,
+# the rest order items WITHIN each group.
+def compare(item):
+    if condition:
+        return (0, item.value, item.name)   # group 0 first; ASC by value, then name
+    else:
+        return (1, -item.priority, item.id)  # group 1 next; DESC by priority, ASC by id
+
+items.sort(key=compare)        # in-place
+# items = sorted(items, key=compare)   # or build a new list
+```
+
+**Why the leading `0` / `1`?** It is a **group tag** — every group-0 item sorts before
+every group-1 item (because tuple comparison checks the first element first). The
+remaining tuple fields only matter *within* the same group, so each group can use its
+own ordering rules (ASC, DESC via negation, different fields entirely).
+
+**Key rules**
+- All branches must return a tuple of the **same length** with **comparable types**
+  position-by-position (don't mix `str` and `int` in the same slot).
+- Negate a numeric field (`-item.priority`) to sort that field DESC while keeping the
+  rest ASC — same trick as section [1-11'].
+- The `key` function is called **once per element** (Schwartzian transform), so it's
+  efficient even with heavier logic inside.
+
+**Classic LC use — LC 937 Reorder Data in Log Files** (letter-logs grouped before
+digit-logs, letter-logs sorted by content then id):
+
+```python
+class Solution:
+    def reorderLogFiles(self, logs):
+        def compare(log):
+            id_, rest = log.split(" ", 1)
+            if rest[0].isalpha():
+                return (0, rest, id_)   # letter-logs: group 0, by content, then id
+            else:
+                return (1,)             # digit-logs: group 1, keep original order
+
+        return sorted(logs, key=compare)
+```
+
+> **Rule of thumb**: reach for a named tuple-returning `key` function the moment the
+> ordering has *branches* — it reads far better than cramming `if/else` into a lambda.
+
+### Sorting a dict by frequency
+
+```python
+# LC 451 Sort Characters By Frequency
+# V1
+import collections
+class Solution(object):
+    def frequencySort(self, s):
+        d = collections.Counter(s)
+        d_dict = dict(d)
+        res = []
+        for x in sorted(d_dict, key=lambda k : -d_dict[k]):
+            res.append(x)
+        return res
+
+x= [1, 2, 3, 1, 2, 1, 2, 1]
+s = Solution()
+r = s.frequencySort(x)
+
+# V2
+# https://stackoverflow.com/questions/613183/how-do-i-sort-a-dictionary-by-value
+import collections
+class Solution(object):
+    def frequencySort(self, s):
+        d = collections.Counter(s)
+        d_dict = dict(d)
+        res = []
+        #for x in sorted(d_dict.items(), key=lambda items: -items[1]):
+        for _ in sorted(d_dict.items(), key=lambda x: -x[1]):
+            res.append(_)
+        return res
+
+x= [1, 2, 3, 1, 2, 1, 2, 1]
+s = Solution()
+r = s.frequencySort(x)
+```
+
+### `min()` / `max()` with `key`
+
+```python
+# key= works exactly like sort's key= parameter
+nums = [-3, -1, 2, 4]
+print(max(nums, key=abs))   # -3  (largest absolute value)
+print(min(nums, key=abs))   # -1  (smallest absolute value)
+
+# With iterable of tuples
+points = [(1, 5), (3, 2), (2, 8)]
+print(max(points, key=lambda p: p[1]))  # (2, 8)
+
+# min/max with default (avoids error on empty iterable)
+print(min([], default=0))   # 0
+
+# clamp a value between lo and hi
+val = max(lo, min(val, hi))
+```
+
+### `sorted()`, `reversed()`, `sum()`, `abs()`
+
 ```python
 # sorted() returns a NEW list; list.sort() is in-place
 nums = [3, 1, 4, 1, 5]
@@ -2898,25 +1063,173 @@ abs(-5)    # 5
 abs(3+4j)  # 5.0  (complex magnitude)
 ```
 
-### 1-47) `map()` and generator expressions
+## Numbers & Math
+
+### Quotient and remainder together — `divmod`
+
 ```python
-# map(func, iterable) — lazy, returns iterator
-nums = ["1", "2", "3"]
-ints = list(map(int, nums))    # [1, 2, 3]
+In [1]: x,y = divmod(100, 3)
 
-# map with lambda
-doubled = list(map(lambda x: x * 2, [1, 2, 3]))  # [2, 4, 6]
+In [2]: x
+Out[2]: 33
 
-# Generator expression (lazy list comprehension) — memory efficient
-gen = (x**2 for x in range(1000000))   # nothing computed yet
-total = sum(x**2 for x in range(1000000))  # computed on the fly
-
-# Prefer generator expression over list comprehension inside sum/any/all/max/min
-max_val = max(abs(x) for x in nums)
-has_neg = any(x < 0 for x in nums)
+In [3]: y
+Out[3]: 1
 ```
 
-### 1-48) `int` tricks: integer division `//`, bit operations
+### Remainder when divided by a number
+
+```python
+#-----------------
+# V1 : %=
+#-----------------
+
+In [7]: x = 100
+
+In [8]: x %= 60
+
+In [9]: x
+Out[9]: 40
+
+In [10]: y = 120
+
+In [11]: y %= 60
+
+In [12]: y
+Out[12]: 0
+
+#-----------------
+# V2 : divmod
+#-----------------
+In [13]: a = 100
+
+In [14]: q, r = divmod(a, 60)
+
+In [15]: q
+Out[15]: 1
+
+In [16]: r
+Out[16]: 40
+
+In [17]: b = 120
+
+In [18]: q2, r2 = divmod(b, 60)
+
+In [19]: q2
+Out[19]: 2
+
+In [20]: r2
+Out[20]: 0
+```
+
+```python
+# LC 1010
+# V0
+# IDEA : dict
+class Solution(object):
+    def numPairsDivisibleBy60(self, time):
+        rem = {}
+        pairs = 0
+        for t in time:
+            #print ("rem = " + str(rem))
+            t %= 60
+            if (60 - t) % 60 in rem:
+                pairs += rem[(60 - t) % 60]
+            if t not in rem:
+                rem[t] = 1
+            else:
+                rem[t] += 1
+        return pairs
+```
+
+### `math.ceil`
+
+```python
+# https://www.runoob.com/python/func-number-ceil.html
+# https://www.runoob.com/python/func-number-ceil.html
+
+"""
+The method ceil(x) in Python returns a ceiling value of x 
+-> i.e., the SMALLEST integer GREATER than or EQUAL to x.
+"""
+In [9]:
+   ...: import math
+   ...:
+   ...: # prints the ceil using ceil() method
+   ...: print ("math.ceil(-23.11) : ", math.ceil(-23.11))
+   ...: print ("math.ceil(300.16) : ", math.ceil(300.16))
+   ...: print ("math.ceil(300.72) : ", math.ceil(300.72))
+math.ceil(-23.11) :  -23
+math.ceil(300.16) :  301
+math.ceil(300.72) :  301
+
+
+# LC 875. Koko Eating Bananas
+#...
+# Iterate over the piles and calculate hour_spent.
+# We increase the hour_spent by ceil(pile / middle)
+for pile in piles:
+    # python ceil : https://www.runoob.com/python/func-number-ceil.html
+    hour_spent += math.ceil(pile / middle)
+# Check if middle is a workable speed, and cut the search space by half.
+if hour_spent <= h:
+    right = middle
+else:
+    left = middle + 1
+#...
+```
+
+### `math.floor`
+
+```python
+# https://www.geeksforgeeks.org/floor-ceil-function-python/
+
+"""
+floor() method in Python returns the floor of x 
+-> i.e., the LARGEST integer NOT GREATER than x. 
+"""
+
+# This will import math module
+import math   
+  
+In [8]: import math
+   ...:
+   ...: # prints the ceil using floor() method
+   ...: print ("math.floor(-23.11) : ", math.floor(-23.11))
+   ...: print ("math.floor(300.16) : ", math.floor(300.16))
+   ...: print ("math.floor(300.72) : ", math.floor(300.72))
+math.floor(-23.11) :  -24
+math.floor(300.16) :  300
+math.floor(300.72) :  300
+```
+
+### `pow(x, n, mod)` — fast modular exponentiation
+
+```python
+# Built-in 3-arg pow is O(log n), much faster than (x**n) % mod
+MOD = 10**9 + 7
+
+print(pow(2, 10, MOD))    # 1024
+print(pow(2, 100, MOD))   # 976371285  (computed efficiently)
+
+# Modular inverse (when mod is prime): pow(a, mod-2, mod)
+inv = pow(3, MOD - 2, MOD)   # modular inverse of 3
+
+# LC 50 Pow(x, n) — manual fast power
+def myPow(x, n):
+    if n < 0:
+        x, n = 1 / x, -n
+    res = 1
+    while n:
+        if n % 2 == 1:
+            res *= x
+        x *= x
+        n //= 2
+    return res
+```
+
+### Integer division `//` and bit operations
+
 ```python
 #-------------------------------
 # Integer division (floor division)
@@ -2964,7 +1277,489 @@ def is_power_of_two(n):
     return n > 0 and (n & (n - 1)) == 0
 ```
 
-### 1-49) `isinstance()` and type checking
+### Converting an N-based integer to base 10
+
+```python
+# https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/math.md
+
+# How does int(x[,base]) work?
+# -> https://stackoverflow.com/questions/33664451/how-does-intx-base-work
+# -> int(string, base) accepts an arbitrary base. You are probably familiar with binary and hexadecimal, and perhaps octal; these are just ways of noting an integer number in different bases:
+# exmaple :
+# In [76]: int('10',2)      # transform '10' from 2 based to 10 based                                                  
+# Out[76]: 2
+#
+# In [77]: int('11',2)      # # transform '11' from 2 based to 10 based                                                 
+# Out[77]: 3
+#
+# In [78]: int('100',2)     # # transform '100' from 2 based to 10 based                                                 
+# Out[78]: 4
+
+# LC 089
+```
+
+### Infinity and boundary values
+
+```python
+# Use float('inf') / float('-inf') instead of sys.maxsize for clarity
+INF = float('inf')
+NEG_INF = float('-inf')
+
+# Works with min/max comparisons
+min_val = float('inf')
+for x in [3, 1, 4, 1, 5]:
+    min_val = min(min_val, x)
+print(min_val)  # 1
+
+# Common in DP initialization
+dp = [[float('inf')] * n for _ in range(m)]
+
+# Python int has no overflow — safe to use large numbers
+# But float('inf') is cleaner for "unbounded" semantics
+```
+
+## Iteration, Comprehensions & Functional Tools
+
+### `all()`
+
+- Will return Boolean (true or false) per condition for ALL elements in a list
+```python
+# example 1
+In [36]: a = "000"
+
+In [37]: all( i == "0" for i in a )
+Out[37]: True
+
+# example 2
+In [38]: b = "abc123"
+
+In [39]: all ( i == "a" for i in b )
+Out[39]: False
+
+# LC 763. Partition Labels
+class Solution(object):
+    def partitionLabels(self, s):
+        d = {val:idx for idx, val in enumerate(list(s))}
+        #print (d)
+        res = []
+        tmp = set()
+        for idx, val in enumerate(s):
+            """
+            NOTE : below condition
+            """
+            if idx == d[val] and all(idx >= d[t] for t in tmp):
+                res.append(idx+1)
+            else:
+                tmp.add(val)
+        _res = [res[0]] + [ res[i] - res[i-1] for i in range(1, len(res)) ]
+        return _res
+```
+
+### `any()`
+
+```python
+# Returns True if ANY element in iterable is True (short-circuits)
+In [1]: any([False, False, True])
+Out[1]: True
+
+In [2]: any([False, False, False])
+Out[2]: False
+
+In [3]: any(x > 3 for x in [1, 2, 5])
+Out[3]: True
+
+# Complement to all():
+# all() -> every element must be True
+# any() -> at least one element must be True
+```
+
+### `not` logic
+
+```python
+#----------------------------
+# can be either None, [], ""
+#----------------------------
+In [32]: x = None
+
+In [34]: not x
+Out[34]: True
+
+In [35]: y = []
+
+In [36]: not y
+Out[36]: True
+
+In [37]: z = ""
+
+In [38]: not z
+Out[38]: True
+```
+
+### `enumerate()`
+
+```python
+# Returns (index, value) pairs — avoids manual index tracking
+fruits = ['apple', 'banana', 'cherry']
+
+for i, v in enumerate(fruits):
+    print(i, v)
+# 0 apple
+# 1 banana
+# 2 cherry
+
+# start parameter
+for i, v in enumerate(fruits, start=1):
+    print(i, v)
+# 1 apple  2 banana  3 cherry
+
+# Build index map (very common in LC)
+s = "abcba"
+idx_map = {v: i for i, v in enumerate(s)}
+print(idx_map)  # {'a': 4, 'b': 3, 'c': 2}  (last occurrence)
+```
+
+### `zip()`
+
+```python
+# python
+In [1]: for x, y in zip([-1, 1, 0, 0], [0, 0, -1, 1]):
+   ...:     print (x, y)
+   ...:
+-1 0
+1 0
+0 -1
+0 1
+
+In [2]: for x, y, z in zip([-1, 1, 0, 0], [0, 0, -1, 1], [0,0,0,0]):
+   ...:     print (x,y,z)
+   ...:
+-1 0 0
+1 0 0
+0 -1 0
+0 1 0
+
+In [3]: for x, y, z, u in zip([-1, 1, 0, 0], [0, 0, -1, 1], [0,0,0,0], [9,9,9,9]):
+   ...:     print (x,y,z,u)
+   ...:
+-1 0 0 9
+1 0 0 9
+0 -1 0 9
+0 1 0 9
+```
+
+### Looping a dict
+
+```python
+d = {'a':1, 'b':2, 'c': 3}
+# loop over key, value
+for k, v in d.items():
+    print (k, v)
+
+# loop over key
+for k in d.keys():
+    print (k)
+
+# loop over value
+for v in d.values():
+    print (v)
+```
+
+### Starred (`*`) expressions
+
+```python
+# Extended Iterable Unpacking
+
+# https://www.python.org/dev/peps/pep-3132/
+# http://swaywang.blogspot.com/2012/01/pythonstarred-expression.html
+
+# example 1
+In [38]: a, *b, c = range(5)
+
+In [39]: a
+Out[39]: 0
+
+In [40]: b
+Out[40]: [1, 2, 3]
+
+In [41]: c
+Out[41]: 4
+
+# example 2
+In [43]: for a, *b in [(1, 2, 3), (4, 5, 6, 7)]:
+    ...:     print ("a = " + str(a) + " b = " + str(b))
+    ...:
+a = 1 b = [2, 3]
+a = 4 b = [5, 6, 7]
+
+# example 3
+In [44]: first, *rest = [1, 2, 3, 4, 5]
+
+In [45]: first
+Out[45]: 1
+
+In [46]: rest
+Out[46]: [2, 3, 4, 5]
+
+# example 4
+In [47]: *directories, executable = "/usr/local/bin/vim".split("/")
+    ...: print (directories)
+    ...: print (executable)
+['', 'usr', 'local', 'bin']
+vim
+
+# example 5
+args = [1,3]
+print (range(*args))
+```
+
+### `filter()`
+
+```python
+# https://www.runoob.com/python/python-func-filter.html
+
+#-----------------------------------------------
+# syntax : filter(<filter_func>, <iterable>)
+#-----------------------------------------------
+
+# note !!! : in py 3, it will return iterable instance; while in py 2, it will return a list directly
+
+#----------------------------
+# example 1
+#----------------------------
+In [13]: def is_odd(n):
+    ...:     return n % 2 == 1
+    ...:
+    ...: newlist = filter(is_odd, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+    ...: print(newlist)
+<filter object at 0x7fc71c3dced0>
+
+In [14]:
+
+In [14]: list(newlist)
+Out[14]: [1, 3, 5, 7, 9]
+
+
+#----------------------------
+# example 2
+#----------------------------
+In [15]: import math
+    ...: def is_sqr(x):
+    ...:     return math.sqrt(x) % 1 == 0
+    ...:
+    ...: newlist = filter(is_sqr, range(1, 101))
+    ...: print(newlist)
+<filter object at 0x7fc71bb10450>
+
+In [16]:
+
+In [16]: list(newlist)
+Out[16]: [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
+```
+
+### List comprehensions
+
+```python
+#----------------------------
+# example 1
+#----------------------------
+# https://stackoverflow.com/questions/4260280/if-else-in-a-list-comprehension
+
+In [8]: [ x for x in range(5) ]
+Out[8]: [0, 1, 2, 3, 4]
+
+# NOTE this !!!!
+In [9]: [ x if x % 2 == 0 else -1 for x in range(5) ]
+   ...:
+   ...:
+Out[9]: [0, -1, 2, -1, 4]
+
+In [10]: def my_func(x):
+    ...:     if x % 2 ==0:
+    ...:         return True
+    ...:     return False
+    ...:
+    ...: [ x if my_func(x) else 999  for x in range(5)]
+Out[10]: [0, 999, 2, 999, 4]
+```
+
+### `map()` and generator expressions
+
+```python
+# map(func, iterable) — lazy, returns iterator
+nums = ["1", "2", "3"]
+ints = list(map(int, nums))    # [1, 2, 3]
+
+# map with lambda
+doubled = list(map(lambda x: x * 2, [1, 2, 3]))  # [2, 4, 6]
+
+# Generator expression (lazy list comprehension) — memory efficient
+gen = (x**2 for x in range(1000000))   # nothing computed yet
+total = sum(x**2 for x in range(1000000))  # computed on the fly
+
+# Prefer generator expression over list comprehension inside sum/any/all/max/min
+max_val = max(abs(x) for x in nums)
+has_neg = any(x < 0 for x in nums)
+```
+
+### Ternary (conditional) expressions
+
+```python
+# syntax: <value_if_true> if <condition> else <value_if_false>
+x = 5
+result = "even" if x % 2 == 0 else "odd"   # "odd"
+
+# Nested ternary (keep shallow — hard to read beyond two levels)
+sign = "positive" if x > 0 else ("zero" if x == 0 else "negative")
+
+# Common LC use
+ans = left if left else right          # return whichever is not None
+val = node.val if node else 0
+```
+
+## Dicts & Sets
+
+### Dict `get()`, `setdefault()`, comprehension
+
+```python
+d = {'a': 1, 'b': 2}
+
+# get(key, default) — safe access
+d.get('c', 0)     # 0  (no KeyError)
+d.get('a', 0)     # 1
+
+# setdefault(key, default) — insert if missing, return value
+d.setdefault('c', []).append(3)   # d['c'] = [3]
+d.setdefault('c', []).append(4)   # d['c'] = [3, 4]
+
+# dict comprehension
+squares = {x: x**2 for x in range(5)}
+# {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}
+
+# invert a dict (assuming unique values)
+inv = {v: k for k, v in squares.items()}
+
+# filter dict
+evens = {k: v for k, v in squares.items() if v % 2 == 0}
+```
+
+### Set operations
+
+```python
+a = {1, 2, 3, 4}
+b = {3, 4, 5, 6}
+
+# Basic ops
+a | b    # union        {1, 2, 3, 4, 5, 6}
+a & b    # intersection {3, 4}
+a - b    # difference   {1, 2}
+a ^ b    # symmetric diff {1, 2, 5, 6}
+
+# Membership: O(1) average
+3 in a   # True
+
+# Mutation
+a.add(5)
+a.discard(99)   # no error if missing (vs remove() which raises KeyError)
+a.remove(1)     # raises KeyError if missing
+
+# NOTE: can directly remove a specific element from a set by value (not index)
+# Common in sliding window problems (LC 3)
+seen = set()
+seen.add('a')
+seen.remove('a')   # removes 'a' directly — no index needed
+
+# Set comprehension
+squares = {x**2 for x in range(5)}   # {0, 1, 4, 9, 16}
+
+# Freeze (hashable, usable as dict key)
+fs = frozenset([1, 2, 3])
+```
+
+### Testing "either element exists" with `or`
+
+```python
+In [8]: def test(l1, l2):
+   ...:     if l1 or l2:
+   ...:         return l1 or l2
+   ...:
+   ...: res = test("l1", None)
+   ...: print (res)
+   ...:
+   ...: res2 = test(None, "l2")
+   ...: print (res2)
+l1
+l2
+```
+
+## Structure, Scope & Return Values
+
+### 2D array (matrix) initialization
+
+```python
+#-------------------------------------------------
+# CORRECT way — use list comprehension (independent rows)
+#-------------------------------------------------
+m, n = 3, 4
+grid = [[0] * n for _ in range(m)]
+grid[0][0] = 1
+# Only grid[0][0] is changed
+
+#-------------------------------------------------
+# WRONG way — all rows share the same list!
+#-------------------------------------------------
+bad = [[0] * n] * m
+bad[0][0] = 1
+# ALL rows become [1, 0, 0, 0]  — common bug!
+
+#-------------------------------------------------
+# Common DP patterns
+#-------------------------------------------------
+# 1D DP
+dp = [0] * (n + 1)
+
+# 2D DP (m rows, n cols, filled with False)
+dp = [[False] * (n + 1) for _ in range(m + 1)]
+
+# Fill with infinity
+dp = [[float('inf')] * n for _ in range(m)]
+```
+
+### `nonlocal` and `global` in nested functions
+
+```python
+# nonlocal: modify a variable in the ENCLOSING (not global) scope
+def outer():
+    count = 0
+    def inner():
+        nonlocal count
+        count += 1
+    inner()
+    inner()
+    print(count)  # 2
+
+# Without nonlocal, count += 1 raises UnboundLocalError
+
+# global: modify a module-level variable inside a function
+total = 0
+def add(x):
+    global total
+    total += x
+
+# Common LC pattern: DFS with mutable result
+def maxDepth(root):
+    res = [0]
+    def dfs(node, depth):
+        if not node:
+            return
+        res[0] = max(res[0], depth)  # list trick avoids nonlocal
+        dfs(node.left, depth + 1)
+        dfs(node.right, depth + 1)
+    dfs(root, 1)
+    return res[0]
+```
+
+### `isinstance()` and type checking
+
 ```python
 isinstance(3, int)        # True
 isinstance(3.0, float)    # True
@@ -2981,466 +1776,142 @@ type(True) == int # False  (bool is subclass of int, but type() is exact)
 isinstance(True, int)  # True  (True IS an int!)
 ```
 
-### 1-51) Array slicing (subarray / substring)
+### Carrying multiple return values in a small class
 
-**Syntax**: `arr[start:end]` — **end is exclusive**, so the slice covers indices `[start, end-1]`.
+
+When a DFS / recursion needs to **return several values at once** (e.g. height + size + a flag), the Java idiom is a small `private static class SubtreeInfo`. In Python the closest equivalents are a `@dataclass`, a plain class, or a `NamedTuple`.
+
+```java
+// java — the pattern we want to port
+private static class SubtreeInfo {
+    int height;
+    int size;
+    boolean isPerfect;
+}
+```
+
+#### **Option 1: `@dataclass` (recommended)**
+
+`@dataclass` auto-generates `__init__`, `__repr__`, `__eq__` — least boilerplate, most readable.
 
 ```python
-arr = [0, 1, 2, 3, 4]
+# python
+from dataclasses import dataclass
 
-arr[1:4]     # [1, 2, 3]  → indices 1, 2, 3  (end=4 is excluded)
-arr[i:j+1]   # indices i .. j  (inclusive on both ends)
-arr[:3]      # [0, 1, 2]  → from start up to index 2
-arr[2:]      # [2, 3, 4]  → index 2 to end
-arr[:]       # full copy
-arr[::-1]    # reversed copy
+@dataclass
+class SubtreeInfo:
+    height: int
+    size: int
+    is_perfect: bool
 
-# Common pattern: get subarray from index i to j (inclusive)
-sub = arr[i : j + 1]
 
-# String slicing works the same way
-s = "abcde"
-s[1:4]       # "bcd"  → indices 1, 2, 3
-s[i:j+1]     # chars from i to j (inclusive)
+def dfs(node):
+    # returns SubtreeInfo carrying 3 values up the recursion
+    if node is None:
+        return SubtreeInfo(0, 0, True)
+
+    left = dfs(node.left)
+    right = dfs(node.right)
+
+    is_perfect = (
+        left.is_perfect
+        and right.is_perfect
+        and left.height == right.height
+    )
+
+    size = left.size + right.size + 1
+    height = max(left.height, right.height) + 1
+
+    if is_perfect:
+        perfect_sizes.append(size)
+
+    return SubtreeInfo(height, size, is_perfect)
+
+# usage
+info = dfs(root)
+print(info.height, info.size, info.is_perfect)
 ```
 
-| Expression | Meaning |
-|-----------|---------|
-| `arr[i:j+1]` | indices `i` to `j` inclusive |
-| `arr[:j+1]` | indices `0` to `j` inclusive |
-| `arr[i:]` | indices `i` to end |
-| `arr[:]` | full shallow copy |
-| `arr[::-1]` | reversed |
-
-#### `x[i:j+1]` vs `x[i:j]` — include or exclude index `j`?
+#### **Option 2: Traditional class (no imports)**
 
 ```python
-x = [1, 3, 2]
-#    0  1  2   ← indices
+# python
+class SubtreeInfo:
+    def __init__(self, height, size, is_perfect):
+        self.height = height
+        self.size = size
+        self.is_perfect = is_perfect
 
-x[0:2]   # [1, 3]  → j=2 is NOT included  (indices 0, 1)
-x[0:3]   # [1, 3, 2] → j=3 is NOT included, but covers all (indices 0, 1, 2)
-
-# To include index j, use j+1 as the stop:
-x[0:1+1]  # [1, 3]  → includes index j=1
-x[0:2+1]  # [1, 3, 2] → includes index j=2
+# usage is identical
+info = dfs(root)
+print(info.height)
 ```
 
-**Rule**:
-```text
-x[i:j]   → j index is NOT included  (standard Python — end is exclusive)
-x[i:j+1] → j index IS included      (add +1 to make end inclusive)
-```
+#### **Option 3: `NamedTuple` (lightweight + immutable)**
 
-#### Concrete example — LC 105 (Construct Binary Tree from Preorder + Inorder)
+Use when the bundle should be **read-only** (also unpackable like a tuple).
 
 ```python
-# preorder = [3, 9, 20, 15, 7]
-# inorder  = [9, 3, 15, 20,  7]
-#
-# root = preorder[0] = 3
-# idx  = inorder.index(3) = 1   ← root sits at index 1 in inorder
-#
-# inorder layout:
-#   index:   0   1   2   3   4
-#   value:  [9,  3, 15, 20,  7]
-#             ^   ^
-#           left root  right subtree starts at idx+1=2
-#
-# Left subtree of inorder  = elements BEFORE root  = inorder[:idx]
-# Right subtree of inorder = elements AFTER  root  = inorder[idx+1:]
+# python
+from typing import NamedTuple
 
-# ✅ CORRECT: inorder[:idx]   → [9]           (excludes root at idx=1)
-# ❌ WRONG:   inorder[:idx+1] → [9, 3]        (includes root — builds wrong tree)
+class SubtreeInfo(NamedTuple):
+    height: int
+    size: int
+    is_perfect: bool
 
-root.left = self.buildTree(
-    preorder[1 : 1 + idx],   # left subtree has `idx` nodes
-    inorder[:idx]             # everything LEFT of root (exclusive stop = idx)
-)
-root.right = self.buildTree(
-    preorder[1 + idx:],       # remaining nodes after left subtree
-    inorder[idx + 1:]         # everything RIGHT of root (skip root at idx)
-)
-
-# Why inorder[:idx] and NOT inorder[:idx+1]?
-#   Python slice stop is EXCLUSIVE, so inorder[:idx] gives indices 0..idx-1,
-#   which is exactly the elements to the LEFT of root (root at idx is excluded).
-#   Using inorder[:idx+1] would mistakenly include the root itself in the left subtree.
+info = dfs(root)
+print(info.height)          # attribute access
+h, s, p = info              # tuple unpacking also works
 ```
 
-### 1-51') Enumerate ALL substrings — why the inner `j` loop needs `+1` ⭐⭐⭐⭐⭐
+#### **Quick comparison**
+
+| Option | Boilerplate | Mutable? | Best for |
+|--------|-------------|----------|----------|
+| `@dataclass`   | low  | yes (`frozen=True` for immutable) | **default choice** — clean & readable |
+| plain class    | high | yes  | no imports allowed / very old Python |
+| `NamedTuple`   | low  | **no** | immutable bundle, also tuple-unpackable |
+
+> **Quick & dirty alternative**: for one-off DFS you can just `return (height, size, is_perfect)` and unpack — but a named class/`NamedTuple` is far more readable once you have 3+ fields. For LeetCode-style solutions, `@dataclass` is usually the cleanest replacement for a Java `private static class`.
+
+> **Rule of thumb:** if you *mutate* a shared container (`append`/`add`), you must undo it (`pop`/`remove`). If you create a *new* object each call (string concat, `tmp + [x]`, tuple), the copy IS the backtrack — there's nothing to undo. See also [0-2) assignment vs shallow/deep copy](#assignment-vs-shallow-copy-vs-deep-copy).
+### `eval()`
 
 ```python
-# LC 647 Palindromic Substrings (brute force)
-count = 0
-# NOTE: since i from 0 to len(s) - 1,
-#  -> so for j we need to "+1" then can go through all elements in str
-for i in range(len(s)):
-    # Note : for j we need to "+1"
-    for j in range(i+1, len(s)+1):
-        if s[i:j] == s[i:j][::-1]:
-            count += 1
+# https://www.runoob.com/python/python-func-eval.html
+# https://www.programiz.com/python-programming/methods/built-in/eval
+# The eval() method parses the expression passed to this method and runs python expression (code) within the program.
+
+# LC 640
+# LC 150
+
+# syntax : eval(expression[, globals[, locals]])
+
+# eample
+In [51]: x = 7
+    ...: eval('3 * x')
+    ...:
+Out[51]: 21
+
+In [52]: eval ('2 + 2')
+    ...:
+Out[52]: 4
+
+In [53]: n = 81
+    ...: eval('n + 4')
+Out[53]: 85
 ```
 
-#### **Core Idea**
-
-**`j` is NOT an index here — it is a slice BOUNDARY (a "cut position").**
-
-- An **index** points AT a character → valid range `0 … n-1`  (`n` values)
-- A **boundary** points BETWEEN characters → valid range `0 … n`  (`n+1` values)
-
-`s[i:j]` is defined by two *boundaries*, so `j` must be able to reach `n`
-(the cut AFTER the last char). That is exactly why the loop is
-`range(i+1, len(s)+1)` and not `range(i+1, len(s))`.
-
-```text
-s = "abc"
-
-index:        0     1     2
-           +--a--+--b--+--c--+
-boundary:  0     1     2     3        ← j lives HERE (0 .. n, so n+1 = 4 slots)
-
-s[0:1] = "a"      s[0:3] = "abc"   ← needs j = 3 = len(s)  → stop must be len(s)+1
-s[1:3] = "bc"     s[3:3] = ""
-```
-
-#### **Explanation — two equivalent forms**
+### Swapping for a longer array
 
 ```python
-n = len(s)
-
-# ── Form A: j as BOUNDARY (slice end, exclusive) ──
-for i in range(n):
-    for j in range(i+1, n+1):     # +1 on BOTH start and stop
-        sub = s[i:j]              # substring s[i .. j-1], length = j - i
-
-# ── Form B: j as INDEX (last char of the substring) ──
-for i in range(n):
-    for j in range(i, n):         # no +1 anywhere in range()
-        sub = s[i:j+1]            # +1 moves INTO the slice, length = j - i + 1
+if len(l1) < len(l2):
+   l1, l2 = l2, l1
 ```
 
-| Form | `j` means | loop | slice | substring length |
-|------|-----------|------|-------|------------------|
-| **A** | boundary / cut | `range(i+1, n+1)` | `s[i:j]` | `j - i` |
-| **B** | last char index | `range(i, n)` | `s[i:j+1]` | `j - i + 1` |
+### DFS path: `str` (immutable, no backtrack) vs `list` (mutable, needs backtrack)
 
-> **Rule**: the `+1` appears **exactly once** — either in `range()` (Form A)
-> or in the slice (Form B). Putting it in **both** or **neither** is the bug.
-
-**The 3 classic mistakes**
-
-```python
-n = len(s)
-
-# ❌ 1) forgot +1 on stop → MISSES every substring ending at the LAST char
-for j in range(i+1, n):
-    s[i:j]          # for s="abc", i=0 -> only "a","ab"   ("abc" never checked!)
-
-# ❌ 2) forgot +1 on start → produces the EMPTY string s[i:i] = ""
-for j in range(i, n+1):
-    s[i:j]          # j == i gives "", and "" == ""[::-1] is True → OVER-counts
-
-# ❌ 3) mixed the two forms → out of range / duplicated work
-for j in range(i+1, n+1):
-    s[i:j+1]        # j+1 can reach n+1 → silently returns the same string again
-```
-
-**Why total count is `n*(n+1)/2`** — a quick sanity check for your loop:
-
-```python
-s = "abc"                      # n = 3  ->  3*4/2 = 6 substrings
-# i=0: "a", "ab", "abc"        (j = 1,2,3)
-# i=1: "b", "bc"               (j = 2,3)
-# i=2: "c"                     (j = 3)
-
-n = len(s)
-print(sum(1 for i in range(n) for j in range(i+1, n+1)))   # 6  ✅
-```
-
-**Same rule for SUBARRAYS** (identical logic, list instead of string):
-
-```python
-# all contiguous subarrays of nums
-for i in range(len(nums)):
-    for j in range(i+1, len(nums)+1):
-        sub = nums[i:j]        # e.g. sum(sub), max(sub), ...
-```
-
-> **Related**: this is the same exclusive-stop rule as [1-51) Array slicing](#1-51-array-slicing-subarray--substring)
-> (`x[i:j]` excludes `j`) and [1-52) Index distance vs element count](#1-52-index-distance-vs-element-count-off-by-one).
-> Careful: **DP** on substrings usually uses `dp[i][j]` with `j` as an **INDEX**
-> (Form B, `s[i:j+1]`) — don't mix the convention inside one solution.
-
-#### **Similar LC problems**
-
-| LC # | Problem | How `j` is used |
-|------|---------|-----------------|
-| 647 | Palindromic Substrings | boundary `s[i:j]` (brute force) / index `dp[i][j]` (DP) |
-| 5 | Longest Palindromic Substring | boundary — track best `s[i:j]` by length |
-| 3 | Longest Substring Without Repeating Chars | sliding window: `right` behaves like a boundary |
-| 76 | Minimum Window Substring | window `s[left:right+1]` → index form |
-| 131 | Palindrome Partitioning | `for j in range(i+1, n+1): s[i:j]` then backtrack from `j` |
-| 139 | Word Break | `for j in range(i+1, n+1): s[i:j] in wordDict` |
-| 560 | Subarray Sum Equals K | subarray `nums[i:j]`, boundary form (prefix-sum uses same cuts) |
-| 53 | Maximum Subarray | subarray enumeration (brute force) / Kadane |
-| 209 | Minimum Size Subarray Sum | window length = `right - left + 1` → index form |
-| 516 | Longest Palindromic Subsequence | DP `dp[i][j]`, `j` as INDEX (Form B) |
-| 1143 | Longest Common Subsequence | DP `dp[i][j]`, `i`/`j` as **lengths** (0 … n) — boundary-like |
-
-### 1-52) Index distance vs element count (off-by-one)
-
-**Core rule:** distance between two indices ≠ number of elements between them.
-
-```python
-a = [1, 2, 3]
-#    0  1  2     ← indices
-
-# distance (span between indices, e.g. window width in pixels)
-# last_idx - first_idx  =  2 - 0  =  2
-
-# element count (how many items are IN the range [first_idx, last_idx] inclusive)
-# last_idx - first_idx + 1  =  2 - 0 + 1  =  3
-```
-
-| Expression | Value | Meaning |
-|-----------|-------|---------|
-| `last - first` | `2` | distance / span (fence gaps) |
-| `last - first + 1` | `3` | number of elements (fence posts) |
-
-**Visualisation — the "fence post" analogy:**
-```text
-index:   0    1    2
-         |    |    |       ← 3 posts  (= last - first + 1 = 3)
-         +----+----+       ← 2 gaps   (= last - first     = 2)
-```
-
-**Common LC applications:**
-
-```python
-# 1. Sliding window length
-#    window covers indices [l, r] inclusive
-window_len = r - l + 1      # NOT r - l
-
-# 2. Substring / subarray length
-s = "abcde"
-# substring s[i:j] in Python has j - i characters (Python end is exclusive)
-# substring from index i to j INCLUSIVE has j - i + 1 characters
-length = j - i + 1
-
-# 3. Array midpoint (binary search)
-mid = (lo + hi) // 2        # mid is an index, not a count
-
-# 4. Difference array / prefix sum length
-#    to cover indices 0..n-1, need n+1 slots in prefix sum array
-prefix = [0] * (n + 1)
-
-# 5. Range check: does [l, r] contain at least k elements?
-if r - l + 1 >= k:          # NOT r - l >= k
-    ...
-```
-
-**Quick rule of thumb:**
-```text
-result = right - left       → use when you need a GAP / DISTANCE
-result = right - left + 1  → use when you need an ELEMENT COUNT
-```
-```python
-#-------------------------------
-# Sliding window template
-#-------------------------------
-def sliding_window(s, k):
-    left = 0
-    window = {}
-    result = 0
-    for right, ch in enumerate(s):
-        window[ch] = window.get(ch, 0) + 1
-        while len(window) > k:       # shrink condition
-            lch = s[left]
-            window[lch] -= 1
-            if window[lch] == 0:
-                del window[lch]
-            left += 1
-        result = max(result, right - left + 1)
-    return result
-
-#-------------------------------
-# Binary search template
-#-------------------------------
-def binary_search(nums, target):
-    lo, hi = 0, len(nums) - 1
-    while lo <= hi:
-        mid = (lo + hi) // 2
-        if nums[mid] == target:
-            return mid
-        elif nums[mid] < target:
-            lo = mid + 1
-        else:
-            hi = mid - 1
-    return -1
-
-# Binary search on answer (find leftmost valid value)
-def binary_search_left(lo, hi, feasible):
-    while lo < hi:
-        mid = (lo + hi) // 2
-        if feasible(mid):
-            hi = mid
-        else:
-            lo = mid + 1
-    return lo
-
-#-------------------------------
-# DFS template (iterative)
-#-------------------------------
-def dfs_iterative(graph, start):
-    visited = set()
-    stack = [start]
-    while stack:
-        node = stack.pop()
-        if node in visited:
-            continue
-        visited.add(node)
-        for neighbor in graph[node]:
-            stack.append(neighbor)
-
-#-------------------------------
-# Backtracking template
-#-------------------------------
-def backtrack(result, current, choices):
-    if is_complete(current):
-        result.append(current[:])
-        return
-    for choice in choices:
-        current.append(choice)
-        backtrack(result, current, next_choices(choice))
-        current.pop()
-
-#-------------------------------
-# Union-Find (Disjoint Set Union)
-#-------------------------------
-class UnionFind:
-    def __init__(self, n):
-        self.parent = list(range(n))
-        self.rank = [0] * n
-
-    def find(self, x):
-        if self.parent[x] != x:
-            self.parent[x] = self.find(self.parent[x])  # path compression
-        return self.parent[x]
-
-    def union(self, x, y):
-        px, py = self.find(x), self.find(y)
-        if px == py:
-            return False
-        if self.rank[px] < self.rank[py]:
-            px, py = py, px
-        self.parent[py] = px
-        if self.rank[px] == self.rank[py]:
-            self.rank[px] += 1
-        return True
-
-#-------------------------------
-# Trie (Prefix Tree)
-#-------------------------------
-class TrieNode:
-    def __init__(self):
-        self.children = {}
-        self.is_end = False
-
-class Trie:
-    def __init__(self):
-        self.root = TrieNode()
-
-    def insert(self, word):
-        node = self.root
-        for ch in word:
-            node = node.children.setdefault(ch, TrieNode())
-        node.is_end = True
-
-    def search(self, word):
-        node = self.root
-        for ch in word:
-            if ch not in node.children:
-                return False
-            node = node.children[ch]
-        return node.is_end
-
-    def startsWith(self, prefix):
-        node = self.root
-        for ch in prefix:
-            if ch not in node.children:
-                return False
-            node = node.children[ch]
-        return True
-```
-
-### 1-53) Build a `prefix sum` array
-
-The cumulative-sum idiom: precompute running totals so any range sum becomes O(1).
-See [`prefix_sum.md`](./prefix_sum.md) for the full cheatsheet.
-
-```python
-cnt = [1, 0, 1, 1, 1]
-
-# Step 1: allocate size n+1, fill with 0
-#   prefix[0] = 0 is the "empty sum" sentinel
-#   -> makes sum starting at index 0 work without a special case
-prefix = [0] * (len(cnt) + 1)
-# prefix = [0, 0, 0, 0, 0, 0]
-
-# Step 2 (CORE) : prefix[i+1] = running total up to (and including) cnt[i]
-for i in range(len(cnt)):
-    prefix[i + 1] = prefix[i] + cnt[i]
-
-# prefix = [0, 1, 1, 2, 3, 4]
-```
-
-**The one line to memorize:**
-```python
-for i in range(len(cnt)):
-    prefix[i + 1] = prefix[i] + cnt[i]
-```
-
-**Trace (note the result is ONE element longer than `cnt`):**
-```text
-cnt:        [ 1,  0,  1,  1,  1 ]
-index i:      0   1   2   3   4
-
-prefix[0] = 0                            ← sentinel (empty prefix)
-prefix[1] = prefix[0] + cnt[0] = 0 + 1 = 1
-prefix[2] = prefix[1] + cnt[1] = 1 + 0 = 1
-prefix[3] = prefix[2] + cnt[2] = 1 + 1 = 2
-prefix[4] = prefix[3] + cnt[3] = 2 + 1 = 3
-prefix[5] = prefix[4] + cnt[4] = 3 + 1 = 4
-
-prefix = [0, 1, 1, 2, 3, 4]
-          ↑                 ↑
-       empty sum        sum of ALL cnt
-```
-
-**Why index `i + 1` (not `i`)?** `prefix` has size `n+1` and `prefix[k]` = "sum of
-the first `k` elements". So writing into `prefix[i+1]` keeps the leading `prefix[0]=0`
-intact — which lets you query `sum(l, r) = prefix[r+1] - prefix[l]` with no edge case.
-
-**One-liner alternative** — `itertools.accumulate` with `initial=0`:
-```python
-from itertools import accumulate
-prefix = list(accumulate(cnt, initial=0))   # [0, 1, 1, 2, 3, 4]
-
-# without initial=0 -> same length as cnt, no leading sentinel
-list(accumulate(cnt))                        # [1, 1, 2, 3, 4]
-```
-
-**Range sum query (O(1) after the O(n) build):**
-```python
-# sum of cnt[l .. r] inclusive
-def range_sum(l, r):
-    return prefix[r + 1] - prefix[l]
-
-range_sum(1, 3)   # cnt[1]+cnt[2]+cnt[3] = 0+1+1 = 2  -> prefix[4]-prefix[1] = 3-1 = 2
-```
-
-### 1-54) DFS path: `str` (immutable, NO backtrack) vs `array` (mutable, NEEDS backtrack) ⭐⭐⭐⭐⭐
 
 When carrying a `path` down a DFS/backtracking recursion, **the data type decides whether you must undo (backtrack)**:
 
@@ -3571,102 +2042,44 @@ class Solution(object):
 | `list` + `tmp + [x]` | No (rebound) | Yes | **No** |
 | `list` + `append` | **Yes** | No (shared)     | **Yes — `path.pop()`**  |
 
-### 1-55) Custom class to carry multiple return values (Java `private static class` → Python)
+### Worked pair — LC 445 Add Two Numbers II and LC 394 Decode String
 
-When a DFS / recursion needs to **return several values at once** (e.g. height + size + a flag), the Java idiom is a small `private static class SubtreeInfo`. In Python the closest equivalents are a `@dataclass`, a plain class, or a `NamedTuple`.
-
-```java
-// java — the pattern we want to port
-private static class SubtreeInfo {
-    int height;
-    int size;
-    boolean isPerfect;
-}
-```
-
-#### **Option 1: `@dataclass` (recommended)**
-
-`@dataclass` auto-generates `__init__`, `__repr__`, `__eq__` — least boilerplate, most readable.
-
+- String -> Int
 ```python
-# python
-from dataclasses import dataclass
+# 445 Add Two Numbers II
+# 394 Decode String
+def str_2_int(x):
+    r=0
+    for i in x:
+        r = int(r)*10 + int(i)
+        print (i, r)
+    return r
 
-@dataclass
-class SubtreeInfo:
-    height: int
-    size: int
-    is_perfect: bool
+def str_2_int_v2(x):
+    res = 0
+    for i in x:
+        res = (res + int(i) % 10) * 10
+    return int(res / 10)
 
+# example 1
+x="131"
+r=str_2_int(x)
+print (r)
+# 1 1
+# 3 13
+# 1 131
+# 131
 
-def dfs(node):
-    # returns SubtreeInfo carrying 3 values up the recursion
-    if node is None:
-        return SubtreeInfo(0, 0, True)
+# examle 2
+In [62]: z
+Out[62]: '5634'
 
-    left = dfs(node.left)
-    right = dfs(node.right)
+In [63]: ans = 0
 
-    is_perfect = (
-        left.is_perfect
-        and right.is_perfect
-        and left.height == right.height
-    )
+In [64]: for i in z:
+    ...:     ans = 10 * ans + int(i)
+    ...:
 
-    size = left.size + right.size + 1
-    height = max(left.height, right.height) + 1
-
-    if is_perfect:
-        perfect_sizes.append(size)
-
-    return SubtreeInfo(height, size, is_perfect)
-
-# usage
-info = dfs(root)
-print(info.height, info.size, info.is_perfect)
+In [65]: ans
+Out[65]: 5634
 ```
-
-#### **Option 2: Traditional class (no imports)**
-
-```python
-# python
-class SubtreeInfo:
-    def __init__(self, height, size, is_perfect):
-        self.height = height
-        self.size = size
-        self.is_perfect = is_perfect
-
-# usage is identical
-info = dfs(root)
-print(info.height)
-```
-
-#### **Option 3: `NamedTuple` (lightweight + immutable)**
-
-Use when the bundle should be **read-only** (also unpackable like a tuple).
-
-```python
-# python
-from typing import NamedTuple
-
-class SubtreeInfo(NamedTuple):
-    height: int
-    size: int
-    is_perfect: bool
-
-info = dfs(root)
-print(info.height)          # attribute access
-h, s, p = info              # tuple unpacking also works
-```
-
-#### **Quick comparison**
-
-| Option | Boilerplate | Mutable? | Best for |
-|--------|-------------|----------|----------|
-| `@dataclass`   | low  | yes (`frozen=True` for immutable) | **default choice** — clean & readable |
-| plain class    | high | yes  | no imports allowed / very old Python |
-| `NamedTuple`   | low  | **no** | immutable bundle, also tuple-unpackable |
-
-> **Quick & dirty alternative**: for one-off DFS you can just `return (height, size, is_perfect)` and unpack — but a named class/`NamedTuple` is far more readable once you have 3+ fields. For LeetCode-style solutions, `@dataclass` is usually the cleanest replacement for a Java `private static class`.
-
-> **Rule of thumb:** if you *mutate* a shared container (`append`/`add`), you must undo it (`pop`/`remove`). If you create a *new* object each call (string concat, `tmp + [x]`, tuple), the copy IS the backtrack — there's nothing to undo. See also [0-2) assignment vs shallow/deep copy](#0-2-assignment-vs-shallow-copy-vs-deep-copy).
