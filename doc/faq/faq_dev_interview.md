@@ -67,7 +67,7 @@ Strong candidates append a short **Reflection**: what you learned, what you'd do
 the experience changed your later behavior. This directly demonstrates the *judgment & learning*
 signal and is often the difference between a "good" and "strong" rating.
 
-```
+```text
 S → T → A → R → (+) Reflection / Learning
 ```
 
@@ -239,7 +239,7 @@ Brainstorm from these prompts (aim for 10–15 raw stories, then pick the best):
 
 Fill one of these out per story. Keep it to a single page.
 
-```
+```text
 Title:            (one line — e.g. "Schema load-test disagreement")
 Themes covered:   (e.g. conflict, data-driven decisions, influence)
 Situation (2 sent): _______________________________________________

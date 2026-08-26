@@ -98,7 +98,7 @@ public List<String> findRepeatedDnaSequences(String s) {
 
 #### Variation B: probe a *transformed* key, not the element itself — LC 532
 
-**Twist**: instead of asking "have I seen `num`?", ask "is `num + k` in the set?". Dedup by iterating the **set** (not the array), so each distinct pair is counted once. `k == 0` is a different question (needs counts) → fall back to a frequency map.
+**Twist**: instead of asking "have I seen `num`?", ask "is `num + k` in the set?". Dedup by iterating the **set** (not the array), so each distinct pair is counted once. `k == 0` is a different question (needs counts) → fall back to a frequency map. `k < 0` has **no** valid pairs and must be rejected before that branch, or it returns the duplicate count.
 
 ```python
 # python
@@ -107,9 +107,14 @@ public List<String> findRepeatedDnaSequences(String s) {
 # time = O(n), space = O(n)
 class Solution(object):
     def findPairs(self, nums, k):
+        ### NOTE !!! k < 0 has NO valid pairs -- |i - j| = k is impossible for a negative k.
+        ###          Falling through to the k <= 0 branch would return the duplicate count.
+        if k < 0:
+            return 0
         if k > 0:
             pool = set(nums)
             return sum(1 for x in pool if x + k in pool)
+        # k == 0 is a different question: how many values occur more than once
         from collections import Counter
         return sum(1 for x, c in Counter(nums).items() if c > 1)
 ```
@@ -119,6 +124,8 @@ class Solution(object):
 // LC 532 - K-diff Pairs in an Array
 // time = O(n), space = O(n)
 public int findPairs(int[] nums, int k) {
+    /** NOTE !!! k < 0 has no valid pairs; without this guard it returns the duplicate count */
+    if (k < 0) return 0;
     if (k > 0) {
         Set<Integer> pool = new HashSet<>();
         for (int n : nums) pool.add(n);

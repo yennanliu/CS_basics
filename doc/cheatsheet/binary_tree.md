@@ -504,7 +504,7 @@ def path_sum_template(root, target):
            / \
            2   3
 
-        ```
+        ```text
 
         **Without `path.pop()`:**
 

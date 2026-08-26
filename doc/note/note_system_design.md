@@ -6,7 +6,7 @@ and numbers to pull from as needed.
 
 ## 0) The Interview Framework (drive the discussion in this order)
 
-```
+```text
 1. Requirements        → functional + non-functional; scope it down
 2. Estimation          → scale: users, QPS, storage, bandwidth
 3. API design          → the key endpoints / contracts

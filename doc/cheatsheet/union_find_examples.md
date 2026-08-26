@@ -1049,7 +1049,17 @@ public int[] hitBricks(int[][] grid, int[][] hits) {
 
     int[][] g = new int[m][];
     for (int i = 0; i < m; i++) g[i] = grid[i].clone();
-    for (int[] h : hits) g[h[0]][h[1]] = 0;            // step 1: apply ALL hits up front
+
+    /** NOTE !!! record whether each hit actually removed a brick.
+     *  Two hits on the same cell both see grid[r][c] == 1, so testing the ORIGINAL grid in
+     *  the reverse pass credits the fall to the wrong hit. Only the first hit on a cell is
+     *  effective; every later one lands on an already-empty cell and must score 0.
+     */
+    boolean[] effective = new boolean[hits.length];
+    for (int i = 0; i < hits.length; i++) {            // step 1: apply ALL hits up front
+        int r = hits[i][0], c = hits[i][1];
+        if (g[r][c] == 1) { g[r][c] = 0; effective[i] = true; }
+    }
 
     p = new int[m * n + 1];
     sz = new int[m * n + 1];
@@ -1068,8 +1078,8 @@ public int[] hitBricks(int[][] grid, int[][] hits) {
     int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
     int[] res = new int[hits.length];
     for (int i = hits.length - 1; i >= 0; i--) {
+        if (!effective[i]) continue;                   // empty cell, or a repeat hit → nothing falls
         int r = hits[i][0], c = hits[i][1];
-        if (grid[r][c] == 0) continue;                 // no brick was there → nothing falls
         int before = sz[find(roof)];
         g[r][c] = 1;                                   // put the brick back
         if (r == 0) union(r * n + c, roof);
@@ -1102,8 +1112,13 @@ class Solution(object):
         m, n = len(grid), len(grid[0])
         roof = m * n
         g = [row[:] for row in grid]
-        for r, c in hits:
-            g[r][c] = 0                          # apply ALL hits first
+        ### NOTE !!! only the FIRST hit on a cell removes a brick; later hits on the same
+        ###          cell land on an empty slot and must score 0, so record which is which.
+        effective = [False] * len(hits)
+        for i, (r, c) in enumerate(hits):        # apply ALL hits first
+            if g[r][c] == 1:
+                g[r][c] = 0
+                effective[i] = True
 
         parent = list(range(m * n + 1))
         size = [1] * (m * n + 1)
@@ -1134,9 +1149,9 @@ class Solution(object):
 
         res = [0] * len(hits)
         for i in range(len(hits) - 1, -1, -1):   # undo hits backwards
+            if not effective[i]:
+                continue                         # empty cell, or a repeat hit → 0
             r, c = hits[i]
-            if grid[r][c] == 0:
-                continue                         # hit on empty cell → 0
             before = size[find(roof)]
             g[r][c] = 1
             if r == 0:
@@ -1151,8 +1166,11 @@ class Solution(object):
 ```
 
 **Gotchas:**
-- A hit on a cell that was already `0` in the *original* grid contributes `0` — check `grid[r][c]`, not `g[r][c]`.
-- Duplicate hits on the same cell: the second (in reverse: first) restore is a no-op, and `max(0, after - before - 1)` correctly yields `0`.
+- A hit on a cell that was already `0` in the *original* grid contributes `0`.
+- **Duplicate hits on the same cell are the trap.** Both see `grid[r][c] == 1`, so testing the
+  original grid in the reverse pass credits the fall to whichever hit the loop reaches first —
+  which, running backwards, is the *later* one. The correct answer belongs to the earlier hit.
+  Record an `effective` flag during the forward pass and skip on that instead.
 - Reverse DSU only works when the deletions are known **offline** (all given up front).
 
 ## Union-Find on Other Structures

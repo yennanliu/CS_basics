@@ -28,7 +28,7 @@ come up in systems and language-internals interviews.
 
 A typical process address space, low → high address:
 
-```
+```text
 +------------------------+  high address
 |        Stack           |  grows down ↓  (local vars, call frames, return addrs)
 +------------------------+
@@ -66,7 +66,7 @@ A typical process address space, low → high address:
 
 ## 3) How a Program Loads and Runs
 
-```
+```text
 Source code
    │  compile / assemble
    ▼

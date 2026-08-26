@@ -111,8 +111,11 @@ Both walks strip / carry one bit per step  =>  O(log N).
 | `query(i)` — prefix `[1..i]` | down to 0 | `i -= i & -i` | peel off the last covered block, jump to what's left |
 | `update(i, d)` — point add | up to `n` | `i += i & -i` | jump to the next block that *contains* `i` |
 
-> **Gotcha**: BIT is **1-indexed**. `i & -i` is `0` at `i = 0`, so a 0-indexed `query` loops forever.
-> Always convert with `i + 1` at the boundary (as LC 307 above does).
+> **Gotcha**: BIT is **1-indexed**, and index `0` fails *differently* on each side.
+> `i & -i` is `0` at `i = 0`, so `update(0, d)` never advances and **loops forever**.
+> `query(0)` does not hang — its loop condition is `i > 0`, so it returns `0` immediately and
+> silently omits the element you meant. Convert with `i + 1` at the boundary either way
+> (as LC 307 above does).
 
 
 ### BIT over POSITIONS — a "live" index after removals — LC 1505 / LC 1409 ⭐⭐⭐⭐

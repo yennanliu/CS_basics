@@ -244,7 +244,7 @@ Both are has-a. **Composition** = strong ownership; the part cannot outlive the 
 
 ## 6) Quick Recap Checklist
 
-```
+```text
 [ ] Can explain the 4 pillars with a one-line example each
 [ ] Interface vs abstract class: multiple inheritance, state, when to use
 [ ] Composition over inheritance: why + a delegation example

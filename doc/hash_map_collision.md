@@ -5,7 +5,7 @@
 
 ### Birthday question
 - https://zh.wikipedia.org/wiki/%E7%94%9F%E6%97%A5%E5%95%8F%E9%A1%8C
-```
+```text
 # Birthday question
 There are people keep walking into a room, at least how many people 
 make the probability of ANY 2 PEOPLE HAS SAME BIRTHERDAY > 50 % ?
@@ -22,7 +22,7 @@ So, the probability of K people in the room BUT ALL WITH UNIQUE  birthday
 -> above term is equal as (365)!/((365^n)*(365-n)!)
 
 ```
-```
+```text
 # Birthday question extension 
 # given n people, every person select a value randomly from N differnt values (N is any larger than 0 interger). 
 # p(n) means any 2 persons select THE SAME value, what's p(n)

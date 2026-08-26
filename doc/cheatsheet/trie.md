@@ -1063,7 +1063,13 @@ def findMaximumXOR(nums):
 ```
 
 ### Trie + DP (Stream Matching) — LC 1032 Stream of Characters
-Combine a trie with a state machine to match words in a character stream in O(1) per query.
+Combine a trie of **reversed** words with the stream so far, and walk the stream backwards.
+
+> **Complexity**: the walk stops at the first character with no trie child, so a query costs
+> O(L) where L is the longest dictionary word — **not** O(1), and not O(stream) either, as long
+> as you cap what you keep. The version below appends to `self.stream` forever, so its walk is
+> bounded by the stream length; keeping only the last L characters (a `deque(maxlen=L)`) is what
+> makes it O(L) per query and O(L) memory.
 
 ```python
 class StreamChecker:
@@ -1095,33 +1101,45 @@ class StreamChecker:
 > The full implementation is [Template 6](#template-6-trie-with-delete-operation) above; this is the invariant it maintains, stated on its own.
 
 ```python
+# NOTE !!! two different booleans are in play, and conflating them is the classic bug:
+#   - `deleted`  -- was the WORD removed?          (what the caller asked)
+#   - `prune`    -- may the parent drop this node? (an internal signal)
+# Returning the prune signal as the result reports False for "delete('a')" when "ab"
+# also exists, because the node survives as a prefix even though the word is gone.
 def delete(self, word: str) -> bool:
-    def _delete(node, word, depth):
+    deleted = False
+
+    def _delete(node, depth):
+        nonlocal deleted
         if depth == len(word):
             if not node.is_end:
-                return False
+                return False              # word was never here -> nothing to prune
             node.is_end = False
-            return len(node.children) == 0  # safe to delete if leaf
+            deleted = True
+            return len(node.children) == 0
         ch = word[depth]
         if ch not in node.children:
             return False
-        should_delete = _delete(node.children[ch], word, depth + 1)
-        if should_delete:
+        if _delete(node.children[ch], depth + 1):
             del node.children[ch]
             return len(node.children) == 0 and not node.is_end
         return False
-    return _delete(self.root, word, 0)
+
+    _delete(self.root, 0)
+    return deleted
 ```
 
 ### Prefix-Suffix Trie — LC 745
 For problems requiring both prefix and suffix matching, wrap each word as `suffix#word` and insert into one trie.
 
 ```python
-# For word "apple", insert: "apple#apple", "pple#apple", "ple#apple", "le#apple", "e#apple"
+# For word "apple", insert: "apple#apple", "pple#apple", ..., "e#apple", and "#apple"
+# NOTE !!! range(len(word) + 1) -- the last iteration inserts the EMPTY suffix, which is
+#          what makes a query with suffix "" matchable. range(len(word)) silently drops it.
 def buildIndex(words):
     trie = {}
     for weight, word in enumerate(words):
-        for i in range(len(word)):
+        for i in range(len(word) + 1):
             key = word[i:] + '#' + word
             node = trie
             for c in key:

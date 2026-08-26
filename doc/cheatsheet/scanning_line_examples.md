@@ -187,9 +187,18 @@ public int brightestPosition(int[][] lights) {
     }
     events.sort((a, b) -> a[0] - b[0]);
     int brightness = 0, maxBrightness = 0, ans = 0;
-    for (int[] e : events) {
-        brightness += e[1];
-        if (brightness > maxBrightness) { maxBrightness = brightness; ans = e[0]; }
+    /** NOTE !!! apply EVERY delta at a coordinate before testing the max.
+     *  The comparator leaves same-coordinate events unordered, so a +1 that happens to sort
+     *  ahead of a -1 at the same x produces a transient brightness no position actually has —
+     *  and that phantom peak is what gets returned.
+     */
+    for (int i = 0; i < events.size(); ) {
+        int x = events.get(i)[0];
+        while (i < events.size() && events.get(i)[0] == x) {
+            brightness += events.get(i)[1];
+            i++;
+        }
+        if (brightness > maxBrightness) { maxBrightness = brightness; ans = x; }
     }
     return ans;
 }
@@ -291,7 +300,7 @@ class Solution:
 >
 > `events[i] = [start_i, end_i]`. Attend event `i` on **any single day** `d` with `start_i <= d <= end_i`, **one event per day**. Return the max number of events attendable.
 >
-> ```
+> ```text
 > events = [[1,2],[2,3],[3,4]]        -> 3
 > events = [[1,2],[2,3],[3,4],[1,2]]  -> 4
 > ```
@@ -446,7 +455,7 @@ public int maxEvents(int[][] events) {
 > Two lists of **closed**, **sorted**, **pairwise-disjoint** intervals. Return every interval
 > covered by *both* lists.
 >
-> ```
+> ```text
 > firstList  = [[0,2],[5,10],[13,23],[24,25]]
 > secondList = [[1,5],[8,12],[15,24],[25,26]]
 > ->           [[1,2],[5,5],[8,10],[15,23],[24,24],[25,25]]

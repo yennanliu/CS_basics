@@ -1594,70 +1594,10 @@ def connect(root):
 - LC 117: Populating Next Right Pointers in Each Node II (Medium)
 - LC 116: Populating Next Right Pointers in Each Node (Medium)
 
----
 
-#### The dummy-head sweep — the same O(1) space, written without a queue
-
-> Moved here from `tree.md`, which used to carry a second traversal-template set.
-> On normalised code the two share 28% of their statements, so this is a genuinely
-> different formulation rather than a re-paste: it keeps `cur` on the head of the
-> current level and builds the next level as a dummy-headed linked list.
-
-*The BFS queue costs O(W) space. When the node already has a `next` pointer, the level itself can act as the queue.*
-
-**Key Idea**: keep a pointer `cur` on the head of the **current** level. Sweep that level by following the `next` pointers we built on the previous round, and append every child to a **dummy-headed linked list** — that list IS the next level. No queue, no recursion, O(1) extra space.
-
-**Why the dummy head**: children may be missing (LC 117 is a general binary tree, not a perfect one), so you cannot compute "the next node" by position. The dummy + `tail` pointer skips holes automatically, which is exactly why the *same* code solves LC 116 (perfect tree) and LC 117 (any tree).
-
-```java
-// java
-// LC 117 - Populating Next Right Pointers in Each Node II
-//          (LC 116 = perfect-tree special case; this code solves both)
-// IDEA: sweep the CURRENT level via the `next` pointers already built, and
-//       string the children onto a dummy-headed list = the NEXT level.
-class Solution {
-    public Node connect(Node root) {
-        // time = O(N), space = O(1)  -> no queue, no recursion stack
-        Node cur = root;                     // head of the level being swept
-        while (cur != null) {
-            Node dummy = new Node(0);        // sentinel head of the NEXT level
-            Node tail = dummy;               // last node appended to next level
-
-            while (cur != null) {            // walk current level left -> right
-                if (cur.left != null)  { tail.next = cur.left;  tail = tail.next; }
-                if (cur.right != null) { tail.next = cur.right; tail = tail.next; }
-                cur = cur.next;              // NOTE: move via `next`, not a queue
-            }
-
-            cur = dummy.next;                // drop down to the next level's head
-        }
-        return root;
-    }
-}
-```
-
-```python
-# python
-# LC 117 - Populating Next Right Pointers in Each Node II
-# IDEA: dummy-head list builds the next level while we sweep the current one
-class Solution:
-    def connect(self, root):
-        # time = O(N), space = O(1)
-        cur = root
-        while cur:
-            dummy = Node(0)      # sentinel for next level
-            tail = dummy
-            while cur:           # sweep current level through `next`
-                if cur.left:
-                    tail.next = cur.left
-                    tail = tail.next
-                if cur.right:
-                    tail.next = cur.right
-                    tail = tail.next
-                cur = cur.next
-            cur = dummy.next     # descend one level
-        return root
-```
+**Why the dummy head**: children may be missing (LC 117 is a *general* binary tree, not a perfect
+one), so you cannot compute "the next node" by position. The dummy + `tail` pointer skips holes
+automatically — which is exactly why the *same* code solves LC 116 and LC 117.
 
 **Trace** (`root = [1,2,3,4,5,null,7]`):
 
@@ -1667,7 +1607,9 @@ level 2:  2 -> 3                 dummy -> 4 -> 5 -> 7   (3 has no left child; du
 level 3:  4 -> 5 -> 7            dummy -> null  -> stop
 ```
 
-**When to reuse this**: any "connect / compare nodes on the same level" question where the node carries a spare pointer (LC 116, LC 117). If the node has **no** `next` field, fall back to Template 4 (queue BFS).
+**When to reuse this**: any "connect / compare nodes on the same level" question where the node
+carries a spare pointer (LC 116, LC 117). If the node has **no** `next` field, fall back to the
+queue BFS in [1.4)](#14-bfs-template-level-order--lc-102-).
 
 ### 8.2) Postorder Tree DP (Pair Return) Template — LC 337 ⭐⭐⭐⭐
 
