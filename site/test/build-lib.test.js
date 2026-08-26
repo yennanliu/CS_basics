@@ -12,14 +12,32 @@ function parse(html) {
 
 // ── slugify ───────────────────────────────────────────────────────────────
 
-test('slugify lowercases, strips tags and collapses punctuation to single dashes', () => {
-  assert.equal(lib.slugify('Template 4: 0/1 Knapsack — LC 416'), 'template-4-0-1-knapsack-lc-416');
+// These pin GitHub's rule, which is the one the markdown under doc/ is written
+// against: drop the character, keep the spaces around it, do not trim the result.
+test('slugify lowercases, strips tags, and drops punctuation without eating its spaces', () => {
+  assert.equal(lib.slugify('Template 4: 0/1 Knapsack — LC 416'), 'template-4-01-knapsack--lc-416');
   assert.equal(lib.slugify('<span>Two Pointers</span>'), 'two-pointers');
+  // ' — ' is space + dropped char + space, so it yields TWO dashes, not one
+  assert.equal(lib.slugify('Reorder List — LC 143'), 'reorder-list--lc-143');
+  // '/' has no spaces around it, so its neighbours join
+  assert.equal(lib.slugify('Fast/Slow Cycle Detection'), 'fastslow-cycle-detection');
+  // '&' behaves the same way
+  assert.equal(lib.slugify('Templates & Algorithms'), 'templates--algorithms');
 });
 
-test('slugify does not leave leading or trailing dashes', () => {
+test('slugify does not trim the result, so a trailing star run leaves a dash', () => {
+  // 74 anchors under doc/cheatsheet depend on this: the space before the star run
+  // survives the run's removal and becomes a trailing '-'
+  assert.equal(lib.slugify('Sort List — LC 148 ⭐⭐⭐⭐⭐'), 'sort-list--lc-148-');
+  assert.equal(lib.slugify('⭐⭐⭐ Overview ⭐'), '-overview-');
+});
+
+test('slugify trims surrounding whitespace before slugifying', () => {
   assert.equal(lib.slugify('  (LC 53) '), 'lc-53');
-  assert.equal(lib.slugify('⭐⭐⭐ Overview ⭐'), 'overview');
+});
+
+test('slugify keeps non-ASCII letters instead of collapsing them', () => {
+  assert.equal(lib.slugify('Prefix Sum (前缀和)'), 'prefix-sum-前缀和');
 });
 
 // ── prioBadge ─────────────────────────────────────────────────────────────
