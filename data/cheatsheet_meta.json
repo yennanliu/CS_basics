@@ -88,6 +88,7 @@
     "stack_expression_parsing":         { "category": "Hashing, Stacks & Queues", "tier": 4 },
     "hashing":                          { "category": "Hashing, Stacks & Queues", "tier": 3 },
     "set":                              { "category": "Hashing, Stacks & Queues", "tier": 3 },
+    "set_examples":                     { "category": "Hashing, Stacks & Queues", "tier": 3, "title": "Set — Worked Examples" },
     "monotonic_queue":                  { "category": "Hashing, Stacks & Queues", "tier": 3 },
 
     "linked_list":                      { "category": "Linked Lists", "tier": 5 },
