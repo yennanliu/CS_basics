@@ -101,6 +101,7 @@
     "tree_lca_distance":                { "category": "Trees & Heaps", "tier": 5 },
     "tree2":                            { "category": "Trees & Heaps", "tier": 4, "title": "Tree Pattern Templates" },
     "trie":                             { "category": "Trees & Heaps", "tier": 4 },
+    "trie_examples":                    { "category": "Trees & Heaps", "tier": 3, "title": "Trie — Worked Examples" },
     "tree_codec":                       { "category": "Trees & Heaps", "tier": 4 },
     "tree_construction":                { "category": "Trees & Heaps", "tier": 4 },
     "heap_examples":                    { "category": "Trees & Heaps", "tier": 4 },
