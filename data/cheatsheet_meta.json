@@ -125,6 +125,7 @@
     "topology_sorting_examples":        { "category": "Graphs", "tier": 4, "title": "Topological Sorting — Worked Examples" },
     "union_find":                       { "category": "Graphs", "tier": 4, "title": "Union Find (Disjoint Set)" },
     "Dijkstra":                         { "category": "Graphs", "tier": 4 },
+    "Dijkstra_examples":                { "category": "Graphs", "tier": 4, "title": "Dijkstra — Worked Examples" },
     "shortest_path_comparison":         { "category": "Graphs", "tier": 3, "title": "Shortest Path — Which Algorithm?" },
     "diff_toposort_quickunion":         { "category": "Graphs", "tier": 3, "title": "Topological Sort vs Union Find" },
     "Bellman-Ford":                     { "category": "Graphs", "tier": 2 },
