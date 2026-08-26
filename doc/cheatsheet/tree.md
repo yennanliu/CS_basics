@@ -1,6 +1,6 @@
 # Tree Data Structure - Concepts & Patterns
 
-> **Scope** — Tree concepts, tree types, traversal-order strategy and the canonical traversal templates — the *why* and *which*, with the heavy algorithm write-ups and the worked-problem archive split into their own sheets.
+> **Scope** — Tree concepts, tree types and traversal-order *strategy* — the **why** and **which**, plus the advanced techniques that are not per-pattern templates (Morris threading, binary lifting, re-rooting). The templates themselves live in [tree2.md](./tree2.md).
 > **See also** — *deep dives split out of this file*: [tree_lca_distance.md](./tree_lca_distance.md) — LCA, node distance, parent maps and root-to-leaf path templates; [tree_codec.md](./tree_codec.md) — subtree serialization and tree ⟷ string codecs; [tree_construction.md](./tree_construction.md) — building a tree from traversals, strings and index ranges; [tree_examples.md](./tree_examples.md) — the worked LC archive for the patterns taught here.
 > *Neighbouring sheets*: [tree2.md](./tree2.md) — one numbered, copy-paste template per pattern; [binary_tree.md](./binary_tree.md) — binary-tree DFS state-flow and structural templates; [bst.md](./bst.md) — ordered trees; [tree_backtrack.md](./tree_backtrack.md) — root→leaf path problems that undo state on the way back up.
 
@@ -78,7 +78,7 @@ no pattern is written out twice in this family of sheets.
 | # | Pattern | Core idea | Code lives in | Examples |
 |---|---------|-----------|---------------|----------|
 | 1 | **Path-Based** | carry the accumulated value (sum, max-so-far, path) DOWN through DFS parameters | [tree_lca_distance.md](./tree_lca_distance.md) — root-to-leaf path templates | LC 112, 113, 257, 437, 1448 |
-| 2 | **Subtree Validation** | post-order — validate both children before deciding for the parent | [Template 3: Postorder](#template-3-postorder-traversal) | LC 98, 101, 110 |
+| 2 | **Subtree Validation** | post-order — validate both children before deciding for the parent | [tree2 1.3)](./tree2.md#13-postorder-template--lc-145) | LC 98, 101, 110 |
 | 3 | **Height vs Depth** | height is computed bottom-up (post-order); depth is carried top-down (pre-order) | [0-3) Top-Down vs Bottom-Up](#0-3-top-down-vs-bottom-up-dfs--two-strategies-for-tree-problems) | LC 104, 111, 543 |
 | 4 | **Tree Construction** | one traversal gives the structure, the other gives the position; or split an index range at the chosen root | [tree_construction.md](./tree_construction.md) | LC 105, 106, 654, 108 |
 | 5 | **Serialization** | encode = DFS that **returns a string**; decode = recursive descent that **consumes a prefix** | [tree_codec.md](./tree_codec.md) | LC 297, 449, 606, 536 |
@@ -485,355 +485,39 @@ public ResultType solveTreeProblem(TreeNode root, ParamType params) {
 
 <p align="center"><img src="../pic/tree_traverse.png" width="600"></p>
 
-### 1.4) DFS Traversal Templates
+### 1.4) Choosing a Traversal
 
-#### **Template 1: Preorder Traversal**
-*Root → Left → Right | Use when you need parent data for processing children*
+The four basic traversals are **written out** in
+[tree2.md](./tree2.md) — that sheet is the numbered template catalogue, in Python and Java,
+one per pattern. What belongs here is the question that comes first: which one.
 
-```python
-# Recursive Preorder
-def preorder_recursive(root, result):
-    if not root:
-        return
-    
-    result.append(root.val)      # Process root first
-    preorder_recursive(root.left, result)   # Then left subtree
-    preorder_recursive(root.right, result)  # Then right subtree
+| The answer depends on… | Traversal | Because | Template |
+|---|---|---|---|
+| the **parent**, before the children are known | **Pre-order** — root → left → right | state flows *down*: a path, a depth, a running prefix | [tree2 1.1) — LC 144](./tree2.md#11-preorder-template--lc-144) |
+| the tree being a **BST**, and you want sorted order | **In-order** — left → root → right | in-order on a BST *is* the sorted sequence, which is why LC 98 and LC 230 are one line each | [tree2 1.2) — LC 94](./tree2.md#12-inorder-template--lc-94-) |
+| **both children**, before the node can answer | **Post-order** — left → right → root | state flows *up*: a height, a sum, a "is this subtree valid" verdict | [tree2 1.3) — LC 145](./tree2.md#13-postorder-template--lc-145) |
+| **distance from the root**, or a per-level answer | **Level-order (BFS)** | the first time you meet a node is via a shortest path, and a level is a queue-length snapshot | [tree2 1.4) — LC 102](./tree2.md#14-bfs-template-level-order--lc-102-) |
+| the level, but **alternating direction** | **BFS + direction flag** | reverse the row, do not reverse the traversal | [tree2 1.5) — LC 103](./tree2.md#15-bfs--direction-template--lc-103) |
 
-# Iterative Preorder  
-def preorder_iterative(root):
-    if not root:
-        return []
-    
-    result = []
-    stack = [root]
-    
-    while stack:
-        node = stack.pop()
-        result.append(node.val)   # Process current node
-        
-        # Add children to stack (right first, then left)
-        if node.right:
-            stack.append(node.right)
-        if node.left:
-            stack.append(node.left)
-    
-    return result
-```
+**The one-line test**: ask *"can this node answer without hearing from its children?"* Yes →
+pre-order. No → post-order. "I need the whole row at once" → BFS.
 
-```java  
-// Java Preorder Implementation
-public void preorderRecursive(TreeNode root, List<Integer> result) {
-    if (root == null) return;
-    
-    result.add(root.val);              // Process root
-    preorderRecursive(root.left, result);   // Process left
-    preorderRecursive(root.right, result);  // Process right
-}
-```
+<p align="center"><img src="../pic/tree_traverse.png" width="600"></p>
 
-#### **Template 2: Inorder Traversal**
-*Left → Root → Right | Use for BST to get sorted order*
+### 1.4-1) Traversals that do not need the queue
 
-```python
-# Recursive Inorder
-def inorder_recursive(root, result):
-    if not root:
-        return
-    
-    inorder_recursive(root.left, result)   # Process left subtree first
-    result.append(root.val)                # Then process root
-    inorder_recursive(root.right, result)  # Finally process right subtree
+Two techniques get an ordinary traversal's answer without its space cost. They are not
+per-pattern templates, so they stay here rather than in the catalogue:
 
-# Iterative Inorder
-def inorder_iterative(root):
-    result = []
-    stack = []
-    current = root
-    
-    while stack or current:
-        # Go to leftmost node
-        while current:
-            stack.append(current)
-            current = current.left
-        
-        # Process current node
-        current = stack.pop()
-        result.append(current.val)
-        
-        # Move to right subtree
-        current = current.right
-    
-    return result
-```
+- **O(1)-space level linking** — when the node already has a `next` pointer, the level itself
+  can act as the queue. Written out at
+  [tree2 8.1) — LC 116 / LC 117](./tree2.md#81-o1-space-level-linking-template--lc-117-).
+- **Coordinate-annotated traversal** — carry `(row, col)` through any traversal and sort at the
+  end; the traversal order stops mattering, which is what makes DFS and BFS interchangeable for
+  vertical order, top/bottom view, and LC 662-style width indexing.
+  [tree2 8.3) — LC 987](./tree2.md#83-coordinate-map-traversal-template--lc-987).
+- **Morris traversal** — below.
 
-```java
-// Java Inorder Implementation
-public void inorderRecursive(TreeNode root, List<Integer> result) {
-    if (root == null) return;
-    
-    inorderRecursive(root.left, result);    // Left subtree
-    result.add(root.val);                   // Current node
-    inorderRecursive(root.right, result);   // Right subtree
-}
-```
-
-#### **Template 3: Postorder Traversal**
-*Left → Right → Root | Use when you need children data for parent processing*
-
-```python
-# Recursive Postorder
-def postorder_recursive(root, result):
-    if not root:
-        return
-    
-    postorder_recursive(root.left, result)   # Process left subtree first
-    postorder_recursive(root.right, result)  # Then right subtree  
-    result.append(root.val)                  # Finally process root
-
-# Iterative Postorder (using two stacks)
-def postorder_iterative(root):
-    if not root:
-        return []
-    
-    result = []
-    stack1 = [root]
-    stack2 = []
-    
-    # First pass: collect nodes in reverse postorder
-    while stack1:
-        node = stack1.pop()
-        stack2.append(node)
-        
-        if node.left:
-            stack1.append(node.left)
-        if node.right:
-            stack1.append(node.right)
-    
-    # Second pass: pop from stack2 to get postorder
-    while stack2:
-        result.append(stack2.pop().val)
-    
-    return result
-```
-
-#### **Template 4: Level-Order Traversal (BFS)**
-*Process nodes level by level | Use for level-based problems*
-
-```python
-# Basic Level-Order Traversal
-from collections import deque
-
-def level_order_traversal(root):
-    if not root:
-        return []
-    
-    result = []
-    queue = deque([root])
-    
-    while queue:
-        level_size = len(queue)
-        current_level = []
-        
-        # Process all nodes at current level
-        for _ in range(level_size):
-            node = queue.popleft()
-            current_level.append(node.val)
-            
-            # Add children to queue for next level
-            if node.left:
-                queue.append(node.left)
-            if node.right:
-                queue.append(node.right)
-        
-        result.append(current_level)
-    
-    return result
-
-# Simple level-order (flat list)
-def level_order_simple(root):
-    if not root:
-        return []
-    
-    result = []
-    queue = deque([root])
-    
-    while queue:
-        node = queue.popleft()
-        result.append(node.val)
-        
-        if node.left:
-            queue.append(node.left)
-        if node.right:
-            queue.append(node.right)
-    
-    return result
-```
-
-```java
-// Java Level-Order Implementation
-public List<List<Integer>> levelOrder(TreeNode root) {
-    List<List<Integer>> result = new ArrayList<>();
-    if (root == null) return result;
-    
-    Queue<TreeNode> queue = new LinkedList<>();
-    queue.offer(root);
-    
-    while (!queue.isEmpty()) {
-        int levelSize = queue.size();
-        List<Integer> currentLevel = new ArrayList<>();
-        
-        for (int i = 0; i < levelSize; i++) {
-            TreeNode node = queue.poll();
-            currentLevel.add(node.val);
-            
-            if (node.left != null) queue.offer(node.left);
-            if (node.right != null) queue.offer(node.right);
-        }
-        
-        result.add(currentLevel);
-    }
-    
-    return result;
-}
-```
-
-#### **Template 4-1: Level Linking with O(1) Space (Dummy Head Sweep) — LC 116 / LC 117** ⭐⭐⭐⭐⭐
-
-*The BFS queue costs O(W) space. When the node already has a `next` pointer, the level itself can act as the queue.*
-
-**Key Idea**: keep a pointer `cur` on the head of the **current** level. Sweep that level by following the `next` pointers we built on the previous round, and append every child to a **dummy-headed linked list** — that list IS the next level. No queue, no recursion, O(1) extra space.
-
-**Why the dummy head**: children may be missing (LC 117 is a general binary tree, not a perfect one), so you cannot compute "the next node" by position. The dummy + `tail` pointer skips holes automatically, which is exactly why the *same* code solves LC 116 (perfect tree) and LC 117 (any tree).
-
-```java
-// java
-// LC 117 - Populating Next Right Pointers in Each Node II
-//          (LC 116 = perfect-tree special case; this code solves both)
-// IDEA: sweep the CURRENT level via the `next` pointers already built, and
-//       string the children onto a dummy-headed list = the NEXT level.
-class Solution {
-    public Node connect(Node root) {
-        // time = O(N), space = O(1)  -> no queue, no recursion stack
-        Node cur = root;                     // head of the level being swept
-        while (cur != null) {
-            Node dummy = new Node(0);        // sentinel head of the NEXT level
-            Node tail = dummy;               // last node appended to next level
-
-            while (cur != null) {            // walk current level left -> right
-                if (cur.left != null)  { tail.next = cur.left;  tail = tail.next; }
-                if (cur.right != null) { tail.next = cur.right; tail = tail.next; }
-                cur = cur.next;              // NOTE: move via `next`, not a queue
-            }
-
-            cur = dummy.next;                // drop down to the next level's head
-        }
-        return root;
-    }
-}
-```
-
-```python
-# python
-# LC 117 - Populating Next Right Pointers in Each Node II
-# IDEA: dummy-head list builds the next level while we sweep the current one
-class Solution:
-    def connect(self, root):
-        # time = O(N), space = O(1)
-        cur = root
-        while cur:
-            dummy = Node(0)      # sentinel for next level
-            tail = dummy
-            while cur:           # sweep current level through `next`
-                if cur.left:
-                    tail.next = cur.left
-                    tail = tail.next
-                if cur.right:
-                    tail.next = cur.right
-                    tail = tail.next
-                cur = cur.next
-            cur = dummy.next     # descend one level
-        return root
-```
-
-**Trace** (`root = [1,2,3,4,5,null,7]`):
-
-```text
-level 1:  1                      dummy -> 2 -> 3
-level 2:  2 -> 3                 dummy -> 4 -> 5 -> 7   (3 has no left child; dummy skips the hole)
-level 3:  4 -> 5 -> 7            dummy -> null  -> stop
-```
-
-**When to reuse this**: any "connect / compare nodes on the same level" question where the node carries a spare pointer (LC 116, LC 117). If the node has **no** `next` field, fall back to Template 4 (queue BFS).
-
-#### **Template 4-2: Coordinate-Annotated Traversal (Vertical Order) — LC 987** ⭐⭐⭐⭐
-
-*Pattern: when output order is NOT the traversal order, do not fight the traversal — tag each node with its `(col, row)` coordinate, then sort.*
-
-**Key Idea**: DFS once, emitting a triple `(col, row, val)` with `left → (row+1, col-1)`, `right → (row+1, col+1)`. Then sort by `col → row → val` and group by `col`. The **third sort key (`val`)** is the whole difficulty of LC 987: two nodes can share the exact same `(row, col)`, and the tie is broken by value — that is what separates LC 987 from the simpler "vertical order" variants.
-
-```java
-// java
-// LC 987 - Vertical Order Traversal of a Binary Tree
-// IDEA: annotate every node with (col, row) during DFS, then sort col -> row -> val
-class Solution {
-    public List<List<Integer>> verticalTraversal(TreeNode root) {
-        // time = O(N log N)  (the sort dominates), space = O(N)
-        List<int[]> nodes = new ArrayList<>();   // {col, row, val}
-        dfs(root, 0, 0, nodes);
-
-        nodes.sort((a, b) -> a[0] != b[0] ? a[0] - b[0]     // 1) column
-                           : a[1] != b[1] ? a[1] - b[1]     // 2) row (top -> bottom)
-                           : a[2] - b[2]);                  // 3) value (tie break!)
-
-        List<List<Integer>> res = new ArrayList<>();
-        for (int i = 0; i < nodes.size(); i++) {
-            // new bucket whenever the column changes
-            if (i == 0 || nodes.get(i)[0] != nodes.get(i - 1)[0]) res.add(new ArrayList<>());
-            res.get(res.size() - 1).add(nodes.get(i)[2]);
-        }
-        return res;
-    }
-
-    private void dfs(TreeNode node, int row, int col, List<int[]> nodes) {
-        if (node == null) return;
-        nodes.add(new int[]{col, row, node.val});
-        dfs(node.left,  row + 1, col - 1, nodes);   // left  -> col - 1
-        dfs(node.right, row + 1, col + 1, nodes);   // right -> col + 1
-    }
-}
-```
-
-```python
-# python
-# LC 987 - Vertical Order Traversal of a Binary Tree
-# IDEA: collect (col, row, val) triples, sort them, group by col
-class Solution:
-    def verticalTraversal(self, root):
-        # time = O(N log N), space = O(N)
-        nodes = []   # (col, row, val)  -> tuple order IS the sort order
-
-        def dfs(node, row, col):
-            if not node:
-                return
-            nodes.append((col, row, node.val))
-            dfs(node.left, row + 1, col - 1)
-            dfs(node.right, row + 1, col + 1)
-
-        dfs(root, 0, 0)
-        nodes.sort()          # col -> row -> val, exactly the required order
-
-        res = []
-        prev_col = None
-        for col, row, val in nodes:
-            if col != prev_col:
-                res.append([])
-                prev_col = col
-            res[-1].append(val)
-        return res
-```
-
-**Generalization**: the "annotate + sort" trick applies whenever the answer is keyed on a *position* rather than a *visit order* — vertical order, "top view" (`min row` per column), "bottom view" (`max row` per column), or LC 662-style width indexing. Traversal choice (DFS vs BFS) becomes irrelevant once the coordinates are explicit.
 
 #### **Template 5: Morris Traversal (O(1) Space Tree Traversal)**
 *In-order traversal with O(1) space using threaded binary tree*
@@ -947,6 +631,7 @@ def flatten(root):
 > **When to reach for this:** any "in-place, O(1) space, restructure a tree along its right spine" problem. The `while rightmost.right` predecessor-finding step is the signature. Recognize it as the **same machinery** as Morris traversal — only the thread's destination and whether you restore it change.
 
 ---
+
 
 ### 1.5) Tree Node Initialization
 
