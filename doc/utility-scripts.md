@@ -128,6 +128,9 @@ Two views carry most of the diagnostic value:
 - **Chronic blind spots** — rows still marked `AGAIN` after 12+ passes. More passes have
   already failed to fix these, so they need a different intervention, not another rep.
 
+**Full guide**: [`doc/lc-readiness-guide.md`](./lc-readiness-guide.md) — every flag, what
+each section of the output means, and which numbers to act on versus ignore.
+
 Two caveats the output flags on its own:
 
 - LeetCode's skill-stats endpoint reports only a curated tag set and silently omits Heap,

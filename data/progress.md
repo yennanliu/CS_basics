@@ -156,7 +156,6 @@
 					- 907
 					- 2104
 		- 2 pointers
-			- 986
 			- Exactly K Problems (At Most K Transformation) -
 				- Exactly K = At Most K - At Most (K-1) 
 					- 992
@@ -262,7 +261,6 @@
 				- 139
 				- 140
 			- DP on tree
-				- 337
 				- 124
 				- 979
 				- 968
