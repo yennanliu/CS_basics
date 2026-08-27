@@ -252,3 +252,17 @@ The build fails on a taxonomy key that is missing, points at an unknown topic, o
 ## Adding Time/Space Complexity Javadoc Comments
 
 For the full guide, see [`doc/add-time-space-guide.md`](doc/add-time-space-guide.md). Quick start: `/add-time-space <DirectoryName>`.
+
+---
+
+## Evaluating Interview Readiness
+
+`script/eval_lc_readiness.py` scores a LeetCode profile against a Google SWE coding bar
+(`--level L3` by default) using the public GraphQL API plus `README.md`'s status column.
+
+For the full guide — flags, how to read each section, and which numbers to act on — see
+[`doc/lc-readiness-guide.md`](doc/lc-readiness-guide.md). Quick start:
+
+```bash
+python3 script/eval_lc_readiness.py
+```

@@ -38,3 +38,7 @@ _site/
 
 # scrape_lc_discuss_company.py download cache (re-fetchable, one file per post)
 data/.lc_discuss_cache/
+
+# eval_lc_readiness.py LeetCode GraphQL cache (re-fetchable)
+.lc_cache/
+

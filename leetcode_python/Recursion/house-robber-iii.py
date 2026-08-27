@@ -42,6 +42,78 @@ class Solution(object):
         pass
 
 
+
+# V0-0-1
+# IDEA: tree DP with POST-order DFS (gpt)
+"""
+NOTE !!!
+
+
+1. bottom up DFS (post order)
+
+2. [rob_val, not_rob_val] is the helper func return type
+"""
+class Solution(object):
+    def rob(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: int
+        """
+
+        rob_val, not_rob_val = self.helper(root)
+
+        return max(rob_val, not_rob_val)
+
+
+    # Return:
+    # [rob_val, not_rob_val]
+    #
+    # rob_val:
+    #   Maximum money if we ROB this node.
+    #
+    # not_rob_val:
+    #   Maximum money if we DO NOT ROB this node.
+    def helper(self, root):
+
+        # Empty tree
+        if not root:
+            return [0, 0]
+
+        # Bottom-up / post-order DFS
+        l_rob, l_not_rob = self.helper(root.left)
+        r_rob, r_not_rob = self.helper(root.right)
+
+        #---------------------------
+        # Case 1:
+        # ROB current node
+        #
+        # Then we CANNOT rob either child.
+        #---------------------------
+        rob_val = root.val + l_not_rob + r_not_rob
+
+        #---------------------------
+        # Case 2:
+        # DO NOT ROB current node
+        #
+        # Each child can `independently` choose
+        # `whether to rob or not.`
+        #---------------------------
+        """
+        NOTE !!!
+
+        1. left, right sub tree status are INDEPENDENT !!!
+
+        2. so, we get the max from 2 choice from each sub tree
+            -> e.g. max(l_rob, l_not_rob)
+
+            (rob or NOT rob)
+        """
+        not_rob_val = max(l_rob, l_not_rob) + \
+                      max(r_rob, r_not_rob)
+
+        return [rob_val, not_rob_val]
+
+
 # V0-1
 # IDEA: tree DP with post-order DFS (gpt)
 class Solution(object):

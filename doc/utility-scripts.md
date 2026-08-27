@@ -85,6 +85,64 @@ Two traps the parser has to dodge, both of which silently inflate coverage:
 - `1. Populate the graph map` in a mid-function comment is not an LC id. The id scan stops at the first type declaration, and a candidate title must look like a title (short noun phrase, no operators or quotes).
 - `check with LC 542` is a cross-reference, not a solution. A `// LC n` tag counts only when it sits alone on its line and a problem url follows within a few lines — the shape `LCWeekly/*.java` uses to hold a whole contest.
 
+## eval_lc_readiness.py
+
+Scores a LeetCode profile against a Google SWE coding bar and prints a terminal report.
+Pulls the public LeetCode GraphQL API (no auth, no premium) and cross-references it with
+`README.md`'s status column.
+
+```bash
+python3 script/eval_lc_readiness.py                    # fetch + report, L3 bar
+python3 script/eval_lc_readiness.py --level L4         # or L3 / L4 / L5
+python3 script/eval_lc_readiness.py --user someone
+python3 script/eval_lc_readiness.py --offline          # replay the cache, no network
+python3 script/eval_lc_readiness.py --json out.json    # evaluated report as JSON
+```
+
+`--level` picks which bar to score against, and it moves the grade a lot — the level
+changes what "enough" means, not what gets asked:
+
+| Level | Solved / medium / hard | Contest rating | Notes |
+|-------|------------------------|----------------|-------|
+| `L3` (default) | 300 / 200 / 60 | 1650 | entry; no system design round, medium fluency is the bar |
+| `L4` | 500 / 300 / 150 | 1800 | hard-flavoured mediums common, so the hard tier must be familiar |
+| `L5` | 600 / 350 / 200 | 1900 | adds a system design round this data cannot see |
+
+Topic targets scale with the level too (`topic_scale`: 0.70 / 1.00 / 1.15).
+
+Fetched JSON is cached under `.lc_cache/` (gitignored), so `--offline` replays the last
+fetch for free. Four axes, weighted into one grade:
+
+| Axis | What it measures | Source |
+|------|------------------|--------|
+| Volume | solved counts and the Easy/Medium/Hard mix vs target | LC `submitStats` |
+| Breadth | per-topic solved vs a target for each topic Google asks, weighted by how often it comes up | LC `tagProblemCounts` |
+| Mastery | share of README rows marked `OK` rather than `AGAIN` | README status column |
+| Signal | contest rating, contests attended, active days — the only speed-under-pressure proxy available | LC contest + calendar |
+
+Two views carry most of the diagnostic value:
+
+- **Cost curve** — mean review passes per problem, per README section. A high mean means
+  the topic keeps costing re-learns even after it is "solved"; ranking sections by it
+  separates *never seen* from *never stuck*.
+- **Chronic blind spots** — rows still marked `AGAIN` after 12+ passes. More passes have
+  already failed to fix these, so they need a different intervention, not another rep.
+
+**Full guide**: [`doc/lc-readiness-guide.md`](./lc-readiness-guide.md) — every flag, what
+each section of the output means, and which numbers to act on versus ignore.
+
+Two caveats the output flags on its own:
+
+- LeetCode's skill-stats endpoint reports only a curated tag set and silently omits three
+  of the topics scored here. Heap/PQ and Prefix Sum fall back to a regex over the README
+  rows and print with a `~` — a lower bound, since it counts only what this repo tracks.
+  BST has no usable fallback (its README notes are full of "check with BST"
+  cross-references, so any regex over-counts), so it prints `n/a` and is left out of the
+  breadth score entirely — an unmeasured topic is not a proven gap.
+- The `OK`/`AGAIN` marker behaves as a permanent review-queue tag, not a mastery verdict
+  (92% of Hard rows sit at `AGAIN`, some after 20+ passes). So read the Mastery axis as a
+  floor, and trust the *relative* cost curve over the absolute `OK` share.
+
 ## Other Scripts
 
 | Script | Purpose |
