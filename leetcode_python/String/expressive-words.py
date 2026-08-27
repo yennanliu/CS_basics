@@ -136,6 +136,42 @@ class Solution(object):
 
         return True
 
+
+# V0-1
+# IDEA: 2 POINTERS (gemini)
+class Solution(object):
+    def expressiveWords(self, s, words):
+        return sum(self.is_stretchy(s, w) for w in words)
+
+    def is_stretchy(self, s, w):
+        i, j = 0, 0
+        n, m = len(s), len(w)
+
+        while i < n and j < m:
+            if s[i] != w[j]:
+                return False
+
+            # Measure group length in s
+            len_s = 0
+            char = s[i]
+            while i < n and s[i] == char:
+                i += 1
+                len_s += 1
+
+            # Measure group length in w
+            len_w = 0
+            while j < m and w[j] == char:
+                j += 1
+                len_w += 1
+
+            # Check stretch rules
+            if len_s < len_w or (len_s > len_w and len_s < 3):
+                return False
+
+        # Both pointers must reach the end
+        return i == n and j == m
+
+
 # V1
 # IDEA: Run Length Encoding
 # https://leetcode.com/problems/expressive-words/editorial/
