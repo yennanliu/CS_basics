@@ -221,7 +221,6 @@
 			- Parent map + BFS radiating outward
 				- 863
 		- 2 pointers
-			- 524
 			- 809
 			- 31 (Next Permutation)
 			- 647

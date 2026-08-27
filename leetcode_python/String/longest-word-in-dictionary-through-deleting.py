@@ -31,6 +31,65 @@ s and dictionary[i] consist of lowercase English letters.
 """
 
 # V0
+# IDEA: 2 POINTERS +  string comparision (`word < res`) (GPT)
+# time = O(d * (n + l)), d = len(dictionary), n = len(s), l = avg word length
+# space = O(1)
+class Solution(object):
+    def findLongestWord(self, s, dictionary):
+        """
+        :type s: str
+        :type dictionary: List[str]
+        :rtype: str
+        """
+
+        res = ""
+
+        for word in dictionary:
+
+            # Check whether word is a subsequence of s
+            if self.can_form(s, word):
+
+                # 1. Longer word wins
+                if len(word) > len(res):
+                    res = word
+
+                # 2. Same length -> lexicographically smaller wins
+                elif len(word) == len(res) and word < res:
+                    res = word
+
+        return res
+
+
+    def can_form(self, s, word):
+        """
+        Return True if word is a subsequence of s.
+        """
+
+        j = 0
+
+        """
+        NOTE !!!
+
+        1. can use `for loop`
+        """
+        for i in range(len(s)):
+
+            if j < len(word) and s[i] == word[j]:
+                j += 1
+
+            """
+            NOTE !!!
+
+            early exit, so NO need to handle edge cases
+            """
+            # All characters in word have been matched
+            if j == len(word):
+                return True
+
+        return False
+
+
+# V0
 # IDEA: 2 POINTERS +  string comparision (`word < res`)
 # time = O(d * (n + l)), d = len(dictionary), n = len(s), l = avg word length
 # space = O(1)
