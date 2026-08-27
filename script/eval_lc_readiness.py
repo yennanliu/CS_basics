@@ -120,6 +120,10 @@ GOOGLE_TOPICS = [
 # ---------------------------------------------------------------------------
 # Fetch
 # ---------------------------------------------------------------------------
+class GraphQLError(RuntimeError):
+    """A 200 response that is not a usable GraphQL result."""
+
+
 def gql(query, variables, user):
     body = json.dumps({"query": query, "variables": variables}).encode()
     req = urllib.request.Request(
@@ -132,7 +136,20 @@ def gql(query, variables, user):
         },
     )
     with urllib.request.urlopen(req, timeout=30) as r:
-        return json.loads(r.read())
+        payload = json.loads(r.read())
+
+    # LeetCode answers a rejected query with HTTP 200 and {"errors": [...],
+    # "data": null}. Caching that would destroy a good cache and then crash
+    # evaluate() on a missing field, so refuse it here instead.
+    if not isinstance(payload, dict):
+        raise GraphQLError(f"expected a JSON object, got {type(payload).__name__}")
+    if payload.get("errors"):
+        first = payload["errors"][0]
+        msg = first.get("message", first) if isinstance(first, dict) else first
+        raise GraphQLError(f"GraphQL error: {msg}")
+    if payload.get("data") is None:
+        raise GraphQLError("GraphQL response carried no data")
+    return payload
 
 
 QUERIES = {
@@ -185,29 +202,42 @@ QUERIES = {
 }
 
 
+def cache_slug(user):
+    """Filesystem-safe directory name for a username."""
+    slug = re.sub(r"[^A-Za-z0-9_-]", "_", user).lower().strip("._-")
+    return slug or "_unnamed"
+
+
 def fetch_all(user, cache_dir, offline, year):
-    """Return {key: payload}. Cached to cache_dir so re-runs are free."""
+    """Return {key: payload}.
+
+    Profile data is cached under a per-user directory, and the calendar
+    additionally per year. Without that, `--user b --offline` would happily
+    replay user a's cache and print it under b's name, and a partial online
+    failure could splice two profiles together.
+    """
     out = {}
-    os.makedirs(cache_dir, exist_ok=True)
+    user_dir = os.path.join(cache_dir, cache_slug(user))
+    os.makedirs(user_dir, exist_ok=True)
     plan = [
-        ("profile", {"username": user}),
-        ("tags", {"username": user}),
-        ("contest", {"username": user}),
-        ("recent", {"username": user, "limit": 100}),
-        ("calendar", {"username": user, "year": year}),
+        ("profile", "profile", {"username": user}),
+        ("tags", "tags", {"username": user}),
+        ("contest", "contest", {"username": user}),
+        ("recent", "recent", {"username": user, "limit": 100}),
+        ("calendar", f"calendar-{year}", {"username": user, "year": year}),
     ]
-    for key, variables in plan:
-        path = os.path.join(cache_dir, f"{key}.json")
-        if offline or (os.path.exists(path) and offline):
-            pass
+    for key, filename, variables in plan:
+        path = os.path.join(user_dir, f"{filename}.json")
         if offline:
             if not os.path.exists(path):
-                sys.exit(f"--offline but {path} is missing; run once online first")
+                sys.exit(f"--offline but {path} is missing; "
+                         f"run once online for {user} first")
             out[key] = json.load(open(path))
             continue
         try:
             payload = gql(QUERIES[key], variables, user)
-        except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError) as e:
+        except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError,
+                GraphQLError) as e:
             if os.path.exists(path):
                 print(f"warn: {key} fetch failed ({e}); using cache", file=sys.stderr)
                 out[key] = json.load(open(path))
@@ -217,10 +247,29 @@ def fetch_all(user, cache_dir, offline, year):
             json.dump(payload, f, indent=1)
         out[key] = payload
 
+    # A username that does not exist comes back as a clean {"matchedUser": null},
+    # which would otherwise surface as a TypeError deep inside evaluate().
+    matched = (out["profile"].get("data") or {}).get("matchedUser")
+    if matched is None:
+        sys.exit(f"error: LeetCode has no public profile for user {user!r}")
+
+    # The report header, and every number under it, come from this payload. If a
+    # cache file has been hand-edited or copied between directories, say so
+    # rather than printing one profile's data under another profile's name.
+    got = (matched.get("username") or "").lower()
+    if got and got != user.lower():
+        sys.exit(f"error: asked for user {user!r} but the profile data is for "
+                 f"{matched['username']!r}. Delete {user_dir} and re-run online.")
+
     # Per-tag problem totals, so topic coverage can be stated as a share of what
     # exists rather than against a target picked by hand. One request per tag,
     # cached in a single file.
+    # Shared across users: it describes the problem set, not a profile.
     upath = os.path.join(cache_dir, "universe.json")
+    if offline and not os.path.exists(upath):
+        sys.exit(f"--offline but {upath} is missing; run once online first. "
+                 "Without it, topic targets are not capped at each tag's own "
+                 "problem count and the breadth score would differ silently.")
     universe = json.load(open(upath)) if os.path.exists(upath) else {}
     wanted = ["__all__"] + [t[0] for t in GOOGLE_TOPICS]
     missing = [t for t in wanted if t not in universe]
@@ -234,7 +283,8 @@ def fetch_all(user, cache_dir, offline, year):
                 universe[tag] = d["data"]["problemsetQuestionList"]["total"]
                 if tag != "__all__" and universe[tag] == universe.get("__all__"):
                     universe[tag] = None   # filter was ignored -> bad slug
-            except Exception as e:                       # non-fatal enrichment
+            except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError,
+                    GraphQLError, KeyError, TypeError) as e:   # non-fatal enrichment
                 print(f"warn: universe fetch for {tag} failed: {e}", file=sys.stderr)
         with open(upath, "w") as f:
             json.dump(universe, f, indent=1)
@@ -382,11 +432,17 @@ def evaluate(data, problems, year, level="L4"):
     # a healthy spaced-repetition backlog is fine; being >70% AGAIN is not
     mastery_score = score(mastery_ratio, 0.55)
 
-    by_section = defaultdict(lambda: {"ok": 0, "again": 0, "google": 0,
+    other = [p for p in tracked if p["status"] not in ("OK", "AGAIN")]
+
+    by_section = defaultdict(lambda: {"ok": 0, "again": 0, "other": 0, "google": 0,
                                       "google_again": 0, "reps": 0})
     for p in tracked:
         b = by_section[p["section"] or "?"]
-        b["ok" if p["status"] == "OK" else "again"] += 1
+        # Bucket by the actual status. Lumping every non-OK row into `again`
+        # would make these counts disagree with the top-level AGAIN total, since
+        # parse_readme also recognises TODO and NOT_OK.
+        b["ok" if p["status"] == "OK" else
+          "again" if p["status"] == "AGAIN" else "other"] += 1
         b["reps"] += p["reps"]
         if p["google"]:
             b["google"] += 1
@@ -466,6 +522,7 @@ def evaluate(data, problems, year, level="L4"):
                      "days_by_month": dict(sorted(day_count.items()))},
         "readme": {
             "tracked": len(tracked), "ok": len(ok), "again": len(again),
+            "other": len(other),
             "mastery_ratio": mastery_ratio,
             "google_tracked": len(g_tracked), "google_ok": len(g_ok),
             "must_tracked": len(must), "must_ok": len(must_ok),
@@ -546,18 +603,21 @@ def render(r):
     p("")
     p("-- Mastery: this repo's README status column " + "-" * 29)
     rd = r["readme"]
-    p(f"  tracked rows {rd['tracked']}   OK {rd['ok']}   AGAIN {rd['again']}"
+    other_bit = f"   TODO/NOT_OK {rd['other']}" if rd.get("other") else ""
+    p(f"  tracked rows {rd['tracked']}   OK {rd['ok']}   AGAIN {rd['again']}{other_bit}"
       f"   -> {rd['mastery_ratio']*100:.0f}% marked solid")
     p(f"  google-tagged  {rd['google_ok']}/{rd['google_tracked']} OK")
     p(f"  MUST-tagged    {rd['must_ok']}/{rd['must_tracked']} OK")
     p("")
     p("  Cost curve - mean review passes per problem, by README section.")
     p("  High mean = the topic keeps costing you re-learns. Ranked worst first:")
-    rows = [(k, v) for k, v in rd["by_section"].items() if v["ok"] + v["again"] >= 8]
-    rows.sort(key=lambda kv: -kv[1]["reps"] / (kv[1]["ok"] + kv[1]["again"]))
+    def sec_n(v):
+        return v["ok"] + v["again"] + v.get("other", 0)
+    rows = [(k, v) for k, v in rd["by_section"].items() if sec_n(v) >= 8]
+    rows.sort(key=lambda kv: -kv[1]["reps"] / sec_n(kv[1]))
     p(f"    {'section':<26}{'n':>4}{'OK':>5}{'AGAIN':>7}{'mean passes':>13}")
     for k, v in rows:
-        n = v["ok"] + v["again"]
+        n = sec_n(v)
         p(f"    {k:<26}{n:>4}{v['ok']:>5}{v['again']:>7}{v['reps']/n:>10.1f}  "
           f"{bar(min(1, v['reps']/n/8), 10)}")
     p("")
@@ -596,7 +656,9 @@ def main():
     ap.add_argument("--year", type=int, default=datetime.now().year)
     ap.add_argument("--cache-dir", default=os.path.join(ROOT, ".lc_cache"))
     ap.add_argument("--offline", action="store_true", help="use cached JSON only")
-    ap.add_argument("--json", dest="json_out", help="also write the raw result here")
+    ap.add_argument("--json", dest="json_out",
+                    help="write the evaluated report here as JSON "
+                         "(everything the terminal shows, minus the raw tag map)")
     a = ap.parse_args()
 
     data = fetch_all(a.user, a.cache_dir, a.offline, a.year)

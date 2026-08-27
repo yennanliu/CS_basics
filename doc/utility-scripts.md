@@ -96,7 +96,7 @@ python3 script/eval_lc_readiness.py                    # fetch + report, L3 bar
 python3 script/eval_lc_readiness.py --level L4         # or L3 / L4 / L5
 python3 script/eval_lc_readiness.py --user someone
 python3 script/eval_lc_readiness.py --offline          # replay the cache, no network
-python3 script/eval_lc_readiness.py --json out.json    # machine-readable dump
+python3 script/eval_lc_readiness.py --json out.json    # evaluated report as JSON
 ```
 
 `--level` picks which bar to score against, and it moves the grade a lot — the level
@@ -133,9 +133,12 @@ each section of the output means, and which numbers to act on versus ignore.
 
 Two caveats the output flags on its own:
 
-- LeetCode's skill-stats endpoint reports only a curated tag set and silently omits Heap,
-  BST, Prefix Sum and Intervals. Those four fall back to a regex over the README rows and
-  print with a `~` — a lower bound, since it only counts what this repo tracks.
+- LeetCode's skill-stats endpoint reports only a curated tag set and silently omits three
+  of the topics scored here. Heap/PQ and Prefix Sum fall back to a regex over the README
+  rows and print with a `~` — a lower bound, since it counts only what this repo tracks.
+  BST has no usable fallback (its README notes are full of "check with BST"
+  cross-references, so any regex over-counts), so it prints `n/a` and is left out of the
+  breadth score entirely — an unmeasured topic is not a proven gap.
 - The `OK`/`AGAIN` marker behaves as a permanent review-queue tag, not a mastery verdict
   (92% of Hard rows sit at `AGAIN`, some after 20+ passes). So read the Mastery axis as a
   floor, and trust the *relative* cost curve over the absolute `OK` share.

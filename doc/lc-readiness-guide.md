@@ -25,8 +25,8 @@ GraphQL API and this repo's `README.md`.
 |------|---------|---------|
 | `--level {L3,L4,L5}` | `L3` | Which bar to score against. Moves the grade a lot — see [Levels](#levels). |
 | `--user <name>` | `yennanliu` | Any public LeetCode username. |
-| `--offline` | off | Replay the cache, make no network calls. Fails if the cache is cold. |
-| `--json <path>` | — | Also dump the raw result for tracking over time. |
+| `--offline` | off | Replay the cache, make no network calls. Fails if any cache file for the requested user, year, or the shared tag universe is missing. |
+| `--json <path>` | — | Write the evaluated report as JSON, for tracking over time. It is everything the terminal shows minus the raw tag map, not the untouched evaluator result. |
 | `--cache-dir <dir>` | `.lc_cache/` | Where fetched JSON lands. Gitignored. |
 | `--readme <path>` | `README.md` | The status-column source. |
 | `--year <yyyy>` | current year | Which year's submission calendar to summarise. |
@@ -34,16 +34,38 @@ GraphQL API and this repo's `README.md`.
 ```bash
 python3 script/eval_lc_readiness.py --level L4          # harder bar, same data
 python3 script/eval_lc_readiness.py --offline           # no network
-python3 script/eval_lc_readiness.py --json out.json     # machine-readable
+python3 script/eval_lc_readiness.py --json out.json     # evaluated report as JSON
 python3 script/eval_lc_readiness.py --user someone_else # scout a friend's profile
 ```
 
 ### Caching
 
-Every fetch is written to `--cache-dir` as one JSON file per query. A second run
-without `--offline` re-fetches the profile, tags, contest, recent and calendar
-queries, but **reuses `universe.json`** — the per-tag problem totals, which cost one
-request per tag and essentially never change.
+Every fetch is written to `--cache-dir`, one JSON file per query, namespaced so that
+two profiles can never be mixed up:
+
+```text
+.lc_cache/
+├── universe.json          # per-tag problem totals — shared, describes the problem set
+└── <username>/
+    ├── profile.json
+    ├── tags.json
+    ├── contest.json
+    ├── recent.json
+    └── calendar-2026.json # per year
+```
+
+Profile data is keyed by user, and the calendar additionally by year, so
+`--user b --offline` cannot replay user a's cache and print it under b's name. As a
+second guard, the run aborts if the profile payload's own username disagrees with
+`--user` — which catches a hand-edited or hand-copied cache file.
+
+A second run without `--offline` re-fetches the five per-user queries but **reuses
+`universe.json`**, which costs one request per tag and essentially never changes. It is
+shared across users because it describes the problem set, not a profile.
+
+`--offline` requires `universe.json` too. Without it the topic targets are no longer
+capped at each tag's own problem count, so the breadth score would shift by a point or
+two with no visible cause — a silent difference is worse than a hard failure.
 
 So the cheap loop while iterating on the report itself is:
 
@@ -237,6 +259,11 @@ This is the most useful part of the report and none of it is visible from LeetCo
     Recursion                   30    3     27       7.3  █████████░
     Math                        81   19     62       1.1  █░░░░░░░░░
 ```
+
+`parse_readme()` also recognises `TODO` and `NOT_OK`. Neither appears in the README
+today, but they are counted in their own bucket rather than folded into `AGAIN`, so the
+per-section totals always reconcile with the header line. They stay in the mastery
+denominator — a `TODO` row is tracked but not solid.
 
 **Mean passes** is the average of the trailing `*` run across a section's rows: how
 many times a topic has to be re-learned before it sticks. Ranking sections by it
