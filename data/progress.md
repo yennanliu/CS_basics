@@ -221,7 +221,6 @@
 			- Parent map + BFS radiating outward
 				- 863
 		- 2 pointers
-			- 809
 			- 31 (Next Permutation)
 			- 647
 			- 2104 (mono stack)
