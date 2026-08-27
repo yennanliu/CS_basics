@@ -45,6 +45,7 @@ s and words[i] consist of lowercase letters.
 
 
 # V0
+# IDEA: Length Encoding (gpt)
 class Solution(object):
     def expressiveWords(self, s, words):
         """
@@ -52,8 +53,88 @@ class Solution(object):
         :type words: List[str]
         :rtype: int
         """
-        pass
 
+        s_encode = self.encode(s)
+
+        count = 0
+
+        for word in words:
+            w_encode = self.encode(word)
+
+            if self.is_same(s_encode, w_encode):
+                count += 1
+
+        return count
+
+
+    def encode(self, x):
+        """
+        Convert string into groups.
+
+        Example:
+        "heeellooo"
+
+        =>
+        [('h', 1), ('e', 3), ('l', 2), ('o', 3)]
+        """
+
+        if not x:
+            return []
+
+        res = []
+
+        # NOTE !!! use `prev` for simpler handling
+        prev = x[0]
+        # NOTE !!! use `count` for simpler handling
+        count = 1
+
+        for i in range(1, len(x)):
+
+            if x[i] == prev:
+                count += 1
+
+            else:
+                res.append((prev, count))
+
+                prev = x[i]
+                count = 1
+
+
+        # NOTE !!! Don't forget the last group
+        # Don't forget the last group
+        res.append((prev, count))
+
+        return res
+
+
+    def is_same(self, x, y):
+        """
+        Check whether y can be stretched to become x.
+        """
+
+        # Different number of groups
+        if len(x) != len(y):
+            return False
+
+        for i in range(len(x)):
+
+            x_char, x_cnt = x[i]
+            y_char, y_cnt = y[i]
+
+            # Characters must match
+            if x_char != y_char:
+                return False
+
+            # word has more characters than s
+            if y_cnt > x_cnt:
+                return False
+
+            # s has more characters than word.
+            # We can only stretch if s's group has >= 3 chars.
+            if x_cnt > y_cnt and x_cnt < 3:
+                return False
+
+        return True
 
 # V1
 # IDEA: Run Length Encoding
