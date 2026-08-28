@@ -50,12 +50,21 @@ s contains only digits and may contain leading zero(s).
 # IDEA: 1D DP (gemini)
 """
 
-DP def
-    dp[i]: number of ways to decode the PREFIX s[0:i]
+- DP def
 
-           (i = length, so dp is size n+1)
+    dp[i] = number of ways to decode the prefix s[0:i]
 
-DP eq
+    e.g.
+
+        dp[i] = ways to decode s[:i]
+        
+
+    i = length of prefix
+    
+    dp has size `n + 1`
+
+
+- DP eq
 
      dp[i] = dp[i-1]   if 1 <= int(s[i-1:i])  <= 9    # take 1 digit
 
@@ -94,16 +103,41 @@ class Solution(object):
         dp[1] = 1  # First char is non-zero (checked above)
 
         for i in range(2, n + 1):
+
+            """
+            NOTE !!!
+
+            ONLY 2 cases
+
+            1. encode `1` digit
+
+                - one_digit = int(s[i-1:i])
+
+
+            2. encode `2` digit
+
+                - two_digits = int(s[i-2:i])
+            """
+
             # Option 1: Single digit decoding (s[i-1])
+
+            # Case 1: Decode one digit
+            # s[i-1] must NOT be '0'
             one_digit = int(s[i-1:i])
             if 1 <= one_digit <= 9:
                 dp[i] += dp[i-1]
 
             # Option 2: Two digit decoding (s[i-2:i])
+
+            # Case 2: Decode two digits
+            # Must be between 10 and 26
             two_digits = int(s[i-2:i])
             if 10 <= two_digits <= 26:
                 dp[i] += dp[i-2]
 
+
+        # NOTE !!!
+        # use `n` idx
         return dp[n]
 
 
@@ -176,6 +210,33 @@ class Solution(object):
 
         """               
         return dp[n]
+
+
+
+# V0-0-2
+# IDEA: 1D DP + O(1) space (gemini)
+class Solution(object):
+    def numDecodings(self, s):
+        if not s or s[0] == '0':
+            return 0
+
+        prev2, prev1 = 1, 1
+
+        for i in range(1, len(s)):
+            curr = 0
+            
+            # Single digit check
+            if s[i] != '0':
+                curr += prev1
+                
+            # Two digit check
+            two_digit = int(s[i - 1 : i + 1])
+            if 10 <= two_digit <= 26:
+                curr += prev2
+
+            prev2, prev1 = prev1, curr
+
+        return prev1
 
 
 # V0-1
