@@ -35,6 +35,75 @@ The doc → tag mapping lives in `DOC_TAGS` inside the script; edit it there rat
 
 `--verify` uses LeetCode's public GraphQL endpoint (`topicTag(slug:)`) because leetcode.com returns HTTP 403 to non-browser clients for HTML pages. It also confirms each link label matches LeetCode's canonical tag name.
 
+## fix_readme_tags.py
+
+Normalises and completes the tags in `README.md`'s **Note** column — the leading bold
+type tag and the company tags.
+
+```bash
+# Rewrite README.md (idempotent — a second run changes nothing)
+python3 script/fix_readme_tags.py
+
+# What would change, without writing
+python3 script/fix_readme_tags.py --report
+
+# Exit 1 if README.md has drifted (for CI or a pre-commit check)
+python3 script/fix_readme_tags.py --check
+```
+
+What it does, in order:
+
+1. **Repairs a stray backtick.** An odd backtick count inverts the code-span parity for
+   the rest of the cell and hides every tag after it from any parser.
+2. **Canonicalises company tags.** `M$`, `MS`, `msft` → `` `microsoft` ``; `amz` →
+   `` `amazon` ``; `meta`/`facebook` → `` `fb` ``; `GS`/`Goldman Sachs` →
+   `` `goldman sachs` ``. This is what makes `script/get_company_LC.sh microsoft` find
+   all 555 rows instead of the 2 that happened to be spelled out.
+3. **Bolds a missing type tag**, when the row's first tag is already a known pattern.
+4. **Appends the problem's real LeetCode topics** when the bold tag names none of them.
+   The bold tag itself is never rewritten: it says which section's technique the row is
+   filed under (LC 84 sits under `## Greedy` on purpose), so the fix is to add
+   `` `monotonic stack` `` beside it, not to overwrite it. Skipped when the row already
+   names the topic in its own words ("Ascending Stack", "mono stack").
+5. **Adds missing company tags** for the eight companies the README already tracks
+   widely: google, amazon, fb, apple, microsoft, uber, linkedin, bloomberg. Widening
+   this set pushes some rows past twenty tags, at which point the column stops being
+   readable — the long tail (airbnb, twitter, garena, shopee…) is canonicalised where it
+   already appears but never added to a new row.
+
+Two vendored caches feed it, so a normal run needs neither the network nor the PDFs:
+
+| File | Source | Refresh with |
+|------|--------|--------------|
+| `data/lc_topic_tags.json` | LeetCode's public GraphQL API — official `topicTags` + difficulty for the 1388 problems the README lists | `--refresh-topics` |
+| `data/company_lc_tags.json` | the company-frequency PDFs under `doc/` (via `pdftotext`), unioned with `doc/google_leetcode_problems_by_tags.md` for Google | `--refresh-companies` |
+
+Both are **vendored, not built** — like `data/problem_lists.json`, the site build never
+touches the network. Refresh them by hand.
+
+The Google column feeds the site: `site/build-roadmap.js` reads `google` out of this
+column for the Study Roadmap's "Google-tagged" list, which the completed tags took from
+263 problems to 914.
+
+### Refreshing the company cache safely
+
+The PDFs come in three print layouts, and `doc/leetcode_company_V6` puts a **single**
+space after the problem number where the others put several — a `\s{2,}` gap alone reads
+5% of that file and silently produces a cache that looks fine. `--refresh-companies`
+therefore validates before it writes, and every failure is fatal:
+
+- `pdftotext` runs with `check=True`, so a corrupt or encrypted PDF aborts the refresh
+  instead of contributing an empty page.
+- Each PDF states its own row count (`You have solved 24 / 1115 problems.`). Parsing under
+  half of it raises; parsing under all of it prints a note, because the `V1` captures are
+  genuinely short prints (55–86%) rather than bad parses.
+- A refresh that ends with no problems for one of the eight companies raises rather than
+  writing the cache — a silently short parse would not produce a visibly broken file, it
+  would quietly *delete* that company's README tags on the next run.
+
+`doc/leetcode_company_V4` is not read: it is a prose interview guide with no problem
+table.
+
 ## scrape_lc_discuss_company.py
 
 Scrapes recently-asked LeetCode problems for a company from LeetCode's **public Discuss forum** and writes a markdown report (default [`doc/g_recent_asked.md`](./g_recent_asked.md)).
