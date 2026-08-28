@@ -38,6 +38,75 @@ All the strings of wordDict are unique.
 
 
 # V0
+# IDEA: BFS (GPT)
+# time = O(n * k), n = len(s), k = len(wordDict)
+# space = O(n)
+"""
+NOTE !!!
+
+
+1. queue is tracking `end` idx
+"""
+from collections import deque
+
+class Solution(object):
+    def wordBreak(self, s, wordDict):
+        """
+        :type s: str
+        :type wordDict: List[str]
+        :rtype: bool
+        """
+
+        if not s:
+            return True
+
+        if not wordDict:
+            return False
+
+        n = len(s)
+
+        """
+        NOTE !!!
+
+
+        1. queue is tracking `end` idx
+
+        """
+        # Each index represents:
+        # "we have successfully matched s[:idx]"
+        q = deque([0])
+
+        # Avoid processing the same index repeatedly
+        visited = set([0])
+
+        while q:
+            idx = q.popleft()
+
+            # NOTE !!! this
+            # Reached the end
+            if idx == n:
+                return True
+
+            for word in wordDict:
+                end = idx + len(word)
+
+                # Avoid going beyond s
+                if end > n:
+                    continue
+
+                # Check whether s[idx:end] matches word
+                if s[idx:end] == word:
+
+                    # We successfully matched s[:end]
+                    if end not in visited:
+                        visited.add(end)
+                        q.append(end)
+
+        return False
+
+
+
+# V0
 # IDEA: BFS
 # time = O(n * k), n = len(s), k = len(wordDict)
 # space = O(n)
