@@ -35,9 +35,65 @@ s and t consist of lowercase letters, uppercase letters, and digits.
 """
 
 # V0
+# IDEA: 2D DP (gpt)
+# LC 72 Edit Distance
+# https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/String/OneEditDistance.java#L415
+"""
+NOTE !!!
+
+
+DP def:
+      // dp[i][j] = min `edits` between s[0...i-1] and t[0...j-1]
+
+
+DP eq:
+    
+    if s[i-1] == t[j-1]:
+            dp[i][j] = dp[i-1][j-1]
+    else:
+            dp[i][j] = 1 + min(
+                dp[i-1][j],     # delete
+                dp[i][j-1],     # insert
+                dp[i-1][j-1]    # replace
+            )
+
+"""
 class Solution:
     def isOneEditDistance(self, s, t):
-        pass
+        n1 = len(s)
+        n2 = len(t)
+
+        # Length difference > 1 => impossible
+        if abs(n1 - n2) > 1:
+            return False
+
+        # dp[i][j] = minimum edit distance
+        # between s[:i] and t[:j]
+        dp = [[0] * (n2 + 1) for _ in range(n1 + 1)]
+
+        # Initialization
+        for i in range(n1 + 1):
+            dp[i][0] = i
+
+        for j in range(n2 + 1):
+            dp[0][j] = j
+
+        # DP
+        for i in range(1, n1 + 1):
+            for j in range(1, n2 + 1):
+
+                if s[i - 1] == t[j - 1]:
+                    dp[i][j] = dp[i - 1][j - 1]
+
+                else:
+                    dp[i][j] = min(
+                        dp[i - 1][j],       # delete
+                        dp[i][j - 1],       # insert
+                        dp[i - 1][j - 1]   # replace
+                    ) + 1
+
+        # Must be EXACTLY one edit
+        return dp[n1][n2] == 1
 
 
 # V0-0-1
@@ -89,6 +145,51 @@ class Solution:
                     )
 
         return dp[m][n] == 1
+
+
+# V0-0-2
+# IDEA: 2 POINTERS (gpt)
+class Solution:
+    def isOneEditDistance(self, s, t):
+        n1 = len(s)
+        n2 = len(t)
+
+        # Must be exactly one edit
+        if s == t:
+            return False
+
+        # If length difference > 1,
+        # cannot be one edit.
+        if abs(n1 - n2) > 1:
+            return False
+
+        # Make s the shorter string
+        if n1 > n2:
+            return self.isOneEditDistance(t, s)
+
+        i = 0
+        j = 0
+
+        while i < n1 and j < n2:
+
+            if s[i] != t[j]:
+
+                # Case 1:
+                # Same length -> replace one character
+                if n1 == n2:
+                    return s[i + 1:] == t[j + 1:]
+
+                # Case 2:
+                # t is longer -> insert one character into s
+                return s[i:] == t[j + 1:]
+
+            i += 1
+            j += 1
+
+        # No mismatch found.
+        # Only possible edit is adding one character
+        # to the end of the shorter string.
+        return n2 - n1 == 1
 
 
 # V0-1
