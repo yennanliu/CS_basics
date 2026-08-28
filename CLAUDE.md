@@ -249,6 +249,42 @@ The build fails on a taxonomy key that is missing, points at an unknown topic, o
 
 ---
 
+## Traditional Chinese cheatsheets
+
+Every sheet has a 繁體中文 counterpart at `doc/cheatsheet/zh/<same-slug>.md`. The
+site builds both trees and the navbar shows a **中文 / EN** button that swaps
+between counterparts; `cheatsheets.html` ↔ `cheatsheets.zh.html` is the way in.
+Progress and known limitations live in
+[`doc/cheatsheet-zh-progress.md`](doc/cheatsheet-zh-progress.md) (generated).
+
+**Rules for a translation**
+
+- Same slug, same code blocks **byte-for-byte** — only prose is translated.
+- No `category` / `tier` / `kind` in the translation: the build reads them off
+  the English sheet, so the two indexes can never disagree.
+- The Scope line becomes `> **範圍** — …` (the build reads either spelling for
+  the card description).
+- The zh index's category names, blurbs, tier labels and "start here" reasons
+  come from the `zh` block in [`data/cheatsheet_meta.json`](data/cheatsheet_meta.json);
+  anything missing there falls back to English rather than failing the build.
+  The page's own sentences are `INDEX_TEXT` in `site/build-lib.js`.
+
+**Workflow** — `script/zh_cheatsheet.py` keeps the code out of the translator's
+hands, because ~70% of these files is fenced code that must survive intact:
+
+```bash
+python3 script/zh_cheatsheet.py extract [slug ...]   # -> .zh-work/<slug>.md, fences as <!--CODE:n-->
+#   translate the prose into .zh-work/<slug>.zh.md, keeping every marker
+python3 script/zh_cheatsheet.py merge   [slug ...]   # -> doc/cheatsheet/zh/<slug>.md
+python3 script/zh_cheatsheet.py verify               # zh code blocks == en code blocks
+python3 script/zh_cheatsheet.py status --write       # refresh the progress doc
+```
+
+`status` flags a sheet **⚠️ stale** when the English original has been committed
+to since its translation — that is the signal to re-run the loop for that slug.
+
+---
+
 ## Adding Time/Space Complexity Javadoc Comments
 
 For the full guide, see [`doc/add-time-space-guide.md`](doc/add-time-space-guide.md). Quick start: `/add-time-space <DirectoryName>`.

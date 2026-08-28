@@ -545,3 +545,117 @@ test('buildIndexGrid counts the docs in each category', () => {
   const d = parse(lib.buildIndexGrid(grouped, ['Java', 'SQL'], 'faqs'));
   assert.deepEqual([...d.querySelectorAll('.cat-count')].map(el => el.textContent), ['2 docs', '1 doc']);
 });
+
+// ── Translated pages ──────────────────────────────────────────────────────
+// A 繁體中文 sheet goes through the same template as its English original, with
+// the chrome swapped by `labels` — there is deliberately no second template to
+// drift out of step.
+
+test('buildPageContent chrome is English by default', () => {
+  const d = parse(lib.buildPageContent(pageArgs()));
+  assert.equal(d.querySelector('.breadcrumbs a').textContent, 'Home');
+  assert.match(d.querySelector('.last-updated').textContent, /^Updated /);
+  assert.equal(d.querySelector('.back-link').textContent, '← Back to Cheat Sheets');
+  assert.equal(d.querySelector('.github-edit').textContent, 'Edit on GitHub →');
+});
+
+test('buildPageContent translates its chrome without touching the content', () => {
+  const d = parse(lib.buildPageContent(pageArgs({
+    indexLabel: '速查表',
+    labels: { home: '首頁', updated: '更新於', backTo: (l) => `返回${l}`, edit: '在 GitHub 上編輯' }
+  })));
+  assert.equal(d.querySelector('.breadcrumbs a').textContent, '首頁');
+  assert.match(d.querySelector('.last-updated').textContent, /^更新於 /);
+  // No stray space between the verb and its object — hence backTo being a function.
+  assert.equal(d.querySelector('.back-link').textContent, '← 返回速查表');
+  assert.equal(d.querySelector('.github-edit').textContent, '在 GitHub 上編輯 →');
+  assert.ok(d.querySelector('h2#overview'), 'the rendered doc must be untouched');
+});
+
+test('generateTOC labels default to English and can be translated whole', () => {
+  const html = '<h2 id="a">A</h2><h2 id="b">B</h2><h2 id="c">C</h2>';
+  const en = parse(lib.generateTOC(html));
+  assert.equal(en.querySelector('.toc-summary-label').textContent, 'Contents');
+  assert.equal(en.querySelector('.toc-count').textContent, '3 sections');
+
+  const zh = parse(lib.generateTOC(html, { contents: '目錄', sections: (n) => `${n} 個章節` }));
+  assert.equal(zh.querySelector('.toc-summary-label').textContent, '目錄');
+  assert.equal(zh.querySelector('.toc-count').textContent, '3 個章節');
+});
+
+test('extractScope reads the translated Scope line too', () => {
+  assert.equal(
+    lib.extractScope('# 堆積\n\n> **範圍** — 堆積與優先佇列的模板。\n'),
+    '堆積與優先佇列的模板。'
+  );
+  // A full-width colon is the other punctuation a translator reaches for.
+  assert.equal(lib.extractScope('# 堆積\n> **範圍**：模板。\n'), '模板。');
+});
+
+// ── buildCheatsheetIndex, translated ──────────────────────────────────────
+
+const ZH_META = Object.assign({}, META, {
+  zh: {
+    tierLabels: { 5: { label: '必備', note: '每一輪都會遇到。' } },
+    categories: { 'Arrays & Strings': '陣列與字串' },
+    categoryBlurbs: { 'Arrays & Strings': '出現頻率最高的一塊。' },
+    startHere: { array: '先從基本操作開始。' }
+  }
+});
+
+const ZH_SHEETS = SHEETS.map(s => ({ ...s, title: s.title + '（中文）' }));
+
+test('buildCheatsheetIndex in zh points every card at the translated page', () => {
+  const d = parse(lib.buildCheatsheetIndex(ZH_SHEETS, ZH_META, 'zh'));
+  const hrefs = [...d.querySelectorAll('.card-title a')].map(a => a.getAttribute('href'));
+  assert.deepEqual(hrefs, [
+    'cheatsheets/array.zh.html',
+    'cheatsheets/difference_array.zh.html',
+    'cheatsheets/graph.zh.html',
+    'cheatsheets/priority_queue.zh.html'
+  ]);
+  assert.equal(d.querySelector('.start-title').getAttribute('href'), 'cheatsheets/array.zh.html');
+});
+
+test('buildCheatsheetIndex in zh translates the category names and the ladder reasons', () => {
+  const d = parse(lib.buildCheatsheetIndex(ZH_SHEETS, ZH_META, 'zh'));
+  assert.equal(d.querySelector('.cat-heading').firstChild.textContent.trim(), '陣列與字串');
+  // Scoped to the section — the start-here ladder reuses .cat-blurb for its own intro.
+  assert.equal(d.querySelector('.cat-section .cat-blurb').textContent, '出現頻率最高的一塊。');
+  assert.equal(d.querySelector('.start-why').textContent, '先從基本操作開始。');
+  assert.equal(d.querySelector('.tier-key-label').textContent, '必備');
+});
+
+// A half-finished zh block should degrade to English rather than fail the build,
+// so a newly added category is readable the moment it exists.
+test('buildCheatsheetIndex in zh falls back to English for anything not yet translated', () => {
+  const d = parse(lib.buildCheatsheetIndex(ZH_SHEETS, ZH_META, 'zh'));
+  const headings = [...d.querySelectorAll('.cat-heading')].map(el => el.firstChild.textContent.trim());
+  assert.deepEqual(headings, ['陣列與字串', 'Graphs']);
+  const tierLabels = [...d.querySelectorAll('.tier-key-label')].map(el => el.textContent);
+  assert.deepEqual(tierLabels, ['必備', 'High value', 'Worth knowing', 'Niche']);
+});
+
+test('buildCheatsheetIndex keeps categories keyed in English so both indexes line up', () => {
+  const en = parse(lib.buildCheatsheetIndex(SHEETS, ZH_META));
+  const zh = parse(lib.buildCheatsheetIndex(ZH_SHEETS, ZH_META, 'zh'));
+  const sections = d => [...d.querySelectorAll('.cat-section')].map(s => s.getAttribute('data-category'));
+  const anchors = d => [...d.querySelectorAll('.cat-heading')].map(h => h.id);
+  assert.deepEqual(sections(zh), sections(en));
+  assert.deepEqual(anchors(zh), anchors(en));
+});
+
+test('buildCheatsheetIndex keeps the English term searchable on a translated card', () => {
+  const d = parse(lib.buildCheatsheetIndex(ZH_SHEETS, ZH_META, 'zh'));
+  const card = d.querySelector('.sheet-card');
+  const haystack = card.getAttribute('data-search');
+  assert.match(haystack, /arrays & strings/);   // the English category
+  assert.match(haystack, /陣列與字串/);           // and the translated one
+  assert.match(haystack, /array/);              // and the slug
+});
+
+test('buildCheatsheetIndex leaves the English index untouched when a zh block exists', () => {
+  const withZh = lib.buildCheatsheetIndex(SHEETS, ZH_META);
+  const without = lib.buildCheatsheetIndex(SHEETS, META);
+  assert.equal(withZh, without);
+});

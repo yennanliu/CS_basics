@@ -212,6 +212,26 @@ Two caveats the output flags on its own:
   (92% of Hard rows sit at `AGAIN`, some after 20+ passes). So read the Mastery axis as a
   floor, and trust the *relative* cost curve over the absolute `OK` share.
 
+## zh_cheatsheet.py
+
+Drives the 繁體中文 translations of `doc/cheatsheet/`. Roughly 70% of those files
+is fenced code that has to survive byte-for-byte, so the script lifts every fence
+out into a `<!--CODE:n-->` marker before translation and splices the originals
+back in afterwards.
+
+```bash
+python3 script/zh_cheatsheet.py extract [slug ...]   # -> .zh-work/<slug>.md (prose only)
+python3 script/zh_cheatsheet.py merge   [slug ...]   # .zh-work/<slug>.zh.md -> doc/cheatsheet/zh/<slug>.md
+python3 script/zh_cheatsheet.py verify  [slug ...]   # zh code blocks == en code blocks, or exit 1
+python3 script/zh_cheatsheet.py status [--write]     # progress; --write refreshes the tracker doc
+```
+
+With no slugs, every sheet is processed. `merge` refuses a translation that
+dropped, duplicated or reordered a marker, so a truncated file fails loudly
+rather than silently losing code. See
+[`cheatsheet-zh-progress.md`](cheatsheet-zh-progress.md) for the current state and
+CLAUDE.md for the translation conventions.
+
 ## Other Scripts
 
 | Script | Purpose |

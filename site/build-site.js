@@ -272,6 +272,100 @@ if (fs.existsSync(cheatsheetDir)) {
   );
 }
 
+// ── Traditional Chinese cheatsheets ──────────────────────────────────────────
+//
+// doc/cheatsheet/zh/<slug>.md is a translation of doc/cheatsheet/<slug>.md — same
+// slug, same code blocks verbatim (script/zh_cheatsheet.py verify enforces that),
+// prose in 繁體中文. Category, tier and kind are never restated in the translation;
+// they are read off the English sheet, so a sheet cannot end up filed twice.
+//
+// A translation is optional. A sheet without one simply gets no 中文 button, which
+// is why the toggle can never link into a 404.
+
+const zhDir = path.join(cheatsheetDir, 'zh');
+const zhSheets = [];
+const ZH_LABELS = {
+  home: '首頁',
+  updated: '更新於',
+  backTo: label => `返回${label}`,
+  edit: '在 GitHub 上編輯'
+};
+const ZH_TOC_LABELS = { contents: '目錄', sections: n => `${n} 個章節` };
+
+if (fs.existsSync(zhDir)) {
+  const zhFiles = fs.readdirSync(zhDir).filter(f => f.endsWith('.md'));
+  const orphans = zhFiles
+    .map(f => path.basename(f, '.md'))
+    .filter(b => !fs.existsSync(path.join(cheatsheetDir, `${b}.md`)));
+  if (orphans.length) {
+    throw new Error(
+      `doc/cheatsheet/zh has translations with no English sheet: ${orphans.join(', ')}\n` +
+      'Every zh/<slug>.md must mirror a doc/cheatsheet/<slug>.md of the same name.'
+    );
+  }
+
+  // Known up front so a sibling link inside a translation (./bst.md) can resolve
+  // to the translated page rather than bouncing the reader back into English.
+  const zhSlugs = new Set(zhFiles.map(f => path.basename(f, '.md')));
+  const zhPaths = zhFiles.map(f => path.join(zhDir, f));
+  const zhLastMod = buildLastModifiedMap(zhPaths);
+
+  // Walked in the English order so prev/next threads the same category ladder.
+  for (const sheet of cheatsheets) {
+    const filePath = path.join(zhDir, `${sheet.file}.md`);
+    if (!zhSlugs.has(sheet.file)) continue;
+    const raw = fs.readFileSync(filePath, 'utf8');
+
+    let htmlContent = renderContent(raw, true);
+    htmlContent = ensureHeadingIds(htmlContent);
+    htmlContent = htmlContent.replace(
+      /href="([^"#]+)(\.html)(#[^"]*)?"/g,
+      (full, slug, ext, hash) => (zhSlugs.has(slug) ? `href="${slug}.zh.html${hash || ''}"` : full)
+    );
+    const { title: h1Title, titleId, html: bodyHtml } = splitLeadingH1(htmlContent);
+    const { html: annotated, hasPriority } = annotatePriorityHeadings(bodyHtml);
+    htmlContent = annotated;
+    const title = h1Title || sheet.title;
+    const description = extractScope(raw) || sheet.description;
+
+    searchRecords.push({
+      title,
+      url: `cheatsheets/${sheet.file}.zh.html`,
+      category: sheet.category,
+      type: 'Cheatsheet (中文)',
+      tier: sheet.tier,
+      summary: description,
+      headings: extractHeadings(htmlContent).slice(0, 40)
+    });
+
+    zhSheets.push({
+      // Category, tier and kind are the English sheet's — never restated in the
+      // translation, so the two indexes can never disagree about where a sheet goes.
+      file: sheet.file,
+      title,
+      description,
+      category: sheet.category,
+      tier: sheet.tier,
+      kind: sheet.kind,
+      content: buildPageContent({
+        title,
+        htmlContent,
+        toc: generateTOC(htmlContent, ZH_TOC_LABELS),
+        lastMod: zhLastMod.get(filePath) || null,
+        indexHref: 'cheatsheets.zh.html',
+        indexLabel: '速查表',
+        githubHref: `https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/zh/${sheet.file}.md`,
+        titleId,
+        labels: ZH_LABELS,
+        meta: `<span class="cat-chip">${sheet.category}</span>` +
+          `<span class="tier-chip tier-${sheet.tier}">${prioBadge(sheet.tier)}` +
+          `<span class="tier-label">${cheatsheetMeta.tierLabels[String(sheet.tier)].label}</span></span>`,
+        legend: hasPriority ? PRIORITY_LEGEND : ''
+      })
+    });
+  }
+}
+
 // ── FAQs ─────────────────────────────────────────────────────────────────────
 
 const faqDir = 'doc/faq';
@@ -357,9 +451,12 @@ if (fs.existsSync(faqDir)) {
 
 // ── HTML template ─────────────────────────────────────────────────────────────
 
-const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '') => `
+// `opts.lang` / `opts.langAlt` mark a page that exists in two languages; nav.js
+// turns them into the 中文/EN button. Pages without a translation pass neither
+// and render exactly the markup they did before.
+const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '', opts = {}) => `
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="${opts.lang === 'zh' ? 'zh-Hant' : 'en'}" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -379,7 +476,9 @@ const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '') =
 </head>
 <body>
   <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
-  <div id="site-nav" data-page="${currentPage}" data-base="${basePath}"></div>
+  <div id="site-nav" data-page="${currentPage}" data-base="${basePath}"${
+    opts.langAlt ? ` data-lang="${opts.lang || 'en'}" data-lang-alt="${opts.langAlt}"` : ''
+  }></div>
   <script>CSNav.mount();</script>
 
   <main class="container">
@@ -412,19 +511,55 @@ if (resourceContent) {
   console.log('✓ Created resources.html');
 }
 
-const cheatsheetIndexContent = buildCheatsheetIndex(cheatsheets, cheatsheetMeta);
+// The two indexes are each other's counterpart: the 中文/EN button in the navbar
+// swaps between them, which is also the only way into the translations from the
+// rest of the site. Built only when translations exist, so a repo with none is
+// byte-identical to before.
+const bilingualIndex = zhSheets.length > 0;
 
-fs.writeFileSync('_site/cheatsheets.html', htmlTemplate('Cheat Sheets', cheatsheetIndexContent, 'cheatsheets'));
+fs.writeFileSync('_site/cheatsheets.html', htmlTemplate(
+  'Cheat Sheets', buildCheatsheetIndex(cheatsheets, cheatsheetMeta), 'cheatsheets', '',
+  bilingualIndex ? { lang: 'en', langAlt: 'cheatsheets.zh.html' } : {}
+));
 console.log('✓ Created cheatsheets.html index');
+
+if (bilingualIndex) {
+  fs.writeFileSync('_site/cheatsheets.zh.html', htmlTemplate(
+    '速查表', buildCheatsheetIndex(zhSheets, cheatsheetMeta, 'zh'), 'cheatsheets', '',
+    { lang: 'zh', langAlt: 'cheatsheets.html' }
+  ));
+  console.log(`✓ Created cheatsheets.zh.html index (${zhSheets.length} translated sheets)`);
+}
+
+const translated = new Set(zhSheets.map(s => s.file));
 
 if (cheatsheets.length > 0) {
   fs.mkdirSync('_site/cheatsheets', { recursive: true });
   cheatsheets.forEach((sheet, idx) => {
     let fixedContent = sheet.content.replace(/src\s*=\s*"doc\//g, 'src="../doc/');
     fixedContent += buildPrevNext(cheatsheets, idx);
-    fs.writeFileSync(`_site/cheatsheets/${sheet.file}.html`, htmlTemplate(sheet.title, fixedContent, 'cheatsheets', '../'));
+    fs.writeFileSync(`_site/cheatsheets/${sheet.file}.html`, htmlTemplate(
+      sheet.title, fixedContent, 'cheatsheets', '../',
+      translated.has(sheet.file) ? { lang: 'en', langAlt: `${sheet.file}.zh.html` } : {}
+    ));
   });
   console.log(`✓ Created ${cheatsheets.length} individual cheatsheet pages`);
+}
+
+if (zhSheets.length > 0) {
+  // prev/next has to thread the .zh pages, so it gets a list whose `file` carries
+  // the suffix — the sheets themselves stay keyed by the bare slug so the index
+  // and the toggle can pair the two languages up.
+  const zhPages = zhSheets.map(s => ({ ...s, file: `${s.file}.zh` }));
+  zhPages.forEach((sheet, idx) => {
+    let fixedContent = sheet.content.replace(/src\s*=\s*"doc\//g, 'src="../doc/');
+    fixedContent += buildPrevNext(zhPages, idx);
+    fs.writeFileSync(`_site/cheatsheets/${sheet.file}.html`, htmlTemplate(
+      sheet.title, fixedContent, 'cheatsheets', '../',
+      { lang: 'zh', langAlt: `${zhSheets[idx].file}.html` }
+    ));
+  });
+  console.log(`✓ Created ${zhSheets.length} 繁體中文 cheatsheet pages`);
 }
 
 const knownFaqCategoryOrder = ['General', 'Java', 'Backend', 'Database', 'SQL', 'Redis', 'Kafka', 'Spark & Hadoop', 'Flink', 'Streaming'];

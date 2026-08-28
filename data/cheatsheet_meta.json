@@ -55,6 +55,64 @@
     { "file": "dp",                     "why": "The largest and hardest tier-5 block — budget the most time here." }
   ],
 
+  "zh": {
+    "_comment": "繁體中文 strings for the translated cheatsheet index (_site/cheatsheets.zh.html). Only *data* lives here — the page's own sentences are INDEX_TEXT in site/build-lib.js. Keys mirror categoryOrder / tierLabels / startHere above; anything missing falls back to the English string.",
+
+    "tierLabels": {
+      "5": { "label": "必備",   "note": "幾乎每一輪 FAANG 面試都會遇到 — 應該要能默寫出來。" },
+      "4": { "label": "高價值", "note": "出現頻率高到「這裡有缺口就會掉關」的程度。" },
+      "3": { "label": "值得會", "note": "固定會出現，多半是五星模式的變形。" },
+      "2": { "label": "冷門",   "note": "面試少見 — 讀過一次即可，除非目標公司已知會問。" }
+    },
+
+    "categories": {
+      "Arrays & Strings": "陣列與字串",
+      "Hashing, Stacks & Queues": "雜湊、堆疊與佇列",
+      "Linked Lists": "鏈結串列",
+      "Trees & Heaps": "樹與堆積",
+      "Graphs": "圖論",
+      "Search & Sort": "搜尋與排序",
+      "Dynamic Programming & Recursion": "動態規劃與遞迴",
+      "Greedy & Intervals": "貪婪與區間",
+      "Range Queries & Advanced Structures": "區間查詢與進階結構",
+      "Math & Bits": "數學與位元運算",
+      "Design & Simulation": "設計與模擬",
+      "Language Toolkit": "語言工具箱",
+      "Interview Meta": "面試方法論"
+    },
+
+    "categoryBlurbs": {
+      "Arrays & Strings": "面試中出現頻率最高的一塊。先把這裡的四大模式家族練熟，再談其他。",
+      "Hashing, Stacks & Queues": "O(1) 查找加上 LIFO/FIFO 的紀律 — 把 O(n^2) 掃描壓成 O(n) 的那組結構。",
+      "Linked Lists": "指標手術。概念不深，但對實作精準度的要求很高。",
+      "Trees & Heaps": "遞迴結構加上有序存取。所有標記為樹／堆積的面試題，大約四分之一出自這五份文件。",
+      "Graphs": "走訪、連通性與排序。BFS/DFS 是必備；帶權最短路徑三本柱多半是 L5 以上才會碰。",
+      "Search & Sort": "把單調空間對半砍，以及排序究竟買到了什麼。「對答案做二分搜尋」是最被低估的五星技巧。",
+      "Dynamic Programming & Recursion": "最硬的五星區塊。從遞迴出發，先記憶化，再改成表格。",
+      "Greedy & Intervals": "先排序再掃描，以及證明它正確的交換論證。",
+      "Range Queries & Advanced Structures": "只有在題目同時需要「更新」和「區間查詢」時才動用這些 — 否則前綴和就夠了。",
+      "Math & Bits": "小而自足的主題。學習成本低，偶爾一題定生死。",
+      "Design & Simulation": "「設計一個 X」與低階設計關卡 — 評分看的是操作複雜度與類別建模，不是花招。",
+      "Language Toolkit": "語言機制，不是演算法。為了寫得快，也為了不再因為可避免的坑而掉 submission。",
+      "Interview Meta": "怎麼分類一道題、怎麼說出它的複雜度。第一次模擬面試前先讀。"
+    },
+
+    "startHere": {
+      "lc_pattern":            "分診：拿到一題，它想要的是哪個模式？",
+      "complexity_cheatsheet": "每一輪面試都會被要求說出複雜度。",
+      "array":                 "原地改寫，以及「用索引當雜湊」的技巧。",
+      "hash_map":              "面試中使用率最高的單一資料結構。",
+      "2_pointers":            "陣列／字串上的相向指標與尾隨指標。",
+      "sliding_window":        "依條件擴張與收縮 — 自成一個題型家族。",
+      "binary_search":         "邊界模板，外加對答案做二分搜尋。",
+      "binary_tree":           "DFS 的狀態如何往下傳、又如何往上收。",
+      "bfs":                   "層序走訪，以及它為什麼能給出最短路徑。",
+      "dfs":                   "每一道圖／樹題目都會重複用到的遞迴模式。",
+      "heap":                  "Top-k 與「反覆取出最好的那個」這類問題。",
+      "dp":                    "最大也最難的五星區塊 — 時間要留最多給它。"
+    }
+  },
+
   "sheets": {
     "array":                            { "category": "Arrays & Strings", "tier": 5 },
     "array_examples":                   { "category": "Arrays & Strings", "tier": 4, "title": "Array — Worked Examples" },

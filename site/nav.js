@@ -20,6 +20,11 @@
 
    `data-page` is an entry id (see PRIMARY/MORE below) and marks it active;
    `data-base` is the prefix that gets a page back to the site root.
+
+   A page that exists in both languages also sets `data-lang` (the language of
+   the page you are on) and `data-lang-alt` (the href of its counterpart). That
+   is the only trigger for the 中文/EN button — pages with no translation simply
+   omit the attributes and get no button, so nothing can link into a 404.
    ───────────────────────────────────────────────────────────────────────── */
 (function (root, factory) {
   if (typeof module === 'object' && module.exports) module.exports = factory();
@@ -29,6 +34,7 @@
 
   var THEME_KEY = 'theme';
   var DEFAULT_THEME = 'dark';
+
   // Fired on `document` after every theme change. Pages that paint their own
   // colours (canvas visualizations, SVG charts) listen for this to repaint.
   var THEME_EVENT = 'cs:themechange';
@@ -86,6 +92,19 @@
     return '<a' + attrs + '>' + esc(item.label) + '</a>';
   }
 
+  // The button names the language you would switch TO — the same rule the theme
+  // toggle follows. It is a plain <a>, so it works with JS off and middle-clicks
+  // into a new tab like any other link.
+  function langToggleHTML(lang, altHref) {
+    if (!altHref) return '';
+    var toZh = lang !== 'zh';
+    var label = toZh ? '中文' : 'EN';
+    var title = toZh ? '切換到繁體中文版' : 'Read this page in English';
+    return '<a class="lang-toggle" href="' + esc(altHref) + '" ' +
+      'lang="' + (toZh ? 'zh-Hant' : 'en') + '" ' +
+      'title="' + esc(title) + '" aria-label="' + esc(title) + '">' + label + '</a>';
+  }
+
   function navHTML(options) {
     options = options || {};
     var currentPage = options.currentPage || '';
@@ -111,6 +130,7 @@
             '</button>' +
             '<div class="nav-more-menu">' + MORE.map(links).join('') + '</div>' +
           '</div>' +
+          langToggleHTML(options.lang, options.langAlt) +
           '<button type="button" id="theme-toggle" class="theme-toggle" ' +
             'aria-label="Toggle theme">' + esc(themeLabel(DEFAULT_THEME)) + '</button>' +
         '</div>' +
@@ -219,7 +239,9 @@
     if (!host) return null;
     host.innerHTML = navHTML({
       currentPage: host.getAttribute('data-page') || '',
-      basePath: host.getAttribute('data-base') || ''
+      basePath: host.getAttribute('data-base') || '',
+      lang: host.getAttribute('data-lang') || 'en',
+      langAlt: host.getAttribute('data-lang-alt') || ''
     });
     initTheme();
     initNavToggle(host);
@@ -237,6 +259,7 @@
     hrefFor: hrefFor,
     isMoreEntry: isMoreEntry,
     navHTML: navHTML,
+    langToggleHTML: langToggleHTML,
     themeLabel: themeLabel,
     storedTheme: storedTheme,
     currentTheme: currentTheme,
