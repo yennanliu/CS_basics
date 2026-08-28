@@ -77,8 +77,16 @@ def code_blocks(text):
     return split_blocks(text)[1]
 
 
+class MergeError(Exception):
+    """A translation that cannot be spliced back together — reported, not fatal."""
+
+
 def restore(prose, blocks, slug):
-    """Substitute markers back for their code blocks, insisting on a 1:1 match."""
+    """Substitute markers back for their code blocks, insisting on a 1:1 match.
+
+    Raises MergeError rather than exiting: one broken translation should not
+    hide the state of the other 128.
+    """
     out, seen = [], []
     for line in prose.split('\n'):
         m = MARKER_RE.match(line)
@@ -87,19 +95,21 @@ def restore(prose, blocks, slug):
             continue
         idx = int(m.group(1))
         if idx >= len(blocks):
-            die(f'{slug}: marker {MARKER % idx} has no matching code block '
-                f'(the English sheet has {len(blocks)})')
+            raise MergeError(f'{slug}: marker {MARKER % idx} has no matching code '
+                             f'block (the English sheet has {len(blocks)})')
         if idx in seen:
-            die(f'{slug}: marker {MARKER % idx} appears more than once')
+            raise MergeError(f'{slug}: marker {MARKER % idx} appears more than once')
         seen.append(idx)
         out.append(blocks[idx])
     missing = [i for i in range(len(blocks)) if i not in seen]
     if missing:
-        die(f'{slug}: {len(missing)} code marker(s) dropped by the translation: ' +
+        raise MergeError(
+            f'{slug}: {len(missing)} code marker(s) dropped by the translation: ' +
             ', '.join(MARKER % i for i in missing[:8]) +
             ('…' if len(missing) > 8 else ''))
     if seen != sorted(seen):
-        die(f'{slug}: code markers are out of order — the translation reordered sections')
+        raise MergeError(f'{slug}: code markers are out of order — '
+                         'the translation reordered sections')
     return '\n'.join(out)
 
 
@@ -148,19 +158,33 @@ def cmd_extract(slugs):
 
 
 def cmd_merge(slugs):
-    merged = 0
+    merged, failed, pending = 0, [], 0
     for slug in resolve(slugs):
         src = os.path.join(WORK_DIR, slug + '.zh.md')
         if not os.path.exists(src):
+            pending += 1
             continue
-        blocks = code_blocks(read(os.path.join(EN_DIR, slug + '.md')))
-        out = restore(read(src), blocks, slug)
-        if not out.startswith('# '):
-            die(f'{slug}: the translation must still open with the H1 ("# 標題")')
+        try:
+            blocks = code_blocks(read(os.path.join(EN_DIR, slug + '.md')))
+            out = restore(read(src), blocks, slug)
+            if not out.startswith('# '):
+                raise MergeError(f'{slug}: the translation must still open with the H1 ("# 標題")')
+        except MergeError as exc:
+            failed.append(str(exc))
+            continue
         write(os.path.join(ZH_DIR, slug + '.md'), out)
         merged += 1
         print(f'✓ doc/cheatsheet/zh/{slug}.md')
-    print(f'merged {merged} file(s)')
+    for msg in failed:
+        print('✗ ' + msg, file=sys.stderr)
+    summary = f'merged {merged} file(s)'
+    if failed:
+        summary += f', {len(failed)} failed'
+    if pending:
+        summary += f', {pending} not translated yet'
+    print(summary)
+    if failed:
+        sys.exit(1)
 
 
 def cmd_verify(slugs):
