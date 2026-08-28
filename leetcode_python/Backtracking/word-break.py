@@ -46,6 +46,8 @@ NOTE !!!
 
 
 1. queue is tracking `end` idx
+
+2. need `visited` to avoid re-process same idx
 """
 from collections import deque
 
@@ -76,6 +78,11 @@ class Solution(object):
         # "we have successfully matched s[:idx]"
         q = deque([0])
 
+        """
+        NOTE !!!
+
+        2. need `visited` to avoid re-process same idx
+        """
         # Avoid processing the same index repeatedly
         visited = set([0])
 
