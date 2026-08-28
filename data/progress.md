@@ -230,8 +230,6 @@
 			- 1D DP
 			- 2D DP
 				- 72
-			- 161
-			- 139
 			- Palindrome Substring DP 
 				- 5
 			- Combinations
