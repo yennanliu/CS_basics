@@ -47,6 +47,10 @@ DP def
 
               (operations: insert / delete / replace)
 
+              NOTE !!
+
+                -> 所以 i / j 不是「character index」，而是 `prefix `的長度。
+
 DP eq
 
      if word1[i-1] == word2[j-1]:
@@ -77,6 +81,37 @@ class Solution(object):
         n1 = len(word1)
         n2 = len(word2)
 
+        """
+        NOTE !!!
+
+
+        why `n+1` ??
+
+        -> 所以 i / j 不是「character index」，而是 `prefix `的長度
+
+
+        -> example:
+
+        ```
+        word1 = "abc"
+        n1 = 3
+        ```
+
+        -> we need to represent below 4 state:
+
+        ```
+
+        i = 0 → ""
+        i = 1 → "a"
+        i = 2 → "ab"
+        i = 3 → "abc"
+
+        ```
+
+        -> so that's why we need `n+1`
+
+
+        """
         # dp[i][j] = min edits to convert word1[0:i] -> word2[0:j]
         dp = [[0] * (n2 + 1) for _ in range(n1 + 1)]
 
