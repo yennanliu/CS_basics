@@ -58,7 +58,7 @@ What it does, in order:
 2. **Canonicalises company tags.** `M$`, `MS`, `msft` → `` `microsoft` ``; `amz` →
    `` `amazon` ``; `meta`/`facebook` → `` `fb` ``; `GS`/`Goldman Sachs` →
    `` `goldman sachs` ``. This is what makes `script/get_company_LC.sh microsoft` find
-   all 402 rows instead of the 2 that happened to be spelled out.
+   all 555 rows instead of the 2 that happened to be spelled out.
 3. **Bolds a missing type tag**, when the row's first tag is already a known pattern.
 4. **Appends the problem's real LeetCode topics** when the bold tag names none of them.
    The bold tag itself is never rewritten: it says which section's technique the row is
@@ -83,7 +83,26 @@ touches the network. Refresh them by hand.
 
 The Google column feeds the site: `site/build-roadmap.js` reads `google` out of this
 column for the Study Roadmap's "Google-tagged" list, which the completed tags took from
-263 problems to 913.
+263 problems to 914.
+
+### Refreshing the company cache safely
+
+The PDFs come in three print layouts, and `doc/leetcode_company_V6` puts a **single**
+space after the problem number where the others put several — a `\s{2,}` gap alone reads
+5% of that file and silently produces a cache that looks fine. `--refresh-companies`
+therefore validates before it writes, and every failure is fatal:
+
+- `pdftotext` runs with `check=True`, so a corrupt or encrypted PDF aborts the refresh
+  instead of contributing an empty page.
+- Each PDF states its own row count (`You have solved 24 / 1115 problems.`). Parsing under
+  half of it raises; parsing under all of it prints a note, because the `V1` captures are
+  genuinely short prints (55–86%) rather than bad parses.
+- A refresh that ends with no problems for one of the eight companies raises rather than
+  writing the cache — a silently short parse would not produce a visibly broken file, it
+  would quietly *delete* that company's README tags on the next run.
+
+`doc/leetcode_company_V4` is not read: it is a prose interview guide with no problem
+table.
 
 ## scrape_lc_discuss_company.py
 

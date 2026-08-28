@@ -469,11 +469,31 @@ def refresh_topics():
     print("wrote %s (%d problems)" % (TOPIC_CACHE, len(trimmed)), file=sys.stderr)
 
 
-# `  388    Longest Absolute File Path (/problems/…)   40.3%   Medium`
-PDF_ROW = re.compile(r"^\s*(\d{1,4})\s{2,}(\S.*?)\s*$")
+# A problem row, across three different print layouts:
+#
+#   frequency-master  `  388    Longest Absolute File Path (/problems/…)  40.3%`
+#   V5                `   3       Longest Substring With…  Hash Table (/tag/…)`
+#   V6                `   388 Longest Absolute File Path (/…  String (/tag/string)`
+#
+# V6 puts a *single* space after the number, so a `\s{2,}` gap alone drops 95%
+# of that file. Every real row carries the problem's `(/…` link, though — even
+# when the title is truncated — so either signal is enough.
+PDF_ROW = re.compile(r"^\s*(\d{1,4})(\s+)(\S.*?)\s*$")
+
+# `You have solved 24 / 1115 problems.` — the page states its own row count,
+# which is what validate_pdf_rows() checks the parse against.
+PDF_TOTAL = re.compile(r"solved\s+\d+\s*/\s*(\d+)\s+problems")
+
+# doc/leetcode_company_V4 is deliberately absent: it is a prose interview guide
+# with no problem table at all, so it contributed zero rows.
 PDF_DIRS = ["doc/Leetcode_company_frequency-master", "doc/leetcode_company_V1",
-            "doc/leetcode_company_V4", "doc/leetcode_company_V5",
-            "doc/leetcode_company_V6"]
+            "doc/leetcode_company_V5", "doc/leetcode_company_V6"]
+
+# Below this share of the row count a PDF states for itself, the parse is
+# treated as broken rather than as a short print. The V1 captures genuinely stop
+# early (55-86% of their stated totals) while a layout the regex cannot read at
+# all yields 0-5%, so the floor sits between the two.
+PDF_MIN_YIELD = 0.5
 
 
 def pdf_company(filename):
@@ -486,37 +506,82 @@ def pdf_company(filename):
     return COMPANY_ALIASES.get(stem)
 
 
+def pdf_rows(path):
+    """Every LC id in one company PDF, plus the row count the page claims."""
+    result = subprocess.run(
+        ["pdftotext", "-layout", str(path), "-"],
+        capture_output=True, text=True, timeout=180, check=True)
+    text = result.stdout
+    ids = set()
+    for line in text.split("\n"):
+        match = PDF_ROW.match(line)
+        if not match:
+            continue
+        lc, gap, rest = int(match.group(1)), match.group(2), match.group(3)
+        if not 1 <= lc <= 3500:
+            continue
+        if re.match(r"^(Easy|Medium|Hard|\d+\.\d+%)", rest):
+            continue
+        if "(/" in rest or (len(gap) >= 2 and re.search(r"[A-Za-z]{3}", rest)):
+            ids.add(lc)
+    stated = PDF_TOTAL.search(text)
+    return ids, int(stated.group(1)) if stated else None
+
+
+def validate_pdf_rows(name, ids, stated):
+    """Raise on a parse that clearly failed; warn on one that came up short."""
+    if not ids:
+        raise RuntimeError(
+            "%s: parsed 0 problem rows — the layout changed, or the PDF is not "
+            "a problem table" % name)
+    if stated is None:
+        return
+    if len(ids) < stated * PDF_MIN_YIELD:
+        raise RuntimeError(
+            "%s: parsed %d of the %d rows the page states (%.0f%%) — refusing "
+            "to write a cache from a broken parse"
+            % (name, len(ids), stated, 100.0 * len(ids) / stated))
+    if len(ids) < stated:
+        print("  note: %s parsed %d of %d stated rows (short print capture)"
+              % (name, len(ids), stated), file=sys.stderr)
+
+
 def refresh_companies():
-    """Re-parse the company-frequency PDFs into data/company_lc_tags.json."""
+    """
+    Re-parse the company-frequency PDFs into data/company_lc_tags.json.
+
+    Every failure mode here is fatal on purpose. The cache drives ~2300 README
+    tags, so a silently short parse would not produce a visibly broken file —
+    it would quietly *delete* company tags on the next run.
+    """
     out = {}
     for rel in PDF_DIRS:
         directory = ROOT / rel
         if not directory.is_dir():
-            continue
+            raise RuntimeError("missing PDF directory %s" % directory)
         for name in sorted(os.listdir(directory)):
             if not name.lower().endswith(".pdf"):
                 continue
             company = pdf_company(name)
             if company not in CORE_COMPANIES:
                 continue
-            text = subprocess.run(["pdftotext", "-layout", str(directory / name), "-"],
-                                  capture_output=True, text=True, timeout=180).stdout
-            for line in text.split("\n"):
-                m = PDF_ROW.match(line)
-                if not m:
-                    continue
-                lc, rest = int(m.group(1)), m.group(2)
-                if not 1 <= lc <= 3500 or not re.search(r"[A-Za-z]{3}", rest):
-                    continue
-                if re.match(r"^(Easy|Medium|Hard|\d+\.\d+%)", rest):
-                    continue
-                out.setdefault(company, set()).add(lc)
-    # doc/google_leetcode_problems_by_tags.md predates the PDFs and covers ~450
+            ids, stated = pdf_rows(directory / name)
+            validate_pdf_rows("%s/%s" % (rel, name), ids, stated)
+            out.setdefault(company, set()).update(ids)
+
+    # doc/google_leetcode_problems_by_tags.md predates the PDFs and covers
     # Google problems they miss; the union is what the site's Google list wants
     gdoc = ROOT / "doc" / "google_leetcode_problems_by_tags.md"
     if gdoc.exists():
         extra = {int(n) for n in re.findall(r"^- #(\d+) ", gdoc.read_text(), re.M)}
         out.setdefault("google", set()).update(extra)
+
+    missing = [c for c in CORE_COMPANIES if not out.get(c)]
+    if missing:
+        raise RuntimeError(
+            "no problems collected for %s — refusing to write a cache that "
+            "would strip their README tags" % ", ".join(missing))
+
     write_cache(COMPANY_CACHE, COMPANY_COMMENT,
                 {k: sorted(out[k]) for k in sorted(out)})
     for company in sorted(out, key=lambda c: -len(out[c])):
