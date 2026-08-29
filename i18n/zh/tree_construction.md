@@ -191,6 +191,10 @@
 | 224 / 227 / 772 | Basic Calculator I / II / III | 同樣的括號下降 | 有優先級與求值，但不保留樹 |
 | 20 | Valid Parentheses | 平衡計數器這個原語 | 只做配對，也就是 V0 用到的那個子步驟 |
 
+<!-- e54c5a583827 -->
+### 4) Build Binary Expression Tree From Infix Expression — LC 1597
+<!--CODE-->
+
 <!-- 9b607a067a7b -->
 ## 總結
 

@@ -64,6 +64,22 @@
 | **看過的狀態** | 偵測環 | O(n) | 偵測重複樣式 |
 | **依雜湊鍵分組** | 分類 | O(n) | 把相似的東西歸在一起 |
 
+<!-- 31e3d724cf76 -->
+### Template 1: Frequency Counter
+<!--CODE-->
+
+<!-- 3527814ecb00 -->
+### Template 2: Rolling Hash (Rabin-Karp)
+<!--CODE-->
+
+<!-- e537917c2366 -->
+### Template 3: HashSet for Cycle Detection
+<!--CODE-->
+
+<!-- 0ecbe45b0e4d -->
+### Template 4: Group by Hash Key
+<!--CODE-->
+
 <!-- c8b75ab397b3 -->
 ## 依模式分類的題目
 

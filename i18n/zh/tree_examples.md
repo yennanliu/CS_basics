@@ -46,6 +46,15 @@
 
 <!--CODE-->
 
+<!-- 7c263ecaf1dc -->
+### 2) Maximum Width of Binary Tree — LC 662
+<!--CODE-->
+
+<!-- 00f286dc2563 -->
+### 3) Reverse Odd Levels of Binary Tree — LC 2415
+
+<!--CODE-->
+
 <!-- 8481a18efc18 -->
 ## 結構與性質範例
 
@@ -72,6 +81,10 @@
 ### 5) 檢查對稱樹 — LC 101
 <!--CODE-->
 
+<!-- 9ff06bfba4d9 -->
+### 6) Same Tree — LC 100
+<!--CODE-->
+
 <!-- 3ca1f0a5bcd5 -->
 #### 變形 — Flip Equivalent Binary Trees (LC 951)
 
@@ -82,6 +95,18 @@
 <!--CODE-->
 
 > 千萬不要想先把兩棵樹「正規化」（例如把子樹依值排序）—— 值只在這題的限制下才唯一；雙向檢查才是通用寫法。
+
+<!-- ba457eb37833 -->
+### 7) Validate Binary Search Tree — LC 98
+<!--CODE-->
+
+<!-- ab082c17f33a -->
+### 8) Balanced Binary Tree — LC 110
+<!--CODE-->
+
+<!-- 50446d246923 -->
+### 9) Boundary of Binary Tree — LC 545
+<!--CODE-->
 
 <!-- 189d06803883 -->
 ## 高度、深度與路徑範例
@@ -177,11 +202,26 @@
 
 <!--CODE-->
 
+<!-- 8e0af4374960 -->
+### 11) Maximum Depth of Binary Tree — LC 104
+<!--CODE-->
+
 <!-- db7975d34366 -->
 ### 12) Minimum Depth of Binary Tree — LC 111
 
 > 參考：[MinimumDepthOfBinaryTree.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Recursion/MinimumDepthOfBinaryTree.java)
 
+<!--CODE-->
+
+<!-- 84fe98653cf5 -->
+### 13) Binary Tree Maximum Path Sum — LC 124
+
+<!--CODE-->
+
+<!--CODE-->
+
+<!-- b8d5cebf0e28 -->
+### 14) Count Good Nodes in Binary Tree — LC 1448
 <!--CODE-->
 
 <!-- 1e8f9fe626f8 -->
@@ -308,6 +348,19 @@
 | Convert BST to Sorted Doubly Linked List | 426 | 用中序壓平成雙向鏈結串列 |
 | Increasing Order Search Tree | 897 | 用中序壓平成只有右子的鏈 |
 | Flatten a Multilevel Doubly Linked List | 430 | 在串列上做同樣的「把子鏈接在 next 之前」 |
+
+<!-- aac93d713835 -->
+### 17) Merge Two Binary Trees — LC 617
+
+<!--CODE-->
+
+<!--CODE-->
+
+<!-- 7e12677f8a6a -->
+### 18) Invert Binary Tree — LC 226
+<!--CODE-->
+
+<!--CODE-->
 
 <!-- 652e4da8e465 -->
 ### 19) Binary Tree Cameras — LC 968（由下而上的多狀態貪婪）

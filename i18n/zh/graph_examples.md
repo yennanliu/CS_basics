@@ -36,6 +36,40 @@
 <!-- 598a9bfd2a3c -->
 ## LC 範例
 
+<!-- 316f2fb29c4b -->
+### 2-1) Number of Islands — LC 200
+
+<!--CODE-->
+
+<!-- f3dac1edb6ba -->
+### 2-2) Max Area of Island — LC 695
+
+<!--CODE-->
+
+<!-- ea6c4b6c6174 -->
+### 2-3) Closest Leaf in a Binary Tree — LC 742
+<!--CODE-->
+
+<!-- 478204341efd -->
+### 2-4) Number of Connected Components in an Undirected Graph — LC 323
+<!--CODE-->
+
+<!-- c5a93a9b6290 -->
+### 2-5) Clone Graph — LC 133 ⭐⭐⭐⭐
+<!--CODE-->
+
+<!-- 8a8485d573bc -->
+### 2-6) Bus Routes — LC 815
+<!--CODE-->
+
+<!-- a42d0530290d -->
+### 2-7) Course Schedule — LC 207
+<!--CODE-->
+
+<!-- 96a7ad576f59 -->
+### 2-8) Find Eventual Safe States — LC 802
+<!--CODE-->
+
 <!-- a3d1fc84c88c -->
 ### 2-9) Evaluate Division — LC 399
 

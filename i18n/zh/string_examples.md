@@ -47,6 +47,18 @@
 - String -> Int
 <!--CODE-->
 
+<!-- f6ba2e488182 -->
+### 2-3) Count and say — LC 38
+<!--CODE-->
+
+<!-- ed4f209c144d -->
+### 2-4) Monotone Increasing Digits — LC 738
+<!--CODE-->
+
+<!-- 214ad94a8081 -->
+### 2-5) Validate IP Address — LC 468
+<!--CODE-->
+
 <!-- e34b7ccf2ede -->
 ### 2-6) License Key Formatting — LC 482
 > **因重複而刪除**：一份 30 行的「字串操作 + 暴力」版本，先去除分隔符、重新分組再接回去；留下來的反向掃描是同一個想法，九行就寫完。
@@ -57,6 +69,10 @@
 ### 2-7) Repeated String Match — LC 686
 > **因重複而刪除**：另一份 Python 版本，用同樣的 `(res-1)*sa <= 2*max(sa,sb)` 上界，只是多加了一堆邊界情況分支。
 
+<!--CODE-->
+
+<!-- 0fc2e5fc93a4 -->
+### 2-8) Roman to Integer — LC 13
 <!--CODE-->
 
 <!-- 041f74879b22 -->

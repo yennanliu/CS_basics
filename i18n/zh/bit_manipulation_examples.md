@@ -86,6 +86,13 @@
 
 <!--CODE-->
 
+<!-- 8f21c2278a58 -->
+### 7) Reverse Bits — LC 190
+
+<!--CODE-->
+
+<!--CODE-->
+
 <!-- db7ab2cc6ab9 -->
 ### 8) Power of Two — LC 231 —— `n & (n - 1) == 0`
 
@@ -98,6 +105,13 @@
 
 <!-- 79dd739428de -->
 ### 9) Sum of Two Integers — LC 371 —— 進位靠 AND、加總靠 XOR ⭐⭐⭐⭐
+
+<!--CODE-->
+
+<!--CODE-->
+
+<!-- 079394600db7 -->
+### 10) Add Binary — LC 67
 
 <!--CODE-->
 
@@ -131,6 +145,13 @@
 
 
 `n` 個元素的陣列，每個子集合都對應到 `[0, 2^n)` 裡的一個 `n` 位元數字：第 `i` 位是 1 ⇔ 選入 `nums[i]`。列舉 mask 是回溯之外的迭代式做法。
+
+<!--CODE-->
+
+<!--CODE-->
+
+<!-- 6e4adc5ec6df -->
+### 13) Gray Code — LC 89
 
 <!--CODE-->
 

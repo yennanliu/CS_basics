@@ -553,6 +553,14 @@ Python 的 `bisect_*` 給你的是**索引**，而且可能是 `-1` 或 `len(d)`
 
 > 標準解跟分組模板放在一起，見 [hash_map.md → Template 3: Grouping by a Computed Key](./hash_map.md#template-3-grouping-by-a-computed-key)。
 
+<!-- 087f0f7c04a4 -->
+### 2-3') Longest Substring Without Repeating Characters — LC 3
+<!--CODE-->
+
+<!-- d620adfff695 -->
+### 2-4) Count Primes — LC 204
+<!--CODE-->
+
 <!-- 5750f591273c -->
 ### 2-5) Valid Sudoku — LC 36
 <!--CODE-->
@@ -561,6 +569,47 @@ Python 的 `bisect_*` 給你的是**索引**，而且可能是 `-1` 或 `len(d)`
 > 因為它從來不去檢查那些已填好的格子彼此之間有沒有衝突。
 
 <!--CODE-->
+
+<!-- 3a122ae82656 -->
+### 2-6) Pairs of Songs With Total Durations Divisible by 60 — LC 1010
+<!--CODE-->
+
+<!-- 67f52712ac68 -->
+### 2-7) Subarray Sum Equals K — LC 560
+<!--CODE-->
+<!--CODE-->
+
+<!-- 6306dcd4af15 -->
+### 2-8) K-diff Pairs in an Array — LC 532
+<!--CODE-->
+
+<!-- 83fee33bbc5e -->
+### 2-9) Sentence Similarity — LC 734
+<!--CODE-->
+
+<!-- 0fa361081a54 -->
+### 2-10) LRU Cache — LC 146
+<!--CODE-->
+
+<!-- 06284fec5512 -->
+### 2-11) Find All Anagrams in a String — LC 438
+<!--CODE-->
+
+<!-- 39ace14ebba9 -->
+### 2-12) Brick Wall — LC 554
+<!--CODE-->
+
+<!-- 350f83619603 -->
+### 2-13) Maximum Size Subarray Sum Equals k — LC 325
+
+<!--CODE-->
+
+<!-- deb4682d7137 -->
+### 2-14) Smallest Common Region — LC 1257
+
+<!--CODE-->
+
+---
 
 <!-- bd95c3aa8bad -->
 ### 2-15) Tuple with Same Product（LC 1726）

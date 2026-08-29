@@ -25,6 +25,9 @@
 **做法**：對每個元素二分搜尋它的補數
 <!--CODE-->
 
+<!-- f7d066390ba6 -->
+### 2) Find Peak Element (LC 162, LC 852)
+
 <!-- ee7a025fa737 -->
 #### 核心想法：往上爬（保證有峰值）
 
@@ -149,6 +152,9 @@
 > 成對的規律在單獨元素之後就被打破了；對偶數索引做二分搜尋。
 
 <!--CODE-->
+
+<!-- 7ff27886ddda -->
+### 15) Check If a Number Is Majority Element in a Sorted Array (LC 1150)
 
 <!-- 89360c4b7a61 -->
 #### 核心想法

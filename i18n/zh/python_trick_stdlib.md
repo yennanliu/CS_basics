@@ -240,6 +240,19 @@ Java 原版：
 - 這套演算法讓你在每次插入新元素時 `NOT sorting an array eveytime`（不必整個重新排序） 
 <!--CODE-->
 
+<!-- f66cc8c387e8 -->
+## `collections`
+
+<!-- a9d3bda962dd -->
+### `defaultdict`
+
+<!--CODE-->
+
+<!-- 385385807f69 -->
+### `Counter`
+
+<!--CODE-->
+
 <!-- 55e88d3e61e0 -->
 ### `deque`（雙端佇列）
 
@@ -250,10 +263,16 @@ Java 原版：
 
 - 參見 [Collection.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/Collection.md)
 
+<!-- d5d7f6d0ab5b -->
+## `itertools`
+
 <!-- f16410e4dd23 -->
 ### `itertools` — product、permutations、combinations、accumulate
 
 <!--CODE-->
+
+<!-- d7d6945ad01c -->
+## `functools`
 
 <!-- a279008bb358 -->
 ### `lru_cache`、`cmp_to_key` 及其同伴
@@ -263,4 +282,17 @@ Java 原版：
 - 參考
     - https://walkonnet.com/archives/451257
     - https://docs.python.org/3/library/functools.html
+<!--CODE-->
+
+<!-- 59659e7580e7 -->
+### `reduce()`
+
+<!--CODE-->
+
+<!-- 07eb08cd6ce9 -->
+## `datetime`
+
+<!-- bd9b33751725 -->
+### `datetime` ↔ `str`
+
 <!--CODE-->

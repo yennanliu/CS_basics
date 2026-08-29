@@ -36,6 +36,16 @@ const FENCE_RE = /^(\s*)(`{3,}|~{3,})(.*)$/;
 const KEY_RE = /^<!-- ([0-9a-f]{12}) -->$/;
 
 /**
+ * A translation whose English section has since been edited.
+ *
+ * It is kept, not deleted: an English edit is usually small, and the Chinese it
+ * invalidates is usually still 90% right. Throwing it away would mean rewriting a
+ * paragraph to chase a five-word change. `compose` ignores these, so a parked
+ * entry never reaches a page — it is there for whoever writes the replacement.
+ */
+const STALE_RE = /^<!-- stale: ([0-9a-f]{12}) -->$/;
+
+/**
  * Split a sheet into prose (every fence collapsed to a one-line CODE marker)
  * and the ordered code blocks that were lifted out.
  *
@@ -131,8 +141,13 @@ function keyOf(body) {
   return crypto.createHash('sha1').update(normalise(body), 'utf8').digest('hex').slice(0, 12);
 }
 
-/** Parse a store file into key → translated body. */
-function parseStore(md) {
+/**
+ * Parse a store file. `stale: true` returns the parked entries instead of the
+ * live ones — the two share a format and a file, and never a key space in use.
+ */
+function parseStore(md, { stale = false } = {}) {
+  const want = stale ? STALE_RE : KEY_RE;
+  const other = stale ? KEY_RE : STALE_RE;
   const store = new Map();
   let key = null;
   let buf = [];
@@ -141,10 +156,15 @@ function parseStore(md) {
     buf = [];
   };
   for (const line of md.split('\n')) {
-    const m = KEY_RE.exec(line);
+    const m = want.exec(line);
     if (m) {
       flush();
       key = m[1];
+    } else if (other.test(line)) {
+      // A marker of the other kind ends this entry — without this its body would
+      // be swallowed into the previous one.
+      flush();
+      key = null;
     } else if (key) {
       buf.push(line);
     }
@@ -153,9 +173,17 @@ function parseStore(md) {
   return store;
 }
 
-/** Render key → body back to a store file, in the order given. */
-function formatStore(entries) {
-  return entries.map(([key, body]) => `<!-- ${key} -->\n${body}\n`).join('\n');
+/** The parked translations: those whose English section has since been edited. */
+const parseStale = md => parseStore(md, { stale: true });
+
+/**
+ * Render a store file: the live entries in the order given, then anything parked.
+ * Parked entries go last so the file still reads top-to-bottom like the sheet.
+ */
+function formatStore(entries, stale = []) {
+  return entries.map(([key, body]) => `<!-- ${key} -->\n${body}\n`)
+    .concat(stale.map(([key, body]) => `<!-- stale: ${key} -->\n${body}\n`))
+    .join('\n');
 }
 
 /**
@@ -195,6 +223,7 @@ module.exports = {
   splitTrailer,
   keyOf,
   parseStore,
+  parseStale,
   formatStore,
   compose,
   survey,

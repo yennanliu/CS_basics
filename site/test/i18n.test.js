@@ -108,6 +108,40 @@ test('parseStore ignores anything before the first key, so a file can carry a pr
   assert.deepEqual([...store.keys()], ['a1b2c3d4e5f6']);
 });
 
+// A translation whose English was edited is parked rather than deleted, because
+// the edit is usually small and the Chinese usually still mostly right. The two
+// kinds share one file, so each parser has to stop at the other's marker — else a
+// parked body is swallowed into whichever entry preceded it.
+test('parseStore ignores parked entries, and does not absorb their text', () => {
+  const md = '<!-- a1b2c3d4e5f6 -->\n## 總覽\n\n<!-- stale: 0123456789ab -->\n## 舊的總覽\n';
+  const live = I.parseStore(md);
+  assert.deepEqual([...live.keys()], ['a1b2c3d4e5f6']);
+  assert.equal(live.get('a1b2c3d4e5f6'), '## 總覽');
+});
+
+test('parseStale reads the parked entries, and only those', () => {
+  const md = '<!-- a1b2c3d4e5f6 -->\n## 總覽\n\n<!-- stale: 0123456789ab -->\n## 舊的總覽\n';
+  const stale = I.parseStale(md);
+  assert.deepEqual([...stale], [['0123456789ab', '## 舊的總覽']]);
+});
+
+test('formatStore writes parked entries after the live ones, and round-trips', () => {
+  const live = [['a1b2c3d4e5f6', '## 總覽']];
+  const parked = [['0123456789ab', '## 舊的總覽']];
+  const md = I.formatStore(live, parked);
+  assert.ok(md.indexOf('<!-- a1b2c3d4e5f6 -->') < md.indexOf('<!-- stale: 0123456789ab -->'));
+  assert.deepEqual([...I.parseStore(md)], live);
+  assert.deepEqual([...I.parseStale(md)], parked);
+});
+
+// Composition must never reach for a parked entry: it is a translation of text
+// the English sheet no longer has.
+test('compose does not use a parked entry', () => {
+  const key = I.keyOf('## Overview\n\nA heap is a tree.\n\n<!--CODE-->');
+  const md = `<!-- stale: ${key} -->\n## 總覽\n`;
+  assert.equal(I.compose(EN, I.parseStore(md)), EN);
+});
+
 test('parseStore rejects a malformed key line instead of storing it', () => {
   // Wrong length and non-hex both fail the key pattern, so the line is body text.
   assert.equal(I.parseStore('<!-- nothex89abc -->\nx').size, 0);

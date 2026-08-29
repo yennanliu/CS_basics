@@ -24,11 +24,51 @@
 <!-- 2fa8c6980a47 -->
 ## 課程排程與排序
 
+<!-- a702090ffa00 -->
+### 1) Course Schedule II — LC 210 ⭐⭐⭐⭐⭐
+
+
+<!--CODE-->
+
+<!--CODE-->
+
+<!-- 3ad00004a1e0 -->
+### 2) Course Schedule — LC 207 ⭐⭐⭐⭐⭐
+
+
+<!--CODE-->
+
+<!--CODE-->
+
+<!-- fe210e75ae52 -->
+### 3) Alien Dictionary — LC 269 ⭐⭐⭐⭐
+
+
+<!--CODE-->
+
+<!--CODE-->
+
+<!-- 333f47d0c122 -->
+### 4) Sequence Reconstruction — LC 444
+
+
+<!--CODE-->
+
 <!-- 197a91d8afbc -->
 ## 分層與平行排程
 
+<!-- e80926ca5726 -->
+### 5) Parallel Courses — LC 1136
+
+<!--CODE-->
+
 <!-- a237f44ca27e -->
 ## 環偵測與安全狀態
+
+<!-- 0023405b4c52 -->
+### 6) Find Eventual Safe States — LC 802
+
+<!--CODE-->
 
 <!-- 7f0839742018 -->
 ## 無向圖 — 連通分量與重心
@@ -97,3 +137,11 @@
 | 2603 | 收集樹中金幣 | 用剝葉子移除不必要的節點 |
 | 1377 | T 秒後青蛙的位置 | 從根開始在樹上跑 BFS |
 | 863 | 二元樹中所有距離為 K 的節點 | 從樹中某個節點跑 BFS |
+
+<!-- d7731e1e1c48 -->
+### 8) Number of Provinces — LC 547
+
+
+<!--CODE-->
+
+<!--CODE-->

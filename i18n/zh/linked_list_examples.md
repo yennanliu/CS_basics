@@ -47,6 +47,14 @@
 
 <!--CODE-->
 
+<!-- c0b97737fe69 -->
+### 2) Reorder List — LC 143
+
+
+<!--CODE-->
+
+<!--CODE-->
+
 <!-- 336fd585c9a9 -->
 ### 3) Swap Nodes in Pairs — LC 24
 
@@ -161,8 +169,33 @@
 <!-- 2f0028ed88d7 -->
 ## 合併與切分
 
+<!-- e32a4f32844a -->
+### 4) Merge Two Sorted Lists — LC 21
+
+<!--CODE-->
+
+<!-- 993aa1c066e4 -->
+### 5) Merge K Sorted Lists — LC 23
+
+<!--CODE-->
+
+<!-- fc6dacd00507 -->
+### 6) Split Linked List in Parts — LC 725
+
+<!--CODE-->
+
 <!-- 86a2bbc78507 -->
 ## 快慢指標與結構
+
+<!-- ccd55ebd47a0 -->
+### 7) Palindrome Linked List — LC 234
+
+<!--CODE-->
+
+<!-- 0ec1b075c981 -->
+### 8) Intersection of Two Linked Lists — LC 160
+
+<!--CODE-->
 
 <!-- dfffc5972b7c -->
 ### 9) Remove Nth Node From End of List — LC 19
@@ -177,6 +210,19 @@
 
 <!-- c9ae5992ae69 -->
 ## 複製、攤平與連通元件
+
+<!-- 108dd35e1fd3 -->
+### 10) Copy List with Random Pointer — LC 138
+
+<!--CODE-->
+
+<!--CODE-->
+
+<!-- a9ef3b526c52 -->
+### 11) Linked List Components — LC 817
+
+
+<!--CODE-->
 
 <!-- 9582e13c742b -->
 ### 12) Flatten a Multilevel Doubly Linked List — LC 430 ⭐⭐⭐⭐
@@ -203,6 +249,11 @@
 
 <!-- e52f2acb6a4a -->
 ## 串列上的算術與排序
+
+<!-- 7760a403628b -->
+### 13) Plus One Linked List — LC 369
+
+<!--CODE-->
 
 <!-- 0cbdea7dc968 -->
 ### 14) Sort List（在鏈結串列上做合併排序） — LC 148 ⭐⭐⭐⭐⭐

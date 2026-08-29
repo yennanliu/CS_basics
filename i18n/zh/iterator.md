@@ -80,6 +80,11 @@ peek、攤平、合併——而且 `next()` 還要維持攤還 `O(1)`。
 <!-- 5fa13fe640ce -->
 ## 2) LC 範例
 
+<!-- 04314dd9674a -->
+### 2-1) Peeking Iterator — LC 284
+
+<!--CODE-->
+
 <!-- 9d5475242e00 -->
 ### 2-2) Flatten Nested List Iterator — LC 341
 

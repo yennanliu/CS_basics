@@ -291,12 +291,25 @@ invalidates only the section it touched.
 missing from the store:
 
 ```bash
-node script/zh.js status              # coverage, and which sheets have gaps
+node script/zh.js sync heap           # park the translations the edit invalidated
 node script/zh.js todo heap           # the sections needing a translation, keys included
-#   translate each one, keeping every <!--CODE--> line, and append it to i18n/zh/heap.md
-node script/zh.js sync heap           # drop entries the English no longer has, reorder
+#   adapt each parked translation, keeping every <!--CODE--> line, and write it back
+#   into i18n/zh/heap.md as a live `<!-- key -->` entry
+node script/zh.js sync heap           # tidy, and drop the parked copies you used
 node script/zh.js status --write      # refresh the progress doc
 ```
+
+`sync` **parks** rather than deletes: a translation whose English section changed
+is kept in the same file under `<!-- stale: key -->`, because the edit is usually
+small and the Chinese usually still most of the way there. `compose` ignores
+parked entries, so one can never reach a page. Revert the English and its
+translation revives on the next `sync` — same text, same key. Only
+`sync --prune` throws parked entries away.
+
+A section counts as translated when the store **has an entry** for it, not when
+its Chinese differs from the English: 238 sections are an LC-titled heading over a
+code block, and house rule keeps LC titles in English, so their correct
+translation *is* the English text.
 
 ---
 

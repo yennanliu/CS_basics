@@ -44,6 +44,13 @@
 <!-- 598a9bfd2a3c -->
 ## LC 範例
 
+<!-- 12fe06f119d7 -->
+### 1) Letter Combinations of a Phone Number — LC 17
+
+<!--CODE-->
+
+<!--CODE-->
+
 <!-- 281d96d0a663 -->
 ### 2) Combination Sum — LC 39 ⭐⭐⭐⭐
 
@@ -136,6 +143,11 @@ LC 79 回傳 **boolean** 而且會短路（`if dfs(...): return True`）。下�
 
 <!--CODE-->
 
+<!-- 9e55a16be5ce -->
+### 5) Subsets II — LC 90
+
+<!--CODE-->
+
 <!-- d808b5a6780f -->
 ### 6) Combinations — LC 77
 
@@ -204,6 +216,11 @@ LC 79 回傳 **boolean** 而且會短路（`if dfs(...): return True`）。下�
 
 <!--CODE-->
 <!--CODE-->
+
+<!--CODE-->
+
+<!-- 905e6ae7906c -->
+### 9) Restore IP Addresses — LC 93
 
 <!--CODE-->
 

@@ -506,6 +506,11 @@
 <!-- 5fa13fe640ce -->
 ## 2) LC 範例
 
+<!-- 8398521972ca -->
+### 2-1) Excel Sheet Column Title — LC 168
+
+<!--CODE-->
+
 <!-- 1684312cd354 -->
 ### 2-1-1) Excel Sheet Column Number — LC 171
 
@@ -516,6 +521,16 @@
 <!--CODE-->
 
 **為什麼 168 比 171 難 — 「雙射的 26 進位」沒有數字 `0`：**
+
+<!--CODE-->
+
+<!-- 85d3918bf019 -->
+### 2-2) Solve the Equation — LC 640
+
+<!--CODE-->
+
+<!-- a8e63f2c3328 -->
+### 2-3) Roman to Integer — LC 13
 
 <!--CODE-->
 

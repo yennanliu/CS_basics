@@ -2,9 +2,11 @@
 /**
  * 繁體中文 cheatsheet translations — authoring CLI.
  *
- *   node script/zh.js status [--write]   coverage per sheet (--write: refresh the tracker)
- *   node script/zh.js todo [slug ...]    print the sections still needing a translation
- *   node script/zh.js sync [slug ...]    drop orphaned entries, reorder to match English
+ *   node script/zh.js status [--write]     coverage per sheet (--write: refresh the tracker)
+ *   node script/zh.js todo [slug ...]      print the sections still needing a translation
+ *   node script/zh.js sync [--prune] [slug ...]
+ *                                          reorder to match English, park what it dropped
+ *                                          (--prune: forget the parked entries)
  *
  * There is no `merge` and no `verify`: the site composes the Chinese document
  * from the English sheet plus i18n/zh/<slug>.md at build time, so there is no
@@ -12,10 +14,11 @@
  *
  * The workflow for a sheet whose English changed:
  *
+ *   node script/zh.js sync heap        # park the translations the edit invalidated
  *   node script/zh.js todo heap        # the sections whose English no longer matches
- *   …translate each one…               # keeping every <!--CODE--> line it carries
- *   …append them to i18n/zh/heap.md…
- *   node script/zh.js sync heap        # tidy: drop what the English no longer has
+ *   …adapt each parked translation…    # keeping every <!--CODE--> line it carries
+ *   …write them back as live entries…
+ *   node script/zh.js sync heap        # tidy, and drop the parked copies you used
  */
 'use strict';
 
@@ -53,16 +56,23 @@ const readStore = slug =>
   fs.existsSync(storePath(slug)) ? I.parseStore(fs.readFileSync(storePath(slug), 'utf8')) : new Map();
 
 /**
- * One row per sheet. `done` counts sections whose stored translation differs
- * from the English — the only definition that cannot go stale, since it is read
- * off the text itself rather than off a marker somebody has to remember to clear.
+ * One row per sheet. `done` counts sections the store has an entry for — not
+ * sections whose Chinese differs from the English.
+ *
+ * That distinction matters. 238 sections are an LC-titled heading over a code
+ * block, with no prose at all: `### Trapping Rain Water — LC 42`. House rule
+ * keeps LC titles in English, so their correct translation *is* the English text,
+ * and a differs-from-English count could never mark them done — leaving a
+ * permanent 95% ceiling and a `todo` list that was 93% work nobody should do.
+ * An entry means somebody looked at the section, which is the thing worth
+ * counting.
  */
 function survey(slugs) {
   return slugs.map(slug => {
     const en = fs.readFileSync(path.join(EN_DIR, `${slug}.md`), 'utf8');
     const store = readStore(slug);
     const rows = I.survey(en, store);
-    const done = rows.filter(r => r.zh !== undefined && r.zh !== r.en).length;
+    const done = rows.filter(r => r.zh !== undefined).length;
     // An entry the English no longer has: left behind by an edit upstream.
     const keys = new Set(rows.map(r => r.key));
     const orphans = [...store.keys()].filter(k => !keys.has(k)).length;
@@ -95,37 +105,76 @@ function cmdStatus(slugs, write) {
 
 function cmdTodo(slugs) {
   let n = 0;
+  let parked = 0;
   for (const { slug, rows } of survey(slugs)) {
     const missing = rows.filter(r => r.zh === undefined);
     if (!missing.length) continue;
-    console.log(`\n## ${slug} — ${missing.length} section(s)\n`);
+    const stale = fs.existsSync(storePath(slug))
+      ? I.parseStale(fs.readFileSync(storePath(slug), 'utf8')).size : 0;
+    parked += stale;
+    console.log(`\n## ${slug} — ${missing.length} section(s)` +
+      (stale ? `, ${stale} parked translation(s) in i18n/zh/${slug}.md to adapt` : '') + '\n');
     for (const r of missing) console.log(`<!-- ${r.key} -->\n${r.en}\n`);
     n += missing.length;
   }
-  console.error(n ? `${n} section(s) need a translation` : 'nothing to translate');
+  console.error(
+    n ? `${n} section(s) need a translation` +
+        (parked ? `; ${parked} parked translation(s) are there to start from` : '')
+      : 'nothing to translate'
+  );
 }
 
-function cmdSync(slugs) {
+/**
+ * Reconcile a store with its English sheet: reorder the live entries to match,
+ * park anything the English no longer has, and revive anything it has again.
+ *
+ * Parking rather than deleting is the point. An English edit is usually small,
+ * and the Chinese it invalidates is usually still most of the way there — so the
+ * old text stays in the file for whoever writes the replacement. `--prune` is the
+ * only thing that throws it away, and you have to ask for it.
+ */
+function cmdSync(slugs, prune) {
   let changed = 0;
+  let parked = 0;
+  let revived = 0;
   for (const { slug, rows } of survey(slugs)) {
     if (!fs.existsSync(storePath(slug))) continue;
-    const store = readStore(slug);
-    // English order, English membership: an entry whose key is gone goes with it.
+    const raw = fs.readFileSync(storePath(slug), 'utf8');
+    const live = I.parseStore(raw);
+    const stale = I.parseStale(raw);
+
     const kept = [];
     const seen = new Set();
     for (const r of rows) {
-      if (store.has(r.key) && !seen.has(r.key)) {
-        kept.push([r.key, store.get(r.key)]);
-        seen.add(r.key);
-      }
+      if (seen.has(r.key)) continue;
+      // Reverting an English section brings its parked translation back: the text
+      // is the same again, so the key is too.
+      const body = live.get(r.key) ?? stale.get(r.key);
+      if (body === undefined) continue;
+      if (!live.has(r.key)) revived++;
+      kept.push([r.key, body]);
+      seen.add(r.key);
     }
-    const next = I.formatStore(kept);
-    if (next === fs.readFileSync(storePath(slug), 'utf8')) continue;
+
+    const keep = prune ? [] : [...stale].filter(([k]) => !seen.has(k));
+    for (const [k, v] of live) if (!seen.has(k)) { keep.push([k, v]); parked++; }
+
+    const next = I.formatStore(kept, keep);
+    if (next === raw) continue;
     fs.writeFileSync(storePath(slug), next);
-    console.log(`✓ ${slug}: ${kept.length} entries, ${store.size - kept.length} dropped`);
+    console.log(`✓ ${slug}: ${kept.length} live, ${keep.length} parked`);
     changed++;
   }
-  console.log(changed ? `synced ${changed} store file(s)` : 'every store file is already in sync');
+  if (!changed) {
+    console.log('every store file is already in sync');
+    return;
+  }
+  console.log(
+    `synced ${changed} store file(s)` +
+    (parked ? `, ${parked} translation(s) parked for reuse` : '') +
+    (revived ? `, ${revived} revived` : '') +
+    (prune ? ' — pruned parked entries' : '')
+  );
 }
 
 const TRACKER_HEAD = `# 繁體中文 Cheatsheets — Translation Progress
@@ -193,9 +242,10 @@ function main() {
   const slugs = resolve(rest.filter(a => !a.startsWith('--')));
   if (cmd === 'status') cmdStatus(slugs, write);
   else if (cmd === 'todo') cmdTodo(slugs);
-  else if (cmd === 'sync') cmdSync(slugs);
+  else if (cmd === 'sync') cmdSync(slugs, rest.includes('--prune'));
   else {
-    console.error('usage: node script/zh.js status [--write] | todo [slug ...] | sync [slug ...]');
+    console.error('usage: node script/zh.js status [--write] | todo [slug ...] | ' +
+                  'sync [--prune] [slug ...]');
     process.exit(1);
   }
 }

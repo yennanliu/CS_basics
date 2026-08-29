@@ -170,6 +170,12 @@
 
 把比較條件推廣成 `nums[fast] != nums[slow - k]`，兩個指標都從 `k` 開始：`k = 1` 就是 LC 26，`k = 2` 就是 LC 80。實作在 [2_pointers_examples.md](./2_pointers_examples.md)。
 
+<!-- 998d33a07600 -->
+#### Remove Element — LC 27
+<!--CODE-->
+
+<!--CODE-->
+
 <!-- 7fc23bf70269 -->
 #### Remove Duplicates from Sorted Array（Python）— LC 26
 

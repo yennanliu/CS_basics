@@ -26,6 +26,30 @@
 <!-- 598a9bfd2a3c -->
 ## LC 範例
 
+<!-- 0eeb6ceddca1 -->
+### 1) Kth Largest Element in a Stream — LC 703
+<!--CODE-->
+
+<!-- 25779f9a3c1e -->
+### 2) Ugly Number II — LC 264
+<!--CODE-->
+
+<!-- 4158286d087c -->
+### 3) Find Median from Data Stream — LC 295
+<!--CODE-->
+
+<!-- c80fb09bdc2c -->
+### 4) Minimum Cost to Connect Sticks — LC 1167
+<!--CODE-->
+
+<!-- 5ba7d4d05d9c -->
+### 5) The kth Factor of n — LC 1492
+<!--CODE-->
+
+<!-- 7c48623282d7 -->
+### 6) Least Number of Unique Integers after K Removals — LC 1481
+<!--CODE-->
+
 <!-- fb0f75b1d4b4 -->
 ### 7) Maximum Number of Events That Can Be Attended — LC 1353
 
@@ -62,6 +86,50 @@
 | 871 | Min Number of Refueling Stops | 把可達的選項推進去，卡住時再貪婪地取最好的 | 油量的最大堆積，只有卡住時才 pop（見 [§ 13](#13-minimum-number-of-refueling-stops--lc-871)） |
 | 1834 | Single-Threaded CPU | 推進時間、推入已抵達的任務、取出最好的 | 以 (處理時間, 索引) 建最小堆積；時間直接跳到下一個抵達時刻 |
 | 767 | Reorganize String | 每個位置一個時段，用堆積貪婪挑選 | 依剩餘數量的最大堆積 + 上次使用過的字元擋著 |
+
+<!-- 5b7ffea08146 -->
+### 8) Maximum Frequency Stack — LC 895
+<!--CODE-->
+
+<!-- fd30120311c5 -->
+### 9) Find K Pairs with Smallest Sums — LC 373
+
+<!--CODE-->
+
+<!-- 6895d2ee8d46 -->
+### 10) Kth Smallest Element in a Sorted Matrix — LC 378
+
+<!--CODE-->
+
+<!-- c77b36b703a2 -->
+### 11) Minimum Deletions to Make Character Frequencies Unique — LC 1647
+
+<!--CODE-->
+
+<!-- 130b4e60be66 -->
+### 12) Maximum Performance of a Team — LC 1383
+
+<!--CODE-->
+
+<!-- f7639dfa4604 -->
+### 13) Minimum Number of Refueling Stops — LC 871
+
+<!--CODE-->
+
+<!-- af84cdd698e2 -->
+### 14) Minimum Number of Visited Cells in a Grid — LC 2617
+
+<!--CODE-->
+
+<!-- b7b9a33c0fa2 -->
+### 15) Divide Intervals Into Minimum Number of Groups — LC 2406
+
+<!--CODE-->
+
+<!-- 8c05ed75b270 -->
+### 16) Minimize Deviation in Array — LC 1675
+
+<!--CODE-->
 
 <!-- 0a5e5356a9a1 -->
 ### 17) Task Scheduler — LC 621
@@ -149,6 +217,26 @@
 
 > 下面五個範例來自舊的 `priority_queue.md`，是**以 Java 為主**的 — 對應的
 > Python 版本放在 [heap.md](./heap.md) 的模板裡。
+
+<!-- b541ef3e6e63 -->
+### 19) K Closest Points to Origin — LC 973
+<!--CODE-->
+
+<!-- c79dcf08ef13 -->
+### 20) Reorganize String — LC 767
+<!--CODE-->
+
+<!-- 67d54a38d266 -->
+### 21) Sliding Window Median — LC 480
+<!--CODE-->
+
+<!-- 806aa4c484ee -->
+### 22) Sort Characters By Frequency — LC 451
+<!--CODE-->
+
+<!-- 5b070afa0524 -->
+### 23) Last Stone Weight — LC 1046
+<!--CODE-->
 
 <!-- 2b6001fbce74 -->
 ## 總結與速查

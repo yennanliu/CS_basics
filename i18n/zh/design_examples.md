@@ -24,6 +24,26 @@
 <!-- de4c8a6bd16b -->
 ## 快取與淘汰策略
 
+<!-- f14c209586a9 -->
+### 1) LRU Cache — LC 146 ⭐⭐⭐⭐⭐
+
+<!--CODE-->
+
+<!-- d4a2f633067d -->
+### 2) LFU Cache — LC 460 ⭐⭐⭐⭐
+
+<!--CODE-->
+
+<!-- 18d4464152aa -->
+### 3) All O(1) Data Structure — LC 432 ⭐⭐⭐⭐
+
+<!--CODE-->
+
+<!-- abf92bf70806 -->
+### 4) Insert Delete GetRandom O(1) — LC 380 ⭐⭐⭐⭐
+
+<!--CODE-->
+
 <!-- 763b5a83cd10 -->
 ## 帶輔助狀態的堆疊
 
@@ -144,14 +164,69 @@
 
 <!--CODE-->
 
+<!-- 668ab27f19cc -->
+### 9) Time Based Key-Value Store — LC 981
+
+<!--CODE-->
+
+<!-- 6cda34ed561c -->
+### 10) Design Hit Counter — LC 362
+
+<!--CODE-->
+
 <!-- 7c5a7b644143 -->
 ## 字典樹與前綴搜尋
+
+<!-- 781d407909f2 -->
+### 11) Design Search Autocomplete System — LC 642
+
+<!--CODE-->
+
+<!-- d2ad318abbfb -->
+### 12) Design Add and Search Words Data Structure — LC 211
+
+<!--CODE-->
 
 <!-- bcc3ed624d58 -->
 ## 檔案系統與路徑
 
+<!-- d225b6210f67 -->
+### 13) Design File System — LC 1166
+
+<!--CODE-->
+
+<!-- f0d8c5dbecdd -->
+### 14) Design In-Memory File System — LC 588
+
+<!--CODE-->
+
+<!-- eab1b9d62fc6 -->
+### 15) Design Log Storage System — LC 635
+
+<!--CODE-->
+
 <!-- b5c899ae47e5 -->
 ## 動態消息、遊戲與模擬
+
+<!-- 96d67f398167 -->
+### 16) Design Twitter — LC 355
+
+<!--CODE-->
+
+<!-- 4a476fe0beb2 -->
+### 17) Design Tic-Tac-Toe — LC 348
+
+<!--CODE-->
+
+<!-- 979cd79a6998 -->
+### 18) Design Snake Game — LC 353
+
+<!--CODE-->
+
+<!-- be2b1d1ff76e -->
+### 19) Design Underground System — LC 1396
+
+<!--CODE-->
 
 <!-- b4933c2986d4 -->
 ## 快速參考

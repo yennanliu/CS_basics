@@ -250,6 +250,21 @@
 <!-- 5fa13fe640ce -->
 ## 2) LC 範例
 
+<!-- fc6c928d3c99 -->
+### 2-1) Range Addition — LC 370
+
+<!--CODE-->
+
+<!-- a7de91689ca3 -->
+### 2-2) Corporate Flight Bookings — LC 1109
+
+<!--CODE-->
+
+<!-- 92f8edebc690 -->
+### 2-3) Car Pooling — LC 1094
+
+<!--CODE-->
+
 <!-- 500180e468d4 -->
 ### 2-4) Minimum Lights to Illuminate a Road — LC 3964
 

@@ -200,6 +200,18 @@
 
 <!--CODE-->
 
+<!-- f0f4c281df0c -->
+### Template 4: Subsets II (skip same-level duplicates) — LC 90 ⭐⭐⭐⭐⭐
+
+<!--CODE-->
+
+<!-- f4f874156b70 -->
+### Template 5: Permutations — LC 46 ⭐⭐⭐⭐⭐
+
+<!--CODE-->
+
+<!--CODE-->
+
 <!-- 0387a8800b4f -->
 #### 有重複元素的排列 — LC 47
 

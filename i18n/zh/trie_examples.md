@@ -24,6 +24,13 @@
 <!-- e42270637613 -->
 ## 把結構蓋出來
 
+<!-- c2e808d47593 -->
+### 1) Implement Trie (Prefix Tree) — LC 208 ⭐⭐⭐⭐⭐
+
+<!--CODE-->
+
+<!--CODE-->
+
 <!-- 414e7c95d8b8 -->
 ### 2) Add and Search Word — LC 211 — 帶萬用字元的走訪 ⭐⭐⭐⭐
 
@@ -40,6 +47,13 @@
 
 <!-- 39a2593a9496 -->
 ## 拿它來搜尋
+
+<!-- 2c962bf60491 -->
+### 3) Search Suggestions System — LC 1268 ⭐⭐⭐⭐
+
+<!--CODE-->
+
+<!--CODE-->
 
 <!-- 3c43bd96b118 -->
 ### 4) Word Search — LC 79 — 格子 DFS，還用不到字典樹

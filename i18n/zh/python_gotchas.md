@@ -238,6 +238,11 @@
 - **I/O-bound、任務數不多 → `threading`**（可以直接用一般的阻塞式程式碼）。
 - **I/O-bound、任務數很多 → `asyncio`**（能便宜地擴到上千條連線）。
 
+<!-- c388c812361b -->
+### 3-3) `threading.Thread` + `Lock`
+
+<!--CODE-->
+
 <!-- 82ae0d13aad3 -->
 ### 3-4) `concurrent.futures` 的 pool
 

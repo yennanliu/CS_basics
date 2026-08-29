@@ -33,6 +33,38 @@
 <!-- 5fa13fe640ce -->
 ## 2) LC 範例
 
+<!-- 98f31e746e9d -->
+### 2-1) Add Binary — LC 67
+<!--CODE-->
+
+<!-- c525f5d1682a -->
+### 2-2) Add Strings — LC 415
+
+<!--CODE-->
+
+
+<!--CODE-->
+
+<!-- 58dd8016f464 -->
+### 2-3) Sum of Two Integers — LC 371
+<!--CODE-->
+
+<!-- 553e06461bc1 -->
+### 2-4) Add to Array Form of Integer — LC 989
+<!--CODE-->
+
+<!-- 68f4dd654860 -->
+### 2-5) Plus One — LC 66
+<!--CODE-->
+
+<!-- bdcebf45a24b -->
+### 2-6) Add Two Numbers — LC 2
+<!--CODE-->
+
+<!-- 495474ab9f2b -->
+### 2-7) Add Two Numbers II — LC 445
+<!--CODE-->
+
 <!-- 001cd34fbf72 -->
 ## 3) 更多模板
 

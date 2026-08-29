@@ -27,6 +27,17 @@ LC 題號，所以一個把那些題目重解一遍的範例區塊，就是整�
 <!-- 0f5d1897e7c0 -->
 ## 用雜湊表處理子陣列和
 
+<!-- 271b91be5548 -->
+### 1) Maximum Size Subarray Sum Equals k — LC 325
+
+<!--CODE-->
+
+<!-- 3af7fc853503 -->
+### 2) Continuous Subarray Sum — LC 523
+
+
+<!--CODE-->
+
 <!-- d5703c396742 -->
 ### 3) Longest Well-Performing Interval — LC 1124
 
@@ -52,6 +63,12 @@ LC 題號，所以一個把那些題目重解一遍的範例區塊，就是整�
 | Maximum Size Subarray Sum Equals k | 325 | 總和 = k 的最長子陣列，首次出現位置的雜湊表 |
 | Subarray Sum Equals K | 560 | 計數版（存次數，不是索引） |
 | Binary Subarrays With Sum | 930 | 計算二元轉換後總和 = k 的子陣列個數 |
+
+<!-- 0709cb5d4c4c -->
+### 4) Flip String to Monotone Increasing — LC 926
+
+
+<!--CODE-->
 
 <!-- 9163151c4d18 -->
 ## 固定視窗與成對視窗

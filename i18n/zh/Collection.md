@@ -40,8 +40,22 @@
 ### 1-0) 取出容器中存在的元素（自訂排序）
 <!--CODE-->
 
+<!-- e7afd0d8d6c2 -->
+#### 1-1) collection.Counter
+<!--CODE-->
+
 <!-- fd559876ea18 -->
 #### 1-2) 重要方法 - most_common()
+<!--CODE-->
+
+<!-- 7d6a9e5c3f85 -->
+#### 1-3) collection.defaultdict (int, list...)
+<!--CODE-->
+
+<!--CODE-->
+
+<!-- 7ae0ac8fc63a -->
+#### 1-4) collection.update()
 <!--CODE-->
 
 <!-- 8f32ad560d44 -->
@@ -50,6 +64,10 @@
 
 <!-- 5fa13fe640ce -->
 ## 2) LC 範例
+
+<!-- a15b027dfac6 -->
+### 2-1) Custom Sort String — LC 791
+<!--CODE-->
 
 <!-- 766801d0e74f -->
 ## 3) 這題該用哪個容器？ ⭐⭐⭐⭐⭐

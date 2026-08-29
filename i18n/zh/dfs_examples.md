@@ -69,6 +69,10 @@
 
 <!--CODE-->
 
+<!-- 3b053dc563f0 -->
+#### 0-9) Serialize and Deserialize BST
+<!--CODE-->
+
 <!-- bbc68c153398 -->
 #### 0-10) 找節點之間的最長距離
 <!--CODE-->
@@ -83,6 +87,27 @@
 
 <!-- cc580af5505c -->
 #### 0-13) 閉包：在巢狀的 `dfs` 裡讀取外層作用域的變數
+<!--CODE-->
+
+<!-- 188b31bab9a8 -->
+### 2-1) Validate Binary Search Tree — LC 98
+<!--CODE-->
+
+<!-- efcd926f8ddf -->
+### 2-2) Insert into a Binary Search Tree — LC 701
+
+<!--CODE-->
+
+<!--CODE-->
+
+<!-- 84b130808aec -->
+### 2-3) Delete Node in a BST — LC 450
+<!--CODE-->
+
+<!--CODE-->
+
+<!-- 9577d980a547 -->
+### 2-4) Find Duplicate Subtrees — LC 652
 <!--CODE-->
 
 <!-- 8ab9ec835b25 -->
@@ -128,9 +153,59 @@
 | 508 | Most Frequent Subtree Sum | 由下而上的子樹彙總 + 雜湊表計數 |
 | 1948 | Delete Duplicate Folders in System | 652 的一般化 —— 把子樹序列化、標出重複的 |
 
+<!-- 9c1ac9f48ab2 -->
+### 2-5) Trim a BST — LC 669
+<!--CODE-->
+
+<!-- 5c36fc6b6608 -->
+### 2-6) Maximum Width of Binary Tree — LC 662
+<!--CODE-->
+
+<!-- 2bb55d528797 -->
+### 2-7) Equal Tree Partition — LC 663
+<!--CODE-->
+
+<!-- f80217f71f40 -->
+### 2-8) Split BST — LC 776
+<!--CODE-->
+
+<!-- a390c6150d12 -->
+### 2-9) Most Frequent Subtree Sum — LC 508
+<!--CODE-->
+
+<!-- d0b28a247d9a -->
+### 2-10) Convert BST to Greater Tree — LC 538
+<!--CODE-->
+
+<!-- a148da9f07d6 -->
+### 2-11) Number of Islands — LC 200
+<!--CODE-->
+
 <!-- 47ba4d9695f8 -->
 #### 四方向鄰居呼叫的兩種寫法
 - 圖的走訪（DFS）：往 4 個方向走（上、下、左、右）
+<!--CODE-->
+
+<!-- 55757f870270 -->
+### 2-12) Max Area of Island — LC 695
+<!--CODE-->
+
+<!-- d512e75934c6 -->
+### 2-13) Binary Tree Paths — LC 257
+<!--CODE-->
+
+<!-- 94b6c97a8496 -->
+### 2-14) Lowest Common Ancestor of a Binary Tree — LC 236
+<!--CODE-->
+
+<!-- b3c81b97e0f9 -->
+### 2-15) Path Sum — LC 112
+<!--CODE-->
+
+<!-- da0163ff02eb -->
+### 2-16) Path Sum II — LC 113
+<!--CODE-->
+
 <!--CODE-->
 
 <!-- 15ed63d943a3 -->
@@ -161,6 +236,14 @@
 | LC 112 - Path Sum | 用相減累積剩下的目標值（`sum - root.val`），而不是往上組 |
 | LC 113 - Path Sum II | 和 112 一樣，但在每個合法葉子收集實際的路徑 list |
 | LC 988 - Smallest String Starting From Leaf | 由下而上（葉到根）把路徑累積成字串，再比字典序 |
+
+<!-- 3738a8dbfb25 -->
+### 2-18) Clone Graph — LC 133
+<!--CODE-->
+
+<!-- ab4c1365aebf -->
+### 2-19) Sentence Similarity II — LC 737
+<!--CODE-->
 
 <!-- 03ff1a0327ba -->
 #### 深入探討 —— 傳遞性的相似其實就是圖的連通性 ⭐⭐⭐⭐
@@ -239,6 +322,37 @@
 > **核心想法**：最下面那行 `return False` **只有在每個鄰居都試過之後**才會執行。
 > 某個子節點回傳 `False` 只是讓 `for` 迴圈往前走；整個 DFS 只有在*所有*分支都走完
 > 卻沒碰到目標時，才會回報 `False`。
+
+<!-- 0497d5cc3bc1 -->
+### 2-20) Serialize and Deserialize Binary Tree — LC 297
+<!--CODE-->
+
+<!-- 72f079dfc2da -->
+### 2-21) Serialize and Deserialize BST — LC 449
+<!--CODE-->
+
+<!-- 3a48da0d2480 -->
+### 2-22) Concatenated Words — LC 472
+<!--CODE-->
+
+<!-- 026c42176f7e -->
+### 2-23) Maximum Product of Splitted Binary Tree — LC 1339
+<!--CODE-->
+
+<!-- b262f444188a -->
+### 2-24) Pacific Atlantic Water Flow — LC 417
+
+<!--CODE-->
+
+<!-- e60c482028bf -->
+### 2-25) Minesweeper — LC 529
+
+<!--CODE-->
+
+<!-- c508b813fe17 -->
+### 2-26) K-th Largest Perfect Subtree Size in Binary Tree — LC 3319
+
+<!--CODE-->
 
 <!-- a8a774fb9ad4 -->
 ### 2-27) Satisfiability of Equality Equations — LC 990

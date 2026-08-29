@@ -276,6 +276,11 @@
 <!-- 1b556feb4eba -->
 ## 基本操作速查
 
+<!-- aa2d683ebf7f -->
+### Python collections.deque
+
+<!--CODE-->
+
 <!-- 72074ec423b5 -->
 ### Java Queue 與 Deque 操作 ⭐⭐⭐⭐
 <!--CODE-->

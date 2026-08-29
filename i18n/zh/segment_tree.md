@@ -109,6 +109,22 @@
 | Reverse Pairs | 493 | BIT／合併排序 | Hard | 數逆序對 |
 | Count of Range Sum | 327 | BIT + 前綴和 | Hard | 座標壓縮 |
 
+<!-- e5517f8ce9b5 -->
+### Range Sum Query - Mutable — LC 307
+<!--CODE-->
+
+<!-- add5765f84bc -->
+### Count of Smaller Numbers After Self — LC 315
+<!--CODE-->
+
+<!-- 1aab999ee418 -->
+### Reverse Pairs — LC 493
+<!--CODE-->
+
+<!-- 677019c894a7 -->
+### Count of Range Sum — LC 327
+<!--CODE-->
+
 <!-- 5ecab1c9ff42 -->
 ## 進階技巧
 

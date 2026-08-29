@@ -220,14 +220,19 @@ keyed by a hash of its English text. The site composes the two into a full
 Chinese document at build time, so code is never stored twice and cannot drift.
 
 ```bash
-node script/zh.js status [--write]   # coverage; --write refreshes the tracker doc
-node script/zh.js todo [slug ...]    # the sections still needing a translation
-node script/zh.js sync [slug ...]    # drop orphaned entries, reorder to match English
+node script/zh.js status [--write]          # coverage; --write refreshes the tracker doc
+node script/zh.js todo [slug ...]           # the sections still needing a translation
+node script/zh.js sync [--prune] [slug ...] # reorder to match English, park what it dropped
 ```
 
 With no slugs, every sheet is processed. Edit an English section and its
 translation simply goes missing — `todo` prints it, and the page falls back to
-English until it is filled in. See
+English until it is filled in.
+
+`sync` parks an invalidated translation under `<!-- stale: key -->` in the same
+file rather than deleting it, so the replacement starts from the old Chinese
+instead of from nothing; reverting the English revives it. `--prune` is the only
+thing that discards parked entries. See
 [`cheatsheet-zh-progress.md`](cheatsheet-zh-progress.md) for the current state and
 CLAUDE.md for the translation conventions.
 

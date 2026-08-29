@@ -526,11 +526,27 @@ A vs B 這個問題只對**由上而下**的題目有意義：也就是一個節
 <!-- 5fa13fe640ce -->
 ## 2) LC 範例
 
+<!-- 221eb3801cc4 -->
+### 2-1) Construct Binary Tree from Preorder and Inorder Traversal — LC 105
+<!--CODE-->
+
+<!-- 160cfc612d34 -->
+### 2-2) Construct Binary Tree from Inorder and Postorder Traversal — LC 106
+<!--CODE-->
+
+<!-- ac879be55b70 -->
+### 2-3) Binary Tree Paths — LC 257
+<!--CODE-->
+
 <!-- fd85e89dc1cd -->
 ### 2-4) Binary Tree Longest Consecutive Sequence — LC 298
 
 > 回看 vs 前看 vs 由下而上的比較見 **§0-2 / §0-3** — LC 298 是少見的三種形狀都能解的題目。
 
+<!--CODE-->
+
+<!-- 8b0b8723a877 -->
+### 2-5) Binary Search Tree Iterator — LC 173
 <!--CODE-->
 
 <!-- 8c59cd2add5f -->

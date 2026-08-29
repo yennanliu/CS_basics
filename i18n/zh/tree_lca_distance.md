@@ -169,6 +169,13 @@
 #### **模式總覽**
 <!--CODE-->
 
+<!-- c4b49acfa01e -->
+#### **LC 863: All Nodes Distance K in Binary Tree**
+
+<!--CODE-->
+
+<!--CODE-->
+
 <!-- 870b1dbfecb5 -->
 #### **重點**
 1. **建父節點表**：O(N) 時間、O(N) 空間

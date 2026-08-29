@@ -32,6 +32,9 @@
 
 > 模板：[模板 1 — 快慢指標的讀寫壓縮](./2_pointers.md#template-1-fastslow-read-write-compaction--lc-26-lc-27-)。
 
+<!-- 6fc7e90d55f7 -->
+### Remove Duplicates from Sorted Array II — LC 80
+
 <!-- 4ffaa3b5b430 -->
 #### 核心想法
 
@@ -96,6 +99,9 @@
 ## 向內收斂的雙向指標
 
 > 模板：[模板 2 — 向內收斂的雙向指標](./2_pointers.md#template-2-converging-bidirectional-pointers-)。
+
+<!-- 00daccdb7500 -->
+### Next Permutation — LC 31
 
 <!-- faf841a75ca2 -->
 #### 核心想法
@@ -167,6 +173,9 @@
 
 <!--CODE-->
 
+<!-- 291ee78193eb -->
+### DI String Match — LC 942
+
 <!-- 7533e164c095 -->
 #### 核心想法
 
@@ -210,6 +219,9 @@
 - LC 259 3Sum Smaller
 - LC 1 Two Sum
 
+<!-- 44cd6820ec16 -->
+### 3Sum Closest — LC 16
+
 <!-- 8e59aeeec2b3 -->
 #### 核心想法
 
@@ -251,6 +263,14 @@
 | Two Sum II | 167 | 兩個元素，已排序的陣列 |
 | Two Sum（最接近版） | — | 本模式的雙指標變形 |
 
+<!-- ee7e6e0d3921 -->
+### Trapping Rain Water — LC 42
+<!--CODE-->
+
+<!-- 33de534dadf8 -->
+### Longest Consecutive Sequence — LC 128
+<!--CODE-->
+
 <!-- 46f67e533184 -->
 ### Reverse String / Reverse Words — LC 344
 
@@ -269,6 +289,14 @@
 ## 從中心往外擴
 
 > 模板：[模板 3 — 從中心往外擴](./2_pointers.md#template-3-expand-from-centre--lc-5-lc-647-)。
+
+<!-- dd08718ac6e7 -->
+### Longest Palindromic Substring — LC 5
+<!--CODE-->
+
+<!-- a9fb07be846c -->
+### Palindromic Substrings — LC 647
+<!--CODE-->
 
 <!-- 1add21ac25eb -->
 ### Valid Palindrome II — LC 680
@@ -539,6 +567,9 @@
 - LC 524 Longest Word in Dictionary through Deleting
 - LC 792 Number of Matching Subsequences
 
+<!-- ec52200dbe2c -->
+### Expressive Words — LC 809
+
 <!-- 1778b77d567e -->
 #### 核心想法
 
@@ -610,6 +641,9 @@
 
 ---
 
+<!-- 91a231372a31 -->
+### Compare Version Numbers — LC 165 ⭐⭐⭐⭐
+
 <!-- b054788ca626 -->
 #### 核心想法
 
@@ -659,6 +693,9 @@
 ## 在區間、矩陣與分割上的指標
 
 > 模板：[模板 5 — 合併兩個有序陣列](./2_pointers.md#template-5-merge-two-sorted-arrays-fill-from-the-back--lc-88-) 與 [模板 6 — 三路分割](./2_pointers.md#template-6-three-way-partition-dutch-national-flag--lc-75-)。
+
+<!-- 767d43914d0f -->
+### Interval List Intersections — LC 986 ⭐⭐⭐⭐
 
 <!-- c0f20555688d -->
 #### 核心想法
@@ -770,6 +807,9 @@
 
 ---
 
+<!-- fd362264e1e7 -->
+### Partition Labels — LC 763 ⭐⭐⭐⭐⭐
+
 <!-- 0f5c8afd8d4e -->
 #### 核心想法
 
@@ -810,6 +850,9 @@
 
 ---
 
+<!-- 3a311db6feb2 -->
+### Search a 2D Matrix II — LC 240 ⭐⭐⭐⭐
+
 <!-- bc42775c03c5 -->
 #### 核心想法
 
@@ -849,3 +892,7 @@
 | Two Sum II | 167 | 一維版本：在已排序陣列上 `l++`／`r--` |
 
 ---
+
+<!-- bd05e9f024df -->
+### Sum of Subarray Ranges — LC 2104
+<!--CODE-->

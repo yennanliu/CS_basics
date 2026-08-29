@@ -98,6 +98,10 @@
 <!-- 5fa13fe640ce -->
 ## 2) LC 範例
 
+<!-- 535abd277e7a -->
+### 2-1) Remove Duplicates from Sorted List — LC 83 ⭐⭐⭐
+<!--CODE-->
+
 <!-- 71b4bc6b2625 -->
 ### 2-2) Remove Duplicates from Sorted List II — LC 82 ⭐⭐⭐⭐
 

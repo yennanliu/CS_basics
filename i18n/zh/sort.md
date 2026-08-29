@@ -494,6 +494,42 @@
 <!-- f5dc009dd747 -->
 ## LC 範例
 
+<!-- ad609cc78228 -->
+### 2-1) Pancake Sorting — LC 969
+<!--CODE-->
+<!--CODE-->
+
+<!-- 9d779f28726e -->
+### 2-2) Reorder Data in Log Files — LC 937
+<!--CODE-->
+
+<!-- 09f05d99fe1b -->
+### 2-3) Meeting Rooms — LC 252
+<!--CODE-->
+
+<!-- 9e43aa4be360 -->
+### 2-4) Custom Sort String — LC 791
+<!--CODE-->
+
+<!-- fdd23c1f9d80 -->
+### 2-5) Find K Closest Elements — LC 658
+<!--CODE-->
+
+<!-- 35225d3b9ae4 -->
+### 2-6) Largest Number — LC 179
+<!--CODE-->
+
+<!-- dbcf8c19d3ea -->
+### 2-7) Permutation in String — LC 567
+<!--CODE-->
+
+<!--CODE-->
+
+<!-- 20b7e9195771 -->
+### 2-8) Car Fleet — LC 853
+
+<!--CODE-->
+
 <!-- cd8aeb6b7bde -->
 ### 2-9) Minimize Maximum Pair Sum in Array — LC 1877
 
@@ -505,3 +541,8 @@
 | Array Partition | 561 | 最大化各對最小值的總和 → 排序後相鄰兩兩配對 |
 | Boats to Save People | 881 | 最少船數 → 帶重量上限的貪婪雙指標 |
 | Divide Players Into Teams | 2491 | 每隊技能總和相等 → 第一個配最後一個 |
+
+<!-- e89f6b957e04 -->
+### 2-10) TopK Frequent Words — LC 692
+
+<!--CODE-->

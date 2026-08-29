@@ -60,6 +60,18 @@ LC 1109 在 [difference_array.md](./difference_array.md)、LC 1567 在
 >
 > **變號標記檢查清單：** ① 值必須能對應到合法索引，② 取值時一律用 `abs(...)`，③ 如果陣列還要再用，記得把正負號還原（LC 442／448 用的是一模一樣的技巧）。
 
+<!-- 91e82fec2999 -->
+### 2) Rotate Array — LC 189 ⭐⭐⭐⭐
+
+<!--CODE-->
+
+<!--CODE-->
+
+<!-- b5caa55f2fd9 -->
+### 3) Product of Array Except Self — LC 238 ⭐⭐⭐⭐⭐
+
+<!--CODE-->
+
 <!-- 3304547287a8 -->
 ### 4) Maximum Swap — LC 670
 
@@ -89,5 +101,46 @@ LC 1109 在 [difference_array.md](./difference_array.md)、LC 1567 在
 >
 > **對照：** LC 121 = **1** 次交易 → 追蹤滾動最小值。LC 122 = **∞** 次交易 → 加總正價差。
 
+<!-- d4fbb95a32d9 -->
+### 6) Maximum Length of Subarray With Positive Product — LC 1567
+
+<!--CODE-->
+
+<!-- 4d54e868afd4 -->
+### 7) Increasing Triplet Subsequence — LC 334
+
+<!--CODE-->
+
+<!-- ee804d488895 -->
+### 8) Maximize Distance to Closest Person — LC 849
+
+
+<!--CODE-->
+
 <!-- 1ec71b3a8c85 -->
 ## 計數、訂位與模擬
+
+<!-- b104e77b20ff -->
+### 9) Corporate Flight Bookings — LC 1109
+
+<!--CODE-->
+
+<!-- 63324ba4ddec -->
+### 10) Bulb Switcher III — LC 1375
+
+<!--CODE-->
+
+<!-- dea958158ce7 -->
+### 11) Robot Bounded In Circle — LC 1041
+
+<!--CODE-->
+
+<!-- 66c18511bb3b -->
+### 12) Queue Reconstruction by Height — LC 406
+
+<!--CODE-->
+
+<!-- 19451d0c2733 -->
+### 13) Flatten 2D Vector — LC 251
+
+<!--CODE-->

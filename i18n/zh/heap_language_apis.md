@@ -29,6 +29,9 @@ API 用錯，不是演算法想錯。
 - [Java PriorityQueue](https://docs.oracle.com/javase/8/docs/api/java/util/PriorityQueue.html)
 - [Priority Queue Implementation Notes](https://docs.python.org/3/library/heapq.html#priority-queue-implementation-notes)
 
+<!-- 4a09619a4d5d -->
+## Python `heapq`
+
 <!-- 679dab35c4da -->
 ### API 速查
 - 注意 :
@@ -119,6 +122,9 @@ API 用錯，不是演算法想錯。
 <!-- 5fc3273fdd8a -->
 ### 堆積排序
 <!--CODE-->
+
+<!-- 2d6e98c9100a -->
+## Java `PriorityQueue`
 
 <!-- 09a827cf6d12 -->
 ### 操作

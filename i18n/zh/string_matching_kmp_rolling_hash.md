@@ -162,8 +162,43 @@
 <!-- 5fa13fe640ce -->
 ## 2) LC 範例
 
+<!-- 3c72a9b5d92b -->
+### 2-1) Find the Index of the First Occurrence in a String (LC 28)
+
+<!--CODE-->
+
+<!-- af3f9220c68d -->
+### 2-2) Repeated Substring Pattern (LC 459)
+
+<!--CODE-->
+
+<!-- 633b45d19b67 -->
+### 2-3) Longest Duplicate Substring (LC 1044)
+
+<!--CODE-->
+
+<!-- 457565b18d47 -->
+### 2-4) Shortest Palindrome (LC 214)
+
+<!--CODE-->
+
+<!-- 31328704e72e -->
+### 2-5) Distinct Echo Substrings (LC 1316)
+
+<!--CODE-->
+
+<!-- e9c3bbccec6b -->
+### 2-6) Rotate String (LC 796)
+
+<!--CODE-->
+
 <!-- b389063abd78 -->
 ### 2-7) strStr() 的各種實作變形
+
+<!--CODE-->
+
+<!-- 8a02b28518d7 -->
+### 2-8) Longest Happy Prefix (LC 1392)
 
 <!--CODE-->
 

@@ -52,6 +52,13 @@
 
 <!--CODE-->
 
+<!-- 0d9dddf30d32 -->
+#### 3) Daily Temperatures — LC 739 ⭐⭐⭐⭐
+
+<!--CODE-->
+
+<!--CODE-->
+
 <!-- 1c17ceb1853e -->
 #### 4) Sum of Subarray Minimums — LC 907
 
@@ -86,6 +93,15 @@
 
 <!-- 580487c69024 -->
 ### 單調堆疊 —— 貪婪移除與字典序
+
+<!-- 6d0ba4d1ce52 -->
+#### 8) Remove K Digits — LC 402 ⭐⭐⭐⭐
+
+<!--CODE-->
+
+<!--CODE-->
+
+<!--CODE-->
 
 <!-- fa3144780d45 -->
 #### 9) Remove Duplicate Letters — LC 316
