@@ -214,6 +214,263 @@ int countPrimes(int n){
 }
 ```
 
+#### 1-1-2') get factors of `x` — divisors & prime factors ⭐⭐⭐⭐
+
+Two different questions hide behind the word "factor". Both are answered by the **same
+`while d * d <= x` loop**, so learn the loop once:
+
+| Question | Answer for `x = 12` | Size of answer | Cost |
+|----------|---------------------|----------------|------|
+| **All divisors** — every `d` with `x % d == 0` | `1, 2, 3, 4, 6, 12` | small (≤ 128 for `x ≤ 10⁵`) | O(√x) |
+| **Prime factors** — the primes whose product is `x` | `{2, 3}` (as `2² × 3`) | ≤ ~15 distinct for `x ≤ 10⁹` | O(√x) |
+
+**Why `√x` is enough (the one idea behind both):**
+
+```text
+Divisors come in PAIRS that multiply to x:   d  ×  (x / d) = x
+  12 = 1×12 = 2×6 = 3×4
+       ^         ^
+       d <= √12  the partner is >= √12
+
+So one member of every pair is <= √x  ->  scanning d = 1..√x sees them all.
+```
+
+##### a) All divisors of `x` — scan to `√x`, take both halves of each pair
+
+```python
+# python
+# GENERAL PATTERN: all divisors of x, ascending
+# IDEA: each divisor d <= sqrt(x) hands you its partner x // d for free
+# time = O(sqrt(x)), space = O(number of divisors)
+def get_divisors(x):
+    small, large = [], []
+    d = 1
+    while d * d <= x:
+        if x % d == 0:
+            small.append(d)
+            if d != x // d:          # perfect square: don't add sqrt(x) twice
+                large.append(x // d)
+        d += 1
+    return small + large[::-1]        # large is descending -> reverse to merge sorted
+
+# get_divisors(12) -> [1, 2, 3, 4, 6, 12]
+# get_divisors(36) -> [1, 2, 3, 4, 6, 9, 12, 18, 36]   (6 counted once)
+```
+
+```java
+// java
+// GENERAL PATTERN: all divisors of x, ascending
+// time = O(sqrt(x)), space = O(number of divisors)
+public List<Integer> getDivisors(int x) {
+    List<Integer> small = new ArrayList<>(), large = new ArrayList<>();
+    for (int d = 1; (long) d * d <= x; d++) {
+        if (x % d == 0) {
+            small.add(d);
+            if (d != x / d) large.add(x / d);   // skip the duplicate sqrt
+        }
+    }
+    Collections.reverse(large);
+    small.addAll(large);
+    return small;
+}
+```
+
+##### b) Distinct prime factors of `x` — divide the factor **out** as you find it
+
+This is the workhorse. The trick that makes it correct *and* fast: whenever `d` divides `x`,
+strip **every** copy of `d` out of `x` before moving on. After that, `x` can never be
+divisible by `d` again, so any later `d` that divides is automatically **prime** — no primality
+test needed anywhere.
+
+```python
+# python
+# GENERAL PATTERN: distinct prime factors of x  (x >= 1)
+# IDEA: TRIAL DIVISION — strip each factor out completely, so every hit is prime
+# time = O(sqrt(x)), space = O(number of distinct primes)
+def get_prime_factors(x):
+    """Returns the set of distinct prime factors of x."""
+    factors = set()
+    d = 2
+    while d * d <= x:
+        if x % d == 0:
+            factors.add(d)
+            while x % d == 0:     # strip ALL copies of d
+                x //= d
+        d += 1                    # x has shrunk, so the loop bound shrinks with it
+    if x > 1:                     # leftover > 1 is a prime bigger than sqrt(original x)
+        factors.add(x)
+    return factors
+```
+
+```java
+// java
+// GENERAL PATTERN: distinct prime factors of x
+// time = O(sqrt(x)), space = O(number of distinct primes)
+public List<Integer> getPrimeFactors(int x) {
+    List<Integer> factors = new ArrayList<>();
+    for (int d = 2; (long) d * d <= x; d++) {
+        if (x % d == 0) {
+            factors.add(d);
+            while (x % d == 0) x /= d;   // strip ALL copies of d
+        }
+    }
+    if (x > 1) factors.add(x);           // the last prime, > sqrt
+    return factors;
+}
+```
+
+**Trace `x = 360`:**
+
+```text
+d=2 : 360 % 2 == 0  -> add 2, strip: 360 -> 180 -> 90 -> 45
+d=3 :  45 % 3 == 0  -> add 3, strip:  45 ->  15 -> 5
+d=4 : 4*4 = 16 > 5  -> loop ends       (bound checks the SHRUNK x, not the original)
+x=5 > 1             -> add 5
+=> {2, 3, 5}         (360 = 2³ × 3² × 5)
+```
+
+**Two things people get wrong:**
+1. **Forgetting `if x > 1` at the end.** For `x = 14`, the loop only reaches `d = 3`
+   (`3*3 > 7`), and the leftover `7` — a prime larger than `√14` — would be lost. There is at
+   most one such leftover, because two primes `> √x` would multiply to more than `x`.
+2. **Testing `d` for primality first.** Unnecessary: `4` can never divide `x` at that point,
+   the `2`s are already gone.
+
+**Want the exponents too?** Count them while stripping — that gives `360 -> {2:3, 3:2, 5:1}`,
+which is what divisor-counting (`∏(eᵢ+1)`) and totient formulas need. See
+[`combinatorics_math_patterns.md`](./combinatorics_math_patterns.md) *Prime Factorization*.
+
+##### c) Factoring **many** numbers — smallest-prime-factor (SPF) sieve
+
+Trial division is O(√x) *per number*. If the input is an array of up to `10⁵` values each up to
+`10⁵`, sieve the smallest prime factor once, then every factorisation is O(log x).
+
+```python
+# python
+# GENERAL PATTERN: SPF sieve -> factor any x <= MAXV in O(log x)
+# time = O(MAXV log log MAXV) build, O(log x) per query; space = O(MAXV)
+MAXV = 100_001
+spf = list(range(MAXV))                     # spf[i] = smallest prime factor of i
+for i in range(2, int(MAXV ** 0.5) + 1):
+    if spf[i] == i:                         # i is prime
+        for j in range(i * i, MAXV, i):
+            if spf[j] == j:                 # only the FIRST prime to reach j wins
+                spf[j] = i
+
+def prime_factors_fast(x):
+    out = set()
+    while x > 1:
+        p = spf[x]
+        out.add(p)
+        while x % p == 0:
+            x //= p
+    return out
+```
+
+```java
+// java
+// GENERAL PATTERN: SPF sieve
+// time = O(MAXV log log MAXV) build, O(log x) per query; space = O(MAXV)
+static final int MAXV = 100_001;
+static int[] spf = new int[MAXV];
+static {
+    for (int i = 0; i < MAXV; i++) spf[i] = i;
+    for (int i = 2; (long) i * i < MAXV; i++)
+        if (spf[i] == i)
+            for (int j = i * i; j < MAXV; j += i)
+                if (spf[j] == j) spf[j] = i;
+}
+
+public List<Integer> primeFactorsFast(int x) {
+    List<Integer> out = new ArrayList<>();
+    while (x > 1) {
+        int p = spf[x];
+        out.add(p);
+        while (x % p == 0) x /= p;
+    }
+    return out;
+}
+```
+
+##### d) LC 4032 — Longest Subarray With at Most K Distinct Prime Factors
+
+> The prime factor set of a subarray is the **union** of the distinct prime factors of its
+> elements. Return the longest subarray whose union has at most `k` primes.
+
+**Why a sliding window works**: growing a window can only *add* primes to the union, never
+remove one — the union size is monotone in the window, so the classic
+`expand right / shrink left while invalid` template applies. Keep a `prime -> how many elements
+in the window contain it` counter; the union size is just the number of **live keys**.
+
+```python
+# python
+# LC 4032. Longest Subarray With at Most K Distinct Prime Factors
+# IDEA: SLIDING WINDOW over a {prime: count} map; union size == len(map)
+# time = O(n * sqrt(A)) to factor + O(n * distinct) window, space = O(n * distinct)
+from collections import defaultdict
+
+def longestSubarray(nums, k):
+    facs = [get_prime_factors(v) for v in nums]   # factor each element ONCE
+    cnt = defaultdict(int)
+    left = best = 0
+    for right in range(len(nums)):
+        for p in facs[right]:
+            cnt[p] += 1
+        while len(cnt) > k:                       # too many distinct primes -> shrink
+            for p in facs[left]:
+                cnt[p] -= 1
+                if cnt[p] == 0:
+                    del cnt[p]                    # MUST delete, len(cnt) is the answer
+            left += 1
+        best = max(best, right - left + 1)
+    return best
+
+# nums = [7,6,10,12,11], k = 3 -> 3   ([6,10,12] -> {2,3,5})
+# nums = [4,6,9,18],     k = 4 -> 4   (whole array -> {2,3})
+# nums = [6,10,15],      k = 2 -> 1   (any pair already needs {2,3,5})
+```
+
+```java
+// java
+// LC 4032. Longest Subarray With at Most K Distinct Prime Factors
+// time = O(n * sqrt(A)), space = O(n * distinct)
+public int longestSubarray(int[] nums, int k) {
+    int n = nums.length;
+    List<List<Integer>> facs = new ArrayList<>();
+    for (int v : nums) facs.add(getPrimeFactors(v));
+
+    Map<Integer, Integer> cnt = new HashMap<>();
+    int left = 0, best = 0;
+    for (int right = 0; right < n; right++) {
+        for (int p : facs.get(right)) cnt.merge(p, 1, Integer::sum);
+        while (cnt.size() > k) {
+            for (int p : facs.get(left)) {
+                if (cnt.merge(p, -1, Integer::sum) == 0) cnt.remove(p);
+            }
+            left++;
+        }
+        best = Math.max(best, right - left + 1);
+    }
+    return best;
+}
+```
+
+> With `nums[i] <= 10⁵` and `n <= 10⁵`, trial division is ~3×10⁷ operations — comfortable in
+> Java, borderline in Python. Swap `get_prime_factors` for the **SPF sieve** above and the
+> factoring step drops to O(n log A).
+
+**Where "get the factors" shows up:**
+
+| Problem | What the factors are used for |
+|---------|-------------------------------|
+| LC 4032 - Longest Subarray With at Most K Distinct Prime Factors | sliding window over the union of prime sets |
+| LC 952 - Largest Component Size by Common Factor | union-find: union each `x` with each of its prime factors |
+| LC 1998 - GCD Sort of an Array | same idea — connect indices sharing a prime |
+| LC 2521 - Distinct Prime Factors of Product of Array | union of `get_prime_factors(x)` over the array |
+| LC 1390 - Four Divisors | `get_divisors` and keep those with exactly 4 |
+| LC 1492 - The k-th Factor of n | `get_divisors`, ascending, index `k-1` |
+| LC 204 - Count Primes | sieve instead — see [1-1-2](#1-1-2-count-prime-number) |
+
 #### 1-1-3) Keep Remainder to Avoid Overflow (Repunit / Modular Arithmetic)
 
 **Core Idea:**
@@ -1578,6 +1835,7 @@ Small patterns that don't need a full template, plus pointers to sibling cheatsh
 | LC 202 - Happy Number | digit-square-sum until 1 or a repeat → **cycle detection** (hash set, or Floyd fast/slow) | — |
 | LC 12 - Integer to Roman | greedy over a descending value/symbol table (incl. `900/400/90/40/9/4`) | [2-3-1](#2-3-1-integer-to-roman--lc-12) |
 | LC 171 - Excel Sheet Column Number | plain base-26 Horner: `res = res*26 + (ch - 'A' + 1)` | [2-1-1](#2-1-1-excel-sheet-column-number--lc-171) |
+| LC 1492 / 1390 / 2521 / 952 | "get the factors of `x`" — `√x` trial division, or an SPF sieve for a whole array | [1-1-2'](#1-1-2-get-factors-of-x--divisors--prime-factors-) |
 | LC 2 / 66 / 67 / 415 / 43 / 7 | digit-by-digit add / multiply with carry, reverse integer | `add_x_sum.md` |
 | LC 62 / 60 | `C(n, k)` paths, factorial number system | `combinatorics_math_patterns.md` |
 | LC 89 / 477 | Gray code (`i ^ (i >> 1)`), Hamming distance by bit column | `bit_manipulation.md` |

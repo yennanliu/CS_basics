@@ -225,6 +225,10 @@ List<int[]> primeFactors(int n) {
 
 **Classic LC:** LC 204 (Count Primes), LC 952 (Largest Component by Common Factor)
 
+> The distinct-primes / all-divisors variants, the SPF sieve for factoring a whole array,
+> and LC 4032 live in [`math.md`](math.md) *1-1-2') get factors of x*. Kept here only in the
+> `(prime, exponent)` form the counting formulas below need.
+
 ### Legendre's Formula — exponent of a prime inside `n!` — LC 172 ⭐⭐⭐⭐
 **Key Idea**: you can read off the power of a prime `p` in `n!` **without ever building `n!`**.
 
