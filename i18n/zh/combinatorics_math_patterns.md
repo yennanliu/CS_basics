@@ -84,11 +84,15 @@ LC 957 為什麼會終止：第 1 天之後兩端永遠是 `0`，只有中間 6 
 ### 埃拉托斯特尼篩法 — LC 204
 <!--CODE-->
 
-<!-- 58fe3ba0f525 -->
+<!-- 2ef9c0ba8950 -->
 ### 質因數分解
 <!--CODE-->
 
 **經典 LC：** LC 204（Count Primes）、LC 952（Largest Component by Common Factor）
+
+> 相異質因數／所有因數的變化題、對整個陣列做分解的 SPF 篩法，以及 LC 4032，都放在
+> [`math.md`](math.md) 的 *1-1-2') get factors of x*。這裡只保留下面計數公式會用到的
+> `(質數, 指數)` 形式。
 
 <!-- 5888d94e405d -->
 ### Legendre 公式 — `n!` 中某個質數的指數 — LC 172 ⭐⭐⭐⭐
