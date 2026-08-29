@@ -2,6 +2,11 @@ package LeetCodeJava.DFS;
 
 // https://leetcode.com/problems/weighted-sum-of-a-tree/
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.List;
+
 /**
  *  4015. Weighted Sum of a Tree
  *  Medium
@@ -81,6 +86,78 @@ public class WeightedSumOfATree {
             res += (long) nums[i] * (height - depth[i] + 1);
         }
 
+        return res;
+    }
+
+    // V1
+    // IDEA: BFS LEVEL ORDER on an explicit children adjacency list rebuilt from `parent`.
+    //       Depth comes from the BFS level, height is the deepest level reached.
+    /**
+     * time = O(n)
+     * space = O(n)
+     */
+    public long weightedSum_1(int[] parent, int[] nums) {
+
+        int n = parent.length;
+        List<List<Integer>> children = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            children.add(new ArrayList<>());
+        }
+        for (int i = 1; i < n; i++) {
+            children.get(parent[i]).add(i);
+        }
+
+        int[] depth = new int[n];
+        depth[0] = 1;
+        int height = 1;
+
+        Deque<Integer> q = new ArrayDeque<>();
+        q.add(0);
+        while (!q.isEmpty()) {
+            int cur = q.poll();
+            height = Math.max(height, depth[cur]);
+            for (Integer child : children.get(cur)) {
+                depth[child] = depth[cur] + 1;
+                q.add(child);
+            }
+        }
+
+        long res = 0L;
+        for (int i = 0; i < n; i++) {
+            res += (long) nums[i] * (height - depth[i] + 1);
+        }
+        return res;
+    }
+
+    // V2
+    // IDEA: brute force O(n * h) - kept as a readable correctness reference.
+    //       For every node, walk the parent chain all the way up to the root and count the
+    //       steps. No caching at all, so a long chain re-walks the same ancestors.
+    /**
+     * time = O(n * h), h = tree height (O(n^2) on a path-shaped tree)
+     * space = O(n)
+     */
+    public long weightedSum_2(int[] parent, int[] nums) {
+
+        int n = parent.length;
+        int[] depth = new int[n];
+        int height = 0;
+
+        for (int i = 0; i < n; i++) {
+            int d = 1;
+            int cur = i;
+            while (parent[cur] != -1) {
+                cur = parent[cur];
+                d++;
+            }
+            depth[i] = d;
+            height = Math.max(height, d);
+        }
+
+        long res = 0L;
+        for (int i = 0; i < n; i++) {
+            res += (long) nums[i] * (height - depth[i] + 1);
+        }
         return res;
     }
 }

@@ -57,4 +57,23 @@ public class BitwiseANDOfNumbersRange {
         }
         return right;
     }
+
+
+    // V2
+    // IDEA: same "common prefix" observation as V0, but computed in O(1) with no
+    //       loop: the highest differing bit of left/right tells us how many low
+    //       bits get wiped out, so mask them off in one step.
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
+    public int rangeBitwiseAnd_2(int left, int right) {
+        int diff = left ^ right;
+        if (diff == 0) {
+            return left;
+        }
+        // number of low bits that differ somewhere in the range
+        int shift = 32 - Integer.numberOfLeadingZeros(diff);
+        return left & (~0 << shift);
+    }
 }

@@ -3,7 +3,10 @@ package LeetCodeJava.DFS;
 // https://leetcode.com/problems/finish-time-of-tasks-i/
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Deque;
+import java.util.List;
 
 /**
  *  3965. Finish Time of Tasks I
@@ -98,6 +101,93 @@ public class FinishTimeOfTasksI {
 
             long ownDuration = (latest - earliest) + baseTime[cur];
             finish[cur] = latest + ownDuration;
+        }
+
+        return finish[0];
+    }
+
+    // V1
+    // IDEA: plain RECURSIVE post-order over adjacency lists - the direct transcription of the
+    //       definition, kept as the readable reference. NOTE: on a 1e5-long chain this can
+    //       overflow the JVM stack, which is exactly why V0 is iterative.
+    /**
+     * time = O(n)
+     * space = O(n)
+     */
+    public long finishTime_1(int n, int[][] edges, int[] baseTime) {
+        List<List<Integer>> children = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            children.add(new ArrayList<Integer>());
+        }
+        for (int[] e : edges) {
+            children.get(e[0]).add(e[1]);
+        }
+        return dfs_1(0, children, baseTime);
+    }
+
+    private long dfs_1(int cur, List<List<Integer>> children, int[] baseTime) {
+        List<Integer> kids = children.get(cur);
+        if (kids.isEmpty()) {
+            return baseTime[cur];
+        }
+        long earliest = Long.MAX_VALUE;
+        long latest = Long.MIN_VALUE;
+        for (Integer c : kids) {
+            long val = dfs_1(c, children, baseTime);
+            earliest = Math.min(earliest, val);
+            latest = Math.max(latest, val);
+        }
+        long ownDuration = (latest - earliest) + baseTime[cur];
+        return latest + ownDuration;
+    }
+
+    // V2
+    // IDEA: KAHN style bottom-up BFS - no traversal order is materialised at all. Keep a
+    //       "children not finished yet" counter plus a running min/max of the children's
+    //       finish times; a node is resolved the moment its counter drops to 0.
+    /**
+     * time = O(n)
+     * space = O(n)
+     */
+    public long finishTime_2(int n, int[][] edges, int[] baseTime) {
+        int[] childCount = new int[n];
+        int[] parent = new int[n];
+        Arrays.fill(parent, -1);
+        for (int[] e : edges) {
+            childCount[e[0]]++;
+            parent[e[1]] = e[0];
+        }
+
+        int[] remaining = childCount.clone();
+        long[] minChild = new long[n];
+        long[] maxChild = new long[n];
+        Arrays.fill(minChild, Long.MAX_VALUE);
+        Arrays.fill(maxChild, Long.MIN_VALUE);
+        long[] finish = new long[n];
+
+        Deque<Integer> queue = new ArrayDeque<>();
+        for (int i = 0; i < n; i++) {
+            if (childCount[i] == 0) {
+                queue.offer(i);
+            }
+        }
+
+        while (!queue.isEmpty()) {
+            int cur = queue.poll();
+            if (childCount[cur] == 0) {
+                finish[cur] = baseTime[cur];
+            } else {
+                long ownDuration = (maxChild[cur] - minChild[cur]) + baseTime[cur];
+                finish[cur] = maxChild[cur] + ownDuration;
+            }
+            int p = parent[cur];
+            if (p != -1) {
+                minChild[p] = Math.min(minChild[p], finish[cur]);
+                maxChild[p] = Math.max(maxChild[p], finish[cur]);
+                if (--remaining[p] == 0) {
+                    queue.offer(p);
+                }
+            }
         }
 
         return finish[0];

@@ -4,6 +4,7 @@ package LeetCodeJava.Greedy;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.TreeMap;
 
 /**
  *  870. Advantage Shuffle
@@ -69,6 +70,73 @@ public class AdvantageShuffle {
                 res[i] = sorted[lo];
                 lo++;
             }
+        }
+        return res;
+    }
+
+    // V1
+    // IDEA: TreeMap as a MULTISET of the nums1 values - walk nums2 in its ORIGINAL order
+    //       and take the cheapest value that still beats it (higherKey); if nothing beats
+    //       it, burn the globally smallest value there (it is the least useful one).
+    /**
+     * time = O(n log n)
+     * space = O(n)
+     */
+    public int[] advantageCount_1(int[] nums1, int[] nums2) {
+        TreeMap<Integer, Integer> pool = new TreeMap<>();
+        for (int x : nums1) {
+            pool.put(x, pool.getOrDefault(x, 0) + 1);
+        }
+
+        int n = nums2.length;
+        int[] res = new int[n];
+        for (int i = 0; i < n; i++) {
+            Integer pick = pool.higherKey(nums2[i]);
+            if (pick == null) {
+                pick = pool.firstKey();
+            }
+            res[i] = pick;
+            int cnt = pool.get(pick);
+            if (cnt == 1) {
+                pool.remove(pick);
+            } else {
+                pool.put(pick, cnt - 1);
+            }
+        }
+        return res;
+    }
+
+    // V2
+    // IDEA: brute force O(n^2) - the same greedy as V1 but with a linear scan over a
+    //       "used" flag array instead of any ordered structure. Kept as a readable
+    //       correctness reference (no sorting, no comparator, nothing to get subtly wrong).
+    /**
+     * time = O(n^2)
+     * space = O(n)
+     */
+    public int[] advantageCount_2(int[] nums1, int[] nums2) {
+        int n = nums1.length;
+        boolean[] used = new boolean[n];
+        int[] res = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            int best = -1;
+            // smallest unused value strictly greater than nums2[i]
+            for (int j = 0; j < n; j++) {
+                if (!used[j] && nums1[j] > nums2[i] && (best == -1 || nums1[j] < nums1[best])) {
+                    best = j;
+                }
+            }
+            if (best == -1) {
+                // nothing beats it -> sacrifice the smallest unused value
+                for (int j = 0; j < n; j++) {
+                    if (!used[j] && (best == -1 || nums1[j] < nums1[best])) {
+                        best = j;
+                    }
+                }
+            }
+            used[best] = true;
+            res[i] = nums1[best];
         }
         return res;
     }

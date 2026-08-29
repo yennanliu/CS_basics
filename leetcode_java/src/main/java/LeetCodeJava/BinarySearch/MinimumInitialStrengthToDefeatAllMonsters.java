@@ -88,4 +88,82 @@ public class MinimumInitialStrengthToDefeatAllMonsters {
         }
         return true;
     }
+
+    // V1
+    // IDEA: backward greedy (no search at all) - walking right to left, the
+    //       minimum strength needed BEFORE monster i is
+    //         need(i) = max(0, monsters[i] - bonus[i],
+    //                       need(i+1) > 0 ? monsters[i] + need(i+1) : 0)
+    //       because cur -> max(0, cur - monsters[i]) after the fight.
+    /**
+     * time = O(n + m)
+     * space = O(n)
+     */
+    public long minInitialStrength_1(int[] monsters, int[][] boosts) {
+        int n = monsters.length;
+
+        long[] bonus = new long[n + 1];
+        if (boosts != null) {
+            for (int[] b : boosts) {
+                bonus[b[0]] += b[2];
+                bonus[b[1] + 1] -= b[2];
+            }
+        }
+        for (int i = 1; i < n; i++) {
+            bonus[i] += bonus[i - 1];
+        }
+
+        long need = 0; // strength required entering the (i+1)-th fight
+        for (int i = n - 1; i >= 0; i--) {
+            long req = monsters[i] - bonus[i]; // enough to beat monster i itself
+            if (need > 0) {
+                // must still hold `need` AFTER paying monsters[i]
+                req = Math.max(req, monsters[i] + need);
+            }
+            need = Math.max(0L, req);
+        }
+        return need;
+    }
+
+    // V2
+    // IDEA: brute force - bonus per monster by scanning every boost, then try
+    //       every candidate initial strength from 0 upward and simulate.
+    //       Kept as a readable correctness reference (only viable on tiny input).
+    /**
+     * time = O(n * m + answer * n)
+     * space = O(n)
+     */
+    public long minInitialStrength_2(int[] monsters, int[][] boosts) {
+        int n = monsters.length;
+        long[] bonus = new long[n];
+        if (boosts != null) {
+            for (int i = 0; i < n; i++) {
+                for (int[] b : boosts) {
+                    if (b[0] <= i && i <= b[1]) {
+                        bonus[i] += b[2];
+                    }
+                }
+            }
+        }
+
+        long limit = 0;
+        for (int m : monsters) {
+            limit += m; // this start is always enough
+        }
+        for (long start = 0; start <= limit; start++) {
+            long cur = start;
+            boolean ok = true;
+            for (int i = 0; i < n; i++) {
+                if (cur + bonus[i] < monsters[i]) {
+                    ok = false;
+                    break;
+                }
+                cur = Math.max(0L, cur - monsters[i]);
+            }
+            if (ok) {
+                return start;
+            }
+        }
+        return limit;
+    }
 }

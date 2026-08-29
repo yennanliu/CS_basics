@@ -58,4 +58,31 @@ public class UniqueBinarySearchTrees {
         }
         return (int) res;
     }
+
+    // V2
+    // IDEA: TOP-DOWN MEMOIZATION of the same "pick a root" recurrence
+    //       (the recursive mirror of V0's bottom-up table).
+    /**
+     * time = O(n^2)
+     * space = O(n)  // memo + recursion depth
+     */
+    public int numTrees_2(int n) {
+        return count_2(n, new int[n + 1], new boolean[n + 1]);
+    }
+
+    private int count_2(int nodes, int[] memo, boolean[] seen) {
+        if (nodes <= 1) {
+            return 1;   // empty tree and single node both have exactly one shape
+        }
+        if (seen[nodes]) {
+            return memo[nodes];
+        }
+        int res = 0;
+        for (int root = 1; root <= nodes; root++) {
+            res += count_2(root - 1, memo, seen) * count_2(nodes - root, memo, seen);
+        }
+        seen[nodes] = true;
+        memo[nodes] = res;
+        return res;
+    }
 }

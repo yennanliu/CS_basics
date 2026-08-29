@@ -82,4 +82,36 @@ public class MinimumInsertionStepsToMakeAStringPalindrome {
         }
         return n - prev[n];
     }
+
+    // V2
+    // IDEA: TOP-DOWN MEMOIZATION over the interval (i, j) - the recursive twin of V0
+    /**
+     * time = O(n^2)
+     * space = O(n^2)
+     */
+    public int minInsertions_2(String s) {
+        int n = s.length();
+        if (n <= 1) {
+            return 0;
+        }
+        Integer[][] memo = new Integer[n][n];
+        return helper_2(s, 0, n - 1, memo);
+    }
+
+    private int helper_2(String s, int i, int j, Integer[][] memo) {
+        if (i >= j) {
+            return 0;
+        }
+        if (memo[i][j] != null) {
+            return memo[i][j];
+        }
+        int res;
+        if (s.charAt(i) == s.charAt(j)) {
+            res = helper_2(s, i + 1, j - 1, memo);
+        } else {
+            res = 1 + Math.min(helper_2(s, i + 1, j, memo), helper_2(s, i, j - 1, memo));
+        }
+        memo[i][j] = res;
+        return res;
+    }
 }

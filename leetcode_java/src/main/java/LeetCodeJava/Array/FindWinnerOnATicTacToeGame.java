@@ -83,4 +83,73 @@ public class FindWinnerOnATicTacToeGame {
 
         return moves.length == n * n ? "Draw" : "Pending";
     }
+
+    // V1
+    // IDEA: SIMULATE THE BOARD — replay the moves onto a 3x3 char grid, then test
+    //       all 8 winning lines explicitly for each player.
+    /**
+     * time = O(n + 8) = O(1)
+     * space = O(1)  (fixed 3x3 grid)
+     */
+    public String tictactoe_1(int[][] moves) {
+        char[][] g = new char[3][3];
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                g[i][j] = ' ';
+            }
+        }
+        for (int i = 0; i < moves.length; i++) {
+            g[moves[i][0]][moves[i][1]] = (i % 2 == 0) ? 'X' : 'O';
+        }
+
+        char[] players = new char[]{'X', 'O'};
+        for (char p : players) {
+            for (int i = 0; i < 3; i++) {
+                if (g[i][0] == p && g[i][1] == p && g[i][2] == p) {
+                    return p == 'X' ? "A" : "B";
+                }
+                if (g[0][i] == p && g[1][i] == p && g[2][i] == p) {
+                    return p == 'X' ? "A" : "B";
+                }
+            }
+            if (g[0][0] == p && g[1][1] == p && g[2][2] == p) {
+                return p == 'X' ? "A" : "B";
+            }
+            if (g[0][2] == p && g[1][1] == p && g[2][0] == p) {
+                return p == 'X' ? "A" : "B";
+            }
+        }
+
+        return moves.length == 9 ? "Draw" : "Pending";
+    }
+
+    // V2
+    // IDEA: BITMASK — pack each player's cells into a 9-bit mask (cell (r,c) -> bit
+    //       r*3+c); a player wins iff their mask covers one of the 8 winning masks.
+    /**
+     * time = O(n + 8) = O(1)
+     * space = O(1)
+     */
+    public String tictactoe_2(int[][] moves) {
+        int[] mask = new int[2]; // mask[0] = A ('X'), mask[1] = B ('O')
+        for (int i = 0; i < moves.length; i++) {
+            mask[i % 2] |= 1 << (moves[i][0] * 3 + moves[i][1]);
+        }
+
+        int[] wins = {
+                0b000000111, 0b000111000, 0b111000000, // rows
+                0b001001001, 0b010010010, 0b100100100, // cols
+                0b100010001, 0b001010100                // diagonals
+        };
+        for (int w : wins) {
+            if ((mask[0] & w) == w) {
+                return "A";
+            }
+            if ((mask[1] & w) == w) {
+                return "B";
+            }
+        }
+
+        return moves.length == 9 ? "Draw" : "Pending";
+    }
 }

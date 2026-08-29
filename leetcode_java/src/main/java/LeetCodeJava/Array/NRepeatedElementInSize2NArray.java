@@ -76,4 +76,27 @@ public class NRepeatedElementInSize2NArray {
         }
         return -1;
     }
+
+    // V2
+    // IDEA: COUNTING ARRAY — values are bounded by 10^4, so bucket-count them and
+    //       return the one value whose count is greater than 1
+    /**
+     * time = O(n + m), m = 10^4
+     * space = O(m)
+     */
+    public int repeatedNTimes_2(int[] nums) {
+        int[] cnt = new int[10001];
+        for (int x : nums) {
+            cnt[x]++;
+        }
+        int best = -1;
+        int bestCnt = 1;
+        for (int v = 0; v < cnt.length; v++) {
+            if (cnt[v] > bestCnt) {
+                bestCnt = cnt[v];
+                best = v;
+            }
+        }
+        return best;
+    }
 }

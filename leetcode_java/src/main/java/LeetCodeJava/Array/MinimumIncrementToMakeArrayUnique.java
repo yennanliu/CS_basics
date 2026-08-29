@@ -92,4 +92,46 @@ public class MinimumIncrementToMakeArrayUnique {
         }
         return res;
     }
+
+    // V2
+    // IDEA: UNION FIND — find(x) returns the smallest still-free value >= x, then
+    //       that slot is linked to x + 1 so it is skipped next time (path compression)
+    /**
+     * time = O(n * alpha(m)) ~ O(n), m = max value + n
+     * space = O(m)
+     */
+    public int minIncrementForUnique_2(int[] nums) {
+        if (nums == null || nums.length <= 1) {
+            return 0;
+        }
+        int max = 0;
+        for (int x : nums) {
+            max = Math.max(max, x);
+        }
+        // every duplicate can be pushed at most n slots past max
+        int[] parent = new int[max + nums.length + 2];
+        Arrays.fill(parent, -1); // -1 = this value is still free
+
+        int res = 0;
+        for (int x : nums) {
+            int slot = find_2(parent, x);
+            res += slot - x;
+            parent[slot] = slot + 1; // slot is taken now -> next candidate is slot + 1
+        }
+        return res;
+    }
+
+    private int find_2(int[] parent, int x) {
+        int root = x;
+        while (parent[root] != -1) {
+            root = parent[root];
+        }
+        // path compression
+        while (parent[x] != -1) {
+            int next = parent[x];
+            parent[x] = root;
+            x = next;
+        }
+        return root;
+    }
 }

@@ -63,4 +63,86 @@ public class PaintFence {
         }
         return (int) (same + diff);
     }
+
+    // V1
+    // IDEA: TOP-DOWN MEMOIZATION on the merged recurrence
+    //       f(n) = (k-1) * (f(n-1) + f(n-2))
+    //       (post n differs from post n-1  ->  f(n-1) choices;
+    //        post n equals post n-1, which then had to differ from n-2 -> f(n-2) choices)
+    /**
+     * time = O(n)
+     * space = O(n)
+     */
+    public int numWays_1(int n, int k) {
+        if (n == 0 || k == 0) {
+            return 0;
+        }
+        long[] memo = new long[n + 1];
+        Arrays.fill(memo, -1);
+        return (int) helper_1(n, k, memo);
+    }
+
+    private long helper_1(int n, int k, long[] memo) {
+        if (n == 1) {
+            return k;
+        }
+        if (n == 2) {
+            return (long) k * k;
+        }
+        if (memo[n] >= 0) {
+            return memo[n];
+        }
+        memo[n] = (long) (k - 1) * (helper_1(n - 1, k, memo) + helper_1(n - 2, k, memo));
+        return memo[n];
+    }
+
+    // V2
+    // IDEA: MATRIX EXPONENTIATION of the same linear recurrence
+    //       [f(n), f(n-1)]^T = [[k-1, k-1], [1, 0]]^(n-2) * [f(2), f(1)]^T
+    //       -> O(log n) instead of O(n)
+    /**
+     * time = O(log n)
+     * space = O(1)
+     */
+    public int numWays_2(int n, int k) {
+        if (n == 0 || k == 0) {
+            return 0;
+        }
+        if (n == 1) {
+            return k;
+        }
+        if (n == 2) {
+            return (int) ((long) k * k);
+        }
+        long[][] pow = matPow_2(new long[][] { { k - 1, k - 1 }, { 1, 0 } }, n - 2);
+        long f2 = (long) k * k;
+        long f1 = k;
+        return (int) (pow[0][0] * f2 + pow[0][1] * f1);
+    }
+
+    private long[][] matPow_2(long[][] m, int p) {
+        long[][] res = { { 1, 0 }, { 0, 1 } };
+        while (p > 0) {
+            if ((p & 1) == 1) {
+                res = matMul_2(res, m);
+            }
+            m = matMul_2(m, m);
+            p >>= 1;
+        }
+        return res;
+    }
+
+    private long[][] matMul_2(long[][] a, long[][] b) {
+        long[][] c = new long[2][2];
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                long v = 0;
+                for (int t = 0; t < 2; t++) {
+                    v += a[i][t] * b[t][j];
+                }
+                c[i][j] = v;
+            }
+        }
+        return c;
+    }
 }

@@ -1,5 +1,7 @@
 package LeetCodeJava.Array;
 
+import java.util.Arrays;
+
 // https://leetcode.com/problems/monotonic-array/
 
 /**
@@ -55,6 +57,53 @@ public class MonotonicArray {
             }
             if (!increasing && !decreasing) {
                 return false;
+            }
+        }
+        return true;
+    }
+
+    // V1
+    // IDEA: SORT — the array is monotonic iff it already equals its ascending sort
+    //       or that same sort read backwards
+    /**
+     * time = O(n log n)
+     * space = O(n)
+     */
+    public boolean isMonotonic_1(int[] nums) {
+        int n = nums.length;
+        int[] asc = nums.clone();
+        Arrays.sort(asc);
+        if (Arrays.equals(nums, asc)) {
+            return true;
+        }
+        for (int i = 0; i < n; i++) {
+            if (nums[i] != asc[n - 1 - i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // V2
+    // IDEA: brute force O(n^2) — check the definition directly over every pair i < j;
+    //       kept as a readable correctness reference
+    /**
+     * time = O(n^2)
+     * space = O(1)
+     */
+    public boolean isMonotonic_2(int[] nums) {
+        return checkAllPairs_2(nums, true) || checkAllPairs_2(nums, false);
+    }
+
+    private boolean checkAllPairs_2(int[] nums, boolean nonDecreasing) {
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = i + 1; j < nums.length; j++) {
+                if (nonDecreasing && nums[i] > nums[j]) {
+                    return false;
+                }
+                if (!nonDecreasing && nums[i] < nums[j]) {
+                    return false;
+                }
             }
         }
         return true;

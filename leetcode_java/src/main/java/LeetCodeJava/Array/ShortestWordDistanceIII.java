@@ -1,5 +1,8 @@
 package LeetCodeJava.Array;
 
+
+import java.util.ArrayList;
+import java.util.List;
 // https://leetcode.com/problems/shortest-word-distance-iii/
 
 /**
@@ -66,4 +69,77 @@ public class ShortestWordDistanceIII {
 
         return res;
     }
+
+    // V1
+    // IDEA: COLLECT THE OCCURRENCE INDEX LISTS FIRST, THEN MERGE THEM WITH
+    //       TWO POINTERS (min gap between 2 sorted index lists). If the 2 words
+    //       are the same, the answer is the min gap of ADJACENT indexes.
+    /**
+     * time = O(n)
+     * space = O(n)
+     */
+    public int shortestWordDistance_1(String[] wordsDict, String word1, String word2) {
+        List<Integer> idx1 = new ArrayList<>();
+        List<Integer> idx2 = new ArrayList<>();
+        for (int i = 0; i < wordsDict.length; i++) {
+            if (wordsDict[i].equals(word1)) {
+                idx1.add(i);
+            }
+            if (wordsDict[i].equals(word2)) {
+                idx2.add(i);
+            }
+        }
+
+        int res = Integer.MAX_VALUE;
+
+        if (word1.equals(word2)) {
+            // same word -> min distance of 2 consecutive occurrences
+            for (int i = 1; i < idx1.size(); i++) {
+                res = Math.min(res, idx1.get(i) - idx1.get(i - 1));
+            }
+            return res;
+        }
+
+        // 2 sorted lists -> classic merge, advance the smaller pointer
+        int a = 0;
+        int b = 0;
+        while (a < idx1.size() && b < idx2.size()) {
+            int i = idx1.get(a);
+            int j = idx2.get(b);
+            res = Math.min(res, Math.abs(i - j));
+            if (i < j) {
+                a++;
+            } else {
+                b++;
+            }
+        }
+        return res;
+    }
+
+    // V2
+    // IDEA: brute force O(n^2) - compare every (word1 idx, word2 idx) pair.
+    //       Kept as a readable correctness reference.
+    /**
+     * time = O(n^2)
+     * space = O(1)
+     */
+    public int shortestWordDistance_2(String[] wordsDict, String word1, String word2) {
+        int res = Integer.MAX_VALUE;
+        for (int i = 0; i < wordsDict.length; i++) {
+            if (!wordsDict[i].equals(word1)) {
+                continue;
+            }
+            for (int j = 0; j < wordsDict.length; j++) {
+                // when word1 == word2 the 2 picks must still be different elements
+                if (i == j) {
+                    continue;
+                }
+                if (wordsDict[j].equals(word2)) {
+                    res = Math.min(res, Math.abs(i - j));
+                }
+            }
+        }
+        return res;
+    }
+
 }

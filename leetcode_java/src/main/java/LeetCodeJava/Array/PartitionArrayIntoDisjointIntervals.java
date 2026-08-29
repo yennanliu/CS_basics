@@ -54,4 +54,54 @@ public class PartitionArrayIntoDisjointIntervals {
         }
         return partitionIdx + 1;
     }
+
+    // V1
+    // IDEA: PREFIX MAX + SUFFIX MIN — the cut is the first i with
+    //       max(nums[0..i]) <= min(nums[i+1..n-1])
+    /**
+     * time = O(n)
+     * space = O(n)
+     */
+    public int partitionDisjoint_1(int[] nums) {
+        int n = nums.length;
+        int[] suffixMin = new int[n];
+        suffixMin[n - 1] = nums[n - 1];
+        for (int i = n - 2; i >= 0; i--) {
+            suffixMin[i] = Math.min(nums[i], suffixMin[i + 1]);
+        }
+
+        int prefixMax = Integer.MIN_VALUE;
+        for (int i = 0; i < n - 1; i++) {
+            prefixMax = Math.max(prefixMax, nums[i]);
+            if (prefixMax <= suffixMin[i + 1]) {
+                return i + 1;
+            }
+        }
+        return n - 1; // the problem guarantees a valid cut exists
+    }
+
+    // V2
+    // IDEA: brute force O(n^2) — for every cut recompute max(left) and min(right)
+    //       from scratch; kept as a readable correctness reference
+    /**
+     * time = O(n^2)
+     * space = O(1)
+     */
+    public int partitionDisjoint_2(int[] nums) {
+        int n = nums.length;
+        for (int cut = 1; cut < n; cut++) {
+            int leftMax = Integer.MIN_VALUE;
+            for (int i = 0; i < cut; i++) {
+                leftMax = Math.max(leftMax, nums[i]);
+            }
+            int rightMin = Integer.MAX_VALUE;
+            for (int i = cut; i < n; i++) {
+                rightMin = Math.min(rightMin, nums[i]);
+            }
+            if (leftMax <= rightMin) {
+                return cut;
+            }
+        }
+        return n - 1;
+    }
 }

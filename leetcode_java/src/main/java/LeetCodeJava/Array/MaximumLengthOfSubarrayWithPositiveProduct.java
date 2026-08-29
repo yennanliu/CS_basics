@@ -109,4 +109,28 @@ public class MaximumLengthOfSubarrayWithPositiveProduct {
         }
         return res;
     }
+
+    // V2
+    // IDEA: brute force O(n^2) — expand every start index and track the running
+    //       sign; kept as a readable correctness reference
+    /**
+     * time = O(n^2)
+     * space = O(1)
+     */
+    public int getMaxLen_2(int[] nums) {
+        int res = 0;
+        for (int i = 0; i < nums.length; i++) {
+            int sign = 1;
+            for (int j = i; j < nums.length; j++) {
+                if (nums[j] == 0) {
+                    break;
+                }
+                sign = (nums[j] > 0) ? sign : -sign;
+                if (sign > 0) {
+                    res = Math.max(res, j - i + 1);
+                }
+            }
+        }
+        return res;
+    }
 }

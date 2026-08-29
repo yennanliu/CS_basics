@@ -63,4 +63,52 @@ public class HIndexII {
         }
         return res;
     }
+
+    // V1
+    // IDEA: linear scan - walk left to right and stop at the first idx where
+    //       citations[idx] >= n - idx (that (n - idx) is the h-index)
+    /**
+     * time = O(n)
+     * space = O(1)
+     */
+    public int hIndex_1(int[] citations) {
+        if (citations == null || citations.length == 0) {
+            return 0;
+        }
+        int n = citations.length;
+        for (int i = 0; i < n; i++) {
+            if (citations[i] >= n - i) {
+                return n - i;
+            }
+        }
+        return 0;
+    }
+
+    // V2
+    // IDEA: counting / bucket sort (the H-Index I trick) - ignores the fact that
+    //       the input is sorted, so it also works on unsorted input
+    /**
+     * time = O(n)
+     * space = O(n)
+     */
+    public int hIndex_2(int[] citations) {
+        if (citations == null || citations.length == 0) {
+            return 0;
+        }
+        int n = citations.length;
+        // bucket[c] = how many papers have exactly c citations (everything >= n
+        // is clamped into bucket[n], since the h-index can never exceed n)
+        int[] bucket = new int[n + 1];
+        for (int c : citations) {
+            bucket[Math.min(c, n)]++;
+        }
+        int cnt = 0; // papers with citations >= h
+        for (int h = n; h >= 0; h--) {
+            cnt += bucket[h];
+            if (cnt >= h) {
+                return h;
+            }
+        }
+        return 0;
+    }
 }

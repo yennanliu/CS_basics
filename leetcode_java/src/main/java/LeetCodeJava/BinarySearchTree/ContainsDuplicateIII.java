@@ -107,4 +107,28 @@ public class ContainsDuplicateIII {
         }
         return false;
     }
+
+    // V2
+    // IDEA: brute force O(n * indexDiff) -- for every i just test the at most
+    //       `indexDiff` earlier elements directly. Kept as a readable
+    //       correctness reference for the bucket / TreeSet versions.
+    /**
+     * time = O(n * indexDiff)
+     * space = O(1)
+     */
+    public boolean containsNearbyAlmostDuplicate_2(int[] nums, int indexDiff, int valueDiff) {
+        if (nums == null || nums.length < 2 || indexDiff <= 0 || valueDiff < 0) {
+            return false;
+        }
+
+        for (int i = 0; i < nums.length; i++) {
+            int from = Math.max(0, i - indexDiff);
+            for (int j = from; j < i; j++) {
+                if (Math.abs((long) nums[i] - nums[j]) <= valueDiff) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

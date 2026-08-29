@@ -2,6 +2,9 @@ package LeetCodeJava.DynamicProgramming;
 
 // https://leetcode.com/problems/2-keys-keyboard/
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 /**
  *  650. 2 Keys Keyboard
  *  Medium
@@ -74,5 +77,51 @@ public class TwoKeysKeyboard {
             res += n;
         }
         return res;
+    }
+
+    // V2
+    // IDEA: BFS over the raw state space (charsOnScreen, charsInClipboard).
+    //       Makes no divisor/prime assumption at all, so it is the readable reference
+    //       that V0's DP and V1's math shortcut are checked against.
+    /**
+     * time = O(n^2)
+     * space = O(n^2)
+     */
+    public int minSteps_2(int n) {
+        if (n <= 1) {
+            return 0;
+        }
+        boolean[][] visited = new boolean[n + 1][n + 1];
+        Deque<int[]> q = new ArrayDeque<>();
+        q.offer(new int[]{1, 0});          // {screen, clipboard}
+        visited[1][0] = true;
+
+        int steps = 0;
+        while (!q.isEmpty()) {
+            steps++;
+            int size = q.size();
+            for (int i = 0; i < size; i++) {
+                int[] cur = q.poll();
+                int screen = cur[0];
+                int clip = cur[1];
+
+                // op 1: copy all
+                if (!visited[screen][screen]) {
+                    visited[screen][screen] = true;
+                    q.offer(new int[]{screen, screen});
+                }
+                // op 2: paste
+                if (clip > 0 && screen + clip <= n) {
+                    if (screen + clip == n) {
+                        return steps;
+                    }
+                    if (!visited[screen + clip][clip]) {
+                        visited[screen + clip][clip] = true;
+                        q.offer(new int[]{screen + clip, clip});
+                    }
+                }
+            }
+        }
+        return -1;   // unreachable for n >= 1
     }
 }

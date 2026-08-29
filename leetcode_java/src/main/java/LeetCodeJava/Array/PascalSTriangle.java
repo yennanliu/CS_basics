@@ -54,4 +54,51 @@ public class PascalSTriangle {
 
         return res;
     }
+
+    // V1
+    // IDEA: BINOMIAL FORMULA — walk each row with C(i, j+1) = C(i, j) * (i - j) / (j + 1),
+    //       so no previous row is consulted at all
+    /**
+     * time = O(numRows^2)
+     * space = O(1) (excluding output)
+     */
+    public List<List<Integer>> generate_1(int numRows) {
+        List<List<Integer>> res = new ArrayList<>();
+        for (int i = 0; i < numRows; i++) {
+            List<Integer> row = new ArrayList<>();
+            long c = 1; // C(i, 0)
+            for (int j = 0; j <= i; j++) {
+                row.add((int) c);
+                c = c * (i - j) / (j + 1);
+            }
+            res.add(row);
+        }
+        return res;
+    }
+
+    // V2
+    // IDEA: RECURSION — generate(n) = generate(n - 1) plus one more row built from
+    //       the last row of that result
+    /**
+     * time = O(numRows^2)
+     * space = O(numRows) recursion depth (excluding output)
+     */
+    public List<List<Integer>> generate_2(int numRows) {
+        if (numRows <= 0) {
+            return new ArrayList<>();
+        }
+        List<List<Integer>> res = generate_2(numRows - 1);
+        int i = numRows - 1; // index of the row we are about to build
+        List<Integer> row = new ArrayList<>();
+        row.add(1);
+        if (i > 0) {
+            List<Integer> prev = res.get(i - 1);
+            for (int j = 1; j < i; j++) {
+                row.add(prev.get(j - 1) + prev.get(j));
+            }
+            row.add(1);
+        }
+        res.add(row);
+        return res;
+    }
 }

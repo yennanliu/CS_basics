@@ -87,4 +87,44 @@ public class MaximumLengthOfPairChain {
         }
         return res;
     }
+
+    // V2
+    // IDEA: PATIENCE / BINARY SEARCH DP (the O(n log n) LIS trick applied to V1's DP).
+    //       Sort by start, keep tails[k] = the smallest achievable END of a chain of
+    //       length k + 1 (tails is increasing), and binary search where each pair lands.
+    /**
+     * time = O(n log n)
+     * space = O(n)
+     */
+    public int findLongestChain_2(int[][] pairs) {
+        Arrays.sort(pairs, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] a, int[] b) {
+                return Integer.compare(a[0], b[0]);
+            }
+        });
+
+        int[] tails = new int[pairs.length];
+        int size = 0;
+
+        for (int[] p : pairs) {
+            // first chain length whose tail can NOT be followed by p (tails[idx] >= p[0])
+            int lo = 0;
+            int hi = size;
+            while (lo < hi) {
+                int mid = (lo + hi) >>> 1;
+                if (tails[mid] < p[0]) {
+                    lo = mid + 1;
+                } else {
+                    hi = mid;
+                }
+            }
+            if (lo == size) {
+                tails[size++] = p[1];          // extends the longest chain so far
+            } else if (p[1] < tails[lo]) {
+                tails[lo] = p[1];              // same length, but a smaller (better) end
+            }
+        }
+        return size;
+    }
 }

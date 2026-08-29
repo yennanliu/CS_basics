@@ -76,4 +76,40 @@ public class PrimeNumberOfSetBitsInBinaryRepresentation {
         }
         return res;
     }
+
+    // V2
+    // IDEA: no lookup table at all - count the set bits with Brian Kernighan's
+    //       trick (v &= v - 1 clears the lowest set bit), then decide primality
+    //       of that count by trial division
+    /**
+     * time = O(n * (popcount + sqrt(popcount)))
+     * space = O(1)
+     */
+    public int countPrimeSetBits_2(int left, int right) {
+        int res = 0;
+        for (int i = left; i <= right; i++) {
+            int bits = 0;
+            int v = i;
+            while (v != 0) {
+                v &= (v - 1);
+                bits++;
+            }
+            if (isPrime_2(bits)) {
+                res++;
+            }
+        }
+        return res;
+    }
+
+    private boolean isPrime_2(int x) {
+        if (x < 2) {
+            return false;
+        }
+        for (int d = 2; (long) d * d <= x; d++) {
+            if (x % d == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

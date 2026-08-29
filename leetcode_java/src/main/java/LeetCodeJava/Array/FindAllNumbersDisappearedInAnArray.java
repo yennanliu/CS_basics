@@ -80,4 +80,34 @@ public class FindAllNumbersDisappearedInAnArray {
         }
         return res;
     }
+
+    // V2
+    // IDEA: CYCLIC SORT — repeatedly swap nums[i] to its home slot (value v -> index
+    //       v - 1); afterwards any index i whose value != i + 1 is a missing number.
+    /**
+     * time = O(n)   (each swap puts one value in its final place)
+     * space = O(1)  (excluding the output list)
+     */
+    public List<Integer> findDisappearedNumbers_2(int[] nums) {
+        List<Integer> res = new ArrayList<>();
+        if (nums == null || nums.length == 0) {
+            return res;
+        }
+        int n = nums.length;
+        for (int i = 0; i < n; i++) {
+            // stop when the value already sits at its home slot (also breaks dup cycles)
+            while (nums[i] != nums[nums[i] - 1]) {
+                int j = nums[i] - 1;
+                int tmp = nums[i];
+                nums[i] = nums[j];
+                nums[j] = tmp;
+            }
+        }
+        for (int i = 0; i < n; i++) {
+            if (nums[i] != i + 1) {
+                res.add(i + 1);
+            }
+        }
+        return res;
+    }
 }

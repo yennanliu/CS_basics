@@ -43,4 +43,37 @@ public class HammingDistance {
         }
         return cnt;
     }
+
+
+    // V1
+    // IDEA: compare the two numbers bit position by bit position (no XOR trick,
+    //       no popcount) - the literal reading of the definition
+    /**
+     * time = O(32) = O(1)
+     * space = O(1)
+     */
+    public int hammingDistance_1(int x, int y) {
+        int cnt = 0;
+        for (int i = 0; i < 32; i++) {
+            if (((x >>> i) & 1) != ((y >>> i) & 1)) {
+                cnt++;
+            }
+        }
+        return cnt;
+    }
+
+    // V2
+    // IDEA: branchless SWAR popcount of x ^ y - count bits pairwise, then in
+    //       nibbles, then in bytes, then sum the bytes with one multiply
+    /**
+     * time = O(1) (no loop at all)
+     * space = O(1)
+     */
+    public int hammingDistance_2(int x, int y) {
+        int z = x ^ y;
+        z = z - ((z >>> 1) & 0x55555555);
+        z = (z & 0x33333333) + ((z >>> 2) & 0x33333333);
+        z = (z + (z >>> 4)) & 0x0f0f0f0f;
+        return (z * 0x01010101) >>> 24;
+    }
 }

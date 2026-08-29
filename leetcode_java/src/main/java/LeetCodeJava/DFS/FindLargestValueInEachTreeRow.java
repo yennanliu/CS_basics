@@ -85,4 +85,40 @@ public class FindLargestValueInEachTreeRow {
         dfs(node.left, depth + 1, res);
         dfs(node.right, depth + 1, res);
     }
+
+    // V2
+    // IDEA: ITERATIVE pre-order DFS with an explicit (node, depth) stack - no recursion,
+    //       so an extremely skewed tree can not blow the JVM call stack
+    /**
+     * time = O(n)
+     * space = O(h)
+     */
+    public List<Integer> largestValues_2(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        if (root == null) {
+            return res;
+        }
+        Deque<TreeNode> nodeStack = new ArrayDeque<>();
+        Deque<Integer> depthStack = new ArrayDeque<>();
+        nodeStack.push(root);
+        depthStack.push(0);
+        while (!nodeStack.isEmpty()) {
+            TreeNode node = nodeStack.pop();
+            int depth = depthStack.pop();
+            if (depth == res.size()) {
+                res.add(node.val);
+            } else {
+                res.set(depth, Math.max(res.get(depth), node.val));
+            }
+            if (node.left != null) {
+                nodeStack.push(node.left);
+                depthStack.push(depth + 1);
+            }
+            if (node.right != null) {
+                nodeStack.push(node.right);
+                depthStack.push(depth + 1);
+            }
+        }
+        return res;
+    }
 }

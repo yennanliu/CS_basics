@@ -54,4 +54,50 @@ public class BinaryGap {
         }
         return res;
     }
+
+    // V1
+    // IDEA: hop directly from set bit to set bit -- numberOfTrailingZeros gives
+    //       the index of the lowest 1, and n &= (n - 1) clears it. Costs one
+    //       iteration per SET bit instead of one per bit position.
+    /**
+     * time = O(popcount(n)) <= O(32) = O(1)
+     * space = O(1)
+     */
+    public int binaryGap_1(int n) {
+        int prev = -1;
+        int res = 0;
+        while (n != 0) {
+            int idx = Integer.numberOfTrailingZeros(n);
+            if (prev != -1) {
+                res = Math.max(res, idx - prev);
+            }
+            prev = idx;
+            // NOTE !!! n & (n - 1) drops the lowest set bit
+            n &= (n - 1);
+        }
+        return res;
+    }
+
+    // V2
+    // IDEA: work on the binary STRING instead of on bits -- the answer is the max
+    //       distance between consecutive '1' characters. Kept as a readable
+    //       reference version.
+    /**
+     * time = O(32) = O(1)
+     * space = O(32) = O(1)   // the string
+     */
+    public int binaryGap_2(int n) {
+        String bits = Integer.toBinaryString(n);
+        int prev = -1;
+        int res = 0;
+        for (int i = 0; i < bits.length(); i++) {
+            if (bits.charAt(i) == '1') {
+                if (prev != -1) {
+                    res = Math.max(res, i - prev);
+                }
+                prev = i;
+            }
+        }
+        return res;
+    }
 }

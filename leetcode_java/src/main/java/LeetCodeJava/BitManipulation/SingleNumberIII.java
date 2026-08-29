@@ -1,5 +1,9 @@
 package LeetCodeJava.BitManipulation;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 // https://leetcode.com/problems/single-number-iii/
 
 /**
@@ -59,5 +63,51 @@ public class SingleNumberIII {
             }
         }
         return new int[]{a, b};
+    }
+
+    // V1
+    // IDEA: hash set toggle - insert on first sight, delete on the second; the two
+    //       survivors in the set are the answer
+    /**
+     * time = O(n)
+     * space = O(n)
+     */
+    public int[] singleNumber_1(int[] nums) {
+        Set<Integer> seen = new HashSet<>();
+        for (int num : nums) {
+            if (!seen.add(num)) {
+                seen.remove(num);
+            }
+        }
+        int[] res = new int[2];
+        int i = 0;
+        for (Integer v : seen) {
+            res[i++] = v;
+        }
+        return res;
+    }
+
+    // V2
+    // IDEA: sort first - equal values become adjacent, so scan and pick up every value
+    //       that is NOT followed by a copy of itself
+    /**
+     * time = O(n log n)
+     * space = O(n) for the defensive copy
+     */
+    public int[] singleNumber_2(int[] nums) {
+        int[] arr = nums.clone();
+        Arrays.sort(arr);
+        int[] res = new int[2];
+        int k = 0;
+        int i = 0;
+        while (i < arr.length) {
+            if (i + 1 < arr.length && arr[i] == arr[i + 1]) {
+                i += 2;
+            } else {
+                res[k++] = arr[i];
+                i++;
+            }
+        }
+        return res;
     }
 }

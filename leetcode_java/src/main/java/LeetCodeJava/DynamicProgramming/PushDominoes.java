@@ -131,4 +131,42 @@ public class PushDominoes {
         }
         return sb.toString();
     }
+
+    // V2
+    // IDEA: brute force simultaneous simulation - one "second" per round, applying the
+    //       physics literally until nothing changes; kept as a readable correctness
+    //       reference (O(N^2) worst case)
+    /**
+     * time = O(N^2)
+     * space = O(N)
+     */
+    public String pushDominoes_2(String dominoes) {
+        char[] cur = dominoes.toCharArray();
+        int n = cur.length;
+
+        while (true) {
+            char[] next = cur.clone();
+            boolean changed = false;
+            for (int i = 0; i < n; i++) {
+                if (cur[i] != '.') {
+                    continue;
+                }
+                boolean pushedRight = (i > 0) && cur[i - 1] == 'R';
+                boolean pushedLeft = (i < n - 1) && cur[i + 1] == 'L';
+                if (pushedRight && !pushedLeft) {
+                    next[i] = 'R';
+                    changed = true;
+                } else if (pushedLeft && !pushedRight) {
+                    next[i] = 'L';
+                    changed = true;
+                }
+                // pushed from both sides -> stays upright
+            }
+            if (!changed) {
+                break;
+            }
+            cur = next;
+        }
+        return new String(cur);
+    }
 }

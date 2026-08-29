@@ -1,5 +1,8 @@
 package LeetCodeJava.Array;
 
+import java.util.ArrayList;
+import java.util.List;
+
 // https://leetcode.com/problems/minimum-lights-to-illuminate-a-road/
 
 /**
@@ -81,6 +84,71 @@ public class MinimumLightsToIlluminateARoad {
                 res++;
                 // new bulb at i + 1 lights up i, i + 1, i + 2
                 i += 3;
+            } else {
+                i++;
+            }
+        }
+        return res;
+    }
+
+    // V1
+    // IDEA: INTERVAL MERGE — build the lit intervals, sort by left edge, sweep them
+    //       and pay ceil(gap / 3) bulbs for every dark gap in between
+    /**
+     * time = O(n log n)
+     * space = O(n)
+     */
+    public int minLights_1(int[] lights) {
+        int n = lights.length;
+        List<int[]> intervals = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            int v = lights[i];
+            if (v > 0) {
+                intervals.add(new int[] { Math.max(0, i - v), Math.min(n - 1, i + v) });
+            }
+        }
+        intervals.sort((a, b) -> Integer.compare(a[0], b[0]));
+
+        int res = 0;
+        int cur = 0; // first position not yet known to be lit
+        for (int[] p : intervals) {
+            if (p[0] > cur) {
+                int gap = p[0] - cur;
+                res += (gap + 2) / 3; // each new bulb lights 3 consecutive spots
+            }
+            cur = Math.max(cur, p[1] + 1);
+        }
+        if (cur < n) {
+            res += (n - cur + 2) / 3;
+        }
+        return res;
+    }
+
+    // V2
+    // IDEA: brute force O(n^2) — literally paint every position each working bulb
+    //       reaches, then greedily cover the dark spots; readable reference
+    /**
+     * time = O(n^2)
+     * space = O(n)
+     */
+    public int minLights_2(int[] lights) {
+        int n = lights.length;
+        boolean[] lit = new boolean[n];
+        for (int i = 0; i < n; i++) {
+            int v = lights[i];
+            if (v > 0) {
+                for (int j = Math.max(0, i - v); j <= Math.min(n - 1, i + v); j++) {
+                    lit[j] = true;
+                }
+            }
+        }
+
+        int res = 0;
+        int i = 0;
+        while (i < n) {
+            if (!lit[i]) {
+                res++;
+                i += 3; // a new bulb placed at i + 1 covers i, i + 1, i + 2
             } else {
                 i++;
             }

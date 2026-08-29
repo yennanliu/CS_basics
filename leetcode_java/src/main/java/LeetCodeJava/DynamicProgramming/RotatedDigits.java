@@ -102,4 +102,77 @@ public class RotatedDigits {
         }
         return changed;
     }
+
+    // V2
+    // IDEA: DIGIT COUNTING (no per-number scan) -
+    //       good(n) = #(x in [1,n] whose digits all lie in {0,1,2,5,6,8,9})
+    //               - #(x in [1,n] whose digits all lie in {0,1,8})
+    //       the subtracted set is exactly the "valid but unchanged" numbers.
+    /**
+     * time = O(log n)
+     * space = O(1)
+     */
+    public int rotatedDigits_2(int n) {
+        boolean[] rotatable = new boolean[10];
+        for (int d : new int[] { 0, 1, 2, 5, 6, 8, 9 }) {
+            rotatable[d] = true;
+        }
+        boolean[] selfMapping = new boolean[10];
+        for (int d : new int[] { 0, 1, 8 }) {
+            selfMapping[d] = true;
+        }
+        return countOnlyDigits_2(n, rotatable) - countOnlyDigits_2(n, selfMapping);
+    }
+
+    // count x in [1, n] such that every digit of x is in the allowed set
+    private int countOnlyDigits_2(int n, boolean[] ok) {
+        if (n <= 0) {
+            return 0;
+        }
+        String s = String.valueOf(n);
+        int len = s.length();
+
+        int all = 0;
+        int nonZero = 0;
+        for (int d = 0; d < 10; d++) {
+            if (ok[d]) {
+                all++;
+                if (d > 0) {
+                    nonZero++;
+                }
+            }
+        }
+
+        long res = 0;
+        // strictly shorter numbers
+        for (int l = 1; l < len; l++) {
+            res += nonZero * pow_2(all, l - 1);
+        }
+        // same length, digit by digit
+        boolean tight = true;
+        for (int i = 0; i < len; i++) {
+            int di = s.charAt(i) - '0';
+            for (int d = (i == 0 ? 1 : 0); d < di; d++) {
+                if (ok[d]) {
+                    res += pow_2(all, len - 1 - i);
+                }
+            }
+            if (!ok[di]) {
+                tight = false;
+                break;
+            }
+        }
+        if (tight) {
+            res++; // n itself
+        }
+        return (int) res;
+    }
+
+    private long pow_2(int base, int exp) {
+        long r = 1;
+        for (int i = 0; i < exp; i++) {
+            r *= base;
+        }
+        return r;
+    }
 }

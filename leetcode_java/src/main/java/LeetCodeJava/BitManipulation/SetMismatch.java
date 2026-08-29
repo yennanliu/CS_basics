@@ -83,4 +83,50 @@ public class SetMismatch {
         }
         return new int[] { dup, missing };
     }
+
+    // V2
+    // IDEA: XOR the array with 1..n -> dup ^ missing. The lowest set bit of that XOR
+    //       is a bit where the two differ, so bucket BOTH the array and 1..n by that
+    //       bit; each bucket XORs down to one candidate. A final scan says which of
+    //       the two candidates actually occurs in nums (that one is the duplicate).
+    /**
+     * time = O(n)
+     * space = O(1)
+     */
+    public int[] findErrorNums_2(int[] nums) {
+        int n = nums.length;
+        int xorAll = 0;
+        for (int num : nums) {
+            xorAll ^= num;
+        }
+        for (int v = 1; v <= n; v++) {
+            xorAll ^= v;
+        }
+
+        int diffBit = xorAll & (-xorAll);
+
+        int a = 0;
+        int b = 0;
+        for (int num : nums) {
+            if ((num & diffBit) != 0) {
+                a ^= num;
+            } else {
+                b ^= num;
+            }
+        }
+        for (int v = 1; v <= n; v++) {
+            if ((v & diffBit) != 0) {
+                a ^= v;
+            } else {
+                b ^= v;
+            }
+        }
+
+        for (int num : nums) {
+            if (num == a) {
+                return new int[] { a, b };
+            }
+        }
+        return new int[] { b, a };
+    }
 }
