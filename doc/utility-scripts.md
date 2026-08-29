@@ -212,23 +212,22 @@ Two caveats the output flags on its own:
   (92% of Hard rows sit at `AGAIN`, some after 20+ passes). So read the Mastery axis as a
   floor, and trust the *relative* cost curve over the absolute `OK` share.
 
-## zh_cheatsheet.py
+## zh.js
 
-Drives the 繁體中文 translations of `doc/cheatsheet/`. Roughly 70% of those files
-is fenced code that has to survive byte-for-byte, so the script lifts every fence
-out into a `<!--CODE:n-->` marker before translation and splices the originals
-back in afterwards.
+Drives the 繁體中文 translations. There is one markdown tree — the English one —
+and `i18n/zh/<slug>.md` holds a sparse overlay of translated *sections*, each
+keyed by a hash of its English text. The site composes the two into a full
+Chinese document at build time, so code is never stored twice and cannot drift.
 
 ```bash
-python3 script/zh_cheatsheet.py extract [slug ...]   # -> .zh-work/<slug>.md (prose only)
-python3 script/zh_cheatsheet.py merge   [slug ...]   # .zh-work/<slug>.zh.md -> doc/cheatsheet/zh/<slug>.md
-python3 script/zh_cheatsheet.py verify  [slug ...]   # zh code blocks == en code blocks, or exit 1
-python3 script/zh_cheatsheet.py status [--write]     # progress; --write refreshes the tracker doc
+node script/zh.js status [--write]   # coverage; --write refreshes the tracker doc
+node script/zh.js todo [slug ...]    # the sections still needing a translation
+node script/zh.js sync [slug ...]    # drop orphaned entries, reorder to match English
 ```
 
-With no slugs, every sheet is processed. `merge` refuses a translation that
-dropped, duplicated or reordered a marker, so a truncated file fails loudly
-rather than silently losing code. See
+With no slugs, every sheet is processed. Edit an English section and its
+translation simply goes missing — `todo` prints it, and the page falls back to
+English until it is filled in. See
 [`cheatsheet-zh-progress.md`](cheatsheet-zh-progress.md) for the current state and
 CLAUDE.md for the translation conventions.
 

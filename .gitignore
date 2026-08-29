@@ -43,8 +43,3 @@ data/.lc_discuss_cache/
 .lc_cache/
 
 
-# script/zh_cheatsheet.py scratch: prose extracted from doc/cheatsheet for
-# translation, plus the translated prose before it is merged back. Regenerate
-# with `python3 script/zh_cheatsheet.py extract`; the merged result under
-# doc/cheatsheet/zh/ is what gets committed.
-.zh-work/

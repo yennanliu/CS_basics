@@ -251,43 +251,52 @@ The build fails on a taxonomy key that is missing, points at an unknown topic, o
 
 ## Traditional Chinese cheatsheets
 
-Every sheet has a 繁體中文 counterpart at `doc/cheatsheet/zh/<same-slug>.md`. The
-site builds both trees and the navbar shows a **中文 / EN** button that swaps
-between counterparts; `cheatsheets.html` ↔ `cheatsheets.zh.html` is the way in.
-Progress and known limitations live in
+There is **one markdown tree**, the English one. A translation is a *sparse
+overlay* of translated sections in `i18n/zh/<slug>.md`, and the site composes the
+two into a full Chinese document at build time (`site/i18n.js`). The navbar shows
+a **中文 / EN** button that swaps between counterparts; `cheatsheets.html` ↔
+`cheatsheets.zh.html` is the way in. Progress lives in
 [`doc/cheatsheet-zh-progress.md`](doc/cheatsheet-zh-progress.md) (generated).
+
+**Why an overlay and not a second tree.** Roughly 70% of a sheet is fenced code
+that must read identically in both languages, and every English sheet was edited
+in the last six months. A parallel tree stored that code twice and tracked
+staleness per *file*, so a 45-line edit invalidated a 1,000-line translation. The
+overlay stores prose only, keyed per *section* (median 249 bytes), so an edit
+invalidates only the section it touched.
 
 **Rules for a translation**
 
-- Same slug, same code blocks **byte-for-byte** — only prose is translated.
-- **Same heading shape** — same count, same levels, same order; translate the
-  heading *text* only. A translation keeps its link targets verbatim, so
-  `[見 §3](#two-pointers)` still names the English slug; the build pairs the two
-  documents' headings by position to retarget it, then asserts that no cheatsheet
-  link is left dangling. Add or drop a heading and the pairing is abandoned and
-  the build fails, rather than shipping links that land in the wrong section.
-- No `category` / `tier` / `kind` in the translation: the build reads them off
-  the English sheet, so the two indexes can never disagree.
-- The Scope line becomes `> **範圍** — …` (the build reads either spelling for
-  the card description).
-- The zh index's category names, blurbs, tier labels and "start here" reasons
-  come from the `zh` block in [`data/cheatsheet_meta.json`](data/cheatsheet_meta.json);
+- **Only prose is stored.** Every fence is lifted out to a one-line `<!--CODE-->`
+  marker before storage and spliced back at compose time. A translated section
+  must keep every marker it was given, in order — `compose` throws otherwise.
+- **Structure comes from the English sheet.** Headings and their order are the
+  English document's, so a translation cannot add or drop one and the two can
+  never disagree about shape. Translate the heading *text* only.
+- **A missing section falls back to English**, so a half-translated sheet renders
+  as a Chinese page with English gaps rather than failing.
+- **Links keep their English targets.** `[見 §3](#two-pointers)` still names the
+  English slug; the build pairs the two documents' headings by position, retargets
+  every fragment, and then asserts that no cheatsheet link is left dangling.
+- No `category` / `tier` / `kind` in a translation: the build reads them off the
+  English sheet, so the two indexes can never disagree.
+- The Scope line becomes `> **範圍** — …` (the build reads either spelling for the
+  card description).
+- The zh index's category names, blurbs, tier labels and "start here" reasons come
+  from the `zh` block in [`data/cheatsheet_meta.json`](data/cheatsheet_meta.json);
   anything missing there falls back to English rather than failing the build.
   The page's own sentences are `INDEX_TEXT` in `site/build-lib.js`.
 
-**Workflow** — `script/zh_cheatsheet.py` keeps the code out of the translator's
-hands, because ~70% of these files is fenced code that must survive intact:
+**Workflow** — after an English sheet is edited, its changed sections simply go
+missing from the store:
 
 ```bash
-python3 script/zh_cheatsheet.py extract [slug ...]   # -> .zh-work/<slug>.md, fences as <!--CODE:n-->
-#   translate the prose into .zh-work/<slug>.zh.md, keeping every marker
-python3 script/zh_cheatsheet.py merge   [slug ...]   # -> doc/cheatsheet/zh/<slug>.md
-python3 script/zh_cheatsheet.py verify               # zh code blocks == en code blocks
-python3 script/zh_cheatsheet.py status --write       # refresh the progress doc
+node script/zh.js status              # coverage, and which sheets have gaps
+node script/zh.js todo heap           # the sections needing a translation, keys included
+#   translate each one, keeping every <!--CODE--> line, and append it to i18n/zh/heap.md
+node script/zh.js sync heap           # drop entries the English no longer has, reorder
+node script/zh.js status --write      # refresh the progress doc
 ```
-
-`status` flags a sheet **⚠️ stale** when the English original has been committed
-to since its translation — that is the signal to re-run the loop for that slug.
 
 ---
 
