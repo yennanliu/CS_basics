@@ -68,7 +68,13 @@ class Solution(object):
 
 
     def helper(self, x):
-        pass
+        # ??
+        # get  ASCII value
+        # ??
+        diff = ord(x - 'a')
+
+        # get 8-bit binary representation
+        return bi(diff, 8)
 
 
 #------------------------------------------------
