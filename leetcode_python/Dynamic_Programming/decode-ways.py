@@ -59,9 +59,9 @@ s contains only digits and may contain leading zero(s).
         dp[i] = ways to decode s[:i]
         
 
-    i = length of prefix
+    i = `length` of prefix
     
-    dp has size `n + 1`
+    dp has size `n + 1`   (NOTE !!!!)
 
 
 - DP eq
@@ -95,11 +95,14 @@ class Solution(object):
             return 0
 
         n = len(s)
+
+        # (NOTE !!!!) dp has `n + 1` size
         # dp[i] represents ways to decode the prefix s[0...i-1]
         dp = [0] * (n + 1)
 
         # Base cases
-        dp[0] = 1  # Empty prefix has 1 valid path
+        # NOTE !!! dp[0] = 1
+        dp[0] = 1  # `Empty` prefix has 1 valid path
         dp[1] = 1  # First char is non-zero (checked above)
 
         for i in range(2, n + 1):
@@ -137,7 +140,9 @@ class Solution(object):
 
 
         # NOTE !!!
-        # use `n` idx
+        # use `n` idx 
+        #       -> the prefix with len == n
+        #       -> i = `length` of prefix
         return dp[n]
 
 
