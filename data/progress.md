@@ -55,6 +55,7 @@
 - greedy.md
 
 - topology_sorting.md
+	- Template 7: Tree Centroid Finding (Leaf Trimming for Undirected Trees): again
 
 - Backtracking.md
 
