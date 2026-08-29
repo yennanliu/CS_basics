@@ -54,8 +54,8 @@
 
 - greedy.md
 
-- topology_sorting.md
-	- Template 7: Tree Centroid Finding (Leaf Trimming for Undirected Trees): again
+- Topological Sorting — Worked Examples
+
 
 - Backtracking.md
 
@@ -102,6 +102,9 @@
   - strings.md (?)
   - complexity_cheatsheet.md
   - lc_pattern (again)
+  - topology_sorting.md
+		- Template 7: Tree Centroid Finding (Leaf Trimming for Undirected Trees): again
+
 
 - LC weekly
 	- `data/lc_weekly/lc_weekly_gpt.md`
@@ -218,6 +221,7 @@
 				- 310
 			- topological sort
 				- 207
+				- 1361
 			- Parent map + BFS radiating outward
 				- 863
 		- 2 pointers
