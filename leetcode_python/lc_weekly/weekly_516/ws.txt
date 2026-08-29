@@ -77,7 +77,10 @@ class Solution(object):
         return bi(diff, 8)
 
 
-#------------------ (fixed)
+#---------------------------------------
+# Fixed
+#---------------------------------------
+
 
 
 class Solution(object):
@@ -115,7 +118,6 @@ class Solution(object):
         return format(ascii_val, "08b")
 
 
-#------------------ (fixed)
 
 
 #------------------------------------------------
@@ -243,7 +245,10 @@ class Solution(object):
 
 
 
-#------------------ (fixed)
+#---------------------------------------
+# Fixed
+#---------------------------------------
+
 
 
 class Solution(object):
@@ -281,7 +286,6 @@ class Solution(object):
         return res
 
 
-#------------------ (fixed)
 
 
 
@@ -409,6 +413,116 @@ class Solution(object):
         return visited
 
         
+
+
+#---------------------------------------
+# Fixed
+#---------------------------------------
+
+
+from collections import Counter
+import math
+
+
+class Solution(object):
+    def longestSubarray(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: int
+        """
+
+        # factor[i] = prime factors of nums[i]
+        factor = []
+
+        for x in nums:
+            #factor.append(self.get_prime_factor(x))
+            factor.append(self.get_prime_factor_v2(x))
+
+        # Count how many numbers in the current window
+        # contain each prime factor.
+        factor_cnt = Counter()
+
+        # Number of distinct prime factors in window
+        distinct = 0
+
+        max_len = 0
+        l = 0
+
+        for r in range(len(nums)):
+
+            # Add nums[r]'s prime factors
+            for p in factor[r]:
+                if factor_cnt[p] == 0:
+                    distinct += 1
+
+                factor_cnt[p] += 1
+
+            # Shrink window if too many distinct factors
+            while distinct > k:
+
+                for p in factor[l]:
+                    factor_cnt[p] -= 1
+
+                    if factor_cnt[p] == 0:
+                        distinct -= 1
+
+                l += 1
+
+            # Current window [l, r] is valid
+            max_len = max(max_len, r - l + 1)
+
+        return max_len
+
+
+    def get_prime_factor_v2(self, x):
+            """Returns the set of distinct prime factors of x."""
+            factors = set()
+            d = 2
+            while d * d <= x:
+                if x % d == 0:
+                    factors.add(d)
+                    while x % d == 0:
+                        x //= d
+                d += 1
+            if x > 1:
+                factors.add(x)
+            return factors
+
+    def get_prime_factor(self, x):
+        """
+        Return the set of distinct prime factors of x.
+
+        Example:
+            12 -> {2, 3}
+            18 -> {2, 3}
+            25 -> {5}
+            1  -> {}
+        """
+
+        res = set()
+
+        # Handle factor 2
+        while x % 2 == 0:
+            res.add(2)
+            x //= 2
+
+        # Handle odd factors
+        p = 3
+
+        while p * p <= x:
+            while x % p == 0:
+                res.add(p)
+                x //= p
+
+            p += 2
+
+        # Remaining x is prime
+        if x > 1:
+            res.add(x)
+
+        return res
+
 
 
 #------------------------------------------------
