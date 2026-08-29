@@ -1,0 +1,44 @@
+#-------------------------------
+# weekly-contest-516
+
+# https://leetcode.com/contest/weekly-contest-516/
+
+
+(67 mins)
+
+10.53 - 12.00 pm
+#-------------------------------
+
+
+#------------------------------------------------
+
+# LC 4030
+# https://leetcode.com/problems/check-ascii-palindromic/description/
+#------------------------------------------------
+
+
+
+
+#------------------------------------------------
+
+# LC 4031
+# https://leetcode.com/problems/find-all-numbers-disappeared-in-an-array-ii/description/
+#------------------------------------------------
+
+
+
+#------------------------------------------------
+
+# LC 4032
+# https://leetcode.com/problems/longest-subarray-with-at-most-k-distinct-prime-factors/
+#------------------------------------------------
+
+
+
+#------------------------------------------------
+
+# LC 4033
+# https://leetcode.com/problems/valid-k-unique-subarrays-i/
+#------------------------------------------------
+
+
