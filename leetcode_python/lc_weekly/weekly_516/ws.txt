@@ -256,12 +256,17 @@ class Solution(object):
         for r in range(len(nums))
             # ???
             r_set = f_map[r]
+
+            if len(r_set) <= k:
+                max_len = max(max_len, 1)
+
             # ???
-            dist_factor += r_set
+            dist_factor = (dist_factor or r_set)
 
             while len(dist_factor) > k:
                 l_set = dist_factor[l]
                 dist_factor -= l_set
+                #dist_factor = (dist_factor or )
                 l += 1
 
             max_len = max(max_len, r - l + 1)
@@ -284,14 +289,19 @@ class Solution(object):
         visited = set()
         for i in range(2, math.sqrt(x)):
             is_factor = True
-            if i not in visited:
+            #if i not in visited:
+            #    visited.add(i)
+            #else:
+            #??
+            if not visited:
                 visited.add(i)
             else:
-                # ??
+            
+                # ??????
                 for x in visited:
                     if x % visited == 0:
                         is_factor = False
-                        continue
+                        break
                 if is_factor:
                     visited.add(x)
 
