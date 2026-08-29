@@ -1,6 +1,6 @@
 # 0/1 背包 DP（0/1 Knapsack 中文詳解）
 
-> **範圍** — 用中文把 0/1 背包從「物品重量價值」一路講到 LC 494／416 的解題流程，重點放在 狀態怎麼定義、「拿或不拿」的轉移、以及為什麼內層迴圈一定要倒序；完全背包（Unbounded）與排列／組合的迴圈順序規則不在這裡展開。
+> **範圍** — 用中文把 0/1 背包從「物品重量價值」一路講到 LC 494／416 的解題流程，重點放在狀態怎麼定義、「拿或不拿」的轉移、以及為什麼內層迴圈一定要倒序；完全背包（Unbounded）與排列／組合的迴圈順序規則不在這裡展開。
 > **另見**：[knapsack.md](./knapsack.md) — 同一家族的英文完整版，含 unbounded / bounded、combinations vs permutations；[dp.md](./dp.md) — DP 主索引與其他 DP pattern；[recursion_to_dp.md](./recursion_to_dp.md) — 從遞迴一步步改寫成 DP。
 
 ## LeetCode 題目清單
