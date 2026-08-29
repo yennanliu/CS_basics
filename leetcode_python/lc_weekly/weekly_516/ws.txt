@@ -77,6 +77,47 @@ class Solution(object):
         return bi(diff, 8)
 
 
+#------------------ (fixed)
+
+
+class Solution(object):
+    def isPalindromic(self, s):
+        """
+        :type s: str
+        :rtype: bool
+        """
+
+        # Convert every character to its 8-bit ASCII representation
+        tmp = ""
+
+        for x in s:
+            tmp += self.helper(x)
+
+        # Check whether the binary string is a palindrome
+        l = 0
+        r = len(tmp) - 1
+
+        while l < r:
+            if tmp[l] != tmp[r]:
+                return False
+
+            l += 1
+            r -= 1
+
+        return True
+
+    def helper(self, x):
+        # Get ASCII value
+        ascii_val = ord(x)
+
+        # Convert to exactly 8-bit binary
+        # Example: 102 -> "01100110"
+        return format(ascii_val, "08b")
+
+
+#------------------ (fixed)
+
+
 #------------------------------------------------
 
 # LC 4031
