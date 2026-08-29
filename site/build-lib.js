@@ -154,6 +154,53 @@
       '</details></aside>';
   }
 
+  // ── Cross-language anchors ────────────────────────────────────────────────
+  //
+  // A translated sheet keeps its links verbatim, so `[見 §3](#two-pointers)` still
+  // names the *English* heading slug — an anchor that does not exist on the
+  // translated page, so the link silently lands at the top of the doc.
+  //
+  // The two files are the same document in two languages: same headings, same
+  // order. So the Nth heading id in one maps to the Nth in the other. That is an
+  // assumption, not a guarantee — a translator can drop or add a heading — so it
+  // is verified before use and the whole map is abandoned if the shapes differ.
+  // Abandoning it leaves the links exactly as broken as they were, never worse.
+
+  function headingIds(htmlContent) {
+    const ids = [];
+    const re = /<h[1-4]\b[^>]*\bid="([^"]*)"/g;
+    let m;
+    while ((m = re.exec(htmlContent)) !== null) ids.push(m[1]);
+    return ids;
+  }
+
+  function anchorMap(fromIds, toIds) {
+    if (!fromIds || !toIds || fromIds.length !== toIds.length || !fromIds.length) return null;
+    const map = new Map();
+    for (let i = 0; i < fromIds.length; i++) {
+      if (fromIds[i] !== toIds[i]) map.set(fromIds[i], toIds[i]);
+    }
+    return map;
+  }
+
+  /**
+   * Rewrites every `#fragment` in `htmlContent` through the map for the page it
+   * points at. `mapFor(page)` returns the map for a sibling page ('' for this
+   * one); anything it cannot resolve is left untouched.
+   */
+  function retargetAnchors(htmlContent, mapFor) {
+    return htmlContent.replace(/href="([^"]*#[^"]*)"/g, (full, href) => {
+      const hash = href.indexOf('#');
+      const page = href.slice(0, hash);
+      // An absolute or parent-relative URL belongs to another site or section.
+      if (/^[a-z]+:|^\/|\.\./i.test(page)) return full;
+      const map = mapFor(page);
+      if (!map) return full;
+      const target = map.get(href.slice(hash + 1));
+      return target ? `href="${page}#${target}"` : full;
+    });
+  }
+
   function extractHeadings(htmlContent) {
     const headingRegex = /<h([1-4])\s[^>]*?>(.*?)<\/h\1>/g;
     const headings = [];
@@ -524,6 +571,9 @@
     PRIORITY_LEGEND,
     generateTOC,
     extractHeadings,
+    headingIds,
+    anchorMap,
+    retargetAnchors,
     ensureHeadingIds,
     groupByCategory,
     buildPrevNext,

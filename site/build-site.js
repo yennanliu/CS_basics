@@ -7,6 +7,7 @@ const hljs = require('highlight.js');
 const {
   slugify, TIER_LABELS, prioBadge, PRIO_BADGE_RE, headingText,
   annotatePriorityHeadings, PRIORITY_LEGEND, generateTOC, extractHeadings,
+  headingIds, anchorMap, retargetAnchors,
   ensureHeadingIds, groupByCategory, buildPrevNext, buildIndexGrid,
   buildCheatsheetIndex, splitLeadingH1, buildPageContent, extractScope,
   titleCaseFromFile, summariseDoc
@@ -208,6 +209,9 @@ if (fs.existsSync(cheatsheetDir)) {
 
     let htmlContent = renderContent(raw, true);
     htmlContent = ensureHeadingIds(htmlContent);
+    // Captured before the H1 is split off, so the translated sheet — measured at
+    // the same point — lines up heading-for-heading with it.
+    const enHeadingIds = headingIds(htmlContent);
     const { title: h1Title, titleId, html: bodyHtml } = splitLeadingH1(htmlContent);
     const { html: annotated, hasPriority } = annotatePriorityHeadings(bodyHtml);
     htmlContent = annotated;
@@ -244,6 +248,7 @@ if (fs.existsSync(cheatsheetDir)) {
       tier,
       kind,
       description,
+      enHeadingIds,
       content: buildPageContent({
         title,
         htmlContent,
@@ -310,18 +315,38 @@ if (fs.existsSync(zhDir)) {
   const zhPaths = zhFiles.map(f => path.join(zhDir, f));
   const zhLastMod = buildLastModifiedMap(zhPaths);
 
-  // Walked in the English order so prev/next threads the same category ladder.
+  // Two passes, because a link inside one translation can point at a *section of
+  // another one* — so every sheet has to be rendered before any of them can have
+  // its anchors retargeted.
+  //
+  // Pass 1: render, and learn how each sheet's English heading ids line up with
+  // its translated ones. Walked in the English order so prev/next threads the
+  // same category ladder.
+  const drafts = [];
+  const anchorMaps = new Map();
   for (const sheet of cheatsheets) {
-    const filePath = path.join(zhDir, `${sheet.file}.md`);
     if (!zhSlugs.has(sheet.file)) continue;
+    const filePath = path.join(zhDir, `${sheet.file}.md`);
     const raw = fs.readFileSync(filePath, 'utf8');
+    const html = ensureHeadingIds(renderContent(raw, true));
+    anchorMaps.set(sheet.file, anchorMap(sheet.enHeadingIds, headingIds(html)));
+    drafts.push({ sheet, filePath, raw, html });
+  }
 
-    let htmlContent = renderContent(raw, true);
-    htmlContent = ensureHeadingIds(htmlContent);
-    htmlContent = htmlContent.replace(
+  // Pass 2: retarget the links, then build the page.
+  for (const { sheet, filePath, raw, html } of drafts) {
+    let htmlContent = html.replace(
       /href="([^"#]+)(\.html)(#[^"]*)?"/g,
       (full, slug, ext, hash) => (zhSlugs.has(slug) ? `href="${slug}.zh.html${hash || ''}"` : full)
     );
+    // A hand-written `[見 §3](#two-pointers)` still names the *English* heading
+    // slug, which does not exist on this page. Point it at the translated
+    // heading in the same position — here, or in a sibling translation.
+    htmlContent = retargetAnchors(htmlContent, page => {
+      if (!page) return anchorMaps.get(sheet.file);
+      const sibling = page.match(/^([^/]+)\.zh\.html$/);
+      return sibling ? anchorMaps.get(sibling[1]) : null;
+    });
     const { title: h1Title, titleId, html: bodyHtml } = splitLeadingH1(htmlContent);
     const { html: annotated, hasPriority } = annotatePriorityHeadings(bodyHtml);
     htmlContent = annotated;
@@ -747,6 +772,43 @@ console.log('✓ Created search.html');
     throw new Error(
       'Priority-badge text leaked into heading labels — route the text through ' +
       `headingText(): ${offenders.slice(0, 5).join(', ')}${offenders.length > 5 ? ` (+${offenders.length - 5})` : ''}`
+    );
+  }
+}
+
+// Every in-page anchor must land somewhere. A translated sheet is where this
+// goes wrong silently: its links still carry the English heading slugs, which
+// retargetAnchors rewrites — but only while the two documents keep the same
+// heading shape. Assert the result rather than trusting it.
+{
+  const dir = '_site/cheatsheets';
+  const idsOf = new Map();
+  const pages = fs.existsSync(dir) ? fs.readdirSync(dir).filter(f => f.endsWith('.html')) : [];
+  for (const page of pages) {
+    const html = fs.readFileSync(path.join(dir, page), 'utf8');
+    idsOf.set(page, new Set([...html.matchAll(/\bid="([^"]*)"/g)].map(m => m[1])));
+  }
+
+  const dangling = [];
+  for (const page of pages) {
+    const html = fs.readFileSync(path.join(dir, page), 'utf8');
+    for (const [, href] of html.matchAll(/href="([^"]*#[^"]*)"/g)) {
+      const hash = href.indexOf('#');
+      const target = href.slice(0, hash) || page;
+      // A fragment travels percent-encoded but is matched decoded, so compare decoded.
+      let fragment;
+      try { fragment = decodeURIComponent(href.slice(hash + 1)); } catch (_) { continue; }
+      if (!fragment || !idsOf.has(target)) continue;
+      if (!idsOf.get(target).has(fragment)) dangling.push(`${page} → ${href}`);
+    }
+  }
+  if (dangling.length) {
+    throw new Error(
+      `${dangling.length} cheatsheet link(s) point at an anchor that does not exist:\n  ` +
+      dangling.slice(0, 8).join('\n  ') +
+      (dangling.length > 8 ? `\n  (+${dangling.length - 8} more)` : '') +
+      '\nOn a .zh page this usually means the translation added or dropped a heading, ' +
+      'so the positional anchor map was abandoned (see anchorMap in build-lib.js).'
     );
   }
 }

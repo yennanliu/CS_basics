@@ -268,13 +268,24 @@ doc/cheatsheet/zh/<slug>.md
 `python3 script/zh_cheatsheet.py verify` re-extracts both sides and fails if a
 translated sheet's code blocks differ from the English original in any way.
 
+## What the build does for a translation
+
+- **In-page anchors are remapped.** A translated sheet keeps its link targets
+  verbatim, so `[見 §3](#two-pointers)` still names the *English* heading slug.
+  The build pairs the two documents' headings by position and retargets every
+  fragment — including one pointing into a sibling translation — then asserts
+  that no cheatsheet link is left dangling. That pairing is why a translation
+  must never add or drop a heading: if the shapes differ the map is abandoned
+  and the build fails loudly rather than shipping broken links.
+- **Category, tier and kind** are read off the English sheet, so a translation
+  never restates them and the two indexes cannot disagree.
+
 ## Known limitations
 
-- **Anchor links across sheets** (`./heap.md#overview`) keep the English
-  fragment, which does not exist on the translated page — the link lands at the
-  top of the right sheet rather than at the right section.
 - **The star legend and the priority tooltips** inside a sheet are still English;
   they come from `site/build-lib.js`, not from the markdown.
+- **LC problem titles stay in English** — they are proper names, and keeping them
+  is what makes a problem findable on LeetCode itself.
 - A sheet marked **⚠️ stale** below has been edited in English since it was
   translated. Re-run extract → translate → merge for it.
 

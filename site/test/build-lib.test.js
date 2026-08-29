@@ -592,6 +592,96 @@ test('extractScope reads the translated Scope line too', () => {
   assert.equal(lib.extractScope('# 堆積\n> **範圍**：模板。\n'), '模板。');
 });
 
+// ── Cross-language anchors ────────────────────────────────────────────────
+// A translation keeps its link targets verbatim, so `[見 §3](#two-pointers)`
+// still names the *English* heading slug. These three functions are what turns
+// it into the translated page's own id — and what refuses to guess when the two
+// documents no longer have the same shape.
+
+test('headingIds reads h1–h4 ids in document order', () => {
+  const html = '<h1 id="t">T</h1><h2 id="a">A</h2><h3 id="b">B</h3><h4 id="c">C</h4>';
+  assert.deepEqual(lib.headingIds(html), ['t', 'a', 'b', 'c']);
+});
+
+test('headingIds skips an h5 and a heading with no id, matching what anchors exist', () => {
+  const html = '<h2 id="a">A</h2><h2>No Id</h2><h5 id="deep">Deep</h5><h3 id="b">B</h3>';
+  assert.deepEqual(lib.headingIds(html), ['a', 'b']);
+});
+
+test('headingIds is not fooled by an id on a non-heading tag between headings', () => {
+  const html = '<h2 id="a">A</h2><div id="sidebar"></div><h2 id="b">B</h2>';
+  assert.deepEqual(lib.headingIds(html), ['a', 'b']);
+});
+
+test('anchorMap pairs the two documents by position', () => {
+  const map = lib.anchorMap(['overview', 'two-pointers'], ['總覽', '雙指標']);
+  assert.equal(map.get('overview'), '總覽');
+  assert.equal(map.get('two-pointers'), '雙指標');
+});
+
+test('anchorMap carries only the ids that actually differ', () => {
+  // An untranslated heading — an LC title, say — keeps its slug, and a rewrite
+  // to the identical value is just noise in the map.
+  const map = lib.anchorMap(['overview', 'lc-200'], ['總覽', 'lc-200']);
+  assert.deepEqual([...map.keys()], ['overview']);
+});
+
+// This is the safety property the whole scheme rests on: pairing by position is
+// an assumption, and a translator who adds or drops a heading breaks it. Refuse
+// the map rather than retarget links to the wrong sections.
+test('anchorMap refuses to guess when the two documents differ in shape', () => {
+  assert.equal(lib.anchorMap(['a', 'b'], ['甲']), null);
+  assert.equal(lib.anchorMap(['a'], ['甲', '乙']), null);
+  assert.equal(lib.anchorMap([], []), null);
+  assert.equal(lib.anchorMap(null, ['甲']), null);
+});
+
+const ZH_MAP = new Map([['overview', '總覽'], ['two-pointers', '雙指標']]);
+const samePageOnly = (page) => (page === '' ? ZH_MAP : null);
+
+test('retargetAnchors rewrites a bare fragment through this page own map', () => {
+  assert.equal(
+    lib.retargetAnchors('<a href="#two-pointers">見 §3</a>', samePageOnly),
+    '<a href="#雙指標">見 §3</a>'
+  );
+});
+
+test('retargetAnchors rewrites a fragment pointing into a sibling translation', () => {
+  const mapFor = (page) => (page === 'heap.zh.html' ? ZH_MAP : null);
+  assert.equal(
+    lib.retargetAnchors('<a href="heap.zh.html#overview">堆積</a>', mapFor),
+    '<a href="heap.zh.html#總覽">堆積</a>'
+  );
+});
+
+test('retargetAnchors leaves a fragment it has no mapping for exactly as it was', () => {
+  // Both cases must be no-ops rather than a dropped href: an id the map does not
+  // carry, and a page whose map was abandoned for a shape mismatch.
+  assert.equal(
+    lib.retargetAnchors('<a href="#unmapped">x</a>', samePageOnly),
+    '<a href="#unmapped">x</a>'
+  );
+  assert.equal(
+    lib.retargetAnchors('<a href="other.zh.html#overview">x</a>', samePageOnly),
+    '<a href="other.zh.html#overview">x</a>'
+  );
+});
+
+test('retargetAnchors does not touch a link that leaves the cheatsheet directory', () => {
+  for (const href of ['https://leetcode.com/x#overview', '/faqs.html#overview',
+                      '../pic/heap.png#overview']) {
+    assert.equal(lib.retargetAnchors(`<a href="${href}">x</a>`, () => ZH_MAP),
+                 `<a href="${href}">x</a>`);
+  }
+});
+
+test('retargetAnchors leaves an href without a fragment alone', () => {
+  assert.equal(
+    lib.retargetAnchors('<a href="heap.zh.html">堆積</a>', () => ZH_MAP),
+    '<a href="heap.zh.html">堆積</a>'
+  );
+});
+
 // ── buildCheatsheetIndex, translated ──────────────────────────────────────
 
 const ZH_META = Object.assign({}, META, {

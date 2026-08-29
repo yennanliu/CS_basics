@@ -260,6 +260,12 @@ Progress and known limitations live in
 **Rules for a translation**
 
 - Same slug, same code blocks **byte-for-byte** — only prose is translated.
+- **Same heading shape** — same count, same levels, same order; translate the
+  heading *text* only. A translation keeps its link targets verbatim, so
+  `[見 §3](#two-pointers)` still names the English slug; the build pairs the two
+  documents' headings by position to retarget it, then asserts that no cheatsheet
+  link is left dangling. Add or drop a heading and the pairing is abandoned and
+  the build fails, rather than shipping links that land in the wrong section.
 - No `category` / `tier` / `kind` in the translation: the build reads them off
   the English sheet, so the two indexes can never disagree.
 - The Scope line becomes `> **範圍** — …` (the build reads either spelling for
