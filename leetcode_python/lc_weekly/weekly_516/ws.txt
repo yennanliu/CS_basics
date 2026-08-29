@@ -33,6 +33,8 @@ by replacing each character in s with the 8-bit binary representation of its ASC
 
 
 
+# time:  O(N)  #  looping
+# space:  O(N) # tmp binary str
 
 
 
@@ -130,6 +132,9 @@ nums = [1,1], lower = 5, upper = 7
 
 # -----------------------
 
+
+# time: O(N log N) + O(N)  # sort + looping
+# space:  O(N)
 
 class Solution(object):
     def findDisappearedNumbers(self, nums, lower, upper):
@@ -236,6 +241,11 @@ The `prime factor set` of a subarray:
 #-----------------
 
 
+
+# time:  N * 1 O(N) + O(N)  # get factor on every element in nums + looping + slide window
+# space:  O(N) (hashmap + set)
+
+
 class Solution(object):
     def longestSubarray(self, nums, k):
         """
@@ -247,6 +257,10 @@ class Solution(object):
 
         # {idx: prime_factor_set}
         f_map = {}
+
+        # ???
+        for i in range(len(nums)):
+            f_map[i] = get_prime_factor(nums[i])
 
         max_len = 0
 
