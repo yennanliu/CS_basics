@@ -52,6 +52,10 @@ NOTE !!!
 1. bottom up DFS (post order)
 
 2. [rob_val, not_rob_val] is the helper func return type
+
+3. DP is `NOT depends` on prev node status 
+    (ALWAYS consider rob or NOT rob cases)
+    
 """
 class Solution(object):
     def rob(self, root):
@@ -82,6 +86,18 @@ class Solution(object):
         # Bottom-up / post-order DFS
         l_rob, l_not_rob = self.helper(root.left)
         r_rob, r_not_rob = self.helper(root.right)
+
+
+        """
+        NOTE !!!
+
+
+        it's a DP algo,
+        and we ALWAYS consider 2 cases (rob or NOT rob),
+        
+            -> it's NOT depeneds on the prev node status
+
+        """
 
         #---------------------------
         # Case 1:
