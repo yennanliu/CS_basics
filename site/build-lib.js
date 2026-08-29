@@ -374,7 +374,7 @@
       emptyReset: '清除篩選',
       howTo: '<strong>使用方式：</strong>先挑主題，讀它的「範圍」那行確認這份文件確實涵蓋你的問題，' +
         '再直接跳到標星的章節。每份速查表只連向相鄰主題，不重複它們的內容。',
-      source: '原始檔：<a href="https://github.com/yennanliu/CS_basics/tree/master/doc/cheatsheet/zh">GitHub 上的 doc/cheatsheet/zh</a> — ' +
+      source: '原始檔：<a href="https://github.com/yennanliu/CS_basics/tree/master/i18n/zh">GitHub 上的 i18n/zh</a> — ' +
         '星等與分組定義在 <a href="https://github.com/yennanliu/CS_basics/blob/master/data/cheatsheet_meta.json">data/cheatsheet_meta.json</a>。'
     }
   };

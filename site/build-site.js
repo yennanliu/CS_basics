@@ -12,6 +12,7 @@ const {
   buildCheatsheetIndex, splitLeadingH1, buildPageContent, extractScope,
   titleCaseFromFile, summariseDoc
 } = require('./build-lib');
+const { compose, parseStore } = require('./i18n');
 
 // A commit that only retouches a header or fixes a link is not a content update.
 // Without this floor, one repo-wide formatting pass stamps today's date on every
@@ -279,15 +280,21 @@ if (fs.existsSync(cheatsheetDir)) {
 
 // ── Traditional Chinese cheatsheets ──────────────────────────────────────────
 //
-// doc/cheatsheet/zh/<slug>.md is a translation of doc/cheatsheet/<slug>.md — same
-// slug, same code blocks verbatim (script/zh_cheatsheet.py verify enforces that),
-// prose in 繁體中文. Category, tier and kind are never restated in the translation;
-// they are read off the English sheet, so a sheet cannot end up filed twice.
+// There is one markdown tree, the English one. i18n/zh/<slug>.md holds a sparse
+// overlay of translated *sections*, keyed by a hash of the English text, and the
+// Chinese document is composed here: English structure, translated prose, the
+// original code blocks. Nothing is stored twice, so nothing can drift — see
+// site/i18n.js.
+//
+// A section with no entry falls back to English, so a half-translated sheet is a
+// Chinese page with English gaps. Category, tier and kind are the English sheet's.
 //
 // A translation is optional. A sheet without one simply gets no 中文 button, which
 // is why the toggle can never link into a 404.
 
-const zhDir = path.join(cheatsheetDir, 'zh');
+// Repo-relative, like cheatsheetDir: buildLastModifiedMap keys off the paths git
+// reports, which are relative to the repo root build.sh runs from.
+const zhDir = 'i18n/zh';
 const zhSheets = [];
 const ZH_LABELS = {
   home: '首頁',
@@ -304,16 +311,20 @@ if (fs.existsSync(zhDir)) {
     .filter(b => !fs.existsSync(path.join(cheatsheetDir, `${b}.md`)));
   if (orphans.length) {
     throw new Error(
-      `doc/cheatsheet/zh has translations with no English sheet: ${orphans.join(', ')}\n` +
-      'Every zh/<slug>.md must mirror a doc/cheatsheet/<slug>.md of the same name.'
+      `i18n/zh has translations with no English sheet: ${orphans.join(', ')}\n` +
+      'Every i18n/zh/<slug>.md must mirror a doc/cheatsheet/<slug>.md of the same name.'
     );
   }
 
   // Known up front so a sibling link inside a translation (./bst.md) can resolve
   // to the translated page rather than bouncing the reader back into English.
   const zhSlugs = new Set(zhFiles.map(f => path.basename(f, '.md')));
-  const zhPaths = zhFiles.map(f => path.join(zhDir, f));
-  const zhLastMod = buildLastModifiedMap(zhPaths);
+  // A composed page changes when either side does, so it is dated by whichever
+  // was touched last — the translation, or the English sheet under it.
+  const zhLastMod = buildLastModifiedMap(
+    zhFiles.map(f => path.join(zhDir, f)).concat(zhFiles.map(f => path.join(cheatsheetDir, f)))
+  );
+  const laterOf = (a, b) => (a && b ? (new Date(a) >= new Date(b) ? a : b) : a || b || null);
 
   // Two passes, because a link inside one translation can point at a *section of
   // another one* — so every sheet has to be rendered before any of them can have
@@ -327,7 +338,10 @@ if (fs.existsSync(zhDir)) {
   for (const sheet of cheatsheets) {
     if (!zhSlugs.has(sheet.file)) continue;
     const filePath = path.join(zhDir, `${sheet.file}.md`);
-    const raw = fs.readFileSync(filePath, 'utf8');
+    const raw = compose(
+      fs.readFileSync(path.join(cheatsheetDir, `${sheet.file}.md`), 'utf8'),
+      parseStore(fs.readFileSync(filePath, 'utf8'))
+    );
     const html = ensureHeadingIds(renderContent(raw, true));
     anchorMaps.set(sheet.file, anchorMap(sheet.enHeadingIds, headingIds(html)));
     drafts.push({ sheet, filePath, raw, html });
@@ -376,10 +390,13 @@ if (fs.existsSync(zhDir)) {
         title,
         htmlContent,
         toc: generateTOC(htmlContent, ZH_TOC_LABELS),
-        lastMod: zhLastMod.get(filePath) || null,
+        lastMod: laterOf(
+          zhLastMod.get(filePath),
+          zhLastMod.get(path.join(cheatsheetDir, `${sheet.file}.md`))
+        ),
         indexHref: 'cheatsheets.zh.html',
         indexLabel: '速查表',
-        githubHref: `https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/zh/${sheet.file}.md`,
+        githubHref: `https://github.com/yennanliu/CS_basics/blob/master/i18n/zh/${sheet.file}.md`,
         titleId,
         labels: ZH_LABELS,
         meta: `<span class="cat-chip">${sheet.category}</span>` +
