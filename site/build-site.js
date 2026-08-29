@@ -7,6 +7,7 @@ const hljs = require('highlight.js');
 const {
   slugify, TIER_LABELS, prioBadge, PRIO_BADGE_RE, headingText,
   annotatePriorityHeadings, PRIORITY_LEGEND, generateTOC, extractHeadings,
+  headingIds, anchorMap, retargetAnchors,
   ensureHeadingIds, groupByCategory, buildPrevNext, buildIndexGrid,
   buildCheatsheetIndex, splitLeadingH1, buildPageContent, extractScope,
   titleCaseFromFile, summariseDoc
@@ -208,6 +209,9 @@ if (fs.existsSync(cheatsheetDir)) {
 
     let htmlContent = renderContent(raw, true);
     htmlContent = ensureHeadingIds(htmlContent);
+    // Captured before the H1 is split off, so the translated sheet — measured at
+    // the same point — lines up heading-for-heading with it.
+    const enHeadingIds = headingIds(htmlContent);
     const { title: h1Title, titleId, html: bodyHtml } = splitLeadingH1(htmlContent);
     const { html: annotated, hasPriority } = annotatePriorityHeadings(bodyHtml);
     htmlContent = annotated;
@@ -244,6 +248,7 @@ if (fs.existsSync(cheatsheetDir)) {
       tier,
       kind,
       description,
+      enHeadingIds,
       content: buildPageContent({
         title,
         htmlContent,
@@ -270,6 +275,120 @@ if (fs.existsSync(cheatsheetDir)) {
     (b.tier - a.tier) ||
     a.title.localeCompare(b.title)
   );
+}
+
+// ── Traditional Chinese cheatsheets ──────────────────────────────────────────
+//
+// doc/cheatsheet/zh/<slug>.md is a translation of doc/cheatsheet/<slug>.md — same
+// slug, same code blocks verbatim (script/zh_cheatsheet.py verify enforces that),
+// prose in 繁體中文. Category, tier and kind are never restated in the translation;
+// they are read off the English sheet, so a sheet cannot end up filed twice.
+//
+// A translation is optional. A sheet without one simply gets no 中文 button, which
+// is why the toggle can never link into a 404.
+
+const zhDir = path.join(cheatsheetDir, 'zh');
+const zhSheets = [];
+const ZH_LABELS = {
+  home: '首頁',
+  updated: '更新於',
+  backTo: label => `返回${label}`,
+  edit: '在 GitHub 上編輯'
+};
+const ZH_TOC_LABELS = { contents: '目錄', sections: n => `${n} 個章節` };
+
+if (fs.existsSync(zhDir)) {
+  const zhFiles = fs.readdirSync(zhDir).filter(f => f.endsWith('.md'));
+  const orphans = zhFiles
+    .map(f => path.basename(f, '.md'))
+    .filter(b => !fs.existsSync(path.join(cheatsheetDir, `${b}.md`)));
+  if (orphans.length) {
+    throw new Error(
+      `doc/cheatsheet/zh has translations with no English sheet: ${orphans.join(', ')}\n` +
+      'Every zh/<slug>.md must mirror a doc/cheatsheet/<slug>.md of the same name.'
+    );
+  }
+
+  // Known up front so a sibling link inside a translation (./bst.md) can resolve
+  // to the translated page rather than bouncing the reader back into English.
+  const zhSlugs = new Set(zhFiles.map(f => path.basename(f, '.md')));
+  const zhPaths = zhFiles.map(f => path.join(zhDir, f));
+  const zhLastMod = buildLastModifiedMap(zhPaths);
+
+  // Two passes, because a link inside one translation can point at a *section of
+  // another one* — so every sheet has to be rendered before any of them can have
+  // its anchors retargeted.
+  //
+  // Pass 1: render, and learn how each sheet's English heading ids line up with
+  // its translated ones. Walked in the English order so prev/next threads the
+  // same category ladder.
+  const drafts = [];
+  const anchorMaps = new Map();
+  for (const sheet of cheatsheets) {
+    if (!zhSlugs.has(sheet.file)) continue;
+    const filePath = path.join(zhDir, `${sheet.file}.md`);
+    const raw = fs.readFileSync(filePath, 'utf8');
+    const html = ensureHeadingIds(renderContent(raw, true));
+    anchorMaps.set(sheet.file, anchorMap(sheet.enHeadingIds, headingIds(html)));
+    drafts.push({ sheet, filePath, raw, html });
+  }
+
+  // Pass 2: retarget the links, then build the page.
+  for (const { sheet, filePath, raw, html } of drafts) {
+    let htmlContent = html.replace(
+      /href="([^"#]+)(\.html)(#[^"]*)?"/g,
+      (full, slug, ext, hash) => (zhSlugs.has(slug) ? `href="${slug}.zh.html${hash || ''}"` : full)
+    );
+    // A hand-written `[見 §3](#two-pointers)` still names the *English* heading
+    // slug, which does not exist on this page. Point it at the translated
+    // heading in the same position — here, or in a sibling translation.
+    htmlContent = retargetAnchors(htmlContent, page => {
+      if (!page) return anchorMaps.get(sheet.file);
+      const sibling = page.match(/^([^/]+)\.zh\.html$/);
+      return sibling ? anchorMaps.get(sibling[1]) : null;
+    });
+    const { title: h1Title, titleId, html: bodyHtml } = splitLeadingH1(htmlContent);
+    const { html: annotated, hasPriority } = annotatePriorityHeadings(bodyHtml);
+    htmlContent = annotated;
+    const title = h1Title || sheet.title;
+    const description = extractScope(raw) || sheet.description;
+
+    searchRecords.push({
+      title,
+      url: `cheatsheets/${sheet.file}.zh.html`,
+      category: sheet.category,
+      type: 'Cheatsheet (中文)',
+      tier: sheet.tier,
+      summary: description,
+      headings: extractHeadings(htmlContent).slice(0, 40)
+    });
+
+    zhSheets.push({
+      // Category, tier and kind are the English sheet's — never restated in the
+      // translation, so the two indexes can never disagree about where a sheet goes.
+      file: sheet.file,
+      title,
+      description,
+      category: sheet.category,
+      tier: sheet.tier,
+      kind: sheet.kind,
+      content: buildPageContent({
+        title,
+        htmlContent,
+        toc: generateTOC(htmlContent, ZH_TOC_LABELS),
+        lastMod: zhLastMod.get(filePath) || null,
+        indexHref: 'cheatsheets.zh.html',
+        indexLabel: '速查表',
+        githubHref: `https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/zh/${sheet.file}.md`,
+        titleId,
+        labels: ZH_LABELS,
+        meta: `<span class="cat-chip">${sheet.category}</span>` +
+          `<span class="tier-chip tier-${sheet.tier}">${prioBadge(sheet.tier)}` +
+          `<span class="tier-label">${cheatsheetMeta.tierLabels[String(sheet.tier)].label}</span></span>`,
+        legend: hasPriority ? PRIORITY_LEGEND : ''
+      })
+    });
+  }
 }
 
 // ── FAQs ─────────────────────────────────────────────────────────────────────
@@ -357,9 +476,12 @@ if (fs.existsSync(faqDir)) {
 
 // ── HTML template ─────────────────────────────────────────────────────────────
 
-const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '') => `
+// `opts.lang` / `opts.langAlt` mark a page that exists in two languages; nav.js
+// turns them into the 中文/EN button. Pages without a translation pass neither
+// and render exactly the markup they did before.
+const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '', opts = {}) => `
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="${opts.lang === 'zh' ? 'zh-Hant' : 'en'}" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -379,7 +501,9 @@ const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '') =
 </head>
 <body>
   <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
-  <div id="site-nav" data-page="${currentPage}" data-base="${basePath}"></div>
+  <div id="site-nav" data-page="${currentPage}" data-base="${basePath}"${
+    opts.langAlt ? ` data-lang="${opts.lang || 'en'}" data-lang-alt="${opts.langAlt}"` : ''
+  }></div>
   <script>CSNav.mount();</script>
 
   <main class="container">
@@ -412,19 +536,55 @@ if (resourceContent) {
   console.log('✓ Created resources.html');
 }
 
-const cheatsheetIndexContent = buildCheatsheetIndex(cheatsheets, cheatsheetMeta);
+// The two indexes are each other's counterpart: the 中文/EN button in the navbar
+// swaps between them, which is also the only way into the translations from the
+// rest of the site. Built only when translations exist, so a repo with none is
+// byte-identical to before.
+const bilingualIndex = zhSheets.length > 0;
 
-fs.writeFileSync('_site/cheatsheets.html', htmlTemplate('Cheat Sheets', cheatsheetIndexContent, 'cheatsheets'));
+fs.writeFileSync('_site/cheatsheets.html', htmlTemplate(
+  'Cheat Sheets', buildCheatsheetIndex(cheatsheets, cheatsheetMeta), 'cheatsheets', '',
+  bilingualIndex ? { lang: 'en', langAlt: 'cheatsheets.zh.html' } : {}
+));
 console.log('✓ Created cheatsheets.html index');
+
+if (bilingualIndex) {
+  fs.writeFileSync('_site/cheatsheets.zh.html', htmlTemplate(
+    '速查表', buildCheatsheetIndex(zhSheets, cheatsheetMeta, 'zh'), 'cheatsheets', '',
+    { lang: 'zh', langAlt: 'cheatsheets.html' }
+  ));
+  console.log(`✓ Created cheatsheets.zh.html index (${zhSheets.length} translated sheets)`);
+}
+
+const translated = new Set(zhSheets.map(s => s.file));
 
 if (cheatsheets.length > 0) {
   fs.mkdirSync('_site/cheatsheets', { recursive: true });
   cheatsheets.forEach((sheet, idx) => {
     let fixedContent = sheet.content.replace(/src\s*=\s*"doc\//g, 'src="../doc/');
     fixedContent += buildPrevNext(cheatsheets, idx);
-    fs.writeFileSync(`_site/cheatsheets/${sheet.file}.html`, htmlTemplate(sheet.title, fixedContent, 'cheatsheets', '../'));
+    fs.writeFileSync(`_site/cheatsheets/${sheet.file}.html`, htmlTemplate(
+      sheet.title, fixedContent, 'cheatsheets', '../',
+      translated.has(sheet.file) ? { lang: 'en', langAlt: `${sheet.file}.zh.html` } : {}
+    ));
   });
   console.log(`✓ Created ${cheatsheets.length} individual cheatsheet pages`);
+}
+
+if (zhSheets.length > 0) {
+  // prev/next has to thread the .zh pages, so it gets a list whose `file` carries
+  // the suffix — the sheets themselves stay keyed by the bare slug so the index
+  // and the toggle can pair the two languages up.
+  const zhPages = zhSheets.map(s => ({ ...s, file: `${s.file}.zh` }));
+  zhPages.forEach((sheet, idx) => {
+    let fixedContent = sheet.content.replace(/src\s*=\s*"doc\//g, 'src="../doc/');
+    fixedContent += buildPrevNext(zhPages, idx);
+    fs.writeFileSync(`_site/cheatsheets/${sheet.file}.html`, htmlTemplate(
+      sheet.title, fixedContent, 'cheatsheets', '../',
+      { lang: 'zh', langAlt: `${zhSheets[idx].file}.html` }
+    ));
+  });
+  console.log(`✓ Created ${zhSheets.length} 繁體中文 cheatsheet pages`);
 }
 
 const knownFaqCategoryOrder = ['General', 'Java', 'Backend', 'Database', 'SQL', 'Redis', 'Kafka', 'Spark & Hadoop', 'Flink', 'Streaming'];
@@ -612,6 +772,43 @@ console.log('✓ Created search.html');
     throw new Error(
       'Priority-badge text leaked into heading labels — route the text through ' +
       `headingText(): ${offenders.slice(0, 5).join(', ')}${offenders.length > 5 ? ` (+${offenders.length - 5})` : ''}`
+    );
+  }
+}
+
+// Every in-page anchor must land somewhere. A translated sheet is where this
+// goes wrong silently: its links still carry the English heading slugs, which
+// retargetAnchors rewrites — but only while the two documents keep the same
+// heading shape. Assert the result rather than trusting it.
+{
+  const dir = '_site/cheatsheets';
+  const idsOf = new Map();
+  const pages = fs.existsSync(dir) ? fs.readdirSync(dir).filter(f => f.endsWith('.html')) : [];
+  for (const page of pages) {
+    const html = fs.readFileSync(path.join(dir, page), 'utf8');
+    idsOf.set(page, new Set([...html.matchAll(/\bid="([^"]*)"/g)].map(m => m[1])));
+  }
+
+  const dangling = [];
+  for (const page of pages) {
+    const html = fs.readFileSync(path.join(dir, page), 'utf8');
+    for (const [, href] of html.matchAll(/href="([^"]*#[^"]*)"/g)) {
+      const hash = href.indexOf('#');
+      const target = href.slice(0, hash) || page;
+      // A fragment travels percent-encoded but is matched decoded, so compare decoded.
+      let fragment;
+      try { fragment = decodeURIComponent(href.slice(hash + 1)); } catch (_) { continue; }
+      if (!fragment || !idsOf.has(target)) continue;
+      if (!idsOf.get(target).has(fragment)) dangling.push(`${page} → ${href}`);
+    }
+  }
+  if (dangling.length) {
+    throw new Error(
+      `${dangling.length} cheatsheet link(s) point at an anchor that does not exist:\n  ` +
+      dangling.slice(0, 8).join('\n  ') +
+      (dangling.length > 8 ? `\n  (+${dangling.length - 8} more)` : '') +
+      '\nOn a .zh page this usually means the translation added or dropped a heading, ' +
+      'so the positional anchor map was abandoned (see anchorMap in build-lib.js).'
     );
   }
 }

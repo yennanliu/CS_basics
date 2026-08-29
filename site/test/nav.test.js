@@ -229,3 +229,58 @@ test('the hamburger toggles the drawer and keeps aria-expanded in step', () => {
   assert.equal(links.classList.contains('open'), false);
   assert.equal(btn.getAttribute('aria-expanded'), 'false');
 });
+
+// ── Language toggle ───────────────────────────────────────────────────────
+// The button is what makes the 繁體中文 cheatsheets reachable at all, and it is
+// rendered from a counterpart href the build supplies — never derived in the
+// browser, so a page with no translation cannot link into a 404.
+
+test('langToggleHTML renders nothing when the page has no counterpart', () => {
+  assert.equal(CSNav.langToggleHTML('en', ''), '');
+  assert.equal(CSNav.langToggleHTML('en', undefined), '');
+});
+
+test('langToggleHTML names the language you would switch TO, not the one you are in', () => {
+  assert.match(CSNav.langToggleHTML('en', 'heap.zh.html'), />中文<\/a>$/);
+  assert.match(CSNav.langToggleHTML('zh', 'heap.html'), />EN<\/a>$/);
+});
+
+test('langToggleHTML points at the counterpart and tags the button with its own language', () => {
+  const html = CSNav.langToggleHTML('en', 'heap.zh.html');
+  assert.match(html, /href="heap\.zh\.html"/);
+  // The label is Chinese, so the element carries lang="zh-Hant" for screen readers.
+  assert.match(html, /lang="zh-Hant"/);
+  assert.match(CSNav.langToggleHTML('zh', 'heap.html'), /lang="en"/);
+});
+
+test('langToggleHTML escapes the href it is handed', () => {
+  assert.ok(!CSNav.langToggleHTML('en', 'a"onmouseover="x').includes('"onmouseover='));
+});
+
+test('navHTML only grows a language toggle when a counterpart is supplied', () => {
+  assert.ok(!CSNav.navHTML({ currentPage: 'cheatsheets' }).includes('lang-toggle'));
+  const html = CSNav.navHTML({ currentPage: 'cheatsheets', lang: 'en', langAlt: 'heap.zh.html' });
+  assert.match(html, /class="lang-toggle"/);
+  // Sits at the end of the row: after the "more" menu, before the theme toggle.
+  assert.ok(html.indexOf('lang-toggle') > html.indexOf('nav-more-menu'));
+  assert.ok(html.indexOf('lang-toggle') < html.indexOf('theme-toggle'));
+});
+
+test('mount reads the counterpart off the placeholder', () => {
+  const host = document.getElementById('site-nav');
+  host.setAttribute('data-page', 'cheatsheets');
+  host.setAttribute('data-base', '../');
+  host.setAttribute('data-lang', 'zh');
+  host.setAttribute('data-lang-alt', 'heap.html');
+  CSNav.mount();
+  const btn = host.querySelector('.lang-toggle');
+  assert.equal(btn.getAttribute('href'), 'heap.html');
+  assert.equal(btn.textContent, 'EN');
+});
+
+test('mount leaves the bar untouched on a page with no translation', () => {
+  const host = document.getElementById('site-nav');
+  host.setAttribute('data-page', 'cheatsheets');
+  CSNav.mount();
+  assert.equal(host.querySelector('.lang-toggle'), null);
+});

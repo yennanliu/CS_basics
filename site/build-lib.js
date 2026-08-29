@@ -94,7 +94,14 @@
   // Nested TOC: h2 → h3, plus any h4 that carries a priority marker (those are the
   // per-pattern templates people actually navigate to). Rendered as a sticky rail
   // on wide screens and a collapsed <details> panel on narrow ones.
-  function generateTOC(htmlContent) {
+  const TOC_LABELS = {
+    contents: 'Contents',
+    // Given a section count, the word that follows it in the summary line.
+    sections: n => `${n} section${n === 1 ? '' : 's'}`
+  };
+
+  function generateTOC(htmlContent, labels = {}) {
+    const L = Object.assign({}, TOC_LABELS, labels);
     const headingRegex = /<h([234])(\s[^>]*)>([\s\S]*?)<\/h\1>/g;
     const headings = [];
     let match;
@@ -141,10 +148,57 @@
     const sections = headings.filter(h => h.level === 2).length;
     return '<aside class="toc-rail">' +
       '<details class="toc" open data-toc>' +
-      `<summary class="toc-summary"><span class="toc-summary-label">Contents</span>` +
-      `<span class="toc-count">${sections} section${sections === 1 ? '' : 's'}</span></summary>` +
+      `<summary class="toc-summary"><span class="toc-summary-label">${L.contents}</span>` +
+      `<span class="toc-count">${L.sections(sections)}</span></summary>` +
       `<nav class="toc-nav" aria-label="On this page"><ul class="toc-list">${toc}</ul></nav>` +
       '</details></aside>';
+  }
+
+  // ── Cross-language anchors ────────────────────────────────────────────────
+  //
+  // A translated sheet keeps its links verbatim, so `[見 §3](#two-pointers)` still
+  // names the *English* heading slug — an anchor that does not exist on the
+  // translated page, so the link silently lands at the top of the doc.
+  //
+  // The two files are the same document in two languages: same headings, same
+  // order. So the Nth heading id in one maps to the Nth in the other. That is an
+  // assumption, not a guarantee — a translator can drop or add a heading — so it
+  // is verified before use and the whole map is abandoned if the shapes differ.
+  // Abandoning it leaves the links exactly as broken as they were, never worse.
+
+  function headingIds(htmlContent) {
+    const ids = [];
+    const re = /<h[1-4]\b[^>]*\bid="([^"]*)"/g;
+    let m;
+    while ((m = re.exec(htmlContent)) !== null) ids.push(m[1]);
+    return ids;
+  }
+
+  function anchorMap(fromIds, toIds) {
+    if (!fromIds || !toIds || fromIds.length !== toIds.length || !fromIds.length) return null;
+    const map = new Map();
+    for (let i = 0; i < fromIds.length; i++) {
+      if (fromIds[i] !== toIds[i]) map.set(fromIds[i], toIds[i]);
+    }
+    return map;
+  }
+
+  /**
+   * Rewrites every `#fragment` in `htmlContent` through the map for the page it
+   * points at. `mapFor(page)` returns the map for a sibling page ('' for this
+   * one); anything it cannot resolve is left untouched.
+   */
+  function retargetAnchors(htmlContent, mapFor) {
+    return htmlContent.replace(/href="([^"]*#[^"]*)"/g, (full, href) => {
+      const hash = href.indexOf('#');
+      const page = href.slice(0, hash);
+      // An absolute or parent-relative URL belongs to another site or section.
+      if (/^[a-z]+:|^\/|\.\./i.test(page)) return full;
+      const map = mapFor(page);
+      if (!map) return full;
+      const target = map.get(href.slice(hash + 1));
+      return target ? `href="${page}#${target}"` : full;
+    });
   }
 
   function extractHeadings(htmlContent) {
@@ -261,49 +315,123 @@
     return sections.length ? truncateSummary('Covers: ' + sections.join(' · ')) : null;
   }
 
+  // Fixed chrome for the cheatsheet index, per language. Anything that is *data*
+  // — category names, blurbs, tier labels, the "start here" reasons — stays in
+  // data/cheatsheet_meta.json (under `zh` for the translation); only the sentences
+  // that belong to this template live here.
+  const INDEX_TEXT = {
+    en: {
+      h1: 'Algorithm &amp; Data Structure Cheat Sheets',
+      intro: n => `${n} sheets, grouped by topic and ranked by how often the pattern actually shows up in a ` +
+        'FAANG software-engineering loop. Read the <a href="#start-here">Start here</a> ladder first; ' +
+        'the catalogue below is for lookup.',
+      starsHeading: 'What the stars mean',
+      starsAria: 'What the star ratings mean',
+      starsFoot: 'The same stars appear on individual sections inside each sheet, so you can skim a ' +
+        '4,000-line doc and still see which templates are the ones to memorise.',
+      startHere: 'Start here',
+      startBlurb: n => `${n} sheets in reading order. Together they cover the large majority of what a ` +
+        'coding round will actually ask.',
+      catalogue: 'Full catalogue',
+      filterLabel: 'Filter',
+      filterPlaceholder: 'Title, topic or description — e.g. window, dijkstra, knapsack',
+      filterAria: 'Filter by interview priority',
+      filterAll: 'All',
+      filterFour: '★★★★ and up',
+      filterFive: '★★★★★ only',
+      sheetCount: n => `${n} sheet${n === 1 ? '' : 's'}`,
+      stub: 'redirect',
+      reference: 'imported reference',
+      empty: 'No sheet matches that filter. ',
+      emptyReset: 'Clear it',
+      howTo: '<strong>How to use this:</strong> pick the sheet, read its Scope line to confirm it owns your ' +
+        'problem, then jump straight to the starred sections. Every sheet links to its neighbours rather ' +
+        'than repeating them.',
+      source: 'Source: <a href="https://github.com/yennanliu/CS_basics/tree/master/doc/cheatsheet">doc/cheatsheet on GitHub</a> — ' +
+        'ratings and grouping live in <a href="https://github.com/yennanliu/CS_basics/blob/master/data/cheatsheet_meta.json">data/cheatsheet_meta.json</a>.'
+    },
+    zh: {
+      h1: '演算法與資料結構速查表',
+      intro: n => `共 ${n} 份速查表，依主題分組，並以「在 FAANG 軟體工程面試中實際出現的頻率」排序。` +
+        '建議先讀 <a href="#start-here">從這裡開始</a> 的閱讀順序，下方的完整目錄則供查閱用。',
+      starsHeading: '星等代表什麼',
+      starsAria: '星等評分說明',
+      starsFoot: '每份速查表內部的章節也標了同一套星等，所以即使面對四千行的文件，' +
+        '也能一眼看出哪些模板是非背不可的。',
+      startHere: '從這裡開始',
+      startBlurb: n => `${n} 份速查表，依閱讀順序排列。讀完這一串，就涵蓋了程式面試絕大多數會問到的內容。`,
+      catalogue: '完整目錄',
+      filterLabel: '篩選',
+      filterPlaceholder: '標題、主題或描述 — 例如 window、dijkstra、knapsack',
+      filterAria: '依面試重要度篩選',
+      filterAll: '全部',
+      filterFour: '★★★★ 以上',
+      filterFive: '僅 ★★★★★',
+      sheetCount: n => `${n} 份`,
+      stub: '轉址',
+      reference: '外部索引',
+      empty: '沒有符合該條件的速查表。',
+      emptyReset: '清除篩選',
+      howTo: '<strong>使用方式：</strong>先挑主題，讀它的「範圍」那行確認這份文件確實涵蓋你的問題，' +
+        '再直接跳到標星的章節。每份速查表只連向相鄰主題，不重複它們的內容。',
+      source: '原始檔：<a href="https://github.com/yennanliu/CS_basics/tree/master/doc/cheatsheet/zh">GitHub 上的 doc/cheatsheet/zh</a> — ' +
+        '星等與分組定義在 <a href="https://github.com/yennanliu/CS_basics/blob/master/data/cheatsheet_meta.json">data/cheatsheet_meta.json</a>。'
+    }
+  };
+
   // The cheatsheet index: a curated "start here" ladder, then every sheet grouped
   // by category and ordered by interview weight, each carrying its Scope line as a
   // description so the reader can tell 74 cards apart.
-  function buildCheatsheetIndex(sheets, meta) {
+  //
+  // `lang` picks both the chrome above and the `zh` overrides in meta, and decides
+  // whether a card points at `<slug>.html` or `<slug>.zh.html`. Categories stay
+  // keyed by their English name everywhere — grouping, anchors, data-category — so
+  // the two indexes stay row-for-row comparable and a deep link works in either.
+  function buildCheatsheetIndex(sheets, meta, lang = 'en') {
+    const t = INDEX_TEXT[lang] || INDEX_TEXT.en;
+    const zh = lang === 'zh' ? (meta.zh || {}) : {};
+    const pick = (map, key, fallback) => (map && map[key] != null ? map[key] : fallback);
+
     const byFile = new Map(sheets.map(s => [s.file, s]));
-    const tierLabel = tier => meta.tierLabels[String(tier)].label;
+    const tierLabel = n => pick(zh.tierLabels, String(n), meta.tierLabels[String(n)]).label;
+    const tierNote = n => pick(zh.tierLabels, String(n), meta.tierLabels[String(n)]).note;
+    const catName = c => pick(zh.categories, c, c);
+    const catBlurb = c => pick(zh.categoryBlurbs, c, meta.categoryBlurbs[c]);
+    const href = file => `cheatsheets/${file}${lang === 'zh' ? '.zh' : ''}.html`;
 
-    const startHere = meta.startHere.map(s => ({ ...byFile.get(s.file), why: s.why })).filter(s => s.file);
-    let html = '<h1>Algorithm &amp; Data Structure Cheat Sheets</h1>' +
-      `<p class="intro">${sheets.length} sheets, grouped by topic and ranked by how often the pattern ` +
-      'actually shows up in a FAANG software-engineering loop. Read the ' +
-      '<a href="#start-here">Start here</a> ladder first; the catalogue below is for lookup.</p>';
+    const startHere = meta.startHere
+      .map(s => ({ ...byFile.get(s.file), why: pick(zh.startHere, s.file, s.why) }))
+      .filter(s => s.file);
+    let html = `<h1>${t.h1}</h1><p class="intro">${t.intro(sheets.length)}</p>`;
 
-    html += '<section class="tier-key" aria-label="What the star ratings mean">' +
-      '<h2 class="key-heading">What the stars mean</h2><ul class="tier-key-list">' +
-      [5, 4, 3, 2].map(t =>
-        `<li class="tier-key-item">${prioBadge(t)}<span class="tier-key-label">${tierLabel(t)}</span>` +
-        `<span class="tier-key-note">${meta.tierLabels[String(t)].note}</span></li>`
+    html += `<section class="tier-key" aria-label="${t.starsAria}">` +
+      `<h2 class="key-heading">${t.starsHeading}</h2><ul class="tier-key-list">` +
+      [5, 4, 3, 2].map(n =>
+        `<li class="tier-key-item">${prioBadge(n)}<span class="tier-key-label">${tierLabel(n)}</span>` +
+        `<span class="tier-key-note">${tierNote(n)}</span></li>`
       ).join('') +
-      '</ul><p class="tier-key-foot">The same stars appear on individual sections inside each sheet, so you can ' +
-      'skim a 4,000-line doc and still see which templates are the ones to memorise.</p></section>';
+      `</ul><p class="tier-key-foot">${t.starsFoot}</p></section>`;
 
-    html += '<section class="start-here" id="start-here"><h2>Start here</h2>' +
-      `<p class="cat-blurb">${startHere.length} sheets in reading order. Together they cover the large majority ` +
-      'of what a coding round will actually ask.</p><ol class="start-list">';
+    html += `<section class="start-here" id="start-here"><h2>${t.startHere}</h2>` +
+      `<p class="cat-blurb">${t.startBlurb(startHere.length)}</p><ol class="start-list">`;
     for (const s of startHere) {
-      html += `<li class="start-item"><a class="start-title" href="cheatsheets/${s.file}.html">${s.title}</a>` +
+      html += `<li class="start-item"><a class="start-title" href="${href(s.file)}">${s.title}</a>` +
         `${prioBadge(s.tier, 'prio-compact')}<span class="start-why">${s.why}</span></li>`;
     }
     html += '</ol></section>';
 
-    html += '<h2 class="catalogue-heading" id="catalogue">Full catalogue</h2>';
+    html += `<h2 class="catalogue-heading" id="catalogue">${t.catalogue}</h2>`;
 
     // Filter bar. It ships with everything visible and is wired up by site.js, so
     // the catalogue still works with JS off.
     html += '<div class="index-filter" data-sheet-filter>' +
-      '<label class="filter-label" for="sheet-filter">Filter</label>' +
-      `<input type="search" id="sheet-filter" class="filter-input" autocomplete="off" ` +
-      `placeholder="Title, topic or description — e.g. window, dijkstra, knapsack">` +
-      '<div class="filter-tiers" role="group" aria-label="Filter by interview priority">' +
-      '<button type="button" class="filter-chip is-on" data-min-tier="0">All</button>' +
-      '<button type="button" class="filter-chip" data-min-tier="4">★★★★ and up</button>' +
-      '<button type="button" class="filter-chip" data-min-tier="5">★★★★★ only</button>' +
+      `<label class="filter-label" for="sheet-filter">${t.filterLabel}</label>` +
+      '<input type="search" id="sheet-filter" class="filter-input" autocomplete="off" ' +
+      `placeholder="${t.filterPlaceholder}">` +
+      `<div class="filter-tiers" role="group" aria-label="${t.filterAria}">` +
+      `<button type="button" class="filter-chip is-on" data-min-tier="0">${t.filterAll}</button>` +
+      `<button type="button" class="filter-chip" data-min-tier="4">${t.filterFour}</button>` +
+      `<button type="button" class="filter-chip" data-min-tier="5">${t.filterFive}</button>` +
       '</div>' +
       `<p class="filter-status" role="status" aria-live="polite" data-total="${sheets.length}"></p>` +
       '</div>';
@@ -314,26 +442,28 @@
       if (!items || !items.length) continue;
       const anchor = slugify(category);
       html += `<section class="cat-section" data-category="${category}">`;
-      html += `<h3 class="cat-heading" id="${anchor}">${category}` +
-        `<span class="cat-count">${items.length} sheet${items.length === 1 ? '' : 's'}</span></h3>`;
-      if (meta.categoryBlurbs[category]) {
-        html += `<p class="cat-blurb">${meta.categoryBlurbs[category]}</p>`;
+      html += `<h3 class="cat-heading" id="${anchor}">${catName(category)}` +
+        `<span class="cat-count">${t.sheetCount(items.length)}</span></h3>`;
+      if (catBlurb(category)) {
+        html += `<p class="cat-blurb">${catBlurb(category)}</p>`;
       }
       html += '<div class="cheatsheet-grid sheet-grid">';
       for (const item of items) {
         const kindChip = item.kind === 'stub'
-          ? '<span class="kind-chip kind-stub">redirect</span>'
+          ? `<span class="kind-chip kind-stub">${t.stub}</span>`
           : item.kind === 'reference'
-            ? '<span class="kind-chip kind-reference">imported reference</span>'
+            ? `<span class="kind-chip kind-reference">${t.reference}</span>`
             : '';
-        // data-search is what the filter matches on: title, category and the
-        // Scope line, so "window" finds Sliding Window and "dag" finds toposort.
-        const haystack = [item.title, category, item.description || '', item.file.replace(/_/g, ' ')]
-          .join(' ').toLowerCase().replace(/"/g, '');
+        // data-search is what the filter matches on: title, category and the Scope
+        // line, so "window" finds Sliding Window and "dag" finds toposort. The
+        // English category and slug ride along in both languages, so a reader who
+        // only knows the English term can still find the 中文 card.
+        const haystack = [item.title, category, catName(category), item.description || '',
+          item.file.replace(/_/g, ' ')].join(' ').toLowerCase().replace(/"/g, '');
         html += `\n        <article class="cheatsheet-card sheet-card tier-${item.tier}"` +
           ` data-tier="${item.tier}" data-search="${haystack}">` +
           '<div class="card-top">' +
-          `<h4 class="card-title"><a href="cheatsheets/${item.file}.html">${item.title}</a></h4>` +
+          `<h4 class="card-title"><a href="${href(item.file)}">${item.title}</a></h4>` +
           `${prioBadge(item.tier, 'prio-compact')}</div>` +
           (item.description ? `<p class="card-desc">${item.description}</p>` : '') +
           (kindChip ? `<p class="card-tags">${kindChip}</p>` : '') +
@@ -341,14 +471,12 @@
       }
       html += '</div></section>';
     }
-    html += '<p class="filter-empty" hidden>No sheet matches that filter. ' +
-      '<button type="button" class="filter-reset">Clear it</button></p>';
+    html += `<p class="filter-empty" hidden>${t.empty}` +
+      `<button type="button" class="filter-reset">${t.emptyReset}</button></p>`;
 
     html += '<div class="index-foot">' +
-      '<p><strong>How to use this:</strong> pick the sheet, read its Scope line to confirm it owns your problem, ' +
-      'then jump straight to the starred sections. Every sheet links to its neighbours rather than repeating them.</p>' +
-      '<p>Source: <a href="https://github.com/yennanliu/CS_basics/tree/master/doc/cheatsheet">doc/cheatsheet on GitHub</a> — ' +
-      'ratings and grouping live in <a href="https://github.com/yennanliu/CS_basics/blob/master/data/cheatsheet_meta.json">data/cheatsheet_meta.json</a>.</p>' +
+      `<p>${t.howTo}</p>` +
+      `<p>${t.source}</p>` +
       '</div>';
     return html;
   }
@@ -369,12 +497,24 @@
     };
   }
 
+  // The page chrome around a rendered doc. `labels` lets a translated page carry
+  // translated chrome without a second copy of this template — a 繁體中文 sheet
+  // should not open with an English breadcrumb.
+  const PAGE_LABELS = {
+    home: 'Home',
+    updated: 'Updated',
+    // Takes the index label: Chinese wants no space between verb and object.
+    backTo: label => `Back to ${label}`,
+    edit: 'Edit on GitHub'
+  };
+
   function buildPageContent({
     title, htmlContent, toc, lastMod, indexHref, indexLabel, githubHref,
-    meta = '', legend = '', titleId = null
+    meta = '', legend = '', titleId = null, labels = {}
   }) {
+    const L = Object.assign({}, PAGE_LABELS, labels);
     return `
-        <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../${indexHref}">${indexLabel}</a> <span class="sep">›</span> <span class="current">${title}</span></nav>
+        <nav class="breadcrumbs"><a href="../index.html">${L.home}</a> <span class="sep">›</span> <a href="../${indexHref}">${indexLabel}</a> <span class="sep">›</span> <span class="current">${title}</span></nav>
         <div class="page-layout">
           ${toc}
           <div class="page-main">
@@ -382,7 +522,7 @@
               <h1${titleId ? ` id="${titleId}"` : ''}>${title}</h1>
               <div class="header-meta">
                 ${meta}
-                ${lastMod ? `<span class="last-updated">Updated ${lastMod}</span>` : ''}
+                ${lastMod ? `<span class="last-updated">${L.updated} ${lastMod}</span>` : ''}
               </div>
             </div>
             ${legend}
@@ -390,8 +530,8 @@
               ${htmlContent}
             </div>
             <div class="cheatsheet-footer">
-              <a href="../${indexHref}" class="back-link">← Back to ${indexLabel}</a>
-              <a href="${githubHref}" class="github-edit" target="_blank">Edit on GitHub →</a>
+              <a href="../${indexHref}" class="back-link">← ${L.backTo(indexLabel)}</a>
+              <a href="${githubHref}" class="github-edit" target="_blank">${L.edit} →</a>
             </div>
           </div>
         </div>
@@ -400,11 +540,15 @@
 
   // Pulls the `> **Scope** — …` line out of a cheatsheet for use as its card
   // description. Markdown emphasis and links are flattened to plain text.
+  // `範圍` is the same line on a 繁體中文 translation — matching both keeps a
+  // translated sheet's card and search summary in its own language.
+  const SCOPE_LINE = /^>\s*\*\*(?:Scope|範圍)\*\*\s*[—:：-]?\s*/;
+
   function extractScope(rawMarkdown) {
-    const line = rawMarkdown.split('\n').slice(0, 12).find(l => l.startsWith('> **Scope**'));
+    const line = rawMarkdown.split('\n').slice(0, 12).find(l => SCOPE_LINE.test(l));
     if (!line) return null;
     return line
-      .replace(/^>\s*\*\*Scope\*\*\s*—?\s*/, '')
+      .replace(SCOPE_LINE, '')
       .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')   // links → their text
       .replace(/`([^`]*)`/g, '$1')
       .replace(/\*\*([^*]*)\*\*/g, '$1')
@@ -427,6 +571,9 @@
     PRIORITY_LEGEND,
     generateTOC,
     extractHeadings,
+    headingIds,
+    anchorMap,
+    retargetAnchors,
     ensureHeadingIds,
     groupByCategory,
     buildPrevNext,

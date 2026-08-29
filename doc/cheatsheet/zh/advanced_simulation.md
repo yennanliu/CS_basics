@@ -1,0 +1,1135 @@
+# 進階模擬
+
+> **範圍** — 那種「答案*就是*忠實地一步步跑完」的題目：狀態機、機器人／格子上的行走、遊戲回合、迭代改寫，外加怎麼讓這種程式碼不要爆長。
+> **另見**：[matrix.md](./matrix.md) — 格子走訪的幾何（螺旋、旋轉）；[design.md](./design.md) — 必須包成類別的模擬題；[queue.md](./queue.md) — 輪流排程與回合佇列。
+
+## LeetCode 題目清單
+
+- [Simulation](https://leetcode.com/problem-list/simulation/)
+- [Design](https://leetcode.com/problem-list/design/)
+
+## 概觀
+**模擬**題要你照著指定的規則與狀態轉移，一步步把整個流程跑出來。這類題考的是：把真實情境模型化、管理複雜狀態，以及把邏輯流程寫精準的能力。
+
+### 關鍵性質
+- **時間複雜度**：通常是 O(steps × operations)，steps 就是模擬長度
+- **空間複雜度**：O(state_size)，用來維護當前狀態
+- **核心想法**：把流程模型化得夠準，然後一步步執行
+- **什麼時候用**：流程模擬、機器人移動、遊戲機制、狀態機
+- **關鍵技能**：狀態管理、規則實作、邊界情況處理
+
+### 核心特徵
+- **狀態追蹤**：準確維護系統當前狀態
+- **遵守規則**：把規則與轉移實作精確
+- **逐步執行**：流程一步一步推進
+- **邊界情況處理**：邊界條件與特殊狀態
+- **最佳化**：偵測循環、預先計算，或找數學捷徑
+
+## 題型分類
+
+### **類別 1：機器人／移動模擬**
+- **說明**：依指令模擬機器人移動
+- **例子**：LC 2061（Robot Cleaning）、LC 2069（Walking Robot Simulation）、LC 657（Robot Return to Origin）
+- **模式**：追蹤位置、方向與狀態變化
+
+### **類別 2：遊戲／流程模擬**
+- **說明**：模擬遊戲規則或多步驟流程
+- **例子**：LC 2532（Time to Cross Bridge）、LC 1823（Find Winner of Circular Game）、LC 874（Walking Robot Simulation）
+- **模式**：以規則驅動轉移的狀態機
+
+### **類別 3：系統／環境模擬**
+- **說明**：把有多個元件的複雜系統模型化
+- **例子**：LC 1701（Average Waiting Time）、LC 1603（Design Parking System）
+- **模式**：元件互動與資源管理
+
+## 模板與演算法
+
+### 模板比較表
+| 模板類型 | 使用情境 | 時間複雜度 | 什麼時候用 |
+|---------------|----------|-----------------|-------------|
+| **基本移動** | 機器人導航 | O(steps) | 單純的移動模擬 |
+| **狀態機** | 遊戲機制 | O(steps × rules) | 規則驅動的流程 |
+| **事件佇列** | 系統模擬 | O(events log events) | 以時間軸推進的模擬 |
+| **格子世界** | 二維環境 | O(steps) | 空間性的模擬 |
+
+### 模板 1：機器人移動模擬
+```python
+class RobotSimulation:
+    """Template for robot movement simulation"""
+
+    def __init__(self):
+        # Robot state
+        self.x = 0
+        self.y = 0
+        self.direction = 0  # 0: North, 1: East, 2: South, 3: West
+
+        # Direction vectors: North, East, South, West
+        self.dx = [0, 1, 0, -1]
+        self.dy = [1, 0, -1, 0]
+
+    def turn_left(self):
+        """Turn robot left (counterclockwise)"""
+        self.direction = (self.direction - 1) % 4
+
+    def turn_right(self):
+        """Turn robot right (clockwise)"""
+        self.direction = (self.direction + 1) % 4
+
+    def move_forward(self, steps=1):
+        """Move robot forward by steps"""
+        for _ in range(steps):
+            new_x = self.x + self.dx[self.direction]
+            new_y = self.y + self.dy[self.direction]
+
+            # Check if move is valid (implement based on problem constraints)
+            if self.is_valid_position(new_x, new_y):
+                self.x = new_x
+                self.y = new_y
+            else:
+                break  # Stop on obstacle
+
+    def is_valid_position(self, x, y):
+        """Check if position is valid (override based on problem)"""
+        return True  # Default: all positions valid
+
+    def execute_commands(self, commands):
+        """Execute a sequence of commands"""
+        for command in commands:
+            if command == 'L':
+                self.turn_left()
+            elif command == 'R':
+                self.turn_right()
+            elif command == 'G':
+                self.move_forward()
+            # Add more commands as needed
+
+        return (self.x, self.y)
+```
+
+### 模板 2：狀態機模擬
+```python
+class StateMachineSimulation:
+    """Template for state machine based simulation"""
+
+    def __init__(self, initial_state):
+        self.current_state = initial_state
+        self.state_history = [initial_state]
+        self.step_count = 0
+
+        # Define state transition rules (override in subclasses)
+        self.transition_rules = {}
+
+    def add_transition(self, from_state, event, to_state, action=None):
+        """Add a state transition rule"""
+        if from_state not in self.transition_rules:
+            self.transition_rules[from_state] = {}
+        self.transition_rules[from_state][event] = (to_state, action)
+
+    def process_event(self, event):
+        """Process an event and transition state"""
+        if (self.current_state in self.transition_rules and
+            event in self.transition_rules[self.current_state]):
+
+            next_state, action = self.transition_rules[self.current_state][event]
+
+            # Execute action if provided
+            if action:
+                action()
+
+            # Transition to next state
+            self.current_state = next_state
+            self.state_history.append(next_state)
+            self.step_count += 1
+
+            return True
+        return False
+
+    def simulate_steps(self, events):
+        """Simulate multiple steps with events"""
+        results = []
+        for event in events:
+            success = self.process_event(event)
+            results.append({
+                'event': event,
+                'success': success,
+                'state': self.current_state,
+                'step': self.step_count
+            })
+        return results
+
+    def detect_cycle(self):
+        """Detect if we've entered a cycle"""
+        seen_states = {}
+        for i, state in enumerate(self.state_history):
+            if state in seen_states:
+                cycle_start = seen_states[state]
+                cycle_length = i - cycle_start
+                return cycle_start, cycle_length
+            seen_states[state] = i
+        return None, 0
+```
+
+### 模板 3：事件佇列模擬
+```python
+import heapq
+from collections import defaultdict
+
+class EventQueueSimulation:
+    """Template for timeline-based simulation with events"""
+
+    def __init__(self):
+        self.current_time = 0
+        self.event_queue = []  # Min-heap: (time, event_type, event_data)
+        self.system_state = {}
+
+    def schedule_event(self, time, event_type, event_data):
+        """Schedule an event to happen at specific time"""
+        heapq.heappush(self.event_queue, (time, event_type, event_data))
+
+    def process_event(self, event_type, event_data):
+        """Process a specific event type (override in subclasses)"""
+        # Default implementation - override for specific event types
+        pass
+
+    def simulate_until(self, end_time):
+        """Run simulation until specified time"""
+        results = []
+
+        while self.event_queue and self.event_queue[0][0] <= end_time:
+            event_time, event_type, event_data = heapq.heappop(self.event_queue)
+
+            # Update current time
+            self.current_time = event_time
+
+            # Process the event
+            result = self.process_event(event_type, event_data)
+            results.append({
+                'time': event_time,
+                'type': event_type,
+                'data': event_data,
+                'result': result
+            })
+
+        return results
+
+    def get_state_at_time(self, time):
+        """Get system state at specific time"""
+        # Save current state
+        saved_time = self.current_time
+        saved_queue = self.event_queue.copy()
+        saved_state = self.system_state.copy()
+
+        # Simulate to target time
+        self.simulate_until(time)
+        result_state = self.system_state.copy()
+
+        # Restore state
+        self.current_time = saved_time
+        self.event_queue = saved_queue
+        self.system_state = saved_state
+
+        return result_state
+```
+
+### 模板 4：格子世界模擬
+```python
+class GridWorldSimulation:
+    """Template for 2D grid-based simulation"""
+
+    def __init__(self, rows, cols):
+        self.rows = rows
+        self.cols = cols
+        self.grid = [[0 for _ in range(cols)] for _ in range(rows)]
+        self.entities = {}  # Track entities and their positions
+
+        # Direction mappings
+        self.directions = {
+            'UP': (-1, 0),
+            'DOWN': (1, 0),
+            'LEFT': (0, -1),
+            'RIGHT': (0, 1)
+        }
+
+    def is_valid_position(self, row, col):
+        """Check if position is within grid bounds"""
+        return 0 <= row < self.rows and 0 <= col < self.cols
+
+    def is_free_position(self, row, col):
+        """Check if position is free (no obstacles)"""
+        return (self.is_valid_position(row, col) and
+                self.grid[row][col] == 0)
+
+    def add_entity(self, entity_id, row, col):
+        """Add entity to specific position"""
+        if self.is_free_position(row, col):
+            self.entities[entity_id] = (row, col)
+            self.grid[row][col] = entity_id
+            return True
+        return False
+
+    def move_entity(self, entity_id, direction):
+        """Move entity in specified direction"""
+        if entity_id not in self.entities:
+            return False
+
+        curr_row, curr_col = self.entities[entity_id]
+        dr, dc = self.directions[direction]
+        new_row, new_col = curr_row + dr, curr_col + dc
+
+        if self.is_free_position(new_row, new_col):
+            # Clear old position
+            self.grid[curr_row][curr_col] = 0
+            # Set new position
+            self.grid[new_row][new_col] = entity_id
+            self.entities[entity_id] = (new_row, new_col)
+            return True
+        return False
+
+    def simulate_moves(self, entity_id, moves):
+        """Simulate sequence of moves for entity"""
+        path = [self.entities.get(entity_id)]
+
+        for move in moves:
+            success = self.move_entity(entity_id, move)
+            if success:
+                path.append(self.entities[entity_id])
+            else:
+                break  # Stop on invalid move
+
+        return path
+
+    def get_neighbors(self, row, col, include_diagonal=False):
+        """Get valid neighbor positions"""
+        neighbors = []
+        directions = [(0,1), (0,-1), (1,0), (-1,0)]
+        if include_diagonal:
+            directions.extend([(1,1), (1,-1), (-1,1), (-1,-1)])
+
+        for dr, dc in directions:
+            new_row, new_col = row + dr, col + dc
+            if self.is_valid_position(new_row, new_col):
+                neighbors.append((new_row, new_col))
+
+        return neighbors
+```
+
+## 依模式分類的題目
+
+### **機器人移動題**
+| 題目 | LC # | 關鍵技巧 | 難度 |
+|---------|------|---------------|------------|
+| Robot Return to Origin | 657 | 單純追蹤位置 | Easy |
+| Walking Robot Simulation | 874 | 方向 + 障礙物處理 | Easy |
+| Walking Robot Simulation II | 2069 | 環形路徑最佳化 | Medium |
+| Number of Spaces Cleaning Robot Cleaned | 2061 | 格子走訪模擬 | Medium |
+
+### **遊戲模擬題**
+| 題目 | LC # | 關鍵技巧 | 難度 |
+|---------|------|---------------|------------|
+| Find Winner of Circular Game | 1823 | Josephus 問題模擬 | Medium |
+| Time to Cross a Bridge | 2532 | 優先佇列模擬 | Hard |
+| Snakes and Ladders | 909 | BFS + 棋盤模擬 | Medium |
+
+### **系統模擬題**
+| 題目 | LC # | 關鍵技巧 | 難度 |
+|---------|------|---------------|------------|
+| Design Parking System | 1603 | 資源管理 | Easy |
+| Average Waiting Time | 1701 | 佇列模擬 | Medium |
+| Design Phone Directory | 379 | 狀態管理 | Medium |
+
+## LC 範例
+
+### 2-1) Walking Robot Simulation II — LC 2069
+> 把位置映射成周長上的索引（對周長取模）；在每個轉角記錄方向。
+
+```java
+// LC 2069 - Walking Robot Simulation II
+// IDEA: Map perimeter as 1D array (mod perimeter); corners change direction
+// time = O(1) per step, space = O(1)
+class Robot {
+    int w, h, perimeter, pos = 0;
+    // perimeter positions: 0=bottom, w-1=bottom-right, w+h-2=top-right, 2w+h-3=top-left
+    String[] DIRS = {"East","North","West","South"};
+    int[] dx = {1,0,-1,0}, dy = {0,1,0,-1};
+    public Robot(int width, int height) {
+        w = width; h = height;
+        perimeter = 2 * (w + h - 2);
+    }
+    public void step(int num) { pos = (pos + num) % perimeter; }
+    public int[] getPos() {
+        if (pos < w)            return new int[]{pos, 0};
+        if (pos < w + h - 1)   return new int[]{w - 1, pos - w + 1};
+        if (pos < 2*w + h - 2) return new int[]{2*w + h - 3 - pos, h - 1};
+        return new int[]{0, 2*w + 2*h - 4 - pos};
+    }
+    public String getDir() {
+        // NOTE: at pos==0 this returns "East" (start dir). After a full loop back to the
+        // origin the true LC 2069 answer is "South"; distinguishing requires tracking whether
+        // step() was ever called. The Python version below tracks direction and handles this.
+        if (pos == 0)             return "East"; // start facing East
+        if (pos < w)              return "East";
+        if (pos < w + h - 1)     return "North";
+        if (pos < 2*w + h - 2)   return "West";
+        return "South";
+    }
+}
+```
+
+```python
+class Robot:
+    """Optimized robot simulation with circular path detection"""
+
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+
+        # Robot state
+        self.pos = 0  # Position on perimeter (0 to perimeter-1)
+        self.direction = 0  # 0: East, 1: North, 2: West, 3: South
+
+        # Calculate perimeter and key positions
+        self.perimeter = 2 * (width + height - 2)
+        self.corners = [0, width - 1, width + height - 2, 2 * width + height - 3]
+
+        # Direction names
+        self.dir_names = ["East", "North", "West", "South"]
+
+    def position_to_coords(self, pos):
+        """Convert perimeter position to (x, y) coordinates"""
+        if pos < self.width:  # Bottom edge
+            return [pos, 0]
+        elif pos < self.width + self.height - 1:  # Right edge
+            return [self.width - 1, pos - self.width + 1]
+        elif pos < 2 * self.width + self.height - 2:  # Top edge
+            return [2 * self.width + self.height - 3 - pos, self.height - 1]
+        else:  # Left edge
+            return [0, 2 * self.width + 2 * self.height - 4 - pos]
+
+    def step(self, num):
+        """Move robot num steps"""
+        if num == 0:
+            return
+
+        # Handle full loops
+        num = num % self.perimeter if self.perimeter > 0 else 0
+
+        self.pos = (self.pos + num) % self.perimeter
+
+        # Update direction if at corner
+        if self.pos in self.corners and num > 0:
+            self.direction = (self.corners.index(self.pos) + 1) % 4
+
+    def getPos(self):
+        """Get current position"""
+        return self.position_to_coords(self.pos)
+
+    def getDir(self):
+        """Get current direction"""
+        return self.dir_names[self.direction]
+```
+
+### 2-2) Time to Cross a Bridge — LC 2532
+> 四個優先佇列：左／右等待中 + 左／右工作中；照時間推進來模擬工人的指派。
+
+```java
+// LC 2532 - Time to Cross a Bridge
+// IDEA: 4 heaps (waitL, waitR, workL, workR); pick highest-efficiency waiting worker each step
+// time = O(N log K), space = O(K)  K = workers
+public int findCrossingTime(int n, int k, int[][] time) {
+    // Max-heaps for waiting (by efficiency = leftTime + rightTime, higher = worse = higher priority)
+    PriorityQueue<int[]> waitL = new PriorityQueue<>((a,b) -> b[0]-a[0]); // [eff, id]
+    PriorityQueue<int[]> waitR = new PriorityQueue<>((a,b) -> b[0]-a[0]);
+    // Min-heaps for working (by finish time)
+    PriorityQueue<int[]> workL = new PriorityQueue<>((a,b) -> a[0]-b[0]); // [finishTime, id]
+    PriorityQueue<int[]> workR = new PriorityQueue<>((a,b) -> a[0]-b[0]);
+    for (int i = 0; i < k; i++) waitL.offer(new int[]{time[i][0]+time[i][2], i});
+    int cur = 0;
+    for (int boxes = 0; boxes < n; boxes++) {
+        // Advance time if no one is waiting
+        while (waitL.isEmpty() || waitR.isEmpty()) {
+            int nextFinish = Integer.MAX_VALUE;
+            if (!workL.isEmpty()) nextFinish = Math.min(nextFinish, workL.peek()[0]);
+            if (!workR.isEmpty()) nextFinish = Math.min(nextFinish, workR.peek()[0]);
+            cur = Math.max(cur, nextFinish);
+            while (!workL.isEmpty() && workL.peek()[0] <= cur) { int[] w = workL.poll(); waitL.offer(new int[]{time[w[1]][0]+time[w[1]][2], w[1]}); }
+            while (!workR.isEmpty() && workR.peek()[0] <= cur) { int[] w = workR.poll(); waitR.offer(new int[]{time[w[1]][0]+time[w[1]][2], w[1]}); }
+            if (waitL.isEmpty() && waitR.isEmpty()) cur = nextFinish;
+        }
+        // Priority: right->left over left->right
+        if (!waitR.isEmpty()) {
+            int[] w = waitR.poll();
+            cur += time[w[1]][2];
+            workL.offer(new int[]{cur + time[w[1]][3], w[1]});
+        } else {
+            int[] w = waitL.poll();
+            cur += time[w[1]][0];
+            workR.offer(new int[]{cur + time[w[1]][1], w[1]});
+        }
+    }
+    // Wait for all right-side workers to come back
+    int ans = cur;
+    while (!waitR.isEmpty()) { int[] w = waitR.poll(); ans = Math.max(ans, cur) + time[w[1]][2]; cur = ans; }
+    while (!workR.isEmpty()) { int[] w = workR.poll(); ans = Math.max(ans, w[0]) + time[w[1]][2]; }
+    return ans;
+}
+```
+
+```python
+import heapq
+
+def findCrossingTime(n, k, time):
+    """Simulate workers crossing bridge with priority queues"""
+
+    # Priority queues: (efficiency, worker_id)
+    left_wait = [(time[i][0] + time[i][2], i) for i in range(k)]
+    right_wait = []
+    left_work = []  # (available_time, efficiency, worker_id)
+    right_work = []
+
+    heapq.heapify(left_wait)
+
+    boxes_left = n
+    boxes_right = 0
+    current_time = 0
+
+    def move_available_workers(current_time):
+        # Move workers from work to wait queues when they become available
+        while left_work and left_work[0][0] <= current_time:
+            _, eff, worker_id = heapq.heappop(left_work)
+            heapq.heappush(left_wait, (eff, worker_id))
+
+        while right_work and right_work[0][0] <= current_time:
+            _, eff, worker_id = heapq.heappop(right_work)
+            heapq.heappush(right_wait, (eff, worker_id))
+
+    while boxes_right < n:
+        move_available_workers(current_time)
+
+        # Priority: right to left > left to right
+        if right_wait and boxes_right > 0:
+            # Worker crosses from right to left
+            eff, worker_id = heapq.heappop(right_wait)
+            current_time += time[worker_id][3]
+
+            # Worker goes to put box and work on left
+            work_end_time = current_time + time[worker_id][2]
+            heapq.heappush(left_work, (work_end_time, eff, worker_id))
+            boxes_right -= 1
+
+        elif left_wait and boxes_left > 0:
+            # Worker crosses from left to right
+            eff, worker_id = heapq.heappop(left_wait)
+            current_time += time[worker_id][1]
+
+            # Worker goes to pick box and work on right
+            work_end_time = current_time + time[worker_id][0]
+            heapq.heappush(right_work, (work_end_time, eff, worker_id))
+            boxes_left -= 1
+            boxes_right += 1
+
+        else:
+            # No workers available, advance time to next available worker
+            next_time = float('inf')
+            if left_work:
+                next_time = min(next_time, left_work[0][0])
+            if right_work:
+                next_time = min(next_time, right_work[0][0])
+            current_time = next_time
+
+    return current_time
+```
+
+### 2-3) Number of Spaces Cleaning Robot Cleaned — LC 2061
+> 從 (0,0) 面向東邊開始 DFS；當同一個 (row, col, direction) 狀態再次出現就停。
+
+```java
+// LC 2061 - Number of Spaces Cleaning Robot Cleaned
+// IDEA: DFS simulation; stop when (row, col, dir) state repeats (cycle detected)
+// time = O(M*N*4), space = O(M*N*4)
+public int numberOfCleanRooms(int[][] room) {
+    int m = room.length, n = room[0].length;
+    boolean[][][] visited = new boolean[m][n][4];
+    int[][] dirs = {{0,1},{1,0},{0,-1},{-1,0}}; // E,S,W,N
+    int row = 0, col = 0, dir = 0, count = 0;
+    Set<String> cleaned = new HashSet<>();
+    while (!visited[row][col][dir]) {
+        visited[row][col][dir] = true;
+        if (cleaned.add(row + "," + col)) count++;
+        int nr = row + dirs[dir][0], nc = col + dirs[dir][1];
+        if (nr >= 0 && nr < m && nc >= 0 && nc < n && room[nr][nc] == 0) {
+            row = nr; col = nc;
+        } else {
+            dir = (dir + 1) % 4; // turn right
+        }
+    }
+    return count;
+}
+```
+
+```python
+def numberOfCleanRooms(room):
+    """Simulate robot cleaning with cycle detection"""
+    m, n = len(room), len(room[0])
+
+    # Robot starts at (0, 0) facing right
+    x, y, direction = 0, 0, 0
+
+    # Directions: right, down, left, up
+    dx = [0, 1, 0, -1]
+    dy = [1, 0, -1, 0]
+
+    cleaned = set()
+    visited_states = set()  # (x, y, direction)
+
+    while True:
+        # Clean current position
+        cleaned.add((x, y))
+
+        # Check if we've been in this state before (cycle detection)
+        state = (x, y, direction)
+        if state in visited_states:
+            break
+        visited_states.add(state)
+
+        # Try to move forward
+        next_x = x + dx[direction]
+        next_y = y + dy[direction]
+
+        # Check if next position is valid and not blocked
+        if (0 <= next_x < m and 0 <= next_y < n and
+            room[next_x][next_y] == 0):
+            # Move forward
+            x, y = next_x, next_y
+        else:
+            # Turn right (clockwise)
+            direction = (direction + 1) % 4
+
+    return len(cleaned)
+```
+
+## 進階技巧
+
+### 模擬中的循環偵測
+```python
+def detect_simulation_cycle(state_sequence):
+    """Detect cycles in simulation using Floyd's algorithm"""
+
+    def get_next_state(state):
+        # Implement state transition logic
+        pass
+
+    # Floyd's cycle detection
+    slow = fast = initial_state
+
+    # Phase 1: Detect if cycle exists
+    while True:
+        slow = get_next_state(slow)
+        fast = get_next_state(get_next_state(fast))
+        if slow == fast:
+            break
+
+    # Phase 2: Find cycle start
+    slow = initial_state
+    while slow != fast:
+        slow = get_next_state(slow)
+        fast = get_next_state(fast)
+
+    # Phase 3: Find cycle length
+    cycle_length = 1
+    current = get_next_state(slow)
+    while current != slow:
+        current = get_next_state(current)
+        cycle_length += 1
+
+    return slow, cycle_length
+```
+
+### 狀態壓縮技巧
+```python
+class StateCompression:
+    """Techniques for compressing simulation states"""
+
+    def hash_state(self, state):
+        """Create hash for complex state objects"""
+        # For tuples/lists
+        return hash(tuple(state) if isinstance(state, list) else state)
+
+    def compress_grid_state(self, grid):
+        """Compress 2D grid into single value"""
+        # Bit manipulation for binary grids
+        result = 0
+        for i, row in enumerate(grid):
+            for j, val in enumerate(row):
+                if val:
+                    result |= (1 << (i * len(row) + j))
+        return result
+
+    def compress_position_direction(self, x, y, direction, max_x, max_y):
+        """Compress position and direction into single value"""
+        return x * max_y * 4 + y * 4 + direction
+```
+
+### 最佳化策略
+```python
+class SimulationOptimizations:
+    """Various optimization techniques for simulations"""
+
+    def precompute_cycles(self, initial_states):
+        """Precompute common cycles for faster simulation"""
+        cycle_cache = {}
+        for state in initial_states:
+            if state not in cycle_cache:
+                cycle_start, cycle_length = self.detect_cycle(state)
+                cycle_cache[state] = (cycle_start, cycle_length)
+        return cycle_cache
+
+    def mathematical_shortcuts(self, steps, cycle_length, cycle_start_pos):
+        """Use math to skip repetitive cycles"""
+        if steps <= cycle_start_pos:
+            return steps
+
+        remaining_steps = steps - cycle_start_pos
+        full_cycles = remaining_steps // cycle_length
+        final_position = remaining_steps % cycle_length
+
+        return cycle_start_pos + final_position
+
+    def parallel_simulation(self, entities):
+        """Simulate multiple entities in parallel"""
+        # Use threading or multiprocessing for independent entities
+        pass
+```
+
+## 效能最佳化提示
+
+### 記憶體管理
+```python
+def memory_optimization_techniques():
+    """Optimize memory usage in simulations"""
+
+    # 1. Use generators for large sequences
+    def simulate_steps_generator(initial_state, max_steps):
+        current_state = initial_state
+        for step in range(max_steps):
+            yield current_state
+            current_state = get_next_state(current_state)
+
+    # 2. Limit history tracking
+    def limited_history_simulation(state, max_history=1000):
+        history = []
+        while True:
+            history.append(state)
+            if len(history) > max_history:
+                history.pop(0)  # Remove oldest
+            state = get_next_state(state)
+
+    # 3. Use bitwise operations for boolean states
+    def bitwise_state_management(width, height):
+        state = 0  # Single integer instead of 2D array
+        # Set bit: state |= (1 << (row * width + col))
+        # Check bit: (state >> (row * width + col)) & 1
+        # Clear bit: state &= ~(1 << (row * width + col))
+```
+
+## 總結與快速查詢
+
+### 常見模擬模式
+
+| 模式 | 模板 | 使用情境 | 例子 |
+|---------|----------|----------|---------|
+| **機器人移動** | 追蹤位置 + 方向 | 導航類問題 | 行走的機器人 |
+| **狀態機** | 規則驅動的轉移 | 遊戲機制 | Josephus 問題 |
+| **事件佇列** | 時間軸模擬 | 系統建模 | 過橋問題 |
+| **格子世界** | 二維環境 | 空間類問題 | 掃地機器人 |
+
+### 時間複雜度指南
+| 題型 | 時間複雜度 | 空間複雜度 | 備註 |
+|--------------|-----------------|------------------|-------|
+| 基本移動 | O(steps) | O(1) | 單純追蹤位置 |
+| 狀態機 | O(steps × rules) | O(states) | 規則的複雜度是關鍵 |
+| 事件模擬 | O(events log events) | O(events) | 優先佇列的額外開銷 |
+| 格子模擬 | O(steps × grid_ops) | O(grid_size) | 取決於格子操作的複雜度 |
+
+### 常見錯誤與訣竅
+
+**🚫 常見錯誤：**
+- 邊界條件沒處理好
+- 漏了循環偵測，導致無窮迴圈
+- 狀態表示法沒效率
+- 忘記更新某些狀態變數
+
+**✅ 最佳實務：**
+- 套用移動／轉移之前，先驗證它合法
+- 對可能無限跑下去的模擬，一定要加循環偵測
+- 用合適的資料結構表示狀態
+- 重複性高的模式，考慮找數學捷徑
+- 邊界情況要測徹底
+
+### 面試訣竅
+1. **把問題模型化得夠準**：搞懂所有規則與限制
+2. **設計乾淨的狀態表示法**：好更新、好比較
+3. **實作循環偵測**：避免無窮迴圈
+4. **想想能不能最佳化**：數學捷徑、預先計算
+5. **處理邊界情況**：邊界、非法狀態、空輸入
+6. **有系統地測試**：拿範例一步步走過一遍
+
+這份模擬小抄涵蓋了高效解決複雜流程建模問題所需的核心模式與技巧。
+
+---
+
+## 補充模板（面試高頻模式）
+
+### 快速決策表
+
+| 目標 | 模板 | LC 範例 |
+|------|----------|-------------|
+| 所有格子必須**同時**更新，又不准開暫存副本 | **模板 5** — 原地狀態編碼 | 289 |
+| 元素只會**跟最近的倖存者互動**（碰撞／抵銷／撤銷） | **模板 6** — 用堆疊當模擬狀態 | 735、682、844、946、1910 |
+| 對長到 `long` 裝不下的字串模擬**小學算術** | **模板 7** — 逐位進位 | 43、415、67 |
+| 流程會永遠重複下去 — 你要的是**答案，不是那個迴圈** | **模板 8** — 代數式的循環偵測 | 1041 |
+
+---
+
+### 模板 5：原地狀態編碼（同時更新） ⭐⭐⭐⭐⭐
+
+**關鍵想法**：當每個格子都必須**根據原始盤面**做轉移時，直接寫入新值會破壞掉*後面*的格子還要讀的資料。與其配置一份副本，不如把兩個狀態塞進同一個整數：**bit 0 = 當前狀態，bit 1 = 下一個狀態**。讀取用 `x & 1`（不受影響），寫入用 `x |= next << 1`。最後掃一次 `x >>= 1`，所有格子一次提交。
+
+**推廣**：任何值域都行，不一定要用位元 — 例如用 `old + 2*new`，或把「本來是 1 現在是 0」記成 `-1`、「本來是 0 現在是 1」記成 `2`。位元技巧只是最乾淨的編碼方式。
+
+```java
+// java
+// LC 289 - Game of Life
+// time = O(M*N), space = O(1)  -- no second board
+// IDEA: bit0 = current state, bit1 = next state. Neighbours are read with (x & 1) so they
+//       still report their ORIGINAL value even after their next state has been written.
+public void gameOfLife(int[][] board) {
+    int m = board.length, n = board[0].length;
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            int live = 0;
+            for (int di = -1; di <= 1; di++) {
+                for (int dj = -1; dj <= 1; dj++) {
+                    if (di == 0 && dj == 0) continue;
+                    int r = i + di, c = j + dj;
+                    if (r < 0 || r >= m || c < 0 || c >= n) continue;
+                    live += board[r][c] & 1;              // read ORIGINAL state
+                }
+            }
+            int cur  = board[i][j] & 1;
+            int next = (cur == 1) ? ((live == 2 || live == 3) ? 1 : 0)   // survive
+                                  : ((live == 3) ? 1 : 0);              // reproduce
+            board[i][j] |= next << 1;                     // stash next state in bit1
+        }
+    }
+    // commit: shift every cell down so bit1 becomes the live value
+    for (int i = 0; i < m; i++)
+        for (int j = 0; j < n; j++)
+            board[i][j] >>= 1;
+}
+```
+
+```python
+# python
+# LC 289 - Game of Life
+# time = O(M*N), space = O(1)
+# IDEA: bit0 = current state, bit1 = next state; commit with a final >>= 1 sweep
+def gameOfLife(board):
+    m, n = len(board), len(board[0])
+    for i in range(m):
+        for j in range(n):
+            live = 0
+            for di in (-1, 0, 1):
+                for dj in (-1, 0, 1):
+                    if di == 0 and dj == 0:
+                        continue
+                    r, c = i + di, j + dj
+                    if 0 <= r < m and 0 <= c < n:
+                        live += board[r][c] & 1          # read ORIGINAL state
+            cur = board[i][j] & 1
+            nxt = 1 if (live == 3 or (cur == 1 and live == 2)) else 0
+            board[i][j] |= nxt << 1                       # stash next state in bit1
+    for i in range(m):
+        for j in range(n):
+            board[i][j] >>= 1                             # commit
+```
+
+> **面試官一定會追問**：「如果盤面是無限大呢？」— 答案：只用一個 `(r, c)` 的雜湊集合存活著的格子，走訪這些活格子、對它們的 8 個鄰居在計數表上 +1 來算鄰居數，然後重建活格子集合。記憶體變成 O(活格子數)。
+
+---
+
+### 模板 6：用堆疊當模擬狀態（碰撞／抵銷／撤銷） ⭐⭐⭐⭐⭐
+
+**關鍵想法**：當新元素只會跟**最近一個還活著的元素**互動時，倖存者自然形成一個堆疊。把每個新項目 push 進去，然後跑一個 `while` 迴圈跟 `stack.top()` 解決衝突 — 這個迴圈可能連續 pop 掉好幾個受害者，而新項目自己也可能陣亡。
+
+**辨識訊號**：「最後站著的那一個」、「它們互相湮滅」、「這個字元會撤銷前一個字元」。任何這種規則用堆疊都是 O(N)，而不是重複掃描的 O(N²)。
+
+```java
+// java
+// LC 735 - Asteroid Collision
+// time = O(N), space = O(N)
+// IDEA: stack holds surviving asteroids. A collision only happens when the incoming asteroid
+//       moves left (a < 0) and the top of the stack moves right (top > 0).
+public int[] asteroidCollision(int[] asteroids) {
+    Deque<Integer> st = new ArrayDeque<>();
+    for (int a : asteroids) {
+        boolean alive = true;
+        while (alive && a < 0 && !st.isEmpty() && st.peek() > 0) {
+            if (st.peek() < -a) { st.pop(); continue; }   // top explodes, `a` keeps going
+            if (st.peek() == -a) st.pop();                // both explode
+            alive = false;                                // `a` explodes (or both did)
+        }
+        if (alive) st.push(a);
+    }
+    int[] res = new int[st.size()];
+    for (int i = res.length - 1; i >= 0; i--) res[i] = st.pop();
+    return res;
+}
+```
+
+```python
+# python
+# LC 735 - Asteroid Collision
+# time = O(N), space = O(N)
+# IDEA: collision only when incoming a < 0 and stack top > 0 (moving toward each other)
+def asteroidCollision(asteroids):
+    st = []
+    for a in asteroids:
+        alive = True
+        while alive and a < 0 and st and st[-1] > 0:
+            if st[-1] < -a:
+                st.pop()          # top explodes, `a` survives and keeps colliding
+                continue
+            if st[-1] == -a:
+                st.pop()          # both explode
+            alive = False         # `a` explodes
+        if alive:
+            st.append(a)
+    return st
+```
+
+#### 模板 6 的變化型
+
+**變化型 A — LC 682 Baseball Game**：*變化點：堆疊就是那份紀錄，而運算會讀取／改寫最上面幾筆。*
+
+```python
+# python
+# LC 682 - Baseball Game
+# time = O(N), space = O(N)
+def calPoints(operations):
+    st = []
+    for op in operations:
+        if op == "C":   st.pop()                    # undo last
+        elif op == "D": st.append(st[-1] * 2)
+        elif op == "+": st.append(st[-1] + st[-2])  # sum of previous two
+        else:           st.append(int(op))
+    return sum(st)
+```
+
+**變化型 B — LC 844 Backspace String Compare**：*變化點：`#` 是 pop，不是碰撞；比較兩個各自建好的堆疊。*（O(1) 空間的版本是從尾端往前走兩個字串，一邊數待處理的退格數。）
+
+```python
+# python
+# LC 844 - Backspace String Compare
+# time = O(M+N), space = O(M+N)   (O(1) possible by scanning from the right)
+def backspaceCompare(s, t):
+    def build(x):
+        st = []
+        for ch in x:
+            if ch == '#':
+                if st: st.pop()
+            else:
+                st.append(ch)
+        return st
+    return build(s) == build(t)
+```
+
+**變化型 C — LC 946 Validate Stack Sequences**：*變化點：照 push 順序重播，只要頂端等於下一個預期要 pop 的值就貪婪地 pop — 堆疊能被清空才算合法。*
+
+```java
+// java
+// LC 946 - Validate Stack Sequences
+// time = O(N), space = O(N)
+public boolean validateStackSequences(int[] pushed, int[] popped) {
+    Deque<Integer> st = new ArrayDeque<>();
+    int j = 0;
+    for (int v : pushed) {
+        st.push(v);
+        while (!st.isEmpty() && j < popped.length && st.peek() == popped[j]) { st.pop(); j++; }
+    }
+    return st.isEmpty();
+}
+```
+
+**變化型 D — LC 1910 Remove All Occurrences of a Substring**：*變化點：「碰撞」是指最後 `k` 個字元剛好等於 `part`；一次 pop 掉全部 `k` 個，讓新變得相鄰的文字有機會再次配對。*
+
+```python
+# python
+# LC 1910 - Remove All Occurrences of a Substring
+# time = O(N*K), space = O(N)
+def removeOccurrences(s, part):
+    st, k = [], len(part)
+    for ch in s:
+        st.append(ch)
+        if len(st) >= k and "".join(st[-k:]) == part:
+            del st[-k:]          # removing may expose a NEW match on the next push
+    return "".join(st)
+```
+
+---
+
+### 模板 7：逐位算術模擬（進位） ⭐⭐⭐⭐
+
+**關鍵想法**：輸入是長到 `int`/`long` 完全裝不下的數字字串／陣列，所以你得模擬小學那套直式算法。兩條不變式讓這件事變得不痛：
+
+1. **索引數學**：`num1[i] * num2[j]` 會落在結果的第 `i+j` 位（進位）與第 `i+j+1` 位（本位），結果緩衝區大小為 `m + n`。
+2. **進位迴圈條件**：一直跑 `while i >= 0 or j >= 0 or carry > 0` — 尾巴那個 `carry > 0` 就是多出來的最高位怎麼來的（`999 + 1 = 1000`）。
+
+```java
+// java
+// LC 43 - Multiply Strings
+// time = O(M*N), space = O(M+N)
+// IDEA: num1[i]*num2[j] contributes to result[i+j+1] (units) and result[i+j] (carry).
+//       Accumulate everything first, normalize as you go, strip leading zeros at the end.
+public String multiply(String num1, String num2) {
+    if (num1.equals("0") || num2.equals("0")) return "0";
+    int m = num1.length(), n = num2.length();
+    int[] pos = new int[m + n];
+    for (int i = m - 1; i >= 0; i--) {
+        for (int j = n - 1; j >= 0; j--) {
+            int mul = (num1.charAt(i) - '0') * (num2.charAt(j) - '0');
+            int p1 = i + j, p2 = i + j + 1;
+            int sum = mul + pos[p2];
+            pos[p2] = sum % 10;
+            pos[p1] += sum / 10;      // safe: pos[p1] stays small, normalized on a later pass
+        }
+    }
+    StringBuilder sb = new StringBuilder();
+    for (int p : pos) if (!(sb.length() == 0 && p == 0)) sb.append(p);  // skip leading zeros
+    return sb.length() == 0 ? "0" : sb.toString();
+}
+```
+
+```python
+# python
+# LC 43 - Multiply Strings
+# time = O(M*N), space = O(M+N)
+# IDEA: digit (i,j) writes units at i+j+1 and carry at i+j
+def multiply(num1, num2):
+    if num1 == "0" or num2 == "0":
+        return "0"
+    m, n = len(num1), len(num2)
+    pos = [0] * (m + n)
+    for i in range(m - 1, -1, -1):
+        for j in range(n - 1, -1, -1):
+            mul = (ord(num1[i]) - 48) * (ord(num2[j]) - 48)
+            p1, p2 = i + j, i + j + 1
+            s = mul + pos[p2]
+            pos[p2] = s % 10
+            pos[p1] += s // 10
+    res = "".join(map(str, pos)).lstrip("0")
+    return res if res else "0"
+```
+
+#### 模板 7 的變化型
+
+**變化型 A — LC 415 Add Strings**：*變化點：從右邊起的雙指標單趟掃描；迴圈條件裡的 `or carry` 負責處理溢出的那一位。*
+
+```java
+// java
+// LC 415 - Add Strings
+// time = O(max(M,N)), space = O(max(M,N))
+public String addStrings(String num1, String num2) {
+    StringBuilder sb = new StringBuilder();
+    int i = num1.length() - 1, j = num2.length() - 1, carry = 0;
+    while (i >= 0 || j >= 0 || carry > 0) {           // `carry > 0` emits the leading digit
+        int d1 = i >= 0 ? num1.charAt(i--) - '0' : 0; // pad short number with 0
+        int d2 = j >= 0 ? num2.charAt(j--) - '0' : 0;
+        int sum = d1 + d2 + carry;
+        sb.append(sum % 10);
+        carry = sum / 10;
+    }
+    return sb.reverse().toString();
+}
+```
+
+**變化型 B — LC 67 Add Binary**：*變化點：迴圈一模一樣，只有進位基底變了 — 除以／模以 2 而不是 10。*
+
+```python
+# python
+# LC 67 - Add Binary  (same skeleton as LC 415, base 2)
+# time = O(max(M,N)), space = O(max(M,N))
+def addBinary(a, b):
+    i, j, carry, out = len(a) - 1, len(b) - 1, 0, []
+    while i >= 0 or j >= 0 or carry:
+        d1 = ord(a[i]) - 48 if i >= 0 else 0
+        d2 = ord(b[j]) - 48 if j >= 0 else 0
+        carry, d = divmod(d1 + d2 + carry, 2)   # base 10 -> divmod(..., 10)
+        out.append(str(d))
+        i -= 1
+        j -= 1
+    return "".join(reversed(out))
+```
+
+---
+
+### 模板 8：代數式循環偵測 — 直接跳過模擬 ⭐⭐⭐⭐
+
+**關鍵想法**：一個會「永遠跑下去」的模擬，就是不能真的讓它永遠跑。兩條出路：
+
+| 出路 | 做法 | 例子 |
+|--------|-----|---------|
+| **狀態循環** | 把完整狀態 `(pos, dir, ...)` 雜湊起來；重複出現 ⇒ 有迴圈 | LC 2061（前面那題） |
+| **代數推導** | 只跑**一輪**指令，然後推理淨位移 + 淨旋轉 | LC 1041 |
+
+以 LC 1041 來說，整個無窮流程可以收斂成一個觀察：跑完一輪指令後，機器人有某個**淨位移** `(x, y)` 和某個**淨旋轉** `d`。
+
+- 如果 `d != 0`（機器人沒有面向原本的方向），那麼跑 4 輪會把總位移分別旋轉 0°/90°/180°/270°，這四個向量**加起來一定是零向量** ⇒ 被侷限住。
+- 如果 `d == 0` 且 `(x, y) != (0, 0)`，同一個偏移量會永遠疊加下去 ⇒ 跑到無限遠。
+
+```java
+// java
+// LC 1041 - Robot Bounded In Circle
+// time = O(N), space = O(1)
+// IDEA: simulate ONE pass. Bounded iff back at origin, OR not facing north (rotation cancels
+//       the drift over 4 passes). No need to simulate repeated cycles at all.
+public boolean isRobotBounded(String instructions) {
+    int x = 0, y = 0, dir = 0;                       // 0=N, 1=E, 2=S, 3=W
+    int[] dx = {0, 1, 0, -1}, dy = {1, 0, -1, 0};
+    for (char c : instructions.toCharArray()) {
+        if (c == 'L')      dir = (dir + 3) % 4;      // -1 mod 4
+        else if (c == 'R') dir = (dir + 1) % 4;
+        else { x += dx[dir]; y += dy[dir]; }
+    }
+    return (x == 0 && y == 0) || dir != 0;
+}
+```
+
+```python
+# python
+# LC 1041 - Robot Bounded In Circle
+# time = O(N), space = O(1)
+# IDEA: one pass; bounded iff net displacement is zero OR net rotation != 0
+def isRobotBounded(instructions):
+    x = y = d = 0                                    # 0=N, 1=E, 2=S, 3=W
+    dx, dy = [0, 1, 0, -1], [1, 0, -1, 0]
+    for c in instructions:
+        if c == 'L':
+            d = (d + 3) % 4
+        elif c == 'R':
+            d = (d + 1) % 4
+        else:
+            x += dx[d]
+            y += dy[d]
+    return (x == 0 and y == 0) or d != 0
+```
+
+> **方向向量的慣例提醒**（這裡每個機器人模板都用這套）：`dx`/`dy` 要照**順時針**排，這樣 `R` 就是 `(dir + 1) % 4`，`L` 就是 `(dir + 3) % 4`。寫 `(dir - 1) % 4` 在 Python 沒問題，但在 Java 會得到負索引 — 兩邊都用 `+3` 比較好移植。
+
+---
+
+### 參考：其他高頻模擬題
+
+| 題目 | LC # | 關鍵技巧 | 難度 |
+|---------|------|---------------|------------|
+| Text Justification | 68 | 貪婪塞行：只要 `len + words <= maxWidth` 就繼續塞字，然後把 `maxWidth - lettersLen` 個空白分配到 `gaps` 個空隙，用 `q, r = divmod(spaces, gaps)`（左邊的空隙多拿一個）；最後一行與只有一個字的行採靠左對齊 | Hard |
+| Contain Virus | 749 | 多階段的格子模擬：每一輪對每個病毒區域做 flood-fill，只隔離威脅最多乾淨格子的那一區，然後讓其餘所有區域擴散 | Hard |

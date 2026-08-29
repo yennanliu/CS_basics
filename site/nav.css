@@ -115,6 +115,15 @@
 }
 .theme-toggle:hover { color: var(--nav-ink-active); background: var(--nav-hover-bg); }
 
+/* ── Language toggle — paired with the theme toggle, deliberately quieter ─── */
+.nav-links a.lang-toggle {
+  color: var(--nav-ink); font-size: 15px; padding: 6px 12px;
+  border: 1px solid var(--nav-line-strong); white-space: nowrap;
+  display: inline-flex; align-items: center; min-height: 44px;
+  letter-spacing: 0.05em; margin: 0 8px 0 12px;
+}
+.nav-links a.lang-toggle:hover { color: var(--nav-ink-active); background: var(--nav-hover-bg); }
+
 /* ── Hamburger — hidden on desktop ─── */
 .nav-toggle {
   display: none; flex-direction: column; gap: 5px;
@@ -178,6 +187,12 @@
   .nav-links .nav-more-menu a {
     padding: 14px 20px 14px 36px; font-size: 17px; min-height: 52px;
     border-bottom: 1px solid var(--nav-line);
+  }
+
+  .nav-links a.lang-toggle {
+    padding: 14px 20px; font-size: 17px; margin: 0;
+    border: none; border-bottom: 1px solid var(--nav-line);
+    width: 100%; min-height: 52px; justify-content: flex-start;
   }
 
   .theme-toggle {
