@@ -251,7 +251,7 @@
 - LC 26 Remove Duplicates from Sorted Array — 順序有意義，改用快慢指標
 - LC 80 Remove Duplicates from Sorted Array II — 順序有意義，改用快慢指標
 
-<!-- f910e97747f3 -->
+<!-- 4bad8fccc517 -->
 ### 模板 3：從中心擴張 — LC 5, LC 647 ⭐⭐⭐⭐
 
 <!--CODE-->
@@ -360,7 +360,7 @@
 
 > 節點版的雙指標家族（中間節點、倒數第 n 個、重排、回文串列）在 [2_pointers_linkedlist.md](./2_pointers_linkedlist.md)。
 
-<!-- 7758ad2007d9 -->
+<!-- 8ddbd59ae47f -->
 ### 模板 8：先推右指標，再推左指標（由條件驅動）
 
 <!--CODE-->

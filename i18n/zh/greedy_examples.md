@@ -42,7 +42,7 @@
 
 <!--CODE-->
 
-<!-- 2ebafddc40ea -->
+<!-- 9683c87e6078 -->
 ### 3) Minimum Number of Taps to Water a Garden — LC 1326 — 換皮的 LC 45
 
 
@@ -120,7 +120,7 @@
 - LC 134 Gas Station（累積總和變負時重設起點的貪婪）
 - LC 435 Non-overlapping Intervals（同樣是最早結束的貪婪，只是區間一開始就全給你了）
 
-<!-- c313be2cfe55 -->
+<!-- 1856a8adb23c -->
 ### 7) Minimum Add to Make Parentheses Valid — LC 921 — 一個平衡計數器
 
 
@@ -192,7 +192,7 @@
 
 <!--CODE-->
 
-<!-- b0be6fc8502d -->
+<!-- 878c0a13493e -->
 ### 12) Minimum Adjacent Swaps to Partition Array — LC 3994 — 群組 key + 索引加總
 
 
@@ -255,7 +255,7 @@
 <!-- ca44a8fc90ca -->
 ## 邊掃邊把答案蓋出來
 
-<!-- fe1e53da1439 -->
+<!-- f89250ff1a3c -->
 ### 13) Partition Labels — LC 763 — 在最後一次出現的位置切開 ⭐⭐⭐⭐⭐
 
 
@@ -290,7 +290,7 @@
 
 ---
 
-<!-- 2a05825c6145 -->
+<!-- ace930d3b4ae -->
 ### 14) Remove K Digits — LC 402 — 用單調堆疊貪婪地蓋答案 ⭐⭐⭐
 
 

@@ -36,7 +36,7 @@
 
 <!--CODE-->
 
-<!-- c7fd14b67b19 -->
+<!-- 0f9ecc8a68b6 -->
 ### 2) Redundant Connection II — LC 685 — **有向**圖上的 DSU ⭐⭐⭐⭐
 
 
@@ -191,7 +191,7 @@ Python 參考：`leetcode_python/Depth-First-Search/count-unreachable-pairs-of-n
 
 > **變化題 — LC 1559 Detect Cycles in 2D Grid**：只在字母相同時，把每個格子與它的**右**鄰和**下**鄰 union；若 union 之前就 `find(a) == find(b)`，代表有環（格子上的環長度自動 ≥ 4）。和 LC 684 一樣是「union 失敗 ⇒ 有環」的判斷，只是搬到格子上。
 
-<!-- af63f40e0e01 -->
+<!-- 506df31abe33 -->
 ### 12) Making A Large Island — LC 827 — 帶大小的 DSU + 候選翻轉 ⭐⭐⭐
 
 
@@ -217,7 +217,7 @@ Python 參考：`leetcode_python/Depth-First-Search/count-unreachable-pairs-of-n
 <!--CODE-->
 <!--CODE-->
 
-<!-- 3e8113046831 -->
+<!-- 0738d96b701b -->
 ### 14) Path With Minimum Effort — LC 1631 — 排序邊（Kruskal 風格）
 
 
@@ -242,7 +242,7 @@ Python 參考：`leetcode_python/Depth-First-Search/count-unreachable-pairs-of-n
 
 > **LC 1697 Checking Existence of Edge Length Limited Paths** — 同一套掃描的**離線查詢**版本：把邊依權重排序，同時把查詢依 `limit` 排序，接著用一個指標同時走兩邊，在回答 `find(p) == find(q)` 之前先把所有 `weight < limit` 的邊 union 進去。記得回傳答案時要還原成原本的查詢順序。
 
-<!-- d3d28e6e7482 -->
+<!-- 74713cda931b -->
 ### 15) Bricks Falling When Hit — LC 803 — 離線**逆向**併查集 ⭐⭐⭐
 
 

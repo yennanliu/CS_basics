@@ -85,7 +85,7 @@
 | 7 | 限制條件滿足 | ❌ 每層處理一列／一格 | [Template 10](#template-10-n-queens--lc-51) / [Template 11](#template-11-sudoku-solver--lc-37) | 51, 37 |
 | 8 | 括號／字串建構 | ❌ 用計數器當限制 | [backtrack_examples.md](./backtrack_examples.md#8-generate-parentheses--lc-22) | 20, 22, 93 |
 
-<!-- 15b6031a1c33 -->
+<!-- 030bcc3b68de -->
 ### 各型態筆記
 
 每種形狀的隨手筆記 — 迴圈主體的口訣，以及會踩到的坑。

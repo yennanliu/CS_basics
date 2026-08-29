@@ -1,4 +1,4 @@
-<!-- dc1374c03ff7 -->
+<!-- b3404098f2d5 -->
 # Linked List（鏈結串列）
 
 > **範圍** — 單向與雙向鏈結串列的指標手術：反轉、合併、重排、虛擬頭節點技巧，以及環的處理。
@@ -19,7 +19,7 @@
 
 > 只要你手上已經握著目標節點（例如 head，或某個你本來就持有的節點），插入／刪除就是 **O(1)**；但*先找到*那個節點是 **O(n)**。
 
-<!-- 34bdf1760c2c -->
+<!-- b897842be2e7 -->
 ## 0) 概念
 - [fucking algorithm : reverse part of linked list](https://github.com/labuladong/fucking-algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E9%80%92%E5%BD%92%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8%E7%9A%84%E4%B8%80%E9%83%A8%E5%88%86.md)
 - [fucking algorithm : reverse k set of linked list](https://github.com/labuladong/fucking-algorithm/blob/master/%E9%AB%98%E9%A2%91%E9%9D%A2%E8%AF%95%E7%B3%BB%E5%88%97/k%E4%B8%AA%E4%B8%80%E7%BB%84%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8.md)
@@ -39,7 +39,7 @@
 
 <!--CODE-->
 
-<!-- 81eb595c9395 -->
+<!-- 5a48b64a19a2 -->
 ### 0-1) 型別
 - 鏈結串列
 - 環狀鏈結串列
@@ -225,7 +225,7 @@
 
 ---
 
-<!-- 533a1c52863a -->
+<!-- 66372205aaa6 -->
 #### **雙向鏈結串列 + HashMap（LRU Cache 模式）** ⭐⭐⭐⭐⭐
 
 **核心想法**：用 HashMap 做 O(1) 的 key 查找，配上雙向鏈結串列做 O(1) 的有序淘汰。最近用過的節點靠近**尾端**；最久沒用的靠近**開頭**。頭尾各放一個哨兵節點，所有邊界情況的指標檢查就全消失了。

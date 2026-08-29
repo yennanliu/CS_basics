@@ -139,7 +139,7 @@
 - **變數名要有意義**：用 `hold`、`sold`，不要用 `dp[0]`、`dp[1]`
 - **不限次數時考慮貪婪**：不限交易次數的話，貪婪寫法更簡單
 
-<!-- 89939e63bff2 -->
+<!-- 35591624d20a -->
 ## 6) 相關題目
 - LC 121: Best Time to Buy and Sell Stock
 - LC 122: Best Time to Buy and Sell Stock II  

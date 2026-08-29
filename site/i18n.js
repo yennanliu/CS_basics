@@ -104,6 +104,23 @@ function splitTrailer(section) {
 }
 
 /**
+ * Whitespace that markdown does not care about, and neither should a key.
+ *
+ * Layout at compose time comes from the English sheet, never from the store, so
+ * normalising here cannot change what renders — it only stops a stray trailing
+ * space or an extra blank line from orphaning a translation that is still
+ * perfectly good. 5% of the corpus carries whitespace of exactly this kind.
+ */
+function normalise(body) {
+  return body
+    .trim()
+    .split('\n')
+    .map(line => line.replace(/\s+$/, ''))
+    .join('\n')
+    .replace(/\n{3,}/g, '\n\n');
+}
+
+/**
  * The store key for a section: a hash of its English body.
  *
  * 12 hex digits over ~39 sections per sheet — a collision needs two *different*
@@ -111,7 +128,7 @@ function splitTrailer(section) {
  * sections sharing a key is deliberate: they get the same translation.
  */
 function keyOf(body) {
-  return crypto.createHash('sha1').update(body.trim(), 'utf8').digest('hex').slice(0, 12);
+  return crypto.createHash('sha1').update(normalise(body), 'utf8').digest('hex').slice(0, 12);
 }
 
 /** Parse a store file into key → translated body. */
@@ -171,6 +188,7 @@ function survey(enText, store) {
 
 module.exports = {
   CODE,
+  normalise,
   splitBlocks,
   joinBlocks,
   splitSections,

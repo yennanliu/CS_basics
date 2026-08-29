@@ -160,7 +160,7 @@
   3. 元素在「可用 → 使用中 → 冷卻中 → 可用」之間循環
 - **與模式 7 的差異**：模式 7 檢查回看視窗並交換元素；模式 8 用一個明確的冷卻佇列來強制距離限制，對於可變的 k 來說更乾淨
 
-<!-- c70804bc750d -->
+<!-- b05cdc6266b8 -->
 ### 參考資料
 - [LeetCode Heap Learn Card](https://leetcode.com/explore/learn/card/heap/)
 - [GeeksforGeeks Heap Guide](https://www.geeksforgeeks.org/heap-data-structure/)

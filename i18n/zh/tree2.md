@@ -428,7 +428,7 @@
 
 <!--CODE-->
 
-<!-- 602832a5247b -->
+<!-- 9bc430a26c1d -->
 #### LeetCode 題目
 - LC 117: Populating Next Right Pointers in Each Node II (Medium)
 - LC 116: Populating Next Right Pointers in Each Node (Medium)

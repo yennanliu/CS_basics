@@ -71,6 +71,22 @@ test('keyOf ignores surrounding whitespace, so re-indenting does not orphan a tr
   assert.equal(I.keyOf('## A\n\nbody'), I.keyOf('\n## A\n\nbody\n\n'));
 });
 
+// Layout comes from the English sheet at compose time, never from the store, so
+// hashing past cosmetic whitespace cannot change what renders — it only stops a
+// stray trailing space or an extra blank line from throwing away a good
+// translation. These are the two edits that used to orphan one.
+test('keyOf ignores trailing spaces and extra blank lines inside a section', () => {
+  const base = '## A\n\nfirst\n\nsecond';
+  assert.equal(I.keyOf(base), I.keyOf('## A  \n\nfirst   \n\nsecond'));
+  assert.equal(I.keyOf(base), I.keyOf('## A\n\n\n\nfirst\n\n\nsecond'));
+});
+
+test('keyOf still separates sections that differ in their words', () => {
+  assert.notEqual(I.keyOf('## A\n\nfirst'), I.keyOf('## A\n\nfirsts'));
+  // A blank line is cosmetic; a *missing* line is not.
+  assert.notEqual(I.keyOf('## A\n\nfirst\n\nsecond'), I.keyOf('## A\n\nfirst'));
+});
+
 test('keyOf changes when the English text changes', () => {
   assert.notEqual(I.keyOf('## A\n\nbody'), I.keyOf('## A\n\nbody edited'));
 });

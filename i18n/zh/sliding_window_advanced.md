@@ -132,7 +132,7 @@
 <!-- ad0f2fb243fa -->
 ### 為什麼 At-Most 相減行得通 ⭐⭐⭐
 
-<!-- 0e2cfa2b0ff4 -->
+<!-- ce3332e204c2 -->
 #### 圖解：一格一格看
 
 
@@ -283,7 +283,7 @@
 1. **`atMost(k) - atMost(k-1)`** —— 兩趟乾淨的掃描；見 [Template 6](./sliding_window.md#template-6-exactly-k-via-at-most-subtraction--lc-992-)。
 2. **視窗內的前綴小技巧** —— 一趟、O(1) 空間；見下一節。
 
-<!-- 12efaee89290 -->
+<!-- 698171006768 -->
 ### 視窗內的前綴小技巧 — LC 1248 ⭐⭐⭐
 
 

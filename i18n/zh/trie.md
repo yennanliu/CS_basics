@@ -1,4 +1,4 @@
-<!-- 179eadb0e744 -->
+<!-- 50efd4a0ffaf -->
 # 字典樹（Trie）
 
 > **範圍** — 前綴樹 — insert/search/startsWith、節點該怎麼擺，以及那些「共用前綴」就是全部訣竅的題目（自動補完、單字搜尋、XOR trie）。
@@ -22,7 +22,7 @@
 
 > **L = 鍵值（單字）的長度** — 複雜度跟存了幾個鍵值無關。最小／最大 = 字典序最小／最大的鍵值。
 
-<!-- e9962b15d61d -->
+<!-- 1cc29736889e -->
 ## 0) 概念
 - https://blog.csdn.net/fuxuemingzhu/article/details/79388432
 - 樹 + dict

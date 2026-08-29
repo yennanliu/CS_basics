@@ -26,7 +26,7 @@
 <!-- 5fccd8eebd6b -->
 ## `heapq` — 優先佇列
 
-<!-- 08f796ba090c -->
+<!-- 9b3448244731 -->
 ### `heapq` 基礎（預設為最小堆積）
 
 
@@ -86,7 +86,7 @@
 - ✅ 要最大堆積：把值取負號，或用 `-val`
 - ✅ 要自訂比較：用 tuple 的排序，或實作 `__lt__`
 
-<!-- f2f11f51e9f1 -->
+<!-- 4999f56943e3 -->
 ### 用取負號模擬最大堆積
 
 
@@ -107,7 +107,7 @@ Python 的 `heapq` 只實作了**最小堆積**——`heapify()` 沒有 `reverse
 <!-- a4547c3efdf3 -->
 ## `sortedcontainers` — 有序映射
 
-<!-- e6b284d09233 -->
+<!-- 7c2c6b5862d1 -->
 ### `SortedDict` / `SortedList` — Python 版的 TreeMap
 
 
@@ -234,7 +234,7 @@ Java 原版：
 <!-- 9f67bbcc8008 -->
 ## `bisect` — 在有序 list 上做二分搜尋
 
-<!-- f86628acf080 -->
+<!-- 91c11501fdd6 -->
 ### `bisect_left` 與 `bisect_right`
 
 - 這套演算法讓你在每次插入新元素時 `NOT sorting an array eveytime`（不必整個重新排序） 

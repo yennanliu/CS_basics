@@ -32,7 +32,7 @@ LC 1109 在 [difference_array.md](./difference_array.md)、LC 1567 在
 <!-- d9f7568c72e5 -->
 ## 原地改寫與索引技巧
 
-<!-- 79ae73e2917e -->
+<!-- 47105027a3a6 -->
 ### 1) First Missing Positive — LC 41 ⭐⭐⭐⭐⭐
 
 > 兩種**把陣列本身當雜湊表**的做法，都是 O(n) 時間、O(1) 額外空間。

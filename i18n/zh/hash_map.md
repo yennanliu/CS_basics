@@ -63,7 +63,7 @@
         - [ref 1](https://blog.csdn.net/junqing_wu/article/details/104606619)
         - [ref 2](https://blog.csdn.net/john1337/article/details/104727895)
 
-<!-- 6573988f81cd -->
+<!-- 816df24e5e9d -->
 ### 什麼時候該用／不該用
 
 - 該用的時候 
@@ -92,7 +92,7 @@
 
 <!--CODE-->
 
-<!-- 69a3240c6b3d -->
+<!-- 4f4b2a7caaa9 -->
 ### 參考資料
 
 - [Java HashMap](https://bbs.huaweicloud.com/blogs/276884?utm_source=juejin&utm_medium=bbs-ex&utm_campaign=other&utm_content=content)
@@ -431,7 +431,7 @@
 3. **記得清理**：頻率表裡計數歸零的項目要移除
 4. **用合適的負載因子**：預設的 0.75 通常就是最佳解
 
-<!-- e1ba18becc4f -->
+<!-- 12f7da4e3bf6 -->
 ### 該避開的常見錯誤
 
 1. **以為不會碰撞**：記住最壞情況的時間複雜度是 O(n)，不是 O(1)

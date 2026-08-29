@@ -78,7 +78,7 @@
 
 這份表以前有九個小節在用各種說法吵 LC 1631。其實都可以收斂成兩個問題 —— 任何最短路徑題都能拿來問一遍 —— 再加一個值得知道的替代視角。
 
-<!-- 320c189636bd -->
+<!-- 802849f14b95 -->
 ### 1) 成本是可加的嗎？格子能不能排出順序？— LC 64 vs LC 1631 ⭐⭐⭐⭐
 
 
@@ -106,7 +106,7 @@
 
 <!--CODE-->
 
-<!-- cfab9926384d -->
+<!-- 0982ddee1e32 -->
 #### 對照表 — LC 64 vs LC 1631
 
 | 題目 | 移動方向 | 成本模型 | 最佳解法 | 需要 dist[][]？ | 需要 visited？ |
@@ -134,7 +134,7 @@ DP 要求依賴關係構成 DAG（無環），所以這題**只能用 Dijkstra �
 
 Cost 可加，effort 不可加。就是這個不可加性讓 DP 掛掉。
 
-<!-- b9e66b9fdff4 -->
+<!-- f5146f4c73e2 -->
 ### 2) 你需要 `dist[]`，還是 `visited[]` 就夠？ ⭐⭐⭐⭐
 
 <!--CODE-->
@@ -533,7 +533,7 @@ Dijkstra 在看候選邊 `cur_node -> nxt_node` 時，可以做兩種完全不�
 | **2812** | Find the Safest Path | 格子上的多源 |
 | **2290** | Minimum Obstacle Removal | 0-1 BFS 變形 |
 
-<!-- ec2ae3a4f519 -->
+<!-- 40e8cf1ce1bd -->
 ### 主要實作檔案
 - **Java 參考**：`leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/MinimumPathSum.java`
   - V0：Dijkstra 搭配 dist[][]（能過，但殺雞用牛刀）

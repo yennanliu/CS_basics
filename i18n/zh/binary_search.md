@@ -40,7 +40,7 @@
 - **搜尋邊界**：找某個值第一次 / 最後一次出現的位置
 - **最佳化問題**：找滿足限制條件的最小 / 最大值
 
-<!-- 3206bc4ddc08 -->
+<!-- af4c38522b78 -->
 ### 參考資料
 - **框架**：
   - [labuladong Binary Search Framework](https://labuladong.online/algo/essential-technique/binary-search-framework/)
@@ -434,7 +434,7 @@ capacity / speed / divisor」、「能不能切分 / 分配 / 派送」。
 **模式 3：驗證函式類題目**（LC 410、875、1011、1060、1482）— 這些題二分搜尋的是
 *答案*，而不是索引；見 [binary_search_on_answer.md](./binary_search_on_answer.md)。
 
-<!-- 54f74fd3969a -->
+<!-- 039e50264bd0 -->
 ### 2.1) 標準二分搜尋模板 — LC 704
 
 **關鍵原則**：
@@ -532,7 +532,7 @@ capacity / speed / divisor」、「能不能切分 / 分配 / 派送」。
 | 可行性判斷需要**走訪圖** | 對答案做二分搜尋 + BFS/DFS 判定式 — [binary_search_on_answer.md](./binary_search_on_answer.md) | LC 1631、LC 778 |
 | `O(n log n)` LIS、加權抽樣、有序歷史紀錄 | 對維護中的有序陣列做 `lower_bound` — [binary_search_examples.md](./binary_search_examples.md) | LC 300、LC 354、LC 528、LC 981 |
 
-<!-- aefdbc4f4b25 -->
+<!-- 2f2b58b17200 -->
 ### 3.3) 常見陷阱與訣竅
 
 **🚫 常見錯誤：**
