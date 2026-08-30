@@ -38,7 +38,7 @@ The doc → tag mapping lives in `DOC_TAGS` inside the script; edit it there rat
 ## fix_readme_tags.py
 
 Normalises and completes the tags in `README.md`'s **Note** column — the leading bold
-type tag and the company tags.
+type tag, the company tags, and the curated-list tags.
 
 ```bash
 # Rewrite README.md (idempotent — a second run changes nothing)
@@ -65,21 +65,36 @@ What it does, in order:
    filed under (LC 84 sits under `## Greedy` on purpose), so the fix is to add
    `` `monotonic stack` `` beside it, not to overwrite it. Skipped when the row already
    names the topic in its own words ("Ascending Stack", "mono stack").
-5. **Adds missing company tags** for the eight companies the README already tracks
-   widely: google, amazon, fb, apple, microsoft, uber, linkedin, bloomberg. Widening
-   this set pushes some rows past twenty tags, at which point the column stops being
-   readable — the long tail (airbnb, twitter, garena, shopee…) is canonicalised where it
-   already appears but never added to a new row.
+5. **Tags the curated list the problem sits on** — `` `blind75` ``, `` `neetcode150` ``,
+   `` `neetcode250` ``, `` `top100liked` ``. The three NeetCode lists nest, so only the
+   narrowest is written: `blind75` already implies the other two. `top100liked` is
+   LeetCode's own list and cuts across them (17 of its 100 are outside NeetCode 250), so
+   it is an independent tag. `neetcodeAll` is not tagged — at 972 problems it is the
+   whole catalogue and would mark 607 rows without ranking any of them.
 
-Two vendored caches feed it, so a normal run needs neither the network nor the PDFs:
+   The hand-written labels this replaces (`Curated Top 75`, `LC top 100 like`) are
+   **deleted, not renamed**: they sat on a fraction of the rows they belonged on, and 2
+   of the 75 rows saying "Curated Top 75" were not on Blind 75 at all, so renaming in
+   place would have preserved the error. A canonical tag is never read as legacy, which
+   is what keeps the step idempotent.
+6. **Adds missing company tags** for the nine companies the README tracks widely: google,
+   amazon, fb, apple, netflix, microsoft, uber, linkedin, bloomberg — the first five
+   being FAANG. Widening this set pushes some rows past twenty tags, at which point the
+   column stops being readable — the long tail (airbnb, twitter, garena, shopee…) is
+   canonicalised where it already appears but never added to a new row.
+
+Three vendored caches feed it, so a normal run needs neither the network nor the PDFs:
 
 | File | Source | Refresh with |
 |------|--------|--------------|
 | `data/lc_topic_tags.json` | LeetCode's public GraphQL API — official `topicTags` + difficulty for the 1388 problems the README lists | `--refresh-topics` |
 | `data/company_lc_tags.json` | the company-frequency PDFs under `doc/` (via `pdftotext`), unioned with `doc/google_leetcode_problems_by_tags.md` for Google | `--refresh-companies` |
+| `data/problem_lists.json` | Blind 75 / NeetCode 150 / 250 / Top 100 Liked membership, shared with the site's roadmap filter | `script/fetch_problem_lists.py` |
 
-Both are **vendored, not built** — like `data/problem_lists.json`, the site build never
-touches the network. Refresh them by hand.
+All three are **vendored, not built** — the site build never touches the network.
+Refresh them by hand. Sharing `data/problem_lists.json` with `site/build-roadmap.js` is
+the point: the README and the roadmap's list picker answer "is this on Blind 75?" from
+one file, so they cannot disagree.
 
 The Google column feeds the site: `site/build-roadmap.js` reads `google` out of this
 column for the Study Roadmap's "Google-tagged" list, which the completed tags took from
@@ -97,7 +112,7 @@ therefore validates before it writes, and every failure is fatal:
 - Each PDF states its own row count (`You have solved 24 / 1115 problems.`). Parsing under
   half of it raises; parsing under all of it prints a note, because the `V1` captures are
   genuinely short prints (55–86%) rather than bad parses.
-- A refresh that ends with no problems for one of the eight companies raises rather than
+- A refresh that ends with no problems for one of the nine companies raises rather than
   writing the cache — a silently short parse would not produce a visibly broken file, it
   would quietly *delete* that company's README tags on the next run.
 
