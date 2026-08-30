@@ -78,6 +78,77 @@ class Solution(object):
         pass
 
 
+# V0-1
+# IDEA: 1D DP (0/1 knapsack) (gpt)
+# https://yennj12.js.org/CS_basics/cheatsheets/dp.html#0-1-dp
+# https://github.com/yennanliu/CS_basics/issues/103
+"""
+CORE IDEA:
+
+Split stones into two groups A and B, and minimize |sum(A) - sum(B)|.
+
+
+->
+
+since sum(A) + sum(B) = total
+
+    -> we want sum(A) as close as possible to `total / 2`.
+
+---
+
+
+
+
+"""
+class Solution(object):
+    def lastStoneWeightII(self, stones):
+        """
+        :type stones: List[int]
+        :rtype: int
+        """
+
+        total = sum(stones)
+        target = total // 2
+
+        # dp[j] = maximum sum <= j
+        # that we can build using each stone at most once
+        dp = [0] * (target + 1)
+
+        # 0/1 Knapsack
+        for stone in stones:
+            for j in range(target, stone - 1, -1):
+                """
+                NOTE !!!
+
+                we need `max` here
+                """
+                dp[j] = max(
+                    dp[j],
+                    dp[j - stone] + stone
+                )
+
+        # Best possible group sum
+        best = dp[target]
+
+        """
+        NOTE !!! why  `total - 2 * s` ?
+
+
+        ->
+
+        split total to (total-s), (s)
+        as 2 group.
+
+        and the diff between above 2 group is:
+
+        (total -s) - (s) = total - 2 * s
+        """
+        
+        # Other group = total - best
+        # Difference = other - best
+        return total - 2 * best
+
+
 
 # V1-1
 # IDEA: 1D DP (0/1 knapsack) (gpt)

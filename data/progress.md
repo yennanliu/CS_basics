@@ -62,6 +62,8 @@
 - Bit Manipulation.md
 
 - Linked List.md
+	- `反轉 K 個節點的輔助函式模式`
+
 
 - Sorting Algorithms.md
 
