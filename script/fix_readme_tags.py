@@ -16,15 +16,26 @@ The Note column carries two kinds of tag that this script owns:
                  `MS`, `msft` and `microsoft` all meant Microsoft, which broke
                  `script/get_company_LC.sh` and the roadmap's Google list). The
                  script canonicalises every one of them and adds the missing
-                 ones for the eight companies the README already tracks widely.
+                 ones for the nine companies the README already tracks widely —
+                 which covers FAANG in full.
 
-Two vendored caches feed it, so a normal run needs neither the network nor the
+  list tag       `blind75`, `neetcode150`, `neetcode250`, `top100liked`: which
+                 curated list the problem sits on. These were hand-written prose
+                 (`Curated Top 75`, `LC top 100 like`) on a fraction of the rows
+                 they belong on, and two of those rows were simply wrong. The
+                 script drops the prose and writes the tag from the vendored
+                 list data instead, so the README and the site's roadmap filter
+                 answer "is this on Blind 75?" from one source.
+
+Three vendored caches feed it, so a normal run needs neither the network nor the
 PDFs:
 
   data/lc_topic_tags.json      LeetCode's official topicTags + difficulty,
                                from the public GraphQL API
   data/company_lc_tags.json    company -> LC ids, from the company-frequency
                                PDFs under doc/
+  data/problem_lists.json      Blind 75 / NeetCode 150 / 250 / Top 100 Liked
+                               membership, from script/fetch_problem_lists.py
 
 Usage:
     python3 script/fix_readme_tags.py                 # rewrite README.md
@@ -49,14 +60,47 @@ ROOT = Path(__file__).resolve().parent.parent
 README = ROOT / "README.md"
 TOPIC_CACHE = ROOT / "data" / "lc_topic_tags.json"
 COMPANY_CACHE = ROOT / "data" / "company_lc_tags.json"
+LISTS_CACHE = ROOT / "data" / "problem_lists.json"
 
 # ── Vocabulary ───────────────────────────────────────────────────────────────
 
-# The eight companies the README already tags on hundreds of rows. Missing tags
-# are filled in for these only: widening the set past this pushes some rows over
-# twenty tags, at which point the column stops being readable.
+# The nine companies the README tags. The first eight it already carried on
+# hundreds of rows; `netflix` is here to close FAANG — its PDF names only four
+# problems, so it costs four tags and makes the acronym mean what it says.
+# Missing tags are filled in for these only: widening the set past this pushes
+# some rows over twenty tags, at which point the column stops being readable.
 CORE_COMPANIES = ["google", "amazon", "fb", "apple", "microsoft", "uber",
-                  "linkedin", "bloomberg"]
+                  "linkedin", "bloomberg", "netflix"]
+
+# The curated lists a row can name, narrowest first. NeetCode's three nest
+# strictly (blind75 ⊂ neetcode150 ⊂ neetcode250), so only the narrowest
+# membership is written: `blind75` already says "and the other two", and
+# spelling all three out would put the same fact on the row three times.
+NEETCODE_LADDER = ["blind75", "neetcode150", "neetcode250"]
+
+# LeetCode's own list. It cuts across the ladder (17 of its 100 are outside
+# NeetCode 250), so it is an independent tag rather than a fourth rung.
+CROSS_LISTS = ["top100liked"]
+
+# `neetcodeAll` is deliberately not tagged: at 972 problems it is the practice
+# site's whole catalogue, so it would land on 607 README rows while telling a
+# reader nothing about which ones to do first.
+
+# Every list tag the script owns, and so may remove. A row's list tags are made
+# to equal what the vendored data says — not merely to include it — because the
+# lists move: NeetCode promotes a problem from 250 to 150, and a row that only
+# ever gained tags would end up claiming both rungs at once.
+LIST_TAGS = NEETCODE_LADDER + CROSS_LISTS
+
+# The hand-written labels the vendored list data now owns. Matched against a
+# whole tag, and deleted rather than rewritten — two of the 75 rows saying
+# "Curated Top 75" are not on Blind 75 at all, so renaming in place would
+# preserve the error the data is here to fix.
+LEGACY_LIST_TAG = re.compile(
+    r"^(curated\s+top\s+75"
+    r"|(lc\s+)?top\s+100\s+likes?"
+    r"|blind\s*(curated\s*)?(top\s*)?\s*75"
+    r"|neet\s*code\s*(150|250))$")
 
 # Every spelling seen in the README (and the obvious neighbours), lowercased,
 # mapped to the one form kept. `fb` beats `facebook`/`meta` because it is what
@@ -377,6 +421,48 @@ def present_tags(cell):
     return seen
 
 
+def sync_list_tags(cell, want):
+    """
+    Make the cell's list tags exactly `want`, and report what moved.
+
+    A tag already in `want` is left where it sits rather than removed and
+    re-appended, which is what keeps the rewrite idempotent — `blind75` also
+    matches the loose legacy pattern, so a second run must not strip what the
+    first wrote. Everything else the script owns goes: the prose labels the
+    vendored data replaced, and a rung the data no longer says.
+    """
+    kept, dropped = [], 0
+    for part in split_tags(cell):
+        key = tag_key(part)
+        if key in want:
+            kept.append(part)
+        elif key in LIST_TAGS or LEGACY_LIST_TAG.match(key):
+            dropped += 1
+        else:
+            kept.append(part)
+
+    have = {tag_key(p) for p in kept}
+    add = [t for t in want if t not in have]
+    body = ",".join(kept)
+    for tag in add:
+        body = ("%s, `%s`" % (body.rstrip().rstrip(","), tag)
+                if body.strip() else "`%s`" % tag)
+    return body, dropped, add
+
+
+def load_lists():
+    """LC id -> the list tags its row should carry, narrowest rung first."""
+    data = json.loads(LISTS_CACHE.read_text())
+    out = {}
+    for problem in data["problems"]:
+        lists = set(problem["lists"])
+        rung = next((k for k in NEETCODE_LADDER if k in lists), None)
+        tags = ([rung] if rung else []) + [k for k in CROSS_LISTS if k in lists]
+        if tags:
+            out[int(problem["id"])] = tags
+    return out
+
+
 def replace_note_cell(line, new_cell):
     """Put `new_cell` back as the second-to-last cell of the row."""
     prefix = line[:len(line) - len(line.lstrip())]
@@ -401,7 +487,7 @@ COMPANY_COMMENT = (
     "Which LeetCode problems each company is known to ask, parsed from the "
     "company-frequency PDFs under doc/ (and, for Google, unioned with "
     "doc/google_leetcode_problems_by_tags.md) by "
-    "script/fix_readme_tags.py --refresh-companies. Only the eight companies "
+    "script/fix_readme_tags.py --refresh-companies. Only the nine companies "
     "README.md tags widely are kept. Vendored, not built — refresh by hand."
 )
 
@@ -591,7 +677,7 @@ def refresh_companies():
 
 # ── The rewrite ──────────────────────────────────────────────────────────────
 
-def rewrite(lines, topics, companies):
+def rewrite(lines, topics, companies, lists):
     """Return (new_lines, stats). Pure: `lines` is not mutated."""
     lines = list(lines)
     stats = Counter()
@@ -645,7 +731,14 @@ def rewrite(lines, topics, companies):
                     stats["topics_added"] += 1
                     stats["topic_tags_added"] += len(add)
 
-        # 4) the core-eight company tags the row is missing
+        # 4) which curated list the problem sits on
+        cell, dropped, added = sync_list_tags(cell, lists.get(lc, ()))
+        if dropped or added:
+            stats["list_rows_touched"] += 1
+            stats["list_tags_dropped"] += dropped
+            stats["list_tags_added"] += len(added)
+
+        # 5) the core company tags the row is missing
         have = {tag_key(p) for p in split_tags(cell)}
         add = [c for c in CORE_COMPANIES
                if lc in company_ids.get(c, ()) and c not in have]
@@ -682,20 +775,23 @@ def main():
         if not (args.check or args.report):
             return 0
 
-    for cache in (TOPIC_CACHE, COMPANY_CACHE):
+    for cache in (TOPIC_CACHE, COMPANY_CACHE, LISTS_CACHE):
         if not cache.exists():
             print("missing cache %s — run with --refresh-topics "
-                  "--refresh-companies" % cache, file=sys.stderr)
+                  "--refresh-companies, or script/fetch_problem_lists.py"
+                  % cache, file=sys.stderr)
             return 2
 
     topics = load_cache(TOPIC_CACHE)
     companies = load_cache(COMPANY_CACHE)
+    lists = load_lists()
     text = README.read_text()
     lines = text.split("\n")
-    new_lines, stats = rewrite(lines, topics, companies)
+    new_lines, stats = rewrite(lines, topics, companies, lists)
 
     for key in ("rows_changed", "backticks_repaired", "company_normalised",
                 "type_tag_added", "topics_added", "topic_tags_added",
+                "list_rows_touched", "list_tags_added", "list_tags_dropped",
                 "company_rows_touched", "company_tags_added"):
         print("%-22s %d" % (key, stats[key]))
 
