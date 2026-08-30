@@ -189,6 +189,76 @@ class Solution(object):
 
 
 
+# V0-2
+# IDEA: 1D DP (gpt)
+"""
+NOTE !!!
+
+
+1. 1D DP
+
+
+
+---
+
+DP def
+
+    dp[i] = True
+
+    means:
+
+        -> s[:i] can be successfully broken into words in wordDict.
+
+
+
+DP eq
+
+
+    For every i, try every possible previous split j:
+
+    ```
+    dp[i] = True
+    if:
+
+        dp[j] == True
+        AND
+        s[j:i] in wordDict
+
+    ```
+
+
+    -> In other words:
+
+    ```
+    dp[i] = OR(
+        dp[j] AND s[j:i] in wordDict
+    )
+    ```
+
+"""
+class Solution(object):
+    def wordBreak(self, s, wordDict):
+
+        n = len(s)
+        d_set = set(wordDict)
+
+        # dp[i] = whether s[:i] can be segmented
+        dp = [False] * (n + 1)
+
+        # Empty string can be segmented
+        dp[0] = True
+
+        for i in range(1, n + 1):
+
+            for j in range(i):
+                # s[j:i] is the last word
+                if dp[j] and s[j:i] in d_set:
+                    dp[i] = True
+                    break
+
+        return dp[n]
+
+
 # V0-1
 # IDEA: BFS
 # time = O(n * k), n = len(s), k = len(wordDict)
