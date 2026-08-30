@@ -26,8 +26,9 @@ CS_basics is a comprehensive computer science fundamentals repository containing
   - `build-site.js` - Builds HTML pages from markdown docs
   - `build-leetcode.js` - Generates LeetCode JSON data for the LC Explorer
   - `build-roadmap.js` - Resolves [`data/roadmap.json`](data/roadmap.json) against `README.md` and [`data/problem_lists.json`](data/problem_lists.json) into the Study Roadmap's data; fails the build on a bad topic id, cheatsheet slug, LC number or list mapping
-  - `pages/` - Hand-maintained static pages (LC Explorer/Similar/Review-Plan/Random-Picker/Roadmap, 404)
-  - `nav.js` / `roadmap.js` - Browser scripts copied to `_site/`; unit-tested under `site/test/`
+  - `build-quiz.js` - Resolves [`data/complexity_quiz.json`](data/complexity_quiz.json) against `README.md` into the Complexity Quiz's data; fails the build on a duplicate id, an LC number README does not know, or an answer the grader cannot parse
+  - `pages/` - Hand-maintained static pages (LC Explorer/Similar/Review-Plan/Random-Picker/Roadmap/Complexity-Quiz, 404)
+  - `nav.js` / `roadmap.js` / `complexity.js` - Browser scripts copied to `_site/`; unit-tested under `site/test/`
   - `style.css` - Site stylesheet
   - `package.json` / `package-lock.json` - Node.js dependencies (markdown-it, highlight.js)
 
@@ -188,6 +189,33 @@ The page shows one problem set at a time. `roadmap` is the curated path above; t
 - **`topicSources`** — each source files problems under its own taxonomy (NeetCode's `Arrays & Hashing`, LeetCode's plan group `Hashing`, README's `## Array` heading). These maps put them on roadmap topics; `null` means *deliberately* off the roadmap (SQL, shell, JavaScript-only exercises). A list's `topicFrom` names which taxonomies to try, in order, so a coarse group falls through to a finer one.
 
 Only the curated list has a teaching order, so only it renders locks and prerequisites.
+
+### Adding a complexity-quiz question
+
+The quiz page (`lc-complexity-quiz.html`) draws from [`data/complexity_quiz.json`](data/complexity_quiz.json) — one entry per snippet:
+
+```json
+{
+  "id": "two-sum-hash",
+  "lc": 1,
+  "topic": "Arrays & Hashing",
+  "vars": "n = len(nums)",
+  "code": ["def twoSum(nums, target):", "    ..."],
+  "time": "O(n)",
+  "space": "O(n)",
+  "why": "One sentence on where each bound comes from.",
+  "trap": "The wrong answer people actually give, and why it is wrong."
+}
+```
+
+Titles, difficulty and the link to this repo's solution come from `README.md` at build time — never repeat them here. Set `title` and `difficulty` yourself only for an entry with `"lc": null` (a pure algorithm or Python drill). `site/build-quiz.js` fails the build if:
+
+- an `id` repeats, or an `lc` number is not in a README table;
+- an entry with an `lc` number sets its own `title` or `difficulty`, or one without an `lc` number omits them;
+- an `accept` field is not an array (a bare string survives validation and then breaks the page's feedback);
+- any answer — `time`, `space`, or an `accept` alternative — does not parse as a complexity expression. Answers are normalised by `site/complexity.js`, whose identifiers are **single letters**, so write `O(n * a)` with a `vars` line rather than `O(n * amount)`.
+
+`accept` is for answers that are genuinely defensible (`O(h)` vs `O(n)` for a tree's recursion stack), not for spelling variants — `O(n log n)`, `nlogn` and `N·logN` already grade the same.
 
 `data/problem_lists.json` is **vendored, not built** — Blind 75 / NeetCode 150 / 250 / All are extracted from the neetcode.io app bundle, and Top 100 Liked from LeetCode's GraphQL. Refresh it by hand; the site build never touches the network:
 

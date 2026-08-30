@@ -11,10 +11,12 @@ on:
       - '.github/workflows/deploy-pages.yml'
       - '.github/workflows/validate-pages.yml'
       - 'algo_demo/**'
+      - 'data/complexity_quiz.json'
       - 'site/build-*.js'
       - 'site/build.sh'
       - 'site/pages/**'
       - 'site/ensure-nav-pages.js'
+      - 'site/complexity.js'
       - 'site/nav.js'
       - 'site/nav.css'
       - 'site/roadmap.js'
@@ -34,10 +36,12 @@ on:
       - '.github/workflows/deploy-pages.yml'
       - '.github/workflows/validate-pages.yml'
       - 'algo_demo/**'
+      - 'data/complexity_quiz.json'
       - 'site/build-*.js'
       - 'site/build.sh'
       - 'site/pages/**'
       - 'site/ensure-nav-pages.js'
+      - 'site/complexity.js'
       - 'site/nav.js'
       - 'site/nav.css'
       - 'site/roadmap.js'
@@ -108,7 +112,9 @@ jobs:
           '_site/roadmap.js',
           '_site/lc-roadmap.html',
           '_site/data/roadmap.json',
-          '_site/site.js'
+          '_site/site.js',
+          '_site/complexity.js',
+          '_site/data/complexity-quiz.json'
         ];
 
         for (const file of requiredFiles) {
