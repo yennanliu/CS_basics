@@ -41,7 +41,7 @@ half-translated sheet renders with English gaps rather than failing.
   is what makes a problem findable on LeetCode itself.
 
 
-## Status — 5058 / 5058 sections (100%)
+## Status — 5064 / 5065 sections (100%)
 
 | Sheet | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -80,7 +80,7 @@ half-translated sheet renders with English gaps rather than failing.
 | [code_interview_general_cheatsheet](./cheatsheet/code_interview_general_cheatsheet.md) | 2 | [✅](../i18n/zh/code_interview_general_cheatsheet.md) |
 | [combinatorics_math_patterns](./cheatsheet/combinatorics_math_patterns.md) | 39 | [✅](../i18n/zh/combinatorics_math_patterns.md) |
 | [complexity_cheatsheet](./cheatsheet/complexity_cheatsheet.md) | 38 | [✅](../i18n/zh/complexity_cheatsheet.md) |
-| [complexity_drills](./cheatsheet/complexity_drills.md) | 23 | [✅](../i18n/zh/complexity_drills.md) |
+| [complexity_drills](./cheatsheet/complexity_drills.md) | 23 | [22/23](../i18n/zh/complexity_drills.md) |
 | [concurrency_patterns](./cheatsheet/concurrency_patterns.md) | 11 | [✅](../i18n/zh/concurrency_patterns.md) |
 | [design](./cheatsheet/design.md) | 43 | [✅](../i18n/zh/design.md) |
 | [design_examples](./cheatsheet/design_examples.md) | 34 | [✅](../i18n/zh/design_examples.md) |
@@ -90,7 +90,7 @@ half-translated sheet renders with English gaps rather than failing.
 | [dfs_examples](./cheatsheet/dfs_examples.md) | 70 | [✅](../i18n/zh/dfs_examples.md) |
 | [diff_toposort_quickunion](./cheatsheet/diff_toposort_quickunion.md) | 18 | [✅](../i18n/zh/diff_toposort_quickunion.md) |
 | [difference_array](./cheatsheet/difference_array.md) | 56 | [✅](../i18n/zh/difference_array.md) |
-| [dp](./cheatsheet/dp.md) | 86 | [✅](../i18n/zh/dp.md) |
+| [dp](./cheatsheet/dp.md) | 93 | [✅](../i18n/zh/dp.md) |
 | [dp_advanced](./cheatsheet/dp_advanced.md) | 137 | [✅](../i18n/zh/dp_advanced.md) |
 | [dp_bitmask](./cheatsheet/dp_bitmask.md) | 16 | [✅](../i18n/zh/dp_bitmask.md) |
 | [dp_digit](./cheatsheet/dp_digit.md) | 18 | [✅](../i18n/zh/dp_digit.md) |

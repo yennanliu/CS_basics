@@ -347,7 +347,7 @@ Use "Two-String Grid" pattern when you see:
 | **LCS** | dp[i][j] = LCS length of s1[:i] and s2[:j] | O(m×n) | Two sequences; diagonal on match |
 | **LIS** | dp[i] = longest increasing subsequence ending at i | O(n²) | **One** sequence — not this grid; O(n log n) with patience sorting |
 | **Palindrome** | dp[i][j] = is s[i:j+1] palindrome | O(n²) | Expand around centers |
-| **Word Break** | dp[i] = can break s[:i] | O(n³) | Check all possible breaks |
+| **Word Break** | dp[i] = can break s[:i] | O(n²) cuts, O(n³) with the slice | **One** string, 1-D — see [Template 1b](./dp.md#template-1b-prefix-partition-dp---lc-139) |
 
 ## LC Examples
 

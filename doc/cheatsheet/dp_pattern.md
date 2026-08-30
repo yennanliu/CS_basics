@@ -549,7 +549,7 @@ public int change(int amount, int[] coins) {
 - LC 322: Coin Change (Minimum Coins)
 - LC 518: Coin Change II (Number of Ways)
 - LC 377: Combination Sum IV
-- LC 139: Word Break
+- LC 139: Word Break (the prefix-partition spelling of this recurrence — [Template 1b](./dp.md#template-1b-prefix-partition-dp---lc-139))
 - LC 140: Word Break II (same `dp[i]` split test, but memoize **lists of sentences** instead of booleans)
 - LC 472: Concatenated Words (run Word Break on each word using the *other* words as the dictionary; sort by length so only shorter words are in the dict)
 - LC 279: Perfect Squares (coins = the perfect squares ≤ n; minimize count)

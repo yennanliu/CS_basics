@@ -47,6 +47,8 @@ Step 4. get the result
 - **Description**: Single sequence problems with linear dependencies
 - **Examples**: LC 70 (Climbing Stairs), LC 198 (House Robber), LC 300 (LIS)
 - **Pattern**: dp[i] depends on dp[i-1], dp[i-2], etc.
+- **Sub-shape — prefix partition**: dp[i] instead scans *every* cut point j < i and tests the whole
+  segment s[j:i] — LC 139 (Word Break), LC 132, LC 279. See [Template 1b](#template-1b-prefix-partition-dp---lc-139).
 
 ### **Category 2: Grid/2D DP**
 - **Description**: Problems on 2D grids or matrices
@@ -171,7 +173,7 @@ def linear_dp(nums):
 | **Fibonacci** | dp[i] = dp[i-1] + dp[i-2] | LC 70 Climbing Stairs | O(n) | O(1) |
 | **House Robber** | dp[i] = max(dp[i-1], dp[i-2] + nums[i]) | LC 198 House Robber | O(n) | O(1) |
 | **Decode Ways** | dp[i] = dp[i-1] + dp[i-2] (if valid) | LC 91 Decode Ways | O(n) | O(1) |
-| **Word Break** | dp[i] = OR(dp[j] AND s[j:i] in dict) | LC 139 Word Break | O(n²) | O(n) |
+| **Word Break** → [Template 1b](#template-1b-prefix-partition-dp---lc-139) | dp[i] = OR(dp[j] AND s[j:i] in dict) | LC 139 Word Break | O(n²) cuts, O(n³) with the slice | O(n) |
 
 #### Maximum subarray (Kadane) → kadane_algorithm.md
 
@@ -300,6 +302,161 @@ def climbStairs_v2(n):
 - `dp[i]` naturally represents "number of ways to reach step i"
 - Step `n` is the goal, so `dp[n]` is the answer
 - Avoids the mental overhead of mapping "step i" to "index i-1"
+
+### Template 1b: Prefix Partition DP ⭐⭐⭐⭐ — LC 139
+
+Template 1a's `n+1` sizing exists for exactly this shape. `dp[i]` is a claim about a **prefix
+length**, never about "the character at index `i`" — and this is the one 1-D family whose
+transition inspects a **whole segment** `s[j:i]` instead of a fixed offset like `dp[i-1]` or
+`dp[i-2]`. Everything else in the family swaps out one thing: the test applied to that segment.
+
+#### 🎯 Pattern (LC 139 — Word Break)
+
+| Aspect | Detail |
+|--------|--------|
+| **Pattern** | Prefix partition — outer loop over prefix *length*, inner loop over the cut point |
+| **State** | `dp[i]` = can `s[:i]`, the first `i` characters, be segmented into dictionary words? |
+| **Base** | `dp[0] = True` — the empty prefix is vacuously segmented |
+| **Transition** | `dp[i] = OR over j < i of (dp[j] AND s[j:i] in dict)` |
+| **Answer** | `dp[n]`, **not** `dp[n-1]` — the table has `n+1` slots |
+| **Complexity** | O(n²) cuts × O(L) per slice+hash → O(n³) worst case, O(n) space (see below) |
+
+#### 💡 Core Idea
+
+**Guess the last word.** If `s[:i]` splits at all, then whatever the split is, it ends with one
+final word. That word occupies `s[j:i]` for some cut point `j`, and everything before it is the
+smaller problem `s[:j]` — which `dp[j]` has already answered. So enumerate every place the last
+word could start and ask two questions:
+
+```text
+        j                 i
+s:  [ ---- dp[j] ---- ][ s[j:i] ]
+      already solved     one word?
+```
+
+`dp[i]` is true the moment **some** `j` answers yes to both — which is why the inner loop can
+`break` on the first hit. It is an OR over cut points, not a count.
+
+```text
+s = "leetcode", dict = {"leet", "code"}
+
+i=0                     dp[0] = True   (base: empty prefix)
+i=1..3   no j works     dp[1..3] = False
+i=4      j=0: dp[0] AND "leet" in dict  -> dp[4] = True
+i=5..7   no j works     dp[5..7] = False
+i=8      j=4: dp[4] AND "code" in dict  -> dp[8] = True
+                                           ^ answer = dp[n] = dp[8]
+```
+
+**Read `i` as a boundary, not a character.** `i` is the frontier between "already segmented" and
+"not yet looked at", so it legitimately reaches `n` — one past the last character. That is the
+same frontier the BFS formulation queues up, and it is why `dp` is sized `n+1`.
+
+#### Code
+
+```python
+# python
+# IDEA: PREFIX PARTITION DP — dp[i] = can s[:i] be cut into dictionary words
+# LC 139 - Word Break
+# time = O(n^2) cuts * O(L) slice+hash, space = O(n + dictionary)
+class Solution(object):
+    def wordBreak(self, s, wordDict):
+        n = len(s)
+        words = set(wordDict)          # set, not list — see the trap below
+
+        dp = [False] * (n + 1)         # NOTE: n+1 slots, indexed by prefix LENGTH
+        dp[0] = True                   # the empty prefix is always segmentable
+
+        for i in range(1, n + 1):      # i = end boundary of the prefix
+            for j in range(i):         # j = start of the candidate last word
+                if dp[j] and s[j:i] in words:
+                    dp[i] = True
+                    break              # one valid cut is enough — it is an OR
+        return dp[n]
+```
+
+```java
+// java
+// IDEA: PREFIX PARTITION DP — dp[i] = can s[:i] be cut into dictionary words
+// LC 139 - Word Break
+// time = O(n^2) cuts * O(L) substring+hash, space = O(n + dictionary)
+public boolean wordBreak(String s, List<String> wordDict) {
+    int n = s.length();
+    Set<String> words = new HashSet<>(wordDict);
+
+    boolean[] dp = new boolean[n + 1];   // NOTE: n+1 slots, indexed by prefix LENGTH
+    dp[0] = true;                        // the empty prefix is always segmentable
+
+    for (int i = 1; i <= n; i++) {       // i = end boundary of the prefix
+        for (int j = 0; j < i; j++) {    // j = start of the candidate last word
+            if (dp[j] && words.contains(s.substring(j, i))) {
+                dp[i] = true;
+                break;                   // one valid cut is enough — it is an OR
+            }
+        }
+    }
+    return dp[n];
+}
+```
+
+#### ⚠️ Three traps
+
+1. **`in wordDict` on the raw list.** `s[j:i] in wordDict` against a *list* is a linear scan with a
+   string compare at each step — O(k·L) per lookup, so the whole solve degrades to O(n²·k·L) and
+   TLEs. `set(wordDict)` makes it one hash. This is the single most common reason a correct-looking
+   Word Break times out.
+2. **Looping over the dictionary instead of over the cut points.** The inner loop is `range(i)` —
+   *positions* — not `for w in wordDict`. The word-driven loop is the BFS/greedy formulation and
+   needs a `visited` set to avoid re-expanding a boundary; mixing the two is where most buggy
+   attempts land.
+3. **Returning `dp[-1]` after mis-sizing.** With `n` slots instead of `n+1` there is nowhere to put
+   the `dp[0] = True` base case, and every answer collapses to `False`.
+
+#### Complexity, stated honestly
+
+The doubled loop is O(n²) iterations, but each one **builds and hashes a substring** of length up
+to `n`. Counting that:
+
+| Accounting | Bound | When it is the right one to quote |
+|------------|-------|-----------------------------------|
+| Treat slice + hash as O(1) | **O(n²)** | The usual interview shorthand |
+| Charge the slice its real cost | **O(n³)** | Python `s[j:i]` / Java `substring` — the strict bound |
+| Cap the inner loop at the longest word `L` | **O(n·L²)** | The optimisation below; `L ≤ 20` on LC 139 |
+
+A last word longer than the longest dictionary entry can never match, so the inner loop only needs
+to reach back `L` characters:
+
+```python
+# python
+# IDEA: same DP, inner loop capped by the longest word — O(n * L^2), effectively linear in n
+L = max(map(len, words))
+for i in range(1, n + 1):
+    for j in range(max(0, i - L), i):
+        if dp[j] and s[j:i] in words:
+            dp[i] = True
+            break
+```
+
+#### Similar LeetCode Problems
+
+Every one of these is the same `dp[i] = f(dp[j], segment(j, i))` skeleton. Only the **segment test**
+and the **combining operator** change:
+
+| Problem | Segment test on `s[j:i]` | Combine | Note |
+|---------|--------------------------|---------|------|
+| **LC 139** Word Break | is it a dictionary word? | OR | The template above |
+| **LC 140** Word Break II | is it a dictionary word? | collect | Memoise *lists of sentences*, not booleans; backtrack from the same table |
+| **LC 472** Concatenated Words | is it one of the *other* words? | OR | Sort by length so only strictly shorter words are in the dict |
+| **LC 132** Palindrome Partitioning II | is it a palindrome? | `min(+1)` | Precompute the palindrome table first, then the identical cut loop |
+| **LC 91** Decode Ways | is it a valid 1–2 digit code? | sum | Segment length is capped at 2, so the inner loop degenerates to `dp[i-1] + dp[i-2]` |
+| **LC 279** Perfect Squares | is `i - j` a perfect square? | `min(+1)` | Same shape over integers rather than characters |
+| **LC 1043** Partition Array for Max Sum | is the run ≤ `k` long? | `max` | Carries the running segment max alongside `j` |
+| **LC 322** Coin Change | is `i - j` a coin? | `min(+1)` | The unbounded-knapsack spelling of the same recurrence |
+
+> **Not this template**: [LC 131 Palindrome Partitioning](./backtrack.md) enumerates *every* split
+> rather than deciding one, so it is backtracking — DP prunes to a yes/no or an optimum, and cannot
+> enumerate exponentially many outputs any faster. LC 140 is the hybrid: DP to prove a split exists,
+> then backtracking to list them.
 
 ### Template 2: 2-D Grid DP ⭐⭐⭐⭐⭐ — LC 64
 
@@ -1397,6 +1554,7 @@ DP Problem Identification Flowchart:
 |--------------|---------------------|-------------|------------------|
 | **Fibonacci-like** | "nth number", "climbing stairs", "decode ways" | Linear DP | LC 70, 91, 746 |
 | **House Robber** | "non-adjacent", "cannot pick consecutive" | Linear DP | LC 198, 213, 337 |
+| **Prefix Partition** | "break/segment a string", "cut into valid pieces" | [Prefix Partition DP](#template-1b-prefix-partition-dp---lc-139) | LC 139, 140, 132, 279 |
 | **Longest Increasing** | "longest increasing", "LIS", "envelope" | Linear DP | LC 300, 354, 673 |
 | **Path Counting** | "unique paths", "number of ways to reach" | Grid DP | LC 62, 63, 980 |
 | **Path Sum (Min/Max)** | "minimum path sum", "maximum sum" | Grid DP | LC 64, 120, 174 |
@@ -1421,7 +1579,7 @@ DP Problem Identification Flowchart:
 | "largest rectangle / maximal square" | Stack DP or DP on prefix heights |
 | "game: two players pick optimally" | Minimax DP: dp[i][j] = score diff |
 | "count numbers with digit constraint" | Digit DP: (pos, tight, accumulator) |
-| "break string into valid words" | Memoized DP + word set |
+| "break string into valid words" | [Prefix partition DP](#template-1b-prefix-partition-dp---lc-139): dp[i] over prefix lengths + word set |
 | "stock buy/sell variants" | State machine (held/sold/rest) |
 | "edit distance, LCS, interleaving" | 2D DP → 1D space optimization |
 

@@ -248,8 +248,22 @@ class Solution(object):
         # Empty string can be segmented
         dp[0] = True
 
+
+
+        """
+        NOTE !!!
+
+        double loop !!!
+
+        -> loop over i, j (forward)
+        """
         for i in range(1, n + 1):
 
+            """
+            NOTE !!!
+
+            j loop from `0 to i` (forward)
+            """
             for j in range(i):
                 # s[j:i] is the last word
                 if dp[j] and s[j:i] in d_set:
