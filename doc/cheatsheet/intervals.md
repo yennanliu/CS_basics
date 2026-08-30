@@ -364,6 +364,8 @@ class MyCalendar:
 | Employee Free Time | 759 | Merge + find gaps | Hard | Merge Template |
 | Video Stitching | 1024 | Greedy coverage | Medium | Greedy Template |
 | Maximum Area of a Piece of Cake After Horizontal and Vertical Cuts | 1465 | Max gap between sorted cuts | Medium | Gap Scan Template |
+| Missing Ranges | 163 | Gap scan over sorted unique values | Medium | Gap Scan Template |
+| Find All Numbers Disappeared in an Array II | 4031 | Clamp + dedupe + sort, then gap scan | Medium | Gap Scan Template |
 
 ### **Meeting Room & Scheduling Problems**
 | Problem | LC # | Key Technique | Difficulty | Template |
@@ -1021,3 +1023,71 @@ def maxArea(h, w, horizontalCuts, verticalCuts):
 ```
 
 **🚫 Traps**: (1) forgetting the two border gaps; (2) taking `%` on each factor *before* multiplying in Java `int` — use `long` for the product; (3) assuming cuts arrive sorted (they do not).
+### 2-15) Find All Numbers Disappeared in an Array II (LC 4031) — Gap Scan With a Sentinel ⭐⭐⭐⭐
+
+> **Key Idea**: same *interval complement* scan as 2-14, but the answer is the gaps themselves: sort the values, and every jump from `prev` to `x` larger than 1 exposes the missing block `[prev+1, x-1]`.
+>
+> **Two things make this harder than LC 163 (Missing Ranges)**, which hands you a sorted, duplicate-free array already inside `[lower, upper]`. Here `nums` is **unsorted**, may hold **duplicates**, and may hold values **outside** the range — all three break the scan, and all three are fixed by one `sorted(set(...))` over the clamped values before the loop.
+>
+> **The sentinel `prev = lower - 1`** is what removes the leading special case: the first real value is then compared against `lower` exactly like every inner value is compared against its predecessor. The **trailing** gap has no such trick — nothing follows the last value, so it needs an explicit check after the loop. Forgetting it is the standard wrong answer.
+
+```text
+nums = [3,9,7], lower = 1, upper = 12
+clamp + dedupe + sort -> [3, 7, 9]
+
+prev=0   x=3 -> 3 > 0+1 -> emit [1, 2]    prev=3
+         x=7 -> 7 > 3+1 -> emit [4, 6]    prev=7
+         x=9 -> 9 > 7+1 -> emit [8, 8]    prev=9   (single missing number = width-1 range)
+after loop: prev=9 < 12  -> emit [10, 12]         (trailing gap: NOT covered by the loop)
+
+res = [[1,2], [4,6], [8,8], [10,12]]
+```
+
+```python
+# python
+# LC 4031 - Find All Numbers Disappeared in an Array II
+# IDEA: clamp to [lower, upper] + dedupe + sort, then emit each gap between consecutive values
+# time = O(N log N), space = O(N)
+def findDisappearedNumbers(nums, lower, upper):
+    nums = sorted({x for x in nums if lower <= x <= upper})
+
+    res = []
+    prev = lower - 1                    # sentinel: makes the leading gap an ordinary gap
+    for x in nums:
+        if x > prev + 1:                # a hole between prev and x
+            res.append([prev + 1, x - 1])
+        prev = x
+
+    if prev < upper:                    # trailing gap: the loop can never emit it
+        res.append([prev + 1, upper])
+    return res
+```
+
+```java
+// java
+// LC 4031 - Find All Numbers Disappeared in an Array II
+// IDEA: TreeSet clamps + dedupes + sorts in one pass; then the same gap scan
+// time = O(N log N), space = O(N)
+public List<List<Integer>> findDisappearedNumbers(int[] nums, int lower, int upper) {
+    TreeSet<Integer> seen = new TreeSet<>();
+    for (int x : nums)
+        if (x >= lower && x <= upper) seen.add(x);
+
+    List<List<Integer>> res = new ArrayList<>();
+    int prev = lower - 1;                                      // sentinel
+    for (int x : seen) {
+        if (x > prev + 1) res.add(Arrays.asList(prev + 1, x - 1));
+        prev = x;
+    }
+    if (prev < upper) res.add(Arrays.asList(prev + 1, upper));  // trailing gap
+    return res;
+}
+```
+
+**🚫 Traps**: (1) dropping the trailing gap, or the leading one if you start from `nums[0]` instead of the sentinel; (2) not filtering values outside `[lower, upper]` — one stray `x < lower` makes `prev` run backwards and emits garbage; (3) not deduping — a repeated value gives `x == prev`, so `x > prev + 1` is false and nothing breaks *here*, but the same array in the LC 163 two-pointer form emits an inverted range `[prev+1, x-1]`; (4) `[8,8]` is a legal answer — a single missing number is a range whose ends coincide, not a value to be skipped.
+
+| Problem | Input guarantees | Extra work before the scan |
+|---------|------------------|----------------------------|
+| LC 163 Missing Ranges | sorted, unique, all inside `[lower, upper]` | none — scan directly, O(N) |
+| LC 228 Summary Ranges | sorted, unique | none — emits the *present* runs, the complement of this |
+| LC 4031 Disappeared Numbers II | none of the above | clamp + dedupe + sort, O(N log N) |
