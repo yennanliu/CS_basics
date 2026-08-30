@@ -68,7 +68,7 @@ class Solution(object):
         dp[0] = 0
 
         """
-        (0/1 knacpack)
+        (0/1 knackpack)
 
         dp[j]: max val / cnt can have with pack capacity = j
 
@@ -93,7 +93,7 @@ class Solution(object):
 
 
 # V0
-# IDEA: 1D DP (gemini)
+# IDEA: 1D DP (unbound 0/1 knapsack) (gemini)
 """
 
  DP def:
@@ -128,7 +128,7 @@ class Solution(object):
 
 
 # V0
-# IDEA: 1D DP
+# IDEA: 1D DP (unbound 0/1 knapsack)
 """
 
  DP def:
@@ -183,6 +183,44 @@ class Solution(object):
 
         return dp[amount] if dp[amount] < 10000 else -1
 
+
+
+# V0-0-1
+# IDEA: 1D DP (unbound 0/1 knapsack)
+class Solution(object):
+    def coinChange(self, coins, amount):
+        """
+        :type coins: List[int]
+        :type amount: int
+        :rtype: int
+        """
+
+        if amount == 0:
+            return 0
+
+        if not coins:
+            return -1
+
+        # dp[i] = minimum number of coins
+        #         needed to make amount i
+        dp = [float('inf')] * (amount + 1)
+
+        # 0 coins are needed to make amount 0
+        dp[0] = 0
+
+        # Unbounded Knapsack
+        for i in range(1, amount + 1):
+            for coin in coins:
+                if i >= coin:
+                    dp[i] = min(
+                        dp[i],
+                        dp[i - coin] + 1
+                    )
+
+        if dp[amount] == float('inf'):
+            return -1
+
+        return dp[amount]
 
 
 # V0-1
