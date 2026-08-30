@@ -64,11 +64,11 @@ LISTS_CACHE = ROOT / "data" / "problem_lists.json"
 
 # ── Vocabulary ───────────────────────────────────────────────────────────────
 
-# The companies the README tags. The first eight it already carried on hundreds
-# of rows; `netflix` is here to close FAANG — its PDF names only four problems,
-# so it costs four tags and makes the acronym mean what it says. Missing tags
-# are filled in for these only: widening the set past this pushes some rows over
-# twenty tags, at which point the column stops being readable.
+# The nine companies the README tags. The first eight it already carried on
+# hundreds of rows; `netflix` is here to close FAANG — its PDF names only four
+# problems, so it costs four tags and makes the acronym mean what it says.
+# Missing tags are filled in for these only: widening the set past this pushes
+# some rows over twenty tags, at which point the column stops being readable.
 CORE_COMPANIES = ["google", "amazon", "fb", "apple", "microsoft", "uber",
                   "linkedin", "bloomberg", "netflix"]
 
@@ -86,9 +86,10 @@ CROSS_LISTS = ["top100liked"]
 # site's whole catalogue, so it would land on 607 README rows while telling a
 # reader nothing about which ones to do first.
 
-# Every list tag the script writes. A tag here is never treated as legacy, which
-# is what keeps the rewrite idempotent: `blind75` also matches the loose legacy
-# pattern below, so without this the second run would strip what the first wrote.
+# Every list tag the script owns, and so may remove. A row's list tags are made
+# to equal what the vendored data says — not merely to include it — because the
+# lists move: NeetCode promotes a problem from 250 to 150, and a row that only
+# ever gained tags would end up claiming both rungs at once.
 LIST_TAGS = NEETCODE_LADDER + CROSS_LISTS
 
 # The hand-written labels the vendored list data now owns. Matched against a
@@ -420,12 +421,33 @@ def present_tags(cell):
     return seen
 
 
-def drop_legacy_list_tags(cell):
-    """Strip the prose list labels, so the vendored data is the only source."""
-    kept = [p for p in split_tags(cell)
-            if tag_key(p) in LIST_TAGS or not LEGACY_LIST_TAG.match(tag_key(p))]
-    new = ",".join(kept) if kept else cell
-    return new, new != cell
+def sync_list_tags(cell, want):
+    """
+    Make the cell's list tags exactly `want`, and report what moved.
+
+    A tag already in `want` is left where it sits rather than removed and
+    re-appended, which is what keeps the rewrite idempotent — `blind75` also
+    matches the loose legacy pattern, so a second run must not strip what the
+    first wrote. Everything else the script owns goes: the prose labels the
+    vendored data replaced, and a rung the data no longer says.
+    """
+    kept, dropped = [], 0
+    for part in split_tags(cell):
+        key = tag_key(part)
+        if key in want:
+            kept.append(part)
+        elif key in LIST_TAGS or LEGACY_LIST_TAG.match(key):
+            dropped += 1
+        else:
+            kept.append(part)
+
+    have = {tag_key(p) for p in kept}
+    add = [t for t in want if t not in have]
+    body = ",".join(kept)
+    for tag in add:
+        body = ("%s, `%s`" % (body.rstrip().rstrip(","), tag)
+                if body.strip() else "`%s`" % tag)
+    return body, dropped, add
 
 
 def load_lists():
@@ -465,7 +487,7 @@ COMPANY_COMMENT = (
     "Which LeetCode problems each company is known to ask, parsed from the "
     "company-frequency PDFs under doc/ (and, for Google, unioned with "
     "doc/google_leetcode_problems_by_tags.md) by "
-    "script/fix_readme_tags.py --refresh-companies. Only the eight companies "
+    "script/fix_readme_tags.py --refresh-companies. Only the nine companies "
     "README.md tags widely are kept. Vendored, not built — refresh by hand."
 )
 
@@ -710,15 +732,11 @@ def rewrite(lines, topics, companies, lists):
                     stats["topic_tags_added"] += len(add)
 
         # 4) which curated list the problem sits on
-        cell, dropped = drop_legacy_list_tags(cell)
-        if dropped:
-            stats["list_legacy_dropped"] += 1
-        have = {tag_key(p) for p in split_tags(cell)}
-        add = [t for t in lists.get(lc, ()) if t not in have]
-        if add:
-            cell = cell.rstrip().rstrip(",") + "".join(", `%s`" % t for t in add)
+        cell, dropped, added = sync_list_tags(cell, lists.get(lc, ()))
+        if dropped or added:
             stats["list_rows_touched"] += 1
-            stats["list_tags_added"] += len(add)
+            stats["list_tags_dropped"] += dropped
+            stats["list_tags_added"] += len(added)
 
         # 5) the core company tags the row is missing
         have = {tag_key(p) for p in split_tags(cell)}
@@ -773,7 +791,7 @@ def main():
 
     for key in ("rows_changed", "backticks_repaired", "company_normalised",
                 "type_tag_added", "topics_added", "topic_tags_added",
-                "list_legacy_dropped", "list_rows_touched", "list_tags_added",
+                "list_rows_touched", "list_tags_added", "list_tags_dropped",
                 "company_rows_touched", "company_tags_added"):
         print("%-22s %d" % (key, stats[key]))
 

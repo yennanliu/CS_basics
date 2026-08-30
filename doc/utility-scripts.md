@@ -72,11 +72,16 @@ What it does, in order:
    it is an independent tag. `neetcodeAll` is not tagged — at 972 problems it is the
    whole catalogue and would mark 607 rows without ranking any of them.
 
+   A row's list tags are made to **equal** what the data says, not merely to include
+   it — the lists move, and a step that only ever added tags would leave a problem
+   promoted from NeetCode 250 to 150 claiming both rungs for ever. A tag that is
+   already correct is left where it sits rather than removed and re-appended, which is
+   what keeps the step idempotent.
+
    The hand-written labels this replaces (`Curated Top 75`, `LC top 100 like`) are
    **deleted, not renamed**: they sat on a fraction of the rows they belonged on, and 2
    of the 75 rows saying "Curated Top 75" were not on Blind 75 at all, so renaming in
-   place would have preserved the error. A canonical tag is never read as legacy, which
-   is what keeps the step idempotent.
+   place would have preserved the error.
 6. **Adds missing company tags** for the nine companies the README tracks widely: google,
    amazon, fb, apple, netflix, microsoft, uber, linkedin, bloomberg — the first five
    being FAANG. Widening this set pushes some rows past twenty tags, at which point the
