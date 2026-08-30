@@ -43,6 +43,7 @@ All the values of coins are unique.
 """
 
 
+
 # V0
 # IDEA: 1D DP (unbounded 0/1 knapsack) (gpt)
 # https://yennj12.js.org/CS_basics/cheatsheets/dp.html#0-1-dp
@@ -106,6 +107,69 @@ class Solution(object):
             for j in range(coin, amount + 1):
                 dp[j] += dp[j - coin]
 
+        return dp[amount]
+
+
+
+# V0-0-1
+# IDEA: 1D DP (unbounded 0/1 knapsack) (gpt)
+# https://yennj12.js.org/CS_basics/cheatsheets/dp.html#0-1-dp
+# https://github.com/yennanliu/CS_basics/issues/103
+"""
+
+DP definition:
+
+    dp[i] = number of combinations to make amount i
+            using the coins processed so far
+
+
+DP equation:
+
+    dp[j] += dp[j - coin]
+
+    Meaning:
+
+    number of ways to make j
+    +
+    number of ways to make j - coin
+
+    because every way to make j - coin can add one coin.
+
+
+"""
+class Solution(object):
+    def change(self, amount, coins):
+        # edge
+        if amount == 0:
+            return 1
+
+        if not coins or len(coins) == 0:
+            return 0
+        
+        if len(coins) == 1:
+            return 1 if amount % coins[0] == 0 else 0
+
+        #  # dp[i] = number of combinations to make amount i
+        dp = [0] * (amount + 1)
+
+        """
+        NOTE !!!
+
+
+        amount = 0, we have `1` method to make up it.
+
+            -> e.g. get NO coin, to make total sum = 0
+        """
+        # Base case:
+        # 1 way to make amount 0
+        dp[0] = 1
+
+        for coin in coins:
+            for j in range(coin, amount + 1):
+                dp[j] += (dp[j - coin])
+
+
+        # ??
         return dp[amount]
 
 
