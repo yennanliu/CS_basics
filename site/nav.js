@@ -58,12 +58,13 @@
   // random picker held, since the picker's siblings (similar, review) already
   // live down here.
   var MORE = [
-    { id: 'patterns',         label: 'patterns',  href: 'patterns.html' },
-    { id: 'lc-similar',       label: 'similar',   href: 'lc-similar.html' },
-    { id: 'lc-review-plan',   label: 'review',    href: 'lc-review-plan.html' },
-    { id: 'lc-random-picker', label: 'random',    href: 'lc-random-picker.html' },
-    { id: 'resources',        label: 'resources', href: 'resources.html' },
-    { id: 'github',           label: 'github',    href: 'https://github.com/yennanliu/CS_basics', external: true }
+    { id: 'patterns',           label: 'patterns',   href: 'patterns.html' },
+    { id: 'lc-similar',         label: 'similar',    href: 'lc-similar.html' },
+    { id: 'lc-review-plan',     label: 'review',     href: 'lc-review-plan.html' },
+    { id: 'lc-random-picker',   label: 'random',     href: 'lc-random-picker.html' },
+    { id: 'lc-complexity-quiz', label: 'complexity', href: 'lc-complexity-quiz.html' },
+    { id: 'resources',          label: 'resources',  href: 'resources.html' },
+    { id: 'github',             label: 'github',     href: 'https://github.com/yennanliu/CS_basics', external: true }
   ];
 
   // ── Markup ──────────────────────────────────────────────────────────────

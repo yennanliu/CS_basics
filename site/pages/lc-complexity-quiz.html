@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <title>Complexity Quiz - CS Basics</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⏱</text></svg>">
+  <link rel="stylesheet" href="nav.css">
+  <!-- Blocking on purpose: nav.js restores the stored theme before first paint. -->
+  <script src="nav.js"></script>
+  <!-- The grader. Shared with site/build-quiz.js, which validates the bank
+       against this same normaliser at build time. -->
+  <script src="complexity.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    :root {
+      --bg: #ffffff; --surface: #f5f5f5; --sunken: #ebebeb; --text: #000000;
+      --text-light: #555555; --border: #cccccc;
+      --ok: #1e7e34; --bad: #b91c1c;
+      --code-c: #6b7280; --code-s: #0a7d55; --code-k: #b02a5b; --code-b: #1d4ed8; --code-n: #7c3aed;
+    }
+    [data-theme="dark"] {
+      --bg: #000000; --surface: #0d0d0d; --sunken: #141414; --text: #ffffff;
+      --text-light: #8a8a8a; --border: #1f1f1f;
+      --ok: #4ade80; --bad: #f87171;
+      --code-c: #6a737d; --code-s: #a5d6a7; --code-k: #ff7b72; --code-b: #79c0ff; --code-n: #d2a8ff;
+    }
+    html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; }
+    body {
+      margin: 0;
+      font-family: 'SF Mono','JetBrains Mono','IBM Plex Mono',ui-monospace,'Menlo',monospace;
+      background: var(--bg); color: var(--text);
+      font-size: 15px; line-height: 1.55;
+      transition: background 0.2s, color 0.2s;
+    }
+    a { color: inherit; }
+    a, button { touch-action: manipulation; }
+
+    .container { max-width: 860px; margin: 2.5rem auto 4rem; padding: 0 1.5rem; }
+
+    .page-header { text-align: center; margin-bottom: 2rem; }
+    .page-header h1 { margin: 0 0 0.4rem; font-size: 1.9rem; }
+    .page-header p { color: var(--text-light); margin: 0; font-size: 0.92rem; }
+
+    /* ── Shared bits ─────────────────────────────────────────────────────── */
+    .panel {
+      background: var(--surface); border: 1px solid var(--border);
+      padding: 1.5rem; margin-bottom: 1.25rem;
+    }
+    .label {
+      display: block; font-size: 0.74rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--text-light); margin-bottom: 0.55rem;
+    }
+    .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .chip {
+      padding: 0.4rem 0.9rem; border: 1px solid var(--border); background: var(--bg);
+      color: var(--text-light); font: inherit; font-size: 0.85rem; cursor: pointer;
+      transition: color 0.15s, background 0.15s, border-color 0.15s;
+    }
+    .chip:hover { border-color: var(--text); color: var(--text); }
+    .chip.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+
+    .btn {
+      padding: 0.65rem 1.6rem; border: 1px solid var(--text);
+      background: var(--text); color: var(--bg);
+      font: inherit; font-weight: 700; cursor: pointer; transition: opacity 0.15s;
+    }
+    .btn:hover { opacity: 0.82; }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-quiet {
+      background: none; color: var(--text); border-color: var(--border); font-weight: 600;
+    }
+    .btn-quiet:hover { border-color: var(--text); opacity: 1; }
+
+    select, input[type="text"], input[type="number"] {
+      background: var(--bg); color: var(--text); border: 1px solid var(--border);
+      font: inherit; padding: 0.5rem 0.7rem;
+    }
+    select:focus, input:focus { outline: none; border-color: var(--text); }
+
+    /* ── Setup ───────────────────────────────────────────────────────────── */
+    .setup-row { margin-bottom: 1.4rem; }
+    .setup-row:last-of-type { margin-bottom: 0; }
+    #countCustom { width: 5.5rem; }
+    .pool {
+      margin-top: 1.4rem; padding-top: 1.1rem; border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; flex-wrap: wrap;
+    }
+    .pool-text { font-size: 0.85rem; color: var(--text-light); }
+    .rules {
+      font-size: 0.85rem; color: var(--text-light);
+      border-left: 2px solid var(--border); padding-left: 1rem; margin: 0 0 1.25rem;
+    }
+    .rules code { color: var(--text); }
+
+    /* ── Question ────────────────────────────────────────────────────────── */
+    .progress { height: 2px; background: var(--border); margin-bottom: 1.1rem; }
+    .progress span { display: block; height: 100%; background: var(--text); transition: width 0.25s; }
+
+    .q-top {
+      display: flex; align-items: baseline; gap: 0.6rem;
+      flex-wrap: wrap; margin-bottom: 0.9rem;
+    }
+    .q-counter { font-size: 0.8rem; color: var(--text-light); font-weight: 700; }
+    .q-title { font-weight: 700; }
+    .q-title a { text-decoration: none; }
+    .q-title a:hover { text-decoration: underline; }
+    .badge {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+      padding: 0.12rem 0.5rem; border: 1px solid var(--border); color: var(--text-light);
+    }
+    .badge.Easy { color: var(--ok); border-color: var(--ok); }
+    .badge.Medium { color: #d97706; border-color: #d97706; }
+    .badge.Hard { color: var(--bad); border-color: var(--bad); }
+
+    pre.code {
+      background: var(--sunken); border: 1px solid var(--border);
+      padding: 1rem 1.1rem; margin: 0 0 0.9rem;
+      overflow-x: auto; font-size: 0.85rem; line-height: 1.5; tab-size: 4;
+    }
+    pre.code .c { color: var(--code-c); font-style: italic; }
+    pre.code .s { color: var(--code-s); }
+    pre.code .k { color: var(--code-k); }
+    pre.code .b { color: var(--code-b); }
+    pre.code .n { color: var(--code-n); }
+
+    .hint { font-size: 0.82rem; color: var(--text-light); margin: 0 0 0.35rem; }
+    .hint b { color: var(--text); font-weight: 700; }
+
+    .answers { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.2rem 0 1rem; }
+    .answers input { width: 100%; font-size: 1rem; }
+    .answers input.right { border-color: var(--ok); }
+    .answers input.wrong { border-color: var(--bad); }
+
+    .actions { display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; }
+    .actions .spacer { flex: 1; }
+    .keyhint { font-size: 0.76rem; color: var(--text-light); }
+    kbd {
+      border: 1px solid var(--border); padding: 0 0.32rem; font-size: 0.72rem;
+      font-family: inherit; color: var(--text-light);
+    }
+
+    /* ── Verdict ─────────────────────────────────────────────────────────── */
+    .verdict {
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      margin: 0 0 1.2rem; padding: 1.1rem 0;
+    }
+    .mark { display: flex; gap: 0.55rem; align-items: baseline; font-size: 0.9rem; margin-bottom: 0.4rem; }
+    .mark .sign { font-weight: 700; width: 1.1rem; flex: none; }
+    .mark.right .sign { color: var(--ok); }
+    .mark.wrong .sign { color: var(--bad); }
+    .mark .said { color: var(--text-light); }
+    .mark .said s { opacity: 0.75; }
+    .prose { font-size: 0.88rem; margin: 0.9rem 0 0; }
+    .prose.trap { color: var(--text-light); }
+    .prose b { text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.08em; color: var(--text-light); }
+    .prose code, .missed-detail code, .hint code { background: var(--sunken); padding: 0 0.25rem; }
+    .prose em, .missed-detail em { font-style: normal; color: var(--text); font-weight: 700; }
+    .refs { margin-top: 0.9rem; display: flex; gap: 0.9rem; font-size: 0.8rem; color: var(--text-light); }
+
+    /* ── Report ──────────────────────────────────────────────────────────── */
+    .score { text-align: center; padding: 0.5rem 0 1.2rem; }
+    .score .big { font-size: 3.2rem; font-weight: 700; line-height: 1; }
+    .score .sub { color: var(--text-light); font-size: 0.9rem; margin-top: 0.5rem; }
+    .score .verdict-word { margin-top: 0.7rem; font-weight: 700; letter-spacing: 0.04em; }
+
+    table.breakdown { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    table.breakdown th {
+      text-align: left; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.07em;
+      color: var(--text-light); font-weight: 700; padding: 0 0.5rem 0.5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    table.breakdown td { padding: 0.45rem 0.5rem 0.45rem 0; border-bottom: 1px solid var(--border); }
+    table.breakdown td.num { text-align: right; white-space: nowrap; color: var(--text-light); }
+    .bar { display: block; height: 6px; background: var(--border); min-width: 60px; }
+    .bar span { display: block; height: 100%; background: var(--text); }
+
+    .missed-item { border-bottom: 1px solid var(--border); padding: 0.8rem 0; font-size: 0.87rem; }
+    .missed-item:last-child { border-bottom: none; }
+    .missed-head { display: flex; gap: 0.5rem; align-items: baseline; flex-wrap: wrap; }
+    .missed-head .name { font-weight: 700; }
+    .missed-detail { color: var(--text-light); margin-top: 0.25rem; }
+
+    .loading, .empty { text-align: center; color: var(--text-light); padding: 3rem 1rem; }
+
+    @media (max-width: 640px) {
+      .container { padding: 0 14px; margin-top: 1.5rem; }
+      .panel { padding: 1.1rem; }
+      .answers { grid-template-columns: 1fr; gap: 0.8rem; }
+      .btn, .chip { min-height: 44px; }
+      input, select { font-size: 16px; min-height: 44px; }
+      pre.code { font-size: 0.78rem; }
+      .keyhint { display: none; }
+    }
+    @supports (padding: env(safe-area-inset-left)) {
+      .container {
+        padding-left: max(14px, env(safe-area-inset-left));
+        padding-right: max(14px, env(safe-area-inset-right));
+      }
+    }
+  </style>
+</head>
+<body>
+<div id="site-nav" data-page="lc-complexity-quiz"></div>
+<script>CSNav.mount();</script>
+
+<div class="container">
+  <div class="page-header">
+    <h1>Complexity Quiz</h1>
+    <p>Read the Python. State the time and space complexity. Get judged.</p>
+  </div>
+
+  <div class="loading" id="loading">Loading questions…</div>
+
+  <!-- ── Setup ──────────────────────────────────────────────────────────── -->
+  <div id="setup" hidden>
+    <p class="rules">
+      Answers are free text — <code>O(n log n)</code>, <code>nlogn</code> and
+      <code>N·logN</code> all count. Time and space are marked separately, so a
+      half-right answer scores half. Unless a question says otherwise, the space
+      asked for is <b>auxiliary</b>: the returned answer does not count against you.
+    </p>
+
+    <div class="panel">
+      <div class="setup-row">
+        <span class="label">How many questions</span>
+        <div class="chips" id="countChips"></div>
+      </div>
+
+      <div class="setup-row">
+        <span class="label">Focus</span>
+        <select id="topicSelect"></select>
+      </div>
+
+      <div class="pool">
+        <span class="pool-text" id="poolText"></span>
+        <button class="btn" id="startBtn">Start →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Quiz ───────────────────────────────────────────────────────────── -->
+  <div id="quiz" hidden>
+    <div class="progress"><span id="progressBar" style="width:0%"></span></div>
+    <div class="panel">
+      <div class="q-top">
+        <span class="q-counter" id="qCounter"></span>
+        <span class="q-title" id="qTitle"></span>
+        <span class="badge" id="qDifficulty"></span>
+        <span class="badge" id="qTopic"></span>
+      </div>
+
+      <pre class="code" id="qCode"></pre>
+      <p class="hint" id="qVars"></p>
+      <p class="hint" id="qNote"></p>
+
+      <div class="answers">
+        <div>
+          <label class="label" for="timeInput">Time complexity</label>
+          <input type="text" id="timeInput" placeholder="O(…)" autocomplete="off"
+                 autocorrect="off" autocapitalize="off" spellcheck="false">
+        </div>
+        <div>
+          <label class="label" for="spaceInput">Space complexity</label>
+          <input type="text" id="spaceInput" placeholder="O(…)" autocomplete="off"
+                 autocorrect="off" autocapitalize="off" spellcheck="false">
+        </div>
+      </div>
+
+      <div class="verdict" id="verdict" hidden></div>
+
+      <div class="actions">
+        <button class="btn" id="checkBtn">Check</button>
+        <button class="btn" id="nextBtn" hidden>Next →</button>
+        <span class="spacer"></span>
+        <span class="keyhint"><kbd>enter</kbd> to check, again to continue</span>
+        <button class="btn btn-quiet" id="quitBtn">End quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Report ─────────────────────────────────────────────────────────── -->
+  <div id="report" hidden>
+    <div class="panel">
+      <div class="score">
+        <div class="big" id="scoreBig"></div>
+        <div class="sub" id="scoreSub"></div>
+        <div class="verdict-word" id="scoreWord"></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <span class="label">Where the marks went</span>
+      <table class="breakdown"><thead>
+        <tr><th>Topic</th><th>Time</th><th>Space</th><th style="width:35%"></th></tr>
+      </thead><tbody id="breakdownBody"></tbody></table>
+    </div>
+
+    <div class="panel" id="missedPanel">
+      <span class="label">Worth a second look</span>
+      <div id="missedList"></div>
+    </div>
+
+    <div class="actions">
+      <button class="btn" id="retryBtn">Retry what I missed</button>
+      <button class="btn btn-quiet" id="restartBtn">New quiz</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var COUNTS = [5, 10, 25, 50];
+  var STORE_KEY = 'complexity-quiz-prefs';
+
+  var bank = [];                                    // every question, as built
+  var prefs = { count: 10, topic: 'all' };
+  var run = null;                                   // the quiz in progress
+
+  var el = function (id) { return document.getElementById(id); };
+
+  function esc(value) {
+    return String(value)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  // Inline `code` spans and *emphasis* in the authored prose, and nothing else
+  // — the bank is ours, but it is still data, so it is escaped before the two
+  // tags go in. Emphasis is applied outside the code spans only, so a stray `*`
+  // in a snippet like `O(m*n)` cannot pair up with one in the next span.
+  function prose(text) {
+    return esc(text).split(/(`[^`]+`)/).map(function (part) {
+      if (part.charAt(0) === '`' && part.length > 1) return '<code>' + part.slice(1, -1) + '</code>';
+      return part.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+    }).join('');
+  }
+
+  function show(id, visible) { el(id).hidden = !visible; }
+
+  // ── Python highlighting ────────────────────────────────────────────────
+  //
+  // Just enough to make a snippet readable: comments, strings, keywords,
+  // builtins, numbers. Pulling in highlight.js for six colours would cost more
+  // bytes than every question in the bank put together.
+
+  var PY = new RegExp([
+    '(#[^\\n]*)',
+    '("(?:[^"\\\\\\n]|\\\\.)*"|\'(?:[^\'\\\\\\n]|\\\\.)*\')',
+    '\\b(def|class|return|if|elif|else|for|while|in|not|and|or|is|None|True|False|'
+      + 'import|from|lambda|yield|break|continue|pass|with|as|try|except|finally|'
+      + 'global|nonlocal|assert|del|raise|self)\\b',
+    '\\b(len|range|enumerate|sorted|sum|max|min|abs|any|all|zip|map|filter|reversed|'
+      + 'set|dict|list|tuple|int|str|float|print|heapq|deque|Counter|defaultdict|OrderedDict|bisect_left)\\b',
+    '(\\b\\d+\\b)'
+  ].join('|'), 'g');
+
+  function highlight(code) {
+    var out = '';
+    var last = 0;
+    var m;
+    PY.lastIndex = 0;
+    while ((m = PY.exec(code)) !== null) {
+      out += esc(code.slice(last, m.index));
+      var cls = m[1] ? 'c' : m[2] ? 's' : m[3] ? 'k' : m[4] ? 'b' : 'n';
+      out += '<span class="' + cls + '">' + esc(m[0]) + '</span>';
+      last = m.index + m[0].length;
+    }
+    return out + esc(code.slice(last));
+  }
+
+  // ── Preferences ────────────────────────────────────────────────────────
+  // Wrapped like nav.js does: Safari's private mode throws rather than
+  // returning null, and losing a preference must never break the page.
+
+  function loadPrefs() {
+    try {
+      var raw = localStorage.getItem(STORE_KEY);
+      if (raw) {
+        var saved = JSON.parse(raw);
+        if (saved && typeof saved === 'object') {
+          if (saved.count) prefs.count = saved.count;
+          if (saved.topic) prefs.topic = saved.topic;
+        }
+      }
+    } catch (e) { /* defaults are fine */ }
+  }
+
+  function savePrefs() {
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(prefs)); } catch (e) { /* ignore */ }
+  }
+
+  // ── Setup screen ───────────────────────────────────────────────────────
+
+  function pool() {
+    if (prefs.topic === 'all') return bank;
+    return bank.filter(function (q) { return q.topic === prefs.topic; });
+  }
+
+  function renderCountChips() {
+    var available = pool().length;
+    el('countChips').innerHTML = COUNTS.map(function (n) {
+      var reachable = n <= available;
+      return '<button type="button" class="chip' + (prefs.count === n ? ' active' : '') + '"'
+        + (reachable ? '' : ' disabled') + ' data-count="' + n + '">' + n + '</button>';
+    }).join('')
+      + '<button type="button" class="chip' + (prefs.count === 'all' ? ' active' : '') + '"'
+      + ' data-count="all">all ' + available + '</button>';
+  }
+
+  function renderPool() {
+    var available = pool().length;
+    var asked = Math.min(askedCount(), available);
+    el('poolText').textContent = available + ' question' + (available === 1 ? '' : 's')
+      + ' in this pool · ' + asked + ' will be drawn · ' + (asked * 2) + ' marks';
+    el('startBtn').disabled = available === 0;
+  }
+
+  function askedCount() {
+    return prefs.count === 'all' ? pool().length : prefs.count;
+  }
+
+  function renderSetup() {
+    renderCountChips();
+    renderPool();
+  }
+
+  // ── Drawing a quiz ─────────────────────────────────────────────────────
+
+  // Fisher-Yates. `sort(() => Math.random() - 0.5)` is the tempting one-liner
+  // and it is not a uniform shuffle — it visibly favours the original order.
+  function shuffled(items) {
+    var out = items.slice();
+    for (var i = out.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var swap = out[i];
+      out[i] = out[j];
+      out[j] = swap;
+    }
+    return out;
+  }
+
+  function startQuiz(questions) {
+    run = { questions: questions, at: 0, results: [], checked: false };
+    show('setup', false);
+    show('report', false);
+    show('quiz', true);
+    renderQuestion();
+  }
+
+  function startFromSetup() {
+    var picked = shuffled(pool()).slice(0, Math.max(1, Math.min(askedCount(), pool().length)));
+    if (!picked.length) return;
+    startQuiz(picked);
+  }
+
+  // ── The question screen ────────────────────────────────────────────────
+
+  function current() { return run.questions[run.at]; }
+
+  function renderQuestion() {
+    var q = current();
+    var total = run.questions.length;
+
+    el('progressBar').style.width = (run.at / total * 100) + '%';
+    el('qCounter').textContent = (run.at + 1) + ' / ' + total;
+    el('qTitle').innerHTML = q.links.lc
+      ? '<a href="' + esc(q.links.lc) + '" target="_blank" rel="noopener">'
+        + (q.lc ? 'LC ' + q.lc + ' · ' : '') + esc(q.title) + '</a>'
+      : esc(q.title);
+    el('qDifficulty').textContent = q.difficulty;
+    el('qDifficulty').className = 'badge ' + q.difficulty;
+    el('qTopic').textContent = q.topic;
+    el('qCode').innerHTML = highlight(q.code);
+
+    el('qVars').innerHTML = q.vars ? '<b>Symbols</b> — ' + prose(q.vars) : '';
+    el('qVars').hidden = !q.vars;
+    el('qNote').innerHTML = q.note ? '<b>Note</b> — ' + prose(q.note) : '';
+    el('qNote').hidden = !q.note;
+
+    ['timeInput', 'spaceInput'].forEach(function (id) {
+      el(id).value = '';
+      el(id).className = '';
+      el(id).readOnly = false;
+    });
+
+    run.checked = false;
+    show('verdict', false);
+    el('checkBtn').hidden = false;
+    el('nextBtn').hidden = true;
+    el('nextBtn').textContent = run.at === total - 1 ? 'See results →' : 'Next →';
+    el('timeInput').focus();
+  }
+
+  function markup(ok, field, said, expected, accepted) {
+    var alts = accepted.length ? ' (or ' + accepted.map(esc).join(', ') + ')' : '';
+    var yours = said.trim()
+      ? (ok ? '' : ' — you said <s>' + esc(said.trim()) + '</s>')
+      : ' — left blank';
+    return '<div class="mark ' + (ok ? 'right' : 'wrong') + '">'
+      + '<span class="sign">' + (ok ? '✓' : '✗') + '</span>'
+      + '<span><b>' + field + '</b> ' + esc(expected) + alts
+      + '<span class="said">' + (ok ? '' : yours) + '</span></span></div>';
+  }
+
+  function check() {
+    if (run.checked) return;
+    var q = current();
+    var said = { time: el('timeInput').value, space: el('spaceInput').value };
+    var got = CSComplexity.grade(said, q);
+
+    run.checked = true;
+    run.results.push({ question: q, said: said, got: got });
+
+    el('timeInput').className = got.time ? 'right' : 'wrong';
+    el('spaceInput').className = got.space ? 'right' : 'wrong';
+    el('timeInput').readOnly = true;
+    el('spaceInput').readOnly = true;
+
+    var html = markup(got.time, 'Time', said.time, q.time, q.accept.time)
+      + markup(got.space, 'Space', said.space, q.space, q.accept.space)
+      + '<p class="prose">' + prose(q.why) + '</p>';
+    if (q.trap) html += '<p class="prose trap"><b>Common slip</b> — ' + prose(q.trap) + '</p>';
+
+    var refs = [];
+    if (q.links.repo) refs.push('<a href="' + esc(q.links.repo) + '" target="_blank" rel="noopener">full solution ↗</a>');
+    refs.push('<a href="cheatsheets/complexity_cheatsheet.html">complexity cheatsheet</a>');
+    html += '<div class="refs">' + refs.join('') + '</div>';
+
+    el('verdict').innerHTML = html;
+    show('verdict', true);
+    el('checkBtn').hidden = true;
+    el('nextBtn').hidden = false;
+    el('nextBtn').focus();
+  }
+
+  function next() {
+    run.at += 1;
+    if (run.at >= run.questions.length) finish();
+    else renderQuestion();
+  }
+
+  // ── Report ─────────────────────────────────────────────────────────────
+
+  var VERDICTS = [
+    [0.9, 'Interview-ready. Complexity is not what will cost you the offer.'],
+    [0.75, 'Solid. Tighten the misses below and this stops being a risk.'],
+    [0.5, 'Shaky. You can read the algorithm — you are not yet pricing it.'],
+    [0, 'Start with the cheatsheet, then come back. This is learnable in an afternoon.']
+  ];
+
+  function finish() {
+    show('quiz', false);
+    show('report', true);
+
+    var results = run.results;
+    var marks = results.reduce(function (n, r) { return n + (r.got.time ? 1 : 0) + (r.got.space ? 1 : 0); }, 0);
+    var total = results.length * 2;
+    var pct = total ? Math.round(marks / total * 100) : 0;
+    var clean = results.filter(function (r) { return r.got.time && r.got.space; }).length;
+    var timeRight = results.filter(function (r) { return r.got.time; }).length;
+    var spaceRight = results.filter(function (r) { return r.got.space; }).length;
+
+    el('scoreBig').textContent = marks + ' / ' + total;
+    el('scoreSub').textContent = pct + '% · ' + clean + ' of ' + results.length
+      + ' fully right · time ' + timeRight + '/' + results.length
+      + ' · space ' + spaceRight + '/' + results.length;
+    for (var i = 0; i < VERDICTS.length; i++) {
+      if (marks / (total || 1) >= VERDICTS[i][0]) { el('scoreWord').textContent = VERDICTS[i][1]; break; }
+    }
+
+    renderBreakdown(results);
+    renderMissed(results);
+  }
+
+  function renderBreakdown(results) {
+    var byTopic = {};
+    results.forEach(function (r) {
+      var t = byTopic[r.question.topic] || (byTopic[r.question.topic] = { n: 0, time: 0, space: 0 });
+      t.n += 1;
+      if (r.got.time) t.time += 1;
+      if (r.got.space) t.space += 1;
+    });
+
+    var rows = Object.keys(byTopic).map(function (topic) {
+      var t = byTopic[topic];
+      return { topic: topic, t: t, rate: (t.time + t.space) / (t.n * 2) };
+    }).sort(function (a, b) { return a.rate - b.rate; });   // weakest first — that is the to-do list
+
+    el('breakdownBody').innerHTML = rows.map(function (row) {
+      return '<tr><td>' + esc(row.topic) + '</td>'
+        + '<td class="num">' + row.t.time + '/' + row.t.n + '</td>'
+        + '<td class="num">' + row.t.space + '/' + row.t.n + '</td>'
+        + '<td><span class="bar"><span style="width:' + Math.round(row.rate * 100) + '%"></span></span></td></tr>';
+    }).join('');
+  }
+
+  function renderMissed(results) {
+    var missed = results.filter(function (r) { return !r.got.time || !r.got.space; });
+    show('missedPanel', missed.length > 0);
+    el('retryBtn').hidden = missed.length === 0;
+
+    el('missedList').innerHTML = missed.map(function (r) {
+      var q = r.question;
+      var parts = [];
+      if (!r.got.time) parts.push('time is <b>' + esc(q.time) + '</b>');
+      if (!r.got.space) parts.push('space is <b>' + esc(q.space) + '</b>');
+      var name = q.lc ? 'LC ' + q.lc + ' · ' + q.title : q.title;
+      return '<div class="missed-item">'
+        + '<div class="missed-head"><span class="name">'
+        + (q.links.lc ? '<a href="' + esc(q.links.lc) + '" target="_blank" rel="noopener">' + esc(name) + '</a>' : esc(name))
+        + '</span><span class="badge">' + esc(q.topic) + '</span></div>'
+        + '<div class="missed-detail">' + parts.join(' · ') + ' — ' + prose(q.why) + '</div>'
+        + '</div>';
+    }).join('');
+  }
+
+  // ── Wiring ─────────────────────────────────────────────────────────────
+
+  function wire() {
+    el('countChips').addEventListener('click', function (event) {
+      var chip = event.target.closest('[data-count]');
+      if (!chip || chip.disabled) return;
+      var value = chip.getAttribute('data-count');
+      prefs.count = value === 'all' ? 'all' : parseInt(value, 10);
+      savePrefs();
+      renderSetup();
+    });
+
+    el('topicSelect').addEventListener('change', function () {
+      prefs.topic = el('topicSelect').value;
+      savePrefs();
+      renderSetup();
+    });
+
+    el('startBtn').addEventListener('click', startFromSetup);
+    el('checkBtn').addEventListener('click', check);
+    el('nextBtn').addEventListener('click', next);
+    el('quitBtn').addEventListener('click', function () {
+      // Ending early still scores what was answered; an empty run just goes back.
+      if (run.results.length) finish();
+      else { show('quiz', false); show('setup', true); }
+    });
+    el('retryBtn').addEventListener('click', function () {
+      startQuiz(shuffled(run.results
+        .filter(function (r) { return !r.got.time || !r.got.space; })
+        .map(function (r) { return r.question; })));
+    });
+    el('restartBtn').addEventListener('click', function () {
+      show('report', false);
+      show('setup', true);
+      renderSetup();
+    });
+
+    // Enter checks, then Enter again moves on — so a whole quiz is typeable
+    // without reaching for the mouse.
+    document.addEventListener('keydown', function (event) {
+      if (event.key !== 'Enter' || el('quiz').hidden) return;
+      if (event.target === el('timeInput') && !run.checked && !el('spaceInput').value.trim()) {
+        el('spaceInput').focus();
+        return;
+      }
+      event.preventDefault();
+      if (run.checked) next();
+      else check();
+    });
+  }
+
+  // ── Boot ───────────────────────────────────────────────────────────────
+
+  function boot(data) {
+    bank = data.questions || [];
+    loadPrefs();
+
+    var topics = data.topics || [];
+    if (topics.indexOf(prefs.topic) === -1) prefs.topic = 'all';
+    el('topicSelect').innerHTML = '<option value="all">Everything</option>'
+      + topics.map(function (t) { return '<option value="' + esc(t) + '">' + esc(t) + '</option>'; }).join('');
+    el('topicSelect').value = prefs.topic;
+
+    show('loading', false);
+    show('setup', true);
+    wire();
+    renderSetup();
+  }
+
+  fetch('./data/complexity-quiz.json')
+    .then(function (res) { return res.json(); })
+    .then(boot)
+    .catch(function () {
+      el('loading').textContent = 'Could not load the question bank.';
+    });
+})();
+</script>
+</body>
+</html>
