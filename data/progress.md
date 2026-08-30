@@ -241,9 +241,46 @@
 				- Problem asks for “number of ways” without considering order
 			- Permutations
 				- Problem asks for different sequences/orderings
-			- Combinations VS Permutations !!!
-			- Combinations VS Permutations VS 0/1 Knapsack !!!
+			- Combinations VS Permutations VS 0/1 Knapsack  VS unboud  0/1 Knapsack !!!
 				- https://yennj12.js.org/CS_basics/cheatsheets/dp.html#code-templates-by-pattern
+				```
+				Combinations — order does NOT matter
+					LC 518 — Coin Change II
+					LC 39 — Combination Sum
+					LC 40 — Combination Sum II
+				
+				Permutations — order DOES matter
+					LC 377 — Combination Sum IV
+					LC 46 — Permutations
+					LC 47 — Permutations II
+				
+				0/1 Knapsack — each item can be used at most once
+					LC 416 — Partition Equal Subset Sum
+					LC 494 — Target Sum
+					LC 1049 — Last Stone Weight II
+				
+				Unbounded Knapsack — each item can be used unlimited times
+					LC 322 — Coin Change
+					LC 518 — Coin Change II
+					LC 279 — Perfect Squares
+				```
+				```
+				Combinations
+		     → order doesn't matter
+		     → coin/item loop OUTSIDE
+
+			  Permutations
+			    → order matters
+			    → amount/target loop OUTSIDE
+
+			0/1 Knapsack
+			    → use each item ONCE
+			    → usually iterate capacity BACKWARD
+
+			Unbounded Knapsack
+			    → reuse item
+			    → usually iterate capacity FORWARD
+				```
 			- Longest Increasing Subsequence (LIS)
 			- Longest Common Subsequence
 				- 1143
