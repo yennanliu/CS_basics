@@ -47,6 +47,37 @@ Follow up: What if negative numbers are allowed in the given array? How does it 
 
 # V0
 # IDEA: 1D DP (`combination` pattern)
+# https://yennj12.js.org/CS_basics/cheatsheets/knapsack.html#loop-order-combinations-vs-permutations
+# https://github.com/yennanliu/CS_basics/issues/103
+"""
+NOTE !!!
+
+
+the `loop` ordering
+
+-> LC 518 VS 377
+
+
+- Unbounded Knapsack — Count
+    
+    ```
+    for num in nums:
+        for s in range(num, target + 1):
+            dp[s] += dp[s - num]
+    ```
+
+
+- Combination count (order DOES matter)
+
+
+   ```
+    for j in range(target + 1):
+        for coin in nums:
+            if j - coin >= 0:
+                dp[j] += dp[j - coin]
+   ```
+
+"""
 class Solution(object):
     def combinationSum4(self, nums, target):
 
@@ -65,6 +96,35 @@ class Solution(object):
 
                 if i >= num:
                     dp[i] += dp[i - num]
+
+        return dp[target]
+
+
+# V0-0-1
+# IDEA: 1D DP (`combination` pattern)
+# https://yennj12.js.org/CS_basics/cheatsheets/knapsack.html#loop-order-combinations-vs-permutations
+# https://github.com/yennanliu/CS_basics/issues/103
+class Solution(object):
+    def combinationSum4(self, nums, target):
+        # edge
+        if target == 0:
+            return 1
+
+        if not nums or len(nums) == 0:
+            return 0
+
+        if len(nums) == 1:
+            return 1 if target % nums[0] == 0 else 0
+
+        dp = [0] * (target + 1)
+
+        dp[0] = 1
+
+        for j in range(target + 1):
+            for coin in nums:
+                if j - coin >= 0:
+                    dp[j] += dp[j - coin]
+
 
         return dp[target]
 
