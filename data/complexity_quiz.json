@@ -1101,7 +1101,7 @@
       "time": "O(n log n)",
       "space": "O(n)",
       "why": "T(n) = 2T(n/2) + O(n): log n levels of merging, O(n) work per level. Each level of the recursion holds O(n) of copied slices, and the stack is only log n deep.",
-      "trap": "Unlike the sliced binary search above, the copying here does not change the order — merge sort already does O(n) work per level, so the slices are free in Big-O terms."
+      "trap": "Unlike a recursive binary search that slices, the copying here does not change the order — merge sort already does O(n) work per level, so the slices are free in Big-O terms."
     },
     {
       "id": "word-search",

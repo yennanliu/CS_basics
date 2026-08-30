@@ -17,9 +17,9 @@
 4. Star (⭐) problems you got wrong — revisit them
 
 Want to be *marked* rather than self-graded? The site's
-[Complexity Quiz](../lc-complexity-quiz.html) draws random Python snippets from
-this repo, takes a typed answer for time and space, and scores each one — with a
-per-topic breakdown at the end.
+[Complexity Quiz](https://yennanliu.github.io/CS_basics/lc-complexity-quiz.html)
+draws random Python snippets from this repo, takes a typed answer for time and
+space, and scores each one — with a per-topic breakdown at the end.
 
 ---
 

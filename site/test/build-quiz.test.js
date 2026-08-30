@@ -64,6 +64,33 @@ test('accept always resolves to a pair of arrays', () => {
   );
 });
 
+test('an LC question may not restate what README already says', () => {
+  for (const field of ['title', 'difficulty']) {
+    assert.throws(
+      () => resolveQuestion(question({ [field]: 'Something Else' }), README),
+      new RegExp(`sets its own ${field}`),
+      `an authored ${field} on an LC question should be rejected`
+    );
+  }
+});
+
+test('a scalar accept field is rejected rather than shipped', () => {
+  // It would survive answerStrings() — concat folds a bare string in as one
+  // element — and then throw in the page, where the feedback maps over it.
+  for (const field of ['time', 'space']) {
+    assert.throws(
+      () => resolveQuestion(question({ accept: { [field]: 'O(n)' } }), README),
+      new RegExp(`accept\\.${field} that is not an array`),
+      `a scalar accept.${field} should be rejected`
+    );
+  }
+  // …and the array spelling of the same thing still passes.
+  assert.deepEqual(
+    resolveQuestion(question({ accept: { time: ['O(n)'], space: ['O(1)'] } }), README).accept,
+    { time: ['O(n)'], space: ['O(1)'] }
+  );
+});
+
 test('a non-LC question carries its own title and difficulty', () => {
   const resolved = resolveQuestion(question({
     id: 'drill', lc: null, title: 'Doubling loop', difficulty: 'Easy',

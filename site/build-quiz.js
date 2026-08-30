@@ -57,6 +57,16 @@ function resolveQuestion(question, readme) {
     throw new Error(`${where} has a code field that is not an array of lines`);
   }
 
+  // `accept: { time: "O(n)" }` instead of `["O(n)"]` would survive validation —
+  // `concat` folds a bare string in as one element — and then reach the page,
+  // where rendering the feedback calls `.map()` on it and throws.
+  for (const field of ['time', 'space']) {
+    const alternatives = question.accept && question.accept[field];
+    if (alternatives !== undefined && !Array.isArray(alternatives)) {
+      throw new Error(`${where} has an accept.${field} that is not an array`);
+    }
+  }
+
   for (const answer of answerStrings(question)) {
     if (CSComplexity.normalize(answer) === null) {
       // Either a typo or a shape the grader has never seen. Both mean nobody
@@ -100,8 +110,17 @@ function resolveQuestion(question, readme) {
   if (!problem) {
     throw new Error(`${where} points at LC ${question.lc}, which is not in README.md`);
   }
-  resolved.title = question.title || problem.title;
-  resolved.difficulty = question.difficulty || problem.difficulty || 'Medium';
+  // README is the single source for these, so an authored one is not merely
+  // redundant — it is a second copy free to drift. Rejecting beats ignoring:
+  // a silently-dropped title is exactly the failure this builder exists to
+  // make loud.
+  for (const field of ['title', 'difficulty']) {
+    if (question[field]) {
+      throw new Error(`${where} sets its own ${field}, but LC ${question.lc} takes that from README.md`);
+    }
+  }
+  resolved.title = problem.title;
+  resolved.difficulty = problem.difficulty || 'Medium';
   resolved.links.lc = problem.url || LC_URL;
   if (problem.solutions && problem.solutions.Python) {
     resolved.links.repo = problem.solutions.Python;

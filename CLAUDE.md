@@ -211,6 +211,8 @@ The quiz page (`lc-complexity-quiz.html`) draws from [`data/complexity_quiz.json
 Titles, difficulty and the link to this repo's solution come from `README.md` at build time — never repeat them here. Set `title` and `difficulty` yourself only for an entry with `"lc": null` (a pure algorithm or Python drill). `site/build-quiz.js` fails the build if:
 
 - an `id` repeats, or an `lc` number is not in a README table;
+- an entry with an `lc` number sets its own `title` or `difficulty`, or one without an `lc` number omits them;
+- an `accept` field is not an array (a bare string survives validation and then breaks the page's feedback);
 - any answer — `time`, `space`, or an `accept` alternative — does not parse as a complexity expression. Answers are normalised by `site/complexity.js`, whose identifiers are **single letters**, so write `O(n * a)` with a `vars` line rather than `O(n * amount)`.
 
 `accept` is for answers that are genuinely defensible (`O(h)` vs `O(n)` for a tree's recursion stack), not for spelling variants — `O(n log n)`, `nlogn` and `N·logN` already grade the same.
