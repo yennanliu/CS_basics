@@ -56,6 +56,76 @@ class Solution(object):
 
 
 # V1
+# IDEA: in-degree + out-degree (gpt)
+# LC 997 = 找一個 node：indegree = n-1，outdegree = 0。
+class Solution(object):
+    def findJudge(self, n, trust):
+        """
+        :type n: int
+        :type trust: List[List[int]]
+        :rtype: int
+        """
+
+        # out_degree[i] = how many people i trusts
+        # in_degree[i]  = how many people trust i
+        in_degree = [0] * (n + 1)
+        out_degree = [0] * (n + 1)
+
+        for a, b in trust:
+            out_degree[a] += 1
+            in_degree[b] += 1
+
+        # Judge:
+        # - trusts nobody -> out_degree == 0
+        # - trusted by everyone else -> in_degree == n - 1
+        for person in range(1, n + 1):
+            if out_degree[person] == 0 and in_degree[person] == n - 1:
+                return person
+
+        return -1
 
 
 # V2
+# IDEA: set + prob understanding (gpt)
+class Solution(object):
+    def findJudge(self, n, trust):
+        """
+        :type n: int
+        :type trust: List[List[int]]
+        :rtype: int
+        """
+
+        # Nobody trusts anyone
+        # Only person 1 can be the judge
+        if n == 1:
+            return 1
+
+        # people who trust someone
+        non_judge = set()
+
+        # people who are trusted
+        judge_candidate = set()
+
+        for a, b in trust:
+            # a trusts b
+            # Therefore a cannot be the judge
+            non_judge.add(a)
+
+            # b could be the judge
+            judge_candidate.add(b)
+
+        # Judge:
+        # 1. is trusted by someone
+        # 2. does not trust anyone
+        candidates = judge_candidate - non_judge
+
+        if len(candidates) != 1:
+            return -1
+
+        judge = candidates.pop()
+
+        # Judge must be trusted by EVERY other person
+        if len([x for x in trust if x[1] == judge]) != n - 1:
+            return -1
+
+        return judge
