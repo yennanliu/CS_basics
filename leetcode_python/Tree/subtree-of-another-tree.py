@@ -35,6 +35,59 @@ The number of nodes in the subRoot tree is in the range [1, 1000].
 
 """
 
+
+# V0
+# IDEA: DFS + isSAME tree
+# time = O(m * n), m = nodes in root, n = nodes in subRoot
+# space = O(h), h = height of root (recursion stack)
+class Solution(object):
+    def isSubtree(self, root, subRoot):
+        """
+        :type root: Optional[TreeNode]
+        :type subRoot: Optional[TreeNode]
+        :rtype: bool
+        """
+
+        # subRoot is empty -> always a subtree
+        if not subRoot:
+            return True
+
+        # root is empty, but subRoot is not
+        if not root:
+            return False
+
+        # Case 1:
+        # root itself is the starting point
+        # Case 2:
+        # search in left subtree
+        # Case 3:
+        # search in right subtree
+        return (
+            self.is_same_node(root, subRoot)
+            or self.isSubtree(root.left, subRoot)
+            or self.isSubtree(root.right, subRoot)
+        )
+
+    def is_same_node(self, root, node):
+        # Both empty -> same tree
+        if not root and not node:
+            return True
+
+        # One empty -> different tree
+        if not root or not node:
+            return False
+
+        # Values are different
+        if root.val != node.val:
+            return False
+
+        # Both subtrees must be identical
+        return (
+            self.is_same_node(root.left, node.left)
+            and self.is_same_node(root.right, node.right)
+        )
+
+
 # V0
 # IDEA: DFS + isSAME tree
 # time = O(m * n), m = nodes in root, n = nodes in subRoot
