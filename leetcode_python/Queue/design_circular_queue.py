@@ -50,6 +50,94 @@ At most 3000 calls will be made to enQueue, deQueue, Front, Rear, isEmpty, and i
 """
 
 # V0
+# IDEA: ARRAY + idx + front, rear, size (gpt)
+class MyCircularQueue(object):
+
+    def __init__(self, k):
+        """
+        :type k: int
+        """
+        self.q = [0] * k
+
+        self.start_idx = 0
+
+        # index of the current rear element
+        self.end_idx = -1
+
+        self.k = k
+        self.cnt = 0
+
+    def enQueue(self, value):
+        """
+        :type value: int
+        :rtype: bool
+        """
+
+        # Queue is full
+        if self.cnt == self.k:
+            return False
+
+        # Move rear forward
+        self.end_idx = (self.end_idx + 1) % self.k
+
+        self.q[self.end_idx] = value
+
+        self.cnt += 1
+
+        return True
+
+    def deQueue(self):
+        """
+        :rtype: bool
+        """
+
+        # Queue is empty
+        if self.cnt == 0:
+            return False
+
+        # Remove front element
+        self.start_idx = (self.start_idx + 1) % self.k
+
+        self.cnt -= 1
+
+        return True
+
+    def Front(self):
+        """
+        :rtype: int
+        """
+
+        if self.isEmpty():
+            return -1
+
+        return self.q[self.start_idx]
+
+    def Rear(self):
+        """
+        :rtype: int
+        """
+
+        if self.isEmpty():
+            return -1
+
+        return self.q[self.end_idx]
+
+    def isEmpty(self):
+        """
+        :rtype: bool
+        """
+
+        return self.cnt == 0
+
+    def isFull(self):
+        """
+        :rtype: bool
+        """
+
+        return self.cnt == self.k
+
+
+# V0-0-1
 # IDEA: ARRAY + idx + front, rear, size (gemini)
 class MyCircularQueue(object):
 
@@ -85,6 +173,30 @@ class MyCircularQueue(object):
         if self.isEmpty():
             return False
 
+        """
+        The element is NOT really deleted from queue;
+
+            -> it's a `logical delete` (soft delete)
+            -> e.g. we ONLY move the index, but leave the element there still.
+
+
+        ---
+
+        4. 所以這個 Queue 其實是「logical deletion」
+
+        你可以把它想成：
+
+                真正的 array:
+                [10, 20, 30]
+
+                Queue 看的是:
+                    ↑
+                   start
+
+                Queue elements:
+                [20, 30]
+
+        """
         self.q[self.front] = -1
         self.front = (self.front + 1) % self.k
         self.size -= 1
