@@ -21,7 +21,7 @@ Topological sorting is a linear ordering of vertices in a Directed Acyclic Graph
 ### Complexity Analysis
 | Approach | Time Complexity | Space Complexity | Use Case |
 |----------|----------------|------------------|----------|
-| DFS (Kahn's Algorithm) | O(V + E) | O(V) | General purpose, cycle detection |
+| DFS (three-colour post-order) | O(V + E) | O(V) | General purpose, cycle detection |
 | BFS (In-degree) | O(V + E) | O(V) | Finding all orderings, level-by-level |
 | Tree Centroid Finding | O(V + E) | O(V) | Undirected trees, find center/minimize height |
 | All Topological Sorts | O(V! × (V + E)) | O(V) | Small graphs, all permutations |
@@ -33,6 +33,7 @@ Topological sorting is a linear ordering of vertices in a Directed Acyclic Graph
 - [TopologicalSort.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/TopologicalSort.java)
 - [NumberOfProvinces.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/DFS/NumberOfProvinces.java) (Connected Components / Union Find)
 - [MinimumHeightTrees.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/BFS/MinimumHeightTrees.java) (Tree Centroid Finding)
+- [minimum-height-trees.py](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/minimum-height-trees.py) (LC 310 — the leaf-trimming solutions plus the O(n^2) brute force to contrast against)
 
 ## Problem Categories
 
@@ -73,8 +74,8 @@ Problems involving finding connected components in undirected graphs.
 
 ### 8. Tree Centroid Finding
 Problems involving finding the center/centroid of undirected trees.
-- **Pattern**: Leaf trimming layer by layer, similar to topological sort for undirected trees
-- **Key Problems**: LC 310, Tree diameter, Tree center
+- **Pattern**: Leaf trimming layer by layer — Kahn's peeling seeded on `degree == 1` instead of `in_degree == 0`
+- **Key Problems**: LC 310, 1245, 2603
 
 ## Core Templates
 
@@ -500,18 +501,61 @@ public int parallelTaskScheduling(int numTasks, int[][] edges, int[] times) {
 }
 ```
 
-### Template 7: Tree Centroid Finding (Leaf Trimming for Undirected Trees) ⭐⭐⭐
+### Template 7: Tree Centroid Finding (Leaf Trimming for Undirected Trees) ⭐⭐⭐⭐
+
+**LC Pattern** — three signals in the statement, all present in LC 310:
+
+| Signal | What it tells you |
+|---|---|
+| undirected, `n` nodes and **`n - 1` edges**, connected | it is a **tree** — no cycles, so no cycle handling and no `visited` set |
+| "you can choose **any node as the root**", "minimum height" | you are asked for a **node set**, not an ordering |
+| the answer is a list, and "at most 2" is hinted | the survivors of the peel *are* the answer |
+
+> **LC 310 = find the tree center = keep removing leaves.**
+
+**Core Idea** — the root that minimises height is the **midpoint of the diameter**. Instead of
+trying every root (an O(n^2) BFS-from-each-node, `V1''` in the solution file), peel inward: a leaf
+is always the *worst* possible root, so discard the entire leaf layer at once and repeat. What
+survives is equidistant from both ends of the diameter — the center.
+
+```text
+        0                 layer 1 leaves: 2, 3, 5        remaining = 6 - 3 = 3
+        |                 remove them
+        1              ────────────────────────────────
+      / | \                 0 - 1 - 4
+     2  3  4             layer 2 leaves: 0, 4            remaining = 3 - 2 = 1
+           |             remove them
+           5           ────────────────────────────────
+                              1                          remaining = 1 → stop, answer [1]
+```
+
+**Why 1 or 2 survivors, never 3** — the survivors are the midpoint(s) of the diameter path, and a
+path has exactly one or two:
+
+```text
+even node count on the diameter          odd node count on the diameter
+A - B - C - D                            A - B - C - D - E
+    ↑   ↑                                        ↑
+  two centers → [B, C]                      one center → [C]
+```
+
+That is why the loop condition is `while remaining > 2` and **not** `while queue` — the queue never
+empties on its own; you stop it.
+
+**Same machinery as Kahn's, four differences** (this is the whole template):
+
+| | Template 1 (Kahn's, DAG) | Template 7 (leaf trimming, tree) |
+|---|---|---|
+| Edge insert | one direction, `in_degree[v] += 1` | **both** directions, `degree[u] += 1` *and* `degree[v] += 1` |
+| Seed | `in_degree == 0` (sources) | `degree == 1` (leaves) |
+| Stop | queue empty → full ordering | `remaining <= 2` → the queue *is* the answer |
+| Output | the pop order | the nodes never popped |
+
 ```python
 def findMinHeightTrees(n, edges):
     """
-    Find tree centroids using leaf trimming (similar to Kahn's Algorithm for undirected trees).
+    Find tree centroids by trimming leaves layer by layer.
     Time: O(V + E), Space: O(V)
-
-    Key Insight:
-    - For undirected trees, leaves are nodes with degree = 1
-    - Remove leaves layer by layer until 1-2 nodes remain
-    - These remaining nodes are the centroids (MHT roots)
-    - Different from standard topological sort: works on undirected trees, not DAGs
     """
     from collections import deque
 
@@ -608,6 +652,20 @@ public List<Integer> findMinHeightTrees(int n, int[][] edges) {
     return new ArrayList<>(leaves);
 }
 ```
+
+**Pitfalls specific to this template**
+
+1. **`n == 1` makes the queue empty**, not full: with no edges no node ever reaches degree 1, so the
+   `while` never runs and you return `[]`. Guard it. `if n <= 2: return list(range(n))` covers both
+   trivial sizes and reads better than a bare `n == 1` check (`V0-2` in the solution file).
+2. **No `visited` set is needed.** `degree` only ever decreases, so a node passes through the value
+   `1` at most once and can be enqueued at most once — the tree structure does the deduplication.
+3. **Count with a separate `remaining`**, decremented by the layer size before draining the layer.
+   Reading `len(queue)` after the fact is not the number of live nodes.
+4. **`degree[leaf]` is not reset to 0** when the leaf is trimmed. Harmless: a trimmed leaf's degree
+   goes 1 → 0 when a sibling leaf later decrements it, and 0 never re-triggers the enqueue test.
+
+**Similar problems**: see [Tree Centroid Finding](#tree-centroid-finding) below.
 
 ### Template 8: Union Find (Connected Components)
 ```python
@@ -989,6 +1047,8 @@ def validateBinaryTreeNodes(n, leftChild, rightChild):
 | [1557. Minimum Number of Vertices to Reach All Nodes](https://leetcode.com/problems/minimum-number-of-vertices-to-reach-all-nodes/) | Medium | Graph Layering | In-degree 0 set (Template 10) |
 | [997. Find the Town Judge](https://leetcode.com/problems/find-the-town-judge/) | Easy | Degree Counting | In/out-degree signature (Template 10-A) |
 | [1361. Validate Binary Tree Nodes](https://leetcode.com/problems/validate-binary-tree-nodes/) | Medium | Cycle Detection | In-degree + reachability (Template 10-B) |
+| [1245. Tree Diameter](https://leetcode.com/problems/tree-diameter/) | Medium | Tree Centroid | Leaf trimming layer count (Template 7) |
+| [2603. Collect Coins in a Tree](https://leetcode.com/problems/collect-coins-in-a-tree/) | Hard | Tree Centroid | Two-stage leaf trimming (Template 7) |
 
 ### Problem Patterns by Category
 
@@ -1051,13 +1111,25 @@ def validateBinaryTreeNodes(n, leftChild, rightChild):
 | Number of Islands | 200 | DFS/BFS on grid |
 
 #### Tree Centroid Finding
-| Pattern | Problems | Key Insight |
-|---------|----------|-------------|
-| Find Tree Centers | 310 | Leaf trimming layer by layer (multi-source BFS inward) |
-| Minimum Height Trees | 310 | BFS from leaves, stop at 1-2 nodes |
-| Tree Diameter Related | 310, 1245 | Centroid is at diameter midpoint |
-| Leaf Pruning / Coin Collection | 2603 | Trim leaves to remove unnecessary nodes |
-| Sum of Distances in Tree | 834 | Rerooting DP, related to centroid concept |
+
+**Same machinery** — build a degree array, seed the queue with the leaves, peel inward (Template 7):
+
+| Problem | Difficulty | What changes vs LC 310 |
+|---------|------------|------------------------|
+| 310 Minimum Height Trees | Medium | the template itself — peel to `remaining <= 2`, return the survivors |
+| 1245 Tree Diameter | Medium | read the **layer count** instead of the survivors: `2 * layers` with one survivor, `2 * layers + 1` with two. (The textbook answer is two BFS passes; this reuses the same peel.) |
+| 2603 Collect Coins in a Tree | Hard | peel **twice**: first repeatedly drop leaves holding no coin, then drop exactly 2 more leaf layers; answer = `2 * remaining_edges` |
+| 802 Find Eventual Safe States | Medium | the directed cousin — seed on `out_degree == 0` and peel the reverse graph; the survivors are the *unsafe* nodes |
+
+**Same tree, different tool** — reach for these when the answer is not the middle of the tree:
+
+| Problem | Difficulty | Why leaf trimming does not apply |
+|---------|------------|----------------------------------|
+| 543 Diameter of Binary Tree | Easy | the tree is already rooted — one DFS returning height, no degrees |
+| 1522 Diameter of N-Ary Tree | Medium | same DFS, combine the top two child heights |
+| 834 Sum of Distances in Tree | Hard | needs **every** node's answer → rerooting DP, not one peel |
+| 863 All Nodes Distance K in Binary Tree | Medium | BFS **outward** from a node (add parent links first), the opposite direction |
+| 1443 Minimum Time to Collect All Apples in a Tree | Medium | prunes by *content* (no apple in the subtree), not by degree |
 
 ## Decision Framework
 
