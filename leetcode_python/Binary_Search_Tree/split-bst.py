@@ -326,6 +326,57 @@ class Solution(object):
         pass
 
 
+# V0-0-1
+# IDEA : BST properties (left < root < right) + recursion (GEMINI)
+# time = O(h)  # h = tree height, BST-guided single-branch recursion
+# space = O(h)  # recursion stack
+class Solution(object):
+    def splitBST(self, root, V):
+        """
+        :type root: Optional[TreeNode]
+        :type V: int
+        :rtype: List[Optional[TreeNode]]
+        """
+
+        if not root:
+            return [None, None]
+
+        return self.helper(root, V)
+
+    def helper(self, root, V):
+        if not root:
+            return [None, None]
+
+        # Case 1:
+        # root.val <= V
+        #
+        # root belongs to the SMALL tree.
+        # Because this is a BST, everything in root.left
+        # is also <= root.val <= V.
+        #
+        # We only need to split root.right.
+        if root.val <= V:
+            small, big = self.helper(root.right, V)
+
+            # Connect the <= V part back to root
+            root.right = small
+
+            return [root, big]
+
+        # Case 2:
+        # root.val > V
+        #
+        # root belongs to the BIG tree.
+        # Everything in root.right is also > root.val > V.
+        #
+        # We only need to split root.left.
+        small, big = self.helper(root.left, V)
+
+        # Connect the > V part back to root
+        root.left = big
+
+        return [small, root]
+
 # V0
 # IDEA : BST properties (left < root < right) + recursion (GEMINI)
 # time = O(h)  # h = tree height, BST-guided single-branch recursion
