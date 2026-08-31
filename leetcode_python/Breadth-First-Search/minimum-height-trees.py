@@ -57,6 +57,88 @@ class Solution(object):
 
 # V0-1
 # IDEA: TOPOLOGICAL SORT / BFS (gpt)
+
+"""
+
+### CORE IDEA
+
+例如：
+
+```text
+        0
+        |
+        1
+      / | \
+     2  3  4
+           |
+           5
+```
+
+第一層 leaf：
+
+```text
+2, 3, 5
+```
+
+移除後：
+
+```text
+0 - 1 - 4
+```
+
+新的 leaf：
+
+```text
+0, 4
+```
+
+再移除後：
+
+```text
+1
+```
+
+所以答案：
+
+```python
+[1]
+```
+
+---
+
+### 為什麼最後只會剩 1 或 2 個？
+
+因為 tree 的「中心」最多只有兩個 nodes：
+
+```text
+偶數長度：
+
+A - B - C - D
+    ↑   ↑
+  center center
+```
+
+→ `[B, C]`
+
+奇數長度：
+
+```text
+A - B - C - D - E
+        ↑
+      center
+
+
+---
+
+→ `[C]`
+
+而 **MHT root 就是 tree 的 center**。
+
+所以這題可以記成：
+
+> **LC 310 = 找 Tree Center = 不斷 remove leaves**
+
+"""
 from collections import deque
 
 class Solution(object):
