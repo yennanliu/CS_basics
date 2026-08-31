@@ -90,6 +90,49 @@ class NestedIterator(object):
 
         return len(self.queue)
 
+
+# V0-1
+# IDEA: ARRAY + RECURSION (gpt)
+class NestedIterator(object):
+
+    def __init__(self, nestedList):
+        """
+        :type nestedList: List[NestedInteger]
+        """
+        self.arr = []
+        self.idx = 0
+
+        self.flatten(nestedList)
+
+    def next(self):
+        """
+        :rtype: int
+        """
+        if self.hasNext():
+            val = self.arr[self.idx]
+            self.idx += 1
+            return val
+
+        return -1
+
+    def hasNext(self):
+        """
+        :rtype: bool
+        """
+        return self.idx < len(self.arr)
+
+    def flatten(self, nestedList):
+        for item in nestedList:
+
+            # Case 1: item is an integer
+            if item.isInteger():
+                self.arr.append(item.getInteger())
+
+            # Case 2: item is a nested list
+            else:
+                self.flatten(item.getList())
+
+
 # V0'
 # time = O(n)
 # space = O(n)
