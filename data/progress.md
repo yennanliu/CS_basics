@@ -3,12 +3,9 @@
 # 2026-09-01
 
 - TODO:
-	- `must_lc_list.md` (1st done)
-		- Backtracking (pass)
-		- DP
+	- `must_lc_list.md` (1st remaining ing)
+		- https://github.com/yennanliu/CS_basics/commit/fe72cf1ba0b3251d42603aa181e2438dfde16a7a
 
-		- remain: 97
-			- daily: 97 / 10 ~ = 9
 	
 	- blind 75
 		- arrays & hashing (ok)
