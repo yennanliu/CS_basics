@@ -55,6 +55,108 @@ class Solution(object):
         pass
 
 
+# V0-1
+# IDEA: TOPOLOGICAL SORT / BFS (gpt)
+from collections import deque
+
+class Solution(object):
+    def findMinHeightTrees(self, n, edges):
+        """
+        :type n: int
+        :type edges: List[List[int]]
+        :rtype: List[int]
+        """
+
+        # Edge case
+        if n == 1:
+            return [0]
+
+        # graph: node -> neighbors
+        graph = [[] for _ in range(n)]
+
+        # degree[i] = number of neighbors of node i
+        degree = [0] * n
+
+        # Build graph
+        for u, v in edges:
+            graph[u].append(v)
+            graph[v].append(u)
+
+            degree[u] += 1
+            degree[v] += 1
+
+        # Start from all leaves
+        q = deque()
+
+        for i in range(n):
+            if degree[i] == 1:
+                q.append(i)
+
+        remaining = n
+
+        # Remove leaves layer by layer
+        while remaining > 2:
+            size = len(q)
+            remaining -= size
+
+            for _ in range(size):
+                leaf = q.popleft()
+
+                for neighbor in graph[leaf]:
+                    degree[neighbor] -= 1
+
+                    # Neighbor becomes a leaf
+                    if degree[neighbor] == 1:
+                        q.append(neighbor)
+
+        # 1 or 2 nodes remain -> MHT roots
+        return list(q)
+
+
+# V0-2
+# IDEA: TOPOLOGICAL SORT / BFS (gemini)
+from collections import defaultdict
+
+class Solution(object):
+    def findMinHeightTrees(self, n, edges):
+        """
+        :type n: int
+        :type edges: List[List[int]]
+        :rtype: List[int]
+        """
+        # Base cases: 1 or 2 nodes are already the centroids
+        if n <= 2:
+            return [i for i in range(n)]
+
+        # Step 1: Build graph using sets for O(1) removals
+        adj = defaultdict(set)
+        for u, v in edges:
+            adj[u].add(v)
+            adj[v].add(u)
+
+        # Step 2: Find initial leaves (nodes with degree 1)
+        leaves = [i for i in range(n) if len(adj[i]) == 1]
+
+        # Step 3: Trim leaves layer by layer until <= 2 nodes remain
+        remaining_nodes = n
+        while remaining_nodes > 2:
+            remaining_nodes -= len(leaves)
+            new_leaves = []
+            
+            for leaf in leaves:
+                # Get the sole neighbor of the leaf
+                neighbor = adj[leaf].pop()
+                adj[neighbor].remove(leaf)
+                
+                # If neighbor becomes a leaf, add to next layer
+                if len(adj[neighbor]) == 1:
+                    new_leaves.append(neighbor)
+            
+            leaves = new_leaves
+
+        return leaves
+
+
 # V1
 # http://bookshadow.com/weblog/2015/11/26/leetcode-minimum-height-trees/
 # time = O(n)  # each node/edge removed once during leaf trimming
