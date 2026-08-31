@@ -1,33 +1,37 @@
 """
 
-Given the root of a binary tree, construct a string consists of parenthesis and integers from a binary tree with the preorder traversing way, and return it.
+572. Subtree of Another Tree
+Solved
+Easy
+Topics
+premium lock icon
+Companies
+Hint
+Given the roots of two binary trees root and subRoot, return true if there is a subtree of root with the same structure and node values of subRoot and false otherwise.
 
-Omit all the empty parenthesis pairs that do not affect the one-to-one mapping relationship between the string and the original binary tree.
+A subtree of a binary tree tree is a tree that consists of a node in tree and all of this node's descendants. The tree tree could also be considered as a subtree of itself.
 
  
 
 Example 1:
 
 
-Input: root = [1,2,3,4]
-Output: "1(2(4))(3)"
-Explanation: Originallay it needs to be "1(2(4)())(3()())", but you need to omit all the unnecessary empty parenthesis pairs. And it will be "1(2(4))(3)"
+Input: root = [3,4,5,1,2], subRoot = [4,1,2]
+Output: true
 Example 2:
 
 
-Input: root = [1,2,3,null,4]
-Output: "1(2()(4))(3)"
-Explanation: Almost the same as the first example, except we cannot omit the first parenthesis pair to break the one-to-one mapping relationship between the input and the output.
+Input: root = [3,4,5,1,2,null,null,null,null,0], subRoot = [4,1,2]
+Output: false
  
 
 Constraints:
 
-The number of nodes in the tree is in the range [1, 104].
--1000 <= Node.val <= 1000
-Accepted
-109,899
-Submissions
-194,930
+The number of nodes in the root tree is in the range [1, 2000].
+The number of nodes in the subRoot tree is in the range [1, 1000].
+-104 <= root.val <= 104
+-104 <= subRoot.val <= 104
+
 
 """
 
