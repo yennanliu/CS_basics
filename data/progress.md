@@ -62,7 +62,7 @@
 - Bit Manipulation.md
 
 - Linked List.md
-	- `反轉 K 個節點的輔助函式模式`
+	- `1-1-6) 反轉串列中間的 N 個節點（以 start, end 表示區間）（遞迴） — LC 92`
 
 
 - Sorting Algorithms.md
@@ -367,6 +367,9 @@
 			- 39
 		- linked list
 			- 92
+			- 反轉-k-個節點的輔助函式模式
+				- LC 92、LC 25、LC 24、LC 206
+				- https://yennj12.js.org/CS_basics/cheatsheets/linked_list.zh.html#%E5%8F%8D%E8%BD%89-k-%E5%80%8B%E7%AF%80%E9%BB%9E%E7%9A%84%E8%BC%94%E5%8A%A9%E5%87%BD%E5%BC%8F%E6%A8%A1%E5%BC%8F-
 		- tree
 			- https://yennj12.js.org/CS_basics/cheatsheets/lc_pattern.html#tree-modification-lc-226
 				- 114 !!!
@@ -459,7 +462,6 @@
 			- 1024
 		- queue
 			- 239
-			- 622
 		- trie
 			- 1268
 			- delete op
