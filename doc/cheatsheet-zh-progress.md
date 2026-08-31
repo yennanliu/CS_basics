@@ -41,7 +41,7 @@ half-translated sheet renders with English gaps rather than failing.
   is what makes a problem findable on LeetCode itself.
 
 
-## Status — 5064 / 5065 sections (100%)
+## Status — 5063 / 5066 sections (100%)
 
 | Sheet | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -110,7 +110,7 @@ half-translated sheet renders with English gaps rather than failing.
 | [heap_advanced](./cheatsheet/heap_advanced.md) | 24 | [✅](../i18n/zh/heap_advanced.md) |
 | [heap_examples](./cheatsheet/heap_examples.md) | 29 | [✅](../i18n/zh/heap_examples.md) |
 | [heap_language_apis](./cheatsheet/heap_language_apis.md) | 20 | [✅](../i18n/zh/heap_language_apis.md) |
-| [intervals](./cheatsheet/intervals.md) | 69 | [✅](../i18n/zh/intervals.md) |
+| [intervals](./cheatsheet/intervals.md) | 70 | [68/70](../i18n/zh/intervals.md) |
 | [iterator](./cheatsheet/iterator.md) | 14 | [✅](../i18n/zh/iterator.md) |
 | [java_trick](./cheatsheet/java_trick.md) | 74 | [✅](../i18n/zh/java_trick.md) |
 | [java_trick_collections](./cheatsheet/java_trick_collections.md) | 57 | [✅](../i18n/zh/java_trick_collections.md) |

@@ -22,16 +22,16 @@
 - **解決相依關係**：處理有先修／相依關係的問題
 - **應用場景**：任務排程、建置系統、課程規劃、相依性解析
 
-<!-- b6fa30360072 -->
+<!-- ec1b803ab30f -->
 ### 複雜度分析
 | 做法 | 時間複雜度 | 空間複雜度 | 適用情境 |
 |----------|----------------|------------------|----------|
-| DFS（Kahn 演算法） | O(V + E) | O(V) | 通用、偵測環 |
+| DFS（三色後序） | O(V + E) | O(V) | 通用、偵測環 |
 | BFS（入度） | O(V + E) | O(V) | 找出所有順序、逐層處理 |
 | 找樹的重心 | O(V + E) | O(V) | 無向樹，找中心／最小化高度 |
 | 列舉所有拓撲排序 | O(V! × (V + E)) | O(V) | 小圖、所有排列 |
 
-<!-- 04900efe0d41 -->
+<!-- 84220654b8ac -->
 ### 參考資料
 - [techbridge : topological-sort](https://blog.techbridge.cc/2020/05/10/leetcode-topological-sort/)
 - [DFS-based topological sort](https://alrightchiu.github.io/SecondRound/graph-li-yong-dfsxun-zhao-dagde-topological-sorttuo-pu-pai-xu.html)
@@ -39,6 +39,8 @@
 - [TopologicalSort.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/TopologicalSort.java)
 - [NumberOfProvinces.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/DFS/NumberOfProvinces.java)（連通分量／併查集）
 - [MinimumHeightTrees.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/BFS/MinimumHeightTrees.java)（找樹的重心）
+- [minimum-height-trees.py](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/minimum-height-trees.py)（LC 310 — 葉節點剝除的各種解法，外加可以拿來對照的 O(n^2) 暴力解）
+- [find-the-town-judge.py](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Graph/find-the-town-judge.py)（LC 997 — 度數特徵的計數解法，以及集合差集的替代寫法）
 
 <!-- 5ab0cfa81ec9 -->
 ## 題型分類
@@ -85,11 +87,11 @@
 - **模式**：帶路徑壓縮的併查集、用 DFS/BFS 遍歷計數分量
 - **代表題目**：LC 547、200、323、684
 
-<!-- 9894c41b914d -->
+<!-- 4b73163f5bdc -->
 ### 8. 找樹的重心
 牽涉尋找無向樹之中心／重心的題目。
-- **模式**：逐層剝除葉節點，類似無向樹版的拓撲排序
-- **代表題目**：LC 310、樹的直徑、樹的中心
+- **模式**：逐層剝除葉節點 — 就是把 Kahn 剝除法的種子條件從 `in_degree == 0` 換成 `degree == 1`
+- **代表題目**：LC 310、1245、2603
 
 <!-- 1f7289e337bb -->
 ## 核心模板
@@ -127,11 +129,59 @@
 
 <!--CODE-->
 
-<!-- 47e2bfd75327 -->
-### 模板 7：找樹的重心（無向樹的葉節點剝除法）⭐⭐⭐
+<!-- e632453a34b4 -->
+### 模板 7：找樹的重心（無向樹的葉節點剝除法）⭐⭐⭐⭐
+
+**LC 模式** — 題目敘述裡有三個訊號，LC 310 三個都有：
+
+| 訊號 | 它告訴你的事 |
+|---|---|
+| 無向、`n` 個節點加 **`n - 1` 條邊**、連通 | 它是一棵**樹** — 沒有環，所以不用處理環，也不需要 `visited` |
+| 「你可以**選任何節點當根**」、「最小高度」 | 要你回答的是一組**節點**，不是一個順序 |
+| 答案是一個 list，而且暗示「最多 2 個」 | 剝除之後**存活下來的節點就是答案** |
+
+> **LC 310 = 找 tree center = 不斷 remove leaves。**
+
+**核心想法** — 讓高度最小的根，就是**直徑的中點**。與其把每個節點都試一遍當根（從每個節點各做一次
+BFS，也就是 O(n^2)，解題檔裡的 `V1''`），不如由外往內剝：葉節點永遠是*最差*的根，所以一次就把整層
+葉節點丟掉，然後重複。活下來的節點與直徑兩端等距 — 那就是中心。
+
+<!--CODE-->
+
+**為什麼只會剩 1 或 2 個，不會是 3 個** — 存活的節點就是直徑路徑的中點，而一條路徑的中點只會有
+一個或兩個：
+
+<!--CODE-->
+
+這也是為什麼迴圈條件是 `while remaining > 2` 而**不是** `while queue` — 佇列不會自己變空，是你去
+停它的。
+
+**和 Kahn 是同一套機制，只差四點**（這四點就是整個模板）：
+
+| | 模板 1（Kahn，DAG） | 模板 7（葉節點剝除，樹） |
+|---|---|---|
+| 加邊 | 單向，`in_degree[v] += 1` | **雙向**，`degree[u] += 1` *且* `degree[v] += 1` |
+| 種子 | `in_degree == 0`（源點） | `degree == 1`（葉節點） |
+| 停止 | 佇列變空 → 完整的順序 | `remaining <= 2` → 佇列**本身**就是答案 |
+| 輸出 | pop 出來的順序 | 從沒被 pop 到的節點 |
+
 <!--CODE-->
 
 <!--CODE-->
+
+**這個模板專屬的坑**
+
+1. **`n == 1` 會讓佇列是空的**，不是滿的：沒有邊，就沒有任何節點的度數會等於 1，於是 `while` 一次
+   都不會跑，你回傳 `[]`。要特判。`if n <= 2: return list(range(n))` 一次蓋掉兩種瑣碎情況，也比只
+   寫 `n == 1` 好讀（解題檔裡的 `V0-2`）。
+2. **不需要 `visited`。** `degree` 只會遞減，所以一個節點最多只會經過 `1` 這個值一次，也就最多只會
+   被推進佇列一次 — 去重是樹的結構幫你做掉的。
+3. **要另外用 `remaining` 計數**，在把整層抽乾之前先扣掉這一層的大小。事後再讀 `len(queue)` 得到的
+   不是還活著的節點數。
+4. **葉節點被剝掉時 `degree[leaf]` 不會被歸零。** 這無害：被剝掉的葉節點之後被同層的兄弟節點遞減
+   時是從 1 變 0，而 0 永遠不會再觸發推入佇列的判斷。
+
+**相似題目**：見下方的[找樹的重心](#tree-centroid-finding)。
 
 <!-- 8b366819baf6 -->
 ### 模板 8：併查集（連通分量）
@@ -162,8 +212,8 @@ O(m·n)。當格子大到遞迴可能爆堆疊，或面試官明確要求用拓�
 
 ---
 
-<!-- ab896f221663 -->
-### 模板 10：入度特徵（答案直接從度數讀出來）
+<!-- 702c7a3c7877 -->
+### 模板 10：入度特徵（答案直接從度數讀出來）⭐⭐⭐⭐
 
 **核心想法**：有些「圖」題根本不需要遍歷——答案完全由**入度／出度的計數**決定。認出這一點能把一題 Medium 變成三行程式。
 
@@ -173,15 +223,63 @@ O(m·n)。當格子大到遞迴可能爆堆疊，或面試官明確要求用拓�
 
 <!--CODE-->
 
-<!-- 7cf75485efa8 -->
+<!-- ffe96381c271 -->
 #### 變化 A — 度數*特徵*比對：LC 997 Find the Town Judge
 
-**變化點**：不是找入度 0，而是找一個精確的指紋——`inDegree = n - 1` **且**
-`outDegree = 0`。把兩者摺進單一的 `score = inDegree - outDegree` 陣列，再掃描找 `n - 1`。
+**LC 模式** — 關鍵線索是：要找的那個節點完全是*用「有幾條邊碰到它」來描述*的，從來不是用它能走到誰：
+
+| 題目敘述裡的訊號 | 它的意思 |
+|---|---|
+| 「法官**不信任任何人**」 | `out_degree == 0` |
+| 「**除了**法官以外，每個人都信任法官」 | `in_degree == n - 1` |
+| 「**恰好只有一個**這樣的人」 | 掃描找這個指紋；沒有節點符合就回 `-1` |
+
+這裡沒有任何一句在問*誰能走到誰*，所以**不用鄰接表、不用佇列、不用 DFS** — 兩個計數陣列、兩趟迴圈
+就結束。它和上面的 LC 1557（`in_degree == 0`）是同一家族，只是換了指紋。
+
+> **LC 997 = 找一個 node：`in_degree == n - 1` 且 `out_degree == 0`。**
+
+**核心想法，第 1 步 — 老實地把兩種度數都數出來。** 這是應該先寫下來的版本：它和題目敘述的兩句話
+一對一對應，緊張的時候也不會推錯。
+
+<!--CODE-->
+
+**核心想法，第 2 步 — 把兩個陣列摺成一個。** 值得寫第二個版本，因為它把空間砍半，而且多數面試官
+預期看到的就是這一版：追蹤 `score = in_degree - out_degree`，然後掃描找 `n - 1`。
+
+**為什麼可以這樣摺**（把這段講出來 — 這是唯一不顯然的一步）：`in_degree <= n - 1` 恆成立，因為
+`trust` 裡的 pair 不重複而且 `a != b`，最多只有 `n - 1` 個不同的人能信任你。有了這個上限，
+`in - out == n - 1` 就**強迫** `in == n - 1` 且 `out == 0` — 不可能靠很大的入度再被負的出度抵掉來
+湊出 `n - 1`。如果哪天題目允許**重複**的 trust pair，`in_degree` 就可能超過 `n - 1`，這個摺疊會報出
+一個假法官；而第 1 步的版本仍然正確。
 
 <!--CODE-->
 
 <!--CODE-->
+
+**坑**
+
+1. **編號是 1-indexed。** 陣列開 `n + 1`、迴圈跑 `1..n`；開 `n` 的陣列在第 `n` 個人身上就會越界。
+2. **`n == 1` 且 `trust == []`** 必須回傳 `1`。上面兩個版本都免費拿到這個結果 — `n - 1 == 0`，而每個
+   score 都是 `0` — 這也是它們比集合解法好的一個理由，後者需要額外寫 `if n == 1: return 1`。
+3. **不要只驗到「有人信任他、而他不信任任何人」就收手。** 那只是*候選人*。計數必須恰好是 `n - 1`；
+   以 `n = 3, trust = [[1,3]]` 為例，節點 3 通得過這個弱化的檢查，但它不是法官。集合差集的版本
+   （`trusted - trusting`，解題檔裡的 `V2`）正是因為這樣才需要再補一趟 `n - 1` 的驗證 — 程式更長，
+   複雜度一樣。
+4. **`-1` 是一個真正的答案**，不是錯誤分支：有環時（`[[1,3],[2,3],[3,1]]`）沒有人的 `out_degree == 0`。
+
+**相似題目 — 答案就是一個度數指紋**
+
+| 題目 | 難度 | 指紋是什麼、又換了什麼 |
+|---------|------------|-----------------------------------|
+| 997 Find the Town Judge | Easy | `in == n - 1` 且 `out == 0` — 模板本身 |
+| 277 Find the Celebrity | Medium | *同一個*指紋，但邊只能透過 `knows(a, b)` API 取得，所以你數不了度數 — 先用一趟 O(n) 淘汰候選人，再驗證存活者的那一列與那一行 |
+| 2924 Find Champion II | Medium | `in == 0` 而且必須**唯一**：恰好一個入度 0 的節點才回它，否則 `-1` |
+| 2923 Find Champion I | Easy | 和 2924 相同，但給的是鄰接**矩陣** — 找沒有任何入邊 `1` 的那一列 |
+| 1557 Minimum Number of Vertices to Reach All Nodes | Medium | `in == 0`，但要回傳**全部**（上面的模板 10） |
+| 1361 Validate Binary Tree Nodes | Medium | 所有節點 `in <= 1` + 恰好一個 `in == 0` + 一趟可達性檢查（下面的變化 B） |
+| 2374 Node With Highest Edge Score | Medium | 累加的是指進來的**編號總和**，不是次數 — 同樣的一趟掃描，只是換了累加器 |
+| 1615 Maximal Network Rank | Medium | 無向圖，只要一個 `degree` 陣列；一對節點相鄰時，rank 是 `deg(a) + deg(b) - 1` |
 
 <!-- 935c83c03ae0 -->
 #### 變化 B — 度數 + 一次可達性檢查：LC 1361 Validate Binary Tree Nodes
@@ -194,7 +292,7 @@ O(m·n)。當格子大到遞迴可能爆堆疊，或面試官明確要求用拓�
 
 <!--CODE-->
 
-<!-- ad912bb305ff -->
+<!-- 4fb16e93a633 -->
 ## 題目分類
 
 | 題目 | 難度 | 分類 | 關鍵技巧 |
@@ -221,6 +319,10 @@ O(m·n)。當格子大到遞迴可能爆堆疊，或面試官明確要求用拓�
 | [1557. Minimum Number of Vertices to Reach All Nodes](https://leetcode.com/problems/minimum-number-of-vertices-to-reach-all-nodes/) | Medium | 圖的分層 | 入度 0 的集合（模板 10） |
 | [997. Find the Town Judge](https://leetcode.com/problems/find-the-town-judge/) | Easy | 度數計算 | 入／出度特徵（模板 10-A） |
 | [1361. Validate Binary Tree Nodes](https://leetcode.com/problems/validate-binary-tree-nodes/) | Medium | 偵測環 | 入度 + 可達性（模板 10-B） |
+| [1245. Tree Diameter](https://leetcode.com/problems/tree-diameter/) | Medium | 樹的重心 | 葉節點剝除的層數（模板 7） |
+| [2603. Collect Coins in a Tree](https://leetcode.com/problems/collect-coins-in-a-tree/) | Hard | 樹的重心 | 兩階段葉節點剝除（模板 7） |
+| [277. Find the Celebrity](https://leetcode.com/problems/find-the-celebrity/) | Medium | 度數計算 | 和 997 同一個指紋，但邊只能透過 API 問（模板 10-A） |
+| [2924. Find Champion II](https://leetcode.com/problems/find-champion-ii/) | Medium | 度數計算 | 唯一那個入度 0 的節點（模板 10-A） |
 
 <!-- 55af032267a6 -->
 ### 依分類整理的題型
@@ -267,12 +369,14 @@ O(m·n)。當格子大到遞迴可能爆堆疊，或面試官明確要求用拓�
 | 路徑值最大化 | 1857 | DAG 上的 DP |
 | 隱式 DAG 上的最長路徑 | 329 | 邊由 `a < b` 隱含；層數 = 路徑長度 |
 
-<!-- 7b6d4d1fb400 -->
+<!-- ea0da5eaf3d9 -->
 #### 度數計算（不需遍歷）
 | 模式 | 題目 | 關鍵洞見 |
 |---------|----------|-------------|
 | 最小起始集合 | 1557 | 在 DAG 上答案就是入度 0 的節點 |
-| 節點指紋 | 997 | 法官 = 入度 `n-1` 且出度 `0` |
+| 節點指紋 | 997、277 | 法官／名人 = 入度 `n-1` 且出度 `0`；可摺成 `score = in - out == n - 1` |
+| 唯一源點 | 2924、2923 | 冠軍 = **唯一**那個入度 0 的節點，否則 `-1` |
+| 帶權度數 | 2374、1615 | 累加編號或單純的度數，而不是數邊 |
 | 驗證樹的形狀 | 1361 | 入度 ≤ 1 + 唯一的根 + 根能到達全部 n 個節點 |
 
 <!-- c3c19e60c737 -->
@@ -291,15 +395,27 @@ O(m·n)。當格子大到遞迴可能爆堆疊，或面試官明確要求用拓�
 | 找出多餘的邊 | 684 | 併查集偵測環 |
 | 島嶼數量 | 200 | 在格子上做 DFS/BFS |
 
-<!-- aea0e621e8b1 -->
+<!-- 234515dabd8e -->
 #### 找樹的重心
-| 模式 | 題目 | 關鍵洞見 |
-|---------|----------|-------------|
-| 找出樹的中心 | 310 | 逐層剝除葉節點（由外向內的多源 BFS） |
-| 最小高度樹 | 310 | 從葉節點開始 BFS，剩 1-2 個節點時停止 |
-| 與樹直徑相關 | 310、1245 | 重心位在直徑的中點 |
-| 剪葉／收集硬幣 | 2603 | 剝掉葉節點以移除不必要的節點 |
-| 樹中距離總和 | 834 | 換根 DP，與重心概念相關 |
+
+**同一套機制** — 建 degree 陣列、用葉節點當佇列種子、由外往內剝（模板 7）：
+
+| 題目 | 難度 | 和 LC 310 的差別 |
+|---------|------------|------------------------|
+| 310 Minimum Height Trees | Medium | 模板本身 — 剝到 `remaining <= 2`，回傳存活的節點 |
+| 1245 Tree Diameter | Medium | 讀的是**剝了幾層**而不是存活者：剩 1 個是 `2 * layers`，剩 2 個是 `2 * layers + 1`。（課本解法是兩次 BFS；這裡是重用同一套剝除。） |
+| 2603 Collect Coins in a Tree | Hard | 剝**兩輪**：先反覆丟掉身上沒有硬幣的葉節點，再丟掉剛好 2 層葉節點；答案 = `2 * remaining_edges` |
+| 802 Find Eventual Safe States | Medium | 有向版的表親 — 以 `out_degree == 0` 當種子剝反向圖，存活下來的是*不安全*的節點 |
+
+**同一棵樹，換工具** — 當答案不是樹的正中間時，改用這些：
+
+| 題目 | 難度 | 為什麼葉節點剝除不適用 |
+|---------|------------|----------------------------------|
+| 543 Diameter of Binary Tree | Easy | 樹已經有根了 — 一趟回傳高度的 DFS 就好，不必算度數 |
+| 1522 Diameter of N-Ary Tree | Medium | 同樣的 DFS，取最大的兩個子節點高度相加 |
+| 834 Sum of Distances in Tree | Hard | 要的是**每個**節點的答案 → 換根 DP，不是剝一次就好 |
+| 863 All Nodes Distance K in Binary Tree | Medium | 先補上父節點連結，再從某個節點**往外** BFS，方向剛好相反 |
+| 1443 Minimum Time to Collect All Apples in a Tree | Medium | 剪的依據是*內容*（子樹裡沒有蘋果），不是度數 |
 
 <!-- 8f6ae47f1610 -->
 ## 決策框架

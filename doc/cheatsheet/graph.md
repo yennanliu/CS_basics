@@ -180,7 +180,9 @@ for u, v in edges:
 - **Directed**: sources have `in_deg == 0` (Kahn's starting set, Template 4); sinks have
   `out_deg == 0` (LC 802 eventual safe states).
 - Some problems are answered by the degrees alone, with no traversal — LC 997 Find the
-  Town Judge (`in == n-1 and out == 0`), LC 1361 Validate Binary Tree Nodes.
+  Town Judge (`in == n-1 and out == 0`), LC 2924 Find Champion II (`in == 0`, and unique),
+  LC 1361 Validate Binary Tree Nodes. The pattern and its pitfalls live in
+  [topology_sorting.md](./topology_sorting.md#template-10-in-degree-signature-answer-read-straight-off-the-degrees-).
 
 <p align="center"><img src="../pic/graph_rep1.png"></p>
 
@@ -646,7 +648,7 @@ Graph Algorithm Selection Flowchart:
 | All Paths From Source to Target | 797 | DFS backtracking on a DAG | Medium |
 | Keys and Rooms | 841 | Plain DFS/BFS reachability from node 0 | Medium |
 | Find if Path Exists in Graph | 1971 | BFS/DFS or Union-Find connectivity | Easy |
-| Find the Town Judge | 997 | In-degree/out-degree counting, no adjacency list needed | Easy |
+| Find the Town Judge | 997 | In-degree/out-degree counting, no adjacency list needed — [topology_sorting.md](./topology_sorting.md#variation-a--degree-signature-lookup-lc-997-find-the-town-judge) | Easy |
 
 #### **Shortest Path Problems**
 | Problem | LC # | Key Technique | Difficulty |

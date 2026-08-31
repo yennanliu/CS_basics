@@ -1,6 +1,6 @@
 # Progress
 
-# 2026-08-31
+# 2026-09-01
 
 - TODO:
 	- `must_lc_list.md` (1st done)

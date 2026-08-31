@@ -144,7 +144,7 @@ Bellman-Ford 就把它掃 `V-1` 次。
 #### **把網格當成圖**
 <!--CODE-->
 
-<!-- 9b9d01e789c5 -->
+<!-- ca0b0dcff6d3 -->
 #### **有向 vs 無向，以及入分支度／出分支度**
 <!--CODE-->
 
@@ -152,7 +152,9 @@ Bellman-Ford 就把它掃 `V-1` 次。
 - **有向圖**：源點的 `in_deg == 0`（Kahn 的起始集合，模板 4）；匯點的 `out_deg == 0`
   （LC 802 最終安全狀態）。
 - 有些題目光靠分支度就能回答，根本不用走訪 — LC 997 Find the
-  Town Judge（`in == n-1 and out == 0`）、LC 1361 Validate Binary Tree Nodes。
+  Town Judge（`in == n-1 and out == 0`）、LC 2924 Find Champion II（`in == 0`，而且唯一）、
+  LC 1361 Validate Binary Tree Nodes。這個模式與它的各種坑放在
+  [topology_sorting.md](./topology_sorting.md#template-10-in-degree-signature-answer-read-straight-off-the-degrees-)。
 
 <p align="center"><img src="../pic/graph_rep1.png"></p>
 
@@ -330,7 +332,7 @@ Bellman-Ford 就把它掃 `V-1` 次。
 <!-- cd45b05eef8f -->
 ### 依模式分類的題目
 
-<!-- c56c27230e21 -->
+<!-- b7febb271cea -->
 #### **圖走訪類題目**
 | 題目 | LC # | 關鍵技巧 | 難度 |
 |---------|------|---------------|------------|
@@ -345,7 +347,7 @@ Bellman-Ford 就把它掃 `V-1` 次。
 | All Paths From Source to Target | 797 | DAG 上的 DFS 回溯 | Medium |
 | Keys and Rooms | 841 | 從節點 0 出發的單純 DFS/BFS 可達性 | Medium |
 | Find if Path Exists in Graph | 1971 | BFS/DFS 或併查集判連通 | Easy |
-| Find the Town Judge | 997 | 統計入／出分支度，不需要鄰接串列 | Easy |
+| Find the Town Judge | 997 | 統計入／出分支度，不需要鄰接串列 — [topology_sorting.md](./topology_sorting.md#variation-a--degree-signature-lookup-lc-997-find-the-town-judge) | Easy |
 
 <!-- c29a8d23bb2b -->
 #### **最短路徑類題目**

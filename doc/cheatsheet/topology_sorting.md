@@ -34,6 +34,7 @@ Topological sorting is a linear ordering of vertices in a Directed Acyclic Graph
 - [NumberOfProvinces.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/DFS/NumberOfProvinces.java) (Connected Components / Union Find)
 - [MinimumHeightTrees.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/BFS/MinimumHeightTrees.java) (Tree Centroid Finding)
 - [minimum-height-trees.py](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/minimum-height-trees.py) (LC 310 — the leaf-trimming solutions plus the O(n^2) brute force to contrast against)
+- [find-the-town-judge.py](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Graph/find-the-town-judge.py) (LC 997 — the degree-signature counting solution and the set-difference alternative)
 
 ## Problem Categories
 
@@ -859,7 +860,7 @@ before all nodes are popped, there is a cycle → return `-1`.
 
 ---
 
-### Template 10: In-Degree Signature (answer read straight off the degrees)
+### Template 10: In-Degree Signature (answer read straight off the degrees) ⭐⭐⭐⭐
 
 **Key Idea**: some "graph" problems never need the traversal at all — the answer is fully
 determined by **in-degree / out-degree counts**. Recognising this turns a Medium into 3 lines.
@@ -903,8 +904,53 @@ def findSmallestSetOfVertices(n, edges):
 
 #### Variation A — degree *signature* lookup: LC 997 Find the Town Judge
 
-**Twist**: instead of in-degree 0, look for one exact fingerprint — `inDegree = n - 1` **and**
-`outDegree = 0`. Fold both into a single `score = inDegree - outDegree` array and scan for `n - 1`.
+**LC Pattern** — the tell is that the wanted node is described *entirely by how many edges touch
+it*, never by what it can reach:
+
+| Signal in the statement | What it means |
+|---|---|
+| "the judge **trusts nobody**" | `out_degree == 0` |
+| "**everybody except** the judge trusts the judge" | `in_degree == n - 1` |
+| "there is **exactly one** such person" | scan for the fingerprint; `-1` if no node has it |
+
+Nothing here asks *who reaches whom*, so **no adjacency list, no queue, no DFS** — two counter
+arrays and two passes. Same family as LC 1557 (`in_degree == 0`) above; only the fingerprint changes.
+
+> **LC 997 = find the node with `in_degree == n - 1` and `out_degree == 0`.**
+
+**Core Idea, step 1 — count both degrees literally.** This is what to write first: it maps
+one-to-one onto the two sentences in the statement, so it cannot be mis-derived under pressure.
+
+```python
+# python
+# LC 997 - Find the Town Judge
+# IDEA: judge == trusted by everyone else (in = n-1) and trusts nobody (out = 0)
+def findJudge(n, trust):
+    # time = O(V + E), space = O(V)
+    # labels are 1..n, so size n + 1 and ignore index 0
+    in_degree = [0] * (n + 1)
+    out_degree = [0] * (n + 1)
+
+    for a, b in trust:          # a trusts b
+        out_degree[a] += 1
+        in_degree[b] += 1
+
+    for person in range(1, n + 1):
+        if out_degree[person] == 0 and in_degree[person] == n - 1:
+            return person
+    return -1
+```
+
+**Core Idea, step 2 — fold the two arrays into one.** Worth the second variant because it halves the
+space and is the version most interviewers expect: track `score = in_degree - out_degree` and scan
+for `n - 1`.
+
+**Why the fold is safe** (say this out loud — it is the only non-obvious step): `in_degree <= n - 1`
+always, because the pairs in `trust` are unique and `a != b`, so at most `n - 1` distinct people can
+trust you. Given that cap, `in - out == n - 1` **forces** `in == n - 1` and `out == 0` — there is no
+way to reach `n - 1` by having a large in-degree offset by a negative out-degree. If the problem ever
+allowed **duplicate** trust pairs, `in_degree` could exceed `n - 1` and this fold would report a
+false judge; step 1 would still be correct.
 
 ```java
 // java
@@ -933,13 +979,40 @@ def findJudge(n, trust):
     # time = O(V + E), space = O(V)
     score = [0] * (n + 1)
     for a, b in trust:
-        score[a] -= 1
-        score[b] += 1
+        score[a] -= 1   # a trusts someone -> out-degree
+        score[b] += 1   # b is trusted     -> in-degree
     for i in range(1, n + 1):
         if score[i] == n - 1:
             return i
     return -1
 ```
+
+**Pitfalls**
+
+1. **Labels are 1-indexed.** Allocate `n + 1` and loop `1..n`; a size-`n` array is an off-by-one
+   crash on person `n`.
+2. **`n == 1` with `trust == []`** must return `1`. Both forms above get it for free — `n - 1 == 0`
+   and every score is `0` — which is a reason to prefer them over the set-based approach, which
+   needs an explicit `if n == 1: return 1` guard.
+3. **Don't stop at "trusted by someone and trusts nobody".** That is only a *candidate*. The count
+   must be exactly `n - 1`; with `n = 3, trust = [[1,3]]` node 3 passes the weak test and is not the
+   judge. The set-difference variant (`trusted - trusting`, `V2` in the solution file) needs a
+   separate `n - 1` verification pass for exactly this reason — more code, same complexity.
+4. **`-1` is a real answer**, not an error path: a cycle (`[[1,3],[2,3],[3,1]]`) leaves nobody with
+   `out_degree == 0`.
+
+**Similar problems — the answer is a degree fingerprint**
+
+| Problem | Difficulty | The fingerprint, and what changes |
+|---------|------------|-----------------------------------|
+| 997 Find the Town Judge | Easy | `in == n - 1` and `out == 0` — the template |
+| 277 Find the Celebrity | Medium | *same* fingerprint, but edges are only reachable through a `knows(a, b)` API, so you cannot count degrees — eliminate candidates in one O(n) sweep, then verify the survivor's row and column |
+| 2924 Find Champion II | Medium | `in == 0` and it must be **unique**: exactly one in-degree-0 node ⇒ that node, otherwise `-1` |
+| 2923 Find Champion I | Easy | same as 2924, given as an adjacency **matrix** — find the row with no incoming `1` |
+| 1557 Minimum Number of Vertices to Reach All Nodes | Medium | `in == 0`, but return **all** of them (Template 10 above) |
+| 1361 Validate Binary Tree Nodes | Medium | `in <= 1` for all + exactly one `in == 0` + a reachability pass (Variation B below) |
+| 2374 Node With Highest Edge Score | Medium | accumulate the **sum of labels** pointing in, not a count — same one-pass shape, different accumulator |
+| 1615 Maximal Network Rank | Medium | undirected, so one `degree` array; rank of a pair is `deg(a) + deg(b) - 1` when they are adjacent |
 
 #### Variation B — degrees + one reachability pass: LC 1361 Validate Binary Tree Nodes
 
@@ -1049,6 +1122,8 @@ def validateBinaryTreeNodes(n, leftChild, rightChild):
 | [1361. Validate Binary Tree Nodes](https://leetcode.com/problems/validate-binary-tree-nodes/) | Medium | Cycle Detection | In-degree + reachability (Template 10-B) |
 | [1245. Tree Diameter](https://leetcode.com/problems/tree-diameter/) | Medium | Tree Centroid | Leaf trimming layer count (Template 7) |
 | [2603. Collect Coins in a Tree](https://leetcode.com/problems/collect-coins-in-a-tree/) | Hard | Tree Centroid | Two-stage leaf trimming (Template 7) |
+| [277. Find the Celebrity](https://leetcode.com/problems/find-the-celebrity/) | Medium | Degree Counting | Same fingerprint as 997, API-only edges (Template 10-A) |
+| [2924. Find Champion II](https://leetcode.com/problems/find-champion-ii/) | Medium | Degree Counting | Unique in-degree-0 node (Template 10-A) |
 
 ### Problem Patterns by Category
 
@@ -1093,7 +1168,9 @@ def validateBinaryTreeNodes(n, leftChild, rightChild):
 | Pattern | Problems | Key Insight |
 |---------|----------|-------------|
 | Minimal Start Set | 1557 | On a DAG the answer is exactly the in-degree-0 nodes |
-| Node Fingerprint | 997 | Judge = in-degree `n-1` and out-degree `0` |
+| Node Fingerprint | 997, 277 | Judge / celebrity = in-degree `n-1` and out-degree `0`; fold to `score = in - out == n - 1` |
+| Unique Source | 2924, 2923 | Champion = the **only** in-degree-0 node, else `-1` |
+| Weighted Degree | 2374, 1615 | Accumulate labels or plain degrees instead of counting edges |
 | Validate Tree Shape | 1361 | in-degree ≤ 1 + one root + root reaches all n |
 
 #### Cycle Detection
