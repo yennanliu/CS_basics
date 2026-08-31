@@ -141,7 +141,7 @@ Apache Flink can be deployed and configured in below ways.
 		- CheckpointBarrier is a special event, will flow to downstream operator, ONLY when skink operator receive it, we say checkpoint completed
 		- NOTE : CheckpointBarrier sync time also need to be considered
 	<p align="center"><img src="../../pic/checkpoint2.png"></p>
-	<p align="center"><img src="../../pic/checkpoint3.png"></p>
+	<p align="center"><img src="../../pic/Checkpoint3.png"></p>
 - `CheckpointCoordinator` is an important class in Checkpoint op
 	- it has below important methods
 		- triggerCheckpoint

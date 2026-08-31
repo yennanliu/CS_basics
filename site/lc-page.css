@@ -1,0 +1,67 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   CS_basics — shared chrome for the hand-maintained LC tool pages
+
+   lc-explorer, lc-similar, lc-review-plan, lc-random-picker,
+   lc-complexity-quiz and 404 are written by hand rather than generated from
+   markdown, so they never picked up style.css. Each one grew its own copy of
+   the colour tokens instead — five hand-maintained palettes that had already
+   drifted (--border was #1f1f1f on three pages and #222222 on a fourth), and
+   five pages with no footer at all, because the footer lived in the generated
+   template none of them use.
+
+   They still cannot take style.css wholesale: it sets the body font, the
+   container width and a full table treatment that their bespoke layouts do not
+   want. So this file is the *overlap* only — the palette, the footer and the
+   skip link — and nothing that would reach into a page's own layout.
+
+   A page keeps declaring the extra tokens it alone needs (--surface2 on the
+   review plan, --code-* on the quiz) after linking this.
+   ───────────────────────────────────────────────────────────────────────── */
+
+:root {
+  --bg: #ffffff;
+  --surface: #f0f0f0;
+  --text: #000000;
+  --text-light: #555555;
+  --border: #cccccc;
+  --radius: 0px;
+  --accent: #000000;
+  --accent2: #555555;
+  /* Difficulty is carried by lightness, not hue — the site is monochrome and
+     the three values have to stay distinguishable in both themes. */
+  --easy: #000000;
+  --medium: #555555;
+  --hard: #888888;
+}
+
+[data-theme="dark"] {
+  --bg: #000000;
+  --surface: #111111;
+  --text: #ffffff;
+  --text-light: #8a8a8a;
+  --border: #1f1f1f;
+  --accent: #ffffff;
+  --accent2: #aaaaaa;
+  --easy: #ffffff;
+  --medium: #aaaaaa;
+  --hard: #666666;
+}
+
+/* ── Footer ───────────────────────────────────────────────────────────────
+   Kept byte-identical in effect to style.css's footer so the two page
+   families do not end their pages differently. */
+footer {
+  background: var(--surface);
+  padding: 24px 0;
+  margin-top: 48px;
+  text-align: center;
+  color: var(--text-light);
+  border-top: 1px solid var(--border);
+}
+footer .container { padding: 0 16px; }
+footer p { margin: 4px 0; font-size: 14px; }
+footer a { color: var(--text-light); margin: 0 8px; }
+footer a:hover { color: var(--text); }
+
+/* The skip link and the reduced-motion opt-out live in nav.css, which every
+   page family loads alongside nav.js. */

@@ -35,9 +35,10 @@ node site/build-site.js       # doc/**.md      -> HTML pages + search index
 node site/build-leetcode.js   # leetcode_*/**  -> _site/data/lc-problems.json
 node site/build-roadmap.js    # data/roadmap.json + README.md -> _site/data/roadmap.json
 node site/build-quiz.js       # data/complexity_quiz.json + README.md -> _site/data/complexity-quiz.json
+node site/build-review-plan.js # data/progress.txt -> _site/data/progress.json
 
 # ── Shared CSS + JS ───────────────────────────────────────────────────────────
-cp site/style.css site/nav.css site/nav.js site/site.js site/roadmap.js site/complexity.js _site/
+cp site/style.css site/nav.css site/lc-page.css site/nav.js site/site.js site/roadmap.js site/complexity.js _site/
 
 # ── Hand-maintained static pages (LC tools, 404) ──────────────────────────────
 cp site/pages/*.html _site/
@@ -45,6 +46,11 @@ cp site/pages/*.html _site/
 # ── Vendor assets ─────────────────────────────────────────────────────────────
 cp site/node_modules/highlight.js/styles/atom-one-dark.min.css _site/vendor/highlight/atom-one-dark.min.css
 cp vendor/fonts.css _site/vendor/fonts.css
+# lc-similar.html used to pull d3 straight off d3js.org — the site's only
+# third-party runtime dependency, unpinned and without an integrity hash, on a
+# page that is unusable if the request fails. It is a build dependency now, so
+# the version is locked in package-lock.json like everything else.
+cp site/node_modules/d3/dist/d3.min.js _site/vendor/d3.min.js
 
 if [ "${SKIP_FONTS:-0}" = "1" ]; then
   echo "→ SKIP_FONTS=1, not downloading web fonts (vendor/fonts.css declares fallbacks)"
@@ -60,4 +66,10 @@ if [ -d algo_demo ]; then
   cp -r algo_demo _site/algo_demo
 fi
 
-echo "✓ _site built ($(find _site -type f | wc -l | tr -d ' ') files)"
+# ── Finishing passes ──────────────────────────────────────────────────────────
+# Both need the *whole* tree in place, so they run last: the hand-written pages
+# above are copied, not generated, and no generator can see them.
+node site/finalize-pages.js  # canonical / og / twitter tags, sitemap.xml, robots.txt
+node site/prune-images.js    # drop doc/pic images no page references
+
+echo "✓ _site built ($(find _site -type f | wc -l | tr -d ' ') files, $(du -sh _site | cut -f1))"
