@@ -224,3 +224,39 @@
 @media print {
   .navbar, .nav-toggle { display: none !important; }
 }
+
+/* ── Skip link ────────────────────────────────────────────────────────────
+   Rendered by nav.js as the navbar's first child, so it reaches every page
+   family from one place. Off-screen until focused; mount() guarantees the
+   #main it targets exists.
+
+   Uses the same token aliases as the bar above so it does not depend on any
+   one page family's palette. */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 200;
+  padding: 10px 16px;
+  background: var(--text, #000000);
+  color: var(--bg, #ffffff);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+}
+.skip-link:focus,
+.skip-link:focus-visible { left: 0; }
+
+/* ── Motion ───────────────────────────────────────────────────────────────
+   The site animates the nav drawer, the theme swap, smooth scrolling, the
+   reading-progress bar, graph edges and the visualizers. This is the one
+   stylesheet every page loads, so the opt-out belongs here rather than being
+   repeated — or forgotten — in each of the four page families' own CSS. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

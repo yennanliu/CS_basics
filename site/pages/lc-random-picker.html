@@ -9,18 +9,12 @@
   <title>Random LC Picker - CS Basics</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎲</text></svg>">
   <link rel="stylesheet" href="nav.css">
+  <link rel="stylesheet" href="lc-page.css">
   <!-- Blocking on purpose: nav.js restores the stored theme before first paint. -->
   <script src="nav.js"></script>
   <style>
     * { box-sizing: border-box; }
-    :root {
-      --bg: #ffffff; --surface: #f0f0f0; --text: #000000;
-      --text-light: #555555; --border: #cccccc; --radius: 0px; --accent: #000000;
-    }
-    [data-theme="dark"] {
-      --bg: #000000; --surface: #111111; --text: #ffffff;
-      --text-light: #8a8a8a; --border: #1f1f1f; --accent: #ffffff;
-    }
+    /* Palette and footer: lc-page.css. Page-specific tokens only below. */
     body {
       margin: 0; padding: 0;
       font-family: 'SF Mono','JetBrains Mono','IBM Plex Mono',ui-monospace,'Menlo',monospace;
@@ -399,5 +393,17 @@
 
     loadData();
   </script>
+
+<footer>
+  <div class="container">
+    <p>CS_basics — computer science fundamentals &amp; interview preparation</p>
+    <p>
+      <a href="https://github.com/yennanliu/CS_basics">github</a> |
+      <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+      <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
+    </p>
+  </div>
+</footer>
+
 </body>
 </html>
