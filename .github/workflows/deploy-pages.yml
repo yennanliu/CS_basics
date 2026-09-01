@@ -53,6 +53,13 @@ jobs:
     - name: Build site
       run: bash site/build.sh
 
+    # The same gate validate-pages.yml runs on a PR, repeated here so a push that
+    # skipped that workflow's path filter still cannot publish a broken tree —
+    # dead links and missing pages are cheaper to catch before they go live than
+    # after.
+    - name: Validate the generated site
+      run: node site/e2e-check.js _site
+
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
 

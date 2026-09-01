@@ -1,17 +1,82 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>404 - Page Not Found</title>
-  <link rel="stylesheet" href="/CS_basics/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <title>Page Not Found — CS_basics</title>
+  <meta name="description" content="That page does not exist. Search the cheatsheets, FAQs and LeetCode problems, or head back to the index.">
+  <link rel="canonical" href="https://yennanliu.github.io/CS_basics/404.html">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
+  <script>
+  // GitHub Pages serves this one file for a request to *any* unmatched path, and
+  // the browser keeps that path in the address bar — so a request for
+  // /CS_basics/cheatsheets/typo.html resolves "nav.js" to
+  // /CS_basics/cheatsheets/nav.js and the page loads with no navbar, no styles
+  // and a CSNav.mount() that throws. A <base> written before the first asset tag
+  // pins every relative href on the page to the site root instead.
+  //
+  // The old version dodged this by hardcoding "/CS_basics/style.css", which
+  // could not be previewed locally, and by sending "Go Home" to "/", which left
+  // the reader on github.io rather than on this site.
+  (function () {
+    // The deploy is a GitHub Pages *project* site, so the repo name is the first
+    // path segment. A local preview (python3 -m http.server -d _site) has none.
+    var REPO = 'CS_basics';
+    var first = location.pathname.split('/')[1];
+    document.write('<base href="' + (first === REPO ? '/' + REPO + '/' : '/') + '">');
+  })();
+  </script>
+  <link rel="stylesheet" href="nav.css">
+  <link rel="stylesheet" href="lc-page.css">
+  <!-- Blocking on purpose: nav.js restores the stored theme before first paint. -->
+  <script src="nav.js"></script>
+  <style>
+    body {
+      background: var(--bg); color: var(--text); margin: 0;
+      font-family: 'SF Mono', 'JetBrains Mono', ui-monospace, Menlo, monospace;
+      min-height: 100vh; display: flex; flex-direction: column;
+    }
+    .nf { flex: 1; max-width: 640px; margin: 0 auto; padding: 96px 24px 48px; text-align: center; }
+    .nf-code { font-size: 88px; line-height: 1; letter-spacing: -0.04em; margin: 0; }
+    .nf h1 { font-size: 20px; font-weight: 600; margin: 16px 0 8px; }
+    .nf p { color: var(--text-light); font-size: 14px; line-height: 1.7; margin: 0 0 32px; }
+    .nf-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .nf-actions a {
+      display: inline-block; padding: 10px 20px; font-size: 14px; text-decoration: none;
+      border: 1px solid var(--border); color: var(--text); background: var(--surface);
+    }
+    .nf-actions a:hover { border-color: var(--text); }
+    .nf-actions a.primary { background: var(--text); color: var(--bg); border-color: var(--text); }
+    @media (max-width: 600px) { .nf { padding-top: 56px; } .nf-code { font-size: 64px; } }
+  </style>
 </head>
 <body>
-  <div class="container" style="text-align: center; padding: 4rem 2rem;">
-    <h1 style="font-size: 4rem; margin-bottom: 1rem;">404</h1>
-    <h2>Page Not Found</h2>
-    <p style="margin: 2rem 0;">The page you're looking for doesn't exist.</p>
-    <a href="/" style="display: inline-block; padding: 0.75rem 1.5rem; background: #222; color: white; border-radius: 6px; text-decoration: none;">Go Home</a>
+
+<div id="site-nav" data-page="" data-base=""></div>
+<script>CSNav.mount();</script>
+
+<main class="nf" id="main">
+  <p class="nf-code">404</p>
+  <h1>No page at this address</h1>
+  <p>The link may be out of date, or the page may have been renamed. Search covers every cheatsheet, FAQ and LeetCode problem in the repo.</p>
+  <div class="nf-actions">
+    <a class="primary" href="search.html">Search the site</a>
+    <a href="index.html">Home</a>
+    <a href="cheatsheets.html">Cheat sheets</a>
   </div>
+</main>
+
+<footer>
+  <div class="container">
+    <p>CS_basics — computer science fundamentals &amp; interview preparation</p>
+    <p>
+      <a href="https://github.com/yennanliu/CS_basics">github</a> |
+      <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+      <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
+    </p>
+  </div>
+</footer>
+
 </body>
 </html>

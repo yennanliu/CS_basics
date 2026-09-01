@@ -10,7 +10,7 @@
 - [Hash Table](https://leetcode.com/problem-list/hash-table/)
 - [Ordered Set](https://leetcode.com/problem-list/ordered-set/)
 
-<!-- 7be7951f4848 -->
+<!-- 979516f4ec25 -->
 ## 時間複雜度
 
 | 資料結構 | 搜尋   | 插入   | 刪除   | 最小／最大  |
@@ -18,8 +18,6 @@
 | Hash Set（平均） | O(1)     | O(1)     | O(1)     | O(n)     |
 
 > 表中是平均情況。**最壞情況（所有元素都碰撞）：O(n)。** 取最小／最大值要整個掃一遍（雜湊本身不保證順序）。兩個集合的聯集／交集是 **O(min(len(s1), len(s2)))**。空間是 **O(n)**。
-
-<img src="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/set_operations.png">
 
 <!-- 637b9b4e53f2 -->
 ## 總覽

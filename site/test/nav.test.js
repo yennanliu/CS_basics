@@ -284,3 +284,73 @@ test('mount leaves the bar untouched on a page with no translation', () => {
   CSNav.mount();
   assert.equal(host.querySelector('.lang-toggle'), null);
 });
+
+// ── Skip link ─────────────────────────────────────────────────────────────
+//
+// It ships with the navbar rather than with each page, because nav.js is the one
+// file all four page families load.
+
+test('navHTML leads with a skip link', () => {
+  assert.ok(CSNav.navHTML().startsWith('<a class="skip-link" href="#main">'));
+});
+
+test('mount labels the page content so the skip link has somewhere to land', () => {
+  setupDOM('<div id="site-nav"></div><main class="container">body</main>');
+  CSNav.mount();
+  assert.equal(document.querySelector('main').id, 'main');
+});
+
+test('mount falls back to the content container when a page has no <main>', () => {
+  // The hand-written LC tools wrap their content in a bare <div class="container">.
+  setupDOM('<div id="site-nav"></div><div class="container">body</div>');
+  CSNav.mount();
+  assert.equal(document.querySelector('.container').id, 'main');
+});
+
+test('mount does not relabel a page that already names its own #main', () => {
+  setupDOM('<div id="site-nav"></div><main class="nf" id="main">body</main>' +
+           '<div class="container">footer</div>');
+  CSNav.mount();
+  assert.equal(document.querySelector('.container').id, '');
+});
+
+// ── Search shortcut ───────────────────────────────────────────────────────
+
+/** Dispatches a keydown carrying modifiers, which the shared helper cannot. */
+function press(key, init) {
+  const event = new global.window.KeyboardEvent('keydown',
+    Object.assign({ key, bubbles: true, cancelable: true }, init));
+  global.document.dispatchEvent(event);
+  return event;
+}
+
+test('"/" focuses the search box when the page has one', () => {
+  setupDOM('<div id="site-nav"></div><input id="q">');
+  CSNav.mount();
+  const event = press('/');
+  assert.equal(document.activeElement, document.getElementById('q'));
+  assert.ok(event.defaultPrevented);
+});
+
+test('cmd-K does the same', () => {
+  setupDOM('<div id="site-nav"></div><input id="q">');
+  CSNav.mount();
+  press('k', { metaKey: true });
+  assert.equal(document.activeElement, document.getElementById('q'));
+});
+
+test('the shortcut leaves a keystroke alone while the reader is typing', () => {
+  setupDOM('<div id="site-nav"></div><input id="filter"><input id="q">');
+  CSNav.mount();
+  document.getElementById('filter').focus();
+  const event = press('/');
+  assert.ok(!event.defaultPrevented, 'a "/" typed into a filter box must reach it');
+  assert.equal(document.activeElement, document.getElementById('filter'));
+});
+
+test('a plain letter is not a shortcut', () => {
+  setupDOM('<div id="site-nav"></div><input id="q">');
+  CSNav.mount();
+  const event = press('k');
+  assert.ok(!event.defaultPrevented);
+});

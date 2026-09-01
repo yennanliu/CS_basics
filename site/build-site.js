@@ -96,10 +96,56 @@ function wrapCodeBlocks(html) {
   );
 }
 
-function processLinks(html, siblingMdToHtml = false) {
+// ── Markdown link resolution ─────────────────────────────────────────────────
+//
+// Every .md link in the source tree has to become either a page on this site or
+// a GitHub URL, and which one it is depends on whether that markdown file gets
+// built. `mdToPage` is that answer, filled in by registerPages() before anything
+// renders: repo-relative source path → site-root-relative output URL.
+//
+// This used to be pattern matching on the href text — `./x.md` inside a
+// cheatsheet became `x.html`, everything else became a GitHub URL. That handled
+// the ./-prefixed sibling link the style guide asks for and nothing else, so the
+// ~120 links written as a bare `design.md`, a cross-tree `../faq/java/faq_OOP.md`
+// or a stale `kadane_algo.md` all shipped as dead ends. Resolving against a real
+// map of built pages means a link is a local page exactly when the target is one.
+const mdToPage = new Map();
+
+function registerPage(srcPath, url) {
+  mdToPage.set(path.posix.normalize(srcPath), url);
+}
+
+// Where a link's target sits relative to the page doing the linking. Cheatsheet
+// siblings keep coming out as a bare "bst.html", which the zh pass relies on to
+// spot a link it should point at the translated page instead.
+function pageHref(outDir, url) {
+  const rel = outDir ? path.posix.relative(outDir, url) : url;
+  return rel || url;
+}
+
+const GITHUB_BLOB = 'https://github.com/yennanliu/CS_basics/blob/master/';
+
+function resolveDocLink(href, srcDir, outDir) {
+  const [target, hash = ''] = href.split(/(#.*)$/, 2);
+  if (!target.endsWith('.md')) return null;
+  const abs = path.posix.normalize(path.posix.join(srcDir, target));
+  // A link that climbs out of the repo is not ours to rewrite.
+  if (abs.startsWith('../')) return null;
+  const page = mdToPage.get(abs);
+  return page ? pageHref(outDir, page) + hash : GITHUB_BLOB + abs;
+}
+
+function processLinks(html, srcDir = '.', outDir = '') {
+  // A hand-written absolute GitHub link to a cheatsheet is really an internal
+  // link. It only becomes one if that sheet is actually built — otherwise it
+  // stays a GitHub URL rather than turning into a page that does not exist,
+  // which is how `kadane_algo.md` used to ship as a dead `kadane_algo.html`.
   html = html.replace(
-    /https:\/\/github\.com\/yennanliu\/CS_basics\/blob\/master\/doc\/cheatsheet\/([^")\s]+\.md)/g,
-    (_, filename) => filename.replace('.md', '') + '.html'
+    /https:\/\/github\.com\/yennanliu\/CS_basics\/blob\/master\/(doc\/[^")\s]+\.md)/g,
+    (full, srcPath) => {
+      const page = mdToPage.get(path.posix.normalize(srcPath));
+      return page ? pageHref(outDir, page) : full;
+    }
   );
   // GitHub blob image URLs → local paths (handles optional space before =)
   html = html.replace(
@@ -112,27 +158,96 @@ function processLinks(html, siblingMdToHtml = false) {
     /src\s*=\s*"(?:\.\.\/)+pic\/([^"]+)"/g,
     'src="doc/pic/$1"'
   );
-  // Relative code links → absolute GitHub URLs, except internal cheatsheet .md links
+  // Every remaining relative link: a built page if the target is one, a GitHub
+  // URL otherwise. Anything already absolute (http, mailto, #anchor) is skipped.
   html = html.replace(
-    /href="\.\/([^"]+)"/g,
-    (_, relativePath) => {
-      if (relativePath.startsWith('doc/cheatsheet/') && relativePath.endsWith('.md')) {
-        return `href="${relativePath.replace('doc/cheatsheet/', '').replace('.md', '.html')}"`;
-      }
-      // Sibling link inside a cheatsheet, e.g. ./bst.md or ./heap.md#overview
-      // → resolve to the built page (which lives in the same output dir)
-      if (siblingMdToHtml && !relativePath.includes('/')) {
-        const m = relativePath.match(/^([^#]+)\.md(#.*)?$/);
-        if (m) return `href="${m[1]}.html${m[2] || ''}"`;
-      }
-      return `href="https://github.com/yennanliu/CS_basics/blob/master/${relativePath}"`;
+    /href="([^"]+)"/g,
+    (full, href) => {
+      if (/^([a-z][a-z0-9+.-]*:|\/\/|#)/i.test(href)) return full;
+      const resolved = resolveDocLink(href.replace(/^\.\//, ''), srcDir, outDir);
+      if (resolved) return `href="${resolved}"`;
+      // Not markdown — a source file, a directory, an asset. Those live in the
+      // repo, not on this site, so they point at GitHub.
+      if (href.endsWith('.html') || href.startsWith('doc/pic/')) return full;
+      const abs = path.posix.normalize(path.posix.join(srcDir, href.replace(/^\.\//, '')));
+      if (abs.startsWith('../')) return full;
+      return `href="${GITHUB_BLOB}${abs}"`;
     }
   );
   return html;
 }
 
-function renderContent(rawContent, siblingMdToHtml = false) {
-  return wrapCodeBlocks(processLinks(md.render(rawContent), siblingMdToHtml));
+// style.css hides the body's horizontal overflow, and `table { min-width: 400px }`
+// keeps a table at least that wide. On a phone that combination does not merely
+// squash a wide table — it clips it, with no way to scroll to the columns on the
+// right. README alone renders 55 tables, several of them eight columns wide with
+// a tag column full of company names.
+//
+// The `.table-wrap` scroll container this needs has been in style.css all along;
+// nothing ever emitted it. That is what this does.
+// Runs after wrapCodeBlocks, so a <table> shown *inside* a fenced example is
+// already escaped to &lt;table&gt; and cannot match.
+function wrapTables(html) {
+  return html.replace(/<table\b[^>]*>/g, m => `<div class="table-wrap">${m}`)
+             .replace(/<\/table>/g, '</table></div>');
+}
+
+// Doc pages carry diagrams that are megabytes each and usually far below the
+// fold — binary_tree.html alone pulls 2.2 MB of them. Without this the browser
+// blocks on every one before it can finish painting the text.
+//
+// The dimensions are read off the file so the space is reserved up front:
+// lazy-loading images with no intrinsic size just trades a slow load for a page
+// that jumps around as each one arrives.
+function lazyLoadImages(html) {
+  return html.replace(/<img\b([^>]*)>/gi, (full, attrs) => {
+    if (/loading\s*=/i.test(attrs)) return full;
+    const src = (attrs.match(/src\s*=\s*"([^"]+)"/) || [])[1];
+    if (!src || /^(https?:|data:|\/\/)/i.test(src)) return full;
+    const size = !/\b(width|height)\s*=/i.test(attrs) ? imageSize(src) : null;
+    const dims = size ? ` width="${size.width}" height="${size.height}"` : '';
+    return `<img${attrs} loading="lazy" decoding="async"${dims}>`;
+  });
+}
+
+// Intrinsic pixel size straight out of the file header — a PNG's IHDR chunk or a
+// JPEG's SOFn marker. Cheaper than a dependency for the two formats doc/pic uses,
+// and a format it cannot read simply goes without the attributes.
+const imageSizeCache = new Map();
+function imageSize(src) {
+  // Rendered hrefs are site-root-relative ("doc/pic/x.png"); the files are in
+  // the repo at the same path under doc/.
+  const file = path.join('.', src.replace(/^(\.\.\/)+/, ''));
+  if (imageSizeCache.has(file)) return imageSizeCache.get(file);
+  let result = null;
+  try {
+    const buf = fs.readFileSync(file);
+    if (buf.length > 24 && buf.readUInt32BE(0) === 0x89504e47) {
+      result = { width: buf.readUInt32BE(16), height: buf.readUInt32BE(20) };
+    } else if (buf.length > 4 && buf[0] === 0xff && buf[1] === 0xd8) {
+      let i = 2;
+      while (i + 9 < buf.length) {
+        if (buf[i] !== 0xff) { i++; continue; }
+        const marker = buf[i + 1];
+        // SOFn carries the frame dimensions; SOF4/8/12 are not frame headers.
+        if (marker >= 0xc0 && marker <= 0xcf && ![0xc4, 0xc8, 0xcc].includes(marker)) {
+          result = { height: buf.readUInt16BE(i + 5), width: buf.readUInt16BE(i + 7) };
+          break;
+        }
+        i += 2 + buf.readUInt16BE(i + 2);
+      }
+    }
+  } catch (_) { /* missing or unreadable — ship the img without dimensions */ }
+  if (result && (!result.width || !result.height)) result = null;
+  imageSizeCache.set(file, result);
+  return result;
+}
+
+// `srcDir` is the directory of the markdown being rendered, `outDir` the
+// directory of the page it becomes — both needed to turn a link written
+// relative to the source into one that works from the output.
+function renderContent(rawContent, srcDir = '.', outDir = '') {
+  return lazyLoadImages(wrapTables(wrapCodeBlocks(processLinks(md.render(rawContent), srcDir, outDir))));
 }
 
 
@@ -140,19 +255,57 @@ function renderContent(rawContent, siblingMdToHtml = false) {
 const searchRecords = [];
 
 
+// ── Page registry ────────────────────────────────────────────────────────────
+//
+// Which markdown files become pages, decided once and up front, because a link
+// in the very first document rendered can point at the very last one built.
+
+const cheatsheetDir = 'doc/cheatsheet';
+const faqDir = 'doc/faq';
+
+// 00_template.md is the authoring skeleton and README.md the directory listing;
+// neither is a page, so a link to one correctly falls through to GitHub.
+const cheatsheetFiles = fs.existsSync(cheatsheetDir)
+  ? fs.readdirSync(cheatsheetDir)
+      .filter(f => f.endsWith('.md') && f !== 'README.md' && f !== '00_template.md')
+      .sort()
+  : [];
+
+const faqFiles = fs.existsSync(faqDir) ? walkDir(faqDir).sort() : [];
+
+// doc/faq/java/faq_OOP.md → faqs/java_faq_OOP.html: the subdirectory is folded
+// into the filename because every FAQ page is written to one flat directory.
+function faqPageName(filePath) {
+  const relativePath = path.relative(faqDir, filePath);
+  const baseName = path.basename(filePath, '.md');
+  const subDir = path.dirname(relativePath);
+  return subDir === '.' ? baseName : `${subDir}_${baseName}`.replace(/\//g, '_');
+}
+
+// README renders to problems.html; index.html is the hand-built landing page, so
+// a link to README.md has to resolve to the problem index, not to the front door.
+registerPage('README.md', 'problems.html');
+if (fs.existsSync('doc/Resource.md')) registerPage('doc/Resource.md', 'resources.html');
+if (fs.existsSync('doc/pattern_recognition.md')) registerPage('doc/pattern_recognition.md', 'patterns.html');
+for (const file of cheatsheetFiles) {
+  registerPage(`${cheatsheetDir}/${file}`, `cheatsheets/${path.basename(file, '.md')}.html`);
+}
+for (const filePath of faqFiles) {
+  registerPage(filePath, `faqs/${faqPageName(filePath)}.html`);
+}
+
 // ── Data collection ─────────────────────────────────────────────────────────
 
 const readme = fs.readFileSync('README.md', 'utf8');
-const content = renderContent(readme);
+const content = renderContent(readme, '.', '');
 
 let resourceContent = '';
 if (fs.existsSync('doc/Resource.md')) {
-  resourceContent = renderContent(fs.readFileSync('doc/Resource.md', 'utf8'));
+  resourceContent = renderContent(fs.readFileSync('doc/Resource.md', 'utf8'), 'doc', '');
 }
 
 // ── Cheatsheets ──────────────────────────────────────────────────────────────
 
-const cheatsheetDir = 'doc/cheatsheet';
 const cheatsheets = [];
 
 // Category, FAANG-interview tier and title overrides live in one reviewable file
@@ -161,10 +314,8 @@ const cheatsheets = [];
 const cheatsheetMeta = JSON.parse(fs.readFileSync('data/cheatsheet_meta.json', 'utf8'));
 
 
-if (fs.existsSync(cheatsheetDir)) {
-  const files = fs.readdirSync(cheatsheetDir)
-    .filter(f => f.endsWith('.md') && f !== 'README.md' && f !== '00_template.md')
-    .sort();
+if (cheatsheetFiles.length > 0) {
+  const files = cheatsheetFiles;
 
   const filePaths = files.map(f => path.join(cheatsheetDir, f));
   const lastModMap = buildLastModifiedMap(filePaths);
@@ -208,7 +359,7 @@ if (fs.existsSync(cheatsheetDir)) {
     const sheetMeta = cheatsheetMeta.sheets[baseName];
     const raw = fs.readFileSync(filePath, 'utf8');
 
-    let htmlContent = renderContent(raw, true);
+    let htmlContent = renderContent(raw, cheatsheetDir, 'cheatsheets');
     htmlContent = ensureHeadingIds(htmlContent);
     // Captured before the H1 is split off, so the translated sheet — measured at
     // the same point — lines up heading-for-heading with it.
@@ -342,7 +493,7 @@ if (fs.existsSync(zhDir)) {
       fs.readFileSync(path.join(cheatsheetDir, `${sheet.file}.md`), 'utf8'),
       parseStore(fs.readFileSync(filePath, 'utf8'))
     );
-    const html = ensureHeadingIds(renderContent(raw, true));
+    const html = ensureHeadingIds(renderContent(raw, cheatsheetDir, 'cheatsheets'));
     anchorMaps.set(sheet.file, anchorMap(sheet.enHeadingIds, headingIds(html)));
     drafts.push({ sheet, filePath, raw, html });
   }
@@ -410,7 +561,6 @@ if (fs.existsSync(zhDir)) {
 
 // ── FAQs ─────────────────────────────────────────────────────────────────────
 
-const faqDir = 'doc/faq';
 const faqs = [];
 
 function walkDir(dir) {
@@ -424,8 +574,7 @@ function walkDir(dir) {
   return files;
 }
 
-if (fs.existsSync(faqDir)) {
-  const faqFiles = walkDir(faqDir).sort();
+if (faqFiles.length > 0) {
   const lastModMap = buildLastModifiedMap(faqFiles);
 
   const faqCategoryMap = {
@@ -438,7 +587,8 @@ if (fs.existsSync(faqDir)) {
     const relativePath = path.relative(faqDir, filePath);
     const baseName = path.basename(filePath, '.md');
     const subDir = path.dirname(relativePath);
-    const uniqueName = subDir === '.' ? baseName : `${subDir}_${baseName}`.replace(/\//g, '_');
+    // Same name the page registry recorded, so the two cannot drift apart.
+    const uniqueName = faqPageName(filePath);
     const title = baseName.replace(/_/g, ' ').split(' ')
       .map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 
@@ -449,7 +599,7 @@ if (fs.existsSync(faqDir)) {
     }
 
     const raw = fs.readFileSync(filePath, 'utf8');
-    let htmlContent = renderContent(raw);
+    let htmlContent = renderContent(raw, path.dirname(filePath), 'faqs');
     htmlContent = ensureHeadingIds(htmlContent);
     const { title: h1Title, titleId, html: bodyHtml } = splitLeadingH1(htmlContent);
     const { html: annotated, hasPriority } = annotatePriorityHeadings(bodyHtml);
@@ -493,10 +643,70 @@ if (fs.existsSync(faqDir)) {
 
 // ── HTML template ─────────────────────────────────────────────────────────────
 
+// Where the site is served from. Needed for the absolute URLs that canonical,
+// hreflang, Open Graph and the sitemap all require — a relative one is not valid
+// in any of them.
+const SITE_ORIGIN = 'https://yennanliu.github.io/CS_basics/';
+
+const DEFAULT_DESCRIPTION =
+  'Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions';
+
+function escAttr(value) {
+  return String(value)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// A title reaches htmlTemplate already entity-escaped when it came from rendered
+// markdown ("Hashing &amp; Counting") and raw when a caller passed a literal
+// ("Problem Index"). Decoding first makes escAttr idempotent over both, which is
+// what stops og:title shipping "Hashing &amp;amp; Counting".
+function unescAttr(value) {
+  // Null-safe: a page that passes no description must reach metaDescription as
+  // "" and get the default, not the string "undefined".
+  if (value === null || value === undefined) return '';
+  return String(value)
+    .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"').replace(/&#0?39;|&apos;/g, "'")
+    .replace(/&amp;/g, '&');
+}
+
+// A description is a sentence about *this* page or it is noise. Every page family
+// already computes one for its index card — the Scope line for a cheatsheet, the
+// lead paragraph for an FAQ — it just never reached the <head>, so all 352 pages
+// shipped the same generic sentence and told a search engine nothing.
+function metaDescription(text) {
+  const clean = String(text || '').replace(/\s+/g, ' ').trim();
+  if (!clean) return DEFAULT_DESCRIPTION;
+  return clean.length > 300 ? clean.slice(0, 297).replace(/\s+\S*$/, '') + '…' : clean;
+}
+
 // `opts.lang` / `opts.langAlt` mark a page that exists in two languages; nav.js
 // turns them into the 中文/EN button. Pages without a translation pass neither
 // and render exactly the markup they did before.
-const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '', opts = {}) => `
+//
+// `opts.url` is the page's own path from the site root. It drives the canonical
+// link, the hreflang pair and the sitemap entry, so a page that omits it is
+// simply left out of all three rather than claiming a wrong address.
+const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '', opts = {}) => {
+  const url = opts.url || '';
+  const absolute = url ? SITE_ORIGIN + url : '';
+  // Decode before truncating, so a 300-char cut can never land inside an entity.
+  const description = metaDescription(unescAttr(opts.description));
+  const pageTitle = unescAttr(title);
+
+  // The zh and en sheets are translations of each other, not duplicates. Saying
+  // so — in both directions, plus x-default — is what stops a crawler picking
+  // one and dropping the other.
+  const alternates = url && opts.langAlt
+    ? [
+        `\n  <link rel="alternate" hreflang="${opts.lang === 'zh' ? 'zh-Hant' : 'en'}" href="${SITE_ORIGIN}${url}">`,
+        `\n  <link rel="alternate" hreflang="${opts.lang === 'zh' ? 'en' : 'zh-Hant'}" href="${SITE_ORIGIN}${path.posix.join(path.posix.dirname(url), opts.langAlt)}">`,
+        `\n  <link rel="alternate" hreflang="x-default" href="${SITE_ORIGIN}${opts.lang === 'zh' ? path.posix.join(path.posix.dirname(url), opts.langAlt) : url}">`
+      ].join('')
+    : '';
+
+  return `
 <!DOCTYPE html>
 <html lang="${opts.lang === 'zh' ? 'zh-Hant' : 'en'}" data-theme="dark">
 <head>
@@ -506,8 +716,18 @@ const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '', o
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>${title} — CS_basics</title>
-  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <title>${escAttr(pageTitle)} — CS_basics</title>
+  <meta name="description" content="${escAttr(description)}">
+  <link rel="canonical" href="${absolute || SITE_ORIGIN}">${alternates}
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="CS_basics">
+  <meta property="og:title" content="${escAttr(pageTitle)}">
+  <meta property="og:description" content="${escAttr(description)}">
+  <meta property="og:url" content="${absolute || SITE_ORIGIN}">
+  <meta property="og:locale" content="${opts.lang === 'zh' ? 'zh_TW' : 'en_US'}">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="${escAttr(pageTitle)}">
+  <meta name="twitter:description" content="${escAttr(description)}">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="${basePath}nav.css">
   <link rel="stylesheet" href="${basePath}style.css">
@@ -542,14 +762,149 @@ const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '', o
 </body>
 </html>
 `;
+};
 
-// ── Write output ─────────────────────────────────────────────────────────────
+// ── Landing page ─────────────────────────────────────────────────────────────
+//
+// index.html used to be README rendered straight through: a 915 KB page of 55
+// tables and 1,512 problem rows, which is the right shape for a repository
+// listing and the wrong one for a front door. It showed a first-time visitor a
+// wall of LeetCode numbers and no sign that the site has a search, a roadmap, a
+// spaced-repetition plan or 37 algorithm visualizers.
+//
+// So the README keeps its page — it is the problem index, and it is genuinely
+// useful — but at problems.html, with a landing page in front of it.
 
-fs.writeFileSync('_site/index.html', htmlTemplate('Home', content, 'home'));
-console.log('✓ Created index.html');
+const { parseReadmeProblems } = require('./build-roadmap');
+const readmeProblems = parseReadmeProblems(readme);
+
+// README's last column is a hand-kept verdict — "OK******* (7)", "AGAIN**** (3)".
+// parseReadmeProblems does not carry it (the roadmap has no use for it), so it is
+// read here: "still marked AGAIN" is the one number on this page worth acting on.
+function readmeStatusCounts(markdown) {
+  const counts = { ok: 0, again: 0, todo: 0 };
+  for (const line of markdown.split('\n')) {
+    if (!line.startsWith('|')) continue;
+    const cells = line.split('|').map(c => c.trim());
+    // A data row is "| # | Title | … | Status |", so cells[1] is the number.
+    if (cells.length < 4 || !/^\d+$/.test(cells[1])) continue;
+    const status = cells[cells.length - 2].toUpperCase();
+    if (status.includes('AGAIN')) counts.again++;
+    else if (status.includes('OK')) counts.ok++;
+    else if (status) counts.todo++;
+  }
+  return counts;
+}
+const statusCounts = readmeStatusCounts(readme);
+
+// Counted, never typed: a hardcoded "1,300+" is a number that goes stale the
+// first week nobody remembers it is there.
+const stats = [
+  [readmeProblems.size.toLocaleString('en-US'), 'LeetCode problems indexed'],
+  [cheatsheets.length, 'cheatsheets'],
+  [faqs.length, 'interview FAQs'],
+  [fs.existsSync('algo_demo')
+    ? fs.readdirSync('algo_demo').filter(f => f.endsWith('.html') && f !== 'index.html').length
+    : 0, 'algorithm visualizers']
+];
+
+// Counts inside a blurb come from the same files the pages themselves are built
+// from. A sentence saying "29 topics" is a sentence that will be wrong the next
+// time someone adds one.
+const countIn = (file, pick) => {
+  try { return pick(JSON.parse(fs.readFileSync(file, 'utf8'))); } catch (_) { return null; }
+};
+const roadmapTopics = countIn('data/roadmap.json', d => (d.nodes || []).length);
+const quizQuestions = countIn('data/complexity_quiz.json', d => (d.questions || []).length);
+const visualizerCount = stats[3][0];
+
+// The pitch for each tool is what it does for you, not what it is. "Explore
+// problems by tag" beats "LC Explorer" to someone who has never seen either.
+const ENTRY_POINTS = [
+  ['lc-roadmap.html', 'Study roadmap',
+   `A dependency-ordered path through ${roadmapTopics ? `${roadmapTopics} topics` : 'the topics'} — what to learn next, and what it needs first.`],
+  ['cheatsheets.html', 'Cheat sheets',
+   'Every pattern, with templates in Java and Python, ranked by how often interviews ask for it.'],
+  ['patterns.html', 'Pattern recognition',
+   'Read a problem statement, name the technique. The keyword-to-pattern table.'],
+  ['lc-explorer.html', 'Problem explorer',
+   'All indexed problems, filtered by tag, difficulty and acceptance rate, linked to the solutions here.'],
+  ['lc-review-plan.html', 'Review plan',
+   'Spaced repetition over the practice log — what is overdue, and what keeps coming back.'],
+  ['lc-complexity-quiz.html', 'Complexity quiz',
+   `Read a snippet, name its time and space.${quizQuestions ? ` ${quizQuestions} questions,` : ''} each with the trap it sets.`],
+  ['algo_demo/index.html', 'Visualizers',
+   `Step through Dijkstra, KMP, knapsack and ${visualizerCount - 3} more, one frame at a time.`],
+  ['problems.html', 'Problem index',
+   'The full README table — every problem, its solutions, its tags and its status.']
+];
+
+const landingContent = `
+  <div class="hero">
+    <h1>CS_basics</h1>
+    <p class="hero-lede">Algorithms, data structures and system design, worked through in Java, Python and SQL — the notes and solutions behind one engineer's interview preparation.</p>
+    <div class="hero-actions">
+      <a class="hero-btn hero-btn-primary" href="lc-roadmap.html">Start with the roadmap</a>
+      <a class="hero-btn" href="search.html">Search everything</a>
+    </div>
+  </div>
+
+  <div class="stat-strip">
+    ${stats.map(([n, label]) =>
+      `<div class="stat-cell"><span class="stat-n">${n}</span><span class="stat-l">${label}</span></div>`
+    ).join('')}
+  </div>
+
+  <h2>Where to go</h2>
+  <div class="entry-grid">
+    ${ENTRY_POINTS.map(([href, title, blurb]) => `
+    <a class="entry-card" href="${href}">
+      <span class="entry-title">${title}</span>
+      <span class="entry-blurb">${blurb}</span>
+    </a>`).join('')}
+  </div>
+
+  <h2>Complexity, at a glance</h2>
+  <p class="section-note">The reference charts, kept on the front page because they are the thing most often looked up. Source: <a href="https://www.bigocheatsheet.com/">bigocheatsheet.com</a>.</p>
+  <div class="ref-figures">
+    ${[
+      ['bigO_complexity_chart.png', 'Big-O complexity chart: operation count against input size for constant, logarithmic, linear, linearithmic, quadratic and exponential growth.'],
+      ['common_ds_op_cost.png', 'Table of average and worst-case time complexity for access, search, insertion and deletion across the common data structures.'],
+      ['sort_algorithm_complexity.png', 'Table of best, average and worst-case time and space complexity for the common sorting algorithms.']
+    ]
+      .filter(([f]) => fs.existsSync(path.join('doc/pic', f)))
+      .map(([f, alt]) => {
+        const size = imageSize(`doc/pic/${f}`);
+        const dims = size ? ` width="${size.width}" height="${size.height}"` : '';
+        return `<figure><img src="doc/pic/${f}" alt="${escAttr(alt)}" loading="lazy" decoding="async"${dims}></figure>`;
+      }).join('')}
+  </div>
+
+  <p class="section-note">
+    ${statusCounts.ok + statusCounts.again > 0
+      ? `Of the problems attempted so far, ${statusCounts.ok.toLocaleString('en-US')} are marked <strong>OK</strong> and ${statusCounts.again.toLocaleString('en-US')} are still marked <strong>AGAIN</strong> — the <a href="lc-review-plan.html">review plan</a> schedules the second group. `
+      : ''}Everything here is built from the markdown in
+    <a href="https://github.com/yennanliu/CS_basics">the repository</a> — corrections welcome.
+  </p>
+`;
+
+fs.writeFileSync('_site/index.html', htmlTemplate('Home', landingContent, 'home', '', {
+  url: 'index.html',
+  description: `Algorithms, data structures, system design and ${readmeProblems.size} LeetCode solutions in Java, Python and SQL — with ${cheatsheets.length} cheatsheets, a study roadmap and a spaced-repetition review plan.`
+}));
+console.log(`✓ Created index.html (landing page, ${readmeProblems.size} problems indexed)`);
+
+fs.writeFileSync('_site/problems.html', htmlTemplate('Problem Index', content, 'problems', '', {
+  url: 'problems.html',
+  description: `All ${readmeProblems.size} LeetCode problems in this repo, by topic, with links to the Java, Python and SQL solutions and the tags each one carries.`
+}));
+console.log('✓ Created problems.html (the README index)');
 
 if (resourceContent) {
-  fs.writeFileSync('_site/resources.html', htmlTemplate('Resources', resourceContent, 'resources'));
+  fs.writeFileSync('_site/resources.html', htmlTemplate('Resources', resourceContent, 'resources', '', {
+    url: 'resources.html',
+    description: 'Books, courses, problem lists and reference sites collected while preparing for algorithm and system design interviews.'
+  }));
   console.log('✓ Created resources.html');
 }
 
@@ -561,14 +916,18 @@ const bilingualIndex = zhSheets.length > 0;
 
 fs.writeFileSync('_site/cheatsheets.html', htmlTemplate(
   'Cheat Sheets', buildCheatsheetIndex(cheatsheets, cheatsheetMeta), 'cheatsheets', '',
-  bilingualIndex ? { lang: 'en', langAlt: 'cheatsheets.zh.html' } : {}
+  Object.assign({
+    url: 'cheatsheets.html',
+    description: `${cheatsheets.length} cheatsheets covering every interview algorithm pattern, ranked by how often it comes up.`
+  }, bilingualIndex ? { lang: 'en', langAlt: 'cheatsheets.zh.html' } : {})
 ));
 console.log('✓ Created cheatsheets.html index');
 
 if (bilingualIndex) {
   fs.writeFileSync('_site/cheatsheets.zh.html', htmlTemplate(
     '速查表', buildCheatsheetIndex(zhSheets, cheatsheetMeta, 'zh'), 'cheatsheets', '',
-    { lang: 'zh', langAlt: 'cheatsheets.html' }
+    { lang: 'zh', langAlt: 'cheatsheets.html', url: 'cheatsheets.zh.html',
+      description: `${zhSheets.length} 份演算法面試速查表的繁體中文版，依考題出現頻率排序。` }
   ));
   console.log(`✓ Created cheatsheets.zh.html index (${zhSheets.length} translated sheets)`);
 }
@@ -582,7 +941,10 @@ if (cheatsheets.length > 0) {
     fixedContent += buildPrevNext(cheatsheets, idx);
     fs.writeFileSync(`_site/cheatsheets/${sheet.file}.html`, htmlTemplate(
       sheet.title, fixedContent, 'cheatsheets', '../',
-      translated.has(sheet.file) ? { lang: 'en', langAlt: `${sheet.file}.zh.html` } : {}
+      Object.assign({
+        url: `cheatsheets/${sheet.file}.html`,
+        description: sheet.description
+      }, translated.has(sheet.file) ? { lang: 'en', langAlt: `${sheet.file}.zh.html` } : {})
     ));
   });
   console.log(`✓ Created ${cheatsheets.length} individual cheatsheet pages`);
@@ -598,7 +960,8 @@ if (zhSheets.length > 0) {
     fixedContent += buildPrevNext(zhPages, idx);
     fs.writeFileSync(`_site/cheatsheets/${sheet.file}.html`, htmlTemplate(
       sheet.title, fixedContent, 'cheatsheets', '../',
-      { lang: 'zh', langAlt: `${zhSheets[idx].file}.html` }
+      { lang: 'zh', langAlt: `${zhSheets[idx].file}.html`,
+        url: `cheatsheets/${sheet.file}.html`, description: sheet.description }
     ));
   });
   console.log(`✓ Created ${zhSheets.length} 繁體中文 cheatsheet pages`);
@@ -619,7 +982,10 @@ let faqIndexContent = '<h1>FAQ - Frequently Asked Questions</h1>' +
   <p>View all FAQs on <a href="https://github.com/yennanliu/CS_basics/tree/master/doc/faq">GitHub</a>.</p>
 </div>`;
 
-fs.writeFileSync('_site/faqs.html', htmlTemplate('FAQs', faqIndexContent, 'faqs'));
+fs.writeFileSync('_site/faqs.html', htmlTemplate('FAQs', faqIndexContent, 'faqs', '', {
+  url: 'faqs.html',
+  description: `${faqs.length} interview FAQs on Java, backend, databases, SQL and streaming systems.`
+}));
 console.log('✓ Created faqs.html index');
 
 if (faqs.length > 0) {
@@ -627,13 +993,15 @@ if (faqs.length > 0) {
   faqs.forEach((faq, idx) => {
     let fixedContent = faq.content.replace(/src\s*=\s*"doc\//g, 'src="../doc/');
     fixedContent += buildPrevNext(faqs, idx);
-    fs.writeFileSync(`_site/faqs/${faq.file}.html`, htmlTemplate(faq.title, fixedContent, 'faqs', '../'));
+    fs.writeFileSync(`_site/faqs/${faq.file}.html`, htmlTemplate(faq.title, fixedContent, 'faqs', '../', {
+      url: `faqs/${faq.file}.html`, description: faq.description
+    }));
   });
   console.log(`✓ Created ${faqs.length} individual FAQ pages`);
 }
 
 if (fs.existsSync('doc/pattern_recognition.md')) {
-  let patternHtml = renderContent(fs.readFileSync('doc/pattern_recognition.md', 'utf8'));
+  let patternHtml = renderContent(fs.readFileSync('doc/pattern_recognition.md', 'utf8'), 'doc', '');
   patternHtml = ensureHeadingIds(patternHtml);
   const patternContent = `
     <div class="cheatsheet-header">
@@ -643,7 +1011,10 @@ if (fs.existsSync('doc/pattern_recognition.md')) {
     ${generateTOC(patternHtml)}
     <div class="cheatsheet-content">${patternHtml}</div>
   `;
-  fs.writeFileSync('_site/patterns.html', htmlTemplate('Pattern Recognition', patternContent, 'patterns'));
+  fs.writeFileSync('_site/patterns.html', htmlTemplate('Pattern Recognition', patternContent, 'patterns', '', {
+    url: 'patterns.html',
+    description: 'Map a problem statement to the algorithm pattern it wants — the keyword-to-technique table, with the LeetCode problems that drill each one.'
+  }));
   console.log('✓ Created patterns.html');
 
   searchRecords.push({
@@ -664,7 +1035,7 @@ console.log(`✓ Created data/search-index.json (${searchRecords.length} doc rec
 const searchBody = `
   <div class="cheatsheet-header">
     <h1>Search</h1>
-    <p>Search across cheatsheets, FAQs, guides, and LeetCode problems.</p>
+    <p>Search across cheatsheets, FAQs, guides, and LeetCode problems. Press <kbd>/</kbd> or <kbd>⌘K</kbd> from any page to get here.</p>
   </div>
   <input type="text" id="q" placeholder="Search topics, patterns, problems…" autofocus
     style="width:100%;padding:0.8rem 1rem;font-size:1.05rem;border:1px solid var(--border);border-radius:8px;background:var(--bg-secondary);color:var(--text);margin-bottom:0.5rem;">
@@ -762,8 +1133,14 @@ const searchBody = `
   })();
   </script>
 `;
-fs.writeFileSync('_site/search.html', htmlTemplate('Search', searchBody, 'search'));
+fs.writeFileSync('_site/search.html', htmlTemplate('Search', searchBody, 'search', '', {
+  url: 'search.html',
+  description: 'Search every cheatsheet, FAQ, guide and LeetCode problem in the repo.'
+}));
 console.log('✓ Created search.html');
+
+// The sitemap and robots.txt are written by site/finalize-pages.js, which runs
+// after the hand-written pages have been copied in and so can see the whole tree.
 
 // ── Post-build self-check ────────────────────────────────────────────────────
 // The priority badge carries a screen-reader sentence. It once leaked into TOC

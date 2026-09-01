@@ -772,3 +772,73 @@ h4 > a.header-anchor:hover { text-decoration: underline; }
   .filter-tiers, .filter-status { grid-column: 1; }
   .filter-chip { font-size: 12px; }
 }
+
+/* ═══════════════════════════════════════════════════════
+   LANDING PAGE
+   index.html was README rendered straight through — 55 tables and 1,512
+   problem rows, which is a repository listing rather than a front door. The
+   README keeps that page at problems.html; these are the styles for what now
+   sits in front of it.
+   ═══════════════════════════════════════════════════════ */
+
+.hero { padding: 48px 0 40px; border-bottom: 1px solid var(--border); margin-bottom: 40px; }
+.hero h1 { font-size: 44px; letter-spacing: -0.03em; margin: 0 0 12px; }
+.hero-lede {
+  font-size: 19px; line-height: 1.6; color: var(--text-muted);
+  max-width: 60ch; margin: 0 0 28px;
+}
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.hero-btn {
+  display: inline-block; padding: 11px 22px; font-size: 15px;
+  border: 1px solid var(--border-strong); color: var(--text);
+  text-decoration: none; background: var(--surface);
+}
+.hero-btn:hover { border-color: var(--text); }
+.hero-btn-primary { background: var(--text); color: var(--bg); border-color: var(--text); }
+.hero-btn-primary:hover { opacity: 0.85; }
+
+/* Counted at build time from README and the doc tree, never typed — a
+   hardcoded figure is one that goes stale the first week nobody checks it. */
+.stat-strip {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  border: 1px solid var(--border); margin-bottom: 48px;
+}
+.stat-cell {
+  padding: 20px 16px; text-align: center;
+  border-right: 1px solid var(--border); background: var(--surface);
+}
+.stat-cell:last-child { border-right: none; }
+.stat-n { display: block; font-size: 30px; font-weight: 700; line-height: 1; }
+.stat-l {
+  display: block; margin-top: 8px; font-size: 12px; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.05em;
+}
+
+.entry-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  border: 1px solid var(--border); margin: 16px 0 48px;
+}
+.entry-card {
+  display: flex; flex-direction: column; gap: 8px;
+  padding: 20px; text-decoration: none; color: var(--text);
+  border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.entry-card:hover { background: var(--surface); }
+.entry-title { font-size: 17px; font-weight: 600; }
+.entry-blurb { font-size: 14px; line-height: 1.6; color: var(--text-muted); }
+
+.section-note { font-size: 15px; color: var(--text-muted); max-width: 70ch; margin: 8px 0 24px; }
+
+.ref-figures { display: flex; flex-direction: column; gap: 24px; margin-bottom: 40px; }
+.ref-figures figure { margin: 0; border: 1px solid var(--border); padding: 12px; background: var(--surface); }
+.ref-figures img { display: block; width: 100%; height: auto; }
+
+@media (max-width: 768px) {
+  .hero { padding: 32px 0 28px; }
+  .hero h1 { font-size: 32px; }
+  .hero-lede { font-size: 16px; }
+  .entry-card { border-right: none; }
+  .stat-cell { border-right: none; border-bottom: 1px solid var(--border); }
+  .stat-cell:last-child { border-bottom: none; }
+}

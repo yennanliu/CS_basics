@@ -9,6 +9,7 @@
   <title>Complexity Quiz - CS Basics</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⏱</text></svg>">
   <link rel="stylesheet" href="nav.css">
+  <link rel="stylesheet" href="lc-page.css">
   <!-- Blocking on purpose: nav.js restores the stored theme before first paint. -->
   <script src="nav.js"></script>
   <!-- The grader. Shared with site/build-quiz.js, which validates the bank
@@ -16,18 +17,9 @@
   <script src="complexity.js"></script>
   <style>
     * { box-sizing: border-box; }
-    :root {
-      --bg: #ffffff; --surface: #f5f5f5; --sunken: #ebebeb; --text: #000000;
-      --text-light: #555555; --border: #cccccc;
-      --ok: #1e7e34; --bad: #b91c1c;
-      --code-c: #6b7280; --code-s: #0a7d55; --code-k: #b02a5b; --code-b: #1d4ed8; --code-n: #7c3aed;
-    }
-    [data-theme="dark"] {
-      --bg: #000000; --surface: #0d0d0d; --sunken: #141414; --text: #ffffff;
-      --text-light: #8a8a8a; --border: #1f1f1f;
-      --ok: #4ade80; --bad: #f87171;
-      --code-c: #6a737d; --code-s: #a5d6a7; --code-k: #ff7b72; --code-b: #79c0ff; --code-n: #d2a8ff;
-    }
+    /* Palette and footer come from lc-page.css; these are this page's own. */
+    :root { --sunken: #ebebeb; --ok: #1e7e34; --bad: #b91c1c; --code-c: #6b7280; --code-s: #0a7d55; --code-k: #b02a5b; --code-b: #1d4ed8; --code-n: #7c3aed; }
+    [data-theme="dark"] { --sunken: #141414; --ok: #4ade80; --bad: #f87171; --code-c: #6a737d; --code-s: #a5d6a7; --code-k: #ff7b72; --code-b: #79c0ff; --code-n: #d2a8ff; }
     html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; }
     body {
       margin: 0;
@@ -698,5 +690,17 @@
     });
 })();
 </script>
+
+<footer>
+  <div class="container">
+    <p>CS_basics — computer science fundamentals &amp; interview preparation</p>
+    <p>
+      <a href="https://github.com/yennanliu/CS_basics">github</a> |
+      <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+      <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
+    </p>
+  </div>
+</footer>
+
 </body>
 </html>

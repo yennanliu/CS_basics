@@ -8,22 +8,14 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <title>Review Plan — CS Basics</title>
   <link rel="stylesheet" href="nav.css">
+  <link rel="stylesheet" href="lc-page.css">
   <!-- Blocking on purpose: nav.js restores the stored theme before first paint. -->
   <script src="nav.js"></script>
   <style>
-    /* ── tokens ── */
-    :root {
-      --bg:#ffffff; --surface:#f4f4f4; --surface2:#e8e8e8;
-      --text:#000000; --muted:#555555; --dim:#999999;
-      --border:#cccccc; --border-s:#888888;
-      --code-bg:#0d1117; --code-text:#e6edf3;
-    }
-    [data-theme="dark"] {
-      --bg:#000000; --surface:#111111; --surface2:#1a1a1a;
-      --text:#ffffff; --muted:#8a8a8a; --dim:#4a4a4a;
-      --border:#222222; --border-s:#555555;
-      --code-bg:#0d1117; --code-text:#e6edf3;
-    }
+    /* ── tokens ── palette and footer come from lc-page.css; these are this
+       page's own. */
+    :root { --surface2:#e8e8e8; --muted:#555555; --dim:#999999; --border-s:#888888; --code-bg:#0d1117; --code-text:#e6edf3; }
+    [data-theme="dark"] { --surface2:#1a1a1a; --muted:#8a8a8a; --dim:#4a4a4a; --border-s:#555555; --code-bg:#0d1117; --code-text:#e6edf3; }
     *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
     html { scroll-behavior:smooth; }
     body {
@@ -151,6 +143,15 @@
     .status-pill.today   { background:var(--text); color:var(--bg); border-color:var(--text); }
     .all-count { font-size:12px; color:var(--muted); margin-top:10px; }
 
+    /* The log's own verdict, carried through from data/progress.txt. The site is
+       deliberately monochrome, so "again" is marked by weight and a solid fill
+       rather than by a colour that would not survive a theme flip. */
+    .st-chip { font-size:10px; padding:1px 5px; margin-left:6px; border:1px solid var(--border);
+               background:var(--surface); color:var(--muted); white-space:nowrap; letter-spacing:.02em; }
+    .st-chip.st-again { background:var(--text); color:var(--bg); border-color:var(--text); font-weight:700; }
+    .st-chip.st-todo  { border-color:var(--border-s); color:var(--text); }
+    .filter-toggle { display:flex; align-items:center; gap:6px; font-size:12px; color:var(--muted); cursor:pointer; }
+
     /* ── Heatmap ── */
     .hm-wrap { overflow-x:auto; }
     .hm-months { display:flex; margin-bottom:4px; font-size:11px; color:var(--muted); width:max-content; }
@@ -273,6 +274,7 @@
 <div class="container">
   <h1>Spaced Repetition Review Plan</h1>
   <p class="subtitle">Fibonacci intervals: 1 → 2 → 3 → 5 → 8 → 13 → 21 → 34 → 55 days</p>
+  <p class="subtitle" id="data-range">Loading practice log…</p>
 
   <div class="stats-row" id="stats-row"></div>
 
@@ -292,14 +294,16 @@
   <!-- All problems -->
   <div id="tab-all" class="tab-panel">
     <div class="filter-bar">
-      <input id="prob-search" type="text" placeholder="Search problem # or date…" oninput="filterTable()">
-      <select id="prob-sort" onchange="sortTable()">
+      <input id="prob-search" type="text" placeholder="Search problem # or date…" oninput="filterTable()" disabled>
+      <select id="prob-sort" onchange="sortTable()" disabled>
         <option value="num">Sort: Problem #</option>
         <option value="first">Sort: First seen</option>
         <option value="last">Sort: Last seen</option>
         <option value="count-desc">Sort: Most practiced</option>
         <option value="next">Sort: Next due</option>
+        <option value="again-desc">Sort: Most "again"</option>
       </select>
+      <label class="filter-toggle"><input type="checkbox" id="prob-again-only" onchange="filterTable()" disabled> only "again"</label>
     </div>
     <div class="all-table-wrap">
       <table class="all-table" id="all-table">
@@ -310,6 +314,7 @@
             <th onclick="setSortCol('last')">Last seen <span class="sort-arrow" id="arr-last">↕</span></th>
             <th onclick="setSortCol('count-desc')">Times <span class="sort-arrow" id="arr-count-desc">↕</span></th>
             <th onclick="setSortCol('next')">Next review <span class="sort-arrow" id="arr-next">↕</span></th>
+            <th onclick="setSortCol('again-desc')">Again <span class="sort-arrow" id="arr-again-desc">↕</span></th>
             <th>Status</th>
             <th>All dates practiced</th>
           </tr>
@@ -361,220 +366,7 @@ function switchTab(name, btn) {
   document.getElementById('tab-' + name).classList.add('active');
 }
 
-// ── Raw data ──────────────────────────────────────────────────────────────
-const RAW = `20260502: 154,1761,1277
-20260501: 1760,1277,1231
-20260430: 1891,1761,154,153,221
-20260429: 1552,1283,410,32,224
-20260428: 34,162,410
-20260427: 1081,316,1099,402,853,2289
-20260426: 402,853,2289
-20260425: 739,84,2406
-20260424: 85,84,1438
-20260423: 2345,2406,765
-20260422: 2406,1675,1150,26
-20260421: 1150,765,80,26
-20260420: 10,486,1248
-20260419: 363,1074,1292,865
-20260418: 312,1048,931,1905
-20260417: 1492,1167,1048,931,499
-20260416: 115,161,72,1905,827
-20260415: 516,227,456,729
-20260414: 35,986,64,329,1110
-20260413: 494,309,518,322,1143,871
-20260412: 373,1140,97,336,153
-20260411: 1353,1481,97
-20260410: 309,518,494,153,336,1032
-20260409: 1143,1049,394,1209,1047,358
-20260408: 877,64,464,814,865,1631,1325,1110
-20260407: 64,1631
-20260406: 62,63,486,133,815,814
-20260405: 1406,486,865,91,343
-20260404: 343,953,399,865
-20260403: 746,279,494,582,91
-20260402: 70,322,518,91,3,582
-20260401: 1137,509,213,91,639
-20260331: 700,310,133,508,2657
-20260330: 865,399,953,399
-20260329: 694,207,210
-20260328: 1020,694,130,392
-20260327: 207,210,547,721,1971,429
-20260326: 1436,542,1765,815,95,96,776
-20260325: 752,733,994,127,126
-20260324: 1971,1791,277
-20260323: 953,165,524,997,669
-20260322: 1109,948,1231,2616,410
-20260321: 988,669,99
-20260320: 892,463,200,695,1254
-20260319: 387,1405,1054,871,834,776,872
-20260318: 257,104,872,129,968,776
-20260317: 303,1150,58,108,776,308
-20260316: 2614,2615,2616,984,652
-20260315: 14,984,1314,2616,2617
-20260314: 2615
-20260313: 404,163,1150,214,1288,179
-20260312: 1405,767,1209,251
-20260311: 1544,108,938,109,112
-20260310: 905,26,113,27
-20260309: 1041,198,213,437,652
-20260308: 506,1094,623,334,670
-20260307: 703,865,973,253
-20260306: 203,2331,814,1325,1110,394
-20260305: 394,337,28,530,907,155,2104,316,402
-20260304: 737,1482,525,738
-20260303: 1482,560,696,917,622,239,701,235,938,450
-20260302: 27,541,1552
-20260229: 81,540,1124,523,325,974,1248,3,532,554,1257
-20260228: 394,1047,1209
-20260227: 33,153,336,1032,980
-20260226: 35,374,852,316,901
-20260225: 71,844,316,591,402,496
-20260224: 980,881,455,682,402,496,901
-20260222: 1920,1480,1089,720,1023
-20260221: 62,63,88,977,493,164,327
-20260220: 680,917,151,345,214
-20260219: 1672,1431,75,274
-20260218: 229,137,659,992
-20260217: 542,694,711,652,1991,525,560,974,727,560
-20260216: 1470,66,727,189,442,41
-20260215: 449,297,303,724,560
-20260204: 283,435
-20260201: 14,165,416
-20260131: 1929,128
-20260130: 986,435,1851,392
-20260128: 72,678,322,518,228,452,1143
-20260125: 1899,763,309
-20260124: 134,846,367,875
-20260123: 55,45
-20260121: 72,312,10,309
-20260118: 97,329,115
-20260117: 309,518,494
-20260116: 14,392,1143,140,388,518
-20260114: 1025,551,552,62,139
-20260113: 132,376,416
-20260111: 5,516,131
-20260110: 2560,53,32
-20260109: 1905,416,740
-20260107: 1381,1382,1383,140,300
-20260106: 322,518
-20260105: 300
-20260104: 5,403,312
-20260103: 140,139,551,552
-20260102: 1137,91,377
-20260101: 746,198,213
-20251231: 2316,261,509,338
-20251230: 1971,997,1381,1382,1383
-20251227: 444,864,127,126
-20251226: 3092,909,317
-20251225: 207,210,802
-20251224: 1791,310,3092
-20251223: 997,1971,3092,3091
-20251222: 407,1020
-20251220: 1162,332,1647
-20251219: 542,994
-20251217: 785,1905,1617,2962
-20251216: 841,207,1466
-20251215: 108,305
-20251213: 323,1091,934,977,164,420,327
-20251212: 733,997
-20251210: 588,2765,2766,3120,3121
-20251209: 934
-20251206: 733,695,827
-20251205: 108,675,529,3120,3121
-20251203: 286,323,675
-20251202: 305,127
-20251130: 2963
-20251129: 694,547,745
-20251128: 463,130,1020,895
-20251126: 733,695,1254
-20251125: 677,432,2962
-20251124: 706,4
-20251123: 2960,2961,2962,706,4
-20251122: 705,981,1647,1094
-20251121: 380,359,362,785
-20251119: 14,146,1481
-20251118: 149,1047,394,648
-20251116: 496,84
-20251115: 1268,387,1054,358
-20251114: 1145,2542,124
-20251112: 703,414,324,280
-20251111: 506,767,502,2682,2683,2684
-20251109: 1901
-20251108: 23,703,264
-20251107: 215,373,973,378,383,2279,739
-20251106: 993
-20251105: 2641,2642
-20251104: 35,886
-20251103: 785
-20251102: 94,450,1109,1094
-20251101: 173,272,99
-20251031: 1382,653
-20251029: 2872,2871
-20251028: 2869,2870,200
-20251027: 2591,2592,2593,2594
-20251018: 209,407,594,640
-20251017: 30,336
-20251015: 333,530,700
-20251014: 987,675,1091
-20251011: 314,107,103
-20251010: 863,32,160,652
-20251008: 752,1268
-20251007: 117,863
-20251006: 24,86,21
-20251005: 1838,1740
-20251004: 298
-20251003: 437,129
-20251001: 124,108,501
-20250930: 98,173
-20250929: 235,236,530,700
-20250928: 572,652,510
-20250927: 110,112,113
-20250926: 111,543
-20250924: 101,100,226,617,116,2290
-20250922: 82,61
-20250921: 876,142,43
-20250920: 104,101,114
-20250917: 206,237,234,141,92
-20250916: 678,921
-20250914: 1004,904,155
-20250913: 239,340
-20250912: 438,76
-20250910: 121,122,219
-20250909: 42,34,35,85
-20250907: 852,162,153
-20250906: 53,152
-20250905: 42,84
-20250903: 35,336,214,278,34
-20250902: 167,5,11,772,1157
-20250831: 3,329,125,680,430
-20250830: 451,973
-20250829: 297
-20250827: 394,535
-20250826: 395
-20250824: 347,215,692,767
-20250823: 438,249,890
-20250822: 335,430
-20250820: 1060,256,321
-20250819: 297
-20250817: 104,199,222,297
-20250816: 124,450
-20250815: 337
-20250810: 1325,450
-20250809: 1448,1666
-20250803: 427
-20250802: 701,450
-20250727: 4
-20250726: 981,1011
-20250725: 271,84
-20250720: 394
-20250719: 71
-20250712: 853
-20250708: 567
-20250704: 133,525
-20250702: 297,200
-20250701: 124`;
-
-// ── Parse ─────────────────────────────────────────────────────────────────
+// ── Date helpers ──────────────────────────────────────────────────────────
 function parseDate(s) {
   return new Date(+s.slice(0,4), +s.slice(4,6)-1, +s.slice(6,8));
 }
@@ -591,23 +383,53 @@ function addDays(key, n) {
   const d = parseDate(key); d.setDate(d.getDate() + n); return toKey(d);
 }
 
+// ── Data ──────────────────────────────────────────────────────────────────
+//
+// The practice log lives in data/progress.txt and is compiled to
+// data/progress.json by site/build-review-plan.js on every build. It used to be
+// pasted into this file as a `const RAW` template literal, which meant the
+// schedule froze on the day someone last remembered to re-paste it — the
+// shipped copy had stopped four months short of the log.
+// The filter bar ships disabled and the sortable <th>s cannot be, so both kinds
+// of inline handler need a global to resolve against while the log is in flight.
+// Without these a click on a column header throws a ReferenceError; boot()
+// overwrites all three with the real implementations.
+window.setSortCol = window.sortTable = window.filterTable = function () {};
+
+fetch('./data/progress.json')
+  .then(res => { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
+  .then(boot)
+  .catch(err => {
+    document.getElementById('stats-row').innerHTML = '';
+    document.getElementById('due-content').innerHTML =
+      '<p class="empty">Could not load the practice log (' + err.message + ').</p>';
+  });
+
+function boot(data) {
+
 const dayMap  = {}; // YYYYMMDD → [prob, ...]
 const probMap = {}; // prob → sorted [YYYYMMDD, ...]
+const statusMap = {}; // prob → { status, againCount, emphasis }
 
-RAW.split('\n').forEach(line => {
-  const m = line.match(/^(\d{8}):\s*(.+)$/);
-  if (!m) return;
-  const key = m[1];
-  const probs = m[2].split(',').map(p => p.trim().replace(/[^0-9]/g,'')).filter(Boolean);
-  if (!dayMap[key]) dayMap[key] = [];
-  probs.forEach(p => {
-    dayMap[key].push(p);
-    if (!probMap[p]) probMap[p] = [];
-    if (!probMap[p].includes(key)) probMap[p].push(key);
-  });
+data.days.forEach(day => { dayMap[day.date] = day.items.map(item => String(item.id)); });
+data.problems.forEach(p => {
+  probMap[p.id] = p.dates.slice();
+  statusMap[p.id] = { status: p.status, againCount: p.againCount, emphasis: p.emphasis };
 });
-// Sort each prob's dates
-Object.values(probMap).forEach(arr => arr.sort());
+
+// The log's own verdict on a problem, carried through from its annotation:
+// "139(again!!)" is a very different row from "139(ok)" even when the two have
+// identical practice counts, and the old paste-in data threw it away.
+function statusChip(row) {
+  if (row.status === 'again' || row.againCount > 0) {
+    const bangs = row.emphasis > 0 ? '!'.repeat(Math.min(row.emphasis, 3)) : '';
+    const label = row.againCount > 1 ? `again ×${row.againCount}${bangs}` : `again${bangs}`;
+    return `<span class="st-chip st-again" title="the log has marked this &quot;again&quot; ${row.againCount} time(s)">${label}</span>`;
+  }
+  if (row.status === 'todo') return '<span class="st-chip st-todo">todo</span>';
+  if (row.status === 'ok')   return '<span class="st-chip st-ok">ok</span>';
+  return '';
+}
 
 const FIB = [1, 2, 3, 5, 8, 13, 21, 34, 55];
 const today = new Date(); today.setHours(0,0,0,0);
@@ -621,7 +443,9 @@ const dueItems = Object.entries(probMap).map(([prob, dates]) => {
   const fibIdx = Math.min(count - 1, FIB.length - 1);
   const interval = FIB[fibIdx];
   const nextKey  = addDays(lastKey, interval);
-  return { prob: +prob, probStr: prob, lastKey, firstKey, nextKey, count, interval, dates };
+  const st = statusMap[prob] || { status: 'none', againCount: 0, emphasis: 0 };
+  return { prob: +prob, probStr: prob, lastKey, firstKey, nextKey, count, interval, dates,
+           status: st.status, againCount: st.againCount, emphasis: st.emphasis };
 });
 dueItems.sort((a,b) => a.nextKey.localeCompare(b.nextKey));
 
@@ -631,6 +455,10 @@ const totalProbs   = Object.keys(probMap).length;
 const overdueCount = dueItems.filter(x => x.nextKey < todayKey).length;
 const todayCount   = dueItems.filter(x => x.nextKey === todayKey).length;
 const weekCount    = dueItems.filter(x => x.nextKey > todayKey && daysBetween(todayKey, x.nextKey) <= 7).length;
+// The count that matters most: problems the log keeps marking "again" however
+// many times they have been attempted. A high number here is the reason a
+// review plan exists at all, so it gets a card of its own.
+const againCount   = dueItems.filter(x => x.againCount > 0).length;
 
 document.getElementById('stats-row').innerHTML = `
   <div class="stat-card"><div class="stat-num">${totalProbs}</div><div class="stat-label">Unique Problems</div></div>
@@ -638,7 +466,11 @@ document.getElementById('stats-row').innerHTML = `
   <div class="stat-card"><div class="stat-num" style="border-bottom:2px solid var(--text)">${overdueCount}</div><div class="stat-label">Overdue</div></div>
   <div class="stat-card"><div class="stat-num" style="border-bottom:2px solid var(--border-s)">${todayCount}</div><div class="stat-label">Due Today</div></div>
   <div class="stat-card"><div class="stat-num">${weekCount}</div><div class="stat-label">Due This Week</div></div>
+  <div class="stat-card"><div class="stat-num">${againCount}</div><div class="stat-label">Marked "again"</div></div>
 `;
+
+document.getElementById('data-range').textContent =
+  `${fmtKey(data.stats.firstDate)} → ${fmtKey(data.stats.lastDate)} · ${data.stats.attempts} attempts logged`;
 
 // ── Due for Review — date-grouped ─────────────────────────────────────────
 (function buildDue() {
@@ -678,13 +510,17 @@ document.getElementById('stats-row').innerHTML = `
     else { tagText = `in ${diff} days`; }
 
     let rowsHTML = '';
-    items.sort((a,b) => a.prob - b.prob).forEach(({probStr, prob, dates: dArr, count, interval, lastKey, firstKey}) => {
+    // Within one due date, the problems still coming back "again" go first —
+    // that is the queue you want to start at when the day's list is long.
+    items.sort((a,b) => (b.againCount - a.againCount) || (b.emphasis - a.emphasis) || (a.prob - b.prob))
+      .forEach(row => {
+      const { probStr, dates: dArr, count, interval } = row;
       const datesHTML = dArr.map((d,i) =>
         `<span class="hist-date${i===dArr.length-1?' latest':''}">${fmtKey(d)}</span>`
       ).join('');
       rowsHTML += `
         <div class="due-row">
-          <div class="prob-num"><a href="https://leetcode.com/problems/?q=${probStr}" target="_blank">#${probStr}</a></div>
+          <div class="prob-num"><a href="https://leetcode.com/problems/?q=${probStr}" target="_blank">#${probStr}</a>${statusChip(row)}</div>
           <div class="prob-history">${datesHTML}</div>
           <div class="prob-interval">×${count} · next: ${interval}d</div>
         </div>`;
@@ -720,11 +556,11 @@ let sortAsc = true;
 
 function setSortCol(col) {
   if (sortCol === col) sortAsc = !sortAsc;
-  else { sortCol = col; sortAsc = col !== 'count-desc'; }
+  else { sortCol = col; sortAsc = col !== 'count-desc' && col !== 'again-desc'; }
   document.getElementById('prob-sort').value = col;
   renderAllTable();
   // update arrows
-  ['num','first','last','count-desc','next'].forEach(c => {
+  ['num','first','last','count-desc','next','again-desc'].forEach(c => {
     const el = document.getElementById('arr-' + c);
     if (el) el.textContent = c === sortCol ? (sortAsc ? '↑' : '↓') : '↕';
     const th = el && el.parentElement;
@@ -736,11 +572,14 @@ function sortTable() { setSortCol(document.getElementById('prob-sort').value); }
 
 function filterTable() {
   const q = document.getElementById('prob-search').value.trim().toLowerCase();
+  const againOnly = document.getElementById('prob-again-only').checked;
   allRows = dueItems.filter(r =>
-    r.probStr.includes(q) ||
-    r.firstKey.includes(q.replace(/-/g,'')) ||
-    r.lastKey.includes(q.replace(/-/g,'')) ||
-    r.dates.some(d => fmtKey(d).includes(q))
+    (!againOnly || r.againCount > 0) && (
+      r.probStr.includes(q) ||
+      r.firstKey.includes(q.replace(/-/g,'')) ||
+      r.lastKey.includes(q.replace(/-/g,'')) ||
+      r.dates.some(d => fmtKey(d).includes(q))
+    )
   );
   renderAllTable();
 }
@@ -753,6 +592,8 @@ function renderAllTable() {
     else if (sortCol === 'last')  { va=a.lastKey;    vb=b.lastKey; }
     else if (sortCol === 'count-desc') { va=a.count; vb=b.count; }
     else if (sortCol === 'next')  { va=a.nextKey;    vb=b.nextKey; }
+    else if (sortCol === 'again-desc') { va=a.againCount * 10 + Math.min(a.emphasis, 9);
+                                         vb=b.againCount * 10 + Math.min(b.emphasis, 9); }
     if (va < vb) return sortAsc ? -1 : 1;
     if (va > vb) return sortAsc ?  1 : -1;
     return 0;
@@ -760,7 +601,8 @@ function renderAllTable() {
 
   const tbody = document.getElementById('all-tbody');
   tbody.innerHTML = '';
-  sorted.forEach(({probStr, prob, firstKey, lastKey, nextKey, count, interval, dates: dArr}) => {
+  sorted.forEach(row => {
+    const { probStr, firstKey, lastKey, nextKey, count, interval, dates: dArr } = row;
     const diff = daysBetween(todayKey, nextKey);
     const isOverdue = nextKey < todayKey;
     const isToday   = nextKey === todayKey;
@@ -775,11 +617,12 @@ function renderAllTable() {
 
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td><a class="prob-link" href="https://leetcode.com/problems/?q=${probStr}" target="_blank">#${probStr}</a></td>
+      <td><a class="prob-link" href="https://leetcode.com/problems/?q=${probStr}" target="_blank">#${probStr}</a> ${statusChip(row)}</td>
       <td>${fmtKey(firstKey)}</td>
       <td>${fmtKey(lastKey)}</td>
       <td>${count}×</td>
       <td>${fmtKey(nextKey)}<br><span style="font-size:11px;color:var(--muted)">interval: ${interval}d</span></td>
+      <td>${row.againCount ? row.againCount + '×' : '—'}</td>
       <td><span class="status-pill ${statusClass}">${statusText}</span></td>
       <td><div style="display:flex;flex-wrap:wrap;gap:3px">${allDatesHTML}</div></td>`;
     tbody.appendChild(tr);
@@ -863,6 +706,33 @@ renderAllTable();
     el.appendChild(div);
   });
 })();
+
+// The table's controls are inline onclick/oninput/onchange handlers, which
+// resolve against the global scope. The page's code now lives inside boot() so
+// that it can run after the log has been fetched, so they need re-exporting.
+window.setSortCol  = setSortCol;
+window.sortTable   = sortTable;
+window.filterTable = filterTable;
+
+// Safe to accept input only now that the handlers above are the real ones.
+['prob-search', 'prob-sort', 'prob-again-only'].forEach(function (id) {
+  var el = document.getElementById(id);
+  if (el) el.disabled = false;
+});
+
+} // ── end boot() ───────────────────────────────────────────────────────────
 </script>
+
+<footer>
+  <div class="container">
+    <p>CS_basics — computer science fundamentals &amp; interview preparation</p>
+    <p>
+      <a href="https://github.com/yennanliu/CS_basics">github</a> |
+      <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+      <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
+    </p>
+  </div>
+</footer>
+
 </body>
 </html>

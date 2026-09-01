@@ -6,6 +6,10 @@ and the Pages deploy workflow.
 
 **Reviewed:** 2026-08-08 · **Status:** findings only, no code changed.
 
+> **Most of this is now fixed.** See [site-review-2026-08-31.md](./site-review-2026-08-31.md)
+> for what was closed, what was closed on `master` in between, and the handful of
+> items still open.
+
 ---
 
 ## Table of Contents

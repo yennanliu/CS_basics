@@ -27,10 +27,15 @@ CS_basics is a comprehensive computer science fundamentals repository containing
   - `build-leetcode.js` - Generates LeetCode JSON data for the LC Explorer
   - `build-roadmap.js` - Resolves [`data/roadmap.json`](data/roadmap.json) against `README.md` and [`data/problem_lists.json`](data/problem_lists.json) into the Study Roadmap's data; fails the build on a bad topic id, cheatsheet slug, LC number or list mapping
   - `build-quiz.js` - Resolves [`data/complexity_quiz.json`](data/complexity_quiz.json) against `README.md` into the Complexity Quiz's data; fails the build on a duplicate id, an LC number README does not know, or an answer the grader cannot parse
+  - `build-review-plan.js` - Compiles [`data/progress.txt`](data/progress.txt) into the Review Plan's data. **The practice log is the only copy** — see [Review plan data](#the-review-plans-data) below
+  - `finalize-pages.js` / `prune-images.js` - The two finishing passes; they run last because they need the whole `_site/` tree (see [Finishing passes](#the-two-finishing-passes))
+  - `e2e-check.js` - Post-build validation of every generated page. Both workflows run it; run it locally too
   - `pages/` - Hand-maintained static pages (LC Explorer/Similar/Review-Plan/Random-Picker/Roadmap/Complexity-Quiz, 404)
   - `nav.js` / `roadmap.js` / `complexity.js` - Browser scripts copied to `_site/`; unit-tested under `site/test/`
-  - `style.css` - Site stylesheet
-  - `package.json` / `package-lock.json` - Node.js dependencies (markdown-it, highlight.js)
+  - `style.css` - Stylesheet for the generated doc pages
+  - `nav.css` - Navbar, skip link and the `prefers-reduced-motion` opt-out. Loaded by **every** page family
+  - `lc-page.css` - Shared palette and footer for the hand-written pages in `pages/`, which do not load `style.css`
+  - `package.json` / `package-lock.json` - Node.js dependencies (markdown-it, highlight.js, d3)
 
 ### The site is built by CI — never commit `_site/`
 
@@ -48,11 +53,91 @@ produces an incomplete tree:
 npm ci --prefix site          # first time only
 bash site/build.sh            # or: npm run build --prefix site
 SKIP_FONTS=1 bash site/build.sh   # offline / skip the web font download
+node site/e2e-check.js _site      # the same gate CI runs — run it before you push
 python3 -m http.server -d _site 8000
 ```
 
 `build.sh` starts with `rm -rf _site`, so a deleted or renamed doc can never leave an
 orphan page behind.
+
+### `e2e-check.js` is the contract for the built site
+
+Both workflows run it and fail on any error, so it is the place a site-wide rule
+belongs. It walks **every** page, not a list of a few — the rules it enforces
+(doctype, charset, viewport, title, navbar, footer, canonical URL, a per-page
+description, no broken or root-relative link, no unresolved `.md` link, no eager
+or missing image, every table scroll-wrapped, no external `<script>`) each exist
+because something quietly shipped broken without them.
+
+It also exercises the real artefacts rather than a copy of their logic: search's
+`score()` is lifted verbatim out of the built `search.html` and run against the
+built index, so a scoring change that breaks queries fails here.
+
+**Add a rule here, not in a workflow.** These checks used to live as a ~280-line
+heredoc inside `validate-pages.yml`, where they could not be run locally, could
+not be tested, and only warned.
+
+### The review plan's data
+
+[`data/progress.txt`](data/progress.txt) — the daily practice log — is the single
+source for `lc-review-plan.html`. `build-review-plan.js` compiles it to
+`_site/data/progress.json` on every build and the page fetches that.
+
+**Never paste practice data into the page.** It was a `const RAW` template literal
+until Aug 2026, which meant the review schedule froze on the day someone last
+remembered to re-paste it; the shipped copy had been four months behind the log.
+An `e2e-check.js` rule now fails the build if that literal comes back.
+
+The log's format is hand-written and loose — wrapped lines, `|` between sessions,
+annotations containing commas and nested parens. `site/test/build-review-plan.test.js`
+pins each shape against the real file, so a new one that the parser cannot read
+fails a test instead of silently shrinking the schedule.
+
+The annotations are the point: `139(again!!)` and `139(ok)` are different rows.
+`again` beats `ok` when a note says both (`"ok, but again"`), and the bang count
+sorts `again!!!` above a bare `again`.
+
+### The two finishing passes
+
+`finalize-pages.js` and `prune-images.js` run after everything else in `build.sh`,
+and the order matters. The site is produced by five generators **plus a plain `cp`**
+of `site/pages/` and `algo_demo/`, so no generator can see the finished tree:
+
+- `finalize-pages.js` gives the copied pages the canonical / Open Graph / Twitter
+  tags that `htmlTemplate` already gives the generated ones, then writes
+  `sitemap.xml` and `robots.txt` from the whole tree. It only fills gaps — a page
+  that already has a canonical URL is left alone.
+- `prune-images.js` deletes the `_site/doc/pic` images no page references.
+  `build.sh` has to copy the directory wholesale (the pages that reference it do
+  not exist yet), and two thirds of it — 68 MB — belongs to the markdown as read
+  on GitHub, not to the site. It matches case-insensitively on purpose, so a
+  reference whose case is wrong is reported by `e2e-check.js` as a broken link
+  rather than quietly deleted.
+
+`doc/pic/` in the repo is never touched by either.
+
+### Where a `.md` link goes
+
+`build-site.js` keeps a registry of every markdown file that becomes a page
+(`mdToPage`), filled in before anything renders. A `.md` link resolves against it:
+**a local page if the target is built, a GitHub URL if it is not.** That holds for
+every spelling — `./heap.md`, a bare `design.md`, a cross-tree
+`../faq/java/faq_OOP.md`, or a hand-written `github.com/.../doc/cheatsheet/x.md`.
+
+Two consequences worth knowing:
+
+- A link to `00_template.md` or a cheatsheet `README.md` correctly becomes a
+  GitHub URL — neither is built.
+- A typo'd target (`kadane_algo.md` for `kadane_algorithm.md`) lands on GitHub,
+  where it 404s visibly, rather than becoming a dead link inside the site.
+
+### The landing page and the problem index
+
+`index.html` is a landing page built by `build-site.js`; README lives at
+`problems.html`. Every count on the landing page — problems, cheatsheets, FAQs,
+visualizers, roadmap topics, quiz questions, OK vs AGAIN — is read from the source
+files at build time. **Do not hardcode one**; a typed number is one that goes stale
+the first week nobody re-checks it.
 
 ## Build and Test Commands
 

@@ -58,6 +58,7 @@
   // random picker held, since the picker's siblings (similar, review) already
   // live down here.
   var MORE = [
+    { id: 'problems',           label: 'problems',   href: 'problems.html' },
     { id: 'patterns',           label: 'patterns',   href: 'patterns.html' },
     { id: 'lc-similar',         label: 'similar',    href: 'lc-similar.html' },
     { id: 'lc-review-plan',     label: 'review',     href: 'lc-review-plan.html' },
@@ -112,7 +113,13 @@
     var basePath = options.basePath || '';
     var links = function (item) { return linkHTML(item, currentPage, basePath); };
 
-    return '<nav class="navbar">' +
+    // The skip link ships with the navbar rather than with each page, for the
+    // same reason the navbar itself does: there are four page families and this
+    // is the only file all four load. Reaching a tool's controls with a keyboard
+    // otherwise means tabbing past all fourteen nav entries first. mount()
+    // guarantees the "#main" it points at exists.
+    return '<a class="skip-link" href="#main">Skip to content</a>' +
+      '<nav class="navbar">' +
       '<div class="nav-inner">' +
         '<a href="' + esc(basePath + 'index.html') + '" class="nav-brand">' +
           '<span class="nav-title">CS_basics</span>' +
@@ -234,6 +241,30 @@
     });
   }
 
+  // "/" and ⌘K / Ctrl-K, the two shortcuts a reader will already try. Bound here
+  // rather than on the search page, because the whole point is reaching search
+  // from wherever you are — including the tool pages, which do not load site.js.
+  function initSearchShortcut(basePath) {
+    document.addEventListener('keydown', function (event) {
+      var slash = event.key === '/' && !event.metaKey && !event.ctrlKey && !event.altKey;
+      var cmdK = (event.key === 'k' || event.key === 'K') && (event.metaKey || event.ctrlKey);
+      if (!slash && !cmdK) return;
+
+      // Never steal a keystroke from someone who is typing. ⌘K included: it is a
+      // text shortcut in some inputs, and the page's own filter boxes matter more.
+      var el = document.activeElement;
+      if (el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT' ||
+                 el.isContentEditable)) return;
+
+      // Already on a page with a search box? Focus it rather than reloading.
+      var box = document.getElementById('q');
+      if (box) { event.preventDefault(); box.focus(); box.select(); return; }
+
+      event.preventDefault();
+      window.location.href = basePath + 'search.html';
+    });
+  }
+
   // Renders the navbar into `#site-nav` (or the given element) and wires it up.
   function mount(target) {
     var host = target || document.getElementById('site-nav');
@@ -247,7 +278,22 @@
     initTheme();
     initNavToggle(host);
     initNavMore(host);
+    ensureMainTarget(host);
+    initSearchShortcut(host.getAttribute('data-base') || '');
     return host;
+  }
+
+  // The four page families wrap their content differently — <main class="container">
+  // on generated pages, a bare <div class="container"> on the hand-written LC
+  // tools, a <section> in the visualizers — so rather than ask each of them to
+  // add an id, find whatever holds the content and label it here.
+  function ensureMainTarget(host) {
+    if (document.getElementById('main')) return;
+    var target = document.querySelector('main') ||
+      (host && host.nextElementSibling && host.nextElementSibling.matches('.container, main, section')
+        ? host.nextElementSibling
+        : document.querySelector('.container'));
+    if (target) target.id = 'main';
   }
 
   if (typeof document !== 'undefined' && document.documentElement) applyStoredTheme();
@@ -270,6 +316,8 @@
     initTheme: initTheme,
     initNavToggle: initNavToggle,
     initNavMore: initNavMore,
+    initSearchShortcut: initSearchShortcut,
+    ensureMainTarget: ensureMainTarget,
     mount: mount
   };
 });
