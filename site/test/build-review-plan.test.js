@@ -86,6 +86,28 @@ test('a date that is not a calendar date is reported, not silently kept', () => 
   assert.match(warnings[0], /not a calendar date/);
 });
 
+test('a wrapped annotation still continues onto the next line', () => {
+  // The real log does this at progress.txt:19-20 — the guard below must not
+  // break it.
+  const { days, warnings } = parseProgress('20260819: 322(again),152(\nok*),62(ok)');
+  assert.equal(days.length, 1);
+  assert.deepEqual(days[0].items.map(i => i.id), [322, 152, 62]);
+  assert.equal(days[0].items[1].status, 'ok');
+  assert.deepEqual(warnings, []);
+});
+
+test('an unclosed "(" does not swallow the next day, and is reported', () => {
+  // A missing ")" is a plausible typo in a hand-written file. It used to hold
+  // the annotation open, so every following date line was appended to the note
+  // and those days disappeared from the schedule without a warning.
+  const { days, warnings } = parseProgress('20260819: 152(ok*\n20260820: 62(ok),91(again)');
+  assert.deepEqual(days.map(d => d.date), ['20260819', '20260820']);
+  assert.deepEqual(days[0].items.map(i => i.id), [152]);
+  assert.deepEqual(days[1].items.map(i => i.id), [62, 91]);
+  assert.equal(warnings.length, 1);
+  assert.match(warnings[0], /unclosed/);
+});
+
 // ── Status classification ───────────────────────────────────────────────────
 
 test('classify reads the log\'s vocabulary', () => {

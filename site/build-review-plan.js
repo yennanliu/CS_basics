@@ -129,7 +129,15 @@ function parseProgress(raw) {
     if (/^[-=]{2,}/.test(trimmed)) { flush(); current = null; continue; }
 
     const header = trimmed.match(/^(\d{8})\s*[:.]?\s*(.*)$/);
-    if (header && !midAnnotation) {
+    // A dated line wins over a still-open annotation. It used to lose, so one
+    // missing ")" swallowed every following day into the note until a blank line
+    // flushed — silently, which is the opposite of the rule that a line the
+    // parser cannot place gets reported. An LC number is at most four digits, so
+    // an eight-digit line is a date, never the tail of a wrapped annotation.
+    if (header && midAnnotation) {
+      warnings.push(`line ${i + 1}: previous entry left "(" unclosed, closed here`);
+    }
+    if (header) {
       flush();
       const date = header[1];
       if (!/^\d{4}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])$/.test(date)) {

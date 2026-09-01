@@ -41,6 +41,17 @@ function escAttr(value) {
     .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
+// Everything lifted back out of a finished page — a <title>, an existing
+// description, a lead paragraph — is already entity-escaped. Decoding first makes
+// escAttr idempotent, which is what stops og:title shipping "&amp;amp;".
+function unescAttr(value) {
+  if (value === null || value === undefined) return '';
+  return String(value)
+    .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"').replace(/&#0?39;|&apos;/g, "'")
+    .replace(/&amp;/g, '&');
+}
+
 // "Dijkstra - Algorithm Visualizer" and "Heap — CS_basics" both want to become
 // "Dijkstra" / "Heap" for og:title — the site name is already in og:site_name.
 function pageTitle(html) {
@@ -72,8 +83,8 @@ for (const file of pages) {
   let html = fs.readFileSync(file, 'utf8');
   if (html.includes('rel="canonical"')) continue;
 
-  const title = pageTitle(html);
-  const description = existingDescription(html) || leadParagraph(html) ||
+  const title = unescAttr(pageTitle(html));
+  const description = unescAttr(existingDescription(html) || leadParagraph(html)) ||
     `${title} — an interactive walkthrough from the CS_basics algorithm visualizer.`;
 
   const tags = [

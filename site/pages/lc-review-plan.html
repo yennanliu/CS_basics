@@ -294,8 +294,8 @@
   <!-- All problems -->
   <div id="tab-all" class="tab-panel">
     <div class="filter-bar">
-      <input id="prob-search" type="text" placeholder="Search problem # or date…" oninput="filterTable()">
-      <select id="prob-sort" onchange="sortTable()">
+      <input id="prob-search" type="text" placeholder="Search problem # or date…" oninput="filterTable()" disabled>
+      <select id="prob-sort" onchange="sortTable()" disabled>
         <option value="num">Sort: Problem #</option>
         <option value="first">Sort: First seen</option>
         <option value="last">Sort: Last seen</option>
@@ -303,7 +303,7 @@
         <option value="next">Sort: Next due</option>
         <option value="again-desc">Sort: Most "again"</option>
       </select>
-      <label class="filter-toggle"><input type="checkbox" id="prob-again-only" onchange="filterTable()"> only "again"</label>
+      <label class="filter-toggle"><input type="checkbox" id="prob-again-only" onchange="filterTable()" disabled> only "again"</label>
     </div>
     <div class="all-table-wrap">
       <table class="all-table" id="all-table">
@@ -390,6 +390,12 @@ function addDays(key, n) {
 // pasted into this file as a `const RAW` template literal, which meant the
 // schedule froze on the day someone last remembered to re-paste it — the
 // shipped copy had stopped four months short of the log.
+// The filter bar ships disabled and the sortable <th>s cannot be, so both kinds
+// of inline handler need a global to resolve against while the log is in flight.
+// Without these a click on a column header throws a ReferenceError; boot()
+// overwrites all three with the real implementations.
+window.setSortCol = window.sortTable = window.filterTable = function () {};
+
 fetch('./data/progress.json')
   .then(res => { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
   .then(boot)
@@ -707,6 +713,12 @@ renderAllTable();
 window.setSortCol  = setSortCol;
 window.sortTable   = sortTable;
 window.filterTable = filterTable;
+
+// Safe to accept input only now that the handlers above are the real ones.
+['prob-search', 'prob-sort', 'prob-again-only'].forEach(function (id) {
+  var el = document.getElementById(id);
+  if (el) el.disabled = false;
+});
 
 } // ── end boot() ───────────────────────────────────────────────────────────
 </script>

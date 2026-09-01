@@ -5,7 +5,7 @@ A second pass over the GitHub Pages site, three weeks after
 records what was **found and fixed**, and what the fixes changed about how the
 build works.
 
-**Reviewed:** 2026-08-31 · **Status:** all findings below are closed.
+**Reviewed:** 2026-08-31 · **Status:** the numbered findings below are fixed and closed; what this pass deliberately left for later is collected in the "Still open" list at the end.
 
 The trigger was a check on PR #52 (`feat/site-improvements`). That branch turned
 out to be 603 commits behind `master` and its proposals were already merged — but

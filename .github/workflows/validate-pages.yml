@@ -45,6 +45,11 @@ on:
       - 'vendor/**'
   workflow_dispatch:
 
+# This job only builds the site and reads the tree it produced. Saying so keeps
+# the token read-only whatever the repository default is, matching deploy-pages.yml.
+permissions:
+  contents: read
+
 jobs:
   validate:
     runs-on: ubuntu-latest

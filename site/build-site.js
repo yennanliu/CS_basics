@@ -282,7 +282,9 @@ function faqPageName(filePath) {
   return subDir === '.' ? baseName : `${subDir}_${baseName}`.replace(/\//g, '_');
 }
 
-registerPage('README.md', 'index.html');
+// README renders to problems.html; index.html is the hand-built landing page, so
+// a link to README.md has to resolve to the problem index, not to the front door.
+registerPage('README.md', 'problems.html');
 if (fs.existsSync('doc/Resource.md')) registerPage('doc/Resource.md', 'resources.html');
 if (fs.existsSync('doc/pattern_recognition.md')) registerPage('doc/pattern_recognition.md', 'patterns.html');
 for (const file of cheatsheetFiles) {
@@ -655,6 +657,20 @@ function escAttr(value) {
     .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
+// A title reaches htmlTemplate already entity-escaped when it came from rendered
+// markdown ("Hashing &amp; Counting") and raw when a caller passed a literal
+// ("Problem Index"). Decoding first makes escAttr idempotent over both, which is
+// what stops og:title shipping "Hashing &amp;amp; Counting".
+function unescAttr(value) {
+  // Null-safe: a page that passes no description must reach metaDescription as
+  // "" and get the default, not the string "undefined".
+  if (value === null || value === undefined) return '';
+  return String(value)
+    .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"').replace(/&#0?39;|&apos;/g, "'")
+    .replace(/&amp;/g, '&');
+}
+
 // A description is a sentence about *this* page or it is noise. Every page family
 // already computes one for its index card — the Scope line for a cheatsheet, the
 // lead paragraph for an FAQ — it just never reached the <head>, so all 352 pages
@@ -675,7 +691,9 @@ function metaDescription(text) {
 const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '', opts = {}) => {
   const url = opts.url || '';
   const absolute = url ? SITE_ORIGIN + url : '';
-  const description = metaDescription(opts.description);
+  // Decode before truncating, so a 300-char cut can never land inside an entity.
+  const description = metaDescription(unescAttr(opts.description));
+  const pageTitle = unescAttr(title);
 
   // The zh and en sheets are translations of each other, not duplicates. Saying
   // so — in both directions, plus x-default — is what stops a crawler picking
@@ -698,17 +716,17 @@ const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '', o
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>${title} — CS_basics</title>
+  <title>${escAttr(pageTitle)} — CS_basics</title>
   <meta name="description" content="${escAttr(description)}">
   <link rel="canonical" href="${absolute || SITE_ORIGIN}">${alternates}
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="CS_basics">
-  <meta property="og:title" content="${escAttr(title)}">
+  <meta property="og:title" content="${escAttr(pageTitle)}">
   <meta property="og:description" content="${escAttr(description)}">
   <meta property="og:url" content="${absolute || SITE_ORIGIN}">
   <meta property="og:locale" content="${opts.lang === 'zh' ? 'zh_TW' : 'en_US'}">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="${escAttr(title)}">
+  <meta name="twitter:title" content="${escAttr(pageTitle)}">
   <meta name="twitter:description" content="${escAttr(description)}">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="${basePath}nav.css">
