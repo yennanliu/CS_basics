@@ -88,6 +88,15 @@ CORE IDEA:
         ```
 
 
+4. we have 2 `if _left:`
+
+5. 
+
+     -> 第一個 if _left：負責「重新接線」
+
+     -> 第二個 if _left：負責「return tail」
+
+
 """
 class Solution(object):
     def flatten(self, root):
@@ -123,6 +132,48 @@ class Solution(object):
 
             left_tail.right = right_head
 
+        """
+        NOTE !!!
+
+
+        1. flatten structure: node -> left sub node -> right sub node
+
+
+        2. below return `tail` !!! (NOT traveral order)
+
+            -> e.g. tell the parent: `這整棵 subtree 的最後一個 node 是誰？ `
+
+        ```
+        if right_tail:
+            return right_tail
+        ```
+
+        3. why can just return right_tail in above ?
+
+            -> 只要 right subtree 存在：
+
+                    -> right_tail = 整棵 subtree 的 tail
+
+
+        4. think above as `priority` check
+
+
+        ```
+        1. 有 right subtree → tail 在 right
+        2. 沒 right，但有 left → tail 在 left
+        3. 兩個都沒有 → node 自己就是 tail
+
+        ```
+
+
+        5. in summary:
+
+        ```
+        if 的檢查順序 ≠ Tree 的 traversal 順序。
+        我們是 Root → Left → Right flatten，但要 Right → Left → Root 找 tail。
+        ```
+
+        """
         # Return the tail of flattened subtree
         if right_tail:
             return right_tail
