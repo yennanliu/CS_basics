@@ -37,6 +37,7 @@ Follow up: Can you flatten the tree in-place (with O(1) extra space)?
 """
 
 
+
 """
 
 NOTE !!!
@@ -59,6 +60,77 @@ class Solution(object):
         :rtype: None Do not return anything, modify root in-place instead.
         """    
         pass
+
+
+# V0-0-1
+# IDEA: POST ORDER DFS + cache + re-connect (gpt)
+"""
+CORE IDEA:
+
+
+1. 回傳 flattened subtree 的 tail
+
+2. return of helper func is `tail` of tree
+
+3.  steps:
+
+        ```
+
+        if left_tail:
+            ...
+
+
+        if right_tail:
+            ...
+
+        if left_tail:
+            ...
+        ```
+
+
+"""
+class Solution(object):
+    def flatten(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: None
+        """
+
+        self.helper(root)
+
+
+    def helper(self, node):
+        # Empty
+        if not node:
+            return None
+
+        # Leaf
+        if not node.left and not node.right:
+            return node
+
+        # Cache original right subtree
+        right_head = node.right
+
+        # Flatten left and right subtrees
+        left_tail = self.helper(node.left)
+        right_tail = self.helper(node.right)
+
+        # If left subtree exists:
+        # node -> left subtree -> right subtree
+        if left_tail:
+            node.right = node.left
+            node.left = None
+
+            left_tail.right = right_head
+
+        # Return the tail of flattened subtree
+        if right_tail:
+            return right_tail
+
+        if left_tail:
+            return left_tail
+
+        return node
 
 
 # V0-1
