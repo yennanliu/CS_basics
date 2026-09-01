@@ -628,6 +628,8 @@ def flatten(root):
                                R         (L_rightmost.right = R)
 ```
 
+> The recursive counterpart — post-order where each call **returns the tail** of the subtree it flattened, so the parent knows where to splice — is worked through in [tree_examples 16)](./tree_examples.md#16-flatten-binary-tree-to-linked-list--lc-114), including why the tail is checked right → left → node.
+
 > **When to reach for this:** any "in-place, O(1) space, restructure a tree along its right spine" problem. The `while rightmost.right` predecessor-finding step is the signature. Recognize it as the **same machinery** as Morris traversal — only the thread's destination and whether you restore it change.
 
 ---

@@ -1464,6 +1464,77 @@ Before:                 After:
                                   right     (left_tail.right = node.right)
 ```
 
+#### The two `if left_tail:` blocks answer different questions
+
+The shape that looks redundant at first glance is:
+
+```text
+if left_tail:        # (A) REWIRE  — do I have to move anything?
+    ...
+
+if right_tail:       # (B) REPORT  — who is my last node?
+    return right_tail
+if left_tail:
+    return left_tail
+return node
+```
+
+Same test, two unrelated jobs:
+
+| Block | The question it answers | What it produces |
+|-------|-------------------------|------------------|
+| **(A)** `if left_tail:` | "Is there a left chain that has to be *moved* onto the right and spliced in front of the original right subtree?" | a **mutation** of this node's pointers |
+| **(B)** `if right_tail: / if left_tail:` | "Which node does my **parent** splice the cached right head onto?" | this call's **return value** |
+
+They cannot be merged, because the two questions disagree in both directions:
+
+- **left only, no right** — (A) runs (the left chain is moved over, and `left_tail.right = node.right` harmlessly assigns `None`), but (B) skips `right_tail` and returns `left_tail`.
+- **right only, no left** — (A) is skipped entirely (the right subtree is *already* where pre-order wants it), yet (B) still has to return `right_tail`.
+
+> The `right_head` cache in some write-ups is only needed when `node.right = node.left` is executed **before** `left_tail.right = node.right` is read. Do the read first, as above, and the cache disappears.
+
+#### Why the tail check runs right → left → node — backwards from the traversal
+
+After block (A), this subtree's flattened layout is fixed by pre-order:
+
+```text
+node ──→ [ flattened left chain ] ──→ [ flattened right chain ]
+ ^                  ^                            ^
+ 3rd fallback       2nd choice                   1st choice for the TAIL
+```
+
+The head is the *leftmost* box, so it is always `node`. The tail is the *rightmost non-empty* box, so finding it means reading that layout **from the right end** — the first box that exists wins:
+
+```text
+1. right subtree exists  → right_tail ends the whole chain
+2. no right, but left    → left_tail ends it
+3. neither               → node is the entire chain, so node is its own tail
+```
+
+That is why the `if` order is not the traversal order:
+
+| | Order |
+|---|---|
+| **Flatten / traversal** | root → left → right |
+| **Tail hunt** | right → left → root |
+
+Same list, scanned from the other end. Read the `if` chain as a **priority fallback**, not as a visit order.
+
+#### Why the return value is the tail, not the head
+
+The head is never in doubt: the parent already holds `node.left` and `node.right`, and each of those *is* the head of its own flattened chain, so returning a head would tell the parent nothing new. What the parent cannot see cheaply is where a child's chain **ends** — and that end is exactly the node the cached right head must hook onto.
+
+The alternative is to walk there:
+
+```python
+current = root                 # tree2 7.2's template does this
+while current.right:
+    current = current.right    # O(h) per node → O(n·h), O(n^2) on a skewed tree
+current.right = right
+```
+
+Returning the tail replaces that walk with an O(1) hand-off, which is what makes the post-order version O(n) overall.
+
 #### Dry run — `root = [1,2,5,3,4,null,6]`
 
 ```text
@@ -1539,8 +1610,6 @@ class Solution(object):
                 curr.left = None
             curr = curr.right                 # advance down the new right spine
 ```
-
-**Key insight**: `right_tail > left_tail > node` priority for the return value mirrors **pre-order's last node** — pre-order ends in the rightmost branch, so the right subtree's tail (if any) is the overall tail.
 
 **Similar problems**:
 

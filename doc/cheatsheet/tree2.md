@@ -1392,7 +1392,7 @@ public TreeNode invertTree(TreeNode root) {
 
 **Pattern**: Flatten tree to linked list
 **Use Case**: Convert to right-skewed tree
-**Time Complexity**: O(n)
+**Time Complexity**: O(n·h) — the `while current.right` walk re-scans the chain at every node (O(n^2) on a skewed tree). Return each subtree's tail instead and it drops to O(n): see [tree_examples 16)](./tree_examples.md#16-flatten-binary-tree-to-linked-list--lc-114).
 **Space Complexity**: O(h)
 
 #### Template Code
