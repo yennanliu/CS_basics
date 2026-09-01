@@ -119,6 +119,8 @@ class Solution:
         dist = [[float("inf")] * n for _ in range(m)]
         dist[start[0]][start[1]] = 0
 
+        # small PQ
+        #   -> [(dist, x, y)]
         pq = [(0, start[0], start[1])]  # (distance, row, col)
 
         while pq:
@@ -146,11 +148,15 @@ class Solution:
                 #        we move within the `while` loop below
                 steps = 0
 
+
+
                 """
                 NOTE !!!!
 
                 since the ball can `keep moving`
                 here we need `while` loop, instead of `if`
+
+
                 """
                 while (
                     0 <= nx + dx < m
