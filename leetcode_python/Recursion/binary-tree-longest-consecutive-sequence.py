@@ -139,6 +139,8 @@ class Solution(object):
 NOTE !!!
 
 
+1. 
+
 -> tree like below could be used as input in LC 298
 (e.g. below is a valid input)
 
@@ -159,6 +161,16 @@ NOTE !!!
 You must always move from parent → child.
 You can switch between left and right children.
 You do not have to stay exclusively left or exclusively right.
+
+
+2. 
+
+for this LC (LC 298),
+
+    -> 其實不需要判斷「這條 path 是不是從 root 開始」。
+
+    -> 因為 LC 298 的 consecutive sequence 可以從任何 node 開始。
+
 
 
 """
@@ -220,6 +232,44 @@ class Solution(object):
         self.dfs(node.left, node, curr_len)
         self.dfs(node.right, node, curr_len)
 
+
+
+# V0-0-1
+# IDEA: DFS (gpt)
+class Solution(object):
+    def longestConsecutive(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: int
+        """
+
+        if not root:
+            return 0
+
+        self.max_len = 0
+
+        self.helper(root, None, 0)
+
+        return self.max_len
+
+
+    def helper(self, node, prev, path):
+        if not node:
+            return
+
+        # Consecutive
+        if prev and node.val == prev.val + 1:
+            path += 1
+        else:
+            # Start a new consecutive path
+            path = 1
+
+        # Update global answer
+        self.max_len = max(self.max_len, path)
+
+        # Continue DFS
+        self.helper(node.left, node, path)
+        self.helper(node.right, node, path)
 
 
 # V0-1
