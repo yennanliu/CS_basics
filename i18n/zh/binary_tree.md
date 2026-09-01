@@ -306,7 +306,7 @@ A vs B 這個問題只對**由上而下**的題目有意義：也就是一個節
 
 ---
 
-<!-- c890f3266dc9 -->
+<!-- cb8000677092 -->
 ### 模板 9：樹 DP — 由下而上回傳多個狀態 ⭐⭐⭐⭐⭐
 
 > **模式**：模板 5 每棵子樹回傳*一個*數字。當父節點的選擇取決於子節點**選了什麼做法**時，改成回傳一個**狀態組**。
@@ -327,10 +327,53 @@ A vs B 這個問題只對**由上而下**的題目有意義：也就是一個節
 | 652 | Find Duplicate Subtrees | 一個**正規化字串** `val,left,right`，記進一個 `HashMap`；計數剛好到 2 時把節點加入答案 |
 | 563 | Binary Tree Tilt | 子樹和，同時把 `abs(leftSum - rightSum)` 累加到全域變數 |
 | 687 | Longest Univalue Path | 往下同值的最長單邊；全域最大值 = 左邊 + 右邊 |
+| 549 | Binary Tree Longest Consecutive Sequence II | `(inc, dec)` — 從我這裡**往下**的最長遞增／遞減連續串；全域最大值 = `inc + dec - 1`（下面有完整寫法） |
 
 <!--CODE-->
 
 <!--CODE-->
+
+<!-- 1241abe1d818 -->
+#### 實作變形：一個節點兩條連續串 — LC 549 Binary Tree Longest Consecutive Sequence II ⭐⭐⭐⭐
+
+> LC 298（§2-4）的續集，改了**兩件事**：連續串可以遞增**也可以**遞減，而且可以在節點處**轉彎**
+> （`子 → 父 → 子`），不再只能一路往下。
+> 出處：[`binary-tree-longest-consecutive-sequence-ii.py`](../../leetcode_python/Recursion/binary-tree-longest-consecutive-sequence-ii.py)
+
+**為什麼要回傳一組值，而不是一個數字** — 從值為 `v` 的節點看出去，值是 `v + 1` 的子節點只能延長**遞增**串，
+值是 `v - 1` 的子節點只能延長**遞減**串。父節點兩件事都要問，所以每次呼叫回傳 `(inc, dec)`：
+**從這個節點出發、一路往下**的最長遞增／遞減連續串。
+
+<!--CODE-->
+
+<!--CODE-->
+
+**轉彎的過程**
+
+<!--CODE-->
+
+**三個讓它正確的關鍵**
+
+1. **`- 1` 是因為節點被算了兩次** — 它既是遞減那一臂的最後一格，也是遞增那一臂的第一格。
+   葉節點一樣成立：`1 + 1 - 1 = 1`。
+2. **兩臂永遠不可能是同一個子節點** — `inc` 只會從值為 `val + 1` 的子節點長出來，`dec` 只會從 `val - 1`
+   長出來，一個子節點不可能兩者皆是。所以 `inc + dec - 1` 一定是一條真實存在的路徑，不會把同一條分支
+   重複算兩次。（LC 124 / 543 是靠分別寫 `left`、`right` 白拿這個保證；這裡則來自值的判斷。）
+3. **全域記答案，往上只回傳單邊** — 轉彎後的長度寫進 `res`；往上只給 `(inc, dec)`。
+   和 LC 124（最大路徑和）、LC 543（直徑）、LC 687（同值路徑）是同一種拆法。
+
+**LC 298 vs LC 549**
+
+| | LC 298 | LC 549 |
+|---|--------|--------|
+| 方向 | 嚴格遞增，父 → 子 | 遞增**或**遞減 |
+| 形狀 | 只能一路往下 | 可以轉彎：子 → 節點 → 子 |
+| 狀態 | 一個純量 `cur_len` **往下**帶（§0-2 的 A／B 型） | 一組 `(inc, dec)` **往上**回傳（C 型／本模板） |
+| 答案 | `cur_len` 的全域最大值 | `inc + dec - 1` 的全域最大值 |
+| 中斷規則 | 連續中斷 → `cur_len = 1` | 連續中斷 → 那一臂就停在 `1` |
+
+> **陷阱**：把 `res` 初始化成 `0` 是安全的（空樹必須回傳 `0`，而任何真實節點至少算得到 `1 + 1 - 1 = 1`），
+> 但把兩臂的初始值設成 `0` 就不安全 — 葉節點會回報 `-1`。
 
 ---
 
@@ -420,7 +463,7 @@ A vs B 這個問題只對**由上而下**的題目有意義：也就是一個節
 | Serialize and Deserialize Tree | 297 | Hard | BFS／DFS | 模板 3 |
 | Construct from String | 536 | Medium | 堆疊／遞迴 | 模板 3 |
 
-<!-- a3972956d512 -->
+<!-- 03979f7da904 -->
 #### **模式 3：路徑題目**
 | 題目 | LC # | 難度 | 關鍵技巧 | 模板 |
 |---------|------|------------|---------------|----------|
@@ -430,6 +473,7 @@ A vs B 這個問題只對**由上而下**的題目有意義：也就是一個節
 | Sum Root to Leaf Numbers | 129 | Medium | DFS | 模板 4 |
 | Binary Tree Maximum Path Sum | 124 | Hard | DFS + 全域最大值 | 模板 4 |
 | Longest Consecutive Sequence | 298 | Medium | DFS + 計數器 | 模板 4（見 §0-2：由上而下**和**由下而上都能解） |
+| Longest Consecutive Sequence II | 549 | Medium | DFS + 狀態組 | 模板 9（路徑可轉彎，`inc + dec - 1`） |
 | Path Sum III | 437 | Medium | 前綴和 | 模板 4 |
 
 <!-- e9741f38c8d9 -->
@@ -493,7 +537,7 @@ A vs B 這個問題只對**由上而下**的題目有意義：也就是一個節
 - LC 543: Diameter of Binary Tree - 全域最大值模式
 - LC 572: Subtree of Another Tree - 樹的比對
 
-<!-- 996d05fb058e -->
+<!-- a839fb67f861 -->
 #### Medium 題（核心）
 - LC 102: Binary Tree Level Order Traversal - BFS 基礎
 - LC 103: Binary Tree Zigzag Level Order - 帶方向的層序
@@ -513,6 +557,7 @@ A vs B 這個問題只對**由上而下**的題目有意義：也就是一個節
 - LC 437: Path Sum III - 樹上的前綴和
 - LC 513: Find Bottom Left Tree Value - 層序的變形
 - LC 536: Construct from String - 解析成樹
+- LC 549: Binary Tree Longest Consecutive II - 可轉彎的路徑，(inc, dec) 狀態
 - LC 654: Maximum Binary Tree - 單調堆疊
 - LC 863: All Nodes Distance K - 轉成圖
 
@@ -538,10 +583,11 @@ A vs B 這個問題只對**由上而下**的題目有意義：也就是一個節
 ### 2-3) Binary Tree Paths — LC 257
 <!--CODE-->
 
-<!-- fd85e89dc1cd -->
+<!-- 4d2fc00c3c28 -->
 ### 2-4) Binary Tree Longest Consecutive Sequence — LC 298
 
 > 回看 vs 前看 vs 由下而上的比較見 **§0-2 / §0-3** — LC 298 是少見的三種形狀都能解的題目。
+> 續集 **LC 549**（路徑可以轉彎，也可以遞減）見 **模板 9 — LC 549**，在那裡純量 `cur_len` 必須變成一組 `(inc, dec)`。
 
 <!--CODE-->
 

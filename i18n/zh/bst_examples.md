@@ -240,12 +240,12 @@ eager vs lazy 的對照表，看 [bst_advanced.md](./bst_advanced.md) 的 `Templ
 
 > **重點**：當你要的量是**沿著一條根→節點的單鏈**定義出來的，就把它當成**參數往下帶進遞迴**。只有在需要拿*整棵子樹*互相比較時，才動用序列化。
 
-<!-- 4bd22cf6505d -->
+<!-- 53141c8d88d5 -->
 ###### **相似的 LeetCode 題目**
 
 | LC # | 題目 | 與 LC 298 的關係 | 關鍵差異 |
 |------|---------|--------------------|----------------|
-| **549** | Binary Tree Longest Consecutive Sequence II | 直接的續集 ⭐ | 路徑可以走**子 → 父 → 子**（一個「V」），而且可以遞增**或**遞減 → 每個節點回傳 `inc + dec - 1` |
+| **549** | Binary Tree Longest Consecutive Sequence II | 直接的續集 ⭐ | 路徑可以走**子 → 父 → 子**（一個「V」），而且可以遞增**或**遞減 → 每個節點回傳 `inc + dec - 1`（[完整寫法](./binary_tree.md#worked-variation-two-runs-per-node--lc-549-binary-tree-longest-consecutive-sequence-ii-)） |
 | **124** | Binary Tree Maximum Path Sum | 同樣的「全域最大值 + 只回傳一邊」骨架 | 路徑可以在節點處轉彎；用的是總和而不是 `+1` 步進 |
 | **687** | Longest Univalue Path | 同一副骨架 | 要求值**相等**而不是 `+1`；數的是**邊**不是節點 |
 | **543** | Diameter of Binary Tree | 同一副骨架 | 對值完全沒有限制；純粹數邊 |

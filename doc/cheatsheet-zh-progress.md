@@ -41,7 +41,7 @@ half-translated sheet renders with English gaps rather than failing.
   is what makes a problem findable on LeetCode itself.
 
 
-## Status — 5063 / 5066 sections (100%)
+## Status — 5061 / 5070 sections (100%)
 
 | Sheet | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -71,7 +71,7 @@ half-translated sheet renders with English gaps rather than failing.
 | [binary_search](./cheatsheet/binary_search.md) | 54 | [✅](../i18n/zh/binary_search.md) |
 | [binary_search_examples](./cheatsheet/binary_search_examples.md) | 43 | [✅](../i18n/zh/binary_search_examples.md) |
 | [binary_search_on_answer](./cheatsheet/binary_search_on_answer.md) | 42 | [✅](../i18n/zh/binary_search_on_answer.md) |
-| [binary_tree](./cheatsheet/binary_tree.md) | 73 | [✅](../i18n/zh/binary_tree.md) |
+| [binary_tree](./cheatsheet/binary_tree.md) | 74 | [✅](../i18n/zh/binary_tree.md) |
 | [bit_manipulation](./cheatsheet/bit_manipulation.md) | 22 | [✅](../i18n/zh/bit_manipulation.md) |
 | [bit_manipulation_examples](./cheatsheet/bit_manipulation_examples.md) | 22 | [✅](../i18n/zh/bit_manipulation_examples.md) |
 | [bst](./cheatsheet/bst.md) | 61 | [✅](../i18n/zh/bst.md) |
@@ -163,12 +163,12 @@ half-translated sheet renders with English gaps rather than failing.
 | [time_space_complexity](./cheatsheet/time_space_complexity.md) | 39 | [✅](../i18n/zh/time_space_complexity.md) |
 | [topology_sorting](./cheatsheet/topology_sorting.md) | 47 | [✅](../i18n/zh/topology_sorting.md) |
 | [topology_sorting_examples](./cheatsheet/topology_sorting_examples.md) | 16 | [✅](../i18n/zh/topology_sorting_examples.md) |
-| [tree](./cheatsheet/tree.md) | 55 | [✅](../i18n/zh/tree.md) |
-| [tree2](./cheatsheet/tree2.md) | 101 | [✅](../i18n/zh/tree2.md) |
+| [tree](./cheatsheet/tree.md) | 55 | [54/55](../i18n/zh/tree.md) |
+| [tree2](./cheatsheet/tree2.md) | 101 | [100/101](../i18n/zh/tree2.md) |
 | [tree_backtrack](./cheatsheet/tree_backtrack.md) | 17 | [✅](../i18n/zh/tree_backtrack.md) |
 | [tree_codec](./cheatsheet/tree_codec.md) | 26 | [✅](../i18n/zh/tree_codec.md) |
 | [tree_construction](./cheatsheet/tree_construction.md) | 16 | [✅](../i18n/zh/tree_construction.md) |
-| [tree_examples](./cheatsheet/tree_examples.md) | 46 | [✅](../i18n/zh/tree_examples.md) |
+| [tree_examples](./cheatsheet/tree_examples.md) | 49 | [45/49](../i18n/zh/tree_examples.md) |
 | [tree_lca_distance](./cheatsheet/tree_lca_distance.md) | 37 | [✅](../i18n/zh/tree_lca_distance.md) |
 | [trie](./cheatsheet/trie.md) | 26 | [✅](../i18n/zh/trie.md) |
 | [trie_examples](./cheatsheet/trie_examples.md) | 11 | [✅](../i18n/zh/trie_examples.md) |

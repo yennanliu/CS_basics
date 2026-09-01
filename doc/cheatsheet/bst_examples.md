@@ -748,7 +748,7 @@ Each node's string is O(size of its subtree), so building them all is **O(n²) t
 
 | LC # | Problem | Relation to LC 298 | Key Difference |
 |------|---------|--------------------|----------------|
-| **549** | Binary Tree Longest Consecutive Sequence II | Direct sequel ⭐ | Path may go **child → parent → child** (a "V"), and may be increasing **or** decreasing → return `inc + dec - 1` at each node |
+| **549** | Binary Tree Longest Consecutive Sequence II | Direct sequel ⭐ | Path may go **child → parent → child** (a "V"), and may be increasing **or** decreasing → return `inc + dec - 1` at each node ([worked solution](./binary_tree.md#worked-variation-two-runs-per-node--lc-549-binary-tree-longest-consecutive-sequence-ii-)) |
 | **124** | Binary Tree Maximum Path Sum | Same "global max + return one side" skeleton | Path CAN bend through a node; uses sums not `+1` steps |
 | **687** | Longest Univalue Path | Same skeleton | Requires **equal** values instead of `+1`; counts **edges** not nodes |
 | **543** | Diameter of Binary Tree | Same skeleton | No value constraint at all; pure edge counting |

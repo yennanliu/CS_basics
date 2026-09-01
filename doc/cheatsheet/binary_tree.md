@@ -737,6 +737,7 @@ class Solution:
 | 652 | Find Duplicate Subtrees | a **canonical string** `val,left,right`, tallied into a `HashMap`; append node when count hits exactly 2 |
 | 563 | Binary Tree Tilt | subtree sum, while accumulating `abs(leftSum - rightSum)` into a global |
 | 687 | Longest Univalue Path | longest same-value arm going down; global max = left arm + right arm |
+| 549 | Binary Tree Longest Consecutive Sequence II | `(inc, dec)` — longest ascending / descending run going **down** from me; global max = `inc + dec - 1` (worked below) |
 
 ```java
 // java
@@ -792,6 +793,138 @@ class Solution:
         sid(root)
         return res
 ```
+
+#### Worked variation: two runs per node — LC 549 Binary Tree Longest Consecutive Sequence II ⭐⭐⭐⭐
+
+> Sequel to LC 298 (§2-4), with **two** rule changes: the run may be increasing **or** decreasing, and
+> it may **bend** through a node (`child → parent → child`) instead of only going straight down.
+> Source: [`binary-tree-longest-consecutive-sequence-ii.py`](../../leetcode_python/Recursion/binary-tree-longest-consecutive-sequence-ii.py)
+
+**Why a tuple, not a scalar** — from a node with value `v`, a child holding `v + 1` can only extend an
+**ascending** run and a child holding `v - 1` only a **descending** one. The parent has to ask both
+questions, so each call returns `(inc, dec)`: the longest ascending / descending consecutive run that
+**starts at this node and goes downward**.
+
+```java
+// java
+// LC 549 - Binary Tree Longest Consecutive Sequence II
+// IDEA: post-order DP. Each call returns {inc, dec} = longest ascending / descending
+//       consecutive run STARTING at this node and going straight down.
+//       The bent (child -> node -> child) path is scored into a global, not returned.
+/**
+ * time = O(N), space = O(H)   // H = tree height (recursion stack)
+ */
+private int res = 0;
+
+public int longestConsecutive(TreeNode root) {
+    helper(root);
+    return res;
+}
+
+// returns int[]{ inc, dec }
+private int[] helper(TreeNode node) {
+    if (node == null) {
+        return new int[]{0, 0};
+    }
+    int[] l = helper(node.left);
+    int[] r = helper(node.right);
+
+    int inc = 1, dec = 1;   // the node alone is already a run of length 1
+    /** NOTE !!! null-check the child BEFORE reading child.val */
+    if (node.left != null) {
+        if (node.left.val == node.val + 1) {
+            inc = Math.max(inc, l[0] + 1);
+        } else if (node.left.val == node.val - 1) {
+            dec = Math.max(dec, l[1] + 1);
+        }
+    }
+    if (node.right != null) {
+        if (node.right.val == node.val + 1) {
+            inc = Math.max(inc, r[0] + 1);
+        } else if (node.right.val == node.val - 1) {
+            dec = Math.max(dec, r[1] + 1);
+        }
+    }
+
+    // the path is allowed to BEND here: descending arm + this node + ascending arm
+    res = Math.max(res, inc + dec - 1);
+
+    // only the STRAIGHT runs are usable by the parent
+    return new int[]{inc, dec};
+}
+```
+
+```python
+# python
+# LC 549 - Binary Tree Longest Consecutive Sequence II
+# IDEA: post-order DP returning (inc, dec) per subtree; bent path scored into a global
+class Solution:
+    def longestConsecutive(self, root):
+        # time = O(N), space = O(H)
+        self.res = 0
+
+        def helper(node):
+            if not node:
+                return (0, 0)                   # (inc, dec)
+
+            l_inc, l_dec = helper(node.left)
+            r_inc, r_dec = helper(node.right)
+
+            inc = dec = 1                       # the node alone is a run of length 1
+            if node.left:
+                if node.left.val == node.val + 1:
+                    inc = max(inc, l_inc + 1)
+                elif node.left.val == node.val - 1:
+                    dec = max(dec, l_dec + 1)
+            if node.right:
+                if node.right.val == node.val + 1:
+                    inc = max(inc, r_inc + 1)
+                elif node.right.val == node.val - 1:
+                    dec = max(dec, r_dec + 1)
+
+            # bend at THIS node: descending arm + node + ascending arm
+            self.res = max(self.res, inc + dec - 1)
+            return (inc, dec)                   # straight runs only go up
+
+        helper(root)
+        return self.res
+```
+
+**Trace of the bend**
+
+```text
+      2         helper(1) -> (inc=1, dec=1)      leaf
+     / \        helper(3) -> (inc=1, dec=1)      leaf
+    1   3       at node 2:  left.val 1 == 2 - 1  -> dec = l_dec + 1 = 2
+                            right.val 3 == 2 + 1 -> inc = r_inc + 1 = 2
+                answer here = inc + dec - 1 = 2 + 2 - 1 = 3     (1 -> 2 -> 3)
+                returns (2, 2) upward — NOT 3, a bent path cannot be extended
+```
+
+**Three things that make it correct**
+
+1. **`- 1` because the node is counted twice** — it is the last cell of the descending arm *and* the
+   first cell of the ascending arm. It holds even for a leaf: `1 + 1 - 1 = 1`.
+2. **The two arms can never be the same child** — `inc` only grows through a child equal to `val + 1`,
+   `dec` only through `val - 1`, and one child cannot be both. So `inc + dec - 1` is always a real
+   path, never one branch double-counted. (LC 124 / 543 get the same guarantee for free by naming
+   `left` and `right` separately; here it comes from the value test.)
+3. **Score globally, return one-sidedly** — the bent length goes into `res`; only `(inc, dec)` goes
+   up. Same split as LC 124 (max path sum), LC 543 (diameter), LC 687 (univalue path).
+
+**LC 298 vs LC 549**
+
+| | LC 298 | LC 549 |
+|---|--------|--------|
+| Direction | strictly increasing, parent → child | increasing **or** decreasing |
+| Shape | straight down only | may bend: child → node → child |
+| State | one scalar `cur_len` carried **down** (§0-2 Style A/B) | tuple `(inc, dec)` returned **up** (Style C / this template) |
+| Answer | global max of `cur_len` | global max of `inc + dec - 1` |
+| Restart rule | broken streak → `cur_len = 1` | broken streak → the arm just stays at `1` |
+
+> **Trap**: initialising `res = 0` is safe (an empty tree must return `0`, and any real node scores at
+> least `1 + 1 - 1 = 1`), but seeding the arms with `0` instead of `1` is not — a leaf would then
+> report `-1`.
 
 ---
 
@@ -1091,6 +1224,7 @@ class Solution:
 | Sum Root to Leaf Numbers | 129 | Medium | DFS | Template 4 |
 | Binary Tree Maximum Path Sum | 124 | Hard | DFS + Global Max | Template 4 |
 | Longest Consecutive Sequence | 298 | Medium | DFS + Counter | Template 4 (see §0-2: solvable top-down **and** bottom-up) |
+| Longest Consecutive Sequence II | 549 | Medium | DFS + Tuple State | Template 9 (bent path, `inc + dec - 1`) |
 | Path Sum III | 437 | Medium | Prefix Sum | Template 4 |
 
 #### **Pattern 4: Tree Properties Problems**
@@ -1167,6 +1301,7 @@ class Solution:
 - LC 437: Path Sum III - Prefix sum on tree
 - LC 513: Find Bottom Left Tree Value - Level order variant
 - LC 536: Construct from String - Parsing to tree
+- LC 549: Binary Tree Longest Consecutive II - Bent path, (inc, dec) state
 - LC 654: Maximum Binary Tree - Monotonic stack
 - LC 863: All Nodes Distance K - Graph conversion
 
@@ -1284,6 +1419,7 @@ class Solution:
 ### 2-4) Binary Tree Longest Consecutive Sequence — LC 298
 
 > See **§0-2 / §0-3** for the Look-Back vs Look-Forward vs Bottom-Up comparison — LC 298 is the rare problem that all three shapes solve.
+> For the sequel **LC 549** (path may bend, and may descend) see **Template 9 — LC 549**, where the scalar `cur_len` has to become an `(inc, dec)` pair.
 
 ```python
 # LC 298 Binary Tree Longest Consecutive Sequence
