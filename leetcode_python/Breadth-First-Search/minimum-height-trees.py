@@ -60,6 +60,27 @@ class Solution(object):
 
 """
 
+### CORE STEP
+
+
+            Tree
+             ↓
+            找所有 leaves (degree == 1)
+             ↓
+            移除 leaves
+             ↓
+            新的 leaves
+             ↓
+            再移除
+             ↓
+            ...
+             ↓
+            剩下 1~2 nodes
+             ↓
+            答案
+
+
+
 ### CORE IDEA
 
 例如：
@@ -171,11 +192,50 @@ class Solution(object):
         q = deque()
 
         for i in range(n):
+            """
+            NOTE !!!
+
+
+            BFS starts from `degree == 1` (but NOT == 0)
+            (start from all `leaves`)
+
+            ---
+
+            Steps:
+
+
+
+            Tree
+             ↓
+            找所有 leaves (degree == 1)
+             ↓
+            移除 leaves
+             ↓
+            新的 leaves
+             ↓
+            再移除
+             ↓
+            ...
+             ↓
+            剩下 1~2 nodes
+             ↓
+            答案
+
+            """
             if degree[i] == 1:
                 q.append(i)
 
         remaining = n
 
+
+        """
+        the while loop condition if `while remaining > 2`,
+        but NOT `while q`
+
+
+        -> keep traversing till last 1 or 2 nodes
+
+        """
         # Remove leaves layer by layer
         while remaining > 2:
             size = len(q)
@@ -187,6 +247,9 @@ class Solution(object):
                 for neighbor in graph[leaf]:
                     degree[neighbor] -= 1
 
+                    # NOTE !!!
+                    # BFS starts from `degree == 1` (but NOT == 0)
+                    
                     # Neighbor becomes a leaf
                     if degree[neighbor] == 1:
                         q.append(neighbor)
