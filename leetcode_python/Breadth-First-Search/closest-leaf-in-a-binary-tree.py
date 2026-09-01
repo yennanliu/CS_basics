@@ -226,6 +226,100 @@ class Solution(object):
         self.build_graph(node.right, node, k)
 
 
+# V0-0-2
+# IDEA: DFS (build graph) + get leaves + BFS (get dist) (TLE)
+# NOTE !!! below code my work, but has TLE (time out error -> poor performance)
+from collections import defaultdict, deque
+
+
+class Solution(object):
+    def countPairs(self, root, distance):
+        """
+        :type root: Optional[TreeNode]
+        :type distance: int
+        :rtype: int
+        """
+
+        if not root:
+            return 0
+
+        self.leaves = []
+        self.graph = defaultdict(list)
+
+        # 1. Find all leaves
+        self.get_leaves(root)
+
+        # 2. Build undirected graph
+        self.build_graph(root, None)
+
+        cnt = 0
+
+        # 3. Check every pair of leaves
+        for i in range(len(self.leaves)):
+            for j in range(i + 1, len(self.leaves)):
+
+                x = self.leaves[i]
+                y = self.leaves[j]
+
+                dist = self.get_dist(x, y)
+
+                if dist <= distance:
+                    cnt += 1
+
+        return cnt
+
+
+    def get_leaves(self, node):
+        if not node:
+            return
+
+        # Leaf
+        if not node.left and not node.right:
+            self.leaves.append(node)
+            return
+
+        self.get_leaves(node.left)
+        self.get_leaves(node.right)
+
+
+    def build_graph(self, node, parent):
+        if not node:
+            return
+
+        if parent:
+            self.graph[node].append(parent)
+            self.graph[parent].append(node)
+
+        self.build_graph(node.left, node)
+        self.build_graph(node.right, node)
+
+
+    def get_dist(self, x, y):
+        if x == y:
+            return 0
+
+        # [(node, distance)]
+        q = deque([(x, 0)])
+
+        visited = {x}
+
+        while q:
+            node, dist = q.popleft()
+
+            if node == y:
+                return dist
+
+            for nxt in self.graph[node]:
+                if nxt in visited:
+                    continue
+
+                visited.add(nxt)
+                q.append((nxt, dist + 1))
+
+        return -1
+
+
+
 # V0
 # IDEA: DFS + BFS (GPT)
 # TODO: validate
