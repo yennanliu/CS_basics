@@ -54,13 +54,11 @@
 - Topological Sorting — Worked Examples
 
 
-- Backtracking.md
+- backtrack.zh.html
 
 - Bit Manipulation.md
 
-- Linked List.md
-	- `1-1-6) 反轉串列中間的 N 個節點（以 start, end 表示區間）（遞迴） — LC 92`
-
+- linked_list_examples.md
 
 - Sorting Algorithms.md
 
@@ -103,8 +101,10 @@
   - lc_pattern (again)
   - topology_sorting.md
 		- Template 7: Tree Centroid Finding (Leaf Trimming for Undirected Trees): again
+	- Linked List.md
+		- `1-1-6) 反轉串列中間的 N 個節點（以 start, end 表示區間）（遞迴） — LC 92`
 
-
+		
 - LC weekly
 	- `data/lc_weekly/lc_weekly_gpt.md`
 		- Weekly Contest 516 (doing)

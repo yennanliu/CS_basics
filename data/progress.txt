@@ -1,4 +1,4 @@
-20260901: 4026(to note),449(todo),394(todo),907(again!!),34(todo),227(again, with univeral algo),104(ok),39(again*).79(again*),212(todo),211(again*) |  102(ok), 317(todo), 505(again*)
+20260901: 4026(to note),449(todo),394(todo),907(again!!),34(todo),227(again, with univeral algo),104(ok),39(again*).79(again*),212(todo),211(again*) |  102(ok), 317(todo), 505(again*), 675(todo), 742(todo)
 
 
 20260831: 4026(to note),449(todo),394(todo),907(again!!),34(todo),227(again, with univeral algo),104(ok),39(again*).79(again*),212(todo),211(again*) | 341(ok), 622(ok*), 310(again!!!), 572(ok*), 776(ok*), 997(ok*)
