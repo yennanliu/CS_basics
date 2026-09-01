@@ -47,7 +47,119 @@ class Solution(object):
         pass
 
 
-# V1
+# V1-1
+# IDEA: POST ORDER DFS (bottom up) (gpt)
+# TODO: validate
+class Solution(object):
+    def longestConsecutive(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: int
+        """
+
+        if not root:
+            return 0
+
+        self.max_len = 1
+
+        self.helper(root)
+
+        return self.max_len
+
+
+    def helper(self, node):
+        if not node:
+            # [increasing, decreasing]
+            return [0, 0]
+
+        # Bottom-up DFS
+        left_inc, left_dec = self.helper(node.left)
+        right_inc, right_dec = self.helper(node.right)
+
+        # Path starting from current node
+        inc = 1
+        dec = 1
+
+        # node -> left child
+        if node.left:
+            if node.left.val == node.val + 1:
+                inc = max(inc, left_inc + 1)
+
+            if node.left.val == node.val - 1:
+                dec = max(dec, left_dec + 1)
+
+        # node -> right child
+        if node.right:
+            if node.right.val == node.val + 1:
+                inc = max(inc, right_inc + 1)
+
+            if node.right.val == node.val - 1:
+                dec = max(dec, right_dec + 1)
+
+        # A valid sequence can go:
+        #
+        # increasing side
+        #       \
+        #       node
+        #       /
+        # decreasing side
+        #
+        # Example:
+        #
+        #      2
+        #     / \
+        #    1   3
+        #
+        # 1 -> 2 -> 3
+        #
+        self.max_len = max(
+            self.max_len,
+            inc + dec - 1
+        )
+
+        return [inc, dec]
+
+
+# V1-2
+# IDEA: POST ORDER DFS (bottom up) (gemini)
+# TODO: validate
+class Solution(object):
+    def longestConsecutive(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: int
+        """
+        self.max_len = 0
+
+        def dfs(node):
+            if not node:
+                return [0, 0]  # Returns [inc, dec]
+
+            inc, dec = 1, 1
+
+            if node.left:
+                left_inc, left_dec = dfs(node.left)
+                if node.left.val == node.val + 1:
+                    inc = max(inc, left_inc + 1)
+                elif node.left.val == node.val - 1:
+                    dec = max(dec, left_dec + 1)
+            
+            if node.right:
+                right_inc, right_dec = dfs(node.right)
+                if node.right.val == node.val + 1:
+                    inc = max(inc, right_inc + 1)
+                elif node.right.val == node.val - 1:
+                    dec = max(dec, right_dec + 1)
+
+            # Max path through 'node' combines increasing and decreasing branches
+            self.max_len = max(self.max_len, inc + dec - 1)
+
+            # Return downward path lengths to parent
+            return [inc, dec]
+
+        dfs(root)
+        return self.max_len
+
 
 # V2-1
 # IDEA: DFS
