@@ -69,6 +69,12 @@ NOTE !!!
 
 
     ```
+
+
+3. we use `global` val: self.running_sum;
+   instead of passing running_sum as param in helper func
+
+
 """
 class Solution(object):
     def convertBST(self, root):
@@ -110,6 +116,40 @@ class Solution(object):
         # 3. Visit the LEFT subtree last (contains elements smaller than the current node)
         self.traverse(node.left)
 
+
+
+# V0-0-1
+# V0
+# IDEA: BST PROPERTY + DFS (right -> root -> left) (GPT)
+# time = O(n)
+# space = O(h)
+class Solution(object):
+    def convertBST(self, root):
+        """
+      
+        NOTE !!!
+
+        set `self.total` as global var
+        """
+        self.total = 0
+
+        self.helper(root)
+
+        return root
+
+    def helper(self, root):
+        if not root:
+            return
+
+        # 1. Visit right subtree first
+        self.helper(root.right)
+
+        # 2. Add current node to running sum
+        self.total += root.val
+        root.val = self.total
+
+        # 3. Visit left subtree
+        self.helper(root.left)
 
 
 # V0
