@@ -287,6 +287,53 @@ The first run of it found a live bug: `add-time-space/SKILL.md` had shipped
 without its `---` fences, so its advertised description was the literal string
 `name: add-time-space`.
 
+## sync_readme_java.py
+
+Appends a README table row for every Java LC solution that has none. The README's
+per-pattern tables are the repo's index but only ever grew by hand, so Java files
+could exist without the index knowing about them.
+
+```bash
+python3 script/sync_readme_java.py --dry-run   # report what would be added
+python3 script/sync_readme_java.py             # rewrite README.md in place
+```
+
+Every field in a generated row is read out of the Java file itself — LC number,
+title and difficulty from the problem javadoc, complexity from the `time =` /
+`space =` javadoc on the V0 solution — so a row always says what the code says.
+The Python link is filled in when a Python solution for the same problem exists,
+using the same three-signal matcher as `find_missing_java.py`.
+
+## check_lc_format.py
+
+Audits the `## LC Examples` sections of every cheatsheet under `doc/cheatsheet/`
+against the house entry format.
+
+```bash
+python3 script/check_lc_format.py              # summary
+python3 script/check_lc_format.py --verbose    # every entry, with its issues
+```
+
+Reports per entry: `bad-numbering`, `missing-lc-number`, `missing-description`,
+`missing-blockquote`, `no-code`, `python-only`. Both spellings of the LC number
+are accepted — `Name (LC N) — Description` and the trailing `Name — LC N` — as is
+a heading citing several problems at once, e.g. `(LC 116 / 117)`. Template and
+comparison entries are exempt from the LC-number rule.
+
+This is a **report, not a gate** — it is not wired into CI, because most of what
+it currently finds is a missing Java solution rather than a formatting slip.
+
+## extract_must_lc.py
+
+Extracts every README row flagged `MUST` into a category-grouped markdown doc
+(LC number, name, difficulty, status, category).
+
+```bash
+python3 script/extract_must_lc.py             # writes doc/must_lc_list.md
+python3 script/extract_must_lc.py --stdout    # print instead of writing
+python3 script/extract_must_lc.py --readme README.md --out doc/must_lc_list.md
+```
+
 ## Other Scripts
 
 | Script | Purpose |
@@ -297,3 +344,8 @@ without its `---` fences, so its advertised description was the literal string
 | `get_must_problems.sh` | Extract must-do problems |
 | `get_review_list.py` | Generate review lists |
 | `list_leetcode_solutions_by_type.sh` | List solutions by algorithm type |
+| `add_javadoc_complexity.py` | Rewrite an inline `// time: O(N), space: O(1)` comment into a Javadoc block on one Java file. Takes a file path; see [`add-time-space-guide.md`](./add-time-space-guide.md) for the directory-wide workflow |
+| `compare_kamyu_coverage.py` | One-off coverage audit against `kamyu104/LeetCode-Solutions`. Takes `<kamyu-list> <ours> <out>` and writes a checkpoint file per batch so an interrupted run keeps its progress |
+| `compare_pdf_and_markdown_lc.py` | One-off: list LC numbers present in a company PDF under `doc/` but missing from a markdown index |
+| `insert_with_tag_mapping.py` | One-off companion to the above — inserts those missing problems under the right `##` section, mapping PDF tag names to the markdown headers |
+| `fetch_problem_lists.py` | Re-vendor `data/problem_lists.json` (Blind 75 / NeetCode / Top 100 Liked). `--check` exits 1 if stale. See the *roadmap's list picker* section of [CLAUDE.md](../CLAUDE.md) |
