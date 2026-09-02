@@ -633,12 +633,12 @@ class Codec:
         index = 1
         while q:
             node = q.popleft()
-            if nodes[index] is not '#':
+            if nodes[index] != '#':
                 node.left = TreeNode(int(nodes[index]))
                 q.append(node.left)
             index += 1
         
-            if nodes[index] is not '#':
+            if nodes[index] != '#':
                 node.right = TreeNode(int(nodes[index]))
                 q.append(node.right)
             index += 1
