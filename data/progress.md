@@ -42,8 +42,8 @@
 
 - binary tree.md
 
-- dp.md
-	- `LC Examples`
+- dp_examples.md
+	- `2-2) Maximum Product Subarray (LC 152) — Track Min/Max Product`
 
 - Difference Array.md
 
@@ -104,6 +104,7 @@
 		- Template 7: Tree Centroid Finding (Leaf Trimming for Undirected Trees): again
 	- Linked List.md
 		- `1-1-6) 反轉串列中間的 N 個節點（以 start, end 表示區間）（遞迴） — LC 92`
+  - dp.md
 
 
 - LC weekly
@@ -290,6 +291,9 @@
 				- 416
 				- 494
 				- 1049
+			- decode way
+				- 639
+				- 91
 			- Unbounded Knapsack
 				- 322
 				- 518
