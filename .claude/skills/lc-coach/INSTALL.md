@@ -5,7 +5,7 @@ given a system prompt can run it. `SKILL.md` is the whole coach; the three files
 `references/` are loaded on demand.
 
 ```text
-lc-interview-coach/
+lc-coach/
 ├── SKILL.md                    # the coach — modes, review loop, output contract
 └── references/
     ├── rubric.md               # four signals, level anchors, self-score card
@@ -15,21 +15,21 @@ lc-interview-coach/
 
 ## Claude Code
 
-Already installed in this repo at `.claude/skills/lc-interview-coach/`. It loads by
+Already installed in this repo at `.claude/skills/lc-coach/`. It loads by
 description when you ask for a review or a mock, or invoke it by name:
 
 ```text
-/lc-interview-coach review leetcode_python/Sliding_Window/sliding_window_maximum.py
+/lc-coach review leetcode_python/Sliding_Window/sliding_window_maximum.py
 ```
 
-For every repo, copy the directory to `~/.claude/skills/lc-interview-coach/`.
+For every repo, copy the directory to `~/.claude/skills/lc-coach/`.
 
 ## Claude (claude.ai / desktop)
 
 **Customize → Skills → + → + Create skill → Upload a skill**, with the directory zipped:
 
 ```bash
-cd .claude/skills && zip -r lc-interview-coach.zip lc-interview-coach
+cd .claude/skills && zip -r lc-coach.zip lc-coach
 ```
 
 Leave the YAML frontmatter intact. `description` is what Claude matches a request against when
@@ -44,7 +44,7 @@ Append a pointer to `AGENTS.md` at the repo root — Codex reads it automaticall
 ```markdown
 ## Interview coaching
 When asked to review a solution, run a mock interview, teach a pattern, or analyse a
-bottleneck, follow `.claude/skills/lc-interview-coach/SKILL.md` and its `references/`.
+bottleneck, follow `.claude/skills/lc-coach/SKILL.md` and its `references/`.
 ```
 
 ## Gemini CLI
@@ -52,7 +52,7 @@ bottleneck, follow `.claude/skills/lc-interview-coach/SKILL.md` and its `referen
 Same shape, in `GEMINI.md`. Or point at it per session:
 
 ```bash
-gemini -p "Act as the coach defined in .claude/skills/lc-interview-coach/SKILL.md. Review @solution.py"
+gemini -p "Act as the coach defined in .claude/skills/lc-coach/SKILL.md. Review @solution.py"
 ```
 
 ## Cursor / Windsurf / other IDE agents
