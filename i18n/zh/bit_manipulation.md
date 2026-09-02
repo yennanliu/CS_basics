@@ -137,8 +137,8 @@ popcount，見 [§1-3](#1-3-counting-set-bits-population-count)）；`x & -x` �
 **「只留下最低位的 1」**（這也是 Fenwick tree 的前進規則 — 見
 [binary_indexed_tree.md](./binary_indexed_tree.md)）。
 
-<!-- e60ac7250caf -->
-### 0-5) 位移 — `<<`、`>>`，以及 Java 的 `>>>`
+<!-- dc4341d77bf4 -->
+### 0-5) 位移：左移、算術右移、邏輯右移
 
 | 運算子 | 名稱 | 補進來的是 | 效果 |
 | ------ | ---- | ---------- | ---- |
@@ -434,15 +434,15 @@ Python 卻把它放在 `|` *下面*。所以 `x & 1 == 0` 在三個語言裡是�
 | 「不用 `+` 或 `/` 做加法／除法」 | XOR 是和，AND 是進位 | [不用算術做算術](./bit_manipulation_examples.md#arithmetic-without-arithmetic) |
 | 「兩個數字的最大 XOR」 | 二元字典樹 — 見 [trie.md](./trie.md) | — |
 
-<!-- 191e5ccd4087 -->
+<!-- 2d37034aeb5b -->
 ### 讓位元運算題掛掉的五個 bug
 
 1. **對負的 `int` 跑 `while (x != 0) x >>= 1`** — 算術右移會一直補 1 進來。
-   Java 要用 `>>>`，Python 要改成 `for i in range(32)`。（[§0-5](#0-5-shifts---and-javas-)、[§0-6](#0-6-python-is-not-java-here-)）
+   Java 要用 `>>>`，Python 要改成 `for i in range(32)`。（[§0-5](#0-5-shifts-left-arithmetic-right-and-logical-right)、[§0-6](#0-6-python-is-not-java-here-)）
 2. **少了括號** — 要寫 `(x & 1) == 0`，絕不要寫 `x & 1 == 0`。（[§0-7](#0-7-precedence--parenthesise-everything-)）
 3. **`Integer.MIN_VALUE` 沒有對應的正數** — `Math.abs` 和一元 `-` 算完都還是它本身，
    所以「先取負再相除」會無聲地壞掉。（[§0-3](#0-3-twos-complement--how-negatives-are-stored-)）
 4. **`1 << i` 在 `i >= 31` 時溢位** — 要用 `1L << i`（也別忘了 Java 會把位移量取低 5 位，
-   所以 `1 << 32 == 1`）。（[§0-2](#0-2-fixed-width--an-int-is-a-32-bit-box)、[§0-5](#0-5-shifts---and-javas-)）
+   所以 `1 << 32 == 1`）。（[§0-2](#0-2-fixed-width--an-int-is-a-32-bit-box)、[§0-5](#0-5-shifts-left-arithmetic-right-and-logical-right)）
 5. **把 32 位元的迴圈原封不動搬到 Python** — Python 永遠不會溢位，所以每一步都要
    `& 0xFFFFFFFF`，最後還要把結果轉回有號數。（[§0-6](#0-6-python-is-not-java-here-)）

@@ -159,7 +159,7 @@ So `x & (x - 1)` means **"drop the lowest 1"** (loop it → Brian Kernighan's po
 and `x & -x` means **"keep only the lowest 1"** (also the step rule of a Fenwick tree — see
 [binary_indexed_tree.md](./binary_indexed_tree.md)).
 
-### 0-5) Shifts — `<<`, `>>`, and Java's `>>>`
+### 0-5) Shifts: left, arithmetic right, and logical right
 
 | Op | Name | Shifts in | Effect |
 | -- | ---- | --------- | ------ |
@@ -819,11 +819,11 @@ grouped by which property of the bit operators they lean on:
 ### The five bugs that fail a bit-manipulation submission
 
 1. **`while (x != 0) x >>= 1` on a negative `int`** — arithmetic shift feeds in 1s forever.
-   Use `>>>` in Java, or `for i in range(32)` in Python. ([§0-5](#0-5-shifts---and-javas-), [§0-6](#0-6-python-is-not-java-here-))
+   Use `>>>` in Java, or `for i in range(32)` in Python. ([§0-5](#0-5-shifts-left-arithmetic-right-and-logical-right), [§0-6](#0-6-python-is-not-java-here-))
 2. **Missing parentheses** — write `(x & 1) == 0`, never `x & 1 == 0`. ([§0-7](#0-7-precedence--parenthesise-everything-))
 3. **`Integer.MIN_VALUE` has no positive twin** — `Math.abs` and unary `-` both return it
    unchanged, so negate-then-divide silently breaks. ([§0-3](#0-3-twos-complement--how-negatives-are-stored-))
 4. **`1 << i` overflows at `i >= 31`** — use `1L << i` (and remember Java masks the shift
-   count, so `1 << 32 == 1`). ([§0-2](#0-2-fixed-width--an-int-is-a-32-bit-box), [§0-5](#0-5-shifts---and-javas-))
+   count, so `1 << 32 == 1`). ([§0-2](#0-2-fixed-width--an-int-is-a-32-bit-box), [§0-5](#0-5-shifts-left-arithmetic-right-and-logical-right))
 5. **Porting a 32-bit loop to Python unchanged** — Python never overflows, so every step
    needs `& 0xFFFFFFFF` and the result needs converting back. ([§0-6](#0-6-python-is-not-java-here-))
