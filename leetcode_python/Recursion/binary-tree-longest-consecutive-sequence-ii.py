@@ -228,7 +228,7 @@ class Solution:
 # V2-3
 # IDEA
 # https://leetcode.ca/2017-06-01-549-Binary-Tree-Longest-Consecutive-Sequence-II/
-lass Solution: # issue with this solution, duplicated dfs() search
+class Solution: # issue with this solution, duplicated dfs() search
     def longestConsecutive(self, root: TreeNode) -> int:
         def helper(node: TreeNode, diff: int) -> int:
             if not node:
