@@ -48,7 +48,12 @@ Real packets are not scored on a four-point scale. Use these codes, on every sig
 the round as a whole — the two borderline rungs are where almost every real candidate lands,
 and collapsing them is what makes practice feedback useless.
 
-| Code | Level | What it means to the committee |
+This table is the **round**, and its evidence is round-level — "reached optimal", "handled the
+follow-up". Do not score an individual signal against it: Coding is not weaker because the
+follow-up went badly. The same six codes apply per signal, but each one has its own anchors in
+`references/rubric.md`, and those are what a signal is scored against.
+
+| Code | Level | What the round means to the committee |
 |---|---|---|
 | **SH** | Strong Hire | I would argue for this person in the room. Optimal, self-verified, time to spare, handled the follow-up. |
 | **H** | Hire | Clear yes. Reached optimal, found their own bug, complexity right. |
@@ -61,11 +66,14 @@ Two rules for combining them:
 
 - **The round is not an average.** One signal at `NH` caps the round at `LNH`; anything at
   `SNH` is `SNH` for the round, whatever else went well.
-- **Hints are logged, so they cost a rung.** Reaching optimal alone is `H`+; after L3 it is at
-  best `LH`; after L4 the *problem solving* signal is `LNH` however clean the code that
-  followed; at L5 there is no problem-solving signal left to score, so it is `NH`. Say which
-  rung was used and what it cost — that is the whole point of the ladder being numbered. The
-  full table is in `references/rubric.md`.
+- **Hints are logged, so they cost a rung.** The highest rung used caps the *problem solving*
+  signal: none or L1 → `SH`, L2 → `H`, L3 → `LH`, L4 → `LNH`, L5 → `NH` (at L5 the candidate
+  was handed the code, so there is no problem-solving signal left to score). Say which rung was
+  used and what it cost — that is the whole point of the ladder being numbered.
+  `references/rubric.md` carries the same table with the sentence each rung puts in the packet.
+
+Only ever emit one of the six codes. `H+`, `LH/H`, "a weak Hire" and similar hedges are not on
+the scale, and a packet that hedges is read down, not up.
 
 ## Modes
 
