@@ -30,7 +30,7 @@ CS_basics is a comprehensive computer science fundamentals repository containing
   - `build-review-plan.js` - Compiles [`data/progress.txt`](data/progress.txt) into the Review Plan's data. **The practice log is the only copy** — see [Review plan data](#the-review-plans-data) below
   - `finalize-pages.js` / `prune-images.js` - The two finishing passes; they run last because they need the whole `_site/` tree (see [Finishing passes](#the-two-finishing-passes))
   - `e2e-check.js` - Post-build validation of every generated page. Both workflows run it; run it locally too
-  - `pages/` - Hand-maintained static pages (LC Explorer/Similar/Review-Plan/Random-Picker/Roadmap/Complexity-Quiz, 404)
+  - `pages/` - Hand-maintained static pages (LC Explorer/Similar/Review-Plan/Random-Picker/Roadmap/Complexity-Quiz, Skills, 404)
   - `nav.js` / `roadmap.js` / `complexity.js` - Browser scripts copied to `_site/`; unit-tested under `site/test/`
   - `style.css` - Stylesheet for the generated doc pages
   - `nav.css` - Navbar, skip link and the `prefers-reduced-motion` opt-out. Loaded by **every** page family
@@ -442,4 +442,49 @@ For the full guide — flags, how to read each section, and which numbers to act
 
 ```bash
 python3 script/eval_lc_readiness.py
+```
+
+---
+
+## Coaching a coding interview
+
+`.claude/skills/lc-interview-coach/` is the interviewer-side counterpart to the readiness
+script: it reviews a solution against the four FAANG signals (communication, problem solving,
+coding, verification), teaches the pattern from first principles rather than handing over a
+template, dry-runs code as a state table, and names the one line that sets the complexity.
+
+`SKILL.md` is the whole coach; `references/` holds the rubric anchors, the per-pattern
+invariants, and the in-the-room talk track. It is plain markdown with no dependencies —
+[`INSTALL.md`](.claude/skills/lc-interview-coach/INSTALL.md) covers installing it on Codex,
+Gemini and other agents from the same source.
+
+`site/pages/skills.html` is its page on the site — intro, per-agent install, quick start —
+reached from the navbar's **more → coach** entry and from the landing page's card. It is a
+hand-maintained page like the LC tools, so `build.sh` copies it and `finalize-pages.js` gives
+it the canonical and Open Graph tags. Editing the skill does **not** update that page's prose;
+keep the two in step by hand. Its *links* are enforced — see below.
+
+### The skills gate
+
+`script/check_skills.py` is to `.claude/skills/` what `e2e-check.js` is to `_site/`: the one
+place a rule about a skill belongs, runnable locally, rather than a `run:` block nobody can
+execute before pushing. `.github/workflows/skills-check.yml` calls it and then builds the site,
+because `validate-pages.yml`'s path filter does not watch `.claude/`.
+
+```bash
+python3 script/check_skills.py --install   # what CI runs
+```
+
+It checks frontmatter every host can parse, that no reference file is orphaned, and that every
+`.claude/skills/...` path named by `CLAUDE.md`, an `INSTALL.md` or `site/pages/skills.html`
+still resolves — that last one because those links are absolute `github.com` URLs, which
+`e2e-check.js` cannot resolve and never will. `--install` performs both documented installs
+(the `cp -r`, and the zip the Claude app uploads) into a temp directory and re-runs every check
+on the copy, which is the only way to prove a skill works with none of this repo around it.
+
+Full detail in [`doc/utility-scripts.md`](doc/utility-scripts.md).
+
+```text
+/lc-interview-coach review leetcode_python/Sliding_Window/sliding_window_maximum.py
+/lc-interview-coach mock interview me on LC 239
 ```

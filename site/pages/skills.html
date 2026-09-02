@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <title>LC Interview Coach — CS_basics</title>
+  <meta name="description" content="An agent skill that reviews your LeetCode solution the way a FAANG interviewer scores it: a hire verdict, the failing input, the line that sets the complexity, and one drill. Installs on Claude Code, Codex, Gemini and anything else that takes a system prompt.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
+  <link rel="stylesheet" href="nav.css">
+  <link rel="stylesheet" href="lc-page.css">
+  <!-- Blocking on purpose: nav.js restores the stored theme before first paint. -->
+  <script src="nav.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    /* Palette and footer: lc-page.css. Page-specific tokens only below. */
+    body {
+      margin: 0; padding: 0;
+      font-family: 'SF Mono','JetBrains Mono','IBM Plex Mono',ui-monospace,'Menlo',monospace;
+      background: var(--bg); color: var(--text);
+      transition: background 0.2s, color 0.2s; font-size: 13px;
+      line-height: 1.65;
+    }
+    a { color: var(--text); }
+
+    .container { max-width: 900px; margin: 0 auto; padding: 0 1.5rem; }
+
+    /* ── Hero ── */
+    .hero { padding: 3.5rem 0 2.5rem; border-bottom: 1px solid var(--border); }
+    .kicker {
+      font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--text-light); margin: 0 0 0.9rem;
+    }
+    .hero h1 { margin: 0 0 0.75rem; font-size: 2.1rem; line-height: 1.15; letter-spacing: -0.02em; }
+    .hero .lede { color: var(--text-light); font-size: 0.95rem; max-width: 62ch; margin: 0 0 1.6rem; }
+    .hero-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-block; padding: 0.55rem 1.1rem; font-size: 0.85rem;
+      text-decoration: none; border: 1px solid var(--border);
+      color: var(--text); background: var(--surface); font-family: inherit;
+    }
+    .btn:hover { border-color: var(--text); }
+    .btn.primary { background: var(--text); color: var(--bg); border-color: var(--text); }
+
+    /* ── Sections ── */
+    section { padding: 2.75rem 0; border-bottom: 1px solid var(--border); }
+    section:last-of-type { border-bottom: none; }
+    h2 { font-size: 1.15rem; margin: 0 0 0.4rem; letter-spacing: -0.01em; }
+    .sub { color: var(--text-light); margin: 0 0 1.6rem; max-width: 70ch; }
+    h3 { font-size: 0.9rem; margin: 1.8rem 0 0.5rem; }
+
+    /* ── Tables ── */
+    .table-wrap { overflow-x: auto; border: 1px solid var(--border); }
+    table { border-collapse: collapse; width: 100%; min-width: 520px; font-size: 0.82rem; }
+    th, td { text-align: left; padding: 0.6rem 0.9rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    th {
+      font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--text-light); background: var(--surface); font-weight: 600;
+    }
+    tbody tr:last-child td { border-bottom: none; }
+    td strong { font-weight: 700; }
+    td code, p code, li code {
+      background: var(--surface); border: 1px solid var(--border);
+      padding: 0.05rem 0.3rem; font-size: 0.92em; font-family: inherit;
+    }
+
+    /* ── Ladder ── */
+    ol.ladder { margin: 0; padding-left: 1.4rem; }
+    ol.ladder li { margin-bottom: 0.5rem; }
+    ol.ladder li::marker { color: var(--text-light); }
+
+    /* ── Code blocks ── */
+    .code {
+      position: relative; background: var(--surface); border: 1px solid var(--border);
+      margin: 0.75rem 0;
+    }
+    .code pre {
+      margin: 0; padding: 0.9rem 1rem; overflow-x: auto;
+      font-size: 0.78rem; line-height: 1.6; font-family: inherit;
+    }
+    .code code { font-family: inherit; }
+    .copy {
+      position: absolute; top: 0.4rem; right: 0.4rem;
+      background: var(--bg); color: var(--text-light); border: 1px solid var(--border);
+      font-family: inherit; font-size: 0.68rem; padding: 0.2rem 0.5rem; cursor: pointer;
+    }
+    .copy:hover { color: var(--text); border-color: var(--text); }
+
+    /* ── Install tabs ── */
+    .tabs { display: flex; gap: 0; flex-wrap: wrap; border-bottom: 1px solid var(--border); margin-bottom: 1.1rem; }
+    .tab {
+      background: none; border: none; border-bottom: 2px solid transparent;
+      color: var(--text-light); font-family: inherit; font-size: 0.82rem;
+      padding: 0.55rem 0.9rem; cursor: pointer; margin-bottom: -1px;
+    }
+    .tab:hover { color: var(--text); }
+    .tab[aria-selected="true"] { color: var(--text); border-bottom-color: var(--text); }
+    .panel p:first-child { margin-top: 0; }
+
+    /* ── File list ── */
+    ul.files { list-style: none; margin: 0; padding: 0; }
+    ul.files li { border-bottom: 1px solid var(--border); padding: 0.7rem 0; }
+    ul.files li:last-child { border-bottom: none; }
+    ul.files a { font-weight: 700; text-decoration: none; border-bottom: 1px solid var(--border); }
+    ul.files a:hover { border-bottom-color: var(--text); }
+    ul.files span { display: block; color: var(--text-light); font-size: 0.82rem; }
+
+    .note { color: var(--text-light); font-size: 0.82rem; }
+
+    @media (max-width: 600px) {
+      .hero { padding-top: 2.25rem; }
+      .hero h1 { font-size: 1.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="site-nav" data-page="skills" data-base=""></div>
+<script>CSNav.mount();</script>
+
+<main id="main">
+
+  <div class="container">
+    <div class="hero">
+      <p class="kicker">Agent skill</p>
+      <h1>LC Interview Coach</h1>
+      <p class="lede">
+        A FAANG interviewer that also coaches. Show it a solution and it gives back a hire
+        verdict, the input that breaks the code, the single line that sets the complexity, a
+        score on the four signals a real round grades — and exactly one drill. It teaches the
+        pattern by derivation rather than handing over a template, dry-runs code as a state
+        table, and rehearses what to say out loud in the room.
+      </p>
+      <div class="hero-actions">
+        <a class="btn primary" href="#install">Install it</a>
+        <a class="btn" href="#quickstart">Quick start</a>
+        <a class="btn" href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-interview-coach/SKILL.md">Read the source</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- ── What it does ─────────────────────────────────────────────────── -->
+    <section id="what">
+      <h2>What it grades</h2>
+      <p class="sub">
+        Every FAANG coding round scores the same four signals. The coach uses them verbatim,
+        with evidence rather than adjectives, so you learn to self-score before the real one.
+        One signal at <em>No Hire</em> caps the whole round at <em>Lean Hire</em> — it says so
+        when that happens.
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Signal</th><th>Scored on</th><th>Fails when</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Communication</strong></td>
+              <td>Clarifying questions, stating the approach before coding, narrating while coding</td>
+              <td>Silent coding; typing starts at second 30</td>
+            </tr>
+            <tr>
+              <td><strong>Problem solving</strong></td>
+              <td>Brute force → bottleneck → optimal, and why that structure fits</td>
+              <td>Pattern-matches to a memorised template that does not fit</td>
+            </tr>
+            <tr>
+              <td><strong>Coding</strong></td>
+              <td>Compiles in the head, named variables, right at the boundaries</td>
+              <td>Off-by-one, mutation during iteration, unhandled empty input</td>
+            </tr>
+            <tr>
+              <td><strong>Verification</strong></td>
+              <td>Self-driven dry run, edge cases named before being asked, complexity stated</td>
+              <td>“It works”, with no trace; complexity guessed</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Six modes, one loop</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Ask</th><th>Mode</th><th>You get</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>“review this”, “would this pass?”</td><td><strong>Review</strong></td><td>Verdict, correctness, complexity, bottleneck, four signals, one drill</td></tr>
+            <tr><td>“why is this slow?”</td><td><strong>Bottleneck</strong></td><td>The dominant cost, and the structure that removes the repeated work</td></tr>
+            <tr><td>“walk me through it”</td><td><strong>Dry run</strong></td><td>A state table, one row per iteration, stopping at the row that breaks the invariant</td></tr>
+            <tr><td>“teach me monotonic stacks”</td><td><strong>Teach</strong></td><td>Brute force → what repeats → what structure kills it → invariant → template</td></tr>
+            <tr><td>“mock interview me on LC 239”</td><td><strong>Mock</strong></td><td>35 minutes in character: it asks, it does not tell, then it debriefs</td></tr>
+            <tr><td>“clean this up”</td><td><strong>Polish</strong></td><td>An interview-grade rewrite, plus what changed and why</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Why it does not just hand you the answer</h3>
+      <p class="sub">
+        A solution you did not derive shows up in the real loop as a “No Hire — memorised”. So
+        hints climb a ladder, one rung at a time, and stop the moment you move:
+      </p>
+      <ol class="ladder">
+        <li><strong>L1</strong> — a question about your own code: “what does <code>lo</code> hold when the loop exits?”</li>
+        <li><strong>L2</strong> — a failing input, no diagnosis: “try <code>[3,3], target = 6</code>.”</li>
+        <li><strong>L3</strong> — the category of the fix: “you recompute a max you have already seen.”</li>
+        <li><strong>L4</strong> — the invariant, or the template’s name.</li>
+        <li><strong>L5</strong> — code, and only after L4 was tried or you asked outright.</li>
+      </ol>
+    </section>
+
+    <!-- ── Install ──────────────────────────────────────────────────────── -->
+    <section id="install">
+      <h2>Install</h2>
+      <p class="sub">
+        Four plain markdown files, no dependencies, no network calls — so the same source runs
+        on any agent that takes a system prompt. Pick yours.
+      </p>
+
+      <div class="tabs" role="tablist" aria-label="Install target">
+        <button class="tab" role="tab" id="tab-cc"     aria-controls="p-cc"     aria-selected="true">Claude Code</button>
+        <button class="tab" role="tab" id="tab-claude" aria-controls="p-claude" aria-selected="false">Claude app</button>
+        <button class="tab" role="tab" id="tab-codex"  aria-controls="p-codex"  aria-selected="false">Codex</button>
+        <button class="tab" role="tab" id="tab-gemini" aria-controls="p-gemini" aria-selected="false">Gemini</button>
+        <button class="tab" role="tab" id="tab-other"  aria-controls="p-other"  aria-selected="false">Anything else</button>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-cc" aria-labelledby="tab-cc">
+        <p>Drop the skill directory into your user-level skills folder and it loads in every repo:</p>
+        <div class="code">
+          <button class="copy" type="button">copy</button>
+          <pre><code>git clone --depth 1 https://github.com/yennanliu/CS_basics.git /tmp/cs_basics
+mkdir -p ~/.claude/skills
+cp -r /tmp/cs_basics/.claude/skills/lc-interview-coach ~/.claude/skills/</code></pre>
+        </div>
+        <p class="note">
+          Already installed inside this repo at <code>.claude/skills/lc-interview-coach/</code>,
+          so a clone of CS_basics needs no setup at all. Claude Code matches it on the
+          description, or you can call it by name.
+        </p>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-claude" aria-labelledby="tab-claude" hidden>
+        <p>Zip the directory, then <em>Customize → Skills → + → + Create skill → Upload a skill</em>:</p>
+        <div class="code">
+          <button class="copy" type="button">copy</button>
+          <pre><code>cd .claude/skills && zip -r lc-interview-coach.zip lc-interview-coach</code></pre>
+        </div>
+        <p class="note">
+          Leave the YAML frontmatter in <code>SKILL.md</code> intact.
+          <code>description</code> is what Claude matches your request against when deciding to
+          load the skill on its own; <code>name</code> is the display label, and the directory
+          name is what supplies the slash command.
+        </p>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-codex" aria-labelledby="tab-codex" hidden>
+        <p>Codex reads <code>AGENTS.md</code> at the repo root automatically. Point it at the skill:</p>
+        <div class="code">
+          <button class="copy" type="button">copy</button>
+          <pre><code>## Interview coaching
+
+When asked to review a solution, run a mock interview, teach a pattern, or
+analyse a bottleneck, follow `.claude/skills/lc-interview-coach/SKILL.md`
+and the files under its `references/`.</code></pre>
+        </div>
+        <p class="note">A pointer, not a copy — one source of truth means a fix reaches every agent at once.</p>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-gemini" aria-labelledby="tab-gemini" hidden>
+        <p>Same shape in <code>GEMINI.md</code>, or point at it for a single session:</p>
+        <div class="code">
+          <button class="copy" type="button">copy</button>
+          <pre><code>gemini -p "Act as the coach defined in \
+.claude/skills/lc-interview-coach/SKILL.md. Review @solution.py"</code></pre>
+        </div>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-other" aria-labelledby="tab-other" hidden>
+        <p>
+          Paste <code>SKILL.md</code> in as the system prompt. It is self-contained; the
+          <code>references/</code> files are optional depth, and the coach works without them
+          with shallower pattern recall. For Cursor or Windsurf, put the Codex pointer above
+          into a rule file (<code>.cursor/rules/interview-coach.mdc</code> or the editor’s
+          equivalent).
+        </p>
+        <div class="code">
+          <button class="copy" type="button">copy</button>
+          <pre><code>curl -sL https://raw.githubusercontent.com/yennanliu/CS_basics/master/.claude/skills/lc-interview-coach/SKILL.md</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Quick start ──────────────────────────────────────────────────── -->
+    <section id="quickstart">
+      <h2>Quick start</h2>
+      <p class="sub">Show it code, or ask it to interview you. Both work from a cold start.</p>
+      <div class="code">
+        <button class="copy" type="button">copy</button>
+        <pre><code>/lc-interview-coach review leetcode_python/Sliding_Window/sliding_window_maximum.py
+
+/lc-interview-coach mock interview me on LC 239, 35 minutes
+
+/lc-interview-coach why is my solution O(n*k)? here is the code: ...
+
+/lc-interview-coach teach me monotonic deques — I keep memorising the template
+
+/lc-interview-coach dry run this on the smallest input that pops the deque</code></pre>
+      </div>
+
+      <h3>What a review looks like</h3>
+      <p class="sub">
+        Fixed shape, every time: verdict first, then evidence, then one thing to do next. Any
+        section with nothing to say is dropped rather than padded.
+      </p>
+      <div class="code">
+        <button class="copy" type="button">copy</button>
+        <pre><code>VERDICT — Lean Hire. O(n*k) vs O(n) optimal. Correct, but the window
+          max is recomputed from scratch every step.
+
+CORRECTNESS
+  ❌ k > len(nums) — fails on [1], k=2 → IndexError, want []
+
+COMPLEXITY
+  time    O(n*k)  because max(nums[i:i+k]) rescans the whole window
+  space   O(1)    besides the output
+  optimal O(n)    via a monotonic deque of indices
+
+BOTTLENECK
+  line 6 — consecutive windows overlap in k-1 elements, so almost the
+  same range is rescanned every step → a deque holding indices in the
+  window with decreasing values keeps the max at the front.
+
+SIGNALS
+  Communication   Hire      — approach stated before coding
+  Problem solving Lean Hire — brute force reached, bottleneck not named
+  Coding          Hire      — clean, one boundary bug
+  Verification    No Hire   — no trace, complexity given as "about O(n)"
+
+DRILL
+  Redo it with a deque, and before coding write the one-sentence
+  invariant that makes the front the maximum.</code></pre>
+      </div>
+    </section>
+
+    <!-- ── What's inside ────────────────────────────────────────────────── -->
+    <section id="inside">
+      <h2>What is inside</h2>
+      <p class="sub">
+        <code>SKILL.md</code> is the whole coach. The three reference files are loaded on
+        demand, so the prompt stays small until depth is actually needed.
+      </p>
+      <ul class="files">
+        <li>
+          <a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-interview-coach/SKILL.md">SKILL.md</a>
+          <span>The coach — six modes over one review loop, the hint ladder, the output contract, and what it must never do.</span>
+        </li>
+        <li>
+          <a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-interview-coach/references/rubric.md">references/rubric.md</a>
+          <span>The four signals with level-by-level anchors, how they combine into a round, and a 90-second self-score card to fill in after every practice problem.</span>
+        </li>
+        <li>
+          <a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-interview-coach/references/patterns.md">references/patterns.md</a>
+          <span>Every core pattern as recognition cue, invariant, target complexity and the classic off-by-one — plus the three questions that resolve most mediums when the pattern will not come.</span>
+        </li>
+        <li>
+          <a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-interview-coach/references/talk-track.md">references/talk-track.md</a>
+          <span>The sentences to actually say, phase by phase, and the phrases that cost you the signal.</span>
+        </li>
+        <li>
+          <a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-interview-coach/INSTALL.md">INSTALL.md</a>
+          <span>The install notes above, kept next to the skill so they travel with it.</span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ── Where it fits ────────────────────────────────────────────────── -->
+    <section id="fits">
+      <h2>Where it fits</h2>
+      <p class="sub">
+        The coach is the interviewer side of the loop. The rest of this site is the study side:
+        the <a href="lc-roadmap.html">roadmap</a> says what to learn next and what it needs
+        first, the <a href="cheatsheets.html">cheatsheets</a> hold the templates, the
+        <a href="lc-complexity-quiz.html">complexity quiz</a> drills the analysis, and the
+        <a href="lc-review-plan.html">review plan</a> schedules what keeps coming back. This
+        page is for the part none of those cover — whether the thing you just wrote would
+        actually pass.
+      </p>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <p>CS_basics — computer science fundamentals &amp; interview preparation</p>
+    <p>
+      <a href="https://github.com/yennanliu/CS_basics">github</a> |
+      <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+      <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  // ── Install tabs ──────────────────────────────────────────────────────
+  // Panels are toggled with the `hidden` attribute rather than a class, so a
+  // hidden panel is out of the accessibility tree and out of find-in-page too.
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+
+  function select(tab) {
+    tabs.forEach(function (t) {
+      var on = t === tab;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    });
+  }
+
+  tabs.forEach(function (tab, i) {
+    tab.addEventListener('click', function () { select(tab); });
+    // Arrow keys move between tabs, which is what a tablist is expected to do
+    // once it announces itself as one.
+    tab.addEventListener('keydown', function (e) {
+      var step = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (!step) return;
+      e.preventDefault();
+      var next = tabs[(i + step + tabs.length) % tabs.length];
+      select(next);
+      next.focus();
+    });
+  });
+
+  // ── Copy buttons ──────────────────────────────────────────────────────
+  // clipboard.writeText needs a secure context; on plain http it rejects, so
+  // the button says so instead of silently doing nothing.
+  document.querySelectorAll('.copy').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var code = btn.parentElement.querySelector('code').innerText;
+      var done = function (label) {
+        btn.textContent = label;
+        setTimeout(function () { btn.textContent = 'copy'; }, 1400);
+      };
+      if (!navigator.clipboard) return done('select it');
+      navigator.clipboard.writeText(code).then(function () { done('copied'); },
+                                               function () { done('select it'); });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

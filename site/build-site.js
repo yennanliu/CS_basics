@@ -835,6 +835,8 @@ const ENTRY_POINTS = [
    `Read a snippet, name its time and space.${quizQuestions ? ` ${quizQuestions} questions,` : ''} each with the trap it sets.`],
   ['algo_demo/index.html', 'Visualizers',
    `Step through Dijkstra, KMP, knapsack and ${visualizerCount - 3} more, one frame at a time.`],
+  ['skills.html', 'Interview coach',
+   'An agent skill that scores your solution the way an interviewer does — the failing input, the line that sets the complexity, one drill.'],
   ['problems.html', 'Problem index',
    'The full README table — every problem, its solutions, its tags and its status.']
 ];

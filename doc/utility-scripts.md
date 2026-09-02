@@ -256,6 +256,37 @@ thing that discards parked entries. See
 [`cheatsheet-zh-progress.md`](cheatsheet-zh-progress.md) for the current state and
 CLAUDE.md for the translation conventions.
 
+## check_skills.py
+
+The gate for the agent skills under `.claude/skills/`, run in CI by
+`.github/workflows/skills-check.yml`. Nothing else looks at a skill: it is
+markdown, so no compiler, linter or test sees it, and both of the ways one breaks
+are invisible in a diff.
+
+```bash
+python3 script/check_skills.py             # structure + wiring
+python3 script/check_skills.py --install   # ...and exercise both documented installs
+python3 script/check_skills.py --verbose   # list every path it resolved
+```
+
+Three groups, matching the three things that rot independently:
+
+| Group | Checks |
+|-------|--------|
+| **structure** | the `---` fenced frontmatter parses as `key: value`; `name` is kebab-case and matches the directory; `description` exists, fits in 1024 chars and is a sentence rather than a name echo; the body is really there; code fences balance |
+| **wiring** | every `.claude/skills/...` path named by `CLAUDE.md`, an `INSTALL.md` or `site/pages/skills.html` still resolves; no reference file is orphaned; no absolute `/Users/...` path is baked in |
+| **install** | the `cp -r` into `~/.claude/skills` and the zip the Claude app uploads are both performed into a temp directory, then re-checked — the only way to prove a skill works with none of this repo around it |
+
+The wiring group is the one that earns the file. `skills.html` links each
+reference file by name as an **absolute** `github.com` URL, so
+[`site/e2e-check.js`](../site/e2e-check.js) cannot resolve them and never will —
+renaming `references/patterns.md` leaves the skill perfectly valid and the
+published page pointing at a 404. This catches that.
+
+The first run of it found a live bug: `add-time-space/SKILL.md` had shipped
+without its `---` fences, so its advertised description was the literal string
+`name: add-time-space`.
+
 ## Other Scripts
 
 | Script | Purpose |
