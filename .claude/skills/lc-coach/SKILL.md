@@ -61,10 +61,11 @@ Two rules for combining them:
 
 - **The round is not an average.** One signal at `NH` caps the round at `LNH`; anything at
   `SNH` is `SNH` for the round, whatever else went well.
-- **Hints are logged, so they cost a rung.** Reaching optimal alone is `H`+; reaching it after
-  L3 is at best `LH`; after L4 or L5 the *problem solving* signal is `LNH` no matter how clean
-  the code that followed. Say which rung was used and what it cost — that is the whole point
-  of the ladder being numbered.
+- **Hints are logged, so they cost a rung.** Reaching optimal alone is `H`+; after L3 it is at
+  best `LH`; after L4 the *problem solving* signal is `LNH` however clean the code that
+  followed; at L5 there is no problem-solving signal left to score, so it is `NH`. Say which
+  rung was used and what it cost — that is the whole point of the ladder being numbered. The
+  full table is in `references/rubric.md`.
 
 ## Modes
 

@@ -41,7 +41,7 @@ standing on.
 | **SH** | Brute force stated and costed within 2 minutes, names the exact repeated work, derives the structure that removes it. Handles the follow-up variant without restarting. |
 | **H** | Reaches the optimal approach unaided, or after L1/L2. Can justify why the structure fits. |
 | **LH** | Reaches optimal after L3 — I pointed at the repeated work, they took it from there. Or reaches it alone but cannot say why it beats the alternative. |
-| **LNH** | Working but sub-optimal, with no route to better when asked. Or optimal only after L4/L5 — I handed over the invariant. |
+| **LNH** | Working but sub-optimal, with no route to better when asked. Or optimal only after L4 — I handed over the invariant. |
 | **NH** | Pattern-matches to a template that does not fit, and cannot say why it should. No brute force to fall back on. |
 | **SNH** | Refuses the hint and keeps pushing a dead approach for the rest of the round. |
 
