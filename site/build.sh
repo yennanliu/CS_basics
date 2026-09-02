@@ -17,8 +17,23 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
-if [ ! -d site/node_modules ]; then
-  echo "site/node_modules is missing — run: npm ci --prefix site" >&2
+# Check for the files the build actually consumes, not just the directory. A
+# partial or stale install passes a bare `-d site/node_modules` test and then
+# dies 40 lines below on a bare `cp: ... No such file or directory`, with no
+# hint that the fix is an npm install.
+REQUIRED_MODULES=(
+  site/node_modules/markdown-it/package.json               # build-site.js
+  site/node_modules/markdown-it-anchor/package.json        # build-site.js
+  site/node_modules/highlight.js/styles/atom-one-dark.min.css  # copied to _site/vendor/
+  site/node_modules/d3/dist/d3.min.js                      # copied to _site/vendor/
+)
+missing=()
+for m in "${REQUIRED_MODULES[@]}"; do
+  [ -e "$m" ] || missing+=("$m")
+done
+if [ ${#missing[@]} -gt 0 ]; then
+  echo "site/node_modules is missing or incomplete — run: npm ci --prefix site" >&2
+  printf '  not found: %s\n' "${missing[@]}" >&2
   exit 1
 fi
 

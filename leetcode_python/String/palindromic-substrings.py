@@ -160,7 +160,7 @@ class Solution(object):
 
 # V0-1
 # IDEA: 2D DP
-"""
+r"""
 
 DP State DefinitionLet $dp[i][j]$ be a boolean value (or integer 1 / 0) representing whether the substring starting at index $i$ and ending at index $j$ (inclusive) is a palindrome.$dp[i][j] = \text{True}$ (or 1) if the substring $s[i \dots j]$ is a valid palindrome.$dp[i][j] = \text{False}$ (or 0) if the substring $s[i \dots j]$ is not a palindrome.DP State Transition EquationA substring $s[i \dots j]$ is a palindrome if and only if its outer boundaries match ($s[i] == s[j]$) and the remaining inner substring is also a palindrome.$$dp[i][j] = 
 \begin{cases} 

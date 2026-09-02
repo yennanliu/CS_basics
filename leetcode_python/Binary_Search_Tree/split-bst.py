@@ -1,7 +1,7 @@
 # https://leetcode.ca/all/776.html
 
 
-"""
+r"""
 
 LC 776 - Split BST
 
@@ -42,7 +42,7 @@ The BST is always valid and each node’s value is different.
 """
 
 
-"""
+r"""
 
 #-------------------------------
 # CORE IDEA:

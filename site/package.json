@@ -3,13 +3,17 @@
   "version": "1.0.0",
   "description": "GitHub Pages build dependencies for CS_basics",
   "private": true,
+  "comments": {
+    "dependencies": "Everything build.sh copies into _site/ or renders with. d3 is shipped to the browser as _site/vendor/d3.min.js, so it is a runtime dependency, not a dev one — an `npm ci --omit=dev` install must still be able to build the site.",
+    "devDependencies": "Test-only. jsdom is used by site/test/*.test.js and never reaches _site/."
+  },
   "dependencies": {
+    "d3": "7.9.0",
     "highlight.js": "^11.9.0",
     "markdown-it": "^14.0.0",
     "markdown-it-anchor": "^9.0.1"
   },
   "devDependencies": {
-    "d3": "7.9.0",
     "jsdom": "^30.0.1"
   },
   "scripts": {

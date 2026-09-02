@@ -61,7 +61,7 @@ class Solution(object):
                 a, b = b, a%b
             return a
 
-        ints = list(map(int, re.findall('[+-]?\d+', expression)))
+        ints = list(map(int, re.findall(r'[+-]?\d+', expression)))
         A, B = 0, 1
         for i in range(0, len(ints), 2):
             a, b = ints[i], ints[i+1]

@@ -112,7 +112,7 @@ class Solution(object):
         :type banned: List[str]
         :rtype: str
         """
-        tokens = re.sub('[\!\?\'\,;\.]', '', paragraph.lower()).split()
+        tokens = re.sub(r"[!?',;.]", '', paragraph.lower()).split()
         cnt = collections.Counter(tokens)
         for ban in banned:
             if ban in cnt:

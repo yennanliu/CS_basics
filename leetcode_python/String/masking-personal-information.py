@@ -15,7 +15,7 @@ class Solution(object):
             left, right = S.lower().split('@')
             return left[0] + '*****' + left[-1] + '@' + right
         # case 2 : phone number. e.g. : 1(234)567-890
-        digits = re.sub('\D*', '', S)
+        digits = re.sub(r'\D*', '', S)
         countryCode = len(digits) - 10
         return (countryCode and '+' + '*' * countryCode + '-' or '') + '***-***-' + digits[-4:]
 
