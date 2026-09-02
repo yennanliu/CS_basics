@@ -64,7 +64,7 @@ import re
 class Solution(object):
     def solveEquation(self, equation):
         a, b, side = 0, 0, 1
-        for eq, sign, num, isx in re.findall('(=)|([-+]?)(\d*)(x?)', equation):
+        for eq, sign, num, isx in re.findall(r'(=)|([-+]?)(\d*)(x?)', equation):
             #print ("eq : {}, sign : {}, num : {}, isx : {}".format(eq, sign, num, isx))
             
             # case : "="
@@ -160,7 +160,7 @@ class Solution(object):
         :rtype: str
         """
         a, b, side = 0, 0, 1
-        for eq, sign, num, isx in re.findall('(=)|([-+]?)(\d*)(x?)', equation):
+        for eq, sign, num, isx in re.findall(r'(=)|([-+]?)(\d*)(x?)', equation):
             if eq:
                 side = -1
             elif isx:

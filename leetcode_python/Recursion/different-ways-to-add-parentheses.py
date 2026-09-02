@@ -18,7 +18,7 @@ class Solution(object):
     # @param {string} input
     # @return {integer[]}
     def diffWaysToCompute(self, input):
-        tokens = re.split('(\D)', input)
+        tokens = re.split(r'(\D)', input)
         nums = list(map(int, tokens[::2]))
         ops = list(map({'+': operator.add, '-': operator.sub, '*': operator.mul}.get, tokens[1::2]))
         lookup = [[None for _ in range(len(nums))] for _ in range(len(nums))]

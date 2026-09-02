@@ -1,6 +1,6 @@
 # https://leetcode.ca/all/536.html
 
-"""
+r"""
 
 Leetcode 536. 
 Construct Binary Tree from String

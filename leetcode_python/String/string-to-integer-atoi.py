@@ -76,7 +76,7 @@ class Solution(object):
         str = str.strip()
         try:
             ### NOTE : this trick (regex)
-            res = re.search('(^[\+\-]?\d+)', str).group()
+            res = re.search(r'(^[\+\-]?\d+)', str).group()
             # res = re.search(r"\d+", s).group()
             res = int(res)
             res = res if res <= 2**31 - 1 else 2**31 - 1    # 2**31 == 2147483648
@@ -328,7 +328,7 @@ class Solution(object):
         """
         str = str.strip()
         try:
-            res = re.search('(^[\+\-]?\d+)', str).group()
+            res = re.search(r'(^[\+\-]?\d+)', str).group()
             res = int(res)
             res = res if res <= 2147483647 else 2147483647
             res = res if res >= -2147483648 else -2147483648

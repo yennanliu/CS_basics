@@ -98,7 +98,7 @@ class Solution(object):
 
 # V0-0-1
 # IDEA: MONO STACK (gpt)
-"""
+r"""
 CORE IDEA:
 
 
