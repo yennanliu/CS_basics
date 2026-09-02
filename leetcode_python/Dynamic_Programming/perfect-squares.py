@@ -40,8 +40,89 @@ class Solution(object):
         pass
 
 
+
 # V0-1
+# IDEA: 1D DP (1D DP / unbounded knapsack) (for ... for ...) (gpt)
+"""
+
+DP def:
+
+     dp[i] = minimum number of perfect squares needed to make i
+
+
+DP eq:
+
+     dp[i] = min(dp[i], dp[i - square] + 1)
+
+
+---
+
+
+target = i
+          ↓
+take one square
+          ↓
+remaining = i - square
+          ↓
+best answer = dp[remaining] + 1
+
+
+"""
+class Solution(object):
+    def numSquares(self, n):
+        # dp[i] = minimum number of perfect squares
+        # needed to make sum i
+        dp = [float('inf')] * (n + 1)
+        dp[0] = 0
+
+        # Generate perfect squares
+        squares = []
+        i = 1
+        while i * i <= n:
+            squares.append(i * i)
+            i += 1
+
+        # Unbounded knapsack
+        for i in range(1, n + 1):
+            for square in squares:
+                if square > i:
+                    break
+
+                dp[i] = min(
+                    dp[i],
+                    dp[i - square] + 1
+                )
+
+        return dp[n]
+
+
+# V0-1-1
 # IDEA: 1D DP (1D DP / unbounded knapsack) (gpt)
+"""
+
+DP def:
+
+     dp[i] = minimum number of perfect squares needed to make i
+
+
+DP eq:
+
+     dp[i] = min(dp[i], dp[i - square] + 1)
+
+
+---
+
+
+target = i
+          ↓
+take one square
+          ↓
+remaining = i - square
+          ↓
+best answer = dp[remaining] + 1
+
+
+"""
 class Solution(object):
     def numSquares(self, n):
         """
