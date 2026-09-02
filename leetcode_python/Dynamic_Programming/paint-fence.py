@@ -99,6 +99,43 @@ class Solution:
             dp[i][1] = (dp[i - 1][0] + dp[i - 1][1]) * (k - 1) # not the same as previous
         return sum(dp[-1])
 
+
+# V0-1
+# IDEA: DP (GPT)
+# TODO: validate
+class Solution:
+    def numWays(self, n: int, k: int) -> int:
+        # Edge cases
+        if n == 0:
+            return 0
+
+        if n == 1:
+            return k
+
+        # dp[i] = number of ways to paint i posts
+        # where no more than 2 adjacent posts have same color
+        dp = [0] * (n + 1)
+
+        dp[1] = k
+
+        # For 2 posts:
+        # same color: k
+        # different color: k * (k - 1)
+        dp[2] = k * k
+
+        for i in range(3, n + 1):
+            # Case 1: current color != previous color
+            different = dp[i - 1] * (k - 1)
+
+            # Case 2: current color == previous color
+            # Then previous two must be different.
+            same = dp[i - 2] * (k - 1)
+
+            dp[i] = different + same
+
+        return dp[n]
+
+
 # V-1
 # IDEA: DP (GPT)
 # TODO: validate
