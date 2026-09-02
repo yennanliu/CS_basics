@@ -30,6 +30,13 @@ The number of nodes in the tree is in the range [0, 1000].
 """
 
 
+"""
+NOTE !!!
+
+LC 437 不是單純從 root 往下累加一條 path。同一個 node 可以作為很多不同 path 的起點。
+
+"""
+
 # V0
 # IDEA 1) dfs (pre-order) + prefix + hashmap + backtrack (GEMINI)
 # time = O(n)
@@ -88,58 +95,6 @@ class Solution(object):
 
 
 # V0-0-1
-# IDEA 1) dfs (pre-order) + prefix + hashmap + backtrack (gpt)
-# time = O(n)
-# space = O(h), h is height of binary tree (hashmap entries bounded by active path due to backtrack)
-class Solution(object):
-    def pathSum(self, root, targetSum):
-        self.path_map = {0: 1}
-        self.cnt = 0
-
-        self.helper(root, targetSum, 0)
-
-        return self.cnt
-
-    def helper(self, root, targetSum, prefix):
-        if not root:
-            return
-
-        prefix += root.val
-
-        """
-        NOTE !!!
-
-
-        prefix_a - prefix_b = target
-
-        -> prefix_b =  prefix_a - target
-        """
-        # Count all paths ending at this node
-        self.cnt += self.path_map.get(prefix - targetSum, 0)
-
-        """
-        NOTE !!!
-
-        DON'T forget to update hashmap
-        """
-        # Add current prefix
-        self.path_map[prefix] = self.path_map.get(prefix, 0) + 1
-
-        self.helper(root.left, targetSum, prefix)
-        self.helper(root.right, targetSum, prefix)
-
-        """
-        NOTE !!!
-
-        since path_map (map) is NOT primitive type in py,
-        we need to do backtrack (undo) here
-        """
-        # Backtrack
-        self.path_map[prefix] -= 1
-
-
-
-# V0-0-2
 # IDEA 1) dfs (pre-order) + prefix + hashmap + backtrack (GPT)
 # time = O(n)
 # space = O(h), h is height of binary tree (hashmap entries bounded by active path due to backtrack)
@@ -193,6 +148,57 @@ class Solution(object):
         # Backtrack:
         # current prefix_sum should not affect sibling subtree
         prefix[cur_sum] -= 1
+
+
+# V0-0-2
+# IDEA 1) dfs (pre-order) + prefix + hashmap + backtrack (gpt)
+# time = O(n)
+# space = O(h), h is height of binary tree (hashmap entries bounded by active path due to backtrack)
+class Solution(object):
+    def pathSum(self, root, targetSum):
+        self.path_map = {0: 1}
+        self.cnt = 0
+
+        self.helper(root, targetSum, 0)
+
+        return self.cnt
+
+    def helper(self, root, targetSum, prefix):
+        if not root:
+            return
+
+        prefix += root.val
+
+        """
+        NOTE !!!
+
+
+        prefix_a - prefix_b = target
+
+        -> prefix_b =  prefix_a - target
+        """
+        # Count all paths ending at this node
+        self.cnt += self.path_map.get(prefix - targetSum, 0)
+
+        """
+        NOTE !!!
+
+        DON'T forget to update hashmap
+        """
+        # Add current prefix
+        self.path_map[prefix] = self.path_map.get(prefix, 0) + 1
+
+        self.helper(root.left, targetSum, prefix)
+        self.helper(root.right, targetSum, prefix)
+
+        """
+        NOTE !!!
+
+        since path_map (map) is NOT primitive type in py,
+        we need to do backtrack (undo) here
+        """
+        # Backtrack
+        self.path_map[prefix] -= 1
 
 
 # V0-1

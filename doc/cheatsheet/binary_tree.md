@@ -1225,7 +1225,7 @@ class Solution:
 | Binary Tree Maximum Path Sum | 124 | Hard | DFS + Global Max | Template 4 |
 | Longest Consecutive Sequence | 298 | Medium | DFS + Counter | Template 4 (see §0-2: solvable top-down **and** bottom-up) |
 | Longest Consecutive Sequence II | 549 | Medium | DFS + Tuple State | Template 9 (bent path, `inc + dec - 1`) |
-| Path Sum III | 437 | Medium | Prefix Sum | Template 4 |
+| Path Sum III | 437 | Medium | Prefix Sum | Template 4 + [prefix-sum-on-a-tree template](./prefix_sum_advanced.md#template-14-prefix-sum-on-a-tree-dfs--hashmap--backtrack---lc-437) |
 
 #### **Pattern 4: Tree Properties Problems**
 | Problem | LC # | Difficulty | Key Technique | Template |
@@ -1298,7 +1298,7 @@ class Solution:
 - LC 236: Lowest Common Ancestor - Classic LCA
 - LC 298: Binary Tree Longest Consecutive - Path tracking
 - LC 314: Binary Tree Vertical Order - Column indexing
-- LC 437: Path Sum III - Prefix sum on tree
+- LC 437: Path Sum III - Prefix sum on tree ([template](./prefix_sum_advanced.md#template-14-prefix-sum-on-a-tree-dfs--hashmap--backtrack---lc-437))
 - LC 513: Find Bottom Left Tree Value - Level order variant
 - LC 536: Construct from String - Parsing to tree
 - LC 549: Binary Tree Longest Consecutive II - Bent path, (inc, dec) state

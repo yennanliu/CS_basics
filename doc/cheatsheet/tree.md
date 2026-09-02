@@ -358,6 +358,9 @@ private void getLeafSeq(TreeNode root, List<Integer> list) {
 **Interview Trick (from LC 437):**
 > If the path **does NOT need to start/end at root/leaf** and asks for count,
 > use **Pre-order DFS + Prefix Sum HashMap** (the "2-sum on tree" pattern).
+> The full template — why the map must be **undone** on the way back up, the two
+> spellings of the base case, and the `long` overflow trap in Java — is
+> [Template 14 in prefix_sum_advanced.md](./prefix_sum_advanced.md#template-14-prefix-sum-on-a-tree-dfs--hashmap--backtrack---lc-437).
 
 #### Classic LC Problems by Traversal Type
 
@@ -368,7 +371,7 @@ private void getLeafSeq(TreeNode root, List<Integer> list) {
 | 112   | Path Sum                       | Pre-order DFS, check leaf with remaining sum  |
 | 113   | Path Sum II                    | Pre-order DFS + backtrack, collect all paths  |
 | 257   | Binary Tree Paths              | Pre-order DFS + backtrack, build string paths |
-| 437   | Path Sum III                   | Pre-order DFS + prefix sum HashMap, 2-sum trick: check (curSum-target) in map |
+| 437   | Path Sum III                   | Pre-order DFS + prefix sum HashMap, 2-sum trick: check (curSum-target) in map — [template](./prefix_sum_advanced.md#template-14-prefix-sum-on-a-tree-dfs--hashmap--backtrack---lc-437) |
 | 129   | Sum Root to Leaf Numbers       | Pre-order DFS, carry running number           |
 | 404   | Sum of Left Leaves             | Pre-order DFS, carry an `isLeft` flag down; add value only at a leaf reached as a left child |
 

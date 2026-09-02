@@ -1,7 +1,7 @@
 # Prefix Sum (前缀和)
 
 > **Scope** — Prefix / running sums — subarray sums, 2D prefix sums, prefix + hashmap counting.
-> **See also**: [prefix_sum_advanced.md](./prefix_sum_advanced.md) — templates 9–13, the ones that borrow another structure; [prefix_sum_examples.md](./prefix_sum_examples.md) — the worked problems no template already solves; [difference_array.md](./difference_array.md) — range *updates* instead of range queries; [binary_indexed_tree.md](./binary_indexed_tree.md) — when the array also changes; [kadane_algorithm.md](./kadane_algorithm.md) — max subarray without prefix sums.
+> **See also**: [prefix_sum_advanced.md](./prefix_sum_advanced.md) — templates 9–13, the ones that borrow another structure; [prefix_sum_examples.md](./prefix_sum_examples.md) — the worked problems no template already solves; [difference_array.md](./difference_array.md) — range *updates* instead of range queries; [binary_indexed_tree.md](./binary_indexed_tree.md) — when the array also changes; [kadane_algorithm.md](./kadane_algorithm.md) — max subarray without prefix sums; [tree_backtrack.md](./tree_backtrack.md) — the root→leaf path DFS that template 14 generalises.
 
 <p align="center"><img src="../pic/prefix_sum.png"></p>
 
@@ -683,7 +683,7 @@ def sum_of_distances_optimized(nums):
 
 ## Advanced Templates
 
-Templates **9–13** moved to **[prefix_sum_advanced.md](./prefix_sum_advanced.md)**. They are the
+Templates **9–14** moved to **[prefix_sum_advanced.md](./prefix_sum_advanced.md)**. They are the
 ones that stop being "build the array, subtract two entries" and start borrowing another
 structure:
 
@@ -694,6 +694,7 @@ structure:
 | 11 | [Row-pair compression](./prefix_sum_advanced.md#template-11-row-pair-compression--collapse-2d-into-1d-prefix-sum---lc-363) ⭐⭐⭐⭐ | collapse 2D to 1D by fixing a pair of rows | 363, 1074 |
 | 12 | [Prefix XOR](./prefix_sum_advanced.md#template-12-prefix-xor---lc-1310) ⭐⭐⭐⭐ | XOR is its own inverse, so the same subtraction identity holds | 1310 |
 | 13 | [Sparse difference array via HashMap](./prefix_sum_advanced.md#template-13-sparse-difference-array-via-hashmap-line-sweep---lc-2021) ⭐⭐⭐⭐⭐ | a hash map instead of an array, when the coordinates are huge | 2021 |
+| 14 | [Prefix sum on a tree](./prefix_sum_advanced.md#template-14-prefix-sum-on-a-tree-dfs--hashmap--backtrack---lc-437) ⭐⭐⭐⭐⭐ | the DFS stack *is* the array — Template 2 plus an undo on the way back up | 437 |
 
 
 ## Problems by Pattern
@@ -795,7 +796,7 @@ structure:
 | Contiguous Array | 525 | Balance 0s and 1s | Template 6 |
 | Shortest Unsorted Continuous Subarray | 581 | Array analysis | Template 1 |
 | Random Pick with Weight | 528 | Weighted random | Template 1 |
-| Path Sum III | 437 | Tree + prefix sum | Template 2 |
+| Path Sum III | 437 | Tree + prefix sum | [Template 14](./prefix_sum_advanced.md#template-14-prefix-sum-on-a-tree-dfs--hashmap--backtrack---lc-437) |
 
 #### **Hard Problems (Advanced Techniques)**
 | Problem | LC # | Focus Area | Template |
@@ -1111,6 +1112,7 @@ def count_nice_subarrays(nums, k):
 - **Binary Search**: Can be combined with prefix sum for range queries
 - **Segment Trees**: Alternative for range sum with updates
 - **Monotonic Stack**: Sometimes combined with prefix sum for optimization
+- **Tree DFS**: a root→node chain is an array, so Template 2 counts downward paths — [Template 14](./prefix_sum_advanced.md#template-14-prefix-sum-on-a-tree-dfs--hashmap--backtrack---lc-437), LC 437
 
 ### Advanced Extensions
 

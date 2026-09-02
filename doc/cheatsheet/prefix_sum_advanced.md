@@ -1,7 +1,7 @@
 # Prefix Sum — Advanced Templates
 
-> **Scope** — The five prefix-sum templates that borrow another structure or another identity: the complement trick, the monotonic deque for arrays with negatives, row-pair compression for 2D, prefix XOR, and the sparse difference array via a hash map.
-> **See also**: [prefix_sum.md](./prefix_sum.md) — the parent sheet: templates 1–8, the concept and the pattern-selection strategy; [prefix_sum_examples.md](./prefix_sum_examples.md) — the worked problems; [monotonic_queue.md](./monotonic_queue.md) — the deque behind template 10; [difference_array.md](./difference_array.md) — the dense counterpart to template 13; [bit_manipulation.md](./bit_manipulation.md) — why XOR supports the same subtraction identity as addition; [matrix.md](./matrix.md) — the 2D geometry template 11 collapses.
+> **Scope** — The six prefix-sum templates that borrow another structure or another identity: the complement trick, the monotonic deque for arrays with negatives, row-pair compression for 2D, prefix XOR, the sparse difference array via a hash map, and the prefix-sum-on-a-tree counting map.
+> **See also**: [prefix_sum.md](./prefix_sum.md) — the parent sheet: templates 1–8, the concept and the pattern-selection strategy; [prefix_sum_examples.md](./prefix_sum_examples.md) — the worked problems; [monotonic_queue.md](./monotonic_queue.md) — the deque behind template 10; [difference_array.md](./difference_array.md) — the dense counterpart to template 13; [bit_manipulation.md](./bit_manipulation.md) — why XOR supports the same subtraction identity as addition; [matrix.md](./matrix.md) — the 2D geometry template 11 collapses; [tree_backtrack.md](./tree_backtrack.md) — the root→leaf path templates template 14 generalises, and the undo-on-the-way-up habit it needs.
 
 ## LeetCode Problem Lists
 
@@ -11,12 +11,12 @@
 ## Overview
 
 Templates 1–8 in [prefix_sum.md](./prefix_sum.md) are all the same move: build the array,
-subtract two entries. These five are where that stops being enough.
+subtract two entries. These six are where that stops being enough.
 
 ### Key Properties
 - **Complexity**: stated per template; the point of each is turning an O(n²) or O(n·m²) scan into O(n) or O(n·m)
 - **Core Idea**: the prefix-sum identity `sum(l, r) = P[r+1] - P[l]` survives any *invertible* combining operation — which is why XOR works and why min/max do not
-- **When to Use**: when a plain prefix sum is the obvious idea and something about the problem breaks it — negatives, two dimensions, a wrap-around, or coordinates too large to allocate
+- **When to Use**: when a plain prefix sum is the obvious idea and something about the problem breaks it — negatives, two dimensions, a wrap-around, coordinates too large to allocate, or an "array" that is really a root→node chain in a tree
 
 
 ### Template 9: Complement Trick — "Total − Middle Window" ⭐⭐⭐⭐⭐ — LC 1423
@@ -486,7 +486,209 @@ public int brightestPosition(int[][] lights) {
 
 > **Rule of thumb**: coordinate range ≤ ~10^6 and non-negative → plain array (Template 4). Otherwise, or if coordinates are negative → HashMap/TreeMap (Template 13).
 
-### Templates 9-13 — Problem Index
+### Template 14: Prefix Sum on a Tree (DFS + HashMap + Backtrack) ⭐⭐⭐⭐⭐ — LC 437
+
+**Key Idea**: a **downward path** in a tree is nothing but a *subarray of the root→node chain*. So
+Template 2 (`cur - k` in a HashMap) applies unchanged — "the array" is just the DFS call stack
+instead of `nums`. The single new move is that the chain is a **branch, not a prefix of one global
+array**, so the map entry must be **undone when the recursion leaves the node**.
+
+| | Array (Template 2) | Tree (Template 14) |
+|---|---|---|
+| "the array" | `nums[0..i]` | the root→node chain = the current DFS stack |
+| running sum | `cur += nums[i]` | `cur += node.val` |
+| count paths ending here | `cnt += map[cur - k]` | same |
+| record this prefix | `map[cur] += 1` | same |
+| **un-record it** | never — the array only grows | **`map[cur] -= 1` after both children** |
+| result | # subarrays with sum `k` | # downward paths with sum `k` |
+
+**When to reach for it** — all three must hold:
+
+- the path must go **downward only** (parent → child), so every candidate path is `chain[i..j]`;
+- the path may **start and end anywhere** — not pinned to root or to a leaf (that is what kills the
+  plain root→leaf DFS of [tree_backtrack.md](./tree_backtrack.md));
+- you are **counting** (or testing existence of) paths with a target sum, not maximizing over a path
+  that may *bend* through a node — see [When not to use it](#when-not-to-use-it--the-path-bends-or-the-answer-is-per-subtree) below.
+
+#### Why the undo is mandatory
+
+Without it, a prefix left behind by a **sibling** subtree is still in the map, and a "path" that
+jumps sideways across the tree gets counted. The smallest failing case, `targetSum = 1`:
+
+```text
+tree:        1              chains:   1        (prefix 1)
+            / \                       1 -> 4   (prefix 5)
+           4   5                       1 -> 5   (prefix 6)
+
+correct answer = 1   (the single node `1`)
+
+DFS pre-order, map starts {0: 1}:
+  node 1 : cur=1  cnt += map[1-1=0] = 1   -> cnt=1   map{0:1, 1:1}
+  node 4 : cur=5  cnt += map[5-1=4] = 0   -> cnt=1   map{0:1, 1:1, 5:1}
+  << no undo here: prefix 5 stays in the map >>
+  node 5 : cur=6  cnt += map[6-1=5] = 1   -> cnt=2   WRONG
+                  ^ that "5" is the left branch's prefix; 4 is not an ancestor of 5
+```
+
+`map[cur] -= 1` on the way out drops prefix `5` before the right branch is entered, and the count
+stays 1. The map's **non-zero** entries are then exactly the prefixes of the current node's
+ancestors — at most `h` of them, which is where the `O(h)` space comes from.
+
+> **`-= 1` is not `del`.** A decremented key stays in the dict with value `0`, so a long-running
+> map can accumulate up to `O(n)` dead keys. That is harmless for correctness — a `0` count adds
+> nothing to `cnt` — but if you want the `O(h)` bound to be literal, `del prefix[cur]` (Java:
+> `prefix.remove(cur)`) once the count reaches `0`.
+
+> **Python-specific**: the map is a mutable object shared by every frame, so the undo is the only
+> thing scoping it. A plain `cur` (an `int`) needs no undo — it is passed by value down each call.
+
+#### Python template
+
+```python
+# python
+# LC 437 - Path Sum III
+# IDEA: pre-order DFS + prefix sum HashMap + backtrack ("2-sum on the root->node chain")
+# time = O(n), space = O(h)
+from collections import defaultdict
+
+class Solution:
+    def pathSum(self, root, targetSum):
+        prefix = defaultdict(int)
+        prefix[0] = 1                 # the empty prefix: a path starting AT the root
+        self.cnt = 0
+
+        def dfs(node, cur):
+            if not node:
+                return
+
+            cur += node.val                       # 1) extend the chain
+
+            # 2) cur - old = targetSum  ->  old = cur - targetSum
+            #    every recorded ancestor prefix `old` is one path ending at `node`
+            self.cnt += prefix[cur - targetSum]
+
+            prefix[cur] += 1                      # 3) publish this prefix to the subtree
+
+            dfs(node.left, cur)
+            dfs(node.right, cur)
+
+            prefix[cur] -= 1                      # 4) BACKTRACK - leave no trace for siblings
+
+        dfs(root, 0)
+        return self.cnt
+```
+
+#### Java template
+
+```java
+// java
+// LC 437 - Path Sum III
+// IDEA: pre-order DFS + prefix sum HashMap + backtrack
+// time = O(n), space = O(h)
+public int pathSum(TreeNode root, int targetSum) {
+    Map<Long, Integer> prefix = new HashMap<>();
+    prefix.put(0L, 1);                       // empty prefix
+    return dfs(root, 0L, targetSum, prefix);
+}
+
+private int dfs(TreeNode node, long cur, int target, Map<Long, Integer> prefix) {
+    if (node == null) return 0;
+
+    cur += node.val;                                            // 1) extend
+    int res = prefix.getOrDefault(cur - target, 0);              // 2) count
+
+    prefix.merge(cur, 1, Integer::sum);                          // 3) publish
+    res += dfs(node.left,  cur, target, prefix);
+    res += dfs(node.right, cur, target, prefix);
+    prefix.merge(cur, -1, Integer::sum);                         // 4) BACKTRACK
+
+    return res;
+}
+```
+
+> **Use `long` for the running sum in Java.** LC 437 allows `-10^9 <= node.val <= 10^9` over up to
+> 1000 nodes, so an `int` chain sum overflows. The *key* must then be `Long`, or the lookup silently
+> misses.
+
+#### Two spellings of the base case — pick one, never both
+
+| | Sentinel (preferred) | Explicit check |
+|---|---|---|
+| init | `prefix = {0: 1}` | `prefix = {}` |
+| count | `cnt += prefix[cur - k]` | `if cur == k: cnt += 1`<br>`cnt += prefix.get(cur - k, 0)` |
+| handles "path starts at root" | the `0` entry does it | the `if` does it |
+| risk | none | writing **both** double-counts every root-started path |
+
+The sentinel is the same `prefix[0] = 0` idea as the array templates: it is the *empty* prefix, and
+it is what makes a path that begins at the root need no special case.
+
+#### Trace — LC 437, the leftmost chain
+
+```text
+root = [10,5,-3,3,2,null,11,3,-2,null,1], targetSum = 8
+
+chain 10 -> 5 -> 3 -> 3        map = {0:1}
+  10 : cur=10  need 10-8=2   map[2]=0            cnt=0   map{0:1,10:1}
+   5 : cur=15  need 15-8=7   map[7]=0            cnt=0   map{...,15:1}
+   3 : cur=18  need 18-8=10  map[10]=1  <-- HIT  cnt=1   map{...,18:1}
+       the hit prefix 10 is node `10`, so the path is (10..18] = 5 -> 3  = 8  ✓
+   3 : cur=21  need 21-8=13  map[13]=0           cnt=1
+  ... unwind: 21, 18, 15, 10 each -= 1
+
+the other two paths are found the same way: 5 -> 2 -> 1, and -3 -> 11
+```
+
+#### Complexity, and what it replaces
+
+| Approach | Time | Space | Note |
+|---|---|---|---|
+| DFS from **every** node (`pathSum(root) = dfs(root) + pathSum(left) + pathSum(right)`) | O(n²) worst case, O(n log n) balanced | O(h) | the obvious first answer; fine to state, then improve |
+| BFS every node + DFS from each | O(n²) | O(n) | same work, more space |
+| **Template 14** | **O(n)** — one visit per node | **O(h)** — the map holds only ancestors | say the `O(h)` out loud; interviewers expect `O(n)` here |
+
+#### Same skeleton, other problems
+
+| Problem | LC # | What changes | Template |
+|---------|------|--------------|----------|
+| Path Sum III | 437 | — the canonical form | Template 14 |
+| Subarray Sum Equals K | 560 | the array version; the tree adds only the undo | Template 2 |
+| Number of Submatrices That Sum to Target | 1074 | the same counting map, "chain" = a fixed row pair | Template 11 + 2 |
+| Path Sum | 112 | path pinned to root→leaf → **no map**, just carry `cur` | Template 14 degenerate |
+| Path Sum II | 113 | root→leaf **and** collect paths → carry a list, undo it | Template 14 degenerate + backtrack |
+| Binary Tree Paths | 257 | same, string instead of sum | — |
+| Sum Root to Leaf Numbers | 129 | `cur = cur * 10 + val` — a running *number*, still a downward prefix | — |
+| Sum of Root To Leaf Binary Numbers | 1022 | `cur = cur * 2 + val` | — |
+| Path Sum IV | 666 | tree given as `depth-position-value` triples; rebuild parent links, then the same chain sum | — |
+| Sum of Nodes with Even-Valued Grandparent | 1315 | carry the last **two** ancestors down instead of a sum | — |
+
+**Swap the combining operation**, and the identity still holds as long as it is *invertible*
+(see [Key Properties](#key-properties) above):
+
+- **XOR** — count downward paths whose XOR is `k`: `cur ^= node.val`, look up `cur ^ k`
+  ([Template 12](#template-12-prefix-xor---lc-1310));
+- **modulo** — count downward paths whose sum is divisible by `k`: key on `cur % k`
+  ([Template 3](./prefix_sum.md#template-3-modulo-prefix-sum-divisibility-problems--lc-974));
+- **min / max** — does **not** work. There is no undo for `min`, so a "prefix min" cannot be
+  subtracted back out; those problems are post-order instead.
+
+#### When not to use it — the path bends, or the answer is per-subtree
+
+If the path may turn at a node (`left → node → right`) or the quantity is a property of a *subtree*,
+the chain framing is wrong and the answer is **post-order DFS returning a value up**:
+
+| Problem | LC # | Why not prefix sum |
+|---------|------|--------------------|
+| Binary Tree Maximum Path Sum | 124 | the path bends; maximize per node with `left + val + right` |
+| Diameter of Binary Tree | 543 | bends; `leftDepth + rightDepth` |
+| Longest Univalue Path | 687 | bends |
+| Most Frequent Subtree Sum | 508 | a HashMap on **subtree** sums, computed bottom-up — not a chain prefix |
+| Count Nodes Equal to Average of Subtree | 2265 | needs `(sum, count)` returned up from each subtree |
+
+> **Interview cue**: "does not need to start or end at the root or a leaf, but must go **downwards**"
+> → Template 14. "Path may pass through a node" / "any two nodes" → post-order (or LCA, see
+> [tree_lca_distance.md](./tree_lca_distance.md)).
+
+### Templates 9-14 — Problem Index
 
 | Problem | LC # | Key Technique | Difficulty | Template |
 |---------|------|---------------|------------|----------|
@@ -509,5 +711,10 @@ public int brightestPosition(int[][] lights) {
 | Brightest Position on Street | 2021 | hashmap diff array + sorted-key sweep | Medium | Template 13 |
 | Describe the Painting | 1943 | hashmap diff array, value = color sum | Medium | Template 13 |
 | My Calendar III | 732 | TreeMap diff array, online max overlap | Hard | Template 13 |
+| Path Sum III | 437 | prefix sum on the root→node chain + backtrack | Medium | Template 14 |
+| Path Sum | 112 | root→leaf chain sum, no map needed | Easy | Template 14 (degenerate) |
+| Path Sum II | 113 | root→leaf chain + path backtracking | Medium | Template 14 (degenerate) |
+| Sum Root to Leaf Numbers | 129 | running *number* down the chain (`cur*10 + val`) | Medium | Template 14 (degenerate) |
+| Path Sum IV | 666 | rebuild the tree from `depth-pos-val`, then chain sum | Medium | Template 14 (degenerate) |
 
-> **Cross-reference:** the exact-sum HashMap complement (`prefix_sum - k`) is also written up as a "2-sum on prefix sums" template in [`n_sum.md`](./n_sum.md) — see Template 2 above for the version used throughout this doc.
+> **Cross-reference:** the exact-sum HashMap complement (`prefix_sum - k`) is also written up as a "2-sum on prefix sums" template in [`n_sum.md`](./n_sum.md) — see Template 2 above for the version used throughout this doc. Template 14 is that same complement run along a DFS stack; the tree-side view of it lives in [`tree.md`](./tree.md) and [`binary_tree.md`](./binary_tree.md).
