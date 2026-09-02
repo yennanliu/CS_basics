@@ -443,3 +443,22 @@ For the full guide — flags, how to read each section, and which numbers to act
 ```bash
 python3 script/eval_lc_readiness.py
 ```
+
+---
+
+## Coaching a coding interview
+
+`.claude/skills/lc-interview-coach/` is the interviewer-side counterpart to the readiness
+script: it reviews a solution against the four FAANG signals (communication, problem solving,
+coding, verification), teaches the pattern from first principles rather than handing over a
+template, dry-runs code as a state table, and names the one line that sets the complexity.
+
+`SKILL.md` is the whole coach; `references/` holds the rubric anchors, the per-pattern
+invariants, and the in-the-room talk track. It is plain markdown with no dependencies —
+[`INSTALL.md`](.claude/skills/lc-interview-coach/INSTALL.md) covers installing it on Codex,
+Gemini and other agents from the same source.
+
+```text
+/lc-interview-coach review leetcode_python/Sliding_Window/sliding_window_maximum.py
+/lc-interview-coach mock interview me on LC 239
+```
