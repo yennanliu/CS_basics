@@ -8,51 +8,66 @@
     <artifactId>leetcode_java</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!--
+        `release` rather than the old `source`/`target` pair. source/target 8 only
+        constrains the *language* level: it still compiles against the running JDK's
+        rt classes, so a post-Java-8 API (BigInteger.TWO, List.of, ...) compiles
+        cleanly here and then throws NoSuchMethodError on a real Java 8 runtime.
+        `release` pins the platform API too, and matches the "javac release 8"
+        flag that .github/workflows/java-syntax-check.yml runs over the same sources.
+        -->
+        <maven.compiler.release>8</maven.compiler.release>
+
+        <junit.version>5.10.2</junit.version>
+    </properties>
+
     <dependencies>
 
         <!--
-        TODO : double check if should use Oracle JDK, so javafx is installed by default
-        https://juejin.cn/s/gradle%20error%20package%20javafx.util%20does%20not%20exist
+        JUnit 5 (Jupiter). The aggregate artifact pulls in junit-jupiter-api,
+        junit-jupiter-engine and junit-jupiter-params, so the engine can never
+        drift out of step with the API.
+
+        Tests live in src/test/java — NOT in src/main/java. A `test`-scoped
+        dependency is absent from the main compile classpath, so a test parked
+        under src/main can only compile by dragging JUnit into `compile` scope,
+        which is how this project ended up shipping JUnit 4 at compile scope and
+        running zero tests.
         -->
         <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-base</artifactId>
-            <version>21.0.1</version>
-        </dependency>
-
-        <!-- UT -->
-        <!-- JUnit 5 (JUnit Jupiter) dependency for unit testing -->
-        <dependency>
             <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>5.8.2</version> <!-- Use the latest version here -->
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit.version}</version>
             <scope>test</scope>
-
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.8.2</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>RELEASE</version>
-            <scope>compile</scope>
         </dependency>
 
     </dependencies>
 
     <build>
         <plugins>
+            <!--
+            Every plugin version is pinned. An unpinned plugin resolves to whatever
+            version the local Maven happens to default to, so the same commit builds
+            differently on two machines.
+            -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>8</source>
-                    <target>8</target>
-                </configuration>
+                <version>3.13.0</version>
+            </plugin>
+
+            <!--
+            Surefire 2.x predates the JUnit Platform and silently discovers no
+            Jupiter tests at all — it reports "Tests run: 0" and passes. 3.x is
+            required for `mvn test` to actually execute anything here.
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
             </plugin>
         </plugins>
     </build>
