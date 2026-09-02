@@ -172,6 +172,61 @@ class Solution:
         return -1
 
 
+# V0-1
+# IDEA: tree -> graph, BFS get min dist in node X, Y (fixed by gpt)
+from collections import defaultdict, deque
+
+class Solution:
+    def findDistance(self, root, p, q):
+        if not root:
+            return 0
+
+        if p == q:
+            return 0
+
+        # {node: [neighbor1, neighbor2, ...]}
+        self.graph = defaultdict(list)
+
+        # Build undirected graph
+        self.build_graph(root, None)
+
+        # BFS from p -> q
+        return self.helper(p, q)
+
+    def build_graph(self, node, parent):
+        if not node:
+            return
+
+        # Binary tree -> undirected graph
+        if parent:
+            self.graph[node].append(parent)
+            self.graph[parent].append(node)
+
+        self.build_graph(node.left, node)
+        self.build_graph(node.right, node)
+
+    def helper(self, start, target):
+        if start == target:
+            return 0
+
+        # (node, distance)
+        q = deque([(start, 0)])
+        visited = {start}
+
+        while q:
+            node, dist = q.popleft()
+
+            if node == target:
+                return dist
+
+            for neighbor in self.graph[node]:
+                if neighbor not in visited:
+                    visited.add(neighbor)
+                    q.append((neighbor, dist + 1))
+
+        return -1
+
+
 # V0
 # time = O(n), LCA search + two distance searches, each O(n)
 # space = O(h), recursion stack
