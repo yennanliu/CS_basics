@@ -461,8 +461,28 @@ Gemini and other agents from the same source.
 `site/pages/skills.html` is its page on the site — intro, per-agent install, quick start —
 reached from the navbar's **more → coach** entry and from the landing page's card. It is a
 hand-maintained page like the LC tools, so `build.sh` copies it and `finalize-pages.js` gives
-it the canonical and Open Graph tags. Editing the skill does **not** update that page; keep
-the two in step by hand.
+it the canonical and Open Graph tags. Editing the skill does **not** update that page's prose;
+keep the two in step by hand. Its *links* are enforced — see below.
+
+### The skills gate
+
+`script/check_skills.py` is to `.claude/skills/` what `e2e-check.js` is to `_site/`: the one
+place a rule about a skill belongs, runnable locally, rather than a `run:` block nobody can
+execute before pushing. `.github/workflows/skills-check.yml` calls it and then builds the site,
+because `validate-pages.yml`'s path filter does not watch `.claude/`.
+
+```bash
+python3 script/check_skills.py --install   # what CI runs
+```
+
+It checks frontmatter every host can parse, that no reference file is orphaned, and that every
+`.claude/skills/...` path named by `CLAUDE.md`, an `INSTALL.md` or `site/pages/skills.html`
+still resolves — that last one because those links are absolute `github.com` URLs, which
+`e2e-check.js` cannot resolve and never will. `--install` performs both documented installs
+(the `cp -r`, and the zip the Claude app uploads) into a temp directory and re-runs every check
+on the copy, which is the only way to prove a skill works with none of this repo around it.
+
+Full detail in [`doc/utility-scripts.md`](doc/utility-scripts.md).
 
 ```text
 /lc-interview-coach review leetcode_python/Sliding_Window/sliding_window_maximum.py

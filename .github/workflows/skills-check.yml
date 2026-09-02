@@ -1,0 +1,110 @@
+name: Agent Skills Check
+
+# A skill is markdown, so no compiler, linter or test ever looks at it. The two
+# ways one breaks are both invisible in a diff: a frontmatter fence that a host
+# cannot parse (the skill loads as inert prose and is never matched), and a
+# renamed file that leaves every pointer to it — including the install
+# instructions and the links on skills.html — aimed at nothing.
+#
+# The rules live in script/check_skills.py rather than in a run: block here, for
+# the reason CLAUDE.md gives about site/e2e-check.js: a gate that only exists
+# inside a workflow cannot be run before pushing, cannot be tested, and gets
+# routed around. Reproduce either job locally with:
+#
+#   python3 script/check_skills.py --install
+#   bash site/build.sh && node site/e2e-check.js _site
+
+# The two path lists are duplicated rather than shared through a YAML anchor:
+# GitHub Actions does not resolve anchors, and every other workflow here repeats
+# its list the same way.
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - '.claude/skills/**'
+      - 'site/pages/skills.html'
+      - 'script/check_skills.py'
+      - '.github/workflows/skills-check.yml'
+  pull_request:
+    branches: [ master ]
+    paths:
+      - '.claude/skills/**'
+      - 'site/pages/skills.html'
+      - 'script/check_skills.py'
+      - '.github/workflows/skills-check.yml'
+  workflow_dispatch:
+
+# Both jobs only read the tree they check out and build.
+permissions:
+  contents: read
+
+jobs:
+  # ── Syntax and install ──────────────────────────────────────────────────────
+  # Standard library only, so there is nothing to install before it can run.
+  skill:
+    name: Syntax and install
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      # Frontmatter every host can parse, bodies that are actually there, and
+      # every .claude/skills path named by CLAUDE.md, an INSTALL.md or the site
+      # page still resolving. The last of those is what catches a renamed
+      # reference file breaking the published page: those links are absolute
+      # github.com URLs, so e2e-check.js cannot resolve them and never will.
+      - name: Syntax and wiring check
+        run: python3 script/check_skills.py --verbose
+
+      # The documented installs, actually run: a `cp -r` into a throwaway HOME
+      # and the zip the Claude app uploads, each followed by the same structure
+      # checks against the copy. A skill that only validates in situ is a skill
+      # that depends on this repo being around it, which is the one thing an
+      # install cannot promise.
+      - name: Install check (copy + zip)
+        run: python3 script/check_skills.py --install
+
+  # ── Build ───────────────────────────────────────────────────────────────────
+  # skills.html documents the skill and links into it, but validate-pages.yml's
+  # path filter does not watch .claude/, so a skill-only change would otherwise
+  # never rebuild the page that advertises it. e2e-check.js already holds
+  # skills.html in its required list and its shared-palette check, so the same
+  # recipe both other workflows run is all this needs.
+  site:
+    name: Build the site
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Cache npm dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('site/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
+      - name: Install dependencies
+        run: npm ci --prefix site
+
+      - name: Build site
+        run: bash site/build.sh
+
+      - name: Run JS unit tests
+        run: npm test --prefix site
+
+      - name: Validate the generated site
+        run: node site/e2e-check.js _site
