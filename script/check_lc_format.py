@@ -6,6 +6,11 @@ Target format (from monotonic_stack.md):
   ### 2-1) Problem Name (LC N) — Short Description
   > Core idea one-liner.
 
+The LC number may equally be written trailing — "### 2-1) Problem Name — LC N" —
+which is the other spelling in use across the cheatsheets. Such a heading carries
+its LC number but no description, so it is reported as `missing-description`
+only, never as `missing-lc-number`.
+
   ```java
   // LC N - Problem Name
   // IDEA: ...
@@ -24,7 +29,25 @@ from pathlib import Path
 
 CHEATSHEET_DIR = Path(__file__).parent.parent / "doc" / "cheatsheet"
 
-GOOD_HEADER = re.compile(r'^### \d+-\d+\) .+ \(LC \d+\) — .+')
+ENTRY_NUMBERING = re.compile(r'^### \d+-\d+\)')
+
+# Two spellings of the LC number are in use across doc/cheatsheet, in almost equal
+# numbers (158 parenthesised vs 151 trailing as of Sep 2026):
+#
+#   ### 2-1) Validate Binary Search Tree (LC 98) — DFS with Bounds
+#   ### 2-1) Compare Version Number — LC 165
+#
+# Both state the number exactly once, which is the rule CLAUDE.md actually sets.
+# Matching only the first spelling made this script report `missing-lc-number`
+# against 151 headings that do carry one — the false positives buried the real
+# findings underneath them.
+# A heading may also cite several problems at once — "(LC 116 / 117)",
+# "(LC 162, LC 852)" — which is still a stated LC number, not a missing one.
+LC_NUMBER = re.compile(
+    r'\(LC \d+(?:\s*[/,]\s*(?:LC )?\d+)*\)'   # (LC 98) / (LC 116 / 117) / (LC 162, LC 852)
+    r'|[—-]\s*LC \d+(?:\s*[/,]\s*(?:LC )?\d+)*\b'  # — LC 165 / — LC 116 / 117
+)
+
 # Template/comparison entries don't need an LC number
 TEMPLATE_KEYWORDS = {"template", "comparison", " vs ", "custom", "theoretical"}
 SECTION_HEADER = re.compile(r'^### (.+)')
@@ -98,13 +121,16 @@ def classify_entry(entry):
     header_lower = header.lower()
     if any(kw in header_lower for kw in TEMPLATE_KEYWORDS):
         return issues  # template/comparison entries are fine without LC number
-    if not GOOD_HEADER.match(header):
-        if not re.match(r'### \d+-\d+\)', header):
-            issues.append("bad-numbering")
-        if not re.search(r'\(LC \d+\)', header):
-            issues.append("missing-lc-number")
-        if not re.search(r' — .+', header):
-            issues.append("missing-description")
+    if not ENTRY_NUMBERING.match(header):
+        issues.append("bad-numbering")
+    if not LC_NUMBER.search(header):
+        issues.append("missing-lc-number")
+    # The description is whatever follows the em dash once the LC number is out of
+    # the way. Without removing it first, "Compare Version Number — LC 165" looks
+    # like it has a description ("LC 165") when the em dash is the number's own
+    # separator.
+    if not re.search(r' — .+', LC_NUMBER.sub('', header)):
+        issues.append("missing-description")
 
     # 2. Check blockquote
     if entry["blockquote"] is None:
