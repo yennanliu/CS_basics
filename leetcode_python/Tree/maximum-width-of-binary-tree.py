@@ -47,6 +47,61 @@ The number of nodes in the tree is in the range [1, 3000].
 
 
 # V0
+# IDEA: BFS + layer, idx (GPT)
+# https://yennj12.js.org/CS_basics/cheatsheets/binary_tree.html#complete-tree-to-array-representation
+"""
+CORE:
+
+1. for parent idx = i,
+    -> left sub tree idx = i * 2
+    -> right sub tree idx = i * 2 + 1
+
+
+2. we use layer BFS
+"""
+from collections import deque
+
+
+class Solution(object):
+    def widthOfBinaryTree(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: int
+        """
+        if not root:
+            return 0
+
+        # (node, index)
+        q = deque([(root, 0)])
+
+        max_width = 0
+
+        while q:
+            size = len(q)
+
+            # Index of the first node in this level
+            min_idx = q[0][1]
+
+            for _ in range(size):
+                node, idx = q.popleft()
+
+                # Add children using complete-tree indexing
+                if node.left:
+                    q.append((node.left, idx * 2))
+
+                if node.right:
+                    q.append((node.right, idx * 2 + 1))
+
+            # Last index - first index + 1
+            max_idx = idx
+            width = max_idx - min_idx + 1
+
+            max_width = max(max_width, width)
+
+        return max_width
+
+
+# V0-0-1
 # IDEA: BST + DFS  + layer, idx (GPT)
 # https://yennj12.js.org/CS_basics/cheatsheets/binary_tree.html#complete-tree-to-array-representation
 """
