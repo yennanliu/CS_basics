@@ -1,4 +1,4 @@
-20260902: 4026(to note),449(todo),394(todo),907(again!!),34(todo),227(again, with univeral algo),104(ok),39(again*).79(again*),212(todo),211(again*) | 437(again!!), 538(ok*), 662(todo), 1137(todo), 639(todo), 279(todo, Unbounded 0/1 Knapsack)
+20260902: 4026(to note),449(todo),394(todo),907(again!!),34(todo),227(again, with univeral algo),104(ok),39(again*).79(again*),212(todo),211(again*) | 437(again!!), 538(ok*), 662(todo), 1137(todo), 639(todo), 279(todo, Unbounded 0/1 Knapsack), 276 (2 states DP)
 
 
 20260901: 102(ok), 317(todo), 505(again*), 675(todo), 742(again*), tree_get_dist_x_y(bfs, again), 1530(again*), 114(again**), 310(again**), 298(ok*), 549(again*)

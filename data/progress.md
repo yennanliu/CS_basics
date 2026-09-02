@@ -38,12 +38,20 @@
 	- review all `cheatsheets`
 
 
+- dp_string.md
+- dp_bitmask.md
+- dp_digit.md
+- knapsack_01_zh.md
+- dp_monotonic_stack.md
+- dp_pattern.md
+- recursion_to_dp.md
+- kadane_algorithm.md
+
+
+
 - time_space_complexity.md
 
 - binary tree.md
-
-- dp_examples.md
-	- `2-2) Maximum Product Subarray (LC 152) — Track Min/Max Product`
 
 - Difference Array.md
 
@@ -105,6 +113,7 @@
 	- Linked List.md
 		- `1-1-6) 反轉串列中間的 N 個節點（以 start, end 表示區間）（遞迴） — LC 92`
   - dp.md
+  - dp_examples.md
 
 
 - LC weekly
@@ -307,6 +316,10 @@
 				- 44
 				- 10
 				- 97
+			- linear DP
+				 - 343
+			- 2 states DP
+				- 276
 			- Unbounded Knapsack VS Knapsack DP
 		- set
 			- 187
