@@ -448,14 +448,22 @@ python3 script/eval_lc_readiness.py
 
 ## Coaching a coding interview
 
-`.claude/skills/lc-interview-coach/` is the interviewer-side counterpart to the readiness
-script: it reviews a solution against the four FAANG signals (communication, problem solving,
-coding, verification), teaches the pattern from first principles rather than handing over a
-template, dry-runs code as a state table, and names the one line that sets the complexity.
+`.claude/skills/lc-coach/` is the interviewer-side counterpart to the readiness
+script: it scores a solution on the four FAANG signals (communication, problem solving, coding,
+verification) using the **six-point scale a real packet uses** — `SH` / `H` / `LH` / `LNH` /
+`NH` / `SNH`, because `LH` and `LNH` are where nearly every real candidate lands and a
+four-point scale hides exactly that rung. It also writes the debrief packet from the
+interviewer's side of the table, teaches a pattern from first principles rather than handing
+over a template, dry-runs code as a state table, names the one line that sets the complexity,
+and recommends the sibling problems to drill next.
+
+The skill directory name **is** the slash command (`/lc-coach`), so renaming the directory
+renames the command; `check_skills.py` pins the frontmatter `name` to it so the two cannot
+drift.
 
 `SKILL.md` is the whole coach; `references/` holds the rubric anchors, the per-pattern
 invariants, and the in-the-room talk track. It is plain markdown with no dependencies —
-[`INSTALL.md`](.claude/skills/lc-interview-coach/INSTALL.md) covers installing it on Codex,
+[`INSTALL.md`](.claude/skills/lc-coach/INSTALL.md) covers installing it on Codex,
 Gemini and other agents from the same source.
 
 `site/pages/skills.html` is its page on the site — intro, per-agent install, quick start —
@@ -485,6 +493,8 @@ on the copy, which is the only way to prove a skill works with none of this repo
 Full detail in [`doc/utility-scripts.md`](doc/utility-scripts.md).
 
 ```text
-/lc-interview-coach review leetcode_python/Sliding_Window/sliding_window_maximum.py
-/lc-interview-coach mock interview me on LC 239
+/lc-coach review leetcode_python/Sliding_Window/sliding_window_maximum.py
+/lc-coach mock interview me on LC 239
+/lc-coach how would an interviewer have scored that? give me the packet
+/lc-coach what should I drill after LC 239?
 ```

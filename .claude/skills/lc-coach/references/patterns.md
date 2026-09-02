@@ -17,7 +17,8 @@ lose it under pressure.
 | **Sliding window, variable** | "longest / shortest subarray such that…" | the window is always valid after the inner `while` | O(n) / O(k) | shrinking with `if` instead of `while` |
 | **Prefix sum** | repeated range sums, "subarrays summing to k" | `pre[i]` = sum of the first `i` elements | O(n) / O(n) | off-by-one between `pre[i]` and `pre[i+1]`; forgetting the seed `{0: 1}` |
 | **Interval merge** | overlapping ranges | sort by start; the last kept interval is the only one that can extend | O(n log n) / O(n) | treating touching intervals (`[1,2],[2,3]`) inconsistently |
-| **Cyclic sort / index-as-hash** | values are `1..n`, "find the missing one" | after the swap loop, `nums[i] == i+1` where possible | O(n) / O(1) | `if` instead of `while` around the swap |
+| **Cyclic sort / index-as-hash**, 1-based | values are `1..n` — "first missing positive", "find the duplicate" | after the swap loop, `nums[i] == i+1` where possible | O(n) / O(1) | `if` instead of `while` around the swap |
+| **Cyclic sort / index-as-hash**, 0-based | values are `0..n` with one absent — "missing number" | after the swap loop, `nums[i] == i` where possible | O(n) / O(1) | carrying the 1-based `i+1` placement over to a 0-based problem |
 
 ## Search
 

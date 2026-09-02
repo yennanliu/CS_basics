@@ -6,102 +6,220 @@
   <meta name="theme-color" content="#000000">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <title>LC Interview Coach — CS_basics</title>
-  <meta name="description" content="An agent skill that reviews your LeetCode solution the way a FAANG interviewer scores it: a hire verdict, the failing input, the line that sets the complexity, and one drill. Installs on Claude Code, Codex, Gemini and anything else that takes a system prompt.">
+  <title>LC Coach — CS_basics</title>
+  <meta name="description" content="An agent skill that sits on the interviewer's side of the table: a six-point verdict (SH/H/LH/LNH/NH/SNH), the debrief packet as it would actually be filed, the failing input, the line that sets your complexity, and the sibling problems to drill next.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
   <link rel="stylesheet" href="nav.css">
   <link rel="stylesheet" href="lc-page.css">
   <!-- Blocking on purpose: nav.js restores the stored theme before first paint. -->
   <script src="nav.js"></script>
   <style>
+    /* ── Page-local tokens ────────────────────────────────────────────────
+       The palette itself (--bg/--text/--border/--surface, light and dark)
+       comes from lc-page.css. Only things this page alone needs live here. */
+    :root {
+      --mono: 'SF Mono','JetBrains Mono','IBM Plex Mono',ui-monospace,'Menlo',monospace;
+      --grid-line: rgba(128,128,128,0.10);
+      --tint: rgba(128,128,128,0.06);
+      --step: 0.35s;
+    }
+
     * { box-sizing: border-box; }
-    /* Palette and footer: lc-page.css. Page-specific tokens only below. */
     body {
-      margin: 0; padding: 0;
-      font-family: 'SF Mono','JetBrains Mono','IBM Plex Mono',ui-monospace,'Menlo',monospace;
+      margin: 0; padding: 0; font-family: var(--mono);
       background: var(--bg); color: var(--text);
-      transition: background 0.2s, color 0.2s; font-size: 13px;
-      line-height: 1.65;
+      transition: background 0.2s, color 0.2s;
+      font-size: 13px; line-height: 1.65;
     }
     a { color: var(--text); }
+    ::selection { background: var(--text); color: var(--bg); }
 
-    .container { max-width: 900px; margin: 0 auto; padding: 0 1.5rem; }
+    .container { max-width: 940px; margin: 0 auto; padding: 0 1.5rem; }
 
-    /* ── Hero ── */
-    .hero { padding: 3.5rem 0 2.5rem; border-bottom: 1px solid var(--border); }
-    .kicker {
-      font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--text-light); margin: 0 0 0.9rem;
+    /* Sections fade up as they arrive. Everything is visible by default, so a
+       page with JS off (or reduced motion) simply shows the finished state. */
+    .reveal { opacity: 1; transform: none; }
+    .js .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .js .reveal.in { opacity: 1; transform: none; }
+
+    /* ── Hero ─────────────────────────────────────────────────────────── */
+    .hero {
+      position: relative; overflow: hidden;
+      border-bottom: 1px solid var(--border);
+      padding: 4rem 0 3rem;
     }
-    .hero h1 { margin: 0 0 0.75rem; font-size: 2.1rem; line-height: 1.15; letter-spacing: -0.02em; }
-    .hero .lede { color: var(--text-light); font-size: 0.95rem; max-width: 62ch; margin: 0 0 1.6rem; }
-    .hero-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    /* A faint engineering grid. Purely decorative, so it is aria-hidden and
+       drawn in a pseudo-element rather than as an element in the flow. */
+    .hero::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+      background-size: 28px 28px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 30%, transparent 75%);
+      -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 30%, transparent 75%);
+    }
+    .hero > * { position: relative; }
+
+    .kicker {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--text-light); margin: 0 0 1.1rem;
+      border: 1px solid var(--border); padding: 0.25rem 0.7rem; border-radius: 100px;
+    }
+    .dot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--text);
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
+
+    .hero h1 {
+      margin: 0 0 0.9rem; font-size: clamp(2.1rem, 6.5vw, 3.4rem);
+      line-height: 1.05; letter-spacing: -0.035em; font-weight: 700;
+    }
+    .hero h1 .thin { color: var(--text-light); font-weight: 400; }
+    .lede { color: var(--text-light); font-size: 0.98rem; max-width: 60ch; margin: 0 0 1.8rem; }
+
+    .hero-actions { display: flex; gap: 0.7rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
     .btn {
-      display: inline-block; padding: 0.55rem 1.1rem; font-size: 0.85rem;
+      display: inline-block; padding: 0.6rem 1.2rem; font-size: 0.85rem;
       text-decoration: none; border: 1px solid var(--border);
       color: var(--text); background: var(--surface); font-family: inherit;
+      transition: border-color 0.15s, transform 0.15s;
     }
-    .btn:hover { border-color: var(--text); }
+    .btn:hover { border-color: var(--text); transform: translateY(-1px); }
     .btn.primary { background: var(--text); color: var(--bg); border-color: var(--text); }
 
-    /* ── Sections ── */
-    section { padding: 2.75rem 0; border-bottom: 1px solid var(--border); }
-    section:last-of-type { border-bottom: none; }
-    h2 { font-size: 1.15rem; margin: 0 0 0.4rem; letter-spacing: -0.01em; }
-    .sub { color: var(--text-light); margin: 0 0 1.6rem; max-width: 70ch; }
-    h3 { font-size: 0.9rem; margin: 1.8rem 0 0.5rem; }
+    /* ── Terminal ─────────────────────────────────────────────────────── */
+    .term {
+      border: 1px solid var(--border); background: var(--surface);
+      font-size: 0.76rem; line-height: 1.62;
+    }
+    .term-bar {
+      display: flex; align-items: center; gap: 0.45rem;
+      padding: 0.5rem 0.8rem; border-bottom: 1px solid var(--border);
+      color: var(--text-light); font-size: 0.68rem; letter-spacing: 0.05em;
+    }
+    .term-bar i { width: 8px; height: 8px; border-radius: 50%; border: 1px solid var(--text-light); display: block; }
+    .term-bar span { margin-left: auto; }
+    .term pre {
+      margin: 0; padding: 1rem; overflow-x: auto; white-space: pre; font-family: inherit;
+      min-height: 15.5rem;
+    }
+    .caret {
+      display: inline-block; width: 0.55em; height: 1em; background: var(--text);
+      vertical-align: -0.15em; animation: blink 1.05s step-end infinite;
+    }
+    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+    .term b { font-weight: 700; }
+    .term .dim { color: var(--text-light); }
 
-    /* ── Tables ── */
+    /* ── Sections ─────────────────────────────────────────────────────── */
+    section { padding: 3.25rem 0; border-bottom: 1px solid var(--border); }
+    section:last-of-type { border-bottom: none; }
+    .eyebrow {
+      font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--text-light); margin: 0 0 0.7rem;
+    }
+    h2 { font-size: 1.35rem; margin: 0 0 0.5rem; letter-spacing: -0.02em; }
+    .sub { color: var(--text-light); margin: 0 0 1.9rem; max-width: 72ch; }
+    h3 { font-size: 0.92rem; margin: 2.2rem 0 0.7rem; }
+
+    /* ── The verdict scale ────────────────────────────────────────────── */
+    .scale { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin-bottom: 1.2rem; }
+    .seg {
+      font-family: inherit; cursor: pointer; text-align: center;
+      border: 1px solid var(--border); background: var(--surface); color: var(--text);
+      padding: 0.9rem 0.3rem 0.75rem; transition: transform 0.15s, border-color 0.15s, background 0.15s;
+    }
+    .seg:hover { border-color: var(--text); transform: translateY(-2px); }
+    .seg[aria-checked="true"] { background: var(--text); color: var(--bg); border-color: var(--text); }
+    .seg .code { display: block; font-size: 1.05rem; font-weight: 700; letter-spacing: -0.02em; }
+    .seg .bar { display: block; height: 3px; margin: 0.55rem 0.35rem 0; background: var(--text); }
+    .seg[aria-checked="true"] .bar { background: var(--bg); }
+    /* Positive rungs read solid, negative rungs read hatched — the site is
+       monochrome, so weight and texture carry what colour would elsewhere. */
+    .seg[data-tone="neg"] .bar {
+      background: repeating-linear-gradient(90deg, var(--text) 0 3px, transparent 3px 6px);
+    }
+    .seg[data-tone="neg"][aria-checked="true"] .bar {
+      background: repeating-linear-gradient(90deg, var(--bg) 0 3px, transparent 3px 6px);
+    }
+    .seg-1 .bar { opacity: 1; }    .seg-2 .bar { opacity: 0.78; }
+    .seg-3 .bar { opacity: 0.56; } .seg-4 .bar { opacity: 0.56; }
+    .seg-5 .bar { opacity: 0.78; } .seg-6 .bar { opacity: 1; }
+
+    .verdict-detail {
+      border: 1px solid var(--border); border-left: 3px solid var(--text);
+      background: var(--tint); padding: 1.1rem 1.3rem; min-height: 8.2rem;
+    }
+    .verdict-detail .vd-name { font-size: 1rem; font-weight: 700; margin: 0 0 0.35rem; }
+    .verdict-detail p { margin: 0 0 0.6rem; }
+    .verdict-detail .vd-move { color: var(--text-light); margin: 0; }
+    .verdict-detail .vd-move b { color: var(--text); font-weight: 700; }
+
+    /* ── Mode grid ────────────────────────────────────────────────────── */
+    .modes { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1px;
+             background: var(--border); border: 1px solid var(--border); }
+    .mode { background: var(--bg); padding: 1.15rem 1.25rem; transition: background 0.15s; }
+    .mode:hover { background: var(--surface); }
+    .mode .glyph { font-size: 1.1rem; display: block; margin-bottom: 0.5rem; color: var(--text-light); }
+    .mode b { display: block; font-size: 0.95rem; margin-bottom: 0.3rem; }
+    .mode .ask { color: var(--text-light); font-size: 0.78rem; font-style: italic; margin-bottom: 0.45rem; }
+    .mode p { margin: 0; font-size: 0.82rem; color: var(--text-light); }
+    .mode.new { position: relative; }
+    .mode.new::after {
+      content: 'NEW'; position: absolute; top: 1.15rem; right: 1.25rem;
+      font-size: 0.58rem; letter-spacing: 0.12em; border: 1px solid var(--text);
+      padding: 0.1rem 0.35rem; font-weight: 700;
+    }
+
+    /* ── Ladder ───────────────────────────────────────────────────────── */
+    .ladder { list-style: none; margin: 0; padding: 0; counter-reset: rung; }
+    .ladder li {
+      display: grid; grid-template-columns: 3.1rem 1fr; gap: 1rem;
+      padding: 0.75rem 0; border-bottom: 1px solid var(--border); align-items: baseline;
+    }
+    .ladder li:last-child { border-bottom: none; }
+    .ladder .rung { font-weight: 700; color: var(--text-light); letter-spacing: 0.02em; }
+    .ladder li:last-child .rung { color: var(--text); }
+    .ladder q { font-style: italic; color: var(--text-light); }
+    .ladder .cost { display: block; font-size: 0.76rem; color: var(--text-light); margin-top: 0.15rem; }
+
+    /* ── Tables ───────────────────────────────────────────────────────── */
     .table-wrap { overflow-x: auto; border: 1px solid var(--border); }
     table { border-collapse: collapse; width: 100%; min-width: 520px; font-size: 0.82rem; }
     th, td { text-align: left; padding: 0.6rem 0.9rem; border-bottom: 1px solid var(--border); vertical-align: top; }
-    th {
-      font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em;
-      color: var(--text-light); background: var(--surface); font-weight: 600;
-    }
+    th { font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.09em;
+         color: var(--text-light); background: var(--surface); font-weight: 600; }
     tbody tr:last-child td { border-bottom: none; }
-    td strong { font-weight: 700; }
-    td code, p code, li code {
-      background: var(--surface); border: 1px solid var(--border);
-      padding: 0.05rem 0.3rem; font-size: 0.92em; font-family: inherit;
-    }
+    code { background: var(--surface); border: 1px solid var(--border);
+           padding: 0.05rem 0.3rem; font-size: 0.92em; font-family: inherit; }
 
-    /* ── Ladder ── */
-    ol.ladder { margin: 0; padding-left: 1.4rem; }
-    ol.ladder li { margin-bottom: 0.5rem; }
-    ol.ladder li::marker { color: var(--text-light); }
-
-    /* ── Code blocks ── */
-    .code {
-      position: relative; background: var(--surface); border: 1px solid var(--border);
-      margin: 0.75rem 0;
-    }
-    .code pre {
-      margin: 0; padding: 0.9rem 1rem; overflow-x: auto;
-      font-size: 0.78rem; line-height: 1.6; font-family: inherit;
-    }
-    .code code { font-family: inherit; }
+    /* ── Code blocks ──────────────────────────────────────────────────── */
+    .code-block { position: relative; background: var(--surface); border: 1px solid var(--border); margin: 0.75rem 0; }
+    .code-block pre { margin: 0; padding: 0.95rem 1rem; overflow-x: auto; font-size: 0.77rem; line-height: 1.6; font-family: inherit; }
+    .code-block code { background: none; border: none; padding: 0; }
     .copy {
-      position: absolute; top: 0.4rem; right: 0.4rem;
-      background: var(--bg); color: var(--text-light); border: 1px solid var(--border);
-      font-family: inherit; font-size: 0.68rem; padding: 0.2rem 0.5rem; cursor: pointer;
+      position: absolute; top: 0.4rem; right: 0.4rem; background: var(--bg); color: var(--text-light);
+      border: 1px solid var(--border); font-family: inherit; font-size: 0.66rem;
+      padding: 0.2rem 0.5rem; cursor: pointer;
     }
     .copy:hover { color: var(--text); border-color: var(--text); }
 
-    /* ── Install tabs ── */
-    .tabs { display: flex; gap: 0; flex-wrap: wrap; border-bottom: 1px solid var(--border); margin-bottom: 1.1rem; }
+    /* ── Tabs (installs, and the sample outputs) ──────────────────────── */
+    .tabs { display: flex; flex-wrap: wrap; border-bottom: 1px solid var(--border); margin-bottom: 1.1rem; }
     .tab {
-      background: none; border: none; border-bottom: 2px solid transparent;
-      color: var(--text-light); font-family: inherit; font-size: 0.82rem;
-      padding: 0.55rem 0.9rem; cursor: pointer; margin-bottom: -1px;
+      background: none; border: none; border-bottom: 2px solid transparent; color: var(--text-light);
+      font-family: inherit; font-size: 0.82rem; padding: 0.55rem 0.9rem; cursor: pointer; margin-bottom: -1px;
     }
     .tab:hover { color: var(--text); }
     .tab[aria-selected="true"] { color: var(--text); border-bottom-color: var(--text); }
     .panel p:first-child { margin-top: 0; }
 
-    /* ── File list ── */
+    /* ── File list ────────────────────────────────────────────────────── */
     ul.files { list-style: none; margin: 0; padding: 0; }
-    ul.files li { border-bottom: 1px solid var(--border); padding: 0.7rem 0; }
+    ul.files li { border-bottom: 1px solid var(--border); padding: 0.75rem 0; }
     ul.files li:last-child { border-bottom: none; }
     ul.files a { font-weight: 700; text-decoration: none; border-bottom: 1px solid var(--border); }
     ul.files a:hover { border-bottom-color: var(--text); }
@@ -109,9 +227,15 @@
 
     .note { color: var(--text-light); font-size: 0.82rem; }
 
-    @media (max-width: 600px) {
-      .hero { padding-top: 2.25rem; }
-      .hero h1 { font-size: 1.6rem; }
+    @media (max-width: 700px) {
+      .scale { grid-template-columns: repeat(3, 1fr); }
+      .hero { padding-top: 2.5rem; }
+      .term pre { min-height: 18rem; }
+    }
+    /* nav.css carries the site-wide opt-out; these are this page's own. */
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+      .js .reveal { opacity: 1; transform: none; }
     }
   </style>
 </head>
@@ -122,208 +246,163 @@
 
 <main id="main">
 
-  <div class="container">
-    <div class="hero">
-      <p class="kicker">Agent skill</p>
-      <h1>LC Interview Coach</h1>
+  <!-- ── Hero ──────────────────────────────────────────────────────────── -->
+  <div class="hero">
+    <div class="container">
+      <p class="kicker"><span class="dot" aria-hidden="true"></span> Agent skill</p>
+      <h1>LC Coach<br><span class="thin">the other side of the table</span></h1>
       <p class="lede">
-        A FAANG interviewer that also coaches. Show it a solution and it gives back a hire
-        verdict, the input that breaks the code, the single line that sets the complexity, a
-        score on the four signals a real round grades — and exactly one drill. It teaches the
-        pattern by derivation rather than handing over a template, dry-runs code as a state
-        table, and rehearses what to say out loud in the room.
+        Every practice tool grades your answer. This one grades <em>you</em> — the way the
+        person across the table actually does it: a six-point verdict, the packet they would
+        file, the input that breaks your code, the line that sets your complexity, and the
+        one change that moves you a rung.
       </p>
       <div class="hero-actions">
         <a class="btn primary" href="#install">Install it</a>
-        <a class="btn" href="#quickstart">Quick start</a>
-        <a class="btn" href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-interview-coach/SKILL.md">Read the source</a>
+        <a class="btn" href="#verdict">See the scale</a>
+        <a class="btn" href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-coach/SKILL.md">Read the source</a>
       </div>
+
+      <div class="term">
+        <div class="term-bar">
+          <i aria-hidden="true"></i><i aria-hidden="true"></i><i aria-hidden="true"></i>
+          <span>/lc-coach review sliding_window_maximum.py</span>
+        </div>
+        <pre id="tape" aria-live="off">VERDICT — LH. O(n) via a monotonic deque, matching optimal.
+          Right structure, but I had to ask for the trace.
+
+CORRECTNESS
+  ✅ empty input, k = 1, k = n, all-equal
+  ❌ k &gt; len(nums) — fails on [1], k=2 → IndexError, want []
+
+BOTTLENECK
+  none — each index is pushed once and popped once
+
+SIGNALS
+  Communication   H    approach stated before coding
+  Problem solving LH   found the deque after L3
+  Coding          H    clean; one boundary bug, self-caught
+  Verification    LNH  traced only when asked
+
+DRILL
+  Trace before I ask. That single habit is the rung.</pre>
+      </div>
+      <p class="note" style="margin-top:0.6rem">A real review, in the shape it always comes back in: verdict first, evidence second, one drill last.</p>
     </div>
   </div>
 
   <div class="container">
 
-    <!-- ── What it does ─────────────────────────────────────────────────── -->
-    <section id="what">
-      <h2>What it grades</h2>
+    <!-- ── The verdict scale ───────────────────────────────────────────── -->
+    <section id="verdict" class="reveal">
+      <p class="eyebrow">What you actually get scored on</p>
+      <h2>Six rungs, not two</h2>
       <p class="sub">
-        Every FAANG coding round scores the same four signals. The coach uses them verbatim,
-        with evidence rather than adjectives, so you learn to self-score before the real one.
-        One signal at <em>No Hire</em> caps the whole round at <em>Lean Hire</em> — it says so
-        when that happens.
+        Real packets are not “hire / no hire”. They are one of six calls, and almost every real
+        candidate lands on one of the two borderline rungs — which is exactly the distinction
+        that practice feedback throws away. Pick a rung to see what it means, and what moves it.
+        The same six codes score each individual signal too, against its own anchors — your
+        Coding score does not drop because the follow-up went badly.
       </p>
+
+      <div class="scale" role="radiogroup" aria-label="Verdict levels">
+        <button class="seg seg-1" role="radio" data-tone="pos" aria-checked="false" data-code="SH"
+                data-name="Strong Hire"
+                data-body="I would spend capital arguing for this person in the room. Optimal reached unaided, self-verified before I asked, time left over, and the follow-up variant handled without restarting."
+                data-move="Nothing. This is the ceiling — the follow-up question is what separates it from a plain Hire.">
+          <span class="code">SH</span><span class="bar" aria-hidden="true"></span>
+        </button>
+        <button class="seg seg-2" role="radio" data-tone="pos" aria-checked="false" data-code="H"
+                data-name="Hire"
+                data-body="A clear yes with nothing to argue about. Reached the optimal approach, found their own bug while tracing, stated complexity with the variables defined."
+                data-move="Handle the follow-up variant without going back to first principles. That is the whole gap to SH.">
+          <span class="code">H</span><span class="bar" aria-hidden="true"></span>
+        </button>
+        <button class="seg seg-3" role="radio" data-tone="pos" aria-checked="true" data-code="LH"
+                data-name="Lean Hire — borderline positive"
+                data-body="Yes, but the packet needs a second positive to survive committee. Typically: got to optimal after I pointed at the repeated work (L3), or got there alone but never verified until asked."
+                data-move="Find the bottleneck before the hint arrives, or trace unprompted. Either one alone usually carries it to H.">
+          <span class="code">LH</span><span class="bar" aria-hidden="true"></span>
+        </button>
+        <button class="seg seg-4" role="radio" data-tone="neg" aria-checked="false" data-code="LNH"
+                data-name="Lean No Hire — borderline negative"
+                data-body="No, but a strong second packet could talk me out of it. Working but sub-optimal with no route to better when asked, or optimal only after I handed over the invariant (L4)."
+                data-move="Say the brute force and its cost out loud in the first two minutes. It is the safety net, and it is what makes the optimisation legible as your idea.">
+          <span class="code">LNH</span><span class="bar" aria-hidden="true"></span>
+        </button>
+        <button class="seg seg-5" role="radio" data-tone="neg" aria-checked="false" data-code="NH"
+                data-name="No Hire"
+                data-body="No working solution, or one the candidate could not explain. Also where a memorised template lands when the follow-up shows it was never understood."
+                data-move="Ship something correct. A traced O(n²) with a stated plan to improve beats an unfinished optimal every time.">
+          <span class="code">NH</span><span class="bar" aria-hidden="true"></span>
+        </button>
+        <button class="seg seg-6" role="radio" data-tone="neg" aria-checked="false" data-code="SNH"
+                data-name="Strong No Hire"
+                data-body="No, and I would flag it if committee leaned otherwise. Fundamentals absent, or a conduct signal: arguing with a failing test case instead of running it, refusing hints, hiding having seen the problem before."
+                data-move="Run the counterexample. Say “I've seen this one” when you have. Both cost nothing and both are read as trust.">
+          <span class="code">SNH</span><span class="bar" aria-hidden="true"></span>
+        </button>
+      </div>
+
+      <div class="verdict-detail" id="vd" aria-live="polite">
+        <p class="vd-name"></p>
+        <p class="vd-body"></p>
+        <p class="vd-move"></p>
+      </div>
+
+      <h3>Two rules that surprise people</h3>
       <div class="table-wrap">
         <table>
-          <thead>
-            <tr><th>Signal</th><th>Scored on</th><th>Fails when</th></tr>
-          </thead>
+          <thead><tr><th>Rule</th><th>Why</th></tr></thead>
           <tbody>
-            <tr>
-              <td><strong>Communication</strong></td>
-              <td>Clarifying questions, stating the approach before coding, narrating while coding</td>
-              <td>Silent coding; typing starts at second 30</td>
-            </tr>
-            <tr>
-              <td><strong>Problem solving</strong></td>
-              <td>Brute force → bottleneck → optimal, and why that structure fits</td>
-              <td>Pattern-matches to a memorised template that does not fit</td>
-            </tr>
-            <tr>
-              <td><strong>Coding</strong></td>
-              <td>Compiles in the head, named variables, right at the boundaries</td>
-              <td>Off-by-one, mutation during iteration, unhandled empty input</td>
-            </tr>
-            <tr>
-              <td><strong>Verification</strong></td>
-              <td>Self-driven dry run, edge cases named before being asked, complexity stated</td>
-              <td>“It works”, with no trace; complexity guessed</td>
-            </tr>
+            <tr><td><b>A round is not an average</b></td><td>One signal at NH caps the round at LNH. Anything at SNH is SNH for the round, however well the rest went.</td></tr>
+            <tr><td><b>Hints cost a rung</b></td><td>Reaching optimal alone is H or better. After L3 it is at best LH; after L4 the problem-solving signal is LNH no matter how clean the code that follows.</td></tr>
           </tbody>
         </table>
       </div>
-
-      <h3>Six modes, one loop</h3>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th>Ask</th><th>Mode</th><th>You get</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>“review this”, “would this pass?”</td><td><strong>Review</strong></td><td>Verdict, correctness, complexity, bottleneck, four signals, one drill</td></tr>
-            <tr><td>“why is this slow?”</td><td><strong>Bottleneck</strong></td><td>The dominant cost, and the structure that removes the repeated work</td></tr>
-            <tr><td>“walk me through it”</td><td><strong>Dry run</strong></td><td>A state table, one row per iteration, stopping at the row that breaks the invariant</td></tr>
-            <tr><td>“teach me monotonic stacks”</td><td><strong>Teach</strong></td><td>Brute force → what repeats → what structure kills it → invariant → template</td></tr>
-            <tr><td>“mock interview me on LC 239”</td><td><strong>Mock</strong></td><td>35 minutes in character: it asks, it does not tell, then it debriefs</td></tr>
-            <tr><td>“clean this up”</td><td><strong>Polish</strong></td><td>An interview-grade rewrite, plus what changed and why</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <h3>Why it does not just hand you the answer</h3>
-      <p class="sub">
-        A solution you did not derive shows up in the real loop as a “No Hire — memorised”. So
-        hints climb a ladder, one rung at a time, and stop the moment you move:
-      </p>
-      <ol class="ladder">
-        <li><strong>L1</strong> — a question about your own code: “what does <code>lo</code> hold when the loop exits?”</li>
-        <li><strong>L2</strong> — a failing input, no diagnosis: “try <code>[3,3], target = 6</code>.”</li>
-        <li><strong>L3</strong> — the category of the fix: “you recompute a max you have already seen.”</li>
-        <li><strong>L4</strong> — the invariant, or the template’s name.</li>
-        <li><strong>L5</strong> — code, and only after L4 was tried or you asked outright.</li>
-      </ol>
     </section>
 
-    <!-- ── Install ──────────────────────────────────────────────────────── -->
-    <section id="install">
-      <h2>Install</h2>
-      <p class="sub">
-        Four plain markdown files, no dependencies, no network calls — so the same source runs
-        on any agent that takes a system prompt. Pick yours.
-      </p>
-
-      <div class="tabs" role="tablist" aria-label="Install target">
-        <button class="tab" role="tab" id="tab-cc"     aria-controls="p-cc"     aria-selected="true">Claude Code</button>
-        <button class="tab" role="tab" id="tab-claude" aria-controls="p-claude" aria-selected="false">Claude app</button>
-        <button class="tab" role="tab" id="tab-codex"  aria-controls="p-codex"  aria-selected="false">Codex</button>
-        <button class="tab" role="tab" id="tab-gemini" aria-controls="p-gemini" aria-selected="false">Gemini</button>
-        <button class="tab" role="tab" id="tab-other"  aria-controls="p-other"  aria-selected="false">Anything else</button>
-      </div>
-
-      <div class="panel" role="tabpanel" id="p-cc" aria-labelledby="tab-cc">
-        <p>Drop the skill directory into your user-level skills folder and it loads in every repo:</p>
-        <div class="code">
-          <button class="copy" type="button">copy</button>
-          <pre><code>git clone --depth 1 https://github.com/yennanliu/CS_basics.git /tmp/cs_basics
-mkdir -p ~/.claude/skills
-cp -r /tmp/cs_basics/.claude/skills/lc-interview-coach ~/.claude/skills/</code></pre>
-        </div>
-        <p class="note">
-          Already installed inside this repo at <code>.claude/skills/lc-interview-coach/</code>,
-          so a clone of CS_basics needs no setup at all. Claude Code matches it on the
-          description, or you can call it by name.
-        </p>
-      </div>
-
-      <div class="panel" role="tabpanel" id="p-claude" aria-labelledby="tab-claude" hidden>
-        <p>Zip the directory, then <em>Customize → Skills → + → + Create skill → Upload a skill</em>:</p>
-        <div class="code">
-          <button class="copy" type="button">copy</button>
-          <pre><code>cd .claude/skills && zip -r lc-interview-coach.zip lc-interview-coach</code></pre>
-        </div>
-        <p class="note">
-          Leave the YAML frontmatter in <code>SKILL.md</code> intact.
-          <code>description</code> is what Claude matches your request against when deciding to
-          load the skill on its own; <code>name</code> is the display label, and the directory
-          name is what supplies the slash command.
-        </p>
-      </div>
-
-      <div class="panel" role="tabpanel" id="p-codex" aria-labelledby="tab-codex" hidden>
-        <p>Codex reads <code>AGENTS.md</code> at the repo root automatically. Point it at the skill:</p>
-        <div class="code">
-          <button class="copy" type="button">copy</button>
-          <pre><code>## Interview coaching
-
-When asked to review a solution, run a mock interview, teach a pattern, or
-analyse a bottleneck, follow `.claude/skills/lc-interview-coach/SKILL.md`
-and the files under its `references/`.</code></pre>
-        </div>
-        <p class="note">A pointer, not a copy — one source of truth means a fix reaches every agent at once.</p>
-      </div>
-
-      <div class="panel" role="tabpanel" id="p-gemini" aria-labelledby="tab-gemini" hidden>
-        <p>Same shape in <code>GEMINI.md</code>, or point at it for a single session:</p>
-        <div class="code">
-          <button class="copy" type="button">copy</button>
-          <pre><code>gemini -p "Act as the coach defined in \
-.claude/skills/lc-interview-coach/SKILL.md. Review @solution.py"</code></pre>
-        </div>
-      </div>
-
-      <div class="panel" role="tabpanel" id="p-other" aria-labelledby="tab-other" hidden>
-        <p>
-          Paste <code>SKILL.md</code> in as the system prompt. It is self-contained; the
-          <code>references/</code> files are optional depth, and the coach works without them
-          with shallower pattern recall. For Cursor or Windsurf, put the Codex pointer above
-          into a rule file (<code>.cursor/rules/interview-coach.mdc</code> or the editor’s
-          equivalent).
-        </p>
-        <div class="code">
-          <button class="copy" type="button">copy</button>
-          <pre><code>curl -sL https://raw.githubusercontent.com/yennanliu/CS_basics/master/.claude/skills/lc-interview-coach/SKILL.md</code></pre>
-        </div>
+    <!-- ── Modes ───────────────────────────────────────────────────────── -->
+    <section id="modes" class="reveal">
+      <p class="eyebrow">Eight modes, one loop</p>
+      <h2>Ask in your own words</h2>
+      <p class="sub">There is no command syntax to learn. The coach picks the mode from what you asked, says which one it picked, and works.</p>
+      <div class="modes">
+        <div class="mode"><span class="glyph" aria-hidden="true">▣</span><b>Review</b><p class="ask">“would this pass?”</p><p>Verdict, the failing input, complexity vs optimal, the bottleneck line, four signals, one drill.</p></div>
+        <div class="mode"><span class="glyph" aria-hidden="true">◷</span><b>Bottleneck</b><p class="ask">“why is this slow?”</p><p>The single line that sets the bound, and the structure that removes the repeated work.</p></div>
+        <div class="mode"><span class="glyph" aria-hidden="true">⋮⋮</span><b>Dry run</b><p class="ask">“walk me through it”</p><p>A state table, one row per iteration, stopping at the row that breaks the invariant.</p></div>
+        <div class="mode"><span class="glyph" aria-hidden="true">△</span><b>Teach</b><p class="ask">“I don't get monotonic stacks”</p><p>Brute force → what repeats → what structure kills it → the invariant → only then the template.</p></div>
+        <div class="mode"><span class="glyph" aria-hidden="true">◔</span><b>Mock</b><p class="ask">“interview me on LC 239”</p><p>35 minutes in character. It asks, then goes quiet — because silence is data.</p></div>
+        <div class="mode"><span class="glyph" aria-hidden="true">✂</span><b>Polish</b><p class="ask">“clean this up”</p><p>An interview-grade rewrite — a different bar from production — plus what changed and why.</p></div>
+        <div class="mode new"><span class="glyph" aria-hidden="true">⑃</span><b>Siblings</b><p class="ask">“what do I do after LC 239?”</p><p>A ladder of related problems grouped by what the difference teaches — including the look-alike that isn't one.</p></div>
+        <div class="mode new"><span class="glyph" aria-hidden="true">✍</span><b>Debrief</b><p class="ask">“how would an interviewer see this?”</p><p>The packet as it would be filed: timestamped notes, signal by signal, the call, and the one-rung move.</p></div>
       </div>
     </section>
 
-    <!-- ── Quick start ──────────────────────────────────────────────────── -->
-    <section id="quickstart">
-      <h2>Quick start</h2>
-      <p class="sub">Show it code, or ask it to interview you. Both work from a cold start.</p>
-      <div class="code">
-        <button class="copy" type="button">copy</button>
-        <pre><code>/lc-interview-coach review leetcode_python/Sliding_Window/sliding_window_maximum.py
+    <!-- ── Sample output ───────────────────────────────────────────────── -->
+    <section id="output" class="reveal">
+      <p class="eyebrow">Fixed shape, every time</p>
+      <h2>What comes back</h2>
+      <p class="sub">
+        Verdict first, evidence second, exactly one drill last. Any section with nothing to say
+        is dropped rather than padded. Here are the three that matter most.
+      </p>
 
-/lc-interview-coach mock interview me on LC 239, 35 minutes
-
-/lc-interview-coach why is my solution O(n*k)? here is the code: ...
-
-/lc-interview-coach teach me monotonic deques — I keep memorising the template
-
-/lc-interview-coach dry run this on the smallest input that pops the deque</code></pre>
+      <div class="tabs" role="tablist" aria-label="Sample output">
+        <button class="tab" role="tab" id="t-rev" aria-controls="o-rev" aria-selected="true">Review</button>
+        <button class="tab" role="tab" id="t-deb" aria-controls="o-deb" aria-selected="false">Debrief</button>
+        <button class="tab" role="tab" id="t-sib" aria-controls="o-sib" aria-selected="false">Siblings</button>
       </div>
 
-      <h3>What a review looks like</h3>
-      <p class="sub">
-        Fixed shape, every time: verdict first, then evidence, then one thing to do next. Any
-        section with nothing to say is dropped rather than padded.
-      </p>
-      <div class="code">
-        <button class="copy" type="button">copy</button>
-        <pre><code>VERDICT — Lean Hire. O(n*k) vs O(n) optimal. Correct, but the window
-          max is recomputed from scratch every step.
+      <div class="panel" role="tabpanel" id="o-rev" aria-labelledby="t-rev">
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code>VERDICT — LNH. O(n*k) vs O(n) optimal. Correct, but the window max is
+          recomputed from scratch every step and there was no route to
+          better when asked.
 
 CORRECTNESS
-  ❌ k > len(nums) — fails on [1], k=2 → IndexError, want []
+  ❌ k &gt; len(nums) — fails on [1], k=2 → IndexError, want []
 
 COMPLEXITY
   time    O(n*k)  because max(nums[i:i+k]) rescans the whole window
@@ -336,59 +415,231 @@ BOTTLENECK
   window with decreasing values keeps the max at the front.
 
 SIGNALS
-  Communication   Hire      — approach stated before coding
-  Problem solving Lean Hire — brute force reached, bottleneck not named
-  Coding          Hire      — clean, one boundary bug
-  Verification    No Hire   — no trace, complexity given as "about O(n)"
+  Communication   LH   approach stated before coding
+  Problem solving LNH  brute force reached, bottleneck not named (hints: L4)
+  Coding          H    clean, one boundary bug
+  Verification    NH   no trace, complexity given as "about O(n)"
 
 DRILL
-  Redo it with a deque, and before coding write the one-sentence
-  invariant that makes the front the maximum.</code></pre>
+  Redo it with a deque. Before writing a line, state the one-sentence
+  invariant that makes the front of the deque the window maximum.</code></pre>
+        </div>
+      </div>
+
+      <div class="panel" role="tabpanel" id="o-deb" aria-labelledby="t-deb" hidden>
+        <p class="note">Nobody in committee reads your code. They read this.</p>
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code>DEBRIEF — LC 239, 35 min, as I would have filed it
+
+WHAT I WROTE DOWN
+  00:00  asked for n's range before anything else — good, it set the target
+  03:10  stated brute force O(n*k) and said it was too slow. Safety net exists.
+  06:40  went quiet. 4 minutes. I had nothing to write for this stretch.
+  10:30  I asked "what's repeated?" (L3). Got the deque a minute later.
+  22:00  clean code, good names, one off-by-one on the expiry check
+  29:00  I had to ask for the trace. Found their own bug once tracing.
+
+SIGNALS
+  Communication    LH   strong open, then a 4-minute silence I could not score
+  Problem solving  LH   right structure, but L3 was mine, not theirs
+  Coding           H    one boundary bug, clean otherwise
+  Verification     LNH  did not trace until asked; complexity recalled, not derived
+
+VERDICT — LH (Lean Hire)
+  Positive, but it needs a second positive packet to survive committee.
+  The deque is right and the code is clean; what I could not write down
+  is a candidate who found the bottleneck or checked their own work.
+
+WHAT WOULD HAVE MOVED IT ONE RUNG
+  Narrating the 4 quiet minutes. Not solving faster — just saying
+  "two-pointers doesn't fit because the max isn't monotonic, let me try
+  a heap" turns an unscoreable gap into a problem-solving note, and L3
+  would have been theirs instead of mine.</code></pre>
+        </div>
+      </div>
+
+      <div class="panel" role="tabpanel" id="o-sib" aria-labelledby="t-sib" hidden>
+        <p class="note">Grouped by what the difference teaches — never a tag dump.</p>
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code>LC 239  Sliding Window Maximum — monotonic deque, extremum over a moving range
+
+SAME INVARIANT, EASIER            start here if 239 was a struggle
+  LC 496  Next Greater Element I    the stack without the window    [solved here]
+  LC 155  Min Stack                 "remember the extremum", 1-D    [solved here]
+
+ONE TWIST AWAY                    the actual drill
+  LC 862  Shortest Subarray, Sum ≥ K   deque over prefix sums, not values
+  LC 1425 Constrained Subsequence Sum  the deque lives inside a DP recurrence
+
+SAME STORY, DIFFERENT STRUCTURE   know why the deque wins here
+  LC 480  Sliding Window Median        two heaps; a deque can't do order statistics
+
+LOOKS LIKE A SIBLING, ISN'T
+  LC 84   Largest Rectangle           monotonic stack, but nothing ever leaves
+                                      a window — different invariant, don't
+                                      drill them together</code></pre>
+        </div>
       </div>
     </section>
 
-    <!-- ── What's inside ────────────────────────────────────────────────── -->
-    <section id="inside">
-      <h2>What is inside</h2>
+    <!-- ── Hint ladder ─────────────────────────────────────────────────── -->
+    <section id="ladder" class="reveal">
+      <p class="eyebrow">Why it won't just tell you</p>
+      <h2>Five rungs, and code is the last one</h2>
       <p class="sub">
-        <code>SKILL.md</code> is the whole coach. The three reference files are loaded on
-        demand, so the prompt stays small until depth is actually needed.
+        A solution you did not derive shows up in the real loop as “No Hire — memorised”. So
+        hints climb, one rung at a time, and stop the moment you move. The ladder is numbered
+        because the number is what a real interviewer writes down — and what it costs you.
       </p>
+      <ol class="ladder">
+        <li><span class="rung">L1</span><span>A question about your own code — <q>what does <code>lo</code> hold when the loop exits?</q><span class="cost">Costs nothing. Still SH territory.</span></span></li>
+        <li><span class="rung">L2</span><span>A failing input, no diagnosis — <q>try <code>[3,3], target = 6</code>.</q><span class="cost">Ceiling drops to H: the counterexample was mine, the diagnosis yours.</span></span></li>
+        <li><span class="rung">L3</span><span>The category of the fix — <q>you recompute a max you have already seen.</q><span class="cost">Ceiling LH — “got there after I pointed at the recomputation”.</span></span></li>
+        <li><span class="rung">L4</span><span>The invariant, or the template's name.<span class="cost">Ceiling LNH — I named the structure, not you.</span></span></li>
+        <li><span class="rung">L5</span><span>Code — only after L4 was tried, or you asked outright.<span class="cost">In a real round this is NH. Here it is a teaching tool; know the difference.</span></span></li>
+      </ol>
+    </section>
+
+    <!-- ── Install ─────────────────────────────────────────────────────── -->
+    <section id="install" class="reveal">
+      <p class="eyebrow">Four markdown files, no dependencies</p>
+      <h2>Install</h2>
+      <p class="sub">Nothing to build and no network calls, so the same source runs on any agent that takes a system prompt. Pick yours.</p>
+
+      <div class="tabs" role="tablist" aria-label="Install target">
+        <button class="tab" role="tab" id="tab-cc"     aria-controls="p-cc"     aria-selected="true">Claude Code</button>
+        <button class="tab" role="tab" id="tab-claude" aria-controls="p-claude" aria-selected="false">Claude app</button>
+        <button class="tab" role="tab" id="tab-codex"  aria-controls="p-codex"  aria-selected="false">Codex</button>
+        <button class="tab" role="tab" id="tab-gemini" aria-controls="p-gemini" aria-selected="false">Gemini</button>
+        <button class="tab" role="tab" id="tab-other"  aria-controls="p-other"  aria-selected="false">Anything else</button>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-cc" aria-labelledby="tab-cc">
+        <p>Drop the skill directory into your user-level skills folder and it loads in every repo:</p>
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code>git clone --depth 1 https://github.com/yennanliu/CS_basics.git /tmp/cs_basics
+mkdir -p ~/.claude/skills
+cp -r /tmp/cs_basics/.claude/skills/lc-coach ~/.claude/skills/</code></pre>
+        </div>
+        <p class="note">
+          Already installed inside this repo at <code>.claude/skills/lc-coach/</code>, so a clone
+          of CS_basics needs no setup at all. Claude Code matches it on the description, or you
+          can call <code>/lc-coach</code> by name.
+        </p>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-claude" aria-labelledby="tab-claude" hidden>
+        <p>Zip the directory, then <em>Customize → Skills → + → + Create skill → Upload a skill</em>:</p>
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code>cd .claude/skills &amp;&amp; zip -r lc-coach.zip lc-coach</code></pre>
+        </div>
+        <p class="note">
+          Leave the YAML frontmatter in <code>SKILL.md</code> intact. <code>description</code> is
+          what Claude matches your request against when deciding to load the skill on its own;
+          <code>name</code> is the display label, and the directory name is what supplies the
+          slash command.
+        </p>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-codex" aria-labelledby="tab-codex" hidden>
+        <p>Codex reads <code>AGENTS.md</code> at the repo root automatically. Point it at the skill:</p>
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code>## Interview coaching
+
+When asked to review a solution, run a mock interview, teach a pattern,
+suggest what to practise next, or write an interviewer debrief, follow
+`.claude/skills/lc-coach/SKILL.md` and the files under its `references/`.</code></pre>
+        </div>
+        <p class="note">A pointer, not a copy — one source of truth means a fix reaches every agent at once.</p>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-gemini" aria-labelledby="tab-gemini" hidden>
+        <p>Same shape in <code>GEMINI.md</code>, or point at it for a single session:</p>
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code>gemini -p "Act as the coach defined in \
+.claude/skills/lc-coach/SKILL.md. Review @solution.py"</code></pre>
+        </div>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-other" aria-labelledby="tab-other" hidden>
+        <p>
+          Paste <code>SKILL.md</code> in as the system prompt. It is self-contained; the
+          <code>references/</code> files are optional depth, and the coach works without them
+          with shallower pattern recall. For Cursor or Windsurf, put the Codex pointer above into
+          a rule file (<code>.cursor/rules/interview-coach.mdc</code> or the editor's equivalent).
+        </p>
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code>curl -sL https://raw.githubusercontent.com/yennanliu/CS_basics/master/.claude/skills/lc-coach/SKILL.md</code></pre>
+        </div>
+      </div>
+
+      <h3>Then just talk to it</h3>
+      <div class="code-block">
+        <button class="copy" type="button">copy</button>
+<pre><code>/lc-coach review leetcode_python/Sliding_Window/sliding_window_maximum.py
+
+/lc-coach mock interview me on LC 239, 35 minutes
+
+/lc-coach how would an interviewer have scored that? give me the packet
+
+/lc-coach what should I drill after LC 239?
+
+/lc-coach teach me monotonic deques — I keep memorising the template</code></pre>
+      </div>
+    </section>
+
+    <!-- ── What's inside ───────────────────────────────────────────────── -->
+    <section id="inside" class="reveal">
+      <p class="eyebrow">Under the hood</p>
+      <h2>What is inside</h2>
+      <p class="sub"><code>SKILL.md</code> is the whole coach. The three reference files load on demand, so the prompt stays small until depth is actually needed.</p>
       <ul class="files">
         <li>
-          <a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-interview-coach/SKILL.md">SKILL.md</a>
-          <span>The coach — six modes over one review loop, the hint ladder, the output contract, and what it must never do.</span>
+          <a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-coach/SKILL.md">SKILL.md</a>
+          <span>The coach — eight modes over one review loop, the six-point scale, the hint ladder, the siblings and debrief protocols, the output contract, and what it must never do.</span>
         </li>
         <li>
-          <a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-interview-coach/references/rubric.md">references/rubric.md</a>
-          <span>The four signals with level-by-level anchors, how they combine into a round, and a 90-second self-score card to fill in after every practice problem.</span>
+          <a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-coach/references/rubric.md">references/rubric.md</a>
+          <span>Every signal anchored at all six levels, what each hint rung costs, how a packet becomes a committee decision, and a 90-second self-score card.</span>
         </li>
         <li>
-          <a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-interview-coach/references/patterns.md">references/patterns.md</a>
+          <a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-coach/references/patterns.md">references/patterns.md</a>
           <span>Every core pattern as recognition cue, invariant, target complexity and the classic off-by-one — plus the three questions that resolve most mediums when the pattern will not come.</span>
         </li>
         <li>
-          <a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-interview-coach/references/talk-track.md">references/talk-track.md</a>
+          <a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-coach/references/talk-track.md">references/talk-track.md</a>
           <span>The sentences to actually say, phase by phase, and the phrases that cost you the signal.</span>
         </li>
         <li>
-          <a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-interview-coach/INSTALL.md">INSTALL.md</a>
+          <a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-coach/INSTALL.md">INSTALL.md</a>
           <span>The install notes above, kept next to the skill so they travel with it.</span>
         </li>
       </ul>
+      <p class="note" style="margin-top:1.2rem">
+        Every one of these is gated in CI by
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/script/check_skills.py">check_skills.py</a> —
+        frontmatter, orphaned references, and whether the links on this page still resolve.
+      </p>
     </section>
 
-    <!-- ── Where it fits ────────────────────────────────────────────────── -->
-    <section id="fits">
+    <!-- ── Where it fits ───────────────────────────────────────────────── -->
+    <section id="fits" class="reveal">
+      <p class="eyebrow">The rest of the loop</p>
       <h2>Where it fits</h2>
       <p class="sub">
-        The coach is the interviewer side of the loop. The rest of this site is the study side:
-        the <a href="lc-roadmap.html">roadmap</a> says what to learn next and what it needs
-        first, the <a href="cheatsheets.html">cheatsheets</a> hold the templates, the
+        The coach is the interviewer's side. The rest of this site is the study side: the
+        <a href="lc-roadmap.html">roadmap</a> says what to learn next and what it needs first,
+        the <a href="cheatsheets.html">cheatsheets</a> hold the templates, the
         <a href="lc-complexity-quiz.html">complexity quiz</a> drills the analysis, and the
-        <a href="lc-review-plan.html">review plan</a> schedules what keeps coming back. This
-        page is for the part none of those cover — whether the thing you just wrote would
-        actually pass.
+        <a href="lc-review-plan.html">review plan</a> schedules what keeps coming back. This page
+        is for the part none of those cover — whether the thing you just wrote would actually pass.
       </p>
     </section>
 
@@ -410,37 +661,104 @@ DRILL
 (function () {
   'use strict';
 
-  // ── Install tabs ──────────────────────────────────────────────────────
-  // Panels are toggled with the `hidden` attribute rather than a class, so a
-  // hidden panel is out of the accessibility tree and out of find-in-page too.
-  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  function select(tab) {
-    tabs.forEach(function (t) {
-      var on = t === tab;
-      t.setAttribute('aria-selected', on ? 'true' : 'false');
-      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
-    });
+  // Sections are visible in the stylesheet and only hidden once `.js` is on the
+  // root, so a page with no JS never gets stuck blank. The cost is that adding
+  // the class here would blank whatever is already on screen for a frame, so
+  // the above-the-fold sections are marked revealed in the *same* synchronous
+  // block — one paint, no flash.
+  var reveals = [].slice.call(document.querySelectorAll('.reveal'));
+  var onscreen = reveals.filter(function (el) {
+    return el.getBoundingClientRect().top < (window.innerHeight || 0);
+  });
+  document.documentElement.classList.add('js');
+  onscreen.forEach(function (el) { el.classList.add('in'); });
+
+  // ── Hero tape ─────────────────────────────────────────────────────────
+  // The review is written into the <pre> in the HTML, so it is there whatever
+  // happens to this script, and it is typed out by clipping that text rather
+  // than by assembling it here. Reduced motion keeps the finished frame.
+  var tape = document.getElementById('tape');
+  if (tape && !reduced) {
+    var TAPE = tape.textContent;
+    var caret = document.createElement('span');
+    caret.className = 'caret';
+    var text = document.createTextNode('');
+    tape.textContent = '';
+    tape.appendChild(text);
+    tape.appendChild(caret);
+    var i = 0;
+    (function step() {
+      // Whole lines at a time once past the verdict: character-by-character
+      // for 700 characters is a long time to make someone watch.
+      i += i < 60 ? 1 : 3;
+      text.nodeValue = TAPE.slice(0, i);
+      if (i < TAPE.length) setTimeout(step, i < 60 ? 26 : 12);
+      else caret.remove();
+    })();
   }
 
-  tabs.forEach(function (tab, i) {
-    tab.addEventListener('click', function () { select(tab); });
-    // Arrow keys move between tabs, which is what a tablist is expected to do
-    // once it announces itself as one.
-    tab.addEventListener('keydown', function (e) {
+  // ── Verdict scale ─────────────────────────────────────────────────────
+  var segs = [].slice.call(document.querySelectorAll('.seg'));
+  var vd = document.getElementById('vd');
+
+  function showVerdict(seg) {
+    segs.forEach(function (s) { s.setAttribute('aria-checked', String(s === seg));
+      s.tabIndex = s === seg ? 0 : -1; });
+    vd.querySelector('.vd-name').textContent = seg.dataset.code + ' — ' + seg.dataset.name;
+    vd.querySelector('.vd-body').textContent = seg.dataset.body;
+    vd.querySelector('.vd-move').innerHTML =
+      '<b>To move a rung:</b> ' + seg.dataset.move.replace(/[&<>]/g, function (c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c];
+      });
+  }
+
+  segs.forEach(function (seg, idx) {
+    seg.addEventListener('click', function () { showVerdict(seg); });
+    seg.addEventListener('keydown', function (e) {
       var step = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
       if (!step) return;
       e.preventDefault();
-      var next = tabs[(i + step + tabs.length) % tabs.length];
-      select(next);
+      var next = segs[(idx + step + segs.length) % segs.length];
+      showVerdict(next);
       next.focus();
+    });
+  });
+  if (segs.length) showVerdict(document.querySelector('.seg[aria-checked="true"]') || segs[0]);
+
+  // ── Tabs ──────────────────────────────────────────────────────────────
+  // Panels toggle with the `hidden` attribute rather than a class, so a hidden
+  // panel is out of the accessibility tree and out of find-in-page too. Each
+  // tablist is handled independently, so the two on this page cannot fight.
+  [].slice.call(document.querySelectorAll('[role="tablist"]')).forEach(function (list) {
+    var tabs = [].slice.call(list.querySelectorAll('.tab'));
+    if (!tabs.length) return;
+
+    function select(tab) {
+      tabs.forEach(function (t) {
+        var on = t === tab;
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+      });
+    }
+    tabs.forEach(function (tab, i) {
+      tab.addEventListener('click', function () { select(tab); });
+      tab.addEventListener('keydown', function (e) {
+        var step = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (!step) return;
+        e.preventDefault();
+        var next = tabs[(i + step + tabs.length) % tabs.length];
+        select(next);
+        next.focus();
+      });
     });
   });
 
   // ── Copy buttons ──────────────────────────────────────────────────────
   // clipboard.writeText needs a secure context; on plain http it rejects, so
   // the button says so instead of silently doing nothing.
-  document.querySelectorAll('.copy').forEach(function (btn) {
+  [].slice.call(document.querySelectorAll('.copy')).forEach(function (btn) {
     btn.addEventListener('click', function () {
       var code = btn.parentElement.querySelector('code').innerText;
       var done = function (label) {
@@ -452,6 +770,20 @@ DRILL
                                                function () { done('select it'); });
     });
   });
+
+  // ── Reveal on scroll ──────────────────────────────────────────────────
+  if (reduced || !('IntersectionObserver' in window)) {
+    reveals.forEach(function (el) { el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      });
+    }, { rootMargin: '0px 0px -12% 0px' });
+    reveals.forEach(function (el) { io.observe(el); });
+  }
 })();
 </script>
 
