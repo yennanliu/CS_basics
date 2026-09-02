@@ -30,8 +30,74 @@ Constraints:
 """
 
 
-
 # V0
+class Solution(object):
+    def numSquares(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        pass
+
+
+# V0-1
+# IDEA: 1D DP (1D DP / unbounded knapsack) (gpt)
+class Solution(object):
+    def numSquares(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+
+        # dp[i] = minimum number of perfect squares
+        # needed to sum to i
+        dp = [float('inf')] * (n + 1)
+
+        # Base case:
+        # 0 requires 0 numbers
+        dp[0] = 0
+
+        for i in range(1, n + 1):
+
+            # Try every perfect square <= i
+            j = 1
+
+            while j * j <= i:
+                square = j * j
+
+                dp[i] = min(
+                    dp[i],
+                    dp[i - square] + 1
+                )
+
+                j += 1
+
+        return dp[n]
+
+
+# V0-2
+# IDEA: 1D DP (1D DP / unbounded knapsack) (gemini)
+class Solution(object):
+    def numSquares(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        # dp[i] stores the minimum number of perfect squares that sum to i
+        dp = [float('inf')] * (n + 1)
+        dp[0] = 0  # Base case: 0 requires 0 numbers
+
+        for i in range(1, n + 1):
+            j = 1
+            # Try all perfect squares <= i
+            while j * j <= i:
+                dp[i] = min(dp[i], dp[i - j * j] + 1)
+                j += 1
+
+        return dp[n]
+
+
+# V0-3
 # IDEA : BFS
 """
 
