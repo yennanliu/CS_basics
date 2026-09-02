@@ -11,7 +11,7 @@ lose it under pressure.
 | Pattern | Recognition cue | Invariant | Target | Classic bug |
 |---|---|---|---|---|
 | **Hash map lookup** | "find the pair / has it been seen" | the map holds everything left of `i` | O(n) / O(n) | inserting before looking up, so an element pairs with itself |
-| **Two pointers, opposite** | sorted array, pair with a target sum | the answer, if any, lies within `[lo, hi]` | O(n) / O(1) | forgetting to skip duplicates → repeated triplets |
+| **Two pointers, opposite** | sorted array, a pair or a k-sum hitting a target | the answer, if any, lies within `[lo, hi]` | O(n) / O(1) | skipping duplicates in the wrong contract — 3Sum returns *distinct triples*, so equal values must be skipped after a hit; 2Sum II returns *indices*, where skipping loses the answer |
 | **Two pointers, same direction** | "remove / partition in place" | everything left of `write` is finished | O(n) / O(1) | advancing `write` when nothing was written |
 | **Sliding window, fixed** | "every subarray of size k" | the window is exactly `[i-k+1, i]` | O(n) / O(1) | starting to emit before the window is full |
 | **Sliding window, variable** | "longest / shortest subarray such that…" | the window is always valid after the inner `while` | O(n) / O(k) | shrinking with `if` instead of `while` |

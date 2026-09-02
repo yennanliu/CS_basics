@@ -58,6 +58,13 @@ Narrate decisions, never keystrokes. "Now I write a for loop" is noise; this is 
 > "This `while` — not an `if` — because more than one element can fall out of order at once."
 > "I'll handle the empty input up front so the main loop stays clean."
 
+Say which way you went when a choice is genuinely free, and why. A stated policy reads as
+problem solving; the same line unstated reads as an accident:
+
+> "`>=` or `>` both work here — an equal element that arrives later dominates the older one,
+>  since it has the same value and survives longer in the window. I'll use `>=` to keep the
+>  deque smaller."
+
 Say it when you defer something, so it does not read as forgotten:
 
 > "I'll assume valid input for now and add the guard at the end if there's time."
@@ -65,18 +72,26 @@ Say it when you defer something, so it does not read as forgotten:
 And when you notice a bug mid-write, say so out loud and fix it. Catching your own bug is a
 **Strong Hire** verification signal; quietly patching it is worth nothing.
 
-> "Wait — that comparison should be strict. With `>=` I'd drop equal elements that are still
->  in the window. Fixing it."
+> "Wait — I'm popping the back by value but never dropping the front when it leaves the
+>  window. On `[5,1,2], k = 2` the 5 is bigger than everything after it, so no value-pop
+>  removes it, and at i=2 I'd report 5 for a window it isn't in. Adding the expiry check
+>  before I read the front."
 
 ## Phase 4 — Verify (3–5 min)
 
 Never say "it works". Trace, out loud, from the smallest input that hits the interesting branch.
 
-> "Let me trace `[2,1,5], k = 2` — small, but it does exercise a pop.
+> "Let me trace `[5,1,2], k = 2` — three elements, but both kinds of pop matter in it.
 >  i=0: push 0, deque `[0]`, window not full yet.
->  i=1: `1 < 2` so it goes behind, deque `[0,1]`, window full → emit `nums[0] = 2`.
->  i=2: `5` pops both, deque `[2]`; index 0 has also left the window → emit `5`.
->  Output `[2,5]`, which matches. The invariant held on every step."
+>  i=1: `1 < 5` so it goes behind, deque `[0,1]`; window full → emit the front, `nums[0] = 5`.
+>  i=2: front first — index 0 is below `i-k+1 = 1`, so it has left the window, drop it.
+>  Then the back — `2 > nums[1] = 1`, so 1 can never win again, drop it too. Push 2,
+>  deque `[2]` → emit `nums[2] = 2`.
+>  Output `[5,2]`, which matches. The invariant held on every step."
+
+Naming the two pops separately is the part that scores. One is an index leaving the window,
+the other is a value that can never win again; a candidate who says "it pops" has not shown
+they know which is which.
 
 Then volunteer the edges before you are asked:
 

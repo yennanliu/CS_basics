@@ -245,14 +245,16 @@ cp -r /tmp/cs_basics/.claude/skills/lc-interview-coach ~/.claude/skills/</code><
       </div>
 
       <div class="panel" role="tabpanel" id="p-claude" aria-labelledby="tab-claude" hidden>
-        <p>Zip the directory, then upload it under <em>Settings → Capabilities → Skills</em>:</p>
+        <p>Zip the directory, then <em>Customize → Skills → + → + Create skill → Upload a skill</em>:</p>
         <div class="code">
           <button class="copy" type="button">copy</button>
           <pre><code>cd .claude/skills && zip -r lc-interview-coach.zip lc-interview-coach</code></pre>
         </div>
         <p class="note">
-          Leave the YAML frontmatter in <code>SKILL.md</code> intact — the <code>name</code> and
-          <code>description</code> fields are what the model matches your request against.
+          Leave the YAML frontmatter in <code>SKILL.md</code> intact.
+          <code>description</code> is what Claude matches your request against when deciding to
+          load the skill on its own; <code>name</code> is the display label, and the directory
+          name is what supplies the slash command.
         </p>
       </div>
 

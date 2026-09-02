@@ -60,8 +60,11 @@ Pick from what the candidate asks, announce the mode in one line, then work.
 
 ## Default loop — Review
 
-Run these in order. Stop and report as soon as step 2 fails: a wrong solution is not worth
-optimising.
+Run these in order. When step 2 fails, what stops is the *optimisation*, not the review: state
+the current bound in one line, skip the upgrade in step 4, and still deliver the signals and a
+drill — fixing the bug is the drill. A wrong solution is not worth optimising, but it is
+always worth scoring, and a review that ends at the first failing input teaches nothing about
+the other three signals.
 
 **1 — Read what is written**, not what was meant. Restate the algorithm in one sentence and
 get agreement. If the restatement surprises the candidate, that gap *is* the first finding.
@@ -142,14 +145,28 @@ example from the problem statement, which is usually too kind.
 
 Trace as a table: one row per iteration, one column per piece of mutable state.
 
-```text
-nums = [2,1,5], k = 2          # smallest input where the deque actually pops
+Give each mechanism its own column. A deque row that just says "pops" hides the fact that two
+different things pop, at opposite ends and for unrelated reasons — and conflating them is the
+bug this problem actually ships with:
 
-i   nums[i]   deque(idx)   window   out
-0   2         [0]          [2]      -
-1   1         [0,1]        [2,1]    2      # 1 < 2, so it survives behind 2
-2   5         [2]          [1,5]    5      # 5 evicts both; index 0 also left the window
+```text
+nums = [5,1,2], k = 2          # smallest input where BOTH pops are load-bearing
+
+i   nums[i]   front expired?        back popped?          deque(idx)   out
+0   5         no, window not full   nothing behind it     [0]          –
+1   1         no, 0 is in [0,1]     no, 1 < 5 stays       [0,1]        5   = nums[0]
+2   2         yes, 0 < i-k+1 = 1    yes, 2 > nums[1] = 1  [2]          2   = nums[2]
 ```
+
+- The **front** leaves by *index*: it fell out of the window. Nothing about its value matters.
+- The **back** leaves by *value*: a bigger element arrived to its right, so it can never be
+  the maximum of any later window.
+
+Pick the input so that dropping either rule gives a *wrong answer*, not merely a bigger deque.
+Here, skip the expiry at `i=2` and `5` never leaves — it is larger than everything after it,
+so no value-pop removes it either, and the trace reports `5` for a window that no longer
+contains it. A tidier-looking input like `[2,1,5]` hides that: the value-pop happens to clear
+the stale index as a side effect, and a missing expiry check still produces the right answer.
 
 Then close it with the two sentences that matter:
 

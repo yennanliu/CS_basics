@@ -26,14 +26,16 @@ For every repo, copy the directory to `~/.claude/skills/lc-interview-coach/`.
 
 ## Claude (claude.ai / desktop)
 
-Settings → Capabilities → Skills → **Upload skill**, with the directory zipped:
+**Customize → Skills → + → + Create skill → Upload a skill**, with the directory zipped:
 
 ```bash
 cd .claude/skills && zip -r lc-interview-coach.zip lc-interview-coach
 ```
 
-The YAML frontmatter (`name`, `description`) is what the model matches against, so leave it
-intact.
+Leave the YAML frontmatter intact. `description` is what Claude matches a request against when
+deciding to load the skill on its own, so it is the one field worth keeping precise. `name` is
+the display label; the *directory* name is what supplies the slash command — which is why this
+repo keeps the two identical, and why `script/check_skills.py` fails a build where they drift.
 
 ## Codex
 
