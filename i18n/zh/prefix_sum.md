@@ -1,11 +1,3 @@
-<!-- c037f60480ec -->
-# Prefix Sum (前綴和)
-
-> **範圍** — 前綴和／累積和 — 子陣列和、二維前綴和、前綴和搭配雜湊表做計數。
-> **另見**：[prefix_sum_advanced.md](./prefix_sum_advanced.md) — 模板 9–13，也就是那些要借用其他資料結構的；[prefix_sum_examples.md](./prefix_sum_examples.md) — 模板沒有直接解掉的實作題；[difference_array.md](./difference_array.md) — 區間*更新*而非區間查詢；[binary_indexed_tree.md](./binary_indexed_tree.md) — 陣列本身也會變動時；[kadane_algorithm.md](./kadane_algorithm.md) — 不靠前綴和求最大子陣列。
-
-<p align="center"><img src="../pic/prefix_sum.png"></p>
-
 <!-- 1d1496862506 -->
 ## LeetCode 題目清單
 
@@ -266,20 +258,6 @@
 > 只有在裝著跟排序後陣列同長度前綴「同一組值」（順序可以不同）時，兩者的和才會相等。
 > 而那正是「這段前綴自成一個區塊」的條件 — 所以這個和的檢查根本不需要排序。
 
-<!-- 8812ccaab35a -->
-## 進階模板
-
-模板 **9–13** 搬到 **[prefix_sum_advanced.md](./prefix_sum_advanced.md)** 了。它們是那些
-已經不只是「建個陣列、相減兩項」，而是開始借用其他資料結構的模板：
-
-| # | 模板 | 借來的想法 | LC |
-|---|---|---|---|
-| 9 | [補集技巧 — 總和 − 中間視窗](./prefix_sum_advanced.md#template-9-complement-trick--total--middle-window---lc-1423) ⭐⭐⭐⭐⭐ | 頭尾繞回來的選法，等於一段要*排除*的連續視窗 | 1423 |
-| 10 | [前綴和 + 單調雙端佇列](./prefix_sum_advanced.md#template-10-prefix-sum--monotonic-deque-shortest-subarray-allows-negatives---lc-862) | 用雙端佇列，因為負數會讓雙指標視窗失效 | 862 |
-| 11 | [列對壓縮](./prefix_sum_advanced.md#template-11-row-pair-compression--collapse-2d-into-1d-prefix-sum---lc-363) ⭐⭐⭐⭐ | 固定一對列，把二維壓成一維 | 363, 1074 |
-| 12 | [前綴 XOR](./prefix_sum_advanced.md#template-12-prefix-xor---lc-1310) ⭐⭐⭐⭐ | XOR 的反運算是自己，所以同一條相減恆等式仍然成立 | 1310 |
-| 13 | [用 HashMap 做稀疏差分陣列](./prefix_sum_advanced.md#template-13-sparse-difference-array-via-hashmap-line-sweep---lc-2021) ⭐⭐⭐⭐⭐ | 座標範圍太大時，用雜湊表取代陣列 | 2021 |
-
 <!-- c8b75ab397b3 -->
 ## 依模式分類的題目
 
@@ -385,15 +363,6 @@
 | Contains Duplicate II | 219 | 滑動視窗 + map | 模板 2 |
 | Maximum Average Subarray I | 643 | 固定長度子陣列 | 模板 1 |
 | Degree of an Array | 697 | 元素頻率 | 模板 2 |
-
-<!-- 095ab8f1cccf -->
-#### **Medium（核心模式）**
-| 題目 | LC # | 重點 | 模板 |
-|---------|------|------------|----------|
-| Contiguous Array | 525 | 平衡 0 和 1 | 模板 6 |
-| Shortest Unsorted Continuous Subarray | 581 | 陣列分析 | 模板 1 |
-| Random Pick with Weight | 528 | 帶權重的隨機選取 | 模板 1 |
-| Path Sum III | 437 | 樹 + 前綴和 | 模板 2 |
 
 <!-- cbfa7b4d9d5a -->
 #### **Hard（進階技巧）**
@@ -636,17 +605,6 @@
    - 說明推廣到二維：「在矩陣上該怎麼做？」
    - 考慮限制條件：「如果數字非常大呢？」（溢位）
 
-<!-- cb1437152d8d -->
-### 相關主題
-
-- **HashMap／雜湊表**：大多數進階前綴和題目的必需品
-- **滑動視窗**：可以跟前綴和結合起來最佳化
-- **Two Sum**：很多前綴和題目其實是 two sum 的延伸
-- **動態規劃**：前綴和常拿來當 DP 的最佳化手段
-- **二分搜尋**：可以跟前綴和結合做區間查詢
-- **線段樹**：需要邊更新邊查詢區間和時的替代方案
-- **單調堆疊**：有時會跟前綴和一起用來最佳化
-
 <!-- 46c1b9564342 -->
 ### 進階延伸
 
@@ -657,3 +615,45 @@
 - **環狀陣列**：改寫模板來處理繞回頭的情況
 
 這份 cheatsheet 涵蓋了所有主要的前綴和模式，並提供一套有系統的方法，讓你能高效率地解掉 40 多題 LeetCode。
+
+<!-- stale: c037f60480ec -->
+# Prefix Sum (前綴和)
+
+> **範圍** — 前綴和／累積和 — 子陣列和、二維前綴和、前綴和搭配雜湊表做計數。
+> **另見**：[prefix_sum_advanced.md](./prefix_sum_advanced.md) — 模板 9–13，也就是那些要借用其他資料結構的；[prefix_sum_examples.md](./prefix_sum_examples.md) — 模板沒有直接解掉的實作題；[difference_array.md](./difference_array.md) — 區間*更新*而非區間查詢；[binary_indexed_tree.md](./binary_indexed_tree.md) — 陣列本身也會變動時；[kadane_algorithm.md](./kadane_algorithm.md) — 不靠前綴和求最大子陣列。
+
+<p align="center"><img src="../pic/prefix_sum.png"></p>
+
+<!-- stale: 8812ccaab35a -->
+## 進階模板
+
+模板 **9–13** 搬到 **[prefix_sum_advanced.md](./prefix_sum_advanced.md)** 了。它們是那些
+已經不只是「建個陣列、相減兩項」，而是開始借用其他資料結構的模板：
+
+| # | 模板 | 借來的想法 | LC |
+|---|---|---|---|
+| 9 | [補集技巧 — 總和 − 中間視窗](./prefix_sum_advanced.md#template-9-complement-trick--total--middle-window---lc-1423) ⭐⭐⭐⭐⭐ | 頭尾繞回來的選法，等於一段要*排除*的連續視窗 | 1423 |
+| 10 | [前綴和 + 單調雙端佇列](./prefix_sum_advanced.md#template-10-prefix-sum--monotonic-deque-shortest-subarray-allows-negatives---lc-862) | 用雙端佇列，因為負數會讓雙指標視窗失效 | 862 |
+| 11 | [列對壓縮](./prefix_sum_advanced.md#template-11-row-pair-compression--collapse-2d-into-1d-prefix-sum---lc-363) ⭐⭐⭐⭐ | 固定一對列，把二維壓成一維 | 363, 1074 |
+| 12 | [前綴 XOR](./prefix_sum_advanced.md#template-12-prefix-xor---lc-1310) ⭐⭐⭐⭐ | XOR 的反運算是自己，所以同一條相減恆等式仍然成立 | 1310 |
+| 13 | [用 HashMap 做稀疏差分陣列](./prefix_sum_advanced.md#template-13-sparse-difference-array-via-hashmap-line-sweep---lc-2021) ⭐⭐⭐⭐⭐ | 座標範圍太大時，用雜湊表取代陣列 | 2021 |
+
+<!-- stale: 095ab8f1cccf -->
+#### **Medium（核心模式）**
+| 題目 | LC # | 重點 | 模板 |
+|---------|------|------------|----------|
+| Contiguous Array | 525 | 平衡 0 和 1 | 模板 6 |
+| Shortest Unsorted Continuous Subarray | 581 | 陣列分析 | 模板 1 |
+| Random Pick with Weight | 528 | 帶權重的隨機選取 | 模板 1 |
+| Path Sum III | 437 | 樹 + 前綴和 | 模板 2 |
+
+<!-- stale: cb1437152d8d -->
+### 相關主題
+
+- **HashMap／雜湊表**：大多數進階前綴和題目的必需品
+- **滑動視窗**：可以跟前綴和結合起來最佳化
+- **Two Sum**：很多前綴和題目其實是 two sum 的延伸
+- **動態規劃**：前綴和常拿來當 DP 的最佳化手段
+- **二分搜尋**：可以跟前綴和結合做區間查詢
+- **線段樹**：需要邊更新邊查詢區間和時的替代方案
+- **單調堆疊**：有時會跟前綴和一起用來最佳化

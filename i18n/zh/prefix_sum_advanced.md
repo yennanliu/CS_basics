@@ -1,26 +1,8 @@
-<!-- 801c0fe846ba -->
-# 前綴和 — 進階模板
-
-> **範圍** — 五個需要借用其他結構或其他恆等式的前綴和模板：補集技巧、應付含負數陣列的單調雙端佇列、二維的列對壓縮、前綴 XOR，以及用雜湊表實作的稀疏差分陣列。
-> **另見**：[prefix_sum.md](./prefix_sum.md) — 母篇：模板 1–8、概念與模板選擇策略；[prefix_sum_examples.md](./prefix_sum_examples.md) — 實作過的例題；[monotonic_queue.md](./monotonic_queue.md) — 模板 10 背後的雙端佇列；[difference_array.md](./difference_array.md) — 模板 13 的稠密版本；[bit_manipulation.md](./bit_manipulation.md) — 為什麼 XOR 跟加法一樣支援同一個相減恆等式；[matrix.md](./matrix.md) — 模板 11 壓掉的那層二維幾何。
-
 <!-- ea216edf7cf4 -->
 ## LeetCode 題目清單
 
 - [Prefix Sum](https://leetcode.com/problem-list/prefix-sum/)
 - [Matrix](https://leetcode.com/problem-list/matrix/)
-
-<!-- 1d918f968572 -->
-## 總覽
-
-[prefix_sum.md](./prefix_sum.md) 裡的模板 1–8 講的都是同一招：把陣列建出來，然後相減兩項。
-下面這五個，就是那一招不夠用的時候。
-
-<!-- 7fb93ce0739f -->
-### 關鍵性質
-- **複雜度**：各模板分別標示；每一個的重點都是把 O(n²) 或 O(n·m²) 的掃描壓成 O(n) 或 O(n·m)
-- **核心想法**：前綴和恆等式 `sum(l, r) = P[r+1] - P[l]` 對任何**可逆**的合併運算都成立 — 這就是 XOR 可行、而 min/max 不行的原因
-- **什麼時候用**：當你一眼就想到前綴和，但題目有東西把它弄壞了 — 負數、二維、環狀繞回，或座標大到開不出陣列
 
 <!-- d4930c79488e -->
 ### 模板 9：補集技巧 —「總和 − 中間視窗」⭐⭐⭐⭐⭐ — LC 1423
@@ -157,7 +139,25 @@
 
 > **經驗法則**：座標範圍 ≤ 約 10^6 且非負 → 用一般陣列（模板 4）。否則，或座標為負 → 用 HashMap／TreeMap（模板 13）。
 
-<!-- 0472cbaa838a -->
+<!-- stale: 801c0fe846ba -->
+# 前綴和 — 進階模板
+
+> **範圍** — 五個需要借用其他結構或其他恆等式的前綴和模板：補集技巧、應付含負數陣列的單調雙端佇列、二維的列對壓縮、前綴 XOR，以及用雜湊表實作的稀疏差分陣列。
+> **另見**：[prefix_sum.md](./prefix_sum.md) — 母篇：模板 1–8、概念與模板選擇策略；[prefix_sum_examples.md](./prefix_sum_examples.md) — 實作過的例題；[monotonic_queue.md](./monotonic_queue.md) — 模板 10 背後的雙端佇列；[difference_array.md](./difference_array.md) — 模板 13 的稠密版本；[bit_manipulation.md](./bit_manipulation.md) — 為什麼 XOR 跟加法一樣支援同一個相減恆等式；[matrix.md](./matrix.md) — 模板 11 壓掉的那層二維幾何。
+
+<!-- stale: 1d918f968572 -->
+## 總覽
+
+[prefix_sum.md](./prefix_sum.md) 裡的模板 1–8 講的都是同一招：把陣列建出來，然後相減兩項。
+下面這五個，就是那一招不夠用的時候。
+
+<!-- stale: 7fb93ce0739f -->
+### 關鍵性質
+- **複雜度**：各模板分別標示；每一個的重點都是把 O(n²) 或 O(n·m²) 的掃描壓成 O(n) 或 O(n·m)
+- **核心想法**：前綴和恆等式 `sum(l, r) = P[r+1] - P[l]` 對任何**可逆**的合併運算都成立 — 這就是 XOR 可行、而 min/max 不行的原因
+- **什麼時候用**：當你一眼就想到前綴和，但題目有東西把它弄壞了 — 負數、二維、環狀繞回，或座標大到開不出陣列
+
+<!-- stale: 0472cbaa838a -->
 ### 模板 9-13 — 題目索引
 
 | 題目 | LC # | 關鍵技巧 | 難度 | 模板 |
