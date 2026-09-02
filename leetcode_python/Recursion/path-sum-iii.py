@@ -139,6 +139,62 @@ class Solution(object):
 
 
 
+# V0-0-2
+# IDEA 1) dfs (pre-order) + prefix + hashmap + backtrack (GPT)
+# time = O(n)
+# space = O(h), h is height of binary tree (hashmap entries bounded by active path due to backtrack)
+from collections import defaultdict
+
+class Solution(object):
+    def pathSum(self, root, targetSum):
+        """
+        :type root: Optional[TreeNode]
+        :type targetSum: int
+        :rtype: int
+        """
+
+        # prefix_sum -> count
+        prefix = defaultdict(int)
+
+        # Empty path has sum 0
+        prefix[0] = 1
+
+        self.cnt = 0
+
+        self.helper(root, targetSum, 0, prefix)
+
+        return self.cnt
+
+
+    def helper(self, node, targetSum, cur_sum, prefix):
+        if not node:
+            return
+
+        # Current prefix sum
+        cur_sum += node.val
+
+        # If:
+        #
+        # cur_sum - old_sum == targetSum
+        #
+        # then:
+        #
+        # old_sum = cur_sum - targetSum
+        #
+        self.cnt += prefix[cur_sum - targetSum]
+
+        # Add current prefix sum
+        prefix[cur_sum] += 1
+
+        # DFS
+        self.helper(node.left, targetSum, cur_sum, prefix)
+        self.helper(node.right, targetSum, cur_sum, prefix)
+
+        # Backtrack:
+        # current prefix_sum should not affect sibling subtree
+        prefix[cur_sum] -= 1
+
+
 # V0-1
 # IDEA 1) dfs (pre-order) + prefix + hashmap + backtrack (GEMINI)
 # time = O(n)
