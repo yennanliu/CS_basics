@@ -48,5 +48,54 @@ class Solution(object):
 
 
 # V1
+# IDEA: 1D DP
+class Solution(object):
+    def tribonacci(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        # edge
+        if n == 0:
+          return 0
+        
+        if n == 1 or n == 2:
+          return 1
+
+        dp = [0] * (n + 1)
+
+        dp[0] = 0
+        dp[1] = 1
+        dp[2] = 1
+
+        for i in range(3, n+1):
+          # Tn+3 = Tn + Tn+1 + Tn+2
+          dp[i] = (dp[i-3] + dp[i-2] + dp[i-1])
+
+
+        return dp[n]
 
 # V2
+# IDEA: 1D DP (O(1) space)
+class Solution(object):
+    def tribonacci(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        if n == 0:
+            return 0
+        if n == 1 or n == 2:
+            return 1
+
+        T0 = 0
+        T1 = 1
+        T2 = 1
+
+        for i in range(3, n + 1):
+            val = T0 + T1 + T2
+            T0 = T1  # Fixed: used digit '0' instead of letter 'O'
+            T1 = T2
+            T2 = val
+
+        return T2
