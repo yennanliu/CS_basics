@@ -49,7 +49,7 @@ const rel = p => path.relative(SITE, p);
 console.log('\n== required artefacts ==');
 const REQUIRED = [
   'index.html', 'problems.html', 'resources.html', 'cheatsheets.html', 'faqs.html',
-  'patterns.html', 'search.html', 'lc-roadmap.html', '404.html',
+  'patterns.html', 'search.html', 'lc-roadmap.html', 'skills.html', '404.html',
   'style.css', 'nav.css', 'nav.js', 'lc-page.css', 'site.js', 'roadmap.js', 'complexity.js',
   'vendor/d3.min.js', 'vendor/highlight/atom-one-dark.min.css',
   'data/roadmap.json', 'data/complexity-quiz.json', 'data/lc-problems.json',
@@ -316,7 +316,7 @@ ok('nav.css honours prefers-reduced-motion',
 // One shared palette for the hand-written tool pages, rather than five copies
 // that had already drifted apart.
 console.log('\n== tool pages ==');
-const TOOL_PAGES = ['lc-explorer', 'lc-similar', 'lc-review-plan', 'lc-random-picker', 'lc-complexity-quiz'];
+const TOOL_PAGES = ['lc-explorer', 'lc-similar', 'lc-review-plan', 'lc-random-picker', 'lc-complexity-quiz', 'skills'];
 for (const name of TOOL_PAGES) {
   const html = sources.get(path.join(SITE, `${name}.html`));
   ok(`${name} uses the shared palette`,

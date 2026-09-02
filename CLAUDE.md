@@ -30,7 +30,7 @@ CS_basics is a comprehensive computer science fundamentals repository containing
   - `build-review-plan.js` - Compiles [`data/progress.txt`](data/progress.txt) into the Review Plan's data. **The practice log is the only copy** — see [Review plan data](#the-review-plans-data) below
   - `finalize-pages.js` / `prune-images.js` - The two finishing passes; they run last because they need the whole `_site/` tree (see [Finishing passes](#the-two-finishing-passes))
   - `e2e-check.js` - Post-build validation of every generated page. Both workflows run it; run it locally too
-  - `pages/` - Hand-maintained static pages (LC Explorer/Similar/Review-Plan/Random-Picker/Roadmap/Complexity-Quiz, 404)
+  - `pages/` - Hand-maintained static pages (LC Explorer/Similar/Review-Plan/Random-Picker/Roadmap/Complexity-Quiz, Skills, 404)
   - `nav.js` / `roadmap.js` / `complexity.js` - Browser scripts copied to `_site/`; unit-tested under `site/test/`
   - `style.css` - Stylesheet for the generated doc pages
   - `nav.css` - Navbar, skip link and the `prefers-reduced-motion` opt-out. Loaded by **every** page family
@@ -457,6 +457,12 @@ template, dry-runs code as a state table, and names the one line that sets the c
 invariants, and the in-the-room talk track. It is plain markdown with no dependencies —
 [`INSTALL.md`](.claude/skills/lc-interview-coach/INSTALL.md) covers installing it on Codex,
 Gemini and other agents from the same source.
+
+`site/pages/skills.html` is its page on the site — intro, per-agent install, quick start —
+reached from the navbar's **more → coach** entry and from the landing page's card. It is a
+hand-maintained page like the LC tools, so `build.sh` copies it and `finalize-pages.js` gives
+it the canonical and Open Graph tags. Editing the skill does **not** update that page; keep
+the two in step by hand.
 
 ```text
 /lc-interview-coach review leetcode_python/Sliding_Window/sliding_window_maximum.py
