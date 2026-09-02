@@ -1,6 +1,6 @@
 # Bit Manipulation
 
-> **Scope** — Bit-level operations and the tricks built on them — masks, XOR identities, lowest set bit, subset enumeration, and bitmask DP.
+> **Scope** — How integers are represented in bits (two's complement, fixed width, shifts) and the operations and tricks built on that — masks, XOR identities, lowest set bit, subset enumeration, and bitmask DP.
 > **See also**: [bit_manipulation_examples.md](./bit_manipulation_examples.md) — the fourteen worked problems behind these techniques; [math.md](./math.md) — numeric manipulation without bits; [combinatorics_math_patterns.md](./combinatorics_math_patterns.md) — counting; [dp.md](./dp.md) — the wider DP catalogue that bitmask DP belongs to.
 
 ## LeetCode Problem Lists
@@ -40,31 +40,229 @@ each operation is a single CPU instruction, bitwise tricks turn many `O(n)` scan
 - [LeetCode — Bit Manipulation card](https://leetcode.com/explore/learn/card/bit-manipulation/)
 - [bit_manipulation.md](https://github.com/yennanliu/CS_basics/blob/master/doc/bit_manipulation.md)
 - [leetcode-easy-bitwise-xor-summary](https://steveyang.blog/2022/07/02/leetcode-easy-bitwise-xor-summary/)
+- [bit VS byte VS char](http://web.ntnu.edu.tw/~algo/Bit.html) — bit widths, with Java examples
+- [Python operators](https://www.runoob.com/python/python-operators.html) — precedence table
 
-## 0) Concept
-- Base
-    - [Ref](https://leetcode.com/explore/learn/card/bit-manipulation/669/bit-manipulation-concepts/4494/)
-    - The actual value of a base-X number is determined by each digit and its location.
-    - example :
-        - 123.45 (base 10) = 1 * 10^2 + 2 * 10^1 + 3 * 10^0 + 4 * 10^(-1) + 5 * 10^(-2)
-        - 720.5 (base 8) = 7 * 8^2 + 2 * 8^1 + 0 * 8^0 + 5 * 8^(-1)
-    - In computer science, the binary system is most commonly used. It has two digits: 0, and 1. Octal (base-8) and hexadecimal (base 16) are also commonly used. Octal has eight digits: 0, 1, 2, 3, 4, 5, 6, and 7.
+## 0) CS Foundations ⭐⭐⭐⭐⭐
 
-- [bit VS byte VS char](http://web.ntnu.edu.tw/~algo/Bit.html)
-    - basic
-        - bit : binary number (use 2 as base : 0, 1)
-        - Hexadecimal Number : use 16 as base : 0123456789abcdef (lower, upper case are same)
-    - byte : 8 bytes (字節)
-    - char : 16 bytes (字符)
-    - ref:
-        - [java example](https://github.com/yennanliu/JavaHelloWorld/blob/main/src/main/java/Advances/IOFlow/demo1.java#L25)
-- ref
-    - [bit_manipulation.md](https://github.com/yennanliu/CS_basics/blob/master/doc/bit_manipulation.md)
-    - [python-operators.html](https://www.runoob.com/python/python-operators.html)
-    - [leetcode-easy-bitwise-xor-summary](https://steveyang.blog/2022/07/02/leetcode-easy-bitwise-xor-summary/)
+Almost every "clever" bit trick is a direct consequence of **how a machine stores an
+integer**. Five facts cover it — learn these and the tricks below stop needing memorisation.
+
+| # | Fact | What it explains |
+| - | ---- | ---------------- |
+| 1 | A number is digits × **place values**; binary's place values are powers of two | reading and writing binary/hex by hand |
+| 2 | An `int` is a **fixed-width 32-bit box** that wraps around | overflow, `MIN_VALUE`, why masks exist |
+| 3 | Negatives are stored in **two's complement** | `~x = -x-1`, `x & -x`, `>>` on negatives |
+| 4 | Shifting **is** multiplying/dividing by powers of two | `<<`, `>>`, `>>>` and their edge cases |
+| 5 | The bits of an int **are** a subset of 32 items | bitmask, subset enumeration, bitmask DP |
+
+### 0-1) Place values, binary, and hex
+
+The value of a base-`X` number is decided by each digit **and its position**
+([ref](https://leetcode.com/explore/learn/card/bit-manipulation/669/bit-manipulation-concepts/4494/)):
+
+```text
+123.45 (base 10) = 1*10^2 + 2*10^1 + 3*10^0 + 4*10^-1 + 5*10^-2
+ 720.5 (base 8)  = 7*8^2  + 2*8^1  + 0*8^0  + 5*8^-1
+  1011 (base 2)  = 1*2^3  + 0*2^2  + 1*2^1  + 1*2^0    = 8 + 0 + 2 + 1 = 11
+```
+
+To read binary, **add the place values that carry a 1**. To write it, halve repeatedly and
+record the remainders bottom-up. That is the entire conversion.
+
+**Hex is binary in groups of four.** One hex digit = 4 bits (a *nibble*), so a 32-bit `int`
+is exactly 8 hex digits — which is why masks are written that way:
+
+```text
+1011 1101  ->  B    D  ->  0xBD  =  11*16 + 13  =  189
+                           each nibble maps to one hex digit — no arithmetic needed
+
+0xFFFFFFFF = 32 ones       0x7FFFFFFF = 31 ones = Integer.MAX_VALUE
+```
+
+Powers of two are worth knowing cold — they appear both as constraints and as masks:
+
+| `n`   | 4  | 8   | 10   | 16    | 20        | 31           | 32           |
+| ----- | -- | --- | ---- | ----- | --------- | ------------ | ------------ |
+| `2^n` | 16 | 256 | 1024 | 65536 | ~1 million | 2 147 483 648 | 4 294 967 296 |
 
 <p align="center"><img src="../pic/bit_basic1.png"></p>
 <p align="center"><img src="../pic/bit_basic2.png"></p>
+
+### 0-2) Fixed width — an `int` is a 32-bit box
+
+| Java type | Width | Range |
+| --------- | ----- | ----- |
+| `byte`    | 8 **bits** | `-128 … 127` |
+| `char`    | 16 **bits** | `0 … 65535` (unsigned) |
+| `int`     | 32 bits | `-2^31 … 2^31 - 1` |
+| `long`    | 64 bits | `-2^63 … 2^63 - 1` |
+
+- Bit `i` carries place value `2^i`. In an `int`, **bit 31 is the sign bit**, so the usable
+  magnitude is 31 bits — this is why so many solutions loop `for i in 0..31`.
+- Anything that leaves the box **wraps silently**: `Integer.MAX_VALUE + 1 == Integer.MIN_VALUE`.
+  A problem statement saying "assume the result fits in a 32-bit integer" is telling you this
+  is the edge case being tested.
+- `1 << 31` is already **negative**. Write `1L << 31` when you want the *value* `2^31`.
+
+### 0-3) Two's complement — how negatives are stored ⭐⭐⭐⭐⭐
+
+**The rule**: `-x` is stored as `~x + 1` — *flip every bit, then add one*. Equivalently,
+the pattern for `-x` is the unsigned value `2^32 - x`.
+
+```text
+(traces are 8-bit for space; a real int is the same picture, 32 wide)
+
+ 5  = 0000 0101
+~5  = 1111 1010     flip every bit
+-5  = 1111 1011     ... + 1
+
+check:  5 + (-5) = 1 0000 0000  ->  the carry falls out of the box, leaving 0 ✓
+```
+
+Why this representation and not a sign bit + magnitude? Because **one adder handles both
+signs** — `a + b` is the same circuit whether the operands are positive or negative, and
+there is only one zero.
+
+Three facts drop straight out of it:
+
+| Fact | Where it shows up |
+| ---- | ----------------- |
+| `~x == -x - 1` | rewriting `~` when a language has no unsigned type |
+| top bit set ⇔ negative | the `for i in 0..31` bit-column loops |
+| `x >> 31` is `0` (non-negative) or `-1` (negative) | branchless `abs`, sign extraction |
+
+**The asymmetry that bites**: the range holds one more negative than positive, so
+`Integer.MIN_VALUE` has **no positive twin** — `-Integer.MIN_VALUE` and
+`Math.abs(Integer.MIN_VALUE)` are both still `Integer.MIN_VALUE`. That single value is the
+hidden test case in LC 29 (Divide Two Integers); handle it before you negate anything.
+
+### 0-4) Why `x & (x - 1)` and `x & -x` work
+
+Both fall out of two's complement. Derive them once and you never have to memorise which
+is which:
+
+```text
+x       = 0101 1000        lowest set bit is bit 3
+x - 1   = 0101 0111        borrowing flips that 1 to 0, and every 0 below it to 1
+-x      = 1010 1000        = ~x + 1
+
+               above bit 3     at bit 3    below bit 3
+  x vs x-1  :  identical       1 vs 0      complementary
+  x vs -x   :  complementary   1 vs 1      both 0
+
+x & (x-1) = 0101 0000      above survives; bit 3 and everything under it AND to 0
+x & (-x)  = 0000 1000      above ANDs to 0; only bit 3 survives
+```
+
+So `x & (x - 1)` means **"drop the lowest 1"** (loop it → Brian Kernighan's popcount, [§1-3](#1-3-counting-set-bits-population-count))
+and `x & -x` means **"keep only the lowest 1"** (also the step rule of a Fenwick tree — see
+[binary_indexed_tree.md](./binary_indexed_tree.md)).
+
+### 0-5) Shifts — `<<`, `>>`, and Java's `>>>`
+
+| Op | Name | Shifts in | Effect |
+| -- | ---- | --------- | ------ |
+| `x << n`  | left shift | zeros on the right | `x * 2^n`; bits pushed off the top are **lost** |
+| `x >> n`  | **arithmetic** right shift | copies of the **sign bit** | `floor(x / 2^n)` |
+| `x >>> n` | **logical** right shift (Java only) | zeros | treats the pattern as unsigned |
+
+```text
+-8 >> 1  = -4            1111 1000 -> 1111 1100    sign preserved
+-8 >>> 1 = 2147483644    1111 1000 -> 0111 1100    sign bit treated as just another bit
+```
+
+**When you need `>>>`**: any loop that walks all 32 bits of a possibly-negative `int` —
+LC 190 (Reverse Bits), LC 191 (Number of 1 Bits), LC 338. With `>>`, a negative number
+shifts in 1s forever and `while (x != 0)` never terminates.
+
+Two more rules that surprise people, both verified above:
+
+- **Java masks the shift count to 5 bits**: `1 << 32` is `1 << 0`, i.e. `1` — **not** `0`.
+  Shift a `long` (6-bit count), or split the shift.
+- **`+` binds tighter than `<<`**: `x << 1 + 2` is `x << 3`. See [§0-7](#0-7-precedence--parenthesise-everything-).
+
+### 0-6) Python is not Java here ⭐⭐⭐⭐⭐
+
+Python's ints are **arbitrary precision** and behave as if they had infinitely many sign
+bits. There is no box, so there is nothing to overflow — and no `>>>`, because there is no
+top bit to stop at.
+
+| | Java (`int`, 32-bit) | Python (unbounded) |
+| --- | --- | --- |
+| `1 << 31` | `-2147483648` (it hit the sign bit) | `2147483648` |
+| `Integer.MAX_VALUE + 1` | wraps to `MIN_VALUE` | just keeps growing |
+| `-1 >> 100` | `-1` | `-1` (infinite sign bits) |
+| logical right shift | `x >>> n` | **none** — mask by hand |
+| `~5` | `-6` | `-6` (same) |
+
+So a Python loop that relies on 32-bit wrap-around has to **simulate the box**:
+
+```python
+# python
+MASK    = 0xFFFFFFFF        # keep only the low 32 bits
+INT_MAX = 0x7FFFFFFF        # 2^31 - 1
+
+def to_signed(x):
+    """read a masked 32-bit pattern back as a signed Python int"""
+    return x if x <= INT_MAX else ~(x ^ MASK)
+```
+
+This is the whole reason LC 371 (Sum of Two Integers) looks so much worse in Python than in
+Java: the carry loop is the same three lines, but every step needs `& MASK` and the result
+needs `to_signed`.
+
+> **Rule of thumb**: in Python, iterate `for i in range(32): (x >> i) & 1` rather than
+> `while x:` whenever `x` can be negative — the `while` never ends.
+
+### 0-7) Precedence — parenthesise everything ⭐⭐⭐⭐
+
+Tightest to loosest — this chain is the same in C, Java and Python:
+
+```text
+~   ->   * / %   ->   + -   ->   << >>   ->   &   ->   ^   ->   |
+```
+
+Two things go wrong with it:
+
+```text
+x << 1 + 2        parses as  x << (1 + 2)     -> x << 3, not (x << 1) + 2
+a ^ b + 1         parses as  a ^ (b + 1)
+```
+
+**Comparison is the one place the languages disagree**: C and Java slot `==` *between*
+`>>` and `&`, Python puts it *below* `|`. So `x & 1 == 0` means three different things:
+
+| Language | `x & 1 == 0` | Outcome |
+| -------- | ------------ | ------- |
+| C / C++  | `x & (1 == 0)` → `x & 0` | **silently always 0** |
+| Java     | `x & (1 == 0)` → `int & boolean` | compile error (`bad operand types`) |
+| Python   | `(x & 1) == 0` | correct — comparison binds *looser* than `&` here |
+
+Never rely on which one you are in. **Write `(x & 1) == 0`.**
+
+### 0-8) A bitmask *is* a set
+
+The final foundation: subsets of `n` items are in **one-to-one correspondence** with the
+integers `0 … 2^n - 1`. Once you see that, "bitmask" needs no further explanation — every
+set operation is one instruction.
+
+| Set language | Bit language |
+| ------------ | ------------ |
+| `S = {}` / `S = {0..n-1}` | `0` / `(1 << n) - 1` |
+| `i ∈ S` | `(mask >> i) & 1` |
+| `S ∪ {i}` / `S \ {i}` / toggle `i` | `mask \| (1<<i)` / `mask & ~(1<<i)` / `mask ^ (1<<i)` |
+| `A ∪ B` / `A ∩ B` / `A \ B` | `a \| b` / `a & b` / `a & ~b` |
+| `A ⊆ B` | `(a & b) == a` |
+| `A ∩ B = ∅` | `(a & b) == 0` |
+| `\|S\|` | `Integer.bitCount(mask)` / `bin(mask).count("1")` |
+| complement within `n` items | `mask ^ ((1 << n) - 1)` |
+
+**Two counting facts** tell you whether a bitmask solution fits the constraints:
+
+- there are `2^n` subsets, so `n ≤ ~20` for an `O(2^n · n)` DP (`2^20 ≈ 10^6`);
+- summed over *every* mask, the number of **sub**masks is `3^n`, not `4^n` — which is what
+  makes the `sub = (sub - 1) & mask` loop in [§2-1](#2-1-subset-enumeration-lc-78-recap) affordable.
 
 ## 1) Core Operations
 
@@ -107,8 +305,8 @@ def clear_lowest(x):   return x & (x - 1)      # turn OFF lowest 1-bit
 
 ### 1-3) Counting set bits (population count)
 
-**Key Idea**: `x & (x - 1)` clears the lowest set bit, so the loop runs **once per 1-bit**
-(Brian Kernighan's algorithm) → `O(popcount)` instead of `O(32)`.
+**Key Idea**: `x & (x - 1)` clears the lowest set bit (why: [§0-4](#0-4-why-x--x---1-and-x---x-work)), so the loop
+runs **once per 1-bit** (Brian Kernighan's algorithm) → `O(popcount)` instead of `O(32)`.
 
 ```java
 // java
@@ -406,16 +604,16 @@ class Solution(object):
 > Adding a Letter), LC 1684 (Count the Number of Consistent Strings — `word & ~allowed == 0`).
 
 
-## 3) Bitmask DP
+## 2) Bitmask DP
 
 A **bitmask** lets an integer represent a **set of visited/chosen items** (bit `i` set ⇔ item
 `i` in the set). When a DP state needs "which subset of ≤ ~20 items have I used", the mask
 **is** the state — enabling exponential subset problems to run in `O(2^n · n)`.
 
-### 3-1) Subset enumeration (LC 78 recap)
+### 2-1) Subset enumeration (LC 78 recap)
 
 Iterating `mask` from `0` to `2^n − 1` visits **every** subset exactly once; bit tests pick
-members (see [2-12](./bit_manipulation_examples.md#12-subsets--lc-78--the-bitmask-enumeration-)). Handy mask idioms:
+members (see [§12 of the worked examples](./bit_manipulation_examples.md#12-subsets--lc-78--the-bitmask-enumeration-)). Handy mask idioms:
 
 ```python
 # python
@@ -426,7 +624,7 @@ bin(mask).count("1")     # size of the subset
 sub = (sub - 1) & mask   # enumerate all SUB-masks of `mask` (classic trick)
 ```
 
-### 3-2) TSP-style bitmask DP (Held–Karp)
+### 2-2) TSP-style bitmask DP (Held–Karp)
 
 The **Travelling Salesman** family is the canonical bitmask DP: `dp[mask][i]` = min cost of a
 path that has **visited exactly the cities in `mask`** and currently sits at city `i`.
@@ -466,7 +664,7 @@ int tsp(int[][] dist) {
 > is "which subset have I used/visited". Related LC: 847 (Shortest Path Visiting All Nodes),
 > 1349 (Maximum Students Taking Exam), 691 (Stickers to Spell Word), 526 (Beautiful Arrangement).
 
-### 3-3) "Fill buckets one at a time" bitmask DP — LC 698 ⭐⭐⭐⭐⭐
+### 2-3) "Fill buckets one at a time" bitmask DP — LC 698 ⭐⭐⭐⭐⭐
 
 **Pattern**: partition-into-`k`-equal-groups problems look like they need `k` nested searches.
 The trick is to **stop tracking which bucket** you are filling and only track:
@@ -601,3 +799,31 @@ grouped by which property of the bit operators they lean on:
 | [Counting & transforming bits](./bit_manipulation_examples.md#counting--transforming-bits) | `x & (x-1)` clears the lowest set bit | LC 191, 338, 190, 231 |
 | [Arithmetic without arithmetic](./bit_manipulation_examples.md#arithmetic-without-arithmetic) | XOR is addition without carry; AND finds the carry | LC 371, 67, 29 |
 | [Enumerating & constructing](./bit_manipulation_examples.md#enumerating-and-constructing-with-bits) | an integer *is* a subset, and counting up visits every one | LC 78, 89, 201 |
+
+## Summary
+
+### Pick the technique from the question
+
+| The problem says… | Reach for | Section |
+| ----------------- | --------- | ------- |
+| "every element appears twice except one" | XOR the whole array | [XOR — cancelling pairs](./bit_manipulation_examples.md#xor--cancelling-pairs) |
+| "count the 1 bits" / "for every `i` in `0..n`" | `x & (x-1)` loop, or DP on `i >> 1` | [§1-3](#1-3-counting-set-bits-population-count) |
+| "sum over all pairs" of a bit property | loop the 32 **bit columns**, not the pairs | [§1-4](#1-4-counting-over-bit-columns--lc-461--lc-477) |
+| lowercase words, "share a letter" / "unique characters" | a 26-bit letter mask | [§1-5](#1-5-a-bitmask-as-a-character-set--lc-318-) |
+| a small fixed alphabet + a sliding window | pack `k` bits per symbol, roll with `<<` and a mask | [Variation B](#variation-b--pack-fixed-width-symbols-into-a-rolling-int-key-lc-187) |
+| "choose a subset", `n ≤ ~20` | `dp[mask]`, bitmask DP | [§2](#2-bitmask-dp) |
+| "partition into `k` equal groups" | `dp[mask]` = fill level, `% target` | [§2-3](#2-3-fill-buckets-one-at-a-time-bitmask-dp--lc-698-) |
+| "add / divide without `+` or `/`" | XOR = sum, AND = carry | [Arithmetic without arithmetic](./bit_manipulation_examples.md#arithmetic-without-arithmetic) |
+| "maximum XOR of two numbers" | binary trie — see [trie.md](./trie.md) | — |
+
+### The five bugs that fail a bit-manipulation submission
+
+1. **`while (x != 0) x >>= 1` on a negative `int`** — arithmetic shift feeds in 1s forever.
+   Use `>>>` in Java, or `for i in range(32)` in Python. ([§0-5](#0-5-shifts---and-javas-), [§0-6](#0-6-python-is-not-java-here-))
+2. **Missing parentheses** — write `(x & 1) == 0`, never `x & 1 == 0`. ([§0-7](#0-7-precedence--parenthesise-everything-))
+3. **`Integer.MIN_VALUE` has no positive twin** — `Math.abs` and unary `-` both return it
+   unchanged, so negate-then-divide silently breaks. ([§0-3](#0-3-twos-complement--how-negatives-are-stored-))
+4. **`1 << i` overflows at `i >= 31`** — use `1L << i` (and remember Java masks the shift
+   count, so `1 << 32 == 1`). ([§0-2](#0-2-fixed-width--an-int-is-a-32-bit-box), [§0-5](#0-5-shifts---and-javas-))
+5. **Porting a 32-bit loop to Python unchanged** — Python never overflows, so every step
+   needs `& 0xFFFFFFFF` and the result needs converting back. ([§0-6](#0-6-python-is-not-java-here-))

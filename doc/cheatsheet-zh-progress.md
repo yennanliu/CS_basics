@@ -41,7 +41,7 @@ half-translated sheet renders with English gaps rather than failing.
   is what makes a problem findable on LeetCode itself.
 
 
-## Status — 5061 / 5070 sections (100%)
+## Status — 5060 / 5090 sections (99%)
 
 | Sheet | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -71,8 +71,8 @@ half-translated sheet renders with English gaps rather than failing.
 | [binary_search](./cheatsheet/binary_search.md) | 54 | [✅](../i18n/zh/binary_search.md) |
 | [binary_search_examples](./cheatsheet/binary_search_examples.md) | 43 | [✅](../i18n/zh/binary_search_examples.md) |
 | [binary_search_on_answer](./cheatsheet/binary_search_on_answer.md) | 42 | [✅](../i18n/zh/binary_search_on_answer.md) |
-| [binary_tree](./cheatsheet/binary_tree.md) | 74 | [✅](../i18n/zh/binary_tree.md) |
-| [bit_manipulation](./cheatsheet/bit_manipulation.md) | 22 | [✅](../i18n/zh/bit_manipulation.md) |
+| [binary_tree](./cheatsheet/binary_tree.md) | 74 | [72/74](../i18n/zh/binary_tree.md) |
+| [bit_manipulation](./cheatsheet/bit_manipulation.md) | 33 | [✅](../i18n/zh/bit_manipulation.md) |
 | [bit_manipulation_examples](./cheatsheet/bit_manipulation_examples.md) | 22 | [✅](../i18n/zh/bit_manipulation_examples.md) |
 | [bst](./cheatsheet/bst.md) | 61 | [✅](../i18n/zh/bst.md) |
 | [bst_advanced](./cheatsheet/bst_advanced.md) | 51 | [✅](../i18n/zh/bst_advanced.md) |
@@ -130,8 +130,8 @@ half-translated sheet renders with English gaps rather than failing.
 | [n_sum](./cheatsheet/n_sum.md) | 16 | [✅](../i18n/zh/n_sum.md) |
 | [ood_design](./cheatsheet/ood_design.md) | 34 | [✅](../i18n/zh/ood_design.md) |
 | [palindrome](./cheatsheet/palindrome.md) | 66 | [✅](../i18n/zh/palindrome.md) |
-| [prefix_sum](./cheatsheet/prefix_sum.md) | 80 | [✅](../i18n/zh/prefix_sum.md) |
-| [prefix_sum_advanced](./cheatsheet/prefix_sum_advanced.md) | 14 | [✅](../i18n/zh/prefix_sum_advanced.md) |
+| [prefix_sum](./cheatsheet/prefix_sum.md) | 80 | [76/80](../i18n/zh/prefix_sum.md) |
+| [prefix_sum_advanced](./cheatsheet/prefix_sum_advanced.md) | 23 | [10/23](../i18n/zh/prefix_sum_advanced.md) |
 | [prefix_sum_examples](./cheatsheet/prefix_sum_examples.md) | 15 | [✅](../i18n/zh/prefix_sum_examples.md) |
 | [priority_queue](./cheatsheet/priority_queue.md) | 3 | [✅](../i18n/zh/priority_queue.md) |
 | [python_gotchas](./cheatsheet/python_gotchas.md) | 44 | [✅](../i18n/zh/python_gotchas.md) |
@@ -163,7 +163,7 @@ half-translated sheet renders with English gaps rather than failing.
 | [time_space_complexity](./cheatsheet/time_space_complexity.md) | 39 | [✅](../i18n/zh/time_space_complexity.md) |
 | [topology_sorting](./cheatsheet/topology_sorting.md) | 47 | [✅](../i18n/zh/topology_sorting.md) |
 | [topology_sorting_examples](./cheatsheet/topology_sorting_examples.md) | 16 | [✅](../i18n/zh/topology_sorting_examples.md) |
-| [tree](./cheatsheet/tree.md) | 55 | [54/55](../i18n/zh/tree.md) |
+| [tree](./cheatsheet/tree.md) | 55 | [52/55](../i18n/zh/tree.md) |
 | [tree2](./cheatsheet/tree2.md) | 101 | [100/101](../i18n/zh/tree2.md) |
 | [tree_backtrack](./cheatsheet/tree_backtrack.md) | 17 | [✅](../i18n/zh/tree_backtrack.md) |
 | [tree_codec](./cheatsheet/tree_codec.md) | 26 | [✅](../i18n/zh/tree_codec.md) |
