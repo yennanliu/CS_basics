@@ -134,6 +134,50 @@ FROM my_num;
 
 ### 7. Given tables: movie, actor (multi to multi relations), please design a data model and query that can report number of actor with given movie-id/movie-name ?
 
+- A many-to-many relation needs a `junction (bridge) table`. Never store a comma-separated list of actor ids — it cannot be indexed, joined or constrained.
+
+```sql
+CREATE TABLE movie (
+  movie_id   INT PRIMARY KEY,
+  name       VARCHAR(200) NOT NULL,
+  release_yr SMALLINT
+);
+
+CREATE TABLE actor (
+  actor_id INT PRIMARY KEY,
+  name     VARCHAR(200) NOT NULL
+);
+
+-- the junction table: one row per (movie, actor) pair
+CREATE TABLE movie_actor (
+  movie_id INT NOT NULL REFERENCES movie(movie_id),
+  actor_id INT NOT NULL REFERENCES actor(actor_id),
+  role     VARCHAR(200),                    -- attributes OF THE RELATIONSHIP live here
+  PRIMARY KEY (movie_id, actor_id),         -- composite PK = dedupe for free
+  INDEX idx_actor (actor_id, movie_id)      -- serves the reverse lookup "films of an actor"
+);
+```
+
+```sql
+-- number of actors for a given movie id
+SELECT COUNT(*) AS actor_cnt
+FROM   movie_actor
+WHERE  movie_id = 123;                       -- index-only: no join needed
+
+-- ... by movie name
+SELECT m.movie_id, m.name, COUNT(ma.actor_id) AS actor_cnt
+FROM   movie m
+LEFT   JOIN movie_actor ma ON ma.movie_id = m.movie_id   -- LEFT JOIN -> movies with 0 actors still report 0
+WHERE  m.name = 'The Matrix'
+GROUP  BY m.movie_id, m.name;
+```
+
+- Talking points an interviewer listens for
+	- the composite PK `(movie_id, actor_id)` both dedupes and indexes the forward lookup; the reverse direction needs its own index
+	- `LEFT JOIN` + `COUNT(ma.actor_id)` (not `COUNT(*)`) so an actorless movie counts 0, not 1
+	- movie names are not unique — id is the real key, name is a lookup convenience
+	- if this count is read constantly, `denormalize` it into `movie.actor_cnt` maintained by a trigger or the application, and accept the write cost
+
 
 ### 8. Solve the "many-to-many" DB design problem?
 - https://dzone.com/articles/how-to-handle-a-many-to-many-relationship-in-datab
@@ -622,6 +666,53 @@ SELECT Avg(Distinct salary) -- = sum(Distinct salary) / Count(Distinct Salary)
 ```
 
 ### 21. Explain/demo on `hierarchy select` in SQL ?
+
+- "Hierarchy select" = walking a `self-referencing` table (employee → manager, category → parent, comment → parent). The portable tool is a `recursive CTE`.
+
+```sql
+CREATE TABLE employee (
+  emp_id     INT PRIMARY KEY,
+  name       VARCHAR(100),
+  manager_id INT REFERENCES employee(emp_id)   -- self reference; NULL for the CEO
+);
+```
+
+```sql
+-- everyone under manager 1, with their depth in the tree
+WITH RECURSIVE org AS (
+
+    -- 1) ANCHOR: where the walk starts
+    SELECT emp_id, name, manager_id, 1 AS lvl, CAST(name AS CHAR(1000)) AS path
+    FROM   employee
+    WHERE  emp_id = 1
+
+    UNION ALL
+
+    -- 2) RECURSIVE part: join the table back onto the rows found so far
+    SELECT e.emp_id, e.name, e.manager_id, o.lvl + 1, CONCAT(o.path, ' > ', e.name)
+    FROM   employee e
+    JOIN   org o ON e.manager_id = o.emp_id
+    WHERE  o.lvl < 10                      -- depth guard: a cycle otherwise loops forever
+)
+SELECT lvl, path FROM org ORDER BY path;
+```
+
+```text
+lvl | path
+----+---------------------------
+  1 | Ada
+  2 | Ada > Brian
+  3 | Ada > Brian > Chen
+  2 | Ada > Dara
+```
+
+- Notes
+	- `UNION ALL` (not `UNION`) — dedup on every iteration is expensive and usually wrong here
+	- reverse the join (`o.manager_id = e.emp_id`) to walk `upward` to the root instead
+	- always bound the recursion (a depth column, or `path NOT LIKE '%' || name || '%'`): real data has cycles
+	- vendor shortcuts exist — Oracle's `CONNECT BY PRIOR`, SQL Server's `hierarchyid` — but the recursive CTE is ANSI and works in MySQL 8+, Postgres, SQL Server and SQLite
+	- alternatives when reads dominate: `materialized path` (store `/1/4/9/`), `nested sets`, or a `closure table` (one row per ancestor-descendant pair) — all trade write cost for `O(1)` subtree reads
+	- see also 23) below
 
 ### 22. DB model questions?
 - https://www.toptal.com/data-modeling/interview-questions

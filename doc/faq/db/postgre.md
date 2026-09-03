@@ -66,9 +66,26 @@ SELECT floor(35.7)
 #35
 ```
 
-### 10) round(numeric,int)
+### 10) round(numeric,int) : round to N decimal places
+```sql
+SELECT round(35.7856, 2);
+-- 35.79
 
-### 11) age(timestamp1,timestamp2)
+-- NOTE: the 2-argument form takes `numeric`, NOT `double precision`
+SELECT round(35.7856::numeric, 2);   -- cast when the column is float8
+```
+
+### 11) age(timestamp1,timestamp2) : the interval between two timestamps
+```sql
+SELECT age(timestamp '2026-09-03', timestamp '1990-01-15');
+-- 36 years 7 mons 19 days          <- calendar-aware (years/months), not just seconds
+
+SELECT age(timestamp '1990-01-15');
+-- same, measured against current_date (one-argument form)
+
+-- For a plain elapsed duration, subtract instead:
+SELECT '2026-09-03'::timestamp - '2026-08-30'::timestamp;   -- 4 days
+```
 
 ### 12) date_trunc(text,timestamp)
 ```sql

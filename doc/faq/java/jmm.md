@@ -1,8 +1,7 @@
 # JMM FAQ (Java Memory Model)
 
-- https://javaguide.cn/java/jvm/memory-area.html#%E5%A0%86
-- https://pdai.tech/md/java/jvm/java-jvm-jmm.html
-- https://javaguide.cn/java/concurrent/jmm.html#happens-before-%E5%8E%9F%E5%88%99%E6%98%AF%E4%BB%80%E4%B9%88
+> **Scope** — the rules for when one thread's write becomes visible to another: atomicity, visibility, ordering, happens-before, and what `volatile`, `synchronized` and `final` each guarantee.
+> **See also**: [`java_multi_thread.md`](./java_multi_thread.md) — the tools that apply these rules; [`jvm.md`](./jvm.md) — the memory *areas* (a different topic from this memory *model*).
 
 ## Overview
 
@@ -101,3 +100,17 @@ private static volatile Singleton instance;
 | `synchronized` | ✓ | ✓ | ✓ |
 | `final` (immutable) | ✓ (never changes) | ✓ (after safe construction) | ✓ |
 | Atomic classes | ✓ (CAS) | ✓ | ✓ |
+
+**A data race is undefined behaviour, not "a stale value".** Without a happens-before
+edge the compiler may hoist the read out of a loop entirely, so a thread polling a
+non-`volatile` flag can spin forever even though the writer set it long ago. That is the
+argument for reaching for one of the four rows above rather than hoping.
+
+---
+
+## References
+
+- [JavaGuide — JMM](https://javaguide.cn/java/concurrent/jmm.html)
+- [pdai — Java JVM JMM](https://pdai.tech/md/java/jvm/java-jvm-jmm.html)
+- [`java_multi_thread.md`](./java_multi_thread.md) — locks, atomics, thread pools
+- [`jvm.md`](./jvm.md) — runtime memory areas and GC

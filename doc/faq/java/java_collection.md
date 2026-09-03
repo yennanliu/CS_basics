@@ -1,7 +1,7 @@
 # Java Collection FAQ
 
-- https://javaguide.cn/java/collection/java-collection-questions-01.html
-- https://javaguide.cn/java/collection/java-collection-questions-02.html
+> **Scope** — the collections framework: the hierarchy, `ArrayList` vs `LinkedList`, `HashMap` and `ConcurrentHashMap` internals, and the Big-O of every operation.
+> **See also**: [`java_generics.md`](./java_generics.md) — the type parameters these APIs use; [`java_functional.md`](./java_functional.md) — streaming over them; [`java_multi_thread.md`](./java_multi_thread.md) — the concurrent variants.
 
 ## 1) The Collection Hierarchy
 
@@ -122,14 +122,40 @@ Thread-safe map for high concurrency, far better than `Hashtable` /
 ## 7) Common Gotchas
 
 - **Fail-fast iterators**: modifying a collection during iteration (except via
-  `Iterator.remove()`) throws `ConcurrentModificationException`.
+  `Iterator.remove()`) throws `ConcurrentModificationException`. Use `removeIf` for
+  conditional removal.
 - **`Arrays.asList()`** returns a fixed-size list backed by the array — `add`/`remove` throw.
+  `List.of(...)` is fully immutable and rejects `null`; `new ArrayList<>(List.of(...))`
+  when you need a mutable copy.
 - Prefer interfaces in declarations: `List<T> x = new ArrayList<>()`.
 - Choose `ArrayDeque` over `Stack` (legacy, synchronized) for stacks.
+- **A mutable key breaks the map**: change a field that `hashCode()` uses after inserting
+  and the entry can never be found again.
+- Collections store objects, so `List<Integer>` boxes every element — use an `int[]` or a
+  primitive stream in hot paths.
+- `HashMap` iteration order is unspecified and *changes on resize*; use `LinkedHashMap`
+  when order matters and `TreeMap` when sorting does.
 
-### how does java implement HashMap ?
-- `Array + Linked list` (list treeifies to a red-black tree per bucket in Java 8+)
-- https://juejin.cn/post/6985369345207566373#heading-7
-- https://lushunjian.github.io/blog/2019/01/02/HashMap%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/
-- https://javaguide.cn/java/collection/java-collection-questions-02.html#hashmap-%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0
-- https://javaguide.cn/java/collection/hashmap-source-code.html#hashmap-%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95%E6%B5%8B%E8%AF%95
+---
+
+## 8) Choosing, in One Table
+
+| You need | Use |
+|----------|-----|
+| Indexed access, iteration | `ArrayList` |
+| Stack, queue, deque | `ArrayDeque` |
+| Uniqueness, `O(1)` membership | `HashSet` |
+| Uniqueness + sorted / range queries | `TreeSet` |
+| Key → value lookup | `HashMap` |
+| Lookup + insertion order (or LRU) | `LinkedHashMap` |
+| Lookup + sorted keys, `floor`/`ceiling` | `TreeMap` |
+| Top-K, priority scheduling | `PriorityQueue` |
+| Shared across threads | `ConcurrentHashMap`, `CopyOnWriteArrayList`, a `BlockingQueue` |
+
+---
+
+## References
+
+- [JavaGuide — collection questions](https://javaguide.cn/java/collection/java-collection-questions-01.html) · [part 2](https://javaguide.cn/java/collection/java-collection-questions-02.html)
+- [JavaGuide — HashMap source walk-through](https://javaguide.cn/java/collection/hashmap-source-code.html)
+- [`java_generics.md`](./java_generics.md) · [`java_functional.md`](./java_functional.md) · [`java_multi_thread.md`](./java_multi_thread.md)

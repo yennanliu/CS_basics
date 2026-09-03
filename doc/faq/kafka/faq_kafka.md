@@ -95,8 +95,28 @@
 	<p align="center"><img src="../../pic/kafka_msg.png"></p>
 
 ### 1'') How kafka find .log file via index ?
+- A partition on disk is a series of `segments`. Each segment is a set of files named by the `base offset` of its first record:
+	- `00000000000000368769.log` : the records
+	- `00000000000000368769.index` : a `SPARSE` map of `relative offset -> byte position` in the .log
+	- `00000000000000368769.timeindex` : `timestamp -> relative offset` (used by `offsetsForTimes`)
+- Lookup of offset `N` is 3 steps, all `O(log n)` then a short scan:
+	- step 1) `binary search on the file NAMES` -> the segment whose base offset is the largest one <= N
+	- step 2) `binary search inside the .index` -> the nearest indexed entry <= N, giving a byte position
+	- step 3) `sequential scan` from that position in the .log until the record with offset N
+- Why sparse (one entry per `log.index.interval.bytes`, 4KB by default) : a dense index would be as large as the data. Sparse index = small enough to stay in page cache, scan cost bounded by the interval
+- Reading is then a `sendfile()` from page cache to socket (zero copy), which is the other half of why kafka is fast
 
 ### 1''') Explain how does zookeeper (ZK) work in kafka ? how kafka interact with offset via ZK ?
+- What ZK held (kafka <= 2.x)
+	- broker registration + liveness (ephemeral nodes)
+	- `controller election` (the broker that assigns partition leaders)
+	- topic / partition / replica metadata, config, ACL, quota
+- Offsets
+	- `kafka 0.8 and before` : consumer offsets were committed to ZK -> ZK writes became the bottleneck (ZK is built for low-write coordination, not per-message commits)
+	- `kafka 0.9+` : offsets are committed to an internal compacted topic `__consumer_offsets`, keyed by `<group, topic, partition>`. ZK is no longer in the consume path
+- `KRaft` (KIP-500, production-ready in 3.3, ZK removed in 4.0) : metadata moves into an internal Raft-replicated log managed by controller brokers
+	- no external ZK to operate, faster failover, and metadata scales to millions of partitions
+- Interview one-liner : "ZK coordinated the cluster, never the data path; offsets left ZK in 0.9 and ZK itself left in KRaft"
 
 ### 2) How does kafka implement `exactly once` ?
 - please check below ` Idempotence (冪等性)`, ` transactional (事務性)`
@@ -141,6 +161,24 @@
 	- https://blog.csdn.net/lbh199466/article/details/89917693
 
 ### 4) Explain kafka basic data model ?
+- `Record` : `key`, `value`, `headers`, `timestamp`, and the broker-assigned `offset`
+- `Topic` : a named, append-only log. A logical stream, split into partitions
+- `Partition` : the unit of ordering, storage and parallelism
+	- ordering is guaranteed `WITHIN a partition ONLY`, never across a topic
+	- the partition is chosen by `hash(key) % partitions` — so the same key always lands in the same partition (that is how per-entity ordering is achieved)
+	- a null key -> sticky/round-robin batching across partitions
+- `Segment` : the files a partition is stored as (see 1'')
+- `Replica` : each partition has `replication.factor` copies — one `leader` (all reads/writes) and followers that fetch from it
+- `Consumer group` : a set of consumers sharing a subscription. One partition -> at most one consumer in the group, so `partition count is the ceiling on parallelism`
+- `Offset` : a consumer's position in a partition. Data is NOT deleted on read — it is retained by `retention.ms` / `retention.bytes`, or compacted by key (`cleanup.policy=compact`), which is what makes replay possible
+
+```text
+topic "orders"
+ ├─ partition 0 : [0][1][2][3][4]        ← ordered, immutable, append-only
+ ├─ partition 1 : [0][1][2]                 leader on broker A, followers on B,C
+ └─ partition 2 : [0][1][2][3]
+consumer group "billing" : c1 → p0, c2 → p1+p2   (a 4th consumer would idle)
+```
 
 ### 5) Explain how does kafka save data (low level, file system level) ?
 - File
@@ -148,8 +186,26 @@
 	- .idnex : file save .log files' index 
 
 ### 6) Explain kafka master, slaves relation ? regarding data partition, ... ?
+- Kafka has NO cluster-wide master for data. Leadership is `per partition`, so load spreads across every broker
+	- `leader replica` : serves ALL produce and consume traffic for that partition
+	- `follower replica` : does nothing but fetch from the leader to stay in sync (it is a hot standby, not a read replica — though `follower fetching` for locality exists since 2.4)
+- The `controller` (one broker, elected via ZK or KRaft) is the cluster-level coordinator: it detects broker failure and reassigns partition leaders
+- Failover : if a leader dies, the controller promotes a replica `from the ISR`
+	- `unclean.leader.election.enable=false` (default) : refuse to promote an out-of-sync replica -> availability suffers, data does not
+	- `= true` : promote anyway -> stays available, silently loses records
+- `Preferred leader` : the first replica in the assignment list; kafka rebalances back to it so leadership stays evenly spread
+- Durability knobs work together : `replication.factor=3` + `min.insync.replicas=2` + `acks=all` means a write is acknowledged only once 2 replicas hold it, so one broker can die with no loss
 
 ### 7) Steps when a consumer consumes a kafka topic ?
+- step 1) `bootstrap` : connect to `bootstrap.servers`, fetch cluster metadata (which broker leads which partition)
+- step 2) `find the group coordinator` : the broker that owns this group's partition of `__consumer_offsets`
+- step 3) `join + sync group` : the coordinator picks a leader consumer, which runs the assignor (`range`, `roundrobin`, `sticky`, or `cooperative-sticky` — the last avoids a stop-the-world rebalance) and hands back the assignment
+- step 4) `position` : for each assigned partition, start from the committed offset, or from `auto.offset.reset` (`earliest` / `latest`) if there is none
+- step 5) `poll loop` : `poll()` fetches batches from each partition leader, and also sends heartbeats and triggers rebalances. Process the records, then commit
+	- `enable.auto.commit=true` : commits in the background -> `at most once` risk (committed then crashed before processing)
+	- manual `commitSync` AFTER processing -> `at least once`, so make the consumer idempotent
+- step 6) `rebalance` when a member joins/leaves or `max.poll.interval.ms` is exceeded (usually "processing was too slow") — partitions are reassigned and step 3 repeats
+- step 7) `close()` : leaves the group cleanly so the group does not wait for `session.timeout.ms` to notice
 
 ### 8) Explain kafka's Idempotence (冪等性)
 - Idempotence -> when run same process multiple times, the result SHOULD BE THE SAME
@@ -217,11 +273,22 @@
 	- https://blog.csdn.net/zc19921215/article/details/108466393#:~:text=Kafka%E5%B9%82%E7%AD%89%E6%80%A7%EF%BC%9A,number%E8%BF%99%E4%B8%A4%E4%B8%AA%E6%A6%82%E5%BF%B5%E3%80%82
 
 ### 9') Explain Transaction Coordinator and it mechanism ?
+- `Transaction Coordinator (TC)` is a module `inside a broker` — the transactional counterpart of the group coordinator
+- Which broker : `hash(transactional.id) % partitions of __transaction_state` — so one transactional producer always talks to the same TC, and the TC's state survives failover because `__transaction_state` is a replicated, compacted topic
+- What it owns
+	- the transaction log : `<transactional.id, PID, producer epoch, state, partitions involved, timeout>`
+	- states : `Empty -> Ongoing -> PrepareCommit / PrepareAbort -> CompleteCommit / CompleteAbort`
+	- writing `Transaction Markers (control batches)` into every partition the transaction touched
+- Mechanism = `two-phase commit` (detail in 9 above): phase 1 writes PREPARE_* to the transaction log (the point of no return), phase 2 writes the markers to the data partitions, then the final state goes back to the log
+- `Zombie fencing` : `InitPidRequest` bumps the `producer epoch`, so an old producer instance that comes back from a GC pause is rejected — this is what makes "exactly once" hold across a producer restart
+- Reader side : a consumer with `isolation.level=read_committed` skips records whose transaction is aborted or still open (it reads only up to the `LSO`, the last stable offset)
 
 ### 10) Explain AR（Assigned Replicas), ISR (In-sync replica), and OSR（Out-of-Sync Replicas）?
-- AR（Assigned Replicas)
-- ISR (In-sync replica)
-- OSR（Out-of-Sync Replicas）
+- `AR (Assigned Replicas)` : every replica assigned to the partition. `AR = ISR + OSR`
+- `ISR (In-Sync Replicas)` : the replicas (leader included) that have caught up with the leader within `replica.lag.time.max.ms` (30s by default). Only an ISR member may be elected leader (unless unclean election is enabled), and `acks=all` means "acknowledged by all of the ISR"
+- `OSR (Out-of-Sync Replicas)` : replicas that have fallen behind — a slow disk, a network partition, or a broker restarting. They keep fetching and rejoin the ISR once caught up
+- Why it matters : `min.insync.replicas` counts the ISR, so if too many replicas fall out, producers with `acks=all` start failing with `NotEnoughReplicas` — the cluster chooses consistency over availability, by design
+- `HW (high watermark)` = the smallest offset replicated to all of the ISR; consumers can never read past it, which is why an un-replicated record is invisible rather than lost-after-read
 - Ref
 	- http://hk.noobyard.com/article/p-azlfvsay-mq.html
 	- https://www.gushiciku.cn/pl/pTAJ/zh-tw

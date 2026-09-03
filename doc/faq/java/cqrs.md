@@ -1,5 +1,18 @@
 # Command Query Responsibility Segregation (CQRS)
 
+> **Scope** — splitting a system's write model from its read model: what CQRS buys (simplicity, scalability, speed), what it costs (eventual consistency, projectors, duplication), and when it is worth it.
+> **See also**: [`../backend/api_design.md`](../backend/api_design.md) — the API surface in front of it; [`../backend/be_programming_notes_pt2.md`](../backend/be_programming_notes_pt2.md) — outbox, sagas and idempotent consumers, which a CQRS projector needs.
+
+| | Command | Query |
+|---|---------|-------|
+| Changes state | **Yes** | No |
+| Returns data | No (an id/ack at most) | **Yes** |
+| Model | Normalized, strongly consistent, invariant-enforcing | De-normalized, read-optimised (materialized views) |
+| Scales with | Write throughput | Read throughput — usually the far larger number |
+
+**CQRS is not event sourcing**; the two are often used together (events as the write log,
+projections as the read model) but either works without the other.
+
 - 命令與查詢責任分離 (command, query)
 - 分開設計以下兩種操作：會改變系統狀態但不會回傳值的操作，稱之為Command，
   以及不會改變狀態但會回傳值的操作，稱為Query 
@@ -45,8 +58,22 @@
 	
 	- Separate repositories lead to problems of consistency, and it’s difficult to keep the write and read repositories in perfect sync always; we often have to settle for eventual consistency
 
-## Ref
-- https://teddy-chen-tw.blogspot.com/2022/07/8cqrs.html
+## When to use it
 
-- example code
+| Reach for CQRS when | Don't when |
+|---------------------|-----------|
+| Reads vastly outnumber writes, and the two need different storage or shapes | The domain is simple CRUD — you are adding a second model for nothing |
+| The write model is genuinely complex (invariants, aggregates) while reads are flat projections | Readers cannot tolerate any staleness |
+| Read and write need to scale, deploy or fail independently | The team has no appetite for eventual consistency and its debugging |
+
+A middle ground that costs almost nothing: keep one database, but separate the *code*
+paths — command handlers that mutate aggregates, and query handlers that read
+projections/DTOs directly. Split the storage only when the traffic asks for it.
+
+---
+
+## References
+- [Teddy Chen — CQRS (Traditional Chinese)](https://teddy-chen-tw.blogspot.com/2022/07/8cqrs.html)
+- [Martin Fowler — CQRS](https://martinfowler.com/bliki/CQRS.html)
+- [`../backend/api_design.md`](../backend/api_design.md) · [`../backend/be_programming_notes_pt2.md`](../backend/be_programming_notes_pt2.md)
 	- https://www.baeldung.com/cqrs-event-sourcing-java
