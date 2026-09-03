@@ -38,7 +38,7 @@ num does not have any leading zeros except for the zero itself.
 
 
 # V0
-# IDEA: STACK (stack[-1] > digit) (gpt)
+# IDEA: Monotonic Stack / Greedy (stack[-1] > digit) (gpt)
 """
 
 Dry run
@@ -68,6 +68,38 @@ Answer:
 """
 # time = O(n)
 # space = O(n)
+"""
+NOTE !!!
+
+
+1. Monotonic Stack
+
+2. code structure
+
+    ```
+    for i in range(len(num)):
+
+        while st and st[-1] > num[i] and k > 0:
+                st.pop()
+                k -= 1
+
+        st.append(num[i])
+    ```
+
+
+3.  handle `k > 0` case
+
+ 
+    ```
+        if k > 0:
+            st = st[:-k]
+    ```
+
+
+4. the `lstrip("0")` op
+    -> ONLY remove leading 0 from left hand side, but NOT right
+
+"""
 class Solution(object):
     def removeKdigits(self, num, k):
 
@@ -77,6 +109,7 @@ class Solution(object):
             
         st = []
         
+        # NOTE !!! use `for loop`
         for digit in num:
             # Pop from stack if the top is GREATER than the current digit
             # and we still have operations left (k > 0)
@@ -85,6 +118,10 @@ class Solution(object):
                 k -= 1
             st.append(digit)
             
+
+        # NOTE !!!  handle `k > 0` case
+        #           -> remove from the end (right hand side)
+
         # If we still have k left to remove (e.g., num was "1234")
         # remove them from the END of the stack
         if k > 0:
@@ -160,7 +197,7 @@ class Solution(object):
 
 
 # V0-2
-# IDEA: STACK (GEMINI)
+# IDEA: MONO STACK (GEMINI)
 # time = O(n)
 # space = O(n)
 class Solution(object):
@@ -196,6 +233,40 @@ class Solution(object):
         # If stripping leading zeros leaves an empty string, return "0"
         return res if res else "0"
 
+
+# V0-3
+# IDEA: MONO STACK (GPT)
+# time = O(n)
+# space = O(n)
+class Solution(object):
+    def removeKdigits(self, num, k):
+        if not num:
+            return "0"
+
+        if k == 0:
+            return num
+
+        st = []
+
+        for x in num:
+
+            # Remove previous larger digits
+            while st and k > 0 and st[-1] > x:
+                st.pop()
+                k -= 1
+
+            st.append(x)
+
+        # If we still have digits to remove,
+        # remove them from the end
+        while k > 0:
+            st.pop()
+            k -= 1
+
+        # Remove leading zeros
+        res = "".join(st).lstrip("0")
+
+        return res if res else "0"
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/81034522
