@@ -44,6 +44,58 @@ The start point of each interval is unique.
 
 """
 
+
+"""
+NOTE !!!
+
+
+the core of this LC is `BINRARY SEARCH`, 
+
+
+
+
+but NOT `mono stack` !!!!
+
+why ?
+
+-> 
+
+
+mono stack is good on below:
+
+```
+Monotonic stack 最擅長的是這種關係：
+
+對每個 element：
+    找左/右邊
+    第一個 > / < 某個值
+```
+
+but LC 436 is NOT looking for above;
+-> it wants `minimized` idx
+-> e.g.
+
+```
+current.end
+     ↓
+全體 intervals 的 starts
+     ↓
+找最小 start >= end
+```
+
+
+
+
+
+"""
+
+
+
+
+
+
+
+
 # V0
 # IDEA: BINRARY SEARCH (gpt)
 """
