@@ -441,6 +441,10 @@ function createLogger(containerId) {
         head.innerHTML = '<span>' + phase[1] + '</span>';
         el.appendChild(head);
         lastStep = null;
+        // A phase spends no step number, but it is still a row on screen:
+        // sync() is what takes the empty-state prompt down, and bellman-ford
+        // and floyd-warshall both open their run with one of these.
+        sync();
         follow(wasAtBottom);
         return;
       }
@@ -512,6 +516,9 @@ function initTracePanel() {
           lines.push('       ' + nt.textContent.trim());
         });
       });
+      // navigator.clipboard exists only in a secure context, so this is absent
+      // when the built site is previewed over http from another machine.
+      if (!navigator.clipboard) return;
       navigator.clipboard.writeText(lines.join('\n')).then(function() {
         var was = copy.textContent;
         copy.textContent = 'Copied';

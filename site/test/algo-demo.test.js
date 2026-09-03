@@ -211,6 +211,15 @@ test('the panel counter and empty state follow the trace', () => {
   assert.equal(rows(dom).length, 0);
 });
 
+test('a phase heading takes the empty-state prompt down', () => {
+  const dom = boot();
+  const empty = dom.window.document.querySelector('[data-trace-empty]');
+  const log = dom.window.createLogger('log');
+  // bellman-ford and floyd-warshall both open their run with one of these.
+  log.log('--- Iteration 1 ---');
+  assert.equal(empty.hidden, true, 'the prompt would print over the heading');
+});
+
 test('clear() restarts the numbering', () => {
   const dom = boot();
   const log = dom.window.createLogger('log');
@@ -223,9 +232,10 @@ test('clear() restarts the numbering', () => {
 // The CSS is the other half of the contract: a row class the stylesheet does
 // not know about renders as an undifferentiated line.
 test('every row class the logger emits is styled', () => {
-  for (const cls of ['.step-item', '.step-note', '.step-phase', '.step-n',
-                     '.step-main', '.is-latest', '.is-key', '.viz-log .k', '.viz-log .v']) {
-    assert.ok(STYLE.includes(cls.replace('.viz-log ', '')), `${cls} is unstyled`);
+  for (const sel of ['.viz-log .step-item', '.viz-log .step-note', '.viz-log .step-phase',
+                     '.viz-log .step-n', '.viz-log .step-main', '.viz-log .k', '.viz-log .v',
+                     '.step-item.is-latest', '.step-item.is-key']) {
+    assert.ok(STYLE.includes(sel), `${sel} is unstyled`);
   }
 });
 

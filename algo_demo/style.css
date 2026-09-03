@@ -183,9 +183,12 @@ main { padding: 32px 0; min-height: calc(100vh - 200px); }
 .viz-filter-empty { color: var(--text-muted); margin: 24px 0; }
 .algo-card[hidden], .algo-grid[hidden], .section-label[hidden],
 .viz-filter-empty[hidden] { display: none; }
-.visually-hidden {
-  position: absolute; width: 1px; height: 1px; overflow: hidden;
-  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+/* Named to match .sr-only in site/style.css. No `clip` fallback beside the
+   clip-path: the only engine that needs one is IE11, and this sheet is 88
+   var(--x) references deep, so it renders nothing there either way. */
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap;
 }
 
 /* ── Visualization layout ─────────────────────────────────────────────
