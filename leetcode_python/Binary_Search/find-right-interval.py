@@ -161,6 +161,47 @@ class Solution(object):
         return res
 
 
+# V0-2
+# IDEA: BINRARY SEARCH (GPT)
+# time = O(n log n)
+# space = O(n)
+from bisect import bisect_left
+
+
+class Solution(object):
+    def findRightInterval(self, intervals):
+        """
+        :type intervals: List[List[int]]
+        :rtype: List[int]
+        """
+        n = len(intervals)
+
+        if n == 0:
+            return []
+
+        # (start, original_index)
+        starts = sorted(
+            (interval[0], i)
+            for i, interval in enumerate(intervals)
+        )
+
+        # Only keep sorted starts for binary search
+        start_values = [start for start, _ in starts]
+
+        res = [-1] * n
+
+        for i, (start, end) in enumerate(intervals):
+
+            # Find the first start >= current end
+            idx = bisect_left(start_values, end)
+
+            if idx < n:
+                # Return original index
+                res[i] = starts[idx][1]
+
+        return res
+
+
 # V0
 # IDEA: SORT + HASHMAP (TLE) (gpt)
 # time = O(n^2)

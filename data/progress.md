@@ -67,7 +67,8 @@
 - backtrack.zh.html
 	- `Template 2: start_idx — i vs i + 1`
 
-- Bit Manipulation.md
+- bit_manipulation.zh.html
+	- `2-1) 子集列舉（LC 78 回顧）`
 
 - linked_list_examples.md
 
