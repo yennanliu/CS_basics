@@ -6,8 +6,12 @@
 	- `must_lc_list.md` (1st remaining ing)
 		- https://github.com/yennanliu/CS_basics/commit/fe72cf1ba0b3251d42603aa181e2438dfde16a7a
 
-	
-	- blind 75
+
+	- LC top 100 like (doing)
+
+ 	- blind 150 (doing)
+
+ 	- blind 75
 		- arrays & hashing (ok)
 		- 2 pointers (ok)
 		- 1D DP (ok)
@@ -22,8 +26,6 @@
 		- graph (ok)
 		- greedy (ok)
 		- invervals (ok)
-
-
 		- 2D DP (doing)
 
 		
