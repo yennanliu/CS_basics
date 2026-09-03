@@ -293,10 +293,13 @@ list(powers_of_two(20))        # [1, 2, 4, 8, 16]
 # python
 import itertools
 
-# A pipeline that never materialises the whole file
-lines   = (line.rstrip() for line in open("big.log"))
-errors  = (l for l in lines if "ERROR" in l)
-first10 = itertools.islice(errors, 10)
+# A pipeline that never materialises the whole file.
+# The `with` owns the file: build AND consume inside it, or the generator holds the
+# descriptor open until it is garbage collected.
+with open("big.log") as f:
+    lines   = (line.rstrip() for line in f)
+    errors  = (l for l in lines if "ERROR" in l)
+    first10 = list(itertools.islice(errors, 10))
 ```
 
 `yield from sub_generator()` delegates to another generator (and forwards `send`/throw).
@@ -427,15 +430,21 @@ class Closeable(Protocol):             # structural: anything with close() match
 # python
 from dataclasses import dataclass, field
 
-@dataclass(frozen=True, slots=True)    # frozen -> immutable + hashable; slots -> smaller
+@dataclass(frozen=True, slots=True)    # frozen -> no reassignment + generated __hash__
 class Point:
     x: int
     y: int
-    tags: list[str] = field(default_factory=list)   # never `= []`
+    tags: tuple[str, ...] = ()         # a list field would make __hash__ raise TypeError
+
+@dataclass                             # mutable: a list default MUST use default_factory
+class Cart:
+    items: list[str] = field(default_factory=list)   # never `= []`
 ```
 
 `@dataclass` generates `__init__`, `__repr__`, `__eq__` (and ordering with
-`order=True`). Alternatives: `NamedTuple` (immutable, tuple-like, lightweight),
+`order=True`). Note `frozen=True` is **shallow**: it blocks `p.x = 1`, but a mutable
+field can still be mutated in place, and hashing one raises `TypeError` — so freeze with
+immutable field types. Alternatives: `NamedTuple` (immutable, tuple-like, lightweight),
 `enum.Enum` (a closed set of constants), `TypedDict` (a dict with a fixed shape).
 
 ### `__slots__`
@@ -647,7 +656,9 @@ find_all("99023430990999", "99")           # [0, 8, 11, 12]
 
 - A module runs **once** on first import and is cached in `sys.modules`.
 - `if __name__ == "__main__":` guards code that should run only when the file is executed
-  directly — **required** for `multiprocessing` on macOS/Windows.
+  directly. Under the `spawn` / `forkserver` start methods (the default on macOS and
+  Windows) a child re-imports the main module, so **the code that starts processes or
+  pools must sit behind this guard** or it recurses.
 - Prefer **absolute imports** (`from myapp.db import conn`). Circular imports usually mean
   a layering problem; the local fix is to import inside the function.
 - Environments: `python -m venv .venv` for the standard tool; `uv` / `poetry` /
@@ -725,8 +736,10 @@ you are reading Python 2 code — the Python 3 equivalents are `range` (already 
 ## 17) Quickfire Interview Q&A
 
 **Q: `list` vs `tuple`?**
-Mutable vs immutable. Tuples are hashable (usable as dict keys), slightly smaller/faster,
-and signal "a fixed record"; lists signal "a homogeneous collection that changes".
+Mutable vs immutable. A tuple is hashable — and so usable as a dict key — **as long as
+every element it holds is hashable** (`hash(([],))` raises `TypeError`). Tuples are also
+slightly smaller/faster and signal "a fixed record"; lists signal "a homogeneous
+collection that changes".
 
 **Q: How is `dict` implemented?**
 An open-addressing hash table with a compact index array (3.6+), which is why iteration

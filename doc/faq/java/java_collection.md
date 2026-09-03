@@ -122,8 +122,9 @@ Thread-safe map for high concurrency, far better than `Hashtable` /
 ## 7) Common Gotchas
 
 - **Fail-fast iterators**: modifying a collection during iteration (except via
-  `Iterator.remove()`) throws `ConcurrentModificationException`. Use `removeIf` for
-  conditional removal.
+  `Iterator.remove()`) *may* throw `ConcurrentModificationException` — the check is
+  best-effort, so never write logic that depends on it. Use `removeIf` for conditional
+  removal.
 - **`Arrays.asList()`** returns a fixed-size list backed by the array — `add`/`remove` throw.
   `List.of(...)` is fully immutable and rejects `null`; `new ArrayList<>(List.of(...))`
   when you need a mutable copy.
@@ -150,7 +151,9 @@ Thread-safe map for high concurrency, far better than `Hashtable` /
 | Lookup + insertion order (or LRU) | `LinkedHashMap` |
 | Lookup + sorted keys, `floor`/`ceiling` | `TreeMap` |
 | Top-K, priority scheduling | `PriorityQueue` |
-| Shared across threads | `ConcurrentHashMap`, `CopyOnWriteArrayList`, a `BlockingQueue` |
+| A map shared across threads | `ConcurrentHashMap` |
+| A list read constantly, written rarely | `CopyOnWriteArrayList` (every write copies the array) |
+| Hand-off between producer and consumer threads | A bounded `BlockingQueue` |
 
 ---
 

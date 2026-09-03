@@ -67,7 +67,7 @@ bean in a proxy, which is why `@Transactional`, `@Async` and `@Cacheable` behave
 | Scope | One instance per | Notes |
 |-------|------------------|-------|
 | `singleton` (default) | Container | Created eagerly at start-up. **Must be stateless** — it is shared by every request thread |
-| `prototype` | Injection point | Spring does not manage its destruction |
+| `prototype` | Each request to the container | A new instance per `getBean`/`ObjectProvider` call — but injection into a singleton happens **once**, so that singleton keeps one instance forever. Spring does not manage prototype destruction |
 | `request` / `session` | HTTP request / session | Web only; injected as a proxy |
 | `application` / `websocket` | `ServletContext` / socket | Rare |
 
@@ -112,8 +112,11 @@ public class TimingAspect {
 
 ### The proxy rules that cause real bugs ⭐⭐⭐⭐⭐
 
-Spring AOP wraps the bean: a **JDK dynamic proxy** if it implements an interface,
-otherwise a **CGLIB subclass**. Advice runs only when the call arrives *through the
+Spring AOP wraps the bean in a **JDK dynamic proxy** (interface-based) or a **CGLIB
+subclass**. Which one depends on configuration, not just the type: plain Spring picks a
+JDK proxy when the bean implements an interface, while **Spring Boot sets
+`spring.aop.proxy-target-class=true`**, so CGLIB is the default there even for
+interface-backed beans. Advice runs only when the call arrives *through the
 proxy*. Therefore:
 
 - **Self-invocation is not advised.** `this.otherMethod()` inside the same class bypasses
@@ -158,10 +161,13 @@ Isolation levels and the anomalies they prevent are covered in
 [`../backend/後端面試題總整理.md`](../backend/後端面試題總整理.md) and demonstrated in
 [`../backend/db_isolation_demo_mysql.md`](../backend/db_isolation_demo_mysql.md).
 
-Other rules: keep transactions **short** (never hold one across an HTTP call), remember
-the transaction ends at the method boundary — so lazy-loading afterwards throws
-`LazyInitializationException` — and don't catch an exception inside the method and swallow
-it, because then the proxy sees a normal return and commits.
+Other rules: keep transactions **short** (never hold one across an HTTP call); remember
+the transaction ends at the method boundary, so lazy-loading a detached entity afterwards
+throws `LazyInitializationException` (Spring Boot's default `spring.jpa.open-in-view=true`
+hides this by keeping the persistence context open for the whole request — convenient, and
+the reason the failure only appears once someone turns it off); and don't catch an
+exception inside the method and swallow it, because then the proxy sees a normal return
+and commits.
 
 ---
 
@@ -220,8 +226,10 @@ public class App {
 }
 ```
 
-**How auto-configuration works**: starters put candidate `@Configuration` classes on the
-classpath (registered in `AutoConfiguration.imports`); each is guarded by `@Conditional`
+**How auto-configuration works**: a *starter* is a dependency aggregator — it pulls in the
+libraries plus `spring-boot-autoconfigure`, which is the jar that actually carries the
+candidate `@Configuration` classes (listed in its
+`META-INF/spring/…AutoConfiguration.imports`). Each candidate is guarded by `@Conditional`
 annotations — `@ConditionalOnClass`, `@ConditionalOnMissingBean`,
 `@ConditionalOnProperty`. So "add `spring-boot-starter-data-jpa` and a `DataSource`
 appears" is: the class is present, you did not define your own bean, therefore Boot
@@ -247,7 +255,7 @@ Prometheus), `/env` and `/loggers`. Expose only what you need, and secure the re
 | `@DataJpaTest` | JPA + an in-memory/Testcontainers DB | Repositories and queries |
 | `@SpringBootTest` | The whole context | A few end-to-end tests — slow, so don't make it the default |
 
-`@MockBean` replaces a bean in the context; Testcontainers gives a real database in
+`@MockBean` replaces a bean in the context (Spring Boot 3.4+ deprecates it in favour of `@MockitoBean`); Testcontainers gives a real database in
 Docker, which is worth it as soon as your SQL is non-trivial. See
 [`java_tdd.md`](./java_tdd.md) for test structure.
 

@@ -152,10 +152,13 @@ CREATE TABLE actor (
 CREATE TABLE movie_actor (
   movie_id INT NOT NULL REFERENCES movie(movie_id),
   actor_id INT NOT NULL REFERENCES actor(actor_id),
-  role     VARCHAR(200),                    -- attributes OF THE RELATIONSHIP live here
-  PRIMARY KEY (movie_id, actor_id),         -- composite PK = dedupe for free
-  INDEX idx_actor (actor_id, movie_id)      -- serves the reverse lookup "films of an actor"
+  role     VARCHAR(200),                 -- attributes OF THE RELATIONSHIP live here
+  PRIMARY KEY (movie_id, actor_id)       -- composite PK = dedupe + the forward index
 );
+
+-- serves the reverse lookup "which films did this actor appear in?"
+-- (a separate statement, so this DDL runs on PostgreSQL as well as MySQL)
+CREATE INDEX idx_movie_actor_actor ON movie_actor (actor_id, movie_id);
 ```
 
 ```sql
@@ -678,7 +681,7 @@ CREATE TABLE employee (
 ```
 
 ```sql
--- everyone under manager 1, with their depth in the tree
+-- everyone up to 10 levels under manager 1, with their depth in the tree
 WITH RECURSIVE org AS (
 
     -- 1) ANCHOR: where the walk starts
@@ -709,7 +712,11 @@ lvl | path
 - Notes
 	- `UNION ALL` (not `UNION`) — dedup on every iteration is expensive and usually wrong here
 	- reverse the join (`o.manager_id = e.emp_id`) to walk `upward` to the root instead
-	- always bound the recursion (a depth column, or `path NOT LIKE '%' || name || '%'`): real data has cycles
+	- always bound the recursion — the depth guard above is what stops a cycle, and it also
+	  caps the result at 10 levels. To detect cycles instead of capping depth, build the
+	  path from **ids** (`,1,4,9,`) and test `NOT (id_path LIKE '%,' || e.emp_id || ',%')`;
+	  matching on names breaks when two people share a name or one name contains another.
+	  PostgreSQL 14+ and SQL Server also offer a built-in `CYCLE` clause
 	- vendor shortcuts exist — Oracle's `CONNECT BY PRIOR`, SQL Server's `hierarchyid` — but the recursive CTE is ANSI and works in MySQL 8+, Postgres, SQL Server and SQLite
 	- alternatives when reads dominate: `materialized path` (store `/1/4/9/`), `nested sets`, or a `closure table` (one row per ancestor-descendant pair) — all trade write cost for `O(1)` subtree reads
 	- see also 23) below

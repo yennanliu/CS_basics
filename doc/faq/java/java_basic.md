@@ -63,7 +63,8 @@ int n = i;          // unboxing -> i.intValue()
 Integer a = 127, b = 127;
 a == b;             // true  — values in [-128, 127] come from a cache
 Integer x = 128, y = 128;
-x == y;             // false — new objects
+x == y;             // typically false — outside the cache the JLS permits, but does
+                    // not require, distinct objects. Never rely on either answer
 ```
 
 Two consequences: **always compare boxed values with `equals`**, and beware the NPE that
@@ -204,9 +205,12 @@ re-creates them:
 
 ```java
 // java
-// Shallow: both lists point at the same elements
-// Deep:    copy constructor / serialization round-trip / manual per-field copy
+// A NEW list, but the SAME hobby objects inside it — a container (one-level) copy.
 Person copy = new Person(original.name(), new ArrayList<>(original.hobbies()));
+
+// Genuinely deep: copy every element too.
+List<Hobby> hobbies = original.hobbies().stream().map(Hobby::new).toList();
+Person deep = new Person(original.name(), new ArrayList<>(hobbies));
 ```
 
 For value types, prefer **immutability** over copying: nothing to copy if nothing can
@@ -221,7 +225,7 @@ change.
 | `new` | `new Foo()` | Yes |
 | Reflection | `Foo.class.getDeclaredConstructor().newInstance()` | Yes |
 | `clone()` | `foo.clone()` | No |
-| Deserialization | `ObjectInputStream.readObject()` | No |
+| Deserialization | `ObjectInputStream.readObject()` | No — but it *does* run the no-arg constructor of the first **non**-serializable superclass |
 | Factory / builder | `List.of()`, `Integer.valueOf(1)` | Indirectly |
 
 The two that skip the constructor are exactly why a singleton must also defend
@@ -235,8 +239,8 @@ The two that skip the constructor are exactly why a singleton must also defend
 |------|-------------|------------------------------------------|
 | **Static nested** | `static class Node` | No — the default choice |
 | **Inner** | `class Iter` | **Yes** — `Outer.this` |
-| **Local** | Declared inside a method | Yes |
-| **Anonymous** | `new Comparator<>() { … }` | Yes |
+| **Local** | Declared inside a method | Only in an instance context — not in a `static` method |
+| **Anonymous** | `new Comparator<>() { … }` | Only in an instance context |
 
 An inner class keeping the outer instance alive is a real leak source (a long-lived
 listener pinning an `Activity`/service). Make nested helper classes `static` unless they
@@ -293,8 +297,9 @@ String text = Files.readString(Path.of("in.txt"));                 // 11+
 List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
 try (Stream<String> stream = Files.lines(path)) { ... }            // lazy, closeable
 
-try (var in  = new BufferedReader(new FileReader("in.txt"));
-     var out = new BufferedWriter(new FileWriter("out.txt"))) {    // auto-closed
+// FileReader/FileWriter take a Charset since Java 11 — always pass one
+try (var in  = new BufferedReader(new FileReader("in.txt", StandardCharsets.UTF_8));
+     var out = new BufferedWriter(new FileWriter("out.txt", StandardCharsets.UTF_8))) {
     in.transferTo(out);
 }
 ```
@@ -317,7 +322,7 @@ not part of the persistent state (an open connection, a logger).
 ```java
 // java
 public class User implements Serializable {
-    private static final long serialVersionUID = 1L;   // pin it, or refactors break reads
+    private static final long serialVersionUID = 1L;   // pin it — see below
     private String name;
     private transient String password;                 // never written out
 }
@@ -379,8 +384,11 @@ Nullability (`Integer` can be `null`), identity comparison (`==` on boxed values
 performance (boxing allocates), and collections (they store objects only).
 
 **Q: What is `serialVersionUID`?**
-The version stamp deserialization checks. Omit it and the compiler derives one from the
-class shape, so any refactor makes old bytes unreadable.
+The version stamp deserialization checks. Omit it and the **serialization runtime**
+computes one from the class shape, so almost any change makes old bytes unreadable
+(`InvalidClassException`). Pinning it keeps *compatible* changes (adding a field,
+adding a method) readable — it cannot rescue incompatible ones such as removing a field
+or changing its type.
 
 **Q: `throw` vs `throws`?** See [`java_exception.md`](./java_exception.md).
 

@@ -200,7 +200,8 @@ abstract class Importer {
 }
 ```
 
-`JdbcTemplate`, `RestTemplate` and `AbstractList` are template methods. Its functional
+`JdbcTemplate`, `RestTemplate` and `AbstractList` are built this way — a fixed skeleton
+with the varying step left to you. Its functional
 cousin — pass the varying step in as a lambda — is usually the better choice today.
 
 ---

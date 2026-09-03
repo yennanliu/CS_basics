@@ -211,14 +211,14 @@
 
 ### 9) Indexing
 - Structure : almost always a `B+tree` — `O(log n)` lookup, and leaves are linked so range scans and `ORDER BY` come free. Others: `hash` (equality only), `bitmap` (low-cardinality, analytics), `GIN/GiST` (full-text, arrays, geo), `LSM-tree` (write-heavy stores)
-- `Composite index + leftmost prefix` : an index on `(a, b, c)` serves `WHERE a`, `WHERE a AND b`, `WHERE a AND b AND c` — but NOT `WHERE b` alone. Put the equality columns first, the range column last
+- `Composite index + leftmost prefix` : an index on `(a, b, c)` serves `WHERE a`, `WHERE a AND b`, `WHERE a AND b AND c`. `WHERE b` alone generally cannot use it — some engines can "skip scan" a low-cardinality leading column (Oracle, MySQL 8 for some plans, PostgreSQL 18), but never count on it. Put the equality columns first, the range column last
 - `Selectivity` : an index pays off when it eliminates most rows. On a column with 2 values the planner will (correctly) prefer a full scan
 - Things that silently disable an index
-	- a function or cast on the column : `WHERE YEAR(created_at) = 2026` -> use a range `WHERE created_at >= '2026-01-01' AND < '2027-01-01'`
+	- a function or cast on the column : `WHERE YEAR(created_at) = 2026` defeats a plain index on `created_at` -> rewrite as a range `WHERE created_at >= '2026-01-01' AND < '2027-01-01'`, or build a matching `expression / functional index` (Postgres, MySQL 8, Oracle) so the predicate is indexed as written
 	- a leading wildcard : `LIKE '%foo'`
 	- `OR` across different columns (often), and implicit type conversion (`WHERE varchar_col = 123`)
 	- `IS NULL` / `!=` on some engines
-- Cost : every index is `written on every INSERT/UPDATE/DELETE` and consumes memory in the buffer pool. Unused and duplicate indexes are pure overhead — an index on `(a)` is redundant when `(a, b)` exists
+- Cost : every index is `written on every INSERT/UPDATE/DELETE` and consumes memory in the buffer pool. Unused and duplicate indexes are pure overhead — an index on `(a)` is *usually* redundant when `(a, b)` exists, but check first: the narrower index is smaller (so cheaper to scan) and a `UNIQUE (a)` constraint is not implied by `(a, b)` at all
 
 ### 10) normalization, denormalization
 - `Normalization` — remove redundancy so every fact lives in exactly one place

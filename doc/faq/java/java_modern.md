@@ -208,15 +208,19 @@ What changes in practice:
 
 - **Thread pools stop being the way to limit concurrency.** Use a `Semaphore` to bound
   access to a database or downstream service.
-- **`synchronized` used to pin** a virtual thread to its carrier while blocking inside it
-  (much improved in 24); `ReentrantLock` never did — prefer it around blocking calls.
+- **On 21, `synchronized` pins** a virtual thread to its carrier while it blocks inside the
+  block, so a pool of carriers can be starved; `ReentrantLock` does not, which is why the
+  advice on 21 is to use it around blocking calls. (Post-21 note: JEP 491 in Java 24
+  removes this pinning, so on 24+ plain `synchronized` is fine again.)
 - `ThreadLocal` still works but loses its "expensive, so cache per thread" rationale;
   scoped values are the intended replacement.
 - CPU-bound work gains nothing — Loom is about **concurrency** (many waiting tasks), not
   parallelism.
 
-**Structured concurrency** (preview) makes a task's children a scope that fails and
-cancels as a unit — the same idea as Python's `TaskGroup`:
+**Structured concurrency** makes a task's children a scope that fails and cancels as a
+unit — the same idea as Python's `TaskGroup`. It is still a **preview API**: on 21 it needs
+`--enable-preview` at both compile and run time, and its shape has changed between
+releases, so don't put it in production code you cannot recompile.
 
 ```java
 // java

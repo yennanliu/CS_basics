@@ -58,7 +58,7 @@ ArrayList::new             // constructor               -> () -> new ArrayList<>
 |---|--------|-----------------|
 | `this` | The **enclosing** instance | The anonymous instance |
 | Compiled to | `invokedynamic` (no extra class file per instance) | A real `Outer$1.class` |
-| Can have state | No | Yes (fields) |
+| Can declare fields | No — though a capturing lambda carries the values it captured, and can mutate the objects they point to | Yes |
 | Target | Functional interfaces only | Any interface / abstract class |
 
 Both capture only **effectively final** locals — a local a lambda uses must never be
@@ -136,8 +136,10 @@ Two traps that come up constantly:
   `toMap(Employee::id, e -> e, (a, b) -> a)`.
 - **`toMap` throws `NullPointerException` on a null value** (unlike `HashMap.put`).
   Filter nulls first, or collect into a `HashMap` yourself.
-- `Collectors.toList()` gives *some* mutable list; `stream.toList()` (16+) gives an
-  **unmodifiable** one. Say which you need.
+- `Collectors.toList()` promises **nothing** about the list's type or mutability (today it
+  is an `ArrayList`, but don't rely on it). Use `toCollection(ArrayList::new)` when you
+  need a mutable list, and `stream.toList()` (16+) when you want an explicitly
+  **unmodifiable** one.
 
 `teeing` (12+) runs two collectors over one pass; `mapping` / `filtering` /
 `flatMapping` compose as downstream collectors inside `groupingBy`.
@@ -217,7 +219,10 @@ for (Order o : orders) {
 }
 ```
 
-Checked exceptions inside a lambda must be wrapped:
+A lambda may throw whatever its **target type** declares — `Callable.call()` allows any
+checked exception. The problem is that the interfaces the Stream API uses (`Function`,
+`Predicate`, `Consumer`, …) declare none, so inside a stream a checked exception must be
+wrapped:
 `.map(f -> { try { return parse(f); } catch (IOException e) { throw new UncheckedIOException(e); } })`.
 
 ---

@@ -89,8 +89,9 @@ with ThreadPoolExecutor(max_workers=16) as pool:          # shutdown on exit
 
 ### Races still happen
 
-The GIL does **not** make your code thread-safe — it only serialises bytecode, and
-`counter += 1` is three bytecodes.
+The GIL does **not** make your code thread-safe — it only serialises bytecode execution,
+and `counter += 1` is a read-modify-write compiled into several bytecodes (how many
+depends on the version), so a switch can land in the middle of it.
 
 ```python
 # python
@@ -130,7 +131,9 @@ put a `finally` you care about in one. Prefer a sentinel value on a queue or an
 from concurrent.futures import ProcessPoolExecutor
 
 if __name__ == "__main__":                 # REQUIRED on macOS/Windows (spawn)
-    with ProcessPoolExecutor() as pool:    # defaults to os.cpu_count()
+    with ProcessPoolExecutor() as pool:    # defaults to the usable CPU count
+                                          # (os.process_cpu_count() on 3.13+,
+                                          #  os.cpu_count() before that)
         for result in pool.map(crunch, chunks, chunksize=8):
             ...
 ```

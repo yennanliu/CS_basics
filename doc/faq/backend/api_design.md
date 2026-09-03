@@ -111,7 +111,7 @@ directly. Whatever shape you pick:
 | Style | Request | Good | Bad |
 |-------|---------|------|-----|
 | **Offset** | `?page=3&size=50` | Jump to any page, show totals | `OFFSET 100000` gets slow; items shift between pages as data changes |
-| **Cursor / keyset** | `?limit=50&cursor=eyJpZCI6MTA0Mn0` | Stable under writes, `O(1)` in the index | No page numbers, no total |
+| **Cursor / keyset** | `?limit=50&cursor=eyJpZCI6MTA0Mn0` | Stable under writes; cost is one index seek plus the page (`O(log n + limit)`) no matter how deep you are | No page numbers, no total |
 
 Prefer **cursor** pagination for feeds, logs and anything large or live; offset is fine
 for small admin tables. Always cap `limit` server-side (a client asking for 1,000,000 is

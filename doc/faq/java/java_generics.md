@@ -32,6 +32,7 @@ The parameter list goes **before** the return type, and can be independent of th
 ```java
 // java
 public static <T extends Comparable<T>> T max(List<T> list) {
+    if (list.isEmpty()) throw new IllegalArgumentException("empty");   // or return Optional<T>
     T best = list.get(0);
     for (T item : list) if (item.compareTo(best) > 0) best = item;
     return best;
@@ -69,8 +70,8 @@ Everything below is a consequence of erasure:
 
 | You cannot | Because | Do instead |
 |-----------|---------|-----------|
-| `new T()` | The type argument is gone at runtime | Pass a `Supplier<T>` or `Class<T>` and call `newInstance` |
-| `new T[10]` | Array creation needs a reifiable type | `(T[]) new Object[10]` with `@SuppressWarnings`, or use a `List<T>` |
+| `new T()` | The type argument is gone at runtime | Pass a `Supplier<T>`, or a `Class<T>` type token and call `getDeclaredConstructor().newInstance()` (`Class.newInstance()` is deprecated) |
+| `new T[10]` | Array creation needs a reifiable type | Use a `List<T>`, or build the real array with a type token: `(T[]) Array.newInstance(componentType, 10)`. A `(T[]) new Object[10]` is still an `Object[]`, so returning it to a caller expecting `String[]` throws `ClassCastException` |
 | `x instanceof List<String>` | Only the raw type survives | `x instanceof List<?>` |
 | `static T field;` | Static members are per-class, not per-instantiation | Make the method generic |
 | Overload on `List<String>` and `List<Integer>` | Same erased signature | Rename the methods |
@@ -97,7 +98,7 @@ Wildcards restore the flexibility safely:
 
 | Form | Means | You can |
 |------|-------|---------|
-| `List<?>` | Unknown element type | Read as `Object`; add only `null` |
+| `List<?>` | Unknown element type | Read as `Object`; `remove`/`clear` still work, but no non-null value can be **added** (the element type is unknown) |
 | `List<? extends Number>` | Some subtype of `Number` (a **producer**) | **Read** `Number`; cannot add (which subtype?) |
 | `List<? super Integer>` | Some supertype of `Integer` (a **consumer**) | **Add** `Integer`; reads come back as `Object` |
 
@@ -180,7 +181,8 @@ as pre-generics code. It was the price of binary backward compatibility in Java 
 
 **Q: `List<Object>` vs `List<?>` vs raw `List`?**
 `List<Object>` accepts any element but only matches a list declared as `List<Object>`.
-`List<?>` matches a list of *some* unknown type and is read-only (bar `null`). Raw `List`
+`List<?>` matches a list of *some* unknown type; you can read from it and remove from it,
+but you cannot add anything except `null`. Raw `List`
 turns checking off entirely — never write it in new code.
 
 **Q: Explain PECS.**

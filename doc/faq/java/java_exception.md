@@ -53,7 +53,7 @@ public String getUserName(int userId) throws SQLException {   // declares: calle
 }
 ```
 
-- `throws` is part of the **signature** — a contract.
+- `throws` is part of the method **declaration** — an API contract. (It is not part of the *signature*: you cannot overload on it.)
 - `throw` is a **statement** that raises an instance.
 - An overriding method may throw **fewer or narrower** checked exceptions than the method
   it overrides, never more — otherwise callers of the base type could be surprised.
@@ -81,7 +81,7 @@ Rules that get tested:
   evaluated first, then `finally`, then the value is returned.
 - **A `return` (or `throw`) inside `finally` discards the pending exception or return
   value.** Never do it; static analysers flag it.
-- The only ways to skip `finally` are `System.exit()`, a JVM crash, or an infinite loop.
+- The Java-level ways to skip `finally` are `System.exit()`, `Runtime.getRuntime().halt()`, or never leaving the `try` (an infinite loop, a deadlock). Outside the JVM's control: a crash, `kill -9`, or the machine losing power.
 - Catching a supertype before a subtype is a **compile error** (unreachable catch).
 - Catching `Exception` also catches every `RuntimeException` — including the NPEs you
   wanted to see fail loudly.
@@ -131,8 +131,9 @@ try {
 }
 ```
 
-`throw new X(e)` without the cause argument is how tracebacks get destroyed — always pass
-the original.
+Pass the cause **object**, not its text: `throw new X("context", e)` keeps the original
+stack trace, while `throw new X(e.getMessage())` throws it away — the most common way a
+root cause disappears from a log.
 
 ### Rules of thumb
 
@@ -173,7 +174,8 @@ always-run block; `finalize()` is the deprecated `Object` hook the GC once calle
 never rely on it, use try-with-resources or `Cleaner`.
 
 **Q: Can `finally` be skipped?**
-Only by `System.exit()`, a JVM crash, or a thread that never leaves the `try` block.
+Yes: `System.exit()` / `Runtime.halt()`, a thread that never leaves the `try` block, or
+anything that kills the process outright (a JVM crash, `kill -9`).
 
 **Q: What is a suppressed exception?**
 An exception thrown while closing a try-with-resources resource, attached to the primary
@@ -185,10 +187,11 @@ and return a 500 is correct — the point is that nothing above you will do it. 
 business logic it is a smell.
 
 **Q: What happens to an exception thrown in a thread?**
-It terminates that thread only, and goes to the thread's
-`UncaughtExceptionHandler` (default: print to `stderr`). Tasks submitted to an
-`ExecutorService` swallow it into the `Future` — you see it only when you call
-`Future.get()`.
+It terminates that thread only, and goes to the thread's `UncaughtExceptionHandler`
+(default: print to `stderr`). In an `ExecutorService` it depends how you handed the task
+over: `submit()` captures the exception in the returned `Future`, so it is **silent until
+you call `Future.get()`**; `execute()` has no `Future`, so it reaches the worker thread's
+`UncaughtExceptionHandler` like any other thread.
 
 **Q: `NoClassDefFoundError` vs `ClassNotFoundException`?**
 `ClassNotFoundException` is checked and comes from an explicit

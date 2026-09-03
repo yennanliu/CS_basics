@@ -101,10 +101,12 @@ private static volatile Singleton instance;
 | `final` (immutable) | ✓ (never changes) | ✓ (after safe construction) | ✓ |
 | Atomic classes | ✓ (CAS) | ✓ | ✓ |
 
-**A data race is undefined behaviour, not "a stale value".** Without a happens-before
-edge the compiler may hoist the read out of a loop entirely, so a thread polling a
-non-`volatile` flag can spin forever even though the writer set it long ago. That is the
-argument for reaching for one of the four rows above rather than hoping.
+**A racy read is not "a slightly stale value" — it is simply not ordered.** Java (unlike
+C/C++) keeps a racing program memory-safe and defines the set of outcomes the JMM allows,
+but with no happens-before edge the compiler may hoist the read out of the loop entirely,
+so a thread polling a non-`volatile` flag can spin forever even though the writer set it
+long ago. That is the argument for reaching for one of the four rows above rather than
+hoping.
 
 ---
 

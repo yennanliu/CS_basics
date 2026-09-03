@@ -33,7 +33,7 @@
 | Area | Shared? | Holds | Failure |
 |------|---------|-------|---------|
 | PC register | Per thread | Address of the current instruction | — |
-| JVM stack | Per thread | Stack frames | `StackOverflowError` (too deep), `OutOfMemoryError` (cannot create a thread) |
+| JVM stack | Per thread | Stack frames | `StackOverflowError` when one thread's stack cannot grow; `OutOfMemoryError: unable to create new native thread` is a *different* failure — the OS refused a new thread (native memory or an OS/cgroup thread limit), not a deep call chain |
 | Native stack | Per thread | Native frames | Same |
 | **Heap** | Shared | Objects, arrays | `OutOfMemoryError: Java heap space` |
 | **Metaspace** | Shared | Class metadata, statics, constant pool | `OutOfMemoryError: Metaspace` |
@@ -112,27 +112,37 @@ reference young ones**. So the heap is split and each part gets the algorithm th
 it — copying for the young generation (few survivors), compaction for the old.
 
 ```text
+Classic generational layout (Serial / Parallel). G1 and later collectors keep the
+same generational *idea* but implement it with same-sized regions, not fixed spaces.
+
 ┌──────────── Young generation ────────────┐┌──── Old generation ────┐
 │   Eden (80%)   │  S0 (10%)  │  S1 (10%)  ││   long-lived objects   │
 └────────────────┴────────────┴────────────┘└────────────────────────┘
     ↑ new objects      ↑ survivors ping-pong      ↑ promoted after
-      allocate here      between S0 and S1          ~15 survivals
+      allocate here      between S0 and S1          enough survivals
 ```
 
 1. Allocation goes to **Eden** (in a TLAB).
 2. Eden fills → **minor GC**: live objects are copied to the empty survivor space, all
    ages +1; Eden and the other survivor are wiped wholesale.
-3. After `-XX:MaxTenuringThreshold` (default 15) survivals — or if the survivor space
-   overflows, or the object is too large — the object is **promoted** to the old
-   generation. Very large objects are allocated straight there.
+3. The object is **promoted** to the old generation once it is old enough — after
+   `-XX:MaxTenuringThreshold` survivals (15 is the *maximum*, and collectors lower it
+   adaptively), or earlier if the survivor space cannot hold it. Objects too large for
+   Eden are allocated straight into the old generation / a humongous region.
 4. The old generation fills → **major / full GC**, which is much more expensive.
 
 ### Stop-the-world
 
-Every collector must, at some point, pause all application threads at a **safepoint** so
-the object graph does not change under it. What differs between collectors is *how much*
-work happens inside the pause. STW pauses are why a healthy-looking service shows p99
-latency spikes: throughput is fine, one request in a thousand waited for a GC.
+To look at the object graph without it changing underneath, a collector brings the
+application threads to a **safepoint**. What differs is *how much* work happens inside
+that pause. Serial and Parallel do everything there. G1 keeps several phases concurrent
+but still evacuates in a pause. ZGC and Shenandoah do marking, reference processing and
+relocation concurrently behind load barriers, leaving only short fixed-cost pauses
+(and Epsilon never collects at all).
+
+Pauses are a classic cause of p99 latency spikes — throughput looks fine while one
+request in a thousand waited for a collection — but they are not the only one, so read
+the GC log before blaming GC (§8).
 
 ### Collectors
 
@@ -141,7 +151,7 @@ latency spikes: throughput is fine, one request in a thousand waited for a GC.
 | **Serial** | Copying / Mark-Compact | `-XX:+UseSerialGC` | One thread, full STW. Small heaps, containers with 1 CPU |
 | **Parallel (Throughput)** | Copying / Mark-Compact | `-XX:+UseParallelGC` | Multi-threaded STW. Maximum throughput, pauses not bounded. Default through Java 8 |
 | **CMS** (removed in 14) | Copying / concurrent Mark-Sweep | `-XX:+UseConcMarkSweepGC` | Historic low-pause option; fragments, needs a fallback full GC |
-| **G1** | Region-based, both | `-XX:+UseG1GC` | **Default since Java 9.** Heap split into ~2 MB regions; collects the regions with most garbage first ("garbage first") to hit a pause target (`-XX:MaxGCPauseMillis=200`) |
+| **G1** | Region-based, both | `-XX:+UseG1GC` | **Default since Java 9.** Heap split into equal-sized regions (`G1HeapRegionSize`, chosen ergonomically as a power of two in 1–32 MB, targeting ~2048 regions); collects the regions with most garbage first ("garbage first") to hit a pause target (`-XX:MaxGCPauseMillis=200`) |
 | **ZGC** | Region-based, concurrent | `-XX:+UseZGC` | Sub-millisecond pauses on multi-TB heaps; almost everything concurrent (coloured pointers, load barriers) |
 | **Shenandoah** | Region-based, concurrent | `-XX:+UseShenandoahGC` | Same goal as ZGC, concurrent compaction via Brooks pointers |
 | **Epsilon** | None | `-XX:+UseEpsilonGC` | No-op collector for benchmarking |
@@ -156,12 +166,15 @@ a pause target is missed). Large heaps with strict latency SLOs → ZGC/Shenando
 
 ## 4) Reference Strengths ⭐⭐⭐
 
-| Type | Collected when | Use |
-|------|----------------|-----|
-| **Strong** `Object o = new Object()` | Never while reachable | Normal code |
-| **Soft** `SoftReference<T>` | Only when the heap is about to fill | Memory-sensitive caches |
-| **Weak** `WeakReference<T>` | At the next GC | `WeakHashMap`, canonical maps, listener registries — keys that should not keep the value alive |
-| **Phantom** `PhantomReference<T>` | Already finalised; `get()` always returns `null` | Post-mortem cleanup via a `ReferenceQueue` (what `Cleaner` uses instead of `finalize`) |
+| Type | Eligible for clearing when | Use |
+|------|---------------------------|-----|
+| **Strong** `Object o = new Object()` | Never, while it stays reachable | Normal code |
+| **Soft** `SoftReference<T>` | Softly reachable *and* the collector decides memory pressure warrants it — timing is entirely at its discretion | Memory-sensitive caches |
+| **Weak** `WeakReference<T>` | Weakly reachable (no strong/soft path). Cleared by *some* subsequent GC, not guaranteed to be the next one | `WeakHashMap`, canonical maps, listener registries — keys that should not keep the value alive |
+| **Phantom** `PhantomReference<T>` | Phantom reachable, after finalization; `get()` always returns `null` | Post-mortem cleanup via a `ReferenceQueue` (what `Cleaner` uses instead of `finalize`) |
+
+None of these is a scheduling promise: reachability makes a referent *eligible*, and the
+collector clears it whenever it next runs and gets to it.
 
 ---
 
@@ -202,8 +215,14 @@ Load → Link (Verify → Prepare → Resolve) → Initialise → Use → Unload
   initialiser's value yet).
 - **Resolve**: replace symbolic references with direct ones (may be lazy).
 - **Initialise**: run `<clinit>` — static initialisers and static field assignments, in
-  source order, after the superclass is initialised. Triggered lazily by first active use
-  (`new`, a static method/field access, reflection, or running `main`).
+  source order, after the superclass is initialised. Triggered lazily by the first
+  **active use** (JLS §12.4.1): `new`, invoking a static method, reading or assigning a
+  static field, running the class's `main`, or a reflective call that asks for
+  initialisation (`Class.forName(name)` does; `Class.forName(name, false, loader)` and
+  `getDeclaredMethod` do not). Two exceptions worth knowing: reading a **compile-time
+  constant** (`static final int X = 42`) is inlined by the compiler and initialises
+  nothing, and touching a subclass does not initialise it through a *field* declared only
+  in the parent.
 
 <p align="center"><img src="../../pic/class_load_step.jpeg"></p>
 
@@ -253,8 +272,14 @@ Consequences worth knowing:
 - Compiled code lives in the **code cache** (`-XX:ReservedCodeCacheSize`); exhausting it
   silently drops the JVM back to interpretation.
 - `-XX:+PrintCompilation` and JITWatch show what got compiled and inlined.
-- **AOT/CDS** (`-XX:SharedArchiveFile`, GraalVM native-image) trades peak throughput for
-  fast start-up — the reason serverless Java gravitates to native images.
+- **CDS** (`-XX:SharedArchiveFile`, and AppCDS) memory-maps a pre-parsed archive of class
+  metadata so start-up skips repeated class loading. Still an ordinary JVM, still JIT'd —
+  little peak-throughput cost.
+- **AOT native images** (GraalVM `native-image`) compile the whole application ahead of
+  time into a native executable: milliseconds to start and a small footprint, but no JIT
+  profile-guided peak throughput, and reflection/dynamic proxies must be declared at build
+  time. This is why serverless Java gravitates to native images and long-running services
+  usually do not.
 
 **JRE / JDK / JIT**: the JRE is the runtime (JVM + core libraries), the JDK is the JRE
 plus development tools (`javac`, `jstack`, `jmap`), and the JIT is the compiler *inside*
@@ -271,7 +296,7 @@ the JVM. Since Java 11 there is no separate JRE download — you use `jlink` to 
 | `-Xms` / `-Xmx` | Initial / maximum heap. **Set them equal** in production to avoid resize pauses |
 | `-Xss` | Thread stack size |
 | `-XX:MaxMetaspaceSize` | Cap on class metadata |
-| `-XX:+UseG1GC` / `UseZGC` | Collector choice |
+| `-XX:+UseG1GC` / `-XX:+UseZGC` | Collector choice |
 | `-XX:MaxGCPauseMillis` | G1's pause target |
 | `-XX:NewRatio` / `-XX:SurvivorRatio` | Young:old and Eden:survivor sizing (rarely needed with G1) |
 | `-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=…` | **Always on.** The dump is the only evidence after an OOM |

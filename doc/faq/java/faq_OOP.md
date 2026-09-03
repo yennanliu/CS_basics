@@ -212,7 +212,9 @@ Beyond `equals`/`hashCode` (§7), two contracts come up in almost every design:
 ```java
 // java
 class Version implements Comparable<Version> {           // natural order
-    public int compareTo(Version o) { return Integer.compare(this.build, o.build); }
+    private final int build;
+    Version(int build) { this.build = build; }
+    @Override public int compareTo(Version o) { return Integer.compare(build, o.build); }
 }
 
 // alternative orders, composed and reusable

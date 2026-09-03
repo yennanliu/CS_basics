@@ -237,10 +237,13 @@ user.thenCombine(stats, Page::new)                 // join two results
 | `exceptionally` / `handle` / `whenComplete` | Error handling; `handle` sees both outcomes |
 | `*Async` variants | Run the callback on the executor rather than the completing thread |
 
-Two traps: work submitted without an explicit executor lands on the **shared common pool**
-(sized `cores − 1`, shared with parallel streams — blocking there starves everything),
-and an unhandled exception is invisible unless a terminal `exceptionally`/`whenComplete`
-is attached.
+Two traps. First, **`supplyAsync`/`runAsync` and every `*Async` method without an
+explicit executor use the shared common ForkJoinPool** (sized `cores − 1`, shared with
+parallel streams — blocking there starves everything); the non-`Async` methods
+(`thenApply`, `thenCombine`, …) pick no executor at all, running on whichever thread
+completed the previous stage, or on the calling thread if it was already complete — which
+is its own surprise when that thread is a Netty event loop. Second, an unhandled exception
+is invisible unless a terminal `exceptionally`/`whenComplete` is attached.
 
 ---
 
@@ -249,7 +252,7 @@ is attached.
 | Need | Use | Not |
 |------|-----|-----|
 | Shared map | `ConcurrentHashMap` (CAS + per-bucket `synchronized`, lock-free reads) | `Hashtable`, `Collections.synchronizedMap` (one global lock) |
-| Producer/consumer hand-off | `ArrayBlockingQueue` / `LinkedBlockingQueue` (bounded!) | A `List` plus `wait`/`notify` |
+| Producer/consumer hand-off | `ArrayBlockingQueue`, or `LinkedBlockingQueue` **with an explicit capacity** — its no-arg form holds `Integer.MAX_VALUE`, i.e. it fills the heap instead of blocking | A `List` plus `wait`/`notify` |
 | Mostly-read list | `CopyOnWriteArrayList` | `synchronizedList` |
 | Counter under contention | `LongAdder` | `AtomicLong`, `synchronized` |
 | Sorted concurrent map | `ConcurrentSkipListMap` | `TreeMap` + lock |
@@ -312,7 +315,11 @@ virtual threads, per-thread caching loses its point; *scoped values* are the suc
 All four Coffman conditions must hold: mutual exclusion, hold-and-wait, no pre-emption,
 circular wait (see [`../cs_basic.md`](../cs_basic.md)). Break any one:
 
-- **Order your locks globally** (by id, by hash) — the fix that scales.
+- **Order your locks globally** — the fix that scales. Order by a *stable, unique* rank
+  (an account id, a monotonic sequence assigned at creation). `hashCode()` is not a total
+  order: collisions leave two locks unordered, and a hash over mutable state can change.
+  If you must fall back to `System.identityHashCode`, break ties with a third "ordering"
+  lock held while acquiring the pair, as *Java Concurrency in Practice* does.
 - Acquire everything at once, or use `tryLock(timeout)` and back off.
 - Shrink critical sections; better, avoid shared mutable state so no lock is needed.
 

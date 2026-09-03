@@ -165,8 +165,8 @@
 - `Topic` : a named, append-only log. A logical stream, split into partitions
 - `Partition` : the unit of ordering, storage and parallelism
 	- ordering is guaranteed `WITHIN a partition ONLY`, never across a topic
-	- the partition is chosen by `hash(key) % partitions` — so the same key always lands in the same partition (that is how per-entity ordering is achieved)
-	- a null key -> sticky/round-robin batching across partitions
+	- with the default partitioner the partition is `murmur2(serialized key) % partition count`, so the same key lands in the same partition — that is how per-entity ordering is achieved. It holds only while the partition count and the partitioner are stable: `adding partitions re-maps keys`, and a custom partitioner can do anything
+	- a null key -> `sticky` batching (fill one partition's batch, then switch), not strict round-robin
 - `Segment` : the files a partition is stored as (see 1'')
 - `Replica` : each partition has `replication.factor` copies — one `leader` (all reads/writes) and followers that fetch from it
 - `Consumer group` : a set of consumers sharing a subscription. One partition -> at most one consumer in the group, so `partition count is the ceiling on parallelism`
@@ -194,7 +194,10 @@ consumer group "billing" : c1 → p0, c2 → p1+p2   (a 4th consumer would idle)
 	- `unclean.leader.election.enable=false` (default) : refuse to promote an out-of-sync replica -> availability suffers, data does not
 	- `= true` : promote anyway -> stays available, silently loses records
 - `Preferred leader` : the first replica in the assignment list; kafka rebalances back to it so leadership stays evenly spread
-- Durability knobs work together : `replication.factor=3` + `min.insync.replicas=2` + `acks=all` means a write is acknowledged only once 2 replicas hold it, so one broker can die with no loss
+- Durability knobs work together : `replication.factor=3` + `min.insync.replicas=2` + `acks=all`
+	- `acks=all` waits for `every replica currently in the ISR` — all 3 when the cluster is healthy, 2 once one replica has dropped out
+	- `min.insync.replicas=2` is the `floor`: if the ISR shrinks below 2, the write is `rejected` (`NotEnoughReplicas`) instead of being acknowledged by a single copy
+	- together they mean one broker can die with no loss and no silent downgrade
 
 ### 7) Steps when a consumer consumes a kafka topic ?
 - step 1) `bootstrap` : connect to `bootstrap.servers`, fetch cluster metadata (which broker leads which partition)
@@ -288,7 +291,7 @@ consumer group "billing" : c1 → p0, c2 → p1+p2   (a 4th consumer would idle)
 - `ISR (In-Sync Replicas)` : the replicas (leader included) that have caught up with the leader within `replica.lag.time.max.ms` (30s by default). Only an ISR member may be elected leader (unless unclean election is enabled), and `acks=all` means "acknowledged by all of the ISR"
 - `OSR (Out-of-Sync Replicas)` : replicas that have fallen behind — a slow disk, a network partition, or a broker restarting. They keep fetching and rejoin the ISR once caught up
 - Why it matters : `min.insync.replicas` counts the ISR, so if too many replicas fall out, producers with `acks=all` start failing with `NotEnoughReplicas` — the cluster chooses consistency over availability, by design
-- `HW (high watermark)` = the smallest offset replicated to all of the ISR; consumers can never read past it, which is why an un-replicated record is invisible rather than lost-after-read
+- `HW (high watermark)` = the smallest log-end offset across the ISR — i.e. the offset of the `first record not yet fully replicated`, so it is `exclusive`: consumers may read everything below it and never the offset itself. That is why an un-replicated record is invisible rather than lost-after-read
 - Ref
 	- http://hk.noobyard.com/article/p-azlfvsay-mq.html
 	- https://www.gushiciku.cn/pl/pTAJ/zh-tw
