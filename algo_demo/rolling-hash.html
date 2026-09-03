@@ -46,10 +46,22 @@
           <button class="btn btn-secondary" id="reset-btn">Reset</button>
         </div>
         <div class="complexity">Time: O(n+m) avg | Space: O(1)</div>
-        <h3>Steps</h3>
-        <div class="viz-log" id="log"></div>
       </div>
     </div>
+    <section class="viz-trace">
+      <div class="viz-trace-head">
+        <h3>Steps</h3>
+        <span class="viz-trace-count" data-trace-count>0 steps</span>
+        <div class="viz-trace-tools">
+          <button type="button" class="btn-mini" data-trace-copy>Copy</button>
+        </div>
+      </div>
+      <div class="viz-trace-body">
+        <div class="viz-log" id="log"></div>
+        <p class="viz-trace-empty" data-trace-empty><span>Press <b>Run</b> to trace the algorithm one step at a time.</span></p>
+        <button type="button" class="viz-trace-jump" data-trace-jump hidden>&darr; latest</button>
+      </div>
+    </section>
   </main>
 <script>
 (function() {
@@ -117,14 +129,14 @@
       ctx.fillText(text[k], tx + (cellSize - 2) / 2, textY + cellSize * 0.67);
       // index
       ctx.fillStyle = VIZ.muted; ctx.font = '9px sans-serif';
-      ctx.fillText(k, tx + (cellSize - 2) / 2, textY + cellSize - 1);
+      ctx.fillText(k, tx + (cellSize - 2) / 2, textY + cellSize + 9);
     }
 
     // bracket under current window
     if (state.winStart >= 0 && state.winStart + pat.length <= text.length) {
       var bx1 = pad + state.winStart * cellSize;
       var bx2 = pad + (state.winStart + pat.length) * cellSize - 2;
-      var bracketY = textY + cellSize + 2;
+      var bracketY = textY + cellSize + 15;
       ctx.strokeStyle = state.phase === 'match' ? VIZ.done : (state.phase === 'collision' ? VIZ.alt : VIZ.swap);
       ctx.lineWidth = 2; ctx.setLineDash([]);
       ctx.beginPath(); ctx.moveTo(bx1, bracketY); ctx.lineTo(bx1, bracketY + 6);
@@ -134,7 +146,7 @@
     }
 
     // --- pattern row ---
-    var patY = textY + cellSize + 24;
+    var patY = textY + cellSize + 34;
     ctx.fillStyle = fg; ctx.font = '11px sans-serif'; ctx.textAlign = 'left';
     ctx.fillText('pat:', 4, patY + cellSize * 0.65);
     for (var k = 0; k < pat.length; k++) {

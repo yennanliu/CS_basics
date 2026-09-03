@@ -46,6 +46,12 @@ a, button, [role="button"] { touch-action: manipulation; }
   --viz-surface:     #e6e6e6;  /* empty cell / panel fill             */
   --viz-surface-alt: #d2d2d2;  /* faint state fill                    */
   --viz-on-fill:     #ffffff;  /* text sitting on an accent fill      */
+  --viz-grid:        #e9e9e9;  /* plotting grid behind the canvas     */
+
+  /* Step-trace row states. Deliberately washes rather than accents: 30 rows
+     with a saturated background is a stripe pattern, not a highlight. */
+  --viz-trace-latest: #fff6e0;
+  --viz-trace-key:    #eaf7ee;
 
   /* Categorical ramp — only for "N distinct groups" (e.g. union-find) */
   --viz-cat-1: #000000; --viz-cat-2: #1a7f37; --viz-cat-3: #9a6700;
@@ -83,6 +89,10 @@ a, button, [role="button"] { touch-action: manipulation; }
   --viz-surface:     #262626;
   --viz-surface-alt: #363636;
   --viz-on-fill:     #000000;
+  --viz-grid:        #191919;
+
+  --viz-trace-latest: #1c1704;
+  --viz-trace-key:    #06180c;
 
   --viz-cat-1: #ffffff; --viz-cat-2: #3fb950; --viz-cat-3: #d29922;
   --viz-cat-4: #db61a2; --viz-cat-5: #39c5cf; --viz-cat-6: #a371f7;
@@ -156,19 +166,62 @@ main { padding: 32px 0; min-height: calc(100vh - 200px); }
   text-transform: uppercase; letter-spacing: 0.05em;
 }
 
-/* ── Visualization layout ─── */
-.viz-wrapper { display: grid; grid-template-columns: 1fr 300px; gap: 24px; margin-top: 8px; }
+/* ── Index filter ─── */
+.viz-filter { display: flex; align-items: center; gap: 12px; margin: 24px 0 4px; }
+.viz-filter input {
+  flex: 1 1 auto; min-width: 0;
+  padding: 9px 12px; font-family: inherit; font-size: 16px;
+  border: 1px solid var(--border-strong); border-radius: 0;
+  background: var(--bg); color: var(--text);
+}
+.viz-filter input:focus { outline: 1px solid var(--text); outline-offset: -2px; }
+.viz-filter input::placeholder { color: var(--text-dim); }
+.viz-filter-count {
+  font-size: 14px; color: var(--text-muted); white-space: nowrap;
+  text-transform: uppercase; letter-spacing: 0.05em;
+}
+.viz-filter-empty { color: var(--text-muted); margin: 24px 0; }
+.algo-card[hidden], .algo-grid[hidden], .section-label[hidden],
+.viz-filter-empty[hidden] { display: none; }
+/* Named to match .sr-only in site/style.css. No `clip` fallback beside the
+   clip-path: the only engine that needs one is IE11, and this sheet is 88
+   var(--x) references deep, so it renders nothing there either way. */
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+
+/* ── Visualization layout ─────────────────────────────────────────────
+   Three bands, top to bottom: the canvas + its legend, the controls beside
+   them, and the step trace across the full width underneath.
+
+   The trace used to sit in the 300px control column, where a line like
+   "L=4 R=24 sum=28" wrapped three times and 220px of height showed four
+   steps. It is the thing a reader actually follows, so it gets the width.
+   ────────────────────────────────────────────────────────────────────── */
+.viz-wrapper { display: grid; grid-template-columns: 1fr 320px; gap: 24px; margin-top: 8px; align-items: start; }
+/* A grid item's default min-width is min-content, and the canvas carries an
+   explicit pixel width (set from the box it measured last). Without this the
+   two ratchet each other wider and the column can never shrink back — the page
+   ends up overflowing on a phone after a rotate. */
+.viz-wrapper > * { min-width: 0; }
 
 .viz-canvas-area {
-  background: var(--bg); border: 1px solid var(--border-strong);
-  padding: 16px; min-height: 400px; position: relative;
+  background-color: var(--bg);
+  /* A faint plotting grid: it gives bar heights and node positions something
+     to be read against, and marks the canvas as a figure rather than a gap. */
+  background-image: radial-gradient(var(--viz-grid) 1px, transparent 1px);
+  background-size: 24px 24px;
+  background-position: 12px 12px;
+  border: 1px solid var(--border-strong);
+  padding: 16px; min-height: 420px; position: relative;
 }
-canvas { width: 100%; height: 100%; display: block; }
+canvas { width: 100%; height: 100%; display: block; position: relative; }
 
 .viz-controls {
   background: var(--surface); border: 1px solid var(--border);
   padding: 16px; display: flex; flex-direction: column; gap: 12px;
-  align-self: start;
+  position: sticky; top: 76px;
 }
 .viz-controls h3 {
   font-size: 15px; margin: 0; color: var(--text);
@@ -179,8 +232,26 @@ canvas { width: 100%; height: 100%; display: block; }
   font-size: 15px; color: var(--text-muted);
   text-transform: uppercase; letter-spacing: 0.05em;
 }
+/* A label whose last child is its live value puts the two on one row. One that
+   wraps a <select> keeps the control on its own full-width line, where its
+   option text is not truncated. Browsers without :has() get the second layout
+   for both, which is what the page did before. */
+.viz-controls label:has(> span:last-child) {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 8px;
+}
+/* The live value beside a slider is the number the reader is actually setting,
+   so it is typeset as data rather than as more label. */
+.viz-controls label > span:last-child {
+  color: var(--text); font-weight: 600; letter-spacing: 0;
+  background: var(--bg); border: 1px solid var(--border);
+  padding: 0 6px; min-width: 34px; text-align: center;
+}
 
-.viz-controls input[type="range"] { width: 100%; accent-color: var(--text); }
+.viz-controls input[type="range"] {
+  width: 100%; accent-color: var(--text);
+  height: 22px; margin: -4px 0 0;
+}
+
 .viz-controls select,
 .viz-controls input[type="number"],
 .viz-controls input[type="text"] {
@@ -208,24 +279,140 @@ canvas { width: 100%; height: 100%; display: block; }
 .btn-danger { background: var(--bg); color: var(--viz-danger); border-color: var(--viz-danger); }
 .btn-danger:hover { background: var(--viz-danger); color: var(--bg); }
 .btn-row { display: flex; gap: 8px; flex-wrap: wrap; }
-
-/* ── Log / info panel ─── */
-.viz-log {
-  max-height: 220px; overflow-y: auto; -webkit-overflow-scrolling: touch;
-  font-family: inherit; font-size: 14px; line-height: 1.6;
-  background: var(--bg); border: 1px solid var(--border);
-  padding: 10px; border-radius: 0;
+.btn-row .btn-primary { flex: 2 1 120px; }
+.btn-mini {
+  min-height: 28px; padding: 2px 10px; font-size: 13px; font-weight: 600;
+  border: 1px solid var(--border-strong); background: var(--bg); color: var(--text-muted);
+  font-family: inherit; text-transform: uppercase; letter-spacing: 0.05em; cursor: pointer;
 }
-.viz-log .step { padding: 1px 0; color: var(--text-muted); }
-.viz-log .highlight { color: var(--text); font-weight: 600; }
+.btn-mini:hover { color: var(--text); border-color: var(--text); }
+
+/* ── Step trace ───────────────────────────────────────────────────────
+   createLogger emits three row kinds; each is styled to say what it is at a
+   glance, so the trace can be skimmed instead of read line by line:
+
+     .step-item   a numbered step        — gutter number + one unwrapped line
+     .step-note   the reason for it      — indented under its step
+     .step-phase  a phase heading        — "--- Iteration 2 ---"
+
+   Plus two states: .is-latest (where the run is right now) and .is-key (the
+   outcome the page marked with <span class="highlight">).
+   ────────────────────────────────────────────────────────────────────── */
+.viz-trace {
+  margin-top: 24px;
+  border: 1px solid var(--border-strong);
+  background: var(--bg);
+}
+.viz-trace-head {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  padding: 10px 14px; background: var(--surface);
+  border-bottom: 1px solid var(--border-strong);
+}
+.viz-trace-head h3 {
+  margin: 0; font-size: 15px; color: var(--text);
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+.viz-trace-count {
+  font-size: 14px; color: var(--text-muted);
+  border: 1px solid var(--border); background: var(--bg); padding: 0 8px;
+}
+.viz-trace-tools { margin-left: auto; display: flex; gap: 8px; }
+
+.viz-trace-body { position: relative; }
+
+.viz-log {
+  /* Grows with the trace between these bounds, so a three-step run is not a
+     mostly-empty box and a fifty-step one does not push the page around.
+     Horizontal scroll rather than wrapping: a wrapped step line is the thing
+     that made the old panel unreadable. */
+  min-height: 260px; max-height: 420px;
+  overflow: auto; -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  font-family: inherit; font-size: 15px; line-height: 1.5;
+  padding: 6px 0;
+}
+
+.viz-log .step { padding: 0; color: var(--text-muted); }
+
+.viz-log .step-item {
+  display: grid; grid-template-columns: 40px minmax(0, 1fr);
+  gap: 12px; align-items: baseline;
+  padding: 4px 14px 4px 0;
+  border-left: 3px solid transparent;
+  border-top: 1px solid var(--border);
+}
+.viz-log .step-item:first-child { border-top: 0; }
+.viz-log .step-n {
+  font-size: 13px; color: var(--text-dim); text-align: right;
+  font-variant-numeric: tabular-nums; user-select: none;
+}
+.viz-log .step-body { min-width: 0; }
+.viz-log .step-main { color: var(--text); white-space: pre; }
+.viz-log .step-note {
+  color: var(--text-muted); font-size: 14px; white-space: pre;
+  margin-top: 1px; padding-left: 14px;
+  border-left: 1px dashed var(--border-strong);
+}
+
+/* name=value: the value is what changes between steps, so it is the part that
+   gets the colour. The arrows mark the decision the step took. */
+.viz-log .k { font-weight: 400; color: var(--text-muted); }
+.viz-log .v { font-weight: 700; color: var(--viz-alt); }
+.viz-log .arrow { font-style: normal; font-weight: 700; color: var(--viz-active); padding: 0 2px; }
+.viz-log .highlight { color: var(--text); font-weight: 700; }
+
+.viz-log .step-item.is-latest {
+  background: var(--viz-trace-latest);
+  border-left-color: var(--viz-active);
+}
+.viz-log .step-item.is-key,
+.viz-log .step-note.is-key { color: var(--text); }
+.viz-log .step-item.is-key {
+  border-left-color: var(--viz-done);
+  background: var(--viz-trace-key);
+}
+
+.viz-log .step-phase {
+  margin: 10px 14px 6px; padding: 0;
+  display: flex; align-items: center; gap: 10px;
+  font-size: 13px; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+.viz-log .step-phase::after {
+  content: ''; flex: 1; height: 1px; background: var(--border-strong);
+}
+.viz-log .step-phase:first-child { margin-top: 2px; }
+
+.viz-trace-empty {
+  position: absolute; inset: 0; margin: 0;
+  /* grid, not flex: a flex container makes each inline child a flex item and
+     eats the spaces around <b>Run</b>. */
+  display: grid; place-items: center; text-align: center;
+  padding: 0 24px; pointer-events: none;
+  font-size: 16px; color: var(--text-dim);
+}
+/* [hidden] is a UA rule on the element; a class selector outranks it. */
+.viz-trace-empty[hidden], .viz-trace-jump[hidden] { display: none; }
+.viz-trace-jump {
+  position: absolute; right: 18px; bottom: 14px;
+  font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer;
+  padding: 4px 10px; min-height: 28px;
+  background: var(--inverse-bg); color: var(--inverse-text);
+  border: 1px solid var(--inverse-bg);
+  text-transform: uppercase; letter-spacing: 0.05em;
+}
 
 /* ── Legend ─── */
 .legend {
-  display: flex; gap: 16px; flex-wrap: wrap; font-size: 15px;
+  display: flex; gap: 8px; flex-wrap: wrap; font-size: 14px;
   margin-top: 12px; color: var(--text-muted);
   text-transform: uppercase; letter-spacing: 0.04em;
 }
-.legend-item { display: flex; align-items: center; gap: 6px; }
+.legend-item {
+  display: flex; align-items: center; gap: 7px;
+  border: 1px solid var(--border); background: var(--bg);
+  padding: 2px 9px 2px 7px;
+}
 .legend-dot {
   width: 12px; height: 12px; border-radius: 0; flex-shrink: 0;
   border: 1px solid var(--border-strong);
@@ -251,7 +438,8 @@ footer a:hover { color: var(--text); opacity: 1; }
 /* ── Responsive — tablet <=1024px ─── */
 @media (max-width: 1024px) {
   .container { padding: 0 24px; }
-  .viz-wrapper { grid-template-columns: 1fr 260px; gap: 16px; }
+  .viz-wrapper { grid-template-columns: 1fr 270px; gap: 16px; }
+  .viz-log { max-height: 360px; }
 }
 
 /* ── Responsive — mobile <=768px ─── */
@@ -265,13 +453,21 @@ footer a:hover { color: var(--text); opacity: 1; }
   .viz-canvas-area { min-height: 320px; padding: 10px; }
   .algo-grid { grid-template-columns: 1fr; }
   .btn { flex: 1 1 auto; }
+
+  /* Stacked, the controls are above the canvas, so sticking them would pin
+     the controls over the thing they control. */
+  .viz-controls { position: static; }
+  .viz-trace { margin-top: 20px; }
+  .viz-log { min-height: 220px; max-height: 320px; font-size: 14px; }
+  .viz-log .step-item { grid-template-columns: 30px minmax(0, 1fr); gap: 8px; padding-right: 10px; }
 }
 
 @media (max-width: 480px) {
   .container { padding: 0 12px; }
   h1 { font-size: 22px; }
   .page-header h1 { font-size: 20px; }
-  .legend { font-size: 14px; gap: 12px; }
+  .legend { font-size: 13px; gap: 6px; }
+  .viz-log { min-height: 200px; max-height: 280px; font-size: 13px; }
   footer p { font-size: 14px; }
 }
 
@@ -293,7 +489,8 @@ footer a:hover { color: var(--text); opacity: 1; }
 /* ── Print ─── */
 @media print {
   /* .navbar / .nav-toggle are hidden by nav.css */
-  footer, .viz-controls { display: none !important; }
+  footer, .viz-controls, .viz-trace-tools, .viz-trace-jump { display: none !important; }
+  .viz-log { min-height: 0; max-height: none; overflow: visible; }
   body { font-size: 11pt; color: #000; background: #fff; }
   main { padding: 0; }
   .viz-wrapper { grid-template-columns: 1fr; }

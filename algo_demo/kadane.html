@@ -42,15 +42,30 @@
           <button class="btn btn-secondary" id="reset-btn">Reset</button>
         </div>
         <div class="complexity">Time: O(n) | Space: O(1)</div>
-        <h3>Steps</h3>
-        <div class="viz-log" id="log"></div>
       </div>
     </div>
+    <section class="viz-trace">
+      <div class="viz-trace-head">
+        <h3>Steps</h3>
+        <span class="viz-trace-count" data-trace-count>0 steps</span>
+        <div class="viz-trace-tools">
+          <button type="button" class="btn-mini" data-trace-copy>Copy</button>
+        </div>
+      </div>
+      <div class="viz-trace-body">
+        <div class="viz-log" id="log"></div>
+        <p class="viz-trace-empty" data-trace-empty><span>Press <b>Run</b> to trace the algorithm one step at a time.</span></p>
+        <button type="button" class="viz-trace-jump" data-trace-jump hidden>&darr; latest</button>
+      </div>
+    </section>
   </main>
 <script>
 (function() {
   var canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
   var arr=[],running=false,stopped=false,logger=createLogger('log');
+  // Keep the current frame across a resize or a theme switch — see
+  // VIZ.repaintable in common.js.
+  draw = VIZ.repaintable(draw);
 
   function resize(){var r=canvas.parentElement.getBoundingClientRect();canvas.width=r.width-32;canvas.height=Math.max(r.height-32,300);}
   function genArray(){
@@ -124,7 +139,7 @@
   document.getElementById('run-btn').addEventListener('click',run);
   document.getElementById('reset-btn').addEventListener('click',function(){stopped=true;running=false;genArray();logger.clear();draw();});
   document.getElementById('size').addEventListener('input',function(){document.getElementById('size-val').textContent=this.value;genArray();logger.clear();draw();});
-  genArray();draw();window.addEventListener('resize',draw);
+  genArray();draw();window.addEventListener('resize',draw.repaint);
 })();
 </script>
   <footer>

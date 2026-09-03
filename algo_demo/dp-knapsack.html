@@ -57,16 +57,31 @@
           <button class="btn btn-secondary" id="reset-btn">New Items</button>
         </div>
         <div class="complexity">Time: O(n·W) | Space: O(n·W)</div>
-        <h3>Steps</h3>
-        <div class="viz-log" id="log"></div>
       </div>
     </div>
+    <section class="viz-trace">
+      <div class="viz-trace-head">
+        <h3>Steps</h3>
+        <span class="viz-trace-count" data-trace-count>0 steps</span>
+        <div class="viz-trace-tools">
+          <button type="button" class="btn-mini" data-trace-copy>Copy</button>
+        </div>
+      </div>
+      <div class="viz-trace-body">
+        <div class="viz-log" id="log"></div>
+        <p class="viz-trace-empty" data-trace-empty><span>Press <b>Run</b> to trace the algorithm one step at a time.</span></p>
+        <button type="button" class="viz-trace-jump" data-trace-jump hidden>&darr; latest</button>
+      </div>
+    </section>
   </main>
 <script>
 (function() {
   var canvas = document.getElementById('canvas'), ctx = canvas.getContext('2d');
   var running = false, stopped = false;
   var logger = createLogger('log');
+  // Keep the current frame across a resize or a theme switch — see
+  // VIZ.repaintable in common.js.
+  draw = VIZ.repaintable(draw);
   var items = [], W = 8, dp = [], n;
 
   function getW() { return +document.getElementById('cap-range').value; }
@@ -105,8 +120,10 @@
     var startY = 40;
 
     // Column headers (capacity 0..W)
-    ctx.fillStyle = textColor; ctx.font = 'bold 11px sans-serif'; ctx.textAlign = 'center';
-    ctx.fillText('item \\ cap', startX - 28, startY + cellH / 2 + 4);
+    // The corner label belongs on the header line: beside row 0 it printed on
+    // top of that row's own "none".
+    ctx.fillStyle = textColor; ctx.font = 'bold 11px sans-serif'; ctx.textAlign = 'right';
+    ctx.fillText('item \\ cap', startX - 4, startY - 6);
     for (var c = 0; c <= W; c++) {
       ctx.fillStyle = textColor;
       ctx.fillText(c, startX + c * cellW + cellW / 2, startY - 6);
@@ -186,7 +203,7 @@
     stopped = true; running = false; genItems();
   });
   genItems();
-  window.addEventListener('resize', function() { draw(-1, -1, null); });
+  window.addEventListener('resize', draw.repaint);
 })();
 </script>
   <footer>

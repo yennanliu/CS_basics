@@ -34,9 +34,8 @@
       </div>
       <div class="viz-controls">
         <h3>Controls</h3>
-        <label>Nodes</label>
+        <label>Nodes: <span id="nodes-val">8</span></label>
         <input type="range" id="nodes" min="6" max="15" value="8">
-        <span id="nodes-val">8</span>
         <label>Speed</label>
         <input type="range" id="speed" min="1" max="10" value="5">
         <div class="btn-row">
@@ -44,10 +43,22 @@
           <button class="btn btn-secondary" id="reset-btn">Reset</button>
         </div>
         <div class="complexity">Time: O((V+E) log V) | Space: O(V)</div>
-        <h3>Steps</h3>
-        <div class="viz-log" id="log"></div>
       </div>
     </div>
+    <section class="viz-trace">
+      <div class="viz-trace-head">
+        <h3>Steps</h3>
+        <span class="viz-trace-count" data-trace-count>0 steps</span>
+        <div class="viz-trace-tools">
+          <button type="button" class="btn-mini" data-trace-copy>Copy</button>
+        </div>
+      </div>
+      <div class="viz-trace-body">
+        <div class="viz-log" id="log"></div>
+        <p class="viz-trace-empty" data-trace-empty><span>Press <b>Run</b> to trace the algorithm one step at a time.</span></p>
+        <button type="button" class="viz-trace-jump" data-trace-jump hidden>&darr; latest</button>
+      </div>
+    </section>
   </main>
 <script>
 (function() {

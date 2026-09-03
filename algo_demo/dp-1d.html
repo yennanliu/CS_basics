@@ -62,16 +62,31 @@
           <button class="btn btn-secondary" id="reset-btn">Reset</button>
         </div>
         <div class="complexity">Time: O(n) | Space: O(n)</div>
-        <h3>Steps</h3>
-        <div class="viz-log" id="log"></div>
       </div>
     </div>
+    <section class="viz-trace">
+      <div class="viz-trace-head">
+        <h3>Steps</h3>
+        <span class="viz-trace-count" data-trace-count>0 steps</span>
+        <div class="viz-trace-tools">
+          <button type="button" class="btn-mini" data-trace-copy>Copy</button>
+        </div>
+      </div>
+      <div class="viz-trace-body">
+        <div class="viz-log" id="log"></div>
+        <p class="viz-trace-empty" data-trace-empty><span>Press <b>Run</b> to trace the algorithm one step at a time.</span></p>
+        <button type="button" class="viz-trace-jump" data-trace-jump hidden>&darr; latest</button>
+      </div>
+    </section>
   </main>
 <script>
 (function() {
   var canvas = document.getElementById('canvas'), ctx = canvas.getContext('2d');
   var running = false, stopped = false;
   var logger = createLogger('log');
+  // Keep the current frame across a resize or a theme switch — see
+  // VIZ.repaintable in common.js.
+  draw = VIZ.repaintable(draw);
   var dp = [], houses = [], n = 10, problem = 'stairs';
 
   function getN() { return +document.getElementById('n-range').value; }
@@ -206,7 +221,7 @@
   document.getElementById('n-range').addEventListener('input', function() { document.getElementById('n-val').textContent = this.value; init(); });
   document.getElementById('problem-select').addEventListener('change', init);
   init();
-  window.addEventListener('resize', function() { draw(-1, -1, -1); });
+  window.addEventListener('resize', draw.repaint);
 })();
 </script>
   <footer>

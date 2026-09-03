@@ -139,6 +139,40 @@ visualizers, roadmap topics, quiz questions, OK vs AGAIN — is read from the so
 files at build time. **Do not hardcode one**; a typed number is one that goes stale
 the first week nobody re-checks it.
 
+### The algorithm visualizers
+
+`algo_demo/` is 36 hand-written visualizer pages plus `common.js` and `style.css`.
+`build.sh` copies the directory wholesale — there is no generator — so anything
+that should look or behave the same on all 36 belongs in those two shared files,
+never copy-pasted into a page's inline `<script>`. `site/test/algo-demo.test.js`
+evaluates the shipped `common.js` in jsdom and asserts against it.
+
+Three things every page gets for free, and must not reimplement:
+
+- **The palette.** Canvases read colours from `VIZ` (the `--viz-*` tokens), never
+  a literal, so both themes and any repaint stay in one place.
+- **Canvas quality.** `getContext('2d')` is wrapped once: the backing store is
+  scaled to `devicePixelRatio` behind `width`/`height` accessors (a page still
+  writes and reads CSS pixels), and the `font` setter rewrites the generic
+  families to the site's face. Both fixes therefore reach pages that were written
+  before either existed.
+- **The step trace.** `createLogger(id)` still takes `clear()` and
+  `log(html, cls)`, but it reads the three shapes the pages already write and
+  renders them as structure — a numbered step, an indented line as *the reason*
+  tucked under the step above it, and `--- x ---` as a phase heading. A message
+  that is **entirely** one `<span class="highlight">` is the run's outcome; the
+  same span used mid-sentence is just emphasis, because pages use it both ways.
+
+The trace lives in its own full-width `.viz-trace` panel below the canvas. It was
+in the 300px control column, where `L=4 R=24 sum=28` wrapped three times and four
+steps filled the box — put it back there and the trace stops being readable.
+
+A page whose `draw()` takes arguments must wrap it: `draw = VIZ.repaintable(draw)`
+and `window.addEventListener('resize', draw.repaint)`. Handing `draw` straight to
+`addEventListener` passes it the resize Event as its first drawing argument, and
+calling it with reset arguments throws the highlight away — and a theme switch
+fires a resize, so either way the picture reverted mid-run.
+
 ## Build and Test Commands
 
 ### Java (leetcode_java/)

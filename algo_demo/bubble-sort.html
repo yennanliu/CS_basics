@@ -42,10 +42,22 @@
           <button class="btn btn-secondary" id="reset-btn">Reset</button>
         </div>
         <div class="complexity">Time: O(n&sup2;) | Space: O(1)</div>
-        <h3>Stats</h3>
-        <div class="viz-log" id="log"></div>
       </div>
     </div>
+    <section class="viz-trace">
+      <div class="viz-trace-head">
+        <h3>Stats</h3>
+        <span class="viz-trace-count" data-trace-count>0 steps</span>
+        <div class="viz-trace-tools">
+          <button type="button" class="btn-mini" data-trace-copy>Copy</button>
+        </div>
+      </div>
+      <div class="viz-trace-body">
+        <div class="viz-log" id="log"></div>
+        <p class="viz-trace-empty" data-trace-empty><span>Press <b>Run</b> to trace the algorithm one step at a time.</span></p>
+        <button type="button" class="viz-trace-jump" data-trace-jump hidden>&darr; latest</button>
+      </div>
+    </section>
   </main>
 <script>
 (function() {
@@ -53,6 +65,9 @@
   var ctx = canvas.getContext('2d');
   var arr = [], running = false, stopped = false;
   var logger = createLogger('log');
+  // Keep the current frame across a resize or a theme switch — see
+  // VIZ.repaintable in common.js.
+  draw = VIZ.repaintable(draw);
   var comparisons = 0, swaps = 0;
 
   function resize() {
@@ -132,7 +147,7 @@
   });
 
   genArray(); draw();
-  window.addEventListener('resize', function(){ draw(); });
+  window.addEventListener('resize', draw.repaint);
 })();
 </script>
   <footer>
