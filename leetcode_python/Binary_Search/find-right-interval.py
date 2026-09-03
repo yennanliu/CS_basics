@@ -50,7 +50,8 @@ The start point of each interval is unique.
 Steps:
 
 
-1. Store every interval's start together with its original index.
+1. Store every interval's start together
+   with its original index.
 
 2. Sort these pairs by start.
 
@@ -165,6 +166,18 @@ class Solution(object):
 # IDEA: BINRARY SEARCH (GPT)
 # time = O(n log n)
 # space = O(n)
+"""
+Steps:
+
+    Sort all starts
+           ↓
+    For every end
+           ↓
+    Binary search first start >= end
+           ↓
+    Return its original index
+
+"""
 from bisect import bisect_left
 
 
