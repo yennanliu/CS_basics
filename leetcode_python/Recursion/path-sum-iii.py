@@ -94,11 +94,13 @@ class Solution(object):
         self.path_map[prefix] -= 1
 
 
+
 # V0-0-1
 # IDEA 1) dfs (pre-order) + prefix + hashmap + backtrack (GPT)
 # time = O(n)
 # space = O(h), h is height of binary tree (hashmap entries bounded by active path due to backtrack)
 from collections import defaultdict
+
 
 class Solution(object):
     def pathSum(self, root, targetSum):
@@ -107,6 +109,57 @@ class Solution(object):
         :type targetSum: int
         :rtype: int
         """
+
+        # {prefix_sum: number of times we have seen it}
+        self.graph = defaultdict(int)
+        self.graph[0] = 1
+
+        self.cur_sum = 0
+        self.cnt = 0
+
+        self.helper(root, targetSum)
+
+        return self.cnt
+
+    # Pre-order DFS
+    def helper(self, root, targetSum):
+        if not root:
+            return
+
+        # Update current prefix sum
+        self.cur_sum += root.val
+
+        # cur_sum - previous_sum = targetSum
+        #
+        # previous_sum = cur_sum - targetSum
+        self.cnt += self.graph[self.cur_sum - targetSum]
+
+        # Add current prefix sum
+        self.graph[self.cur_sum] += 1
+
+        # DFS
+        self.helper(root.left, targetSum)
+        self.helper(root.right, targetSum)
+
+        """
+        NOTE !!!
+
+        UNDO !!! (backtrack)
+        """
+        # Backtracking:
+        # Remove current prefix sum before going to another branch
+        self.graph[self.cur_sum] -= 1
+        self.cur_sum -= root.val
+
+
+# V0-0-0-1
+# IDEA 1) dfs (pre-order) + prefix + hashmap + backtrack (GPT)
+# time = O(n)
+# space = O(h), h is height of binary tree (hashmap entries bounded by active path due to backtrack)
+from collections import defaultdict
+
+class Solution(object):
+    def pathSum(self, root, targetSum):
 
         # prefix_sum -> count
         prefix = defaultdict(int)
