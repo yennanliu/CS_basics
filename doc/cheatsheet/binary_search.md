@@ -2,7 +2,7 @@
 
 > **Scope** — Halving a **monotonic** search space — the loop-invariant reasoning behind `l <= r` vs `l < r`, the boundary (lower/upper bound) templates, rotated arrays, and floating-point and 2D search.
 > **See also** — *deep dives split out of this file*: [binary_search_on_answer.md](./binary_search_on_answer.md) — searching the *answer space*: the `canFinish` / `isValid` predicate, minimise-maximum vs maximise-minimum, and value-domain counting; [binary_search_examples.md](./binary_search_examples.md) — the worked-problem archive, one canonical solution per problem.
-> *Neighbouring sheets*: [sort.md](./sort.md) — getting the array sorted first; [advanced_divide_and_conquer.md](./advanced_divide_and_conquer.md) — halving *with* a merge step; [bst.md](./bst.md) — the same invariant as a data structure; [heap.md](./heap.md) — k-th element without ordering.
+> *Neighbouring sheets*: [sort.md](./sort.md) — getting the array sorted first; [advanced_divide_and_conquer.md](./advanced_divide_and_conquer.md) — halving *with* a merge step; [bst.md](./bst.md) — the same invariant as a data structure; [heap.md](./heap.md) — k-th element without ordering; [monotonic_stack.md](./monotonic_stack.md) — the *positional* "next greater", which is the pattern lower bound is most often confused with.
 
 
 ## LeetCode Problem Lists
@@ -416,7 +416,105 @@ public int search(int[] nums, int target) {
 
 ### 1.3) Find Boundaries — Lower and Upper Bound (LC 34) ⭐⭐⭐⭐⭐
 
-**Purpose**: Find first and last occurrence of target in a **non-decreasing** array with duplicates
+**Purpose**: Answer *bound* queries on a sorted array — the first index `>= target`, the
+last index `<= target`, and everything that reduces to them (first/last occurrence, insertion
+point, floor/ceiling lookups)
+
+#### Recognition — "the smallest value >= target" is a Lower Bound ⭐⭐⭐⭐⭐
+
+Before choosing a template, read the problem's own wording. A query phrased as
+*「最小的 value >= target」* — **the smallest value that is at least X** — is a
+lower bound, no matter how the problem dresses it up (intervals, timestamps, spell
+strengths, LIS tails).
+
+##### Pattern: Sort Once, Then One Bound Query per Element
+
+| Wording in the problem | What you are asking for | Template |
+|---|---|---|
+| "smallest value **>=** X", "first one that is at least X" | **lower bound** | `findLeft` → `l` (`bisect_left`) |
+| "smallest value **>** X", "strictly greater" | **upper bound** | `findRight` → `r + 1` (`bisect_right`) |
+| "largest value **<=** X", "floor", "most recent before X" | **upper bound − 1** | `findRight` → `r` (`bisect_right - 1`) |
+| "largest value **<** X" | **lower bound − 1** | `findLeft` → `l - 1` (`bisect_left - 1`) |
+
+The shape is always the same three lines — and when the answer must be the element's
+**original position**, pair the value with its index *before* sorting so the sort keeps
+them glued together:
+
+```python
+# python - the generic "sort once, lower-bound each query" shape
+# time = O(n log n) build + O(log n) per query, space = O(n)
+import bisect
+
+pairs = sorted((v, i) for i, v in enumerate(raw))   # NOTE !!! pair value WITH original idx
+keys  = [v for v, _ in pairs]                       # bisect needs a plain sorted list
+
+j = bisect.bisect_left(keys, x)                     # first value >= x
+ans = pairs[j][1] if j < len(keys) else -1          # map sorted pos -> original idx
+```
+
+```java
+// java - the same query, hand-rolled (identical to findLeft in the template below)
+// time = O(log N), space = O(1)
+private int lowerBound(int[] keys, int x) {
+    int l = 0, r = keys.length - 1;
+    while (l <= r) {
+        int mid = l + (r - l) / 2;
+        if (keys[mid] < x) l = mid + 1;   // strict < → equality falls right, pushing l left
+        else r = mid - 1;
+    }
+    return l;                              // l == keys.length → no value >= x
+}
+```
+
+##### Core Idea: Lower Bound vs Monotonic Stack
+
+These two get confused constantly, because both sound like "find the next bigger thing".
+They answer **different questions**:
+
+```text
+Monotonic stack : for each i, the FIRST element to its LEFT / RIGHT that is > (or <) nums[i]
+                  -> a POSITIONAL neighbour; array order is the whole point
+
+Lower bound     : for each query x, the SMALLEST value >= x in the WHOLE set
+                  -> a VALUE ranking; position is irrelevant, so sort first
+```
+
+**Test to apply**: if reordering the input would change the answer, it is a monotonic
+stack (a nearest-neighbour scan). If it would not — you would still want the same
+minimal value — it is a lower bound, so sort once and binary search.
+
+LC 436 (Find Right Interval) is the clean example of the second: it wants the interval
+whose `start` is the **minimum start `>= end_i`** across *all* intervals, not the nearest
+interval sitting to the right in the input array — so it is binary search, not a
+monotonic stack.
+
+```text
+current.end
+     ↓
+all intervals' starts (sorted)
+     ↓
+first start >= end          → lower bound
+```
+
+> Worked solution for LC 436 — including the sort-with-index recipe — lives in
+> [binary_search_examples.md](./binary_search_examples.md) §16.
+
+##### Similar Problems: Bound Queries on a Sorted Set
+
+| LC # | Problem | The query, in bound form |
+|------|---------|--------------------------|
+| **436** | Find Right Interval | smallest `start >= end_i` → lower bound, answer is the original index |
+| **35** | Search Insert Position | smallest index with `nums[i] >= target` → lower bound, unvalidated |
+| **34** | Find First and Last Position of Element in Sorted Array | lower bound and upper bound − 1 together |
+| **744** | Find Smallest Letter Greater Than Target | strictly `>` → upper bound, then wrap with `% n` |
+| **981** | Time Based Key-Value Store | largest `timestamp <= query` → upper bound − 1, per key |
+| **1146** | Snapshot Array | same floor query, on a per-index version list |
+| **300** | Longest Increasing Subsequence (O(N log N)) | smallest tail `>= x`, then overwrite it |
+| **2300** | Successful Pairs of Spells and Potions | smallest potion `>= ceil(success / spell)`, then count the suffix |
+| **1170** | Compare Strings by Frequency of the Smallest Character | count of words with freq `>` query → `n - upperBound` |
+
+> **If the set mutates between queries** (insertions arriving over time), a sorted array
+> plus binary search is no longer enough — reach for `SortedList` / a BST / a BIT instead.
 
 #### Pattern: Two Independent Boundary Searches
 
@@ -1006,6 +1104,8 @@ One table for the whole sheet: given the shape of the input, this is the templat
 |--------|---------|
 | "find minimum/maximum X such that..." | Binary search on answer |
 | "sorted array, find first/last occurrence" | Left/right boundary binary search |
+| "the smallest value **>=** X" / "largest **<=** X", asked once per element | Sort once + lower/upper bound — §1.3 |
+| "the **first** element to the left/right that is bigger" (positional) | Monotonic stack, NOT binary search — §1.3 |
 | "matrix with row+col sorted" | Staircase search (NOT flat binary search) |
 | "real number answer, precision required" | Floating-point binary search |
 | "can we achieve X?" is monotonic | Binary search on monotonic predicate |
