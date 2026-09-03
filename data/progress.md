@@ -6,33 +6,28 @@
 	- `must_lc_list.md` (1st remaining ing)
 		- https://github.com/yennanliu/CS_basics/commit/fe72cf1ba0b3251d42603aa181e2438dfde16a7a
 
-
-	- LC top 100 like (doing)
-
- 	- blind 150 (doing)
-
- 	- blind 75
-		- arrays & hashing (ok)
-		- 2 pointers (ok)
-		- 1D DP (ok)
-		- slide window (ok)
-		- stack (ok)
-		- binary search (ok)
-		- linked list (todo)
-		- tree (ok)
-		- heap & PQ (todo)
-		- backtrack (ok)
-		- tries (todo)
-		- graph (ok)
-		- greedy (ok)
-		- invervals (ok)
-		- 2D DP (doing)
-
-		
-
 	- LC Top 100 like
 		- https://leetcode.com/studyplan/top-100-liked/
 		- https://leetcode.cn/studyplan/top-100-liked/
+
+	- LC weekly
+		- `data/lc_weekly/lc_weekly_gpt.md`
+			- Weekly Contest 516 (doing)
+				- https://leetcode.com/contest/weekly-contest-516/
+		- LC docs contest
+			- https://leetcode.doocs.org/contest/
+
+
+		- `scan` (ONLY idea, no implement)
+			- 第 258 场周赛(2021-09-12 10:30, 90 分钟) 参赛人数 4519
+			- weekly 258
+				- https://leetcode.com/contest/weekly-contest-258/
+
+
+ 	- blind 150 (doing)
+
+ 	- blind 75 (done)
+
 
 		- stack
 
@@ -118,13 +113,6 @@
   - dp.md
   - dp_examples.md
 
-
-- LC weekly
-	- `data/lc_weekly/lc_weekly_gpt.md`
-		- Weekly Contest 516 (doing)
-			- https://leetcode.com/contest/weekly-contest-516/
-	- LC docs contest
-		- https://leetcode.doocs.org/contest/
 
 - Others
 	- DP - `0/1 Knapsack and` -> revisit
