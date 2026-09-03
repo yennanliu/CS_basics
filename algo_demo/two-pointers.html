@@ -29,6 +29,7 @@
           <div class="legend-item"><div class="legend-dot" style="background:var(--viz-active)"></div> Left pointer</div>
           <div class="legend-item"><div class="legend-dot" style="background:var(--viz-swap)"></div> Right pointer</div>
           <div class="legend-item"><div class="legend-dot" style="background:var(--viz-done)"></div> Found pair</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-idle);opacity:.35"></div> Ruled out</div>
         </div>
       </div>
       <div class="viz-controls">
@@ -43,10 +44,22 @@
           <button class="btn btn-secondary" id="reset-btn">Reset</button>
         </div>
         <div class="complexity">Time: O(n) | Space: O(1)</div>
-        <h3>Steps</h3>
-        <div class="viz-log" id="log"></div>
       </div>
     </div>
+    <section class="viz-trace">
+      <div class="viz-trace-head">
+        <h3>Steps</h3>
+        <span class="viz-trace-count" data-trace-count>0 steps</span>
+        <div class="viz-trace-tools">
+          <button type="button" class="btn-mini" data-trace-copy>Copy</button>
+        </div>
+      </div>
+      <div class="viz-trace-body">
+        <div class="viz-log" id="log"></div>
+        <p class="viz-trace-empty" data-trace-empty><span>Press <b>Run</b> to trace the algorithm one step at a time.</span></p>
+        <button type="button" class="viz-trace-jump" data-trace-jump hidden>&darr; latest</button>
+      </div>
+    </section>
   </main>
 <script>
 (function() {
@@ -67,45 +80,61 @@
     state={lo:-1,hi:-1,found:-1,foundHi:-1};
   }
 
+  // Layout bands, top to bottom: readout | bars | axis + indices | pointers.
+  var TOP = 52, AXIS_PAD = 64;
+
   function draw(){
     var r=canvas.parentElement.getBoundingClientRect();
-    canvas.width=r.width-32; canvas.height=Math.max(r.height-32,260);
+    canvas.width=r.width-32; canvas.height=Math.max(r.height-32,300);
     var w=canvas.width,h=canvas.height,n=arr.length;
     ctx.clearRect(0,0,w,h);
-    var barW=Math.min(50,(w-40)/n-4),gap=4,totalW=n*(barW+gap)-gap,startX=(w-totalW)/2;
-    var max=Math.max.apply(null,arr);
-    var barAreaH=h-100;
+    var barW=Math.min(50,(w-40)/n-6),gap=6,totalW=n*(barW+gap)-gap,startX=(w-totalW)/2;
+    var max=Math.max.apply(null,arr)||1;
+    var baseY=h-AXIS_PAD, barAreaH=baseY-TOP-24;
+    var live=state.lo>=0&&state.found<0;
+    var sum=live?arr[state.lo]+arr[state.hi]:null;
+
+    // The band still in play. Everything outside it has been ruled out by the
+    // sorted order — the one idea the whole technique rests on.
+    if(state.lo>=0&&state.found<0&&state.lo<state.hi){
+      VIZ.region(ctx,
+        startX+state.lo*(barW+gap)-3, startX+state.hi*(barW+gap)+barW+3,
+        TOP+16, baseY+4, VIZ.alt, 'still in play');
+    }
 
     for(var i=0;i<n;i++){
       var x=startX+i*(barW+gap);
-      var bh=(arr[i]/max)*barAreaH*0.7;
-      var y=h-60-bh;
-      var color=VIZ.base;
+      var bh=(arr[i]/max)*barAreaH;
+      var y=baseY-bh;
+      var color=VIZ.base, mode='';
       if(state.found>=0&&(i===state.found||i===state.foundHi)) color=VIZ.done;
       else if(i===state.lo) color=VIZ.active;
       else if(i===state.hi) color=VIZ.swap;
-      ctx.fillStyle=color;
-      ctx.beginPath();ctx.roundRect(x,y,barW,bh||2,3);ctx.fill();
-      // value
-      ctx.fillStyle=VIZ.label;
-      ctx.font='11px sans-serif';ctx.textAlign='center';
-      ctx.fillText(arr[i],x+barW/2,y-5);
-      // pointer labels
-      if(i===state.lo&&state.found<0){
-        ctx.fillStyle=VIZ.active;ctx.font='bold 11px sans-serif';
-        ctx.fillText('L',x+barW/2,h-42);
-      }
-      if(i===state.hi&&state.found<0){
-        ctx.fillStyle=VIZ.swap;ctx.font='bold 11px sans-serif';
-        ctx.fillText('R',x+barW/2,h-42);
-      }
+      else if(live&&(i<state.lo||i>state.hi)) { color=VIZ.idle; mode='muted'; }
+      VIZ.bar(ctx,x,y,barW,bh,color,arr[i],mode);
     }
-    // target info
-    ctx.fillStyle=VIZ.label;
-    ctx.font='13px sans-serif';ctx.textAlign='left';
-    ctx.fillText('Target: '+target,10,25);
-    if(state.lo>=0&&state.found<0)
-      ctx.fillText('sum: '+(arr[state.lo]||0)+' + '+(arr[state.hi]||0)+' = '+(arr[state.lo]+arr[state.hi]),10,45);
+
+    var marks={};
+    if(state.found>=0){ marks[state.found]={color:VIZ.done}; marks[state.foundHi]={color:VIZ.done}; }
+    else if(live){ marks[state.lo]={color:VIZ.active}; marks[state.hi]={color:VIZ.swap}; }
+    VIZ.axis(ctx,startX-8,startX+totalW+8,baseY,n,startX,barW,gap,marks);
+
+    if(live){
+      // Same column when the pointers meet: stack rather than overprint.
+      var same=state.lo===state.hi;
+      VIZ.pointer(ctx,startX+state.lo*(barW+gap)+barW/2,baseY+22,'L',VIZ.active,0);
+      VIZ.pointer(ctx,startX+state.hi*(barW+gap)+barW/2,baseY+22,'R',VIZ.swap,same?1:0);
+    }
+
+    var verdict=null;
+    if(sum!==null) verdict=sum===target?{label:'sum = target',value:'take it',color:VIZ.done}
+                   :sum<target?{label:'sum < target',value:'L \u2192',color:VIZ.active}
+                              :{label:'sum > target',value:'\u2190 R',color:VIZ.swap};
+    VIZ.readout(ctx,10,12,[
+      {label:'target',value:target},
+      sum!==null?{label:arr[state.lo]+' + '+arr[state.hi]+' =',value:sum,color:VIZ.alt}:null,
+      state.found>=0?{label:'found',value:arr[state.found]+' + '+arr[state.foundHi],color:VIZ.done}:verdict
+    ]);
   }
 
   async function run(){

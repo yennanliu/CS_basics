@@ -42,10 +42,22 @@
           <button class="btn btn-secondary" id="reset-btn">New Graph</button>
         </div>
         <div class="complexity">Time: O(V&middot;E) | Space: O(V)</div>
-        <h3>Steps</h3>
-        <div class="viz-log" id="log"></div>
       </div>
     </div>
+    <section class="viz-trace">
+      <div class="viz-trace-head">
+        <h3>Steps</h3>
+        <span class="viz-trace-count" data-trace-count>0 steps</span>
+        <div class="viz-trace-tools">
+          <button type="button" class="btn-mini" data-trace-copy>Copy</button>
+        </div>
+      </div>
+      <div class="viz-trace-body">
+        <div class="viz-log" id="log"></div>
+        <p class="viz-trace-empty" data-trace-empty><span>Press <b>Run</b> to trace the algorithm one step at a time.</span></p>
+        <button type="button" class="viz-trace-jump" data-trace-jump hidden>&darr; latest</button>
+      </div>
+    </section>
   </main>
 <script>
 (function() {
@@ -89,8 +101,13 @@
       var ax=b.x*sx-22*Math.cos(angle),ay=b.y*sy-22*Math.sin(angle);
       ctx.beginPath();ctx.moveTo(ax,ay);ctx.lineTo(ax-8*Math.cos(angle-0.4),ay-8*Math.sin(angle-0.4));ctx.lineTo(ax-8*Math.cos(angle+0.4),ay-8*Math.sin(angle+0.4));ctx.closePath();ctx.fillStyle=ctx.strokeStyle;ctx.fill();
       // Weight
+      // Offset the weight to the left of the edge's own direction. A fixed
+      // offset put u->v and v->u on the same pixel, so the two weights
+      // overprinted into an unreadable smudge.
       var mx=(a.x+b.x)/2*sx,my=(a.y+b.y)/2*sy;
-      ctx.fillStyle=e[2]<0?VIZ.danger:VIZ.muted;ctx.font='bold 11px sans-serif';ctx.textAlign='center';ctx.fillText(e[2],mx+10,my-6);
+      ctx.fillStyle=e[2]<0?VIZ.danger:VIZ.muted;ctx.font='bold 11px sans-serif';
+      ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText(e[2],mx+Math.sin(angle)*13,my-Math.cos(angle)*13);
     });
     nodes.forEach(function(n,i){
       ctx.beginPath();ctx.arc(n.x*sx,n.y*sy,18,0,Math.PI*2);

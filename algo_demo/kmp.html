@@ -46,10 +46,22 @@
           <button class="btn btn-secondary" id="reset-btn">Reset</button>
         </div>
         <div class="complexity">Time: O(n+m) | Space: O(m)</div>
-        <h3>Steps</h3>
-        <div class="viz-log" id="log"></div>
       </div>
     </div>
+    <section class="viz-trace">
+      <div class="viz-trace-head">
+        <h3>Steps</h3>
+        <span class="viz-trace-count" data-trace-count>0 steps</span>
+        <div class="viz-trace-tools">
+          <button type="button" class="btn-mini" data-trace-copy>Copy</button>
+        </div>
+      </div>
+      <div class="viz-trace-body">
+        <div class="viz-log" id="log"></div>
+        <p class="viz-trace-empty" data-trace-empty><span>Press <b>Run</b> to trace the algorithm one step at a time.</span></p>
+        <button type="button" class="viz-trace-jump" data-trace-jump hidden>&darr; latest</button>
+      </div>
+    </section>
   </main>
 <script>
 (function() {
@@ -107,14 +119,14 @@
       // index label
       ctx.fillStyle = VIZ.muted;
       ctx.font = '9px sans-serif';
-      ctx.fillText(k, fx + (cellSize - 2) / 2, failY + cellSize - 1);
+      ctx.fillText(k, fx + (cellSize - 2) / 2, failY + cellSize + 9);
     }
     // label for fail row
     ctx.fillStyle = VIZ.muted; ctx.font = '10px sans-serif'; ctx.textAlign = 'left';
     ctx.fillText('Failure function (lps)', pad, failY - 4);
 
     // --- draw text row ---
-    var textY = failY + cellSize + 20;
+    var textY = failY + cellSize + 26;
     ctx.fillStyle = fg; ctx.font = '11px sans-serif'; ctx.textAlign = 'left';
     ctx.fillText('text:', 4, textY + cellSize * 0.65);
     for (var k = 0; k < text.length; k++) {
@@ -138,11 +150,11 @@
       ctx.fillText(text[k], tx + (cellSize - 2) / 2, textY + cellSize * 0.67);
       // index
       ctx.fillStyle = VIZ.muted; ctx.font = '9px sans-serif';
-      ctx.fillText(k, tx + (cellSize - 2) / 2, textY + cellSize - 1);
+      ctx.fillText(k, tx + (cellSize - 2) / 2, textY + cellSize + 9);
     }
 
     // --- draw pattern row (aligned under text[i-j]) ---
-    var patY = textY + cellSize + 6;
+    var patY = textY + cellSize + 20;
     ctx.fillStyle = fg; ctx.font = '11px sans-serif'; ctx.textAlign = 'left';
     ctx.fillText('pat:', 4, patY + cellSize * 0.65);
     var patOffset = state.i >= 0 && state.j >= 0 ? state.i - state.j : 0;
@@ -168,7 +180,7 @@
     if (state.i >= 0) {
       var ix = pad + state.i * cellSize + (cellSize - 2) / 2;
       ctx.fillStyle = VIZ.swap; ctx.font = 'bold 11px sans-serif'; ctx.textAlign = 'center';
-      ctx.fillText('i', ix, textY + cellSize + 3);
+      ctx.fillText('i', ix, textY - 4);
     }
 
     // --- status line ---

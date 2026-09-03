@@ -28,6 +28,7 @@
           <div class="legend-item"><div class="legend-dot" style="background:var(--viz-base)"></div> Array element</div>
           <div class="legend-item"><div class="legend-dot" style="background:var(--viz-swap)"></div> Current window</div>
           <div class="legend-item"><div class="legend-dot" style="background:var(--viz-done)"></div> Best window</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-idle);opacity:.35"></div> Outside window</div>
         </div>
       </div>
       <div class="viz-controls">
@@ -43,10 +44,22 @@
           <button class="btn btn-secondary" id="reset-btn">Reset</button>
         </div>
         <div class="complexity">Time: O(n) | Space: O(1)</div>
-        <h3>Steps</h3>
-        <div class="viz-log" id="log"></div>
       </div>
     </div>
+    <section class="viz-trace">
+      <div class="viz-trace-head">
+        <h3>Steps</h3>
+        <span class="viz-trace-count" data-trace-count>0 steps</span>
+        <div class="viz-trace-tools">
+          <button type="button" class="btn-mini" data-trace-copy>Copy</button>
+        </div>
+      </div>
+      <div class="viz-trace-body">
+        <div class="viz-log" id="log"></div>
+        <p class="viz-trace-empty" data-trace-empty><span>Press <b>Run</b> to trace the algorithm one step at a time.</span></p>
+        <button type="button" class="viz-trace-jump" data-trace-jump hidden>&darr; latest</button>
+      </div>
+    </section>
   </main>
 <script>
 (function() {
@@ -60,38 +73,61 @@
     state={wStart:-1,wEnd:-1,bestStart:-1,bestEnd:-1};
   }
 
+  // Layout bands, top to bottom: readout | bars | axis + indices | pointers.
+  var TOP = 52, AXIS_PAD = 64;
+
   function draw(){
     var r=canvas.parentElement.getBoundingClientRect();
-    canvas.width=r.width-32; canvas.height=Math.max(r.height-32,260);
+    canvas.width=r.width-32; canvas.height=Math.max(r.height-32,300);
     var w=canvas.width,h=canvas.height,n=arr.length;
     ctx.clearRect(0,0,w,h);
-    var barW=Math.min(44,(w-40)/n-4),gap=4,totalW=n*(barW+gap)-gap,startX=(w-totalW)/2;
+    var barW=Math.min(44,(w-40)/n-6),gap=6,totalW=n*(barW+gap)-gap,startX=(w-totalW)/2;
     var max=Math.max.apply(null,arr)||1;
-    var barAreaH=h-100;
+    var baseY=h-AXIS_PAD, barAreaH=baseY-TOP-24;
+    var live=state.wStart>=0;
+    var colX=function(i){ return startX+i*(barW+gap); };
+
+    // Best-so-far first, so the live window draws over it where they overlap.
+    // While the two are the same window there is only one thing to say, and
+    // saying it twice puts two captions on the same pixel.
+    var bestIsWindow=live&&state.bestStart===state.wStart&&state.bestEnd===state.wEnd;
+    if(state.bestStart>=0&&!bestIsWindow){
+      VIZ.region(ctx,colX(state.bestStart)-3,colX(state.bestEnd)+barW+3,
+                 TOP+16,baseY+4,VIZ.done,'best so far','right');
+    }
+    if(live){
+      VIZ.region(ctx,colX(state.wStart)-3,colX(state.wEnd)+barW+3,
+                 TOP+16,baseY+4,VIZ.swap,'window');
+    }
 
     for(var i=0;i<n;i++){
-      var x=startX+i*(barW+gap);
-      var bh=(arr[i]/max)*barAreaH*0.72;
-      var y=h-60-bh;
-      var color=VIZ.base;
-      if(state.bestStart>=0&&i>=state.bestStart&&i<=state.bestEnd) color=VIZ.done;
-      if(state.wStart>=0&&i>=state.wStart&&i<=state.wEnd) color=VIZ.swap;
-      ctx.fillStyle=color;
-      ctx.beginPath();ctx.roundRect(x,y,barW,bh||2,3);ctx.fill();
-      ctx.fillStyle=VIZ.label;
-      ctx.font='11px sans-serif';ctx.textAlign='center';
-      ctx.fillText(arr[i],x+barW/2,y-5);
+      var bh=(arr[i]/max)*barAreaH, y=baseY-bh;
+      var inWin=live&&i>=state.wStart&&i<=state.wEnd;
+      var inBest=state.bestStart>=0&&i>=state.bestStart&&i<=state.bestEnd;
+      var color=VIZ.base, mode='';
+      if(inWin) color=VIZ.swap;
+      else if(inBest) color=VIZ.done;
+      else if(live) { color=VIZ.idle; mode='muted'; }
+      VIZ.bar(ctx,colX(i),y,barW,bh,color,arr[i],mode);
     }
-    // draw window bracket
-    if(state.wStart>=0){
-      var wx=startX+state.wStart*(barW+gap)-2;
-      var wx2=startX+state.wEnd*(barW+gap)+barW+2;
-      ctx.strokeStyle=VIZ.swap;ctx.lineWidth=2;ctx.setLineDash([]);
-      ctx.strokeRect(wx,20,wx2-wx,h-80);
+
+    var marks={};
+    if(live) for(var j=state.wStart;j<=state.wEnd;j++) marks[j]={color:VIZ.swap};
+    VIZ.axis(ctx,startX-8,startX+totalW+8,baseY,n,startX,barW,gap,marks);
+
+    if(live){
+      // The two ends of the window are what a slide actually moves: the one
+      // that leaves and the one that joins.
+      VIZ.pointer(ctx,colX(state.wStart)+barW/2,baseY+22,'out',VIZ.idle,0);
+      VIZ.pointer(ctx,colX(state.wEnd)+barW/2,baseY+22,'in',VIZ.swap,
+                  state.wStart===state.wEnd?1:0);
     }
-    ctx.fillStyle=VIZ.label;
-    ctx.font='13px sans-serif';ctx.textAlign='left';
-    if(state.curSum!==undefined) ctx.fillText('curSum: '+state.curSum+'  maxSum: '+state.maxSum,10,18);
+
+    VIZ.readout(ctx,10,12,[
+      {label:'k',value:state.k===undefined?+document.getElementById('k-slider').value:state.k},
+      state.curSum===undefined?null:{label:'sum',value:state.curSum,color:VIZ.swap},
+      state.maxSum===undefined?null:{label:'best',value:state.maxSum,color:VIZ.done}
+    ]);
   }
 
   async function run(){

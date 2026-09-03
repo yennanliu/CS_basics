@@ -47,10 +47,22 @@
         </div>
         <p style="font-size:.75rem;color:var(--text-secondary)">Click cells to toggle walls.</p>
         <div class="complexity">Time: O(V+E) | Space: O(V)</div>
-        <h3>Stack</h3>
-        <div class="viz-log" id="log"></div>
       </div>
     </div>
+    <section class="viz-trace">
+      <div class="viz-trace-head">
+        <h3>Stack</h3>
+        <span class="viz-trace-count" data-trace-count>0 steps</span>
+        <div class="viz-trace-tools">
+          <button type="button" class="btn-mini" data-trace-copy>Copy</button>
+        </div>
+      </div>
+      <div class="viz-trace-body">
+        <div class="viz-log" id="log"></div>
+        <p class="viz-trace-empty" data-trace-empty><span>Press <b>Run DFS</b> to trace the algorithm one step at a time.</span></p>
+        <button type="button" class="viz-trace-jump" data-trace-jump hidden>&darr; latest</button>
+      </div>
+    </section>
   </main>
 <script>
 (function() {

@@ -16,8 +16,17 @@
   <main class="container">
     <div class="page-header">
       <h1>Algorithm Visualizations</h1>
-      <p>Interactive visualizations of common algorithms used in LeetCode problems.</p>
+      <p>Interactive visualizations of common algorithms used in LeetCode problems.
+         Each one runs step by step and prints the trace underneath.</p>
     </div>
+
+    <div class="viz-filter">
+      <label class="visually-hidden" for="filter">Filter visualizations</label>
+      <input type="search" id="filter" autocomplete="off" spellcheck="false"
+             placeholder="Filter — name, technique, or LC number">
+      <span class="viz-filter-count" id="filter-count"></span>
+    </div>
+    <p class="viz-filter-empty" id="filter-empty" hidden>Nothing matches that.</p>
 
     <h3 class="section-label">Sorting</h3>
     <div class="algo-grid">
@@ -235,6 +244,43 @@
       </a>
     </div>
   </main>
+<script>
+// Live filter over the cards. Everything the cards already say is searchable —
+// title, blurb and tags — so "log n", "LC 347" and "heap" all find something.
+(function() {
+  var input = document.getElementById('filter');
+  var count = document.getElementById('filter-count');
+  var empty = document.getElementById('filter-empty');
+  var cards = [].slice.call(document.querySelectorAll('.algo-card'));
+  var sections = [].slice.call(document.querySelectorAll('.section-label'));
+  cards.forEach(function(c) { c.dataset.hay = c.textContent.toLowerCase().replace(/\s+/g, ' '); });
+
+  function apply() {
+    var q = input.value.trim().toLowerCase();
+    var shown = 0;
+    cards.forEach(function(c) {
+      var hit = !q || c.dataset.hay.indexOf(q) >= 0;
+      c.hidden = !hit;
+      if (hit) shown++;
+    });
+    // A section heading with nothing under it is just a dangling rule.
+    sections.forEach(function(h) {
+      var grid = h.nextElementSibling;
+      var any = [].slice.call(grid.children).some(function(c) { return !c.hidden; });
+      h.hidden = !any;
+      grid.hidden = !any;
+    });
+    count.textContent = q ? shown + ' of ' + cards.length : cards.length + ' visualizations';
+    empty.hidden = shown > 0;
+  }
+
+  input.addEventListener('input', apply);
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') { input.value = ''; apply(); }
+  });
+  apply();
+})();
+</script>
   <footer>
     <div class="container">
       <p>CS_basics &mdash; computer science fundamentals &amp; interview preparation</p>
