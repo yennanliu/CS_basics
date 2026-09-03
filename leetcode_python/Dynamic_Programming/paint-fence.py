@@ -79,6 +79,7 @@ class Solution:
         # For 2 posts:
         # same color: k
         # different color: k * (k - 1)
+        #   -> k + k * (k - 1) = k * k (NOTE !!!!)
         dp[2] = k * k
 
         for i in range(3, n + 1):
@@ -89,6 +90,16 @@ class Solution:
             """
 
             # Case 1: current color != previous color
+            """
+            NOTE !!!
+
+            why `different` color is `(k - 1)` ?
+
+                -> it's from DP definition
+                    -> it defines color in i idx is DIFFERENT from i-1 idx
+                        -> so it ONLY has `k-1` choice
+
+            """
             different = dp[i - 1] * (k - 1)
 
             # Case 2: current color == previous color
