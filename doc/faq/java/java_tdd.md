@@ -1,6 +1,7 @@
 # Java TDD FAQ
 
-- https://tech.youzan.com/dddclue/
+> **Scope** — test-driven development in Java: the red-green-refactor cycle, JUnit 5, the AAA structure, mocking, and what is worth testing.
+> **See also**: [`java_spring.md`](./java_spring.md) — Spring's test slices; [`java_exception.md`](./java_exception.md) — asserting on failures.
 
 ## Overview
 

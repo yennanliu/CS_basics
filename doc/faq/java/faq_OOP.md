@@ -1,6 +1,7 @@
 # OOP FAQ
 
-Object-Oriented Programming fundamentals for Java interviews. For class-modeling / low-level design prompts (Parking Lot, Elevator, Vending Machine), see [`../../cheatsheet/ood_design.md`](../../cheatsheet/ood_design.md).
+> **Scope** — OOP fundamentals for Java interviews: the four pillars, interface vs abstract class, composition over inheritance, SOLID and the everyday principles, and the object contracts.
+> **See also**: [`../../cheatsheet/ood_design.md`](../../cheatsheet/ood_design.md) — class-modeling / low-level design prompts (Parking Lot, Elevator, Vending Machine); [`java_design_pattern.md`](./java_design_pattern.md) — the patterns these principles produce.
 
 ---
 
@@ -177,7 +178,65 @@ class PercentDiscount implements Discount {
 
 ---
 
-## 5) Common Interview Q&A
+## 5) Beyond SOLID: Everyday Principles ⭐⭐⭐⭐
+
+| Principle | Says | Failure it prevents |
+|-----------|------|---------------------|
+| **DRY** — don't repeat yourself | Every piece of knowledge has one authoritative home | The same rule fixed in three places, and missed in a fourth |
+| **KISS** — keep it simple | Prefer the boring solution | A framework where a method would do |
+| **YAGNI** — you aren't gonna need it | Build for today's requirement | Configurability nobody ever uses, but everyone must read |
+| **Law of Demeter** | Talk only to your immediate collaborators | `order.getCustomer().getAddress().getCity()` — a train wreck that couples you to three classes' internals |
+| **Tell, don't ask** | Send the object a command instead of pulling out its state to decide for it | An anaemic model with all the logic in "service" classes |
+| **Program to an interface** | Depend on the capability, not the implementation | `ArrayList x = …` where `List x = …` would do |
+| **Composition over inheritance** | See §3 | Fragile base classes |
+
+DRY has a limit worth stating in an interview: **duplication is cheaper than the wrong
+abstraction.** Two pieces of code that merely *look* alike but change for different reasons
+should stay apart.
+
+---
+
+## 6) Object Contracts ⭐⭐⭐⭐
+
+Beyond `equals`/`hashCode` (§7), two contracts come up in almost every design:
+
+### `Comparable` vs `Comparator`
+
+| | `Comparable<T>` | `Comparator<T>` |
+|---|-----------------|-----------------|
+| Where | Implemented **by** the class | A separate object |
+| Method | `int compareTo(T other)` | `int compare(T a, T b)` |
+| Means | The type's **natural order** (one only) | Any number of alternative orders |
+| Use when | There is an obvious ordering (`String`, `Integer`, a version) | Sorting by different fields, or ordering a class you don't own |
+
+```java
+// java
+class Version implements Comparable<Version> {           // natural order
+    private final int build;
+    Version(int build) { this.build = build; }
+    @Override public int compareTo(Version o) { return Integer.compare(build, o.build); }
+}
+
+// alternative orders, composed and reusable
+Comparator<Employee> byPay = Comparator.comparingLong(Employee::salary)
+                                       .reversed()
+                                       .thenComparing(Employee::name);
+```
+
+The contract: `compareTo` must be transitive and antisymmetric, and **should be consistent
+with `equals`** — when it is not, a `TreeSet` (which dedupes by `compareTo == 0`) and a
+`HashSet` (which dedupes by `equals`) disagree about what a duplicate is. Never implement
+it as `a.value - b.value`: that overflows for large values.
+
+### Copying: `clone` vs a copy constructor
+
+`Object.clone()` is shallow, requires `Cloneable`, and bypasses constructors. A **copy
+constructor** (`new Order(other)`) or a static factory is clearer and preserves
+invariants. Best of all is immutability — nothing to copy if nothing can change.
+
+---
+
+## 7) Common Interview Q&A
 
 **Q: What is the difference between `==` and `.equals()`?**
 `==` compares references (same object in memory) for objects, or values for primitives. `.equals()` compares logical equality as defined by the class. Always override `equals()` **and** `hashCode()` together.
@@ -242,14 +301,16 @@ Both are has-a. **Composition** = strong ownership; the part cannot outlive the 
 
 ---
 
-## 6) Quick Recap Checklist
+## 8) Quick Recap Checklist
 
 ```text
 [ ] Can explain the 4 pillars with a one-line example each
 [ ] Interface vs abstract class: multiple inheritance, state, when to use
 [ ] Composition over inheritance: why + a delegation example
 [ ] All 5 SOLID principles + the smell each fixes
+[ ] DRY / KISS / YAGNI / Law of Demeter — and where DRY stops
 [ ] equals()/hashCode() contract and why both matter
+[ ] Comparable vs Comparator, and consistency with equals
 [ ] Overriding vs overloading (runtime vs compile-time)
 [ ] Dynamic dispatch = runtime polymorphism mechanism
 [ ] Immutability: how to build one and why it helps
@@ -260,3 +321,6 @@ Both are has-a. **Composition** = strong ownership; the part cannot outlive the 
 ## References
 - [`../../cheatsheet/ood_design.md`](../../cheatsheet/ood_design.md) — Object-Oriented Design / Low-Level Design patterns
 - [`../../cheatsheet/design.md`](../../cheatsheet/design.md) — data structure & system coding design
+- [`java_design_pattern.md`](./java_design_pattern.md) — the GoF patterns these principles produce
+- [`java_basic.md`](./java_basic.md) — the language mechanics (`static`, `final`, `Object`'s methods)
+- [`java_generics.md`](./java_generics.md) — variance, wildcards and substitution in the type system

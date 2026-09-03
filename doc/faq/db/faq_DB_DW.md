@@ -178,18 +178,59 @@
 
 
 ### 5) DB tuning 
+- Order of attack (cheapest and highest-yield first)
+	- step 1) `find the slow query` — `slow query log`, `pg_stat_statements`, or the APM's top-N by total time. Optimising a query nobody runs is wasted work
+	- step 2) `read the plan` — `EXPLAIN ANALYZE`. Look for `Seq Scan` on a big table, a row-estimate that is orders of magnitude off (stale stats -> `ANALYZE`), a nested loop over many rows, or a sort spilling to disk
+	- step 3) `index` — add/redesign so the predicate and the join key are covered (see 8/9). Then re-check the plan actually uses it
+	- step 4) `rewrite the query` — remove `SELECT *`, avoid a function on an indexed column (`WHERE date(ts) = …` kills the index), replace correlated subqueries with joins, paginate by keyset instead of `OFFSET`, batch N+1 round trips into one statement
+	- step 5) `schema` — right data types, partition by time on a huge append-only table, denormalize a read-hot join
+	- step 6) `server / infra` — connection pooling (a DB dies of too many connections long before too much CPU), buffer pool / `shared_buffers` sizing, read replicas, then caching in front
+- Measure one change at a time, against realistic data volume — plans flip as tables grow
 
 ### 6) DB management 
+- `Backup & restore` : full + incremental (or WAL/binlog for point-in-time recovery). A backup is only real once a `restore has been rehearsed` and timed against the RTO/RPO
+- `HA` : primary + replicas with automatic failover; know whether replication is `async` (fast, can lose the last writes) or `sync` (no loss, slower writes)
+- `Schema migration` : versioned and forward-only (Flyway/Liquibase/Alembic), expand-then-contract for zero downtime — add the column, backfill, dual-write, switch reads, drop the old one
+- `Monitoring` : connections, replication lag, slow queries, buffer hit rate, lock waits, disk headroom, and the age of the last successful backup
+- `Access control` : least-privilege roles, no shared superuser, separate credentials per service, encryption in transit and at rest
+- `Maintenance` : statistics refresh (`ANALYZE`), bloat/vacuum (Postgres), index rebuilds, retention/archival jobs
 
 ### 7) Case study 
 - NeoDDL on gcloud 
 	- https://medium.com/traveloka-engineering/data-modelling-and-processing-in-travel-super-app-8011a6ecafe6
 
 ### 8) Clustered indexing
+- A `clustered index` defines the `physical order of the rows` — the table IS the index (its leaf level holds the full row)
+	- therefore `at most ONE per table`
+	- InnoDB always has one: the `PRIMARY KEY` (or the first unique-not-null key, or a hidden row id)
+	- a range scan on the clustered key is sequential I/O -> very fast
+- A `secondary (non-clustered) index` stores `key -> pointer`. In InnoDB the pointer is the primary key, so a lookup is `two` B+tree walks: index -> PK -> row (a "bookmark lookup"). A `covering index` (one that contains every column the query needs) skips the second walk
+- Design consequence : keep the PK `short, monotonic and immutable`
+	- a random UUID PK scatters inserts across the whole B+tree (page splits, poor cache locality) and bloats every secondary index — prefer an auto-increment id or a time-ordered ULID/UUIDv7
+- Postgres differs : its tables are heaps, so there is no clustered index — `CLUSTER` is a one-off physical reorder, not a maintained property
 
 ### 9) Indexing
+- Structure : almost always a `B+tree` — `O(log n)` lookup, and leaves are linked so range scans and `ORDER BY` come free. Others: `hash` (equality only), `bitmap` (low-cardinality, analytics), `GIN/GiST` (full-text, arrays, geo), `LSM-tree` (write-heavy stores)
+- `Composite index + leftmost prefix` : an index on `(a, b, c)` serves `WHERE a`, `WHERE a AND b`, `WHERE a AND b AND c`. `WHERE b` alone generally cannot use it — some engines can "skip scan" a low-cardinality leading column (Oracle, MySQL 8 for some plans, PostgreSQL 18), but never count on it. Put the equality columns first, the range column last
+- `Selectivity` : an index pays off when it eliminates most rows. On a column with 2 values the planner will (correctly) prefer a full scan
+- Things that silently disable an index
+	- a function or cast on the column : `WHERE YEAR(created_at) = 2026` defeats a plain index on `created_at` -> rewrite as a range `WHERE created_at >= '2026-01-01' AND < '2027-01-01'`, or build a matching `expression / functional index` (Postgres, MySQL 8, Oracle) so the predicate is indexed as written
+	- a leading wildcard : `LIKE '%foo'`
+	- `OR` across different columns (often), and implicit type conversion (`WHERE varchar_col = 123`)
+	- `IS NULL` / `!=` on some engines
+- Cost : every index is `written on every INSERT/UPDATE/DELETE` and consumes memory in the buffer pool. Unused and duplicate indexes are pure overhead — an index on `(a)` is *usually* redundant when `(a, b)` exists, but check first: the narrower index is smaller (so cheaper to scan) and a `UNIQUE (a)` constraint is not implied by `(a, b)` at all
 
 ### 10) normalization, denormalization
+- `Normalization` — remove redundancy so every fact lives in exactly one place
+	- `1NF` : atomic values, no repeating groups
+	- `2NF` : 1NF + no partial dependency on part of a composite key
+	- `3NF` : 2NF + no transitive dependency (a non-key column depending on another non-key column)
+	- BCNF and beyond exist; `3NF is where OLTP schemas stop` in practice
+	- Benefit : no update anomalies — change a customer's address once, not in 40,000 order rows
+- `Denormalization` — deliberately duplicate data to avoid joins
+	- Cost : the copies can disagree, and every write must maintain them
+	- Use when reads dominate and the join is the bottleneck: a `star schema` in a warehouse (facts + wide dimensions), a materialized view, or a counter column instead of `COUNT(*)`
+- Rule of thumb : `normalize the write model, denormalize the read model` — the same split as [CQRS](../java/cqrs.md). See also 15) below
 
 ### 11) SQL performance tuning
 - ref
@@ -228,10 +269,30 @@
 
 ### 16) Index pros and cons
 
+| Pros | Cons |
+|------|------|
+| Turns a full scan into `O(log n)` for lookups and ranges | Every write must maintain every affected index |
+| Serves `ORDER BY` / `GROUP BY` without a sort | Extra storage, and buffer-pool space competing with the data |
+| Enforces uniqueness (`UNIQUE`) | A low-selectivity index is never used — pure cost |
+| A covering index answers the query from the index alone | More indexes = more plans for the optimiser to get wrong |
+| Speeds up joins on the foreign key | Bloat/fragmentation needs occasional rebuilding |
+
 - https://learn.lianglianglee.com/%E6%96%87%E7%AB%A0/%E9%9D%A2%E8%AF%95%E6%9C%80%E5%B8%B8%E8%A2%AB%E9%97%AE%E7%9A%84%20Java%20%E5%90%8E%E7%AB%AF%E9%A2%98.md
 
 
 ### 17) Mysql Index
+- Engine : `InnoDB` (default, transactional, row-level locking, clustered PK). MyISAM is legacy — table locks, no transactions
+- Structure : `B+tree`. The PK index is `clustered` (leaves hold the rows); every secondary index leaf holds `<indexed columns, primary key>` — so a non-covering secondary lookup costs a second walk back into the PK tree (`回表`)
+- Index types : `PRIMARY`, `UNIQUE`, ordinary `KEY`, `composite`, `prefix` (`KEY(url(64))` for long strings), `FULLTEXT`, `SPATIAL`
+- Reading a plan
+	- `EXPLAIN SELECT …` → the `type` column is the headline: `system > const > eq_ref > ref > range > index > ALL` (`ALL` = full table scan)
+	- `key` = the index chosen, `rows` = estimated rows examined, `Extra` = `Using index` (covering — good), `Using filesort` / `Using temporary` (a sort or temp table — usually fixable with an index)
+	- `EXPLAIN ANALYZE` (8.0.18+) executes it and reports actual timings
+- Practical rules
+	- index the columns in `WHERE`, `JOIN` and `ORDER BY`; respect the leftmost prefix
+	- keep the PK short and monotonic (see 8)
+	- `LIMIT n OFFSET 100000` re-reads 100k rows — paginate by the last seen key instead
+	- watch the buffer pool hit rate (`innodb_buffer_pool_size` is the single most important MySQL setting)
 
 
 ## Ref
