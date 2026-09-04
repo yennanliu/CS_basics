@@ -279,7 +279,9 @@ Integer.numberOfTrailingZeros(x)     = 3                 <- an INDEX
 31 - Integer.numberOfLeadingZeros(x) = 5                 <- an INDEX
 ```
 
-| Goal | Java | Python |
+**The two columns below are equivalent only for `x >= 0`** — see *Negatives* below for why.
+
+| Goal | Java (`x >= 0`) | Python (`x >= 0`) |
 | ---- | ---- | ------ |
 | popcount | `Integer.bitCount(x)` | `x.bit_count()` (3.10+), else `bin(x).count("1")` |
 | lowest set bit — **value** | `Integer.lowestOneBit(x)` | `x & -x` |
@@ -290,19 +292,49 @@ Integer.numberOfTrailingZeros(x)     = 3                 <- an INDEX
 | show the bits | `Integer.toBinaryString(x)` | `bin(x)`, or `format(x, "032b")` |
 | parse binary | `Integer.parseInt(s, 2)` | `int(s, 2)` |
 
-**The zero cases split the same way**, and this is the part that bites: the *value* helpers
-return `0`, but the *index* helpers return **32**, not `-1`.
+#### **Negatives — where the two columns stop agreeing**
+
+Java's helpers read a **32-bit two's-complement pattern**, so the sign bit is just another
+bit. Python's `bit_length()` and `bit_count()` read the **absolute value** and have no sign
+bit at all ([§0-6](#0-6-python-is-not-java-here-)). The rows do not all break equally:
 
 ```text
-Integer.highestOneBit(0)         = 0
-Integer.lowestOneBit(0)          = 0
-Integer.numberOfTrailingZeros(0) = 32      <- not -1
-Integer.numberOfLeadingZeros(0)  = 32      <- not -1
+                        x = -19      Java            Python
+popcount                             30              3        <- DIVERGES (Java counts the sign bits)
+lowest set bit (value)               1               1        <- agrees
+lowest set bit (index)               0               0        <- agrees
+highest set bit (value)              -2147483648     16       <- DIVERGES (Java: always the sign bit)
+highest set bit (index)              31              4        <- DIVERGES (Java: always 31)
 ```
 
-So `1 << Integer.numberOfTrailingZeros(0)` is `1 << 32`, which Java masks back to **`1`**
+The **lowest**-bit rows survive because `x & -x` is the same arithmetic in both languages.
+The **highest**-bit rows and popcount do not: for *any* negative `int`, Java's highest set
+bit is the sign bit, so the value is always `Integer.MIN_VALUE` and the index always `31`.
+Mask to 32 bits first (`x & 0xFFFFFFFF`) if you need Java's answer out of Python.
+
+**The zero cases split along the value/index line too** — and this is the part that bites:
+
+```text
+value helpers  ->  Integer.highestOneBit(0)         = 0
+                   Integer.lowestOneBit(0)          = 0
+
+raw counts     ->  Integer.numberOfTrailingZeros(0) = 32     <- a count, not a position
+                   Integer.numberOfLeadingZeros(0)  = 32
+
+derived index  ->  31 - Integer.numberOfLeadingZeros(0)      = -1
+                   (0).bit_length() - 1        (Python)      = -1
+```
+
+The counts are honest — there really are 32 zero bits in `0`. The bug appears the moment you
+**use a count as a bit position**, and the two directions fail differently: the trailing-zero
+count *is* the lowest-set-bit index in the table above, so it hands you `32`, and
+`1 << 32` is masked back to **`1`** by Java
 ([§0-5](#0-5-shifts-left-arithmetic-right-and-logical-right)) — a wrong answer, not a crash.
-**Guard `x == 0` before any index helper.**
+The leading-zero count is turned into an index by `31 - …`, so it hands you `-1`, and
+`1 << -1` throws or shifts by 31 depending on the language.
+
+**So the guard is not "before every count" — it is `x == 0` before treating a count as a
+position.** `Integer.bitCount(0)`, and the two value helpers, need no guard at all.
 
 **Python's log2 is `bit_length()`, not `math.log2`.** Floats carry 53 bits of mantissa, so
 the moment an int needs more precision than that, rounding hands you an off-by-one:
@@ -446,6 +478,11 @@ the bottleneck, and no interviewer has ever awarded a point for removing it.
 The point of §0 is that these are **consequences**, not vocabulary. Cover the right-hand
 column and rebuild each one from two's complement and place values; if you can do that, you
 can reconstruct any trick in this file after forgetting it.
+
+**Every row assumes `x >= 0`**, which is how these appear in problems. The two that are
+outright meaningless on a negative are the Gray code and the adjacent-ones test — in Python
+`(-1) ^ (-1 >> 1)` is `0` and `(-1) & (-1 >> 1)` is `-1`, because the sign bits run forever
+([§0-6](#0-6-python-is-not-java-here-)).
 
 | Expression | What it does, and where it comes from |
 | ---------- | ------------------------------------- |

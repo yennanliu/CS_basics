@@ -41,7 +41,7 @@ half-translated sheet renders with English gaps rather than failing.
   is what makes a problem findable on LeetCode itself.
 
 
-## Status — 5061 / 5101 sections (99%)
+## Status — 5062 / 5102 sections (99%)
 
 | Sheet | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -72,7 +72,7 @@ half-translated sheet renders with English gaps rather than failing.
 | [binary_search_examples](./cheatsheet/binary_search_examples.md) | 43 | [✅](../i18n/zh/binary_search_examples.md) |
 | [binary_search_on_answer](./cheatsheet/binary_search_on_answer.md) | 42 | [✅](../i18n/zh/binary_search_on_answer.md) |
 | [binary_tree](./cheatsheet/binary_tree.md) | 74 | [72/74](../i18n/zh/binary_tree.md) |
-| [bit_manipulation](./cheatsheet/bit_manipulation.md) | 40 | [✅](../i18n/zh/bit_manipulation.md) |
+| [bit_manipulation](./cheatsheet/bit_manipulation.md) | 41 | [✅](../i18n/zh/bit_manipulation.md) |
 | [bit_manipulation_examples](./cheatsheet/bit_manipulation_examples.md) | 22 | [✅](../i18n/zh/bit_manipulation_examples.md) |
 | [bst](./cheatsheet/bst.md) | 61 | [✅](../i18n/zh/bst.md) |
 | [bst_advanced](./cheatsheet/bst_advanced.md) | 51 | [✅](../i18n/zh/bst_advanced.md) |
