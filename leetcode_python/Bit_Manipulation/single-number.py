@@ -47,7 +47,7 @@ class Solution(object):
 
 
 # V0-1
-# IDEA : BIT XOR
+# IDEA : BIT XOR (GPT)
 """
 CORE IDEA:
 
@@ -164,6 +164,17 @@ class Solution(object):
 
         return res
 
+
+# V0-2
+# IDEA : BIT XOR (GEMINI)
+class Solution(object):
+    def singleNumber(self, nums):
+        res = 0  # 1. 初始化變數 res 為 0 ( 0 ^ x = x )
+        
+        for n in nums:
+            res ^= n  # 2. 將陣列中的每個數字與 res 進行 XOR 運算並賦值 (等價於 res = res ^ n)
+            
+        return res   # 3. 走訪結束後，成對的數字已全部抵消為 0，剩餘的 res 即為目標數字
 
 
 # V0'
