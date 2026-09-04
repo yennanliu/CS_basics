@@ -264,6 +264,243 @@ set operation is one instruction.
 - summed over *every* mask, the number of **sub**masks is `3^n`, not `4^n` — which is what
   makes the `sub = (sub - 1) & mask` loop in [§2-1](#2-1-subset-enumeration-lc-78-recap) affordable.
 
+### 0-9) The library helpers — value vs index ⭐⭐⭐
+
+Every language ships these, and reaching for the wrong one is a **silent** bug rather than a
+compile error. The split that causes it: some helpers return a **value** (a pattern with one
+bit set), others return an **index** (`0…31`). They are never interchangeable.
+
+```text
+x = 0b101000  (= 40)
+
+Integer.highestOneBit(x)             = 0b100000 = 32     <- a VALUE
+Integer.lowestOneBit(x)              = 0b001000 = 8      <- a VALUE  (exactly x & -x)
+Integer.numberOfTrailingZeros(x)     = 3                 <- an INDEX
+31 - Integer.numberOfLeadingZeros(x) = 5                 <- an INDEX
+```
+
+**The two columns below are equivalent only for `x >= 0`** — see *Negatives* below for why.
+
+| Goal | Java (`x >= 0`) | Python (`x >= 0`) |
+| ---- | ---- | ------ |
+| popcount | `Integer.bitCount(x)` | `x.bit_count()` (3.10+), else `bin(x).count("1")` |
+| lowest set bit — **value** | `Integer.lowestOneBit(x)` | `x & -x` |
+| lowest set bit — **index** | `Integer.numberOfTrailingZeros(x)` | `(x & -x).bit_length() - 1` |
+| highest set bit — **value** | `Integer.highestOneBit(x)` | `1 << (x.bit_length() - 1)` |
+| highest set bit — **index** = `floor(log2 x)` | `31 - Integer.numberOfLeadingZeros(x)` | `x.bit_length() - 1` |
+| reverse all 32 bits | `Integer.reverse(x)` | none — loop it (LC 190) |
+| show the bits | `Integer.toBinaryString(x)` | `bin(x)`, or `format(x, "032b")` |
+| parse binary | `Integer.parseInt(s, 2)` | `int(s, 2)` |
+
+#### **Negatives — where the two columns stop agreeing**
+
+Java's helpers read a **32-bit two's-complement pattern**, so the sign bit is just another
+bit. Python's `bit_length()` and `bit_count()` read the **absolute value** and have no sign
+bit at all ([§0-6](#0-6-python-is-not-java-here-)). The rows do not all break equally:
+
+```text
+                        x = -19      Java            Python
+popcount                             30              3        <- DIVERGES (Java counts the sign bits)
+lowest set bit (value)               1               1        <- agrees
+lowest set bit (index)               0               0        <- agrees
+highest set bit (value)              -2147483648     16       <- DIVERGES (Java: always the sign bit)
+highest set bit (index)              31              4        <- DIVERGES (Java: always 31)
+```
+
+The **lowest**-bit rows survive because `x & -x` is the same arithmetic in both languages.
+The **highest**-bit rows and popcount do not: for *any* negative `int`, Java's highest set
+bit is the sign bit, so the value is always `Integer.MIN_VALUE` and the index always `31`.
+Mask to 32 bits first (`x & 0xFFFFFFFF`) if you need Java's answer out of Python.
+
+**The zero cases split along the value/index line too** — and this is the part that bites:
+
+```text
+value helpers  ->  Integer.highestOneBit(0)         = 0
+                   Integer.lowestOneBit(0)          = 0
+
+raw counts     ->  Integer.numberOfTrailingZeros(0) = 32     <- a count, not a position
+                   Integer.numberOfLeadingZeros(0)  = 32
+
+derived index  ->  31 - Integer.numberOfLeadingZeros(0)      = -1
+                   (0).bit_length() - 1        (Python)      = -1
+```
+
+The counts are honest — there really are 32 zero bits in `0`. The bug appears the moment you
+**use a count as a bit position**, and the two directions fail differently: the trailing-zero
+count *is* the lowest-set-bit index in the table above, so it hands you `32`, and
+`1 << 32` is masked back to **`1`** by Java
+([§0-5](#0-5-shifts-left-arithmetic-right-and-logical-right)) — a wrong answer, not a crash.
+The leading-zero count is turned into an index by `31 - …`, so it hands you `-1`, and
+`1 << -1` throws or shifts by 31 depending on the language.
+
+**So the guard is not "before every count" — it is `x == 0` before treating a count as a
+position.** `Integer.bitCount(0)`, and the two value helpers, need no guard at all.
+
+**Python's log2 is `bit_length()`, not `math.log2`.** Floats carry 53 bits of mantissa, so
+the moment an int needs more precision than that, rounding hands you an off-by-one:
+
+```python
+# python
+# IDEA: floor(log2 x) == x.bit_length() - 1, exactly, for every x > 0
+x = (1 << 53) - 1
+x.bit_length() - 1        # 52  <- correct
+int(math.log2(x))         # 53  <- WRONG: log2 rounded up to 53.0
+
+x = (1 << 64) - 1
+x.bit_length() - 1        # 63  <- correct
+int(math.log2(x))         # 64  <- WRONG
+```
+
+**Know the manual version too.** "Count the set bits *without* `Integer.bitCount`" is not a
+trick question — it is the whole of LC 191. The `x &= (x - 1)` loop is in
+[§1-3](#1-3-counting-set-bits-population-count); say the library call out loud, then write
+the loop.
+
+### 0-10) XOR prefix, and the `0..n` closed form ⭐⭐⭐⭐
+
+XOR is **addition with the carries thrown away** ([§0-4](#0-4-why-x--x---1-and-x---x-work)),
+so every prefix-sum technique has an XOR twin — and the XOR one is *simpler*, because XOR is
+its own inverse and there is no subtraction step.
+
+#### **Range XOR by prefix**
+
+```text
+pre[0]   = 0
+pre[i+1] = pre[i] ^ a[i]
+
+a[l] ^ a[l+1] ^ ... ^ a[r]  =  pre[r+1] ^ pre[l]
+```
+
+**Why `^` and not `-`**: every element before `l` appears **twice** in `pre[r+1] ^ pre[l]`,
+once from each side, so it cancels itself. With sums you must subtract; with XOR the same
+operator undoes itself.
+
+```python
+# python
+# IDEA: pre[i+1] = XOR of a[0..i]; any range XOR is then one operation
+# time = O(n) build + O(1) per query, space = O(n)
+def build(a):
+    pre = [0] * (len(a) + 1)
+    for i, v in enumerate(a):
+        pre[i + 1] = pre[i] ^ v
+    return pre
+
+def range_xor(pre, l, r):        # inclusive [l, r]
+    return pre[r + 1] ^ pre[l]
+```
+
+#### **XOR of `0..n` in O(1)**
+
+Every **aligned block of four** cancels itself, which collapses the whole prefix to a lookup
+on `n % 4`:
+
+```text
+4k   = ...00
+4k+1 = ...01     (4k) ^ (4k+1)   = 1   <- differ only in bit 0
+4k+2 = ...10
+4k+3 = ...11     (4k+2) ^ (4k+3) = 1   <- differ only in bit 0
+
+                 1 ^ 1 = 0             <- so each aligned quadruple vanishes
+```
+
+Only the tail after the last complete block survives:
+
+| `n % 4` | `0 ^ 1 ^ … ^ n` |
+| ------- | --------------- |
+| `0` | `n` |
+| `1` | `1` |
+| `2` | `n + 1` |
+| `3` | `0` |
+
+```python
+# python
+# IDEA: aligned blocks of 4 cancel; only n % 4 decides what is left
+# time = O(1), space = O(1)
+def xor_to(n):                   # XOR of 0..n  (identical to 1..n, since 0 changes nothing)
+    return [n, 1, n + 1, 0][n % 4]
+
+def xor_range(l, r):             # XOR of l..r
+    return xor_to(r) ^ xor_to(l - 1)
+```
+
+`xor_to` covers `1..n` as well — XOR-ing in `0` changes nothing
+([§0-8](#0-8-a-bitmask-is-a-set) has the identity: `a ^ 0 = a`).
+
+**Where it shows up**: any "XOR of a range" query, and as the O(1) replacement for the
+`x1 = 1 ^ 2 ^ … ^ n` loop in LC 268 (Missing Number). LC 2683 (Neighboring Bitwise XOR)
+is the prefix idea run backwards. *LC 1310 — XOR Queries of a Subarray* is the canonical
+prefix-XOR drill; it has no solution in this repo yet.
+
+### 0-11) Branchless idioms ⭐⭐⭐
+
+One expression does most of the work: **`x >> 31` is `0` for a non-negative `int` and `-1`
+(all ones) for a negative one** ([§0-3](#0-3-twos-complement--how-negatives-are-stored-)).
+An all-ones mask ANDs to *keep*, an all-zeros mask ANDs to *drop* — that is how a branch
+becomes arithmetic.
+
+| Goal | Expression | Why it works |
+| ---- | ---------- | ------------ |
+| do `a` and `b` have **opposite signs**? | `(a ^ b) < 0` | XOR's sign bit is 1 exactly when the two sign bits differ — and no overflow, unlike `a * b < 0` |
+| `abs(x)` | `(x ^ (x >> 31)) - (x >> 31)` | `x ≥ 0` → `(x ^ 0) - 0 = x`; `x < 0` → `(x ^ -1) - (-1) = ~x + 1 = -x` |
+| sign of `x` as `0` / `-1` | `x >> 31` | the sign bit smeared across all 32 |
+| is `x` a multiple of `2^k`? | `(x & ((1 << k) - 1)) == 0` | the low `k` bits are the remainder |
+| round `x` down to a multiple of `2^k` | `x & ~((1 << k) - 1)` | clear the remainder bits |
+
+**`abs` inherits the `MIN_VALUE` trap, exactly like `Math.abs`**: both return
+`Integer.MIN_VALUE` unchanged, because it has no positive twin
+([§0-3](#0-3-twos-complement--how-negatives-are-stored-)). Branchless does not rescue you here.
+
+#### **The one to never ship — XOR swap**
+
+```java
+// java
+// IDEA: swap without a temporary. Correct ONLY when the two operands are distinct.
+a ^= b;  b ^= a;  a ^= b;
+```
+
+It is the classic "look, no temp variable" answer, and it **destroys the value when the two
+operands alias**:
+
+```text
+swap(arr, i, j) with i == j, arr[i] = 7
+
+arr[i] ^= arr[j]   ->  7 ^ 7 = 0     both names point at the same slot
+arr[j] ^= arr[i]   ->  0 ^ 0 = 0
+arr[i] ^= arr[j]   ->  0 ^ 0 = 0     the 7 is gone
+```
+
+Any partition step that can call `swap(i, i)` — several standard quicksort and Dutch-flag
+partitions do — is silently zeroed by it. **Use a temporary.** The extra variable was never
+the bottleneck, and no interviewer has ever awarded a point for removing it.
+
+### 0-12) Derive it yourself
+
+The point of §0 is that these are **consequences**, not vocabulary. Cover the right-hand
+column and rebuild each one from two's complement and place values; if you can do that, you
+can reconstruct any trick in this file after forgetting it.
+
+**Every row assumes `x >= 0`**, which is how these appear in problems. The two that are
+outright meaningless on a negative are the Gray code and the adjacent-ones test — in Python
+`(-1) ^ (-1 >> 1)` is `0` and `(-1) & (-1 >> 1)` is `-1`, because the sign bits run forever
+([§0-6](#0-6-python-is-not-java-here-)).
+
+| Expression | What it does, and where it comes from |
+| ---------- | ------------------------------------- |
+| `x & (x - 1)` | **clears the lowest set bit** — `x-1` borrows through the trailing zeros, so at and below that bit the two disagree |
+| `x & -x` | **isolates the lowest set bit** — `-x = ~x + 1`, so above that bit the two are complementary |
+| `x & (x + 1)` | **clears the trailing ones** — the mirror of `x & (x - 1)` |
+| `x \| (x + 1)` | **sets the lowest clear bit** — carry propagates up to the first `0` |
+| `x ^ (x >> 1)` | the **Gray code** of `x` — adjacent codes differ in one bit (LC 89) |
+| `x & (x >> 1)` | non-zero ⇔ `x` has **two adjacent 1s** |
+| `(x >> i) & 1` | reads bit `i` — shift it down to position 0, mask off the rest |
+| `x ^ ((1 << n) - 1)` | **complement within `n` bits** — XOR against a field of ones flips each |
+| `(x & (x - 1)) == 0` | `x` is a **power of two** *or zero* — one set bit at most; add `x > 0` |
+| `x >> 31` | `0` or `-1` — the sign bit smeared to full width |
+
+Two rules for using this table honestly: **say what the expression does before you check**,
+and **name the input that would break it**. `(x & (x - 1)) == 0` accepting `0` is the single
+most common answer people get half-right.
+
 ## 1) Core Operations
 
 ### 1-1) The 6 operators
@@ -813,6 +1050,7 @@ grouped by which property of the bit operators they lean on:
 | a small fixed alphabet + a sliding window | pack `k` bits per symbol, roll with `<<` and a mask | [Variation B](#variation-b--pack-fixed-width-symbols-into-a-rolling-int-key-lc-187) |
 | "choose a subset", `n ≤ ~20` | `dp[mask]`, bitmask DP | [§2](#2-bitmask-dp) |
 | "partition into `k` equal groups" | `dp[mask]` = fill level, `% target` | [§2-3](#2-3-fill-buckets-one-at-a-time-bitmask-dp--lc-698-) |
+| "XOR of a subarray" / "XOR of `1..n`", asked repeatedly | XOR prefix array, or the `n % 4` closed form | [§0-10](#0-10-xor-prefix-and-the-0n-closed-form-) |
 | "add / divide without `+` or `/`" | XOR = sum, AND = carry | [Arithmetic without arithmetic](./bit_manipulation_examples.md#arithmetic-without-arithmetic) |
 | "maximum XOR of two numbers" | binary trie — see [trie.md](./trie.md) | — |
 
