@@ -41,7 +41,7 @@ half-translated sheet renders with English gaps rather than failing.
   is what makes a problem findable on LeetCode itself.
 
 
-## Status — 5060 / 5090 sections (99%)
+## Status — 5061 / 5101 sections (99%)
 
 | Sheet | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -68,11 +68,11 @@ half-translated sheet renders with English gaps rather than failing.
 | [bfs_advanced](./cheatsheet/bfs_advanced.md) | 38 | [✅](../i18n/zh/bfs_advanced.md) |
 | [bfs_examples](./cheatsheet/bfs_examples.md) | 31 | [✅](../i18n/zh/bfs_examples.md) |
 | [binary_indexed_tree](./cheatsheet/binary_indexed_tree.md) | 32 | [✅](../i18n/zh/binary_indexed_tree.md) |
-| [binary_search](./cheatsheet/binary_search.md) | 54 | [✅](../i18n/zh/binary_search.md) |
+| [binary_search](./cheatsheet/binary_search.md) | 58 | [51/58](../i18n/zh/binary_search.md) |
 | [binary_search_examples](./cheatsheet/binary_search_examples.md) | 43 | [✅](../i18n/zh/binary_search_examples.md) |
 | [binary_search_on_answer](./cheatsheet/binary_search_on_answer.md) | 42 | [✅](../i18n/zh/binary_search_on_answer.md) |
 | [binary_tree](./cheatsheet/binary_tree.md) | 74 | [72/74](../i18n/zh/binary_tree.md) |
-| [bit_manipulation](./cheatsheet/bit_manipulation.md) | 33 | [✅](../i18n/zh/bit_manipulation.md) |
+| [bit_manipulation](./cheatsheet/bit_manipulation.md) | 40 | [✅](../i18n/zh/bit_manipulation.md) |
 | [bit_manipulation_examples](./cheatsheet/bit_manipulation_examples.md) | 22 | [✅](../i18n/zh/bit_manipulation_examples.md) |
 | [bst](./cheatsheet/bst.md) | 61 | [✅](../i18n/zh/bst.md) |
 | [bst_advanced](./cheatsheet/bst_advanced.md) | 51 | [✅](../i18n/zh/bst_advanced.md) |
@@ -86,7 +86,7 @@ half-translated sheet renders with English gaps rather than failing.
 | [design_examples](./cheatsheet/design_examples.md) | 34 | [✅](../i18n/zh/design_examples.md) |
 | [design_patterns](./cheatsheet/design_patterns.md) | 8 | [✅](../i18n/zh/design_patterns.md) |
 | [dfs](./cheatsheet/dfs.md) | 45 | [✅](../i18n/zh/dfs.md) |
-| [dfs_advanced](./cheatsheet/dfs_advanced.md) | 27 | [✅](../i18n/zh/dfs_advanced.md) |
+| [dfs_advanced](./cheatsheet/dfs_advanced.md) | 27 | [24/27](../i18n/zh/dfs_advanced.md) |
 | [dfs_examples](./cheatsheet/dfs_examples.md) | 70 | [✅](../i18n/zh/dfs_examples.md) |
 | [diff_toposort_quickunion](./cheatsheet/diff_toposort_quickunion.md) | 18 | [✅](../i18n/zh/diff_toposort_quickunion.md) |
 | [difference_array](./cheatsheet/difference_array.md) | 56 | [✅](../i18n/zh/difference_array.md) |
