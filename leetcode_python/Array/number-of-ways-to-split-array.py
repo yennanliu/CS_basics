@@ -65,3 +65,46 @@ class Solution(object):
             if 2 * pre >= total:
                 res += 1
         return res
+
+
+# V0-1
+# IDEA : BRUTE FORCE (recompute both halves per split point)
+#
+#   for every split index i in [0, n-2], literally slice the array in two
+#   and sum each side. no prefix bookkeeping at all - this is the direct
+#   translation of the problem statement, kept as the baseline that the
+#   prefix-sum version above optimises.
+#
+# time = O(n^2)
+# space = O(n)   (the slices)
+class Solution(object):
+    def waysToSplitArray(self, nums):
+        n = len(nums)
+        res = 0
+        for i in range(n - 1):
+            if sum(nums[:i + 1]) >= sum(nums[i + 1:]):
+                res += 1
+        return res
+
+
+# V0-2
+# IDEA : EXPLICIT PREFIX / SUFFIX ARRAYS (two pass, built with accumulate)
+#
+#   pre[i] = nums[0] + ... + nums[i]
+#   suf[i] = nums[i] + ... + nums[n-1]   (accumulate over the reversed array)
+#
+#   then a split at i is valid iff pre[i] >= suf[i + 1]. this trades O(n)
+#   extra memory for the ability to answer "sum of the left / right part"
+#   for ANY i in O(1) afterwards (handy if the splits were queried, not counted).
+#
+# time = O(n)
+# space = O(n)
+from itertools import accumulate
+
+
+class Solution(object):
+    def waysToSplitArray(self, nums):
+        n = len(nums)
+        pre = list(accumulate(nums))
+        suf = list(accumulate(nums[::-1]))[::-1]
+        return sum(1 for i in range(n - 1) if pre[i] >= suf[i + 1])

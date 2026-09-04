@@ -75,3 +75,55 @@ class Solution(object):
                     col_cost += 1
 
         return min(row_cost, col_cost)
+
+
+# V0-1
+# IDEA : TRANSPOSE THE GRID AND REUSE ONE ROW-COST ROUTINE
+#
+#   the column question on `grid` IS the row question on `zip(*grid)`, so a
+#   single helper that walks each line against its own reverse can answer
+#   both halves once the transposed copy is materialised — no index
+#   arithmetic on the mirrored coordinates at all.
+#
+# time = O(m * n), space = O(m * n)   (the transposed copy)
+class Solution(object):
+    def minFlips(self, grid):
+        def line_cost(lines):
+            total = 0
+            for line in lines:
+                line = list(line)
+                half = len(line) // 2
+                total += sum(1 for a, b in zip(line[:half], line[::-1])
+                             if a != b)
+            return total
+
+        return min(line_cost(grid), line_cost(zip(*grid)))
+
+
+# V0-2
+# IDEA : BITMASK EACH LINE, XOR IT WITH ITS REVERSE, POPCOUNT
+#
+#   pack a line into an integer and pack the same line read backwards into a
+#   second integer. a set bit in `val ^ rev` marks a position that disagrees
+#   with its mirror, and every disagreeing PAIR lights up two such bits (both
+#   j and its partner), so the flip count for that line is popcount / 2.
+#
+#   a middle cell of an odd-length line is compared with itself and can never
+#   contribute, which is exactly the wanted behaviour.
+#
+# time = O(m * n) integer ops, space = O(m + n) for the packed words
+class Solution(object):
+    def minFlips(self, grid):
+        def line_cost(lines):
+            total = 0
+            for line in lines:
+                val = 0
+                rev = 0
+                for bit in line:
+                    val = (val << 1) | bit
+                for bit in reversed(list(line)):
+                    rev = (rev << 1) | bit
+                total += bin(val ^ rev).count("1") // 2
+            return total
+
+        return min(line_cost(grid), line_cost(zip(*grid)))
