@@ -79,7 +79,7 @@
 
 ### **Pattern 8: Prefix Maximum (Greedy Chunk / Partition)** — LC 769
 - **Description**: Track the running maximum of the array. When `maxSoFar == i`, the prefix `[0..i]` contains exactly the elements `{0, 1, ..., i}` and can form an independent sorted chunk.
-- **Examples**: LC 769 - Max Chunks To Make Sorted, LC 768 - Max Chunks To Make Sorted II
+- **Examples**: LC 769 - Max Chunks To Make Sorted, LC 768 - Max Chunks To Make Sorted II, LC 2012 - Sum of Beauty in the Array
 - **Pattern**: Single pass with a `maxSoFar` variable; increment chunk count whenever `maxSoFar == currentIndex`
 - **Key Insight**: Because the array is a permutation of `[0, n-1]`, if the max value seen so far equals the current index, all values needed for positions `0..i` are already present in `arr[0..i]`
 
@@ -634,6 +634,11 @@ for (int i = 0; i < n; i++)
     if (i == 0 || suffixMin[i] > prefixMax[i-1]) chunks++;
 ```
 
+> **The same pair asked about an element, not a cut.** LC 2012 keeps `prefixMax` and
+> `suffixMin` but tests `prefixMax[i] < nums[i] < suffixMin[i]`, and only the suffix side
+> needs an array — worked through in
+> [prefix_sum_examples.md § Prefix max / suffix min scans](./prefix_sum_examples.md#prefix-max--suffix-min-scans).
+
 #### Alternative: Running Sum Approach (No Prefix Array)
 ```python
 def sum_of_distances_optimized(nums):
@@ -770,6 +775,7 @@ structure:
 | Max Chunks To Make Sorted | 769 | Prefix max == index | Medium | Template 8 |
 | Max Chunks To Make Sorted II | 768 | PrefixMax + SuffixMin arrays | Hard | Template 8 |
 | Find the Longest Turbulent Subarray | 978 | Running state tracking | Medium | Modified Template 8 |
+| Sum of Beauty in the Array | 2012 | PrefixMax + SuffixMin, per element | Medium | Template 8 variant |
 
 #### **Advanced/Mixed Pattern Problems**
 | Problem | LC # | Key Technique | Difficulty | Template |
@@ -916,7 +922,7 @@ Problem Analysis Flowchart:
 
 ## Worked Examples
 
-Seven problems live in **[prefix_sum_examples.md](./prefix_sum_examples.md)** — the ones the
+Eight problems live in **[prefix_sum_examples.md](./prefix_sum_examples.md)** — the ones the
 templates above do not already solve end to end:
 
 | Group | Problems |
@@ -925,6 +931,7 @@ templates above do not already solve end to end:
 | [Fixed and paired windows](./prefix_sum_examples.md#fixed-and-paired-windows) | LC 1031 |
 | [2D prefix sums](./prefix_sum_examples.md#2d-prefix-sums) | LC 1292 |
 | [Range updates](./prefix_sum_examples.md#range-updates) | LC 1094 |
+| [Prefix max / suffix min scans](./prefix_sum_examples.md#prefix-max--suffix-min-scans) | LC 2012 |
 
 Five problems that used to have their own example section do not: LC 370, 560, 769, 1248 and
 2615 are each solved by the template that names them, and the second copies added nothing the

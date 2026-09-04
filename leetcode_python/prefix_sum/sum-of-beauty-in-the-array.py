@@ -56,6 +56,29 @@ class Solution(object):
 
 # V1
 # IDEA: PREFIX + SUFFIX SUM (GEMINI)
+"""
+NOTE !!!
+
+
+1.  LC 2012 判斷 nums[i] 的 beauty 時，不只是看左右相鄰元素，而是看：
+
+nums[i] 是否 大於左邊所有元素
+nums[i] 是否 小於右邊所有元素
+
+	-> so we need to keep tracking the `min val` from right to left (<-)
+
+
+2. core idea:
+
+	for every i:
+		->
+
+		 ```
+		 left_max[i]  = i 左邊最大的數
+		 right_min[i] = i 右邊最小的數
+		 ```
+
+"""
 class Solution:
     def sumOfBeauties(self, nums: list[int]) -> int:
         n = len(nums)

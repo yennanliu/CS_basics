@@ -1,6 +1,6 @@
 # Prefix Sum — Worked Examples
 
-> **Scope** — The worked-solution archive behind [prefix_sum.md](./prefix_sum.md): the seven problems the templates do not already solve end to end, grouped by which prefix-sum shape they need.
+> **Scope** — The worked-solution archive behind [prefix_sum.md](./prefix_sum.md): the eight problems the templates do not already solve end to end, grouped by which prefix-sum shape they need.
 > **See also**: [prefix_sum.md](./prefix_sum.md) — the parent sheet: templates 1–8, the concept and the decision framework; [prefix_sum_advanced.md](./prefix_sum_advanced.md) — templates 9–13; [difference_array.md](./difference_array.md) — range updates in their own right, including LC 370; [sliding_window.md](./sliding_window.md) — the alternative when all values are non-negative; [hash_map.md](./hash_map.md) — the structure four of these turn on.
 
 ## LeetCode Problem Lists
@@ -18,7 +18,7 @@ What is left are the problems no template already works end to end.
 
 ### Key Properties
 - **Complexity**: every solution below is O(n) time after the prefix array is built, except LC 1292, which is O(m·n·log(min(m,n)))
-- **Core Idea**: four of the seven are the same move — a hash map from prefix value to how many times it has been seen — applied to a different transform of the input
+- **Core Idea**: four of the eight are the same move — a hash map from prefix value to how many times it has been seen — applied to a different transform of the input
 - **When to Use**: after the parent's decision framework has named the template
 
 
@@ -466,3 +466,130 @@ for (int i = 1; i < prefixSum.length; i++) {
 
 // ...
 ```
+
+## Prefix Max / Suffix Min Scans
+
+### 8) Sum of Beauty in the Array — LC 2012
+
+**Core Idea (LC 2012):**
+```text
+For each i in [1, n-2] the beauty of nums[i] is:
+  2  if nums[i] beats EVERY element to its left and loses to EVERY element to its right
+  1  else if it only beats its two neighbours:  nums[i-1] < nums[i] < nums[i+1]
+  0  otherwise
+
+The 2-test is a global question asked at every index — O(n) per index if asked
+literally. Two extreme scans reduce it to O(1) per index:
+
+  prefixMax[i] = max(nums[0 .. i-1])     <- everything STRICTLY left of i
+  suffixMin[i] = min(nums[i+1 .. n-1])   <- everything STRICTLY right of i
+
+  beauty 2  <=>  prefixMax[i] < nums[i] < suffixMin[i]
+
+Only the suffix side has to be materialised: it is known only after a
+right-to-left pass. The prefix side is a single rolling variable, because the
+left-to-right loop has already walked past everything it needs.
+```
+
+**Pattern:** materialised suffix extreme + rolling prefix extreme
+- One right-to-left pass builds `suffixMin` — O(n) time, O(n) space
+- One left-to-right pass answers both tests and updates `prefixMax` — O(n) time, O(1) extra
+- The beauty-2 test is the LC 768 cut test (`prefixMax < suffixMin`) asked about a *single element* instead of a cut point
+
+**Visual trace** — `nums = [2, 4, 6, 4]`:
+```text
+index        0    1    2    3
+nums         2    4    6    4
+prefixMax    -    2    4    -      (max of everything strictly left)
+suffixMin    -    4    4    -      (min of everything strictly right)
+
+i = 1:  2 < 4 < 4 ?  no  (4 < 4 fails)   -> not 2
+        nums[0]=2 < 4 < nums[2]=6 ?  yes -> +1
+i = 2:  4 < 6 < 4 ?  no                  -> not 2
+        nums[1]=4 < 6 < nums[3]=4 ?  no  -> +0
+
+answer = 1
+```
+
+```python
+# python
+# LC 2012 — Suffix Min array + rolling Prefix Max
+# time: O(N), space: O(N)
+# ref: leetcode_python/prefix_sum/sum-of-beauty-in-the-array.py
+class Solution:
+    def sumOfBeauties(self, nums):
+        n = len(nums)
+
+        # suffix_min[i] = min(nums[i+1 .. n-1])  (strictly to the right of i)
+        # NOTE: inf at the last index, so the "nothing to the right" case
+        #       never blocks the comparison
+        suffix_min = [float("inf")] * n
+        for i in range(n - 2, -1, -1):
+            suffix_min[i] = min(suffix_min[i + 1], nums[i + 1])
+
+        res = 0
+        prefix_max = nums[0]   # max(nums[0 .. i-1]) as the loop reaches i
+
+        for i in range(1, n - 1):
+            # beauty 2: global — beats all of the left, loses to all of the right
+            if prefix_max < nums[i] < suffix_min[i]:
+                res += 2
+            # beauty 1: local — only the two neighbours
+            # NOTE: `elif`, since the 2-case already implies this one
+            elif nums[i - 1] < nums[i] < nums[i + 1]:
+                res += 1
+
+            prefix_max = max(prefix_max, nums[i])
+
+        return res
+```
+
+```java
+// java
+// LC 2012 — Suffix Min array + rolling Prefix Max
+// time: O(N), space: O(N)
+public int sumOfBeauties(int[] nums) {
+    int n = nums.length;
+
+    // suffixMin[i] = min(nums[i+1 .. n-1])
+    int[] suffixMin = new int[n];
+    suffixMin[n - 1] = Integer.MAX_VALUE;
+    for (int i = n - 2; i >= 0; i--) {
+        suffixMin[i] = Math.min(suffixMin[i + 1], nums[i + 1]);
+    }
+
+    int res = 0;
+    int prefixMax = nums[0];
+
+    for (int i = 1; i < n - 1; i++) {
+        if (prefixMax < nums[i] && nums[i] < suffixMin[i]) {
+            res += 2;
+        } else if (nums[i - 1] < nums[i] && nums[i] < nums[i + 1]) {
+            res += 1;
+        }
+        prefixMax = Math.max(prefixMax, nums[i]);
+    }
+    return res;
+}
+```
+
+**The two traps:**
+
+| Trap | What goes wrong |
+|---|---|
+| Off-by-one on the extremes | Both windows are *strict*. Building `suffixMin[i] = min(suffixMin[i+1], nums[i])` includes `nums[i]` itself, so it must then be read as `suffixMin[i+1]`. Building it from `nums[i+1]` (above) lets it be read at `i`. Mixing the two spellings makes every beauty-2 test compare `nums[i]` against itself and the answer collapses. |
+| `if` instead of `elif` | An element with beauty 2 also satisfies the neighbour test, so a second `if` scores it 3. |
+
+> **Why the prefix side needs no array.** `prefix_max` is only ever read at the index the
+> loop is currently on, and it is updated at the end of each iteration — so the value in hand
+> is always `max(nums[0 .. i-1])`. The suffix side is read *before* the pass that would
+> compute it, which is the whole reason one of the two directions has to be stored.
+
+**Similar problems:**
+
+| Problem | LC # | Key difference |
+|---------|------|----------------|
+| Max Chunks To Make Sorted II | 768 | Same `prefixMax < suffixMin` test, asked at cut points instead of elements — Template 8 |
+| Max Chunks To Make Sorted | 769 | Permutation input, so `prefixMax == i` replaces the suffix array entirely — Template 8 |
+| Trapping Rain Water | 42 | Prefix max *and* suffix max, both materialised, combined by `min(...) - height[i]` |
+| Product of Array Except Self | 238 | Same left-pass / right-pass split with products instead of extremes |
