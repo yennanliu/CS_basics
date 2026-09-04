@@ -3,8 +3,7 @@
 # 2026-09-04
 
 - TODO:
-	- `must_lc_list.md` (1st remaining ing)
-		- https://github.com/yennanliu/CS_basics/commit/fe72cf1ba0b3251d42603aa181e2438dfde16a7a
+	- `must_lc_list.md` -> done
 
 	- LC Top 100 like
 		- https://leetcode.com/studyplan/top-100-liked/

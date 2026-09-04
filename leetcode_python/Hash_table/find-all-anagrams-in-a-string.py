@@ -37,6 +37,45 @@ s and p consist of lowercase English letters.
 # IDEA : SLIDING WINDOW + collections.Counter()
 # time = O(n)
 # space = O(1)  # Counter bounded by 26 lowercase letters
+from collections import Counter
+
+class Solution(object):
+    def findAnagrams(self, s, p):
+        if not s or not p or len(p) > len(s):
+            return []
+
+        res = []
+
+        p_cnt = Counter(p)
+        window = Counter()
+
+        l = 0
+        k = len(p)
+
+        for r in range(len(s)):
+            # Add new character
+            window[s[r]] += 1
+
+            # Window is too large
+            if r - l + 1 > k:
+                window[s[l]] -= 1
+
+                if window[s[l]] == 0:
+                    del window[s[l]]
+
+                l += 1
+
+            # Window size == len(p)
+            if window == p_cnt:
+                res.append(l)
+
+        return res
+
+
+# V0-0-1
+# IDEA : SLIDING WINDOW + collections.Counter()
+# time = O(n)
+# space = O(1)  # Counter bounded by 26 lowercase letters
 class Solution(object):
     def findAnagrams(self, s, p):
         ls, lp = len(s), len(p)
@@ -53,22 +92,71 @@ class Solution(object):
             if cs == cp:
                 ans.append(i - lp + 1)
         return ans
-      
-# V0' : DEV : LTE (LIMITED TIME OUT ERROR)
-# from collections import Counter
-# class Solution(object):
-#     def findAnagrams(self, s, p):
-#         answer = []
-#         m, n = len(s), len(p)
-#         if m < n:
-#             return answer
-#         pCounter = Counter(p)
-#         sCounter = Counter(s[:n-1])
-#         for i in range(0, len(s) - len(p)+1):
-#             tmp = s[i : i+len(p)]
-#             if Counter(tmp) == pCounter:
-#                 answer.append(i)
-#         return answer
+    
+# V0-1
+# IDEA: SLIDE WINDOW (gemini)
+from collections import Counter
+
+class Solution(object):
+    def findAnagrams(self, s, p):
+        """
+        :type s: str
+        :type p: str
+        :rtype: List[int]
+        """
+        # Guard: If p is longer than s, no anagram is possible
+        if len(s) < len(p):
+            return []
+
+        p_cnt = Counter(p)
+        s_cnt = Counter()
+        res = []
+        k = len(p)
+
+        for i in range(len(s)):
+            # 1. Add current right character
+            s_cnt[s[i]] += 1
+
+            # 2. Remove left character when window size exceeds k
+            if i >= k:
+                left_char = s[i - k]
+                s_cnt[left_char] -= 1
+                if s_cnt[left_char] == 0:
+                    del s_cnt[left_char]
+
+            # 3. Compare window frequencies (O(1) comparison for 26 lowercase letters)
+            if s_cnt == p_cnt:
+                res.append(i - k + 1)
+
+        return res
+
+
+# V0-2
+# IDEA: 2 POINTERS + hashmap (TLE) (gpt)
+from collections import Counter
+
+class Solution(object):
+    def findAnagrams(self, s, p):
+        """
+        :type s: str
+        :type p: str
+        :rtype: List[int]
+        """
+        if not s or not p or len(p) > len(s):
+            return []
+
+        res = []
+        p_cnt = Counter(p)
+        k = len(p)
+
+        for l in range(len(s) - k + 1):
+            window = s[l:l + k]
+
+            if Counter(window) == p_cnt:
+                res.append(l)
+
+        return res
+
 
 # V0''
 # time = O(n)
