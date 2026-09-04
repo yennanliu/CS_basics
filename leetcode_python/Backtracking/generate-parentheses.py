@@ -23,7 +23,76 @@ Constraints:
 
 """
 
+
 # V0
+# IDEA : bracktrack + LEFT, RIGHT COUNT (LC 020)
+# time = O(4^n / sqrt(n))
+# space = O(4^n / sqrt(n))
+class Solution(object):
+    def generateParenthesis(self, n):
+        """
+        :type n: int
+        :rtype: List[str]
+        """
+        self.res = []
+
+        self.helper(n, [], 0, 0)
+
+        return self.res
+
+    def helper(self, n, tmp, left, right):
+        # 已經放滿 2*n 個括號
+        if len(tmp) == 2 * n:
+            self.res.append("".join(tmp))
+            return
+
+        # 可以放 "("：
+        # 只要還沒用完 n 個 "("
+        if left < n:
+            tmp.append("(")
+            self.helper(n, tmp, left + 1, right)
+            tmp.pop()
+
+        # 可以放 ")"：
+        # 必須確保目前有未關閉的 "("
+        if right < left:
+            tmp.append(")")
+            self.helper(n, tmp, left, right + 1)
+            tmp.pop()
+
+
+# V0-0-1
+# IDEA : bracktrack + LEFT, RIGHT COUNT (LC 020)
+# time = O(4^n / sqrt(n))
+# space = O(4^n / sqrt(n))
+class Solution(object):
+    def generateParenthesis(self, n):
+        res = []
+
+        def helper(tmp, open_cnt, close_cnt):
+            if len(tmp) == 2 * n:
+                res.append("".join(tmp))
+                return
+
+            # 保留你的 for x in ["(", ")"] 迴圈
+            for x in ["(", ")"]:
+                # 判斷放左括號是否合法
+                if x == "(" and open_cnt < n:
+                    tmp.append(x)
+                    helper(tmp, open_cnt + 1, close_cnt)
+                    tmp.pop()  # undo
+
+                # 判斷放右括號是否合法
+                elif x == ")" and close_cnt < open_cnt:
+                    tmp.append(x)
+                    helper(tmp, open_cnt, close_cnt + 1)
+                    tmp.pop()  # undo
+
+        helper([], 0, 0)
+        return res
+
+
+# V0-1
 # IDEA : bracktrack + Valid Parentheses (LC 020)
 # time = O(4^n / sqrt(n))
 # space = O(4^n / sqrt(n))
@@ -70,6 +139,67 @@ class Solution(object):
         tmp = ""
         help(tmp)
         return res
+
+
+# V0-2
+# IDEA: # IDEA: BACKTRACKING
+class Solution(object):
+    def generateParenthesis(self, n):
+        """
+        :type n: int
+        :rtype: List[str]
+        """
+        # edge case
+        if n == 0:
+            return []
+
+        self.res = []
+
+        self.helper(n, [])
+
+        return self.res
+
+    def helper(self, n, tmp):
+        # We have generated 2*n parentheses
+        if len(tmp) == n * 2:
+            if self.is_valid(tmp):
+                self.res.append("".join(tmp))
+            return
+
+        # Don't generate more than 2*n characters
+        if len(tmp) > n * 2:
+            return
+
+        # Try "("
+        tmp.append("(")
+        self.helper(n, tmp)
+
+        # Undo
+        tmp.pop()
+
+        # Try ")"
+        tmp.append(")")
+        self.helper(n, tmp)
+
+        # Undo
+        tmp.pop()
+
+    def is_valid(self, input):
+        balance = 0
+
+        for x in input:
+            if x == "(":
+                balance += 1
+            else:
+                balance -= 1
+
+                # More ")" than "(" -> invalid
+                if balance < 0:
+                    return False
+
+        # Must have equal number of "(" and ")"
+        return balance == 0
+
 
 # V0'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79362373
