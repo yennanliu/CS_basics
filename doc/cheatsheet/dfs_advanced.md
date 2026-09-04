@@ -36,7 +36,7 @@ first, then come here when a problem does not fit any of its ten templates.
 | 6 | Trie + DFS wildcard search | "`.` matches any letter", "one edit away", "magic dictionary" | LC 211 | 676 |
 | 7 | Depth-indexed stack DFS | tab-indented input, `/`-separated paths, "longest absolute path" | LC 388 | 1233 |
 | 8 | Post-order distance-bucket aggregation | "good leaf pairs", "distance between leaves ≤ k" | LC 1530 | 124, 543, 687 |
-| 9 | N-ary post-order child min/max rollup | tree as `edges` rooted at 0, answer only for the root | LC 3965 | 559, 590, 1376 |
+| 9 | N-ary post-order child min/max rollup | tree as `edges` rooted at 0, answer only for the root | LC 3965 | 3967, 559, 590, 1376 |
 | 10 | Tree ⟷ string codec | DFS **returns a string** / parses a nesting string | LC 606 / LC 536 | 297, 449, 331, 652 |
 | 11 | Parent-array tree, memoized upward depth | input is `parent[]` / `manager[]` with `-1` at the root | LC 4015 | 1376, 1483, 1650 |
 
@@ -1281,7 +1281,7 @@ class Solution:
 | Sum of Distances in Tree | 834 | post-order subtree counts + reroot DP (advanced follow-up) |
 ---
 
-### Template 9: N-ary Tree Post-Order Value Aggregation (Child Min/Max Rollup) — LC 3965
+### Template 9: N-ary Tree Post-Order Value Aggregation (Child Min/Max Rollup) — LC 3965 ⭐⭐⭐⭐
 
 **a. Core idea**
 
@@ -1295,6 +1295,10 @@ For LC 3965 the formula is:
 ownDuration = (latest - earliest) + baseTime[node]
 finishTime  = latest + ownDuration
 ```
+
+Read it as: a parent cannot start until its **slowest** child lands (`latest`), and it is *penalised* by
+how badly its children disagree (`latest - earliest`, the idle spread). A node with one child, or with
+all children finishing together, has spread `0` and costs exactly its own `baseTime`.
 
 **Two things that make this an N-ary (not binary) tree pattern:**
 1. Build an **adjacency list** `graph[parent] = [child, ...]` from the `edges` array — you loop `for child in graph[node]`, *not* `node.left / node.right`.
@@ -1331,10 +1335,73 @@ class Solution:
         return dfs(0)                        # tree rooted at task 0
 ```
 
+```java
+// java — same rollup, written ITERATIVELY (see the depth gotcha below)
+// time = O(N), space = O(N)
+public long finishTime(int n, int[][] edges, int[] baseTime) {
+
+    List<List<Integer>> children = new ArrayList<>();
+    for (int i = 0; i < n; i++) {
+        children.add(new ArrayList<>());
+    }
+    for (int[] e : edges) {
+        children.get(e[0]).add(e[1]);   // e[0] is PARENT of e[1]
+    }
+
+    // push pre-order, drain in reverse -> every child settles before its parent
+    Deque<Integer> stack = new ArrayDeque<>();
+    Deque<Integer> order = new ArrayDeque<>();
+    stack.push(0);
+    while (!stack.isEmpty()) {
+        int cur = stack.pop();
+        order.push(cur);
+        for (int c : children.get(cur)) {
+            stack.push(c);
+        }
+    }
+
+    long[] finish = new long[n];        // long, NOT int — see the overflow gotcha
+    while (!order.isEmpty()) {
+        int cur = order.pop();
+
+        if (children.get(cur).isEmpty()) {
+            finish[cur] = baseTime[cur];
+            continue;
+        }
+
+        long earliest = Long.MAX_VALUE, latest = Long.MIN_VALUE;
+        for (int c : children.get(cur)) {
+            earliest = Math.min(earliest, finish[c]);
+            latest   = Math.max(latest,   finish[c]);
+        }
+
+        long ownDuration = (latest - earliest) + baseTime[cur];
+        finish[cur] = latest + ownDuration;
+    }
+
+    return finish[0];
+}
+```
+
 **Recognition signals**
 - Tree given as **`edges` + rooted at 0** (N-ary / general tree), not a `TreeNode` with `.left/.right`.
 - A node's answer is a pure function of its **children's returned values** (min/max/sum) plus its own weight → classic **bottom-up post-order**.
 - You only need the **root's** result → let DFS return the value; no global variable needed.
+
+**Gotchas that decide the submission**
+- **Recursion depth.** `n` is up to `10^5` and the tree may be a **chain**, so the recursive form above
+  is the *explanatory* one — it overflows the default stack on a worst-case input. Either
+  `sys.setrecursionlimit(2 * 10**5)` in Python, or switch to the two-stack iterative form (the Java
+  block above), which is the safe default in Java where the limit is not tunable from the solution.
+- **Overflow.** Finish times are only guaranteed `< 2^53`, which does not fit an `int`. A node whose
+  children's times are far apart returns `latest + (latest - earliest) + base`, i.e. close to *twice*
+  its slowest child, so the value compounds with depth — accumulate in `long` in Java. Python ints are
+  arbitrary precision, so this bites Java only.
+- **Leaf test.** "Leaf" is *no children*, which is `graph[node]` being empty — not "degree 1". Building
+  the graph undirected breaks exactly this check, since every non-root node then has its parent as a
+  neighbour.
+- **`defaultdict` while iterating.** `if not graph[node]` *inserts* an empty list for a leaf. Harmless
+  here, but do not also iterate `graph` elsewhere in the same pass.
 
 > **Contrast with binary bottom-up (Pattern 6 / 15):** same "return a value up, combine at parent" shape, but children are an arbitrary-length list from an adjacency list rather than fixed `left`/`right`. Watch the edge direction when building the graph.
 
@@ -1343,11 +1410,13 @@ class Solution:
 | Problem | LC # | Link to this pattern |
 |---------|------|----------------------|
 | Finish Time of Tasks I | 3965 | canonical N-ary post-order min/max child rollup |
-| Sum of Nodes with Even-Valued Grandparent | 1315 | post-order over tree, aggregate from descendants |
+| Finish Time of Tasks II | 3967 | same rollup, made **queryable** — direct follow-up to 3965 |
 | Maximum Depth of N-ary Tree | 559 | `1 + max(child depths)` — N-ary post-order max rollup |
 | N-ary Tree Postorder Traversal | 590 | canonical post-order visit of an N-ary tree |
 | Time Needed to Inform All Employees | 1376 | rooted tree via manager array, `max(child times) + own` |
+| Sum of Nodes with Even-Valued Grandparent | 1315 | post-order over tree, aggregate from descendants |
 | Count Nodes With the Highest Score | 2049 | post-order subtree aggregation ([dfs.md Template 6](./dfs.md#template-6-bottom-up-post-order-dfs--lc-543-)) |
+| Binary Tree Maximum Path Sum | 124 | binary sibling of the same shape: combine children's returned values at the node |
 ---
 
 ### Template 10: DFS that Returns / Consumes a String (Tree ⟷ String Codec) — LC 606 / LC 536
@@ -1499,7 +1568,7 @@ def get_depth(x, parent, depth):
 - Input is `parent` / `manager` / `parents` — an **array of ancestors**, with `-1` marking the root.
 - The answer needs **depth, height, or an ancestor** — not subtree aggregates. (Needing subtree sums
   or child min/max flips you back to top-down: invert to a children list, then
-  [Template 9](#template-9-n-ary-tree-post-order-value-aggregation-child-minmax-rollup--lc-3965).)
+  [Template 9](#template-9-n-ary-tree-post-order-value-aggregation-child-minmax-rollup--lc-3965-).)
 - `n` up to `10^5` with a possible path-shaped tree → the memo is required, and in Python so is the
   iterative form.
 
