@@ -103,6 +103,55 @@ The finish time of every task is guaranteed to be less than 253.
 
 
 # V0
+# IDEA: DFS (post order) (GPT)
+from collections import defaultdict
+
+
+class Solution(object):
+    def finishTime(self, n, edges, baseTime):
+        """
+        :type n: int
+        :type edges: List[List[int]]
+        :type baseTime: List[int]
+        :rtype: int
+        """
+
+        # Build graph
+        # {parent: [child1, child2, ...]}
+        self.graph = defaultdict(list)
+
+        for u, v in edges:
+            self.graph[u].append(v)
+
+        self.baseTime = baseTime
+
+        # Root is node 0
+        return self.helper(0)
+
+    def helper(self, node):
+
+        # Leaf
+        if not self.graph[node]:
+            return self.baseTime[node]
+
+        earliest = float("inf")
+        latest = float("-inf")
+
+        # Process all children
+        for child in self.graph[node]:
+            child_time = self.helper(child)
+
+            earliest = min(earliest, child_time)
+            latest = max(latest, child_time)
+
+        # Current node's own duration
+        ownDuration = (latest - earliest) + self.baseTime[node]
+
+        # Finish time of current node
+        return latest + ownDuration
+
+
+# V0-0-1
 # IDEA: DFS (post order) (GEMINI)
 class Solution(object):
     def finishTime(self, n, edges, baseTime):
