@@ -1,4 +1,4 @@
-20260904: 4026(to note),449(todo),394(todo),907(again!!),34(todo),227(again, with univeral algo),104(ok),39(again*).79(again*),212(todo),211(again*) | (LC must) 438(again), 3965(again !!), 3967(Finish-Time-of-Tasks-II, todo), 136(again), 137(again) | (LC top 100 likes), 17(again), 22(todo)
+20260904: 4026(to note),449(todo),394(todo),907(again!!),34(todo),227(again, with univeral algo),104(ok),39(again*).79(again*),212(todo),211(again*) | (LC must) 438(again), 3965(again !!), 3967(Finish-Time-of-Tasks-II, todo), 136(again), 137(again) | (LC top 100 likes), 17(again), 22(todo), LC 2012 (again)
 
 
 20260903: |  1740(ok*), 402(again!!), 435(ok*), 436(again !!!), 35(todo), (similar to LC 436: 35, 34, 744, 981, 1146, 300, 2300, 1170), 437(ok*), 276(again!), 1530(ok**), 2001(to add, math)
