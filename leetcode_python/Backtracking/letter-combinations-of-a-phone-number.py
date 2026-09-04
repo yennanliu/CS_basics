@@ -30,6 +30,52 @@ digits[i] is a digit in the range ['2', '9'].
 """
 
 # V0
+# IDEA : backtracking (GPT)
+# time = O(n * 4^n)  # n = len(digits)
+# space = O(n)
+class Solution(object):
+    def letterCombinations(self, digits):
+        if not digits:
+            return []
+
+        self.n_map = {
+            '2': 'abc',
+            '3': 'def',
+            '4': 'ghi',
+            '5': 'jkl',
+            '6': 'mno',
+            '7': 'pqrs',
+            '8': 'tuv',
+            '9': 'wxyz'
+        }
+
+        self.res = []
+        self.helper(digits, 0, [])
+
+        return self.res
+
+    def helper(self, digits, idx, tmp):
+        # 所有 digit 都處理完了
+        if idx == len(digits):
+            self.res.append("".join(tmp))
+            return
+
+        # 例如 digits[idx] = '2'
+        # letters = 'abc'
+        letters = self.n_map[digits[idx]]
+
+        for letter in letters:
+            # choose
+            tmp.append(letter)
+
+            # explore
+            self.helper(digits, idx + 1, tmp)
+
+            # undo
+            tmp.pop()
+
+
+# V0
 # IDEA : backtracking
 # time = O(n * 4^n)  # n = len(digits)
 # space = O(n)
