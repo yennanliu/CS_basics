@@ -33,6 +33,53 @@ digits[i] is a digit in the range ['2', '9'].
 # IDEA : backtracking (GPT)
 # time = O(n * 4^n)  # n = len(digits)
 # space = O(n)
+"""
+Steps:
+
+    ```
+    tmp = []
+
+    選 a
+    tmp = [a]
+
+        選 d
+        tmp = [a,d]
+        → 加入 "ad"
+
+        pop d
+        tmp = [a]
+
+        選 e
+        tmp = [a,e]
+        → 加入 "ae"
+
+        pop e
+        tmp = [a]
+
+    pop a
+    tmp = []
+    ```
+
+
+Template:
+
+    ```
+    def dfs(index, path):
+
+        if index == len(digits):
+            result.append("".join(path))
+            return
+
+        for choice in choices[index]:
+
+            path.append(choice)      # choose
+
+            dfs(index + 1, path)     # explore
+
+            path.pop()               # undo
+
+    ```
+"""
 class Solution(object):
     def letterCombinations(self, digits):
         if not digits:
@@ -64,12 +111,36 @@ class Solution(object):
         # letters = 'abc'
         letters = self.n_map[digits[idx]]
 
+
+        # NOTE !!
+        # we loop over `letters` (but NOT idx)
         for letter in letters:
             # choose
             tmp.append(letter)
 
+
+            """
+            NOTE !!!
+
+
+            1. we move to next idx (idx + 1)
+
+            2. NO need to undo (backtrack) on index
+                -> it's primitive type
+                   , py re-create a new one in every recursion call
+
+
+                   -> but we NEED `undo` for `tmp` (array type)
+            """
             # explore
             self.helper(digits, idx + 1, tmp)
+
+
+            """
+            NOTE !!!
+
+            we pop `within for loop`
+            """
 
             # undo
             tmp.pop()
