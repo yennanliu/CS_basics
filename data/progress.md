@@ -64,6 +64,7 @@
 
 
 - bit_manipulation_examples.zh.html
+	- `2) Single Number II — LC 137 —— 對位元計數再取 mod 3`
 
 - linked_list_examples.md
 
