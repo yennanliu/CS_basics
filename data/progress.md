@@ -62,8 +62,8 @@
 - backtrack.zh.html
 	- `Template 2: start_idx — i vs i + 1`
 
-- bit_manipulation.zh.html
-	- `2-1) 子集列舉（LC 78 回顧）`
+
+- bit_manipulation_examples.zh.html
 
 - linked_list_examples.md
 
@@ -112,6 +112,7 @@
 		- `1-1-6) 反轉串列中間的 N 個節點（以 start, end 表示區間）（遞迴） — LC 92`
   - dp.md
   - dp_examples.md
+  - bit_manipulation.zh.html (again)
 
 
 - Others
