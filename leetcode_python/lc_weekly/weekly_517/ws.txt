@@ -90,6 +90,75 @@ class Solution(object):
 # https://leetcode.com/problems/sum-of-decoded-numbers/description/
 
 
+
+->
+
+Return the `sum` of the `decoded values` 
+of all `elements in nums`, modulo 109 + 7.
+
+
+nums: int arr
+
+
+nums[i] 
+	is an encoded integer
+	xi, yi
+
+
+to decode nums[i] :
+
+	- widthi = nums[i] % 10
+
+	- di = floor(nums[i] / 10)
+
+
+	- xi as the integer formed by the `first widthi`
+		 digits of the decimal representation of di.
+
+
+	- yi as the integer formed by `all remaining `
+	 digits of the decimal representation of di.
+
+
+The decoded value of nums[i] is (xi) ^ (yi)
+
+
+# idea 1) math
+
+
+class Solution(object):
+    def sumDecoded(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        # edge
+        if not nums or len(nums) == 0:
+        	return 0
+
+        ans = 0
+
+        for x in nums:
+        	width, d = self.helper(x)
+
+        	# ??
+        	x = int(str(d[:width]))
+        	y = int(str(d[width + 1:]))
+
+        	ans += (x)^ y
+
+       return ans
+
+
+    # given x, return width, d
+    def helper(self, x):
+		#widthi = x % 10
+		#di = floor(x / 10)
+
+		return x % 10, floor(x / 10)
+
+
+
 #------------------------------------------------
 
 
