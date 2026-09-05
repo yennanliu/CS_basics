@@ -42,8 +42,83 @@ class Solution(object):
         pass
 
 
-# V0
-# IDEA: DP
+# V0-1
+# IDEA: 2D DP (gpt)
+"""
+NOTE !!!
+
+
+DP def:
+
+dp[i][j] = min deletions needed to make
+           word1[:i], word2[:j] equal
+
+
+DP eq:
+
+
+dp[i][j] =
+     if word1[i - 1] == word2[j - 1]:
+         dp[i][j] = dp[i-1][j-1]
+     else:
+         1 + min(
+           dp[i-1][j],   # delete word1[i-1]
+           dp[i][j-1]    # delete word2[j-1]
+        )
+
+
+"""
+# time = O(m * n)
+# space = O(m * n)
+class Solution(object):
+    def minDistance(self, word1, word2):
+
+        # edge case
+        if not word1:
+            return len(word2)
+
+        if not word2:
+            return len(word1)
+
+        if word1 == word2:
+            return 0
+
+        n1 = len(word1)
+        n2 = len(word2)
+
+        # dp[i][j] = minimum deletions needed
+        # to make word1[:i] and word2[:j] the same
+        dp = [[float('inf')] * (n2 + 1) for _ in range(n1 + 1)]
+
+        dp[0][0] = 0
+
+        # word2 is empty -> delete all characters from word1
+        for i in range(1, n1 + 1):
+            dp[i][0] = i
+
+        # word1 is empty -> delete all characters from word2
+        for j in range(1, n2 + 1):
+            dp[0][j] = j
+
+        for i in range(1, n1 + 1):
+            for j in range(1, n2 + 1):
+
+                # NOTE !!!
+                # compare `i-1` VS `j-1` idx
+                if word1[i - 1] == word2[j - 1]:
+                    dp[i][j] = dp[i - 1][j - 1]
+
+                else:
+                    dp[i][j] = min(
+                        dp[i - 1][j],
+                        dp[i][j - 1]
+                    ) + 1
+
+        return dp[n1][n2]
+
+
+# V0-2
+# IDEA: 2D DP
 """
 NOTE !!!
 
