@@ -50,14 +50,15 @@ Follow up: Could you solve it using only O(s2.length) additional memory space?
 
 
 # V0
-# class Solution(object):
-#     def isInterleave(self, s1, s2, s3):
-#         """
-#         :type s1: str
-#         :type s2: str
-#         :type s3: str
-#         :rtype: bool
-#         """
+class Solution(object):
+    def isInterleave(self, s1, s2, s3):
+        """
+        :type s1: str
+        :type s2: str
+        :type s3: str
+        :rtype: bool
+        """
+        pass
         
 
 
@@ -151,10 +152,14 @@ class Solution(object):
         for i in range(1, m + 1):
             for j in range(1, n + 1):
 
+                # Case 1: last char comes from s1
                 dp[i][j] = (
                     dp[i - 1][j]
                     and s1[i - 1] == s3[i + j - 1]
-                ) or (
+                )
+
+                # Case 2: last char comes from s2
+                or (
                     dp[i][j - 1]
                     and s2[j - 1] == s3[i + j - 1]
                 )
