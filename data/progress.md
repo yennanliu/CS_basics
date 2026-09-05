@@ -38,6 +38,9 @@
 
 
 - dp_string.md
+	- `Valid Parenthesis String Pattern (LC 678)`
+	- `LC 678 - Valid Parenthesis String` DP again
+
 - dp_bitmask.md
 - dp_digit.md
 - knapsack_01_zh.md
