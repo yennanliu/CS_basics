@@ -6,7 +6,9 @@
 
 (67 mins)
 
-10.53 - 12.00 pm
+4.14 - 5:21 PM
+
+
 #-------------------------------
 
 
@@ -14,6 +16,69 @@
 
 # LC 4038
 # https://leetcode.com/problems/count-integers-appearing-in-a-single-block/
+
+
+->
+
+Return the `number` of `distinct` 
+`special integers` in nums.
+
+ 
+nums: int arr
+
+
+x is special:
+	-  special if `all occurrences`  of x in 
+	   nums appear in a `single contiguous block.`
+
+
+# idea 1) brute force
+
+# idea 2) hashmap
+	
+	map: {val: [idx_1, idx_2, ...]}
+
+	-> check how many of val is `special`
+
+
+from collections import defaultdict
+
+class Solution(object):
+    def countSpecialIntegers(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        # edge
+        if not nums or len(nums) == 0:
+        	return 0
+        
+        if len(nums) == 1:
+        	return 1
+
+        # map: {val: [idx_1, idx_2, ...]}
+        my_map = defaultdict(list)
+
+        for i in len(nums):
+        	val = nums[i]
+        	my_map[val].append(i)
+
+        cnt = 0
+
+        for k in my_map:
+        	is_perfect = True
+        	for i in range(1, len(my_map[k])):
+        		if my_map[k][i] != my_map[k][i-1] + 1:
+        			is_perfect = False
+        			break
+
+        	if is_perfect:
+        		cnt += 1
+
+       return cnt
+
+        
+
 
 
 #------------------------------------------------
