@@ -1,6 +1,6 @@
 # Progress
 
-# 2026-09-04
+# 2026-09-05
 
 - TODO:
 	- `must_lc_list.md` -> done
@@ -119,7 +119,6 @@
 
 
 - Others
-	- DP - `0/1 Knapsack and` -> revisit
 	- recent updated cheatsheet
 	- TODO LC:
 		- 34(todo),875(todo),81(todo)
@@ -239,7 +238,6 @@
 		- DP
 			- 1D DP
 			- 2D DP
-				- 72
 			- Palindrome Substring DP 
 				- 5
 			- Combinations
@@ -249,6 +247,8 @@
 			- Combinations VS Permutations VS 0/1 Knapsack  VS unboud  0/1 Knapsack !!!
 				- https://yennj12.js.org/CS_basics/cheatsheets/dp.html#code-templates-by-pattern
 				```
+				(OK)
+
 				Combinations — order does NOT matter
 					LC 518 — Coin Change II
 					LC 39 — Combination Sum
@@ -288,16 +288,8 @@
 				```
 			- Longest Increasing Subsequence (LIS)
 			- Longest Common Subsequence
-				- 1143
-				- 72
-				- 583
 			- (0/1 Knapsack DP)
-				- 416
-				- 494
-				- 1049
 			- decode way
-				- 639
-				- 91
 			- Unbounded Knapsack
 				- 322
 				- 518
