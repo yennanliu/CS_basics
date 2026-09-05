@@ -1,4 +1,4 @@
-20260905: 4026(to note),449(todo),394(todo),907(again!!),34(todo),227(again, with univeral algo),104(ok),39(again*).79(again*),212(todo),211(again*), | DP: 46(todo, dp), 47(todo, dp), 279(ok*), 1143(ok), 583(ok**), 639(todo), 97(todo), 678(todo, brute force, stack, dp)
+20260905: 4026(to note),449(todo),394(todo),907(again!!),34(todo),227(again, with univeral algo),104(ok),39(again*).79(again*),212(todo),211(again*), | DP: 46(todo, dp), 47(todo, dp), 279(ok*), 1143(ok), 583(ok**), 639(todo), 97(todo), 678(todo, brute force, stack, dp), 4040(todo: note)
 
 
 20260904: | (LC must) 438(again), 3965(again !!), 3967(Finish-Time-of-Tasks-II, todo), 136(again), 137(again) | (LC top 100 likes), 17(again), 22(todo), LC 2012 (again)

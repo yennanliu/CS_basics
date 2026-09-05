@@ -260,6 +260,8 @@ Output: 3
 
 
 
+# idea 3) backtrack + dfs ????
+
 class Solution(object):
     def minOperations(self, nums, sum):
         """
@@ -317,6 +319,80 @@ class Solution(object):
         return 0
 
 
+
+#------------------------------------------------
+# fixed (0/1 / Group Knapsack, GPT)
+#------------------------------------------------
+
+class Solution(object):
+    def minOperations(self, nums, sum):
+        """
+        :type nums: List[int]
+        :type sum: int
+        :rtype: int
+        """
+
+        INF = float('inf')
+
+        # dp[s] = minimum operations needed
+        # to form subset sum s
+        dp = [INF] * (sum + 1)
+        dp[0] = 0
+
+        for x in nums:
+
+            # All possible values this x can become:
+            # (new_value, number_of_operations)
+            options = []
+
+            # Keep x unchanged
+            if x <= sum:
+                options.append((x, 0))
+
+            # Multiply:
+            # x -> 2x -> 4x -> ...
+            value = x
+            op = 0
+
+            while value <= sum:
+                if op > 0:
+                    options.append((value, op))
+
+                value *= 2
+                op += 1
+
+            # Divide:
+            # x -> floor(x/2) -> floor(x/4) -> ...
+            value = x
+            op = 0
+
+            while value > 0:
+                value //= 2
+                op += 1
+
+                if value == 0:
+                    break
+
+                if value <= sum:
+                    options.append((value, op))
+
+            # 0/1 / Group Knapsack:
+            # this original x can be used at most once
+            new_dp = dp[:]
+
+            for value, cost in options:
+
+                for s in range(value, sum + 1):
+
+                    if dp[s - value] != INF:
+                        new_dp[s] = min(
+                            new_dp[s],
+                            dp[s - value] + cost
+                        )
+
+            dp = new_dp
+
+        return -1 if dp[sum] == INF else dp[sum]
 
 
 
