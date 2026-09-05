@@ -11,7 +11,7 @@
 
 	- LC weekly
 		- `data/lc_weekly/lc_weekly_gpt.md`
-			- Weekly Contest 517 (doing)
+			- Weekly Contest 517 (done, to review)
 				- https://leetcode.com/contest/weekly-contest-517/
 		- LC docs contest
 			- https://leetcode.doocs.org/contest/
@@ -303,8 +303,6 @@
 				- 140
 			- DP on tree
 				- 124
-				- 979
-				- 968
 			- Wildcard / Regex Pattern Matching DP ⭐
 				- 44
 				- 10
