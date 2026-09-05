@@ -30,6 +30,18 @@ word1 and word2 consist of only lowercase English letters.
 
 """
 
+
+# V0
+class Solution(object):
+    def minDistance(self, word1, word2):
+        """
+        :type word1: str
+        :type word2: str
+        :rtype: int
+        """
+        pass
+
+
 # V0
 # IDEA: DP
 """
