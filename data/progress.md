@@ -11,8 +11,8 @@
 
 	- LC weekly
 		- `data/lc_weekly/lc_weekly_gpt.md`
-			- Weekly Contest 516 (doing)
-				- https://leetcode.com/contest/weekly-contest-516/
+			- Weekly Contest 517 (doing)
+				- https://leetcode.com/contest/weekly-contest-517/
 		- LC docs contest
 			- https://leetcode.doocs.org/contest/
 
@@ -37,11 +37,11 @@
 	- review all `cheatsheets`
 
 
-- dp_string.md
-	- `Valid Parenthesis String Pattern (LC 678)`
-	- `LC 678 - Valid Parenthesis String` DP again
 
 - dp_bitmask.md
+	- todo
+
+
 - dp_digit.md
 - knapsack_01_zh.md
 - dp_monotonic_stack.md
@@ -119,6 +119,9 @@
   - dp.md
   - dp_examples.md
   - bit_manipulation.zh.html (again)
+  - dp_string.md
+		- `Valid Parenthesis String Pattern (LC 678)`
+		- `LC 678 - Valid Parenthesis String` DP again
 
 
 - Others
