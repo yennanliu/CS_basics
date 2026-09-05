@@ -44,6 +44,14 @@ class Solution(object):
 # V0-1
 # IDEA: 1D DP (1D DP / unbounded knapsack) (for ... for ...) (gpt)
 """
+Time: O(n × √n)
+     
+     -> 完全平方數的個數為 √n，內層迴圈執行 n 次
+
+Space: O(n)
+
+"""
+"""
 
 DP def:
 
@@ -70,9 +78,17 @@ best answer = dp[remaining] + 1
 """
 class Solution(object):
     def numSquares(self, n):
+
+
+        # NOTE !!
+        # init dp val as `float('inf')`
+
         # dp[i] = minimum number of perfect squares
         # needed to make sum i
         dp = [float('inf')] * (n + 1)
+
+        # NOTE !!
+        # init dp[0] as 0
         dp[0] = 0
 
         # Generate perfect squares
@@ -88,6 +104,8 @@ class Solution(object):
                 if square > i:
                     break
 
+                # NOTE !!!
+                # DON'T forget to `+1`
                 dp[i] = min(
                     dp[i],
                     dp[i - square] + 1
