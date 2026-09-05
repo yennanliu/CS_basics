@@ -55,6 +55,50 @@ class Solution(object):
         #print ("res = " + str(res))
         return res
 
+
+# V0-1
+# IDEA: 1D DP (gemini)
+"""
+DP def:
+
+    dp[i] 為考慮前 i 個數字所能組成的所有全排列。
+
+
+DP eq:
+
+    dp(i)→dp(i+1)
+
+
+    已知 dp[i-1] 的所有排列結果，當加入第 i 個數字 nums[i] 時，
+    將 nums[i] 插入到 dp[i-1] 中每一個排列的每一個可能位置
+    （索引 $0$ 到 $len$），即可構造出 dp[i]。
+
+"""
+class Solution:
+    def permute(self, nums: list[int]) -> list[list[int]]:
+        if not nums:
+            return []
+
+        # Base Case: 初始化第一個元素的排列
+        dp = [[nums[0]]]
+
+        # 逐步加入第 i 個數字
+        for i in range(1, len(nums)):
+            num = nums[i]
+            next_dp = []
+
+            # 走訪上一層的所有排列組合
+            for p in dp:
+                # 將 num 插入到當前排列 p 的所有可能位置 (0 到 len(p))
+                for j in range(len(p) + 1):
+                    new_perm = p[:j] + [num] + p[j:]
+                    next_dp.append(new_perm)
+
+            dp = next_dp
+
+        return dp
+
+
 # V0 
 # time = O(n * n!)
 # space = O(n)
