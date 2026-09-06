@@ -1,6 +1,6 @@
 # Progress
 
-# 2026-09-06
+# 2026-09-07
 
 - TODO:
 	- `must_lc_list.md` -> done
@@ -8,6 +8,8 @@
 	- LC Top 100 like
 		- https://leetcode.com/studyplan/top-100-liked/
 		- https://leetcode.cn/studyplan/top-100-liked/
+
+	- classics_lc_hard.txt
 
 	- LC weekly
 		- `data/lc_weekly/lc_weekly_gpt.md`
