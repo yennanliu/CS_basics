@@ -531,12 +531,12 @@ tiling family, where the mask describes which cells of the next row are already 
 
 | Pattern | State Definition | Transition | Example Problems |
 |---------|-----------------|------------|------------------|
-| **Visit All Nodes** | dp[mask][i] = cost to visit mask, end at i | Try next unvisited node | LC 847, LC 943 |
-| **Assignment** | dp[mask] = cost to assign tasks in mask | Assign next task to worker | LC 1723, LC 1986 |
-| **Subset Selection** | dp[mask] = ways/cost for subset mask | Include/exclude next item | LC 691, LC 1434 |
-| **Partition** | dp[mask] = can partition mask into groups | Form complete groups | LC 698, LC 1681 |
-| **Set Cover** | dp[cover] = cheapest set of items reaching that cover | Union in one more item | LC 1125, LC 691 |
-| **Profile DP** | dp[i][mask] = state at row i with column mask | Process row by row | LC 1349, tiling problems |
+| **Visit All Nodes** | `dp[mask][i]` = cost to visit mask, end at i | Try next unvisited node | LC 847, LC 943 |
+| **Assignment** | `dp[mask]` = cost to assign tasks in mask | Assign next task to worker | LC 1723, LC 1986 |
+| **Subset Selection** | `dp[mask]` = ways/cost for subset mask | Include/exclude next item | LC 691, LC 1434 |
+| **Partition** | `dp[mask]` = can partition mask into groups | Form complete groups | LC 698, LC 1681 |
+| **Set Cover** | `dp[cover]` = cheapest set of items reaching that cover | Union in one more item | LC 1125, LC 691 |
+| **Profile DP** | `dp[i][mask]` = state at row i with column mask | Process row by row | LC 1349, tiling problems |
 
 ---
 

@@ -1082,28 +1082,28 @@ public int[] closestRoom(int[][] rooms, int[][] queries) {
 ```python
 # python
 # LC 1847 - Closest Room
-# IDEA: same sweep; SortedList keeps the admitted room ids ordered so bisect finds the
-#       two candidates around `preferred` in O(log n)
-# time = O((n + q) log n + q log q), space = O(n + q)
-from sortedcontainers import SortedList     # stdlib fallback: a list + bisect.insort
+# IDEA: same sweep. `ids` is kept sorted so bisect finds the two candidates around
+#       `preferred`; insort keeps this to the standard library, at O(n) per insert.
+# time = O(n^2 + q log q + q log n), space = O(n + q)
+from bisect import bisect_left, insort
 
 def closestRoom(rooms, queries):
     rooms = sorted(rooms, key=lambda r: -r[1])                  # size descending
     order = sorted(range(len(queries)), key=lambda i: -queries[i][1])
 
-    ids = SortedList()
+    ids = []
     ans = [-1] * len(queries)
     j = 0
 
     for qi in order:
         preferred, min_size = queries[qi]
         while j < len(rooms) and rooms[j][1] >= min_size:
-            ids.add(rooms[j][0])
+            insort(ids, rooms[j][0])                            # O(n) memmove per insert
             j += 1
         if not ids:
             continue                                            # no room is big enough
 
-        k = ids.bisect_left(preferred)
+        k = bisect_left(ids, preferred)
         best = None
         for cand in (ids[k - 1] if k > 0 else None, ids[k] if k < len(ids) else None):
             if cand is None:
@@ -1115,6 +1115,15 @@ def closestRoom(rooms, queries):
 
     return ans
 ```
+
+> **`insort` vs a real balanced set.** `bisect.insort` finds the slot in `O(log n)` but shifts the
+> tail, so each insert is `O(n)` and the sweep is `O(n^2)` — fine for LC 1847's `n <= 10^5` because
+> the shift is a `memmove`, and it needs nothing outside the standard library. The `O(n log n)`
+> version is `SortedList` from the third-party `sortedcontainers` package (pre-installed on
+> LeetCode, **not** in the standard library, so `pip install sortedcontainers` to run it here):
+> swap `ids = []` for `ids = SortedList()`, `insort(ids, x)` for `ids.add(x)`, and
+> `bisect_left(ids, x)` for `ids.bisect_left(x)`. Java's `TreeSet` above is the genuinely
+> logarithmic structure and needs no such caveat.
 
 **Common mistakes**
 

@@ -1512,7 +1512,9 @@ Same skeleton, `mask` becomes "obstacles I may still remove". Two things are wor
 the interview:
 
 - **The shortcut.** If `k >= m + n - 2` you can bulldoze straight through, so the answer is the
-  Manhattan distance `m + n - 2` — that check alone turns the worst case from `O(m*n*k)` into `O(1)`.
+  Manhattan distance `m + n - 2` and that branch returns in `O(1)`. It is worth more than one early
+  exit, though: past it every surviving input has `k < m + n - 2`, so the bound is
+  `O(m*n*(m+n))` rather than growing with an unbounded `k`.
 - **`best[r][c]` instead of a 3-D `visited`.** Store the largest remaining budget ever seen at a
   cell and skip any arrival that is not strictly better. Same answers, `O(m*n)` memory.
 

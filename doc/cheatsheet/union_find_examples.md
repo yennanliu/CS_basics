@@ -1593,9 +1593,11 @@ def minSwapsCouples(row):
 > the lowest bit. `p ^ 1` beats `p + 1 if p % 2 == 0 else p - 1` and is the reason the couple id is
 > `p / 2` (equivalently `p >> 1`).
 
-**Same arithmetic, different problems**: LC 947 Most Stones Removed (above) and LC 839 Similar String
-Groups both answer `items - components`. The pattern to carry away is *"a component of size k costs
-k-1 operations"* — count roots, never unions.
+**Same arithmetic, different problems**: LC 947 Most Stones Removed (above) answers
+`items - components` too. LC 839 Similar String Groups builds the *same* components but returns the
+component **count** itself — so it is the same union-find and a different final line. The pattern to
+carry away is *"a component of size k costs k-1 operations"*, and either way you count roots, never
+unions.
 
 
 ### 19) Smallest Subtree with all the Deepest Nodes — LC 865 — BFS + union-find climb
