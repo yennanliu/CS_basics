@@ -38,12 +38,10 @@
 
 
 
-- dp_bitmask.md
-	- todo
-
-
-- dp_digit.md
 - knapsack_01_zh.md
+	- `2-2) LC 416 Partition Equal Subset Sum — 存在性版本`
+
+
 - dp_monotonic_stack.md
 - dp_pattern.md
 - recursion_to_dp.md
@@ -122,6 +120,9 @@
   - dp_string.md
 		- `Valid Parenthesis String Pattern (LC 678)`
 		- `LC 678 - Valid Parenthesis String` DP again
+
+	- dp_bitmask.md
+		- again
 
 
 - Others
@@ -301,6 +302,11 @@
 				- 518
 				- 139
 				- 140
+			- bounded Knapsack
+				- 「每個東西最多 k 次」→ 二進位拆分後套 0/1
+				- https://yennj12.js.org/CS_basics/cheatsheets/knapsack_01_zh.zh.html#1-5-%E4%B8%89%E7%A8%AE%E8%83%8C%E5%8C%85%E7%9A%84%E5%AE%8C%E6%95%B4%E5%B0%8D%E7%85%A7
+				- 2585
+				- 1774
 			- DP on tree
 				- 124
 			- Wildcard / Regex Pattern Matching DP ⭐
