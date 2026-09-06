@@ -1,0 +1,44 @@
+# https://ithelp.ithome.com.tw/articles/10304217
+
+
+-----
+
+
+84. Largest Rectangle in Histogram (Monotonic stack經典)
+127. Word Ladder
+188. Best Time to Buy and Sell Stock IV(DP 經典)
+218. The Skyline Problem(非線段數的multimap掃描線解法 如同LC 2158 非常經典
+https://github.com/wisdompeak/LeetCode/tree/master/Others/2158.Amount-of-New-Area-Painted-Each-Day)
+239. Sliding Window Maximum
+295. Find Median from Data Stream (Two heap method 經典)
+297. Serialize and Deserialize Binary Tree(經典)
+312. Burst Balloons (區間型DP經典)
+315. Count of Smaller Numbers After Self (BIT可作)
+354. Russian Doll Envelopes
+446. Arithmetic Slices II - Subsequence
+460. LFU Cache (Design題經典)
+493. Reverse Pairs
+630. Course Schedule III (經典難題)
+632. Smallest Range Covering Elements from K Lists (經典難題)
+710. Random Pick with Blacklist
+715. Range Module (經典難題)
+741. Cherry Pickup (DP經典)
+765. Couples Holding Hands
+773. Sliding Puzzle
+778. Swim in Rising Water
+862. Shortest Subarray with Sum at Least K
+864. Shortest Path to Get All Keys
+871. Minimum Number of Refueling Stops
+887. Super Egg Drop (DP經典難題)
+895. Maximum Frequency Stack
+940. Distinct Subsequences II
+956. Tallest Billboard (DP經典)
+968. Binary Tree Cameras(經典難題)
+992. Subarrays with K Different Integers
+1125. Smallest Sufficient Team(經典狀態壓縮)
+1235. Maximum Profit in Job Scheduling (經典DP+二分搜)
+1293. Shortest Path in a Grid with Obstacles Elimination
+1349. Maximum Students Taking Exam(經典狀態壓縮)
+1547. Minimum Cost to Cut a Stick
+1713. Minimum Operations to Make a Subsequence
+1847. Closest Room (offline演算法的練習)
