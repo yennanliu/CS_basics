@@ -1152,6 +1152,117 @@ def grid_dp_optimized(grid):
     return prev[n-1]
 ```
 
+### Two paths walked in lockstep — LC 741 ⭐⭐⭐⭐⭐
+
+> **Pattern**: "go there and come back" is **not** two independent grid DPs. Reverse the return
+> trip and it becomes **two walkers leaving the origin at the same time**, and because both only
+> move right/down, after `t` steps both satisfy `r + c == t`. That one invariant collapses a 4-D
+> state `(r1, c1, r2, c2)` to 3-D — pick `r1`, `c1`, `r2` and `c2` falls out as `r1 + c1 - r2`.
+
+Running the two trips separately and adding them is the classic wrong answer: the greedy best first
+path eats cherries the second path needed, and grids like `[[1,1,1],[0,0,1],[1,1,1]]` expose it
+immediately. The paths must be chosen **together**.
+
+#### 💡 Core Idea (LC 741 Cherry Pickup)
+
+```text
+state : (r1, c1, r2)     with   c2 = r1 + c1 - r2      # both walkers took r1+c1 steps
+moves : each walker independently goes DOWN or RIGHT   -> 4 combinations
+pick  : grid[r1][c1] + grid[r2][c2],  but ONCE if the two walkers are on the same cell
+block : a -1 under either walker kills the whole state
+answer: max(0, dfs(0, 0, 0))    # -inf means "no legal round trip at all"
+```
+
+Two details decide whether it passes:
+
+- **`-infinity`, not `0`, for a blocked state.** A blocked path that scores `0` is
+  indistinguishable from a legal path that happened to pick nothing, so the max silently walks
+  through thorns.
+- **Double-count guard.** When `(r1, c1) == (r2, c2)` the cherry is picked once. Every walker pair
+  meets on the diagonal at least at the start and the end, so this is not an edge case.
+
+```java
+// java
+// LC 741 - Cherry Pickup
+// IDEA: down-and-back == two simultaneous down-right walks. Both have taken r1+c1 steps,
+//       so the second walker's column is implied: c2 = r1 + c1 - r2.
+// time = O(n^3), space = O(n^3)
+private static final int NEG = Integer.MIN_VALUE;
+
+public int cherryPickup(int[][] grid) {
+    int n = grid.length;
+    Integer[][][] memo = new Integer[n][n][n];
+    return Math.max(0, dfs(grid, 0, 0, 0, memo));   // NEG means every round trip is blocked
+}
+
+private int dfs(int[][] grid, int r1, int c1, int r2, Integer[][][] memo) {
+    int n = grid.length;
+    int c2 = r1 + c1 - r2;             // the invariant that removes the 4th dimension
+    if (r1 >= n || c1 >= n || r2 >= n || c2 >= n) return NEG;
+    if (grid[r1][c1] == -1 || grid[r2][c2] == -1) return NEG;
+    if (r1 == n - 1 && c1 == n - 1) return grid[r1][c1];   // both are forced onto (n-1, n-1)
+    if (memo[r1][c1][r2] != null) return memo[r1][c1][r2];
+
+    // NOTE !!! same cell -> the cherry is taken once, not twice
+    int got = grid[r1][c1] + (r1 == r2 ? 0 : grid[r2][c2]);
+
+    int rest = Math.max(
+        Math.max(dfs(grid, r1 + 1, c1, r2 + 1, memo),      // down , down
+                 dfs(grid, r1 + 1, c1, r2,     memo)),     // down , right
+        Math.max(dfs(grid, r1, c1 + 1, r2 + 1, memo),      // right, down
+                 dfs(grid, r1, c1 + 1, r2,     memo)));    // right, right
+
+    int res = (rest == NEG) ? NEG : got + rest;
+    memo[r1][c1][r2] = res;
+    return res;
+}
+```
+
+```python
+# python
+# LC 741 - Cherry Pickup
+# IDEA: two walkers, both r+c steps in; c2 is derived, so memoise on (r1, c1, r2)
+# time = O(n^3), space = O(n^3)
+from functools import lru_cache
+
+def cherryPickup(grid):
+    n = len(grid)
+    NEG = float('-inf')
+
+    @lru_cache(maxsize=None)
+    def dfs(r1, c1, r2):
+        c2 = r1 + c1 - r2
+        if r1 >= n or c1 >= n or r2 >= n or c2 >= n:
+            return NEG
+        if grid[r1][c1] == -1 or grid[r2][c2] == -1:
+            return NEG
+        if r1 == c1 == n - 1:
+            return grid[r1][c1]
+
+        got = grid[r1][c1] + (0 if r1 == r2 else grid[r2][c2])
+        rest = max(dfs(r1 + 1, c1, r2 + 1), dfs(r1 + 1, c1, r2),
+                   dfs(r1, c1 + 1, r2 + 1), dfs(r1, c1 + 1, r2))
+        return NEG if rest == NEG else got + rest
+
+    return max(0, dfs(0, 0, 0))
+```
+
+> **`r1 == r2` is the same test as `(r1, c1) == (r2, c2)`.** Both walkers share `r + c`, so equal
+> rows force equal columns — and equal columns force equal rows. Either single test is correct;
+> writing `r1 == r2 || c1 == c2` is **not** a stronger guard, it is the same condition spelled
+> twice.
+
+**Bottom-up sizing**, if you prefer a table: index by step `t` from `0` to `2n-2` and keep only two
+layers, `dp[r1][r2]` — `O(n^2)` space. The recursion above is what most people can actually write
+correctly in 25 minutes, so lead with it and mention the rolling version.
+
+**Similar problems**: LC 1463 Cherry Pickup II (two walkers again, but they start in the two top
+corners and move **down** every step, so `t == row` and the state is just `(row, c1, c2)` — strictly
+easier, and the better one to practise first), LC 1301 Number of Paths with Max Score, and the
+classic "two robots collect maximum" grid family.
+
+---
+
 ## State Machine DP — Extended
 
 ### Sub-patterns by transaction constraint
@@ -2413,6 +2524,190 @@ def canCross(stones):
 - **Using `dp[i] = boolean`** — reachability alone loses the jump size and gives wrong answers (e.g. `[0,1,3,6,10,13,14]`).
 - **Not deduplicating** — use a `Set` per stone, otherwise the state space blows up.
 - Top-down `memo[(i, k)] -> boolean` with DFS is the equivalent formulation; same complexity.
+
+---
+
+### A hash map as the state dimension — LC 446 ⭐⭐⭐⭐
+
+> **Pattern**: the extra dimension is a **value**, not a small index — a common difference, a ratio,
+> a running remainder. You cannot allocate `dp[i][value]` as an array, so each `i` gets a **hash
+> map** instead. Everything else is an ordinary `O(n^2)` "for each `i`, look back at every `j`" DP.
+
+#### 🎯 Pattern Recognition — LC 446
+
+| Signal | The map's key |
+|--------|---------------|
+| "arithmetic subsequence" | `nums[i] - nums[j]`, the common difference |
+| "geometric / ratio subsequence" | the ratio, as a reduced fraction |
+| "subsequence summing to a multiple of k" | the running sum mod `k` (an array works here — `k` is small) |
+| "pairs with the same gap" | the gap |
+
+#### 💡 Core Idea (LC 446 Arithmetic Slices II — Subsequence)
+
+The question wants subsequences of length **≥ 3**, but the DP has to count length **≥ 2** — a pair
+carries no information about whether it will grow, and you cannot know at `j` whether `j` will
+later be extended. So keep the loose count in the table and only bank the strict one into the
+answer:
+
+```text
+dp[i][d] = number of subsequences of length >= 2 ending at i with common difference d
+
+for each j < i, d = nums[i] - nums[j]:
+    cnt = dp[j][d]           # each of these has length >= 2 ...
+    ans += cnt               # ... so appending i makes it length >= 3  -> a real answer
+    dp[i][d] += cnt + 1      # cnt extended subsequences, plus the new pair (j, i)
+```
+
+The `+1` is the pair `(j, i)` joining the table; `ans` never sees it. That split — **count loosely,
+report strictly** — is the reusable idea, and it shows up again in "count subarrays with at least
+k" style problems.
+
+```java
+// java
+// LC 446 - Arithmetic Slices II - Subsequence
+// IDEA: dp.get(i) maps a common difference -> how many length>=2 subsequences end at i
+//       with that difference. Each one becomes a length>=3 answer when i extends it.
+// time = O(n^2), space = O(n^2)
+public int numberOfArithmeticSlices(int[] nums) {
+    int n = nums.length, ans = 0;
+    List<Map<Long, Integer>> dp = new ArrayList<>();
+    for (int i = 0; i < n; i++) dp.add(new HashMap<>());
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < i; j++) {
+            // NOTE !!! (long) cast — nums[i] - nums[j] overflows int on the real test data
+            long d = (long) nums[i] - nums[j];
+            int cnt = dp.get(j).getOrDefault(d, 0);
+            ans += cnt;                       // only length>=3 chains are answers
+            dp.get(i).merge(d, cnt + 1, Integer::sum);   // +1 = the new pair (j, i)
+        }
+    }
+    return ans;
+}
+```
+
+```python
+# python
+# LC 446 - Arithmetic Slices II - Subsequence
+# IDEA: same table, one defaultdict per index; report cnt (length>=3) but store cnt+1
+# time = O(n^2), space = O(n^2)
+from collections import defaultdict
+
+def numberOfArithmeticSlices(nums):
+    n = len(nums)
+    dp = [defaultdict(int) for _ in range(n)]
+    ans = 0
+    for i in range(n):
+        for j in range(i):
+            d = nums[i] - nums[j]
+            cnt = dp[j].get(d, 0)             # .get, not [d] — [d] would insert a 0 entry
+            ans += cnt
+            dp[i][d] += cnt + 1
+    return ans
+```
+
+#### Common Pitfalls — map-keyed DP ⚠️
+
+- **Adding the `+1` to `ans`.** That counts pairs, and the answer explodes to `C(n,2)` plus the real
+  count. The pair lives in the table only.
+- **`int` difference in Java.** `nums[i] - nums[j]` overflows for the `[0, -2147483648]` style
+  tests; the map key must be `long`.
+- **Reaching for `O(n log n)`.** There isn't one — the pairwise loop *is* the intended solution, and
+  `n <= 1000` in the constraints is the hint that says so.
+
+**Similar problems**: LC 413 Arithmetic Slices (contiguous — collapses to a single rolling counter,
+no map needed), LC 1027 Longest Arithmetic Subsequence (same table, keep the max length instead of
+a count), LC 1218 Longest Arithmetic Subsequence of Given Difference (`d` is fixed, so one map is
+enough and it becomes `O(n)`).
+
+---
+
+### Inverting the state: make the answer a dimension — LC 887 ⭐⭐⭐⭐⭐
+
+> **Pattern**: the natural DP is `dp[eggs][floors] = moves`, and it is `O(k * n^2)` — too slow.
+> **Swap an input with the output**: `dp[eggs][moves] = floors`. The recurrence becomes additive
+> instead of a minimax over a split point, and the whole inner search disappears. Reach for this
+> whenever the answer is small, monotone, and the state it replaces is large.
+
+#### 💡 Core Idea (LC 887 Super Egg Drop)
+
+Ask the question backwards. Not *"how many moves do I need for `n` floors?"* but *"with `k` eggs and
+`m` moves, how tall a building can I fully resolve?"* Drop one egg somewhere:
+
+```text
+dp[k][m] = dp[k-1][m-1]      floors BELOW the drop  (egg broke:      k-1 eggs, m-1 moves)
+         + dp[k][m-1]        floors ABOVE the drop  (egg survived:   k   eggs, m-1 moves)
+         + 1                 the floor you dropped from
+
+answer = the smallest m with dp[k][m] >= n
+```
+
+Notice what vanished: there is no `min` and no loop over "which floor do I drop from". The optimal
+drop floor is *implied* — it is exactly `dp[k-1][m-1] + 1` floors up — so the search that made the
+naive version quadratic is gone.
+
+`dp[k][m] >= n` is monotone in `m`, so just increment `m` until it holds. Only the previous `m`
+column is ever read, so one array suffices — **iterate `k` downwards** so `dp[k-1]` is still last
+round's value.
+
+```java
+// java
+// LC 887 - Super Egg Drop
+// IDEA: invert the table — dp[j] = how many floors j eggs can resolve in the moves so far.
+//       Grow `m` until k eggs cover n floors; that m is the answer.
+// time = O(k * m) with m = the answer (m <= n, and far smaller in practice)
+// space = O(k)
+public int superEggDrop(int k, int n) {
+    int[] dp = new int[k + 1];        // dp[j] = floors resolvable with j eggs in m moves
+    int m = 0;
+    while (dp[k] < n) {
+        m++;
+        // NOTE !!! descending j, so dp[j - 1] still holds the value for m - 1 moves
+        for (int j = k; j >= 1; j--) {
+            dp[j] = dp[j] + dp[j - 1] + 1;
+        }
+    }
+    return m;
+}
+```
+
+```python
+# python
+# LC 887 - Super Egg Drop
+# IDEA: dp[j] = floors coverable with j eggs and the current number of moves
+# time = O(k * m), space = O(k)
+def superEggDrop(k, n):
+    dp = [0] * (k + 1)
+    m = 0
+    while dp[k] < n:
+        m += 1
+        for j in range(k, 0, -1):     # descending: dp[j - 1] is still the m-1 value
+            dp[j] = dp[j] + dp[j - 1] + 1
+    return m
+```
+
+**Sanity check** — `k = 2, n = 6`:
+
+```text
+m=1 : dp = [0, 1, 1]     2 eggs, 1 move  -> 1 floor
+m=2 : dp = [0, 2, 3]     2 eggs, 2 moves -> 3 floors
+m=3 : dp = [0, 3, 6]     2 eggs, 3 moves -> 6 floors  >= 6  ->  answer 3
+```
+
+#### When to reach for the inversion ⚠️
+
+| The naive state | Invert to | Because |
+|---|---|---|
+| `dp[eggs][floors] = min moves` (LC 887) | `dp[eggs][moves] = max floors` | floors reach `10^4`, moves stay tiny |
+| `dp[i][capacity] = max value`, capacity huge | `dp[i][value] = min capacity` | knapsack with `W = 10^9` but a small total value |
+| `dp[i][sum] = feasible?`, sum huge | `dp[i][count] = min sum` | the same trade, one axis at a time |
+
+The tell is always the same: **one axis of the table is bounded by something tiny and the other
+isn't.** Put the tiny one in the table.
+
+**Similar problems**: LC 1884 Egg Drop With 2 Eggs and N Floors (the `k = 2` special case, where the
+same reasoning gives the closed form `m(m+1)/2 >= n`), and the "knapsack by value" rewrite of 0/1
+knapsack in [knapsack.md](./knapsack.md).
 
 ---
 

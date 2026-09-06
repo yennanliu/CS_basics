@@ -317,6 +317,216 @@ public boolean canPartitionKSubsets(int[] nums, int k) {
 
 ---
 
+#### **Pattern 5: Set Cover — the mask is the GOAL, not the items** ⭐⭐⭐⭐⭐
+
+**Problem Type**: pick the fewest items so that the union of what they cover is everything
+
+**State Definition**: `dp[cover]` = the cheapest team whose skills union to exactly `cover`
+
+**Transition**: for each person `p`, `dp[cover | skills(p)] <- dp[cover] + {p}`
+
+**Time Complexity**: O(people × 2^m)
+**Space Complexity**: O(2^m) states (plus whatever you store per state to rebuild the answer)
+
+> **The mask indexes the SKILLS, not the PEOPLE.** This is the whole trick and it is the one thing
+> that goes wrong in the room. LC 1125 has up to 60 people and at most 16 skills — `2^60` is
+> impossible and `2^16` is nothing. Whenever `n` looks far too big for bitmask DP, check whether the
+> *requirement* is the small side.
+
+**Example**: LC 1125 - Smallest Sufficient Team
+
+```java
+// java
+// LC 1125 - Smallest Sufficient Team
+// IDEA: dp[cover] = smallest team covering that skill set. People are up to 60, so the
+//       team itself is stored as a 64-bit person mask and rebuilt by scanning its bits.
+// time = O(people * 2^m), space = O(2^m)
+public int[] smallestSufficientTeam(String[] reqSkills, List<List<String>> people) {
+    int m = reqSkills.length, full = (1 << m) - 1;
+    Map<String, Integer> skillId = new HashMap<>();
+    for (int i = 0; i < m; i++) skillId.put(reqSkills[i], i);
+
+    long[] team = new long[1 << m];             // team[cover] = bitmask of chosen people
+    int[] size = new int[1 << m];
+    Arrays.fill(size, Integer.MAX_VALUE);
+    size[0] = 0;                                // the empty team covers nothing, for free
+
+    for (int p = 0; p < people.size(); p++) {
+        int pm = 0;
+        for (String s : people.get(p)) {
+            Integer id = skillId.get(s);        // people may list skills nobody asked for
+            if (id != null) pm |= 1 << id;
+        }
+        if (pm == 0) continue;
+        for (int cover = 0; cover <= full; cover++) {
+            if (size[cover] == Integer.MAX_VALUE) continue;
+            int next = cover | pm;
+            /** NOTE !!! `next >= cover` always, and when pm is already inside `cover` we get
+             *  next == cover and the relaxation below is a no-op — so a person can never be
+             *  added twice even though we write forward into the same array. */
+            if (size[next] > size[cover] + 1) {
+                size[next] = size[cover] + 1;
+                team[next] = team[cover] | (1L << p);
+            }
+        }
+    }
+
+    long chosen = team[full];
+    int[] ans = new int[size[full]];
+    int k = 0;
+    for (int p = 0; p < people.size(); p++) {
+        if ((chosen >> p & 1) == 1) ans[k++] = p;
+    }
+    return ans;
+}
+```
+
+```python
+# python
+# LC 1125 - Smallest Sufficient Team
+# IDEA: dict from skill-cover mask -> the smallest team reaching it. Only reachable
+#       covers are ever stored, which in practice is far fewer than 2^m.
+# time = O(people * 2^m), space = O(2^m * m)
+def smallestSufficientTeam(req_skills, people):
+    skill_id = {s: i for i, s in enumerate(req_skills)}
+    full = (1 << len(req_skills)) - 1
+
+    dp = {0: []}                                   # cover -> list of person indices
+    for p, skills in enumerate(people):
+        pm = 0
+        for s in skills:
+            if s in skill_id:                      # ignore skills nobody required
+                pm |= 1 << skill_id[s]
+        if pm == 0:
+            continue
+        # NOTE !!! iterate a SNAPSHOT -- otherwise person p can be re-used within one pass
+        for cover, crew in list(dp.items()):
+            nxt = cover | pm
+            if nxt == cover:
+                continue
+            if nxt not in dp or len(dp[nxt]) > len(crew) + 1:
+                dp[nxt] = crew + [p]
+
+    return dp[full]
+```
+
+**Similar problems**: LC 691 Stickers to Spell Word (same shape, but a sticker may be used more
+than once, so relax `dp[cover]` from *every* cover repeatedly — BFS or an ascending sweep),
+LC 1434 Number of Ways to Wear Different Hats, LC 2305 Fair Distribution of Cookies.
+
+---
+
+#### **Pattern 6: Row-by-Row Profile DP — the mask is ONE ROW** ⭐⭐⭐⭐
+
+**Problem Type**: fill a grid subject to constraints between a cell and its neighbours, where the
+grid is **narrow** (`cols <= ~12`) but may be arbitrarily tall
+
+**State Definition**: `dp[i][mask]` = best value for rows `0..i` when row `i` is exactly `mask`
+
+**Transition**: for each pair `(prev, cur)` of legal row layouts, check the cross-row rule
+
+**Time Complexity**: O(rows × 4^cols) naive, O(rows × 3^cols) if you enumerate submasks
+**Space Complexity**: O(2^cols) — only the previous row is needed
+
+> **Which dimension goes in the mask.** Always the **short** one. LC 1349 is `m <= 8` rows by
+> `n <= 8` columns, but the same problem with 10,000 rows and 8 columns is identical work — the
+> exponent is on the width alone. Transpose first if the grid is tall and thin the other way.
+
+The constraints split cleanly into two independent checks, and keeping them separate is what makes
+this writable under pressure:
+
+```text
+within a row   :  no two students side by side  ->  mask & (mask << 1) == 0
+                  no student on a broken seat   ->  mask & broken[i]   == 0
+
+across rows    :  no upper-left neighbour       ->  cur & (prev << 1)  == 0
+                  no upper-right neighbour      ->  cur & (prev >> 1)  == 0
+                  (directly above is ALLOWED — cheating needs a diagonal)
+```
+
+**Example**: LC 1349 - Maximum Students Taking Exam
+
+```java
+// java
+// LC 1349 - Maximum Students Taking Exam
+// IDEA: dp[mask] = most students seated so far with the current row laid out as `mask`.
+//       Row validity and cross-row validity are two separate bit tests.
+// time = O(m * 4^n), space = O(2^n)
+public int maxStudents(char[][] seats) {
+    int m = seats.length, n = seats[0].length, full = 1 << n;
+
+    int[] broken = new int[m];
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            if (seats[i][j] == '#') broken[i] |= 1 << j;
+        }
+    }
+
+    int[] prev = new int[full];
+    Arrays.fill(prev, -1);
+    prev[0] = 0;                                  // before row 0: only the empty layout exists
+
+    for (int i = 0; i < m; i++) {
+        int[] cur = new int[full];
+        Arrays.fill(cur, -1);
+        for (int mask = 0; mask < full; mask++) {
+            if ((mask & broken[i]) != 0) continue;         // sits on a broken seat
+            if ((mask & (mask << 1)) != 0) continue;       // two students side by side
+            for (int p = 0; p < full; p++) {
+                if (prev[p] == -1) continue;               // unreachable previous layout
+                if ((mask & (p << 1)) != 0) continue;      // upper-left neighbour
+                if ((mask & (p >> 1)) != 0) continue;      // upper-right neighbour
+                cur[mask] = Math.max(cur[mask], prev[p] + Integer.bitCount(mask));
+            }
+        }
+        prev = cur;
+    }
+
+    int best = 0;
+    for (int v : prev) best = Math.max(best, v);
+    return best;
+}
+```
+
+```python
+# python
+# LC 1349 - Maximum Students Taking Exam
+# IDEA: same two-tier validity test; -1 marks an unreachable layout so it can never
+#       be relaxed from (a plain 0 default would invent seatings that do not exist)
+# time = O(m * 4^n), space = O(2^n)
+def maxStudents(seats):
+    m, n = len(seats), len(seats[0])
+    full = 1 << n
+
+    broken = [0] * m
+    for i in range(m):
+        for j in range(n):
+            if seats[i][j] == '#':
+                broken[i] |= 1 << j
+
+    prev = [-1] * full
+    prev[0] = 0
+    for i in range(m):
+        cur = [-1] * full
+        for mask in range(full):
+            if mask & broken[i] or mask & (mask << 1):
+                continue
+            best = max((prev[p] for p in range(full)
+                        if prev[p] >= 0 and not (mask & (p << 1)) and not (mask & (p >> 1))),
+                       default=-1)
+            if best >= 0:
+                cur[mask] = best + bin(mask).count('1')
+        prev = cur
+
+    return max(prev)
+```
+
+**Similar problems**: LC 1659 Maximize Grid Happiness (profile DP with three states per cell, so
+base 3 instead of base 2), LC 1655 Distribute Repeating Integers, and the classic domino/tromino
+tiling family, where the mask describes which cells of the next row are already covered.
+
+---
+
 #### **Bitmask DP Common Patterns Summary**
 
 | Pattern | State Definition | Transition | Example Problems |
@@ -325,7 +535,8 @@ public boolean canPartitionKSubsets(int[] nums, int k) {
 | **Assignment** | dp[mask] = cost to assign tasks in mask | Assign next task to worker | LC 1723, LC 1986 |
 | **Subset Selection** | dp[mask] = ways/cost for subset mask | Include/exclude next item | LC 691, LC 1434 |
 | **Partition** | dp[mask] = can partition mask into groups | Form complete groups | LC 698, LC 1681 |
-| **Profile DP** | dp[i][mask] = state at row i with column mask | Process row by row | Tiling problems |
+| **Set Cover** | dp[cover] = cheapest set of items reaching that cover | Union in one more item | LC 1125, LC 691 |
+| **Profile DP** | dp[i][mask] = state at row i with column mask | Process row by row | LC 1349, tiling problems |
 
 ---
 

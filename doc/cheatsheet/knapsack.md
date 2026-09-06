@@ -992,6 +992,142 @@ public int coinChange(int[] coins, int amount) {
 
 ---
 
+### **Deep Dive: Difference-Keyed Knapsack — LC 956** 🏗️ ⭐⭐⭐⭐
+
+#### **When to Use a Difference Key**
+
+Every problem above indexes the table by a **total** — `dp[capacity]`, `dp[amount]`, `dp[sum]`.
+Some problems instead split the items into **two groups and only care how far apart the groups
+are**. Then the total is irrelevant and the right key is the **difference**:
+
+```text
+dp[capacity] = best value     ->   "how much have I packed?"
+dp[difference] = best height  ->   "how unbalanced are the two piles?"
+```
+
+Recognise it by the shape of the answer:
+
+- "split into two subsets with **equal** sum, maximise that sum" (LC 956 — the two steel supports)
+- "minimise `|sum(A) - sum(B)|`" (LC 1049 Last Stone Weight II, LC 2035 Partition Array Into Two
+  Arrays)
+- "make two piles equal, items may be **left out**"
+
+> **LC 416 / LC 1049 are the same family solved with a total.** With small sums you can key on
+> `sum` and read `dp[total/2]` at the end. LC 956 cannot: it wants the *height* of the balanced pair,
+> and rods can be discarded — so the value you carry and the value you key by are different things.
+> That is exactly what the difference key buys.
+
+#### **The State**
+
+```text
+dp[d] = the tallest achievable TALLER side, over all ways to split some subset
+        of the rods so far into two piles differing by exactly d
+
+dp[0] = 0   (two empty piles, difference 0, height 0)
+answer = dp[0] after all rods -- difference 0 means equal, and we kept the max height
+```
+
+Each rod has **three** choices, not two, and this is where it differs from 0/1 knapsack:
+
+```text
+skip it            ->  (d,        taller)                 unchanged
+put on TALLER      ->  (d + x,    taller + x)             the gap widens
+put on SHORTER     ->  (|d - x|,  max(taller, shorter+x)) the gap closes, and may flip sides
+                       where shorter = taller - d
+```
+
+The `|d - x|` and the `max(...)` together handle the case where the short pile overtakes the tall
+one — the two piles swap roles and the difference reflects back off zero.
+
+```java
+// java
+// LC 956 - Tallest Billboard
+// IDEA: key the table by the DIFFERENCE between the two supports, store the taller
+//       support's height. Answer = dp[0], the best height at difference zero.
+// time = O(n * sum), space = O(sum)
+public int tallestBillboard(int[] rods) {
+    int sum = 0;
+    for (int r : rods) sum += r;
+
+    int[] dp = new int[sum + 1];
+    Arrays.fill(dp, -1);          // NOTE !!! -1 = unreachable; 0 is a real, reachable height
+    dp[0] = 0;
+
+    for (int x : rods) {
+        int[] prev = dp.clone();  // "skip x" is prev carried forward, already in dp
+        for (int d = 0; d <= sum; d++) {
+            if (prev[d] < 0) continue;
+            int taller = prev[d], shorter = taller - d;
+
+            // 1) x joins the taller pile -> gap widens by x
+            if (d + x <= sum) dp[d + x] = Math.max(dp[d + x], taller + x);
+
+            // 2) x joins the shorter pile -> gap becomes |d - x|, piles may swap
+            int nd = Math.abs(d - x);
+            dp[nd] = Math.max(dp[nd], Math.max(taller, shorter + x));
+        }
+    }
+    return dp[0];
+}
+```
+
+```python
+# python
+# LC 956 - Tallest Billboard
+# IDEA: dict from difference -> tallest "taller side"; only reachable differences are stored
+# time = O(n * sum), space = O(sum)
+def tallestBillboard(rods):
+    dp = {0: 0}                        # difference -> height of the taller support
+
+    for x in rods:
+        prev = dict(dp)                # snapshot: each rod is used at most once
+        for d, taller in prev.items():
+            shorter = taller - d
+
+            nd, nt = d + x, taller + x                 # x on the taller side
+            dp[nd] = max(dp.get(nd, 0), nt)
+
+            nd2 = abs(d - x)                           # x on the shorter side
+            dp[nd2] = max(dp.get(nd2, 0), max(taller, shorter + x))
+
+    return dp[0]
+```
+
+#### **Trace — `rods = [1, 2, 3, 6]`**
+
+```text
+start        {0: 0}
+after 1      {0: 0, 1: 1}
+after 2      {0: 0, 1: 2, 2: 2, 3: 3}
+after 3      {0: 3, 1: 3, 2: 4, 3: 3, 4: 5, 5: 5, 6: 6}
+after 6      {0: 6, 1: 6, 2: 7, 3: 6, ...}   -> dp[0] = 6, supports {6} and {1,2,3}
+```
+
+`dp[0]` jumps from `0` to `3` when the third rod balances `{3}` against `{1,2}`, and to `6` when the
+`6` balances the whole rest.
+
+#### **Common Pitfalls — difference key** ⚠️
+
+- **Initialising the array to `0` instead of `-1`.** Height `0` at difference `d` is a *legal* state
+  only for `d = 0`; a zero-filled array claims every difference is reachable for free and the answer
+  comes out too large.
+- **Mutating `dp` while iterating it** (Python) or forgetting the `clone()` (Java). Without the
+  snapshot a rod can be placed on both piles in one pass.
+- **Storing the shorter side instead of the taller.** Either convention works, but the transition
+  formulas are different — pick one and derive `shorter = taller - d` from it consistently.
+- **`d + x` overflowing the array.** Cap the loop at `sum`; a difference larger than the total is
+  meaningless.
+
+#### **Similar LeetCode Problems — two-pile splits** 📚
+
+| Problem | Key |
+|---|---|
+| LC 1049 Last Stone Weight II | minimise the difference — the same table, read the smallest reachable `d` |
+| LC 416 Partition Equal Subset Sum | feasibility only — a boolean `dp[sum]` is enough |
+| LC 2035 Partition Array Into Two Arrays | `n <= 30`, so meet-in-the-middle beats a difference table |
+| LC 494 Target Sum | signs instead of piles — algebra turns it back into a subset-sum on the total |
+
+
 ## Pattern Selection Strategy
 
 ```text

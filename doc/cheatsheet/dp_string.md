@@ -754,6 +754,100 @@ public boolean checkValidString(String s) {
 
 ---
 
+### **Counting DISTINCT Subsequences — the last-occurrence subtraction (LC 940)** 🔢
+
+**Pattern**: *count* every subsequence, then remove exactly the ones you have counted before. The
+subtraction term is always "the state as it was **just before the previous occurrence of this same
+character**". This is the counting counterpart of the two-string grid above — one string, one
+running total, no table.
+
+#### **Core Idea**
+
+Let `total` be the number of distinct subsequences of the prefix seen so far, **including the empty
+one**. Append a character `ch`:
+
+```text
+every existing subsequence can be extended by ch   ->  `total` brand new candidates
+but if ch appeared before, the `add` value it produced back then
+generated exactly the same set again                ->  subtract it
+
+add   = total                      # candidates created by this ch
+total = total + add - last[ch]     # last[ch] = the `add` from ch's previous occurrence
+last[ch] = add
+```
+
+Trace on `"aba"` — note the answer excludes the empty subsequence, so subtract 1 at the end:
+
+```text
+start      total = 1                       { "" }
+'a'  add=1 total = 1 + 1 - 0 = 2           { "", a }
+'b'  add=2 total = 2 + 2 - 0 = 4           { "", a, b, ab }
+'a'  add=4 total = 4 + 4 - 1 = 7           { "", a, b, ab, aa, ba, aba }
+answer = 7 - 1 = 6
+```
+
+The `- 1` at `'a'` is precisely the duplicate `"a"` (the bare second `a` re-creates the first one).
+
+#### **Why the subtraction is `last[ch]` and not `last_total`**
+
+The set produced by this `ch` is `{ s + ch : s in prefix_before_ch }`. Two occurrences of `ch`
+produce overlapping sets exactly on the subsequences that existed before the **earlier** one — and
+that count is the earlier occurrence's `add`. Storing `total` instead is off by whatever was added
+between the two occurrences, which is the single most common bug here.
+
+```java
+// java
+// LC 940 - Distinct Subsequences II
+// IDEA: running count of distinct subsequences incl. the empty one; each character adds
+//       `total` new ones and re-creates `last[ch]` old ones, so subtract those.
+// time = O(n), space = O(1)  (26 counters)
+public int distinctSubseqII(String s) {
+    final int MOD = 1_000_000_007;
+    long[] last = new long[26];      // last[c] = the `add` produced by c's previous occurrence
+    long total = 1;                  // the empty subsequence
+
+    for (char ch : s.toCharArray()) {
+        long add = total;
+        // NOTE !!! + MOD before the second % — `total + add - last[c]` can go negative
+        total = (total + add - last[ch - 'a'] + MOD) % MOD;
+        last[ch - 'a'] = add;
+    }
+    return (int) ((total - 1 + MOD) % MOD);   // drop the empty subsequence
+}
+```
+
+```python
+# python
+# LC 940 - Distinct Subsequences II
+# IDEA: same running total; `last[ch]` remembers what this character contributed last time
+# time = O(n), space = O(1)
+def distinctSubseqII(s):
+    MOD = 10 ** 9 + 7
+    last = {}
+    total = 1                        # counts the empty subsequence
+
+    for ch in s:
+        add = total                  # every current subsequence can be extended by ch
+        total = (total + add - last.get(ch, 0)) % MOD
+        last[ch] = add
+
+    return (total - 1) % MOD         # exclude the empty subsequence
+```
+
+#### **Related Problems — counting variants**
+
+| Problem | Difference from LC 940 |
+|---|---|
+| LC 115 Distinct Subsequences | count subsequences of `s` **equal to `t`** — back to the two-string grid |
+| LC 1987 Number of Unique Good Subsequences | binary string, plus a leading-zero rule; same recurrence with two counters |
+| LC 730 Count Different Palindromic Subsequences | same "subtract the duplicates" idea, but on an interval DP with **first and last** occurrence |
+| "count distinct **subarrays**" | *not* the same problem — subarrays are contiguous, so it is a sliding window or a suffix structure, never this recurrence |
+
+**Key takeaway**: whenever a counting DP over-counts because an item repeats, the correction term is
+almost never a constant — it is *the value of the same DP at the previous occurrence of that item*.
+Keep a `last[item]` map alongside the running total.
+
+
 ## Summary
 
 | Question the problem asks | dp[i][j] holds | On match | On mismatch |

@@ -220,6 +220,92 @@ def maxEnvelopes(envelopes):
 ```
 
 
+### Variation: LCS becomes LIS when one side has distinct values (LC 1713)
+
+**LC 1713 Minimum Operations to Make a Subsequence** asks for the fewest insertions into `arr` so
+that `target` is a subsequence of it. That is `len(target) - LCS(target, arr)` — everything already
+in common is kept, everything missing is inserted.
+
+The trap is the constraint: both arrays go up to `10^5`, so the `O(n * m)` LCS grid is `10^10` cells
+and hopeless. The way out is the *other* sentence in the statement — **`target` has distinct
+values**:
+
+```text
+replace each element of arr by its INDEX in target  (drop elements not in target)
+
+    target = [6,4,8,1,3,2]      index map: 6->0, 4->1, 8->2, 1->3, 3->4, 2->5
+    arr    = [4,7,6,2,3,8,6,1]
+    mapped = [1,   0, 5, 4, 2, 0, 3]        # 7 is dropped
+
+a common subsequence of (target, arr)  ==  a subsequence of `mapped` that is
+                                           strictly increasing
+
+so   LCS(target, arr) == LIS(mapped)      ->   O(n log n)
+```
+
+The equivalence needs distinctness in exactly one place: with duplicates an element of `arr` would
+map to *several* target indices and the reduction breaks.
+
+```java
+// java
+// LC 1713 - Minimum Operations to Make a Subsequence
+// IDEA: target has distinct values, so LCS(target, arr) == LIS of arr rewritten as
+//       target-indices. Answer = len(target) - that LIS.
+// time = O(n log n), space = O(n)
+public int minOperations(int[] target, int[] arr) {
+    Map<Integer, Integer> pos = new HashMap<>();
+    for (int i = 0; i < target.length; i++) pos.put(target[i], i);
+
+    List<Integer> tails = new ArrayList<>();      // tails.get(k) = smallest tail of an LIS of length k+1
+    for (int a : arr) {
+        Integer p = pos.get(a);
+        if (p == null) continue;                  // not in target -> can never be matched
+        // NOTE !!! strictly increasing -> lower_bound. Collections.binarySearch is not
+        // usable directly here because it says nothing useful about a missing key's neighbours.
+        int lo = 0, hi = tails.size();
+        while (lo < hi) {
+            int mid = (lo + hi) >>> 1;
+            if (tails.get(mid) < p) lo = mid + 1;
+            else hi = mid;
+        }
+        if (lo == tails.size()) tails.add(p);
+        else tails.set(lo, p);
+    }
+    return target.length - tails.size();
+}
+```
+
+```python
+# python
+# LC 1713 - Minimum Operations to Make a Subsequence
+# IDEA: map arr onto target-indices, then the answer is len(target) - LIS(mapped)
+# time = O(n log n), space = O(n)
+from bisect import bisect_left
+
+def minOperations(target, arr):
+    pos = {v: i for i, v in enumerate(target)}
+    seq = [pos[a] for a in arr if a in pos]
+
+    tails = []
+    for x in seq:
+        i = bisect_left(tails, x)      # bisect_LEFT -> strictly increasing
+        if i == len(tails):
+            tails.append(x)
+        else:
+            tails[i] = x
+    return len(target) - len(tails)
+```
+
+**The reusable idea**: an `O(n·m)` LCS is only unavoidable when *both* sequences may repeat values.
+The moment one of them is a permutation (or has distinct values), relabel by position and the
+problem is an LIS. Watch for the phrase "**`target` contains no duplicates**" in the constraints —
+it is never decoration.
+
+**Similar problems**: LC 1035 Uncrossed Lines (plain LCS — values repeat on both sides, so the grid
+is the answer), LC 2926 Maximum Balanced Subsequence Sum (LIS shape with a segment tree instead of
+`tails`), and LC 354 above, the other "sort/relabel, then LIS" reduction.
+
+
 ## 3. Matrix Chain Multiplication (MCM) / Interval DP ⭐⭐⭐⭐
 
 **Pattern**: Divide a problem into subproblems by splitting at different positions and combining results.

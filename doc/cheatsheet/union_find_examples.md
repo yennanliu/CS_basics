@@ -1511,7 +1511,92 @@ class Solution(object):
         return n - len({find(i) for i in range(n)})
 ```
 
-> **Variation — LC 765 Couples Holding Hands**: union by **couple id** instead of person id — for each seat pair `(2i, 2i+1)` do `union(row[2i]/2, row[2i+1]/2)`. Answer = `n_couples − components` (a component of size `k` needs `k−1` swaps). Same "components → answer" arithmetic as LC 947.
+### 18-1) Couples Holding Hands — LC 765 — components → swaps
+
+> **The union is on the COUPLE, not the person.** Number the couples `0 .. n-1`, so person `p`
+> belongs to couple `p / 2`. Each seat pair `(2i, 2i+1)` says "these two couples are entangled" —
+> union them. A connected component of `k` couples is a cycle that takes exactly `k - 1` swaps to
+> untangle, so the answer is the same `n - components` arithmetic as LC 947 above.
+
+```text
+row = [0, 2, 4, 6, 7, 1, 3, 5]      couples: 0,1,2,3
+
+seat pairs        couples         union
+(0, 2)            0, 1            {0,1}
+(4, 6)            2, 3            {0,1} {2,3}
+(7, 1)            3, 0            {0,1,2,3}
+(3, 5)            1, 2            (already joined)
+
+4 couples, 1 component  ->  4 - 1 = 3 swaps
+```
+
+```java
+// java
+// LC 765 - Couples Holding Hands
+// IDEA: union the two COUPLE ids sharing a seat pair; a component of k couples needs
+//       k-1 swaps, so answer = couples - components.
+// time = O(n * alpha(n)), space = O(n)
+public int minSwapsCouples(int[] row) {
+    int n = row.length / 2;                 // number of couples
+    int[] parent = new int[n];
+    for (int i = 0; i < n; i++) parent[i] = i;
+
+    for (int i = 0; i < row.length; i += 2) {
+        int a = find(parent, row[i] / 2), b = find(parent, row[i + 1] / 2);
+        parent[a] = b;                      // seat pair -> these couples are entangled
+    }
+
+    Set<Integer> roots = new HashSet<>();
+    for (int i = 0; i < n; i++) roots.add(find(parent, i));
+    return n - roots.size();                // count ROOTS, not unions
+}
+
+private int find(int[] parent, int x) {
+    while (parent[x] != x) {
+        parent[x] = parent[parent[x]];      // path halving
+        x = parent[x];
+    }
+    return x;
+}
+```
+
+**The greedy alternative** is shorter to write and worth knowing, because it also *produces* the
+swaps rather than just counting them: walk the even seats, and if the person next to `row[i]` is not
+their partner, swap the partner in from wherever they are. Each swap seats one couple permanently,
+so the greedy is optimal and the two methods always agree.
+
+```python
+# python
+# LC 765 - Couples Holding Hands  (greedy — same answer, and it shows the moves)
+# IDEA: partner of p is p ^ 1. Fix seat pairs left to right; a position map makes each
+#       swap O(1), so the whole scan is linear.
+# time = O(n), space = O(n)
+def minSwapsCouples(row):
+    row = list(row)
+    pos = {p: i for i, p in enumerate(row)}      # person -> current seat
+    swaps = 0
+
+    for i in range(0, len(row), 2):
+        partner = row[i] ^ 1                     # 0<->1, 2<->3, ...
+        if row[i + 1] == partner:
+            continue
+        j = pos[partner]
+        # swap the stranger out and the partner in, keeping `pos` in step
+        pos[row[i + 1]], pos[partner] = j, i + 1
+        row[j], row[i + 1] = row[i + 1], row[j]
+        swaps += 1
+
+    return swaps
+```
+
+> **Why `p ^ 1` gives the partner** — couples are `(0,1), (2,3), (4,5)…`, so partners differ only in
+> the lowest bit. `p ^ 1` beats `p + 1 if p % 2 == 0 else p - 1` and is the reason the couple id is
+> `p / 2` (equivalently `p >> 1`).
+
+**Same arithmetic, different problems**: LC 947 Most Stones Removed (above) and LC 839 Similar String
+Groups both answer `items - components`. The pattern to carry away is *"a component of size k costs
+k-1 operations"* — count roots, never unions.
+
 
 ### 19) Smallest Subtree with all the Deepest Nodes — LC 865 — BFS + union-find climb
 
