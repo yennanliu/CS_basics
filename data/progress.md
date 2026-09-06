@@ -1,6 +1,6 @@
 # Progress
 
-# 2026-09-05
+# 2026-09-06
 
 - TODO:
 	- `must_lc_list.md` -> done
@@ -304,11 +304,7 @@
 			- DP on tree
 				- 124
 			- Wildcard / Regex Pattern Matching DP ⭐
-				- 44
-				- 10
-				- 97
 			- linear DP
-				 - 343
 			- 2 states DP
 				- 276
 			- Unbounded Knapsack VS Knapsack DP
