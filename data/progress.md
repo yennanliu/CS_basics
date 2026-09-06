@@ -139,7 +139,6 @@
 		- scanning_line
 			- 1353
 		- prefix sum
-			- 2615
 		- Binary Search
 			- 35
 			- 34
