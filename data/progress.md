@@ -37,12 +37,13 @@
 	- review all `cheatsheets`
 
 
-
-- knapsack_01_zh.md
-	- `2-2) LC 416 Partition Equal Subset Sum — 存在性版本`
-
-
 - dp_monotonic_stack.md
+	- todo
+
+
+
+
+
 - dp_pattern.md
 - recursion_to_dp.md
 - kadane_algorithm.md
@@ -120,9 +121,11 @@
   - dp_string.md
 		- `Valid Parenthesis String Pattern (LC 678)`
 		- `LC 678 - Valid Parenthesis String` DP again
-
 	- dp_bitmask.md
 		- again
+	- knapsack_01_zh.md
+
+
 
 
 - Others
