@@ -38,6 +38,30 @@ The sum of all Node.val is n.
 """
 
 
+"""
+NOTE !!!
+
+for this LC, we CAN NOT use `bfs (node traversal) + dfs (build graph) approach)
+
+->
+
+Reason:
+
+1.缺乏全域子樹視角（Global Subtree Balance）：
+    BFS 只能做到「局部擴散」，但二元樹中的硬幣流向是有方向性與距離約束的。
+    例如：左子樹缺 3 個硬幣，右子樹多 3 個硬幣，這 3 個硬幣必須
+    「向上穿過根節點，再向下進入左子樹」。
+    局部 BFS 無法預知遠端子樹的供需狀況，容易導致無窮迴圈或非最佳路徑。
+
+
+2. 樹的邊界性質被破壞：
+    二元樹的一條邊（Edge）會將整棵樹切分為兩個連通塊。
+    通過這條邊的硬幣轉移次數，恰好等於「切開後其中一個子樹的硬幣淨餘缺量（Net Balance）」的絕對值。
+    將樹轉為無向圖進行 BFS 會喪失這個自底向上（Bottom-Up）累積子樹狀態的關鍵特性。
+
+"""
+
+
 # V0 
 # Definition for a binary tree node.
 # class TreeNode(object):
@@ -56,6 +80,24 @@ class Solution(object):
 
 # V0-1
 # IDEA: Postorder DFS + Balance (GPT)
+"""
+CORE IDEA:
+
+        ```
+        每個 node 最後要留下 1 顆 coin
+
+        balance = node.val - 1
+                  + left_balance
+                  + right_balance
+        ```
+
+        ->
+
+            moves += abs(left_balance)
+            moves += abs(right_balance)
+
+
+"""
 class Solution(object):
 
     def distributeCoins(self, root):
@@ -103,7 +145,26 @@ class Solution(object):
 #         self.val = val
 #         self.left = left
 #         self.right = right
+"""
+CORE IDEA:
 
+
+- 每個節點最終都必須正好留下 1 個硬幣。
+
+- 對於任意以 node 為根的子樹，其向父節點輸出的淨硬幣餘缺量（Balance）為：
+    
+     ```
+     balance = left_balance + right_balance + (node.val - 1)
+     ```
+
+    - if balance > 0：代表該子樹多出 balance 個硬幣，需要向上傳給父節點。
+
+    - if balance < 0：代表該子樹缺少 abs(balance) 個硬幣，需要從父節點向下獲取。
+
+    - 無論正負，通過該節點與父節點之間那條邊的移動次數必定為 abs(balance)
+
+
+"""
 class Solution(object):
     def distributeCoins(self, root):
         """
