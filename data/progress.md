@@ -36,16 +36,12 @@
 	- neetcode 150
 	- review all `cheatsheets`
 
-
-- dp_monotonic_stack.md
-	- todo
-
-
+- recursion_to_dp.zh.html
+	 - todo
 
 
 
 - dp_pattern.md
-- recursion_to_dp.md
 - kadane_algorithm.md
 
 
@@ -124,6 +120,7 @@
 	- dp_bitmask.md
 		- again
 	- knapsack_01_zh.md
+	- dp_monotonic_stack.zh.html
 
 
 
