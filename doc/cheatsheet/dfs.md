@@ -36,7 +36,7 @@ the index into them: match the recognition keywords, then jump to the template.
 | 3 | Path problems | "path sum", "root to leaf", "all paths", "does a path exist" | [T3](#template-3-path-finding--lc-112-) | LC 112 | 113, 257, 129, 1971 |
 | 4 | Backtracking | "all combinations", "permutations", "subsets" | [T4](#template-4-backtracking--lc-46) | LC 46 | 78, 39, 17, 22, 51, 79 |
 | 5 | Tree modification | "delete", "insert", "trim", "convert" | [T5](#template-5-tree-modification--lc-450) | LC 450 | 701, 669, 538, 226, 114 |
-| 6 | Subtree aggregation & LCA | "subtree sum", "duplicate subtrees", "LCA", "deepest leaves" | [T6](#template-6-bottom-up-post-order-dfs--lc-543-) | LC 543 | 124, 236, 508, 652, 663, 2049 |
+| 6 | Subtree aggregation & LCA | "subtree sum", "duplicate subtrees", "LCA", "deepest leaves", "minimum moves between adjacent nodes" | [T6](#template-6-bottom-up-post-order-dfs--lc-543-) | LC 543 | 124, 236, 508, 652, 663, 979, 2049 |
 | 7 | Boundary elimination (2 passes) | "closed islands", "surrounded regions", "captured" | [T7](#template-7-2-pass-dfs-boundary-elimination--lc-1254) | LC 1254 | 130, 417, 1020 |
 | 8 | Path signatures (shape encoding) | "distinct islands", "unique shapes", "same shape after translation" | [T8](#template-8-path-signature-shape-encoding--lc-694) | LC 694 | 711, 652 |
 | 9 | Grid DFS + backtracking | "one path", "collect the most", "cannot revisit a cell" | [T9](#template-9-grid-dfs--backtracking--3-styles-compared-lc-1219-path-with-maximum-gold) | LC 1219 | 79, 329, 980 |
@@ -544,8 +544,8 @@ private TreeNode _dfs(TreeNode node){
 
 ### Template 6: Bottom-up (Post-Order) DFS — LC 543 ⭐⭐⭐⭐⭐
 - **Description**: Process subtrees and aggregate results bottom-up; find the lowest common ancestor of target nodes
-- **Recognition**: "Subtree sum", "duplicate subtrees", "LCA", "smallest subtree containing", "lowest common ancestor", "deepest leaves"
-- **Examples**: LC 508, LC 652, LC 236, LC 663, LC 865, LC 1123
+- **Recognition**: "Subtree sum", "duplicate subtrees", "LCA", "smallest subtree containing", "lowest common ancestor", "deepest leaves", "minimum moves between adjacent nodes"
+- **Examples**: LC 508, LC 652, LC 236, LC 663, LC 865, LC 979, LC 1123
 - **When to Use LCA Approach**:
   - Two (or more) target nodes exist in different subtrees and you need the first node that "sees" both sides
   - "Smallest subtree that contains [condition X]" — this is LCA in disguise
@@ -616,6 +616,91 @@ class Solution:
         dfs(root)
         return self.max_sum
 ```
+
+#### Variation: post-order **balance / flow** accumulation — LC 979 Distribute Coins in Binary Tree
+
+- **Description**: Post-order DFS where each node returns its subtree's **surplus/deficit** (`balance`), while a global counter accumulates `|balance|` across every edge
+- **Recognition**: "move one unit between **adjacent** nodes", "minimum number of moves", "make every node have exactly one X", "total supply equals total demand"
+- **Key Technique**: The answer is a sum over **edges**, not over nodes. The traffic on the edge above a subtree is *forced* — exactly `|balance(subtree)|` units must cross it — so there is nothing to search or optimise, only to count.
+- **Examples**: LC 979 (Distribute Coins in Binary Tree)
+- **Core Idea**:
+  1. `balance(node) = node.val - 1 + balance(left) + balance(right)` — the node keeps 1 coin, and the rest of the subtree's net excess (`> 0`) or shortfall (`< 0`) is pushed up to the parent.
+  2. Every coin crossing an edge is **one move**, so the edge above a subtree costs `|balance(subtree)|` moves → `moves += |balance|`.
+  3. **Only the magnitude matters**: a coin flowing up and a coin flowing down cost the same, which is why `abs()` is taken at accumulation time.
+  4. `balance(root) == 0` always (the problem guarantees `Σ node.val == n`) — that invariant is what makes the greedy edge count optimal.
+- **Two equivalent accumulation spots** (both appear in the wild, same total):
+  - **Charge from the parent**: `self.moves += abs(left) + abs(right)` before returning — each non-root node is charged once, as somebody's child.
+  - **Charge from the node**: `self.moves += abs(current_balance)` after computing it — each node pays for its own edge to its parent; the root adds `|0| = 0`.
+- **Important Notes**:
+  - Return the **signed** balance but accumulate the **absolute** one. Returning `abs(...)` upward is the classic bug: a `-2` deficit has to stay negative so it can cancel a sibling's `+2` surplus at their parent.
+  - `node.val - 1` is the whole trick — "every node keeps exactly one coin" turns a distribution problem into a flow-conservation problem.
+  - Do **not** short-circuit on `node.val == 1`; a locally balanced node is still a conduit for its subtrees' traffic.
+
+```text
+LC 979 trace — root = [0, 3, 0]        balance = val - 1 + left + right
+
+        0                 dfs(left  3) -> 3 - 1 + 0 + 0 = +2   moves += 2   (2 coins go UP)
+       / \                dfs(right 0) -> 0 - 1 + 0 + 0 = -1   moves += 1   (1 coin  goes DOWN)
+      3   0               dfs(root  0) -> 0 - 1 + 2 + (-1) = 0            <- always 0 at root
+
+  total moves = 2 + 1 = 3
+```
+
+```python
+# python
+# LC 979 - Distribute Coins in Binary Tree
+# IDEA: post-order DFS; each subtree returns its net balance, each edge costs |balance| moves
+# time = O(n), space = O(h)   # h = tree height, worst O(n)
+class Solution:
+    def distributeCoins(self, root):
+        self.moves = 0
+
+        def dfs(node):
+            if not node:
+                return 0
+            left = dfs(node.left)                 # net surplus/deficit of left subtree
+            right = dfs(node.right)               # net surplus/deficit of right subtree
+            balance = node.val - 1 + left + right # keep 1 coin, push the rest up
+            self.moves += abs(balance)            # this subtree's edge to its parent
+            return balance                        # NOTE: signed, never abs()
+
+        dfs(root)
+        return self.moves
+```
+
+```java
+// java
+// LC 979 - Distribute Coins in Binary Tree
+// IDEA: post-order DFS; each subtree returns its net balance, each edge costs |balance| moves
+// time = O(n), space = O(h)
+private int moves = 0;
+
+public int distributeCoins(TreeNode root) {
+    moves = 0;
+    dfs(root);
+    return moves;
+}
+
+private int dfs(TreeNode node) {
+    if (node == null) {
+        return 0;
+    }
+    int left = dfs(node.left);
+    int right = dfs(node.right);
+    int balance = node.val - 1 + left + right;  // keep 1 coin, push the rest up
+    moves += Math.abs(balance);                 // this subtree's edge to its parent
+    return balance;                             // NOTE: signed, never Math.abs()
+}
+```
+
+- **Similar Classic LC Problems**:
+  - LC 979 - Distribute Coins in Binary Tree (canonical post-order balance/flow)
+  - LC 2477 - Minimum Fuel Cost to Report to the Capital (same edge-flow count, but `ceil(people / seats)` per edge)
+  - LC 1443 - Minimum Time to Collect All Apples in a Tree (post-order, charge 2 per useful edge)
+  - LC 1339 - Maximum Product of Splitted Binary Tree (post-order subtree sum, then cut one edge)
+  - LC 508 - Most Frequent Subtree Sum (per-subtree value rolled up post-order)
+  - LC 124 - Binary Tree Maximum Path Sum (return one value up, aggregate a different one globally)
+  - LC 2049 - Count Nodes With the Highest Score (subtree size rollup — see the variation below)
 
 #### Variation: subtree size aggregation (remove-node scoring) — LC 2049
 - **Description**: Post-order DFS that returns each node's **subtree size**, while simultaneously computing a per-node value (score) derived from the sizes of the components formed when that node is removed

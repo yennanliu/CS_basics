@@ -31,6 +31,74 @@ Node.val == 0
 """
 
 # V0
+# IDEA: POST ORDER DFS + `3 states` (gpt)
+"""
+CORE IDEA:
+
+
+1.  3 states
+
+    # 0 = node 沒有被 cover
+    # 1 = node 被 cover，但自己沒有 camera
+    # 2 = node 有 camera
+
+
+
+2. post order DFS
+
+
+3.  null node -> treat as `1` state
+    (NULL node 視為已經被 cover)
+"""
+class Solution(object):
+    def minCameraCover(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: int
+        """
+
+        if not root:
+            return 0
+
+        self.cnt = 0
+
+        # 如果 root 最後沒有被 cover
+        # 要在 root 裝一台 camera
+        if self.helper(root) == 0:
+            self.cnt += 1
+
+        return self.cnt
+
+    # return:
+    # 0 = node 沒有被 cover
+    # 1 = node 被 cover，但自己沒有 camera
+    # 2 = node 有 camera
+    def helper(self, root):
+
+        # NULL node 視為已經被 cover
+        if not root:
+            return 1
+
+        left = self.helper(root.left)
+        right = self.helper(root.right)
+
+        # 如果任何 child 沒被 cover
+        # current node 必須裝 camera
+        if left == 0 or right == 0:
+            self.cnt += 1
+            return 2
+
+        # 如果任何 child 有 camera
+        # current node 已經被 cover
+        if left == 2 or right == 2:
+            return 1
+
+        # left == 1 and right == 1
+        # child 都被 cover，但 current node 沒被 cover
+        return 0
+
+
+# V0-1
 class Solution(object):
      def minCameraCover(self, root):
         pass
