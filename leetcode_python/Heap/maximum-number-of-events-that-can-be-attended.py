@@ -102,6 +102,28 @@ class Solution(object):
 
 # V0-0-1
 # IDEA:  PQ + GREEEDY (GPT)
+"""
+CORE IDEA:
+
+
+Sort by start + Min Heap by end + 每天選最早結束
+
+
+---
+
+    1. Sort events by `start` day.
+
+    2. Iterate through the days.
+
+    3. Add all events that start today into a min-heap 
+       (ordered by end day).
+
+    4. Remove events that have already expired.
+
+    5. Attend the event that ends the earliest.
+
+
+"""
 import heapq
 
 class Solution(object):
