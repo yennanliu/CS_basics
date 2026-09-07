@@ -78,6 +78,70 @@ class Solution(object):
         pass
 
 
+# V0-0-1
+# IDEA: Postorder DFS + Balance (GPT)
+"""
+CORE IDEA:
+
+        ```
+        每個 node 最後要留下 1 顆 coin
+
+        balance = node.val - 1
+                  + left_balance
+                  + right_balance
+        ```
+
+        ->
+
+            moves += abs(left_balance)
+            moves += abs(right_balance)
+
+
+"""
+class Solution(object):
+    def distributeCoins(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: int
+        """
+        self.cnt = 0
+
+        self.helper(root)
+
+        return self.cnt
+
+    def helper(self, root):
+        # edge
+        if not root:
+            return 0
+
+        # postorder DFS
+        _left = self.helper(root.left)
+        _right = self.helper(root.right)
+
+
+        """
+        NOTE !!!
+
+        moves + `abs` val
+        """
+        # moves needed for left/right subtree
+        self.cnt += abs(_left) + abs(_right)
+
+
+        """
+        NOTE !!!
+
+        diff = the sum of left, right and root.val -1
+
+             -> `-1` is for allocate coin to cur node
+        """
+        # balance to send to parent
+        diff = _left + _right + root.val - 1
+
+        return diff
+
+
 # V0-1
 # IDEA: Postorder DFS + Balance (GPT)
 """
@@ -116,6 +180,11 @@ class Solution(object):
             left_balance = dfs(node.left)
             right_balance = dfs(node.right)
 
+            """
+            NOTE !!!
+
+            moves + `abs` val
+            """
             # 每個 subtree 都需要透過 edge
             # 傳送 |balance| 顆 coin
             self.moves += abs(left_balance)
