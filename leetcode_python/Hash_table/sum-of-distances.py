@@ -55,7 +55,121 @@ class Solution(object):
         pass
 
 
-# V1
+# V1-1
+# IDEA: PREFIX SUM (gpt)
+from collections import defaultdict
+
+class Solution(object):
+
+    def distance(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[int]
+        """
+
+        n = len(nums)
+
+        # {value: [index1, index2, ...]}
+        c_map = defaultdict(list)
+
+        for i in range(n):
+            val = nums[i]
+            c_map[val].append(i)
+
+        # answer for every index
+        res = [0] * n
+
+        # Process each value independently
+        for val in c_map:
+
+            indices = c_map[val]
+
+            # No need to calculate if value appears only once
+            if len(indices) <= 1:
+                continue
+
+            m = len(indices)
+
+            # prefix[j] = sum of indices[0:j]
+            prefix = [0] * (m + 1)
+
+            for i in range(m):
+                prefix[i + 1] = prefix[i] + indices[i]
+
+            # Calculate distance for each occurrence
+            for i in range(m):
+
+                cur = indices[i]
+
+                # Left side:
+                # cur - indices[0]
+                # + cur - indices[1]
+                # + ...
+                #
+                # = cur * i - prefix[i]
+                left = cur * i - prefix[i]
+
+                # Right side:
+                # indices[i+1] - cur
+                # + indices[i+2] - cur
+                # + ...
+                #
+                # = (prefix[m] - prefix[i+1]) - cur * (m-i-1)
+                right = (
+                    prefix[m]
+                    - prefix[i + 1]
+                    - cur * (m - i - 1)
+                )
+
+                res[cur] = left + right
+
+        return res
+
+
+# V1-2
+# IDEA: PREFIX SUM (GEMINI)
+from collections import defaultdict
+
+class Solution(object):
+    def distance(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[int]
+        """
+        n = len(nums)
+        res = [0] * n
+        c_map = defaultdict(list)
+
+        # 1. 將相同數值的索引分組 (索引會自然維持遞增)
+        for i, val in enumerate(nums):
+            c_map[val].append(i)
+
+        # 2. 對於每一組相同的數值，使用前後綴累加計算距離
+        for val, indices in c_map.items():
+            k = len(indices)
+            if k <= 1:
+                continue
+
+            total_sum = sum(indices)
+            left_sum = 0
+
+            for p, idx in enumerate(indices):
+                # 動態算出右側索引和
+                right_sum = total_sum - left_sum - idx
+
+                left_count = p
+                right_count = k - 1 - p
+
+                # 左右距離和計算
+                left_dist = left_count * idx - left_sum
+                right_dist = right_sum - right_count * idx
+
+                res[idx] = left_dist + right_dist
+
+                # 更新 left_sum 供下一個索引使用
+                left_sum += idx
+
+        return res
 
 
 # V2
