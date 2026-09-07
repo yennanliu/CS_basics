@@ -73,9 +73,9 @@
 
 ### **Pattern 7: Sum of Distances (Left-Right Split)** — LC 2615
 - **Description**: Calculate sum of absolute differences between indices efficiently
-- **Examples**: LC 2615 - Sum of Distances, LC 2121 - Intervals Between Identical Elements, LC 1685 - Sum of Absolute Differences
-- **Pattern**: Split into left/right parts, use `count * value - sum` formula
-- **Key Insight**: For index `i`, distance = `(i * countLeft - sumLeft) + (sumRight - i * countRight)`
+- **Examples**: LC 2615 - Sum of Distances (LC 2121 - Intervals Between Identical Elements is the **same problem**), LC 1685 - Sum of Absolute Differences, LC 2602 - Minimum Operations to Make All Array Elements Equal
+- **Pattern**: Group by value, then split each group into left/right parts and use the `count * value - sum` formula
+- **Key Insight**: For index `i`, distance = `(i * countLeft - sumLeft) + (sumRight - i * countRight)`, which collapses to `total - 2*prefixSum + i*(2*rank - groupSize)`
 
 ### **Pattern 8: Prefix Maximum (Greedy Chunk / Partition)** — LC 769
 - **Description**: Track the running maximum of the array. When `maxSoFar == i`, the prefix `[0..i]` contains exactly the elements `{0, 1, ..., i}` and can form an independent sorted chunk.
@@ -459,6 +459,20 @@ def count_nice_subarrays(nums, k):
 This pattern efficiently calculates sum of absolute differences `|i - j|` between indices.
 
 #### Core Idea
+
+Two moves, in this order:
+
+1. **Group the indices by value** (`{value: [indices]}`), because `|i - j|` only ever runs between
+   equal values — every group is an independent, self-contained sub-problem.
+2. **Inside a group, drop the absolute value by splitting at the pivot.** Everything to the left is
+   `pivot - other`, everything to the right is `other - pivot`; no bars survive, and each half is
+   `count * pivot ∓ sum` — a prefix sum away.
+
+> **The group's indices arrive sorted for free.** You append `i` while scanning left to right, so
+> each list is already increasing. That is what makes the whole thing `O(n)` — sorting the groups
+> would cost `O(n log n)` and buys nothing. Never sort here; it is the giveaway that the grouping
+> step was not understood.
+
 For a sorted list of indices `[i0, i1, i2, ..., ik]`, to find sum of distances from `ij` to all others:
 
 ```text
@@ -583,6 +597,107 @@ public long[] distance(int[] nums) {
 }
 ```
 
+#### Alternative: Running Sum Approach (No Prefix Array)
+```python
+def sum_of_distances_optimized(nums):
+    """Space-optimized version using running sums"""
+    from collections import defaultdict
+
+    n = len(nums)
+    result = [0] * n
+    index_map = defaultdict(list)
+
+    for i, num in enumerate(nums):
+        index_map[num].append(i)
+
+    for indices in index_map.values():
+        m = len(indices)
+        if m == 1:
+            continue
+
+        # Calculate total sum once
+        total_sum = sum(indices)
+
+        prefix_sum = 0
+        for i, idx in enumerate(indices):
+            # Left: idx * i - prefix_sum
+            # Right: (total_sum - prefix_sum - idx) - idx * (m - i - 1)
+            left_dist = idx * i - prefix_sum
+            right_dist = (total_sum - prefix_sum - idx) - idx * (m - i - 1)
+
+            result[idx] = left_dist + right_dist
+            prefix_sum += idx
+
+    return result
+```
+
+#### The Same Thing in One Line (the identity worth memorising)
+
+The left/right split is how you *derive* the answer at the whiteboard, but the two halves collapse
+algebraically into a single expression — no branch, no `countLeft` / `countRight` bookkeeping:
+
+```text
+left  = idx * i           - prefixSum
+right = (total - prefixSum - idx) - idx * (m - i - 1)
+
+left + right
+  = idx*i - prefixSum + total - prefixSum - idx - idx*m + idx*i + idx
+  = total - 2 * prefixSum + idx * (2*i - m)
+                             ↑
+                    the -idx and +idx cancel
+```
+
+```python
+# python
+# LC 2615 - Sum of Distances  (collapsed form)
+# IDEA: total - 2*prefixSum + idx*(2i - m) is exactly leftDist + rightDist
+# time = O(n), space = O(n)
+from collections import defaultdict
+
+def distance(nums):
+    groups = defaultdict(list)
+    for i, v in enumerate(nums):
+        groups[v].append(i)
+
+    res = [0] * len(nums)
+    for group in groups.values():
+        total, prefix_sum, m = sum(group), 0, len(group)
+        for i, idx in enumerate(group):
+            res[idx] = total - prefix_sum * 2 + idx * (2 * i - m)
+            prefix_sum += idx
+    return res
+```
+
+> **The `m == 1` guard becomes unnecessary.** For a single-occurrence group the formula reads
+> `idx - 0 + idx*(0 - 1) = 0` on its own, which is the answer the problem asks for. The split form
+> needs `if m == 1: continue` only because it is written as two pieces.
+
+#### Formula Summary
+| Component | Formula | Meaning |
+|-----------|---------|---------|
+| **Left Distance** | `idx * countLeft - sumLeft` | Sum of `(idx - smaller_idx)` |
+| **Right Distance** | `sumRight - idx * countRight` | Sum of `(larger_idx - idx)` |
+| **Total Distance** | `leftDist + rightDist` | Sum of all `\|idx - other_idx\|` |
+
+#### Similar Problems — the `count * value − sum` family
+
+Every one of these is the same identity; what changes is *what the sorted list holds* and *where it
+comes from*.
+
+| Problem | The sorted list is… | Difference from LC 2615 |
+|---|---|---|
+| **LC 2121** Intervals Between Identical Elements | indices grouped by value | **The identical problem.** LC 2615's statement says so outright — same input, same output, different title |
+| **LC 1685** Sum of Absolute Differences in a Sorted Array | the *values*, already sorted | no grouping and no hash map — the array itself is the group, so it is the one-group case |
+| **LC 2602** Minimum Operations to Make All Array Elements Equal | the sorted values, plus a prefix array | the pivot is a **query**, not an element, so binary search for its insertion point first, then apply the same two halves |
+| **LC 2448** Minimum Cost to Make Array Equal | values sorted, carrying weights | each element counts `w` times: the counts become weight sums, so prefix over `w` and over `w*v` |
+| **LC 462** Minimum Moves to Equal Array Elements II | the sorted values | asks only for the *minimum* over pivots, which the median gives — no per-element pass needed |
+| **LC 834** Sum of Distances in Tree | — | the "line" is a tree, so the left/right split becomes subtree / everything-else, computed by re-rooting |
+
+> **Recognising it in the room.** The trigger is a sum of `|x − y|` over a set you can sort. Sorting
+> removes the absolute value — everything before the pivot subtracts, everything after adds — and
+> once the bars are gone, each half is `count × pivot ∓ sum`, which prefix sums answer in `O(1)`.
+> Say that sentence and the `O(n^2)` brute force is already behind you.
+
 ### Template 8: Prefix Maximum (Greedy Chunk / Partition) — LC 769
 
 **Core Idea:** For a permutation of `[0, n-1]`, the prefix `arr[0..i]` can be an independent sorted chunk if and only if `max(arr[0..i]) == i`. Track this with a single `maxSoFar` variable.
@@ -622,6 +737,11 @@ for (int i = 0; i < arr.length; i++) {
 }
 ```
 
+> **Why comparing sums is enough for LC 769.** The values are a permutation of `0..n-1`, so
+> a prefix of `arr` can only have the same sum as the same-length prefix of the sorted array
+> if it holds the same *set* of values — in some order. That is exactly the condition for the
+> prefix to be a self-contained chunk, which is why the sum test needs no sorting.
+
 **When to upgrade to PrefixMax + SuffixMin (LC 768, general arrays):**
 ```java
 // If values are NOT a permutation, use:
@@ -639,51 +759,6 @@ for (int i = 0; i < n; i++)
 > needs an array — worked through in
 > [prefix_sum_examples.md § Prefix max / suffix min scans](./prefix_sum_examples.md#prefix-max--suffix-min-scans).
 
-#### Alternative: Running Sum Approach (No Prefix Array)
-```python
-def sum_of_distances_optimized(nums):
-    """Space-optimized version using running sums"""
-    from collections import defaultdict
-
-    n = len(nums)
-    result = [0] * n
-    index_map = defaultdict(list)
-
-    for i, num in enumerate(nums):
-        index_map[num].append(i)
-
-    for indices in index_map.values():
-        m = len(indices)
-        if m == 1:
-            continue
-
-        # Calculate total sum once
-        total_sum = sum(indices)
-
-        prefix_sum = 0
-        for i, idx in enumerate(indices):
-            # Left: idx * i - prefix_sum
-            # Right: (total_sum - prefix_sum - idx) - idx * (m - i - 1)
-            left_dist = idx * i - prefix_sum
-            right_dist = (total_sum - prefix_sum - idx) - idx * (m - i - 1)
-
-            result[idx] = left_dist + right_dist
-            prefix_sum += idx
-
-    return result
-```
-
-#### Formula Summary
-| Component | Formula | Meaning |
-|-----------|---------|---------|
-| **Left Distance** | `idx * countLeft - sumLeft` | Sum of `(idx - smaller_idx)` |
-| **Right Distance** | `sumRight - idx * countRight` | Sum of `(larger_idx - idx)` |
-| **Total Distance** | `leftDist + rightDist` | Sum of all `\|idx - other_idx\|` |
-
-> **Why comparing sums is enough for LC 769.** The values are a permutation of `0..n-1`, so
-> a prefix of `arr` can only have the same sum as the same-length prefix of the sorted array
-> if it holds the same *set* of values — in some order. That is exactly the condition for the
-> prefix to be a self-contained chunk, which is why the sum test needs no sorting.
 
 
 ## Advanced Templates
@@ -764,8 +839,11 @@ structure:
 | Problem | LC # | Key Technique | Difficulty | Template |
 |---------|------|---------------|------------|----------|
 | Sum of Distances | 2615 | Group + left-right split | Medium | Template 7 |
-| Intervals Between Identical Elements | 2121 | Same pattern, intervals | Medium | Template 7 |
-| Sum of Absolute Differences in a Sorted Array | 1685 | Sorted array variant | Medium | Template 7 |
+| Intervals Between Identical Elements | 2121 | **The same problem as 2615**, different title | Medium | Template 7 |
+| Sum of Absolute Differences in a Sorted Array | 1685 | One group — the array is already sorted, no map | Medium | Template 7 |
+| Minimum Operations to Make All Array Elements Equal | 2602 | Pivot is a **query**: binary search its rank, then the same two halves | Hard | Template 7 + binary search |
+| Minimum Cost to Make Array Equal | 2448 | Weighted — prefix over `w` and over `w*v` | Hard | Template 7 weighted |
+| Minimum Moves to Equal Array Elements II | 462 | Only the best pivot is wanted, and that is the median | Medium | Template 7 (median shortcut) |
 | Sum of Distances in Tree | 834 | Tree version (DFS + reroot) | Hard | Template 7 + DFS |
 | Minimum Total Distance Traveled | 2463 | DP + distance calculation | Hard | Template 7 + DP |
 
@@ -864,7 +942,7 @@ Problem Analysis Flowchart:
 | "range addition", "updates", "intervals" | Template 4 | LC 370, 1094 |
 | "2D", "matrix", "rectangle" | Template 5 | LC 304, 1314 |
 | "odd numbers", "binary", "transform" | Template 6 | LC 1248, 926 |
-| "sum of distances", "absolute differences", "identical elements" | Template 7 | LC 2615, 2121, 1685 |
+| "sum of distances", "absolute differences", "identical elements", any `sum of \|x-y\|` over a sortable set | Template 7 | LC 2615, 2121, 1685, 2602 |
 | "max chunks", "partition to sort", "split into sorted segments" | Template 8 | LC 769, 768 |
 | "take from both ends", "remove from left or right" | Template 9 | LC 1423, 1658 |
 | "shortest subarray with sum ≥ K" **and negatives allowed** | Template 10 | LC 862 (vs LC 209 window) |
@@ -908,10 +986,15 @@ Problem Analysis Flowchart:
 
 #### **Identify Template 7 Usage:**
 - Problem mentions: "sum of distances", "absolute differences", "identical elements"
+- The real trigger is broader: **a sum of `|x - y|` over a set you are allowed to sort.** Sorting
+  removes the absolute value, and each side is then `count * pivot ∓ sum`
 - Need to calculate `sum of |i - j|` for elements with same value
 - Key insight: Split into left/right parts, use `count * value - sum` formula
-- HashMap stores: `{value: [list of indices]}`
+- HashMap stores: `{value: [list of indices]}` — and the lists come out sorted for free, so do
+  **not** sort them
 - Time complexity reduces from O(n²) to O(n)
+- If the pivot is a *query* rather than an element (LC 2602), binary search for its rank first —
+  the two halves are unchanged
 
 #### **Identify Template 8 Usage:**
 - Problem mentions: "max chunks", "partition array so each part can be sorted independently", "split to sort"
@@ -963,7 +1046,7 @@ is grafted into the templates as notes.
 | **Template 4** | Range Updates | `diff[start] += val; diff[end+1] -= val` |
 | **Template 5** | 2D Matrix | `prefix[i][j] = val + left + top - topleft` |
 | **Template 6** | Transform Count | `transform array first, then apply prefix sum` |
-| **Template 7** | Sum of Distances | `left = idx * countLeft - sumLeft; right = sumRight - idx * countRight` |
+| **Template 7** | Sum of Distances | `left = idx*countLeft - sumLeft; right = sumRight - idx*countRight` — or in one line, `total - 2*prefixSum + idx*(2*i - m)` |
 | **Template 8** | Prefix Maximum | `maxSoFar = max(maxSoFar, arr[i]); if (maxSoFar == i) chunks++` |
 | **Template 9** | Complement (both ends) | `ans = total - min(window of length n-k)` |
 | **Template 10** | Monotonic Deque (negatives) | `while p[i]-p[dq[0]]>=k: ans=min(ans,i-dq.popleft())` |

@@ -1,11 +1,3 @@
-<!-- c037f60480ec -->
-# Prefix Sum (前綴和)
-
-> **範圍** — 前綴和／累積和 — 子陣列和、二維前綴和、前綴和搭配雜湊表做計數。
-> **另見**：[prefix_sum_advanced.md](./prefix_sum_advanced.md) — 模板 9–13，也就是那些要借用其他資料結構的；[prefix_sum_examples.md](./prefix_sum_examples.md) — 模板沒有直接解掉的實作題；[difference_array.md](./difference_array.md) — 區間*更新*而非區間查詢；[binary_indexed_tree.md](./binary_indexed_tree.md) — 陣列本身也會變動時；[kadane_algorithm.md](./kadane_algorithm.md) — 不靠前綴和求最大子陣列。
-
-<p align="center"><img src="../pic/prefix_sum.png"></p>
-
 <!-- 1d1496862506 -->
 ## LeetCode 題目清單
 
@@ -82,20 +74,6 @@
 - **例子**：LC 1248 - Count Nice Subarrays、LC 926 - Flip String to Monotone
 - **模式**：把元素轉成 0/1，再套帶條件的前綴和
 - **關鍵洞見**：把題目轉化成更單純的前綴和問題
-
-<!-- ecf89e15b577 -->
-### **模式 7：距離總和（左右拆分）** — LC 2615
-- **說明**：高效率地算出索引之間絕對差值的總和
-- **例子**：LC 2615 - Sum of Distances、LC 2121 - Intervals Between Identical Elements、LC 1685 - Sum of Absolute Differences
-- **模式**：拆成左右兩半，套 `count * value - sum` 這條公式
-- **關鍵洞見**：對索引 `i`，距離 = `(i * countLeft - sumLeft) + (sumRight - i * countRight)`
-
-<!-- 1a543e9a7534 -->
-### **模式 8：前綴最大值（貪婪分塊／分割）** — LC 769
-- **說明**：一路追蹤陣列的累積最大值。當 `maxSoFar == i` 時，前綴 `[0..i]` 剛好裝著 `{0, 1, ..., i}` 這些元素，可以獨立成一個排序區塊。
-- **例子**：LC 769 - Max Chunks To Make Sorted、LC 768 - Max Chunks To Make Sorted II
-- **模式**：單趟掃描搭配一個 `maxSoFar` 變數；每當 `maxSoFar == currentIndex` 就把區塊數加一
-- **關鍵洞見**：因為陣列是 `[0, n-1]` 的一個排列，所以只要目前看過的最大值等於當前索引，位置 `0..i` 需要的所有值就一定已經在 `arr[0..i]` 裡
 
 <!-- 442b0cdc3b57 -->
 ## 0) 概念
@@ -217,12 +195,6 @@
 
 這個模式能高效率算出索引之間絕對差值 `|i - j|` 的總和。
 
-<!-- e0b8d36946aa -->
-#### 核心想法
-給一串排序好的索引 `[i0, i1, i2, ..., ik]`，要算 `ij` 到其他所有索引的距離總和：
-
-<!--CODE-->
-
 <!-- 332f1f2c0aaa -->
 #### 圖解
 <!--CODE-->
@@ -235,50 +207,9 @@
 #### Java 模板
 <!--CODE-->
 
-<!-- 94c2d637944b -->
-### 模板 8：前綴最大值（貪婪分塊／分割） — LC 769
-
-**核心想法：** 對於 `[0, n-1]` 的一個排列，前綴 `arr[0..i]` 能獨立成一個排序區塊，當且僅當 `max(arr[0..i]) == i`。用一個 `maxSoFar` 變數就能追蹤這件事。
-
-<!--CODE-->
-
-<!--CODE-->
-
-**等價的前綴和寫法**（同樣是 O(n)/O(1)）：
-<!--CODE-->
-
-**什麼時候該升級成 PrefixMax + SuffixMin（LC 768，一般陣列）：**
-<!--CODE-->
-
 <!-- fb2da565f479 -->
 #### 替代作法：邊走邊累加（不建前綴陣列）
 <!--CODE-->
-
-<!-- b1ddf7e9c40c -->
-#### 公式整理
-| 部分 | 公式 | 意義 |
-|-----------|---------|---------|
-| **左側距離** | `idx * countLeft - sumLeft` | `(idx - smaller_idx)` 的總和 |
-| **右側距離** | `sumRight - idx * countRight` | `(larger_idx - idx)` 的總和 |
-| **總距離** | `leftDist + rightDist` | 所有 `\|idx - other_idx\|` 的總和 |
-
-> **為什麼 LC 769 光比總和就夠。** 因為值是 `0..n-1` 的一個排列，所以 `arr` 的某段前綴
-> 只有在裝著跟排序後陣列同長度前綴「同一組值」（順序可以不同）時，兩者的和才會相等。
-> 而那正是「這段前綴自成一個區塊」的條件 — 所以這個和的檢查根本不需要排序。
-
-<!-- 8812ccaab35a -->
-## 進階模板
-
-模板 **9–13** 搬到 **[prefix_sum_advanced.md](./prefix_sum_advanced.md)** 了。它們是那些
-已經不只是「建個陣列、相減兩項」，而是開始借用其他資料結構的模板：
-
-| # | 模板 | 借來的想法 | LC |
-|---|---|---|---|
-| 9 | [補集技巧 — 總和 − 中間視窗](./prefix_sum_advanced.md#template-9-complement-trick--total--middle-window---lc-1423) ⭐⭐⭐⭐⭐ | 頭尾繞回來的選法，等於一段要*排除*的連續視窗 | 1423 |
-| 10 | [前綴和 + 單調雙端佇列](./prefix_sum_advanced.md#template-10-prefix-sum--monotonic-deque-shortest-subarray-allows-negatives---lc-862) | 用雙端佇列，因為負數會讓雙指標視窗失效 | 862 |
-| 11 | [列對壓縮](./prefix_sum_advanced.md#template-11-row-pair-compression--collapse-2d-into-1d-prefix-sum---lc-363) ⭐⭐⭐⭐ | 固定一對列，把二維壓成一維 | 363, 1074 |
-| 12 | [前綴 XOR](./prefix_sum_advanced.md#template-12-prefix-xor---lc-1310) ⭐⭐⭐⭐ | XOR 的反運算是自己，所以同一條相減恆等式仍然成立 | 1310 |
-| 13 | [用 HashMap 做稀疏差分陣列](./prefix_sum_advanced.md#template-13-sparse-difference-array-via-hashmap-line-sweep---lc-2021) ⭐⭐⭐⭐⭐ | 座標範圍太大時，用雜湊表取代陣列 | 2021 |
 
 <!-- c8b75ab397b3 -->
 ## 依模式分類的題目
@@ -346,24 +277,6 @@
 | Max Chunks To Make Sorted | 769 | 比較總和 | Medium | 模板 6 |
 | Longest Arithmetic Subsequence | 1027 | 轉成差值 | Medium | 模板 6 |
 
-<!-- baa33f7181e4 -->
-#### **模式 7：距離總和**
-| 題目 | LC # | 關鍵技巧 | 難度 | 模板 |
-|---------|------|---------------|------------|----------|
-| Sum of Distances | 2615 | 分組 + 左右拆分 | Medium | 模板 7 |
-| Intervals Between Identical Elements | 2121 | 同一個模式，改算間隔 | Medium | 模板 7 |
-| Sum of Absolute Differences in a Sorted Array | 1685 | 有序陣列的變形 | Medium | 模板 7 |
-| Sum of Distances in Tree | 834 | 樹上的版本（DFS + 換根） | Hard | 模板 7 + DFS |
-| Minimum Total Distance Traveled | 2463 | DP + 距離計算 | Hard | 模板 7 + DP |
-
-<!-- e1e479382df1 -->
-#### **模式 8：前綴最大值**
-| 題目 | LC # | 關鍵技巧 | 難度 | 模板 |
-|---------|------|---------------|------------|----------|
-| Max Chunks To Make Sorted | 769 | 前綴最大值 == 索引 | Medium | 模板 8 |
-| Max Chunks To Make Sorted II | 768 | PrefixMax + SuffixMin 陣列 | Hard | 模板 8 |
-| Find the Longest Turbulent Subarray | 978 | 邊走邊追蹤狀態 | Medium | 模板 8 改寫 |
-
 <!-- e40dcddaf5fb -->
 #### **進階／混合模式**
 | 題目 | LC # | 關鍵技巧 | 難度 | 模板 |
@@ -386,15 +299,6 @@
 | Maximum Average Subarray I | 643 | 固定長度子陣列 | 模板 1 |
 | Degree of an Array | 697 | 元素頻率 | 模板 2 |
 
-<!-- 095ab8f1cccf -->
-#### **Medium（核心模式）**
-| 題目 | LC # | 重點 | 模板 |
-|---------|------|------------|----------|
-| Contiguous Array | 525 | 平衡 0 和 1 | 模板 6 |
-| Shortest Unsorted Continuous Subarray | 581 | 陣列分析 | 模板 1 |
-| Random Pick with Weight | 528 | 帶權重的隨機選取 | 模板 1 |
-| Path Sum III | 437 | 樹 + 前綴和 | 模板 2 |
-
 <!-- cbfa7b4d9d5a -->
 #### **Hard（進階技巧）**
 | 題目 | LC # | 重點 | 模板 |
@@ -411,26 +315,6 @@
 ### 前綴和題目的決策框架
 
 <!--CODE-->
-
-<!-- 581b125363d9 -->
-### 模板選擇指南
-
-| 題目關鍵字 | 建議模板 | 例題 |
-|------------------|---------------------|------------------|
-| 「range sum」、「query」 | 模板 1 | LC 303, 304 |
-| 「subarray sum equals」、「count subarrays」 | 模板 2 | LC 560, 325 |
-| 「divisible by」、「remainder」、「modulo」 | 模板 3 | LC 974, 523 |
-| 「range addition」、「updates」、「intervals」 | 模板 4 | LC 370, 1094 |
-| 「2D」、「matrix」、「rectangle」 | 模板 5 | LC 304, 1314 |
-| 「odd numbers」、「binary」、「transform」 | 模板 6 | LC 1248, 926 |
-| 「sum of distances」、「absolute differences」、「identical elements」 | 模板 7 | LC 2615, 2121, 1685 |
-| 「max chunks」、「partition to sort」、「split into sorted segments」 | 模板 8 | LC 769, 768 |
-| 「take from both ends」、「remove from left or right」 | 模板 9 | LC 1423, 1658 |
-| 「shortest subarray with sum ≥ K」**且允許負數** | 模板 10 | LC 862（對比 LC 209 的視窗解） |
-| 「submatrix sum ≤ k」、「count submatrices」、「rectangle + condition」 | 模板 11 | LC 363, 1074 |
-| 「XOR of subarray」、「even count of every letter」、「parity」 | 模板 12 | LC 1310, 1915, 1738 |
-
-> 模板 **9–13** 的完整內容寫在 [prefix_sum_advanced.md](./prefix_sum_advanced.md)。
 
 <!-- a80576cca94b -->
 ### 怎麼認出各個模板
@@ -472,37 +356,12 @@
 - 先轉換陣列（例如奇數→1、偶數→0），再套前綴和
 - 會化簡成更單純的前綴和問題
 
-<!-- b105898dccad -->
-#### **認出該用模板 7：**
-- 題目提到：「sum of distances」、「absolute differences」、「identical elements」
-- 需要對相同值的元素算出 `sum of |i - j|`
-- 關鍵洞見：拆成左右兩半，套 `count * value - sum` 公式
-- HashMap 存的是：`{value: [索引清單]}`
-- 時間複雜度從 O(n²) 降到 O(n)
-
 <!-- 30e7f06faeb9 -->
 #### **認出該用模板 8：**
 - 題目提到：「max chunks」、「切成幾段讓每段能各自排序」、「split to sort」
 - 輸入陣列是 `[0, n-1]` 的一個排列（或可以用前綴／後綴陣列推廣）
 - 關鍵洞見：`maxSoFar == i` 代表前綴 `[0..i]` 已經是一組完整、自成一體、可以直接排序的集合
 - 等價的檢查：`arr[0..i]` 的前綴和等於排序後陣列 `[0..i]` 的前綴和
-
-<!-- 4529f6051572 -->
-## 實作範例
-
-七題實作放在 **[prefix_sum_examples.md](./prefix_sum_examples.md)** — 都是上面的模板沒有從頭到尾解掉的：
-
-| 分組 | 題目 |
-|---|---|
-| [用 HashMap 求子陣列和](./prefix_sum_examples.md#subarray-sums-with-a-hashmap) | LC 325, 523, 1124, 926 |
-| [固定視窗與成對視窗](./prefix_sum_examples.md#fixed-and-paired-windows) | LC 1031 |
-| [二維前綴和](./prefix_sum_examples.md#2d-prefix-sums) | LC 1292 |
-| [區間更新](./prefix_sum_examples.md#range-updates) | LC 1094 |
-
-另外五題以前有自己的範例章節，現在沒有了：LC 370、560、769、1248 和 2615 都已經被
-點名它們的那個模板解掉，多出來的第二份實作並沒有補上模板缺的東西。那些副本*真正*
-有價值的部分 — 為什麼 map 存次數而不是索引、為什麼 LC 769 光比和就夠、以及為什麼
-轉換不必真的建出陣列 — 已經以註解的形式併進模板裡。
 
 <!-- ea4fa3974f42 -->
 ## 總結與速查
@@ -518,27 +377,6 @@
 | 建二維前綴和 | O(mn) | O(mn) | m×n 的矩陣 |
 | 二維區間查詢 | O(1) | O(1) | 前處理完之後 |
 | 差分陣列更新 | O(k) | O(n) | k 次更新，陣列大小 n |
-
-<!-- 52b927535707 -->
-### 模板速查
-
-| 模板 | 模式 | 關鍵程式片段 |
-|----------|---------|------------------|
-| **模板 1** | 基本區間求和 | `prefix[i+1] = prefix[i] + nums[i]` |
-| **模板 2** | HashMap + 目標值 | `if prefix_sum - k in map: count += map[prefix_sum - k]` |
-| **模板 3** | 取模／整除 | `remainder = prefix_sum % k; if remainder in map...` |
-| **模板 4** | 區間更新 | `diff[start] += val; diff[end+1] -= val` |
-| **模板 5** | 二維矩陣 | `prefix[i][j] = val + left + top - topleft` |
-| **模板 6** | 轉換後計數 | `先轉換陣列，再套前綴和` |
-| **模板 7** | 距離總和 | `left = idx * countLeft - sumLeft; right = sumRight - idx * countRight` |
-| **模板 8** | 前綴最大值 | `maxSoFar = max(maxSoFar, arr[i]); if (maxSoFar == i) chunks++` |
-| **模板 9** | 補集（取兩端） | `ans = total - min(window of length n-k)` |
-| **模板 10** | 單調雙端佇列（有負數） | `while p[i]-p[dq[0]]>=k: ans=min(ans,i-dq.popleft())` |
-| **模板 11** | 列對壓縮 | `for top: for bot: colSum[c]+=mat[bot][c]` → 再用一維解法 |
-| **模板 12** | 前綴 XOR | `p[i+1] = p[i] ^ a[i]; xor(l,r) = p[r+1] ^ p[l]` |
-| **模板 13** | 稀疏差分（HashMap） | `d[start]+=v; d[end+1]-=v; for k in sorted(d): cur+=d[k]` |
-
-> 模板 **9–13** 的完整內容寫在 [prefix_sum_advanced.md](./prefix_sum_advanced.md)。
 
 <!-- 2cf2928ac75c -->
 ### 核心數學洞見
@@ -636,17 +474,6 @@
    - 說明推廣到二維：「在矩陣上該怎麼做？」
    - 考慮限制條件：「如果數字非常大呢？」（溢位）
 
-<!-- cb1437152d8d -->
-### 相關主題
-
-- **HashMap／雜湊表**：大多數進階前綴和題目的必需品
-- **滑動視窗**：可以跟前綴和結合起來最佳化
-- **Two Sum**：很多前綴和題目其實是 two sum 的延伸
-- **動態規劃**：前綴和常拿來當 DP 的最佳化手段
-- **二分搜尋**：可以跟前綴和結合做區間查詢
-- **線段樹**：需要邊更新邊查詢區間和時的替代方案
-- **單調堆疊**：有時會跟前綴和一起用來最佳化
-
 <!-- 46c1b9564342 -->
 ### 進階延伸
 
@@ -657,3 +484,176 @@
 - **環狀陣列**：改寫模板來處理繞回頭的情況
 
 這份 cheatsheet 涵蓋了所有主要的前綴和模式，並提供一套有系統的方法，讓你能高效率地解掉 40 多題 LeetCode。
+
+<!-- stale: c037f60480ec -->
+# Prefix Sum (前綴和)
+
+> **範圍** — 前綴和／累積和 — 子陣列和、二維前綴和、前綴和搭配雜湊表做計數。
+> **另見**：[prefix_sum_advanced.md](./prefix_sum_advanced.md) — 模板 9–13，也就是那些要借用其他資料結構的；[prefix_sum_examples.md](./prefix_sum_examples.md) — 模板沒有直接解掉的實作題；[difference_array.md](./difference_array.md) — 區間*更新*而非區間查詢；[binary_indexed_tree.md](./binary_indexed_tree.md) — 陣列本身也會變動時；[kadane_algorithm.md](./kadane_algorithm.md) — 不靠前綴和求最大子陣列。
+
+<p align="center"><img src="../pic/prefix_sum.png"></p>
+
+<!-- stale: ecf89e15b577 -->
+### **模式 7：距離總和（左右拆分）** — LC 2615
+- **說明**：高效率地算出索引之間絕對差值的總和
+- **例子**：LC 2615 - Sum of Distances、LC 2121 - Intervals Between Identical Elements、LC 1685 - Sum of Absolute Differences
+- **模式**：拆成左右兩半，套 `count * value - sum` 這條公式
+- **關鍵洞見**：對索引 `i`，距離 = `(i * countLeft - sumLeft) + (sumRight - i * countRight)`
+
+<!-- stale: 1a543e9a7534 -->
+### **模式 8：前綴最大值（貪婪分塊／分割）** — LC 769
+- **說明**：一路追蹤陣列的累積最大值。當 `maxSoFar == i` 時，前綴 `[0..i]` 剛好裝著 `{0, 1, ..., i}` 這些元素，可以獨立成一個排序區塊。
+- **例子**：LC 769 - Max Chunks To Make Sorted、LC 768 - Max Chunks To Make Sorted II
+- **模式**：單趟掃描搭配一個 `maxSoFar` 變數；每當 `maxSoFar == currentIndex` 就把區塊數加一
+- **關鍵洞見**：因為陣列是 `[0, n-1]` 的一個排列，所以只要目前看過的最大值等於當前索引，位置 `0..i` 需要的所有值就一定已經在 `arr[0..i]` 裡
+
+<!-- stale: e0b8d36946aa -->
+#### 核心想法
+給一串排序好的索引 `[i0, i1, i2, ..., ik]`，要算 `ij` 到其他所有索引的距離總和：
+
+<!--CODE-->
+
+<!-- stale: 94c2d637944b -->
+### 模板 8：前綴最大值（貪婪分塊／分割） — LC 769
+
+**核心想法：** 對於 `[0, n-1]` 的一個排列，前綴 `arr[0..i]` 能獨立成一個排序區塊，當且僅當 `max(arr[0..i]) == i`。用一個 `maxSoFar` 變數就能追蹤這件事。
+
+<!--CODE-->
+
+<!--CODE-->
+
+**等價的前綴和寫法**（同樣是 O(n)/O(1)）：
+<!--CODE-->
+
+**什麼時候該升級成 PrefixMax + SuffixMin（LC 768，一般陣列）：**
+<!--CODE-->
+
+<!-- stale: b1ddf7e9c40c -->
+#### 公式整理
+| 部分 | 公式 | 意義 |
+|-----------|---------|---------|
+| **左側距離** | `idx * countLeft - sumLeft` | `(idx - smaller_idx)` 的總和 |
+| **右側距離** | `sumRight - idx * countRight` | `(larger_idx - idx)` 的總和 |
+| **總距離** | `leftDist + rightDist` | 所有 `\|idx - other_idx\|` 的總和 |
+
+> **為什麼 LC 769 光比總和就夠。** 因為值是 `0..n-1` 的一個排列，所以 `arr` 的某段前綴
+> 只有在裝著跟排序後陣列同長度前綴「同一組值」（順序可以不同）時，兩者的和才會相等。
+> 而那正是「這段前綴自成一個區塊」的條件 — 所以這個和的檢查根本不需要排序。
+
+<!-- stale: 8812ccaab35a -->
+## 進階模板
+
+模板 **9–13** 搬到 **[prefix_sum_advanced.md](./prefix_sum_advanced.md)** 了。它們是那些
+已經不只是「建個陣列、相減兩項」，而是開始借用其他資料結構的模板：
+
+| # | 模板 | 借來的想法 | LC |
+|---|---|---|---|
+| 9 | [補集技巧 — 總和 − 中間視窗](./prefix_sum_advanced.md#template-9-complement-trick--total--middle-window---lc-1423) ⭐⭐⭐⭐⭐ | 頭尾繞回來的選法，等於一段要*排除*的連續視窗 | 1423 |
+| 10 | [前綴和 + 單調雙端佇列](./prefix_sum_advanced.md#template-10-prefix-sum--monotonic-deque-shortest-subarray-allows-negatives---lc-862) | 用雙端佇列，因為負數會讓雙指標視窗失效 | 862 |
+| 11 | [列對壓縮](./prefix_sum_advanced.md#template-11-row-pair-compression--collapse-2d-into-1d-prefix-sum---lc-363) ⭐⭐⭐⭐ | 固定一對列，把二維壓成一維 | 363, 1074 |
+| 12 | [前綴 XOR](./prefix_sum_advanced.md#template-12-prefix-xor---lc-1310) ⭐⭐⭐⭐ | XOR 的反運算是自己，所以同一條相減恆等式仍然成立 | 1310 |
+| 13 | [用 HashMap 做稀疏差分陣列](./prefix_sum_advanced.md#template-13-sparse-difference-array-via-hashmap-line-sweep---lc-2021) ⭐⭐⭐⭐⭐ | 座標範圍太大時，用雜湊表取代陣列 | 2021 |
+
+<!-- stale: baa33f7181e4 -->
+#### **模式 7：距離總和**
+| 題目 | LC # | 關鍵技巧 | 難度 | 模板 |
+|---------|------|---------------|------------|----------|
+| Sum of Distances | 2615 | 分組 + 左右拆分 | Medium | 模板 7 |
+| Intervals Between Identical Elements | 2121 | 同一個模式，改算間隔 | Medium | 模板 7 |
+| Sum of Absolute Differences in a Sorted Array | 1685 | 有序陣列的變形 | Medium | 模板 7 |
+| Sum of Distances in Tree | 834 | 樹上的版本（DFS + 換根） | Hard | 模板 7 + DFS |
+| Minimum Total Distance Traveled | 2463 | DP + 距離計算 | Hard | 模板 7 + DP |
+
+<!-- stale: e1e479382df1 -->
+#### **模式 8：前綴最大值**
+| 題目 | LC # | 關鍵技巧 | 難度 | 模板 |
+|---------|------|---------------|------------|----------|
+| Max Chunks To Make Sorted | 769 | 前綴最大值 == 索引 | Medium | 模板 8 |
+| Max Chunks To Make Sorted II | 768 | PrefixMax + SuffixMin 陣列 | Hard | 模板 8 |
+| Find the Longest Turbulent Subarray | 978 | 邊走邊追蹤狀態 | Medium | 模板 8 改寫 |
+
+<!-- stale: 095ab8f1cccf -->
+#### **Medium（核心模式）**
+| 題目 | LC # | 重點 | 模板 |
+|---------|------|------------|----------|
+| Contiguous Array | 525 | 平衡 0 和 1 | 模板 6 |
+| Shortest Unsorted Continuous Subarray | 581 | 陣列分析 | 模板 1 |
+| Random Pick with Weight | 528 | 帶權重的隨機選取 | 模板 1 |
+| Path Sum III | 437 | 樹 + 前綴和 | 模板 2 |
+
+<!-- stale: 581b125363d9 -->
+### 模板選擇指南
+
+| 題目關鍵字 | 建議模板 | 例題 |
+|------------------|---------------------|------------------|
+| 「range sum」、「query」 | 模板 1 | LC 303, 304 |
+| 「subarray sum equals」、「count subarrays」 | 模板 2 | LC 560, 325 |
+| 「divisible by」、「remainder」、「modulo」 | 模板 3 | LC 974, 523 |
+| 「range addition」、「updates」、「intervals」 | 模板 4 | LC 370, 1094 |
+| 「2D」、「matrix」、「rectangle」 | 模板 5 | LC 304, 1314 |
+| 「odd numbers」、「binary」、「transform」 | 模板 6 | LC 1248, 926 |
+| 「sum of distances」、「absolute differences」、「identical elements」 | 模板 7 | LC 2615, 2121, 1685 |
+| 「max chunks」、「partition to sort」、「split into sorted segments」 | 模板 8 | LC 769, 768 |
+| 「take from both ends」、「remove from left or right」 | 模板 9 | LC 1423, 1658 |
+| 「shortest subarray with sum ≥ K」**且允許負數** | 模板 10 | LC 862（對比 LC 209 的視窗解） |
+| 「submatrix sum ≤ k」、「count submatrices」、「rectangle + condition」 | 模板 11 | LC 363, 1074 |
+| 「XOR of subarray」、「even count of every letter」、「parity」 | 模板 12 | LC 1310, 1915, 1738 |
+
+> 模板 **9–13** 的完整內容寫在 [prefix_sum_advanced.md](./prefix_sum_advanced.md)。
+
+<!-- stale: b105898dccad -->
+#### **認出該用模板 7：**
+- 題目提到：「sum of distances」、「absolute differences」、「identical elements」
+- 需要對相同值的元素算出 `sum of |i - j|`
+- 關鍵洞見：拆成左右兩半，套 `count * value - sum` 公式
+- HashMap 存的是：`{value: [索引清單]}`
+- 時間複雜度從 O(n²) 降到 O(n)
+
+<!-- stale: 4529f6051572 -->
+## 實作範例
+
+七題實作放在 **[prefix_sum_examples.md](./prefix_sum_examples.md)** — 都是上面的模板沒有從頭到尾解掉的：
+
+| 分組 | 題目 |
+|---|---|
+| [用 HashMap 求子陣列和](./prefix_sum_examples.md#subarray-sums-with-a-hashmap) | LC 325, 523, 1124, 926 |
+| [固定視窗與成對視窗](./prefix_sum_examples.md#fixed-and-paired-windows) | LC 1031 |
+| [二維前綴和](./prefix_sum_examples.md#2d-prefix-sums) | LC 1292 |
+| [區間更新](./prefix_sum_examples.md#range-updates) | LC 1094 |
+
+另外五題以前有自己的範例章節，現在沒有了：LC 370、560、769、1248 和 2615 都已經被
+點名它們的那個模板解掉，多出來的第二份實作並沒有補上模板缺的東西。那些副本*真正*
+有價值的部分 — 為什麼 map 存次數而不是索引、為什麼 LC 769 光比和就夠、以及為什麼
+轉換不必真的建出陣列 — 已經以註解的形式併進模板裡。
+
+<!-- stale: 52b927535707 -->
+### 模板速查
+
+| 模板 | 模式 | 關鍵程式片段 |
+|----------|---------|------------------|
+| **模板 1** | 基本區間求和 | `prefix[i+1] = prefix[i] + nums[i]` |
+| **模板 2** | HashMap + 目標值 | `if prefix_sum - k in map: count += map[prefix_sum - k]` |
+| **模板 3** | 取模／整除 | `remainder = prefix_sum % k; if remainder in map...` |
+| **模板 4** | 區間更新 | `diff[start] += val; diff[end+1] -= val` |
+| **模板 5** | 二維矩陣 | `prefix[i][j] = val + left + top - topleft` |
+| **模板 6** | 轉換後計數 | `先轉換陣列，再套前綴和` |
+| **模板 7** | 距離總和 | `left = idx * countLeft - sumLeft; right = sumRight - idx * countRight` |
+| **模板 8** | 前綴最大值 | `maxSoFar = max(maxSoFar, arr[i]); if (maxSoFar == i) chunks++` |
+| **模板 9** | 補集（取兩端） | `ans = total - min(window of length n-k)` |
+| **模板 10** | 單調雙端佇列（有負數） | `while p[i]-p[dq[0]]>=k: ans=min(ans,i-dq.popleft())` |
+| **模板 11** | 列對壓縮 | `for top: for bot: colSum[c]+=mat[bot][c]` → 再用一維解法 |
+| **模板 12** | 前綴 XOR | `p[i+1] = p[i] ^ a[i]; xor(l,r) = p[r+1] ^ p[l]` |
+| **模板 13** | 稀疏差分（HashMap） | `d[start]+=v; d[end+1]-=v; for k in sorted(d): cur+=d[k]` |
+
+> 模板 **9–13** 的完整內容寫在 [prefix_sum_advanced.md](./prefix_sum_advanced.md)。
+
+<!-- stale: cb1437152d8d -->
+### 相關主題
+
+- **HashMap／雜湊表**：大多數進階前綴和題目的必需品
+- **滑動視窗**：可以跟前綴和結合起來最佳化
+- **Two Sum**：很多前綴和題目其實是 two sum 的延伸
+- **動態規劃**：前綴和常拿來當 DP 的最佳化手段
+- **二分搜尋**：可以跟前綴和結合做區間查詢
+- **線段樹**：需要邊更新邊查詢區間和時的替代方案
+- **單調堆疊**：有時會跟前綴和一起用來最佳化
