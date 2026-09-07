@@ -94,11 +94,6 @@ since sum(A) + sum(B) = total
 
     -> we want sum(A) as close as possible to `total / 2`.
 
----
-
-
-
-
 """
 class Solution(object):
     def lastStoneWeightII(self, stones):
@@ -147,6 +142,41 @@ class Solution(object):
         # Other group = total - best
         # Difference = other - best
         return total - 2 * best
+
+
+
+# V0-2
+# IDEA: 1D DP (0/1 knapsack) (gpt)
+class Solution(object):
+    def lastStoneWeightII(self, stones):
+        """
+        :type stones: List[int]
+        :rtype: int
+        """
+        if not stones:
+            return 0
+
+        _sum = sum(stones)
+
+        # try to find the largest subset sum <= total / 2
+        target = _sum // 2
+
+        dp = [0] * (target + 1)
+
+        # 0/1 knapsack
+        for coin in stones:
+            for j in range(target, coin - 1, -1):
+                dp[j] = max(
+                    dp[j],
+                    dp[j - coin] + coin
+                )
+
+        # group 1 = dp[target]
+        group_1 = dp[target]
+
+        # group 2 = _sum - group_1
+        # final weight = group_2 - group_1
+        return _sum - 2 * group_1
 
 
 

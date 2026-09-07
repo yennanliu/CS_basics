@@ -1765,6 +1765,7 @@ class Solution(object):
 
 
 > Reference: [BinaryTreeCameras.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/BinarySearchTree/BinaryTreeCameras.java)
+> · [binary-tree-cameras.py](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Binary_Search_Tree/binary-tree-cameras.py)
 
 Some problems require each node to return a **state** (not a numeric value) to its parent, and the parent makes a **greedy decision** based on children's states. This is a distinct bottom-up pattern.
 
@@ -1783,8 +1784,28 @@ which forces their parents to place cameras — this is the greedy insight.
 - By processing leaves first, we force cameras onto their parents (which cover 3 nodes)
 - This greedy strategy from bottom to top minimizes total cameras
 
+**Only three cases — and the order they are tested in matters:**
+
+| # | Test | What it means | Action |
+|---|------|---------------|--------|
+| 1 | `left == 0 \|\| right == 0` | a child is uncovered, and I am its only remaining coverer | place a camera here, return `1` |
+| 2 | `left == 1 \|\| right == 1` | a child has a camera, so it already covers me | return `2` (covered), no camera |
+| 3 | otherwise (`both == 2`) | both children are covered and neither has a camera — **I** am uncovered | return `0`, decide nothing |
+
+Case 3 is the one worth internalising: there is **no camera decision to make here at all**.
+An uncovered node does not fix itself — it reports state `0` upward and lets the **parent**
+decide, because a camera at the parent also covers the grandparent, while a camera here
+would cover only this node and its (already covered) children. Deferring the decision is
+what the post-order return value is *for*.
+
+**Case 1 must be tested before case 2.** A node with one uncovered child and one child that
+has a camera still MUST place a camera — the uncovered child has no other neighbour left.
+Flip the two tests and that node returns "covered", silently leaving the child uncovered.
+
 ```java
+// java
 // LC 968 — Binary Tree Cameras: bottom-up greedy with 3 states
+// time = O(N), space = O(H)
 int cameraCnt = 0;
 
 public int minCameraCover(TreeNode root) {
@@ -1802,39 +1823,77 @@ private int dfs(TreeNode node) {
     int left = dfs(node.left);    // post-order: solve children first
     int right = dfs(node.right);
 
-    // Rule 1: Any child uncovered → MUST place camera here
+    // Case 1: any child uncovered → MUST place camera here (test this FIRST)
     if (left == 0 || right == 0) {
         cameraCnt++;
         return 1;  // has camera
     }
 
-    // Rule 2: Any child has camera → this node is covered
+    // Case 2: any child has camera → this node is covered
     if (left == 1 || right == 1) {
         return 2;  // covered
     }
 
-    // Rule 3: Both children covered (no cameras) → this node is NOT covered
-    // Rely on parent to cover it (greedy: delay camera placement upward)
+    // Case 3: both children covered (no cameras) → this node is NOT covered.
+    // Decide nothing: report the state upward and let the parent place the camera.
     return 0;  // uncovered
 }
 ```
 
-**Visual — Why greedy works bottom-up:**
-```text
-        1 ← if uncovered, add camera here (special root check)
-       / \
-      2   3 ← children covered (state 2), no camera needed
-     / \
-    4   5 ← camera HERE (state 1), covers parent + children
-   / \
-  6   7 ← uncovered (state 0), forces parent to place camera
+```python
+# python
+# LC 968 — Binary Tree Cameras
+# IDEA: post-order DFS returning one of 3 states; the parent makes the decision
+class Solution:
+    def minCameraCover(self, root):
+        # time = O(N), space = O(H)
+        self.cnt = 0
 
-Processing order (post-order): 6,7 → 4,5 → 2,3 → 1
-  node 6,7: null children return 2 → both children covered → return 0 (uncovered)
-  node 4: left=0 (uncovered!) → place camera → return 1
-  node 5: similar logic
-  node 2: left=1 (has camera) → return 2 (covered)
-  node 1: depends on children's states
+        def dfs(node):
+            # null = covered, so a leaf comes back uncovered
+            if not node:
+                return 2
+
+            left = dfs(node.left)      # post-order: children first
+            right = dfs(node.right)
+
+            # Case 1: a child is uncovered -> I MUST place a camera (test this FIRST)
+            if left == 0 or right == 0:
+                self.cnt += 1
+                return 1
+
+            # Case 2: a child has a camera -> I am covered, no camera needed
+            if left == 1 or right == 1:
+                return 2
+
+            # Case 3: both children covered, neither has a camera -> I am uncovered.
+            #         Place NOTHING here: report 0 upward and let the parent decide.
+            return 0
+
+        # the root has no parent to fall back on
+        if dfs(root) == 0:
+            self.cnt += 1
+        return self.cnt
+```
+
+**Visual — why greedy works bottom-up:**
+```text
+        1  ← left=1 (2 has a camera), right=0 (3 uncovered) → case 1 → camera
+       / \
+      2   3 ← 3 is a leaf → state 0 (uncovered)
+     / \
+    4   5 ← 4 places a camera (state 1); 5 is a leaf → state 0 (uncovered)
+   / \
+  6   7 ← leaves → state 0 (uncovered), which forces 4 to place a camera
+
+post-order visiting order: 6, 7, 4, 5, 2, 3, 1
+  6, 7 : null children return 2 → case 3 → return 0 (uncovered)
+  4    : left = 0            → case 1 → camera #1, return 1
+  5    : null children       → case 3 → return 0 (uncovered)
+  2    : left = 1, right = 0 → case 1, NOT case 2 → camera #2, return 1
+  3    : null children       → case 3 → return 0 (uncovered)
+  1    : left = 1, right = 0 → case 1 → camera #3, return 1
+  dfs(root) = 1, not 0 → no extra camera at the root. Answer = 3.
 ```
 
 **State transition rules (decision at each node):**
@@ -1849,6 +1908,13 @@ Processing order (post-order): 6,7 → 4,5 → 2,3 → 1
 
 **Key insight — why `null → 2` (covered)?**
 If null returned 0 (uncovered), every leaf would be forced to have a camera — wasteful. By treating null as "covered", leaves become state 0 (uncovered), forcing their **parents** to place cameras, which is strictly better (covers 3 nodes vs 1).
+
+> **The 1 / 2 labels are arbitrary.** Only the *roles* matter: one state means "uncovered",
+> one means "has a camera", one means "covered by a child", and **null takes the
+> covered-without-a-camera state**. Solutions in the wild (this repo's Python file among them)
+> swap the numbers for `1 = covered, 2 = has camera` and return `1` for null — the same
+> algorithm with the last two labels renamed. Read the `null` return first to tell which
+> convention a snippet is using.
 
 **Similar LC problems using bottom-up greedy with states:**
 
@@ -1878,4 +1944,4 @@ If null returned 0 (uncovered), every leaf would be forced to have a camera — 
 | LC 1110 | two-state DFS | a survivor whose parent died becomes a forest root |
 | LC 114 | post-order returning the tail | or the O(1)-space Morris rewire in tree.md |
 | LC 617 / 226 | structural recursion | build or swap on the way down, return the node |
-| LC 968 | bottom-up 3-state greedy | `null → covered`, which forces cameras onto the parents of leaves |
+| LC 968 | bottom-up 3-state greedy | `null → covered` forces cameras onto the parents of leaves; an uncovered node places nothing and defers to its parent |
