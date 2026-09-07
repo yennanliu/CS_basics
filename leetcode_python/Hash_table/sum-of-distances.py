@@ -46,17 +46,97 @@ Note: This question is the same as 2121: Intervals Between Identical Elements.
 
 
 # V0
+from collections import defaultdict
+
 class Solution(object):
     def distance(self, nums):
         """
         :type nums: List[int]
         :rtype: List[int]
         """
-        pass
+        n = len(nums)
+        res = [0] * n
+        c_map = defaultdict(list)
+
+        # 1. 將相同數值的索引分組 (索引會自然維持遞增)
+        for i, val in enumerate(nums):
+            c_map[val].append(i)
+
+        # 2. 對於每一組相同的數值，使用前後綴累加計算距離
+        for val, indices in c_map.items():
+            k = len(indices)
+            if k <= 1:
+                continue
+
+            total_sum = sum(indices)
+            left_sum = 0
+
+            for p, idx in enumerate(indices):
+                # 動態算出右側索引和
+                right_sum = total_sum - left_sum - idx
+
+                left_count = p
+                right_count = k - 1 - p
+
+                # 左右距離和計算
+                left_dist = left_count * idx - left_sum
+                right_dist = right_sum - right_count * idx
+
+                res[idx] = left_dist + right_dist
+
+                # 更新 left_sum 供下一個索引使用
+                left_sum += idx
+
+        return res
 
 
 # V1-1
 # IDEA: PREFIX SUM (gpt)
+"""
+CORE IDEA:
+
+
+1. 
+
+	HashMap
+	   ↓
+	value → 所有出現位置
+	   ↓
+	Prefix Sum
+	   ↓
+	左邊距離 + 右邊距離
+	   ↓
+	O(N)
+
+
+
+2. 
+
+
+	left  = cur * i - prefix[i]
+
+	right = (total - prefix[i+1])
+	        - cur * (m-i-1)
+
+
+
+3. explaination of #2
+
+
+(`p` idx on the left)
+
+left = 
+	(idx - i0) + (idx - i1) + ..... (idx - ip-1) = idx * p - left_sum
+
+
+(`k-1-p` idx on the left)
+
+right = 
+	 (ip+1 - idx) + .... + (ik-1 - idx) = right_sum - (k-1-(p+1) + 1) * idx
+	 									= right_sum - (k - p - 1)
+
+
+"""
 from collections import defaultdict
 
 class Solution(object):
