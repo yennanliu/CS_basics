@@ -1378,6 +1378,238 @@ def removeInvalidParentheses(s):
 
 ---
 
+### Pattern 16: BFS over an Augmented State — `(cell, resource)` — LC 864 & LC 1293 ⭐⭐⭐⭐⭐
+
+**Key Idea**: plain grid BFS keys `visited` on the **cell**. That is only correct when arriving at a
+cell makes every future identical. The moment you carry something along the walk — keys collected,
+eliminations left, fuel, a colour, a parity — two arrivals at the same cell are **different
+positions in the search**, and the fix is always the same one line:
+
+```text
+visited on (r, c)              ->  visited on (r, c, resource)
+```
+
+Everything else stays a textbook queue BFS, so the first time you pop the goal you still have the
+shortest path. The cost is the state count: `m * n * |resource|`.
+
+| Signal in the statement | The extra dimension |
+|---|---|
+| "collect keys, doors need the matching key" (LC 864) | key bitmask, `2^k` values |
+| "you may remove at most `k` obstacles" (LC 1293) | eliminations **remaining**, `k+1` values |
+| "at most `k` stops / edges" (LC 787) | edges used so far |
+| "you may reverse at most one edge" | a 0/1 flag |
+| "moves alternate between two players / colours" (LC 1129) | last colour used |
+
+> **Why `k` must be part of the key, not a `best[r][c]` scalar** — reaching a cell with *more*
+> budget left is never worse, so a cell is worth revisiting when the new arrival has strictly more
+> budget. Keying only on the cell throws that arrival away and reports `-1` on grids that are
+> solvable. Keying on `(cell, k)` is always correct; `best[r][c] = max budget seen` is the same
+> thing compressed, and is the usual memory optimisation.
+
+#### LC 864 — the resource is a bitmask of keys
+
+Lowercase `a..f` are keys, uppercase `A..F` are locks. `k <= 6`, so the whole key ring fits in 6
+bits and the state space is `m * n * 64`.
+
+```java
+// java
+// LC 864 - Shortest Path to Get All Keys
+// IDEA: BFS over (row, col, keyMask). A lock is passable only when its bit is already
+//       in the mask; stepping on a key ORs its bit in. Answer = first pop with all keys.
+// time = O(m*n*2^k), space = O(m*n*2^k)
+public int shortestPathAllKeys(String[] grid) {
+    int m = grid.length, n = grid[0].length();
+    int startR = 0, startC = 0, allKeys = 0;
+    for (int r = 0; r < m; r++) {
+        for (int c = 0; c < n; c++) {
+            char ch = grid[r].charAt(c);
+            if (ch == '@') { startR = r; startC = c; }
+            else if (ch >= 'a' && ch <= 'f') allKeys |= 1 << (ch - 'a');
+        }
+    }
+
+    int[][] dirs = {{0,1},{0,-1},{1,0},{-1,0}};
+    boolean[][][] seen = new boolean[m][n][1 << 6];   // NOTE !!! the mask is part of the key
+    Queue<int[]> q = new LinkedList<>();
+    q.offer(new int[]{startR, startC, 0});
+    seen[startR][startC][0] = true;
+
+    int steps = 0;
+    while (!q.isEmpty()) {
+        int size = q.size();
+        for (int s = 0; s < size; s++) {
+            int[] cur = q.poll();
+            int r = cur[0], c = cur[1], mask = cur[2];
+            if (mask == allKeys) return steps;
+
+            for (int[] d : dirs) {
+                int nr = r + d[0], nc = c + d[1];
+                if (nr < 0 || nr >= m || nc < 0 || nc >= n) continue;
+                char ch = grid[nr].charAt(nc);
+                if (ch == '#') continue;
+                // a lock we have no key for is a wall
+                if (ch >= 'A' && ch <= 'F' && (mask & (1 << (ch - 'A'))) == 0) continue;
+
+                int nMask = mask;
+                if (ch >= 'a' && ch <= 'f') nMask |= 1 << (ch - 'a');
+                if (seen[nr][nc][nMask]) continue;
+                seen[nr][nc][nMask] = true;
+                q.offer(new int[]{nr, nc, nMask});
+            }
+        }
+        steps++;
+    }
+    return -1;
+}
+```
+
+```python
+# python
+# LC 864 - Shortest Path to Get All Keys
+# IDEA: same BFS, state = (r, c, keyMask); picking up a key moves you to a DIFFERENT
+#       layer of the search space, which is why a cell can be visited up to 2^k times
+# time = O(m*n*2^k), space = O(m*n*2^k)
+from collections import deque
+
+def shortestPathAllKeys(grid):
+    m, n = len(grid), len(grid[0])
+    all_keys = 0
+    start = (0, 0)
+    for r in range(m):
+        for c in range(n):
+            ch = grid[r][c]
+            if ch == '@':
+                start = (r, c)
+            elif ch.islower():
+                all_keys |= 1 << (ord(ch) - ord('a'))
+
+    q = deque([(start[0], start[1], 0, 0)])       # r, c, mask, steps
+    seen = {(start[0], start[1], 0)}
+    while q:
+        r, c, mask, steps = q.popleft()
+        if mask == all_keys:
+            return steps
+        for dr, dc in ((0, 1), (0, -1), (1, 0), (-1, 0)):
+            nr, nc = r + dr, c + dc
+            if not (0 <= nr < m and 0 <= nc < n):
+                continue
+            ch = grid[nr][nc]
+            if ch == '#':
+                continue
+            if ch.isupper() and not (mask >> (ord(ch) - ord('A'))) & 1:
+                continue                          # locked door, no key -> a wall
+            n_mask = mask | (1 << (ord(ch) - ord('a'))) if ch.islower() else mask
+            if (nr, nc, n_mask) in seen:
+                continue
+            seen.add((nr, nc, n_mask))
+            q.append((nr, nc, n_mask, steps + 1))
+    return -1
+```
+
+#### LC 1293 — the resource is a countdown
+
+Same skeleton, `mask` becomes "obstacles I may still remove". Two things are worth carrying into
+the interview:
+
+- **The shortcut.** If `k >= m + n - 2` you can bulldoze straight through, so the answer is the
+  Manhattan distance `m + n - 2` and that branch returns in `O(1)`. It is worth more than one early
+  exit, though: past it every surviving input has `k < m + n - 2`, so the bound is
+  `O(m*n*(m+n))` rather than growing with an unbounded `k`.
+- **`best[r][c]` instead of a 3-D `visited`.** Store the largest remaining budget ever seen at a
+  cell and skip any arrival that is not strictly better. Same answers, `O(m*n)` memory.
+
+```java
+// java
+// LC 1293 - Shortest Path in a Grid with Obstacles Elimination
+// IDEA: BFS over (row, col, k left). best[r][c] = most budget ever seen here; an arrival
+//       with <= that budget can never do better, so drop it.
+// time = O(m*n*k), space = O(m*n)
+public int shortestPath(int[][] grid, int k) {
+    int m = grid.length, n = grid[0].length;
+    if (k >= m + n - 2) return m + n - 2;        // enough budget to walk the diagonal
+
+    int[][] best = new int[m][n];
+    for (int[] row : best) Arrays.fill(row, -1);
+    int[][] dirs = {{0,1},{0,-1},{1,0},{-1,0}};
+
+    Queue<int[]> q = new LinkedList<>();
+    q.offer(new int[]{0, 0, k});
+    best[0][0] = k;
+
+    int steps = 0;
+    while (!q.isEmpty()) {
+        int size = q.size();
+        for (int s = 0; s < size; s++) {
+            int[] cur = q.poll();
+            int r = cur[0], c = cur[1], left = cur[2];
+            if (r == m - 1 && c == n - 1) return steps;
+
+            for (int[] d : dirs) {
+                int nr = r + d[0], nc = c + d[1];
+                if (nr < 0 || nr >= m || nc < 0 || nc >= n) continue;
+                int nLeft = left - grid[nr][nc];   // grid is 0/1, so this spends the budget
+                /** NOTE !!! `<=` not `<` — an arrival with the same budget is a duplicate,
+                 *  and it is arriving no earlier, so it can never win. */
+                if (nLeft < 0 || nLeft <= best[nr][nc]) continue;
+                best[nr][nc] = nLeft;
+                q.offer(new int[]{nr, nc, nLeft});
+            }
+        }
+        steps++;
+    }
+    return -1;
+}
+```
+
+```python
+# python
+# LC 1293 - Shortest Path in a Grid with Obstacles Elimination
+# IDEA: BFS over (r, c, k remaining); prune with the best budget ever seen at a cell
+# time = O(m*n*k), space = O(m*n)
+from collections import deque
+
+def shortestPath(grid, k):
+    m, n = len(grid), len(grid[0])
+    if k >= m + n - 2:
+        return m + n - 2
+
+    best = [[-1] * n for _ in range(m)]
+    best[0][0] = k
+    q = deque([(0, 0, k, 0)])                     # r, c, k left, steps
+    while q:
+        r, c, left, steps = q.popleft()
+        if (r, c) == (m - 1, n - 1):
+            return steps
+        for dr, dc in ((0, 1), (0, -1), (1, 0), (-1, 0)):
+            nr, nc = r + dr, c + dc
+            if not (0 <= nr < m and 0 <= nc < n):
+                continue
+            n_left = left - grid[nr][nc]
+            if n_left < 0 or n_left <= best[nr][nc]:
+                continue                          # out of budget, or already been here richer
+            best[nr][nc] = n_left
+            q.append((nr, nc, n_left, steps + 1))
+    return -1
+```
+
+**Common mistakes**
+
+- Marking `seen` on the **cell** — LC 864 then reports `-1` whenever the path must cross its own
+  earlier route after picking a key up, which is most of the test set.
+- Counting a key you already hold as a new state — harmless but doubles the queue; `nMask == mask`
+  is caught by the `seen` check anyway.
+- In LC 1293, spending budget on the cell you **leave** instead of the one you **enter**. The start
+  cell is guaranteed to be `0`, so both happen to pass the sample and diverge on the real tests.
+
+**Similar problems**: LC 787 Cheapest Flights Within K Stops (`(node, stops)`; weighted, so
+Dijkstra or Bellman-Ford), LC 1928 Minimum Cost to Reach Destination in Time (`(node, time)`),
+LC 1129 Shortest Path with Alternating Colors (`(node, lastColour)`), LC 847 Shortest Path Visiting
+All Nodes (`(node, visitedMask)` — see [dp_bitmask.md](./dp_bitmask.md)). When the extra dimension
+makes edges *weighted*, the same state goes into a heap instead of a queue —
+[Dijkstra.md](./Dijkstra.md).
+
+---
+
 ## Tree → Undirected Graph BFS
 
 ### Pattern 10: Tree → Undirected Graph + Per-Leaf Bounded BFS — LC 1530

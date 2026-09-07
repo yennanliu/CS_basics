@@ -1018,6 +1018,138 @@ class Solution:
 
 **When to reach for cyclic sort**: the array length is `n` **and** the values are constrained to `1..n` (or `0..n-1`), and the follow-up asks for O(n) time / O(1) space (so no HashSet, no counting array). The post-sort scan is what varies — "first index that's wrong" answers missing/duplicate/first-missing-positive style questions.
 
+### Template 11: Offline Queries — sort the QUERIES too, then sweep — LC 1847 ⭐⭐⭐⭐
+
+**When**: every query is answered independently, all of them are given up front, and answering one
+in isolation costs too much. Sorting the *queries* alongside the data turns `q` independent searches
+into **one sweep** — but only if you remember to put the answers back in the original order.
+
+```text
+online   : answer query i the moment it arrives           (must handle any order)
+offline  : you have all q queries -> reorder them freely  (this template)
+```
+
+The recipe is always these four steps:
+
+1. Sort the data by the dimension the queries filter on.
+2. Sort the **query indices** by the same dimension — keep the index, that is the whole trick.
+3. Sweep: a single moving pointer feeds items into a searchable structure as the threshold relaxes.
+4. Write each answer into `ans[originalIndex]`.
+
+**LC 1847 Closest Room**: each query is `(preferred id, minSize)` — among rooms with
+`size >= minSize`, return the id closest to `preferred`, ties going to the smaller id.
+
+- Sort rooms by size **descending** and queries by `minSize` **descending**. As `minSize` relaxes,
+  rooms only ever get *added* — never removed. A monotone threshold is what makes one pointer
+  enough.
+- The structure must answer "nearest value to `x`", so it needs order: a `TreeSet` in Java
+  (`floor` / `ceiling`), a `SortedList` in Python.
+
+```java
+// java
+// LC 1847 - Closest Room
+// IDEA: offline. Rooms by size DESC, queries by minSize DESC; one pointer adds rooms into
+//       a TreeSet as the size requirement relaxes, then floor/ceiling gives the nearest id.
+// time = O(n log n + q log q + q log n), space = O(n + q)
+public int[] closestRoom(int[][] rooms, int[][] queries) {
+    int n = rooms.length, q = queries.length;
+    Arrays.sort(rooms, (a, b) -> b[1] - a[1]);            // size descending
+
+    Integer[] order = new Integer[q];
+    for (int i = 0; i < q; i++) order[i] = i;
+    // NOTE !!! sort the INDICES, not the queries — ans must go back in the caller's order
+    Arrays.sort(order, (a, b) -> queries[b][1] - queries[a][1]);
+
+    TreeSet<Integer> ids = new TreeSet<>();
+    int[] ans = new int[q];
+    int j = 0;
+
+    for (int qi : order) {
+        int preferred = queries[qi][0], minSize = queries[qi][1];
+        while (j < n && rooms[j][1] >= minSize) ids.add(rooms[j++][0]);   // monotone: add only
+
+        Integer lo = ids.floor(preferred), hi = ids.ceiling(preferred);
+        if (lo == null && hi == null)      ans[qi] = -1;
+        else if (lo == null)               ans[qi] = hi;
+        else if (hi == null)               ans[qi] = lo;
+        // tie -> smaller id, so `<=` favours the floor
+        else ans[qi] = (preferred - lo <= hi - preferred) ? lo : hi;
+    }
+    return ans;
+}
+```
+
+```python
+# python
+# LC 1847 - Closest Room
+# IDEA: same sweep. `ids` is kept sorted so bisect finds the two candidates around
+#       `preferred`; insort keeps this to the standard library, at O(n) per insert.
+# time = O(n^2 + q log q + q log n), space = O(n + q)
+from bisect import bisect_left, insort
+
+def closestRoom(rooms, queries):
+    rooms = sorted(rooms, key=lambda r: -r[1])                  # size descending
+    order = sorted(range(len(queries)), key=lambda i: -queries[i][1])
+
+    ids = []
+    ans = [-1] * len(queries)
+    j = 0
+
+    for qi in order:
+        preferred, min_size = queries[qi]
+        while j < len(rooms) and rooms[j][1] >= min_size:
+            insort(ids, rooms[j][0])                            # O(n) memmove per insert
+            j += 1
+        if not ids:
+            continue                                            # no room is big enough
+
+        k = bisect_left(ids, preferred)
+        best = None
+        for cand in (ids[k - 1] if k > 0 else None, ids[k] if k < len(ids) else None):
+            if cand is None:
+                continue
+            # strict `<` keeps the smaller id on a tie, because the floor is seen first
+            if best is None or abs(cand - preferred) < abs(best - preferred):
+                best = cand
+        ans[qi] = best
+
+    return ans
+```
+
+> **`insort` vs a real balanced set.** `bisect.insort` finds the slot in `O(log n)` but shifts the
+> tail, so each insert is `O(n)` and the sweep is `O(n^2)` — fine for LC 1847's `n <= 10^5` because
+> the shift is a `memmove`, and it needs nothing outside the standard library. The `O(n log n)`
+> version is `SortedList` from the third-party `sortedcontainers` package (pre-installed on
+> LeetCode, **not** in the standard library, so `pip install sortedcontainers` to run it here):
+> swap `ids = []` for `ids = SortedList()`, `insort(ids, x)` for `ids.add(x)`, and
+> `bisect_left(ids, x)` for `ids.bisect_left(x)`. Java's `TreeSet` above is the genuinely
+> logarithmic structure and needs no such caveat.
+
+**Common mistakes**
+
+- **Sorting the queries themselves.** The answers then come out in sorted order and the judge sees
+  a permutation of the right array. Sort an index array, or carry the index in the tuple.
+- **A non-monotone threshold.** If items had to be *removed* as the sweep advances, one pointer is
+  not enough — you need a structure that supports deletion, or two sweeps.
+- **Only checking `ceiling`.** The nearest value can be on either side; both neighbours must be
+  compared, and the tie rule read off the statement.
+
+**Where else this template shows up**
+
+| Problem | Sort by | Structure swept into |
+|---|---|---|
+| LC 1847 Closest Room | room size / `minSize`, descending | `TreeSet` of ids |
+| LC 1697 Checking Existence of Edge Length Limited Paths | edge weight / query limit, ascending | union-find |
+| LC 2070 Most Beautiful Item for Each Query | price, ascending | prefix max over prices |
+| LC 1146 Snapshot Array | — | *online*, so binary search per key instead |
+
+> **Offline vs online is a real interview signal.** "You are given all the queries in an array" is
+> permission to reorder them; "implement a class with a `query()` method" is not. Say which one you
+> are assuming out loud — it changes the achievable complexity.
+
+---
+
+
 ## Problems by Pattern
 
 ### Pattern-Based Problem Tables
