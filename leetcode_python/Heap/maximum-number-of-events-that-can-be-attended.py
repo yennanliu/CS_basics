@@ -99,6 +99,97 @@ class Solution(object):
         """
         pass
 
+
+# V0-0-1
+# IDEA:  PQ + GREEEDY (GPT)
+import heapq
+
+class Solution(object):
+    def maxEvents(self, events):
+        """
+        :type events: List[List[int]]
+        :rtype: int
+        """
+        if not events:
+            return 0
+
+        # sort by start day
+        events.sort()
+
+        n = len(events)
+        i = 0
+        day = 0
+        cnt = 0
+
+        heap = []
+
+        while i < n or heap:
+
+            # 如果 heap 空了，直接跳到下一個 event 的 start day
+            if not heap:
+                day = events[i][0]
+
+            # 把今天開始的 event 放進 heap
+            while i < n and events[i][0] <= day:
+                heapq.heappush(heap, events[i][1])
+                i += 1
+
+            # 移除已經過期的 event
+            while heap and heap[0] < day:
+                heapq.heappop(heap)
+
+            # 今天參加「最早結束」的 event
+            if heap:
+                heapq.heappop(heap)
+                cnt += 1
+                day += 1
+
+        return cnt
+
+
+# V0-0-2
+# IDEA:  PQ + GREEEDY (GEMINI)
+import heapq
+
+class Solution(object):
+    def maxEvents(self, events):
+        """
+        :type events: List[List[int]]
+        :rtype: int
+        """
+        # 1. 將活動按照開始時間 (startDay) 排序
+        events.sort(key=lambda x: x[0])
+
+        min_heap = []  # 用來存放目前可參加活動的「結束時間 (endDay)」
+        ans = 0
+        i = 0
+        n = len(events)
+        curr_day = 0
+
+        # 2. 當還有活動未加入 或 Heap 中還有活動待參加時
+        while i < n or min_heap:
+            # 若 Heap 為空，直接跳到下一個未處理活動的開始天數（加速跳過空閒日子）
+            if not min_heap:
+                curr_day = events[i][0]
+
+            # 將所有「開始時間 <= 當前天數」的活動放入 Min-Heap
+            while i < n and events[i][0] <= curr_day:
+                heapq.heappush(min_heap, events[i][1])
+                i += 1
+
+            # 移除所有「結束時間 < 當前天數」的過期活動（已無法參加）
+            while min_heap and min_heap[0] < curr_day:
+                heapq.heappop(min_heap)
+
+            # 貪婪選擇：參加「最早結束」的活動
+            if min_heap:
+                heapq.heappop(min_heap)
+                ans += 1
+                curr_day += 1  # 推進到下一天
+
+        return ans
+
+
 # V0-1
 # IDEA: sweep line (scan line) + PQ (gpt)
 """

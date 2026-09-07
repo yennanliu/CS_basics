@@ -10,6 +10,8 @@
 		- https://leetcode.cn/studyplan/top-100-liked/
 
 	- classics_lc_hard.txt
+		- review chearsheet:
+			- https://github.com/yennanliu/CS_basics/pull/140
 
 	- LC weekly
 		- `data/lc_weekly/lc_weekly_gpt.md`
@@ -137,7 +139,6 @@
 		- 663,508
 		- 701,450
 		- scanning_line
-			- 1353
 		- prefix sum
 		- Binary Search
 			- 35
