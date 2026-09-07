@@ -12,6 +12,7 @@
 	- classics_lc_hard.txt
 		- review chearsheet:
 			- https://github.com/yennanliu/CS_basics/pull/140
+				- dp_bitmask.md
 
 	- LC weekly
 		- `data/lc_weekly/lc_weekly_gpt.md`
