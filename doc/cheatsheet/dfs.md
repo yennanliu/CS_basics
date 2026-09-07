@@ -621,7 +621,7 @@ class Solution:
 
 - **Description**: Post-order DFS where each node returns its subtree's **surplus/deficit** (`balance`), while a global counter accumulates `|balance|` across every edge
 - **Recognition**: "move one unit between **adjacent** nodes", "minimum number of moves", "make every node have exactly one X", "total supply equals total demand"
-- **Key Technique**: The answer is a sum over **edges**, not over nodes. The traffic on the edge above a subtree is *forced* — exactly `|balance(subtree)|` units must cross it — so there is nothing to search or optimise, only to count.
+- **Key Technique**: The answer is a sum over **edges**, not over nodes. Every tree edge is a **bridge**: cutting the edge above a subtree splits the tree into exactly two components, so the coins crossing it can only be `|balance(subtree)|`. The traffic is *forced* — there is nothing to search or optimise, only to count.
 - **Examples**: LC 979 (Distribute Coins in Binary Tree)
 - **Core Idea**:
   1. `balance(node) = node.val - 1 + balance(left) + balance(right)` — the node keeps 1 coin, and the rest of the subtree's net excess (`> 0`) or shortfall (`< 0`) is pushed up to the parent.
@@ -635,6 +635,8 @@ class Solution:
   - Return the **signed** balance but accumulate the **absolute** one. Returning `abs(...)` upward is the classic bug: a `-2` deficit has to stay negative so it can cancel a sibling's `+2` surplus at their parent.
   - `node.val - 1` is the whole trick — "every node keeps exactly one coin" turns a distribution problem into a flow-conservation problem.
   - Do **not** short-circuit on `node.val == 1`; a locally balanced node is still a conduit for its subtrees' traffic.
+  - Do **not** flatten the tree into an undirected adjacency list and diffuse coins with BFS — the common wrong first instinct. A BFS frontier is *local*: it cannot see that the left subtree is short 3 coins while the right subtree has 3 spare, and therefore cannot know those 3 must travel **up through the root and back down**. It ends up shuffling coins along non-optimal paths (or looping) because it has no notion of a subtree's net demand.
+  - What the post-order rollup supplies is exactly the missing **global** view: `balance(subtree)` is the net surplus/deficit of a whole component, and it only exists bottom-up. Re-modelling the tree as a graph discards the cut structure above (every edge a bridge) that makes each edge's cost a closed form rather than a search.
 
 ```text
 LC 979 trace — root = [0, 3, 0]        balance = val - 1 + left + right

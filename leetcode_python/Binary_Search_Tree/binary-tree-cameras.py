@@ -82,6 +82,27 @@ class Solution(object):
         left = self.helper(root.left)
         right = self.helper(root.right)
 
+
+        """
+        NOTE !!! 
+
+        ONLY 3 cases
+
+        1. left == 0 or right == 0 (if any child has NO camera)
+
+        2. left == 2 or right == 2 (if any child has camera)
+
+        3. else
+
+            -> NOTE !!!
+               for `else`, we DON'T need to add/decide should add camera at place,
+                    -> we want to `populate` this status to its parent node,
+                       let it decide whether we need a new camera or not
+                       (POST order DFS idea)
+
+
+        """
+
         # 如果任何 child 沒被 cover
         # current node 必須裝 camera
         if left == 0 or right == 0:
@@ -93,8 +114,52 @@ class Solution(object):
         if left == 2 or right == 2:
             return 1
 
+        # NOTE !!!! below
+        #         -> `NO NEED` to add new camera for now
         # left == 1 and right == 1
         # child 都被 cover，但 current node 沒被 cover
+        return 0
+
+
+# V0-0-1
+class Solution(object):
+    def minCameraCover(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: int
+        """
+        if not root:
+            return 0
+
+        self.cnt = 0
+
+        # root 如果最後沒有被 cover，需要在 root 放一台 camera
+        if self.helper(root) == 0:
+            self.cnt += 1
+
+        return self.cnt
+
+    def helper(self, root):
+        # null node 視為 covered
+        if not root:
+            return 1
+
+        _left = self.helper(root.left)
+        _right = self.helper(root.right)
+
+        # 1. child 有一個沒被 cover
+        #    → current node 必須放 camera
+        if _left == 0 or _right == 0:
+            self.cnt += 1
+            return 2
+
+        # 2. child 有一個有 camera
+        #    → current node 被 cover
+        if _left == 2 or _right == 2:
+            return 1
+
+        # 3. 左右 child 都 covered，但都沒有 camera
+        #    → current node 沒被 cover
         return 0
 
 
