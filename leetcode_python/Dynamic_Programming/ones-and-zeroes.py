@@ -52,6 +52,24 @@ class Solution(object):
 
 # V0-1
 # IDEA: 2D 0/1 KNAPSACK (gemini)
+"""
+DP def
+
+    
+    dp[i][j]: 使用最多 i 個 0 和最多 j 個 1，
+              最多可以選幾個 strings
+
+
+
+DP eq
+
+    
+    dp[i][j] = max(
+            dp[i][j],
+            dp[i - zeros][j - ones] + 1
+        )
+
+"""
 class Solution(object):
     def findMaxForm(self, strs, m, n):
         # dp[i][j] 代表使用最多 i 個 '0' 與 j 個 '1' 所能拼出的最大字串數量
@@ -74,7 +92,7 @@ class Solution(object):
 # IDEA: 2D 0/1 KNAPSACK (GPT)
 class Solution(object):
     def findMaxForm(self, strs, m, n):
-        
+
         # dp[i][j] = maximum number of strings
         # using at most i zeros and j ones
         dp = [[0] * (n + 1) for _ in range(m + 1)]
