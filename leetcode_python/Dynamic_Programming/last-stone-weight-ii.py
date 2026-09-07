@@ -41,7 +41,71 @@ Constraints:
 
 """
 
+
 # V0
+# IDEA: 1D DP (0/1 knapsack) (gpt)
+"""
+NOTE !!!
+
+
+DP def
+    
+    dp[i]:
+        容量最多是 target (i = target) 時，能湊出的最大 sum 是多少 ?
+
+DP eq
+
+
+    ```
+        for coin in stones:
+            for j in range(target, coin - 1, -1):
+                dp[j] = max(
+                    dp[j],
+                    dp[j - coin] + coin
+                )
+
+    ```
+
+"""
+class Solution(object):
+    def lastStoneWeightII(self, stones):
+        """
+        :type stones: List[int]
+        :rtype: int
+        """
+        if not stones:
+            return 0
+
+        _sum = sum(stones)
+
+        # try to find the largest subset sum <= total / 2
+        target = _sum // 2
+
+        # NOTE !!!
+        # dp is the `max sum` we can get if `capacity == target`
+        dp = [0] * (target + 1)
+
+        # 0/1 knapsack
+        for coin in stones:
+            for j in range(target, coin - 1, -1):
+                dp[j] = max(
+                    dp[j],
+                    dp[j - coin] + coin
+                )
+
+        # group 1 = dp[target]
+        group_1 = dp[target]
+
+        # group 2 = _sum - group_1
+        # final weight = group_2 - group_1
+        #
+        #  -> (_sum - group_1) - group_1
+        #     -> _sum - 2 * group_1
+        return _sum - 2 * group_1
+
+
+
+# V0-0-1
 """
 
 DP def
@@ -142,42 +206,6 @@ class Solution(object):
         # Other group = total - best
         # Difference = other - best
         return total - 2 * best
-
-
-
-# V0-2
-# IDEA: 1D DP (0/1 knapsack) (gpt)
-class Solution(object):
-    def lastStoneWeightII(self, stones):
-        """
-        :type stones: List[int]
-        :rtype: int
-        """
-        if not stones:
-            return 0
-
-        _sum = sum(stones)
-
-        # try to find the largest subset sum <= total / 2
-        target = _sum // 2
-
-        dp = [0] * (target + 1)
-
-        # 0/1 knapsack
-        for coin in stones:
-            for j in range(target, coin - 1, -1):
-                dp[j] = max(
-                    dp[j],
-                    dp[j - coin] + coin
-                )
-
-        # group 1 = dp[target]
-        group_1 = dp[target]
-
-        # group 2 = _sum - group_1
-        # final weight = group_2 - group_1
-        return _sum - 2 * group_1
-
 
 
 # V1-1
