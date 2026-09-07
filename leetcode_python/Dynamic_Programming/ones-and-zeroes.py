@@ -49,6 +49,53 @@ class Solution(object):
         """
         pass
 
+
+# V0-1
+# IDEA: 2D 0/1 KNAPSACK (gemini)
+class Solution(object):
+    def findMaxForm(self, strs, m, n):
+        # dp[i][j] 代表使用最多 i 個 '0' 與 j 個 '1' 所能拼出的最大字串數量
+        dp = [[0] * (n + 1) for _ in range(m + 1)]
+
+        for s in strs:
+            # 統計當前字串消耗的代價
+            zeros = s.count('0')
+            ones = s.count('1')
+
+            # 0/1 背包 2D 滾動陣列：兩個維度皆需倒序遍歷，防止重複選取同一個字串
+            for i in range(m, zeros - 1, -1):
+                for j in range(n, ones - 1, -1):
+                    dp[i][j] = max(dp[i][j], dp[i - zeros][j - ones] + 1)
+
+        return dp[m][n]
+
+
+# V0-2
+# IDEA: 2D 0/1 KNAPSACK (GPT)
+class Solution(object):
+    def findMaxForm(self, strs, m, n):
+        
+        # dp[i][j] = maximum number of strings
+        # using at most i zeros and j ones
+        dp = [[0] * (n + 1) for _ in range(m + 1)]
+
+        for s in strs:
+            zeros = s.count("0")
+            ones = s.count("1")
+
+            # 0/1 knapsack -> iterate backwards
+            for i in range(m, zeros - 1, -1):
+                for j in range(n, ones - 1, -1):
+
+                    # choose this string
+                    dp[i][j] = max(
+                        dp[i][j],
+                        dp[i - zeros][j - ones] + 1
+                    )
+
+        return dp[m][n]
+
+
 # V1 
 # http://bookshadow.com/weblog/2016/12/11/leetcode-ones-and-zeroes/
 # IDEA : DP
