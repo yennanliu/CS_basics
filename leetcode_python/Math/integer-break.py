@@ -104,6 +104,66 @@ class Solution(object):
 
         return product
 
+
+# V0-0-1
+# IDEA: GREEDY (gpt)
+class Solution(object):
+    def integerBreak(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        if n == 2:
+            return 1
+        if n == 3:
+            return 2
+
+        if n % 3 == 0:
+            return 3 ** (n // 3)
+
+        if n % 3 == 1:
+            return 3 ** (n // 3 - 1) * 4
+
+        return 3 ** (n // 3) * 2
+
+
+# V0-0-2
+# IDEA: 1D DP (gemini)
+"""
+
+DP def
+    
+    dp[i] 為正整數 i 拆分後能獲得的最大乘積
+
+
+
+DP eq
+     
+     dp[i] = max(dp[i], j * (i - j), j * dp[i - j])
+
+
+     -> case 1):  j * (i - j): 不再拆分 (i - j)
+        case 2):  j * dp[i - j]: 繼續拆分 (i - j)
+"""
+class Solution(object):
+    def integerBreak(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        # dp[i] 代表正整數 i 拆分後的最大乘積
+        dp = [0] * (n + 1)
+        dp[2] = 1  # Base Case: 2 = 1 + 1 -> 1 * 1 = 1
+
+        for i in range(3, n + 1):
+            for j in range(1, i):
+                # 1. j * (i - j): 不再拆分 (i - j)
+                # 2. j * dp[i - j]: 繼續拆分 (i - j)
+                dp[i] = max(dp[i], j * (i - j), j * dp[i - j])
+
+        return dp[n]
+
+
 # V0-1
 # IDEA: MATH (gpt)
 class Solution(object):
