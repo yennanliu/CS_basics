@@ -491,6 +491,7 @@ python3 script/fix_readme_tags.py            # rewrite the Note column
 | 2963 | [Count the Number of Good Partitions](https://leetcode.com/problems/count-the-number-of-good-partitions) | [Java](./leetcode_java/src/main/java/LeetCodeJava/HashTable/CountTheNumberOfGoodPartitions.java) | _O(n)_ | _O(n)_ | Hard | **hash table**, LC weekly | AGAIN (1) (not start) |
 | 3121 | [Count the Number of Special Characters II](https://leetcode.com/problems/count-the-number-of-special-characters-ii) | [Java](./leetcode_java/src/main/java/LeetCodeJava/HashTable/CountTheNumberOfSpecialCharacters2.java) | _O(n)_ | _O(1)_ | Medium | **hash table**, greedy, hashmap | AGAIN(1) (not srart) |
 | 4007 | [Minimum Initial Strength to Defeat All Monsters](https://leetcode.com/problems/minimum-initial-strength-to-defeat-all-monsters/description/) | [Python](./leetcode_python/Hash_table//widest-possible-fence.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/BinarySearch/MinimumInitialStrengthToDefeatAllMonsters.java) | _O(nlogM)_ | _O(1)_ | Medium | **hash table**, good trick, hashmap pair, LC weekly | AGAIN(1) (not srart) |
+| 4038 | [Count Integers Appearing in a Single Block](https://leetcode.com/problems/count-integers-appearing-in-a-single-block/) | [Python](./leetcode_python/Hash_table/count-integers-appearing-in-a-single-block.py) | _O(n)_ | _O(n)_ | Easy | **hash table**, hashmap, `span == cnt` trick, first/last idx, LC weekly | AGAIN(1) |
 
 
 
