@@ -1522,6 +1522,7 @@ python3 script/fix_readme_tags.py            # rewrite the Note column
 |-----|-------|----------|------|-------|------------|------|--------|
 | 1124 | [Longest Well-Performing Interval](https://leetcode.com/problems/longest-well-performing-interval) | [Python](./leetcode_python/prefix_sum/longest-well-performing-interval.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/PrefixSum/LongestWellPerformingInterval.java) | _O(n)_ | _O(n)_ | Medium | **prefix sum**, hashmap, first idx, Monotonic Stack, good basic, `google` | AGAIN************* (3)(MUST) |
 | 2012 | [Sum of Beauty in the Array](https://leetcode.com/problems/sum-of-beauty-in-the-array/description/) | [Python](./leetcode_python/prefix_sum/sum-of-beauty-in-the-array.py) | _O(n)_ | _O(n)_ | Medium | **prefix sum**, good basics, prefix, suffix sum, LC weekly| AGAIN****** (2) |
+| 2017 | [Grid Game](https://leetcode.com/problems/grid-game/description/) | [Python](./leetcode_python/prefix_sum/grid-game.py) | _O(n)_ | _O(1)_ | Medium | **prefix sum**, 2 x n grid, path == turning column, prefix (bottom) + suffix (top) sum, minimax, greedy, LC weekly | AGAIN(1) |
 
 
 
