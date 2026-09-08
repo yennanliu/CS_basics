@@ -182,11 +182,30 @@ class Solution(object):
         # 1. 將活動按照開始時間 (startDay) 排序
         events.sort(key=lambda x: x[0])
 
-        min_heap = []  # 用來存放目前可參加活動的「結束時間 (endDay)」
-        ans = 0
-        i = 0
-        n = len(events)
-        curr_day = 0
+
+        # --- Variable Declarations & State Setup ---
+        min_heap = []     # 用來存放目前可參加活動的「結束時間 (endDay)」
+        ans = 0           # Result: Total events successfully attended
+        i = 0             # Pointer: Tracks the next event in sorted 'events' (0 <= i < n)
+        n = len(events)   # Boundary: Total number of input events
+        day = 0           # Timeline: Current simulation day
+
+
+        """
+        NOTE !!!!
+
+
+        1. while - (while - while) loop
+
+        2. while loop over n
+
+        2'. in the 2nd while loop, we also update i
+
+        3. `top` element in PQ in py
+            -> pq[0]
+
+        4. add `end time` to PQ
+        """
 
         # 2. 當還有活動未加入 或 Heap 中還有活動待參加時
         while i < n or min_heap:
@@ -197,6 +216,8 @@ class Solution(object):
             # 將所有「開始時間 <= 當前天數」的活動放入 Min-Heap
             while i < n and events[i][0] <= curr_day:
                 heapq.heappush(min_heap, events[i][1])
+                # NOTE !!!
+                # we update i here as well
                 i += 1
 
             # 移除所有「結束時間 < 當前天數」的過期活動（已無法參加）
