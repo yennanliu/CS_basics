@@ -46,6 +46,7 @@ Note: This question is the same as 2121: Intervals Between Identical Elements.
 
 
 # V0
+# IDEA: PREFIX SUM + LEFT, RIGHT dist
 from collections import defaultdict
 
 class Solution(object):
@@ -86,6 +87,65 @@ class Solution(object):
 
                 # 更新 left_sum 供下一個索引使用
                 left_sum += idx
+
+        return res
+
+
+# V0-0-1
+# IDEA: PREFIX SUM + LEFT, RIGHT dist (gpt)
+from collections import defaultdict
+
+class Solution(object):
+    def distance(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[int]
+        """
+
+        n = len(nums)
+
+        # {value: [index1, index2, ...]}
+        c_map = defaultdict(list)
+
+        for i in range(n):
+            c_map[nums[i]].append(i)
+
+        res = [0] * n
+
+        # Process each value independently
+        for k in c_map:
+
+            indices = c_map[k]
+
+            if len(indices) <= 1:
+                continue
+
+            m = len(indices)
+
+            # prefix[i] = sum of indices[0:i]
+            prefix = [0] * (m + 1)
+
+            for j in range(m):
+                prefix[j + 1] = prefix[j] + indices[j]
+
+            # Calculate answer for every occurrence of this value
+            for i in range(m):
+
+                cur = indices[i]
+
+                # Number of same values on the left
+                left_cnt = i
+
+                # Number of same values on the right
+                right_cnt = m - i - 1
+
+                # Sum of distances to the left
+                left = cur * left_cnt - prefix[i]
+
+                # Sum of distances to the right
+                right = (prefix[m] - prefix[i + 1]) - cur * right_cnt
+
+                res[cur] = left + right
 
         return res
 
