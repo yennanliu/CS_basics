@@ -1,6 +1,6 @@
 ---
-name: add-lc
-description: File a LeetCode solution into this repo the way the existing ones are filed — find the problem's real slug, write the Python file in the house layout (problem docstring, V0 with an IDEA block and a time/space line), smoke-test it against the examples, and insert the README row. Use when asked to "add LC <number>", to file a problem just solved in a weekly contest, to turn a pasted draft into a committed solution, or to wire an existing solution file into README. Triggers - "add LC 4038 to Hash_table", "/add-lc 239 Sliding_Window", "add this solution and update the README", "file yesterday's contest Q1".
+name: lc-add
+description: File a LeetCode solution into this repo the way the existing ones are filed — find the problem's real slug, write the Python file in the house layout (problem docstring, V0 with an IDEA block and a time/space line), smoke-test it against the examples, and insert the README row. Use when asked to "add LC <number>", to file a problem just solved in a weekly contest, to turn a pasted draft into a committed solution, or to wire an existing solution file into README. Triggers - "add LC 4038 to Hash_table", "/lc-add 239 Sliding_Window", "add this solution and update the README", "file yesterday's contest Q1".
 allowed-tools: Read, Glob, Grep, Bash, Write, Edit
 ---
 
@@ -9,7 +9,7 @@ allowed-tools: Read, Glob, Grep, Bash, Write, Edit
 Turn an LC number (plus, usually, a draft the user already wrote) into a committed-quality
 solution file **and** its README row, in the shape the other ~826 Python files already use.
 
-**Invocation**: `/add-lc <LC number> <pattern dir>` — e.g. `/add-lc 4038 Hash_table`.
+**Invocation**: `/lc-add <LC number> <pattern dir>` — e.g. `/lc-add 4038 Hash_table`.
 A reference or draft solution pasted under the command is used as `V0`; with no draft, the
 draft is usually already in the contest scratch file (step 1).
 
@@ -189,7 +189,7 @@ the statement, a Java link deliberately omitted.
 
 ## Worked example
 
-`add-lc 4038 Hash_table`, with the user's draft pasted:
+`lc-add 4038 Hash_table`, with the user's draft pasted:
 
 | Step | What it produced |
 |---|---|
