@@ -81,6 +81,113 @@ class Solution(object):
         help(s, tmp)
         return res
 
+
+# V0-1
+# IDEA: BACKTRACK (GPT)
+class Solution(object):
+    def partition(self, s):
+        """
+        :type s: str
+        :rtype: List[List[str]]
+        """
+        res = []
+
+        def backtrack(start_idx, path):
+            # Base Case: Reached the end of the string -> valid partition complete
+            if start_idx == len(s):
+                res.append(list(path))
+                return
+
+            # Explore all candidate partitions s[start_idx : end_idx]
+            for end_idx in range(start_idx + 1, len(s) + 1):
+                substring = s[start_idx:end_idx]
+                
+                if self.is_palindrome(substring):
+                    path.append(substring)           # Choose
+                    backtrack(end_idx, path)         # Explore
+                    path.pop()                       # Backtrack
+
+        backtrack(0, [])
+        return res
+
+    def is_palindrome(self, x):
+        l, r = 0, len(x) - 1
+        while l < r:
+            if x[l] != x[r]:
+                return False
+            l += 1
+            r -= 1
+        return True
+
+
+# V0-2
+# IDEA: BACKTRACK (gemini)
+class Solution(object):
+    def partition(self, s):
+        """
+        :type s: str
+        :rtype: List[List[str]]
+        """
+        res = []
+
+        def backtrack(start_idx, path):
+            # Base Case: Reached the end of the string -> valid partition complete
+            if start_idx == len(s):
+                res.append(list(path))
+                return
+
+            # Explore all candidate partitions s[start_idx : end_idx]
+            for end_idx in range(start_idx + 1, len(s) + 1):
+                substring = s[start_idx:end_idx]
+                
+                if self.is_palindrome(substring):
+                    path.append(substring)           # Choose
+                    backtrack(end_idx, path)         # Explore
+                    path.pop()                       # Backtrack
+
+        backtrack(0, [])
+        return res
+
+    def is_palindrome(self, x):
+        l, r = 0, len(x) - 1
+        while l < r:
+            if x[l] != x[r]:
+                return False
+            l += 1
+            r -= 1
+        return True
+
+
+# V0-3
+# IDEA: 2D DP (gemini)
+class Solution(object):
+    def partition(self, s):
+        n = len(s)
+        res = []
+
+        # 1. DP Precomputation: dp[i][j] is True if s[i..j] is a palindrome
+        dp = [[False] * n for _ in range(n)]
+        for right in range(n):
+            for left in range(right + 1):
+                if s[left] == s[right] and (right - left <= 2 or dp[left + 1][right - 1]):
+                    dp[left][right] = True
+
+        # 2. Backtracking using O(1) DP lookup
+        def backtrack(start, path):
+            if start == n:
+                res.append(list(path))
+                return
+
+            for end in range(start, n):
+                if dp[start][end]:
+                    path.append(s[start : end + 1])
+                    backtrack(end + 1, path)
+                    path.pop()
+
+        backtrack(0, [])
+        return res
+
+
 # V0'
 # IDEA : BACKTRCK, similar as LC 046 permutations
 # time = O(n * 2^n)
