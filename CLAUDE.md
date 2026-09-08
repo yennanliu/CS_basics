@@ -230,17 +230,17 @@ See [`doc/utility-scripts.md`](doc/utility-scripts.md) for full usage of all scr
 
 ---
 
-## Adding a LeetCode solution — `/add-lc`
+## Adding a LeetCode solution — `/lc-add`
 
-`.claude/skills/add-lc/` is the recipe for filing a solved problem into the repo:
+`.claude/skills/lc-add/` is the recipe for filing a solved problem into the repo:
 find the problem's real slug, write `leetcode_python/<Pattern_Dir>/<slug>.py` in the
 house layout (problem docstring → `# V0` → `# IDEA` → `# time = O(...), space = O(...)`
 → `class Solution(object)`), smoke-test it against the docstring's own examples, and
 insert the README row in LC-number order.
 
 ```text
-/add-lc 4038 Hash_table          # + paste the draft solution under it
-/add-lc 239 Sliding_Window
+/lc-add 4038 Hash_table          # + paste the draft solution under it
+/lc-add 239 Sliding_Window
 add LC 4038 to leetcode_python/Hash_table/    # the plain-English form works too
 ```
 
