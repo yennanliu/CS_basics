@@ -223,6 +223,45 @@ class Solution(object):
 
 
 
+#------------------------------------------------(fixed)
+
+
+class Solution(object):
+    def sumDecoded(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+
+        if not nums:
+            return 0
+
+        MOD = 10**9 + 7
+        ans = 0
+
+        for num in nums:
+
+            # Last digit = width
+            width = num % 10
+
+            # Remove the last digit
+            d = num // 10
+
+            # Convert d to string
+            s = str(d)
+
+            # First `width` digits
+            x = int(s[:width])
+
+            # Remaining digits
+            y = int(s[width:])
+
+            # x ^ y in the problem means x raised to power y
+            ans = (ans + pow(x, y, MOD)) % MOD
+
+        return ans
+
+
 #------------------------------------------------
 
 
