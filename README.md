@@ -905,7 +905,6 @@ python3 script/fix_readme_tags.py            # rewrite the Note column
 | 3190 | [Find Minimum Operations to Make All Elements Divisible by Three](https://leetcode.com/problems/find-minimum-operations-to-make-all-elements-divisible-by-three/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Math/FindMinimumOperationsToMakeAllElementsDivisibleByThree.java) | _O(n)_ | _O(1)_ | Easy | **math**, LC weekly | OK |
 | 3194 | [Minimum Average of Smallest and Largest Elements](https://leetcode.com/problems/minimum-average-of-smallest-and-largest-elements/description/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Math/minimumAverageOfSmallestAndLargestElements.java) | _O(nlogn)_ | _O(1)_ | Easy | **math**, LC weekly, `array`, `two pointers`, `sort` | OK |
 | 3993 | [Maximum Value of an Alternating Sequence](https://leetcode.com/problems/maximum-value-of-an-alternating-sequence/description/) | [Python](./leetcode_python/Math/maximum-value-of-an-alternating-sequence.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Math/MaximumValueOfAnAlternatingSequence.java) | _O(n)_ | _O(1)_ | Medium | **math**, LC weekly, good trick | again**** (1) |
-| 4039 | [Sum of Decoded Numbers](https://leetcode.com/problems/sum-of-decoded-numbers/description/) | [Python](./leetcode_python/Math/sum-of-decoded-numbers.py) | _O(n * logy)_ | _O(1)_ | Medium | **math**, digit split via divmod 10, string slice, modular exponentiation (`pow(x, y, MOD)`), LC weekly | AGAIN(1) |
 
 
 
@@ -1426,6 +1425,7 @@ python3 script/fix_readme_tags.py            # rewrite the Note column
 | 3691 | [Maximum Total Subarray Value II](https://leetcode.com/problems/merge-triplets-to-form-target-triplet/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Greedy/MaximumTotalSubarrayValueII.java) | _O(n^2)_ | _O(n)_ | Hard | **greedy**, brute force, tree | AGAIN |
 | 3994 | [Transform Binary String Using Subsequence Sort](https://leetcode.com/problems/minimum-adjacent-swaps-to-partition-array/description/) | [Python](./leetcode_python/Greedy/minimum-adjacent-swaps-to-partition-array.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Greedy/MinimumAdjacentSwapsToPartitionArray.java) | _O(n)_ | _O(1)_ | Medium | **greedy**, brute force, LC weekly | AGAIN*****(1) |
 | 3998 | [Transform Binary String Using Subsequence Sort](https://leetcode.com/problems/transform-binary-string-using-subsequence-sort/description/) | [Python](./leetcode_python/Greedy/transform-binary-string-using-subsequence-sort.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Greedy/TransformBinaryStringUsingSubsequenceSort.java) | _O(n)_ | _O(1)_ | Medium | **greedy**, brute force, prefix, LC weekly | AGAIN |
+| 4040 | [Minimum Operations to Form Subset Sum I](https://leetcode.com/problems/minimum-operations-to-form-subset-sum-i/description/) | [Python](./leetcode_python/Dynamic_Programming/minimum-operations-to-form-subset-sum-i.py) | _O(n * sum * logx)_ | _O(sum)_ | Medium | **dp**, group 0/1 knapsack, per-element (value, cost) options, x2 / x//2 chains, LC weekly | AGAIN(1) |
 
 
 
