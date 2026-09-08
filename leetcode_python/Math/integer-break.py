@@ -58,6 +58,9 @@ class Solution(object):
     NOTE !!!
 
     this helper func
+
+
+    `k`: split n into `k` parts
     """
     def get_product(self, n, k):
         """
@@ -155,11 +158,49 @@ class Solution(object):
         dp = [0] * (n + 1)
         dp[2] = 1  # Base Case: 2 = 1 + 1 -> 1 * 1 = 1
 
+
+        # NOTE !!! double loop !!!
         for i in range(3, n + 1):
             for j in range(1, i):
                 # 1. j * (i - j): 不再拆分 (i - j)
                 # 2. j * dp[i - j]: 繼續拆分 (i - j)
-                dp[i] = max(dp[i], j * (i - j), j * dp[i - j])
+                dp[i] = max(
+                        dp[i], 
+                        j * (i - j),
+                        j * dp[i - j]
+                        )
+
+        return dp[n]
+
+
+# V0-0-3
+# IDEA: 1D DP (GPT)
+class Solution(object):
+    def integerBreak(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        # edge
+        if n == 2:
+            return 1
+
+        dp = [0] * (n + 1)
+
+        # dp[i] = maximum product for integer i
+        dp[2] = 1
+
+        # NOTE !!! double loop !!!
+        for i in range(3, n + 1):
+            for k in range(1, i):
+                # split i into k + (i-k)
+                dp[i] = max(
+                    dp[i],
+                    k * (i - k),              # don't break the two parts further
+                    k * dp[i - k],            # break i-k further
+                    dp[k] * (i - k),          # break k further
+                    dp[k] * dp[i - k]         # break both further
+                )
 
         return dp[n]
 
