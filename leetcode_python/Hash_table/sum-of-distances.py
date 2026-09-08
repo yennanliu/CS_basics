@@ -46,53 +46,52 @@ Note: This question is the same as 2121: Intervals Between Identical Elements.
 
 
 # V0
-# IDEA: PREFIX SUM + LEFT, RIGHT dist
-from collections import defaultdict
-
-class Solution(object):
-    def distance(self, nums):
-        """
-        :type nums: List[int]
-        :rtype: List[int]
-        """
-        n = len(nums)
-        res = [0] * n
-        c_map = defaultdict(list)
-
-        # 1. 將相同數值的索引分組 (索引會自然維持遞增)
-        for i, val in enumerate(nums):
-            c_map[val].append(i)
-
-        # 2. 對於每一組相同的數值，使用前後綴累加計算距離
-        for val, indices in c_map.items():
-            k = len(indices)
-            if k <= 1:
-                continue
-
-            total_sum = sum(indices)
-            left_sum = 0
-
-            for p, idx in enumerate(indices):
-                # 動態算出右側索引和
-                right_sum = total_sum - left_sum - idx
-
-                left_count = p
-                right_count = k - 1 - p
-
-                # 左右距離和計算
-                left_dist = left_count * idx - left_sum
-                right_dist = right_sum - right_count * idx
-
-                res[idx] = left_dist + right_dist
-
-                # 更新 left_sum 供下一個索引使用
-                left_sum += idx
-
-        return res
-
-
-# V0-0-1
 # IDEA: PREFIX SUM + LEFT, RIGHT dist (gpt)
+"""
+CORE IDEA:
+
+====================================================================
+Setup:
+  indices = [i_0, i_1, i_2, ..., i_{m-1}] (sorted list of indices for same number)
+  m = length of indices
+  For the element at rank k in indices:
+    idx = indices[k]
+    left_cnt = k
+    right_cnt = m - 1 - k
+
+Prefix Sum Definition:
+  prefix_sum[0] = 0
+  prefix_sum[1] = i_0
+  prefix_sum[k] = i_0 + i_1 + ... + i_{k-1}      (sum of first k elements)
+  prefix_sum[k + 1] = i_0 + i_1 + ... + i_k      (sum of first k+1 elements)
+  prefix_sum[m] = i_0 + i_1 + ... + i_{m-1}      (total sum of all m elements)
+====================================================================
+
+1) LEFT DISTANCE DERIVATION:
+
+   left = (idx - i_0) + (idx - i_1) + ... + (idx - i_{k-1})
+        = (idx + idx + ... + idx) - (i_0 + i_1 + ... + i_{k-1})
+          [k times idx]             [sum of first k elements]
+        = idx * k - (i_0 + i_1 + ... + i_{k-1})
+        = idx * (left_cnt) - prefix_sum[k]
+
+
+2) RIGHT DISTANCE DERIVATION:
+
+   right = (i_{k+1} - idx) + (i_{k+2} - idx) + ... + (i_{m-1} - idx)
+         = (i_{k+1} + i_{k+2} + ... + i_{m-1}) - (idx + idx + ... + idx)
+           [sum of right elements]               [(m - 1 - k) times idx]
+         = (i_{k+1} + i_{k+2} + ... + i_{m-1}) - idx * (m - 1 - k)
+         = (total_sum - sum_up_to_k) - idx * (right_cnt)
+         = (prefix_sum[m] - prefix_sum[k + 1]) - idx * (right_cnt)
+
+
+3) TOTAL DISTANCE:
+
+   arr[idx] = left + right
+            = (idx * left_cnt - prefix_sum[k]) + ((prefix_sum[m] - prefix_sum[k + 1]) - idx * right_cnt)
+
+"""
 from collections import defaultdict
 
 class Solution(object):
@@ -146,6 +145,52 @@ class Solution(object):
                 right = (prefix[m] - prefix[i + 1]) - cur * right_cnt
 
                 res[cur] = left + right
+
+        return res
+
+
+# V0-0-1
+# IDEA: PREFIX SUM + LEFT, RIGHT dist
+from collections import defaultdict
+
+class Solution(object):
+    def distance(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[int]
+        """
+        n = len(nums)
+        res = [0] * n
+        c_map = defaultdict(list)
+
+        # 1. 將相同數值的索引分組 (索引會自然維持遞增)
+        for i, val in enumerate(nums):
+            c_map[val].append(i)
+
+        # 2. 對於每一組相同的數值，使用前後綴累加計算距離
+        for val, indices in c_map.items():
+            k = len(indices)
+            if k <= 1:
+                continue
+
+            total_sum = sum(indices)
+            left_sum = 0
+
+            for p, idx in enumerate(indices):
+                # 動態算出右側索引和
+                right_sum = total_sum - left_sum - idx
+
+                left_count = p
+                right_count = k - 1 - p
+
+                # 左右距離和計算
+                left_dist = left_count * idx - left_sum
+                right_dist = right_sum - right_count * idx
+
+                res[idx] = left_dist + right_dist
+
+                # 更新 left_sum 供下一個索引使用
+                left_sum += idx
 
         return res
 
