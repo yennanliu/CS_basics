@@ -230,70 +230,35 @@ See [`doc/utility-scripts.md`](doc/utility-scripts.md) for full usage of all scr
 
 ---
 
-## Adding a LeetCode solution — keyword: `add-lc`
+## Adding a LeetCode solution — `/add-lc`
 
-**Trigger**: `add-lc <LC number> <pattern dir>` — e.g. `add-lc 4038 Hash_table`
-(optionally paste a reference/draft solution under the line; if none is pasted, the
-draft is usually already in the contest scratch file, step 1).
+`.claude/skills/add-lc/` is the recipe for filing a solved problem into the repo:
+find the problem's real slug, write `leetcode_python/<Pattern_Dir>/<slug>.py` in the
+house layout (problem docstring → `# V0` → `# IDEA` → `# time = O(...), space = O(...)`
+→ `class Solution(object)`), smoke-test it against the docstring's own examples, and
+insert the README row in LC-number order.
 
-It is a plain keyword, not a skill — nothing to install, and it means *run the seven
-steps below in order*.
+```text
+/add-lc 4038 Hash_table          # + paste the draft solution under it
+/add-lc 239 Sliding_Window
+add LC 4038 to leetcode_python/Hash_table/    # the plain-English form works too
+```
 
-### The steps
+As with `/lc-coach`, the skill directory name **is** the command, and
+`check_skills.py` pins the frontmatter `name` to it.
 
-1. **Find the problem's source of truth first.** For a contest problem it is
-   `leetcode_python/lc_weekly/weekly_<n>/ws.txt` — it records the LC number, the
-   problem URL, the user's idea notes and their draft. **The URL slug is the
-   filename**, and the position in that file (first LC number listed = Q1) is the
-   difficulty signal. Never guess a slug from the class name: LC 4038's method is
-   `countSpecialIntegers` but the problem is `count-integers-appearing-in-a-single-block`.
-2. **Read a neighbour before writing.** Open a recent file in the same pattern dir
-   (`git log --oneline --name-only` finds the last few added) and copy its shape.
-   The layout is not invented per file.
-3. **Write `leetcode_python/<Pattern_Dir>/<slug>.py`** in that shape:
-   - a `"""` docstring: `<number>. <Title>`, difficulty, the statement, `Example 1..n`
-     with Input / Output / Explanation, then `Constraints:`
-   - `# V0` — the canonical solution, preceded by a `# IDEA : <one line>` header and a
-     short indented block saying *why* the trick works (the invariant, not a restatement
-     of the loop), closed by `# time = O(...), space = O(...)`
-   - `class Solution(object):` with LeetCode's `:type: / :rtype:` docstring
-   - keep the user's pasted solution as `V0` when they gave one — fix bugs, do not
-     rewrite their approach into a different one
-4. **A second variant needs a stated reason** (different complexity, distinct trick,
-   different language idiom) — then it is `# V0-1` / `# V1` with its own `IDEA` and
-   complexity line. Otherwise one solution only.
-5. **Smoke-test before reporting done.** Load the file and run the docstring's examples
-   plus the edge cases (empty, single element):
+**The steps live in `SKILL.md`, not here** — one copy, so the two cannot drift. The
+three things it exists to prevent, all of which have actually happened:
 
-   ```bash
-   python3 -c "
-   import importlib.util
-   spec = importlib.util.spec_from_file_location('m', 'leetcode_python/<dir>/<slug>.py')
-   m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
-   print(m.Solution().<method>(<args>))"
-   ```
+- a slug guessed from the method name (LC 4038's method is `countSpecialIntegers`;
+  the problem is `count-integers-appearing-in-a-single-block`), which yields a wrong
+  file name and a dead README link;
+- an invented file layout, instead of copying a neighbour in the target dir;
+- code handed back untested, and a README row whose columns do not match the table
+  it was inserted into.
 
-6. **Add the README row** to the pattern's table, in ascending LC-number order (a
-   4-digit contest problem goes at the end of that table). Columns:
-
-   ```text
-   | <num> | [<Title>](<leetcode url>) | [Python](./leetcode_python/<Dir>/<slug>.py) | _O(t)_ | _O(s)_ | <Difficulty> | **<pattern>**, <tags>, LC weekly | AGAIN(1) |
-   ```
-
-   Match the spacing of the rows already there — `git show <commit> -- README.md` on a
-   previous `update <NNN> py` commit is the fastest way to see the exact column shape.
-   Add the `[Java](...)` link in the same cell only when that file actually exists.
-7. **Report what was assumed.** Difficulty inferred from contest position, or examples
-   written from the rule because `ws.txt` only kept the statement — say so, so it can be
-   corrected against the real problem page.
-
-### Do not
-
-- ❌ invent the file layout — copy a neighbour (step 2)
-- ❌ hand back untested code — step 5 is not optional
-- ❌ touch `data/progress.txt`; the practice log is the user's own record and gets its
-  own commit (see [Review plan data](#the-review-plans-data))
-- ❌ commit or push unless asked
+It never touches `data/progress.txt` — the practice log is the user's own record and
+gets its own commit (see [Review plan data](#the-review-plans-data)).
 
 ---
 
