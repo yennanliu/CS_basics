@@ -45,6 +45,27 @@ Note: This question is the same as 2121: Intervals Between Identical Elements.
 """
 
 
+"""
+NOTE !!!  `prefix sum` definition
+
+
+https://yennj12.js.org/CS_basics/cheatsheets/prefix_sum.html#overview
+
+
+prefixSum[i] = nums[0] + nums[1] + ... + nums[i-1]
+
+
+    -> so, when we say prefixSum[i],
+       we are sum over the val in [0, i-1]
+
+
+    -> i_0 + i_1 + ... + i_{k-1} is `prefix[k]`
+
+
+    -> i_{k+1} + i_{k+2} + ... + i_{m-1} is `prefix[m] - prefix[k + 1]`
+"""
+
+
 # V0
 # IDEA: PREFIX SUM + LEFT, RIGHT dist (gpt)
 """

@@ -473,35 +473,150 @@ Two moves, in this order:
 > would cost `O(n log n)` and buys nothing. Never sort here; it is the giveaway that the grouping
 > step was not understood.
 
-For a sorted list of indices `[i0, i1, i2, ..., ik]`, to find sum of distances from `ij` to all others:
+#### The Derivation
+
+**Setup — the notation the rest of this section uses**
 
 ```text
-Instead of: |ij - i0| + |ij - i1| + ... + |ij - ik|  (O(n) per element)
+indices = [i_0, i_1, i_2, ..., i_{m-1}]   the sorted indices of ONE value
+m       = len(indices)
 
-Split into:
-  - Left part:  (ij - i0) + (ij - i1) + ... = ij * countLeft - sumLeft
-  - Right part: (ij+1 - ij) + (ij+2 - ij) + ... = sumRight - ij * countRight
+For the element at RANK k inside that group:
+  idx       = indices[k]      its position in the ORIGINAL array
+  left_cnt  = k               how many equal values sit before it
+  right_cnt = m - 1 - k       how many sit after it
 
-Total: (ij * countLeft - sumLeft) + (sumRight - ij * countRight)
+Prefix sum over the group (size m+1, leading sentinel):
+  prefix[0]     = 0                                  the empty sum
+  prefix[k]     = i_0 + i_1 + ... + i_{k-1}          first k     → everything LEFT of rank k
+  prefix[k + 1] = i_0 + i_1 + ... + i_k              first k + 1 → the left part, plus idx itself
+  prefix[m]     = i_0 + i_1 + ... + i_{m-1}          the whole group
 ```
 
-#### Visual Explanation
+> **Two different indices are in play, and confusing them is the classic slip.** `k` is the rank
+> *within the group* — it indexes `indices` and `prefix`. `idx = indices[k]` is the position *in
+> `nums`* — it is the value being summed over, and it is where the answer is written
+> (`res[idx]`, never `res[k]`).
+
+**Reading a prefix index — the one rule the whole derivation leans on**
+
 ```text
-Indices with same value: [2, 5, 8, 12]
-                          ↑  ↑  ↑   ↑
-For index 8 (position 2 in list):
+prefixSum[i] = nums[0] + nums[1] + ... + nums[i-1]
 
-  Left indices: [2, 5]
-    countLeft = 2
-    sumLeft = 2 + 5 = 7
-    distanceLeft = 8 * 2 - 7 = 9  → |8-2| + |8-5| = 6 + 3 = 9 ✓
+  -> so, when we say prefixSum[i],
+     we are summing the values in [0, i-1]   ← i is EXCLUSIVE, i itself is NOT in the sum
 
-  Right indices: [12]
-    countRight = 1
-    sumRight = 12
-    distanceRight = 12 - 8 * 1 = 4  → |12-8| = 4 ✓
+Applied to a group's indices:
 
-  Total distance for index 8: 9 + 4 = 13
+  -> i_0 + i_1 + ... + i_{k-1}          is   prefix[k]
+     (everything strictly LEFT of rank k)          upper end k is excluded, so idx is out ✓
+
+  -> i_{k+1} + i_{k+2} + ... + i_{m-1}  is   prefix[m] - prefix[k + 1]
+     (everything strictly RIGHT of rank k)         whole group, minus the first k+1 (which ends AT idx)
+```
+
+**Concrete example** — group `[2, 5, 8, 12]`, `m = 4`, so `prefix = [0, 2, 7, 15, 27]`:
+
+```text
+rank k:      0   1   2    3
+indices:     2   5   8   12
+prefix:  0   2   7  15   27
+         ↑                ↑
+    prefix[0]         prefix[4] = prefix[m]
+
+At rank k = 2  (idx = 8):
+
+  left part  = i_0 + i_1                  = 2 + 5  = 7
+             = prefix[k]  = prefix[2]     = 7                       ✓ (8 is NOT included)
+
+  right part = i_3                        = 12
+             = prefix[m] - prefix[k + 1]
+             = prefix[4] - prefix[3]      = 27 - 15 = 12            ✓ (8 is NOT included)
+
+Contrast the off-by-one:
+  prefix[m] - prefix[k] = 27 - 7 = 20 = 8 + 12   ← still carries idx itself, hence prefix[k+1]
+```
+
+
+**1) Left distance** — every index to the left is smaller, so `|idx - i| = idx - i` and the bars drop:
+
+```text
+left = (idx - i_0) + (idx - i_1) + ... + (idx - i_{k-1})
+
+     = (idx + idx + ... + idx)  -  (i_0 + i_1 + ... + i_{k-1})
+       └─── k copies of idx ──┘     └── sum of the first k ──┘
+
+     = idx * k - (i_0 + ... + i_{k-1})
+
+     = idx * left_cnt - prefix[k]
+```
+
+**2) Right distance** — every index to the right is larger, so `|idx - i| = i - idx`:
+
+```text
+right = (i_{k+1} - idx) + (i_{k+2} - idx) + ... + (i_{m-1} - idx)
+
+      = (i_{k+1} + i_{k+2} + ... + i_{m-1})  -  (idx + ... + idx)
+        └───── sum of the right part ──────┘     └ m-1-k copies ┘
+
+      = (total_sum - sum_up_to_and_including_idx) - idx * (m - 1 - k)
+
+      = (prefix[m] - prefix[k + 1]) - idx * right_cnt
+```
+
+> **Why the right part subtracts `prefix[k + 1]` and not `prefix[k]`.** `prefix[k]` stops *before*
+> `idx`, so `prefix[m] - prefix[k]` still contains `idx` — pairing that with `right_cnt = m - 1 - k`
+> overshoots the answer by exactly `idx`. The sum and the count have to agree on whether the pivot
+> is in the right part; `prefix[k + 1]` with `m - 1 - k` says it is not.
+
+**3) Total distance**
+
+```text
+res[idx] = left + right
+         = (idx * left_cnt - prefix[k])  +  ((prefix[m] - prefix[k + 1]) - idx * right_cnt)
+```
+
+That is `O(1)` per element after an `O(m)` prefix pass over the group, so `O(n)` overall — against
+`O(n^2)` for comparing every pair.
+
+#### Visual Explanation
+
+```text
+One group's indices: [2, 5, 8, 12]        m = 4
+rank k:               0  1  2   3
+
+prefix = [0, 2, 7, 15, 27]
+          ↑                ↑
+       empty sum        prefix[m] = whole group
+
+Take rank k = 2  →  idx = 8, left_cnt = 2, right_cnt = m-1-k = 1
+
+  left  = idx * left_cnt - prefix[k]
+        = 8 * 2 - prefix[2]                    prefix[2] = 2 + 5 = 7
+        = 16 - 7 = 9                           → |8-2| + |8-5| = 6 + 3 = 9 ✓
+
+  right = (prefix[m] - prefix[k+1]) - idx * right_cnt
+        = (27 - 15) - 8 * 1                    prefix[3] = 2 + 5 + 8 = 15
+        = 12 - 8 = 4                           → |12-8| = 4 ✓
+
+  res[8] = 9 + 4 = 13
+```
+
+**End to end on the LC 2615 example** — `nums = [1,3,1,1,2]`, expected `[5,0,3,4,0]`:
+
+```text
+groups:  1 -> [0, 2, 3]      3 -> [1]      2 -> [4]
+
+Group [0, 2, 3]:  m = 3,  prefix = [0, 0, 2, 5]
+
+ k=0  idx=0  left_cnt=0 right_cnt=2   left = 0*0 - prefix[0] = 0
+                                      right = (5 - prefix[1]) - 0*2 = 5 - 0 = 5   res[0] = 5 ✓
+ k=1  idx=2  left_cnt=1 right_cnt=1   left = 2*1 - prefix[1] = 2 - 0 = 2
+                                      right = (5 - prefix[2]) - 2*1 = 3 - 2 = 1   res[2] = 3 ✓
+ k=2  idx=3  left_cnt=2 right_cnt=0   left = 3*2 - prefix[2] = 6 - 2 = 4
+                                      right = (5 - prefix[3]) - 3*0 = 0           res[3] = 4 ✓
+
+Single-index groups keep res = 0  →  res[1] = res[4] = 0 ✓
 ```
 
 #### Python Template
@@ -527,27 +642,22 @@ def sum_of_distances(nums):
         if m == 1:
             continue  # Single element has distance 0
 
-        # Build prefix sum of indices
-        prefix = [0] * m
-        prefix[0] = indices[0]
-        for i in range(1, m):
-            prefix[i] = prefix[i - 1] + indices[i]
-
-        total_sum = prefix[m - 1]
+        # prefix[k] = sum of the first k indices  (size m+1, prefix[0] = 0)
+        prefix = [0] * (m + 1)
+        for k in range(m):
+            prefix[k + 1] = prefix[k] + indices[k]
 
         # Calculate distance for each index in group
-        for i in range(m):
-            idx = indices[i]
+        for k in range(m):
+            idx = indices[k]
 
-            # Left part: idx * countLeft - sumLeft
-            count_left = i
-            sum_left = prefix[i - 1] if i > 0 else 0
-            left_dist = idx * count_left - sum_left
+            # Left part: idx * left_cnt - prefix[k]
+            left_cnt = k
+            left_dist = idx * left_cnt - prefix[k]
 
-            # Right part: sumRight - idx * countRight
-            count_right = m - i - 1
-            sum_right = total_sum - prefix[i]
-            right_dist = sum_right - idx * count_right
+            # Right part: (prefix[m] - prefix[k+1]) - idx * right_cnt
+            right_cnt = m - 1 - k
+            right_dist = (prefix[m] - prefix[k + 1]) - idx * right_cnt
 
             result[idx] = left_dist + right_dist
 
@@ -572,22 +682,21 @@ public long[] distance(int[] nums) {
         int m = indices.size();
         if (m == 1) continue;
 
-        // Build prefix sum
-        long[] prefix = new long[m];
-        prefix[0] = indices.get(0);
-        for (int i = 1; i < m; i++) {
-            prefix[i] = prefix[i - 1] + indices.get(i);
+        // prefix[k] = sum of the first k indices  (size m+1, prefix[0] = 0)
+        long[] prefix = new long[m + 1];
+        for (int k = 0; k < m; k++) {
+            prefix[k + 1] = prefix[k] + indices.get(k);
         }
 
         // Calculate distance for each index
-        for (int i = 0; i < m; i++) {
-            int idx = indices.get(i);
+        for (int k = 0; k < m; k++) {
+            int idx = indices.get(k);
 
-            // Left: idx * countLeft - sumLeft
-            long left = (long) idx * i - (i == 0 ? 0 : prefix[i - 1]);
+            // Left: idx * left_cnt - prefix[k]
+            long left = (long) idx * k - prefix[k];
 
-            // Right: sumRight - idx * countRight
-            long right = (prefix[m - 1] - prefix[i]) - (long) idx * (m - i - 1);
+            // Right: (prefix[m] - prefix[k+1]) - idx * right_cnt
+            long right = (prefix[m] - prefix[k + 1]) - (long) idx * (m - 1 - k);
 
             res[idx] = left + right;
         }
@@ -673,11 +782,16 @@ def distance(nums):
 > needs `if m == 1: continue` only because it is written as two pieces.
 
 #### Formula Summary
+
+At rank `k` of a group of size `m`, with `idx = indices[k]` and `prefix` the size-`m+1` prefix sum:
+
 | Component | Formula | Meaning |
 |-----------|---------|---------|
-| **Left Distance** | `idx * countLeft - sumLeft` | Sum of `(idx - smaller_idx)` |
-| **Right Distance** | `sumRight - idx * countRight` | Sum of `(larger_idx - idx)` |
-| **Total Distance** | `leftDist + rightDist` | Sum of all `\|idx - other_idx\|` |
+| **Left count / sum** | `left_cnt = k`, `sum_left = prefix[k]` | the `k` equal values before `idx` |
+| **Right count / sum** | `right_cnt = m - 1 - k`, `sum_right = prefix[m] - prefix[k + 1]` | the equal values after `idx`, pivot excluded |
+| **Left Distance** | `idx * left_cnt - prefix[k]` | Sum of `(idx - smaller_idx)` |
+| **Right Distance** | `(prefix[m] - prefix[k + 1]) - idx * right_cnt` | Sum of `(larger_idx - idx)` |
+| **Total Distance** | `left + right` → `res[idx]` | Sum of all `\|idx - other_idx\|` |
 
 #### Similar Problems — the `count * value − sum` family
 
