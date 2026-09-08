@@ -905,6 +905,7 @@ python3 script/fix_readme_tags.py            # rewrite the Note column
 | 3190 | [Find Minimum Operations to Make All Elements Divisible by Three](https://leetcode.com/problems/find-minimum-operations-to-make-all-elements-divisible-by-three/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Math/FindMinimumOperationsToMakeAllElementsDivisibleByThree.java) | _O(n)_ | _O(1)_ | Easy | **math**, LC weekly | OK |
 | 3194 | [Minimum Average of Smallest and Largest Elements](https://leetcode.com/problems/minimum-average-of-smallest-and-largest-elements/description/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Math/minimumAverageOfSmallestAndLargestElements.java) | _O(nlogn)_ | _O(1)_ | Easy | **math**, LC weekly, `array`, `two pointers`, `sort` | OK |
 | 3993 | [Maximum Value of an Alternating Sequence](https://leetcode.com/problems/maximum-value-of-an-alternating-sequence/description/) | [Python](./leetcode_python/Math/maximum-value-of-an-alternating-sequence.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Math/MaximumValueOfAnAlternatingSequence.java) | _O(n)_ | _O(1)_ | Medium | **math**, LC weekly, good trick | again**** (1) |
+| 4039 | [Sum of Decoded Numbers](https://leetcode.com/problems/sum-of-decoded-numbers/description/) | [Python](./leetcode_python/Math/sum-of-decoded-numbers.py) | _O(n * logy)_ | _O(1)_ | Medium | **math**, digit split via divmod 10, string slice, modular exponentiation (`pow(x, y, MOD)`), LC weekly | AGAIN(1) |
 
 
 
