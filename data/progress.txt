@@ -1,4 +1,4 @@
-20260908: 979(again), 968(again), 4026(to note),449(todo),394(todo),34(todo),227(again, with univeral algo),104(ok),39(again*).79(again*),212(todo),211(again*), 2615(again!!!!), 1353(again, note !!!) | DP: 44(todo), 10(todo)276(todo) 2289(todo: mono stack + dp), 926(todo dp), 343(again!)
+20260908: 979(again), 968(again), 4026(to note),449(todo),394(todo),34(todo),227(again, with univeral algo),104(ok),39(again*).79(again*),212(todo),211(again*), 2615(again!!!!), 1353(again, note !!!) | DP: 44(todo), 10(todo)276(todo) 2289(todo: mono stack + dp), 926(again !!), 343(again!)
 
 
 20260907: 979(again), 968(again), 4026(to note),449(todo),394(todo),907(again!!),34(todo),227(again, with univeral algo),104(ok),39(again*).79(again*),212(todo),211(again*), 2615(again!!!!), 1353(again, note !!!) | DP: 44(todo), 10(todo), 343(todo), 276(todo), 1049(ok, but again!!!), 474(again!!, 2D 0/1 knapsack), 2289(todo: mono stack + dp), 926(todo dp)

@@ -107,6 +107,84 @@ class Solution:
             res = min(res, ones + zeros)
         return res
 
+
+# V0-1
+# IDEA: 1D DP (dp + one_so_far) (gpt)
+class Solution(object):
+    def minFlipsMonoIncr(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        if len(s) <= 1:
+            return 0
+
+        n = len(s)
+
+        # dp[i] = minimum flips to make s[:i] monotone increasing
+        dp = [0] * (n + 1)
+
+        one_so_far = 0
+
+        for i in range(1, n + 1):
+            val = s[i - 1]
+
+            if val == '0':
+                # Option 1:
+                # keep this 0
+                # -> flip all previous 1s to 0
+                #
+                # Option 2:
+                # flip this 0 -> 1
+                dp[i] = min(
+                    one_so_far,
+                    dp[i - 1] + 1
+                )
+
+            else:
+                # val == '1'
+
+                # Keep this 1
+                dp[i] = dp[i - 1]
+
+                one_so_far += 1
+
+        return dp[n]
+
+
+# V0-2
+# IDEA: 1D DP (gpt)
+class Solution(object):
+    def minFlipsMonoIncr(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        if len(s) <= 1:
+            return 0
+
+        # dp = minimum flips so far
+        # ones = number of 1s seen so far
+        dp = 0
+        ones = 0
+
+        for ch in s:
+            if ch == '1':
+                # Keep this 1
+                ones += 1
+            else:
+                # ch == '0'
+
+                # Option 1:
+                # flip this 0 -> 1
+                #
+                # Option 2:
+                # flip all previous 1s -> 0
+                dp = min(dp + 1, ones)
+
+        return dp
+
+
 # V0'
 # IDEA : PREFIX SUM
 """
