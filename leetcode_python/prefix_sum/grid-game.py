@@ -65,6 +65,28 @@ n == grid[r].length
 
 """
 
+"""
+NOTE !!! Dijkstra is NOT working for this LC
+
+
+**不適用，Dijkstra / 最長路徑演算法無法解決 LC 2017。**
+
+這想法無法成立的主要原因有兩個：
+
+---
+
+### 1. 為什麼 Dijkstra 會失敗？
+
+1. **目標函數不符合（博弈論 Minimax vs. 最優路徑）**：
+第一個機器人的目標**不是**讓自己的分數最大化，而是**讓第二個機器人能拿到的最高分數最小化**（典型的 Minimax 博弈問題）。如果機器人 1 貪心地拿走自己能得最高分的路線，可能會把剩餘地圖中分數更高的區域完整留給機器人 2。
+2. **網格幾何限制（$M = 2$ 的特性）**：
+因為網格只有 2 行，機器人 1 唯一的決策點就是**在哪一個列 $c$ 從第 0 行向下轉向第 1 行**。這意味著機器人 1 只有 $N$ 種固定的轉向選擇，完全不需要使用圖搜尋演算法。
+
+
+"""
+
+
+
 # V0
 # IDEA: PREFIX (BOTTOM) + SUFFIX (TOP) SUM OVER THE TURNING COLUMN
 #
@@ -106,5 +128,59 @@ class Solution(object):
             top -= grid[0][i]
             res = min(res, max(top, bottom))
             bottom += grid[1][i]
+
+        return res
+
+
+# V0-1
+# IDEA: PREFIX (BOTTOM) + SUFFIX (TOP) SUM OVER THE TURNING COLUMN (gemini)
+"""
+CORE IDEA:
+
+
+### 2. 正確的數學推導（前綴和 / 後綴和）
+
+當機器人 1 選擇在第 $c$ 列往下轉向時：
+
+1. 第一行的 $[0 \dots c]$ 和第二行的 $[c \dots N-1]$ 都會被清成 `0`。
+2. 此時機器人 2 只剩下**兩種可獲得非 0 分數的最佳路線**：
+* **選項 A（第一行後綴和）**：走第一行直到最後一格 $\rightarrow$ 獲得 $\text{grid}[0][c+1 \dots N-1]$。
+* **選項 B（第二行前綴和）**：第一格立刻往下走第二行 $\rightarrow$ 獲得 $\text{grid}[1][0 \dots c-1]$。
+
+
+
+機器人 2 會貪心選擇這兩者中的較大值 $\max(\text{top\_suffix}, \text{bottom\_prefix})$。
+機器人 1 的目標則是選擇一個轉向點 $c$，使機器人 2 的最終得分最小：
+
+$$\min_{0 \le c < N} \left( \max\left( \sum_{j=c+1}^{N-1} \text{grid}[0][j], \, \sum_{j=0}^{c-1} \text{grid}[1][j] \right) \right)$$
+
+
+"""
+class Solution(object):
+    def gridGame(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        N = len(grid[0])
+
+        # 初始狀態：機器人 1 若在第 0 列就往下，第一行剩餘的總和（後綴和）
+        top_sum = sum(grid[0])
+        bottom_sum = 0
+
+        res = float('inf')
+
+        for c in range(N):
+            # 機器人 1 經過 grid[0][c]，第一行剩餘分數減少
+            top_sum -= grid[0][c]
+
+            # 若機器人 1 在第 c 列轉向，機器人 2 能拿到的最高分數
+            robot2_score = max(top_sum, bottom_sum)
+
+            # 機器人 1 最小化機器人 2 的最大得分
+            res = min(res, robot2_score)
+
+            # 將 grid[1][c] 累加至第二行前綴和，供下一個轉向點 (c + 1) 使用
+            bottom_sum += grid[1][c]
 
         return res
