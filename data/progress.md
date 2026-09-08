@@ -69,7 +69,7 @@
 
 
 - bit_manipulation_examples.zh.html
-	- `2) Single Number II — LC 137 —— 對位元計數再取 mod 3`
+	- `3) Single Number III — LC 260 —— 用最低的相異位元切開`
 
 - linked_list_examples.md
 
@@ -315,7 +315,6 @@
 			- Wildcard / Regex Pattern Matching DP ⭐
 			- linear DP
 			- 2 states DP
-				- 276
 			- Unbounded Knapsack VS Knapsack DP
 		- set
 			- 187

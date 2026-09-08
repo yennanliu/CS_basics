@@ -61,6 +61,38 @@ DP eq
 
 
 """
+"""
+NOTE !!!
+
+below is WRONG !!!
+
+```
+if s[i] == s[i-1]:
+    #..
+else
+    # ...
+```
+
+
+Reason:
+
+    1. 根本沒有陣列 s 可以進行比較
+        
+        -> LC 276 是 計數類動態規劃（Counting DP
+           題目沒有給定任何已知顏色陣列 s
+
+    2. 加法原理（Summation） vs. 分支判斷（If-Else
+
+        ->
+
+        在構建第 i 支柵欄時，
+        塗與前一支相同的顏色
+        VS
+        塗與前一支不同的顏色
+
+        是同時存在且互斥的兩種可能性（Two Disjoint Cases
+
+"""
 class Solution:
     def numWays(self, n: int, k: int) -> int:
         # Edge cases
@@ -89,8 +121,10 @@ class Solution:
             ONLY 2 cases
             """
 
-            # Case 1: current color != previous color
             """
+
+            # Case 1: current color != previous color
+            
             NOTE !!!
 
             why `different` color is `(k - 1)` ?
@@ -99,11 +133,40 @@ class Solution:
                     -> it defines color in i idx is DIFFERENT from i-1 idx
                         -> so it ONLY has `k-1` choice
 
+
+            ---
+    
+
+            1. 前 i - 1 支柵欄共有 dp[i-1] 種合法塗色方式。
+
+            2. 第 i 支只需要避開第 i - 1 支的顏色，因此有 (k - 1) 種顏色選擇。
+
+            3. cnt = dp[i-1] * (k-1)
+
             """
             different = dp[i - 1] * (k - 1)
 
+            """
             # Case 2: current color == previous color
+            
             # Then previous two must be different.
+
+
+            ---
+
+            1. 題目規定不能連續 3 支同色。如果第 i 支與第 i-1 支同色，
+               那麼第 i-1 支與第 i-2 支必須異色。
+
+
+            2. 前 i-2 支柵欄共有 dp[i-2] 種合法塗色方式。
+
+            3. 第 i-1 支避開第 i-2 支的顏色（有 k-1 種選擇），
+               而第 i 支強制與第 i-1 支同色（只有 1 種選擇）。
+
+                
+            4. cnt = dp[i - 2] * (k - 1)
+
+            """
             same = dp[i - 2] * (k - 1)
 
             dp[i] = different + same
