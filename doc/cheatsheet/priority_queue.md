@@ -19,6 +19,7 @@
 | `PriorityQueue` API / peek without popping | [heap_language_apis.md](./heap_language_apis.md#java-priorityqueue) — the full API reference; [heap.md → Language APIs](./heap.md#language-apis) keeps the one-screen table |
 | Classic LC problems with Java solutions | [heap_examples.md → LC Examples](./heap_examples.md#lc-examples) |
 | PQ pattern → problem mapping | [heap.md → Decision Table](./heap.md#decision-table--which-heap-pattern) |
+| Greedy + PQ scheduling (LC 1353 Max Events, and why the LC 253 sweep does not transfer) | [heap_examples.md → LC 1353](./heap_examples.md#7-maximum-number-of-events-that-can-be-attended--lc-1353) — core idea, pattern table, similar LC; [heap.md → Pattern 5](./heap.md#problem-categories) for the one-line signature |
 
 ## See also
 

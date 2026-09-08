@@ -77,6 +77,7 @@
 - **Pattern**: Use heap to maintain events by start/end time or priority
 - **Key Insight (time sweep + deadline heap)**: sort by window **start** so items enter the heap in time order; heap by window **end** so each time slot serves the **most urgent (earliest deadline)** item; lazy-delete expired tops
 - **Signature**: *"one item per unit of time"* + *"each item has a validity window / deadline"* → see [heap_examples.md § LC 1353](./heap_examples.md#7-maximum-number-of-events-that-can-be-attended--lc-1353)
+- **Trap**: do **not** reuse the LC 253 counting sweep. There `[1,3]` *occupies* days 1–3; here it costs **one** day chosen from `{1,2,3}`, capped at one event per day — so max-overlap over-counts (`[[1,1],[1,1],[1,1]]` → sweep 3, answer 1). See [heap_examples.md § LC 1353](./heap_examples.md#7-maximum-number-of-events-that-can-be-attended--lc-1353)
 
 #### **Pattern 6: Data Stream Problems**
 - **Description**: Handle continuous data stream with min/max queries
@@ -741,7 +742,7 @@ public int minMeetingRooms(int[][] intervals) {
 }
 ```
 
-**Variation: Maximum Number of Events That Can Be Attended (LC 1353)** — twist: the heap holds **end days of currently-open events** and you sweep *day by day* (not interval by interval), attending the event that **ends soonest** each day. LC 253 counts concurrent intervals; LC 1353 *picks one per day* greedily.
+**Variation: Maximum Number of Events That Can Be Attended (LC 1353)** — twist: the heap holds **end days of currently-open events** and you sweep *day by day* (not interval by interval), attending the event that **ends soonest** each day. LC 253 counts concurrent intervals; LC 1353 *picks one per day* greedily. The two are not variants of one sweep: LC 253's interval **occupies** its whole span, LC 1353's costs a **single day** anywhere inside it, so counting overlaps here over-counts.
 
 ```java
 // java

@@ -378,6 +378,31 @@ events = [[1,4],[1,1]]      day 1: pq = [1, 4]
                             wrong (pop 4)  -> day 2: pq = [1] expired    => 1 ❌
 ```
 
+
+**Trap: this looks like LC 253, and the LC 253 sweep gives the wrong answer.**
+
+`[start, end]` does not mean the same thing in the two problems, so the counting
+sweep (max concurrent overlaps) cannot be reused here:
+
+| | LC 253 Meeting Rooms II | LC 1353 Max Events Attended |
+|---|---|---|
+| What `[1, 3]` means | **occupies** days 1, 2 and 3 | takes **one** day, any of `{1, 2, 3}` |
+| Question | peak concurrency | assign distinct days to as many events as possible |
+| Capacity | unlimited rooms at the peak | exactly **1 event per day** |
+| Answer is | max overlap count | number of successful heap pops |
+
+```text
+events = [[1,1],[1,1],[1,1]]        overlap at day 1 = 3   -> LC 253 sweep says 3
+                                    only 1 day exists      -> real answer 1
+
+events = [[1,3],[1,3],[1,3],[1,3]]  overlap on days 1..3 = 4 -> LC 253 sweep says 4
+                                    only 3 distinct days     -> real answer 3
+```
+
+A counting sweep answers *"how many intervals cover day X?"*. LC 1353 asks
+*"which event do I spend today on so I don't waste a later day?"* — the choice per
+day is what makes it greedy + heap rather than a concurrency count.
+
 **Pattern: Sweep Time + Min Heap of Deadlines (earliest-deadline-first)**
 
 | Step | Data structure | Purpose |
@@ -396,7 +421,7 @@ events = [[1,4],[1,1]]      day 1: pq = [1, 4]
 |------|---------|---------------|----------------|
 | 1751 | Max Number of Events That Can Be Attended II | Same events input | Events occupy the **whole** interval + values → DP + binary search, **not** heap |
 | 621 | Task Scheduler | Time sweep + heap, one slot per tick | Max heap on frequency + cooling queue (see [§ 17](#17-task-scheduler--lc-621)) |
-| 253 | Meeting Rooms II | Sort by start, min heap of end times | Counts *concurrent* intervals, doesn't pick a subset |
+| 253 | Meeting Rooms II | Sort by start, min heap of end times | Counts *concurrent* intervals, doesn't pick a subset — its sweep **over-counts** here (see the trap above) |
 | 2406 | Divide Intervals Into Min Number of Groups | Sort by start, min heap of end times | Same as 253, interval-partition framing (see [§ 15](#15-divide-intervals-into-minimum-number-of-groups--lc-2406)) |
 | 630 | Course Schedule III | Greedy by deadline + heap | Max heap **replace**: drop the longest course when overrunning |
 | 502 | IPO | Sort by one key, heap by another | Two-heap greedy (capital → max heap of profit) |
