@@ -41,7 +41,7 @@ half-translated sheet renders with English gaps rather than failing.
   is what makes a problem findable on LeetCode itself.
 
 
-## Status — 5045 / 5134 sections (98%)
+## Status — 5046 / 5143 sections (98%)
 
 | Sheet | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -106,9 +106,9 @@ half-translated sheet renders with English gaps rather than failing.
 | [hash_map](./cheatsheet/hash_map.md) | 43 | [✅](../i18n/zh/hash_map.md) |
 | [hash_map_examples](./cheatsheet/hash_map_examples.md) | 93 | [✅](../i18n/zh/hash_map_examples.md) |
 | [hashing](./cheatsheet/hashing.md) | 46 | [✅](../i18n/zh/hashing.md) |
-| [heap](./cheatsheet/heap.md) | 54 | [✅](../i18n/zh/heap.md) |
+| [heap](./cheatsheet/heap.md) | 54 | [52/54](../i18n/zh/heap.md) |
 | [heap_advanced](./cheatsheet/heap_advanced.md) | 24 | [✅](../i18n/zh/heap_advanced.md) |
-| [heap_examples](./cheatsheet/heap_examples.md) | 29 | [✅](../i18n/zh/heap_examples.md) |
+| [heap_examples](./cheatsheet/heap_examples.md) | 29 | [28/29](../i18n/zh/heap_examples.md) |
 | [heap_language_apis](./cheatsheet/heap_language_apis.md) | 20 | [✅](../i18n/zh/heap_language_apis.md) |
 | [intervals](./cheatsheet/intervals.md) | 70 | [68/70](../i18n/zh/intervals.md) |
 | [iterator](./cheatsheet/iterator.md) | 14 | [✅](../i18n/zh/iterator.md) |
@@ -116,7 +116,7 @@ half-translated sheet renders with English gaps rather than failing.
 | [java_trick_collections](./cheatsheet/java_trick_collections.md) | 57 | [✅](../i18n/zh/java_trick_collections.md) |
 | [java_trick_strings_sorting](./cheatsheet/java_trick_strings_sorting.md) | 42 | [✅](../i18n/zh/java_trick_strings_sorting.md) |
 | [kadane_algorithm](./cheatsheet/kadane_algorithm.md) | 42 | [✅](../i18n/zh/kadane_algorithm.md) |
-| [knapsack](./cheatsheet/knapsack.md) | 51 | [45/51](../i18n/zh/knapsack.md) |
+| [knapsack](./cheatsheet/knapsack.md) | 59 | [53/59](../i18n/zh/knapsack.md) |
 | [knapsack_01_zh](./cheatsheet/knapsack_01_zh.md) | 27 | [✅](../i18n/zh/knapsack_01_zh.md) |
 | [lc_category](./cheatsheet/lc_category.md) | 3 | [✅](../i18n/zh/lc_category.md) |
 | [lc_pattern](./cheatsheet/lc_pattern.md) | 72 | [✅](../i18n/zh/lc_pattern.md) |
@@ -130,10 +130,10 @@ half-translated sheet renders with English gaps rather than failing.
 | [n_sum](./cheatsheet/n_sum.md) | 16 | [✅](../i18n/zh/n_sum.md) |
 | [ood_design](./cheatsheet/ood_design.md) | 34 | [✅](../i18n/zh/ood_design.md) |
 | [palindrome](./cheatsheet/palindrome.md) | 66 | [✅](../i18n/zh/palindrome.md) |
-| [prefix_sum](./cheatsheet/prefix_sum.md) | 82 | [65/82](../i18n/zh/prefix_sum.md) |
+| [prefix_sum](./cheatsheet/prefix_sum.md) | 83 | [64/83](../i18n/zh/prefix_sum.md) |
 | [prefix_sum_advanced](./cheatsheet/prefix_sum_advanced.md) | 23 | [10/23](../i18n/zh/prefix_sum_advanced.md) |
 | [prefix_sum_examples](./cheatsheet/prefix_sum_examples.md) | 17 | [13/17](../i18n/zh/prefix_sum_examples.md) |
-| [priority_queue](./cheatsheet/priority_queue.md) | 3 | [✅](../i18n/zh/priority_queue.md) |
+| [priority_queue](./cheatsheet/priority_queue.md) | 3 | [2/3](../i18n/zh/priority_queue.md) |
 | [python_gotchas](./cheatsheet/python_gotchas.md) | 44 | [✅](../i18n/zh/python_gotchas.md) |
 | [python_trick](./cheatsheet/python_trick.md) | 66 | [✅](../i18n/zh/python_trick.md) |
 | [python_trick_indexing](./cheatsheet/python_trick_indexing.md) | 28 | [✅](../i18n/zh/python_trick_indexing.md) |
@@ -168,7 +168,7 @@ half-translated sheet renders with English gaps rather than failing.
 | [tree_backtrack](./cheatsheet/tree_backtrack.md) | 17 | [✅](../i18n/zh/tree_backtrack.md) |
 | [tree_codec](./cheatsheet/tree_codec.md) | 26 | [✅](../i18n/zh/tree_codec.md) |
 | [tree_construction](./cheatsheet/tree_construction.md) | 16 | [✅](../i18n/zh/tree_construction.md) |
-| [tree_examples](./cheatsheet/tree_examples.md) | 49 | [45/49](../i18n/zh/tree_examples.md) |
+| [tree_examples](./cheatsheet/tree_examples.md) | 49 | [43/49](../i18n/zh/tree_examples.md) |
 | [tree_lca_distance](./cheatsheet/tree_lca_distance.md) | 37 | [✅](../i18n/zh/tree_lca_distance.md) |
 | [trie](./cheatsheet/trie.md) | 26 | [✅](../i18n/zh/trie.md) |
 | [trie_examples](./cheatsheet/trie_examples.md) | 11 | [✅](../i18n/zh/trie_examples.md) |

@@ -1,6 +1,6 @@
 # Knapsack DP (0/1, Unbounded, Coin Change)
 
-> **Scope** — The knapsack family in full: 0/1 vs unbounded vs bounded, the subset-sum reduction, why the 0/1 inner loop runs backward, and the loop-order rule that separates combinations from permutations.
+> **Scope** — The knapsack family in full: 0/1 vs unbounded vs bounded vs group, the subset-sum reduction, why the 0/1 inner loop runs backward, and the loop-order rule that separates combinations from permutations.
 > **See also**: [dp.md](./dp.md) — the one-screen knapsack template and the rest of the DP patterns; [knapsack_01_zh.md](./knapsack_01_zh.md) — 0/1 背包的中文詳解 — a Traditional Chinese walkthrough of the 0/1 case only; [combinatorics_math_patterns.md](./combinatorics_math_patterns.md) — counting without DP.
 
 ## LeetCode Problem Lists
@@ -13,7 +13,8 @@
 ### Key Properties
 
 - **Complexity**: `O(n * W)` time, `O(W)` space after the 1-D rollup — `n` items, `W` capacity/target.
-- **Core Idea**: every item is a **take / skip** decision, and the DP dimension that separates the
+- **Core Idea**: every item is a **take / skip** decision (a **pick-one-of-many** decision once an
+  item carries a menu of options), and the DP dimension that separates the
   variants is the **capacity axis** — whether the inner loop reads values that already include the
   current item.
 - **When to Use**: a fixed set of items each with a cost, a hard capacity/target, and a
@@ -28,6 +29,7 @@
 | **Unbounded — permutations** | unlimited, order **does** matter | amount | items | 377 |
 | **Unbounded — min/max** | unlimited, order irrelevant | either | either | 322, 279, 1449 |
 | **Bounded** | each item ≤ `k` times | items (binary-split into 0/1 copies) | capacity, backward | 2585, 1774 |
+| **Group** | ≤ 1 **option** of each item | items | capacity **backward, outer**; options inner | 4040, 1155, 2218 |
 
 ### References
 
@@ -44,6 +46,7 @@
 | **Best value under a cap** | most value that fits the capacity? | int (max) | classic 0/1, 474, 879 |
 | **Fewest items to a target** | min coins / squares to make the amount? | int (min) or -1 | 322, 279 |
 | **Ordered vs unordered counting** | is `1+2` the same as `2+1`? | decides the loop nesting | 518 vs 377 |
+| **One form per item** | each item may be used in one of several forms — which? | int (min cost) | 4040, 1155, 2218 |
 
 ## Templates & Algorithms
 
@@ -1128,23 +1131,260 @@ after 6      {0: 6, 1: 6, 2: 7, 3: 6, ...}   -> dp[0] = 6, supports {6} and {1,2
 | LC 494 Target Sum | signs instead of piles — algebra turns it back into a subset-sum on the total |
 
 
+### **Deep Dive: Group 0/1 Knapsack — LC 4040** 🎁 ⭐⭐⭐⭐
+
+#### **When an Item Becomes a Group**
+
+In plain 0/1 knapsack an item is a single `(weight, value)` pair and the decision is
+**take / skip**. In a **group knapsack** each item arrives as a *menu* of mutually exclusive
+options, and the decision is **which one, or none**:
+
+```text
+0/1     item i  ->  (w, v)                       take it or don't
+group   item i  ->  {(w, c), (w', c'), ...}      take AT MOST ONE of these
+```
+
+Recognise it whenever an item can be **used in one of several forms**:
+
+| Problem | The group is… | Per-group rule |
+|---|---|---|
+| **LC 4040** Minimum Operations to Form Subset Sum I | one `x` and every value it can be transformed into, with the op count as the cost | ≤ 1 |
+| LC 1155 Number of Dice Rolls With Target Sum | one die and its faces `1..f` | **exactly** 1 |
+| LC 2218 Maximum Value of K Coins From Piles | one pile and each of its prefixes (`0..k` coins) | ≤ 1 |
+| LC 2585 Number of Ways to Earn Points | one question type used `0, 1, … count` times | ≤ 1 |
+| LC 474 Ones and Zeroes | — *(counter-example)* | plain 0/1 with a 2-D capacity, no menu |
+
+> **Bounded knapsack is a group knapsack.** "Usable up to `k` times" is the group
+> `{(w, v), (2w, 2v), …, (kw, kv)}`; the binary split in the table at the top of this file is
+> just the faster way to spell the same thing.
+
+#### **The State — same axis, new inner choice**
+
+The capacity axis does not change. Only what happens inside it does:
+
+```text
+0/1     dp[s] = best( dp[s],  dp[s - w] + v )                 ONE candidate
+group   dp[s] = best( dp[s],  best over the item's options )  |group| candidates
+```
+
+LC 4040 asks for a **minimum cost**, so the table is seeded with `INF` rather than `0`/`False`:
+
+```text
+dp[s] = fewest operations to make SOME subset of the elements seen so far sum to exactly s
+dp[0] = 0, everything else INF
+answer = dp[sum], or -1 if it never left INF
+```
+
+#### **The One Rule: at most one option per group** ⚠️
+
+Backward iteration is what stops an item being reused in plain 0/1 — but it does **not** stop two
+*different* options of the same group from both being taken. Two loop orders enforce the group
+rule; a third, the one that looks most like the 0/1 template, is wrong:
+
+```text
+✅ snapshot         read prev, write into a copy   every option competes against the state BEFORE the item
+✅ capacity OUTER   for s in W..0:                  dp[s-w] is a smaller index, not yet touched by this item
+                        for (w, c) in group:
+❌ options OUTER    for (w, c) in group:            option B reads a dp[] that option A has already updated
+                        for s in W..w:
+```
+
+The failure is not subtle. `nums = [5], sum = 3`: the group for `5` is `{(2, 1), (1, 2)}`
+(`5 -> 2`, and `5 -> 2 -> 1`). The answer is `-1` — one element cannot be two members of a subset —
+but the options-outer loop happily builds `2 + 1 = 3` and reports `3`.
+
+```python
+# python
+# The group knapsack skeleton -- both correct orders, minimisation flavour
+# time = O(n * W * |group|), space = O(W)
+def group_knapsack(groups, W):
+    INF = float('inf')
+    dp = [INF] * (W + 1)
+    dp[0] = 0
+
+    for options in groups:                       # options = [(weight, cost), ...]
+
+        # form A -- snapshot: dp is read-only for the whole group
+        new_dp = dp[:]
+        for w, c in options:
+            for s in range(w, W + 1):
+                if dp[s - w] != INF:
+                    new_dp[s] = min(new_dp[s], dp[s - w] + c)
+        dp = new_dp
+
+        # form B -- in place, capacity OUTER and backward (no copy needed)
+        # for s in range(W, -1, -1):
+        #     for w, c in options:
+        #         if s >= w and dp[s - w] != INF:
+        #             dp[s] = min(dp[s], dp[s - w] + c)
+
+    return dp[W]
+```
+
+#### **Building LC 4040's Group: only the two pure chains**
+
+The modelling half of the problem is deciding what the menu contains. An element `x` may be
+doubled and halved, **but all its multiplications must come before all its divisions** — and that
+rule collapses the menu to two straight chains:
+
+```text
+x, 2x, 4x, ...        k doublings, cost k
+x, x//2, x//4, ...    k halvings,  cost k
+```
+
+A mixed run is never worth it: `k` doublings then `j` halvings lands on `x * 2^(k-j)` — doubling
+loses no low bits, so the halvings undo it exactly — which a pure chain already reaches at cost
+`|k - j|` instead of `k + j`. Only **divide-then-multiply** could reach something genuinely new
+(`5 -> 2 -> 4`, which no pure chain gives), and that is precisely what the problem forbids.
+
+```text
+x = 10, sum = 13  ->  (10, 0), (5, 1), (2, 2), (1, 3)      20 is already over sum
+x =  2, sum = 13  ->  (2, 0), (4, 1), (8, 2), (1, 1)
+```
+
+Cut both chains as soon as they stop being useful — the doubling chain past `sum` (it only grows),
+the halving chain at `0` (it can never help a positive sum).
+
+```python
+# python
+# LC 4040 - Minimum Operations to Form Subset Sum I
+# IDEA: group 0/1 knapsack -- each x is a menu of (value, ops); take at most one entry per x
+# time = O(n * sum * log(max(x, sum))), space = O(sum)
+def minOperations(nums, sum):
+    INF = float('inf')
+    dp = [INF] * (sum + 1)                 # dp[s] = min ops for a subset summing to s
+    dp[0] = 0
+
+    for x in nums:
+        options = []
+        if x <= sum:
+            options.append((x, 0))         # NOTE !!! keep x untouched -- the zero-cost option
+        value, op = x, 0
+        while value <= sum:                # x, 2x, 4x, ...
+            if op > 0:
+                options.append((value, op))
+            value *= 2
+            op += 1
+        value, op = x, 0
+        while value > 0:                   # x//2, x//4, ...
+            value, op = value // 2, op + 1
+            if value == 0:
+                break
+            if value <= sum:
+                options.append((value, op))
+
+        new_dp = dp[:]                     # NOTE !!! snapshot => x is used at most once,
+        for value, cost in options:        #          in at most one of its forms
+            for s in range(value, sum + 1):
+                if dp[s - value] != INF:
+                    new_dp[s] = min(new_dp[s], dp[s - value] + cost)
+        dp = new_dp
+
+    return -1 if dp[sum] == INF else dp[sum]
+```
+
+```java
+// java
+// LC 4040 - Minimum Operations to Form Subset Sum I
+// IDEA: same group knapsack, written in place with the capacity loop OUTER and backward
+// time = O(n * sum * log(max(x, sum))), space = O(sum)
+public int minOperations(int[] nums, int sum) {
+    final int INF = Integer.MAX_VALUE / 2;
+    int[] dp = new int[sum + 1];
+    Arrays.fill(dp, INF);
+    dp[0] = 0;
+
+    for (int x : nums) {
+        List<int[]> options = new ArrayList<>();
+        for (long v = x, op = 0; v <= sum; v *= 2, op++)      // x, 2x, 4x, ...  (op = 0 keeps x)
+            options.add(new int[]{(int) v, (int) op});
+        for (long v = x, op = 0; v > 0; ) {                   // x/2, x/4, ...
+            v /= 2;
+            op++;
+            if (v == 0) break;
+            if (v <= sum) options.add(new int[]{(int) v, (int) op});
+        }
+
+        for (int s = sum; s >= 0; s--) {                      // NOTE !!! capacity OUTER, backward
+            for (int[] o : options) {                         //          options INNER
+                int value = o[0], cost = o[1];
+                if (s >= value && dp[s - value] != INF)
+                    dp[s] = Math.min(dp[s], dp[s - value] + cost);
+            }
+        }
+    }
+    return dp[sum] >= INF ? -1 : dp[sum];
+}
+```
+
+#### **Trace — `nums = [10, 2]`, `sum = 13`**
+
+```text
+groups       10 -> (10,0) (5,1) (2,2) (1,3)
+              2 -> (2,0)  (4,1) (8,2) (1,1)
+
+start        {0:0}
+after 10     {0:0, 1:3, 2:2, 5:1, 10:0}
+after 2      {0:0, 1:1, 2:0, 3:3, 4:1, 5:1, 6:2, 7:1, 8:2, 9:2, 10:0, 11:1, 12:0, 13:3}
+                                                                                  ^
+                                              dp[13] = dp[5] + 2 = 1 + 2 -> 10->5 and 2->4->8
+```
+
+Note `dp[1]` improving from `3` to `1`: the first group reached `1` only as `10 -> 5 -> 2 -> 1`,
+the second gets there with `2 -> 1`. Each row is the *cheapest* way to that sum, not a set of them.
+
+#### **Common Pitfalls — group knapsack** ⚠️
+
+- **Options outer with an in-place `dp`.** The 0/1 muscle memory, and it silently mixes two forms
+  of one element — see the `nums = [5], sum = 3` case above.
+- **Dropping the zero-cost option.** Without `(x, 0)` the element can only be used *transformed*,
+  so `nums = [4], sum = 4` returns `-1`.
+- **Enumerating mixed chains.** Wasted work here — but the pruning argument is a property of *this*
+  problem's ordering rule. If divide-then-multiply were allowed the two pure chains would be
+  **incomplete**, so re-read the rule before reusing the shortcut.
+- **Not bounding the chains.** The doubling chain never returns once it passes `sum`, and a halved
+  value of `0` cannot contribute to a positive sum; both are infinite/dead loops otherwise.
+- **Reading `dp[sum]` without the `INF` check**, which returns a huge sentinel instead of `-1`. In
+  Java also keep `INF` at `MAX_VALUE / 2` so `dp[...] + cost` cannot overflow.
+
+#### **Similar LeetCode Problems — groups & menus** 📚
+
+| Problem | Key |
+|---|---|
+| LC 1155 Number of Dice Rolls With Target Sum | **exactly** one face per die — so no "skip", and `dp` is a count: `dp[i][t] += dp[i-1][t-f]` |
+| LC 2218 Maximum Value of K Coins From Piles | group = prefixes of a pile; prefix-sum each pile first, then it is this template with `max` |
+| LC 2585 Number of Ways to Earn Points | group = "use this type `j` times", `j = 0..count` — bounded knapsack read as a group |
+| LC 1449 Form Largest Integer With Digits That Add up to Target | one *unbounded* menu shared by all positions — a group knapsack it is **not**; compare the loop order |
+| LC 474 Ones and Zeroes | plain 0/1, but the capacity is a `(zeros, ones)` pair — the other way an item's axis can grow |
+| LC 4040 Minimum Operations to Form Subset Sum I | the menu is *derived*, not given — most of the work is proving which options are reachable and cheapest |
+
+
 ## Pattern Selection Strategy
 
 ```text
-Is each item reusable?
+Does one item offer SEVERAL mutually exclusive options?
 │
-├─ NO  ──► 0/1 Knapsack
-│          for item in items:
-│              for w in range(W, weight-1, -1):     # BACKWARD
-│          └─ asks "can we hit the sum?"  -> boolean dp
-│          └─ asks "how many ways?"       -> dp[j] += dp[j-w]
-│          └─ asks "best value?"          -> dp[j] = max(dp[j], dp[j-w]+v)
+├─ YES ──► Group Knapsack  [4040, 1155, 2218, 2585]
+│          for group in groups:
+│              for w in range(W, -1, -1):             # CAPACITY outer, backward
+│                  for (weight, cost) in group:       # options inner
+│          └─ or snapshot dp and let every option read the pre-group state
+│          └─ options-outer + in-place dp is the classic bug: two forms of one item
 │
-└─ YES ──► Does order matter?
-           │
-           ├─ NO  (combinations, {1,2} == {2,1})  ──► items outer, amount inner  [518]
-           ├─ YES (permutations, {1,2} != {2,1})  ──► amount outer, items inner  [377]
-           └─ Min/max only (order irrelevant)     ──► either nesting             [322, 279]
+└─ NO  ──► Is each item reusable?
+    │
+    ├─ NO  ──► 0/1 Knapsack
+    │          for item in items:
+    │              for w in range(W, weight-1, -1):     # BACKWARD
+    │          └─ asks "can we hit the sum?"  -> boolean dp
+    │          └─ asks "how many ways?"       -> dp[j] += dp[j-w]
+    │          └─ asks "best value?"          -> dp[j] = max(dp[j], dp[j-w]+v)
+    │
+    └─ YES ──► Does order matter?
+               │
+               ├─ NO  (combinations, {1,2} == {2,1})  ──► items outer, amount inner  [518]
+               ├─ YES (permutations, {1,2} != {2,1})  ──► amount outer, items inner  [377]
+               └─ Min/max only (order irrelevant)     ──► either nesting             [322, 279]
 ```
 
 ## Summary
@@ -1157,3 +1397,5 @@ Is each item reusable?
 | **LC 494 Target Sum** | `sum1 = (total + T) / 2`, but guard `abs(T) <= total` and `(total + T)` even first |
 | **The guard** | `i - coin >= 0`, not `> 0` — the `== 0` case reads the seeded `dp[0]` |
 | **Bounded knapsack** | binary-split each item into `1, 2, 4, …` copies, then run plain 0/1 |
+| **Group knapsack** | put the *capacity* loop outside the *options* loop — options-outer takes two forms of one item |
+| **LC 4040** | the group is the two pure `x2` / `x//2` chains, cost = length; "multiply before divide" is what makes mixed runs redundant |
