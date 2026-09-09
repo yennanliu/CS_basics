@@ -287,6 +287,129 @@ The first run of it found a live bug: `add-time-space/SKILL.md` had shipped
 without its `---` fences, so its advertised description was the literal string
 `name: add-time-space`.
 
+## suggest_review.py
+
+Suggests what to practise next, chosen to keep the practice **balanced** rather
+than merely important. The problem it solves is bias: a good week on DP turns
+into three weeks on DP while linked list, design and slide window quietly go a
+month untouched — and a flat "most important, least recently seen" ranking makes
+that worse, because the biggest sections hold the most important problems and
+would fill the whole list.
+
+```bash
+python3 script/suggest_review.py                      # the balanced plan
+python3 script/suggest_review.py --top 20 --per-category 3
+python3 script/suggest_review.py --only must          # MUST rows only
+python3 script/suggest_review.py --only top100liked
+python3 script/suggest_review.py --section "Binary Search" --top 10
+python3 script/suggest_review.py --no-balance         # plain importance rank
+python3 script/suggest_review.py --markdown doc/review_suggestions.md
+python3 script/suggest_review.py --self-test          # run the unit tests
+```
+
+### What it reads
+
+Nothing is invented; all three signals are already in the repo.
+
+| Source | What it contributes |
+|--------|---------------------|
+| `README.md` | The problem universe **and** this repo's own judgement of what matters: the `MUST` marker, the curated-list tags (`blind75` / `neetcode150` / `neetcode250` / `top100liked`), the company tags, and the status column's `OK`/`AGAIN` plus its `*` run of review passes. |
+| git history | When each problem was last *worked on* — the commit that touched its solution file, or named its LC number in the subject. |
+| [`data/progress.txt`](../data/progress.txt) | When it was last *practised*, which is not the same thing: a re-read that produced no commit still counts. |
+
+[`doc/must_lc_list.md`](must_lc_list.md) is generated from the same README rows by
+`extract_must_lc.py`, so reading README covers it — and `--self-test` asserts the
+two scripts agree on which rows carry `MUST`, so the rule cannot drift apart.
+
+### How a problem is chosen
+
+**score = importance × staleness × category balance**
+
+- **Importance** — `MUST` +5.0, `top100liked` +2.5, `blind75` +2.5 (the NeetCode
+  lists nest, so only the narrowest one scores: 150 → +1.5, 250 → +0.7),
+  `google` +1.5 (the stated target is a Google loop), other company tags +0.2
+  each capped at +1.0, Medium +0.5 / Hard +0.3, and +0.2 per recorded pass on an
+  `AGAIN` row up to +2.4. That last one reads the pass count as *difficulty*,
+  not as progress — the `AGAIN` marker never graduates in this repo, see
+  [`lc-readiness-guide.md`](lc-readiness-guide.md).
+- **Staleness** — `1 − 0.5 ^ (days / half-life)`, half-life 21 days. Touched
+  today scores 0, never touched saturates near 1.
+- **Category balance** — each README section's share of total importance
+  compared against its share of *recent attention*. A section getting none of
+  the practice it is owed nearly doubles its problems' scores; one getting twice
+  its share is cut to 0.4.
+
+Picks are then spent **round-robin across categories in deficit order**, capped
+at `--per-category` (default 2), so no single hot topic can own the list. The
+cap and the score floor are a preference for breadth, not a quota: once every
+eligible category has had its share, the rest of `--top` is filled by score.
+
+### Reading the output
+
+Read the **balance table first** and the picks second — the table is the
+finding, the picks are one way to act on it.
+
+```text
+== Balance: attention vs importance ==
+
+  category                       n  importance     attention         ratio  last
+  Array                        139  ######...... #...........    0.19 UNDER  today
+  Linked list                   24  ##.......... ............    0.00 UNDER  36d
+  ...
+  Dynamic Programming           94  #####....... ############    2.20 over   today
+```
+
+`ratio` is the share of recent attention divided by the share of importance:
+`1.00` is a fair share, `UNDER` (< 0.5) is the bias to fix, `over` (> 1.8) is
+where the practice has been pooling.
+
+### Two things it deliberately ignores
+
+- **Bulk commits.** A commit touching more than `--bulk-limit` (default 6)
+  solution files is an import or a sweeping refactor, not a study session. This
+  repo has commits adding 393 generated Java files at once; counted naively they
+  made every one of those problems look practised on the same day and put 563
+  problems inside a 30-day window that actually saw 188. Their file paths are
+  dropped; an LC number written into the subject by hand still counts.
+- **Non-practice sections.** SQL, Shell Script, Concurrency and the unverified
+  `Newly Added (kamyu104 gap)` drafts are left out of the balance maths so they
+  cannot distort a category's share. `--all-sections` puts them back.
+
+### Tests
+
+```bash
+python3 script/test_suggest_review.py           # 88 tests, stdlib unittest, no deps
+python3 script/test_suggest_review.py -v
+python3 script/test_suggest_review.py ParseProgress   # one class
+python3 script/suggest_review.py --self-test    # the same suite, quietly
+```
+
+Three of the four inputs are hand-written files whose shape nobody controls, so
+the failure mode is not a crash — it is a parser that quietly reads fewer rows
+than there are and returns a plausible but shrunken plan. Every fixture in
+[`test_suggest_review.py`](../script/test_suggest_review.py) is therefore a line
+that is really in those files: a `MUST` in the status cell vs. the word "must" in
+prose, a duplicate README row for one LC, an annotation containing a comma, a
+line wrapped mid-annotation, a `DP:` label, a stray period between entries, a
+`git log` whose commit adds twenty files at once.
+
+The split mirrors `site/test/*.test.js`: the unit tests run against those
+fixtures so they do not move whenever a row does, and a `LiveFiles` class holds
+the real `README.md` and `data/progress.txt` — including the cross-check that
+`suggest_review.py` and `extract_must_lc.py` still agree on what a `MUST` row is,
+and that `EXCLUDED_SECTIONS` still names sections that exist (a renamed one would
+silently start competing for review slots).
+
+`--self-test` loads and runs that same module, so there is one copy of the
+assertions; it exists because the planner is most often run as a lone script and
+"does it still read the files correctly" should be one command away.
+
+Writing them turned up one live difference worth knowing:
+`site/build-review-plan.js` does not strip a run's label, so
+`| DP: 44(todo), 10(todo)` loses LC 44 — 8 entries in the current log, always the
+first problem after a label. This script strips them; the site build is
+untouched.
+
 ## Other Scripts
 
 | Script | Purpose |
@@ -295,5 +418,5 @@ without its `---` fences, so its advertised description was the literal string
 | `get_company_LC.sh` | Get company-specific LeetCode problems |
 | `get_lc_per_rating.py` | Filter problems by difficulty rating |
 | `get_must_problems.sh` | Extract must-do problems |
-| `get_review_list.py` | Generate review lists |
+| `get_review_list.py` | Fibonacci-interval spaced-repetition dates from `data/progress.txt` (see `suggest_review.py` above for the importance/balance view) |
 | `list_leetcode_solutions_by_type.sh` | List solutions by algorithm type |
