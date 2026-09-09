@@ -108,6 +108,7 @@ class Solution(object):
         # Empty chessboard
         board = [["."] * n for _ in range(n)]
 
+        # NOTE !!! we start from row = 0
         # Start from row 0
         self.helper(n, board, 0)
 
@@ -122,6 +123,26 @@ class Solution(object):
             self.res.append(result)
             return
 
+        """
+        NOTE !!!
+
+         we loop over column, if can put queen, then move to next row.
+
+        ->
+
+             一個 row
+                ↓
+            嘗試所有 column
+                ↓
+            這個位置安全嗎？
+                ↓ yes
+            放 Queen
+                ↓
+            下一個 row
+                ↓
+            backtrack
+
+        """
         # Try every column in this row
         for col in range(n):
 
