@@ -70,7 +70,7 @@
 
 
 - bit_manipulation_examples.zh.html
-	- `5) Number of 1 Bits — LC 191`
+	- `13) Gray Code — LC 89`
 		- https://yennj12.js.org/CS_basics/cheatsheets/bit_manipulation_examples.zh.html
 
 - linked_list_examples.md
