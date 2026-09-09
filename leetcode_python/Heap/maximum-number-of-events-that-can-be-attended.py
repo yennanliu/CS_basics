@@ -145,18 +145,60 @@ class Solution(object):
 
         heap = []
 
+        """
+        NOTE !!!
+
+        while `i < n or heap`
+
+
+        -> the while loop condition
+        """
         while i < n or heap:
 
             # 如果 heap 空了，直接跳到下一個 event 的 start day
+            """
+            NOTE !!!
+
+
+            if not heap,
+            we just `move forward` the time,
+            NOT doing anything else
+            """
             if not heap:
                 day = events[i][0]
 
-            # 把今天開始的 event 放進 heap
+            # 把今天`開始`的 event 放進 heap
+            """
+            NOTE !!!
+
+
+            1.  we insert events start day prev or at cur day to PQ
+
+                 (start_day <= cur_day)
+
+
+            2. we insert `end day`, NOT `start day`
+            """
             while i < n and events[i][0] <= day:
+                """
+                NOTE !!!
+
+                we insert `end day`, NOT `start day`
+                """
                 heapq.heappush(heap, events[i][1])
                 i += 1
 
+
             # 移除已經過期的 event
+            """
+            NOTE !!!
+
+
+            remove events in PQ which end day prev that cur day
+
+                (end_day < cur_day)
+
+            """
             while heap and heap[0] < day:
                 heapq.heappop(heap)
 
