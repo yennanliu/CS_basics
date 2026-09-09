@@ -70,7 +70,8 @@
 
 
 - bit_manipulation_examples.zh.html
-	- `3) Single Number III — LC 260 —— 用最低的相異位元切開`
+	- `5) Number of 1 Bits — LC 191`
+		- https://yennj12.js.org/CS_basics/cheatsheets/bit_manipulation_examples.zh.html
 
 - linked_list_examples.md
 
