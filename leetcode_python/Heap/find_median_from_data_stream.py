@@ -68,6 +68,17 @@ class MedianFinder(object):
 
 # V0-1
 # IDEA: 2 PQ (small, big) (gemini)
+"""
+
+1. 
+    利用 Python heapq 預設為小頂堆（Min-Heap）的特性：
+
+    small (Max-Heap)：存負數（-num）來模擬大頂堆。
+
+    large (Min-Heap)：直接存正數。
+
+
+"""
 import heapq
 
 class MedianFinder(object):
@@ -91,7 +102,7 @@ class MedianFinder(object):
         val = -heapq.heappop(self.small)
         heapq.heappush(self.large, val)
         
-        # 步驟 3: 維護數量平衡 (保持 len(small) >= len(large))
+        # 步驟 3: 維護`數量平衡` (保持 len(small) >= len(large))
         # 若 large 的數量多於 small，則把 large 堆頂最小值移回 small
         if len(self.large) > len(self.small):
             val = heapq.heappop(self.large)
@@ -101,10 +112,14 @@ class MedianFinder(object):
         """
         :rtype: float
         """
-        # 總個數為奇數：中位數就是 small 的堆頂
+
+        # case 1) total cnt is `odd`
+        # 總個數為`奇數`：中位數就是 small 的堆頂
         if len(self.small) > len(self.large):
             return float(-self.small[0])
-        # 總個數為偶數：中位數是兩堆堆頂的平均值
+        
+        # case 2) total cnt is `even`
+        # 總個數為`偶數`：中位數是兩堆堆頂的平均值
         else:
             return (-self.small[0] + self.large[0]) / 2.0
 
