@@ -47,7 +47,7 @@ SKILLS_DIR = ROOT / ".claude" / "skills"
 MAX_DESCRIPTION = 1024
 
 # Files that name a skill path and go stale when a skill is renamed.
-WIRING_SOURCES = ["CLAUDE.md", "site/pages/skills.html"]
+WIRING_SOURCES = ["CLAUDE.md", "site/pages/skills.html", "site/pages/lc-add.html"]
 
 NAME_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 FRONTMATTER_RE = re.compile(r"\A---\n(.*?)\n---\n", re.S)
@@ -216,11 +216,11 @@ def check_self_contained(rep, skill_dir, label=None):
 def check_wiring(rep, skills):
     """Every .claude/skills path named outside the skill still resolves.
 
-    This is the check that earns the file. site/pages/skills.html links each
-    reference file by name; renaming one leaves the skill perfectly valid and
-    the published page pointing at four GitHub 404s, and nothing else in the
-    build can see it — e2e-check.js only resolves links that are local files,
-    and these are absolute github.com URLs by necessity.
+    This is the check that earns the file. Each skill's page under site/pages/
+    links its files by name; renaming one leaves the skill perfectly valid and
+    the published page pointing at GitHub 404s, and nothing else in the build
+    can see it — e2e-check.js only resolves links that are local files, and
+    these are absolute github.com URLs by necessity.
     """
     sources = list(WIRING_SOURCES)
     sources += [str((d / "INSTALL.md").relative_to(ROOT)) for d in skills

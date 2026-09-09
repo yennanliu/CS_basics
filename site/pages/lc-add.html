@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <title>LC Add — CS_basics</title>
+  <meta name="description" content="An agent skill that files a solved LeetCode problem into this repo the way the other solutions are filed: the real slug off the problem page, a neighbour's layout copied rather than invented, a smoke test against the docstring's own examples, and a README row inserted in LC-number order.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📥</text></svg>">
+  <link rel="stylesheet" href="nav.css">
+  <link rel="stylesheet" href="lc-page.css">
+  <!-- Blocking on purpose: nav.js restores the stored theme before first paint. -->
+  <script src="nav.js"></script>
+  <style>
+    /* ── Page-local tokens ────────────────────────────────────────────────
+       The palette itself (--bg/--text/--border/--surface, light and dark)
+       comes from lc-page.css. Only things this page alone needs live here.
+       Deliberately the same vocabulary skills.html uses — the two skill pages
+       should read as one family, not as two designs. */
+    :root {
+      --mono: 'SF Mono','JetBrains Mono','IBM Plex Mono',ui-monospace,'Menlo',monospace;
+      --grid-line: rgba(128,128,128,0.10);
+      --tint: rgba(128,128,128,0.06);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 0; font-family: var(--mono);
+      background: var(--bg); color: var(--text);
+      transition: background 0.2s, color 0.2s;
+      font-size: 13px; line-height: 1.65;
+    }
+    a { color: var(--text); }
+    ::selection { background: var(--text); color: var(--bg); }
+
+    .container { max-width: 940px; margin: 0 auto; padding: 0 1.5rem; }
+
+    /* Sections fade up as they arrive. Everything is visible by default, so a
+       page with JS off (or reduced motion) simply shows the finished state. */
+    .reveal { opacity: 1; transform: none; }
+    .js .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .js .reveal.in { opacity: 1; transform: none; }
+
+    /* ── Hero ─────────────────────────────────────────────────────────── */
+    .hero {
+      position: relative; overflow: hidden;
+      border-bottom: 1px solid var(--border);
+      padding: 4rem 0 3rem;
+    }
+    /* A faint engineering grid. Purely decorative, so it is aria-hidden and
+       drawn in a pseudo-element rather than as an element in the flow. */
+    .hero::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+      background-size: 28px 28px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 30%, transparent 75%);
+      -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 30%, transparent 75%);
+    }
+    .hero > * { position: relative; }
+
+    .kicker {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--text-light); margin: 0 0 1.1rem;
+      border: 1px solid var(--border); padding: 0.25rem 0.7rem; border-radius: 100px;
+    }
+    .dot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--text);
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
+
+    .hero h1 {
+      margin: 0 0 0.9rem; font-size: clamp(2.1rem, 6.5vw, 3.4rem);
+      line-height: 1.05; letter-spacing: -0.035em; font-weight: 700;
+    }
+    .hero h1 .thin { color: var(--text-light); font-weight: 400; }
+    .lede { color: var(--text-light); font-size: 0.98rem; max-width: 62ch; margin: 0 0 1.8rem; }
+
+    .hero-actions { display: flex; gap: 0.7rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+    .btn {
+      display: inline-block; padding: 0.6rem 1.2rem; font-size: 0.85rem;
+      text-decoration: none; border: 1px solid var(--border);
+      color: var(--text); background: var(--surface); font-family: inherit;
+      transition: border-color 0.15s, transform 0.15s;
+    }
+    .btn:hover { border-color: var(--text); transform: translateY(-1px); }
+    .btn.primary { background: var(--text); color: var(--bg); border-color: var(--text); }
+
+    /* ── Terminal ─────────────────────────────────────────────────────── */
+    .term {
+      border: 1px solid var(--border); background: var(--surface);
+      font-size: 0.76rem; line-height: 1.62;
+    }
+    .term-bar {
+      display: flex; align-items: center; gap: 0.45rem;
+      padding: 0.5rem 0.8rem; border-bottom: 1px solid var(--border);
+      color: var(--text-light); font-size: 0.68rem; letter-spacing: 0.05em;
+    }
+    .term-bar i { width: 8px; height: 8px; border-radius: 50%; border: 1px solid var(--text-light); display: block; }
+    .term-bar span { margin-left: auto; }
+    .term pre {
+      margin: 0; padding: 1rem; overflow-x: auto; white-space: pre; font-family: inherit;
+      min-height: 15.5rem;
+    }
+    .caret {
+      display: inline-block; width: 0.55em; height: 1em; background: var(--text);
+      vertical-align: -0.15em; animation: blink 1.05s step-end infinite;
+    }
+    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+
+    /* ── Sections ─────────────────────────────────────────────────────── */
+    section { padding: 3.25rem 0; border-bottom: 1px solid var(--border); }
+    section:last-of-type { border-bottom: none; }
+    .eyebrow {
+      font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--text-light); margin: 0 0 0.7rem;
+    }
+    h2 { font-size: 1.35rem; margin: 0 0 0.5rem; letter-spacing: -0.02em; }
+    .sub { color: var(--text-light); margin: 0 0 1.9rem; max-width: 72ch; }
+    h3 { font-size: 0.92rem; margin: 2.2rem 0 0.7rem; }
+
+    /* ── Failure cards ────────────────────────────────────────────────── */
+    .fails { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1px;
+             background: var(--border); border: 1px solid var(--border); }
+    .fail { background: var(--bg); padding: 1.15rem 1.25rem; transition: background 0.15s; }
+    .fail:hover { background: var(--surface); }
+    .fail .glyph { font-size: 1.1rem; display: block; margin-bottom: 0.5rem; color: var(--text-light); }
+    .fail b { display: block; font-size: 0.95rem; margin-bottom: 0.4rem; }
+    .fail p { margin: 0 0 0.5rem; font-size: 0.82rem; color: var(--text-light); }
+    .fail p:last-child { margin-bottom: 0; }
+    .fail .cost { color: var(--text); }
+
+    /* ── The pipeline stepper ─────────────────────────────────────────── */
+    .rail { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 1.2rem; }
+    .step {
+      font-family: inherit; cursor: pointer; text-align: center;
+      border: 1px solid var(--border); background: var(--surface); color: var(--text);
+      padding: 0.85rem 0.25rem 0.7rem; transition: transform 0.15s, border-color 0.15s, background 0.15s;
+    }
+    .step:hover { border-color: var(--text); transform: translateY(-2px); }
+    .step[aria-checked="true"] { background: var(--text); color: var(--bg); border-color: var(--text); }
+    .step .n { display: block; font-size: 1.05rem; font-weight: 700; letter-spacing: -0.02em; }
+    .step .tag { display: block; font-size: 0.6rem; letter-spacing: 0.06em; text-transform: uppercase;
+                 margin-top: 0.35rem; color: var(--text-light); overflow: hidden; text-overflow: ellipsis; }
+    .step[aria-checked="true"] .tag { color: var(--bg); }
+    .step .bar { display: block; height: 3px; margin: 0.5rem 0.3rem 0; background: var(--text); }
+    .step[aria-checked="true"] .bar { background: var(--bg); }
+
+    .step-detail {
+      border: 1px solid var(--border); border-left: 3px solid var(--text);
+      background: var(--tint); padding: 1.1rem 1.3rem; min-height: 11.5rem;
+    }
+    .step-detail .sd-name { font-size: 1rem; font-weight: 700; margin: 0 0 0.35rem; }
+    .step-detail p { margin: 0 0 0.6rem; }
+    .step-detail .sd-rule { color: var(--text-light); margin: 0 0 0.75rem; }
+    .step-detail .sd-rule b { color: var(--text); font-weight: 700; }
+    .step-detail pre {
+      margin: 0; padding: 0.7rem 0.85rem; overflow-x: auto; font-size: 0.75rem;
+      background: var(--surface); border: 1px solid var(--border); font-family: inherit;
+    }
+
+    /* ── Tables ───────────────────────────────────────────────────────── */
+    .table-wrap { overflow-x: auto; border: 1px solid var(--border); }
+    table { border-collapse: collapse; width: 100%; min-width: 520px; font-size: 0.82rem; }
+    th, td { text-align: left; padding: 0.6rem 0.9rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    th { font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.09em;
+         color: var(--text-light); background: var(--surface); font-weight: 600; }
+    tbody tr:last-child td { border-bottom: none; }
+    td.num { white-space: nowrap; font-weight: 700; }
+    code { background: var(--surface); border: 1px solid var(--border);
+           padding: 0.05rem 0.3rem; font-size: 0.92em; font-family: inherit; }
+
+    /* ── Code blocks ──────────────────────────────────────────────────── */
+    .code-block { position: relative; background: var(--surface); border: 1px solid var(--border); margin: 0.75rem 0; }
+    .code-block pre { margin: 0; padding: 0.95rem 1rem; overflow-x: auto; font-size: 0.77rem; line-height: 1.6; font-family: inherit; }
+    .code-block code { background: none; border: none; padding: 0; }
+    .code-block .ann { color: var(--text-light); }
+    .copy {
+      position: absolute; top: 0.4rem; right: 0.4rem; background: var(--bg); color: var(--text-light);
+      border: 1px solid var(--border); font-family: inherit; font-size: 0.66rem;
+      padding: 0.2rem 0.5rem; cursor: pointer;
+    }
+    .copy:hover { color: var(--text); border-color: var(--text); }
+
+    /* ── Tabs (the anatomy, and the installs) ─────────────────────────── */
+    .tabs { display: flex; flex-wrap: wrap; border-bottom: 1px solid var(--border); margin-bottom: 1.1rem; }
+    .tab {
+      background: none; border: none; border-bottom: 2px solid transparent; color: var(--text-light);
+      font-family: inherit; font-size: 0.82rem; padding: 0.55rem 0.9rem; cursor: pointer; margin-bottom: -1px;
+    }
+    .tab:hover { color: var(--text); }
+    .tab[aria-selected="true"] { color: var(--text); border-bottom-color: var(--text); }
+    .panel p:first-child { margin-top: 0; }
+
+    /* ── Won't-do list ────────────────────────────────────────────────── */
+    ul.nots { list-style: none; margin: 0; padding: 0; }
+    ul.nots li {
+      display: grid; grid-template-columns: 1.4rem 1fr; gap: 0.7rem;
+      padding: 0.7rem 0; border-bottom: 1px solid var(--border); align-items: baseline;
+    }
+    ul.nots li:last-child { border-bottom: none; }
+    ul.nots .x { color: var(--text-light); font-weight: 700; }
+    ul.nots b { font-weight: 700; }
+    ul.nots span.why { display: block; color: var(--text-light); font-size: 0.82rem; margin-top: 0.15rem; }
+
+    /* ── File list ────────────────────────────────────────────────────── */
+    ul.files { list-style: none; margin: 0; padding: 0; }
+    ul.files li { border-bottom: 1px solid var(--border); padding: 0.75rem 0; }
+    ul.files li:last-child { border-bottom: none; }
+    ul.files a { font-weight: 700; text-decoration: none; border-bottom: 1px solid var(--border); }
+    ul.files a:hover { border-bottom-color: var(--text); }
+    ul.files span { display: block; color: var(--text-light); font-size: 0.82rem; }
+
+    .note { color: var(--text-light); font-size: 0.82rem; }
+
+    @media (max-width: 760px) {
+      .rail { grid-template-columns: repeat(4, 1fr); }
+      .step .tag { display: none; }
+      .hero { padding-top: 2.5rem; }
+      .term pre { min-height: 18rem; }
+    }
+    /* nav.css carries the site-wide opt-out; these are this page's own. */
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+      .js .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="site-nav" data-page="lc-add" data-base=""></div>
+<script>CSNav.mount();</script>
+
+<main id="main">
+
+  <!-- ── Hero ──────────────────────────────────────────────────────────── -->
+  <div class="hero">
+    <div class="container">
+      <p class="kicker"><span class="dot" aria-hidden="true"></span> Agent skill</p>
+      <h1>LC Add<br><span class="thin">solved &rarr; filed</span></h1>
+      <p class="lede">
+        Solving the problem is the interesting half. The other half is filing it: the real
+        slug off the problem page, the layout every neighbouring file already uses, a smoke
+        test against the docstring's own examples, and a README row that lines up with the
+        table it was inserted into. <code>/lc-add</code> does that half, in one pass, the
+        same way every time.
+      </p>
+      <div class="hero-actions">
+        <a class="btn primary" href="#install">Install it</a>
+        <a class="btn" href="#pipeline">See the pipeline</a>
+        <a class="btn" href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-add/SKILL.md">Read the source</a>
+      </div>
+
+      <div class="term">
+        <div class="term-bar">
+          <i aria-hidden="true"></i><i aria-hidden="true"></i><i aria-hidden="true"></i>
+          <span>/lc-add 4038 Hash_table</span>
+        </div>
+        <pre id="tape" aria-live="off">1  slug       weekly_517/ws.txt → count-integers-appearing-in-a-single-block
+              the method is countSpecialIntegers. That is not the slug.
+
+2  neighbour  read Hash_table/count-special-triplets.py, matched its shape
+
+3  write      leetcode_python/Hash_table/count-integers-…-single-block.py
+              V0 · IDEA : HASH MAP {val : [idx_1, idx_2, ...]}
+              time = O(n), space = O(n)
+
+4  variant    + V0-1, keeps only (first, last, cnt) — O(distinct) space
+
+5  test       [1,1,2,2,3]→3  [1,2,1]→1  [5]→1  []→0   V0 and V0-1 agree
+
+6  readme     row inserted after LC 4007 — README.md:494
+
+7  assumed    Easy, inferred from its position in weekly 517. Correct me.</pre>
+      </div>
+      <p class="note" style="margin-top:0.6rem">A real run, in the order it always happens: find the slug, copy a neighbour, write, test, file, then say what was guessed.</p>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- ── Why it exists ───────────────────────────────────────────────── -->
+    <section id="why" class="reveal">
+      <p class="eyebrow">Why a skill and not a habit</p>
+      <h2>Three ways filing a solution goes wrong</h2>
+      <p class="sub">
+        None of these are hypothetical — each one has actually landed in this repo, and each
+        one is invisible in a diff. They are why the recipe is written down once instead of
+        remembered differently every time.
+      </p>
+      <div class="fails">
+        <div class="fail">
+          <span class="glyph" aria-hidden="true">&#9639;</span>
+          <b>The slug is guessed</b>
+          <p>LC 4038's method is <code>countSpecialIntegers</code>. Its problem is <em>Count Integers Appearing in a Single Block</em>. A file named after the method is a file nobody finds.</p>
+          <p class="cost">Cost: a wrong file name and a dead README link.</p>
+        </div>
+        <div class="fail">
+          <span class="glyph" aria-hidden="true">&#9636;</span>
+          <b>The layout is invented</b>
+          <p>Every file in a pattern directory has the same shape — docstring, <code>V0</code>, <code>IDEA</code>, complexity, class. A file that invents its own is the one that breaks a later sweep over the tree.</p>
+          <p class="cost">Fix: read a neighbour before writing.</p>
+        </div>
+        <div class="fail">
+          <span class="glyph" aria-hidden="true">&#9676;</span>
+          <b>Nothing was run</b>
+          <p>The file name has dashes, so it is not importable — which makes it just slightly too annoying to test, which is how untested code gets committed and a README row lands with the wrong columns.</p>
+          <p class="cost">Rule: untested is unfinished.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── The pipeline ────────────────────────────────────────────────── -->
+    <section id="pipeline" class="reveal">
+      <p class="eyebrow">One pass, no branches</p>
+      <h2>Seven steps, in order</h2>
+      <p class="sub">
+        The steps never reorder and none of them is optional. Pick one to see what it does and
+        the rule that step exists to enforce.
+      </p>
+
+      <div class="rail" role="radiogroup" aria-label="Pipeline steps">
+        <button class="step" role="radio" aria-checked="true" data-n="1"
+                data-name="Find the problem's source of truth"
+                data-body="For a contest problem that is the weekly scratch file — it already holds the LC number, the problem URL, your idea notes and your draft, usually with the bug you hit and a (fixed) version under it. If you pasted a URL or the statement instead, that is the source of truth and this step is already done."
+                data-rule="The problem page is the authority on the title; the class name is not. Two things get read out of it — the URL slug IS the file name, and the position in the contest implies the difficulty."
+                data-code="grep -rn &quot;LC 4038&quot; leetcode_python/lc_weekly/*/ws.txt">
+          <span class="n">1</span><span class="bar" aria-hidden="true"></span><span class="tag">slug</span>
+        </button>
+        <button class="step" role="radio" aria-checked="false" data-n="2"
+                data-name="Read a neighbour before writing"
+                data-body="Open one recent file from the target directory and match it. The documented layout is the current house shape, but a directory that has drifted wins — the point is that the new file looks like the ones beside it, not like the spec."
+                data-rule="Copy a neighbour, never invent the layout."
+                data-code="ls leetcode_python/Hash_table/
+git log --oneline -12 --name-only">
+          <span class="n">2</span><span class="bar" aria-hidden="true"></span><span class="tag">neighbour</span>
+        </button>
+        <button class="step" role="radio" aria-checked="false" data-n="3"
+                data-name="Write the solution file"
+                data-body="Problem docstring first — before any import — then # V0 with a one-line IDEA header, an indented why that gives the invariant rather than restating the loop, and the time/space line as the last comment before the code. LeetCode's :type / :rtype docstring stays on the method, because these files get pasted back into LC."
+                data-rule="Your approach is the solution. A pasted draft gets its bugs fixed and keeps its idea as V0 — replacing it with a cleverer one teaches nothing and hides the bug you wanted found."
+                data-code="leetcode_python/&lt;Pattern_Dir&gt;/&lt;slug&gt;.py">
+          <span class="n">3</span><span class="bar" aria-hidden="true"></span><span class="tag">write</span>
+        </button>
+        <button class="step" role="radio" aria-checked="false" data-n="4"
+                data-name="A second variant needs a stated reason"
+                data-body="One canonical solution per problem. A second is justified by a different complexity, a distinct trick or a different language idiom — not a different spelling of the same loop. V0-1 is a variation on V0, V1 is a genuinely different approach, and the class is Solution2 / Solution3 so the file still imports."
+                data-rule="No reason, no variant. The reason goes in the IDEA block, where the next reader will look for it."
+                data-code="# V0-1
+# IDEA : ONE PASS, KEEP ONLY (first_idx, last_idx, count)
+# time = O(n), space = O(k), k = number of distinct values">
+          <span class="n">4</span><span class="bar" aria-hidden="true"></span><span class="tag">variant</span>
+        </button>
+        <button class="step" role="radio" aria-checked="false" data-n="5"
+                data-name="Smoke-test before reporting done"
+                data-body="The file name has dashes, so it is loaded by path rather than imported. Run the docstring's own examples plus the edges — empty, single element, all-same. Every variant gets the same call and they must agree."
+                data-rule="If an example from the problem statement disagrees, the solution is wrong. Say so, rather than adjusting the example to fit."
+                data-code="spec = importlib.util.spec_from_file_location('m', path)
+m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+print([m.Solution().countSpecialIntegers(x) for x in cases])">
+          <span class="n">5</span><span class="bar" aria-hidden="true"></span><span class="tag">test</span>
+        </button>
+        <button class="step" role="radio" aria-checked="false" data-n="6"
+                data-name="Add the README row"
+                data-body="Find the pattern's table and insert in ascending LC-number order — a four-digit contest problem goes at the end of it. Match the spacing of the rows already there. A Java link joins the same cell only if that file actually exists under leetcode_java/."
+                data-rule="Tags earn their place — the pattern in bold first, then the trick worth grepping for later, then LC weekly for a contest problem. Status is AGAIN(1) on a first pass, and a status you already set is never downgraded."
+                data-code="| 4038 | [Count Integers …](…) | [Python](./leetcode_python/Hash_table/…py) | _O(n)_ | _O(n)_ | Easy | **hash table**, hashmap, `span == cnt` trick | AGAIN(1) |">
+          <span class="n">6</span><span class="bar" aria-hidden="true"></span><span class="tag">readme</span>
+        </button>
+        <button class="step" role="radio" aria-checked="false" data-n="7"
+                data-name="Report what was assumed"
+                data-body="Close with the file, the README line number, the test results, and every inference made along the way: difficulty read off the contest position, examples written from the rule because the scratch file kept only the statement, a Java link deliberately left out."
+                data-rule="Say what was assumed, so it can be corrected. An unflagged guess is the one that survives."
+                data-code="assumed  Easy, inferred from its position in weekly 517
+assumed  Example 3 written from the rule - ws.txt kept only the statement
+omitted  no Java link: leetcode_java/ has no counterpart">
+          <span class="n">7</span><span class="bar" aria-hidden="true"></span><span class="tag">report</span>
+        </button>
+      </div>
+
+      <div class="step-detail" id="sd" aria-live="polite">
+        <p class="sd-name"></p>
+        <p class="sd-body"></p>
+        <p class="sd-rule"></p>
+        <pre class="sd-code"></pre>
+      </div>
+    </section>
+
+    <!-- ── The house layout ────────────────────────────────────────────── -->
+    <section id="layout" class="reveal">
+      <p class="eyebrow">What lands in the tree</p>
+      <h2>The house layout</h2>
+      <p class="sub">
+        Two artefacts, every time: one Python file and one README row. Both are shown here as
+        they were actually written for LC 4038 — the run the skill's own worked example
+        describes.
+      </p>
+
+      <div class="tabs" role="tablist" aria-label="Artefacts">
+        <button class="tab" role="tab" id="t-file" aria-controls="a-file" aria-selected="true">Solution file</button>
+        <button class="tab" role="tab" id="t-row"  aria-controls="a-row"  aria-selected="false">README row</button>
+        <button class="tab" role="tab" id="t-var"  aria-controls="a-var"  aria-selected="false">Second variant</button>
+      </div>
+
+      <div class="panel" role="tabpanel" id="a-file" aria-labelledby="t-file">
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code>"""                                    <span class="ann">&lt;- docstring first, before any import</span>
+
+4038. Count Integers Appearing in a Single Block
+Easy                                   <span class="ann">&lt;- number, exact title, difficulty</span>
+
+An integer x is called special if all occurrences of x in nums
+appear in a single contiguous block.
+
+Example 1:
+
+Input: nums = [1,1,2,2,3]
+
+Output: 3
+...
+"""
+
+# V0                                   <span class="ann">&lt;- the canonical solution</span>
+# IDEA : HASH MAP {val : [idx_1, idx_2, ....]}
+#
+#   collect every index a value lands on, then a value is special
+#   ONLY if its indices are consecutive.
+#
+#   the cheap way to test "consecutive" is NOT to walk the list, but
+#   to compare the span against the count:
+#
+#      last_idx - first_idx + 1 == number_of_occurrences
+#
+#   e.g. nums = [1,2,1] -&gt; idx of 1 = [0,2] -&gt; 2 - 0 + 1 = 3 != 2
+#
+# time = O(n), space = O(n)             <span class="ann">&lt;- last comment before the code</span>
+from collections import defaultdict
+
+
+class Solution(object):                 <span class="ann">&lt;- Python 2 style, like the whole tree</span>
+    def countSpecialIntegers(self, nums):
+        """
+        :type nums: List[int]           <span class="ann">&lt;- kept: these get pasted back into LC</span>
+        :rtype: int
+        """
+        # edge
+        if not nums:
+            return 0
+
+        my_map = defaultdict(list)
+        for i in range(len(nums)):
+            my_map[nums[i]].append(i)
+
+        cnt = 0
+        for k in my_map:
+            indices = my_map[k]
+            # NOTE !!! span == count  &lt;=&gt;  indices are consecutive
+            if indices[-1] - indices[0] + 1 == len(indices):
+                cnt += 1
+        return cnt</code></pre>
+        </div>
+        <p class="note">
+          <code># NOTE !!!</code> marks the one line a reader would get wrong. Once per file —
+          five of them mark nothing.
+        </p>
+      </div>
+
+      <div class="panel" role="tabpanel" id="a-row" aria-labelledby="t-row" hidden>
+        <p>Inserted into the pattern's own table, in ascending LC-number order:</p>
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code>| 4038 | [Count Integers Appearing in a Single Block](https://leetcode.com/problems/count-integers-appearing-in-a-single-block/) | [Python](./leetcode_python/Hash_table/count-integers-appearing-in-a-single-block.py) | _O(n)_ | _O(n)_ | Easy | **hash table**, hashmap, `span == cnt` trick, first/last idx, LC weekly | AGAIN(1) |</code></pre>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Column</th><th>Where it comes from</th></tr></thead>
+            <tbody>
+              <tr><td class="num">Title</td><td>The problem page — never the method name.</td></tr>
+              <tr><td class="num">Python / Java</td><td>The file just written. A Java link joins the same cell <b>only if that file exists</b> — checked, not assumed.</td></tr>
+              <tr><td class="num">O(t) / O(s)</td><td>The <code>time = / space =</code> line on <code>V0</code>, so the row and the file cannot disagree.</td></tr>
+              <tr><td class="num">Tags</td><td>Pattern in bold first, then the trick worth grepping for later, then <code>LC weekly</code>, then company tags in backticks if known.</td></tr>
+              <tr><td class="num">Status</td><td><code>AGAIN(1)</code> on a first pass. A status you have already set is never downgraded.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel" role="tabpanel" id="a-var" aria-labelledby="t-var" hidden>
+        <p>
+          The same problem earned a second block, because it is a genuinely different space
+          bound — not a different spelling of the same loop:
+        </p>
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code># V0-1
+# IDEA : ONE PASS, KEEP ONLY (first_idx, last_idx, count)
+#
+#   same "span == count" check as V0, but there is no need to KEEP
+#   every index : first, last and the count are all the check reads
+#
+#   -&gt; still O(n) space, but O(distinct) instead of O(n) list cells
+#
+# time = O(n), space = O(k), k = number of distinct values
+class Solution2(object):                <span class="ann">&lt;- so the file still imports</span>
+    def countSpecialIntegers(self, nums):
+        info = {}
+        for i, v in enumerate(nums):
+            if v not in info:
+                info[v] = [i, i, 1]
+            else:
+                info[v][1] = i
+                info[v][2] += 1
+        return sum(1 for first, last, cnt in info.values()
+                   if last - first + 1 == cnt)</code></pre>
+        </div>
+        <p class="note">
+          Both variants get the same smoke test and the results have to agree. A variant that
+          disagrees with <code>V0</code> is a bug found before the commit rather than after.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── How to call it ──────────────────────────────────────────────── -->
+    <section id="use" class="reveal">
+      <p class="eyebrow">Arguments are inferred, not interrogated</p>
+      <h2>How to call it</h2>
+      <p class="sub">
+        The slash form and plain English do the same thing. Paste a draft under the command
+        and it becomes <code>V0</code>; leave it out and the draft is usually already in the
+        contest scratch file, which is step 1's job to find.
+      </p>
+      <div class="code-block">
+        <button class="copy" type="button">copy</button>
+<pre><code>/lc-add 4038 Hash_table          <span class="ann"># + paste your draft under it</span>
+/lc-add 239 Sliding_Window
+
+add LC 4038 to leetcode_python/Hash_table/
+file yesterday's contest Q1
+add this solution and update the README</code></pre>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Left out</th><th>What happens</th></tr></thead>
+          <tbody>
+            <tr><td class="num">Pattern dir</td><td>Inferred from the technique the solution actually uses — not from the problem's LeetCode tags.</td></tr>
+            <tr><td class="num">Language</td><td>Taken from wherever the draft came from. Python by default.</td></tr>
+            <tr><td class="num">Difficulty</td><td>Read off the problem page, or inferred from the contest position (Q1 Easy, then Medium, Medium/Hard, Hard) — and flagged as an inference in the report.</td></tr>
+            <tr><td class="num">LC number</td><td>The one thing it will ask for. Everything else keys off it.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── Worked example ──────────────────────────────────────────────── -->
+    <section id="example" class="reveal">
+      <p class="eyebrow">End to end</p>
+      <h2>A worked run</h2>
+      <p class="sub">
+        <code>/lc-add 4038 Hash_table</code> with a draft pasted under it — the run the hero
+        terminal is showing, step by step and with what each one actually produced.
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Step</th><th>What it produced</th></tr></thead>
+          <tbody>
+            <tr><td class="num">1 slug</td><td><code>weekly_517/ws.txt</code> &rarr; <code>count-integers-appearing-in-a-single-block</code>; first of 4038/4039/4040/4041, so Easy</td></tr>
+            <tr><td class="num">2 neighbour</td><td>read <code>count-special-triplets.py</code> from the same directory</td></tr>
+            <tr><td class="num">3 write</td><td>wrote the file; the <code>IDEA</code> explains why <code>last - first + 1 == count</code> <b>is</b> the contiguity test</td></tr>
+            <tr><td class="num">4 variant</td><td>added <code>V0-1</code> keeping only <code>first/last/cnt</code> — justified: <code>O(distinct)</code> space, not <code>O(n)</code> cells</td></tr>
+            <tr><td class="num">5 test</td><td><code>[1,1,2,2,3]&rarr;3</code>, <code>[1,2,1]&rarr;1</code>, <code>[5]&rarr;1</code>, <code>[1,2,1,3,3,2]&rarr;1</code>, <code>[]&rarr;0</code> — both variants agreeing</td></tr>
+            <tr><td class="num">6 readme</td><td>row inserted after LC 4007, the last row of the hash-table table</td></tr>
+            <tr><td class="num">7 report</td><td>flagged: difficulty inferred from contest position, examples written from the rule</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note" style="margin-top:1rem">
+        The file it produced is in the tree:
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/count-integers-appearing-in-a-single-block.py">count-integers-appearing-in-a-single-block.py</a>.
+      </p>
+    </section>
+
+    <!-- ── What it will not do ─────────────────────────────────────────── -->
+    <section id="rules" class="reveal">
+      <p class="eyebrow">The guardrails</p>
+      <h2>What it will not do</h2>
+      <p class="sub">
+        A filing tool that quietly does more than filing is one you have to review line by
+        line, which defeats the point of having it.
+      </p>
+      <ul class="nots">
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Rewrite your approach into its own.</b><span class="why">A pasted draft gets its bugs fixed and keeps its idea. The bug you hit is the thing worth seeing fixed.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Hand back untested code.</b><span class="why">The docstring's own examples plus the edges run before anything is reported done.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Touch <code>data/progress.txt</code>.</b><span class="why">The practice log is your own record and gets its own commit — it is also the single source for the <a href="lc-review-plan.html">review plan</a>, so nothing else writes to it.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Downgrade a status you set.</b><span class="why"><code>AGAIN(1)</code> is for a first pass. An <code>OK</code> you earned stays <code>OK</code>.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Commit or push unless asked.</b><span class="why">It writes files and stops. The commit is yours to shape.</span></span></li>
+      </ul>
+    </section>
+
+    <!-- ── Install ─────────────────────────────────────────────────────── -->
+    <section id="install" class="reveal">
+      <p class="eyebrow">One markdown file, no dependencies</p>
+      <h2>Install</h2>
+      <p class="sub">
+        <code>SKILL.md</code> is the whole recipe — nothing to build and no network calls, so
+        the same source runs on any agent that takes a system prompt. Pick yours.
+      </p>
+
+      <div class="tabs" role="tablist" aria-label="Install target">
+        <button class="tab" role="tab" id="tab-cc"     aria-controls="p-cc"     aria-selected="true">Claude Code</button>
+        <button class="tab" role="tab" id="tab-claude" aria-controls="p-claude" aria-selected="false">Claude app</button>
+        <button class="tab" role="tab" id="tab-codex"  aria-controls="p-codex"  aria-selected="false">Codex</button>
+        <button class="tab" role="tab" id="tab-gemini" aria-controls="p-gemini" aria-selected="false">Gemini</button>
+        <button class="tab" role="tab" id="tab-other"  aria-controls="p-other"  aria-selected="false">Anything else</button>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-cc" aria-labelledby="tab-cc">
+        <p>Drop the skill directory into your user-level skills folder and it loads in every repo:</p>
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code>git clone --depth 1 https://github.com/yennanliu/CS_basics.git /tmp/cs_basics
+mkdir -p ~/.claude/skills
+cp -r /tmp/cs_basics/.claude/skills/lc-add ~/.claude/skills/</code></pre>
+        </div>
+        <p class="note">
+          Already installed inside this repo at <code>.claude/skills/lc-add/</code>, so a clone
+          of CS_basics needs no setup at all. Claude Code matches it on the description, or you
+          can call <code>/lc-add</code> by name — the directory name <em>is</em> the command.
+        </p>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-claude" aria-labelledby="tab-claude" hidden>
+        <p>Zip the directory, then <em>Customize &rarr; Skills &rarr; + &rarr; + Create skill &rarr; Upload a skill</em>:</p>
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code>cd .claude/skills &amp;&amp; zip -r lc-add.zip lc-add</code></pre>
+        </div>
+        <p class="note">
+          Leave the YAML frontmatter in <code>SKILL.md</code> intact. <code>description</code> is
+          what Claude matches your request against when deciding to load the skill on its own;
+          <code>name</code> is the display label, and the directory name is what supplies the
+          slash command.
+        </p>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-codex" aria-labelledby="tab-codex" hidden>
+        <p>Codex reads <code>AGENTS.md</code> at the repo root automatically. Point it at the skill:</p>
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code>## Filing a LeetCode solution
+
+When asked to add an LC problem to the repo, to file a problem just
+solved, or to wire an existing solution file into README, follow
+`.claude/skills/lc-add/SKILL.md`.</code></pre>
+        </div>
+        <p class="note">A pointer, not a copy — one source of truth means a fix reaches every agent at once.</p>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-gemini" aria-labelledby="tab-gemini" hidden>
+        <p>Same shape in <code>GEMINI.md</code>, or point at it for a single session:</p>
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code>gemini -p "Follow the recipe in .claude/skills/lc-add/SKILL.md. \
+File LC 4038 into leetcode_python/Hash_table/ — draft in @draft.py"</code></pre>
+        </div>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-other" aria-labelledby="tab-other" hidden>
+        <p>
+          Paste <code>SKILL.md</code> in as the system prompt. It is self-contained and has no
+          <code>references/</code> to carry. For Cursor or Windsurf, put the Codex pointer above
+          into a rule file (<code>.cursor/rules/lc-add.mdc</code> or the editor's equivalent).
+        </p>
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code>curl -sL https://raw.githubusercontent.com/yennanliu/CS_basics/master/.claude/skills/lc-add/SKILL.md</code></pre>
+        </div>
+        <p class="note">
+          One caveat away from this repo: steps 2 and 6 read a neighbouring solution file and an
+          existing README table. Point it at whatever plays those roles in your own tree, or it
+          falls back to the layout documented in <code>SKILL.md</code>.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── What's inside ───────────────────────────────────────────────── -->
+    <section id="inside" class="reveal">
+      <p class="eyebrow">Under the hood</p>
+      <h2>What is inside</h2>
+      <p class="sub">
+        One file. The steps live there and nowhere else — this page describes them, but
+        <code>SKILL.md</code> is what actually runs, so the two cannot drift into two recipes.
+      </p>
+      <ul class="files">
+        <li>
+          <a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-add/SKILL.md">SKILL.md</a>
+          <span>The whole recipe — the five prime directives, the seven steps with their commands, the file layout, the README row shape, the do-not list, and the LC 4038 worked example.</span>
+        </li>
+      </ul>
+      <p class="note" style="margin-top:1.2rem">
+        Gated in CI by
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/script/check_skills.py">check_skills.py</a> —
+        frontmatter every host can parse, the directory name pinned to the command name, and
+        whether the links on this page still resolve.
+      </p>
+    </section>
+
+    <!-- ── Where it fits ───────────────────────────────────────────────── -->
+    <section id="fits" class="reveal">
+      <p class="eyebrow">The rest of the loop</p>
+      <h2>Where it fits</h2>
+      <p class="sub">
+        <code>/lc-add</code> is the step right after you solve something — it turns a scratch
+        draft into a file the rest of the site can see. From there the
+        <a href="lc-explorer.html">explorer</a> indexes it, the
+        <a href="lc-review-plan.html">review plan</a> schedules it once you log the attempt,
+        <a href="suggest-review.html">suggest review</a> decides when it is owed another look,
+        and <a href="skills.html">LC Coach</a> is the one to ask whether the solution you just
+        filed would actually have passed.
+      </p>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <p>CS_basics — computer science fundamentals &amp; interview preparation</p>
+    <p>
+      <a href="https://github.com/yennanliu/CS_basics">github</a> |
+      <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+      <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Sections are visible in the stylesheet and only hidden once `.js` is on the
+  // root, so a page with no JS never gets stuck blank. The cost is that adding
+  // the class here would blank whatever is already on screen for a frame, so
+  // the above-the-fold sections are marked revealed in the *same* synchronous
+  // block — one paint, no flash.
+  var reveals = [].slice.call(document.querySelectorAll('.reveal'));
+  var onscreen = reveals.filter(function (el) {
+    return el.getBoundingClientRect().top < (window.innerHeight || 0);
+  });
+  document.documentElement.classList.add('js');
+  onscreen.forEach(function (el) { el.classList.add('in'); });
+
+  // ── Hero tape ─────────────────────────────────────────────────────────
+  // The run is written into the <pre> in the HTML, so it is there whatever
+  // happens to this script, and it is typed out by clipping that text rather
+  // than by assembling it here. Reduced motion keeps the finished frame.
+  var tape = document.getElementById('tape');
+  if (tape && !reduced) {
+    var TAPE = tape.textContent;
+    var caret = document.createElement('span');
+    caret.className = 'caret';
+    var text = document.createTextNode('');
+    tape.textContent = '';
+    tape.appendChild(text);
+    tape.appendChild(caret);
+    var i = 0;
+    (function tick() {
+      // Whole lines at a time once past the first: character-by-character for
+      // 700 characters is a long time to make someone watch.
+      i += i < 60 ? 1 : 3;
+      text.nodeValue = TAPE.slice(0, i);
+      if (i < TAPE.length) setTimeout(tick, i < 60 ? 26 : 12);
+      else caret.remove();
+    })();
+  }
+
+  // ── Pipeline stepper ──────────────────────────────────────────────────
+  var steps = [].slice.call(document.querySelectorAll('.step'));
+  var sd = document.getElementById('sd');
+
+  function showStep(step) {
+    steps.forEach(function (s) {
+      s.setAttribute('aria-checked', String(s === step));
+      s.tabIndex = s === step ? 0 : -1;
+    });
+    sd.querySelector('.sd-name').textContent = step.dataset.n + '. ' + step.dataset.name;
+    sd.querySelector('.sd-body').textContent = step.dataset.body;
+    // The rule is the line worth reading twice, so it gets a label. Every
+    // dataset value is plain text and is set as text — the label is a real
+    // element rather than a string concatenated into innerHTML.
+    var rule = sd.querySelector('.sd-rule');
+    rule.textContent = '';
+    var label = document.createElement('b');
+    label.textContent = 'Rule: ';
+    rule.appendChild(label);
+    rule.appendChild(document.createTextNode(step.dataset.rule));
+    sd.querySelector('.sd-code').textContent = step.dataset.code;
+  }
+
+  steps.forEach(function (step, idx) {
+    step.addEventListener('click', function () { showStep(step); });
+    step.addEventListener('keydown', function (e) {
+      var delta = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (!delta) return;
+      e.preventDefault();
+      var next = steps[(idx + delta + steps.length) % steps.length];
+      showStep(next);
+      next.focus();
+    });
+  });
+  if (steps.length) showStep(document.querySelector('.step[aria-checked="true"]') || steps[0]);
+
+  // ── Tabs ──────────────────────────────────────────────────────────────
+  // Panels toggle with the `hidden` attribute rather than a class, so a hidden
+  // panel is out of the accessibility tree and out of find-in-page too. Each
+  // tablist is handled independently, so the two on this page cannot fight.
+  [].slice.call(document.querySelectorAll('[role="tablist"]')).forEach(function (list) {
+    var tabs = [].slice.call(list.querySelectorAll('.tab'));
+    if (!tabs.length) return;
+
+    function select(tab) {
+      tabs.forEach(function (t) {
+        var on = t === tab;
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+      });
+    }
+    tabs.forEach(function (tab, i) {
+      tab.addEventListener('click', function () { select(tab); });
+      tab.addEventListener('keydown', function (e) {
+        var delta = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (!delta) return;
+        e.preventDefault();
+        var next = tabs[(i + delta + tabs.length) % tabs.length];
+        select(next);
+        next.focus();
+      });
+    });
+  });
+
+  // ── Copy buttons ──────────────────────────────────────────────────────
+  // clipboard.writeText needs a secure context; on plain http it rejects, so
+  // the button says so instead of silently doing nothing.
+  [].slice.call(document.querySelectorAll('.copy')).forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var code = btn.parentElement.querySelector('code').innerText;
+      var done = function (label) {
+        btn.textContent = label;
+        setTimeout(function () { btn.textContent = 'copy'; }, 1400);
+      };
+      if (!navigator.clipboard) return done('select it');
+      navigator.clipboard.writeText(code).then(function () { done('copied'); },
+                                               function () { done('select it'); });
+    });
+  });
+
+  // ── Reveal on scroll ──────────────────────────────────────────────────
+  if (reduced || !('IntersectionObserver' in window)) {
+    reveals.forEach(function (el) { el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      });
+    }, { rootMargin: '0px 0px -12% 0px' });
+    reveals.forEach(function (el) { io.observe(el); });
+  }
+})();
+</script>
+
+</body>
+</html>

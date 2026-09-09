@@ -66,6 +66,7 @@
     { id: 'lc-complexity-quiz', label: 'complexity', href: 'lc-complexity-quiz.html' },
     { id: 'suggest-review',     label: 'suggest',    href: 'suggest-review.html' },
     { id: 'skills',             label: 'coach',      href: 'skills.html' },
+    { id: 'lc-add',             label: 'lc-add',     href: 'lc-add.html' },
     { id: 'resources',          label: 'resources',  href: 'resources.html' },
     { id: 'github',             label: 'github',     href: 'https://github.com/yennanliu/CS_basics', external: true }
   ];

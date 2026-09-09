@@ -837,6 +837,8 @@ const ENTRY_POINTS = [
    `Step through Dijkstra, KMP, knapsack and ${visualizerCount - 3} more, one frame at a time.`],
   ['skills.html', 'Interview coach',
    'An agent skill that scores you the way an interviewer does — a six-point verdict, the debrief they would file, and what to drill next.'],
+  ['lc-add.html', 'File a solution',
+   'The agent skill that turns a solved problem into a committed one — the real slug, the house layout, a smoke test, and the README row.'],
   ['suggest-review.html', 'Suggest review',
    'A planner that measures which topics the practice is quietly skipping, then spends its picks on the ones that are owed them.'],
   ['problems.html', 'Problem index',
