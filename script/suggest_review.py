@@ -649,8 +649,10 @@ def truncate(text, width):
     return text if len(text) <= width else text[:width - 1] + "…"
 
 
-def render_text(picks, cats, recent, args, warnings, out=sys.stdout):
-    w = out.write
+def render_text(picks, cats, recent, args, warnings, out=None):
+    # Resolved at call time, not bound as a default: a default would capture the
+    # real stdout at import and write straight past a redirect_stdout.
+    w = (out or sys.stdout).write
 
     w("\n== Recent focus (last %d days) ==\n\n" % args.window)
     if recent["events"]:
@@ -747,205 +749,27 @@ def render_markdown(picks, cats, recent, args):
 
 
 # ── Self-test ───────────────────────────────────────────────────────────────
-# `python3 script/suggest_review.py --self-test`
-#
-# Three of the four inputs are hand-written files whose shape nobody controls —
-# README rows, the practice log, commit subjects — so the failure mode is not a
-# crash, it is a parser that quietly reads fewer rows than there are and hands
-# back a plausible-looking but shrunken plan. These pin the shapes that are
-# actually in the files, plus a live cross-check against the one other script
-# that reads the same `MUST` marker.
-SELF_TEST_README = """
-## Resource
-
-| 999 | ignored, above the first LC section | | | | Easy | | OK |
-
-## Array
-
-|  #  | Title | Solution | Time | Space | Difficulty | Note | Status |
-|-----|-------|----------|------|-------|------------|------|--------|
-| 48 | [Rotate Image](https://leetcode.com/problems/rotate-image/) | [Python](./leetcode_python/Array/rotate-image.py) | _O(n^2)_ | _O(1)_ | Medium | **array**, `google`, `blind75` | AGAIN*** (5) (MUST) |
-| 118 | [Pascal's Triangle](https://leetcode.com/problems/pascals-triangle/) | [Python](./leetcode_python/Array/pascals-triangle.py) | _O(n^2)_ | _O(1)_ | Easy | **array**, the row must be built from the one above, `amazon` | OK** |
-| 547 | [Friend Circles](https://leetcode.com/problems/number-of-provinces/) | [Python](./leetcode_python/DFS/friend-circles.py) | _O(n^2)_ | _O(n)_ | Medium | union find, `google` | AGAIN* |
-
-## Graph
-
-|  #  | Title | Solution | Time | Space | Difficulty | Note | Status |
-|-----|-------|----------|------|-------|------------|------|--------|
-| 547 | [Number of Provinces](https://leetcode.com/problems/number-of-provinces/) | [Java](./leetcode_java/x/NumberOfProvinces.java) | _O(n^2)_ | _O(n)_ | Medium | **graph**, MUST, `fb` | AGAIN***** (2) |
-"""
-
-SELF_TEST_PROGRESS = """20260909: 4(todo), 34(again!!) | DP: 44(todo)
-
-20260908: 70(ok*, o(1) space!!),198(
-ok*),139(again* 1d dp)
-
-20260907: top 100 (backtrack): 51(todo) | (LC must) 438(again), 2289(todo: mono stack + dp)
-20260906: 39(again*).79(again*), topo_sort, weekly_331
-,53(again)
-
------- review
-
-20260905  1740(ok)
-"""
-
-
-def _check(label, condition, detail=""):
-    if condition:
-        return 0
-    print("  FAIL  %s%s" % (label, (" — " + detail) if detail else ""))
-    return 1
-
-
 def self_test(args):
-    import tempfile
+    """`--self-test` — run script/test_suggest_review.py, quietly.
 
-    failures = 0
+    The assertions live in that file, not here, so there is one copy of them:
+    this flag exists because the planner is most often run as a lone script and
+    "does it still read the files correctly" should be one command away.
+    """
+    import unittest
 
-    # ── README shapes ────────────────────────────────────────────────────────
-    with tempfile.NamedTemporaryFile("w", suffix=".md", delete=False,
-                                     encoding="utf-8") as fh:
-        fh.write(SELF_TEST_README)
-        readme_path = fh.name
-    problems = parse_readme(readme_path)
-    os.unlink(readme_path)
-
-    failures += _check("README: rows above the first LC section are skipped",
-                       999 not in problems)
-    failures += _check("README: three distinct problems parsed",
-                       sorted(problems) == [48, 118, 547], sorted(problems))
-    failures += _check("README: MUST in the status cell is a marker",
-                       problems[48]["must"])
-    failures += _check("README: 'must' in note prose is NOT a marker",
-                       not problems[118]["must"])
-    failures += _check("README: an ALL-CAPS MUST token in the note IS a marker",
-                       problems[547]["must"])
-    failures += _check("README: a duplicate row folds into the first sighting",
-                       problems[547]["also_in"] == ["Graph"]
-                       and problems[547]["passes"] == 5
-                       and {"google", "fb"} <= problems[547]["tags"]
-                       and len(problems[547]["paths"]) == 2)
-    failures += _check("README: the `*` run counts review passes",
-                       problems[48]["passes"] == 3)
-    failures += _check("README: title and url come off the link",
-                       problems[48]["title"] == "Rotate Image"
-                       and problems[48]["url"].endswith("/rotate-image/"))
-    failures += _check("README: difficulty is read by value, not by position",
-                       problems[118]["difficulty"] == "Easy")
-
-    # ── Practice log shapes ──────────────────────────────────────────────────
-    with tempfile.NamedTemporaryFile("w", suffix=".txt", delete=False,
-                                     encoding="utf-8") as fh:
-        fh.write(SELF_TEST_PROGRESS)
-        progress_path = fh.name
-    dates, notes, warnings = parse_progress(progress_path)
-    os.unlink(progress_path)
-
-    failures += _check("log: `|` session separators do not hide problems",
-                       44 in dates)
-    failures += _check("log: an annotation containing a comma stays one entry",
-                       70 in dates and 198 in dates and 1 not in dates,
-                       "'(ok*, o(1) space!!)' must not split into '70' and 'o(1) space'")
-    failures += _check("log: an annotation wrapped across a newline is rejoined",
-                       198 in dates and 139 in dates)
-    failures += _check("log: a period between entries splits them",
-                       39 in dates and 79 in dates)
-    failures += _check("log: a bare continuation line joins the day above",
-                       53 in dates)
-    failures += _check("log: a `DP:` style label does not swallow the entry",
-                       44 in dates, "labelled runs are where the DP practice hides")
-    failures += _check("log: a label with its own parens is stripped",
-                       51 in dates and 100 not in dates)
-    failures += _check("log: a parenthesised label with no colon is stripped",
-                       438 in dates)
-    failures += _check("log: a colon inside an annotation is not a label",
-                       2289 in dates and notes[2289]["todo"] == 1,
-                       "'2289(todo: mono stack + dp)' must stay LC 2289")
-    failures += _check("log: named drills are not LC numbers",
-                       331 not in dates and 3 not in dates)
-    failures += _check("log: a separator line ends the day",
-                       1740 in dates)
-    failures += _check("log: `again` beats `ok` when a note says both",
-                       notes[34]["again"] == 1 and notes[70]["ok"] == 1)
-    failures += _check("log: nothing unreadable in the fixture",
-                       not warnings, warnings)
-
-    # ── Commit subjects ──────────────────────────────────────────────────────
-    def named(subject):
-        return {int(a or b) for a, b in SUBJECT_LC.findall(subject)}
-
-    failures += _check("subject: 'update 131 py' names LC 131",
-                       named("update 131 py") == {131})
-    failures += _check("subject: 'expand LC 131 (Template 8)' names LC 131",
-                       named("update backtrack cheatsheet: expand LC 131 (Template 8)")
-                       == {131})
-    failures += _check("subject: an LC range is not a problem",
-                       named("add 291 solutions for LC 1118-2000 coverage gap") == set(),
-                       "a bulk-import range must not mark LC 1118 as practised")
-    failures += _check("subject: a bare count is not a problem",
-                       named("cover the 13 uncovered classics") == set())
-
-    # ── Scoring ──────────────────────────────────────────────────────────────
-    failures += _check("staleness: touched today is ~0",
-                       staleness(0, DEFAULT_HALF_LIFE) == 0.0)
-    failures += _check("staleness: rises with days and stays under 1",
-                       staleness(7, 21) < staleness(60, 21) < 1.0)
-    failures += _check("staleness: never touched saturates",
-                       staleness(None, 21) > 0.99)
-
-    hot = {"section": "Hot", "importance_share": 0.5, "attention_share": 0.9,
-           "ratio": 1.8, "deficit": -0.4, "multiplier": 0.4, "last_ts": None, "n": 2}
-    cold = {"section": "Cold", "importance_share": 0.5, "attention_share": 0.1,
-            "ratio": 0.2, "deficit": 0.4, "multiplier": 1.8, "last_ts": None, "n": 3}
-    rows = ([{"lc": i, "section": "Hot", "score": 100 - i} for i in range(4)]
-            + [{"lc": 10 + i, "section": "Cold", "score": 50 - i} for i in range(3)])
-    cats = {"Hot": hot, "Cold": cold}
-
-    picked = pick(rows, cats, top=4, per_category=2, balanced=True, min_score_frac=0.0)
-    failures += _check("pick: the neglected category goes first",
-                       picked[0]["section"] == "Cold")
-    failures += _check("pick: no category takes more than --per-category",
-                       Counter(r["section"] for r in picked)["Hot"] == 2)
-    picked = pick(rows, cats, top=6, per_category=2, balanced=True, min_score_frac=0.0)
-    failures += _check("pick: the cap is a preference, not a quota",
-                       len(picked) == 6, "%d returned" % len(picked))
-    picked = pick(rows, cats, top=3, per_category=2, balanced=True, min_score_frac=0.9)
-    failures += _check("pick: a weak category is passed over",
-                       all(r["section"] == "Hot" for r in picked))
-    picked = pick(rows, cats, top=3, per_category=1, balanced=False)
-    failures += _check("pick: --no-balance is straight score order",
-                       [r["lc"] for r in picked] == [0, 1, 2])
-
-    # ── Live cross-checks ────────────────────────────────────────────────────
-    # The one rule shared with another script: what counts as a `MUST` row.
-    # extract_must_lc.py owns it and generates doc/must_lc_list.md from it, so
-    # the two readings must agree exactly or one of the two docs is lying.
-    live = parse_readme(args.readme)
-    failures += _check("live: README still parses as a table of problems",
-                       len(live) > 1000, "%d rows" % len(live))
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     try:
-        import extract_must_lc
-    except ImportError as exc:
-        failures += _check("live: extract_must_lc.py importable", False, str(exc))
-    else:
-        theirs = {num for num, _, _, _, _ in extract_must_lc.parse(args.readme)}
-        mine = {num for num, row in live.items() if row["must"]}
-        failures += _check("live: MUST agrees with extract_must_lc.py",
-                           mine == theirs,
-                           "only here %s / only there %s"
-                           % (sorted(mine - theirs)[:5], sorted(theirs - mine)[:5]))
+        import test_suggest_review
+    except ImportError:
+        print("script/test_suggest_review.py is not next to this script — "
+              "run the tests from a full checkout.", file=sys.stderr)
+        return 1
 
-    live_dates, _, live_warnings = parse_progress(args.progress)
-    failures += _check("live: the practice log still yields problems",
-                       len(live_dates) > 400, "%d problems" % len(live_dates))
-    # One known bad date (20260229 — 2026 is not a leap year) is in the log.
-    failures += _check("live: the log parses almost cleanly",
-                       len(live_warnings) <= 2, live_warnings)
+    suite = unittest.defaultTestLoader.loadTestsFromModule(test_suggest_review)
+    result = unittest.TextTestRunner(verbosity=1).run(suite)
+    return 0 if result.wasSuccessful() else 1
 
-    print("\n  %s — %d check(s) failed\n" % ("FAILED" if failures else "all checks pass",
-                                             failures))
-    return 1 if failures else 0
 
 
 # ── CLI ─────────────────────────────────────────────────────────────────────

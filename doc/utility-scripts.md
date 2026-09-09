@@ -304,7 +304,7 @@ python3 script/suggest_review.py --only top100liked
 python3 script/suggest_review.py --section "Binary Search" --top 10
 python3 script/suggest_review.py --no-balance         # plain importance rank
 python3 script/suggest_review.py --markdown doc/review_suggestions.md
-python3 script/suggest_review.py --self-test          # check the parsers
+python3 script/suggest_review.py --self-test          # run the unit tests
 ```
 
 ### What it reads
@@ -375,23 +375,40 @@ where the practice has been pooling.
   `Newly Added (kamyu104 gap)` drafts are left out of the balance maths so they
   cannot distort a category's share. `--all-sections` puts them back.
 
-### `--self-test`
+### Tests
 
 ```bash
-python3 script/suggest_review.py --self-test
+python3 script/test_suggest_review.py           # 88 tests, stdlib unittest, no deps
+python3 script/test_suggest_review.py -v
+python3 script/test_suggest_review.py ParseProgress   # one class
+python3 script/suggest_review.py --self-test    # the same suite, quietly
 ```
 
 Three of the four inputs are hand-written files whose shape nobody controls, so
 the failure mode is not a crash — it is a parser that quietly reads fewer rows
-than there are and returns a plausible but shrunken plan. The self-test pins the
-shapes that are really in those files (a `MUST` in the status cell vs. the word
-"must" in prose; a duplicate README row for one LC; an annotation containing a
-comma, a wrapped line, a `DP:` label, a stray period between entries) and
-cross-checks the live README against `extract_must_lc.py`.
+than there are and returns a plausible but shrunken plan. Every fixture in
+[`test_suggest_review.py`](../script/test_suggest_review.py) is therefore a line
+that is really in those files: a `MUST` in the status cell vs. the word "must" in
+prose, a duplicate README row for one LC, an annotation containing a comma, a
+line wrapped mid-annotation, a `DP:` label, a stray period between entries, a
+`git log` whose commit adds twenty files at once.
 
-It found one live difference worth knowing: `site/build-review-plan.js` does not
-strip a run's label, so `| DP: 44(todo), 10(todo)` loses LC 44. Eight entries in
-the current log — always the first problem after a label.
+The split mirrors `site/test/*.test.js`: the unit tests run against those
+fixtures so they do not move whenever a row does, and a `LiveFiles` class holds
+the real `README.md` and `data/progress.txt` — including the cross-check that
+`suggest_review.py` and `extract_must_lc.py` still agree on what a `MUST` row is,
+and that `EXCLUDED_SECTIONS` still names sections that exist (a renamed one would
+silently start competing for review slots).
+
+`--self-test` loads and runs that same module, so there is one copy of the
+assertions; it exists because the planner is most often run as a lone script and
+"does it still read the files correctly" should be one command away.
+
+Writing them turned up one live difference worth knowing:
+`site/build-review-plan.js` does not strip a run's label, so
+`| DP: 44(todo), 10(todo)` loses LC 44 — 8 entries in the current log, always the
+first problem after a label. This script strips them; the site build is
+untouched.
 
 ## Other Scripts
 
