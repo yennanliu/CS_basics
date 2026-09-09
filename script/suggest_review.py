@@ -592,6 +592,7 @@ def pick(rows, cats, top, per_category, balanced, min_score_frac=MIN_SCORE_FRAC)
     # still not be worth a pick ahead of a big one that is half-neglected.
     order = sorted(by_cat, key=lambda s: -cats[s]["deficit"])
     picks, cursor, used = [], {s: 0 for s in order}, defaultdict(int)
+    chosen = set()
 
     def take(section, cap, bar):
         queue = by_cat[section]
@@ -600,9 +601,10 @@ def pick(rows, cats, top, per_category, balanced, min_score_frac=MIN_SCORE_FRAC)
         while cursor[section] < len(queue):
             cand = queue[cursor[section]]
             cursor[section] += 1
-            if cand["score"] <= 0 or cand["score"] < bar:
+            if id(cand) in chosen or cand["score"] <= 0 or cand["score"] < bar:
                 continue
             picks.append(cand)
+            chosen.add(id(cand))
             used[section] += 1
             return True
         return False
@@ -620,14 +622,22 @@ def pick(rows, cats, top, per_category, balanced, min_score_frac=MIN_SCORE_FRAC)
     # every eligible category has had its share, the rest of the request is
     # filled by score. Without this, `--section "Binary Search" --top 5` returns
     # two problems, which reads as a bug rather than as a policy.
-    while len(picks) < top:
-        progressed = False
-        for section in order:
-            if len(picks) >= top:
-                break
-            progressed |= take(section, top, 0.0)
-        if not progressed:
+    #
+    # The refill reads `ranked` rather than resuming the per-category cursors.
+    # Those cursors have already been walked past every candidate the floor
+    # rejected — a queue is sorted by descending score, so a category whose best
+    # is under the floor has all of it under the floor and one pass exhausts it
+    # — and resuming from there returns short while eligible problems are still
+    # sitting in the pool. Reading `ranked` also makes "filled by score" true:
+    # continuing round-robin would instead keep ordering the remainder by
+    # category deficit.
+    for cand in ranked:
+        if len(picks) >= top:
             break
+        if id(cand) in chosen or cand["score"] <= 0:
+            continue
+        picks.append(cand)
+        chosen.add(id(cand))
     return picks
 
 
@@ -814,6 +824,20 @@ def main(argv=None):
 
     if args.self_test:
         return self_test(args)
+
+    # Both of these are divisors — the half-life in `staleness`, half the window
+    # in `category_balance` — so a zero turns a mistyped flag into a traceback
+    # instead of a usage line, and a negative one silently inverts the curve:
+    # the freshest problems would come out looking the most stale.
+    for flag, value in (("--top", args.top),
+                        ("--per-category", args.per_category),
+                        ("--window", args.window),
+                        ("--half-life", args.half_life),
+                        ("--bulk-limit", args.bulk_limit)):
+        if value <= 0:
+            ap.error("%s must be greater than 0" % flag)
+    if not 0.0 <= args.min_score_frac <= 1.0:
+        ap.error("--min-score-frac must be between 0 and 1")
 
     now = time.time()
 

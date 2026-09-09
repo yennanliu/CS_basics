@@ -594,6 +594,44 @@ class Pick(unittest.TestCase):
         picks = self.pick(top=3, min_score_frac=0.9)
         self.assertTrue(all(p["section"] == "Hot" for p in picks))
 
+    def test_the_refill_can_reach_candidates_the_floor_rejected(self):
+        # Each queue is sorted by descending score, so a category whose best
+        # candidate is under the floor has every candidate under it, and one
+        # round-robin pass walks its cursor to the end. A refill that resumed
+        # those cursors would find nothing and return short while eligible
+        # problems are still sitting in the pool.
+        rows = ([{"lc": 1, "section": "Hot", "score": 100.0}]
+                + [{"lc": 10 + i, "section": "Cold", "score": 10.0 - i}
+                   for i in range(3)])
+        cats = {"Hot": cat("Hot", -0.1), "Cold": cat("Cold", 0.4)}
+        picks = sr.pick(rows, cats, top=4, per_category=2,
+                        balanced=True, min_score_frac=0.3)
+        self.assertEqual(len(picks), 4)
+        self.assertEqual([p["lc"] for p in picks], [1, 10, 11, 12])
+
+    def test_the_floor_still_orders_the_first_pass(self):
+        # The rewind must not turn the floor into a no-op: the above-floor
+        # category is still served before any below-floor one.
+        rows = ([{"lc": 1, "section": "Hot", "score": 100.0}]
+                + [{"lc": 10 + i, "section": "Cold", "score": 10.0 - i}
+                   for i in range(3)])
+        cats = {"Hot": cat("Hot", -0.1), "Cold": cat("Cold", 0.4)}
+        picks = sr.pick(rows, cats, top=2, per_category=2,
+                        balanced=True, min_score_frac=0.3)
+        self.assertEqual([p["lc"] for p in picks], [1, 10])
+
+    def test_the_refill_does_not_hand_back_a_problem_twice(self):
+        picks = self.pick(top=99, min_score_frac=0.9)
+        self.assertEqual(len({p["lc"] for p in picks}), len(picks))
+        self.assertEqual(len(picks), len(self.rows))
+
+    def test_the_refill_is_ordered_by_score_not_by_deficit(self):
+        # Breadth is spent in the round-robin; what is left over is simply the
+        # best of the rest, which is what --per-category being a preference
+        # rather than a quota means.
+        picks = self.pick(top=5, per_category=2)
+        self.assertEqual([p["lc"] for p in picks[4:]], [2])
+
     def test_a_zero_score_is_never_picked(self):
         rows = [{"lc": 1, "section": "Hot", "score": 0.0}]
         self.assertEqual(sr.pick(rows, self.cats, 5, 2, True, 0.0), [])
@@ -689,6 +727,24 @@ class LiveFiles(unittest.TestCase):
         text = out.getvalue()
         self.assertIn("Balance: attention vs importance", text)
         self.assertIn("Suggested review", text)
+
+    def test_a_non_positive_divisor_is_a_usage_error_not_a_traceback(self):
+        # --half-life divides in staleness(), --window in category_balance();
+        # a zero used to abort with a ZeroDivisionError traceback, and a
+        # negative silently inverted the curve.
+        import io
+        import contextlib
+
+        for argv in (["--half-life", "0"], ["--window", "0"], ["--top", "0"],
+                     ["--per-category", "0"], ["--bulk-limit", "0"],
+                     ["--half-life", "-3"], ["--min-score-frac", "1.5"]):
+            with self.subTest(argv=argv):
+                err = io.StringIO()
+                with contextlib.redirect_stderr(err):
+                    with self.assertRaises(SystemExit) as raised:
+                        sr.main(argv + ["--top", "2"] if argv[0] != "--top" else argv)
+                self.assertEqual(raised.exception.code, 2)
+                self.assertIn("must be", err.getvalue())
 
     def test_an_impossible_filter_exits_nonzero_rather_than_printing_nothing(self):
         import io
