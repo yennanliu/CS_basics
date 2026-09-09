@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <title>Suggest Review — CS_basics</title>
+  <meta name="description" content="A command-line planner that picks what to practise next by importance x staleness, then spends the picks across categories in deficit order — so the topic you have been quietly avoiding gets a slot instead of the one you already like.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚖️</text></svg>">
+  <link rel="stylesheet" href="nav.css">
+  <link rel="stylesheet" href="lc-page.css">
+  <!-- Blocking on purpose: nav.js restores the stored theme before first paint. -->
+  <script src="nav.js"></script>
+  <style>
+    /* ── Page-local tokens ────────────────────────────────────────────────
+       The palette itself (--bg/--text/--border/--surface, light and dark)
+       comes from lc-page.css. Only things this page alone needs live here.
+       The vocabulary below is deliberately the same as skills.html's, so the
+       two hand-written explainer pages read as one family. */
+    :root {
+      --mono: 'SF Mono','JetBrains Mono','IBM Plex Mono',ui-monospace,'Menlo',monospace;
+      --grid-line: rgba(128,128,128,0.10);
+      --tint: rgba(128,128,128,0.06);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 0; font-family: var(--mono);
+      background: var(--bg); color: var(--text);
+      transition: background 0.2s, color 0.2s;
+      font-size: 13px; line-height: 1.65;
+    }
+    a { color: var(--text); }
+    ::selection { background: var(--text); color: var(--bg); }
+
+    .container { max-width: 940px; margin: 0 auto; padding: 0 1.5rem; }
+
+    /* Sections fade up as they arrive. Everything is visible by default, so a
+       page with JS off (or reduced motion) simply shows the finished state. */
+    .reveal { opacity: 1; transform: none; }
+    .js .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .js .reveal.in { opacity: 1; transform: none; }
+
+    /* ── Hero ─────────────────────────────────────────────────────────── */
+    .hero {
+      position: relative; overflow: hidden;
+      border-bottom: 1px solid var(--border);
+      padding: 4rem 0 3rem;
+    }
+    /* A faint engineering grid. Purely decorative, so it is aria-hidden and
+       drawn in a pseudo-element rather than as an element in the flow. */
+    .hero::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+      background-size: 28px 28px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 30%, transparent 75%);
+      -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 30%, transparent 75%);
+    }
+    .hero > * { position: relative; }
+
+    .kicker {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--text-light); margin: 0 0 1.1rem;
+      border: 1px solid var(--border); padding: 0.25rem 0.7rem; border-radius: 100px;
+    }
+    .dot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--text);
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
+
+    .hero h1 {
+      margin: 0 0 0.9rem; font-size: clamp(2.1rem, 6.5vw, 3.4rem);
+      line-height: 1.05; letter-spacing: -0.035em; font-weight: 700;
+    }
+    .hero h1 .thin { color: var(--text-light); font-weight: 400; }
+    .lede { color: var(--text-light); font-size: 0.98rem; max-width: 62ch; margin: 0 0 1.8rem; }
+
+    .hero-actions { display: flex; gap: 0.7rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+    .btn {
+      display: inline-block; padding: 0.6rem 1.2rem; font-size: 0.85rem;
+      text-decoration: none; border: 1px solid var(--border);
+      color: var(--text); background: var(--surface); font-family: inherit;
+      transition: border-color 0.15s, transform 0.15s;
+    }
+    .btn:hover { border-color: var(--text); transform: translateY(-1px); }
+    .btn.primary { background: var(--text); color: var(--bg); border-color: var(--text); }
+
+    /* ── Terminal ─────────────────────────────────────────────────────── */
+    .term {
+      border: 1px solid var(--border); background: var(--surface);
+      font-size: 0.76rem; line-height: 1.62;
+    }
+    .term-bar {
+      display: flex; align-items: center; gap: 0.45rem;
+      padding: 0.5rem 0.8rem; border-bottom: 1px solid var(--border);
+      color: var(--text-light); font-size: 0.68rem; letter-spacing: 0.05em;
+    }
+    .term-bar i { width: 8px; height: 8px; border-radius: 50%; border: 1px solid var(--text-light); display: block; }
+    .term-bar span { margin-left: auto; }
+    .term pre { margin: 0; padding: 1rem; overflow-x: auto; white-space: pre; font-family: inherit; }
+    .term b { font-weight: 700; }
+    .term .dim { color: var(--text-light); }
+
+    /* ── Sections ─────────────────────────────────────────────────────── */
+    section { padding: 3.25rem 0; border-bottom: 1px solid var(--border); }
+    section:last-of-type { border-bottom: none; }
+    .eyebrow {
+      font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--text-light); margin: 0 0 0.7rem;
+    }
+    h2 { font-size: 1.35rem; margin: 0 0 0.5rem; letter-spacing: -0.02em; }
+    .sub { color: var(--text-light); margin: 0 0 1.9rem; max-width: 72ch; }
+    h3 { font-size: 0.92rem; margin: 2.2rem 0 0.7rem; }
+
+    /* ── The formula ──────────────────────────────────────────────────── */
+    .formula {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1px;
+      background: var(--border); border: 1px solid var(--border); margin-bottom: 1.6rem;
+    }
+    .factor { background: var(--bg); padding: 1.15rem 1.25rem; }
+    .factor .op {
+      font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--text-light); display: block; margin-bottom: 0.45rem;
+    }
+    .factor b { display: block; font-size: 1rem; margin-bottom: 0.4rem; }
+    .factor p { margin: 0; font-size: 0.82rem; color: var(--text-light); }
+
+    /* ── Balance meter ────────────────────────────────────────────────── */
+    /* Two stacked bars per row — importance above, attention below — because
+       the finding is the *gap* between them, and two bars show a gap in a way
+       a single number never does. Widths are inline because each row's data
+       is its own; everything else is here. */
+    .meter { border: 1px solid var(--border); }
+    .meter-row {
+      display: grid; grid-template-columns: 9.5rem 1fr 4.6rem;
+      gap: 0.9rem; align-items: center;
+      padding: 0.55rem 0.9rem; border-bottom: 1px solid var(--border);
+    }
+    .meter-row:last-child { border-bottom: none; }
+    .meter-row .cat { font-size: 0.8rem; }
+    .meter-bars { display: grid; gap: 3px; }
+    .meter-bars i { display: block; height: 7px; background: var(--text); min-width: 1px; }
+    /* Attention is hatched, importance is solid — the site is monochrome, so
+       texture carries what colour would elsewhere. */
+    .meter-bars i.att { background: repeating-linear-gradient(90deg, var(--text) 0 3px, transparent 3px 6px); }
+    .meter-row .ratio { font-size: 0.76rem; text-align: right; color: var(--text-light); }
+    .meter-row .ratio b { color: var(--text); }
+    .meter-row.under .ratio b { border-bottom: 2px solid var(--text); }
+    .legend { display: flex; gap: 1.3rem; flex-wrap: wrap; margin: 0.8rem 0 0; font-size: 0.76rem; color: var(--text-light); }
+    .legend span { display: inline-flex; align-items: center; gap: 0.4rem; }
+    .legend i { width: 22px; height: 7px; display: block; background: var(--text); }
+    .legend i.att { background: repeating-linear-gradient(90deg, var(--text) 0 3px, transparent 3px 6px); }
+
+    /* ── Tables ───────────────────────────────────────────────────────── */
+    .table-wrap { overflow-x: auto; border: 1px solid var(--border); }
+    table { border-collapse: collapse; width: 100%; min-width: 520px; font-size: 0.82rem; }
+    th, td { text-align: left; padding: 0.6rem 0.9rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    th { font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.09em;
+         color: var(--text-light); background: var(--surface); font-weight: 600; }
+    tbody tr:last-child td { border-bottom: none; }
+    td code, p code, li code { background: var(--surface); border: 1px solid var(--border);
+           padding: 0.05rem 0.3rem; font-size: 0.92em; font-family: inherit; white-space: nowrap; }
+    .flag { white-space: nowrap; font-weight: 700; }
+    .dflt { color: var(--text-light); white-space: nowrap; }
+
+    /* ── Code blocks ──────────────────────────────────────────────────── */
+    .code-block { position: relative; background: var(--surface); border: 1px solid var(--border); margin: 0.75rem 0; }
+    .code-block pre { margin: 0; padding: 0.95rem 1rem; overflow-x: auto; font-size: 0.77rem; line-height: 1.6; font-family: inherit; }
+    .code-block code { background: none; border: none; padding: 0; }
+    .copy {
+      position: absolute; top: 0.4rem; right: 0.4rem; background: var(--bg); color: var(--text-light);
+      border: 1px solid var(--border); font-family: inherit; font-size: 0.66rem;
+      padding: 0.2rem 0.5rem; cursor: pointer;
+    }
+    .copy:hover { color: var(--text); border-color: var(--text); }
+
+    /* ── Tabs ─────────────────────────────────────────────────────────── */
+    .tabs { display: flex; flex-wrap: wrap; border-bottom: 1px solid var(--border); margin-bottom: 1.1rem; }
+    .tab {
+      background: none; border: none; border-bottom: 2px solid transparent; color: var(--text-light);
+      font-family: inherit; font-size: 0.82rem; padding: 0.55rem 0.9rem; cursor: pointer; margin-bottom: -1px;
+    }
+    .tab:hover { color: var(--text); }
+    .tab[aria-selected="true"] { color: var(--text); border-bottom-color: var(--text); }
+    .panel p:first-child { margin-top: 0; }
+
+    /* ── Callout ──────────────────────────────────────────────────────── */
+    .callout {
+      border: 1px solid var(--border); border-left: 3px solid var(--text);
+      background: var(--tint); padding: 1rem 1.25rem; margin: 1.2rem 0;
+    }
+    .callout p { margin: 0 0 0.5rem; }
+    .callout p:last-child { margin: 0; }
+    .callout b { font-weight: 700; }
+
+    .note { color: var(--text-light); font-size: 0.82rem; }
+
+    @media (max-width: 700px) {
+      .hero { padding-top: 2.5rem; }
+      .meter-row { grid-template-columns: 7rem 1fr 3.6rem; gap: 0.6rem; }
+      .meter-row .cat { font-size: 0.72rem; }
+    }
+    /* nav.css carries the site-wide opt-out; these are this page's own. */
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+      .js .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="site-nav" data-page="suggest-review" data-base=""></div>
+<script>CSNav.mount();</script>
+
+<main id="main">
+
+  <!-- ── Hero ──────────────────────────────────────────────────────────── -->
+  <div class="hero">
+    <div class="container">
+      <p class="kicker"><span class="dot" aria-hidden="true"></span> Command-line planner</p>
+      <h1>Suggest Review<br><span class="thin">practise what you are avoiding</span></h1>
+      <p class="lede">
+        A good week on DP turns into three weeks on DP, while linked list, design and
+        slide window quietly go a month untouched — and they are exactly what a coding
+        round is made of. This script measures that drift against the repo's own history,
+        then spends its picks on the topics that are owed them.
+      </p>
+      <div class="hero-actions">
+        <a class="btn primary" href="#run">Run it</a>
+        <a class="btn" href="#flags">All the flags</a>
+        <a class="btn" href="https://github.com/yennanliu/CS_basics/blob/master/script/suggest_review.py">Read the source</a>
+      </div>
+
+      <div class="term">
+        <div class="term-bar">
+          <i aria-hidden="true"></i><i aria-hidden="true"></i><i aria-hidden="true"></i>
+          <span>python3 script/suggest_review.py</span>
+        </div>
+<pre><span class="dim">== Balance: attention vs importance ==</span>
+
+  category                       n  importance     attention         ratio  last
+  <b>Array                        139  ######...... #...........    0.19 UNDER</b>  today
+  <b>Linked list                   24  ##.......... ............    0.00 UNDER</b>  36d
+  <b>Design                        45  #........... ............    0.24 UNDER</b>  23d
+  Binary Search                 46  ###......... ##..........    0.94        today
+  Tree                          62  ####........ ####........    1.12        1d
+  Recursion                     29  ##.......... ####........    1.94 over   1d
+  <b>Dynamic Programming           94  #####....... ############    2.19 over</b>  today
+</pre>
+      </div>
+      <p class="note" style="margin-top:0.6rem">
+        The table is the finding. The list of problems underneath it is one way to act on it.
+      </p>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- ── Run it ──────────────────────────────────────────────────────── -->
+    <section id="run" class="reveal">
+      <p class="eyebrow">No install, no dependencies</p>
+      <h2>Running it</h2>
+      <p class="sub">
+        Standard library Python, run from the repo root. It reads files that are already
+        in the repo and never touches the network, so it is as fast offline as on.
+      </p>
+
+      <div class="code-block">
+        <button class="copy" type="button">copy</button>
+<pre><code>python3 script/suggest_review.py                      <span class="dim"># the balanced plan</span>
+python3 script/suggest_review.py --top 20 --per-category 3
+python3 script/suggest_review.py --only must         <span class="dim"># MUST rows only</span>
+python3 script/suggest_review.py --only top100liked
+python3 script/suggest_review.py --section "Binary Search" --top 10
+python3 script/suggest_review.py --no-balance        <span class="dim"># plain importance rank</span>
+python3 script/suggest_review.py --markdown doc/review_suggestions.md
+python3 script/suggest_review.py --self-test         <span class="dim"># the unit tests</span></code></pre>
+      </div>
+
+      <h3>What it reads</h3>
+      <p class="note">Nothing is invented — all three signals are already in the repo.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Source</th><th>What it contributes</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><b>README.md</b></td>
+              <td>The problem universe <em>and</em> this repo's own judgement of what matters: the
+                  <code>MUST</code> marker, the curated-list tags (<code>blind75</code>,
+                  <code>neetcode150</code>, <code>neetcode250</code>, <code>top100liked</code>), the
+                  company tags, and the status column's <code>OK</code>/<code>AGAIN</code> plus its
+                  <code>*</code> run of review passes.</td>
+            </tr>
+            <tr>
+              <td><b>git history</b></td>
+              <td>When each problem was last <em>worked on</em> — the commit that touched its
+                  solution file, or named its LC number in the subject.</td>
+            </tr>
+            <tr>
+              <td><b>data/progress.txt</b></td>
+              <td>When it was last <em>practised</em>, which is not the same thing: a re-read that
+                  produced no commit still counts.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note" style="margin-top:0.8rem">
+        <code>doc/must_lc_list.md</code> is generated from the same README rows, so reading README
+        covers it — and a test asserts this script and <code>extract_must_lc.py</code> still agree
+        on which rows carry <code>MUST</code>.
+      </p>
+    </section>
+
+    <!-- ── How it decides ──────────────────────────────────────────────── -->
+    <section id="scoring" class="reveal">
+      <p class="eyebrow">Three factors, then a round-robin</p>
+      <h2>How a problem gets chosen</h2>
+      <p class="sub">
+        A flat “most important, least recently seen” ranking makes bias <em>worse</em>, because the
+        biggest sections hold the most important problems and would fill the whole list. So the
+        score is only half the job; the other half is who gets to spend it.
+      </p>
+
+      <div class="formula">
+        <div class="factor">
+          <span class="op">score =</span>
+          <b>importance</b>
+          <p><code>MUST</code> +5.0 · <code>top100liked</code> +2.5 · <code>blind75</code> +2.5
+             (the NeetCode lists nest, so only the narrowest scores: 150 → +1.5, 250 → +0.7) ·
+             <code>google</code> +1.5 · other company tags +0.2 each, capped at +1.0 ·
+             Medium +0.5, Hard +0.3 · and +0.2 per recorded pass on an <code>AGAIN</code> row,
+             capped at +2.4.</p>
+        </div>
+        <div class="factor">
+          <span class="op">×</span>
+          <b>staleness</b>
+          <p><code>1 − 0.5 ^ (days / half-life)</code>, half-life 21 days. Touched today scores 0;
+             never touched saturates near 1. The clock reads whichever is more recent, the git
+             touch or the practice-log entry.</p>
+        </div>
+        <div class="factor">
+          <span class="op">×</span>
+          <b>category balance</b>
+          <p>Each README section's share of total importance against its share of <em>recent
+             attention</em>. A section getting none of the practice it is owed nearly doubles its
+             problems' scores; one getting twice its share is cut to 0.4.</p>
+        </div>
+      </div>
+
+      <p>
+        Picks are then spent <b>round-robin across categories in deficit order</b>, capped at
+        <code>--per-category</code>. The cap and the score floor are a preference for breadth,
+        not a quota: once every eligible category has had its share, the rest of
+        <code>--top</code> is filled by score.
+      </p>
+
+      <div class="callout">
+        <p><b>Why the pass count counts as difficulty, not progress.</b></p>
+        <p>
+          The <code>AGAIN</code> marker in this repo never graduates — 854 of 1,191 tracked rows
+          carry it, some after 20+ passes. So a row that has already cost twelve passes is read as
+          an unclosed gap and scores <em>higher</em>, not lower. An <code>OK</code> row's passes are
+          real progress and score nothing.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── Reading the balance ─────────────────────────────────────────── -->
+    <section id="balance" class="reveal">
+      <p class="eyebrow">Read this first</p>
+      <h2>The balance table</h2>
+      <p class="sub">
+        <b>ratio = share of recent attention ÷ share of importance.</b> 1.00 is a fair share.
+        Below 0.5 the run marks the row <code>UNDER</code> — that is the bias to fix. Above 1.8 it
+        marks it <code>over</code> — that is where the practice has been pooling.
+      </p>
+
+      <div class="meter">
+        <div class="meter-row under">
+          <span class="cat">Array</span>
+          <span class="meter-bars"><i style="width:100%"></i><i class="att" style="width:17%"></i></span>
+          <span class="ratio"><b>0.19</b></span>
+        </div>
+        <div class="meter-row under">
+          <span class="cat">Linked list</span>
+          <span class="meter-bars"><i style="width:27%"></i><i class="att" style="width:1%"></i></span>
+          <span class="ratio"><b>0.00</b></span>
+        </div>
+        <div class="meter-row under">
+          <span class="cat">Design</span>
+          <span class="meter-bars"><i style="width:24%"></i><i class="att" style="width:6%"></i></span>
+          <span class="ratio"><b>0.24</b></span>
+        </div>
+        <div class="meter-row">
+          <span class="cat">Binary Search</span>
+          <span class="meter-bars"><i style="width:41%"></i><i class="att" style="width:39%"></i></span>
+          <span class="ratio"><b>0.94</b></span>
+        </div>
+        <div class="meter-row">
+          <span class="cat">Tree</span>
+          <span class="meter-bars"><i style="width:55%"></i><i class="att" style="width:62%"></i></span>
+          <span class="ratio"><b>1.12</b></span>
+        </div>
+        <div class="meter-row">
+          <span class="cat">Recursion</span>
+          <span class="meter-bars"><i style="width:29%"></i><i class="att" style="width:56%"></i></span>
+          <span class="ratio"><b>1.94</b></span>
+        </div>
+        <div class="meter-row">
+          <span class="cat">Dynamic Programming</span>
+          <span class="meter-bars"><i style="width:88%"></i><i class="att" style="width:100%"></i></span>
+          <span class="ratio"><b>2.19</b></span>
+        </div>
+      </div>
+      <p class="legend">
+        <span><i aria-hidden="true"></i> share of importance</span>
+        <span><i class="att" aria-hidden="true"></i> share of recent attention</span>
+        <span>underlined ratio = <code>UNDER</code></span>
+      </p>
+
+      <p style="margin-top:1.4rem">
+        Array is the row worth staring at. Its <em>last touched</em> column says <b>today</b>, so
+        nothing looks wrong — but it is holding 11% of the importance on 1.9% of the attention. It
+        is being touched, one problem at a time, not worked.
+      </p>
+    </section>
+
+    <!-- ── Example output ──────────────────────────────────────────────── -->
+    <section id="output" class="reveal">
+      <p class="eyebrow">Real runs, real data</p>
+      <h2>What comes back</h2>
+      <p class="sub">
+        Three sections, always in this order: what you have been working on lately, the balance
+        table, then the picks. The picks are listed <em>most-neglected category first</em>, not
+        highest score first — that order is the recommendation.
+      </p>
+
+      <div class="tabs" role="tablist" aria-label="Sample output">
+        <button class="tab" role="tab" id="t-bal" aria-controls="o-bal" aria-selected="true">Balanced (default)</button>
+        <button class="tab" role="tab" id="t-must" aria-controls="o-must" aria-selected="false">--only must</button>
+        <button class="tab" role="tab" id="t-sec" aria-controls="o-sec" aria-selected="false">--section</button>
+        <button class="tab" role="tab" id="t-flat" aria-controls="o-flat" aria-selected="false">--no-balance</button>
+      </div>
+
+      <div class="panel" role="tabpanel" id="o-bal" aria-labelledby="t-bal">
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code>$ python3 script/suggest_review.py --top 12
+
+== Recent focus (last 30 days) ==
+
+  818 touches on 188 problems across 22 categories.
+  (69 bulk commits ignored — a commit touching more than 6 solution
+   files is an import, not a session.)
+    Dynamic Programming        166  ##############
+    Recursion                   75  ######........
+    Breadth-First Search        69  ######........
+    Depth-First Search          58  #####.........
+
+== Suggested review (12 problems, 12 categories) ==
+
+  Ordered by how neglected the category is, not by score — that order
+  is the recommendation.
+
+  #   LC    title                          diff    category         last  score  why
+  1   48    Rotate Image                   Medium  Array            220d  27.85  MUST · top100liked · blind75 · google · AGAIN x13
+  2   5     Longest Palindromic Substring  Medium  String            33d  15.45  MUST · top100liked · blind75 · google · AGAIN x19
+  3   24    Swap Nodes in Pairs            Medium  Linked list       47d  20.31  MUST · top100liked · google · AGAIN x16
+  4   739   Daily Temperatures             Medium  Stack             47d  16.94  MUST · top100liked · neetcode150 · google · AGAIN x19
+  5   146   LRU Cache                      Medium  Design            90d  15.00  top100liked · neetcode150 · google · AGAIN x10
+  6   347   Top K Frequent Elements        Medium  Sort              99d  15.16  top100liked · blind75 · google · AGAIN x8
+  7   19    Remove Nth Node From End       Medium  Two Pointers      29d  14.28  MUST · top100liked · blind75 · google · AGAIN x10
+  8   3     Longest Substring w/o Repeat   Medium  Hash Table        51d  15.61  MUST · top100liked · blind75 · google · AGAIN x16
+  9   55    Jump Game                      Medium  Greedy            88d  16.64  MUST · top100liked · blind75 · google · AGAIN x11
+  10  1658  Min Ops to Reduce X to Zero    Medium  Slide Window      54d  14.63  MUST · google · AGAIN x8
+  11  33    Search in Rotated Sorted Array Medium  Binary Search     28d   9.77  MUST · top100liked · blind75 · google · AGAIN x12
+  12  1943  Describe the Painting          Medium  Scan Line         31d  10.32  MUST · google · AGAIN x5</code></pre>
+        </div>
+        <p class="note">
+          Twelve picks, twelve different categories. Notice the scores do <em>not</em> descend —
+          the order is deficit, not score.
+        </p>
+      </div>
+
+      <div class="panel" role="tabpanel" id="o-must" aria-labelledby="t-must" hidden>
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code>$ python3 script/suggest_review.py --only must --top 8
+
+  #   LC    title                          diff    category         last  score  why
+  1   48    Rotate Image                   Medium  Array            220d  27.85  MUST · top100liked · blind75 · google · AGAIN x13
+  2   5     Longest Palindromic Substring  Medium  String            33d  15.45  MUST · top100liked · blind75 · google · AGAIN x19
+  3   24    Swap Nodes in Pairs            Medium  Linked list       47d  20.31  MUST · top100liked · google · AGAIN x16
+  4   739   Daily Temperatures             Medium  Stack             47d  16.94  MUST · top100liked · neetcode150 · google · AGAIN x19
+  5   253   Meeting Rooms II               Medium  Sort              32d  13.76  MUST · blind75 · google · AGAIN x12
+  6   19    Remove Nth Node From End       Medium  Two Pointers      29d  14.28  MUST · top100liked · blind75 · google · AGAIN x10
+  7   3     Longest Substring w/o Repeat   Medium  Hash Table        51d  15.61  MUST · top100liked · blind75 · google · AGAIN x16
+  8   55    Jump Game                      Medium  Greedy            88d  16.64  MUST · top100liked · blind75 · google · AGAIN x11</code></pre>
+        </div>
+        <p class="note">
+          The balance is still measured over the whole pool before <code>--only</code> narrows it —
+          “which topic am I neglecting” is not a question you can answer from inside a filter.
+        </p>
+      </div>
+
+      <div class="panel" role="tabpanel" id="o-sec" aria-labelledby="t-sec" hidden>
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code>$ python3 script/suggest_review.py --section "Binary Search" --top 5
+
+  #   LC    title                          diff    category         last  score  why
+  1   33    Search in Rotated Sorted Array Medium  Binary Search     28d   9.77  MUST · top100liked · blind75 · google · AGAIN x12
+  2   153   Find Minimum in Rotated Sorted Medium  Binary Search     27d   9.60  MUST · top100liked · blind75 · google · AGAIN x16
+  3   74    Search a 2D Matrix             Medium  Binary Search     97d   7.09  top100liked · neetcode150 · google
+  4   658   Find K Closest Elements        Medium  Binary Search     27d   6.90  MUST · neetcode250 · google · AGAIN x22
+  5   875   Koko Eating Bananas            Medium  Binary Search     27d   6.52  MUST · neetcode150 · google · AGAIN x7</code></pre>
+        </div>
+        <p class="note">
+          One category, so <code>--per-category</code> has nothing to spread across and the refill
+          delivers the full five by score. <code>--section</code> is repeatable and
+          case-insensitive, and it also matches a problem filed under a second section.
+        </p>
+      </div>
+
+      <div class="panel" role="tabpanel" id="o-flat" aria-labelledby="t-flat" hidden>
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code>$ python3 script/suggest_review.py --no-balance --top 8
+
+  #   LC    title                          diff    category         last  score  why
+  1   48    Rotate Image                   Medium  Array            220d  15.39  MUST · top100liked · blind75 · google · AGAIN x13
+  2   78    Subsets                        Medium  Backtracking     509d  14.40  MUST · top100liked · neetcode150 · google · AGAIN x16
+  3   55    Jump Game                      Medium  Greedy            88d  14.37  MUST · top100liked · blind75 · google · AGAIN x11
+  4   45    Jump Game II                   Medium  Greedy           229d  13.59  MUST · top100liked · neetcode150 · google · AGAIN x8
+  5   94    Binary Tree Inorder Traversal  Medium  Tree             311d  12.80  MUST · top100liked · neetcode250 · google · AGAIN x9
+  6   3     Longest Substring w/o Repeat   Medium  Hash Table        51d  12.54  MUST · top100liked · blind75 · google · AGAIN x16
+  7   57    Insert Interval                Medium  Array             88d  11.82  MUST · blind75 · google · AGAIN x10
+  8   208   Implement Trie (Prefix Tree)   Medium  Tree              44d  11.80  MUST · top100liked · blind75 · google · AGAIN x14</code></pre>
+        </div>
+        <p class="note">
+          Eight picks, five categories — two Greedy, two Tree, two Array. This is the shape the
+          balancing exists to avoid, and it is why the default is not this.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── Flags ───────────────────────────────────────────────────────── -->
+    <section id="flags" class="reveal">
+      <p class="eyebrow">Every flag</p>
+      <h2>Options</h2>
+      <p class="sub">
+        <code>--top</code>, <code>--per-category</code>, <code>--window</code>,
+        <code>--half-life</code> and <code>--bulk-limit</code> must be greater than zero, and
+        <code>--min-score-frac</code> must be within 0–1; anything else is a usage error rather
+        than a traceback.
+      </p>
+
+      <h3>Shaping the list</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Flag</th><th>Default</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td class="flag">--top N</td><td class="dflt">15</td>
+                <td>How many problems to suggest.</td></tr>
+            <tr><td class="flag">--per-category N</td><td class="dflt">2</td>
+                <td>Most picks any one category may take before every other eligible category has
+                    had a turn. A preference, not a quota — the remainder of <code>--top</code> is
+                    filled by score.</td></tr>
+            <tr><td class="flag">--no-balance</td><td class="dflt">off</td>
+                <td>Rank by score alone. Useful for seeing what the balancing is actually
+                    changing.</td></tr>
+            <tr><td class="flag">--min-score-frac F</td><td class="dflt">0.30</td>
+                <td>Skip a category whose best candidate scores below this fraction of the top
+                    pick. Stops a five-row section from taking a slot with a problem nothing
+                    recommends.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Narrowing the pool</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Flag</th><th>Default</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td class="flag">--only MARKER</td><td class="dflt">—</td>
+                <td>One of <code>must</code>, <code>blind75</code>, <code>neetcode150</code>,
+                    <code>neetcode250</code>, <code>top100liked</code>, <code>google</code>,
+                    <code>again</code>.</td></tr>
+            <tr><td class="flag">--section NAME</td><td class="dflt">—</td>
+                <td>A README section such as <code>"Binary Search"</code>. Repeatable and
+                    case-insensitive.</td></tr>
+            <tr><td class="flag">--difficulty D</td><td class="dflt">—</td>
+                <td><code>Easy</code>, <code>Medium</code> or <code>Hard</code>. Repeatable.</td></tr>
+            <tr><td class="flag">--all-sections</td><td class="dflt">off</td>
+                <td>Put SQL, Shell Script, Concurrency and the unverified kamyu104 drafts back into
+                    the pool and the balance maths.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Tuning the measurement</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Flag</th><th>Default</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td class="flag">--window DAYS</td><td class="dflt">30</td>
+                <td>How much history counts as “recent attention”. Shorter reacts faster and is
+                    noisier.</td></tr>
+            <tr><td class="flag">--half-life DAYS</td><td class="dflt">21</td>
+                <td>How fast a problem goes stale. Roughly the point where a solved-once problem
+                    stops being recallable without re-deriving it.</td></tr>
+            <tr><td class="flag">--bulk-limit N</td><td class="dflt">6</td>
+                <td>A commit touching more solution files than this is an import, not a session,
+                    and its file paths are ignored.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Output and plumbing</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Flag</th><th>Default</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td class="flag">--markdown PATH</td><td class="dflt">—</td>
+                <td>Also write a markdown report, with the balance table and the picks as linked
+                    tables.</td></tr>
+            <tr><td class="flag">--json PATH</td><td class="dflt">—</td>
+                <td>Also write the full result — every category's shares and every pick's factors —
+                    as JSON.</td></tr>
+            <tr><td class="flag">--self-test</td><td class="dflt">—</td>
+                <td>Run the unit suite and exit.</td></tr>
+            <tr><td class="flag">--readme / --progress / --lists / --repo</td><td class="dflt">repo root</td>
+                <td>Point the four inputs somewhere else. Mostly for tests.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── What it ignores ─────────────────────────────────────────────── -->
+    <section id="ignores" class="reveal">
+      <p class="eyebrow">Two deliberate blind spots</p>
+      <h2>What it refuses to count</h2>
+      <p class="sub">
+        Both of these change the answer materially, and both are the difference between measuring
+        practice and measuring commits.
+      </p>
+
+      <h3>Bulk commits are not study sessions</h3>
+      <p>
+        This repo has commits that add 393 generated Java files at once. Counted naively they made
+        every one of those problems look practised on the same day, and put <b>563 problems</b>
+        inside a 30-day window that actually saw <b>188</b>. LC 48 read as “61 days ago” when the
+        real gap was <b>220</b>.
+      </p>
+      <p>
+        So a commit touching more than <code>--bulk-limit</code> solution files has its file paths
+        dropped. An LC number written into the subject by hand — <code>update 131 py</code> — still
+        counts, because that is somebody recording work.
+      </p>
+
+      <h3>Some sections are not DSA practice</h3>
+      <p>
+        SQL, Shell Script, Concurrency and the <code>Newly Added (kamyu104 gap)</code> drafts —
+        which have never been run against LeetCode's judge — are left out of the balance maths so
+        they cannot distort a category's share. <code>--all-sections</code> puts them back.
+      </p>
+    </section>
+
+    <!-- ── Tests ───────────────────────────────────────────────────────── -->
+    <section id="tests" class="reveal">
+      <p class="eyebrow">Why there is a test suite for a helper script</p>
+      <h2>The parsers are the risky part</h2>
+      <p class="sub">
+        Three of the four inputs are hand-written files whose shape nobody controls. The failure
+        mode is not a crash — it is a parser that quietly reads fewer rows than there are and hands
+        back a plausible but shrunken plan.
+      </p>
+
+      <div class="code-block">
+        <button class="copy" type="button">copy</button>
+<pre><code>python3 script/test_suggest_review.py           <span class="dim"># 93 tests, stdlib unittest</span>
+python3 script/test_suggest_review.py -v
+python3 script/test_suggest_review.py ParseProgress
+python3 script/suggest_review.py --self-test    <span class="dim"># the same suite</span></code></pre>
+      </div>
+
+      <p>
+        Every fixture is a line that is really in those files: a <code>MUST</code> in the status
+        cell versus the word “must” in prose, a duplicate README row for one LC, an annotation
+        containing a comma, a line wrapped mid-annotation, a <code>DP:</code> label, a stray period
+        between entries. A <code>LiveFiles</code> class then holds the real <code>README.md</code>
+        and <code>data/progress.txt</code>, so a format drift fails a test instead of silently
+        shrinking the plan.
+      </p>
+    </section>
+
+    <!-- ── Where it fits ───────────────────────────────────────────────── -->
+    <section id="fits" class="reveal">
+      <p class="eyebrow">One of several</p>
+      <h2>Where this sits</h2>
+      <p class="sub">
+        The <a href="lc-review-plan.html">review plan</a> answers <em>when</em> — a spaced-repetition
+        schedule off the same practice log. The <a href="lc-roadmap.html">roadmap</a> answers
+        <em>in what order</em>, for a topic you have not learned yet. The
+        <a href="lc-random-picker.html">random picker</a> answers <em>anything, just start</em>.
+      </p>
+      <p>
+        This script answers a different question: given everything you have already done, which
+        topic is the practice quietly skipping? Its output pairs naturally with
+        <a href="skills.html">LC Coach</a> — that one grades the attempt, this one chooses it.
+      </p>
+      <p class="note" style="margin-top:1.2rem">
+        Full written reference:
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/utility-scripts.md">doc/utility-scripts.md</a>
+        · source:
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/script/suggest_review.py">script/suggest_review.py</a>
+      </p>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <p>CS_basics — computer science fundamentals &amp; interview preparation</p>
+    <p>
+      <a href="https://github.com/yennanliu/CS_basics">github</a> |
+      <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+      <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Sections are visible in the stylesheet and only hidden once `.js` is on the
+  // root, so a page with no JS never gets stuck blank. The cost is that adding
+  // the class here would blank whatever is already on screen for a frame, so
+  // the above-the-fold sections are marked revealed in the *same* synchronous
+  // block — one paint, no flash.
+  var reveals = [].slice.call(document.querySelectorAll('.reveal'));
+  var onscreen = reveals.filter(function (el) {
+    return el.getBoundingClientRect().top < (window.innerHeight || 0);
+  });
+  document.documentElement.classList.add('js');
+  onscreen.forEach(function (el) { el.classList.add('in'); });
+
+  // ── Tabs ──────────────────────────────────────────────────────────────
+  // Panels toggle with the `hidden` attribute rather than a class, so a hidden
+  // panel is out of the accessibility tree and out of find-in-page too.
+  [].slice.call(document.querySelectorAll('[role="tablist"]')).forEach(function (list) {
+    var tabs = [].slice.call(list.querySelectorAll('.tab'));
+    if (!tabs.length) return;
+
+    function select(tab) {
+      tabs.forEach(function (t) {
+        var on = t === tab;
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+      });
+    }
+    tabs.forEach(function (tab, i) {
+      tab.addEventListener('click', function () { select(tab); });
+      tab.addEventListener('keydown', function (e) {
+        var step = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (!step) return;
+        e.preventDefault();
+        var next = tabs[(i + step + tabs.length) % tabs.length];
+        select(next);
+        next.focus();
+      });
+    });
+  });
+
+  // ── Copy buttons ──────────────────────────────────────────────────────
+  // clipboard.writeText needs a secure context; on plain http it rejects, so
+  // the button says so instead of silently doing nothing.
+  [].slice.call(document.querySelectorAll('.copy')).forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var code = btn.parentElement.querySelector('code').innerText;
+      var done = function (label) {
+        btn.textContent = label;
+        setTimeout(function () { btn.textContent = 'copy'; }, 1400);
+      };
+      if (!navigator.clipboard) return done('select it');
+      navigator.clipboard.writeText(code).then(function () { done('copied'); },
+                                               function () { done('select it'); });
+    });
+  });
+
+  // ── Reveal on scroll ──────────────────────────────────────────────────
+  if (reduced || !('IntersectionObserver' in window)) {
+    reveals.forEach(function (el) { el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      });
+    }, { rootMargin: '0px 0px -12% 0px' });
+    reveals.forEach(function (el) { io.observe(el); });
+  }
+})();
+</script>
+
+</body>
+</html>
