@@ -50,20 +50,20 @@ If 99% of all integer numbers from the stream are in the range [0, 100], how wou
 class MedianFinder(object):
 
     def __init__(self):
-        
+        pass
 
     def addNum(self, num):
         """
         :type num: int
         :rtype: None
         """
-        
+        pass
 
     def findMedian(self):
         """
         :rtype: float
         """
-        
+        pass
 
 
 # V0-1
@@ -104,44 +104,70 @@ import heapq
 class MedianFinder(object):
 
     def __init__(self):
-        # small: 大頂堆 (Max-Heap)，維護較小的一半數字 (存負數)
-        self.small = []
-        # large: 小頂堆 (Min-Heap)，維護較大的一半數字 (存正數)
-        self.large = []
+        # small_half:
+        # Max-Heap
+        # 維護較小的一半數字
+        # Python 沒有 Max-Heap，所以存負數
+        self.small_half = []
+
+        # large_half:
+        # Min-Heap
+        # 維護較大的一半數字
+        # 存正數
+        self.large_half = []
 
     def addNum(self, num):
         """
         :type num: int
         :rtype: None
         """
-        # 步驟 1: 先將數字放進 small (Max-Heap)
-        heapq.heappush(self.small, -num)
-        
-        # 步驟 2: 確保 small 的最大值 <= large 的最小值
-        # 將 small 堆頂最大值彈出並放進 large
-        val = -heapq.heappop(self.small)
-        heapq.heappush(self.large, val)
-        
-        # 步驟 3: 維護`數量平衡` (保持 len(small) >= len(large))
-        # 若 large 的數量多於 small，則把 large 堆頂最小值移回 small
-        if len(self.large) > len(self.small):
-            val = heapq.heappop(self.large)
-            heapq.heappush(self.small, -val)
+
+        # Step 1:
+        # 先把 num 放進 small_half
+        heapq.heappush(self.small_half, -num)
+
+        # Step 2:
+        # 把 small_half 最大的數字移到 large_half
+        #
+        # 因為 small_half 存負數，
+        # heap top 是「負數中最小」= 原本最大的數字
+        moved_num = -heapq.heappop(self.small_half)
+
+        heapq.heappush(self.large_half, moved_num)
+
+        # Step 3:
+        # 維持：
+        #
+        # len(small_half) >= len(large_half)
+        #
+        # 如果 large_half 比 small_half 多，
+        # 就把 large_half 最小的數字移回 small_half
+        if len(self.large_half) > len(self.small_half):
+            moved_num = heapq.heappop(self.large_half)
+            heapq.heappush(self.small_half, -moved_num)
 
     def findMedian(self):
         """
         :rtype: float
         """
 
-        # case 1) total cnt is `odd`
-        # 總個數為`奇數`：中位數就是 small 的堆頂
-        if len(self.small) > len(self.large):
-            return float(-self.small[0])
-        
-        # case 2) total cnt is `even`
-        # 總個數為`偶數`：中位數是兩堆堆頂的平均值
-        else:
-            return (-self.small[0] + self.large[0]) / 2.0
+        small_size = len(self.small_half)
+        large_size = len(self.large_half)
+
+        # Case 1:
+        # 奇數個數字
+        #
+        # small_half 會多一個
+        # median = small_half 最大值
+        if small_size > large_size:
+            return float(-self.small_half[0])
+
+        # Case 2:
+        # 偶數個數字
+        #
+        # median =
+        # (small_half 最大值 + large_half 最小值) / 2
+        return (-self.small_half[0] + self.large_half[0]) / 2.0
 
 
 # V0-2
