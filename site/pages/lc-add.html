@@ -849,9 +849,24 @@ File LC 4038 into leetcode_python/Hash_table/ — draft in @draft.py"</code></pr
   // ── Copy buttons ──────────────────────────────────────────────────────
   // clipboard.writeText needs a secure context; on plain http it rejects, so
   // the button says so instead of silently doing nothing.
+  //
+  // The `.ann` spans are margin notes about the code, not part of it, so they
+  // are stripped from a clone before the text is read — copying the anatomy
+  // block otherwise hands back Python with "<- docstring first" inside it. The
+  // strip leaves the padding that positioned each note, hence the trailing
+  // whitespace pass. textContent, not innerText: the clone is detached, and in
+  // a <pre> the two agree anyway.
+  function codeText(block) {
+    var node = block.querySelector('code').cloneNode(true);
+    [].slice.call(node.querySelectorAll('.ann')).forEach(function (a) {
+      a.parentNode.removeChild(a);
+    });
+    return node.textContent.replace(/[ \t]+$/gm, '');
+  }
+
   [].slice.call(document.querySelectorAll('.copy')).forEach(function (btn) {
     btn.addEventListener('click', function () {
-      var code = btn.parentElement.querySelector('code').innerText;
+      var code = codeText(btn.parentElement);
       var done = function (label) {
         btn.textContent = label;
         setTimeout(function () { btn.textContent = 'copy'; }, 1400);
