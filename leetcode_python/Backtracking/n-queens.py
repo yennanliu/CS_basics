@@ -44,7 +44,134 @@ Constraints:
 
 """
 
+"""
+NOTE !!!
+
+
+    -> Queen 可以攻擊同一 row、同一 column、以及兩條 diagonal。
+"""
+
+
+
 # V0
+# IDEA: BACKTRACK (gpt)
+"""
+NOTE !!!
+
+
+1. this is NOT like a `bfs`, `graph` LC
+
+    -> what we need is:
+        simply try to put 1 queen at every row,
+        check if they can `attack` each other
+        -> collect the ways we can put queen
+
+
+2. CORE IDEA: 
+
+    -> 一層 backtracking = 處理一個 row。每個 row 嘗試所有 column。
+
+
+3. Steps:
+
+        ```
+        一個 row
+            ↓
+        嘗試所有 column
+            ↓
+        這個位置安全嗎？
+            ↓ yes
+        放 Queen
+            ↓
+        下一個 row
+            ↓
+        backtrack
+        ```
+
+
+    (below is WRONG)
+
+    ```
+    「我要在棋盤上走來走去」
+    ```
+
+
+"""
+class Solution(object):
+    def solveNQueens(self, n):
+        """
+        :type n: int
+        :rtype: List[List[str]]
+        """
+        self.res = []
+
+        # Empty chessboard
+        board = [["."] * n for _ in range(n)]
+
+        # Start from row 0
+        self.helper(n, board, 0)
+
+        return self.res
+
+    def helper(self, n, board, row):
+        # All rows have a queen
+        if row == n:
+            result = []
+            for r in board:
+                result.append("".join(r))
+            self.res.append(result)
+            return
+
+        # Try every column in this row
+        for col in range(n):
+
+            # Try to put a queen here
+            if self.can_attack(board, row, col):
+                continue
+
+            # Choose
+            board[row][col] = "Q"
+
+            # Explore
+            self.helper(n, board, row + 1)
+
+            # Undo
+            board[row][col] = "."
+
+    def can_attack(self, board, row, col):
+        n = len(board)
+
+        # 1. Same column
+        for r in range(row):
+            if board[r][col] == "Q":
+                return True
+
+        # 2. Upper-left diagonal
+        r = row - 1
+        c = col - 1
+
+        while r >= 0 and c >= 0:
+            if board[r][c] == "Q":
+                return True
+            r -= 1
+            c -= 1
+
+        # 3. Upper-right diagonal
+        r = row - 1
+        c = col + 1
+
+        while r >= 0 and c < n:
+            if board[r][c] == "Q":
+                return True
+            r -= 1
+            c += 1
+
+        return False
+
+
+
+
+# V0-1
 # IDEA : BACKTRACK (PLACE ONE QUEEN PER ROW) + 3 "USED" SETS
 #
 #   place exactly ONE queen per row, so the row conflict is impossible
@@ -65,7 +192,6 @@ Constraints:
 #   strings are only rendered once a full placement is reached.
 #
 # time = O(n!), space = O(n^2)   (O(n) aux, the rest is the returned boards)
-
 
 class Solution(object):
     def solveNQueens(self, n):
@@ -112,8 +238,7 @@ class Solution(object):
         backtrack(0)
         return res
 
-
-# V0-1
+# V0-2
 # IDEA : BACKTRACK + BITMASK
 #
 #   same search, but the 3 sets become 3 integers, so "is this cell
