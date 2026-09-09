@@ -620,11 +620,50 @@ def combinationSum2(candidates, target):
     return result
 ```
 
-### Template 8: Palindrome Partitioning — LC 131 ⭐⭐⭐⭐
+### Template 8: Palindrome Partitioning — LC 131 ⭐⭐⭐⭐⭐
 
-The partition shape: loop `end` from `start + 1` to `n`, gate on a validity predicate
-(`isPalindrome`), recurse from `end`. Swap the predicate and you get IP-address restoration
-(LC 93) or word break (LC 140).
+#### Core idea — choose *where to cut*, not *what to take*
+
+Every other template on this page chooses **which element to take**. A partitioning problem
+chooses **where to cut**. Standing at index `start`, the choice list is every prefix of the
+remaining string — `s[start:end]` for `end` in `start+1 .. n`. Take a prefix only if it
+passes a validity gate (here: *is it a palindrome?*), then recurse on **the rest**, from
+`end`. Running out of string means every piece passed the gate, so the path is a complete
+answer.
+
+That reframing is the whole problem. A string of `n` characters has `n - 1` gaps between
+characters, and a partition is just **a subset of gaps to cut** — so LC 131 is
+[LC 78 Subsets](#template-3-subsets--lc-78-) wearing a costume, with `isPalindrome` as the
+filter. It is also where the bound comes from: `2^(n-1)` candidate partitions, `O(n)` to
+check and copy each → `O(2^n · n)`.
+
+```text
+s = "aab"        gaps:  a|a|b  ->  2 gaps  ->  2^2 = 4 candidate partitions
+
+start=0  "a"   ✔ ─┬─ start=1  "a"   ✔ ── start=2  "b" ✔ ── start=3 ✅ ["a","a","b"]
+                  └─ start=1  "ab"  ✘  (not a palindrome — branch dies here)
+start=0  "aa"  ✔ ─── start=2  "b"   ✔ ─────────────────── start=3 ✅ ["aa","b"]
+start=0  "aab" ✘  (not a palindrome)
+```
+
+#### Pattern — one gate, three knobs
+
+The shape is fixed; three knobs turn it into every other partitioning problem:
+
+| Knob | LC 131 | Swap it for… |
+|------|--------|--------------|
+| **the gate** `is_valid(piece)` | `piece == piece[::-1]` | `0 <= int(piece) <= 255` and no leading zero → LC 93; `piece in wordDict` → LC 140 |
+| **the cut range** `for end in …` | every prefix, `start+1 .. n` | a capped length — `<= 3` for an IP octet, `<= maxWordLen` for a dictionary |
+| **the end condition** | `start == n` | `start == n` **and** `len(path) == 4` (LC 93 needs exactly four pieces) |
+
+Two things that actually go wrong:
+
+- **Recurse from `end`, not from `start + 1`.** After cutting a 2-character piece,
+  `start + 1` re-consumes its second character. This is the partitioning equivalent of the
+  `i` vs `i + 1` question in [Template 2](#template-2-start_idx--i-vs-i--1-).
+- **Copy the path at the leaf** (`path[:]` / `new ArrayList<>(path)`). The Python variant
+  below sidesteps it by passing `path + [piece]` — a brand-new list per call, which is also
+  why it needs no `pop()`; see [Template 14](#template-14-when-to-undo--mutable-vs-immutable-state-).
 
 ```java
 // java
@@ -668,11 +707,15 @@ public boolean isPalindrome(String s, int low, int high){
 class Solution(object):
     def partition(self, s):
         def help(s, res, path):
+            # NOTE !!! no remaining string -> every piece passed the gate -> record
             if not s:
                 res.append(path)
                 return
+            # NOTE !!! `range(1, len(s)+1)` — every prefix, INCLUDING the whole of s
             for i in range(1, len(s)+1):
                 if s[:i] == s[:i][::-1]:
+                    # NOTE !!! recurse on the REST (`s[i:]`), and pass a NEW list
+                    #          (`path + [s[:i]]`), so there is nothing to undo
                     help(s[i:], res, path + [s[:i]])
         # edge case
         if not s:
@@ -682,6 +725,64 @@ class Solution(object):
         help(s, res, path)
         return res
 ```
+
+> The Python form slices the string (`s[i:]`) instead of carrying an index. It reads more
+> cleanly, but each slice is an `O(n)` copy — in Java, pass `start` and use
+> `s.substring(start, i + 1)` as above.
+
+#### Making the gate O(1) — the precomputed palindrome table ⭐⭐⭐
+
+The gate sits in the innermost loop and costs `O(n)` per call. Precompute
+`dp[i][j] = "is s[i..j] a palindrome"` in `O(n^2)` first, and every gate check becomes
+`O(1)`. The output is still exponential, so the **complexity class does not change** — but
+it is a real constant-factor win, and naming it is the follow-up an interviewer is waiting
+for.
+
+```python
+# python
+# time = O(2^n * n), space = O(n^2)   the O(n^2) table replaces an O(n) check per cut
+# LC 131 - Palindrome Partitioning (precomputed palindrome table)
+# IDEA : BACKTRACK + DP gate. dp[i][j] is built bottom-up so dp[i+1][j-1] is already known.
+def partition(s):
+    n = len(s)
+    dp = [[False] * n for _ in range(n)]
+    for i in range(n - 1, -1, -1):          # i descends so the inner span is ready
+        for j in range(i, n):
+            dp[i][j] = s[i] == s[j] and (j - i < 2 or dp[i + 1][j - 1])
+
+    res, path = [], []
+
+    def backtrack(start):
+        if start == n:
+            res.append(path[:])             # NOTE: copy — `path` is one shared list here
+            return
+        for end in range(start, n):
+            if dp[start][end]:              # O(1) gate
+                path.append(s[start:end + 1])
+                backtrack(end + 1)          # NOTE !!! `end + 1`, not `start + 1`
+                path.pop()
+
+    backtrack(0)
+    return res
+```
+
+#### Similar problems — the partitioning family
+
+| LC | Problem | What changes vs LC 131 |
+|----|---------|------------------------|
+| 93 | Restore IP Addresses | gate = `0..255` with no leading zero; cut length capped at 3; the end condition also demands exactly 4 pieces ([worked](./backtrack_examples.md#9-restore-ip-addresses--lc-93)) |
+| 140 | Word Break II | gate = `piece in wordDict`; needs memoisation on `start`, or `"aaaa…aaab"` explodes ([worked](./backtrack_examples.md#11-word-break-ii--lc-140)) |
+| 139 | Word Break | same search, but it only asks *whether* — so drop the path and it collapses to DP/BFS over `start` |
+| 132 | Palindrome Partitioning II | asks for the **minimum number of cuts**, not every partition — enumerate nothing, DP over `start` |
+| 842 | Split Array into Fibonacci Sequence | gate = "this piece equals the previous two summed", so the recursion carries the last two values as state |
+| 306 | Additive Number | LC 842's yes/no twin — return on the first success instead of collecting |
+| 816 | Ambiguous Coordinates | a two-level partition: cut into 2 pieces, then place a decimal point inside each |
+| 291 | Word Pattern II | partition + a bijection `char -> piece` that **must** be undone on backtrack |
+| 698 | Partition to K Equal Sum Subsets | partitions a **multiset into k buckets**, not a sequence into contiguous pieces — a different template ([Template 13](#template-13-k-bucket-partitioning--lc-698--lc-473)) |
+
+> LC 131 → LC 132 is the canonical **backtrack → DP** step from
+> [Key Properties](#key-properties): the moment the question stops asking for *every*
+> partition and starts asking for the *best* one, enumerating them is waste.
 
 ### Template 9: Grid / Word Search — LC 79 ⭐⭐⭐⭐
 

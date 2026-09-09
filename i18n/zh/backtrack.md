@@ -242,16 +242,81 @@ LC 40 還額外需要同一層的重複跳過。
 
 <!--CODE-->
 
-<!-- 77cce9435ce9 -->
-### Template 8: Palindrome Partitioning — LC 131 ⭐⭐⭐⭐
+<!-- ff4f2a2d182b -->
+### Template 8: Palindrome Partitioning — LC 131 ⭐⭐⭐⭐⭐
 
-切分題的形狀：`end` 從 `start + 1` 跑到 `n`，用一個合法性判斷當關卡
-（`isPalindrome`），再從 `end` 往下遞迴。把判斷式換掉，就變成還原 IP 位址
-（LC 93）或斷詞（LC 140）。
+<!-- 6fb0dfd3c15c -->
+#### 核心想法 — 選的是「切在哪」，不是「拿哪個」
+
+這一頁其他每份模板選的都是**要拿哪個元素**，切分題選的則是**要切在哪裡**。站在索引
+`start` 上，選擇清單就是剩餘字串的每一個前綴 —— `end` 從 `start+1` 跑到 `n` 的
+`s[start:end]`。只有通過合法性關卡（這裡是：*它是迴文嗎？*）的前綴才拿，然後從 `end`
+往下對**剩下的部分**遞迴。字串用完了，代表每一段都過了關卡，這條路徑就是一組完整解。
+
+這個重新框定就是整題的全部。長度 `n` 的字串在字元之間有 `n - 1` 個縫隙，一個切分
+其實就是**挑一個要切開的縫隙子集** —— 所以 LC 131 是
+[LC 78 Subsets](#template-3-subsets--lc-78-) 換了層皮，只是多了 `isPalindrome`
+這個過濾器。複雜度也是從這裡來的：`2^(n-1)` 種候選切分，每種花 `O(n)` 檢查與複製
+→ `O(2^n · n)`。
+
+<!--CODE-->
+
+<!-- 212755170525 -->
+#### 模式 — 一個關卡，三個旋鈕
+
+形狀是固定的；轉動三個旋鈕就能變成其他每一道切分題：
+
+| 旋鈕 | LC 131 | 換成⋯ |
+|------|--------|--------|
+| **關卡** `is_valid(piece)` | `piece == piece[::-1]` | `0 <= int(piece) <= 255` 且不能有前導零 → LC 93；`piece in wordDict` → LC 140 |
+| **切分範圍** `for end in …` | 每一個前綴，`start+1 .. n` | 有長度上限 —— IP 的每段 `<= 3`，字典斷詞 `<= maxWordLen` |
+| **結束條件** | `start == n` | `start == n` **而且** `len(path) == 4`（LC 93 要求剛好四段） |
+
+真的會出錯的兩件事：
+
+- **要從 `end` 遞迴，不是從 `start + 1`。** 切掉一段 2 個字元的片段後，`start + 1`
+  會把它的第二個字元再吃一次。這就是切分題版本的
+  [Template 2](#template-2-start_idx--i-vs-i--1-) `i` vs `i + 1` 問題。
+- **在葉節點要複製路徑**（`path[:]` / `new ArrayList<>(path)`）。下面的 Python 版本
+  用傳 `path + [piece]` 繞過這件事 —— 每次呼叫都是全新的 list，這也是它不需要
+  `pop()` 的原因；見 [Template 14](#template-14-when-to-undo--mutable-vs-immutable-state-)。
 
 <!--CODE-->
 
 <!--CODE-->
+
+> Python 這種寫法是切字串（`s[i:]`）而不是帶著索引走。讀起來比較乾淨，但每次切片都是
+> 一次 `O(n)` 的複製 —— 在 Java 就照上面那樣傳 `start`，用
+> `s.substring(start, i + 1)`。
+
+<!-- cb5aedc6b78e -->
+#### 讓關卡變成 O(1) — 預先算好的迴文表 ⭐⭐⭐
+
+關卡位在最內層迴圈，每次呼叫要花 `O(n)`。先用 `O(n^2)` 把
+`dp[i][j] = 「s[i..j] 是不是迴文」` 算好，之後每次檢查就只要 `O(1)`。輸出量本身仍是
+指數等級，所以**複雜度等級不會改變** —— 但這是實實在在的常數項優化，而且講得出這一點
+正是面試官在等的追問。
+
+<!--CODE-->
+
+<!-- 4c3f3253305f -->
+#### 類似題 — 切分題家族
+
+| LC | 題目 | 跟 LC 131 差在哪 |
+|----|------|------------------|
+| 93 | Restore IP Addresses | 關卡 = `0..255` 且無前導零；切分長度上限 3；結束條件還要求剛好 4 段（[實作解](./backtrack_examples.md#9-restore-ip-addresses--lc-93)） |
+| 140 | Word Break II | 關卡 = `piece in wordDict`；要對 `start` 做記憶化，否則 `"aaaa…aaab"` 會爆掉（[實作解](./backtrack_examples.md#11-word-break-ii--lc-140)） |
+| 139 | Word Break | 同一套搜尋，但它只問*能不能* —— 把路徑拿掉就塌縮成對 `start` 的 DP／BFS |
+| 132 | Palindrome Partitioning II | 問的是**最少切幾刀**，不是所有切法 —— 什麼都不用列舉，直接對 `start` 做 DP |
+| 842 | Split Array into Fibonacci Sequence | 關卡 = 「這一段等於前兩段相加」，所以遞迴要帶著前兩個值當狀態 |
+| 306 | Additive Number | LC 842 的是非題雙胞胎 —— 第一次成功就回傳，不用收集 |
+| 816 | Ambiguous Coordinates | 兩層切分：先切成 2 段，再在每一段裡面插小數點 |
+| 291 | Word Pattern II | 切分 + 一個 `char -> piece` 的雙射，回溯時**必須**復原 |
+| 698 | Partition to K Equal Sum Subsets | 切的是**多重集合分成 k 桶**，不是把序列切成連續片段 —— 是另一份模板（[Template 13](#template-13-k-bucket-partitioning--lc-698--lc-473)） |
+
+> LC 131 → LC 132 就是 [Key Properties](#key-properties) 裡那個典型的
+> **回溯 → DP** 轉折：問題一旦不再要*所有*切分、而是要*最好*的那一個，把它們全部列舉
+> 出來就是浪費。
 
 <!-- daad7c059aef -->
 ### Template 9: Grid / Word Search — LC 79 ⭐⭐⭐⭐
