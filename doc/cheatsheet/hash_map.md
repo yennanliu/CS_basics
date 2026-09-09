@@ -195,7 +195,7 @@ In [6]:
 
 | # | Template | Map shape | Recognise it by | Typical LC |
 |---|----------|-----------|-----------------|------------|
-| 1 | Frequency counter | `{item: count}` | "count", "frequency", "anagram", "top-K" | 242, 49, 347, 451 |
+| 1 | Frequency counter | `{item: count}`, or `{item: (first, last, count)}` | "count", "frequency", "anagram", "top-K", "all occurrences in one contiguous block" | 242, 49, 347, 451, 4038 |
 | 2 | Seen-before index map | `{value: index}` | "find a pair", "target sum", complement | 1, 15, 532, 1010 |
 | 3 | Grouping by a computed key | `{canonical_key: [items]}` | "group", "same line", "same signature" | 49, 149, 609, 987 |
 | 4 | Prefix sum → count map | `{prefixSum: count}` / `{prefixSum: firstIndex}` | "subarray sum equals / divisible by K" | 560, 974, 525, 325 |
@@ -230,6 +230,71 @@ def counting_pattern(arr):
 
 # Examples: LC 49, LC 242, LC 451, LC 347, LC 692
 ```
+
+#### Variation: index-span map — `span == count` proves contiguity ⭐⭐⭐
+
+**Pattern**: sometimes the question is not *how many times* a value appears but *where* it appears. Record the positions instead of the count, and one arithmetic identity settles "are all occurrences of this value one contiguous block?":
+
+```text
+last_idx - first_idx + 1 == number_of_occurrences
+```
+
+**Key Idea**: the span is the number of slots the value's block would occupy if nothing else were inside it. Any foreign value sitting between two occurrences widens the span while leaving the count alone, so `span > count` ⇔ the block is broken. No sorting, no walking the index list — O(1) per distinct value.
+
+```python
+# python
+# LC 4038 - Count Integers Appearing in a Single Block
+# IDEA: {val: [idx, ...]}, then a value is special iff its indices are consecutive
+# time = O(n), space = O(n)
+from collections import defaultdict
+
+def countSpecialIntegers(nums: list) -> int:
+    my_map = defaultdict(list)
+    for i, v in enumerate(nums):
+        my_map[v].append(i)
+
+    cnt = 0
+    for k in my_map:
+        idxs = my_map[k]
+        # NOTE !!! span == count  <=>  indices are consecutive
+        if idxs[-1] - idxs[0] + 1 == len(idxs):
+            cnt += 1
+    return cnt
+
+# [1,1,2,2,3] -> 1:[0,1] 2:[2,3] 3:[4]     -> every span == count -> 3
+# [1,2,1]     -> 1:[0,2] -> 2-0+1 = 3 != 2 -> broken -> only 2 is special -> 1
+```
+
+**The one-pass refinement** — the check only ever reads three numbers, so the index list is never needed. Same O(n) time, but O(distinct) cells instead of O(n):
+
+```python
+# python
+# LC 4038 - keep only (first_idx, last_idx, count) per value
+# time = O(n), space = O(k), k = number of distinct values
+def countSpecialIntegers(nums: list) -> int:
+    info = {}                                  # {val: [first, last, cnt]}
+    for i, v in enumerate(nums):
+        if v not in info:
+            info[v] = [i, i, 1]
+        else:
+            info[v][1] = i
+            info[v][2] += 1
+    return sum(1 for first, last, cnt in info.values() if last - first + 1 == cnt)
+```
+
+**Four traps**:
+1. **Special-casing a single occurrence** — no branch is needed: one index gives `span = last - first + 1 = 1` and `count = 1`, so it passes the same identity every block does.
+2. **Walking (or sorting) the index list** to test consecutiveness — the indices arrive in increasing order already, and `span == count` reads only the ends.
+3. **Counting occurrences instead of values** — the answer is the number of distinct *keys* that pass, so a value appearing 5 times in one block contributes 1.
+4. **Confusing consecutive *indices* with consecutive *values*** — this identity is about positions in the array. Runs of consecutive values (LC 128) are a different sheet's trick (a set, plus "is `v-1` present?").
+
+**Variations** (same "store position, not just count" move):
+
+| Problem | LC# | The twist — what the map stores |
+|---------|-----|---------------------------------|
+| Partition Labels | 763 | `{char: last index}`; sweep left→right extending the block's end to the furthest `last` seen — a cut happens exactly where `i == end` |
+| Contains Duplicate II | 219 | `{value: last index}`; a hit needs `i - last <= k`, so only the most recent position matters |
+| Longest Consecutive Sequence | 128 | The contrast case: spans over **values**, not indices — a set plus "start only where `v-1` is absent" |
 
 ### Template 2: Seen-Before Index Map (Two-Sum Shape)
 ```python
@@ -946,7 +1011,7 @@ def top_k_frequent(nums, k):
 
 | Recognise it by | Pattern | Template | Time / Space | Problems |
 |-----------------|---------|----------|--------------|----------|
-| Frequency of elements, characters or patterns; "most frequent", "anagram", duplicates | Counting / frequency map | [T1](#template-1-frequency-counter) | O(n) / O(n) | 242, 49, 451, 347, 692, 387, 819, 811, 1207, 383, 299, 349, 350 |
+| Frequency of elements, characters or patterns; "most frequent", "anagram", duplicates, or *where* a value occurs ("one contiguous block") | Counting / frequency map, incl. the [index-span variation](#variation-index-span-map--span--count-proves-contiguity-) | [T1](#template-1-frequency-counter) | O(n) / O(n) | 242, 49, 451, 347, 692, 387, 819, 811, 1207, 383, 299, 349, 350, 4038, 763, 219 |
 | A pair, triplet or complement that hits a target; "two sum", "k-diff", "divisible by 60" | Seen-before index map | [T2](#template-2-seen-before-index-map-two-sum-shape) | O(n) / O(n) | 1, 15, 16, 18, 167, 532, 653, 1010, 1679, 1711, 2006 |
 | Items that belong together under some *derived* form; "group", "same line", "same row or column" | Grouping by a computed key | [T3](#template-3-grouping-by-a-computed-key) | O(n·k) / O(n) | 49, 149, 609, 939, 947, 987 |
 | A subarray property: sum equals k, sum divisible by k, equal 0s and 1s, exactly k odds | Prefix sum → count map | [T4](#template-4-prefix-sum--count-map-) | O(n) / O(n) | 560, 325, 523, 525, 930, 974, 1248, 724 |
