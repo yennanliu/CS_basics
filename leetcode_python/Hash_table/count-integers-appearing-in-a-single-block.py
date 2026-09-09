@@ -56,6 +56,51 @@ Constraints:
 
 # V0
 # IDEA : HASH MAP {val : [idx_1, idx_2, ....]}
+"""
+CORE IDEA:
+
+    value -> 所有出現的 index，然後檢查這些 index 是否連續
+"""
+from collections import defaultdict
+
+class Solution(object):
+    def countSpecialIntegers(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        # edge
+        if len(nums) == 1:
+            return 1
+        
+        cnt_map = defaultdict(list)
+
+        for i in range(len(nums)):
+            val = nums[i]
+            cnt_map[val].append(i)
+
+        cnt = 0
+
+        for k in cnt_map.keys():
+            indices = cnt_map[k]
+            # NOTE !!
+            # if val ONLY exists once,
+            # it is still count (as a valid continuous index)
+            if len(indices) == 1:
+                cnt += 1
+            else:
+                if len(indices) > 1:
+                    # NOTE !!!
+                    # via below trick, we check if the index are continuous
+                    if len(indices) == indices[-1] - indices[0] + 1:
+                        cnt += 1
+
+
+        return cnt
+
+
+# V0-1
+# IDEA : HASH MAP {val : [idx_1, idx_2, ....]}
 #
 #   collect every index a value lands on, then a value is special
 #   ONLY if its indices are consecutive.
@@ -102,7 +147,7 @@ class Solution(object):
         return cnt
 
 
-# V0-1
+# V0-2
 # IDEA : ONE PASS, KEEP ONLY (first_idx, last_idx, count)
 #
 #   same "span == count" check as V0, but there is no need to KEEP every
