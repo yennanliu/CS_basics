@@ -1,4 +1,4 @@
-20260909: top 100 (binary search): 4(todo), 34(todo) |top 100 (backtrack): 51(again), 131(again!!) | 4038(ok*), 1353(again!!!) | DP: 44(todo), 10(todo), 2289(todo: mono stack + dp), 926(again !!!!!),343(again!)
+20260909: top 100 (binary search): 4(todo), 34(todo) |top 100 (backtrack): 51(again), 131(again!!), 295(again!) | 4038(ok*), 1353(again!!!) | DP: 44(todo), 10(todo), 2289(todo: mono stack + dp), 926(again !!!!!),343(again!)
 
 
 20260908:  4038(to note), 4026(to note),449(todo),394(todo),34(todo),227(again, with univeral algo),104(ok),39(again*),79(again*),212(todo) | 211(again*), 1353(again!!!), 2615(again!!!), 2017(again, todo: note) | DP: 44(todo), 10(todo),2289(todo: mono stack + dp), 926(again !!), 343(again!), 276(again)

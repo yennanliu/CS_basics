@@ -45,7 +45,133 @@ If 99% of all integer numbers from the stream are in the range [0, 100], how wou
 
 """
 
+
 # V0
+class MedianFinder(object):
+
+    def __init__(self):
+        
+
+    def addNum(self, num):
+        """
+        :type num: int
+        :rtype: None
+        """
+        
+
+    def findMedian(self):
+        """
+        :rtype: float
+        """
+        
+
+
+# V0-1
+# IDEA: 2 PQ (small, big) (gemini)
+import heapq
+
+class MedianFinder(object):
+
+    def __init__(self):
+        # small: 大頂堆 (Max-Heap)，維護較小的一半數字 (存負數)
+        self.small = []
+        # large: 小頂堆 (Min-Heap)，維護較大的一半數字 (存正數)
+        self.large = []
+
+    def addNum(self, num):
+        """
+        :type num: int
+        :rtype: None
+        """
+        # 步驟 1: 先將數字放進 small (Max-Heap)
+        heapq.heappush(self.small, -num)
+        
+        # 步驟 2: 確保 small 的最大值 <= large 的最小值
+        # 將 small 堆頂最大值彈出並放進 large
+        val = -heapq.heappop(self.small)
+        heapq.heappush(self.large, val)
+        
+        # 步驟 3: 維護數量平衡 (保持 len(small) >= len(large))
+        # 若 large 的數量多於 small，則把 large 堆頂最小值移回 small
+        if len(self.large) > len(self.small):
+            val = heapq.heappop(self.large)
+            heapq.heappush(self.small, -val)
+
+    def findMedian(self):
+        """
+        :rtype: float
+        """
+        # 總個數為奇數：中位數就是 small 的堆頂
+        if len(self.small) > len(self.large):
+            return float(-self.small[0])
+        # 總個數為偶數：中位數是兩堆堆頂的平均值
+        else:
+            return (-self.small[0] + self.large[0]) / 2.0
+
+
+# V0-2
+# IDEA: 2 PQ (small, big) (GPT)
+import heapq
+
+class MedianFinder(object):
+
+    def __init__(self):
+        # small half
+        # max heap
+        # Python only has min heap,
+        # so store negative values
+        self.s_pq = []
+
+        # big half
+        # min heap
+        self.b_pq = []
+
+    def addNum(self, num):
+        """
+        :type num: int
+        :rtype: None
+        """
+
+        # Put num into the correct heap
+        if not self.s_pq:
+            heapq.heappush(self.s_pq, -num)
+
+        elif num <= -self.s_pq[0]:
+            # num belongs to small half
+            heapq.heappush(self.s_pq, -num)
+
+        else:
+            # num belongs to big half
+            heapq.heappush(self.b_pq, num)
+
+        # Balance heaps
+        #
+        # small heap can have at most 1 more element
+        if len(self.s_pq) > len(self.b_pq) + 1:
+            num = -heapq.heappop(self.s_pq)
+            heapq.heappush(self.b_pq, num)
+
+        elif len(self.b_pq) > len(self.s_pq):
+            num = heapq.heappop(self.b_pq)
+            heapq.heappush(self.s_pq, -num)
+
+    def findMedian(self):
+        """
+        :rtype: float
+        """
+
+        s_size = len(self.s_pq)
+        b_size = len(self.b_pq)
+
+        # Same size
+        if s_size == b_size:
+            return (-self.s_pq[0] + self.b_pq[0]) / 2.0
+
+        # Small heap has one extra element
+        return float(-self.s_pq[0])
+
+
+# V0-3
 # https://docs.python.org/zh-tw/3/library/heapq.html
 # https://github.com/python/cpython/blob/3.10/Lib/heapq.py
 # Note !!! 
