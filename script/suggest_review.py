@@ -819,7 +819,7 @@ def main(argv=None):
     ap.add_argument("--json", metavar="PATH", help="also write the full result as JSON")
     ap.add_argument("--markdown", metavar="PATH", help="also write a markdown report")
     ap.add_argument("--self-test", action="store_true",
-                    help="check the parsers against known input shapes and exit")
+                    help="run script/test_suggest_review.py and exit")
     args = ap.parse_args(argv)
 
     if args.self_test:

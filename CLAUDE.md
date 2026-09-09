@@ -30,7 +30,7 @@ CS_basics is a comprehensive computer science fundamentals repository containing
   - `build-review-plan.js` - Compiles [`data/progress.txt`](data/progress.txt) into the Review Plan's data. **The practice log is the only copy** — see [Review plan data](#the-review-plans-data) below
   - `finalize-pages.js` / `prune-images.js` - The two finishing passes; they run last because they need the whole `_site/` tree (see [Finishing passes](#the-two-finishing-passes))
   - `e2e-check.js` - Post-build validation of every generated page. Both workflows run it; run it locally too
-  - `pages/` - Hand-maintained static pages (LC Explorer/Similar/Review-Plan/Random-Picker/Roadmap/Complexity-Quiz, Skills, 404)
+  - `pages/` - Hand-maintained static pages (LC Explorer/Similar/Review-Plan/Random-Picker/Roadmap/Complexity-Quiz, Skills, Suggest-Review, 404)
   - `nav.js` / `roadmap.js` / `complexity.js` - Browser scripts copied to `_site/`; unit-tested under `site/test/`
   - `style.css` - Stylesheet for the generated doc pages
   - `nav.css` - Navbar, skip link and the `prefers-reduced-motion` opt-out. Loaded by **every** page family

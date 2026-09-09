@@ -289,6 +289,11 @@ without its `---` fences, so its advertised description was the literal string
 
 ## suggest_review.py
 
+**On the site**: [`suggest-review.html`](../site/pages/suggest-review.html) — the
+same material as a page, with the flags grouped by what they do and four real
+runs side by side. Reached from the navbar's **more → suggest** entry. Editing
+this doc does not update that page; keep the two in step by hand.
+
 Suggests what to practise next, chosen to keep the practice **balanced** rather
 than merely important. The problem it solves is bias: a good week on DP turns
 into three weeks on DP while linked list, design and slide window quietly go a
@@ -378,7 +383,7 @@ where the practice has been pooling.
 ### Tests
 
 ```bash
-python3 script/test_suggest_review.py           # 88 tests, stdlib unittest, no deps
+python3 script/test_suggest_review.py           # stdlib unittest, no dependencies
 python3 script/test_suggest_review.py -v
 python3 script/test_suggest_review.py ParseProgress   # one class
 python3 script/suggest_review.py --self-test    # the same suite, quietly

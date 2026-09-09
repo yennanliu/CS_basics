@@ -316,7 +316,7 @@ ok('nav.css honours prefers-reduced-motion',
 // One shared palette for the hand-written tool pages, rather than five copies
 // that had already drifted apart.
 console.log('\n== tool pages ==');
-const TOOL_PAGES = ['lc-explorer', 'lc-similar', 'lc-review-plan', 'lc-random-picker', 'lc-complexity-quiz', 'skills'];
+const TOOL_PAGES = ['lc-explorer', 'lc-similar', 'lc-review-plan', 'lc-random-picker', 'lc-complexity-quiz', 'skills', 'suggest-review'];
 for (const name of TOOL_PAGES) {
   const html = sources.get(path.join(SITE, `${name}.html`));
   ok(`${name} uses the shared palette`,
