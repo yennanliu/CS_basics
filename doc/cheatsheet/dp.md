@@ -231,6 +231,78 @@ def rob_v2(nums):
     return dp[n]  # Answer at position n
 ```
 
+#### **The `s[i-1]` trap — it is the *current* character, not the previous one**
+
+Once the table is `n+1` long, `i` stops being a position and becomes a **length**. That single
+change is what makes `s[i-1]` read wrong at first glance: the `-1` looks like "step back one
+character", but it is only the conversion from *a length* to *the index of that length's last
+character*.
+
+```text
+dp[i]  = a claim about the FIRST i CHARACTERS  ->  i is a LENGTH (0 .. n)
+s[j]   = the character sitting AT position j   ->  j is an INDEX  (0 .. n-1)
+
+a prefix of length i ends at index i-1
+        -> s[i-1] is the newest character inside dp[i]  ->  the CURRENT one
+```
+
+Line the two rows up once and the confusion goes away — they are off by one *by construction*,
+because the length row carries an extra "empty prefix" slot at the front:
+
+```text
+s        =        0     1     0          (n = 3)
+index    =        0     1     2          <- s is indexed 0..n-1
+                  ^     ^     ^
+dp slot  =  0     1     2     3          <- dp has n+1 slots
+            |     |     |     |
+           ""    "0"   "01"  "010"       <- the prefix dp[i] talks about
+```
+
+| loop step | `i` (length) | prefix `s[:i]` | its last char | `val = s[i-1]` |
+|---|---|---|---|---|
+| 1st | 1 | `"0"`   | `'0'` | `s[0]` = `'0'` ✅ current |
+| 2nd | 2 | `"01"`  | `'1'` | `s[1]` = `'1'` ✅ current |
+| 3rd | 3 | `"010"` | `'0'` | `s[2]` = `'0'` ✅ current |
+
+`s[i-1]` is never the previous character — the previous character is `s[i-2]`, and you almost
+never need it, because everything already decided about it is folded into `dp[i-1]`.
+
+**LC 926 (Flip String to Monotone Increasing) written in this view** — `dp[i]` = min flips to make
+the first `i` characters monotone increasing:
+
+```python
+# LC 926 - Flip String to Monotone Increasing
+# IDEA: dp[i] = min flips over the PREFIX OF LENGTH i, so the char decided at step i is s[i-1]
+dp = [0] * (n + 1)          # n+1 slots: dp[0] = empty prefix = 0 flips
+one_so_far = 0              # '1's kept so far in s[:i-1]
+
+for i in range(1, n + 1):   # i = prefix LENGTH, not a position
+    val = s[i - 1]          # the character being decided right now
+
+    if val == '0':
+        # keep this '0' -> every earlier kept '1' must flip -> one_so_far
+        # flip this '0' -> 1 more than dp[i-1]
+        dp[i] = min(one_so_far, dp[i - 1] + 1)
+    else:
+        dp[i] = dp[i - 1]   # a '1' at the end is always safe, costs nothing
+        one_so_far += 1
+
+return dp[n]                # dp[n], NOT dp[n-1]
+```
+
+Trace on `s = "010"`:
+
+```text
+i=1  val=s[0]='0'  dp[1]=min(one_so_far=0, dp[0]+1=1) = 0
+i=2  val=s[1]='1'  dp[2]=dp[1]=0                 one_so_far -> 1
+i=3  val=s[2]='0'  dp[3]=min(one_so_far=1, dp[2]+1=1) = 1
+answer = dp[3] = 1     ("010" -> "011" or "000")
+```
+
+Three tells put you in the length view, and **all three must agree** — `dp = [0] * (n + 1)`,
+`for i in range(1, n + 1)`, `return dp[n]`. Mix one of them with the index view and you either
+read `s[n]` off the end of the string or silently skip its last character.
+
 #### **2. Handling the "Empty" Base Case**
 
 Many DP problems need a base case representing "nothing" (target sum = 0, empty string, etc.).

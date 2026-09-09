@@ -108,6 +108,50 @@ class Solution(object):
         return product
 
 
+# V0-0-0-1
+# IDEA: MATH (gemini)
+class Solution(object):
+
+    def integerBreak(self, n):
+        """
+        :type n: int
+
+        :rtype: int
+        """
+        # Edge case
+        if n == 2:
+            return 1
+
+        max_product = 1
+
+        # Try splitting n into k parts (k ranges from 2 to n)
+        for k in range(2, n + 1):
+            tmp = self.get_product(n, k)
+            max_product = max(max_product, tmp)
+
+        return max_product
+
+    """
+    NOTE !!!
+    `k`: split n into `k` parts as evenly as possible
+    """
+
+    def get_product(self, n, k):
+        q = n // k  # 商數（基礎每份的大小）
+        r = n % k  # 餘數（有 r 份需要多分配 1，變成 q + 1）
+
+        """
+        NOTE !!!! 
+
+        1. r (餘數): r parts have value (q + 1)
+        2. k - r: (k - r) parts have value q
+        """
+        # 使用次方 ** 替代迴圈，語法更簡潔且速度更快
+        product = ((q + 1) ** r) * (q ** (k - r))
+
+        return product
+
+
 # V0-0-1
 # IDEA: GREEDY (gpt)
 class Solution(object):
