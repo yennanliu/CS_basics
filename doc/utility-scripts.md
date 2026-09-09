@@ -383,7 +383,7 @@ where the practice has been pooling.
 ### Tests
 
 ```bash
-python3 script/test_suggest_review.py           # 88 tests, stdlib unittest, no deps
+python3 script/test_suggest_review.py           # stdlib unittest, no dependencies
 python3 script/test_suggest_review.py -v
 python3 script/test_suggest_review.py ParseProgress   # one class
 python3 script/suggest_review.py --self-test    # the same suite, quietly
