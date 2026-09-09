@@ -35,7 +35,119 @@ s[i] is either '0' or '1'.
 
 """
 
+
+
 # V0
+# IDEA: 1D DP (dp + one_so_far) (gpt)
+"""
+NOTE !!!
+
+DP def
+
+    
+     - dp[i] 代表的是：長度為 i 的前綴 (prefix) 子字串 s[0 ... i-1] 
+       達到單調遞增的最少翻轉次數。
+
+     - dp[i] = 把前 i 個字元 s[:i] 變成 monotone increasing
+       所需要的最少 flip 次數。
+
+DP eq
+"""
+class Solution(object):
+    def minFlipsMonoIncr(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        if len(s) <= 1:
+            return 0
+
+        n = len(s)
+
+        # dp[i] = minimum flips to make s[:i] monotone increasing
+        dp = [0] * (n + 1)
+
+        one_so_far = 0
+
+        for i in range(1, n + 1):
+
+            """
+            NOTE !!!
+
+            val is `cur` val, NOT the `prev` val
+
+            e.g.
+
+            val = s[i - 1]
+                -> val = 目前正在處理的 character
+
+
+            ---
+
+            
+            ->
+
+
+            ### 1. 為什麼 `val = s[i - 1]` 是「當前字元」而不是前一個字元？
+
+            因為程式碼中的 `dp` 採用了 **長度觀點（1-based DP）**：
+
+            * `dp[i]` 代表的是：長度為 $i$ 的前綴子字串 `s[0 ... i-1]` 達到單調遞增的最少翻轉次數。
+            * 迴圈 `for i in range(1, n + 1)` 中的 $i$ 代表**當前正在處理前綴的長度**：
+            * 當 $i = 1$ 時：考慮前綴長度為 1，最後一個字元（即當前字元）是 `s[1 - 1]` = `s[0]`。
+            * 當 $i = 2$ 時：考慮前綴長度為 2，最後一個字元（即當前字元）是 `s[2 - 1]` = `s[1]`。
+            * 當 $i = k$ 時：考慮前綴長度為 $k$，最後一個字元（即當前字元）是 `s[k - 1]`。
+
+
+
+            因此，`val = s[i - 1]` 取出的恰好就是當前正在處理的那一個字元，而不是前一個字元！
+
+            """
+
+            # current character
+            val = s[i - 1]
+
+            
+
+            """
+            NOTE !!!
+
+
+            1. we track
+                if cur val == "0" or == "1"
+
+
+            2. if cur val == "0" 
+                -> either we
+                    - flip ALL prev 1 to 0
+                    - flip cur val to 1
+            """
+            if val == '0':
+                # Current is 0.
+                #
+                # Option 1:
+                # Keep current 0.
+                # Then all previous 1s must become 0.
+                #
+                # Option 2:
+                # Flip current 0 -> 1.
+                dp[i] = min(
+                    one_so_far,
+                    dp[i - 1] + 1
+                )
+
+            else:
+                # Current is 1.
+                #
+                # Keep current 1.
+                dp[i] = dp[i - 1]
+
+                one_so_far += 1
+
+        return dp[n]
+
+
+# V0-0-1
 """
 
 DP def
