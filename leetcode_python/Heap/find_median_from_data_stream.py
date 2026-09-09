@@ -70,7 +70,27 @@ class MedianFinder(object):
 # IDEA: 2 PQ (small, big) (gemini)
 """
 
-1. 
+1. Steps:
+
+
+step 1)
+    先入 small：不管三七二十一，先塞進 small。
+
+
+step 2)
+    過濾出最大值給 large：將 small 裡的最大值彈出放入 large。
+    這一步自動確保了 small 的所有數字 <= large 的所有數字。
+
+step 3)
+    保持數量平衡：如果 large 的長度超過 small，就把 large 的最小值搬回 small。
+
+    -> 如此一來，small 的長度只可能等於 len(large) 或 len(large) + 1 !!
+
+
+
+
+
+2. 
     利用 Python heapq 預設為小頂堆（Min-Heap）的特性：
 
     small (Max-Heap)：存負數（-num）來模擬大頂堆。
