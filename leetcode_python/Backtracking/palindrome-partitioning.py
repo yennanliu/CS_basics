@@ -99,6 +99,40 @@ class Solution(object):
                 return
 
             # Explore all candidate partitions s[start_idx : end_idx]
+            """
+            Q: why  `start_idx + 1, len(s) + 1` ?
+
+            ->
+
+            Python 字串切片的「左閉右開」特性 與 range() 函數「不包含終點」的語法規則
+
+
+            1. why start_idx + 1 ?
+
+                -> - Python 的字串切片 s[start_idx : end_idx] 取出的字元範圍是
+                   [start_idx, end_idx -1] (包含起點，不包含終點） 
+
+
+                   - 遞迴切割時，每次切出的子字串長度至少要為 1
+                     （不能切出空字串造成死迴圈）。
+
+                
+                    - 當 end_idx = start_idx + 1 時，s[start_idx : start_idx + 1]
+                    恰好能取出長度為 1 的單一字元。
+
+
+            2. why len(s) + 1 ?
+
+                ->  - range(A, B) 產生的數值範圍是從 A 到 B - 1
+
+                    - 我們希望子字串最遠可以一路切到字串末端，也就是讓 end_idx 
+                      能夠取到 len(s)（對應切片 s[start_idx : len(s)]）。
+
+
+                    - 為了讓迴圈中的 end_idx 能夠順利到達 len(s)，range 
+                      的第二個參數（stop）就必須設定為 len(s) + 1。
+
+            """
             for end_idx in range(start_idx + 1, len(s) + 1):
                 substring = s[start_idx:end_idx]
                 
