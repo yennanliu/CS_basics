@@ -1,3 +1,6 @@
+20260910: top 100 like: 4(todo), 34(todo), 35(todo), 74(todo), 124(todo) | top 100 (backtrack): 51(again)  | others:   | DP: 44(todo), 10(todo), 2289(todo: mono stack + dp)
+
+
 20260909: top 100 (binary search): 4(todo), 34(todo) |top 100 (backtrack): 51(again), 131(again!!), 295(again!) | 4038(ok*), 1353(again!!!) | DP: 44(todo), 10(todo), 2289(todo: mono stack + dp), 926(again !!!!!),343(again!)
 
 
