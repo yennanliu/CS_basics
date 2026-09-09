@@ -260,6 +260,14 @@ three things it exists to prevent, all of which have actually happened:
 It never touches `data/progress.txt` — the practice log is the user's own record and
 gets its own commit (see [Review plan data](#the-review-plans-data)).
 
+`site/pages/lc-add.html` is its page on the site — the three failure modes it exists to
+prevent, the seven steps as a stepper, the house layout shown as the file it actually
+produced for LC 4038, per-agent install. It is hand-maintained like `skills.html`, so
+`build.sh` copies it and `finalize-pages.js` gives it the canonical and Open Graph tags;
+editing `SKILL.md` does **not** update that page's prose. Its `.claude/skills/...` links
+are enforced by [the skills gate](#the-skills-gate) — `check_skills.py` reads it, the
+same way it reads `skills.html`.
+
 ---
 
 ## Cheatsheet Style Guide
@@ -550,7 +558,8 @@ python3 script/check_skills.py --install   # what CI runs
 ```
 
 It checks frontmatter every host can parse, that no reference file is orphaned, and that every
-`.claude/skills/...` path named by `CLAUDE.md`, an `INSTALL.md` or `site/pages/skills.html`
+`.claude/skills/...` path named by `CLAUDE.md`, an `INSTALL.md` or a skill's page under
+`site/pages/` (`skills.html`, `lc-add.html`)
 still resolves — that last one because those links are absolute `github.com` URLs, which
 `e2e-check.js` cannot resolve and never will. `--install` performs both documented installs
 (the `cp -r`, and the zip the Claude app uploads) into a temp directory and re-runs every check
