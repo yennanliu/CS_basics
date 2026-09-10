@@ -138,19 +138,25 @@ second pass only has to bit-vector that single block.
 BLOCK = 1 << 20                              # 2^20 values per block
 
 def find_missing(read_all, limit=1 << 31):   # read_all() -> a fresh iterator each call
-    counts = [0] * (limit // BLOCK)          # 2048 counters
+    counts = [0] * -(-limit // BLOCK)        # 2048 counters; ceiling covers a part-block
     for v in read_all():                     # ---- pass 1
         counts[v // BLOCK] += 1
 
-    block = next(i for i, c in enumerate(counts) if c < BLOCK)
-    lo = block * BLOCK
-    seen = bytearray(BLOCK // 8)             # ---- pass 2, 128 KB
+    def slots(i):                            # the last block may be shorter than BLOCK
+        return min(BLOCK, limit - i * BLOCK)
+
+    block = next((i for i, c in enumerate(counts) if c < slots(i)), -1)
+    if block < 0:
+        return -1                            # every block is full: nothing is missing
+
+    lo, width = block * BLOCK, slots(block)
+    seen = bytearray((width + 7) // 8)       # ---- pass 2, 128 KB for a full block
     for v in read_all():
-        if lo <= v < lo + BLOCK:
+        if lo <= v < lo + width:
             off = v - lo
             seen[off >> 3] |= 1 << (off & 7)
 
-    for off in range(BLOCK):
+    for off in range(width):
         if not (seen[off >> 3] >> (off & 7)) & 1:
             return lo + off
     return -1                                # no gap: the input held every value
@@ -222,7 +228,10 @@ write it out as a sorted **run**, then merge the runs with a heap holding one re
 # IDEA: phase 1 turns the input into sorted runs; phase 2 k-way merges them, keeping
 #       only k heads (one per run) in RAM
 # time = O(n log n) compares; I/O = O(n) per pass, passes = 1 + log_k(#runs)
+# NOTE: ONE merge pass, so it assumes len(runs) fits the fan-in the process can hold
+#       open at once. More runs than that must be merged in rounds — see below.
 import heapq
+from contextlib import ExitStack
 
 def external_sort(records, chunk_size, tmpdir):
     runs, chunk = [], []
@@ -234,9 +243,10 @@ def external_sort(records, chunk_size, tmpdir):
     if chunk:
         runs.append(_flush(chunk, tmpdir, len(runs)))
 
-    files = [open(p) for p in runs]                      # ---- phase 2: k-way merge
-    for line in heapq.merge(*files, key=int):            # heap of k heads only
-        yield int(line)
+    with ExitStack() as stack:                           # ---- phase 2: k-way merge
+        files = [stack.enter_context(open(p)) for p in runs]   # closed on the way out,
+        for line in heapq.merge(*files, key=int):              # even if the caller
+            yield int(line)                                    # abandons the generator
 
 def _flush(chunk, tmpdir, i):
     chunk.sort()
@@ -249,8 +259,11 @@ def _flush(chunk, tmpdir, i):
 - **Why a heap.** Merging `k` runs by scanning every head is `O(k)` per record; a heap makes
   it `O(log k)`. It is LC 23 (Merge k Sorted Lists) — the only difference is that each list
   lives on disk.
-- **Why `k` is bounded.** Every open run needs a read buffer, so `k ~= RAM / buffer size`.
-  More runs than that means more than one merge pass: `passes = 1 + ceil(log_k(runs))`.
+- **Why `k` is bounded.** Every open run costs a file descriptor *and* a read buffer, so `k`
+  is capped by both `RAM / buffer size` and the process's descriptor limit (`ulimit -n`,
+  commonly 256–1024). A tiny `chunk_size` makes thousands of runs and the single-pass merge
+  above then fails outright — merge them in rounds of `k` instead:
+  `passes = 1 + ceil(log_k(runs))`.
 - **What it buys.** Once the data is sorted, dedup, grouping and set intersection are each a
   single linear scan with two pointers and no extra memory.
 

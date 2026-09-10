@@ -99,23 +99,29 @@ x + (x-1) + ... + 1 = x(x+1)/2 >= 100    ->    x = 14   (14*15/2 = 105)
 
 ```python
 # python
-# CtCI 6.5 - 2 eggs, 100 floors: find the breaking floor in at most 14 drops
+# CtCI 6.5 - 2 eggs, n floors: find the breaking floor in at most x drops,
+# where x is the smallest integer with x(x+1)/2 >= n  (n = 100 -> x = 14)
 # IDEA: shrink the jump by 1 after each survived drop, so (drops used + worst
-#       remaining scan) stays constant at 14 for every outcome
+#       remaining scan) stays constant at x for every outcome
 # time = O(sqrt(n)) drops, space = O(1)
 def find_breaking_floor(floors, breaks_at):      # breaks_at(f) -> True if the egg breaks
-    step = 14                                    # smallest x with x(x+1)/2 >= 100
-    floor, prev = step, 0
+    step = 1
+    while step * (step + 1) // 2 < floors:       # derive x from the building, not from 100
+        step += 1
 
-    while floor <= floors and not breaks_at(floor):   # egg 1: decreasing jumps
+    floor, prev, broke = step, 0, False
+    while step > 0 and floor <= floors:          # egg 1: jumps that shrink by 1
+        if breaks_at(floor):
+            broke = True
+            break
         step -= 1
-        prev = floor
-        floor += step
+        prev, floor = floor, floor + step
 
-    for f in range(prev + 1, min(floor, floors) + 1): # egg 2: scan the gap below
+    top = floor - 1 if broke else min(floor, floors)   # never re-test the floor that broke
+    for f in range(prev + 1, top + 1):                 # egg 2: scan the gap, bottom-up
         if breaks_at(f):
             return f
-    return -1                                    # it never breaks
+    return floor if broke else -1                # nothing lower broke, so it is `floor`
 ```
 
 The same balancing act, in other clothes:

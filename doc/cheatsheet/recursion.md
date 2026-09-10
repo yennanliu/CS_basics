@@ -675,7 +675,7 @@ and **weaving two ordered sequences**.
 | Nested brackets / grammar in a string | **5-2) Recursive Descent (shared cursor)** | LC 394, 224, 1106, 736 |
 | `n` shrinks by a *factor* each step | **5-3) Halving Recursion** | LC 50, 1922, 231/326/342 |
 | A closed-form `f(n)` from `f(n-1)` | **5-4) Recurrence Reduction** | LC 779, 1823, 273 |
-| Only the top item is reachable; the rest must be parked somewhere | **5-5) Move Through a Buffer** | Towers of Hanoi, CtCI 3.5 |
+| Only the top item is reachable; the rest must be parked somewhere | **5-5) Move Through a Buffer** | Towers of Hanoi (CtCI 8.6), sort-a-stack (CtCI 3.5) |
 | List *every* order that preserves two orderings | **5-6) Weaving Two Sequences** | CtCI 4.9, cf. LC 97 |
 
 ---
@@ -1419,7 +1419,8 @@ move(n, src, dst, buf):
 # a larger disk on a smaller one
 # IDEA: the three pegs swap roles between the two recursive calls; that rotation,
 #       not the move itself, is what makes the recursion correct
-# time = O(2^n) moves — T(n) = 2T(n-1) + 1 = 2^n - 1; space = O(n) call stack
+# time = O(2^n) moves — T(n) = 2T(n-1) + 1 = 2^n - 1
+# space = O(n) auxiliary (the call stack); the `moves` list itself is O(2^n) output
 def hanoi(n, src, dst, buf, moves):
     if n == 0:
         return

@@ -621,16 +621,19 @@ first `m` items, then let each later item `i` replace a random slot with probabi
 # CtCI 17.3 - a uniformly random subset of size m, in one pass over the input
 # IDEA: reservoir sampling with k = m — item i (i >= m) lands in slot k when the
 #       random k < m, so early and late items end up equally likely
-# time = O(n), space = O(m)
+# time = O(n), space = O(m) — any iterable, and it never indexes or re-reads it
 import random
 
 def pick_m(items, m):
-    subset = list(items[:m])
-    for i in range(m, len(items)):
-        k = random.randint(0, i)          # inclusive at both ends
-        if k < m:
-            subset[k] = items[i]
-    return subset
+    subset = []
+    for i, item in enumerate(items):      # one pass; a generator is fine
+        if i < m:
+            subset.append(item)           # seed the reservoir
+        else:
+            k = random.randint(0, i)      # inclusive at both ends
+            if k < m:
+                subset[k] = item          # replaces a slot with probability m/(i+1)
+    return subset                         # shorter than m if the input was
 ```
 
 **Classic LC:** LC 384 uses the full shuffle above; this is the version to reach for when

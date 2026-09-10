@@ -15,7 +15,7 @@ and the techniques; this file keeps the problems that *apply* them.
 
 ### Key Properties
 - **Complexity**: O(1) per number or O(32n) over an array, unless a solution says otherwise — which is the reason to reach for bits at all
-- **Core Idea**: four properties do almost all the work, and the groups below are those four
+- **Core Idea**: five properties do almost all the work, and the groups below are those five
 - **When to Use**: when the constraint is O(1) space, no arithmetic operators, or a set small enough to fit in an `int`
 
 
@@ -789,9 +789,11 @@ int updateBits(int n, int m, int i, int j) {
 }
 ```
 
-> The `j == 31` guard is what the question is really checking. Java and C mask a shift count
-> by 31, so `x << 32` returns `x` unchanged rather than 0 — the mask would come out as all
-> 1s and clear nothing. Python has no such limit, so the guard is not needed there.
+> The `j == 31` guard is what the question is really checking. **Java** masks a shift count
+> by 31 (JLS 15.19), so `allOnes << 32` returns `allOnes` unchanged rather than 0 — the mask
+> comes out as all 1s and clears nothing. **C is worse**: a shift by the operand's width is
+> *undefined behaviour*, so it may mask, may give 0, may do something else entirely. Python
+> has no fixed width and no shift limit, so the guard is not needed there.
 
 ### 16) Next number with the same number of 1 bits — CtCI 5.4 ⭐⭐⭐
 
@@ -810,6 +812,8 @@ add back c1-1 = 4 ones at bottom 11011010001111 = 13967
 ```python
 # python
 # CtCI 5.4 - the smallest number LARGER than n with the same number of 1 bits
+# DOMAIN: positive 32-bit SIGNED ints, as in the book — the answer must stay under
+#         2^31, so a result needing bit 31 is reported as -1 rather than returned
 # IDEA: flip the rightmost non-trailing zero (position c0+c1) to grow the number,
 #       then push the remaining ones as far right as possible to keep it minimal
 # time = O(32), space = O(1)
@@ -821,8 +825,10 @@ def next_same_popcount(n):
     while c & 1:                         # c1 = the run of ones above them
         c1 += 1
         c >>= 1
-    if c0 + c1 in (0, 31):               # 11..100..0 is already the largest such number
+    if c0 + c1 == 0:                     # n == 0: no ones to move
         return -1
+    if c0 + c1 == 31:                    # the next value would need bit 31 (negative
+        return -1                        # as an int32) — out of domain, so no answer
 
     p = c0 + c1
     n |= 1 << p                          # flip the rightmost non-trailing zero
