@@ -99,6 +99,15 @@ step 3)
     large (Min-Heap)：直接存正數。
 
 
+
+3. NOTE !!!
+
+
+maintain PQ as
+
+    -> small 的長度只可能等於 len(large) 或 len(large) + 1
+
+    -> len(small_half) >= len(large_half)
 """
 import heapq
 
