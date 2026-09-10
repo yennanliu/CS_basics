@@ -600,22 +600,94 @@ def bottom_up_dfs(root):
 ```
 
 #### Global-accumulator form — LC 124 Binary Tree Maximum Path Sum
+
+> Source: [`binary-tree-maximum-path-sum.py`](../../leetcode_python/Tree/binary-tree-maximum-path-sum.py)
+
+- **Key Idea**: a node computes **two different values**, and confusing them is the whole difficulty of
+  the problem:
+  1. **The answer candidate** (`left + right + node.val`) — the path that *turns* at this node, using
+     **both** children. It is recorded into a global max and **never returned**.
+  2. **The value returned to the parent** (`max(left, right) + node.val`) — a path continuing upward
+     can only use **one** child, because a path is a sequence of nodes, not a fork.
+- **Recognition**: "path does not need to pass through the root", "path may turn at some node",
+  "maximise over all paths" — anything where the best local answer is *not* the value the parent needs.
+- **Why `max(0, ...)`**: a child subtree whose best downward sum is negative is simply **dropped** —
+  attaching it can only make the path worse. Clamping to `0` is how "drop it" is spelled.
+- **Why `float('-inf')` and not `0`**: the path must be non-empty, so an all-negative tree
+  (`[-3]` → `-3`) must be allowed to win. Seeding at `0` silently returns `0` there.
+- **Do not return `left + right + node.val`** upward. That is the single most common bug: it hands the
+  parent a forked path, which the parent then forks again, producing a shape that is not a path at all.
+
 ```python
+# python
+# LC 124 - Binary Tree Maximum Path Sum
+# IDEA: post-order DFS; record the `turning` path globally, return the best `straight` path upward
+# time = O(n), space = O(h)   # h = tree height, worst O(n)
 class Solution:
     def maxPathSum(self, root):
         self.max_sum = float('-inf')
-        
+
         def dfs(node):
             if not node:
                 return 0
-            left = max(0, dfs(node.left))
-            right = max(0, dfs(node.right))
+            left = max(0, dfs(node.left))       # drop a negative subtree
+            right = max(0, dfs(node.right))     # drop a negative subtree
+            # (1) candidate: path TURNS here, uses BOTH children -> global only
             self.max_sum = max(self.max_sum, left + right + node.val)
+            # (2) upward: path CONTINUES, so only ONE child may be kept
             return max(left, right) + node.val
-        
+
         dfs(root)
         return self.max_sum
 ```
+
+```java
+// java
+// LC 124 - Binary Tree Maximum Path Sum
+// IDEA: post-order DFS; record the `turning` path globally, return the best `straight` path upward
+// time = O(n), space = O(h)
+private int maxSum = Integer.MIN_VALUE;
+
+public int maxPathSum(TreeNode root) {
+    maxSum = Integer.MIN_VALUE;
+    dfs(root);
+    return maxSum;
+}
+
+private int dfs(TreeNode node) {
+    if (node == null) {
+        return 0;
+    }
+    int left = Math.max(0, dfs(node.left));    // drop a negative subtree
+    int right = Math.max(0, dfs(node.right));  // drop a negative subtree
+    maxSum = Math.max(maxSum, left + right + node.val);  // turns here
+    return Math.max(left, right) + node.val;             // continues upward
+}
+```
+
+##### Variant: no clamp — carry the node into the negative branch instead
+
+Equivalent form that appears in the wild: rather than clamping a negative child to `0`, restart the
+branch at `node.val`. The two branch values then each **already include** `node.val`, so the turning
+candidate has to subtract it back out once.
+
+```python
+# python
+# LC 124 - Binary Tree Maximum Path Sum (no-clamp variant)
+# IDEA: a negative branch restarts at root.val, so both sides carry root.val -> subtract one copy
+# time = O(n), space = O(h)
+def dfs(node):
+    if not node:
+        return 0
+    l_max, r_max = dfs(node.left), dfs(node.right)
+    l_max = node.val if l_max < 0 else l_max + node.val
+    r_max = node.val if r_max < 0 else r_max + node.val
+    self.maximum = max(self.maximum, l_max + r_max - node.val)   # NOTE: `- node.val`
+    return max(l_max, r_max)
+```
+
+> Prefer the `max(0, ...)` form. It is shorter, the `- node.val` correction is easy to forget, and the
+> clamp reads directly as the invariant *"a negative subtree is never worth attaching"*.
 
 #### Variation: post-order **balance / flow** accumulation — LC 979 Distribute Coins in Binary Tree
 
