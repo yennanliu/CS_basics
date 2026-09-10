@@ -34,7 +34,89 @@ nums is a non-decreasing array.
 
 """
 
+
 # V0
+# IDEA: BINARY SEARCH + FIND LEFT, RIGHT (gpt)
+class Solution(object):
+    def searchRange(self, nums, target):
+
+        res = [-1, -1]
+
+        # edge
+        if not nums:
+            return res
+
+        if len(nums) == 1:
+            if nums[0] == target:
+                return [0, 0]
+            return res
+
+        # NOTE !!!
+        # we have 2 binary search
+        # for find `left boundary of target` and `right boundary of target`
+        
+        # Find first and last position
+        l = self.find_left(nums, target)
+        r = self.find_right(nums, target)
+
+        # target `exists` if the boundaries are valid
+        if l <= r:
+            return [l, r]
+
+        return res
+
+    def find_left(self, nums, target):
+
+        l = 0
+        r = len(nums) - 1
+
+        while l <= r:
+            mid = l + (r - l) // 2
+            val = nums[mid]
+
+            """
+            NOTE !!!
+
+            even target is found,
+                -> keep finding `left` to see if there is small idx has target val
+            """
+            if val >= target:
+                # Keep searching left
+                r = mid - 1
+            else:
+                l = mid + 1
+
+        # NOTE !!!!
+        # First position >= target
+        return l
+
+    def find_right(self, nums, target):
+
+        l = 0
+        r = len(nums) - 1
+
+        while l <= r:
+            mid = l + (r - l) // 2
+            val = nums[mid]
+
+            """
+            NOTE !!!
+
+            even target is found,
+                -> keep finding `right` to see if there is small idx has target val
+            """
+            if val <= target:
+                # Keep searching right
+                l = mid + 1
+            else:
+                r = mid - 1
+
+        # NOTE !!!!
+        # Last position <= target
+        return r
+
+
+# V0-0-1
 # IDEA : BINARY SEARCH
 # time = O(logn)
 # space = O(1)
