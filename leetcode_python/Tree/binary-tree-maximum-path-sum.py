@@ -34,7 +34,7 @@ The number of nodes in the tree is in the range [1, 3 * 104].
 
 
 # V0
-# IDEA: DFS (gpt)
+# IDEA: post order DFS (gpt)
 """
 CORE IDEA:
 
@@ -52,6 +52,10 @@ CORE IDEA:
 """
 class Solution(object):
     def maxPathSum(self, root):
+
+        # NOTE !!
+        # we init path as `float("-inf")`
+        # since node val can < 0
         self.max_path = float("-inf")
 
         self.dfs_helper(root)
@@ -62,15 +66,70 @@ class Solution(object):
         if not root:
             return 0
 
+        """
+        NOTE !!!
+
+        if left path sum < 0, we DON'T take it (take 0 instead),
+        same idea for right path.
+
+        """
         left = max(0, self.dfs_helper(root.left))
         right = max(0, self.dfs_helper(root.right))
 
         # Path passing through this node
         cur_path = root.val + left + right
+        """
+        # NOTE !!!
+        
+        update global path here
+        """
         self.max_path = max(self.max_path, cur_path)
 
+        """
+        # NOTE !!!
+        
+        ONLY return the `bigger` branch
+        (for its parent)
+        """
         # Return one branch to parent
         return root.val + max(left, right)
+
+
+# V0-0-1
+# IDEA: post order DFS (GPT)
+class Solution(object):
+    def maxPathSum(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: int
+        """
+        if not root:
+            return 0
+
+        # Important: can be all negative
+        self.max_sum = float("-inf")
+
+        self.helper(root)
+
+        return self.max_sum
+
+    def helper(self, root):
+        if not root:
+            return 0
+
+        # Get the best one-side path from left/right subtree
+        left = max(0, self.helper(root.left))
+        right = max(0, self.helper(root.right))
+
+        # Path that passes through current node
+        current = root.val + left + right
+
+        # Update global answer
+        self.max_sum = max(self.max_sum, current)
+
+        # Parent can only take ONE branch
+        return root.val + max(left, right)
+
 
 
 # V0-1
