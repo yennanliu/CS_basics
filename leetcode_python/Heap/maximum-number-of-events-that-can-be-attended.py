@@ -91,13 +91,103 @@ LC 1353 requires asking **"Which event should I commit to today so I don't waste
 """
 
 # V0
+# IDEA:  PQ + GREEEDY (GPT)
+"""
+CORE IDEA:
+
+
+Sort by start + Min Heap by end + 每天選最早結束
+
+
+---
+
+    1. Sort events by `start` day.
+
+    2. Iterate through the days.
+
+    3. Add all events that start today into a min-heap 
+       (ordered by end day).
+
+    4. Remove events that have already expired.
+
+    5. Attend the event that ends the earliest.
+
+
+
+
+----
+
+
+NOTE !!
+
+    we need 3 var for this LC.
+        -> 
+
+            i = 0              # next event index
+            time = 0           # current day
+            cnt = 0            # events attended
+
+
+        ->  NOTE !!!
+
+            `i` is the `event index`
+"""
+import heapq
+
 class Solution(object):
     def maxEvents(self, events):
         """
         :type events: List[List[int]]
         :rtype: int
         """
-        pass
+
+        # Sort by start time
+        events.sort()
+
+        # Min heap:
+        # pq = [end_time_1, end_time_2, ...]
+        # Always attend the event that ends earliest
+        pq = []
+
+
+        """
+        NOTE !!!
+
+        below var definition
+        """
+        i = 0              # next event index
+        time = 0           # current day
+        cnt = 0            # events attended
+        n = len(events)    # total events
+
+
+        while i < n or pq:
+
+            # Step 1:
+            # If no available event,
+            # jump time to the next event's start time.
+            if not pq:
+                time = events[i][0]
+
+            # Step 2:
+            # Add all events that have started by `time`.
+            while i < n and events[i][0] <= time:
+                heapq.heappush(pq, events[i][1])
+                i += 1
+
+            # Step 3:
+            # Remove expired events.
+            while pq and pq[0] < time:
+                heapq.heappop(pq)
+
+            # Step 4:
+            # Attend the event that ends earliest.
+            if pq:
+                heapq.heappop(pq)
+                cnt += 1
+                time += 1
+
+        return cnt
 
 
 # V0-0-1
