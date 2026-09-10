@@ -49,12 +49,19 @@ CORE IDEA:
 
 ->
 
+1. 
 when the loop ends, 
 
 `l` is exactly the position 
 
 where target should be inserted.
 
+
+
+2. 
+
+
+LC 35 = Binary Search，找不到時 l 就是 insertion position。
 
 """
 class Solution(object):
@@ -68,6 +75,12 @@ class Solution(object):
             mid = l + (r - l) // 2
             val = nums[mid]
 
+            """
+            NOTE !!!
+
+            when val == target
+                -> return `mid` directly
+            """
             if val == target:
                 return mid
 
