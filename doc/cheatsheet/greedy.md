@@ -286,7 +286,7 @@ def fractional_knapsack(items, capacity):
 
 **Recognition rule of thumb:**
 - If the objective is *"minimize the maximum"* / *"maximize the minimum"* → the greedy usually becomes a **monotone predicate inside binary search on the answer**, not a standalone algorithm (LC 410 is the canonical case).
-- If a choice can be **undone profitably later** (a fee, a cap, a deadline you can retract) → the fix is often a **heap-based "regret" greedy** rather than DP. See the *greedy with regret* template in [`priority_queue.md`](priority_queue.md) — LC 871 Minimum Number of Refueling Stops, LC 630 Course Schedule III, LC 1642 Furthest Building You Can Reach.
+- If a choice can be **undone profitably later** (a fee, a cap, a deadline you can retract) → the fix is often a **heap-based "regret" greedy** rather than DP. See the *greedy with regret* template in [`heap_advanced.md`](heap_advanced.md#4-greedy-with-regret--undo-the-worst-past-decision-) — LC 871 Minimum Number of Refueling Stops, LC 630 Course Schedule III, LC 1642 Furthest Building You Can Reach.
 
 ---
 

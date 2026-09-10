@@ -174,7 +174,7 @@ O(n) → **O(n)**。
 <!-- a4003afd75c3 -->
 ## 6) 堆積（優先佇列） — 用低成本維持前 k 名
 
-<!-- d68d5ac569a3 -->
+<!-- 60eea39da575 -->
 ### LC 215 — Kth Largest Element
 
 <!--CODE-->
@@ -186,7 +186,7 @@ k 個元素。
 **替代方案 — QuickSelect：平均 O(n)、額外空間 O(1)**（但最差 O(n²)）。如果你還需要*串流式*的
 前 k 名，就用堆積。
 
-> **類似題：** LC 347 Top K Frequent、LC 23 Merge K Sorted Lists（O(N log k)）、LC 295 Find Median from Data Stream（雙堆積）、LC 973 K Closest Points。見 [`heap.md`](./heap.md) / [`priority_queue.md`](./priority_queue.md)。
+> **類似題：** LC 347 Top K Frequent、LC 23 Merge K Sorted Lists（O(N log k)）、LC 295 Find Median from Data Stream（雙堆積）、LC 973 K Closest Points。見 [`heap.md`](./heap.md)。
 
 ---
 
