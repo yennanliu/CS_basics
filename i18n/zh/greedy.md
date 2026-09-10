@@ -140,7 +140,7 @@
 <!-- 14cad3b3f9bb -->
 ## 決策框架
 
-<!-- 30c625bae21c -->
+<!-- 46ce3b0b0da6 -->
 ### 貪婪失敗的時候 — 要知道逃生門在哪
 
 > 面試官很愛出那種*看起來*像貪婪的題目。能講出反例並馬上換路走，價值不輸把貪婪寫出來。
@@ -154,7 +154,7 @@
 
 **辨識的經驗法則：**
 - 目標如果是*「最小化最大值」*／*「最大化最小值」* → 貪婪通常會變成**對答案二分搜尋裡的那個單調判斷式**，而不是一個獨立的演算法（LC 410 是最典型的例子）。
-- 如果一個選擇**之後可以划算地反悔**（手續費、上限、能撤回的截止期限）→ 解法往往是**基於堆積的「反悔」貪婪**，而不是 DP。見 [`priority_queue.md`](priority_queue.md) 裡的 *greedy with regret* 模板 — LC 871 Minimum Number of Refueling Stops、LC 630 Course Schedule III、LC 1642 Furthest Building You Can Reach。
+- 如果一個選擇**之後可以划算地反悔**（手續費、上限、能撤回的截止期限）→ 解法往往是**基於堆積的「反悔」貪婪**，而不是 DP。見 [`heap_advanced.md`](heap_advanced.md#4-greedy-with-regret--undo-the-worst-past-decision-) 裡的 *greedy with regret* 模板 — LC 871 Minimum Number of Refueling Stops、LC 630 Course Schedule III、LC 1642 Furthest Building You Can Reach。
 
 ---
 

@@ -301,7 +301,7 @@ more than k items.
 **Alternative — QuickSelect: O(n) average, O(1) extra space** (but O(n²) worst case). Use the heap
 when you also want a *streaming* top-k.
 
-> **Similar:** LC 347 Top K Frequent, LC 23 Merge K Sorted Lists (O(N log k)), LC 295 Find Median from Data Stream (two heaps), LC 973 K Closest Points. See [`heap.md`](./heap.md) / [`priority_queue.md`](./priority_queue.md).
+> **Similar:** LC 347 Top K Frequent, LC 23 Merge K Sorted Lists (O(N log k)), LC 295 Find Median from Data Stream (two heaps), LC 973 K Closest Points. See [`heap.md`](./heap.md).
 
 ---
 

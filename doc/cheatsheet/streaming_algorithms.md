@@ -757,7 +757,7 @@ if (!bf.mightContain("https://new-site.com")) {
 |------|-----------|-----------|------------|
 | k largest values | min-heap | `size > k` | k-th largest (LC 703, 215) |
 | k most frequent | worst-first heap | `size > k` | current worst survivor (LC 692) |
-| running median | two heaps | after each add | see `priority_queue.md` / `heap.md` (LC 295, 480) |
+| running median | two heaps | after each add | see `heap.md` (LC 295, 480) |
 
 ```java
 // java
@@ -876,7 +876,7 @@ class KthLargest:
         return self.heap[0]
 ```
 
-> **Cross-ref:** running-median (two heaps) and lazy-deletion heaps live in `priority_queue.md` / `heap.md`; the streaming framing here is only "bounded memory k, unbounded n".
+> **Cross-ref:** running-median (two heaps) lives in `heap.md` and lazy-deletion heaps in `heap_advanced.md`; the streaming framing here is only "bounded memory k, unbounded n".
 
 ---
 
@@ -1201,7 +1201,7 @@ Famous "design over a stream" problems that reuse the templates above — no new
 |---------|------------|-------------------|------|
 | LC 1352 | Medium | Running prefix-product list | `getProduct(k)` = `prefix[-1] / prefix[-1-k]`; **reset the list on a `0`** so no zero ever sits inside a stored product |
 | LC 2013 | Medium | `Map<Point, count>` of all added points | For each query, scan stored points for a diagonal partner, then multiply the counts of the two remaining corners |
-| LC 480 | Hard | Two heaps + lazy deletion | Windowed version of LC 295 — see `priority_queue.md` / `heap.md` |
+| LC 480 | Hard | Two heaps + lazy deletion | Windowed version of LC 295 — see `heap.md` |
 | LC 355 | Medium | Per-user tweet lists + k-way merge heap | Merge k sorted streams — see `design.md` |
 
 ---

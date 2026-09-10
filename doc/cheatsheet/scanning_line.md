@@ -793,7 +793,7 @@ events.sort((a, b) -> a[0] != b[0] ? a[0] - b[0] : a[1] - b[1]);  // end(-1) fir
 events.sort((a, b) -> a[0] != b[0] ? a[0] - b[0] : b[1] - a[1]);  // start(+1) first: inclusive
 ```
 
-**Third tie-break level**: when several events share a coordinate *and* a type (skyline starts at the same `x`), order by the payload — LC 218 sorts starts by **descending height** so the tallest wins immediately and no spurious key point is emitted. See [`heap.md`](./heap.md) / [`priority_queue.md`](./priority_queue.md) for the lazy-deletion max-heap that pairs with it.
+**Third tie-break level**: when several events share a coordinate *and* a type (skyline starts at the same `x`), order by the payload — LC 218 sorts starts by **descending height** so the tallest wins immediately and no spurious key point is emitted. See [`heap_advanced.md`](./heap_advanced.md#2-sweep-line--max-heap-of-alive-intervals-) for the lazy-deletion max-heap that pairs with it.
 
 #### **Sweep + Heap / Ordered-Set Problems**
 | Problem | LC # | Key Technique | Difficulty |
