@@ -170,7 +170,84 @@ class Solution(object):
         return res
 
 
+
 # V0-0-1
+# IDEA: PREFIX SUM + LEFT, RIGHT dist (GPT)
+from collections import defaultdict
+
+class Solution(object):
+    def distance(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[int]
+        """
+
+        # Group indices by value
+        # {val: [idx_1, idx_2, ...]}
+        c_map = defaultdict(list)
+
+        n = len(nums)
+        res = [0] * n
+
+        # step 1) build map
+        for i in range(n):
+            val = nums[i]
+            c_map[val].append(i)
+
+
+        # step 2) loop over key
+        # NOTE !!! loop over key in hashmap
+        # Process each value group
+        for k in c_map.keys():
+            index_list = c_map[k]
+            size = len(index_list)
+
+            # prefix[i] = sum of index_list[0:i]
+            prefix = [0] * (size + 1)
+
+            # step 3) get prefix
+            # NOTE !!! get prefix
+            for i in range(size):
+                prefix[i + 1] = prefix[i] + index_list[i]
+
+
+            # step 4) loop over `index`
+            # NOTE !!! loop over `index`
+            # Calculate contribution for each index
+            for j in range(size):
+
+                """
+                NOTE !!!
+
+                we get `idx` via index_list[j]
+
+                and use this `idx` in res as well.
+                """
+                idx = index_list[j]
+
+                # step 5) get val (left_val, right_val)
+                # Number of indices on the left/right
+                left_cnt = j
+                right_cnt = size - j - 1
+
+                # Sum of distances to all indices on the left
+                left_val = idx * left_cnt - prefix[j]
+
+                # Sum of distances to all indices on the right
+                right_val = (
+                    prefix[size]
+                    - prefix[j + 1]
+                    - idx * right_cnt
+                )
+
+                # step 6) update result
+                # Put result back to original index
+                res[idx] = left_val + right_val
+
+        return res
+
+
+# V0-0-2
 # IDEA: PREFIX SUM + LEFT, RIGHT dist
 from collections import defaultdict
 
