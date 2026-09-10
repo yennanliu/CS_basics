@@ -66,6 +66,7 @@ class MedianFinder(object):
         pass
 
 
+
 # V0-1
 # IDEA: 2 PQ (small, big) (gemini)
 """
@@ -168,6 +169,82 @@ class MedianFinder(object):
         # median =
         # (small_half 最大值 + large_half 最小值) / 2
         return (-self.small_half[0] + self.large_half[0]) / 2.0
+
+
+
+# V0-2
+# IDEA: 2 PQ (small, big PQ) (gpt)
+"""
+NOTE !!!
+
+->
+
+        # small_half: max heap
+        # Store negative values because Python heapq is a min heap
+        self.small_half = []
+
+        # big_half: min heap
+        self.big_half = []
+
+"""
+import heapq
+
+
+class MedianFinder(object):
+
+    def __init__(self):
+
+        # small_half: max heap
+        # Store negative values because Python heapq is a min heap
+        self.small_half = []
+
+        # big_half: min heap
+        self.big_half = []
+
+        # Invariant:
+        # len(small_half) == len(big_half)
+        # OR
+        # len(small_half) == len(big_half) + 1
+        #
+        # And:
+        # max(small_half) <= min(big_half)
+
+    def addNum(self, num):
+        """
+        :type num: int
+        :rtype: None
+        """
+
+        # Add to small_half first
+        heapq.heappush(self.small_half, -num)
+
+        # Move the largest value from small_half
+        # to big_half
+        moved_num = -heapq.heappop(self.small_half)
+
+        heapq.heappush(self.big_half, moved_num)
+
+        # Keep small_half having the same size
+        # or one more element than big_half
+        if len(self.big_half) > len(self.small_half):
+            moved_num = heapq.heappop(self.big_half)
+            heapq.heappush(self.small_half, -moved_num)
+
+    def findMedian(self):
+        """
+        :rtype: float
+        """
+
+        # Odd number of elements
+        # small_half has one extra element
+        if len(self.small_half) > len(self.big_half):
+            return float(-self.small_half[0])
+
+        # Even number of elements
+        left = -self.small_half[0]
+        right = self.big_half[0]
+
+        return (left + right) / 2.0
 
 
 # V0-2
