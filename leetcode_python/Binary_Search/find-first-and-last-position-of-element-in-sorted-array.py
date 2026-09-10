@@ -121,6 +121,63 @@ class Solution(object):
         return [left_bound, right_bound]
 
 
+# V0-2
+# IDEA: BINARY SEARCH + EXPAND FROM CENTER (TLE) (gpt)
+class Solution(object):
+    def searchRange(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[int]
+        """
+
+        res = [-1, -1]
+
+        # edge
+        if not nums:
+            return res
+
+        if len(nums) == 1:
+            if nums[0] == target:
+                return [0, 0]
+            return res
+
+        l = 0
+        r = len(nums) - 1
+
+        while l <= r:
+            mid = l + (r - l) // 2
+            val = nums[mid]
+
+            if val == target:
+                # expand from center
+                _l = mid
+                _r = mid
+
+                """
+                NOTE !!!
+
+                below op time complexity is O(N);
+                but NOT O(log N)
+                """
+                # find first position
+                while _l >= 0 and nums[_l] == val:
+                    _l -= 1
+
+                # find last position
+                while _r < len(nums) and nums[_r] == val:
+                    _r += 1
+
+                return [_l + 1, _r - 1]
+
+            elif val < target:
+                l = mid + 1
+            else:
+                r = mid - 1
+
+        return res
+
+
 # V0'
 # IDEA : BINARY SEARCH
 # time = O(logn)
