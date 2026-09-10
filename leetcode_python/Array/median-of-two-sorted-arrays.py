@@ -54,6 +54,14 @@ CORE IDEA:
 
 對於 LeetCode 004，最優解法是在較短的陣列上進行**分割線（Partition）的二分搜尋**：
 
+->
+
+不是在找 median。
+
+    -> 是在找一個 `partition`，讓`左邊剛好是一半，而且左邊所有東西都 ≤ 右邊所有東西`。
+
+        -> 一旦找到這個 partition，median 就只是從 4 個 boundary values 裡取出來。
+
 
 ---
 
@@ -77,7 +85,7 @@ Steps:
            odd  → max(left1, left2)
            even → (max(left1,left2) + min(right1,right2)) / 2
 
-   
+
 ---
 
 ### 💡 核心分割線機制 (Partitioning)
