@@ -27,6 +27,87 @@ s contains only lowercase English letters.
 """
 
 # V0
+# IDEA : BACKTRCK (GPT)
+# time = O(n * 2^n)
+# space = O(n)
+class Solution(object):
+    def partition(self, s):
+        """
+        :type s: str
+        :rtype: List[List[str]]
+        """
+
+        self.res = []
+
+        self.helper(s, 0, [])
+
+        return self.res
+
+
+    """
+    NOTE !!!
+
+
+    `start_idx` as param
+    """
+    def helper(self, s, start_idx, tmp):
+
+        # Reached the end
+        if start_idx == len(s):
+            self.res.append(tmp[:])
+            return
+
+        """
+        NOTE !!!
+
+
+        1.  we loop over `end_idx`,
+
+           (but NOT start_idx)
+
+
+        2. end idx is in range(tart_idx + 1, len(s) + 1)
+
+            -> since in py, `end` idx is actual idx + 1
+
+            -> e.g.
+
+                 s = [1,2,3]
+
+                 s[2:3] = ?
+
+
+        3. ONLY move forward (run recursion)
+            if `part == part[::-1]`
+
+            -> e.g. current sub str is palindrome
+        """
+        # Try every possible end position
+        for end_idx in range(start_idx + 1, len(s) + 1):
+
+            # Current substring
+            part = s[start_idx:end_idx]
+
+            # Only choose palindrome
+            if part == part[::-1]:
+
+                # Choose
+                tmp.append(part)
+
+                """
+                NOTE !!!
+
+                the `next` `start_idx` is `end_idx`
+                """
+                # Explore
+                self.helper(s, end_idx, tmp)
+
+                # Undo
+                tmp.pop()
+
+
+
+# V0
 # IDEA : BACKTRCK
 # time = O(n * 2^n)
 # space = O(n)
