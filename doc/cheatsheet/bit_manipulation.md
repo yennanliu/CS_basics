@@ -1027,7 +1027,7 @@ Prune first with `maxChoosable * (maxChoosable + 1) / 2 < desiredTotal` → nobo
 
 ## Worked Examples
 
-Fourteen problems live in **[bit_manipulation_examples.md](./bit_manipulation_examples.md)**,
+Nineteen problems live in **[bit_manipulation_examples.md](./bit_manipulation_examples.md)**,
 grouped by which property of the bit operators they lean on:
 
 | Group | The property | Problems |
@@ -1036,6 +1036,7 @@ grouped by which property of the bit operators they lean on:
 | [Counting & transforming bits](./bit_manipulation_examples.md#counting--transforming-bits) | `x & (x-1)` clears the lowest set bit | LC 191, 338, 190, 231 |
 | [Arithmetic without arithmetic](./bit_manipulation_examples.md#arithmetic-without-arithmetic) | XOR is addition without carry; AND finds the carry | LC 371, 67, 29 |
 | [Enumerating & constructing](./bit_manipulation_examples.md#enumerating-and-constructing-with-bits) | an integer *is* a subset, and counting up visits every one | LC 78, 89, 201 |
+| [Bit-field surgery](./bit_manipulation_examples.md#bit-field-surgery) | build a mask, clear the field, OR the new bits in | CtCI 5.1–5.7 |
 
 ## Summary
 
@@ -1052,6 +1053,8 @@ grouped by which property of the bit operators they lean on:
 | "partition into `k` equal groups" | `dp[mask]` = fill level, `% target` | [§2-3](#2-3-fill-buckets-one-at-a-time-bitmask-dp--lc-698-) |
 | "XOR of a subarray" / "XOR of `1..n`", asked repeatedly | XOR prefix array, or the `n % 4` closed form | [§0-10](#0-10-xor-prefix-and-the-0n-closed-form-) |
 | "add / divide without `+` or `/`" | XOR = sum, AND = carry | [Arithmetic without arithmetic](./bit_manipulation_examples.md#arithmetic-without-arithmetic) |
+| "set / clear / replace bits `i..j`" | a `111..000..111` mask, then OR the field in | [Bit-field surgery](./bit_manipulation_examples.md#bit-field-surgery) |
+| "next number with the same number of 1s" | flip the rightmost non-trailing zero, repack the ones | [Bit-field surgery](./bit_manipulation_examples.md#bit-field-surgery) |
 | "maximum XOR of two numbers" | binary trie — see [trie.md](./trie.md) | — |
 
 ### The five bugs that fail a bit-manipulation submission

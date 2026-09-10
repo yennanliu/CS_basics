@@ -1,6 +1,6 @@
 # Bit Manipulation — Worked Examples
 
-> **Scope** — The worked-solution archive behind [bit_manipulation.md](./bit_manipulation.md): fourteen problems grouped by which property of the bit operators they lean on — XOR cancelling pairs, clearing the lowest set bit, carry-free arithmetic, or an integer standing in for a subset.
+> **Scope** — The worked-solution archive behind [bit_manipulation.md](./bit_manipulation.md): nineteen problems grouped by which property of the bit operators they lean on — XOR cancelling pairs, clearing the lowest set bit, carry-free arithmetic, an integer standing in for a subset, or a hand-built mask editing a bit field.
 > **See also**: [bit_manipulation.md](./bit_manipulation.md) — the parent sheet: the operators, the single-bit tricks, counting over bit columns, the bitmask-as-character-set technique, and bitmask DP; [dp_bitmask.md](./dp_bitmask.md) — subset DP in its own right; [math.md](./math.md) — the arithmetic these problems avoid using.
 
 ## LeetCode Problem Lists
@@ -15,7 +15,7 @@ and the techniques; this file keeps the problems that *apply* them.
 
 ### Key Properties
 - **Complexity**: O(1) per number or O(32n) over an array, unless a solution says otherwise — which is the reason to reach for bits at all
-- **Core Idea**: four properties do almost all the work, and the groups below are those four
+- **Core Idea**: five properties do almost all the work, and the groups below are those five
 - **When to Use**: when the constraint is O(1) space, no arithmetic operators, or a set small enough to fit in an `int`
 
 
@@ -738,3 +738,232 @@ class Solution {
     }
 }
 ```
+
+## Bit-Field Surgery
+
+These five are *Cracking the Coding Interview* problems rather than LeetCode ones, and they
+test the thing LC rarely does: whether you can **build a mask** instead of recalling a
+trick. The recipe never changes — build a mask, clear the field, OR the new bits in.
+
+### 15) Insert M into N between bits i and j — CtCI 5.1 ⭐⭐⭐⭐
+
+Put all of `m` into `n` so that it occupies bits `i` through `j`, leaving every other bit of
+`n` untouched. The mask you need is `1`s everywhere **except** `i..j`, built as
+`(1s above j) | (1s below i)`.
+
+```text
+n = 10000000000, m = 10011, i = 2, j = 6
+
+left  = ~0 << (j+1) = 11110000000        1s above j
+right = (1 << i) - 1 = 00000000011       1s below i
+mask  = left | right = 11110000011       0s exactly on bits 2..6
+n & mask             = 10000000000       field cleared
+m << i               = 00001001100       m moved into place
+result               = 10001001100
+```
+
+```python
+# python
+# CtCI 5.1 - insert m into n so that m occupies bits i..j
+# IDEA: clear the field with a 111..000..111 mask, then OR in m shifted to offset i
+# time = O(1), space = O(1)
+def update_bits(n, m, i, j):
+    all_ones = ~0                        # ...11111111
+    left  = all_ones << (j + 1)          # 1s above j, 0s from j down
+    right = (1 << i) - 1                 # 1s below i
+    mask  = left | right                 # 0s exactly on bits i..j
+    return (n & mask) | (m << i)
+```
+
+```java
+// java
+// CtCI 5.1 - insert m into n between bits i and j
+// IDEA: same three steps — build mask, clear field, drop m in at offset i
+// time = O(1), space = O(1)
+int updateBits(int n, int m, int i, int j) {
+    int allOnes = ~0;
+    int left  = (j < 31) ? (allOnes << (j + 1)) : 0;   // j == 31: << 32 is a NO-OP in Java
+    int right = (1 << i) - 1;
+    int mask  = left | right;
+    return (n & mask) | (m << i);
+}
+```
+
+> The `j == 31` guard is what the question is really checking. **Java** masks a shift count
+> by 31 (JLS 15.19), so `allOnes << 32` returns `allOnes` unchanged rather than 0 — the mask
+> comes out as all 1s and clears nothing. **C is worse**: a shift by the operand's width is
+> *undefined behaviour*, so it may mask, may give 0, may do something else entirely. Python
+> has no fixed width and no shift limit, so the guard is not needed there.
+
+### 16) Next number with the same number of 1 bits — CtCI 5.4 ⭐⭐⭐
+
+Brute force (increment until the popcount matches) is worth stating first, then improve it.
+Let `c0` be the trailing zeros and `c1` the run of ones just above them. Setting bit
+`p = c0 + c1` makes the number **larger**; clearing everything below `p` and re-inserting
+the remaining `c1 - 1` ones at the very bottom makes it the **smallest** such number.
+
+```text
+n = 13948 = 11011001111100      c0 = 2 (trailing 0s), c1 = 5 (ones above), p = 7
+set bit 7                        11011010111100
+clear below 7                    11011010000000
+add back c1-1 = 4 ones at bottom 11011010001111 = 13967
+```
+
+```python
+# python
+# CtCI 5.4 - the smallest number LARGER than n with the same number of 1 bits
+# DOMAIN: positive 32-bit SIGNED ints, as in the book — the answer must stay under
+#         2^31, so a result needing bit 31 is reported as -1 rather than returned
+# IDEA: flip the rightmost non-trailing zero (position c0+c1) to grow the number,
+#       then push the remaining ones as far right as possible to keep it minimal
+# time = O(32), space = O(1)
+def next_same_popcount(n):
+    c, c0, c1 = n, 0, 0
+    while c and not (c & 1):             # c0 = trailing zeros
+        c0 += 1
+        c >>= 1
+    while c & 1:                         # c1 = the run of ones above them
+        c1 += 1
+        c >>= 1
+    if c0 + c1 == 0:                     # n == 0: no ones to move
+        return -1
+    if c0 + c1 == 31:                    # the next value would need bit 31 (negative
+        return -1                        # as an int32) — out of domain, so no answer
+
+    p = c0 + c1
+    n |= 1 << p                          # flip the rightmost non-trailing zero
+    n &= ~((1 << p) - 1)                 # clear everything below it
+    n |= (1 << (c1 - 1)) - 1             # re-insert (c1 - 1) ones at the bottom
+    return n
+```
+
+The **previous** smaller number is the mirror image: count the trailing *ones* and the zeros
+above them, clear the rightmost non-trailing one, and pack the ones back immediately below
+it. Same three lines with the roles of 0 and 1 swapped.
+
+### 17) Longest run of 1s after flipping one 0 — CtCI 5.3 ⭐⭐⭐⭐
+
+Walk the bits from the right, keeping two counters: the run of 1s you are inside now, and
+the run that ended at the last 0. A **single** 0 between them can be flipped to join the
+two; two or more 0s cannot, so the earlier run resets.
+
+```python
+# python
+# CtCI 5.3 - longest run of 1s obtainable by flipping exactly one bit to 1
+# IDEA: cur = run ending here, prev = run before the last 0 (kept ONLY if that 0 is
+#       isolated). prev + cur + 1 is the best merge through the current zero.
+# time = O(32), space = O(1)
+def flip_bit_to_win(a):
+    a &= 0xFFFFFFFF                      # Python ints are unbounded — pin it to 32 bits
+    if a == 0xFFFFFFFF:
+        return 32                        # already all 1s
+    cur = prev = 0
+    best = 1                             # a lone flipped 0 always gives at least 1
+    while a:
+        if a & 1:
+            cur += 1
+        else:
+            prev = cur if (a & 2) else 0 # the NEXT bit decides whether the runs can merge
+            cur = 0
+        best = max(best, prev + cur + 1)
+        a >>= 1
+    return best
+```
+
+```java
+// java
+// CtCI 5.3 - longest run of 1s after flipping one bit
+// IDEA: identical, but the shift must be >>> — an arithmetic >> on a negative int
+//       feeds in 1s forever and the loop never ends
+// time = O(32), space = O(1)
+int flipBitToWin(int a) {
+    if (~a == 0) return Integer.SIZE;    // all 1s
+    int cur = 0, prev = 0, best = 1;
+    while (a != 0) {
+        if ((a & 1) == 1) {
+            cur++;
+        } else {
+            prev = ((a & 2) == 0) ? 0 : cur;
+            cur = 0;
+        }
+        best = Math.max(best, prev + cur + 1);
+        a >>>= 1;                        // logical shift, not >>
+    }
+    return best;
+}
+```
+
+The array version of this question — *at most `k` zeros*, not exactly one — is a sliding
+window instead: LC 1004 and LC 487 in [sliding_window.md](./sliding_window.md). Bits only
+buy you the `O(1)` space here because the input is one 32-bit word.
+
+### 18) Swap odd and even bits — CtCI 5.7 ⭐⭐⭐
+
+Swap bit 0 with bit 1, bit 2 with bit 3, and so on. No loop and no temporary: mask the two
+halves apart and shift each one the other way.
+
+```text
+0xAAAAAAAA = 1010...1010   the ODD-indexed bits    -> shift RIGHT by 1
+0x55555555 = 0101...0101   the EVEN-indexed bits   -> shift LEFT  by 1
+```
+
+```python
+# python
+# CtCI 5.7 - swap every pair of adjacent bits
+# IDEA: pull the odd and even bits apart with 0xA... / 0x5..., shift each toward the
+#       other's slot, then OR the two halves back together
+# time = O(1), space = O(1)
+def swap_odd_even_bits(x):
+    x &= 0xFFFFFFFF
+    return (((x & 0xAAAAAAAA) >> 1) | ((x & 0x55555555) << 1)) & 0xFFFFFFFF
+```
+
+```java
+// java
+// CtCI 5.7 - swap every pair of adjacent bits
+// IDEA: >>> is required — 0xaaaaaaaa is a NEGATIVE int, so >> would smear its sign bit
+// time = O(1), space = O(1)
+int swapOddEvenBits(int x) {
+    return ((x & 0xaaaaaaaa) >>> 1) | ((x & 0x55555555) << 1);
+}
+```
+
+The same mask-and-shift shape scales: swapping nibbles is `0xF0F0F0F0` / `0x0F0F0F0F` with
+a shift of 4, and repeating it for 1, 2, 4, 8, 16 is exactly how a `O(log n)` bit-reverse
+(LC 190) works.
+
+### 19) Print a fraction in binary — CtCI 5.2 ⭐⭐⭐
+
+Given a `double` between 0 and 1, print its binary representation, or `ERROR` if it needs
+more than 32 characters. Reading a binary fraction is **doubling**: bit `k` after the point
+is 1 exactly when `2x >= 1`, and the leftover `2x - 1` carries into the next bit.
+
+```python
+# python
+# CtCI 5.2 - print a double in (0, 1) as binary, or ERROR beyond 32 characters
+# IDEA: double the number; a result >= 1 emits a 1 bit and leaves the remainder behind,
+#       a result < 1 emits a 0 bit. It terminates only for dyadic fractions (k / 2^m).
+# time = O(32), space = O(32)
+def print_binary(num):
+    if num <= 0 or num >= 1:
+        return "ERROR"
+    out = ["."]
+    while num > 0:
+        if len(out) >= 32:
+            return "ERROR"               # not representable in 32 characters
+        num *= 2
+        if num >= 1:
+            out.append("1")
+            num -= 1                      # keep only the fractional part
+        else:
+            out.append("0")
+    return "".join(out)
+
+# print_binary(0.625) -> ".101"    (1/2 + 1/8)
+# print_binary(0.125) -> ".001"
+# print_binary(0.1)   -> "ERROR"   0.1 is 0.0001100110011... forever in binary
+```
+
+That last line is the whole point of the question, and the same fact behind
+`0.1 + 0.2 != 0.3` — see [python_gotchas.md](./python_gotchas.md). A fraction terminates in
+binary only when its denominator is a power of two.

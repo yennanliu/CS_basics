@@ -567,7 +567,23 @@ partition 都會 — 都會被它無聲地清成 0。**用一個暫存變數。*
 > LC 1707（Maximum XOR With an Element From Array）是用**二元／XOR 字典樹（Trie）**解的 —
 > 請看 `trie.md`，這裡不重複。
 
-<!-- a6e5f1afdf84 -->
+<!-- cf146c401303 -->
+## 總結
+
+<!-- 2d37034aeb5b -->
+### 讓位元運算題掛掉的五個 bug
+
+1. **對負的 `int` 跑 `while (x != 0) x >>= 1`** — 算術右移會一直補 1 進來。
+   Java 要用 `>>>`，Python 要改成 `for i in range(32)`。（[§0-5](#0-5-shifts-left-arithmetic-right-and-logical-right)、[§0-6](#0-6-python-is-not-java-here-)）
+2. **少了括號** — 要寫 `(x & 1) == 0`，絕不要寫 `x & 1 == 0`。（[§0-7](#0-7-precedence--parenthesise-everything-)）
+3. **`Integer.MIN_VALUE` 沒有對應的正數** — `Math.abs` 和一元 `-` 算完都還是它本身，
+   所以「先取負再相除」會無聲地壞掉。（[§0-3](#0-3-twos-complement--how-negatives-are-stored-)）
+4. **`1 << i` 在 `i >= 31` 時溢位** — 要用 `1L << i`（也別忘了 Java 會把位移量取低 5 位，
+   所以 `1 << 32 == 1`）。（[§0-2](#0-2-fixed-width--an-int-is-a-32-bit-box)、[§0-5](#0-5-shifts-left-arithmetic-right-and-logical-right)）
+5. **把 32 位元的迴圈原封不動搬到 Python** — Python 永遠不會溢位，所以每一步都要
+   `& 0xFFFFFFFF`，最後還要把結果轉回有號數。（[§0-6](#0-6-python-is-not-java-here-)）
+
+<!-- stale: a6e5f1afdf84 -->
 ## 範例詳解
 
 十四道題目放在 **[bit_manipulation_examples.md](./bit_manipulation_examples.md)**，
@@ -580,10 +596,7 @@ partition 都會 — 都會被它無聲地清成 0。**用一個暫存變數。*
 | [不用算術做算術](./bit_manipulation_examples.md#arithmetic-without-arithmetic) | XOR 是不帶進位的加法；AND 找出進位 | LC 371, 67, 29 |
 | [列舉與建構](./bit_manipulation_examples.md#enumerating-and-constructing-with-bits) | 一個整數*就是*一個子集，往上數就能走遍所有子集 | LC 78, 89, 201 |
 
-<!-- cf146c401303 -->
-## 總結
-
-<!-- 797081a04d02 -->
+<!-- stale: 797081a04d02 -->
 ### 從題目敘述挑出該用的技巧
 
 | 題目說… | 就用 | 章節 |
@@ -598,16 +611,3 @@ partition 都會 — 都會被它無聲地清成 0。**用一個暫存變數。*
 | 反覆問「某個子陣列的 XOR」／「`1..n` 的 XOR」 | XOR 前綴陣列，或 `n % 4` 的封閉形式 | [§0-10](#0-10-xor-prefix-and-the-0n-closed-form-) |
 | 「不用 `+` 或 `/` 做加法／除法」 | XOR 是和，AND 是進位 | [不用算術做算術](./bit_manipulation_examples.md#arithmetic-without-arithmetic) |
 | 「兩個數字的最大 XOR」 | 二元字典樹 — 見 [trie.md](./trie.md) | — |
-
-<!-- 2d37034aeb5b -->
-### 讓位元運算題掛掉的五個 bug
-
-1. **對負的 `int` 跑 `while (x != 0) x >>= 1`** — 算術右移會一直補 1 進來。
-   Java 要用 `>>>`，Python 要改成 `for i in range(32)`。（[§0-5](#0-5-shifts-left-arithmetic-right-and-logical-right)、[§0-6](#0-6-python-is-not-java-here-)）
-2. **少了括號** — 要寫 `(x & 1) == 0`，絕不要寫 `x & 1 == 0`。（[§0-7](#0-7-precedence--parenthesise-everything-)）
-3. **`Integer.MIN_VALUE` 沒有對應的正數** — `Math.abs` 和一元 `-` 算完都還是它本身，
-   所以「先取負再相除」會無聲地壞掉。（[§0-3](#0-3-twos-complement--how-negatives-are-stored-)）
-4. **`1 << i` 在 `i >= 31` 時溢位** — 要用 `1L << i`（也別忘了 Java 會把位移量取低 5 位，
-   所以 `1 << 32 == 1`）。（[§0-2](#0-2-fixed-width--an-int-is-a-32-bit-box)、[§0-5](#0-5-shifts-left-arithmetic-right-and-logical-right)）
-5. **把 32 位元的迴圈原封不動搬到 Python** — Python 永遠不會溢位，所以每一步都要
-   `& 0xFFFFFFFF`，最後還要把結果轉回有號數。（[§0-6](#0-6-python-is-not-java-here-)）

@@ -1,9 +1,3 @@
-<!-- fd101c348a5c -->
-# 並行處理模式（Java）
-
-> **範圍** — L4 以上會出現的少數幾題 Java 並行題：依序列印、生產者／消費者、讀寫協調，以及它們會用到的同步原語。
-> **另見**：[python_gotchas.md](./python_gotchas.md) — GIL 與 Python 的並行故事；[design.md](./design.md) — 執行緒安全的結構設計；[java_trick.md](./java_trick.md) — Java 容器慣用手法。
-
 <!-- fa160d1433d1 -->
 ## LeetCode 題目清單
 
@@ -64,3 +58,9 @@ Google 在 L4 以上偶爾會考並行／多執行緒題。這類題目在檢驗
 | 1188 | Bounded Blocking Queue | ReentrantLock + Condition |
 | 1195 | Fizz Buzz Multithreaded | Semaphore／CyclicBarrier |
 | 1226 | The Dining Philosophers | 避免死鎖 |
+
+<!-- stale: fd101c348a5c -->
+# 並行處理模式（Java）
+
+> **範圍** — L4 以上會出現的少數幾題 Java 並行題：依序列印、生產者／消費者、讀寫協調，以及它們會用到的同步原語。
+> **另見**：[python_gotchas.md](./python_gotchas.md) — GIL 與 Python 的並行故事；[design.md](./design.md) — 執行緒安全的結構設計；[java_trick.md](./java_trick.md) — Java 容器慣用手法。

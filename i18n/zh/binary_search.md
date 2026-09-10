@@ -1,10 +1,3 @@
-<!-- 51e9781a0030 -->
-# 二分搜尋
-
-> **範圍** — 對**單調**搜尋空間做折半 — `l <= r` 與 `l < r` 背後的迴圈不變式推理、邊界（lower / upper bound）模板、旋轉陣列，以及浮點數與二維搜尋。
-> **另見** — *從本文件拆出去的深入主題*：[binary_search_on_answer.md](./binary_search_on_answer.md) — 對*答案空間*做搜尋：`canFinish` / `isValid` 判定式、最小化最大值 vs 最大化最小值，以及值域計數；[binary_search_examples.md](./binary_search_examples.md) — 題解存放處，每題一份標準解。
-> *鄰近文件*：[sort.md](./sort.md) — 先把陣列排好序；[advanced_divide_and_conquer.md](./advanced_divide_and_conquer.md) — 折半*外加*合併步驟；[bst.md](./bst.md) — 同一個不變式做成資料結構；[heap.md](./heap.md) — 不用整體排序就取第 k 大元素。
-
 <!-- d25f0f2274da -->
 ## LeetCode 題目清單
 
@@ -235,11 +228,6 @@
 **關鍵差異**：
 - **LC 153**（找最小值）：只需要判斷該往哪一側搜尋
 - **LC 33/81**（找 target）：還必須檢查 target 是否落在有序的那一半裡
-
-<!-- e9579f387d51 -->
-### 1.3) 找邊界 — Lower 與 Upper Bound (LC 34) ⭐⭐⭐⭐⭐
-
-**目的**：在有重複值的**非遞減**陣列中，找出 target 第一次與最後一次出現的位置
 
 <!-- bd2065940a8e -->
 #### 模式：兩次獨立的邊界搜尋
@@ -486,7 +474,46 @@ capacity / speed / divisor」、「能不能切分 / 分配 / 派送」。
 
 題解範例 — LC 1095 Find in Mountain Array — 見 [binary_search_examples.md](./binary_search_examples.md)。
 
-<!-- 68c1ad485db6 -->
+<!-- 6b58a0929f57 -->
+## 3) 總結與速查
+
+<!-- e96de109ff89 -->
+### 3.1) 何時該用二分搜尋
+✅ **以下情況請用二分搜尋：**
+- 陣列有序（完全有序、部分有序或旋轉有序）
+- 搜尋空間具備單調性
+- 需要 O(log n) 的搜尋效能
+- 要找邊界或插入位置
+- 具備二元性質的最佳化問題
+
+<!-- 2f2b58b17200 -->
+### 3.3) 常見陷阱與訣竅
+
+**🚫 常見錯誤：**
+- `mid = (left + right) / 2` 的整數溢位 → 改用 `mid = left + (right - left) / 2`
+- 邊界更新寫錯（`mid` 與 `mid ± 1` 搞混）
+- 忘了做後續的有效性驗證
+- `while l < r` 搭配錯誤的更新方式造成無窮迴圈
+
+**✅ 最佳實務：**
+- 一律用 `else if` 讓邏輯清楚
+- 邊界搜尋結束後要驗證結果  
+- 邊界型態要前後一致（閉區間 vs 半開區間）
+- 用邊界情況測試：空陣列、單一元素、重複值
+
+<!-- stale: 51e9781a0030 -->
+# 二分搜尋
+
+> **範圍** — 對**單調**搜尋空間做折半 — `l <= r` 與 `l < r` 背後的迴圈不變式推理、邊界（lower / upper bound）模板、旋轉陣列，以及浮點數與二維搜尋。
+> **另見** — *從本文件拆出去的深入主題*：[binary_search_on_answer.md](./binary_search_on_answer.md) — 對*答案空間*做搜尋：`canFinish` / `isValid` 判定式、最小化最大值 vs 最大化最小值，以及值域計數；[binary_search_examples.md](./binary_search_examples.md) — 題解存放處，每題一份標準解。
+> *鄰近文件*：[sort.md](./sort.md) — 先把陣列排好序；[advanced_divide_and_conquer.md](./advanced_divide_and_conquer.md) — 折半*外加*合併步驟；[bst.md](./bst.md) — 同一個不變式做成資料結構；[heap.md](./heap.md) — 不用整體排序就取第 k 大元素。
+
+<!-- stale: e9579f387d51 -->
+### 1.3) 找邊界 — Lower 與 Upper Bound (LC 34) ⭐⭐⭐⭐⭐
+
+**目的**：在有重複值的**非遞減**陣列中，找出 target 第一次與最後一次出現的位置
+
+<!-- stale: 68c1ad485db6 -->
 ### 2.5) 速查 — 其他帶有二分搜尋味道的題目
 
 這些知名題目都是重用本文件已有的模板；列在這裡是為了讓你一眼認出來，不需要新技巧。
@@ -502,19 +529,7 @@ capacity / speed / divisor」、「能不能切分 / 分配 / 派送」。
 | 1385 | Find the Distance Value Between Two Arrays | 排序 `arr2`，對每個 `arr1[i]` 二分搜尋最接近的鄰居 |
 | 1346 | Check If N and Its Double Exist | 排序 + 二分搜尋 `2*x`（也可用雜湊集合） |
 
-<!-- 6b58a0929f57 -->
-## 3) 總結與速查
-
-<!-- e96de109ff89 -->
-### 3.1) 何時該用二分搜尋
-✅ **以下情況請用二分搜尋：**
-- 陣列有序（完全有序、部分有序或旋轉有序）
-- 搜尋空間具備單調性
-- 需要 O(log n) 的搜尋效能
-- 要找邊界或插入位置
-- 具備二元性質的最佳化問題
-
-<!-- 616a3f557623 -->
+<!-- stale: 616a3f557623 -->
 ### 3.2) 模板選擇指南
 
 整份文件用這一張表就夠了：看輸入的形狀，決定該拿哪個模板。
@@ -535,22 +550,7 @@ capacity / speed / divisor」、「能不能切分 / 分配 / 派送」。
 | 可行性判斷需要**走訪圖** | 對答案做二分搜尋 + BFS/DFS 判定式 — [binary_search_on_answer.md](./binary_search_on_answer.md) | LC 1631、LC 778 |
 | `O(n log n)` LIS、加權抽樣、有序歷史紀錄 | 對維護中的有序陣列做 `lower_bound` — [binary_search_examples.md](./binary_search_examples.md) | LC 300、LC 354、LC 528、LC 981 |
 
-<!-- 2f2b58b17200 -->
-### 3.3) 常見陷阱與訣竅
-
-**🚫 常見錯誤：**
-- `mid = (left + right) / 2` 的整數溢位 → 改用 `mid = left + (right - left) / 2`
-- 邊界更新寫錯（`mid` 與 `mid ± 1` 搞混）
-- 忘了做後續的有效性驗證
-- `while l < r` 搭配錯誤的更新方式造成無窮迴圈
-
-**✅ 最佳實務：**
-- 一律用 `else if` 讓邏輯清楚
-- 邊界搜尋結束後要驗證結果  
-- 邊界型態要前後一致（閉區間 vs 半開區間）
-- 用邊界情況測試：空陣列、單一元素、重複值
-
-<!-- 422dbae9bba7 -->
+<!-- stale: 422dbae9bba7 -->
 ### 3.4) 面試訊號 — 該用哪個模式？
 
 | 訊號 | 模式 |

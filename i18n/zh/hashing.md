@@ -169,20 +169,6 @@
 
 > 上面那些模板雜湊的是*本來就*可雜湊的值。這一節講的是雜湊面試裡比較難的那一半：**發明一個鍵**，讓「相等」剛好等於題目要的那種相等，以及**自己把表做出來**。
 
-<!-- 68613978ef59 -->
-### 快速決策表
-
-| 目標 | 模板 | 你要造的鍵 | 例子 |
-|------|----------|---------------|----------|
-| 自己實作一個 map | [Template 5](#template-5-build-a-hash-map-from-scratch-lc-706) ⭐⭐⭐⭐⭐ | `hash(k) % capacity` → bucket | LC 706 |
-| 用一個 set 同時管好多個限制 | [Template 6](#template-6-canonical-composite-key-lc-36) ⭐⭐⭐⭐⭐ | 帶標籤的 tuple `("row", r, d)` | LC 36, LC 939 |
-| 比的是*形狀*而不是值 | [Template 7](#template-7-structural-hashing--canonical-serialization-lc-572) ⭐⭐⭐⭐ | 標準化的序列化字串 | LC 572, LC 508 |
-| 依比值／方向分組 | [Template 8](#template-8-normalized-fraction-key-lc-149) ⭐⭐⭐⭐ | 約分過的 `(dx, dy)` | LC 149 |
-
-**鍵設計的黃金法則**：兩個東西產生**位元組完全相同的鍵，若且唯若它們在這題的意義下是等價的**。這一節裡的每個 bug 不是*誤合*（兩個不同的東西被壓成同一個鍵）就是*誤分*（兩個等價的東西拿到不同的鍵）。
-
----
-
 <!-- 0a0825c5f644 -->
 ### Template 5: Build a Hash Map From Scratch (LC 706)
 
@@ -362,3 +348,17 @@
 6. **拿例子測一遍**：確認雜湊碰撞不會把邏輯弄壞
 
 這份完整的雜湊 cheatsheet 收錄了解雜湊類題目最重要的模式與技巧。
+
+<!-- stale: 68613978ef59 -->
+### 快速決策表
+
+| 目標 | 模板 | 你要造的鍵 | 例子 |
+|------|----------|---------------|----------|
+| 自己實作一個 map | [Template 5](#template-5-build-a-hash-map-from-scratch-lc-706) ⭐⭐⭐⭐⭐ | `hash(k) % capacity` → bucket | LC 706 |
+| 用一個 set 同時管好多個限制 | [Template 6](#template-6-canonical-composite-key-lc-36) ⭐⭐⭐⭐⭐ | 帶標籤的 tuple `("row", r, d)` | LC 36, LC 939 |
+| 比的是*形狀*而不是值 | [Template 7](#template-7-structural-hashing--canonical-serialization-lc-572) ⭐⭐⭐⭐ | 標準化的序列化字串 | LC 572, LC 508 |
+| 依比值／方向分組 | [Template 8](#template-8-normalized-fraction-key-lc-149) ⭐⭐⭐⭐ | 約分過的 `(dx, dy)` | LC 149 |
+
+**鍵設計的黃金法則**：兩個東西產生**位元組完全相同的鍵，若且唯若它們在這題的意義下是等價的**。這一節裡的每個 bug 不是*誤合*（兩個不同的東西被壓成同一個鍵）就是*誤分*（兩個等價的東西拿到不同的鍵）。
+
+---

@@ -662,9 +662,10 @@ private boolean isIdentical(TreeNode node1, TreeNode node2) {
 
 ## 5) More Recursion Templates
 
-The sections above are tree-centric. The four templates below cover the other recursion
+The sections above are tree-centric. The six templates below cover the other recursion
 shapes that show up in interviews: **linked-list rewiring**, **recursive-descent parsing**,
-**halving recursion**, and **pure recurrence reduction**.
+**halving recursion**, **pure recurrence reduction**, **moving a stack through a buffer**,
+and **weaving two ordered sequences**.
 
 **Quick Decision Table**
 
@@ -674,6 +675,8 @@ shapes that show up in interviews: **linked-list rewiring**, **recursive-descent
 | Nested brackets / grammar in a string | **5-2) Recursive Descent (shared cursor)** | LC 394, 224, 1106, 736 |
 | `n` shrinks by a *factor* each step | **5-3) Halving Recursion** | LC 50, 1922, 231/326/342 |
 | A closed-form `f(n)` from `f(n-1)` | **5-4) Recurrence Reduction** | LC 779, 1823, 273 |
+| Only the top item is reachable; the rest must be parked somewhere | **5-5) Move Through a Buffer** | Towers of Hanoi (CtCI 8.6), sort-a-stack (CtCI 3.5) |
+| List *every* order that preserves two orderings | **5-6) Weaving Two Sequences** | CtCI 4.9, cf. LC 97 |
 
 ---
 
@@ -1396,7 +1399,127 @@ def numberToWords(num):
 
 ---
 
-### 5-5) Other Recursion-Tagged Classics
+### 5-5) Move a Stack Through a Buffer — Towers of Hanoi ⭐⭐⭐⭐
+
+**Definition**: only the top item of a pile is reachable, so before you can touch the bottom
+one you must park everything above it somewhere else, make the single move you *do* know how
+to make, then bring the parked items back. The recursion's real job is deciding **which
+place plays which role** on each call — and that role swap is the whole trick.
+
+```text
+move(n, src, dst, buf):
+    move(n-1, src, buf, dst)      # clear the top n-1 out of the way — dst is now the buffer
+    move disk n: src -> dst       # the one move you actually know how to make
+    move(n-1, buf, dst, src)      # bring them back on top — src is now the buffer
+```
+
+```python
+# python
+# Towers of Hanoi (CtCI 8.6) - move n disks from src to dst via buf, never putting
+# a larger disk on a smaller one
+# IDEA: the three pegs swap roles between the two recursive calls; that rotation,
+#       not the move itself, is what makes the recursion correct
+# time = O(2^n) moves — T(n) = 2T(n-1) + 1 = 2^n - 1
+# space = O(n) auxiliary (the call stack); the `moves` list itself is O(2^n) output
+def hanoi(n, src, dst, buf, moves):
+    if n == 0:
+        return
+    hanoi(n - 1, src, buf, dst, moves)      # dst acts as the buffer here
+    moves.append((src, dst))                # move the bottom disk
+    hanoi(n - 1, buf, dst, src, moves)      # src acts as the buffer here
+
+# hanoi(3, "A", "C", "B", moves)
+#   -> A->C, A->B, C->B, A->C, B->A, B->C, A->C     (7 = 2^3 - 1 moves)
+```
+
+```java
+// java
+// Towers of Hanoi - the same recursion on real stacks, so the invariant is checkable
+// IDEA: recurse to park n-1 disks on the buffer, move one, recurse to restore them
+// time = O(2^n), space = O(n)
+void hanoi(int n, Deque<Integer> src, Deque<Integer> dst, Deque<Integer> buf) {
+    if (n == 0) return;
+    hanoi(n - 1, src, buf, dst);
+    dst.push(src.pop());                    // smaller disks are all parked on buf
+    hanoi(n - 1, buf, dst, src);
+}
+```
+
+- **Why exponential, and why that is optimal.** `T(n) = 2T(n-1) + 1 = 2^n - 1`, and every one
+  of those moves is genuinely required — the output has that many lines, so no algorithm can
+  do better.
+- **The same shape elsewhere.** "Reverse a stack using recursion only" and "sort a stack with
+  one extra stack" (CtCI 3.5) are this move with the call stack itself as the buffer.
+
+### 5-6) Weaving Two Sequences — Every Interleaving ⭐⭐⭐
+
+**Definition**: given two ordered lists, emit every sequence that keeps each list's own
+relative order. At any point the next element can only be the head of one list or the head
+of the other — so the recursion is two branches with an exact undo between them.
+
+```python
+# python
+# GENERAL PATTERN: all interleavings of two lists, each list's order preserved
+# IDEA: take the head of one list, recurse, put it back; then the same for the other.
+#       Mutate-recurse-restore keeps one copy of each list instead of slicing.
+# time = O(C(m+n, m) * (m+n)) — one output per interleaving; space = O(m + n)
+from collections import deque
+
+def weave(first, second, prefix, out):
+    if not first or not second:                  # one side is exhausted: no choice left
+        out.append(prefix + list(first) + list(second))
+        return
+
+    head = first.popleft()                       # branch 1: take from `first`
+    prefix.append(head)
+    weave(first, second, prefix, out)
+    prefix.pop()                                 # undo, exactly
+    first.appendleft(head)
+
+    head = second.popleft()                      # branch 2: take from `second`
+    prefix.append(head)
+    weave(first, second, prefix, out)
+    prefix.pop()
+    second.appendleft(head)
+```
+
+**Where it earns its keep — CtCI 4.9**: list every insertion order that would build one
+given BST. The root must be inserted first; after that the left subtree's orders and the
+right subtree's orders are independent and may interleave freely.
+
+```python
+# python
+# CtCI 4.9 - all insertion orders that rebuild this exact BST
+# IDEA: root first, then weave every left-subtree order against every right-subtree
+#       order — the two sides constrain each other in no way at all
+# time = exponential in n (the answer itself is), space = O(n) per sequence
+def all_sequences(node):
+    if node is None:
+        return [[]]                              # one empty order, not zero orders
+    left = all_sequences(node.left)
+    right = all_sequences(node.right)
+
+    out = []
+    for l in left:
+        for r in right:
+            weave(deque(l), deque(r), [node.val], out)
+    return out
+
+# BST     2          -> [[2, 1, 3], [2, 3, 1]]
+#        / \
+#       1   3
+```
+
+- **The base case returns `[[]]`, not `[]`.** An empty subtree has exactly one valid order —
+  the empty one. Returning `[]` makes every product loop above it produce nothing.
+- **Enumerating vs deciding.** LC 97 (Interleaving String) asks only *whether* `s3` is an
+  interleaving; that is DP over `(i, j)` in `O(mn)`. Listing them cannot be — there are
+  `C(m+n, m)` answers. Naming that difference is worth a sentence in the room.
+- The mutate-recurse-restore discipline here is the same one in
+  [backtrack.md](./backtrack.md); the only unusual part is that the state being restored is
+  the *input*, not a partial answer.
+
+### 5-7) Other Recursion-Tagged Classics
 
 Problems that fit patterns already covered above — listed for completeness:
 

@@ -227,11 +227,13 @@
     "segment_tree":                     { "category": "Range Queries & Advanced Structures", "tier": 3, "title": "Segment Tree" },
     "binary_indexed_tree":              { "category": "Range Queries & Advanced Structures", "tier": 3, "title": "Binary Indexed Tree (Fenwick)" },
     "streaming_algorithms":             { "category": "Range Queries & Advanced Structures", "tier": 2 },
+    "memory_constrained_algorithms":    { "category": "Range Queries & Advanced Structures", "tier": 2, "title": "Algorithms Under a Memory Cap" },
 
     "math":                             { "category": "Math & Bits", "tier": 3 },
     "bit_manipulation":                 { "category": "Math & Bits", "tier": 3 },
     "bit_manipulation_examples":        { "category": "Math & Bits", "tier": 3, "title": "Bit Manipulation — Worked Examples" },
     "combinatorics_math_patterns":      { "category": "Math & Bits", "tier": 2, "title": "Combinatorics & Number Theory" },
+    "math_logic_puzzles":               { "category": "Math & Bits", "tier": 2, "title": "Math & Logic Puzzles" },
 
     "design":                           { "category": "Design & Simulation", "tier": 4, "title": "Design (LC \"Design a X\")" },
     "design_examples":                  { "category": "Design & Simulation", "tier": 4, "title": "Design — Worked Examples" },
