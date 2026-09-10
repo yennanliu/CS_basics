@@ -47,6 +47,63 @@ class Solution(object):
 
 # V0-1
 # IDEA: binary search on the smaller array (gemini)
+"""
+CORE IDEA:
+
+### 🛠️ 修正後的 Python 程式碼 (分割線二分搜尋)
+
+對於 LeetCode 004，最優解法是在較短的陣列上進行**分割線（Partition）的二分搜尋**：
+
+
+---
+
+Steps:
+
+        1. Binary search smaller array
+
+        2. Cut nums1
+                ↓
+           partition1
+
+        3. Calculate nums2 cut
+                ↓
+           partition2 = half - partition1
+
+        4. Check:
+           left1 <= right2
+           left2 <= right1
+
+        5. Valid partition:
+           odd  → max(left1, left2)
+           even → (max(left1,left2) + min(right1,right2)) / 2
+
+   
+---
+
+### 💡 核心分割線機制 (Partitioning)
+
+將兩個陣列各自切一刀，使「左半邊元素總和」等於「右半邊元素總和」：
+
+```text
+nums1:  [  ...  | nums1[i]  ...  ]   (nums1_left | nums1_right)
+nums2:  [  ...  | nums2[j]  ...  ]   (nums2_left | nums2_right)
+
+```
+
+只要滿足以下兩個條件，代表分割線位置完美：
+
+1. **`nums1_left <= nums2_right`**
+2. **`nums2_left <= nums1_right`**
+
+---
+
+### ⏱️ 複雜度分析
+
+* **時間複雜度**：O(log(min(m, n)) — 僅在較短的陣列長度內做二分搜尋。
+* **空間複雜度**：O(1) — 僅使用常數級指標，無任何額外陣列開銷。
+
+
+"""
 class Solution(object):
 
     def findMedianSortedArrays(self, nums1, nums2):
