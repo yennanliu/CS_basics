@@ -1,9 +1,3 @@
-<!-- e39ce9db3234 -->
-# Bit Manipulation — 實戰題解
-
-> **範圍** — [bit_manipulation.md](./bit_manipulation.md) 背後的題解檔案庫：十四題，依照它們吃到位元運算子的哪個性質分組 —— XOR 把成對元素抵銷、清掉最低的 set bit、不用算術做算術，或是用一個整數代表一個子集合。
-> **另見**：[bit_manipulation.md](./bit_manipulation.md) — 母表：運算子、單一位元的小技巧、按位元欄位計數、把 bitmask 當字元集合用，以及 bitmask DP；[dp_bitmask.md](./dp_bitmask.md) — 子集合 DP 本身；[math.md](./math.md) — 這些題目刻意避開的算術。
-
 <!-- 2c4ef99078e0 -->
 ## LeetCode 題目清單
 
@@ -166,3 +160,9 @@
 <!--CODE-->
 
 <!--CODE-->
+
+<!-- stale: e39ce9db3234 -->
+# Bit Manipulation — 實戰題解
+
+> **範圍** — [bit_manipulation.md](./bit_manipulation.md) 背後的題解檔案庫：十四題，依照它們吃到位元運算子的哪個性質分組 —— XOR 把成對元素抵銷、清掉最低的 set bit、不用算術做算術，或是用一個整數代表一個子集合。
+> **另見**：[bit_manipulation.md](./bit_manipulation.md) — 母表：運算子、單一位元的小技巧、按位元欄位計數、把 bitmask 當字元集合用，以及 bitmask DP；[dp_bitmask.md](./dp_bitmask.md) — 子集合 DP 本身；[math.md](./math.md) — 這些題目刻意避開的算術。

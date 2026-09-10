@@ -552,6 +552,7 @@ def topKFrequent(nums, k):
 | One set enforces many constraints | [Template 6](#template-6-canonical-composite-key-lc-36) ⭐⭐⭐⭐⭐ | tagged tuple `("row", r, d)` | LC 36, LC 939 |
 | Compare *shapes*, not values | [Template 7](#template-7-structural-hashing--canonical-serialization-lc-572) ⭐⭐⭐⭐ | canonical serialization string | LC 572, LC 508 |
 | Group by a ratio / direction | [Template 8](#template-8-normalized-fraction-key-lc-149) ⭐⭐⭐⭐ | gcd-reduced `(dx, dy)` | LC 149 |
+| Every **pair** that shares a feature | [Template 9](#template-9-inverted-index--compare-all-pairs-without-visiting-all-pairs-) ⭐⭐⭐⭐ | `feature → who has it`, then ordered pair `(a, b)` | CtCI 17.26, cf. LC 49 |
 
 **Golden rule of key design**: two items must produce **byte-identical keys iff they are equivalent for the problem**. Every bug in this section is either a *false merge* (two different things collapse to one key) or a *false split* (two equivalent things get different keys).
 
@@ -924,6 +925,58 @@ def maxPoints(points):
 ```
 
 > Same normalization trick applies whenever the key is a **ratio or direction**: reduce by gcd, fix the sign, keep it integral. Only reset the slope map per anchor point — sharing one map across anchors is a classic false merge (parallel lines through different anchors).
+
+---
+
+### Template 9: Inverted Index — Compare All Pairs Without Visiting All Pairs ⭐⭐⭐⭐
+
+**Key Idea**: when the answer needs "every pair that shares something", do **not** loop over
+pairs. Build the map `feature → who has it` (the *inverted index*), then walk each feature's
+list and emit only the pairs it actually creates. Pairs that share nothing are never even
+formed — which is the entire saving when the data is sparse.
+
+CtCI 17.26 (sparse similarity) is the canonical version: given documents of word ids, report
+every pair whose Jaccard similarity `|A ∩ B| / |A ∪ B|` is above zero. The brute force is
+`O(D² · W)` over `D` documents; almost all of that work compares documents with nothing in
+common.
+
+```python
+# python
+# CtCI 17.26 - Jaccard similarity of every pair of documents that shares a word
+# IDEA: invert to word -> [doc ids], then every co-occurrence in one word's list
+#       contributes exactly 1 to that pair's intersection. Pairs sharing nothing
+#       never appear, so the cost follows the OUTPUT, not D^2.
+# time = O(sum over words of len(list)^2), space = O(total words + pairs reported)
+from collections import defaultdict
+from itertools import combinations
+
+def sparse_similarity(docs):                    # docs: {doc_id: set_of_word_ids}
+    index = defaultdict(list)                   # ---- pass 1: word -> docs holding it
+    for doc_id, words in docs.items():
+        for w in words:
+            index[w].append(doc_id)
+
+    intersect = defaultdict(int)                # ---- pass 2: count shared words per pair
+    for doc_ids in index.values():
+        for a, b in combinations(sorted(doc_ids), 2):
+            intersect[(a, b)] += 1              # one shared word -> +1 for this pair
+
+    out = {}                                    # ---- pass 3: turn counts into similarity
+    for (a, b), shared in intersect.items():
+        union = len(docs[a]) + len(docs[b]) - shared
+        out[(a, b)] = shared / float(union)
+    return out
+```
+
+- **Why the pair key must be ordered.** `(a, b)` with `a < b` — otherwise the same pair is
+  counted twice under two keys, the textbook *false split*.
+- **What the complexity really is.** Not `O(D²)`: the cost is the sum of `len(list)²` over
+  words, i.e. the number of (pair, shared word) facts. Sparse data makes that tiny; one word
+  appearing in every document makes it `D²` again, which is why search engines drop stop
+  words before indexing.
+- **Where you have seen it already.** LC 49 (Group Anagrams) is the one-feature case, and the
+  `char → indices` map in LC 792 is the same inversion — build the index once, answer many
+  queries from it.
 
 ---
 

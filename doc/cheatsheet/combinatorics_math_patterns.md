@@ -567,6 +567,106 @@ void shuffle(int[] arr) {
 ### Weighted Random / Binary Search on Prefix Sum — LC 528
 **Classic LC:** LC 528 (Random Pick with Weight) — O(log N) per pick
 
+### Rejection Sampling — one uniform generator from another — LC 470 ⭐⭐⭐⭐
+
+Given `rand5()`, build `rand7()`. Two rules, and both are where candidates slip:
+
+1. **Combine draws multiplicatively, never additively.** `5 * rand5() + rand5()` is uniform
+   over `0..24` because the multiplier equals the second draw's range, so each of the 25
+   outcomes comes from exactly one pair. `rand5() + rand5()` is *not* uniform — sums bunch
+   in the middle.
+2. **Throw away the leftovers.** 25 is not a multiple of 7, so `% 7` alone would favour
+   `0..3`. Keep only `0..20` (that is `3 * 7`) and re-draw otherwise.
+
+```java
+// java
+// CtCI 16.23 - rand7() from rand5(), where rand5() is uniform on 0..4
+// IDEA: 5*rand5() + rand5() is uniform on 0..24; keep 0..20 (an exact multiple of 7)
+//       and take % 7, re-drawing otherwise so no residue is favoured
+// time = O(1) expected — 25/21 ~= 1.19 rounds, space = O(1)
+int rand7() {
+    while (true) {
+        int n = 5 * rand5() + rand5();   // uniform over 0..24
+        if (n < 21) return n % 7;        // 21 = 3 * 7
+    }
+}
+```
+
+```python
+# python
+# LC 470 - Implement Rand10() Using Rand7()   (rand7() is uniform on 1..7)
+# IDEA: 7*(rand7()-1) + rand7() is uniform on 1..49; keep 1..40 = 4 * 10 and map
+#       with % 10; the rejected 9 values just cost another round
+# time = O(1) expected — 49/40 = 1.225 rounds, space = O(1)
+class Solution(object):
+    def rand10(self):
+        while True:
+            n = 7 * (rand7() - 1) + rand7()    # uniform over 1..49
+            if n <= 40:                        # 40 is an exact multiple of 10
+                return 1 + (n - 1) % 10
+```
+
+The loop is unbounded but finishes fast: with success probability `p` per round the expected
+number of rounds is `1/p` — `49/40` here. Say that instead of "it usually terminates".
+
+### Random Subset of Size M — partial Fisher-Yates
+
+Picking `m` of `n` items uniformly does **not** need a full shuffle. Seed the result with the
+first `m` items, then let each later item `i` replace a random slot with probability
+`m / (i+1)` — which is reservoir sampling with `k = m`, and leaves every item at exactly
+`m / n`.
+
+```python
+# python
+# CtCI 17.3 - a uniformly random subset of size m, in one pass over the input
+# IDEA: reservoir sampling with k = m — item i (i >= m) lands in slot k when the
+#       random k < m, so early and late items end up equally likely
+# time = O(n), space = O(m)
+import random
+
+def pick_m(items, m):
+    subset = list(items[:m])
+    for i in range(m, len(items)):
+        k = random.randint(0, i)          # inclusive at both ends
+        if k < m:
+            subset[k] = items[i]
+    return subset
+```
+
+**Classic LC:** LC 384 uses the full shuffle above; this is the version to reach for when
+`m << n` or the input is a stream you cannot shuffle in place.
+
+### Random Node of a Tree — weight by subtree size
+
+Each node stores its subtree `size`, maintained on insert. "Give me a uniformly random node"
+then becomes "give me the `i`-th node in order" for a uniform `i` — an `O(h)` descent.
+
+```python
+# python
+# CtCI 4.11 - getRandomNode(), every node equally likely
+# IDEA: with sizes stored, picking the i-th node in order is a descent; a uniform i
+#       therefore makes every node equally likely. Same idea as LC 528, with the
+#       tree standing in for the prefix-sum array.
+# time = O(h) per call, space = O(1) — sizes are maintained during insert
+import random
+
+def get_ith(node, i):
+    left_size = node.left.size if node.left else 0
+    if i < left_size:
+        return get_ith(node.left, i)
+    elif i == left_size:
+        return node
+    else:
+        return get_ith(node.right, i - left_size - 1)
+
+def get_random(root):
+    return get_ith(root, random.randrange(root.size))
+```
+
+If you cannot change the node class, reservoir sampling over any traversal still gives a
+uniform node in `O(n)` and `O(1)` extra space — the trade to name out loud is `O(h)` per call
+with stored sizes versus `O(n)` per call without them.
+
 ## Pattern 6: Geometry / Computational Geometry
 
 ### Cross Product (Orientation Test)

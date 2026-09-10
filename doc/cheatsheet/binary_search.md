@@ -1039,7 +1039,131 @@ A neat way to write both in one function: `if ((val < target) == ascending) l = 
 
 Worked example — LC 1095 Find in Mountain Array — in [binary_search_examples.md](./binary_search_examples.md).
 
-### 2.5) Quick Reference — Other Binary-Search-Flavoured Problems
+### 2.5) No Right End — Exponential (Galloping) Search ⭐⭐⭐⭐
+
+Binary search needs a right end, and sometimes the input refuses to give you one: LC 702
+(Search in a Sorted Array of Unknown Size) hands you a `reader` with no length, CtCI 10.4
+hands you a `Listy` whose `elementAt()` just returns `-1` past the end, and a paginated API
+behaves the same way. **Find a right end by doubling, then binary search inside it.**
+
+```text
+probe 1, 2, 4, 8, 16, ...  until the value overshoots the target (or falls off the end)
+                           -> the answer is inside [prev probe, this probe]
+```
+
+Both halves cost `O(log p)` probes, where `p` is the target's index — so the whole search
+is `O(log p)`, independent of the array's (unknown, possibly huge) total length.
+
+```python
+# python
+# LC 702 - Search in a Sorted Array of Unknown Size
+# IDEA: double the index until reader.get() overshoots -> that bounds the answer;
+#       then run an ordinary binary search inside the window
+# time = O(log p) where p is the target's index, space = O(1)
+class Solution(object):
+    def search(self, reader, target):
+        hi = 1
+        while reader.get(hi) < target:       # out of range returns 2^31-1, so this stops
+            hi <<= 1                         # 1, 2, 4, 8, ... only O(log p) probes
+        lo = hi >> 1                         # the previous probe was still < target
+
+        while lo <= hi:
+            mid = lo + (hi - lo) // 2
+            val = reader.get(mid)
+            if val == target:
+                return mid
+            elif val < target:
+                lo = mid + 1
+            else:
+                hi = mid - 1                 # also the "past the end" case
+        return -1
+```
+
+```java
+// java
+// CtCI 10.4 - search a sorted "Listy" that has no size(); elementAt() returns -1 past the end
+// IDEA: same doubling, but the sentinel here is -1, which reads as TOO SMALL —
+//       so it has to be tested for explicitly instead of comparing naturally
+// time = O(log p), space = O(1)
+int search(Listy list, int target) {
+    int hi = 1;
+    while (list.elementAt(hi) != -1 && list.elementAt(hi) < target) {
+        hi *= 2;
+    }
+    int lo = hi / 2;
+
+    while (lo <= hi) {
+        int mid = lo + (hi - lo) / 2;
+        int val = list.elementAt(mid);
+        if (val == target) return mid;
+        if (val == -1 || val > target) hi = mid - 1;   // -1 means past the end -> go left
+        else lo = mid + 1;
+    }
+    return -1;
+}
+```
+
+- **The trap is the out-of-range sentinel's direction.** `2^31-1` sorts above every real
+  value, so the ordinary comparisons handle it. `-1` sorts *below* them, so an untested
+  `-1` sends the search right, off the end, forever.
+- **Why doubling and not a fixed stride.** A stride of `k` costs `p/k` probes; doubling
+  costs `log2(p)`, and it never overshoots the answer by more than a factor of two.
+- **The same trick outside interviews.** Intersecting a small sorted list with a huge one
+  galloping-searches each element instead of scanning, and Timsort's merge uses it to skip
+  long runs from one side.
+
+### 2.6) The Probe Can Land on a Hole — Sparse Search ⭐⭐⭐
+
+CtCI 10.5: a sorted array of strings padded with `""` at random positions. `mid` can land
+on an empty string, which carries **no order information** — you cannot tell whether the
+target is left or right of it, so the standard template stalls. Fix: step outward from
+`mid` to the nearest real entry, then compare as usual.
+
+```python
+# python
+# CtCI 10.5 - find a word in a sorted string array that is padded with "" entries
+# IDEA: a probe landing on "" tells you nothing, so walk outward from mid — both
+#       directions at once — to the closest real string, then continue normally
+# time = O(log n) when holes are sparse, O(n) worst case; space = O(1)
+def sparse_search(words, target):
+    if not target:                            # "" has no defined position
+        return -1
+    lo, hi = 0, len(words) - 1
+
+    while lo <= hi:
+        mid = lo + (hi - lo) // 2
+
+        if not words[mid]:                    # in a hole: find the nearest word
+            left, right = mid - 1, mid + 1
+            while True:
+                if left < lo and right > hi:
+                    return -1                 # this whole window is empty
+                elif right <= hi and words[right]:
+                    mid = right
+                    break
+                elif left >= lo and words[left]:
+                    mid = left
+                    break
+                left -= 1
+                right += 1
+
+        if words[mid] == target:
+            return mid
+        elif words[mid] < target:
+            lo = mid + 1
+        else:
+            hi = mid - 1
+    return -1
+```
+
+- **Step outward, not just rightward.** Scanning only right can run past `hi` and force you
+  to discard a half that still contained the target.
+- **The guarantee is gone, and that is the answer.** A run of `""` of length `n` makes it
+  `O(n)`; you keep `O(log n)` only while the holes are sparse. Say this — it is the same
+  lesson as LC 81 (§1.2), where `nums[l] == nums[mid] == nums[r]` leaves the probe
+  uninformative and the fallback `l++ / r--` degrades the search to `O(n)`.
+
+### 2.7) Quick Reference — Other Binary-Search-Flavoured Problems
 
 Famous problems that reuse a template already in this doc; listed so you recognise them, no new technique needed.
 
@@ -1077,6 +1201,8 @@ One table for the whole sheet: given the shape of the input, this is the templat
 | **Peak / valley**, no target value | Half-open `while l < r`, `r = mid` | LC 162, LC 852 |
 | **Rotated** sorted array | Identify the sorted half — §1.2 | LC 33, LC 81, LC 153, LC 154 |
 | Array goes **up then down** (mountain / bitonic) | Peak + two ordered searches, one **descending** — §2.4 | LC 1095 |
+| Input has **no length** (reader / stream / paginated API) | Double the index to find a right end, then search — §2.5 | LC 702 |
+| A probe can land on an **uninformative** slot (`""`, duplicates) | Step outward to the nearest usable entry — §2.6 | CtCI 10.5, LC 81 |
 | **2D matrix** | Flatten if globally sorted, staircase if only rows+cols sorted — §2.3 | LC 74 vs LC 240 |
 | **Real-number** answer, precision required | Floating-point / fixed-iteration — §2.2 | LC 69 (float variant) |
 | "**Minimize the maximum**" / "**maximize the minimum**" | Binary search on answer — [binary_search_on_answer.md](./binary_search_on_answer.md) | LC 410, 875, 1011, 1231, 2616 |
@@ -1106,6 +1232,7 @@ One table for the whole sheet: given the shape of the input, this is the templat
 | "sorted array, find first/last occurrence" | Left/right boundary binary search |
 | "the smallest value **>=** X" / "largest **<=** X", asked once per element | Sort once + lower/upper bound — §1.3 |
 | "the **first** element to the left/right that is bigger" (positional) | Monotonic stack, NOT binary search — §1.3 |
+| "the array has no `size()`" / "the API is paginated" | Exponential (galloping) search for a right end — §2.5 |
 | "matrix with row+col sorted" | Staircase search (NOT flat binary search) |
 | "real number answer, precision required" | Floating-point binary search |
 | "can we achieve X?" is monotonic | Binary search on monotonic predicate |
