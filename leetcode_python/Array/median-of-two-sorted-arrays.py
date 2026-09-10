@@ -3,9 +3,6 @@
 4. Median of Two Sorted Arrays
 Hard
 
-15208
-
-1907
 
 Given two sorted arrays nums1 and nums2 of size m and n respectively, return the median of the two sorted arrays.
 
@@ -46,24 +43,117 @@ class Solution(object):
         """
         pass
      
-   
 
-# V0
-# IDEA : medium definiton
-# time = O((m+n)log(m+n))
-# space = O(m+n)
-class Solution:
+
+# V0-1
+# IDEA: binary search on the smaller array (gemini)
+class Solution(object):
+
     def findMedianSortedArrays(self, nums1, nums2):
-        nums = nums1 + nums2
-        nums.sort()
-        
-        L = len(nums)
-        if L==1:
-            return nums[0]
-        if L % 2 != 0:
-            return nums[L//2]
-        else:
-            return (nums[L//2 - 1] + nums[L//2])/2.0 # NOTE this !!!
+        """
+        :type nums1: List[int]
+
+        :type target: List[int]
+
+        :rtype: float
+        """
+        # 1. 確保 nums1 是較短的陣列，確保時間複雜度為 O(log(min(M, N)))
+        if len(nums1) > len(nums2):
+            nums1, nums2 = nums2, nums1
+
+        m, n = len(nums1), len(nums2)
+        l, r = 0, m
+        half_len = (m + n + 1) // 2  # 左半部分包含的元素個數
+
+        while l <= r:
+            i = l + (r - l) // 2  # nums1 的分割點
+            j = half_len - i  # nums2 的分割點
+
+            # 2. 定義分割線左右兩側的 4 個關鍵數值（使用 +-inf 處理邊界越界）
+            nums1_left = nums1[i - 1] if i > 0 else float("-inf")
+            nums1_right = nums1[i] if i < m else float("inf")
+
+            nums2_left = nums2[j - 1] if j > 0 else float("-inf")
+            nums2_right = nums2[j] if j < n else float("inf")
+
+            # 3. 檢查分割線是否合法
+            if nums1_left <= nums2_right and nums2_left <= nums1_right:
+                # 總數為奇數：中位數即為左半部的最大值
+                if (m + n) % 2 == 1:
+                    return float(max(nums1_left, nums2_left))
+                # 總數為偶數：中位數為 (左半部最大值 + 右半部最小值) / 2.0
+                else:
+                    return (
+                        max(nums1_left, nums2_left)
+                        + min(nums1_right, nums2_right)
+                    ) / 2.0
+
+            elif nums1_left > nums2_right:
+                # nums1 分割點太靠右，需左移
+                r = i - 1
+            else:
+                # nums1 分割點太靠左，需右移
+                l = i + 1
+
+        return 0.0
+
+
+# V0-2
+# IDEA: binary search on the smaller array (GPT)
+class Solution(object):
+    def findMedianSortedArrays(self, nums1, nums2):
+        """
+        :type nums1: List[int]
+        :type nums2: List[int]
+        :rtype: float
+        """
+
+        # Always binary search the smaller array
+        if len(nums1) > len(nums2):
+            nums1, nums2 = nums2, nums1
+
+        m = len(nums1)
+        n = len(nums2)
+
+        left = 0
+        right = m
+
+        while left <= right:
+            # Partition nums1
+            partition1 = left + (right - left) // 2
+
+            # Partition nums2
+            partition2 = (m + n + 1) // 2 - partition1
+
+            # Boundary values
+            left1 = float("-inf") if partition1 == 0 else nums1[partition1 - 1]
+            right1 = float("inf") if partition1 == m else nums1[partition1]
+
+            left2 = float("-inf") if partition2 == 0 else nums2[partition2 - 1]
+            right2 = float("inf") if partition2 == n else nums2[partition2]
+
+            # Correct partition
+            if left1 <= right2 and left2 <= right1:
+
+                # Odd total length
+                if (m + n) % 2 == 1:
+                    return float(max(left1, left2))
+
+                # Even total length
+                left_max = max(left1, left2)
+                right_min = min(right1, right2)
+
+                return (left_max + right_min) / 2.0
+
+            # nums1 partition is too far right
+            elif left1 > right2:
+                right = partition1 - 1
+
+            # nums1 partition is too far left
+            else:
+                left = partition1 + 1
+
+        return 0.0
 
 
 # V0-3
