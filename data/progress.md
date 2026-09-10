@@ -50,7 +50,8 @@
 	- review all `cheatsheets`
 
 - recursion_to_dp.zh.html
-	 - todo
+	- https://yennj12.js.org/CS_basics/cheatsheets/recursion_to_dp.zh.html
+	- `3) 轉換檢查清單`
 
 
 
@@ -75,10 +76,6 @@
 - backtrack.zh.html
 	- `Template 2: start_idx — i vs i + 1`
 
-
-- bit_manipulation_examples.zh.html
-	- `13) Gray Code — LC 89`
-		- https://yennj12.js.org/CS_basics/cheatsheets/bit_manipulation_examples.zh.html
 
 - linked_list_examples.md
 
@@ -135,6 +132,8 @@
 		- again
 	- knapsack_01_zh.md
 	- dp_monotonic_stack.zh.html
+	- bit_manipulation_examples.zh.html
+		- again
 
 
 
