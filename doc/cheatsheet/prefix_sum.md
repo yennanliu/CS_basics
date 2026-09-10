@@ -83,6 +83,12 @@
 - **Pattern**: Single pass with a `maxSoFar` variable; increment chunk count whenever `maxSoFar == currentIndex`
 - **Key Insight**: Because the array is a permutation of `[0, n-1]`, if the max value seen so far equals the current index, all values needed for positions `0..i` are already present in `arr[0..i]`
 
+### **Pattern 9: Prefix + Suffix Split (Minimax over a Split Point)** — LC 2017
+- **Description**: The whole choice the problem offers collapses to **one index**; what lies left of it is a prefix sum and what lies right of it is a suffix sum, so every candidate is scored in one pass
+- **Examples**: LC 2017 - Grid Game, LC 724 - Find Pivot Index, LC 1422 - Maximum Score After Splitting a String, LC 2483 - Minimum Penalty for a Shop
+- **Pattern**: Sweep the split left to right holding two running sums — shrink the suffix **before** the compare, grow the prefix **after** it, so the split cell belongs to neither side
+- **Key Insight**: Once "a choice" is reduced to "an index", `min`/`max` over all choices is an O(n) scan, not a search — no DP and no graph algorithm (see Template 15)
+
 ## 0) Concept
 
 ### How to Build the Prefix Sum Array (核心)
@@ -220,6 +226,7 @@ sumRange(0, 5) = prefix[6] - prefix[0] = -3 - 0 = -3     ✓  (-2+0+3-5+2-1)
 | **Difference Array** | Range updates | Array with start/end markers | Multiple range additions |
 | **2D Prefix Sum** | Rectangle sum queries | 2D matrix | 2D range sum calculations |
 | **Sum of Distances** | Absolute difference sums | HashMap + Prefix Sum | Sum of |i-j| for matching elements |
+| **Prefix + Suffix Split** | Best split point / minimax | Two running sums | The whole answer is decided by one index |
 
 ### Universal Template
 
@@ -874,6 +881,155 @@ for (int i = 0; i < n; i++)
 > [prefix_sum_examples.md § Prefix max / suffix min scans](./prefix_sum_examples.md#prefix-max--suffix-min-scans).
 
 
+### Template 15: Prefix + Suffix Split — Minimax over a Split Point ⭐⭐⭐⭐ — LC 2017
+
+> Numbered 15 because 9–14 are the advanced set in the next section; this one belongs with the
+> core templates.
+
+#### Core Idea
+
+Some problems read like a search over paths or partitions, but the entire choice collapses to
+**one index**. The moment it does, the two sides of that index are a **prefix sum** and a
+**suffix sum**, and the best choice is a single linear scan — no DP, no graph search.
+
+LC 2017 is the cleanest instance. The grid is `2 x n`, and a legal path goes right along row 0,
+drops **exactly once**, then goes right along row 1 — so **a path IS its turning column `i`**.
+There are only `n` paths, not exponentially many.
+
+```text
+grid = [[2, 5, 4],
+        [1, 5, 1]]        robot 1 turns down at column i = 1
+
+        col:   0     1     2
+row 0:       [ 2 ] [ 5 ]   4        4 survives   ->  TOP    = suffix of row 0
+row 1:         1   [ 5 ] [ 1 ]      1 survives   ->  BOTTOM = prefix of row 1
+                     ^
+        [ ] = zeroed by robot 1     column i is on robot 1's own path -> in NEITHER block
+```
+
+Robot 1 turning at `i` zeroes `row0[0..i]` and `row1[i..n-1]`, so robot 2 is left exactly two
+untouched blocks — and they sit on **opposite sides** of `i`:
+
+| Block | Cells | Which sum |
+|---|---|---|
+| top | `row0[i+1 ... n-1]` | **suffix** of row 0 |
+| bottom | `row1[0 ... i-1]` | **prefix** of row 1 |
+
+Robot 2 also drops exactly once, so it can reach **only one** of the two blocks; since every
+value is `>= 1` it takes that block whole (drop at column `n-1` for the top, at column `0` for
+the bottom). So robot 2 scores `max(top, bottom)`, and robot 1 picks the `i` that minimises it:
+
+```text
+answer = min over i of   max( sum(row0[i+1 ... n-1]) ,  sum(row1[0 ... i-1]) )
+                              └──── suffix, shrinks ─┘   └──── prefix, grows ─┘
+```
+
+#### The Pattern
+
+Two running sums moving in opposite directions, and **the order of the three statements inside
+the loop is the whole template**:
+
+```text
+top    = sum(row 0)          the suffix, starts whole
+bottom = 0                   the prefix, starts empty
+
+for i in 0 .. n-1:
+    top    -= row0[i]        1. shrink the suffix FIRST  -> column i leaves the top block
+    res     = min(res, max(top, bottom))   2. score this split
+    bottom += row1[i]        3. grow the prefix AFTER    -> column i joins the bottom block
+                                              only for the NEXT split
+```
+
+Do step 3 before step 2 and column `i` is double-counted into the bottom block; do step 1 after
+step 2 and it is still counted in the top block. Either slip scores a path that does not exist.
+
+```python
+# python
+# LC 2017 - Grid Game
+# IDEA: a path in a 2 x n grid IS its turning column, so scan the column and keep
+#       suffix(row 0) and prefix(row 1) as two running sums
+# time = O(n), space = O(1)
+class Solution(object):
+    def gridGame(self, grid):
+        top = sum(grid[0])      # suffix row0[i+1 ... n-1] once shrunk
+        bottom = 0              # prefix row1[0   ... i-1] once grown
+        res = float('inf')
+
+        for i in range(len(grid[0])):
+            top -= grid[0][i]                    # column i leaves the top block
+            res = min(res, max(top, bottom))     # robot 2 takes the bigger block
+            bottom += grid[1][i]                 # column i joins the bottom block
+
+        return res
+```
+
+```java
+// java
+// LC 2017 - Grid Game
+// IDEA: minimise, over the turning column, the max of (row 0 suffix, row 1 prefix)
+// time = O(n), space = O(1)
+public long gridGame(int[][] grid) {
+    long top = 0, bottom = 0, res = Long.MAX_VALUE;
+    for (int v : grid[0]) top += v;              // n <= 5e4, v <= 1e5 -> 5e9, so long
+
+    for (int i = 0; i < grid[0].length; i++) {
+        top -= grid[0][i];
+        res = Math.min(res, Math.max(top, bottom));
+        bottom += grid[1][i];
+    }
+    return res;
+}
+```
+
+#### Visual Trace — `grid = [[2,5,4],[1,5,1]]`
+
+```text
+top starts at 2+5+4 = 11, bottom at 0
+
+ i | top -= row0[i] | bottom | max(top, bottom) | res | bottom += row1[i]
+---+----------------+--------+------------------+-----+------------------
+ 0 | 11 - 2 =  9    |   0    |        9         |  9  | 0 + 1 = 1
+ 1 |  9 - 5 =  4    |   1    |        4    <--  |  4  | 1 + 5 = 6
+ 2 |  4 - 4 =  0    |   6    |        6         |  4  | 6 + 1 = 7
+
+answer = 4   (robot 1 turns at column 1, robot 2 takes the lone 4 on the top row) ✓
+```
+
+#### Traps
+
+- **This is minimax, not greedy.** Robot 1 does *not* maximise its own take. Grabbing the richest
+  path can hand robot 2 an even richer leftover — the objective is `min(max(...))`, and only the
+  scan over all `n` splits sees that.
+- **Do not reach for a graph algorithm.** Dijkstra / longest-path answers "best route for me",
+  which is the wrong objective, and the `2 x n` shape means there is nothing to search: the
+  decision is one column index.
+- **The split cell is on neither side.** See the ordering note above — it is the only real bug in
+  this template.
+- **Overflow in Java.** `n <= 5 * 10^4` and values `<= 10^5` put the row total at `5 * 10^9`;
+  accumulate in `long`.
+
+#### Similar Problems — the split-point family
+
+Same shape every time: one index decides the answer, the left of it is a prefix and the right a
+suffix.
+
+| Problem | LC # | What the split index is | Difference from LC 2017 |
+|---|---|---|---|
+| **Find Pivot Index** | 724 | the pivot | the plain case: find a split where prefix `==` suffix, no min/max |
+| **Product of Array Except Self** | 238 | every index in turn | prefix **product** × suffix product instead of sums |
+| **Maximum Score After Splitting a String** | 1422 | the cut | **maximise** zeros-left + ones-right — one scan, same two counters |
+| **Minimum Penalty for a Shop** | 2483 | the closing hour | **minimise** customers-lost-before + no-customer-hours-after |
+| **Flip String to Monotone Increasing** | 926 | the `0 → 1` boundary | minimise ones-left + zeros-right; already a Template 6 transform |
+| **Partition Array Into Three Parts With Equal Sum** | 1013 | two splits | prefix must hit `total/3` twice — a scan with two checkpoints |
+| **Ways to Split Array Into Three Subarrays** | 1712 | two splits | the second split is monotone in the first, so binary search it |
+| **Trapping Rain Water** | 42 | every index | prefix **max** / suffix **max** rather than sums (cf. Template 8) |
+| **Maximum Trailing Zeros in a Cornfield Path** | 2245 | the turning cell in a grid | LC 2017's "one turn" in a full grid: four directions, prefix counts of factors 2 and 5 |
+
+> **Recognising it in the room.** Ask: *how many genuinely different choices are there?* If the
+> answer is "one per index" — one turning column, one cut, one pivot — stop looking for DP and
+> write the two-running-sum scan. In LC 2017 the giveaway is `grid.length == 2`: two rows and one
+> allowed drop mean a path has no other degree of freedom.
+
 
 ## Advanced Templates
 
@@ -969,6 +1125,19 @@ structure:
 | Find the Longest Turbulent Subarray | 978 | Running state tracking | Medium | Modified Template 8 |
 | Sum of Beauty in the Array | 2012 | PrefixMax + SuffixMin, per element | Medium | Template 8 variant |
 
+#### **Pattern 9: Prefix + Suffix Split Problems**
+| Problem | LC # | Key Technique | Difficulty | Template |
+|---------|------|---------------|------------|----------|
+| Grid Game | 2017 | Turning column + suffix(row 0) / prefix(row 1), minimax | Medium | Template 15 |
+| Find Pivot Index | 724 | Split where prefix == suffix | Easy | Template 15 (plain case) |
+| Product of Array Except Self | 238 | Prefix product × suffix product | Medium | Template 15 (products) |
+| Maximum Score After Splitting a String | 1422 | Maximise zeros-left + ones-right | Easy | Template 15 |
+| Minimum Penalty for a Shop | 2483 | Minimise loss-before + idle-after | Medium | Template 15 |
+| Partition Array Into Three Parts With Equal Sum | 1013 | Two splits at `total/3` | Easy | Template 15 (two cuts) |
+| Ways to Split Array Into Three Subarrays | 1712 | Two splits + binary search the second | Medium | Template 15 + binary search |
+| Trapping Rain Water | 42 | Prefix max / suffix max per index | Hard | Template 15 (max, not sum) |
+| Maximum Trailing Zeros in a Cornfield Path | 2245 | One turn in a grid, prefix counts of 2s and 5s | Medium | Template 15 (grid) |
+
 #### **Advanced/Mixed Pattern Problems**
 | Problem | LC # | Key Technique | Difficulty | Template |
 |---------|------|---------------|------------|----------|
@@ -1039,7 +1208,11 @@ Problem Analysis Flowchart:
    ├── YES → Use Template 5 (2D Prefix Sum)
    └── NO → Continue to 5
 
-5. Special cases:
+5. Is every candidate answer described by ONE index (a cut, a pivot, a turning column)?
+   ├── YES → Use Template 15 (Prefix + Suffix Split), even when the ask is min(max(...))
+   └── NO → Continue to 6
+
+6. Special cases:
    ├── Product instead of sum → Modified Template 1
    ├── Tree path sums → Template 2 + Tree traversal
    ├── Sliding window + prefix → Combine templates
@@ -1062,6 +1235,7 @@ Problem Analysis Flowchart:
 | "shortest subarray with sum ≥ K" **and negatives allowed** | Template 10 | LC 862 (vs LC 209 window) |
 | "submatrix sum ≤ k", "count submatrices", "rectangle + condition" | Template 11 | LC 363, 1074 |
 | "XOR of subarray", "even count of every letter", "parity" | Template 12 | LC 1310, 1915, 1738 |
+| "2 x n grid", "one turn", "best split point", "both play optimally" | Template 15 | LC 2017, 724, 1422, 2483 |
 
 > Templates **9–13** are written out in [prefix_sum_advanced.md](./prefix_sum_advanced.md).
 
@@ -1116,6 +1290,17 @@ Problem Analysis Flowchart:
 - Key insight: `maxSoFar == i` means prefix `[0..i]` is a complete, self-contained set ready to sort
 - Equivalent check: prefix sum of `arr[0..i]` equals prefix sum of sorted array `[0..i]`
 
+#### **Identify Template 15 Usage:**
+- Problem mentions: "split the array", "pivot", "turning point", "close the shop at hour i", "both robots play optimally"
+- The real trigger: **the set of candidate answers is one per index.** A `2 x n` grid with a single
+  allowed drop, a string cut in two, a partition into a left and a right part
+- Key insight: left of the index is a prefix sum, right of it is a suffix sum — scan the index and
+  score both sides in O(1)
+- Watch the ordering: shrink the suffix *before* scoring, grow the prefix *after*, so the split
+  cell lands on neither side
+- If the objective is `min(max(...))` or `max(min(...))`, it is minimax — a greedy "take the best
+  for me" pass is the wrong objective, not just a weaker one
+
 
 ## Worked Examples
 
@@ -1149,6 +1334,7 @@ is grafted into the templates as notes.
 | 2D prefix sum build | O(mn) | O(mn) | For m×n matrix |
 | 2D range query | O(1) | O(1) | After preprocessing |
 | Difference array updates | O(k) | O(n) | k updates, n array size |
+| Prefix + suffix split scan | O(n) | O(1) | Two running sums, no array kept |
 
 ### Template Quick Reference
 
@@ -1167,6 +1353,7 @@ is grafted into the templates as notes.
 | **Template 11** | Row-Pair Compression | `for top: for bot: colSum[c]+=mat[bot][c]` → 1D solver |
 | **Template 12** | Prefix XOR | `p[i+1] = p[i] ^ a[i]; xor(l,r) = p[r+1] ^ p[l]` |
 | **Template 13** | Sparse Diff (HashMap) | `d[start]+=v; d[end+1]-=v; for k in sorted(d): cur+=d[k]` |
+| **Template 15** | Prefix + Suffix Split | `top-=a[i]; res=min(res,max(top,bottom)); bottom+=b[i]` |
 
 > Templates **9–13** are written out in [prefix_sum_advanced.md](./prefix_sum_advanced.md).
 
@@ -1289,6 +1476,7 @@ def count_nice_subarrays(nums, k):
    - If you see "range queries" → basic prefix sum array
    - If you see "divisible by K" → modulo technique with HashMap
    - If you see "multiple range updates" → difference array
+   - If the choice is one index (a cut, a pivot, a turning column) → prefix + suffix scan
 
 2. **Communication Strategy**
    - Explain the mathematical insight: "We're looking for pairs of prefix sums"
