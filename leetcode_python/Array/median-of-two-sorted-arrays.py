@@ -37,6 +37,18 @@ nums2.length == n
 """
 
 # V0
+class Solution(object):
+    def findMedianSortedArrays(self, nums1, nums2):
+        """
+        :type nums1: List[int]
+        :type nums2: List[int]
+        :rtype: float
+        """
+        pass
+     
+   
+
+# V0
 # IDEA : medium definiton
 # time = O((m+n)log(m+n))
 # space = O(m+n)
@@ -53,7 +65,41 @@ class Solution:
         else:
             return (nums[L//2 - 1] + nums[L//2])/2.0 # NOTE this !!!
 
-# V0'
+
+# V0-3
+# IDEA: ARRAY OP + mid (TLE) (gpt)
+# NOTE !!! this code works, but the time complexity exceed.
+class Solution(object):
+    def findMedianSortedArrays(self, nums1, nums2):
+        """
+        :type nums1: List[int]
+        :type nums2: List[int]
+        :rtype: float
+        """
+
+        # Merge two arrays
+        tmp = []
+        tmp += nums1
+        tmp += nums2
+
+        # Sort: small -> big
+        tmp.sort()
+
+        size = len(tmp)
+        mid = size // 2
+
+        # Odd length
+        if size % 2 == 1:
+            return float(tmp[mid])
+
+        # Even length
+        left = tmp[mid - 1]
+        right = tmp[mid]
+
+        return float((left + right) / 2.0)
+
+
+# V0-5
 # IDEA : heapq
 # time = O(m+n)
 # space = O(m+n)
