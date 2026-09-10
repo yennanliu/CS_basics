@@ -156,119 +156,16 @@ def dfs(root):
 
 #### 0-8) Serialize and Deserialize Binary Tree
 
-> Python version: [2-20) LC 297](#2-20-serialize-and-deserialize-binary-tree--lc-297) below.
-
-```java
-// java
-// LC 297
-public class Codec{
-    public String serialize(TreeNode root) {
-
-        /** NOTE !!!
-         *
-         *     if root == null, return "#"
-         */
-        if (root == null){
-            return "#";
-        }
-
-        /** NOTE !!! return result via pre-order, split with "," */
-        return root.val + "," + serialize(root.left) + "," + serialize(root.right);
-    }
-
-    public TreeNode deserialize(String data) {
-
-        /** NOTE !!!
-         *
-         *   1) init queue and append serialize output
-         *   2) even use queue, but helper func still using DFS
-         */
-        Queue<String> queue = new LinkedList<>(Arrays.asList(data.split(",")));
-        return helper(queue);
-    }
-
-    private TreeNode helper(Queue<String> queue) {
-
-        // get val from queue first
-        String s = queue.poll();
-
-        if (s.equals("#")){
-            return null;
-        }
-        /** NOTE !!! init current node  */
-        TreeNode root = new TreeNode(Integer.valueOf(s));
-        /** NOTE !!!
-         *
-         *    since serialize is "pre-order",
-         *    deserialize we use "pre-order" as well
-         *    e.g. root -> left sub tree -> right sub tree
-         *    -> so we get sub tree via below :
-         *
-         *       root.left = helper(queue);
-         *       root.right = helper(queue);
-         *
-         */
-        root.left = helper(queue);
-        root.right = helper(queue);
-        /** NOTE !!! don't forget to return final deserialize result  */
-        return root;
-    }
-}
-```
+The DFS shape: **pre-order with an explicit null marker**, and a deserialize that consumes
+the same stream in the same order. Written out in both languages in
+[tree_codec.md](./tree_codec.md#serialize-and-deserialize-binary-tree), which owns the codec
+family — including why pre-order is the traversal that can rebuild a tree from one string.
 
 #### 0-9) Serialize and Deserialize BST
-```python
-# LC 449. Serialize and Deserialize BST
-# please check below 2) LC Example
-# NOTE : there is also a bfs approach
-# V1'
-# IDEA : BST property
-# https://leetcode.com/problems/serialize-and-deserialize-bst/discuss/212043/Python-solution
-class Codec:
 
-    def serialize(self, root):
-        """Encodes a tree to a single string.
-        
-        :type root: TreeNode
-        :rtype: str
-        """
-        def dfs(root):
-            if not root:
-                return 
-            res.append(str(root.val) + ",")
-            dfs(root.left)
-            dfs(root.right)
-            
-        res = []
-        dfs(root)
-        return "".join(res)
-
-    def deserialize(self, data):
-        """Decodes your encoded data to tree.
-        
-        :type data: str
-        :rtype: TreeNode
-        """
-        lst = data.split(",")
-        lst.pop()
-        stack = []
-        head = None
-        for n in lst:
-            n = int(n)
-            if not head:
-                head = TreeNode(n)
-                stack.append(head)
-            else:
-                node = TreeNode(n)
-                if n < stack[-1].val:
-                    stack[-1].left = node
-                else:
-                    while stack and stack[-1].val < n: 
-                        u = stack.pop()
-                    u.right = node
-                stack.append(node)
-        return head
-```
+A BST needs **no null markers** — the ordering already says where each value belongs, so
+the serialized string is just the pre-order values. The three codecs that follow from that
+are in [bst_examples.md](./bst_examples.md#1-serialize-and-deserialize-bst--lc-449).
 
 #### 0-10) find longest distance between nodes
 ```java
@@ -454,158 +351,12 @@ class Solution(object):
 ```
 
 ### 2-3) Delete Node in a BST — LC 450
-```python
-# 450 Delete Node in a BST
-# V0
-# IDEA : RECURSION + BST PROPERTY
-#### 2 CASES :
-#   -> CASE 1 : root.val == key and NO right subtree 
-#                -> swap root and root.left, return root.left
-#   -> CASE 2 : root.val == key and THERE IS right subtree
-#                -> 1) go to 1st RIGHT sub tree
-#                -> 2) iterate to deepest LEFT subtree
-#                -> 3) swap root and  `deepest LEFT subtree` then return root
-class Solution(object):
-    def deleteNode(self, root, key):
-        if not root: return None
-        if root.val == key:
-            # case 1 : NO right subtree 
-            if not root.right:
-                left = root.left
-                return left
-            # case 2 : THERE IS right subtree
-            else:
-                ### NOTE : find min in "right" sub-tree
-                #           -> because BST property, we ONLY go to 1st right tree (make sure we find the min of right sub-tree)
-                #           -> then go to deepest left sub-tree
-                right = root.right
-                while right.left:
-                    right = right.left
-                ### NOTE : we need to swap root, right ON THE SAME TIME
-                root.val, right.val = right.val, root.val
-        root.left = self.deleteNode(root.left, key)
-        root.right = self.deleteNode(root.right, key)
-        return root
-```
 
-```java
-// java
-// LC 450
-// V0
-// IDEA: DFS + BST property
-/**
- *
- * (when found a node to delete)
- *
- *    // Case 1: No children
- *
- *    // Case 2: One child
- *
- *    // Case 3: Two children
- *
- */
-/**
- *
- *  Summary of Deletion Strategy:
- *
- *
- *  | Case         | Description        | What Happens                                  |
- * |--------------|--------------------|-----------------------------------------------|
- * | Leaf         | No children         | Return `null`                                 |
- * | One Child    | One child           | Replace node with its child                   |
- * | Two Children | Both children       | Replace with in-order successor, then delete the successor |
- *
- *
- *  `in-order successor`:  Left → root → Right
- */
-
-public TreeNode deleteNode(TreeNode root, int key) {
-    return deleteNodeHelper_0(root, key);
-}
-
-private TreeNode deleteNodeHelper_0(TreeNode root, int key) {
-    if (root == null) {
-        return null;
-    }
-
-    /**
-     * CASE 1)  NOT found a node to delete
-     */
-    if (key < root.val) {
-        // search in left subtree
-        /**
-         *  NOTE !!!
-         *
-         *   we assign `left sub tree` as res from deleteNodeHelper_0(root.left, key)
-         *
-         *   -> NOT return `deleteNodeHelper_0(root.left, key)`
-         *      as res directly, since it deleteNodeHelper_0
-         *      could NOT be a null val, we need it to assign root.left,
-         *      so we can keep `whole BST info`
-         */
-        root.left = deleteNodeHelper_0(root.left, key);
-    } else if (key > root.val) {
-        // search in right subtree
-        /**
-         *  NOTE !!!
-         *
-         *   we assign `right sub tree` as res from deleteNodeHelper_0(root.right, key)
-         */
-        root.right = deleteNodeHelper_0(root.right, key);
-    }
-    /**
-     * CASE 2)  Found a node to delete
-     */
-    else {
-        // Case 1: No left child
-        if (root.left == null) {
-            return root.right;
-        }
-
-        // Case 2: No right child
-        if (root.right == null) {
-            return root.left;
-        }
-
-        /**
-         *  NOTE !!!! below
-         *
-         *  step 1) find `min` val  (`sub right tree`)
-         *  step 2) set root val as min val
-         *  step 3)  delete the `min` val node from sub right tree
-         *             - `recursively` call `deleteNodeHelper`
-         *
-         */
-        // Case 3: Two children → find inorder successor
-        /**
-         *  NOTE !!!
-         *
-         *   we need to find a `min` tree from `sub right tree`
-         *   as a node to `swap` with current node.
-         *
-         *   Reason:
-         *      since it is a BST, so  `left < root < right`.
-         *      so after swapping `min` from sub right tree.
-         *      with current node
-         *          -> the tree `remains` BST.
-         *          we DON'T have to do any further modification.
-         *
-         */
-        TreeNode minNode = findMin_0(root.right);
-        root.val = minNode.val; // copy value
-        root.right = deleteNodeHelper_0(root.right, minNode.val); // delete successor
-    }
-
-    return root;
-}
-
-private TreeNode findMin_0(TreeNode node) {
-    while (node.left != null) {
-        node = node.left;
-    }
-    return node;
-}
-```
+The DFS shape is "recurse to the target, then rebuild upward from what you return".
+Both forms — the canonical `return` of the replacement subtree, and the value-swap variant
+most people write first — are in
+[bst_advanced.md](./bst_advanced.md#variation-value-swap-delete-lc-450-python), with the
+reason the second one costs O(n) rather than O(h).
 
 ### 2-4) Find Duplicate Subtrees — LC 652
 ```python
@@ -1395,97 +1146,10 @@ class Codec:
 ```
 
 ### 2-21) Serialize and Deserialize BST — LC 449
-```python
-# LC 449. Serialize and Deserialize BST
-# V0
-# IDEA : BFS + queue op
-class Codec:
-    def serialize(self, root):
-        if not root:
-            return '{}'
 
-        res = [root.val]
-        q = [root]
-
-        while q:
-            new_q = []
-            for i in range(len(q)):
-                tmp = q.pop(0)
-                if tmp.left:
-                    q.append(tmp.left)
-                    res.extend( [tmp.left.val] )
-                else:
-                    res.append('#')
-                if tmp.right:
-                    q.append(tmp.right)
-                    res.extend( [tmp.right.val] )
-                else:
-                    res.append('#')
-
-        while res and res[-1] == '#':
-                    res.pop()
-
-        return '{' + ','.join(map(str, res)) + '}' 
-
-
-    def deserialize(self, data):
-        if data == '{}':
-            return
-
-        nodes = [ TreeNode(x) for x in data[1:-1].split(",") ]
-        root = nodes.pop(0)
-        p = [root]
-        while p:
-            new_p = []
-            for n in p:
-                if nodes:
-                    left_node = nodes.pop(0)
-                    if left_node.val != '#':
-                        n.left = left_node
-                        new_p.append(n.left)
-                    else:
-                        n.left = None
-                if nodes:
-                    right_node = nodes.pop(0)
-                    if right_node.val != '#':
-                        n.right = right_node
-                        new_p.append(n.right)
-                    else:
-                        n.right = None
-            p = new_p 
-             
-        return root
-
-# V1
-# IDEA : same as LC 297
-# https://leetcode.com/problems/serialize-and-deserialize-bst/discuss/93283/Python-solution-using-BST-property
-class Codec:
-
-    def serialize(self, root):
-        vals = []
-        self._preorder(root, vals)
-        return ','.join(vals)
-        
-    def _preorder(self, node, vals):
-        if node:
-            vals.append(str(node.val))
-            self._preorder(node.left, vals)
-            self._preorder(node.right, vals)
-        
-    def deserialize(self, data):
-        vals = collections.deque(map(int, data.split(','))) if data else []
-        return self._build(vals, -float('inf'), float('inf'))
-
-    def _build(self, vals, minVal, maxVal):
-        if vals and minVal < vals[0] < maxVal:
-            val = vals.popleft()
-            root = TreeNode(val)
-            root.left = self._build(vals, minVal, val)
-            root.right = self._build(vals, val, maxVal)
-            return root
-        else:
-            return None
-```
+See [bst_examples.md](./bst_examples.md#1-serialize-and-deserialize-bst--lc-449) — the BST
+property is what the problem turns on, so the solutions live with the BST sheet rather than
+here. [0-9)](#0-9-serialize-and-deserialize-bst) above is the DFS shape they share.
 
 ### 2-22) Concatenated Words — LC 472
 ```python

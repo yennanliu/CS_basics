@@ -241,7 +241,15 @@ LC 79 回傳 **boolean** 而且會短路（`if dfs(...): return True`）。下�
 
 <!--CODE-->
 
-<!-- 557c2bf25c6b -->
+<!-- 962b16149816 -->
+### 相關主題
+
+- [backtrack.md](./backtrack.md) — 模板本身
+- [backtrack_advanced.md](./backtrack_advanced.md) — LC 212 / 282 / 301
+- [tree_backtrack.md](./tree_backtrack.md) — root→leaf 路徑題（LC 113、257、129、437）
+- [dfs.md](./dfs.md) — 不需要 undo 的走訪
+
+<!-- stale: 557c2bf25c6b -->
 ### 12) Course Schedule — LC 207
 
 > 從回溯的角度看：`visiting.remove(crs)` **就是**取消選擇那一步 — 這個集合裝的是目前的 DFS 路徑，
@@ -250,7 +258,7 @@ LC 79 回傳 **boolean** 而且會短路（`if dfs(...): return True`）。下�
 
 <!--CODE-->
 
-<!-- 1a5d4813b258 -->
+<!-- stale: 1a5d4813b258 -->
 ## 總結與速查
 
 | 如果上面的範例讓你覺得陌生 | 回去看 |
@@ -260,11 +268,3 @@ LC 79 回傳 **boolean** 而且會短路（`if dfs(...): return True`）。下�
 | 怎麼跳過重複值 | [Duplicate skipping](./backtrack.md#duplicate-skipping--the-same-level-skip-rule-) |
 | 剪枝時該用 `break` 還是 `continue` | [Sort, dedup, prune — when](./backtrack.md#sort-dedup-prune--when) |
 | 怎麼從題目敘述挑出對的形狀 | [Decision Table](./backtrack.md#decision-table--which-backtrack-shape-) |
-
-<!-- 962b16149816 -->
-### 相關主題
-
-- [backtrack.md](./backtrack.md) — 模板本身
-- [backtrack_advanced.md](./backtrack_advanced.md) — LC 212 / 282 / 301
-- [tree_backtrack.md](./tree_backtrack.md) — root→leaf 路徑題（LC 113、257、129、437）
-- [dfs.md](./dfs.md) — 不需要 undo 的走訪

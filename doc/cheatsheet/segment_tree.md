@@ -1,7 +1,7 @@
-# Segment Tree & Binary Indexed Tree (Fenwick Tree)
+# Segment Tree
 
-> **Scope** — Range query + range update structures — the segment tree, lazy propagation, and the BIT-vs-segment-tree-vs-merge-sort decision.
-> **See also**: [binary_indexed_tree.md](./binary_indexed_tree.md) — the Fenwick tree in depth; [prefix_sum.md](./prefix_sum.md) — no updates needed; [difference_array.md](./difference_array.md) — range update, single final read.
+> **Scope** — The segment tree specifically — the recursive build, point and range update, lazy propagation, and the problems that need an operation a Fenwick tree cannot do (min / max / gcd, range assignment, interval coverage).
+> **See also**: [binary_indexed_tree.md](./binary_indexed_tree.md) — the Fenwick tree, and the BIT-vs-segment-tree-vs-merge-sort decision, which that sheet owns; [prefix_sum.md](./prefix_sum.md) — no updates needed; [difference_array.md](./difference_array.md) — range update, single final read.
 
 ## LeetCode Problem Lists
 
@@ -46,55 +46,75 @@
 - **Examples**: LC 315 (Count Smaller), LC 493 (Reverse Pairs), LC 327 (Count Range Sum)
 - **Pattern**: BIT with coordinate compression or merge sort
 
-## Data Structure Comparison
+### **Range Sum Query Problems**
 
-### **BIT vs Segment Tree Comparison**
-| Aspect | Binary Indexed Tree | Segment Tree |
-|--------|-------------------|--------------|
-| **Space** | O(n) | O(4n) |
-| **Implementation** | Simple, short code | More complex |
-| **Operations** | Sum, XOR, OR | Any associative operation |
-| **Range Updates** | Difficult | Easy with lazy propagation |
-| **1-indexed** | Natural fit | Can be adapted |
-| **Query Types** | Prefix queries easy | Arbitrary range queries |
+| Problem | LC # | Data Structure | Difficulty | Key Technique |
+|---------|------|----------------|------------|---------------|
+| Range Sum Query - Immutable | 303 | Prefix Sum | Easy | Simple prefix array |
+| Range Sum Query - Mutable | 307 | BIT/Segment Tree | Medium | Point update, range query |
+| Range Sum Query 2D - Immutable | 304 | 2D Prefix Sum | Medium | 2D prefix array |
+| Range Sum Query 2D - Mutable | 308 | 2D BIT | Hard | 2D point update, range query |
+### **Order Statistics Problems**
+| Problem | LC # | Data Structure | Difficulty | Key Technique |
+|---------|------|----------------|------------|---------------|
+| Count of Smaller Numbers After Self | 315 | BIT + Compression | Hard | Coordinate compression |
+| Reverse Pairs | 493 | BIT/Merge Sort | Hard | Count inversions |
+| Count of Range Sum | 327 | BIT + Prefix Sum | Hard | Coordinate compression |
+
+
+### Where the BIT solutions live
+
+LC 307, 315, 493 and 327 are all solvable with a Fenwick tree plus coordinate compression, and
+that is the shorter answer for each of them. They are worked in
+**[binary_indexed_tree.md](./binary_indexed_tree.md)** — LC 307 at
+[§1](./binary_indexed_tree.md#1-range-sum-query--mutable--lc-307), the three counting problems
+under [Counting Inversions with Coordinate Compression](./binary_indexed_tree.md#counting-inversions-with-coordinate-compression).
+
+The **segment-tree** solutions to LC 307 and LC 315 — which is what this sheet is for — are in
+[LC Examples](#lc-examples) below, alongside the problems a BIT cannot do at all
+(LC 699 max, LC 715 coverage, LC 729 interval booking).
+
+
+## Data Structure Comparison — Is a Segment Tree Even the Answer? ⭐⭐⭐⭐⭐
+
+
+> Reaching for a segment tree in an interview is **usually the wrong call**. Walk this table top-down and stop at the first row that fits.
+
+| Situation | Reach for | Why not a segment tree |
+|-----------|-----------|------------------------|
+| Static array, range sum only | **Prefix sum** | `O(N)` build, `O(1)` query, 2 lines |
+| Range add offline, read all at the end | **Difference array** | see [`difference_array.md`](difference_array.md) — no tree at all |
+| Point update + prefix/range **sum** | **BIT** | same `O(log N)`, ~8 lines, `O(N)` space |
+| Counting smaller / inversions | **BIT + coordinate compression** (or merge sort) | sums are all you need |
+| Interval booking / add / remove / overlap | **TreeMap / `SortedList`** (LC 715, 729, 731) | intervals are sparse; a tree over `1e9` coords needs dynamic nodes |
+| "Max so far" while sweeping | **Heap with lazy deletion** (LC 218) | you only ever read the max |
+| `N <= 2000` and `O(N^2)` passes | **Plain DP / brute force** (LC 673, 406, 1395) | write the simple one, mention the tree |
+| Range **max/min/gcd** + point update | **Segment tree** | — |
+| Range **update** + range query | **Lazy segment tree** | — |
+| Custom associative merge, e.g. `(len, count)`, Boyer–Moore pair | **Segment tree** | BIT cannot do non-invertible merges |
+| Covered length / area of union under a sweep | **Segment tree with `cnt`** (LC 850) | — |
+| Coordinates up to `1e9`, few operations | **Coordinate compression**, else a dynamic/sparse tree | a `4 * 1e9` array does not fit |
+
+**Say this out loud in the interview**: *"A BIT gives me prefix sums in 8 lines; I only need a segment tree if the merge isn't invertible (max/gcd/custom) or if I need lazy range updates."* That single sentence is worth more than a memorized 80-line template.
+
+**Reference lines** (segment-tree/BIT-tagged, but the tree is not the intended solution):
+- **LC 1622 Fancy Sequence** — a lazy segment tree with *affine tag composition* `(a, b) -> (a*x + b)` works, but the intended solution is `O(1)` per op: keep one global `(mul, add)` transform and store each appended value pre-divided by `mul` using the **modular inverse** (`pow(mul, MOD-2, MOD)`).
+- **LC 1395 Count Number of Teams** — BIT counts "smaller before / greater after" per index, but `n <= 1000`, so the `O(N^2)` "fix the middle soldier and multiply the two counts" solution is the expected answer.
+- **LC 1409 Queries on a Permutation With Key** — BIT over a `2m`-sized array simulates the move-to-front; with `m <= 10^3` a plain list `index` + `pop` + `insert(0, ...)` is accepted and far clearer.
+
+The three-way **BIT vs segment tree vs merge sort** table — constant factors, which
+operations each supports, and which LC problems fall where — is in
+[binary_indexed_tree.md](./binary_indexed_tree.md#decision-bit-vs-segment-tree-vs-merge-sort),
+which owns that decision.
 
 ## Templates & Algorithms
 
-### Template 1: Binary Indexed Tree (Fenwick Tree)
-```python
-class BIT:
-    """Binary Indexed Tree for range sum queries and point updates"""
+### Template 1: The Fenwick Tree — see the BIT sheet
 
-    def __init__(self, n):
-        self.n = n
-        self.tree = [0] * (n + 1)  # 1-indexed
-
-    def update(self, i, delta):
-        """Add delta to element at index i"""
-        while i <= self.n:
-            self.tree[i] += delta
-            i += i & (-i)  # Add lowest set bit
-
-    def query(self, i):
-        """Get prefix sum from 1 to i"""
-        total = 0
-        while i > 0:
-            total += self.tree[i]
-            i -= i & (-i)  # Remove lowest set bit
-        return total
-
-    def range_query(self, left, right):
-        """Get sum from left to right (inclusive)"""
-        if left > 1:
-            return self.query(right) - self.query(left - 1)
-        else:
-            return self.query(right)
-
-    def build(self, arr):
-        """Build BIT from array (1-indexed)"""
-        for i in range(1, len(arr)):
-            self.update(i, arr[i])
-```
+The BIT class, the `i & -i` lowbit mechanics it turns on, and the reason a Fenwick tree is
+~6 lines where the segment tree below is ~40, are in
+**[binary_indexed_tree.md](./binary_indexed_tree.md#the-bit-class--point-update--prefix--range-query)**.
+Templates 2 and 3 here are what you build when that structure is not enough.
 
 ### Template 2: Segment Tree (Range Sum)
 ```python
@@ -228,260 +248,23 @@ class LazySegmentTree:
         return self.query_range(1, 0, self.n - 1, left, right)
 ```
 
-### Template 4: 2D Binary Indexed Tree — LC 308
-```python
-class BIT2D:
-    """2D Binary Indexed Tree for 2D range sum queries"""
+### Template 4: The 2D Fenwick Tree — see the BIT sheet
 
-    def __init__(self, rows, cols):
-        self.rows = rows
-        self.cols = cols
-        self.tree = [[0] * (cols + 1) for _ in range(rows + 1)]
+LC 308 (Range Sum Query 2D — Mutable) is a nested BIT: the outer loop walks rows by lowbit,
+the inner walks columns, and the rectangle sum comes out by inclusion-exclusion on four
+prefix rectangles. Worked in full, with the derivation and a simpler row-based alternative, in
+**[binary_indexed_tree.md](./binary_indexed_tree.md#2-range-sum-query-2d--mutable--lc-308--a-2d-bit)**.
 
-    def update(self, row, col, delta):
-        """Add delta to element at (row, col)"""
-        orig_col = col
-        while row <= self.rows:
-            col = orig_col
-            while col <= self.cols:
-                self.tree[row][col] += delta
-                col += col & (-col)
-            row += row & (-row)
-
-    def query(self, row, col):
-        """Get sum from (1,1) to (row, col)"""
-        total = 0
-        orig_col = col
-        while row > 0:
-            col = orig_col
-            while col > 0:
-                total += self.tree[row][col]
-                col -= col & (-col)
-            row -= row & (-row)
-        return total
-
-    def range_query(self, row1, col1, row2, col2):
-        """Get sum in rectangle from (row1, col1) to (row2, col2)"""
-        return (self.query(row2, col2) -
-                self.query(row1 - 1, col2) -
-                self.query(row2, col1 - 1) +
-                self.query(row1 - 1, col1 - 1))
-```
-
-## LeetCode Problems & Solutions
-
-### **Range Sum Query Problems**
-| Problem | LC # | Data Structure | Difficulty | Key Technique |
-|---------|------|----------------|------------|---------------|
-| Range Sum Query - Immutable | 303 | Prefix Sum | Easy | Simple prefix array |
-| Range Sum Query - Mutable | 307 | BIT/Segment Tree | Medium | Point update, range query |
-| Range Sum Query 2D - Immutable | 304 | 2D Prefix Sum | Medium | 2D prefix array |
-| Range Sum Query 2D - Mutable | 308 | 2D BIT | Hard | 2D point update, range query |
-
-### **Order Statistics Problems**
-| Problem | LC # | Data Structure | Difficulty | Key Technique |
-|---------|------|----------------|------------|---------------|
-| Count of Smaller Numbers After Self | 315 | BIT + Compression | Hard | Coordinate compression |
-| Reverse Pairs | 493 | BIT/Merge Sort | Hard | Count inversions |
-| Count of Range Sum | 327 | BIT + Prefix Sum | Hard | Coordinate compression |
-
-### Range Sum Query - Mutable — LC 307
-```python
-class NumArray:
-    """Range Sum Query with updates using BIT"""
-
-    def __init__(self, nums):
-        self.nums = [0] + nums  # Make 1-indexed
-        self.bit = BIT(len(nums))
-
-        # Build BIT
-        for i in range(1, len(self.nums)):
-            self.bit.update(i, self.nums[i])
-
-    def update(self, index, val):
-        """Update element at index to val"""
-        index += 1  # Convert to 1-indexed
-        delta = val - self.nums[index]
-        self.nums[index] = val
-        self.bit.update(index, delta)
-
-    def sumRange(self, left, right):
-        """Sum elements from left to right"""
-        return self.bit.range_query(left + 1, right + 1)
-
-# Alternative using Segment Tree
-class NumArraySegTree:
-    def __init__(self, nums):
-        self.seg_tree = SegmentTree(nums)
-        self.nums = nums
-
-    def update(self, index, val):
-        self.nums[index] = val
-        self.seg_tree.point_update(index, val)
-
-    def sumRange(self, left, right):
-        return self.seg_tree.range_sum(left, right)
-```
-
-### Count of Smaller Numbers After Self — LC 315
-```python
-def countSmaller(nums):
-    """Count smaller numbers after self using BIT"""
-    if not nums:
-        return []
-
-    # Coordinate compression
-    sorted_nums = sorted(set(nums))
-    rank = {num: i + 1 for i, num in enumerate(sorted_nums)}
-
-    bit = BIT(len(sorted_nums))
-    result = []
-
-    # Process from right to left
-    for i in range(len(nums) - 1, -1, -1):
-        # Count numbers smaller than nums[i]
-        count = bit.query(rank[nums[i]] - 1) if rank[nums[i]] > 1 else 0
-        result.append(count)
-
-        # Add current number to BIT
-        bit.update(rank[nums[i]], 1)
-
-    return result[::-1]  # Reverse to get correct order
-
-# Alternative using merge sort
-def countSmallerMergeSort(nums):
-    """Using merge sort to count inversions"""
-    def mergeSort(arr):
-        if len(arr) <= 1:
-            return arr, [0] * len(arr)
-
-        mid = len(arr) // 2
-        left, left_counts = mergeSort(arr[:mid])
-        right, right_counts = mergeSort(arr[mid:])
-
-        merged = []
-        counts = [0] * len(arr)
-        i = j = 0
-
-        while i < len(left) and j < len(right):
-            if left[i][0] <= right[j][0]:
-                merged.append(left[i])
-                counts[left[i][1]] += j  # j elements from right are smaller
-                i += 1
-            else:
-                merged.append(right[j])
-                j += 1
-
-        while i < len(left):
-            merged.append(left[i])
-            counts[left[i][1]] += j
-            i += 1
-
-        while j < len(right):
-            merged.append(right[j])
-            j += 1
-
-        return merged, counts
-
-    # Create (value, original_index) pairs
-    indexed_nums = [(nums[i], i) for i in range(len(nums))]
-    _, counts = mergeSort(indexed_nums)
-    return counts
-```
-
-### Reverse Pairs — LC 493
-```python
-def reversePairs(nums):
-    """Count reverse pairs using BIT and coordinate compression"""
-    if not nums:
-        return 0
-
-    # Get all possible values (including doubled values)
-    values = set(nums)
-    for num in nums:
-        values.add(2 * num)
-
-    # Coordinate compression
-    sorted_values = sorted(values)
-    rank = {val: i + 1 for i, val in enumerate(sorted_values)}
-
-    bit = BIT(len(sorted_values))
-    count = 0
-
-    for num in reversed(nums):
-        # Count how many numbers > 2 * num are already seen
-        target_rank = rank[2 * num]
-        # Query from target_rank+1 to end
-        if target_rank < len(sorted_values):
-            count += bit.query(len(sorted_values)) - bit.query(target_rank)
-
-        # Add current number to BIT
-        bit.update(rank[num], 1)
-
-    return count
-
-# Alternative merge sort approach
-def reversePairsMergeSort(nums):
-    def mergeSort(arr, start, end):
-        if start >= end:
-            return 0
-
-        mid = (start + end) // 2
-        count = mergeSort(arr, start, mid) + mergeSort(arr, mid + 1, end)
-
-        # Count reverse pairs
-        j = mid + 1
-        for i in range(start, mid + 1):
-            while j <= end and arr[i] > 2 * arr[j]:
-                j += 1
-            count += j - (mid + 1)
-
-        # Merge sorted arrays
-        arr[start:end + 1] = sorted(arr[start:end + 1])
-        return count
-
-    return mergeSort(nums, 0, len(nums) - 1)
-```
-
-### Count of Range Sum — LC 327
-```python
-def countRangeSum(nums, lower, upper):
-    """Count range sums in [lower, upper] using BIT"""
-    if not nums:
-        return 0
-
-    # Compute prefix sums
-    prefix_sums = [0]
-    for num in nums:
-        prefix_sums.append(prefix_sums[-1] + num)
-
-    # Get all relevant values for coordinate compression
-    values = set(prefix_sums)
-    for ps in prefix_sums:
-        values.add(ps - lower)
-        values.add(ps - upper)
-
-    sorted_values = sorted(values)
-    rank = {val: i + 1 for i, val in enumerate(sorted_values)}
-
-    bit = BIT(len(sorted_values))
-    count = 0
-
-    for ps in prefix_sums:
-        # Count prefix sums in range [ps - upper, ps - lower]
-        left_rank = rank[ps - upper]
-        right_rank = rank[ps - lower]
-        count += bit.range_query(left_rank, right_rank)
-
-        # Add current prefix sum to BIT
-        bit.update(rank[ps], 1)
-
-    return count
-```
 
 ## Advanced Techniques
 
 ### Coordinate Compression
+
+> `BIT` below is the class from
+> [binary_indexed_tree.md](./binary_indexed_tree.md#the-bit-class--point-update--prefix--range-query).
+> Compression is shown here because a segment tree over `1e9` coordinates needs it just as badly —
+> the alternative is a dynamic (sparse) tree that allocates nodes on demand.
+
 ```python
 def coordinate_compress(arr):
     """Compress coordinates for BIT usage"""
@@ -595,25 +378,16 @@ def segment_tree_tips():
 
 ### When to Use Each Structure
 
-| Use Case | Best Choice | Why |
-|----------|-------------|-----|
-| **Range Sum + Point Updates** | BIT | Simple, space-efficient |
-| **Range Min/Max + Updates** | Segment Tree | Supports any associative operation |
-| **Range Updates** | Lazy Segment Tree | Efficient batch updates |
-| **2D Range Queries** | 2D BIT | Natural extension |
-| **Count Inversions** | BIT + Compression | Perfect for order statistics |
+The full table is [Data Structure Comparison](#data-structure-comparison--is-a-segment-tree-even-the-answer-) at
+the top of the sheet. In one line: **a segment tree earns its 40 lines only when the merge is not
+invertible (min / max / gcd / a custom pair) or when the update covers a range.** Everything else
+is a prefix sum, a difference array, a BIT, or an ordered map.
 
 ### Implementation Checklist
 - [ ] **BIT**: Remember 1-indexing, use coordinate compression for large values
 - [ ] **Segment Tree**: Allocate 4n space, handle query edge cases
 - [ ] **Lazy Propagation**: Implement push correctly, update children lazily
 - [ ] **2D Structures**: Consider memory usage, test with small examples first
-
-### LeetCode Problem Categories
-- **Range Sum**: LC 303, 307, 308 (BIT/Segment Tree)
-- **Order Statistics**: LC 315, 327, 493 (BIT + Compression)
-- **Dynamic Programming**: Range DP with RMQ optimization
-- **Geometry**: 2D range queries, rectangle problems
 
 ## LC Examples
 
@@ -1290,28 +1064,3 @@ def reconstructQueue(people):
 
 **Variation — LC 1505 Minimum Possible Integer After at Most K Adjacent Swaps On Digits**: greedily take the smallest digit reachable within the remaining budget; a BIT/segment tree over positions counts how many already-removed digits lie before it, converting an *original* index into the *current* index. Same "count of still-present slots" structure, using a prefix **query** instead of a descent.
 
-### 2-15) Decision Note — Segment Tree vs BIT vs Prefix Sum vs Ordered Map ⭐⭐⭐⭐⭐
-
-> Reaching for a segment tree in an interview is **usually the wrong call**. Walk this table top-down and stop at the first row that fits.
-
-| Situation | Reach for | Why not a segment tree |
-|-----------|-----------|------------------------|
-| Static array, range sum only | **Prefix sum** | `O(N)` build, `O(1)` query, 2 lines |
-| Range add offline, read all at the end | **Difference array** | see [`difference_array.md`](difference_array.md) — no tree at all |
-| Point update + prefix/range **sum** | **BIT** | same `O(log N)`, ~8 lines, `O(N)` space |
-| Counting smaller / inversions | **BIT + coordinate compression** (or merge sort) | sums are all you need |
-| Interval booking / add / remove / overlap | **TreeMap / `SortedList`** (LC 715, 729, 731) | intervals are sparse; a tree over `1e9` coords needs dynamic nodes |
-| "Max so far" while sweeping | **Heap with lazy deletion** (LC 218) | you only ever read the max |
-| `N <= 2000` and `O(N^2)` passes | **Plain DP / brute force** (LC 673, 406, 1395) | write the simple one, mention the tree |
-| Range **max/min/gcd** + point update | **Segment tree** | — |
-| Range **update** + range query | **Lazy segment tree** | — |
-| Custom associative merge, e.g. `(len, count)`, Boyer–Moore pair | **Segment tree** | BIT cannot do non-invertible merges |
-| Covered length / area of union under a sweep | **Segment tree with `cnt`** (LC 850) | — |
-| Coordinates up to `1e9`, few operations | **Coordinate compression**, else a dynamic/sparse tree | a `4 * 1e9` array does not fit |
-
-**Say this out loud in the interview**: *"A BIT gives me prefix sums in 8 lines; I only need a segment tree if the merge isn't invertible (max/gcd/custom) or if I need lazy range updates."* That single sentence is worth more than a memorized 80-line template.
-
-**Reference lines** (segment-tree/BIT-tagged, but the tree is not the intended solution):
-- **LC 1622 Fancy Sequence** — a lazy segment tree with *affine tag composition* `(a, b) -> (a*x + b)` works, but the intended solution is `O(1)` per op: keep one global `(mul, add)` transform and store each appended value pre-divided by `mul` using the **modular inverse** (`pow(mul, MOD-2, MOD)`).
-- **LC 1395 Count Number of Teams** — BIT counts "smaller before / greater after" per index, but `n <= 1000`, so the `O(N^2)` "fix the middle soldier and multiply the two counts" solution is the expected answer.
-- **LC 1409 Queries on a Permutation With Key** — BIT over a `2m`-sized array simulates the move-to-front; with `m <= 10^3` a plain list `index` + `pop` + `insert(0, ...)` is accepted and far clearer.

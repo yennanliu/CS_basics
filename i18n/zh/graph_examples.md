@@ -62,10 +62,6 @@
 ### 2-6) Bus Routes — LC 815
 <!--CODE-->
 
-<!-- a42d0530290d -->
-### 2-7) Course Schedule — LC 207
-<!--CODE-->
-
 <!-- 96a7ad576f59 -->
 ### 2-8) Find Eventual Safe States — LC 802
 <!--CODE-->
@@ -154,3 +150,7 @@
   列／行編號）裡發現節點，邊讀邊建。
 - **依屬性做併查集（LC 947、1319）** — 把共用屬性變成節點，就免掉了 O(n²) 的
   兩兩建邊。
+
+<!-- stale: a42d0530290d -->
+### 2-7) Course Schedule — LC 207
+<!--CODE-->

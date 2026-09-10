@@ -224,7 +224,7 @@
     "scanning_line_examples":           { "category": "Greedy & Intervals", "tier": 3, "title": "Sweep Line — Worked Examples" },
     "array_overlap_explaination":       { "category": "Greedy & Intervals", "tier": 2, "title": "Interval Overlap Predicate" },
 
-    "segment_tree":                     { "category": "Range Queries & Advanced Structures", "tier": 3, "title": "Segment Tree" },
+    "segment_tree":                     { "category": "Range Queries & Advanced Structures", "tier": 3 },
     "binary_indexed_tree":              { "category": "Range Queries & Advanced Structures", "tier": 3, "title": "Binary Indexed Tree (Fenwick)" },
     "streaming_algorithms":             { "category": "Range Queries & Advanced Structures", "tier": 2 },
     "memory_constrained_algorithms":    { "category": "Range Queries & Advanced Structures", "tier": 2, "title": "Algorithms Under a Memory Cap" },

@@ -32,14 +32,6 @@
 
 <!--CODE-->
 
-<!-- 3ad00004a1e0 -->
-### 2) Course Schedule — LC 207 ⭐⭐⭐⭐⭐
-
-
-<!--CODE-->
-
-<!--CODE-->
-
 <!-- fe210e75ae52 -->
 ### 3) Alien Dictionary — LC 269 ⭐⭐⭐⭐
 
@@ -140,6 +132,14 @@
 
 <!-- d7731e1e1c48 -->
 ### 8) Number of Provinces — LC 547
+
+
+<!--CODE-->
+
+<!--CODE-->
+
+<!-- stale: 3ad00004a1e0 -->
+### 2) Course Schedule — LC 207 ⭐⭐⭐⭐⭐
 
 
 <!--CODE-->

@@ -1,9 +1,3 @@
-<!-- ea2192a3cf6b -->
-# Stack — 實戰題解
-
-> **範圍** — [stack.md](./stack.md) 背後的題解庫：單調堆疊、貪婪移除、相鄰重複、括號家族、走訪與設計類題目，每題每語言各一份標準解，依各自演練的模板分組。
-> **另見**：[stack.md](./stack.md) — 母頁：本庫所支撐的標準模板、決策表與陷阱；[stack_expression_parsing.md](./stack_expression_parsing.md) — 計算機、decode string 與後綴運算求值，那是自成一家的題型；[monotonic_stack.md](./monotonic_stack.md) — next greater／previous smaller 的理論，底下不少題目其實歸它管；[iterator.md](./iterator.md) — LC 173／LC 341 之外的迭代器設計；[queue.md](./queue.md) — FIFO 那一側，包括從另一個角度看 LC 232。
-
 <!-- 34c8da6a34d8 -->
 ## LeetCode 題目清單
 
@@ -22,11 +16,6 @@
 - **核心想法**：每一節都是母頁某一份模板的演練 —— 要背的是模板，這些是練習量
 - **什麼時候用**：當你已經知道一道題該用哪份模板，想看它完整寫出來長什麼樣
 
-<!-- 6220b8183e35 -->
-### 關於重複收錄
-
-其中十二題在 [monotonic_stack.md](./monotonic_stack.md) 裡也有題解（LC 32、84、155、388、402、496、503、735、739、901、907、2104），LC 173／LC 341 則是 [iterator.md](./iterator.md) 的主題。這些重複目前是刻意保留的 —— 要整併它們是跨檔案的工程，不是單一份 cheatsheet 能處理的。
-
 <!-- 598a9bfd2a3c -->
 ## LC 範例
 
@@ -44,26 +33,10 @@
 
 <!--CODE-->
 
-<!-- 5137737465fb -->
-#### 2) Next Greater Element II — LC 503
-
-> **環狀**陣列：跑 `nums * 2`（或索引取 mod `n`），讓元素可以繞回頭去找答案。這裡給了兩個方向 ——
-> 由左往右、在 pop 的當下就決定答案；以及由右往左、直接從剩下的堆疊頂端讀答案。
-
-<!--CODE-->
-
 <!-- 0d9dddf30d32 -->
 #### 3) Daily Temperatures — LC 739 ⭐⭐⭐⭐
 
 <!--CODE-->
-
-<!--CODE-->
-
-<!-- 1c17ceb1853e -->
-#### 4) Sum of Subarray Minimums — LC 907
-
-> **貢獻度計數**：對每個元素問「它*主宰*了幾個子陣列？」兩趟單調掃描分別給出往左、往右可以延伸的數量；
-> 答案就是 `sum(a * left * right)`。
 
 <!--CODE-->
 
@@ -72,14 +45,6 @@
 
 > 把 LC 907 做兩次：`sum(max) - sum(min)`，兩半都用同一套貢獻度計數，並在頭尾放哨兵，
 > 逼每個元素都會被彈出堆疊。
-
-<!--CODE-->
-
-<!-- 66dfc06dfb73 -->
-#### 6) Largest Rectangle in Histogram — LC 84 ⭐⭐⭐⭐
-
-> 被彈出的那根柱子是矩形的**高**；新索引與新的堆疊頂端之間的距離是它的**寬**。
-> 底部那個 `-1` 哨兵讓寬度的算式可以統一寫。
 
 <!--CODE-->
 
@@ -115,14 +80,6 @@
 > *「這個字元後面還會再出現嗎？」*。底下的走查會說明，為什麼這個檢查正是讓貪婪彈出安全的關鍵。
 
 **「後面還會出現」邏輯的說明：**
-
-<!--CODE-->
-
-<!-- 609f6c475166 -->
-#### 10) Asteroid Collision — LC 735
-
-> 一個裝倖存者的堆疊：往左飛的小行星（`new < 0`）只會跟往右飛的堆疊頂端（`ans[-1] > 0`）對撞。
-> 注意那個 `for ... else` —— `else` 只有在 `while` 沒被 break 時才會執行，也就是新來的那顆活下來了。
 
 <!--CODE-->
 
@@ -288,3 +245,46 @@
 | 1111 | Maximum Nesting Depth of Two Valid Parentheses Strings | 用深度計數器就好，不用真的堆疊：偶數深度給 A，奇數深度給 B |
 
 > **注意**：LC 42 (Trapping Rain Water)、LC 84 / 85 (Maximal Rectangle)、LC 456 (132 Pattern)、LC 853 (Car Fleet)、LC 581、LC 654、LC 769、LC 962 都是**單調堆疊**題 —— 那些模板見 [monotonic_stack.md](./monotonic_stack.md)。
+
+<!-- stale: ea2192a3cf6b -->
+# Stack — 實戰題解
+
+> **範圍** — [stack.md](./stack.md) 背後的題解庫：單調堆疊、貪婪移除、相鄰重複、括號家族、走訪與設計類題目，每題每語言各一份標準解，依各自演練的模板分組。
+> **另見**：[stack.md](./stack.md) — 母頁：本庫所支撐的標準模板、決策表與陷阱；[stack_expression_parsing.md](./stack_expression_parsing.md) — 計算機、decode string 與後綴運算求值，那是自成一家的題型；[monotonic_stack.md](./monotonic_stack.md) — next greater／previous smaller 的理論，底下不少題目其實歸它管；[iterator.md](./iterator.md) — LC 173／LC 341 之外的迭代器設計；[queue.md](./queue.md) — FIFO 那一側，包括從另一個角度看 LC 232。
+
+<!-- stale: 6220b8183e35 -->
+### 關於重複收錄
+
+其中十二題在 [monotonic_stack.md](./monotonic_stack.md) 裡也有題解（LC 32、84、155、388、402、496、503、735、739、901、907、2104），LC 173／LC 341 則是 [iterator.md](./iterator.md) 的主題。這些重複目前是刻意保留的 —— 要整併它們是跨檔案的工程，不是單一份 cheatsheet 能處理的。
+
+<!-- stale: 5137737465fb -->
+#### 2) Next Greater Element II — LC 503
+
+> **環狀**陣列：跑 `nums * 2`（或索引取 mod `n`），讓元素可以繞回頭去找答案。這裡給了兩個方向 ——
+> 由左往右、在 pop 的當下就決定答案；以及由右往左、直接從剩下的堆疊頂端讀答案。
+
+<!--CODE-->
+
+<!-- stale: 1c17ceb1853e -->
+#### 4) Sum of Subarray Minimums — LC 907
+
+> **貢獻度計數**：對每個元素問「它*主宰*了幾個子陣列？」兩趟單調掃描分別給出往左、往右可以延伸的數量；
+> 答案就是 `sum(a * left * right)`。
+
+<!--CODE-->
+
+<!-- stale: 66dfc06dfb73 -->
+#### 6) Largest Rectangle in Histogram — LC 84 ⭐⭐⭐⭐
+
+> 被彈出的那根柱子是矩形的**高**；新索引與新的堆疊頂端之間的距離是它的**寬**。
+> 底部那個 `-1` 哨兵讓寬度的算式可以統一寫。
+
+<!--CODE-->
+
+<!-- stale: 609f6c475166 -->
+#### 10) Asteroid Collision — LC 735
+
+> 一個裝倖存者的堆疊：往左飛的小行星（`new < 0`）只會跟往右飛的堆疊頂端（`ans[-1] > 0`）對撞。
+> 注意那個 `for ... else` —— `else` 只有在 `while` 沒被 break 時才會執行，也就是新來的那顆活下來了。
+
+<!--CODE-->

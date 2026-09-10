@@ -1,9 +1,3 @@
-<!-- 09eab7c2f4d0 -->
-# Segment Tree & Binary Indexed Tree (Fenwick Tree)
-
-> **範圍** — 支援區間查詢＋區間更新的結構 —— 線段樹（segment tree）、懶惰標記（lazy propagation），以及 BIT vs 線段樹 vs 合併排序該怎麼選。
-> **另見**：[binary_indexed_tree.md](./binary_indexed_tree.md) — 樹狀陣列（Fenwick tree）的深入版；[prefix_sum.md](./prefix_sum.md) — 完全不需要更新時用它；[difference_array.md](./difference_array.md) — 區間更新、最後只讀一次。
-
 <!-- b8ea18d3e808 -->
 ## LeetCode 題目清單
 
@@ -56,26 +50,16 @@
 - **例子**：LC 315（Count Smaller）、LC 493（Reverse Pairs）、LC 327（Count Range Sum）
 - **模式**：BIT + 座標壓縮，或用合併排序
 
-<!-- 5861e705e329 -->
-## 資料結構比較
-
-<!-- 980205790b2e -->
-### **BIT vs 線段樹**
-| 面向 | 樹狀陣列（BIT） | 線段樹 |
-|--------|-------------------|--------------|
-| **空間** | O(n) | O(4n) |
-| **實作** | 簡單、程式碼短 | 比較複雜 |
-| **可做的運算** | 總和、XOR、OR | 任何滿足結合律的運算 |
-| **區間更新** | 麻煩 | 加上懶惰標記就很簡單 |
-| **1-indexed** | 天生適合 | 也可以配合 |
-| **查詢型態** | 前綴查詢很容易 | 任意區間查詢 |
+<!-- 6a6729c39be5 -->
+### **順序統計量題**
+| 題目 | LC # | 資料結構 | 難度 | 關鍵技巧 |
+|---------|------|----------------|------------|---------------|
+| Count of Smaller Numbers After Self | 315 | BIT + 壓縮 | Hard | 座標壓縮 |
+| Reverse Pairs | 493 | BIT／合併排序 | Hard | 數逆序對 |
+| Count of Range Sum | 327 | BIT + 前綴和 | Hard | 座標壓縮 |
 
 <!-- ddc7f484e4af -->
 ## 模板與演算法
-
-<!-- 7a65399a19f8 -->
-### 模板 1：樹狀陣列（Fenwick Tree）
-<!--CODE-->
 
 <!-- d00680651908 -->
 ### 模板 2：線段樹（區間和）
@@ -85,52 +69,8 @@
 ### 模板 3：帶懶惰標記的線段樹
 <!--CODE-->
 
-<!-- ba0e40c0ff7d -->
-### 模板 4：二維樹狀陣列 — LC 308
-<!--CODE-->
-
-<!-- 4dfa1b14baba -->
-## LeetCode 題目與解法
-
-<!-- 43531fd2d6df -->
-### **區間和查詢題**
-| 題目 | LC # | 資料結構 | 難度 | 關鍵技巧 |
-|---------|------|----------------|------------|---------------|
-| Range Sum Query - Immutable | 303 | 前綴和 | Easy | 單純的前綴陣列 |
-| Range Sum Query - Mutable | 307 | BIT／線段樹 | Medium | 單點更新、區間查詢 |
-| Range Sum Query 2D - Immutable | 304 | 二維前綴和 | Medium | 二維前綴陣列 |
-| Range Sum Query 2D - Mutable | 308 | 二維 BIT | Hard | 二維單點更新、區間查詢 |
-
-<!-- 6a6729c39be5 -->
-### **順序統計量題**
-| 題目 | LC # | 資料結構 | 難度 | 關鍵技巧 |
-|---------|------|----------------|------------|---------------|
-| Count of Smaller Numbers After Self | 315 | BIT + 壓縮 | Hard | 座標壓縮 |
-| Reverse Pairs | 493 | BIT／合併排序 | Hard | 數逆序對 |
-| Count of Range Sum | 327 | BIT + 前綴和 | Hard | 座標壓縮 |
-
-<!-- e5517f8ce9b5 -->
-### Range Sum Query - Mutable — LC 307
-<!--CODE-->
-
-<!-- add5765f84bc -->
-### Count of Smaller Numbers After Self — LC 315
-<!--CODE-->
-
-<!-- 1aab999ee418 -->
-### Reverse Pairs — LC 493
-<!--CODE-->
-
-<!-- 677019c894a7 -->
-### Count of Range Sum — LC 327
-<!--CODE-->
-
 <!-- 5ecab1c9ff42 -->
 ## 進階技巧
-
-<!-- ca9841a130b4 -->
-### 座標壓縮
-<!--CODE-->
 
 <!-- 43cbe0951f68 -->
 ### 區間最大值查詢（RMQ）線段樹
@@ -165,30 +105,12 @@
 <!-- ea4fa3974f42 -->
 ## 總結與速查
 
-<!-- e2b08f6273d4 -->
-### 各結構的使用時機
-
-| 使用情境 | 最佳選擇 | 原因 |
-|----------|-------------|-----|
-| **區間和 + 單點更新** | BIT | 簡單、省空間 |
-| **區間 min/max + 更新** | 線段樹 | 任何滿足結合律的運算都撐得住 |
-| **區間更新** | 懶惰線段樹 | 批次更新很有效率 |
-| **二維區間查詢** | 二維 BIT | 自然的延伸 |
-| **數逆序對** | BIT + 壓縮 | 順序統計量的絕配 |
-
 <!-- 5445f956e357 -->
 ### 實作檢查清單
 - [ ] **BIT**：記得是 1-indexed，數值很大時要先做座標壓縮
 - [ ] **線段樹**：配置 4n 空間，處理好查詢的邊界情況
 - [ ] **懶惰標記**：push 要寫對，子節點要延後更新
 - [ ] **二維結構**：注意記憶體用量，先拿小例子測過
-
-<!-- 338f2adecc8a -->
-### LeetCode 題型分類
-- **區間和**：LC 303, 307, 308（BIT／線段樹）
-- **順序統計量**：LC 315, 327, 493（BIT + 壓縮）
-- **動態規劃**：搭配 RMQ 最佳化的區間 DP
-- **幾何**：二維區間查詢、矩形類題目
 
 <!-- 598a9bfd2a3c -->
 ## LC 範例
@@ -325,7 +247,85 @@
 
 **變形 —— LC 1505 Minimum Possible Integer After at Most K Adjacent Swaps On Digits**：貪婪地取出剩餘預算內能搆到的最小數字；用 BIT／線段樹在位置上數出它前面已經被移走幾個數字，把*原始*索引換算成*目前*索引。同樣是「還在場的空位數量」這個結構，只是用前綴**查詢**而不是下降。
 
-<!-- f3208d1240a4 -->
+<!-- stale: 09eab7c2f4d0 -->
+# Segment Tree & Binary Indexed Tree (Fenwick Tree)
+
+> **範圍** — 支援區間查詢＋區間更新的結構 —— 線段樹（segment tree）、懶惰標記（lazy propagation），以及 BIT vs 線段樹 vs 合併排序該怎麼選。
+> **另見**：[binary_indexed_tree.md](./binary_indexed_tree.md) — 樹狀陣列（Fenwick tree）的深入版；[prefix_sum.md](./prefix_sum.md) — 完全不需要更新時用它；[difference_array.md](./difference_array.md) — 區間更新、最後只讀一次。
+
+<!-- stale: 5861e705e329 -->
+## 資料結構比較
+
+<!-- stale: 980205790b2e -->
+### **BIT vs 線段樹**
+| 面向 | 樹狀陣列（BIT） | 線段樹 |
+|--------|-------------------|--------------|
+| **空間** | O(n) | O(4n) |
+| **實作** | 簡單、程式碼短 | 比較複雜 |
+| **可做的運算** | 總和、XOR、OR | 任何滿足結合律的運算 |
+| **區間更新** | 麻煩 | 加上懶惰標記就很簡單 |
+| **1-indexed** | 天生適合 | 也可以配合 |
+| **查詢型態** | 前綴查詢很容易 | 任意區間查詢 |
+
+<!-- stale: 7a65399a19f8 -->
+### 模板 1：樹狀陣列（Fenwick Tree）
+<!--CODE-->
+
+<!-- stale: ba0e40c0ff7d -->
+### 模板 4：二維樹狀陣列 — LC 308
+<!--CODE-->
+
+<!-- stale: 4dfa1b14baba -->
+## LeetCode 題目與解法
+
+<!-- stale: 43531fd2d6df -->
+### **區間和查詢題**
+| 題目 | LC # | 資料結構 | 難度 | 關鍵技巧 |
+|---------|------|----------------|------------|---------------|
+| Range Sum Query - Immutable | 303 | 前綴和 | Easy | 單純的前綴陣列 |
+| Range Sum Query - Mutable | 307 | BIT／線段樹 | Medium | 單點更新、區間查詢 |
+| Range Sum Query 2D - Immutable | 304 | 二維前綴和 | Medium | 二維前綴陣列 |
+| Range Sum Query 2D - Mutable | 308 | 二維 BIT | Hard | 二維單點更新、區間查詢 |
+
+<!-- stale: e5517f8ce9b5 -->
+### Range Sum Query - Mutable — LC 307
+<!--CODE-->
+
+<!-- stale: add5765f84bc -->
+### Count of Smaller Numbers After Self — LC 315
+<!--CODE-->
+
+<!-- stale: 1aab999ee418 -->
+### Reverse Pairs — LC 493
+<!--CODE-->
+
+<!-- stale: 677019c894a7 -->
+### Count of Range Sum — LC 327
+<!--CODE-->
+
+<!-- stale: ca9841a130b4 -->
+### 座標壓縮
+<!--CODE-->
+
+<!-- stale: e2b08f6273d4 -->
+### 各結構的使用時機
+
+| 使用情境 | 最佳選擇 | 原因 |
+|----------|-------------|-----|
+| **區間和 + 單點更新** | BIT | 簡單、省空間 |
+| **區間 min/max + 更新** | 線段樹 | 任何滿足結合律的運算都撐得住 |
+| **區間更新** | 懶惰線段樹 | 批次更新很有效率 |
+| **二維區間查詢** | 二維 BIT | 自然的延伸 |
+| **數逆序對** | BIT + 壓縮 | 順序統計量的絕配 |
+
+<!-- stale: 338f2adecc8a -->
+### LeetCode 題型分類
+- **區間和**：LC 303, 307, 308（BIT／線段樹）
+- **順序統計量**：LC 315, 327, 493（BIT + 壓縮）
+- **動態規劃**：搭配 RMQ 最佳化的區間 DP
+- **幾何**：二維區間查詢、矩形類題目
+
+<!-- stale: f3208d1240a4 -->
 ### 2-15) 決策筆記 — 線段樹 vs BIT vs 前綴和 vs 有序表 ⭐⭐⭐⭐⭐
 
 > 在面試裡動用線段樹**通常是錯誤的選擇**。從上往下看這張表，停在第一個符合的列。

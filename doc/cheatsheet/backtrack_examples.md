@@ -1261,117 +1261,12 @@ class Solution:
 ### 12) Course Schedule — LC 207
 
 > The backtracking angle: `visiting.remove(crs)` **is** the un-choose step — the set holds the
-> current DFS path, so a repeat inside it means a cycle. See
-> [topology_sorting.md](./topology_sorting.md) for the Kahn / in-degree treatment.
+> current DFS path, so a repeat inside it means a cycle, and forgetting the removal turns the
+> path set into a global seen-set that reports a cycle for any re-visited node.
 
-```java
-// java
-// LC 207
-// IDEA : DFS (fix by gpt)
-// NOTE !!! instead of maintain status (0,1,2), below video offers a simpler approach
-//      -> e.g. use a set, recording the current visiting course, if ANY duplicated (already in set) course being met,
-//      -> means "cyclic", so return false directly
-// https://www.youtube.com/watch?v=EgI5nU9etnU
-public boolean canFinish(int numCourses, int[][] prerequisites) {
-    // Initialize adjacency list for storing prerequisites
-    /**
-     *  NOTE !!!
-     *
-     *  init prerequisites map
-     *  {course : [prerequisites_array]}
-     *  below init map with null array as first step
-     */
-    Map<Integer, List<Integer>> preMap = new HashMap<>();
-    for (int i = 0; i < numCourses; i++) {
-        preMap.put(i, new ArrayList<>());
-    }
-
-    // Populate the adjacency list with prerequisites
-    /**
-     *  NOTE !!!
-     *
-     *  update prerequisites map
-     *  {course : [prerequisites_array]}
-     *  so we go through prerequisites,
-     *  then append each course's prerequisites to preMap
-     */
-    for (int[] pair : prerequisites) {
-        int crs = pair[0];
-        int pre = pair[1];
-        preMap.get(crs).add(pre);
-    }
-
-    /** NOTE !!!
-     *
-     *  init below set for checking if there is "cyclic" case
-     */
-    // Set for tracking courses during the current DFS path
-    Set<Integer> visiting = new HashSet<>();
-
-    // Recursive DFS function
-    for (int c = 0; c < numCourses; c++) {
-        if (!dfs(c, preMap, visiting)) {
-            return false;
-        }
-    }
-    return true;
-}
-
-private boolean dfs(int crs, Map<Integer, List<Integer>> preMap, Set<Integer> visiting) {
-    /** NOTE !!!
-     *
-     *  if visiting contains current course,
-     *  means there is a "cyclic",
-     *  (e.g. : needs to take course a, then can take course b, and needs to take course b, then can take course a)
-     *  so return false directly
-     */
-    if (visiting.contains(crs)) {
-        return false;
-    }
-    /**
-     *  NOTE !!!
-     *
-     *  if such course has NO preRequisite,
-     *  return true directly
-     */
-    if (preMap.get(crs).isEmpty()) {
-        return true;
-    }
-
-    /**
-     *  NOTE !!!
-     *
-     *  add current course to set (Set<Integer> visiting)
-     */
-    visiting.add(crs);
-    for (int pre : preMap.get(crs)) {
-        if (!dfs(pre, preMap, visiting)) {
-            return false;
-        }
-    }
-    /**
-     *  NOTE !!!
-     *
-     *  remove current course from set,
-     *  since already finish visiting
-     *
-     *  e.g. undo changes
-     */
-    visiting.remove(crs);
-    preMap.get(crs).clear(); // Clear prerequisites as the course is confirmed to be processed
-    return true;
-}
-```
-
-## Summary & Quick Reference
-
-| If the example above felt unfamiliar | Go back to |
-|---|---|
-| why `path.pop()` / when it is not needed | [Template 14](./backtrack.md#template-14-when-to-undo--mutable-vs-immutable-state-) |
-| `i` vs `i + 1` in the recursive call | [Template 2](./backtrack.md#template-2-start_idx--i-vs-i--1-) |
-| skipping duplicate values | [Duplicate skipping](./backtrack.md#duplicate-skipping--the-same-level-skip-rule-) |
-| `break` vs `continue` when pruning | [Sort, dedup, prune — when](./backtrack.md#sort-dedup-prune--when) |
-| picking the right shape from the problem statement | [Decision Table](./backtrack.md#decision-table--which-backtrack-shape-) |
+The solution itself is in
+[topology_sorting_examples.md](./topology_sorting_examples.md#2-course-schedule--lc-207-),
+with the Kahn / in-degree treatment beside it.
 
 ### Related Topics
 

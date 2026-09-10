@@ -1,7 +1,7 @@
 # Stack — Worked Examples
 
 > **Scope** — The worked-solution archive behind [stack.md](./stack.md): one canonical solution per problem per language for the monotonic, greedy-removal, adjacent-duplicate, bracket-family, traversal and design problems, grouped by the template each one exercises.
-> **See also**: [stack.md](./stack.md) — the parent sheet: the canonical templates, the decision table and the traps this archive backs; [stack_expression_parsing.md](./stack_expression_parsing.md) — the calculators, decode string and postfix evaluation, which are their own family; [monotonic_stack.md](./monotonic_stack.md) — the next-greater / previous-smaller theory, which owns many of the problems below; [iterator.md](./iterator.md) — iterator design beyond LC 173 / LC 341; [queue.md](./queue.md) — the FIFO counterpart, including LC 232 from the other side.
+> **See also**: [stack.md](./stack.md) — the parent sheet: the canonical templates, the decision table and the traps this archive backs; [stack_expression_parsing.md](./stack_expression_parsing.md) — the calculators, decode string and postfix evaluation, which are their own family; [monotonic_stack.md](./monotonic_stack.md) — the next-greater / previous-smaller templates and the contribution method these solutions apply, which this file is the archive for; [iterator.md](./iterator.md) — iterator design beyond LC 173 / LC 341; [queue.md](./queue.md) — the FIFO counterpart, including LC 232 from the other side.
 
 ## LeetCode Problem Lists
 
@@ -23,10 +23,14 @@ consecutive run.
 
 ### A Note on Overlap
 
-Twelve of these problems are also worked in [monotonic_stack.md](./monotonic_stack.md)
-(LC 32, 84, 155, 388, 402, 496, 503, 735, 739, 901, 907, 2104) and LC 173 / LC 341 are
-[iterator.md](./iterator.md)'s subject. Those copies are deliberate for now — reconciling them
-is a cross-file job, not a per-sheet one.
+[monotonic_stack.md](./monotonic_stack.md) used to re-solve twelve of these problems
+(LC 32, 84, 155, 388, 402, 496, 503, 735, 739, 901, 907, 2104). That sheet now keeps the
+templates and the theory — including the contribution method behind LC 907 and LC 2104, which
+this file's solutions apply — and points here for the code. **If you are adding a worked
+monotonic-stack solution, it belongs in this file.**
+
+LC 173 / LC 341 are also [iterator.md](./iterator.md)'s subject: this file shows the explicit
+stack, that sheet the iterator design around it.
 
 ## LC Examples
 
@@ -255,6 +259,28 @@ class Solution:
         return res
 ```
 
+The Java forward pass, for comparison — `i` runs to `2n` and only the first `n` indices are pushed, so nothing is answered twice.
+
+```java
+// java
+// LC 503 - Next Greater Element II (circular array)
+// IDEA: Monotonic stack — traverse 2n indices with modulo for circular effect
+// time = O(N), space = O(N)
+public int[] nextGreaterElements(int[] nums) {
+    int n = nums.length;
+    int[] ans = new int[n];
+    Arrays.fill(ans, -1);
+    Deque<Integer> stack = new ArrayDeque<>();
+    for (int i = 0; i < 2 * n; i++) {
+        while (!stack.isEmpty() && nums[i % n] > nums[stack.peek()]) {
+            ans[stack.pop()] = nums[i % n];
+        }
+        if (i < n) stack.push(i);
+    }
+    return ans;
+}
+```
+
 #### 3) Daily Temperatures — LC 739 ⭐⭐⭐⭐
 
 ```python
@@ -388,6 +414,37 @@ class Solution:
         return sum(a * l * r for a, l, r in zip(A, left, right)) % mod
 ```
 
+The same two passes in Java. Note the asymmetry that keeps duplicates from being double-counted: `>=` on the left pass, `>` on the right.
+
+```java
+// java
+// LC 907 - Sum of Subarray Minimums
+// IDEA: Monotonic stack — for each element find left & right span as minimum
+// time = O(N), space = O(N)
+public int sumSubarrayMins(int[] arr) {
+    int n = arr.length;
+    int MOD = 1_000_000_007;
+    int[] left = new int[n], right = new int[n];
+    Deque<Integer> stack = new ArrayDeque<>();
+    // left[i] = distance to previous smaller element
+    for (int i = 0; i < n; i++) {
+        while (!stack.isEmpty() && arr[stack.peek()] >= arr[i]) stack.pop();
+        left[i] = stack.isEmpty() ? i + 1 : i - stack.peek();
+        stack.push(i);
+    }
+    stack.clear();
+    // right[i] = distance to next smaller or equal element
+    for (int i = n-1; i >= 0; i--) {
+        while (!stack.isEmpty() && arr[stack.peek()] > arr[i]) stack.pop();
+        right[i] = stack.isEmpty() ? n - i : stack.peek() - i;
+        stack.push(i);
+    }
+    long ans = 0;
+    for (int i = 0; i < n; i++) ans = (ans + (long) arr[i] * left[i] * right[i]) % MOD;
+    return (int) ans;
+}
+```
+
 #### 5) Sum of Subarray Ranges — LC 2104
 
 > LC 907 twice: `sum(max) - sum(min)`, each half by the same contribution count, with
@@ -443,6 +500,29 @@ class Solution:
             current_width = len(heights) - stack[-1] - 1
             max_area = max(max_area, current_height * current_width)
         return max_area
+```
+
+The Java version uses `i == heights.length` as the sentinel instead of a `-1` at the bottom — one trailing zero-height bar flushes the stack.
+
+```java
+// java
+// LC 84 - Largest Rectangle in Histogram
+// IDEA: Monotonic increasing stack — pop and compute area on shorter bar
+// time = O(N), space = O(N)
+public int largestRectangleArea(int[] heights) {
+    Deque<Integer> stack = new ArrayDeque<>();
+    int maxArea = 0;
+    for (int i = 0; i <= heights.length; i++) {
+        int h = (i == heights.length) ? 0 : heights[i];
+        while (!stack.isEmpty() && h < heights[stack.peek()]) {
+            int height = heights[stack.pop()];
+            int width = stack.isEmpty() ? i : i - stack.peek() - 1;
+            maxArea = Math.max(maxArea, height * width);
+        }
+        stack.push(i);
+    }
+    return maxArea;
+}
 ```
 
 #### 7) Online Stock Span — LC 901
@@ -948,6 +1028,30 @@ class Solution(object):
             else:
                 ans.append(new)
         return ans
+```
+
+The Java version carries an explicit `alive` flag because there is no `for ... else`.
+
+```java
+// java
+// LC 735 - Asteroid Collision
+// IDEA: Stack — simulate collisions between right (+) and left (-) asteroids
+// time = O(N), space = O(N)
+public int[] asteroidCollision(int[] asteroids) {
+    Deque<Integer> stack = new ArrayDeque<>();
+    for (int a : asteroids) {
+        boolean alive = true;
+        while (alive && a < 0 && !stack.isEmpty() && stack.peek() > 0) {
+            if (stack.peek() < -a) { stack.pop(); }      // stack top destroyed
+            else if (stack.peek() == -a) { stack.pop(); alive = false; } // both destroyed
+            else alive = false;                             // incoming destroyed
+        }
+        if (alive) stack.push(a);
+    }
+    int[] res = new int[stack.size()];
+    for (int i = res.length - 1; i >= 0; i--) res[i] = stack.pop();
+    return res;
+}
 ```
 
 ### Adjacent-Duplicate Removal — `[element, count]` Pairs

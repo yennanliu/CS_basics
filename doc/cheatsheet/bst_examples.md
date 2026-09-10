@@ -122,6 +122,61 @@ class Codec:
             return None
 ```
 
+#### Third codec — pre-order + an explicit stack (no recursion)
+
+> Kept as a third variant because it rebuilds **iteratively**: the stack holds the right-hand
+> ancestors still waiting for a bigger value, so `while stack and stack[-1].val < n` finds the
+> node whose right child `n` becomes. Same O(n), no recursion depth — the answer to "what if
+> the tree is a 10^5-node chain?".
+
+```python
+# LC 449. Serialize and Deserialize BST
+# please check below 2) LC Example
+# NOTE : there is also a bfs approach
+# V1'
+# IDEA : BST property
+# https://leetcode.com/problems/serialize-and-deserialize-bst/discuss/212043/Python-solution
+class Codec:
+    def serialize(self, root):
+        """Encodes a tree to a single string.
+        :type root: TreeNode
+        :rtype: str
+        """
+        def dfs(root):
+            if not root:
+                return 
+            res.append(str(root.val) + ",")
+            dfs(root.left)
+            dfs(root.right)
+        res = []
+        dfs(root)
+        return "".join(res)
+    def deserialize(self, data):
+        """Decodes your encoded data to tree.
+        :type data: str
+        :rtype: TreeNode
+        """
+        lst = data.split(",")
+        lst.pop()
+        stack = []
+        head = None
+        for n in lst:
+            n = int(n)
+            if not head:
+                head = TreeNode(n)
+                stack.append(head)
+            else:
+                node = TreeNode(n)
+                if n < stack[-1].val:
+                    stack[-1].left = node
+                else:
+                    while stack and stack[-1].val < n: 
+                        u = stack.pop()
+                    u.right = node
+                stack.append(node)
+        return head
+```
+
 ### 2) Split BST — LC 776
 
 #### Pattern: Recursive BST Partition

@@ -1,7 +1,7 @@
 # Monotonic Stack Data Structure
 
-> **Scope** — Next greater / previous smaller / span / histogram problems — the stack stays sorted so each element is pushed and popped once.
-> **See also**: [stack.md](./stack.md) — plain LIFO problems; [monotonic_queue.md](./monotonic_queue.md) — the sliding-window counterpart; [heap.md](./heap.md) — when you need a global extreme instead of a neighbouring one.
+> **Scope** — Next greater / previous smaller / span / histogram problems — the stack stays sorted so each element is pushed and popped once. **Templates and the theory behind them**; the worked solutions live in the sheets that own each problem.
+> **See also**: [stack_examples.md](./stack_examples.md) — the worked-solution archive for the problems below, one canonical solution per language; [stack.md](./stack.md) — plain LIFO problems, including the index and depth stacks that are *not* monotonic by value; [monotonic_queue.md](./monotonic_queue.md) — the sliding-window counterpart; [dp_monotonic_stack.md](./dp_monotonic_stack.md) — when the stack carries a DP value instead of a neighbour; [heap.md](./heap.md) — when you need a global extreme instead of a neighbouring one.
 
 ## LeetCode Problem Lists
 
@@ -64,6 +64,9 @@
 | **Circular Array** | Cyclic Problems | Varies | Process circular sequences |
 | **Pattern Validation** | Sequence Validation | Varies | Validate specific patterns |
 | **Optimization Stack** | Max/Min Problems | Varies | Maintain optimal candidates |
+| **Contribution** | Sum over all subarrays | Increasing | Count the subarrays each element is the min/max of |
+| **Dual Stack** | `max − min` aggregates | Both | Run the contribution pass twice and subtract |
+| **Tree Build** | Cartesian tree | Decreasing | Popped nodes become the left subtree |
 
 ### Universal Template
 
@@ -331,6 +334,359 @@ def find_132_pattern(nums):
     return False
 ```
 
+### Template 7: Contribution Method — Count the Subarrays an Element Dominates — LC 907 ⭐⭐⭐⭐⭐
+
+> Instead of enumerating subarrays, ask *"for how many subarrays is `arr[i]` the minimum?"*.
+> Two monotonic passes give the left and right dominance spans; their product is the count.
+> The Java form of the same two passes is in
+> [stack_examples.md](./stack_examples.md#4-sum-of-subarray-minimums--lc-907).
+
+#### **Contribution Method — Visualizing `left[i]` / `right[i]` (Python)** ⭐⭐⭐⭐⭐
+
+> `leetcode_python/Math/sum-of-subarray-minimums.py`
+
+**Core idea:** every subarray has exactly one minimum, so instead of enumerating subarrays we ask *"for how many subarrays is `arr[i]` the minimum?"* — then sum `arr[i] * count`.
+
+For each index `i`, that count splits into two independent choices:
+
+```text
+        left choices              right choices
+           <---->                    <----->
+   ┌───────────────────────────────────────────────┐
+   │  ...  PSE   .   .   .   [i]   .   .   .   NSE   │      arr
+   └───────────────────────────────────────────────┘
+              ^                          ^
+        previous smaller           next smaller-or-equal
+        element (strict >=)        element (strict >)
+
+   left[i]  = i - PSE     ← # of left endpoints that keep arr[i] as min
+   right[i] = NSE - i     ← # of right endpoints that keep arr[i] as min
+
+   count(i) = left[i] * right[i]
+   contribution = arr[i] * left[i] * right[i]
+```
+
+- A subarray keeps `arr[i]` as its minimum only if it **starts** somewhere in `(PSE, i]` and **ends** somewhere in `[i, NSE)`.
+- The two ranges are independent → multiply them.
+
+**Handling duplicates (avoid double counting):** use **`>=`** on the left pass and **`>`** on the right pass (asymmetric). Equal values are then counted on exactly one side.
+
+```python
+# python
+# LC 907 - Sum of Subarray Minimums (contribution method)
+# time = O(n), space = O(n)
+MOD = 10**9 + 7
+n = len(arr)
+left  = [0] * n   # left[i]  = distance to previous smaller element
+right = [0] * n   # right[i] = distance to next smaller-or-equal element
+
+# --- LEFT pass: distance to Previous Smaller Element (pop on >=) ---
+mono_st = []
+for i in range(n):
+    val = arr[i]
+    # Pop elements that are greater than OR EQUAL to current val
+    while mono_st and arr[mono_st[-1]] >= val:
+        mono_st.pop()   # these can't be the left boundary of arr[i]
+
+    # If stack empty -> val is the smallest so far, boundary is index -1
+    #   left choices = i - (-1) = i + 1
+    # Else -> boundary is the surviving stack top (the PSE)
+    #   left choices = i - mono_st[-1]
+    left[i] = i + 1 if not mono_st else i - mono_st[-1]
+    mono_st.append(i)
+
+# --- RIGHT pass: distance to Next Smaller Element (pop on >) ---
+mono_st = []
+for i in range(n - 1, -1, -1):
+    val = arr[i]
+    while mono_st and arr[mono_st[-1]] > val:   # strict > here
+        mono_st.pop()
+    right[i] = n - i if not mono_st else mono_st[-1] - i
+    mono_st.append(i)
+
+ans = 0
+for i in range(n):
+    ans = (ans + arr[i] * left[i] * right[i]) % MOD
+```
+
+**Why `left[i] = i + 1` when the stack is empty:** an empty stack means nothing to the left is smaller than `arr[i]` — `arr[i]` dominates the whole prefix. The imaginary left boundary sits at index `-1`, so the left choices span indices `0..i`, i.e. `i - (-1) = i + 1`.
+
+**Visual trace on `arr = [3, 1, 2, 4]`:**
+
+```text
+i=0 val=3 : stack empty              -> left[0] = 0-(-1) = 1   stack=[0]
+i=1 val=1 : arr[0]=3 >= 1 -> pop 0
+            stack empty              -> left[1] = 1-(-1) = 2   stack=[1]
+i=2 val=2 : arr[1]=1 >= 2? no        -> left[2] = 2-1     = 1   stack=[1,2]
+i=3 val=4 : arr[2]=2 >= 4? no        -> left[3] = 3-2     = 1   stack=[1,2,3]
+
+left  = [1, 2, 1, 1]
+right = [1, 3, 2, 1]   (symmetric backward pass with strict >)
+
+contribution = 3*1*1 + 1*2*3 + 2*1*2 + 4*1*1 = 3 + 6 + 4 + 4 = 17  ✓
+```
+
+### Template 8: Dual Stack — `max − min` Over All Subarrays — LC 2104 ⭐⭐⭐⭐
+
+
+> `sum(ranges) = sum(subarray maxs) − sum(subarray mins)`. Use one monotonic stack pass per role; for each popped element compute how many subarrays it owns as the max/min.
+
+#### Core Idea
+
+```text
+range(subarray) = max − min
+sum(all ranges) = sum(all subarray maxs) − sum(all subarray mins)
+```
+
+For each element `nums[mid]`, find its **left** and **right** dominance boundaries:
+- **Left boundary** `L` — index of the previous element that would displace `nums[mid]` from the max/min role (or `-1` if none)
+- **Right boundary** `R` — index of the next element that displaces it (or `n` if none)
+
+Number of subarrays where `nums[mid]` is the max/min:
+```text
+count = (mid − L) × (R − mid)
+contribution = nums[mid] × count
+```
+
+The **sentinel loop** runs `i` from `0` to `n` inclusive. When `i == n`, it flushes every remaining index from the stack using `n` as the right boundary.
+
+**Duplicate-safe boundary rule** (avoids double-counting equal elements):
+- For **max**: pop when `nums[mid] < nums[i]` (strict); left boundary is the last *greater-or-equal* element.
+- For **min**: pop when `nums[mid] > nums[i]` (strict); left boundary is the last *smaller-or-equal* element.
+
+---
+
+#### Visual Trace — max pass on `[1, 3, 2]`
+
+```text
+Decreasing stack (max contribution)
+
+i=0: push 0         stack=[0]
+i=1: nums[0]=1 < nums[1]=3 → pop mid=0
+       left=-1, right=1
+       contrib = 1 * (0-(-1)) * (1-0) = 1*1*1 = 1
+     push 1          stack=[1]
+i=2: nums[1]=3 > nums[2]=2, no pop
+     push 2          stack=[1,2]
+i=3 (sentinel): flush
+     pop mid=2: left=1, right=3  → 2*(2-1)*(3-2) = 2
+     pop mid=1: left=-1, right=3 → 3*(1-(-1))*(3-1) = 12
+
+max_sum = 1 + 2 + 12 = 15
+
+min pass (increasing stack) → min_sum = 10
+
+answer = 15 − 10 = 5  ✓
+verify: [1]=0,[3]=0,[2]=0,[1,3]=2,[3,2]=1,[1,3,2]=2 → sum = 5
+```
+
+---
+
+#### Pattern (Python)
+
+```python
+# python
+# LC 2104 - Sum of Subarray Ranges
+# IDEA: sum(ranges) = sum(subarray maxs) - sum(subarray mins)
+#       Contribution method via monotonic stack — one pass per role
+# time = O(N), space = O(N)
+def subArrayRanges(nums):
+    n = len(nums)
+
+    def contribution(is_max):
+        stack = []
+        total = 0
+        for i in range(n + 1):          # sentinel: i == n flushes remaining
+            while stack and (
+                i == n or
+                (nums[stack[-1]] < nums[i] if is_max else nums[stack[-1]] > nums[i])
+            ):
+                mid = stack.pop()
+                left  = stack[-1] if stack else -1   # previous boundary index
+                right = i                            # current index = right boundary
+                total += nums[mid] * (mid - left) * (right - mid)
+            stack.append(i)
+        return total
+
+    return contribution(True) - contribution(False)
+```
+
+#### Pattern (Java)
+
+```java
+// java
+// LC 2104 - Sum of Subarray Ranges
+// IDEA: sum(ranges) = sum(subarray maxs) - sum(subarray mins)
+//       Contribution method: for each element count subarrays where it's max/min
+// time = O(N), space = O(N)
+public long subArrayRanges(int[] nums) {
+    return contribution(nums, true) - contribution(nums, false);
+}
+
+private long contribution(int[] nums, boolean isMax) {
+    int n = nums.length;
+    Deque<Integer> stack = new ArrayDeque<>();
+    long total = 0;
+
+    for (int i = 0; i <= n; i++) {          // i == n is the sentinel flush
+        while (!stack.isEmpty()) {
+            int mid = stack.peek();
+            boolean shouldPop = (i == n) ||
+                (isMax ? nums[mid] < nums[i] : nums[mid] > nums[i]);
+            if (!shouldPop) break;
+            stack.pop();
+            int left  = stack.isEmpty() ? -1 : stack.peek(); // prev boundary
+            int right = i;                                    // next boundary
+            total += (long) nums[mid] * (mid - left) * (right - mid);
+        }
+        stack.push(i);
+    }
+    return total;
+}
+```
+
+#### Two-Stack Logic Summary
+
+| Pass | Stack type | Pop condition | Computes |
+|------|-----------|---------------|----------|
+| Max pass | Monotonic **decreasing** | `nums[mid] < nums[i]` | Sum of subarray maximums |
+| Min pass | Monotonic **increasing** | `nums[mid] > nums[i]` | Sum of subarray minimums |
+| Both | Sentinel at `i = n` | Always flush | Handles right-edge elements |
+
+#### Similar Problems
+
+| Problem | LC# | Key Difference |
+|---------|-----|----------------|
+| Sum of Subarray Ranges | 2104 | `max_sum − min_sum`; two monotonic stack passes |
+| Sum of Subarray Minimums | 907 | Min contribution only; single increasing stack pass |
+| Maximum Subarray Min-Product | 1856 | Min contribution × subarray sum; prefix sums + stack |
+| Sum of Total Strength of Wizards | 2281 | Min × sum of sums; prefix of prefix sums + stack |
+| Largest Rectangle in Histogram | 84 | Area = height × width; pop on shorter bar |
+| Number of Visible People in Queue | 1944 | Count pops per element as the answer |
+
+### Template 9: The Stack Builds a Cartesian Tree — LC 654 ⭐⭐⭐⭐
+
+
+> **Template 9: monotonic stack that builds a tree.** The naive "find max, recurse left/right" is O(n²). A **decreasing** stack builds the same tree in one pass: everything popped by `num` is smaller than `num` and sits to its left → it becomes `num`'s **left** subtree; the surviving stack top is greater than `num` → `num` becomes its **right** child. Root = bottom of the stack.
+
+```text
+nums = [3,2,1,6,0,5]
+
+3 → stack[3]
+2 → 3>2, 3.right = 2            stack[3,2]
+1 → 2>1, 2.right = 1            stack[3,2,1]
+6 → pop 1,2,3 (each becomes 6.left in turn, last popped wins) → stack empty
+                                 stack[6]      root = 6
+0 → 6.right = 0                 stack[6,0]
+5 → pop 0 → 5.left = 0; top 6 → 6.right = 5   stack[6,5]
+```
+
+```java
+// java
+// LC 654 - Maximum Binary Tree
+// IDEA: Monotonic DECREASING stack of nodes. Nodes popped by num become num's left
+//       subtree (last popped = direct left child); surviving top adopts num as right child
+// time = O(N), space = O(N)   // beats the O(N^2) divide & conquer build
+public TreeNode constructMaximumBinaryTree(int[] nums) {
+    Deque<TreeNode> stack = new ArrayDeque<>(); // values decreasing: bottom -> top
+    for (int num : nums) {
+        TreeNode cur = new TreeNode(num);
+        while (!stack.isEmpty() && stack.peek().val < num) {
+            cur.left = stack.pop();          // last popped ends up as the left child
+        }
+        if (!stack.isEmpty()) stack.peek().right = cur;
+        stack.push(cur);
+    }
+    return stack.isEmpty() ? null : stack.peekLast(); // bottom of stack = global max = root
+}
+```
+
+```python
+# python
+# LC 654 - Maximum Binary Tree
+# IDEA: monotonic decreasing stack of nodes; popped nodes chain into cur.left,
+#       remaining top takes cur as its right child; stack[0] is the root
+# time = O(N), space = O(N)
+def constructMaximumBinaryTree(nums):
+    stack = []                      # node values decreasing
+    for num in nums:
+        cur = TreeNode(num)
+        while stack and stack[-1].val < num:
+            cur.left = stack.pop()  # overwritten each pop -> keeps the LAST popped
+        if stack:
+            stack[-1].right = cur
+        stack.append(cur)
+    return stack[0] if stack else None
+```
+
+**Why `cur.left` may be overwritten:** each pop re-assigns `cur.left`, and the popped nodes are already linked to each other (an earlier pop is the previous node's right child), so after the loop `cur.left` correctly points at the root of the whole popped block.
+
+**Related:** LC 1008 (Construct BST from Preorder Traversal) uses the mirror idea — a decreasing stack where a larger value becomes the right child of the last popped node.
+
+> [tree_construction.md](./tree_construction.md#1-maximum-binary-tree--lc-654-build-tree-from-an-array-by-index-range-) builds the same tree by recursive index range — O(n²) worst case, but the shape most people reach for first. The stack build above is the O(n) one.
+
+### Template Variations — Same Stack, a Different Payload
+
+
+| LC # | Problem | Base template | The twist |
+|------|---------|---------------|-----------|
+| 1475 | Final Prices With a Special Discount in a Shop | Template 2 (next smaller) | Next smaller **or equal** — pop on `prices[stack[-1]] >= prices[i]`, and the discount is `price - prices[i]` rather than the index distance |
+| 1019 | Next Greater Node In Linked List | Template 1 (next greater) | Same decreasing stack, but the input is a linked list — walk it once into an array (or push `(index, val)` while walking) since the answer array needs random access |
+| 768 | Max Chunks To Make Sorted II | Template 1 (decreasing pops) | Stack holds **chunk maxima**, not raw elements; answer = final stack size |
+| 769 | Max Chunks To Make Sorted | Template 1 (degenerate) | Values are a permutation of `0..n-1`, so a running max replaces the stack: cut a chunk whenever `runningMax == i` |
+| 1047 / 1209 | Remove All Adjacent Duplicates In String (I / II) | Template 5 (stack with info) | Stack stores `(char, count)` pairs; pop when `count` reaches `k` — LC 1047 is the `k = 2` special case |
+
+**Max Chunks To Make Sorted II (LC 768) — chunk-maxima stack**
+
+```java
+// java
+// LC 768 - Max Chunks To Make Sorted II
+// IDEA: monotonic increasing stack of chunk MAXIMA. A value smaller than the top must
+//       merge every chunk it is smaller than; the merged chunk keeps the largest max
+// time = O(N), space = O(N)
+public int maxChunksToSorted(int[] arr) {
+    Deque<Integer> stack = new ArrayDeque<>(); // chunk maxima, increasing bottom -> top
+    for (int num : arr) {
+        if (!stack.isEmpty() && num < stack.peek()) {
+            int maxOfMerged = stack.pop();
+            while (!stack.isEmpty() && num < stack.peek()) stack.pop();
+            stack.push(maxOfMerged);           // merged chunk keeps the old max
+        } else {
+            stack.push(num);                   // starts a new chunk
+        }
+    }
+    return stack.size();
+}
+```
+
+```python
+# python
+# LC 768 - Max Chunks To Make Sorted II
+# IDEA: increasing stack of chunk maxima; merging keeps the largest max
+# time = O(N), space = O(N)
+def maxChunksToSorted(arr):
+    stack = []                       # chunk maxima, increasing
+    for num in arr:
+        if stack and num < stack[-1]:
+            merged_max = stack.pop()
+            while stack and num < stack[-1]:
+                stack.pop()
+            stack.append(merged_max)
+        else:
+            stack.append(num)
+    return len(stack)
+
+# LC 769 - Max Chunks To Make Sorted (values are a permutation of 0..n-1)
+# time = O(N), space = O(1)
+def maxChunksToSortedI(arr):
+    chunks, running_max = 0, -1
+    for i, num in enumerate(arr):
+        running_max = max(running_max, num)
+        if running_max == i:         # prefix holds exactly the values 0..i
+            chunks += 1
+    return chunks
+```
+
 ## Problems by Pattern
 
 ### Pattern-Based Problem Classification
@@ -426,6 +782,9 @@ def find_132_pattern(nums):
 - **Template 3 (Histogram)**: 8 problems
 - **Template 4 (Circular)**: 6 problems
 - **Template 5 (Validation/Complex)**: 11 problems
+- **Template 7 (Contribution)**: 5 problems — LC 907, 2104, 1856, 2281, 1944
+- **Template 8 (Dual stack)**: 2 problems — LC 2104, 2281
+- **Template 9 (Cartesian tree)**: 2 problems — LC 654, 1008
 - **Multiple Templates**: 8 problems
 
 ## Pattern Selection Strategy
@@ -508,6 +867,9 @@ Problem Analysis for Monotonic Stack:
 | **Circular Arrays** | Template 4 | Indices | 2x traversal |
 | **Pattern Detection** | Template 6 | Values | Right to Left |
 | **Complex Validation** | Template 5 | Tuples | Varies |
+| **Sum over all subarrays** | Template 7 | Indices | Two passes, opposite directions |
+| **`max − min` aggregate** | Template 8 | Indices | Template 7 twice, then subtract |
+| **Build a tree in one pass** | Template 9 | Nodes | Left to Right |
 
 ## Summary & Quick Reference
 
@@ -530,6 +892,9 @@ Problem Analysis for Monotonic Stack:
 | **Template 4** | Circular | `for i in range(2 * n)` |
 | **Template 5** | Validation | Store additional info in stack |
 | **Template 6** | Pattern Detection | Right-to-left with condition tracking |
+| **Template 7** | Contribution | `total += arr[i] * left[i] * right[i]` |
+| **Template 8** | Dual stack | `contribution(max) - contribution(min)` |
+| **Template 9** | Cartesian tree | `while stack and stack[-1].val < num: cur.left = stack.pop()` |
 
 ### Common Patterns & Tricks
 
@@ -670,77 +1035,19 @@ def largest_rectangle_area(heights):
 
 ## LC Examples
 
-### 2-1) Daily Temperatures (LC 739) — Monotonic Decreasing Stack
-> Stack stores indices; pop when a warmer day is found.
+One worked problem lives here — the one whose monotonic-stack solution has no other home.
+Every other problem this sheet teaches is solved in full in the sheet that owns it; the table
+below says which. The templates above are the thing to memorise, and re-solving a problem
+that another sheet already works through only makes the two copies drift.
 
-```java
-// LC 739 - Daily Temperatures
-// IDEA: Monotonic decreasing stack — pop when current > stack top
-// time = O(N), space = O(N)
-public int[] dailyTemperatures(int[] temperatures) {
-    int n = temperatures.length;
-    int[] ans = new int[n];
-    Deque<Integer> stack = new ArrayDeque<>(); // stores indices
-    for (int i = 0; i < n; i++) {
-        while (!stack.isEmpty() && temperatures[i] > temperatures[stack.peek()]) {
-            int idx = stack.pop();
-            ans[idx] = i - idx;
-        }
-        stack.push(i);
-    }
-    return ans;
-}
-```
+### 2-1) Trapping Rain Water — LC 42 — Horizontal Layers
 
-### 2-2) Largest Rectangle in Histogram (LC 84) — Monotonic Increasing Stack
-> Pop a bar when a shorter bar arrives; compute area using width from stack.
+> Pop a bar when a taller bar arrives; the water trapped is `(min of the two walls − bottom) × width`.
+> This fills the puddle in **horizontal layers**, one per pop.
+> [2_pointers_examples.md](./2_pointers_examples.md#trapping-rain-water--lc-42) solves the same problem in
+> **vertical columns** with two pointers and O(1) space — worth knowing both, because the interviewer
+> who asks for O(1) space is asking for that one.
 
-```java
-// LC 84 - Largest Rectangle in Histogram
-// IDEA: Monotonic increasing stack — pop and compute area on shorter bar
-// time = O(N), space = O(N)
-public int largestRectangleArea(int[] heights) {
-    Deque<Integer> stack = new ArrayDeque<>();
-    int maxArea = 0;
-    for (int i = 0; i <= heights.length; i++) {
-        int h = (i == heights.length) ? 0 : heights[i];
-        while (!stack.isEmpty() && h < heights[stack.peek()]) {
-            int height = heights[stack.pop()];
-            int width = stack.isEmpty() ? i : i - stack.peek() - 1;
-            maxArea = Math.max(maxArea, height * width);
-        }
-        stack.push(i);
-    }
-    return maxArea;
-}
-```
-
-### 2-3) Next Greater Element I (LC 496) — Monotonic Stack + HashMap
-> Precompute next greater element for nums2, then answer queries for nums1.
-
-```java
-// LC 496 - Next Greater Element I
-// IDEA: Monotonic decreasing stack on nums2; store results in map
-// time = O(M + N), space = O(M)
-public int[] nextGreaterElement(int[] nums1, int[] nums2) {
-    Map<Integer, Integer> map = new HashMap<>(); // val -> next greater val
-    Deque<Integer> stack = new ArrayDeque<>();
-    for (int num : nums2) {
-        while (!stack.isEmpty() && num > stack.peek()) {
-            map.put(stack.pop(), num);
-        }
-        stack.push(num);
-    }
-    int[] ans = new int[nums1.length];
-    for (int i = 0; i < nums1.length; i++) {
-        ans[i] = map.getOrDefault(nums1[i], -1);
-    }
-    return ans;
-}
-```
-
-### 2-4) Trapping Rain Water (LC 42) — Monotonic Stack
-> Pop a bar when a taller bar arrives; water trapped = (min height difference) * width.
 
 ```java
 // LC 42 - Trapping Rain Water
@@ -764,737 +1071,25 @@ public int trap(int[] height) {
 }
 ```
 
-### 2-5) Next Greater Element II (LC 503) — Circular Monotonic Stack
-> Process array twice (or use modulo) to handle circular next-greater queries.
-
-```java
-// LC 503 - Next Greater Element II (circular array)
-// IDEA: Monotonic stack — traverse 2n indices with modulo for circular effect
-// time = O(N), space = O(N)
-public int[] nextGreaterElements(int[] nums) {
-    int n = nums.length;
-    int[] ans = new int[n];
-    Arrays.fill(ans, -1);
-    Deque<Integer> stack = new ArrayDeque<>();
-    for (int i = 0; i < 2 * n; i++) {
-        while (!stack.isEmpty() && nums[i % n] > nums[stack.peek()]) {
-            ans[stack.pop()] = nums[i % n];
-        }
-        if (i < n) stack.push(i);
-    }
-    return ans;
-}
-```
-
-### 2-6) Online Stock Span (LC 901) — Monotonic Decreasing Stack
-> Pop all previous prices <= current; span = days since last greater price.
-
-```java
-// LC 901 - Online Stock Span
-// IDEA: Monotonic decreasing stack storing [price, span] pairs
-// time = O(1) amortized per call, space = O(N)
-class StockSpanner {
-    Deque<int[]> stack = new ArrayDeque<>(); // [price, span]
-    public int next(int price) {
-        int span = 1;
-        while (!stack.isEmpty() && stack.peek()[0] <= price) {
-            span += stack.pop()[1];
-        }
-        stack.push(new int[]{price, span});
-        return span;
-    }
-}
-```
-
-### 2-7) Sum of Subarray Minimums (LC 907) — Monotonic Stack
-> For each element, find left/right boundaries where it is the minimum; use monotonic stack.
-
-```java
-// LC 907 - Sum of Subarray Minimums
-// IDEA: Monotonic stack — for each element find left & right span as minimum
-// time = O(N), space = O(N)
-public int sumSubarrayMins(int[] arr) {
-    int n = arr.length;
-    int MOD = 1_000_000_007;
-    int[] left = new int[n], right = new int[n];
-    Deque<Integer> stack = new ArrayDeque<>();
-    // left[i] = distance to previous smaller element
-    for (int i = 0; i < n; i++) {
-        while (!stack.isEmpty() && arr[stack.peek()] >= arr[i]) stack.pop();
-        left[i] = stack.isEmpty() ? i + 1 : i - stack.peek();
-        stack.push(i);
-    }
-    stack.clear();
-    // right[i] = distance to next smaller or equal element
-    for (int i = n-1; i >= 0; i--) {
-        while (!stack.isEmpty() && arr[stack.peek()] > arr[i]) stack.pop();
-        right[i] = stack.isEmpty() ? n - i : stack.peek() - i;
-        stack.push(i);
-    }
-    long ans = 0;
-    for (int i = 0; i < n; i++) ans = (ans + (long) arr[i] * left[i] * right[i]) % MOD;
-    return (int) ans;
-}
-```
-
-#### **Contribution Method — Visualizing `left[i]` / `right[i]` (Python)** ⭐⭐⭐⭐⭐
-
-> `leetcode_python/Math/sum-of-subarray-minimums.py`
-
-**Core idea:** every subarray has exactly one minimum, so instead of enumerating subarrays we ask *"for how many subarrays is `arr[i]` the minimum?"* — then sum `arr[i] * count`.
-
-For each index `i`, that count splits into two independent choices:
-
-```text
-        left choices              right choices
-           <---->                    <----->
-   ┌───────────────────────────────────────────────┐
-   │  ...  PSE   .   .   .   [i]   .   .   .   NSE   │      arr
-   └───────────────────────────────────────────────┘
-              ^                          ^
-        previous smaller           next smaller-or-equal
-        element (strict >=)        element (strict >)
-
-   left[i]  = i - PSE     ← # of left endpoints that keep arr[i] as min
-   right[i] = NSE - i     ← # of right endpoints that keep arr[i] as min
-
-   count(i) = left[i] * right[i]
-   contribution = arr[i] * left[i] * right[i]
-```
-
-- A subarray keeps `arr[i]` as its minimum only if it **starts** somewhere in `(PSE, i]` and **ends** somewhere in `[i, NSE)`.
-- The two ranges are independent → multiply them.
-
-**Handling duplicates (avoid double counting):** use **`>=`** on the left pass and **`>`** on the right pass (asymmetric). Equal values are then counted on exactly one side.
-
-```python
-# python
-# LC 907 - Sum of Subarray Minimums (contribution method)
-# time = O(n), space = O(n)
-MOD = 10**9 + 7
-n = len(arr)
-left  = [0] * n   # left[i]  = distance to previous smaller element
-right = [0] * n   # right[i] = distance to next smaller-or-equal element
-
-# --- LEFT pass: distance to Previous Smaller Element (pop on >=) ---
-mono_st = []
-for i in range(n):
-    val = arr[i]
-    # Pop elements that are greater than OR EQUAL to current val
-    while mono_st and arr[mono_st[-1]] >= val:
-        mono_st.pop()   # these can't be the left boundary of arr[i]
-
-    # If stack empty -> val is the smallest so far, boundary is index -1
-    #   left choices = i - (-1) = i + 1
-    # Else -> boundary is the surviving stack top (the PSE)
-    #   left choices = i - mono_st[-1]
-    left[i] = i + 1 if not mono_st else i - mono_st[-1]
-    mono_st.append(i)
-
-# --- RIGHT pass: distance to Next Smaller Element (pop on >) ---
-mono_st = []
-for i in range(n - 1, -1, -1):
-    val = arr[i]
-    while mono_st and arr[mono_st[-1]] > val:   # strict > here
-        mono_st.pop()
-    right[i] = n - i if not mono_st else mono_st[-1] - i
-    mono_st.append(i)
-
-ans = 0
-for i in range(n):
-    ans = (ans + arr[i] * left[i] * right[i]) % MOD
-```
-
-**Why `left[i] = i + 1` when the stack is empty:** an empty stack means nothing to the left is smaller than `arr[i]` — `arr[i]` dominates the whole prefix. The imaginary left boundary sits at index `-1`, so the left choices span indices `0..i`, i.e. `i - (-1) = i + 1`.
-
-**Visual trace on `arr = [3, 1, 2, 4]`:**
-
-```text
-i=0 val=3 : stack empty              -> left[0] = 0-(-1) = 1   stack=[0]
-i=1 val=1 : arr[0]=3 >= 1 -> pop 0
-            stack empty              -> left[1] = 1-(-1) = 2   stack=[1]
-i=2 val=2 : arr[1]=1 >= 2? no        -> left[2] = 2-1     = 1   stack=[1,2]
-i=3 val=4 : arr[2]=2 >= 4? no        -> left[3] = 3-2     = 1   stack=[1,2,3]
-
-left  = [1, 2, 1, 1]
-right = [1, 3, 2, 1]   (symmetric backward pass with strict >)
-
-contribution = 3*1*1 + 1*2*3 + 2*1*2 + 4*1*1 = 3 + 6 + 4 + 4 = 17  ✓
-```
-
-### 2-8) Remove K Digits (LC 402) — Monotonic Increasing Stack
-> Maintain increasing stack; remove digits when a smaller digit arrives.
-
-```java
-// LC 402 - Remove K Digits
-// IDEA: Greedy + monotonic increasing stack — remove larger digits greedily
-// time = O(N), space = O(N)
-public String removeKdigits(String num, int k) {
-    Deque<Character> stack = new ArrayDeque<>();
-    for (char c : num.toCharArray()) {
-        while (k > 0 && !stack.isEmpty() && stack.peek() > c) {
-            stack.pop(); k--;
-        }
-        stack.push(c);
-    }
-    while (k-- > 0) stack.pop(); // remove from top if k still > 0
-    // reconstruct result in correct order (bottom to top of stack)
-    Deque<Character> result = new ArrayDeque<>(stack);
-    StringBuilder sb = new StringBuilder();
-    boolean leadingZero = true;
-    while (!result.isEmpty()) {
-        char c = result.pollFirst();
-        if (leadingZero && c == '0') continue;
-        leadingZero = false;
-        sb.append(c);
-    }
-    return sb.length() == 0 ? "0" : sb.toString();
-}
-```
-
-### 2-9) Maximal Rectangle (LC 85) — Histogram + Monotonic Stack
-> For each row, compute histogram heights; apply LC 84 largest rectangle logic per row.
-
-```java
-// LC 85 - Maximal Rectangle
-// IDEA: For each row build histogram; apply largestRectangleArea (LC 84) logic
-// time = O(M*N), space = O(N)
-public int maximalRectangle(char[][] matrix) {
-    if (matrix.length == 0) return 0;
-    int n = matrix[0].length, maxArea = 0;
-    int[] heights = new int[n];
-    for (char[] row : matrix) {
-        for (int j = 0; j < n; j++)
-            heights[j] = row[j] == '0' ? 0 : heights[j] + 1;
-        maxArea = Math.max(maxArea, largestRectangle(heights));
-    }
-    return maxArea;
-}
-private int largestRectangle(int[] heights) {
-    Deque<Integer> stack = new ArrayDeque<>();
-    int max = 0;
-    for (int i = 0; i <= heights.length; i++) {
-        int h = i == heights.length ? 0 : heights[i];
-        while (!stack.isEmpty() && h < heights[stack.peek()]) {
-            int height = heights[stack.pop()];
-            int width = stack.isEmpty() ? i : i - stack.peek() - 1;
-            max = Math.max(max, height * width);
-        }
-        stack.push(i);
-    }
-    return max;
-}
-```
-
-### 2-10) Car Fleet (LC 853) — Monotonic Stack on Speed
-> Sort by position; stack tracks fleets — a car joining a fleet is removed.
-
-```java
-// LC 853 - Car Fleet
-// IDEA: Sort by position DESC; use stack to count distinct fleets
-// time = O(N log N), space = O(N)
-public int carFleet(int target, int[] position, int[] speed) {
-    int n = position.length;
-    Integer[] idx = new Integer[n];
-    for (int i = 0; i < n; i++) idx[i] = i;
-    Arrays.sort(idx, (a, b) -> position[b] - position[a]);
-    Deque<Double> stack = new ArrayDeque<>();
-    for (int i : idx) {
-        double time = (double)(target - position[i]) / speed[i];
-        if (stack.isEmpty() || time > stack.peek()) stack.push(time);
-        // if time <= top, this car catches up (joins the fleet)
-    }
-    return stack.size();
-}
-```
-
-### 2-11) Asteroid Collision (LC 735) — Stack Simulation
-> Right-moving asteroids stay on stack; left-moving collide with top until stable.
-
-```java
-// LC 735 - Asteroid Collision
-// IDEA: Stack — simulate collisions between right (+) and left (-) asteroids
-// time = O(N), space = O(N)
-public int[] asteroidCollision(int[] asteroids) {
-    Deque<Integer> stack = new ArrayDeque<>();
-    for (int a : asteroids) {
-        boolean alive = true;
-        while (alive && a < 0 && !stack.isEmpty() && stack.peek() > 0) {
-            if (stack.peek() < -a) { stack.pop(); }      // stack top destroyed
-            else if (stack.peek() == -a) { stack.pop(); alive = false; } // both destroyed
-            else alive = false;                             // incoming destroyed
-        }
-        if (alive) stack.push(a);
-    }
-    int[] res = new int[stack.size()];
-    for (int i = res.length - 1; i >= 0; i--) res[i] = stack.pop();
-    return res;
-}
-```
-
-### 2-12) Sum of Subarray Ranges (LC 2104) — Dual Monotonic Stack (Contribution Method)
-
-> `sum(ranges) = sum(subarray maxs) − sum(subarray mins)`. Use one monotonic stack pass per role; for each popped element compute how many subarrays it owns as the max/min.
-
-#### Core Idea
-
-```text
-range(subarray) = max − min
-sum(all ranges) = sum(all subarray maxs) − sum(all subarray mins)
-```
-
-For each element `nums[mid]`, find its **left** and **right** dominance boundaries:
-- **Left boundary** `L` — index of the previous element that would displace `nums[mid]` from the max/min role (or `-1` if none)
-- **Right boundary** `R` — index of the next element that displaces it (or `n` if none)
-
-Number of subarrays where `nums[mid]` is the max/min:
-```text
-count = (mid − L) × (R − mid)
-contribution = nums[mid] × count
-```
-
-The **sentinel loop** runs `i` from `0` to `n` inclusive. When `i == n`, it flushes every remaining index from the stack using `n` as the right boundary.
-
-**Duplicate-safe boundary rule** (avoids double-counting equal elements):
-- For **max**: pop when `nums[mid] < nums[i]` (strict); left boundary is the last *greater-or-equal* element.
-- For **min**: pop when `nums[mid] > nums[i]` (strict); left boundary is the last *smaller-or-equal* element.
-
----
-
-#### Visual Trace — max pass on `[1, 3, 2]`
-
-```text
-Decreasing stack (max contribution)
-
-i=0: push 0         stack=[0]
-i=1: nums[0]=1 < nums[1]=3 → pop mid=0
-       left=-1, right=1
-       contrib = 1 * (0-(-1)) * (1-0) = 1*1*1 = 1
-     push 1          stack=[1]
-i=2: nums[1]=3 > nums[2]=2, no pop
-     push 2          stack=[1,2]
-i=3 (sentinel): flush
-     pop mid=2: left=1, right=3  → 2*(2-1)*(3-2) = 2
-     pop mid=1: left=-1, right=3 → 3*(1-(-1))*(3-1) = 12
-
-max_sum = 1 + 2 + 12 = 15
-
-min pass (increasing stack) → min_sum = 10
-
-answer = 15 − 10 = 5  ✓
-verify: [1]=0,[3]=0,[2]=0,[1,3]=2,[3,2]=1,[1,3,2]=2 → sum = 5
-```
-
----
-
-#### Pattern (Python)
-
-```python
-# python
-# LC 2104 - Sum of Subarray Ranges
-# IDEA: sum(ranges) = sum(subarray maxs) - sum(subarray mins)
-#       Contribution method via monotonic stack — one pass per role
-# time = O(N), space = O(N)
-def subArrayRanges(nums):
-    n = len(nums)
-
-    def contribution(is_max):
-        stack = []
-        total = 0
-        for i in range(n + 1):          # sentinel: i == n flushes remaining
-            while stack and (
-                i == n or
-                (nums[stack[-1]] < nums[i] if is_max else nums[stack[-1]] > nums[i])
-            ):
-                mid = stack.pop()
-                left  = stack[-1] if stack else -1   # previous boundary index
-                right = i                            # current index = right boundary
-                total += nums[mid] * (mid - left) * (right - mid)
-            stack.append(i)
-        return total
-
-    return contribution(True) - contribution(False)
-```
-
-#### Pattern (Java)
-
-```java
-// java
-// LC 2104 - Sum of Subarray Ranges
-// IDEA: sum(ranges) = sum(subarray maxs) - sum(subarray mins)
-//       Contribution method: for each element count subarrays where it's max/min
-// time = O(N), space = O(N)
-public long subArrayRanges(int[] nums) {
-    return contribution(nums, true) - contribution(nums, false);
-}
-
-private long contribution(int[] nums, boolean isMax) {
-    int n = nums.length;
-    Deque<Integer> stack = new ArrayDeque<>();
-    long total = 0;
-
-    for (int i = 0; i <= n; i++) {          // i == n is the sentinel flush
-        while (!stack.isEmpty()) {
-            int mid = stack.peek();
-            boolean shouldPop = (i == n) ||
-                (isMax ? nums[mid] < nums[i] : nums[mid] > nums[i]);
-            if (!shouldPop) break;
-            stack.pop();
-            int left  = stack.isEmpty() ? -1 : stack.peek(); // prev boundary
-            int right = i;                                    // next boundary
-            total += (long) nums[mid] * (mid - left) * (right - mid);
-        }
-        stack.push(i);
-    }
-    return total;
-}
-```
-
-#### Two-Stack Logic Summary
-
-| Pass | Stack type | Pop condition | Computes |
-|------|-----------|---------------|----------|
-| Max pass | Monotonic **decreasing** | `nums[mid] < nums[i]` | Sum of subarray maximums |
-| Min pass | Monotonic **increasing** | `nums[mid] > nums[i]` | Sum of subarray minimums |
-| Both | Sentinel at `i = n` | Always flush | Handles right-edge elements |
-
-#### Similar Problems
-
-| Problem | LC# | Key Difference |
-|---------|-----|----------------|
-| Sum of Subarray Ranges | 2104 | `max_sum − min_sum`; two monotonic stack passes |
-| Sum of Subarray Minimums | 907 | Min contribution only; single increasing stack pass |
-| Maximum Subarray Min-Product | 1856 | Min contribution × subarray sum; prefix sums + stack |
-| Sum of Total Strength of Wizards | 2281 | Min × sum of sums; prefix of prefix sums + stack |
-| Largest Rectangle in Histogram | 84 | Area = height × width; pop on shorter bar |
-| Number of Visible People in Queue | 1944 | Count pops per element as the answer |
-
-### 2-13) Longest Absolute File Path (LC 388) — Stack Indexed by Nesting Depth ⭐⭐⭐⭐⭐
-
-> **Template 7: depth stack.** The stack is not monotonic by *value* — it is monotonic by **depth**: `stack[d]` always holds the accumulated path length at depth `d`. Before handling a line at depth `d`, pop until `stack.size() == d`, which discards every sibling branch that just ended.
-
-**Key idea**
-```text
-"dir\n\tsub1\n\t\tfile.ext\n\tsub2"
-
-line          depth   pop until size==depth   stack (path lengths, '/' included)
-dir             0     []                      [4]            "dir/"
-  sub1          1     [4]                     [4, 9]         "dir/sub1/"
-    file.ext    2     [4, 9]                  (file → no push, len = 9 + 8 = 17)
-  sub2          1     pop 9 → [4]             [4, 9]
-```
-- `depth` = number of leading `\t`; the name is the rest of the line.
-- A **directory** pushes `parentLen + name.length() + 1` (the `+1` is the `/` separator).
-- A **file** (name contains `.`) never pushes — it only updates the answer with `parentLen + name.length()`.
-
-```java
-// java
-// LC 388 - Longest Absolute File Path
-// IDEA: Stack indexed by nesting depth — stack.peek() = length of the current
-//       directory prefix (with trailing '/'); pop until size == depth to leave sibling branches
-// time = O(N), space = O(D)  // N = input length, D = max depth
-public int lengthLongestPath(String input) {
-    Deque<Integer> stack = new ArrayDeque<>(); // prefix length per depth
-    int maxLen = 0;
-    for (String line : input.split("\n")) {
-        int depth = line.lastIndexOf('\t') + 1;  // tabs are leading & contiguous
-        String name = line.substring(depth);
-        while (stack.size() > depth) stack.pop();          // leave finished branches
-        int parentLen = stack.isEmpty() ? 0 : stack.peek();
-        int curLen = parentLen + name.length();
-        if (name.indexOf('.') >= 0) {
-            maxLen = Math.max(maxLen, curLen);             // file → candidate answer
-        } else {
-            stack.push(curLen + 1);                        // dir → +1 for '/'
-        }
-    }
-    return maxLen;
-}
-```
-
-```python
-# python
-# LC 388 - Longest Absolute File Path
-# IDEA: stack[d] = length of the directory prefix at depth d (trailing '/' counted);
-#       pop until len(stack) == depth so sibling branches are discarded
-# time = O(N), space = O(D)
-def lengthLongestPath(input: str) -> int:
-    stack = []          # prefix length per depth
-    best = 0
-    for line in input.split('\n'):
-        depth = len(line) - len(line.lstrip('\t'))
-        name = line[depth:]
-        while len(stack) > depth:
-            stack.pop()
-        parent = stack[-1] if stack else 0
-        cur = parent + len(name)
-        if '.' in name:
-            best = max(best, cur)      # file
-        else:
-            stack.append(cur + 1)      # dir, +1 for '/'
-    return best
-```
-
-**Pitfalls**
-- The answer is the longest **path to a file**, so never update the max on a directory.
-- Do not compute depth with `line.count('\t')` after slicing — depth must come from the *leading* tabs only.
-- Empty input / no file → return `0`.
-
-### 2-14) Longest Valid Parentheses (LC 32) — Index Stack with a Base Sentinel ⭐⭐⭐⭐⭐
-
-> **Template 8: stack of indices + sentinel base.** Instead of storing characters, store **indices**, and seed the stack with `-1` as "the index just before the current valid block". After popping on `)`, the new stack top is the last unmatched index, so `i - stack.peek()` is the length of the valid run ending at `i` — no extra length bookkeeping needed.
-
-**Two cases on `)`**
-```text
-pop, then:
-  stack empty  → this ')' is unmatched → push i as the NEW base
-  stack !empty → length = i - stack.top()
-```
-
-**Visual trace on `s = ")()())"`**
-```text
-i=0 ')'  pop -1 → empty → push 0        stack=[0]        best=0
-i=1 '('  push 1                          stack=[0,1]
-i=2 ')'  pop 1 → top=0 → 2-0 = 2         stack=[0]        best=2
-i=3 '('  push 3                          stack=[0,3]
-i=4 ')'  pop 3 → top=0 → 4-0 = 4         stack=[0]        best=4
-i=5 ')'  pop 0 → empty → push 5          stack=[5]        best=4  ✓
-```
-
-```java
-// java
-// LC 32 - Longest Valid Parentheses
-// IDEA: Stack of indices seeded with -1 (base). On ')' pop; if empty this ')' becomes
-//       the new base, else answer candidate = i - stack.peek()
-// time = O(N), space = O(N)
-public int longestValidParentheses(String s) {
-    Deque<Integer> stack = new ArrayDeque<>();
-    stack.push(-1);                 // base = index before the current valid block
-    int best = 0;
-    for (int i = 0; i < s.length(); i++) {
-        if (s.charAt(i) == '(') {
-            stack.push(i);
-        } else {
-            stack.pop();
-            if (stack.isEmpty()) stack.push(i);                 // unmatched ')' → new base
-            else best = Math.max(best, i - stack.peek());
-        }
-    }
-    return best;
-}
-```
-
-```python
-# python
-# LC 32 - Longest Valid Parentheses
-# IDEA: index stack with -1 sentinel; i - stack[-1] = length of valid run ending at i
-# time = O(N), space = O(N)
-def longestValidParentheses(s: str) -> int:
-    stack = [-1]          # base index
-    best = 0
-    for i, c in enumerate(s):
-        if c == '(':
-            stack.append(i)
-        else:
-            stack.pop()
-            if not stack:
-                stack.append(i)               # new base
-            else:
-                best = max(best, i - stack[-1])
-    return best
-```
-
-**Pitfalls**
-- Forgetting the `-1` seed breaks every run that starts at index `0`.
-- The stack holds **indices**, never characters — the whole trick is the index arithmetic.
-- O(1)-space alternative: two passes (left→right, then right→left) with `open`/`close` counters, resetting when `close > open` (resp. `open > close`).
-
-### 2-15) Maximum Binary Tree (LC 654) — Monotonic Decreasing Stack Builds a Cartesian Tree ⭐⭐⭐⭐
-
-> **Template 9: monotonic stack that builds a tree.** The naive "find max, recurse left/right" is O(n²). A **decreasing** stack builds the same tree in one pass: everything popped by `num` is smaller than `num` and sits to its left → it becomes `num`'s **left** subtree; the surviving stack top is greater than `num` → `num` becomes its **right** child. Root = bottom of the stack.
-
-```text
-nums = [3,2,1,6,0,5]
-
-3 → stack[3]
-2 → 3>2, 3.right = 2            stack[3,2]
-1 → 2>1, 2.right = 1            stack[3,2,1]
-6 → pop 1,2,3 (each becomes 6.left in turn, last popped wins) → stack empty
-                                 stack[6]      root = 6
-0 → 6.right = 0                 stack[6,0]
-5 → pop 0 → 5.left = 0; top 6 → 6.right = 5   stack[6,5]
-```
-
-```java
-// java
-// LC 654 - Maximum Binary Tree
-// IDEA: Monotonic DECREASING stack of nodes. Nodes popped by num become num's left
-//       subtree (last popped = direct left child); surviving top adopts num as right child
-// time = O(N), space = O(N)   // beats the O(N^2) divide & conquer build
-public TreeNode constructMaximumBinaryTree(int[] nums) {
-    Deque<TreeNode> stack = new ArrayDeque<>(); // values decreasing: bottom -> top
-    for (int num : nums) {
-        TreeNode cur = new TreeNode(num);
-        while (!stack.isEmpty() && stack.peek().val < num) {
-            cur.left = stack.pop();          // last popped ends up as the left child
-        }
-        if (!stack.isEmpty()) stack.peek().right = cur;
-        stack.push(cur);
-    }
-    return stack.isEmpty() ? null : stack.peekLast(); // bottom of stack = global max = root
-}
-```
-
-```python
-# python
-# LC 654 - Maximum Binary Tree
-# IDEA: monotonic decreasing stack of nodes; popped nodes chain into cur.left,
-#       remaining top takes cur as its right child; stack[0] is the root
-# time = O(N), space = O(N)
-def constructMaximumBinaryTree(nums):
-    stack = []                      # node values decreasing
-    for num in nums:
-        cur = TreeNode(num)
-        while stack and stack[-1].val < num:
-            cur.left = stack.pop()  # overwritten each pop -> keeps the LAST popped
-        if stack:
-            stack[-1].right = cur
-        stack.append(cur)
-    return stack[0] if stack else None
-```
-
-**Why `cur.left` may be overwritten:** each pop re-assigns `cur.left`, and the popped nodes are already linked to each other (an earlier pop is the previous node's right child), so after the loop `cur.left` correctly points at the root of the whole popped block.
-
-**Related:** LC 1008 (Construct BST from Preorder Traversal) uses the mirror idea — a decreasing stack where a larger value becomes the right child of the last popped node.
-
-### 2-16) Min Stack (LC 155) — Auxiliary Non-Increasing Stack ⭐⭐⭐⭐
-
-> **Template 10: parallel "min stack".** Keep a second stack whose values are **non-increasing**; its top is always the minimum of the live elements. This is the design-problem face of the monotonic stack.
-
-```java
-// java
-// LC 155 - Min Stack
-// IDEA: second stack keeps a non-increasing sequence of minima; push a new min when
-//       val <= current min (the '=' is REQUIRED so duplicates survive matching pops)
-// time = O(1) per op, space = O(N)
-class MinStack {
-    private final Deque<Integer> stack = new ArrayDeque<>();
-    private final Deque<Integer> mins  = new ArrayDeque<>(); // non-increasing
-
-    public void push(int val) {
-        stack.push(val);
-        if (mins.isEmpty() || val <= mins.peek()) mins.push(val);
-    }
-    public void pop() {
-        int v = stack.pop();
-        if (v == mins.peek()) mins.pop();
-    }
-    public int top()    { return stack.peek(); }
-    public int getMin() { return mins.peek(); }
-}
-```
-
-```python
-# python
-# LC 155 - Min Stack
-# IDEA: auxiliary non-increasing stack of minima; '<=' on push keeps duplicate minima
-# time = O(1) per op, space = O(N)
-class MinStack:
-    def __init__(self):
-        self.stack = []
-        self.mins  = []          # non-increasing
-
-    def push(self, val: int) -> None:
-        self.stack.append(val)
-        if not self.mins or val <= self.mins[-1]:
-            self.mins.append(val)
-
-    def pop(self) -> None:
-        if self.stack.pop() == self.mins[-1]:
-            self.mins.pop()
-
-    def top(self) -> int:
-        return self.stack[-1]
-
-    def getMin(self) -> int:
-        return self.mins[-1]
-```
-
-**The classic bug:** pushing the new min only when `val < mins.peek()` (strict). With `push(0); push(0); pop();` the single stored `0` is removed and `getMin()` returns the wrong value. Use `<=`.
-**Space-saving variant:** store `(val, minSoFar)` pairs in one stack — same O(1) ops, simpler to state under interview pressure.
-
-### 2-17) Variations of Existing Templates
-
-| LC # | Problem | Base template | The twist |
-|------|---------|---------------|-----------|
-| 1475 | Final Prices With a Special Discount in a Shop | Template 2 (next smaller) | Next smaller **or equal** — pop on `prices[stack[-1]] >= prices[i]`, and the discount is `price - prices[i]` rather than the index distance |
-| 1019 | Next Greater Node In Linked List | Template 1 (next greater) | Same decreasing stack, but the input is a linked list — walk it once into an array (or push `(index, val)` while walking) since the answer array needs random access |
-| 768 | Max Chunks To Make Sorted II | Template 1 (decreasing pops) | Stack holds **chunk maxima**, not raw elements; answer = final stack size |
-| 769 | Max Chunks To Make Sorted | Template 1 (degenerate) | Values are a permutation of `0..n-1`, so a running max replaces the stack: cut a chunk whenever `runningMax == i` |
-| 1047 / 1209 | Remove All Adjacent Duplicates In String (I / II) | Template 5 (stack with info) | Stack stores `(char, count)` pairs; pop when `count` reaches `k` — LC 1047 is the `k = 2` special case |
-
-**Max Chunks To Make Sorted II (LC 768) — chunk-maxima stack**
-
-```java
-// java
-// LC 768 - Max Chunks To Make Sorted II
-// IDEA: monotonic increasing stack of chunk MAXIMA. A value smaller than the top must
-//       merge every chunk it is smaller than; the merged chunk keeps the largest max
-// time = O(N), space = O(N)
-public int maxChunksToSorted(int[] arr) {
-    Deque<Integer> stack = new ArrayDeque<>(); // chunk maxima, increasing bottom -> top
-    for (int num : arr) {
-        if (!stack.isEmpty() && num < stack.peek()) {
-            int maxOfMerged = stack.pop();
-            while (!stack.isEmpty() && num < stack.peek()) stack.pop();
-            stack.push(maxOfMerged);           // merged chunk keeps the old max
-        } else {
-            stack.push(num);                   // starts a new chunk
-        }
-    }
-    return stack.size();
-}
-```
-
-```python
-# python
-# LC 768 - Max Chunks To Make Sorted II
-# IDEA: increasing stack of chunk maxima; merging keeps the largest max
-# time = O(N), space = O(N)
-def maxChunksToSorted(arr):
-    stack = []                       # chunk maxima, increasing
-    for num in arr:
-        if stack and num < stack[-1]:
-            merged_max = stack.pop()
-            while stack and num < stack[-1]:
-                stack.pop()
-            stack.append(merged_max)
-        else:
-            stack.append(num)
-    return len(stack)
-
-# LC 769 - Max Chunks To Make Sorted (values are a permutation of 0..n-1)
-# time = O(N), space = O(1)
-def maxChunksToSortedI(arr):
-    chunks, running_max = 0, -1
-    for i, num in enumerate(arr):
-        running_max = max(running_max, num)
-        if running_max == i:         # prefix holds exactly the values 0..i
-            chunks += 1
-    return chunks
-```
-
-### 2-18) Classic Stack Problems Worth Knowing (non-monotonic)
-
-> These use a plain stack (no monotonic invariant) but show up constantly alongside the patterns above.
-
-| Problem | LC # | Key Technique | Difficulty |
-|---------|------|---------------|------------|
-| Simplify Path | 71 | Split on `/`; push components, `..` pops, `.`/empty skipped | Medium |
-| Backspace String Compare | 844 | Stack per string, or two pointers from the back for O(1) space | Easy |
-| Remove All Adjacent Duplicates In String | 1047 | Push char, pop when equal to top | Easy |
-| Remove All Adjacent Duplicates in String II | 1209 | Stack of `(char, count)`, pop when count hits `k` | Medium |
-| Flatten Nested List Iterator | 341 | Stack of iterators/lists; flatten lazily in `hasNext()` | Medium |
-| Binary Search Tree Iterator | 173 | Controlled iterative inorder — stack of left spine | Medium |
-| Maximum Frequency Stack | 895 | `freq` map + map from frequency → stack of values | Hard |
-| Baseball Game | 682 | Straight stack simulation of `+`, `D`, `C` | Easy |
+### Worked Solutions — Where Each Problem Lives
+
+| LC # | Problem | Template | Worked in |
+|------|---------|----------|-----------|
+| 496 | Next Greater Element I | 1 | [stack_examples.md](./stack_examples.md#1-next-greater-element-i--lc-496) |
+| 503 | Next Greater Element II | 4 | [stack_examples.md](./stack_examples.md#2-next-greater-element-ii--lc-503) |
+| 739 | Daily Temperatures | 1 | [stack_examples.md](./stack_examples.md#3-daily-temperatures--lc-739-) |
+| 907 | Sum of Subarray Minimums | 7 | [stack_examples.md](./stack_examples.md#4-sum-of-subarray-minimums--lc-907) |
+| 2104 | Sum of Subarray Ranges | 8 | [stack_examples.md](./stack_examples.md#5-sum-of-subarray-ranges--lc-2104) |
+| 84 | Largest Rectangle in Histogram | 3 | [stack_examples.md](./stack_examples.md#6-largest-rectangle-in-histogram--lc-84-) |
+| 901 | Online Stock Span | 1 | [stack_examples.md](./stack_examples.md#7-online-stock-span--lc-901) |
+| 402 | Remove K Digits | 2 | [stack_examples.md](./stack_examples.md#8-remove-k-digits--lc-402-) |
+| 735 | Asteroid Collision | 5 | [stack_examples.md](./stack_examples.md#10-asteroid-collision--lc-735) |
+| 32 | Longest Valid Parentheses | index stack | [stack_examples.md](./stack_examples.md#15-longest-valid-parentheses--lc-32-) |
+| 155 | Min Stack | auxiliary stack | [stack.md](./stack.md#template-4-min-stack--o1-getmin--lc-155-) |
+| 388 | Longest Absolute File Path | depth stack | [stack.md](./stack.md#template-6-scope--context-ledger--lc-388-lc-636-) |
+| 85 | Maximal Rectangle | 3, per row | [matrix_examples.md](./matrix_examples.md#15-maximal-rectangle--lc-85--row-by-row-histogram-reduction) |
+| 654 | Maximum Binary Tree | 9 | [tree_construction.md](./tree_construction.md#1-maximum-binary-tree--lc-654-build-tree-from-an-array-by-index-range-) |
+| 853 | Car Fleet | sort + running max | [sort.md](./sort.md#2-8-car-fleet--lc-853) |
+
+LC 155, 388, 32 and 853 are on this list because the sheet used to solve them: none keeps a
+monotonic invariant by *value*, so the technique above is not what makes them work.

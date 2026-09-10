@@ -1,9 +1,3 @@
-<!-- f96756806b52 -->
-# 樹狀陣列（Binary Indexed Tree / Fenwick Tree）
-
-> **範圍** — 專講 Fenwick 樹：`i & -i` 的索引運算、單點更新 + 前綴查詢，以及用它最俐落的那些題目。
-> **另見**：[segment_tree.md](./segment_tree.md) — 更通用的區間結構，以及 BIT vs 線段樹該怎麼選；[prefix_sum.md](./prefix_sum.md) — 靜態、不支援更新的版本。
-
 <!-- e0ff10649564 -->
 ## LeetCode 題目清單
 
@@ -320,3 +314,9 @@ BIT 只要 `O(log N)` 就能回答，而移除本身就是一次單點更新。
 
 > **面試重點**：只有在查詢是**可逆運算的前綴聚合**、而且搭配**單點更新**時，才該掏出 BIT。
 > 這張表裡的其他東西都該用別的工具。
+
+<!-- stale: f96756806b52 -->
+# 樹狀陣列（Binary Indexed Tree / Fenwick Tree）
+
+> **範圍** — 專講 Fenwick 樹：`i & -i` 的索引運算、單點更新 + 前綴查詢，以及用它最俐落的那些題目。
+> **另見**：[segment_tree.md](./segment_tree.md) — 更通用的區間結構，以及 BIT vs 線段樹該怎麼選；[prefix_sum.md](./prefix_sum.md) — 靜態、不支援更新的版本。

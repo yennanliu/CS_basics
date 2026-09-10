@@ -440,83 +440,11 @@ while pq not empty:
 
 ### Design Twitter — LC 355
 
-The timeline is a **k-way merge** over the followees\' tweet lists (each already newest-first), so
-`heapq.merge` gives the 10 newest posts without materialising every list.
+The one API worth taking away: `heapq.merge(*iterables)` is a **k-way merge** over already-sorted
+iterables, and it is lazy — `islice(merge(...), 10)` reads roughly 10 items, not every followee's
+whole tweet list. That is the whole trick behind the timeline, and it is why `merge` beats
+`nlargest` over a concatenation here.
 
-```python
-# 355 Design Twitter
-# https://github.com/labuladong/fucking-algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E8%AE%BE%E8%AE%A1Twitter.md
-from collections import defaultdict
-from heapq import merge
-class Twitter(object):
-    
-    def __init__(self):
-        self.follower_followees_map = defaultdict(set)
-        self.user_tweets_map = defaultdict(list)
-        self.time_stamp = 0
-
-    def postTweet(self, userId, tweetId):
-        self.user_tweets_map[userId].append((self.time_stamp, tweetId))
-        self.time_stamp -= 1
-
-    def getNewsFeed(self, userId):
-        # get the followees list
-        followees = self.follower_followees_map[userId]
-        # add userId as well, since he/she can also see his/her post in the timeline
-        followees.add(userId)
-        
-        # reversed(.) returns a listreverseiterator, so the complexity is O(1) not O(n)
-        candidate_tweets = [reversed(self.user_tweets_map[u]) for u in followees]
-
-        tweets = []
-        """
-        python starred expression :
-        -> will extend Iterable Unpacking
-        example 1 : *candidate_tweets
-        exmaple 2 : a, *b, c = range(5)
-        ref :
-        https://www.python.org/dev/peps/pep-3132/
-        https://blog.csdn.net/weixin_41521681/article/details/103528136
-        http://swaywang.blogspot.com/2012/01/pythonstarred-expression.html
-        https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/python_trick.md
-        """
-        # complexity is 10*log(n), n is twitter's user number in worst case
-        for t in merge(*candidate_tweets):
-            tweets.append(t[1])
-            if len(tweets) == 10:
-                break
-        return tweets
-
-    def follow(self, followerId, followeeId):
-        self.follower_followees_map[followerId].add(followeeId)
-
-    def unfollow(self, followerId, followeeId):
-        self.follower_followees_map[followerId].discard(followeeId)
-```
-
-## Summary & Quick Reference
-
-| Operation | Python `heapq` | Java `PriorityQueue` |
-|---|---|---|
-| Create min-heap | `h = []` | `new PriorityQueue<>()` |
-| Create max-heap | negate keys: `heappush(h, -v)` | `new PriorityQueue<>(Collections.reverseOrder())` |
-| Build from a list | `heapq.heapify(lst)` — O(N) | `new PriorityQueue<>(collection)` — O(N) |
-| Push | `heapq.heappush(h, v)` | `pq.offer(v)` / `pq.add(v)` |
-| Pop top | `heapq.heappop(h)` | `pq.poll()` |
-| Peek top | `h[0]` — **no `peek()` exists** | `pq.peek()` |
-| Pop then push | `heapq.heapreplace(h, v)` | `pq.poll(); pq.offer(v);` |
-| Push then pop | `heapq.heappushpop(h, v)` | `pq.offer(v); pq.poll();` |
-| Top k largest | `heapq.nlargest(k, it)` | size-k min-heap, then drain |
-| Top k smallest | `heapq.nsmallest(k, it)` | size-k max-heap, then drain |
-| Merge sorted iterables | `heapq.merge(a, b, ...)` | k-way merge by hand |
-| Empty check | `if h:` | `pq.isEmpty()` |
-| Custom order | tuples, or `__lt__` on the class | comparator lambda / `Comparable` |
-
-**Three rules that prevent most API bugs**
-
-1. Only index `0` is meaningful. `h[1]`, `h[-1]`, and iterating a Java `PriorityQueue` all give you
-   **partial** order, not sorted order.
-2. Build a comparator with `Integer.compare(a, b)` / `Long.compare(a, b)`, never `a - b` — subtraction
-   overflows for large or negative values.
-3. Guard the empty case: `h[0]` raises `IndexError`, Java\'s `peek()` returns `null` and `element()`
-   throws. In a `while` condition put the emptiness test **first** so it short-circuits.
+The class it builds — follow/unfollow bookkeeping, the global timestamp, the newest-first
+per-user lists — is worked in
+[design_examples.md](./design_examples.md#16-design-twitter--lc-355).

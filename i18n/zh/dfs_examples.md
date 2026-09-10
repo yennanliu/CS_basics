@@ -62,17 +62,6 @@
 #### 0-7) 把 BST 轉成 Greater Tree
 <!--CODE-->
 
-<!-- 07090472130c -->
-#### 0-8) Serialize and Deserialize Binary Tree
-
-> Python 版本：見下方 [2-20) LC 297](#2-20-serialize-and-deserialize-binary-tree--lc-297)。
-
-<!--CODE-->
-
-<!-- 3b053dc563f0 -->
-#### 0-9) Serialize and Deserialize BST
-<!--CODE-->
-
 <!-- bbc68c153398 -->
 #### 0-10) 找節點之間的最長距離
 <!--CODE-->
@@ -96,12 +85,6 @@
 <!-- efcd926f8ddf -->
 ### 2-2) Insert into a Binary Search Tree — LC 701
 
-<!--CODE-->
-
-<!--CODE-->
-
-<!-- 84b130808aec -->
-### 2-3) Delete Node in a BST — LC 450
 <!--CODE-->
 
 <!--CODE-->
@@ -325,10 +308,6 @@
 
 <!-- 0497d5cc3bc1 -->
 ### 2-20) Serialize and Deserialize Binary Tree — LC 297
-<!--CODE-->
-
-<!-- 72f079dfc2da -->
-### 2-21) Serialize and Deserialize BST — LC 449
 <!--CODE-->
 
 <!-- 3a48da0d2480 -->
@@ -718,3 +697,24 @@
 | 某道樹題以樹為主軸的完整說明 | [tree.md](./tree.md)、[tree2.md](./tree2.md)、[bst.md](./bst.md) |
 
 **怎麼讀有多段程式碼的條目**：同一個標題下有兩段程式碼時，中間的註解會說明第二段教了什麼 —— 不同的複雜度、不同語言的慣用寫法，或是一個獨立的技巧。其他情況都只是單一份標準解法。
+
+<!-- stale: 07090472130c -->
+#### 0-8) Serialize and Deserialize Binary Tree
+
+> Python 版本：見下方 [2-20) LC 297](#2-20-serialize-and-deserialize-binary-tree--lc-297)。
+
+<!--CODE-->
+
+<!-- stale: 3b053dc563f0 -->
+#### 0-9) Serialize and Deserialize BST
+<!--CODE-->
+
+<!-- stale: 84b130808aec -->
+### 2-3) Delete Node in a BST — LC 450
+<!--CODE-->
+
+<!--CODE-->
+
+<!-- stale: 72f079dfc2da -->
+### 2-21) Serialize and Deserialize BST — LC 449
+<!--CODE-->

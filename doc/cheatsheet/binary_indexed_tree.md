@@ -1,7 +1,7 @@
 # Binary Indexed Tree (Fenwick Tree)
 
 > **Scope** — The Fenwick tree specifically — `i & -i` index arithmetic, point update + prefix query, and the problems it is the tidiest answer to.
-> **See also**: [segment_tree.md](./segment_tree.md) — the more general range structure and the BIT-vs-segment-tree decision; [prefix_sum.md](./prefix_sum.md) — the static, no-update version.
+> **See also**: [segment_tree.md](./segment_tree.md) — the more general range structure, for the operations a BIT cannot do (min / max / gcd, lazy range updates, interval coverage); [prefix_sum.md](./prefix_sum.md) — the static, no-update version.
 
 ## LeetCode Problem Lists
 

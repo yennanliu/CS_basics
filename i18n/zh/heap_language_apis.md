@@ -137,7 +137,7 @@ API 用錯，不是演算法想錯。
 <!-- 598a9bfd2a3c -->
 ## LC 範例
 
-<!-- 9363f579ddbb -->
+<!-- stale: 9363f579ddbb -->
 ### Design Twitter — LC 355
 
 時間軸本質上是對所有追蹤對象的推文清單做**k 路合併**（每一份都已經是最新在前），
@@ -145,7 +145,7 @@ API 用錯，不是演算法想錯。
 
 <!--CODE-->
 
-<!-- c60aba944554 -->
+<!-- stale: c60aba944554 -->
 ## 總結與速查
 
 | 操作 | Python `heapq` | Java `PriorityQueue` |
