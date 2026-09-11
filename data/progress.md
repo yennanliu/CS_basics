@@ -54,8 +54,11 @@
 	- `3) 轉換檢查清單`
 
 
-
 - dp_pattern.md
+	- https://yennj12.js.org/CS_basics/cheatsheets/dp_pattern.zh.html
+
+
+
 - kadane_algorithm.md
 
 
