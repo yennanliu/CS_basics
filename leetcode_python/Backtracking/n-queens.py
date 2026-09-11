@@ -52,8 +52,90 @@ NOTE !!!
 """
 
 
-
 # V0
+# IDEA: BACKTRACK (gpt)
+class Solution(object):
+
+    def solveNQueens(self, n):
+        """
+        :type n: int
+        :rtype: List[List[str]]
+        """
+
+        self.res = []
+
+        # matrix[row][col]
+        matrix = [["."] * n for _ in range(n)]
+
+        # Start from row 0
+        self.helper(n, 0, matrix)
+
+        return self.res
+
+    # Backtracking:
+    # Place one queen in each row.
+    def helper(self, n, row, matrix):
+
+        # All rows have a queen
+        if row == n:
+            # Deep copy the board
+            board = ["".join(r) for r in matrix]
+            self.res.append(board)
+            return
+
+        # Try every column in the current row
+        for col in range(n):
+
+            # Skip if placing a queen here causes an attack
+            if self.can_attack(n, row, col, matrix):
+                continue
+
+            # Choose
+            matrix[row][col] = "Q"
+
+            # Explore
+            self.helper(n, row + 1, matrix)
+
+            # Undo
+            matrix[row][col] = "."
+
+    def can_attack(self, n, row, col, matrix):
+        """
+        Check whether a queen already exists in:
+        1. Same column
+        2. Same diagonal
+        """
+
+        # Check same column
+        for r in range(n):
+            if matrix[r][col] == "Q":
+                return True
+
+        # Check upper-left diagonal
+        r = row - 1
+        c = col - 1
+
+        while r >= 0 and c >= 0:
+            if matrix[r][c] == "Q":
+                return True
+            r -= 1
+            c -= 1
+
+        # Check upper-right diagonal
+        r = row - 1
+        c = col + 1
+
+        while r >= 0 and c < n:
+            if matrix[r][c] == "Q":
+                return True
+            r -= 1
+            c += 1
+
+        return False
+
+
+
+# V0-0-1
 # IDEA: BACKTRACK (gpt)
 """
 NOTE !!!
@@ -94,7 +176,6 @@ NOTE !!!
     ```
     「我要在棋盤上走來走去」
     ```
-
 
 """
 class Solution(object):
