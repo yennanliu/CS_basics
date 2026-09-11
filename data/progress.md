@@ -51,7 +51,7 @@
 
 - recursion_to_dp.zh.html
 	- https://yennj12.js.org/CS_basics/cheatsheets/recursion_to_dp.zh.html
-	- `3) 轉換檢查清單`
+	- `6-1) 狀態機 DP — f(index, state)`
 
 
 - dp_pattern.md
