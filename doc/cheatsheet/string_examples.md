@@ -16,19 +16,19 @@ Read the template it instantiates in [string.md](./string.md) first, then the ex
 
 | Group | Problems |
 |---|---|
-| **Parsing & Comparison** | [2-1)](#2-1-compare-version-number--lc-165), [2-2)](#2-2-add-two-numbers-ii--decode-string), [2-4)](#2-4-monotone-increasing-digits--lc-738), [2-5)](#2-5-validate-ip-address--lc-468), [2-8)](#2-8-roman-to-integer--lc-13), [2-13)](#2-13-verifying-an-alien-dictionary--lc-953) |
+| **Parsing & Comparison** | [2-1)](#2-1-compare-version-number--lc-165-), [2-2)](#2-2-add-two-numbers-ii--decode-string), [2-4)](#2-4-monotone-increasing-digits--lc-738), [2-5)](#2-5-validate-ip-address--lc-468), [2-8)](#2-8-roman-to-integer--lc-13-), [2-13)](#2-13-verifying-an-alien-dictionary--lc-953-) |
 | **Grouping & Run-Length** | [2-3)](#2-3-count-and-say--lc-38), [2-18)](#2-18-expressive-words--lc-809) |
-| **Building & Formatting** | [2-6)](#2-6-license-key-formatting--lc-482), [2-16)](#2-16-ambiguous-coordinates--lc-816), [2-19)](#2-19-integer-to-english-words--lc-273) |
-| **Search & Matching** | [2-7)](#2-7-repeated-string-match--lc-686), [2-10)](#2-10-palindromic-substrings--lc-647), [2-11)](#2-11-repeated-substring-pattern--lc-459), [2-20)](#2-20-rotate-string--lc-796) |
+| **Building & Formatting** | [2-6)](#2-6-license-key-formatting--lc-482), [2-16)](#2-16-ambiguous-coordinates--lc-816), [2-19)](#2-19-integer-to-english-words--lc-273-) |
+| **Search & Matching** | [2-7)](#2-7-repeated-string-match--lc-686), [2-10)](#2-10-palindromic-substrings--lc-647-), [2-11)](#2-11-repeated-substring-pattern--lc-459), [2-20)](#2-20-rotate-string--lc-796) |
 | **Counting & Contribution** | [2-9)](#2-9-count-unique-characters-of-all-substrings-of-a-given-string--lc-828), [2-15)](#2-15-count-pairs-of-equal-substrings-with-minimum-difference--lc-1794) |
 | **Two-Pointer & In-Place** | [2-12)](#2-12-reverse-only-letters--lc-917), [2-14)](#2-14-longest-word-in-dictionary-through-deleting--lc-524) |
 | **Prefix Validation** | [2-17)](#2-17-longest-word-in-dictionary--lc-720) |
-| **Two-Sequence DP** | [2-21)](#2-21-space-optimised-two-sequence-dp--lc-72-lc-1143) |
+| **Two-Sequence DP** | [2-21)](#2-21-space-optimised-two-sequence-dp--lc-72-lc-1143-) |
 | **Reference** | [2-22)](#2-22-additional-high-frequency-problems-reference) |
 
 ## LC Examples
 
-### 2-1) Compare Version Number — LC 165
+### 2-1) Compare Version Number — LC 165 ⭐⭐⭐⭐
 > **Dropped as a duplicate**: a second Python variant that popped from the front and then ran two leftover loops — same split-and-compare approach; the surviving version zero-pads the shorter version instead.
 
 - go through 2 string, keep comparing digits in eash string
@@ -222,7 +222,7 @@ class Solution(object):
         return -1
 ```
 
-### 2-8) Roman to Integer — LC 13
+### 2-8) Roman to Integer — LC 13 ⭐⭐⭐⭐
 ```python
 # LC 13. Roman to Integer
 class Solution(object):
@@ -281,7 +281,7 @@ class Solution(object):
             return res % (10**9 + 7)
 ```
 
-### 2-10) Palindromic Substrings — LC 647
+### 2-10) Palindromic Substrings — LC 647 ⭐⭐⭐⭐
 > The O(n) centre-expansion and Manacher treatments of this problem live in [palindrome.md](./palindrome.md); this is the O(n³) brute force kept for contrast.
 
 ```python
@@ -513,7 +513,7 @@ Final: "Qedo1ct-eeLg=ntse-T!"
 - LC 541 Reverse String II (selective ranges)
 - LC 151 Reverse Words in a String (word-level reversal)
 
-### 2-13) Verifying an Alien Dictionary — LC 953
+### 2-13) Verifying an Alien Dictionary — LC 953 ⭐⭐⭐⭐
 
 **Pattern: Custom Lexicographic Order Comparison**
 - Map each character to its rank in the alien order
@@ -1210,7 +1210,7 @@ private List<int[]> groups(String x) {
 - ⚠️ Extension only **grows** groups: `"aaa"` cannot match `"aaaa"` (need `n1 > n2`).
 - ⚠️ A group of size 2 can never be stretched (`"aa"` from `"a"` is invalid) — the `>= 3` rule.
 
-### 2-19) Integer to English Words — LC 273
+### 2-19) Integer to English Words — LC 273 ⭐⭐⭐⭐
 > Instantiates **Template 5: Greedy Line Packing + Space Distribution** in [string.md](./string.md#template-5-greedy-line-packing--space-distribution-text-wrapping--lc-68-) — same "collect pieces into a list, join once" discipline, chunked by 3 digits instead of by width.
 
 *Twist*: same "build pieces into a list, join once at the end" discipline, but the chunking rule
@@ -1307,7 +1307,7 @@ class Solution(object):
         return False
 ```
 
-### 2-21) Space-Optimised Two-Sequence DP — LC 72, LC 1143
+### 2-21) Space-Optimised Two-Sequence DP — LC 72, LC 1143 ⭐⭐⭐⭐⭐
 > The **family** is owned by [dp_string.md](./dp_string.md) and the 2D templates by [dp.md](./dp.md); what is kept here is the O(min(m, n))-space **Python** rolling-row form, which those sheets carry only in Java.
 
 ```python

@@ -35,7 +35,7 @@ sheet becomes a set of instantiations rather than nine separate problems.
 
 ## Fixed-Size Window
 
-### 1) Permutation in String — LC 567
+### 1) Permutation in String — LC 567 ⭐⭐⭐⭐
 
 *Template 1. Fixed window of `len(s1)`; because the size is fixed, comparing the two frequency
 maps directly is affordable — no `have`/`need` counter needed.*
@@ -82,7 +82,7 @@ class Solution(object):
         return False
 ```
 
-### 2) Find All Anagrams in a String — LC 438
+### 2) Find All Anagrams in a String — LC 438 ⭐⭐⭐⭐
 
 *Template 1. Same window as LC 567, but collect every start index instead of returning on the
 first match.*
@@ -190,7 +190,7 @@ public int longestOnes(int[] nums, int k) {
 }
 ```
 
-### 5) Longest Repeating Character Replacement — LC 424
+### 5) Longest Repeating Character Replacement — LC 424 ⭐⭐⭐⭐⭐
 
 *Template 3 with the validity test `windowLen - maxFreq <= k`: whatever the most frequent
 character in the window is, everything else has to be replaced.*
@@ -408,7 +408,7 @@ class Solution(object):
         return res 
 ```
 
-### 9) Partition Labels — LC 763
+### 9) Partition Labels — LC 763 ⭐⭐⭐⭐
 
 *Greedy window with no shrink phase: precompute each character's last index, then stretch `end`
 while scanning and cut when `i == end`. The window only ever grows and then restarts.*

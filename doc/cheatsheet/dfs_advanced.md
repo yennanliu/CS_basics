@@ -1575,7 +1575,7 @@ def get_depth(x, parent, depth):
 > **Contrast with Union-Find:** the climb-and-memo is structurally the same walk as DSU `find()` with
 > path compression, and `parent[]` even looks like a DSU array — but there is **no `union()`**, no
 > merging, and the tree is fixed. Reaching for a DSU here adds `α(N)` bookkeeping for nothing. See
-> [union_find.md → When NOT to use Union Find](./union_find.md#3-tips--pitfalls).
+> [union_find.md → When NOT to use Union Find](./union_find.md#3-tips--pitfalls-).
 
 **c. Similar LC**
 

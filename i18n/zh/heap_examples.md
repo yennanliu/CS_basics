@@ -26,16 +26,16 @@
 <!-- 598a9bfd2a3c -->
 ## LC 範例
 
-<!-- 0eeb6ceddca1 -->
-### 1) Kth Largest Element in a Stream — LC 703
+<!-- 342736dee788 -->
+### 1) Kth Largest Element in a Stream — LC 703 ⭐⭐⭐⭐
 <!--CODE-->
 
 <!-- 25779f9a3c1e -->
 ### 2) Ugly Number II — LC 264
 <!--CODE-->
 
-<!-- 4158286d087c -->
-### 3) Find Median from Data Stream — LC 295
+<!-- b5bad44dbe0c -->
+### 3) Find Median from Data Stream — LC 295 ⭐⭐⭐⭐⭐
 <!--CODE-->
 
 <!-- c80fb09bdc2c -->
@@ -78,7 +78,7 @@
 | LC # | 題目 | 共通模式 | 關鍵差異 |
 |------|---------|---------------|----------------|
 | 1751 | Max Number of Events That Can Be Attended II | 輸入的活動資料相同 | 活動佔用**整段**區間並帶有價值 → DP + 二分搜尋，**不是**堆積 |
-| 621 | Task Scheduler | 時間掃描 + 堆積，每個時刻一個時段 | 依頻率的最大堆積 + 冷卻佇列（見 [§ 17](#17-task-scheduler--lc-621)） |
+| 621 | Task Scheduler | 時間掃描 + 堆積，每個時刻一個時段 | 依頻率的最大堆積 + 冷卻佇列（見 [§ 17](#17-task-scheduler--lc-621-)） |
 | 253 | Meeting Rooms II | 依開始排序，結束時間的最小堆積 | 數的是*同時進行*的區間數，不是挑出一個子集合 |
 | 2406 | Divide Intervals Into Min Number of Groups | 依開始排序，結束時間的最小堆積 | 與 253 相同，只是換成區間分組的說法（見 [§ 15](#15-divide-intervals-into-minimum-number-of-groups--lc-2406)） |
 | 630 | Course Schedule III | 依截止日貪婪 + 堆積 | 最大堆積做**替換**：超時就丟掉耗時最長的課 |
@@ -96,8 +96,8 @@
 
 <!--CODE-->
 
-<!-- 6895d2ee8d46 -->
-### 10) Kth Smallest Element in a Sorted Matrix — LC 378
+<!-- da5a4a8cbfea -->
+### 10) Kth Smallest Element in a Sorted Matrix — LC 378 ⭐⭐⭐⭐
 
 <!--CODE-->
 
@@ -131,8 +131,8 @@
 
 <!--CODE-->
 
-<!-- 0a5e5356a9a1 -->
-### 17) Task Scheduler — LC 621
+<!-- d21fadd24550 -->
+### 17) Task Scheduler — LC 621 ⭐⭐⭐⭐⭐
 
 <!--CODE-->
 
@@ -218,12 +218,12 @@
 > 下面五個範例來自舊的 `priority_queue.md`，是**以 Java 為主**的 — 對應的
 > Python 版本放在 [heap.md](./heap.md) 的模板裡。
 
-<!-- b541ef3e6e63 -->
-### 19) K Closest Points to Origin — LC 973
+<!-- 229af6d3483e -->
+### 19) K Closest Points to Origin — LC 973 ⭐⭐⭐⭐⭐
 <!--CODE-->
 
-<!-- c79dcf08ef13 -->
-### 20) Reorganize String — LC 767
+<!-- d63e6cef0fc5 -->
+### 20) Reorganize String — LC 767 ⭐⭐⭐⭐
 <!--CODE-->
 
 <!-- 67d54a38d266 -->

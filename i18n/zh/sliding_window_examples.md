@@ -37,8 +37,8 @@
 <!-- 30eacfa613f8 -->
 ## 固定長度視窗
 
-<!-- 039f68ccb2ed -->
-### 1) Permutation in String — LC 567
+<!-- cf4321a3528f -->
+### 1) Permutation in String — LC 567 ⭐⭐⭐⭐
 
 *模板 1。視窗固定為 `len(s1)`；因為長度固定，直接比對兩張頻率表就夠划算了 — 不需要 `have`／`need` 計數器。*
 
@@ -48,8 +48,8 @@
 
 <!--CODE-->
 
-<!-- 4d005d8fcf69 -->
-### 2) Find All Anagrams in a String — LC 438
+<!-- d81429a26aba -->
+### 2) Find All Anagrams in a String — LC 438 ⭐⭐⭐⭐
 
 *模板 1。視窗跟 LC 567 一模一樣，只是改成蒐集每個起始索引，而不是在第一次配對成功時就回傳。*
 
@@ -78,8 +78,8 @@
 
 <!--CODE-->
 
-<!-- b92c47b5932e -->
-### 5) Longest Repeating Character Replacement — LC 424
+<!-- bda3a1ef54ed -->
+### 5) Longest Repeating Character Replacement — LC 424 ⭐⭐⭐⭐⭐
 
 *模板 3，合法性判斷改成 `windowLen - maxFreq <= k`：不管視窗裡出現最多次的是哪個字元，其他全部都得被替換掉。*
 
@@ -126,8 +126,8 @@
 
 <!--CODE-->
 
-<!-- 077d78a52c2e -->
-### 9) Partition Labels — LC 763
+<!-- 8ff4f50b8237 -->
+### 9) Partition Labels — LC 763 ⭐⭐⭐⭐
 
 *貪婪視窗，沒有收縮階段：先預先算出每個字元最後出現的索引，掃描時一路把 `end` 往外拉，`i == end` 時就切一刀。這個視窗只會變大，然後重新開始。*
 

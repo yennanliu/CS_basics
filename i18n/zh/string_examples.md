@@ -15,26 +15,26 @@
 一題一節，編號連續不跳號。每題只出現一次。
 先去 [string.md](./string.md) 讀它對應的模板，再回來看範例。
 
-<!-- b9bf3d8e8f13 -->
+<!-- d9b3e8520555 -->
 ### 題目索引
 
 | 分組 | 題目 |
 |---|---|
-| **解析與比較** | [2-1)](#2-1-compare-version-number--lc-165), [2-2)](#2-2-add-two-numbers-ii--decode-string), [2-4)](#2-4-monotone-increasing-digits--lc-738), [2-5)](#2-5-validate-ip-address--lc-468), [2-8)](#2-8-roman-to-integer--lc-13), [2-13)](#2-13-verifying-an-alien-dictionary--lc-953) |
+| **解析與比較** | [2-1)](#2-1-compare-version-number--lc-165-), [2-2)](#2-2-add-two-numbers-ii--decode-string), [2-4)](#2-4-monotone-increasing-digits--lc-738), [2-5)](#2-5-validate-ip-address--lc-468), [2-8)](#2-8-roman-to-integer--lc-13-), [2-13)](#2-13-verifying-an-alien-dictionary--lc-953-) |
 | **分組與遊程編碼** | [2-3)](#2-3-count-and-say--lc-38), [2-18)](#2-18-expressive-words--lc-809) |
-| **建構與格式化** | [2-6)](#2-6-license-key-formatting--lc-482), [2-16)](#2-16-ambiguous-coordinates--lc-816), [2-19)](#2-19-integer-to-english-words--lc-273) |
-| **搜尋與比對** | [2-7)](#2-7-repeated-string-match--lc-686), [2-10)](#2-10-palindromic-substrings--lc-647), [2-11)](#2-11-repeated-substring-pattern--lc-459), [2-20)](#2-20-rotate-string--lc-796) |
+| **建構與格式化** | [2-6)](#2-6-license-key-formatting--lc-482), [2-16)](#2-16-ambiguous-coordinates--lc-816), [2-19)](#2-19-integer-to-english-words--lc-273-) |
+| **搜尋與比對** | [2-7)](#2-7-repeated-string-match--lc-686), [2-10)](#2-10-palindromic-substrings--lc-647-), [2-11)](#2-11-repeated-substring-pattern--lc-459), [2-20)](#2-20-rotate-string--lc-796) |
 | **計數與貢獻法** | [2-9)](#2-9-count-unique-characters-of-all-substrings-of-a-given-string--lc-828), [2-15)](#2-15-count-pairs-of-equal-substrings-with-minimum-difference--lc-1794) |
 | **雙指標與原地操作** | [2-12)](#2-12-reverse-only-letters--lc-917), [2-14)](#2-14-longest-word-in-dictionary-through-deleting--lc-524) |
 | **前綴驗證** | [2-17)](#2-17-longest-word-in-dictionary--lc-720) |
-| **雙序列 DP** | [2-21)](#2-21-space-optimised-two-sequence-dp--lc-72-lc-1143) |
+| **雙序列 DP** | [2-21)](#2-21-space-optimised-two-sequence-dp--lc-72-lc-1143-) |
 | **參考** | [2-22)](#2-22-additional-high-frequency-problems-reference) |
 
 <!-- 598a9bfd2a3c -->
 ## LC 範例
 
-<!-- 09cb03276ac6 -->
-### 2-1) Compare Version Number — LC 165
+<!-- 7715402df4ef -->
+### 2-1) Compare Version Number — LC 165 ⭐⭐⭐⭐
 > **因重複而刪除**：另一份 Python 版本，從前面 pop 之後再跑兩個收尾迴圈 — 拆解再比對的做法完全相同；留下來的版本改成把較短的版本號補零。
 
 - 同時走訪兩個字串，逐段比較數字
@@ -71,8 +71,8 @@
 
 <!--CODE-->
 
-<!-- 0fc2e5fc93a4 -->
-### 2-8) Roman to Integer — LC 13
+<!-- a37329593715 -->
+### 2-8) Roman to Integer — LC 13 ⭐⭐⭐⭐
 <!--CODE-->
 
 <!-- 041f74879b22 -->
@@ -81,8 +81,8 @@
 
 <!--CODE-->
 
-<!-- 14576683eec6 -->
-### 2-10) Palindromic Substrings — LC 647
+<!-- fd46fa145524 -->
+### 2-10) Palindromic Substrings — LC 647 ⭐⭐⭐⭐
 > 這題的 O(n) 中心擴展法與 Manacher 解法在 [palindrome.md](./palindrome.md)；這裡留的是 O(n³) 暴力解，用來對照。
 
 <!--CODE-->
@@ -127,8 +127,8 @@
 - LC 541 Reverse String II（選擇性區間）
 - LC 151 Reverse Words in a String（以單字為單位反轉）
 
-<!-- aa313a560a4d -->
-### 2-13) Verifying an Alien Dictionary — LC 953
+<!-- 67d9dd7d0ab7 -->
+### 2-13) Verifying an Alien Dictionary — LC 953 ⭐⭐⭐⭐
 
 **模式：自訂字典序比較**
 - 把每個字元對應到它在外星字母序中的排名
@@ -270,8 +270,8 @@
 - ⚠️ 擴展只能**變長**：`"aaa"` 無法對上 `"aaaa"`（需要 `n1 > n2`）。
 - ⚠️ 大小為 2 的分組永遠拉不出來（從 `"a"` 變成 `"aa"` 不合法）— 這就是 `>= 3` 規則。
 
-<!-- e59f005db553 -->
-### 2-19) Integer to English Words — LC 273
+<!-- 790fd633bc9f -->
+### 2-19) Integer to English Words — LC 273 ⭐⭐⭐⭐
 > 實作 [string.md](./string.md#template-5-greedy-line-packing--space-distribution-text-wrapping--lc-68-) 的 **模板 5：貪婪排版 + 空白分配** — 同樣是「把片段收進 list，最後一次 join」的紀律，只是切法從按寬度換成按 3 位數一組。
 
 *變化點*：同樣是「把片段收進 list，最後一次 join」的紀律，但切分規則變成**每 3 位數一組**，而不是「能塞幾個字就塞幾個」。用 `List<String>` 再 join，比 `StringBuilder` + `trim()` 好，因為這樣根本不可能出現連續兩個空白的 bug。
@@ -289,8 +289,8 @@
 
 <!--CODE-->
 
-<!-- 29fb51ccedf3 -->
-### 2-21) Space-Optimised Two-Sequence DP — LC 72, LC 1143
+<!-- c118741c452a -->
+### 2-21) Space-Optimised Two-Sequence DP — LC 72, LC 1143 ⭐⭐⭐⭐⭐
 > 這個**家族**歸 [dp_string.md](./dp_string.md) 管，二維模板歸 [dp.md](./dp.md) 管；這裡留下的是 O(min(m, n)) 空間的 **Python** 滾動列寫法，那兩份文件只有 Java 版。
 
 <!--CODE-->

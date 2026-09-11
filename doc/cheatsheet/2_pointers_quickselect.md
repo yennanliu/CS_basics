@@ -43,7 +43,7 @@ QuickSelect: Only finds the Kth element position → O(n) average
 
 ## Templates & Algorithms
 
-### Template 1: Kth Largest Element — LC 215
+### Template 1: Kth Largest Element — LC 215 ⭐⭐⭐⭐⭐
 
 ```python
 # Python - QuickSelect for Kth Largest
@@ -196,7 +196,7 @@ Answer: nums[4] = 5 (2nd largest element)
 
 ---
 
-### Template 2: K Closest Points to Origin — LC 973
+### Template 2: K Closest Points to Origin — LC 973 ⭐⭐⭐⭐
 
 ```python
 # Python - K Closest Points using QuickSelect
@@ -327,7 +327,7 @@ private int partitionPts(int[][] a, int lo, int hi, int pivotIdx) {
 
 ---
 
-### Optimization: Randomized Pivot
+### Optimization: Randomized Pivot ⭐⭐⭐⭐
 
 ```python
 # Randomized QuickSelect for better average performance
@@ -374,7 +374,7 @@ def findKthLargest_randomized(nums, k):
 
 ---
 
-### Partition Algorithm Variants
+### Partition Algorithm Variants ⭐⭐⭐
 
 **1. Hoare Partition (Two-Pointer from Ends):**
 

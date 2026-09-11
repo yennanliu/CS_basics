@@ -22,7 +22,7 @@ third of the file interleaved with unrelated language idioms.
 
 ## `heapq` — Priority Queue
 
-### `heapq` basics (min-heap by default)
+### `heapq` basics (min-heap by default) ⭐⭐⭐⭐⭐
 
 
 **heapq** - Heap queue algorithm (priority queue)
@@ -388,7 +388,7 @@ heapq.heapify(heap)  # O(n)
 - ✅ For custom comparison: use tuple ordering or implement `__lt__`
 
 
-### Max-heap via negation
+### Max-heap via negation ⭐⭐⭐⭐⭐
 
 
 Python's `heapq` only implements a **min heap** — there is no `reverse=True` option for `heapify()`.
@@ -702,7 +702,7 @@ def containsNearbyAlmostDuplicate(nums, indexDiff, valueDiff):
 
 ## `bisect` — Binary Search on a Sorted List
 
-### `bisect_left` and `bisect_right`
+### `bisect_left` and `bisect_right` ⭐⭐⭐⭐⭐
 
 - algorithm for `NOT sorting an array eveytime` whenever there is a new inserted element 
 ```text
@@ -844,7 +844,7 @@ print(dist[0][1])   # 5
 print(dist[0][99])  # inf
 ```
 
-### `Counter`
+### `Counter` ⭐⭐⭐⭐
 
 ```python
 from collections import Counter
@@ -881,7 +881,7 @@ def topKFrequent(nums, k):
     return [x for x, _ in Counter(nums).most_common(k)]
 ```
 
-### `deque` (double-ended queue)
+### `deque` (double-ended queue) ⭐⭐⭐⭐
 
 ```python
 from collections import deque

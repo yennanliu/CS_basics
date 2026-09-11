@@ -18,7 +18,7 @@
 
 ## 0) Concept
 
-### 0-0) Union-Find Variants
+### 0-0) Union-Find Variants ⭐⭐⭐⭐
 
 #### Quick Find vs Quick Union
 
@@ -101,7 +101,7 @@ class QuickFind {
 - Large datasets (millions of elements)
 - Most practical applications (recommended)
 
-### 0-1) Key Optimizations
+### 0-1) Key Optimizations ⭐⭐⭐⭐⭐
 Union Find achieves nearly O(1) performance through two critical optimizations:
 
 **Path Compression**: Applied in `find()` operation
@@ -125,7 +125,7 @@ Without these optimizations, operations degrade to O(n). With both, time complex
 - **Weighted Union Find**: Handle ratios/weights between nodes (LC 399)
 - **Grid Problems**: 2D grid connectivity (Number of Islands variants)
 
-### 0-3) Algorithm Pattern / Template
+### 0-3) Algorithm Pattern / Template ⭐⭐⭐⭐⭐
 
 **Core Operations:**
 - `find(x)`: Get root parent of x with path compression
@@ -322,7 +322,7 @@ class UnionFind:
 - Already connected nodes
 - Invalid indices
 
-### 0-4) The Six Union-Find Patterns
+### 0-4) The Six Union-Find Patterns ⭐⭐⭐⭐
 
 Every problem below is the same template with a different answer to *"what is a node, and when
 do two of them merge?"* That question is the whole difficulty; the DSU itself never changes.
@@ -473,7 +473,7 @@ After:   A → E
          D → E
 ```
 
-## 3) Tips & Pitfalls
+## 3) Tips & Pitfalls ⭐⭐⭐⭐
 
 **Common Mistakes:**
 1. **Forgetting Path Compression**: Results in O(n) time instead of nearly O(1)

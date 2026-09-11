@@ -134,7 +134,7 @@ Out[11]: [1, 2, 3, 4, 5]
 > **Performance note**: `insert` shifts every element after `idx`, so it is `O(n)`.
 > Calling it inside a loop → `O(n²)`. That is acceptable for LC constraints like
 > `n <= 2000` (LC 406), but if you only ever insert at the FRONT, use
-> `collections.deque.appendleft()` (`O(1)`) — see [1-32) deque](./python_trick_stdlib.md#deque-double-ended-queue).
+> `collections.deque.appendleft()` (`O(1)`) — see [1-32) deque](./python_trick_stdlib.md#deque-double-ended-queue-).
 
 #### **Use case 1 — LC 406 Queue Reconstruction by Height ⭐⭐⭐⭐⭐**
 
@@ -221,7 +221,7 @@ def countSmaller(nums):
     return res[::-1]
 ```
 
-> See [1-27) bisect](./python_trick_stdlib.md#bisect_left-and-bisect_right).
+> See [1-27) bisect](./python_trick_stdlib.md#bisect_left-and-bisect_right-).
 
 #### **Use case 3 — insert at the FRONT (build result in reverse)**
 

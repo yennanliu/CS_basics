@@ -70,7 +70,7 @@ Trees can be efficiently represented using arrays, especially for complete binar
 | **[Heap](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/heap.md)** | Parent-child ordering property | Fast min/max extraction | Priority queues, sorting |
 | **[Trie](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/trie.md)** | Prefix tree for strings | Efficient string operations | Auto-complete, spell check |
 
-### 0-2) Common Tree Patterns
+### 0-2) Common Tree Patterns ⭐⭐⭐⭐
 
 The nine recurring shapes. Each row names the **one** place the code for that pattern lives —
 no pattern is written out twice in this family of sheets.
@@ -79,7 +79,7 @@ no pattern is written out twice in this family of sheets.
 |---|---------|-----------|---------------|----------|
 | 1 | **Path-Based** | carry the accumulated value (sum, max-so-far, path) DOWN through DFS parameters | [tree_lca_distance.md](./tree_lca_distance.md) — root-to-leaf path templates | LC 112, 113, 257, 437, 1448 |
 | 2 | **Subtree Validation** | post-order — validate both children before deciding for the parent | [tree2 1.3)](./tree2.md#13-postorder-template--lc-145) | LC 98, 101, 110 |
-| 3 | **Height vs Depth** | height is computed bottom-up (post-order); depth is carried top-down (pre-order) | [0-3) Top-Down vs Bottom-Up](#0-3-top-down-vs-bottom-up-dfs--two-strategies-for-tree-problems) | LC 104, 111, 543 |
+| 3 | **Height vs Depth** | height is computed bottom-up (post-order); depth is carried top-down (pre-order) | [0-3) Top-Down vs Bottom-Up](#0-3-top-down-vs-bottom-up-dfs--two-strategies-for-tree-problems-) | LC 104, 111, 543 |
 | 4 | **Tree Construction** | one traversal gives the structure, the other gives the position; or split an index range at the chosen root | [tree_construction.md](./tree_construction.md) | LC 105, 106, 654, 108 |
 | 5 | **Serialization** | encode = DFS that **returns a string**; decode = recursive descent that **consumes a prefix** | [tree_codec.md](./tree_codec.md) | LC 297, 449, 606, 536 |
 | 6 | **Move Parent** | build a parent map, treat the tree as an undirected graph, then BFS in all directions | [tree_lca_distance.md](./tree_lca_distance.md) — move-parent pattern | LC 863, 742, 1740 |
@@ -91,7 +91,7 @@ no pattern is written out twice in this family of sheets.
 > other seven are one hop away in the sheet named in the table.
 > **Reference** (pattern 2): [Subtree Validation Video](https://www.bilibili.com/video/BV1ue4y1Y7Mf/)
 
-### 0-3) Top-Down vs Bottom-Up DFS — Two Strategies for Tree Problems
+### 0-3) Top-Down vs Bottom-Up DFS — Two Strategies for Tree Problems ⭐⭐⭐⭐⭐
 
 <p align="center"><img src="../pic/tree_depth_vs_height.jpeg" width="500"></p>
 
@@ -235,7 +235,7 @@ private int height(TreeNode root) {
 **Interview Tip:**
 > LC 104 (Max Depth) is the best problem to practice both strategies. Start with bottom-up (3 lines), then rewrite as top-down (global var + void helper). Understanding both unlocks the full tree problem toolkit.
 
-### 0-4) Traversal Order Selection Strategy
+### 0-4) Traversal Order Selection Strategy ⭐⭐⭐⭐⭐
 
 ```text
 When to use which traversal:
@@ -323,7 +323,7 @@ private void getLeafSeq(TreeNode root, List<Integer> list) {
 | 104 | Maximum Depth | Post-order | Need children's height first |
 | 110 | Balanced Binary Tree | Post-order | Validate subtree heights |
 
-### 0-5) Traversal Quick-Reference Table (Interview Cheat Sheet)
+### 0-5) Traversal Quick-Reference Table (Interview Cheat Sheet) ⭐⭐⭐⭐
 
 > Inspired by LC 113 Path Sum II — key insight: the traversal choice determines the algorithm structure.
 
@@ -414,7 +414,7 @@ private void getLeafSeq(TreeNode root, List<Integer> list) {
 
 ## 1) Tree Templates & Algorithms
 
-### 1.1) Universal Tree Template
+### 1.1) Universal Tree Template ⭐⭐⭐⭐⭐
 
 **Core Principle**: Tree problems are naturally recursive - solve for current node using solutions from subtrees.
 
@@ -460,7 +460,7 @@ public ResultType solveTreeProblem(TreeNode root, ParamType params) {
 }
 ```
 
-### 1.2) Template Selection Guide
+### 1.2) Template Selection Guide ⭐⭐⭐⭐
 
 | Pattern | Template | When to Use | Example Problems |
 |---------|----------|-------------|------------------|
@@ -675,7 +675,7 @@ public class TreeNode {
 
 ## 2) Problems by Pattern Classification
 
-### 2.1) Problem Categories & Templates
+### 2.1) Problem Categories & Templates ⭐⭐⭐⭐
 
 #### **Tree Traversal Problems**
 | Problem | LC # | Pattern | Template | Difficulty |
@@ -876,7 +876,7 @@ class Solution:
         return self.max_sum
 ```
 
-### 3.5) Common Mistakes & Tips
+### 3.5) Common Mistakes & Tips ⭐⭐⭐⭐
 
 **🚫 Common Mistakes:**
 - Forgetting base cases in recursion
@@ -913,7 +913,7 @@ class Solution:
 
 ## Advanced Tree Techniques — Binary Lifting, Re-rooting, Morris Traversal
 
-### Binary Lifting — LCA in O(log n) per Query
+### Binary Lifting — LCA in O(log n) per Query ⭐⭐⭐
 
 ```python
 import math

@@ -65,7 +65,8 @@ orphan page behind.
 Both workflows run it and fail on any error, so it is the place a site-wide rule
 belongs. It walks **every** page, not a list of a few — the rules it enforces
 (doctype, charset, viewport, title, navbar, footer, canonical URL, a per-page
-description, no broken or root-relative link, no unresolved `.md` link, no eager
+description, no broken or root-relative link, no unresolved `.md` link, no
+dangling `#fragment`, no eager
 or missing image, every table scroll-wrapped, no external `<script>`) each exist
 because something quietly shipped broken without them.
 
@@ -393,6 +394,7 @@ The build fails on a taxonomy key that is missing, points at an unknown topic, o
 - Complexity: inside code as first comment — `// time = O(...), space = O(...)`
 - Images: `<p align="center"><img src="../pic/filename.png"></p>`
 - Priority markers: a trailing `⭐`…`⭐⭐⭐⭐⭐` run on a heading marks how interview-critical that section is (5 = memorise it). The site strips the run out of the heading, renders it as a star badge, weights the heading's left rule by it, and surfaces 4★/5★ sections in the page's table of contents — so put the run **on the heading**, not in the prose under it. Leave ordinary background sections unmarked; if everything is starred, nothing is.
+  **Adding or changing a run moves the heading's anchor** — the stars are stripped from the slug but the space before them is not, so the id gains a trailing `-`. Every link aimed at that heading has to move with it, in the same commit; `e2e-check.js`'s dangling-`#fragment` rule is what catches it if you forget. Sections are also the unit the 繁體中文 overlay is keyed on, so re-key the translation rather than letting `sync` park it (see [Traditional Chinese cheatsheets](#traditional-chinese-cheatsheets)).
 - Heading levels never skip (`h2` → `h3`, never `h2` → `h4`)
 - State each LC number **once** per heading — not `... (LC 347) — LC 347`
 - Complexity is stated **once** in the header: either the `## Time Complexity` table *or* a Key Properties bullet, never both
