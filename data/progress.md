@@ -34,9 +34,10 @@
 			- weekly 260
 				- https://leetcode.com/contest/weekly-contest-260/
 					- LC 2002
-					- LC 2012 (todo: note)
+					- LC 2012
+					- LC 2017
 
-					- LC 2017 (todo: note)
+					- LC 2018 (note: Slot Partitioning)
 
 
  	- blind 150 (doing)

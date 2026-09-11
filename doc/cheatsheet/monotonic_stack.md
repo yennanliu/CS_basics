@@ -390,6 +390,7 @@ def find_132_pattern(nums):
 | Buildings With Ocean View | 1762 | Right-to-left scan | Medium | Template 1 |
 | Find the Winner of Circular Game | 1823 | Josephus problem | Medium | Template 4 |
 | Maximum Width Ramp | 962 | Index difference | Medium | Template 1 |
+| Steps to Make Array Non-decreasing | 2289 | Stack carries a dp value | Medium | Template 11 |
 | Pancake Sorting | 969 | Reverse operations | Medium | Template 1 |
 
 #### **Pattern 6: Circular Array Problems**
@@ -1484,7 +1485,163 @@ def maxChunksToSortedI(arr):
     return chunks
 ```
 
-### 2-18) Classic Stack Problems Worth Knowing (non-monotonic)
+### 2-18) Steps to Make Array Non-decreasing (LC 2289) — Monotonic Stack Carrying a DP Value ⭐⭐⭐⭐
+
+> `leetcode_python/Stack/steps-to-make-array-non-decreasing.py`
+
+> **Template 11: the stack carries a dp value, not just a position.** Every template above computes a *final* number at the moment of the pop (a width, an area, a distance). Here the popped element hands its **dp value up to the element that popped it**, so the answers chain: `dp[i] = max(dp of everything I popped) + 1`. The answer is `max(dp)`, the longest such chain.
+
+#### Core Idea
+
+One round deletes *every* `nums[i]` with `nums[i-1] > nums[i]`, all at once. Simulating the rounds is O(n²) (n up to 1e5), so re-ask the question per element:
+
+```text
+dp[i] = the round in which nums[i] is deleted     (0 = never deleted)
+answer = max(dp)
+```
+
+`nums[i]` is eventually deleted by the nearest element on its **left** that is strictly greater — but that killer cannot reach `nums[i]` until everything between them is gone. That waiting time is exactly what the stack hands over:
+
+```text
+keep a DECREASING stack of indices, then for each i:
+
+  while nums[i] >= nums[stack[-1]]:        # this top can never kill me
+      cur = max(cur, dp[stack.pop()])      #   -> inherit its deadline
+
+  if stack:      dp[i] = cur + 1           # top is > nums[i]: my killer.
+                                           #   it reaches me one round after
+                                           #   the last of the popped ones died
+  else:          dp[i] = 0                 # nothing bigger on the left -> I survive
+```
+
+Two things the "eating" metaphor makes obvious:
+
+- **What gets popped is what I outlive.** Anything `<= nums[i]` is doomed no later than `nums[i]` is, so its deadline is a lower bound on mine.
+- **`+1`, not `+ popped count`.** All deletions in a round happen simultaneously, so a whole block of popped elements can vanish in the *same* round; only the slowest one (`max`, not `sum`) delays my killer, and then by exactly one round.
+
+#### Visual Trace — `nums = [5,3,4,4,7]`
+
+```text
+i  nums[i]  pops (dp inherited)          stack after       dp[i]                 res
+0    5      -                            [0]               0   (nothing bigger)   0
+1    3      none (3 < 5)                 [0,1]             0+1 = 1                1
+2    4      pop 1 -> cur=max(0,dp1)=1    [0,2]             1+1 = 2                2
+3    4      pop 2 -> cur=max(0,dp2)=2    [0,3]             2+1 = 3                3
+4    7      pop 3 (cur=3), pop 0         [4]               0   (stack emptied)     3
+
+dp = [0,1,2,3,0]  ->  answer 3
+check: round1 deletes 3 -> [5,4,4,7]; round2 deletes the first 4 -> [5,4,7];
+       round3 deletes the second 4 -> [5,7]  ✓
+```
+
+#### The `>=` vs `>` trap
+
+The deletion rule fires only on `nums[i-1] > nums[i]`, so an **equal** element is never deleted — which means it is not a killer either, and must be popped like the smaller ones. Writing the pop as strict `>` is the bug this problem is built to catch:
+
+```text
+nums = [5,3,4,4,7]
+pop on >=  ->  dp = [0,1,2,3,0]  ->  3   ✓
+pop on >   ->  dp = [0,1,2,1,0]  ->  2   ✗   (idx 3 wrongly adopts idx 2 as its killer)
+```
+
+**Direction flips the operator**, and this is the part worth memorising:
+
+| Scan | Pop condition | What the pops mean |
+|------|---------------|--------------------|
+| Left → right | `nums[i] >= nums[stack[-1]]` (**non-strict**) | things that *cannot kill me* — smaller **and equal** |
+| Right → left | `nums[i] > nums[stack[-1]]` (**strict**) | things that *I eat* — strictly smaller only |
+
+#### Pattern (Python)
+
+```python
+# python
+# LC 2289 - Steps to Make Array Non-decreasing
+# IDEA: monotonic DECREASING stack of indices; dp[i] = round in which nums[i] dies.
+#       A popped element hands its dp up: dp[i] = max(popped dp) + 1
+# time = O(n), space = O(n)
+def totalSteps(nums):
+    n = len(nums)
+    dp = [0] * n          # dp[i] = round nums[i] is removed (0 = never)
+    stack = []            # indices, values monotonically DECREASING
+    res = 0
+
+    for i in range(n):
+        cur = 0
+        # NOTE !!! `>=` — an equal element is never deleted, so it is not a killer
+        while stack and nums[i] >= nums[stack[-1]]:
+            cur = max(cur, dp[stack.pop()])
+        if stack:                       # a strictly greater element on the left = my killer
+            dp[i] = cur + 1
+            res = max(res, dp[i])
+        stack.append(i)                 # else dp[i] stays 0: never removed
+
+    return res
+```
+
+Same dp scanned **right → left** — each element computes its answer from what it *eats*, so the "is there a bigger element on my left?" branch disappears:
+
+```python
+# python
+# LC 2289 - variant: right -> left, steps = max(steps + 1, dp[j])
+# time = O(n), space = O(n)
+def totalSteps_rtl(nums):
+    n = len(nums)
+    dp = [0] * n
+    stack, res = [], 0
+    for i in range(n - 1, -1, -1):
+        steps = 0
+        while stack and nums[i] > nums[stack[-1]]:   # strict: only what I eat
+            # one more round than eaten so far, but j may itself be dying until dp[j]
+            steps = max(steps + 1, dp[stack.pop()])
+        dp[i] = steps
+        res = max(res, steps)
+        stack.append(i)
+    return res
+```
+
+#### Pattern (Java)
+
+```java
+// java
+// LC 2289 - Steps to Make Array Non-decreasing
+// IDEA: decreasing stack of indices; dp[i] = round nums[i] is removed.
+//       dp[i] = max(dp of popped) + 1 when a strictly greater element remains on the left
+// time = O(N), space = O(N)
+public int totalSteps(int[] nums) {
+    int n = nums.length, res = 0;
+    int[] dp = new int[n];                          // dp[i] = round nums[i] dies (0 = never)
+    Deque<Integer> stack = new ArrayDeque<>();      // indices, values decreasing
+
+    for (int i = 0; i < n; i++) {
+        int cur = 0;
+        while (!stack.isEmpty() && nums[i] >= nums[stack.peek()]) {
+            cur = Math.max(cur, dp[stack.pop()]);   // inherit the deadline
+        }
+        if (!stack.isEmpty()) {
+            dp[i] = cur + 1;
+            res = Math.max(res, dp[i]);
+        }
+        stack.push(i);
+    }
+    return res;
+}
+```
+
+A `(value, steps)` pair stack works identically and drops the `dp` array — push `(num, cur)` instead of the index, pop on `stack[-1][0] <= num`. Use it when the indices are not needed for anything else.
+
+#### Similar Problems
+
+| Problem | LC # | Key Difference |
+|---------|------|----------------|
+| Steps to Make Array Non-decreasing | 2289 | Popped element's dp is **inherited**: `dp[i] = max(popped dp) + 1` |
+| Online Stock Span | 901 | Same "carry a value through the pops", but the aggregate is a **sum** of popped spans, not a max+1 |
+| Car Fleet II | 1776 | Right-to-left stack where each car's collision time is derived from the popped cars — the same chaining, with a real-valued dp |
+| Car Fleet | 853 | Simulation collapsed to a stack, but the answer is the *number of survivors*, not when anyone dies |
+| Asteroid Collision | 735 | Same "stronger element eats weaker" simulation; the answer is the survivors, so no dp is carried |
+| Minimum Cost Tree From Leaf Values | 1130 | Pop while smaller and aggregate a **cost** at each pop instead of a round number |
+| Largest Rectangle in Histogram | 84 | Baseline contrast: the pop computes a **final** value (area) that nothing inherits |
+
+### 2-19) Classic Stack Problems Worth Knowing (non-monotonic)
 
 > These use a plain stack (no monotonic invariant) but show up constantly alongside the patterns above.
 
