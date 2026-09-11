@@ -104,6 +104,14 @@ class Solution(object):
         Check whether a queen already exists in:
         1. Same column
         2. Same diagonal
+
+            - NOTE !! (ONLY check `upper`, no need to check `lower`,
+                       since we put queen from up to down)
+                       
+                        -> 因為我們是 一列一列往下放 Queen，所以目前要檢查的 Queen 上方才可能有已放好的 Queen。
+
+                - left upper
+                - right upper
         """
 
         # Check same column
@@ -111,6 +119,7 @@ class Solution(object):
             if matrix[r][col] == "Q":
                 return True
 
+        # Upper-left：左上斜線
         # Check upper-left diagonal
         r = row - 1
         c = col - 1
@@ -121,6 +130,7 @@ class Solution(object):
             r -= 1
             c -= 1
 
+        # Upper-right：右上斜線
         # Check upper-right diagonal
         r = row - 1
         c = col + 1
