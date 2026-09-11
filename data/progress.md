@@ -56,7 +56,7 @@
 
 - dp_pattern.md
 	- https://yennj12.js.org/CS_basics/cheatsheets/dp_pattern.zh.html
-		- `3. 矩陣連乘（MCM）／區間 DP`
+		- `最長共同子序列（LCS）` 
 
 
 
