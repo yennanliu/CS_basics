@@ -232,7 +232,7 @@ class Solution(object):
         return max(dp)
 
 
-# V0
+# V0-2
 # IDEA : DP 
 # DP equation : 
 #               -> dp[i] = max(1, dp[j] + 1), while i > j and nums[i] > nums[i]
@@ -260,39 +260,45 @@ class Solution:
         return max(dp)
 
 
-# V0-2
-# IDEA: BINARY SEARCH  + patience sorting / tails idea (gpt)
+
+# V0-5
+# IDEA: BINARY SEARCH  + patience sorting / tails idea (gemini)
 class Solution(object):
+
     def lengthOfLIS(self, nums):
         """
         :type nums: List[int]
+
         :rtype: int
         """
+        # tails[i] 儲存長度為 i + 1 的遞增子序列中，最小的結尾數值
         tails = []
 
         for num in nums:
-            l = 0
-            r = len(tails) - 1
+            l, r = 0, len(tails) - 1
 
-            # Find the first position where tails[pos] >= num
-            while r >= l:
+            # 搜尋 tails 中第一個 >= num 的位置 (bisect_left)
+            while l <= r:
                 mid = l + (r - l) // 2
 
                 if tails[mid] < num:
-                    l = mid + 1
+                    l = mid + 1  # 目標在右半邊
                 else:
-                    r = mid - 1
+                    r = mid - 1  # 目標在左半邊或當前 mid
 
-            # l is the insertion/replacement position
+            # 若 l == len(tails)，代表 num 比 tails 內所有數都大，直接追加長度
             if l == len(tails):
                 tails.append(num)
             else:
+                # 否則替換第一個 >= num 的元素，使該長度下的結尾數值更小
                 tails[l] = num
 
         return len(tails)
 
 
-# V0-3
+
+
+# V0-6
 # IDEA: BINARY SEARCH  + patience sorting / tails idea (gemini)
 class Solution(object):
     def lengthOfLIS(self, nums):
@@ -322,7 +328,7 @@ class Solution(object):
 
         return len(tails)
 
-# V0'
+# V0-5
 # IDEA : ARRAY
 # time = O(n^2) (linear scan to find insertion point)
 # space = O(n)
