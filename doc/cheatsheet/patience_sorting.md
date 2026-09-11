@@ -45,7 +45,7 @@ nums = [10, 9, 2, 5, 3, 7]
 
 Two facts make this an algorithm rather than a card trick:
 
-- **Pile tops increase from left to right.** A new card is *smaller or equal* to the top it lands on and *strictly greater* than the top to its left, so the tops stay sorted — which means "leftmost pile whose top is `>= x`" is a plain `lower_bound` (`bisect_left`) and costs `O(log P)`, not `O(P)`.
+- **Pile tops increase from left to right.** A card that lands on a pile is *smaller or equal* to that pile's top and *strictly greater* than the top to its left; a card that starts a new pile is greater than every top. Either way the tops stay sorted — which means "leftmost pile whose top is `>= x`" is a plain `lower_bound` (`bisect_left`) and costs `O(log P)`, not `O(P)`.
 - **Only the tops are ever read.** Collapse the piles to their tops and you have the `tails` array everyone writes in an interview:
 
 ```text
@@ -68,9 +68,9 @@ tops   [   2,     3,    7 ]   ==  tails
 Two directions, each one line, and they are the whole correctness proof:
 
 ```text
-LIS <= piles :  a pile read top-to-bottom is NON-INCREASING, so an increasing
-                subsequence can take at most ONE card from each pile
-                -> it cannot be longer than the number of piles
+LIS <= piles :  a pile read in DEALING ORDER (bottom -> top) is NON-INCREASING,
+                so an increasing subsequence can take at most ONE card from each
+                pile -> it cannot be longer than the number of piles
 
 LIS >= piles :  a card on pile k landed there because pile k-1 already had a
                 SMALLER top; chain that back pile by pile and you get an actual
@@ -117,7 +117,8 @@ def lis_length(nums):
         while l <= r:
             mid = l + (r - l) // 2
             if tails[mid] < num:
-                l = mid + 1      # NOTE !!! strict < -> equality falls right, pushing l left
+                l = mid + 1      # NOTE !!! strict < -> an equal tail FAILS this test,
+                                 #          so it takes the else and pushes r left
             else:
                 r = mid - 1
 
@@ -226,6 +227,7 @@ def patience_piles(nums):
             tops[l] = num
 
     return piles     # len(piles) == LIS length; each pile is non-increasing
+                     # bottom -> top, i.e. in the order it was dealt
 ```
 
 ### 1-4) Recovering the Subsequence, Not Just Its Length ⭐⭐⭐⭐

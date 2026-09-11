@@ -816,7 +816,8 @@ class Solution(object):
             while l <= r:
                 mid = l + (r - l) // 2
                 if tails[mid] < num:
-                    l = mid + 1      # strict < -> equality falls right, pushing l left
+                    l = mid + 1      # strict < -> equality fails this test, so it
+                                     # takes the else and pushes r left
                 else:
                     r = mid - 1
             # l == lower_bound(tails, num) == first index with tails[l] >= num
@@ -837,10 +838,19 @@ class Solution(object):
 #### Why It Works — Three Claims
 
 **1) `tails` is always sorted, so binary search is legal.**
-The only write is `tails[l] = num`, and the lower bound guarantees
-`tails[l-1] < num <= tails[l] < tails[l+1]`. The array is strictly increasing before the
-write and strictly increasing after it, so the predicate `tails[i] < num` is true on a
-prefix and false on a suffix — the monotone condition every binary search needs.
+Assume it is strictly increasing, and check the two cases the scan can take. The lower
+bound gives `tails[l-1] < num` whenever slot `l-1` exists, and `num <= tails[l]` whenever
+slot `l` exists:
+
+- **append** (`l == len(tails)`): the array grows by `num` at the end, and
+  `tails[l-1] < num` — still strictly increasing.
+- **overwrite** (`l < len(tails)`): `num` replaces `tails[l]`, so the new neighbours are
+  `tails[l-1] < num <= tails[l] < tails[l+1]` — the last term only if slot `l+1` exists,
+  and dropping to a smaller value cannot break it either way.
+
+So the array is strictly increasing after every element, which makes the predicate
+`tails[i] < num` true on a prefix and false on a suffix — the monotone condition every
+binary search needs.
 
 **2) Exactly one slot can ever improve, and `l` is it.**
 `num` can extend an increasing run of length `k+1` only if that run's tail is `< num`.
@@ -890,7 +900,8 @@ start a new pile if there is none, and the answer is the pile count.
 
 Reach for `tails` when **all** of these hold:
 
-- the answer is the **length** (or count) of a longest chain, not the chain itself;
+- the answer is the **length** of a longest chain (or `n − length`), not the chain
+  itself and not how many such chains exist;
 - "chainable" is a **total order** on one key (`<` on a number, or on a key you can sort
   by first), so partial progress can be summarised by a single tail value;
 - an `O(n²)` DP `dp[i] = max(dp[j]) + 1` is the obvious solution and the follow-up asks

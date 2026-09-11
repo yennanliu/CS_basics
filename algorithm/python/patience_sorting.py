@@ -23,8 +23,8 @@
 # Space : O(N)         (O(N) for tails only; the full piles are O(N) too)
 #
 # Why the pile count is the answer:
-#   - each pile is, read top to bottom, a NON-INCREASING subsequence, so no
-#     increasing subsequence can use two cards from the same pile
+#   - each pile is, read in DEALING ORDER (bottom to top), a NON-INCREASING
+#     subsequence, so no increasing subsequence can use two cards from one pile
 #     -> LIS <= number of piles
 #   - every card placed on pile k sat on a card of pile k-1 that was already
 #     there, so following that chain back gives an increasing subsequence of
@@ -46,19 +46,20 @@ def lis_length(nums):
     tails = []
 
     for num in nums:
-        # lower bound : first index with tails[l] >= num
-        l, r = 0, len(tails) - 1
-        while l <= r:
-            mid = l + (r - l) // 2
+        # lower bound : first index with tails[lo] >= num
+        lo, hi = 0, len(tails) - 1
+        while lo <= hi:
+            mid = lo + (hi - lo) // 2
             if tails[mid] < num:
-                l = mid + 1      # strict < -> equality falls right, pushing l left
+                lo = mid + 1     # num belongs strictly right of mid
             else:
-                r = mid - 1
+                hi = mid - 1     # an EQUAL tail fails the strict <, so it lands
+                                 # here too -> hi moves left, lo stays put
 
-        if l == len(tails):
+        if lo == len(tails):
             tails.append(num)    # beats every tail -> a NEW longest length exists
         else:
-            tails[l] = num       # same length, cheaper tail -> overwrite
+            tails[lo] = num      # same length, cheaper tail -> overwrite
 
     return len(tails)
 
@@ -67,11 +68,11 @@ def lis_length(nums):
 def lis_length_bisect(nums):
     tails = []
     for num in nums:
-        l = bisect.bisect_left(tails, num)   # first tail >= num
-        if l == len(tails):
+        pos = bisect.bisect_left(tails, num)   # first tail >= num
+        if pos == len(tails):
             tails.append(num)
         else:
-            tails[l] = num
+            tails[pos] = num
     return len(tails)
 
 
@@ -80,29 +81,30 @@ def lis_length_bisect(nums):
 def lis_length_non_decreasing(nums):
     tails = []
     for num in nums:
-        l = bisect.bisect_right(tails, num)  # first tail > num
-        if l == len(tails):
+        pos = bisect.bisect_right(tails, num)  # first tail > num
+        if pos == len(tails):
             tails.append(num)
         else:
-            tails[l] = num
+            tails[pos] = num
     return len(tails)
 
 
 # V2 : the actual card game - keep the whole piles, not just their tops
-#      (LIS length is len(piles); the piles themselves are a minimum
-#       non-increasing cover of the array, i.e. Dilworth's theorem)
+#      (LIS length is len(piles); each pile is non-increasing read bottom to
+#       top, and together they are a minimum non-increasing cover of the
+#       array - i.e. Dilworth's theorem)
 def patience_piles(nums):
     piles = []       # piles[k] : the cards on pile k, top card LAST
     tops = []        # tops[k] == piles[k][-1], kept separately so bisect can see it
 
     for num in nums:
-        l = bisect.bisect_left(tops, num)
-        if l == len(piles):
+        pos = bisect.bisect_left(tops, num)
+        if pos == len(piles):
             piles.append([num])
             tops.append(num)
         else:
-            piles[l].append(num)
-            tops[l] = num
+            piles[pos].append(num)
+            tops[pos] = num
 
     return piles
 
@@ -119,18 +121,18 @@ def lis_reconstruct(nums):
     prev = [-1] * len(nums)
 
     for i, num in enumerate(nums):
-        l = bisect.bisect_left(tails, num)
+        pos = bisect.bisect_left(tails, num)
 
-        # whatever currently ends the run of length l becomes num's predecessor
-        if l > 0:
-            prev[i] = tails_idx[l - 1]
+        # whatever currently ends the run of length pos becomes num's predecessor
+        if pos > 0:
+            prev[i] = tails_idx[pos - 1]
 
-        if l == len(tails):
+        if pos == len(tails):
             tails.append(num)
             tails_idx.append(i)
         else:
-            tails[l] = num
-            tails_idx[l] = i
+            tails[pos] = num
+            tails_idx[pos] = i
 
     # walk back from the tail of the longest run
     out = []
