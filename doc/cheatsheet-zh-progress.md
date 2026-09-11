@@ -41,7 +41,7 @@ half-translated sheet renders with English gaps rather than failing.
   is what makes a problem findable on LeetCode itself.
 
 
-## Status — 5037 / 5213 sections (97%)
+## Status — 5037 / 5237 sections (96%)
 
 | Sheet | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -132,6 +132,7 @@ half-translated sheet renders with English gaps rather than failing.
 | [n_sum](./cheatsheet/n_sum.md) | 16 | [✅](../i18n/zh/n_sum.md) |
 | [ood_design](./cheatsheet/ood_design.md) | 34 | [✅](../i18n/zh/ood_design.md) |
 | [palindrome](./cheatsheet/palindrome.md) | 66 | [✅](../i18n/zh/palindrome.md) |
+| [patience_sorting](./cheatsheet/patience_sorting.md) | 24 | — |
 | [prefix_sum](./cheatsheet/prefix_sum.md) | 92 | [61/92](../i18n/zh/prefix_sum.md) |
 | [prefix_sum_advanced](./cheatsheet/prefix_sum_advanced.md) | 23 | [10/23](../i18n/zh/prefix_sum_advanced.md) |
 | [prefix_sum_examples](./cheatsheet/prefix_sum_examples.md) | 17 | [13/17](../i18n/zh/prefix_sum_examples.md) |

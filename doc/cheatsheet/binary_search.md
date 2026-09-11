@@ -2,7 +2,7 @@
 
 > **Scope** — Halving a **monotonic** search space — the loop-invariant reasoning behind `l <= r` vs `l < r`, the boundary (lower/upper bound) templates, rotated arrays, and floating-point and 2D search.
 > **See also** — *deep dives split out of this file*: [binary_search_on_answer.md](./binary_search_on_answer.md) — searching the *answer space*: the `canFinish` / `isValid` predicate, minimise-maximum vs maximise-minimum, and value-domain counting; [binary_search_examples.md](./binary_search_examples.md) — the worked-problem archive, one canonical solution per problem.
-> *Neighbouring sheets*: [sort.md](./sort.md) — getting the array sorted first; [advanced_divide_and_conquer.md](./advanced_divide_and_conquer.md) — halving *with* a merge step; [bst.md](./bst.md) — the same invariant as a data structure; [heap.md](./heap.md) — k-th element without ordering; [monotonic_stack.md](./monotonic_stack.md) — the *positional* "next greater", which is the pattern lower bound is most often confused with.
+> *Neighbouring sheets*: [patience_sorting.md](./patience_sorting.md) — §1.5's scan told as the card game, with reconstruction, the pile/Dilworth proof and the LIS-reduction problems; [sort.md](./sort.md) — getting the array sorted first; [advanced_divide_and_conquer.md](./advanced_divide_and_conquer.md) — halving *with* a merge step; [bst.md](./bst.md) — the same invariant as a data structure; [heap.md](./heap.md) — k-th element without ordering; [monotonic_stack.md](./monotonic_stack.md) — the *positional* "next greater", which is the pattern lower bound is most often confused with.
 
 
 ## LeetCode Problem Lists
@@ -792,6 +792,11 @@ Every template above searches the **input**. This one searches a small array tha
 **builds as it goes** — and that array is kept sorted *on purpose*, precisely so a lower
 bound can be run on it. It is the pattern behind `O(n log n)` LIS, and the reason LC 300
 is filed under binary search at all.
+
+> The algorithm's own sheet — the card game it comes from, the pile/Dilworth argument,
+> recovering the subsequence itself, and the problems that *reduce* to LIS —
+> is [patience_sorting.md](./patience_sorting.md). This section is the binary-search view:
+> which template runs, and why one write per element is the complete update.
 
 #### Core Idea — One Slot per Achievable Length, Holding the Smallest Tail
 
