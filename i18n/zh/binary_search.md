@@ -45,7 +45,6 @@
   - [Python bisect module](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/python_trick.md) — 插入時維持排序順序
   - [Python Universal Binary Search Template](https://leetcode.com/discuss/general-discussion/786126/python-powerful-ultimate-binary-search-template-solved-many-problems) — 一個模板通吃多題
 
-
 <p align="center"><img src ="../pic/binary_search_pattern.png" ></p>
 
 <!-- 7f3af396dd96 -->
@@ -127,7 +126,7 @@
 <!-- 44335a6bb19f -->
 ## 1) 二分搜尋的類型與模式
 
-<!-- 592fb5b03d86 -->
+<!-- f379f90bcb86 -->
 ### 1.1) 類型速覽
 
 **基本二分搜尋 — LC 704**（標準模板見 §2.1）
@@ -155,6 +154,10 @@
 **對答案空間做二分搜尋**（§1.4）
 - **目的**：搜尋的是*候選答案的範圍*，而不是一個陣列
 - **回傳**：單調可行性判定式的分界點
+
+**對自己維護的陣列做二分搜尋 — `tails` 模式**（§1.5）
+- **目的**：把「每個已達成長度的最佳值」這種 `O(n²)` DP 壓成一次 lower bound 查詢
+- **回傳**：所維護陣列的長度（是長度，不是那條鏈本身）
 
 <!-- 88c893e86307 -->
 ### 1.2) 旋轉排序陣列 — 找出樞紐點
@@ -320,7 +323,7 @@ target 不存在的情況，`nums = [5,7,7,8,8,10]`、`target = 6`：
 - ❌ 忘了空陣列的情況 — 兩個閉區間輔助函式都會自然處理（`l=0, r=-1` → 跳過迴圈 → `l=0 > r=-1` → `[-1,-1]`）
 - ❌ 事先檢查 `if target not in nums` — 那是 O(N)，直接毀掉 O(log N) 的要求
 
-<!-- 98f074ee7c0b -->
+<!-- 75d51d9235ca -->
 ##### 相似題目
 
 | LC # | 題目 | 關鍵差異 |
@@ -333,7 +336,7 @@ target 不存在的情況，`nums = [5,7,7,8,8,10]`、`target = 6`：
 | **744** | Find Smallest Letter Greater Than Target | `bisect_right` + 取模繞回 |
 | **1146** | Snapshot Array | 對每個索引的版本清單做 `bisect` |
 | **658** | Find K Closest Elements | 用 `findLeft` 定位視窗起點，再往外擴 |
-| **300** | Longest Increasing Subsequence (O(N log N)) | 用 `bisect_left` 替換 tails |
+| **300** | Longest Increasing Subsequence (O(N log N)) | 用 `bisect_left` 替換 tails — §1.5 |
 | **981** | Time Based Key-Value Store | `findRight`（最大且 `<=` 查詢值的時間戳） |
 | **436** | Find Right Interval | 對排序後的起點做 `findLeft` |
 | **1898** | Maximum Number of Removable Characters | 對答案做邊界搜尋 + 可行性檢查 |
@@ -352,8 +355,8 @@ target 不存在的情況，`nums = [5,7,7,8,8,10]`、`target = 6`：
 **辨識關鍵字**：「minimize the maximum」、「maximize the minimum」、「找出最小的
 capacity / speed / divisor」、「能不能切分 / 分配 / 派送」。
 
-<!-- b7959cdc6094 -->
-### 1.5) 相關演算法與資料結構
+<!-- 809b59b4f3c6 -->
+### 1.6) 相關演算法與資料結構
 
 **互補演算法**：
 - **雙指標**：用於沒有隨機存取能力的已排序序列
