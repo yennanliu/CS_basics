@@ -62,6 +62,40 @@ class Solution(object):
 
 # V0-0-1
 # IDEA: DFS (post order)
+class Solution(object):
+    def maxDepth(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: int
+        """
+        # Edge case
+        if not root:
+            return 0
+
+        self.max_depth = 0
+
+        # NOTE !!
+        # depth starts from 1
+        self.helper(root, 1)
+
+        return self.max_depth
+
+    # DFS: track current depth
+    def helper(self, node, depth):
+        # Reached an empty node
+        if not node:
+            return
+
+        # Update maximum depth
+        self.max_depth = max(self.max_depth, depth)
+
+        # Visit left and right subtrees
+        self.helper(node.left, depth + 1)
+        self.helper(node.right, depth + 1)
+
+
+# V0-0-2
+# IDEA: DFS (post order)
 # NOTE !!! we DON'T need global var
 # time = O(n)
 # space = O(h), h is height of binary tree (recursion stack)
