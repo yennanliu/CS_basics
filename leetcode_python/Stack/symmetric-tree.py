@@ -30,6 +30,90 @@ Follow up: Could you solve it both recursively and iteratively?
 """
 
 # V0
+# IDEA: Dual-Pointer Mirror DFS (pre-order dfs) (gpt)
+class Solution(object):
+    def isSymmetric(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: bool
+        """
+        # Edge case
+        if not root:
+            return True
+
+        return self.helper(root.left, root.right)
+
+    """
+    NOTE !!!
+
+
+    we pass 2 param to the helper func
+        -> left, right
+
+    """
+    # DFS: check whether two subtrees are mirrors
+    def helper(self, left, right):
+        # Both are empty -> symmetric
+        if not left and not right:
+            return True
+
+        # One is empty -> not symmetric
+        if not left or not right:
+            return False
+
+        # Values must be the same
+        if left.val != right.val:
+            return False
+
+        """
+        NOTE !!!
+
+        how we mirror the sub tree
+        """
+        # Mirror comparison:
+        # left.left  <-> right.right
+        # left.right <-> right.left
+        return (
+            self.helper(left.left, right.right)
+            and
+            self.helper(left.right, right.left)
+        )
+
+
+# V0-1
+# IDEA: (Dual-Pointer Mirror DFS) (gemini)
+class Solution(object):
+
+    def isSymmetric(self, root):
+        """
+        :type root: Optional[TreeNode]
+
+        :rtype: bool
+        """
+        if not root:
+            return True
+
+        # 將根節點的左右兩棵子樹傳入對稱比較函式
+        return self.isMirror(root.left, root.right)
+
+    def isMirror(self, t1, t2):
+        # 1. 兩者皆為空，代表對稱成功
+        if not t1 and not t2:
+            return True
+
+        # 2. 只有其中一個為空，或是兩者數值不同，代表不對稱
+        if not t1 or not t2 or t1.val != t2.val:
+            return False
+
+        # 3. 核心鏡像遞迴：
+        #    - t1 的左子樹 vs t2 的右子樹
+        #    - t1 的右子樹 vs t2 的左子樹
+        return self.isMirror(t1.left, t2.right) and self.isMirror(
+            t1.right, t2.left
+        )
+
+
+# V0
 # IDEA : Iterative
 # time = O(n), n = number of nodes in tree
 # space = O(n)
