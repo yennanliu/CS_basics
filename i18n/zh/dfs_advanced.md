@@ -547,7 +547,7 @@ LC 3965 的公式是：
 > **與併查集的對照：** 這種「往上爬 + 記憶化」在結構上跟帶路徑壓縮的 DSU `find()` 是同一種走法，
 > 連 `parent[]` 看起來都像 DSU 陣列 — 但這裡**沒有 `union()`**、沒有合併，樹是固定的。
 > 在這裡硬套 DSU 只是白白多付 `α(N)` 的記帳成本。見
-> [union_find.md → When NOT to use Union Find](./union_find.md#3-tips--pitfalls)。
+> [union_find.md → When NOT to use Union Find](./union_find.md#3-tips--pitfalls-)。
 
 **c. 類似題目**
 

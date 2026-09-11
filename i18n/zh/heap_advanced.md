@@ -271,7 +271,7 @@ LC 1383 的程式碼：[heap_examples.md § Maximum Performance of a Team](./hea
 ### 10) 帶去重的堆積
 <!--CODE-->
 
-<!-- fe2e91ef435f -->
+<!-- 78d6e555106e -->
 ### 11) k 路合併的各種變形
 
 **模板 2 的變形（骨架相同，只是簿記方式不同）：**
@@ -280,7 +280,7 @@ LC 1383 的程式碼：[heap_examples.md § Maximum Performance of a Team](./hea
 |----|---------|--------------------------|
 | 632 | Smallest Range Covering Elements from K Lists | 額外追蹤 k 個堆積元素的**最大值**；每次 pop 都給出一個涵蓋所有清單的視窗 `[heap_min, running_max]` — 任一清單耗盡就停 |
 | 355 | Design Twitter | 這裡的「k 個有序清單」是被追蹤者的推文清單（新的在前）；把每位被追蹤者的第一則推進以時間戳為鍵的最大堆積，pop 10 次 |
-| 373 / 378 | K Pairs with Smallest Sums／Kth Smallest in Sorted Matrix | 清單是有序格子中的**虛擬**列 — 見 [heap_examples.md § LC 373](./heap_examples.md#9-find-k-pairs-with-smallest-sums--lc-373)／[§ LC 378](./heap_examples.md#10-kth-smallest-element-in-a-sorted-matrix--lc-378) |
+| 373 / 378 | K Pairs with Smallest Sums／Kth Smallest in Sorted Matrix | 清單是有序格子中的**虛擬**列 — 見 [heap_examples.md § LC 373](./heap_examples.md#9-find-k-pairs-with-smallest-sums--lc-373)／[§ LC 378](./heap_examples.md#10-kth-smallest-element-in-a-sorted-matrix--lc-378-) |
 
 <!--CODE-->
 

@@ -974,7 +974,7 @@ def solve_with_unique_heap(nums):
 |----|---------|--------------------------|
 | 632 | Smallest Range Covering Elements from K Lists | Also track the **max** of the k heap elements; every pop gives a window `[heap_min, running_max]` that covers all lists — stop when any list is exhausted |
 | 355 | Design Twitter | The "k sorted lists" are the followees' tweet lists (newest first); push each followee's head into a max-heap by timestamp, pop 10 times |
-| 373 / 378 | K Pairs with Smallest Sums / Kth Smallest in Sorted Matrix | Lists are **virtual** rows of a sorted grid — see [heap_examples.md § LC 373](./heap_examples.md#9-find-k-pairs-with-smallest-sums--lc-373) / [§ LC 378](./heap_examples.md#10-kth-smallest-element-in-a-sorted-matrix--lc-378) |
+| 373 / 378 | K Pairs with Smallest Sums / Kth Smallest in Sorted Matrix | Lists are **virtual** rows of a sorted grid — see [heap_examples.md § LC 373](./heap_examples.md#9-find-k-pairs-with-smallest-sums--lc-373) / [§ LC 378](./heap_examples.md#10-kth-smallest-element-in-a-sorted-matrix--lc-378-) |
 
 ```python
 # python

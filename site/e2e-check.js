@@ -134,6 +134,33 @@ for (const p of pages) {
 ok('no unresolved .md links', mdLinks.length === 0,
    mdLinks.length ? `${mdLinks.length}, e.g. ${mdLinks.slice(0, 4).join(' | ')}` : '');
 
+// A `#fragment` that names no id is a link that silently lands at the top of the
+// page instead of the section it promised. The checks above strip the fragment
+// off before resolving, so this whole class used to ship unnoticed — and a
+// cheatsheet heading's id moves whenever its text does (adding a priority ⭐ run
+// appends a trailing '-' to the slug), which is exactly when the deep links
+// pointing at it need to move too.
+const idsOf = new Map(
+  pages.map(p => [p, new Set([...sources.get(p).matchAll(/\bid="([^"]+)"/g)].map(m => m[1]))])
+);
+const danglingFragments = [];
+for (const p of pages) {
+  for (const m of stripScripts(sources.get(p)).matchAll(/href="([^"#]*)#([^"]+)"/g)) {
+    const [, file, frag] = m;
+    if (/^([a-z][a-z0-9+.-]*:|\/\/|\/)/i.test(file)) continue;
+    const target = file === '' ? p : path.resolve(path.dirname(p), decodeURIComponent(file));
+    // Anything not built here (an image, a missing page) is the link checks' job.
+    if (!idsOf.has(target)) continue;
+    if (!idsOf.get(target).has(decodeURIComponent(frag))) {
+      danglingFragments.push(`${rel(p)} \u2192 ${file}#${decodeURIComponent(frag)}`);
+    }
+  }
+}
+ok('no dangling #fragments', danglingFragments.length === 0,
+   danglingFragments.length
+     ? `${danglingFragments.length}, e.g. ${danglingFragments.slice(0, 4).join(' | ')}`
+     : '');
+
 console.log('\n== images (all pages) ==');
 const brokenImages = [];
 const eagerImages = [];

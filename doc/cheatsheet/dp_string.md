@@ -35,7 +35,7 @@
 
 ## Templates & Algorithms
 
-### The Two-String Grid
+### The Two-String Grid ⭐⭐⭐⭐⭐
 
 #### **The "Two-String / Two-Sequence Grid" Pattern** 🧩
 
@@ -159,11 +159,11 @@ public int longestCommonSubsequence(String s1, String s2) {
 
 ---
 
-### **Deep Dive: The Prefix-Based Indexing Pattern (LCS & Variants)** 🔍
+### **Deep Dive: The Prefix-Based Indexing Pattern (LCS & Variants)** 🔍 ⭐⭐⭐⭐⭐
 
 This subsection focuses on understanding the **1-indexed DP table** concept that's critical for getting string DP right.
 
-#### **Why 1-Indexed DP Table?**
+#### **Why 1-Indexed DP Table?** ⭐⭐⭐⭐
 
 When building a 2D DP table for string problems, we use `dp[m+1][n+1]` instead of `dp[m][n]`. This might seem like off-by-one overhead, but it's actually elegant:
 
@@ -200,7 +200,7 @@ Index Mapping:
   Therefore: when at dp[i][j], compare string1[i-1] with string2[j-1]
 ```
 
-#### **The Three-Way Transition Logic (Using LCS as Example)**
+#### **The Three-Way Transition Logic (Using LCS as Example)** ⭐⭐⭐⭐⭐
 
 ```java
 // java
@@ -339,7 +339,7 @@ Use "Two-String Grid" pattern when you see:
 
 ---
 
-### **Classic String DP Patterns (Detailed)**
+### **Classic String DP Patterns (Detailed)** ⭐⭐⭐⭐
 
 | Problem Type | Pattern | Complexity | Notes |
 |--------------|---------|------------|-------|
@@ -407,7 +407,7 @@ This problem demonstrates **multiple DP paradigms** and is excellent for underst
 - Interval DP patterns
 - Space optimization techniques
 
-#### **Approach 1: Greedy (Min/Max Balance Tracking)** ⚡ OPTIMAL
+#### **Approach 1: Greedy (Min/Max Balance Tracking)** ⚡ OPTIMAL ⭐⭐⭐⭐
 
 **Time**: O(n) | **Space**: O(1)
 

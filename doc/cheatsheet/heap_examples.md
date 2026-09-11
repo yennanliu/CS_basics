@@ -22,7 +22,7 @@ template lives in [heap.md](./heap.md) (canonical) or [heap_advanced.md](./heap_
 
 ## LC Examples
 
-### 1) Kth Largest Element in a Stream — LC 703
+### 1) Kth Largest Element in a Stream — LC 703 ⭐⭐⭐⭐
 ```python
 # 703 Kth Largest Element in a Stream
 # IDEA : HEAP
@@ -97,7 +97,7 @@ class Solution(object):
         return ugly_number
 ```
 
-### 3) Find Median from Data Stream — LC 295
+### 3) Find Median from Data Stream — LC 295 ⭐⭐⭐⭐⭐
 ```python
 # 295 Find Median from Data Stream
 # https://docs.python.org/zh-tw/3/library/heapq.html
@@ -420,7 +420,7 @@ day is what makes it greedy + heap rather than a concurrency count.
 | LC # | Problem | Shared pattern | Key difference |
 |------|---------|---------------|----------------|
 | 1751 | Max Number of Events That Can Be Attended II | Same events input | Events occupy the **whole** interval + values → DP + binary search, **not** heap |
-| 621 | Task Scheduler | Time sweep + heap, one slot per tick | Max heap on frequency + cooling queue (see [§ 17](#17-task-scheduler--lc-621)) |
+| 621 | Task Scheduler | Time sweep + heap, one slot per tick | Max heap on frequency + cooling queue (see [§ 17](#17-task-scheduler--lc-621-)) |
 | 253 | Meeting Rooms II | Sort by start, min heap of end times | Counts *concurrent* intervals, doesn't pick a subset — its sweep **over-counts** here (see the trap above) |
 | 2406 | Divide Intervals Into Min Number of Groups | Sort by start, min heap of end times | Same as 253, interval-partition framing (see [§ 15](#15-divide-intervals-into-minimum-number-of-groups--lc-2406)) |
 | 630 | Course Schedule III | Greedy by deadline + heap | Max heap **replace**: drop the longest course when overrunning |
@@ -554,7 +554,7 @@ public List<List<Integer>> kSmallestPairs_0_1(int[] nums1, int[] nums2, int k) {
 }
 ```
 
-### 10) Kth Smallest Element in a Sorted Matrix — LC 378
+### 10) Kth Smallest Element in a Sorted Matrix — LC 378 ⭐⭐⭐⭐
 
 ```java
 // java
@@ -1402,7 +1402,7 @@ public int minimumDeviation(int[] nums) {
  */
 ```
 
-### 17) Task Scheduler — LC 621
+### 17) Task Scheduler — LC 621 ⭐⭐⭐⭐⭐
 
 ```python
 # python
@@ -1660,7 +1660,7 @@ class Solution {
 > The five examples below came from the old `priority_queue.md` and are **Java-first** — their
 > Python counterparts live in the templates in [heap.md](./heap.md).
 
-### 19) K Closest Points to Origin — LC 973
+### 19) K Closest Points to Origin — LC 973 ⭐⭐⭐⭐⭐
 ```java
 // Java
 // LC 973 - Find K closest points to origin (0,0)
@@ -1709,7 +1709,7 @@ public int[][] kClosest_MinHeap(int[][] points, int k) {
 ```
 
 
-### 20) Reorganize String — LC 767
+### 20) Reorganize String — LC 767 ⭐⭐⭐⭐
 ```java
 // Java
 // LC 767 - Rearrange string so no adjacent characters are same

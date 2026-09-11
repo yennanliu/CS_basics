@@ -46,7 +46,7 @@
 
 <!--CODE-->
 
-<!-- d5c3d4c792a8 -->
+<!-- b475842ebc45 -->
 #### **`insert` vs `append` vs `extend` vs `+`**
 
 | 操作 | 效果 | 時間 | 回傳 |
@@ -65,7 +65,7 @@
 > **效能提醒**：`insert` 會把 `idx` 之後的每個元素都往後搬，所以是 `O(n)`。
 > 放在迴圈裡呼叫就變成 `O(n²)`。以 LC 那種 `n <= 2000` 的限制（LC 406）還可以接受，
 > 但如果你只會插在最前面，請改用
-> `collections.deque.appendleft()`（`O(1)`）—— 見 [1-32) deque](./python_trick_stdlib.md#deque-double-ended-queue)。
+> `collections.deque.appendleft()`（`O(1)`）—— 見 [1-32) deque](./python_trick_stdlib.md#deque-double-ended-queue-)。
 
 <!-- 30dc3fc6f474 -->
 #### **使用情境 1 —— LC 406 Queue Reconstruction by Height ⭐⭐⭐⭐⭐**
@@ -89,7 +89,7 @@
 > 相關：排序鍵本身請看
 > [1-11'') 多鍵 tuple 排序](./python_trick.md#multi-key-tuple-sort-keylambda-x-x0-x1-)。
 
-<!-- a80c3a040a68 -->
+<!-- 4dd3d77a1ffd -->
 #### **使用情境 2 —— 插入並維持陣列有序（`bisect.insort`）**
 
 別自己手刻「先找位置再插入」—— `bisect` 已經幫你把搜尋做掉了。
@@ -98,7 +98,7 @@
 
 <!--CODE-->
 
-> 見 [1-27) bisect](./python_trick_stdlib.md#bisect_left-and-bisect_right)。
+> 見 [1-27) bisect](./python_trick_stdlib.md#bisect_left-and-bisect_right-)。
 
 <!-- 67b8e71a2eff -->
 #### **使用情境 3 —— 插在最前面（反向建結果）**
