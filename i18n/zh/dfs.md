@@ -29,7 +29,7 @@
 - [DFS vs BFS Comparison](https://github.com/yennanliu/CS_basics/blob/master/doc/pic/dfs_vs_bfs.png)
 - [Tree Traversal Animations](https://github.com/yennanliu/CS_basics/blob/master/doc/pic/dfs_2.png)
 
-<!-- 3311584cf729 -->
+<!-- 918997b93caa -->
 ## 題型分類
 
 下面每個模式都**只出現一次** — 以下一節的模板形式呈現。這張表是它們的索引：
@@ -37,12 +37,12 @@
 
 | # | 模式 | 辨識關鍵字 | 模板 | 代表題 | 其他 |
 |---|---------|----------------------|----------|--------------|------|
-| 1 | 樹走訪 | "traverse"、"visit all"、"print tree"、"serialize" | [T1](#template-1-tree-traversal--lc-94-) | LC 94 | 144, 145, 297, 449, 100 |
+| 1 | 樹走訪、成對 DFS | "traverse"、"visit all"、"print tree"、"serialize"、"is it a mirror"、"are two trees the same" | [T1](#template-1-tree-traversal--lc-94-) | LC 94 | 144, 145, 297, 449, 100, 101, 951 |
 | 2 | 圖／網格走訪、連通分量 | "connected components"、"islands"、"cycle detection" | [T2](#template-2-graph--grid-dfs-flood-fill--lc-200-) | LC 200 | 695, 133, 207, 210, 419 |
 | 3 | 路徑類問題 | "path sum"、"root to leaf"、"all paths"、"does a path exist" | [T3](#template-3-path-finding--lc-112-) | LC 112 | 113, 257, 129, 1971 |
 | 4 | 回溯 | "all combinations"、"permutations"、"subsets" | [T4](#template-4-backtracking--lc-46) | LC 46 | 78, 39, 17, 22, 51, 79 |
 | 5 | 樹結構修改 | "delete"、"insert"、"trim"、"convert" | [T5](#template-5-tree-modification--lc-450) | LC 450 | 701, 669, 538, 226, 114 |
-| 6 | 子樹彙總與 LCA | "subtree sum"、"duplicate subtrees"、"LCA"、"deepest leaves" | [T6](#template-6-bottom-up-post-order-dfs--lc-543-) | LC 543 | 124, 236, 508, 652, 663, 2049 |
+| 6 | 子樹彙總與 LCA | "subtree sum"、"duplicate subtrees"、"LCA"、"deepest leaves"、"minimum moves between adjacent nodes" | [T6](#template-6-bottom-up-post-order-dfs--lc-543-) | LC 543 | 124, 236, 508, 652, 663, 979, 2049 |
 | 7 | 邊界消除（兩趟） | "closed islands"、"surrounded regions"、"captured" | [T7](#template-7-2-pass-dfs-boundary-elimination--lc-1254) | LC 1254 | 130, 417, 1020 |
 | 8 | 路徑簽名（形狀編碼） | "distinct islands"、"unique shapes"、"same shape after translation" | [T8](#template-8-path-signature-shape-encoding--lc-694) | LC 694 | 711, 652 |
 | 9 | 網格 DFS + 回溯 | "one path"、"collect the most"、"cannot revisit a cell" | [T9](#template-9-grid-dfs--backtracking--3-styles-compared-lc-1219-path-with-maximum-gold) | LC 1219 | 79, 329, 980 |
@@ -77,13 +77,73 @@
 ### 通用 DFS 模板
 <!--CODE-->
 
-<!-- 35bebdd7b248 -->
+<!-- d316fee4947c -->
 ### 模板 1：樹走訪 — LC 94 ⭐⭐⭐⭐⭐
 - **說明**：以特定順序拜訪所有節點（前序、中序、後序）
 - **辨識**："Traverse"、"visit all"、"print tree"、"serialize"
-- **例題**：LC 94、LC 144、LC 145、LC 297、LC 449
+- **例題**：LC 94、LC 144、LC 145、LC 297、LC 449；成對 DFS — LC 100、LC 101（見下方的[變化型](#variation-paired-dual-pointer-dfs--lc-101-symmetric-tree)）
 
 <!--CODE-->
+
+<!-- e8a9d2ba073d -->
+#### 變化型：成對（雙指標）DFS — LC 101 Symmetric Tree
+
+> 來源：[`symmetric-tree.py`](../../leetcode_python/Stack/symmetric-tree.py)
+
+- **說明**：一次帶**兩個游標**的 DFS。遞迴不再是從一個節點「算出」某個值，
+  而是檢查一對節點之間的**關係**，並對配好對的子節點繼續遞迴。
+- **辨識**："is it a mirror of itself"、"are these two trees the same"、
+  "symmetric around its centre"、"same shape and same values" — 凡是述語本身就需要兩個節點才講得出來的題目。
+- **關鍵技巧**：helper 收的是 `(a, b)`，不是 `node`。而你往下遞迴時**怎麼配對**，就是這類題的全部：
+  - `(a.left, b.left)` + `(a.right, b.right)` → *同向*配對＝「兩棵樹相同」（LC 100）
+  - `(a.left, b.right)` + `(a.right, b.left)` → *鏡像*配對＝「對稱」（LC 101）
+- **核心想法**：
+  1. 一棵樹對稱的充要條件是**它的兩棵子樹互為鏡像**，所以起手式是
+     `helper(root.left, root.right)` — 根節點本身從頭到尾不跟任何節點比較。
+  2. 三個 base case，**順序很重要**：兩邊皆空 → `True`；只有一邊空 → `False`；
+     值不同 → `False`。三關都過了才往下走。
+  3. 依鏡像配對往下遞迴，並把兩個結果 `and` 起來：**外側**那一對（`a.left` ↔ `b.right`）
+     與**內側**那一對（`a.right` ↔ `b.left`）。
+  4. `and` 會短路，所以任何位置第一次對不上，整趟走訪就結束。
+
+<!--CODE-->
+
+- **最該背下來的那個 bug**：在這題改用*同向*配對並不是「大致上可行」 —
+  它回答的是另一個問題（「左子樹是否等於右子樹？」），而且**兩個方向都會答錯**：
+
+<!--CODE-->
+
+<!--CODE-->
+
+<!--CODE-->
+
+<!-- 45399a59d4e0 -->
+##### 迭代寫法 — 把配對放在堆疊上
+
+題目自己的 follow up 就在問這個寫法，而它也是把成對 DFS 去遞迴化的通用做法：堆疊裡放的是
+**一對一對**的節點，推入與彈出都是兩個一起。
+
+<!--CODE-->
+
+- **刻意把 `None` 也推進去。** 跟模板 1 的迭代走訪不同，這裡**不可以**跳過空的子節點：
+  `(None, node)` 這種配對一定要被彈出來**比較過**，才能回傳 `False`。用 `if p.left:` 擋住推入，
+  會默默地把不對稱的樹判成對稱。
+- **彈出時配對是反過來的** — `stack.pop(), stack.pop()` 拿回來的是 `(q.left, p.right)`，
+  也就是後推入的那個先出來。這裡無害，因為鏡像述語對它的兩個參數是對稱的；但在述語有方向性的
+  成對 DFS（例如「`b` 是不是 `a` 的子樹」）裡就**不是**無害的，那時你必須把兩個值彈進正確的位置。
+- **換成配對佇列也完全一樣** — 把堆疊換成 `deque`、連 `popleft()` 兩次；比較的順序會變，答案不會變。
+  見 [bfs.md](./bfs.md) 裡的 LC 101 那一列。
+
+- **類似的經典 LC 題目**：
+  - LC 100 - Same Tree（同一個骨架，改用*同向*配對）
+  - LC 951 - Flip Equivalent Binary Trees（**兩種**配對都試，再 `or` 起來）
+  - LC 572 - Subtree of Another Tree（把 LC 100 的成對 DFS 在每個節點重新發動一次）
+  - LC 617 - Merge Two Binary Trees（成對 DFS，但**建出**一個節點而不是回傳布林值）
+  - LC 1612 - Check If Two Expression Trees are Equivalent（成對走訪 + 比較葉節點的多重集合）
+  - LC 226 - Invert Binary Tree（把鏡像當成一個*變換* — 對稱就等於
+    `isSameTree(root, invert(root))`，代價是會改動原樹）
+  - LC 872 - Leaf-Similar Trees（刻意放進來當對照：兩趟**各自獨立**的 DFS，
+    事後比較葉節點序列，因為這題允許兩棵樹的形狀不同）
 
 <!-- 481b1282f1c5 -->
 ### 模板 2：圖／網格 DFS（Flood Fill） — LC 200 ⭐⭐⭐⭐⭐
@@ -214,43 +274,6 @@
 #### 慣用寫法：先把子樹指回去，再回傳該節點
 - 把子樹指派給節點，最後再回傳更新後的節點（非常重要！！！！）
 
-<!--CODE-->
-
-<!-- 5370aa7cd1c2 -->
-### 模板 6：由下而上（後序）DFS — LC 543 ⭐⭐⭐⭐⭐
-- **說明**：先處理子樹並由下往上彙總結果；也用來找目標節點的最低共同祖先
-- **辨識**："Subtree sum"、"duplicate subtrees"、"LCA"、"smallest subtree containing"、"lowest common ancestor"、"deepest leaves"
-- **例題**：LC 508、LC 652、LC 236、LC 663、LC 865、LC 1123
-- **什麼時候用 LCA 解法**：
-  - 兩個（或更多）目標節點分別落在不同子樹，而你要找第一個「同時看得到兩邊」的節點
-  - 「包含〔條件 X〕的最小子樹」— 這其實就是換皮的 LCA
-  - 目標可能是**題目給定**的（LC 236：找 p、q 的 LCA），也可能是**隱含**的（LC 865/1123：所有最深層的節點）
-- **核心想法（後序／由下而上）**：
-  1. 先遞迴左右子樹（後序）
-  2. 每個子樹往上回傳一組 `(node, depth/info)`
-  3. 在每個節點比較左右結果：
-     - **左邊較深** → 答案在左子樹，把左邊的結果往上傳
-     - **右邊較深** → 答案在右子樹，把右邊的結果往上傳
-     - **深度相同** → 目前節點就是 LCA（最深的路徑在這裡交會），回傳目前節點
-  4. 遞迴的根節點持有最終答案
-- **主要變體**：
-  - **標準 LCA（LC 236）**：目標 p、q 已給定；回傳第一個在不同子樹看到兩者的節點
-  - **以深度為基準的 LCA（LC 865/1123）**：目標是找出來的（最深的節點）；用深度比較找出最深路徑收斂處
-  - **先標記再作答（LC 865 官解 V1）**：兩趟 — 第一趟 DFS 算出所有深度，第二趟 DFS 找出包含所有最深節點的子樹
-  - **BFS + parent 對照表（LC 865 V0-4）**：先 BFS 找出最深的一層，再沿著 parent 往上走，直到全部收斂到同一個節點
-- **相似的經典 LC 題目**：
-  - LC 236 - Lowest Common Ancestor of a Binary Tree（標準 LCA）
-  - LC 235 - Lowest Common Ancestor of a Binary Search Tree（用 BST 性質最佳化）
-  - LC 865 - Smallest Subtree with all the Deepest Nodes（以深度為基準的 LCA）
-  - LC 1123 - Lowest Common Ancestor of Deepest Leaves（同 LC 865）
-  - LC 1644 - Lowest Common Ancestor of a Binary Tree II（節點可能不存在）
-  - LC 1650 - Lowest Common Ancestor of a Binary Tree III（有 parent 指標）
-  - LC 1676 - Lowest Common Ancestor of a Binary Tree IV（多個目標節點）
-
-<!--CODE-->
-
-<!-- a1033b2ed8fa -->
-#### 全域累加器寫法 — LC 124 Binary Tree Maximum Path Sum
 <!--CODE-->
 
 <!-- 44959c0e78bf -->
@@ -469,7 +492,7 @@
 4. **處理邊界情況**：空的、單一元素、環
 5. **必要時最佳化**：記憶化、剪枝
 
-<!-- a9a41a63c8ac -->
+<!-- c06e07056dd3 -->
 ### 選模板的實用心法
 
 - **兩趟型問題**：如果得先消掉某些東西（邊界、邊），用模板 7
@@ -477,9 +500,10 @@
 - **由下而上彙總**：如果答案取決於先處理完子節點，用模板 6
 - **嘗試所有可能**：如果題目要「所有」解／組合，用模板 4（回溯）
 - **多起點且路徑重疊**：標記、遞迴，然後**還原** — 模板 9
+- **述語需要兩個節點**：如果問題沒辦法只用一個節點*講出來*（「鏡像」、「兩棵樹相同」），就把一**對**節點帶著遞迴 — 模板 1 的[成對 DFS 變化型](#variation-paired-dual-pointer-dfs--lc-101-symmetric-tree)
 - **完全對不上的題目**：在自創模式之前，先翻 [dfs_advanced.md](./dfs_advanced.md)
 
-<!-- 06d7bae4f862 -->
+<!-- 0e8ae5c71de4 -->
 ### 相關主題
 - **[bfs.md](./bfs.md)**：需要最短路徑時
 - **[dp.md](./dp.md)**：子問題重疊 — 把 DFS 記憶化
@@ -490,6 +514,43 @@
 - **[dfs_examples.md](./dfs_examples.md)**：題解與完整題目索引
 
 ---
-**面試必會題目**：LC 94, 104, 112, 113, 124, 200, 236, 297, 399, 694
+**面試必會題目**：LC 94, 100, 101, 104, 112, 113, 124, 200, 236, 297, 399, 694
 **進階題目**：LC 124, 297, 329, 472, 652, 694, 711
 **路徑簽名模式**：LC 694（Distinct Islands）、LC 711（Distinct Islands II）、LC 652（Find Duplicate Subtrees）
+
+<!-- stale: 5370aa7cd1c2 -->
+### 模板 6：由下而上（後序）DFS — LC 543 ⭐⭐⭐⭐⭐
+- **說明**：先處理子樹並由下往上彙總結果；也用來找目標節點的最低共同祖先
+- **辨識**："Subtree sum"、"duplicate subtrees"、"LCA"、"smallest subtree containing"、"lowest common ancestor"、"deepest leaves"
+- **例題**：LC 508、LC 652、LC 236、LC 663、LC 865、LC 1123
+- **什麼時候用 LCA 解法**：
+  - 兩個（或更多）目標節點分別落在不同子樹，而你要找第一個「同時看得到兩邊」的節點
+  - 「包含〔條件 X〕的最小子樹」— 這其實就是換皮的 LCA
+  - 目標可能是**題目給定**的（LC 236：找 p、q 的 LCA），也可能是**隱含**的（LC 865/1123：所有最深層的節點）
+- **核心想法（後序／由下而上）**：
+  1. 先遞迴左右子樹（後序）
+  2. 每個子樹往上回傳一組 `(node, depth/info)`
+  3. 在每個節點比較左右結果：
+     - **左邊較深** → 答案在左子樹，把左邊的結果往上傳
+     - **右邊較深** → 答案在右子樹，把右邊的結果往上傳
+     - **深度相同** → 目前節點就是 LCA（最深的路徑在這裡交會），回傳目前節點
+  4. 遞迴的根節點持有最終答案
+- **主要變體**：
+  - **標準 LCA（LC 236）**：目標 p、q 已給定；回傳第一個在不同子樹看到兩者的節點
+  - **以深度為基準的 LCA（LC 865/1123）**：目標是找出來的（最深的節點）；用深度比較找出最深路徑收斂處
+  - **先標記再作答（LC 865 官解 V1）**：兩趟 — 第一趟 DFS 算出所有深度，第二趟 DFS 找出包含所有最深節點的子樹
+  - **BFS + parent 對照表（LC 865 V0-4）**：先 BFS 找出最深的一層，再沿著 parent 往上走，直到全部收斂到同一個節點
+- **相似的經典 LC 題目**：
+  - LC 236 - Lowest Common Ancestor of a Binary Tree（標準 LCA）
+  - LC 235 - Lowest Common Ancestor of a Binary Search Tree（用 BST 性質最佳化）
+  - LC 865 - Smallest Subtree with all the Deepest Nodes（以深度為基準的 LCA）
+  - LC 1123 - Lowest Common Ancestor of Deepest Leaves（同 LC 865）
+  - LC 1644 - Lowest Common Ancestor of a Binary Tree II（節點可能不存在）
+  - LC 1650 - Lowest Common Ancestor of a Binary Tree III（有 parent 指標）
+  - LC 1676 - Lowest Common Ancestor of a Binary Tree IV（多個目標節點）
+
+<!--CODE-->
+
+<!-- stale: a1033b2ed8fa -->
+#### 全域累加器寫法 — LC 124 Binary Tree Maximum Path Sum
+<!--CODE-->

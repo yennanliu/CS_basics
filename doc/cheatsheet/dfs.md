@@ -31,7 +31,7 @@ the index into them: match the recognition keywords, then jump to the template.
 
 | # | Pattern | Recognition keywords | Template | Canonical LC | Also |
 |---|---------|----------------------|----------|--------------|------|
-| 1 | Tree traversal | "traverse", "visit all", "print tree", "serialize" | [T1](#template-1-tree-traversal--lc-94-) | LC 94 | 144, 145, 297, 449, 100 |
+| 1 | Tree traversal, paired DFS | "traverse", "visit all", "print tree", "serialize", "is it a mirror", "are two trees the same" | [T1](#template-1-tree-traversal--lc-94-) | LC 94 | 144, 145, 297, 449, 100, 101, 951 |
 | 2 | Graph / grid traversal, components | "connected components", "islands", "cycle detection" | [T2](#template-2-graph--grid-dfs-flood-fill--lc-200-) | LC 200 | 695, 133, 207, 210, 419 |
 | 3 | Path problems | "path sum", "root to leaf", "all paths", "does a path exist" | [T3](#template-3-path-finding--lc-112-) | LC 112 | 113, 257, 129, 1971 |
 | 4 | Backtracking | "all combinations", "permutations", "subsets" | [T4](#template-4-backtracking--lc-46) | LC 46 | 78, 39, 17, 22, 51, 79 |
@@ -94,7 +94,7 @@ def dfs(node, visited=None):
 ### Template 1: Tree Traversal — LC 94 ⭐⭐⭐⭐⭐
 - **Description**: Visit all nodes in specific order (preorder, inorder, postorder)
 - **Recognition**: "Traverse", "visit all", "print tree", "serialize"
-- **Examples**: LC 94, LC 144, LC 145, LC 297, LC 449
+- **Examples**: LC 94, LC 144, LC 145, LC 297, LC 449; paired DFS — LC 100, LC 101 (see the [variation](#variation-paired-dual-pointer-dfs--lc-101-symmetric-tree) below)
 
 ```python
 # Preorder: Root -> Left -> Right
@@ -134,6 +134,152 @@ def dfs_iterative(root):
     
     return result
 ```
+
+#### Variation: paired (dual-pointer) DFS — LC 101 Symmetric Tree
+
+> Source: [`symmetric-tree.py`](../../leetcode_python/Stack/symmetric-tree.py)
+
+- **Description**: DFS that carries **two cursors** instead of one. The recursion no longer computes a
+  value *from* a node — it checks a **relation** *between* a pair of nodes, and recurses on the paired
+  children.
+- **Recognition**: "is it a mirror of itself", "are these two trees the same", "symmetric around its
+  centre", "same shape and same values" — anything whose predicate needs two nodes to even be stated.
+- **Key Technique**: the helper takes `(a, b)`, not `node`. Which **pairing** you recurse on *is* the
+  problem:
+  - `(a.left, b.left)` + `(a.right, b.right)` → *straight* pairing = "identical trees" (LC 100)
+  - `(a.left, b.right)` + `(a.right, b.left)` → *mirror* pairing = "symmetric" (LC 101)
+- **Core Idea**:
+  1. A single tree is symmetric iff its **two subtrees are mirrors of each other**, so the launch is
+     `helper(root.left, root.right)` — the root itself is never compared to anything.
+  2. Three base cases, **in this order**: both `None` → `True`; exactly one `None` → `False`; values
+     differ → `False`. Only then descend.
+  3. Descend on the mirror pairing and `and` the two results: the **outer** pair
+     (`a.left` ↔ `b.right`) and the **inner** pair (`a.right` ↔ `b.left`).
+  4. `and` short-circuits, so the first mismatch anywhere aborts the whole traversal.
+
+```text
+LC 101 trace — root = [1,2,2,null,3,null,3]     helper(a, b) pairs  a.left <-> b.right
+                                                                   a.right <-> b.left
+        1               helper(a=2, b=2)                  vals equal -> descend
+      /   \             |- helper(a.left=null, b.right=3)  exactly one null -> FALSE
+    2       2           |- (never evaluated: `and` short-circuits)
+     \       \
+      3       3         answer = False
+   a.right  b.right     <- both 3's are RIGHT children, so they are not mirror partners
+```
+
+- **The one bug worth memorising**: recursing on the *straight* pairing here does not "almost work" —
+  it answers a different question ("is the left subtree equal to the right subtree?") and is wrong in
+  **both** directions:
+
+```text
+straight pairing (a.left<->b.left, a.right<->b.right) on the same two inputs:
+
+  [1,2,2,null,3,null,3]   null==null, then 3==3  -> True    (correct answer: False)
+  [1,2,2,3,4,4,3]         3 vs 4                 -> False   (correct answer: True)
+```
+
+```python
+# python
+# LC 101 - Symmetric Tree
+# IDEA: paired (dual-pointer) DFS; recurse on the MIRROR pairing (a.left, b.right) / (a.right, b.left)
+# time = O(n), space = O(h)   # h = tree height, worst O(n)
+class Solution:
+    def isSymmetric(self, root):
+        if not root:
+            return True
+        # NOTE: the helper takes TWO nodes -> the root is never compared to anything
+        return self.helper(root.left, root.right)
+
+    def helper(self, left, right):
+        if not left and not right:      # both empty -> mirrored
+            return True
+        if not left or not right:       # exactly one empty -> not mirrored
+            return False
+        if left.val != right.val:
+            return False
+        return (
+            self.helper(left.left, right.right)     # outer pair
+            and
+            self.helper(left.right, right.left)     # inner pair
+        )
+```
+
+```java
+// java
+// LC 101 - Symmetric Tree
+// IDEA: paired (dual-pointer) DFS; recurse on the MIRROR pairing
+// time = O(n), space = O(h)
+public boolean isSymmetric(TreeNode root) {
+    if (root == null) {
+        return true;
+    }
+    return helper(root.left, root.right);
+}
+
+private boolean helper(TreeNode left, TreeNode right) {
+    if (left == null && right == null) {
+        return true;
+    }
+    if (left == null || right == null) {
+        return false;
+    }
+    if (left.val != right.val) {
+        return false;
+    }
+    return helper(left.left, right.right)      // outer pair
+            && helper(left.right, right.left); // inner pair
+}
+```
+
+##### Iterative form — the pair lives on the stack
+
+The problem's own follow-up asks for it, and it is the general way to de-recurse a paired DFS: the
+stack holds **pairs**, pushed and popped two entries at a time.
+
+```python
+# python
+# LC 101 - Symmetric Tree (iterative — the stated follow-up)
+# IDEA: same mirror pairing, kept on an explicit stack; pop two entries = pop one pair
+# time = O(n), space = O(n)
+def isSymmetric(root):
+    if not root:
+        return True
+    stack = [root.left, root.right]
+    while stack:
+        p, q = stack.pop(), stack.pop()          # NOTE: pops ONE pair
+        if not p and not q:
+            continue
+        if not p or not q or p.val != q.val:
+            return False
+        # push the two mirror pairs
+        stack.append(p.left)
+        stack.append(q.right)                    # outer pair
+        stack.append(p.right)
+        stack.append(q.left)                     # inner pair
+    return True
+```
+
+- **Push `None`s on purpose.** Unlike the iterative traversal in Template 1, you may **not** skip a
+  null child: a `(None, node)` pair has to be *popped and compared* to return `False`. Guarding the
+  pushes with `if p.left:` silently accepts asymmetric trees.
+- **The pop reverses the pair** — `stack.pop(), stack.pop()` hands back `(q.left, p.right)`, i.e. the
+  second-pushed entry first. Harmless, because the mirror predicate is symmetric in its two
+  arguments; it is *not* harmless in a paired DFS whose predicate is directional (e.g. "is `b` a
+  subtree of `a`"), where you must pop into the right slots.
+- **A pair queue works identically** — swap the stack for a `deque` and `popleft()` twice; the order of
+  comparison changes, the answer does not. See the LC 101 row in [bfs.md](./bfs.md).
+
+- **Similar Classic LC Problems**:
+  - LC 100 - Same Tree (the same skeleton on the *straight* pairing)
+  - LC 951 - Flip Equivalent Binary Trees (try **both** pairings and `or` them)
+  - LC 572 - Subtree of Another Tree (LC 100's paired DFS relaunched at every node)
+  - LC 617 - Merge Two Binary Trees (paired DFS that **builds** a node instead of returning a bool)
+  - LC 1612 - Check If Two Expression Trees are Equivalent (paired walk + leaf multiset compare)
+  - LC 226 - Invert Binary Tree (the mirror as a *transformation* — symmetric is
+    `isSameTree(root, invert(root))`, at the cost of mutating the tree)
+  - LC 872 - Leaf-Similar Trees (deliberate contrast: two **independent** DFS runs whose leaf
+    sequences are compared afterwards, because the trees' shapes are allowed to differ)
 
 ### Template 2: Graph / Grid DFS (Flood Fill) — LC 200 ⭐⭐⭐⭐⭐
 - **Description**: Explore graphs, find components, detect cycles
@@ -1441,6 +1587,7 @@ DFS Problem Analysis Flowchart:
 - **Bottom-up aggregation**: If answer depends on processing children first, use Template 6
 - **Try all possibilities**: If problem asks for "all" solutions/combinations, use Template 4 (Backtracking)
 - **Overlapping paths from many starts**: mark, recurse, then **restore** — Template 9
+- **Two nodes in the predicate**: if the question cannot be *stated* about one node ("mirror", "same tree"), carry a **pair** through the recursion — Template 1's [paired-DFS variation](#variation-paired-dual-pointer-dfs--lc-101-symmetric-tree)
 - **Anything that does not fit**: check [dfs_advanced.md](./dfs_advanced.md) before inventing a pattern
 
 ### Related Topics
@@ -1453,6 +1600,6 @@ DFS Problem Analysis Flowchart:
 - **[dfs_examples.md](./dfs_examples.md)**: worked solutions and the full problem index
 
 ---
-**Must-Know Problems for Interviews**: LC 94, 104, 112, 113, 124, 200, 236, 297, 399, 694
+**Must-Know Problems for Interviews**: LC 94, 100, 101, 104, 112, 113, 124, 200, 236, 297, 399, 694
 **Advanced Problems**: LC 124, 297, 329, 472, 652, 694, 711
 **Path Signature Pattern**: LC 694 (Distinct Islands), LC 711 (Distinct Islands II), LC 652 (Find Duplicate Subtrees)
