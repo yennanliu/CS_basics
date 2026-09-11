@@ -262,7 +262,17 @@ class Solution:
 
 
 # V0-5
-# IDEA: BINARY SEARCH  + patience sorting / tails idea (gemini)
+# IDEA: BINARY SEARCH  + Patience Sorting (分割替換法)  / tails idea (gemini)
+"""
+NOTE !!!
+
+
+1. Patience Sorting (分割替換法)
+    
+    ->  能在 O(N log N) 時間內求出`最長遞增子序列` (LIS) 的長度
+
+
+"""
 class Solution(object):
 
     def lengthOfLIS(self, nums):
@@ -299,7 +309,7 @@ class Solution(object):
 
 
 # V0-6
-# IDEA: BINARY SEARCH  + patience sorting / tails idea (gemini)
+# IDEA: BINARY SEARCH  + Patience Sorting (分割替換法) / tails idea (gemini)
 class Solution(object):
     def lengthOfLIS(self, nums):
         """
