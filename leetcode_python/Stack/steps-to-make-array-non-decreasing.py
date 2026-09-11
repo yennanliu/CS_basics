@@ -43,7 +43,46 @@ class Solution(object):
         pass
 
 
-# V0
+# V0-1
+# IDEA : Monotonic Stack + DP -> LEFT (gemini)
+class Solution(object):
+
+    def totalSteps(self, nums):
+        """
+        :type nums: List[int]
+
+        :rtype: int
+        """
+
+        # NOTE !!!
+        # -> stack = [ [val, steps_to_remove_this_val] ]
+        # 棧中儲存二元組：(數值 num, 該數字被消除所需的步數 step)
+        stack = []
+        max_steps = 0
+
+        for num in nums:
+            cur_steps = 0
+
+            # 單調遞減棧：當前 num >= 棧頂數字時，說明 num 會存活並「吞併」這些較小數字
+            # num 必須等待這些較小數字被消除完後，才有機會被更左邊的更大數字消除
+            while stack and stack[-1][0] <= num:
+                cur_steps = max(cur_steps, stack.pop()[1])
+
+            # 如果棧不為空，說明左邊有一個嚴格大於 num 的數字可以消除它
+            if stack:
+                cur_steps += 1
+            else:
+                # 棧為空，說明 num 是當前最大值，永遠不會被消除
+                cur_steps = 0
+
+            # 更新全局最大步數
+            max_steps = max(max_steps, cur_steps)
+            stack.append((num, cur_steps))
+
+        return max_steps
+
+
+# V0-2
 # IDEA : MONOTONIC STACK + DP ("WHEN DOES nums[i] GET EATEN?")
 #
 #   Simulating the rounds is O(n^2). Instead ask, per element, the only
@@ -94,42 +133,6 @@ class Solution(object):
             stack.append(i)
 
         return res
-
-
-# V0-1
-# IDEA : Monotonic Stack + DP -> LEFT (gemini)
-class Solution(object):
-
-    def totalSteps(self, nums):
-        """
-        :type nums: List[int]
-
-        :rtype: int
-        """
-        # 棧中儲存二元組：(數值 num, 該數字被消除所需的步數 step)
-        stack = []
-        max_steps = 0
-
-        for num in nums:
-            cur_steps = 0
-
-            # 單調遞減棧：當前 num >= 棧頂數字時，說明 num 會存活並「吞併」這些較小數字
-            # num 必須等待這些較小數字被消除完後，才有機會被更左邊的更大數字消除
-            while stack and stack[-1][0] <= num:
-                cur_steps = max(cur_steps, stack.pop()[1])
-
-            # 如果棧不為空，說明左邊有一個嚴格大於 num 的數字可以消除它
-            if stack:
-                cur_steps += 1
-            else:
-                # 棧為空，說明 num 是當前最大值，永遠不會被消除
-                cur_steps = 0
-
-            # 更新全局最大步數
-            max_steps = max(max_steps, cur_steps)
-            stack.append((num, cur_steps))
-
-        return max_steps
 
 
 # V0-2
