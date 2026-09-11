@@ -912,6 +912,12 @@ class Solution:
 ### 18) Longest Increasing Subsequence — the `tails` Array (LC 300) ⭐⭐⭐⭐⭐
 
 > Longest Increasing Subsequence in `O(n log n)`. The `O(n²)` DP is the expected first answer; the binary-search version is the follow-up FAANG interviewers ask for.
+>
+> **Why it works** — the sorted-`tails` invariant, the proof that exactly one slot can
+> improve per element, and the LIS-lookalikes this trick does *not* solve (LC 673, 368,
+> 1027) are in [binary_search.md](./binary_search.md) §1.5; the card game itself, the
+> reconstruction, and the LIS-reduction problems are in
+> [patience_sorting.md](./patience_sorting.md).
 
 #### Core Idea
 

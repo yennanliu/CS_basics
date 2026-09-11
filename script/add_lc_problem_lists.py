@@ -140,6 +140,7 @@ DOC_TAGS = {
     "n_sum.md": ["two-pointers", "hash-table", "sorting"],
     "ood_design.md": ["design"],
     "palindrome.md": ["string", "two-pointers", "dynamic-programming"],
+    "patience_sorting.md": ["binary-search", "dynamic-programming", "greedy"],
     "prefix_sum.md": ["prefix-sum"],
     "priority_queue.md": ["heap-priority-queue"],
     "python_gotchas.md": ["concurrency"],

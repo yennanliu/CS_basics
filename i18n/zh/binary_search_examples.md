@@ -332,10 +332,14 @@
 
 ---
 
-<!-- 2dd722b12a5a -->
+<!-- 283951b87730 -->
 ### 18) Longest Increasing Subsequence — `tails` 陣列 (LC 300) ⭐⭐⭐⭐⭐
 
 > 用 `O(n log n)` 求最長遞增子序列。`O(n²)` 的 DP 是預期中的第一個答案；二分搜尋版才是 FAANG 面試官接著要的追問。
+>
+> **為什麼可行** — `tails` 保持有序的不變量、每個元素最多只會改善一個格子的證明，以及這個技巧
+> *解不了* 的 LIS 仿題（LC 673、368、1027），都在 [binary_search.md](./binary_search.md) §1.5；紙牌遊戲本身、還原子序列的做法，
+> 以及可以歸約成 LIS 的題目，則在 [patience_sorting.md](./patience_sorting.md)。
 
 <!-- f415fda21e77 -->
 #### 核心想法

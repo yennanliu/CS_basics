@@ -2,7 +2,7 @@
 
 > **Scope** — Halving a **monotonic** search space — the loop-invariant reasoning behind `l <= r` vs `l < r`, the boundary (lower/upper bound) templates, rotated arrays, and floating-point and 2D search.
 > **See also** — *deep dives split out of this file*: [binary_search_on_answer.md](./binary_search_on_answer.md) — searching the *answer space*: the `canFinish` / `isValid` predicate, minimise-maximum vs maximise-minimum, and value-domain counting; [binary_search_examples.md](./binary_search_examples.md) — the worked-problem archive, one canonical solution per problem.
-> *Neighbouring sheets*: [sort.md](./sort.md) — getting the array sorted first; [advanced_divide_and_conquer.md](./advanced_divide_and_conquer.md) — halving *with* a merge step; [bst.md](./bst.md) — the same invariant as a data structure; [heap.md](./heap.md) — k-th element without ordering; [monotonic_stack.md](./monotonic_stack.md) — the *positional* "next greater", which is the pattern lower bound is most often confused with.
+> *Neighbouring sheets*: [patience_sorting.md](./patience_sorting.md) — §1.5's scan told as the card game, with reconstruction, the pile/Dilworth proof and the LIS-reduction problems; [sort.md](./sort.md) — getting the array sorted first; [advanced_divide_and_conquer.md](./advanced_divide_and_conquer.md) — halving *with* a merge step; [bst.md](./bst.md) — the same invariant as a data structure; [heap.md](./heap.md) — k-th element without ordering; [monotonic_stack.md](./monotonic_stack.md) — the *positional* "next greater", which is the pattern lower bound is most often confused with.
 
 
 ## LeetCode Problem Lists
@@ -226,6 +226,10 @@ while (l <= r) {
 **Binary Search on Answer Space** (§1.4)
 - **Purpose**: Search a *range of candidate answers*, not an array
 - **Return**: The boundary of a monotone feasibility predicate
+
+**Binary Search into an Array You Maintain — the `tails` pattern** (§1.5)
+- **Purpose**: Collapse an `O(n²)` "best per achieved length" DP into one lower-bound lookup
+- **Return**: The size of the maintained array (a length, not the chain)
 
 ### 1.2) Rotated Sorted Array — Find the Pivot
 
@@ -509,7 +513,7 @@ first start >= end          → lower bound
 | **744** | Find Smallest Letter Greater Than Target | strictly `>` → upper bound, then wrap with `% n` |
 | **981** | Time Based Key-Value Store | largest `timestamp <= query` → upper bound − 1, per key |
 | **1146** | Snapshot Array | same floor query, on a per-index version list |
-| **300** | Longest Increasing Subsequence (O(N log N)) | smallest tail `>= x`, then overwrite it |
+| **300** | Longest Increasing Subsequence (O(N log N)) | smallest tail `>= x`, then overwrite it — §1.5 |
 | **2300** | Successful Pairs of Spells and Potions | smallest potion `>= ceil(success / spell)`, then count the suffix |
 | **1170** | Compare Strings by Frequency of the Smallest Character | count of words with freq `>` query → `n - upperBound` |
 
@@ -762,7 +766,7 @@ l=1 > r=0 → [-1, -1] ✓
 | **744** | Find Smallest Letter Greater Than Target | `bisect_right` + wraparound modulo |
 | **1146** | Snapshot Array | `bisect` on version list per index |
 | **658** | Find K Closest Elements | `findLeft` to locate window start, then expand |
-| **300** | Longest Increasing Subsequence (O(N log N)) | `bisect_left` to replace tails |
+| **300** | Longest Increasing Subsequence (O(N log N)) | `bisect_left` to replace tails — §1.5 |
 | **981** | Time Based Key-Value Store | `findRight` (largest timestamp `<=` query) |
 | **436** | Find Right Interval | `findLeft` on sorted starts |
 | **1898** | Maximum Number of Removable Characters | Boundary search on answer + feasibility check |
@@ -782,7 +786,163 @@ most under-practised tier-5 binary-search skill, so it has a sheet of its own:
 **Recognition keywords**: "minimize the maximum", "maximize the minimum", "find the
 smallest capacity / speed / divisor", "can we split / allocate / distribute".
 
-### 1.5) Related Algorithms & Data Structures
+### 1.5) Binary Search into an Array You Maintain — the `tails` Pattern (LC 300) ⭐⭐⭐⭐⭐
+
+Every template above searches the **input**. This one searches a small array that the scan
+**builds as it goes** — and that array is kept sorted *on purpose*, precisely so a lower
+bound can be run on it. It is the pattern behind `O(n log n)` LIS, and the reason LC 300
+is filed under binary search at all.
+
+> The algorithm's own sheet — the card game it comes from, the pile/Dilworth argument,
+> recovering the subsequence itself, and the problems that *reduce* to LIS —
+> is [patience_sorting.md](./patience_sorting.md). This section is the binary-search view:
+> which template runs, and why one write per element is the complete update.
+
+#### Core Idea — One Slot per Achievable Length, Holding the Smallest Tail
+
+```python
+# python - LC 300 Longest Increasing Subsequence, O(n log n)
+# IDEA: tails[k] = the SMALLEST tail value among increasing subsequences of length k+1
+#       -> tails is sorted -> lower-bound it (findLeft, §1.3) -> append or overwrite
+# time = O(n log n), space = O(n)
+class Solution(object):
+    def lengthOfLIS(self, nums):
+        # tails[k] : smallest possible ending value of an increasing run of length k + 1
+        tails = []
+
+        for num in nums:
+            # NOTE !!! this IS findLeft from §1.3, run on `tails` instead of on `nums`
+            l, r = 0, len(tails) - 1
+            while l <= r:
+                mid = l + (r - l) // 2
+                if tails[mid] < num:
+                    l = mid + 1      # strict < -> equality fails this test, so it
+                                     # takes the else and pushes r left
+                else:
+                    r = mid - 1
+            # l == lower_bound(tails, num) == first index with tails[l] >= num
+
+            if l == len(tails):
+                tails.append(num)    # num beats every tail -> a NEW longest length exists
+            else:
+                tails[l] = num       # same length, cheaper tail -> overwrite
+
+        return len(tails)            # NOTE !!! the LENGTH is the answer, not the contents
+```
+
+> The `bisect_left` one-liner version, the Java version, and the LC 354 variation are in
+> [binary_search_examples.md](./binary_search_examples.md) §18. The loop is spelled out
+> here on purpose: it is character-for-character `findLeft` (§1.3), which is the whole
+> reason this problem belongs on this sheet.
+
+#### Why It Works — Three Claims
+
+**1) `tails` is always sorted, so binary search is legal.**
+Assume it is strictly increasing, and check the two cases the scan can take. The lower
+bound gives `tails[l-1] < num` whenever slot `l-1` exists, and `num <= tails[l]` whenever
+slot `l` exists:
+
+- **append** (`l == len(tails)`): the array grows by `num` at the end, and
+  `tails[l-1] < num` — still strictly increasing.
+- **overwrite** (`l < len(tails)`): `num` replaces `tails[l]`, so the new neighbours are
+  `tails[l-1] < num <= tails[l] < tails[l+1]` — the last term only if slot `l+1` exists,
+  and dropping to a smaller value cannot break it either way.
+
+So the array is strictly increasing after every element, which makes the predicate
+`tails[i] < num` true on a prefix and false on a suffix — the monotone condition every
+binary search needs.
+
+**2) Exactly one slot can ever improve, and `l` is it.**
+`num` can extend an increasing run of length `k+1` only if that run's tail is `< num`.
+Because `tails` is sorted, the lengths whose tail is `< num` are exactly `k = 0 .. l-1`,
+so the longest run `num` can extend has length `l`, producing a run of length `l+1`:
+
+```text
+tails:   [ tails[0] ... tails[l-1] | tails[l] ... ]
+           <  num  (extendable)      >= num
+                          ^ longest extendable run has length l
+                            -> num is a candidate tail for length l + 1 -> slot l
+```
+
+- Slot `l` improves: the new candidate tail is `num`, and `num <= tails[l]`, so
+  `min(tails[l], num) = num`. (If `l` is past the end, length `l+1` was not achievable
+  before and now is — that is the `append`.)
+- No slot `j < l` improves: `num` *could* end a run of length `j+1`, but
+  `tails[j] < num`, so the stored tail is already smaller.
+- No slot `j > l` improves: reaching length `j+1` through `num` needs a run of length `j`
+  ending `< num`, and `tails[j-1] >= tails[l] >= num`. There is none.
+
+So the single write per element is not an optimisation — it is the *complete* update.
+
+**3) `len(tails)` is the LIS length.**
+`>=` : every slot that exists was created by an append, and an append happened only when
+`num` genuinely extended a run — so a run of length `len(tails)` exists.
+`<=` : an increasing subsequence of length `L` makes length `L` achievable, which by
+claim 2 forces `tails` to have a slot `L-1`. Neither direction can be beaten.
+
+**`tails` is not a subsequence.** Only its length means anything:
+
+```text
+nums  = [3, 4, 5, 1]
+tails = [1, 4, 5]     <- 1 sits at index 0 but arrives LAST in the input
+len   = 3             <- correct: the LIS is [3,4,5]
+```
+
+#### The Greedy That the Overwrite Encodes
+
+`tails[l] = num` is the greedy "a smaller tail is never worse": any future `y` that could
+be appended after the old tail can also be appended after `num`, and possibly more. The
+overwrite throws away no reachable answer, which is exactly what claim 2 proves. It is the
+same move as patience sorting — place each card on the leftmost pile whose top is `>= num`,
+start a new pile if there is none, and the answer is the pile count.
+
+#### Pattern: Recognising It
+
+Reach for `tails` when **all** of these hold:
+
+- the answer is the **length** of a longest chain (or `n − length`), not the chain
+  itself and not how many such chains exist;
+- "chainable" is a **total order** on one key (`<` on a number, or on a key you can sort
+  by first), so partial progress can be summarised by a single tail value;
+- an `O(n²)` DP `dp[i] = max(dp[j]) + 1` is the obvious solution and the follow-up asks
+  for `O(n log n)`.
+
+The generalisation is worth naming: **when a DP's state is "best value for each achieved
+length" and that table is monotone, the table is binary-searchable and the whole DP row
+collapses to one lower-bound lookup.**
+
+| Off-by-one | Query | Python |
+|---|---|---|
+| **strictly** increasing (LC 300) | first tail `>= num` | `bisect_left` |
+| **non-decreasing** (duplicates allowed) | first tail `> num` | `bisect_right` |
+| non-**increasing** / decreasing | negate the values, then the above | `bisect_*` on `-num` |
+
+> **Need the subsequence itself, not its length?** Keep, alongside `tails`, the input index
+> written into each slot and a `prev[i]` pointing at the index that was in slot `l-1` when
+> `i` was placed; walk `prev` back from the last append. `tails` alone cannot be read off
+> as the answer (see the `[3,4,5,1]` trace above).
+
+#### Similar Problems: Same `tails` + Lower Bound
+
+| LC # | Problem | What changes |
+|------|---------|--------------|
+| **300** | Longest Increasing Subsequence | Baseline — `bisect_left`, answer `len(tails)` |
+| **354** | Russian Doll Envelopes | Sort `(w asc, h desc)`, then LIS on heights — the tie rule is what blocks same-width chains |
+| **1964** | Longest Obstacle Course at Each Position | Non-decreasing → `bisect_right`, and the answer per index is the **insertion position + 1**, reported as you go |
+| **2111** | Minimum Operations to Make the Array K-Increasing | Split into `k` residue classes, run the non-decreasing variant on each; keep `len - LIS` |
+| **1671** | Minimum Removals to Make a Mountain Array | LIS ending at `i` from the left + LIS starting at `i` from the right, both by this scan |
+| **646** | Maximum Length of Pair Chain | Same chain question; sorting by end value makes plain greedy enough, but the `tails` scan also solves it |
+| **1996** | The Number of Weak Characters | The sibling *sort-with-a-tie-rule* trick from LC 354, without the binary search |
+
+**Traps — problems that look like LIS but are not this pattern:**
+
+| LC # | Problem | Why `tails` fails |
+|------|---------|-------------------|
+| **673** | Number of Longest Increasing Subsequence | A **count**, not a length — a single tail per length cannot carry multiplicities. `O(n²)` DP with a count array, or a BIT over values |
+| **368** | Largest Divisible Subset | "Chainable" is divisibility, which is **not** a total order, so no single tail summarises a chain — `O(n²)` DP + parent pointers |
+| **1027** | Longest Arithmetic Subsequence | State is `(index, difference)` — a hash map DP, not a sorted table |
+
+### 1.6) Related Algorithms & Data Structures
 
 **Complementary Algorithms**:
 - **Two Pointers**: For sorted arrays without random access
@@ -1208,7 +1368,7 @@ One table for the whole sheet: given the shape of the input, this is the templat
 | "**Minimize the maximum**" / "**maximize the minimum**" | Binary search on answer — [binary_search_on_answer.md](./binary_search_on_answer.md) | LC 410, 875, 1011, 1231, 2616 |
 | Values in a known range, **array NOT sorted** | Binary search the value domain + count — [binary_search_on_answer.md](./binary_search_on_answer.md) | LC 287, LC 378 |
 | Feasibility needs a **graph walk** | Binary search on answer + BFS/DFS predicate — [binary_search_on_answer.md](./binary_search_on_answer.md) | LC 1631, LC 778 |
-| `O(n log n)` LIS, weighted pick, sorted history | `lower_bound` on a maintained sorted array — [binary_search_examples.md](./binary_search_examples.md) | LC 300, LC 354, LC 528, LC 981 |
+| `O(n log n)` LIS, weighted pick, sorted history | `lower_bound` on a sorted array you **maintain** — §1.5, worked in [binary_search_examples.md](./binary_search_examples.md) | LC 300, LC 354, LC 528, LC 981 |
 
 ### 3.3) Common Pitfalls & Tips
 
@@ -1235,5 +1395,6 @@ One table for the whole sheet: given the shape of the input, this is the templat
 | "the array has no `size()`" / "the API is paginated" | Exponential (galloping) search for a right end — §2.5 |
 | "matrix with row+col sorted" | Staircase search (NOT flat binary search) |
 | "real number answer, precision required" | Floating-point binary search |
+| "longest increasing/chained subsequence", `O(n²)` DP asked to become `O(n log n)` | `tails` + lower bound — §1.5 |
 | "can we achieve X?" is monotonic | Binary search on monotonic predicate |
 | O(n) solution exists but O(log n) asked | Think: what is the sorted search space? |

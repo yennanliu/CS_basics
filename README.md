@@ -238,6 +238,7 @@ python3 script/fix_readme_tags.py            # rewrite the Note column
 ||LFU Cache | [Python](./algorithm/python/lfu_cache.py) || LC 460 | | | AGAIN| 
 ||DifferenceArray | [Java](./leetcode_java/src/main/java/AlgorithmJava/DifferenceArray.java) || LC 1109, 370 | | | AGAIN| 
 ||Kadane Algo | [Java](./leetcode_java/src/main/java/AlgorithmJava/KadaneAlgo.java) || LC 53, 152,918 | | | AGAIN| 
+||Patience sorting (LIS) | [Python](./algorithm/python/patience_sorting.py) | `longest increasing subsequence in O(N log N)`, longest chainable run | [cheatsheet](./doc/cheatsheet/patience_sorting.md), the pile count is the LIS length (Dilworth), LC 300, 334, 354, 1964, 1713 | O(N log N) | O(N) | not start|
 
 ## Array
 

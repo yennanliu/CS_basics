@@ -45,7 +45,6 @@
   - [Python bisect module](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/python_trick.md) — 插入時維持排序順序
   - [Python Universal Binary Search Template](https://leetcode.com/discuss/general-discussion/786126/python-powerful-ultimate-binary-search-template-solved-many-problems) — 一個模板通吃多題
 
-
 <p align="center"><img src ="../pic/binary_search_pattern.png" ></p>
 
 <!-- 7f3af396dd96 -->
@@ -127,7 +126,7 @@
 <!-- 44335a6bb19f -->
 ## 1) 二分搜尋的類型與模式
 
-<!-- 592fb5b03d86 -->
+<!-- f379f90bcb86 -->
 ### 1.1) 類型速覽
 
 **基本二分搜尋 — LC 704**（標準模板見 §2.1）
@@ -155,6 +154,10 @@
 **對答案空間做二分搜尋**（§1.4）
 - **目的**：搜尋的是*候選答案的範圍*，而不是一個陣列
 - **回傳**：單調可行性判定式的分界點
+
+**對自己維護的陣列做二分搜尋 — `tails` 模式**（§1.5）
+- **目的**：把「每個已達成長度的最佳值」這種 `O(n²)` DP 壓成一次 lower bound 查詢
+- **回傳**：所維護陣列的長度（是長度，不是那條鏈本身）
 
 <!-- 88c893e86307 -->
 ### 1.2) 旋轉排序陣列 — 找出樞紐點
@@ -320,7 +323,7 @@ target 不存在的情況，`nums = [5,7,7,8,8,10]`、`target = 6`：
 - ❌ 忘了空陣列的情況 — 兩個閉區間輔助函式都會自然處理（`l=0, r=-1` → 跳過迴圈 → `l=0 > r=-1` → `[-1,-1]`）
 - ❌ 事先檢查 `if target not in nums` — 那是 O(N)，直接毀掉 O(log N) 的要求
 
-<!-- 98f074ee7c0b -->
+<!-- 75d51d9235ca -->
 ##### 相似題目
 
 | LC # | 題目 | 關鍵差異 |
@@ -333,7 +336,7 @@ target 不存在的情況，`nums = [5,7,7,8,8,10]`、`target = 6`：
 | **744** | Find Smallest Letter Greater Than Target | `bisect_right` + 取模繞回 |
 | **1146** | Snapshot Array | 對每個索引的版本清單做 `bisect` |
 | **658** | Find K Closest Elements | 用 `findLeft` 定位視窗起點，再往外擴 |
-| **300** | Longest Increasing Subsequence (O(N log N)) | 用 `bisect_left` 替換 tails |
+| **300** | Longest Increasing Subsequence (O(N log N)) | 用 `bisect_left` 替換 tails — §1.5 |
 | **981** | Time Based Key-Value Store | `findRight`（最大且 `<=` 查詢值的時間戳） |
 | **436** | Find Right Interval | 對排序後的起點做 `findLeft` |
 | **1898** | Maximum Number of Removable Characters | 對答案做邊界搜尋 + 可行性檢查 |
@@ -352,8 +355,122 @@ target 不存在的情況，`nums = [5,7,7,8,8,10]`、`target = 6`：
 **辨識關鍵字**：「minimize the maximum」、「maximize the minimum」、「找出最小的
 capacity / speed / divisor」、「能不能切分 / 分配 / 派送」。
 
-<!-- b7959cdc6094 -->
-### 1.5) 相關演算法與資料結構
+<!-- b9097b803cd2 -->
+### 1.5) 對自己維護的陣列做二分搜尋 — `tails` 模式 (LC 300) ⭐⭐⭐⭐⭐
+
+上面每個模板搜尋的都是**輸入陣列**。這一個搜尋的是掃描過程中**一邊走一邊建出來**的小陣列 —
+而那個陣列是刻意保持有序的，正是為了能對它做 lower bound。這就是 `O(n log n)` LIS 背後的模式，
+也是 LC 300 會被歸在二分搜尋底下的原因。
+
+> 這個演算法自己的專屬 sheet — 它源自的紙牌遊戲、牌堆 / Dilworth 論證、如何還原出子序列本身，
+> 以及可以*歸約*成 LIS 的題目 — 在 [patience_sorting.md](./patience_sorting.md)。本節是二分搜尋
+> 的視角：跑的是哪一個模板，以及為什麼「每個元素只寫一次」就是完整的更新。
+
+<!-- cda122cc98f5 -->
+#### 核心想法 — 每個可達成的長度一格，存最小的結尾值
+
+<!--CODE-->
+
+> `bisect_left` 一行版、Java 版，以及 LC 354 的變化題都在
+> [binary_search_examples.md](./binary_search_examples.md) §18。這裡刻意把迴圈完整寫出來：
+> 它和 `findLeft`（§1.3）逐字相同，而這正是這題該放在本 sheet 的理由。
+
+<!-- 8436e349ac50 -->
+#### 為什麼可行 — 三個論證
+
+**1) `tails` 永遠有序，所以二分搜尋是合法的。**
+先假設它嚴格遞增，再檢查掃描可能走的兩種情況。只要格子 `l-1` 存在，lower bound 就保證
+`tails[l-1] < num`；只要格子 `l` 存在，就保證 `num <= tails[l]`：
+
+- **append**（`l == len(tails)`）：陣列尾端多出 `num`，且 `tails[l-1] < num` — 仍然嚴格遞增。
+- **overwrite**（`l < len(tails)`）：`num` 取代 `tails[l]`，新的鄰居關係是
+  `tails[l-1] < num <= tails[l] < tails[l+1]` — 最後一項只在格子 `l+1` 存在時才需要看，
+  而且換成更小的值在哪種情況下都不會破壞順序。
+
+所以處理完每個元素後陣列都仍嚴格遞增，這讓判定式 `tails[i] < num` 在前綴為真、在後綴為假 —
+也就是任何二分搜尋都需要的單調條件。
+
+**2) 每次最多只有一個格子會被改善，而那個格子就是 `l`。**
+`num` 只有在某個長度 `k+1` 的遞增序列結尾 `< num` 時，才能接在它後面。因為 `tails` 有序，
+結尾 `< num` 的長度剛好是 `k = 0 .. l-1`，所以 `num` 能延伸的最長序列長度是 `l`，接出來的
+新長度是 `l+1`：
+
+<!--CODE-->
+
+- 格子 `l` 會被改善：新的候選結尾是 `num`，而 `num <= tails[l]`，所以
+  `min(tails[l], num) = num`。（若 `l` 已超出尾端，代表長度 `l+1` 之前做不到、現在做到了 —
+  那就是 `append`。）
+- 任何 `j < l` 的格子不會被改善：`num` *可以* 當長度 `j+1` 的結尾，但 `tails[j] < num`，
+  已經存著更小的結尾。
+- 任何 `j > l` 的格子不會被改善：要透過 `num` 達到長度 `j+1`，需要一個長度 `j` 且結尾 `< num`
+  的序列，但 `tails[j-1] >= tails[l] >= num`，這樣的序列並不存在。
+
+所以「每個元素只寫一次」不是最佳化 — 它就是*完整*的更新。
+
+**3) `len(tails)` 就是 LIS 長度。**
+`>=`：存在的每個格子都是某次 append 產生的，而 append 只在 `num` 真的延伸了某個序列時才發生 —
+所以長度 `len(tails)` 的遞增序列確實存在。
+`<=`：一個長度 `L` 的遞增子序列讓長度 `L` 變成可達成，依論證 2，`tails` 一定會有格子 `L-1`。
+兩個方向都無法再更好。
+
+**`tails` 不是一個子序列。** 只有它的長度有意義：
+
+<!--CODE-->
+
+<!-- 950fca910890 -->
+#### overwrite 所編碼的那個貪心
+
+`tails[l] = num` 就是「結尾更小絕不會更糟」這個貪心：任何未來能接在舊結尾後面的 `y`，也一定能
+接在 `num` 後面，甚至更多。這個覆寫不會丟掉任何可達成的答案 — 而這正是論證 2 所證明的事。它和
+patience sorting 是同一個動作：把每張牌放到「牌頂 `>= num` 的最左邊那一堆」，沒有這樣的牌堆就
+開一堆新的，答案就是牌堆數。
+
+<!-- 9c3fd446c737 -->
+#### 模式：怎麼認出它
+
+當**以下全部**成立時，就該想到 `tails`：
+
+- 答案是最長鏈的**長度**（或 `n − 長度`），不是鏈本身，也不是這種鏈有幾條；
+- 「可以接起來」是單一 key 上的**全序**（數值上的 `<`，或某個可以先排序的 key），所以中途的
+  進度可以用一個結尾值總結；
+- 顯然的解法是 `O(n²)` DP `dp[i] = max(dp[j]) + 1`，而追問要求 `O(n log n)`。
+
+這個推廣值得記住：**當一個 DP 的狀態是「每個已達成長度的最佳值」而那張表是單調的，這張表就可以
+二分搜尋，整列 DP 轉移也就塌成一次 lower bound 查詢。**
+
+| 差一位的地方 | 查詢 | Python |
+|---|---|---|
+| **嚴格**遞增 (LC 300) | 第一個 `>= num` 的結尾 | `bisect_left` |
+| **非遞減**（允許重複） | 第一個 `> num` 的結尾 | `bisect_right` |
+| 非**遞增** / 遞減 | 把數值取負，再用上面的做法 | 對 `-num` 用 `bisect_*` |
+
+> **要的是子序列本身，不只是長度？** 在 `tails` 之外，另外記下每格所存元素在輸入中的索引，
+> 以及一個 `prev[i]` 指向 `i` 被放進來時位在格子 `l-1` 的那個索引；再從最後一次 append 沿著
+> `prev` 走回去。`tails` 本身不能直接當答案讀出來（見上面 `[3,4,5,1]` 的追蹤）。
+
+<!-- 4d5587e34e58 -->
+#### 相似題目：同樣是 `tails` + lower bound
+
+| LC # | 題目 | 差異在哪 |
+|------|---------|--------------|
+| **300** | Longest Increasing Subsequence | 基準題 — `bisect_left`，答案是 `len(tails)` |
+| **354** | Russian Doll Envelopes | 排序 `(w 遞增, h 遞減)`，再對 heights 做 LIS — 同寬時的 tie 規則正是用來擋掉同寬成鏈 |
+| **1964** | Longest Obstacle Course at Each Position | 非遞減 → `bisect_right`，而且每個位置的答案就是**插入位置 + 1**，邊走邊回報 |
+| **2111** | Minimum Operations to Make the Array K-Increasing | 依 mod `k` 拆成 `k` 個剩餘類，各自跑非遞減版；保留 `len - LIS` |
+| **1671** | Minimum Removals to Make a Mountain Array | 從左邊算「結尾在 `i`」的 LIS + 從右邊算「起點在 `i`」的 LIS，兩邊都用這個掃描 |
+| **646** | Maximum Length of Pair Chain | 同樣是成鏈問題；按結尾值排序後單純貪心就夠了，但 `tails` 掃描也能解 |
+| **1996** | The Number of Weak Characters | 來自 LC 354 的*排序 + tie 規則*同門技巧，只是不需要二分搜尋 |
+
+**陷阱 — 看起來像 LIS，但不屬於這個模式的題目：**
+
+| LC # | 題目 | 為什麼 `tails` 不行 |
+|------|---------|-------------------|
+| **673** | Number of Longest Increasing Subsequence | 要的是**數量**而不是長度 — 每個長度只存一個結尾，無法帶著重數。改用 `O(n²)` DP 加一個計數陣列，或對值域開 BIT |
+| **368** | Largest Divisible Subset | 「可以接起來」是整除關係，**不是**全序，所以沒有單一結尾能總結一條鏈 — 用 `O(n²)` DP + parent pointer |
+| **1027** | Longest Arithmetic Subsequence | 狀態是 `(index, 差值)` — 是 hash map DP，不是一張有序表 |
+
+<!-- 809b59b4f3c6 -->
+### 1.6) 相關演算法與資料結構
 
 **互補演算法**：
 - **雙指標**：用於沒有隨機存取能力的已排序序列

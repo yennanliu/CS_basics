@@ -198,6 +198,7 @@
     "binary_search_examples":           { "category": "Search & Sort", "tier": 4 },
     "2_pointers_quickselect":           { "category": "Search & Sort", "tier": 4 },
     "advanced_divide_and_conquer":      { "category": "Search & Sort", "tier": 3, "title": "Divide & Conquer (Advanced)" },
+    "patience_sorting":                 { "category": "Search & Sort", "tier": 4, "title": "Patience Sorting (LIS)" },
 
     "dp":                               { "category": "Dynamic Programming & Recursion", "tier": 5, "title": "Dynamic Programming (DP)" },
     "backtrack":                        { "category": "Dynamic Programming & Recursion", "tier": 5, "title": "Backtracking" },
