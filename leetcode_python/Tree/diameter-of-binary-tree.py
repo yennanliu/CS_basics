@@ -31,6 +31,29 @@ The number of nodes in the tree is in the range [1, 104].
 
 """
 
+"""
+NOTE !!!
+
+DON'T use below approach:
+
+    tree -> graph -> try to get max len from node.
+
+    1. too complex
+    2. the things we get is the `order` (度數最大) of node,
+       but NOT the path from a node.
+
+->
+
+1, 核心觀念錯誤（圖論鄰接表與樹直徑無關）：
+
+    - 原程式碼嘗試將二元樹轉換成無向圖的鄰接表 (defaultdict)，
+      並用 max(len_list) 去找鄰居數量最多的節點。
+      這只會找出「度數最大」的節點（在二元樹中最大度數也不過 3），
+      完全無法計算任意兩點之間的最長路徑（直徑）。
+
+
+"""
+
 # V0
 # IDEA: DFS (POST ORDER)
 # time = O(n)

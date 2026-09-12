@@ -1,4 +1,4 @@
-20260913: top 100 like(dp): 5 | top 100 like (binary tree):  105, 199, 226, 230, 236, 437, 543  | top 100 (backtrack):  | others: 300, 2D LIS (354)  | DP: 44(todo), 10(todo) |LC weekly: 4045(again, with 853), 4043(again), 2289(again)  | 2615 (again !!! PREFIX SUM + LEFT, RIGHT dist)
+20260913: top 100 like(dp): 5 | top 100 like (binary tree):  105, 199, 226, 230, 236, 437, 543(again)  | top 100 (backtrack):  | others: 300, 2D LIS (354)  | DP: 44(todo), 10(todo) |LC weekly: 4045(again, with 853), 4043(again), 2289(again)  | 2615 (again !!! PREFIX SUM + LEFT, RIGHT dist)
 
 
 20260912: top 100 like (binary tree): 108(ok), 114(again*), 199, 226, 230, 236 | top 100 (backtrack):  | others: 300, 2D LIS (354)  | DP: 44(todo), 10(todo) |LC weekly: 4045(again, with 853), 4043(again), 2289(again)  | 2615 (again !!! PREFIX SUM + LEFT, RIGHT dist)
