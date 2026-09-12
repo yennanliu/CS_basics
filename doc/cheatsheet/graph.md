@@ -567,6 +567,23 @@ def is_bipartite_dfs(graph):
 
 ---
 
+## Follow-ups — the variants that separate `H` from `SH` ⭐⭐⭐⭐
+
+The main problem filters; the follow-up is where a Hire becomes a Strong Hire. Each row is a
+variant an interviewer actually asks, paired with **the one thing in the template that has to
+change**. If you can name that line, you understood the template; if you cannot, you memorised it.
+
+| You just solved | The follow-up | What changes |
+|---|---|---|
+| LC 200 Number of Islands | "count **distinct shapes**, not islands" (LC 694) | normalise each component: record moves relative to the starting cell, then put the signature in a set |
+| LC 200 Number of Islands | "the grid does not fit in memory" | union-find over a row-at-a-time sweep, keeping only two rows of parents |
+| LC 207 Course Schedule | "return a valid order" (LC 210) | Kahn's already builds it — collect nodes as they are dequeued; a cycle shows up as `len(order) < n`, so no separate check is needed |
+| LC 207 Course Schedule | "return **all** valid orders" | topological sort stops being enough — backtracking over every zero-indegree choice at each step |
+| LC 684 Redundant Connection | "support undo / rollback of a union" | path compression makes the structure unrecoverable — use union-by-rank only, and push each merged root onto a stack |
+| LC 785 Is Graph Bipartite | "what about 3 colours?" | 2-colouring is BFS; k-colouring for k ≥ 3 is NP-complete. Recognising that is the answer |
+| LC 133 Clone Graph | "the graph is very deep" | recursive DFS stack-overflows — switch to BFS with the same `{old: new}` map |
+| BFS shortest path | "the edges have weights / negative weights" | Dijkstra / Bellman-Ford — see [shortest_path_comparison.md](./shortest_path_comparison.md) |
+
 ## Summary & Quick Reference
 
 ### Decision Table — Which Graph Pattern?

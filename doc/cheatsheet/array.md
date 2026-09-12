@@ -1528,6 +1528,22 @@ class Solution(object):
 ---
 
 
+### Follow-ups — the variants that separate `H` from `SH` ⭐⭐⭐⭐
+
+The main problem filters; the follow-up is where a Hire becomes a Strong Hire. Each row is a
+variant an interviewer actually asks, paired with **the one thing in the template that has to
+change**. If you can name that line, you understood the template; if you cannot, you memorised it.
+
+| You just solved | The follow-up | What changes |
+|---|---|---|
+| Kadane (LC 53) | "return the subarray, not the sum" | record a `start` whenever the running sum resets to `nums[i]`, and freeze `(start, i)` whenever `best` improves |
+| Kadane (LC 53) | "the array is **circular**" (LC 918) | answer = `max(maxSub, total - minSub)` — but if every element is negative, `total - minSub` is 0 (the empty wrap), so return `maxSub` |
+| Kadane (LC 53) | "product instead of sum" (LC 152) | one running max is not enough: a negative flips the sign, so carry `curMax` **and** `curMin` and swap them on a negative |
+| LC 238 Product Except Self | "division is allowed now" | still wrong — a single zero makes every other entry `0/0`, and two zeros make the whole array 0. The prefix/suffix scan needs no special case |
+| LC 189 Rotate Array | "in-place, O(1) space" | three reversals: whole array, first `k`, rest. And `k %= n` first, or the last reverse runs on a negative-length slice |
+| LC 169 Majority Element | "everything appearing more than `n/3` times" (LC 229) | Boyer-Moore with **two** candidates and two counts, then a second pass to verify both — at most two such values can exist |
+| Prefix sums | "the queries are updates, not just reads" | a static prefix array is O(n) per update; switch to a Fenwick tree (BIT) for O(log n) both ways |
+
 ## 2) Pattern Selection
 
 Most problems tagged **array** are not array problems. They are window, pointer, prefix-sum or

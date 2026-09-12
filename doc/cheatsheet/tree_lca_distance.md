@@ -1328,6 +1328,22 @@ class Solution:
                         q.append(node)
 ```
 
+## Follow-ups — the variants that separate `H` from `SH` ⭐⭐⭐⭐
+
+The main problem filters; the follow-up is where a Hire becomes a Strong Hire. Each row is a
+variant an interviewer actually asks, paired with **the one thing in the template that has to
+change**. If you can name that line, you understood the template; if you cannot, you memorised it.
+
+| You just solved | The follow-up | What changes |
+|---|---|---|
+| LC 236 LCA | "what if one of the nodes is **not** in the tree?" | the standard recursion happily returns the other node — you must verify both were actually found, with a second pass or a found-count |
+| LC 236 LCA | "there will be a million queries on one fixed tree" | per-query O(n) is too slow — preprocess with binary lifting, O(n log n) build then O(log n) per query, or Euler tour + sparse table for O(1) |
+| LC 236 LCA | "the nodes have parent pointers" | no recursion — collect one node's ancestors in a set and walk up from the other; or equalise depths and step together, O(h) time O(1) space |
+| LCA | "the distance between two nodes" | `dist(u,v) = depth[u] + depth[v] - 2·depth[lca(u,v)]` — one LCA call plus a depth table |
+| LC 235 LCA in a BST | "why is this easier than LC 236?" | the values order the descent — go left when both are smaller, right when both are larger, stop on a split. O(h) with no recursion into both sides |
+| LC 863 All Nodes Distance K | "the tree has no parent pointers" | build a `{node: parent}` map with one DFS first, then BFS radiating out from the target, with a visited set so you do not walk back |
+| Any LCA solution | "what is the space bound?" | the recursion stack, O(h) — which is O(n) on a degenerate tree. Stating that unprompted is the verification signal |
+
 ## Pattern Selection Strategy
 
 **Step 2 — Apply the pattern:**

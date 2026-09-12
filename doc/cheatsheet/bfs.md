@@ -885,6 +885,22 @@ def isBipartite(graph):
 
 ---
 
+## Follow-ups — the variants that separate `H` from `SH` ⭐⭐⭐⭐
+
+The main problem filters; the follow-up is where a Hire becomes a Strong Hire. Each row is a
+variant an interviewer actually asks, paired with **the one thing in the template that has to
+change**. If you can name that line, you understood the template; if you cannot, you memorised it.
+
+| You just solved | The follow-up | What changes |
+|---|---|---|
+| LC 102 Level Order | "bottom-up" (LC 107) / "zigzag" (LC 103) | nothing in the traversal — reverse the output list, or flip an `leftToRight` flag per level. The BFS itself is untouched |
+| LC 102 Level Order | "only the rightmost node of each level" (LC 199) | take the last node dequeued in each level loop; still one pass |
+| LC 994 Rotting Oranges | "what if some cells can never rot?" | after the BFS drains, count remaining fresh cells — non-zero means return `-1`. Forgetting this is the classic wrong answer |
+| LC 1091 Shortest Path in Binary Matrix | "4 directions instead of 8, or a knight's moves" | only the `dirs` array changes; the BFS, the visited set and the level counter are identical |
+| LC 127 Word Ladder | "return the actual path" (LC 126) | distance alone is not enough — store a parent map (a **list** of parents per node, since several may be at the same level) and backtrack from the end |
+| LC 127 Word Ladder | "the word list is huge" | bidirectional BFS — expand the smaller frontier each round; the branching factor halves in the exponent |
+| Any unweighted shortest path | "the edges now have weights" | BFS breaks immediately: level number stops equalling distance. Dijkstra (non-negative) or Bellman-Ford (negative) — see [shortest_path_comparison.md](./shortest_path_comparison.md) |
+
 ## Summary & Quick Reference
 
 > `Pattern 4.5 / 4.6 / 6 / 8 / 8.5 / 9 / 10 / 12 / 14 / 15` below live in [bfs_advanced.md](./bfs_advanced.md); `§2-N` references live in [bfs_examples.md](./bfs_examples.md).

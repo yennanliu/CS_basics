@@ -1359,6 +1359,23 @@ the second gets there with `2 -> 1`. Each row is the *cheapest* way to that sum,
 | LC 4040 Minimum Operations to Form Subset Sum I | the menu is *derived*, not given — most of the work is proving which options are reachable and cheapest |
 
 
+## Follow-ups — the variants that separate `H` from `SH` ⭐⭐⭐⭐
+
+The main problem filters; the follow-up is where a Hire becomes a Strong Hire. Each row is a
+variant an interviewer actually asks, paired with **the one thing in the template that has to
+change**. If you can name that line, you understood the template; if you cannot, you memorised it.
+
+| You just solved | The follow-up | What changes |
+|---|---|---|
+| LC 322 Coin Change | "count the ways instead of the minimum" (LC 518) | `min(dp[i], dp[i-c]+1)` becomes `dp[i] += dp[i-c]`, and `dp[0] = 1` seeds it |
+| LC 518 Coin Change II | "count **permutations**, not combinations" (LC 377) | nothing but the loop order — amount outer, coins inner. This sheet exists mostly for this one line |
+| LC 416 Partition Equal Subset Sum | "which items did you pick?" | the 1-D rolling array has thrown that away — keep the 2-D table and walk back from `dp[n][target]`, or store a parent choice |
+| LC 416 Partition Equal Subset Sum | "partition into **k** equal subsets" (LC 698) | subset-sum DP no longer covers it — bitmask DP over which elements are used, O(n·2ⁿ) |
+| 0/1 knapsack | "each item may be taken at most `k` times" | bounded knapsack — binary-split each item into 1, 2, 4, … copies so the 0/1 loop still applies, O(n·W·log k) |
+| 0/1 knapsack | "why iterate the weight loop **backwards**?" | forwards lets the same item be reused within one pass, silently turning 0/1 into unbounded. That is the entire difference between the two templates |
+| Any knapsack | "the weights are huge but the values are small" | flip the DP dimension — index by achievable value and minimise weight, O(n·Σv) |
+| Any knapsack | "derive it from brute force first" | the recurrence *is* `take` vs `skip` recursion with the memo flattened — see [recursion_to_dp.md](./recursion_to_dp.md) |
+
 ## Pattern Selection Strategy
 
 ```text

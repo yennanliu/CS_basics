@@ -1377,6 +1377,21 @@ class Solution:
 
 ---
 
+## Follow-ups — the variants that separate `H` from `SH` ⭐⭐⭐⭐
+
+The main problem filters; the follow-up is where a Hire becomes a Strong Hire. Each row is a
+variant an interviewer actually asks, paired with **the one thing in the template that has to
+change**. If you can name that line, you understood the template; if you cannot, you memorised it.
+
+| You just solved | The follow-up | What changes |
+|---|---|---|
+| LC 875 Koko Eating Bananas | "minimise the maximum" → "maximise the minimum" | only the predicate's direction flips; `lo`/`hi` update lines swap. The loop shape is identical |
+| LC 410 Split Array Largest Sum | "also return **where** you split" | binary search gives the value only — re-run the feasibility check once at the final answer and record the cut points |
+| Any integer search | "the answer is a real number, not an integer" | `while lo < hi` never terminates on reals. Loop a fixed ~100 iterations, or on `hi - lo > 1e-6` |
+| Any `(lo + hi) / 2` | "the bounds are near `Integer.MAX_VALUE`" | `lo + (hi - lo) / 2`. Also `long` for the running sum inside the feasibility check |
+| LC 4 Median of Two Sorted Arrays | "why can't I binary-search the value?" | you can, but O(log(max-min)·log n); the O(log(min(m,n))) solution searches the **partition index**, not the value |
+| Feasibility predicate | "prove the predicate is monotone" | the whole method dies without it — state that `feasible(x) ⇒ feasible(x+1)`, or binary search is not applicable at all |
+
 ## Problems by Pattern
 
 | Problem | Difficulty | Pattern | Key Insight |

@@ -41,7 +41,7 @@ would copy into a live interview — see finding 3.
 | Files / lines | 133 / 142,931 | — |
 | Tier-5 sheets naming a **brute force** baseline | **5 / 22** | Problem solving |
 | Tier-5 sheets stating an **invariant** | 11 / 22 | Problem solving |
-| Tier-5 sheets with a **follow-up** question | 8 / 22 | Problem solving (`H` → `SH`) |
+| Tier-5 sheets with a **follow-up** question | 8 / 22 → **21 / 22** ✅ | Problem solving (`H` → `SH`) |
 | Sheets saying **when the pattern does *not* work** | 10 / 133 | Problem solving |
 | Sheets mentioning **clarifying questions** | 22 / 133 | Communication |
 | Sheets with a **dry run / trace** | 31 / 133 | Verification |
@@ -187,6 +187,26 @@ which is what the last eight minutes of a real round are.
 
 > **Fix** — one `### Follow-up` heading per template section, stating the variant and the one
 > line of the template that has to change. `dfs.md` (4 mentions) is the closest existing model.
+
+**Done (Sep 2026).** A `Follow-ups — the variants that separate H from SH` section was added to
+the 13 tier-5 sheets that had none: `2_pointers`, `array`, `bfs`, `binary_search_on_answer`,
+`binary_tree`, `bst`, `graph`, `knapsack`, `linked_list`, `sliding_window`, `stack`, `tree`,
+`tree_lca_distance`. Coverage is now **21 / 22**.
+
+Each is a table of 6–8 rows: *what you just solved* → *the follow-up an interviewer asks* →
+*the one line of the template that changes*. Every one of the 80 LC numbers cited resolves to a
+README entry, so no row sends a reader to a problem this repo cannot show (see finding 8).
+
+`lc_pattern.md` is deliberately excluded — its own Scope line says "index and triage only, no
+templates here", so there is no template for a follow-up to modify.
+
+Two things this deliberately did **not** do, and which remain open:
+
+- The sections are **consolidated per sheet**, not placed inline under each template section as
+  the fix above specifies. Consolidated is greppable and testable; inline is better teaching.
+  Splitting them out is the follow-up to this follow-up.
+- The 8 sheets that already mention follow-ups still do so **in prose**, not as posed questions
+  (`dfs.md:237`, `hash_map.md:1041`, `dp.md:1548`). They were left alone.
 
 ---
 
@@ -362,7 +382,7 @@ Ranked by interview impact per hour of editing:
 | 4 | Promote the signal→pattern table out of `graph.md` | 22 sheets | the highest-value artefact, currently stranded |
 | 5 | `Does not apply when` block per tier-5 sheet | 5 lines each | stops the look-alike trap |
 | 6 | Link tier-5 Overviews to the existing constraint table | 20 one-line edits | cheapest item here; earns the point in minute two |
-| 7 | `### Follow-up` per template section | incremental | the `H` → `SH` rung |
+| 7 | ~~`### Follow-up` per template section~~ — **done**, consolidated per sheet (13 sheets, 21/22 coverage) | — | the `H` → `SH` rung |
 | 8 | Link cheatsheets to this repo's solutions; validate `LC n` in the build | tooling | closes the practice loop |
 | 9 | Java/Python parity in `graph.md`, `knapsack.md`, `hash_map.md`, `dp.md` | per-block | serves half the readership |
 | 10 | Renumber patterns; qualify duplicate headings; cross-reference the 21 multi-sheet problems | cosmetic + anchors | cheap, and fixes real anchor collisions |

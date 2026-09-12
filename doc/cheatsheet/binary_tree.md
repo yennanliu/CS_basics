@@ -1610,6 +1610,22 @@ private int getHeight(TreeNode node) {
 }
 ```
 
+## Follow-ups — the variants that separate `H` from `SH` ⭐⭐⭐⭐
+
+The main problem filters; the follow-up is where a Hire becomes a Strong Hire. Each row is a
+variant an interviewer actually asks, paired with **the one thing in the template that has to
+change**. If you can name that line, you understood the template; if you cannot, you memorised it.
+
+| You just solved | The follow-up | What changes |
+|---|---|---|
+| LC 104 Max Depth | "the longest path between **any** two nodes" (LC 543) | same post-order recursion; the answer stops being the return value and becomes a side-effect updated at each node as `left + right` |
+| LC 124 Max Path Sum | "why return `max(left,right)+val` but score `left+right+val`?" | the return value must be a path a *parent* can extend (one branch); the scored value may fork at this node. Naming that split is the whole question |
+| LC 112 Path Sum | "count **every** downward path, not just root-to-leaf" (LC 437) | a running prefix-sum map, `{prefix: count}`, added and removed around the recursion — it is 2-Sum on a root path |
+| LC 98 Validate BST | "what about duplicate values?" | the bounds are no longer symmetric — decide whether duplicates go left or right, and make exactly one side's comparison strict |
+| Any recursive traversal | "do it iteratively, O(1) space" | Morris traversal — thread each node's predecessor to itself, then unthread. O(1) space, but it *mutates* the tree mid-walk |
+| Any binary-tree template | "now the tree is n-ary" | the two `left` / `right` calls become a loop over `children`; post-order and level-order carry over unchanged |
+| LC 105 Build from Preorder + Inorder | "preorder + postorder instead" | no longer unique for general trees — only for full binary trees. Saying so is the answer |
+
 ## Pattern Selection Strategy
 
 ```text
