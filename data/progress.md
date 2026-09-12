@@ -60,6 +60,7 @@
 
 
 - kadane_algorithm.md
+	- `1-5) 最多刪一個元素的最大子陣列和（LC 1186）`
 
 
 
@@ -329,6 +330,8 @@
 			- linear DP
 			- 2 states DP
 			- Unbounded Knapsack VS Knapsack DP
+			- Kadane’s algo
+					- 環狀最大子陣列（LC 918)
 		- set
 			- 187
 			- 532
