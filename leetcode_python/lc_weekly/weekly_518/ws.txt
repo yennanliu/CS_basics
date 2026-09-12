@@ -19,6 +19,76 @@
 #------------------------------------------------
 
 
+->
+
+Return the `number` of 
+`cyclic rotations` of s whose `score equals `k`.`
+
+
+
+s: str, with len=n
+
+
+cyclic rotation:
+    - choose a prefix within [0, n-1],
+      move this prefix to the end.
+      preserving the order of all characters.
+
+
+for every cyclic rotation,
+
+    score = # of indices i s.t. 0 <= i < n - 1
+            and the characters at positions
+            ` i and i + 1` are equal.
+
+
+
+
+# idea 1) brute force (rotate on prefix and cnt)
+
+
+class Solution(object):
+    def countRotations(self, s, k):
+        """
+        :type s: str
+        :type k: int
+        :rtype: int
+        """
+        # edge
+        if not s or len(s):
+            return 0
+        # ??
+        if len(s) == 2:
+            cnt = 0
+            if s[0] == s[1]:
+                cnt += 1
+            if cnt == k:
+                return 1
+            return 0
+
+        #score = 0
+        #tmp = []
+        c_map = defaultdict(int)
+
+        for i in range(len(s)):
+            if i == 0:
+                #res.append(self.get_score(s))
+                c_map[self.get_score(s)] += 1
+            else:
+                # rotate # ???
+                tmp = s[0]
+                s = s[1:] + tmp
+                #res.append(self.get_score(s))
+                c_map[self.get_score(s)] += 1
+
+        return c_map[k]
+
+
+    def get_score(self, x):
+        pass
+        
+
+
 
 #------------------------------------------------
 
