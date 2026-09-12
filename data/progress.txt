@@ -1,3 +1,6 @@
+20260912: top 100 like (binary tree):  105, 108, 114, 199, 226, 230, 236 | top 100 (backtrack):  | others: 300 (todo: Parent Pointers, binary search, to note), 2D LIS (354)  | DP: 44(todo), 10(todo),  | 2615 (again !!! PREFIX SUM + LEFT, RIGHT dist)
+
+
 20260911: top 100 like (binary tree): 94(ok), 98(ok*), 101(again!!), 104(ok*), 105, 108, 114  | top 100 (backtrack):  | others: 300 (todo: Parent Pointers, binary search, to note), 2D LIS (354),  51(again), 295(ok*) | DP: 44(todo), 10(todo), 2289(again!!) | 2615 (again !!! PREFIX SUM + LEFT, RIGHT dist)
 
 
