@@ -88,6 +88,8 @@
       border-left: 2px solid var(--border); padding-left: 1rem; margin: 0 0 1.25rem;
     }
     .rules code { color: var(--text); }
+    .rules p { margin: 0 0 0.6rem; }
+    .rules p:last-child { margin-bottom: 0; }
 
     /* ── Question ────────────────────────────────────────────────────────── */
     .progress { height: 2px; background: var(--border); margin-bottom: 1.1rem; }
@@ -210,12 +212,19 @@
 
   <!-- ── Setup ──────────────────────────────────────────────────────────── -->
   <div id="setup" hidden>
-    <p class="rules">
-      Answers are free text — <code>O(n log n)</code>, <code>nlogn</code> and
-      <code>N·logN</code> all count. Time and space are marked separately, so a
-      half-right answer scores half. Unless a question says otherwise, the space
-      asked for is <b>auxiliary</b>: the returned answer does not count against you.
-    </p>
+    <div class="rules">
+      <p>
+        Answers are free text — <code>O(n log n)</code>, <code>nlogn</code> and
+        <code>N·logN</code> all count. Time and space are marked separately, so a
+        half-right answer scores half. Unless a question says otherwise, the space
+        asked for is <b>auxiliary</b>: the returned answer does not count against you.
+      </p>
+      <p>
+        The snippets are the classics — Blind 75, NeetCode 150 / 250 and LeetCode's
+        Top 100 Liked — plus a handful of pure drills where the shape of the loop is
+        the whole question.
+      </p>
+    </div>
 
     <div class="panel">
       <div class="setup-row">
@@ -308,7 +317,7 @@
 (function () {
   'use strict';
 
-  var COUNTS = [5, 10, 25, 50];
+  var COUNTS = [5, 10, 25, 50, 100];
   var STORE_KEY = 'complexity-quiz-prefs';
 
   var bank = [];                                    // every question, as built
