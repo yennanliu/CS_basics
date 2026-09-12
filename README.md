@@ -800,6 +800,7 @@ python3 script/fix_readme_tags.py            # rewrite the Note column
 | 955 | [Delete Columns to Make Sorted II](https://leetcode.com/problems/delete-columns-to-make-sorted-ii/) | [Python](./leetcode_python/String/delete-columns-to-make-sorted-ii.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/String/DeleteColumnsToMakeSortedII.java) | _O(n * l)_ | _O(n)_ | Medium | **string**, LC 944, greedy column keeping, `good trick`, `google` | AGAIN (not start) |
 | 1119 | [Remove Vowels from a String](https://leetcode.com/problems/remove-vowels-from-a-string/) | [Python](./leetcode_python/String/remove-vowels-from-a-string.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/String/RemoveVowelsFromAString.java) | _O(n)_ | _O(n)_ | Easy | **string**, `amazon` | OK |
 | 4006 | [Count Valid Prefixes](https://leetcode.com/problems/count-valid-prefixes/description/) | [Python](./leetcode_python/String/count-valid-prefixes.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/String/CountValidPrefixes.java) | _O(n)_ | _O(1)_ | Easy | **string**, prefix, good basic, LC weekly | OK |
+| 4043 | [Count Rotations With Exactly K Equal Adjacent Pairs](https://leetcode.com/problems/count-rotations-with-exactly-k-equal-adjacent-pairs/description/) | [Python](./leetcode_python/String/count-rotations-with-exactly-k-equal-adjacent-pairs.py) | _O(n)_ | _O(1)_ | Easy | **string**, cyclic pairs, a rotation only cuts ONE pair so score is C or C-1, brute force O(n^2) as V0, LC weekly | AGAIN(1) |
 
 
 ## Queue
