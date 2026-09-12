@@ -31,6 +31,9 @@
 ### References
 
 - [dp.md](./dp.md) — the Edit Distance (LC 72) and LCS (LC 1143) templates
+- [dp.md — Template 2a](./dp.md#template-2a-reading-a-2-d-dp-table--shape-dependency-fill-order-) — the table itself: which cells the transition
+  reads, why row-major is the only legal fill order here, and the backward walk that turns the
+  finished table into the edit script
 - [palindrome.md](./palindrome.md) — the single-string palindrome DP family
 
 ## Templates & Algorithms

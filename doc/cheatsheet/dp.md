@@ -608,8 +608,400 @@ public int minPathSum(int[][] grid) {
 > `[[1,3,1],[1,5,1],[4,2,1]]` trace are in [dp_advanced.md](./dp_advanced.md); the counting twin
 > LC 62 (Unique Paths) is worked in [dp_examples.md](./dp_examples.md).
 
+### Template 2a: Reading a 2-D DP Table — Shape, Dependency, Fill Order ⭐⭐⭐⭐⭐
+
+Template 2 is the easy 2-D case: the table *is* the input grid, so `dp[i][j]` sits where the problem
+already put it. The other two 2-D families — interval DP (Template 3, Template 10) and two-sequence
+DP (Template 8, Template 9) — invent a table the problem never handed you, and there the recurrence
+is rarely what sinks people. The table is: **what shape is it, which cells does the recurrence read,
+and therefore which loop order is legal.** This section is the shared map; the templates below
+assume it.
+
+#### The rule that decides the loop order
+
+> Write the transition first. Every `dp[...]` on its **right-hand side** is an arrow pointing *into*
+> `dp[i][j]`. A loop order is legal exactly when every arrow lands on a cell that is **already
+> filled**. There is nothing else to it.
+
+| The transition reads | Which neighbour | So the loop must go |
+|---|---|---|
+| `dp[i-1][j]` | row **above** | `i` ascending (`1 → m`) |
+| `dp[i+1][j]` | row **below** | `i` **descending** (`n-1 → 0`) |
+| `dp[i][j-1]` | column **left** | `j` ascending (`1 → n`) |
+| `dp[i][j+1]` | column **right** | `j` **descending** |
+| `dp[i+1][j-1]` | the **inner** range (both ends move in) | `i` descending **and** `j` ascending |
+| `dp[i][k]`, `dp[k][j]` for `i < k < j` | **shorter** ranges | interval **length** ascending |
+
+That table is the whole decision procedure, and it is why LC 516's loop runs `i` backwards while
+LC 72's runs `i` forwards — not style, not taste, just which neighbours each recurrence reads.
+
+#### Which shape am I building?
+
+```text
+What do i and j MEAN in dp[i][j]?
+
+├── ONE sequence; i and j are the two ENDS of a sub-range s[i..j]
+│      → Shape A — n × n, only the upper triangle is real,
+│        base on the diagonal, answer at the TOP-RIGHT dp[0][n-1]
+│        LC 516, 5, 647, 1312, 312, 877
+│
+├── TWO sequences; i and j are PREFIX LENGTHS (first i of s1, first j of s2)
+│      → Shape B — (m+1) × (n+1), row 0 / column 0 are the empty prefixes,
+│        answer at the BOTTOM-RIGHT dp[m][n]
+│        LC 72, 1143, 115, 97, 10
+│
+└── a real grid handed to you; i and j are COORDINATES
+       → Template 2 above — m × n, answer at dp[m-1][n-1]
+         LC 62, 64, 221
+```
+
+---
+
+#### Shape A — one sequence, `i`/`j` are the two ends
+
+**State**: `dp[i][j]` = the answer for the sub-range `s[i..j]`.
+
+```text
+            j = 0      1        2      ...    n-1
+  i = 0   [ base ] [   ?  ] [   ?  ]  ...  [ 🎯 dp[0][n-1] ]   ← the answer
+      1   [ dead ] [ base ] [   ?  ]  ...  [      ?        ]
+      2   [ dead ] [ dead ] [ base ]  ...  [      ?        ]
+      :
+    n-1   [ dead ] [ dead ] [ dead ]  ...  [    base       ]
+
+  diagonal  i == j : the length-1 base case  (dp[i][i] = 1, or True)
+  below it  i >  j : an empty range — never written, never read
+  corner   (0, n-1): the whole sequence — this is what you return
+```
+
+**Dependency** — the three cells a boundary-shrinking transition reads:
+
+```text
+   the 2 x 2 window, drawn the same way up as the table above:
+
+                        j-1              j
+                  ┌──────────────┬──────────────┐
+        row i     │  dp[i][j-1]  │   dp[i][j]   │  ← 🎯 being filled
+                  ├──────────────┼──────────────┤
+        row i+1   │ dp[i+1][j-1] │  dp[i+1][j]  │
+                  └──────────────┴──────────────┘
+
+   dp[i][j]  ⟵  dp[i][j-1]     →  from the LEFT      — drop the right end s[j]
+   dp[i][j]  ⟵  dp[i+1][j]     ↑  from BELOW         — drop the left end  s[i]
+   dp[i][j]  ⟵  dp[i+1][j-1]   ↗  from BELOW-LEFT    — drop BOTH ends
+
+   Every arrow travels UP and to the RIGHT. Nothing arrives from above or from
+   the right, so the table fills from the diagonal OUTWARD, toward the
+   top-right corner.
+```
+
+##### Order A — `i` backward, `j` forward (write this one)
+
+```python
+# python
+# LC 516 - Longest Palindromic Subsequence
+# IDEA: i descends so row i+1 is already done; j ascends so column j-1 is already done
+# time = O(n^2), space = O(n^2)
+n = len(s)
+dp = [[0] * n for _ in range(n)]
+
+for i in range(n):                 # base: one character is a palindrome of length 1
+    dp[i][i] = 1
+
+for i in range(n - 1, -1, -1):     # ↑ bottom row first
+    for j in range(i + 1, n):      # → left to right, staying above the diagonal
+        if s[i] == s[j]:
+            dp[i][j] = dp[i + 1][j - 1] + 2
+        else:
+            dp[i][j] = max(dp[i + 1][j], dp[i][j - 1])
+
+return dp[0][n - 1]
+```
+
+##### Order B — by interval length (diagonal sweep)
+
+```python
+# python
+# IDEA: same table, one diagonal at a time. The only order that works when the transition
+#       needs a split point k (dp[i][k] and dp[k][j]) instead of the two ends.
+# time = O(n^2) for a two-end transition, O(n^3) once a k-loop is nested inside
+for length in range(2, n + 1):          # sub-range length: short → long
+    for i in range(n - length + 1):     # left end
+        j = i + length - 1              # right end is derived, never looped
+        ...                             # same transition as Order A
+```
+
+##### Both are legal — here is the order the cells actually get filled (`n = 5`)
+
+```text
+   Order A  (i: n-1→0, j: i+1→n-1)        Order B  (length: 2→n, i: 0→n-length)
+          j0   j1   j2   j3   j4                  j0   j1   j2   j3   j4
+    i0     ·    7    8    9   10            i0     ·    1    5    8   10
+    i1          ·    4    5    6            i1          ·    2    6    9
+    i2               ·    2    3            i2               ·    3    7
+    i3                    ·    1            i3                    ·    4
+    i4                         ·            i4                         ·
+
+    row by row, bottom → top                diagonal by diagonal, ↗
+
+  Check the corner cell dp[0][4] — step 10 in both orders.
+  It reads dp[1][3], dp[1][4], dp[0][3]:
+    Order A → steps 5, 6, 9   ✅ all filled before step 10
+    Order B → steps 6, 9, 8   ✅ all filled before step 10
+```
+
+**How to pick**: Order A when the transition moves the two **ends** (`dp[i+1][j-1]`, `dp[i+1][j]`,
+`dp[i][j-1]`) — palindromes, LCS against the reverse of the same string. Order B when the transition
+needs a **split point `k`** strictly inside the range (`dp[i][k] + dp[k][j]`) — burst balloons, merge
+stones, matrix chain — because there "already filled" means *strictly shorter*, and only a
+length-driven loop guarantees that.
+
+##### Worked table — LC 516 on `s = "bbbab"`
+
+```text
+   s =       b    b    b    a    b
+             j0   j1   j2   j3   j4
+   b   i0  [ 1 ][ 2 ][ 3 ][ 3 ][ 4 ]  ← 🎯 answer = 4
+   b   i1    ·  [ 1 ][ 2 ][ 2 ][ 3 ]
+   b   i2    ·    ·  [ 1 ][ 1 ][ 3 ]
+   a   i3    ·    ·    ·  [ 1 ][ 1 ]
+   b   i4    ·    ·    ·    ·  [ 1 ]
+
+   dp[2][3] = 1 : 'b' != 'a'      → max(dp[3][3]=1, dp[2][2]=1) = 1
+   dp[0][2] = 3 : s[0]=='b'==s[2] → dp[1][1] + 2 = 3          ("bbb")
+   dp[1][3] = 2 : 'b' != 'a'      → max(dp[2][3]=1, dp[1][2]=2) = 2
+   dp[0][4] = 4 : s[0]=='b'==s[4] → dp[1][3] + 2 = 4          ("bbbb")
+```
+
+##### Which way did it go? — walking the table backwards
+
+The forward pass stores *values*. The **decisions** are recovered afterwards by re-asking, at each
+cell, which neighbour produced that value — no parent pointers needed, just re-evaluate the
+transition:
+
+```text
+   at (0,4)  s[0]=='b'==s[4]           → matched pair: take both, jump ↘ to (1,3)
+   at (1,3)  'b' != 'a', and
+             dp[1][2]=2 > dp[2][3]=1   → the max came from the LEFT: drop s[3], move to (1,2)
+   at (1,2)  s[1]=='b'==s[2]           → matched pair: take both, jump ↘ to (2,1)
+   at (2,1)  i > j                     → empty range: stop
+
+   pairs collected, outer → inner:  (s0, s4) then (s1, s2)
+   answer string:   b [ b  b ] b   =  "bbbb"   ✓ length 4 = dp[0][4]
+```
+
+##### Shape A problems
+
+| Problem | On `s[i] == s[j]` | Otherwise |
+|---|---|---|
+| **LC 516** Longest Palindromic Subsequence | `dp[i+1][j-1] + 2` | `max(dp[i+1][j], dp[i][j-1])` |
+| **LC 5** Longest Palindromic Substring | `True` if `j - i <= 2` or `dp[i+1][j-1]` | `False` |
+| **LC 647** Palindromic Substrings | same test as LC 5, counting the `True`s | `False` |
+| **LC 1312** Min Insertions to Make Palindrome | `dp[i+1][j-1]` | `1 + min(dp[i+1][j], dp[i][j-1])` |
+
+Two Shape A problems have no character test at all, and they are the ones that pick the fill order
+for you:
+
+- **LC 312** (Burst Balloons) — a **split point**, so Order B only:
+  `dp[i][j] = max over k in (i, j) of dp[i][k] + dp[k][j] + b[i]*b[k]*b[j]`. Worked in Template 3.
+- **LC 877 / LC 486** (Stone Game / Predict the Winner) — same triangle, but `dp[i][j]` holds a
+  **score difference**: `max(nums[i] - dp[i+1][j], nums[j] - dp[i][j-1])`. Two ends, so Order A. The
+  minimax reasoning is in [dp_advanced.md](./dp_advanced.md).
+
+---
+
+#### Shape B — two sequences, `i`/`j` are prefix lengths
+
+**State**: `dp[i][j]` = the answer for the **first `i` characters of `s1`** and the **first `j`
+characters of `s2`**. So the characters this cell decides about are `s1[i-1]` and `s2[j-1]` — the
+off-by-one everyone trips on is just a consequence of row/column 0 meaning *the empty prefix*.
+
+```text
+                  ""     s2[0]  s2[1]   ...   s2[n-1]
+             j =   0       1      2     ...      n
+   ""    i =  0  [base] [base] [base]  ...  [ base ]   ← s1 is empty
+  s1[0]       1  [base] [  ?  ][  ?  ] ...  [  ?   ]
+  s1[1]       2  [base] [  ?  ][  ?  ] ...  [  ?   ]
+    :
+  s1[m-1]     m  [base] [  ?  ][  ?  ] ...  [ 🎯 dp[m][n] ]  ← the answer
+
+  row 0 / column 0 : one string is empty, so the answer is FORCED, not computed
+  every other cell : three neighbours, one decision
+```
+
+**Dependency** — three arrows, all arriving from above / left / above-left:
+
+```text
+   the same 2 x 2 window, one row higher:
+
+                        j-1              j
+                  ┌──────────────┬──────────────┐
+        row i-1   │ dp[i-1][j-1] │  dp[i-1][j]  │
+                  ├──────────────┼──────────────┤
+        row i     │  dp[i][j-1]  │   dp[i][j]   │  ← 🎯 being filled
+                  └──────────────┴──────────────┘
+
+   dp[i][j]  ⟵  dp[i-1][j-1]   ↘  from ABOVE-LEFT   — consume from BOTH strings
+   dp[i][j]  ⟵  dp[i-1][j]     ↓  from ABOVE        — consume from s1 only
+   dp[i][j]  ⟵  dp[i][j-1]     →  from the LEFT     — consume from s2 only
+
+   Nothing arrives from below or from the right, so plain row-major
+   (i: 1 → m, inner j: 1 → n) is legal — and it is the only order anyone writes.
+```
+
+**What each move means** — the recurrence changes per problem, the *geometry* never does:
+
+| Move | Cell read | Meaning | LC 72 (Edit Distance) | LC 1143 (LCS) |
+|---|---|---|---|---|
+| ↘ diagonal | `dp[i-1][j-1]` | consume one char from **each** string | free if equal, else **replace** (`+1`) | `+1` if equal |
+| ↓ vertical | `dp[i-1][j]` | consume from `s1` only | **delete** `s1[i-1]` (`+1`) | skip `s1[i-1]` |
+| → horizontal | `dp[i][j-1]` | consume from `s2` only | **insert** `s2[j-1]` (`+1`) | skip `s2[j-1]` |
+
+```python
+# python
+# LC 72 - Edit Distance
+# IDEA: Shape B — base row/col are the forced answers, then row-major over three neighbours
+# time = O(m * n), space = O(m * n)  → O(min(m, n)) once rolled
+m, n = len(s1), len(s2)
+dp = [[0] * (n + 1) for _ in range(m + 1)]
+
+for i in range(m + 1):
+    dp[i][0] = i          # s2 empty → delete every character of s1
+for j in range(n + 1):
+    dp[0][j] = j          # s1 empty → insert every character of s2
+
+for i in range(1, m + 1):
+    for j in range(1, n + 1):
+        if s1[i - 1] == s2[j - 1]:
+            dp[i][j] = dp[i - 1][j - 1]          # ↘ free
+        else:
+            dp[i][j] = 1 + min(
+                dp[i - 1][j],                    # ↓ delete
+                dp[i][j - 1],                    # → insert
+                dp[i - 1][j - 1],                # ↘ replace
+            )
+
+return dp[m][n]
+```
+
+> **The base row is where the bug lives.** `dp[i][0] = i` for edit distance, `0` for LCS, `1` for
+> LC 115 — the empty string is a subsequence of anything, exactly once. Derive it, never copy it:
+> put `i = 0` into your own state sentence and read the answer off in English.
+
+##### Worked table — LC 72 on `"horse"` → `"ros"`, with the path it chose
+
+```text
+              ""    r     o     s
+        ""  [ 0*]   1     2     3
+        h   [ 1 ] [ 1*]   2     3
+        o   [ 2 ]   2   [ 1*]   2
+        r   [ 3 ]   2   [ 2*]   2
+        s   [ 4 ]   3     3   [ 2*]
+        e   [ 5 ]   4     4   [ 3*]   ← 🎯 dp[5][3] = 3
+
+   * = the cells on the chosen path, recovered by walking backwards from dp[5][3]:
+
+   (5,3) 'e' vs 's' ✗   1 + min(↓ dp[4][3]=2, → dp[5][2]=4, ↘ dp[4][2]=3)
+                        the min came from ↓   ⇒ DELETE 'e'
+   (4,3) 's' == 's' ✓   free ↘                ⇒ KEEP 's'
+   (3,2) 'r' vs 'o' ✗   1 + min(↓ dp[2][2]=1, → dp[3][1]=2, ↘ dp[2][1]=2)
+                        the min came from ↓   ⇒ DELETE 'r'
+   (2,2) 'o' == 'o' ✓   free ↘                ⇒ KEEP 'o'
+   (1,1) 'h' vs 'r' ✗   1 + min(↓ dp[0][1]=1, → dp[1][0]=1, ↘ dp[0][0]=0)
+                        the min came from ↘   ⇒ REPLACE 'h' → 'r'
+   (0,0) both prefixes empty                  ⇒ stop
+
+   replayed forwards:   replace h→r   "horse" → "rorse"
+                        keep    o
+                        delete  r     "rorse" → "rose"
+                        keep    s
+                        delete  e     "rose"  → "ros"    ✓ 3 ops = dp[5][3]
+```
+
+Read the path geometrically: **↘ means a character survives, ↓ means a character of `s1` is spent,
+→ means a character of `s2` is spent.** The identical walk over the LC 1143 table spells out the
+actual common subsequence instead of an operation list — same table, same backward walk, different
+thing recorded on the way.
+
+##### Space compression — and when it is not available
+
+`dp[i][j]` reads only row `i` and row `i-1`, so Shape B collapses to **two rows**, then to one plus a
+scalar for the diagonal that is about to be overwritten:
+
+```python
+# python
+# IDEA: rolling row — prev is row i-1, cur is row i. s2 is the inner axis, so pass the
+#       SHORTER string as s2.
+# time = O(m * n), space = O(min(m, n))
+prev = list(range(n + 1))
+for i in range(1, m + 1):
+    cur = [i] + [0] * n
+    for j in range(1, n + 1):
+        cur[j] = prev[j - 1] if s1[i - 1] == s2[j - 1] else 1 + min(prev[j], cur[j - 1], prev[j - 1])
+    prev = cur
+return prev[n]
+```
+
+**Shape A does not compress this way.** `dp[i][j]` reads row `i+1` at *two different columns*
+(`j-1` and `j`), and the diagonal sweep keeps reaching back across every earlier diagonal — there is
+no "last two rows" window to hold. Budget O(n²) for interval DP and move on.
+
+And do not compress at all if you need the traceback: the rolling row throws away exactly the cells
+the backward walk would have read. Whenever the answer is the *path* rather than the number, keep the
+full table (or store the chosen move per cell).
+
+##### Shape B problems
+
+| Problem | On `s1[i-1] == s2[j-1]` | Otherwise |
+|---|---|---|
+| **LC 72** Edit Distance | `dp[i-1][j-1]` | `1 + min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1])` |
+| **LC 1143** Longest Common Subsequence | `dp[i-1][j-1] + 1` | `max(dp[i-1][j], dp[i][j-1])` |
+| **LC 115** Distinct Subsequences | `dp[i-1][j-1] + dp[i-1][j]` | `dp[i-1][j]` |
+
+Two more live on the same grid without a `s1` vs `s2` character test:
+
+- **LC 97** (Interleaving String) — boolean, and the comparison is against a *third* string:
+  `dp[i][j] = (dp[i-1][j] and s1[i-1] == s3[i+j-1]) or (dp[i][j-1] and s2[j-1] == s3[i+j-1])`.
+  No diagonal at all — only ↓ and →, which is the shape of "every character comes from exactly one
+  of the two sources".
+- **LC 10** (Regular Expression Matching) — the `j` axis is the *pattern*. A plain character or `.`
+  is the ordinary ↘; `'*'` splits into "zero copies" `dp[i][j-2]` and "one more copy" `dp[i-1][j]`,
+  both of which still read only left and above, so row-major still holds.
+
+---
+
+#### The 2-D DP cheat sheet
+
+| | **Shape A — one sequence** | **Shape B — two sequences** | **Template 2 — real grid** |
+|---|---|---|---|
+| `dp[i][j]` means | the range `s[i..j]` | first `i` of `s1` vs first `j` of `s2` | the cell `(i, j)` |
+| Table size | `n × n`, upper triangle | `(m+1) × (n+1)` | `m × n` |
+| Base case | the diagonal `dp[i][i]` | row 0 and column 0 | first row and first column |
+| Answer cell | top-right `dp[0][n-1]` | bottom-right `dp[m][n]` | bottom-right `dp[m-1][n-1]` |
+| Reads | `dp[i+1][j-1]`, `dp[i+1][j]`, `dp[i][j-1]` | `dp[i-1][j-1]`, `dp[i-1][j]`, `dp[i][j-1]` | `dp[i-1][j]`, `dp[i][j-1]` |
+| Loop order | `i: n-1 → 0`, `j: i+1 → n-1` (or by length) | `i: 1 → m`, `j: 1 → n` | `i: 0 → m-1`, `j: 0 → n-1` |
+| Time / space | O(n²) / O(n²) — O(n³) with a split point | O(m·n) / O(min(m,n)) rolled | O(m·n) / O(n) rolled |
+| Canonical | LC 516, 5, 647, 1312, 312 | LC 72, 1143, 115, 97 | LC 62, 64, 221 |
+
+#### The four mistakes that actually cost the table
+
+1. **Filling in the wrong direction.** Shape A's `i` must descend; `for i in range(n)` reads
+   `dp[i+1][...]` while it is still `0` and the answer comes out silently too small — no crash, no
+   wrong-index exception. Derive the direction from the arrow table above instead of recalling it.
+2. **Touching the dead triangle.** In Shape A with `j == i + 1`, `dp[i+1][j-1]` is `dp[i+1][i]`,
+   below the diagonal. It is `0` / `False` by construction — which happens to be *correct* for
+   LC 516 (`0 + 2 = 2`, a two-character palindrome) and *wrong* for LC 5, which is exactly why that
+   one needs its explicit `j - i <= 2` guard.
+3. **Copying the base row from another problem.** `0`, `i` and `1` are all correct base rows for
+   different problems in the very same shape — see the callout above.
+4. **Compressing before knowing you only need the number.** The rolling row is free only when the
+   answer is a value; the moment the follow-up is "and which operations?", you need the table back.
+
 ### Template 3: Interval DP — LC 312
 
+> The table is **Shape A** — `n × n`, upper triangle, answer in the top-right corner. Its
+> skeleton, the two legal fill orders and why a split point forces the length-driven one are in
+> [Template 2a](#template-2a-reading-a-2-d-dp-table--shape-dependency-fill-order-).
 
 **🎯 Key Insight**: Think about which element to process **LAST**, not first!
 
@@ -1261,6 +1653,8 @@ LIS: [2, 3, 7, 101] or [2, 5, 7, 101] or others
 `word2` (Levenshtein distance). The recognition checklist, the three-operation intuition, the
 top-down and space-optimised variants and the visual table are in
 [dp_advanced.md](./dp_advanced.md); the whole two-sequence family is in [dp_string.md](./dp_string.md).
+The table is **Shape B** — see [Template 2a](#template-2a-reading-a-2-d-dp-table--shape-dependency-fill-order-) for its shape, why
+row-major is the only legal order, and the backward walk that recovers the operation list.
 
 #### **State Definition**:
 - `dp[i][j]` = minimum operations to convert `word1[0...i-1]` to `word2[0...j-1]`
@@ -1400,6 +1794,10 @@ The templates for LC 72 and LC 1143 stay above (Template 8 — Edit Distance, Te
 ### Template 10: Palindrome Substring DP ⭐⭐⭐⭐⭐ — LC 5
 
 **Problem archetype**: LC 647 (Count Palindromic Substrings), LC 5 (Longest Palindromic Substring)
+
+> The table is **Shape A** — the backward-`i` + forward-`j` order below is Order A in
+> [Template 2a](#template-2a-reading-a-2-d-dp-table--shape-dependency-fill-order-), and the `j - i <= 2` guard exists because `dp[i+1][j-1]` falls into the
+> dead triangle.
 
 #### 🎯 Approach Comparison
 

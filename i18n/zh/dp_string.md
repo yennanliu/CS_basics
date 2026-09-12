@@ -31,10 +31,13 @@
 | **可行性** | 這兩個能不能交錯／能不能配上這個 pattern？ | 97, 10, 44 |
 | **單字串萬用字元** | 帶 `*` 的括號字串是否合法？ | 678 |
 
-<!-- 8f302edcb45a -->
+<!-- 3160ac14bea2 -->
 ### 參考資料
 
 - [dp.md](./dp.md) — 編輯距離（LC 72）與 LCS（LC 1143）的模板
+- [dp.md — 模板 2a](./dp.md#template-2a-reading-a-2-d-dp-table--shape-dependency-fill-order-) — 表格
+  本身：轉移會讀到哪些格子、為什麼這裡照列掃是唯一合法的填表順序，以及把填好的表變成編輯腳本的
+  反向走法
 - [palindrome.md](./palindrome.md) — 單字串的回文 DP 家族
 
 <!-- ddc7f484e4af -->

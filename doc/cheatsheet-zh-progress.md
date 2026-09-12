@@ -41,7 +41,7 @@ half-translated sheet renders with English gaps rather than failing.
   is what makes a problem findable on LeetCode itself.
 
 
-## Status — 5050 / 5244 sections (96%)
+## Status — 5066 / 5260 sections (96%)
 
 | Sheet | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -90,7 +90,7 @@ half-translated sheet renders with English gaps rather than failing.
 | [dfs_examples](./cheatsheet/dfs_examples.md) | 70 | [✅](../i18n/zh/dfs_examples.md) |
 | [diff_toposort_quickunion](./cheatsheet/diff_toposort_quickunion.md) | 18 | [✅](../i18n/zh/diff_toposort_quickunion.md) |
 | [difference_array](./cheatsheet/difference_array.md) | 56 | [✅](../i18n/zh/difference_array.md) |
-| [dp](./cheatsheet/dp.md) | 94 | [93/94](../i18n/zh/dp.md) |
+| [dp](./cheatsheet/dp.md) | 110 | [109/110](../i18n/zh/dp.md) |
 | [dp_advanced](./cheatsheet/dp_advanced.md) | 146 | [137/146](../i18n/zh/dp_advanced.md) |
 | [dp_bitmask](./cheatsheet/dp_bitmask.md) | 18 | [15/18](../i18n/zh/dp_bitmask.md) |
 | [dp_digit](./cheatsheet/dp_digit.md) | 18 | [✅](../i18n/zh/dp_digit.md) |
