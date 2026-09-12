@@ -47,6 +47,39 @@ for every cyclic rotation,
 # idea 1) brute force (rotate on prefix and cnt)
 
 
+# idea 2) hashmap
+
+
+
+from collections import defualtdict
+
+
+class Solution(object):
+    def countRotations(self, s, k):
+
+        # edge
+        if not s or len(s):
+            return 0
+
+        # {val: [idx_1, idx_2, ...]}
+        idx_map = defaultdict(list)
+
+        for i in range(len(s)):
+            val = s[i]
+            idx_map[val].append(i)
+       
+
+       # {score: cnt} 
+       c_map = defaultdict(int)
+
+        for i in range(len(s)):
+            if i == 0:
+                if idx_map[]
+
+
+
+
+
 class Solution(object):
     def countRotations(self, s, k):
         """
