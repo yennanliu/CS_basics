@@ -37,6 +37,46 @@ nums is sorted in a strictly increasing order.
 
 
 # V0
+# IDEA: DFS + BST property + mid idx -> get root (GPT)
+class Solution(object):
+    def sortedArrayToBST(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: Optional[TreeNode]
+        """
+
+        # Edge case
+        if not nums:
+            return None
+
+        # nums is already sorted by the problem
+        return self.helper(nums)
+
+    def helper(self, nums):
+
+        # NOTE !!!
+        # the base case
+        
+        # Empty array -> empty subtree
+        if not nums:
+            return None
+
+        # Pick middle element as root
+        n = len(nums)
+        idx = n // 2
+
+        root = TreeNode(nums[idx])
+
+        # Left half -> left subtree
+        root.left = self.helper(nums[:idx])
+
+        # Right half -> right subtree
+        root.right = self.helper(nums[idx + 1:])
+
+        return root
+
+
+# V0-0-1
 # IDEA: DFS + BST property + mid idx -> get root (gemini)
 class Solution(object):
     def sortedArrayToBST(self, nums):
