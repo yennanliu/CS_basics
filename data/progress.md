@@ -50,10 +50,6 @@
 	- neetcode 150
 	- review all `cheatsheets`
 
-- recursion_to_dp.zh.html
-	- https://yennj12.js.org/CS_basics/cheatsheets/recursion_to_dp.zh.html
-	- `6-1) 狀態機 DP — f(index, state)`
-
 
 - dp_pattern.md
 	- https://yennj12.js.org/CS_basics/cheatsheets/dp_pattern.zh.html
@@ -140,6 +136,8 @@
 	- knapsack_01_zh.md
 	- dp_monotonic_stack.zh.html
 	- bit_manipulation_examples.zh.html
+		- again
+	- recursion_to_dp.zh.html
 		- again
 
 
