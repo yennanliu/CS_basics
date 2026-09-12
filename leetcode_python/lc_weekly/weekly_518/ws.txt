@@ -97,6 +97,61 @@ class Solution(object):
 #------------------------------------------------
 
 
+->
+Return the `number` of `cyclic rotations` of nums 
+that are `good.`
+
+
+
+nums: int arr, len = n
+
+A cyclic rotation is `good` 
+    if the sum of its first n / 2 elements is strictly greater 
+    than the sum of its last n / 2 elements.
+
+
+# idea 1) brute force (rotate simulation) + math
+
+
+
+
+class Solution(object):
+    def countGoodRotations(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        # edge
+
+        cnt = 0
+
+        for i in range(len(nums)):
+            # ??
+            if i > 0:
+                # rotate
+                tmp = nums[0]
+                nums = nums[1:] + tmp
+
+            if self.is_good(nums):
+                cnt += 1
+
+        return cnt
+
+
+    def is_good(self, arr):
+        _sum = sum(arr)
+        n = len(arr)
+        first_half = sum(arr[: (n // 2) + 1])
+        sec_half = _sum - first_half
+
+        return first_half > sec_half
+
+
+
+
+
+
+
 
 #------------------------------------------------
 
