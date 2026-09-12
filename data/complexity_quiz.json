@@ -2890,7 +2890,7 @@
       "time": "O(n)",
       "space": "O(n)",
       "why": "`i >> 1` is i with its last bit dropped, and that answer is already in the table, so each entry costs one lookup and one add.",
-      "trap": "`bin(i).count(\"1\")` per number is O(n log n) — every number has up to log n bits and `bin` builds a string for each. The reuse is what removes the log, and it is the reason this is filed as a DP problem rather than a bit-twiddling one."
+      "trap": "`bin(i).count(\"1\")` per number is O(n log n) — every number has up to log n bits and `bin` builds a string for each. What removes the log is not a bit trick but a recurrence: the shift lands on a subproblem already solved. The bit work is the one `& 1`; the rest is DP."
     },
     {
       "id": "missing-number-xor",
