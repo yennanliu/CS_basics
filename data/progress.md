@@ -1,6 +1,6 @@
 # Progress
 
-# 2026-09-12
+# 2026-09-13
 
 - TODO:
 	- `must_lc_list.md` -> done
@@ -9,7 +9,8 @@
 		- https://leetcode.com/studyplan/top-100-liked/
 			- backtrack (done)
 			- binary search (done)
-			- binary tree (ing)
+			- binary tree (done)
+			- dp (ing)
 
 
 		- https://leetcode.cn/studyplan/top-100-liked/
