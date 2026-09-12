@@ -41,7 +41,7 @@ half-translated sheet renders with English gaps rather than failing.
   is what makes a problem findable on LeetCode itself.
 
 
-## Status — 5066 / 5273 sections (96%)
+## Status — 5065 / 5273 sections (96%)
 
 | Sheet | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -101,7 +101,7 @@ half-translated sheet renders with English gaps rather than failing.
 | [graph](./cheatsheet/graph.md) | 50 | [49/50](../i18n/zh/graph.md) |
 | [graph_advanced](./cheatsheet/graph_advanced.md) | 37 | [✅](../i18n/zh/graph_advanced.md) |
 | [graph_examples](./cheatsheet/graph_examples.md) | 18 | [✅](../i18n/zh/graph_examples.md) |
-| [greedy](./cheatsheet/greedy.md) | 49 | [✅](../i18n/zh/greedy.md) |
+| [greedy](./cheatsheet/greedy.md) | 49 | [48/49](../i18n/zh/greedy.md) |
 | [greedy_examples](./cheatsheet/greedy_examples.md) | 28 | [✅](../i18n/zh/greedy_examples.md) |
 | [hash_map](./cheatsheet/hash_map.md) | 44 | [41/44](../i18n/zh/hash_map.md) |
 | [hash_map_examples](./cheatsheet/hash_map_examples.md) | 93 | [✅](../i18n/zh/hash_map_examples.md) |

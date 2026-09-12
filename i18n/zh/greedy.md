@@ -192,14 +192,6 @@
 <!-- 3f54caf2dc9a -->
 ## 貪婪的證明與周邊演算法 — 交換論證、MST
 
-<!-- c8fb5ab597eb -->
-### 證明模板：交換論證
-要驗證一個貪婪選擇，就證明把貪婪挑的那個換成任何其他選擇，結果都不會變好。
-
-<!--CODE-->
-
-常見的交換論證題目：LC 435（Non-overlapping Intervals）、LC 452（Burst Balloons）、工作排程。
-
 <!-- 97551047ec1e -->
 ### 最小生成樹（MST）
 
@@ -348,3 +340,11 @@
 | [Frequency & heap interleaving](./greedy_examples.md#frequency--heap-interleaving) | 永遠放當下合法且出現次數最多的那個 | LC 767, 984, 621 |
 | [Sort, then take](./greedy_examples.md#sort-then-take) | 依關鍵比值排序，然後照順序拿 | LC 1710, 3994 |
 | [Build while scanning](./greedy_examples.md#build-the-answer-while-scanning) | 一個字元或一條邊界確定不會再變，就馬上定案 | LC 763, 402 |
+
+<!-- stale: c8fb5ab597eb -->
+### 證明模板：交換論證
+要驗證一個貪婪選擇，就證明把貪婪挑的那個換成任何其他選擇，結果都不會變好。
+
+<!--CODE-->
+
+常見的交換論證題目：LC 435（Non-overlapping Intervals）、LC 452（Burst Balloons）、工作排程。

@@ -8,6 +8,12 @@ which asked whether the corpus was *organised*. It was, and it still is. This on
 whether it is *coachable* — whether a reader ends up able to derive the solution unaided,
 or only to recognise it.
 
+> **[Addendum — is this good enough for Google L3?](#addendum--is-this-good-enough-for-google-l3-sep-2026)**
+> narrows the same question to one bar, measured against this repo's own `google` tags.
+> Short version: **coverage is done (172 of the 174 high-signal problems), allocation is not** —
+> greedy gets 1.3% of the corpus for 4.0% of the Google ask, and 71% of that high-signal set is
+> still marked `AGAIN`.
+
 > **Method** — the corpus was scored as if it were a candidate, on the four signals a real
 > packet uses (communication, problem solving, coding, verification) and the six-point scale
 > `SH` / `H` / `LH` / `LNH` / `NH` / `SNH`. Every finding below names the file and line that
@@ -407,8 +413,191 @@ Worth stating, because a findings list reads as if nothing works:
 
 ---
 
+---
+
+## Addendum — is this good enough for Google L3? (Sep 2026)
+
+The review above asks whether the corpus is *coachable*. This addendum asks a narrower,
+harder question: **would working through `doc/cheatsheet/` prepare someone for a Google L3
+SWE loop specifically?** L3 is entry-level — two coding rounds, ~45 minutes each, the mass of
+questions Medium, at most one Hard, and essentially no systems round.
+
+Everything below is measured against this repo's own Google data: the `google` tag in
+`README.md` (928 tagged problems, written from [`data/company_lc_tags.json`](../data/company_lc_tags.json)),
+crossed with the curated lists.
+
+### Verdict — `H` on coverage, `LNH` on allocation
+
+**Coverage is not the problem, and it is worth being clear about that.** Take the
+high-signal L3 set — problems that are Google-tagged **and** on Blind 75 / NeetCode 150 /
+LeetCode Top 100 Liked — and the corpus covers essentially all of it:
+
+| | |
+|---|---:|
+| Google-tagged ∩ curated list | **174** |
+| …mentioned somewhere in `doc/cheatsheet/` | **172 (99%)** |
+| …not mentioned anywhere | **2** |
+
+The two gaps are `LC 118` Pascal's Triangle (Easy) and `LC 1899` Merge Triplets to Form
+Target Triplet (Medium). Neither is worth a paragraph. **As a breadth index for Google L3,
+this corpus is done.**
+
+What is *not* done is where the effort sits, and what the reader is told to skip.
+
+### Finding L1 — effort is allocated against the wrong distribution ⭐⭐⭐⭐⭐
+
+Line count per topic versus how often Google actually asks that topic. `%eff` is the
+bucket's share of the corpus; `%ask` is its share of the 905 Google-tagged problems that fall
+in a mapped README section. Ratio = `%eff / %ask`.
+
+| Bucket | sheets | lines | %eff | Google | %ask | ratio |
+|---|---:|---:|---:|---:|---:|---:|
+| Heap / priority queue | 5 | 4,795 | 3.7% | 14 | 1.5% | **2.39×** |
+| Two pointers & sliding window | 7 | 8,024 | 6.2% | 33 | 3.6% | **1.70×** |
+| Graphs & traversal (BFS/DFS/UF/topo/SP) | 19 | 22,895 | 17.7% | 96 | 10.6% | **1.67×** |
+| Trees & BST | 11 | 13,897 | 10.7% | 71 | 7.8% | 1.37× |
+| Design & streaming | 7 | 6,116 | 4.7% | 39 | 4.3% | 1.10× |
+| Dynamic programming | 11 | 14,562 | 11.2% | 100 | 11.0% | 1.02× |
+| Stack & monotonic | 6 | 6,557 | 5.1% | 46 | 5.1% | 1.00× |
+| Linked list | 2 | 2,761 | 2.1% | 22 | 2.4% | 0.88× |
+| Arrays, prefix, intervals, sort | 18 | 16,958 | 13.1% | 144 | 15.9% | 0.82× |
+| Hashing & sets | 5 | 5,744 | 4.4% | 53 | 5.9% | 0.76× |
+| Strings & palindrome | 7 | 7,238 | 5.6% | 75 | 8.3% | 0.67× |
+| Binary search | 3 | 4,015 | 3.1% | 45 | 5.0% | **0.62×** |
+| Backtracking & recursion | 4 | 4,890 | 3.8% | 58 | 6.4% | **0.59×** |
+| Math & bits | 5 | 5,273 | 4.1% | 73 | 8.1% | **0.50×** |
+| Greedy | 2 | 1,717 | 1.3% | 36 | 4.0% | **0.33×** |
+
+**Greedy is the standout.** 36 Google-tagged problems — more than heaps and linked lists put
+together — served by 1,717 lines, the smallest allocation in the table. Google asks greedy a
+lot, because "is the obvious greedy actually optimal?" is a cheap way to separate candidates
+who reason from candidates who pattern-match.
+
+> **Fix** — grow `greedy.md`, `binary_search.md` and `backtrack.md` toward their ask share
+> before adding another line anywhere above 1.0×. This is a *reallocation*, not a request for
+> 10,000 more lines.
+
+**Two caveats on this table, because both nearly produced a wrong finding.** README's `Graph`
+section holds only 10 Google-tagged problems — `LC 200`, `LC 207`, `LC 133` and the rest are
+filed under `Breadth-First Search` / `Depth-First Search` / `Tree`. Measuring `graph*.md`
+against that section alone gives a meaningless 11×, so the buckets above merge graphs with
+both traversal sections. For the same reason `trie.md` / `segment_tree.md` /
+`binary_indexed_tree.md` are **excluded entirely** — their 24 Google-tagged problems are
+scattered across seven other sections, so no honest ratio can be computed for them from the
+README taxonomy.
+
+### Finding L2 — ~13,000 lines are above the L3 bar, and nothing says so ⭐⭐⭐⭐
+
+About **10% of the corpus** teaches material an L3 candidate will not be asked:
+
+```text
+dp_advanced 3,179   bfs_advanced 2,072   dfs_advanced 1,781   streaming 1,623
+bst_advanced 1,552  sliding_window_advanced 1,527   segment_tree 1,316
+advanced_string_algorithms 1,174   advanced_simulation 1,151
+advanced_divide_and_conquer 1,138   kmp_rolling_hash 1,092   heap_advanced 1,091
+graph_advanced 1,046 (Tarjan, max flow, bipartite matching)
+combinatorics 890   binary_indexed_tree 813   dp_digit 673   dp_bitmask 653
+```
+
+None of this is *wrong* to have — it is right for L4+, for competitive programming, and for
+the occasional Hard. It is wrong to leave **unmarked** in front of a reader with eight weeks
+and a specific bar to clear. Suffix automata and digit DP are not an L3 risk; spending a
+weekend on them instead of greedy is.
+
+The tier data already exists — [`data/cheatsheet_meta.json`](../data/cheatsheet_meta.json)
+scores every sheet 5 down to 2 — but it is surfaced **only on `cheatsheets.html`**. A reader
+who opens `dp_digit.md` from a search result, or reads it on GitHub, gets no signal at all.
+
+> **Fix** — put the tier in the sheet, in the Scope block: one line such as
+> `> **Bar** — tier 2 (niche). Above the L3 ask; read after the tier-4/5 sheets.`
+> Generated from the metadata, not hand-typed, so it cannot drift from the index.
+
+### Finding L3 — the real L3 gap is retention, not coverage ⭐⭐⭐⭐⭐
+
+The same 174-problem high-signal set, scored against the practice log in
+[`data/progress.txt`](../data/progress.txt):
+
+| Status | Count | Share |
+|---|---:|---:|
+| `OK` | 48 | 28% |
+| `AGAIN` | **123** | **71%** |
+| never attempted | 3 | 2% |
+
+**71% of the exact problems a Google L3 loop draws from are still marked AGAIN.** Where they
+cluster:
+
+```text
+Dynamic Programming 19   BFS 11   Array 9   Binary Search 9   Backtracking 9
+Greedy 9   Recursion 8   Tree 7   Stack 6   Two Pointers 6   Hash Table 5   String 5
+```
+
+Note what that list agrees with: four of the six largest AGAIN clusters — binary search,
+backtracking, greedy, recursion — are the same four buckets that finding L1 shows are
+*under-resourced*. That is not a coincidence, and it is the single most actionable thing in
+this document. The sheets that are thinnest relative to the Google ask are the sheets whose
+problems are not graduating.
+
+This also confirms, from the corpus side, what
+[`doc/lc-readiness-guide.md`](lc-readiness-guide.md) measures from the profile side: the
+constraint is not how many problems have been seen, it is how many have been *retired*.
+
+> **Fix** — the corpus cannot fix a practice habit, but it can stop being the bottleneck:
+> the derivation gap (finding 1), the untraced pitfalls (finding 2) and the missing
+> constraint budget (finding 6) are precisely what makes a problem fail to graduate. Work
+> them in the four under-resourced buckets first, not evenly across all 133 sheets.
+
+### Finding L4 — `greedy.md` is the weakest high-yield sheet ⭐⭐⭐⭐
+
+It is the worst cell in finding L1 (0.33×) and it has a second, independent problem: of its
+16 Java/Python blocks, **zero carry a `time = O(...)` line** — the lowest annotation rate of
+any tier-4 sheet.
+
+Structurally it is better than its size suggests: it *does* have the exchange argument
+(line 350) and a `When Greedy Fails` escape hatch (line 276), which is exactly the right
+content and is more than most greedy references carry. But the exchange-argument section is
+four lines long and ends with a wrong pointer:
+
+```text
+greedy.md:361
+Common exchange argument problems: LC 435 (Non-overlapping Intervals),
+                                   LC 452 (Burst Balloons), Job Scheduling.
+```
+
+`LC 452` is **Minimum Number of Arrows to Burst Balloons** — a greedy interval problem, so the
+*number* is right. **Burst Balloons is `LC 312`**, an O(n³) interval-DP Hard, and the closest
+thing to the opposite of a greedy exchange argument. A reader who searches the title rather
+than the number loses an evening to the wrong problem, which is the exact failure the
+`/lc-coach` rule about never mis-pairing a number and a title exists to prevent.
+
+> **Fix** — corrected in this commit. The sheet still needs the proof section expanded from
+> four lines to the three canonical arguments (stay-ahead, exchange, cut-and-paste), each with
+> the LC problem it settles.
+
+### What an L3 reader should actually be told
+
+The corpus has no reading order for this bar. Given the numbers above, the honest one is:
+
+1. **Clear the 123 AGAIN problems in the high-signal set** before reading anything new. That
+   is the bar, and it is where the gap is.
+2. **Tier 5 first**, and inside it favour the under-resourced four — binary search, greedy,
+   backtracking/recursion, math & bits — because that is where the AGAIN markers and the thin
+   sheets coincide.
+3. **Skip every `*_advanced.md`, `segment_tree`, `binary_indexed_tree`, `dp_digit`,
+   `dp_bitmask` and `graph_advanced`** on a first pass. ~13,000 lines, near-zero L3 yield.
+4. **Read `complexity_cheatsheet.md:679` once** — the input-size → complexity table — and be
+   able to produce it from memory. It is minute two of every round (finding 6).
+
+> **Not done** — this list is prose here, not a page. The natural home is the Study Roadmap
+> (`data/roadmap.json`), which already has the machinery for an ordered, prerequisite-aware
+> path and a list picker with a `readme:google` source. An `L3` list filed against these
+> priorities would make this addendum executable instead of advisory.
+
 ## One-line summary for the next reviewer
 
 The corpus knows every pattern and teaches almost none of them from first principles; the
 single edit that would move it from `LH` to `H` is putting the brute force back at the top of
 each tier-5 sheet, because everything a candidate is actually scored on hangs off that rung.
+
+And for Google L3 specifically: **stop adding problems.** The index is complete. Move lines
+from heaps and advanced graphs into greedy, binary search, backtracking and math — the four
+buckets where thin sheets and un-graduated `AGAIN` markers are the same four buckets.
