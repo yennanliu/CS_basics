@@ -97,6 +97,48 @@ CORE IDEA:
      -> 第二個 if _left：負責「return tail」
 
 
+
+---
+
+Example:
+
+given input:
+
+        ```
+            1
+           / \
+          2   5
+         / \   \
+        3   4   6
+        ```
+
+-> flatten:
+
+
+        ```
+        1
+         \
+          2
+           \
+            3
+             \
+              4
+               \
+                5
+                 \
+                  6
+        ```
+
+
+-> so
+
+```
+helper(2) → 4
+helper(5) → 6
+helper(1) → 6
+```
+
+
 """
 class Solution(object):
     def flatten(self, root):
@@ -174,12 +216,72 @@ class Solution(object):
         ```
 
         """
+
+        """
+        NOTE !!!
+
+        why we check `right_tail` first ?
+
+        -> because the helper func return
+           the `last node` of flatten sub tree
+
+            -> based on the LC requirement,
+               we need to connect left sub tree then `right sub tree`
+
+               -> so need to right_tail if it existed
+        """
         # Return the tail of flattened subtree
         if right_tail:
             return right_tail
 
         if left_tail:
             return left_tail
+
+        return node
+
+
+# V0-0-1
+# IDEA: POST ORDER DFS + cache + re-connect (gpt)
+class Solution(object):
+    def flatten(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: None Do not return anything, modify root in-place instead.
+        """
+        if not root:
+            return None
+
+        self.helper(root)
+
+    # helper return value:
+    # the last node of the flattened tree
+    def helper(self, node):
+        if not node:
+            return None
+
+        # cache original children
+        left_cache = node.left
+        right_cache = node.right
+
+        # flatten left and right subtree first
+        left_last = self.helper(left_cache)
+        right_last = self.helper(right_cache)
+
+        # reconnect:
+        # node -> left subtree -> right subtree
+        if left_cache:
+            node.right = left_cache
+            node.left = None
+
+            # find the end of flattened left subtree
+            left_last.right = right_cache
+
+        # return the last node
+        if right_last:
+            return right_last
+
+        if left_last:
+            return left_last
 
         return node
 
