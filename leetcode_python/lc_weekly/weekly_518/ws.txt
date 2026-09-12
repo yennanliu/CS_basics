@@ -289,6 +289,15 @@ class Solution(object):
             t += 1 
 
             # update postion in PQ ???
+            tmp_arr = []
+            while pq:
+                tmp_3 = heapq.heappop()
+                # [[p_1, s_1], ....]
+                tmp_arr.append([tmp_3[0] + tmp_1[1], tmp_1[1]])
+
+            for x in tmp_arr:
+                heapq.headppush(pq, x)
+
 
         return len(pq)
 
