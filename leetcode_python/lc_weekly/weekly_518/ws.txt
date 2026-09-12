@@ -160,11 +160,198 @@ class Solution(object):
 #------------------------------------------------
 
 
+->
+
+Return the `number` of `groups` 
+
+remaining after `all possible merges have occurred.`
+
+
+position: int arr, increasing order.
+
+    position[i] is the `initial` position of the 
+    ith robot at time t = 0.
+
+
+
+speed[i]:
+    is the constant speed of the ith robot 
+    in units per second, and an integer distance.
+
+
+Whenever the distance between 
+two robots or groups becomes at most distance, 
+they merge into a single group.
+
+
+After a merge, the resulting group takes the 
+current position and speed of the `rightmost robot` in that group.
+ Once merged, robots never separate.
+
+
+# idea 1) brute force ??
+
+
+# idea 2) mono stack ???
+    
+    traverse from right -> left,
+
+    stack save arrived_time, and idx
+
+    e.g. [[time, idx, speed]]
+
+    once merge, update group cnt, and speed ??
+
+    merge when new car arrived time < stack arrived time
+
+    ...
+
+    get the final group cnt
+
+
+
+# idea 3)  brute force ??
+
+
+loop over t, update position via speed
+and merge robots that within distance,
+update the speed as well
+
+
+#---------------------
+
+ex 1)
+
+Input: position = [1,5,6,20], 
+speed = [4,3,2,3], distance = 1
+
+
+->
+
+loop from right to left
+
+
+st = []
+
+
+#---------------------
+
+
+
+
+# small PQ
+
+
+import heapq
+
+
+# brute force
+class Solution(object):
+    def countGroups(self, position, speed, distance):
+
+        # edge
+        if not position or len(position) == 0:
+            return 0
+
+        # ???
+        #cache = zip(position, speed)
+
+        # small PQ ????
+        # [[p_1, s_1], ....]
+        cache = []
+        
+        # ???
+        for i in range(len(speed)):
+            #cache.append([position[i], speed[i]])
+            heapq.heappush(cache, [position[i], speed[i]])
+
+
+        t = 0
+
+        while not self.should_stop():
+
+            # ??
+            tmp = heapq.heappop(cache)
+            # should merge
+            # and record the speed of `rightmost` bot
+            right_most_speed = -1
+            position = -1
+
+            while cache[0][0] <= tmp[0]:
+                tmp2 = heapq.heappop()
+                right_most_speed = tmp2[1]
+                position = tmp2[0]
+
+
+            # insert back to PQ
+            heapq.heappush(pq, [position, right_most_speed])
+
+            t += 1 
+
+            # update postion in PQ ???
+
+        return len(pq)
+
+
+
+
+
+
+class Solution(object):
+    def countGroups(self, position, speed, distance):
+        """
+        :type position: List[int]
+        :type speed: List[int]
+        :type distance: int
+        :rtype: int
+        """
+        # edge
+        if not position or len(position) == 0:
+            return 0
+
+        # ??
+
+        # [[last_updated_time, speed, position]]
+        # small pq
+        pq = []
+        t = 0
+
+        i = 0
+
+        while not should_end(position, speed, distance):
+            if not pq:
+                heapq.heappush(pq, [0, speed[i], position[i]])
+
+
+
+
+
+
+
+    def should_end(self, position, speed, distance):
+        pass
+
+
+
+        
+
 
 #------------------------------------------------
 
 # LC 4046
 # https://leetcode.com/problems/minimum-cost-path-with-at-most-k-turns/description/
 #------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
 
 
