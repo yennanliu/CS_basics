@@ -23,8 +23,8 @@
 
 	- LC weekly
 		- `data/lc_weekly/lc_weekly_gpt.md`
-			- Weekly Contest 517 (done, to review)
-				- https://leetcode.com/contest/weekly-contest-517/
+			- Weekly Contest 518 (doing)
+				- https://leetcode.com/contest/weekly-contest-518/
 		- LC docs contest
 			- https://leetcode.doocs.org/contest/
 

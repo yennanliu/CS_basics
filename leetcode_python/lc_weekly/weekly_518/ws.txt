@@ -1,0 +1,45 @@
+#-------------------------------
+# weekly-contest-518
+
+# https://leetcode.com/contest/weekly-contest-518/
+
+
+(67 mins)
+
+3.28 - 4.35 pm
+
+
+#-------------------------------
+
+
+#------------------------------------------------
+
+# LC 4043
+# https://leetcode.com/problems/count-rotations-with-exactly-k-equal-adjacent-pairs/description/
+#------------------------------------------------
+
+
+
+#------------------------------------------------
+
+# LC 4044
+# https://leetcode.com/problems/count-good-cyclic-rotations/description/
+#------------------------------------------------
+
+
+
+#------------------------------------------------
+
+# LC 4045
+# https://leetcode.com/problems/count-robot-groups/description/
+#------------------------------------------------
+
+
+
+#------------------------------------------------
+
+# LC 4046
+# https://leetcode.com/problems/minimum-cost-path-with-at-most-k-turns/description/
+#------------------------------------------------
+
+
