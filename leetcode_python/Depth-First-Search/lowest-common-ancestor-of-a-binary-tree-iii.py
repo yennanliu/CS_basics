@@ -49,10 +49,45 @@ p and q exist in the tree.
 """
 
 # V0
+# IDEA : 2 POINTERS ON THE PARENT CHAIN ("swap the tails")
+#
+#   There is no root here, only parent pointers -- so walk UP from both nodes.
+#   The two paths have different lengths, so plain lock-step walking misses.
+#   Fix : when a pointer runs off the top (None), restart it at the OTHER node.
+#
+#   Each pointer then covers exactly len(path(p)) + len(path(q)) steps, so both
+#   arrive at every node of the shared tail in the same iteration -> they first
+#   collide at the LOWEST shared ancestor.
+#
+#   e.g. root = [3,5,1,6,2,0,8,null,null,7,4], p = 4, q = 1
+#        path(4) = 4-2-5-3, path(1) = 1-3
+#
+#        step :  0    1    2     3     4     5    6
+#        a    :  4    2    5     3     None  1    3
+#        b    :  1    3    None  4     2     5    3   -> meet at 3
+#
+#   NOTE !!! `a = a.parent if a else q` (NOT `a.parent or q`) -- the None step
+#            itself must be consumed. It is what makes both pointers walk the
+#            SAME total distance, and it is what makes the loop terminate (both
+#            land on None together) if p, q ever sit in different trees.
+#
+# time = O(h), space = O(1)
 class Solution:
     def lowestCommonAncestor(self, p, q):
-        pass
+        """
+        :type p: Node
+        :type q: Node
+        :rtype: Node
+        """
+        # edge
+        if not p or not q:
+            return None
 
+        a, b = p, q
+        while a != b:
+            a = a.parent if a else q
+            b = b.parent if b else p
+        return a
 
 
 # V0-1
