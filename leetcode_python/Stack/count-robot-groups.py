@@ -121,3 +121,73 @@ class Solution(object):
             cur_p, cur_s = position[i], speed[i]
 
         return cnt
+
+
+# V0-1
+# IDEA: GREEDY, inverse loop (gpt)
+"""
+CORE IDEA:
+    
+    從右往左走，只需要記住右邊最近的 position，
+    以及右邊目前 group 的 speed threshold。
+
+
+---
+
+Steps:
+
+LC 4045
+Reverse Greedy
+
+right → left
+
+記：
+p2 = 右邊位置
+s2 = 右邊 group speed
+
+if p2 - p > distance
+   and s <= s2:
+       new group
+       res += 1
+       s2 = s
+
+p2 = p
+
+
+"""
+class Solution(object):
+    def countGroups(self, position, speed, distance):
+        """
+        :type position: List[int]
+        :type speed: List[int]
+        :type distance: int
+        :rtype: int
+        """
+        # edge
+        if not position or not speed:
+            return 0
+
+        n = len(position)
+
+        if n == 1:
+            return 1
+
+        # right neighbor / right group
+        p2 = float("inf")
+        s2 = float("inf")
+
+        res = 0
+
+        # right -> left
+        for i in range(n - 1, -1, -1):
+            p = position[i]
+            s = speed[i]
+
+            # current car can form a new group
+            if p2 - p > distance and s <= s2:
+                res += 1
+                s2 = s
+
+            p2 = p
+
+        return res
