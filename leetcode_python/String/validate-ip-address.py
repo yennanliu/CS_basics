@@ -77,7 +77,7 @@ class Solution:
         else:
             return "Neither"
 
-# V0'
+# V0-1
 # time = O(1)
 # space = O(1)
 class Solution(object):
@@ -111,7 +111,7 @@ class Solution(object):
             if any(c not in string.hexdigits for c in part): return False
         return True
 
-# V0''
+# V0-2
 # TODO : fix below
 # class Solution(object):
 #     def validIPAddress(self, queryIP):
@@ -212,7 +212,7 @@ class Solution:
         else:
             return "Neither"
 
-# V1'''
+# V1''
 # http://bookshadow.com/weblog/2016/12/11/leetcode-validate-ip-address/
 # IDEA : 
 # IPV4 :   -> x.y.z.u, while  0 < x,y,z,u < 255  (Decimal)
@@ -263,7 +263,7 @@ class Solution(object):
             if any(c not in string.hexdigits for c in part): return False # Ipv6 is a 8 hex-decimal digits split with ":" 
         return True
 
-# V1'''''
+# V1'''
 # https://www.jiuzhang.com/solution/validate-ip-address/#tag-highlight-lang-python
 # time = O(1)
 # space = O(1)

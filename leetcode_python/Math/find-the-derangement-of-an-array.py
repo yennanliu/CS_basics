@@ -1,3 +1,12 @@
+"""
+
+634. Find the Derangement of An Array
+Medium
+
+https://leetcode.com/problems/find-the-derangement-of-an-array/
+
+"""
+
 # LeetCode 634. Find the Derangement of An Array
 
 # In combinatorial mathematics, a derangement is a permutation of the elements of a set, such that no element appears in its original position.
@@ -14,6 +23,8 @@
 # Note:
 # n is in the range of [1, 106].
 
+
+# V0
 
 # V1 : DEV 
 

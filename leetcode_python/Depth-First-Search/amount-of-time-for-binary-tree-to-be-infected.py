@@ -40,7 +40,6 @@ Each node has a unique value.
 A node is adjacent to another node if it has a direct edge to it.
 start exists in the tree.
 
-
 """
 
 # V0

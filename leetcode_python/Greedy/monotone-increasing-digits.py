@@ -49,7 +49,7 @@ class Solution:
         s = "".join(s)        
         return int(s) 
 
-# V0'
+# V0-1
 # brute force -> time out error
 # time = O(N * D)   # D = number of digits = O(log N)
 # space = O(D)
@@ -68,7 +68,7 @@ class Solution(object):
             #print ("n = " + str(n) + str(check(n)))
         return n
 
-# V0'
+# V0-2
 # time = O(D^2)   # D = number of digits = O(log N); recursion restarts scan
 # space = O(D)
 class Solution:

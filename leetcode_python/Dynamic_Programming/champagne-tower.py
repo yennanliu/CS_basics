@@ -4,6 +4,9 @@
 # https://blog.csdn.net/fuxuemingzhu/article/details/83444553
 """
 
+799. Champagne Tower
+Medium
+
 DP def
     dp[i][j]: TOTAL amount of champagne poured INTO glass (i, j)
 

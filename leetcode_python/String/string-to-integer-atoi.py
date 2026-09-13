@@ -85,7 +85,7 @@ class Solution(object):
             res = 0
         return res
 
-# V0'
+# V0-1
 # IDEA : string op
 # time = O(n)
 # space = O(n)
@@ -191,7 +191,7 @@ class Solution:
         # Return it after multiplying it with its sign.
         return sign * result
 
-# V1
+# V1'
 # IDEA : Deterministic Finite Automaton (DFA)
 # https://leetcode.com/problems/string-to-integer-atoi/solution/
 # time = O(n)
@@ -289,7 +289,7 @@ class Solution:
 
         return q.get_integer()
 
-# V1
+# V1''
 # https://blog.csdn.net/coder_orz/article/details/52053932
 # time = O(n)
 # space = O(n)
@@ -315,7 +315,7 @@ class Solution(object):
         number = number if number >= -2147483648 else -2147483648
         return number
 
-# V1'
+# V1'''
 # https://blog.csdn.net/coder_orz/article/details/52053932
 # IDEA : REGULAR EXPRESSION
 # time = O(n)
@@ -336,7 +336,7 @@ class Solution(object):
             res = 0
         return res
 
-# V1''
+# V1''''
 # https://www.jiuzhang.com/solution/string-to-integer-atoi/#tag-highlight-lang-python
 # time = O(n)
 # space = O(1)

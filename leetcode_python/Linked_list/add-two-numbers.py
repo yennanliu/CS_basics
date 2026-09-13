@@ -91,7 +91,7 @@ class Solution(object):
         return dummy.next
 
 
-# V0
+# V0-2
 # time = O(max(n, m))  # n = len(l1), m = len(l2)
 # space = O(max(n, m))
 class Solution(object):
@@ -128,7 +128,7 @@ class Solution(object):
         #print ("head = " + str(head))
         return head.next
 
-# V0'
+# V0-3
 # time = O(max(n, m))  # n = len(l1), m = len(l2)
 # space = O(max(n, m))
 class Solution:

@@ -2,6 +2,7 @@
 
 3221. Maximum Array Hopping Score II
 Medium
+
 🔒 (premium)
 
 Given an array nums, you have to get the maximum score starting from index 0 and hopping until you reach the last element of the array.

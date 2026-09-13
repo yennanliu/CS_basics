@@ -2,6 +2,7 @@
 
 2107. Number of Unique Flavors After Sharing K Candies
 Medium
+
 (premium / locked problem)
 
 You are given a 0-indexed integer array candies, where candies[i] represents the flavor of the ith candy. Your mom wants you to share these candies with your little sister by giving her k consecutive candies, but you want to keep as many flavors of candies as possible.

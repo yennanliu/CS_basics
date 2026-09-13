@@ -1,11 +1,8 @@
 """
 
 593. Valid Square
-Solved
 Medium
-Topics
-premium lock icon
-Companies
+
 Given the coordinates of four points in 2D space p1, p2, p3 and p4, return true if the four points construct a square.
 
 The coordinate of a point pi is represented as [xi, yi]. The input is not given in any order.
@@ -33,7 +30,6 @@ Constraints:
 p1.length == p2.length == p3.length == p4.length == 2
 -104 <= xi, yi <= 104
  
-
 
 """
 
@@ -92,7 +88,7 @@ class Solution(object):
 
 
 
-# V1-1
+# V1
 # IDEA: MATH (gpt)
 """
 NOTE !!!
@@ -204,7 +200,7 @@ class Solution(object):
 
 
 
-# V1-2
+# V1'
 # IDEA: MATH (GEMINI)
 class Solution(object):
     def validSquare(self, p1, p2, p3, p4):

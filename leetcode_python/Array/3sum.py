@@ -163,7 +163,7 @@ class Solution(object):
                     
         return res
 
-# V0
+# V0-3
 # IDEA : for loop + 2 sum
 # time = O(n^2)
 # space = O(n)
@@ -205,7 +205,7 @@ class Solution(object):
                     d[x] = j
         return res
 
-# V0'
+# V0-4
 # IDEA : 2 SUM -> 3 SUM
 # time = O(n^2)
 # space = O(1)
@@ -253,7 +253,7 @@ class Solution(object):
                     d[nums[j]] = j
         return res
 
-# V0''
+# V0-5
 # IDEA : 2 SUM -> 3 SUM
 # time = O(n^2)
 # space = O(n)
@@ -279,7 +279,7 @@ class Solution(object):
                 d[nums[j]] = j
         return res
 
-# V0''''
+# V0-6
 # BELOW WILL CAUSE "TIME OUT ERROR"
 # due to 
 #  -> _nums = nums[:i] + nums[i+1:]
@@ -311,7 +311,7 @@ class Solution(object):
 #                     d[_nums[j]] = j
 #         return res
 
-# V0''''''
+# V0-7
 # time = O(n^2)
 # space = O(n)
 class Solution:

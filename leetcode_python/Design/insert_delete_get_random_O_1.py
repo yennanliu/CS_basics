@@ -1,5 +1,8 @@
 """
 
+380. Insert Delete GetRandom O(1)
+Medium
+
 Implement the RandomizedSet class:
 
 RandomizedSet() Initializes the RandomizedSet object.
@@ -76,7 +79,7 @@ class RandomizedSet(object):
         ### NOTE : transform set to list, for getting element via idx
         return list(self.set)[idx]
 
-# V0'
+# V0-1
 # IDEA : SET
 import random
 class RandomizedSet(object):
@@ -130,7 +133,7 @@ class RandomizedSet(object):
         # we use `list(self.set)` transform set to list
         return list(self.set)[ind]
 
-# V0'
+# V0-2
 # IDEA : LIST + DICT
 class RandomizedSet(object):
 

@@ -68,7 +68,7 @@ class Solution:
 
         return backtrack(0, set(), set(), set())
 
-# V1
+# V1'
 # IDEA : BACKTRACK
 # https://leetcode.com/problems/n-queens-ii/solutions/243444/python-solution/
 # time = O(n!)

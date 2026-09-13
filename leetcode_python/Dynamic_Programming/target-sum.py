@@ -1,11 +1,8 @@
 """
 
 494. Target Sum
-Solved
 Medium
-Topics
-premium lock icon
-Companies
+
 You are given an integer array nums and an integer target.
 
 You want to build an expression out of nums by adding one of the symbols '+' and '-' before each integer in nums and then concatenate all the integers.
@@ -148,7 +145,7 @@ class Solution(object):
 
 
 
-# V0
+# V0-1
 # IDEA: 1D DP (0/1 knapsack), LC 416
 """
 
@@ -250,7 +247,7 @@ class Solution(object):
         return dp[subset_target]
 
 
-# V0-1
+# V0-2
 # IDEA: 1D DP (0/1 knapsack), LC 416
 """
 
@@ -325,7 +322,7 @@ class Solution(object):
         return dp[subset_target]
 
 
-# V0 
+# V0-3
 # IDEA : DP 
 # IDEA :
 # dp[0][0] = 1;
@@ -539,7 +536,7 @@ class Solution(object):
             return helper(index + 1, acc + nums[index]) + helper(index + 1, acc - nums[index])
         return helper(0, 0)
 
-# V1
+# V1'''
 # https://blog.csdn.net/xiaoxiaoley/article/details/78968852
 # dp[x+y] += dp[y]
 """
@@ -595,7 +592,7 @@ class Solution(object):
                 i = i-1
         return dp[target]
 
-# V1'''
+# V1''''
 # https://zxi.mytechroad.com/blog/dynamic-programming/leetcode-494-target-sum/
 
 

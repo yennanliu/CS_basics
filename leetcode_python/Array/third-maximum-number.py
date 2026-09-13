@@ -57,7 +57,7 @@ class Solution(object):
             return keys[0]
         return keys[2]
 
-# V0'
+# V0-1
 # IDEA : COLLECTIONS 
 # time = O(n)
 # space = O(n)
@@ -70,7 +70,7 @@ class Solution(object):
             return max(count_.keys())
         return sorted(count_.keys())[::-1][2]
 
-# V0''
+# V0-2
 # IDEA : COLLECTIONS 
 # time = O(n)
 # space = O(n)
@@ -84,7 +84,7 @@ class Solution(object):
             return max(count_.keys())
         return sorted(count_.keys())[-3]
 
-# V0''''
+# V0-3
 # IDEA : SET 
 # time = O(n)
 # space = O(n)
@@ -98,7 +98,7 @@ class Solution(object):
         _max = max(nums_set)
         return _max
 
-# V0''
+# V0-4
 # time = O(n)
 # space = O(1)
 class Solution(object):

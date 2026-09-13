@@ -3,7 +3,6 @@
 40. Combination Sum II
 Medium
 
-
 Given a collection of candidate numbers (candidates) and a target number (target), find all unique combinations in candidates where the candidate numbers sum to target.
 
 Each number in candidates may only be used once in the combination.
@@ -70,7 +69,7 @@ class Solution(object):
         dfs(candidates, target, 0, res, [])
         return res
 
-# V0
+# V0-1
 # IDEA : backtrack
 # TODO : fix TLE
 # from collections import Counter
@@ -180,7 +179,7 @@ class Solution:
 
         return results
 
-# V1'
+# V1''
 # IDEA : BACKTRACKING with index
 # https://leetcode.com/problems/combination-sum-ii/solution/
 # time = O(2^n * n), n = len(candidates)

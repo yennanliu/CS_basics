@@ -2,6 +2,7 @@
 
 3004. Maximum Subtree of the Same Color
 Medium
+
 🔒 (premium)
 
 You are given a 2D integer array edges representing a tree with n nodes, numbered from 0 to n - 1, rooted at node 0, where edges[i] = [ui, vi] means there is an edge between the nodes vi and ui.

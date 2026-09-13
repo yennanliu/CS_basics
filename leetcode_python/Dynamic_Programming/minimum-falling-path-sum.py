@@ -6,6 +6,9 @@
 # https://www.jiuzhang.com/solution/minimum-falling-path-sum/#tag-highlight-lang-python
 """
 
+931. Minimum Falling Path Sum
+Medium
+
 DP def
     dp[i][j]: MIN falling path sum from row 0 down to cell (i, j)
 

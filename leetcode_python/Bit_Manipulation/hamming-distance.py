@@ -1,4 +1,8 @@
 """
+
+461. Hamming Distance
+Easy
+
 The Hamming distance between two integers is the number of positions at which the corresponding bits are different.
 
 Given two integers x and y, return the Hamming distance between them.
@@ -45,7 +49,7 @@ class Solution:
                 r += 1
         return r
 
-# V0'
+# V0-1
 # IDEA  : BITWISE OPERATOR 
 # https://github.com/yennanliu/CS_basics/blob/master/doc/bit_manipulation.md
 # XOR : if (a,b) = (1,0) or (0,1), then a ^ b = 1, otherwise = 0

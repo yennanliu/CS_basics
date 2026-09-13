@@ -100,7 +100,7 @@ class Solution:
         print ("res = " + str(res))
         return res
 
-# V1
+# V1'
 # IDEA : BFS
 # https://leetcode.com/problems/word-ladder-ii/discuss/254249/Python-BFS
 # time = O(P * L^2 * 26)  # P = number of candidate paths explored; full paths are stored/extended in the queue so this can blow up combinatorially
@@ -130,7 +130,7 @@ class Solution:
             wordList -= to_remove
         return []
 
-# V1'
+# V1''
 # IDEA : BFS + DFS
 # https://leetcode.com/problems/word-ladder-ii/discuss/241584/Python-solution
 # IDEA : 
@@ -186,7 +186,7 @@ class Solution(object):
         dfs(beginWord)
         return res 
 
-# V1''
+# V1'''
 # IDEA : BFS backwards from endWord to beginWord
 # https://leetcode.com/problems/word-ladder-ii/discuss/241584/Python-solution
 # time = O(N * 26 * L^2 + P * L)  # N = len(wordList), L = word length, P = number of shortest paths (backward BFS builds dist/graph, DFS reconstructs)
@@ -248,7 +248,7 @@ class Solution(object):
                 tmp.pop()
         return res
 
-# V1 
+# V1''''
 # https://blog.csdn.net/qqxx6661/article/details/78509871
 # https://medium.com/@bill800227/leetcode-126-word-ladder-ii-19bc2ff4a6db
 # IDEA : BFS 
@@ -312,7 +312,7 @@ class Solution(object):
 
 ### Test case : dev 
 
-# V1'
+# V1'''''
 # https://www.cnblogs.com/zuoyuan/p/3697045.html
 # time = O(N * 26 * L^2 + P * L)  # N = len(wordList), L = word length, P = number of shortest paths (BFS over candidate sets + DFS path construction)
 # space = O(N * L + P * L)
@@ -358,7 +358,7 @@ class Solution:
         buildpath([], end)
         return result
 
-# V1''
+# V1''''''
 # https://www.twblogs.net/a/5d17a56abd9eee1ede0563e6
 # time = O(P * L^2 * 26)  # P = number of paths kept per layer; full paths stored in `layer` dict so this can blow up combinatorially
 # space = O(P * L)

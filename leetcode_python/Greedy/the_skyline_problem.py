@@ -114,7 +114,7 @@ class Solution:
         # Return 'answer' as the skyline.
         return answer
 
-# V1
+# V1''
 # IDEA : Sweep Line + Priority Queue
 # https://leetcode.com/problems/the-skyline-problem/solutions/2375781/the-skyline-problem/
 # time = O(n log n)   # n = len(buildings); sort edges + heap ops
@@ -172,7 +172,7 @@ class Solution:
         # Return 'answer' as the skyline.
         return answer
 
-# V1
+# V1'''
 # IDEA :  Sweep Line + Two Priority Queue
 # https://leetcode.com/problems/the-skyline-problem/solutions/2375781/the-skyline-problem/
 # time = O(n log n)   # n = len(buildings); sort edges + heap ops
@@ -231,7 +231,7 @@ class Solution(object):
         # Return 'answer' as the skyline.
         return answer
 
-# V1
+# V1''''
 # IDEA : Union Find
 # https://leetcode.com/problems/the-skyline-problem/solutions/2375781/the-skyline-problem/
 # time = O(n log n)   # n = len(buildings); sorting dominates; union-find is ~O(n a(n))
@@ -293,7 +293,7 @@ class Solution:
                 answer.append([edges[i], heights[i]])
         return answer
 
-# V1
+# V1'''''
 # IDEA : Divide-and-Conquer
 # https://leetcode.com/problems/the-skyline-problem/solutions/2375781/the-skyline-problem/
 # time = O(n log n)   # n = len(A); T(n) = 2T(n/2) + O(n) merge
@@ -370,7 +370,7 @@ class Solution:
             right_pos += 1
         return answer
 
-# V1
+# V1''''''
 # IDEA : Sweep Line + Two Priority Queue
 # https://blog.csdn.net/zml66666/article/details/118688749
 # JAVA

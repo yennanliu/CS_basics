@@ -3,11 +3,8 @@
 """
 
 3964. Minimum Lights to Illuminate a Road
-Solved
 Medium
-premium lock icon
-Companies
-Hint
+
 You are given an integer array lights of length n, representing positions 0 through n - 1 on a road.
 
 For each position i:
@@ -126,7 +123,7 @@ class Solution(object):
         return cnt
 
 
-# V1-1
+# V1
 # IDEA: DIFF ARRAY (GEMINI)
 class Solution(object):
     def minLights(self, lights):
@@ -175,7 +172,7 @@ class Solution(object):
         return ans
 
 
-# V1-2
+# V1'
 # IDEA: DIFF ARRAY (GEMINI)
 class Solution(object):
     def minLights(self, lights):

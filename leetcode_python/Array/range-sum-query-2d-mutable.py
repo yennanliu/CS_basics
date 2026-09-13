@@ -1,8 +1,9 @@
 """
 
-# https://kennyzhuang.gitbooks.io/leetcode-lock/content/308_range_sum_query_2d_-_mutable.html
+308. Range Sum Query 2D - Mutable
+Medium
 
-308: Range Sum Query 2D - Mutable
+# https://kennyzhuang.gitbooks.io/leetcode-lock/content/308_range_sum_query_2d_-_mutable.html
 
 Given a 2D matrix matrix, find the sum of the elements inside the rectangle defined by its upper left corner (row1, col1) and lower right corner (row2, col2).
 
@@ -162,7 +163,7 @@ class NumMatrix(object):
         """
         return self.getSum(row2, col2) - self.getSum(row2, col1-1) - self.getSum(row1-1, col2) + self.getSum(row1-1, col1-1)
  
-# V1'''
+# V1''
 # https://github.com/clairett/Leetcode-Lintcode-Python/blob/master/308.py
 class NumMatrix:
 
@@ -210,7 +211,7 @@ class NumMatrix:
             i -= (i & -i)
         return result
 
-# V1''
+# V1'''
 # https://leetcode.jp/leetcode-308-range-sum-query-2d-mutable-%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF%E5%88%86%E6%9E%90/
 # JAVA
 # int[][] presum; // 前缀和数组
@@ -251,7 +252,7 @@ class NumMatrix:
 #         + (row1>0&&col1>0?presum[row1-1][col1-1]:0);
 # }
 
-# V1'''
+# V1''''
 # https://kennyzhuang.gitbooks.io/leetcode-lock/content/308_range_sum_query_2d_-_mutable.html
 # JAVA
 # public class NumMatrix {

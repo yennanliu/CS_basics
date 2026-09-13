@@ -50,7 +50,7 @@ class Solution(object):
         #print (res)
         return res
 
-# V0'
+# V0-1
 # time = O(n log n)
 # space = O(n)
 import collections
@@ -62,7 +62,7 @@ class Solution(object):
             res += x[0]*x[1]
         return res
 
-# V0'
+# V0-2
 # time = O(n log n)
 # space = O(n)
 import collections
@@ -76,7 +76,7 @@ class Solution(object):
             res += x * d_dict[x]
         return res
 
-# V0'
+# V0-3
 # time = O(n log n)
 # space = O(n)
 import collections
@@ -90,7 +90,7 @@ class Solution(object):
             res += item[0] * item[1]
         return res
 
-# V0'
+# V0-4
 # IDEA : collections.Counter(s).most_common
 # time = O(n log n)
 # space = O(n)

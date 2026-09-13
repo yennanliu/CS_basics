@@ -54,7 +54,7 @@ class Solution(object):
                 cnt += 1
         return cnt
 
-# V0 
+# V0-1
 # IDEA : GREEDY + sorting
 # ->  we sort on pair's "2nd" element (0 index) -> possible cases that we can get sub pairs with max length with the needed conditions
 # ->  we need to find the "max length" of "continous or non-continous" sub pairs (with condition)

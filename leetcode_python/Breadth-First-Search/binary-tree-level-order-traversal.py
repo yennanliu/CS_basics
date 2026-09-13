@@ -1,12 +1,8 @@
 """
 
 102. Binary Tree Level Order Traversal
-Solved
 Medium
-Topics
-premium lock icon
-Companies
-Hint
+
 Given the root of a binary tree, return the level order traversal of its nodes' values. (i.e., from left to right, level by level).
 
  
@@ -106,7 +102,7 @@ class Solution(object):
         return res
 
 
-# V0
+# V0-2
 # IDEA : BFS
 # time = O(n)
 # space = O(n)
@@ -134,7 +130,7 @@ class Solution(object):
                 queue.append([layer+1, tmp.right])
         return res
 
-# V0'
+# V0-3
 # IDEA : BFS
 # time = O(n)
 # space = O(n)
@@ -157,7 +153,7 @@ class Solution(object):
                     q.append([tmp.right, _layer+1])
         return res
 
-# V0'
+# V0-4
 # IDEA : BFS
 import collections
 # time = O(n)
@@ -185,7 +181,7 @@ class Solution(object):
             l += 1
         return r
 
-# V0'
+# V0-5
 # IDEA : BFS
 # Definition for a binary tree node.
 # time = O(n)
@@ -211,7 +207,7 @@ class Solution(object):
             res.append(level)
         return res
 
-# V0'
+# V0-6
 # IDEA : DFS 
 # DEMO
 # In [29]: x=[]

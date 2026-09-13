@@ -1,11 +1,8 @@
 """
 
 198. House Robber
-Solved
 Medium
-Topics
-premium lock icon
-Companies
+
 You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed, the only constraint stopping you from robbing each of them is that adjacent houses have security systems connected and it will automatically contact the police if two adjacent houses were broken into on the same night.
 
 Given an integer array nums representing the amount of money of each house, return the maximum amount of money you can rob tonight without alerting the police.
@@ -65,7 +62,7 @@ class Solution(object):
         pass
 
 
-# V0-0-1
+# V0-1
 # IDEA: 1D DP (gemini)
 """
     DP def
@@ -102,7 +99,7 @@ class Solution(object):
         return dp[n - 1]
 
 
-# V0-0-2
+# V0-2
 """
 
 DP def
@@ -204,7 +201,7 @@ class Solution(object):
         return p2
 
 
-# V0-0-3
+# V0-3
 # IDEA: 1D DP (O(1) space) (gemini)
 """
 
@@ -241,7 +238,7 @@ class Solution(object):
         return p2
 
 
-# V0
+# V0-4
 # IDEA: 1D DP
 """
     DP def
@@ -274,7 +271,7 @@ class Solution(object):
 
 
 
-# V0-1
+# V0-5
 # IDEA: 1D DP
 """
 
@@ -319,7 +316,7 @@ class Solution(object):
         return dp[-1]
 
 
-# V0
+# V0-6
 """
 
 DP def
@@ -361,7 +358,7 @@ class Solution(object):
                 nums[i] = max((nums[i-2]+nums[i]), nums[i-1])
             return nums[-1]
 
-# V0'
+# V0-7
 # class Solution:
 #     # @param num, a list of integer
 #     # @return an integer

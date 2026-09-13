@@ -137,7 +137,7 @@ class MyCircularQueue(object):
         return self.cnt == self.k
 
 
-# V0-0-1
+# V0-1
 # IDEA: ARRAY + idx + front, rear, size (gemini)
 class MyCircularQueue(object):
 
@@ -236,7 +236,7 @@ class MyCircularQueue(object):
         return self.size == self.k
 
 
-# V0
+# V0-2
 # IDEA : ARRAY
 # https://leetcode.com/problems/design-circular-queue/solution/
 # time = O(k) for __init__ (array init); O(1) for enQueue/deQueue/Front/Rear/isEmpty/isFull
@@ -301,7 +301,7 @@ class MyCircularQueue:
         """
         return self.count == self.capacity
 
-# V0'
+# V0-3
 # IDEA : LINKED LIST
 # https://leetcode.com/problems/design-circular-queue/solution/
 # time = O(1) per operation (init, enQueue, deQueue, Front, Rear, isEmpty, isFull)
@@ -445,7 +445,7 @@ class MyCircularQueue:
         """
         return self.count == self.capacity
 
-# V1
+# V1'
 # IDEA : ARRAY V2 + LOCK
 # https://leetcode.com/problems/design-circular-queue/solution/
 # time = O(1) per operation (lock adds constant overhead)
@@ -478,7 +478,7 @@ class MyCircularQueue:
         # automatically release the lock when leaving the block
         return True
 
-# V1
+# V1''
 # IDEA : LINKED LIST
 # https://leetcode.com/problems/design-circular-queue/solution/
 # time = O(1) per operation (init, enQueue, deQueue, Front, Rear, isEmpty, isFull)
@@ -557,7 +557,7 @@ class MyCircularQueue:
         """
         return self.count == self.capacity
 
-# V1
+# V1'''
 # https://blog.csdn.net/qq_32424059/article/details/86998300
 # time = O(1) per operation (init, enQueue, deQueue, Front, Rear, isEmpty, isFull)
 # space = O(k)  # k = queue capacity, fixed-size array
@@ -636,7 +636,7 @@ class MyCircularQueue(object):
         """
         return (self.end + 1) % self.max_length == self.start
 
-# V1'
+# V1''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/81027583
 # time = O(1) per operation (init, enQueue, deQueue, Front, Rear, isEmpty, isFull)
 # space = O(m)  # m = total enQueue calls over the object's lifetime (list never shrinks)
@@ -718,7 +718,7 @@ class MyCircularQueue(object):
 # param_5 = obj.isEmpty()
 # param_6 = obj.isFull()
 
-# V1''
+# V1'''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/81027583
 # time = O(1) per operation for __init__/enQueue/Front/Rear/isEmpty/isFull (amortized append)
 # space = O(k)  # k = queue capacity
@@ -804,7 +804,7 @@ class MyCircularQueue(object):
 # param_5 = obj.isEmpty()
 # param_6 = obj.isFull()
 
-# V1'''
+# V1''''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/81027583
 # time = O(1) per operation for __init__/enQueue/Front/Rear/isEmpty/isFull (amortized append)
 # space = O(k)  # k = queue capacity

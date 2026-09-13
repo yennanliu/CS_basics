@@ -166,7 +166,7 @@ class Solution(object):
 # V1'''''
 # https://cloud.tencent.com/developer/article/1659664
 
-# V1'''''''
+# V1''''''
 # https://leetcode.ca/2019-01-24-1151-Minimum-Swaps-to-Group-All-1's-Together/
 
 # V2

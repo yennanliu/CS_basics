@@ -1,11 +1,8 @@
 """
 
 904. Fruit Into Baskets
-Solved
 Medium
-Topics
-premium lock icon
-Companies
+
 You are visiting a farm that has a single row of fruit trees arranged from left to right. The trees are represented by an integer array fruits where fruits[i] is the type of fruit the ith tree produces.
 
 You want to collect as much fruit as possible. However, the owner has some strict rules that you must follow:
@@ -41,7 +38,6 @@ Constraints:
 1 <= fruits.length <= 105
 0 <= fruits[i] < fruits.length
  
-
 
 """
 
@@ -80,7 +76,7 @@ class Solution(object):
         return max_cnt
 
 
-# V0-0-1
+# V0-1
 # IDEA: SLIDE WINDOW (gemini)
 # time = O(n)  # n = len(fruits)
 # space = O(1)  # at most 3 fruit types tracked
@@ -119,7 +115,7 @@ class Solution(object):
         return max_cnt
 
 
-# V0-1
+# V0-2
 # IDEA: SLIDE WINDOW (gemini)
 # time = O(n)  # n = len(fruits)
 # space = O(1)  # at most 3 fruit types tracked
@@ -159,7 +155,7 @@ class Solution(object):
         return max_fruit
 
 
-# V0-2
+# V0-3
 # IDEA: SLIDE WINDOW (gpt)
 # time = O(n)  # n = len(fruits)
 # space = O(1)  # at most 3 fruit types tracked

@@ -1,12 +1,8 @@
 """
 
 572. Subtree of Another Tree
-Solved
 Easy
-Topics
-premium lock icon
-Companies
-Hint
+
 Given the roots of two binary trees root and subRoot, return true if there is a subtree of root with the same structure and node values of subRoot and false otherwise.
 
 A subtree of a binary tree tree is a tree that consists of a node in tree and all of this node's descendants. The tree tree could also be considered as a subtree of itself.
@@ -31,7 +27,6 @@ The number of nodes in the root tree is in the range [1, 2000].
 The number of nodes in the subRoot tree is in the range [1, 1000].
 -104 <= root.val <= 104
 -104 <= subRoot.val <= 104
-
 
 """
 
@@ -88,7 +83,7 @@ class Solution(object):
         )
 
 
-# V0
+# V0-1
 # IDEA: DFS + isSAME tree
 # time = O(m * n), m = nodes in root, n = nodes in subRoot
 # space = O(h), h = height of root (recursion stack)
@@ -123,7 +118,7 @@ class Solution(object):
         )
 
 
-# V0-1
+# V0-2
 # IDEA: DFS
 # time = O(m * n), m = nodes in root, n = nodes in subRoot
 # space = O(h), h = height of root (recursion stack)
@@ -152,7 +147,7 @@ class Solution(object):
 
 
 
-# V0-2
+# V0-3
 # IDEA: BFS
 # time = O(m * n), m = nodes in root, n = nodes in subRoot
 # space = O(m), m = nodes in root (BFS queue)
@@ -194,7 +189,7 @@ class Solution(object):
                 self.sameTree(p.right, q.right))
 
 
-# V0
+# V0-4
 # IDEA : BFS + DFS (LC 100 Same tree)
 # time = O(m * n), m = nodes in root, n = nodes in subRoot
 # space = O(m), m = nodes in root (BFS queue + cache)
@@ -238,7 +233,7 @@ class Solution(object):
         # check if there is "True" in cache
         return True in cache
 
-# V0'
+# V0-5
 # IDEA : DFS + DFS (LC 100 Same tree)
 # time = O(m * n), m = nodes in root, n = nodes in subRoot
 # space = O(h + m), h = height of root (recursion), m = nodes in root (res list)
@@ -272,7 +267,7 @@ class Solution(object):
         #print ("res = " + str(res))
         return True in res
 
-# V0'
+# V0-6
 # IDEA : DFS + DFS
 # time = O(m * n), m = nodes in s, n = nodes in t
 # space = O(h), h = height of s (recursion stack)
@@ -292,7 +287,7 @@ class Solution(object):
             return False
         return s.val == t.val and self.isSameTree(s.left, t.left) and self.isSameTree(s.right, t.right)
 
-# V0'
+# V0-7
 # IDEA : BFS + DFS
 # time = O(m * n), m = nodes in s, n = nodes in t
 # space = O(m), m = nodes in s (BFS queue)
@@ -321,7 +316,7 @@ class Solution(object):
             return False
         return s.val == t.val and self.isSameTree(s.left, t.left) and self.isSameTree(s.right, t.right)
 
-# V0'' (### TO FIX)
+# V0-8 (### TO FIX)
 # IDEA : tree -> string, and check if sub string
 # # https://blog.csdn.net/fuxuemingzhu/article/details/71440802
 # class Solution(object):

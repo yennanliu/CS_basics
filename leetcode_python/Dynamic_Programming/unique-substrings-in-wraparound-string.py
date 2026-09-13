@@ -4,6 +4,9 @@
 # http://bookshadow.com/weblog/2016/12/04/leetcode-unique-substrings-in-wraparound-string/
 """
 
+467. Unique Substrings in Wraparound String
+Medium
+
 DP def
     every substring of the infinite wraparound string is uniquely identified by
     its FIRST letter and its LENGTH - so counting distinct substrings means,

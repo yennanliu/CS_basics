@@ -2,7 +2,9 @@
 
 """
 
-Leetcode 694. Number of Distinct Islands (Python)
+694. Number of Distinct Islands
+Medium
+
 Related Topic
 Depth-First-Search.
 
@@ -90,7 +92,7 @@ class Solution(object):
         path.append("#")
 
 
-# V0-0-1
+# V0-1
 # IDEA 1) DFS + PATH  + `Backtrack` (gemini)
 class Solution(object):
     def numDistinctIslands(self, grid):
@@ -153,7 +155,7 @@ class Solution(object):
 
 
 
-# V0-1
+# V0-2
 # IDEA 1) DFS + PATH  + `Backtrack` (GPT)
 class Solution:
     def numDistinctIslands(self, grid):
@@ -211,7 +213,7 @@ class Solution:
         path.append("b")
 
 
-# V0
+# V0-3
 # IDEA : DFS
 # time = O(rows * cols)
 # space = O(rows * cols)
@@ -246,7 +248,7 @@ class Solution:
                     shapes.add(tuple(pos))            
         return len(shapes)
 
-# V0'
+# V0-4
 # IDEA : DFS
 # TODO : fix below
 # class Solution:
@@ -289,7 +291,7 @@ class Solution:
 #         print ("res = " + str(res))
 #         return len(res)
 
-# V0'
+# V0-5
 # IDEA DFS
 # TODO : validate it
 # time = O(rows * cols)
@@ -363,7 +365,7 @@ class Solution:
 
 ### Test case : dev 
 
-# V1
+# V1'
 # IDEA : Brute Force
 # https://leetcode.com/problems/number-of-distinct-islands/solution/
 # time = O((rows * cols)^2), each island is compared against all previously found unique islands
@@ -410,7 +412,7 @@ class Solution:
         print(unique_islands)
         return len(unique_islands)
 
-# V1
+# V1''
 # IDEA : Hash By Local Coordinates
 # https://leetcode.com/problems/number-of-distinct-islands/solution/
 # time = O(rows * cols)
@@ -445,7 +447,7 @@ class Solution:
         
         return len(unique_islands)
 
-# V1
+# V1'''
 # IDEA : Hash By Path Signature
 # https://leetcode.com/problems/number-of-distinct-islands/solution/
 # time = O(rows * cols)
@@ -479,7 +481,7 @@ class Solution:
         
         return len(unique_islands)
 
-# V1'
+# V1''''
 # https://www.jiuzhang.com/solution/number-of-distinct-islands/#tag-highlight-lang-python
 # IDEA : DFS / BFS
 # time = O(rows * cols)

@@ -113,7 +113,7 @@ class Solution(object):
 
 
 
-# V0
+# V0-1
 # IDEA: BFS
 # time = O(n * k), n = len(s), k = len(wordDict)
 # space = O(n)
@@ -273,7 +273,7 @@ class Solution(object):
         return dp[n]
 
 
-# V0-1
+# V0-3
 # IDEA: BFS
 # time = O(n * k), n = len(s), k = len(wordDict)
 # space = O(n)
@@ -319,7 +319,7 @@ class Solution(object):
 
 
 
-# V0
+# V0-4
 # IDEA: BFS
 # time = O(n^2), n = len(s)
 # space = O(n)
@@ -363,7 +363,7 @@ class Solution(object):
         # If BFS ends without reaching len(s)
         return False
 
-# V0-1
+# V0-5
 # IDEA: BFS
 # time = O(n^2), n = len(s)
 # space = O(n)
@@ -422,7 +422,7 @@ class Solution(object):
 
 
 
-# V0-2
+# V0-6
 # IDEA: 1D DP
 """
 
@@ -485,7 +485,7 @@ class Solution(object):
         return dp[n]
 
 
-# V0-3
+# V0-7
 # IDEA: 1D DP
 # time = O(n^2), n = len(s)
 # space = O(n)
@@ -532,7 +532,7 @@ class Solution(object):
         return dp[n]
 
 
-# V0
+# V0-8
 # IDEA : BFS
 # time = O(n^2), n = len(s)
 # space = O(n)
@@ -554,7 +554,7 @@ class Solution:
                 visited[i]=True
         return False
 
-# V0'
+# V0-9
 # IDEA : DP
 # time = O(n^2), n = len(s)
 # space = O(n)
@@ -594,7 +594,7 @@ class Solution:
                         q.append(j)
                 visited[i]=True
 
-# V1
+# V1'
 # IDEA : Brute Force (TLE)
 # https://leetcode.com/problems/word-break/solution/
 # time = O(2^n), n = len(s)
@@ -611,7 +611,7 @@ class Solution:
 
         return wordBreakRecur(s, set(wordDict), 0)
 
-# V1
+# V1''
 # IDEA : RECURSION WITH MEMORY
 # https://leetcode.com/problems/word-break/solution/
 # time = O(n^2), n = len(s)
@@ -629,7 +629,7 @@ class Solution:
 
         return wordBreakMemo(s, frozenset(wordDict), 0)
 
-# V1
+# V1'''
 # IDEA : BFS
 # https://leetcode.com/problems/word-break/solution/
 # time = O(n^2), n = len(s)
@@ -653,7 +653,7 @@ class Solution:
             visited.add(start)
         return False
 
-# V1
+# V1''''
 # IDEA : DP
 # https://leetcode.com/problems/word-break/solution/
 # time = O(n^2), n = len(s)
@@ -671,7 +671,7 @@ class Solution:
                     break
         return dp[len(s)]
 
-# V1
+# V1'''''
 # IDEA : Iterative
 # https://leetcode.com/problems/word-break/discuss/1659559/Python-or-Iterative
 # time = O(n^2), n = len(s)
@@ -697,7 +697,7 @@ class Solution:
             return True
         return False
 
-# V1 
+# V1''''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79368360
 # time = O(n^2), n = len(s)
 # space = O(n)
@@ -721,7 +721,7 @@ class Solution(object):
                     print(dp)
         return dp.pop()
 
-# V1'
+# V1'''''''
 # https://www.jiuzhang.com/solution/word-break/#tag-highlight-lang-python
 # time = O(n^2), n = len(s)
 # space = O(n)
@@ -745,7 +745,7 @@ class Solution:
                     break        
         return f[n]
 
-# V1
+# V1''''''''
 # IDEA : Dynamic Programming bottom up
 # https://leetcode.com/problems/word-break/discuss/164472/Python-solution
 # time = O(n^2), n = len(s)
@@ -769,7 +769,7 @@ class Solution(object):
                 dp[i] = 0
         return dp[-1] == 1
 
-# V1
+# V1'''''''''
 # IDEA : Dynamic Programming top down (memoization)
 # https://leetcode.com/problems/word-break/discuss/164472/Python-solution
 # time = O(n^2), n = len(s)

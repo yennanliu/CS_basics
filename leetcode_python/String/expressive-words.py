@@ -1,11 +1,8 @@
 """
 
 809. Expressive Words
-Solved
 Medium
-Topics
-premium lock icon
-Companies
+
 Sometimes people repeat letters to represent extra feeling. For example:
 
 "hello" -> "heeellooo"
@@ -38,7 +35,6 @@ Constraints:
 1 <= words[i].length <= 100
 s and words[i] consist of lowercase letters.
  
-
 
 """
 

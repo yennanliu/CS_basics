@@ -43,7 +43,7 @@ class Solution(object):
 
 
 
-# V0-0-1
+# V0-1
 # IDEA: tree DP with POST-order DFS (gpt)
 """
 NOTE !!!
@@ -130,7 +130,7 @@ class Solution(object):
         return [rob_val, not_rob_val]
 
 
-# V0-1
+# V0-2
 # IDEA: tree DP with post-order DFS (gpt)
 class Solution(object):
     def rob(self, root):
@@ -164,7 +164,7 @@ class Solution(object):
         return (rob, skip)
 
 
-# V0-2
+# V0-3
 # IDEA: tree DP with post-order DFS (gemini)
 class Solution(object):
     def rob(self, root):
@@ -287,7 +287,7 @@ class Solution:
 
         return max(dp_rob[0], dp_not_rob[0])
 
-# V1''''
+# V1'''
 # https://blog.csdn.net/fuxuemingzhu/article/details/80779068
 # for more solutions, plz check the link above
 # time = O(n)
@@ -308,7 +308,7 @@ class Solution(object):
             return [norobcurr, robcurr]
         return dfs(root)[1]
 
-# V1''''''
+# V1''''
 # https://www.hrwhisper.me/leetcode-house-robber-iii/
 # time = O(n)
 # space = O(h), h is height of binary tree (recursion stack)

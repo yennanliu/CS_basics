@@ -139,7 +139,7 @@ class MyQueue(object):
         # The queue is only empty if both stacks have no elements
         return not self.in_stack and not self.out_stack
 
-# V0
+# V0-2
 # IDEA : STACK
 # time = O(n) for push (re-stack all elements), O(1) for pop/peek/empty
 # space = O(n)
@@ -164,7 +164,7 @@ class MyQueue:
     def empty(self):
         return self.stack == []
 
-# V0'
+# V0-3
 # IDEA : TWO STACK
 # time = O(1) for push, amortized O(1) for pop/peek/empty
 # space = O(n)
@@ -337,7 +337,7 @@ class MyQueue:
         """
         return self.stack == []
 
-# V1'''''
+# V1'''
 # https://leetcode.com/problems/implement-queue-using-stacks/solution/
 # JAVA
 

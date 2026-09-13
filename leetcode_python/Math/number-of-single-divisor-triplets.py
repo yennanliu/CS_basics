@@ -2,6 +2,7 @@
 
 2198. Number of Single Divisor Triplets
 Medium
+
 (premium / locked problem)
 
 You are given a 0-indexed array nums consisting of positive integers. A triplet of indices (i, j, k) is a single divisor triplet of nums if nums[i] + nums[j] + nums[k] is divisible by exactly one of nums[i], nums[j], or nums[k].

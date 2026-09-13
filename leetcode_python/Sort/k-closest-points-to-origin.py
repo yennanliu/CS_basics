@@ -33,7 +33,6 @@ Constraints:
 1 <= k <= points.length <= 104
 -104 < xi, yi < 104
 
-
 """
 
 
@@ -110,7 +109,7 @@ class Solution(object):
         return res
 
 
-# V0
+# V0-3
 # IDEA : sort + lambda
 # time = O(n log n), n = len(points)
 # space = O(n)
@@ -119,7 +118,7 @@ class Solution(object):
         points.sort(key = lambda x : x[0]**2 +  x[1]**2)
         return points[:K]
 
-# V0'
+# V0-4
 # IDEA : sort + lambda
 # time = O(n log n), n = len(points)
 # space = O(n)

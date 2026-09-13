@@ -1,5 +1,8 @@
 """
 
+1375. Number of Times Binary String Is Prefix-Aligned
+Medium
+
 LeetCode 1375. Bulb Switcher III
 
 There is a room with n bulbs, numbered from 1 to n, arranged in a row from left to right. Initially, all the bulbs are turned off.
@@ -69,7 +72,7 @@ class Solution:
                 res += 1
         return res
 
-# V0'
+# V0-1
 # time = O(n)
 # space = O(1)
 class Solution:
@@ -102,7 +105,7 @@ class Solution:
         
         return count
 
-# V1''
+# V1'
 # https://www.codeleading.com/article/31473623024/
 # time = O(n)
 # space = O(1)
@@ -116,11 +119,11 @@ class Solution:
                 ans=ans+1
         return ans
 
-# V1'''
+# V1''
 # https://blog.csdn.net/Wonz5130/article/details/104734212
 # https://blog.csdn.net/qq_37821701/article/details/111772365
 
-# V1''''
+# V1'''
 # https://zxi.mytechroad.com/blog/algorithms/array/leetcode-1375-bulb-switcher-iii/
 # C++
 # class Solution {

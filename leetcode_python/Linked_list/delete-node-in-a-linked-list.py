@@ -1,8 +1,7 @@
 """
 
 237. Delete Node in a Linked List
-Easy
-
+Medium
 
 Write a function to delete a node in a singly-linked list. You will not be given access to the head of the list, instead you will be given access to the node to be deleted directly.
 
@@ -56,7 +55,7 @@ class Solution:
         node.val = node.next.val
         node.next = node.next.next
 
-# V0'
+# V0-1
 # IDEA : if we have access to the linked list (this idea not works! since we can only access the to-delete node !)
 # class Solution(object):
 #     def deleteNode(self, node):
@@ -90,7 +89,7 @@ class Solution:
         node.val = node.next.val
         node.next = node.next.next
 
-# V1'
+# V1''
 # http://bookshadow.com/weblog/2015/07/15/leetcode-delete-node-linked-list/
 # time = O(1)
 # space = O(1)

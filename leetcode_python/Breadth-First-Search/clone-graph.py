@@ -124,7 +124,7 @@ class Solution(object):
         return new_node
 
 
-# V0
+# V0-1
 # IDEA: DFS + node class
 # time = O(V + E)  # V = number of nodes, E = number of edges
 # space = O(V)
@@ -159,7 +159,7 @@ class Solution(object):
         return res
 
 
-# V0-1
+# V0-2
 # IDEA: DFS + node class
 # Definition for a Node.
 # class Node(object):
@@ -197,7 +197,7 @@ class Solution(object):
         return clone_node
 
 
-# V0
+# V0-3
 # IDEA : BFS
 # time = O(V + E)  # V = number of nodes, E = number of edges
 # space = O(V)
@@ -243,7 +243,7 @@ class Solution(object):
                 visited[t].neighbors.append(visited[n])
         return res
 
-# V0
+# V0-4
 # IDEA : DFS
 # NOTE :
 #  -> 1) we init node via : node_copy = Node(node.val, [])
@@ -270,7 +270,7 @@ class Solution(object):
                 node_copy.neighbors.append(n_copy)
         return node_copy
 
-# V0'
+# V0-5
 # IDEA : BFS
 # time = O(V + E)  # V = number of nodes, E = number of edges
 # space = O(V)
@@ -294,7 +294,7 @@ class Solution(object):
                     hashd[t].neighbors.append(hashd[n])
         return node_copy
 
-# V0''
+# V0-6
 # IDEA : BFS
 # time = O(V + E)  # V = number of nodes, E = number of edges
 # space = O(V)
@@ -320,7 +320,7 @@ class Solution:
             root.neighbors.append(self.cloneGraph(item))
         return root
 
-# V0''
+# V0-7
 # IDEA : BFS
 # time = O(V + E)  # V = number of nodes, E = number of edges
 # space = O(V)
@@ -414,7 +414,7 @@ class Solution(object):
                 hashd[t].neighbors.append(hashd[n])
         return node_copy
 
-# V1
+# V1''
 # IDEA : DFS
 # https://leetcode.com/problems/clone-graph/solution/
 """
@@ -460,7 +460,7 @@ class Solution(object):
 
         return clone_node
 
-# V1
+# V1'''
 # IDEA : BFS
 # https://leetcode.com/problems/clone-graph/solution/
 """
@@ -510,7 +510,7 @@ class Solution(object):
         # Return the clone of the node from visited.
         return visited[node]
 
-# V1''
+# V1''''
 # https://www.jiuzhang.com/solution/clone-graph/#tag-highlight-lang-python
 # IDEA : DFS 
 """
@@ -544,7 +544,7 @@ class Solution:
             root.neighbors.append(self.cloneGraph(item))
         return root
 
-# V1''' 
+# V1'''''
 # https://www.jiuzhang.com/solution/clone-graph/#tag-highlight-lang-python
 # IDEA : BFS 
 # time = O(V + E)  # V = number of nodes, E = number of edges

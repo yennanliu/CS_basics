@@ -2,6 +2,7 @@
 
 2277. Closest Node to Path in Tree
 Hard
+
 (premium / locked problem)
 
 You are given a positive integer n representing the number of nodes in a tree, numbered from 0 to n - 1 (inclusive). You are also given a 2D integer array edges of length n - 1, where edges[i] = [node1_i, node2_i] denotes that there is a bidirectional edge connecting node1_i and node2_i in the tree.

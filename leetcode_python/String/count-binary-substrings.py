@@ -99,7 +99,7 @@ class Solution(object):
         return res
 
 
-# V0-0-1
+# V0-1
 # IDEA :  Group By Character + continous sub-string (gpt)
 """
 Core idea:
@@ -155,7 +155,7 @@ class Solution(object):
 
 
 
-# V0-1
+# V0-2
 # IDEA :  Group By Character + continous sub-string (GEMINI)
 class Solution(object):
     def countBinarySubstrings(self, s):
@@ -191,7 +191,7 @@ class Solution(object):
 
 
 
-# V0 
+# V0-3
 # IDEA :  Group By Character + continous sub-string
 # https://leetcode.com/problems/count-binary-substrings/solution/
 # https://blog.csdn.net/fuxuemingzhu/article/details/79183556
@@ -218,7 +218,7 @@ class Solution(object):
             ans += min(groups[i-1], groups[i])
         return ans
 
-# V0'
+# V0-4
 # IDEA : LINEAR SCAN
 # # https://leetcode.com/problems/count-binary-substrings/solution/
 # time = O(n)
@@ -235,7 +235,7 @@ class Solution(object):
 
         return ans + min(prev, cur)
 
-# V0''
+# V0-5
 # IDEA : BRUTE FORCE (TLE)
 # class Solution(object):
 #     def countBinarySubstrings(self, s):

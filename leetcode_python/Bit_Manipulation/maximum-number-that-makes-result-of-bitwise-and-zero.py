@@ -2,6 +2,7 @@
 
 3125. Maximum Number That Makes Result of Bitwise AND Zero
 Medium
+
 🔒 (premium)
 
 Given an integer n, return the maximum integer x such that x <= n, and the bitwise AND of all the numbers in the range [x, n] is equal to 0.

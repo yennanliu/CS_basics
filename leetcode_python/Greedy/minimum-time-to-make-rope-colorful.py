@@ -1,5 +1,8 @@
 """
 
+1578. Minimum Time to Make Rope Colorful
+Medium
+
 1578. Minimum Deletion Cost to Avoid Repeating Letters
 Medium
 

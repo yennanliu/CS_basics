@@ -1,6 +1,7 @@
 """
 
 311. Sparse Matrix Multiplication
+Medium
 
 Given two sparse matrices A and B, return the result of AB.
 

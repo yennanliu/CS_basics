@@ -75,7 +75,7 @@ class Solution(object):
                     self.dfs_helper(grid, x_, y_)
 
 
-# V0
+# V0-1
 # IDEA : DFS
 # time = O(m * n)
 # space = O(m * n)
@@ -104,7 +104,7 @@ class Solution(object):
                     dfs(grid, j, i)
         return _counter
 
-# V0'
+# V0-2
 # IDEA : DFS
 # time = O(m * n)
 # space = O(m * n)
@@ -139,7 +139,7 @@ class Solution(object):
                     res += 1
         return res
 
-# V0'''
+# V0-3
 # IDEA : DFS
 # time = O(m * n)
 # space = O(m * n)

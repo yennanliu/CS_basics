@@ -82,7 +82,7 @@ class LRUCache(object):
             self.cache.popitem(last=False)
 
 
-# V0
+# V0-1
 # IDEA:  HASHMAP + doubly linked list( most recent used + least recent used )
 """
 
@@ -164,7 +164,7 @@ class LRUCache:
         self._insert(node)
 
 
-# V0-1
+# V0-2
 # IDEA:  HASHMAP + doubly linked list( most recent used + least recent used )
 """
 
@@ -251,7 +251,7 @@ class LRUCache(object):
             del self.cache[lru_node.key]
 
 
-# V0
+# V0-3
 # IDEA : ARRAY + LRU (implement LRU via array)
 # time = O(n) for get/put (list.remove is O(n))
 # space = O(capacity)
@@ -564,7 +564,7 @@ class LRUCache:
         del self.dic[tail_node.key]
         self.removeFromList(tail_node)
 
-# V1'
+# V1''''
 # https://blog.csdn.net/laughing2333/article/details/70231547
 # time = O(n) for get/put (list.remove is O(n))
 # space = O(capacity)

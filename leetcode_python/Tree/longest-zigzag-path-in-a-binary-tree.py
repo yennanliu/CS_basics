@@ -74,11 +74,11 @@ class Solution:
                         break
         return res
 
-# V1
+# V1'
 # IDEA : DFS
 # https://blog.csdn.net/Wonz5130/article/details/104733479
 
-# V1
+# V1''
 # IDEA : DFS
 # https://www.codeleading.com/article/69034872436/
 # time = O(n), each node visited twice (once per initial direction)
@@ -101,7 +101,7 @@ class Solution:
         self.maxZigZag(root,False,0)
         return self.maxStep
 
-# V1
+# V1'''
 # IDEA : DFS
 # https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/discuss/531867/JavaPython-DFS-Solution
 # IDEA :
@@ -119,7 +119,7 @@ class Solution:
             return [left[1] + 1, right[0] + 1, max(left[1] + 1, right[0] + 1, left[2], right[2])]
         return dfs(root)[-1]
 
-# V1
+# V1''''
 # IDEA : POST ORDER
 # https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/discuss/531860/python-postorder
 # a = the max number of nodes on a path down (starting from u) if I take a left
@@ -138,7 +138,7 @@ class Solution(object):
         count[0] = max(count[0], 1+ a[1], 1+b[0])
         return (1 + a[1], 1 + b[0]) 
 
-# V1
+# V1'''''
 # IDEA : BFS
 # https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/discuss/1771498/python-or-bfs
 # time = O(n)
@@ -172,7 +172,7 @@ class Solution:
         
         return ans
 
-# V1
+# V1''''''
 # IDEA : DFS
 # https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/discuss/532057/python-dfs
 # time = O(n)

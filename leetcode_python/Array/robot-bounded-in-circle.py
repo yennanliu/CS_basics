@@ -70,7 +70,7 @@ class Solution:
                 y = y + dirs[idx][1]
         return (x == 0 and y ==0) or idx !=0
 
-# V0'
+# V0-1
 # TODO : fix below (cyclic case)
 # class Solution:
 #     def isRobotBounded(self, instructions):
@@ -125,7 +125,7 @@ class Solution:
                 y = y + dirs[idx][1]
         return (x == 0 and y ==0) or idx !=0
 
-# V1
+# V1'
 # IDEA : one pass
 # https://leetcode.com/problems/robot-bounded-in-circle/solution/
 # time = O(n)
@@ -153,7 +153,7 @@ class Solution:
         # or robot doesn't face north
         return (x == 0 and y == 0) or idx != 0
 
-# V1
+# V1''
 # https://leetcode.com/problems/robot-bounded-in-circle/discuss/910396/Python-easy
 # time = O(n)
 # space = O(1)
@@ -177,7 +177,7 @@ class Solution:
                 return True
         return False
 
-# V1'
+# V1'''
 # https://leetcode.com/problems/robot-bounded-in-circle/discuss/290870/Python
 # time = O(n)
 # space = O(1)

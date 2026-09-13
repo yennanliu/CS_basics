@@ -17,6 +17,9 @@
 # -> BFS IN THIS PROBLEM MAY NOT WORKS
 """
 
+361. Bomb Enemy
+Medium
+
 DP def
     (scan left->right, top->bottom, reusing counts until a wall 'W' resets them)
 
@@ -90,7 +93,7 @@ class Solution(object):
                     ans = max(ans, count(i, j))                 
         return ans
 
-# V0'
+# V0-1
 # TODO : OPTIMIZATION : NOT TO SEARCH "visited" grid REPEATEDLY
 
 # V1

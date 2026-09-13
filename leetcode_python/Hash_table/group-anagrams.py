@@ -29,7 +29,6 @@ Constraints:
 0 <= strs[i].length <= 100
 strs[i] consists of lowercase English letters.
 
-
 """
 
 # V0
@@ -69,7 +68,7 @@ class Solution(object):
 
 
 
-# V0-0-X
+# V0-1
 # IDEA : HASH TABLE
 # time = O(n + m log m), n = len(nums), m = number of unique elements
 # space = O(m)
@@ -85,7 +84,7 @@ class Solution(object):
         return [num for num, cnt in arr[:k]]
 
 
-# V0-0-1
+# V0-2
 # IDEA : HASH TABLE
 # time = O(N * K log K), N = len(strs), K = max length of a string
 # space = O(N * K)
@@ -101,7 +100,7 @@ class Solution:
 
 
 
-# V0-1
+# V0-3
 # time = O(N * K log K), N = len(strs), K = max length of a string
 # space = O(N * K)
 class Solution(object):
@@ -119,7 +118,7 @@ class Solution(object):
         return list(groups.values())
 
 
-# V0-0-1
+# V0-4
 # time = O(N * K), N = len(strs), K = max length of a string
 # space = O(N * K)
 class Solution(object):
@@ -142,7 +141,7 @@ class Solution(object):
         return list(groups.values())
 
 
-# V0'
+# V0-5
 # IDEA : SORT LIST strs.sort(key = lambda x : ''.join(sorted(x)) )
 # time = O(N * K * (log N + log K)), N = len(strs), K = max length of a string
 # space = O(N * K)
@@ -162,7 +161,7 @@ class Solution:
             r[j-1].append(strs[i])
         return [x for x in r if len(x) > 0]
 
-# V0''
+# V0-6
 # IDEA : SORT + DICT
 # time = O(N * K log K), N = len(strs), K = max length of a string
 # space = O(N * K)

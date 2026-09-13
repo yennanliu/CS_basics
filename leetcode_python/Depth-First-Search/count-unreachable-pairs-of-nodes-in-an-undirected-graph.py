@@ -3,12 +3,8 @@
 """
 
 2316. Count Unreachable Pairs of Nodes in an Undirected Graph
-Solved
 Medium
-Topics
-premium lock icon
-Companies
-Hint
+
 You are given an integer n. There is an undirected graph with n nodes, numbered from 0 to n - 1. You are given a 2D integer array edges where edges[i] = [ai, bi] denotes that there exists an undirected edge connecting nodes ai and bi.
 
 Return the number of pairs of different nodes that are unreachable from each other.
@@ -56,7 +52,7 @@ class Solution(object):
         """
         
 
-# V1-2
+# V1
 # IDEA: UNION FIND (GPT)
 # time = O((n + e) * a(n))  # n = nodes, e = len(edges), a = inverse Ackermann (union-find w/ path compression)
 # space = O(n)
@@ -124,7 +120,7 @@ class Solution(object):
         return res
 
 
-# V1-1
+# V1'
 # IDEA: UNION FIND (gemini)
 # time = O((n + e) * a(n))  # n = nodes, e = len(edges), a = inverse Ackermann (union-find w/ union-by-size + path compression)
 # space = O(n)

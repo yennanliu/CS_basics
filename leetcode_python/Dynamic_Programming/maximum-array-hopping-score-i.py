@@ -2,6 +2,7 @@
 
 3205. Maximum Array Hopping Score I
 Medium
+
 🔒 (premium)
 
 Given an array nums, you have to get the maximum score starting from index 0 and hopping until you reach the last element of the array.

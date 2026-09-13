@@ -71,6 +71,7 @@ ui != vi
 queries[i].length == 2
 queries[i][0] is either 1 or 2.
 1 <= queries[i][1] <= c
+
 """
 
 # V0

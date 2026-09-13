@@ -74,7 +74,7 @@ class Solution(object):
             found = False
         return res
 
-# V0'
+# V0-1
 # IDEA : double for loop (one of loops is INVERSE ORDERING) + case conditions op
 # time = O(n * m), n = len(nums1), m = len(nums2)
 # space = O(m)
@@ -140,7 +140,7 @@ class Solution:
 
         return map(helper, findNums)
 
-# V1'
+# V1''
 # https://leetcode.com/problems/next-greater-element-i/discuss/143065/Python-solution
 # time = O(n + m), n = len(findNums), m = len(nums)
 # space = O(m)
@@ -162,7 +162,7 @@ class Solution(object):
 
         return res 
 
-# V1'
+# V1'''
 # https://blog.techbridge.cc/2019/10/26/leetcode-pattern-next-greater-element/
 # C++ stack
 # class Solution {

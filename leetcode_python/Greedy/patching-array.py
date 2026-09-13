@@ -67,7 +67,7 @@ class Solution:
         
         return res
 
-# V1'
+# V1''
 # IDEA : GREEDY WINDOW
 # https://leetcode.com/problems/patching-array/discuss/266608/Python-greedy-window
 # time = O(m + log n)   # m = len(nums); reach at least doubles per patch
@@ -88,7 +88,7 @@ class Solution:
             
         return res
 
-# V1''
+# V1'''
 # https://leetcode.com/problems/patching-array/discuss/78547/Greedy-solution-in-Python
 # IDEA :
 # I used a greedy algorithm. When traversing through the given number list, consider each number as a goal and resource. When in the for loop for the ith number, try to add some numbers so that you can represent every number in the range [ 1, nums[i] ). Then, add the ith number to your source for further loops.
@@ -137,7 +137,7 @@ class Solution(object):
                 count+=1
         return count
 
-# V1''''
+# V1'''''
 # https://leetcode.com/problems/patching-array/solution/
 # JAVA
 # public class Solution {

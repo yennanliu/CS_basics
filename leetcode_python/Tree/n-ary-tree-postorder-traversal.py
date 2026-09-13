@@ -1,7 +1,7 @@
 """
 
 590. N-ary Tree Postorder Traversal
-Medium
+Easy
 
 Given the root of an n-ary tree, return the postorder traversal of its nodes' values.
 
@@ -76,7 +76,7 @@ class Solution(object):
 
         return res[::-1]
 
-# V0'
+# V0-1
 # IDEA : DFS (recursion) + HELPER FUNC (easiest to read)
 #
 #  Postorder for a n-ary tree = "ALL children first (left -> right), then myself"
@@ -129,7 +129,7 @@ class Solution(object):
         res.append(node.val)
 
 
-# V0''
+# V0-2
 # IDEA : DFS (recursion) + HELPER FUNC that RETURNS a list (no shared state)
 #
 #  Same idea as V0', but instead of appending into a shared `res`,

@@ -1,13 +1,10 @@
 """
-# https://leetcode.com/problems/weighted-sum-of-a-tree/description/
-
 
 4015. Weighted Sum of a Tree
-Solved
 Medium
-premium lock icon
-Companies
-Hint
+
+# https://leetcode.com/problems/weighted-sum-of-a-tree/description/
+
 You are given an integer array parent of length n representing a rooted tree with nodes labeled from 0 to n - 1.
 
 The tree is rooted at node 0, so parent[0] = -1. For each node i where 1 <= i <= n - 1, parent[i] denotes the parent of node i.
@@ -74,7 +71,6 @@ parent[0] == -1
 0 <= parent[i] <= n - 1 for all i in [1, n - 1]
 1 <= nums[i] <= 106
 The input is generated such that the array parent represents a valid tree rooted at node 0.
-
 
 """
 

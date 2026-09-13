@@ -2,6 +2,9 @@
 
 """
 
+505. The Maze II
+Medium
+
 [LeetCode] 505. The Maze II
 
 # https://www.cnblogs.com/grandyang/p/6725380.html
@@ -340,7 +343,7 @@ class Solution:
 
 
 
-# V1
+# V1'
 # https://www.jiuzhang.com/solution/the-maze-ii/#tag-other-lang-python
 # time = O(m*n*max(m,n)), m,n = maze dimensions; each cell visited once via `visited`, each expansion rolls up to O(max(m,n)) cells
 # space = O(m*n)
@@ -376,7 +379,7 @@ class Solution:
         rows, cols = len(maze), len(maze[0])
         return 0 <= x < rows and 0 <= y < cols and maze[x][y] == 0
 
-# V1'
+# V1''
 # http://bookshadow.com/weblog/2017/01/29/leetcode-the-maze-ii/
 # IDEA : BFS
 # time = O(m*n), m,n = maze dimensions; O(m*n) to precompute dmap stop-positions in each direction, then O(m*n) BFS over precomputed stops
@@ -419,7 +422,7 @@ class Solution(object):
                     queue.append((np, ndist, npath))
         return bmap[hole][1] if hole in bmap else 'impossible'
 
-# V1''
+# V1'''
 # https://leetcode.com/articles/the-maze-ii/?page=4
 # IDEA : DFS
 # JAVA 
@@ -452,7 +455,7 @@ class Solution(object):
 #     }
 # }
 
-# V1'''
+# V1''''
 # http://bookshadow.com/weblog/2017/01/29/leetcode-the-maze-ii/
 # IDEA : Dijkstra ALGORITHM
 # time = O((m*n)^2), m,n = maze dimensions; `min(bmap.values())` scans up to O(m*n) entries on each of O(m*n) iterations (no heap used)
@@ -497,7 +500,7 @@ class Solution(object):
                     bmap[np] = (ndist, npath, np)
         return 'impossible'
         
-# V1''''
+# V1'''''
 # https://www.jiuzhang.com/solution/the-maze-ii/#tag-other-lang-python
 # IDEA : BFS
 # time = O(m*n*max(m,n)), m,n = maze dimensions; each cell marked visited via maze[x][y]=2 (visited once), each expansion rolls up to O(max(m,n)) cells
@@ -537,7 +540,7 @@ def shortestDistance(self, maze, start, destination):
             return -1
         return result
 
-# V1'''''
+# V1''''''
 # IDEA : DFS
 # JAVA
 # class Solution {

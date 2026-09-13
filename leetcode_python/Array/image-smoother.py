@@ -57,7 +57,7 @@ class Solution:
                 res[i][j] = sum(temp)//len(temp)
         return res
 
-# V0'
+# V0-1
 # time = O(m*n)
 # space = O(m*n)
 class Solution(object):

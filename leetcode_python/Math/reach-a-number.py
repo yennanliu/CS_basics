@@ -1,11 +1,8 @@
 """
 
 754. Reach a Number
-Solved
 Medium
-Topics
-premium lock icon
-Companies
+
 You are standing at position 0 on an infinite number line. There is a destination at position target.
 
 You can make some number of moves numMoves so that:
@@ -37,7 +34,6 @@ Constraints:
 
 -109 <= target <= 109
 target != 0
-
 
 """
 # V0

@@ -1,12 +1,8 @@
 """
 
-
 121. Best Time to Buy and Sell Stock
-Solved
 Easy
-Topics
-premium lock icon
-Companies
+
 You are given an array prices where prices[i] is the price of a given stock on the ith day.
 
 You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock.
@@ -32,7 +28,6 @@ Constraints:
 
 1 <= prices.length <= 105
 0 <= prices[i] <= 104
-
 
 """
 
@@ -79,7 +74,7 @@ class Solution(object):
         return global_max
 
 
-# V0
+# V0-1
 # IDEA : array op + problem understanding
 # time = O(n)
 # space = O(1)
@@ -100,7 +95,7 @@ class Solution(object):
                 maxProfit = p - minPrice
         return maxProfit
 
-# V0''
+# V0-2
 # IDEA : BRUTE FORCE (time out error)
 # time = O(n^2)
 # space = O(1)

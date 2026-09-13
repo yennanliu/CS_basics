@@ -1,7 +1,7 @@
 """
 
-167. Two Sum II - Input array is sorted
-Easy
+167. Two Sum II - Input Array Is Sorted
+Medium
 
 Given a 1-indexed array of integers numbers that is already sorted in non-decreasing order, find two numbers such that they add up to a specific target number. Let these two numbers be numbers[index1] and numbers[index2] where 1 <= first < second <= numbers.length.
 
@@ -58,7 +58,7 @@ class Solution(object):
         return [-1, -1]
 
 
-# V0
+# V0-1
 # IDEA : TWO POINTERS
 #       -> l = 0, r = len(numbers) - 1
 # time = O(n)
@@ -82,7 +82,7 @@ class Solution(object):
                 l += 1
         return [-1, -1]
 
-# V0'
+# V0-2
 # IDEA : TWO POINTERS
 # time = O(n)
 # space = O(1)
@@ -97,7 +97,7 @@ class Solution(object):
             else:
                 left += 1
 
-# V0'
+# V0-3
 # IDEA : DICT
 # time = O(n)
 # space = O(n)
@@ -109,7 +109,7 @@ class Solution(object):
                 return [num_dict[target - num], i + 1]
             num_dict[num] = i + 1
 
-# V0''
+# V0-4
 # IDEA : BINARY SEARCH
 # time = O(n log n)
 # space = O(1)

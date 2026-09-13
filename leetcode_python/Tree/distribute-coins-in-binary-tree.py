@@ -2,9 +2,7 @@
 
 979. Distribute Coins in Binary Tree
 Medium
-Topics
-premium lock icon
-Companies
+
 You are given the root of a binary tree with n nodes where each node in the tree has node.val coins. There are n coins in total throughout the whole tree.
 
 In one move, we may choose two adjacent nodes and move one coin from one node to another. A move may be from parent to child, or from child to parent.
@@ -78,7 +76,7 @@ class Solution(object):
         pass
 
 
-# V0-0-1
+# V0-1
 # IDEA: Postorder DFS + Balance (GPT)
 """
 CORE IDEA:
@@ -142,7 +140,7 @@ class Solution(object):
         return diff
 
 
-# V0-1
+# V0-2
 # IDEA: Postorder DFS + Balance (GPT)
 """
 CORE IDEA:
@@ -206,7 +204,7 @@ class Solution(object):
         return self.moves
 
 
-# V0-2
+# V0-3
 # IDEA: Postorder DFS + Balance (GEMINI)
 # Definition for a binary tree node.
 # class TreeNode(object):

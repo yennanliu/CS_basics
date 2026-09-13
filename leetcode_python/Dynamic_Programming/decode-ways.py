@@ -146,7 +146,7 @@ class Solution(object):
         return dp[n]
 
 
-# V0-0-1
+# V0-1
 # IDEA: 1D DP
 """
 
@@ -218,7 +218,7 @@ class Solution(object):
 
 
 
-# V0-0-2
+# V0-2
 # IDEA: 1D DP + O(1) space (gemini)
 class Solution(object):
     def numDecodings(self, s):
@@ -244,7 +244,7 @@ class Solution(object):
         return prev1
 
 
-# V0-1
+# V0-3
 # IDEA: 1D DP
 """
 
@@ -314,7 +314,7 @@ class Solution(object):
 
 
 
-# V0
+# V0-4
 # IDEA : DP
 # IDEA : 
 # dp[i]=⎧⎩⎨⎪⎪dp[i−1]+dp[i−2], 10 <=s[i-2:2]<=26 and s[i−2:2]!=[10 or 20]
@@ -448,7 +448,7 @@ class Solution(object):
                 return 0
         return dp[len(s)]
 
-# V1
+# V1'
 # IDEA : Recursive Approach with Memoization
 # https://leetcode.com/problems/decode-ways/solution/
 """
@@ -499,7 +499,7 @@ class Solution:
     def numDecodings(self, s: str) -> int:
         return self.recursiveWithMemo(0, s)
 
-# V1
+# V1''
 # IDEA : Iterative Approach
 # https://leetcode.com/problems/decode-ways/solution/
 """
@@ -549,7 +549,7 @@ class Solution:
                 
         return dp[len(s)]
 
-# V1
+# V1'''
 # IDEA : Iterative, Constant Space
 # https://leetcode.com/problems/decode-ways/solution/
 """
@@ -594,7 +594,7 @@ class Solution:
         
         return one_back
 
-# V1'
+# V1''''
 # https://www.jiuzhang.com/solution/decode-ways/#tag-highlight-lang-python
 # IDEA : DP
 """

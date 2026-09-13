@@ -109,7 +109,7 @@ class Solution(object):
         return True
 
 
-# V0
+# V0-1
 # time = O(9^2)  # board is fixed at 9x9
 # space = O(9)
 class Solution(object):
@@ -152,7 +152,7 @@ class Solution(object):
         return True
 
 
-# V0-1
+# V0-2
 # time = O(9^2)  # board is fixed at 9x9
 # space = O(9^2)
 class Solution(object):

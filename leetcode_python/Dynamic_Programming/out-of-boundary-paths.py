@@ -6,6 +6,9 @@
 # IDEA : DP 
 """
 
+576. Out of Boundary Paths
+Medium
+
 DP def
     dp[s][x][y]: number of ways to move the ball OUT of the grid using
 
@@ -167,7 +170,7 @@ class Solution:
         ret = dfs(N, 0, m, n, i, j)
         return ret % (10 ** 9 + 7)
 
-# V1''
+# V1''''
 # https://www.jiuzhang.com/solution/out-of-boundary-paths/#tag-highlight-lang-python
 """
 

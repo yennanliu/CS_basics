@@ -77,7 +77,7 @@ class Solution(object):
         return "".join(char * cnt for char, cnt in st)
 
 
-# V0
+# V0-1
 # IDEA: STACK
 """
 
@@ -125,7 +125,7 @@ class Solution(object):
 
 
 
-# V0-1
+# V0-2
 # IDEA : STACK
 class Solution(object):
     def removeDuplicates(self, s, k):
@@ -157,7 +157,7 @@ class Solution(object):
         return res
 
 
-# V0
+# V0-3
 # IDEA : STACK
 # time = O(n)
 # space = O(n)
@@ -191,7 +191,7 @@ class Solution:
           #print (">> tmp = " + str(tmp))
           return "".join(tmp)
 
-# V0'
+# V0-4
 # IDEA : STACK
 # NOTE !!! we DON'T need to modify original s, (but maintain an extra stack for duplicated checks)
 # time = O(n)
@@ -209,7 +209,7 @@ class Solution:
                     stack.append([c, 1])
             return ''.join(c * k for c, k in stack)
 
-# V0''
+# V0-5
 # TODO : fix below
 # from collections import Counter
 # class Solution(object):
@@ -377,7 +377,7 @@ class Solution:
 #     return sb.toString();
 # }
 
-# V1
+# V1'''''
 # IDEA : STACK
 # https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string-ii/solution/
 # JAVA
@@ -400,7 +400,7 @@ class Solution:
 #     return sb.toString();
 # }
 
-# V1''''
+# V1''''''
 # IDEA : Stack with Reconstruction
 # https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string-ii/solution/
 # JAVA

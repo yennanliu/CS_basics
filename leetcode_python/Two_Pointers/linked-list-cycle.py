@@ -1,5 +1,8 @@
 """
 
+141. Linked List Cycle
+Easy
+
 Given head, the head of a linked list, 
 determine if the linked list has a cycle in it.
 
@@ -63,7 +66,7 @@ class Solution(object):
                 return True
         return False
 
-# V0'
+# V0-1
 # IDEA : fast-slow pointer (2 pointers)
 # https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/2_pointers.md
 # time = O(n)
@@ -81,7 +84,7 @@ class Solution:
                 return True
         return False
 
-# V0
+# V0-2
 # IDEA : MAP
 # time = O(n)
 # space = O(n)

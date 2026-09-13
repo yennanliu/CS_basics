@@ -118,7 +118,7 @@ class Solution(object):
         return prev, head, curr
 
 
-# V1-1
+# V1
 # IDEA: LINKED LIST + helper func (gpt)
 """
 NOTE !!!
@@ -171,7 +171,7 @@ class Solution(object):
         return prev, head, curr
 
 
-# V1-2
+# V1'
 # IDEA: LINKED LIST (gemini)
 class Solution(object):
     def reverseBetween(self, head, left, right):
@@ -217,7 +217,7 @@ class Solution(object):
 
 
 
-# V1
+# V1''
 # IDEA : Iterative Link Reversal
 # https://leetcode.com/problems/reverse-linked-list-ii/solution/
 # time = O(n)
@@ -262,7 +262,7 @@ class Solution:
         tail.next = cur
         return head
 
-# V1'
+# V1'''
 # IDEA : Recursion
 # https://leetcode.com/problems/reverse-linked-list-ii/solution/
 # time = O(n)
@@ -316,7 +316,7 @@ class Solution:
         recurseAndReverse(right, m, n)
         return head
 
-# V1''
+# V1''''
 # http://bookshadow.com/weblog/2015/01/29/leetcode-reverse-linked-list-ii/
 # IDEA : dummyNode
 # Definition for singly-linked list.
@@ -360,7 +360,7 @@ class Solution:
         end.next = next
         return dummyNode.next
 
-# V1'
+# V1'''''
 # https://www.jiuzhang.com/solution/reverse-linked-list-ii/#tag-highlight-lang-python
 # time = O(n)
 # space = O(1)

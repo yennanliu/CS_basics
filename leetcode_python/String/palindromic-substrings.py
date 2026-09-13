@@ -216,7 +216,7 @@ class Solution(object):
         return total_palindromes
 
 
-# V0
+# V0-2
 # IDEA : BRUTE FORCE
 # time = O(n^3)  # O(n^2) substrings, each palindrome check up to O(n)
 # space = O(n)
@@ -233,7 +233,7 @@ class Solution(object):
         return count
 
 
-# V0-0-1
+# V0-3
 # IDEA : BRUTE FORCE
 # time = O(n^3)  # O(n^2) substrings, each palindrome check up to O(n)
 # space = O(n)
@@ -252,7 +252,7 @@ class Solution(object):
         return cnt
 
 
-# V0'
+# V0-4
 # IDEA : BRUTE FORCE
 # time = O(n^3)  # O(n^2) substrings, each palindrome check up to O(n)
 # space = O(n)
@@ -265,7 +265,7 @@ class Solution(object):
                     count += 1
         return count
 
-# V0''
+# V0-5
 # IDEA : TWO POINTERS (similar as LC 005)
 # time = O(n^2)
 # space = O(1)
@@ -294,7 +294,7 @@ class Solution(object):
 
         return count
 
-# V0''
+# V0-6
 # IDEA : TWO POINTERS
 # https://leetcode.com/problems/palindromic-substrings/discuss/1041760/Python-Easy-Solution-Beats-85
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/longest-palindromic-substring.py
@@ -421,7 +421,7 @@ class Solution(object):
 #     }
 # }
 
-# V1'''''
+# V1''''
 # IDEA : DP
 # https://leetcode.com/problems/palindromic-substrings/solution/
 # JAVA
@@ -455,7 +455,7 @@ class Solution(object):
 #     }
 # }
 
-# V1''''''
+# V1'''''
 # IDEA : Expand Around Possible Centers
 # https://leetcode.com/problems/palindromic-substrings/solution/
 # JAVA 

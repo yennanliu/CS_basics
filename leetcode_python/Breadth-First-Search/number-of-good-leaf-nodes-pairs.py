@@ -3,12 +3,8 @@
 """
 
 1530. Number of Good Leaf Nodes Pairs
-Solved
 Medium
-Topics
-premium lock icon
-Companies
-Hint
+
 You are given the root of a binary tree and an integer distance. A pair of two different leaf nodes of a binary tree is said to be good if the length of the shortest path between them is less than or equal to distance.
 
 Return the number of good leaf node pairs in the tree.
@@ -39,7 +35,6 @@ Constraints:
 The number of nodes in the tree is in the range [1, 210].
 1 <= Node.val <= 100
 1 <= distance <= 10
-
 
 """
 
@@ -300,7 +295,7 @@ class Solution(object):
         return res
 
 
-# V1-1
+# V1
 # IDEA: BFS (gemini)
 # time = O(n^2)  # n = number of nodes; BFS from each leaf
 # space = O(n)

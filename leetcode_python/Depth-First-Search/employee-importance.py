@@ -1,6 +1,11 @@
 # V0 
 """
+
+690. Employee Importance
+Medium
+
 # Employee info
+
 class Employee:
     def __init__(self, id, importance, subordinates):
         # It's the unique id of each node.
@@ -10,6 +15,7 @@ class Employee:
         self.importance = importance
         # the id of direct subordinates
         self.subordinates = subordinates
+
 """
 # time = O(n)
 # space = O(n)

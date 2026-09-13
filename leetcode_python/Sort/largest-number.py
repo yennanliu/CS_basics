@@ -41,7 +41,7 @@ class Solution:
         largest = ''.join(largest)
         return '0' if largest[0] == '0' else largest
 
-# V0'
+# V0-1
 # time = O(n log n), n = len(num)
 # space = O(n)
 from functools import cmp_to_key
@@ -56,7 +56,7 @@ class Solution:
     def compare(self, a, b):
         return [1, -1][a + b > b + a]
 
-# V0'
+# V0-2
 # time = O(n log n), n = len(nums)
 # space = O(n)
 class compare(str):
@@ -84,7 +84,7 @@ class Solution:
         largest_num = ''.join(sorted(map(str, nums), key=LargerNumKey))
         return '0' if largest_num[0] == '0' else largest_num
 
-# V1
+# V1'
 # http://bookshadow.com/weblog/2015/01/13/leetcode-largest-number/
 # IDEA : SORT
 # -> GO THROUGH THE nums
@@ -126,7 +126,7 @@ assert s.largestNumber([7,7,7,7,7])=="77777"
 assert s.largestNumber([0,0,0,3,2])=="32000"
 assert s.largestNumber([])=="0"
 
-# V1'
+# V1''
 # https://leetcode.com/problems/largest-number/discuss/53270/Python-simple-solution-in-4-lines
 # time = O(n log n), n = len(nums)
 # space = O(n)
@@ -143,7 +143,7 @@ class Solution:
             return '0'
         return ''.join(nums)
 
-# V1''
+# V1'''
 # https://blog.csdn.net/qian2729/article/details/50638656
 # time = O(n log n), n = len(nums)
 # space = O(n)
@@ -160,7 +160,7 @@ class Solution(object):
 
         return ans or '0'
 
-# V1'''
+# V1''''
 # https://www.jianshu.com/p/960cf375c40a
 # time = O(n^2), n = len(nums) (bubble-sort-like comparison)
 # space = O(n)

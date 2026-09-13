@@ -2,6 +2,7 @@
 
 47. Permutations II
 Medium
+
 8.1K
 137
 Companies
@@ -65,7 +66,7 @@ class Solution(object):
         help(res, cur, _cnt)
         return res
 
-# V0'
+# V0-1
 # IDEA : BACKTRACK + LC 46 -> TLE
 # time = O(n * n!)
 # space = O(n)
@@ -156,7 +157,7 @@ class Solution(object):
                 continue
             self.dfs(nums[:i]+nums[i+1:], path+[nums[i]], res)
 
-# V2
+# V2'
 # time = O(n * n!)
 # space = O(n)
 class Solution(object):

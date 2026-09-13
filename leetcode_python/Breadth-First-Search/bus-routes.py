@@ -32,7 +32,6 @@ sum(routes[i].length) <= 105
 0 <= routes[i][j] < 106
 0 <= source, target < 106
 
-
 """
 
 # V0
@@ -218,7 +217,7 @@ class Solution(object):
                 if y not in seen: seen.add(y), q.append((y, d+1))
         return -1
 
-# V1'''''
+# V1''''
 # IDEA : BFS
 # https://leetcode.com/problems/bus-routes/solution/
 # time = O(R^2 * S), R = number of routes, S = max route length (pairwise route intersection)

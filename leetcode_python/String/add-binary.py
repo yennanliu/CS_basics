@@ -3,7 +3,6 @@
 67. Add Binary
 Easy
 
-
 Given two binary strings a and b, return their sum as a binary string.
 
  
@@ -75,7 +74,7 @@ class Solution:
         
         return ''.join(answer)
 
-# V0'
+# V0-1
 # IDEA : STRING + BINARY
 # time = O(n)
 # space = O(n)
@@ -107,7 +106,7 @@ class Solution(object):
         else: 
             return result[::-1] ### NOTE WE NEED TO REVERSE IT!
 
-# V0''
+# V0-2
 # time = O(n)
 # space = O(n)
 class Solution(object):
@@ -126,7 +125,7 @@ class Solution(object):
             i, j, plus = i-1, j-1, plus//2  # since max of "plus" is 3 in bimary case, so "plus//2" works here
         return res
 
-# V0'''
+# V0-3
 # time = O(n)
 # space = O(n)
 class Solution(object):
@@ -147,7 +146,7 @@ class Solution(object):
             result += str(carry)
         return result[::-1]
 
-# V0''''
+# V0-4
 # IDEA : py default
 # time = O(n)
 # space = O(n)
@@ -155,7 +154,7 @@ class Solution:
     def addBinary(self, a, b) -> str:
         return '{0:b}'.format(int(a, 2) + int(b, 2))
 
-# V0''''
+# V0-5
 # IDEA : Bit Manipulation
 # time = O(n)
 # space = O(n)
@@ -168,7 +167,7 @@ class Solution:
             x, y = answer, carry
         return bin(x)[2:]
 
-# V0'''''
+# V0-6
 # class Solution(object):
 #     # @param a, a string
 #     # @param b, a string
@@ -283,7 +282,7 @@ class Solution(object):
         """
         return bin(int(a, 2) + int(b, 2))[2:]
 
-# V1''''''
+# V1'''''
 # https://blog.csdn.net/coder_orz/article/details/51706532
 # time = O(n)
 # space = O(n)
@@ -303,7 +302,7 @@ class Solution(object):
             i, j, plus = i-1, j-1, plus//2
         return res
 
-# V1'''''''
+# V1''''''
 # https://blog.csdn.net/coder_orz/article/details/51706532
 # IDEA : RECURSION
 # time = O(n^2)  # n recursive calls, each doing O(n) string slicing/concat
@@ -324,7 +323,7 @@ class Solution(object):
         else:
             return self.addBinary(a[:-1], b[:-1]) + '1'
 
-# V1''''''''
+# V1'''''''
 # https://www.jiuzhang.com/solution/add-binary/#tag-highlight-lang-python
 # time = O(n)
 # space = O(n)

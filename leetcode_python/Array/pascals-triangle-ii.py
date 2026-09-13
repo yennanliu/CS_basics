@@ -50,7 +50,7 @@ class Solution(object):
         #print ("--> res = " + str(res))
         return res
 
-# V0
+# V0-1
 # time = O(n^2)
 # space = O(n^2)
 class Solution(object):
@@ -66,7 +66,7 @@ class Solution(object):
             init.append(_tmp)
         return init[-1]
 
-# V0
+# V0-2
 # time = O(n^2)
 # space = O(n^2)
 class Solution(object):
@@ -77,7 +77,7 @@ class Solution(object):
                 res[i][j] = res[i - 1][j - 1] + res[i - 1][j]
         return res[-1]
 
-# V0'
+# V0-3
 # a bit different in index init
 # time = O(n^2)
 # space = O(n^2)
@@ -89,7 +89,7 @@ class Solution(object):
                 res[i][j+1] = res[i - 1][j] + res[i - 1][j+1]
         return res[-1]
 
-# V0''
+# V0-4
 # time = O(n^2)
 # space = O(n)
 class Solution(object):

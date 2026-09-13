@@ -1,6 +1,7 @@
 """
 
 1756. Design Most Recently Used Queue
+Medium
 
 # https://leetcode.ca/all/1756.html
 # https://leetcode.ca/2021-04-08-1756-Design-Most-Recently-Used-Queue/

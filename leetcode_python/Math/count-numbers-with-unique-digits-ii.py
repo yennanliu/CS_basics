@@ -2,6 +2,7 @@
 
 3032. Count Numbers With Unique Digits II
 Easy
+
 🔒 (premium)
 
 Given two positive integers a and b, return the count of numbers having unique digits in the range [a, b] (inclusive).

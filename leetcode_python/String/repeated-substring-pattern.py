@@ -3,8 +3,6 @@
 459. Repeated Substring Pattern
 Easy
 
-
-Share
 Given a string s, check if it can be constructed by taking a substring of it and appending multiple copies of the substring together.
 
  
@@ -54,7 +52,7 @@ class Solution(object):
             i += 1
         return False
 
-# V0'
+# V0-1
 # IDEA : # only have to go through till HALF of s's length, since it's not possbile to find the SubstringPattern if len(s[:x]) > size//2
 # time = O(n^2)
 # space = O(n)
@@ -75,7 +73,7 @@ class Solution(object):
                 return False
         return False
 
-# V0'
+# V0-2
 # IDEA : # only have to go through till HALF of s's length, since it's not possbile to find the SubstringPattern if len(s[:x]) > size//2
 # time = O(n^2)
 # space = O(n)
@@ -95,7 +93,7 @@ class Solution(object):
                 return False
         return False
 
-# V0''
+# V0-3
 # time = O(n^2)
 # space = O(n)
 class Solution(object):
@@ -111,7 +109,7 @@ class Solution(object):
                 return True
         return False
 
-# V0'
+# V0-4
 # time = O(n^2)
 # space = O(n)
 class Solution(object):
@@ -124,7 +122,7 @@ class Solution(object):
                 return True
         return False
 
-# V0''
+# V0-5
 # time = O(n^2)
 # space = O(n)
 class Solution(object):

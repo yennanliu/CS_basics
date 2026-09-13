@@ -73,7 +73,7 @@ class Solution(object):
                 count = max(count, _counter[cum_sum])
         return len(wall) - count
 
-# V0'
+# V0-1
 # IDEA : HASH TABLE + COUNTER UPDATE (looping every element in the list and cumsum and get the max count)
 # time = O(n), n = total number of bricks
 # space = O(m), m = number of distinct widths

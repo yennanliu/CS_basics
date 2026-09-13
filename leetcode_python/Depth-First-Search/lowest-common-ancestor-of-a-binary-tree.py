@@ -121,7 +121,7 @@ class Solution(object):
         # if p, q both in left sub tree or both in right sub tree
         return left if left else right
 
-# V0'
+# V0-1
 # IDEA : RECURSION + POST ORDER TRANSVERSAL
 ### NOTE : we need POST ORDER TRANSVERSAL for this problem
 #          -> left -> right -> root
@@ -141,7 +141,7 @@ class Solution(object):
         # if only find p or only find q -> LCA is the one we found at the moment
         return left if left else right
 
-# V0'
+# V0-2
 # time = O(n)
 # space = O(h)  # h = tree height (worst case O(n))
 class Solution(object):
@@ -161,7 +161,7 @@ class Solution(object):
         if left or right:
             return left or right
 
-# V0''
+# V0-3
 # time = O(n)
 # space = O(h)  # h = tree height (worst case O(n))
 class Solution(object):
@@ -174,7 +174,7 @@ class Solution(object):
             return root
         return left if left else right
 
-# V0'''
+# V0-4
 # time = O(n)
 # space = O(h)  # h = tree height (worst case O(n))
 class Solution:
@@ -207,7 +207,7 @@ class Solution:
         # if there is nothing at left, right sub tree 
         return None
 
-# V0''
+# V0-5
 # DFS : TO FIX 
 # class Solution(object):
 #     def lowestCommonAncestor(self, root, p, q):
@@ -296,7 +296,7 @@ class Solution:
         # if there is nothing at left, right sub tree 
         return None
 
-# V1'
+# V1''
 # https://leetcode.com/articles/lowest-common-ancestor-of-a-binary-tree/
 # IDEA : BFS
 # time = O(n)
@@ -436,7 +436,7 @@ class Solution:
             q = parent[q]
         return q
 
-# V1''''
+# V1'''''
 # IDEA :  Iterative without parent pointers
 # https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/solution/
 # time = O(n)

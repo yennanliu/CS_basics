@@ -55,7 +55,7 @@ class Solution:
 
         return len(cnt.keys()) - removed
 
-# V0
+# V0-1
 # IDEA : Counter
 # time = O(n log n), n = len(arr)
 # space = O(n)
@@ -78,7 +78,7 @@ class Solution:
                 remove_ele.append(key)
         return len(num_counter) - len(remove_ele)
 
-# V0'
+# V0-2
 # IDEA : Counter
 # time = O(n log n), n = len(arr)
 # space = O(n)
@@ -92,7 +92,7 @@ class Solution:
                 remove_ele.append(key)
         return len(num_counter) - len(remove_ele)
 
-# V0''
+# V0-3
 # IDEA : Counter + heapq
 # time = O(n log n), n = len(arr)
 # space = O(n)
@@ -244,7 +244,7 @@ class Solution(object):
 
             return len(h)
 
-# V1'''''''
+# V1''''''
 # IDEA : Counter + heapq
 # https://leetcode.com/problems/least-number-of-unique-integers-after-k-removals/discuss/1542356/Python-MinHeap-Solution
 # time = O(n log n), n = len(arr) (heap of unique keys, worst-case k decrements)

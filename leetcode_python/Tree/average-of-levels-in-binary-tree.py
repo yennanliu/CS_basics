@@ -1,5 +1,8 @@
 """
 
+637. Average of Levels in Binary Tree
+Easy
+
 Given the root of a binary tree, return the average value of the nodes on each level in the form of an array. Answers within 10-5 of the actual answer will be accepted.
  
 
@@ -54,7 +57,7 @@ class Solution(object):
         if root.right:
             self.dfs(root.right, level + 1, res)
 
-# V0'
+# V0-1
 # IDEA : DFS
 # time = O(n)  # n = number of tree nodes
 # space = O(n)  # res holds all node values, plus O(h) recursion stack

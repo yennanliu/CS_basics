@@ -2,6 +2,7 @@
 
 2464. Minimum Subarrays in a Valid Split
 Medium
+
 (premium / locked problem)
 
 You are given an integer array nums.

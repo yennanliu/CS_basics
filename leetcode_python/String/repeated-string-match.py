@@ -52,7 +52,7 @@ class Solution(object):
             x += 1
         return -1
 
-# V0'
+# V0-1
 # time = O(m * (m + n)), m = len(a), n = len(b)
 # space = O(m + n)
 class Solution(object):
@@ -88,7 +88,7 @@ class Solution(object):
         t = -(-len(B) // len(A)) # Equal to ceil(len(b) / len(a))
         return t * (B in A * t) or (t + 1) * (B in A * (t + 1)) or -1
 
-# V1
+# V1'
 # https://leetcode.com/problems/repeated-string-match/discuss/108090/Intuitive-Python-2-liner
 # IDEA : BRUTE FORCE
 # Let n be the answer, the minimum number of times A has to be repeated.
@@ -106,7 +106,7 @@ class Solution(object):
             return times + i
         return -1
 
-# V1
+# V1''
 # http://bookshadow.com/weblog/2017/10/01/leetcode-repeated-string-match/
 # time = O(m * (m + n)), m = len(A), n = len(B)
 # space = O(m + n)
@@ -122,7 +122,7 @@ class Solution(object):
 
 ### Test case : dev 
 
-# V1'
+# V1'''
 # https://leetcode.com/problems/repeated-string-match/discuss/224182/Explanation-on-the-Intuitive-Python-2-liner-solution
 # time = O(m + n), m = len(A), n = len(B)
 # space = O(m + n)
@@ -134,7 +134,7 @@ class Solution:
                 return a
         return -1
 
-# V1'
+# V1''''
 # https://leetcode.com/problems/repeated-string-match/solution/
 # IDEA : BRUTE FORCE
 # time = O(m * (m + n)), m = len(A), n = len(B)
@@ -146,7 +146,7 @@ class Solution(object):
             if B in A * (q+i): return q+i
         return -1
 
-# V1''
+# V1'''''
 # https://leetcode.com/problems/repeated-string-match/solution/
 # IDEA : Rabin-Karp (Rolling Hash)
 # time = O(m + n), m = len(A), n = len(B)

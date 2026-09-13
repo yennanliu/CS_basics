@@ -80,7 +80,7 @@ class Solution(object):
 
 
 
-# V0
+# V0-1
 # IDEA: SET + ONLY loop nums and check existed (GPT)
 class Solution(object):
     def longestConsecutive(self, nums):
@@ -127,7 +127,7 @@ class Solution(object):
 
 
 
-# V0
+# V0-2
 # IDEA: SET + ONLY loop nums and check existed (GEMINI)
 """
 NOTE !!!
@@ -175,7 +175,7 @@ class Solution(object):
                 
         return max_len
 
-# V0-0-1
+# V0-3
 # IDEA: SET + ONLY loop nums and check existed (GEMINI)
 class Solution(object):
     def longestConsecutive(self, nums):
@@ -216,7 +216,7 @@ class Solution(object):
 
         return max_len
 
-# V0-1
+# V0-4
 # IDEA: SET + ONLY loop nums and check existed (GPT)
 # time = O(n)
 # space = O(n)
@@ -244,7 +244,7 @@ class Solution(object):
 
 
 
-# V0
+# V0-5
 # time = O(N log N)
 # space = O(N)
 class Solution(object):
@@ -277,7 +277,7 @@ class Solution(object):
         return max_len
 
 
-# V0-0-1
+# V0-6
 # IDEA: SORT + SET + SLIDE WINDOW
 # time = O(N log N)
 # space = O(N)
@@ -311,7 +311,7 @@ class Solution(object):
 
         return max_len
 
-# V0-1
+# V0-7
 # time = O(N)  # NOTE !!!
 # space = O(N)
 class Solution(object):
@@ -331,7 +331,7 @@ class Solution(object):
         return longest
 
 
-# V0
+# V0-8
 # IDEA : sliding window
 # time = O(n log n)
 # space = O(n)
@@ -375,7 +375,7 @@ class Solution(object):
         # edge case : if res == 0, means no continous array (with len > 1), so we return 1 (a single alphabet can be recognized as a "continous assay", and its len = 1)
         return res if res > 1 else 1
 
-# V0'
+# V0-9
 # IDEA : SORTING + 2 POINTERS
 # time = O(n log n)
 # space = O(1)
@@ -404,7 +404,7 @@ class Solution(object):
         # check max len again
         return max(max_len, cur_len)
 
-# V0'
+# V0-10
 # IDEA : SORTING + 2 POINTERS
 # time = O(n log n)
 # space = O(1)
@@ -428,7 +428,7 @@ class Solution:
 
         return max(longest_streak, current_streak)
 
-# V0'
+# V0-11
 # IDEA : HASHSET
 # time = O(n)
 # space = O(n)

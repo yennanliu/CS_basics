@@ -96,7 +96,7 @@ class UF(object):
         return self.cnt
 
 
-# V0
+# V0-1
 # BFS
 # time = O(n^2)
 # space = O(n^2)
@@ -149,7 +149,7 @@ class Solution(object):
                 answer += 1       
         return answer
 
-# V0'
+# V0-2
 # IDEA : DFS ITERATIVE
 # time = O(n^2)
 # space = O(n)
@@ -171,7 +171,7 @@ class Solution(object):
                             stack.append(j)
         return res
 
-# V0''
+# V0-3
 # IDEA : UNION FIND
 # time = O(n^2 * α(n))
 # space = O(n)
@@ -220,7 +220,7 @@ class Solution:
         
         return uf.get_count()
 
-# V0
+# V0-4
 # BFS : TODO : fix this
 # class Solution(object):
 #     def findCircleNum(self, isConnected):
@@ -336,7 +336,7 @@ class Solution(object):
             
         return answer
 
-# V1''''
+# V1'''
 # https://leetcode.com/problems/number-of-provinces/discuss/269818/Union-Find-Python-solution
 # IDEA : UNION FIND + ROUTE COMPRESSION
 # time = O(n^2 * α(n))
@@ -386,7 +386,7 @@ class Solution:
         
         return uf.get_count()
 
-# V1'''''
+# V1''''
 # IDEA : BFS
 # https://leetcode.com/problems/number-of-provinces/discuss/1364979/Python-or-BFS
 # time = O(n^2)
@@ -416,7 +416,7 @@ class Solution(object):
 
             return res
 
-# V1''''''
+# V1'''''
 # IDEA : DFS
 # https://leetcode.com/problems/number-of-provinces/discuss/101349/Python-Simple-Explanation
 # time = O(n^2)
@@ -438,7 +438,7 @@ class Solution(object):
                 ans += 1
         return ans
 
-# V1''''
+# V1''''''
 # IDEA : DFS
 # JAVA
 # public class Solution {
@@ -464,7 +464,7 @@ class Solution(object):
 # }
 
 
-# V1''''
+# V1'''''''
 # IDEA : BFS
 # JAVA
 # public class Solution {
@@ -490,7 +490,7 @@ class Solution(object):
 #     }
 # }
 
-# V1''''
+# V1''''''''
 # IDEA : UNION FIND
 # JAVA
 # public class Solution {

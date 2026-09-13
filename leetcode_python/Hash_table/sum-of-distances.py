@@ -1,12 +1,8 @@
 """
 
 2615. Sum of Distances
-Solved
 Medium
-Topics
-premium lock icon
-Companies
-Hint
+
 You are given a 0-indexed integer array nums.
 
 There exists an array arr of length nums.length, where arr[i] is the sum of |i - j| over all j such that nums[j] == nums[i] and j != i. If there is no such j, set arr[i] to be 0.
@@ -40,7 +36,6 @@ Constraints:
  
 
 Note: This question is the same as 2121: Intervals Between Identical Elements.
-
 
 """
 
@@ -171,7 +166,7 @@ class Solution(object):
 
 
 
-# V0-0-1
+# V0-1
 # IDEA: PREFIX SUM + LEFT, RIGHT dist (GPT)
 from collections import defaultdict
 
@@ -247,7 +242,7 @@ class Solution(object):
         return res
 
 
-# V0-0-2
+# V0-2
 # IDEA: PREFIX SUM + LEFT, RIGHT dist
 from collections import defaultdict
 
@@ -293,7 +288,7 @@ class Solution(object):
         return res
 
 
-# V1-1
+# V1
 # IDEA: PREFIX SUM (gpt)
 """
 CORE IDEA:
@@ -409,7 +404,7 @@ class Solution(object):
         return res
 
 
-# V1-2
+# V1'
 # IDEA: PREFIX SUM (GEMINI)
 from collections import defaultdict
 

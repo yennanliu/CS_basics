@@ -1,8 +1,11 @@
-# V0  : dev 
+# V0 : dev
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/83027364
 """
+
+368. Largest Divisible Subset
+Medium
 
 DP def
     SORT first: then a <= b with b % a == 0 makes divisibility TRANSITIVE

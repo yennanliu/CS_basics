@@ -90,7 +90,7 @@ class Solution(object):
         return "".join(st)
 
 
-# V0'
+# V0-2
 # IDEA : TWO POINTERS
 #      -> pointers : end, c
 # time = O(n)

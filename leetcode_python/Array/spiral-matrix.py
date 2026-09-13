@@ -26,7 +26,6 @@ n == matrix[i].length
 1 <= m, n <= 10
 -100 <= matrix[i][j] <= 100
 
-
 """
 
 # V0
@@ -90,7 +89,7 @@ class Solution(object):
             
         return res
 
-# V0
+# V0-1
 # IDEA : 4 cases : right, down, left, up
 #      -> NOTE : boundary condition
 # time = O(m * n)
@@ -127,7 +126,7 @@ class Solution(object):
             x1 -= 1
         return res
 
-# V0'
+# V0-2
 # time = O(m * n)
 # space = O(1)
 class Solution(object):
@@ -157,7 +156,7 @@ class Solution(object):
 
         return result
 
-# V0''
+# V0-3
 # time = O(m * n)
 # space = O(1)
 class Solution:
@@ -302,7 +301,7 @@ assert s.spiralOrder([[0]]) == [0]
 assert s.spiralOrder([[1,2,3]]) == [1,2,3]
 assert s.spiralOrder([[1,2,3],[4,5,6]]) == [1,2,3,6,5,4]
 
-# V1'
+# V1''
 # IDEA : SIMULATION
 # time = O(N)
 # space = O(N)
@@ -327,7 +326,7 @@ class Solution(object):
                 r, c = r + dr[di], c + dc[di]
         return ans
 
-# V1''
+# V1'''
 # IDEA : Layer-by-Layer
 # time = O(N)
 # space = O(1)
@@ -358,7 +357,7 @@ class Solution(object):
             c1 += 1; c2 -= 1
         return ans
 
-# V1'''
+# V1''''
 # https://www.cnblogs.com/zuoyuan/p/3769829.html
 # https://blog.csdn.net/qian2729/article/details/50539281
 # IDEA : STATUS + POINTER 

@@ -20,11 +20,16 @@
 # https://www.jiuzhang.com/solution/plus-one-linked-list/#tag-highlight-lang-python
 
 """
+
+369. Plus One Linked List
+Medium
+
 Definition of ListNode
 class ListNode(object):
     def __init__(self, val, next=None):
         self.val = val
         self.next = next
+
 """
 
 # time = O(n)

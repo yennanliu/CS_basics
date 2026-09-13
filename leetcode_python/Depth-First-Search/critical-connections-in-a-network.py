@@ -106,7 +106,7 @@ class Solution:
             
             self.conn_dict[(min(u, v), max(u, v))] = 1
 
-# V1
+# V1'
 # IDEA : DFS
 # IDEA : Inspired by tarjan, but simplified to just do what is requested in a problem, i.e. find the critical paths (and not strongly connected components):
 # https://leetcode.com/problems/critical-connections-in-a-network/discuss/1082197/Python-DFS
@@ -144,7 +144,7 @@ class Solution(object):
         visit(0)
         return results
 
-# V1'
+# V1''
 # IDEA : GRAPH
 # https://leetcode.com/problems/critical-connections-in-a-network/discuss/571964/Python-Solution
 # time = O(V + E)  # V = n servers, E = len(connections); Tarjan-style DFS
@@ -189,7 +189,7 @@ class Solution(object):
 
             return bridges
 
-# V1''
+# V1'''
 # IDEA : tarjans algorithm
 # https://leetcode.com/problems/critical-connections-in-a-network/discuss/832441/Python-Tarjans-Implementation
 # time = O(V + E)  # V = n servers, E = len(edges); Tarjan's bridge-finding DFS

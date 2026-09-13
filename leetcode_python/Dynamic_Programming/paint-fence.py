@@ -4,6 +4,8 @@
 """
 
 276. Paint Fence
+Medium
+
 There is a fence with n posts, each post can be painted with one of the k colors.
 
 You have to paint all the posts such that no more than two adjacent fence posts have the same color.
@@ -35,8 +37,6 @@ Company:
 Google
 Problem Solution
 276-Paint-Fence
-
-
 
 """
 
@@ -174,7 +174,7 @@ class Solution:
         return dp[n]
 
 
-# V0
+# V0-1
 """
 DP def:
 
@@ -234,7 +234,7 @@ class Solution:
         return sum(dp[-1])
 
 
-# V0-1
+# V0-2
 # IDEA: DP (GPT)
 # TODO: validate
 class Solution:
@@ -324,7 +324,7 @@ class Solution(object):
         return same + diff
 
 
-# V2-1
+# V2
 # https://leetcode.ca/2016-09-01-276-Paint-Fence/
 """
 
@@ -369,7 +369,7 @@ class Solution:
 
 
 
-# V2-2
+# V2'
 # https://leetcode.ca/2016-09-01-276-Paint-Fence/
 """
 
@@ -482,7 +482,7 @@ class Solution(object):
 # V4
 # time = O(n)
 # space = O(1)
-# V2
+# V2''
 # DP solution with rolling window.
 """
 

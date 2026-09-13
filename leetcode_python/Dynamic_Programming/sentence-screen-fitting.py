@@ -1,7 +1,6 @@
 """
 
 418. Sentence Screen Fitting
-
 Medium
 
 Given a rows x cols screen and a sentence represented as a list of strings, return the number of times the given sentence can be fitted on the screen.

@@ -147,7 +147,7 @@ class Solution(object):
         return dp[n]
 
 
-# V0-0-1
+# V0-1
 """
 
 DP def
@@ -220,7 +220,7 @@ class Solution:
         return res
 
 
-# V0-1
+# V0-2
 # IDEA: 1D DP (dp + one_so_far) (gpt)
 class Solution(object):
     def minFlipsMonoIncr(self, s):
@@ -264,7 +264,7 @@ class Solution(object):
         return dp[n]
 
 
-# V0-2
+# V0-3
 # IDEA: 1D DP (gpt)
 class Solution(object):
     def minFlipsMonoIncr(self, s):
@@ -297,7 +297,7 @@ class Solution(object):
         return dp
 
 
-# V0'
+# V0-4
 # IDEA : PREFIX SUM
 """
 
@@ -340,7 +340,7 @@ class Solution(object):
             res = min(res, P[j] + len(S)-j-(P[-1]-P[j]))
         return res
 
-# V0''
+# V0-5
 """
 
 DP def
@@ -550,7 +550,7 @@ class Solution:
             res = min(res, cur)
         return res
 
-# V1'''''
+# V1''''
 # https://leetcode.com/problems/flip-string-to-monotone-increasing/discuss/184080/Python-3-liner
 """
 
@@ -587,7 +587,7 @@ class Solution:
         for c in s: res, cur = c == "1" and (res, cur + 1) or (min(res, cur - 1), cur - 1)
         return res
 
-# V1''''''
+# V1'''''
 # https://www.jiuzhang.com/solution/flip-string-to-monotone-increasing/#tag-highlight-lang-python
 """
 

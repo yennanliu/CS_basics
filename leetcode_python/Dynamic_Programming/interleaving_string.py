@@ -1,10 +1,8 @@
 """
+
 97. Interleaving String
-Solved
 Medium
-Topics
-premium lock icon
-Companies
+
 Given strings s1, s2, and s3, find whether s3 is formed by an interleaving of s1 and s2.
 
 An interleaving of two strings s and t is a configuration where s and t are divided into n and m substrings respectively, such that:
@@ -63,7 +61,7 @@ class Solution(object):
 
 
 
-# V0
+# V0-1
 # IDEA 1) 2D DP
 """
 DP def:
@@ -168,7 +166,7 @@ class Solution(object):
         return dp[m][n]
 
 
-# V0-1
+# V0-2
 # IDEA 1) 2D DP
 """
 

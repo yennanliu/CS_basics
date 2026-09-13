@@ -68,7 +68,7 @@ class Vector2D:
         # If the next position is a valid index of nums, return True.
         return self.position + 1 < len(self.nums)
 
-# V0'
+# V0-1
 # IDEA : ARRAY OP
 # time = O(1)
 # space = O(1)
@@ -174,7 +174,7 @@ class Vector2D:
         # we've stopped at an integer and so there's an integer left.
         return self.outer < len(self.vector)
 
-# V1'
+# V1''
 # https://www.jiuzhang.com/solution/flatten-2d-vector/#tag-highlight-lang-python
 # time = O(1)
 # space = O(1)
@@ -200,7 +200,7 @@ class Vector2D(object):
             self.row, self.col = self.row + 1, 0
         return self.row < len(self.vec2d)
 
-# V1''
+# V1'''
 # https://www.jiuzhang.com/solution/flatten-2d-vector/#tag-highlight-lang-python
 # time = O(1)
 # space = O(1)
@@ -237,7 +237,7 @@ class Vector2D(object):
             
         return False
 
-# V1'''
+# V1''''
 # https://github.com/criszhou/LeetCode-Python/blob/master/251.%20Flatten%202D%20Vector.py
 # time = O(1)
 # space = O(1)
@@ -277,7 +277,7 @@ class Vector2D(object):
         """
         return self.i1 < len(self.vec2d)
 
-# V1''''
+# V1'''''
 # http://www.voidcn.com/article/p-qxkyrjri-zo.html
 # time = O(1)
 # space = O(1)

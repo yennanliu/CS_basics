@@ -44,7 +44,6 @@ orders[i].length == 3
 customerNamei and foodItemi consist of lowercase and uppercase English letters and the space character.
 tableNumberi is a valid integer between 1 and 500.
 
-
 """
 
 # V0

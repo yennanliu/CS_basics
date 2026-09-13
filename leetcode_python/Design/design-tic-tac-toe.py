@@ -113,7 +113,7 @@ class TicTacToe:
         else:
             return 0
 
-# V0'
+# V0-1
 # https://github.com/yennanliu/utility_Python/blob/master/game/tic_tac_toe.py
 class TicTacToe:
 
@@ -165,7 +165,7 @@ class TicTacToe:
 # t_game = TicTacToe()
 # t_game.operate_game()
 
-# V0''
+# V0-2
 # TODO : validate/fix below
 class TicTacToe(object):
 
@@ -273,7 +273,7 @@ class TicTacToe:
             return 0
 
 
-# V1
+# V1'
 # IDEA : Optimized Brute Force
 # https://leetcode.com/problems/design-tic-tac-toe/solution/
 # JAVA
@@ -338,7 +338,7 @@ class TicTacToe:
 # }
 
 
-# V1
+# V1''
 # IDEA : Optimised Approach
 # https://leetcode.com/problems/design-tic-tac-toe/solution/
 # public class TicTacToe {
@@ -379,7 +379,7 @@ class TicTacToe:
 # }
 
 
-# V1''
+# V1'''
 # https://blog.csdn.net/danspace1/article/details/86616981
 class TicTacToe:
 
@@ -428,7 +428,7 @@ class TicTacToe:
             return 2
         return 0
 
-# V1'
+# V1''''
 # https://www.jiuzhang.com/solution/design-tic-tac-toe/
 # JAVA
 # public class TicTacToe {

@@ -57,7 +57,7 @@ class Solution(object):
                 r = mid - 1
         return -1
 
-# V0'
+# V0-1
 # IDEA : binary search
 # time = O(log n)
 # space = O(1)

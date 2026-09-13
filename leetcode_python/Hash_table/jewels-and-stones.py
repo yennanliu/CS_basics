@@ -35,7 +35,7 @@ class Solution(object):
     def numJewelsInStones(self, J, S):
         return len([ i for i in S if i in J])
 
-# V0'
+# V0-1
 # time = O(n + m)  # n = len(S), m = len(J)
 # space = O(m)
 class Solution(object):

@@ -2,6 +2,7 @@
 
 2237. Count Positions on Street With Required Brightness
 Medium
+
 (premium / locked problem)
 
 You are given an integer n. A perfectly straight street is represented by a number line ranging from 0 to n - 1. You are given a 2D integer array lights representing the street lamp(s) on the street. Each lights[i] = [position_i, range_i] indicates that there is a street lamp at position position_i that lights up the area from [max(0, position_i - range_i), min(n - 1, position_i + range_i)] (inclusive).

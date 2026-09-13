@@ -1,10 +1,15 @@
 # VO 
 
+# V0
+
 # V1 
 # http://bookshadow.com/weblog/2016/07/16/leetcode-guess-number-higher-or-lower-ii/
 # DP state func :
 # dp[i][j] = min(k + max(dp[i][k - 1], dp[k + 1][j]))
 """
+
+375. Guess Number Higher or Lower II
+Medium
 
 DP def
     (INTERVAL DP - minimax: we choose the guess, the adversary chooses the

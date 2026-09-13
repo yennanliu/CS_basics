@@ -68,7 +68,7 @@ class Solution(object):
         return max_val
 
 
-# V0
+# V0-1
 # IDEA : MATH
 # first, we represent the F(1) op as below:
 #
@@ -110,7 +110,7 @@ class Solution(object):
         return ans
 
 
-# V0-1
+# V0-2
 # IDEA : MATH (GEMINI)
 """
 NOTE !!!
@@ -188,7 +188,7 @@ class Solution(object):
         return max_sum
 
 
-# V0-2
+# V0-3
 # IDEA : MATH (GPT)
 class Solution(object):
     def maxRotateFunction(self, nums):
@@ -209,7 +209,7 @@ class Solution(object):
 
         return ans
 
-# V0'
+# V0-4
 # IDEA : BRUTE FORCE (TLE)
 # time = O(n^2)
 # space = O(1)

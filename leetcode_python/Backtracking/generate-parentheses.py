@@ -61,7 +61,7 @@ class Solution(object):
             tmp.pop()
 
 
-# V0-0-1
+# V0-1
 # IDEA : bracktrack + LEFT, RIGHT COUNT (LC 020)
 # time = O(4^n / sqrt(n))
 # space = O(4^n / sqrt(n))
@@ -92,7 +92,7 @@ class Solution(object):
         return res
 
 
-# V0-1
+# V0-2
 # IDEA : bracktrack + Valid Parentheses (LC 020)
 # time = O(4^n / sqrt(n))
 # space = O(4^n / sqrt(n))
@@ -141,7 +141,7 @@ class Solution(object):
         return res
 
 
-# V0-2
+# V0-3
 # IDEA: # IDEA: BACKTRACKING
 class Solution(object):
     def generateParenthesis(self, n):
@@ -201,7 +201,7 @@ class Solution(object):
         return balance == 0
 
 
-# V0'
+# V0-4
 # https://blog.csdn.net/fuxuemingzhu/article/details/79362373
 # IDEA: BACKTRACKING + DFS 
 # NOTE : KEEP DFS WHEN MEAT 2 CONDTIONS:
@@ -318,7 +318,7 @@ class Solution(object):
                     ans.append('({}){}'.format(left, right))
         return ans
 
-# V1'''''
+# V1''''
 # https://blog.csdn.net/nxhyd/article/details/72514987
 # time = O(4^n / sqrt(n))
 # space = O(4^n / sqrt(n))
@@ -336,7 +336,7 @@ class Solution(object):
                 for q in generate(p + ')', left, right - 1) : yield q
         return list(generate('', n, n))
 
-# V1''''''
+# V1'''''
 # https://blog.csdn.net/nxhyd/article/details/72514987
 # time = O(4^n / sqrt(n))
 # space = O(4^n / sqrt(n))

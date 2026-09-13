@@ -1,6 +1,7 @@
 """
 
-Leetcode 285: Inorder Successor in BST
+285. Inorder Successor in BST
+Medium
 
 Question
 
@@ -56,7 +57,7 @@ class Solution(object):
         r.append(root)
         self.dfs(root.right)
         
-# V0'
+# V0-1
 # IDEA : DFS
 # time = O(n)
 # space = O(n)
@@ -75,7 +76,7 @@ class Solution(object):
             if l[i] == p:
                 return l[i+1] if i+1 < len(l) else None
 
-# V0''
+# V0-2
 # IDEA : `bfs` like approach
 # time = O(h)  # h = tree height
 # space = O(1)

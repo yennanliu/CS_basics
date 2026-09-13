@@ -49,7 +49,7 @@ class Solution(object):
                 return False
         return True
 
-# V0'
+# V0-1
 # IDEA : a local inversion MUST a global inversion as well,
 #     -> so if we want  (# of local inversion) = (# of global inversion)
 #     -> ALL global inversion MUST be local inversion as well
@@ -100,7 +100,7 @@ class Solution(object):
                 return False
         return True
 
-# V1'''
+# V1''
 # https://leetcode.com/problems/global-and-local-inversions/discuss/635114/Python-intuitive-approach
 # time = O(n)
 # space = O(1)
@@ -128,7 +128,7 @@ class Solution(object):
                 if mx > A[i+2]: return False
             return True
 
-# V1'''
+# V1'''''
 # http://bookshadow.com/weblog/2018/01/28/leetcode-global-and-local-inversions/
 # time = O(n)
 # space = O(1)

@@ -108,7 +108,7 @@ class Solution(object):
         return max_cnt
 
 
-# V0
+# V0-3
 # IDEA: GREEDY (GEMINI)
 # time = O(n log n)
 # space = O(1)
@@ -140,7 +140,7 @@ class Solution(object):
         return total_units
 
 
-# V0-1
+# V0-4
 # IDEA: GREEDY (GPT)
 # time = O(n log n)
 # space = O(1)
@@ -164,7 +164,7 @@ class Solution:
         return total_units
 
 
-# V0
+# V0-5
 # IDEA : GREEDY + sorting
 # time = O(n log n)
 # space = O(1)
@@ -212,7 +212,7 @@ class Solution(object):
                 break        
         return res
 
-# V1
+# V1'
 # IDEA : GREEDY
 # https://leetcode.com/problems/maximum-units-on-a-truck/discuss/1045318/Python-solution
 # time = O(n log n)
@@ -232,7 +232,7 @@ class Solution(object):
         result += truckSize * boxTypes[i][1]
         return result
 
-# V1'
+# V1''
 # https://leetcode.com/problems/maximum-units-on-a-truck/discuss/1000278/Python-sort.-Short-and-fast-(100)
 # time = O(n log n)
 # space = O(1)

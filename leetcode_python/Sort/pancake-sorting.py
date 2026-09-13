@@ -83,7 +83,7 @@ class Solution(object):
         print ("arr = " + str(arr))
         return res
 
-# V0'
+# V0-1
 # IDEA : pancake_sort.py
 # https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/pancake_sort.py#L44
 # time = O(n^2)
@@ -160,7 +160,7 @@ class Solution:
         #print ("res = " + str(res))
         return res
 
-# V1
+# V1'
 # IDEA : RECURSIVE
 # https://leetcode.com/problems/pancake-sorting/discuss/553116/My-python-solution
 # https://leetcode.com/problems/pancake-sorting/discuss/274921/PythonDetailed-Explanation-for-This-Problem
@@ -181,7 +181,7 @@ class Solution:
             
         return result
 
-# V1'
+# V1''
 # https://leetcode.com/problems/pancake-sorting/discuss/274921/PythonDetailed-Explanation-for-This-Problem
 # time = O(n^2)
 # space = O(n)
@@ -207,7 +207,7 @@ class Solution:
             res.append(n-i)
         return res
 
-# V1''
+# V1'''
 # https://leetcode.com/problems/pancake-sorting/discuss/767576/python-solution
 # time = O(n^2)
 # space = O(n)

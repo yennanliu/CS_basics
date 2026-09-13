@@ -2,6 +2,7 @@
 
 2403. Minimum Time to Kill All Monsters
 Hard
+
 (premium / locked problem)
 
 You are given an integer array power where power[i] is the minimum required energy to defeat the ith monster.

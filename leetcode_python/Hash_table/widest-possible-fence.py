@@ -1,11 +1,8 @@
 """
 
 4007. Widest Possible Fence
-Solved
-Medium
-premium lock icon
-Companies
-Hint
+Hard
+
 You are given an integer array planks, where planks[i] represents the height of the ith wooden plank. Each plank has a width of 1 unit.
 
 You want to build a fence consisting of planks that all have the same height.

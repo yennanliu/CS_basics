@@ -1,12 +1,8 @@
 """
 
-
 662. Maximum Width of Binary Tree
-Solved
 Medium
-Topics
-premium lock icon
-Companies
+
 Given the root of a binary tree, return the maximum width of the given tree.
 
 The maximum width of a tree is the maximum width among all levels.
@@ -41,7 +37,6 @@ Constraints:
 
 The number of nodes in the tree is in the range [1, 3000].
 -100 <= Node.val <= 100
-
 
 """
 
@@ -101,7 +96,7 @@ class Solution(object):
         return max_width
 
 
-# V0-0-1
+# V0-1
 # IDEA: BST + DFS  + layer, idx (GPT)
 # https://yennj12.js.org/CS_basics/cheatsheets/binary_tree.html#complete-tree-to-array-representation
 """
@@ -159,7 +154,7 @@ class Solution(object):
 
 
 
-# V0-1
+# V0-2
 # IDEA: HASHMAP + DFS + layer, idx (GPT)
 # IDEA : GIVEN index = idx -> its left tree index = idx*2 ; its right tree index = idx*2 + 1
 # https://yennj12.js.org/CS_basics/cheatsheets/binary_tree.html#complete-tree-to-array-representation
@@ -226,7 +221,7 @@ class Solution(object):
 
 
 
-# V0
+# V0-3
 # IDEA: BST + DFS + layer, idx (GPT)
 # IDEA : GIVEN index = idx -> its left tree index = idx*2 ; its right tree index = idx*2 + 1
 # https://yennj12.js.org/CS_basics/cheatsheets/binary_tree.html#complete-tree-to-array-representation
@@ -281,7 +276,7 @@ class Solution(object):
         self.helper(node.right, level + 1, 2 * idx + 1)
 
 
-# V0
+# V0-4
 # IDEA : defaultdict + DFS
 # IDEA : GIVEN index = idx -> its left tree index = idx*2 ; its right tree index = idx*2 + 1
 # time = O(n)
@@ -301,7 +296,7 @@ class Solution:
         return max(v[-1] - v[0] + 1 for _, v in d.items())
 
 
-# V0-1
+# V0-5
 # IDEA: BST + DFS (GEMINI)
 # time = O(n)
 # space = O(n)
@@ -341,7 +336,7 @@ class Solution(object):
         self.helper(node.right, level + 1, 2 * idx + 1)
 
 
-# V0'
+# V0-6
 # IDEA : BFS
 # IDEA : GIVEN index = idx -> its left tree index = idx*2 ; its right tree index = idx*2 + 1
 #        -> SO GO THROUGH ALL LAYERS IN THE TREE, CALCULATE THEIR WIDTH, AND RETRUN THE MAX WIDTH WHICH IS THE NEEDED RESPONSE
@@ -370,7 +365,7 @@ class Solution(object):
         #print ("_res = " + str(_res))
         return max(_res)
 
-# V0''
+# V0-7
 # IDEA : DFS 
 #-> ### NEED TO RETURN THE MAX OF WIDTH IN EACH LAYER
 # Explanation
@@ -410,7 +405,7 @@ class Solution(object):
         dfs(root)
         return self.ans
 
-# V0'''
+# V0-8
 # IDEA : DFS 
 # time = O(n)
 # space = O(h)
@@ -519,7 +514,7 @@ class Solution(object):
             q = q0
         return ans
 
-# V1''
+# V1'''
 # https://leetcode.com/problems/maximum-width-of-binary-tree/solution/
 # IDEA : BFS 
 # Time Complexity: O(N)
@@ -540,7 +535,7 @@ class Solution(object):
                 ans = max(pos - left + 1, ans)
         return ans
 
-# V1'''
+# V1''''
 # https://leetcode.com/problems/maximum-width-of-binary-tree/solution/
 # IDEA : DFS 
 # Time Complexity: O(N)

@@ -61,7 +61,7 @@ class Solution:
         answer = int(s) + k
         return  list("".join(str(answer)))
 
-# V1
+# V1'
 # IDEA : int adding
 # https://leetcode.com/problems/add-to-array-form-of-integer/discuss/473808/python
 # time = O(n)
@@ -84,7 +84,7 @@ class Solution:
             carry = v//10
         return [carry] + A if carry else A
 
-# V1
+# V1''
 # IDEA :  Schoolbook Addition
 # https://leetcode.com/problems/add-to-array-form-of-integer/solution/
 # time = O(n)
@@ -99,7 +99,7 @@ class Solution(object):
             A = map(int, str(carry)) + A
         return A
 
-# V1
+# V1'''
 # https://leetcode.com/problems/add-to-array-form-of-integer/discuss/874679/Python-one-liner
 # time = O(n)
 # space = O(n)

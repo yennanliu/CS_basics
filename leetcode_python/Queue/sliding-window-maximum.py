@@ -155,7 +155,7 @@ class Solution:
         return ans
 
 
-# V0-0-1
+# V0-1
 # IDEA : DEQUE + monotonic queue
 # time = O(n)  # each index pushed/popped from deque at most once
 # space = O(k)  # deque holds at most k indices
@@ -324,7 +324,7 @@ class Solution:
             output.append(nums[deq[0]])
         return output
 
-# V1''''''
+# V1'''''
 # IDEA : Dynamic programming
 # https://leetcode.com/problems/sliding-window-maximum/solution/
 # time = O(n)  # single pass to build left/right max arrays, then O(1) per window
@@ -362,7 +362,7 @@ class Solution:
             
         return output
 
-# V1'''''''
+# V1''''''
 # IDEA : DEQUE
 # https://leetcode.com/problems/sliding-window-maximum/discuss/823635/Python-Intuitive-Solution
 # time = O(n)  # each index pushed/popped from deque at most once
@@ -391,7 +391,7 @@ class Solution:
         
         return ret
 
-# V1''''''''''''
+# V1'''''''
 # IDEA : monoclic queue
 # https://leetcode.com/problems/sliding-window-maximum/discuss/952539/Python-mono-queue
 # time = O(n)  # each index pushed/popped from deque at most once
@@ -411,7 +411,7 @@ class Solution:
                 ans.append(mono[0][1])
         return ans
 
-# V1'''''''''''
+# V1''''''''
 # https://blog.csdn.net/PKU_Jade/article/details/77934644
 # IDEA : DEQUE
 # time = O(n)  # each index pushed/popped from deque at most once
@@ -453,7 +453,7 @@ class Solution(object):
 
         return ans
 
-# V1''''''''''''
+# V1'''''''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/100828798
 # IDEA : DEQUE
 # time = O(n)  # each index pushed/popped from deque at most once

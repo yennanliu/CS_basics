@@ -37,7 +37,7 @@ matrix[i][j] is '0' or '1'.
 # IDEA : BRUTE FOECE
 # https://leetcode.com/problems/maximal-rectangle/solution/
 
-# V1
+# V1'
 # IDEA : Dynamic Programming - Better Brute Force on Histograms
 # https://leetcode.com/problems/maximal-rectangle/solution/
 # time = O(rows^2 * cols)  # for each cell, scan upward up to `rows` times
@@ -60,7 +60,7 @@ class Solution:
                     maxarea = max(maxarea, width * (i-k+1))
         return maxarea
 
-# V1
+# V1''
 # IDEA : Using Histograms - Stack
 # https://leetcode.com/problems/maximal-rectangle/solution/
 # time = O(rows * cols)  # each row builds a histogram in O(cols), then O(cols) stack pass
@@ -101,7 +101,7 @@ class Solution:
             maxarea = max(maxarea, self.leetcode84(dp))
         return maxarea
 
-# V1
+# V1'''
 # IDEA : Dynamic Programming - Maximum Height at Each Point
 # https://leetcode.com/problems/maximal-rectangle/solution/
 # time = O(rows * cols)

@@ -3,6 +3,8 @@
 """
 
 758. Bold Words in String
+Medium
+
 Given a set of keywords words and a string S, make all appearances of all keywords in S bold. Any letters between <b> and </b> tags become bold.
 
 The returned string should use the least number of tags possible, and of course the tags should form a valid combination.
@@ -25,6 +27,7 @@ Problem Solution
 758-Bold-Words-in-String
 All Problems:
 Link to All Problems
+
 """
 
 # V0

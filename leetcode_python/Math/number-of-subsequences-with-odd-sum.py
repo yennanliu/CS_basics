@@ -2,6 +2,7 @@
 
 3247. Number of Subsequences with Odd Sum
 Medium
+
 🔒 (premium)
 
 Given an array nums, return the number of subsequences with an odd sum.

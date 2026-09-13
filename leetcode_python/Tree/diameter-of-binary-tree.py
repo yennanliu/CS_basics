@@ -28,7 +28,6 @@ Constraints:
 The number of nodes in the tree is in the range [1, 104].
 -100 <= Node.val <= 100
 
-
 """
 
 """
@@ -112,7 +111,7 @@ class Solution(object):
         return max(_left, _right) + 1
 
 
-# V0-0-1
+# V0-1
 
 class Solution(object):
     def diameterOfBinaryTree(self, root):
@@ -149,7 +148,7 @@ class Solution(object):
         return max(_left, _right) + 1
 
 
-# V0-1
+# V0-2
 # IDEA: DFS (POST ORDER)
 # time = O(n)
 # space = O(h)  # h = tree height, worst O(n)
@@ -183,7 +182,7 @@ class Solution(object):
         return max(_left, _right) + 1
 
 
-# V0-2
+# V0-3
 # IDEA: DFS (POST ORDER)
 # time = O(n)
 # space = O(h)  # h = tree height, worst O(n)
@@ -218,7 +217,7 @@ class Solution(object):
         return max(left_height, right_height) + 1
 
 
-# V0
+# V0-4
 # time = O(n)
 # space = O(h)  # h = tree height, worst O(n)
 class Solution:

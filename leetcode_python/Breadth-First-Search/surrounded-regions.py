@@ -3,7 +3,6 @@
 130. Surrounded Regions
 Medium
 
-
 Given an m x n matrix board containing 'X' and 'O', capture all regions that are 4-directionally surrounded by 'X'.
 
 A region is captured by flipping all 'O's into 'X's in that surrounded region.
@@ -201,7 +200,7 @@ class Solution(object):
             self.updater(board, x_, y_, old_state, new_state)
 
 
-# V0
+# V0-2
 # IDEA : BFS
 # time = O(m*n), m,n = board dims
 # space = O(m*n), queue holds up to O(m*n) cells
@@ -260,7 +259,7 @@ class Solution(object):
                     board[i][j] = "X"
         return board
 
-# V0'
+# V0-3
 # IDEA : BFS
 # time = O(m*n), m,n = board dims
 # space = O(m*n), queue holds up to O(m*n) cells
@@ -352,7 +351,7 @@ assert s.solve([["X","X","O"],["X","X","X"]]) == [["X","X","O"],["X","X","X"]]
 assert s.solve([["X","X","X","X"],["X","O","O","X"],["X","X","O","X"],["X","O","X","X"]]) ==  [["X","X","X","X"],["X","X","X","X"],["X","X","X","X"],["X","O","X","X"]]
 assert s.solve([["X","X","X","X"],["X","O","O","X"],["X","X","O","X"],["X","X","X","X"]]) ==  [["X","X","X","X"],["X","X","X","X"],["X","X","X","X"],["X","X","X","X"]]
 
-# V1
+# V1'
 # IDEA : UNION FIND
 # https://leetcode.com/problems/surrounded-regions/discuss/1764075/Python-or-Union-Find
 # time = O(m*n*alpha(m*n)), m,n = board dims, alpha = inverse Ackermann (union-find near O(1))
@@ -417,7 +416,7 @@ class Solution:
         
         return board
 
-# V1
+# V1''
 # IDEA : UNION FIND
 # https://leetcode.com/problems/surrounded-regions/discuss/1371795/python3-%2B-Union-Find
 # time = O(m*n*alpha(m*n)), m,n = board dims, alpha = inverse Ackermann (union-find near O(1))
@@ -460,7 +459,7 @@ class Solution:
                 else:
                     board[i][j] = "X"
 
-# V1'
+# V1'''
 # https://leetcode.com/problems/surrounded-regions/discuss/475014/python3-BFS-and-DFS
 # IDEA : DFS
 # time = O(m*n), m,n = board dims
@@ -504,7 +503,7 @@ class Solution:
             self.dfs(board, r-1, c, R, C)            
             self.dfs(board, r+1, c, R, C)  
 
-# V1''
+# V1''''
 # https://leetcode.com/problems/surrounded-regions/discuss/475014/python3-BFS-and-DFS
 # IDEA : BFS
 # time = O(m*n), m,n = board dims
@@ -567,7 +566,7 @@ class Solution:
                 if board[r][c] == "N":
                     board[r][c] = "O"
 
-# V1'''
+# V1'''''
 # https://www.jiuzhang.com/solution/surrounded-regions/#tag-highlight-lang-python
 # time = O(m*n), m,n = board dims
 # space = O(m*n), queue holds up to O(m*n) cells
@@ -589,7 +588,7 @@ class Solution:
 
         board[:] = [['XO'[c == 'W'] for c in row] for row in board]
 
-# V1''''
+# V1''''''
 # https://www.jiuzhang.com/solution/surrounded-regions/#tag-highlight-lang-python
 # time = O(m*n), m,n = board dims
 # space = O(m*n), queue holds up to O(m*n) cells

@@ -62,7 +62,7 @@ class Solution:
             if union(u-1, v-1): ans += val
         return ans if len(set(find(x) for x in parents)) == 1 else -1
 
-# V1
+# V1'
 # IDEA : UNION FIND
 # https://leetcode.com/problems/connecting-cities-with-minimum-cost/discuss/460868/Python-Union-Find
 import heapq
@@ -108,7 +108,7 @@ class Solution(object):
         
         return cost if len(set([find_root(node) for node in range(N)])) ==1 else -1
 
-# V1
+# V1''
 # IDEA : UNION FIND
 # https://leetcode.com/problems/connecting-cities-with-minimum-cost/discuss/511197/Fast-Python-with-explanation
 # time = O(E log E)  # E = len(connections); heapify + pops dominate
@@ -149,7 +149,7 @@ class Solution:
                     return res
         return -1
 
-# V1
+# V1'''
 # IDEA : prime
 # https://leetcode.com/problems/connecting-cities-with-minimum-cost/discuss/1629009/Prims-Algo-Python
 # time = O(E log E)  # E = len(connections); Prim's with heap
@@ -175,7 +175,7 @@ class Solution:
                         heapq.heappush(pq, (neicost, nei))
         return res if len(mst_set)==n else -1
 
-# V1
+# V1''''
 # IDEA : Kruskal
 # https://leetcode.com/problems/connecting-cities-with-minimum-cost/discuss/1711108/Python-Kruskal
 # time = O(E log E)  # E = len(connections); sort dominates union-find by rank
@@ -225,7 +225,7 @@ class Solution:
         
         return -1
 
-# V1
+# V1'''''
 # https://www.shangmayuan.com/a/9938a545153b42b58dbc675c.html
 # time = O(E log E)  # E = len(connections); heap-based Prim-like MST
 # space = O(V + E)  # graph adjacency dict + heap
@@ -268,10 +268,10 @@ class Solution:
 
         return ans if not waiting else -1
 
-# V1
+# V1''''''
 # https://blog.csdn.net/Changxing_J/article/details/117188248
 
-# V1
+# V1'''''''
 # IDEA :  Minimum Spanning Tree (Using Kruskal's algorithm)
 # https://leetcode.com/problems/connecting-cities-with-minimum-cost/solution/
 # JAVA
@@ -310,7 +310,7 @@ class Solution:
 #     }
 # }
 
-# V1
+# V1''''''''
 # IDEA :  Minimum Spanning Tree (Using Kruskal's algorithm)
 # https://leetcode.com/problems/connecting-cities-with-minimum-cost/solution/
 # JAVA

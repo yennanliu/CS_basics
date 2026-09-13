@@ -1,11 +1,8 @@
 """
 
 424. Longest Repeating Character Replacement
-Solved
 Medium
-Topics
-premium lock icon
-Companies
+
 You are given a string s and an integer k. You can choose any character of the string and change it to any other uppercase English character. You can perform this operation at most k times.
 
 Return the length of the longest substring containing the same letter you can get after performing the above operations.
@@ -104,7 +101,7 @@ class Solution(object):
 
 
 
-# V0-0-1
+# V0-1
 # IDEA : SLIDING WINDOW + MAP + `op = (r-l+1) - max(cnt_map.values())`
 class Solution(object):
     def characterReplacement(self, s, k):
@@ -129,7 +126,7 @@ class Solution(object):
         return max_len
 
 
-# V0-1
+# V0-2
 # IDEA : SLIDING WINDOW + MAP + MAX_FREQ_CNT
 class Solution(object):
     def characterReplacement(self, s, k):
@@ -166,7 +163,7 @@ class Solution(object):
         return max_len
 
 
-# V0
+# V0-3
 # IDEA : SLIDING WINDOW + MAP + MAX_FREQ_CNT
 # time = O(n), n = len(s)
 # space = O(1) (only 26 alphabet)
@@ -238,7 +235,7 @@ class Solution(object):
         return max_len
 
 
-# V0-0-1
+# V0-4
 # IDEA : SLIDING WINDOW + MAP + MAX_FREQ_CNT
 # time = O(n)  # max(cnt_map.values()) bounded by 26
 # space = O(1)  # bounded alphabet
@@ -282,7 +279,7 @@ class Solution(object):
         return max_len
 
 
-# V0
+# V0-5
 # IDEA : SLIDING WINDOW + DICT + 2 POINTERS
 # time = O(n)  # max(table.values()) bounded by 26
 # space = O(1)  # bounded alphabet
@@ -324,7 +321,7 @@ class Solution(object):
             res = max(res, p2 - p1)
         return res
     
-# V0'
+# V0-6
 # time = O(n)  # max(cnt.values()) bounded by 26
 # space = O(1)  # bounded alphabet
 from collections import defaultdict
@@ -480,7 +477,7 @@ class Solution:
             ans = max(ans, i - deleted + 1)
         return ans
 
-# V1''''
+# V1'''''
 # https://leetcode.com/problems/longest-repeating-character-replacement/discuss/867755/python-solution
 # time = O(n)  # max(cnt.values()) bounded by 26
 # space = O(1)  # bounded alphabet
@@ -497,7 +494,7 @@ class Solution:
             res = max(res, j - i + 1)
         return res
 
-# V1'''''
+# V1''''''
 # https://leetcode.com/problems/longest-repeating-character-replacement/discuss/535734/Python-two-pointers
 # IDEA : 2 POINTERS
 # time = O(n)  # max(seen) bounded by 26

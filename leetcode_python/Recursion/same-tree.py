@@ -31,7 +31,6 @@ Constraints:
 The number of nodes in both trees is in the range [0, 100].
 -104 <= Node.val <= 104
 
-
 """
 
 # V0
@@ -69,7 +68,7 @@ class Solution(object):
             self.isSameTree(p.right, q.right)
         )
 
-# V0
+# V0-2
 # IDEA : Recursion
 # time = O(N)
 # space = O(H)
@@ -91,7 +90,7 @@ class Solution(object):
         res = dfs(p, q)
         return res
 
-# V0'
+# V0-3
 # IDEA : iteration
 # time = O(N)
 # space = O(N)
@@ -118,7 +117,7 @@ class Solution:
                     
         return True
 
-# V0''
+# V0-4
 # IDEA : Recursion
 # time = O(N)
 # space = O(H)
@@ -142,7 +141,7 @@ class Solution(object):
         res = dfs(p, q)
         return res
 
-# V0'''
+# V0-5
 # IDEA : Recursion
 # time = O(N)
 # space = O(H)
@@ -156,7 +155,7 @@ class Solution(object):
         # if p == None or q == None  or p == q == None
         return p == q == None
     
-# V0''''
+# V0-6
 # IDEA : Iteration (DFS)
 # https://leetcode.com/problems/same-tree/solution/
 # time = O(N)

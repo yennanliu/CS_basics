@@ -32,6 +32,9 @@
 # V2
 """
 
+712. Minimum ASCII Delete Sum for Two Strings
+Medium
+
 DP def
     dp[i][j]: MIN sum of deleted ASCII values to make s1[:i] and s2[:j] equal
 

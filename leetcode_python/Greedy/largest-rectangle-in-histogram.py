@@ -62,7 +62,7 @@ class Solution:
                 max_area = max(max_area, min_height * (j - i + 1))
         return max_area
 
-# V1'''
+# V1''
 # IDEA : STACK
 # https://leetcode.com/problems/largest-rectangle-in-histogram/solution/
 # Algorithm:
@@ -88,7 +88,7 @@ class Solution:
             max_area = max(max_area, current_height * current_width)
         return max_area
 
-# V1''
+# V1'''
 # IDEA : STACK (monotone stack)
 # https://leetcode.com/problems/largest-rectangle-in-histogram/solutions/1083629/python-by-monotone-stack-w-comment/
 # time = O(n)
@@ -129,7 +129,7 @@ class Solution:
                   
         return rectangle
 
-# V1'''
+# V1''''
 # IDEA : STACK
 # https://leetcode.com/problems/largest-rectangle-in-histogram/solutions/342507/python-different-solutins/
 # time = O(n)
@@ -173,7 +173,7 @@ class Solution:
             max_area = max(max_area, (l - j) * m)
         return max_area
 
-# V1'''''''
+# V1''''''
 # IDEA : Divide and Conquer Approach
 # https://leetcode.com/problems/largest-rectangle-in-histogram/solution/
 # time = O(n^2)  # worst-case (unbalanced splits); O(n log n) average
@@ -195,7 +195,7 @@ class Solution:
 
         return calculateArea(heights, 0, len(heights) - 1)
 
-# V1
+# V1'''''''
 # IDEA : Better Divide and Conquer
 # https://leetcode.com/problems/largest-rectangle-in-histogram/solution/
 # JAVA

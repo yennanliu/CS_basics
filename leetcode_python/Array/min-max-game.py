@@ -1,7 +1,7 @@
 """
 
 2293. Min Max Game
-Medium
+Easy
 
 You are given a 0-indexed integer array nums whose length is a power of 2.
 

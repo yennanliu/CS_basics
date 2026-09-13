@@ -2,6 +2,7 @@
 
 3189. Minimum Moves to Get a Peaceful Board
 Medium
+
 🔒 (premium)
 
 Given a 2D array rooks of length n, where rooks[i] = [x_i, y_i] indicates the position of a rook on an n x n chess board. Your task is to move the rooks 1 cell at a time vertically or horizontally (to an adjacent cell) such that the board becomes peaceful.

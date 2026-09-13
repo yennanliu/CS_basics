@@ -1,5 +1,8 @@
 """
 
+477. Total Hamming Distance
+Medium
+
 The Hamming distance between two integers is the number of positions at which the corresponding bits are different.
 
 Given an integer array nums, return the sum of Hamming distances between all the pairs of the integers in nums.
@@ -57,7 +60,7 @@ class Solution(object):
                 r += dis
         return r
 
-# V0'
+# V0-1
 
 # V1
 # https://leetcode.com/problems/total-hamming-distance/discuss/96252/Python-O(nlogV)-time
@@ -96,7 +99,7 @@ class Solution(object):
             res += bitCount * (len(nums) - bitCount)
         return res
 
-# V1'
+# V1''
 # http://bookshadow.com/weblog/2016/12/18/leetcode-total-hamming-distance/
 # time = O(n)  # n = len(nums); 32 * n work
 # space = O(1)

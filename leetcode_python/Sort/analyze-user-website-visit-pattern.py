@@ -102,7 +102,7 @@ class Solution:
             count = sum([collections.Counter(set(itertools.combinations(dp[u], 3))) for u in dp], collections.Counter())
             return list(min(count, key=lambda k: (-count[k], k)))
 
-# V1
+# V1''
 # https://blog.51cto.com/u_15344287/3648546
 # https://blog.csdn.net/qq_21201267/article/details/107784313
 # time = O(n^3)
@@ -142,7 +142,7 @@ class Solution:
 
         return list(ans[0])
 
-# V1''
+# V1'''
 # IDEA : SUBSET
 # https://leetcode.com/problems/analyze-user-website-visit-pattern/discuss/355385/Python-using-subset3
 # time = O(n^3)
@@ -182,7 +182,7 @@ class Solution:
                     count = 1
             return list(fres)
 
-# V1'''
+# V1''''
 # https://leetcode.com/problems/analyze-user-website-visit-pattern/discuss/1617330/python
 # time = O(n^3)
 # space = O(n^3)
@@ -226,7 +226,7 @@ class Solution:
                 maxpattern=pattern
         return maxpattern
 
-# V1''''
+# V1'''''
 # IDEA : BRUTE FORCE
 # https://leetcode.com/problems/analyze-user-website-visit-pattern/discuss/534149/Python-Brute-Force
 # time = O(n^3)
@@ -250,7 +250,7 @@ class Solution:
      
         return sorted(seq.items(),key=lambda x:(-len(x[1]),x[0]))[0][0]
 
-# V1'''''
+# V1''''''
 # https://leetcode.com/problems/analyze-user-website-visit-pattern/discuss/1032279/Python-with-Explanation
 # time = O(n^3)
 # space = O(n^3)

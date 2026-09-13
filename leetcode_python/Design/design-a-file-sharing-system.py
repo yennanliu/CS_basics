@@ -1,6 +1,7 @@
 """
 
 1500. Design a File Sharing System
+Medium
 
 # https://leetcode.ca/all/1500.html
 # https://leetcode.ca/2020-01-08-1500-Design-a-File-Sharing-System/

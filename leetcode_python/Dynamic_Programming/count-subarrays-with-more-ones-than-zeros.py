@@ -2,6 +2,7 @@
 
 2031. Count Subarrays With More Ones Than Zeros
 Medium
+
 (premium / locked problem)
 
 You are given a binary array nums containing only the integers 0 and 1. Return the number of subarrays in nums that have more 1's than 0's. Since the answer may be very large, return it modulo 10^9 + 7.

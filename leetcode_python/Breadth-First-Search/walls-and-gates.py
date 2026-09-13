@@ -79,7 +79,7 @@ class Solution:
 
 
 
-# V0
+# V0-1
 # IDEA : BFS
 # time = O(m*n), m,n = grid dimensions; q grows with gates found so far, each cell relaxed only when a shorter distance is found
 # space = O(m*n)
@@ -109,7 +109,7 @@ class Solution:
                     q.append((new_x, new_y))
 
 
-# V0-1
+# V0-2
 # IDEA: BFS
 # time = O(m*n), m,n = grid dimensions; multi-source BFS visits each cell at most once (guarded by the INF check)
 # space = O(m*n)
@@ -145,7 +145,7 @@ class Solution:
                     q.append((nr, nc))
 
 
-# V0-2
+# V0-3
 # IDEA : BFS
 # time = O(m*n), m,n = grid dimensions; multi-source BFS visits each cell at most once (guarded by the INF check)
 # space = O(m*n)
@@ -192,7 +192,7 @@ class Solution:
                         q.append((x_, y_))
 
 
-# V0
+# V0-4
 # IDEA : DFS  -> TLE (time out error)
 # time = O((m*n)^2), m,n = grid dimensions; a cell can be revisited/updated many times as `dist` improves via different DFS paths (no visited-once guarantee)
 # space = O(m*n), recursion stack can reach O(m*n) depth

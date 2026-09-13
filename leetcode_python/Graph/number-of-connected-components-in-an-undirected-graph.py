@@ -150,7 +150,7 @@ class MyUF:
         return self.get_parent(a) == self.get_parent(b)
 
 
-# V0'
+# V0-2
 # IDEA : DFS
 # time = O(N + E)  # N = n nodes, E = len(edges); DFS visits each node/edge once
 # space = O(N + E)  # graph adjacency + visited set + recursion stack
@@ -190,7 +190,7 @@ class Solution:
                 res += 1
         return res
 
-# V0'
+# V0-3
 # IDEA : UNION FIND
 # union find basic algorithm
 # time = O((N + E) * α(N)) ≈ O(N + E)  # N = n nodes, E = len(edges); union-find w/ path compression
@@ -241,7 +241,7 @@ class Solution:
             uf.union(a, b)
         return uf.count()
 
-# V0''
+# V0-4
 # IDEA : UNION FIND
 # time = O((N + E) * α(N)) ≈ O(N + E)  # N = n nodes, E = len(edges); union-find w/ path compression
 # space = O(N)
@@ -297,7 +297,7 @@ class Solution(object):
         #print ("uf.parents = " + str(uf.parents))
         return uf.count
 
-# V0'''
+# V0-5
 # IDEA : DFS + GRAPH
 # time = O(N + E)  # N = n nodes, E = len(edges); DFS visits each node/edge once
 # space = O(N + E)  # graph adjacency + visited set + recursion stack
@@ -353,7 +353,7 @@ class Solution:
                 count+=1
         return count
 
-# V1
+# V1'
 # IDEA : BFS
 # https://www.jiuzhang.com/solution/number-of-connected-components-in-an-undirected-graph/#tag-other-lang-python
 # time = O(N + E)  # N = n nodes, E = len(edges); BFS visits each node/edge once
@@ -397,7 +397,7 @@ class Solution:
             else:
                 return count
 
-# V1'
+# V1''
 # IDEA : UNION FIND
 # https://www.cnblogs.com/lightwindy/p/8487160.html
 # time = O(nlog*n) ~= O(n), n is the length of the positions
@@ -430,7 +430,7 @@ class Solution(object):
             union_find.union_set(i, j)
         return union_find.count
 
-# V1''
+# V1'''
 # IDEA : UNION FIND
 # https://blog.csdn.net/qq_37821701/article/details/104371911
 # time = O((N + E) * α(N)) ≈ O(N + E)  # N = n nodes, E = len(edges); union-find w/ path compression
@@ -461,7 +461,7 @@ class Solution:
             unionfind(edge[0],edge[1])
         return count
 
-# V1
+# V1''''
 # IDEA : DFS
 # https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/solution/
 # JAVA
@@ -501,7 +501,7 @@ class Solution:
 #     }
 # }
 
-# V1
+# V1'''''
 # IDEA : Disjoint Set Union (DSU)
 # https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/solution/
 # JAVA

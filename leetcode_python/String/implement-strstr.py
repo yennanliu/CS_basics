@@ -1,5 +1,8 @@
 """
 
+28. Find the Index of the First Occurrence in a String
+Easy
+
 Implement strStr().
 
 Return the index of the first occurrence of needle in haystack, or -1 if needle is not part of haystack.
@@ -43,7 +46,7 @@ class Solution(object):
         else:
             return -1
 
-# V0'
+# V0-1
 # time = O(n * m), n = len(haystack), m = len(needle)
 # space = O(m)
 class Solution(object):
@@ -139,7 +142,7 @@ class Solution(object):
             return i - j
         return -1
 
-# V1'''''
+# V1''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79254558
 # time = O(n * m), n = len(haystack), m = len(needle)
 # space = O(1)
@@ -152,7 +155,7 @@ class Solution(object):
         """
         return haystack.find(needle)
 
-# V1''''''
+# V1'''''
 # time = O(n * m), n = len(haystack), m = len(needle)
 # space = O(m)
 class Solution:
@@ -168,7 +171,7 @@ class Solution:
                 return i
         return -1
 
-# V1'''''''
+# V1''''''
 # Wiki of KMP algorithm:
 # http://en.wikipedia.org/wiki/Knuth-Morris-Pratt_algorithm
 # time = O(n + m), n = len(haystack), m = len(needle)

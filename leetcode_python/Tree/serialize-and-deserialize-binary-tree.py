@@ -81,7 +81,7 @@ class Codec:
 
 
 
-# V0
+# V0-1
 # IDRA : DFS
 # time = O(n)
 # space = O(n)
@@ -126,7 +126,7 @@ class Codec:
         root = rdeserialize(data_list)
         return root
   
-# V0
+# V0-2
 # IDEA : DFS + tree property + recursive  + queue
 # time = O(n)
 # space = O(n)
@@ -168,7 +168,7 @@ class Codec:
                 return root
         return build()
 
-# V0'
+# V0-3
 # IDEA : DFS + tree property + recursive + collections.deque
 import collections
 # time = O(n)
@@ -257,7 +257,7 @@ class Codec:
         root = rdeserialize(data_list)
         return root
 
-# V1 
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79571892
 # IDEA : DEQUE (collections.deque)
 # Deque DEMO 
@@ -325,7 +325,7 @@ class Codec:
 
 ### Test case : dev
 
-# V1
+# V1''
 # IDEA : ASCII
 # http://zxi.mytechroad.com/blog/tree/leetcode-297-serialize-and-deserialize-binary-tree/
 # C++
@@ -367,7 +367,7 @@ class Codec:
 # };
 
 
-# V1
+# V1'''
 # IDEA : BINARY
 # http://zxi.mytechroad.com/blog/tree/leetcode-297-serialize-and-deserialize-binary-tree/
 # C++
@@ -418,7 +418,7 @@ class Codec:
 #     }
 # };
 
-# V1'
+# V1''''
 # http://bookshadow.com/weblog/2015/10/26/leetcode-serialize-and-deserialize-binary-tree/
 # IDEA : BINARY TREE TRANVERSE
 # time = O(n)
@@ -449,7 +449,7 @@ class Codec:
         vals = iter(data.split())
         return doit()
 
-# V1''
+# V1'''''
 # http://bookshadow.com/weblog/2015/10/26/leetcode-serialize-and-deserialize-binary-tree/
 # IDEA : BINARY TREE TRANVERSE (BY LAYER)
 # time = O(n)
@@ -500,7 +500,7 @@ class Codec:
                 q.append(right)
         return root
 
-# V1'''
+# V1''''''
 # http://bookshadow.com/weblog/2015/10/26/leetcode-serialize-and-deserialize-binary-tree/
 # IDEA : JSON + DICT
 import json
@@ -557,7 +557,7 @@ class Codec:
                 nodes.append(frontNode.right)
         return root
 
-# V1''''
+# V1'''''''
 # http://bookshadow.com/weblog/2015/10/26/leetcode-serialize-and-deserialize-binary-tree/
 # IDEA : JSON + TUPLE 
 import json
@@ -578,7 +578,7 @@ class Codec:
                 return root
         return detuplify(json.loads(data))
 
-# V1'''''
+# V1''''''''
 # https://leetcode.com/problems/serialize-and-deserialize-binary-tree/discuss/74259/Recursive-preorder-Python-and-C%2B%2B-O(n)
 # time = O(n)
 # space = O(n)
@@ -607,7 +607,7 @@ class Codec:
         vals = iter(data.split())
         return doit()
 
-# V1''''''
+# V1'''''''''
 # IDEA : BFS 
 # https://leetcode.com/problems/serialize-and-deserialize-binary-tree/discuss/166904/Python-or-BFS-tm
 # time = O(n)

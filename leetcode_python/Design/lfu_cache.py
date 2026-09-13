@@ -278,7 +278,7 @@ class LFUCache(object):
         self.__freq_to_nodes[self.__key_to_node[key].freq].append(self.__key_to_node[key])
         self.__size += 1
 
-# V1
+# V1'
 # TODO : fix this
 # IDEA : DOUBLY LINKED LIST + HASH TABLE
 # http://bookshadow.com/weblog/2016/11/22/leetcode-lfu-cache/
@@ -421,4 +421,4 @@ class LFUCache(object):
 #         freqNode.first = keyNode
 #         if freqNode.last is None: freqNode.last = keyNode
 
-# V2
+# V2'

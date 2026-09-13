@@ -2,6 +2,7 @@
 
 2077. Paths in Maze That Lead to Same Room
 Medium
+
 (premium / locked problem)
 
 A maze consists of n rooms numbered from 1 to n, and some rooms are connected by corridors. You are given a 2D integer array corridors where corridors[i] = [room1_i, room2_i] indicates that there is a corridor connecting room1_i and room2_i, allowing a person in the maze to go from room1_i to room2_i and vice versa.

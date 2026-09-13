@@ -50,7 +50,7 @@ class Solution(object):
         res = help(root1, root2)
         return res
 
-# V0'
+# V0-1
 # IDEA : ITERATION, BFS
 # time = O(min(m, n))  # m, n = number of nodes in t1, t2
 # space = O(min(m, n))  # stack storage in the worst case
@@ -72,7 +72,7 @@ class Solution(object):
 
             return dummy.left
 
-# V0
+# V0-2
 # IDEA : recursive
 # time = O(min(m, n))  # m, n = number of nodes in t1, t2
 # space = O(min(m, n))  # recursion stack depth in the worst case (skewed tree)
@@ -95,7 +95,7 @@ class Solution:
         else:
             return t1 or t2
 
-# V0'
+# V0-3
 # IDEA : DFS + BACKTRACK
 # time = O(min(m, n))  # m, n = number of nodes in t1, t2
 # space = O(min(m, n))  # recursion stack depth in the worst case (skewed tree)
@@ -112,7 +112,7 @@ class Solution:
         else:
             return t1 or t2
 
-# V0'
+# V0-4
 # time = O(min(m, n))  # m, n = number of nodes in t1, t2
 # space = O(min(m, n))  # recursion stack depth in the worst case (skewed tree)
 class Solution:
@@ -145,7 +145,7 @@ class Solution:
         else:
             return t1 or t2
 
-# V1
+# V1'
 # https://leetcode.com/problems/merge-two-binary-trees/discuss/159138/Python-solution
 # IDEA : resursive
 # time = O(min(m, n))  # m, n = number of nodes in t1, t2
@@ -166,7 +166,7 @@ class Solution(object):
         return new_root
 
 
-# V1
+# V1''
 # IDEA : iterative
 # https://leetcode.com/problems/merge-two-binary-trees/discuss/121170/Python-iterative
 # time = O(min(m, n))  # m, n = number of nodes in t1, t2
@@ -191,7 +191,7 @@ class Solution(object):
 
 ### Test case : dev 
 
-# V1
+# V1'''
 # https://leetcode.com/problems/merge-two-binary-trees/solution/
 # IDEA : resursive
 # java
@@ -218,7 +218,7 @@ class Solution(object):
 # }
 
 
-# V1
+# V1''''
 # https://leetcode.com/problems/merge-two-binary-trees/solution/
 # IDEA : Iterative
 # java
@@ -259,7 +259,7 @@ class Solution(object):
 # }
 
 
-# V1'
+# V1'''''
 # https://www.polarxiong.com/archives/LeetCode-617-merge-two-binary-trees.html
 # time = O(min(m, n))  # m, n = number of nodes in t1, t2
 # space = O(min(m, n))  # recursion stack depth in the worst case (skewed tree)
@@ -277,7 +277,7 @@ class Solution:
             return t1
         return t1 if t2 is None else t2
 
-# V1''
+# V1''''''
 # https://www.jiuzhang.com/solution/merge-two-binary-trees/#tag-highlight-lang-python
 # time = O(min(m, n))  # m, n = number of nodes in t1, t2
 # space = O(min(m, n))  # recursion stack depth in the worst case (skewed tree)
@@ -298,7 +298,7 @@ class Solution:
         t3.right = self.mergeTrees(t1.right, t2.right)
         return t3
 
-# V1'''
+# V1'''''''
 # https://leetcode.com/problems/merge-two-binary-trees/discuss/124537/Python-recursive-iterative-DFS-BFS-solutions
 # IDEA : BFS
 # time = O(min(m, n))  # m, n = number of nodes in t1, t2
@@ -351,7 +351,7 @@ class Solution:
                 q.append(t.right)   
         return tRoot
 
-# V1'''''''
+# V1''''''''
 # https://leetcode.com/problems/merge-two-binary-trees/discuss/124537/Python-recursive-iterative-DFS-BFS-solutions
 # IDEA : RECURSION PRE-ORDER
 # time = O(min(m, n))  # m, n = number of nodes in t1, t2
@@ -375,7 +375,7 @@ class Solution:
         t.right = self.mergeTrees(t1.right, t2.right)
         return t
 
-# V1''''''''
+# V1'''''''''
 # https://leetcode.com/problems/merge-two-binary-trees/discuss/124537/Python-recursive-iterative-DFS-BFS-solutions
 # IDEA : Recursion in-order
 # time = O(min(m, n))  # m, n = number of nodes in t1, t2
@@ -402,7 +402,7 @@ class Solution:
         
         return t
 
-# V1''''''''
+# V1''''''''''
 # https://leetcode.com/problems/merge-two-binary-trees/discuss/124537/Python-recursive-iterative-DFS-BFS-solutions
 # IDEA : Recursion post-order
 # time = O(min(m, n))  # m, n = number of nodes in t1, t2
@@ -429,7 +429,7 @@ class Solution:
         
         return t
 
-# V1''''''''''
+# V1'''''''''''
 # https://leetcode.com/problems/merge-two-binary-trees/discuss/124537/Python-recursive-iterative-DFS-BFS-solutions
 # Iterative in-order
 # time = O(min(m, n))  # m, n = number of nodes in t1, t2
@@ -481,7 +481,7 @@ class Solution:
                 t1, t2, t = t1.right, t2.right, t.right                
         return tRoot
 
-# V1'''''''''''''''
+# V1''''''''''''
 # https://leetcode.com/problems/merge-two-binary-trees/discuss/124537/Python-recursive-iterative-DFS-BFS-solutions
 # IDEA : Iterative pre-order
 # time = O(min(m, n))  # m, n = number of nodes in t1, t2

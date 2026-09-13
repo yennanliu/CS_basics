@@ -127,7 +127,7 @@ class SnakeGame:
 # obj = SnakeGame(width, height, food)
 # param_1 = obj.move(direction)
 
-# V1
+# V1'
 # https://leetcode.com/problems/design-snake-game/discuss/514781/fast-python-solution
 class SnakeGame:
 
@@ -179,7 +179,7 @@ class SnakeGame:
             del self.snake[-1]
         return self.eat
 
-# V1
+# V1''
 # IDEA : OrderedDict
 # https://leetcode.com/problems/design-snake-game/discuss/1751562/Python-or-OrderedDict
 class SnakeGame:
@@ -220,7 +220,7 @@ class SnakeGame:
         else:
             return -1
 
-# V1
+# V1'''
 # IDEA : QUEUE
 # https://leetcode.com/problems/design-snake-game/discuss/1778152/Python-Queue
 class SnakeGame:
@@ -277,7 +277,7 @@ class SnakeGame:
 
         return self.score
 
-# V1
+# V1''''
 # https://leetcode.com/problems/design-snake-game/discuss/82744/Easy-python-solution
 # IDEA : 
 # I use a queue to simulate the snake and use a set to keep all parts of the snake body.
@@ -340,7 +340,7 @@ class SnakeGame(object):
         #Add back the tail if the snake eat a food
         return len(self.snake)-1
 
-# V1
+# V1'''''
 # IDEA : Set and Deque 
 # https://leetcode.com/problems/design-snake-game/discuss/82723/Simple-Python-solution
 from collections import deque
@@ -409,7 +409,7 @@ class SnakeGame(object):
         
         return self.score
 
-# V1
+# V1''''''
 # https://www.cnblogs.com/grandyang/p/5558033.html
 # JAVA
 # class SnakeGame {

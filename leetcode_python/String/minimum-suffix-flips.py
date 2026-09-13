@@ -1,5 +1,8 @@
 """
 
+1529. Minimum Suffix Flips
+Medium
+
 1529. Bulb Switcher IV
 Medium
 

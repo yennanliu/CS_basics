@@ -7,6 +7,9 @@
 # solve(nums) = max(nums[0] - solve(nums[1:]), nums[-1] - solve(nums[:-1]))
 """
 
+486. Predict the Winner
+Medium
+
 DP def
     (GAME / INTERVAL DP - both players play optimally, so score the game as
      "current player's total minus the opponent's")

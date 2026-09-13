@@ -31,7 +31,7 @@ Constraints:
 
 """
 
-#  V0
+# V0
 # IDEA: SLIDE WINDOW + HASHMAP
 """
 SLIDE WINDOW template:
@@ -77,7 +77,7 @@ class Solution(object):
         return ans
 
 
-# V0-0-1
+# V0-1
 # IDEA: SLIDE WINDOW + HASHMAP
 """
 SLIDE WINDOW template:
@@ -123,7 +123,7 @@ class Solution(object):
 
 
 
-# V0-1
+# V0-2
 # IDEA: SLIDE WINDOW + SET
 # time = O(n)
 # space = O(min(n, m))  # m = charset size, seen holds at most distinct chars in window
@@ -151,7 +151,7 @@ class Solution(object):
         return max_len
 
 
-# V0
+# V0-3
 # IDEA : brute force : SLIDING WINDOW + DICT
 # time = O(n^2)  # nested loop restarts scan on each duplicate found
 # space = O(min(n, m))  # m = charset size, Counter holds current window chars
@@ -178,7 +178,7 @@ class Solution(object):
                 tmp += 1
         return _max
 
-# V0'
+# V0-4
 # IDEA : TWO POINTER + SLIDING WINDOW + DICT (NOTE this method !!!!)
 #       -> use a hash table (d) record visited "element" (e.g. : a,b,c,...)
 #          (but NOT sub-string)
@@ -210,7 +210,7 @@ class Solution(object):
             res = max(res, r -l + 1)
         return res
 
-# V0'
+# V0-5
 # IDEA : SLIDING WINDOW + defaultdict (brute force)
 # time = O(n^2)  # nested loop restarts scan on each duplicate found
 # space = O(min(n, m))  # m = charset size, tmp holds current window chars
@@ -233,7 +233,7 @@ class Solution(object):
                     res = max(res, j-i+1)
         return res
 
-# V0''
+# V0-6
 # IDEA : GREEDY  + 2 pointer + set
 class Solution(object):
     def lengthOfLongestSubstring(self, s):
@@ -251,7 +251,7 @@ class Solution(object):
                 res = max(res, len(chars))
         return res
 
-# V0'''
+# V0-7
 # IDEA : SLIDING WINDOW + DICT
 class Solution(object):
     def lengthOfLongestSubstring(self, s):
@@ -362,7 +362,7 @@ class Solution(object):
                 res = max(res, len(chars))
         return res
 
-# V1'''''
+# V1''''
 # http://bookshadow.com/weblog/2015/04/05/leetcode-longest-substring-without-repeating-characters/
 # IDEA : MOVING WINDOW + DICT 
 class Solution:

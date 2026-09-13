@@ -57,7 +57,7 @@ class Solution:
 
         return min_room
 
-# V0-0-1
+# V0-1
 # IDEA : SCANNING LINE
 # time = O(n log n)
 # space = O(n)
@@ -88,7 +88,7 @@ class Solution:
         return max_room
 
 
-# V0
+# V0-2
 # IDEA : SCANNING LINE : Sort all time points and label the start and end points. Move a vertical line from left to right.
 # time = O(n log n)
 # space = O(n)
@@ -111,7 +111,7 @@ class Solution:
                 res = max(res, curr_rooms)
             return res
 
-# V0'
+# V0-3
 # IDEA : Chronological Ordering
 # https://leetcode.com/problems/meeting-rooms-ii/solution/
 # time = O(n log n)
@@ -150,7 +150,7 @@ class Solution:
 
         return used_rooms
 
-# V0''
+# V0-4
 # IDEA : SCANNING LINE
 # Step 1 : split intervals to points, and label start, end point
 # Step 2 : reorder the points
@@ -184,7 +184,7 @@ class Solution:
             max_num = max(n, max_num)
         return max_num
 
-# V0'''
+# V0-5
 # IDEA : Priority Queues
 # https://leetcode.com/problems/meeting-rooms-ii/solution/
 # time = O(n log n)
@@ -219,7 +219,7 @@ class Solution:
         # The size of the heap tells us the minimum rooms required for all the meetings.
         return len(free_rooms)
 
-# V0''''
+# V0-6
 # TODO : fix below
 # IDEA : SCANNING LINE
 # Step 1 : split intervals to points, and label start, end point
@@ -397,7 +397,7 @@ class Solution:
             res = max(res, i-pop_count+1)
         return res
 
-# V1'''''''
+# V1''''''
 # IDEA : min-heap (priority queue)
 # https://leetcode.com/problems/meeting-rooms-ii/discuss/208109/Python-solution
 # time = O(n log n)
@@ -424,7 +424,7 @@ class Solution:
             res = max(res, len(heap))
         return res
 
-# V1''''''''
+# V1'''''''
 # IDEA : min-heap (priority queue)
 # https://leetcode.com/problems/meeting-rooms-ii/discuss/1031292/Simple-Python-Solution
 # time = O(n log n)
@@ -446,7 +446,7 @@ class Solution:
                 maxRooms = len(h)
         return maxRooms
 
-# V1'''''''''
+# V1''''''''
 # https://www.jiuzhang.com/solution/meeting-rooms-ii/#tag-highlight-lang-python
 # IDEA  : TO HAVE A ARRAY OF ALL "ROOM OPEN" AND "ROOM CLOSE" EVENTS
 # "ROOM OPEN" EVENT : (TIME, 1)

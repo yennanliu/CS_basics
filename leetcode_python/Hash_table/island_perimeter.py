@@ -59,7 +59,7 @@ class Solution:
                             neighbors += 1
         return 4 * counts - 2 * neighbors
 
-# V0'
+# V0-1
 # IDEA : SIMPLE COUNTING
 # IDEA :
 # -> Go through every cell on the grid and whenever you are at cell 1 (land cell), look for surrounding (UP, RIGHT, DOWN, LEFT) cells. A land cell without any surrounding land cell will have a perimeter of 4. Subtract 1 for each surrounding land cell.

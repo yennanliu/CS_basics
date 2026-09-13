@@ -76,7 +76,7 @@ class Solution(object):
             lookup[num] = i
         return [-1, -1]
 
-# V0'
+# V0-1
 # IDEA : dict
 # time = O(n)
 # space = O(n)

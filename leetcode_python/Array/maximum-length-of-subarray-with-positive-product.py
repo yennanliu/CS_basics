@@ -55,7 +55,7 @@ class Solution:
             mx = max(mx, i-j)
         return mx
 
-# V0'
+# V0-1
 # IDEA : 2 POINTERS
 # time = O(n)
 # space = O(1)
@@ -113,7 +113,7 @@ class Solution:
             mx = max(mx, i-j)
         return mx
 
-# V1
+# V1'
 # IDEA : ARRAY OP
 # https://www.codeleading.com/article/43895450358/
 # pos_len : len of sub array with prodcut > 0
@@ -140,7 +140,7 @@ class Solution:
             res=max(res,pos_len)
         return res
 
-# V1
+# V1''
 # IDEA : 2 POINTERS
 # time = O(n)
 # space = O(1)
@@ -171,7 +171,7 @@ class Solution:
                     res = max(res, i - j)
         return res
 
-# V1
+# V1'''
 # IDEA : GREEDY
 # https://leetcode.com/problems/maximum-length-of-subarray-with-positive-product/discuss/839439/Python-Greedy-Solution
 # time = O(n)
@@ -207,7 +207,7 @@ class Solution:
         # scan from left and scan from right
         return max(helper(nums), helper(nums[::-1]))
 
-# V1
+# V1''''
 # https://leetcode.com/problems/maximum-length-of-subarray-with-positive-product/discuss/821358/python
 # time = O(n)
 # space = O(n)
@@ -236,7 +236,7 @@ class Solution(object):
             return res
         return max(func(nums), func(nums[::-1]))
 
-# V1
+# V1'''''
 # IDEA : DP
 # https://leetcode.com/problems/maximum-length-of-subarray-with-positive-product/discuss/819279/Python-Easy-python-dp-solution
 # time = O(n)

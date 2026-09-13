@@ -1,5 +1,8 @@
 """
 
+275. H-Index II
+Medium
+
 Follow up for H-Index:  (274)
 
 What if the citations array is sorted 
@@ -34,7 +37,7 @@ class Solution:
                 left = mid + 1 # NOTE this, we want mid become bigger
         return res
 
-# V0'
+# V0-1
 # IDEA : SAME AS #274 H-Index
 # time = O(n log n)
 # space = O(n)
@@ -102,7 +105,7 @@ class Solution(object):
                 r = mid - 1
         return H
 
-# V1'
+# V1''
 # http://bookshadow.com/weblog/2015/09/04/leetcode-h-index-ii/
 # time = O(log n)
 # space = O(1)
@@ -122,7 +125,7 @@ class Solution(object):
                 high = mid - 1
         return N - low
 
-# V1''
+# V1'''
 # https://www.hrwhisper.me/leetcode-h-index-h-index-ii/
 # time = O(n log n)
 # space = O(n)
@@ -135,7 +138,7 @@ class Solution(object):
         if not citations: return 0
         return max([min(i + 1, c) for i, c in enumerate(sorted(citations, reverse=True))])
 
-# V1'''
+# V1''''
 # https://www.hrwhisper.me/leetcode-h-index-h-index-ii/
 # time = O(n log n)
 # space = O(n)

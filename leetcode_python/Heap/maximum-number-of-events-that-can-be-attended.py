@@ -190,7 +190,7 @@ class Solution(object):
         return cnt
 
 
-# V0-0-1
+# V0-1
 # IDEA:  PQ + GREEEDY (GPT)
 """
 CORE IDEA:
@@ -301,7 +301,7 @@ class Solution(object):
         return cnt
 
 
-# V0-0-2
+# V0-2
 # IDEA:  PQ + GREEEDY (GEMINI)
 import heapq
 
@@ -365,7 +365,7 @@ class Solution(object):
         return ans
 
 
-# V0-1
+# V0-3
 # IDEA: sweep line (scan line) + PQ (gpt)
 """
 Core idea:
@@ -430,7 +430,7 @@ class Solution(object):
         return ans
 
 
-# V0-2
+# V0-4
 # IDEA: sweep line (scan line) + PQ (gemini)
 import heapq
 
@@ -485,7 +485,7 @@ class Solution(object):
         return max_events
 
 
-# V0
+# V0-5
 # IDEA : PRIORITY QUEUE
 # NOTE !!!
 # We just need to attend d where startTimei <= d <= endTimei, then we CAN attend the meeting
@@ -521,7 +521,7 @@ class Solution:
                 ans += 1            
         return ans
 
-# V0'
+# V0-6
 # IDEA : PRIORITY QUEUE
 # NOTE !!!
 # We just need to attend d where startTimei <= d <= endTimei, then we CAN attend the meeting
@@ -567,7 +567,7 @@ class Solution:
                 heapq.heappop(endday)
         return  ans
 
-# V1''
+# V1'
 # IDEA : PRIORITY QUEUE
 # https://leetcode.com/problems/maximum-number-of-events-that-can-be-attended/discuss/510263/JavaC%2B%2BPython-Priority-Queue
 # IDEA :
@@ -601,7 +601,7 @@ class Solution(object):
                     heapq.heappop(h)
             return res
 
-# V1''''
+# V1''
 # IDEA : HEAP
 # https://leetcode.com/problems/maximum-number-of-events-that-can-be-attended/discuss/1799845/Python-Heap
 # time = O(n log n + D), n = len(events), D = max end day
@@ -628,7 +628,7 @@ class Solution:
 
         return cnt
 
-# V1'''''
+# V1'''
 # IDEA : HEAP + GREEDY
 # https://leetcode.com/problems/maximum-number-of-events-that-can-be-attended/discuss/1414435/Python-Greedy%2BHeap
 # time = O(D + n log n), D = day range, n = len(events)
@@ -661,7 +661,7 @@ class Solution:
                 att += 1            
         return att
 
-# V1''''''
+# V1''''
 # IDEA : HEAP + index
 # https://leetcode.com/problems/maximum-number-of-events-that-can-be-attended/discuss/954460/Python%3A-faster-than-79.04-of-Python
 # time = O(D + n log n), D = day range, n = len(events)

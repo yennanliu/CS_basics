@@ -167,7 +167,7 @@ class Solution:
                 stack[-1][2] = e                                                # set the operation in the last element of stack
         return max(stack[0][0], stack[0][1])                  
         
-# V1''
+# V1'''
 # IDEA : DP
 # https://leetcode.com/problems/minimum-cost-to-change-the-final-value-of-expression/discuss/1267522/Python-DP-O(n)
 # time = O(n)

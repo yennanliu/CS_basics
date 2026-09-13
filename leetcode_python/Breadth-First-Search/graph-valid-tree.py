@@ -4,6 +4,8 @@
 """
 
 261. Graph Valid Tree
+Medium
+
 Given n nodes labeled from 0 to n-1 and a list of undirected edges (each edge is a pair of nodes), write a function to check whether these edges make up a valid tree.
 
 Example 1:
@@ -27,7 +29,6 @@ Adobe Amazon Facebook Google LinkedIn Pinterest Salesforce Zenefits
 # https://leetcode.ca/all/261.html
 # https://leetcode.ca/2016-08-17-261-Graph-Valid-Tree/
 
-
 """
 
 # V0
@@ -36,7 +37,7 @@ class Solution(object):
         pass
 
 
-# V0
+# V0-1
 # IDEA: UNION FIND
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/BFS/GraphValidTree.java#L31
 # time = O(n * α(n))  # union-find with path compression
@@ -155,7 +156,7 @@ class UnionFind(object):
         return True
 
 
-# V0-1
+# V0-2
 # IDEA: UNION FIND
 # time = O(n * α(n))  # union-find with path compression + union by rank
 # space = O(n)
@@ -204,7 +205,7 @@ class UnionFind(object):
         return True
 
 
-# V0-1
+# V0-3
 # IDEA: UNION FIND
 # time = O(n * α(n))  # union-find with path compression
 # space = O(n)
@@ -256,7 +257,7 @@ class Solution(object):
         return True
 
 
-# V0-2
+# V0-4
 # IDEA: DFS
 # time = O(V + E)  # V = n, E = len(edges)
 # space = O(V + E)
@@ -304,7 +305,7 @@ class Solution(object):
         return True
 
 
-# V0
+# V0-5
 # IDEA : DFS (NEED TO VALIDATE***)
 # class Solution(object):
 #     def validTree(self, n, edges):
@@ -325,7 +326,7 @@ class Solution(object):
 #         for key in _edges[key]:
 #             self.dfs(_edges, key, visited.append(key))
 
-# V0'
+# V0-6
 # IDEA : Quick Find
 # time = O(n^2)  # find has no path compression, worst-case skewed chain
 # space = O(n)
@@ -352,7 +353,7 @@ class Solution(object):
         else:
             return self.find(root, root[e])
 
-# V0'
+# V0-7
 # IDEA : BFS
 #       -> check if visited count is as same as "n"
 # time = O(V + E)  # V = n, E = len(edges)
@@ -382,7 +383,7 @@ class Solution:
  
         return len(visited)==n
 
-# V0''
+# V0-8
 # IDEA : DFS
 # time = O(V + E)  # V = n, E = len(edges)
 # space = O(V + E)

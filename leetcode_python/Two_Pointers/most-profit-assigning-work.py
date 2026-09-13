@@ -1,5 +1,7 @@
 """
-LeetCode 826. Most Profit Assigning Work
+
+826. Most Profit Assigning Work
+Medium
 
 We have jobs: difficulty[i] is the difficulty of the ith job, and profit[i] is the profit of the ith job. 
 
@@ -21,6 +23,7 @@ Notes:
 1 <= difficulty.length = profit.length <= 10000
 1 <= worker.length <= 10000
 difficulty[i], profit[i], worker[i]  are in range [1, 10^5]
+
 """
 
 # V0

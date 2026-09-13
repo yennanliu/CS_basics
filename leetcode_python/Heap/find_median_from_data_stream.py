@@ -256,7 +256,7 @@ class MedianFinder(object):
         return (left + right) / 2.0
 
 
-# V0-2
+# V0-3
 # IDEA: 2 PQ (small, big) (GPT)
 import heapq
 
@@ -318,7 +318,7 @@ class MedianFinder(object):
         return float(-self.s_pq[0])
 
 
-# V0-3
+# V0-4
 # https://docs.python.org/zh-tw/3/library/heapq.html
 # https://github.com/python/cpython/blob/3.10/Lib/heapq.py
 # Note !!! 
@@ -400,7 +400,7 @@ class MedianFinder:
             return float(large[0])
         return (large[0] - small[0]) / 2.0
 
-# V1''
+# V1'
 # https://leetcode.com/problems/find-median-from-data-stream/discuss/74047/JavaPython-two-heap-solution-O(log-n)-add-O(1)-find
 from heapq import *
 # time = O(log n) per addNum, O(1) per findMedian
@@ -422,7 +422,7 @@ class MedianFinder:
         else:
             return float(self.large[0])
 
-# V1''''
+# V1''
 # https://leetcode.com/problems/find-median-from-data-stream/discuss/74047/JavaPython-two-heap-solution-O(log-n)-add-O(1)-find
 # JAVA
 # private PriorityQueue<Integer> small = new PriorityQueue<>(Collections.reverseOrder());
@@ -537,7 +537,7 @@ class MedianFinder:
         else:
             return float(self.large[0])
 
-# V1''''''''
+# V1'''''''
 # http://bookshadow.com/weblog/2015/10/19/leetcode-find-median-data-stream/
 # IDEA : HEAP
 # time = O(log n) per addNum, O(1) per findMedian (custom binary heap)

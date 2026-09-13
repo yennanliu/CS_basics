@@ -2,6 +2,7 @@
 
 2291. Maximum Profit From Trading Stocks
 Medium
+
 (premium / locked problem)
 
 You are given two 0-indexed integer arrays of the same length present and future where present[i] is the current price of the ith stock and future[i] is the price of the ith stock a year in the future. You may buy each stock at most once. You are also given an integer budget representing the amount of money you currently have.

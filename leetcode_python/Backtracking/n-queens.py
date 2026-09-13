@@ -145,7 +145,7 @@ class Solution(object):
 
 
 
-# V0-0-1
+# V0-1
 # IDEA: BACKTRACK (gpt)
 """
 NOTE !!!
@@ -283,7 +283,7 @@ class Solution(object):
 
 
 
-# V0-1
+# V0-2
 # IDEA : BACKTRACK (PLACE ONE QUEEN PER ROW) + 3 "USED" SETS
 #
 #   place exactly ONE queen per row, so the row conflict is impossible
@@ -350,7 +350,7 @@ class Solution(object):
         backtrack(0)
         return res
 
-# V0-2
+# V0-3
 # IDEA : BACKTRACK + BITMASK
 #
 #   same search, but the 3 sets become 3 integers, so "is this cell

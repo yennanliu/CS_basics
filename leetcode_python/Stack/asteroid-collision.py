@@ -55,7 +55,7 @@ class Solution(object):
                 stack.append(item)
         return stack
 
-# V0
+# V0-1
 # IDEA : STACK
 # time = O(n)
 # space = O(n)
@@ -94,7 +94,7 @@ class Solution(object):
                 ans.append(new)
         return ans
 
-# V1
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/81079015
 # time = O(n)
 # space = O(n)

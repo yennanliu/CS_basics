@@ -1,8 +1,10 @@
 """
-https://leetcode.ca/2018-10-20-1055-Shortest-Way-to-Form-String/
-
 
 1055. Shortest Way to Form String
+Medium
+
+https://leetcode.ca/2018-10-20-1055-Shortest-Way-to-Form-String/
+
 Description
 A subsequence of a string is a new string that is formed from the original string by deleting some (can be none) of the characters without disturbing the relative positions of the remaining characters. (i.e., "ace" is a subsequence of "abcde" while "aec" is not).
 

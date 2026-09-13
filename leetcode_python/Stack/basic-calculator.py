@@ -46,7 +46,7 @@ class Solution(object):
         pass
 
 
-# V0-0-1
+# V0-1
 # IDEA: DEQUE  (gemini)
 """
 NOTE !!!
@@ -103,7 +103,7 @@ class Solution(object):
         return helper(queue)
 
 
-# V0-1
+# V0-2
 # IDEA: STACK (GPT)
 class Solution(object):
     def calculate(self, s):
@@ -146,7 +146,7 @@ class Solution(object):
 
 
 
-# V0-2
+# V0-3
 # IDEA: STACK (GEMINI)
 class Solution(object):
     def calculate(self, s):
@@ -195,7 +195,7 @@ class Solution(object):
         return res
 
 
-# V0
+# V0-4
 # IDEA : STACK
 # time = O(n)
 # space = O(n)
@@ -226,7 +226,7 @@ class Solution(object):
                 stack.pop(-1)
         return res
 
-# V0'
+# V0-5
 # IDEA : STACK
 # https://leetcode.com/problems/basic-calculator/solution/
 # time = O(n)
@@ -319,7 +319,7 @@ class Solution(object):
                 stack.pop()
         return res
 
-# V1
+# V1'
 # IDEA : Stack and String Reversal
 # https://leetcode.com/problems/basic-calculator/solution/
 # time = O(n)
@@ -385,7 +385,7 @@ class Solution:
         # Evaluate any left overs in the stack.
         return self.evaluate_expr(stack)
 
-# V1
+# V1''
 # IDEA : Stack and No String Reversal
 # https://leetcode.com/problems/basic-calculator/solution/
 # time = O(n)
@@ -454,7 +454,7 @@ class Solution:
 
         return res + sign * operand
 
-# V1'
+# V1'''
 # https://leetcode.com/problems/basic-calculator/discuss/196363/Python-solution
 # IDEA : STACK
 # time = O(n)
@@ -505,7 +505,7 @@ class Solution:
             res += int(prev)
         return res
 
-# V1''
+# V1''''
 # https://leetcode.com/problems/basic-calculator/discuss/62344/Easy-18-lines-C%2B%2B-16-lines-Python
 # IDEA : STACK
 # time = O(n)
@@ -529,7 +529,7 @@ class Solution:
             i += 1
         return total
 
-# V1''''
+# V1'''''
 # https://leetcode.com/problems/basic-calculator/discuss/62483/AC-Python-Solution
 # IDEA : STACK
 # time = O(n)

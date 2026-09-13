@@ -94,7 +94,7 @@ class Solution(object):
         return res
 
 
-# V0
+# V0-2
 # IDEA: DIFF ARRAY + PREFIX SUM (GPT)
 # time = O(n + k)
 # space = O(n)
@@ -179,7 +179,7 @@ class Solution(object):
         return result
 
 
-# V0-1
+# V0-3
 # IDEA: DIFF ARRAY + PREFIX SUM (GEMINI)
 # time = O(n + k)
 # space = O(n)
@@ -213,7 +213,7 @@ class Solution(object):
         return res
 
 
-# V0
+# V0-4
 # IDEA : double loop -> 2 single loops,  prefix sum
 # time = O(n + k)
 # space = O(n)
@@ -241,7 +241,7 @@ class Solution(object):
         #print ("--> res = " + str(res))
         return res
 
-# V0'
+# V0-5
 # IDEA : double loop -> 2 single loops,  prefix sum
 # time = O(n + k)
 # space = O(n)
@@ -269,7 +269,7 @@ class Solution(object):
         # NOTE : we return res[0:-1]
         return res[0:-1]
 
-# V0'
+# V0-6
 # IDEA : double loop -> 2 single loops,  prefix sum
 # time = O(n + k)
 # space = O(n)
@@ -286,7 +286,7 @@ class Solution(object):
         
         return ret[0:-1]
 
-# V0
+# V0-7
 # IDEA : naive (TLE)
 # class Solution(object):
 #     def getModifiedArray(self, length, updates):
@@ -399,7 +399,7 @@ class Solution:
 # https://blog.csdn.net/qq508618087/article/details/51864853
 # DEV 
 
-# V1'''''''
+# V1''''''
 # IDEA :  Naïve Approach
 # https://leetcode.com/problems/range-addition/solution/
 # C++
@@ -418,7 +418,7 @@ class Solution:
 #     return result;
 # }
 
-# V1'''''''''
+# V1'''''''
 # IDEA : Range Caching
 # https://leetcode.com/problems/range-addition/solution/
 # C++

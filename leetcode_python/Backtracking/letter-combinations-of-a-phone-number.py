@@ -146,7 +146,7 @@ class Solution(object):
             tmp.pop()
 
 
-# V0
+# V0-1
 # IDEA : backtracking
 # time = O(n * 4^n)  # n = len(digits)
 # space = O(n)
@@ -177,7 +177,7 @@ class Solution(object):
         help(idx, cur)
         return res
 
-# V0'
+# V0-2
 # IDEA : dfs + backtracking
 # time = O(n * 4^n)  # n = len(digits)
 # space = O(n)
@@ -211,7 +211,7 @@ class Solution(object):
         dfs(0,"")
         return res
 
-# V0''
+# V0-3
 # IDEA : dfs + backtracking
 # time = O(n * 4^n)  # n = len(digits)
 # space = O(n)
@@ -235,7 +235,7 @@ class Solution(object):
         dfs(digits, 0, "")
         return res
 
-# V0''''
+# V0-4
 # time = O(n * 4^n)  # n = len(digits)
 # space = O(n)
 class Solution(object):
@@ -247,7 +247,7 @@ class Solution(object):
             res = [w + c for c in d[e] for w in res]
         return res
 
-# V0''''''
+# V0-5
 # time = O(n * 4^n)  # n = len(digits)
 # space = O(n)
 class Solution(object):
@@ -265,7 +265,7 @@ class Solution(object):
             r = [ b+a for a in d[e] for b in r]
         return r
 
-# V0'''''''
+# V0-6
 # IDEA : DFS
 # time = O(n * 4^n)  # n = len(digits)
 # space = O(n)

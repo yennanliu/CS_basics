@@ -2,6 +2,7 @@
 
 687. Longest Univalue Path
 Medium
+
 3.9K
 649
 Companies
@@ -126,7 +127,7 @@ class Solution(object):
 
 
 
-# V0
+# V0-2
 # time = O(n)
 # space = O(h), recursion stack
 class Solution(object):

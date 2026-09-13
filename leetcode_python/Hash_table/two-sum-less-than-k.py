@@ -1,6 +1,7 @@
 """
 
-LeetCode 1099. Two Sum Less Than K
+1099. Two Sum Less Than K
+Easy
 
 https://goodtecher.com/leetcode-1099-two-sum-less-than-k/
 
@@ -67,7 +68,7 @@ class Solution:
                 ans = max(ans, n1 + n2)
         return ans
 
-# V1'
+# V1''
 # https://blog.csdn.net/qq_32424059/article/details/94226165
 
 # V2

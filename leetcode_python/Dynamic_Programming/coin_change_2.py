@@ -1,5 +1,8 @@
 """
 
+518. Coin Change II
+Medium
+
 518. Coin Change 2
 Medium
 
@@ -111,7 +114,7 @@ class Solution(object):
 
 
 
-# V0-0-1
+# V0-1
 # IDEA: 1D DP (unbounded 0/1 knapsack) (gpt)
 # https://yennj12.js.org/CS_basics/cheatsheets/dp.html#0-1-dp
 # https://github.com/yennanliu/CS_basics/issues/103
@@ -174,7 +177,7 @@ class Solution(object):
 
 
 
-# V0
+# V0-2
 # IDEA: 1D DP
 """
 NOTE !!!
@@ -305,7 +308,7 @@ class Solution(object):
 
 
 
-# V0-1
+# V0-3
 # IDEA: 1D DP
 """
 
@@ -363,7 +366,7 @@ class Solution(object):
 
 
 
-# V0
+# V0-4
 # IDEA : DP
 # DP EQUATION : dp[i] += dp[i - coin]
 """
@@ -494,7 +497,7 @@ class Solution:
                 dp[x] += dp[x - coin]
         return dp[amount]
 
-# V1'
+# V1''
 # https://www.jiuzhang.com/solution/coin-change-ii/#tag-highlight-lang-python
 """
 

@@ -1,7 +1,7 @@
 """
 
 155. Min Stack
-Easy
+Medium
 
 Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.
 
@@ -149,7 +149,7 @@ class MinStack(object):
 
 
 
-# V0
+# V0-2
 # IDEA : STACK
 # IDEA :
 # -> USE A STACK TO STORAGE MIN VALUE IN THE STACK WHEN EVERY PUSH
@@ -190,7 +190,7 @@ class MinStack(object):
         # the latest min in stack is at stack[-1][1]
         return self.stack[-1][1]
 
-# V0'
+# V0-3
 # IDEA : STACK
 # time = O(1)  # per operation (push/pop/top/getMin)
 # space = O(n)
@@ -218,7 +218,7 @@ class MinStack(object):
     def getMin(self):
         return self.min[-1]
 
-# V0
+# V0-4
 # IDEA : heap
 # TODO : validate if below is correct
 # time = O(log n) for push/pop, O(1) for top, O(log n) for getMin (as implemented, pops from heap)
@@ -315,7 +315,7 @@ assert s.push(99) == None
 assert s.pop() == 99
 assert s.top() ==100
 
-# V1''
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79253237
 # time = O(1)  # per operation (push/pop/top/getMin)
 # space = O(n)
@@ -359,7 +359,7 @@ class MinStack(object):
         """
         return self.min[-1]
 
-# V1''''
+# V1''
 # https://www.cnblogs.com/zuoyuan/p/4091870.html
 # stack1 : regular stack
 # stack2 : stack for return minimum in-stack element
@@ -391,7 +391,7 @@ class MinStack:
     def getMin(self):
         return self.stack2[-1]
 
-# V1'''''
+# V1'''
 # time = O(1)  # per operation (push/pop/top/getMin)
 # space = O(n)
 class MinStack:
@@ -428,7 +428,7 @@ class MinStack:
     def getMin(self):
         return self.min
 
-# V1'''''''
+# V1''''
 # time = O(1)  # per operation (push/pop/top/getMin)
 # space = O(n)
 class MinStack2:
@@ -467,7 +467,7 @@ class MinStack2:
 #     stack.push(-1)
 #     print([stack.top(), stack.getMin()])
 
-# V1'''''''''
+# V1'''''
 # time = O(n)
 # space = O(1)
 class MinStack(object):

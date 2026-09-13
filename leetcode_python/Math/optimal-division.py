@@ -55,7 +55,7 @@ class Solution(object):
             return '/'.join(nums)
         return str(nums[0]) + "/" + "(" + "/".join( str(i) for i in nums[1:]) + ")"
 
-# V0'
+# V0-1
 # IDEA : MATH 
 # time = O(n)   # n = len(nums)
 # space = O(n)
@@ -66,7 +66,7 @@ class Solution(object):
             return '/'.join(nums)
         return '{}/({})'.format(nums[0], '/'.join(nums[1:]))
 
-# V0''
+# V0-2
 # IDEA : string op
 # IDEA : only 1st "/" need to be "/", 
 #        -> other "/" can be transformed into "*"
@@ -93,7 +93,7 @@ class Solution(object):
         _res = pres + "(" + res + ")"
         return _res
 
-# V0'''
+# V0-3
 # time = O(n)   # n = len(nums)
 # space = O(n)
 class Solution(object):

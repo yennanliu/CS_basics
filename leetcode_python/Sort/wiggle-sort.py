@@ -1,3 +1,12 @@
+"""
+
+280. Wiggle Sort
+Medium
+
+https://leetcode.com/problems/wiggle-sort/
+
+"""
+
 # Wiggle Sort
 # Given an unsorted array nums, reorder it in-place such that nums[0] <= nums[1] >= nums[2] <= nums[3]....
 # For example, given nums = [3, 5, 2, 1, 6, 4], one possible answer is [1, 6, 2, 5, 3, 4].
@@ -36,7 +45,7 @@ class Solution:
             elif i%2 == 0 and nums[i]> nums[i+1]:
                 nums[i], nums[i+1] = nums[i+1], nums[i]
 
-# V1''
+# V1'
 # https://www.jiuzhang.com/solution/wiggle-sort/#tag-highlight-lang-python
 # time = O(n)
 # space = O(1)

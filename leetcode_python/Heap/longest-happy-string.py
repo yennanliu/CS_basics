@@ -3,12 +3,8 @@
 """
 
 1405. Longest Happy String
-Solved
 Medium
-Topics
-premium lock icon
-Companies
-Hint
+
 A string s is called happy if it satisfies the following conditions:
 
 s only contains the letters 'a', 'b', and 'c'.
@@ -242,7 +238,7 @@ class Solution(object):
         return "".join(res)
 
 
-# V0-2
+# V0-3
 # IDEA: PQ (gpt)
 import heapq
 
@@ -327,7 +323,7 @@ class Solution(object):
 # V1
 
 
-# V2-1
+# V2
 # IDEA: PQ
 # https://leetcode.com/problems/longest-happy-string/editorial/
 class Solution:
@@ -365,7 +361,7 @@ class Solution:
         return "".join(result)
 
 
-# V2-2
+# V2'
 # IDEA: COUNTER
 # https://leetcode.com/problems/longest-happy-string/editorial/
 class Solution:

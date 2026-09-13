@@ -86,7 +86,7 @@ class Solution(object):
         print (d)
         return longest
 
-# V0'
+# V0-1
 # IDEA : HASH TABLE
 # time = O(n)
 # space = O(d)  # d = max depth of the paths
@@ -104,7 +104,7 @@ class Solution(object):
                 pathlen[depth + 1] = pathlen[depth] + len(name) + 1
         return maxlen
 
-# V0''
+# V0-2
 # IDEA : stack + string op
 # time = O(n)  # n = len(input); amortized stack push/pop
 # space = O(d)  # d = max depth of the paths
@@ -148,7 +148,7 @@ class Solution:
                 ans = max(ans, stack[-1][0] + stack[-1][1])   
         return ans
 
-# V1
+# V1'
 # IDEA : dict + replae, split
 # https://leetcode.com/problems/longest-absolute-file-path/discuss/86640/python-solution-easy-to-understand
 # time = O(n * d)  # n = len(input), d = max depth (directory levels seen so far)
@@ -170,7 +170,7 @@ class Solution(object):
                 longest=max(longest,length)
         return longest
 
-# V1'
+# V1''
 # http://bookshadow.com/weblog/2016/08/21/leetcode-longest-absolute-file-path/
 # time = O(n)  # n = len(input); amortized stack push/pop
 # space = O(d)  # d = max depth of the paths
@@ -197,7 +197,7 @@ class Solution(object):
                 ans = max(ans, lengthSum)
         return ans
 
-# V1''
+# V1'''
 # https://leetcode.com/problems/longest-absolute-file-path/discuss/86619/Simple-Python-solution
 # IDEA : lstrip() : Remove spaces to the left of the string:
 # https://www.w3schools.com/python/ref_string_lstrip.asp
@@ -218,7 +218,7 @@ class Solution(object):
 
 ### Test case : dev
 
-# V1'''
+# V1''''
 # http://bookshadow.com/weblog/2016/08/21/leetcode-longest-absolute-file-path/
 # time = O(n)
 # space = O(d)  # d = max depth of the paths
@@ -239,7 +239,7 @@ class Solution(object):
                 pathlen[depth + 1] = pathlen[depth] + len(name) + 1
         return maxlen
 
-# V1''''
+# V1'''''
 # https://www.jiuzhang.com/solution/longest-absolute-file-path/#tag-highlight-lang-python
 # time = O(n^2)  # worst case: cumulative path strings rebuilt via concatenation per line
 # space = O(n)  # dict stores full cumulative path strings per depth level
@@ -264,7 +264,7 @@ class Solution:
 
         return result
 
-# V1'''''
+# V1''''''
 # https://leetcode.com/problems/longest-absolute-file-path/discuss/266896/Simple-(Python)-solution-with-detailed-explanation
 # time = O(n)
 # space = O(d)  # d = max depth of the paths

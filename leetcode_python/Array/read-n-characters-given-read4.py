@@ -150,7 +150,7 @@ class Solution:
 #     }
 # };
 
-# V1'
+# V1''
 # http://www.voidcn.com/article/p-pfdpmnvw-qp.html
 # https://www.cnblogs.com/yrbbest/p/4489710.html
 # The read4 API is already defined for you.
@@ -176,7 +176,7 @@ class Solution(object):
             if current!=4:
                 return index 
 
-# V1''
+# V1'''
 # https://www.jiuzhang.com/solution/read-n-characters-given-read4-ii-call-multiple-times/#tag-highlight-lang-python
 class Solution:
     # time = O(1)

@@ -57,7 +57,7 @@ class Solution(object):
                 return True      
         return False
 
-# V0' 
+# V0-1
 # IDEA : MAINTAIN var a, b 
 #        AND GO THROUGH nums to check if there exists x (on the right hand side of a, b )
 #        such that x > a > b
@@ -88,7 +88,7 @@ class Solution(object):
                 return True
         return False
 
-# V0'
+# V0-2
 # IDEA : brute force + 2 pointers : TLE
 # time = O(n^3)
 # space = O(1)

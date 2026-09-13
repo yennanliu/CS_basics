@@ -1,5 +1,8 @@
 """
 
+674. Longest Continuous Increasing Subsequence
+Easy
+
 Given an unsorted array of integers nums, return the length of the longest continuous increasing subsequence (i.e. subarray). The subsequence must be strictly increasing.
 
 A continuous increasing subsequence is defined by two indices l and r (l < r) such that it is [nums[l], nums[l + 1], ..., nums[r - 1], nums[r]] and for each l <= i < r, nums[i] < nums[i + 1].
@@ -50,7 +53,7 @@ class Solution:
         # for dealing with the [1,1,1] case (i.e. the length should 1 rather than 0 in this case)
         return  max(r, 1)
 
-# V0'
+# V0-1
 # IDEA : GREEDY
 # DEMO :  CHECK BELOW CASES
 # nums = [1,2,3,4,2,5,6,7]
@@ -82,7 +85,7 @@ class Solution:
         result = max(result, count)
         return result
 
-# V0'
+# V0-2
 # IDEA : GREEDY
 # time = O(n^2)
 # space = O(1)
@@ -103,7 +106,7 @@ class Solution(object):
             count = max(count, tmp_count)
         return count 
 
-# V0''
+# V0-3
 # IDEA : DP
 # time = O(n)
 # space = O(n)

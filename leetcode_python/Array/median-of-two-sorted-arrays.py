@@ -3,7 +3,6 @@
 4. Median of Two Sorted Arrays
 Hard
 
-
 Given two sorted arrays nums1 and nums2 of size m and n respectively, return the median of the two sorted arrays.
 
 The overall run time complexity should be O(log (m+n)).
@@ -254,7 +253,7 @@ class Solution(object):
         return float((left + right) / 2.0)
 
 
-# V0-5
+# V0-4
 # IDEA : heapq
 # time = O(m+n)
 # space = O(m+n)
@@ -294,7 +293,7 @@ class Solution:
             return (nums[L//2 - 1] + nums[L//2])/2.0 # NOTE this !!!
 
 
-# V1
+# V1'
 # IDEA : heapq
 # https://leetcode.com/problems/median-of-two-sorted-arrays/discuss/1373385/Python-3-Easy-With-explanation-Heaps
 # IDEA :
@@ -315,7 +314,7 @@ class Solution:
             right = int(len(final)/2)
             return (final[left]+final[right])/2.0
 
-# V1
+# V1''
 # IDEA : bisect
 # https://leetcode.com/problems/median-of-two-sorted-arrays/discuss/2755/9-lines-O(log(min(mn)))-Python
 # time = O(log(min(m,n)))
@@ -332,7 +331,7 @@ class Solution:
         nextfew = sorted(a[i:i+2] + b[after-i:after-i+2])
         return (nextfew[0] + nextfew[1 - (m+n)%2]) / 2.0
 
-# V1
+# V1'''
 # IDEA : binary search
 # https://leetcode.com/problems/median-of-two-sorted-arrays/discuss/2755/9-lines-O(log(min(mn)))-Python
 # time = O(log(min(m,n)))
@@ -353,7 +352,7 @@ class Solution:
         nextfew = sorted(a[i:i+2] + b[after-i:after-i+2])
         return (nextfew[0] + nextfew[1 - (m+n)%2]) / 2.0
 
-# V1
+# V1''''
 # https://leetcode.com/problems/median-of-two-sorted-arrays/discuss/468832/Simple-python-solution
 # time = O((m+n)log(m+n))
 # space = O(m+n)
@@ -368,7 +367,7 @@ class Solution:
                          
         return med
 
-# V1
+# V1'''''
 # https://leetcode.com/problems/median-of-two-sorted-arrays/discuss/952647/Simple-python
 # time = O((m+n)log(m+n))
 # space = O(m+n)

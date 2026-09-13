@@ -2,6 +2,7 @@
 
 3135. Equalize Strings by Adding or Removing Characters at Ends
 Medium
+
 🔒 (premium)
 
 You are given two strings initial and target. In one operation, you can add or remove one character only at the beginning or the end of the string initial.

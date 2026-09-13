@@ -133,7 +133,7 @@ class NestedIterator(object):
                 self.flatten(item.getList())
 
 
-# V0'
+# V0-2
 # time = O(n)
 # space = O(n)
 import collections
@@ -159,7 +159,7 @@ class NestedIterator(object):
 
         return len(self.queue)
 
-# V0''
+# V0-3
 #### key : define a r = [] outside of the func
 # r = []
 # def flatten_array(_array):
@@ -241,7 +241,7 @@ class NestedIterator(object):
                 self.stack.append(elem)
         return False
 
-# V1
+# V1''
 # IDEA :  Make a Flat List with Recursion
 # https://leetcode.com/problems/flatten-nested-list-iterator/solution/
 # time = O(n)
@@ -266,7 +266,7 @@ class NestedIterator:
     def hasNext(self):
         return self._position + 1 < len(self._integers)
 
-# V1
+# V1'''
 # IDEA : Stack
 # https://leetcode.com/problems/flatten-nested-list-iterator/solution/
 # time = O(1) amortized per next()/hasNext() call, O(n) total across full iteration
@@ -294,7 +294,7 @@ class NestedIterator:
             # the stack in reverse order.
             self.stack.extend(reversed(self.stack.pop().getList()))
 
-# V1
+# V1''''
 # IDEA : Two Stacks
 # https://leetcode.com/problems/flatten-nested-list-iterator/solution/
 # time = O(1) amortized per next()/hasNext() call, O(n) total across full iteration
@@ -341,7 +341,7 @@ class NestedIterator:
         self.make_stack_top_an_integer()
         return len(self.stack) > 0
 
-# V1
+# V1'''''
 # IDEA : Stack of Iterators
 # https://leetcode.com/problems/flatten-nested-list-iterator/solution/
 # JAVA
@@ -417,7 +417,7 @@ class NestedIterator:
 # }
 
 
-# V1
+# V1''''''
 # IDEA : Using a Generator
 # https://leetcode.com/problems/flatten-nested-list-iterator/solution/
 # time = O(1) amortized per next()/hasNext() call, O(n) total across full iteration

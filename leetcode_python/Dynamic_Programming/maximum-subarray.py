@@ -1,7 +1,7 @@
 """
 
 53. Maximum Subarray
-Easy
+Medium
 
 Given an integer array nums, find the contiguous subarray (containing at least one number) which has the largest sum and return its sum.
 
@@ -77,7 +77,7 @@ class Solution(object):
         return max_sum
 
 
-# V0
+# V0-1
 # IDEA : DP (Kadane’s algo)
 # DP EQUATION :
 # -> dp[i+1] = dp[i] + s[i+1] (if dp[i] >= 0 )
@@ -129,7 +129,7 @@ class Solution(object):
         return max_sum
 
 
-# V0
+# V0-2
 # IDEA : DP
 # DP EQUATION :
 # -> dp[i+1] = dp[i] + s[i+1] (if dp[i] >= 0 )
@@ -178,7 +178,7 @@ class Solution(object):
             max_result = max(max_result, dp[i])
         return max_result
 
-# V0'
+# V0-3
 # IDEA : DP
 """
 
@@ -218,7 +218,7 @@ class Solution(object):
             max_ = max(max_, cumsum)
         return max_ 
 
-# V0'
+# V0-4
 # IDEA : BRUTE FORCE (TLE)
 """
 
@@ -261,7 +261,7 @@ class Solution(object):
                 res = max(res, sum(tmp))
         return res
 
-# V1''
+# V1
 # https://blog.csdn.net/qqxx6661/article/details/78167981
 # IDEA : DP
 # DP EQUATION :
@@ -310,7 +310,7 @@ class Solution(object):
             m = max(current, m)
         return m
 
-# V1''
+# V1'
 # https://blog.csdn.net/qqxx6661/article/details/78167981
 # IDEA : DP
 # DP STATUS EQUATION : 
@@ -361,7 +361,7 @@ class Solution(object):
                 max_result = dp[i]
         return max_result
 
-# V1 
+# V1''
 # https://blog.csdn.net/hyperbolechi/article/details/43038749
 # IDEA : BRUTE FORCE
 """
@@ -401,7 +401,7 @@ class Solution:
                     result=arr[i:j]
         return result
 
-# V1
+# V1'''
 # IDEA :  Optimized Brute Force
 # https://leetcode.com/problems/maximum-subarray/solution/
 """
@@ -441,7 +441,7 @@ class Solution:
         
         return max_subarray
 
-# V1
+# V1''''
 # IDEA : Dynamic Programming, Kadane's Algorithm
 # https://leetcode.com/problems/maximum-subarray/solution/
 """
@@ -483,7 +483,7 @@ class Solution:
         
         return max_subarray
 
-# V1
+# V1'''''
 # IDEA : Divide and Conquer
 # https://leetcode.com/problems/maximum-subarray/solution/
 """

@@ -3,7 +3,6 @@
 208. Implement Trie (Prefix Tree)
 Medium
 
-Share
 A trie (pronounced as "try") or prefix tree is a tree data structure used to efficiently store and retrieve keys in a dataset of strings. There are various applications of this data structure, such as autocomplete and spellchecker.
 
 Implement the Trie class:
@@ -184,7 +183,7 @@ class Trie(object):
         return True
 
 
-# V0-5
+# V0-2
 # IDEA : trie concept :  dict + tree
 # https://blog.csdn.net/fuxuemingzhu/article/details/79388432
 # deine node
@@ -239,7 +238,7 @@ class Trie():
                 return False
         return True
 
-# V0'
+# V0-3
 # IDEA : trie concept :  dict + tree
 # https://blog.csdn.net/fuxuemingzhu/article/details/79388432
 ### NOTE : we need implement Node class
@@ -287,7 +286,7 @@ class Trie(object):
         ### NOTE : we don't need to check isword here, since it is "startsWith"
         return True
 
-# V0''
+# V0-4
 # IDEA : USE dict AS data structure (# TrieNode: is dict, or hashmap)
 # time = O(L) per insert/search/startsWith call, L = length of word/prefix
 # space = O(total chars inserted) for the trie storage
@@ -355,7 +354,7 @@ class Trie(object):
             p = p[c]
         return p
 
-# V1 
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79388432
 class Node(object):
     def __init__(self):
@@ -415,7 +414,7 @@ class Trie(object):
 # param_2 = obj.search(word)
 # param_3 = obj.startsWith(prefix)
 
-# V1'
+# V1''
 # https://www.jiuzhang.com/solution/implement-trie-prefix-tree/#tag-highlight-lang-python
 class TrieNode:
     
@@ -470,7 +469,7 @@ class Trie:
     def startsWith(self, prefix):
         return self.find(prefix) is not None
 
-# V1''
+# V1'''
 # https://www.jiuzhang.com/solution/implement-trie-prefix-tree/#tag-highlight-lang-python
 class TrieNode:
     

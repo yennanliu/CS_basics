@@ -78,7 +78,7 @@ class Solution(object):
             res.append((i >> 1) ^ i)
         return res
 
-# V0
+# V0-1
 # IDEA : RECURSION & grayCode property
 # time = O(2^n)
 # space = O(2^n)
@@ -94,7 +94,7 @@ class Solution(object):
 
         return [int(x, 2) for x in help(n)]
 
-# V0
+# V0-2
 # IDEA : RECURSION & grayCode property
 # -> binary representation of grayCode(n) can be composed of the solution of grayCode(n - 1) padded with zeros, concatenated with the reversed grayCode(n - 1) padded with ones.
 # -> example : the binary representation of grayCode(2) is [00, 01, 11, 10]
@@ -189,7 +189,7 @@ class Solution:
 
 ### Test case : dev 
 
-# V1'
+# V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/80664204
 # IDEA : ITERATION
 # time = O(2^n)
@@ -212,7 +212,7 @@ class Solution(object):
             grays[i] = n_gray
         return map(lambda x: int(x, 2), grays[n])
 
-# V1'
+# V1'''
 # https://blog.csdn.net/fuxuemingzhu/article/details/80664204
 # IDEA : RECURSION
 # time = O(2^n)
@@ -236,7 +236,7 @@ class Solution(object):
             ans = ['0' + x for x in pre_gray] + ['1' + x for x in pre_gray[::-1]]
         return ans
 
-# V1''
+# V1''''
 # https://blog.csdn.net/qqxx6661/article/details/78371259
 # time = O(2^n)
 # space = O(2^n)

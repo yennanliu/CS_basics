@@ -1,6 +1,7 @@
 """
 
 663. Equal Tree Partition
+Medium
 
 Given a binary tree with n nodes, your task is to check if it's possible to partition the tree to two trees which have the equal sum of values after removing exactly one edge on the original tree.
 
@@ -42,7 +43,6 @@ The range of tree node value is in the range of [-100000, 100000].
 Difficulty:
 Medium
 
-
 """
 
 # NOTE !!! this problem seems can only be solved with DFS approach (but not BFS)
@@ -64,7 +64,7 @@ class Solution(object):
         #print ("seen = " + str(seen))
         return seen[-1] / 2.0 in seen[:-1]
 
-# V0''
+# V0-1
 # IDEA : DFS + cache
 # time = O(n)
 # space = O(n)
@@ -81,7 +81,7 @@ class Solution(object):
         seen.pop()
         return total / 2.0 in seen
 
-# V0'
+# V0-2
 #### NEED TO VALIDATE <--- WRONG, plz check # LC 508
 #   -> we should use below sum_ for sum of sub tree
         # def sum_(node):
@@ -105,7 +105,7 @@ class Solution(object):
 #         _total_sum = tmp[-1]
 #         return _total_sum // 2 in tmp
 
-# V0''
+# V0-3
 ### NOTE : 
 ### THE PROBLEM IS TO CHECK 
 ### "IF THERE IS A WAY TO USE A LINE SPLIT WHOLE TREE INTO 2 SUB TREE WITH SAME SUM"
@@ -136,7 +136,7 @@ class Solution:
             self.mp[sum] += 1
         return sum
 
-# V0'
+# V0-4
 # time = O(n)
 # space = O(n)
 class Solution(object):
@@ -234,7 +234,7 @@ class Solution(object):
         seen.pop()
         return total / 2.0 in seen
 
-# V1
+# V1'''
 # IDEA : DFS
 # https://leetcode.com/problems/equal-tree-partition/solution/
 # time = O(n)

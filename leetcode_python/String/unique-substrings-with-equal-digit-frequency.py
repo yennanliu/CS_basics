@@ -2,6 +2,7 @@
 
 2168. Unique Substrings With Equal Digit Frequency
 Medium
+
 (premium / locked problem)
 
 You are given a digit string s.

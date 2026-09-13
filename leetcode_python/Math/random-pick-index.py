@@ -1,5 +1,8 @@
 """
 
+398. Random Pick Index
+Medium
+
 Given an integer array nums with possible duplicates, randomly output the index of a given target number. You can assume that the given target number must exist in the array.
 
 Implement the Solution class:
@@ -47,7 +50,7 @@ class Solution(object):
                 idxs.append(i)
         return idxs[random.randint(0, len(idxs) - 1)]
 
-# V0'
+# V0-1
 # time = O(n)  # n = len(nums), scan in pick()
 # space = O(n)  # indexes list can hold up to n indices
 from random import randint

@@ -2,6 +2,7 @@
 
 3294. Convert Doubly Linked List to Array II
 Medium
+
 🔒 (premium)
 
 You are given an arbitrary node from a doubly linked list, which contains nodes that have a next pointer and a previous pointer.

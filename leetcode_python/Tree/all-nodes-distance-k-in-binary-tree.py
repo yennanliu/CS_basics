@@ -3,7 +3,6 @@
 863. All Nodes Distance K in Binary Tree
 Medium
 
-
 Given the root of a binary tree, the value of a target node target, and an integer k, return an array of the values of all nodes that have a distance k from the target node.
 
 You can return the answer in any order.
@@ -93,7 +92,7 @@ class Solution(object):
         self.build_graph(node.right, node)
 
 
-# V0
+# V0-1
 # IDEA: DFS + BFS (GPT)
 """
 CORE IDEA:
@@ -168,7 +167,7 @@ class Solution(object):
         self.build_graph(root.right)
 
 
-# V0
+# V0-2
 # IDEA: DFS + BFS (gemini)
 """
 CORE IDEA:
@@ -240,68 +239,6 @@ class Solution(object):
         self.build_graph(node.right, node)
 
 
-# V0-0-1
-# IDEA: BFS (gemini)
-"""
-CORE IDEA:
-
-
--> Use BFS to radiate outward from the target node
-
-
-1. build the graph: {node: parent}
-2. use BFS, init q as [target, 0]    (node, dist)
-3. run BFS, collect nodes when dist == k
-"""
-import collections
-
-class Solution(object):
-    def distanceK(self, root, target, k):
-        """
-        :type root: TreeNode
-        :type target: TreeNode
-        :type k: int
-        :rtype: List[int]
-        """
-        # Step 1: Traverse the tree to map every node to its parent
-        parents = {}
-        def add_parents(node, parent):
-            if not node:
-                return
-            parents[node] = parent
-            add_parents(node.left, node)
-            add_parents(node.right, node)
-            
-        add_parents(root, None)
-        
-        # Step 2: Use BFS to radiate outward from the target node
-        queue = collections.deque([(target, 0)]) # (current_node, distance)
-        visited = set([target])
-        ans = []
-        
-        while queue:
-            node, dist = queue.popleft()
-            
-            # If we reached distance k, add to answer. 
-            # We don't need to go any further down this path!
-            if dist == k:
-                ans.append(node.val)
-                continue
-                
-            # Look at all 3 possible directions: Left, Right, and Up (Parent)
-            for neighbor in (node.left, node.right, parents[node]):
-                # If the neighbor exists and we haven't visited it yet
-                if neighbor and neighbor not in visited:
-                    visited.add(neighbor)
-                    queue.append((neighbor, dist + 1))
-                    
-        return ans
-
-
-# V0-1
-
-# V0-2
-
 # V0-3
 # IDEA: BFS (gemini)
 """
@@ -359,7 +296,69 @@ class Solution(object):
                     
         return ans
 
+
 # V0-4
+
+# V0-5
+
+# V0-6
+# IDEA: BFS (gemini)
+"""
+CORE IDEA:
+
+
+-> Use BFS to radiate outward from the target node
+
+
+1. build the graph: {node: parent}
+2. use BFS, init q as [target, 0]    (node, dist)
+3. run BFS, collect nodes when dist == k
+"""
+import collections
+
+class Solution(object):
+    def distanceK(self, root, target, k):
+        """
+        :type root: TreeNode
+        :type target: TreeNode
+        :type k: int
+        :rtype: List[int]
+        """
+        # Step 1: Traverse the tree to map every node to its parent
+        parents = {}
+        def add_parents(node, parent):
+            if not node:
+                return
+            parents[node] = parent
+            add_parents(node.left, node)
+            add_parents(node.right, node)
+            
+        add_parents(root, None)
+        
+        # Step 2: Use BFS to radiate outward from the target node
+        queue = collections.deque([(target, 0)]) # (current_node, distance)
+        visited = set([target])
+        ans = []
+        
+        while queue:
+            node, dist = queue.popleft()
+            
+            # If we reached distance k, add to answer. 
+            # We don't need to go any further down this path!
+            if dist == k:
+                ans.append(node.val)
+                continue
+                
+            # Look at all 3 possible directions: Left, Right, and Up (Parent)
+            for neighbor in (node.left, node.right, parents[node]):
+                # If the neighbor exists and we haven't visited it yet
+                if neighbor and neighbor not in visited:
+                    visited.add(neighbor)
+                    queue.append((neighbor, dist + 1))
+                    
+        return ans
+
+# V0-7
 # IDEA: DFS (gpt)
 class Solution(object):
     def distanceK(self, root, target, k):
@@ -409,7 +408,7 @@ class Solution(object):
         return -1
 
 
-# V0
+# V0-8
 # IDEA : DFS + BFS
 # https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/discuss/604718/Python-BFS-solution
 # DEMO
@@ -447,7 +446,7 @@ class Solution:
                     q.append((node,j+1))
         return ans if len(q) < K else [target.val]
 
-# V0'
+# V0-9
 # IDEA : DFS + BFS
 # time = O(n)  # n = number of tree nodes
 # space = O(n)
@@ -685,7 +684,7 @@ class Solution:
         dfs(root, path[root.val])
         return res
 
-# V1''''''
+# V1'''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/82709619
 # Definition for a binary tree node.
 # class TreeNode(object):
@@ -720,7 +719,7 @@ class Solution(object):
             visited |= set(bfs)
         return bfs
 
-# V1'''''''
+# V1''''''
 # https://www.jiuzhang.com/solution/all-nodes-distance-k-in-binary-tree/#tag-highlight-lang-python
 # time = O(n)  # n = number of tree nodes
 # space = O(n)
@@ -746,7 +745,7 @@ class Solution(object):
                     queue.append((nei, d+1))
         return []
 
-# V1''''''''''
+# V1'''''''
 # https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/solution/
 # IDEA :  Annotate Parent
 # PROCESS:
@@ -778,7 +777,7 @@ class Solution(object):
 
         return []
 
-# V1''''''''''
+# V1''''''''
 # https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/solution/
 # IDEA : Percolate Distance
 # time = O(n)  # n = number of tree nodes

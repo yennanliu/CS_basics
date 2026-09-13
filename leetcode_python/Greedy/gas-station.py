@@ -62,7 +62,7 @@ class Solution(object):
                 start = i + 1
         return -1 if total < 0 else start
 
-# V0'
+# V0-1
 # IDEA : GREEDY
 # IDEA : if sum(gas) - sum(cost) > 0, => THERE MUST BE A SOLUTION
 # time = O(n)
@@ -78,7 +78,7 @@ class Solution:
                 sum_ = 0
         return start if sum(gas) - sum(cost) >= 0 else -1 
 
-# V0''
+# V0-2
 # TODO : fix below
 # class Solution(object):
 #     def canCompleteCircuit(self, gas, cost):
@@ -146,7 +146,7 @@ assert s.canCompleteCircuit([1,2,3,2,5],[3,4,5,1,2])==-1
 assert s.canCompleteCircuit([1,1,1],[1,2,3])==-1
 assert s.canCompleteCircuit([1,2,3],[2,1,1])==1
 
-# V1''
+# V1'
 # https://leetcode.com/problems/gas-station/discuss/274646/Python-One-Pass-Greedy
 # IDEA :
 # The heuristic is that if sum(gas) >= sum(cost), there must exists a starting station that enable the circular travel.
@@ -167,7 +167,7 @@ class Solution(object):
                 start, agg = i+1, 0
         return start
 
-# V1'''
+# V1''
 # https://www.hrwhisper.me/leetcode-greedy/
 # time = O(n)
 # space = O(1)
@@ -183,7 +183,7 @@ class Solution(object):
         return -1 if total < 0 else start
 
 
-# V1''''
+# V1'''
 # http://bookshadow.com/weblog/2015/08/06/leetcode-gas-station/
 # IDEA : GREEDY
 # time = O(n)
@@ -200,7 +200,7 @@ class Solution:
                 start, sums = x + 1, 0
         return start if sum(gas) >= sum(cost) else -1
 
-# V1''''''
+# V1''''
 # https://leetcode.com/problems/gas-station/discuss/164515/Python-O(N)-solution
 # time = O(n)
 # space = O(1)

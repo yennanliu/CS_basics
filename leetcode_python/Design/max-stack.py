@@ -1,6 +1,7 @@
 """
 
-716 Max Stack
+716. Max Stack
+Hard
 
 # https://cheonhyangzhang.gitbooks.io/leetcode-solutions/content/716-max-stack.html
 

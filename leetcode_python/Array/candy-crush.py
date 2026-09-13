@@ -1,3 +1,12 @@
+"""
+
+723. Candy Crush
+Medium
+
+https://leetcode.com/problems/candy-crush/
+
+"""
+
 # V0 
 
 # V1 

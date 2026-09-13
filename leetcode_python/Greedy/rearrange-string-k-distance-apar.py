@@ -1,9 +1,10 @@
 """
 
+358. Rearrange String k Distance Apart
+Hard
+
 # https://www.cnblogs.com/fuxuemingzhu/p/15436068.html
 # https://tenderleo.gitbooks.io/leetcode-solutions-/content/GoogleHard/358.html
-
-358. Rearrange String k Distance Apart
 
 Given a non-empty string str and an integer k, rearrange the string such that the same characters are at least distance k from each other.
 
@@ -327,11 +328,11 @@ class Solution(object):
                 heapq.heappush(priorityQueue, item)
         return result
 
-# V1'
+# V1''
 # https://blog.csdn.net/qq_46105170/article/details/109377535
 # JAVA
 
-# V1''
+# V1'''
 # https://tenderleo.gitbooks.io/leetcode-solutions-/content/GoogleHard/358.html
 # JAVA
 # public class Solution {

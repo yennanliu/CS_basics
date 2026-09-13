@@ -68,7 +68,7 @@ class Solution(object):
         dfs(sc, sr)
         return image
 
-# V0'
+# V0-1
 # IDEA : DFS
 # time = O(m*n)
 # space = O(m*n)
@@ -91,7 +91,7 @@ class Solution(object):
         dfs(image, sr, sc, newColor, color)
         return image
 
-# V1'
+# V1
 # https://www.jiuzhang.com/solution/flood-fill/#tag-highlight-lang-python
 # IDEA : DFS
 # time = O(m*n)

@@ -95,7 +95,7 @@ class Solution(object):
         return res
 
 
-# V0
+# V0-1
 # IDEA: BIG PQ + HASHMAP + 1st, 2nd freq element (gemini)
 import heapq
 from collections import Counter
@@ -153,7 +153,7 @@ class Solution(object):
 
 
 
-# V0
+# V0-2
 # IDEA: PQ + HASHMAP
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Greedy/ReorganizeString.java#L40
 # time = O(n log n)
@@ -221,7 +221,7 @@ class Solution(object):
 
 
 
-# V0-1
+# V0-3
 # IDEA: PQ + HASHMAP
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Greedy/ReorganizeString.java#L40
 # time = O(n log n)
@@ -289,7 +289,7 @@ class Solution(object):
         return "".join(res)
 
 
-# V0-3
+# V0-4
 # IDEA: prev char, cnt, PQ, hashmap
 # time = O(n log n)
 # space = O(n)
@@ -329,7 +329,7 @@ class Solution(object):
         return ans if len(ans) == len(s) else ""
 
 
-# V0-4
+# V0-5
 # time = O(n log n)
 # space = O(n)
 import heapq
@@ -377,7 +377,7 @@ class Solution(object):
             
         return "".join(res)
 
-# V0
+# V0-6
 # IDEA : GREEDY + COUNTER
 # IDEA : 
 #  step 1) order exists count (big -> small)
@@ -416,7 +416,7 @@ class Solution(object):
                 break
         return ans[1:] if len(ans[1:]) == len(S) else ''
 
-# V0'
+# V0-7
 # IDEA : GREEDY + COUNTER
 # IDEA : 
 #  step 1) order exists count (big -> small)
@@ -457,7 +457,7 @@ class Solution(object):
         # len(ans) - 1 == len(s), since ans init with "#", we need to substract 1 on length comparison
         return ans[1:] if (len(ans) - 1 == len(s)) else ""
 
-# V0''
+# V0-8
 # time = O(n)
 # space = O(n)
 class Solution(object):
@@ -507,7 +507,7 @@ class Solution(object):
                 i += 2
         return ''.join(res)
 
-# V1
+# V1'
 # http://bookshadow.com/weblog/2018/01/21/leetcode-reorganize-string/
 # IDEA : GREEDY
 # IDEA : 
@@ -536,7 +536,7 @@ class Solution(object):
             if stop: break
         return ans[1:] if len(ans) == len(S) + 1 else ''
 
-# V1'
+# V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/80680454
 # time = O(n)   # bounded alphabet (<=26): most_common() cost is O(1) amortized
 # space = O(n)
@@ -561,7 +561,7 @@ class Solution(object):
             if stop: break
         return ans[1:] if len(ans) == len(S) + 1 else ""
 
-# V1''
+# V1'''
 # https://blog.csdn.net/fuxuemingzhu/article/details/80680454
 # time = O(n log n)
 # space = O(n)
@@ -591,7 +591,7 @@ class Solution(object):
                 heapq.heappush(que, x)
         return res
 
-# V1''
+# V1''''
 # https://www.jiuzhang.com/solution/reorganize-string/#tag-highlight-lang-python
 # time = O(n)
 # space = O(n)

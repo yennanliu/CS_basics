@@ -87,7 +87,7 @@ class Solution(object):
         if N == 1: return 0
         return (1 - K%2) ^ self.kthGrammar(N-1, (K+1)/2)
 
-# V1'
+# V1''
 # https://leetcode.com/problems/k-th-symbol-in-grammar/solution/
 # IDEA : Recursion (Flip Variant)
 # time = O(n)  # recursion depth n
@@ -100,7 +100,7 @@ class Solution(object):
         return self.kthGrammar(N-1, K - 2**(N-2)) ^ 1
 
 
-# V1'
+# V1'''
 # https://leetcode.com/problems/k-th-symbol-in-grammar/solution/
 # IDEA : Binary Count
 # time = O(log k)  # bits of K

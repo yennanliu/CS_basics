@@ -4,6 +4,9 @@
 # https://blog.csdn.net/fuxuemingzhu/article/details/82390672
 """
 
+877. Stone Game
+Medium
+
 DP def
     (INTERVAL game DP)
 

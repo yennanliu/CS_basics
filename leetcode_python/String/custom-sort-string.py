@@ -64,7 +64,7 @@ class Solution(object):
 
         return res
 
-# V0
+# V0-1
 # IDEA : COUNTER
 # time = O(n)
 # space = O(n)
@@ -81,7 +81,7 @@ class Solution(object):
             res += s * s_map[s]
         return res
 
-# V0'
+# V0-2
 # IDEA : COUNTER
 # time = O(n)
 # space = O(n)
@@ -107,7 +107,7 @@ class Solution(object):
         #print ("res = " + str(res))
         return res
 
-# V0''
+# V0-3
 # IDEA : COUNTER 
 # time = O(n)
 # space = O(n)
@@ -123,7 +123,7 @@ class Solution(object):
             answer += c * count[c]
         return answer
         
-# V0'''
+# V0-4
 # IDEA : COUNTER + SORT KEY LAMBDA 
 # time = O(n log n)
 # space = O(n)

@@ -95,7 +95,7 @@ class Solution(object):
         return 0 if min_len == float('inf') else min_len
 
 
-# V0
+# V0-2
 # IDEA : SLIDING WINDOW : start, end
 # time = O(n)
 # space = O(1)
@@ -131,7 +131,7 @@ class Solution:
             return 0         
         return minLength
 
-# V0'
+# V0-3
 # IDEA : SLIDING WINDOW : start, end
 # time = O(n)
 # space = O(1)
@@ -159,7 +159,7 @@ class Solution:
             return _ans
         return 0
 
-# V0' : NEED TO FIX
+# V0-4 : NEED TO FIX
 # class Solution:
 #     def minSubArrayLen(self, nums, s):
 #         if nums is None or len(nums) == 0:
@@ -210,7 +210,7 @@ class Solution:
             return 0         
         return minLength
 
-# V1 ''
+# V1'
 # http://bookshadow.com/weblog/2015/05/12/leetcode-minimum-size-subarray-sum/
 # IDEA : MOVING WINDOW (START, END AS WINDOW INDEX)
 # time = O(n)
@@ -241,7 +241,7 @@ class Solution:
             return bestAns
         return 0
 
-# V1' 
+# V1''
 # http://bookshadow.com/weblog/2015/05/12/leetcode-minimum-size-subarray-sum/
 # IDEA : BINARY SEARCH 
 # time = O(nlogn)
@@ -296,7 +296,7 @@ class Solution:
 #     return (ans != INT_MAX) ? ans : 0;
 # }
 
-# V1'''''
+# V1''''
 # Approach #3 Using Binary search
 # https://leetcode.com/problems/minimum-size-subarray-sum/solution/
 # C++

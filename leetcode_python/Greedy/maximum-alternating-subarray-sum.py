@@ -2,6 +2,7 @@
 
 2036. Maximum Alternating Subarray Sum
 Medium
+
 (premium / locked problem)
 
 A subarray of a 0-indexed integer array is a contiguous non-empty sequence of elements within an array.

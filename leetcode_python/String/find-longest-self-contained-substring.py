@@ -2,6 +2,7 @@
 
 3104. Find Longest Self-Contained Substring
 Hard
+
 🔒 (premium)
 
 Given a string s, your task is to find the length of the longest self-contained substring of s.

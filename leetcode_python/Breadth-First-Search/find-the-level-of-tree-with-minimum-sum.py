@@ -2,6 +2,7 @@
 
 3157. Find the Level of Tree with Minimum Sum
 Medium
+
 🔒 (premium)
 
 Given the root of a binary tree root where each node has a value, return the level of the tree that has the minimum sum of values among all the levels (in case of a tie, return the lowest level).

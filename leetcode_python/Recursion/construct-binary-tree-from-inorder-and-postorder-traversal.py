@@ -45,7 +45,7 @@ class Solution(object):
         root.right = self.buildTree(inorder[ index + 1 : ], postorder[ index : - 1 ])
         return root
 
-# V0
+# V0-1
 # IDEA : Binary Tree property, same as LC 105
 # time = O(n^2), index() lookup is O(n) at each of n recursive calls
 # space = O(n^2), slicing creates new lists at every recursion level
@@ -69,7 +69,7 @@ class Solution(object):
         root.right =  self.buildTree(inorder[idx+1:], postorder[idx:-1])
         return root
    
-# V0'
+# V0-2
 # time = O(n^2), index() lookup is O(n) at each of n recursive calls
 # space = O(n^2), slicing creates new lists at every recursion level
 class Solution(object):

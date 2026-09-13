@@ -97,7 +97,7 @@ class Solution:
         return best_pos
 
 
-# V0-0-1
+# V0-2
 # IDEA: PREFIX SUM + SCAN LINE (GEMINI)
 """
 NOTE !!!
@@ -161,7 +161,7 @@ class Solution(object):
         return ans_pos
 
 
-# V0-2
+# V0-3
 # IDEA: PREFIX SUM (gpt)
 # TODO: validate
 class Solution:
@@ -209,7 +209,7 @@ class Solution:
 
 
 
-# V0
+# V0-4
 # IDEA : Scanning line, LC 253 MEETING ROOM II
 # time = O(n log n)
 # space = O(n)
@@ -240,7 +240,7 @@ class Solution:
         
         return list_position[max_bright_index]
 
-# V0'
+# V0-5
 # IDEA : Scanning line, LC 253 MEETING ROOM II
 # time = O(n log n)
 # space = O(n)
@@ -406,7 +406,7 @@ class Solution:
                 maxInd = st
         return maxInd
 
-# V1'''''''
+# V1''''''
 # https://blog.csdn.net/sinat_30403031/article/details/121528384
 
 # V2

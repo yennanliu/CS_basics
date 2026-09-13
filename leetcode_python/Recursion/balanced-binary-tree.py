@@ -79,7 +79,7 @@ class Solution(object):
         return max(_left, _right) + 1
 
 
-# V0-0-1
+# V0-1
 # IDEA: DFS (post order) (WITHOUT global var) + helper func (gemini)
 class Solution(object):
 
@@ -105,7 +105,7 @@ class Solution(object):
 
 
 
-# V0
+# V0-2
 # IDEA: DFS (post order) + helper func
 # time = O(n^2), height helper recomputed at every node
 # space = O(h), h = tree height (recursion stack)
@@ -134,7 +134,7 @@ class Solution(object):
         )
 
 
-# V0-1
+# V0-3
 # time = O(n^2), height helper recomputed at every node
 # space = O(h), h = tree height (recursion stack)
 class Solution(object):
@@ -164,7 +164,7 @@ class Solution(object):
         )
 
 
-# V0-2
+# V0-4
 # time = O(n^2), height helper recomputed at every node
 # space = O(h), h = tree height (recursion stack)
 class Solution(object):
@@ -201,7 +201,7 @@ class Solution(object):
             self.get_height(root.right)
         )
 
-# V0
+# V0-5
 # https://blog.csdn.net/coder_orz/article/details/51335758
 # time = O(n^2), getAllDepth traverses subtree at every recursive call
 # space = O(h), h = tree height (recursion stack)
@@ -361,7 +361,7 @@ class Solution(object):
             return 0
         return 1 + max(self.getDepth(root.left), self.getDepth(root.right))
 
-# V1''''''
+# V1'''''
 # https://www.jiuzhang.com/solution/balanced-binary-tree/#tag-highlight-lang-python
 """
 Definition of TreeNode:

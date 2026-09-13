@@ -1,3 +1,12 @@
+"""
+
+339. Nested List Weight Sum
+Medium
+
+https://leetcode.com/problems/nested-list-weight-sum/
+
+"""
+
 # V0
 # IDEA : BFS
 # time = O(n), n = total number of integers/lists in nestedList
@@ -19,7 +28,7 @@ class Solution(object):
             depth += 1
         return ans
 
-# V0'
+# V0-1
 # IDEA : DFS
 # class Solution(object):
 #     def depthSum(self, nestedList):

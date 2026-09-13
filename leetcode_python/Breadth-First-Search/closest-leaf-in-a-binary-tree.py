@@ -1,5 +1,8 @@
 """
 
+742. Closest Leaf in a Binary Tree
+Medium
+
 # https://leetcode.ca/all/742.html
 # https://zxi.mytechroad.com/blog/tree/742-closest-leaf-in-a-binary-tree/
 
@@ -139,7 +142,7 @@ class Solution(object):
 
 
 
-# V0-0-1
+# V0-1
 # IDEA: DFS (build graph) + BFS (find closest ndoe to target) (GPT)
 # TODO: validate
 from collections import deque
@@ -226,7 +229,7 @@ class Solution(object):
         self.build_graph(node.right, node, k)
 
 
-# V0-0-2
+# V0-2
 # IDEA: DFS (build graph) + get leaves + BFS (get dist) (TLE)
 # NOTE !!! below code my work, but has TLE (time out error -> poor performance)
 from collections import defaultdict, deque
@@ -320,7 +323,7 @@ class Solution(object):
 
 
 
-# V0
+# V0-3
 # IDEA: DFS + BFS (GPT)
 # TODO: validate
 from collections import defaultdict, deque
@@ -408,7 +411,7 @@ class Solution(object):
                     visited.add(nei)
                     q.append(nei)
 
-# V0-1
+# V0-4
 # IDEA: BFS (GEMINI)
 # TODO: validate
 from collections import defaultdict, deque
@@ -465,7 +468,7 @@ class Solution(object):
         return -1
 
 
-# V0
+# V0-5
 # IDEA : DFS build GRAPH + BFS find ans
 ### NOTE :  closest to a leaf means the least number of edges travelled on the binary tree to reach any leaf of the tree. Also, a node is called a leaf if it has no children.
 #         -> We only consider the min distance between left (no sub tree) and k
@@ -516,7 +519,7 @@ class Solution:
                     if node not in visited: # need to check if "if node not in visited" or "if node in visited"
                         q.append(node)
 
-# V0' : 
+# V0-6 :
 # TODO : verify if correct
 # class Solution:
 #     def findClosestLeaf(self, root, k):

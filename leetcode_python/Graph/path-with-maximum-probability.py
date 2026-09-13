@@ -4,10 +4,7 @@
 
 1514. Path with Maximum Probability
 Medium
-Topics
-premium lock icon
-Companies
-Hint
+
 You are given an undirected weighted graph of n nodes (0-indexed), represented by an edge list where edges[i] = [a, b] is an undirected edge connecting the nodes a and b with a probability of success of traversing that edge succProb[i].
 
 Given two nodes start and end, find the path with the maximum probability of success to go from start to end and return its success probability.
@@ -111,7 +108,7 @@ class Solution(object):
         return 0.0
 
 
-# V1-1
+# V1
 # IDEA: Dijkstra (gpt)
 # build a graph + use a priority queue (Dijkstra).
 # time = O(E log V), E = len(edges), V = n
@@ -210,7 +207,7 @@ class Solution(object):
 
 
 
-# V1-2
+# V1'
 # IDEA: Dijkstra (gemini)
 # build a graph + use a priority queue (Dijkstra).
 # time = O(E log V), E = len(edges), V = n
@@ -276,7 +273,7 @@ class Solution(object):
         return 0.0
 
 
-# V2-1
+# V2
 # IDEA: Bellman-Ford Algorithm
 # https://leetcode.com/problems/path-with-maximum-probability/editorial/
 # time = O(V * E), V = n, E = len(edges)
@@ -312,7 +309,7 @@ class Solution:
         return max_prob[end]
 
 
-# V2-2
+# V2'
 # IDEA:  Shortest Path Faster Algorithm
 # https://leetcode.com/problems/path-with-maximum-probability/editorial/
 # time = O(V * E) worst case, V = n, E = len(edges)
@@ -347,7 +344,7 @@ class Solution:
 
         return max_prob[end]
 
-# V2-3
+# V2''
 # IDEA: Dijkstra's Algorithm
 # https://leetcode.com/problems/path-with-maximum-probability/editorial/
 # time = O(E log V), E = len(edges), V = n

@@ -2,6 +2,7 @@
 
 296. Best Meeting Point
 Hard
+
 (premium)
 
 Given an m x n binary grid grid where each 1 marks the home of one friend,

@@ -2,6 +2,7 @@
 
 2330. Valid Palindrome IV
 Medium
+
 (premium / locked problem)
 
 You are given a 0-indexed string s consisting of only lowercase English letters. In one operation, you can change any character of s to any other character.

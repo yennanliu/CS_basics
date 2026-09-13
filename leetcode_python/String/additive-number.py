@@ -2,9 +2,7 @@
 
 306. Additive Number
 Medium
-Topics
-premium lock icon
-Companies
+
 An additive number is a string whose digits can form an additive sequence.
 
 A valid additive sequence should contain at least three numbers. Except for the first two numbers, each subsequent number in the sequence must be the sum of the preceding two.
@@ -40,7 +38,6 @@ num consists only of digits.
 Follow up: How would you handle overflow for very large input integers?
 
  
-
 
 """
 

@@ -261,7 +261,7 @@ class Solution:
 
 
 
-# V0-5
+# V0-3
 # IDEA: BINARY SEARCH  + Patience Sorting (分割替換法)  / tails idea (gemini)
 """
 NOTE !!!
@@ -308,7 +308,7 @@ class Solution(object):
 
 
 
-# V0-6
+# V0-4
 # IDEA: BINARY SEARCH  + Patience Sorting (分割替換法) / tails idea (gemini)
 class Solution(object):
     def lengthOfLIS(self, nums):
@@ -358,7 +358,7 @@ class Solution:
 
         return len(sub)
 
-# V0''
+# V0-6
 # IDEA : DP
 # time = O(n^2)
 # space = O(n)
@@ -379,7 +379,7 @@ class Solution(object):
             dp[i] = tmax
         return max(dp) 
 
-# V0'''
+# V0-7
 # IDEA : improve With Binary Search
 # https://leetcode.com/problems/longest-increasing-subsequence/solution/
 # time = O(n log n)
@@ -415,7 +415,7 @@ class Solution:
 
         return max(dp)
 
-# V1
+# V1'
 # IDEA : Intelligently Build a Subsequence
 # https://leetcode.com/problems/longest-increasing-subsequence/solution/
 # time = O(n^2) (linear scan to find insertion point)
@@ -436,7 +436,7 @@ class Solution:
 
         return len(sub)
 
-# V1
+# V1''
 # IDEA : improve With Binary Search
 # https://leetcode.com/problems/longest-increasing-subsequence/solution/
 # time = O(n log n)
@@ -457,7 +457,7 @@ class Solution:
         
         return len(sub)
 
-# V1
+# V1'''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79820919
 # IDEA : DP
 # time = O(n^2)
@@ -479,7 +479,7 @@ class Solution(object):
             dp[i] = tmax
         return max(dp)
 
-# V1'
+# V1''''
 # https://www.jiuzhang.com/solution/longest-increasing-subsequence/#tag-highlight-lang-python
 # IDEA : DP
 # time = O(n^2)
@@ -500,7 +500,7 @@ class Solution:
                     dp[curr] = max(dp[curr], dp[prev] + 1)
         return max(dp)
 
-# V1''
+# V1'''''
 # https://www.jiuzhang.com/solution/longest-increasing-subsequence/#tag-highlight-lang-python
 # IDEA : DP + binary search
 # time = O(n^2) (this implementation's inner loop is a linear scan, not binary search)
@@ -543,7 +543,7 @@ class Solution:
         print(path[::-1])       
         return longest
 
-# V1'''
+# V1''''''
 # https://www.jiuzhang.com/solution/longest-increasing-subsequence/#tag-highlight-lang-python
 # time = O(n log n)
 # space = O(n)

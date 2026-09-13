@@ -2,6 +2,7 @@
 
 2489. Number of Substrings With Fixed Ratio
 Medium
+
 (premium / locked problem)
 
 You are given a binary string s, and two integers num1 and num2. num1 and num2 are coprime numbers.

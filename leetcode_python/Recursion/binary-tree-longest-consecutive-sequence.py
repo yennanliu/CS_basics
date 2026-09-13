@@ -3,7 +3,8 @@
 
 """
 
-Leetcode 298: Binary Tree Longest Consecutive Sequence
+298. Binary Tree Longest Consecutive Sequence
+Medium
 
 Question
 Given a binary tree, find the length of the longest consecutive sequence path.
@@ -234,7 +235,7 @@ class Solution(object):
 
 
 
-# V0-0-1
+# V0-1
 # IDEA: DFS (gpt)
 class Solution(object):
     def longestConsecutive(self, root):
@@ -272,7 +273,7 @@ class Solution(object):
         self.helper(node.right, node, path)
 
 
-# V0-1
+# V0-2
 # IDEA: DFS (gemini)
 class Solution(object):
     def longestConsecutive(self, root):
@@ -307,7 +308,7 @@ class Solution(object):
         return self.max_len
 
 
-# V0-2
+# V0-3
 # IDEA: DFS (gpt)
 class Solution(object):
     def longestConsecutive(self, root):
@@ -336,7 +337,7 @@ class Solution(object):
         return self.max_len
 
 
-# V0-3
+# V0-4
 # IDEA: Forward-Looking (on child) Top-Down DFS (gemini)
 class Solution(object):
     def longestConsecutive(self, root):
@@ -367,7 +368,7 @@ class Solution(object):
 
 
 
-# V0
+# V0-5
 # IDEA : DFS
 # time = O(n), each node visited once
 # space = O(h), h = tree height (recursion stack)
@@ -394,7 +395,7 @@ class Solution(object):
             else:
                 self.helper(root.right, 1)
 
-# V0'
+# V0-6
 # IDEA : BFS
 # time = O(n), each node visited once
 # space = O(n), stack can hold up to O(n) nodes
@@ -423,7 +424,7 @@ class Solution(object):
 
         return maxLen
 
-# V0''
+# V0-7
 # IDEA : BFS
 # TODO : validate this approach
 # BFS
@@ -516,7 +517,7 @@ class Solution(object):
 
         return maxLen
 
-# V1'
+# V1''
 # https://eugenejw.github.io/2017/08/leetcode-298
 # IDEA : DFS
 # time = O(n), each node visited once
@@ -555,7 +556,7 @@ class Solution(object):
             else:
                 self.dfs(root.right, 1)
 
-# V1
+# V1'''
 # https://blog.csdn.net/qq508618087/article/details/50883425
 # JAVA
 # /**

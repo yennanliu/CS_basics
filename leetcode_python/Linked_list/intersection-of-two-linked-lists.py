@@ -95,7 +95,7 @@ class Solution(object):
                 q = headA
         return p
 
-# V0'
+# V0-1
 # time = O(m + n)
 # space = O(1)
 class Solution(object):
@@ -106,7 +106,7 @@ class Solution(object):
                 b_pointer = b_pointer.next if b_pointer else headA
             return a_pointer
 
-# V0'
+# V0-2
 # class Solution(object):
 #     def getIntersectionNode(self, headA, headB):
 #         """
@@ -141,7 +141,7 @@ class Solution(object):
                 b_pointer = b_pointer.next if b_pointer else headA
             return a_pointer
 
-# V1 
+# V1'
 # https://blog.csdn.net/coder_orz/article/details/51615444
 # Definition for singly-linked list.
 # class ListNode(object):
@@ -170,7 +170,7 @@ class Solution(object):
                 q = headA
         return p
 
-# V1'
+# V1''
 # https://www.jiuzhang.com/solution/intersection-of-two-linked-lists/#tag-highlight-lang-python
 # time = O(m + n)
 # space = O(1)

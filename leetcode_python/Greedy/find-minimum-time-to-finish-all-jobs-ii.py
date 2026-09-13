@@ -2,6 +2,7 @@
 
 2323. Find Minimum Time to Finish All Jobs II
 Medium
+
 (premium / locked problem)
 
 You are given two 0-indexed integer arrays jobs and workers of equal length, where jobs[i] is the amount of time needed to complete the ith job, and workers[j] is the amount of time the jth worker can work each day.

@@ -1,11 +1,8 @@
 """
 
 865. Smallest Subtree with all the Deepest Nodes
-Solved
 Medium
-Topics
-premium lock icon
-Companies
+
 Given the root of a binary tree, the depth of each node is the shortest distance to the root.
 
 Return the smallest subtree such that it contains all the deepest nodes in the original tree.
@@ -45,7 +42,6 @@ The values of the nodes in the tree are unique.
 
 Note: This question is the same as 1123: https://leetcode.com/problems/lowest-common-ancestor-of-deepest-leaves/
 
-
 """
 
 
@@ -59,7 +55,7 @@ class Solution(object):
         pass
 
 
-# V0-0-0-1
+# V0-1
 # IDEA: DFS + LCA (GPT) (straightforward)
 """
 NOTE !!!
@@ -92,7 +88,7 @@ class Solution(object):
         return (left_depth + 1, root)
 
 
-# V0-0-1
+# V0-2
 # IDEA: DFS + LCA (gemini) (straightforward)
 class Solution(object):
     def subtreeWithAllDeepest(self, root):
@@ -158,7 +154,7 @@ class Solution(object):
 
 
 
-# V0-0-2
+# V0-3
 # IDEA: LCA (GEMINI)
 class Solution(object):
     def subtreeWithAllDeepest(self, root):
@@ -194,7 +190,7 @@ class Solution(object):
         return max(_left_depth, _right_depth)
 
 
-# V0-1
+# V0-4
 # IDEA: LCA (gpt)
 """
 
@@ -232,7 +228,7 @@ class Solution(object):
         return (left_depth + 1, root)
 
 
-# V0-2
+# V0-5
 # IDEA: LCA (gemini)
 class Solution(object):
     def subtreeWithAllDeepest(self, root):

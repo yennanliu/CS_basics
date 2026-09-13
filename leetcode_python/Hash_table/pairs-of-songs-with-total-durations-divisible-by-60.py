@@ -111,7 +111,7 @@ class Solution(object):
         return cnt
 
 
-# V0
+# V0-2
 # IDEA : dict
 # IDEA : NOTE : we only count "NUMBER OF PAIRS", instead get all pairs indexes
 # time = O(n)
@@ -231,7 +231,7 @@ class Solution(object):
         ret+=ncr(a[30],2) if a[30] > 1 else 0
         return ret
 
-# V1'''''
+# V1''''
 # IDEA : collections.Counter
 # https://leetcode.com/problems/pairs-of-songs-with-total-durations-divisible-by-60/discuss/313790/Python-3
 # time = O(n)  # Counter bounded to 60 keys; sum(range(...)) work amortizes to O(n) total

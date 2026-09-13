@@ -1,4 +1,8 @@
 """
+
+566. Reshape the Matrix
+Easy
+
 In MATLAB, there is a very useful function called 'reshape', which can reshape a matrix into a new one with different size but keep its original data.
 
 You're given a matrix represented by a two-dimensional array, and two positive integers r and c representing the row number and column number of the wanted reshaped matrix, respectively.
@@ -31,6 +35,7 @@ There is no way to reshape a 2 * 2 matrix to a 2 * 4 matrix. So output the origi
 Note:
 The height and width of the given matrix is in range [1, 100].
 The given r and c are all positive.
+
 """
 
 # V0 

@@ -85,7 +85,7 @@ class Solution(object):
         return cnt
 
 
-# V0
+# V0-1
 # IDEA : BINARY SEARCH
 # time = O(n * log(w))   # n = len(weights), w = sum(weights)
 # space = O(1)

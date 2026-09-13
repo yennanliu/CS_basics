@@ -2,6 +2,7 @@
 
 2128. Remove All Ones With Row and Column Flips
 Medium
+
 (premium / locked problem)
 
 You are given an m x n binary matrix grid.

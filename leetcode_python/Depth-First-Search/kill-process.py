@@ -85,7 +85,7 @@ class Solution(object):
             for child in self.graph[x]:
                 self.helper(child)
 
-# V0
+# V0-2
 # IDEA : BFS + defaultdict
 from collections import defaultdict
 # time = O(n)
@@ -105,7 +105,7 @@ class Solution(object):
                     q.append(_)
         return res
 
-# V0'
+# V0-3
 # IDEA : DFS
 # time = O(n)
 # space = O(n)
@@ -207,7 +207,7 @@ class Solution:
                 queue += m[curr]
         return answer
 
-# V1
+# V1'''
 # IDEA : DFS (TLE)
 # https://leetcode.com/problems/kill-process/solution/
 # JAVA
@@ -225,7 +225,7 @@ class Solution:
 #     }
 # }
 
-# V1
+# V1''''
 # IDEA : Tree Simulation
 # https://leetcode.com/problems/kill-process/solution/
 # public class Solution {
@@ -260,7 +260,7 @@ class Solution:
 # }
 
 
-# V1
+# V1'''''
 # IDEA : HashMap + Depth First Search 
 # https://leetcode.com/problems/kill-process/solution/
 # JAVA
@@ -288,7 +288,7 @@ class Solution:
 #     }
 # }
 
-# V1
+# V1''''''
 # IDEA : HashMap + Breadth First Search
 # https://leetcode.com/problems/kill-process/solution/
 # JAVA

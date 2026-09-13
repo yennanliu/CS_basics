@@ -68,7 +68,7 @@ class Solution(object):
         #print ("nums = " + str(nums))
         return i+1
 
-# V0'
+# V0-1
 # IDEA : 2 POINTERS
 # HAVE A POINTER j STARTS FROM 0 AND THE OTHER POINTER i GO THROUGH nums
 #  -> IF A[i] != A[j]
@@ -187,7 +187,7 @@ class Solution:
                 A[index] = A[i]
         return index + 1
 
-# V1'''
+# V1''''
 # IDEA : 2 POINTERS
 # JAVA
 # https://leetcode.com/problems/remove-duplicates-from-sorted-array/solution/

@@ -3,12 +3,8 @@
 """
 
 1325. Delete Leaves With a Given Value
-Solved
 Medium
-Topics
-premium lock icon
-Companies
-Hint
+
 Given a binary tree root and an integer target, delete all the leaf nodes with value target.
 
 Note that once you delete a leaf node with value target, if its parent node becomes a leaf node and has the value target, it should also be deleted (you need to continue doing that until you cannot).
@@ -146,7 +142,7 @@ class Solution(object):
                     root.val == target)
 
 
-# V1-1
+# V1
 # IDEA: Recursion (Postorder Traversal)
 # https://leetcode.com/problems/delete-leaves-with-a-given-value/editorial/
 class Solution:
@@ -172,7 +168,7 @@ class Solution:
         return root
 
 
-# V1-2
+# V1'
 # IDEA: Iterative (PostOrder Traversal)
 # https://leetcode.com/problems/delete-leaves-with-a-given-value/editorial/
 class Solution:

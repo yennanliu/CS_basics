@@ -2,6 +2,7 @@
 
 3253. Construct String with Minimum Cost (Easy)
 Medium
+
 🔒 (premium)
 
 You are given a string target, an array of strings words, and an integer array costs, both arrays of the same length.

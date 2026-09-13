@@ -1,13 +1,8 @@
 """
 
-
 1838. Frequency of the Most Frequent Element
-Solved
 Medium
-Topics
-premium lock icon
-Companies
-Hint
+
 The frequency of an element is the number of times it occurs in an array.
 
 You are given an integer array nums and an integer k. In one operation, you can choose an index of nums and increment the element at that index by 1.
@@ -42,7 +37,6 @@ Constraints:
 1 <= nums[i] <= 105
 1 <= k <= 105
  
-
 
 """
 

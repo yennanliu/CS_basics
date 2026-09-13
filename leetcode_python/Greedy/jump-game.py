@@ -104,7 +104,7 @@ class Solution(object):
         return max_reachable >= target
 
 
-# V0
+# V0-2
 # time = O(n)
 # space = O(1)
 class Solution(object):
@@ -119,7 +119,7 @@ class Solution(object):
             cur = max(cur, i + nums[i])
         return True
 
-# V0'
+# V0-3
 # time = O(n)
 # space = O(1)
 class Solution(object):

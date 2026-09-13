@@ -43,7 +43,7 @@ class Solution(object):
         x, y = (min(C, G) - max(A, E)), (min(D, H) - max(B, F))
         return x > 0 and y > 0
 
-# V0'
+# V0-1
 # time = O(1)
 # space = O(1)
 class Solution:

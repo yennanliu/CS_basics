@@ -135,7 +135,7 @@ class Solution(object):
         return ans
 
 
-# V0
+# V0-1
 # IDEA: MONO STACK (INCREASING)
 """
 
@@ -216,7 +216,7 @@ For each element arr[i], count:
 
 
 """
-# V0
+# V0-2
 # IDEA: MONO STACK (Gemini)
 # time = O(n)
 # space = O(n)
@@ -278,7 +278,7 @@ class Solution(object):
         return ans
 
 
-# V0-1
+# V0-3
 # IDEA: MONO STACK
 # time = O(n)
 # space = O(n)
@@ -360,7 +360,7 @@ class Solution(object):
 
 
 
-# V0-1
+# V0-4
 # IDEA: MONO STACK (INCREASING)
 # time = O(n)
 # space = O(n)
@@ -403,7 +403,7 @@ class Solution(object):
 
 
 
-# V0
+# V0-5
 # IDEA :  increasing stacks
 # time = O(n)
 # space = O(n)
@@ -427,7 +427,7 @@ class Solution:
             s2.append([A[i], count])
         return sum(a * l * r for a, l, r in zip(A, left, right)) % mod
 
-# V0'
+# V0-6
 # IDEA : BRUTE FORCE (TLE)
 # brute force
 # class Solution(object):
@@ -459,7 +459,7 @@ class Solution:
             stack.append(i)
         return res%(10**9+7)
 
-# V1
+# V1'
 # IDEA :  increasing stacks
 # https://leetcode.com/problems/sum-of-subarray-minimums/discuss/170750/JavaC%2B%2BPython-Stack-Solution
 # IDEA :
@@ -505,7 +505,7 @@ class Solution:
             s2.append([A[i], count])
         return sum(a * l * r for a, l, r in zip(A, left, right)) % mod
 
-# V1
+# V1''
 # IDEA :  increasing stacks + above improvement
 # https://leetcode.com/problems/sum-of-subarray-minimums/discuss/170750/JavaC%2B%2BPython-Stack-Solution
 # time = O(n)
@@ -523,7 +523,7 @@ class Solution:
                 s.append(i)
             return res % (10**9 + 7)
 
-# V1
+# V1'''
 # IDEA : STACK
 # https://leetcode.com/problems/sum-of-subarray-minimums/discuss/374000/stack-python
 # IDEA :
@@ -571,7 +571,7 @@ class Solution(object):
             stack.append(i)
         return right
 
-# V1
+# V1''''
 # https://leetcode.com/problems/sum-of-subarray-minimums/discuss/170927/Python-Stack
 # time = O(n)
 # space = O(n)
@@ -588,7 +588,7 @@ class Solution(object):
             an += increase
         return an%(10**9+7)
 
-# V1
+# V1'''''
 # https://leetcode.com/problems/sum-of-subarray-minimums/discuss/279705/python-solution
 # time = O(n)
 # space = O(n)
@@ -608,7 +608,7 @@ class Solution:
         return sum(A[i] * (i - left[i]) * (right[i] - i) for i in range(n)) % (10**9 +7)
 
 
-# V1
+# V1''''''
 # https://leetcode.jp/leetcode-907-sum-of-subarray-minimums-%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF%E5%88%86%E6%9E%90/
 # JAVA
 # public int sumSubarrayMins(int[] A) {
@@ -642,7 +642,7 @@ class Solution:
 #     return (int) (sum % 1000000007);
 # }
 
-# V1
+# V1'''''''
 # https://blog.csdn.net/zjucor/article/details/82721781
 # time = O(n)
 # space = O(n)

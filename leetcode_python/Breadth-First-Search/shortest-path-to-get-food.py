@@ -1,5 +1,8 @@
 """
 
+1730. Shortest Path to Get Food
+Medium
+
 [LeetCode] 1730. Shortest Path to Get Food
 
 # https://www.cnblogs.com/cnoodle/p/15645191.html

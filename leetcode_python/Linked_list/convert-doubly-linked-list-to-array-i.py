@@ -2,6 +2,7 @@
 
 3263. Convert Doubly Linked List to Array I
 Easy
+
 🔒 (premium)
 
 You are given the head of a doubly linked list, which contains nodes that have a next pointer and a previous pointer.

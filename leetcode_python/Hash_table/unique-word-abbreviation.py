@@ -1,4 +1,8 @@
 """
+
+288. Unique Word Abbreviation
+Medium
+
 An abbreviation of a word follows the form <first letter><number><last letter>. Below are some examples of word abbreviations:
 
 a) it                      --> it    (no abbreviation)
@@ -25,6 +29,7 @@ isUnique("cane") -> false
 isUnique("make") -> true
 
 http://leetcode.com/problems/unique-word-abbreviation/
+
 """
 
 # V0 
@@ -61,7 +66,7 @@ class ValidWordAbbr:
 
 ### Test case : dev
 
-# V1
+# V1'
 # http://www.voidcn.com/article/p-cfjjycdw-qp.html
 # time = O(n) init, O(1) isUnique
 # space = O(n)

@@ -1,6 +1,7 @@
 """
 
-642 Design Search Autocomplete System
+642. Design Search Autocomplete System
+Hard
 
 https://cheonhyangzhang.gitbooks.io/leetcode-solutions/content/642-design-search-autocomplete-system.html
 

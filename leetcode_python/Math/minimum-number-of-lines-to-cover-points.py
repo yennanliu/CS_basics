@@ -2,6 +2,7 @@
 
 2152. Minimum Number of Lines to Cover Points
 Medium
+
 (premium / locked problem)
 
 You are given an array points where points[i] = [xi, yi] represents a point on an X-Y plane.

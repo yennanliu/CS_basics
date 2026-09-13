@@ -3,12 +3,8 @@
 """
 
 1726. Tuple with Same Product
-Solved
 Medium
-Topics
-premium lock icon
-Companies
-Hint
+
 Given an array nums of distinct positive integers, return the number of tuples (a, b, c, d) such that a * b = c * d where a, b, c, and d are elements of nums, and a != b != c != d.
 
  
@@ -51,7 +47,7 @@ class Solution(object):
         pass
 
 
-# V1-1
+# V1
 # IDEA: product, math, brute force (gpt)
 """
 CORE:
@@ -129,7 +125,7 @@ class Solution(object):
 
 
 
-# V1-2
+# V1'
 # IDEA: product, math, brute force (gemini)
 class Solution(object):
     def tupleSameProduct(self, nums):
@@ -160,7 +156,7 @@ class Solution(object):
         return ans
 
 
-# V2-1
+# V2
 # IDEA: Optimized Brute Force
 # https://leetcode.com/problems/tuple-with-same-product/editorial/
 class Solution:
@@ -197,7 +193,7 @@ class Solution:
         return total_number_of_tuples
 
 
-# V2-2
+# V2'
 # IDEA: Count Product Frequency
 # https://leetcode.com/problems/tuple-with-same-product/editorial/
 class Solution:
@@ -245,7 +241,7 @@ class Solution:
         return total_number_of_tuples
 
 
-# V2-3
+# V2''
 # IDEA: Product Frequency Hash Map
 # https://leetcode.com/problems/tuple-with-same-product/editorial/
 class Solution(object):

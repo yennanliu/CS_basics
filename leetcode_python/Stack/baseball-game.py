@@ -86,7 +86,7 @@ class Solution(object):
             return 0
         return sum(cache)
 
-# V0'
+# V0-1
 # IDEA : STACK
 # time = O(n)
 # space = O(n)
@@ -124,7 +124,7 @@ class Solution(object):
 
         return sum(stack)
 
-# V1 
+# V1'
 # http://bookshadow.com/weblog/2017/09/24/leetcode-baseball-game/
 # time = O(n)
 # space = O(n)

@@ -1,12 +1,8 @@
 """
 
 1049. Last Stone Weight II
-Solved
 Medium
-Topics
-premium lock icon
-Companies
-Hint
+
 You are given an array of integers stones where stones[i] is the weight of the ith stone.
 
 We are playing a game with the stones. On each turn, we choose any two stones and smash them together. Suppose the stones have weights x and y with x <= y. The result of this smash is:
@@ -105,7 +101,7 @@ class Solution(object):
 
 
 
-# V0-0-1
+# V0-1
 """
 
 DP def
@@ -142,7 +138,7 @@ class Solution(object):
         pass
 
 
-# V0-1
+# V0-2
 # IDEA: 1D DP (0/1 knapsack) (gpt)
 # https://yennj12.js.org/CS_basics/cheatsheets/dp.html#0-1-dp
 # https://github.com/yennanliu/CS_basics/issues/103
@@ -208,7 +204,7 @@ class Solution(object):
         return total - 2 * best
 
 
-# V1-1
+# V1
 # IDEA: 1D DP (0/1 knapsack) (gpt)
 # https://yennj12.js.org/CS_basics/cheatsheets/dp.html#0-1-dp
 # https://github.com/yennanliu/CS_basics/issues/103
@@ -293,7 +289,7 @@ class Solution(object):
         return total - 2 * s
 
 
-# V1-2
+# V1'
 # IDEA: 1D DP (0/1 knapsack) (gemini)
 """
 

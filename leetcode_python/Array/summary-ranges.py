@@ -65,7 +65,7 @@ class Solution:
                 head = nums[i]
         return res
 
-# V0'
+# V0-1
 # time = O(n)
 # space = O(n)
 class Solution:
@@ -137,7 +137,7 @@ class Solution:
                 start = end = i
         return res[1:]
 
-# V1' 
+# V1'''
 # http://bookshadow.com/weblog/2015/06/26/leetcode-summary-ranges/
 # IDEA : COLLECT THE RANGES, FORMTAT AND RETURN THEM 
 # time = O(n)
@@ -150,7 +150,7 @@ def summaryRanges(self, nums):
         ranges[-1][1:] = n,
     return ['->'.join(map(str, r)) for r in ranges]
 
-# V1'' 
+# V1''''
 # http://bookshadow.com/weblog/2015/06/26/leetcode-summary-ranges/
 # IDEA : A variation of solution 1', holding the current range in an extra variable r to make things easier.
 # time = O(n)
@@ -163,7 +163,7 @@ def summaryRanges(self, nums):
         ranges[-1][1:] = n,
     return ['->'.join(map(str, r)) for r in ranges]
 
-# V1''' 
+# V1'''''
 # http://bookshadow.com/weblog/2015/06/26/leetcode-summary-ranges/
 # time = O(n)
 # space = O(n)

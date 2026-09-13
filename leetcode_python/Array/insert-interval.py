@@ -1,5 +1,8 @@
 """
 
+57. Insert Interval
+Medium
+
 Given a set of non-overlapping intervals, 
 insert a new interval into the intervals (merge if necessary).
 
@@ -110,7 +113,7 @@ class Solution(object):
         return res
 
 
-# V0
+# V0-2
 # IDEA : compare merged[-1][1]. interval[0]
 # https://leetcode.com/problems/insert-interval/discuss/1236101/Python3-Easy-to-Understand-Solution
 ### NOTE : there are only 2 cases

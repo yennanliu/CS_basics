@@ -7,6 +7,9 @@
 # dp[x] = min(dp[x], dp[y] + x / y) <- while y ∈[1, x) and x % y == 0
 """
 
+650. 2 Keys Keyboard
+Medium
+
 DP def
     dp[x]: min number of operations (Copy All / Paste)
 

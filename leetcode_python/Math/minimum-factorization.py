@@ -1,3 +1,12 @@
+"""
+
+625. Minimum Factorization
+Medium
+
+https://leetcode.com/problems/minimum-factorization/
+
+"""
+
 # leetcode 625. Minimum Factorization
 
 # Given a positive integer a, find the smallest positive integer b whose multiplication of each digit equals to a.
@@ -17,6 +26,8 @@
 # 35
 
 
+
+# V0
 
 # V1 
 # idea :

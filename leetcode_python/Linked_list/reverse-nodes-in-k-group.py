@@ -1,5 +1,8 @@
 """
 
+25. Reverse Nodes in k-Group
+Hard
+
 Given the head of a linked list, reverse the nodes of the list k at a time, and return the modified list.
 
 k is a positive integer and is less than or equal to the length of the linked list. If the number of nodes is not a multiple of k then left-out nodes, in the end, should remain as it is.
@@ -69,7 +72,7 @@ class Solution:
             preHead = curHead
         return d.next
 
-# V0'
+# V0-1
 # https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/linked_list.md#1-1-6-reverse-nodes-in-k-group--linked-list-iteration
 
 # V1
@@ -244,7 +247,7 @@ class Solution:
             head = head.next
         return False
 
-# V1
+# V1'''
 # https://zxi.mytechroad.com/blog/list/leetcode-25-reverse-nodes-in-k-group/
 # C++
 # class Solution {
@@ -271,7 +274,7 @@ class Solution:
 #   }
 # };
 
-# V1'''
+# V1''''
 # IDEA : RECURSIVE
 # https://leetcode.com/problems/reverse-nodes-in-k-group/discuss/11676/64ms-python-solution1
 # time = O(n)
@@ -334,7 +337,7 @@ class Solution(object):
                     k -= 1
         return start.next
             
-# V1'''''''
+# V1''''''
 # https://leetcode.com/problems/reverse-nodes-in-k-group/discuss/211534/Python-solution
 # time = O(n)
 # space = O(1)
@@ -385,7 +388,7 @@ class Solution(object):
                             prev = tmp
                 return record.next
 
-# V1''''''''
+# V1'''''''
 # https://zxi.mytechroad.com/blog/list/leetcode-25-reverse-nodes-in-k-group/
 # C++
 # class Solution {

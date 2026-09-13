@@ -1,7 +1,7 @@
 """
 
 1808. Maximize Number of Nice Divisors
-Medium
+Hard
 
 You are given a positive integer primeFactors. You are asked to construct a positive integer n that satisfies the following conditions:
 

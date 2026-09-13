@@ -2,6 +2,7 @@
 
 2422. Merge Operations to Turn Array Into a Palindrome
 Medium
+
 (premium / locked problem)
 
 You are given an array nums consisting of positive integers.

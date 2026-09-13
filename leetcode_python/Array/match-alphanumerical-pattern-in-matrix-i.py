@@ -2,6 +2,7 @@
 
 3078. Match Alphanumerical Pattern in Matrix I
 Medium
+
 🔒 (premium)
 
 You are given a 2D integer matrix board and a 2D character matrix pattern. Where 0 <= board[r][c] <= 9 and each element of pattern is either a digit or a lowercase English letter.

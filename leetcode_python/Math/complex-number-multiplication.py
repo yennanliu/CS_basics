@@ -44,7 +44,7 @@ class Solution(object):
         i_res = str(r_1 * i_2 + i_1 * r_2) + "i"
         return r_res + "+" +  i_res
 
-# V0'
+# V0-1
 # IDEA : MATH
 # time = O(n)  # n = len(input string)
 # space = O(n)

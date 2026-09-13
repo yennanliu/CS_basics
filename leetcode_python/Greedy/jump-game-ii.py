@@ -157,7 +157,7 @@ class Solution:
 
             return num_jump
 
-# V1''''''
+# V1'''''
 # IDEA : DP
 # https://leetcode.com/problems/jump-game-ii/discuss/1455589/Python-Dynamic-Programming
 # time = O(n^2)

@@ -1,7 +1,10 @@
 # https://leetcode.ca/all/635.html
 
 """
+
 635. Design Log Storage System
+Medium
+
 You are given several logs that each log contains a unique id and timestamp. Timestamp is a string that has the following format: Year:Month:Day:Hour:Minute:Second, for example, 2017:01:01:23:59:59. All domains are zero-padded decimal numbers.
 
 Design a log storage system to implement the following functions:
@@ -25,6 +28,7 @@ Year ranges from [2000,2017]. Hour ranges from [00,23].
 Output for Retrieve has no order required.
 Difficulty:
 Medium
+
 """
 
 
@@ -99,7 +103,7 @@ class LogSystem:
 
 
 
-# V1-2
+# V1'
 class LogSystem(object):
 
     # time = O(1)
@@ -167,7 +171,7 @@ class LogSystem(object):
         return res
 
 
-# V2-1
+# V2
 # https://leetcode.ca/2017-08-26-635-Design-Log-Storage-System/
 class LogSystem:
     # time = O(1)
@@ -198,7 +202,7 @@ class LogSystem:
 
 
 
-# V2-2
+# V2'
 # https://leetcode.ca/2017-08-26-635-Design-Log-Storage-System/
 class LogSystem:
     # time = O(1)

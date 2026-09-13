@@ -84,7 +84,7 @@ class Solution(object):
                 self.helper(root.right, root.val, max_val))
 
 
-# V0
+# V0-2
 # IDEA : BFS
 #  -> trick : we make sure current tree and all of sub tree are valid BST
 #   -> not only compare tmp.val with tmp.left.val, tmp.right.val,
@@ -123,7 +123,7 @@ class Solution(object):
                     q.append([tmp.right, tmp.val, _max])
         return True
 
-# V0'
+# V0-3
 # IDEA : BFS
 # time = O(n)
 # space = O(n), BFS queue can hold up to O(n) nodes
@@ -147,7 +147,7 @@ class Solution:
       
         return True
 
-# V0''
+# V0-4
 # IDEA: RECURSION 
 # time = O(n)
 # space = O(h), h is height of binary tree (recursion stack)
@@ -165,7 +165,7 @@ class Solution(object):
             return False
         return self.valid(root.left, min_, root.val) and self.valid(root.right, root.val, max_)
 
-# V0'''
+# V0-5
 # IDEA: RECURSION 
 # time = O(n)
 # space = O(h), h is height of binary tree (recursion stack)
@@ -181,7 +181,7 @@ class Solution(object):
 
         return valid(root, float('inf'), -float('inf'))
 
-# V0''''
+# V0-6
 # IDEA : BFS + Inorder traversal
 # time = O(n)
 # space = O(n), stack can hold up to O(n) nodes
@@ -221,7 +221,7 @@ class Solution:
       
         return True
 
-# V1''
+# V1'
 # IDEA : BFS
 # https://leetcode.com/problems/validate-binary-search-tree/discuss/640837/Python-Good-use-case-for-BFS
 class Solution:
@@ -246,7 +246,7 @@ class Solution:
     
         return True
 
-# V1''' : TODO : figure out it
+# V1'' : TODO : figure out it
 # IDEA : INORDER TRAVERSAL
 # https://leetcode.com/problems/validate-binary-search-tree/discuss/166691/Python-solution
 class Solution(object):
@@ -271,7 +271,7 @@ class Solution(object):
                 trav = u.right
         return True
 
-# V1'
+# V1'''
 # https://blog.csdn.net/fuxuemingzhu/article/details/70209865
 class Solution(object):
     def isValidBST(self, root):
@@ -287,7 +287,7 @@ class Solution(object):
             return False
         return self.valid(root.left, min_, root.val) and self.valid(root.right, root.val, max_)
 
-# V1'
+# V1''''
 # IDEA : BFS + Inorder traversal
 # https://leetcode.com/problems/validate-binary-search-tree/discuss/32465/Python-Inorder-Traversal
 class Solution:
@@ -303,7 +303,7 @@ class Solution:
             pre, cur = s, s.right
         return True
 
-# V1'
+# V1'''''
 # https://www.jiuzhang.com/solution/validate-binary-search-tree/#tag-highlight-lang-python
 class Solution:
     """
@@ -336,7 +336,7 @@ class Solution:
                 last_node = stack[-1]
         return True
 
-# V1''
+# V1''''''
 # https://www.jiuzhang.com/solution/validate-binary-search-tree/#tag-highlight-lang-python
 class Solution:
     """
@@ -359,7 +359,7 @@ class Solution:
         self.lastVal = root.val
         self.validate(root.right)
 
-# V1'''
+# V1'''''''
 # IDEA : BFS + Inorder traversal
 # https://leetcode.com/problems/validate-binary-search-tree/discuss/166691/Python-solution
 class Solution(object):
@@ -384,7 +384,7 @@ class Solution(object):
                 trav = u.right
         return True
 
-# V1''''
+# V1''''''''
 # https://www.jiuzhang.com/solution/validate-binary-search-tree/#tag-highlight-lang-python
 class Solution:
     """
@@ -415,7 +415,7 @@ class Solution:
         
         return True, minNode, maxNode
 
-# V1'''''
+# V1'''''''''
 # IDEA : PY generators
 # https://leetcode.com/problems/validate-binary-search-tree/discuss/715307/Python-generators-rule
 class Solution:

@@ -1,6 +1,7 @@
 """
 
 94. Binary Tree Inorder Traversal
+Easy
 
 Given the root of a binary tree, return the inorder traversal of its nodes' values.
 
@@ -52,7 +53,7 @@ class Solution(object):
         dfs(root)
         return root
 
-# V0'
+# V0-1
 # IDEA : ITERATION
 # time = O(n)  # n = number of tree nodes
 # space = O(h)  # h = tree height (stack)
@@ -76,7 +77,7 @@ class Solution:
             root = root.right
         return res
 
-# V0'
+# V0-2
 # time = O(n)  # n = number of tree nodes
 # space = O(h)  # h = tree height (recursion stack)
 class Solution(object):
@@ -151,7 +152,7 @@ class Solution(object):
             answer.append(root.val)
             root = root.right
 
-# V1
+# V1''
 # IDEA : ITERATION
 # https://leetcode.com/problems/binary-tree-inorder-traversal/solutions/2256663/python-recursive-and-iterative-inorder-traversals/
 # time = O(n)  # n = number of tree nodes
@@ -174,7 +175,7 @@ class Solution:
             root = root.right
         return res
 
-# V1''
+# V1'''
 # https://www.jiuzhang.com/solution/binary-tree-inorder-traversal/#tag-highlight-lang-python
 # time = O(n)  # n = number of tree nodes
 # space = O(h)  # h = tree height (stack)

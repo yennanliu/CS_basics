@@ -116,7 +116,7 @@ class Solution(object):
         return r
 
 
-# V0-0-1
+# V0-1
 # IDEA : BINARY SEARCH
 # time = O(logn)
 # space = O(1)
@@ -166,7 +166,7 @@ class Solution:
         return r
 
 
-# V0-1
+# V0-2
 class Solution(object):
     def searchRange(self, nums, target):
         """
@@ -203,7 +203,7 @@ class Solution(object):
         return [left_bound, right_bound]
 
 
-# V0-2
+# V0-3
 # IDEA: BINARY SEARCH + EXPAND FROM CENTER (TLE) (gpt)
 class Solution(object):
     def searchRange(self, nums, target):
@@ -260,7 +260,7 @@ class Solution(object):
         return res
 
 
-# V0'
+# V0-4
 # IDEA : BINARY SEARCH
 # time = O(logn)
 # space = O(1)
@@ -318,7 +318,7 @@ class Solution(object):
         _max = getMax(l, r)
         return [_min, _max]
 
-# V0'
+# V0-5
 # IDEA : BINARY SEARCH
 # time = O(logn)
 # space = O(1)
@@ -343,7 +343,7 @@ class Solution:
 
         return [-1, -1]
 
-# V0'
+# V0-6
 # IDEA : BRUTE FORCE + PY default
 # binary search : time O(n log n)
 # time = O(n)

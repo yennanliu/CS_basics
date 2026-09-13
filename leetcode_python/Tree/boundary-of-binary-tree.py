@@ -1,6 +1,7 @@
 """
 
-545. Boundary of Binary Tree (Medium)
+545. Boundary of Binary Tree
+Medium
 
 https://xiaoguan.gitbooks.io/leetcode/content/LeetCode/545-boundary-of-binary-tree-medium.html
 
@@ -113,7 +114,7 @@ class Solution(object):
         rightBoundary(root.right, nodes)
         return nodes
 
-# V0'
+# V0-1
 # time = O(n)  # n = number of tree nodes
 # space = O(n)  # output list + boundary/leaf lists
 class Solution(object):
@@ -205,7 +206,7 @@ class Solution(object):
 
 ### Test case : dev
 
-# V1
+# V1'
 # https://leetcode.com/problems/boundary-of-binary-tree/discuss/101309/Python-Straightforward-with-Explanation
 # IDEA :
 # Let's merely get the nodes from the left boundary, the right boundary, and the leaves, in counter-clockwise order.
@@ -255,7 +256,7 @@ class Solution(object):
 
         return ans
 
-# V1
+# V1''
 # https://leetcode.com/problems/boundary-of-binary-tree/discuss/422802/python-concise-solution
 # time = O(n)  # n = number of tree nodes
 # space = O(n)  # output list + O(h) recursion stack
@@ -278,7 +279,7 @@ class Solution:
         dfs(root.right,False,True)
         return res
 
-# V1
+# V1'''
 # https://leetcode.com/problems/boundary-of-binary-tree/discuss/422802/python-concise-solution
 # time = O(n)  # n = number of tree nodes
 # space = O(n)  # output list + O(h) recursion stack
@@ -320,7 +321,7 @@ class Solution:
         right_boundary(root.right)
         return res
 
-# V1'
+# V1''''
 # https://www.jiuzhang.com/solution/boundary-of-binary-tree/#tag-highlight-lang-python
 # time = O(n)  # n = number of tree nodes
 # space = O(n)  # output list + O(h) recursion stack
@@ -368,7 +369,7 @@ class Solution:
             self.dfsRight(rt.left)
         self.ans.append(rt.val)
 
-# V1''
+# V1'''''
 # https://www.jiuzhang.com/solution/boundary-of-binary-tree/#tag-highlight-lang-python
 # time = O(n)  # n = number of tree nodes
 # space = O(n)  # output list + O(h) recursion stack
@@ -400,7 +401,7 @@ class Solution:
         if(rgt):
             self.ans.append(root.val)
             
-# V1'''
+# V1''''''
 # http://bookshadow.com/weblog/2017/03/26/leetcode-boundary-of-binary-tree/
 # Definition for a binary tree node.
 # class TreeNode(object):
@@ -447,7 +448,7 @@ class Solution(object):
         right = right[1:] if root.right else []
         return [node.val for node in [root] + left + leaves + right[::-1]]
 
-# V1''''
+# V1'''''''
 # https://blog.csdn.net/danspace1/article/details/86659807
 # time = O(n)  # n = number of tree nodes
 # space = O(n)  # output list + O(h) recursion stack
@@ -492,7 +493,7 @@ class Solution:
         rightBoundary(root.right)
         return b
 
-# V1
+# V1''''''''
 # IDEA : Simple Solution
 # https://leetcode.com/problems/boundary-of-binary-tree/solution/
 # JAVA
@@ -564,7 +565,7 @@ class Solution:
 #     }
 # }
 
-# V1
+# V1'''''''''
 # IDEA :  PreOrder Traversal 
 # https://leetcode.com/problems/boundary-of-binary-tree/solution/
 # JAVA

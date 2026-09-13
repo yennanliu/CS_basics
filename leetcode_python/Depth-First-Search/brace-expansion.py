@@ -5,6 +5,8 @@
 """
 
 1087. Brace Expansion
+Medium
+
 A string S represents a list of words.
 
 Each letter in the word has 1 or more options.  If there is one option, the letter is represented as is.  If there is more than one option, then curly braces delimit the options.  For example, "{a,b,c}" represents options ["a", "b", "c"].
@@ -37,7 +39,6 @@ Prime
 Company:
 Google
 
-
 """
 
 
@@ -49,7 +50,7 @@ class Solution:
         pass
 
 
-# V0-0-1
+# V0-1
 # IDEA: DFS  + BACKTRACK (gpt)
 # TODO: validate
 """
@@ -102,7 +103,7 @@ class Solution(object):
         backtrack(0, [])
         return self.res
 
-# V0-1
+# V0-2
 # IDEA: BFS (gpt)
 # TODO: validate
 """
@@ -188,7 +189,7 @@ class Solution:
         return sorted(q)
 
 
-# V0-2
+# V0-3
 # IDEA: DFS + BACKTRACK (gemini)
 # TODO: validate
 class Solution(object):
@@ -236,7 +237,7 @@ class Solution(object):
             path.pop()  # Backtrack
 
 
-# V1-2
+# V1
 # IDEA: BFS (GPT)
 """
 NOTE !!!
@@ -378,7 +379,7 @@ class Solution:
         return res
 
 
-# V1-2
+# V1'
 # IDEA: BFS (GEMINI)
 # time = O(p * n)  # p = total number of expanded strings, n = length of s
 # space = O(p * n)

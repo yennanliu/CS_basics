@@ -55,7 +55,7 @@ class Solution:
             self.backtracking(nums, i + 1, path, result) # NOTE here
             path.pop(-1) # NOTE here
 
-# V0
+# V0-1
 # IDEA : DFS
 # plz also refer backtrack cheatsheet
 # https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/backtrack.md
@@ -86,7 +86,7 @@ class Solution(object):
         dfs(0, 0, [])
         return res
 
-# V0'
+# V0-2
 # brack tracking
 # time = O(n * 2^n)
 # space = O(n)
@@ -109,7 +109,7 @@ class Solution(object):
         help(start, tmp, res)
         return res
 
-# V0''
+# V0-3
 # IDEA : BRUTE FROCE
 # time = O(n * 2^n)
 # space = O(n * 2^n)
@@ -124,7 +124,7 @@ class Solution(object):
                 result[-1].append(nums[i])
         return result
 
-# V0'''
+# V0-4
 # IDEA : Backtracking
 # time = O(n * 2^n)
 # space = O(n)
@@ -149,7 +149,7 @@ class Solution:
             backtrack()
         return output
 
-# V0''''''
+# V0-5
 # IDEA : DFS 
 # SAME AS # 90 subset-ii 
 # time = O(n * 2^n)
@@ -174,7 +174,7 @@ class Solution(object):
         dfs(0, 0, [])
         return res
 
-# V0''''''''
+# V0-6
 # IDEA : DFS
 # time = O(n * 2^n)
 # space = O(n)
@@ -219,7 +219,7 @@ class Solution:
             self.backtracking(nums, i + 1, path, result)
             path.pop()
 
-# V1
+# V1'
 # https://www.jiuzhang.com/solution/subsets/#tag-highlight-lang-python
 # time = O(n * 2^n)
 # space = O(n)
@@ -242,7 +242,7 @@ class Solution:
             self.dfs(nums, i + 1, combination, combinations)
             combination.pop()
 
-# V1
+# V1''
 # IDEA : BACKTRACK
 # https://www.youtube.com/watch?v=REOH22Xwdkk&t=4s
 # https://github.com/neetcode-gh/leetcode/blob/main/python/0078-subsets.py
@@ -268,7 +268,7 @@ class Solution:
         dfs(0)
         return res
 
-# V1'
+# V1'''
 # https://leetcode.com/problems/subsets/solution/
 # IDEA : Cascading
 # time = O(n * 2^n)
@@ -283,7 +283,7 @@ class Solution:
         
         return output
 
-# V1''
+# V1''''
 # https://leetcode.com/problems/subsets/solution/
 # IDEA : Backtracking
 # time = O(n * 2^n)
@@ -309,7 +309,7 @@ class Solution:
             backtrack()
         return output
 
-# V1'''
+# V1'''''
 # https://leetcode.com/problems/subsets/solution/
 # IDRA :  Lexicographic (Binary Sorted) Subsets
 # time = O(n * 2^n)
@@ -328,7 +328,7 @@ class Solution:
         
         return output
 
-# V1''
+# V1''''''
 # https://www.jiuzhang.com/solution/subsets/#tag-highlight-lang-python
 # time = O(n * 2^n)
 # space = O(n)
@@ -349,7 +349,7 @@ class Solution:
         self.search(sorted(nums), [], 0)
         return self.results
 
-# V1'''
+# V1'''''''
 # https://www.jiuzhang.com/solution/subsets/#tag-highlight-lang-python
 # time = O(n * 2^n)
 # space = O(n * 2^n)

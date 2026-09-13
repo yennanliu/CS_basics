@@ -1,10 +1,9 @@
 """
 
 2009. Minimum Number of Operations to Make Array Continuous
+Hard
 
 # https://leetcode-cn.com/problems/minimum-number-of-operations-to-make-array-continuous/
-
-Hard
 
 You are given an integer array nums. In one operation, you can replace any element in nums with any integer.
 

@@ -1,4 +1,8 @@
 """
+
+66. Plus One
+Easy
+
 # https://github.com/kamyu104/LeetCode/blob/master/Python/plus-one.py
 
 Given a non-empty array of digits representing a non-negative integer, plus one to the integer.
@@ -48,7 +52,7 @@ class Solution(object):
             digits.insert(0, 1)
         return digits
 
-# V0'
+# V0-1
 # IDEA : array -> string -> int -> string
 # time = O(n)
 # space = O(n)

@@ -1,5 +1,8 @@
 """
 
+653. Two Sum IV - Input is a BST
+Easy
+
 Given the root of a Binary Search Tree and a target number k, 
 return true if there exist two elements in the BST such that their 
 sum is equal to the given target.
@@ -40,7 +43,6 @@ The number of nodes in the tree is in the range [1, 104].
 root is guaranteed to be a valid binary search tree.
 -105 <= k <= 105
 
-
 """
 
 # V0
@@ -63,7 +65,7 @@ class Solution(object):
         ### NOTE this
         return self.dfs(root.left, s, k) or self.dfs(root.right, s, k)
 
-# V0'
+# V0-1
 # IDEA : DFS
 # time = O(n)
 # space = O(n)
@@ -81,7 +83,7 @@ class Solution(object):
         res = set()
         return dfs(root)
 
-# V0'
+# V0-2
 # IDEA : BFS
 # time = O(n)
 # space = O(n)

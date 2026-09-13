@@ -6,6 +6,9 @@
 # https://www.jiuzhang.com/solution/new-21-game/#tag-highlight-lang-python
 """
 
+837. New 21 Game
+Medium
+
 DP def
     dp[i]: PROBABILITY of the running total ever being exactly i
 

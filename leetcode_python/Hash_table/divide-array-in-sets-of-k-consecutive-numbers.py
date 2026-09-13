@@ -55,7 +55,7 @@ class Solution:
                             return False
             return True
 
-# V1
+# V1'
 # IDEA : collections.Counter
 # https://leetcode.com/problems/divide-array-in-sets-of-k-consecutive-numbers/discuss/872280/python-solution
 # time = O(n^2 / k)  # min(cnt) scans remaining distinct keys each of the n/k group removals

@@ -57,7 +57,7 @@ class Solution:
                 path.pop(-1) # NOTE here
                 _cnt[nums[i]] += 1
 
-# V0'
+# V0-1
 # IDEA : BACKTRACKING + LC 078 Subsets + dict
 # time = O(n * 2^n)
 # space = O(n * 2^n)
@@ -96,7 +96,7 @@ class Solution(object):
         print ("res = " + str(res))
         return res
 
-# V0'''' 
+# V0-2
 # IDEA : backtrack + seen
 # https://github.com/youngyangyang04/leetcode-master/blob/master/problems/0090.%E5%AD%90%E9%9B%86II.md
 # time = O(n * 2^n)
@@ -124,7 +124,7 @@ class Solution:
             used[i] = False
             path.pop()
 
-# V0'
+# V0-3
 # IDEA : BRUTE FORCE
 # time = O(n * 2^n)
 # space = O(n * 2^n)
@@ -141,7 +141,7 @@ class Solution:
                     ans.append(temp) 
         return ans
 
-# V0''
+# V0-4
 # IDEA : DFS
 ### NOTE :
 # in py, we can pass the var into the "sub func" directly, but no need to put it in the func variable
@@ -196,7 +196,7 @@ class Solution:
                     ans.append(temp) 
         return ans
 
-# V1
+# V1'
 # IDEA : DFS 
 # https://www.cnblogs.com/loadofleaf/p/5395066.html
 #  SAME AS # 78 subset
@@ -221,7 +221,7 @@ class Solution(object):
         dfs(0, 0, [])
         return res
 
-# V1'
+# V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79785548
 # IDEA : BACKTRACKING  + DFS 
 # DEMO :
@@ -273,7 +273,7 @@ class Solution(object):
         for i in range(index, len(nums)):
             self.dfs(nums, i + 1, res, path + [nums[i]]) # [] + [1] = [1], [] + [1] + [2] = [1,2]
 
-# V1''
+# V1'''
 # IDEA : BACKTRACKING
 # https://leetcode.com/problems/subsets-ii/discuss/690114/Python-Backtracking-Solution
 # time = O(n * 2^n)
@@ -294,7 +294,7 @@ class Solution:
                 continue
             self.backtrack(nums, current + [nums[i]], i + 1)
 
-# V1''
+# V1''''
 # https://www.jianshu.com/p/b6c831622498
 # time = O(n * 2^n)
 # space = O(n * 2^n)
@@ -309,7 +309,7 @@ class Solution(object):
             res.extend(guo)
         return res
 
-# V1'''
+# V1'''''
 # https://www.jianshu.com/p/b6c831622498
 # time = O(n * 2^n)
 # space = O(n * 2^n)

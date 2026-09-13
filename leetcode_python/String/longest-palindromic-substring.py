@@ -154,7 +154,7 @@ class Solution(object):
         return s[start:start + max_len]
 
 
-# V0
+# V0-3
 # IDEA : TWO POINTERS + IDX EXPANSION
 # -> DEAL WITH odd, even len cases
 #  -> step 1) for loop on idx 
@@ -219,7 +219,7 @@ class Solution:
 
         return res
 
-# V0'
+# V0-4
 # IDEA : TWO POINTER + RECURSION
 # https://leetcode.com/problems/longest-palindromic-substring/discuss/1057629/Python.-Super-simple-and-easy-understanding-solution.-O(n2).
 # time = O(n^2)
@@ -238,7 +238,7 @@ class Solution:
             res = max(helper(index, index), helper(index, index + 1), res, key = len)           
         return res
 
-# V0''
+# V0-5
 # IDEA : TWO POINTERS
 # https://leetcode.com/problems/longest-palindromic-substring/discuss/1025496/Python-Clean-and-Simple
 # time = O(n^2)
@@ -258,7 +258,7 @@ class Solution:
                 size += 1
         return s[left:left+size]
 
-# V0'''
+# V0-6
 # IDEA : DP
 # https://leetcode.com/problems/longest-palindromic-substring/discuss/1194142/Super-Clean-DP-Python-Solution
 # time = O(n^2)
@@ -275,7 +275,7 @@ class Solution:
                         longest = s[j:j+i+1]
             return longest
 
-# V0'''
+# V0-7
 # IDEA : BRUTE FORCE (TIME OUT ERROR)
 # brute force
 # time = O(n^3)
@@ -326,7 +326,7 @@ class Solution:
             right += 1
         return string[left + 1:right]
 
-# V1
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79573621
 # https://blog.csdn.net/qqxx6661/article/details/76864410
 # IDEA : DP
@@ -356,7 +356,7 @@ class Solution(object):
             dp[i][i] = 1
         return s[start : end + 1]
 
-# V1'
+# V1''
 # https://www.jiuzhang.com/solution/longest-palindromic-substring/#tag-highlight-lang-python
 # time = O(n^2)
 # space = O(n^2)
@@ -388,7 +388,7 @@ class Solution:
                     
         return s[start:end + 1]
 
-# V1''
+# V1'''
 # https://www.jiuzhang.com/solution/longest-palindromic-substring/#tag-highlight-lang-python
 # time = O(n^2)
 # space = O(1)

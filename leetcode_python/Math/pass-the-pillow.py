@@ -2,6 +2,7 @@
 
 2582. Pass the Pillow
 Easy
+
 There are n people standing in a line labeled from 1 to n. The first person in the line is holding
 a pillow initially. Every second, the person holding the pillow passes it to the next person
 standing in the line. Once the pillow reaches the end of the line, the direction changes, and

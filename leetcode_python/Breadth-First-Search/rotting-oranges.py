@@ -175,7 +175,7 @@ class Solution(object):
         return time if fresh == 0 else -1
 
 
-# V0
+# V0-2
 # time = O(m * n)
 # space = O(m * n)
 class Solution(object):

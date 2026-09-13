@@ -2,6 +2,7 @@
 
 2689. Extract Kth Character From The Rope Tree
 Easy
+
 You are given the root of a binary tree and an integer k. Besides the left and right children, every node of this tree has two other properties, a string node.val containing only lowercase English letters (possibly empty) and a non-negative integer node.len. There are two types of nodes in this tree:
 
 Leaf: These nodes have no children, node.len = 0, and node.val is some non-empty string.

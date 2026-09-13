@@ -72,7 +72,7 @@ class Solution(object):
             res =  resmin + "-" + res
         return res.strip("-")
 
-# V0'
+# V0-1
 # IDEA : inverse traversal + residual
 # time = O(n)
 # space = O(n)
@@ -87,7 +87,7 @@ class Solution(object):
             result += S[i].upper()
         return "".join(result[::-1])
 
-# V0''
+# V0-2
 # IDEA : string op + brute force
 # time = O(n)
 # space = O(n)
@@ -125,7 +125,7 @@ class Solution(object):
             res += ("".join(s_[i:i+k]) + "-")
         return res.strip("-")
 
-# V0'''
+# V0-3
 # IDEA : GO THROUGH THE STRING FROM BACK,
 #        -> SO NO NEED TO THINK ABOUT THE "len(S) % K > 1"  cases
 # time = O(n)
@@ -135,7 +135,7 @@ class Solution:
         S = S.replace("-", "").upper()[::-1]
         return '-'.join(S[i:i+K] for i in range(0, len(S), K))[::-1]
 
-# V0''''
+# V0-4
 # DEMO : range with gap
 #    ...: for i in range(1,10, 2):
 #    ...: ^Iprint (i)

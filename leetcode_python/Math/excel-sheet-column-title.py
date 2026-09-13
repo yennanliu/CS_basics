@@ -56,7 +56,7 @@ class Solution(object):
             n = (n-1) // 26
         return res
 
-# V0'
+# V0-1
 # TODO : fix below
 # class Solution(object):
 #     def convertToTitle(self, columnNumber):
@@ -78,7 +78,7 @@ class Solution(object):
 #         print ("res = " + str(res))
 #         return res[::-1]
 
-# V0'
+# V0-2
 # time = O(n)  # n = len(s)
 # space = O(1)
 class Solution(object):
@@ -93,7 +93,7 @@ class Solution(object):
             sum = sum*26 + ord(c) - 64 # 64 = ord('A') - 1
         return sum
 
-# V0''
+# V0-3
 # https://leetcode.com/problems/excel-sheet-column-title/discuss/205987/Python-Solution-with-explanation
 # time = O(logn)
 # space = O(logn)
@@ -118,7 +118,7 @@ class Solution:
                 res = d[r] + res
         return res
 
-# V0'''
+# V0-4
 # time = O(logn)
 # space = O(logn)
 class Solution(object):

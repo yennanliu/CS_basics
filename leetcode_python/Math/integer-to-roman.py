@@ -3,7 +3,6 @@
 12. Integer to Roman
 Medium
 
-
 Roman numerals are represented by seven different symbols: I, V, X, L, C, D and M.
 
 Symbol       Value
@@ -117,7 +116,7 @@ class Solution(object):
         return "".join(res)
 
 
-# V0
+# V0-2
 # IDEA
 # In [8]: 1200%100
 # Out[8]: 0
@@ -166,7 +165,7 @@ class Solution(object):
             i -= 1
         return ''.join(s)
 
-# V1
+# V1'
 # IDEA : Greedy
 # https://leetcode.com/problems/integer-to-roman/solution/
 # time = O(1)
@@ -187,7 +186,7 @@ class Solution:
             roman_digits.append(symbol * count)
         return "".join(roman_digits)
 
-# V1
+# V1''
 # IDEA : Hardcode Digits
 # https://leetcode.com/problems/integer-to-roman/solution/
 # time = O(1)
@@ -201,7 +200,7 @@ class Solution:
         return (thousands[num // 1000] + hundreds[num % 1000 // 100] 
                + tens[num % 100 // 10] + ones[num % 10])
 
-# V1'
+# V1'''
 # https://blog.csdn.net/NXHYD/article/details/72461202
 # time = O(1)
 # space = O(1)
@@ -217,7 +216,7 @@ class Solution(object):
         I = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"]
         return M[num/1000] + C[(num%1000)/100] + X[(num%100)/10] + I[num%10]
 
-# V1''
+# V1''''
 # https://www.jiuzhang.com/solution/integer-to-roman/#tag-highlight-lang-python
 # time = O(1)
 # space = O(1)

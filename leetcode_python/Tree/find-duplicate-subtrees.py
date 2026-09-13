@@ -115,7 +115,7 @@ class Solution(object):
         return serial
 
 
-# V0-0-0-1
+# V0-1
 # IDEA: Post-order DFS + serialization (path) (gpt)
 class Solution(object):
     def findDuplicateSubtrees(self, root):
@@ -165,7 +165,7 @@ class Solution(object):
         return path
 
 
-# V0-0-1
+# V0-2
 # IDEA: Post-order DFS (gpt)
 class Solution(object):
     def findDuplicateSubtrees(self, root):
@@ -244,7 +244,7 @@ class Solution(object):
         return serial
 
 
-# V0-0-2
+# V0-3
 # IDEA: Post-order DFS (gemini)
 import collections
 
@@ -298,7 +298,7 @@ class Solution(object):
         return current_str
 
 
-# V0
+# V0-4
 # IDEA: DFS (post order) + serialization + hashmap (GPT)
 # time = O(n)
 # space = O(n)
@@ -369,7 +369,7 @@ class Solution(object):
         return serial
 
 
-# V0-1
+# V0-5
 # IDEA: DFS (post order) + serialization + hashmap (GEMINI)
 # time = O(n)
 # space = O(n)
@@ -411,7 +411,7 @@ class Solution(object):
         return subtree_signature
 
 
-# V0
+# V0-6
 # IDEA : DFS
 # DEMO : defaultdict
 # In [26]: import collections 
@@ -482,7 +482,7 @@ class Solution(object):
         m[path] += 1
         return path
 
-# V0'
+# V0-7
 import collections
 # time = O(n)
 # space = O(n)
@@ -502,7 +502,7 @@ class Solution(object):
         self.m[path] += 1
         return path
 
-# V0''
+# V0-8
 # IDEA : DFS
 # time = O(n)
 # space = O(n)

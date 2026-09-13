@@ -102,7 +102,7 @@ class Solution(object):
         return -1
 
 
-# V0
+# V0-1
 # IDEA :  Dijkstra
 import heapq
 from collections import defaultdict
@@ -147,7 +147,7 @@ class Solution(object):
         return -1
 
 
-# V0-1
+# V0-2
 
 
 
@@ -203,7 +203,7 @@ class Solution:
                         
         return -1 if distances[dst] == float("inf") else distances[dst]
 
-# V1
+# V1'
 # https://leetcode.com/problems/cheapest-flights-within-k-stops/solution/
 # IDEA :  Depth-First-Search with Memoization
 # time = O(n^2 * K), n = number of cities, K = max stops (n work per (node, stops) state)
@@ -248,7 +248,7 @@ class Solution:
         result = self.findShortest(src, K, dst, n)
         return -1 if result == float("inf") else result
 
-# V1
+# V1''
 # https://leetcode.com/problems/cheapest-flights-within-k-stops/solution/
 # IDEA :  Bellman-Ford
 # time = O(K * E), E = number of flights, K = max stops
@@ -282,7 +282,7 @@ class Solution:
                     
         return -1 if distances[K&1][dst] == float("inf") else distances[K&1][dst]
 
-# V1
+# V1'''
 # https://leetcode.com/problems/cheapest-flights-within-k-stops/solution/
 # IDEA :  Breadth First Search
 # time = O(K * n^2), n = number of cities, K = max stops
@@ -337,7 +337,7 @@ class Solution:
         
         return -1 if ans == float("inf") else ans
 
-# V1
+# V1''''
 # IDEA : Dijkstra
 # https://leetcode.com/problems/cheapest-flights-within-k-stops/discuss/267200/Python-Dijkstra
 # IDEA
@@ -367,7 +367,7 @@ class Solution:
                 heapq.heappush(pq, (w+dw, y, k-1))
         return -1
 
-# V1'
+# V1'''''
 # IDEA : Dijkstra
 # https://leetcode.com/problems/cheapest-flights-within-k-stops/discuss/209730/Python-solution
 # time = O(E * K * log(E * K)), E = number of flights, K = max stops
@@ -410,7 +410,7 @@ class Solution(object):
 # TODO : FIX BELOW APPROACHES (TLE)
 #--------------------------------------------
 
-# V1''
+# V1''''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/83307822
 # IDEA :DFS
 # DEMO : collections.defaultdict
@@ -452,7 +452,7 @@ class Solution(object):
 
 ### Test case : dev
 
-# V1''''
+# V1'''''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/83307822
 # IDEA : BFS
 # time = O(n^K)  # no per-(node, stops) dedup, branching factor n, depth K (TLE)
@@ -488,7 +488,7 @@ class Solution(object):
             step += 1
         return -1 if ans == float('inf') else ans
 
-# V1''''''
+# V1''''''''
 # https://leetcode.com/problems/cheapest-flights-within-k-stops/discuss/267200/Python-Dijkstra
 # IDEA : Dijkstra algorithm
 # time = O(n^K * log(n^K))  # no per-(node, stops) dedup, heap can hold exponentially many states (TLE)
@@ -505,7 +505,7 @@ class Solution(object):
                     heapq.heappush(pq, (cost+g[s][d], d, k-1))
         return -1
 
-# V1'''''''
+# V1'''''''''
 # https://leetcode.com/problems/cheapest-flights-within-k-stops/discuss/317262/2-Clean-Python-Solution-(BFS-Dijkstra-Explained)
 # IDEA : Dijkstra algorithm
 # time = O(n^K * log(n^K))  # no per-(node, stops) dedup, heap can hold exponentially many states (TLE)
@@ -527,7 +527,7 @@ class Solution(object):
                     heapq.heappush(pq, (price+price_to_nei, stops-1, nei))
         return -1
 
-# V1''''
+# V1''''''''''
 # https://leetcode.com/problems/cheapest-flights-within-k-stops/discuss/317262/2-Clean-Python-Solution-(BFS-Dijkstra-Explained)
 # IDEA : BFS
 # time = O(n^K)  # no per-(node, stops) dedup, branching factor n, depth K (TLE)
@@ -553,7 +553,7 @@ class Solution(object):
 
         return min_price if min_price!=float('inf') else -1
 
-# V1'''''
+# V1'''''''''''
 # https://leetcode.com/problems/cheapest-flights-within-k-stops/discuss/115541/JavaPython-Priority-Queue-Solution
 # IDEA : Priority Queue 
 # time = O(n^K * log(n^K))  # no per-(node, stops) dedup, heap can hold exponentially many states (TLE)

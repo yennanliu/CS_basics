@@ -1,10 +1,8 @@
 """
+
 845. Longest Mountain in Array
-Solved
 Medium
-Topics
-premium lock icon
-Companies
+
 You may recall that an array arr is a mountain array if and only if:
 
 arr.length >= 3
@@ -39,7 +37,6 @@ Can you solve it using only one pass?
 Can you solve it in O(1) space?
  
 
-
 """
 
 # V0
@@ -71,7 +68,7 @@ class Solution(object):
         return max_len
 
 
-# V0-0-1
+# V0-1
 # IDEA: Single pass (two pointers) (GPT)
 class Solution(object):
     def longestMountain(self, arr):
@@ -107,7 +104,7 @@ class Solution(object):
         return ans
 
 
-# V0-1
+# V0-2
 # IDEA: 2 POINTERS + EXPAND (GEMINI)
 class Solution(object):
     def longestMountain(self, arr):
@@ -140,7 +137,7 @@ class Solution(object):
         return max_len
 
 
-# V0-2
+# V0-3
 # IDEA: Two arrays (up[] and down[]) (GPT)
 """
 

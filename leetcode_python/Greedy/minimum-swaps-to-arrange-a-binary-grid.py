@@ -35,7 +35,6 @@ n == grid.length == grid[i].length
 1 <= n <= 200
 grid[i][j] is either 0 or 1
 
-
 """
 
 # V0
