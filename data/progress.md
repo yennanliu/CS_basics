@@ -57,19 +57,14 @@
 		- `最長共同子序列（LCS）` 
 
 
+- Difference Array.md
+	- https://yennj12.js.org/CS_basics/cheatsheets/difference_array.zh.html
 
-
-
-- kadane_algorithm.md
-	- https://yennj12.js.org/CS_basics/cheatsheets/kadane_algorithm.zh.html
-		- `1-7) 二維 Kadane／格子上的「以此結尾的最佳解」（LC 221)`
 
 
 - time_space_complexity.md
 
 - binary tree.md
-
-- Difference Array.md
 
 - Matrix / 2D Grid.md
 
@@ -141,6 +136,7 @@
 		- again
 	- recursion_to_dp.zh.html
 		- again
+	- kadane_algorithm.md
 
 
 
