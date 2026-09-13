@@ -38,6 +38,60 @@ p and q will exist in the tree.
 """
 
 # V0
+# IDEA: POST ORDER DFS (gpt)
+class Solution(object):
+    def lowestCommonAncestor(self, root, p, q):
+        """
+        :type root: TreeNode
+        :type p: TreeNode
+        :type q: TreeNode
+        :rtype: TreeNode
+        """
+        if not root:
+            return None
+
+        if p == q:
+            return root
+
+        return self.helper(root, p, q)
+
+    def helper(self, root, p, q):
+        if not root:
+            return None
+
+        # Found p or q
+        if root == p or root == q:
+            return root
+
+        left = self.helper(root.left, p, q)
+        right = self.helper(root.right, p, q)
+
+        # NOTE !!! below
+        # p and q are on different sides
+        if left and right:
+            return root
+
+        # Only one side has p/q
+        if left:
+            return left
+
+        if right:
+            return right
+
+        """
+        NOTE !!!
+
+        there is a case that
+        BOTH left, right are `None`,
+
+            -> e.g. CAN'T find neither p or q in the sub nodes
+
+                -> need to return `None` per this case
+        """
+        return None
+
+
+# V0
 # IDEA : RECURSION + POST ORDER TRANSVERSAL
 # time = O(n)
 # space = O(h)  # h = tree height (worst case O(n))
