@@ -1,6 +1,6 @@
 # Progress
 
-# 2026-09-13
+# 2026-09-14
 
 - TODO:
 	- `must_lc_list.md` -> done
@@ -333,8 +333,10 @@
 					- 918
 						- 環狀最大子陣列（LC 918)
 					- 1186
-					- 2 Kadane
+					- 2 state Kadane
 						- 714
+					- 2 D Kadane
+						- 221
 		- set
 			- 187
 			- 532
