@@ -7,10 +7,7 @@ import java.util.*;
 /**
  * 2685. Count the Number of Complete Components
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You are given an integer n. There is an undirected graph with n vertices, numbered from 0 to n - 1. You are given a 2D integer array edges where edges[i] = [ai, bi] denotes that there exists an undirected edge connecting vertices ai and bi.
  *
  * Return the number of complete connected components of the graph.
@@ -45,8 +42,6 @@ import java.util.*;
  * 0 <= ai, bi <= n - 1
  * ai != bi
  * There are no repeated edges.
- *
- *
  *
  */
 public class CountTheNumberOfCompleteComponents {

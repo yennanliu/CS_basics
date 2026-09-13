@@ -3,11 +3,8 @@ package LeetCodeJava.TwoPointer;
 // https://leetcode.com/problems/middle-of-the-linked-list/
 /**
  * 876. Middle of the Linked List
- * Solved
  * Easy
- * Topics
- * premium lock icon
- * Companies
+ *
  * Given the head of a singly linked list, return the middle node of the linked list.
  *
  * If there are two middle nodes, return the second middle node.
@@ -32,12 +29,6 @@ package LeetCodeJava.TwoPointer;
  *
  * The number of nodes in the list is in the range [1, 100].
  * 1 <= Node.val <= 100
- *
- * Seen this question in a real interview before?
- * 1/5
- * Yes
- * No
- *
  *
  */
 import LeetCodeJava.DataStructure.ListNode;

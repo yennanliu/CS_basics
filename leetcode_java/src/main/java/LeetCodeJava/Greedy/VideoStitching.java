@@ -3,31 +3,32 @@ package LeetCodeJava.Greedy;
 // https://leetcode.com/problems/video-stitching/
 
 /**
- *  1024. Video Stitching
- *  Medium
+ * 1024. Video Stitching
+ * Medium
  *
- *  You are given a series of video clips from a sporting event that lasted `time` seconds.
- *  These video clips can be overlapping and have varying lengths.
+ * You are given a series of video clips from a sporting event that lasted `time` seconds.
+ * These video clips can be overlapping and have varying lengths.
  *
- *  Each video clip is described by an array clips where clips[i] = [starti, endi] means
- *  the ith clip started at starti and ended at endi.
+ * Each video clip is described by an array clips where clips[i] = [starti, endi] means
+ * the ith clip started at starti and ended at endi.
  *
- *  We can cut these clips into segments freely. Return the minimum number of clips needed
- *  so that we can cut the clips into segments that cover the entire sporting event
- *  [0, time]. If the task is impossible, return -1.
+ * We can cut these clips into segments freely. Return the minimum number of clips needed
+ * so that we can cut the clips into segments that cover the entire sporting event
+ * [0, time]. If the task is impossible, return -1.
  *
- *  Example 1:
- *    Input: clips = [[0,2],[4,6],[8,10],[1,9],[1,5],[5,9]], time = 10
- *    Output: 3    ([0,2] + [1,9] + [8,10])
+ * Example 1:
+ * Input: clips = [[0,2],[4,6],[8,10],[1,9],[1,5],[5,9]], time = 10
+ * Output: 3    ([0,2] + [1,9] + [8,10])
  *
- *  Example 2:
- *    Input: clips = [[0,1],[1,2]], time = 5
- *    Output: -1
+ * Example 2:
+ * Input: clips = [[0,1],[1,2]], time = 5
+ * Output: -1
  *
- *  Constraints:
- *    1 <= clips.length <= 100
- *    0 <= starti <= endi <= 100
- *    1 <= time <= 100
+ * Constraints:
+ * 1 <= clips.length <= 100
+ * 0 <= starti <= endi <= 100
+ * 1 <= time <= 100
+ *
  */
 public class VideoStitching {
 

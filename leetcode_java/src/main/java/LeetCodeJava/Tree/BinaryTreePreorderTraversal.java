@@ -10,8 +10,7 @@ import java.util.List;
 /**
  * 144. Binary Tree Preorder Traversal
  * Easy
- * Topics
- * Companies
+ *
  * Given the root of a binary tree, return the preorder traversal of its nodes' values.
  *
  *
@@ -54,7 +53,6 @@ import java.util.List;
  *
  * The number of nodes in the tree is in the range [0, 100].
  * -100 <= Node.val <= 100
- *
  *
  */
 

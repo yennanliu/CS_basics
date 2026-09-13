@@ -5,31 +5,32 @@ package LeetCodeJava.BackTrack;
 import java.util.*;
 
 /**
- *  216. Combination Sum III
- *  Medium
+ * 216. Combination Sum III
+ * Medium
  *
- *  Find all valid combinations of k numbers that sum up to n such that:
- *   - Only numbers 1 through 9 are used.
- *   - Each number is used at most once.
+ * Find all valid combinations of k numbers that sum up to n such that:
+ * - Only numbers 1 through 9 are used.
+ * - Each number is used at most once.
  *
- *  Return a list of all possible valid combinations. The list must not contain
- *  the same combination twice, and the combinations may be returned in any order.
+ * Return a list of all possible valid combinations. The list must not contain
+ * the same combination twice, and the combinations may be returned in any order.
  *
- *  Example 1:
- *   Input: k = 3, n = 7
- *   Output: [[1,2,4]]
+ * Example 1:
+ * Input: k = 3, n = 7
+ * Output: [[1,2,4]]
  *
- *  Example 2:
- *   Input: k = 3, n = 9
- *   Output: [[1,2,6],[1,3,5],[2,3,4]]
+ * Example 2:
+ * Input: k = 3, n = 9
+ * Output: [[1,2,6],[1,3,5],[2,3,4]]
  *
- *  Example 3:
- *   Input: k = 4, n = 1
- *   Output: []
+ * Example 3:
+ * Input: k = 4, n = 1
+ * Output: []
  *
- *  Constraints:
- *   2 <= k <= 9
- *   1 <= n <= 60
+ * Constraints:
+ * 2 <= k <= 9
+ * 1 <= n <= 60
+ *
  */
 public class CombinationSumIII {
 

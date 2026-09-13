@@ -2,11 +2,9 @@ package LeetCodeJava.Sort;
 
 // https://leetcode.com/problems/longest-consecutive-sequence/
 /**
- *  128. Longest Consecutive Sequence
- * Solved
+ * 128. Longest Consecutive Sequence
  * Medium
- * Topics
- * Companies
+ *
  * Given an unsorted array of integers nums, return the length of the longest consecutive elements sequence.
  *
  * You must write an algorithm that runs in O(n) time.
@@ -28,6 +26,7 @@ package LeetCodeJava.Sort;
  *
  * 0 <= nums.length <= 105
  * -109 <= nums[i] <= 109
+ *
  */
 import java.util.*;
 

@@ -7,30 +7,31 @@ import java.util.Random;
 import LeetCodeJava.DataStructure.ListNode;
 
 /**
- *  382. Linked List Random Node
- *  Medium
+ * 382. Linked List Random Node
+ * Medium
  *
- *  Given a singly linked list, return a random node's value from the linked list.
- *  Each node must have the same probability of being chosen.
+ * Given a singly linked list, return a random node's value from the linked list.
+ * Each node must have the same probability of being chosen.
  *
- *  Implement the Solution class:
- *   - Solution(ListNode head) Initializes the object with the head of the singly-linked list.
- *   - int getRandom() Chooses a node randomly from the list and returns its value.
- *     All the nodes of the list should be equally likely to be chosen.
+ * Implement the Solution class:
+ * - Solution(ListNode head) Initializes the object with the head of the singly-linked list.
+ * - int getRandom() Chooses a node randomly from the list and returns its value.
+ * All the nodes of the list should be equally likely to be chosen.
  *
- *  Example 1:
+ * Example 1:
  *
- *  Input
- *  ["Solution", "getRandom", "getRandom", "getRandom"]
- *  [[[1, 2, 3]], [], [], []]
- *  Output
- *  [null, 1, 3, 2]
+ * Input
+ * ["Solution", "getRandom", "getRandom", "getRandom"]
+ * [[[1, 2, 3]], [], [], []]
+ * Output
+ * [null, 1, 3, 2]
  *
- *  Constraints:
+ * Constraints:
  *
- *  The number of nodes in the linked list will be in the range [1, 10^4].
- *  -10^4 <= Node.val <= 10^4
- *  At most 10^4 calls will be made to getRandom.
+ * The number of nodes in the linked list will be in the range [1, 10^4].
+ * -10^4 <= Node.val <= 10^4
+ * At most 10^4 calls will be made to getRandom.
+ *
  */
 public class LinkedListRandomNode {
 

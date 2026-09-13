@@ -5,9 +5,7 @@ package LeetCodeJava.DynamicProgramming;
 /**
  * 1406. Stone Game III
  * Hard
- * Topics
- * Companies
- * Hint
+ *
  * Alice and Bob continue their games with piles of stones. There are several stones arranged in a row, and each stone has an associated value which is an integer given in the array stoneValue.
  *
  * Alice and Bob take turns, with Alice starting first. On each player's turn, that player can take 1, 2, or 3 stones from the first remaining stones in the row.

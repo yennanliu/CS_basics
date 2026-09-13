@@ -10,12 +10,10 @@ import java.util.List;
 /**
  * 99. Recover Binary Search Tree
  * Medium
- * Topics
- * premium lock icon
- * Companies
+ *
  * You are given the root of a binary search tree (BST), where the values of exactly two nodes of the tree were swapped by mistake. Recover the tree without changing its structure.
  *
- *Example 1:
+ * Example 1:
  *
  *
  * Input: root = [1,3,null,null,2]
@@ -36,10 +34,6 @@ import java.util.List;
  *
  *
  * Follow up: A solution using O(n) space is pretty straight-forward. Could you devise a constant O(1) space solution?
- *
- * Seen this question in a real interview before?
- * 1/5
- * Yes
  *
  */
 public class RecoverBinarySearchTree {

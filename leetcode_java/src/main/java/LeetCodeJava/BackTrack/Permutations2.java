@@ -6,10 +6,8 @@ import java.util.*;
 
 /**
  * 47. Permutations II
- * Solved
  * Medium
- * Topics
- * Companies
+ *
  * Given a collection of numbers, nums, that might contain duplicates, return all possible unique permutations in any order.
  *
  *
@@ -19,8 +17,8 @@ import java.util.*;
  * Input: nums = [1,1,2]
  * Output:
  * [[1,1,2],
- *  [1,2,1],
- *  [2,1,1]]
+ * [1,2,1],
+ * [2,1,1]]
  * Example 2:
  *
  * Input: nums = [1,2,3]

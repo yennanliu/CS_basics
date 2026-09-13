@@ -8,35 +8,36 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- *  966. Vowel Spellchecker
- *  Medium
+ * 966. Vowel Spellchecker
+ * Medium
  *
- *  Given a wordlist, we want to implement a spellchecker that converts a query
- *  word into a correct word. For a given query word, the spell checker handles
- *  two categories of spelling mistakes:
+ * Given a wordlist, we want to implement a spellchecker that converts a query
+ * word into a correct word. For a given query word, the spell checker handles
+ * two categories of spelling mistakes:
  *
- *  1) Capitalization: if the query matches a word in the wordlist case-insensitively,
- *     return the FIRST such match in the wordlist.
- *  2) Vowel Errors: if replacing all the vowels ('a','e','i','o','u') of the query
- *     with any vowel makes it match a word in the wordlist (case-insensitively),
- *     return the FIRST such match in the wordlist.
+ * 1) Capitalization: if the query matches a word in the wordlist case-insensitively,
+ * return the FIRST such match in the wordlist.
+ * 2) Vowel Errors: if replacing all the vowels ('a','e','i','o','u') of the query
+ * with any vowel makes it match a word in the wordlist (case-insensitively),
+ * return the FIRST such match in the wordlist.
  *
- *  In addition, an exact match (case-sensitive) is always returned as is, and
- *  precedence is: exact match > capitalization > vowel error > "" (no match).
+ * In addition, an exact match (case-sensitive) is always returned as is, and
+ * precedence is: exact match > capitalization > vowel error > "" (no match).
  *
- *  Example 1:
- *  Input: wordlist = ["KiTe","kite","hare","Hare"],
- *         queries = ["kite","Kite","KiTe","Hare","HARE","Hear","hear","keti","keet","keto"]
- *  Output: ["kite","KiTe","KiTe","Hare","hare","","","KiTe","","KiTe"]
+ * Example 1:
+ * Input: wordlist = ["KiTe","kite","hare","Hare"],
+ * queries = ["kite","Kite","KiTe","Hare","HARE","Hear","hear","keti","keet","keto"]
+ * Output: ["kite","KiTe","KiTe","Hare","hare","","","KiTe","","KiTe"]
  *
- *  Example 2:
- *  Input: wordlist = ["yellow"], queries = ["YellOw"]
- *  Output: ["yellow"]
+ * Example 2:
+ * Input: wordlist = ["yellow"], queries = ["YellOw"]
+ * Output: ["yellow"]
  *
- *  Constraints:
- *  1 <= wordlist.length, queries.length <= 5000
- *  1 <= wordlist[i].length, queries[i].length <= 7
- *  wordlist[i] and queries[i] consist only of English letters.
+ * Constraints:
+ * 1 <= wordlist.length, queries.length <= 5000
+ * 1 <= wordlist[i].length, queries[i].length <= 7
+ * wordlist[i] and queries[i] consist only of English letters.
+ *
  */
 public class VowelSpellchecker {
 

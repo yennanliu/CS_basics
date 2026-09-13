@@ -3,35 +3,36 @@ package LeetCodeJava.SlideWindow;
 // https://leetcode.com/problems/shortest-subarray-with-or-at-least-k-ii/
 
 /**
- *  3097. Shortest Subarray With OR at Least K II
- *  Medium
+ * 3097. Shortest Subarray With OR at Least K II
+ * Medium
  *
- *  You are given an array nums of non-negative integers and an integer k.
+ * You are given an array nums of non-negative integers and an integer k.
  *
- *  An array is called special if the bitwise OR of all of its elements is at
- *  least k.
+ * An array is called special if the bitwise OR of all of its elements is at
+ * least k.
  *
- *  Return the length of the shortest special non-empty subarray of nums, or
- *  return -1 if no special subarray exists.
+ * Return the length of the shortest special non-empty subarray of nums, or
+ * return -1 if no special subarray exists.
  *
- *  Example 1:
- *    Input: nums = [1,2,3], k = 2
- *    Output: 1
- *    Explanation: The subarray [3] has OR value of 3.
+ * Example 1:
+ * Input: nums = [1,2,3], k = 2
+ * Output: 1
+ * Explanation: The subarray [3] has OR value of 3.
  *
- *  Example 2:
- *    Input: nums = [2,1,8], k = 10
- *    Output: 3
- *    Explanation: The subarray [2,1,8] has OR value of 11.
+ * Example 2:
+ * Input: nums = [2,1,8], k = 10
+ * Output: 3
+ * Explanation: The subarray [2,1,8] has OR value of 11.
  *
- *  Example 3:
- *    Input: nums = [1,2], k = 0
- *    Output: 1
+ * Example 3:
+ * Input: nums = [1,2], k = 0
+ * Output: 1
  *
- *  Constraints:
- *    1 <= nums.length <= 2 * 10^5
- *    0 <= nums[i] <= 10^9
- *    0 <= k <= 10^9
+ * Constraints:
+ * 1 <= nums.length <= 2 * 10^5
+ * 0 <= nums[i] <= 10^9
+ * 0 <= k <= 10^9
+ *
  */
 public class ShortestSubarrayWithOrAtLeastKII {
 

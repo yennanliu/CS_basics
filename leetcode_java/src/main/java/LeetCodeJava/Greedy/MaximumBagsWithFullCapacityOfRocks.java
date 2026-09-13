@@ -5,12 +5,9 @@ package LeetCodeJava.Greedy;
 import java.util.*;
 
 /**
- *  2279. Maximum Bags With Full Capacity of Rocks
+ * 2279. Maximum Bags With Full Capacity of Rocks
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You have n bags numbered from 0 to n - 1. You are given two 0-indexed integer arrays capacity and rocks. The ith bag can hold a maximum of capacity[i] rocks and currently contains rocks[i] rocks. You are also given an integer additionalRocks, the number of additional rocks you can place in any of the bags.
  *
  * Return the maximum number of bags that could have full capacity after placing the additional rocks in some bags.
@@ -49,21 +46,6 @@ import java.util.*;
  * 0 <= rocks[i] <= capacity[i]
  * 1 <= additionalRocks <= 109
  *
- * Seen this question in a real interview before?
- * 1/5
- * Yes
- * No
- * Accepted
- * 109,003/160.7K
- * Acceptance Rate
- * 67.8%
- * Topics
- * icon
- * Companies
- * Hint 1
- * Hint 2
- * Similar Questions
- * Discussion (54)
  */
 public class MaximumBagsWithFullCapacityOfRocks {
 

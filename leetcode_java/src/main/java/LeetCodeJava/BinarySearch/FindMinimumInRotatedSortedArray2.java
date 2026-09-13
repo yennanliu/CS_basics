@@ -3,11 +3,9 @@ package LeetCodeJava.BinarySearch;
 // https://leetcode.com/problems/find-minimum-in-rotated-sorted-array-ii/description/
 // https://leetcode.ca/all/154.html
 /**
- *  154. Find Minimum in Rotated Sorted Array II
- * N/A
- * Topics
- * premium lock icon
- * Companies
+ * 154. Find Minimum in Rotated Sorted Array II
+ * Hard
+ *
  * Suppose an array of length n sorted in ascending order is rotated between 1 and n times. For example, the array nums = [0,1,4,4,5,6,7] might become:
  *
  * [4,5,6,7,0,1,4] if it was rotated 4 times.
@@ -36,7 +34,6 @@ package LeetCodeJava.BinarySearch;
  * 1 <= n <= 5000
  * -5000 <= nums[i] <= 5000
  * nums is sorted and rotated between 1 and n times.
- *
  *
  */
 public class FindMinimumInRotatedSortedArray2 {

@@ -8,9 +8,7 @@ import java.util.regex.Pattern;
 /**
  * 591. Tag Validator
  * Hard
- * Topics
- * premium lock icon
- * Companies
+ *
  * Given a string representing a code snippet, implement a tag validator to parse the code and return whether it is valid.
  *
  * A code snippet is valid if all the following rules hold:
@@ -59,7 +57,6 @@ import java.util.regex.Pattern;
  *
  * 1 <= code.length <= 500
  * code consists of English letters, digits, '<', '>', '/', '!', '[', ']', '.', and ' '.
- *
  *
  */
 public class TagValidator {

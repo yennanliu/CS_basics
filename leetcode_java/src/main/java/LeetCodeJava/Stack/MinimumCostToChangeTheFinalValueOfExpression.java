@@ -6,36 +6,37 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 /**
- *  1896. Minimum Cost to Change the Final Value of Expression
- *  Hard
+ * 1896. Minimum Cost to Change the Final Value of Expression
+ * Hard
  *
- *  You are given a valid boolean expression as a string expression consisting of the
- *  characters '1', '0', '&' (AND), '|' (OR), '(' and ')'.
+ * You are given a valid boolean expression as a string expression consisting of the
+ * characters '1', '0', '&' (AND), '|' (OR), '(' and ')'.
  *
- *  Return the minimum cost to change the final value of the expression. The cost is the
- *  number of operations performed, where an operation is one of:
- *   - turn a '1' into a '0' (or the other way round)
- *   - turn a '&' into a '|' (or the other way round)
+ * Return the minimum cost to change the final value of the expression. The cost is the
+ * number of operations performed, where an operation is one of:
+ * - turn a '1' into a '0' (or the other way round)
+ * - turn a '&' into a '|' (or the other way round)
  *
- *  Note: '&' does NOT take precedence over '|'. Evaluate parentheses first, then
- *  strictly left-to-right.
+ * Note: '&' does NOT take precedence over '|'. Evaluate parentheses first, then
+ * strictly left-to-right.
  *
- *  Example 1:
- *  Input: expression = "1&(0|1)"
- *  Output: 1
+ * Example 1:
+ * Input: expression = "1&(0|1)"
+ * Output: 1
  *
- *  Example 2:
- *  Input: expression = "(0&0)&(0&0&0)"
- *  Output: 3
+ * Example 2:
+ * Input: expression = "(0&0)&(0&0&0)"
+ * Output: 3
  *
- *  Example 3:
- *  Input: expression = "(0|(1|0&1))"
- *  Output: 1
+ * Example 3:
+ * Input: expression = "(0|(1|0&1))"
+ * Output: 1
  *
- *  Constraints:
- *  1 <= expression.length <= 10^5
- *  expression only contains '1', '0', '&', '|', '(' and ')'
- *  All parentheses are properly matched, and there are no empty parentheses.
+ * Constraints:
+ * 1 <= expression.length <= 10^5
+ * expression only contains '1', '0', '&', '|', '(' and ')'
+ * All parentheses are properly matched, and there are no empty parentheses.
+ *
  */
 public class MinimumCostToChangeTheFinalValueOfExpression {
 

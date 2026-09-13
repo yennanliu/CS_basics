@@ -5,12 +5,9 @@ package LeetCodeJava.BinarySearchTree;
 import LeetCodeJava.DataStructure.TreeNode;
 
 /**
- *  968. Binary Tree Cameras
- * Solved
+ * 968. Binary Tree Cameras
  * Hard
- * Topics
- * premium lock icon
- * Companies
+ *
  * You are given the root of a binary tree. We install cameras on the tree nodes where each camera at a node can monitor its parent, itself, and its immediate children.
  *
  * Return the minimum number of cameras needed to monitor all nodes of the tree.
@@ -35,7 +32,6 @@ import LeetCodeJava.DataStructure.TreeNode;
  *
  * The number of nodes in the tree is in the range [1, 1000].
  * Node.val == 0
- *
  *
  */
 public class BinaryTreeCameras {

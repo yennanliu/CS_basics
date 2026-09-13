@@ -2,12 +2,9 @@ package LeetCodeJava.DynamicProgramming;
 
 // https://leetcode.com/problems/range-sum-query-immutable/description/
 /**
- *  303. Range Sum Query - Immutable
- * Solved
+ * 303. Range Sum Query - Immutable
  * Easy
- * Topics
- * premium lock icon
- * Companies
+ *
  * Given an integer array nums, handle multiple queries of the following type:
  *
  * Calculate the sum of the elements of nums between indices left and right inclusive where left <= right.
@@ -85,6 +82,8 @@ public class RangeSumQueryImmutable {
     }
 
 
+
+    // V0
 
     // V0-1
     // IDEA: PREFIX SUM (fixed by gemini)

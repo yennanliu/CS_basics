@@ -7,43 +7,44 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- *  2322. Minimum Score After Removals on a Tree
- *  Hard
+ * 2322. Minimum Score After Removals on a Tree
+ * Hard
  *
- *  There is an undirected connected tree with n nodes labeled from 0 to n - 1
- *  and n - 1 edges.
+ * There is an undirected connected tree with n nodes labeled from 0 to n - 1
+ * and n - 1 edges.
  *
- *  You are given a 0-indexed integer array nums of length n where nums[i]
- *  represents the value of the ith node. You are also given a 2D integer array
- *  edges of length n - 1 where edges[i] = [ai, bi] indicates that there is an
- *  edge between nodes ai and bi in the tree.
+ * You are given a 0-indexed integer array nums of length n where nums[i]
+ * represents the value of the ith node. You are also given a 2D integer array
+ * edges of length n - 1 where edges[i] = [ai, bi] indicates that there is an
+ * edge between nodes ai and bi in the tree.
  *
- *  Remove two distinct edges of the tree to form three connected components.
- *  Get the XOR of all the values of the nodes for each of the three components;
- *  the difference between the largest XOR value and the smallest XOR value is
- *  the score of the pair.
+ * Remove two distinct edges of the tree to form three connected components.
+ * Get the XOR of all the values of the nodes for each of the three components;
+ * the difference between the largest XOR value and the smallest XOR value is
+ * the score of the pair.
  *
- *  Return the minimum score of any possible pair of edge removals.
+ * Return the minimum score of any possible pair of edge removals.
  *
- *  Example 1:
- *    Input: nums = [1,5,5,4,11], edges = [[0,1],[1,2],[1,3],[3,4]]
- *    Output: 9
- *    Explanation: components {1,3,4} -> 10, {0} -> 1, {2} -> 5; 10 - 1 = 9.
+ * Example 1:
+ * Input: nums = [1,5,5,4,11], edges = [[0,1],[1,2],[1,3],[3,4]]
+ * Output: 9
+ * Explanation: components {1,3,4} -> 10, {0} -> 1, {2} -> 5; 10 - 1 = 9.
  *
- *  Example 2:
- *    Input: nums = [5,5,2,4,4,2], edges = [[0,1],[1,2],[5,2],[4,3],[1,3]]
- *    Output: 0
- *    Explanation: all three components XOR to 0.
+ * Example 2:
+ * Input: nums = [5,5,2,4,4,2], edges = [[0,1],[1,2],[5,2],[4,3],[1,3]]
+ * Output: 0
+ * Explanation: all three components XOR to 0.
  *
- *  Constraints:
- *    n == nums.length
- *    3 <= n <= 1000
- *    1 <= nums[i] <= 10^8
- *    edges.length == n - 1
- *    edges[i].length == 2
- *    0 <= ai, bi < n
- *    ai != bi
- *    edges represents a valid tree.
+ * Constraints:
+ * n == nums.length
+ * 3 <= n <= 1000
+ * 1 <= nums[i] <= 10^8
+ * edges.length == n - 1
+ * edges[i].length == 2
+ * 0 <= ai, bi < n
+ * ai != bi
+ * edges represents a valid tree.
+ *
  */
 public class MinimumScoreAfterRemovalsOnATree {
 

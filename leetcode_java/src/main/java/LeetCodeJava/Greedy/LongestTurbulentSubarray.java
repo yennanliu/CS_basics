@@ -4,8 +4,7 @@ package LeetCodeJava.Greedy;
 /**
  * 978. Longest Turbulent Subarray
  * Medium
- * Topics
- * Companies
+ *
  * Given an integer array arr, return the length of a maximum size turbulent subarray of arr.
  *
  * A subarray is turbulent if the comparison sign flips between each adjacent pair of elements in the subarray.
@@ -39,7 +38,6 @@ package LeetCodeJava.Greedy;
  *
  * 1 <= arr.length <= 4 * 104
  * 0 <= arr[i] <= 109
- *
  *
  */
 public class LongestTurbulentSubarray {

@@ -9,8 +9,7 @@ import java.util.Queue;
 /**
  * 649. Dota2 Senate
  * Medium
- * Topics
- * Companies
+ *
  * In the world of Dota2, there are two parties: the Radiant and the Dire.
  *
  * The Dota2 senate consists of senators coming from two parties. Now the Senate wants to decide on a change in the Dota2 game. The voting for this change is a round-based procedure. In each round, each senator can exercise one of the two rights:
@@ -49,8 +48,6 @@ import java.util.Queue;
  * n == senate.length
  * 1 <= n <= 104
  * senate[i] is either 'R' or 'D'.
- *
- *
  *
  */
 public class Dota2Senate {

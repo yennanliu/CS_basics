@@ -9,6 +9,7 @@ import java.util.List;
 /**
  * 296. Best Meeting Point
  * Hard
+ *
  * Lock: Prime
  *
  * Given an m x n binary grid grid where each 1 marks the home of one friend,

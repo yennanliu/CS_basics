@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  285. Inorder Successor in BST
+ * 285. Inorder Successor in BST
+ * Medium
+ *
  * Given a binary search tree and a node in it, find the in-order successor of that node in the BST.
  *
  * The successor of a node p is the node with the smallest key greater than p.val.

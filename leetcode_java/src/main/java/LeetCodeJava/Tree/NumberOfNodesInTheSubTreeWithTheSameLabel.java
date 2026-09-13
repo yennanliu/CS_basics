@@ -3,37 +3,38 @@ package LeetCodeJava.Tree;
 // https://leetcode.com/problems/number-of-nodes-in-the-sub-tree-with-the-same-label/
 
 /**
- *  1519. Number of Nodes in the Sub-Tree With the Same Label
- *  Medium
+ * 1519. Number of Nodes in the Sub-Tree With the Same Label
+ * Medium
  *
- *  You are given a tree (i.e. a connected, undirected graph that has no
- *  cycles) consisting of n nodes numbered from 0 to n - 1 and exactly n - 1
- *  edges. The root of the tree is node 0, and each node has a label which is a
- *  lower-case character given in the string labels (the node numbered i has
- *  the label labels[i]).
+ * You are given a tree (i.e. a connected, undirected graph that has no
+ * cycles) consisting of n nodes numbered from 0 to n - 1 and exactly n - 1
+ * edges. The root of the tree is node 0, and each node has a label which is a
+ * lower-case character given in the string labels (the node numbered i has
+ * the label labels[i]).
  *
- *  The edges array is given on the form edges[i] = [a_i, b_i], meaning there
- *  is an edge between nodes a_i and b_i.
+ * The edges array is given on the form edges[i] = [a_i, b_i], meaning there
+ * is an edge between nodes a_i and b_i.
  *
- *  Return an array of size n where ans[i] is the number of nodes in the
- *  subtree of the ith node which have the same label as node i.
+ * Return an array of size n where ans[i] is the number of nodes in the
+ * subtree of the ith node which have the same label as node i.
  *
- *  Example 1:
- *    Input: n = 7, edges = [[0,1],[0,2],[1,4],[1,5],[2,3],[2,6]],
- *           labels = "abaedcd"
- *    Output: [2,1,1,1,1,1,1]
- *    Explanation: node 0 has label 'a' and its subtree also holds node 2
- *                 with label 'a', so the answer is 2.
+ * Example 1:
+ * Input: n = 7, edges = [[0,1],[0,2],[1,4],[1,5],[2,3],[2,6]],
+ * labels = "abaedcd"
+ * Output: [2,1,1,1,1,1,1]
+ * Explanation: node 0 has label 'a' and its subtree also holds node 2
+ * with label 'a', so the answer is 2.
  *
- *  Example 2:
- *    Input: n = 4, edges = [[0,1],[1,2],[0,3]], labels = "bbbb"
- *    Output: [4,2,1,1]
+ * Example 2:
+ * Input: n = 4, edges = [[0,1],[1,2],[0,3]], labels = "bbbb"
+ * Output: [4,2,1,1]
  *
- *  Constraints:
- *    1 <= n <= 10^5
- *    edges.length == n - 1
- *    0 <= a_i, b_i < n, a_i != b_i
- *    labels.length == n, lowercase English letters only
+ * Constraints:
+ * 1 <= n <= 10^5
+ * edges.length == n - 1
+ * 0 <= a_i, b_i < n, a_i != b_i
+ * labels.length == n, lowercase English letters only
+ *
  */
 public class NumberOfNodesInTheSubTreeWithTheSameLabel {
 

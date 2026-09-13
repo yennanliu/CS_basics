@@ -5,31 +5,32 @@ package LeetCodeJava.Greedy;
 import java.util.*;
 
 /**
- *  1648. Sell Diminishing-Valued Colored Balls
- *  Medium
+ * 1648. Sell Diminishing-Valued Colored Balls
+ * Medium
  *
- *  You have an inventory of different colored balls, and there is a customer
- *  that wants orders balls of any color.
+ * You have an inventory of different colored balls, and there is a customer
+ * that wants orders balls of any color.
  *
- *  Each colored ball's value is the number of balls of that color you currently
- *  have in your inventory (so the value decreases as you sell).
+ * Each colored ball's value is the number of balls of that color you currently
+ * have in your inventory (so the value decreases as you sell).
  *
- *  You are given an integer array inventory, where inventory[i] is the number of
- *  balls of the ith color, and an integer orders (the total number of balls the
- *  customer wants). Return the maximum total value you can attain, modulo 10^9 + 7.
+ * You are given an integer array inventory, where inventory[i] is the number of
+ * balls of the ith color, and an integer orders (the total number of balls the
+ * customer wants). Return the maximum total value you can attain, modulo 10^9 + 7.
  *
- *  Example 1:
- *  Input: inventory = [2,5], orders = 4
- *  Output: 14   (2 + 5 + 4 + 3)
+ * Example 1:
+ * Input: inventory = [2,5], orders = 4
+ * Output: 14   (2 + 5 + 4 + 3)
  *
- *  Example 2:
- *  Input: inventory = [3,5], orders = 6
- *  Output: 19   (3 + 2 + 5 + 4 + 3 + 2)
+ * Example 2:
+ * Input: inventory = [3,5], orders = 6
+ * Output: 19   (3 + 2 + 5 + 4 + 3 + 2)
  *
- *  Constraints:
- *   - 1 <= inventory.length <= 10^5
- *   - 1 <= inventory[i] <= 10^9
- *   - 1 <= orders <= min(sum(inventory[i]), 10^9)
+ * Constraints:
+ * - 1 <= inventory.length <= 10^5
+ * - 1 <= inventory[i] <= 10^9
+ * - 1 <= orders <= min(sum(inventory[i]), 10^9)
+ *
  */
 public class SellDiminishingValuedColoredBalls {
 

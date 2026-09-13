@@ -9,6 +9,8 @@ import java.util.TreeMap;
 
 /**
  * 340. Longest Substring with At Most K Distinct Characters
+ * Medium
+ *
  * Given a string, find the length of the longest substring T that contains at most k distinct characters.
  *
  * Example 1:
@@ -29,6 +31,7 @@ import java.util.TreeMap;
  * Amazon AppDynamics Bloomberg Citadel Coupang Facebook Google Microsoft Uber
  * Problem Solution
  * 340-Longest-Substring-with-At-Most-K-Distinct-Characters
+ *
  */
 public class LongestSubstringWithAtMostKDistinctCharacters {
 

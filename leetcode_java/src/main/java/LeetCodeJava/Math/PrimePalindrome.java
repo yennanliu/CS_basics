@@ -4,8 +4,7 @@ package LeetCodeJava.Math;
 /**
  * 866. Prime Palindrome
  * Medium
- * Topics
- * Companies
+ *
  * Given an integer n, return the smallest prime palindrome greater than or equal to n.
  *
  * An integer is prime if it has exactly two divisors: 1 and itself. Note that 1 is not a prime number.

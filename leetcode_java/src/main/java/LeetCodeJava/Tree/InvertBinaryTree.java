@@ -3,10 +3,8 @@ package LeetCodeJava.Tree;
 // https://leetcode.com/problems/invert-binary-tree/
 /**
  * 226. Invert Binary Tree
- * Solved
  * Easy
- * Topics
- * Companies
+ *
  * Given the root of a binary tree, invert the tree, and return its root.
  *
  *
@@ -31,6 +29,7 @@ package LeetCodeJava.Tree;
  *
  * The number of nodes in the tree is in the range [0, 100].
  * -100 <= Node.val <= 100
+ *
  */
 import LeetCodeJava.DataStructure.TreeNode;
 
@@ -116,7 +115,7 @@ public class InvertBinaryTree {
     }
 
 
-    // VO-1
+    // V0-1
     // IDEA : DFS + cache
     /**
      * time = O(N)

@@ -9,9 +9,7 @@ import java.util.*;
 /**
  * 530. Minimum Absolute Difference in BST
  * Easy
- * Topics
- * premium lock icon
- * Companies
+ *
  * Given the root of a Binary Search Tree (BST), return the minimum absolute difference between the values of any two different nodes in the tree.
  *
  *
@@ -35,7 +33,6 @@ import java.util.*;
  *
  *
  * Note: This question is the same as 783: https://leetcode.com/problems/minimum-distance-between-bst-nodes/
- *
  *
  */
 public class MinimumAbsoluteDifferenceInBST {

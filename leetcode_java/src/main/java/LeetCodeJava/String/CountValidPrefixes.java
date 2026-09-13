@@ -3,33 +3,34 @@ package LeetCodeJava.String;
 // https://leetcode.com/problems/count-valid-prefixes/
 
 /**
- *  4006. Count Valid Prefixes
- *  Easy
+ * 4006. Count Valid Prefixes
+ * Easy
  *
- *  You are given a binary string s.
+ * You are given a binary string s.
  *
- *  A prefix of s is considered valid if its characters can be rearranged
- *  to form an alternating string.
+ * A prefix of s is considered valid if its characters can be rearranged
+ * to form an alternating string.
  *
- *  Return the number of valid prefixes of s.
+ * Return the number of valid prefixes of s.
  *
- *  A string is considered alternating if no two adjacent characters are equal.
+ * A string is considered alternating if no two adjacent characters are equal.
  *
- *  Example 1:
+ * Example 1:
  *
- *  Input: s = "00101"
- *  Output: 3
- *  Explanation: the valid prefixes are "0", "001" and "00101".
+ * Input: s = "00101"
+ * Output: 3
+ * Explanation: the valid prefixes are "0", "001" and "00101".
  *
- *  Example 2:
+ * Example 2:
  *
- *  Input: s = "101"
- *  Output: 3
+ * Input: s = "101"
+ * Output: 3
  *
- *  Constraints:
+ * Constraints:
  *
- *  1 <= s.length <= 100
- *  s consists only of '0' and '1'.
+ * 1 <= s.length <= 100
+ * s consists only of '0' and '1'.
+ *
  */
 public class CountValidPrefixes {
 

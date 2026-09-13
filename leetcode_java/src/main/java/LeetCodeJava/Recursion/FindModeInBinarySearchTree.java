@@ -9,9 +9,7 @@ import java.util.*;
 /**
  * 501. Find Mode in Binary Search Tree
  * Easy
- * Topics
- * premium lock icon
- * Companies
+ *
  * Given the root of a binary search tree (BST) with duplicates, return all the mode(s) (i.e., the most frequently occurred element) in it.
  *
  * If the tree has more than one mode, return them in any order.
@@ -41,7 +39,6 @@ import java.util.*;
  *
  *
  * Follow up: Could you do that without using any extra space? (Assume that the implicit stack space incurred due to recursion does not count).
- *
  *
  */
 public class FindModeInBinarySearchTree {

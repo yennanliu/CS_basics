@@ -5,31 +5,32 @@ package LeetCodeJava.DynamicProgramming;
 import java.util.Arrays;
 
 /**
- *  1335. Minimum Difficulty of a Job Schedule
- *  Hard
+ * 1335. Minimum Difficulty of a Job Schedule
+ * Hard
  *
- *  You want to schedule a list of jobs in d days. Jobs are dependent
- *  (i.e to work on the ith job, you have to finish all the jobs j where 0 <= j < i).
+ * You want to schedule a list of jobs in d days. Jobs are dependent
+ * (i.e to work on the ith job, you have to finish all the jobs j where 0 <= j < i).
  *
- *  You have to finish at least one task every day. The difficulty of a job schedule
- *  is the sum of difficulties of each day of the d days. The difficulty of a day is
- *  the maximum difficulty of a job done on that day.
+ * You have to finish at least one task every day. The difficulty of a job schedule
+ * is the sum of difficulties of each day of the d days. The difficulty of a day is
+ * the maximum difficulty of a job done on that day.
  *
- *  Given jobDifficulty and d, return the minimum difficulty of a job schedule.
- *  If you cannot find a schedule for the jobs return -1.
+ * Given jobDifficulty and d, return the minimum difficulty of a job schedule.
+ * If you cannot find a schedule for the jobs return -1.
  *
- *  Example 1:
- *    Input: jobDifficulty = [6,5,4,3,2,1], d = 2
- *    Output: 7   (first day 6,5,4,3,2 -> 6, second day 1 -> 1)
+ * Example 1:
+ * Input: jobDifficulty = [6,5,4,3,2,1], d = 2
+ * Output: 7   (first day 6,5,4,3,2 -> 6, second day 1 -> 1)
  *
- *  Example 2:
- *    Input: jobDifficulty = [9,9,9], d = 4
- *    Output: -1
+ * Example 2:
+ * Input: jobDifficulty = [9,9,9], d = 4
+ * Output: -1
  *
- *  Constraints:
- *    1 <= jobDifficulty.length <= 300
- *    0 <= jobDifficulty[i] <= 1000
- *    1 <= d <= 10
+ * Constraints:
+ * 1 <= jobDifficulty.length <= 300
+ * 0 <= jobDifficulty[i] <= 1000
+ * 1 <= d <= 10
+ *
  */
 public class MinimumDifficultyOfAJobSchedule {
 

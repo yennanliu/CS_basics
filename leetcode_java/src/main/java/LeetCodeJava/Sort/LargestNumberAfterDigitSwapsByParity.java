@@ -3,26 +3,27 @@ package LeetCodeJava.Sort;
 // https://leetcode.com/problems/largest-number-after-digit-swaps-by-parity/
 
 /**
- *  2231. Largest Number After Digit Swaps by Parity
- *  Easy
+ * 2231. Largest Number After Digit Swaps by Parity
+ * Easy
  *
- *  You are given a positive integer num. You may swap any two digits of num that
- *  have the same parity (i.e. both odd digits or both even digits).
+ * You are given a positive integer num. You may swap any two digits of num that
+ * have the same parity (i.e. both odd digits or both even digits).
  *
- *  Return the largest possible value of num after any number of swaps.
+ * Return the largest possible value of num after any number of swaps.
  *
- *  Example 1:
- *    Input: num = 1234
- *    Output: 3412
- *    Explanation: Swap the digit 3 with the digit 1 -> 3214. Swap the digit 2 with
- *                 the digit 4 -> 3412. We may not swap 4 with 1 (different parity).
+ * Example 1:
+ * Input: num = 1234
+ * Output: 3412
+ * Explanation: Swap the digit 3 with the digit 1 -> 3214. Swap the digit 2 with
+ * the digit 4 -> 3412. We may not swap 4 with 1 (different parity).
  *
- *  Example 2:
- *    Input: num = 65875
- *    Output: 87655
+ * Example 2:
+ * Input: num = 65875
+ * Output: 87655
  *
- *  Constraints:
- *    1 <= num <= 10^9
+ * Constraints:
+ * 1 <= num <= 10^9
+ *
  */
 public class LargestNumberAfterDigitSwapsByParity {
 

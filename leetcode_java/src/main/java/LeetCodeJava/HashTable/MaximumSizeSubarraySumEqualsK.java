@@ -7,6 +7,8 @@ import java.util.Map;
 // https://leetcode.ca/2016-10-20-325-Maximum-Size-Subarray-Sum-Equals-k/
 /**
  * 325. Maximum Size Subarray Sum Equals k
+ * Medium
+ *
  * Description
  * Given an integer array nums and an integer k, return the maximum length of a subarray that sums to k. If there is not one, return 0 instead.
  *
@@ -29,8 +31,6 @@ import java.util.Map;
  * 1 <= nums.length <= 2 * 105
  * -104 <= nums[i] <= 104
  * -109 <= k <= 109
- *
- *
  *
  */
 public class MaximumSizeSubarraySumEqualsK {

@@ -9,10 +9,7 @@ import java.util.List;
 /**
  * 2683. Neighboring Bitwise XOR
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * A 0-indexed array derived with length n is derived by computing the bitwise XOR (⊕) of adjacent values in a binary array original of length n.
  *
  * Specifically, for each index i in the range [0, n - 1]:

@@ -8,9 +8,7 @@ import java.util.Queue;
 /**
  * 1871. Jump Game VII
  * Medium
- * Topics
- * Companies
- * Hint
+ *
  * You are given a 0-indexed binary string s and two integers minJump and maxJump. In the beginning, you are standing at index 0, which is equal to '0'. You can move from index i to index j if the following conditions are fulfilled:
  *
  * i + minJump <= j <= min(i + maxJump, s.length - 1), and
@@ -38,8 +36,6 @@ import java.util.Queue;
  * s[i] is either '0' or '1'.
  * s[0] == '0'
  * 1 <= minJump <= maxJump < s.length
- *
- *
  *
  */
 public class JumpGame7 {

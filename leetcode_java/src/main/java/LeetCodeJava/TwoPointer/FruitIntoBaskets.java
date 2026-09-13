@@ -7,10 +7,9 @@ import java.util.HashSet;
 import java.util.Map;
 
 /**
- *  904. Fruit Into Baskets
+ * 904. Fruit Into Baskets
  * Medium
- * Topics
- * Companies
+ *
  * You are visiting a farm that has a single row of fruit trees arranged from left to right. The trees are represented by an integer array fruits where fruits[i] is the type of fruit the ith tree produces.
  *
  * You want to collect as much fruit as possible. However, the owner has some strict rules that you must follow:
@@ -45,7 +44,6 @@ import java.util.Map;
  *
  * 1 <= fruits.length <= 105
  * 0 <= fruits[i] < fruits.length
- *
  *
  */
 public class FruitIntoBaskets {

@@ -7,12 +7,9 @@ import DataStructure.Pair;
 import java.util.*;
 
 /**
- *  414. Third Maximum Number
- * Solved
+ * 414. Third Maximum Number
  * Easy
- * Topics
- * premium lock icon
- * Companies
+ *
  * Given an integer array nums, return the third distinct maximum number in this array. If the third maximum does not exist, return the maximum number.
  *
  *
@@ -47,7 +44,6 @@ import java.util.*;
  *
  * 1 <= nums.length <= 104
  * -231 <= nums[i] <= 231 - 1
- *
  *
  */
 public class ThirdMaximumNumber {

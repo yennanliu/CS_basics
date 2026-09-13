@@ -7,10 +7,7 @@ import java.util.*;
 /**
  * 1157. Online Majority Element In Subarray
  * Hard
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * Design a data structure that efficiently finds the majority element of a given subarray.
  *
  * The majority element of a subarray is an element that occurs threshold times or more in the subarray.
@@ -44,7 +41,6 @@ import java.util.*;
  * threshold <= right - left + 1
  * 2 * threshold > right - left + 1
  * At most 104 calls will be made to query.
- *
  *
  */
 public class OnlineMajorityElementInSubarray {

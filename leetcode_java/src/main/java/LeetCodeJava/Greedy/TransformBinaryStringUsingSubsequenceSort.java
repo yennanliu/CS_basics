@@ -5,37 +5,38 @@ package LeetCodeJava.Greedy;
 import java.util.*;
 
 /**
- *  3998. Transform Binary String Using Subsequence Sort
- *  Medium
+ * 3998. Transform Binary String Using Subsequence Sort
+ * Medium
  *
- *  You are given a binary string s, and an array of strings strs, where each
- *  strs[i] has the same length as s and consists of '0', '1' and '?'.
- *  Each '?' can be replaced by either '0' or '1'.
+ * You are given a binary string s, and an array of strings strs, where each
+ * strs[i] has the same length as s and consists of '0', '1' and '?'.
+ * Each '?' can be replaced by either '0' or '1'.
  *
- *  You may perform the following operation any number of times:
- *   - Choose any subsequence sub of s, sort sub in non-decreasing order and
- *     put it back in place (other characters unchanged).
+ * You may perform the following operation any number of times:
+ * - Choose any subsequence sub of s, sort sub in non-decreasing order and
+ * put it back in place (other characters unchanged).
  *
- *  Return a boolean array ans, where ans[i] is true if it's possible to replace
- *  all '?' in strs[i] and transform s into the resulting string.
+ * Return a boolean array ans, where ans[i] is true if it's possible to replace
+ * all '?' in strs[i] and transform s into the resulting string.
  *
- *  Example 1:
- *  Input: s = "101", strs = ["1?1","0?1","0?0"]
- *  Output: [true,true,false]
+ * Example 1:
+ * Input: s = "101", strs = ["1?1","0?1","0?0"]
+ * Output: [true,true,false]
  *
- *  Example 2:
- *  Input: s = "1100", strs = ["0011","11?1","1?1?"]
- *  Output: [true,false,true]
+ * Example 2:
+ * Input: s = "1100", strs = ["0011","11?1","1?1?"]
+ * Output: [true,false,true]
  *
- *  Example 3:
- *  Input: s = "1010", strs = ["0011"]
- *  Output: [true]
+ * Example 3:
+ * Input: s = "1010", strs = ["0011"]
+ * Output: [true]
  *
- *  Constraints:
- *   - 1 <= n == s.length <= 2000
- *   - s[i] is either '0' or '1'
- *   - 1 <= strs.length <= 2000
- *   - strs[i].length == n, strs[i] is '0', '1' or '?'
+ * Constraints:
+ * - 1 <= n == s.length <= 2000
+ * - s[i] is either '0' or '1'
+ * - 1 <= strs.length <= 2000
+ * - strs[i].length == n, strs[i] is '0', '1' or '?'
+ *
  */
 public class TransformBinaryStringUsingSubsequenceSort {
 

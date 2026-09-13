@@ -3,30 +3,31 @@ package LeetCodeJava.Math;
 // https://leetcode.com/problems/bulb-switcher/
 
 /**
- *  319. Bulb Switcher
- *  Medium
+ * 319. Bulb Switcher
+ * Medium
  *
- *  There are n bulbs that are initially off. You first turn on all the bulbs, then you
- *  turn off every second bulb. On the third round, you toggle every third bulb
- *  (turning on if it's off or turning off if it's on). For the ith round, you toggle
- *  every i bulb. For the nth round, you only toggle the last bulb.
+ * There are n bulbs that are initially off. You first turn on all the bulbs, then you
+ * turn off every second bulb. On the third round, you toggle every third bulb
+ * (turning on if it's off or turning off if it's on). For the ith round, you toggle
+ * every i bulb. For the nth round, you only toggle the last bulb.
  *
- *  Return the number of bulbs that are on after n rounds.
+ * Return the number of bulbs that are on after n rounds.
  *
- *  Example 1:
+ * Example 1:
  *
- *  Input: n = 3
- *  Output: 1
- *  Explanation: after round 3 the state is [on, off, off] -> 1 bulb is on.
+ * Input: n = 3
+ * Output: 1
+ * Explanation: after round 3 the state is [on, off, off] -> 1 bulb is on.
  *
- *  Example 2:
+ * Example 2:
  *
- *  Input: n = 0
- *  Output: 0
+ * Input: n = 0
+ * Output: 0
  *
- *  Constraints:
+ * Constraints:
  *
- *  0 <= n <= 10^9
+ * 0 <= n <= 10^9
+ *
  */
 public class BulbSwitcher {
 

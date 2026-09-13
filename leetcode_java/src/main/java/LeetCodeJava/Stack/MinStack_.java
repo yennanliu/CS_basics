@@ -3,11 +3,8 @@ package LeetCodeJava.Stack;
 // https://leetcode.com/problems/min-stack/
 /**
  * 155. Min Stack
- * Solved
  * Medium
- * Topics
- * Companies
- * Hint
+ *
  * Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.
  *
  * Implement the MinStack class:

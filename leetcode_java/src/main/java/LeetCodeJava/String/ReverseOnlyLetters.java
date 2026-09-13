@@ -7,10 +7,7 @@ import java.util.Stack;
 /**
  * 917. Reverse Only Letters
  * Easy
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * Given a string s, reverse the string according to the following rules:
  *
  * All the characters that are not English letters remain in the same position.
@@ -38,8 +35,6 @@ import java.util.Stack;
  * 1 <= s.length <= 100
  * s consists of characters with ASCII values in the range [33, 122].
  * s does not contain '\"' or '\\'.
- *
- *
  *
  */
 public class ReverseOnlyLetters {

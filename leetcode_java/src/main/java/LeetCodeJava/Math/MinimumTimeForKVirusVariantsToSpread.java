@@ -5,37 +5,38 @@ package LeetCodeJava.Math;
 import java.util.Arrays;
 
 /**
- *  1956. Minimum Time For K Virus Variants to Spread
- *  Hard
+ * 1956. Minimum Time For K Virus Variants to Spread
+ * Hard
  *
- *  There are n unique virus variants in an infinite 2D grid. You are given a 2D array
- *  points, where points[i] = [xi, yi] represents a virus originating at (xi, yi) on day
- *  0. Note that it is possible for multiple virus variants to originate at the same point.
+ * There are n unique virus variants in an infinite 2D grid. You are given a 2D array
+ * points, where points[i] = [xi, yi] represents a virus originating at (xi, yi) on day
+ * 0. Note that it is possible for multiple virus variants to originate at the same point.
  *
- *  Every day, each cell infected with a virus variant will spread the virus to all
- *  neighboring points in the four cardinal directions (i.e. up, down, left, and right).
- *  If a cell has multiple variants, all the variants will spread without interfering with
- *  each other.
+ * Every day, each cell infected with a virus variant will spread the virus to all
+ * neighboring points in the four cardinal directions (i.e. up, down, left, and right).
+ * If a cell has multiple variants, all the variants will spread without interfering with
+ * each other.
  *
- *  Given an integer k, return the minimum integer number of days for any point to contain
- *  at least k of the unique virus variants.
+ * Given an integer k, return the minimum integer number of days for any point to contain
+ * at least k of the unique virus variants.
  *
- *  Example 1:
- *    Input: points = [[1,1],[6,1]], k = 2
- *    Output: 3
- *    Explanation: on day 3, (3,1) and (4,1) contain both variants.
+ * Example 1:
+ * Input: points = [[1,1],[6,1]], k = 2
+ * Output: 3
+ * Explanation: on day 3, (3,1) and (4,1) contain both variants.
  *
- *  Example 3:
- *    Input: points = [[3,3],[1,2],[9,2]], k = 3
- *    Output: 4
- *    Explanation: on day 4, (5,2) contains all 3 variants.
+ * Example 3:
+ * Input: points = [[3,3],[1,2],[9,2]], k = 3
+ * Output: 4
+ * Explanation: on day 4, (5,2) contains all 3 variants.
  *
- *  Constraints:
- *    n == points.length
- *    2 <= n <= 50
- *    points[i].length == 2
- *    1 <= xi, yi <= 100
- *    2 <= k <= n
+ * Constraints:
+ * n == points.length
+ * 2 <= n <= 50
+ * points[i].length == 2
+ * 1 <= xi, yi <= 100
+ * 2 <= k <= n
+ *
  */
 public class MinimumTimeForKVirusVariantsToSpread {
 

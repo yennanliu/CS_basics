@@ -9,10 +9,7 @@ import java.util.PriorityQueue;
 /**
  * 2542. Maximum Subsequence Score
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You are given two 0-indexed integer arrays nums1 and nums2 of equal length n and a positive integer k. You must choose a subsequence of indices from nums1 of length k.
  *
  * For chosen indices i0, i1, ..., ik - 1, your score is defined as:
@@ -50,8 +47,6 @@ import java.util.PriorityQueue;
  * 1 <= n <= 105
  * 0 <= nums1[i], nums2[j] <= 105
  * 1 <= k <= n
- *
- *
  *
  */
 public class MaximumSubsequenceScore {
@@ -165,7 +160,7 @@ public class MaximumSubsequenceScore {
         return maxScore;
     }
 
-    // V0-2
+    // V0-3
     // NOTE !!! below is WRONG (reason as below)
     /**
      *  why below logic is wrong ?

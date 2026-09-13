@@ -3,39 +3,40 @@ package LeetCodeJava.BackTrack;
 // https://leetcode.com/problems/maximize-grid-happiness/
 
 /**
- *  1659. Maximize Grid Happiness
- *  Hard
+ * 1659. Maximize Grid Happiness
+ * Hard
  *
- *  You are given four integers, m, n, introvertsCount, and extrovertsCount.
- *  You have an m x n grid, and there are two types of people: introverts and
- *  extroverts. There are introvertsCount introverts and extrovertsCount
- *  extroverts. You should decide how many people you want to live in the grid
- *  and assign each of them one grid cell. Note that you do not have to have all
- *  the people living in the grid.
+ * You are given four integers, m, n, introvertsCount, and extrovertsCount.
+ * You have an m x n grid, and there are two types of people: introverts and
+ * extroverts. There are introvertsCount introverts and extrovertsCount
+ * extroverts. You should decide how many people you want to live in the grid
+ * and assign each of them one grid cell. Note that you do not have to have all
+ * the people living in the grid.
  *
- *  The happiness of each person is calculated as follows:
- *    - Introverts start with 120 happiness and lose 30 happiness for each
- *      neighbor (introvert or extrovert).
- *    - Extroverts start with 40 happiness and gain 20 happiness for each
- *      neighbor (introvert or extrovert).
+ * The happiness of each person is calculated as follows:
+ * - Introverts start with 120 happiness and lose 30 happiness for each
+ * neighbor (introvert or extrovert).
+ * - Extroverts start with 40 happiness and gain 20 happiness for each
+ * neighbor (introvert or extrovert).
  *
- *  Neighbors live in the directly adjacent cells north, east, south and west.
- *  The grid happiness is the sum of each person's happiness. Return the maximum
- *  possible grid happiness.
+ * Neighbors live in the directly adjacent cells north, east, south and west.
+ * The grid happiness is the sum of each person's happiness. Return the maximum
+ * possible grid happiness.
  *
- *  Example 1:
- *    Input: m = 2, n = 3, introvertsCount = 1, extrovertsCount = 2
- *    Output: 240
- *    Explanation: introvert at (1,1) -> 120, extroverts at (1,3) and (2,3)
- *                 -> 60 + 60. total = 240
+ * Example 1:
+ * Input: m = 2, n = 3, introvertsCount = 1, extrovertsCount = 2
+ * Output: 240
+ * Explanation: introvert at (1,1) -> 120, extroverts at (1,3) and (2,3)
+ * -> 60 + 60. total = 240
  *
- *  Example 2:
- *    Input: m = 3, n = 1, introvertsCount = 2, extrovertsCount = 1
- *    Output: 260
+ * Example 2:
+ * Input: m = 3, n = 1, introvertsCount = 2, extrovertsCount = 1
+ * Output: 260
  *
- *  Constraints:
- *    1 <= m, n <= 5
- *    0 <= introvertsCount, extrovertsCount <= min(m * n, 6)
+ * Constraints:
+ * 1 <= m, n <= 5
+ * 0 <= introvertsCount, extrovertsCount <= min(m * n, 6)
+ *
  */
 public class MaximizeGridHappiness {
 

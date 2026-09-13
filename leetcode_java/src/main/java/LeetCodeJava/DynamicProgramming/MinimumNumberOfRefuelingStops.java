@@ -6,7 +6,10 @@ import java.util.Collections;
 import java.util.PriorityQueue;
 
 /**
- * 871. Minimum Number of Refueling Stops Hard Topics Companies A car travels from a starting
+ * 871. Minimum Number of Refueling Stops
+ * Hard
+ *
+ * Hard Topics Companies A car travels from a starting
  * position to a destination which is target miles east of the starting position.
  *
  * <p>There are gas stations along the way. The gas stations are represented as an array stations
@@ -41,6 +44,7 @@ import java.util.PriorityQueue;
  *
  * <p>1 <= target, startFuel <= 109 0 <= stations.length <= 500 1 <= positioni < positioni+1 <
  * target 1 <= fueli < 109
+ *
  */
 public class MinimumNumberOfRefuelingStops {
 

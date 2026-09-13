@@ -3,22 +3,23 @@ package LeetCodeJava.String;
 // https://leetcode.com/problems/repeated-substring-pattern/
 
 /**
- *  459. Repeated Substring Pattern
- *  Easy
+ * 459. Repeated Substring Pattern
+ * Easy
  *
- *  Given a string s, check if it can be constructed by taking a substring of
- *  it and appending multiple copies of the substring together.
+ * Given a string s, check if it can be constructed by taking a substring of
+ * it and appending multiple copies of the substring together.
  *
- *  Example 1:
- *    Input: s = "abab"          Output: true   ("ab" twice)
- *  Example 2:
- *    Input: s = "aba"           Output: false
- *  Example 3:
- *    Input: s = "abcabcabcabc"  Output: true   ("abc" four times)
+ * Example 1:
+ * Input: s = "abab"          Output: true   ("ab" twice)
+ * Example 2:
+ * Input: s = "aba"           Output: false
+ * Example 3:
+ * Input: s = "abcabcabcabc"  Output: true   ("abc" four times)
  *
- *  Constraints:
- *    1 <= s.length <= 10^4
- *    s consists of lowercase English letters.
+ * Constraints:
+ * 1 <= s.length <= 10^4
+ * s consists of lowercase English letters.
+ *
  */
 public class RepeatedSubstringPattern {
 

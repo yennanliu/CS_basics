@@ -8,9 +8,7 @@ import java.util.Stack;
 /**
  * 769. Max Chunks To Make Sorted
  * Medium
- * Topics
- * Companies
- * Hint
+ *
  * You are given an integer array arr of length n that represents a permutation of the integers in the range [0, n - 1].
  * <p>
  * We split arr into some number of chunks (i.e., partitions), and individually sort each chunk. After concatenating them, the result should equal the sorted array.
@@ -41,6 +39,7 @@ import java.util.Stack;
  * 1 <= n <= 10
  * 0 <= arr[i] < n
  * All the elements of arr are unique.
+ *
  */
 public class MaxChunksToMakeSorted {
 

@@ -6,31 +6,32 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- *  820. Short Encoding of Words
- *  Medium
+ * 820. Short Encoding of Words
+ * Medium
  *
- *  A valid encoding of an array of words is any reference string s and array of
- *  indices such that:
- *    - words.length == indices.length
- *    - s ends with the '#' character
- *    - for each index, the substring of s starting from indices[i] and up to
- *      (but not including) the next '#' character is equal to words[i]
- *  Given an array of words, return the length of the shortest reference string s
- *  possible of any valid encoding of words.
+ * A valid encoding of an array of words is any reference string s and array of
+ * indices such that:
+ * - words.length == indices.length
+ * - s ends with the '#' character
+ * - for each index, the substring of s starting from indices[i] and up to
+ * (but not including) the next '#' character is equal to words[i]
+ * Given an array of words, return the length of the shortest reference string s
+ * possible of any valid encoding of words.
  *
- *  Example 1:
- *    Input:  words = ["time","me","bell"]
- *    Output: 10
- *    (s = "time#bell#", indices = [0, 2, 5])
+ * Example 1:
+ * Input:  words = ["time","me","bell"]
+ * Output: 10
+ * (s = "time#bell#", indices = [0, 2, 5])
  *
- *  Example 2:
- *    Input:  words = ["t"]
- *    Output: 2
+ * Example 2:
+ * Input:  words = ["t"]
+ * Output: 2
  *
- *  Constraints:
- *    1 <= words.length <= 2000
- *    1 <= words[i].length <= 7
- *    words[i] consists of only lowercase letters.
+ * Constraints:
+ * 1 <= words.length <= 2000
+ * 1 <= words[i].length <= 7
+ * words[i] consists of only lowercase letters.
+ *
  */
 public class ShortEncodingOfWords {
 

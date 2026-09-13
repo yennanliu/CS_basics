@@ -6,32 +6,33 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 
 /**
- *  3341. Find Minimum Time to Reach Last Room I
- *  Medium
+ * 3341. Find Minimum Time to Reach Last Room I
+ * Medium
  *
- *  There is a dungeon with n x m rooms arranged as a grid.
+ * There is a dungeon with n x m rooms arranged as a grid.
  *
- *  You are given a 2D array moveTime of size n x m, where moveTime[i][j] represents
- *  the minimum time in seconds when you can start moving to that room. You start
- *  from the room (0, 0) at time t = 0 and can move to an adjacent room. Moving
- *  between adjacent rooms takes exactly one second.
+ * You are given a 2D array moveTime of size n x m, where moveTime[i][j] represents
+ * the minimum time in seconds when you can start moving to that room. You start
+ * from the room (0, 0) at time t = 0 and can move to an adjacent room. Moving
+ * between adjacent rooms takes exactly one second.
  *
- *  Return the minimum time to reach the room (n - 1, m - 1).
- *  Two rooms are adjacent if they share a common wall, horizontally or vertically.
+ * Return the minimum time to reach the room (n - 1, m - 1).
+ * Two rooms are adjacent if they share a common wall, horizontally or vertically.
  *
- *  Example 1:
- *    Input: moveTime = [[0,4],[4,4]]
- *    Output: 6
- *    Explanation: wait until t == 4, step to (1,0) at t == 5, then to (1,1) at t == 6.
+ * Example 1:
+ * Input: moveTime = [[0,4],[4,4]]
+ * Output: 6
+ * Explanation: wait until t == 4, step to (1,0) at t == 5, then to (1,1) at t == 6.
  *
- *  Example 2:
- *    Input: moveTime = [[0,0,0],[0,0,0]]
- *    Output: 3
+ * Example 2:
+ * Input: moveTime = [[0,0,0],[0,0,0]]
+ * Output: 3
  *
- *  Constraints:
- *    2 <= n == moveTime.length <= 50
- *    2 <= m == moveTime[i].length <= 50
- *    0 <= moveTime[i][j] <= 10^9
+ * Constraints:
+ * 2 <= n == moveTime.length <= 50
+ * 2 <= m == moveTime[i].length <= 50
+ * 0 <= moveTime[i][j] <= 10^9
+ *
  */
 public class FindMinimumTimeToReachLastRoomI {
 

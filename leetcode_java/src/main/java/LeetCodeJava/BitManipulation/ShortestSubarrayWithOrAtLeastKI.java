@@ -3,35 +3,36 @@ package LeetCodeJava.BitManipulation;
 // https://leetcode.com/problems/shortest-subarray-with-or-at-least-k-i/
 
 /**
- *  3095. Shortest Subarray With OR at Least K I
- *  Easy
+ * 3095. Shortest Subarray With OR at Least K I
+ * Easy
  *
- *  You are given an array nums of non-negative integers and an integer k.
+ * You are given an array nums of non-negative integers and an integer k.
  *
- *  An array is called special if the bitwise OR of all of its elements is at
- *  least k.
+ * An array is called special if the bitwise OR of all of its elements is at
+ * least k.
  *
- *  Return the length of the shortest special non-empty subarray of nums, or
- *  return -1 if no special subarray exists.
+ * Return the length of the shortest special non-empty subarray of nums, or
+ * return -1 if no special subarray exists.
  *
- *  Example 1:
- *    Input: nums = [1,2,3], k = 2
- *    Output: 1
- *    Explanation: the subarray [3] has OR value 3.
+ * Example 1:
+ * Input: nums = [1,2,3], k = 2
+ * Output: 1
+ * Explanation: the subarray [3] has OR value 3.
  *
- *  Example 2:
- *    Input: nums = [2,1,8], k = 10
- *    Output: 3
- *    Explanation: the subarray [2,1,8] has OR value 11.
+ * Example 2:
+ * Input: nums = [2,1,8], k = 10
+ * Output: 3
+ * Explanation: the subarray [2,1,8] has OR value 11.
  *
- *  Example 3:
- *    Input: nums = [1,2], k = 0
- *    Output: 1
+ * Example 3:
+ * Input: nums = [1,2], k = 0
+ * Output: 1
  *
- *  Constraints:
- *    1 <= nums.length <= 50
- *    0 <= nums[i] <= 50
- *    0 <= k < 64
+ * Constraints:
+ * 1 <= nums.length <= 50
+ * 0 <= nums[i] <= 50
+ * 0 <= k < 64
+ *
  */
 public class ShortestSubarrayWithOrAtLeastKI {
 

@@ -3,7 +3,9 @@ package LeetCodeJava.BinarySearch;
 // https://leetcode.com/problems/cutting-ribbons/description/
 // https://leetcode.ca/2021-07-24-1891-Cutting-Ribbons/
 /**
- *  1891 - Cutting Ribbons
+ * 1891. Cutting Ribbons
+ * Medium
+ *
  * Posted on July 24, 2021 · 5 minute read
  * Welcome to Subscribe On Youtube
  *
@@ -44,7 +46,6 @@ package LeetCodeJava.BinarySearch;
  * Input: ribbons = [7,5,9], k = 4
  *
  * Output: 4
- *
  *
  */
 public class CuttingRibbons {

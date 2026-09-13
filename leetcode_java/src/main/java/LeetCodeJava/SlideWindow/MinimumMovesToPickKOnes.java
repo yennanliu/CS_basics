@@ -3,36 +3,37 @@ package LeetCodeJava.SlideWindow;
 // https://leetcode.com/problems/minimum-moves-to-pick-k-ones/
 
 /**
- *  3086. Minimum Moves to Pick K Ones
- *  Hard
+ * 3086. Minimum Moves to Pick K Ones
+ * Hard
  *
- *  You are given a binary array nums of length n, a positive integer k and a
- *  non-negative integer maxChanges.
+ * You are given a binary array nums of length n, a positive integer k and a
+ * non-negative integer maxChanges.
  *
- *  Alice picks any index aliceIndex and stands there. If nums[aliceIndex] == 1
- *  she picks up that one for free. After this she may repeatedly do exactly one
- *  of:
- *   - Select any index j != aliceIndex with nums[j] == 0 and set nums[j] = 1.
- *     This action can be performed at most maxChanges times.
- *   - Select adjacent indices x, y with nums[x] == 1, nums[y] == 0 and swap
- *     them. If y == aliceIndex, Alice picks up that one.
+ * Alice picks any index aliceIndex and stands there. If nums[aliceIndex] == 1
+ * she picks up that one for free. After this she may repeatedly do exactly one
+ * of:
+ * - Select any index j != aliceIndex with nums[j] == 0 and set nums[j] = 1.
+ * This action can be performed at most maxChanges times.
+ * - Select adjacent indices x, y with nums[x] == 1, nums[y] == 0 and swap
+ * them. If y == aliceIndex, Alice picks up that one.
  *
- *  Return the minimum number of moves required by Alice to pick exactly k ones.
+ * Return the minimum number of moves required by Alice to pick exactly k ones.
  *
- *  Example 1:
- *    Input: nums = [1,1,0,0,0,1,1,0,0,1], k = 3, maxChanges = 1
- *    Output: 3
+ * Example 1:
+ * Input: nums = [1,1,0,0,0,1,1,0,0,1], k = 3, maxChanges = 1
+ * Output: 3
  *
- *  Example 2:
- *    Input: nums = [0,0,0,0], k = 2, maxChanges = 3
- *    Output: 4
+ * Example 2:
+ * Input: nums = [0,0,0,0], k = 2, maxChanges = 3
+ * Output: 4
  *
- *  Constraints:
- *    2 <= n <= 10^5
- *    0 <= nums[i] <= 1
- *    1 <= k <= 10^5
- *    0 <= maxChanges <= 10^5
- *    maxChanges + sum(nums) >= k
+ * Constraints:
+ * 2 <= n <= 10^5
+ * 0 <= nums[i] <= 1
+ * 1 <= k <= 10^5
+ * 0 <= maxChanges <= 10^5
+ * maxChanges + sum(nums) >= k
+ *
  */
 public class MinimumMovesToPickKOnes {
 

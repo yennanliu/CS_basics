@@ -7,6 +7,8 @@ import LeetCodeJava.DataStructure.TreeNode;
 
 /**
  * 1740. Find Distance in a Binary Tree
+ * Medium
+ *
  * Given the root of a binary tree and two integers p and q, return the distance between the nodes of value p and value q in the tree.
  *
  * The distance between two nodes is the number of edges on the path from one to the other.
@@ -45,6 +47,7 @@ import LeetCodeJava.DataStructure.TreeNode;
  * Prime
  * Company:
  * Amazon
+ *
  */
 public class FindDistanceInABinaryTree {
 

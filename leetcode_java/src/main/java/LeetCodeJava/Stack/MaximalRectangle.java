@@ -5,12 +5,9 @@ package LeetCodeJava.Stack;
 import java.util.Stack;
 
 /**
- *  85. Maximal Rectangle
- * Solved
+ * 85. Maximal Rectangle
  * Hard
- * Topics
- * premium lock icon
- * Companies
+ *
  * Given a rows x cols binary matrix filled with 0's and 1's, find the largest rectangle containing only 1's and return its area.
  *
  *
@@ -37,8 +34,6 @@ import java.util.Stack;
  * cols == matrix[i].length
  * 1 <= rows, cols <= 200
  * matrix[i][j] is '0' or '1'.
- *
- *
  *
  */
 public class MaximalRectangle {

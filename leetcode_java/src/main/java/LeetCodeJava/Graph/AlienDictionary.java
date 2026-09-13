@@ -7,6 +7,7 @@ import java.util.*;
 
 /**
  * 269. Alien Dictionary
+ * Hard
  *
  * There is a new alien language which uses the latin alphabet.
  * However, the order among letters are unknown to you.
@@ -18,11 +19,11 @@ import java.util.*;
  *
  * Input:
  * [
- *   "wrt",
- *   "wrf",
- *   "er",
- *   "ett",
- *   "rftt"
+ * "wrt",
+ * "wrf",
+ * "er",
+ * "ett",
+ * "rftt"
  * ]
  *
  * Output: "wertf"
@@ -30,8 +31,8 @@ import java.util.*;
  *
  * Input:
  * [
- *   "z",
- *   "x"
+ * "z",
+ * "x"
  * ]
  *
  * Output: "zx"
@@ -39,9 +40,9 @@ import java.util.*;
  *
  * Input:
  * [
- *   "z",
- *   "x",
- *   "z"
+ * "z",
+ * "x",
+ * "z"
  * ]
  *
  * Output: ""

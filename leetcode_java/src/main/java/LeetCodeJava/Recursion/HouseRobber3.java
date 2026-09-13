@@ -10,8 +10,7 @@ import java.util.Map;
 /**
  * 337. House Robber III
  * Medium
- * Topics
- * Companies
+ *
  * The thief has found himself a new place for his thievery again. There is only one entrance to this area, called root.
  *
  * Besides the root, each house has one and only one parent house. After a tour, the smart thief realized that all houses in this place form a binary tree. It will automatically contact the police if two directly-linked houses were broken into on the same night.

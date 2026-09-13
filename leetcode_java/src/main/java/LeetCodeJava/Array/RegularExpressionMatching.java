@@ -3,10 +3,8 @@ package LeetCodeJava.Array;
 // https://leetcode.com/problems/regular-expression-matching/description/
 /**
  * 10. Regular Expression Matching
- * Solved
  * Hard
- * Topics
- * Companies
+ *
  * Given an input string s and a pattern p, implement regular expression matching with support for '.' and '*' where:
  *
  * '.' Matches any single character.
@@ -39,7 +37,6 @@ package LeetCodeJava.Array;
  * s contains only lowercase English letters.
  * p contains only lowercase English letters, '.', and '*'.
  * It is guaranteed for each appearance of the character '*', there will be a previous valid character to match.
- *
  *
  */
 public class RegularExpressionMatching {

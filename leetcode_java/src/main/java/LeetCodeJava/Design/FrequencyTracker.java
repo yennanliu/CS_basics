@@ -6,41 +6,42 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *  2671. Frequency Tracker
- *  Medium
+ * 2671. Frequency Tracker
+ * Medium
  *
- *  Design a data structure that keeps track of the values in it and answers some
- *  queries regarding their frequencies.
+ * Design a data structure that keeps track of the values in it and answers some
+ * queries regarding their frequencies.
  *
- *  Implement the FrequencyTracker class:
- *    FrequencyTracker() Initializes the FrequencyTracker object with an empty array.
- *    void add(int number) Adds number to the data structure.
- *    void deleteOne(int number) Deletes one occurrence of number from the data
- *      structure. The data structure may not contain number, and in this case
- *      nothing is deleted.
- *    boolean hasFrequency(int frequency) Returns true if there is a number in the
- *      data structure that occurs frequency number of times, otherwise false.
+ * Implement the FrequencyTracker class:
+ * FrequencyTracker() Initializes the FrequencyTracker object with an empty array.
+ * void add(int number) Adds number to the data structure.
+ * void deleteOne(int number) Deletes one occurrence of number from the data
+ * structure. The data structure may not contain number, and in this case
+ * nothing is deleted.
+ * boolean hasFrequency(int frequency) Returns true if there is a number in the
+ * data structure that occurs frequency number of times, otherwise false.
  *
- *  Example 1:
- *    Input
- *      ["FrequencyTracker", "add", "add", "hasFrequency"]
- *      [[], [3], [3], [2]]
- *    Output
- *      [null, null, null, true]
- *    Explanation: 3 occurs twice, so hasFrequency(2) -> true
+ * Example 1:
+ * Input
+ * ["FrequencyTracker", "add", "add", "hasFrequency"]
+ * [[], [3], [3], [2]]
+ * Output
+ * [null, null, null, true]
+ * Explanation: 3 occurs twice, so hasFrequency(2) -> true
  *
- *  Example 2:
- *    Input
- *      ["FrequencyTracker", "add", "deleteOne", "hasFrequency"]
- *      [[], [1], [1], [1]]
- *    Output
- *      [null, null, null, false]
- *    Explanation: the structure is empty again -> false
+ * Example 2:
+ * Input
+ * ["FrequencyTracker", "add", "deleteOne", "hasFrequency"]
+ * [[], [1], [1], [1]]
+ * Output
+ * [null, null, null, false]
+ * Explanation: the structure is empty again -> false
  *
- *  Constraints:
- *    1 <= number <= 10^5
- *    1 <= frequency <= 10^5
- *    At most 2 * 10^5 calls will be made to add, deleteOne and hasFrequency.
+ * Constraints:
+ * 1 <= number <= 10^5
+ * 1 <= frequency <= 10^5
+ * At most 2 * 10^5 calls will be made to add, deleteOne and hasFrequency.
+ *
  */
 public class FrequencyTracker {
 

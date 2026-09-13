@@ -10,9 +10,7 @@ import java.util.Queue;
 /**
  * 108. Convert Sorted Array to Binary Search Tree
  * Easy
- * Topics
- * premium lock icon
- * Companies
+ *
  * Given an integer array nums where the elements are sorted in ascending order, convert it to a height-balanced binary search tree.
  *
  *
@@ -37,7 +35,6 @@ import java.util.Queue;
  * 1 <= nums.length <= 104
  * -104 <= nums[i] <= 104
  * nums is sorted in a strictly increasing order.
- *
  *
  */
 public class ConvertSortedArrayToBinarySearchTree {

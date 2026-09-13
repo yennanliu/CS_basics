@@ -12,39 +12,40 @@ import java.util.Map;
 import LeetCodeJava.DataStructure.TreeNode;
 
 /**
- *  2458. Height of Binary Tree After Subtree Removal Queries
- *  Hard
+ * 2458. Height of Binary Tree After Subtree Removal Queries
+ * Hard
  *
- *  You are given the root of a binary tree with n nodes. Each node is assigned a unique
- *  value from 1 to n. You are also given an array queries of size m.
+ * You are given the root of a binary tree with n nodes. Each node is assigned a unique
+ * value from 1 to n. You are also given an array queries of size m.
  *
- *  You have to perform m independent queries on the tree where in the ith query you
- *  remove the subtree rooted at the node with the value queries[i] from the tree. It is
- *  guaranteed that queries[i] will not be equal to the value of the root.
+ * You have to perform m independent queries on the tree where in the ith query you
+ * remove the subtree rooted at the node with the value queries[i] from the tree. It is
+ * guaranteed that queries[i] will not be equal to the value of the root.
  *
- *  Return an array answer of size m where answer[i] is the height of the tree after
- *  performing the ith query.
+ * Return an array answer of size m where answer[i] is the height of the tree after
+ * performing the ith query.
  *
- *  Note: the queries are independent (the tree returns to its initial state after each
- *  query) and the height of a tree is the number of edges in the longest simple path
- *  from the root to some node in the tree.
+ * Note: the queries are independent (the tree returns to its initial state after each
+ * query) and the height of a tree is the number of edges in the longest simple path
+ * from the root to some node in the tree.
  *
- *  Example 1:
- *    Input: root = [1,3,4,2,null,6,5,null,null,null,null,null,7], queries = [4]
- *    Output: [2]
- *    Explanation: after removing the subtree at 4, the height is 2 (path 1 -> 3 -> 2).
+ * Example 1:
+ * Input: root = [1,3,4,2,null,6,5,null,null,null,null,null,7], queries = [4]
+ * Output: [2]
+ * Explanation: after removing the subtree at 4, the height is 2 (path 1 -> 3 -> 2).
  *
- *  Example 2:
- *    Input: root = [5,8,9,2,1,3,7,4,6], queries = [3,2,4,8]
- *    Output: [3,2,3,2]
+ * Example 2:
+ * Input: root = [5,8,9,2,1,3,7,4,6], queries = [3,2,4,8]
+ * Output: [3,2,3,2]
  *
- *  Constraints:
- *    2 <= n <= 10^5
- *    1 <= Node.val <= n, all values are unique
- *    m == queries.length
- *    1 <= m <= min(n, 10^4)
- *    1 <= queries[i] <= n
- *    queries[i] != root.val
+ * Constraints:
+ * 2 <= n <= 10^5
+ * 1 <= Node.val <= n, all values are unique
+ * m == queries.length
+ * 1 <= m <= min(n, 10^4)
+ * 1 <= queries[i] <= n
+ * queries[i] != root.val
+ *
  */
 public class HeightOfBinaryTreeAfterSubtreeRemovalQueries {
 

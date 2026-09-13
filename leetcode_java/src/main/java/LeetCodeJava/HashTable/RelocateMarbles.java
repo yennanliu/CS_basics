@@ -6,12 +6,8 @@ import java.util.*;
 
 /**
  * 2766. Relocate Marbles
- * Solved
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You are given a 0-indexed integer array nums representing the initial positions of some marbles. You are also given two 0-indexed integer arrays moveFrom and moveTo of equal length.
  *
  * Throughout moveFrom.length steps, you will change the positions of the marbles. On the ith step, you will move all marbles at position moveFrom[i] to position moveTo[i].
@@ -50,7 +46,6 @@ import java.util.*;
  * moveFrom.length == moveTo.length
  * 1 <= nums[i], moveFrom[i], moveTo[i] <= 109
  * The test cases are generated such that there is at least a marble in moveFrom[i] at the moment we want to apply the ith move.
- *
  *
  */
 public class RelocateMarbles {

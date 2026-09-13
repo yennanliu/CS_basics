@@ -8,30 +8,31 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *  609. Find Duplicate File in System
- *  Medium
+ * 609. Find Duplicate File in System
+ * Medium
  *
- *  Given a list paths of directory info, including the directory path, and all the
- *  files with contents in this directory, return all the duplicate files in the file
- *  system in terms of their paths. You may return the answer in any order.
+ * Given a list paths of directory info, including the directory path, and all the
+ * files with contents in this directory, return all the duplicate files in the file
+ * system in terms of their paths. You may return the answer in any order.
  *
- *  A group of duplicate files consists of at least two files that have the same content.
+ * A group of duplicate files consists of at least two files that have the same content.
  *
- *  A single directory info string in the input list has the following format:
- *   "root/d1/d2/.../dm f1.txt(f1_content) f2.txt(f2_content) ... fn.txt(fn_content)"
+ * A single directory info string in the input list has the following format:
+ * "root/d1/d2/.../dm f1.txt(f1_content) f2.txt(f2_content) ... fn.txt(fn_content)"
  *
- *  The output is a list of groups of duplicate file paths, of the form
- *   "directory_path/file_name.txt"
+ * The output is a list of groups of duplicate file paths, of the form
+ * "directory_path/file_name.txt"
  *
- *  Example 1:
- *  Input: paths = ["root/a 1.txt(abcd) 2.txt(efgh)","root/c 3.txt(abcd)",
- *                  "root/c/d 4.txt(efgh)","root 4.txt(efgh)"]
- *  Output: [["root/a/2.txt","root/c/d/4.txt","root/4.txt"],
- *           ["root/a/1.txt","root/c/3.txt"]]
+ * Example 1:
+ * Input: paths = ["root/a 1.txt(abcd) 2.txt(efgh)","root/c 3.txt(abcd)",
+ * "root/c/d 4.txt(efgh)","root 4.txt(efgh)"]
+ * Output: [["root/a/2.txt","root/c/d/4.txt","root/4.txt"],
+ * ["root/a/1.txt","root/c/3.txt"]]
  *
- *  Constraints:
- *  1 <= paths.length <= 2 * 10^4
- *  1 <= paths[i].length <= 3000
+ * Constraints:
+ * 1 <= paths.length <= 2 * 10^4
+ * 1 <= paths[i].length <= 3000
+ *
  */
 public class FindDuplicateFileInSystem {
 

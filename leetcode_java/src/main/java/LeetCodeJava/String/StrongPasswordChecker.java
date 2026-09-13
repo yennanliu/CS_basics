@@ -15,9 +15,9 @@ import java.util.List;
  *
  * - It has at least 6 characters and at most 20 characters.
  * - It contains at least one lowercase letter, at least one uppercase letter, and
- *   at least one digit.
+ * at least one digit.
  * - It does not contain three repeating characters in a row (i.e., "Baaabb0" is
- *   weak, but "Baabaa0" is strong).
+ * weak, but "Baabaa0" is strong).
  *
  * Given a string password, return the minimum number of steps required to make
  * password strong. if password is already strong, return 0.

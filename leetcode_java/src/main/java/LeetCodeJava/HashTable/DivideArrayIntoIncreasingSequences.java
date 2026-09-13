@@ -8,6 +8,8 @@ import java.util.Map;
 
 /**
  * 1121. Divide Array Into Increasing Sequences
+ * Hard
+ *
  * Given a non-decreasing array of positive integers nums and an integer K, find out if this array can be divided into one or more disjoint increasing subsequences of length at least K.
  *
  *
@@ -37,7 +39,6 @@ import java.util.Map;
  * Prime
  * Company:
  * Google
- *
  *
  */
 public class DivideArrayIntoIncreasingSequences {

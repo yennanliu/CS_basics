@@ -10,12 +10,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *  508. Most Frequent Subtree Sum
- * Solved
+ * 508. Most Frequent Subtree Sum
  * Medium
- * Topics
- * premium lock icon
- * Companies
+ *
  * Given the root of a binary tree, return the most frequent subtree sum. If there is a tie, return all the values with the highest frequency in any order.
  *
  * The subtree sum of a node is defined as the sum of all the node values formed by the subtree rooted at that node (including the node itself).
@@ -38,6 +35,7 @@ import java.util.Map;
  *
  * The number of nodes in the tree is in the range [1, 104].
  * -105 <= Node.val <= 105
+ *
  */
 public class MostFrequentSubtreeSum {
 

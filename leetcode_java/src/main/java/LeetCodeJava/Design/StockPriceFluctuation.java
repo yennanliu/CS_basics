@@ -7,50 +7,51 @@ import java.util.Map;
 import java.util.PriorityQueue;
 
 /**
- *  2034. Stock Price Fluctuation
- *  Medium
+ * 2034. Stock Price Fluctuation
+ * Medium
  *
- *  You are given a stream of records about a particular stock. Each record contains a
- *  timestamp and the corresponding price of the stock at that timestamp.
+ * You are given a stream of records about a particular stock. Each record contains a
+ * timestamp and the corresponding price of the stock at that timestamp.
  *
- *  Unfortunately due to the volatile nature of the stock market, the records do not come in
- *  order. Even worse, some records may be incorrect. Another record with the same timestamp
- *  may appear later in the stream correcting the price of the previous wrong record.
+ * Unfortunately due to the volatile nature of the stock market, the records do not come in
+ * order. Even worse, some records may be incorrect. Another record with the same timestamp
+ * may appear later in the stream correcting the price of the previous wrong record.
  *
- *  Implement the StockPrice class:
+ * Implement the StockPrice class:
  *
- *   - StockPrice() Initializes the object with no price records.
- *   - void update(int timestamp, int price) Updates the price of the stock at the given
- *     timestamp.
- *   - int current() Returns the latest price of the stock (the price at the latest
- *     timestamp recorded).
- *   - int maximum() Returns the maximum price of the stock.
- *   - int minimum() Returns the minimum price of the stock.
+ * - StockPrice() Initializes the object with no price records.
+ * - void update(int timestamp, int price) Updates the price of the stock at the given
+ * timestamp.
+ * - int current() Returns the latest price of the stock (the price at the latest
+ * timestamp recorded).
+ * - int maximum() Returns the maximum price of the stock.
+ * - int minimum() Returns the minimum price of the stock.
  *
- *  Example 1:
+ * Example 1:
  *
- *  Input
- *  ["StockPrice", "update", "update", "current", "maximum", "update", "maximum",
- *   "update", "minimum"]
- *  [[], [1, 10], [2, 5], [], [], [1, 3], [], [4, 2], []]
- *  Output
- *  [null, null, null, 5, 10, null, 5, null, 2]
+ * Input
+ * ["StockPrice", "update", "update", "current", "maximum", "update", "maximum",
+ * "update", "minimum"]
+ * [[], [1, 10], [2, 5], [], [], [1, 3], [], [4, 2], []]
+ * Output
+ * [null, null, null, 5, 10, null, 5, null, 2]
  *
- *  Explanation
- *  StockPrice stockPrice = new StockPrice();
- *  stockPrice.update(1, 10); // timestamps [1]     prices [10]
- *  stockPrice.update(2, 5);  // timestamps [1,2]   prices [10,5]
- *  stockPrice.current();     // return 5
- *  stockPrice.maximum();     // return 10
- *  stockPrice.update(1, 3);  // timestamp 1 corrected -> prices [3,5]
- *  stockPrice.maximum();     // return 5
- *  stockPrice.update(4, 2);  // timestamps [1,2,4] prices [3,5,2]
- *  stockPrice.minimum();     // return 2
+ * Explanation
+ * StockPrice stockPrice = new StockPrice();
+ * stockPrice.update(1, 10); // timestamps [1]     prices [10]
+ * stockPrice.update(2, 5);  // timestamps [1,2]   prices [10,5]
+ * stockPrice.current();     // return 5
+ * stockPrice.maximum();     // return 10
+ * stockPrice.update(1, 3);  // timestamp 1 corrected -> prices [3,5]
+ * stockPrice.maximum();     // return 5
+ * stockPrice.update(4, 2);  // timestamps [1,2,4] prices [3,5,2]
+ * stockPrice.minimum();     // return 2
  *
- *  Constraints:
+ * Constraints:
  *
- *   1 <= timestamp, price <= 10^9
- *   At most 10^5 calls will be made in total to update, current, maximum, and minimum.
+ * 1 <= timestamp, price <= 10^9
+ * At most 10^5 calls will be made in total to update, current, maximum, and minimum.
+ *
  */
 public class StockPriceFluctuation {
 

@@ -5,12 +5,9 @@ package LeetCodeJava.DFS;
 import java.util.Arrays;
 
 /**
- *  1020. Number of Enclaves
+ * 1020. Number of Enclaves
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You are given an m x n binary matrix grid, where 0 represents a sea cell and 1 represents a land cell.
  *
  * A move consists of walking from one land cell to another adjacent (4-directionally) land cell or walking off the boundary of the grid.
@@ -39,7 +36,6 @@ import java.util.Arrays;
  * n == grid[i].length
  * 1 <= m, n <= 500
  * grid[i][j] is either 0 or 1.
- *
  *
  */
 public class NumberOfEnclaves {

@@ -3,33 +3,34 @@ package LeetCodeJava.Math;
 // https://leetcode.com/problems/super-pow/
 
 /**
- *  372. Super Pow
- *  Medium
+ * 372. Super Pow
+ * Medium
  *
- *  Your task is to calculate a^b mod 1337 where a is a positive integer and b is an
- *  extremely large positive integer given in the form of an array.
+ * Your task is to calculate a^b mod 1337 where a is a positive integer and b is an
+ * extremely large positive integer given in the form of an array.
  *
- *  Example 1:
+ * Example 1:
  *
- *  Input: a = 2, b = [3]
- *  Output: 8
+ * Input: a = 2, b = [3]
+ * Output: 8
  *
- *  Example 2:
+ * Example 2:
  *
- *  Input: a = 2, b = [1,0]
- *  Output: 1024
+ * Input: a = 2, b = [1,0]
+ * Output: 1024
  *
- *  Example 3:
+ * Example 3:
  *
- *  Input: a = 2147483647, b = [2,0,0]
- *  Output: 1198
+ * Input: a = 2147483647, b = [2,0,0]
+ * Output: 1198
  *
- *  Constraints:
+ * Constraints:
  *
- *  1 <= a <= 2^31 - 1
- *  1 <= b.length <= 2000
- *  0 <= b[i] <= 9
- *  b does not contain leading zeros.
+ * 1 <= a <= 2^31 - 1
+ * 1 <= b.length <= 2000
+ * 0 <= b[i] <= 9
+ * b does not contain leading zeros.
+ *
  */
 public class SuperPow {
 

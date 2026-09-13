@@ -3,11 +3,8 @@ package LeetCodeJava.String;
 // https://leetcode.com/problems/palindromic-substrings/
 /**
  * 647. Palindromic Substrings
- * Solved
  * Medium
- * Topics
- * Companies
- * Hint
+ *
  * Given a string s, return the number of palindromic substrings in it.
  *
  * A string is a palindrome when it reads the same backward as forward.
@@ -32,7 +29,6 @@ package LeetCodeJava.String;
  *
  * 1 <= s.length <= 1000
  * s consists of lowercase English letters.
- *
  *
  */
 public class PalindromicSubstrings {

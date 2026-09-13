@@ -3,10 +3,8 @@ package LeetCodeJava.BFS;
 // https://leetcode.com/problems/rotting-oranges/
 /**
  * 994. Rotting Oranges
- * Solved
  * Medium
- * Topics
- * Companies
+ *
  * You are given an m x n grid where each cell can have one of three values:
  *
  * 0 representing an empty cell,
@@ -41,12 +39,13 @@ package LeetCodeJava.BFS;
  * n == grid[i].length
  * 1 <= m, n <= 10
  * grid[i][j] is 0, 1, or 2.
+ *
  */
 import java.util.*;
 
 public class RottingOranges {
 
-    // VO
+    // V0
     // IDEA : multi source - BFS, LC 542 (fixed by gemini)
     public int orangesRotting(int[][] grid) {
         if (grid == null || grid.length == 0 || grid[0].length == 0) {

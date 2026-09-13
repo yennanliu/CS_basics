@@ -8,9 +8,7 @@ import java.util.Map;
 /**
  * 1095. Find in Mountain Array
  * Hard
- * Topics
- * Companies
- * Hint
+ *
  * (This problem is an interactive problem.)
  *
  * You may recall that an array arr is a mountain array if and only if:
@@ -46,8 +44,6 @@ import java.util.Map;
  * 3 <= mountainArr.length() <= 104
  * 0 <= target <= 109
  * 0 <= mountainArr.get(index) <= 109
- *
- *
  *
  */
 public class FindInMountainArray {

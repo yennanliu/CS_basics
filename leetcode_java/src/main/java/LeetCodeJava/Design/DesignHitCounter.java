@@ -7,6 +7,8 @@ import java.util.*;
 
 /**
  * 362. Design Hit Counter
+ * Medium
+ *
  * Design a hit counter which counts the number of hits received in the past 5 minutes.
  *
  * Each function accepts a timestamp parameter (in seconds granularity) and you may assume that calls are being made to the system in chronological order (ie, the timestamp is monotonically increasing). You may assume that the earliest timestamp starts at 1.
@@ -109,7 +111,7 @@ public class DesignHitCounter {
     }
 
 
-    // V0_0_1
+    // V0-_0_1
     // TODO: validate
     class HitCounter_0_0_1 {
 

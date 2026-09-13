@@ -8,12 +8,8 @@ import java.util.PriorityQueue;
 
 /**
  * 2593. Find Score of an Array After Marking All Elements
- * Solved
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You are given an array nums consisting of positive integers.
  *
  * Starting with score = 0, apply the following algorithm:
@@ -54,7 +50,7 @@ import java.util.PriorityQueue;
  */
 public class FindScoreOfAnArrayAfterMarkingAllElements {
 
-    // VO
+    // V0
 //    /**
 //     * time = O(N log N)
 //     * space = O(N)
@@ -64,7 +60,7 @@ public class FindScoreOfAnArrayAfterMarkingAllElements {
 //    }
 
 
-    // V0-1: IDEA: custom min PQ (fixed by gpt)
+    // V0-1 : IDEA: custom min PQ (fixed by gpt)
     /**
      * time = O(N log N)
      * space = O(N)

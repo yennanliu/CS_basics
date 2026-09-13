@@ -5,29 +5,30 @@ package LeetCodeJava.HashTable;
 import java.util.Random;
 
 /**
- *  470. Implement Rand10() Using Rand7()
- *  Medium
+ * 470. Implement Rand10() Using Rand7()
+ * Medium
  *
- *  Given the API rand7() that generates a uniform random integer in the range [1, 7],
- *  write a function rand10() that generates a uniform random integer in the range [1, 10].
- *  You can only call the API rand7(), and you shouldn't call any other API.
+ * Given the API rand7() that generates a uniform random integer in the range [1, 7],
+ * write a function rand10() that generates a uniform random integer in the range [1, 10].
+ * You can only call the API rand7(), and you shouldn't call any other API.
  *
- *  Each test case will have one internal argument n, the number of times that your
- *  implemented function rand10() will be called while testing.
+ * Each test case will have one internal argument n, the number of times that your
+ * implemented function rand10() will be called while testing.
  *
- *  Example 1:
- *  Input: n = 1
- *  Output: [2]
+ * Example 1:
+ * Input: n = 1
+ * Output: [2]
  *
- *  Example 2:
- *  Input: n = 3
- *  Output: [3,8,10]
+ * Example 2:
+ * Input: n = 3
+ * Output: [3,8,10]
  *
- *  Constraints:
- *  1 <= n <= 10^5
+ * Constraints:
+ * 1 <= n <= 10^5
  *
- *  NOTE: on LeetCode the solution class extends SolBase which supplies rand7().
- *        Here rand7() is provided locally so the file is self-contained / compilable.
+ * NOTE: on LeetCode the solution class extends SolBase which supplies rand7().
+ * Here rand7() is provided locally so the file is self-contained / compilable.
+ *
  */
 public class ImplementRand10UsingRand7 {
 

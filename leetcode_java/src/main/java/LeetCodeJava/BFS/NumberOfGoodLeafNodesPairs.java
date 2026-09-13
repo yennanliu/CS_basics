@@ -7,28 +7,29 @@ import java.util.*;
 import LeetCodeJava.DataStructure.TreeNode;
 
 /**
- *  1530. Number of Good Leaf Nodes Pairs
- *  Medium
+ * 1530. Number of Good Leaf Nodes Pairs
+ * Medium
  *
- *  You are given the root of a binary tree and an integer distance. A pair of
- *  two different leaf nodes of a binary tree is said to be good if the length
- *  of the shortest path between them is less than or equal to distance.
+ * You are given the root of a binary tree and an integer distance. A pair of
+ * two different leaf nodes of a binary tree is said to be good if the length
+ * of the shortest path between them is less than or equal to distance.
  *
- *  Return the number of good leaf node pairs in the tree.
+ * Return the number of good leaf node pairs in the tree.
  *
- *  Example 1:
- *   Input: root = [1,2,3,null,4], distance = 3
- *   Output: 1
- *   Explanation: The leaf nodes are 3 and 4, shortest path between them = 3.
+ * Example 1:
+ * Input: root = [1,2,3,null,4], distance = 3
+ * Output: 1
+ * Explanation: The leaf nodes are 3 and 4, shortest path between them = 3.
  *
- *  Example 2:
- *   Input: root = [1,2,3,4,5,6,7], distance = 3
- *   Output: 2
+ * Example 2:
+ * Input: root = [1,2,3,4,5,6,7], distance = 3
+ * Output: 2
  *
- *  Constraints:
- *   The number of nodes in the tree is in the range [1, 2^10].
- *   1 <= Node.val <= 100
- *   1 <= distance <= 10
+ * Constraints:
+ * The number of nodes in the tree is in the range [1, 2^10].
+ * 1 <= Node.val <= 100
+ * 1 <= distance <= 10
+ *
  */
 public class NumberOfGoodLeafNodesPairs {
 

@@ -4,11 +4,20 @@ package LeetCodeJava.DFS;
 
 import java.util.*;
 
+// V0
+
 // V1
 // http://www.noteanddata.com/leetcode-711-Number-of-Distinct-Islands-II-java-solution-note.html
 
 // V1'
 // http://www.noteanddata.com/leetcode-711-Number-of-Distinct-Islands-II-java-solution-note.html
+/**
+ * 711. Number of Distinct Islands II
+ * Hard
+ *
+ * https://leetcode.com/problems/number-of-distinct-islands-ii/
+ *
+ */
 class NumberOfDistinctIslandSii {
     /**
      * time = O(M * N)

@@ -4,9 +4,7 @@ package LeetCodeJava.Stack;
 /**
  * 856. Score of Parentheses
  * Medium
- * Topics
- * premium lock icon
- * Companies
+ *
  * Given a balanced parentheses string s, return the score of the string.
  *
  * The score of a balanced parentheses string is based on the following rule:

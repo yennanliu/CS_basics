@@ -8,36 +8,37 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *  963. Minimum Area Rectangle II
- *  Medium
+ * 963. Minimum Area Rectangle II
+ * Medium
  *
- *  You are given an array of points in the X-Y plane points where
- *  points[i] = [xi, yi].
+ * You are given an array of points in the X-Y plane points where
+ * points[i] = [xi, yi].
  *
- *  Return the minimum area of any rectangle formed from these points, with
- *  sides not necessarily parallel to the X and Y axes. If there is not any such
- *  rectangle, return 0.
+ * Return the minimum area of any rectangle formed from these points, with
+ * sides not necessarily parallel to the X and Y axes. If there is not any such
+ * rectangle, return 0.
  *
- *  Answers within 10^-5 of the actual answer will be accepted.
+ * Answers within 10^-5 of the actual answer will be accepted.
  *
- *  Example 1:
- *   Input: points = [[1,2],[2,1],[1,0],[0,1]]
- *   Output: 2.00000
+ * Example 1:
+ * Input: points = [[1,2],[2,1],[1,0],[0,1]]
+ * Output: 2.00000
  *
- *  Example 2:
- *   Input: points = [[0,1],[2,1],[1,1],[1,0],[2,0]]
- *   Output: 1.00000
+ * Example 2:
+ * Input: points = [[0,1],[2,1],[1,1],[1,0],[2,0]]
+ * Output: 1.00000
  *
- *  Example 3:
- *   Input: points = [[0,3],[1,2],[3,1],[1,3],[2,1]]
- *   Output: 0
- *   Explanation: there is no possible rectangle to form from these points.
+ * Example 3:
+ * Input: points = [[0,3],[1,2],[3,1],[1,3],[2,1]]
+ * Output: 0
+ * Explanation: there is no possible rectangle to form from these points.
  *
- *  Constraints:
- *   - 1 <= points.length <= 50
- *   - points[i].length == 2
- *   - 0 <= xi, yi <= 4 * 10^4
- *   - All the given points are unique.
+ * Constraints:
+ * - 1 <= points.length <= 50
+ * - points[i].length == 2
+ * - 0 <= xi, yi <= 4 * 10^4
+ * - All the given points are unique.
+ *
  */
 public class MinimumAreaRectangleII {
 

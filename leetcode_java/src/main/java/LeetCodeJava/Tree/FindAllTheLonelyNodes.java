@@ -8,27 +8,28 @@ import java.util.List;
 import LeetCodeJava.DataStructure.TreeNode;
 
 /**
- *  1469. Find All The Lonely Nodes
- *  Easy
+ * 1469. Find All The Lonely Nodes
+ * Easy
  *
- *  In a binary tree, a lonely node is a node that is the only child of its parent
- *  node. The root of the tree is not lonely because it does not have a parent node.
+ * In a binary tree, a lonely node is a node that is the only child of its parent
+ * node. The root of the tree is not lonely because it does not have a parent node.
  *
- *  Given the root of a binary tree, return an array containing the values of all
- *  lonely nodes in the tree. Return the list in any order.
+ * Given the root of a binary tree, return an array containing the values of all
+ * lonely nodes in the tree. Return the list in any order.
  *
- *  Example 1:
- *    Input: root = [1,2,3,null,4]
- *    Output: [4]
- *    Explanation: node 1 is the root; nodes 2 and 3 share a parent.
+ * Example 1:
+ * Input: root = [1,2,3,null,4]
+ * Output: [4]
+ * Explanation: node 1 is the root; nodes 2 and 3 share a parent.
  *
- *  Example 2:
- *    Input: root = [7,1,4,6,null,5,3,null,null,null,null,null,2]
- *    Output: [6,2]
+ * Example 2:
+ * Input: root = [7,1,4,6,null,5,3,null,null,null,null,null,2]
+ * Output: [6,2]
  *
- *  Constraints:
- *    The number of nodes in the tree is in the range [1, 1000].
- *    1 <= Node.val <= 10^6
+ * Constraints:
+ * The number of nodes in the tree is in the range [1, 1000].
+ * 1 <= Node.val <= 10^6
+ *
  */
 public class FindAllTheLonelyNodes {
 

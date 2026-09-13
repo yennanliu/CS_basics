@@ -8,11 +8,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- *  539. Minimum Time Difference
+ * 539. Minimum Time Difference
  * Medium
- * Topics
- * premium lock icon
- * Companies
+ *
  * Given a list of 24-hour clock time points in "HH:MM" format, return the minimum minutes difference between any two time-points in the list.
  *
  *

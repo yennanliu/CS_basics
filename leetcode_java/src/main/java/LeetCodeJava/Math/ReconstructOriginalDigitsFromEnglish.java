@@ -3,27 +3,28 @@ package LeetCodeJava.Math;
 // https://leetcode.com/problems/reconstruct-original-digits-from-english/
 
 /**
- *  423. Reconstruct Original Digits from English
- *  Medium
+ * 423. Reconstruct Original Digits from English
+ * Medium
  *
- *  Given a string s containing an out-of-order English representation of digits 0-9,
- *  return the digits in ascending order.
+ * Given a string s containing an out-of-order English representation of digits 0-9,
+ * return the digits in ascending order.
  *
- *  Example 1:
+ * Example 1:
  *
- *  Input: s = "owoztneoer"
- *  Output: "012"
+ * Input: s = "owoztneoer"
+ * Output: "012"
  *
- *  Example 2:
+ * Example 2:
  *
- *  Input: s = "fviefuro"
- *  Output: "45"
+ * Input: s = "fviefuro"
+ * Output: "45"
  *
- *  Constraints:
+ * Constraints:
  *
- *  1 <= s.length <= 10^5
- *  s[i] is one of the characters ["e","g","f","i","h","o","n","s","r","u","t","w","v","x","z"].
- *  s is guaranteed to be valid.
+ * 1 <= s.length <= 10^5
+ * s[i] is one of the characters ["e","g","f","i","h","o","n","s","r","u","t","w","v","x","z"].
+ * s is guaranteed to be valid.
+ *
  */
 public class ReconstructOriginalDigitsFromEnglish {
 

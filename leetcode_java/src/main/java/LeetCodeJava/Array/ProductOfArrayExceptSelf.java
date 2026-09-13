@@ -3,11 +3,8 @@ package LeetCodeJava.Array;
 // https://leetcode.com/problems/product-of-array-except-self/
 /**
  * 238. Product of Array Except Self
- * Solved
  * Medium
- * Topics
- * Companies
- * Hint
+ *
  * Given an integer array nums, return an array answer such that answer[i] is equal to the product of all the elements of nums except nums[i].
  *
  * The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.
@@ -35,11 +32,10 @@ package LeetCodeJava.Array;
  *
  * Follow up: Can you solve the problem in O(1) extra space complexity? (The output array does not count as extra space for space complexity analysis.)
  *
- *
  */
 public class ProductOfArrayExceptSelf {
 
-    // VO
+    // V0
     // IDEA : ARRAY PRODUCT
     /**
      * time = O(N)

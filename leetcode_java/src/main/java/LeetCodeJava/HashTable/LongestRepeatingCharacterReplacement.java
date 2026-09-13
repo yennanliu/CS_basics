@@ -7,11 +7,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *  424. Longest Repeating Character Replacement
- * Solved
+ * 424. Longest Repeating Character Replacement
  * Medium
- * Topics
- * Companies
+ *
  * You are given a string s and an integer k. You can choose any character of the string and change it to any other uppercase English character. You can perform this operation at most k times.
  *
  * Return the length of the longest substring containing the same letter you can get after performing the above operations.
@@ -133,7 +131,7 @@ public class LongestRepeatingCharacterReplacement {
         return res;
     }
 
-    // V0_2
+    // V0-_2
     /**
      * time = O(N)
      * space = O(N)
@@ -192,7 +190,7 @@ public class LongestRepeatingCharacterReplacement {
         return max;
     }
 
-    // V0_3
+    // V0-_3
     // IDEA : TWO POINTER + HASHMAP (modified by GPT)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/longest-repeating-character-replacement.py
     /**

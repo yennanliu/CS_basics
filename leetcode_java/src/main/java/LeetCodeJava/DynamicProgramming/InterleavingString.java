@@ -5,8 +5,7 @@ package LeetCodeJava.DynamicProgramming;
 /**
  * 97. Interleaving String
  * Medium
- * Topics
- * Companies
+ *
  * Given strings s1, s2, and s3, find whether s3 is formed by an interleaving of s1 and s2.
  *
  * An interleaving of two strings s and t is a configuration where s and t are divided into n and m substrings respectively, such that:
@@ -47,7 +46,6 @@ package LeetCodeJava.DynamicProgramming;
  *
  *
  * Follow up: Could you solve it using only O(s2.length) additional memory space?
- *
  *
  */
 public class InterleavingString {

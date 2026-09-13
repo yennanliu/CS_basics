@@ -23,18 +23,18 @@ import java.util.List;
  * - SummaryRanges() Initializes the object with an empty stream.
  * - void addNum(int value) Adds the integer value to the stream.
  * - int[][] getIntervals() Returns a summary of the integers in the stream currently as a
- *   list of disjoint intervals [starti, endi]. The answer should be sorted by starti.
+ * list of disjoint intervals [starti, endi]. The answer should be sorted by starti.
  *
  *
  * Example 1:
  *
  * Input
  * ["SummaryRanges", "addNum", "getIntervals", "addNum", "getIntervals", "addNum",
- *  "getIntervals", "addNum", "getIntervals", "addNum", "getIntervals"]
+ * "getIntervals", "addNum", "getIntervals", "addNum", "getIntervals"]
  * [[], [1], [], [3], [], [7], [], [2], [], [6], []]
  * Output
  * [null, null, [[1, 1]], null, [[1, 1], [3, 3]], null, [[1, 1], [3, 3], [7, 7]], null,
- *  [[1, 3], [7, 7]], null, [[1, 3], [6, 7]]]
+ * [[1, 3], [7, 7]], null, [[1, 3], [6, 7]]]
  *
  * Explanation
  * SummaryRanges summaryRanges = new SummaryRanges();

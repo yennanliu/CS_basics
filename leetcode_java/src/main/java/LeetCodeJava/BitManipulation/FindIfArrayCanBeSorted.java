@@ -3,36 +3,37 @@ package LeetCodeJava.BitManipulation;
 // https://leetcode.com/problems/find-if-array-can-be-sorted/
 
 /**
- *  3011. Find if Array Can Be Sorted
- *  Medium
+ * 3011. Find if Array Can Be Sorted
+ * Medium
  *
- *  You are given a 0-indexed array of positive integers nums.
+ * You are given a 0-indexed array of positive integers nums.
  *
- *  In one operation, you can swap any two adjacent elements if they have the
- *  same number of set bits. You are allowed to do this operation any number of
- *  times (including zero).
+ * In one operation, you can swap any two adjacent elements if they have the
+ * same number of set bits. You are allowed to do this operation any number of
+ * times (including zero).
  *
- *  Return true if you can sort the array, else return false.
+ * Return true if you can sort the array, else return false.
  *
- *  Example 1:
- *    Input: nums = [8,4,2,30,15]
- *    Output: true
- *    Explanation: 2, 4, 8 all have one set bit and 15, 30 have four set bits,
- *                 so [8,4,2] can be sorted in place and so can [30,15], giving
- *                 [2,4,8,15,30].
+ * Example 1:
+ * Input: nums = [8,4,2,30,15]
+ * Output: true
+ * Explanation: 2, 4, 8 all have one set bit and 15, 30 have four set bits,
+ * so [8,4,2] can be sorted in place and so can [30,15], giving
+ * [2,4,8,15,30].
  *
- *  Example 2:
- *    Input: nums = [1,2,3,4,5]
- *    Output: true
- *    Explanation: the array is already sorted.
+ * Example 2:
+ * Input: nums = [1,2,3,4,5]
+ * Output: true
+ * Explanation: the array is already sorted.
  *
- *  Example 3:
- *    Input: nums = [3,16,8,4,2]
- *    Output: false
+ * Example 3:
+ * Input: nums = [3,16,8,4,2]
+ * Output: false
  *
- *  Constraints:
- *    1 <= nums.length <= 100
- *    1 <= nums[i] <= 2^8
+ * Constraints:
+ * 1 <= nums.length <= 100
+ * 1 <= nums[i] <= 2^8
+ *
  */
 public class FindIfArrayCanBeSorted {
 

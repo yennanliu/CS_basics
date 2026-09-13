@@ -6,38 +6,39 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 /**
- *  3965. Finish Time of Tasks I
- *  Medium
+ * 3965. Finish Time of Tasks I
+ * Medium
  *
- *  You are given an integer n representing the number of tasks in a project, numbered
- *  from 0 to n - 1. These tasks are connected as a tree rooted at task 0, represented by
- *  a 2D integer array edges of length n - 1, where edges[i] = [ui, vi] indicates that
- *  task ui is the parent of task vi.
+ * You are given an integer n representing the number of tasks in a project, numbered
+ * from 0 to n - 1. These tasks are connected as a tree rooted at task 0, represented by
+ * a 2D integer array edges of length n - 1, where edges[i] = [ui, vi] indicates that
+ * task ui is the parent of task vi.
  *
- *  You are also given an array baseTime of length n, where baseTime[i] is the time to
- *  complete task i.
+ * You are also given an array baseTime of length n, where baseTime[i] is the time to
+ * complete task i.
  *
- *  The finish time of each task:
- *   - Leaf task: finish time is baseTime[i].
- *   - Non-leaf task: let earliest / latest be the min / max finish time among its
- *     children, ownDuration = (latest - earliest) + baseTime[i], and the finish time
- *     of task i is latest + ownDuration.
+ * The finish time of each task:
+ * - Leaf task: finish time is baseTime[i].
+ * - Non-leaf task: let earliest / latest be the min / max finish time among its
+ * children, ownDuration = (latest - earliest) + baseTime[i], and the finish time
+ * of task i is latest + ownDuration.
  *
- *  Return the finish time of the root task 0.
+ * Return the finish time of the root task 0.
  *
- *  Example 1:
- *    Input: n = 3, edges = [[0,1],[1,2]], baseTime = [9,5,3]
- *    Output: 17
+ * Example 1:
+ * Input: n = 3, edges = [[0,1],[1,2]], baseTime = [9,5,3]
+ * Output: 17
  *
- *  Example 2:
- *    Input: n = 3, edges = [[0,1],[0,2]], baseTime = [4,7,6]
- *    Output: 12
+ * Example 2:
+ * Input: n = 3, edges = [[0,1],[0,2]], baseTime = [4,7,6]
+ * Output: 12
  *
- *  Constraints:
- *    1 <= n <= 10^5
- *    edges.length == n - 1, edges[i] == [ui, vi], 0 <= ui, vi <= n - 1, ui != vi
- *    baseTime.length == n, 1 <= baseTime[i] <= 10^5
- *    The finish time of every task is guaranteed to be less than 2^53.
+ * Constraints:
+ * 1 <= n <= 10^5
+ * edges.length == n - 1, edges[i] == [ui, vi], 0 <= ui, vi <= n - 1, ui != vi
+ * baseTime.length == n, 1 <= baseTime[i] <= 10^5
+ * The finish time of every task is guaranteed to be less than 2^53.
+ *
  */
 public class FinishTimeOfTasksI {
 

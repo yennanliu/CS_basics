@@ -8,10 +8,8 @@ import java.util.Set;
 
 /**
  * 416. Partition Equal Subset Sum
- * Solved
  * Medium
- * Topics
- * Companies
+ *
  * Given an integer array nums, return true if you can partition the array into two subsets such that the sum of the elements in both subsets is equal or false otherwise.
  *
  *
@@ -32,7 +30,6 @@ import java.util.Set;
  *
  * 1 <= nums.length <= 200
  * 1 <= nums[i] <= 100
- *
  *
  */
 public class PartitionEqualSubsetSum {
@@ -166,7 +163,7 @@ public class PartitionEqualSubsetSum {
 //    }
 
 
-    // V0-0-1
+    // V0-1
     // TODO: implement with below idea (optimized brute force)
     // https://youtu.be/IsvocB5BJhw?si=evPYANn0pPicVwu6
 //    public boolean canPartition(int[] nums) {
@@ -174,7 +171,7 @@ public class PartitionEqualSubsetSum {
 //    }
 
 
-    // V0-1
+    // V0-2
     // IDEA: Optimal 1D DP Solution (Subset Sum, O(n × target)) (GPT)
     /**  NOTE !!! CORE
      *
@@ -443,7 +440,7 @@ public class PartitionEqualSubsetSum {
     }
 
 
-    // V0-2
+    // V0-3
     // IDEA: (Optimized 1D DP) (GEMINI)
     /**
      * To solve **LeetCode 416: Partition Equal Subset Sum**,
@@ -507,7 +504,7 @@ public class PartitionEqualSubsetSum {
     }
 
 
-    // V0-3
+    // V0-4
     // IDEA: 2D DP (gpt)
     /** NOTE !!!
      *
@@ -572,11 +569,11 @@ public class PartitionEqualSubsetSum {
 
 
 
-    // V0-4
+    // V0-5
     // IDEA: DP
     // https://github.com/yennanliu/CS_basics/blob/master/doc/pic/lc/lc_416_1.png
 
-    // V0-5
+    // V0-6
     // IDEA: DP (fixed by gpt)
     /**
      * time = O(N * sum)

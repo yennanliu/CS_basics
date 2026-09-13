@@ -9,7 +9,9 @@ import java.util.List;
 import java.util.Set;
 
 /**
- *356. Line Reflection
+ * 356. Line Reflection
+ * Medium
+ *
  * Given n points on a 2D plane, find if there is such a line parallel to y-axis that reflect the given points.
  *
  * Example 1:
@@ -22,6 +24,7 @@ import java.util.Set;
  * Output: false
  * Difficulty:
  * Medium
+ *
  */
 public class LineReflection {
 

@@ -6,32 +6,33 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- *  548. Split Array with Equal Sum
- *  Hard
+ * 548. Split Array with Equal Sum
+ * Hard
  *
- *  Given an integer array nums of length n, return true if there is a triplet
- *  (i, j, k) which satisfies the following conditions:
+ * Given an integer array nums of length n, return true if there is a triplet
+ * (i, j, k) which satisfies the following conditions:
  *
- *   - 0 < i, i + 1 < j, j + 1 < k < n - 1
- *   - The sum of the subarrays nums[0..i-1], nums[i+1..j-1],
- *     nums[j+1..k-1] and nums[k+1..n-1] is equal.
+ * - 0 < i, i + 1 < j, j + 1 < k < n - 1
+ * - The sum of the subarrays nums[0..i-1], nums[i+1..j-1],
+ * nums[j+1..k-1] and nums[k+1..n-1] is equal.
  *
- *  Example 1:
+ * Example 1:
  *
- *  Input: nums = [1,2,1,2,1,2,1]
- *  Output: true
- *  Explanation: i = 1, j = 3, k = 5, every part sums to 1.
+ * Input: nums = [1,2,1,2,1,2,1]
+ * Output: true
+ * Explanation: i = 1, j = 3, k = 5, every part sums to 1.
  *
- *  Example 2:
+ * Example 2:
  *
- *  Input: nums = [1,2,1,2,1,2,1,2]
- *  Output: false
+ * Input: nums = [1,2,1,2,1,2,1,2]
+ * Output: false
  *
- *  Constraints:
+ * Constraints:
  *
- *  n == nums.length
- *  1 <= n <= 2000
- *  -10^6 <= nums[i] <= 10^6
+ * n == nums.length
+ * 1 <= n <= 2000
+ * -10^6 <= nums[i] <= 10^6
+ *
  */
 public class SplitArrayWithEqualSum {
 

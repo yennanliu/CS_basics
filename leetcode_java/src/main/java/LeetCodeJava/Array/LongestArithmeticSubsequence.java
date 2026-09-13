@@ -7,10 +7,8 @@ import java.util.Map;
 
 /**
  * 1027. Longest Arithmetic Subsequence
- * Solved
  * Medium
- * Topics
- * Companies
+ *
  * Given an array nums of integers, return the length of the longest arithmetic subsequence in nums.
  *
  * Note that:
@@ -40,7 +38,6 @@ import java.util.Map;
  *
  * 2 <= nums.length <= 1000
  * 0 <= nums[i] <= 500
- *
  *
  */
 public class LongestArithmeticSubsequence {

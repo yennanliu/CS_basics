@@ -20,16 +20,16 @@ package LeetCodeJava.Tree;
  * children. Besides, each node has two attributes:
  *
  * - val: True if the node represents a grid of 1's or False if the node represents a
- *   grid of 0's.
+ * grid of 0's.
  * - isLeaf: True if the node is leaf node on the tree or False if the node has the four
- *   children.
+ * children.
  *
  * We can construct a Quad-Tree from a two-dimensional area using the following steps:
  *
  * 1. If the current grid has the same value (i.e all 1's or all 0's) set isLeaf True and
- *    set val to the value of the grid and set the four children to Null and stop.
+ * set val to the value of the grid and set the four children to Null and stop.
  * 2. If the current grid has different values, set isLeaf to False and set val to any
- *    value and divide the current grid into four sub-grids as shown in the photo.
+ * value and divide the current grid into four sub-grids as shown in the photo.
  * 3. Recurse for each of the children with the proper sub-grid.
  *
  * Example 1:

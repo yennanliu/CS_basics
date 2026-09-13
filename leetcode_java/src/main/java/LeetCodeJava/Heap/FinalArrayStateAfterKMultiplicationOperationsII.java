@@ -7,32 +7,33 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 
 /**
- *  3266. Final Array State After K Multiplication Operations II
- *  Hard
+ * 3266. Final Array State After K Multiplication Operations II
+ * Hard
  *
- *  You are given an integer array nums, an integer k, and an integer multiplier.
+ * You are given an integer array nums, an integer k, and an integer multiplier.
  *
- *  You need to perform k operations on nums. In each operation:
- *    - Find the minimum value x in nums. If there are multiple occurrences of the
- *      minimum value, select the one that appears first.
- *    - Replace the selected minimum value x with x * multiplier.
+ * You need to perform k operations on nums. In each operation:
+ * - Find the minimum value x in nums. If there are multiple occurrences of the
+ * minimum value, select the one that appears first.
+ * - Replace the selected minimum value x with x * multiplier.
  *
- *  After the k operations, apply modulo 10^9 + 7 to every value in nums, and return
- *  the resulting array.
+ * After the k operations, apply modulo 10^9 + 7 to every value in nums, and return
+ * the resulting array.
  *
- *  Example 1:
- *    Input: nums = [2,1,3,5,6], k = 5, multiplier = 2
- *    Output: [8,4,6,5,6]
+ * Example 1:
+ * Input: nums = [2,1,3,5,6], k = 5, multiplier = 2
+ * Output: [8,4,6,5,6]
  *
- *  Example 2:
- *    Input: nums = [100000,2000], k = 2, multiplier = 1000000
- *    Output: [999999307,999999993]
+ * Example 2:
+ * Input: nums = [100000,2000], k = 2, multiplier = 1000000
+ * Output: [999999307,999999993]
  *
- *  Constraints:
- *    1 <= nums.length <= 10^4
- *    1 <= nums[i] <= 10^9
- *    1 <= k <= 10^9
- *    1 <= multiplier <= 10^6
+ * Constraints:
+ * 1 <= nums.length <= 10^4
+ * 1 <= nums[i] <= 10^9
+ * 1 <= k <= 10^9
+ * 1 <= multiplier <= 10^6
+ *
  */
 public class FinalArrayStateAfterKMultiplicationOperationsII {
 

@@ -10,6 +10,7 @@ import java.util.List;
 /**
  * 428. Serialize and Deserialize N-ary Tree
  * Hard
+ *
  * Lock: Prime
  *
  * Serialization is the process of converting a data structure or object into a
@@ -30,9 +31,9 @@ import java.util.List;
  * Example 1:
  *
  * Input: root = [1,null,2,3,4,5,null,null,6,7,null,8,null,9,10,null,null,11,null,12,
- *                null,13,null,null,14]
+ * null,13,null,null,14]
  * Output: [1,null,2,3,4,5,null,null,6,7,null,8,null,9,10,null,null,11,null,12,null,13,
- *          null,null,14]
+ * null,null,14]
  *
  * Example 2:
  *

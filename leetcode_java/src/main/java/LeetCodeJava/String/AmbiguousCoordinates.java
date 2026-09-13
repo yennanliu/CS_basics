@@ -6,30 +6,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  816. Ambiguous Coordinates
- *  Medium
+ * 816. Ambiguous Coordinates
+ * Medium
  *
- *  We had some 2-dimensional coordinates, like "(1, 3)" or "(2, 0.5)". Then we
- *  removed all commas, decimal points, and spaces and ended up with the string s.
- *  For example, "(1, 3)" becomes s = "(13)" and "(2, 0.5)" becomes s = "(205)".
- *  Return a list of strings representing all possibilities for what our original
- *  coordinates could have been.
- *  The original representation never had extraneous zeroes ("00", "0.0", "1.0",
- *  "001", "00.01" are all invalid), and a decimal point never occurs without at
- *  least one digit before it (".1" is invalid).
+ * We had some 2-dimensional coordinates, like "(1, 3)" or "(2, 0.5)". Then we
+ * removed all commas, decimal points, and spaces and ended up with the string s.
+ * For example, "(1, 3)" becomes s = "(13)" and "(2, 0.5)" becomes s = "(205)".
+ * Return a list of strings representing all possibilities for what our original
+ * coordinates could have been.
+ * The original representation never had extraneous zeroes ("00", "0.0", "1.0",
+ * "001", "00.01" are all invalid), and a decimal point never occurs without at
+ * least one digit before it (".1" is invalid).
  *
- *  Example 1:
- *    Input:  s = "(123)"
- *    Output: ["(1, 2.3)","(1, 23)","(1.2, 3)","(12, 3)"]
+ * Example 1:
+ * Input:  s = "(123)"
+ * Output: ["(1, 2.3)","(1, 23)","(1.2, 3)","(12, 3)"]
  *
- *  Example 2:
- *    Input:  s = "(00011)"
- *    Output: ["(0, 0.011)","(0.001, 1)"]
+ * Example 2:
+ * Input:  s = "(00011)"
+ * Output: ["(0, 0.011)","(0.001, 1)"]
  *
- *  Constraints:
- *    4 <= s.length <= 12
- *    s[0] == '(' and s[s.length - 1] == ')'
- *    The rest of s are digits.
+ * Constraints:
+ * 4 <= s.length <= 12
+ * s[0] == '(' and s[s.length - 1] == ')'
+ * The rest of s are digits.
+ *
  */
 public class AmbiguousCoordinates {
 

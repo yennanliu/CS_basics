@@ -3,35 +3,36 @@ package LeetCodeJava.Sort;
 // https://leetcode.com/problems/number-of-sets-of-k-non-overlapping-line-segments/
 
 /**
- *  1621. Number of Sets of K Non-Overlapping Line Segments
- *  Medium
+ * 1621. Number of Sets of K Non-Overlapping Line Segments
+ * Medium
  *
- *  Given n points on a 1-D plane, where the ith point (from 0 to n-1) is at x = i,
- *  find the number of ways we can draw exactly k non-overlapping line segments
- *  such that each segment covers two or more points. The endpoints of each segment
- *  must have integral coordinates. The k line segments do not have to cover all n
- *  points, and they are allowed to share endpoints.
+ * Given n points on a 1-D plane, where the ith point (from 0 to n-1) is at x = i,
+ * find the number of ways we can draw exactly k non-overlapping line segments
+ * such that each segment covers two or more points. The endpoints of each segment
+ * must have integral coordinates. The k line segments do not have to cover all n
+ * points, and they are allowed to share endpoints.
  *
- *  Return the number of ways we can draw k non-overlapping line segments. Since
- *  this number can be huge, return it modulo 10^9 + 7.
+ * Return the number of ways we can draw k non-overlapping line segments. Since
+ * this number can be huge, return it modulo 10^9 + 7.
  *
- *  Example 1:
- *    Input: n = 4, k = 2
- *    Output: 5
- *    Explanation: {(0,2),(2,3)}, {(0,1),(1,3)}, {(0,1),(2,3)}, {(1,2),(2,3)},
- *                 {(0,1),(1,2)}
+ * Example 1:
+ * Input: n = 4, k = 2
+ * Output: 5
+ * Explanation: {(0,2),(2,3)}, {(0,1),(1,3)}, {(0,1),(2,3)}, {(1,2),(2,3)},
+ * {(0,1),(1,2)}
  *
- *  Example 2:
- *    Input: n = 3, k = 1
- *    Output: 3
+ * Example 2:
+ * Input: n = 3, k = 1
+ * Output: 3
  *
- *  Example 3:
- *    Input: n = 30, k = 7
- *    Output: 796297179
+ * Example 3:
+ * Input: n = 30, k = 7
+ * Output: 796297179
  *
- *  Constraints:
- *    2 <= n <= 1000
- *    1 <= k <= n-1
+ * Constraints:
+ * 2 <= n <= 1000
+ * 1 <= k <= n-1
+ *
  */
 public class NumberOfSetsOfKNonOverlappingLineSegments {
 

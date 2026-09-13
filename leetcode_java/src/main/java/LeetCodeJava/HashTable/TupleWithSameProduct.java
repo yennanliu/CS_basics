@@ -7,10 +7,7 @@ import java.util.*;
 /**
  * 1726. Tuple with Same Product
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * Given an array nums of distinct positive integers, return the number of tuples (a, b, c, d) such that a * b = c * d where a, b, c, and d are elements of nums, and a != b != c != d.
  *
  *
@@ -38,15 +35,6 @@ import java.util.*;
  * 1 <= nums.length <= 1000
  * 1 <= nums[i] <= 104
  * All elements in nums are distinct.
- *
- * Seen this question in a real interview before?
- * 1/6
- * Yes
- * No
- * Accepted
- * 199,472/284.6K
- * Acceptance Rate
- * 70.1%
  *
  */
 public class TupleWithSameProduct {

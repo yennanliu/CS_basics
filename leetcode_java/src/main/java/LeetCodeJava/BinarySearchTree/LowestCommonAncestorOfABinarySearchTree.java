@@ -45,6 +45,9 @@ import LeetCodeJava.DataStructure.TreeNode;
  */
 
 /**
+ * 235. Lowest Common Ancestor of a Binary Search Tree
+ * Medium
+ *
  * NOTE !!!
  *
  * Binary Search Tree (BST) property :
@@ -57,6 +60,7 @@ import LeetCodeJava.DataStructure.TreeNode;
  * - Left subtree of a node N contains nodes whose values are lesser than or equal to node N's value.
  * - Right subtree of a node N contains nodes whose values are greater than node N's value.
  * - Both left and right subtrees are also BSTs.
+ *
  */
 public class LowestCommonAncestorOfABinarySearchTree {
 

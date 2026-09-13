@@ -6,28 +6,29 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *  697. Degree of an Array
- *  Easy
+ * 697. Degree of an Array
+ * Easy
  *
- *  Given a non-empty array of non-negative integers nums, the degree of this
- *  array is defined as the maximum frequency of any one of its elements.
+ * Given a non-empty array of non-negative integers nums, the degree of this
+ * array is defined as the maximum frequency of any one of its elements.
  *
- *  Your task is to find the smallest possible length of a (contiguous) subarray
- *  of nums, that has the same degree as nums.
+ * Your task is to find the smallest possible length of a (contiguous) subarray
+ * of nums, that has the same degree as nums.
  *
- *  Example 1:
- *    Input: nums = [1,2,2,3,1]
- *    Output: 2
- *    Explanation: The input array has a degree of 2 because both elements 1 and 2
- *    appear twice. The shortest subarray with the same degree is [2,2].
+ * Example 1:
+ * Input: nums = [1,2,2,3,1]
+ * Output: 2
+ * Explanation: The input array has a degree of 2 because both elements 1 and 2
+ * appear twice. The shortest subarray with the same degree is [2,2].
  *
- *  Example 2:
- *    Input: nums = [1,2,2,3,1,4,2]
- *    Output: 6
+ * Example 2:
+ * Input: nums = [1,2,2,3,1,4,2]
+ * Output: 6
  *
- *  Constraints:
- *    nums.length will be between 1 and 50,000.
- *    nums[i] will be an integer between 0 and 49,999.
+ * Constraints:
+ * nums.length will be between 1 and 50,000.
+ * nums[i] will be an integer between 0 and 49,999.
+ *
  */
 public class DegreeOfAnArray {
 

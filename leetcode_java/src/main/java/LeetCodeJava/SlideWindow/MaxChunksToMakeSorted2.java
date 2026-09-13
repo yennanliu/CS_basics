@@ -7,10 +7,7 @@ import java.util.*;
 /**
  * 768. Max Chunks To Make Sorted II
  * Hard
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You are given an integer array arr.
  *
  * We split arr into some number of chunks (i.e., partitions), and individually sort each chunk. After concatenating them, the result should equal the sorted array.
@@ -39,7 +36,6 @@ import java.util.*;
  *
  * 1 <= arr.length <= 2000
  * 0 <= arr[i] <= 108
- *
  *
  */
 public class MaxChunksToMakeSorted2 {

@@ -8,36 +8,37 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 /**
- *  1606. Find Servers That Handled Most Number of Requests
- *  Hard
+ * 1606. Find Servers That Handled Most Number of Requests
+ * Hard
  *
- *  You have k servers numbered from 0 to k-1 that handle multiple requests
- *  simultaneously. Each server has infinite computational capacity but cannot handle
- *  more than one request at a time. Requests are assigned like this:
- *    - The ith (0-indexed) request arrives.
- *    - If all servers are busy, the request is dropped.
- *    - If the (i % k)th server is available, assign the request to that server.
- *    - Otherwise assign it to the next available server, wrapping around to 0.
+ * You have k servers numbered from 0 to k-1 that handle multiple requests
+ * simultaneously. Each server has infinite computational capacity but cannot handle
+ * more than one request at a time. Requests are assigned like this:
+ * - The ith (0-indexed) request arrives.
+ * - If all servers are busy, the request is dropped.
+ * - If the (i % k)th server is available, assign the request to that server.
+ * - Otherwise assign it to the next available server, wrapping around to 0.
  *
- *  You are given a strictly increasing array arrival, where arrival[i] is the arrival
- *  time of the ith request, and load, where load[i] is how long it takes to complete.
- *  A server is busiest if it handled the most requests. Return the IDs of the
- *  busiest server(s), in any order.
+ * You are given a strictly increasing array arrival, where arrival[i] is the arrival
+ * time of the ith request, and load, where load[i] is how long it takes to complete.
+ * A server is busiest if it handled the most requests. Return the IDs of the
+ * busiest server(s), in any order.
  *
- *  Example 1:
- *    Input: k = 3, arrival = [1,2,3,4,5], load = [5,2,3,3,3]
- *    Output: [1]
- *    Explanation: server 1 handled two requests, servers 0 and 2 one each.
+ * Example 1:
+ * Input: k = 3, arrival = [1,2,3,4,5], load = [5,2,3,3,3]
+ * Output: [1]
+ * Explanation: server 1 handled two requests, servers 0 and 2 one each.
  *
- *  Example 2:
- *    Input: k = 3, arrival = [1,2,3], load = [10,12,11]
- *    Output: [0,1,2]
+ * Example 2:
+ * Input: k = 3, arrival = [1,2,3], load = [10,12,11]
+ * Output: [0,1,2]
  *
- *  Constraints:
- *    1 <= k <= 10^5
- *    1 <= arrival.length == load.length <= 10^5
- *    1 <= arrival[i], load[i] <= 10^9
- *    arrival is strictly increasing.
+ * Constraints:
+ * 1 <= k <= 10^5
+ * 1 <= arrival.length == load.length <= 10^5
+ * 1 <= arrival[i], load[i] <= 10^9
+ * arrival is strictly increasing.
+ *
  */
 public class FindServersThatHandledMostNumberOfRequests {
 

@@ -32,7 +32,7 @@ import java.util.List;
  * Example 1:
  *
  * Input: secret = "acckzz", words = ["acckzz","ccbazz","eiowzz","abcczz"],
- *        allowedGuesses = 10
+ * allowedGuesses = 10
  * Output: You guessed the secret word correctly.
  * Explanation:
  * master.guess("aaaaaa") returns -1, because "aaaaaa" is not in words.

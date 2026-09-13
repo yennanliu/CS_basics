@@ -5,12 +5,9 @@ package LeetCodeJava.BinarySearch;
 import java.util.Arrays;
 
 /**
- *  1283. Find the Smallest Divisor Given a Threshold
+ * 1283. Find the Smallest Divisor Given a Threshold
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * Given an array of integers nums and an integer threshold, we will choose a positive integer divisor, divide all the array by it, and sum the division's result. Find the smallest divisor such that the result mentioned above is less than or equal to threshold.
  *
  * Each result of the division is rounded to the nearest integer greater than or equal to that element. (For example: 7/3 = 3 and 10/2 = 5).
@@ -36,8 +33,6 @@ import java.util.Arrays;
  * 1 <= nums.length <= 5 * 104
  * 1 <= nums[i] <= 106
  * nums.length <= threshold <= 106
- *
- *
  *
  */
 public class FindTheSmallestDivisorGivenAThreshold {

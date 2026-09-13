@@ -3,36 +3,37 @@ package LeetCodeJava.String;
 // https://leetcode.com/problems/masking-personal-information/
 
 /**
- *  831. Masking Personal Information
- *  Medium
+ * 831. Masking Personal Information
+ * Medium
  *
- *  You are given a personal information string s, representing either an
- *  email address or a phone number. Return the masked personal information
- *  using the below rules.
+ * You are given a personal information string s, representing either an
+ * email address or a phone number. Return the masked personal information
+ * using the below rules.
  *
- *  Email address:
- *   - An email is "name1@name2.name3" where both names contain only letters.
- *   - Lowercase all letters, then replace all letters of name1 between the
- *     first and last letter with 5 asterisks "*****".
+ * Email address:
+ * - An email is "name1@name2.name3" where both names contain only letters.
+ * - Lowercase all letters, then replace all letters of name1 between the
+ * first and last letter with 5 asterisks "*****".
  *
- *  Phone number:
- *   - A phone number contains 10-13 digits, and may contain the separation
- *     characters '+', '-', '(', ')', ' '.
- *   - The last 10 digits are the local number, the rest (0-3 digits) are the
- *     country code.
- *   - Mask as "***-***-XXXX" when there is no country code, otherwise
- *     "+**...**-***-***-XXXX" with one '*' per country-code digit.
+ * Phone number:
+ * - A phone number contains 10-13 digits, and may contain the separation
+ * characters '+', '-', '(', ')', ' '.
+ * - The last 10 digits are the local number, the rest (0-3 digits) are the
+ * country code.
+ * - Mask as "***-***-XXXX" when there is no country code, otherwise
+ * "+**...**-***-***-XXXX" with one '*' per country-code digit.
  *
- *  Example 1:
- *  Input: s = "LeetCode@LeetCode.com"
- *  Output: "l*****e@leetcode.com"
+ * Example 1:
+ * Input: s = "LeetCode@LeetCode.com"
+ * Output: "l*****e@leetcode.com"
  *
- *  Example 2:
- *  Input: s = "1(234)567-890"
- *  Output: "***-***-7890"
+ * Example 2:
+ * Input: s = "1(234)567-890"
+ * Output: "***-***-7890"
  *
- *  Constraints:
- *   - s is either a valid email or a phone number.
+ * Constraints:
+ * - s is either a valid email or a phone number.
+ *
  */
 public class MaskingPersonalInformation {
 

@@ -5,12 +5,9 @@ package LeetCodeJava.BFS;
 import java.util.*;
 
 /**
- *  542. 01 Matrix
- * Solved
+ * 542. 01 Matrix
  * Medium
- * Topics
- * premium lock icon
- * Companies
+ *
  * Given an m x n binary matrix mat, return the distance of the nearest 0 for each cell.
  *
  * The distance between two cells sharing a common edge is 1.
@@ -38,7 +35,6 @@ import java.util.*;
  *
  *
  * Note: This question is the same as 1765: https://leetcode.com/problems/map-of-highest-peak/
- *
  *
  */
 public class ZeroOneMatrix {

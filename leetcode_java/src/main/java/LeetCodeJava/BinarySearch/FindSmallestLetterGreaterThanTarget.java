@@ -3,39 +3,40 @@ package LeetCodeJava.BinarySearch;
 // https://leetcode.com/problems/find-smallest-letter-greater-than-target/
 
 /**
- *  744. Find Smallest Letter Greater Than Target
- *  Easy
+ * 744. Find Smallest Letter Greater Than Target
+ * Easy
  *
- *  You are given an array of characters letters that is sorted in
- *  non-decreasing order, and a character target. There are at least two
- *  different characters in letters.
+ * You are given an array of characters letters that is sorted in
+ * non-decreasing order, and a character target. There are at least two
+ * different characters in letters.
  *
- *  Return the smallest character in letters that is lexicographically greater
- *  than target. If such a character does not exist, return the first character
- *  in letters (the search wraps around).
+ * Return the smallest character in letters that is lexicographically greater
+ * than target. If such a character does not exist, return the first character
+ * in letters (the search wraps around).
  *
- *  Example 1:
+ * Example 1:
  *
- *  Input: letters = ["c","f","j"], target = "a"
- *  Output: "c"
+ * Input: letters = ["c","f","j"], target = "a"
+ * Output: "c"
  *
- *  Example 2:
+ * Example 2:
  *
- *  Input: letters = ["c","f","j"], target = "c"
- *  Output: "f"
+ * Input: letters = ["c","f","j"], target = "c"
+ * Output: "f"
  *
- *  Example 3:
+ * Example 3:
  *
- *  Input: letters = ["x","x","y","y"], target = "z"
- *  Output: "x"
+ * Input: letters = ["x","x","y","y"], target = "z"
+ * Output: "x"
  *
- *  Constraints:
+ * Constraints:
  *
- *  2 <= letters.length <= 10^4
- *  letters[i] is a lowercase English letter.
- *  letters is sorted in non-decreasing order.
- *  letters contains at least two different characters.
- *  target is a lowercase English letter.
+ * 2 <= letters.length <= 10^4
+ * letters[i] is a lowercase English letter.
+ * letters is sorted in non-decreasing order.
+ * letters contains at least two different characters.
+ * target is a lowercase English letter.
+ *
  */
 public class FindSmallestLetterGreaterThanTarget {
 

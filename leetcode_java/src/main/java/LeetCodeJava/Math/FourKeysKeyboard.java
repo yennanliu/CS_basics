@@ -3,31 +3,32 @@ package LeetCodeJava.Math;
 // https://leetcode.com/problems/4-keys-keyboard/
 
 /**
- *  651. 4 Keys Keyboard
- *  Medium
+ * 651. 4 Keys Keyboard
+ * Medium
  *
- *  Imagine you have a special keyboard with the following keys:
- *    Key 1: (A)      Print one 'A' on screen.
- *    Key 2: (Ctrl-A) Select the whole screen.
- *    Key 3: (Ctrl-C) Copy selection to buffer.
- *    Key 4: (Ctrl-V) Print buffer on screen appending it after what has
- *                    already been printed.
+ * Imagine you have a special keyboard with the following keys:
+ * Key 1: (A)      Print one 'A' on screen.
+ * Key 2: (Ctrl-A) Select the whole screen.
+ * Key 3: (Ctrl-C) Copy selection to buffer.
+ * Key 4: (Ctrl-V) Print buffer on screen appending it after what has
+ * already been printed.
  *
- *  Given an integer n, return the maximum number of 'A' you can print on the
- *  screen with at most n presses of the keys.
+ * Given an integer n, return the maximum number of 'A' you can print on the
+ * screen with at most n presses of the keys.
  *
- *  Example 1:
- *    Input: n = 3
- *    Output: 3
- *    Explanation: A, A, A
+ * Example 1:
+ * Input: n = 3
+ * Output: 3
+ * Explanation: A, A, A
  *
- *  Example 2:
- *    Input: n = 7
- *    Output: 9
- *    Explanation: A, A, A, Ctrl-A, Ctrl-C, Ctrl-V, Ctrl-V
+ * Example 2:
+ * Input: n = 7
+ * Output: 9
+ * Explanation: A, A, A, Ctrl-A, Ctrl-C, Ctrl-V, Ctrl-V
  *
- *  Constraints:
- *   - 1 <= n <= 50
+ * Constraints:
+ * - 1 <= n <= 50
+ *
  */
 public class FourKeysKeyboard {
 

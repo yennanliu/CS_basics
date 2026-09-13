@@ -3,32 +3,33 @@ package LeetCodeJava.Sort;
 // https://leetcode.com/problems/count-of-matches-in-tournament/
 
 /**
- *  1688. Count of Matches in Tournament
- *  Easy
+ * 1688. Count of Matches in Tournament
+ * Easy
  *
- *  You are given an integer n, the number of teams in a tournament that has
- *  strange rules:
- *    - If the current number of teams is even, each team gets paired with another
- *      team. A total of n / 2 matches are played, and n / 2 teams advance.
- *    - If the current number of teams is odd, one team randomly advances, and the
- *      rest gets paired. A total of (n - 1) / 2 matches are played, and
- *      (n - 1) / 2 + 1 teams advance.
+ * You are given an integer n, the number of teams in a tournament that has
+ * strange rules:
+ * - If the current number of teams is even, each team gets paired with another
+ * team. A total of n / 2 matches are played, and n / 2 teams advance.
+ * - If the current number of teams is odd, one team randomly advances, and the
+ * rest gets paired. A total of (n - 1) / 2 matches are played, and
+ * (n - 1) / 2 + 1 teams advance.
  *
- *  Return the number of matches played in the tournament until a winner is decided.
+ * Return the number of matches played in the tournament until a winner is decided.
  *
- *  Example 1:
- *    Input: n = 7
- *    Output: 6
- *    Explanation: 7 teams -> 3 matches, 4 teams -> 2 matches, 2 teams -> 1 match.
- *                 3 + 2 + 1 = 6.
+ * Example 1:
+ * Input: n = 7
+ * Output: 6
+ * Explanation: 7 teams -> 3 matches, 4 teams -> 2 matches, 2 teams -> 1 match.
+ * 3 + 2 + 1 = 6.
  *
- *  Example 2:
- *    Input: n = 14
- *    Output: 13
- *    Explanation: 7 + 3 + 2 + 1 = 13.
+ * Example 2:
+ * Input: n = 14
+ * Output: 13
+ * Explanation: 7 + 3 + 2 + 1 = 13.
  *
- *  Constraints:
- *    1 <= n <= 200
+ * Constraints:
+ * 1 <= n <= 200
+ *
  */
 public class CountOfMatchesInTournament {
 

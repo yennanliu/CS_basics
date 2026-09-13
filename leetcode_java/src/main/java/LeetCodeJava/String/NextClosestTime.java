@@ -6,27 +6,28 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- *  681. Next Closest Time
- *  Medium
+ * 681. Next Closest Time
+ * Medium
  *
- *  Given a time represented in the format "HH:MM", form the next closest time
- *  by reusing the current digits. There is no limit on how many times a digit
- *  can be reused.
- *  You may assume the given input string is always valid.
+ * Given a time represented in the format "HH:MM", form the next closest time
+ * by reusing the current digits. There is no limit on how many times a digit
+ * can be reused.
+ * You may assume the given input string is always valid.
  *
- *  Example 1:
- *    Input:  time = "19:34"
- *    Output: "19:39"
- *    (next closest time out of digits 1, 9, 3, 4, which occurs 5 minutes later)
+ * Example 1:
+ * Input:  time = "19:34"
+ * Output: "19:39"
+ * (next closest time out of digits 1, 9, 3, 4, which occurs 5 minutes later)
  *
- *  Example 2:
- *    Input:  time = "23:59"
- *    Output: "22:22"
+ * Example 2:
+ * Input:  time = "23:59"
+ * Output: "22:22"
  *
- *  Constraints:
- *    time.length == 5
- *    time is a valid time in the form "HH:MM".
- *    0 <= HH < 24, 0 <= MM < 60
+ * Constraints:
+ * time.length == 5
+ * time is a valid time in the form "HH:MM".
+ * 0 <= HH < 24, 0 <= MM < 60
+ *
  */
 public class NextClosestTime {
 

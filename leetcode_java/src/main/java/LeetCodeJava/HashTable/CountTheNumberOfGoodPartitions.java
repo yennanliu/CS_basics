@@ -6,14 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
  * 2963. Count the Number of Good Partitions
- * Solved
  * Hard
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You are given a 0-indexed array nums consisting of positive integers.
  *
  * A partition of an array into one or more contiguous subarrays is called good if no two subarrays contain the same number.
@@ -22,7 +17,7 @@ import java.util.Map;
  *
  * Since the answer may be large, return it modulo 109 + 7.
  *
- *   Example 1:
+ * Example 1:
  *
  * Input: nums = [1,2,3,4]
  * Output: 8
@@ -43,7 +38,6 @@ import java.util.Map;
  *
  * 1 <= nums.length <= 105
  * 1 <= nums[i] <= 109
- *
  *
  */
 public class CountTheNumberOfGoodPartitions {

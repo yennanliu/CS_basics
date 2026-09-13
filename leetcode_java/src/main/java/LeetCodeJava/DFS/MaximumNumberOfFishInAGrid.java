@@ -6,12 +6,9 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 /**
- *  2658. Maximum Number of Fish in a Grid
+ * 2658. Maximum Number of Fish in a Grid
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You are given a 0-indexed 2D matrix grid of size m x n, where (r, c) represents:
  *
  * A land cell if grid[r][c] = 0, or

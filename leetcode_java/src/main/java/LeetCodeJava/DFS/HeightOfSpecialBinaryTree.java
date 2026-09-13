@@ -8,39 +8,40 @@ import java.util.Deque;
 import LeetCodeJava.DataStructure.TreeNode;
 
 /**
- *  2773. Height of Special Binary Tree
- *  Medium
+ * 2773. Height of Special Binary Tree
+ * Medium
  *
- *  You are given a root, which is the root of a special binary tree with n nodes. The
- *  nodes of the special binary tree are numbered from 1 to n. Suppose the tree has k
- *  leaves in the following order: b1 < b2 < ... < bk.
+ * You are given a root, which is the root of a special binary tree with n nodes. The
+ * nodes of the special binary tree are numbered from 1 to n. Suppose the tree has k
+ * leaves in the following order: b1 < b2 < ... < bk.
  *
- *  The leaves of this tree have a special property! That is, for every leaf bi:
- *    The right child of bi is bi+1 if i < k, and b1 otherwise.
- *    The left child of bi is bi-1 if i > 1, and bk otherwise.
+ * The leaves of this tree have a special property! That is, for every leaf bi:
+ * The right child of bi is bi+1 if i < k, and b1 otherwise.
+ * The left child of bi is bi-1 if i > 1, and bk otherwise.
  *
- *  Return the height of the given tree.
+ * Return the height of the given tree.
  *
- *  Note: The height of a binary tree is the length of the longest path from the root to
- *  any other node.
+ * Note: The height of a binary tree is the length of the longest path from the root to
+ * any other node.
  *
- *  Example 1:
- *    Input: root = [1,2,3,null,null,4,5]
- *    Output: 2
+ * Example 1:
+ * Input: root = [1,2,3,null,null,4,5]
+ * Output: 2
  *
- *  Example 2:
- *    Input: root = [1,2]
- *    Output: 1
+ * Example 2:
+ * Input: root = [1,2]
+ * Output: 1
  *
- *  Example 3:
- *    Input: root = [1,2,3,null,null,4,null,5,6]
- *    Output: 3
+ * Example 3:
+ * Input: root = [1,2,3,null,null,4,null,5,6]
+ * Output: 3
  *
- *  Constraints:
- *    n == number of nodes in the tree
- *    2 <= n <= 10^4
- *    1 <= node.val <= n
- *    The input is generated such that each node.val is unique.
+ * Constraints:
+ * n == number of nodes in the tree
+ * 2 <= n <= 10^4
+ * 1 <= node.val <= n
+ * The input is generated such that each node.val is unique.
+ *
  */
 public class HeightOfSpecialBinaryTree {
 

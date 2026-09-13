@@ -9,11 +9,9 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 /**
- *  988. Smallest String Starting From Leaf
+ * 988. Smallest String Starting From Leaf
  * Medium
- * Topics
- * premium lock icon
- * Companies
+ *
  * You are given the root of a binary tree where each node has a value in the range [0, 25] representing the letters 'a' to 'z'.
  *
  * Return the lexicographically smallest string that starts at a leaf of this tree and ends at the root.
@@ -46,8 +44,6 @@ import java.util.Queue;
  *
  * The number of nodes in the tree is in the range [1, 8500].
  * 0 <= Node.val <= 25
- *
- *
  *
  */
 

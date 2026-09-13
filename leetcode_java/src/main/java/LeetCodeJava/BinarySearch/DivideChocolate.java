@@ -3,7 +3,9 @@ package LeetCodeJava.BinarySearch;
 // https://leetcode.ca/all/1231.html
 // https://leetcode.com/problems/divide-chocolate/description/
 /**
- *  1231. Divide Chocolate
+ * 1231. Divide Chocolate
+ * Hard
+ *
  * You have one chocolate bar that consists of some chunks. Each chunk has its own sweetness given by the array sweetness.
  *
  * You want to share the chocolate with your K friends so you start cutting the chocolate bar into K+1 pieces using K cuts, each piece consists of some consecutive chunks.

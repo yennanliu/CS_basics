@@ -4,10 +4,7 @@ package LeetCodeJava.Array;
 /**
  * 1991. Find the Middle Index in Array
  * Easy
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * Given a 0-indexed integer array nums, find the leftmost middleIndex (i.e., the smallest amongst all the possible ones).
  *
  * A middleIndex is an index where nums[0] + nums[1] + ... + nums[middleIndex-1] == nums[middleIndex+1] + nums[middleIndex+2] + ... + nums[nums.length-1].
@@ -44,7 +41,6 @@ package LeetCodeJava.Array;
  *
  *
  * Note: This question is the same as 724: https://leetcode.com/problems/find-pivot-index/
- *
  *
  */
 public class FindTheMiddleIndexInArray {

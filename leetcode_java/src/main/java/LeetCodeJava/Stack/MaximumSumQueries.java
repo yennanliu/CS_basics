@@ -6,34 +6,35 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 /**
- *  2736. Maximum Sum Queries
- *  Hard
+ * 2736. Maximum Sum Queries
+ * Hard
  *
- *  You are given two 0-indexed integer arrays nums1 and nums2, each of length
- *  n, and a 1-indexed 2D array queries where queries[i] = [xi, yi].
+ * You are given two 0-indexed integer arrays nums1 and nums2, each of length
+ * n, and a 1-indexed 2D array queries where queries[i] = [xi, yi].
  *
- *  For the ith query, find the maximum value of nums1[j] + nums2[j] among all
- *  indices j (0 <= j < n), where nums1[j] >= xi and nums2[j] >= yi, or -1 if
- *  there is no j satisfying the constraints.
+ * For the ith query, find the maximum value of nums1[j] + nums2[j] among all
+ * indices j (0 <= j < n), where nums1[j] >= xi and nums2[j] >= yi, or -1 if
+ * there is no j satisfying the constraints.
  *
- *  Return an array answer where answer[i] is the answer to the ith query.
+ * Return an array answer where answer[i] is the answer to the ith query.
  *
- *  Example 1:
- *    Input: nums1 = [4,3,1,2], nums2 = [2,4,9,5],
- *           queries = [[4,1],[1,3],[2,5]]
- *    Output: [6,10,7]
+ * Example 1:
+ * Input: nums1 = [4,3,1,2], nums2 = [2,4,9,5],
+ * queries = [[4,1],[1,3],[2,5]]
+ * Output: [6,10,7]
  *
- *  Example 2:
- *    Input: nums1 = [2,1], nums2 = [2,3], queries = [[3,3]]
- *    Output: [-1]
+ * Example 2:
+ * Input: nums1 = [2,1], nums2 = [2,3], queries = [[3,3]]
+ * Output: [-1]
  *
- *  Constraints:
- *    nums1.length == nums2.length == n
- *    1 <= n <= 10^5
- *    1 <= nums1[i], nums2[i] <= 10^9
- *    1 <= queries.length <= 10^5
- *    queries[i].length == 2
- *    1 <= xi, yi <= 10^9
+ * Constraints:
+ * nums1.length == nums2.length == n
+ * 1 <= n <= 10^5
+ * 1 <= nums1[i], nums2[i] <= 10^9
+ * 1 <= queries.length <= 10^5
+ * queries[i].length == 2
+ * 1 <= xi, yi <= 10^9
+ *
  */
 public class MaximumSumQueries {
 

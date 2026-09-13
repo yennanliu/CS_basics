@@ -5,11 +5,9 @@ package LeetCodeJava.Design;
 import java.util.Arrays;
 
 /**
- *  705. Design HashSet
+ * 705. Design HashSet
  * Easy
- * Topics
- * premium lock icon
- * Companies
+ *
  * Design a HashSet without using any built-in hash table libraries.
  *
  * Implement MyHashSet class:
@@ -43,7 +41,6 @@ import java.util.Arrays;
  *
  * 0 <= key <= 106
  * At most 104 calls will be made to add, remove, and contains.
- *
  *
  */
 public class DesignHashSet {

@@ -7,9 +7,7 @@ import java.util.*;
 /**
  * 2392. Build a Matrix With Conditions
  * Hard
- * Topics
- * Companies
- * Hint
+ *
  * You are given a positive integer k. You are also given:
  *
  * a 2D integer array rowConditions of size n where rowConditions[i] = [abovei, belowi], and
@@ -55,7 +53,6 @@ import java.util.*;
  * 1 <= abovei, belowi, lefti, righti <= k
  * abovei != belowi
  * lefti != righti
- *
  *
  */
 public class BuildAMatrixWithConditions {

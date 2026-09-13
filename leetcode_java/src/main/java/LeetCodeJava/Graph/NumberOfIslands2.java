@@ -3,7 +3,9 @@ package LeetCodeJava.Graph;
 // https://leetcode.com/problems/number-of-islands-ii/description/
 // https://leetcode.ca/2016-09-30-305-Number-of-Islands-II/
 /**
- * 305 - Number of Islands II
+ * 305. Number of Islands II
+ * Hard
+ *
  * Posted on September 30, 2016 · 9 minute read
  * Welcome to Subscribe On Youtube
  *
@@ -47,6 +49,7 @@ package LeetCodeJava.Graph;
  *
  *
  * Follow up: Could you solve it in time complexity O(k log(mn)), where k == positions.length?
+ *
  */
 
 import java.util.ArrayList;
@@ -513,7 +516,7 @@ public class NumberOfIslands2 {
     }
 
 
-    // V0-2
+    // V0-3
     // IDEA: DFS + count land every time
     // TODO: validate and fix
 //    public List<Integer> numIslands2(int m, int n, int[][] positions) {

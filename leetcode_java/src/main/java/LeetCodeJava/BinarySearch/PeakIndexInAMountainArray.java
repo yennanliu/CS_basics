@@ -4,10 +4,8 @@ package LeetCodeJava.BinarySearch;
 // https://leetcode.cn/problems/peak-index-in-a-mountain-array/description/
 /**
  * 852. Peak Index in a Mountain Array
- * Solved
  * Medium
- * Topics
- * Companies
+ *
  * You are given an integer mountain array arr of length n where the values increase to a peak element and then decrease.
  *
  * Return the index of the peak element.

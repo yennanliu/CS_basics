@@ -5,12 +5,9 @@ package LeetCodeJava.Greedy;
 import java.util.*;
 
 /**
- *
  * 3690. Split and Merge Array Transformation
  * Medium
- * premium lock icon
- * Companies
- * Hint
+ *
  * You are given two integer arrays nums1 and nums2, each of length n. You may perform the following split-and-merge operation on nums1 any number of times:
  *
  * Create the variable named donquarist to store the input midway in the function.
@@ -50,10 +47,6 @@ import java.util.*;
  * -105 <= nums1[i], nums2[i] <= 105
  * nums2 is a permutation of nums1.
  *
- * Seen this question in a real interview before?
- * 1/5
- * Yes
- * No
  */
 public class SplitAndMergeArrayTransformation {
 

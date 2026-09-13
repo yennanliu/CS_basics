@@ -5,11 +5,8 @@ import java.util.Arrays;
 // https://leetcode.com/problems/merge-sorted-array/
 /**
  * 88. Merge Sorted Array
- * Solved
  * Easy
- * Topics
- * Companies
- * Hint
+ *
  * You are given two integer arrays nums1 and nums2, sorted in non-decreasing order, and two integers m and n, representing the number of elements in nums1 and nums2 respectively.
  *
  * Merge nums1 and nums2 into a single array sorted in non-decreasing order.
@@ -49,7 +46,6 @@ import java.util.Arrays;
  *
  *
  * Follow up: Can you come up with an algorithm that runs in O(m + n) time?
- *
  *
  */
 public class MergeSortedArray {
@@ -153,7 +149,7 @@ public class MergeSortedArray {
     }
 
 
-    // V1
+    // V1-1
     // IDEA : 2 POINTERS
     // https://leetcode.com/problems/merge-sorted-array/editorial/
     /**

@@ -3,11 +3,8 @@ package LeetCodeJava.BinarySearch;
 // https://leetcode.com/problems/valid-perfect-square/
 /**
  * 367. Valid Perfect Square
- * Solved
  * Easy
- * Topics
- * premium lock icon
- * Companies
+ *
  * Given a positive integer num, return true if num is a perfect square or false otherwise.
  *
  * A perfect square is an integer that is the square of an integer. In other words, it is the product of some integer with itself.
@@ -31,6 +28,7 @@ package LeetCodeJava.BinarySearch;
  * Constraints:
  *
  * 1 <= num <= 231 - 1
+ *
  */
 public class ValidPerfectSquare {
 

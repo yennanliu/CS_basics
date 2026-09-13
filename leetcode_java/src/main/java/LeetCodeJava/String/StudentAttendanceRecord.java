@@ -3,11 +3,8 @@ package LeetCodeJava.String;
 // https://leetcode.com/problems/student-attendance-record-i/description/
 /**
  * 551. Student Attendance Record I
- * Solved
  * Easy
- * Topics
- * premium lock icon
- * Companies
+ *
  * You are given a string s representing an attendance record for a student where each character signifies whether the student was absent, late, or present on that day. The record only contains the following three characters:
  *
  * 'A': Absent.

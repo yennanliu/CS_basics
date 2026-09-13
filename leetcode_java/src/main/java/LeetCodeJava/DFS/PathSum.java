@@ -3,11 +3,8 @@ package LeetCodeJava.DFS;
 // https://leetcode.com/problems/path-sum/
 /**
  * 112. Path Sum
- * Solved
  * Easy
- * Topics
- * premium lock icon
- * Companies
+ *
  * Given the root of a binary tree and an integer targetSum, return true if the tree has a root-to-leaf path such that adding up all the values along the path equals targetSum.
  *
  * A leaf is a node with no children.

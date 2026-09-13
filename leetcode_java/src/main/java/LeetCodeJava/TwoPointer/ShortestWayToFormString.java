@@ -4,7 +4,9 @@ package LeetCodeJava.TwoPointer;
 // https://leetcode.com/problems/shortest-way-to-form-string/description/
 
 /**
- *  1055. Shortest Way to Form String
+ * 1055. Shortest Way to Form String
+ * Medium
+ *
  * Description
  * A subsequence of a string is a new string that is formed from the original string by deleting some (can be none) of the characters without disturbing the relative positions of the remaining characters. (i.e., "ace" is a subsequence of "abcde" while "aec" is not).
  *
@@ -34,7 +36,6 @@ package LeetCodeJava.TwoPointer;
  * 1 <= source.length, target.length <= 1000
  * source and target consist of lowercase English letters.
  *
- * 
  */
 public class ShortestWayToFormString {
 
@@ -72,7 +73,7 @@ public class ShortestWayToFormString {
 //    }
 
 
-    // V1_1
+    // V1-_1
     // IDEA : 2 POINTER (gpt)
     // TODO : validate below
     /**
@@ -125,7 +126,7 @@ public class ShortestWayToFormString {
     }
 
 
-    // V2_1
+    // V2-_1
     // https://leetcode.ca/2018-10-20-1055-Shortest-Way-to-Form-String/
     // IDEA : 2 POINTER
     /**

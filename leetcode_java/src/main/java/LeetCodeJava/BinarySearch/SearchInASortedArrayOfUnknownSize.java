@@ -4,6 +4,7 @@ package LeetCodeJava.BinarySearch;
 /**
  * 702. Search in a Sorted Array of Unknown Size
  * Medium
+ *
  * Lock: Prime
  *
  * This is an interactive problem.
@@ -12,8 +13,8 @@ package LeetCodeJava.BinarySearch;
  * to the array but you can use the ArrayReader interface to access it.
  * You can call ArrayReader.get(i) that:
  *
- *   - returns the value at the ith index (0-indexed) of the secret array (i.e., secret[i]), or
- *   - returns 2^31 - 1 if the i is out of the boundary of the array.
+ * - returns the value at the ith index (0-indexed) of the secret array (i.e., secret[i]), or
+ * - returns 2^31 - 1 if the i is out of the boundary of the array.
  *
  * You are also given an integer target.
  *

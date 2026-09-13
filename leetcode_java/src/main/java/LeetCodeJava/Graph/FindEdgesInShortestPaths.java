@@ -5,12 +5,9 @@ package LeetCodeJava.Graph;
 import java.util.*;
 
 /**
- *  3123. Find Edges in Shortest Paths
+ * 3123. Find Edges in Shortest Paths
  * Hard
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You are given an undirected weighted graph of n nodes numbered from 0 to n - 1. The graph consists of m edges represented by a 2D array edges, where edges[i] = [ai, bi, wi] indicates that there is an edge between nodes ai and bi with weight wi.
  *
  * Consider all the shortest paths from node 0 to node n - 1 in the graph. You need to find a boolean array answer where answer[i] is true if the edge edges[i] is part of at least one shortest path. Otherwise, answer[i] is false.

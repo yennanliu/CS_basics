@@ -3,32 +3,33 @@ package LeetCodeJava.BitManipulation;
 // https://leetcode.com/problems/longest-subarray-with-maximum-bitwise-and/
 
 /**
- *  2419. Longest Subarray With Maximum Bitwise AND
- *  Medium
+ * 2419. Longest Subarray With Maximum Bitwise AND
+ * Medium
  *
- *  You are given an integer array nums of size n.
+ * You are given an integer array nums of size n.
  *
- *  Consider a non-empty subarray from nums that has the maximum possible bitwise
- *  AND. In other words, let k be the maximum value of the bitwise AND of any
- *  subarray of nums. Then, only subarrays with a bitwise AND equal to k should be
- *  considered.
+ * Consider a non-empty subarray from nums that has the maximum possible bitwise
+ * AND. In other words, let k be the maximum value of the bitwise AND of any
+ * subarray of nums. Then, only subarrays with a bitwise AND equal to k should be
+ * considered.
  *
- *  Return the length of the longest such subarray.
+ * Return the length of the longest such subarray.
  *
- *  Example 1:
- *    Input: nums = [1,2,3,3,2,2]
- *    Output: 2
- *    Explanation: the maximum subarray AND is 3 and the longest subarray with
- *                 that value is [3,3].
+ * Example 1:
+ * Input: nums = [1,2,3,3,2,2]
+ * Output: 2
+ * Explanation: the maximum subarray AND is 3 and the longest subarray with
+ * that value is [3,3].
  *
- *  Example 2:
- *    Input: nums = [1,2,3,4]
- *    Output: 1
- *    Explanation: the maximum subarray AND is 4, achieved only by [4].
+ * Example 2:
+ * Input: nums = [1,2,3,4]
+ * Output: 1
+ * Explanation: the maximum subarray AND is 4, achieved only by [4].
  *
- *  Constraints:
- *    1 <= nums.length <= 10^5
- *    1 <= nums[i] <= 10^6
+ * Constraints:
+ * 1 <= nums.length <= 10^5
+ * 1 <= nums[i] <= 10^6
+ *
  */
 public class LongestSubarrayWithMaximumBitwiseAND {
 

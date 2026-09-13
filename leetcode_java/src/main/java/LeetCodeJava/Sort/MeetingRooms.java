@@ -3,6 +3,8 @@ package LeetCodeJava.Sort;
 // https://leetcode.com/problems/meeting-rooms/
 /**
  * 252. Meeting Rooms
+ * Easy
+ *
  * Given an array of meeting time intervals consisting of start and end times [[s1,e1],[s2,e2],...] (si < ei), determine if a person could attend all meetings.
  *
  * Example 1:
@@ -21,7 +23,6 @@ package LeetCodeJava.Sort;
  * Prime
  * Company:
  * Amazon Bloomberg Facebook Google Microsoft Twitter
- *
  *
  */
 import java.util.ArrayList;

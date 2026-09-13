@@ -8,37 +8,38 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *  2791. Count Paths That Can Form a Palindrome in a Tree
- *  Hard
+ * 2791. Count Paths That Can Form a Palindrome in a Tree
+ * Hard
  *
- *  You are given a tree (i.e. a connected, undirected graph that has no cycles) rooted
- *  at node 0 consisting of n nodes numbered from 0 to n - 1. The tree is represented by
- *  a 0-indexed array parent of size n, where parent[i] is the parent of node i. Since
- *  node 0 is the root, parent[0] == -1.
+ * You are given a tree (i.e. a connected, undirected graph that has no cycles) rooted
+ * at node 0 consisting of n nodes numbered from 0 to n - 1. The tree is represented by
+ * a 0-indexed array parent of size n, where parent[i] is the parent of node i. Since
+ * node 0 is the root, parent[0] == -1.
  *
- *  You are also given a string s of length n, where s[i] is the character assigned to
- *  the edge between i and parent[i]. s[0] can be ignored.
+ * You are also given a string s of length n, where s[i] is the character assigned to
+ * the edge between i and parent[i]. s[0] can be ignored.
  *
- *  Return the number of pairs of nodes (u, v) such that u < v and the characters
- *  assigned to edges on the path from u to v can be rearranged to form a palindrome.
+ * Return the number of pairs of nodes (u, v) such that u < v and the characters
+ * assigned to edges on the path from u to v can be rearranged to form a palindrome.
  *
- *  Example 1:
- *    Input: parent = [-1,0,0,1,1,2], s = "acaabc"
- *    Output: 8
- *    Explanation: the single-character paths (0,1),(0,2),(1,3),(1,4),(2,5) plus
- *                 (2,3) -> "aca", (1,5) -> "cac", (3,5) -> "acac" -> "acca".
+ * Example 1:
+ * Input: parent = [-1,0,0,1,1,2], s = "acaabc"
+ * Output: 8
+ * Explanation: the single-character paths (0,1),(0,2),(1,3),(1,4),(2,5) plus
+ * (2,3) -> "aca", (1,5) -> "cac", (3,5) -> "acac" -> "acca".
  *
- *  Example 2:
- *    Input: parent = [-1,0,0,0,0], s = "aaaaa"
- *    Output: 10
+ * Example 2:
+ * Input: parent = [-1,0,0,0,0], s = "aaaaa"
+ * Output: 10
  *
- *  Constraints:
- *    n == parent.length == s.length
- *    1 <= n <= 10^5
- *    0 <= parent[i] <= n - 1 for all i >= 1
- *    parent[0] == -1
- *    parent represents a valid tree.
- *    s consists of only lowercase English letters.
+ * Constraints:
+ * n == parent.length == s.length
+ * 1 <= n <= 10^5
+ * 0 <= parent[i] <= n - 1 for all i >= 1
+ * parent[0] == -1
+ * parent represents a valid tree.
+ * s consists of only lowercase English letters.
+ *
  */
 public class CountPathsThatCanFormAPalindromeInATree {
 

@@ -6,40 +6,41 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *  911. Online Election
- *  Medium
+ * 911. Online Election
+ * Medium
  *
- *  You are given two integer arrays persons and times. In an election, the ith
- *  vote was cast for persons[i] at time times[i].
+ * You are given two integer arrays persons and times. In an election, the ith
+ * vote was cast for persons[i] at time times[i].
  *
- *  For each query at a time t, find the person that was leading the election at
- *  time t. Votes cast at time t count towards the query. In the case of a tie,
- *  the most recent leading candidate wins.
+ * For each query at a time t, find the person that was leading the election at
+ * time t. Votes cast at time t count towards the query. In the case of a tie,
+ * the most recent leading candidate wins.
  *
- *  Implement the TopVotedCandidate class:
+ * Implement the TopVotedCandidate class:
  *
- *  - TopVotedCandidate(int[] persons, int[] times) Initializes the object with
- *    the persons and times arrays.
- *  - int q(int t) Returns the number of the person that was leading the election
- *    at time t according to the mentioned rules.
+ * - TopVotedCandidate(int[] persons, int[] times) Initializes the object with
+ * the persons and times arrays.
+ * - int q(int t) Returns the number of the person that was leading the election
+ * at time t according to the mentioned rules.
  *
- *  Example 1:
+ * Example 1:
  *
- *  Input
- *  ["TopVotedCandidate", "q", "q", "q", "q", "q", "q"]
- *  [[[0, 1, 1, 0, 0, 1, 0], [0, 5, 10, 15, 20, 25, 30]], [3], [12], [25], [15], [24], [8]]
- *  Output
- *  [null, 0, 1, 1, 0, 0, 1]
+ * Input
+ * ["TopVotedCandidate", "q", "q", "q", "q", "q", "q"]
+ * [[[0, 1, 1, 0, 0, 1, 0], [0, 5, 10, 15, 20, 25, 30]], [3], [12], [25], [15], [24], [8]]
+ * Output
+ * [null, 0, 1, 1, 0, 0, 1]
  *
- *  Constraints:
+ * Constraints:
  *
- *  1 <= persons.length <= 5000
- *  times.length == persons.length
- *  0 <= persons[i] < persons.length
- *  0 <= times[i] <= 10^9
- *  times is sorted in a strictly increasing order.
- *  times[0] <= t <= 10^9
- *  At most 10^4 calls will be made to q.
+ * 1 <= persons.length <= 5000
+ * times.length == persons.length
+ * 0 <= persons[i] < persons.length
+ * 0 <= times[i] <= 10^9
+ * times is sorted in a strictly increasing order.
+ * times[0] <= t <= 10^9
+ * At most 10^4 calls will be made to q.
+ *
  */
 public class OnlineElection {
 

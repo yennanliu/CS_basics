@@ -6,33 +6,34 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *  3588. Find Maximum Area of a Triangle
- *  Medium
+ * 3588. Find Maximum Area of a Triangle
+ * Medium
  *
- *  You are given a 2D array coords of size n x 2, representing the coordinates of n
- *  points in an infinite Cartesian plane.
+ * You are given a 2D array coords of size n x 2, representing the coordinates of n
+ * points in an infinite Cartesian plane.
  *
- *  Find twice the maximum area of a triangle with its corners at any three elements from
- *  coords, such that at least one side of this triangle is parallel to the x-axis or
- *  y-axis. Formally, if the maximum area of such a triangle is A, return 2 * A.
+ * Find twice the maximum area of a triangle with its corners at any three elements from
+ * coords, such that at least one side of this triangle is parallel to the x-axis or
+ * y-axis. Formally, if the maximum area of such a triangle is A, return 2 * A.
  *
- *  If no such triangle exists, return -1.
- *  Note that a triangle cannot have zero area.
+ * If no such triangle exists, return -1.
+ * Note that a triangle cannot have zero area.
  *
- *  Example 1:
- *    Input: coords = [[1,1],[1,2],[3,2],[3,3]]
- *    Output: 2
- *    Explanation: the triangle (1,1), (1,2), (3,2) has base 1 and height 2 -> area 1.
+ * Example 1:
+ * Input: coords = [[1,1],[1,2],[3,2],[3,3]]
+ * Output: 2
+ * Explanation: the triangle (1,1), (1,2), (3,2) has base 1 and height 2 -> area 1.
  *
- *  Example 2:
- *    Input: coords = [[1,1],[2,2],[3,3]]
- *    Output: -1
- *    Explanation: the only possible triangle has no axis-parallel side.
+ * Example 2:
+ * Input: coords = [[1,1],[2,2],[3,3]]
+ * Output: -1
+ * Explanation: the only possible triangle has no axis-parallel side.
  *
- *  Constraints:
- *    1 <= n == coords.length <= 10^5
- *    1 <= coords[i][0], coords[i][1] <= 10^6
- *    All coords[i] are unique.
+ * Constraints:
+ * 1 <= n == coords.length <= 10^5
+ * 1 <= coords[i][0], coords[i][1] <= 10^6
+ * All coords[i] are unique.
+ *
  */
 public class FindMaximumAreaOfATriangle {
 

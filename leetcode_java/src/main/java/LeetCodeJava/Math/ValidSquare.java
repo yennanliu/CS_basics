@@ -5,7 +5,10 @@ package LeetCodeJava.Math;
 import java.util.Arrays;
 
 /**
- * 593. Valid Square Attempted Medium Topics Companies Given the coordinates of four points in 2D
+ * 593. Valid Square
+ * Medium
+ *
+ * Attempted Medium Topics Companies Given the coordinates of four points in 2D
  * space p1, p2, p3 and p4, return true if the four points construct a square.
  *
  * <p>The coordinate of a point pi is represented as [xi, yi]. The input is not given in any order.
@@ -24,6 +27,7 @@ import java.util.Arrays;
  * <p>Constraints:
  *
  * <p>p1.length == p2.length == p3.length == p4.length == 2 -104 <= xi, yi <= 104
+ *
  */
 public class ValidSquare {
 

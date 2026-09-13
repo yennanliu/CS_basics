@@ -2,12 +2,9 @@ package LeetCodeJava.Array;
 
 // https://leetcode.com/problems/summary-ranges/
 /**
- *  228. Summary Ranges
- * Solved
+ * 228. Summary Ranges
  * Easy
- * Topics
- * premium lock icon
- * Companies
+ *
  * You are given a sorted unique integer array nums.
  *
  * A range [a,b] is the set of all integers from a to b (inclusive).
@@ -43,7 +40,6 @@ package LeetCodeJava.Array;
  * -231 <= nums[i] <= 231 - 1
  * All the values of nums are unique.
  * nums is sorted in ascending order.
- *
  *
  */
 import java.util.ArrayList;

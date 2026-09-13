@@ -4,10 +4,7 @@ package LeetCodeJava.Sort;
 /**
  * 493. Reverse Pairs
  * Hard
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * Given an integer array nums, return the number of reverse pairs in the array.
  *
  * A reverse pair is a pair (i, j) where:
@@ -37,7 +34,6 @@ package LeetCodeJava.Sort;
  *
  * 1 <= nums.length <= 5 * 104
  * -231 <= nums[i] <= 231 - 1
- *
  *
  */
 public class ReversePairs {

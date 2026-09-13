@@ -12,34 +12,35 @@ import java.util.Map;
 import LeetCodeJava.DataStructure.TreeNode;
 
 /**
- *  2385. Amount of Time for Binary Tree to Be Infected
- *  Medium
+ * 2385. Amount of Time for Binary Tree to Be Infected
+ * Medium
  *
- *  You are given the root of a binary tree with unique values, and an integer start.
- *  At minute 0, an infection starts from the node with value start.
+ * You are given the root of a binary tree with unique values, and an integer start.
+ * At minute 0, an infection starts from the node with value start.
  *
- *  Each minute, a node becomes infected if:
- *    - The node is currently uninfected.
- *    - The node is adjacent to an infected node.
+ * Each minute, a node becomes infected if:
+ * - The node is currently uninfected.
+ * - The node is adjacent to an infected node.
  *
- *  Return the number of minutes needed for the entire tree to be infected.
+ * Return the number of minutes needed for the entire tree to be infected.
  *
- *  Example 1:
- *    Input: root = [1,5,3,null,4,10,6,9,2], start = 3
- *    Output: 4
- *    Explanation: minute 0 -> {3}, minute 1 -> {1,10,6}, minute 2 -> {5},
- *                 minute 3 -> {4}, minute 4 -> {9,2}
+ * Example 1:
+ * Input: root = [1,5,3,null,4,10,6,9,2], start = 3
+ * Output: 4
+ * Explanation: minute 0 -> {3}, minute 1 -> {1,10,6}, minute 2 -> {5},
+ * minute 3 -> {4}, minute 4 -> {9,2}
  *
- *  Example 2:
- *    Input: root = [1], start = 1
- *    Output: 0
+ * Example 2:
+ * Input: root = [1], start = 1
+ * Output: 0
  *
- *  Constraints:
- *    The number of nodes in the tree is in the range [1, 10^5].
- *    1 <= Node.val <= 10^5
- *    Each node has a unique value.
- *    A node is adjacent to another node if it has a direct edge to it.
- *    start exists in the tree.
+ * Constraints:
+ * The number of nodes in the tree is in the range [1, 10^5].
+ * 1 <= Node.val <= 10^5
+ * Each node has a unique value.
+ * A node is adjacent to another node if it has a direct edge to it.
+ * start exists in the tree.
+ *
  */
 public class AmountOfTimeForBinaryTreeToBeInfected {
 

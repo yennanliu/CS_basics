@@ -3,10 +3,8 @@ package LeetCodeJava.String;
 // https://leetcode.com/problems/valid-palindrome-ii/description/
 /**
  * 680. Valid Palindrome II
- * Solved
  * Easy
- * Topics
- * Companies
+ *
  * Given a string s, return true if the s can be palindrome after deleting at most one character from it.
  *
  *

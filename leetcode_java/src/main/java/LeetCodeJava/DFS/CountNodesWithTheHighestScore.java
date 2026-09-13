@@ -6,36 +6,37 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 /**
- *  2049. Count Nodes With the Highest Score
- *  Medium
+ * 2049. Count Nodes With the Highest Score
+ * Medium
  *
- *  There is a binary tree rooted at 0 consisting of n nodes. The nodes are labeled
- *  from 0 to n - 1. You are given a 0-indexed integer array parents representing the
- *  tree, where parents[i] is the parent of node i. Since node 0 is the root,
- *  parents[0] == -1.
+ * There is a binary tree rooted at 0 consisting of n nodes. The nodes are labeled
+ * from 0 to n - 1. You are given a 0-indexed integer array parents representing the
+ * tree, where parents[i] is the parent of node i. Since node 0 is the root,
+ * parents[0] == -1.
  *
- *  Each node has a score. To find the score of a node, consider if the node and the
- *  edges connected to it were removed. The tree would become one or more non-empty
- *  subtrees. The size of a subtree is the number of the nodes in it. The score of the
- *  node is the product of the sizes of all those subtrees.
+ * Each node has a score. To find the score of a node, consider if the node and the
+ * edges connected to it were removed. The tree would become one or more non-empty
+ * subtrees. The size of a subtree is the number of the nodes in it. The score of the
+ * node is the product of the sizes of all those subtrees.
  *
- *  Return the number of nodes that have the highest score.
+ * Return the number of nodes that have the highest score.
  *
- *  Example 1:
- *    Input: parents = [-1,2,0,2,0]
- *    Output: 3
- *    (scores: node0 = 3*1 = 3, node1 = 4, node2 = 1*1*2 = 2, node3 = 4, node4 = 4)
+ * Example 1:
+ * Input: parents = [-1,2,0,2,0]
+ * Output: 3
+ * (scores: node0 = 3*1 = 3, node1 = 4, node2 = 1*1*2 = 2, node3 = 4, node4 = 4)
  *
- *  Example 2:
- *    Input: parents = [-1,2,0]
- *    Output: 2
+ * Example 2:
+ * Input: parents = [-1,2,0]
+ * Output: 2
  *
- *  Constraints:
- *    n == parents.length
- *    2 <= n <= 10^5
- *    parents[0] == -1
- *    0 <= parents[i] <= n - 1 for i != 0
- *    parents represents a valid binary tree.
+ * Constraints:
+ * n == parents.length
+ * 2 <= n <= 10^5
+ * parents[0] == -1
+ * 0 <= parents[i] <= n - 1 for i != 0
+ * parents represents a valid binary tree.
+ *
  */
 public class CountNodesWithTheHighestScore {
 

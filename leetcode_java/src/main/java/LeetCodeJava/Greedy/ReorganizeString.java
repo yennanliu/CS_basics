@@ -7,11 +7,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 767. Reorganize String
- * Solved
  * Medium
- * Topics
- * Companies
- * Hint
+ *
  * Given a string s, rearrange the characters of s so that any two adjacent characters are not the same.
  *
  * Return any possible rearrangement of s or return "" if not possible.
@@ -32,7 +29,6 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * 1 <= s.length <= 500
  * s consists of lowercase English letters.
- *
  *
  */
 public class ReorganizeString {

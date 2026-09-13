@@ -7,30 +7,31 @@ import java.util.Arrays;
 import java.util.Deque;
 
 /**
- *  2334. Subarray With Elements Greater Than Varying Threshold
- *  Hard
+ * 2334. Subarray With Elements Greater Than Varying Threshold
+ * Hard
  *
- *  You are given an integer array nums and an integer threshold.
+ * You are given an integer array nums and an integer threshold.
  *
- *  Find any subarray of nums of length k such that every element in the subarray
- *  is greater than threshold / k.
+ * Find any subarray of nums of length k such that every element in the subarray
+ * is greater than threshold / k.
  *
- *  Return the size of any such subarray. If there is no such subarray, return -1.
+ * Return the size of any such subarray. If there is no such subarray, return -1.
  *
- *  Example 1:
- *    Input: nums = [1,3,4,3,1], threshold = 6
- *    Output: 3
- *    Explanation: the subarray [3,4,3] has size 3, and every element is greater
- *                 than 6 / 3 = 2.
+ * Example 1:
+ * Input: nums = [1,3,4,3,1], threshold = 6
+ * Output: 3
+ * Explanation: the subarray [3,4,3] has size 3, and every element is greater
+ * than 6 / 3 = 2.
  *
- *  Example 2:
- *    Input: nums = [6,5,6,5,8], threshold = 7
- *    Output: 1
- *    Explanation: [8] has size 1 and 8 > 7 / 1. (2, 3, 4, 5 are also accepted.)
+ * Example 2:
+ * Input: nums = [6,5,6,5,8], threshold = 7
+ * Output: 1
+ * Explanation: [8] has size 1 and 8 > 7 / 1. (2, 3, 4, 5 are also accepted.)
  *
- *  Constraints:
- *    1 <= nums.length <= 10^5
- *    1 <= nums[i], threshold <= 10^9
+ * Constraints:
+ * 1 <= nums.length <= 10^5
+ * 1 <= nums[i], threshold <= 10^9
+ *
  */
 public class SubarrayWithElementsGreaterThanVaryingThreshold {
 

@@ -4,9 +4,7 @@ package LeetCodeJava.DynamicProgramming;
 /**
  * 343. Integer Break
  * Medium
- * Topics
- * Companies
- * Hint
+ *
  * Given an integer n, break it into the sum of k positive integers, where k >= 2, and maximize the product of those integers.
  *
  * Return the maximum product you can get.
@@ -28,15 +26,6 @@ package LeetCodeJava.DynamicProgramming;
  * Constraints:
  *
  * 2 <= n <= 58
- * Seen this question in a real interview before?
- * 1/5
- * Yes
- * No
- * Accepted
- * 393.9K
- * Submissions
- *
- *
  *
  */
 public class IntegerBreak {

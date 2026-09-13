@@ -5,34 +5,35 @@ package LeetCodeJava.Sort;
 import java.util.Arrays;
 
 /**
- *  2545. Sort the Students by Their Kth Score
- *  Medium
+ * 2545. Sort the Students by Their Kth Score
+ * Medium
  *
- *  There is a class with m students and n exams. You are given a 0-indexed
- *  m x n integer matrix score, where each row represents one student and
- *  score[i][j] denotes the score the ith student got in the jth exam. The matrix
- *  score contains distinct integers only.
+ * There is a class with m students and n exams. You are given a 0-indexed
+ * m x n integer matrix score, where each row represents one student and
+ * score[i][j] denotes the score the ith student got in the jth exam. The matrix
+ * score contains distinct integers only.
  *
- *  You are also given an integer k. Sort the students (i.e., the rows of the
- *  matrix) by their scores in the kth (0-indexed) exam from the highest to the
- *  lowest.
+ * You are also given an integer k. Sort the students (i.e., the rows of the
+ * matrix) by their scores in the kth (0-indexed) exam from the highest to the
+ * lowest.
  *
- *  Return the matrix after sorting it.
+ * Return the matrix after sorting it.
  *
- *  Example 1:
- *    Input: score = [[10,6,9,1],[7,5,11,2],[4,8,3,15]], k = 2
- *    Output: [[7,5,11,2],[10,6,9,1],[4,8,3,15]]
+ * Example 1:
+ * Input: score = [[10,6,9,1],[7,5,11,2],[4,8,3,15]], k = 2
+ * Output: [[7,5,11,2],[10,6,9,1],[4,8,3,15]]
  *
- *  Example 2:
- *    Input: score = [[3,4],[5,6]], k = 0
- *    Output: [[5,6],[3,4]]
+ * Example 2:
+ * Input: score = [[3,4],[5,6]], k = 0
+ * Output: [[5,6],[3,4]]
  *
- *  Constraints:
- *    m == score.length, n == score[i].length
- *    1 <= m, n <= 250
- *    1 <= score[i][j] <= 10^5
- *    score consists of distinct integers.
- *    0 <= k < n
+ * Constraints:
+ * m == score.length, n == score[i].length
+ * 1 <= m, n <= 250
+ * 1 <= score[i][j] <= 10^5
+ * score consists of distinct integers.
+ * 0 <= k < n
+ *
  */
 public class SortTheStudentsByTheirKthScore {
 

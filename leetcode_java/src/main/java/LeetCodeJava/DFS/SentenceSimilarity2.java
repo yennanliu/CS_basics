@@ -7,6 +7,8 @@ import java.util.*;
 
 /**
  * 737. Sentence Similarity II
+ * Medium
+ *
  * Given two sentences words1, words2 (each represented as an array of strings), and a list of similar word pairs pairs, determine if two sentences are similar.
  *
  * For example, words1 = ["great", "acting", "skills"] and words2 = ["fine", "drama", "talent"] are similar, if the similar word pairs are pairs = [["great", "good"], ["fine", "good"], ["acting","drama"], ["skills","talent"]].

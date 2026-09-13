@@ -3,10 +3,8 @@ package LeetCodeJava.DynamicProgramming;
 // https://leetcode.com/problems/unique-paths/description/
 /**
  * 62. Unique Paths
- * Solved
  * Medium
- * Topics
- * Companies
+ *
  * There is a robot on an m x n grid. The robot is initially located at the top-left corner (i.e., grid[0][0]). The robot tries to move to the bottom-right corner (i.e., grid[m - 1][n - 1]). The robot can only move either down or right at any point in time.
  *
  * Given the two integers m and n, return the number of possible unique paths that the robot can take to reach the bottom-right corner.
@@ -185,7 +183,7 @@ public class UniquePaths {
         return dp[m - 1][n - 1];
     }
 
-    // V0_1_1_1
+    // V0-_1_1_1
     // IDEA: 1-D DP (fixed by gpt)
     /**
      * time = O(M * N)
@@ -243,7 +241,7 @@ public class UniquePaths {
         return dp[0][0];
     }
 
-    // VO-2
+    // V0-2
     // IDEA : MATH
     // -> the UNIQUE combination of x "a", and y "b"
     // -> e.g. [a, a,....a] and [b,b...,,,,b]

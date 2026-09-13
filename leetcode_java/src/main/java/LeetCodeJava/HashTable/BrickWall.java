@@ -6,7 +6,9 @@ import java.util.*;
 // https://leetcode.ca/2017-06-06-554-Brick-Wall/
 
 /**
- *  554. Brick Wall
+ * 554. Brick Wall
+ * Medium
+ *
  * Description
  * There is a rectangular brick wall in front of you with n rows of bricks. The ith row has some number of bricks each of the same height (i.e., one unit) but they can be of different widths. The total width of each row is the same.
  *
@@ -36,7 +38,6 @@ import java.util.*;
  * 1 <= sum(wall[i].length) <= 2 * 104
  * sum(wall[i]) is the same for each row i.
  * 1 <= wall[i][j] <= 231 - 1
- *
  *
  */
 

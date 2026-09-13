@@ -7,9 +7,7 @@ import java.util.*;
 /**
  * 316. Remove Duplicate Letters
  * Medium
- * Topics
- * Companies
- * Hint
+ *
  * Given a string s, remove duplicate letters so that every letter appears once and only once. You must make sure your result is the smallest in lexicographical order among all possible results.
  * <p>
  * <p>
@@ -31,6 +29,7 @@ import java.util.*;
  * <p>
  * <p>
  * Note: This question is the same as 1081: https://leetcode.com/problems/smallest-subsequence-of-distinct-characters/
+ *
  */
 public class RemoveDuplicateLetters {
 
@@ -580,7 +579,7 @@ public class RemoveDuplicateLetters {
 
 
 
-    // V3
+    // V3-1
 
 
 

@@ -5,13 +5,9 @@ package LeetCodeJava.Heap;
 import java.util.*;
 
 /**
- *  1481. Least Number of Unique Integers after K Removals
- * Solved
+ * 1481. Least Number of Unique Integers after K Removals
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * Given an array of integers arr and an integer k. Find the least number of unique integers after removing exactly k elements.
  *
  *

@@ -10,6 +10,7 @@ import java.util.List;
 /**
  * 604. Design Compressed String Iterator
  * Easy
+ *
  * Lock: Prime
  *
  * Design and implement a data structure for a compressed string iterator.
@@ -20,15 +21,15 @@ import java.util.List;
  * Implement the StringIterator class:
  *
  * - next() Returns the next character if the original string still has uncompressed
- *   characters, otherwise returns a white space.
+ * characters, otherwise returns a white space.
  * - hasNext() Returns true if there is any letter needs to be uncompressed in the
- *   original string, otherwise returns false.
+ * original string, otherwise returns false.
  *
  * Example 1:
  *
  * Input
  * ["StringIterator", "next", "next", "next", "next", "next", "next", "hasNext", "next",
- *  "hasNext"]
+ * "hasNext"]
  * [["L1e2t1C1o1d1e1"], [], [], [], [], [], [], [], [], []]
  * Output
  * [null, "L", "e", "e", "t", "C", "o", true, "d", true]

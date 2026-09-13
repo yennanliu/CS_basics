@@ -4,6 +4,8 @@ package LeetCodeJava.BFS;
 // https://leetcode.ca/all/261.html
 /**
  * 261. Graph Valid Tree
+ * Medium
+ *
  * Given n nodes labeled from 0 to n-1 and a list of undirected edges (each edge is a pair of nodes), write a function to check whether these edges make up a valid tree.
  *
  * Example 1:
@@ -22,6 +24,7 @@ package LeetCodeJava.BFS;
  * Prime
  * Company:
  * Adobe Amazon Facebook Google LinkedIn Pinterest Salesforce Zenefits
+ *
  */
 
 import java.util.*;

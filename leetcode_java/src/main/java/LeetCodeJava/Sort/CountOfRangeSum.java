@@ -5,9 +5,7 @@ package LeetCodeJava.Sort;
 /**
  * 327. Count of Range Sum
  * Hard
- * Topics
- * premium lock icon
- * Companies
+ *
  * Given an integer array nums and two integers lower and upper, return the number of range sums that lie in [lower, upper] inclusive.
  *
  * Range sum S(i, j) is defined as the sum of the elements in nums between indices i and j inclusive, where i <= j.
@@ -31,8 +29,6 @@ package LeetCodeJava.Sort;
  * -231 <= nums[i] <= 231 - 1
  * -105 <= lower <= upper <= 105
  * The answer is guaranteed to fit in a 32-bit integer.
- *
- *
  *
  */
 public class CountOfRangeSum {
@@ -65,7 +61,7 @@ public class CountOfRangeSum {
         return ans;
     }
 
-    // V1-1
+    // V1-2
     // IDEA: MERGE SORT
     // https://leetcode.com/problems/count-of-range-sum/solutions/77990/share-my-solution-by-dietpepsi-1g5d/
     public int countRangeSum_1_2(int[] nums, int lower, int upper) {

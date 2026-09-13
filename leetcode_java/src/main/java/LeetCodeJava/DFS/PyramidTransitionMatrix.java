@@ -8,38 +8,39 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *  756. Pyramid Transition Matrix
- *  Medium
+ * 756. Pyramid Transition Matrix
+ * Medium
  *
- *  You are stacking blocks to form a pyramid. Each block has a color, which is represented by
- *  a single letter. Each row of blocks contains one less block than the row beneath it and is
- *  centered on top.
+ * You are stacking blocks to form a pyramid. Each block has a color, which is represented by
+ * a single letter. Each row of blocks contains one less block than the row beneath it and is
+ * centered on top.
  *
- *  To make the pyramid aesthetically pleasing, there are only specific triangular patterns that
- *  are allowed. A triangular pattern consists of a single block stacked on top of two blocks.
- *  The patterns are given as a list of three-letter strings allowed, where the first two
- *  characters of a pattern represent the left and right bottom blocks respectively, and the
- *  third character is the top block.
+ * To make the pyramid aesthetically pleasing, there are only specific triangular patterns that
+ * are allowed. A triangular pattern consists of a single block stacked on top of two blocks.
+ * The patterns are given as a list of three-letter strings allowed, where the first two
+ * characters of a pattern represent the left and right bottom blocks respectively, and the
+ * third character is the top block.
  *
- *  You start with a bottom row of blocks bottom, given as a single string. You are also given a
- *  list of allowed triangular patterns allowed. Return true if you can build the pyramid all the
- *  way to the top such that every triangular pattern in the pyramid is in allowed, or false
- *  otherwise.
+ * You start with a bottom row of blocks bottom, given as a single string. You are also given a
+ * list of allowed triangular patterns allowed. Return true if you can build the pyramid all the
+ * way to the top such that every triangular pattern in the pyramid is in allowed, or false
+ * otherwise.
  *
- *  Example 1:
- *  Input: bottom = "BCD", allowed = ["BCC","CDE","CEA","FFF"]
- *  Output: true
+ * Example 1:
+ * Input: bottom = "BCD", allowed = ["BCC","CDE","CEA","FFF"]
+ * Output: true
  *
- *  Example 2:
- *  Input: bottom = "AAAA", allowed = ["AAB","AAC","BCD","BBE","DEF"]
- *  Output: false
+ * Example 2:
+ * Input: bottom = "AAAA", allowed = ["AAB","AAC","BCD","BBE","DEF"]
+ * Output: false
  *
- *  Constraints:
- *  2 <= bottom.length <= 6
- *  0 <= allowed.length <= 216
- *  allowed[i].length == 3
- *  The letters in all input strings are from the set {'A', 'B', 'C', 'D', 'E', 'F'}.
- *  All the values of allowed are unique.
+ * Constraints:
+ * 2 <= bottom.length <= 6
+ * 0 <= allowed.length <= 216
+ * allowed[i].length == 3
+ * The letters in all input strings are from the set {'A', 'B', 'C', 'D', 'E', 'F'}.
+ * All the values of allowed are unique.
+ *
  */
 public class PyramidTransitionMatrix {
 

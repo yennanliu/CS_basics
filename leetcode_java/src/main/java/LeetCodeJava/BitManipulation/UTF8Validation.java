@@ -3,39 +3,40 @@ package LeetCodeJava.BitManipulation;
 // https://leetcode.com/problems/utf-8-validation/
 
 /**
- *  393. UTF-8 Validation
- *  Medium
+ * 393. UTF-8 Validation
+ * Medium
  *
- *  Given an integer array data representing the data, return whether it is a
- *  valid UTF-8 encoding.
+ * Given an integer array data representing the data, return whether it is a
+ * valid UTF-8 encoding.
  *
- *  A character in UTF8 can be from 1 to 4 bytes long, subjected to the rules:
+ * A character in UTF8 can be from 1 to 4 bytes long, subjected to the rules:
  *
- *   - For a 1-byte character, the first bit is a 0, followed by its Unicode code.
- *   - For an n-bytes character, the first n bits are all one's, the n + 1 bit is
- *     0, followed by n - 1 bytes with the most significant 2 bits being 10.
+ * - For a 1-byte character, the first bit is a 0, followed by its Unicode code.
+ * - For an n-bytes character, the first n bits are all one's, the n + 1 bit is
+ * 0, followed by n - 1 bytes with the most significant 2 bits being 10.
  *
- *     Char. number range  |        UTF-8 octet sequence
- *        (hexadecimal)    |              (binary)
- *     --------------------+---------------------------------------------
- *     0000 0000-0000 007F | 0xxxxxxx
- *     0000 0080-0000 07FF | 110xxxxx 10xxxxxx
- *     0000 0800-0000 FFFF | 1110xxxx 10xxxxxx 10xxxxxx
- *     0001 0000-0010 FFFF | 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
+ * Char. number range  |        UTF-8 octet sequence
+ * (hexadecimal)    |              (binary)
+ * --------------------+---------------------------------------------
+ * 0000 0000-0000 007F | 0xxxxxxx
+ * 0000 0080-0000 07FF | 110xxxxx 10xxxxxx
+ * 0000 0800-0000 FFFF | 1110xxxx 10xxxxxx 10xxxxxx
+ * 0001 0000-0010 FFFF | 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
  *
- *  Note: only the least significant 8 bits of each integer is used.
+ * Note: only the least significant 8 bits of each integer is used.
  *
- *  Example 1:
- *  Input: data = [197,130,1]
- *  Output: true
+ * Example 1:
+ * Input: data = [197,130,1]
+ * Output: true
  *
- *  Example 2:
- *  Input: data = [235,140,4]
- *  Output: false
+ * Example 2:
+ * Input: data = [235,140,4]
+ * Output: false
  *
- *  Constraints:
- *  1 <= data.length <= 2 * 10^4
- *  0 <= data[i] <= 255
+ * Constraints:
+ * 1 <= data.length <= 2 * 10^4
+ * 0 <= data[i] <= 255
+ *
  */
 public class UTF8Validation {
 

@@ -3,10 +3,8 @@ package LeetCodeJava.BinarySearch;
 // https://leetcode.com/problems/search-a-2d-matrix/
 /**
  * 74. Search a 2D Matrix
- * Solved
  * Medium
- * Topics
- * Companies
+ *
  * You are given an m x n integer matrix matrix with the following two properties:
  *
  * Each row is sorted in non-decreasing order.

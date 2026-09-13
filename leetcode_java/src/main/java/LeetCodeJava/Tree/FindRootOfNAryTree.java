@@ -6,32 +6,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  1506. Find Root of N-Ary Tree
- *  Medium
+ * 1506. Find Root of N-Ary Tree
+ * Medium
  *
- *  You are given all the nodes of an N-ary tree as an array of Node objects,
- *  where each node has a unique value.
+ * You are given all the nodes of an N-ary tree as an array of Node objects,
+ * where each node has a unique value.
  *
- *  Return the root of the N-ary tree.
+ * Return the root of the N-ary tree.
  *
- *  The driver code constructs the tree from a serialized input, puts every Node
- *  object into an array in an ARBITRARY order, and passes that array to findRoot.
+ * The driver code constructs the tree from a serialized input, puts every Node
+ * object into an array in an ARBITRARY order, and passes that array to findRoot.
  *
- *  Example 1:
- *    Input: tree = [1,null,3,2,4,null,5,6]
- *    Output: [1,null,3,2,4,null,5,6]
- *    Explanation: findRoot should return Node(1) whatever the array order is.
+ * Example 1:
+ * Input: tree = [1,null,3,2,4,null,5,6]
+ * Output: [1,null,3,2,4,null,5,6]
+ * Explanation: findRoot should return Node(1) whatever the array order is.
  *
- *  Example 2:
- *    Input: tree = [1,null,2,3,4,5,null,null,6,7,null,8,null,9,10,null,null,11,null,12,null,13,null,null,14]
- *    Output: [1,null,2,3,4,5,null,null,6,7,null,8,null,9,10,null,null,11,null,12,null,13,null,null,14]
+ * Example 2:
+ * Input: tree = [1,null,2,3,4,5,null,null,6,7,null,8,null,9,10,null,null,11,null,12,null,13,null,null,14]
+ * Output: [1,null,2,3,4,5,null,null,6,7,null,8,null,9,10,null,null,11,null,12,null,13,null,null,14]
  *
- *  Constraints:
- *    The total number of nodes is between [1, 5 * 10^4].
- *    Each node has a unique value.
+ * Constraints:
+ * The total number of nodes is between [1, 5 * 10^4].
+ * Each node has a unique value.
  *
- *  Follow up: Could you solve this problem in constant space complexity with a
- *             linear time algorithm?
+ * Follow up: Could you solve this problem in constant space complexity with a
+ * linear time algorithm?
+ *
  */
 public class FindRootOfNAryTree {
 

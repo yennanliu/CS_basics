@@ -9,33 +9,34 @@ import java.util.List;
 import java.util.Set;
 
 /**
- *  472. Concatenated Words
- *  Hard
+ * 472. Concatenated Words
+ * Hard
  *
- *  Given an array of strings words (without duplicates), return all the
- *  concatenated words in the given list of words.
+ * Given an array of strings words (without duplicates), return all the
+ * concatenated words in the given list of words.
  *
- *  A concatenated word is defined as a string that is comprised entirely of at
- *  least two shorter words (not necessarily distinct) in the given array.
+ * A concatenated word is defined as a string that is comprised entirely of at
+ * least two shorter words (not necessarily distinct) in the given array.
  *
- *  Example 1:
+ * Example 1:
  *
- *  Input: words = ["cat","cats","catsdogcats","dog","dogcatsdog",
- *                  "hippopotamuses","rat","ratcatdogcat"]
- *  Output: ["catsdogcats","dogcatsdog","ratcatdogcat"]
+ * Input: words = ["cat","cats","catsdogcats","dog","dogcatsdog",
+ * "hippopotamuses","rat","ratcatdogcat"]
+ * Output: ["catsdogcats","dogcatsdog","ratcatdogcat"]
  *
- *  Example 2:
+ * Example 2:
  *
- *  Input: words = ["cat","dog","catdog"]
- *  Output: ["catdog"]
+ * Input: words = ["cat","dog","catdog"]
+ * Output: ["catdog"]
  *
- *  Constraints:
+ * Constraints:
  *
- *  1 <= words.length <= 10^4
- *  1 <= words[i].length <= 30
- *  words[i] consists of only lowercase English letters.
- *  All the strings of words are unique.
- *  1 <= sum(words[i].length) <= 10^5
+ * 1 <= words.length <= 10^4
+ * 1 <= words[i].length <= 30
+ * words[i] consists of only lowercase English letters.
+ * All the strings of words are unique.
+ * 1 <= sum(words[i].length) <= 10^5
+ *
  */
 public class ConcatenatedWords {
 

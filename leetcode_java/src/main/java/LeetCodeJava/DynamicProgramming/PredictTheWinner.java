@@ -2,11 +2,9 @@ package LeetCodeJava.DynamicProgramming;
 
 // https://leetcode.com/problems/predict-the-winner/description/
 /**
- *  486. Predict the Winner
+ * 486. Predict the Winner
  * Medium
- * Topics
- * premium lock icon
- * Companies
+ *
  * You are given an integer array nums. Two players are playing a game with this array: player 1 and player 2.
  *
  * Player 1 and player 2 take turns, with player 1 starting first. Both players start the game with a score of 0. At each turn, the player takes one of the numbers from either end of the array (i.e., nums[0] or nums[nums.length - 1]) which reduces the size of the array by 1. The player adds the chosen number to their score. The game ends when there are no more elements in the array.
@@ -410,7 +408,7 @@ public class PredictTheWinner {
     }
 
 
-    // V3
+    // V3-1
 
 
 

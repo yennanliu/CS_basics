@@ -8,8 +8,7 @@ import java.util.List;
 /**
  * 307. Range Sum Query - Mutable
  * Medium
- * Topics
- * Companies
+ *
  * Given an integer array nums, handle multiple queries of the following types:
  *
  * Update the value of an element in nums.

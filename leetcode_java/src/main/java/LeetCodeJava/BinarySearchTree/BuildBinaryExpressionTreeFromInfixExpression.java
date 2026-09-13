@@ -6,38 +6,39 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 /**
- *  1597. Build Binary Expression Tree From Infix Expression
- *  Hard
+ * 1597. Build Binary Expression Tree From Infix Expression
+ * Hard
  *
- *  A binary expression tree is a kind of binary tree used to represent arithmetic
- *  expressions. Each node has either zero or two children. Leaf nodes correspond
- *  to operands (numbers), and internal nodes correspond to the operators
- *  '+', '-', '*' and '/'.
+ * A binary expression tree is a kind of binary tree used to represent arithmetic
+ * expressions. Each node has either zero or two children. Leaf nodes correspond
+ * to operands (numbers), and internal nodes correspond to the operators
+ * '+', '-', '*' and '/'.
  *
- *  For each internal node with operator o, the infix expression it represents is
- *  (A o B), where A is the expression of the left subtree and B that of the right.
+ * For each internal node with operator o, the infix expression it represents is
+ * (A o B), where A is the expression of the left subtree and B that of the right.
  *
- *  You are given a string s, an infix expression containing operands, the
- *  operators described above, and parentheses '(' and ')'.
+ * You are given a string s, an infix expression containing operands, the
+ * operators described above, and parentheses '(' and ')'.
  *
- *  Return any valid binary expression tree whose in-order traversal reproduces s
- *  after omitting the parentheses. Order of operations applies: parentheses
- *  first, then '*' and '/', then '+' and '-'. Operands must appear in the same
- *  order in s and in the in-order traversal.
+ * Return any valid binary expression tree whose in-order traversal reproduces s
+ * after omitting the parentheses. Order of operations applies: parentheses
+ * first, then '*' and '/', then '+' and '-'. Operands must appear in the same
+ * order in s and in the in-order traversal.
  *
- *  Example 1:
- *   Input: s = "3*4-2*5"
- *   Output: [-,*,*,3,4,2,5]
+ * Example 1:
+ * Input: s = "3*4-2*5"
+ * Output: [-,*,*,3,4,2,5]
  *
- *  Example 2:
- *   Input: s = "2-3/(5*2)+1"
- *   Output: [+,-,1,2,/,null,null,null,null,3,*,null,null,5,2]
+ * Example 2:
+ * Input: s = "2-3/(5*2)+1"
+ * Output: [+,-,1,2,/,null,null,null,null,3,*,null,null,5,2]
  *
- *  Constraints:
- *   1 <= s.length <= 1000
- *   s consists of digits and the characters '+', '-', '*', '/', '(' and ')'.
- *   Operands in s are exactly 1 digit.
- *   It is guaranteed that s is a valid expression.
+ * Constraints:
+ * 1 <= s.length <= 1000
+ * s consists of digits and the characters '+', '-', '*', '/', '(' and ')'.
+ * Operands in s are exactly 1 digit.
+ * It is guaranteed that s is a valid expression.
+ *
  */
 public class BuildBinaryExpressionTreeFromInfixExpression {
 

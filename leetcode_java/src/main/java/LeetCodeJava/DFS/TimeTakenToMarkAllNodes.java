@@ -7,37 +7,38 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- *  3241. Time Taken to Mark All Nodes
- *  Hard
+ * 3241. Time Taken to Mark All Nodes
+ * Hard
  *
- *  There exists an undirected tree with n nodes numbered 0 to n - 1. You are
- *  given a 2D integer array edges of length n - 1, where edges[i] = [ui, vi]
- *  indicates that there is an edge between nodes ui and vi in the tree.
+ * There exists an undirected tree with n nodes numbered 0 to n - 1. You are
+ * given a 2D integer array edges of length n - 1, where edges[i] = [ui, vi]
+ * indicates that there is an edge between nodes ui and vi in the tree.
  *
- *  Initially, all nodes are unmarked. For each node i:
- *    - If i is odd, the node gets marked at time x if there is at least one node
- *      adjacent to it which was marked at time x - 1.
- *    - If i is even, the node gets marked at time x if there is at least one
- *      node adjacent to it which was marked at time x - 2.
+ * Initially, all nodes are unmarked. For each node i:
+ * - If i is odd, the node gets marked at time x if there is at least one node
+ * adjacent to it which was marked at time x - 1.
+ * - If i is even, the node gets marked at time x if there is at least one
+ * node adjacent to it which was marked at time x - 2.
  *
- *  Return an array times where times[i] is the time when all nodes get marked in
- *  the tree, if you mark node i at time t = 0. The answers are independent.
+ * Return an array times where times[i] is the time when all nodes get marked in
+ * the tree, if you mark node i at time t = 0. The answers are independent.
  *
- *  Example 1:
- *    Input: edges = [[0,1],[0,2]]
- *    Output: [2,4,3]
- *    Explanation: for i = 0, node 1 is marked at t = 1 and node 2 at t = 2.
+ * Example 1:
+ * Input: edges = [[0,1],[0,2]]
+ * Output: [2,4,3]
+ * Explanation: for i = 0, node 1 is marked at t = 1 and node 2 at t = 2.
  *
- *  Example 3:
- *    Input: edges = [[2,4],[0,1],[2,3],[0,2]]
- *    Output: [4,6,3,5,5]
+ * Example 3:
+ * Input: edges = [[2,4],[0,1],[2,3],[0,2]]
+ * Output: [4,6,3,5,5]
  *
- *  Constraints:
- *    2 <= n <= 10^5
- *    edges.length == n - 1
- *    edges[i].length == 2
- *    0 <= edges[i][0], edges[i][1] <= n - 1
- *    The input is generated such that edges represents a valid tree.
+ * Constraints:
+ * 2 <= n <= 10^5
+ * edges.length == n - 1
+ * edges[i].length == 2
+ * 0 <= edges[i][0], edges[i][1] <= n - 1
+ * The input is generated such that edges represents a valid tree.
+ *
  */
 public class TimeTakenToMarkAllNodes {
 

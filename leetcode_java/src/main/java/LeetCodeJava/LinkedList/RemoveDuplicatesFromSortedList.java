@@ -3,10 +3,8 @@ package LeetCodeJava.LinkedList;
 // https://leetcode.com/problems/remove-duplicates-from-sorted-list/
 /**
  * 83. Remove Duplicates from Sorted List
- * Solved
  * Easy
- * Topics
- * Companies
+ *
  * Given the head of a sorted linked list, delete all duplicates such that each element appears only once. Return the linked list sorted as well.
  *
  *
@@ -98,7 +96,7 @@ public class RemoveDuplicatesFromSortedList {
     }
 
 
-    //  V1
+    // V1
 
     // https://leetcode.com/problems/remove-duplicates-from-sorted-list/solutions/3257316/c-python-c-java-easiest-solution-o-n-time/
     /**

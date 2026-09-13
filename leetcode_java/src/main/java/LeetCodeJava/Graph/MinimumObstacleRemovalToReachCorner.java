@@ -7,10 +7,7 @@ import java.util.*;
 /**
  * 2290. Minimum Obstacle Removal to Reach Corner
  * Hard
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You are given a 0-indexed 2D integer array grid of size m x n. Each cell has one of two values:
  *
  * 0 represents an empty cell,
@@ -45,11 +42,6 @@ import java.util.*;
  * 2 <= m * n <= 105
  * grid[i][j] is either 0 or 1.
  * grid[0][0] == grid[m - 1][n - 1] == 0
- *
- * Seen this question in a real interview before?
- * 1/5
- * Yes
- * No
  *
  */
 public class MinimumObstacleRemovalToReachCorner {

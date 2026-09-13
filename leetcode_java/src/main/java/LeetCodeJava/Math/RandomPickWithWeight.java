@@ -9,8 +9,7 @@ import java.util.TreeMap;
 /**
  * 528. Random Pick with Weight
  * Medium
- * Topics
- * Companies
+ *
  * You are given a 0-indexed array of positive integers w where w[i] describes the weight of the ith index.
  * <p>
  * You need to implement the function pickIndex(), which randomly picks an index in the range [0, w.length - 1] (inclusive) and returns it. The probability of picking an index i is w[i] / sum(w).
@@ -61,6 +60,7 @@ import java.util.TreeMap;
  * 1 <= w.length <= 104
  * 1 <= w[i] <= 105
  * pickIndex will be called at most 104 times.
+ *
  */
 public class RandomPickWithWeight {
 

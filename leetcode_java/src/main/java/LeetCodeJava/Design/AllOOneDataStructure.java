@@ -8,11 +8,9 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- *  432. All O`one Data Structure
+ * 432. All O`one Data Structure
  * Hard
- * Topics
- * premium lock icon
- * Companies
+ *
  * Design a data structure to store the strings' count with the ability to return the strings with minimum and maximum counts.
  *
  * Implement the AllOne class:
@@ -51,6 +49,7 @@ import java.util.Set;
  * key consists of lowercase English letters.
  * It is guaranteed that for each call to dec, key is existing in the data structure.
  * At most 5 * 104 calls will be made to inc, dec, getMaxKey, and getMinKey.
+ *
  */
 public class AllOOneDataStructure {
 

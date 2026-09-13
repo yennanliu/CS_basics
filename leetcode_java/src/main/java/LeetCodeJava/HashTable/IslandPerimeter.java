@@ -7,10 +7,8 @@ import java.util.function.BiFunction;
 
 /**
  * 463. Island Perimeter
- * Solved
  * Easy
- * Topics
- * Companies
+ *
  * You are given row x col grid representing a map where grid[i][j] = 1 represents land and grid[i][j] = 0 represents water.
  *
  * Grid cells are connected horizontally/vertically (not diagonally). The grid is completely surrounded by water, and there is exactly one island (i.e., one or more connected land cells).
@@ -42,7 +40,6 @@ import java.util.function.BiFunction;
  * 1 <= row, col <= 100
  * grid[i][j] is 0 or 1.
  * There is exactly one island in grid.
- *
  *
  */
 public class IslandPerimeter {

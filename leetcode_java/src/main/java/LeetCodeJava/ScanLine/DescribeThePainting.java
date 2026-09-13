@@ -5,12 +5,9 @@ package LeetCodeJava.ScanLine;
 import java.util.*;
 
 /**
- *  1943. Describe the Painting
+ * 1943. Describe the Painting
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * There is a long and thin painting that can be represented by a number line. The painting was painted with multiple overlapping segments where each segment was painted with a unique color. You are given a 2D integer array segments, where segments[i] = [starti, endi, colori] represents the half-closed segment [starti, endi) with colori as the color.
  *
  * The colors in the overlapping segments of the painting were mixed when it was painted. When two or more colors mix, they form a new color that can be represented as a set of mixed colors.
@@ -65,7 +62,6 @@ import java.util.*;
  * 1 <= starti < endi <= 105
  * 1 <= colori <= 109
  * Each colori is distinct.
- *
  *
  */
 public class DescribeThePainting {

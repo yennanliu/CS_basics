@@ -6,7 +6,9 @@ package LeetCodeJava.DFS;
 import java.util.*;
 
 /**
- *  582 - Kill Process
+ * 582. Kill Process
+ * Medium
+ *
  * Posted on July 4, 2017 · 3 minute read
  * Welcome to Subscribe On Youtube
  *
@@ -45,7 +47,6 @@ import java.util.*;
  * Only one process has no parent.
  * All the values of pid are unique.
  * kill is guaranteed to be in pid.
- *
  *
  */
 public class KillProcess {

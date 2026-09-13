@@ -2,12 +2,9 @@ package LeetCodeJava.Math;
 
 // https://leetcode.com/problems/prime-in-diagonal/description/
 /**
- *  2614. Prime In Diagonal
+ * 2614. Prime In Diagonal
  * Easy
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You are given a 0-indexed two-dimensional integer array nums.
  *
  * Return the largest prime number that lies on at least one of the diagonals of nums. In case, no prime is present on any of the diagonals, return 0.
@@ -39,7 +36,6 @@ package LeetCodeJava.Math;
  * 1 <= nums.length <= 300
  * nums.length == numsi.length
  * 1 <= nums[i][j] <= 4*106
- *
  *
  */
 public class PrimeInDiagonal {

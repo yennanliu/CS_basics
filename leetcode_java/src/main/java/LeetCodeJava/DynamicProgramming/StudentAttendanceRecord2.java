@@ -7,8 +7,7 @@ import java.util.Arrays;
 /**
  * 552. Student Attendance Record II
  * Hard
- * Topics
- * Companies
+ *
  * An attendance record for a student can be represented as a string where each character signifies whether the student was absent, late, or present on that day. The record only contains the following three characters:
  *
  * 'A': Absent.
@@ -605,7 +604,7 @@ public class StudentAttendanceRecord2 {
 
 
 
-    // V2_1
+    // V2-_1
     // IDEA : Top-Down Dynamic Programming with Memoization
     // https://leetcode.com/problems/student-attendance-record-ii/editorial/
     private final int MOD = 1000000007;
@@ -663,7 +662,7 @@ public class StudentAttendanceRecord2 {
     }
 
 
-    // V2_2
+    // V2-_2
     // IDEA : Bottom-Up Dynamic Programming
     // https://leetcode.com/problems/student-attendance-record-ii/editorial/
     /**
@@ -724,7 +723,7 @@ public class StudentAttendanceRecord2 {
         return count;
     }
 
-    // V2_3
+    // V2-_3
     // IDEA : Bottom-Up Dynamic Programming, Space Optimized
     // https://leetcode.com/problems/student-attendance-record-ii/editorial/
     /**

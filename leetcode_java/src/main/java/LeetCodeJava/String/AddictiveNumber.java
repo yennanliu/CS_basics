@@ -3,29 +3,30 @@ package LeetCodeJava.String;
 // https://leetcode.com/problems/additive-number/
 
 /**
- *  306. Additive Number
- *  Medium
+ * 306. Additive Number
+ * Medium
  *
- *  An additive number is a string whose digits can form an additive sequence.
+ * An additive number is a string whose digits can form an additive sequence.
  *
- *  A valid additive sequence should contain at least three numbers. Except for
- *  the first two numbers, each subsequent number in the sequence must be the
- *  sum of the preceding two.
+ * A valid additive sequence should contain at least three numbers. Except for
+ * the first two numbers, each subsequent number in the sequence must be the
+ * sum of the preceding two.
  *
- *  Given a string containing only digits, return true if it is an additive
- *  number, or false otherwise.
+ * Given a string containing only digits, return true if it is an additive
+ * number, or false otherwise.
  *
- *  Note: numbers in the additive sequence cannot have leading zeros, so the
- *  sequences 1, 2, 03 and 1, 02, 3 are invalid.
+ * Note: numbers in the additive sequence cannot have leading zeros, so the
+ * sequences 1, 2, 03 and 1, 02, 3 are invalid.
  *
- *  Example 1:
- *    Input: num = "112358"     Output: true   (1, 1, 2, 3, 5, 8)
- *  Example 2:
- *    Input: num = "199100199"  Output: true   (1, 99, 100, 199)
+ * Example 1:
+ * Input: num = "112358"     Output: true   (1, 1, 2, 3, 5, 8)
+ * Example 2:
+ * Input: num = "199100199"  Output: true   (1, 99, 100, 199)
  *
- *  Constraints:
- *    1 <= num.length <= 35
- *    num consists only of digits.
+ * Constraints:
+ * 1 <= num.length <= 35
+ * num consists only of digits.
+ *
  */
 public class AddictiveNumber {
 

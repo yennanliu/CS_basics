@@ -8,11 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *  30. Substring with Concatenation of All Words
+ * 30. Substring with Concatenation of All Words
  * Hard
- * Topics
- * premium lock icon
- * Companies
+ *
  * You are given a string s and an array of strings words. All the strings of words are of the same length.
  *
  * A concatenated string is a string that exactly contains all the strings of any permutation of words concatenated.
@@ -63,6 +61,7 @@ import java.util.Map;
  * 1 <= words.length <= 5000
  * 1 <= words[i].length <= 30
  * s and words[i] consist of lowercase English letters.
+ *
  */
 public class SubstringwithConcatenationOfAllWords {
 

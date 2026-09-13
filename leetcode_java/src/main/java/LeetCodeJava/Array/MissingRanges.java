@@ -9,6 +9,8 @@ import java.util.List;
 
 /**
  * 163. Missing Ranges
+ * Easy
+ *
  * Given a sorted integer array nums, where the range of elements are in the inclusive range [lower, upper], return its missing ranges.
  * <p>
  * Example:
@@ -22,6 +24,7 @@ import java.util.List;
  * Company:
  * Amazon Facebook Google Oracle
  * Problem Solution
+ *
  */
 public class MissingRanges {
 

@@ -7,10 +7,7 @@ import java.util.*;
 /**
  * 2508. Add Edges to Make Degrees of All Nodes Even
  * Hard
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * There is an undirected graph consisting of n nodes numbered from 1 to n. You are given the integer n and a 2D array edges where edges[i] = [ai, bi] indicates that there is an edge between nodes ai and bi. The graph can be disconnected.
  *
  * You can add at most two additional edges (possibly none) to this graph so that there are no repeated edges and no self-loops.

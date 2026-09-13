@@ -7,9 +7,7 @@ import java.util.*;
 /**
  * 731. My Calendar II
  * Medium
- * Topics
- * Companies
- * Hint
+ *
  * You are implementing a program to use as your calendar. We can add a new event if adding the event will not cause a triple booking.
  *
  * A triple booking happens when three events have some non-empty intersection (i.e., some moment is common to all the three events.).
@@ -44,16 +42,7 @@ import java.util.*;
  *
  * 0 <= start < end <= 109
  * At most 1000 calls will be made to book.
- * Seen this question in a real interview before?
- * 1/5
- * Yes
- * No
- * Accepted
- * 187.4K
- * Submissions
- * 298.6K
- * Acceptance Rate
- * 62.8%
+ *
  */
 public class MyCalendar2 {
 

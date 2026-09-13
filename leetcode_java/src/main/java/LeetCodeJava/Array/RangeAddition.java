@@ -6,7 +6,10 @@ package LeetCodeJava.Array;
 import java.util.Arrays;
 
 /**
- * 370. Range Addition Assume you have an array of length n initialized with all 0's and are given k
+ * 370. Range Addition
+ * Medium
+ *
+ * Assume you have an array of length n initialized with all 0's and are given k
  * update operations.
  *
  * <p>Each operation is represented as a triplet: [startIndex, endIndex, inc] which increments each
@@ -25,6 +28,7 @@ import java.util.Arrays;
  * <p>After applying operation [2,4,3]: [0,2,5,5,3]
  *
  * <p>After applying operation [0,2,-2]: [-2,0,3,5,3] Difficulty: Medium Lock: Prime Company: Google
+ *
  */
 public class RangeAddition {
 

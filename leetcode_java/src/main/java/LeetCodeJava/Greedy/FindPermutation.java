@@ -7,6 +7,7 @@ import java.util.Deque;
 /**
  * 484. Find Permutation
  * Medium
+ *
  * Lock: Prime
  *
  * A permutation perm of n integers of all the integers in the range [1, n] can be

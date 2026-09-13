@@ -2,11 +2,9 @@ package LeetCodeJava.LinkedList;
 
 // https://leetcode.com/problems/rotate-list/description/
 /**
- *  61. Rotate List
+ * 61. Rotate List
  * Medium
- * Topics
- * premium lock icon
- * Companies
+ *
  * Given the head of a linked list, rotate the list to the right by k places.
  *
  *
@@ -28,6 +26,7 @@ package LeetCodeJava.LinkedList;
  * The number of nodes in the list is in the range [0, 500].
  * -100 <= Node.val <= 100
  * 0 <= k <= 2 * 109
+ *
  */
 
 import LeetCodeJava.DataStructure.ListNode;
@@ -103,7 +102,7 @@ public class RotateList {
         return res.next;
     }
 
-    //  V1
+    // V1
 
     // https://leetcode.ca/2016-01-30-61-Rotate-List/
     /**

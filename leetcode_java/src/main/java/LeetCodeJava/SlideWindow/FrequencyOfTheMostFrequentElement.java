@@ -5,12 +5,9 @@ package LeetCodeJava.SlideWindow;
 import java.util.Arrays;
 
 /**
- *  1838. Frequency of the Most Frequent Element
+ * 1838. Frequency of the Most Frequent Element
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * The frequency of an element is the number of times it occurs in an array.
  *
  * You are given an integer array nums and an integer k. In one operation, you can choose an index of nums and increment the element at that index by 1.
@@ -45,10 +42,6 @@ import java.util.Arrays;
  * 1 <= nums[i] <= 105
  * 1 <= k <= 105
  *
- * Seen this question in a real interview before?
- * 1/5
- * Yes
- * No
  */
 public class FrequencyOfTheMostFrequentElement {
 

@@ -9,6 +9,8 @@ import java.util.List;
 
 /**
  * 1522. Diameter of N-Ary Tree
+ * Medium
+ *
  * Given a root of an N-ary tree, you need to compute the length of the diameter of the tree.
  *
  * The diameter of an N-ary tree is the length of the longest path between any two nodes in the tree. This path may or may not pass through the root.
@@ -43,7 +45,6 @@ import java.util.List;
  * The depth of the n-ary tree is less than or equal to 1000.
  * The total number of nodes is between [0, 10^4].
  * Difficulty:
- *
  *
  */
 public class DiameterOfNAryTree {

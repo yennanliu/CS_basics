@@ -8,8 +8,7 @@ import java.util.List;
 /**
  * 986. Interval List Intersections
  * Medium
- * Topics
- * Companies
+ *
  * You are given two lists of closed intervals, firstList and secondList, where firstList[i] = [starti, endi] and secondList[j] = [startj, endj]. Each list of intervals is pairwise disjoint and in sorted order.
  *
  * Return the intersection of these two interval lists.
@@ -39,6 +38,7 @@ import java.util.List;
  * endi < starti+1
  * 0 <= startj < endj <= 109
  * endj < startj+1
+ *
  */
 public class IntervalListIntersections {
 

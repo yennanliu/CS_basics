@@ -7,6 +7,8 @@ import java.util.Objects;
 
 /**
  * 161. One Edit Distance
+ * Medium
+ *
  * Given two strings s and t, determine if they are both one edit distance apart.
  *
  * Note:
@@ -39,7 +41,6 @@ import java.util.Objects;
  * Amazon Facebook Google Microsoft Snapchat Twitter Uber
  * Problem Solution
  * 161-One-Edit-Distance
- *
  *
  */
 public class OneEditDistance {

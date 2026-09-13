@@ -6,32 +6,33 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 /**
- *  3589. Count Prime-Gap Balanced Subarrays
- *  Medium
+ * 3589. Count Prime-Gap Balanced Subarrays
+ * Medium
  *
- *  You are given an integer array nums and an integer k.
+ * You are given an integer array nums and an integer k.
  *
- *  Call a subarray prime-gap balanced if:
- *   - It contains at least two prime numbers, and
- *   - The difference between the maximum and minimum prime numbers in that
- *     subarray is less than or equal to k.
+ * Call a subarray prime-gap balanced if:
+ * - It contains at least two prime numbers, and
+ * - The difference between the maximum and minimum prime numbers in that
+ * subarray is less than or equal to k.
  *
- *  Return the count of prime-gap balanced subarrays in nums.
+ * Return the count of prime-gap balanced subarrays in nums.
  *
- *  Example 1:
- *    Input: nums = [1,2,3], k = 1
- *    Output: 2
- *    Explanation: [2,3] and [1,2,3] both hold two primes with max - min = 1.
+ * Example 1:
+ * Input: nums = [1,2,3], k = 1
+ * Output: 2
+ * Explanation: [2,3] and [1,2,3] both hold two primes with max - min = 1.
  *
- *  Example 2:
- *    Input: nums = [2,3,5,7], k = 3
- *    Output: 4
- *    Explanation: [2,3], [2,3,5], [3,5] and [5,7] qualify.
+ * Example 2:
+ * Input: nums = [2,3,5,7], k = 3
+ * Output: 4
+ * Explanation: [2,3], [2,3,5], [3,5] and [5,7] qualify.
  *
- *  Constraints:
- *    1 <= nums.length <= 5 * 10^4
- *    1 <= nums[i] <= 5 * 10^4
- *    0 <= k <= 5 * 10^4
+ * Constraints:
+ * 1 <= nums.length <= 5 * 10^4
+ * 1 <= nums[i] <= 5 * 10^4
+ * 0 <= k <= 5 * 10^4
+ *
  */
 public class CountPrimeGapBalancedSubarrays {
 

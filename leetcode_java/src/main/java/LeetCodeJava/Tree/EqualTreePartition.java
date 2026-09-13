@@ -8,29 +8,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  663. Equal Tree Partition
- *  Medium
+ * 663. Equal Tree Partition
+ * Medium
  *
- *  Given the root of a binary tree, return true if you can partition the tree
- *  into two trees with equal sums of values after removing exactly one edge on
- *  the original tree.
+ * Given the root of a binary tree, return true if you can partition the tree
+ * into two trees with equal sums of values after removing exactly one edge on
+ * the original tree.
  *
- *  Example 1:
+ * Example 1:
  *
- *  Input: root = [5,10,10,null,null,2,3]
- *  Output: true
- *  Explanation: removing the edge above the right child of the root gives
- *               two trees of sum 15 each.
+ * Input: root = [5,10,10,null,null,2,3]
+ * Output: true
+ * Explanation: removing the edge above the right child of the root gives
+ * two trees of sum 15 each.
  *
- *  Example 2:
+ * Example 2:
  *
- *  Input: root = [1,2,10,null,null,2,20]
- *  Output: false
+ * Input: root = [1,2,10,null,null,2,20]
+ * Output: false
  *
- *  Constraints:
+ * Constraints:
  *
- *  The number of nodes in the tree is in the range [1, 10^4].
- *  -10^5 <= Node.val <= 10^5
+ * The number of nodes in the tree is in the range [1, 10^4].
+ * -10^5 <= Node.val <= 10^5
+ *
  */
 public class EqualTreePartition {
 

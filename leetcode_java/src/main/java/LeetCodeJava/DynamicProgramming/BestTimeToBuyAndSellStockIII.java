@@ -3,32 +3,33 @@ package LeetCodeJava.DynamicProgramming;
 // https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/
 
 /**
- *  123. Best Time to Buy and Sell Stock III
- *  Hard
+ * 123. Best Time to Buy and Sell Stock III
+ * Hard
  *
- *  You are given an array prices where prices[i] is the price of a given stock on the ith day.
+ * You are given an array prices where prices[i] is the price of a given stock on the ith day.
  *
- *  Find the maximum profit you can achieve. You may complete at most two transactions.
+ * Find the maximum profit you can achieve. You may complete at most two transactions.
  *
- *  Note: You may not engage in multiple transactions simultaneously (i.e. you must sell the
- *  stock before you buy again).
+ * Note: You may not engage in multiple transactions simultaneously (i.e. you must sell the
+ * stock before you buy again).
  *
- *  Example 1:
- *  Input: prices = [3,3,5,0,0,3,1,4]
- *  Output: 6      // buy at 0 sell at 3 (profit 3), buy at 1 sell at 4 (profit 3)
+ * Example 1:
+ * Input: prices = [3,3,5,0,0,3,1,4]
+ * Output: 6      // buy at 0 sell at 3 (profit 3), buy at 1 sell at 4 (profit 3)
  *
- *  Example 2:
- *  Input: prices = [1,2,3,4,5]
- *  Output: 4      // buy at 1 sell at 5
+ * Example 2:
+ * Input: prices = [1,2,3,4,5]
+ * Output: 4      // buy at 1 sell at 5
  *
- *  Example 3:
- *  Input: prices = [7,6,4,3,1]
- *  Output: 0      // no transaction is done
+ * Example 3:
+ * Input: prices = [7,6,4,3,1]
+ * Output: 0      // no transaction is done
  *
- *  Constraints:
+ * Constraints:
  *
- *   1 <= prices.length <= 10^5
- *   0 <= prices[i] <= 10^5
+ * 1 <= prices.length <= 10^5
+ * 0 <= prices[i] <= 10^5
+ *
  */
 public class BestTimeToBuyAndSellStockIII {
 

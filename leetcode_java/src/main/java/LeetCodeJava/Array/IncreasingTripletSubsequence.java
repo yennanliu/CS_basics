@@ -6,10 +6,8 @@ import java.util.Arrays;
 
 /**
  * 334. Increasing Triplet Subsequence
- * Solved
  * Medium
- * Topics
- * Companies
+ *
  * Given an integer array nums, return true if there exists a triple of indices (i, j, k) such that i < j < k and nums[i] < nums[j] < nums[k]. If no such indices exists, return false.
  * <p>
  * <p>
@@ -38,6 +36,7 @@ import java.util.Arrays;
  * <p>
  * <p>
  * Follow up: Could you implement a solution that runs in O(n) time complexity and O(1) space complexity?
+ *
  */
 public class IncreasingTripletSubsequence {
 

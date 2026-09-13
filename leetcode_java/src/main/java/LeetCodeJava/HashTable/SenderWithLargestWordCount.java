@@ -6,11 +6,8 @@ import java.util.*;
 
 /**
  * 2284. Sender With Largest Word Count
- * Solved
  * Medium
- * Topics
- * Companies
- * Hint
+ *
  * You have a chat log of n messages. You are given two string arrays messages and senders where messages[i] is a message sent by senders[i].
  *
  * A message is list of words that are separated by a single space with no leading or trailing spaces. The word count of a sender is the total number of words sent by the sender. Note that a sender may send more than one message.
@@ -50,8 +47,6 @@ import java.util.*;
  * All the words in messages[i] are separated by a single space.
  * messages[i] does not have leading or trailing spaces.
  * senders[i] consists of uppercase and lowercase English letters only.
- *
- *
  *
  */
 public class SenderWithLargestWordCount {

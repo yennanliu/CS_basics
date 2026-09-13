@@ -10,36 +10,37 @@ import java.util.Deque;
 import java.util.List;
 
 /**
- *  919. Complete Binary Tree Inserter
- *  Medium
+ * 919. Complete Binary Tree Inserter
+ * Medium
  *
- *  A complete binary tree is a binary tree in which every level, except
- *  possibly the last, is completely filled, and all the nodes are as far left
- *  as possible.
+ * A complete binary tree is a binary tree in which every level, except
+ * possibly the last, is completely filled, and all the nodes are as far left
+ * as possible.
  *
- *  Design an algorithm to insert a new node to a complete binary tree keeping
- *  it complete after the insertion. Implement the CBTInserter class:
+ * Design an algorithm to insert a new node to a complete binary tree keeping
+ * it complete after the insertion. Implement the CBTInserter class:
  *
- *   - CBTInserter(TreeNode root) initializes the data structure with the root
- *     of the complete binary tree.
- *   - int insert(int val) inserts a TreeNode into the tree with value
- *     Node.val == val so that the tree remains complete, and returns the value
- *     of the parent of the inserted TreeNode.
- *   - TreeNode get_root() returns the root node of the tree.
+ * - CBTInserter(TreeNode root) initializes the data structure with the root
+ * of the complete binary tree.
+ * - int insert(int val) inserts a TreeNode into the tree with value
+ * Node.val == val so that the tree remains complete, and returns the value
+ * of the parent of the inserted TreeNode.
+ * - TreeNode get_root() returns the root node of the tree.
  *
- *  Example:
+ * Example:
  *
- *  Input: ["CBTInserter","insert","insert","get_root"]
- *         [[[1,2]],[3],[4],[]]
- *  Output: [null,1,2,[1,2,3,4]]
+ * Input: ["CBTInserter","insert","insert","get_root"]
+ * [[[1,2]],[3],[4],[]]
+ * Output: [null,1,2,[1,2,3,4]]
  *
- *  Constraints:
+ * Constraints:
  *
- *  The number of nodes in the tree will be in the range [1, 1000].
- *  0 <= Node.val <= 5000
- *  root is a complete binary tree.
- *  0 <= val <= 5000
- *  At most 10^4 calls will be made to insert and get_root.
+ * The number of nodes in the tree will be in the range [1, 1000].
+ * 0 <= Node.val <= 5000
+ * root is a complete binary tree.
+ * 0 <= val <= 5000
+ * At most 10^4 calls will be made to insert and get_root.
+ *
  */
 public class CompleteBinaryTreeInserter {
 

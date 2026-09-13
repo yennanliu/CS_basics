@@ -6,12 +6,8 @@ import java.util.Arrays;
 
 /**
  * 2640. Find the Score of All Prefixes of an Array
- * Solved
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * We define the conversion array conver of an array arr as follows:
  *
  * conver[i] = arr[i] + max(arr[0..i]) where max(arr[0..i]) is the maximum value of arr[j] over 0 <= j <= i.
@@ -49,10 +45,6 @@ import java.util.Arrays;
  * 1 <= nums.length <= 105
  * 1 <= nums[i] <= 109
  *
- * Seen this question in a real interview before?
- * 1/5
- * Yes
- * No
  */
 public class FindTheScoreOfAllPrefixesOfAnArray {
 

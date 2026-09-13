@@ -8,36 +8,37 @@ import java.util.PriorityQueue;
 import LeetCodeJava.DataStructure.TreeNode;
 
 /**
- *  2792. Count Nodes That Are Great Enough
- *  Hard
+ * 2792. Count Nodes That Are Great Enough
+ * Hard
  *
- *  You are given a root to a binary tree and an integer k. A node of this tree is
- *  called great enough if the following hold:
- *    - Its subtree has at least k nodes.
- *    - Its value is greater than the value of at least k nodes in its subtree.
+ * You are given a root to a binary tree and an integer k. A node of this tree is
+ * called great enough if the following hold:
+ * - Its subtree has at least k nodes.
+ * - Its value is greater than the value of at least k nodes in its subtree.
  *
- *  Return the number of nodes in this tree that are great enough.
+ * Return the number of nodes in this tree that are great enough.
  *
- *  The node u is in the subtree of the node v, if u == v or v is an ancestor of u.
+ * The node u is in the subtree of the node v, if u == v or v is an ancestor of u.
  *
- *  Example 1:
- *    Input: root = [7,6,5,4,3,2,1], k = 2
- *    Output: 3
- *    Explanation: the nodes with values 7, 6 and 5 each have at least 2 strictly
- *                 smaller values in their subtree.
+ * Example 1:
+ * Input: root = [7,6,5,4,3,2,1], k = 2
+ * Output: 3
+ * Explanation: the nodes with values 7, 6 and 5 each have at least 2 strictly
+ * smaller values in their subtree.
  *
- *  Example 2:
- *    Input: root = [1,2,3], k = 1
- *    Output: 0
+ * Example 2:
+ * Input: root = [1,2,3], k = 1
+ * Output: 0
  *
- *  Example 3:
- *    Input: root = [3,2,2], k = 2
- *    Output: 1
+ * Example 3:
+ * Input: root = [3,2,2], k = 2
+ * Output: 1
  *
- *  Constraints:
- *    The number of nodes in the tree is in the range [1, 10^4].
- *    1 <= Node.val <= 10^4
- *    1 <= k <= 10
+ * Constraints:
+ * The number of nodes in the tree is in the range [1, 10^4].
+ * 1 <= Node.val <= 10^4
+ * 1 <= k <= 10
+ *
  */
 public class CountNodesThatAreGreatEnough {
 

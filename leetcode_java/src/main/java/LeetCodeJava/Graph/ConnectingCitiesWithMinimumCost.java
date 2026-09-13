@@ -8,7 +8,9 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 /**
- *  1135. Connecting Cities With Minimum Cost
+ * 1135. Connecting Cities With Minimum Cost
+ * Medium
+ *
  * There are N cities numbered from 1 to N.
  *
  * You are given connections, where each connections[i] = [city1, city2, cost] represents the cost to connect city1 and city2 together.  (A connection is bidirectional: connecting city1 and city2 is the same as connecting city2 and city1.)
@@ -50,7 +52,6 @@ import java.util.Comparator;
  * Amazon Uber
  * Problem Solution
  * 1135-Connecting-Cities-With-Minimum-Cost
- *
  *
  */
 public class ConnectingCitiesWithMinimumCost {

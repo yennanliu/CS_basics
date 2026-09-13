@@ -58,19 +58,22 @@ import java.util.Map;
  * sources[i] and targets[i] consist of only lowercase English letters.
  */
 /**
- *  NOTE !!!
+ * 833. Find And Replace in String
+ * Medium
  *
- *  -> The testcases will be generated such that the replacements will not overlap.
- *  (All replacement operations must occur simultaneously,
- *   meaning the replacement operations should not affect the
- *   indexing of each other. The testcases will be generated
- *   such that the replacements will not overlap.)
+ * NOTE !!!
  *
- *   -> e.g. case like below will NOT happen:
+ * -> The testcases will be generated such that the replacements will not overlap.
+ * (All replacement operations must occur simultaneously,
+ * meaning the replacement operations should not affect the
+ * indexing of each other. The testcases will be generated
+ * such that the replacements will not overlap.)
  *
- *   s = "abc", indices = [0, 1], and sources = ["ab","bc"]
+ * -> e.g. case like below will NOT happen:
  *
- *   -> so, it's NO NEEDED that our code to handle scenario as above
+ * s = "abc", indices = [0, 1], and sources = ["ab","bc"]
+ *
+ * -> so, it's NO NEEDED that our code to handle scenario as above
  *
  */
 public class FindAndReplaceInString {
@@ -277,7 +280,7 @@ public class FindAndReplaceInString {
 //        return res.toString();
 //    }
 
-    // V3
+    // V3-1
     // https://blog.csdn.net/qq_37821701/article/details/125737152
 
 }

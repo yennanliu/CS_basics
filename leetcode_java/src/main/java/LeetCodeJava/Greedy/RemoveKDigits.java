@@ -9,9 +9,7 @@ import java.util.Stack;
 /**
  * 402. Remove K Digits
  * Medium
- * Topics
- * premium lock icon
- * Companies
+ *
  * Given string num representing a non-negative integer num, and an integer k, return the smallest possible integer after removing k digits from num.
  *
  *

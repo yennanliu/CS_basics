@@ -10,43 +10,44 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *  1516. Move Sub-Tree of N-Ary Tree
- *  Hard
+ * 1516. Move Sub-Tree of N-Ary Tree
+ * Hard
  *
- *  Given the root of an N-ary tree of unique values, and two nodes of the tree
- *  p and q.
+ * Given the root of an N-ary tree of unique values, and two nodes of the tree
+ * p and q.
  *
- *  You should move the subtree of the node p to become a direct child of node
- *  q. If p is already a direct child of q, do not change anything. Node p must
- *  be the last child in the children list of node q.
+ * You should move the subtree of the node p to become a direct child of node
+ * q. If p is already a direct child of q, do not change anything. Node p must
+ * be the last child in the children list of node q.
  *
- *  Return the root of the tree after adjusting it.
+ * Return the root of the tree after adjusting it.
  *
- *  There are 3 cases for nodes p and q:
- *    1. Node q is in the sub-tree of node p.
- *    2. Node p is in the sub-tree of node q.
- *    3. Neither p is in the sub-tree of q nor q is in the sub-tree of p.
+ * There are 3 cases for nodes p and q:
+ * 1. Node q is in the sub-tree of node p.
+ * 2. Node p is in the sub-tree of node q.
+ * 3. Neither p is in the sub-tree of q nor q is in the sub-tree of p.
  *
- *  In cases 2 and 3 you just move p (with its sub-tree) to be a child of q,
- *  but in case 1 the tree may be disconnected, so you need to reconnect it.
+ * In cases 2 and 3 you just move p (with its sub-tree) to be a child of q,
+ * but in case 1 the tree may be disconnected, so you need to reconnect it.
  *
- *  Example 1:
- *    Input: root = [1,null,2,3,null,4,5,null,6,null,7,8], p = 4, q = 1
- *    Output: [1,null,2,3,4,null,5,null,6,null,7,8]
- *    Explanation: case 2 - p is in the sub-tree of q, so p just moves under q
- *                 and becomes its LAST child.
+ * Example 1:
+ * Input: root = [1,null,2,3,null,4,5,null,6,null,7,8], p = 4, q = 1
+ * Output: [1,null,2,3,4,null,5,null,6,null,7,8]
+ * Explanation: case 2 - p is in the sub-tree of q, so p just moves under q
+ * and becomes its LAST child.
  *
- *  Example 4:
- *    Input: root = [1,null,2,3,null,4], p = 1, q = 4
- *    Output: [4,null,1,null,2,3]
- *    Explanation: case 1 - q is in the sub-tree of p, so q is detached from
- *                 its parent, takes p's old slot (here: becomes the new root)
- *                 and p is appended as q's last child.
+ * Example 4:
+ * Input: root = [1,null,2,3,null,4], p = 1, q = 4
+ * Output: [4,null,1,null,2,3]
+ * Explanation: case 1 - q is in the sub-tree of p, so q is detached from
+ * its parent, takes p's old slot (here: becomes the new root)
+ * and p is appended as q's last child.
  *
- *  Constraints:
- *    The total number of nodes is between [2, 1000].
- *    Each node has a unique value.
- *    p != null, q != null, p != q
+ * Constraints:
+ * The total number of nodes is between [2, 1000].
+ * Each node has a unique value.
+ * p != null, q != null, p != q
+ *
  */
 public class MoveSubTreeOfNAryTree {
 

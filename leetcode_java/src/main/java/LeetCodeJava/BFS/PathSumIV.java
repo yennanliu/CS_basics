@@ -5,37 +5,38 @@ package LeetCodeJava.BFS;
 import java.util.*;
 
 /**
- *  666. Path Sum IV
- *  Medium
+ * 666. Path Sum IV
+ * Medium
  *
- *  If the depth of a tree is smaller than 5, then this tree can be represented
- *  by an array of three-digit integers. For each integer in this array:
+ * If the depth of a tree is smaller than 5, then this tree can be represented
+ * by an array of three-digit integers. For each integer in this array:
  *
- *   - The hundreds digit represents the depth d of this node, 1 <= d <= 4.
- *   - The tens digit represents the position p of this node in the level it
- *     belongs to, 1 <= p <= 8. The position is the same as that in a full
- *     binary tree.
- *   - The units digit represents the value v of this node, 0 <= v <= 9.
+ * - The hundreds digit represents the depth d of this node, 1 <= d <= 4.
+ * - The tens digit represents the position p of this node in the level it
+ * belongs to, 1 <= p <= 8. The position is the same as that in a full
+ * binary tree.
+ * - The units digit represents the value v of this node, 0 <= v <= 9.
  *
- *  Given an array of ascending three-digit integers nums representing a binary
- *  tree with a depth smaller than 5, return the sum of all paths from the root
- *  towards the leaves.
+ * Given an array of ascending three-digit integers nums representing a binary
+ * tree with a depth smaller than 5, return the sum of all paths from the root
+ * towards the leaves.
  *
- *  It is guaranteed that the given array represents a valid connected binary tree.
+ * It is guaranteed that the given array represents a valid connected binary tree.
  *
- *  Example 1:
- *   Input: nums = [113,215,221]
- *   Output: 12
- *   Explanation: the tree is  3 / \ 5 1 , paths are 3+5=8 and 3+1=4, total 12.
+ * Example 1:
+ * Input: nums = [113,215,221]
+ * Output: 12
+ * Explanation: the tree is  3 / \ 5 1 , paths are 3+5=8 and 3+1=4, total 12.
  *
- *  Example 2:
- *   Input: nums = [113,221]
- *   Output: 4
+ * Example 2:
+ * Input: nums = [113,221]
+ * Output: 4
  *
- *  Constraints:
- *   1 <= nums.length <= 15
- *   110 <= nums[i] <= 489
- *   nums represents a valid binary tree with depth less than 5.
+ * Constraints:
+ * 1 <= nums.length <= 15
+ * 110 <= nums[i] <= 489
+ * nums represents a valid binary tree with depth less than 5.
+ *
  */
 public class PathSumIV {
 

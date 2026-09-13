@@ -9,40 +9,41 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 /**
- *  1976. Number of Ways to Arrive at Destination
- *  Medium
+ * 1976. Number of Ways to Arrive at Destination
+ * Medium
  *
- *  You are in a city that consists of n intersections numbered from 0 to n - 1 with
- *  bi-directional roads between some intersections. The inputs are generated such that you
- *  can reach any intersection from any other intersection and that there is at most one road
- *  between any two intersections.
+ * You are in a city that consists of n intersections numbered from 0 to n - 1 with
+ * bi-directional roads between some intersections. The inputs are generated such that you
+ * can reach any intersection from any other intersection and that there is at most one road
+ * between any two intersections.
  *
- *  You are given an integer n and a 2D integer array roads where
- *  roads[i] = [ui, vi, timei] means that there is a road between intersections ui and vi
- *  that takes timei minutes to travel.
+ * You are given an integer n and a 2D integer array roads where
+ * roads[i] = [ui, vi, timei] means that there is a road between intersections ui and vi
+ * that takes timei minutes to travel.
  *
- *  You want to know in how many ways you can travel from intersection 0 to intersection
- *  n - 1 in the shortest amount of time.
+ * You want to know in how many ways you can travel from intersection 0 to intersection
+ * n - 1 in the shortest amount of time.
  *
- *  Return the number of ways you can arrive at your destination in the shortest amount of
- *  time. Since the answer may be large, return it modulo 10^9 + 7.
+ * Return the number of ways you can arrive at your destination in the shortest amount of
+ * time. Since the answer may be large, return it modulo 10^9 + 7.
  *
- *  Example 1:
- *  Input: n = 7, roads = [[0,6,7],[0,1,2],[1,2,3],[1,3,3],[6,3,3],[3,5,1],[6,5,1],
- *                         [2,5,1],[0,4,5],[4,6,2]]
- *  Output: 4      // the shortest time is 7 minutes, reachable in 4 ways
+ * Example 1:
+ * Input: n = 7, roads = [[0,6,7],[0,1,2],[1,2,3],[1,3,3],[6,3,3],[3,5,1],[6,5,1],
+ * [2,5,1],[0,4,5],[4,6,2]]
+ * Output: 4      // the shortest time is 7 minutes, reachable in 4 ways
  *
- *  Example 2:
- *  Input: n = 2, roads = [[1,0,10]]
- *  Output: 1      // only one way: 0 -> 1
+ * Example 2:
+ * Input: n = 2, roads = [[1,0,10]]
+ * Output: 1      // only one way: 0 -> 1
  *
- *  Constraints:
+ * Constraints:
  *
- *   1 <= n <= 200
- *   n - 1 <= roads.length <= n * (n - 1) / 2
- *   roads[i].length == 3
- *   0 <= ui, vi <= n - 1, ui != vi
- *   1 <= timei <= 10^9
+ * 1 <= n <= 200
+ * n - 1 <= roads.length <= n * (n - 1) / 2
+ * roads[i].length == 3
+ * 0 <= ui, vi <= n - 1, ui != vi
+ * 1 <= timei <= 10^9
+ *
  */
 public class NumberOfWaysToArriveAtDestination {
 

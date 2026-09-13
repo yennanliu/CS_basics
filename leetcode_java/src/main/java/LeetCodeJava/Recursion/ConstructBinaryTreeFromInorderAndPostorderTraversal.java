@@ -8,10 +8,8 @@ import java.util.HashMap;
 // https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/
 /**
  * 106. Construct Binary Tree from Inorder and Postorder Traversal
- * Solved
  * Medium
- * Topics
- * Companies
+ *
  * Given two integer arrays inorder and postorder where inorder is the inorder traversal of a binary tree and postorder is the postorder traversal of the same tree, construct and return the binary tree.
  *
  *
@@ -36,6 +34,7 @@ import java.util.HashMap;
  * Each value of postorder also appears in inorder.
  * inorder is guaranteed to be the inorder traversal of the tree.
  * postorder is guaranteed to be the postorder traversal of the tree.
+ *
  */
 public class ConstructBinaryTreeFromInorderAndPostorderTraversal {
 

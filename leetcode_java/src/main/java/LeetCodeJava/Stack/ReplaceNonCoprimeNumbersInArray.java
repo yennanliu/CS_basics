@@ -6,34 +6,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  2197. Replace Non-Coprime Numbers in Array
- *  Hard
+ * 2197. Replace Non-Coprime Numbers in Array
+ * Hard
  *
- *  You are given an array of integers nums. Perform the following steps:
- *    - Find any two adjacent numbers in nums that are non-coprime.
- *    - If no such numbers are found, stop the process.
- *    - Otherwise, delete the two numbers and replace them with their LCM
- *      (Least Common Multiple).
- *    - Repeat as long as you keep finding two adjacent non-coprime numbers.
+ * You are given an array of integers nums. Perform the following steps:
+ * - Find any two adjacent numbers in nums that are non-coprime.
+ * - If no such numbers are found, stop the process.
+ * - Otherwise, delete the two numbers and replace them with their LCM
+ * (Least Common Multiple).
+ * - Repeat as long as you keep finding two adjacent non-coprime numbers.
  *
- *  Return the final modified array. It can be shown that replacing adjacent
- *  non-coprime numbers in any arbitrary order will lead to the same result.
+ * Return the final modified array. It can be shown that replacing adjacent
+ * non-coprime numbers in any arbitrary order will lead to the same result.
  *
- *  Two values x and y are non-coprime if GCD(x, y) > 1.
+ * Two values x and y are non-coprime if GCD(x, y) > 1.
  *
- *  Example 1:
- *    Input: nums = [6,4,3,2,7,6,2]
- *    Output: [12,7,6]
+ * Example 1:
+ * Input: nums = [6,4,3,2,7,6,2]
+ * Output: [12,7,6]
  *
- *  Example 2:
- *    Input: nums = [2,2,1,1,3,3,3]
- *    Output: [2,1,1,3]
+ * Example 2:
+ * Input: nums = [2,2,1,1,3,3,3]
+ * Output: [2,1,1,3]
  *
- *  Constraints:
- *    1 <= nums.length <= 10^5
- *    1 <= nums[i] <= 10^5
- *    The test cases are generated such that the values in the final array are
- *    less than or equal to 10^8.
+ * Constraints:
+ * 1 <= nums.length <= 10^5
+ * 1 <= nums[i] <= 10^5
+ * The test cases are generated such that the values in the final array are
+ * less than or equal to 10^8.
+ *
  */
 public class ReplaceNonCoprimeNumbersInArray {
 

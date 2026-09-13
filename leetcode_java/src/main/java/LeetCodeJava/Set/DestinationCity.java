@@ -7,12 +7,9 @@ import java.util.List;
 import java.util.Set;
 
 /**
- *  1436. Destination City
+ * 1436. Destination City
  * Easy
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You are given the array paths, where paths[i] = [cityAi, cityBi] means there exists a direct path going from cityAi to cityBi. Return the destination city, that is, the city without any path outgoing to another city.
  *
  * It is guaranteed that the graph of paths forms a line without any loop, therefore, there will be exactly one destination city.
@@ -47,7 +44,6 @@ import java.util.Set;
  * 1 <= cityAi.length, cityBi.length <= 10
  * cityAi != cityBi
  * All strings consist of lowercase and uppercase English letters and the space character.
- *
  *
  */
 public class DestinationCity {

@@ -6,11 +6,8 @@ import java.util.*;
 
 /**
  * 399. Evaluate Division
- * Solved
  * Medium
- * Topics
- * Companies
- * Hint
+ *
  * You are given an array of variable pairs equations and an array of real numbers values, where equations[i] = [Ai, Bi] and values[i] represent the equation Ai / Bi = values[i]. Each Ai or Bi is a string that represents a single variable.
  *
  * You are also given some queries, where queries[j] = [Cj, Dj] represents the jth query where you must find the answer for Cj / Dj = ?.
@@ -869,7 +866,7 @@ public class EvaluateDivision {
         return results;
     }
 
-    // V5
+    // V5-1
     // IDEA: UNION FIND
     // https://leetcode.com/problems/evaluate-division/submissions/1498458088/
 //    private Map<String, Pair<String, Double>> parents = new HashMap<>();
@@ -958,7 +955,7 @@ public class EvaluateDivision {
 //        }
 //    }
 
-    // V4
+    // V4-1
     // IDEA: BFS
     // https://leetcode.com/problems/evaluate-division/solutions/3543150/pythonjavacsimple-solutioneasy-to-unders-7uwo/
 //    public double[] calcEquation_4(List<List<String>> equations, double[] values, List<List<String>> queries) {

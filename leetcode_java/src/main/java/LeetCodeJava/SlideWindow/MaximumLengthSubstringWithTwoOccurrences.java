@@ -8,10 +8,7 @@ import java.util.Map;
 /**
  * 3090. Maximum Length Substring With Two Occurrences
  * Easy
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * Given a string s, return the maximum length of a substring such that it contains at most two occurrences of each character.
  *
  *

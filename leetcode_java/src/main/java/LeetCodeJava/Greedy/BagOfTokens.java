@@ -7,11 +7,9 @@ import java.util.Deque;
 import java.util.LinkedList;
 
 /**
- *  948. Bag of Tokens
+ * 948. Bag of Tokens
  * Medium
- * Topics
- * premium lock icon
- * Companies
+ *
  * You start with an initial power of power, an initial score of 0, and a bag of tokens given as an integer array tokens, where each tokens[i] denotes the value of tokeni.
  *
  * Your goal is to maximize the total score by strategically playing these tokens. In one move, you can play an unplayed token in one of the two ways (but not both for the same token):

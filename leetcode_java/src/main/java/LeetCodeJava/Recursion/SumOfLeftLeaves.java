@@ -3,11 +3,8 @@ package LeetCodeJava.Recursion;
 // https://leetcode.com/problems/sum-of-left-leaves/
 /**
  * 404. Sum of Left Leaves
- * Solved
  * Easy
- * Topics
- * premium lock icon
- * Companies
+ *
  * Given the root of a binary tree, return the sum of all left leaves.
  *
  * A leaf is a node with no children. A left leaf is a leaf that is the left child of another node.
@@ -30,7 +27,6 @@ package LeetCodeJava.Recursion;
  *
  * The number of nodes in the tree is in the range [1, 1000].
  * -1000 <= Node.val <= 1000
- *
  *
  */
 import LeetCodeJava.DataStructure.TreeNode;
@@ -133,7 +129,7 @@ public class SumOfLeftLeaves {
 
 
 
-    // VO-7
+    // V0-7
     // IDEA: DFS (post order traverse)
     int res = 0;
     /**

@@ -5,14 +5,16 @@ package LeetCodeJava.Tree;
 import LeetCodeJava.DataStructure.TreeNode;
 
 /**
- *  NOTE !!!
+ * 701. Insert into a Binary Search Tree
+ * Medium
  *
- *   what if `duplicated val` in node is allowed ?
+ * NOTE !!!
  *
- *   e.g.
+ * what if `duplicated val` in node is allowed ?
  *
- *     It is guaranteed that the new value does not exist in the original BST.
+ * e.g.
  *
+ * It is guaranteed that the new value does not exist in the original BST.
  *
  */
 public class InsertIntoABinarySearchTreeFollowup {

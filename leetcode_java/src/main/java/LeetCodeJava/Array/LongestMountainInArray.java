@@ -2,11 +2,9 @@ package LeetCodeJava.Array;
 
 // https://leetcode.com/problems/longest-mountain-in-array/description/
 /**
- *  845. Longest Mountain in Array
+ * 845. Longest Mountain in Array
  * Medium
- * Topics
- * premium lock icon
- * Companies
+ *
  * You may recall that an array arr is a mountain array if and only if:
  *
  * arr.length >= 3

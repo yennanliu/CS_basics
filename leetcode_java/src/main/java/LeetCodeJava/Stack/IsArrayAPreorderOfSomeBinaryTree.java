@@ -5,35 +5,36 @@ package LeetCodeJava.Stack;
 import java.util.List;
 
 /**
- *  2764. Is Array a Preorder of Some Binary Tree
- *  Medium
+ * 2764. Is Array a Preorder of Some ‌Binary Tree
+ * Medium
  *
- *  Given a 0-indexed integer 2D array nodes, your task is to determine if the
- *  given array represents the preorder traversal of some binary tree.
+ * Given a 0-indexed integer 2D array nodes, your task is to determine if the
+ * given array represents the preorder traversal of some binary tree.
  *
- *  For each index i, nodes[i] = [id, parentId], where id is the id of the node
- *  at index i and parentId is the id of its parent in the tree (if the node has
- *  no parent, then parentId == -1).
+ * For each index i, nodes[i] = [id, parentId], where id is the id of the node
+ * at index i and parentId is the id of its parent in the tree (if the node has
+ * no parent, then parentId == -1).
  *
- *  Return true if the given array represents the preorder traversal of some
- *  tree, and false otherwise.
+ * Return true if the given array represents the preorder traversal of some
+ * tree, and false otherwise.
  *
- *  Example 1:
- *    Input: nodes = [[0,-1],[1,0],[2,0],[3,2],[4,2]]
- *    Output: true
- *    Explanation: visit 0, then the subtree [1], then the subtree [2,3,4].
+ * Example 1:
+ * Input: nodes = [[0,-1],[1,0],[2,0],[3,2],[4,2]]
+ * Output: true
+ * Explanation: visit 0, then the subtree [1], then the subtree [2,3,4].
  *
- *  Example 2:
- *    Input: nodes = [[0,-1],[1,0],[2,0],[3,1],[4,1]]
- *    Output: false
- *    Explanation: 2 comes between 1 and 3, so 1's subtree is not contiguous.
+ * Example 2:
+ * Input: nodes = [[0,-1],[1,0],[2,0],[3,1],[4,1]]
+ * Output: false
+ * Explanation: 2 comes between 1 and 3, so 1's subtree is not contiguous.
  *
- *  Constraints:
- *    1 <= nodes.length <= 10^5
- *    nodes[i].length == 2
- *    0 <= nodes[i][0] <= 10^5
- *    -1 <= nodes[i][1] <= 10^5
- *    The input is generated such that nodes make a binary tree.
+ * Constraints:
+ * 1 <= nodes.length <= 10^5
+ * nodes[i].length == 2
+ * 0 <= nodes[i][0] <= 10^5
+ * -1 <= nodes[i][1] <= 10^5
+ * The input is generated such that nodes make a binary tree.
+ *
  */
 public class IsArrayAPreorderOfSomeBinaryTree {
 

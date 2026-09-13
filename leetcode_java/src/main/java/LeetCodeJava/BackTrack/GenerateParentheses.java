@@ -3,10 +3,8 @@ package LeetCodeJava.BackTrack;
 // https://leetcode.com/problems/generate-parentheses/
 /**
  * 22. Generate Parentheses
- * Solved
  * Medium
- * Topics
- * Companies
+ *
  * Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
  *
  *
@@ -271,7 +269,7 @@ public class GenerateParentheses {
     }
 
 
-    // V2
+    // V2-1
     // IDEA :  Backtracking, Keep Candidate Valid
     // https://leetcode.com/problems/generate-parentheses/editorial/
     // time: O(4^N / sqrt(N)), space: O(4^N / sqrt(N))

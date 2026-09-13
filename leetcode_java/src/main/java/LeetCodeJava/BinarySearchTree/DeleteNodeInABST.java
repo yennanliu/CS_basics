@@ -6,10 +6,8 @@ import LeetCodeJava.DataStructure.TreeNode;
 
 /**
  * 450. Delete Node in a BST
- * Solved
  * Medium
- * Topics
- * Companies
+ *
  * Given a root node reference of a BST and a key, delete the node with the given key in the BST. Return the root node reference (possibly updated) of the BST.
  *
  * Basically, the deletion can be divided into two stages:
@@ -37,6 +35,7 @@ import LeetCodeJava.DataStructure.TreeNode;
  * -105 <= key <= 105
  *
  * Follow up: Could you solve it with time complexity O(height of tree)?
+ *
  */
 public class DeleteNodeInABST {
 

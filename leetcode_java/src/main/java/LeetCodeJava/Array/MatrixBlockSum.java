@@ -2,12 +2,9 @@ package LeetCodeJava.Array;
 
 // https://leetcode.com/problems/matrix-block-sum/description/
 /**
- *  1314. Matrix Block Sum
+ * 1314. Matrix Block Sum
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * Given a m x n matrix mat and an integer k, return a matrix answer where each answer[i][j] is the sum of all elements mat[r][c] for:
  *
  * i - k <= r <= i + k,
@@ -31,7 +28,6 @@ package LeetCodeJava.Array;
  * n == mat[i].length
  * 1 <= m, n, k <= 100
  * 1 <= mat[i][j] <= 100
- *
  *
  */
 public class MatrixBlockSum {

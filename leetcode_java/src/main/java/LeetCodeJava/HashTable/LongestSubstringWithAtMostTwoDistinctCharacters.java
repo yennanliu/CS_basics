@@ -9,6 +9,7 @@ import java.util.Map;
 /**
  * 159. Longest Substring with At Most Two Distinct Characters
  * Medium
+ *
  * Lock: Prime
  *
  * Given a string s, return the length of the longest substring that contains

@@ -5,10 +5,9 @@ package LeetCodeJava.DynamicProgramming;
 import java.util.Arrays;
 
 /**
- *  801. Minimum Swaps To Make Sequences Increasing
+ * 801. Minimum Swaps To Make Sequences Increasing
  * Hard
- * Topics
- * Companies
+ *
  * You are given two integer arrays of the same length nums1 and nums2. In one operation, you are allowed to swap nums1[i] with nums2[i].
  *
  * For example, if nums1 = [1,2,3,8], and nums2 = [5,6,7,4], you can swap the element at i = 3 to obtain nums1 = [1,2,3,4] and nums2 = [5,6,7,8].
@@ -37,7 +36,6 @@ import java.util.Arrays;
  * 2 <= nums1.length <= 105
  * nums2.length == nums1.length
  * 0 <= nums1[i], nums2[i] <= 2 * 105
- *
  *
  */
 // NOTE : An array arr is strictly increasing if and only if arr[0] < arr[1] < arr[2] < ... < arr[arr.length - 1].

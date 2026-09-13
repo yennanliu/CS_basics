@@ -6,10 +6,8 @@ import java.util.*;
 
 /**
  * 524. Longest Word in Dictionary through Deleting
- *
  * Medium
- * Topics
- * Companies
+ *
  * Given a string s and a string array dictionary, return the longest string in the dictionary that can be formed by deleting some of the given string characters. If there is more than one possible result, return the longest word with the smallest lexicographical order. If there is no possible result, return the empty string.
  *
  *
@@ -288,7 +286,7 @@ public class LongestWordInDictionaryThroughDeleting {
 
 
 
-    // V1_1
+    // V1-_1
     // IDEA : Brute Force
     // https://leetcode.com/problems/longest-word-in-dictionary-through-deleting/editorial/
     /**
@@ -320,7 +318,7 @@ public class LongestWordInDictionaryThroughDeleting {
         }
     }
 
-    // V1_2
+    // V1-_2
     // IDEA : Iterative Brute Force
     // https://leetcode.com/problems/longest-word-in-dictionary-through-deleting/editorial/
     /**
@@ -347,7 +345,7 @@ public class LongestWordInDictionaryThroughDeleting {
         return max_str;
     }
 
-    // V1_3
+    // V1-_3
     // IDEA : Sorting and Checking Subsequence
     // https://leetcode.com/problems/longest-word-in-dictionary-through-deleting/editorial/
     /**
@@ -382,7 +380,7 @@ public class LongestWordInDictionaryThroughDeleting {
         return "";
     }
 
-    // V1_4
+    // V1-_4
     // IDEA : Without Sorting
     // https://leetcode.com/problems/longest-word-in-dictionary-through-deleting/editorial/
     /**

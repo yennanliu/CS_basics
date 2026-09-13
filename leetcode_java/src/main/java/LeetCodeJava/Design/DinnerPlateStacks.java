@@ -9,33 +9,34 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 /**
- *  1172. Dinner Plate Stacks
- *  Hard
+ * 1172. Dinner Plate Stacks
+ * Hard
  *
- *  You have an infinite number of stacks arranged in a row and numbered (left to right)
- *  from 0, each of the stacks has the same maximum capacity.
+ * You have an infinite number of stacks arranged in a row and numbered (left to right)
+ * from 0, each of the stacks has the same maximum capacity.
  *
- *  Implement the DinnerPlates class:
- *   - DinnerPlates(int capacity) Initializes the object with the maximum capacity.
- *   - void push(int val) Pushes val into the LEFTMOST stack with size < capacity.
- *   - int pop() Returns and removes the value at the top of the RIGHTMOST non-empty
- *     stack, or -1 if all the stacks are empty.
- *   - int popAtStack(int index) Returns and removes the value at the top of the stack
- *     with the given index, or -1 if that stack is empty.
+ * Implement the DinnerPlates class:
+ * - DinnerPlates(int capacity) Initializes the object with the maximum capacity.
+ * - void push(int val) Pushes val into the LEFTMOST stack with size < capacity.
+ * - int pop() Returns and removes the value at the top of the RIGHTMOST non-empty
+ * stack, or -1 if all the stacks are empty.
+ * - int popAtStack(int index) Returns and removes the value at the top of the stack
+ * with the given index, or -1 if that stack is empty.
  *
- *  Example 1:
- *    Input
- *      ["DinnerPlates","push","push","push","push","push","popAtStack","push","push",
- *       "popAtStack","popAtStack","pop","pop","pop","pop","pop"]
- *      [[2],[1],[2],[3],[4],[5],[0],[20],[21],[0],[2],[],[],[],[],[]]
- *    Output
- *      [null,null,null,null,null,null,2,null,null,20,21,5,4,3,1,-1]
+ * Example 1:
+ * Input
+ * ["DinnerPlates","push","push","push","push","push","popAtStack","push","push",
+ * "popAtStack","popAtStack","pop","pop","pop","pop","pop"]
+ * [[2],[1],[2],[3],[4],[5],[0],[20],[21],[0],[2],[],[],[],[],[]]
+ * Output
+ * [null,null,null,null,null,null,2,null,null,20,21,5,4,3,1,-1]
  *
- *  Constraints:
- *    1 <= capacity <= 2 * 10^4
- *    1 <= val <= 2 * 10^4
- *    0 <= index <= 10^5
- *    At most 2 * 10^5 calls will be made to push, pop, and popAtStack.
+ * Constraints:
+ * 1 <= capacity <= 2 * 10^4
+ * 1 <= val <= 2 * 10^4
+ * 0 <= index <= 10^5
+ * At most 2 * 10^5 calls will be made to push, pop, and popAtStack.
+ *
  */
 public class DinnerPlateStacks {
 

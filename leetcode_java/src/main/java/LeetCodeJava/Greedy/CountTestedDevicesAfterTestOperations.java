@@ -3,12 +3,8 @@ package LeetCodeJava.Greedy;
 // https://leetcode.com/problems/count-tested-devices-after-test-operations/description/
 /**
  * 2960. Count Tested Devices After Test Operations
- * Solved
  * Easy
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You are given a 0-indexed integer array batteryPercentages having length n, denoting the battery percentages of n 0-indexed devices.
  *
  * Your task is to test each device i in order from 0 to n - 1, by performing the following test operations:

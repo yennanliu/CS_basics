@@ -11,8 +11,7 @@ import java.util.List;
 /**
  * 2807. Insert Greatest Common Divisors in Linked List
  * Medium
- * Topics
- * Companies
+ *
  * Given the head of a linked list head, in which each node contains an integer value.
  *
  * Between every pair of adjacent nodes, insert a new node with a value equal to the greatest common divisor of them.

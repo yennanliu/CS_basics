@@ -6,7 +6,9 @@ package LeetCodeJava.Heap;
 import java.util.PriorityQueue;
 
 /**
- *  1167. Minimum Cost to Connect Sticks
+ * 1167. Minimum Cost to Connect Sticks
+ * Medium
+ *
  * You have some sticks with positive integer lengths.
  *
  * You can connect any two sticks of lengths X and Y into one stick by paying a cost of X + Y.  You perform this action until there is one stick remaining.

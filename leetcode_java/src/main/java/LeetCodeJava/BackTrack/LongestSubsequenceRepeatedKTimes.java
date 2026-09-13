@@ -8,40 +8,41 @@ import java.util.Deque;
 import java.util.List;
 
 /**
- *  2014. Longest Subsequence Repeated k Times
- *  Hard
+ * 2014. Longest Subsequence Repeated k Times
+ * Hard
  *
- *  You are given a string s of length n, and an integer k. You are tasked to
- *  find the longest subsequence repeated k times in string s.
+ * You are given a string s of length n, and an integer k. You are tasked to
+ * find the longest subsequence repeated k times in string s.
  *
- *  A subsequence seq is repeated k times in s if seq * k is a subsequence of s,
- *  where seq * k is seq concatenated k times.
- *  For example, "bba" is repeated 2 times in "bababcba", because "bbabba" is a
- *  subsequence of "bababcba".
+ * A subsequence seq is repeated k times in s if seq * k is a subsequence of s,
+ * where seq * k is seq concatenated k times.
+ * For example, "bba" is repeated 2 times in "bababcba", because "bbabba" is a
+ * subsequence of "bababcba".
  *
- *  Return the longest subsequence repeated k times in s. If multiple such
- *  subsequences exist, return the lexicographically largest one. If there is no
- *  such subsequence, return an empty string.
+ * Return the longest subsequence repeated k times in s. If multiple such
+ * subsequences exist, return the lexicographically largest one. If there is no
+ * such subsequence, return an empty string.
  *
- *  Example 1:
- *    Input: s = "letsleetcode", k = 2
- *    Output: "let"
- *    Explanation: "let" and "ete" are both repeated 2 times; "let" is the
- *                 lexicographically largest one.
+ * Example 1:
+ * Input: s = "letsleetcode", k = 2
+ * Output: "let"
+ * Explanation: "let" and "ete" are both repeated 2 times; "let" is the
+ * lexicographically largest one.
  *
- *  Example 2:
- *    Input: s = "bb", k = 2
- *    Output: "b"
+ * Example 2:
+ * Input: s = "bb", k = 2
+ * Output: "b"
  *
- *  Example 3:
- *    Input: s = "ab", k = 2
- *    Output: ""
+ * Example 3:
+ * Input: s = "ab", k = 2
+ * Output: ""
  *
- *  Constraints:
- *    n == s.length
- *    2 <= k <= 2000
- *    2 <= n < min(2001, k * 8)
- *    s consists of lowercase English letters.
+ * Constraints:
+ * n == s.length
+ * 2 <= k <= 2000
+ * 2 <= n < min(2001, k * 8)
+ * s consists of lowercase English letters.
+ *
  */
 public class LongestSubsequenceRepeatedKTimes {
 

@@ -5,12 +5,9 @@ package LeetCodeJava.Sort;
 import java.util.Arrays;
 
 /**
- *  1877. Minimize Maximum Pair Sum in Array
+ * 1877. Minimize Maximum Pair Sum in Array
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * The pair sum of a pair (a,b) is equal to a + b. The maximum pair sum is the largest pair sum in a list of pairs.
  *
  * For example, if we have pairs (1,5), (2,3), and (4,4), the maximum pair sum would be max(1+5, 2+3, 4+4) = max(6, 5, 8) = 8.
@@ -42,8 +39,6 @@ import java.util.Arrays;
  * 2 <= n <= 105
  * n is even.
  * 1 <= nums[i] <= 105
- *
- *
  *
  */
 public class MinimizeMaximumPairSumInArray {

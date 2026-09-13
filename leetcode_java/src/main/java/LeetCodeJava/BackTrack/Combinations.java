@@ -3,10 +3,8 @@ package LeetCodeJava.BackTrack;
 // https://leetcode.com/problems/combinations/description/
 /**
  * 77. Combinations
- * Solved
  * Medium
- * Topics
- * Companies
+ *
  * Given two integers n and k, return all possible combinations of k numbers chosen from the range [1, n].
  *
  * You may return the answer in any order.

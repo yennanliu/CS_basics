@@ -5,40 +5,41 @@ package LeetCodeJava.BackTrack;
 import java.util.*;
 
 /**
- *  489. Robot Room Cleaner
- *  Hard
+ * 489. Robot Room Cleaner
+ * Hard
  *
- *  You are controlling a robot that is located somewhere in a room. The room is
- *  modeled as an m x n binary grid where 0 represents a wall and 1 represents an
- *  empty slot.
+ * You are controlling a robot that is located somewhere in a room. The room is
+ * modeled as an m x n binary grid where 0 represents a wall and 1 represents an
+ * empty slot.
  *
- *  The robot starts at an unknown location in the room that is guaranteed to be
- *  empty, and you do not have access to the grid, but you can move the robot
- *  using the given API Robot. You are tasked to use the robot to clean the
- *  entire room.
+ * The robot starts at an unknown location in the room that is guaranteed to be
+ * empty, and you do not have access to the grid, but you can move the robot
+ * using the given API Robot. You are tasked to use the robot to clean the
+ * entire room.
  *
- *  When the robot tries to move into a wall cell, its bumper sensor detects the
- *  obstacle, and it stays on the current cell.
+ * When the robot tries to move into a wall cell, its bumper sensor detects the
+ * obstacle, and it stays on the current cell.
  *
- *  API:
- *   boolean move();   // true if next cell is open and robot moved into it
- *   void turnLeft();  // 90 degrees, robot stays on the same cell
- *   void turnRight(); // 90 degrees, robot stays on the same cell
- *   void clean();     // clean the current cell
+ * API:
+ * boolean move();   // true if next cell is open and robot moved into it
+ * void turnLeft();  // 90 degrees, robot stays on the same cell
+ * void turnRight(); // 90 degrees, robot stays on the same cell
+ * void clean();     // clean the current cell
  *
- *  The initial direction of the robot is facing up. All four edges of the grid
- *  are surrounded by a wall.
+ * The initial direction of the robot is facing up. All four edges of the grid
+ * are surrounded by a wall.
  *
- *  Example 1:
- *   Input: room = [[1,1,1,1,1,0,1,1],[1,1,1,1,1,0,1,1],[1,0,1,1,1,1,1,1],
- *                  [0,0,0,1,0,0,0,0],[1,1,1,1,1,1,1,1]], row = 1, col = 3
- *   Output: Robot cleaned all rooms.
+ * Example 1:
+ * Input: room = [[1,1,1,1,1,0,1,1],[1,1,1,1,1,0,1,1],[1,0,1,1,1,1,1,1],
+ * [0,0,0,1,0,0,0,0],[1,1,1,1,1,1,1,1]], row = 1, col = 3
+ * Output: Robot cleaned all rooms.
  *
- *  Constraints:
- *   m == room.length, n == room[i].length
- *   1 <= m <= 100, 1 <= n <= 200
- *   room[i][j] is either 0 or 1.
- *   All the empty cells can be visited from the starting position.
+ * Constraints:
+ * m == room.length, n == room[i].length
+ * 1 <= m <= 100, 1 <= n <= 200
+ * room[i][j] is either 0 or 1.
+ * All the empty cells can be visited from the starting position.
+ *
  */
 public class RobotRoomCleaner {
 

@@ -9,12 +9,8 @@ import java.util.Queue;
 
 /**
  * 1248. Count Number of Nice Subarrays
- * Solved
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * Given an array of integers nums and an integer k. A continuous subarray is called nice if there are k odd numbers on it.
  *
  * Return the number of nice sub-arrays.
@@ -361,7 +357,7 @@ public class CountNumberOfNiceSubarrays {
     }
 
 
-    // V0-1
+    // V0-2
     // IDEA: Sliding Window (GPT)
     /** NOTE !!!
      *

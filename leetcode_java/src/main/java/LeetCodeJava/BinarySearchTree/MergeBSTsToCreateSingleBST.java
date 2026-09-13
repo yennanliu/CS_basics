@@ -11,42 +11,43 @@ import java.util.Map;
 import LeetCodeJava.DataStructure.TreeNode;
 
 /**
- *  1932. Merge BSTs to Create Single BST
- *  Hard
+ * 1932. Merge BSTs to Create Single BST
+ * Hard
  *
- *  You are given n BST (binary search tree) root nodes for n separate BSTs stored
- *  in an array trees (0-indexed). Each BST in trees has at most 3 nodes, and no
- *  two roots have the same value. In one operation, you can:
- *   - Select two distinct indices i and j such that the value stored at one of the
- *     leaves of trees[i] is equal to the root value of trees[j].
- *   - Replace the leaf node in trees[i] with trees[j].
- *   - Remove trees[j] from trees.
+ * You are given n BST (binary search tree) root nodes for n separate BSTs stored
+ * in an array trees (0-indexed). Each BST in trees has at most 3 nodes, and no
+ * two roots have the same value. In one operation, you can:
+ * - Select two distinct indices i and j such that the value stored at one of the
+ * leaves of trees[i] is equal to the root value of trees[j].
+ * - Replace the leaf node in trees[i] with trees[j].
+ * - Remove trees[j] from trees.
  *
- *  Return the root of the resulting BST if it is possible to form a valid BST after
- *  performing n - 1 operations, or null if it is impossible to create a valid BST.
+ * Return the root of the resulting BST if it is possible to form a valid BST after
+ * performing n - 1 operations, or null if it is impossible to create a valid BST.
  *
- *  Example 1:
- *    Input: trees = [[2,1],[3,2,5],[5,4]]
- *    Output: [3,2,5,1,null,4]
+ * Example 1:
+ * Input: trees = [[2,1],[3,2,5],[5,4]]
+ * Output: [3,2,5,1,null,4]
  *
- *  Example 2:
- *    Input: trees = [[5,3,8],[3,2,6]]
- *    Output: []
- *    Explanation: the only possible merge does not yield a valid BST.
+ * Example 2:
+ * Input: trees = [[5,3,8],[3,2,6]]
+ * Output: []
+ * Explanation: the only possible merge does not yield a valid BST.
  *
- *  Example 3:
- *    Input: trees = [[5,4],[3]]
- *    Output: []
- *    Explanation: it is impossible to perform any operation.
+ * Example 3:
+ * Input: trees = [[5,4],[3]]
+ * Output: []
+ * Explanation: it is impossible to perform any operation.
  *
- *  Constraints:
- *    n == trees.length
- *    1 <= n <= 5 * 10^4
- *    The number of nodes in each tree is in the range [1, 3].
- *    Each node in the input may have children but no grandchildren.
- *    No two roots of trees have the same value.
- *    All the trees in the input are valid BSTs.
- *    1 <= TreeNode.val <= 5 * 10^4
+ * Constraints:
+ * n == trees.length
+ * 1 <= n <= 5 * 10^4
+ * The number of nodes in each tree is in the range [1, 3].
+ * Each node in the input may have children but no grandchildren.
+ * No two roots of trees have the same value.
+ * All the trees in the input are valid BSTs.
+ * 1 <= TreeNode.val <= 5 * 10^4
+ *
  */
 public class MergeBSTsToCreateSingleBST {
 

@@ -6,39 +6,40 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  842. Split Array into Fibonacci Sequence
- *  Medium
+ * 842. Split Array into Fibonacci Sequence
+ * Medium
  *
- *  You are given a string of digits num, such as "123456579". We can split it
- *  into a Fibonacci-like sequence [123, 456, 579].
+ * You are given a string of digits num, such as "123456579". We can split it
+ * into a Fibonacci-like sequence [123, 456, 579].
  *
- *  Formally, a Fibonacci-like sequence is a list f of non-negative integers such
- *  that:
- *   - 0 <= f[i] < 2^31 (that is, each integer fits in a 32-bit signed integer),
- *   - f.length >= 3, and
- *   - f[i] + f[i + 1] == f[i + 2] for all 0 <= i < f.length - 2.
+ * Formally, a Fibonacci-like sequence is a list f of non-negative integers such
+ * that:
+ * - 0 <= f[i] < 2^31 (that is, each integer fits in a 32-bit signed integer),
+ * - f.length >= 3, and
+ * - f[i] + f[i + 1] == f[i + 2] for all 0 <= i < f.length - 2.
  *
- *  Note that when you split the string into pieces, each piece must not have
- *  extra leading zeros, except if the piece is the number 0 itself.
+ * Note that when you split the string into pieces, each piece must not have
+ * extra leading zeros, except if the piece is the number 0 itself.
  *
- *  Return any Fibonacci-like sequence split from num, or return [] if it cannot
- *  be done.
+ * Return any Fibonacci-like sequence split from num, or return [] if it cannot
+ * be done.
  *
- *  Example 1:
- *  Input: num = "1101111"
- *  Output: [11,0,11,11]
+ * Example 1:
+ * Input: num = "1101111"
+ * Output: [11,0,11,11]
  *
- *  Example 2:
- *  Input: num = "112358130"
- *  Output: []
+ * Example 2:
+ * Input: num = "112358130"
+ * Output: []
  *
- *  Example 3:
- *  Input: num = "0123"
- *  Output: []
+ * Example 3:
+ * Input: num = "0123"
+ * Output: []
  *
- *  Constraints:
- *   - 1 <= num.length <= 200
- *   - num contains only digits.
+ * Constraints:
+ * - 1 <= num.length <= 200
+ * - num contains only digits.
+ *
  */
 public class SplitArrayIntoFibonacciSequence {
 

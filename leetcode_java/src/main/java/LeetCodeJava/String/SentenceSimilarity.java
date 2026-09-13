@@ -6,7 +6,9 @@ package LeetCodeJava.String;
 import java.util.*;
 
 /**
- * 734 - Sentence Similarity
+ * 734. Sentence Similarity
+ * Easy
+ *
  * Posted on December 3, 2017 · 2 minute read
  * Welcome to Subscribe On Youtube
  * <p>
@@ -53,6 +55,7 @@ import java.util.*;
  * 1 <= xi.length, yi.length <= 20
  * xi and yi consist of lower-case and upper-case English letters.
  * All the pairs (xi, yi) are distinct.
+ *
  */
 public class SentenceSimilarity {
 

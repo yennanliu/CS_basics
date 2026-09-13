@@ -5,37 +5,38 @@ package LeetCodeJava.Math;
 import java.util.Arrays;
 
 /**
- *  910. Smallest Range II
- *  Medium
+ * 910. Smallest Range II
+ * Medium
  *
- *  You are given an integer array nums and an integer k.
+ * You are given an integer array nums and an integer k.
  *
- *  For each index i where 0 <= i < nums.length, change nums[i] to be either
- *  nums[i] + k or nums[i] - k.
+ * For each index i where 0 <= i < nums.length, change nums[i] to be either
+ * nums[i] + k or nums[i] - k.
  *
- *  The score of nums is the difference between the maximum and minimum elements
- *  in nums.
+ * The score of nums is the difference between the maximum and minimum elements
+ * in nums.
  *
- *  Return the minimum score of nums after changing the values at each index.
+ * Return the minimum score of nums after changing the values at each index.
  *
- *  Example 1:
- *   Input: nums = [1], k = 0
- *   Output: 0
+ * Example 1:
+ * Input: nums = [1], k = 0
+ * Output: 0
  *
- *  Example 2:
- *   Input: nums = [0,10], k = 2
- *   Output: 6
- *   Explanation: change to [2,8] -> score 6.
+ * Example 2:
+ * Input: nums = [0,10], k = 2
+ * Output: 6
+ * Explanation: change to [2,8] -> score 6.
  *
- *  Example 3:
- *   Input: nums = [1,3,6], k = 3
- *   Output: 3
- *   Explanation: change to [4,6,3] -> score 3.
+ * Example 3:
+ * Input: nums = [1,3,6], k = 3
+ * Output: 3
+ * Explanation: change to [4,6,3] -> score 3.
  *
- *  Constraints:
- *   - 1 <= nums.length <= 10^4
- *   - 0 <= nums[i] <= 10^4
- *   - 0 <= k <= 10^4
+ * Constraints:
+ * - 1 <= nums.length <= 10^4
+ * - 0 <= nums[i] <= 10^4
+ * - 0 <= k <= 10^4
+ *
  */
 public class SmallestRangeII {
 

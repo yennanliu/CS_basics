@@ -3,10 +3,8 @@ package LeetCodeJava.DynamicProgramming;
 // https://leetcode.com/problems/edit-distance/description/
 /**
  * 72. Edit Distance
- * Solved
  * Medium
- * Topics
- * Companies
+ *
  * Given two strings word1 and word2, return the minimum number of operations required to convert word1 to word2.
  *
  * You have the following three operations permitted on a word:
@@ -40,7 +38,6 @@ package LeetCodeJava.DynamicProgramming;
  *
  * 0 <= word1.length, word2.length <= 500
  * word1 and word2 consist of lowercase English letters.
- *
  *
  */
 public class EditDistance {

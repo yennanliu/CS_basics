@@ -3,40 +3,41 @@ package LeetCodeJava.Sort;
 // https://leetcode.com/problems/coordinate-with-maximum-network-quality/
 
 /**
- *  1620. Coordinate With Maximum Network Quality
- *  Medium
+ * 1620. Coordinate With Maximum Network Quality
+ * Medium
  *
- *  You are given an array of network towers towers, where towers[i] = [xi, yi, qi]
- *  denotes the ith network tower with location (xi, yi) and quality factor qi. All
- *  the coordinates are integral coordinates on the X-Y plane, and the distance
- *  between two coordinates is the Euclidean distance.
+ * You are given an array of network towers towers, where towers[i] = [xi, yi, qi]
+ * denotes the ith network tower with location (xi, yi) and quality factor qi. All
+ * the coordinates are integral coordinates on the X-Y plane, and the distance
+ * between two coordinates is the Euclidean distance.
  *
- *  You are also given an integer radius where a tower is reachable if the distance
- *  is less than or equal to radius. Outside that distance the tower is not reachable.
+ * You are also given an integer radius where a tower is reachable if the distance
+ * is less than or equal to radius. Outside that distance the tower is not reachable.
  *
- *  The signal quality of the ith tower at a coordinate (x, y) is
- *  floor(qi / (1 + d)), where d is the distance between the tower and the
- *  coordinate. The network quality at a coordinate is the sum of the signal
- *  qualities from all the reachable towers.
+ * The signal quality of the ith tower at a coordinate (x, y) is
+ * floor(qi / (1 + d)), where d is the distance between the tower and the
+ * coordinate. The network quality at a coordinate is the sum of the signal
+ * qualities from all the reachable towers.
  *
- *  Return the array [cx, cy] representing the integral coordinate where the network
- *  quality is maximum. If there are multiple such coordinates, return the
- *  lexicographically minimum non-negative coordinate.
+ * Return the array [cx, cy] representing the integral coordinate where the network
+ * quality is maximum. If there are multiple such coordinates, return the
+ * lexicographically minimum non-negative coordinate.
  *
- *  Example 1:
- *    Input: towers = [[1,2,5],[2,1,7],[3,1,9]], radius = 2
- *    Output: [2,1]
- *    Explanation: at (2, 1) the total quality is 7 + 2 + 4 = 13, the maximum.
+ * Example 1:
+ * Input: towers = [[1,2,5],[2,1,7],[3,1,9]], radius = 2
+ * Output: [2,1]
+ * Explanation: at (2, 1) the total quality is 7 + 2 + 4 = 13, the maximum.
  *
- *  Example 2:
- *    Input: towers = [[23,11,21]], radius = 9
- *    Output: [23,11]
+ * Example 2:
+ * Input: towers = [[23,11,21]], radius = 9
+ * Output: [23,11]
  *
- *  Constraints:
- *    1 <= towers.length <= 50
- *    towers[i].length == 3
- *    0 <= xi, yi, qi <= 50
- *    1 <= radius <= 50
+ * Constraints:
+ * 1 <= towers.length <= 50
+ * towers[i].length == 3
+ * 0 <= xi, yi, qi <= 50
+ * 1 <= radius <= 50
+ *
  */
 public class CoordinateWithMaximumNetworkQuality {
 

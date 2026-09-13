@@ -3,37 +3,38 @@ package LeetCodeJava.BackTrack;
 // https://leetcode.com/problems/splitting-a-string-into-descending-consecutive-values/
 
 /**
- *  1849. Splitting a String Into Descending Consecutive Values
- *  Medium
+ * 1849. Splitting a String Into Descending Consecutive Values
+ * Medium
  *
- *  You are given a string s that consists of only digits.
+ * You are given a string s that consists of only digits.
  *
- *  Check if we can split s into two or more non-empty substrings such that the
- *  numerical values of the substrings are in descending order and the difference
- *  between numerical values of every two adjacent substrings is equal to 1.
+ * Check if we can split s into two or more non-empty substrings such that the
+ * numerical values of the substrings are in descending order and the difference
+ * between numerical values of every two adjacent substrings is equal to 1.
  *
- *  For example, the string s = "0090089" can be split into ["0090", "089"] with
- *  numerical values [90,89]. The values are in descending order and adjacent values
- *  differ by 1, so this way is valid.
+ * For example, the string s = "0090089" can be split into ["0090", "089"] with
+ * numerical values [90,89]. The values are in descending order and adjacent values
+ * differ by 1, so this way is valid.
  *
- *  Return true if it is possible to split s as described above, or false otherwise.
+ * Return true if it is possible to split s as described above, or false otherwise.
  *
- *  Example 1:
- *    Input: s = "1234"
- *    Output: false
+ * Example 1:
+ * Input: s = "1234"
+ * Output: false
  *
- *  Example 2:
- *    Input: s = "050043"
- *    Output: true
- *    Explanation: s can be split into ["05", "004", "3"] -> [5,4,3].
+ * Example 2:
+ * Input: s = "050043"
+ * Output: true
+ * Explanation: s can be split into ["05", "004", "3"] -> [5,4,3].
  *
- *  Example 3:
- *    Input: s = "9080701"
- *    Output: false
+ * Example 3:
+ * Input: s = "9080701"
+ * Output: false
  *
- *  Constraints:
- *    1 <= s.length <= 20
- *    s only consists of digits.
+ * Constraints:
+ * 1 <= s.length <= 20
+ * s only consists of digits.
+ *
  */
 public class SplittingAStringIntoDescendingConsecutiveValues {
 

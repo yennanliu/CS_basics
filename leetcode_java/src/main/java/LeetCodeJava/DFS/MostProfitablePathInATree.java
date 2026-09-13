@@ -7,46 +7,47 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- *  2467. Most Profitable Path in a Tree
- *  Medium
+ * 2467. Most Profitable Path in a Tree
+ * Medium
  *
- *  There is an undirected tree with n nodes labeled from 0 to n - 1, rooted at
- *  node 0. You are given a 2D integer array edges of length n - 1 where
- *  edges[i] = [ai, bi] indicates that there is an edge between nodes ai and bi.
+ * There is an undirected tree with n nodes labeled from 0 to n - 1, rooted at
+ * node 0. You are given a 2D integer array edges of length n - 1 where
+ * edges[i] = [ai, bi] indicates that there is an edge between nodes ai and bi.
  *
- *  At every node i there is a gate. amount[i] is the price to open the gate at
- *  node i if amount[i] is negative, or the cash reward otherwise.
+ * At every node i there is a gate. amount[i] is the price to open the gate at
+ * node i if amount[i] is negative, or the cash reward otherwise.
  *
- *  Initially Alice is at node 0 and Bob is at node bob. At every second Alice
- *  moves towards some leaf and Bob moves towards node 0. For every node on their
- *  path they either spend money or accept the reward; an already-open gate gives
- *  nothing. If they reach a node simultaneously they split the price / reward in
- *  half. Alice stops at a leaf, Bob stops at node 0.
+ * Initially Alice is at node 0 and Bob is at node bob. At every second Alice
+ * moves towards some leaf and Bob moves towards node 0. For every node on their
+ * path they either spend money or accept the reward; an already-open gate gives
+ * nothing. If they reach a node simultaneously they split the price / reward in
+ * half. Alice stops at a leaf, Bob stops at node 0.
  *
- *  Return the maximum net income Alice can have if she travels towards the
- *  optimal leaf node.
+ * Return the maximum net income Alice can have if she travels towards the
+ * optimal leaf node.
  *
- *  Example 1:
- *    Input: edges = [[0,1],[1,2],[1,3],[3,4]], bob = 3, amount = [-2,4,2,-4,6]
- *    Output: 6
- *    Explanation: Alice walks 0 -> 1 -> 3 -> 4 : -2 + 4/2 + 0 + 6 = 6.
+ * Example 1:
+ * Input: edges = [[0,1],[1,2],[1,3],[3,4]], bob = 3, amount = [-2,4,2,-4,6]
+ * Output: 6
+ * Explanation: Alice walks 0 -> 1 -> 3 -> 4 : -2 + 4/2 + 0 + 6 = 6.
  *
- *  Example 2:
- *    Input: edges = [[0,1]], bob = 1, amount = [-7280,2350]
- *    Output: -7280
- *    Explanation: Alice only opens the gate at node 0.
+ * Example 2:
+ * Input: edges = [[0,1]], bob = 1, amount = [-7280,2350]
+ * Output: -7280
+ * Explanation: Alice only opens the gate at node 0.
  *
- *  Constraints:
- *    2 <= n <= 10^5
- *    edges.length == n - 1
- *    edges[i].length == 2
- *    0 <= ai, bi < n
- *    ai != bi
- *    edges represents a valid tree.
- *    bob != 0
- *    0 <= bob < n
- *    amount.length == n
- *    amount[i] is an even integer in the range [-10^4, 10^4].
+ * Constraints:
+ * 2 <= n <= 10^5
+ * edges.length == n - 1
+ * edges[i].length == 2
+ * 0 <= ai, bi < n
+ * ai != bi
+ * edges represents a valid tree.
+ * bob != 0
+ * 0 <= bob < n
+ * amount.length == n
+ * amount[i] is an even integer in the range [-10^4, 10^4].
+ *
  */
 public class MostProfitablePathInATree {
 

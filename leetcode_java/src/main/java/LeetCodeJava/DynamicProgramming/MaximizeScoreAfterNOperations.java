@@ -3,31 +3,32 @@ package LeetCodeJava.DynamicProgramming;
 // https://leetcode.com/problems/maximize-score-after-n-operations/
 
 /**
- *  1799. Maximize Score After N Operations
- *  Hard
+ * 1799. Maximize Score After N Operations
+ * Hard
  *
- *  You are given nums, an array of positive integers of size 2 * n.
- *  You must perform n operations on this array.
+ * You are given nums, an array of positive integers of size 2 * n.
+ * You must perform n operations on this array.
  *
- *  In the ith operation (1-indexed), you will:
- *    - Choose two elements, x and y.
- *    - Receive a score of i * gcd(x, y).
- *    - Remove x and y from nums.
+ * In the ith operation (1-indexed), you will:
+ * - Choose two elements, x and y.
+ * - Receive a score of i * gcd(x, y).
+ * - Remove x and y from nums.
  *
- *  Return the maximum score you can receive after performing n operations.
+ * Return the maximum score you can receive after performing n operations.
  *
- *  Example 1:
- *    Input: nums = [1,2]
- *    Output: 1     (1 * gcd(1,2) = 1)
+ * Example 1:
+ * Input: nums = [1,2]
+ * Output: 1     (1 * gcd(1,2) = 1)
  *
- *  Example 2:
- *    Input: nums = [3,4,6,8]
- *    Output: 11    (1*gcd(3,6) + 2*gcd(4,8) = 3 + 8 = 11)
+ * Example 2:
+ * Input: nums = [3,4,6,8]
+ * Output: 11    (1*gcd(3,6) + 2*gcd(4,8) = 3 + 8 = 11)
  *
- *  Constraints:
- *    1 <= n <= 7
- *    nums.length == 2 * n
- *    1 <= nums[i] <= 10^6
+ * Constraints:
+ * 1 <= n <= 7
+ * nums.length == 2 * n
+ * 1 <= nums[i] <= 10^6
+ *
  */
 public class MaximizeScoreAfterNOperations {
 

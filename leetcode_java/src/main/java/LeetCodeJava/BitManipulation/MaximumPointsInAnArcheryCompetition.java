@@ -3,36 +3,37 @@ package LeetCodeJava.BitManipulation;
 // https://leetcode.com/problems/maximum-points-in-an-archery-competition/
 
 /**
- *  2212. Maximum Points in an Archery Competition
- *  Medium
+ * 2212. Maximum Points in an Archery Competition
+ * Medium
  *
- *  Alice and Bob are opponents in an archery competition. Alice first shoots
- *  numArrows arrows and then Bob shoots numArrows arrows. The target has integer
- *  scoring sections ranging from 0 to 11 inclusive. For each section with score k,
- *  say Alice and Bob shot ak and bk arrows on that section. If ak >= bk then Alice
- *  takes k points; if ak < bk then Bob takes k points. If ak == bk == 0 nobody
- *  takes k points.
+ * Alice and Bob are opponents in an archery competition. Alice first shoots
+ * numArrows arrows and then Bob shoots numArrows arrows. The target has integer
+ * scoring sections ranging from 0 to 11 inclusive. For each section with score k,
+ * say Alice and Bob shot ak and bk arrows on that section. If ak >= bk then Alice
+ * takes k points; if ak < bk then Bob takes k points. If ak == bk == 0 nobody
+ * takes k points.
  *
- *  You are given the integer numArrows and an integer array aliceArrows of size 12.
- *  Bob wants to maximize the total number of points he can obtain. Return the array
- *  bobArrows, whose values must sum to numArrows. If several answers achieve the
- *  maximum, return any of them.
+ * You are given the integer numArrows and an integer array aliceArrows of size 12.
+ * Bob wants to maximize the total number of points he can obtain. Return the array
+ * bobArrows, whose values must sum to numArrows. If several answers achieve the
+ * maximum, return any of them.
  *
- *  Example 1:
- *    Input: numArrows = 9, aliceArrows = [1,1,0,1,0,0,2,1,0,1,2,0]
- *    Output: [0,0,0,0,1,1,0,0,1,2,3,1]
- *    Explanation: Bob earns 4 + 5 + 8 + 9 + 10 + 11 = 47 points.
+ * Example 1:
+ * Input: numArrows = 9, aliceArrows = [1,1,0,1,0,0,2,1,0,1,2,0]
+ * Output: [0,0,0,0,1,1,0,0,1,2,3,1]
+ * Explanation: Bob earns 4 + 5 + 8 + 9 + 10 + 11 = 47 points.
  *
- *  Example 2:
- *    Input: numArrows = 3, aliceArrows = [0,0,1,0,0,0,0,0,0,0,0,2]
- *    Output: [0,0,0,0,0,0,0,0,1,1,1,0]
- *    Explanation: Bob earns 8 + 9 + 10 = 27 points.
+ * Example 2:
+ * Input: numArrows = 3, aliceArrows = [0,0,1,0,0,0,0,0,0,0,0,2]
+ * Output: [0,0,0,0,0,0,0,0,1,1,1,0]
+ * Explanation: Bob earns 8 + 9 + 10 = 27 points.
  *
- *  Constraints:
- *    1 <= numArrows <= 10^5
- *    aliceArrows.length == bobArrows.length == 12
- *    0 <= aliceArrows[i] <= numArrows
- *    sum(aliceArrows[i]) == numArrows
+ * Constraints:
+ * 1 <= numArrows <= 10^5
+ * aliceArrows.length == bobArrows.length == 12
+ * 0 <= aliceArrows[i] <= numArrows
+ * sum(aliceArrows[i]) == numArrows
+ *
  */
 public class MaximumPointsInAnArcheryCompetition {
 

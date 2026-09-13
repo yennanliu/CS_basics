@@ -7,6 +7,8 @@ import java.util.*;
 
 /**
  * 1564. Put Boxes Into the Warehouse I
+ * Medium
+ *
  * Given two arrays of positive integers boxes and warehouse representing the heights of some boxes of unit width, and the heights of n rooms in a warehouse, respectively. The warehouse's rooms are labeled from 0 to n - 1 from left to right where warehouse[i] (0-indexed) is the height of the ith room.
  *
  * Boxes are put into the warehouse by the following rules:
@@ -62,7 +64,6 @@ import java.util.*;
  * Lock:
  * Prime
  * Company:
- *
  *
  */
 public class PutBoxesIntoTheWarehouseI {

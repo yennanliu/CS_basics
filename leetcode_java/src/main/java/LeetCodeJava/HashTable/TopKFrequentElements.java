@@ -7,10 +7,8 @@ import java.util.stream.Collectors;
 
 /**
  * 347. Top K Frequent Elements
- * Solved
  * Medium
- * Topics
- * Companies
+ *
  * Given an integer array nums and an integer k, return the k most frequent elements. You may return the answer in any order.
  *
  *

@@ -3,10 +3,8 @@ package LeetCodeJava.BackTrack;
 // https://leetcode.com/problems/combination-sum-ii/
 /**
  * 40. Combination Sum II
- * Solved
  * Medium
- * Topics
- * Companies
+ *
  * Given a collection of candidate numbers (candidates) and a target number (target), find all unique combinations in candidates where the candidate numbers sum to target.
  *
  * Each number in candidates may only be used once in the combination.
@@ -40,7 +38,6 @@ package LeetCodeJava.BackTrack;
  * 1 <= candidates.length <= 100
  * 1 <= candidates[i] <= 50
  * 1 <= target <= 30
- *
  *
  */
 import java.util.*;

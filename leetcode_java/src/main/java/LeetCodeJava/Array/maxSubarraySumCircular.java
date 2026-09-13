@@ -10,9 +10,7 @@ import java.util.List;
 /**
  * 918. Maximum Sum Circular Subarray
  * Medium
- * Topics
- * Companies
- * Hint
+ *
  * Given a circular integer array nums of length n, return the maximum possible sum of a non-empty subarray of nums.
  *
  * A circular array means the end of the array connects to the beginning of the array. Formally, the next element of nums[i] is nums[(i + 1) % n] and the previous element of nums[i] is nums[(i - 1 + n) % n].
@@ -43,8 +41,6 @@ import java.util.List;
  * n == nums.length
  * 1 <= n <= 3 * 104
  * -3 * 104 <= nums[i] <= 3 * 104
- *
- *
  *
  */
 public class maxSubarraySumCircular {
@@ -124,7 +120,7 @@ public class maxSubarraySumCircular {
         return Math.max(global_max, total_sum - global_min);
     }
 
-    // V0
+    // V0-1
     // TODO: fix below
 //    public int maxSubarraySumCircular(int[] nums) {
 //        // edge
@@ -163,7 +159,7 @@ public class maxSubarraySumCircular {
 //        return globalMax;
 //    }
 
-    // V0-1
+    // V0-2
     // IDEA: (GEMINI)
     // time: O(N), space: O(1)
     /**
@@ -232,7 +228,7 @@ public class maxSubarraySumCircular {
         return max_sum > 0 ? Math.max(max_sum, total_sum - min_sum) : max_sum;
     }
 
-    // V0-2
+    // V0-3
     // IDEA: Kadane algo (gpt)
     /**
      * time = O(N)
@@ -260,7 +256,7 @@ public class maxSubarraySumCircular {
         return Math.max(maxSum, totalSum - minSum);
     }
 
-    // V0-3
+    // V0-4
     // IDEA: DEQUEUE + PREFIX SUM (gpt)
     /**
      * time = O(N)

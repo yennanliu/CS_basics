@@ -6,12 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *  765. Couples Holding Hands
+ * 765. Couples Holding Hands
  * Hard
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * There are n couples sitting in 2n seats arranged in a row and want to hold hands.
  *
  * The people and seats are represented by an integer array row where row[i] is the ID of the person sitting in the ith seat. The couples are numbered in order, the first couple being (0, 1), the second couple being (2, 3), and so on with the last couple being (2n - 2, 2n - 1).

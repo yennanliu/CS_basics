@@ -5,38 +5,39 @@ package LeetCodeJava.Tree;
 import java.util.Arrays;
 
 /**
- *  3515. Shortest Path in a Weighted Tree
- *  Hard
+ * 3515. Shortest Path in a Weighted Tree
+ * Hard
  *
- *  You are given an integer n and an undirected, weighted tree rooted at node
- *  1 with n nodes numbered from 1 to n. This is represented by a 2D array
- *  edges of length n - 1, where edges[i] = [u_i, v_i, w_i] indicates an
- *  undirected edge from node u_i to v_i with weight w_i.
+ * You are given an integer n and an undirected, weighted tree rooted at node
+ * 1 with n nodes numbered from 1 to n. This is represented by a 2D array
+ * edges of length n - 1, where edges[i] = [u_i, v_i, w_i] indicates an
+ * undirected edge from node u_i to v_i with weight w_i.
  *
- *  You are also given a 2D integer array queries of length q, where each
- *  queries[i] is either:
- *    [1, u, v, w'] - Update the weight of the edge between nodes u and v to
- *                    w', where (u, v) is guaranteed to be an existing edge.
- *    [2, x]        - Compute the shortest path distance from the root node 1
- *                    to node x.
+ * You are also given a 2D integer array queries of length q, where each
+ * queries[i] is either:
+ * [1, u, v, w'] - Update the weight of the edge between nodes u and v to
+ * w', where (u, v) is guaranteed to be an existing edge.
+ * [2, x]        - Compute the shortest path distance from the root node 1
+ * to node x.
  *
- *  Return an integer array answer, where answer[i] is the shortest path
- *  distance from node 1 to x for the ith query of type [2, x].
+ * Return an integer array answer, where answer[i] is the shortest path
+ * distance from node 1 to x for the ith query of type [2, x].
  *
- *  Example 1:
- *    Input: n = 2, edges = [[1,2,7]], queries = [[2,2],[1,1,2,4],[2,2]]
- *    Output: [7,4]
+ * Example 1:
+ * Input: n = 2, edges = [[1,2,7]], queries = [[2,2],[1,1,2,4],[2,2]]
+ * Output: [7,4]
  *
- *  Example 2:
- *    Input: n = 3, edges = [[1,2,2],[1,3,4]],
- *           queries = [[2,1],[2,3],[1,1,3,7],[2,2],[2,3]]
- *    Output: [0,4,2,7]
+ * Example 2:
+ * Input: n = 3, edges = [[1,2,2],[1,3,4]],
+ * queries = [[2,1],[2,3],[1,1,3,7],[2,2],[2,3]]
+ * Output: [0,4,2,7]
  *
- *  Constraints:
- *    1 <= n <= 10^5
- *    edges.length == n - 1, 1 <= w_i <= 10^4
- *    1 <= queries.length == q <= 10^5
- *    (u, v) is always an edge from edges, 1 <= w' <= 10^4
+ * Constraints:
+ * 1 <= n <= 10^5
+ * edges.length == n - 1, 1 <= w_i <= 10^4
+ * 1 <= queries.length == q <= 10^5
+ * (u, v) is always an edge from edges, 1 <= w' <= 10^4
+ *
  */
 public class ShortestPathInAWeightedTree {
 

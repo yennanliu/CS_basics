@@ -5,13 +5,9 @@ package LeetCodeJava.DynamicProgramming;
 import java.util.Arrays;
 
 /**
- *
  * 1277. Count Square Submatrices with All Ones
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * Given a m * n matrix of ones and zeros, return how many square submatrices have all ones.
  *
  *
@@ -20,9 +16,9 @@ import java.util.Arrays;
  *
  * Input: matrix =
  * [
- *   [0,1,1,1],
- *   [1,1,1,1],
- *   [0,1,1,1]
+ * [0,1,1,1],
+ * [1,1,1,1],
+ * [0,1,1,1]
  * ]
  * Output: 15
  * Explanation:
@@ -34,9 +30,9 @@ import java.util.Arrays;
  *
  * Input: matrix =
  * [
- *   [1,0,1],
- *   [1,1,0],
- *   [1,1,0]
+ * [1,0,1],
+ * [1,1,0],
+ * [1,1,0]
  * ]
  * Output: 7
  * Explanation:
@@ -50,7 +46,6 @@ import java.util.Arrays;
  * 1 <= arr.length <= 300
  * 1 <= arr[0].length <= 300
  * 0 <= arr[i][j] <= 1
- *
  *
  */
 public class CountSquareSubmatricesWithAllOnes {

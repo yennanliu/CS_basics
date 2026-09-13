@@ -8,9 +8,7 @@ import java.util.Map;
 /**
  * 540. Single Element in a Sorted Array
  * Medium
- * Topics
- * premium lock icon
- * Companies
+ *
  * You are given a sorted array consisting of only integers where every element appears exactly twice, except for one element which appears exactly once.
  *
  * Return the single element that appears only once.
@@ -33,7 +31,6 @@ import java.util.Map;
  *
  * 1 <= nums.length <= 105
  * 0 <= nums[i] <= 105
- *
  *
  */
 public class SingleElementInASortedArray {

@@ -6,34 +6,35 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- *  822. Card Flipping Game
- *  Medium
+ * 822. Card Flipping Game
+ * Medium
  *
- *  You are given "n" cards. Each card has a number printed on the front (fronts[i])
- *  and a number printed on the back (backs[i]). Initially, every card is placed on
- *  a table with its front side facing up.
+ * You are given "n" cards. Each card has a number printed on the front (fronts[i])
+ * and a number printed on the back (backs[i]). Initially, every card is placed on
+ * a table with its front side facing up.
  *
- *  You may flip over any number of cards (possibly zero). After the flips, you pick
- *  one card, and the number "x" on its BACK (the hidden face) is "good" if x does NOT
- *  appear on the front (the visible face) of ANY card.
+ * You may flip over any number of cards (possibly zero). After the flips, you pick
+ * one card, and the number "x" on its BACK (the hidden face) is "good" if x does NOT
+ * appear on the front (the visible face) of ANY card.
  *
- *  Return the minimum possible good integer after flipping the cards.
- *  If there is no good integer, return 0.
+ * Return the minimum possible good integer after flipping the cards.
+ * If there is no good integer, return 0.
  *
- *  Example 1:
- *  Input: fronts = [1,2,4,4,7], backs = [1,3,4,1,3]
- *  Output: 2
- *  Explanation: flip the second card, then the fronts are [1,3,4,4,7] and the backs
- *  are [1,2,4,1,3]; 2 is on a back and never on a front, so 2 is good and minimal.
+ * Example 1:
+ * Input: fronts = [1,2,4,4,7], backs = [1,3,4,1,3]
+ * Output: 2
+ * Explanation: flip the second card, then the fronts are [1,3,4,4,7] and the backs
+ * are [1,2,4,1,3]; 2 is on a back and never on a front, so 2 is good and minimal.
  *
- *  Example 2:
- *  Input: fronts = [1], backs = [1]
- *  Output: 0
+ * Example 2:
+ * Input: fronts = [1], backs = [1]
+ * Output: 0
  *
- *  Constraints:
- *  n == fronts.length == backs.length
- *  1 <= n <= 1000
- *  1 <= fronts[i], backs[i] <= 2000
+ * Constraints:
+ * n == fronts.length == backs.length
+ * 1 <= n <= 1000
+ * 1 <= fronts[i], backs[i] <= 2000
+ *
  */
 public class CardFlippingGame {
 

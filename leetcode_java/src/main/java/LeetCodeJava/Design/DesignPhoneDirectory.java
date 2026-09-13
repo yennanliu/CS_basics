@@ -7,6 +7,8 @@ import java.util.*;
 
 /**
  * 379. Design Phone Directory
+ * Medium
+ *
  * Design a Phone Directory which supports the following operations:
  *
  *
@@ -44,6 +46,7 @@ import java.util.*;
  * Prime
  * Company:
  * Dropbox Google Microsoft
+ *
  */
 public class DesignPhoneDirectory {
 

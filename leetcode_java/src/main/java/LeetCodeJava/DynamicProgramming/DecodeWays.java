@@ -7,11 +7,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *  91. Decode Ways
- * Solved
+ * 91. Decode Ways
  * Medium
- * Topics
- * Companies
+ *
  * You have intercepted a secret message encoded as a string of numbers. The message is decoded via the following mapping:
  *
  * "1" -> 'A'

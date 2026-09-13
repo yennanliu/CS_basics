@@ -3,10 +3,8 @@ package LeetCodeJava.BinarySearch;
 // https://leetcode.com/problems/split-array-largest-sum/description/
 /**
  * 410. Split Array Largest Sum
- * Solved
  * Hard
- * Topics
- * Companies
+ *
  * Given an integer array nums and an integer k, split nums into k non-empty subarrays such that the largest sum of any subarray is minimized.
  *
  * Return the minimized largest sum of the split.
@@ -34,16 +32,6 @@ package LeetCodeJava.BinarySearch;
  * 1 <= nums.length <= 1000
  * 0 <= nums[i] <= 106
  * 1 <= k <= min(50, nums.length)
- * Seen this question in a real interview before?
- * 1/5
- * Yes
- * No
- * Accepted
- * 452.8K
- * Submissions
- * 786.6K
- * Acceptance Rate
- * 57.6%
  *
  */
 import java.util.Arrays;

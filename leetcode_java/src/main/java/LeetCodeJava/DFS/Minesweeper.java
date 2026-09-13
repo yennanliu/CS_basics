@@ -8,10 +8,8 @@ import java.util.Queue;
 
 /**
  * 529. Minesweeper
- * Solved
  * Medium
- * Topics
- * Companies
+ *
  * Let's play the minesweeper game (Wikipedia, online game)!
  *
  * You are given an m x n char matrix board representing the game board where:
@@ -53,7 +51,6 @@ import java.util.Queue;
  * 0 <= clickr < m
  * 0 <= clickc < n
  * board[clickr][clickc] is either 'M' or 'E'.
- *
  *
  */
 public class Minesweeper {

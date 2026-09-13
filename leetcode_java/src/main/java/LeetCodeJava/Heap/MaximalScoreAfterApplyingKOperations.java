@@ -6,32 +6,33 @@ import java.util.Collections;
 import java.util.PriorityQueue;
 
 /**
- *  2530. Maximal Score After Applying K Operations
- *  Medium
+ * 2530. Maximal Score After Applying K Operations
+ * Medium
  *
- *  You are given a 0-indexed integer array nums and an integer k. You have a
- *  starting score of 0.
+ * You are given a 0-indexed integer array nums and an integer k. You have a
+ * starting score of 0.
  *
- *  In one operation:
- *    1. choose an index i such that 0 <= i < nums.length,
- *    2. increase your score by nums[i], and
- *    3. replace nums[i] with ceil(nums[i] / 3).
+ * In one operation:
+ * 1. choose an index i such that 0 <= i < nums.length,
+ * 2. increase your score by nums[i], and
+ * 3. replace nums[i] with ceil(nums[i] / 3).
  *
- *  Return the maximum possible score you can attain after applying exactly k
- *  operations.
+ * Return the maximum possible score you can attain after applying exactly k
+ * operations.
  *
- *  Example 1:
- *    Input: nums = [10,10,10,10,10], k = 5
- *    Output: 50
+ * Example 1:
+ * Input: nums = [10,10,10,10,10], k = 5
+ * Output: 50
  *
- *  Example 2:
- *    Input: nums = [1,10,3,3,3], k = 3
- *    Output: 17
- *    Explanation: pick 10 -> 4 -> then 3. score = 10 + 4 + 3 = 17.
+ * Example 2:
+ * Input: nums = [1,10,3,3,3], k = 3
+ * Output: 17
+ * Explanation: pick 10 -> 4 -> then 3. score = 10 + 4 + 3 = 17.
  *
- *  Constraints:
- *    1 <= nums.length, k <= 10^5
- *    1 <= nums[i] <= 10^9
+ * Constraints:
+ * 1 <= nums.length, k <= 10^5
+ * 1 <= nums[i] <= 10^9
+ *
  */
 public class MaximalScoreAfterApplyingKOperations {
 

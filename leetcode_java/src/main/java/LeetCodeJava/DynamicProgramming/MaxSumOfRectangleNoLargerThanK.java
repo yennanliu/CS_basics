@@ -5,11 +5,10 @@ package LeetCodeJava.DynamicProgramming;
 import java.util.TreeSet;
 
 /**
+ * 363. Max Sum of Rectangle No Larger Than K
+ * Hard
  *
- *  363. Max Sum of Rectangle No Larger Than K
- *
- *
- *  Given an m x n matrix matrix and an integer k, return the max sum of a rectangle in the matrix such that its sum is no larger than k.
+ * Given an m x n matrix matrix and an integer k, return the max sum of a rectangle in the matrix such that its sum is no larger than k.
  *
  * It is guaranteed that there will be a rectangle with a sum no larger than k.
  *
@@ -37,9 +36,6 @@ import java.util.TreeSet;
  *
  *
  * Follow up: What if the number of rows is much larger than the number of columns?
- *
- *
- *
  *
  */
 
@@ -148,7 +144,7 @@ public class MaxSumOfRectangleNoLargerThanK {
         return max;
     }
 
-    // V2_1
+    // V2-_1
     // IDEA : DP
     // https://leetcode.com/problems/max-sum-of-rectangle-no-larger-than-k/solutions/2488344/java-easy-and-simple-solution-90-faster-code/
     /**
@@ -193,7 +189,7 @@ public class MaxSumOfRectangleNoLargerThanK {
         return max;
     }
 
-    // V3_1
+    // V3-_1
     // https://leetcode.com/problems/max-sum-of-rectangle-no-larger-than-k/solutions/2488527/java-beats-100-32ms-kadane-s-algorithm-and-faster-approach-w-video-explanation/
     // IDEA : Kadane's Algorithm
     /**
@@ -235,7 +231,7 @@ public class MaxSumOfRectangleNoLargerThanK {
         return result;
     }
 
-    // V3_2
+    // V3-_2
     // https://leetcode.com/problems/max-sum-of-rectangle-no-larger-than-k/solutions/2488527/java-beats-100-32ms-kadane-s-algorithm-and-faster-approach-w-video-explanation/
     /**
      * time = O(N)

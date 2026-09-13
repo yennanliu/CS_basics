@@ -5,12 +5,9 @@ package LeetCodeJava.Array;
 import java.util.Arrays;
 
 /**
- *  1288. Remove Covered Intervals
+ * 1288. Remove Covered Intervals
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * Given an array intervals where intervals[i] = [li, ri] represent the interval [li, ri), remove all intervals that are covered by another interval in the list.
  *
  * The interval [a, b) is covered by the interval [c, d) if and only if c <= a and b <= d.
@@ -36,8 +33,6 @@ import java.util.Arrays;
  * intervals[i].length == 2
  * 0 <= li < ri <= 105
  * All the given intervals are unique.
- *
- *
  *
  */
 public class RemoveCoveredIntervals {

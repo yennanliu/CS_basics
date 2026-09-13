@@ -2,13 +2,9 @@ package LeetCodeJava.Array;
 
 // https://leetcode.com/problems/robot-bounded-in-circle/description/
 /**
- *  1041. Robot Bounded In Circle
- * Solved
+ * 1041. Robot Bounded In Circle
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * On an infinite plane, a robot initially stands at (0, 0) and faces north. Note that:
  *
  * The north direction is the positive direction of the y-axis.
@@ -69,8 +65,6 @@ package LeetCodeJava.Array;
  *
  * 1 <= instructions.length <= 100
  * instructions[i] is 'G', 'L' or, 'R'.
- *
- *
  *
  */
 public class RobotBoundedInCircle {

@@ -10,9 +10,7 @@ import java.util.TreeMap;
 /**
  * 729. My Calendar I
  * Medium
- * Topics
- * Companies
- * Hint
+ *
  * You are implementing a program to use as your calendar. We can add a new event if adding the event will not cause a double booking.
  *
  * A double booking happens when two events have some non-empty intersection (i.e., some moment is common to both events.).

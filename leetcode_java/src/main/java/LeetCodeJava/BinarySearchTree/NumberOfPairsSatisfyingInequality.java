@@ -3,31 +3,32 @@ package LeetCodeJava.BinarySearchTree;
 // https://leetcode.com/problems/number-of-pairs-satisfying-inequality/
 
 /**
- *  2426. Number of Pairs Satisfying Inequality
- *  Hard
+ * 2426. Number of Pairs Satisfying Inequality
+ * Hard
  *
- *  You are given two 0-indexed integer arrays nums1 and nums2, each of size n, and
- *  an integer diff. Find the number of pairs (i, j) such that:
- *   - 0 <= i < j <= n - 1 and
- *   - nums1[i] - nums1[j] <= nums2[i] - nums2[j] + diff.
+ * You are given two 0-indexed integer arrays nums1 and nums2, each of size n, and
+ * an integer diff. Find the number of pairs (i, j) such that:
+ * - 0 <= i < j <= n - 1 and
+ * - nums1[i] - nums1[j] <= nums2[i] - nums2[j] + diff.
  *
- *  Return the number of pairs that satisfy the conditions.
+ * Return the number of pairs that satisfy the conditions.
  *
- *  Example 1:
- *    Input: nums1 = [3,2,5], nums2 = [2,2,1], diff = 1
- *    Output: 3
- *    Explanation: the 3 valid pairs are (0,1), (0,2) and (1,2).
+ * Example 1:
+ * Input: nums1 = [3,2,5], nums2 = [2,2,1], diff = 1
+ * Output: 3
+ * Explanation: the 3 valid pairs are (0,1), (0,2) and (1,2).
  *
- *  Example 2:
- *    Input: nums1 = [3,-1], nums2 = [-2,2], diff = -1
- *    Output: 0
- *    Explanation: no pair satisfies the condition.
+ * Example 2:
+ * Input: nums1 = [3,-1], nums2 = [-2,2], diff = -1
+ * Output: 0
+ * Explanation: no pair satisfies the condition.
  *
- *  Constraints:
- *    n == nums1.length == nums2.length
- *    2 <= n <= 10^5
- *    -10^4 <= nums1[i], nums2[i] <= 10^4
- *    -10^4 <= diff <= 10^4
+ * Constraints:
+ * n == nums1.length == nums2.length
+ * 2 <= n <= 10^5
+ * -10^4 <= nums1[i], nums2[i] <= 10^4
+ * -10^4 <= diff <= 10^4
+ *
  */
 public class NumberOfPairsSatisfyingInequality {
 

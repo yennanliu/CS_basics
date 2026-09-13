@@ -9,12 +9,9 @@ import java.util.Map;
 import java.util.Stack;
 
 /**
- *  2331. Evaluate Boolean Binary Tree
+ * 2331. Evaluate Boolean Binary Tree
  * Easy
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You are given the root of a full binary tree with the following properties:
  *
  * Leaf nodes have either the value 0 or 1, where 0 represents False and 1 represents True.
@@ -54,7 +51,6 @@ import java.util.Stack;
  * Every node has either 0 or 2 children.
  * Leaf nodes have a value of 0 or 1.
  * Non-leaf nodes have a value of 2 or 3.
- *
  *
  */
 public class EvaluateBooleanBinaryTree {

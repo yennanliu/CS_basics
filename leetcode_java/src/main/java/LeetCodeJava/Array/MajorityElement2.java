@@ -10,9 +10,7 @@ import java.util.Map;
 /**
  * 229. Majority Element II
  * Medium
- * Topics
- * Companies
- * Hint
+ *
  * Given an integer array of size n, find all elements that appear more than ⌊ n/3 ⌋ times.
  *
  *
@@ -38,8 +36,6 @@ import java.util.Map;
  *
  *
  * Follow up: Could you solve the problem in linear time and in O(1) space?
- *
- *
  *
  */
 public class MajorityElement2 {

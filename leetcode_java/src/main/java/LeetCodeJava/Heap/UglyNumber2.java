@@ -6,12 +6,8 @@ import java.util.*;
 
 /**
  * 264. Ugly Number II
- * Solved
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * An ugly number is a positive integer whose prime factors are limited to 2, 3, and 5.
  *
  * Given an integer n, return the nth ugly number.
@@ -33,8 +29,6 @@ import java.util.*;
  * Constraints:
  *
  * 1 <= n <= 1690
- *
- *
  *
  */
 public class UglyNumber2 {

@@ -5,10 +5,7 @@ package LeetCodeJava.Tree;
 /**
  * 2509. Cycle Length Queries in a Tree
  * Hard
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You are given an integer n. There is a complete binary tree with 2n - 1 nodes. The root of that tree is the node with the value 1, and every node with a value val in the range [1, 2n - 1 - 1] has two children where:
  *
  * The left node has the value 2 * val, and
@@ -53,7 +50,6 @@ package LeetCodeJava.Tree;
  * queries[i].length == 2
  * 1 <= ai, bi <= 2n - 1
  * ai != bi
- *
  *
  */
 public class CycleLengthQueriesInATree {

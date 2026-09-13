@@ -3,11 +3,8 @@ package LeetCodeJava.Stack;
 // https://leetcode.com/problems/daily-temperatures/
 /**
  * 739. Daily Temperatures
- * Solved
  * Medium
- * Topics
- * Companies
- * Hint
+ *
  * Given an array of integers temperatures represents the daily temperatures, return an array answer such that answer[i] is the number of days you have to wait after the ith day to get a warmer temperature. If there is no future day for which this is possible, keep answer[i] == 0 instead.
  *
  *
@@ -30,6 +27,7 @@ package LeetCodeJava.Stack;
  *
  * 1 <= temperatures.length <= 105
  * 30 <= temperatures[i] <= 100
+ *
  */
 import java.util.*;
 
@@ -276,7 +274,7 @@ public class DailyTemperatures {
     }
 
 
-    // VO-2
+    // V0-2
     // IDEA : INCREASING STACK
     // https://www.bilibili.com/list/525438321?sort_field=pubtime&spm_id_from=333.999.0.0&oid=779764003&bvid=BV1my4y1Z7jj
     /**  NOTE !!! WE USE "INCREASING"  STACK HERE

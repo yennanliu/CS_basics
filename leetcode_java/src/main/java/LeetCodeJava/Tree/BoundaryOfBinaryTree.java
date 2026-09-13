@@ -9,31 +9,32 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- *  545. Boundary of Binary Tree
- *  Medium
+ * 545. Boundary of Binary Tree
+ * Medium
  *
- *  Given a binary tree, return the values of its boundary in anti-clockwise
- *  direction starting from root. Boundary includes left boundary, leaves and
- *  right boundary in order without duplicate nodes.
+ * Given a binary tree, return the values of its boundary in anti-clockwise
+ * direction starting from root. Boundary includes left boundary, leaves and
+ * right boundary in order without duplicate nodes.
  *
- *  Left boundary is the path from root to the left-most node; right boundary
- *  is the path from root to the right-most node. If the root has no left
- *  (resp. right) subtree, the root itself is the left (resp. right) boundary.
+ * Left boundary is the path from root to the left-most node; right boundary
+ * is the path from root to the right-most node. If the root has no left
+ * (resp. right) subtree, the root itself is the left (resp. right) boundary.
  *
- *  Example 1:
+ * Example 1:
  *
- *  Input: root = [1,null,2,3,4]
- *  Output: [1,3,4,2]
+ * Input: root = [1,null,2,3,4]
+ * Output: [1,3,4,2]
  *
- *  Example 2:
+ * Example 2:
  *
- *  Input: root = [1,2,3,4,5,6,null,null,null,7,8,9,10]
- *  Output: [1,2,4,7,8,9,10,6,3]
+ * Input: root = [1,2,3,4,5,6,null,null,null,7,8,9,10]
+ * Output: [1,2,4,7,8,9,10,6,3]
  *
- *  Constraints:
+ * Constraints:
  *
- *  The number of nodes in the tree is in the range [1, 10^4].
- *  -1000 <= Node.val <= 1000
+ * The number of nodes in the tree is in the range [1, 10^4].
+ * -1000 <= Node.val <= 1000
+ *
  */
 public class BoundaryOfBinaryTree {
 

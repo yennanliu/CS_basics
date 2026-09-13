@@ -6,35 +6,36 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 /**
- *  1628. Design an Expression Tree With Evaluate Function
- *  Medium
+ * 1628. Design an Expression Tree With Evaluate Function
+ * Medium
  *
- *  Given the postfix tokens of an arithmetic expression, build and return the binary
- *  expression tree that represents this expression.
+ * Given the postfix tokens of an arithmetic expression, build and return the binary
+ * expression tree that represents this expression.
  *
- *  Postfix notation is a notation for writing arithmetic expressions in which the operands
- *  (numbers) appear before their operators. For example, the postfix tokens of the expression
- *  4*(5-(7+2)) are represented in the array postfix = ["4","5","7","2","+","-","*"].
+ * Postfix notation is a notation for writing arithmetic expressions in which the operands
+ * (numbers) appear before their operators. For example, the postfix tokens of the expression
+ * 4*(5-(7+2)) are represented in the array postfix = ["4","5","7","2","+","-","*"].
  *
- *  Leaf nodes (0 children) correspond to operands (numbers), and internal nodes (2 children)
- *  correspond to the operators '+', '-', '*' and '/'.
+ * Leaf nodes (0 children) correspond to operands (numbers), and internal nodes (2 children)
+ * correspond to the operators '+', '-', '*' and '/'.
  *
- *  This class plays the role of the TreeBuilder in the original problem: buildTree() returns
- *  the root Node, and Node.evaluate() computes the value of the expression tree.
+ * This class plays the role of the TreeBuilder in the original problem: buildTree() returns
+ * the root Node, and Node.evaluate() computes the value of the expression tree.
  *
- *  Example 1:
- *  Input: s = ["3","4","+","2","*","7","/"]
- *  Output: 2      // ((3+4)*2)/7 = 14/7 = 2
+ * Example 1:
+ * Input: s = ["3","4","+","2","*","7","/"]
+ * Output: 2      // ((3+4)*2)/7 = 14/7 = 2
  *
- *  Example 2:
- *  Input: s = ["4","5","2","7","+","-","*"]
- *  Output: -16    // 4*(5-(2+7)) = 4*(-4) = -16
+ * Example 2:
+ * Input: s = ["4","5","2","7","+","-","*"]
+ * Output: -16    // 4*(5-(2+7)) = 4*(-4) = -16
  *
- *  Constraints:
+ * Constraints:
  *
- *   1 <= s.length < 100, s.length is odd
- *   s consists of numbers and the characters '+', '-', '*', and '/'
- *   It is guaranteed that s is a valid expression, no division by zero
+ * 1 <= s.length < 100, s.length is odd
+ * s consists of numbers and the characters '+', '-', '*', and '/'
+ * It is guaranteed that s is a valid expression, no division by zero
+ *
  */
 public class DesignAnExpressionTreeWithEvaluateFunction {
 

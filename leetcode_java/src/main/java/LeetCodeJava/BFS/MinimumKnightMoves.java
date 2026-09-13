@@ -10,6 +10,8 @@ import java.util.Queue;
 
 /**
  * 1197. Minimum Knight Moves
+ * Medium
+ *
  * In an infinite chess board with coordinates from -infinity to +infinity, you have a knight at square [0, 0].
  * <p>
  * A knight has 8 possible moves it can make, as illustrated below. Each move is two squares in a cardinal direction, then one square in an orthogonal direction.
@@ -43,6 +45,7 @@ import java.util.Queue;
  * Amazon Facebook Google Oracle
  * Problem Solution
  * 1197-Minimum-Knight-Moves
+ *
  */
 public class MinimumKnightMoves {
 

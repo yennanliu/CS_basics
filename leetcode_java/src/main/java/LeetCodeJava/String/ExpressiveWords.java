@@ -3,11 +3,8 @@ package LeetCodeJava.String;
 // https://leetcode.com/problems/expressive-words/
 /**
  * 809. Expressive Words
- * Solved
  * Medium
- * Topics
- * premium lock icon
- * Companies
+ *
  * Sometimes people repeat letters to represent extra feeling. For example:
  *
  * "hello" -> "heeellooo"
@@ -39,7 +36,6 @@ package LeetCodeJava.String;
  * 1 <= s.length, words.length <= 100
  * 1 <= words[i].length <= 100
  * s and words[i] consist of lowercase letters.
- *
  *
  */
 import java.util.ArrayList;
@@ -478,7 +474,7 @@ public class ExpressiveWords {
         return index - start;
     }
 
-    // V1_1 (modified by gpt)
+    // V1-_1 (modified by gpt)
     /**
      * time = O(N)
      * space = O(N)

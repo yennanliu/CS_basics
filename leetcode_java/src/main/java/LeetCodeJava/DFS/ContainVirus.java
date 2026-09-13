@@ -36,7 +36,7 @@ import java.util.Set;
  * Example 1:
  *
  * Input: isInfected = [[0,1,0,0,0,0,0,1],[0,1,0,0,0,0,0,1],[0,0,0,0,0,0,0,1],
- *                      [0,0,0,0,0,0,0,0]]
+ * [0,0,0,0,0,0,0,0]]
  * Output: 10
  * Explanation: There are 2 contaminated regions.
  * On the first day, add 5 walls to quarantine the viral region on the left.

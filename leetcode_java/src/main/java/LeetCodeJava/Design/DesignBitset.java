@@ -3,44 +3,45 @@ package LeetCodeJava.Design;
 // https://leetcode.com/problems/design-bitset/
 
 /**
- *  2166. Design Bitset
- *  Medium
+ * 2166. Design Bitset
+ * Medium
  *
- *  A Bitset is a data structure that compactly stores bits.
+ * A Bitset is a data structure that compactly stores bits.
  *
- *  Implement the Bitset class:
+ * Implement the Bitset class:
  *
- *   - Bitset(int size) Initializes the Bitset with size bits, all of which are 0.
- *   - void fix(int idx) Updates the value of the bit at the index idx to 1. If the value
- *     was already 1, no change occurs.
- *   - void unfix(int idx) Updates the value of the bit at the index idx to 0. If the
- *     value was already 0, no change occurs.
- *   - void flip() Flips the values of each bit in the Bitset.
- *   - boolean all() Returns true if the value of each bit in the Bitset is 1.
- *   - boolean one() Returns true if there is at least one bit with value 1.
- *   - int count() Returns the total number of bits in the Bitset which have value 1.
- *   - String toString() Returns the current composition of the Bitset.
+ * - Bitset(int size) Initializes the Bitset with size bits, all of which are 0.
+ * - void fix(int idx) Updates the value of the bit at the index idx to 1. If the value
+ * was already 1, no change occurs.
+ * - void unfix(int idx) Updates the value of the bit at the index idx to 0. If the
+ * value was already 0, no change occurs.
+ * - void flip() Flips the values of each bit in the Bitset.
+ * - boolean all() Returns true if the value of each bit in the Bitset is 1.
+ * - boolean one() Returns true if there is at least one bit with value 1.
+ * - int count() Returns the total number of bits in the Bitset which have value 1.
+ * - String toString() Returns the current composition of the Bitset.
  *
- *  Example 1:
- *    Input
- *      ["Bitset","fix","fix","flip","all","unfix","flip","one","unfix","count","toString"]
- *      [[5],[3],[1],[],[],[0],[],[],[0],[],[]]
- *    Output
- *      [null,null,null,null,false,null,null,true,null,2,"01010"]
- *    Explanation
- *      Bitset bs = new Bitset(5); // "00000"
- *      fix(3);  -> "00010"      fix(1);  -> "01010"
- *      flip();  -> "10101"      all();   -> false
- *      unfix(0);-> "00101"      flip();  -> "11010"
- *      one();   -> true         unfix(0);-> "01010"
- *      count(); -> 2            toString(); -> "01010"
+ * Example 1:
+ * Input
+ * ["Bitset","fix","fix","flip","all","unfix","flip","one","unfix","count","toString"]
+ * [[5],[3],[1],[],[],[0],[],[],[0],[],[]]
+ * Output
+ * [null,null,null,null,false,null,null,true,null,2,"01010"]
+ * Explanation
+ * Bitset bs = new Bitset(5); // "00000"
+ * fix(3);  -> "00010"      fix(1);  -> "01010"
+ * flip();  -> "10101"      all();   -> false
+ * unfix(0);-> "00101"      flip();  -> "11010"
+ * one();   -> true         unfix(0);-> "01010"
+ * count(); -> 2            toString(); -> "01010"
  *
- *  Constraints:
- *    1 <= size <= 10^5
- *    0 <= idx < size
- *    At most 10^5 calls will be made in total to fix, unfix, flip, all, and toString.
- *    At least one call will be made to all, one, count, or toString.
- *    At most 5 * 10^4 calls will be made to toString.
+ * Constraints:
+ * 1 <= size <= 10^5
+ * 0 <= idx < size
+ * At most 10^5 calls will be made in total to fix, unfix, flip, all, and toString.
+ * At least one call will be made to all, one, count, or toString.
+ * At most 5 * 10^4 calls will be made to toString.
+ *
  */
 public class DesignBitset {
 

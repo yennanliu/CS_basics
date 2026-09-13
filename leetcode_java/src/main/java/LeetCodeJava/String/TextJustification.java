@@ -34,12 +34,12 @@ import java.util.List;
  * Example 1:
  *
  * Input: words = ["This", "is", "an", "example", "of", "text", "justification."],
- *        maxWidth = 16
+ * maxWidth = 16
  * Output:
  * [
- *    "This    is    an",
- *    "example  of text",
- *    "justification.  "
+ * "This    is    an",
+ * "example  of text",
+ * "justification.  "
  * ]
  *
  * Example 2:
@@ -47,9 +47,9 @@ import java.util.List;
  * Input: words = ["What","must","be","acknowledgment","shall","be"], maxWidth = 16
  * Output:
  * [
- *   "What   must   be",
- *   "acknowledgment  ",
- *   "shall be        "
+ * "What   must   be",
+ * "acknowledgment  ",
+ * "shall be        "
  * ]
  * Explanation: Note that the last line is "shall be    " instead of "shall     be",
  * because the last line must be left-justified instead of fully-justified.
@@ -61,12 +61,12 @@ import java.util.List;
  * "to","a","computer.","Art","is","everything","else","we","do"], maxWidth = 20
  * Output:
  * [
- *   "Science  is  what we",
- *   "understand      well",
- *   "enough to explain to",
- *   "a  computer.  Art is",
- *   "everything  else  we",
- *   "do                  "
+ * "Science  is  what we",
+ * "understand      well",
+ * "enough to explain to",
+ * "a  computer.  Art is",
+ * "everything  else  we",
+ * "do                  "
  * ]
  *
  *

@@ -6,29 +6,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  273. Integer to English Words
- *  Hard
+ * 273. Integer to English Words
+ * Hard
  *
- *  Convert a non-negative integer num to its English words representation.
+ * Convert a non-negative integer num to its English words representation.
  *
- *  Example 1:
+ * Example 1:
  *
- *  Input: num = 123
- *  Output: "One Hundred Twenty Three"
+ * Input: num = 123
+ * Output: "One Hundred Twenty Three"
  *
- *  Example 2:
+ * Example 2:
  *
- *  Input: num = 12345
- *  Output: "Twelve Thousand Three Hundred Forty Five"
+ * Input: num = 12345
+ * Output: "Twelve Thousand Three Hundred Forty Five"
  *
- *  Example 3:
+ * Example 3:
  *
- *  Input: num = 1234567
- *  Output: "One Million Two Hundred Thirty Four Thousand Five Hundred Sixty Seven"
+ * Input: num = 1234567
+ * Output: "One Million Two Hundred Thirty Four Thousand Five Hundred Sixty Seven"
  *
- *  Constraints:
+ * Constraints:
  *
- *  0 <= num <= 2^31 - 1
+ * 0 <= num <= 2^31 - 1
+ *
  */
 public class IntegerToEnglishWords {
 

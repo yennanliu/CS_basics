@@ -3,10 +3,8 @@ package LeetCodeJava.Stack;
 // https://leetcode.com/problems/evaluate-reverse-polish-notation/
 /**
  * 150. Evaluate Reverse Polish Notation
- * Solved
  * Medium
- * Topics
- * Companies
+ *
  * You are given an array of strings tokens that represents an arithmetic expression in a Reverse Polish Notation.
  *
  * Evaluate the expression. Return an integer that represents the value of the expression.
@@ -48,6 +46,7 @@ package LeetCodeJava.Stack;
  *
  * 1 <= tokens.length <= 104
  * tokens[i] is either an operator: "+", "-", "*", or "/", or an integer in the range [-200, 200].
+ *
  */
 import java.util.ArrayList;
 import java.util.Arrays;

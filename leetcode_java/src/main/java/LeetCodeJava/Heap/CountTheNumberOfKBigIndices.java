@@ -5,29 +5,30 @@ package LeetCodeJava.Heap;
 import java.util.PriorityQueue;
 
 /**
- *  2519. Count the Number of K-Big Indices
- *  Hard
+ * 2519. Count the Number of K-Big Indices
+ * Hard
  *
- *  You are given a 0-indexed integer array nums and a positive integer k.
+ * You are given a 0-indexed integer array nums and a positive integer k.
  *
- *  We call an index i k-big if the following conditions are satisfied:
- *    - There exist at least k different indices idx1 such that idx1 < i and nums[idx1] < nums[i].
- *    - There exist at least k different indices idx2 such that idx2 > i and nums[idx2] < nums[i].
+ * We call an index i k-big if the following conditions are satisfied:
+ * - There exist at least k different indices idx1 such that idx1 < i and nums[idx1] < nums[i].
+ * - There exist at least k different indices idx2 such that idx2 > i and nums[idx2] < nums[i].
  *
- *  Return the number of k-big indices.
+ * Return the number of k-big indices.
  *
- *  Example 1:
- *    Input: nums = [2,3,6,5,2,3], k = 2
- *    Output: 2
- *    Explanation: the 2-big indices are i = 2 and i = 3.
+ * Example 1:
+ * Input: nums = [2,3,6,5,2,3], k = 2
+ * Output: 2
+ * Explanation: the 2-big indices are i = 2 and i = 3.
  *
- *  Example 2:
- *    Input: nums = [1,1,1], k = 3
- *    Output: 0
+ * Example 2:
+ * Input: nums = [1,1,1], k = 3
+ * Output: 0
  *
- *  Constraints:
- *    1 <= nums.length <= 10^5
- *    1 <= nums[i], k <= nums.length
+ * Constraints:
+ * 1 <= nums.length <= 10^5
+ * 1 <= nums[i], k <= nums.length
+ *
  */
 public class CountTheNumberOfKBigIndices {
 

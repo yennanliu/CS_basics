@@ -2,12 +2,9 @@ package LeetCodeJava.DynamicProgramming;
 
 // https://leetcode.com/problems/stone-game-ii/description/
 /**
- *  1140. Stone Game II
+ * 1140. Stone Game II
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * Alice and Bob continue their games with piles of stones. There are a number of piles arranged in a row, and each pile has a positive integer number of stones piles[i]. The objective of the game is to end with the most stones.
  *
  * Alice and Bob take turns, with Alice starting first.
@@ -44,7 +41,6 @@ package LeetCodeJava.DynamicProgramming;
  *
  * 1 <= piles.length <= 100
  * 1 <= piles[i] <= 104
- *
  *
  */
 public class StoneGame2 {

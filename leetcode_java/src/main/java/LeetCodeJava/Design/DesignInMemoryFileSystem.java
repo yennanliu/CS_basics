@@ -7,6 +7,8 @@ import java.util.*;
 
 /**
  * 588. Design In-Memory File System
+ * Hard
+ *
  * Description
  * Design a data structure that simulates an in-memory file system.
  *
@@ -52,7 +54,6 @@ import java.util.*;
  * You can assume that all operations will be passed valid parameters, and users will not attempt to retrieve file content or list a directory or file that does not exist.
  * 1 <= content.length <= 50
  * At most 300 calls will be made to ls, mkdir, addContentToFile, and readContentFromFile.
- *
  *
  */
 public class DesignInMemoryFileSystem {

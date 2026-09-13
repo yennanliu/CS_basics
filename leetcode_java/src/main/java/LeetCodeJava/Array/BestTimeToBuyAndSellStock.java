@@ -3,10 +3,8 @@ package LeetCodeJava.Array;
 // https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
 /**
  * 121. Best Time to Buy and Sell Stock
- * Solved
  * Easy
- * Topics
- * Companies
+ *
  * You are given an array prices where prices[i] is the price of a given stock on the ith day.
  *
  * You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock.
@@ -32,6 +30,7 @@ package LeetCodeJava.Array;
  *
  * 1 <= prices.length <= 105
  * 0 <= prices[i] <= 104
+ *
  */
 public class BestTimeToBuyAndSellStock {
 
@@ -72,7 +71,7 @@ public class BestTimeToBuyAndSellStock {
         return ans;
     }
 
-    // V0_0_1
+    // V0-_0_1
     // IDEA: 2 POINTERS
     /**
      * time = O(N)

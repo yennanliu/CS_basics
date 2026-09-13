@@ -5,37 +5,38 @@ package LeetCodeJava.BackTrack;
 import java.util.*;
 
 /**
- *  320. Generalized Abbreviation
- *  Medium
+ * 320. Generalized Abbreviation
+ * Medium
  *
- *  A word's generalized abbreviation can be constructed by taking any number of
- *  non-adjacent, non-empty substrings and replacing them with their respective
- *  lengths.
+ * A word's generalized abbreviation can be constructed by taking any number of
+ * non-adjacent, non-empty substrings and replacing them with their respective
+ * lengths.
  *
- *  For example, "abcde" can be abbreviated into:
- *   "a3e"   ("bcd" turned into "3")
- *   "1bcd1" ("a" and "e" both turned into "1")
- *   "5"     ("abcde" turned into "5")
- *   "abcde" (no substrings replaced)
- *  However, these are not valid abbreviations:
- *   "23"  ("ab" turned into "2" and "cde" turned into "3" are adjacent)
- *   "22de" ("ab" and "cd" turned into "2" and "2" are adjacent)
+ * For example, "abcde" can be abbreviated into:
+ * "a3e"   ("bcd" turned into "3")
+ * "1bcd1" ("a" and "e" both turned into "1")
+ * "5"     ("abcde" turned into "5")
+ * "abcde" (no substrings replaced)
+ * However, these are not valid abbreviations:
+ * "23"  ("ab" turned into "2" and "cde" turned into "3" are adjacent)
+ * "22de" ("ab" and "cd" turned into "2" and "2" are adjacent)
  *
- *  Given a string word, return a list of all the possible generalized
- *  abbreviations of word. Return the answer in any order.
+ * Given a string word, return a list of all the possible generalized
+ * abbreviations of word. Return the answer in any order.
  *
- *  Example 1:
- *   Input: word = "word"
- *   Output: ["4","3d","2r1","2rd","1o2","1o1d","1or1","1ord","w3","w2d","w1r1",
- *            "w1rd","wo2","wo1d","wor1","word"]
+ * Example 1:
+ * Input: word = "word"
+ * Output: ["4","3d","2r1","2rd","1o2","1o1d","1or1","1ord","w3","w2d","w1r1",
+ * "w1rd","wo2","wo1d","wor1","word"]
  *
- *  Example 2:
- *   Input: word = "a"
- *   Output: ["1","a"]
+ * Example 2:
+ * Input: word = "a"
+ * Output: ["1","a"]
  *
- *  Constraints:
- *   1 <= word.length <= 15
- *   word consists of only lowercase English letters.
+ * Constraints:
+ * 1 <= word.length <= 15
+ * word consists of only lowercase English letters.
+ *
  */
 public class GeneralizedAbbreviation {
 

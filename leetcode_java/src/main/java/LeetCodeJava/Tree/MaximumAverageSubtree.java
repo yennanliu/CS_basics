@@ -5,33 +5,34 @@ package LeetCodeJava.Tree;
 import LeetCodeJava.DataStructure.TreeNode;
 
 /**
- *  1120. Maximum Average Subtree
- *  Medium
+ * 1120. Maximum Average Subtree
+ * Medium
  *
- *  Given the root of a binary tree, return the maximum average value of a
- *  subtree of that tree. Answers within 10^-5 of the actual answer will be
- *  accepted.
+ * Given the root of a binary tree, return the maximum average value of a
+ * subtree of that tree. Answers within 10^-5 of the actual answer will be
+ * accepted.
  *
- *  A subtree of a tree is any node of that tree plus all its descendants.
- *  The average value of a tree is the sum of its values, divided by the
- *  number of nodes.
+ * A subtree of a tree is any node of that tree plus all its descendants.
+ * The average value of a tree is the sum of its values, divided by the
+ * number of nodes.
  *
- *  Example 1:
- *    Input: root = [5,6,1]
- *    Output: 6.00000
- *    Explanation:
- *      node 5 -> (5 + 6 + 1) / 3 = 4
- *      node 6 -> 6 / 1 = 6
- *      node 1 -> 1 / 1 = 1
- *      so the answer is 6.
+ * Example 1:
+ * Input: root = [5,6,1]
+ * Output: 6.00000
+ * Explanation:
+ * node 5 -> (5 + 6 + 1) / 3 = 4
+ * node 6 -> 6 / 1 = 6
+ * node 1 -> 1 / 1 = 1
+ * so the answer is 6.
  *
- *  Example 2:
- *    Input: root = [0,null,1]
- *    Output: 1.00000
+ * Example 2:
+ * Input: root = [0,null,1]
+ * Output: 1.00000
  *
- *  Constraints:
- *    The number of nodes in the tree is in the range [1, 10^4].
- *    0 <= Node.val <= 10^5
+ * Constraints:
+ * The number of nodes in the tree is in the range [1, 10^4].
+ * 0 <= Node.val <= 10^5
+ *
  */
 public class MaximumAverageSubtree {
 

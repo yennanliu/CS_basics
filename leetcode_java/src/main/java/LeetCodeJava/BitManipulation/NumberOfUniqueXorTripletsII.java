@@ -3,30 +3,31 @@ package LeetCodeJava.BitManipulation;
 // https://leetcode.com/problems/number-of-unique-xor-triplets-ii/
 
 /**
- *  3514. Number of Unique XOR Triplets II
- *  Medium
+ * 3514. Number of Unique XOR Triplets II
+ * Medium
  *
- *  You are given an integer array nums.
+ * You are given an integer array nums.
  *
- *  A XOR triplet is defined as the XOR of three elements
- *  nums[i] XOR nums[j] XOR nums[k] where i <= j <= k.
+ * A XOR triplet is defined as the XOR of three elements
+ * nums[i] XOR nums[j] XOR nums[k] where i <= j <= k.
  *
- *  Return the number of unique XOR triplet values from all possible triplets
- *  (i, j, k).
+ * Return the number of unique XOR triplet values from all possible triplets
+ * (i, j, k).
  *
- *  Example 1:
- *    Input: nums = [1,3]
- *    Output: 2
- *    Explanation: the reachable values are {1, 3}.
+ * Example 1:
+ * Input: nums = [1,3]
+ * Output: 2
+ * Explanation: the reachable values are {1, 3}.
  *
- *  Example 2:
- *    Input: nums = [6,7,8,9]
- *    Output: 4
- *    Explanation: the reachable values are {6, 7, 8, 9}.
+ * Example 2:
+ * Input: nums = [6,7,8,9]
+ * Output: 4
+ * Explanation: the reachable values are {6, 7, 8, 9}.
  *
- *  Constraints:
- *    1 <= nums.length <= 1500
- *    1 <= nums[i] <= 1500
+ * Constraints:
+ * 1 <= nums.length <= 1500
+ * 1 <= nums[i] <= 1500
+ *
  */
 public class NumberOfUniqueXorTripletsII {
 

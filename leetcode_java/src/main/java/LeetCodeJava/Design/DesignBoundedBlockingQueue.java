@@ -9,6 +9,8 @@ import java.util.concurrent.Semaphore;
 
 /**
  * 1188. Design Bounded Blocking Queue
+ * Medium
+ *
  * Implement a thread safe bounded blocking queue that has the following methods:
  *
  * BoundedBlockingQueue(int capacity) The constructor initializes the queue with a maximum capacity.
@@ -80,6 +82,7 @@ import java.util.concurrent.Semaphore;
  * Medium
  * Lock:
  * Prime
+ *
  */
 public class DesignBoundedBlockingQueue {
 

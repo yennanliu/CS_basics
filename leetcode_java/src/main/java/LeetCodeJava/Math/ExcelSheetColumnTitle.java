@@ -6,12 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
  * 168. Excel Sheet Column Title
- * Solved
  * Easy
- * Topics
- * Companies
+ *
  * Given an integer columnNumber, return its corresponding column title as it appears in an Excel sheet.
  *
  * For example:
@@ -43,7 +40,6 @@ import java.util.Map;
  * Constraints:
  *
  * 1 <= columnNumber <= 231 - 1
- *
  *
  */
 public class ExcelSheetColumnTitle {

@@ -6,12 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  2961. Double Modular Exponentiation
- * Solved
+ * 2961. Double Modular Exponentiation
  * Medium
- * Topics
- * premium lock icon
- * Companies
+ *
  * You are given a 0-indexed 2D array variables where variables[i] = [ai, bi, ci, mi], and an integer target.
  *
  * An index i is good if the following formula holds:
@@ -158,7 +155,7 @@ public class DoubleModularExponentiation {
 
 
 
-    // VO-1
+    // V0-2
     // TODO: fix below
     // NOTE !!! below is WRONG
     // since we need to apply the `modulo operation` in the algorithm
@@ -214,7 +211,7 @@ public class DoubleModularExponentiation {
 //    }
 
 
-    // V0-2
+    // V0-3
 
     // IDEA: MATH (fixed by gpt)
     /**
@@ -267,7 +264,7 @@ public class DoubleModularExponentiation {
     }
 
 
-    // V0-3
+    // V0-4
 
     // IDEA: MATH (fixed by gemini)
     /**
@@ -345,7 +342,7 @@ public class DoubleModularExponentiation {
         return (int) result;
     }
 
-    // V0-3
+    // V0-5
 
 
 

@@ -5,9 +5,12 @@ package LeetCodeJava.Greedy;
 import java.util.*;
 
 /**
- *  You are given an array of people, people,
- *  which are the attributes of some people in a queue (not necessarily in order).
- *  Each people[i] = [hi, ki] represents the ith person of height hi with exactly ki other people in front who have a height greater than or equal to hi.
+ * 406. Queue Reconstruction by Height
+ * Medium
+ *
+ * You are given an array of people, people,
+ * which are the attributes of some people in a queue (not necessarily in order).
+ * Each people[i] = [hi, ki] represents the ith person of height hi with exactly ki other people in front who have a height greater than or equal to hi.
  *
  */
 public class QueueReconstructionByHeight {

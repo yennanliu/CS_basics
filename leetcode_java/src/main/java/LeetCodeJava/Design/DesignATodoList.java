@@ -12,51 +12,52 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- *  2590. Design a Todo List
- *  Medium
+ * 2590. Design a Todo List
+ * Medium
  *
- *  Design a Todo List where users can add tasks, mark them as complete, or get a list
- *  of pending tasks. Users can also add tags to tasks and can filter the tasks by
- *  certain tags.
+ * Design a Todo List where users can add tasks, mark them as complete, or get a list
+ * of pending tasks. Users can also add tags to tasks and can filter the tasks by
+ * certain tags.
  *
- *  Implement the TodoList class:
+ * Implement the TodoList class:
  *
- *   - TodoList() Initializes the object.
- *   - int addTask(int userId, String taskDescription, int dueDate, List<String> tags)
- *     Adds a task for the user with the ID userId with a due date equal to dueDate and
- *     a list of tags attached to the task. The return value is the ID of the task. This
- *     ID starts at 1 and is sequentially increasing.
- *   - List<String> getAllTasks(int userId) Returns a list of all the tasks not marked as
- *     complete for the user with ID userId, ordered by the due date. Returns an empty
- *     list if the user has no uncompleted tasks.
- *   - List<String> getTasksForTag(int userId, String tag) Returns a list of all the tasks
- *     that are not marked as complete for the user with the ID userId and have tag as one
- *     of their tags, ordered by their due date. Returns an empty list if no such task exists.
- *   - void completeTask(int userId, int taskId) Marks the task with the ID taskId as
- *     completed only if the task exists and the user with the ID userId has this task,
- *     and it is uncompleted.
+ * - TodoList() Initializes the object.
+ * - int addTask(int userId, String taskDescription, int dueDate, List<String> tags)
+ * Adds a task for the user with the ID userId with a due date equal to dueDate and
+ * a list of tags attached to the task. The return value is the ID of the task. This
+ * ID starts at 1 and is sequentially increasing.
+ * - List<String> getAllTasks(int userId) Returns a list of all the tasks not marked as
+ * complete for the user with ID userId, ordered by the due date. Returns an empty
+ * list if the user has no uncompleted tasks.
+ * - List<String> getTasksForTag(int userId, String tag) Returns a list of all the tasks
+ * that are not marked as complete for the user with the ID userId and have tag as one
+ * of their tags, ordered by their due date. Returns an empty list if no such task exists.
+ * - void completeTask(int userId, int taskId) Marks the task with the ID taskId as
+ * completed only if the task exists and the user with the ID userId has this task,
+ * and it is uncompleted.
  *
- *  Example 1:
- *    Input
- *      ["TodoList","addTask","addTask","getAllTasks","getAllTasks","addTask",
- *       "getTasksForTag","completeTask","completeTask","getTasksForTag","getAllTasks"]
- *      [[],[1,"Task1",50,[]],[1,"Task2",100,["P1"]],[1],[5],[1,"Task3",30,["P1"]],
- *       [1,"P1"],[5,1],[1,2],[1,"P1"],[1]]
- *    Output
- *      [null,1,2,["Task1","Task2"],[],3,["Task3","Task2"],null,null,["Task3"],
- *       ["Task3","Task1"]]
- *    Explanation
- *      completeTask(5, 1) does nothing, since task 1 does not belong to user 5.
- *      completeTask(1, 2) marks task 2 as completed, so it drops out of both getters.
+ * Example 1:
+ * Input
+ * ["TodoList","addTask","addTask","getAllTasks","getAllTasks","addTask",
+ * "getTasksForTag","completeTask","completeTask","getTasksForTag","getAllTasks"]
+ * [[],[1,"Task1",50,[]],[1,"Task2",100,["P1"]],[1],[5],[1,"Task3",30,["P1"]],
+ * [1,"P1"],[5,1],[1,2],[1,"P1"],[1]]
+ * Output
+ * [null,1,2,["Task1","Task2"],[],3,["Task3","Task2"],null,null,["Task3"],
+ * ["Task3","Task1"]]
+ * Explanation
+ * completeTask(5, 1) does nothing, since task 1 does not belong to user 5.
+ * completeTask(1, 2) marks task 2 as completed, so it drops out of both getters.
  *
- *  Constraints:
- *    1 <= userId, taskId, dueDate <= 100
- *    0 <= tags.length <= 100
- *    1 <= taskDescription.length <= 50
- *    1 <= tags[i].length, tag.length <= 20
- *    All dueDate values are unique.
- *    All the strings consist of lowercase and uppercase English letters and digits.
- *    At most 100 calls will be made for each method.
+ * Constraints:
+ * 1 <= userId, taskId, dueDate <= 100
+ * 0 <= tags.length <= 100
+ * 1 <= taskDescription.length <= 50
+ * 1 <= tags[i].length, tag.length <= 20
+ * All dueDate values are unique.
+ * All the strings consist of lowercase and uppercase English letters and digits.
+ * At most 100 calls will be made for each method.
+ *
  */
 public class DesignATodoList {
 

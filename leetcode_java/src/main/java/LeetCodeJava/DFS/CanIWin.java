@@ -6,11 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *  464. Can I Win
+ * 464. Can I Win
  * Medium
- * Topics
- * premium lock icon
- * Companies
+ *
  * In the "100 game" two players take turns adding, to a running total, any integer from 1 to 10. The player who first causes the running total to reach or exceed 100 wins.
  *
  * What if we change the game so that players cannot re-use integers?
@@ -45,11 +43,6 @@ import java.util.Map;
  *
  * 1 <= maxChoosableInteger <= 20
  * 0 <= desiredTotal <= 300
- *
- * Seen this question in a real interview before?
- * 1/5
- * Yes
- * No
  *
  */
 public class CanIWin {

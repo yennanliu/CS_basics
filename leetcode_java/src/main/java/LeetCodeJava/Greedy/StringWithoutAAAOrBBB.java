@@ -7,9 +7,7 @@ import java.util.PriorityQueue;
 /**
  * 984. String Without AAA or BBB
  * Medium
- * Topics
- * premium lock icon
- * Companies
+ *
  * Given two integers a and b, return any string s such that:
  *
  * s has length a + b and contains exactly a 'a' letters, and exactly b 'b' letters,
@@ -32,8 +30,6 @@ import java.util.PriorityQueue;
  *
  * 0 <= a, b <= 100
  * It is guaranteed such an s exists for the given a and b.
- *
- *
  *
  */
 public class StringWithoutAAAOrBBB {

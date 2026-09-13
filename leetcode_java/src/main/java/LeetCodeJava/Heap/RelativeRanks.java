@@ -9,9 +9,7 @@ import java.util.*;
 /**
  * 506. Relative Ranks
  * Easy
- * Topics
- * premium lock icon
- * Companies
+ *
  * You are given an integer array score of size n, where score[i] is the score of the ith athlete in a competition. All the scores are guaranteed to be unique.
  *
  * The athletes are placed based on their scores, where the 1st place athlete has the highest score, the 2nd place athlete has the 2nd highest score, and so on. The placement of each athlete determines their rank:
@@ -43,8 +41,6 @@ import java.util.*;
  * 1 <= n <= 104
  * 0 <= score[i] <= 106
  * All the values in score are unique.
- *
- *
  *
  */
 public class RelativeRanks {

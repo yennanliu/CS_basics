@@ -8,34 +8,35 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *  2080. Range Frequency Queries
- *  Medium
+ * 2080. Range Frequency Queries
+ * Medium
  *
- *  Design a data structure to find the frequency of a given value in a given
- *  subarray. The frequency of a value in a subarray is the number of occurrences of
- *  that value in the subarray.
+ * Design a data structure to find the frequency of a given value in a given
+ * subarray. The frequency of a value in a subarray is the number of occurrences of
+ * that value in the subarray.
  *
- *  Implement the RangeFreqQuery class:
- *    RangeFreqQuery(int[] arr) Constructs an instance of the class with the given
- *      0-indexed integer array arr.
- *    int query(int left, int right, int value) Returns the frequency of value in the
- *      subarray arr[left...right].
+ * Implement the RangeFreqQuery class:
+ * RangeFreqQuery(int[] arr) Constructs an instance of the class with the given
+ * 0-indexed integer array arr.
+ * int query(int left, int right, int value) Returns the frequency of value in the
+ * subarray arr[left...right].
  *
- *  Example 1:
- *    Input
- *      ["RangeFreqQuery","query","query"]
- *      [[[12,33,4,56,22,2,34,33,22,12,34,56]],[1,2,4],[0,11,33]]
- *    Output
- *      [null, 1, 2]
- *    Explanation
- *      query(1,2,4)  -> 1 (the value 4 occurs once in [33,4])
- *      query(0,11,33)-> 2 (the value 33 occurs twice in the whole array)
+ * Example 1:
+ * Input
+ * ["RangeFreqQuery","query","query"]
+ * [[[12,33,4,56,22,2,34,33,22,12,34,56]],[1,2,4],[0,11,33]]
+ * Output
+ * [null, 1, 2]
+ * Explanation
+ * query(1,2,4)  -> 1 (the value 4 occurs once in [33,4])
+ * query(0,11,33)-> 2 (the value 33 occurs twice in the whole array)
  *
- *  Constraints:
- *    1 <= arr.length <= 10^5
- *    1 <= arr[i], value <= 10^4
- *    0 <= left <= right < arr.length
- *    1 <= queries <= 10^5
+ * Constraints:
+ * 1 <= arr.length <= 10^5
+ * 1 <= arr[i], value <= 10^4
+ * 0 <= left <= right < arr.length
+ * 1 <= queries <= 10^5
+ *
  */
 public class RangeFrequencyQueries {
 

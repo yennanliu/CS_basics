@@ -3,26 +3,27 @@ package LeetCodeJava.Sort;
 // https://leetcode.com/problems/concatenation-of-consecutive-binary-numbers/
 
 /**
- *  1680. Concatenation of Consecutive Binary Numbers
- *  Medium
+ * 1680. Concatenation of Consecutive Binary Numbers
+ * Medium
  *
- *  Given an integer n, return the decimal value of the binary string formed by
- *  concatenating the binary representations of 1 to n in order, modulo 10^9 + 7.
+ * Given an integer n, return the decimal value of the binary string formed by
+ * concatenating the binary representations of 1 to n in order, modulo 10^9 + 7.
  *
- *  Example 1:
- *    Input: n = 3
- *    Output: 27
- *    Explanation: in binary 1, 2, 3 are "1", "10", "11". Concatenated they give
- *                 "11011", which is 27 in decimal.
+ * Example 1:
+ * Input: n = 3
+ * Output: 27
+ * Explanation: in binary 1, 2, 3 are "1", "10", "11". Concatenated they give
+ * "11011", which is 27 in decimal.
  *
- *  Example 2:
- *    Input: n = 12
- *    Output: 505379714
- *    Explanation: the concatenation is 118505380540, and 118505380540 mod 1e9+7
- *                 is 505379714.
+ * Example 2:
+ * Input: n = 12
+ * Output: 505379714
+ * Explanation: the concatenation is 118505380540, and 118505380540 mod 1e9+7
+ * is 505379714.
  *
- *  Constraints:
- *    1 <= n <= 10^5
+ * Constraints:
+ * 1 <= n <= 10^5
+ *
  */
 public class ConcatenationOfConsecutiveBinaryNumbers {
 
