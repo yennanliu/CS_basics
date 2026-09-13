@@ -33,7 +33,9 @@ The number of nodes in the tree is in the range [0, 1000].
 """
 NOTE !!!
 
-LC 437 不是單純從 root 往下累加一條 path。同一個 node 可以作為很多不同 path 的起點。
+LC 437 不是單純從 root 往下累加一條 path。
+
+    -> `同一個 node` 可以作為很多不同 path 的起點。
 
 """
 
@@ -94,8 +96,70 @@ class Solution(object):
         self.path_map[prefix] -= 1
 
 
-
 # V0-0-1
+# IDEA: DFS (tree -> graph (downward ONLY)) + BFS (get path) (gpt)
+from collections import defaultdict, deque
+
+
+class Solution(object):
+    def pathSum(self, root, targetSum):
+        """
+        :type root: Optional[TreeNode]
+        :type targetSum: int
+        :rtype: int
+        """
+        if not root:
+            return 0
+
+        # Tree -> directed graph
+        # parent -> children
+        self.graph = defaultdict(list)
+        self.build_graph(root, None)
+
+        # BFS from every node
+        # Every node can be a starting point
+        q = deque()
+
+        for node in self.graph.keys():
+            q.append((node, node.val))
+
+        cnt = 0
+
+        while q:
+            node, cur_sum = q.popleft()
+
+            if cur_sum == targetSum:
+                cnt += 1
+
+            # Continue downward
+            for next_node in self.graph[node]:
+                q.append(
+                    (next_node, cur_sum + next_node.val)
+                )
+
+        return cnt
+
+    def build_graph(self, node, parent):
+        if not node:
+            return
+
+        # NOTE !!!
+        # need to add `leaf` to grpag as well
+
+        # Make sure every node is in graph,
+        # including leaf nodes
+        self.graph[node]
+
+        if parent:
+            # NOTE !!!  ONLY `downward` direction
+            self.graph[parent].append(node)
+
+        self.build_graph(node.left, node)
+        self.build_graph(node.right, node)
+
+
+
+# V0-0-2
 # IDEA 1) dfs (pre-order) + prefix + hashmap + backtrack (GPT)
 # time = O(n)
 # space = O(h), h is height of binary tree (hashmap entries bounded by active path due to backtrack)
