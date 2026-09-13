@@ -366,7 +366,7 @@ public int maxSideLength(int[][] mat, int threshold) {
 
     int l = 1, r = Math.min(m, n), ans = 0;
     while (l <= r) {
-        int mid = (l + r) / 2;
+        int mid = l + (r - l) / 2;
         boolean found = false;
         outer:
         for (int i = mid; i <= m; i++) {

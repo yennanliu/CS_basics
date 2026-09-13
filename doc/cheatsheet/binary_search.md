@@ -400,7 +400,7 @@ class Solution(object):
 public int search(int[] nums, int target) {
     int l = 0, r = nums.length - 1;
     while (l <= r) {
-        int mid = (l + r) / 2;
+        int mid = l + (r - l) / 2;
         if (nums[mid] == target) return mid;
         if (nums[l] <= nums[mid]) {           // left half is sorted
             if (nums[l] <= target && target < nums[mid]) r = mid - 1;

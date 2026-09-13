@@ -585,7 +585,7 @@ public int countRangeSum(int[] nums, int lower, int upper) {
 }
 private int mergeCount(long[] arr, int l, int r, int lo, int hi) {
     if (r - l <= 1) return 0;
-    int mid = (l + r) / 2;
+    int mid = l + (r - l) / 2;
     int count = mergeCount(arr, l, mid, lo, hi) + mergeCount(arr, mid, r, lo, hi);
     int j = mid, k = mid;
     for (int i = l; i < mid; i++) {

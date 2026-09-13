@@ -157,6 +157,17 @@ inconsistent files are `binary_search.md`, `binary_search_examples.md`,
 > the site of the change saying why. This is the only finding here that is a *correctness*
 > defect rather than a pedagogy gap, so it should go first.
 
+**Done (Sep 2026).** All **19** sites rewritten to `lo + (hi - lo) / 2`, across
+`binary_search.md`, `binary_search_examples.md` (4), `binary_search_on_answer.md` (2),
+`segment_tree.md` (4), `advanced_divide_and_conquer.md` (3), `binary_indexed_tree.md`,
+`Dijkstra_examples.md`, `advanced_string_algorithms.md`, `prefix_sum_examples.md`,
+`matrix_examples.md`. Zero remain.
+
+Every rewritten site was checked for a negative lower bound first — the two forms round
+differently when `lo < 0` — and all 19 start at `l = 0` or `l = 1`, so the change is exactly
+equivalent as well as overflow-safe. Python blocks were left alone: `//` on unbounded ints
+cannot overflow, and rewriting them would teach a defensive habit the language does not need.
+
 ---
 
 ### 4. No "when this pattern does *not* apply" ⭐⭐⭐⭐
@@ -382,7 +393,7 @@ Ranked by interview impact per hour of editing:
 
 | # | Action | Scope | Why first |
 |---|---|---|---|
-| 1 | Fix the 19 `(l + r) / 2` Java blocks | mechanical | the only correctness defect; a candidate ships this bug |
+| 1 | ~~Fix the 19 `(l + r) / 2` Java blocks~~ — **done**, 19/19 | — | the only correctness defect; a candidate ships this bug |
 | 2 | Give every pitfall bullet a failing input | 94 sheets, incremental | converts the corpus from reminder to teacher |
 | 3 | Add a brute-force rung to the 22 tier-5 sheets | 1 paragraph each | the missing problem-solving signal |
 | 4 | Promote the signal→pattern table out of `graph.md` | 22 sheets | the highest-value artefact, currently stranded |
@@ -540,6 +551,16 @@ problems are not graduating.
 This also confirms, from the corpus side, what
 [`doc/lc-readiness-guide.md`](lc-readiness-guide.md) measures from the profile side: the
 constraint is not how many problems have been seen, it is how many have been *retired*.
+
+**Acted on (Sep 2026).** [`lc-stuck-22-drill.md`](lc-stuck-22-drill.md) takes the **22**
+problems in this set at 16+ `AGAIN` marks — ~391 attempts that retired none of them — and gives
+each one its brute force, the recomputation the optimal solution removes, the invariant to say
+out loud before typing, and the specific reason that problem keeps failing. It deliberately
+contains no code.
+
+The entries are grouped by recurrence family rather than by attempt count, because six of the
+top seven are 1-D sequence DP wearing different clothes — a much smaller problem than a list of
+22 suggests.
 
 > **Fix** — the corpus cannot fix a practice habit, but it can stop being the bottleneck:
 > the derivation gap (finding 1), the untraced pitfalls (finding 2) and the missing

@@ -701,7 +701,7 @@ public int minimumEffortPath_binarySearch(int[][] heights) {
     int lo = 0, hi = 1_000_000;
     
     while (lo < hi) {
-        int mid = (lo + hi) / 2;
+        int mid = lo + (hi - lo) / 2;
         if (canReach(heights, mid)) {
             hi = mid;
         } else {

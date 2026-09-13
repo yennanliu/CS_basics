@@ -693,14 +693,14 @@ class SegTree {
     }
     private void build(int[] nums, int node, int l, int r) {
         if (l == r) { tree[node] = nums[l]; return; }
-        int mid = (l + r) / 2;
+        int mid = l + (r - l) / 2;
         build(nums, 2*node+1, l, mid);
         build(nums, 2*node+2, mid+1, r);
         tree[node] = tree[2*node+1] + tree[2*node+2];
     }
     private void pushDown(int node, int l, int r) {
         if (lazy[node] != 0) {
-            int mid = (l + r) / 2;
+            int mid = l + (r - l) / 2;
             tree[2*node+1] += (mid-l+1) * lazy[node]; lazy[2*node+1] += lazy[node];
             tree[2*node+2] += (r-mid)   * lazy[node]; lazy[2*node+2] += lazy[node];
             lazy[node] = 0;
@@ -710,7 +710,7 @@ class SegTree {
         if (ql > r || qr < l) return;
         if (ql <= l && r <= qr) { tree[node] += (r-l+1)*val; lazy[node] += val; return; }
         pushDown(node, l, r);
-        int mid = (l + r) / 2;
+        int mid = l + (r - l) / 2;
         update(2*node+1, l, mid, ql, qr, val);
         update(2*node+2, mid+1, r, ql, qr, val);
         tree[node] = tree[2*node+1] + tree[2*node+2];
@@ -719,7 +719,7 @@ class SegTree {
         if (ql > r || qr < l) return 0;
         if (ql <= l && r <= qr) return tree[node];
         pushDown(node, l, r);
-        int mid = (l + r) / 2;
+        int mid = l + (r - l) / 2;
         return query(2*node+1, l, mid, ql, qr) + query(2*node+2, mid+1, r, ql, qr);
     }
 }

@@ -157,7 +157,7 @@ otherwise `mid == l == r` would cause infinite loop (`r = mid` never shrinks).
 ```java
 // ✅ Correct: while (l < r)
 while (l < r) {
-    int mid = (l + r) / 2;
+    int mid = l + (r - l) / 2;
     if (nums[mid] > nums[mid + 1])
         r = mid;       // Keep mid, since it may be the peak
     else
@@ -202,7 +202,7 @@ class Solution(object):
     public int search(int[] nums, int l, int r) {
         if (l == r)
             return l;
-        int mid = (l + r) / 2;
+        int mid = l + (r - l) / 2;
         if (nums[mid] > nums[mid + 1])
             return search(nums, l, mid);
         return search(nums, mid + 1, r);
@@ -505,7 +505,7 @@ class TimeMap {
         List<int[]> times = map.get(key);
         int l = 0, r = times.size() - 1, idx = -1;
         while (l <= r) {
-            int mid = (l + r) / 2;
+            int mid = l + (r - l) / 2;
             if (times.get(mid)[0] <= timestamp) { idx = mid; l = mid + 1; }
             else r = mid - 1;
         }
@@ -524,7 +524,7 @@ class TimeMap {
 public int singleNonDuplicate(int[] nums) {
     int l = 0, r = nums.length - 1;
     while (l < r) {
-        int mid = (l + r) / 2;
+        int mid = l + (r - l) / 2;
         if (mid % 2 == 1) mid--; // ensure mid is even
         if (nums[mid] == nums[mid + 1]) l = mid + 2; // pair intact, single is to the right
         else r = mid;                                  // pair broken, single is here or left

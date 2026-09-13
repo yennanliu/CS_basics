@@ -726,7 +726,7 @@ def minEatingSpeed(piles, h):
 public int minEatingSpeed(int[] piles, int h) {
     int l = 1, r = Arrays.stream(piles).max().getAsInt();
     while (l < r) {
-        int mid = (l + r) / 2;
+        int mid = l + (r - l) / 2;
         if (canFinish(piles, mid, h)) r = mid;
         else l = mid + 1;
     }
@@ -827,7 +827,7 @@ public int minDays(int[] bloomDay, int m, int k) {
     int l = 1, r = 0;
     for (int d : bloomDay) r = Math.max(r, d);
     while (l < r) {
-        int mid = (l + r) / 2;
+        int mid = l + (r - l) / 2;
         if (canMake(bloomDay, m, k, mid)) r = mid;
         else l = mid + 1;
     }
