@@ -7,40 +7,41 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- *  2477. Minimum Fuel Cost to Report to the Capital
- *  Medium
+ * 2477. Minimum Fuel Cost to Report to the Capital
+ * Medium
  *
- *  There is a tree (i.e., a connected, undirected graph with no cycles)
- *  structure country network consisting of n cities numbered from 0 to n - 1
- *  and exactly n - 1 roads. The capital city is city 0. You are given a 2D
- *  integer array roads where roads[i] = [ai, bi] denotes that there exists a
- *  bidirectional road connecting cities ai and bi.
+ * There is a tree (i.e., a connected, undirected graph with no cycles)
+ * structure country network consisting of n cities numbered from 0 to n - 1
+ * and exactly n - 1 roads. The capital city is city 0. You are given a 2D
+ * integer array roads where roads[i] = [ai, bi] denotes that there exists a
+ * bidirectional road connecting cities ai and bi.
  *
- *  There is a meeting for the representatives of each city, in the capital.
- *  There is a car in each city; seats is the number of seats in each car. A
- *  representative can use the car in their city to travel or change the car and
- *  ride with another representative. The cost of traveling between two cities is
- *  one liter of fuel.
+ * There is a meeting for the representatives of each city, in the capital.
+ * There is a car in each city; seats is the number of seats in each car. A
+ * representative can use the car in their city to travel or change the car and
+ * ride with another representative. The cost of traveling between two cities is
+ * one liter of fuel.
  *
- *  Return the minimum number of liters of fuel to reach the capital city.
+ * Return the minimum number of liters of fuel to reach the capital city.
  *
- *  Example 1:
- *    Input: roads = [[0,1],[0,2],[0,3]], seats = 5
- *    Output: 3
- *    Explanation: each of the 3 representatives drives directly to the capital.
+ * Example 1:
+ * Input: roads = [[0,1],[0,2],[0,3]], seats = 5
+ * Output: 3
+ * Explanation: each of the 3 representatives drives directly to the capital.
  *
- *  Example 2:
- *    Input: roads = [[3,1],[3,2],[1,0],[0,4],[0,5],[4,6]], seats = 2
- *    Output: 7
+ * Example 2:
+ * Input: roads = [[3,1],[3,2],[1,0],[0,4],[0,5],[4,6]], seats = 2
+ * Output: 7
  *
- *  Constraints:
- *    1 <= n <= 10^5
- *    roads.length == n - 1
- *    roads[i].length == 2
- *    0 <= ai, bi < n
- *    ai != bi
- *    roads represents a valid tree.
- *    1 <= seats <= 10^5
+ * Constraints:
+ * 1 <= n <= 10^5
+ * roads.length == n - 1
+ * roads[i].length == 2
+ * 0 <= ai, bi < n
+ * ai != bi
+ * roads represents a valid tree.
+ * 1 <= seats <= 10^5
+ *
  */
 public class MinimumFuelCostToReportToTheCapital {
 

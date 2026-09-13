@@ -3,11 +3,8 @@ package LeetCodeJava.Array;
 // https://leetcode.com/problems/spiral-matrix/description/
 /**
  * 54. Spiral Matrix
- * Solved
  * Medium
- * Topics
- * Companies
- * Hint
+ *
  * Given an m x n matrix, return all elements of the matrix in spiral order.
  *
  *

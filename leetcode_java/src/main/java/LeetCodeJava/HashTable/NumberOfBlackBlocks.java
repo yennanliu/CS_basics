@@ -8,10 +8,7 @@ import java.util.*;
 /**
  * 2768. Number of Black Blocks
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You are given two integers m and n representing the dimensions of a 0-indexed m x n grid.
  *
  * You are also given a 0-indexed 2D integer matrix coordinates, where coordinates[i] = [x, y] indicates that the cell with coordinates [x, y] is colored black. All cells in the grid that do not appear in coordinates are white.

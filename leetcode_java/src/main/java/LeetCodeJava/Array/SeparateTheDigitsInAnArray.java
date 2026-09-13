@@ -6,13 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  2553. Separate the Digits in an Array
- * Solved
+ * 2553. Separate the Digits in an Array
  * Easy
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * Given an array of positive integers nums, return an array answer that consists of the digits of each integer in nums after separating them in the same order they appear in nums.
  *
  * To separate the digits of an integer is to get all the digits it has in the same order.
@@ -43,10 +39,6 @@ import java.util.List;
  * 1 <= nums.length <= 1000
  * 1 <= nums[i] <= 105
  *
- * Seen this question in a real interview before?
- * 1/5
- * Yes
- * No
  */
 public class SeparateTheDigitsInAnArray {
 

@@ -3,10 +3,8 @@ package LeetCodeJava.Math;
 // https://leetcode.com/problems/powx-n/description/
 /**
  * 50. Pow(x, n)
- * Solved
  * Medium
- * Topics
- * Companies
+ *
  * Implement pow(x, n), which calculates x raised to the power n (i.e., xn).
  *
  *

@@ -6,10 +6,8 @@ import java.util.HashSet;
 
 /**
  * 287. Find the Duplicate Number
- * Solved
  * Medium
- * Topics
- * Companies
+ *
  * Given an array of integers nums containing n + 1 integers where each integer is in the range [1, n] inclusive.
  *
  * There is only one repeated number in nums, return this repeated number.
@@ -44,7 +42,6 @@ import java.util.HashSet;
  *
  * How can we prove that at least one duplicate number must exist in nums?
  * Can you solve the problem in linear runtime complexity?
- *
  *
  */
 public class FindTheDuplicateNumber {

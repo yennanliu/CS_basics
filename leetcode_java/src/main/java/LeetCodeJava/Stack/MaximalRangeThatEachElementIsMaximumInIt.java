@@ -3,29 +3,30 @@ package LeetCodeJava.Stack;
 // https://leetcode.com/problems/maximal-range-that-each-element-is-maximum-in-it/
 
 /**
- *  2832. Maximal Range That Each Element Is Maximum in It
- *  Medium
+ * 2832. Maximal Range That Each Element Is Maximum in It
+ * Medium
  *
- *  You are given a 0-indexed array nums of distinct integers.
+ * You are given a 0-indexed array nums of distinct integers.
  *
- *  Let us define a 0-indexed array ans of the same length as nums in the
- *  following way: ans[i] is the maximum length of a subarray nums[l..r], such
- *  that the maximum element in that subarray is equal to nums[i].
+ * Let us define a 0-indexed array ans of the same length as nums in the
+ * following way: ans[i] is the maximum length of a subarray nums[l..r], such
+ * that the maximum element in that subarray is equal to nums[i].
  *
- *  Return the array ans.
+ * Return the array ans.
  *
- *  Example 1:
- *    Input: nums = [1,5,4,3,6]
- *    Output: [1,4,2,1,5]
+ * Example 1:
+ * Input: nums = [1,5,4,3,6]
+ * Output: [1,4,2,1,5]
  *
- *  Example 2:
- *    Input: nums = [1,2,3,4,5]
- *    Output: [1,2,3,4,5]
+ * Example 2:
+ * Input: nums = [1,2,3,4,5]
+ * Output: [1,2,3,4,5]
  *
- *  Constraints:
- *    1 <= nums.length <= 10^5
- *    1 <= nums[i] <= 10^5
- *    All elements in nums are distinct.
+ * Constraints:
+ * 1 <= nums.length <= 10^5
+ * 1 <= nums[i] <= 10^5
+ * All elements in nums are distinct.
+ *
  */
 public class MaximalRangeThatEachElementIsMaximumInIt {
 

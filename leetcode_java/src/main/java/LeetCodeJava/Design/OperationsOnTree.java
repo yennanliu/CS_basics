@@ -8,53 +8,54 @@ import java.util.Deque;
 import java.util.List;
 
 /**
- *  1993. Operations on Tree
- *  Medium
+ * 1993. Operations on Tree
+ * Medium
  *
- *  You are given a tree with n nodes numbered from 0 to n - 1 in the form of a
- *  parent array parent where parent[i] is the parent of the ith node. The root of
- *  the tree is node 0, so parent[0] = -1. You want to design a data structure that
- *  allows users to lock, unlock and upgrade nodes in the tree.
+ * You are given a tree with n nodes numbered from 0 to n - 1 in the form of a
+ * parent array parent where parent[i] is the parent of the ith node. The root of
+ * the tree is node 0, so parent[0] = -1. You want to design a data structure that
+ * allows users to lock, unlock and upgrade nodes in the tree.
  *
- *    Lock: locks the given node for the given user and prevents other users from
- *      locking the same node. Only possible if the node is unlocked.
- *    Unlock: unlocks the given node for the given user. Only possible if it is
- *      currently locked by the same user.
- *    Upgrade: locks the given node for the given user and unlocks all of its
- *      descendants regardless of who locked them. Only possible if all 3 hold:
- *        - the node is unlocked,
- *        - it has at least one locked descendant (by any user), and
- *        - it does not have any locked ancestors.
+ * Lock: locks the given node for the given user and prevents other users from
+ * locking the same node. Only possible if the node is unlocked.
+ * Unlock: unlocks the given node for the given user. Only possible if it is
+ * currently locked by the same user.
+ * Upgrade: locks the given node for the given user and unlocks all of its
+ * descendants regardless of who locked them. Only possible if all 3 hold:
+ * - the node is unlocked,
+ * - it has at least one locked descendant (by any user), and
+ * - it does not have any locked ancestors.
  *
- *  Implement the LockingTree class:
- *    LockingTree(int[] parent) initializes the data structure with the parent array.
- *    boolean lock(int num, int user)
- *    boolean unlock(int num, int user)
- *    boolean upgrade(int num, int user)
+ * Implement the LockingTree class:
+ * LockingTree(int[] parent) initializes the data structure with the parent array.
+ * boolean lock(int num, int user)
+ * boolean unlock(int num, int user)
+ * boolean upgrade(int num, int user)
  *
- *  Example 1:
- *    Input
- *      ["LockingTree","lock","unlock","unlock","lock","upgrade","lock"]
- *      [[[-1,0,0,1,1,2,2]],[2,2],[2,3],[2,2],[4,5],[0,1],[0,1]]
- *    Output
- *      [null, true, false, true, true, true, false]
- *    Explanation
- *      lock(2,2)    -> true  (node 2 was unlocked)
- *      unlock(2,3)  -> false (user 3 did not lock it)
- *      unlock(2,2)  -> true
- *      lock(4,5)    -> true
- *      upgrade(0,1) -> true  (node 0 free, node 4 is a locked descendant)
- *      lock(0,1)    -> false (already locked)
+ * Example 1:
+ * Input
+ * ["LockingTree","lock","unlock","unlock","lock","upgrade","lock"]
+ * [[[-1,0,0,1,1,2,2]],[2,2],[2,3],[2,2],[4,5],[0,1],[0,1]]
+ * Output
+ * [null, true, false, true, true, true, false]
+ * Explanation
+ * lock(2,2)    -> true  (node 2 was unlocked)
+ * unlock(2,3)  -> false (user 3 did not lock it)
+ * unlock(2,2)  -> true
+ * lock(4,5)    -> true
+ * upgrade(0,1) -> true  (node 0 free, node 4 is a locked descendant)
+ * lock(0,1)    -> false (already locked)
  *
- *  Constraints:
- *    n == parent.length
- *    2 <= n <= 2000
- *    0 <= parent[i] <= n - 1 for i != 0
- *    parent[0] == -1
- *    0 <= num <= n - 1
- *    1 <= user <= 10^4
- *    parent represents a valid tree.
- *    At most 2000 calls in total will be made to lock, unlock and upgrade.
+ * Constraints:
+ * n == parent.length
+ * 2 <= n <= 2000
+ * 0 <= parent[i] <= n - 1 for i != 0
+ * parent[0] == -1
+ * 0 <= num <= n - 1
+ * 1 <= user <= 10^4
+ * parent represents a valid tree.
+ * At most 2000 calls in total will be made to lock, unlock and upgrade.
+ *
  */
 public class OperationsOnTree {
 

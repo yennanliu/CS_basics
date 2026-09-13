@@ -8,40 +8,41 @@ import java.util.List;
 import java.util.Queue;
 
 /**
- *  2277. Closest Node to Path in Tree
- *  Hard
+ * 2277. Closest Node to Path in Tree
+ * Hard
  *
- *  You are given a positive integer n representing the number of nodes in a tree,
- *  numbered from 0 to n - 1 (inclusive). You are also given a 2D integer array
- *  edges of length n - 1, where edges[i] = [node1_i, node2_i] denotes that there
- *  is a bidirectional edge connecting node1_i and node2_i in the tree.
+ * You are given a positive integer n representing the number of nodes in a tree,
+ * numbered from 0 to n - 1 (inclusive). You are also given a 2D integer array
+ * edges of length n - 1, where edges[i] = [node1_i, node2_i] denotes that there
+ * is a bidirectional edge connecting node1_i and node2_i in the tree.
  *
- *  You are given a 0-indexed integer array query of length m where
- *  query[i] = [start_i, end_i, node_i] means that for the ith query, you are
- *  tasked with finding the node on the path from start_i to end_i that is closest
- *  to node_i.
+ * You are given a 0-indexed integer array query of length m where
+ * query[i] = [start_i, end_i, node_i] means that for the ith query, you are
+ * tasked with finding the node on the path from start_i to end_i that is closest
+ * to node_i.
  *
- *  Return an integer array answer of length m, where answer[i] is the answer to
- *  the ith query.
+ * Return an integer array answer of length m, where answer[i] is the answer to
+ * the ith query.
  *
- *  Example 1:
- *    Input: n = 7, edges = [[0,1],[0,2],[0,3],[1,4],[2,5],[2,6]],
- *           query = [[5,3,4],[5,3,6]]
- *    Output: [0,2]
- *    Explanation: the path 5 -> 3 is [5,2,0,3]; node 0 is the closest to 4,
- *                 node 2 is the closest to 6.
+ * Example 1:
+ * Input: n = 7, edges = [[0,1],[0,2],[0,3],[1,4],[2,5],[2,6]],
+ * query = [[5,3,4],[5,3,6]]
+ * Output: [0,2]
+ * Explanation: the path 5 -> 3 is [5,2,0,3]; node 0 is the closest to 4,
+ * node 2 is the closest to 6.
  *
- *  Example 2:
- *    Input: n = 3, edges = [[0,1],[1,2]], query = [[0,1,2]]
- *    Output: [1]
+ * Example 2:
+ * Input: n = 3, edges = [[0,1],[1,2]], query = [[0,1,2]]
+ * Output: [1]
  *
- *  Constraints:
- *    1 <= n <= 1000
- *    edges.length == n - 1
- *    1 <= query.length <= 1000
- *    query[i].length == 3
- *    0 <= start_i, end_i, node_i <= n - 1
- *    The graph is a tree.
+ * Constraints:
+ * 1 <= n <= 1000
+ * edges.length == n - 1
+ * 1 <= query.length <= 1000
+ * query[i].length == 3
+ * 0 <= start_i, end_i, node_i <= n - 1
+ * The graph is a tree.
+ *
  */
 public class ClosestNodeToPathInTree {
 

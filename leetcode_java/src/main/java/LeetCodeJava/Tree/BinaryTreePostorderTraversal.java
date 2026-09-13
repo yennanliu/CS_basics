@@ -8,10 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  145. Binary Tree Postorder Traversal
+ * 145. Binary Tree Postorder Traversal
  * Easy
- * Topics
- * Companies
+ *
  * Given the root of a binary tree, return the postorder traversal of its nodes' values.
  *
  *
@@ -57,8 +56,6 @@ import java.util.List;
  *
  *
  * Follow up: Recursive solution is trivial, could you do it iteratively?
- *
- *
  *
  */
 public class BinaryTreePostorderTraversal {

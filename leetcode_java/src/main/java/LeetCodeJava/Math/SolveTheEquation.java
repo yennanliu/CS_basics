@@ -7,11 +7,8 @@ import java.util.List;
 
 /**
  * 640. Solve the Equation
- * Solved
  * Medium
- * Topics
- * premium lock icon
- * Companies
+ *
  * Solve a given equation and return the value of 'x' in the form of a string "x=#value". The equation contains only '+', '-' operation, the variable 'x' and its coefficient. You should return "No solution" if there is no solution for the equation, or "Infinite solutions" if there are infinite solutions for the equation.
  *
  * If there is exactly one solution for the equation, we ensure that the value of 'x' is an integer.
@@ -38,7 +35,6 @@ import java.util.List;
  * equation has exactly one '='.
  * equation consists of integers with an absolute value in the range [0, 100] without any leading zeros, and the variable 'x'.
  * The input is generated that if there is a single solution, it will be an integer.
- *
  *
  */
 public class SolveTheEquation {

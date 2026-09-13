@@ -5,32 +5,33 @@ package LeetCodeJava.HashTable;
 import java.util.*;
 
 /**
- *  388. Longest Absolute File Path
- *  Medium
+ * 388. Longest Absolute File Path
+ * Medium
  *
- *  Suppose we have a file system that stores both files and directories,
- *  serialized as a single string where '\n' separates entries and the number of
- *  leading '\t' gives the depth, e.g.
- *  "dir\n\tsubdir1\n\t\tfile1.ext\n\t\tsubsubdir1\n\tsubdir2\n\t\tsubsubdir2\n\t\t\tfile2.ext"
+ * Suppose we have a file system that stores both files and directories,
+ * serialized as a single string where '\n' separates entries and the number of
+ * leading '\t' gives the depth, e.g.
+ * "dir\n\tsubdir1\n\t\tfile1.ext\n\t\tsubsubdir1\n\tsubdir2\n\t\tsubsubdir2\n\t\t\tfile2.ext"
  *
- *  Return the length of the longest absolute path to a FILE in the abstracted
- *  file system (directories joined by '/'). If there is no file, return 0.
+ * Return the length of the longest absolute path to a FILE in the abstracted
+ * file system (directories joined by '/'). If there is no file, return 0.
  *
- *  Example 1:
- *  Input: input = "dir\n\tsubdir1\n\tsubdir2\n\t\tfile.ext"
- *  Output: 20   ("dir/subdir2/file.ext")
+ * Example 1:
+ * Input: input = "dir\n\tsubdir1\n\tsubdir2\n\t\tfile.ext"
+ * Output: 20   ("dir/subdir2/file.ext")
  *
- *  Example 2:
- *  Input: input = "dir\n\tsubdir1\n\t\tfile1.ext\n\t\tsubsubdir1\n\tsubdir2\n\t\tsubsubdir2\n\t\t\tfile2.ext"
- *  Output: 32   ("dir/subdir2/subsubdir2/file2.ext")
+ * Example 2:
+ * Input: input = "dir\n\tsubdir1\n\t\tfile1.ext\n\t\tsubsubdir1\n\tsubdir2\n\t\tsubsubdir2\n\t\t\tfile2.ext"
+ * Output: 32   ("dir/subdir2/subsubdir2/file2.ext")
  *
- *  Example 3:
- *  Input: input = "a"
- *  Output: 0
+ * Example 3:
+ * Input: input = "a"
+ * Output: 0
  *
- *  Constraints:
- *   - 1 <= input.length <= 10^4
- *   - input may contain letters, '\n', '\t', '.', ' ' and digits.
+ * Constraints:
+ * - 1 <= input.length <= 10^4
+ * - input may contain letters, '\n', '\t', '.', ' ' and digits.
+ *
  */
 public class LongestAbsoluteFilePath {
 

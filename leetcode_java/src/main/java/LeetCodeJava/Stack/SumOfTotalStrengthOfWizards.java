@@ -7,32 +7,33 @@ import java.util.Arrays;
 import java.util.Deque;
 
 /**
- *  2281. Sum of Total Strength of Wizards
- *  Hard
+ * 2281. Sum of Total Strength of Wizards
+ * Hard
  *
- *  As the ruler of a kingdom, you have an army of wizards at your command.
+ * As the ruler of a kingdom, you have an army of wizards at your command.
  *
- *  You are given a 0-indexed integer array strength, where strength[i] denotes
- *  the strength of the ith wizard. For a contiguous group of wizards (i.e. the
- *  wizards' strengths form a subarray of strength), the total strength is
- *  defined as the product of:
- *    - the strength of the weakest wizard in the group, and
- *    - the total of all the individual strengths of the wizards in the group.
+ * You are given a 0-indexed integer array strength, where strength[i] denotes
+ * the strength of the ith wizard. For a contiguous group of wizards (i.e. the
+ * wizards' strengths form a subarray of strength), the total strength is
+ * defined as the product of:
+ * - the strength of the weakest wizard in the group, and
+ * - the total of all the individual strengths of the wizards in the group.
  *
- *  Return the sum of the total strengths of all contiguous groups of wizards.
- *  Since the answer may be very large, return it modulo 10^9 + 7.
+ * Return the sum of the total strengths of all contiguous groups of wizards.
+ * Since the answer may be very large, return it modulo 10^9 + 7.
  *
- *  Example 1:
- *    Input: strength = [1,3,1,2]
- *    Output: 44
+ * Example 1:
+ * Input: strength = [1,3,1,2]
+ * Output: 44
  *
- *  Example 2:
- *    Input: strength = [5,4,6]
- *    Output: 213
+ * Example 2:
+ * Input: strength = [5,4,6]
+ * Output: 213
  *
- *  Constraints:
- *    1 <= strength.length <= 10^5
- *    1 <= strength[i] <= 10^9
+ * Constraints:
+ * 1 <= strength.length <= 10^5
+ * 1 <= strength[i] <= 10^9
+ *
  */
 public class SumOfTotalStrengthOfWizards {
 

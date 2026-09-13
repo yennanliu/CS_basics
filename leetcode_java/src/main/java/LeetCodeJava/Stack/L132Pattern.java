@@ -8,11 +8,9 @@ import java.util.List;
 import java.util.Stack;
 
 /**
- *  456. 132 Pattern
+ * 456. 132 Pattern
  * Medium
- * Topics
- * premium lock icon
- * Companies
+ *
  * Given an array of n integers nums, a 132 pattern is a subsequence of three integers nums[i], nums[j] and nums[k] such that i < j < k and nums[i] < nums[k] < nums[j].
  *
  * Return true if there is a 132 pattern in nums, otherwise, return false.
@@ -41,7 +39,6 @@ import java.util.Stack;
  * n == nums.length
  * 1 <= n <= 2 * 105
  * -109 <= nums[i] <= 109
- *
  *
  */
 public class L132Pattern {

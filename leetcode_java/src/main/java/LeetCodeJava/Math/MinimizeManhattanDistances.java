@@ -3,31 +3,32 @@ package LeetCodeJava.Math;
 // https://leetcode.com/problems/minimize-manhattan-distances/
 
 /**
- *  3102. Minimize Manhattan Distances
- *  Hard
+ * 3102. Minimize Manhattan Distances
+ * Hard
  *
- *  You are given an array points representing integer coordinates of some points on a 2D
- *  plane, where points[i] = [xi, yi].
+ * You are given an array points representing integer coordinates of some points on a 2D
+ * plane, where points[i] = [xi, yi].
  *
- *  The distance between two points is defined as their Manhattan distance.
+ * The distance between two points is defined as their Manhattan distance.
  *
- *  Return the minimum possible value for maximum distance between any two points by
- *  removing exactly one point.
+ * Return the minimum possible value for maximum distance between any two points by
+ * removing exactly one point.
  *
- *  Example 1:
- *    Input: points = [[3,10],[5,15],[10,2],[4,4]]
- *    Output: 12
- *    Explanation: removing the 2nd point leaves a max distance of 12, between (5,15) and
- *                 (4,4) -> |5-4| + |15-4| = 12, which is the smallest achievable.
+ * Example 1:
+ * Input: points = [[3,10],[5,15],[10,2],[4,4]]
+ * Output: 12
+ * Explanation: removing the 2nd point leaves a max distance of 12, between (5,15) and
+ * (4,4) -> |5-4| + |15-4| = 12, which is the smallest achievable.
  *
- *  Example 2:
- *    Input: points = [[1,1],[1,1],[1,1]]
- *    Output: 0
+ * Example 2:
+ * Input: points = [[1,1],[1,1],[1,1]]
+ * Output: 0
  *
- *  Constraints:
- *    3 <= points.length <= 10^5
- *    points[i].length == 2
- *    1 <= points[i][0], points[i][1] <= 10^8
+ * Constraints:
+ * 3 <= points.length <= 10^5
+ * points[i].length == 2
+ * 1 <= points[i][0], points[i][1] <= 10^8
+ *
  */
 public class MinimizeManhattanDistances {
 

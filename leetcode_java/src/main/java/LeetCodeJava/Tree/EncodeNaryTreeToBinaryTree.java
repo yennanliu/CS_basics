@@ -12,6 +12,7 @@ import java.util.List;
 /**
  * 431. Encode N-ary Tree to Binary Tree
  * Hard
+ *
  * Lock: Prime
  *
  * Design an algorithm to encode an N-ary tree into a binary tree and decode the
@@ -33,9 +34,9 @@ import java.util.List;
  * Example 2:
  *
  * Input: root = [1,null,2,3,4,5,null,null,6,7,null,8,null,9,10,null,null,11,null,12,
- *                null,13,null,null,14]
+ * null,13,null,null,14]
  * Output: [1,null,2,3,4,5,null,null,6,7,null,8,null,9,10,null,null,11,null,12,null,13,
- *          null,null,14]
+ * null,null,14]
  *
  * Example 3:
  *

@@ -8,11 +8,9 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 /**
- *  3122. Minimum Number of Operations to Satisfy Conditions
+ * 3122. Minimum Number of Operations to Satisfy Conditions
  * Medium
- * Topics
- * premium lock icon
- * Companies
+ *
  * You are given a 2D matrix grid of size m x n. In one operation, you can change the value of any cell to any non-negative number. You need to perform some operations such that each cell grid[i][j] is:
  *
  * Equal to the cell below it, i.e. grid[i][j] == grid[i + 1][j] (if it exists).

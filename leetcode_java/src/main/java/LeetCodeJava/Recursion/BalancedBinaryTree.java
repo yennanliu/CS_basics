@@ -3,10 +3,8 @@ package LeetCodeJava.Recursion;
 // https://leetcode.com/problems/balanced-binary-tree/
 /**
  * 110. Balanced Binary Tree
- * Solved
  * Easy
- * Topics
- * Companies
+ *
  * Given a binary tree, determine if it is height-balanced.
  *
  *
@@ -31,6 +29,7 @@ package LeetCodeJava.Recursion;
  *
  * The number of nodes in the tree is in the range [0, 5000].
  * -104 <= Node.val <= 104
+ *
  */
 import LeetCodeJava.DataStructure.TreeNode;
 

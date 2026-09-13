@@ -2,11 +2,9 @@ package LeetCodeJava.BFS;
 
 // https://leetcode.com/problems/binary-tree-level-order-traversal-ii/
 /**
- *  107. Binary Tree Level Order Traversal II
- * Solved
+ * 107. Binary Tree Level Order Traversal II
  * Medium
- * Topics
- * Companies
+ *
  * Given the root of a binary tree, return the bottom-up level order traversal of its nodes' values. (i.e., from left to right, level by level from leaf to root).
  *
  *
@@ -30,16 +28,6 @@ package LeetCodeJava.BFS;
  *
  * The number of nodes in the tree is in the range [0, 2000].
  * -1000 <= Node.val <= 1000
- * Seen this question in a real interview before?
- * 1/5
- * Yes
- * No
- * Accepted
- * 706.5K
- * Submissions
- * 1.1M
- * Acceptance Rate
- * 65.2%
  *
  */
 import LeetCodeJava.DataStructure.TreeNode;

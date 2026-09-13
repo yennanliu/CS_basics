@@ -2,8 +2,8 @@ package LeetCodeJava.BinarySearch;
 
 // https://leetcode.com/problems/time-based-key-value-store/description/
 /**
- *
  * 981. Time Based Key-Value Store
+ * Medium
  *
  * Design a time-based key-value data structure that can store multiple values for the same key at different time stamps and retrieve the key's value at a certain timestamp.
  *
@@ -39,7 +39,6 @@ package LeetCodeJava.BinarySearch;
  * 1 <= timestamp <= 107
  * All the timestamps timestamp of set are strictly increasing.
  * At most 2 * 105 calls will be made to set and get.
- *
  *
  */
 //import javafx.util.Pair;
@@ -322,7 +321,7 @@ public class TimeBasedKeyValueStore {
 
 
 
-    // V0_1
+    // V0-_1
     // IDEA : HASHMAP + BINARY SEARCH (fixed by GPT)
     class TimeMap_0_1 {
 
@@ -392,7 +391,7 @@ public class TimeBasedKeyValueStore {
         }
     }
 
-    // V0_2
+    // V0-_2
     // IDEA :  TREEMAP +  floorKey
     /**
      *
@@ -450,7 +449,7 @@ public class TimeBasedKeyValueStore {
         }
     }
 
-    // V0_3
+    // V0-_3
     // IDEA : DICT + BINARY SEARCH (fixed by GPT)
     class TimeMap_0_3 {
 

@@ -3,11 +3,8 @@ package LeetCodeJava.Tree;
 // https://leetcode.com/problems/merge-two-binary-trees/
 /**
  * 617. Merge Two Binary Trees
- * Solved
  * Easy
- * Topics
- * premium lock icon
- * Companies
+ *
  * You are given two binary trees root1 and root2.
  *
  * Imagine that when you put one of them to cover the other, some nodes of the two trees are overlapped while the others are not. You need to merge the two trees into a new binary tree. The merge rule is that if two nodes overlap, then sum node values up as the new value of the merged node. Otherwise, the NOT null node will be used as the node of the new tree.
@@ -34,10 +31,6 @@ package LeetCodeJava.Tree;
  * The number of nodes in both trees is in the range [0, 2000].
  * -104 <= Node.val <= 104
  *
- * Seen this question in a real interview before?
- * 1/5
- * Yes
- * No
  */
 import LeetCodeJava.DataStructure.TreeNode;
 

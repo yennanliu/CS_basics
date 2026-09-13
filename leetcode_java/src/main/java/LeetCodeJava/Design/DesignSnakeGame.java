@@ -6,7 +6,9 @@ package LeetCodeJava.Design;
 import java.util.*;
 
 /**
- * 353 - Design Snake Game
+ * 353. Design Snake Game
+ * Medium
+ *
  * Posted on November 17, 2016 · 8 minute read
  * Welcome to Subscribe On Youtube
  * <p>

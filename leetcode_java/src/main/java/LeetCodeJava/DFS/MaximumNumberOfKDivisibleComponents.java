@@ -5,13 +5,9 @@ package LeetCodeJava.DFS;
 import java.util.*;
 
 /**
- *  2872. Maximum Number of K-Divisible Components
- * Solved
+ * 2872. Maximum Number of K-Divisible Components
  * Hard
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * There is an undirected tree with n nodes labeled from 0 to n - 1. You are given the integer n and a 2D integer array edges of length n - 1, where edges[i] = [ai, bi] indicates that there is an edge between nodes ai and bi in the tree.
  *
  * You are also given a 0-indexed integer array values of length n, where values[i] is the value associated with the ith node, and an integer k.

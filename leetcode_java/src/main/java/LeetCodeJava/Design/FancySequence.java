@@ -6,45 +6,46 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  1622. Fancy Sequence
- *  Hard
+ * 1622. Fancy Sequence
+ * Hard
  *
- *  Write an API that generates fancy sequences using the append, addAll and
- *  multAll operations.
+ * Write an API that generates fancy sequences using the append, addAll and
+ * multAll operations.
  *
- *  Implement the Fancy class:
- *    Fancy() Initializes the object with an empty sequence.
- *    void append(int val) Appends an integer val to the end of the sequence.
- *    void addAll(int inc) Increments all existing values in the sequence by an
- *      integer inc.
- *    void multAll(int m) Multiplies all existing values in the sequence by an
- *      integer m.
- *    int getIndex(int idx) Gets the current value at index idx (0-indexed) of the
- *      sequence modulo 10^9 + 7. If the index is greater or equal than the length
- *      of the sequence, return -1.
+ * Implement the Fancy class:
+ * Fancy() Initializes the object with an empty sequence.
+ * void append(int val) Appends an integer val to the end of the sequence.
+ * void addAll(int inc) Increments all existing values in the sequence by an
+ * integer inc.
+ * void multAll(int m) Multiplies all existing values in the sequence by an
+ * integer m.
+ * int getIndex(int idx) Gets the current value at index idx (0-indexed) of the
+ * sequence modulo 10^9 + 7. If the index is greater or equal than the length
+ * of the sequence, return -1.
  *
- *  Example 1:
- *    Input
- *      ["Fancy","append","addAll","append","multAll","getIndex","addAll",
- *       "append","multAll","getIndex","getIndex","getIndex"]
- *      [[],[2],[3],[7],[2],[0],[3],[10],[2],[0],[1],[2]]
- *    Output
- *      [null,null,null,null,null,10,null,null,null,26,34,20]
- *    Explanation
- *      append(2)   -> [2]
- *      addAll(3)   -> [5]
- *      append(7)   -> [5,7]
- *      multAll(2)  -> [10,14]
- *      getIndex(0) -> 10
- *      addAll(3)   -> [13,17]
- *      append(10)  -> [13,17,10]
- *      multAll(2)  -> [26,34,20]
- *      getIndex(0) -> 26, getIndex(1) -> 34, getIndex(2) -> 20
+ * Example 1:
+ * Input
+ * ["Fancy","append","addAll","append","multAll","getIndex","addAll",
+ * "append","multAll","getIndex","getIndex","getIndex"]
+ * [[],[2],[3],[7],[2],[0],[3],[10],[2],[0],[1],[2]]
+ * Output
+ * [null,null,null,null,null,10,null,null,null,26,34,20]
+ * Explanation
+ * append(2)   -> [2]
+ * addAll(3)   -> [5]
+ * append(7)   -> [5,7]
+ * multAll(2)  -> [10,14]
+ * getIndex(0) -> 10
+ * addAll(3)   -> [13,17]
+ * append(10)  -> [13,17,10]
+ * multAll(2)  -> [26,34,20]
+ * getIndex(0) -> 26, getIndex(1) -> 34, getIndex(2) -> 20
  *
- *  Constraints:
- *    1 <= val, inc, m <= 100
- *    0 <= idx <= 10^5
- *    At most 10^5 calls total will be made to append, addAll, multAll and getIndex.
+ * Constraints:
+ * 1 <= val, inc, m <= 100
+ * 0 <= idx <= 10^5
+ * At most 10^5 calls total will be made to append, addAll, multAll and getIndex.
+ *
  */
 public class FancySequence {
 

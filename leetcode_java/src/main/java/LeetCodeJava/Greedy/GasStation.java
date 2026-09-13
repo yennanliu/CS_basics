@@ -8,10 +8,8 @@ import java.util.List;
 // https://leetcode.com/problems/gas-station/
 /**
  * 134. Gas Station
- * Solved
  * Medium
- * Topics
- * Companies
+ *
  * There are n gas stations along a circular route, where the amount of gas at the ith station is gas[i].
  *
  * You have a car with an unlimited gas tank and it costs cost[i] of gas to travel from the ith station to its next (i + 1)th station. You begin the journey with an empty tank at one of the gas stations.
@@ -54,7 +52,7 @@ import java.util.List;
  */
 public class GasStation {
 
-    // VO
+    // V0
     // IDEA: GREEDY + MATH
     // https://www.bilibili.com/video/BV1jA411r7WX/?share_source=copy_web&vd_source=49348a1975630e1327042905e52f488a
     /**

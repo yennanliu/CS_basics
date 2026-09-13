@@ -4,9 +4,7 @@ package LeetCodeJava.Greedy;
 /**
  * 376. Wiggle Subsequence
  * Medium
- * Topics
- * premium lock icon
- * Companies
+ *
  * A wiggle sequence is a sequence where the differences between successive numbers strictly alternate between positive and negative. The first difference (if one exists) may be either positive or negative. A sequence with one element and a sequence with two non-equal elements are trivially wiggle sequences.
  *
  * For example, [1, 7, 4, 9, 2, 5] is a wiggle sequence because the differences (6, -3, 5, -7, 3) alternate between positive and negative.
@@ -41,6 +39,7 @@ package LeetCodeJava.Greedy;
  *
  *
  * Follow up: Could you solve this in O(n) time?
+ *
  */
 public class WiggleSubsequence {
 

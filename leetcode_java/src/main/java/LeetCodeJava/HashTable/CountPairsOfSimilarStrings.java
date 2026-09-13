@@ -6,12 +6,8 @@ import java.util.*;
 
 /**
  * 2506. Count Pairs Of Similar Strings
- * Solved
  * Easy
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You are given a 0-indexed string array words.
  *
  * Two strings are similar if they consist of the same characters.
@@ -49,7 +45,6 @@ import java.util.*;
  * 1 <= words.length <= 100
  * 1 <= words[i].length <= 100
  * words[i] consist of only lowercase English letters.
- *
  *
  */
 public class CountPairsOfSimilarStrings {

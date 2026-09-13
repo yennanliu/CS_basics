@@ -3,29 +3,30 @@ package LeetCodeJava.BackTrack;
 // https://leetcode.com/problems/sum-of-number-and-its-reverse/
 
 /**
- *  2443. Sum of Number and Its Reverse
- *  Medium
+ * 2443. Sum of Number and Its Reverse
+ * Medium
  *
- *  Given a non-negative integer num, return true if num can be expressed as the sum
- *  of any non-negative integer and its reverse, or false otherwise.
+ * Given a non-negative integer num, return true if num can be expressed as the sum
+ * of any non-negative integer and its reverse, or false otherwise.
  *
- *  Example 1:
- *    Input: num = 443
- *    Output: true
- *    Explanation: 172 + 271 = 443 so we return true.
+ * Example 1:
+ * Input: num = 443
+ * Output: true
+ * Explanation: 172 + 271 = 443 so we return true.
  *
- *  Example 2:
- *    Input: num = 63
- *    Output: false
+ * Example 2:
+ * Input: num = 63
+ * Output: false
  *
- *  Example 3:
- *    Input: num = 181
- *    Output: true
- *    Explanation: 140 + 041 = 181. Note that when a number is reversed, there may
- *                 be leading zeros.
+ * Example 3:
+ * Input: num = 181
+ * Output: true
+ * Explanation: 140 + 041 = 181. Note that when a number is reversed, there may
+ * be leading zeros.
  *
- *  Constraints:
- *    0 <= num <= 10^5
+ * Constraints:
+ * 0 <= num <= 10^5
+ *
  */
 public class SumOfNumberAndItsReverse {
 

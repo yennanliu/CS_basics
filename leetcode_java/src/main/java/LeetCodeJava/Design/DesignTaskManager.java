@@ -10,50 +10,51 @@ import java.util.PriorityQueue;
 import java.util.TreeSet;
 
 /**
- *  3408. Design Task Manager
- *  Medium
+ * 3408. Design Task Manager
+ * Medium
  *
- *  There is a task management system that allows users to manage their tasks, each
- *  associated with a priority. The system should efficiently handle adding, modifying,
- *  executing, and removing tasks.
+ * There is a task management system that allows users to manage their tasks, each
+ * associated with a priority. The system should efficiently handle adding, modifying,
+ * executing, and removing tasks.
  *
- *  Implement the TaskManager class:
+ * Implement the TaskManager class:
  *
- *   - TaskManager(List<List<Integer>> tasks) initializes the task manager with a list of
- *     user-task-priority triples [userId, taskId, priority].
- *   - void add(int userId, int taskId, int priority) adds a task with the specified taskId
- *     and priority to the user with userId. It is guaranteed that taskId does not exist
- *     in the system.
- *   - void edit(int taskId, int newPriority) updates the priority of the existing taskId
- *     to newPriority. It is guaranteed that taskId exists in the system.
- *   - void rmv(int taskId) removes the task identified by taskId from the system. It is
- *     guaranteed that taskId exists in the system.
- *   - int execTop() executes the task with the HIGHEST priority across all users. If there
- *     are multiple tasks with the same highest priority, execute the one with the HIGHEST
- *     taskId. After executing, the taskId is removed from the system. Returns the userId
- *     associated with the executed task, or -1 if no tasks are available.
+ * - TaskManager(List<List<Integer>> tasks) initializes the task manager with a list of
+ * user-task-priority triples [userId, taskId, priority].
+ * - void add(int userId, int taskId, int priority) adds a task with the specified taskId
+ * and priority to the user with userId. It is guaranteed that taskId does not exist
+ * in the system.
+ * - void edit(int taskId, int newPriority) updates the priority of the existing taskId
+ * to newPriority. It is guaranteed that taskId exists in the system.
+ * - void rmv(int taskId) removes the task identified by taskId from the system. It is
+ * guaranteed that taskId exists in the system.
+ * - int execTop() executes the task with the HIGHEST priority across all users. If there
+ * are multiple tasks with the same highest priority, execute the one with the HIGHEST
+ * taskId. After executing, the taskId is removed from the system. Returns the userId
+ * associated with the executed task, or -1 if no tasks are available.
  *
- *  Note that a user may be assigned multiple tasks.
+ * Note that a user may be assigned multiple tasks.
  *
- *  Example 1:
- *    Input:
- *      ["TaskManager","add","edit","execTop","rmv","add","execTop"]
- *      [[[[1,101,10],[2,102,20],[3,103,15]]],[4,104,5],[102,8],[],[101],[5,105,15],[]]
- *    Output:
- *      [null,null,null,3,null,null,5]
- *    Explanation
- *      add(4, 104, 5);  edit(102, 8);
- *      execTop();       // return 3, executes task 103 (priority 15) for user 3
- *      rmv(101);        add(5, 105, 15);
- *      execTop();       // return 5, executes task 105 for user 5
+ * Example 1:
+ * Input:
+ * ["TaskManager","add","edit","execTop","rmv","add","execTop"]
+ * [[[[1,101,10],[2,102,20],[3,103,15]]],[4,104,5],[102,8],[],[101],[5,105,15],[]]
+ * Output:
+ * [null,null,null,3,null,null,5]
+ * Explanation
+ * add(4, 104, 5);  edit(102, 8);
+ * execTop();       // return 3, executes task 103 (priority 15) for user 3
+ * rmv(101);        add(5, 105, 15);
+ * execTop();       // return 5, executes task 105 for user 5
  *
- *  Constraints:
- *    1 <= tasks.length <= 10^5
- *    0 <= userId <= 10^5
- *    0 <= taskId <= 10^5
- *    0 <= priority, newPriority <= 10^9
- *    At most 2 * 10^5 calls will be made in total to add, edit, rmv, and execTop.
- *    The input is generated such that taskId will be valid.
+ * Constraints:
+ * 1 <= tasks.length <= 10^5
+ * 0 <= userId <= 10^5
+ * 0 <= taskId <= 10^5
+ * 0 <= priority, newPriority <= 10^9
+ * At most 2 * 10^5 calls will be made in total to add, edit, rmv, and execTop.
+ * The input is generated such that taskId will be valid.
+ *
  */
 public class DesignTaskManager {
 

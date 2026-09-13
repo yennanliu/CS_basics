@@ -6,38 +6,39 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 /**
- *  1670. Design Front Middle Back Queue
- *  Medium
+ * 1670. Design Front Middle Back Queue
+ * Medium
  *
- *  Design a queue that supports push and pop operations in the front, middle, and back.
+ * Design a queue that supports push and pop operations in the front, middle, and back.
  *
- *  Implement the FrontMiddleBack class:
+ * Implement the FrontMiddleBack class:
  *
- *   - FrontMiddleBackQueue() Initializes the queue.
- *   - void pushFront(int val)  Adds val to the front of the queue.
- *   - void pushMiddle(int val) Adds val to the middle of the queue.
- *   - void pushBack(int val)   Adds val to the back of the queue.
- *   - int popFront()  Removes and returns the front element, or -1 if empty.
- *   - int popMiddle() Removes and returns the middle element, or -1 if empty.
- *   - int popBack()   Removes and returns the back element, or -1 if empty.
+ * - FrontMiddleBackQueue() Initializes the queue.
+ * - void pushFront(int val)  Adds val to the front of the queue.
+ * - void pushMiddle(int val) Adds val to the middle of the queue.
+ * - void pushBack(int val)   Adds val to the back of the queue.
+ * - int popFront()  Removes and returns the front element, or -1 if empty.
+ * - int popMiddle() Removes and returns the middle element, or -1 if empty.
+ * - int popBack()   Removes and returns the back element, or -1 if empty.
  *
- *  When there are two middle position choices, the operation is performed on the frontmost
- *  middle position. e.g. pushing 6 into the middle of [1,2,3,4,5] gives [1,2,6,3,4,5];
- *  popping the middle of [1,2,3,4,5,6] returns 3.
+ * When there are two middle position choices, the operation is performed on the frontmost
+ * middle position. e.g. pushing 6 into the middle of [1,2,3,4,5] gives [1,2,6,3,4,5];
+ * popping the middle of [1,2,3,4,5,6] returns 3.
  *
- *  Example 1:
+ * Example 1:
  *
- *  Input:
- *  ["FrontMiddleBackQueue","pushFront","pushBack","pushMiddle","pushMiddle","popFront",
- *   "popMiddle","popMiddle","popBack","popFront"]
- *  [[],[1],[2],[3],[4],[],[],[],[],[]]
- *  Output:
- *  [null,null,null,null,null,1,3,4,2,-1]
+ * Input:
+ * ["FrontMiddleBackQueue","pushFront","pushBack","pushMiddle","pushMiddle","popFront",
+ * "popMiddle","popMiddle","popBack","popFront"]
+ * [[],[1],[2],[3],[4],[],[],[],[],[]]
+ * Output:
+ * [null,null,null,null,null,1,3,4,2,-1]
  *
- *  Constraints:
+ * Constraints:
  *
- *   1 <= val <= 10^9
- *   At most 1000 calls will be made to the push/pop methods.
+ * 1 <= val <= 10^9
+ * At most 1000 calls will be made to the push/pop methods.
+ *
  */
 public class DesignFrontMiddleBackQueue {
 

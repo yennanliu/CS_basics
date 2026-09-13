@@ -10,9 +10,8 @@ import java.util.Map;
 import java.util.stream.IntStream;
 
 /**
- *
  * 889. Construct Binary Tree from Preorder and Postorder Traversal
- *
+ * Medium
  *
  * Given two integer arrays, preorder and postorder where preorder is the preorder traversal of a binary tree of distinct values and postorder is the postorder traversal of the same tree, reconstruct and return the binary tree.
  *
@@ -40,7 +39,6 @@ import java.util.stream.IntStream;
  * 1 <= postorder[i] <= postorder.length
  * All the values of postorder are unique.
  * It is guaranteed that preorder and postorder are the preorder traversal and postorder traversal of the same binary tree.
- *
  *
  */
 public class ConstructBinaryTreeFromPreorderAndPostorderTraversal {

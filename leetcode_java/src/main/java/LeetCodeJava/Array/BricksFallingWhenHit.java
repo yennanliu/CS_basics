@@ -35,15 +35,15 @@ import java.util.Set;
  * Output: [2]
  * Explanation: Starting with the grid:
  * [[1,0,0,0],
- *  [1,1,1,0]]
+ * [1,1,1,0]]
  * We erase the brick at (1,0), resulting in the grid:
  * [[1,0,0,0],
- *  [0,1,1,0]]
+ * [0,1,1,0]]
  * The two remaining bricks on row 1 are no longer stable as they are no longer
  * connected to the top nor adjacent to another stable brick, so they will fall.
  * The resulting grid is:
  * [[1,0,0,0],
- *  [0,0,0,0]]
+ * [0,0,0,0]]
  * Hence the result is [2].
  *
  * Example 2:

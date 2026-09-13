@@ -3,31 +3,32 @@ package LeetCodeJava.String;
 // https://leetcode.com/problems/validate-ip-address/
 
 /**
- *  468. Validate IP Address
- *  Medium
+ * 468. Validate IP Address
+ * Medium
  *
- *  Given a string queryIP, return "IPv4" if IP is a valid IPv4 address,
- *  "IPv6" if IP is a valid IPv6 address, or "Neither" if IP is not a correct
- *  IP of any type.
+ * Given a string queryIP, return "IPv4" if IP is a valid IPv4 address,
+ * "IPv6" if IP is a valid IPv6 address, or "Neither" if IP is not a correct
+ * IP of any type.
  *
- *  A valid IPv4 address is "x1.x2.x3.x4" where 0 <= xi <= 255 and xi cannot
- *  contain leading zeros.
+ * A valid IPv4 address is "x1.x2.x3.x4" where 0 <= xi <= 255 and xi cannot
+ * contain leading zeros.
  *
- *  A valid IPv6 address is "x1:x2:x3:x4:x5:x6:x7:x8" where
- *    - 1 <= xi.length <= 4
- *    - xi is a hexadecimal string (digits, 'a'-'f', 'A'-'F')
- *    - leading zeros are allowed.
+ * A valid IPv6 address is "x1:x2:x3:x4:x5:x6:x7:x8" where
+ * - 1 <= xi.length <= 4
+ * - xi is a hexadecimal string (digits, 'a'-'f', 'A'-'F')
+ * - leading zeros are allowed.
  *
- *  Example 1:
- *    Input: queryIP = "172.16.254.1"                        Output: "IPv4"
- *  Example 2:
- *    Input: queryIP = "2001:0db8:85a3:0:0:8A2E:0370:7334"   Output: "IPv6"
- *  Example 3:
- *    Input: queryIP = "256.256.256.256"                     Output: "Neither"
+ * Example 1:
+ * Input: queryIP = "172.16.254.1"                        Output: "IPv4"
+ * Example 2:
+ * Input: queryIP = "2001:0db8:85a3:0:0:8A2E:0370:7334"   Output: "IPv6"
+ * Example 3:
+ * Input: queryIP = "256.256.256.256"                     Output: "Neither"
  *
- *  Constraints:
- *    queryIP consists only of English letters, digits and the characters
- *    '.' and ':'.
+ * Constraints:
+ * queryIP consists only of English letters, digits and the characters
+ * '.' and ':'.
+ *
  */
 public class ValidateIPAddress {
 

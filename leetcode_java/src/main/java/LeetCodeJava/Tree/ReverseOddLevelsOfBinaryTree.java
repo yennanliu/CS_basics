@@ -12,10 +12,7 @@ import java.util.Queue;
 /**
  * 2415. Reverse Odd Levels of Binary Tree
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * Given the root of a perfect binary tree, reverse the node values at each odd level of the tree.
  *
  * For example, suppose the node values at level 3 are [2,1,3,4,7,11,29,18], then it should become [18,29,11,7,4,3,1,2].
@@ -57,7 +54,6 @@ import java.util.Queue;
  * The number of nodes in the tree is in the range [1, 214].
  * 0 <= Node.val <= 105
  * root is a perfect binary tree.
- *
  *
  */
 public class ReverseOddLevelsOfBinaryTree {

@@ -10,8 +10,7 @@ import java.util.Queue;
 /**
  * 802. Find Eventual Safe States
  * Medium
- * Topics
- * Companies
+ *
  * There is a directed graph of n nodes with each node labeled from 0 to n - 1. The graph is represented by a 0-indexed 2D integer array graph where graph[i] is an integer array of nodes adjacent to node i, meaning there is an edge from node i to each node in graph[i].
  *
  * A node is a terminal node if there are no outgoing edges. A node is a safe node if every possible path starting from that node leads to a terminal node (or another safe node).
@@ -45,16 +44,6 @@ import java.util.Queue;
  * graph[i] is sorted in a strictly increasing order.
  * The graph may contain self-loops.
  * The number of edges in the graph will be in the range [1, 4 * 104].
- * Seen this question in a real interview before?
- * 1/5
- * Yes
- * No
- * Accepted
- * 292.9K
- * Submissions
- * 454.2K
- * Acceptance Rate
- * 64.5%
  *
  */
 public class FindEventualSafeStates {

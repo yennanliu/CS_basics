@@ -7,10 +7,8 @@ import java.util.Map;
 
 /**
  * 523. Continuous Subarray Sum
- * Solved
  * Medium
- * Topics
- * Companies
+ *
  * Given an integer array nums and an integer k, return true if nums has a good subarray or false otherwise.
  *
  * A good subarray is a subarray where:
@@ -46,16 +44,7 @@ import java.util.Map;
  * 0 <= nums[i] <= 109
  * 0 <= sum(nums[i]) <= 231 - 1
  * 1 <= k <= 231 - 1
- * Seen this question in a real interview before?
- * 1/5
- * Yes
- * No
- * Accepted
- * 625K
- * Submissions
- * 2M
- * Acceptance Rate
- * 30.5%
+ *
  */
 public class ContinuousSubarraySum {
 

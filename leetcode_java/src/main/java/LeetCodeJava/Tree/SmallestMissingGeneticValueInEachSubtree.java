@@ -5,35 +5,36 @@ package LeetCodeJava.Tree;
 import java.util.Arrays;
 
 /**
- *  2003. Smallest Missing Genetic Value in Each Subtree
- *  Hard
+ * 2003. Smallest Missing Genetic Value in Each Subtree
+ * Hard
  *
- *  There is a family tree rooted at 0 consisting of n nodes numbered 0 to
- *  n - 1. You are given a 0-indexed integer array parents, where parents[i] is
- *  the parent for node i. Since node 0 is the root, parents[0] == -1.
+ * There is a family tree rooted at 0 consisting of n nodes numbered 0 to
+ * n - 1. You are given a 0-indexed integer array parents, where parents[i] is
+ * the parent for node i. Since node 0 is the root, parents[0] == -1.
  *
- *  There are 10^5 genetic values, each represented by an integer in the
- *  inclusive range [1, 10^5]. You are given a 0-indexed integer array nums,
- *  where nums[i] is a distinct genetic value for node i.
+ * There are 10^5 genetic values, each represented by an integer in the
+ * inclusive range [1, 10^5]. You are given a 0-indexed integer array nums,
+ * where nums[i] is a distinct genetic value for node i.
  *
- *  Return an array ans of length n where ans[i] is the smallest genetic value
- *  that is missing from the subtree rooted at node i.
+ * Return an array ans of length n where ans[i] is the smallest genetic value
+ * that is missing from the subtree rooted at node i.
  *
- *  Example 1:
- *    Input: parents = [-1,0,0,2], nums = [1,2,3,4]
- *    Output: [5,1,1,1]
- *    Explanation: subtree of 0 holds {1,2,3,4} -> 5 missing;
- *                 the other subtrees all miss 1.
+ * Example 1:
+ * Input: parents = [-1,0,0,2], nums = [1,2,3,4]
+ * Output: [5,1,1,1]
+ * Explanation: subtree of 0 holds {1,2,3,4} -> 5 missing;
+ * the other subtrees all miss 1.
  *
- *  Example 2:
- *    Input: parents = [-1,0,1,0,3,3], nums = [5,4,6,2,1,3]
- *    Output: [7,1,1,4,2,1]
+ * Example 2:
+ * Input: parents = [-1,0,1,0,3,3], nums = [5,4,6,2,1,3]
+ * Output: [7,1,1,4,2,1]
  *
- *  Constraints:
- *    n == parents.length == nums.length
- *    2 <= n <= 10^5
- *    parents[0] == -1, parents represents a valid tree.
- *    1 <= nums[i] <= 10^5, each nums[i] is distinct.
+ * Constraints:
+ * n == parents.length == nums.length
+ * 2 <= n <= 10^5
+ * parents[0] == -1, parents represents a valid tree.
+ * 1 <= nums[i] <= 10^5, each nums[i] is distinct.
+ *
  */
 public class SmallestMissingGeneticValueInEachSubtree {
 

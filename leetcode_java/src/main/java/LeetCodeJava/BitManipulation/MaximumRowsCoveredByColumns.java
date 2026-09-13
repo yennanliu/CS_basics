@@ -3,34 +3,35 @@ package LeetCodeJava.BitManipulation;
 // https://leetcode.com/problems/maximum-rows-covered-by-columns/
 
 /**
- *  2397. Maximum Rows Covered by Columns
- *  Medium
+ * 2397. Maximum Rows Covered by Columns
+ * Medium
  *
- *  You are given an m x n binary matrix matrix and an integer numSelect.
+ * You are given an m x n binary matrix matrix and an integer numSelect.
  *
- *  Your goal is to select exactly numSelect distinct columns from matrix such that
- *  you cover as many rows as possible. A row is considered covered if all the 1's
- *  in that row are also part of a column that you have selected. If a row does not
- *  have any 1s, it is also considered covered.
+ * Your goal is to select exactly numSelect distinct columns from matrix such that
+ * you cover as many rows as possible. A row is considered covered if all the 1's
+ * in that row are also part of a column that you have selected. If a row does not
+ * have any 1s, it is also considered covered.
  *
- *  Return the maximum number of rows that can be covered by a set of numSelect
- *  columns.
+ * Return the maximum number of rows that can be covered by a set of numSelect
+ * columns.
  *
- *  Example 1:
- *    Input: matrix = [[0,0,0],[1,0,1],[0,1,1],[0,0,1]], numSelect = 2
- *    Output: 3
- *    Explanation: choosing columns {0, 2} covers rows 0, 1 and 3.
+ * Example 1:
+ * Input: matrix = [[0,0,0],[1,0,1],[0,1,1],[0,0,1]], numSelect = 2
+ * Output: 3
+ * Explanation: choosing columns {0, 2} covers rows 0, 1 and 3.
  *
- *  Example 2:
- *    Input: matrix = [[1],[0]], numSelect = 1
- *    Output: 2
+ * Example 2:
+ * Input: matrix = [[1],[0]], numSelect = 1
+ * Output: 2
  *
- *  Constraints:
- *    m == matrix.length
- *    n == matrix[i].length
- *    1 <= m, n <= 12
- *    matrix[i][j] is either 0 or 1
- *    1 <= numSelect <= n
+ * Constraints:
+ * m == matrix.length
+ * n == matrix[i].length
+ * 1 <= m, n <= 12
+ * matrix[i][j] is either 0 or 1
+ * 1 <= numSelect <= n
+ *
  */
 public class MaximumRowsCoveredByColumns {
 

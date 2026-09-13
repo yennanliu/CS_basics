@@ -8,7 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *  2345 - Finding the Number of Visible Mountains
+ * 2345. Finding the Number of Visible Mountains
+ * Medium
+ *
  * Posted on August 25, 2022 · 3 minute read
  * Welcome to Subscribe On Youtube
  *
@@ -50,7 +52,6 @@ import java.util.Map;
  * 1 <= peaks.length <= 105
  * peaks[i].length == 2
  * 1 <= xi, yi <= 105
- *
  *
  */
 public class FindingTheNumberOfVisibleMountains {

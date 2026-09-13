@@ -7,35 +7,36 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *  957. Prison Cells After N Days
- *  Medium
+ * 957. Prison Cells After N Days
+ * Medium
  *
- *  There are 8 prison cells in a row and each cell is either occupied or vacant.
- *  Each day, whether the cell is occupied or vacant changes according to the
- *  following rules:
- *    - If a cell has two adjacent neighbors that are both occupied or both vacant,
- *      then the cell becomes occupied.
- *    - Otherwise, it becomes vacant.
- *  Note that because the prison is a row, the first and the last cells in the row
- *  can't have two adjacent neighbors, so they are always vacant after day 1.
+ * There are 8 prison cells in a row and each cell is either occupied or vacant.
+ * Each day, whether the cell is occupied or vacant changes according to the
+ * following rules:
+ * - If a cell has two adjacent neighbors that are both occupied or both vacant,
+ * then the cell becomes occupied.
+ * - Otherwise, it becomes vacant.
+ * Note that because the prison is a row, the first and the last cells in the row
+ * can't have two adjacent neighbors, so they are always vacant after day 1.
  *
- *  You are given an integer array cells where cells[i] == 1 if the ith cell is
- *  occupied and cells[i] == 0 if it is vacant, and an integer n.
+ * You are given an integer array cells where cells[i] == 1 if the ith cell is
+ * occupied and cells[i] == 0 if it is vacant, and an integer n.
  *
- *  Return the state of the prison after n days.
+ * Return the state of the prison after n days.
  *
- *  Example 1:
- *  Input: cells = [0,1,0,1,1,0,0,1], n = 7
- *  Output: [0,0,1,1,0,0,0,0]
+ * Example 1:
+ * Input: cells = [0,1,0,1,1,0,0,1], n = 7
+ * Output: [0,0,1,1,0,0,0,0]
  *
- *  Example 2:
- *  Input: cells = [1,0,0,1,0,0,1,0], n = 1000000000
- *  Output: [0,0,1,1,1,1,1,0]
+ * Example 2:
+ * Input: cells = [1,0,0,1,0,0,1,0], n = 1000000000
+ * Output: [0,0,1,1,1,1,1,0]
  *
- *  Constraints:
- *  cells.length == 8
- *  cells[i] is either 0 or 1.
- *  1 <= n <= 10^9
+ * Constraints:
+ * cells.length == 8
+ * cells[i] is either 0 or 1.
+ * 1 <= n <= 10^9
+ *
  */
 public class PrisonCellsAfterNDays {
 

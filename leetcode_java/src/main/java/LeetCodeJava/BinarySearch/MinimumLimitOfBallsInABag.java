@@ -5,12 +5,9 @@ package LeetCodeJava.BinarySearch;
 import java.util.Arrays;
 
 /**
- *  1760. Minimum Limit of Balls in a Bag
+ * 1760. Minimum Limit of Balls in a Bag
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You are given an integer array nums where the ith bag contains nums[i] balls. You are also given an integer maxOperations.
  *
  * You can perform the following operation at most maxOperations times:
@@ -47,7 +44,6 @@ import java.util.Arrays;
  *
  * 1 <= nums.length <= 105
  * 1 <= maxOperations, nums[i] <= 109
- *
  *
  */
 public class MinimumLimitOfBallsInABag {

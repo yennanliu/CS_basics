@@ -5,8 +5,8 @@ package LeetCodeJava.BFS;
 import java.util.*;
 
 /**
- *
  * 743. Network Delay Time
+ * Medium
  *
  * You are given a network of n nodes, labeled from 1 to n. You are also given times, a list of travel times as directed edges times[i] = (ui, vi, wi), where ui is the source node, vi is the target node, and wi is the time it takes for a signal to travel from source to target.
  *
@@ -38,7 +38,6 @@ import java.util.*;
  * ui != vi
  * 0 <= wi <= 100
  * All the pairs (ui, vi) are unique. (i.e., no multiple edges.)
- *
  *
  */
 public class NetworkDelayTime {
@@ -591,12 +590,12 @@ public class NetworkDelayTime {
     }
 
 
-    // V4_1
+    // V4-_1
     // IDEA : Dijlstra's Algorithm V1
     // https://leetcode.com/problems/network-delay-time/submissions/1409037231/
 
 
-    // V4_2
+    // V4-_2
     // IDEA : Dijlstra's Algorithm V2
     // https://leetcode.com/problems/network-delay-time/submissions/1409037231/
 

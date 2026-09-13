@@ -5,32 +5,33 @@ package LeetCodeJava.BitManipulation;
 import java.util.List;
 
 /**
- *  2859. Sum of Values at Indices With K Set Bits
- *  Easy
+ * 2859. Sum of Values at Indices With K Set Bits
+ * Easy
  *
- *  You are given a 0-indexed integer array nums and an integer k.
+ * You are given a 0-indexed integer array nums and an integer k.
  *
- *  Return an integer that denotes the sum of elements in nums whose corresponding
- *  indices have exactly k set bits in their binary representation.
+ * Return an integer that denotes the sum of elements in nums whose corresponding
+ * indices have exactly k set bits in their binary representation.
  *
- *  The set bits in an integer are the 1's present when it is written in binary.
- *  For example, the binary representation of 21 is 10101, which has 3 set bits.
+ * The set bits in an integer are the 1's present when it is written in binary.
+ * For example, the binary representation of 21 is 10101, which has 3 set bits.
  *
- *  Example 1:
- *    Input: nums = [5,10,1,5,2], k = 1
- *    Output: 13
- *    Explanation: indices 1 (001), 2 (010) and 4 (100) have exactly 1 set bit,
- *                 so the answer is nums[1] + nums[2] + nums[4] = 13.
+ * Example 1:
+ * Input: nums = [5,10,1,5,2], k = 1
+ * Output: 13
+ * Explanation: indices 1 (001), 2 (010) and 4 (100) have exactly 1 set bit,
+ * so the answer is nums[1] + nums[2] + nums[4] = 13.
  *
- *  Example 2:
- *    Input: nums = [4,3,2,1], k = 2
- *    Output: 1
- *    Explanation: only index 3 (11) has 2 set bits.
+ * Example 2:
+ * Input: nums = [4,3,2,1], k = 2
+ * Output: 1
+ * Explanation: only index 3 (11) has 2 set bits.
  *
- *  Constraints:
- *    1 <= nums.length <= 1000
- *    1 <= nums[i] <= 10^5
- *    0 <= k <= 10
+ * Constraints:
+ * 1 <= nums.length <= 1000
+ * 1 <= nums[i] <= 10^5
+ * 0 <= k <= 10
+ *
  */
 public class SumOfValuesAtIndicesWithKSetBits {
 

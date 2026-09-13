@@ -4,10 +4,7 @@ package LeetCodeJava.BinarySearch;
 /**
  * 1482. Minimum Number of Days to Make m Bouquets
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You are given an integer array bloomDay, an integer m and an integer k.
  *
  * You want to make m bouquets. To make a bouquet, you need to use k adjacent flowers from the garden.

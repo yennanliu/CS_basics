@@ -11,43 +11,44 @@ import java.util.List;
 import java.util.Queue;
 
 /**
- *  281. Zigzag Iterator
- *  Medium
+ * 281. Zigzag Iterator
+ * Medium
  *
- *  Given two vectors of integers v1 and v2, implement an iterator to return
- *  their elements alternately.
+ * Given two vectors of integers v1 and v2, implement an iterator to return
+ * their elements alternately.
  *
- *  Implement the ZigzagIterator class:
+ * Implement the ZigzagIterator class:
  *
- *   - ZigzagIterator(List<int> v1, List<int> v2) initializes the object with
- *     the two vectors.
- *   - boolean hasNext() returns true if the iterator still has elements.
- *   - int next() returns the current element and moves the iterator forward.
- *
- *
- *  Example 1:
- *
- *  Input: v1 = [1,2], v2 = [3,4,5,6]
- *  Output: [1,3,2,4,5,6]
- *
- *  Example 2:
- *
- *  Input: v1 = [1], v2 = []
- *  Output: [1]
- *
- *  Example 3:
- *
- *  Input: v1 = [], v2 = [1]
- *  Output: [1]
+ * - ZigzagIterator(List<int> v1, List<int> v2) initializes the object with
+ * the two vectors.
+ * - boolean hasNext() returns true if the iterator still has elements.
+ * - int next() returns the current element and moves the iterator forward.
  *
  *
- *  Constraints:
+ * Example 1:
  *
- *  0 <= v1.length, v2.length <= 1000
- *  1 <= v1.length + v2.length <= 2000
- *  -2^31 <= v1[i], v2[i] <= 2^31 - 1
+ * Input: v1 = [1,2], v2 = [3,4,5,6]
+ * Output: [1,3,2,4,5,6]
  *
- *  Follow up: what if you are given k vectors?
+ * Example 2:
+ *
+ * Input: v1 = [1], v2 = []
+ * Output: [1]
+ *
+ * Example 3:
+ *
+ * Input: v1 = [], v2 = [1]
+ * Output: [1]
+ *
+ *
+ * Constraints:
+ *
+ * 0 <= v1.length, v2.length <= 1000
+ * 1 <= v1.length + v2.length <= 2000
+ * -2^31 <= v1[i], v2[i] <= 2^31 - 1
+ *
+ * Follow up: what if you are given k vectors?
+ *
  */
 public class ZigzagIterator {
 

@@ -2,12 +2,9 @@ package LeetCodeJava.Array;
 
 // https://leetcode.com/problems/maximum-swap/description/
 /**
- *  670. Maximum Swap
- * Solved
+ * 670. Maximum Swap
  * Medium
- * Topics
- * premium lock icon
- * Companies
+ *
  * You are given an integer num. You can swap two digits at most once to get the maximum valued number.
  *
  * Return the maximum valued number you can get.
@@ -29,7 +26,6 @@ package LeetCodeJava.Array;
  * Constraints:
  *
  * 0 <= num <= 108
- *
  *
  */
 public class MaximumSwap {
@@ -102,7 +98,7 @@ public class MaximumSwap {
     }
 
 
-    // V0-2
+    // V0-3
     // IDEA: OPTIMIZED (Greedy) (GEMINI)
     public int maximumSwap_0_3(int num) {
         char[] digits = String.valueOf(num).toCharArray();

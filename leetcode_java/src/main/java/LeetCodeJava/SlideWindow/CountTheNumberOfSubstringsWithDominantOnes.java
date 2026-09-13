@@ -3,27 +3,28 @@ package LeetCodeJava.SlideWindow;
 // https://leetcode.com/problems/count-the-number-of-substrings-with-dominant-ones/
 
 /**
- *  3234. Count the Number of Substrings With Dominant Ones
- *  Medium
+ * 3234. Count the Number of Substrings With Dominant Ones
+ * Medium
  *
- *  You are given a binary string s.
+ * You are given a binary string s.
  *
- *  Return the number of substrings with dominant ones.
+ * Return the number of substrings with dominant ones.
  *
- *  A string has dominant ones if the number of ones in the string is greater
- *  than or equal to the square of the number of zeros in the string.
+ * A string has dominant ones if the number of ones in the string is greater
+ * than or equal to the square of the number of zeros in the string.
  *
- *  Example 1:
- *    Input: s = "00011"
- *    Output: 5
+ * Example 1:
+ * Input: s = "00011"
+ * Output: 5
  *
- *  Example 2:
- *    Input: s = "101101"
- *    Output: 16
+ * Example 2:
+ * Input: s = "101101"
+ * Output: 16
  *
- *  Constraints:
- *    1 <= s.length <= 4 * 10^4
- *    s consists only of characters '0' and '1'.
+ * Constraints:
+ * 1 <= s.length <= 4 * 10^4
+ * s consists only of characters '0' and '1'.
+ *
  */
 public class CountTheNumberOfSubstringsWithDominantOnes {
 

@@ -9,8 +9,7 @@ import java.util.*;
 /**
  * 373. Find K Pairs with Smallest Sums
  * Medium
- * Topics
- * Companies
+ *
  * You are given two integer arrays nums1 and nums2 sorted in non-decreasing order and an integer k.
  *
  * Define a pair (u, v) which consists of one element from the first array and one element from the second array.
@@ -38,7 +37,6 @@ import java.util.*;
  * nums1 and nums2 both are sorted in non-decreasing order.
  * 1 <= k <= 104
  * k <= nums1.length * nums2.length
- *
  *
  */
 public class FindKPairsWithSmallestSums {

@@ -6,6 +6,8 @@ import java.util.*;
 // https://leetcode.ca/all/253.html
 /**
  * 253. Meeting Rooms II
+ * Medium
+ *
  * Given an array of meeting time intervals consisting of start and end times [[s1,e1],[s2,e2],...] (si < ei), find the minimum number of conference rooms required.
  *
  * Example 1:
@@ -24,6 +26,7 @@ import java.util.*;
  * Prime
  * Company:
  * Amazon Apple Atlassian Baidu Bloomberg Booking.com Cisco Citrix Drawbridge eBay Expedia Facebook GoDaddy Goldman Sachs Google Lyft Microsoft Nutanix Oracle Paypal Postmates Quora Snapchat Uber Visa Walmart Labs Yelp
+ *
  */
 
 public class MeetingRooms2 {

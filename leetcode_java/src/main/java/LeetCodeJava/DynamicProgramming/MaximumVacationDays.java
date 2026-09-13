@@ -9,6 +9,7 @@ import java.util.Arrays;
 /**
  * 568. Maximum Vacation Days
  * Hard
+ *
  * Lock: Prime
  *
  * LeetCode wants to give one of its best employees the option to travel among n cities
@@ -18,19 +19,19 @@ import java.util.Arrays;
  * Rules and restrictions:
  *
  * 1. You can only travel among n cities, represented by indexes from 0 to n - 1.
- *    Initially, you are in the city indexed 0 on Monday.
+ * Initially, you are in the city indexed 0 on Monday.
  * 2. The cities are connected by flights, given as an n x n matrix. If there is no flight
- *    from city i to city j, flights[i][j] == 0; otherwise flights[i][j] == 1.
- *    Also, flights[i][i] == 0 for all i.
+ * from city i to city j, flights[i][j] == 0; otherwise flights[i][j] == 1.
+ * Also, flights[i][i] == 0 for all i.
  * 3. You totally have k weeks (each week has seven days) to travel. You can only take
- *    flights on each week's Monday morning.
+ * flights on each week's Monday morning.
  * 4. For each city, you can only have restricted vacation days in different weeks, given
- *    an n x k matrix called days. days[i][j] is the maximum days you could take a
- *    vacation in city i in week j.
+ * an n x k matrix called days. days[i][j] is the maximum days you could take a
+ * vacation in city i in week j.
  * 5. You could stay in a city beyond the number of vacation days, but you should work on
- *    the extra days.
+ * the extra days.
  * 6. If you fly from city A to city B and take the vacation on that day, the deduction
- *    towards vacation days will count towards the vacation days of city B in that week.
+ * towards vacation days will count towards the vacation days of city B in that week.
  *
  * Given the two matrices flights and days, return the maximum vacation days you could
  * take during k weeks.

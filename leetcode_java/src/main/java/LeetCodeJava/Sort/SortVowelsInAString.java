@@ -5,36 +5,37 @@ package LeetCodeJava.Sort;
 import java.util.Arrays;
 
 /**
- *  2785. Sort Vowels in a String
- *  Medium
+ * 2785. Sort Vowels in a String
+ * Medium
  *
- *  Given a 0-indexed string s, permute s to get a new string t such that:
- *    - All consonants remain in their original places. More formally, if there
- *      is an index i with 0 <= i < s.length such that s[i] is a consonant, then
- *      t[i] = s[i].
- *    - The vowels must be sorted in the nondecreasing order of their ASCII
- *      values.
+ * Given a 0-indexed string s, permute s to get a new string t such that:
+ * - All consonants remain in their original places. More formally, if there
+ * is an index i with 0 <= i < s.length such that s[i] is a consonant, then
+ * t[i] = s[i].
+ * - The vowels must be sorted in the nondecreasing order of their ASCII
+ * values.
  *
- *  Return the resulting string.
+ * Return the resulting string.
  *
- *  The vowels are 'a', 'e', 'i', 'o' and 'u', and they can appear in lowercase
- *  or uppercase. Consonants comprise all letters that are not vowels.
+ * The vowels are 'a', 'e', 'i', 'o' and 'u', and they can appear in lowercase
+ * or uppercase. Consonants comprise all letters that are not vowels.
  *
- *  Example 1:
- *    Input: s = "lEetcOde"
- *    Output: "lEOtcede"
- *    Explanation: 'E', 'O', 'e' are the vowels; they get sorted by ASCII value
- *                 while the consonants stay put.
+ * Example 1:
+ * Input: s = "lEetcOde"
+ * Output: "lEOtcede"
+ * Explanation: 'E', 'O', 'e' are the vowels; they get sorted by ASCII value
+ * while the consonants stay put.
  *
- *  Example 2:
- *    Input: s = "lYmpH"
- *    Output: "lYmpH"
- *    Explanation: there are no vowels in s.
+ * Example 2:
+ * Input: s = "lYmpH"
+ * Output: "lYmpH"
+ * Explanation: there are no vowels in s.
  *
- *  Constraints:
- *    1 <= s.length <= 10^5
- *    s consists only of letters of the English alphabet in uppercase and
- *    lowercase.
+ * Constraints:
+ * 1 <= s.length <= 10^5
+ * s consists only of letters of the English alphabet in uppercase and
+ * lowercase.
+ *
  */
 public class SortVowelsInAString {
 

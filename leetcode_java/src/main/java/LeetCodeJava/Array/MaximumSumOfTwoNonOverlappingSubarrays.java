@@ -5,9 +5,7 @@ package LeetCodeJava.Array;
 /**
  * 1031. Maximum Sum of Two Non-Overlapping Subarrays
  * Medium
- * Topics
- * Companies
- * Hint
+ *
  * Given an integer array nums and two integers firstLen and secondLen, return the maximum sum of elements in two non-overlapping subarrays with lengths firstLen and secondLen.
  * <p>
  * The array with length firstLen could occur before or after the array with length secondLen, but they have to be non-overlapping.
@@ -39,6 +37,7 @@ package LeetCodeJava.Array;
  * 2 <= firstLen + secondLen <= 1000
  * firstLen + secondLen <= nums.length <= 1000
  * 0 <= nums[i] <= 1000
+ *
  */
 public class MaximumSumOfTwoNonOverlappingSubarrays {
 

@@ -7,8 +7,7 @@ import java.util.*;
 /**
  * 997. Find the Town Judge
  * Easy
- * Topics
- * Companies
+ *
  * In a town, there are n people labeled from 1 to n. There is a rumor that one of these people is secretly the town judge.
  *
  * If the town judge exists, then:
@@ -44,7 +43,6 @@ import java.util.*;
  * All the pairs of trust are unique.
  * ai != bi
  * 1 <= ai, bi <= n
- *
  *
  */
 public class FindTheTownJudge {

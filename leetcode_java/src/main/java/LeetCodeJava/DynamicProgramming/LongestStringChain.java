@@ -5,11 +5,9 @@ package LeetCodeJava.DynamicProgramming;
 import java.util.*;
 
 /**
- *1048. Longest String Chain
+ * 1048. Longest String Chain
  * Medium
- * Topics
- * Companies
- * Hint
+ *
  * You are given an array of words where each word consists of lowercase English letters.
  *
  * wordA is a predecessor of wordB if and only if we can insert exactly one letter anywhere in wordA without changing the order of the other characters to make it equal to wordB.

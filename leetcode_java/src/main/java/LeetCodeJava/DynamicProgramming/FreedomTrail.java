@@ -31,10 +31,10 @@ import java.util.Map;
  * At the stage of rotating the ring to spell the key character key[i]:
  *
  * 1. You can rotate the ring clockwise or anticlockwise by one place, which counts as one
- *    step. The final purpose of the rotation is to align one of ring's characters at the
- *    "12:00" direction, where this character must equal key[i].
+ * step. The final purpose of the rotation is to align one of ring's characters at the
+ * "12:00" direction, where this character must equal key[i].
  * 2. If the character key[i] has been aligned at the "12:00" direction, press the center
- *    button to spell, which also counts as one step.
+ * button to spell, which also counts as one step.
  *
  * Example 1:
  *

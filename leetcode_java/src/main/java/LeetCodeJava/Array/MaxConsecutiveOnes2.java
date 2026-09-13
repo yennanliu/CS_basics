@@ -7,6 +7,7 @@ import java.util.List;
 /**
  * 487. Max Consecutive Ones II
  * Medium
+ *
  * Lock: Prime
  *
  * Given a binary array nums, return the maximum number of consecutive 1's in the array

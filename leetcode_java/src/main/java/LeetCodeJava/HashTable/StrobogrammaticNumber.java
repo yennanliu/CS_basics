@@ -5,6 +5,13 @@ package LeetCodeJava.HashTable;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 246. Strobogrammatic Number
+ * Easy
+ *
+ * https://leetcode.com/problems/strobogrammatic-number/
+ *
+ */
 public class StrobogrammaticNumber {
 
     // V0

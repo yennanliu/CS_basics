@@ -7,6 +7,8 @@ import java.util.*;
 
 /**
  * 1257. Smallest Common Region
+ * Medium
+ *
  * You are given some lists of regions where the first region of each list includes all other regions in that list.
  *
  * Naturally, if a region X contains another region Y then X is bigger than Y. Also by definition a region X contains itself.
@@ -45,7 +47,6 @@ import java.util.*;
  * Airbnb
  * Problem Solution
  * 1257-Smallest-Common-Region
- *
  *
  */
 public class SmallestCommonRegion {

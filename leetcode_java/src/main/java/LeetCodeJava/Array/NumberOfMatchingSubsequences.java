@@ -7,8 +7,7 @@ import java.util.*;
 /**
  * 792. Number of Matching Subsequences
  * Medium
- * Topics
- * Companies
+ *
  * Given a string s and an array of strings words, return the number of words[i] that is a subsequence of s.
  * <p>
  * A subsequence of a string is a new string generated from the original string with some characters (can be none) deleted without changing the relative order of the remaining characters.
@@ -33,6 +32,7 @@ import java.util.*;
  * 1 <= words.length <= 5000
  * 1 <= words[i].length <= 50
  * and words[i] consist of only lowercase English letters.
+ *
  */
 public class NumberOfMatchingSubsequences {
 
@@ -251,5 +251,5 @@ public class NumberOfMatchingSubsequences {
         return res;
     }
 
-    // V2
+    // V2-1
 }

@@ -8,9 +8,7 @@ import java.util.Stack;
 /**
  * 321. Create Maximum Number
  * Hard
- * Topics
- * premium lock icon
- * Companies
+ *
  * You are given two integer arrays nums1 and nums2 of lengths m and n respectively. nums1 and nums2 represent the digits of two numbers. You are also given an integer k.
  *
  * Create the maximum number of length k <= m + n from digits of the two numbers. The relative order of the digits from the same array must be preserved.

@@ -5,13 +5,9 @@ package LeetCodeJava.Design;
 import java.util.*;
 
 /**
- *  1268. Search Suggestions System
- * Solved
+ * 1268. Search Suggestions System
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You are given an array of strings products and a string searchWord.
  *
  * Design a system that suggests at most three product names from products after each character of searchWord is typed. Suggested products should have common prefix with searchWord. If there are more than three products with a common prefix return the three lexicographically minimums products.

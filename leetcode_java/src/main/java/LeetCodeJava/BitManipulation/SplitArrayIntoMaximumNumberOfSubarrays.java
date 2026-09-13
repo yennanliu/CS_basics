@@ -3,12 +3,8 @@ package LeetCodeJava.BitManipulation;
 // https://leetcode.com/problems/split-array-into-maximum-number-of-subarrays/description/
 /**
  * 2871. Split Array Into Maximum Number of Subarrays
- * Solved
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You are given an array nums consisting of non-negative integers.
  *
  * We define the score of subarray nums[l..r] such that l <= r as nums[l] AND nums[l + 1] AND ... AND nums[r] where AND is the bitwise AND operation.
@@ -45,7 +41,6 @@ package LeetCodeJava.BitManipulation;
  *
  * 1 <= nums.length <= 105
  * 0 <= nums[i] <= 106
- *
  *
  */
 public class SplitArrayIntoMaximumNumberOfSubarrays {

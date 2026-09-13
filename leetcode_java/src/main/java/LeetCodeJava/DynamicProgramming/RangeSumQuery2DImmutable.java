@@ -3,10 +3,8 @@ package LeetCodeJava.DynamicProgramming;
 // https://leetcode.com/problems/range-sum-query-2d-immutable/description/
 /**
  * 304. Range Sum Query 2D - Immutable
- * Solved
  * Medium
- * Topics
- * Companies
+ *
  * Given a 2D matrix matrix, handle multiple queries of the following type:
  *
  * Calculate the sum of the elements of matrix inside the rectangle defined by its upper left corner (row1, col1) and lower right corner (row2, col2).

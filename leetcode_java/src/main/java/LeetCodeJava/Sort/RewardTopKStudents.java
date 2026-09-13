@@ -9,51 +9,52 @@ import java.util.List;
 import java.util.Set;
 
 /**
- *  2512. Reward Top K Students
- *  Medium
+ * 2512. Reward Top K Students
+ * Medium
  *
- *  You are given two string arrays positive_feedback and negative_feedback,
- *  containing the words denoting positive and negative feedback, respectively.
- *  Note that no word is both positive and negative.
+ * You are given two string arrays positive_feedback and negative_feedback,
+ * containing the words denoting positive and negative feedback, respectively.
+ * Note that no word is both positive and negative.
  *
- *  Initially every student has 0 points. Each positive word in a feedback report
- *  increases the points of a student by 3, whereas each negative word decreases
- *  the points by 1.
+ * Initially every student has 0 points. Each positive word in a feedback report
+ * increases the points of a student by 3, whereas each negative word decreases
+ * the points by 1.
  *
- *  You are given n feedback reports, represented by a 0-indexed string array
- *  report and a 0-indexed integer array student_id, where student_id[i]
- *  represents the ID of the student who has received the feedback report
- *  report[i]. The ID of each student is unique.
+ * You are given n feedback reports, represented by a 0-indexed string array
+ * report and a 0-indexed integer array student_id, where student_id[i]
+ * represents the ID of the student who has received the feedback report
+ * report[i]. The ID of each student is unique.
  *
- *  Given an integer k, return the top k students after ranking them in
- *  non-increasing order by their points. In case more than one student has the
- *  same points, the one with the lower ID ranks higher.
+ * Given an integer k, return the top k students after ranking them in
+ * non-increasing order by their points. In case more than one student has the
+ * same points, the one with the lower ID ranks higher.
  *
- *  Example 1:
- *    Input: positive_feedback = ["smart","brilliant","studious"],
- *           negative_feedback = ["not"],
- *           report = ["this student is studious","the student is smart"],
- *           student_id = [1,2], k = 2
- *    Output: [1,2]
- *    Explanation: Both students have 3 points, but student 1 has the lower ID.
+ * Example 1:
+ * Input: positive_feedback = ["smart","brilliant","studious"],
+ * negative_feedback = ["not"],
+ * report = ["this student is studious","the student is smart"],
+ * student_id = [1,2], k = 2
+ * Output: [1,2]
+ * Explanation: Both students have 3 points, but student 1 has the lower ID.
  *
- *  Example 2:
- *    Input: positive_feedback = ["smart","brilliant","studious"],
- *           negative_feedback = ["not"],
- *           report = ["this student is not studious","the student is smart"],
- *           student_id = [1,2], k = 2
- *    Output: [2,1]
+ * Example 2:
+ * Input: positive_feedback = ["smart","brilliant","studious"],
+ * negative_feedback = ["not"],
+ * report = ["this student is not studious","the student is smart"],
+ * student_id = [1,2], k = 2
+ * Output: [2,1]
  *
- *  Constraints:
- *    1 <= positive_feedback.length, negative_feedback.length <= 10^4
- *    1 <= positive_feedback[i].length, negative_feedback[j].length <= 100
- *    No word is present in both positive_feedback and negative_feedback.
- *    n == report.length == student_id.length
- *    1 <= n <= 10^4
- *    1 <= report[i].length <= 100
- *    1 <= student_id[i] <= 10^9
- *    All the values of student_id[i] are unique.
- *    1 <= k <= n
+ * Constraints:
+ * 1 <= positive_feedback.length, negative_feedback.length <= 10^4
+ * 1 <= positive_feedback[i].length, negative_feedback[j].length <= 100
+ * No word is present in both positive_feedback and negative_feedback.
+ * n == report.length == student_id.length
+ * 1 <= n <= 10^4
+ * 1 <= report[i].length <= 100
+ * 1 <= student_id[i] <= 10^9
+ * All the values of student_id[i] are unique.
+ * 1 <= k <= n
+ *
  */
 public class RewardTopKStudents {
 

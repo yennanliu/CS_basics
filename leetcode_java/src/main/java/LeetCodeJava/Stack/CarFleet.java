@@ -5,10 +5,8 @@ import java.util.*;
 // https://leetcode.com/problems/car-fleet/
 /**
  * 853. Car Fleet
- * Solved
  * Medium
- * Topics
- * Companies
+ *
  * There are n cars at given miles away from the starting mile 0, traveling to reach the mile target.
  *
  * You are given two integer array position and speed, both of length n, where position[i] is the starting mile of the ith car and speed[i] is the speed of the ith car in miles per hour.
@@ -63,8 +61,6 @@ import java.util.*;
  * 0 <= position[i] < target
  * All the values of position are unique.
  * 0 < speed[i] <= 106
- *
- *
  *
  */
 

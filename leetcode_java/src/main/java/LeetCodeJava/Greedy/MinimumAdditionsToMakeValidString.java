@@ -2,13 +2,14 @@ package LeetCodeJava.Greedy;
 
 // https://leetcode.com/problems/minimum-additions-to-make-valid-string/
 /**
- *  2645. Minimum Additions to Make Valid String
+ * 2645. Minimum Additions to Make Valid String
+ * Medium
  *
- *  Given a string word to which you can insert letters "a", "b" or "c" anywhere and any number of times, return the minimum number of letters that must be inserted so that word becomes valid.
+ * Given a string word to which you can insert letters "a", "b" or "c" anywhere and any number of times, return the minimum number of letters that must be inserted so that word becomes valid.
  *
  * A string is called valid if it can be formed by concatenating the string "abc" several times.
  *
- *  Example 1:
+ * Example 1:
  *
  * Input: word = "b"
  * Output: 2
@@ -29,7 +30,6 @@ package LeetCodeJava.Greedy;
  *
  * 1 <= word.length <= 50
  * word consists of letters "a", "b" and "c" only.
- *
  *
  */
 public class MinimumAdditionsToMakeValidString {

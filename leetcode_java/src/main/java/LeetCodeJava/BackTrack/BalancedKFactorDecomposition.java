@@ -7,31 +7,32 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- *  3669. Balanced K-Factor Decomposition
- *  Medium
+ * 3669. Balanced K-Factor Decomposition
+ * Medium
  *
- *  Given two integers n and k, split the number n into exactly k positive
- *  integers such that the product of these integers is equal to n.
+ * Given two integers n and k, split the number n into exactly k positive
+ * integers such that the product of these integers is equal to n.
  *
- *  Return any one split in which the maximum difference between any two
- *  numbers is minimized. You may return the result in any order.
+ * Return any one split in which the maximum difference between any two
+ * numbers is minimized. You may return the result in any order.
  *
- *  Example 1:
- *    Input: n = 100, k = 2
- *    Output: [10,10]
- *    Explanation: The split [10, 10] yields 10 * 10 = 100 and a max-min
- *                 difference of 0, which is minimal.
+ * Example 1:
+ * Input: n = 100, k = 2
+ * Output: [10,10]
+ * Explanation: The split [10, 10] yields 10 * 10 = 100 and a max-min
+ * difference of 0, which is minimal.
  *
- *  Example 2:
- *    Input: n = 44, k = 3
- *    Output: [2,2,11]
- *    Explanation: [1,1,44] -> diff 43, [1,2,22] -> diff 21,
- *                 [1,4,11] -> diff 10, [2,2,11] -> diff 9 (minimal).
+ * Example 2:
+ * Input: n = 44, k = 3
+ * Output: [2,2,11]
+ * Explanation: [1,1,44] -> diff 43, [1,2,22] -> diff 21,
+ * [1,4,11] -> diff 10, [2,2,11] -> diff 9 (minimal).
  *
- *  Constraints:
- *    4 <= n <= 10^5
- *    2 <= k <= 5
- *    k is strictly less than the total number of positive divisors of n.
+ * Constraints:
+ * 4 <= n <= 10^5
+ * 2 <= k <= 5
+ * k is strictly less than the total number of positive divisors of n.
+ *
  */
 public class BalancedKFactorDecomposition {
 

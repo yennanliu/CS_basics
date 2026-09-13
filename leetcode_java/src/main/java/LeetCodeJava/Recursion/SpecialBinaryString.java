@@ -14,8 +14,8 @@ import java.util.List;
  *
  * Special binary strings are binary strings with the following two properties:
  *
- *   - The number of 0's is equal to the number of 1's.
- *   - Every prefix of the binary string has at least as many 1's as 0's.
+ * - The number of 0's is equal to the number of 1's.
+ * - Every prefix of the binary string has at least as many 1's as 0's.
  *
  * You are given a special binary string s.
  *

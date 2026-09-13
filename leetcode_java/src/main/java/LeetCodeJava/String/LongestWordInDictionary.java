@@ -6,12 +6,8 @@ import java.util.*;
 
 /**
  * 720. Longest Word in Dictionary
- * Attempted
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * Given an array of strings words representing an English Dictionary, return the longest word in words that can be built one character at a time by other words in words.
  * <p>
  * If there is more than one possible answer, return the longest word with the smallest lexicographical order. If there is no answer, return the empty string.
@@ -37,6 +33,7 @@ import java.util.*;
  * 1 <= words.length <= 1000
  * 1 <= words[i].length <= 30
  * words[i] consists of lowercase English letters.
+ *
  */
 public class LongestWordInDictionary {
 

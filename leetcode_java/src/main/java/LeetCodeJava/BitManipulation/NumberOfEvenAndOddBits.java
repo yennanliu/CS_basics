@@ -3,30 +3,31 @@ package LeetCodeJava.BitManipulation;
 // https://leetcode.com/problems/number-of-even-and-odd-bits/
 
 /**
- *  2595. Number of Even and Odd Bits
- *  Easy
+ * 2595. Number of Even and Odd Bits
+ * Easy
  *
- *  You are given a positive integer n.
+ * You are given a positive integer n.
  *
- *  Let even denote the number of even indices in the binary representation of n with
- *  value 1. Let odd denote the number of odd indices in the binary representation of
- *  n with value 1. Note that bits are indexed from right to left in the binary
- *  representation of a number.
+ * Let even denote the number of even indices in the binary representation of n with
+ * value 1. Let odd denote the number of odd indices in the binary representation of
+ * n with value 1. Note that bits are indexed from right to left in the binary
+ * representation of a number.
  *
- *  Return the array [even, odd].
+ * Return the array [even, odd].
  *
- *  Example 1:
- *    Input: n = 50
- *    Output: [1,2]
- *    Explanation: 50 is 110010 in binary; it has 1s at indices 1, 4 and 5.
+ * Example 1:
+ * Input: n = 50
+ * Output: [1,2]
+ * Explanation: 50 is 110010 in binary; it has 1s at indices 1, 4 and 5.
  *
- *  Example 2:
- *    Input: n = 2
- *    Output: [0,1]
- *    Explanation: 2 is 10 in binary; it has a 1 only at index 1.
+ * Example 2:
+ * Input: n = 2
+ * Output: [0,1]
+ * Explanation: 2 is 10 in binary; it has a 1 only at index 1.
  *
- *  Constraints:
- *    1 <= n <= 1000
+ * Constraints:
+ * 1 <= n <= 1000
+ *
  */
 public class NumberOfEvenAndOddBits {
 

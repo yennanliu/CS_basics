@@ -7,11 +7,8 @@ import java.util.Map;
 
 /**
  * 387. First Unique Character in a String
- * Solved
  * Easy
- * Topics
- * premium lock icon
- * Companies
+ *
  * Given a string s, find the first non-repeating character in it and return its index. If it does not exist, return -1.
  *
  *

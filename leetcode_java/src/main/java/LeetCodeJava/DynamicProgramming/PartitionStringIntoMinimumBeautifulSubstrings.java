@@ -7,10 +7,7 @@ import java.util.Arrays;
 /**
  * 2767. Partition String Into Minimum Beautiful Substrings
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * Given a binary string s, partition the string into one or more substrings such that each substring is beautiful.
  *
  * A string is beautiful if:
@@ -49,6 +46,7 @@ import java.util.Arrays;
  *
  * 1 <= s.length <= 15
  * s[i] is either '0' or '1'.
+ *
  */
 public class PartitionStringIntoMinimumBeautifulSubstrings {
 

@@ -17,11 +17,11 @@ import java.math.BigInteger;
  * the following three ways:
  *
  * <IntegerPart>
- *     For example, 12, 0, and 123.
+ * For example, 12, 0, and 123.
  * <IntegerPart>.<NonRepeatingPart>
- *     For example, 0.5, 1., 2.12, and 123.0001.
+ * For example, 0.5, 1., 2.12, and 123.0001.
  * <IntegerPart>.<NonRepeatingPart>(<RepeatingPart>)
- *     For example, 0.1(6), 1.(9), 123.00(1212).
+ * For example, 0.1(6), 1.(9), 123.00(1212).
  *
  * The repeating portion of a decimal expansion is conventionally denoted within a pair
  * of round brackets. For example:

@@ -2,12 +2,9 @@ package LeetCodeJava.Greedy;
 
 // https://leetcode.com/problems/row-with-maximum-ones/description/
 /**
- *  2643. Row With Maximum Ones
+ * 2643. Row With Maximum Ones
  * Easy
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * Given a m x n binary matrix mat, find the 0-indexed position of the row that contains the maximum count of ones, and the number of ones in that row.
  *
  * In case there are multiple rows that have the maximum count of ones, the row with the smallest row number should be selected.
@@ -39,8 +36,6 @@ package LeetCodeJava.Greedy;
  * n == mat[i].length
  * 1 <= m, n <= 100
  * mat[i][j] is either 0 or 1.
- *
- *
  *
  */
 public class RowWithMaximumOnes {

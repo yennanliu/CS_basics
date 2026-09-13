@@ -4,9 +4,7 @@ package LeetCodeJava.DynamicProgramming;
 /**
  * 639. Decode Ways II
  * Hard
- * Topics
- * premium lock icon
- * Companies
+ *
  * A message containing letters from A-Z can be encoded into numbers using the following mapping:
  *
  * 'A' -> "1"

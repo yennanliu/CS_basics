@@ -5,45 +5,46 @@ package LeetCodeJava.BinarySearchTree;
 import java.util.Random;
 
 /**
- *  3526. Range XOR Queries with Subarray Reversals
- *  Hard
+ * 3526. Range XOR Queries with Subarray Reversals
+ * Hard
  *
- *  You are given an integer array nums of length n and a 2D integer array queries
- *  of length q, where each query is one of the following three types:
- *   - Update: queries[i] = [1, index, value] -> set nums[index] = value.
- *   - Range XOR Query: queries[i] = [2, left, right] -> compute the bitwise XOR of
- *     all elements in the subarray nums[left...right], and record this result.
- *   - Reverse Subarray: queries[i] = [3, left, right] -> reverse the subarray
- *     nums[left...right] in place.
+ * You are given an integer array nums of length n and a 2D integer array queries
+ * of length q, where each query is one of the following three types:
+ * - Update: queries[i] = [1, index, value] -> set nums[index] = value.
+ * - Range XOR Query: queries[i] = [2, left, right] -> compute the bitwise XOR of
+ * all elements in the subarray nums[left...right], and record this result.
+ * - Reverse Subarray: queries[i] = [3, left, right] -> reverse the subarray
+ * nums[left...right] in place.
  *
- *  Return an array of the results of all range XOR queries in the order they were
- *  encountered.
+ * Return an array of the results of all range XOR queries in the order they were
+ * encountered.
  *
- *  Example 1:
- *    Input: nums = [1,2,3,4,5], queries = [[2,1,3],[1,2,10],[3,0,4],[2,0,4]]
- *    Output: [5,8]
- *    Explanation:
- *      [2,1,3] -> XOR of [2,3,4] = 5
- *      [1,2,10] -> nums becomes [1,2,10,4,5]
- *      [3,0,4] -> nums becomes [5,4,10,2,1]
- *      [2,0,4] -> XOR of [5,4,10,2,1] = 8
+ * Example 1:
+ * Input: nums = [1,2,3,4,5], queries = [[2,1,3],[1,2,10],[3,0,4],[2,0,4]]
+ * Output: [5,8]
+ * Explanation:
+ * [2,1,3] -> XOR of [2,3,4] = 5
+ * [1,2,10] -> nums becomes [1,2,10,4,5]
+ * [3,0,4] -> nums becomes [5,4,10,2,1]
+ * [2,0,4] -> XOR of [5,4,10,2,1] = 8
  *
- *  Example 2:
- *    Input: nums = [7,8,9], queries = [[1,0,3],[2,0,2],[3,1,2]]
- *    Output: [2]
- *    Explanation:
- *      [1,0,3] -> nums becomes [3,8,9]
- *      [2,0,2] -> XOR of [3,8,9] = 2
- *      [3,1,2] -> nums becomes [3,9,8]
+ * Example 2:
+ * Input: nums = [7,8,9], queries = [[1,0,3],[2,0,2],[3,1,2]]
+ * Output: [2]
+ * Explanation:
+ * [1,0,3] -> nums becomes [3,8,9]
+ * [2,0,2] -> XOR of [3,8,9] = 2
+ * [3,1,2] -> nums becomes [3,9,8]
  *
- *  Constraints:
- *    1 <= nums.length <= 10^5
- *    0 <= nums[i] <= 10^9
- *    1 <= queries.length <= 10^5
- *    queries[i].length == 3
- *    queries[i][0] is 1, 2 or 3
- *    if queries[i][0] == 1 : 0 <= index < nums.length, 0 <= value <= 10^9
- *    otherwise             : 0 <= left <= right < nums.length
+ * Constraints:
+ * 1 <= nums.length <= 10^5
+ * 0 <= nums[i] <= 10^9
+ * 1 <= queries.length <= 10^5
+ * queries[i].length == 3
+ * queries[i][0] is 1, 2 or 3
+ * if queries[i][0] == 1 : 0 <= index < nums.length, 0 <= value <= 10^9
+ * otherwise             : 0 <= left <= right < nums.length
+ *
  */
 public class RangeXORQueriesWithSubarrayReversals {
 

@@ -7,9 +7,7 @@ import java.util.PriorityQueue;
 /**
  * 1405. Longest Happy String
  * Medium
- * Topics
- * Companies
- * Hint
+ *
  * A string s is called happy if it satisfies the following conditions:
  *
  * s only contains the letters 'a', 'b', and 'c'.

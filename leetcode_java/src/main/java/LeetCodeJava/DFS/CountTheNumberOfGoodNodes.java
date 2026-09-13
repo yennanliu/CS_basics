@@ -6,32 +6,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  3249. Count the Number of Good Nodes
- *  Medium
+ * 3249. Count the Number of Good Nodes
+ * Medium
  *
- *  There is an undirected tree with n nodes labeled from 0 to n - 1, and rooted at
- *  node 0. You are given a 2D integer array edges of length n - 1, where
- *  edges[i] = [ai, bi] indicates that there is an edge between nodes ai and bi.
+ * There is an undirected tree with n nodes labeled from 0 to n - 1, and rooted at
+ * node 0. You are given a 2D integer array edges of length n - 1, where
+ * edges[i] = [ai, bi] indicates that there is an edge between nodes ai and bi.
  *
- *  A node is good if all the subtrees rooted at its children have the same size.
+ * A node is good if all the subtrees rooted at its children have the same size.
  *
- *  Return the number of good nodes in the given tree.
+ * Return the number of good nodes in the given tree.
  *
- *  Example 1:
- *    Input: edges = [[0,1],[0,2],[1,3],[1,4],[2,5],[2,6]]
- *    Output: 7
- *    Explanation: all of the nodes of the given tree are good.
+ * Example 1:
+ * Input: edges = [[0,1],[0,2],[1,3],[1,4],[2,5],[2,6]]
+ * Output: 7
+ * Explanation: all of the nodes of the given tree are good.
  *
- *  Example 2:
- *    Input: edges = [[0,1],[1,2],[2,3],[3,4],[0,5],[1,6],[2,7],[3,8]]
- *    Output: 6
+ * Example 2:
+ * Input: edges = [[0,1],[1,2],[2,3],[3,4],[0,5],[1,6],[2,7],[3,8]]
+ * Output: 6
  *
- *  Constraints:
- *    2 <= n <= 10^5
- *    edges.length == n - 1
- *    edges[i].length == 2
- *    0 <= edges[i][0], edges[i][1] <= n - 1
- *    The input is generated such that edges represents a valid tree.
+ * Constraints:
+ * 2 <= n <= 10^5
+ * edges.length == n - 1
+ * edges[i].length == 2
+ * 0 <= edges[i][0], edges[i][1] <= n - 1
+ * The input is generated such that edges represents a valid tree.
+ *
  */
 public class CountTheNumberOfGoodNodes {
 

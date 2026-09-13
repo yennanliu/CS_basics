@@ -8,6 +8,8 @@ import java.util.List;
 
 /**
  * 1011. Capacity To Ship Packages Within D Days
+ * Medium
+ *
  * <p>
  * A conveyor belt has packages that must be shipped from one port to another within days days.
  * <p>
@@ -52,6 +54,7 @@ import java.util.List;
  * <p>
  * 1 <= days <= weights.length <= 5 * 104
  * 1 <= weights[i] <= 500
+ *
  */
 public class CapacityToShipPackagesWithinDDays {
 

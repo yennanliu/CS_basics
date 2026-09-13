@@ -6,38 +6,39 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- *  929. Unique Email Addresses
- *  Easy
+ * 929. Unique Email Addresses
+ * Easy
  *
- *  Every valid email consists of a local name and a domain name, separated by
- *  the '@' sign. Besides lowercase letters, the email may contain one or more
- *  '.' or '+'.
+ * Every valid email consists of a local name and a domain name, separated by
+ * the '@' sign. Besides lowercase letters, the email may contain one or more
+ * '.' or '+'.
  *
- *  If you add periods '.' between some characters in the local name part of
- *  an email address, mail sent there will be forwarded to the same address
- *  without dots in the local name.
+ * If you add periods '.' between some characters in the local name part of
+ * an email address, mail sent there will be forwarded to the same address
+ * without dots in the local name.
  *
- *  If you add a plus '+' in the local name, everything after the first plus
- *  sign will be ignored.
+ * If you add a plus '+' in the local name, everything after the first plus
+ * sign will be ignored.
  *
- *  Rules above do not apply to the domain name.
+ * Rules above do not apply to the domain name.
  *
- *  Given an array of strings emails, return the number of different addresses
- *  that actually receive mails.
+ * Given an array of strings emails, return the number of different addresses
+ * that actually receive mails.
  *
- *  Example 1:
- *  Input: emails = ["test.email+alex@leetcode.com",
- *                   "test.e.mail+bob.cathy@leetcode.com",
- *                   "testemail+david@lee.tcode.com"]
- *  Output: 2
+ * Example 1:
+ * Input: emails = ["test.email+alex@leetcode.com",
+ * "test.e.mail+bob.cathy@leetcode.com",
+ * "testemail+david@lee.tcode.com"]
+ * Output: 2
  *
- *  Example 2:
- *  Input: emails = ["a@leetcode.com","b@leetcode.com","c@leetcode.com"]
- *  Output: 3
+ * Example 2:
+ * Input: emails = ["a@leetcode.com","b@leetcode.com","c@leetcode.com"]
+ * Output: 3
  *
- *  Constraints:
- *   - 1 <= emails.length <= 100
- *   - 1 <= emails[i].length <= 100
+ * Constraints:
+ * - 1 <= emails.length <= 100
+ * - 1 <= emails[i].length <= 100
+ *
  */
 public class UniqueEmailAddresses {
 

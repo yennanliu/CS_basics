@@ -11,38 +11,39 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- *  1152. Analyze User Website Visit Pattern
- *  Medium
+ * 1152. Analyze User Website Visit Pattern
+ * Medium
  *
- *  You are given two string arrays username and website and an integer array timestamp.
- *  All arrays have the same length and the tuple [username[i], website[i], timestamp[i]]
- *  means user username[i] visited website[i] at time timestamp[i].
+ * You are given two string arrays username and website and an integer array timestamp.
+ * All arrays have the same length and the tuple [username[i], website[i], timestamp[i]]
+ * means user username[i] visited website[i] at time timestamp[i].
  *
- *  A pattern is a list of three websites (not necessarily distinct).
- *  The score of a pattern is the number of users that visited all the websites in the
- *  pattern in the same order they appeared in the pattern.
+ * A pattern is a list of three websites (not necessarily distinct).
+ * The score of a pattern is the number of users that visited all the websites in the
+ * pattern in the same order they appeared in the pattern.
  *
- *  Return the pattern with the largest score. If there is more than one pattern with the
- *  same largest score, return the lexicographically smallest such pattern.
+ * Return the pattern with the largest score. If there is more than one pattern with the
+ * same largest score, return the lexicographically smallest such pattern.
  *
- *  Example 1:
- *  Input: username = ["joe","joe","joe","james","james","james","james","mary","mary","mary"],
- *         timestamp = [1,2,3,4,5,6,7,8,9,10],
- *         website = ["home","about","career","home","cart","maps","home","home","about","career"]
- *  Output: ["home","about","career"]
+ * Example 1:
+ * Input: username = ["joe","joe","joe","james","james","james","james","mary","mary","mary"],
+ * timestamp = [1,2,3,4,5,6,7,8,9,10],
+ * website = ["home","about","career","home","cart","maps","home","home","about","career"]
+ * Output: ["home","about","career"]
  *
- *  Example 2:
- *  Input: username = ["ua","ua","ua","ub","ub","ub"], timestamp = [1,2,3,4,5,6],
- *         website = ["a","b","a","a","b","c"]
- *  Output: ["a","b","a"]
+ * Example 2:
+ * Input: username = ["ua","ua","ua","ub","ub","ub"], timestamp = [1,2,3,4,5,6],
+ * website = ["a","b","a","a","b","c"]
+ * Output: ["a","b","a"]
  *
- *  Constraints:
- *  3 <= username.length <= 50
- *  1 <= username[i].length, website[i].length <= 10
- *  timestamp.length == username.length == website.length
- *  1 <= timestamp[i] <= 10^9
- *  username[i] and website[i] consist of lowercase English letters.
- *  At least one user visited at least three websites.
+ * Constraints:
+ * 3 <= username.length <= 50
+ * 1 <= username[i].length, website[i].length <= 10
+ * timestamp.length == username.length == website.length
+ * 1 <= timestamp[i] <= 10^9
+ * username[i] and website[i] consist of lowercase English letters.
+ * At least one user visited at least three websites.
+ *
  */
 public class AnalyzeUserWebsiteVisitPattern {
 

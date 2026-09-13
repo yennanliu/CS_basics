@@ -7,36 +7,37 @@ import java.util.Deque;
 import java.util.List;
 
 /**
- *  636. Exclusive Time of Functions
- *  Medium
+ * 636. Exclusive Time of Functions
+ * Medium
  *
- *  On a single-threaded CPU, we execute a program containing n functions, each with a
- *  unique ID between 0 and n-1. Calls are stored in a call stack.
+ * On a single-threaded CPU, we execute a program containing n functions, each with a
+ * unique ID between 0 and n-1. Calls are stored in a call stack.
  *
- *  You are given logs, where logs[i] is "{function_id}:{"start" | "end"}:{timestamp}".
- *  "0:start:3" means function 0 started at the BEGINNING of timestamp 3;
- *  "1:end:2" means function 1 ended at the END of timestamp 2.
- *  A function can be called multiple times, possibly recursively.
+ * You are given logs, where logs[i] is "{function_id}:{"start" | "end"}:{timestamp}".
+ * "0:start:3" means function 0 started at the BEGINNING of timestamp 3;
+ * "1:end:2" means function 1 ended at the END of timestamp 2.
+ * A function can be called multiple times, possibly recursively.
  *
- *  A function's exclusive time is the sum of execution times of all its calls, not
- *  counting time spent inside functions it called.
+ * A function's exclusive time is the sum of execution times of all its calls, not
+ * counting time spent inside functions it called.
  *
- *  Return the exclusive time of each function.
+ * Return the exclusive time of each function.
  *
- *  Example 1:
- *  Input: n = 2, logs = ["0:start:0","1:start:2","1:end:5","0:end:6"]
- *  Output: [3,4]
+ * Example 1:
+ * Input: n = 2, logs = ["0:start:0","1:start:2","1:end:5","0:end:6"]
+ * Output: [3,4]
  *
- *  Example 2:
- *  Input: n = 1, logs = ["0:start:0","0:start:2","0:end:5","0:start:6","0:end:6","0:end:7"]
- *  Output: [8]
+ * Example 2:
+ * Input: n = 1, logs = ["0:start:0","0:start:2","0:end:5","0:start:6","0:end:6","0:end:7"]
+ * Output: [8]
  *
- *  Constraints:
- *  1 <= n <= 100
- *  1 <= logs.length <= 500
- *  0 <= function_id < n
- *  0 <= timestamp <= 10^9
- *  Each function has an "end" log for each "start" log.
+ * Constraints:
+ * 1 <= n <= 100
+ * 1 <= logs.length <= 500
+ * 0 <= function_id < n
+ * 0 <= timestamp <= 10^9
+ * Each function has an "end" log for each "start" log.
+ *
  */
 public class ExclusiveTimeOfFunctions {
 

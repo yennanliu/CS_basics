@@ -6,47 +6,48 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 /**
- *  3585. Find Weighted Median Node in Tree
- *  Hard
+ * 3585. Find Weighted Median Node in Tree
+ * Hard
  *
- *  You are given an integer n and an undirected, weighted tree rooted at node 0
- *  with n nodes numbered from 0 to n - 1. This is represented by a 2D array edges
- *  of length n - 1, where edges[i] = [u_i, v_i, w_i] indicates an edge from node
- *  u_i to v_i with weight w_i.
+ * You are given an integer n and an undirected, weighted tree rooted at node 0
+ * with n nodes numbered from 0 to n - 1. This is represented by a 2D array edges
+ * of length n - 1, where edges[i] = [u_i, v_i, w_i] indicates an edge from node
+ * u_i to v_i with weight w_i.
  *
- *  The weighted median node is defined as the first node x on the path from u_i
- *  to v_i such that the sum of edge weights from u_i to x is greater than or
- *  equal to half of the total path weight.
+ * The weighted median node is defined as the first node x on the path from u_i
+ * to v_i such that the sum of edge weights from u_i to x is greater than or
+ * equal to half of the total path weight.
  *
- *  You are given a 2D integer array queries. For each queries[j] = [u_j, v_j],
- *  determine the weighted median node along the path from u_j to v_j.
+ * You are given a 2D integer array queries. For each queries[j] = [u_j, v_j],
+ * determine the weighted median node along the path from u_j to v_j.
  *
- *  Return an array ans, where ans[j] is the node index of the weighted median
- *  for queries[j].
+ * Return an array ans, where ans[j] is the node index of the weighted median
+ * for queries[j].
  *
- *  Example 1:
- *    Input: n = 2, edges = [[0,1,7]], queries = [[1,0],[0,1]]
- *    Output: [0,1]
- *    Explanation: path 1 -> 0 has total weight 7, half 3.5, and 7 >= 3.5 so the
- *                 median is node 0. Symmetrically for [0,1].
+ * Example 1:
+ * Input: n = 2, edges = [[0,1,7]], queries = [[1,0],[0,1]]
+ * Output: [0,1]
+ * Explanation: path 1 -> 0 has total weight 7, half 3.5, and 7 >= 3.5 so the
+ * median is node 0. Symmetrically for [0,1].
  *
- *  Example 3:
- *    Input: n = 5, edges = [[0,1,2],[0,2,5],[1,3,1],[2,4,3]],
- *           queries = [[3,4],[1,2]]
- *    Output: [2,2]
- *    Explanation: path 3 -> 1 -> 0 -> 2 -> 4 has total weight 11, half 5.5;
- *                 the prefix 3 -> 2 is 8 >= 5.5, so the median is node 2.
+ * Example 3:
+ * Input: n = 5, edges = [[0,1,2],[0,2,5],[1,3,1],[2,4,3]],
+ * queries = [[3,4],[1,2]]
+ * Output: [2,2]
+ * Explanation: path 3 -> 1 -> 0 -> 2 -> 4 has total weight 11, half 5.5;
+ * the prefix 3 -> 2 is 8 >= 5.5, so the median is node 2.
  *
- *  Constraints:
- *    2 <= n <= 10^5
- *    edges.length == n - 1
- *    edges[i] == [u_i, v_i, w_i]
- *    0 <= u_i, v_i < n
- *    1 <= w_i <= 10^9
- *    1 <= queries.length <= 10^5
- *    queries[j] == [u_j, v_j]
- *    0 <= u_j, v_j < n
- *    The input is generated such that edges represents a valid tree.
+ * Constraints:
+ * 2 <= n <= 10^5
+ * edges.length == n - 1
+ * edges[i] == [u_i, v_i, w_i]
+ * 0 <= u_i, v_i < n
+ * 1 <= w_i <= 10^9
+ * 1 <= queries.length <= 10^5
+ * queries[j] == [u_j, v_j]
+ * 0 <= u_j, v_j < n
+ * The input is generated such that edges represents a valid tree.
+ *
  */
 public class FindWeightedMedianNodeInTree {
 

@@ -5,12 +5,9 @@ package LeetCodeJava.Array;
 import java.util.Arrays;
 
 /**
- *  16. 3Sum Closest
- * Solved
+ * 16. 3Sum Closest
  * Medium
- * Topics
- * premium lock icon
- * Companies
+ *
  * Given an integer array nums of length n and an integer target, find three integers at distinct indices in nums such that the sum is closest to target.
  *
  * Return the sum of the three integers.
@@ -36,8 +33,6 @@ import java.util.Arrays;
  * 3 <= nums.length <= 500
  * -1000 <= nums[i] <= 1000
  * -104 <= target <= 104
- *
- *
  *
  */
 public class ThreeSumClosest {

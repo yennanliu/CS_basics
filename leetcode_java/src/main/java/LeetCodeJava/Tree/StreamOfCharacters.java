@@ -10,9 +10,7 @@ import java.util.Map;
 /**
  * 1032. Stream of Characters
  * Hard
- * Topics
- * Companies
- * Hint
+ *
  * Design an algorithm that accepts a stream of characters and checks if a suffix of these characters is a string of a given array of strings words.
  * <p>
  * For example, if words = ["abc", "xyz"] and the stream added the four characters (one by one) 'a', 'x', 'y', and 'z', your algorithm should detect that the suffix "xyz" of the characters "axyz" matches "xyz" from words.
@@ -54,6 +52,7 @@ import java.util.Map;
  * words[i] consists of lowercase English letters.
  * letter is a lowercase English letter.
  * At most 4 * 104 calls will be made to query.
+ *
  */
 public class StreamOfCharacters {
 

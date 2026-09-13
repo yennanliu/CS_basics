@@ -6,11 +6,8 @@ import java.util.*;
 // https://leetcode.com/problems/shortest-path-to-get-all-keys/description/
 /**
  * 864. Shortest Path to Get All Keys
- * Solved
  * Hard
- * Topics
- * premium lock icon
- * Companies
+ *
  * You are given an m x n grid grid where:
  *
  * '.' is an empty cell.
@@ -57,12 +54,6 @@ import java.util.*;
  * Each key in the grid is unique.
  * Each key in the grid has a matching lock.
  *
- * Seen this question in a real interview before?
- * 1/5
- * Yes
- * No
- * Accepted
- * 91,352/168.4K
  */
 public class ShortestPathToGetAllKeys {
 

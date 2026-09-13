@@ -7,9 +7,7 @@ import java.util.*;
 /**
  * 1146. Snapshot Array
  * Medium
- * Topics
- * Companies
- * Hint
+ *
  * Implement a SnapshotArray that supports the following interface:
  *
  * SnapshotArray(int length) initializes an array-like data structure with the given length. Initially, each element equals 0.
@@ -83,7 +81,7 @@ public class SnapshotArray {
 //        }
 //    }
 
-    // V0_1
+    // V0-_1
     // IDEA : (fix by GPT)
     /**
      * Key Optimizations
@@ -151,7 +149,7 @@ public class SnapshotArray {
         }
     }
 
-    // V0_2
+    // V0-_2
     // IDEA : HASHMAP + LIST (fixed by gpt) + binary search
     class SnapshotArray_0_2 {
 

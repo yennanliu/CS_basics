@@ -7,10 +7,7 @@ import java.util.Arrays;
 /**
  * 2644. Find the Maximum Divisibility Score
  * Easy
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You are given two integer arrays nums and divisors.
  *
  * The divisibility score of divisors[i] is the number of indices j such that nums[j] is divisible by divisors[i].

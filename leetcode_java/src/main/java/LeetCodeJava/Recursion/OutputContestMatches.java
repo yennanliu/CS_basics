@@ -6,33 +6,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  544. Output Contest Matches
- *  Medium
+ * 544. Output Contest Matches
+ * Medium
  *
- *  During the NBA playoffs, we always set the rather strong team to play with
- *  the rather weak team. Given n teams (ranked 1..n, 1 = strongest), output
- *  their final contest matches as a string, using parentheses for pairing and
- *  commas for partition. In every round the strongest remaining team is paired
- *  with the weakest remaining team.
- *
- *
- *  Example 1:
- *
- *  Input: n = 4
- *  Output: "((1,4),(2,3))"
- *  Explanation:
- *    Round 1: (1,4),(2,3)
- *    Round 2: ((1,4),(2,3))
- *
- *  Example 2:
- *
- *  Input: n = 8
- *  Output: "(((1,8),(4,5)),((2,7),(3,6)))"
+ * During the NBA playoffs, we always set the rather strong team to play with
+ * the rather weak team. Given n teams (ranked 1..n, 1 = strongest), output
+ * their final contest matches as a string, using parentheses for pairing and
+ * commas for partition. In every round the strongest remaining team is paired
+ * with the weakest remaining team.
  *
  *
- *  Constraints:
+ * Example 1:
  *
- *  n == 2^k where k is in the range [0, 12].
+ * Input: n = 4
+ * Output: "((1,4),(2,3))"
+ * Explanation:
+ * Round 1: (1,4),(2,3)
+ * Round 2: ((1,4),(2,3))
+ *
+ * Example 2:
+ *
+ * Input: n = 8
+ * Output: "(((1,8),(4,5)),((2,7),(3,6)))"
+ *
+ *
+ * Constraints:
+ *
+ * n == 2^k where k is in the range [0, 12].
+ *
  */
 public class OutputContestMatches {
 

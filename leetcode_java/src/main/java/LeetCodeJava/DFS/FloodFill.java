@@ -6,13 +6,9 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 /**
- *  733. Flood Fill
- * Solved
+ * 733. Flood Fill
  * Easy
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You are given an image represented by an m x n grid of integers image, where image[i][j] represents the pixel value of the image. You are also given three integers sr, sc, and color. Your task is to perform a flood fill on the image starting from the pixel image[sr][sc].
  *
  * To perform a flood fill:
@@ -23,7 +19,7 @@ import java.util.Queue;
  * The process stops when there are no more adjacent pixels of the original color to update.
  * Return the modified image after performing the flood fill.
  *
- *   Example 1:
+ * Example 1:
  *
  * Input: image = [[1,1,1],[1,1,0],[1,0,1]], sr = 1, sc = 1, color = 2
  *
@@ -57,7 +53,6 @@ import java.util.Queue;
  * 0 <= image[i][j], color < 216
  * 0 <= sr < m
  * 0 <= sc < n
- *
  *
  */
 public class FloodFill {

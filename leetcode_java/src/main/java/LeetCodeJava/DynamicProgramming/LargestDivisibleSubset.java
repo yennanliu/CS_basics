@@ -8,34 +8,35 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- *  368. Largest Divisible Subset
- *  Medium
+ * 368. Largest Divisible Subset
+ * Medium
  *
- *  Given a set of distinct positive integers nums, return the largest subset
- *  answer such that every pair (answer[i], answer[j]) of elements in this
- *  subset satisfies:
+ * Given a set of distinct positive integers nums, return the largest subset
+ * answer such that every pair (answer[i], answer[j]) of elements in this
+ * subset satisfies:
  *
- *    answer[i] % answer[j] == 0, or
- *    answer[j] % answer[i] == 0
+ * answer[i] % answer[j] == 0, or
+ * answer[j] % answer[i] == 0
  *
- *  If there are multiple solutions, return any of them.
+ * If there are multiple solutions, return any of them.
  *
- *  Example 1:
+ * Example 1:
  *
- *  Input: nums = [1,2,3]
- *  Output: [1,2]
- *  Explanation: [1,3] is also accepted.
+ * Input: nums = [1,2,3]
+ * Output: [1,2]
+ * Explanation: [1,3] is also accepted.
  *
- *  Example 2:
+ * Example 2:
  *
- *  Input: nums = [1,2,4,8]
- *  Output: [1,2,4,8]
+ * Input: nums = [1,2,4,8]
+ * Output: [1,2,4,8]
  *
- *  Constraints:
+ * Constraints:
  *
- *  1 <= nums.length <= 1000
- *  1 <= nums[i] <= 2 * 10^9
- *  All the integers in nums are unique.
+ * 1 <= nums.length <= 1000
+ * 1 <= nums[i] <= 2 * 10^9
+ * All the integers in nums are unique.
+ *
  */
 public class LargestDivisibleSubset {
 

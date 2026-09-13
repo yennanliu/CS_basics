@@ -5,33 +5,34 @@ package LeetCodeJava.Sort;
 import java.util.Arrays;
 
 /**
- *  1509. Minimum Difference Between Largest and Smallest Value in Three Moves
- *  Medium
+ * 1509. Minimum Difference Between Largest and Smallest Value in Three Moves
+ * Medium
  *
- *  You are given an integer array nums.
+ * You are given an integer array nums.
  *
- *  In one move, you can choose one element of nums and change it to any value.
+ * In one move, you can choose one element of nums and change it to any value.
  *
- *  Return the minimum difference between the largest and smallest value of nums
- *  after performing at most three moves.
+ * Return the minimum difference between the largest and smallest value of nums
+ * after performing at most three moves.
  *
- *  Example 1:
- *    Input: nums = [5,3,2,4]
- *    Output: 0
- *    Explanation: 3 moves can flatten every value -> difference 0.
+ * Example 1:
+ * Input: nums = [5,3,2,4]
+ * Output: 0
+ * Explanation: 3 moves can flatten every value -> difference 0.
  *
- *  Example 2:
- *    Input: nums = [1,5,0,10,14]
- *    Output: 1
- *    Explanation: change 5 -> 0, 10 -> 0, 14 -> 1, giving [1,0,0,0,1].
+ * Example 2:
+ * Input: nums = [1,5,0,10,14]
+ * Output: 1
+ * Explanation: change 5 -> 0, 10 -> 0, 14 -> 1, giving [1,0,0,0,1].
  *
- *  Example 3:
- *    Input: nums = [3,100,20]
- *    Output: 0
+ * Example 3:
+ * Input: nums = [3,100,20]
+ * Output: 0
  *
- *  Constraints:
- *    1 <= nums.length <= 10^5
- *    -10^9 <= nums[i] <= 10^9
+ * Constraints:
+ * 1 <= nums.length <= 10^5
+ * -10^9 <= nums[i] <= 10^9
+ *
  */
 public class MinimumDifferenceBetweenLargestAndSmallestValueInThreeMoves {
 

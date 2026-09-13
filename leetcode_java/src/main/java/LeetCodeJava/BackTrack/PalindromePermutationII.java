@@ -5,26 +5,27 @@ package LeetCodeJava.BackTrack;
 import java.util.*;
 
 /**
- *  267. Palindrome Permutation II
- *  Medium
+ * 267. Palindrome Permutation II
+ * Medium
  *
- *  Given a string s, return all the palindromic permutations (without
- *  duplicates) of it.
+ * Given a string s, return all the palindromic permutations (without
+ * duplicates) of it.
  *
- *  You may return the answer in any order. If s has no palindromic permutation,
- *  return an empty list.
+ * You may return the answer in any order. If s has no palindromic permutation,
+ * return an empty list.
  *
- *  Example 1:
- *   Input: s = "aabb"
- *   Output: ["abba","baab"]
+ * Example 1:
+ * Input: s = "aabb"
+ * Output: ["abba","baab"]
  *
- *  Example 2:
- *   Input: s = "abc"
- *   Output: []
+ * Example 2:
+ * Input: s = "abc"
+ * Output: []
  *
- *  Constraints:
- *   1 <= s.length <= 16
- *   s consists of only lowercase English letters.
+ * Constraints:
+ * 1 <= s.length <= 16
+ * s consists of only lowercase English letters.
+ *
  */
 public class PalindromePermutationII {
 

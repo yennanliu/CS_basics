@@ -10,10 +10,8 @@ import java.util.List;
 
 /**
  * 92. Reverse Linked List II
- * Solved
  * Medium
- * Topics
- * Companies
+ *
  * Given the head of a singly linked list and two integers left and right where left <= right, reverse the nodes of the list from position left to position right, and return the reversed list.
  *
  *
@@ -815,7 +813,7 @@ public class ReverseLinkedList2 {
         return dummy.next;
     }
 
-    // V3
+    // V3-1
     // https://leetcode.com/problems/reverse-linked-list-ii/solutions/4011862/9240-two-pointers-stack-recursion-by-van-sz5v/
 
 

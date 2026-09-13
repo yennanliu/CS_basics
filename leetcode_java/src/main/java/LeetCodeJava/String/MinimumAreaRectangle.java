@@ -8,9 +8,10 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- *  939. Minimum Area Rectangle
+ * 939. Minimum Area Rectangle
+ * Medium
  *
- *  You are given an array of points in the X-Y plane points where points[i] = [xi, yi].
+ * You are given an array of points in the X-Y plane points where points[i] = [xi, yi].
  *
  * Return the minimum area of a rectangle formed from these points, with sides parallel to the X and Y axes. If there is not any such rectangle, return 0.
  *
@@ -34,7 +35,6 @@ import java.util.Set;
  * points[i].length == 2
  * 0 <= xi, yi <= 4 * 104
  * All the given points are unique.
- *
  *
  */
 public class MinimumAreaRectangle {

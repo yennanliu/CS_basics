@@ -8,13 +8,9 @@ import java.util.LinkedList;
 import java.util.Stack;
 
 /**
- *  1209. Remove All Adjacent Duplicates in String II
- * Solved
+ * 1209. Remove All Adjacent Duplicates in String II
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You are given a string s and an integer k, a k duplicate removal consists of choosing k adjacent and equal letters from s and removing them, causing the left and the right side of the deleted substring to concatenate together.
  *
  * We repeatedly make k duplicate removals on s until we no longer can.
@@ -47,7 +43,6 @@ import java.util.Stack;
  * 1 <= s.length <= 105
  * 2 <= k <= 104
  * s only contains lowercase English letters.
- *
  *
  */
 public class RemoveAllAdjacentDuplicatesInString2 {

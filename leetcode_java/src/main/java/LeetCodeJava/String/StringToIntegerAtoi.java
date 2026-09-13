@@ -3,35 +3,36 @@ package LeetCodeJava.String;
 // https://leetcode.com/problems/string-to-integer-atoi/
 
 /**
- *  8. String to Integer (atoi)
- *  Medium
+ * 8. String to Integer (atoi)
+ * Medium
  *
- *  Implement the myAtoi(string s) function, which converts a string to a
- *  32-bit signed integer.
+ * Implement the myAtoi(string s) function, which converts a string to a
+ * 32-bit signed integer.
  *
- *  The algorithm is as follows:
- *   1. Read in and ignore any leading whitespace.
- *   2. Check if the next character is '-' or '+'. Read it in if it is either.
- *      This determines the sign; assume positive if neither is present.
- *   3. Read in the next characters until the next non-digit character or the
- *      end of the input is reached. The rest of the string is ignored.
- *   4. Convert those digits into an integer ("123" -> 123, "0032" -> 32).
- *      If no digits were read, the integer is 0. Apply the sign.
- *   5. If the integer is out of the 32-bit signed range [-2^31, 2^31 - 1],
- *      clamp it to that range.
+ * The algorithm is as follows:
+ * 1. Read in and ignore any leading whitespace.
+ * 2. Check if the next character is '-' or '+'. Read it in if it is either.
+ * This determines the sign; assume positive if neither is present.
+ * 3. Read in the next characters until the next non-digit character or the
+ * end of the input is reached. The rest of the string is ignored.
+ * 4. Convert those digits into an integer ("123" -> 123, "0032" -> 32).
+ * If no digits were read, the integer is 0. Apply the sign.
+ * 5. If the integer is out of the 32-bit signed range [-2^31, 2^31 - 1],
+ * clamp it to that range.
  *
- *  Only the space character ' ' counts as whitespace.
+ * Only the space character ' ' counts as whitespace.
  *
- *  Example 1:
- *    Input: s = "42"              Output: 42
- *  Example 2:
- *    Input: s = "   -42"          Output: -42
- *  Example 3:
- *    Input: s = "4193 with words" Output: 4193
+ * Example 1:
+ * Input: s = "42"              Output: 42
+ * Example 2:
+ * Input: s = "   -42"          Output: -42
+ * Example 3:
+ * Input: s = "4193 with words" Output: 4193
  *
- *  Constraints:
- *    0 <= s.length <= 200
- *    s consists of English letters, digits, ' ', '+', '-' and '.'.
+ * Constraints:
+ * 0 <= s.length <= 200
+ * s consists of English letters, digits, ' ', '+', '-' and '.'.
+ *
  */
 public class StringToIntegerAtoi {
 

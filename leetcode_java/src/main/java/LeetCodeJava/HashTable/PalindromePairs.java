@@ -7,10 +7,7 @@ import java.util.*;
 /**
  * 336. Palindrome Pairs
  * Hard
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You are given a 0-indexed array of unique strings words.
  *
  * A palindrome pair is a pair of integers (i, j) such that:

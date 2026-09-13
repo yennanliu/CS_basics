@@ -4,10 +4,8 @@ package LeetCodeJava.Stack;
 // https://github.com/yennanliu/JavaHelloWorld/blob/main/src/main/java/Basics/Array1D.java#L14
 /**
  * 496. Next Greater Element I
- * Solved
  * Easy
- * Topics
- * Companies
+ *
  * The next greater element of some element x in an array is the first greater element that is to the right of x in the same array.
  *
  * You are given two distinct 0-indexed integer arrays nums1 and nums2, where nums1 is a subset of nums2.

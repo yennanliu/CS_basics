@@ -5,42 +5,44 @@ package LeetCodeJava.LinkedList;
 import LeetCodeJava.DataStructure.ListNode;
 
 /**
- *  3062. Winner of the Linked List Game
- *  Easy
- *  (premium / locked)
+ * 3062. Winner of the Linked List Game
+ * Easy
  *
- *  You are given the head of a linked list of even length containing integers.
- *  Each odd-indexed node contains an odd integer and each even-indexed node
- *  contains an even integer.
+ * (premium / locked)
  *
- *  We call each even-indexed node and its next node a pair, e.g., the nodes with
- *  indices 0 and 1 are a pair, the nodes with indices 2 and 3 are a pair, and so on.
+ * You are given the head of a linked list of even length containing integers.
+ * Each odd-indexed node contains an odd integer and each even-indexed node
+ * contains an even integer.
  *
- *  For every pair, we compare the values of the nodes in the pair:
- *    If the odd-indexed node is higher, the "Odd" team gets a point.
- *    If the even-indexed node is higher, the "Even" team gets a point.
+ * We call each even-indexed node and its next node a pair, e.g., the nodes with
+ * indices 0 and 1 are a pair, the nodes with indices 2 and 3 are a pair, and so on.
  *
- *  Return the name of the team with the higher points, if the points are equal,
- *  return "Tie".
+ * For every pair, we compare the values of the nodes in the pair:
+ * If the odd-indexed node is higher, the "Odd" team gets a point.
+ * If the even-indexed node is higher, the "Even" team gets a point.
  *
- *  Example 1:
- *    Input: head = [2,1]
- *    Output: "Even"
- *    Explanation: only pair is (2,1), 2 > 1 so the Even team gets the point.
+ * Return the name of the team with the higher points, if the points are equal,
+ * return "Tie".
  *
- *  Example 2:
- *    Input: head = [2,5,4,7,20,5]
- *    Output: "Odd"
- *    Explanation: (2,5) -> Odd, (4,7) -> Odd, (20,5) -> Even. Odd 2 : 1 Even.
+ * Example 1:
+ * Input: head = [2,1]
+ * Output: "Even"
+ * Explanation: only pair is (2,1), 2 > 1 so the Even team gets the point.
  *
- *  Example 3:
- *    Input: head = [4,5,2,1]
- *    Output: "Tie"
+ * Example 2:
+ * Input: head = [2,5,4,7,20,5]
+ * Output: "Odd"
+ * Explanation: (2,5) -> Odd, (4,7) -> Odd, (20,5) -> Even. Odd 2 : 1 Even.
  *
- *  Constraints:
- *    The number of nodes in the list is in the range [2, 100].
- *    The number of nodes in the list is even.
- *    1 <= Node.val <= 100
+ * Example 3:
+ * Input: head = [4,5,2,1]
+ * Output: "Tie"
+ *
+ * Constraints:
+ * The number of nodes in the list is in the range [2, 100].
+ * The number of nodes in the list is even.
+ * 1 <= Node.val <= 100
+ *
  */
 public class WinnerOfTheLinkedListGame {
 

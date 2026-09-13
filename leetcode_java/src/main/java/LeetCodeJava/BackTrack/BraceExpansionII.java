@@ -11,34 +11,35 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
- *  1096. Brace Expansion II
- *  Hard
+ * 1096. Brace Expansion II
+ * Hard
  *
- *  Under the grammar given below, strings can represent a set of lowercase
- *  words. Let R(expr) denote the set of words the expression represents.
+ * Under the grammar given below, strings can represent a set of lowercase
+ * words. Let R(expr) denote the set of words the expression represents.
  *
- *    - For every lowercase letter x, R(x) = {x}.
- *    - For expressions e1, e2, ..., ek with k >= 2,
- *      R({e1,e2,...}) = R(e1) union R(e2) union ...
- *    - For expressions e1 and e2,
- *      R(e1 + e2) = { a + b for (a, b) in R(e1) x R(e2) }.
+ * - For every lowercase letter x, R(x) = {x}.
+ * - For expressions e1, e2, ..., ek with k >= 2,
+ * R({e1,e2,...}) = R(e1) union R(e2) union ...
+ * - For expressions e1 and e2,
+ * R(e1 + e2) = { a + b for (a, b) in R(e1) x R(e2) }.
  *
- *  Given an expression representing a set of words under the given grammar,
- *  return the sorted list of words that the expression represents.
+ * Given an expression representing a set of words under the given grammar,
+ * return the sorted list of words that the expression represents.
  *
- *  Example 1:
- *    Input: expression = "{a,b}{c,{d,e}}"
- *    Output: ["ac","ad","ae","bc","bd","be"]
+ * Example 1:
+ * Input: expression = "{a,b}{c,{d,e}}"
+ * Output: ["ac","ad","ae","bc","bd","be"]
  *
- *  Example 2:
- *    Input: expression = "{{a,z},a{b,c},{ab,z}}"
- *    Output: ["a","ab","ac","z"]
- *    Explanation: Each distinct word is written only once in the answer.
+ * Example 2:
+ * Input: expression = "{{a,z},a{b,c},{ab,z}}"
+ * Output: ["a","ab","ac","z"]
+ * Explanation: Each distinct word is written only once in the answer.
  *
- *  Constraints:
- *    1 <= expression.length <= 60
- *    expression[i] consists of '{', '}', ',' or lowercase English letters.
- *    The given expression represents a set of words based on the grammar.
+ * Constraints:
+ * 1 <= expression.length <= 60
+ * expression[i] consists of '{', '}', ',' or lowercase English letters.
+ * The given expression represents a set of words based on the grammar.
+ *
  */
 public class BraceExpansionII {
 

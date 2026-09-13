@@ -6,34 +6,35 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 /**
- *  1999. Smallest Greater Multiple Made of Two Digits
- *  Medium
+ * 1999. Smallest Greater Multiple Made of Two Digits
+ * Medium
  *
- *  Given three integers, k, digit1, and digit2, you want to find the smallest
- *  integer that is:
- *    Larger than k,
- *    A multiple of k, and
- *    Comprised of only the digits digit1 and/or digit2.
+ * Given three integers, k, digit1, and digit2, you want to find the smallest
+ * integer that is:
+ * Larger than k,
+ * A multiple of k, and
+ * Comprised of only the digits digit1 and/or digit2.
  *
- *  Return the smallest such integer. If no such integer exists or the integer
- *  exceeds the limit of a signed 32-bit integer (2^31 - 1), return -1.
+ * Return the smallest such integer. If no such integer exists or the integer
+ * exceeds the limit of a signed 32-bit integer (2^31 - 1), return -1.
  *
- *  Example 1:
- *    Input: k = 2, digit1 = 0, digit2 = 2
- *    Output: 20
+ * Example 1:
+ * Input: k = 2, digit1 = 0, digit2 = 2
+ * Output: 20
  *
- *  Example 2:
- *    Input: k = 3, digit1 = 4, digit2 = 2
- *    Output: 24
+ * Example 2:
+ * Input: k = 3, digit1 = 4, digit2 = 2
+ * Output: 24
  *
- *  Example 3:
- *    Input: k = 2, digit1 = 0, digit2 = 0
- *    Output: -1
+ * Example 3:
+ * Input: k = 2, digit1 = 0, digit2 = 0
+ * Output: -1
  *
- *  Constraints:
- *    1 <= k <= 1000
- *    0 <= digit1 <= 9
- *    0 <= digit2 <= 9
+ * Constraints:
+ * 1 <= k <= 1000
+ * 0 <= digit1 <= 9
+ * 0 <= digit2 <= 9
+ *
  */
 public class SmallestGreaterMultipleMadeOfTwoDigits {
 

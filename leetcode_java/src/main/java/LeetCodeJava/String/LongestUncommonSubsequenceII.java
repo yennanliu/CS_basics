@@ -6,25 +6,26 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 /**
- *  522. Longest Uncommon Subsequence II
- *  Medium
+ * 522. Longest Uncommon Subsequence II
+ * Medium
  *
- *  Given an array of strings strs, return the length of the longest uncommon
- *  subsequence between them. If the longest uncommon subsequence does not
- *  exist, return -1.
+ * Given an array of strings strs, return the length of the longest uncommon
+ * subsequence between them. If the longest uncommon subsequence does not
+ * exist, return -1.
  *
- *  An uncommon subsequence between an array of strings is a string that is a
- *  subsequence of one string but not the others.
+ * An uncommon subsequence between an array of strings is a string that is a
+ * subsequence of one string but not the others.
  *
- *  Example 1:
- *    Input: strs = ["aba","cdc","eae"]   Output: 3
- *  Example 2:
- *    Input: strs = ["aaa","aaa","aa"]    Output: -1
+ * Example 1:
+ * Input: strs = ["aba","cdc","eae"]   Output: 3
+ * Example 2:
+ * Input: strs = ["aaa","aaa","aa"]    Output: -1
  *
- *  Constraints:
- *    2 <= strs.length <= 50
- *    1 <= strs[i].length <= 10
- *    strs[i] consists of lowercase English letters.
+ * Constraints:
+ * 2 <= strs.length <= 50
+ * 1 <= strs[i].length <= 10
+ * strs[i] consists of lowercase English letters.
+ *
  */
 public class LongestUncommonSubsequenceII {
 

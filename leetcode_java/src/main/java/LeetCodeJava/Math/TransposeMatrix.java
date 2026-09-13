@@ -7,14 +7,12 @@ import java.util.Arrays;
 /**
  * 867. Transpose Matrix
  * Easy
- * Topics
- * Companies
- * Hint
+ *
  * Given a 2D integer array matrix, return the transpose of matrix.
  *
  * The transpose of a matrix is the matrix flipped over its main diagonal, switching the matrix's row and column indices.
  *
-
+ *
  * Example 1:
  *
  * Input: matrix = [[1,2,3],[4,5,6],[7,8,9]]
@@ -32,7 +30,6 @@ import java.util.Arrays;
  * 1 <= m, n <= 1000
  * 1 <= m * n <= 105
  * -109 <= matrix[i][j] <= 109
- *
  *
  */
 public class TransposeMatrix {

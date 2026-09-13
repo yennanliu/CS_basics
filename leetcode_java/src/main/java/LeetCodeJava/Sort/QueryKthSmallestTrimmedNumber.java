@@ -6,40 +6,41 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 /**
- *  2343. Query Kth Smallest Trimmed Number
- *  Medium
+ * 2343. Query Kth Smallest Trimmed Number
+ * Medium
  *
- *  You are given a 0-indexed array of strings nums, where each string is of equal
- *  length and consists of only digits.
+ * You are given a 0-indexed array of strings nums, where each string is of equal
+ * length and consists of only digits.
  *
- *  You are also given a 0-indexed 2D integer array queries where
- *  queries[i] = [ki, trimi]. For each queries[i], you need to:
- *    - Trim each number in nums to its rightmost trimi digits.
- *    - Determine the index of the kith smallest trimmed number in nums. If two
- *      trimmed numbers are equal, the number with the lower index is considered
- *      to be smaller.
- *    - Reset each number in nums to its original length.
+ * You are also given a 0-indexed 2D integer array queries where
+ * queries[i] = [ki, trimi]. For each queries[i], you need to:
+ * - Trim each number in nums to its rightmost trimi digits.
+ * - Determine the index of the kith smallest trimmed number in nums. If two
+ * trimmed numbers are equal, the number with the lower index is considered
+ * to be smaller.
+ * - Reset each number in nums to its original length.
  *
- *  Return an array answer of the same length as queries, where answer[i] is the
- *  answer to the ith query.
+ * Return an array answer of the same length as queries, where answer[i] is the
+ * answer to the ith query.
  *
- *  Example 1:
- *    Input: nums = ["102","473","251","814"], queries = [[1,1],[2,3],[4,2],[1,2]]
- *    Output: [2,2,1,0]
+ * Example 1:
+ * Input: nums = ["102","473","251","814"], queries = [[1,1],[2,3],[4,2],[1,2]]
+ * Output: [2,2,1,0]
  *
- *  Example 2:
- *    Input: nums = ["24","37","96","04"], queries = [[2,1],[2,2]]
- *    Output: [3,0]
+ * Example 2:
+ * Input: nums = ["24","37","96","04"], queries = [[2,1],[2,2]]
+ * Output: [3,0]
  *
- *  Constraints:
- *    1 <= nums.length <= 100
- *    1 <= nums[i].length <= 100
- *    nums[i] consists of only digits.
- *    All nums[i].length are equal.
- *    1 <= queries.length <= 100
- *    queries[i].length == 2
- *    1 <= ki <= nums.length
- *    1 <= trimi <= nums[i].length
+ * Constraints:
+ * 1 <= nums.length <= 100
+ * 1 <= nums[i].length <= 100
+ * nums[i] consists of only digits.
+ * All nums[i].length are equal.
+ * 1 <= queries.length <= 100
+ * queries[i].length == 2
+ * 1 <= ki <= nums.length
+ * 1 <= trimi <= nums[i].length
+ *
  */
 public class QueryKthSmallestTrimmedNumber {
 

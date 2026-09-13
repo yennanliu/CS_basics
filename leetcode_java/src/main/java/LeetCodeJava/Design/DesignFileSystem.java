@@ -6,34 +6,35 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *  1166. Design File System
- *  Medium
+ * 1166. Design File System
+ * Medium
  *
- *  You are asked to design a file system that allows you to create new paths and
- *  associate them with different values.
+ * You are asked to design a file system that allows you to create new paths and
+ * associate them with different values.
  *
- *  The format of a path is one or more concatenated strings of the form: '/' followed
- *  by one or more lowercase English letters. For example, "/leetcode" and
- *  "/leetcode/problems" are valid paths while an empty string "" and "/" are not.
+ * The format of a path is one or more concatenated strings of the form: '/' followed
+ * by one or more lowercase English letters. For example, "/leetcode" and
+ * "/leetcode/problems" are valid paths while an empty string "" and "/" are not.
  *
- *  Implement the FileSystem class:
- *   - boolean createPath(String path, int value) Creates a new path and associates a
- *     value to it if possible and returns true. Returns false if the path already
- *     exists or its parent path doesn't exist.
- *   - int get(String path) Returns the value associated with path, or -1 if the path
- *     doesn't exist.
+ * Implement the FileSystem class:
+ * - boolean createPath(String path, int value) Creates a new path and associates a
+ * value to it if possible and returns true. Returns false if the path already
+ * exists or its parent path doesn't exist.
+ * - int get(String path) Returns the value associated with path, or -1 if the path
+ * doesn't exist.
  *
- *  Example 2:
- *    Input:
- *      ["FileSystem","createPath","createPath","get","createPath","get"]
- *      [[],["/leet",1],["/leet/code",2],["/leet/code"],["/c/d",1],["/c"]]
- *    Output:
- *      [null,true,true,2,false,-1]
+ * Example 2:
+ * Input:
+ * ["FileSystem","createPath","createPath","get","createPath","get"]
+ * [[],["/leet",1],["/leet/code",2],["/leet/code"],["/c/d",1],["/c"]]
+ * Output:
+ * [null,true,true,2,false,-1]
  *
- *  Constraints:
- *    The number of calls to the two functions is <= 10^4 in total.
- *    2 <= path.length <= 100
- *    1 <= value <= 10^9
+ * Constraints:
+ * The number of calls to the two functions is <= 10^4 in total.
+ * 2 <= path.length <= 100
+ * 1 <= value <= 10^9
+ *
  */
 public class DesignFileSystem {
 

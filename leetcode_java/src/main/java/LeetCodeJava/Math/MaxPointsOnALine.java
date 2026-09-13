@@ -8,11 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *  149. Max Points on a Line
+ * 149. Max Points on a Line
  * Hard
- * Topics
- * premium lock icon
- * Companies
+ *
  * Given an array of points where points[i] = [xi, yi] represents a point on the X-Y plane, return the maximum number of points that lie on the same straight line.
  *
  *
@@ -35,7 +33,6 @@ import java.util.Map;
  * points[i].length == 2
  * -104 <= xi, yi <= 104
  * All the points are unique.
- *
  *
  */
 public class MaxPointsOnALine {

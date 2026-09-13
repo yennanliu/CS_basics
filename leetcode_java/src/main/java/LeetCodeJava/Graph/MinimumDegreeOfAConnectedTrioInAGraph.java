@@ -5,12 +5,9 @@ package LeetCodeJava.Graph;
 import java.util.*;
 
 /**
- *  1761. Minimum Degree of a Connected Trio in a Graph
+ * 1761. Minimum Degree of a Connected Trio in a Graph
  * Hard
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You are given an undirected graph. You are given an integer n which is the number of nodes in the graph and an array edges, where each edges[i] = [ui, vi] indicates that there is an undirected edge between ui and vi.
  *
  * A connected trio is a set of three nodes where there is an edge between every pair of them.
@@ -46,8 +43,6 @@ import java.util.*;
  * 1 <= ui, vi <= n
  * ui != vi
  * There are no repeated edges.
- *
- *
  *
  */
 public class MinimumDegreeOfAConnectedTrioInAGraph {

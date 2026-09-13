@@ -6,11 +6,9 @@ import LeetCodeJava.DataStructure.ListNode;
 import LeetCodeJava.DataStructure.TreeNode;
 
 /**
- *  109. Convert Sorted List to Binary Search Tree
+ * 109. Convert Sorted List to Binary Search Tree
  * Medium
- * Topics
- * premium lock icon
- * Companies
+ *
  * Given the head of a singly linked list where elements are sorted in ascending order, convert it to a height-balanced binary search tree.
  *
  *
@@ -31,8 +29,6 @@ import LeetCodeJava.DataStructure.TreeNode;
  *
  * The number of nodes in head is in the range [0, 2 * 104].
  * -105 <= Node.val <= 105
- *
- *
  *
  */
 public class ConvertSortedListToBinarySearchTree {

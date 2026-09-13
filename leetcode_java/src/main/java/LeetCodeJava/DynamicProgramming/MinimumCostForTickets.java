@@ -7,11 +7,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- *  983. Minimum Cost For Tickets
+ * 983. Minimum Cost For Tickets
  * Medium
- * Topics
- * premium lock icon
- * Companies
+ *
  * You have planned some train traveling one year in advance. The days of the year in which you will travel are given as an integer array days. Each day is an integer from 1 to 365.
  *
  * Train tickets are sold in three different ways:
@@ -24,7 +22,7 @@ import java.util.Set;
  * For example, if we get a 7-day pass on day 2, then we can travel for 7 days: 2, 3, 4, 5, 6, 7, and 8.
  * Return the minimum number of dollars you need to travel every day in the given list of days.
  *
- *  Example 1:
+ * Example 1:
  *
  * Input: days = [1,4,6,7,8,20], costs = [2,7,15]
  * Output: 11
@@ -50,7 +48,6 @@ import java.util.Set;
  * days is in strictly increasing order.
  * costs.length == 3
  * 1 <= costs[i] <= 1000
- *
  *
  */
 public class MinimumCostForTickets {

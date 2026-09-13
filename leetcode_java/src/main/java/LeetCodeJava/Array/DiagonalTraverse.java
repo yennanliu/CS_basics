@@ -7,10 +7,8 @@ import java.util.Collections;
 
 /**
  * 498. Diagonal Traverse
- * Solved
  * Medium
- * Topics
- * Companies
+ *
  * Given an m x n matrix mat, return an array of all the elements of the array in a diagonal order.
  *
  *
@@ -33,7 +31,6 @@ import java.util.Collections;
  * 1 <= m, n <= 104
  * 1 <= m * n <= 104
  * -105 <= mat[i][j] <= 105
- * Seen this question in a real interview before?
  *
  */
 public class DiagonalTraverse {

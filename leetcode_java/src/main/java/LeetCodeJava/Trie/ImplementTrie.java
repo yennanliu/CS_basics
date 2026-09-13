@@ -3,10 +3,8 @@ package LeetCodeJava.Trie;
 // https://leetcode.com/problems/implement-trie-prefix-tree/
 /**
  * 208. Implement Trie (Prefix Tree)
- * Solved
  * Medium
- * Topics
- * Companies
+ *
  * A trie (pronounced as "try") or prefix tree is a tree data structure used to efficiently store and retrieve keys in a dataset of strings. There are various applications of this data structure, such as autocomplete and spellchecker.
  *
  * Implement the Trie class:
@@ -40,7 +38,6 @@ package LeetCodeJava.Trie;
  * 1 <= word.length, prefix.length <= 2000
  * word and prefix consist only of lowercase English letters.
  * At most 3 * 104 calls in total will be made to insert, search, and startsWith.
- *
  *
  */
 import java.util.HashMap;

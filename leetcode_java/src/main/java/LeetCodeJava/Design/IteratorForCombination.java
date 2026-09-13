@@ -6,29 +6,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  1286. Iterator for Combination
- *  Medium
+ * 1286. Iterator for Combination
+ * Medium
  *
- *  Design the CombinationIterator class:
- *    CombinationIterator(String characters, int combinationLength) Initializes the
- *      object with a string characters of sorted distinct lowercase English letters
- *      and a number combinationLength as arguments.
- *    String next() Returns the next combination of length combinationLength in
- *      lexicographical order.
- *    boolean hasNext() Returns true if and only if there exists a next combination.
+ * Design the CombinationIterator class:
+ * CombinationIterator(String characters, int combinationLength) Initializes the
+ * object with a string characters of sorted distinct lowercase English letters
+ * and a number combinationLength as arguments.
+ * String next() Returns the next combination of length combinationLength in
+ * lexicographical order.
+ * boolean hasNext() Returns true if and only if there exists a next combination.
  *
- *  Example 1:
- *    Input
- *      ["CombinationIterator","next","hasNext","next","hasNext","next","hasNext"]
- *      [["abc", 2], [], [], [], [], [], []]
- *    Output
- *      [null, "ab", true, "ac", true, "bc", false]
+ * Example 1:
+ * Input
+ * ["CombinationIterator","next","hasNext","next","hasNext","next","hasNext"]
+ * [["abc", 2], [], [], [], [], [], []]
+ * Output
+ * [null, "ab", true, "ac", true, "bc", false]
  *
- *  Constraints:
- *    1 <= combinationLength <= characters.length <= 15
- *    All the characters of characters are unique.
- *    At most 10^4 calls will be made to next and hasNext.
- *    It is guaranteed that all calls of the function next are valid.
+ * Constraints:
+ * 1 <= combinationLength <= characters.length <= 15
+ * All the characters of characters are unique.
+ * At most 10^4 calls will be made to next and hasNext.
+ * It is guaranteed that all calls of the function next are valid.
+ *
  */
 public class IteratorForCombination {
 

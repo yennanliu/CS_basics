@@ -6,12 +6,8 @@ import java.util.List;
 // https://leetcode.com/problems/number-of-wonderful-substrings/description/
 /**
  * 1915. Number of Wonderful Substrings
- * Solved
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * A wonderful string is a string where at most one letter appears an odd number of times.
  *
  * For example, "ccjjc" and "abab" are wonderful, but "ab" is not.
@@ -58,10 +54,6 @@ import java.util.List;
  * 1 <= word.length <= 105
  * word consists of lowercase English letters from 'a' to 'j'.
  *
- * Seen this question in a real interview before?
- * 1/5
- * Yes
- * No
  */
 public class BitwiseOROfEvenNumbersInAnArray {
 

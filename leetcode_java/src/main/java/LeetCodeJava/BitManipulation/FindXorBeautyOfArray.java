@@ -3,31 +3,32 @@ package LeetCodeJava.BitManipulation;
 // https://leetcode.com/problems/find-xor-beauty-of-array/
 
 /**
- *  2527. Find Xor-Beauty of Array
- *  Medium
+ * 2527. Find Xor-Beauty of Array
+ * Medium
  *
- *  You are given a 0-indexed integer array nums.
+ * You are given a 0-indexed integer array nums.
  *
- *  The effective value of three indices i, j, and k is defined as
- *  ((nums[i] | nums[j]) & nums[k]).
+ * The effective value of three indices i, j, and k is defined as
+ * ((nums[i] | nums[j]) & nums[k]).
  *
- *  The xor-beauty of the array is the XORing of the effective values of all the
- *  possible triplets of indices (i, j, k) where 0 <= i, j, k < n.
+ * The xor-beauty of the array is the XORing of the effective values of all the
+ * possible triplets of indices (i, j, k) where 0 <= i, j, k < n.
  *
- *  Return the xor-beauty of nums.
+ * Return the xor-beauty of nums.
  *
- *  Example 1:
- *    Input: nums = [1,4]
- *    Output: 5
- *    Explanation: the 8 triplets give 1, 0, 1, 4, 1, 4, 0, 4 and their XOR is 5.
+ * Example 1:
+ * Input: nums = [1,4]
+ * Output: 5
+ * Explanation: the 8 triplets give 1, 0, 1, 4, 1, 4, 0, 4 and their XOR is 5.
  *
- *  Example 2:
- *    Input: nums = [15,45,20,2,34,35,5,44,32,30]
- *    Output: 34
+ * Example 2:
+ * Input: nums = [15,45,20,2,34,35,5,44,32,30]
+ * Output: 34
  *
- *  Constraints:
- *    1 <= nums.length <= 10^5
- *    1 <= nums[i] <= 10^9
+ * Constraints:
+ * 1 <= nums.length <= 10^5
+ * 1 <= nums[i] <= 10^9
+ *
  */
 public class FindXorBeautyOfArray {
 

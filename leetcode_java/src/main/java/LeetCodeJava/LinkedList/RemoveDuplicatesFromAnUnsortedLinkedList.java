@@ -8,6 +8,8 @@ import java.util.Map;
 
 /**
  * 1836. Remove Duplicates From an Unsorted Linked List
+ * Medium
+ *
  * Given the head of a linked list, find all the values that appear more than once in the list and delete the nodes that have any of those values.
  *
  * Return the linked list after the deletions.

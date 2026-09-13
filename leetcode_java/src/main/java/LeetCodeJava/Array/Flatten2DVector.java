@@ -9,6 +9,8 @@ import java.util.NoSuchElementException;
 
 /**
  * 251. Flatten 2D Vector
+ * Medium
+ *
  * Design and implement an iterator to flatten a 2d vector. It should support the following operations: next and hasNext.
  *
  *
@@ -42,9 +44,6 @@ import java.util.NoSuchElementException;
  * Prime
  * Company:
  * Airbnb Amazon Apple Facebook Google Lyft Salesforce Twitter Uber Zenefits
- *
- *
- *
  *
  */
 public class Flatten2DVector {
@@ -145,7 +144,7 @@ public class Flatten2DVector {
 
 
 
-    // V0-1
+    // V0-3
     // TODO: fix & validate below
 //    class Vector2D{
 //
@@ -221,7 +220,7 @@ public class Flatten2DVector {
         }
     }
 
-    // V0-3
+    // V0-4
     // IDEA: (fixed by gpt)
     // TODO: fix & validate below
     // time: O(1) for constructor/next/hasNext, space: O(1)

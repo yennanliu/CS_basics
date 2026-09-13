@@ -12,10 +12,7 @@ import java.util.List;
 /**
  * 3319. K-th Largest Perfect Subtree Size in Binary Tree
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You are given the root of a binary tree and an integer k.
  *
  * Return an integer denoting the size of the kth largest perfect binary subtree, or -1 if it doesn't exist.

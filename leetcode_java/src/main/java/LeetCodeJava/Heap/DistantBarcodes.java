@@ -7,10 +7,7 @@ import java.util.*;
 /**
  * 1054. Distant Barcodes
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * In a warehouse, there is a row of barcodes, where the ith barcode is barcodes[i].
  *
  * Rearrange the barcodes so that no two adjacent barcodes are equal. You may return any answer, and it is guaranteed an answer exists.
@@ -31,6 +28,7 @@ import java.util.*;
  *
  * 1 <= barcodes.length <= 10000
  * 1 <= barcodes[i] <= 10000
+ *
  */
 public class DistantBarcodes {
 

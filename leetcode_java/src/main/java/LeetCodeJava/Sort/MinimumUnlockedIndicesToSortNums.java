@@ -3,39 +3,41 @@ package LeetCodeJava.Sort;
 // https://leetcode.com/problems/minimum-unlocked-indices-to-sort-nums/
 
 /**
- *  3431. Minimum Unlocked Indices to Sort Nums
- *  Medium
- *  (premium / locked problem)
+ * 3431. Minimum Unlocked Indices to Sort Nums
+ * Medium
  *
- *  You are given an array nums consisting of integers between 1 and 3, and a
- *  binary array locked of the same size.
+ * (premium / locked problem)
  *
- *  We consider nums sortable if it can be sorted using adjacent swaps, where a
- *  swap between two indices i and i + 1 is allowed if nums[i] - nums[i + 1] == 1
- *  and locked[i] == 0.
+ * You are given an array nums consisting of integers between 1 and 3, and a
+ * binary array locked of the same size.
  *
- *  In one operation, you can unlock any index i by setting locked[i] to 0.
+ * We consider nums sortable if it can be sorted using adjacent swaps, where a
+ * swap between two indices i and i + 1 is allowed if nums[i] - nums[i + 1] == 1
+ * and locked[i] == 0.
  *
- *  Return the minimum number of operations needed to make nums sortable. If it is
- *  not possible to make nums sortable, return -1.
+ * In one operation, you can unlock any index i by setting locked[i] to 0.
  *
- *  Example 1:
- *    Input: nums = [1,2,1,2,3,2], locked = [1,0,1,1,0,1]
- *    Output: 0
+ * Return the minimum number of operations needed to make nums sortable. If it is
+ * not possible to make nums sortable, return -1.
  *
- *  Example 2:
- *    Input: nums = [1,2,1,1,3,2,2], locked = [1,0,1,1,0,1,0]
- *    Output: 2
+ * Example 1:
+ * Input: nums = [1,2,1,2,3,2], locked = [1,0,1,1,0,1]
+ * Output: 0
  *
- *  Example 3:
- *    Input: nums = [1,2,1,2,3,2,1], locked = [0,0,0,0,0,0,0]
- *    Output: -1
+ * Example 2:
+ * Input: nums = [1,2,1,1,3,2,2], locked = [1,0,1,1,0,1,0]
+ * Output: 2
  *
- *  Constraints:
- *    1 <= nums.length <= 10^5
- *    1 <= nums[i] <= 3
- *    locked.length == nums.length
- *    0 <= locked[i] <= 1
+ * Example 3:
+ * Input: nums = [1,2,1,2,3,2,1], locked = [0,0,0,0,0,0,0]
+ * Output: -1
+ *
+ * Constraints:
+ * 1 <= nums.length <= 10^5
+ * 1 <= nums[i] <= 3
+ * locked.length == nums.length
+ * 0 <= locked[i] <= 1
+ *
  */
 public class MinimumUnlockedIndicesToSortNums {
 

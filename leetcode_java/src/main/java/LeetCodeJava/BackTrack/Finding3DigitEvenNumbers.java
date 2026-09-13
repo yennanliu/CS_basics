@@ -3,32 +3,33 @@ package LeetCodeJava.BackTrack;
 // https://leetcode.com/problems/finding-3-digit-even-numbers/
 
 /**
- *  2094. Finding 3-Digit Even Numbers
- *  Easy
+ * 2094. Finding 3-Digit Even Numbers
+ * Easy
  *
- *  You are given an integer array digits, where each element is a digit. The
- *  array may contain duplicates.
+ * You are given an integer array digits, where each element is a digit. The
+ * array may contain duplicates.
  *
- *  You need to find all the unique integers that follow the given requirements:
- *    - The integer consists of the concatenation of three elements from digits
- *      in any arbitrary order.
- *    - The integer does not have leading zeros.
- *    - The integer is even.
+ * You need to find all the unique integers that follow the given requirements:
+ * - The integer consists of the concatenation of three elements from digits
+ * in any arbitrary order.
+ * - The integer does not have leading zeros.
+ * - The integer is even.
  *
- *  Return a sorted array of the unique integers.
+ * Return a sorted array of the unique integers.
  *
- *  Example 1:
- *    Input: digits = [2,1,3,0]
- *    Output: [102,120,130,132,210,230,302,310,312,320]
+ * Example 1:
+ * Input: digits = [2,1,3,0]
+ * Output: [102,120,130,132,210,230,302,310,312,320]
  *
- *  Example 2:
- *    Input: digits = [2,2,8,8,2]
- *    Output: [222,228,282,288,822,828,882]
- *    Explanation: The same digit can be used as many times as it appears.
+ * Example 2:
+ * Input: digits = [2,2,8,8,2]
+ * Output: [222,228,282,288,822,828,882]
+ * Explanation: The same digit can be used as many times as it appears.
  *
- *  Constraints:
- *    3 <= digits.length <= 100
- *    0 <= digits[i] <= 9
+ * Constraints:
+ * 3 <= digits.length <= 100
+ * 0 <= digits[i] <= 9
+ *
  */
 public class Finding3DigitEvenNumbers {
 

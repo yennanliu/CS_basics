@@ -2,12 +2,9 @@ package LeetCodeJava.Array;
 
 // https://leetcode.com/problems/minimum-add-to-make-parentheses-valid/description/
 /**
- *
  * 921. Minimum Add to Make Parentheses Valid
  * Medium
- * Topics
- * premium lock icon
- * Companies
+ *
  * A parentheses string is valid if and only if:
  *
  * It is the empty string,
@@ -34,7 +31,6 @@ package LeetCodeJava.Array;
  *
  * 1 <= s.length <= 1000
  * s[i] is either '(' or ')'.
- *
  *
  */
 public class MinimumAddToMakeParenthesesValid {

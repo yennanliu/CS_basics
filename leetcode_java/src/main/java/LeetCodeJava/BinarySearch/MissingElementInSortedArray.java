@@ -8,6 +8,8 @@ import java.util.Set;
 
 /**
  * 1060. Missing Element in Sorted Array
+ * Medium
+ *
  * Given a sorted array A of unique numbers, find the K-th missing number starting from the leftmost number of the array.
  *
  *
@@ -42,6 +44,7 @@ import java.util.Set;
  * Lock:
  * Prime
  * Company:
+ *
  */
 public class MissingElementInSortedArray {
 

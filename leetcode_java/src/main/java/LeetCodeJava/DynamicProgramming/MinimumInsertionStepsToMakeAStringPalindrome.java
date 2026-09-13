@@ -3,30 +3,31 @@ package LeetCodeJava.DynamicProgramming;
 // https://leetcode.com/problems/minimum-insertion-steps-to-make-a-string-palindrome/
 
 /**
- *  1312. Minimum Insertion Steps to Make a String Palindrome
- *  Hard
+ * 1312. Minimum Insertion Steps to Make a String Palindrome
+ * Hard
  *
- *  Given a string s. In one step you can insert any character at any index of the string.
+ * Given a string s. In one step you can insert any character at any index of the string.
  *
- *  Return the minimum number of steps to make s palindrome.
+ * Return the minimum number of steps to make s palindrome.
  *
- *  A Palindrome String is one that reads the same backward as well as forward.
+ * A Palindrome String is one that reads the same backward as well as forward.
  *
- *  Example 1:
- *    Input: s = "zzazz"
- *    Output: 0
+ * Example 1:
+ * Input: s = "zzazz"
+ * Output: 0
  *
- *  Example 2:
- *    Input: s = "mbadm"
- *    Output: 2   ("mbdadbm" or "mdbabdm")
+ * Example 2:
+ * Input: s = "mbadm"
+ * Output: 2   ("mbdadbm" or "mdbabdm")
  *
- *  Example 3:
- *    Input: s = "leetcode"
- *    Output: 5   ("leetcodocteel")
+ * Example 3:
+ * Input: s = "leetcode"
+ * Output: 5   ("leetcodocteel")
  *
- *  Constraints:
- *    1 <= s.length <= 500
- *    s consists of lowercase English letters.
+ * Constraints:
+ * 1 <= s.length <= 500
+ * s consists of lowercase English letters.
+ *
  */
 public class MinimumInsertionStepsToMakeAStringPalindrome {
 

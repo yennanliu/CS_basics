@@ -16,9 +16,9 @@ package LeetCodeJava.String;
  * two phases:
  *
  * 1. Concatenate all the strings into a loop, where you can reverse some strings or not
- *    and connect them in the same order as given.
+ * and connect them in the same order as given.
  * 2. Cut and make one breakpoint in any place of the loop, which will make the looped
- *    string into a regular one starting from the character at the cutpoint.
+ * string into a regular one starting from the character at the cutpoint.
  *
  * And your job is to find the lexicographically largest one among all the possible
  * regular strings.

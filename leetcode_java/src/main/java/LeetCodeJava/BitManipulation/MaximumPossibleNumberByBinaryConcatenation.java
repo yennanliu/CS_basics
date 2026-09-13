@@ -3,29 +3,30 @@ package LeetCodeJava.BitManipulation;
 // https://leetcode.com/problems/maximum-possible-number-by-binary-concatenation/
 
 /**
- *  3309. Maximum Possible Number by Binary Concatenation
- *  Medium
+ * 3309. Maximum Possible Number by Binary Concatenation
+ * Medium
  *
- *  You are given an array of integers nums of size 3.
+ * You are given an array of integers nums of size 3.
  *
- *  Return the maximum possible number whose binary representation can be formed by
- *  concatenating the binary representation of all elements in nums in some order.
+ * Return the maximum possible number whose binary representation can be formed by
+ * concatenating the binary representation of all elements in nums in some order.
  *
- *  Note that the binary representation of any number does not contain leading zeros.
+ * Note that the binary representation of any number does not contain leading zeros.
  *
- *  Example 1:
- *    Input: nums = [1,2,3]
- *    Output: 30
- *    Explanation: Concatenate in the order [3, 1, 2] to get "11110", which is 30.
+ * Example 1:
+ * Input: nums = [1,2,3]
+ * Output: 30
+ * Explanation: Concatenate in the order [3, 1, 2] to get "11110", which is 30.
  *
- *  Example 2:
- *    Input: nums = [2,8,16]
- *    Output: 1296
- *    Explanation: Concatenate in the order [2, 8, 16] to get "10100010000", i.e. 1296.
+ * Example 2:
+ * Input: nums = [2,8,16]
+ * Output: 1296
+ * Explanation: Concatenate in the order [2, 8, 16] to get "10100010000", i.e. 1296.
  *
- *  Constraints:
- *    nums.length == 3
- *    1 <= nums[i] <= 127
+ * Constraints:
+ * nums.length == 3
+ * 1 <= nums[i] <= 127
+ *
  */
 public class MaximumPossibleNumberByBinaryConcatenation {
 

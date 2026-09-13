@@ -5,12 +5,9 @@ package LeetCodeJava.Stack;
 import java.util.Stack;
 
 /**
- *  224. Basic Calculator
- * Solved
+ * 224. Basic Calculator
  * Hard
- * Topics
- * premium lock icon
- * Companies
+ *
  * Given a string s representing a valid expression, implement a basic calculator to evaluate it, and return the result of the evaluation.
  *
  * Note: You are not allowed to use any built-in function which evaluates strings as mathematical expressions, such as eval().
@@ -40,8 +37,6 @@ import java.util.Stack;
  * '-' could be used as a unary operation (i.e., "-1" and "-(2 + 3)" is valid).
  * There will be no two consecutive operators in the input.
  * Every number and running calculation will fit in a signed 32-bit integer.
- *
- *
  *
  */
 public class BasicCalculator {

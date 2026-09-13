@@ -7,35 +7,36 @@ import java.util.Map;
 import java.util.TreeSet;
 
 /**
- *  2349. Design a Number Container System
- *  Medium
+ * 2349. Design a Number Container System
+ * Medium
  *
- *  Design a number container system that can do the following:
- *   - Insert or Replace a number at the given index in the system.
- *   - Return the smallest index for the given number in the system.
+ * Design a number container system that can do the following:
+ * - Insert or Replace a number at the given index in the system.
+ * - Return the smallest index for the given number in the system.
  *
- *  Implement the NumberContainers class:
+ * Implement the NumberContainers class:
  *
- *   - NumberContainers() Initializes the number container system.
- *   - void change(int index, int number) Fills the container at index with the number.
- *     If there is already a number at that index, replace it.
- *   - int find(int number) Returns the smallest index for the given number, or -1 if
- *     there is no index that is filled by number in the system.
+ * - NumberContainers() Initializes the number container system.
+ * - void change(int index, int number) Fills the container at index with the number.
+ * If there is already a number at that index, replace it.
+ * - int find(int number) Returns the smallest index for the given number, or -1 if
+ * there is no index that is filled by number in the system.
  *
- *  Example 1:
- *    Input
- *      ["NumberContainers","find","change","change","change","change","find","change","find"]
- *      [[],[10],[2,10],[1,10],[3,10],[5,10],[10],[1,20],[10]]
- *    Output
- *      [null,-1,null,null,null,null,1,null,2]
- *    Explanation
- *      find(10)     -> -1, nothing holds 10 yet
- *      after filling indices 2, 1, 3, 5 with 10, find(10) -> 1
- *      change(1, 20) overwrites index 1, so find(10) -> 2
+ * Example 1:
+ * Input
+ * ["NumberContainers","find","change","change","change","change","find","change","find"]
+ * [[],[10],[2,10],[1,10],[3,10],[5,10],[10],[1,20],[10]]
+ * Output
+ * [null,-1,null,null,null,null,1,null,2]
+ * Explanation
+ * find(10)     -> -1, nothing holds 10 yet
+ * after filling indices 2, 1, 3, 5 with 10, find(10) -> 1
+ * change(1, 20) overwrites index 1, so find(10) -> 2
  *
- *  Constraints:
- *    1 <= index, number <= 10^9
- *    At most 10^5 calls will be made in total to change and find.
+ * Constraints:
+ * 1 <= index, number <= 10^9
+ * At most 10^5 calls will be made in total to change and find.
+ *
  */
 public class DesignANumberContainerSystem {
 

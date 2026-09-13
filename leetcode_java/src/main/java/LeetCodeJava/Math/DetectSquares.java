@@ -7,11 +7,8 @@ import java.util.*;
 // https://leetcode.cn/problems/detect-squares/
 /**
  * 2013. Detect Squares
- * Solved
  * Medium
- * Topics
- * Companies
- * Hint
+ *
  * You are given a stream of points on the X-Y plane. Design an algorithm that:
  *
  * Adds new points from the stream into a data structure. Duplicate points are allowed and should be treated as different points.
@@ -40,12 +37,12 @@ import java.util.*;
  * detectSquares.add([11, 2]);
  * detectSquares.add([3, 2]);
  * detectSquares.count([11, 10]); // return 1. You can choose:
- *                                //   - The first, second, and third points
+ * //   - The first, second, and third points
  * detectSquares.count([14, 8]);  // return 0. The query point cannot form a square with any points in the data structure.
  * detectSquares.add([11, 2]);    // Adding duplicate points is allowed.
  * detectSquares.count([11, 10]); // return 2. You can choose:
- *                                //   - The first, second, and third points
- *                                //   - The first, third, and fourth points
+ * //   - The first, second, and third points
+ * //   - The first, third, and fourth points
  *
  *
  * Constraints:
@@ -53,8 +50,6 @@ import java.util.*;
  * point.length == 2
  * 0 <= x, y <= 1000
  * At most 3000 calls in total will be made to add and count.
- *
- *
  *
  */
 public class DetectSquares {
@@ -280,7 +275,7 @@ public class DetectSquares {
 
     }
 
-    // V0_0_1
+    // V0-_0_1
     // IDEA : MATH
     class DetectSquares_0_0_1{
 

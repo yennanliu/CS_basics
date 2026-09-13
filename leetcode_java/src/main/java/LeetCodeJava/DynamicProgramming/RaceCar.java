@@ -21,12 +21,12 @@ import java.util.Set;
  * instructions 'A' (accelerate) and 'R' (reverse):
  *
  * When you get an instruction 'A', your car does the following:
- *     position += speed
- *     speed *= 2
+ * position += speed
+ * speed *= 2
  * When you get an instruction 'R', your car does the following:
- *     If your speed is positive then speed = -1
- *     otherwise speed = 1
- *     Your position stays the same.
+ * If your speed is positive then speed = -1
+ * otherwise speed = 1
+ * Your position stays the same.
  *
  * For example, after commands "AAR", your car goes to positions 0 --> 1 --> 3 --> 3, and
  * your speed goes to 1 --> 2 --> 4 --> -1.

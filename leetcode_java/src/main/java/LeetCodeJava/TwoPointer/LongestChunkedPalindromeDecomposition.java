@@ -2,12 +2,9 @@ package LeetCodeJava.TwoPointer;
 
 // https://leetcode.com/problems/longest-chunked-palindrome-decomposition/description/
 /**
- *  1147. Longest Chunked Palindrome Decomposition
+ * 1147. Longest Chunked Palindrome Decomposition
  * Hard
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You are given a string text. You should split it to k substrings (subtext1, subtext2, ..., subtextk) such that:
  *
  * subtexti is a non-empty string.
@@ -38,8 +35,6 @@ package LeetCodeJava.TwoPointer;
  *
  * 1 <= text.length <= 1000
  * text consists only of lowercase English characters.
- *
- *
  *
  */
 public class LongestChunkedPalindromeDecomposition {

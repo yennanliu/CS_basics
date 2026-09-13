@@ -6,12 +6,18 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 /**
+ * 346. Moving Average from Data Stream
+ * Easy
+ *
  * Your MovingAverage object will be instantiated and called as such:
  * MovingAverage obj = new MovingAverage(size);
  * double param_1 = obj.next(val);
+ *
  */
 
 public class MovingAverageFromDataStream {
+
+    // V0
 
     // V1
     // https://leetcode.com/problems/moving-average-from-data-stream/editorial/
@@ -67,7 +73,7 @@ public class MovingAverageFromDataStream {
         }
     }
 
-    // V2
+    // V2-1
     // https://leetcode.com/problems/moving-average-from-data-stream/editorial/
     class MovingAverage3 {
         int size, head = 0, windowSum = 0, count = 0;

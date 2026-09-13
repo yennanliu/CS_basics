@@ -8,12 +8,9 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- *  3120. Count the Number of Special Characters I
+ * 3120. Count the Number of Special Characters I
  * Easy
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You are given a string word. A letter is called special if it appears both in lowercase and uppercase in word.
  *
  * Return the number of special letters in word.

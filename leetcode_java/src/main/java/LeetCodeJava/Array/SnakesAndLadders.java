@@ -6,16 +6,13 @@ package LeetCodeJava.Array;
 import java.util.*;
 
 /**
- *  909. Snakes and Ladders
- * Solved
+ * 909. Snakes and Ladders
  * Medium
- * Topics
- * premium lock icon
- * Companies
+ *
  * You are given an n x n integer matrix board where the cells are labeled from 1 to n2 in a Boustrophedon style starting from the bottom left of the board (i.e. board[n - 1][0]) and alternating direction each row.
  *
  *
- *  You start on square 1 of the board. In each move, starting from square curr, do the following:
+ * You start on square 1 of the board. In each move, starting from square curr, do the following:
  *
  * Choose a destination square next with a label in the range [curr + 1, min(curr + 6, n2)].
  * This choice simulates the result of a standard 6-sided die roll: i.e., there are always at most 6 destinations, regardless of the size of the board.
@@ -30,7 +27,7 @@ import java.util.*;
  *
  *
  *
- *   Example 1:
+ * Example 1:
  *
  *
  * Input: board = [[-1,-1,-1,-1,-1,-1],[-1,-1,-1,-1,-1,-1],[-1,-1,-1,-1,-1,-1],[-1,35,-1,-1,13,-1],[-1,-1,-1,-1,-1,-1],[-1,15,-1,-1,-1,-1]]
@@ -54,7 +51,6 @@ import java.util.*;
  * 2 <= n <= 20
  * board[i][j] is either -1 or in the range [1, n2].
  * The squares labeled 1 and n2 are not the starting points of any snake or ladder.
- *
  *
  */
 public class SnakesAndLadders {

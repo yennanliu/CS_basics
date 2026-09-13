@@ -3,26 +3,28 @@ package LeetCodeJava.LinkedList;
 // https://leetcode.com/problems/convert-doubly-linked-list-to-array-i/
 
 /**
- *  3263. Convert Doubly Linked List to Array I
- *  Easy
- *  (premium)
+ * 3263. Convert Doubly Linked List to Array I
+ * Easy
  *
- *  You are given the head of a doubly linked list, which contains nodes that have
- *  a next pointer and a previous pointer.
+ * (premium)
  *
- *  Return an integer array which contains the elements of the linked list in order.
+ * You are given the head of a doubly linked list, which contains nodes that have
+ * a next pointer and a previous pointer.
  *
- *  Example 1:
- *    Input: head = [1,2,3,4,3,2,1]
- *    Output: [1,2,3,4,3,2,1]
+ * Return an integer array which contains the elements of the linked list in order.
  *
- *  Example 2:
- *    Input: head = [2,2,2,2,2]
- *    Output: [2,2,2,2,2]
+ * Example 1:
+ * Input: head = [1,2,3,4,3,2,1]
+ * Output: [1,2,3,4,3,2,1]
  *
- *  Constraints:
- *    The number of nodes in the given list is in the range [1, 50].
- *    1 <= Node.val <= 50
+ * Example 2:
+ * Input: head = [2,2,2,2,2]
+ * Output: [2,2,2,2,2]
+ *
+ * Constraints:
+ * The number of nodes in the given list is in the range [1, 50].
+ * 1 <= Node.val <= 50
+ *
  */
 public class ConvertDoublyLinkedListToArrayI {
 

@@ -6,6 +6,8 @@ package LeetCodeJava.Tree;
 
 /**
  * 1666. Change the Root of a Binary Tree
+ * Medium
+ *
  * Given the root of a binary tree and a leaf node, reroot the tree so that the leaf is the new root.
  *
  * You can reroot the tree with the following steps for each node cur on the path starting from the leaf up to the root​​​ excluding the root:

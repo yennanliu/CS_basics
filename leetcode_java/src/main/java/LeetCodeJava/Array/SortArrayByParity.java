@@ -8,11 +8,9 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- *  905. Sort Array By Parity
+ * 905. Sort Array By Parity
  * Easy
- * Topics
- * premium lock icon
- * Companies
+ *
  * Given an integer array nums, move all the even integers at the beginning of the array followed by all the odd integers.
  *
  * Return any array that satisfies this condition.
@@ -34,8 +32,6 @@ import java.util.List;
  *
  * 1 <= nums.length <= 5000
  * 0 <= nums[i] <= 5000
- *
- *
  *
  */
 public class SortArrayByParity {
@@ -183,7 +179,7 @@ public class SortArrayByParity {
     }
 
 
-    // V0-2
+    // V0-3
     // IDEA: 2 POINTERS (gpt)
     public int[] sortArrayByParity_0_3(int[] nums) {
         int l = 0, r = nums.length - 1;

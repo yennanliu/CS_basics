@@ -3,30 +3,31 @@ package LeetCodeJava.Stack;
 // https://leetcode.com/problems/minimum-adjacent-swaps-for-k-consecutive-ones/
 
 /**
- *  1703. Minimum Adjacent Swaps for K Consecutive Ones
- *  Hard
+ * 1703. Minimum Adjacent Swaps for K Consecutive Ones
+ * Hard
  *
- *  You are given an integer array nums (only 0's and 1's) and an integer k.
- *  In one move, you can choose two adjacent indices and swap their values.
+ * You are given an integer array nums (only 0's and 1's) and an integer k.
+ * In one move, you can choose two adjacent indices and swap their values.
  *
- *  Return the minimum number of moves required so that nums has k consecutive 1's.
+ * Return the minimum number of moves required so that nums has k consecutive 1's.
  *
- *  Example 1:
- *  Input: nums = [1,0,0,1,0,1], k = 2
- *  Output: 1
+ * Example 1:
+ * Input: nums = [1,0,0,1,0,1], k = 2
+ * Output: 1
  *
- *  Example 2:
- *  Input: nums = [1,0,0,0,0,0,1,1], k = 3
- *  Output: 5
+ * Example 2:
+ * Input: nums = [1,0,0,0,0,0,1,1], k = 3
+ * Output: 5
  *
- *  Example 3:
- *  Input: nums = [1,1,0,1], k = 2
- *  Output: 0
+ * Example 3:
+ * Input: nums = [1,1,0,1], k = 2
+ * Output: 0
  *
- *  Constraints:
- *  1 <= nums.length <= 10^5
- *  nums[i] is 0 or 1.
- *  1 <= k <= sum(nums)
+ * Constraints:
+ * 1 <= nums.length <= 10^5
+ * nums[i] is 0 or 1.
+ * 1 <= k <= sum(nums)
+ *
  */
 public class MinimumAdjacentSwapsForKConsecutiveOnes {
 

@@ -8,31 +8,32 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *  1429. First Unique Number
- *  Medium
+ * 1429. First Unique Number
+ * Medium
  *
- *  You have a queue of integers, you need to retrieve the first unique integer in the
- *  queue.
+ * You have a queue of integers, you need to retrieve the first unique integer in the
+ * queue.
  *
- *  Implement the FirstUnique class:
- *   - FirstUnique(int[] nums) Initializes the object with the numbers in the queue.
- *   - int showFirstUnique() Returns the value of the first unique integer of the queue,
- *     and returns -1 if there is no such integer.
- *   - void add(int value) Inserts value into the queue.
+ * Implement the FirstUnique class:
+ * - FirstUnique(int[] nums) Initializes the object with the numbers in the queue.
+ * - int showFirstUnique() Returns the value of the first unique integer of the queue,
+ * and returns -1 if there is no such integer.
+ * - void add(int value) Inserts value into the queue.
  *
- *  Example 1:
- *    Input:
- *      ["FirstUnique","showFirstUnique","add","showFirstUnique","add",
- *       "showFirstUnique","add","showFirstUnique"]
- *      [[[2,3,5]],[],[5],[],[2],[],[3],[]]
- *    Output:
- *      [null,2,null,2,null,3,null,-1]
+ * Example 1:
+ * Input:
+ * ["FirstUnique","showFirstUnique","add","showFirstUnique","add",
+ * "showFirstUnique","add","showFirstUnique"]
+ * [[[2,3,5]],[],[5],[],[2],[],[3],[]]
+ * Output:
+ * [null,2,null,2,null,3,null,-1]
  *
- *  Constraints:
- *    1 <= nums.length <= 10^5
- *    1 <= nums[i] <= 10^8
- *    1 <= value <= 10^8
- *    At most 50000 calls will be made to showFirstUnique and add.
+ * Constraints:
+ * 1 <= nums.length <= 10^5
+ * 1 <= nums[i] <= 10^8
+ * 1 <= value <= 10^8
+ * At most 50000 calls will be made to showFirstUnique and add.
+ *
  */
 public class FirstUniqueNumber {
 

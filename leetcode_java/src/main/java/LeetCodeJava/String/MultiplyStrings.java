@@ -16,10 +16,8 @@ import java.util.Collections;
  */
 /**
  * 43. Multiply Strings
- * Solved
  * Medium
- * Topics
- * Companies
+ *
  * Given two non-negative integers num1 and num2 represented as strings, return the product of num1 and num2, also represented as a string.
  *
  * Note: You must not use any built-in BigInteger library or convert the inputs to integer directly.
@@ -41,7 +39,6 @@ import java.util.Collections;
  * 1 <= num1.length, num2.length <= 200
  * num1 and num2 consist of digits only.
  * Both num1 and num2 do not contain any leading zero, except the number 0 itself.
- *
  *
  */
 public class MultiplyStrings {
@@ -327,7 +324,7 @@ public class MultiplyStrings {
         return answer.toString();
     }
 
-    // V3
+    // V3-1
     // https://leetcode.com/problems/multiply-strings/editorial/
     // IDEA : MATH + less space usage
 

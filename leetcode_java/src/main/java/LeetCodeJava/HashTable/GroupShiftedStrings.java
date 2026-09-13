@@ -3,6 +3,8 @@ package LeetCodeJava.HashTable;
 // https://leetcode.com/problems/group-shifted-strings/
 /**
  * 249. Group Shifted Strings
+ * Medium
+ *
  * Given a string, we can "shift" each of its letter to its successive letter, for example: "abc" -> "bcd". We can keep "shifting" which forms the sequence:
  *
  * "abc" -> "bcd" -> ... -> "xyz"
@@ -13,10 +15,10 @@ package LeetCodeJava.HashTable;
  * Input: ["abc", "bcd", "acef", "xyz", "az", "ba", "a", "z"],
  * Output:
  * [
- *   ["abc","bcd","xyz"],
- *   ["az","ba"],
- *   ["acef"],
- *   ["a","z"]
+ * ["abc","bcd","xyz"],
+ * ["az","ba"],
+ * ["acef"],
+ * ["a","z"]
  * ]
  * Difficulty:
  * Medium
@@ -24,6 +26,7 @@ package LeetCodeJava.HashTable;
  * Prime
  * Company:
  * Facebook Google Uber
+ *
  */
 import java.util.ArrayList;
 import java.util.HashMap;

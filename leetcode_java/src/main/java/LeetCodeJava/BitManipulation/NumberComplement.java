@@ -9,7 +9,7 @@ package LeetCodeJava.BitManipulation;
  * 1's and all the 1's to 0's in its binary representation.
  *
  * - For example, The integer 5 is "101" in binary and its complement is "010"
- *   which is the integer 2.
+ * which is the integer 2.
  *
  * Given an integer num, return its complement.
  *

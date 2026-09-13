@@ -4,9 +4,7 @@ package LeetCodeJava.LinkedList;
 /**
  * 82. Remove Duplicates from Sorted List II
  * Medium
- * Topics
- * premium lock icon
- * Companies
+ *
  * Given the head of a sorted linked list, delete all nodes that have duplicate numbers, leaving only distinct numbers from the original list. Return the linked list sorted as well.
  *
  *
@@ -28,6 +26,7 @@ package LeetCodeJava.LinkedList;
  * The number of nodes in the list is in the range [0, 300].
  * -100 <= Node.val <= 100
  * The list is guaranteed to be sorted in ascending order.
+ *
  */
 
 import LeetCodeJava.DataStructure.ListNode;
@@ -270,7 +269,7 @@ public class RemoveDuplicatesFromSortedList2 {
         return dummy.next;
     }
 
-    //  V2
+    // V2
 
     // https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/solutions/6801800/beats-100-easiest-explanation-for-beginn-6noz/
     /**

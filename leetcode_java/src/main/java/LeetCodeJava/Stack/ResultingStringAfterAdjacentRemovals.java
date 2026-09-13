@@ -3,39 +3,40 @@ package LeetCodeJava.Stack;
 // https://leetcode.com/problems/resulting-string-after-adjacent-removals/
 
 /**
- *  3561. Resulting String After Adjacent Removals
- *  Medium
+ * 3561. Resulting String After Adjacent Removals
+ * Medium
  *
- *  You are given a string s consisting of lowercase English letters.
+ * You are given a string s consisting of lowercase English letters.
  *
- *  You must repeatedly perform the following operation while the string s has at
- *  least two consecutive characters:
- *    - Remove the leftmost pair of adjacent characters in the string that are
- *      consecutive in the alphabet, in either order (e.g. 'a' and 'b', or 'b'
- *      and 'a').
- *    - Shift the remaining characters to the left to fill the gap.
+ * You must repeatedly perform the following operation while the string s has at
+ * least two consecutive characters:
+ * - Remove the leftmost pair of adjacent characters in the string that are
+ * consecutive in the alphabet, in either order (e.g. 'a' and 'b', or 'b'
+ * and 'a').
+ * - Shift the remaining characters to the left to fill the gap.
  *
- *  Return the resulting string after no more operations can be performed.
+ * Return the resulting string after no more operations can be performed.
  *
- *  Note: Consider the alphabet as circular, thus 'a' and 'z' are consecutive.
+ * Note: Consider the alphabet as circular, thus 'a' and 'z' are consecutive.
  *
- *  Example 1:
- *    Input: s = "abc"
- *    Output: "c"
- *    Explanation: remove "ab", leaving "c".
+ * Example 1:
+ * Input: s = "abc"
+ * Output: "c"
+ * Explanation: remove "ab", leaving "c".
  *
- *  Example 2:
- *    Input: s = "adcb"
- *    Output: ""
- *    Explanation: remove "dc" -> "ab", then remove "ab" -> "".
+ * Example 2:
+ * Input: s = "adcb"
+ * Output: ""
+ * Explanation: remove "dc" -> "ab", then remove "ab" -> "".
  *
- *  Example 3:
- *    Input: s = "zadb"
- *    Output: "db"
+ * Example 3:
+ * Input: s = "zadb"
+ * Output: "db"
  *
- *  Constraints:
- *    1 <= s.length <= 10^5
- *    s consists only of lowercase English letters.
+ * Constraints:
+ * 1 <= s.length <= 10^5
+ * s consists only of lowercase English letters.
+ *
  */
 public class ResultingStringAfterAdjacentRemovals {
 

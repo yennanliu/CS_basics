@@ -3,14 +3,11 @@ package LeetCodeJava.TwoPointer;
 // https://leetcode.com/problems/permutation-in-string/
 /**
  * 567. Permutation in String
- * Solved
  * Medium
- * Topics
- * Companies
- * Hint
+ *
  * Given two strings s1 and s2, return true if s2 contains a
  * permutation
- *  of s1, or false otherwise.
+ * of s1, or false otherwise.
  *
  * In other words, return true if one of s1's permutations is the substring of s2.
  *
@@ -98,7 +95,7 @@ public class PermutationInString {
         return false;
     }
 
-    // V0_0_1
+    // V0-_0_1
     // IDEA: HASHMAP + SLIDING WINDOW (fixed by gpt)
     /**
      * time = O(N)

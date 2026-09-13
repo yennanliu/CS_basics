@@ -8,29 +8,30 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- *  341. Flatten Nested List Iterator
- *  Medium
+ * 341. Flatten Nested List Iterator
+ * Medium
  *
- *  You are given a nested list of integers nestedList. Each element is either an integer
- *  or a list whose elements may also be integers or other lists. Implement an iterator
- *  to flatten it.
+ * You are given a nested list of integers nestedList. Each element is either an integer
+ * or a list whose elements may also be integers or other lists. Implement an iterator
+ * to flatten it.
  *
- *  Implement the NestedIterator class:
- *   - NestedIterator(List<NestedInteger> nestedList) initializes the iterator.
- *   - int next() returns the next integer in the nested list.
- *   - boolean hasNext() returns true if there are still some integers left.
+ * Implement the NestedIterator class:
+ * - NestedIterator(List<NestedInteger> nestedList) initializes the iterator.
+ * - int next() returns the next integer in the nested list.
+ * - boolean hasNext() returns true if there are still some integers left.
  *
- *  Example 1:
- *  Input: nestedList = [[1,1],2,[1,1]]
- *  Output: [1,1,2,1,1]
+ * Example 1:
+ * Input: nestedList = [[1,1],2,[1,1]]
+ * Output: [1,1,2,1,1]
  *
- *  Example 2:
- *  Input: nestedList = [1,[4,[6]]]
- *  Output: [1,4,6]
+ * Example 2:
+ * Input: nestedList = [1,[4,[6]]]
+ * Output: [1,4,6]
  *
- *  Constraints:
- *  1 <= nestedList.length <= 500
- *  The values of the integers in the nested list are in the range [-10^6, 10^6].
+ * Constraints:
+ * 1 <= nestedList.length <= 500
+ * The values of the integers in the nested list are in the range [-10^6, 10^6].
+ *
  */
 public class FlattenNestedListIterator {
 

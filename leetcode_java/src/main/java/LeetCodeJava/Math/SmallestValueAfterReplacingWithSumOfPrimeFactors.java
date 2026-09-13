@@ -7,12 +7,8 @@ import java.util.List;
 
 /**
  * 2507. Smallest Value After Replacing With Sum of Prime Factors
- * Solved
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You are given a positive integer n.
  *
  * Continuously replace n with the sum of its prime factors.
@@ -42,8 +38,6 @@ import java.util.List;
  * Constraints:
  *
  * 2 <= n <= 105
- *
- *
  *
  */
 public class SmallestValueAfterReplacingWithSumOfPrimeFactors {

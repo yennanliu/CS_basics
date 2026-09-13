@@ -5,6 +5,13 @@ package LeetCodeJava.Array;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 243. Shortest Word Distance
+ * Easy
+ *
+ * https://leetcode.com/problems/shortest-word-distance/
+ *
+ */
 public class ShortestWordDistance {
 
     // V0

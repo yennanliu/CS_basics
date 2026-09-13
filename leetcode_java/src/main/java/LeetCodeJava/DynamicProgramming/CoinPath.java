@@ -11,6 +11,7 @@ import java.util.List;
 /**
  * 656. Coin Path
  * Hard
+ *
  * Lock: Prime
  *
  * You are given an integer array coins (1-indexed) of length n and an integer maxJump.

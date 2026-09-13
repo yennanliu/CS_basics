@@ -3,31 +3,32 @@ package LeetCodeJava.Stack;
 // https://leetcode.com/problems/maximum-of-minimum-values-in-all-subarrays/
 
 /**
- *  1950. Maximum of Minimum Values in All Subarrays
- *  Medium
+ * 1950. Maximum of Minimum Values in All Subarrays
+ * Medium
  *
- *  You are given an integer array nums of size n. You are asked to solve n
- *  queries for each integer i in the range 0 <= i < n.
+ * You are given an integer array nums of size n. You are asked to solve n
+ * queries for each integer i in the range 0 <= i < n.
  *
- *  To solve the ith query:
- *    1. Find the minimum value in each possible subarray of size i + 1 of nums.
- *    2. Find the maximum of those minimum values.
+ * To solve the ith query:
+ * 1. Find the minimum value in each possible subarray of size i + 1 of nums.
+ * 2. Find the maximum of those minimum values.
  *
- *  Return a 0-indexed integer array ans of size n such that ans[i] is the
- *  answer to the ith query.
+ * Return a 0-indexed integer array ans of size n such that ans[i] is the
+ * answer to the ith query.
  *
- *  Example 1:
- *    Input: nums = [0,1,2,4]
- *    Output: [4,2,1,0]
+ * Example 1:
+ * Input: nums = [0,1,2,4]
+ * Output: [4,2,1,0]
  *
- *  Example 2:
- *    Input: nums = [10,20,50,10]
- *    Output: [50,20,10,10]
+ * Example 2:
+ * Input: nums = [10,20,50,10]
+ * Output: [50,20,10,10]
  *
- *  Constraints:
- *    n == nums.length
- *    1 <= n <= 10^5
- *    0 <= nums[i] <= 10^9
+ * Constraints:
+ * n == nums.length
+ * 1 <= n <= 10^5
+ * 0 <= nums[i] <= 10^9
+ *
  */
 public class MaximumOfMinimumValuesInAllSubarrays {
 

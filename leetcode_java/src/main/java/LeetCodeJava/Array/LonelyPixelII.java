@@ -6,34 +6,35 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *  533. Lonely Pixel II
- *  Medium
+ * 533. Lonely Pixel II
+ * Medium
  *
- *  Given an m x n picture consisting of black 'B' and white 'W' pixels and an
- *  integer target, return the number of black lonely pixels.
+ * Given an m x n picture consisting of black 'B' and white 'W' pixels and an
+ * integer target, return the number of black lonely pixels.
  *
- *  A black lonely pixel is a character 'B' at location (r, c) such that:
- *    - Row r and column c both contain exactly target black pixels.
- *    - For all rows that have a black pixel at column c, they should be exactly
- *      the same as row r.
+ * A black lonely pixel is a character 'B' at location (r, c) such that:
+ * - Row r and column c both contain exactly target black pixels.
+ * - For all rows that have a black pixel at column c, they should be exactly
+ * the same as row r.
  *
- *  Example 1:
- *  Input: picture = [["W","B","W","B","B","W"],
- *                    ["W","B","W","B","B","W"],
- *                    ["W","B","W","B","B","W"],
- *                    ["W","W","B","W","B","W"]], target = 3
- *  Output: 6
+ * Example 1:
+ * Input: picture = [["W","B","W","B","B","W"],
+ * ["W","B","W","B","B","W"],
+ * ["W","B","W","B","B","W"],
+ * ["W","W","B","W","B","W"]], target = 3
+ * Output: 6
  *
- *  Example 2:
- *  Input: picture = [["W","W","B"],["W","W","B"],["W","W","B"]], target = 1
- *  Output: 0
+ * Example 2:
+ * Input: picture = [["W","W","B"],["W","W","B"],["W","W","B"]], target = 1
+ * Output: 0
  *
- *  Constraints:
- *  m == picture.length
- *  n == picture[i].length
- *  1 <= m, n <= 200
- *  picture[i][j] is 'W' or 'B'.
- *  1 <= target <= min(m, n)
+ * Constraints:
+ * m == picture.length
+ * n == picture[i].length
+ * 1 <= m, n <= 200
+ * picture[i][j] is 'W' or 'B'.
+ * 1 <= target <= min(m, n)
+ *
  */
 public class LonelyPixelII {
 

@@ -6,10 +6,8 @@ import java.util.*;
 
 /**
  * 895. Maximum Frequency Stack
- * Solved
  * Hard
- * Topics
- * Companies
+ *
  * Design a stack-like data structure to push elements to the stack and pop the most frequent element from the stack.
  *
  * Implement the FreqStack class:
@@ -47,7 +45,6 @@ import java.util.*;
  * 0 <= val <= 109
  * At most 2 * 104 calls will be made to push and pop.
  * It is guaranteed that there will be at least one element in the stack before calling pop.
- *
  *
  */
 public class MaximumFrequencyStack {

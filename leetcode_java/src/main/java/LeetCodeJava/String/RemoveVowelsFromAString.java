@@ -3,26 +3,27 @@ package LeetCodeJava.String;
 // https://leetcode.com/problems/remove-vowels-from-a-string/
 
 /**
- *  1119. Remove Vowels from a String
- *  Easy
+ * 1119. Remove Vowels from a String
+ * Easy
  *
- *  Given a string s, remove the vowels 'a', 'e', 'i', 'o', and 'u'
- *  from it, and return the new string.
+ * Given a string s, remove the vowels 'a', 'e', 'i', 'o', and 'u'
+ * from it, and return the new string.
  *
- *  Example 1:
+ * Example 1:
  *
- *  Input: s = "leetcodeisacommunityforcoders"
- *  Output: "ltcdscmmntyfrcdrs"
+ * Input: s = "leetcodeisacommunityforcoders"
+ * Output: "ltcdscmmntyfrcdrs"
  *
- *  Example 2:
+ * Example 2:
  *
- *  Input: s = "aeiou"
- *  Output: ""
+ * Input: s = "aeiou"
+ * Output: ""
  *
- *  Constraints:
+ * Constraints:
  *
- *  1 <= s.length <= 1000
- *  s consists of only lowercase English letters.
+ * 1 <= s.length <= 1000
+ * s consists of only lowercase English letters.
+ *
  */
 public class RemoveVowelsFromAString {
 

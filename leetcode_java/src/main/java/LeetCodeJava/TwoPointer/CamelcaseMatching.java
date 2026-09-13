@@ -8,10 +8,7 @@ import java.util.List;
 /**
  * 1023. Camelcase Matching
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * Given an array of strings queries and a string pattern, return a boolean array answer where answer[i] is true if queries[i] matches pattern, and false otherwise.
  *
  * A query word queries[i] matches pattern if you can insert lowercase English letters into the pattern so that it equals the query. You may insert a character at any position in pattern or you may choose not to insert any characters at all.
@@ -43,8 +40,6 @@ import java.util.List;
  * 1 <= pattern.length, queries.length <= 100
  * 1 <= queries[i].length <= 100
  * queries[i] and pattern consist of English letters.
- *
- *
  *
  */
 public class CamelcaseMatching {

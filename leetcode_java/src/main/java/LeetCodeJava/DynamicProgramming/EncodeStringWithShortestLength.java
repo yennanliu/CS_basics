@@ -3,40 +3,41 @@ package LeetCodeJava.DynamicProgramming;
 // https://leetcode.com/problems/encode-string-with-shortest-length/
 
 /**
- *  471. Encode String with Shortest Length
- *  Hard
+ * 471. Encode String with Shortest Length
+ * Hard
  *
- *  Given a string s, encode the string such that its encoded length is the
- *  shortest.
+ * Given a string s, encode the string such that its encoded length is the
+ * shortest.
  *
- *  The encoding rule is k[encoded_string], where the encoded_string inside the
- *  square brackets is being repeated exactly k times. k should be a positive
- *  integer.
+ * The encoding rule is k[encoded_string], where the encoded_string inside the
+ * square brackets is being repeated exactly k times. k should be a positive
+ * integer.
  *
- *  If an encoding process does not make the string shorter, then do not encode
- *  it. If there are several solutions, return any of them.
+ * If an encoding process does not make the string shorter, then do not encode
+ * it. If there are several solutions, return any of them.
  *
- *  Example 1:
+ * Example 1:
  *
- *  Input: s = "aaa"
- *  Output: "aaa"
- *  Explanation: There is no way to encode it such that it is shorter than the
- *  input string, so we do not encode it.
+ * Input: s = "aaa"
+ * Output: "aaa"
+ * Explanation: There is no way to encode it such that it is shorter than the
+ * input string, so we do not encode it.
  *
- *  Example 2:
+ * Example 2:
  *
- *  Input: s = "aaaaa"
- *  Output: "5[a]"
+ * Input: s = "aaaaa"
+ * Output: "5[a]"
  *
- *  Example 3:
+ * Example 3:
  *
- *  Input: s = "aaaaaaaaaa"
- *  Output: "10[a]"
+ * Input: s = "aaaaaaaaaa"
+ * Output: "10[a]"
  *
- *  Constraints:
+ * Constraints:
  *
- *  1 <= s.length <= 150
- *  s consists of only lowercase English letters.
+ * 1 <= s.length <= 150
+ * s consists of only lowercase English letters.
+ *
  */
 public class EncodeStringWithShortestLength {
 

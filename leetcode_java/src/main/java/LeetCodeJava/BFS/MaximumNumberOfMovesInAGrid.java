@@ -7,10 +7,7 @@ import java.util.*;
 /**
  * 2684. Maximum Number of Moves in a Grid
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You are given a 0-indexed m x n matrix grid consisting of positive integers.
  *
  * You can start at any cell in the first column of the matrix, and traverse the grid in the following way:
@@ -45,6 +42,7 @@ import java.util.*;
  * 2 <= m, n <= 1000
  * 4 <= m * n <= 105
  * 1 <= grid[i][j] <= 106
+ *
  */
 public class MaximumNumberOfMovesInAGrid {
 
@@ -582,7 +580,7 @@ public class MaximumNumberOfMovesInAGrid {
 
 
     // TODO: validate below
-    // V0-1
+    // V0-5
     // IDEA 3) dijkstra ???
 //    public int maxMoves(int[][] grid) {
 //        // edge

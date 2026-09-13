@@ -9,8 +9,7 @@ import java.util.Stack;
 /**
  * 951. Flip Equivalent Binary Trees
  * Medium
- * Topics
- * Companies
+ *
  * For a binary tree T, we can define a flip operation as follows: choose any node, and swap the left and right child subtrees.
  *
  * A binary tree X is flip equivalent to a binary tree Y if and only if we can make X equal to Y after some number of flip operations.

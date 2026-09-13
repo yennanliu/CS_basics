@@ -5,31 +5,34 @@ package LeetCodeJava.String;
 import java.util.*;
 
 /**
- *  758. Bold Words in String
- *  Medium (premium)
+ * 758. Bold Words in String
+ * Medium
  *
- *  Given an array of keywords `words` and a string `s`, make all appearances of
- *  all keywords in `s` bold. Any letters between <b> and </b> tags become bold.
+ * Medium (premium)
  *
- *  Return `s` after adding the bold tags. The returned string should use the least
- *  number of tags possible, and the tags should form a valid combination.
+ * Given an array of keywords `words` and a string `s`, make all appearances of
+ * all keywords in `s` bold. Any letters between <b> and </b> tags become bold.
  *
- *  Example 1:
- *    Input: words = ["ab","bc"], s = "aabcd"
- *    Output: "a<b>abc</b>d"
- *    Note that returning "a<b>a<b>b</b>c</b>d" would use more tags, so it is incorrect.
+ * Return `s` after adding the bold tags. The returned string should use the least
+ * number of tags possible, and the tags should form a valid combination.
  *
- *  Example 2:
- *    Input: words = ["ab","cb"], s = "aabcd"
- *    Output: "a<b>ab</b>cd"
+ * Example 1:
+ * Input: words = ["ab","bc"], s = "aabcd"
+ * Output: "a<b>abc</b>d"
+ * Note that returning "a<b>a<b>b</b>c</b>d" would use more tags, so it is incorrect.
  *
- *  Constraints:
- *    1 <= s.length <= 500
- *    0 <= words.length <= 50
- *    1 <= words[i].length <= 10
- *    s and words[i] consist of lowercase English letters.
+ * Example 2:
+ * Input: words = ["ab","cb"], s = "aabcd"
+ * Output: "a<b>ab</b>cd"
  *
- *  NOTE: identical to LC 616 (Add Bold Tag in String), only the parameter order differs.
+ * Constraints:
+ * 1 <= s.length <= 500
+ * 0 <= words.length <= 50
+ * 1 <= words[i].length <= 10
+ * s and words[i] consist of lowercase English letters.
+ *
+ * NOTE: identical to LC 616 (Add Bold Tag in String), only the parameter order differs.
+ *
  */
 public class BoldWordsInString {
 

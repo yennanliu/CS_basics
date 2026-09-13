@@ -6,11 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *  677. Map Sum Pairs
+ * 677. Map Sum Pairs
  * Medium
- * Topics
- * premium lock icon
- * Companies
+ *
  * Design a map that allows you to do the following:
  *
  * Maps a string key to a given value.

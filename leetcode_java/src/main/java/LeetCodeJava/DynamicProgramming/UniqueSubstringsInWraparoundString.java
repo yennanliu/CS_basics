@@ -3,38 +3,39 @@ package LeetCodeJava.DynamicProgramming;
 // https://leetcode.com/problems/unique-substrings-in-wraparound-string/
 
 /**
- *  467. Unique Substrings in Wraparound String
- *  Medium
+ * 467. Unique Substrings in Wraparound String
+ * Medium
  *
- *  We define the string base to be the infinite wraparound string of
- *  "abcdefghijklmnopqrstuvwxyz", so base looks like:
- *  "..zabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcd..".
+ * We define the string base to be the infinite wraparound string of
+ * "abcdefghijklmnopqrstuvwxyz", so base looks like:
+ * "..zabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcd..".
  *
- *  Given a string s, return the number of unique non-empty substrings of s
- *  that are present in base.
+ * Given a string s, return the number of unique non-empty substrings of s
+ * that are present in base.
  *
- *  Example 1:
+ * Example 1:
  *
- *  Input: s = "a"
- *  Output: 1
+ * Input: s = "a"
+ * Output: 1
  *
- *  Example 2:
+ * Example 2:
  *
- *  Input: s = "cac"
- *  Output: 2
- *  Explanation: There are two substrings ("a", "c") of s in base.
+ * Input: s = "cac"
+ * Output: 2
+ * Explanation: There are two substrings ("a", "c") of s in base.
  *
- *  Example 3:
+ * Example 3:
  *
- *  Input: s = "zab"
- *  Output: 6
- *  Explanation: There are six substrings ("z", "a", "b", "za", "ab", "zab")
- *  of s in base.
+ * Input: s = "zab"
+ * Output: 6
+ * Explanation: There are six substrings ("z", "a", "b", "za", "ab", "zab")
+ * of s in base.
  *
- *  Constraints:
+ * Constraints:
  *
- *  1 <= s.length <= 10^5
- *  s consists of lowercase English letters.
+ * 1 <= s.length <= 10^5
+ * s consists of lowercase English letters.
+ *
  */
 public class UniqueSubstringsInWraparoundString {
 

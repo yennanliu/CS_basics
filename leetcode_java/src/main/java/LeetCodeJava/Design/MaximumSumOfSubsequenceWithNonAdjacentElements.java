@@ -3,37 +3,38 @@ package LeetCodeJava.Design;
 // https://leetcode.com/problems/maximum-sum-of-subsequence-with-non-adjacent-elements/
 
 /**
- *  3165. Maximum Sum of Subsequence With Non-adjacent Elements
- *  Hard
+ * 3165. Maximum Sum of Subsequence With Non-adjacent Elements
+ * Hard
  *
- *  You are given an array nums consisting of integers. You are also given a 2D array
- *  queries, where queries[i] = [pos_i, x_i].
+ * You are given an array nums consisting of integers. You are also given a 2D array
+ * queries, where queries[i] = [pos_i, x_i].
  *
- *  For query i, we first set nums[pos_i] equal to x_i, then we calculate the answer
- *  to query i which is the maximum sum of a subsequence of nums where no two
- *  adjacent elements are selected.
+ * For query i, we first set nums[pos_i] equal to x_i, then we calculate the answer
+ * to query i which is the maximum sum of a subsequence of nums where no two
+ * adjacent elements are selected.
  *
- *  Return the sum of the answers to all queries, modulo 10^9 + 7.
+ * Return the sum of the answers to all queries, modulo 10^9 + 7.
  *
- *  Example 1:
- *    Input: nums = [3,5,9], queries = [[1,-2],[0,-3]]
- *    Output: 21
- *    Explanation:
- *      after query 1 nums = [3,-2,9] -> best is 3 + 9 = 12
- *      after query 2 nums = [-3,-2,9] -> best is 9
+ * Example 1:
+ * Input: nums = [3,5,9], queries = [[1,-2],[0,-3]]
+ * Output: 21
+ * Explanation:
+ * after query 1 nums = [3,-2,9] -> best is 3 + 9 = 12
+ * after query 2 nums = [-3,-2,9] -> best is 9
  *
- *  Example 2:
- *    Input: nums = [0,-1], queries = [[0,-5]]
- *    Output: 0
- *    Explanation: nums = [-5,-1] -> best is 0 (the empty subsequence)
+ * Example 2:
+ * Input: nums = [0,-1], queries = [[0,-5]]
+ * Output: 0
+ * Explanation: nums = [-5,-1] -> best is 0 (the empty subsequence)
  *
- *  Constraints:
- *    1 <= nums.length <= 5 * 10^4
- *    -10^5 <= nums[i] <= 10^5
- *    1 <= queries.length <= 5 * 10^4
- *    queries[i] == [pos_i, x_i]
- *    0 <= pos_i <= nums.length - 1
- *    -10^5 <= x_i <= 10^5
+ * Constraints:
+ * 1 <= nums.length <= 5 * 10^4
+ * -10^5 <= nums[i] <= 10^5
+ * 1 <= queries.length <= 5 * 10^4
+ * queries[i] == [pos_i, x_i]
+ * 0 <= pos_i <= nums.length - 1
+ * -10^5 <= x_i <= 10^5
+ *
  */
 public class MaximumSumOfSubsequenceWithNonAdjacentElements {
 

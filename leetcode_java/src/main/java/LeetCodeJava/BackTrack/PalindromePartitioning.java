@@ -3,10 +3,8 @@ package LeetCodeJava.BackTrack;
 // https://leetcode.com/problems/palindrome-partitioning/
 /**
  * 131. Palindrome Partitioning
- * Solved
  * Medium
- * Topics
- * Companies
+ *
  * Given a string s, partition s such that every substring of the partition is a palindrome. Return all possible palindrome partitioning of s.
  * <p>
  * <p>
@@ -25,6 +23,7 @@ package LeetCodeJava.BackTrack;
  * <p>
  * 1 <= s.length <= 16
  * s contains only lowercase English letters.
+ *
  */
 
 import java.util.ArrayList;

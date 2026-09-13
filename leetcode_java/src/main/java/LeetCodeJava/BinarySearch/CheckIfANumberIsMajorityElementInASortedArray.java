@@ -8,6 +8,8 @@ import java.util.Map;
 
 /**
  * 1150. Check If a Number Is Majority Element in a Sorted Array
+ * Easy
+ *
  * Given an array nums sorted in non-decreasing order, and a number target, return True if and only if target is a majority element.
  *
  * A majority element is an element that appears more than N/2 times in an array of length N.
@@ -43,7 +45,6 @@ import java.util.Map;
  * Salesforce
  * Problem Solution
  * 1150-Check-If-a-Number-Is-Majority-Element-in-a-Sorted-Array
- *
  *
  */
 

@@ -8,12 +8,9 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- *  745. Prefix and Suffix Search
+ * 745. Prefix and Suffix Search
  * Hard
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * Design a special dictionary that searches the words in it by a prefix and a suffix.
  *
  * Implement the WordFilter class:

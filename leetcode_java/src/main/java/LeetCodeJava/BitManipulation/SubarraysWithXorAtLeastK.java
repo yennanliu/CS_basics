@@ -6,30 +6,31 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *  3632. Subarrays with XOR at Least K
- *  Hard
+ * 3632. Subarrays with XOR at Least K
+ * Hard
  *
- *  Given an array of positive integers nums of length n and a non-negative
- *  integer k.
+ * Given an array of positive integers nums of length n and a non-negative
+ * integer k.
  *
- *  Return the number of contiguous subarrays whose bitwise XOR of all elements
- *  is greater than or equal to k.
+ * Return the number of contiguous subarrays whose bitwise XOR of all elements
+ * is greater than or equal to k.
  *
- *  Example 1:
- *    Input: nums = [3,1,2,3], k = 2
- *    Output: 6
- *    Explanation: the valid subarrays are [3], [3,1], [3,1,2,3], [1,2], [2] and
- *                 the trailing [3] — 6 in total.
+ * Example 1:
+ * Input: nums = [3,1,2,3], k = 2
+ * Output: 6
+ * Explanation: the valid subarrays are [3], [3,1], [3,1,2,3], [1,2], [2] and
+ * the trailing [3] — 6 in total.
  *
- *  Example 2:
- *    Input: nums = [0,0,0], k = 0
- *    Output: 6
- *    Explanation: every contiguous subarray yields XOR = 0, which meets k = 0.
+ * Example 2:
+ * Input: nums = [0,0,0], k = 0
+ * Output: 6
+ * Explanation: every contiguous subarray yields XOR = 0, which meets k = 0.
  *
- *  Constraints:
- *    1 <= nums.length <= 10^5
- *    0 <= nums[i] <= 10^9
- *    0 <= k <= 10^9
+ * Constraints:
+ * 1 <= nums.length <= 10^5
+ * 0 <= nums[i] <= 10^9
+ * 0 <= k <= 10^9
+ *
  */
 public class SubarraysWithXorAtLeastK {
 

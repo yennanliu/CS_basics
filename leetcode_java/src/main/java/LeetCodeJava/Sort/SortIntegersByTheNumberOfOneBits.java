@@ -5,29 +5,30 @@ package LeetCodeJava.Sort;
 import java.util.Arrays;
 
 /**
- *  1356. Sort Integers by The Number of 1 Bits
- *  Easy
+ * 1356. Sort Integers by The Number of 1 Bits
+ * Easy
  *
- *  You are given an integer array arr. Sort the integers in the array in
- *  ascending order by the number of 1's in their binary representation and in
- *  case of two or more integers have the same number of 1's you have to sort
- *  them in ascending order.
+ * You are given an integer array arr. Sort the integers in the array in
+ * ascending order by the number of 1's in their binary representation and in
+ * case of two or more integers have the same number of 1's you have to sort
+ * them in ascending order.
  *
- *  Return the array after sorting it.
+ * Return the array after sorting it.
  *
- *  Example 1:
- *    Input: arr = [0,1,2,3,4,5,6,7,8]
- *    Output: [0,1,2,4,8,3,5,6,7]
- *    Explanation: [0] has 0 bits, [1,2,4,8] have 1 bit, [3,5,6] have 2 bits,
- *                 [7] has 3 bits.
+ * Example 1:
+ * Input: arr = [0,1,2,3,4,5,6,7,8]
+ * Output: [0,1,2,4,8,3,5,6,7]
+ * Explanation: [0] has 0 bits, [1,2,4,8] have 1 bit, [3,5,6] have 2 bits,
+ * [7] has 3 bits.
  *
- *  Example 2:
- *    Input: arr = [1024,512,256,128,64,32,16,8,4,2,1]
- *    Output: [1,2,4,8,16,32,64,128,256,512,1024]
+ * Example 2:
+ * Input: arr = [1024,512,256,128,64,32,16,8,4,2,1]
+ * Output: [1,2,4,8,16,32,64,128,256,512,1024]
  *
- *  Constraints:
- *    1 <= arr.length <= 500
- *    0 <= arr[i] <= 10^4
+ * Constraints:
+ * 1 <= arr.length <= 500
+ * 0 <= arr[i] <= 10^4
+ *
  */
 public class SortIntegersByTheNumberOfOneBits {
 

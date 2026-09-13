@@ -6,12 +6,8 @@ import java.util.*;
 
 /**
  * 2642. Design Graph With Shortest Path Calculator
- * Solved
  * Hard
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * There is a directed weighted graph that consists of n nodes numbered from 0 to n - 1. The edges of the graph are initially represented by the given array edges where edges[i] = [fromi, toi, edgeCosti] meaning that there is an edge from fromi to toi with the cost edgeCosti.
  *
  * Implement the Graph class:
@@ -48,8 +44,6 @@ import java.util.*;
  * There are no repeated edges and no self-loops in the graph at any point.
  * At most 100 calls will be made for addEdge.
  * At most 100 calls will be made for shortestPath.
- *
- *
  *
  */
 public class DesignGraphWithShortestPathCalculator {

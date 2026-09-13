@@ -9,37 +9,38 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- *  655. Print Binary Tree
- *  Medium
+ * 655. Print Binary Tree
+ * Medium
  *
- *  Given the root of a binary tree, construct a 0-indexed m x n string matrix
- *  res that represents a formatted layout of the tree:
+ * Given the root of a binary tree, construct a 0-indexed m x n string matrix
+ * res that represents a formatted layout of the tree:
  *
- *   - the number of rows m == height + 1 (height = height of the tree)
- *   - the number of columns n == 2^(height+1) - 1
- *   - the root sits at res[0][(n-1)/2]
- *   - a node placed at res[r][c] puts its left child at
- *     res[r+1][c - 2^(height-r-1)] and its right child at
- *     res[r+1][c + 2^(height-r-1)]
- *   - every empty cell holds the empty string ""
+ * - the number of rows m == height + 1 (height = height of the tree)
+ * - the number of columns n == 2^(height+1) - 1
+ * - the root sits at res[0][(n-1)/2]
+ * - a node placed at res[r][c] puts its left child at
+ * res[r+1][c - 2^(height-r-1)] and its right child at
+ * res[r+1][c + 2^(height-r-1)]
+ * - every empty cell holds the empty string ""
  *
- *  Example 1:
+ * Example 1:
  *
- *  Input: root = [1,2]
- *  Output: [["","1",""],["2","",""]]
+ * Input: root = [1,2]
+ * Output: [["","1",""],["2","",""]]
  *
- *  Example 2:
+ * Example 2:
  *
- *  Input: root = [1,2,3,null,4]
- *  Output: [["","","","1","","",""],
- *           ["","2","","","","3",""],
- *           ["","","4","","","",""]]
+ * Input: root = [1,2,3,null,4]
+ * Output: [["","","","1","","",""],
+ * ["","2","","","","3",""],
+ * ["","","4","","","",""]]
  *
- *  Constraints:
+ * Constraints:
  *
- *  The number of nodes in the tree is in the range [1, 2^10].
- *  -99 <= Node.val <= 99
- *  The depth of the tree will be in the range [1, 10].
+ * The number of nodes in the tree is in the range [1, 2^10].
+ * -99 <= Node.val <= 99
+ * The depth of the tree will be in the range [1, 10].
+ *
  */
 public class PrintBinaryTree {
 

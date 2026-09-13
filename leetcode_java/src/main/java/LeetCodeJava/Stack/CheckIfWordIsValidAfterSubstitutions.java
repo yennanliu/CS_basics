@@ -6,31 +6,32 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 /**
- *  1003. Check If Word Is Valid After Substitutions
- *  Medium
+ * 1003. Check If Word Is Valid After Substitutions
+ * Medium
  *
- *  Given a string s, determine if it is valid.
+ * Given a string s, determine if it is valid.
  *
- *  A string s is valid if, starting with an empty string t = "", you can
- *  transform t into s after performing the following operation any number of
- *  times: insert string "abc" into any position in t. More formally, t becomes
- *  tleft + "abc" + tright, where t == tleft + tright. Note that tleft and
- *  tright may be empty.
+ * A string s is valid if, starting with an empty string t = "", you can
+ * transform t into s after performing the following operation any number of
+ * times: insert string "abc" into any position in t. More formally, t becomes
+ * tleft + "abc" + tright, where t == tleft + tright. Note that tleft and
+ * tright may be empty.
  *
- *  Return true if s is a valid string, otherwise, return false.
+ * Return true if s is a valid string, otherwise, return false.
  *
- *  Example 1:
- *    Input: s = "aabcbc"
- *    Output: true
- *    Explanation: "" -> "abc" -> "aabcbc"
+ * Example 1:
+ * Input: s = "aabcbc"
+ * Output: true
+ * Explanation: "" -> "abc" -> "aabcbc"
  *
- *  Example 2:
- *    Input: s = "abccba"
- *    Output: false
+ * Example 2:
+ * Input: s = "abccba"
+ * Output: false
  *
- *  Constraints:
- *    1 <= s.length <= 2 * 10^4
- *    s consists of letters 'a', 'b', and 'c'
+ * Constraints:
+ * 1 <= s.length <= 2 * 10^4
+ * s consists of letters 'a', 'b', and 'c'
+ *
  */
 public class CheckIfWordIsValidAfterSubstitutions {
 

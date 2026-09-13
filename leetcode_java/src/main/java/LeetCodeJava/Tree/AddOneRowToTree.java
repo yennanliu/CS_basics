@@ -5,11 +5,9 @@ package LeetCodeJava.Tree;
 import LeetCodeJava.DataStructure.TreeNode;
 
 /**
- *  623. Add One Row to Tree
+ * 623. Add One Row to Tree
  * Medium
- * Topics
- * premium lock icon
- * Companies
+ *
  * Given the root of a binary tree and two integers val and depth, add a row of nodes with value val at the given depth depth.
  *
  * Note that the root node is at depth 1.
@@ -41,8 +39,6 @@ import LeetCodeJava.DataStructure.TreeNode;
  * -100 <= Node.val <= 100
  * -105 <= val <= 105
  * 1 <= depth <= the depth of tree + 1
- *
- *
  *
  */
 public class AddOneRowToTree {

@@ -2,13 +2,9 @@ package LeetCodeJava.Array;
 
 // https://leetcode.com/problems/watering-plants/description/
 /**
- *  2079. Watering Plants
- * Solved
+ * 2079. Watering Plants
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You want to water n plants in your garden with a watering can. The plants are arranged in a row and are labeled from 0 to n - 1 from left to right where the ith plant is located at x = i. There is a river at x = -1 that you can refill your watering can at.
  *
  * Each plant needs a specific amount of water. You will water the plants in the following way:

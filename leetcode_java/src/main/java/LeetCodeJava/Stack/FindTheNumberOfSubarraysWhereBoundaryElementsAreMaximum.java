@@ -3,30 +3,31 @@ package LeetCodeJava.Stack;
 // https://leetcode.com/problems/find-the-number-of-subarrays-where-boundary-elements-are-maximum/
 
 /**
- *  3113. Find the Number of Subarrays Where Boundary Elements Are Maximum
- *  Hard
+ * 3113. Find the Number of Subarrays Where Boundary Elements Are Maximum
+ * Hard
  *
- *  You are given an array of positive integers nums.
+ * You are given an array of positive integers nums.
  *
- *  Return the number of subarrays of nums, where the first and the last
- *  elements of the subarray are equal to the largest element in the subarray.
+ * Return the number of subarrays of nums, where the first and the last
+ * elements of the subarray are equal to the largest element in the subarray.
  *
- *  Example 1:
- *    Input: nums = [1,4,3,3,2]
- *    Output: 6
- *    Explanation: the 5 length-1 subarrays, plus [3,3].
+ * Example 1:
+ * Input: nums = [1,4,3,3,2]
+ * Output: 6
+ * Explanation: the 5 length-1 subarrays, plus [3,3].
  *
- *  Example 2:
- *    Input: nums = [3,3,3]
- *    Output: 6
+ * Example 2:
+ * Input: nums = [3,3,3]
+ * Output: 6
  *
- *  Example 3:
- *    Input: nums = [1]
- *    Output: 1
+ * Example 3:
+ * Input: nums = [1]
+ * Output: 1
  *
- *  Constraints:
- *    1 <= nums.length <= 10^5
- *    1 <= nums[i] <= 10^9
+ * Constraints:
+ * 1 <= nums.length <= 10^5
+ * 1 <= nums[i] <= 10^9
+ *
  */
 public class FindTheNumberOfSubarraysWhereBoundaryElementsAreMaximum {
 

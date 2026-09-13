@@ -3,46 +3,47 @@ package LeetCodeJava.Design;
 // https://leetcode.com/problems/design-memory-allocator/
 
 /**
- *  2502. Design Memory Allocator
- *  Medium
+ * 2502. Design Memory Allocator
+ * Medium
  *
- *  You are given an integer n representing the size of a 0-indexed memory array. All
- *  memory units are initially free.
+ * You are given an integer n representing the size of a 0-indexed memory array. All
+ * memory units are initially free.
  *
- *  You have a memory allocator with the following functionalities:
- *   1. Allocate a block of size consecutive free memory units and assign it the id mID.
- *   2. Free all memory units with the given id mID.
+ * You have a memory allocator with the following functionalities:
+ * 1. Allocate a block of size consecutive free memory units and assign it the id mID.
+ * 2. Free all memory units with the given id mID.
  *
- *  Note that multiple blocks can be allocated to the same mID, and you should free all
- *  the memory units with mID even if they were allocated in different blocks.
+ * Note that multiple blocks can be allocated to the same mID, and you should free all
+ * the memory units with mID even if they were allocated in different blocks.
  *
- *  Implement the Allocator class:
+ * Implement the Allocator class:
  *
- *   - Allocator(int n) Initializes an Allocator object with a memory array of size n.
- *   - int allocate(int size, int mID) Find the LEFTMOST block of size consecutive free
- *     memory units and allocate it with the id mID. Return the block's first index. If
- *     such a block does not exist, return -1.
- *   - int freeMemory(int mID) Free all memory units with the id mID. Return the number
- *     of memory units you have freed.
+ * - Allocator(int n) Initializes an Allocator object with a memory array of size n.
+ * - int allocate(int size, int mID) Find the LEFTMOST block of size consecutive free
+ * memory units and allocate it with the id mID. Return the block's first index. If
+ * such a block does not exist, return -1.
+ * - int freeMemory(int mID) Free all memory units with the id mID. Return the number
+ * of memory units you have freed.
  *
- *  Example 1:
- *    Input
- *      ["Allocator","allocate","allocate","allocate","freeMemory","allocate","allocate",
- *       "allocate","freeMemory","allocate","freeMemory"]
- *      [[10],[1,1],[1,2],[1,3],[2],[3,4],[1,1],[1,1],[1],[10,2],[7]]
- *    Output
- *      [null,0,1,2,1,3,1,6,3,-1,0]
- *    Explanation
- *      allocate(1,1) -> 0, allocate(1,2) -> 1, allocate(1,3) -> 2  => [1,2,3,_,...]
- *      freeMemory(2) -> 1                                          => [1,_,3,_,...]
- *      allocate(3,4) -> 3, allocate(1,1) -> 1, allocate(1,1) -> 6
- *      freeMemory(1) -> 3
- *      allocate(10,2) -> -1 (no 10 consecutive free units)
- *      freeMemory(7)  -> 0  (nothing owns mID 7)
+ * Example 1:
+ * Input
+ * ["Allocator","allocate","allocate","allocate","freeMemory","allocate","allocate",
+ * "allocate","freeMemory","allocate","freeMemory"]
+ * [[10],[1,1],[1,2],[1,3],[2],[3,4],[1,1],[1,1],[1],[10,2],[7]]
+ * Output
+ * [null,0,1,2,1,3,1,6,3,-1,0]
+ * Explanation
+ * allocate(1,1) -> 0, allocate(1,2) -> 1, allocate(1,3) -> 2  => [1,2,3,_,...]
+ * freeMemory(2) -> 1                                          => [1,_,3,_,...]
+ * allocate(3,4) -> 3, allocate(1,1) -> 1, allocate(1,1) -> 6
+ * freeMemory(1) -> 3
+ * allocate(10,2) -> -1 (no 10 consecutive free units)
+ * freeMemory(7)  -> 0  (nothing owns mID 7)
  *
- *  Constraints:
- *    1 <= n, size, mID <= 1000
- *    At most 1000 calls will be made to allocate and freeMemory.
+ * Constraints:
+ * 1 <= n, size, mID <= 1000
+ * At most 1000 calls will be made to allocate and freeMemory.
+ *
  */
 public class DesignMemoryAllocator {
 

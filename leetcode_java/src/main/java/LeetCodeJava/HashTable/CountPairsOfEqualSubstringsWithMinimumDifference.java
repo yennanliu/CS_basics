@@ -10,7 +10,9 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- *  1794 - Count Pairs of Equal Substrings With Minimum Difference
+ * 1794. Count Pairs of Equal Substrings With Minimum Difference
+ * Medium
+ *
  * Posted on May 16, 2021 · 4 minute read
  * Welcome to Subscribe On Youtube
  *
@@ -49,7 +51,6 @@ import java.util.Set;
  *
  * 1 <= firstString.length, secondString.length <= 2 * 10^5
  * Both strings consist only of lowercase English letters.
- *
  *
  */
 public class CountPairsOfEqualSubstringsWithMinimumDifference {

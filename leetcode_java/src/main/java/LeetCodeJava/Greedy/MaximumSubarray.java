@@ -3,16 +3,14 @@ package LeetCodeJava.Greedy;
 // https://leetcode.com/problems/maximum-subarray/
 /**
  * 53. Maximum Subarray
- * Solved
  * Medium
- * Topics
- * Companies
+ *
  * Given an integer array nums, find the
  * subarray
- *  with the largest sum, and return its sum.
+ * with the largest sum, and return its sum.
  *
  *
- *  -> A subarray is a contiguous non-empty sequence of elements within an array.
+ * -> A subarray is a contiguous non-empty sequence of elements within an array.
  *
  *
  *
@@ -40,7 +38,6 @@ package LeetCodeJava.Greedy;
  *
  *
  * Follow up: If you have figured out the O(n) solution, try coding another solution using the divide and conquer approach, which is more subtle.
- *
  *
  */
 public class MaximumSubarray {

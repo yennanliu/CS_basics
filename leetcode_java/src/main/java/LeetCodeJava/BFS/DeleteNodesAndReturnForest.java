@@ -3,11 +3,8 @@ package LeetCodeJava.BFS;
 // https://leetcode.com/problems/delete-nodes-and-return-forest/description/
 /**
  * 1110. Delete Nodes And Return Forest
- * Solved
  * Medium
- * Topics
- * premium lock icon
- * Companies
+ *
  * Given the root of a binary tree, each node in the tree has a distinct value.
  *
  * After deleting all nodes with a value in to_delete, we are left with a forest (a disjoint union of trees).
@@ -33,7 +30,6 @@ package LeetCodeJava.BFS;
  * Each node has a distinct value between 1 and 1000.
  * to_delete.length <= 1000
  * to_delete contains distinct values between 1 and 1000.
- *
  *
  */
 import LeetCodeJava.DataStructure.TreeNode;
@@ -480,7 +476,7 @@ public class DeleteNodesAndReturnForest {
         return forest;
     }
 
-    // V2_1
+    // V2-_1
     // IDEA :  Recursion (Postorder Traversal)
     // https://leetcode.com/problems/delete-nodes-and-return-forest/editorial/
     /**
@@ -534,7 +530,7 @@ public class DeleteNodesAndReturnForest {
 
 
 
-    // V2
+    // V2-1
 
 
 

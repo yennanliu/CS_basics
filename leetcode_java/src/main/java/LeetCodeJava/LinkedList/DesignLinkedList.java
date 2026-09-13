@@ -7,6 +7,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * 707. Design Linked List
+ * Medium
+ *
  * Your MyLinkedList object will be instantiated and called as such:
  * MyLinkedList obj = new MyLinkedList();
  * int param_1 = obj.get(index);
@@ -14,6 +17,7 @@ import java.util.List;
  * obj.addAtTail(val);
  * obj.addAtIndex(index,val);
  * obj.deleteAtIndex(index);
+ *
  */
 
 public class DesignLinkedList {

@@ -5,37 +5,38 @@ package LeetCodeJava.Tree;
 import java.util.Arrays;
 
 /**
- *  3553. Minimum Weighted Subgraph With the Required Paths II
- *  Hard
+ * 3553. Minimum Weighted Subgraph With the Required Paths II
+ * Hard
  *
- *  You are given an undirected weighted tree with n nodes, numbered from 0 to
- *  n - 1. It is represented by a 2D integer array edges of length n - 1, where
- *  edges[i] = [u_i, v_i, w_i] indicates that there is an edge between nodes
- *  u_i and v_i with weight w_i.
+ * You are given an undirected weighted tree with n nodes, numbered from 0 to
+ * n - 1. It is represented by a 2D integer array edges of length n - 1, where
+ * edges[i] = [u_i, v_i, w_i] indicates that there is an edge between nodes
+ * u_i and v_i with weight w_i.
  *
- *  Additionally, you are given a 2D integer array queries, where
- *  queries[j] = [src1_j, src2_j, dest_j].
+ * Additionally, you are given a 2D integer array queries, where
+ * queries[j] = [src1_j, src2_j, dest_j].
  *
- *  Return an array answer of length equal to queries.length, where answer[j]
- *  is the minimum total weight of a subtree such that it is possible to reach
- *  dest_j from both src1_j and src2_j using edges in this subtree.
+ * Return an array answer of length equal to queries.length, where answer[j]
+ * is the minimum total weight of a subtree such that it is possible to reach
+ * dest_j from both src1_j and src2_j using edges in this subtree.
  *
- *  Example 1:
- *    Input: edges = [[0,1,2],[1,2,3],[1,3,5],[1,4,4],[2,5,6]],
- *           queries = [[2,3,4],[0,2,5]]
- *    Output: [12,11]
- *    Explanation: answer[0] = 3 + 5 + 4 = 12; answer[1] = 2 + 3 + 6 = 11.
+ * Example 1:
+ * Input: edges = [[0,1,2],[1,2,3],[1,3,5],[1,4,4],[2,5,6]],
+ * queries = [[2,3,4],[0,2,5]]
+ * Output: [12,11]
+ * Explanation: answer[0] = 3 + 5 + 4 = 12; answer[1] = 2 + 3 + 6 = 11.
  *
- *  Example 2:
- *    Input: edges = [[1,0,8],[0,2,7]], queries = [[0,1,2]]
- *    Output: [15]
+ * Example 2:
+ * Input: edges = [[1,0,8],[0,2,7]], queries = [[0,1,2]]
+ * Output: [15]
  *
- *  Constraints:
- *    3 <= n <= 10^5
- *    edges[i].length == 3, 1 <= w_i <= 10^4
- *    1 <= queries.length <= 10^5
- *    queries[j].length == 3, src1_j, src2_j, dest_j pairwise distinct
- *    edges represents a valid tree.
+ * Constraints:
+ * 3 <= n <= 10^5
+ * edges[i].length == 3, 1 <= w_i <= 10^4
+ * 1 <= queries.length <= 10^5
+ * queries[j].length == 3, src1_j, src2_j, dest_j pairwise distinct
+ * edges represents a valid tree.
+ *
  */
 public class MinimumWeightedSubgraphWithTheRequiredPathsII {
 

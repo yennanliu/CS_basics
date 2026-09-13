@@ -6,40 +6,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  1352. Product of the Last K Numbers
- *  Medium
+ * 1352. Product of the Last K Numbers
+ * Medium
  *
- *  Design an algorithm that accepts a stream of integers and retrieves the product
- *  of the last k integers of the stream.
+ * Design an algorithm that accepts a stream of integers and retrieves the product
+ * of the last k integers of the stream.
  *
- *  Implement the ProductOfNumbers class:
- *    ProductOfNumbers() Initializes the object with an empty stream.
- *    void add(int num) Appends the integer num to the stream.
- *    int getProduct(int k) Returns the product of the last k numbers in the current
- *      list. You can assume that the current list always has at least k numbers.
+ * Implement the ProductOfNumbers class:
+ * ProductOfNumbers() Initializes the object with an empty stream.
+ * void add(int num) Appends the integer num to the stream.
+ * int getProduct(int k) Returns the product of the last k numbers in the current
+ * list. You can assume that the current list always has at least k numbers.
  *
- *  The test cases are generated so that, at any time, the product of any contiguous
- *  sequence of numbers will fit into a single 32-bit integer without overflowing.
+ * The test cases are generated so that, at any time, the product of any contiguous
+ * sequence of numbers will fit into a single 32-bit integer without overflowing.
  *
- *  Example 1:
- *    Input
- *      ["ProductOfNumbers","add","add","add","add","add","getProduct","getProduct",
- *       "getProduct","add","getProduct"]
- *      [[],[3],[0],[2],[5],[4],[2],[3],[4],[8],[2]]
- *    Output
- *      [null,null,null,null,null,null,20,40,0,null,32]
- *    Explanation
- *      stream = [3,0,2,5,4]
- *      getProduct(2) -> 5*4  = 20
- *      getProduct(3) -> 2*5*4 = 40
- *      getProduct(4) -> 0*2*5*4 = 0
- *      add(8); getProduct(2) -> 4*8 = 32
+ * Example 1:
+ * Input
+ * ["ProductOfNumbers","add","add","add","add","add","getProduct","getProduct",
+ * "getProduct","add","getProduct"]
+ * [[],[3],[0],[2],[5],[4],[2],[3],[4],[8],[2]]
+ * Output
+ * [null,null,null,null,null,null,20,40,0,null,32]
+ * Explanation
+ * stream = [3,0,2,5,4]
+ * getProduct(2) -> 5*4  = 20
+ * getProduct(3) -> 2*5*4 = 40
+ * getProduct(4) -> 0*2*5*4 = 0
+ * add(8); getProduct(2) -> 4*8 = 32
  *
- *  Constraints:
- *    0 <= num <= 100
- *    1 <= k <= 4 * 10^4
- *    At most 4 * 10^4 calls will be made to add and getProduct.
- *    The product of the stream at any point in time will fit in a 32-bit integer.
+ * Constraints:
+ * 0 <= num <= 100
+ * 1 <= k <= 4 * 10^4
+ * At most 4 * 10^4 calls will be made to add and getProduct.
+ * The product of the stream at any point in time will fit in a 32-bit integer.
+ *
  */
 public class ProductOfTheLastKNumbers {
 

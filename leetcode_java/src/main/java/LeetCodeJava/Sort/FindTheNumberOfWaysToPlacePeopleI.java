@@ -5,37 +5,38 @@ package LeetCodeJava.Sort;
 import java.util.Arrays;
 
 /**
- *  3025. Find the Number of Ways to Place People I
- *  Medium
+ * 3025. Find the Number of Ways to Place People I
+ * Medium
  *
- *  You are given a 2D array points of size n x 2 representing integer coordinates
- *  of some points on a 2D-plane, where points[i] = [xi, yi].
+ * You are given a 2D array points of size n x 2 representing integer coordinates
+ * of some points on a 2D-plane, where points[i] = [xi, yi].
  *
- *  You have to place n people, including Alice and Bob, at these points such that
- *  there is exactly one person at every point. Alice wants to be alone with Bob,
- *  so Alice will build a rectangular fence with Alice's position as the upper left
- *  corner and Bob's position as the lower right corner of the fence (the fence
- *  might not enclose any area, i.e. it can be a line). If any person other than
- *  Alice and Bob is either inside the fence or on the fence, Alice will be sad.
+ * You have to place n people, including Alice and Bob, at these points such that
+ * there is exactly one person at every point. Alice wants to be alone with Bob,
+ * so Alice will build a rectangular fence with Alice's position as the upper left
+ * corner and Bob's position as the lower right corner of the fence (the fence
+ * might not enclose any area, i.e. it can be a line). If any person other than
+ * Alice and Bob is either inside the fence or on the fence, Alice will be sad.
  *
- *  Return the number of pairs of points where you can place Alice and Bob, such
- *  that Alice does not become sad on building the fence.
+ * Return the number of pairs of points where you can place Alice and Bob, such
+ * that Alice does not become sad on building the fence.
  *
- *  Example 1:
- *    Input: points = [[1,1],[2,2],[3,3]]
- *    Output: 0
+ * Example 1:
+ * Input: points = [[1,1],[2,2],[3,3]]
+ * Output: 0
  *
- *  Example 2:
- *    Input: points = [[6,2],[4,4],[2,6]]
- *    Output: 2
- *    Explanation: Alice (4,4) + Bob (6,2), and Alice (2,6) + Bob (4,4). Alice
- *                 (2,6) + Bob (6,2) fails because (4,4) is inside the fence.
+ * Example 2:
+ * Input: points = [[6,2],[4,4],[2,6]]
+ * Output: 2
+ * Explanation: Alice (4,4) + Bob (6,2), and Alice (2,6) + Bob (4,4). Alice
+ * (2,6) + Bob (6,2) fails because (4,4) is inside the fence.
  *
- *  Constraints:
- *    2 <= n <= 50
- *    points[i].length == 2
- *    0 <= points[i][0], points[i][1] <= 50
- *    All points[i] are distinct.
+ * Constraints:
+ * 2 <= n <= 50
+ * points[i].length == 2
+ * 0 <= points[i][0], points[i][1] <= 50
+ * All points[i] are distinct.
+ *
  */
 public class FindTheNumberOfWaysToPlacePeopleI {
 

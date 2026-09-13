@@ -7,12 +7,9 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 /**
- *  1765. Map of Highest Peak
+ * 1765. Map of Highest Peak
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You are given an integer matrix isWater of size m x n that represents a map of land and water cells.
  *
  * If isWater[i][j] == 0, cell (i, j) is a land cell.
@@ -56,7 +53,6 @@ import java.util.Queue;
  *
  *
  * Note: This question is the same as 542: https://leetcode.com/problems/01-matrix/
- *
  *
  */
 public class MapOfHighestPeak {

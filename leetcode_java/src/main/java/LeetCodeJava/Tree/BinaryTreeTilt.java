@@ -5,31 +5,32 @@ package LeetCodeJava.Tree;
 import LeetCodeJava.DataStructure.TreeNode;
 
 /**
- *  563. Binary Tree Tilt
- *  Easy
+ * 563. Binary Tree Tilt
+ * Easy
  *
- *  Given the root of a binary tree, return the sum of every tree node's tilt.
+ * Given the root of a binary tree, return the sum of every tree node's tilt.
  *
- *  The tilt of a tree node is the absolute difference between the sum of all
- *  left subtree node values and all right subtree node values. If a node does
- *  not have a left child, the sum of the left subtree node values is treated
- *  as 0 (the same for the right child).
+ * The tilt of a tree node is the absolute difference between the sum of all
+ * left subtree node values and all right subtree node values. If a node does
+ * not have a left child, the sum of the left subtree node values is treated
+ * as 0 (the same for the right child).
  *
- *  Example 1:
+ * Example 1:
  *
- *  Input: root = [1,2,3]
- *  Output: 1
- *  Explanation: tilt of node 2 = 0, node 3 = 0, node 1 = |2-3| = 1.
+ * Input: root = [1,2,3]
+ * Output: 1
+ * Explanation: tilt of node 2 = 0, node 3 = 0, node 1 = |2-3| = 1.
  *
- *  Example 2:
+ * Example 2:
  *
- *  Input: root = [4,2,9,3,5,null,7]
- *  Output: 15
+ * Input: root = [4,2,9,3,5,null,7]
+ * Output: 15
  *
- *  Constraints:
+ * Constraints:
  *
- *  The number of nodes in the tree is in the range [0, 10^4].
- *  -1000 <= Node.val <= 1000
+ * The number of nodes in the tree is in the range [0, 10^4].
+ * -1000 <= Node.val <= 1000
+ *
  */
 public class BinaryTreeTilt {
 

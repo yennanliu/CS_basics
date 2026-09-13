@@ -7,10 +7,7 @@ import java.util.*;
 /**
  * 2646. Minimize the Total Price of the Trips
  * Hard
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * There exists an undirected and unrooted tree with n nodes indexed from 0 to n - 1. You are given the integer n and a 2D integer array edges of length n - 1, where edges[i] = [ai, bi] indicates that there is an edge between nodes ai and bi in the tree.
  *
  * Each node has an associated price. You are given an integer array price, where price[i] is the price of the ith node.

@@ -6,33 +6,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  735. Asteroid Collision
- *  Medium
+ * 735. Asteroid Collision
+ * Medium
  *
- *  We are given an array asteroids of integers representing asteroids in a row.
- *  For each asteroid, the absolute value represents its size, and the sign represents
- *  its direction (positive = right, negative = left). Each asteroid moves at the same speed.
+ * We are given an array asteroids of integers representing asteroids in a row.
+ * For each asteroid, the absolute value represents its size, and the sign represents
+ * its direction (positive = right, negative = left). Each asteroid moves at the same speed.
  *
- *  Find out the state of the asteroids after all collisions. If two asteroids meet, the
- *  smaller one explodes. If both are the same size, both explode. Two asteroids moving
- *  in the same direction never meet.
+ * Find out the state of the asteroids after all collisions. If two asteroids meet, the
+ * smaller one explodes. If both are the same size, both explode. Two asteroids moving
+ * in the same direction never meet.
  *
- *  Example 1:
- *  Input: asteroids = [5,10,-5]
- *  Output: [5,10]
+ * Example 1:
+ * Input: asteroids = [5,10,-5]
+ * Output: [5,10]
  *
- *  Example 2:
- *  Input: asteroids = [8,-8]
- *  Output: []
+ * Example 2:
+ * Input: asteroids = [8,-8]
+ * Output: []
  *
- *  Example 3:
- *  Input: asteroids = [10,2,-5]
- *  Output: [10]
+ * Example 3:
+ * Input: asteroids = [10,2,-5]
+ * Output: [10]
  *
- *  Constraints:
- *  2 <= asteroids.length <= 10^4
- *  -1000 <= asteroids[i] <= 1000
- *  asteroids[i] != 0
+ * Constraints:
+ * 2 <= asteroids.length <= 10^4
+ * -1000 <= asteroids[i] <= 1000
+ * asteroids[i] != 0
+ *
  */
 public class AsteroidCollision {
 

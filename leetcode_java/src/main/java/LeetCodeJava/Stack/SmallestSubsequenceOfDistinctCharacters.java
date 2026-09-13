@@ -5,12 +5,9 @@ package LeetCodeJava.Stack;
 import java.util.Stack;
 
 /**
- *  1081. Smallest Subsequence of Distinct Characters
+ * 1081. Smallest Subsequence of Distinct Characters
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * Given a string s, return the lexicographically smallest subsequence of s that contains all the distinct characters of s exactly once.
  *
  *
@@ -32,7 +29,6 @@ import java.util.Stack;
  *
  *
  * Note: This question is the same as 316: https://leetcode.com/problems/remove-duplicate-letters/
- *
  *
  */
 public class SmallestSubsequenceOfDistinctCharacters {

@@ -3,32 +3,33 @@ package LeetCodeJava.String;
 // https://leetcode.com/problems/decoded-string-at-index/
 
 /**
- *  880. Decoded String at Index
- *  Medium
+ * 880. Decoded String at Index
+ * Medium
  *
- *  You are given an encoded string s. To decode the string to a tape, the
- *  encoded string is read one character at a time:
- *   - If the character read is a letter, that letter is written onto the tape.
- *   - If the character read is a digit d, the entire current tape is
- *     repeatedly written d - 1 more times in total.
+ * You are given an encoded string s. To decode the string to a tape, the
+ * encoded string is read one character at a time:
+ * - If the character read is a letter, that letter is written onto the tape.
+ * - If the character read is a digit d, the entire current tape is
+ * repeatedly written d - 1 more times in total.
  *
- *  Given an integer k, return the k-th letter (1-indexed) in the decoded
- *  string.
+ * Given an integer k, return the k-th letter (1-indexed) in the decoded
+ * string.
  *
- *  Example 1:
- *  Input: s = "leet2code3", k = 10
- *  Output: "o"
- *  Explanation: The decoded string is
- *  "leetleetcodeleetleetcodeleetleetcode", the 10th letter is "o".
+ * Example 1:
+ * Input: s = "leet2code3", k = 10
+ * Output: "o"
+ * Explanation: The decoded string is
+ * "leetleetcodeleetleetcodeleetleetcode", the 10th letter is "o".
  *
- *  Example 2:
- *  Input: s = "ha22", k = 5
- *  Output: "h"
+ * Example 2:
+ * Input: s = "ha22", k = 5
+ * Output: "h"
  *
- *  Constraints:
- *   - 2 <= s.length <= 100
- *   - s consists of lowercase English letters and digits 2 through 9.
- *   - The decoded string is guaranteed to have less than 2^63 letters.
+ * Constraints:
+ * - 2 <= s.length <= 100
+ * - s consists of lowercase English letters and digits 2 through 9.
+ * - The decoded string is guaranteed to have less than 2^63 letters.
+ *
  */
 public class DecodedStringAtIndex {
 

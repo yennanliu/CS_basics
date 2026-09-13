@@ -5,10 +5,7 @@ package LeetCodeJava.SlideWindow;
 /**
  * 1004. Max Consecutive Ones III
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * Given a binary array nums and an integer k, return the maximum number of consecutive 1's in the array if you can flip at most k 0's.
  *
  *
@@ -32,16 +29,6 @@ package LeetCodeJava.SlideWindow;
  * 1 <= nums.length <= 105
  * nums[i] is either 0 or 1.
  * 0 <= k <= nums.length
- *
- * Seen this question in a real interview before?
- * 1/5
- * Yes
- * No
- * Accepted
- * 1,144,839/1.7M
- * Acceptance Rate
- * 66.6%
- *
  *
  */
 public class MaxConsecutiveOnes3 {

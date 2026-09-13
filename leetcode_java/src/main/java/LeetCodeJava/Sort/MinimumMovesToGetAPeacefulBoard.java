@@ -5,33 +5,35 @@ package LeetCodeJava.Sort;
 import java.util.Arrays;
 
 /**
- *  3189. Minimum Moves to Get a Peaceful Board
- *  Medium
- *  (premium / locked problem)
+ * 3189. Minimum Moves to Get a Peaceful Board
+ * Medium
  *
- *  Given a 2D array rooks of length n, where rooks[i] = [x_i, y_i] indicates the
- *  position of a rook on an n x n chess board. Your task is to move the rooks one
- *  cell at a time vertically or horizontally (to an adjacent cell) such that the
- *  board becomes peaceful.
+ * (premium / locked problem)
  *
- *  A board is peaceful if there is exactly one rook in each row and each column.
+ * Given a 2D array rooks of length n, where rooks[i] = [x_i, y_i] indicates the
+ * position of a rook on an n x n chess board. Your task is to move the rooks one
+ * cell at a time vertically or horizontally (to an adjacent cell) such that the
+ * board becomes peaceful.
  *
- *  Return the minimum number of moves required to get a peaceful board.
+ * A board is peaceful if there is exactly one rook in each row and each column.
  *
- *  Note that at no point can there be two rooks in the same cell.
+ * Return the minimum number of moves required to get a peaceful board.
  *
- *  Example 1:
- *    Input: rooks = [[0,0],[1,0],[1,1]]
- *    Output: 3
+ * Note that at no point can there be two rooks in the same cell.
  *
- *  Example 2:
- *    Input: rooks = [[0,0],[0,1],[0,2],[0,3]]
- *    Output: 6
+ * Example 1:
+ * Input: rooks = [[0,0],[1,0],[1,1]]
+ * Output: 3
  *
- *  Constraints:
- *    1 <= n == rooks.length <= 500
- *    0 <= x_i, y_i <= n - 1
- *    The input is generated such that there are no 2 rooks in the same cell.
+ * Example 2:
+ * Input: rooks = [[0,0],[0,1],[0,2],[0,3]]
+ * Output: 6
+ *
+ * Constraints:
+ * 1 <= n == rooks.length <= 500
+ * 0 <= x_i, y_i <= n - 1
+ * The input is generated such that there are no 2 rooks in the same cell.
+ *
  */
 public class MinimumMovesToGetAPeacefulBoard {
 

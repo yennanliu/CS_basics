@@ -12,7 +12,7 @@ import java.util.List;
  * A magical string s consists of only '1' and '2' and obeys the following rule:
  *
  * - Concatenating the sequence of lengths of its consecutive groups of identical
- *   characters '1' and '2' generates the string s itself.
+ * characters '1' and '2' generates the string s itself.
  *
  * The first few elements of s is s = "1221121221221121122......". If we group the
  * consecutive 1's and 2's in s, it will be "1 22 11 2 1 22 1 22 11 2 11 22 ......"

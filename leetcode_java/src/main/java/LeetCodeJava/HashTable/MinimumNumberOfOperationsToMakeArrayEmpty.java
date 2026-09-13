@@ -7,15 +7,10 @@ import java.util.Map;
 
 /**
  * 2870. Minimum Number of Operations to Make Array Empty
+ * Medium
  *
  * 2244: Minimum Rounds to Complete All Tasks.
  *
- *
- * Solved
- * Medium
- * Topics
- * premium lock icon
- * Companies
  * You are given a 0-indexed array nums consisting of positive integers.
  *
  * There are two types of operations that you can apply on the array any number of times:
@@ -50,7 +45,6 @@ import java.util.Map;
  *
  *
  * Note: This question is the same as 2244: Minimum Rounds to Complete All Tasks.
- *
  *
  */
 public class MinimumNumberOfOperationsToMakeArrayEmpty {

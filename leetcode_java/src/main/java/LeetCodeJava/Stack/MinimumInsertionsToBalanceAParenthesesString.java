@@ -3,35 +3,36 @@ package LeetCodeJava.Stack;
 // https://leetcode.com/problems/minimum-insertions-to-balance-a-parentheses-string/
 
 /**
- *  1541. Minimum Insertions to Balance a Parentheses String
- *  Medium
+ * 1541. Minimum Insertions to Balance a Parentheses String
+ * Medium
  *
- *  Given a parentheses string s containing only the characters '(' and ')'.
- *  A parentheses string is balanced if:
- *    - any left parenthesis '(' must have a corresponding two consecutive
- *      right parenthesis '))'
- *    - left parenthesis '(' must go before the corresponding '))'
+ * Given a parentheses string s containing only the characters '(' and ')'.
+ * A parentheses string is balanced if:
+ * - any left parenthesis '(' must have a corresponding two consecutive
+ * right parenthesis '))'
+ * - left parenthesis '(' must go before the corresponding '))'
  *
- *  In other words, we treat '(' as an opening parenthesis and '))' as a
- *  closing parenthesis. For example "())", "())(())))" and "(())())))" are
- *  balanced, while ")()", "()))" and "(()))" are not.
+ * In other words, we treat '(' as an opening parenthesis and '))' as a
+ * closing parenthesis. For example "())", "())(())))" and "(())())))" are
+ * balanced, while ")()", "()))" and "(()))" are not.
  *
- *  You can insert the characters '(' and ')' at any position of the string to
- *  balance it if needed. Return the minimum number of insertions needed.
+ * You can insert the characters '(' and ')' at any position of the string to
+ * balance it if needed. Return the minimum number of insertions needed.
  *
- *  Example 1:
- *    Input: s = "(()))"
- *    Output: 1
- *    Explanation: add one ')' at the end -> "(())))" which is balanced.
+ * Example 1:
+ * Input: s = "(()))"
+ * Output: 1
+ * Explanation: add one ')' at the end -> "(())))" which is balanced.
  *
- *  Example 2:
- *    Input: s = "))())("
- *    Output: 3
- *    Explanation: add '(' to match the first '))', add '))' for the last '('.
+ * Example 2:
+ * Input: s = "))())("
+ * Output: 3
+ * Explanation: add '(' to match the first '))', add '))' for the last '('.
  *
- *  Constraints:
- *    1 <= s.length <= 10^5
- *    s consists of '(' and ')' only.
+ * Constraints:
+ * 1 <= s.length <= 10^5
+ * s consists of '(' and ')' only.
+ *
  */
 public class MinimumInsertionsToBalanceAParenthesesString {
 

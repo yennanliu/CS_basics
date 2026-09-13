@@ -3,35 +3,36 @@ package LeetCodeJava.DFS;
 // https://leetcode.com/problems/number-of-nodes-with-value-one/
 
 /**
- *  2445. Number of Nodes With Value One
- *  Medium
+ * 2445. Number of Nodes With Value One
+ * Medium
  *
- *  There is an undirected connected tree with n nodes labeled from 1 to n and
- *  n - 1 edges. You are given the integer n. The parent node of a node with a
- *  label v is the node with the label floor(v / 2). The root of the tree is the
- *  node with the label 1.
+ * There is an undirected connected tree with n nodes labeled from 1 to n and
+ * n - 1 edges. You are given the integer n. The parent node of a node with a
+ * label v is the node with the label floor(v / 2). The root of the tree is the
+ * node with the label 1.
  *
- *  You are also given an integer array queries. Initially, every node has a
- *  value 0 on it. For each query queries[i], you should flip all values in the
- *  subtree of the node with the label queries[i].
+ * You are also given an integer array queries. Initially, every node has a
+ * value 0 on it. For each query queries[i], you should flip all values in the
+ * subtree of the node with the label queries[i].
  *
- *  Return the total number of nodes with the value 1 after processing all the
- *  queries.
+ * Return the total number of nodes with the value 1 after processing all the
+ * queries.
  *
- *  Example 1:
- *    Input: n = 5, queries = [1,2,5]
- *    Output: 3
- *    Explanation: nodes 1, 3 and 5 end up with value 1.
+ * Example 1:
+ * Input: n = 5, queries = [1,2,5]
+ * Output: 3
+ * Explanation: nodes 1, 3 and 5 end up with value 1.
  *
- *  Example 2:
- *    Input: n = 3, queries = [2,3,3]
- *    Output: 1
- *    Explanation: only node 2 ends up with value 1.
+ * Example 2:
+ * Input: n = 3, queries = [2,3,3]
+ * Output: 1
+ * Explanation: only node 2 ends up with value 1.
  *
- *  Constraints:
- *    1 <= n <= 10^5
- *    1 <= queries.length <= 10^5
- *    1 <= queries[i] <= n
+ * Constraints:
+ * 1 <= n <= 10^5
+ * 1 <= queries.length <= 10^5
+ * 1 <= queries[i] <= n
+ *
  */
 public class NumberOfNodesWithValueOne {
 

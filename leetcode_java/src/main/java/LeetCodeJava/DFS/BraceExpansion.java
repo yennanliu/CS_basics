@@ -7,6 +7,8 @@ import java.util.*;
 
 /**
  * 1087. Brace Expansion
+ * Medium
+ *
  * Description
  * You are given a string s representing a list of words. Each letter in the word has one or more options.
  *

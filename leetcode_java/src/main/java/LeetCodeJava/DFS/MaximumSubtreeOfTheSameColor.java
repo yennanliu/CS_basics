@@ -7,39 +7,40 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- *  3004. Maximum Subtree of the Same Color
- *  Medium
+ * 3004. Maximum Subtree of the Same Color
+ * Medium
  *
- *  You are given a 2D integer array edges representing a tree with n nodes,
- *  numbered from 0 to n - 1, rooted at node 0, where edges[i] = [ui, vi] means
- *  there is an edge between the nodes vi and ui.
+ * You are given a 2D integer array edges representing a tree with n nodes,
+ * numbered from 0 to n - 1, rooted at node 0, where edges[i] = [ui, vi] means
+ * there is an edge between the nodes vi and ui.
  *
- *  You are also given a 0-indexed integer array colors of size n, where
- *  colors[i] is the color assigned to node i.
+ * You are also given a 0-indexed integer array colors of size n, where
+ * colors[i] is the color assigned to node i.
  *
- *  We want to find a node v such that every node in the subtree of v has the
- *  same color. Return the size of such subtree with the maximum number of nodes
- *  possible.
+ * We want to find a node v such that every node in the subtree of v has the
+ * same color. Return the size of such subtree with the maximum number of nodes
+ * possible.
  *
- *  Example 1:
- *    Input: edges = [[0,1],[0,2],[0,3]], colors = [1,1,2,3]
- *    Output: 1
- *    Explanation: The subtree rooted at node 0 has children with different
- *                 colors; every other subtree has size 1.
+ * Example 1:
+ * Input: edges = [[0,1],[0,2],[0,3]], colors = [1,1,2,3]
+ * Output: 1
+ * Explanation: The subtree rooted at node 0 has children with different
+ * colors; every other subtree has size 1.
  *
- *  Example 3:
- *    Input: edges = [[0,1],[0,2],[2,3],[2,4]], colors = [1,2,3,3,3]
- *    Output: 3
- *    Explanation: The subtree rooted at node 2 is uniform and has size 3.
+ * Example 3:
+ * Input: edges = [[0,1],[0,2],[2,3],[2,4]], colors = [1,2,3,3,3]
+ * Output: 3
+ * Explanation: The subtree rooted at node 2 is uniform and has size 3.
  *
- *  Constraints:
- *    n == colors.length
- *    1 <= n <= 5 * 10^4
- *    edges.length == n - 1
- *    edges[i].length == 2
- *    0 <= ui, vi < n
- *    1 <= colors[i] <= 10^5
- *    The input is generated such that the graph represented by edges is a tree.
+ * Constraints:
+ * n == colors.length
+ * 1 <= n <= 5 * 10^4
+ * edges.length == n - 1
+ * edges[i].length == 2
+ * 0 <= ui, vi < n
+ * 1 <= colors[i] <= 10^5
+ * The input is generated such that the graph represented by edges is a tree.
+ *
  */
 public class MaximumSubtreeOfTheSameColor {
 

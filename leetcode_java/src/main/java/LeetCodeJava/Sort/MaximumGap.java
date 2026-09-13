@@ -9,9 +9,7 @@ import java.util.List;
 /**
  * 164. Maximum Gap
  * Medium
- * Topics
- * premium lock icon
- * Companies
+ *
  * Given an integer array nums, return the maximum difference between two successive elements in its sorted form. If the array contains less than two elements, return 0.
  *
  * You must write an algorithm that runs in linear time and uses linear extra space.
@@ -34,7 +32,6 @@ import java.util.List;
  *
  * 1 <= nums.length <= 105
  * 0 <= nums[i] <= 109
- *
  *
  */
 public class MaximumGap {

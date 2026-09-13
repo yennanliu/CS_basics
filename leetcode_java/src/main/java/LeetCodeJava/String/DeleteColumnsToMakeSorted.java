@@ -3,36 +3,37 @@ package LeetCodeJava.String;
 // https://leetcode.com/problems/delete-columns-to-make-sorted/
 
 /**
- *  944. Delete Columns to Make Sorted
- *  Easy
+ * 944. Delete Columns to Make Sorted
+ * Easy
  *
- *  You are given an array of n strings strs, all of the same length.
+ * You are given an array of n strings strs, all of the same length.
  *
- *  The strings can be arranged such that there is one on each line, making a
- *  grid.
+ * The strings can be arranged such that there is one on each line, making a
+ * grid.
  *
- *  You want to delete the columns that are not sorted lexicographically.
+ * You want to delete the columns that are not sorted lexicographically.
  *
- *  Return the number of columns that you will delete.
+ * Return the number of columns that you will delete.
  *
- *  Example 1:
- *  Input: strs = ["cba","daf","ghi"]
- *  Output: 1
- *  Explanation: the grid's columns are "cdg", "bah", "afi"; column 1 ("bah")
- *  is not sorted, so we delete 1 column.
+ * Example 1:
+ * Input: strs = ["cba","daf","ghi"]
+ * Output: 1
+ * Explanation: the grid's columns are "cdg", "bah", "afi"; column 1 ("bah")
+ * is not sorted, so we delete 1 column.
  *
- *  Example 2:
- *  Input: strs = ["a","b"]
- *  Output: 0
+ * Example 2:
+ * Input: strs = ["a","b"]
+ * Output: 0
  *
- *  Example 3:
- *  Input: strs = ["zyx","wvu","tsr"]
- *  Output: 3
+ * Example 3:
+ * Input: strs = ["zyx","wvu","tsr"]
+ * Output: 3
  *
- *  Constraints:
- *   - n == strs.length
- *   - 1 <= n <= 100
- *   - 1 <= strs[i].length <= 1000
+ * Constraints:
+ * - n == strs.length
+ * - 1 <= n <= 100
+ * - 1 <= strs[i].length <= 1000
+ *
  */
 public class DeleteColumnsToMakeSorted {
 

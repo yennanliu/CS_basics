@@ -12,43 +12,44 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
- *  1500. Design a File Sharing System
- *  Medium
+ * 1500. Design a File Sharing System
+ * Medium
  *
- *  We will use a file-sharing system to share a very large file which consists of m small
- *  chunks with IDs from 1 to m.
+ * We will use a file-sharing system to share a very large file which consists of m small
+ * chunks with IDs from 1 to m.
  *
- *  When users join the system, the system should assign a unique ID to them. The unique ID
- *  should be used once for each user, but when a user leaves the system, the ID can be reused.
+ * When users join the system, the system should assign a unique ID to them. The unique ID
+ * should be used once for each user, but when a user leaves the system, the ID can be reused.
  *
- *  Users can request a certain chunk of the file, the system should return a list of IDs of
- *  all the users who have this chunk. After that, if at least one other user has this chunk,
- *  the user who requested the chunk will get it.
+ * Users can request a certain chunk of the file, the system should return a list of IDs of
+ * all the users who have this chunk. After that, if at least one other user has this chunk,
+ * the user who requested the chunk will get it.
  *
- *  Implement the FileSharing class:
+ * Implement the FileSharing class:
  *
- *   - FileSharing(int m) Initializes the object with the number of chunks of the file m.
- *   - int join(List<Integer> ownedChunks) A new user joined owning some chunks; assign the
- *     smallest positive integer id not taken by any other user and return it.
- *   - void leave(int userID) The user leaves; their chunks are no longer available.
- *   - List<Integer> request(int userID, int chunkID) Return the ids of all users that own
- *     this chunk, sorted ascending.
+ * - FileSharing(int m) Initializes the object with the number of chunks of the file m.
+ * - int join(List<Integer> ownedChunks) A new user joined owning some chunks; assign the
+ * smallest positive integer id not taken by any other user and return it.
+ * - void leave(int userID) The user leaves; their chunks are no longer available.
+ * - List<Integer> request(int userID, int chunkID) Return the ids of all users that own
+ * this chunk, sorted ascending.
  *
- *  Example 1:
+ * Example 1:
  *
- *  Input:
- *  ["FileSharing","join","join","join","request","request","leave","request","leave","join"]
- *  [[4],[[1,2]],[[2,3]],[[4]],[1,3],[2,2],[1],[2,1],[2],[[]]]
- *  Output:
- *  [null,1,2,3,[2],[1,2],null,[],null,1]
+ * Input:
+ * ["FileSharing","join","join","join","request","request","leave","request","leave","join"]
+ * [[4],[[1,2]],[[2,3]],[[4]],[1,3],[2,2],[1],[2,1],[2],[[]]]
+ * Output:
+ * [null,1,2,3,[2],[1,2],null,[],null,1]
  *
- *  Constraints:
+ * Constraints:
  *
- *   1 <= m <= 10^5
- *   0 <= ownedChunks.length <= min(100, m)
- *   1 <= ownedChunks[i] <= m
- *   1 <= chunkID <= m
- *   At most 10^4 calls will be made to join, leave and request.
+ * 1 <= m <= 10^5
+ * 0 <= ownedChunks.length <= min(100, m)
+ * 1 <= ownedChunks[i] <= m
+ * 1 <= chunkID <= m
+ * At most 10^4 calls will be made to join, leave and request.
+ *
  */
 public class DesignAFileSharingSystem {
 

@@ -3,10 +3,8 @@ package LeetCodeJava.BinarySearch;
 // https://leetcode.com/problems/guess-number-higher-or-lower/
 /**
  * 374. Guess Number Higher or Lower
- * Solved
  * Easy
- * Topics
- * Companies
+ *
  * We are playing the Guess Game. The game is as follows:
  *
  * I pick a number from 1 to n. You have to guess which number I picked.

@@ -4,6 +4,8 @@ package LeetCodeJava.BFS;
 // https://leetcode.ca/all/286.html
 /**
  * 286. Walls and Gates
+ * Medium
+ *
  * You are given a m x n 2D grid initialized with these three possible values.
  *
  * -1 - A wall or an obstacle.
@@ -18,13 +20,13 @@ package LeetCodeJava.BFS;
  * INF  -1  0  INF
  * INF INF INF  -1
  * INF  -1 INF  -1
- *   0  -1 INF INF
+ * 0  -1 INF INF
  * After running your function, the 2D grid should be:
  *
- *   3  -1   0   1
- *   2   2   1  -1
- *   1  -1   2  -1
- *   0  -1   3   4
+ * 3  -1   0   1
+ * 2   2   1  -1
+ * 1  -1   2  -1
+ * 0  -1   3   4
  * Difficulty:
  * Medium
  * Lock:
@@ -543,7 +545,7 @@ public class WallsAndGates {
         }
     }
 
-    // V2
+    // V2-1
     // IDEA BRUTE FORCE (TLE)
     // https://leetcode.com/problems/walls-and-gates/editorial/
 //    private static final int EMPTY = Integer.MAX_VALUE;

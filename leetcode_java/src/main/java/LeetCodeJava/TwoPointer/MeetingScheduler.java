@@ -10,6 +10,8 @@ import java.util.List;
 
 /**
  * 1229. Meeting Scheduler
+ * Medium
+ *
  * Given the availability time slots arrays slots1 and slots2 of two people and a meeting duration duration, return the earliest time slot that works for both of them and is of duration duration.
  *
  * If there is no common time slot that satisfies the requirements, return an empty array.
@@ -46,7 +48,6 @@ import java.util.List;
  * Amazon DoorDash Paypal pramp Uber
  * Problem Solution
  * 1229-Meeting-Scheduler
- *
  *
  */
 public class MeetingScheduler {

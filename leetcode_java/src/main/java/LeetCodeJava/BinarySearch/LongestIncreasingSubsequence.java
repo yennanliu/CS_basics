@@ -3,10 +3,8 @@ package LeetCodeJava.BinarySearch;
 // https://leetcode.com/problems/longest-increasing-subsequence/description/
 /**
  * 300. Longest Increasing Subsequence
- * Solved
  * Medium
- * Topics
- * Companies
+ *
  * Given an integer array nums, return the length of the longest strictly increasing
  * subsequence
  * .

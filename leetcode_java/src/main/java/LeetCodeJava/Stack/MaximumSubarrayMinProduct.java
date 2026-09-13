@@ -3,34 +3,35 @@ package LeetCodeJava.Stack;
 // https://leetcode.com/problems/maximum-subarray-min-product/
 
 /**
- *  1856. Maximum Subarray Min-Product
- *  Medium
+ * 1856. Maximum Subarray Min-Product
+ * Medium
  *
- *  The min-product of an array is equal to the minimum value in the array
- *  multiplied by the array's sum. For example, the array [3,2,5] (minimum
- *  value is 2) has a min-product of 2 * (3+2+5) = 20.
+ * The min-product of an array is equal to the minimum value in the array
+ * multiplied by the array's sum. For example, the array [3,2,5] (minimum
+ * value is 2) has a min-product of 2 * (3+2+5) = 20.
  *
- *  Given an array of integers nums, return the maximum min-product of any
- *  non-empty subarray of nums. Since the answer may be large, return it
- *  modulo 10^9 + 7.
+ * Given an array of integers nums, return the maximum min-product of any
+ * non-empty subarray of nums. Since the answer may be large, return it
+ * modulo 10^9 + 7.
  *
- *  Note that the min-product should be maximized BEFORE performing the modulo
- *  operation. Testcases are generated such that the maximum min-product
- *  without modulo will fit in a 64-bit signed integer.
+ * Note that the min-product should be maximized BEFORE performing the modulo
+ * operation. Testcases are generated such that the maximum min-product
+ * without modulo will fit in a 64-bit signed integer.
  *
- *  Example 1:
- *    Input: nums = [1,2,3,2]
- *    Output: 14
- *    Explanation: subarray [2,3,2] -> 2 * 7 = 14
+ * Example 1:
+ * Input: nums = [1,2,3,2]
+ * Output: 14
+ * Explanation: subarray [2,3,2] -> 2 * 7 = 14
  *
- *  Example 2:
- *    Input: nums = [3,1,5,6,4,2]
- *    Output: 60
- *    Explanation: subarray [5,6,4] -> 4 * 15 = 60
+ * Example 2:
+ * Input: nums = [3,1,5,6,4,2]
+ * Output: 60
+ * Explanation: subarray [5,6,4] -> 4 * 15 = 60
  *
- *  Constraints:
- *    1 <= nums.length <= 10^5
- *    1 <= nums[i] <= 10^7
+ * Constraints:
+ * 1 <= nums.length <= 10^5
+ * 1 <= nums[i] <= 10^7
+ *
  */
 public class MaximumSubarrayMinProduct {
 

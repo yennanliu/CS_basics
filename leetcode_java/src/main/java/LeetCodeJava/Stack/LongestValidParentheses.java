@@ -5,15 +5,11 @@ package LeetCodeJava.Stack;
 import java.util.Stack;
 
 /**
- *  32. Longest Valid Parentheses
- * Solved
+ * 32. Longest Valid Parentheses
  * Hard
- * Topics
- * premium lock icon
- * Companies
  *
  * Given a string containing just the characters '(' and ')', return the length of the longest valid (well-formed) parentheses substring.
- *  Example 1:
+ * Example 1:
  *
  * Input: s = "(()"
  * Output: 2
@@ -32,7 +28,6 @@ import java.util.Stack;
  *
  * 0 <= s.length <= 3 * 104
  * s[i] is '(', or ')'.
- *
  *
  */
 public class LongestValidParentheses {

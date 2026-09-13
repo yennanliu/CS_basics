@@ -3,10 +3,8 @@ package LeetCodeJava.Stack;
 // https://leetcode.com/problems/largest-rectangle-in-histogram/
 /**
  * 84. Largest Rectangle in Histogram
- * Solved
  * Hard
- * Topics
- * Companies
+ *
  * Given an array of integers heights representing the histogram's bar height where the width of each bar is 1, return the area of the largest rectangle in the histogram.
  *
  *
@@ -29,7 +27,6 @@ package LeetCodeJava.Stack;
  *
  * 1 <= heights.length <= 105
  * 0 <= heights[i] <= 104
- *
  *
  */
 import java.util.ArrayDeque;

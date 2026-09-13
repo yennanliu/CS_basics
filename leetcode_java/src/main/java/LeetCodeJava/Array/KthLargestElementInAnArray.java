@@ -3,11 +3,8 @@ package LeetCodeJava.Array;
 // https://leetcode.com/problems/kth-largest-element-in-an-array/
 /**
  * 215. Kth Largest Element in an Array
- * Solved
- * N/A
- * Topics
- * premium lock icon
- * Companies
+ * Medium
+ *
  * Given an integer array nums and an integer k, return the kth largest element in the array.
  *
  * Note that it is the kth largest element in the sorted order, not the kth distinct element.
@@ -31,10 +28,6 @@ package LeetCodeJava.Array;
  * 1 <= k <= nums.length <= 105
  * -104 <= nums[i] <= 104
  *
- * Seen this question in a real interview before?
- * 1/5
- * Yes
- * No
  */
 import java.util.*;
 

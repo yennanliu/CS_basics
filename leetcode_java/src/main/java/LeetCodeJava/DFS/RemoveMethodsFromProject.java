@@ -6,44 +6,45 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  3310. Remove Methods From Project
- *  Medium
+ * 3310. Remove Methods From Project
+ * Medium
  *
- *  You are maintaining a project that has n methods numbered from 0 to n - 1.
+ * You are maintaining a project that has n methods numbered from 0 to n - 1.
  *
- *  You are given two integers n and k, and a 2D integer array invocations, where
- *  invocations[i] = [a_i, b_i] indicates that method a_i invokes method b_i.
+ * You are given two integers n and k, and a 2D integer array invocations, where
+ * invocations[i] = [a_i, b_i] indicates that method a_i invokes method b_i.
  *
- *  There is a known bug in method k. Method k, along with any method invoked by
- *  it, either directly or indirectly, are considered suspicious and we aim to
- *  remove them.
+ * There is a known bug in method k. Method k, along with any method invoked by
+ * it, either directly or indirectly, are considered suspicious and we aim to
+ * remove them.
  *
- *  A group of methods can only be removed if no method outside the group invokes
- *  any methods within it.
+ * A group of methods can only be removed if no method outside the group invokes
+ * any methods within it.
  *
- *  Return an array containing all the remaining methods after removing all the
- *  suspicious methods. You may return the answer in any order. If it is not
- *  possible to remove all the suspicious methods, none should be removed.
+ * Return an array containing all the remaining methods after removing all the
+ * suspicious methods. You may return the answer in any order. If it is not
+ * possible to remove all the suspicious methods, none should be removed.
  *
- *  Example 1:
- *    Input: n = 4, k = 1, invocations = [[1,2],[0,1],[3,2]]
- *    Output: [0,1,2,3]
- *    Explanation: methods 1 and 2 are suspicious but are invoked from the clean
- *                 methods 0 and 3, so nothing is removed.
+ * Example 1:
+ * Input: n = 4, k = 1, invocations = [[1,2],[0,1],[3,2]]
+ * Output: [0,1,2,3]
+ * Explanation: methods 1 and 2 are suspicious but are invoked from the clean
+ * methods 0 and 3, so nothing is removed.
  *
- *  Example 2:
- *    Input: n = 3, k = 2, invocations = [[1,2],[0,1],[2,0]]
- *    Output: []
- *    Explanation: all methods are suspicious and can be removed.
+ * Example 2:
+ * Input: n = 3, k = 2, invocations = [[1,2],[0,1],[2,0]]
+ * Output: []
+ * Explanation: all methods are suspicious and can be removed.
  *
- *  Constraints:
- *    1 <= n <= 10^5
- *    0 <= k <= n - 1
- *    0 <= invocations.length <= 2 * 10^5
- *    invocations[i] == [a_i, b_i]
- *    0 <= a_i, b_i <= n - 1
- *    a_i != b_i
- *    invocations[i] != invocations[j]
+ * Constraints:
+ * 1 <= n <= 10^5
+ * 0 <= k <= n - 1
+ * 0 <= invocations.length <= 2 * 10^5
+ * invocations[i] == [a_i, b_i]
+ * 0 <= a_i, b_i <= n - 1
+ * a_i != b_i
+ * invocations[i] != invocations[j]
+ *
  */
 public class RemoveMethodsFromProject {
 

@@ -12,10 +12,7 @@ import java.util.Queue;
 /**
  * 114. Flatten Binary Tree to Linked List
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * Given the root of a binary tree, flatten the tree into a "linked list":
  *
  * The "linked list" should use the same TreeNode class where the right child pointer points to the next node in the list and the left child pointer is always null.

@@ -10,6 +10,7 @@ import java.util.Set;
 /**
  * 291. Word Pattern II
  * Medium
+ *
  * Lock: Prime
  *
  * Given a pattern and a string s, return true if s matches the pattern.

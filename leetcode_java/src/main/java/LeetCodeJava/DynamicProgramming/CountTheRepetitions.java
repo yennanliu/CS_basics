@@ -16,7 +16,7 @@ import java.util.Arrays;
  * characters from s2 such that it becomes s1.
  *
  * - For example, s1 = "abc" can be obtained from s2 = "abdbec" based on our
- *   definition by removing the bolded underlined characters.
+ * definition by removing the bolded underlined characters.
  *
  * You are given two strings s1 and s2 and two integers n1 and n2. You have the two
  * strings str1 = [s1, n1] and str2 = [s2, n2].

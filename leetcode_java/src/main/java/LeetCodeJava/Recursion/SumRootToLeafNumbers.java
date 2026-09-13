@@ -8,11 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  129. Sum Root to Leaf Numbers
+ * 129. Sum Root to Leaf Numbers
  * Medium
- * Topics
- * premium lock icon
- * Companies
+ *
  * You are given the root of a binary tree containing digits from 0 to 9 only.
  *
  * Each root-to-leaf path in the tree represents a number.
@@ -50,7 +48,6 @@ import java.util.List;
  * The number of nodes in the tree is in the range [1, 1000].
  * 0 <= Node.val <= 9
  * The depth of the tree will not exceed 10.
- *
  *
  */
 public class SumRootToLeafNumbers {

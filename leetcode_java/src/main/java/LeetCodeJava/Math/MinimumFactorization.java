@@ -3,25 +3,26 @@ package LeetCodeJava.Math;
 // https://leetcode.com/problems/minimum-factorization/
 
 /**
- *  625. Minimum Factorization
- *  Medium
+ * 625. Minimum Factorization
+ * Medium
  *
- *  Given a positive integer a, find the smallest positive integer b whose
- *  multiplication of each digit equals to a.
+ * Given a positive integer a, find the smallest positive integer b whose
+ * multiplication of each digit equals to a.
  *
- *  If there is no answer or the answer is not fit in 32-bit signed integer,
- *  then return 0.
+ * If there is no answer or the answer is not fit in 32-bit signed integer,
+ * then return 0.
  *
- *  Example 1:
- *    Input: a = 48
- *    Output: 68
+ * Example 1:
+ * Input: a = 48
+ * Output: 68
  *
- *  Example 2:
- *    Input: a = 15
- *    Output: 35
+ * Example 2:
+ * Input: a = 15
+ * Output: 35
  *
- *  Constraints:
- *   - 1 <= a <= 2^31 - 1
+ * Constraints:
+ * - 1 <= a <= 2^31 - 1
+ *
  */
 public class MinimumFactorization {
 

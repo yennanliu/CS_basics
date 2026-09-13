@@ -9,15 +9,12 @@ import java.util.*;
 
 // https://leetcode.com/problems/unique-binary-search-trees-ii/description/
 /**
- *   95. Unique Binary Search Trees II
- * Solved
+ * 95. Unique Binary Search Trees II
  * Medium
- * Topics
- * premium lock icon
- * Companies
+ *
  * Given an integer n, return all the structurally unique BST's (binary search trees), which has exactly n nodes of unique values from 1 to n. Return the answer in any order.
  *
- *  Example 1:
+ * Example 1:
  *
  *
  * Input: n = 3

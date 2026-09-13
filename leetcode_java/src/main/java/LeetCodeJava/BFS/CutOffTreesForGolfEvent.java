@@ -6,11 +6,8 @@ import java.util.*;
 
 /**
  * 675. Cut Off Trees for Golf Event
- * Solved
  * Hard
- * Topics
- * premium lock icon
- * Companies
+ *
  * You are asked to cut off all the trees in a forest for a golf event. The forest is represented as an m x n matrix. In this matrix:
  *
  * 0 means the cell cannot be walked through.
@@ -53,6 +50,7 @@ import java.util.*;
  * 1 <= m, n <= 50
  * 0 <= forest[i][j] <= 109
  * Heights of all trees are distinct.
+ *
  */
 public class CutOffTreesForGolfEvent {
 

@@ -7,11 +7,8 @@ import java.util.Map;
 
 /**
  * 560. Subarray Sum Equals K
- * Solved
  * Medium
- * Topics
- * Companies
- * Hint
+ *
  * Given an array of integers nums and an integer k, return the total number of subarrays whose sum equals to k.
  *
  * A subarray is a contiguous non-empty sequence of elements within an array.
@@ -33,17 +30,7 @@ import java.util.Map;
  * 1 <= nums.length <= 2 * 104
  * -1000 <= nums[i] <= 1000
  * -107 <= k <= 107
- * Seen this question in a real interview before?
- * 1/5
- * Yes
- * No
- * Accepted
- * 1.5M
- * Submissions
- * 3.4M
- * Acceptance Rate
- * 44.5%
- * Topics
+ *
  */
 public class SubarraySumEqualsK {
 

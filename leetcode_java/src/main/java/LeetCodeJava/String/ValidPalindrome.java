@@ -3,13 +3,9 @@ package LeetCodeJava.String;
 // https://leetcode.com/problems/valid-palindrome/description/?envType=list&envId=xoqag3yj
 
 /**
- *
  * 125. Valid Palindrome
- * Solved
- * N/A
- * Topics
- * premium lock icon
- * Companies
+ * Easy
+ *
  * A phrase is a palindrome if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters and numbers.
  *
  * Given a string s, return true if it is a palindrome, or false otherwise.
@@ -40,16 +36,17 @@ package LeetCodeJava.String;
  * s consists only of printable ASCII characters.
  *
  *
- *  A phrase is a palindrome if, after converting all uppercase letters into lowercase
- *  letters and removing all non-alphanumeric characters,
- *  it reads the same forward and backward.
- *  Alphanumeric characters include letters and numbers.
+ * A phrase is a palindrome if, after converting all uppercase letters into lowercase
+ * letters and removing all non-alphanumeric characters,
+ * it reads the same forward and backward.
+ * Alphanumeric characters include letters and numbers.
  *
  *
- *  NOTE !!!
+ * NOTE !!!
  *
- *  "and removing all non-alphanumeric characters, "
- *   -> so we need to consider both alphabet and numeric element
+ * "and removing all non-alphanumeric characters, "
+ * -> so we need to consider both alphabet and numeric element
+ *
  */
 public class ValidPalindrome {
 
@@ -87,7 +84,7 @@ public class ValidPalindrome {
         return sb.toString().equals(sb.reverse().toString());
     }
 
-    // VO-1
+    // V0-1
     // IDEA: Str op + alpha, num check + stringBuilder
     /**
      * time = O(N)

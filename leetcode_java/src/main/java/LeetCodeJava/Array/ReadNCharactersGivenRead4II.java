@@ -7,6 +7,7 @@ import java.util.Queue;
 /**
  * 158. Read N Characters Given read4 II - Call Multiple Times
  * Hard
+ *
  * Lock: Prime
  *
  * Given a file and assume that you can only read the file using a given method read4,
@@ -23,8 +24,8 @@ import java.util.Queue;
  *
  * Definition of read4:
  *
- *     Parameter:  char[] buf4
- *     Returns:    int
+ * Parameter:  char[] buf4
+ * Returns:    int
  *
  * buf4[] is a destination, not a source. The results from read4 will be copied to buf4[].
  *
@@ -45,20 +46,20 @@ import java.util.Queue;
  *
  * Definition of read:
  *
- *     Parameters: char[] buf, int n
- *     Returns:    int
+ * Parameters: char[] buf, int n
+ * Returns:    int
  *
  * buf[] is a destination, not a source. You will need to write the results to buf[].
  *
  * Note:
  *
  * - Consider that you cannot manipulate the file directly. The file is only accessible
- *   for read4 but not for read.
+ * for read4 but not for read.
  * - The read function may be called multiple times.
  * - Please remember to RESET your class variables declared in Solution, as static/class
- *   variables are persisted across multiple test cases.
+ * variables are persisted across multiple test cases.
  * - You may assume the destination buffer array, buf, is guaranteed to have enough space
- *   for storing n characters.
+ * for storing n characters.
  * - It is guaranteed that in a given test case the same buffer buf is called by read.
  *
  *

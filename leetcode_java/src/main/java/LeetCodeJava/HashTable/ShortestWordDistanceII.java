@@ -5,31 +5,32 @@ package LeetCodeJava.HashTable;
 import java.util.*;
 
 /**
- *  244. Shortest Word Distance II
- *  Medium
+ * 244. Shortest Word Distance II
+ * Medium
  *
- *  Design a data structure that will be initialized with a string array, and
- *  then it should answer queries of the shortest distance between two different
- *  strings from the array.
+ * Design a data structure that will be initialized with a string array, and
+ * then it should answer queries of the shortest distance between two different
+ * strings from the array.
  *
- *  Implement the WordDistance class:
- *   - WordDistance(String[] wordsDict) initializes the object with the strings
- *     array wordsDict.
- *   - int shortest(String word1, String word2) returns the shortest distance
- *     between word1 and word2 in the array wordsDict.
+ * Implement the WordDistance class:
+ * - WordDistance(String[] wordsDict) initializes the object with the strings
+ * array wordsDict.
+ * - int shortest(String word1, String word2) returns the shortest distance
+ * between word1 and word2 in the array wordsDict.
  *
- *  Example 1:
- *  Input
- *  ["WordDistance", "shortest", "shortest"]
- *  [[["practice","makes","perfect","coding","makes"]], ["coding","practice"], ["makes","coding"]]
- *  Output
- *  [null, 3, 1]
+ * Example 1:
+ * Input
+ * ["WordDistance", "shortest", "shortest"]
+ * [[["practice","makes","perfect","coding","makes"]], ["coding","practice"], ["makes","coding"]]
+ * Output
+ * [null, 3, 1]
  *
- *  Constraints:
- *   - 1 <= wordsDict.length <= 3 * 10^4
- *   - 1 <= wordsDict[i].length <= 10
- *   - word1 and word2 are in wordsDict, and word1 != word2
- *   - At most 5000 calls will be made to shortest.
+ * Constraints:
+ * - 1 <= wordsDict.length <= 3 * 10^4
+ * - 1 <= wordsDict[i].length <= 10
+ * - word1 and word2 are in wordsDict, and word1 != word2
+ * - At most 5000 calls will be made to shortest.
+ *
  */
 public class ShortestWordDistanceII {
 

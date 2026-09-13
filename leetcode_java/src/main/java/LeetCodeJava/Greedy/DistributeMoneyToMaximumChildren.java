@@ -3,12 +3,8 @@ package LeetCodeJava.Greedy;
 // https://leetcode.com/problems/distribute-money-to-maximum-children/description/
 /**
  * 2591. Distribute Money to Maximum Children
- * Solved
  * Easy
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You are given an integer money denoting the amount of money (in dollars) that you have and another integer children denoting the number of children that you must distribute the money to.
  *
  * You have to distribute the money according to the following rules:
@@ -41,8 +37,6 @@ package LeetCodeJava.Greedy;
  *
  * 1 <= money <= 200
  * 2 <= children <= 30
- *
- *
  *
  */
 public class DistributeMoneyToMaximumChildren {

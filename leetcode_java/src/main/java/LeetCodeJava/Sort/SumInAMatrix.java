@@ -5,32 +5,33 @@ package LeetCodeJava.Sort;
 import java.util.Arrays;
 
 /**
- *  2679. Sum in a Matrix
- *  Medium
+ * 2679. Sum in a Matrix
+ * Medium
  *
- *  You are given a 0-indexed 2D integer array nums. Initially, your score is 0.
- *  Perform the following operations until the matrix becomes empty:
- *    1. From each row in the matrix, select the largest number and remove it. In
- *       the case of a tie, it does not matter which number is chosen.
- *    2. Identify the highest number amongst all those removed in step 1. Add
- *       that number to your score.
+ * You are given a 0-indexed 2D integer array nums. Initially, your score is 0.
+ * Perform the following operations until the matrix becomes empty:
+ * 1. From each row in the matrix, select the largest number and remove it. In
+ * the case of a tie, it does not matter which number is chosen.
+ * 2. Identify the highest number amongst all those removed in step 1. Add
+ * that number to your score.
  *
- *  Return the final score.
+ * Return the final score.
  *
- *  Example 1:
- *    Input: nums = [[7,2,1],[6,4,2],[6,5,3],[3,2,1]]
- *    Output: 15
- *    Explanation: rounds remove {7,6,6,3} -> +7, {2,4,5,2} -> +5,
- *                 {1,2,3,1} -> +3. Total 15.
+ * Example 1:
+ * Input: nums = [[7,2,1],[6,4,2],[6,5,3],[3,2,1]]
+ * Output: 15
+ * Explanation: rounds remove {7,6,6,3} -> +7, {2,4,5,2} -> +5,
+ * {1,2,3,1} -> +3. Total 15.
  *
- *  Example 2:
- *    Input: nums = [[1]]
- *    Output: 1
+ * Example 2:
+ * Input: nums = [[1]]
+ * Output: 1
  *
- *  Constraints:
- *    1 <= nums.length <= 300
- *    1 <= nums[i].length <= 500
- *    0 <= nums[i][j] <= 10^3
+ * Constraints:
+ * 1 <= nums.length <= 300
+ * 1 <= nums[i].length <= 500
+ * 0 <= nums[i][j] <= 10^3
+ *
  */
 public class SumInAMatrix {
 

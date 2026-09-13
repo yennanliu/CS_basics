@@ -6,12 +6,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- *
  * 753. Cracking the Safe
  * Hard
- * Topics
- * Companies
- * Hint
+ *
  * There is a safe protected by a password. The password is a sequence of n digits where each digit can be in the range [0, k - 1].
  *
  * The safe has a peculiar way of checking the password. When you enter in a sequence, it checks the most recent n digits that were entered each time you type a digit.
@@ -49,6 +46,7 @@ import java.util.Set;
  * 1 <= n <= 4
  * 1 <= k <= 10
  * 1 <= kn <= 4096
+ *
  */
 
 

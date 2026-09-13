@@ -2,11 +2,9 @@ package LeetCodeJava.LinkedList;
 
 // https://leetcode.com/problems/reverse-linked-list/
 /**
- *  206. Reverse Linked List
- * Solved
+ * 206. Reverse Linked List
  * Easy
- * Topics
- * Companies
+ *
  * Given the head of a singly linked list, reverse the list, and return the reversed list.
  *
  *

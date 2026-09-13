@@ -6,12 +6,9 @@ import java.util.Collections;
 import java.util.PriorityQueue;
 
 /**
- *  1675. Minimize Deviation in Array
+ * 1675. Minimize Deviation in Array
  * Hard
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You are given an array nums of n positive integers.
  *
  * You can perform two types of operations on any element of the array any number of times:
@@ -47,7 +44,6 @@ import java.util.PriorityQueue;
  * n == nums.length
  * 2 <= n <= 5 * 104
  * 1 <= nums[i] <= 109
- *
  *
  */
 public class MinimizeDeviationInArray {

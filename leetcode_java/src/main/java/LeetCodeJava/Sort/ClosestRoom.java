@@ -6,39 +6,40 @@ import java.util.Arrays;
 import java.util.TreeSet;
 
 /**
- *  1847. Closest Room
- *  Hard
+ * 1847. Closest Room
+ * Hard
  *
- *  There is a hotel with n rooms. The rooms are represented by a 2D integer array
- *  rooms where rooms[i] = [roomId_i, size_i] denotes that there is a room with
- *  room number roomId_i and size equal to size_i. Each roomId_i is unique.
+ * There is a hotel with n rooms. The rooms are represented by a 2D integer array
+ * rooms where rooms[i] = [roomId_i, size_i] denotes that there is a room with
+ * room number roomId_i and size equal to size_i. Each roomId_i is unique.
  *
- *  You are also given k queries in a 2D array queries where
- *  queries[j] = [preferred_j, minSize_j]. The answer to the jth query is the room
- *  number id of a room such that:
- *    - the room has a size of at least minSize_j, and
- *    - abs(id - preferred_j) is minimized.
- *  If there is a tie in the absolute difference, use the room with the smallest
- *  such id. If there is no such room, the answer is -1.
+ * You are also given k queries in a 2D array queries where
+ * queries[j] = [preferred_j, minSize_j]. The answer to the jth query is the room
+ * number id of a room such that:
+ * - the room has a size of at least minSize_j, and
+ * - abs(id - preferred_j) is minimized.
+ * If there is a tie in the absolute difference, use the room with the smallest
+ * such id. If there is no such room, the answer is -1.
  *
- *  Return an array answer of length k where answer[j] is the answer to the jth query.
+ * Return an array answer of length k where answer[j] is the answer to the jth query.
  *
- *  Example 1:
- *    Input: rooms = [[2,2],[1,2],[3,2]], queries = [[3,1],[3,3],[5,2]]
- *    Output: [3,-1,3]
+ * Example 1:
+ * Input: rooms = [[2,2],[1,2],[3,2]], queries = [[3,1],[3,3],[5,2]]
+ * Output: [3,-1,3]
  *
- *  Example 2:
- *    Input: rooms = [[1,4],[2,3],[3,5],[4,1],[5,2]], queries = [[2,3],[2,4],[2,5]]
- *    Output: [2,1,3]
- *    Explanation: for [2,4] both rooms 1 and 3 qualify, ties go to the smaller id.
+ * Example 2:
+ * Input: rooms = [[1,4],[2,3],[3,5],[4,1],[5,2]], queries = [[2,3],[2,4],[2,5]]
+ * Output: [2,1,3]
+ * Explanation: for [2,4] both rooms 1 and 3 qualify, ties go to the smaller id.
  *
- *  Constraints:
- *    n == rooms.length
- *    1 <= n <= 10^5
- *    k == queries.length
- *    1 <= k <= 10^4
- *    1 <= roomId_i, preferred_j <= 10^7
- *    1 <= size_i, minSize_j <= 10^7
+ * Constraints:
+ * n == rooms.length
+ * 1 <= n <= 10^5
+ * k == queries.length
+ * 1 <= k <= 10^4
+ * 1 <= roomId_i, preferred_j <= 10^7
+ * 1 <= size_i, minSize_j <= 10^7
+ *
  */
 public class ClosestRoom {
 

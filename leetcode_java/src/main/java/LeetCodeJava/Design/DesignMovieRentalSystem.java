@@ -10,50 +10,51 @@ import java.util.Map;
 import java.util.TreeSet;
 
 /**
- *  1912. Design Movie Rental System
- *  Hard
+ * 1912. Design Movie Rental System
+ * Hard
  *
- *  You have a movie renting company consisting of n shops. You want to implement a
- *  renting system that supports searching for, booking, and returning movies. The system
- *  should also support generating a report of the currently rented movies.
+ * You have a movie renting company consisting of n shops. You want to implement a
+ * renting system that supports searching for, booking, and returning movies. The system
+ * should also support generating a report of the currently rented movies.
  *
- *  Each movie is given as a 2D integer array entries where entries[i] = [shop, movie,
- *  price] indicates that there is a copy of movie at shop with a rental price of price.
- *  Each shop carries at most one copy of a movie.
+ * Each movie is given as a 2D integer array entries where entries[i] = [shop, movie,
+ * price] indicates that there is a copy of movie at shop with a rental price of price.
+ * Each shop carries at most one copy of a movie.
  *
- *  Implement the MovieRentingSystem class:
+ * Implement the MovieRentingSystem class:
  *
- *   - MovieRentingSystem(int n, int[][] entries) Initializes the object with n shops and
- *     the movies in entries.
- *   - List<Integer> search(int movie) Finds the cheapest 5 shops that have an UNRENTED
- *     copy of the given movie, sorted by price ascending, ties broken by smaller shop.
- *     Fewer than 5 -> all of them; none -> an empty list.
- *   - void rent(int shop, int movie) Rents an unrented copy of a given movie from a shop.
- *   - void drop(int shop, int movie) Drops off a previously rented copy at a shop.
- *   - List<List<Integer>> report() Returns the cheapest 5 RENTED movies as res[j] =
- *     [shop, movie], sorted by price ascending, then smaller shop, then smaller movie.
+ * - MovieRentingSystem(int n, int[][] entries) Initializes the object with n shops and
+ * the movies in entries.
+ * - List<Integer> search(int movie) Finds the cheapest 5 shops that have an UNRENTED
+ * copy of the given movie, sorted by price ascending, ties broken by smaller shop.
+ * Fewer than 5 -> all of them; none -> an empty list.
+ * - void rent(int shop, int movie) Rents an unrented copy of a given movie from a shop.
+ * - void drop(int shop, int movie) Drops off a previously rented copy at a shop.
+ * - List<List<Integer>> report() Returns the cheapest 5 RENTED movies as res[j] =
+ * [shop, movie], sorted by price ascending, then smaller shop, then smaller movie.
  *
- *  Note: rent will only be called if the shop has an unrented copy of the movie, and drop
- *  will only be called if the shop had previously rented out the movie.
+ * Note: rent will only be called if the shop has an unrented copy of the movie, and drop
+ * will only be called if the shop had previously rented out the movie.
  *
- *  Example 1:
- *    Input
- *      ["MovieRentingSystem","search","rent","rent","report","drop","search"]
- *      [[3,[[0,1,5],[0,2,6],[0,3,7],[1,1,4],[1,2,7],[2,1,5]]],[1],[0,1],[1,2],[],[1,2],[2]]
- *    Output
- *      [null,[1,0,2],null,null,[[0,1],[1,2]],null,[0,1]]
- *    Explanation
- *      search(1) -> [1,0,2]; shop 1 is cheapest, shops 0 and 2 tie on price so the
- *                   smaller shop number comes first.
- *      report()  -> [[0,1],[1,2]]; movie 1 from shop 0 is cheapest, then movie 2 from shop 1.
+ * Example 1:
+ * Input
+ * ["MovieRentingSystem","search","rent","rent","report","drop","search"]
+ * [[3,[[0,1,5],[0,2,6],[0,3,7],[1,1,4],[1,2,7],[2,1,5]]],[1],[0,1],[1,2],[],[1,2],[2]]
+ * Output
+ * [null,[1,0,2],null,null,[[0,1],[1,2]],null,[0,1]]
+ * Explanation
+ * search(1) -> [1,0,2]; shop 1 is cheapest, shops 0 and 2 tie on price so the
+ * smaller shop number comes first.
+ * report()  -> [[0,1],[1,2]]; movie 1 from shop 0 is cheapest, then movie 2 from shop 1.
  *
- *  Constraints:
- *    1 <= n <= 3 * 10^5
- *    1 <= entries.length <= 10^5
- *    0 <= shop_i < n
- *    1 <= movie_i, price_i <= 10^4
- *    Each shop carries at most one copy of a movie.
- *    At most 10^5 calls in total will be made to search, rent, drop and report.
+ * Constraints:
+ * 1 <= n <= 3 * 10^5
+ * 1 <= entries.length <= 10^5
+ * 0 <= shop_i < n
+ * 1 <= movie_i, price_i <= 10^4
+ * Each shop carries at most one copy of a movie.
+ * At most 10^5 calls in total will be made to search, rent, drop and report.
+ *
  */
 public class DesignMovieRentalSystem {
 

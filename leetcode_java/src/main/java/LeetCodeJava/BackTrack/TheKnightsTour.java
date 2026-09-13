@@ -3,38 +3,39 @@ package LeetCodeJava.BackTrack;
 // https://leetcode.com/problems/the-knights-tour/
 
 /**
- *  2664. The Knight's Tour
- *  Medium
+ * 2664. The Knight’s Tour
+ * Medium
  *
- *  Given two positive integers m and n which are the height and width of a
- *  0-indexed 2D-array board, a pair of positive integers (r, c) which is the
- *  starting position of the knight on the board.
+ * Given two positive integers m and n which are the height and width of a
+ * 0-indexed 2D-array board, a pair of positive integers (r, c) which is the
+ * starting position of the knight on the board.
  *
- *  Your task is to find an order of movements for the knight, in a manner that every
- *  cell of the board gets visited exactly once (the starting cell is considered
- *  visited and you shouldn't visit it again).
+ * Your task is to find an order of movements for the knight, in a manner that every
+ * cell of the board gets visited exactly once (the starting cell is considered
+ * visited and you shouldn't visit it again).
  *
- *  Return the array board in which the cells' values show the order of visiting the
- *  cell starting from 0 (the initial place of the knight).
+ * Return the array board in which the cells' values show the order of visiting the
+ * cell starting from 0 (the initial place of the knight).
  *
- *  Note that a knight can move from cell (r1, c1) to cell (r2, c2) if
- *  0 <= r2 <= m - 1 and 0 <= c2 <= n - 1 and min(|r1-r2|, |c1-c2|) = 1 and
- *  max(|r1-r2|, |c1-c2|) = 2.
+ * Note that a knight can move from cell (r1, c1) to cell (r2, c2) if
+ * 0 <= r2 <= m - 1 and 0 <= c2 <= n - 1 and min(|r1-r2|, |c1-c2|) = 1 and
+ * max(|r1-r2|, |c1-c2|) = 2.
  *
- *  Example 1:
- *    Input: m = 1, n = 1, r = 0, c = 0
- *    Output: [[0]]
+ * Example 1:
+ * Input: m = 1, n = 1, r = 0, c = 0
+ * Output: [[0]]
  *
- *  Example 2:
- *    Input: m = 3, n = 4, r = 0, c = 0
- *    Output: [[0,3,6,9],[11,8,1,4],[2,5,10,7]]
+ * Example 2:
+ * Input: m = 3, n = 4, r = 0, c = 0
+ * Output: [[0,3,6,9],[11,8,1,4],[2,5,10,7]]
  *
- *  Constraints:
- *    1 <= m, n <= 5
- *    0 <= r <= m - 1
- *    0 <= c <= n - 1
- *    The inputs will be generated such that there exists at least one possible order
- *    of movements with the given condition.
+ * Constraints:
+ * 1 <= m, n <= 5
+ * 0 <= r <= m - 1
+ * 0 <= c <= n - 1
+ * The inputs will be generated such that there exists at least one possible order
+ * of movements with the given condition.
+ *
  */
 public class TheKnightsTour {
 

@@ -6,8 +6,7 @@ package LeetCodeJava.Tree;
 /**
  * 427. Construct Quad Tree
  * Medium
- * Topics
- * Companies
+ *
  * Given a n * n matrix grid of 0's and 1's only. We want to represent grid with a Quad-Tree.
  *
  * Return the root of the Quad-Tree representing grid.
@@ -17,12 +16,12 @@ package LeetCodeJava.Tree;
  * val: True if the node represents a grid of 1's or False if the node represents a grid of 0's. Notice that you can assign the val to True or False when isLeaf is False, and both are accepted in the answer.
  * isLeaf: True if the node is a leaf node on the tree or False if the node has four children.
  * class Node {
- *     public boolean val;
- *     public boolean isLeaf;
- *     public Node topLeft;
- *     public Node topRight;
- *     public Node bottomLeft;
- *     public Node bottomRight;
+ * public boolean val;
+ * public boolean isLeaf;
+ * public Node topLeft;
+ * public Node topRight;
+ * public Node bottomLeft;
+ * public Node bottomRight;
  * }
  * We can construct a Quad-Tree from a two-dimensional area using the following steps:
  *

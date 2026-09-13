@@ -6,45 +6,46 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 /**
- *  1825. Finding MK Average
- *  Hard
+ * 1825. Finding MK Average
+ * Hard
  *
- *  You are given two integers, m and k, and a stream of integers. You are tasked to
- *  implement a data structure that calculates the MKAverage for the stream.
+ * You are given two integers, m and k, and a stream of integers. You are tasked to
+ * implement a data structure that calculates the MKAverage for the stream.
  *
- *  The MKAverage can be calculated using these steps:
- *    - If the number of the elements in the stream is less than m you should
- *      consider the MKAverage to be -1. Otherwise, copy the last m elements of the
- *      stream to a separate container.
- *    - Remove the smallest k elements and the largest k elements from the container.
- *    - Calculate the average value for the rest of the elements rounded down to the
- *      nearest integer.
+ * The MKAverage can be calculated using these steps:
+ * - If the number of the elements in the stream is less than m you should
+ * consider the MKAverage to be -1. Otherwise, copy the last m elements of the
+ * stream to a separate container.
+ * - Remove the smallest k elements and the largest k elements from the container.
+ * - Calculate the average value for the rest of the elements rounded down to the
+ * nearest integer.
  *
- *  Implement the MKAverage class:
- *    MKAverage(int m, int k) Initializes the MKAverage object with an empty stream
- *      and the two integers m and k.
- *    void addElement(int num) Inserts a new element num into the stream.
- *    int calculateMKAverage() Calculates and returns the MKAverage for the current
- *      stream rounded down to the nearest integer.
+ * Implement the MKAverage class:
+ * MKAverage(int m, int k) Initializes the MKAverage object with an empty stream
+ * and the two integers m and k.
+ * void addElement(int num) Inserts a new element num into the stream.
+ * int calculateMKAverage() Calculates and returns the MKAverage for the current
+ * stream rounded down to the nearest integer.
  *
- *  Example 1:
- *    Input
- *      ["MKAverage","addElement","addElement","calculateMKAverage","addElement",
- *       "calculateMKAverage","addElement","addElement","addElement",
- *       "calculateMKAverage"]
- *      [[3,1],[3],[1],[],[10],[],[5],[5],[5],[]]
- *    Output
- *      [null,null,null,-1,null,3,null,null,null,5]
- *    Explanation
- *      only 2 elements exist -> -1
- *      last 3 = [3,1,10] -> drop min & max -> [3] -> 3
- *      last 3 = [5,5,5]  -> drop min & max -> [5] -> 5
+ * Example 1:
+ * Input
+ * ["MKAverage","addElement","addElement","calculateMKAverage","addElement",
+ * "calculateMKAverage","addElement","addElement","addElement",
+ * "calculateMKAverage"]
+ * [[3,1],[3],[1],[],[10],[],[5],[5],[5],[]]
+ * Output
+ * [null,null,null,-1,null,3,null,null,null,5]
+ * Explanation
+ * only 2 elements exist -> -1
+ * last 3 = [3,1,10] -> drop min & max -> [3] -> 3
+ * last 3 = [5,5,5]  -> drop min & max -> [5] -> 5
  *
- *  Constraints:
- *    3 <= m <= 10^5
- *    1 < k*2 < m
- *    1 <= num <= 10^5
- *    At most 10^5 calls will be made to addElement and calculateMKAverage.
+ * Constraints:
+ * 3 <= m <= 10^5
+ * 1 < k*2 < m
+ * 1 <= num <= 10^5
+ * At most 10^5 calls will be made to addElement and calculateMKAverage.
+ *
  */
 public class FindingMKAverage {
 

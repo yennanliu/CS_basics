@@ -5,34 +5,35 @@ package LeetCodeJava.Design;
 import java.util.Random;
 
 /**
- *  1206. Design Skiplist
- *  Hard
+ * 1206. Design Skiplist
+ * Hard
  *
- *  Design a Skiplist without using any built-in libraries.
+ * Design a Skiplist without using any built-in libraries.
  *
- *  A skiplist is a data structure that takes O(log(n)) time to add, erase and search.
- *  It is a stack of sorted linked lists: each layer is a sorted linked list and the
- *  upper layers let a search skip over many nodes at once.
+ * A skiplist is a data structure that takes O(log(n)) time to add, erase and search.
+ * It is a stack of sorted linked lists: each layer is a sorted linked list and the
+ * upper layers let a search skip over many nodes at once.
  *
- *  Implement the Skiplist class:
- *   - Skiplist() Initializes the object of the skiplist.
- *   - boolean search(int target) Returns true if target exists in the Skiplist.
- *   - void add(int num) Inserts num into the Skiplist.
- *   - boolean erase(int num) Removes ONE occurrence of num and returns true; if num
- *     does not exist, do nothing and return false.
+ * Implement the Skiplist class:
+ * - Skiplist() Initializes the object of the skiplist.
+ * - boolean search(int target) Returns true if target exists in the Skiplist.
+ * - void add(int num) Inserts num into the Skiplist.
+ * - boolean erase(int num) Removes ONE occurrence of num and returns true; if num
+ * does not exist, do nothing and return false.
  *
- *  Note that duplicates may exist in the Skiplist.
+ * Note that duplicates may exist in the Skiplist.
  *
- *  Example 1:
- *    Input
- *      ["Skiplist","add","add","add","search","add","search","erase","erase","search"]
- *      [[],[1],[2],[3],[0],[4],[1],[0],[1],[1]]
- *    Output
- *      [null,null,null,null,false,null,true,false,true,false]
+ * Example 1:
+ * Input
+ * ["Skiplist","add","add","add","search","add","search","erase","erase","search"]
+ * [[],[1],[2],[3],[0],[4],[1],[0],[1],[1]]
+ * Output
+ * [null,null,null,null,false,null,true,false,true,false]
  *
- *  Constraints:
- *    0 <= num, target <= 2 * 10^4
- *    At most 5 * 10^4 calls will be made to search, add, and erase.
+ * Constraints:
+ * 0 <= num, target <= 2 * 10^4
+ * At most 5 * 10^4 calls will be made to search, add, and erase.
+ *
  */
 public class DesignSkiplist {
 

@@ -5,12 +5,9 @@ package LeetCodeJava.Stack;
 import java.util.Stack;
 
 /**
- *  2104. Sum of Subarray Ranges
- * Solved
+ * 2104. Sum of Subarray Ranges
  * Medium
- * Topics
- * Companies
- * Hint
+ *
  * You are given an integer array nums. The range of a subarray of nums is the difference between the largest and smallest element in the subarray.
  *
  * Return the sum of all subarray ranges of nums.

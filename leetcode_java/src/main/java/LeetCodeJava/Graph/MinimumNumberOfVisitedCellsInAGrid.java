@@ -5,12 +5,9 @@ package LeetCodeJava.Graph;
 import java.util.*;
 
 /**
- *  2617. Minimum Number of Visited Cells in a Grid
+ * 2617. Minimum Number of Visited Cells in a Grid
  * Hard
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You are given a 0-indexed m x n integer matrix grid. Your initial position is at the top-left cell (0, 0).
  *
  * Starting from the cell (i, j), you can move to one of the following cells:
@@ -49,7 +46,6 @@ import java.util.*;
  * 1 <= m * n <= 105
  * 0 <= grid[i][j] < m * n
  * grid[m - 1][n - 1] == 0
- *
  *
  */
 public class MinimumNumberOfVisitedCellsInAGrid {

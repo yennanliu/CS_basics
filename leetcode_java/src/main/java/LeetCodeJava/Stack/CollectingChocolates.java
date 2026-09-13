@@ -3,36 +3,37 @@ package LeetCodeJava.Stack;
 // https://leetcode.com/problems/collecting-chocolates/
 
 /**
- *  2735. Collecting Chocolates
- *  Medium
+ * 2735. Collecting Chocolates
+ * Medium
  *
- *  You are given a 0-indexed integer array nums of size n representing the cost
- *  of collecting different chocolates. The cost of collecting the chocolate at
- *  index i is nums[i]. Each chocolate is of a different type, and initially the
- *  chocolate at index i is of ith type.
+ * You are given a 0-indexed integer array nums of size n representing the cost
+ * of collecting different chocolates. The cost of collecting the chocolate at
+ * index i is nums[i]. Each chocolate is of a different type, and initially the
+ * chocolate at index i is of ith type.
  *
- *  In one operation, you can do the following with an incurred cost of x:
- *  simultaneously change the chocolate of ith type to ((i + 1) mod n)th type
- *  for all chocolates.
+ * In one operation, you can do the following with an incurred cost of x:
+ * simultaneously change the chocolate of ith type to ((i + 1) mod n)th type
+ * for all chocolates.
  *
- *  Return the minimum cost to collect chocolates of all types, given that you
- *  can perform as many operations as you would like.
+ * Return the minimum cost to collect chocolates of all types, given that you
+ * can perform as many operations as you would like.
  *
- *  Example 1:
- *    Input: nums = [20,1,15], x = 5
- *    Output: 13
- *    Explanation: buy type 1 for 1, rotate (5), buy type 2 for 1, rotate (5),
- *                 buy type 0 for 1 -> 1 + 5 + 1 + 5 + 1 = 13
+ * Example 1:
+ * Input: nums = [20,1,15], x = 5
+ * Output: 13
+ * Explanation: buy type 1 for 1, rotate (5), buy type 2 for 1, rotate (5),
+ * buy type 0 for 1 -> 1 + 5 + 1 + 5 + 1 = 13
  *
- *  Example 2:
- *    Input: nums = [1,2,3], x = 4
- *    Output: 6
- *    Explanation: buy everything at its own price, no operation.
+ * Example 2:
+ * Input: nums = [1,2,3], x = 4
+ * Output: 6
+ * Explanation: buy everything at its own price, no operation.
  *
- *  Constraints:
- *    1 <= nums.length <= 1000
- *    1 <= nums[i] <= 10^9
- *    1 <= x <= 10^9
+ * Constraints:
+ * 1 <= nums.length <= 1000
+ * 1 <= nums[i] <= 10^9
+ * 1 <= x <= 10^9
+ *
  */
 public class CollectingChocolates {
 

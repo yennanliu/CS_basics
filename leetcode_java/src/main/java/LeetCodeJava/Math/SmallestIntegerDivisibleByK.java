@@ -2,12 +2,9 @@ package LeetCodeJava.Math;
 
 // https://leetcode.com/problems/smallest-integer-divisible-by-k/description/
 /**
- *  1015. Smallest Integer Divisible by K
+ * 1015. Smallest Integer Divisible by K
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * Given a positive integer k, you need to find the length of the smallest positive integer n such that n is divisible by k, and n only contains the digit 1.
  *
  * Return the length of n. If there is no such n, return -1.
@@ -36,7 +33,6 @@ package LeetCodeJava.Math;
  * Constraints:
  *
  * 1 <= k <= 105
- *
  *
  */
 public class SmallestIntegerDivisibleByK {

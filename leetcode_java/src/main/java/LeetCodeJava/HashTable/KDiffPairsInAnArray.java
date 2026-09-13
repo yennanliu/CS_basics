@@ -6,32 +6,33 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *  532. K-diff Pairs in an Array
- *  Medium
+ * 532. K-diff Pairs in an Array
+ * Medium
  *
- *  Given an array of integers nums and an integer k,
- *  return the number of unique k-diff pairs in the array.
+ * Given an array of integers nums and an integer k,
+ * return the number of unique k-diff pairs in the array.
  *
- *  A k-diff pair is an integer pair (nums[i], nums[j]), where the following are true:
- *   - 0 <= i < j < nums.length
- *   - |nums[i] - nums[j]| == k
+ * A k-diff pair is an integer pair (nums[i], nums[j]), where the following are true:
+ * - 0 <= i < j < nums.length
+ * - |nums[i] - nums[j]| == k
  *
- *  Example 1:
- *  Input: nums = [3,1,4,1,5], k = 2
- *  Output: 2   // (1, 3) and (3, 5)
+ * Example 1:
+ * Input: nums = [3,1,4,1,5], k = 2
+ * Output: 2   // (1, 3) and (3, 5)
  *
- *  Example 2:
- *  Input: nums = [1,2,3,4,5], k = 1
- *  Output: 4
+ * Example 2:
+ * Input: nums = [1,2,3,4,5], k = 1
+ * Output: 4
  *
- *  Example 3:
- *  Input: nums = [1,3,1,5,4], k = 0
- *  Output: 1
+ * Example 3:
+ * Input: nums = [1,3,1,5,4], k = 0
+ * Output: 1
  *
- *  Constraints:
- *  1 <= nums.length <= 10^4
- *  -10^7 <= nums[i] <= 10^7
- *  0 <= k <= 10^7
+ * Constraints:
+ * 1 <= nums.length <= 10^4
+ * -10^7 <= nums[i] <= 10^7
+ * 0 <= k <= 10^7
+ *
  */
 public class KDiffPairsInAnArray {
 

@@ -4,10 +4,7 @@ package LeetCodeJava.DynamicProgramming;
 /**
  * 2765. Longest Alternating Subarray
  * Easy
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You are given a 0-indexed integer array nums. A subarray s of length m is called alternating if:
  *
  * m is greater than 1.

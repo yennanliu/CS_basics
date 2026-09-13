@@ -3,37 +3,38 @@ package LeetCodeJava.Design;
 // https://leetcode.com/problems/implement-trie-ii-prefix-tree/
 
 /**
- *  1804. Implement Trie II (Prefix Tree)
- *  Medium
+ * 1804. Implement Trie II (Prefix Tree)
+ * Medium
  *
- *  A trie (pronounced as "try") or prefix tree is a tree data structure used to
- *  efficiently store and retrieve keys in a dataset of strings.
+ * A trie (pronounced as "try") or prefix tree is a tree data structure used to
+ * efficiently store and retrieve keys in a dataset of strings.
  *
- *  Implement the Trie class:
- *    Trie() Initializes the trie object.
- *    void insert(String word) Inserts the string word into the trie.
- *    int countWordsEqualTo(String word) Returns the number of instances of the
- *      string word in the trie.
- *    int countWordsStartingWith(String prefix) Returns the number of strings in the
- *      trie that have the string prefix as a prefix.
- *    void erase(String word) Erases the string word from the trie.
+ * Implement the Trie class:
+ * Trie() Initializes the trie object.
+ * void insert(String word) Inserts the string word into the trie.
+ * int countWordsEqualTo(String word) Returns the number of instances of the
+ * string word in the trie.
+ * int countWordsStartingWith(String prefix) Returns the number of strings in the
+ * trie that have the string prefix as a prefix.
+ * void erase(String word) Erases the string word from the trie.
  *
- *  Example 1:
- *    Input
- *      ["Trie","insert","insert","countWordsEqualTo","countWordsStartingWith",
- *       "erase","countWordsEqualTo","countWordsStartingWith","erase",
- *       "countWordsStartingWith"]
- *      [[],["apple"],["apple"],["apple"],["app"],["apple"],["apple"],["app"],
- *       ["apple"],["app"]]
- *    Output
- *      [null,null,null,2,2,null,1,1,null,0]
+ * Example 1:
+ * Input
+ * ["Trie","insert","insert","countWordsEqualTo","countWordsStartingWith",
+ * "erase","countWordsEqualTo","countWordsStartingWith","erase",
+ * "countWordsStartingWith"]
+ * [[],["apple"],["apple"],["apple"],["app"],["apple"],["apple"],["app"],
+ * ["apple"],["app"]]
+ * Output
+ * [null,null,null,2,2,null,1,1,null,0]
  *
- *  Constraints:
- *    1 <= word.length, prefix.length <= 2000
- *    word and prefix consist only of lowercase English letters.
- *    At most 3 * 10^4 calls in total will be made to insert, countWordsEqualTo,
- *      countWordsStartingWith and erase.
- *    It is guaranteed that for any call to erase, the string word exists in the trie.
+ * Constraints:
+ * 1 <= word.length, prefix.length <= 2000
+ * word and prefix consist only of lowercase English letters.
+ * At most 3 * 10^4 calls in total will be made to insert, countWordsEqualTo,
+ * countWordsStartingWith and erase.
+ * It is guaranteed that for any call to erase, the string word exists in the trie.
+ *
  */
 public class ImplementTrieIIPrefixTree {
 

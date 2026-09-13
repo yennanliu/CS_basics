@@ -3,37 +3,38 @@ package LeetCodeJava.BitManipulation;
 // https://leetcode.com/problems/minimum-numbers-of-function-calls-to-make-target-array/
 
 /**
- *  1558. Minimum Numbers of Function Calls to Make Target Array
- *  Medium
+ * 1558. Minimum Numbers of Function Calls to Make Target Array
+ * Medium
  *
- *  You are given an integer array nums. You have an integer array arr of the same
- *  length with all values set to 0 initially. You also have a modify function that
- *  can either
- *    - increment arr[i] by 1 for a single chosen index i, or
- *    - double every element of arr.
+ * You are given an integer array nums. You have an integer array arr of the same
+ * length with all values set to 0 initially. You also have a modify function that
+ * can either
+ * - increment arr[i] by 1 for a single chosen index i, or
+ * - double every element of arr.
  *
- *  You want to use the modify function to convert arr to nums using the minimum
- *  number of calls. Return that minimum number of function calls.
+ * You want to use the modify function to convert arr to nums using the minimum
+ * number of calls. Return that minimum number of function calls.
  *
- *  The test cases are generated so that the answer fits in a 32-bit signed integer.
+ * The test cases are generated so that the answer fits in a 32-bit signed integer.
  *
- *  Example 1:
- *    Input: nums = [1,5]
- *    Output: 5
- *    Explanation: [0,0] -> [0,1] -> [0,2] -> [0,4] -> [1,4] -> [1,5]:
- *                 1 increment + 2 doublings + 2 increments = 5 calls.
+ * Example 1:
+ * Input: nums = [1,5]
+ * Output: 5
+ * Explanation: [0,0] -> [0,1] -> [0,2] -> [0,4] -> [1,4] -> [1,5]:
+ * 1 increment + 2 doublings + 2 increments = 5 calls.
  *
- *  Example 2:
- *    Input: nums = [2,2]
- *    Output: 3
+ * Example 2:
+ * Input: nums = [2,2]
+ * Output: 3
  *
- *  Example 3:
- *    Input: nums = [4,2,5]
- *    Output: 6
+ * Example 3:
+ * Input: nums = [4,2,5]
+ * Output: 6
  *
- *  Constraints:
- *    1 <= nums.length <= 10^5
- *    0 <= nums[i] <= 10^9
+ * Constraints:
+ * 1 <= nums.length <= 10^5
+ * 0 <= nums[i] <= 10^9
+ *
  */
 public class MinimumNumbersOfFunctionCallsToMakeTargetArray {
 

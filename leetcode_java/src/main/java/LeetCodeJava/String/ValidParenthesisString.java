@@ -9,9 +9,7 @@ import java.util.Stack;
 /**
  * 678. Valid Parenthesis String
  * Medium
- * Topics
- * Companies
- * Hint
+ *
  * Given a string s containing only three types of characters: '(', ')' and '*', return true if s is valid.
  *
  * The following rules define a valid string:
@@ -128,7 +126,7 @@ public class ValidParenthesisString {
     }
 
 
-    // V0
+    // V0-1
     // IDEA: GREEDY
     // https://neetcode.io/problems/valid-parenthesis-string
     /**
@@ -434,7 +432,7 @@ public class ValidParenthesisString {
   }
 
 
-  // V0-1
+  // V0-2
   // IDEA: GREEDY (fixed by gpt)
   /**
    *  IDEA:

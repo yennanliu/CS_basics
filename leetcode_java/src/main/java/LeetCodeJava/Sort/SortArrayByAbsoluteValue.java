@@ -5,32 +5,33 @@ package LeetCodeJava.Sort;
 import java.util.Arrays;
 
 /**
- *  3667. Sort Array By Absolute Value
- *  Easy
+ * 3667. Sort Array By Absolute Value
+ * Easy
  *
- *  You are given an integer array nums.
+ * You are given an integer array nums.
  *
- *  Rearrange elements of nums in non-decreasing order of their absolute value.
+ * Rearrange elements of nums in non-decreasing order of their absolute value.
  *
- *  Return any rearranged array that satisfies this condition.
+ * Return any rearranged array that satisfies this condition.
  *
- *  Note: The absolute value of an integer x is defined as:
- *    x  if x >= 0
- *    -x if x < 0
+ * Note: The absolute value of an integer x is defined as:
+ * x  if x >= 0
+ * -x if x < 0
  *
- *  Example 1:
- *    Input: nums = [3,-1,-4,1,5]
- *    Output: [-1,1,3,-4,5]
- *    Explanation: the absolute values are 3, 1, 4, 1, 5; sorted -> 1,1,3,4,5.
- *                 [1,-1,3,-4,5] is also accepted.
+ * Example 1:
+ * Input: nums = [3,-1,-4,1,5]
+ * Output: [-1,1,3,-4,5]
+ * Explanation: the absolute values are 3, 1, 4, 1, 5; sorted -> 1,1,3,4,5.
+ * [1,-1,3,-4,5] is also accepted.
  *
- *  Example 2:
- *    Input: nums = [-100,100]
- *    Output: [-100,100]
+ * Example 2:
+ * Input: nums = [-100,100]
+ * Output: [-100,100]
  *
- *  Constraints:
- *    1 <= nums.length <= 100
- *    -100 <= nums[i] <= 100
+ * Constraints:
+ * 1 <= nums.length <= 100
+ * -100 <= nums[i] <= 100
+ *
  */
 public class SortArrayByAbsoluteValue {
 

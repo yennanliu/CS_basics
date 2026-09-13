@@ -5,33 +5,34 @@ package LeetCodeJava.BinarySearchTree;
 import LeetCodeJava.DataStructure.TreeNode;
 
 /**
- *  1373. Maximum Sum BST in Binary Tree
- *  Hard
+ * 1373. Maximum Sum BST in Binary Tree
+ * Hard
  *
- *  Given a binary tree root, return the maximum sum of all keys of any sub-tree
- *  which is also a Binary Search Tree (BST).
+ * Given a binary tree root, return the maximum sum of all keys of any sub-tree
+ * which is also a Binary Search Tree (BST).
  *
- *  Assume a BST is defined as follows:
- *   - The left subtree of a node contains only nodes with keys less than the
- *     node's key.
- *   - The right subtree of a node contains only nodes with keys greater than the
- *     node's key.
- *   - Both the left and right subtrees must also be binary search trees.
+ * Assume a BST is defined as follows:
+ * - The left subtree of a node contains only nodes with keys less than the
+ * node's key.
+ * - The right subtree of a node contains only nodes with keys greater than the
+ * node's key.
+ * - Both the left and right subtrees must also be binary search trees.
  *
- *  Example 1:
- *    Input: root = [1,4,3,2,4,2,5,null,null,null,null,null,null,4,6]
- *    Output: 20
- *    Explanation: The maximum sum in a valid BST is obtained in the sub-tree
- *                 rooted at the node with key 3.
+ * Example 1:
+ * Input: root = [1,4,3,2,4,2,5,null,null,null,null,null,null,4,6]
+ * Output: 20
+ * Explanation: The maximum sum in a valid BST is obtained in the sub-tree
+ * rooted at the node with key 3.
  *
- *  Example 2:
- *    Input: root = [-4,-2,-5]
- *    Output: 0
- *    Explanation: All values are negative, so return an empty BST.
+ * Example 2:
+ * Input: root = [-4,-2,-5]
+ * Output: 0
+ * Explanation: All values are negative, so return an empty BST.
  *
- *  Constraints:
- *    The number of nodes in the tree is in the range [1, 4 * 10^4].
- *    -4 * 10^4 <= Node.val <= 4 * 10^4
+ * Constraints:
+ * The number of nodes in the tree is in the range [1, 4 * 10^4].
+ * -4 * 10^4 <= Node.val <= 4 * 10^4
+ *
  */
 public class MaximumSumBSTInBinaryTree {
 

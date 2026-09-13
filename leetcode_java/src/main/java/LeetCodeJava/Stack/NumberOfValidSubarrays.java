@@ -6,28 +6,29 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 /**
- *  1063. Number of Valid Subarrays
- *  Hard
+ * 1063. Number of Valid Subarrays
+ * Hard
  *
- *  Given an integer array nums, return the number of non-empty subarrays with
- *  the leftmost element of the subarray not larger than other elements in the
- *  subarray.
+ * Given an integer array nums, return the number of non-empty subarrays with
+ * the leftmost element of the subarray not larger than other elements in the
+ * subarray.
  *
- *  A subarray is a contiguous part of an array.
+ * A subarray is a contiguous part of an array.
  *
- *  Example 1:
- *    Input: nums = [1,4,2,5,3]
- *    Output: 11
- *    Explanation: the 11 valid subarrays are [1],[4],[2],[5],[3],[1,4],[2,5],
- *                 [1,4,2],[2,5,3],[1,4,2,5],[1,4,2,5,3]
+ * Example 1:
+ * Input: nums = [1,4,2,5,3]
+ * Output: 11
+ * Explanation: the 11 valid subarrays are [1],[4],[2],[5],[3],[1,4],[2,5],
+ * [1,4,2],[2,5,3],[1,4,2,5],[1,4,2,5,3]
  *
- *  Example 2:
- *    Input: nums = [3,2,1]
- *    Output: 3
+ * Example 2:
+ * Input: nums = [3,2,1]
+ * Output: 3
  *
- *  Constraints:
- *    1 <= nums.length <= 5 * 10^4
- *    0 <= nums[i] <= 10^5
+ * Constraints:
+ * 1 <= nums.length <= 5 * 10^4
+ * 0 <= nums[i] <= 10^5
+ *
  */
 public class NumberOfValidSubarrays {
 

@@ -14,13 +14,13 @@ import java.util.Deque;
  *
  * - MyCircularDeque(int k) Initializes the deque with a maximum size of k.
  * - boolean insertFront() Adds an item at the front of Deque. Returns true if the
- *   operation is successful, or false otherwise.
+ * operation is successful, or false otherwise.
  * - boolean insertLast() Adds an item at the rear of Deque. Returns true if the
- *   operation is successful, or false otherwise.
+ * operation is successful, or false otherwise.
  * - boolean deleteFront() Deletes an item from the front of Deque. Returns true if
- *   the operation is successful, or false otherwise.
+ * the operation is successful, or false otherwise.
  * - boolean deleteLast() Deletes an item from the rear of Deque. Returns true if
- *   the operation is successful, or false otherwise.
+ * the operation is successful, or false otherwise.
  * - int getFront() Returns the front item from the Deque. Returns -1 if the deque is empty.
  * - int getRear() Returns the last item from Deque. Returns -1 if the deque is empty.
  * - boolean isEmpty() Returns true if the deque is empty, or false otherwise.
@@ -30,7 +30,7 @@ import java.util.Deque;
  *
  * Input
  * ["MyCircularDeque", "insertLast", "insertLast", "insertFront", "insertFront", "getRear",
- *  "isFull", "deleteLast", "insertFront", "getFront"]
+ * "isFull", "deleteLast", "insertFront", "getFront"]
  * [[3], [1], [2], [3], [4], [], [], [], [4], []]
  * Output
  * [null, true, true, true, false, 2, true, true, true, 4]

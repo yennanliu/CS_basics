@@ -3,38 +3,39 @@ package LeetCodeJava.DynamicProgramming;
 // https://leetcode.com/problems/android-unlock-patterns/
 
 /**
- *  351. Android Unlock Patterns
- *  Medium
+ * 351. Android Unlock Patterns
+ * Medium
  *
- *  Android devices have a special lock screen with a 3 x 3 grid of dots. Users can set an
- *  "unlock pattern" by connecting the dots in a specific sequence, forming a series of joined
- *  line segments where each segment's endpoints are two consecutive dots in the sequence.
- *  A sequence of k dots is a valid unlock pattern if both of the following are true:
+ * Android devices have a special lock screen with a 3 x 3 grid of dots. Users can set an
+ * "unlock pattern" by connecting the dots in a specific sequence, forming a series of joined
+ * line segments where each segment's endpoints are two consecutive dots in the sequence.
+ * A sequence of k dots is a valid unlock pattern if both of the following are true:
  *
- *   - All the dots in the sequence are distinct.
- *   - If the line segment connecting two consecutive dots in the sequence passes through the
- *     center of any other dot, the other dot must have previously appeared in the sequence.
- *     No jumps through non-selected dots are allowed.
+ * - All the dots in the sequence are distinct.
+ * - If the line segment connecting two consecutive dots in the sequence passes through the
+ * center of any other dot, the other dot must have previously appeared in the sequence.
+ * No jumps through non-selected dots are allowed.
  *
- *  Given two integers m and n, return the number of unlock patterns of the Android grid lock
- *  screen that consist of at least m keys and at most n keys.
+ * Given two integers m and n, return the number of unlock patterns of the Android grid lock
+ * screen that consist of at least m keys and at most n keys.
  *
- *  Grid:
- *      | 1 | 2 | 3 |
- *      | 4 | 5 | 6 |
- *      | 7 | 8 | 9 |
+ * Grid:
+ * | 1 | 2 | 3 |
+ * | 4 | 5 | 6 |
+ * | 7 | 8 | 9 |
  *
- *  Example 1:
- *  Input: m = 1, n = 1
- *  Output: 9
+ * Example 1:
+ * Input: m = 1, n = 1
+ * Output: 9
  *
- *  Example 2:
- *  Input: m = 1, n = 2
- *  Output: 65
+ * Example 2:
+ * Input: m = 1, n = 2
+ * Output: 65
  *
- *  Constraints:
+ * Constraints:
  *
- *   1 <= m, n <= 9
+ * 1 <= m, n <= 9
+ *
  */
 public class AndroidUnlockPatterns {
 

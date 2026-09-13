@@ -12,33 +12,34 @@ import java.util.Map;
 import LeetCodeJava.DataStructure.TreeNode;
 
 /**
- *  1973. Count Nodes Equal to Sum of Descendants
- *  Medium
+ * 1973. Count Nodes Equal to Sum of Descendants
+ * Medium
  *
- *  Given the root of a binary tree, return the number of nodes where the value of the
- *  node is equal to the sum of the values of its descendants.
+ * Given the root of a binary tree, return the number of nodes where the value of the
+ * node is equal to the sum of the values of its descendants.
  *
- *  A descendant of a node x is any node that is on the path from node x to some leaf
- *  node. The sum is considered to be 0 if the node has no descendants.
+ * A descendant of a node x is any node that is on the path from node x to some leaf
+ * node. The sum is considered to be 0 if the node has no descendants.
  *
- *  Example 1:
- *    Input: root = [10,3,4,2,1]
- *    Output: 2
- *    Explanation: node 10 -> descendants sum 3+4+2+1 = 10,
- *                 node 3  -> descendants sum 2+1 = 3.
+ * Example 1:
+ * Input: root = [10,3,4,2,1]
+ * Output: 2
+ * Explanation: node 10 -> descendants sum 3+4+2+1 = 10,
+ * node 3  -> descendants sum 2+1 = 3.
  *
- *  Example 2:
- *    Input: root = [2,3,null,2,null]
- *    Output: 0
+ * Example 2:
+ * Input: root = [2,3,null,2,null]
+ * Output: 0
  *
- *  Example 3:
- *    Input: root = [0]
- *    Output: 1
- *    Explanation: a leaf has descendant sum 0, so a leaf holding 0 counts.
+ * Example 3:
+ * Input: root = [0]
+ * Output: 1
+ * Explanation: a leaf has descendant sum 0, so a leaf holding 0 counts.
  *
- *  Constraints:
- *    The number of nodes in the tree is in the range [1, 10^5].
- *    0 <= Node.val <= 10^5
+ * Constraints:
+ * The number of nodes in the tree is in the range [1, 10^5].
+ * 0 <= Node.val <= 10^5
+ *
  */
 public class CountNodesEqualToSumOfDescendants {
 

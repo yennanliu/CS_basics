@@ -2,15 +2,12 @@ package LeetCodeJava.HashTable;
 
 // https://leetcode.com/problems/longest-substring-without-repeating-characters/
 /**
- *  3. Longest Substring Without Repeating Characters
- * Solved
+ * 3. Longest Substring Without Repeating Characters
  * Medium
- * Topics
- * Companies
- * Hint
+ *
  * Given a string s, find the length of the longest
  * substring
- *  without repeating characters.
+ * without repeating characters.
  *
  *
  *
@@ -36,7 +33,6 @@ package LeetCodeJava.HashTable;
  *
  * 0 <= s.length <= 5 * 104
  * s consists of English letters, digits, symbols and spaces.
- *
  *
  */
 import java.util.HashMap;

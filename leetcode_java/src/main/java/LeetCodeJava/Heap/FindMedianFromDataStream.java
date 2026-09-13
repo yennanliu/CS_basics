@@ -7,8 +7,7 @@ import java.util.*;
 /**
  * 295. Find Median from Data Stream
  * Hard
- * Topics
- * Companies
+ *
  * The median is the middle value in an ordered integer list. If the size of the list is even, there is no middle value, and the median is the mean of the two middle values.
  *
  * For example, for arr = [2,3,4], the median is 3.
@@ -48,7 +47,6 @@ import java.util.*;
  *
  * If all integer numbers from the stream are in the range [0, 100], how would you optimize your solution?
  * If 99% of all integer numbers from the stream are in the range [0, 100], how would you optimize your solution?
- *
  *
  */
 

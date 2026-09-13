@@ -3,11 +3,8 @@ package LeetCodeJava.Tree;
 // https://leetcode.com/problems/find-duplicate-subtrees/
 /**
  * 652. Find Duplicate Subtrees
- * Solved
  * Medium
- * Topics
- * premium lock icon
- * Companies
+ *
  * Given the root of a binary tree, return all duplicate subtrees.
  *
  * For each kind of duplicate subtrees, you only need to return the root node of any one of them.
@@ -37,7 +34,6 @@ package LeetCodeJava.Tree;
  *
  * The number of the nodes in the tree will be in the range [1, 5000]
  * -200 <= Node.val <= 200
- *
  *
  */
 import LeetCodeJava.DataStructure.TreeNode;

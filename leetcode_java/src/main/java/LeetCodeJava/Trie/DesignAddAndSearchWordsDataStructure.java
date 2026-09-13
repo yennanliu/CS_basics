@@ -2,12 +2,9 @@ package LeetCodeJava.Trie;
 
 // https://leetcode.com/problems/design-add-and-search-words-data-structure/
 /**
- *  211. Design Add and Search Words Data Structure
- * Solved
+ * 211. Design Add and Search Words Data Structure
  * Medium
- * Topics
- * Companies
- * Hint
+ *
  * Design a data structure that supports adding new words and finding if a string matches any previously added string.
  *
  * Implement the WordDictionary class:

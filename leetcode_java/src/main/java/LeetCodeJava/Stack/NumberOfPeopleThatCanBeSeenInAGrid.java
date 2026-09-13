@@ -6,35 +6,37 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 /**
- *  2282. Number of People That Can Be Seen in a Grid
- *  Medium
- *  (premium / locked problem)
+ * 2282. Number of People That Can Be Seen in a Grid
+ * Medium
  *
- *  You are given an m x n 0-indexed 2D array of positive integers heights where
- *  heights[i][j] is the height of the person standing at position (i, j).
+ * (premium / locked problem)
  *
- *  A person standing at position (row1, col1) can see a person standing at
- *  position (row2, col2) if:
- *    - The person at (row2, col2) is to the right or below the person at
- *      (row1, col1). More formally, either row1 == row2 and col1 < col2, or
- *      row1 < row2 and col1 == col2.
- *    - Everyone in between them is shorter than both of them.
+ * You are given an m x n 0-indexed 2D array of positive integers heights where
+ * heights[i][j] is the height of the person standing at position (i, j).
  *
- *  Return an m x n 2D array of integers answer where answer[i][j] is the number
- *  of people that the person at position (i, j) can see.
+ * A person standing at position (row1, col1) can see a person standing at
+ * position (row2, col2) if:
+ * - The person at (row2, col2) is to the right or below the person at
+ * (row1, col1). More formally, either row1 == row2 and col1 < col2, or
+ * row1 < row2 and col1 == col2.
+ * - Everyone in between them is shorter than both of them.
  *
- *  Example 1:
- *    Input: heights = [[3,1,4,2,5]]
- *    Output: [[2,1,2,1,0]]
+ * Return an m x n 2D array of integers answer where answer[i][j] is the number
+ * of people that the person at position (i, j) can see.
  *
- *  Example 2:
- *    Input: heights = [[5,1],[3,1],[4,1]]
- *    Output: [[3,1],[2,1],[1,0]]
+ * Example 1:
+ * Input: heights = [[3,1,4,2,5]]
+ * Output: [[2,1,2,1,0]]
  *
- *  Constraints:
- *    1 <= heights.length <= 400
- *    1 <= heights[i].length <= 400
- *    1 <= heights[i][j] <= 10^5
+ * Example 2:
+ * Input: heights = [[5,1],[3,1],[4,1]]
+ * Output: [[3,1],[2,1],[1,0]]
+ *
+ * Constraints:
+ * 1 <= heights.length <= 400
+ * 1 <= heights[i].length <= 400
+ * 1 <= heights[i][j] <= 10^5
+ *
  */
 public class NumberOfPeopleThatCanBeSeenInAGrid {
 

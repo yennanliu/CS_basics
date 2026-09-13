@@ -8,33 +8,34 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *  811. Subdomain Visit Count
- *  Medium
+ * 811. Subdomain Visit Count
+ * Medium
  *
- *  A website domain "discuss.leetcode.com" consists of various subdomains.
- *  At the top level, we have "com", at the next level, we have "leetcode.com" and at
- *  the lowest level, "discuss.leetcode.com". When we visit a domain like
- *  "discuss.leetcode.com", we will also visit the parent domains "leetcode.com" and "com"
- *  implicitly.
+ * A website domain "discuss.leetcode.com" consists of various subdomains.
+ * At the top level, we have "com", at the next level, we have "leetcode.com" and at
+ * the lowest level, "discuss.leetcode.com". When we visit a domain like
+ * "discuss.leetcode.com", we will also visit the parent domains "leetcode.com" and "com"
+ * implicitly.
  *
- *  A count-paired domain is a domain that has one of the two formats
- *  "rep d1.d2.d3" or "rep d1.d2" where rep is the number of visits to the domain.
+ * A count-paired domain is a domain that has one of the two formats
+ * "rep d1.d2.d3" or "rep d1.d2" where rep is the number of visits to the domain.
  *
- *  Given an array of count-paired domains cpdomains, return an array of the
- *  count-paired domains of each subdomain in the input. You may return the answer
- *  in any order.
+ * Given an array of count-paired domains cpdomains, return an array of the
+ * count-paired domains of each subdomain in the input. You may return the answer
+ * in any order.
  *
- *  Example 1:
- *  Input: cpdomains = ["9001 discuss.leetcode.com"]
- *  Output: ["9001 leetcode.com","9001 discuss.leetcode.com","9001 com"]
+ * Example 1:
+ * Input: cpdomains = ["9001 discuss.leetcode.com"]
+ * Output: ["9001 leetcode.com","9001 discuss.leetcode.com","9001 com"]
  *
- *  Example 2:
- *  Input: cpdomains = ["900 google.mail.com","50 yahoo.com","1 intel.mail.com","5 wiki.org"]
- *  Output: ["901 mail.com","50 yahoo.com","900 google.mail.com","5 wiki.org","5 org","1 intel.mail.com","951 com"]
+ * Example 2:
+ * Input: cpdomains = ["900 google.mail.com","50 yahoo.com","1 intel.mail.com","5 wiki.org"]
+ * Output: ["901 mail.com","50 yahoo.com","900 google.mail.com","5 wiki.org","5 org","1 intel.mail.com","951 com"]
  *
- *  Constraints:
- *  1 <= cpdomain.length <= 100
- *  1 <= cpdomain[i].length <= 100
+ * Constraints:
+ * 1 <= cpdomain.length <= 100
+ * 1 <= cpdomain[i].length <= 100
+ *
  */
 public class SubdomainVisitCount {
 

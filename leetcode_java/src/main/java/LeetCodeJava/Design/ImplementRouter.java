@@ -12,57 +12,58 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- *  3508. Implement Router
- *  Medium
+ * 3508. Implement Router
+ * Medium
  *
- *  Design a data structure that can efficiently manage data packets in a network
- *  router. Each data packet consists of source, destination and timestamp.
+ * Design a data structure that can efficiently manage data packets in a network
+ * router. Each data packet consists of source, destination and timestamp.
  *
- *  Implement the Router class:
- *    Router(int memoryLimit) Initializes the Router object with a fixed memory
- *      limit, the maximum number of packets it can store at any given time. If
- *      adding a new packet would exceed this limit, the oldest packet must be
- *      removed to free up space.
- *    boolean addPacket(int source, int destination, int timestamp) Adds a packet.
- *      A packet is a duplicate if another packet with the same source, destination
- *      and timestamp already exists in the router. Return true if the packet was
- *      added (i.e. it is not a duplicate), otherwise false.
- *    int[] forwardPacket() Forwards the next packet in FIFO order, removes it from
- *      storage and returns it as [source, destination, timestamp]. If there are no
- *      packets to forward, return an empty array.
- *    int getCount(int destination, int startTime, int endTime) Returns the number
- *      of packets currently stored (i.e. not yet forwarded) with the given
- *      destination and a timestamp in the inclusive range [startTime, endTime].
+ * Implement the Router class:
+ * Router(int memoryLimit) Initializes the Router object with a fixed memory
+ * limit, the maximum number of packets it can store at any given time. If
+ * adding a new packet would exceed this limit, the oldest packet must be
+ * removed to free up space.
+ * boolean addPacket(int source, int destination, int timestamp) Adds a packet.
+ * A packet is a duplicate if another packet with the same source, destination
+ * and timestamp already exists in the router. Return true if the packet was
+ * added (i.e. it is not a duplicate), otherwise false.
+ * int[] forwardPacket() Forwards the next packet in FIFO order, removes it from
+ * storage and returns it as [source, destination, timestamp]. If there are no
+ * packets to forward, return an empty array.
+ * int getCount(int destination, int startTime, int endTime) Returns the number
+ * of packets currently stored (i.e. not yet forwarded) with the given
+ * destination and a timestamp in the inclusive range [startTime, endTime].
  *
- *  Note that queries for addPacket will be made in non-decreasing order of timestamp.
+ * Note that queries for addPacket will be made in non-decreasing order of timestamp.
  *
- *  Example 1:
- *    Input
- *      ["Router","addPacket","addPacket","addPacket","addPacket","addPacket",
- *       "forwardPacket","addPacket","getCount"]
- *      [[3],[1,4,90],[2,5,90],[1,4,90],[3,5,95],[4,5,105],[],[5,2,110],[5,100,110]]
- *    Output
- *      [null,true,true,false,true,true,[2,5,90],true,1]
- *    Explanation
- *      addPacket(1,4,90) / (2,5,90) -> true ; (1,4,90) again -> false (duplicate)
- *      addPacket(4,5,105) evicts [1,4,90] (memoryLimit = 3)
- *      forwardPacket() -> [2,5,90]
- *      getCount(5,100,110) -> 1  (only [4,5,105])
+ * Example 1:
+ * Input
+ * ["Router","addPacket","addPacket","addPacket","addPacket","addPacket",
+ * "forwardPacket","addPacket","getCount"]
+ * [[3],[1,4,90],[2,5,90],[1,4,90],[3,5,95],[4,5,105],[],[5,2,110],[5,100,110]]
+ * Output
+ * [null,true,true,false,true,true,[2,5,90],true,1]
+ * Explanation
+ * addPacket(1,4,90) / (2,5,90) -> true ; (1,4,90) again -> false (duplicate)
+ * addPacket(4,5,105) evicts [1,4,90] (memoryLimit = 3)
+ * forwardPacket() -> [2,5,90]
+ * getCount(5,100,110) -> 1  (only [4,5,105])
  *
- *  Example 2:
- *    Input
- *      ["Router","addPacket","forwardPacket","forwardPacket"]
- *      [[2],[7,4,90],[],[]]
- *    Output
- *      [null,true,[7,4,90],[]]
+ * Example 2:
+ * Input
+ * ["Router","addPacket","forwardPacket","forwardPacket"]
+ * [[2],[7,4,90],[],[]]
+ * Output
+ * [null,true,[7,4,90],[]]
  *
- *  Constraints:
- *    2 <= memoryLimit <= 10^5
- *    1 <= source, destination <= 2 * 10^5
- *    1 <= timestamp <= 10^9
- *    1 <= startTime <= endTime <= 10^9
- *    At most 10^5 calls will be made to addPacket, forwardPacket and getCount.
- *    Queries for addPacket will be made in non-decreasing order of timestamp.
+ * Constraints:
+ * 2 <= memoryLimit <= 10^5
+ * 1 <= source, destination <= 2 * 10^5
+ * 1 <= timestamp <= 10^9
+ * 1 <= startTime <= endTime <= 10^9
+ * At most 10^5 calls will be made to addPacket, forwardPacket and getCount.
+ * Queries for addPacket will be made in non-decreasing order of timestamp.
+ *
  */
 public class ImplementRouter {
 

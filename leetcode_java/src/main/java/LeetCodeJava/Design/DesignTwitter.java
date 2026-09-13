@@ -3,6 +3,8 @@ package LeetCodeJava.Design;
 // https://leetcode.com/problems/design-twitter/
 /**
  * 355. Design Twitter
+ * Medium
+ *
  * Design a simplified version of Twitter where
  * users can post tweets, follow/unfollow another
  * user and is able to see the 10 most recent tweets
@@ -180,7 +182,7 @@ public class DesignTwitter {
 //    }
 
 
-    // V1_1
+    // V1-_1
     // https://leetcode.com/problems/design-twitter/solutions/3869194/beats-100-8ms-java/
     class Twitter_1_1 {
 

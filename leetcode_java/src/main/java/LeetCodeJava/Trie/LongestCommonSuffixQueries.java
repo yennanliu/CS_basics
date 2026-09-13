@@ -10,10 +10,7 @@ import java.util.Map;
 /**
  * 3093. Longest Common Suffix Queries
  * Hard
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You are given two arrays of strings wordsContainer and wordsQuery.
  *
  * For each wordsQuery[i], you need to find a string from wordsContainer that has the longest common suffix with wordsQuery[i]. If there are two or more strings in wordsContainer that share the longest common suffix, find the string that is the smallest in length. If there are two or more such strings that have the same smallest length, find the one that occurred earlier in wordsContainer.

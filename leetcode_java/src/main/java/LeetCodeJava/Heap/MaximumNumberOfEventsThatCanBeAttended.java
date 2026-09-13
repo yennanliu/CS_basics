@@ -3,12 +3,8 @@ package LeetCodeJava.Heap;
 // https://leetcode.com/problems/maximum-number-of-events-that-can-be-attended/description/
 /**
  * 1353. Maximum Number of Events That Can Be Attended
- * Solved
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You are given an array of events where events[i] = [startDayi, endDayi]. Every event i starts at startDayi and ends at endDayi.
  *
  * You can attend an event i at any day d where startDayi <= d <= endDayi. You can only attend one event at any time d.
@@ -38,12 +34,6 @@ package LeetCodeJava.Heap;
  * 1 <= events.length <= 105
  * events[i].length == 2
  * 1 <= startDayi <= endDayi <= 105
- *
- * Seen this question in a real interview before?
- * 1/5
- * Yes
- * No
- *
  *
  */
 

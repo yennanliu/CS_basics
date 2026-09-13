@@ -2,12 +2,9 @@ package LeetCodeJava.Math;
 
 // https://leetcode.com/problems/apply-operations-to-make-sum-of-array-greater-than-or-equal-to-k/description/
 /**
- *  3091. Apply Operations to Make Sum of Array Greater Than or Equal to k
+ * 3091. Apply Operations to Make Sum of Array Greater Than or Equal to k
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * You are given a positive integer k. Initially, you have an array nums = [1].
  *
  * You can perform any of the following operations on the array any number of times (possibly zero):
@@ -48,6 +45,7 @@ package LeetCodeJava.Math;
  * Constraints:
  *
  * 1 <= k <= 105
+ *
  */
 public class ApplyOperationsToMakeSumOfArrayGreaterThanOrEqualToK {
 

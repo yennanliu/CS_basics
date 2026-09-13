@@ -5,30 +5,31 @@ package LeetCodeJava.Sort;
 import java.util.Arrays;
 
 /**
- *  2164. Sort Even and Odd Indices Independently
- *  Easy
+ * 2164. Sort Even and Odd Indices Independently
+ * Easy
  *
- *  You are given a 0-indexed integer array nums. Rearrange the values of nums
- *  according to the following rules:
- *    - Sort the values at odd indices of nums in non-increasing order.
- *    - Sort the values at even indices of nums in non-decreasing order.
+ * You are given a 0-indexed integer array nums. Rearrange the values of nums
+ * according to the following rules:
+ * - Sort the values at odd indices of nums in non-increasing order.
+ * - Sort the values at even indices of nums in non-decreasing order.
  *
- *  Return the array formed after rearranging the values of nums.
+ * Return the array formed after rearranging the values of nums.
  *
- *  Example 1:
- *    Input: nums = [4,1,2,3]
- *    Output: [2,3,4,1]
- *    Explanation: odd indices (1,3) hold {1,3} -> non-increasing {3,1};
- *                 even indices (0,2) hold {4,2} -> non-decreasing {2,4}.
+ * Example 1:
+ * Input: nums = [4,1,2,3]
+ * Output: [2,3,4,1]
+ * Explanation: odd indices (1,3) hold {1,3} -> non-increasing {3,1};
+ * even indices (0,2) hold {4,2} -> non-decreasing {2,4}.
  *
- *  Example 2:
- *    Input: nums = [2,1]
- *    Output: [2,1]
- *    Explanation: one odd index and one even index -> nothing moves.
+ * Example 2:
+ * Input: nums = [2,1]
+ * Output: [2,1]
+ * Explanation: one odd index and one even index -> nothing moves.
  *
- *  Constraints:
- *    1 <= nums.length <= 100
- *    1 <= nums[i] <= 100
+ * Constraints:
+ * 1 <= nums.length <= 100
+ * 1 <= nums[i] <= 100
+ *
  */
 public class SortEvenAndOddIndicesIndependently {
 

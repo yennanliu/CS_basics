@@ -7,10 +7,7 @@ import java.util.*;
 /**
  * 1381. Design a Stack With Increment Operation
  * Medium
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ *
  * Design a stack that supports increment operations on its elements.
  *
  * Implement the CustomStack class:
@@ -49,7 +46,6 @@ import java.util.*;
  * 1 <= maxSize, x, k <= 1000
  * 0 <= val <= 100
  * At most 1000 calls will be made to each method of increment, push and pop each separately.
- *
  *
  */
 public class DesignAStackWithIncrementOperation {

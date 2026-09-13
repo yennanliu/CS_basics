@@ -3,32 +3,33 @@ package LeetCodeJava.Array;
 // https://leetcode.com/problems/rotate-function/
 
 /**
- *  396. Rotate Function
- *  Medium
+ * 396. Rotate Function
+ * Medium
  *
- *  You are given an integer array nums of length n.
+ * You are given an integer array nums of length n.
  *
- *  Assume arr_k to be an array obtained by rotating nums by k positions
- *  clock-wise. We define F(k) as follows:
+ * Assume arr_k to be an array obtained by rotating nums by k positions
+ * clock-wise. We define F(k) as follows:
  *
- *   F(k) = 0 * arr_k[0] + 1 * arr_k[1] + ... + (n - 1) * arr_k[n - 1]
+ * F(k) = 0 * arr_k[0] + 1 * arr_k[1] + ... + (n - 1) * arr_k[n - 1]
  *
- *  Return the maximum value of F(0), F(1), ..., F(n-1).
- *  The test cases are generated so that the answer fits in a 32-bit integer.
+ * Return the maximum value of F(0), F(1), ..., F(n-1).
+ * The test cases are generated so that the answer fits in a 32-bit integer.
  *
- *  Example 1:
- *   Input: nums = [4,3,2,6]
- *   Output: 26
- *   (F(0)=25, F(1)=16, F(2)=23, F(3)=26)
+ * Example 1:
+ * Input: nums = [4,3,2,6]
+ * Output: 26
+ * (F(0)=25, F(1)=16, F(2)=23, F(3)=26)
  *
- *  Example 2:
- *   Input: nums = [1000]
- *   Output: 0
+ * Example 2:
+ * Input: nums = [1000]
+ * Output: 0
  *
- *  Constraints:
- *   n == nums.length
- *   1 <= n <= 10^5
- *   -100 <= nums[i] <= 100
+ * Constraints:
+ * n == nums.length
+ * 1 <= n <= 10^5
+ * -100 <= nums[i] <= 100
+ *
  */
 public class RotateFunction {
 

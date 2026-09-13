@@ -2,12 +2,9 @@ package LeetCodeJava.BackTrack;
 
 // https://leetcode.com/problems/unique-paths-iii/description/
 /**
- *  980. Unique Paths III
- * Solved
+ * 980. Unique Paths III
  * Hard
- * Topics
- * premium lock icon
- * Companies
+ *
  * You are given an m x n integer array grid where grid[i][j] could be:
  *
  * 1 representing the starting square. There is exactly one starting square.
@@ -53,7 +50,6 @@ package LeetCodeJava.BackTrack;
  * 1 <= m * n <= 20
  * -1 <= grid[i][j] <= 2
  * There is exactly one starting cell and one ending cell.
- *
  *
  */
 public class UniquePaths3 {

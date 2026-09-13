@@ -7,33 +7,34 @@ import java.util.Arrays;
 import java.util.Deque;
 
 /**
- *  2454. Next Greater Element IV
- *  Hard
+ * 2454. Next Greater Element IV
+ * Hard
  *
- *  You are given a 0-indexed array of non-negative integers nums. For each
- *  integer in nums, you must find its respective second greater integer.
+ * You are given a 0-indexed array of non-negative integers nums. For each
+ * integer in nums, you must find its respective second greater integer.
  *
- *  The second greater integer of nums[i] is nums[j] such that:
- *    j > i
- *    nums[j] > nums[i]
- *    There exists exactly one index k such that nums[k] > nums[i] and i < k < j.
+ * The second greater integer of nums[i] is nums[j] such that:
+ * j > i
+ * nums[j] > nums[i]
+ * There exists exactly one index k such that nums[k] > nums[i] and i < k < j.
  *
- *  If there is no such nums[j], the second greater integer is considered to be -1.
+ * If there is no such nums[j], the second greater integer is considered to be -1.
  *
- *  Return an integer array answer, where answer[i] is the second greater integer
- *  of nums[i].
+ * Return an integer array answer, where answer[i] is the second greater integer
+ * of nums[i].
  *
- *  Example 1:
- *    Input: nums = [2,4,0,9,6]
- *    Output: [9,6,6,-1,-1]
+ * Example 1:
+ * Input: nums = [2,4,0,9,6]
+ * Output: [9,6,6,-1,-1]
  *
- *  Example 2:
- *    Input: nums = [3,3]
- *    Output: [-1,-1]
+ * Example 2:
+ * Input: nums = [3,3]
+ * Output: [-1,-1]
  *
- *  Constraints:
- *    1 <= nums.length <= 10^5
- *    0 <= nums[i] <= 10^9
+ * Constraints:
+ * 1 <= nums.length <= 10^5
+ * 0 <= nums[i] <= 10^9
+ *
  */
 public class NextGreaterElementIV {
 

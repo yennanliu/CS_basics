@@ -3,30 +3,31 @@ package LeetCodeJava.String;
 // https://leetcode.com/problems/buddy-strings/
 
 /**
- *  859. Buddy Strings
- *  Easy
+ * 859. Buddy Strings
+ * Easy
  *
- *  Given two strings s and goal, return true if you can swap two letters in s
- *  so the result is equal to goal, otherwise, return false.
+ * Given two strings s and goal, return true if you can swap two letters in s
+ * so the result is equal to goal, otherwise, return false.
  *
- *  Swapping letters is defined as taking two indices i and j (0-indexed) such
- *  that i != j and swapping the characters at s[i] and s[j].
+ * Swapping letters is defined as taking two indices i and j (0-indexed) such
+ * that i != j and swapping the characters at s[i] and s[j].
  *
- *  Example 1:
- *  Input: s = "ab", goal = "ba"
- *  Output: true
+ * Example 1:
+ * Input: s = "ab", goal = "ba"
+ * Output: true
  *
- *  Example 2:
- *  Input: s = "ab", goal = "ab"
- *  Output: false (the only swap gives "ba" != goal)
+ * Example 2:
+ * Input: s = "ab", goal = "ab"
+ * Output: false (the only swap gives "ba" != goal)
  *
- *  Example 3:
- *  Input: s = "aa", goal = "aa"
- *  Output: true
+ * Example 3:
+ * Input: s = "aa", goal = "aa"
+ * Output: true
  *
- *  Constraints:
- *   - 1 <= s.length, goal.length <= 2 * 10^4
- *   - s and goal consist of lowercase letters.
+ * Constraints:
+ * - 1 <= s.length, goal.length <= 2 * 10^4
+ * - s and goal consist of lowercase letters.
+ *
  */
 public class BuddyStrings {
 

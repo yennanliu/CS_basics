@@ -5,33 +5,34 @@ package LeetCodeJava.Sort;
 import java.util.Arrays;
 
 /**
- *  2740. Find the Value of the Partition
- *  Medium
+ * 2740. Find the Value of the Partition
+ * Medium
  *
- *  You are given a positive integer array nums.
+ * You are given a positive integer array nums.
  *
- *  Partition nums into two arrays, nums1 and nums2, such that:
- *    - Each element of the array nums belongs to either nums1 or nums2.
- *    - Both arrays are non-empty.
- *    - The value of the partition is minimized.
+ * Partition nums into two arrays, nums1 and nums2, such that:
+ * - Each element of the array nums belongs to either nums1 or nums2.
+ * - Both arrays are non-empty.
+ * - The value of the partition is minimized.
  *
- *  The value of the partition is |max(nums1) - min(nums2)|.
+ * The value of the partition is |max(nums1) - min(nums2)|.
  *
- *  Return the integer denoting the value of such partition.
+ * Return the integer denoting the value of such partition.
  *
- *  Example 1:
- *    Input: nums = [1,3,2,4]
- *    Output: 1
- *    Explanation: nums1 = [1,2], nums2 = [3,4] -> |2 - 3| = 1, the minimum.
+ * Example 1:
+ * Input: nums = [1,3,2,4]
+ * Output: 1
+ * Explanation: nums1 = [1,2], nums2 = [3,4] -> |2 - 3| = 1, the minimum.
  *
- *  Example 2:
- *    Input: nums = [100,1,10]
- *    Output: 9
- *    Explanation: nums1 = [10], nums2 = [100,1] -> |10 - 1| = 9, the minimum.
+ * Example 2:
+ * Input: nums = [100,1,10]
+ * Output: 9
+ * Explanation: nums1 = [10], nums2 = [100,1] -> |10 - 1| = 9, the minimum.
  *
- *  Constraints:
- *    2 <= nums.length <= 10^5
- *    1 <= nums[i] <= 10^9
+ * Constraints:
+ * 2 <= nums.length <= 10^5
+ * 1 <= nums[i] <= 10^9
+ *
  */
 public class FindTheValueOfThePartition {
 

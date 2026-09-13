@@ -7,13 +7,9 @@ import LeetCodeJava.DataStructure.TreeNode;
 import java.util.*;
 
 /**
- *
  * 103. Binary Tree Zigzag Level Order Traversal
- * Solved
  * Medium
- * Topics
- * premium lock icon
- * Companies
+ *
  * Given the root of a binary tree, return the zigzag level order traversal of its nodes' values. (i.e., from left to right, then right to left for the next level and alternate between).
  *
  * Example 1:

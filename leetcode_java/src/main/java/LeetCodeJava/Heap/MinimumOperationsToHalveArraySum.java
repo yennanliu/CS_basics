@@ -6,29 +6,30 @@ import java.util.Collections;
 import java.util.PriorityQueue;
 
 /**
- *  2208. Minimum Operations to Halve Array Sum
- *  Medium
+ * 2208. Minimum Operations to Halve Array Sum
+ * Medium
  *
- *  You are given an array nums of positive integers. In one operation, you can
- *  choose any number from nums and reduce it to exactly half the number. (Note that
- *  you may choose this reduced number in future operations.)
+ * You are given an array nums of positive integers. In one operation, you can
+ * choose any number from nums and reduce it to exactly half the number. (Note that
+ * you may choose this reduced number in future operations.)
  *
- *  Return the minimum number of operations to reduce the sum of nums by at least
- *  half.
+ * Return the minimum number of operations to reduce the sum of nums by at least
+ * half.
  *
- *  Example 1:
- *    Input: nums = [5,19,8,1]
- *    Output: 3
- *    Explanation: sum = 33. 19 -> 9.5 -> 4.75, then 8 -> 4, leaving
- *                 [5, 4.75, 4, 1] with sum 14.75; 33 - 14.75 = 18.25 >= 33/2.
+ * Example 1:
+ * Input: nums = [5,19,8,1]
+ * Output: 3
+ * Explanation: sum = 33. 19 -> 9.5 -> 4.75, then 8 -> 4, leaving
+ * [5, 4.75, 4, 1] with sum 14.75; 33 - 14.75 = 18.25 >= 33/2.
  *
- *  Example 2:
- *    Input: nums = [3,8,20]
- *    Output: 3
+ * Example 2:
+ * Input: nums = [3,8,20]
+ * Output: 3
  *
- *  Constraints:
- *    1 <= nums.length <= 10^5
- *    1 <= nums[i] <= 10^7
+ * Constraints:
+ * 1 <= nums.length <= 10^5
+ * 1 <= nums[i] <= 10^7
+ *
  */
 public class MinimumOperationsToHalveArraySum {
 

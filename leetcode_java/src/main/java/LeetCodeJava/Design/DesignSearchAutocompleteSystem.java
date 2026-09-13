@@ -10,37 +10,38 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *  642. Design Search Autocomplete System
- *  Hard
+ * 642. Design Search Autocomplete System
+ * Hard
  *
- *  Design a search autocomplete system for a search engine. Users may input a sentence
- *  (at least one word and ends with a special character '#').
+ * Design a search autocomplete system for a search engine. Users may input a sentence
+ * (at least one word and ends with a special character '#').
  *
- *  For each character they type (except '#'), return the top 3 historical hot sentences
- *  that have the same prefix as the part of the sentence already typed:
- *   - The hot degree of a sentence is the number of times a user typed exactly it before.
- *   - Ties are broken by ASCII order (smaller first).
- *   - Fewer than 3 matches -> return as many as exist.
- *   - On '#', the typed sentence is recorded and an empty list is returned.
+ * For each character they type (except '#'), return the top 3 historical hot sentences
+ * that have the same prefix as the part of the sentence already typed:
+ * - The hot degree of a sentence is the number of times a user typed exactly it before.
+ * - Ties are broken by ASCII order (smaller first).
+ * - Fewer than 3 matches -> return as many as exist.
+ * - On '#', the typed sentence is recorded and an empty list is returned.
  *
- *  Implement the AutocompleteSystem class:
- *   - AutocompleteSystem(String[] sentences, int[] times) initializes with history.
- *   - List<String> input(char c) processes the next typed character.
+ * Implement the AutocompleteSystem class:
+ * - AutocompleteSystem(String[] sentences, int[] times) initializes with history.
+ * - List<String> input(char c) processes the next typed character.
  *
- *  Example:
- *    AutocompleteSystem(["i love you","island","ironman","i love leetcode"], [5,3,2,2])
- *    input('i') -> ["i love you", "island", "i love leetcode"]
- *    input(' ') -> ["i love you", "i love leetcode"]
- *    input('a') -> []
- *    input('#') -> []   // "i a" is now stored with hot degree 1
+ * Example:
+ * AutocompleteSystem(["i love you","island","ironman","i love leetcode"], [5,3,2,2])
+ * input('i') -> ["i love you", "island", "i love leetcode"]
+ * input(' ') -> ["i love you", "i love leetcode"]
+ * input('a') -> []
+ * input('#') -> []   // "i a" is now stored with hot degree 1
  *
- *  Constraints:
- *    n == sentences.length == times.length, 1 <= n <= 100
- *    1 <= sentences[i].length <= 100
- *    sentences[i] consists of lowercase letters, '#' and spaces
- *    1 <= times[i] <= 50
- *    c is a lowercase letter, a space, or '#'
- *    At most 5000 calls will be made to input.
+ * Constraints:
+ * n == sentences.length == times.length, 1 <= n <= 100
+ * 1 <= sentences[i].length <= 100
+ * sentences[i] consists of lowercase letters, '#' and spaces
+ * 1 <= times[i] <= 50
+ * c is a lowercase letter, a space, or '#'
+ * At most 5000 calls will be made to input.
+ *
  */
 public class DesignSearchAutocompleteSystem {
 

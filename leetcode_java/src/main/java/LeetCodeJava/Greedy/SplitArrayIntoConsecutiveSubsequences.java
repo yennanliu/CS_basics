@@ -7,8 +7,7 @@ import java.util.PriorityQueue;
 /**
  * 659. Split Array into Consecutive Subsequences
  * Medium
- * Topics
- * Companies
+ *
  * You are given an integer array nums that is sorted in non-decreasing order.
  *
  * Determine if it is possible to split nums into one or more subsequences such that both of the following conditions are true:
@@ -279,7 +278,7 @@ public class SplitArrayIntoConsecutiveSubsequences {
     }
 
 
-    // V 1_1
+    // V1-_1
     // https://leetcode.com/problems/split-array-into-consecutive-subsequences/solutions/2447452/java-greedy-just-a-few-lines-explained/
     public boolean isPossible_1_1(int[] nums) {
         int[] count = new int[2003];

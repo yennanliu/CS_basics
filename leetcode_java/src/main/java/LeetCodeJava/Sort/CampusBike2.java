@@ -7,7 +7,9 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 /**
- *  1066. Campus Bikes II
+ * 1066. Campus Bikes II
+ * Medium
+ *
  * On a campus represented as a 2D grid, there are N workers and M  bikes, with N <= M. Each worker and  bike is a 2D coordinate on this grid.
  *
  * We assign one unique bike to each worker so that the sum of the Manhattan distances between each worker and their assigned bike is minimized.
@@ -109,7 +111,7 @@ public class CampusBike2 {
 //    }
 
 
-    // V1_1
+    // V1-_1
     // https://leetcode.ca/2018-10-31-1066-Campus-Bikes-II/#google_vignette
     /**
      * time = O(N)

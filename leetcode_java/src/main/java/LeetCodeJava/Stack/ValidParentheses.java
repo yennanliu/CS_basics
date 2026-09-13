@@ -5,11 +5,8 @@ package LeetCodeJava.Stack;
 // https://www.softwaretestinghelp.com/java-queue-interface/
 /**
  * 20. Valid Parentheses
- * N/A
- * Topics
- * premium lock icon
- * Companies
- * Hint
+ * Easy
+ *
  * Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
  *
  * An input string is valid if:

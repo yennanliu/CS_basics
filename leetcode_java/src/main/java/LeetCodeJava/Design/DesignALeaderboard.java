@@ -9,7 +9,9 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
- *  1244. Design A Leaderboard
+ * 1244. Design A Leaderboard
+ * Medium
+ *
  * Design a Leaderboard class, which has 3 functions:
  *
  * addScore(playerId, score): Update the leaderboard by adding score to the given player's score. If there is no player with such id in the leaderboard, add him to the leaderboard with the given score.

@@ -10,7 +10,9 @@ import java.util.LinkedList;
 import java.util.PriorityQueue;
 
 /**
- *  499. The Maze III
+ * 499. The Maze III
+ * Hard
+ *
  * There is a ball in a maze with empty spaces and walls. The ball can go through empty spaces by rolling up (u), down (d), left (l) or right (r), but it won't stop rolling until hitting a wall. When the ball stops, it could choose the next direction. There is also a hole in this maze. The ball will drop into the hole if it rolls on to the hole.
  *
  * Given the ball position, the hole position and the maze, find out how the ball could drop into the hole by moving the shortest distance. The distance is defined by the number of empty spaces traveled by the ball from the start position (excluded) to the hole (included). Output the moving directions by using 'u', 'd', 'l' and 'r'. Since there could be several different shortest ways, you should output the lexicographically smallest way. If the ball cannot reach the hole, output "impossible".
@@ -71,6 +73,7 @@ import java.util.PriorityQueue;
  * Company:
  * Google
  * Problem Solution
+ *
  */
 public class TheMaze3 {
 

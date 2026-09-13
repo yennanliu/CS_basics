@@ -5,34 +5,35 @@ package LeetCodeJava.BitManipulation;
 import java.util.Arrays;
 
 /**
- *  3181. Maximum Total Reward Using Operations II
- *  Hard
+ * 3181. Maximum Total Reward Using Operations II
+ * Hard
  *
- *  You are given an integer array rewardValues of length n, representing the values
- *  of rewards.
+ * You are given an integer array rewardValues of length n, representing the values
+ * of rewards.
  *
- *  Initially, your total reward x is 0, and all indices are unmarked. You are
- *  allowed to perform the following operation any number of times:
+ * Initially, your total reward x is 0, and all indices are unmarked. You are
+ * allowed to perform the following operation any number of times:
  *
- *    - Choose an unmarked index i from the range [0, n - 1].
- *    - If rewardValues[i] is greater than your current total reward x, then add
- *      rewardValues[i] to x (i.e. x = x + rewardValues[i]), and mark the index i.
+ * - Choose an unmarked index i from the range [0, n - 1].
+ * - If rewardValues[i] is greater than your current total reward x, then add
+ * rewardValues[i] to x (i.e. x = x + rewardValues[i]), and mark the index i.
  *
- *  Return an integer denoting the maximum total reward you can collect by
- *  performing the operations optimally.
+ * Return an integer denoting the maximum total reward you can collect by
+ * performing the operations optimally.
  *
- *  Example 1:
- *    Input: rewardValues = [1,1,3,3]
- *    Output: 4
- *    Explanation: mark indices 0 and 2 in order -> total reward 4.
+ * Example 1:
+ * Input: rewardValues = [1,1,3,3]
+ * Output: 4
+ * Explanation: mark indices 0 and 2 in order -> total reward 4.
  *
- *  Example 2:
- *    Input: rewardValues = [1,6,4,3,2]
- *    Output: 11
+ * Example 2:
+ * Input: rewardValues = [1,6,4,3,2]
+ * Output: 11
  *
- *  Constraints:
- *    1 <= rewardValues.length <= 5 * 10^4
- *    1 <= rewardValues[i] <= 5 * 10^4
+ * Constraints:
+ * 1 <= rewardValues.length <= 5 * 10^4
+ * 1 <= rewardValues[i] <= 5 * 10^4
+ *
  */
 public class MaximumTotalRewardUsingOperationsII {
 

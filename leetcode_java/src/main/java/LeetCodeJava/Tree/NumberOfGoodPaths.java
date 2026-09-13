@@ -6,41 +6,42 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 /**
- *  2421. Number of Good Paths
- *  Hard
+ * 2421. Number of Good Paths
+ * Hard
  *
- *  There is a tree (i.e. a connected, undirected graph with no cycles)
- *  consisting of n nodes numbered from 0 to n - 1 and exactly n - 1 edges.
+ * There is a tree (i.e. a connected, undirected graph with no cycles)
+ * consisting of n nodes numbered from 0 to n - 1 and exactly n - 1 edges.
  *
- *  You are given a 0-indexed integer array vals of length n where vals[i]
- *  denotes the value of the ith node. You are also given a 2D integer array
- *  edges where edges[i] = [ai, bi] denotes an undirected edge connecting
- *  nodes ai and bi.
+ * You are given a 0-indexed integer array vals of length n where vals[i]
+ * denotes the value of the ith node. You are also given a 2D integer array
+ * edges where edges[i] = [ai, bi] denotes an undirected edge connecting
+ * nodes ai and bi.
  *
- *  A good path is a simple path that satisfies:
- *    - The starting node and the ending node have the same value.
- *    - All nodes between the starting node and the ending node have values
- *      less than or equal to the starting node's value.
+ * A good path is a simple path that satisfies:
+ * - The starting node and the ending node have the same value.
+ * - All nodes between the starting node and the ending node have values
+ * less than or equal to the starting node's value.
  *
- *  Return the number of distinct good paths. A path and its reverse count as
- *  the same path. A single node is also a valid path.
+ * Return the number of distinct good paths. A path and its reverse count as
+ * the same path. A single node is also a valid path.
  *
- *  Example 1:
- *    Input: vals = [1,3,2,1,3], edges = [[0,1],[0,2],[2,3],[2,4]]
- *    Output: 6
- *    Explanation: 5 single-node paths, plus 1 -> 0 -> 2 -> 4.
+ * Example 1:
+ * Input: vals = [1,3,2,1,3], edges = [[0,1],[0,2],[2,3],[2,4]]
+ * Output: 6
+ * Explanation: 5 single-node paths, plus 1 -> 0 -> 2 -> 4.
  *
- *  Example 2:
- *    Input: vals = [1,1,2,2,3], edges = [[0,1],[1,2],[2,3],[2,4]]
- *    Output: 7
- *    Explanation: 5 single-node paths, plus 0 -> 1 and 2 -> 3.
+ * Example 2:
+ * Input: vals = [1,1,2,2,3], edges = [[0,1],[1,2],[2,3],[2,4]]
+ * Output: 7
+ * Explanation: 5 single-node paths, plus 0 -> 1 and 2 -> 3.
  *
- *  Constraints:
- *    n == vals.length
- *    1 <= n <= 3 * 10^4
- *    0 <= vals[i] <= 10^5
- *    edges.length == n - 1
- *    edges represents a valid tree.
+ * Constraints:
+ * n == vals.length
+ * 1 <= n <= 3 * 10^4
+ * 0 <= vals[i] <= 10^5
+ * edges.length == n - 1
+ * edges represents a valid tree.
+ *
  */
 public class NumberOfGoodPaths {
 

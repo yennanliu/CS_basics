@@ -37,11 +37,14 @@ import LeetCodeJava.DataStructure.TreeNode;
 import java.util.*;
 
 /**
- *  The minimum depth is the number of nodes
- *  along the shortest path from the root node down to the nearest leaf node.
+ * 111. Minimum Depth of Binary Tree
+ * Easy
  *
- *  -> NOTE !!! depth is node number, not distance
- *  > The minimum depth is the number of nodes ...
+ * The minimum depth is the number of nodes
+ * along the shortest path from the root node down to the nearest leaf node.
+ *
+ * -> NOTE !!! depth is node number, not distance
+ * > The minimum depth is the number of nodes ...
  *
  */
 

@@ -3,11 +3,8 @@ package LeetCodeJava.Array;
 // https://leetcode.com/problems/remove-duplicates-from-sorted-array/
 /**
  * 26. Remove Duplicates from Sorted Array
- * Solved
  * Easy
- * Topics
- * Companies
- * Hint
+ *
  * Given an integer array nums sorted in non-decreasing order, remove the duplicates in-place such that each unique element appears only once. The relative order of the elements should be kept the same. Then return the number of unique elements in nums.
  *
  * Consider the number of unique elements of nums to be k, to get accepted, you need to do the following things:
@@ -25,7 +22,7 @@ package LeetCodeJava.Array;
  *
  * assert k == expectedNums.length;
  * for (int i = 0; i < k; i++) {
- *     assert nums[i] == expectedNums[i];
+ * assert nums[i] == expectedNums[i];
  * }
  * If all assertions pass, then your solution will be accepted.
  *
@@ -50,7 +47,6 @@ package LeetCodeJava.Array;
  * 1 <= nums.length <= 3 * 104
  * -100 <= nums[i] <= 100
  * nums is sorted in non-decreasing order.
- *
  *
  */
 import java.util.LinkedHashSet;
