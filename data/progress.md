@@ -61,8 +61,8 @@
 
 
 - kadane_algorithm.md
-	- `1-5) 最多刪一個元素的最大子陣列和（LC 1186）`
-
+	- https://yennj12.js.org/CS_basics/cheatsheets/kadane_algorithm.zh.html
+		- `1-7) 二維 Kadane／格子上的「以此結尾的最佳解」（LC 221)`
 
 
 - time_space_complexity.md
@@ -332,7 +332,11 @@
 			- 2 states DP
 			- Unbounded Knapsack VS Knapsack DP
 			- Kadane’s algo
-					- 環狀最大子陣列（LC 918)
+					- 918
+						- 環狀最大子陣列（LC 918)
+					- 1186
+					- 2 Kadane
+						- 714
 		- set
 			- 187
 			- 532
