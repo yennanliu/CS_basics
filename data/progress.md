@@ -57,8 +57,9 @@
 		- `最長共同子序列（LCS）` 
 
 
-- Difference Array.md
-	- https://yennj12.js.org/CS_basics/cheatsheets/difference_array.zh.html
+
+- Topological Sorting — Worked Examples
+	- https://yennj12.js.org/CS_basics/cheatsheets/topology_sorting_examples.zh.html
 
 
 
@@ -69,9 +70,6 @@
 - Matrix / 2D Grid.md
 
 - greedy.md
-
-- Topological Sorting — Worked Examples
-
 
 - backtrack.zh.html
 	- `Template 2: start_idx — i vs i + 1`
@@ -137,6 +135,7 @@
 	- recursion_to_dp.zh.html
 		- again
 	- kadane_algorithm.md
+	-  Difference Array.md
 
 
 
@@ -152,6 +151,8 @@
 		- 701,450
 		- scanning_line
 		- prefix sum
+		- Difference array
+			- 3964
 		- Binary Search
 			- 35
 			- 34
