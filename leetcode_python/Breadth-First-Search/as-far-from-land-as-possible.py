@@ -151,7 +151,7 @@ class Solution(object):
         return max_dist
 
 
-# V0
+# V0-3
 # IDEA : BFS
 # time = O(n^2)  # grid is n x n
 # space = O(n^2)
@@ -185,7 +185,7 @@ class Solution(object):
             level += 1
         return level - 1
 
-# V0
+# V0-4
 # IDEA : BFS + queue (made by array)
 # time = O(n^2)  # grid is n x n
 # space = O(n^2)

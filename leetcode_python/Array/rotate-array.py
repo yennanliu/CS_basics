@@ -83,7 +83,7 @@ class Solution(object):
         return res
 
 
-# V0
+# V0-1
 # IDEA: BRUTE FORCE (TLE) (GPT)
 class Solution(object):
     def maxRotateFunction(self, nums):
@@ -113,7 +113,7 @@ class Solution(object):
         return res
 
 
-# V0-1
+# V0-2
 # IDEA: MATH (GEMINI)
 class Solution(object):
     def maxRotateFunction(self, nums):
@@ -149,7 +149,7 @@ class Solution(object):
         return res
 
 
-# V0
+# V0-3
 # IDEA: SPLIT + MOD
 # time = O(n)
 # space = O(n)
@@ -180,7 +180,7 @@ class Solution(object):
         nums[:] = tail + head
 
 
-# V0-0-1
+# V0-4
 # time = O(n)
 # space = O(n)
 class Solution(object):
@@ -202,7 +202,7 @@ class Solution(object):
         nums[:] = nums[n - k:] + nums[:n - k]
 
 
-# V0
+# V0-5
 # IDEA : pop + insert (python 3)
 # time = O(k * n)
 # space = O(1)
@@ -225,7 +225,7 @@ class Solution(object):
 
 
 
-# V0-1
+# V0-6
 # time = O(n)
 # space = O(1)
 class Solution(object):
@@ -244,7 +244,7 @@ class Solution(object):
         reverse(k, n - 1)
 
 
-# V0
+# V0-7
 # IDEA : pop + insert (python 3)
 # time = O(k * n)
 # space = O(1)
@@ -257,7 +257,7 @@ class Solution(object):
             nums.insert(0, tmp)
             k -= 1
 
-# V0'
+# V0-8
 # IDEA : SLICE (in place)
 # time = O(n)
 # space = O(n)
@@ -276,7 +276,7 @@ class Solution(object):
         nums[:k], nums[k:] = nums[-k:], nums[:-k]
         return nums
 
-# V0''
+# V0-9
 # IDEA : SLICE (in place)
 # time = O(n)
 # space = O(n)
@@ -285,7 +285,7 @@ class Solution(object):
         k = k % len(nums)
         nums[:k], nums[k:] = nums[-k:], nums[:len(nums)-k]
 
-# V0'' : TODO : fix this
+# V0-10 : TODO : fix this
 # class Solution(object):
 #     def rotate(self, nums, k):
 #         _nums = nums[:]
@@ -294,7 +294,7 @@ class Solution(object):
 #             nums = [_nums[-1]] + _nums[:-1]
 #         return nums
 
-# V0''''
+# V0-11
 # IDEA : SLICE
 # time = O(n)
 # space = O(n)

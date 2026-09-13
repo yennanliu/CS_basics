@@ -3,7 +3,6 @@
 74. Search a 2D Matrix
 Medium
 
-
 Write an efficient algorithm that searches for a value in an m x n matrix. This matrix has the following properties:
 
 Integers in each row are sorted from left to right.
@@ -99,7 +98,7 @@ class Solution(object):
                 
         return False
 
-# V0
+# V0-2
 # IDEA : MATRIX IN ORDER + BRUTE FORCE
 # time = O(m + n)  # worst case
 # space = O(1)
@@ -117,7 +116,7 @@ class Solution:
                 col -= 1
         return False
 
-# V0'
+# V0-3
 # IDEA : DFS
 # time = O(m*n)
 # space = O(m*n)  # recursion stack in worst case
@@ -144,7 +143,7 @@ class Solution(object):
         dfs(matrix, target, 0, 0)
         return True in res
 
-# V0'
+# V0-4
 # IDEA : BINARY SEARCH
 # time = O(log m + log n)
 # space = O(1)
@@ -239,7 +238,7 @@ class Solution(object):
             else:
                 return False
 
-# V1'
+# V1'''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79459314
 # https://blog.csdn.net/fuxuemingzhu/article/details/79459200
 # time = O(m*n)

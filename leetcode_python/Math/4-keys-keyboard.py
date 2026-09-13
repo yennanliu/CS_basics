@@ -1,3 +1,12 @@
+"""
+
+651. 4 Keys Keyboard
+Medium
+
+https://leetcode.com/problems/4-keys-keyboard/
+
+"""
+
 # [Leetcode] 651. 4 Keys Keyboard
 
 # Imagine you have a special keyboard with the following keys:
@@ -31,6 +40,8 @@
 # 1 <= N <= 50
 # Answers will be in the range of 32-bit signed integer.
 
+
+# V0
 
 # V1 : dev 
 import collections

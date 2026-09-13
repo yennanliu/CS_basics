@@ -27,7 +27,6 @@ n == matrix.length == matrix[i].length
 1 <= n <= 20
 -1000 <= matrix[i][j] <= 1000
 
-
 """
 
 # V0
@@ -82,7 +81,7 @@ class Solution(object):
             matrix[i] = matrix[i][::-1]
         return matrix
 
-# V0'
+# V0-1
 # IDEA : TRANSPOSE (i,j -> j,i) -> REVERSE 
 # time = O(n^2)
 # space = O(1)

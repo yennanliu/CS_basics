@@ -1,5 +1,8 @@
 """
 
+210. Course Schedule II
+Medium
+
 There are a total of numCourses courses you have to take, labeled from 0 to numCourses - 1. You are given an array prerequisites where prerequisites[i] = [ai, bi] indicates that you must take course bi first if you want to take course ai.
 
 For example, the pair [0, 1], indicates that to take course 0 you have to first take course 1.
@@ -191,7 +194,7 @@ class Solution(object):
 
 
 
-# V0
+# V0-2
 # IDEA : DFS + topological sort
 # SAME dfs logic as LC 207 (Course Schedule)
 from collections import defaultdict
@@ -247,7 +250,7 @@ class Solution(object):
                 return []
         return res
 
-# V0'
+# V0-3
 # IDEA : DFS + topological sort
 # SAME dfs logic as LC 207 (Course Schedule)
 import collections
@@ -282,7 +285,7 @@ class Solution:
         res.append(i)
         return True
 
-# V0'
+# V0-4
 # IDEA : DFS + topological sort
 # SAME dfs logic as LC 207 (Course Schedule)
 # time = O(V + E), V = numCourses, E = len(prerequisites)

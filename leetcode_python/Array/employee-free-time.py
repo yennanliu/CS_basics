@@ -1,6 +1,7 @@
 """
 
-LC 759
+759. Employee Free Time
+Hard
 
 We are given a list schedule of employees, which represents the working time for each employee.
 

@@ -66,7 +66,7 @@ class Solution:
                     nonprimes.add(j)
         return n - len(nonprimes) - 2  # remove prinme(1), prime(2)
 
-# V0'
+# V0-1
 # python 2
 # TIME OUT ERROR (but logic is OK)
 # time = O(n * sqrt(n))
@@ -84,7 +84,7 @@ class Solution(object):
                 res += 1
         return res
 
-# V0''
+# V0-2
 # python2 
 # time = O(n log log n)
 # space = O(n)
@@ -109,7 +109,7 @@ class Solution(object):
                 is_prime[j] = False
         return num
 
-# V0''': -> to fix
+# V0-3 : -> to fix
 # class Solution(object):
 #     def countPrimes(self, n):
 #         def check(x):
@@ -256,7 +256,7 @@ class Solution:
                 primes[i * i:: i] = [False] * len(primes[i * i:: i])
         return sum(primes)
         
-# V1'
+# V1''''
 # https://blog.csdn.net/github_39261590/article/details/73864039
 # IDEA : GREEDY (TLE, time out exception)
 # time = O(n * sqrt(n))
@@ -276,7 +276,7 @@ class Solution:
             count=count+judge_prime(x)
         return count
 
-# V1''
+# V1'''''
 # https://www.jiuzhang.com/solution/count-primes/#tag-highlight-lang-python
 # time = O(n log log n)
 # space = O(n)

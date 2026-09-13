@@ -1,9 +1,9 @@
 """
 
-# https://ttzztt.gitbooks.io/lc/content/string/next-closet-time.html
-
 681. Next Closest Time
 Medium
+
+# https://ttzztt.gitbooks.io/lc/content/string/next-closet-time.html
 
 Given a time represented in the format "HH:MM", form the next closest time by reusing the current digits. There is no limit on how many times a digit can be reused.
 
@@ -61,7 +61,7 @@ class Solution:
                 return tmp
         return -1
 
-# V0'
+# V0-1
 # IDEA : brute force + check subset of set 
 # LOGIC : start from the given time, then "add 1 minute" in every loop, 
 # if all the elements in the upddated time are also the subset of the original time set -> return True (find the answer)

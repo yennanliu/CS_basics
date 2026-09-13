@@ -41,7 +41,7 @@ class Solution(object):
         s_list = s_.split(" ")
         return " ".join([ i[::-1] for  i in s_list])
 
-# V0'
+# V0-1
 # time = O(n)
 # space = O(n)
 class Solution(object):
@@ -84,7 +84,7 @@ class Solution:
         # reverse each word
         self.reverse_each_word(s)
 
-# V1 
+# V1'
 # http://www.voidcn.com/article/p-eggrnnob-zo.html
 # time = O(n)
 # space = O(1)

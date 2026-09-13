@@ -1,5 +1,7 @@
 """
-LeetCode 404. Sum of Left Leaves
+
+404. Sum of Left Leaves
+Easy
 
 Find the sum of all left leaves in a given binary tree.
 
@@ -40,7 +42,7 @@ class Solution:
             last = "r"
             self.dfs(root.right, tmp, last)
 
-# V0'
+# V0-1
 # IDEA : BFS
 # time = O(N)
 # space = O(N)
@@ -60,7 +62,7 @@ class Solution(object):
                 stack.append(u.right)
         return res
 
-# V0''
+# V0-2
 # time = O(N)
 # space = O(H)
 class Solution:
@@ -145,7 +147,7 @@ class Solution(object):
             ans += self.sumOfLeftLeaves(l) + self.sumOfLeftLeaves(r)
         return ans
 
-# V1'
+# V1'''
 # https://blog.csdn.net/fuxuemingzhu/article/details/54178595
 # time = O(N)
 # space = O(H)
@@ -169,7 +171,7 @@ class Solution:
         if root.right:
             self.inOrder(root.right)
 
-# V1''
+# V1''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/54178595
 # time = O(N)
 # space = O(N)

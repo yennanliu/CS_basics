@@ -2,6 +2,7 @@
 
 2431. Maximize Total Tastiness of Purchased Fruits
 Medium
+
 (premium / locked problem)
 
 You are given two non-negative integer arrays price and tastiness, both arrays have the same length n. You are also given two non-negative integers maxAmount and maxCoupons.

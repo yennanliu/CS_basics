@@ -193,7 +193,7 @@ class Solution(object):
                         res = max(res, ending_here[i])
         return res
 
-# V1'''''''
+# V1''''''
 # IDEA : BRUTE FORCE
 # https://leetcode.com/problems/longest-valid-parentheses/solution/
 # JAVA
@@ -224,7 +224,7 @@ class Solution(object):
 #     }
 # }
 
-# V1''''''''''
+# V1'''''''
 # IDEA : DP
 # https://leetcode.com/problems/longest-valid-parentheses/solution/
 # JAVA
@@ -246,7 +246,7 @@ class Solution(object):
 #     }
 # }
 
-# V1'''''''''''
+# V1''''''''
 # IDEA : STACK
 # https://leetcode.com/problems/longest-valid-parentheses/solution/
 # JAVA
@@ -273,7 +273,7 @@ class Solution(object):
 # }
 
 
-# V1''''''''''
+# V1'''''''''
 # IDEA : WITHOUT EXTRA SPACE
 # https://leetcode.com/problems/longest-valid-parentheses/solution/
 # JAVA

@@ -33,7 +33,7 @@ class Souluton:
         r = int(math.log(tmp))
         return r
 
-# V0'
+# V0-1
 # https://leetcode.com/problems/sum-of-two-integers/discuss/196889/Python-one-liner
 # time = O(1)
 # space = O(1)
@@ -41,7 +41,7 @@ class Solution(object):
     def getSum(self, a, b):
         return sum([a,b])
 
-# V0'
+# V0-2
 # https://blog.csdn.net/fuxuemingzhu/article/details/79379939
 #########
 # XOR op:
@@ -85,7 +85,7 @@ class Solution(object):
         # then get 32-bit positive's Python complement negative
         return a if a <= MAX else ~(a ^ mask)
 
-# V0'
+# V0-3
 # https://blog.csdn.net/fuxuemingzhu/article/details/79379939
 # time = O(1)  # bounded by 32-bit width
 # space = O(1)
@@ -129,7 +129,7 @@ class Solution:
 
         return x * sign
 
-# V1
+# V1'
 # https://leetcode.com/problems/sum-of-two-integers/solution/
 # IDEA : Bit Manipulation: Easy and Language-Independent
 # time = O(1)  # bounded by 32-bit width
@@ -162,7 +162,7 @@ class Solution:
         
         return x * sign
 
-# V1
+# V1''
 # https://leetcode.com/problems/sum-of-two-integers/solution/
 # IDEA : Bit Manipulation: Easy and Language-Independent
 # time = O(1)  # bounded by 32-bit width
@@ -186,7 +186,7 @@ class Solution:
         
         return x * sign
 
-# V1
+# V1'''
 # https://leetcode.com/problems/sum-of-two-integers/solution/
 # IDEA : Bit Manipulation: Short Language-Specific Solution
 # time = O(1)  # bounded by 32-bit width
@@ -201,7 +201,7 @@ class Solution:
         max_int = 0x7FFFFFFF
         return a if a < max_int else ~(a ^ mask)
 
-# V1
+# V1''''
 # https://leetcode.com/problems/sum-of-two-integers/solution/
 # IDEA : Bit Manipulation: Short Language-Specific Solution
 # time = O(1)  # bounded by 32-bit width
@@ -216,7 +216,7 @@ class Solution:
         max_int = 0x7FFFFFFF
         return a if a < max_int else ~(a ^ mask)
 
-# V1
+# V1'''''
 # http://bookshadow.com/weblog/2016/06/30/leetcode-sum-of-two-integers/
 # https://blog.csdn.net/fuxuemingzhu/article/details/79379939
 # https://blog.csdn.net/coder_orz/article/details/52034541
@@ -240,7 +240,7 @@ class Solution(object):
             b = (b >> 1) % MASK
         return r if r <= MAX_INT else ~((r & MAX_INT) ^ MAX_INT)
 
-# V1'
+# V1''''''
 # https://www.jiuzhang.com/solution/371-sum-of-two-integers/#tag-highlight-lang-python
 # time = O(1)  # bounded by 32-bit width
 # space = O(1)

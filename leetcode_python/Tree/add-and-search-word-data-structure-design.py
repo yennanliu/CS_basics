@@ -108,7 +108,7 @@ class WordDictionary(object):
         return self.helper(word, idx + 1, node.child[ch])
 
 
-# V0
+# V0-1
 # IDEA: TRIE + recursion (gemini)
 # time = O(m) add / O(26^m) search worst  # m = word length
 # space = O(N)  # N = total chars stored in trie
@@ -176,7 +176,7 @@ class WordDictionary(object):
 
 
 
-# V0-1
+# V0-2
 # IDEA: TRIE + recursion (GEMINI)
 class myNode(object):
     def __init__(self):
@@ -237,7 +237,7 @@ class WordDictionary(object):
         return dfs(0, self.root)
 
 
-# V0-2
+# V0-3
 # IDEA: TRIE + recursion (GPT)
 # time = O(m) add / O(26^m) search worst  # m = word length
 # space = O(N)  # N = total chars stored in trie
@@ -325,7 +325,7 @@ class WordDictionary(object):
         return False
 
 
-# V0
+# V0-4
 # time = O(m) add / O(26^m) search worst  # m = word length
 # space = O(N)  # N = total chars stored in trie
 from collections import defaultdict

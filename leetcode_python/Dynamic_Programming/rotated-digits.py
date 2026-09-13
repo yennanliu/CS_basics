@@ -26,6 +26,9 @@
 # https://blog.csdn.net/fuxuemingzhu/article/details/79378135
 """
 
+788. Rotated Digits
+Medium
+
 DP def
     a number is GOOD iff it contains no 3, 4 or 7 (those cannot be rotated)
     AND contains at least one 2, 5, 6 or 9 (so the rotation actually DIFFERS)

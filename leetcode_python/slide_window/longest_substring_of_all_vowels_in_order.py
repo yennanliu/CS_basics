@@ -1,6 +1,7 @@
 """
 
 1839. Longest Substring Of All Vowels in Order
+Medium
 
 A string is considered beautiful if it satisfies the following conditions:
 

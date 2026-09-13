@@ -76,7 +76,7 @@ class Solution:
                     ans += map[sum]
         return ans
 
-# V1'
+# V1''
 # https://leetcode.com/problems/4sum-ii/discuss/761528/Python-solution
 # time = O(n^2)
 # space = O(n^2)
@@ -99,7 +99,7 @@ class Solution:
                     count += num_dict[target]
         return count
 
-# V1''
+# V1'''
 # https://leetcode.com/problems/4sum-ii/discuss/432974/python
 # time = O(n^2)
 # space = O(n^2)
@@ -115,7 +115,7 @@ class Solution:
                 ans = ans + ab.get(-(c+d), 0)
         return ans
 
-# V1'''
+# V1''''
 # https://leetcode.com/problems/4sum-ii/discuss/331940/Python-O(n2)-with-hashing
 # time = O(n^2)
 # space = O(n^2)

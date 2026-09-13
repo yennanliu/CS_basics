@@ -84,7 +84,7 @@ class Solution(object):
         return root
 
 
-# V0
+# V0-1
 # time = O(n)
 # space = O(h), h is height of binary tree (recursion stack)
 class Solution(object):
@@ -129,7 +129,7 @@ class Solution(object):
 
         return root
 
-# V0
+# V0-2
 # IDEA: BST PROPERTY + DFS (POST ORDER) (GEMINI)
 # time = O(n)
 # space = O(h), h is height of binary tree (recursion stack)
@@ -166,7 +166,7 @@ class Solution(object):
         return root
 
 
-# V0-1
+# V0-3
 # IDEA: BST PROPERTY + DFS (POST ORDER) (GPT)
 # time = O(n)
 # space = O(h), h is height of binary tree (recursion stack)
@@ -224,7 +224,7 @@ class Solution(object):
         return root
 
 
-# V0
+# V0-4
 # IDEA :RECURSION, BST
 # IDEA : USE BST'S PROPERTY : 
 # -> FOR EVERY NODE : right > node > left 
@@ -269,7 +269,7 @@ class Solution:
 #         root.left = self.trimBST(root.left, low, high)
 #         root.right = self.trimBST(root.right, low, high)
 
-# V0'
+# V0-5
 # IDEA : DFS
 # time = O(n)
 # space = O(h), h is height of binary tree (recursion stack)

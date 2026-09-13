@@ -32,7 +32,6 @@ edges[i].length == 2
 ui != vi
 There are no repeated edges.
 
-
 """
 
 from collections import deque

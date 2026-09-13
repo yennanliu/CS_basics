@@ -34,7 +34,6 @@ Constraints:
 1 <= s.length <= 1000
 s[i] is either '0' or '1'.
 
-
 """
 
 # V0

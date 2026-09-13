@@ -188,7 +188,7 @@ class Solution(object):
         return -1.0
 
 
-# V0
+# V0-2
 # IDEA : DFS + collections.defaultdict(dict)
 # time = O(E + Q * (V + E)), E = len(equations), V = number of distinct variables, Q = len(queries)
 # space = O(V + E)
@@ -219,7 +219,7 @@ class Solution:
                 return d * table[x][n]
         return -1.0
 
-# V0'
+# V0-3
 # IDEA : DFS + collections.defaultdict(dict)
 # time = O(E + Q * (V + E)), E = len(equations), V = number of distinct variables, Q = len(queries)
 # space = O(V + E)

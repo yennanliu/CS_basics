@@ -4,10 +4,7 @@
 
 1546. Maximum Number of Non-Overlapping Subarrays With Sum Equals Target
 Medium
-Topics
-premium lock icon
-Companies
-Hint
+
 Given an array nums and an integer target, return the maximum number of non-empty non-overlapping subarrays such that the sum of values in each subarray is equal to target.
 
  
@@ -82,7 +79,7 @@ class Solution(object):
         return ans
 
 
-# V0
+# V0-1
 # IDEA: PREFIX + HAHSMAP + greedy (reset) (gpt)
 # time = O(n)
 # space = O(n)
@@ -135,7 +132,7 @@ class Solution(object):
 
 
 
-# V0-1
+# V0-2
 # IDEA: PREFIX + SET + greedy (reset) (gemini)
 # time = O(n)
 # space = O(n)
@@ -173,7 +170,7 @@ class Solution(object):
 
 
 
-# V1-1
+# V1
 # IDEA: greedy + PREFIX + HASHMAP (gpt)
 """
 
@@ -251,7 +248,7 @@ class Solution(object):
         return ans
 
 
-# V1-2
+# V1'
 # IDEA: greedy + PREFIX + HASHMAP (GEMINI)
 """
 NOTE !!!

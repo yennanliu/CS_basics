@@ -83,7 +83,7 @@ class Solution(object):
 
 
 
-# V0
+# V0-1
 # IDEA : BFS
 # time = O(n)
 # space = O(n), BFS queue can hold up to O(n) nodes
@@ -105,7 +105,7 @@ class Solution:
                     queue.append(node.right)
         return root
 
-# V0'
+# V0-2
 # IDEA : BFS 
 # time = O(n)
 # space = O(n), BFS queue can hold up to O(n) nodes
@@ -306,7 +306,7 @@ class Solution(object):
                 node.next = q[0]      
         return root
 
-# V1'''''
+# V1''''
 # https://www.bbsmax.com/A/pRdBoNL2zn/
 # time = O(n)
 # space = O(h), h = number of levels (recursion stack via self.connect)

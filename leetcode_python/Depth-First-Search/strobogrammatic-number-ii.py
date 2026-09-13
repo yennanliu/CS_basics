@@ -1,3 +1,12 @@
+"""
+
+247. Strobogrammatic Number II
+Medium
+
+https://leetcode.com/problems/strobogrammatic-number-ii/
+
+"""
+
 # V0
 # time = O(n^2 * 5^(n/2))
 # space = O(n)  # recursion depth (excludes O(5^(n/2)) output storage)

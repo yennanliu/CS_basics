@@ -2,6 +2,7 @@
 
 2387. Median of a Row Wise Sorted Matrix
 Medium
+
 (premium / locked problem)
 
 Given an m x n matrix grid containing an odd number of integers where each row is sorted in non-decreasing order, return the median of the matrix.

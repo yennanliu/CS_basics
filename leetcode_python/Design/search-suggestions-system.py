@@ -192,7 +192,7 @@ class Solution:
                 output.append(temp)
             return(output)
 
-# V1''''
+# V1'''
 # IDEA : HEAP
 # https://leetcode.com/problems/search-suggestions-system/discuss/1242697/Python-heap
 class Solution:
@@ -227,7 +227,7 @@ class Solution:
         
         return ans
 
-# V1'''''
+# V1''''
 # IDEA : bisect
 # https://leetcode.com/problems/search-suggestions-system/discuss/517125/Python-simple-solution
 class Solution:
@@ -243,7 +243,7 @@ class Solution:
                 res.append([products[i] for i in range(idx, min(len(products), idx + 3)) if products[i].startswith(key)])
             return res
 
-# V1''''''
+# V1'''''
 # IDEA : BINARY SEARCH
 # https://leetcode.com/problems/search-suggestions-system/solution/
 # JAVA
@@ -291,7 +291,7 @@ class Solution:
 #     }
 # }
 
-# V1''''''''
+# V1''''''
 # IDEA : TRIE + DFS
 # https://leetcode.com/problems/search-suggestions-system/solution/
 # JAVA

@@ -1,12 +1,12 @@
 """
-# python 3 
-# https://leetcode.com/problems/single-number/description/
-
-# solution 
-# https://leetcode.com/articles/single-number/
 
 136. Single Number
 Easy
+
+# python 3 
+# https://leetcode.com/problems/single-number/description/
+# solution 
+# https://leetcode.com/articles/single-number/
 
 Given a non-empty array of integers nums, every element appears twice except for one. Find that single one.
 
@@ -177,7 +177,7 @@ class Solution(object):
         return res   # 3. 走訪結束後，成對的數字已全部抵消為 0，剩餘的 res 即為目標數字
 
 
-# V0'
+# V0-3
 # IDEA : BIT XOR 
 # IDEA 
 # Solution with XOR #
@@ -223,7 +223,7 @@ class Solution:
             ans = ans ^ x
         return ans
 
-# V1
+# V1''
 # time = O(n^2)  # `in` check and `.remove` on a list are each O(n)
 # space = O(n)
 class Solution:

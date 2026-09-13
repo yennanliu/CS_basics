@@ -2,6 +2,7 @@
 
 3037. Find Pattern in Infinite Stream II
 Hard
+
 🔒 (premium)
 
 You are given a binary array pattern and an object stream of class InfiniteStream representing a 0-indexed infinite stream of bits.

@@ -1,4 +1,5 @@
 """
+
 7. Reverse Integer
 Medium
 
@@ -50,7 +51,7 @@ class Solution(object):
             x_ = -1 * x_
             return x_ if x_ > (-1) * 2**31 else 0
 
-# V0
+# V0-1
 # time = O(log(x)) = O(1)
 # space = O(log(x)) = O(1)
 class Solution(object):

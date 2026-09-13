@@ -1,5 +1,7 @@
 """
-LeetCode 422. Valid Word Square
+
+422. Valid Word Square
+Easy
 
 Given a sequence of words, check whether it forms a valid word square.
 

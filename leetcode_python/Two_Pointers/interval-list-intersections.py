@@ -3,11 +3,8 @@
 """
 
 986. Interval List Intersections
-Solved
 Medium
-Topics
-premium lock icon
-Companies
+
 You are given two lists of closed intervals, firstList and secondList, where firstList[i] = [starti, endi] and secondList[j] = [startj, endj]. Each list of intervals is pairwise disjoint and in sorted order.
 
 Return the intersection of these two interval lists.
@@ -37,7 +34,6 @@ firstList.length + secondList.length >= 1
 endi < starti+1
 0 <= startj < endj <= 109 
 endj < startj+1
-
 
 """
 
@@ -127,7 +123,7 @@ class Solution(object):
         return ans
 
 
-# V1-1
+# V1
 # IDEA: interval + 2 pointers (gemini)
 class Solution(object):
     def intervalIntersection(self, firstList, secondList):
@@ -164,7 +160,7 @@ class Solution(object):
         return ans
 
 
-# V1-2
+# V1'
 # IDEA: interval + 2 pointers (GPT)
 class Solution(object):
     def intervalIntersection(self, firstList, secondList):
@@ -203,7 +199,7 @@ class Solution(object):
         return ans
 
 
-# V1-3
+# V1''
 # IDEA: SCAN LINE (gemini)
 class Solution(object):
     def intervalIntersection(self, firstList, secondList):
@@ -253,7 +249,7 @@ class Solution(object):
         return ans
 
 
-# V1-4
+# V1'''
 # IDEA: SCAN LINE (gpt)
 
 class Solution(object):

@@ -2,9 +2,7 @@
 
 816. Ambiguous Coordinates
 Medium
-Topics
-premium lock icon
-Companies
+
 We had some 2-dimensional coordinates, like "(1, 3)" or "(2, 0.5)". Then, we removed all commas, decimal points, and spaces and ended up with the string s.
 
 For example, "(1, 3)" becomes s = "(13)" and "(2, 0.5)" becomes s = "(205)".
@@ -170,7 +168,7 @@ class Solution(object):
 
 
 
-# V0-2
+# V0-1
 # IDEA: GEMINI
 # time = O(n^3)  # O(n) splits, each get_valid_formats scan is O(n), plus O(n) cross-multiply pairs
 # space = O(n^2)  # output list holds O(n) strings of length O(n)

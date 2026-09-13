@@ -56,7 +56,7 @@ class Solution(object):
             stack.append([idx, val])
         return res
 
-# V0'
+# V0-1
 # IDEA : STACK + circular loop handling
 # time = O(n)
 # space = O(n)
@@ -73,7 +73,7 @@ class Solution:
             stack.append(nums[index])
         return res
 
-# V0'
+# V0-2
 # IDEA : STACK + circular loop handling
 # time = O(n)
 # space = O(n)
@@ -97,7 +97,7 @@ class Solution(object):
             stack.append(nums2[i])
         return res
 
-# V0'
+# V0-3
 # IDEA : STACK + circular loop handling
 # time = O(n)
 # space = O(n)
@@ -122,7 +122,7 @@ class Solution:
             stack.append(augLst[i])
         return res
 
-# V0''
+# V0-4
 # IDER : brute force (for + while loop) : TLE
 # time = O(n^2)
 # space = O(n)
@@ -227,7 +227,7 @@ class Solution:
                 st.append(num)
         return res
 
-# V1'''''
+# V1'''
 # IDEA : Brute Force (using Double Length Array) [Time Limit Exceeded]
 # https://leetcode.com/problems/next-greater-element-ii/solution/
 # JAVA
@@ -252,7 +252,7 @@ class Solution:
 # }
 
 
-# V1''''''
+# V1''''
 # IDEA : Brute Force (using Double Length Array) (ACCEPTED)
 # https://leetcode.com/problems/next-greater-element-ii/solution/
 # JAVA
@@ -272,7 +272,7 @@ class Solution:
 #     }
 # }
 
-# V1''''''
+# V1'''''
 # IDEA : Stack (ACCEPTED)
 # https://leetcode.com/problems/next-greater-element-ii/solution/
 # JAVA
@@ -292,7 +292,7 @@ class Solution:
 #     }
 # }
 
-# V1'''''''
+# V1''''''
 # https://blog.techbridge.cc/2019/10/26/leetcode-pattern-next-greater-element/
 # C++
 # class Solution {

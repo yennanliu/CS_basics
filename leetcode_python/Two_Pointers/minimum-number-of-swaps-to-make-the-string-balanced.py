@@ -109,7 +109,7 @@ class Solution(object):
         return (unmatched_open + 1) // 2
 
 
-# V0
+# V0-2
 # IDEA : GREEDY
 # STEP 1) : remove "[]" pair
 # STEP 2) : since all "[]" pairs are removed already
@@ -234,7 +234,7 @@ class Solution:
             extraClose = max(close, extraClose)
         return (extraClose + 1) // 2
 
-# V1''''
+# V1'''''
 # IDEA : TWO POINTERS
 # https://leetcode.com/problems/minimum-number-of-swaps-to-make-the-string-balanced/discuss/1444539/Python3-solution-or-O(n)-or-explained-pattern
 # time = O(n)
@@ -257,7 +257,7 @@ class Solution:
             res = (l+1)//2
         return res
 
-# V1'''''
+# V1''''''
 # https://leetcode.com/problems/minimum-number-of-swaps-to-make-the-string-balanced/discuss/1390394/Easy-Python
 # time = O(n)
 # space = O(n)

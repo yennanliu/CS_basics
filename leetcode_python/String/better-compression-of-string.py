@@ -2,6 +2,7 @@
 
 3167. Better Compression of String
 Medium
+
 🔒 (premium)
 
 You are given a string compressed representing a compressed version of a string. The format is a character followed by its frequency. For example, "a3b1a1c2" is a compressed version of the string "aaabacc".

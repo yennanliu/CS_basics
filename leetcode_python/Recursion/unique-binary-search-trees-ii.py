@@ -62,7 +62,7 @@ class Solution(object):
 
         return res
 
-# V0
+# V0-1
 # IDEA: RECURSION
 # time = O(4^n / n^(3/2)) ~= Catalan numbers
 # space = O(4^n / n^(3/2)) ~= Catalan numbers
@@ -171,7 +171,7 @@ class Solution(object):
 
 
 
-# V0-1
+# V0-2
 # IDEA: RECURSION
 # time = O(4^n / n^(3/2)) ~= Catalan numbers
 # space = O(4^n / n^(3/2)) ~= Catalan numbers

@@ -1,5 +1,8 @@
 """
 
+20. Valid Parentheses
+Easy
+
 Given a string containing just the characters '(', ')', '{', '}', '[' and ']', 
 determine if the input string is valid.
 
@@ -88,7 +91,7 @@ class Solution(object):
 
         return not stack
 
-# V0
+# V0-2
 # IDEA : STACK + DICT
 # time = O(n), n = len(s)
 # space = O(n)
@@ -112,7 +115,7 @@ class Solution(object):
                     return False
         return True if not q else False
 
-# V0'
+# V0-3
 # IDEA : STACK + DICT
 # time = O(n), n = len(s)
 # space = O(n)
@@ -127,7 +130,7 @@ class Solution:
                 return False
         return len(stack) == 0
 
-# V0''
+# V0-4
 # IDEA : queue + dict
 # time = O(n), n = len(s)
 # space = O(n)
@@ -151,7 +154,7 @@ class Solution(object):
                         return False
         return True if not q else False
 
-# V0'''
+# V0-5
 # IDEA : STACK + DICT
 # time = O(n), n = len(s)
 # space = O(n)

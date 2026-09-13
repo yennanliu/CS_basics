@@ -74,7 +74,7 @@ class Solution(object):
         self.helper(root.right, path)
 
 
-# V0
+# V0-1
 # IDEA: DFS (pre-order)
 # time = O(n)  # n = number of tree nodes
 # space = O(n)  # recursion depth + collected paths
@@ -127,7 +127,7 @@ class Solution(object):
         self.helper(root.right, path)
 
 
-# V0-1
+# V0-2
 # IDEA: DFS (GPT)
 # time = O(n)  # n = number of tree nodes
 # space = O(n)  # recursion depth + collected paths
@@ -165,7 +165,7 @@ class Solution(object):
             self.dfs(node.right, path + "->" + str(node.right.val))
 
 
-# V0
+# V0-3
 # IDEA: DFS
 # time = O(n)  # n = number of tree nodes
 # space = O(n)  # recursion depth + collected paths
@@ -204,7 +204,7 @@ class Solution(object):
         path.pop()
 
 
-# V0-1
+# V0-4
 # IDEA: DFS
 # Definition for a binary tree node.
 # class TreeNode(object):
@@ -252,7 +252,7 @@ class Solution(object):
         return res
 
 
-# V0
+# V0-5
 # IDEA : BFS
 # time = O(n)  # n = number of tree nodes
 # space = O(n)  # queue + collected paths
@@ -284,7 +284,7 @@ class Solution(object):
         #return [x.strip("->") for x in res]
         return ["->".join(x.split("->")[1:]) for x in res]
 
-# V0
+# V0-6
 # IDEA : BFS
 # time = O(n)  # n = number of tree nodes
 # space = O(n)  # queue + collected paths
@@ -319,7 +319,7 @@ class Solution(object):
         #print ("res = " + str(res))
         return res
 
-# V0'
+# V0-7
 # IDEA : BFS
 # time = O(n)  # n = number of tree nodes
 # space = O(n)  # queue + collected paths
@@ -345,7 +345,7 @@ class Solution:
                     q.append((node.right, cur + str(node.val) + '->'))
         return res
 
-# V0'
+# V0-8
 # IDEA : DFS
 # time = O(n)  # n = number of tree nodes
 # space = O(n)  # recursion depth + collected paths
@@ -465,7 +465,7 @@ class Solution:
             res.append(str(root.val) + '->' + path)
         return res
 
-# V1'''''
+# V1''''
 # https://blog.csdn.net/coder_orz/article/details/51706119
 # IDEA : BFS (RECURSION)
 # time = O(n)  # n = number of tree nodes
@@ -484,7 +484,7 @@ class Solution:
                 stack.append((node.right, curs + str(node.val) + '->'))
         return res
 
-# V1'''''''
+# V1'''''
 # https://blog.csdn.net/coder_orz/article/details/51706119
 # IDEA : BFS
 # time = O(n)  # n = number of tree nodes
@@ -503,7 +503,7 @@ class Solution:
                 queue.insert(0, (node.right, curs + str(node.val) + '->'))
         return res
 
-# V1'''''''''
+# V1''''''
 # https://www.jiuzhang.com/solution/binary-tree-paths/#tag-highlight-lang-python
 # time = O(n)  # n = number of tree nodes
 # space = O(n)  # recursion depth + collected paths
@@ -535,7 +535,7 @@ class Solution:
             self.dfs(node.right, path, result)
             path.pop() 
 
-# V1''''''''
+# V1'''''''
 # https://www.jiuzhang.com/solution/binary-tree-paths/#tag-highlight-lang-python
 # time = O(n^2)  # each recursive call rebuilds sub-results as new lists
 # space = O(n^2)

@@ -2,6 +2,7 @@
 
 2158. Amount of New Area Painted Each Day
 Hard
+
 (premium / locked problem)
 
 There is a long and thin painting that can be represented by a number line. You are given a 0-indexed 2D integer array paint of length n, where paint[i] = [start_i, end_i]. This means that on the ith day you need to paint the area between start_i and end_i.

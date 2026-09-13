@@ -72,7 +72,7 @@ class Solution(object):
         return res
 
 
-# V0-0-1
+# V0-1
 # IDEA : SLIDING WINDOW + collections.Counter()
 # time = O(n)
 # space = O(1)  # Counter bounded by 26 lowercase letters
@@ -93,7 +93,7 @@ class Solution(object):
                 ans.append(i - lp + 1)
         return ans
     
-# V0-1
+# V0-2
 # IDEA: SLIDE WINDOW (gemini)
 from collections import Counter
 
@@ -131,7 +131,7 @@ class Solution(object):
         return res
 
 
-# V0-2
+# V0-3
 # IDEA: 2 POINTERS + hashmap (TLE) (gpt)
 from collections import Counter
 
@@ -158,7 +158,7 @@ class Solution(object):
         return res
 
 
-# V0''
+# V0-4
 # time = O(n)
 # space = O(1)  # Counter bounded by 26 lowercase letters
 from collections import Counter
@@ -333,7 +333,7 @@ class Solution(object):
             right += 1
         return res
 
-# V1''''''
+# V1'''''
 # http://zxi.mytechroad.com/blog/hashtable/leetcode-438-find-all-anagrams-in-a-string/
 # C++
 # // Author: Huahua

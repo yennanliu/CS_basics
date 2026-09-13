@@ -156,7 +156,7 @@ class Solution(object):
         return root
 
 
-# V0
+# V0-3
 # IDEA : BFS
 # REF : LC # 117 : populating-next-right-pointers-in-each-node-ii/
 # time = O(N)
@@ -180,7 +180,7 @@ class Solution:
                     queue.append(node.right)
         return root
 
-# V0'
+# V0-4
 # IDEA : BFS
 ### NOTE : in this problem, we need to populate the result as LINKED LIST form
 from collections import deque
@@ -215,7 +215,7 @@ class Solution(object):
             temp[-1].next = None ###  NOTE : temp[-1].next, is pointing tmp's next to None
         return root
 
-# V0''
+# V0-5
 # IDEA : BFS
 ### NOTE : in this problem, we need to populate the result as LINKED LIST form
 from collections import deque
@@ -245,7 +245,7 @@ class Solution(object):
             temp[-1].next = None
         return root
 
-# V0'
+# V0-6
 ### NOTE : in this problem, we need to populate the result as LINKED LIST form
 # IDEA : DFS
 # DEMO
@@ -320,7 +320,7 @@ class Solution:
         # Since the tree has now been modified, return the root node
         return root
 
-# V1
+# V1'
 # IDEA : Using previously established next pointers
 # https://leetcode.com/problems/populating-next-right-pointers-in-each-node/solution/
 # time = O(N)
@@ -359,7 +359,7 @@ class Solution:
         
         return root 
 
-# V1
+# V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79559645
 # time = O(N)
 # space = O(log N)
@@ -375,7 +375,7 @@ class Solution:
         self.connect(root.left)
         self.connect(root.right)
 
-# V1'
+# V1'''
 # IDEA : BFS
 # https://leetcode.com/problems/populating-next-right-pointers-in-each-node/discuss/291622/Python-recursive-solution
 from collections import deque
@@ -405,7 +405,7 @@ class Solution(object):
             temp[-1].next = None
         return root
 
-# V1''
+# V1''''
 # IDEA : LINKED LIST
 # https://leetcode.com/problems/populating-next-right-pointers-in-each-node/discuss/291622/Python-recursive-solution
 # time = O(N)
@@ -430,7 +430,7 @@ class Solution(object):
                 nex = cur.left
         return root
 
-# V1'''
+# V1'''''
 # https://www.cnblogs.com/loadofleaf/p/5523911.html
 # time = O(N)
 # space = O(log N)

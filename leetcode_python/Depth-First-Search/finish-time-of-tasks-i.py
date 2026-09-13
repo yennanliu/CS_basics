@@ -3,11 +3,8 @@
 """
 
 3965. Finish Time of Tasks I
-Solved
 Medium
-premium lock icon
-Companies
-Hint
+
 You are given an integer n representing the number of tasks in a project, numbered from 0 to n - 1. These tasks are connected as a tree rooted at task 0. This is represented by a 2D integer array edges of length n - 1, where edges[i] = [ui, vi] indicates that task ui is the parent of task vi.
 
 You are also given an array baseTime of length n, where baseTime[i] represents the time to complete task i.
@@ -151,7 +148,7 @@ class Solution(object):
         return latest + ownDuration
 
 
-# V0-0-1
+# V0-1
 # IDEA: DFS (post order) (GEMINI)
 class Solution(object):
     def finishTime(self, n, edges, baseTime):
@@ -210,7 +207,7 @@ class Solution(object):
         return val
 
 
-# V1-1
+# V1
 # IDEA: DFS (GEMINI)
 from collections import defaultdict
 
@@ -251,7 +248,7 @@ class Solution(object):
 
 
 
-# V1-2
+# V1'
 # IDEA: DFS (GPT)
 class Solution(object):
     def finishTime(self, n, edges, baseTime):

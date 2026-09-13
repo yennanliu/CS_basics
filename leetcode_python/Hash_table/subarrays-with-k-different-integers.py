@@ -173,7 +173,7 @@ class Solution(object):
                     res += left_k - left + 1
             return res
 
-# V1''''''
+# V1'''''
 # IDEA : hashmap + freq
 # https://leetcode.com/problems/subarrays-with-k-different-integers/discuss/348984/Different-Python-two-pointer-solutions
 # time = O(n)

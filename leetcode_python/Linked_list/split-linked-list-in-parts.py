@@ -93,7 +93,7 @@ class Solution(object):
         #print ("res = " + str(res))
         return res
 
-# V0'
+# V0-1
 # time = O(n + k)  # n = length of linked list
 # space = O(1)  # excluding output list of k head pointers
 class Solution(object):
@@ -125,7 +125,7 @@ class Solution(object):
         print ("res = " + str(res))
         return res
 
-# V0'
+# V0-2
 # IDEA : LINKED LIST OP
 # time = O(n + k)  # n = length of linked list
 # space = O(1)  # excluding output list of k head pointers

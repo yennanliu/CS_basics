@@ -58,7 +58,7 @@ class Solution:
 
         return res
 
-# V0'
+# V0-1
 # IDEA : TWO POINTERS
 # IDEA : CORE
 #     -> step 1) use left_max, right_mex : record "highest" "wall" in left, right handside at current idx
@@ -169,7 +169,7 @@ class Solution:
 
 ### Test case : dev
 
-# V1'
+# V1''
 # https://blog.csdn.net/XX_123_1_RJ/article/details/81048041
 # IDEA : BRUTE FORCE
 # time = O(n)
@@ -192,7 +192,7 @@ class Solution:
             res += min(left_max[i], right_max[i]) - height[i]
         return res
 
-# V1''
+# V1'''
 # https://blog.csdn.net/jiangjiang_jian/article/details/81135879
 # time = O(n)
 # space = O(n)
@@ -213,7 +213,7 @@ class Solution:
                 sum += min(rightmax, leftmosthigh[i]) - A[i]
         return sum
 
-# V1'''
+# V1''''
 # https://www.cnblogs.com/zuoyuan/p/3781453.html
 # time = O(n)
 # space = O(n)
@@ -234,11 +234,11 @@ class Solution:
                 sum += min(rightmax, leftmosthigh[i]) - A[i]
         return sum
 
-# V1
+# V1'''''
 # IDEA : BRUTE FORCE
 # https://leetcode.com/problems/trapping-rain-water/solution/
 
-# V1
+# V1''''''
 # IDEA : DP
 # https://leetcode.com/problems/trapping-rain-water/solution/
 # C++

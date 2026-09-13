@@ -3,6 +3,8 @@
 """
 
 271. Encode and Decode Strings
+Medium
+
 Design an algorithm to encode a list of strings to a string. The encoded string is then sent over the network and is decoded back to the original list of strings.
 
 Machine 1 (sender) has the function:
@@ -39,8 +41,6 @@ Lock:
 Prime
 Company:
 Bloomberg Google Microsoft Square Twitter
-
-
 
 """
 
@@ -112,7 +112,7 @@ class Codec:
         return res
 
 
-# V0
+# V0-1
 # IDEA: 2 POINTERS + STR OP
 # time = O(n)
 # space = O(n)
@@ -171,7 +171,7 @@ class Codec:
         return res
 
 
-# V0-1
+# V0-2
 # time = O(n)
 # space = O(n)
 class Codec:
@@ -202,7 +202,7 @@ class Codec:
         return res
 
 
-# V0-2
+# V0-3
 # time = O(n)
 # space = O(n)
 class Codec:
@@ -236,7 +236,7 @@ class Codec:
         return res
 
 
-# V0 
+# V0-4
 # encode : len(element) + "$#"
 # decode : find the "#" and get the len(element) -> get original element
 # NOTE : find() in python
@@ -303,7 +303,7 @@ class Codec:
 
 ### Test case : dev
 
-# V1
+# V1'
 # https://blog.csdn.net/qq508618087/article/details/50912562
 # IDEA : 
 # encode : len(element) + "$"
@@ -333,7 +333,7 @@ class Codec:
 #     }
 # };
 
-# V1'
+# V1''
 # https://medium.com/leetcode-%E6%BC%94%E7%AE%97%E6%B3%95%E6%95%99%E5%AD%B8/024-leetcode-271-%E6%BC%94%E7%AE%97%E6%B3%95-encode-and-decode-strings-%E5%AD%97%E4%B8%B2%E5%8A%A0%E8%A7%A3%E5%AF%86-722cafd6238
 # IDEA :
 # ABC -> 3/ABC 

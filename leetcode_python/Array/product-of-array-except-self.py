@@ -1,4 +1,8 @@
 """
+
+238. Product of Array Except Self
+Medium
+
 Given an integer array nums, return an array answer such that answer[i] is equal to the product of all the elements of nums except nums[i].
 
 The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.
@@ -261,14 +265,14 @@ class Solution(object):
         return res
 
 
-# V0
+# V0-1
 # IDEA : array product + deal with 0 case
 #  get all products, 
 #  if val != 0, productExceptSelf  = all_products / val
 #  if val == 0, set val = 1, get tmp_all_products,  productExceptSelf  = tmp_all_products / 1
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Array/ProductOfArrayExceptSelf.java#L9
 
-# V0'
+# V0-2
 # time = O(n)
 # space = O(1)
 class Solution:
@@ -294,7 +298,7 @@ class Solution:
                 r.append(int(_prod_except_z))
         return r
 
-# V0''
+# V0-3
 # IDEA : ARRAY OP
 # time = O(n)
 # space = O(1)
@@ -318,7 +322,7 @@ class Solution(object):
             ans[j-1] = ans[j-1] * right
         return ans
 
-# V0'''''
+# V0-4
 # time = O(n)
 # space = O(1)
 class Solution:

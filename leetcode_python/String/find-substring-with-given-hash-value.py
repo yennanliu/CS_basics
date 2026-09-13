@@ -1,7 +1,7 @@
 """
 
 2156. Find Substring With Given Hash Value
-Medium
+Hard
 
 The hash of a 0-indexed string s of length k, given integers p and m, is computed using the following function:
 

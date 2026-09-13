@@ -20,7 +20,6 @@ Example 3:
 Input: nums = [1]
 Output: [[1]]
 
-
 """
 
 # V0
@@ -99,7 +98,7 @@ class Solution:
         return dp
 
 
-# V0 
+# V0-2
 # time = O(n * n!)
 # space = O(n)
 class Solution(object):

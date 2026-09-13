@@ -1,3 +1,11 @@
+"""
+
+469. Convex Polygon
+Medium
+
+https://leetcode.com/problems/convex-polygon/
+
+"""
 
 # LeetCode 469. Convex Polygon
 
@@ -23,6 +31,8 @@
 
 # Explanation:
 
+
+# V0
 
 # V1 : DEV 
 

@@ -3,7 +3,6 @@
 670. Maximum Swap
 Medium
 
-
 You are given an integer num. You can swap two digits at most once to get the maximum valued number.
 
 Return the maximum valued number you can get.
@@ -96,7 +95,7 @@ class Solution(object):
         return num
 
 
-# V0-0-1
+# V0-1
 # IDEA: LAST IDX + HASHMAP (GPT)
 """
 
@@ -168,7 +167,7 @@ class Solution(object):
 
 
 
-# V0-1
+# V0-2
 # IDEA: LAST IDX + HASHMAP (GEMINI)
 class Solution(object):
     def maximumSwap(self, num):
@@ -203,7 +202,7 @@ class Solution(object):
         return num
 
 
-# V0-2
+# V0-3
 # IDEA: BRUTE FORCE (GPT)
 class Solution(object):
     def maximumSwap(self, num):
@@ -222,7 +221,7 @@ class Solution(object):
         return max(candidates)
 
 
-# V0
+# V0-4
 # IDEA : 3 pointers + array op
 # IDEA : 3 pointers + array op
 # -> MAINTAIN 3 pointers : left, right, and max_idx
@@ -269,7 +268,7 @@ class Solution(object):
         num[l], num[r] = num[r], num[l]
         return int("".join(num))
 
-# V0'
+# V0-5
 # IDEA : 3 pointers + array op
 # -> MAINTAIN 3 pointers : left, right, and max_idx
 # -> AND GO THROUGH FROM max idx to 0 idx
@@ -318,7 +317,7 @@ class Solution(object):
         digits[left], digits[right] = digits[right], digits[left] # swap left and right when loop finished 
         return int("".join(digits))
 
-# V0''
+# V0-6
 # IDEA : BRUTE FORCE
 # NOTE : ans = A[:]
 #        A[:] is a `shallow copy` syntax in python,

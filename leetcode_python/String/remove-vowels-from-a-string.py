@@ -1,5 +1,8 @@
 """
 
+1119. Remove Vowels from a String
+Easy
+
 # https://blog.csdn.net/fuxuemingzhu/article/details/100976794
 
 Given a string S, remove the vowels 'a', 'e', 'i', 'o', and 'u' from it, and return the new string.
@@ -20,7 +23,6 @@ Note:
 
 S consists of lowercase English letters only.
 1 <= S.length <= 1000
-
 
 """
 

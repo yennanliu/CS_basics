@@ -46,7 +46,6 @@ Constraints:
 1 <= nums[i] <= 10^5
 1 <= k <= min(n * (n + 1) / 2, 10^9)
 
-
 """
 
 # V0

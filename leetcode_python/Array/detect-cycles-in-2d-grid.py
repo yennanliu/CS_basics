@@ -1,7 +1,7 @@
 """
 
 1559. Detect Cycles in 2D Grid
-Hard
+Medium
 
 Given a 2D array of characters grid of size m x n, you need to find if there exists any cycle consisting of the same value in grid.
 

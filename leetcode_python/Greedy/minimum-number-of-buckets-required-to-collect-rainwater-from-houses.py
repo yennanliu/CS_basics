@@ -1,5 +1,8 @@
 """
 
+2086. Minimum Number of Food Buckets to Feed the Hamsters
+Medium
+
 2086. Minimum Number of Buckets Required to Collect Rainwater from Houses
 Medium
 

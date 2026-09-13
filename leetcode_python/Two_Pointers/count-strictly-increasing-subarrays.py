@@ -2,6 +2,7 @@
 
 2393. Count Strictly Increasing Subarrays
 Medium
+
 (premium / locked problem)
 
 You are given an array nums consisting of positive integers.

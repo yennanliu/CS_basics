@@ -113,7 +113,7 @@ class Solution(object):
         )
 
 
-# V0
+# V0-2
 # IDEA : Iterative
 # time = O(n), n = number of nodes in tree
 # space = O(n)
@@ -146,7 +146,7 @@ class Solution:
 
         return True
 
-# V0'
+# V0-3
 # IDEA : Recursive
 # time = O(n), n = number of nodes in tree
 # space = O(h), h = height of tree (recursion depth)
@@ -336,7 +336,7 @@ class Solution2:
 #     root.left.right, root.right.left = TreeNode(4), TreeNode(4)
 #     print(Solution().isSymmetric(root))
 
-# V1
+# V1''''
 # IDEA : Recursive
 # https://leetcode.com/problems/symmetric-tree/solution/
 # JAVA
@@ -352,7 +352,7 @@ class Solution2:
 #         && isMirror(t1.left, t2.right);
 # }
 
-# V1
+# V1'''''
 # IDEA : Iterative
 # https://leetcode.com/problems/symmetric-tree/solution/
 # JAVA

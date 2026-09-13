@@ -2,6 +2,7 @@
 
 2371. Minimize Maximum Value in a Grid
 Hard
+
 (premium / locked problem)
 
 You are given an m x n integer matrix grid containing distinct positive integers.

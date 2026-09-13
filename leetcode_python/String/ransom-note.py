@@ -102,7 +102,7 @@ class Solution2(object):
         """
         return not collections.Counter(ransomNote) - collections.Counter(magazine)
 
-# V3
+# V3'
 # time = O(m + n)
 # space = O(1) (26-letter fixed-size array)
 class Solution(object):

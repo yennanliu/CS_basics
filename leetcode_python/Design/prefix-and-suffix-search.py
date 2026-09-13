@@ -1,5 +1,8 @@
 """
 
+745. Prefix and Suffix Search
+Hard
+
 Given many words, words[i] has weight i.
 
 Design a class WordFilter that supports one function, WordFilter.f(String prefix, String suffix). It will return the word with given prefix and suffix with maximum weight. If no word exists, return -1.

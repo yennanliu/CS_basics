@@ -1,12 +1,8 @@
 """
 
 1382. Balance a Binary Search Tree
-Solved
 Medium
-Topics
-premium lock icon
-Companies
-Hint
+
 Given the root of a binary search tree, return a balanced binary search tree with the same node values. If there is more than one answer, return any of them.
 
 A binary search tree is balanced if the depth of the two subtrees of every node never differs by more than 1.
@@ -31,7 +27,6 @@ Constraints:
 The number of nodes in the tree is in the range [1, 104].
 1 <= Node.val <= 105
 
-
 """
 
 
@@ -51,7 +46,7 @@ class Solution(object):
         pass
 
 
-# V1-1
+# V1
 # IDEA: IN ORDER DFS + DFS BUILD tree (gpt)
 """
 NOTE !!!
@@ -117,7 +112,7 @@ class Solution(object):
         return root
 
 
-# V1-2
+# V1'
 # IDEA: IN ORDER DFS + DFS BUILD tree (GEMINI)
 class Solution(object):
     def balanceBST(self, root):
@@ -159,7 +154,7 @@ class Solution(object):
 
         return root
 
-# V2-1
+# V2
 # IDEA: Inorder Traversal + Recursive Construction
 # https://leetcode.com/problems/balance-a-binary-search-tree/editorial/
 class Solution:
@@ -198,7 +193,7 @@ class Solution:
         return node
 
 
-# V2-2
+# V2'
 # IDEA: Day-Stout-Warren Algorithm / In-Place Balancing
 # https://leetcode.com/problems/balance-a-binary-search-tree/editorial/
 class Solution:

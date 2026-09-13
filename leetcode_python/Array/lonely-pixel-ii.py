@@ -1,3 +1,12 @@
+"""
+
+533. Lonely Pixel II
+Medium
+
+https://leetcode.com/problems/lonely-pixel-ii/
+
+"""
+
 # V0 
 
 # V1 

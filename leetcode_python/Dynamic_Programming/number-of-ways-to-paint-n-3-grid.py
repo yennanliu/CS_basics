@@ -1,5 +1,8 @@
 """
 
+1411. Number of Ways to Paint N × 3 Grid
+Hard
+
 1411. Number of Ways to Paint N x 3 Grid
 Hard
 

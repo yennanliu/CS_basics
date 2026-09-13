@@ -4,6 +4,9 @@
 # dp[i][j]  :  sum of sub-matrix (0,0)(0,0) to (i,j)(i,j)
 """
 
+304. Range Sum Query 2D - Immutable
+Medium
+
 DP def
     dp[i][j]: sum of the sub-matrix from (0, 0) to (i-1, j-1)
 

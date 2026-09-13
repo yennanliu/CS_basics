@@ -1,4 +1,5 @@
 """
+
 1024. Video Stitching
 Medium
 
@@ -43,6 +44,7 @@ Note:
 1 <= clips.length <= 100
 0 <= clips[i][0], clips[i][1] <= 100
 0 <= T <= 100
+
 """
 
 

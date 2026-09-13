@@ -1,4 +1,5 @@
 """
+
 35. Search Insert Position
 Easy
 
@@ -92,7 +93,7 @@ class Solution(object):
         return l
 
 
-# V0-0-1
+# V0-1
 # IDEA : BINARY SEARCH (gemini)
 # time = O(log n)
 # space = O(1)
@@ -120,7 +121,7 @@ class Solution(object):
         # 'l' is the exact insertion index when target is not found
         return l
 
-# V0
+# V0-2
 # IDEA : BINARY SEARCH
 # time = O(log n)
 # space = O(1)
@@ -135,7 +136,7 @@ class Solution:
                 left = mid + 1
         return left
 
-# V0'
+# V0-3
 # IDEA : BINARY SEARCH + OTHER CASES HANDLING
 # time = O(log n)
 # space = O(1)

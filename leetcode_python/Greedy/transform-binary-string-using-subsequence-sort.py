@@ -4,11 +4,8 @@
 """
 
 3998. Transform Binary String Using Subsequence Sort
-Solved
 Medium
-premium lock icon
-Companies
-Hint
+
 You are given a binary string s.
 
 You are also given an array of strings strs, where each strs[i] has the same length as s and consists of characters '0', '1', and '?'. Each '?' can be replaced by either '0' or '1'.
@@ -77,7 +74,6 @@ s[i] is either '0' or '1'.
 strs[i].length == n
 strs[i] is either '0', '1', or '?'​​​​​​​.
  
-
 
 """
 

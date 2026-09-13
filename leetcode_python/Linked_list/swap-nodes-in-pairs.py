@@ -3,7 +3,6 @@
 24. Swap Nodes in Pairs
 Medium
 
-
 Given a linked list, swap every two adjacent nodes and return its head. You must solve the problem without modifying the values in the list's nodes (i.e., only nodes themselves may be changed.)
 
 
@@ -96,7 +95,7 @@ class Solution(object):
         return _next_
 
 
-# V0 
+# V0-2
 # IDEA : LINKED LIST
 # NOTE : 
 #   1) define 2 node via : n1, n2 = head.next, head.next.next
@@ -159,7 +158,7 @@ class Solution:
       head = n1
     return dummy.next
 
-# V1
+# V1'
 # IDEA : Recursive Approach
 # https://leetcode.com/problems/swap-nodes-in-pairs/solution/
 # time = O(n)
@@ -186,7 +185,7 @@ class Solution(object):
         # Now the head is the second node
         return second_node
 
-# V1
+# V1''
 # IDEA : Iterative Approach
 # https://leetcode.com/problems/swap-nodes-in-pairs/solution/
 # time = O(n)
@@ -222,7 +221,7 @@ class Solution:
         # Return the new head node.
         return dummy.next
 
-# V1' 
+# V1'''
 # https://blog.csdn.net/coder_orz/article/details/51532184
 # IDEA : LINKED LIST 
 # Definition for singly-linked list.
@@ -250,7 +249,7 @@ class Solution(object):
             head = head.next
         return new_head.next
 
-# V1'' 
+# V1''''
 # https://blog.csdn.net/coder_orz/article/details/51532184
 # IDEA : ITERATION  
 # Definition for singly-linked list.
@@ -273,7 +272,7 @@ class Solution(object):
         new_head.next = head
         return new_head
 
-# V1'''
+# V1'''''
 # https://www.jiuzhang.com/solution/swap-nodes-in-pairs/#tag-highlight-lang-python
 # time = O(n)
 # space = O(1)

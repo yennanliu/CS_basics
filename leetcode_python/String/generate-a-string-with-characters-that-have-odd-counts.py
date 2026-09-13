@@ -1,6 +1,6 @@
 """
 
-1374. Generate a String With Characters That Have Odd Count
+1374. Generate a String With Characters That Have Odd Counts
 Easy
 
 Given an integer n, return a string with n characters such that each character in such string

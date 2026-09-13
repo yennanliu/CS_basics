@@ -1,5 +1,8 @@
 """
 
+340. Longest Substring with At Most K Distinct Characters
+Medium
+
 # https://www.cnblogs.com/lz87/p/10095363.html
 
 [LeetCode] 340. Longest Substring with At Most K Distinct Characters
@@ -17,7 +20,6 @@ Example 2:
 Input: s = "aa", k = 1
 Output: 2
 Explanation: T is "aa" which its length is 2.
-
 
 """
 

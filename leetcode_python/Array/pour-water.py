@@ -1,3 +1,12 @@
+"""
+
+755. Pour Water
+Medium
+
+https://leetcode.com/problems/pour-water/
+
+"""
+
 # V0 
 
 # V1 

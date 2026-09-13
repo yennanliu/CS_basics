@@ -2,6 +2,7 @@
 
 3231. Minimum Number of Increasing Subsequence to Be Removed
 Hard
+
 🔒 (premium)
 
 Given an array of integers nums, you are allowed to perform the following operation any number of times:

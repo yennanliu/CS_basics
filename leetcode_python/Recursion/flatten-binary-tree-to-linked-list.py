@@ -1,11 +1,8 @@
 """
+
 114. Flatten Binary Tree to Linked List
-Solved
 Medium
-Topics
-premium lock icon
-Companies
-Hint
+
 Given the root of a binary tree, flatten the tree into a "linked list":
 
 The "linked list" should use the same TreeNode class where the right child pointer points to the next node in the list and the left child pointer is always null.
@@ -34,6 +31,7 @@ The number of nodes in the tree is in the range [0, 2000].
  
 
 Follow up: Can you flatten the tree in-place (with O(1) extra space)?
+
 """
 
 
@@ -62,7 +60,7 @@ class Solution(object):
         pass
 
 
-# V0-0-1
+# V0-1
 # IDEA: POST ORDER DFS + cache + re-connect (gpt)
 """
 CORE IDEA:
@@ -240,7 +238,7 @@ class Solution(object):
         return node
 
 
-# V0-0-1
+# V0-2
 # IDEA: POST ORDER DFS + cache + re-connect (gpt)
 class Solution(object):
     def flatten(self, root):
@@ -286,7 +284,7 @@ class Solution(object):
         return node
 
 
-# V0-1
+# V0-3
 # IDEA: Reverse Preorder DFS (gpt)
 """
 
@@ -391,7 +389,7 @@ class Solution(object):
         self.prev = node
 
 
-# V0
+# V0-4
 # IDEA: DFS (post-order) (GEMINI)
 # time = O(n)
 # space = O(h), h is height of binary tree (recursion stack)
@@ -546,7 +544,7 @@ class Solution(object):
         return root
 
 
-# V0
+# V0-5
 # IDEA: DFS (post-order) (gpt)
 # time = O(n)
 # space = O(h), h is height of binary tree (recursion stack)
@@ -620,7 +618,7 @@ class Solution(object):
 
 
 
-# V0-1
+# V0-6
 # IDEA: DFS (post-order) (O(1) space) (CLAUDE)
 # time = O(n)
 # space = O(1)
@@ -639,7 +637,7 @@ class Solution(object):
 
 
 
-# V0-2
+# V0-7
 # IDEA: DFS (post-order) + prev node (GPT)
 # time = O(n)
 # space = O(h), h is height of binary tree (recursion stack)
@@ -672,7 +670,7 @@ class Solution(object):
 
 
 
-# V0-2
+# V0-8
 # IDEA: DFS (post-order) + prev node (GEMINI)
 # time = O(n)
 # space = O(h), h is height of binary tree (recursion stack)
@@ -703,7 +701,7 @@ class Solution(object):
 
 
 
-# V0
+# V0-9
 # IDEA: DFS + PREORDER
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Recursion/FlattenBinaryTreeToLinkedList.java#L73
 # time = O(n)
@@ -737,7 +735,7 @@ class Solution:
             nodes[-1].right = None
 
 
-# V0-1
+# V0-10
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, val=0, left=None, right=None):

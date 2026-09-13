@@ -1,5 +1,8 @@
 """
 
+974. Subarray Sums Divisible by K
+Medium
+
 Code
 Testcase
 Testcase
@@ -33,6 +36,7 @@ Constraints:
 1 <= nums.length <= 3 * 104
 -104 <= nums[i] <= 104
 2 <= k <= 104
+
 """
 
 
@@ -66,7 +70,7 @@ class Solution(object):
         return cnt
 
 
-# V0
+# V0-1
 # time = O(n)
 # space = O(k)
 class Solution(object):
@@ -87,7 +91,7 @@ class Solution(object):
 
         return cnt
 
-# V0-1
+# V0-2
 # time = O(n)
 # space = O(k)
 class Solution(object):

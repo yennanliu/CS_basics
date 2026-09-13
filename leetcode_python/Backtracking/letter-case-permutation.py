@@ -1,5 +1,8 @@
 """
 
+784. Letter Case Permutation
+Medium
+
 Given a string s, we can transform every letter individually to be lowercase 
 or uppercase to create another string.
 Return a list of all possible strings we could create. You can return the output in any order.
@@ -53,7 +56,7 @@ class Solution(object):
         else:
             self.dfs(S[1:], res, word + S[0])
             
-# V0'
+# V0-1
 # IDEA : DFS
 # time = O(n * 2^n)
 # space = O(n)

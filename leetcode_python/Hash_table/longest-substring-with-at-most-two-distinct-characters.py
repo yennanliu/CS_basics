@@ -2,6 +2,7 @@
 
 159. Longest Substring with At Most Two Distinct Characters
 Medium
+
 (premium)
 
 Given a string s, return the length of the longest substring that contains

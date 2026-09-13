@@ -1,6 +1,7 @@
 """
 
-LeetCode 163. Missing Ranges
+163. Missing Ranges
+Easy
 
 # https://www.goodtecher.com/leetcode-163-missing-ranges/
 
@@ -202,7 +203,7 @@ class Solution:
         
         return str(left) + "->" + str(right)
         
-# V1'
+# V1''''
 # https://www.cnblogs.com/grandyang/p/5184890.html
 # IDEA : C++ 
 # class Solution {

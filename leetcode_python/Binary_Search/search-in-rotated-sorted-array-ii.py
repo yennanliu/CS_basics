@@ -80,7 +80,7 @@ class Solution(object):
                     left = mid + 1
         return False
 
-# V0'
+# V0-1
 # IDEA : 
 # STEP 0) NEGLECT THE "DUPLICATES" : "while l < r and nums[l] == nums[r]: l += 1"
 # STEP 1) CHECK WHETHER "LEFT SUB-STRING" OR "RIGHT SUB-STRING" IS ORDERING 
@@ -186,7 +186,7 @@ class Solution(object):
                 return True
         return False
 
-# V1
+# V1'''
 # IDEA : BINARY SEARCH
 # https://leetcode.com/problems/search-in-rotated-sorted-array-ii/solution/
 # JAVA

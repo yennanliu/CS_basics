@@ -1,11 +1,8 @@
 """
 
 43. Multiply Strings
-Solved
 Medium
-Topics
-premium lock icon
-Companies
+
 Given two non-negative integers num1 and num2 represented as strings, return the product of num1 and num2, also represented as a string.
 
 Note: You must not use any built-in BigInteger library or convert the inputs to integer directly.
@@ -120,7 +117,7 @@ class Solution(object):
         return str(n1 * n2)
 
 
-# V0
+# V0-3
 # time = O(m * n)  # m = len(num1), n = len(num2)
 # space = O(m + n)
 class Solution(object):
@@ -145,7 +142,7 @@ class Solution(object):
             ans += curr * (10 ** i)
         return str(ans)
 
-# V0'
+# V0-4
 # AGAIN 
 # class Solution(object):
 #     def multiply(self, num1, num2):

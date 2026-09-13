@@ -1,11 +1,8 @@
 """
 
 108. Convert Sorted Array to Binary Search Tree
-Solved
 Easy
-Topics
-premium lock icon
-Companies
+
 Given an integer array nums where the elements are sorted in ascending order, convert it to a height-balanced binary search tree.
 
  
@@ -31,7 +28,6 @@ Constraints:
 -104 <= nums[i] <= 104
 nums is sorted in a strictly increasing order.
  
-
 
 """
 
@@ -76,7 +72,7 @@ class Solution(object):
         return root
 
 
-# V0-0-1
+# V0-1
 # IDEA: DFS + BST property + mid idx -> get root (gemini)
 class Solution(object):
     def sortedArrayToBST(self, nums):
@@ -108,7 +104,7 @@ class Solution(object):
         return root
 
 
-# V0-1
+# V0-2
 # IDEA: DFS + BST property + mid idx -> get root (GPT)
 class Solution(object):
     def sortedArrayToBST(self, nums):
@@ -140,7 +136,7 @@ class Solution(object):
         return root
 
 
-# V0
+# V0-3
 # time = O(n log n), slicing costs O(n) total per level, O(log n) levels
 # space = O(n), slices along recursion path sum to O(n)
 class Solution(object):

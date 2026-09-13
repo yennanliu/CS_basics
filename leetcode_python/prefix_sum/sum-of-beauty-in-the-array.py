@@ -1,12 +1,8 @@
 """
 
 2012. Sum of Beauty in the Array
-Solved
 Medium
-Topics
-premium lock icon
-Companies
-Hint
+
 You are given a 0-indexed integer array nums. For each index i (1 <= i <= nums.length - 2) the beauty of nums[i] equals:
 
 2, if nums[j] < nums[i] < nums[k], for all 0 <= j < i and for all i < k <= nums.length - 1.

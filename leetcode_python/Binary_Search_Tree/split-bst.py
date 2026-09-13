@@ -3,7 +3,8 @@
 
 """
 
-LC 776 - Split BST
+776. Split BST
+Medium
 
 Problem Description
 Given a Binary Search Tree (BST) with root node root, and a target value V, split the tree into two subtrees where one subtree has nodes that are all smaller or equal to the target value, while the other subtree has all nodes that are greater than the target value. It’s not necessarily the case that the tree contains a node with value V.
@@ -326,7 +327,7 @@ class Solution(object):
         pass
 
 
-# V0-0-1
+# V0-1
 # IDEA : BST properties (left < root < right) + recursion (GEMINI)
 # time = O(h)  # h = tree height, BST-guided single-branch recursion
 # space = O(h)  # recursion stack
@@ -377,7 +378,7 @@ class Solution(object):
 
         return [small, root]
 
-# V0
+# V0-2
 # IDEA : BST properties (left < root < right) + recursion (GEMINI)
 # time = O(h)  # h = tree height, BST-guided single-branch recursion
 # space = O(h)  # recursion stack
@@ -415,7 +416,7 @@ class Solution(object):
             return [small_part, root]
 
 
-# V0-0-1
+# V0-3
 # IDEA : BST properties (left < root < right) + recursion (GPT)
 class Solution(object):
     def splitBST(self, root, V):
@@ -443,7 +444,7 @@ class Solution(object):
             return [left, root]
 
 
-# V0-0-1
+# V0-4
 # IDEA: (gemini)
 class Solution(object):
     def generateTrees(self, n):
@@ -481,7 +482,7 @@ class Solution(object):
         return all_trees
 
 
-# V0-1
+# V0-5
 # IDEA : BST properties (left < root < right) + recursion (GPT)
 # time = O(h)  # h = tree height, BST-guided single-branch recursion
 # space = O(h)  # recursion stack
@@ -504,7 +505,7 @@ class Solution(object):
             return small, root
 
 
-# V0
+# V0-6
 # IDEA : BST properties (left < root < right) + recursion
 # https://blog.csdn.net/magicbean2/article/details/79679927
 # https://www.itdaan.com/tw/d58594b92742689b5769f9827365e8b4
@@ -533,7 +534,7 @@ class Solution(object):
             root.right = left
             return [root, right]
 
-# V0'
+# V0-7
 # IDEA : BST properties (left < root < right) + recursion
 # time = O(h)  # h = tree height, BST-guided single-branch recursion
 # space = O(h)  # recursion stack
@@ -552,7 +553,7 @@ class Solution(object):
             root.left = result[1]
             return result[0], root
 
-# V0'
+# V0-8
 # time = O(h)  # h = tree height, BST-guided single-branch recursion
 # space = O(h)  # recursion stack
 class Solution(object):
@@ -568,7 +569,7 @@ class Solution(object):
             root.left = result[1]
             return result[0], root
 
-# V0''
+# V0-9
 # time = O(h)  # h = tree height, BST-guided single-branch recursion
 # space = O(h)  # recursion stack
 class Solution(object):

@@ -1,12 +1,8 @@
 """
 
 153. Find Minimum in Rotated Sorted Array
-Solved
 Medium
-Topics
-premium lock icon
-Companies
-Hint
+
 Suppose an array of length n sorted in ascending order is rotated between 1 and n times. For example, the array nums = [0,1,2,4,5,6,7] might become:
 
 [4,5,6,7,0,1,2] if it was rotated 4 times.
@@ -44,7 +40,6 @@ n == nums.length
 All the integers of nums are unique.
 nums is sorted and rotated between 1 and n times.
  
-
 
 """
 
@@ -92,7 +87,7 @@ class Solution(object):
         return res
 
 
-# V0
+# V0-1
 # IDEA : BINARY SEARCH + CHECK mid is in left or right part
 # time = O(logn)
 # space = O(1)
@@ -310,7 +305,7 @@ class Solution(object):
         return min_val
 
 
-# V0-1
+# V0-2
 # IDEA : BINARY SEARCH + CHECK mid is in left or right part
 # time = O(logn)
 # space = O(1)
@@ -329,7 +324,7 @@ class Solution(object):
         return nums[l]
 
 
-# V0-2
+# V0-3
 # time = O(logn)
 # space = O(1)
 class Solution(object):
@@ -357,7 +352,7 @@ class Solution(object):
         return min_val
 
 
-# V0
+# V0-4
 # IDEA : BINARY SEARCH
 # time = O(logn)
 # space = O(1)
@@ -374,7 +369,7 @@ class Solution(object):
         # nums[r] is OK as well, since 2 pointers (l, r) overlap in the final step
         return nums[l] 
 
-# V0'
+# V0-5
 # IDEA : LINEAR SEARCH
 # time = O(n)
 # space = O(1)
@@ -488,7 +483,7 @@ class Solution(object):
             else:
                 right = mid - 1
 
-# V1''''
+# V1'''
 # IDEA : LINEAR SEARCH
 # http://bookshadow.com/weblog/2014/10/16/leetcode-find-minimum-rotated-sorted-array/
 # time = O(n)

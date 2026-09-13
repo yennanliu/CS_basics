@@ -65,7 +65,7 @@ class KthLargest:
 
         return self.heap[0]
 
-# V0'
+# V0-1
 # IDEA : HEAP
 # time = O(m log k) init (m = len(nums)), O(log k) per add
 # space = O(k)

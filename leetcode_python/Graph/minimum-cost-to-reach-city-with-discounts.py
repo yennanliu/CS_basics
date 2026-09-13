@@ -2,6 +2,7 @@
 
 2093. Minimum Cost to Reach City With Discounts
 Medium
+
 (premium / locked problem)
 
 A series of highways connect n cities numbered from 0 to n - 1. You are given a 2D integer array highways where highways[i] = [city1_i, city2_i, toll_i] indicates that there is a highway that connects city1_i and city2_i, allowing a car to go from city1_i to city2_i and vice versa for a cost of toll_i.

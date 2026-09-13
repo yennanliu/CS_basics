@@ -107,7 +107,7 @@ class Solution(object):
 
 
 
-# V0
+# V0-1
 # IDEA : BACKTRCK
 # time = O(n * 2^n)
 # space = O(n)
@@ -163,7 +163,7 @@ class Solution(object):
         return res
 
 
-# V0-1
+# V0-2
 # IDEA: BACKTRACK (GPT)
 class Solution(object):
     def partition(self, s):
@@ -235,7 +235,7 @@ class Solution(object):
         return True
 
 
-# V0-2
+# V0-3
 # IDEA: BACKTRACK (gemini)
 class Solution(object):
     def partition(self, s):
@@ -273,7 +273,7 @@ class Solution(object):
         return True
 
 
-# V0-3
+# V0-4
 # IDEA: 2D DP (gemini)
 class Solution(object):
     def partition(self, s):
@@ -303,7 +303,7 @@ class Solution(object):
         return res
 
 
-# V0'
+# V0-5
 # IDEA : BACKTRCK, similar as LC 046 permutations
 # time = O(n * 2^n)
 # space = O(n)
@@ -324,7 +324,7 @@ class Solution(object):
         help(s, res, path)
         return res
 
-# V0''
+# V0-6
 # IDEA : BACKTRCK, similar as LC 046 permutations
 # time = O(n * 2^n)
 # space = O(n)
@@ -458,7 +458,7 @@ class Solution(object):
             if s[:i] == s[i-1::-1]
             for rest in self.partition(s[i:])] or [[]]
 
-# V1
+# V1''''
 # IDEA : Backtracking
 # https://leetcode.com/problems/palindrome-partitioning/solution/
 # JAVA
@@ -490,7 +490,7 @@ class Solution(object):
 #     }
 # }
 
-# V1
+# V1'''''
 # IDEA : Backtracking with Dynamic Programming
 # https://leetcode.com/problems/palindrome-partitioning/solution/
 # JAVA

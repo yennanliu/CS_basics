@@ -1,3 +1,12 @@
+"""
+
+320. Generalized Abbreviation
+Medium
+
+https://leetcode.com/problems/generalized-abbreviation/
+
+"""
+
 # V0 
 
 # V1 

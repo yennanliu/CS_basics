@@ -2,6 +2,7 @@
 
 2417. Closest Fair Integer
 Medium
+
 (premium / locked problem)
 
 You are given a positive integer n.

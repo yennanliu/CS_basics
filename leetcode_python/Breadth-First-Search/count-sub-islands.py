@@ -1,12 +1,8 @@
 """
 
 1905. Count Sub Islands
-Solved
 Medium
-Topics
-premium lock icon
-Companies
-Hint
+
 You are given two m x n binary matrices grid1 and grid2 containing only 0's (representing water) and 1's (representing land). An island is a group of 1's connected 4-directionally (horizontal or vertical). Any cells outside of the grid are considered water cells.
 
 An island in grid2 is considered a sub-island if there is an island in grid1 that contains all the cells that make up this island in grid2.
@@ -147,7 +143,7 @@ class Solution(object):
 
 
 
-# V2-1
+# V2
 # IDEA: BFS
 # https://leetcode.com/problems/count-sub-islands/editorial/
 # time = O(m * n)  # each cell visited at most once across all BFS calls
@@ -228,7 +224,7 @@ class Solution:
 
 
 
-# V2-2
+# V2'
 # IDEA: DFS
 # https://leetcode.com/problems/count-sub-islands/editorial/
 # time = O(m * n)  # each cell visited at most once across all DFS calls
@@ -301,7 +297,7 @@ class Solution:
 
 
 
-# V2-3
+# V2''
 # IDEA: UNION FIND
 # https://leetcode.com/problems/count-sub-islands/editorial/
 # time = O(m * n * α(m * n))  # union-find with path compression + union by rank

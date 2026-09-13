@@ -2,6 +2,7 @@
 
 2113. Elements in Array After Removing and Replacing Elements
 Medium
+
 (premium / locked problem)
 
 You are given a 0-indexed integer array nums. Initially on minute 0, the array is unchanged. Every minute, the leftmost element in nums is removed until no elements remain. Then, every minute, one element is appended to the end of nums, in the order they were removed in, until the original array is restored. This process repeats indefinitely.

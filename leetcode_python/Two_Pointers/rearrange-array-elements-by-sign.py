@@ -39,7 +39,6 @@ nums.length is even
 1 <= |nums[i]| <= 10^5
 nums consists of equal number of positive and negative integers.
 
-
 """
 
 # V0

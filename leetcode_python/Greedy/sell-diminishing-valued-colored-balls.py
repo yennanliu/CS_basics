@@ -38,7 +38,7 @@ Constraints:
 
 # V0
 
-# V0'
+# V0-1
 # IDEA : max-heap (heap) (TLE)
 # TODO : fix below
 # from heapq import *
@@ -63,7 +63,7 @@ Constraints:
 #             orders -= 1
 #         return res
 
-# V1''''''
+# V1
 # check its video
 # https://zxi.mytechroad.com/blog/greedy/leetcode-1648-sell-diminishing-valued-colored-balls/
 # C++
@@ -94,7 +94,7 @@ Constraints:
 #   }
 # };
 
-# V1
+# V1'
 # IDEA : GREEDY
 # https://leetcode.com/problems/sell-diminishing-valued-colored-balls/discuss/927679/Python-greedy-solution
 # time = O(n log n)   # n = len(inventory); dominated by sort
@@ -113,7 +113,7 @@ class Solution(object):
                 remain -= min(each, d)
             return ans % mod
 
-# V1'
+# V1''
 # IDEA : GREEDY
 # time = O(n log n)   # n = len(inventory); dominated by sort
 # space = O(1)
@@ -140,7 +140,7 @@ class Solution(object):
         # inclusive lo and hi
         return (hi * (hi+1)) // 2 - (lo * (lo-1)) // 2
 
-# V1''
+# V1'''
 # IDEA : SORTING
 # https://leetcode.com/problems/sell-diminishing-valued-colored-balls/discuss/927920/python-concise-sort-solution
 # time = O(n log n)   # n = len(inventory)
@@ -160,7 +160,7 @@ class Solution(object):
             cnt+=1
             res%=(10**9+7)
 
-# V1'''
+# V1''''
 # IDEA : BINARY SEARCH
 # https://leetcode.com/problems/sell-diminishing-valued-colored-balls/discuss/1306530/Python-Binary-Search-and-Arithmetic-series-formula-680ms
 # time = O(n log n)   # n = len(inventory); sort + bounded scan with inner binary search
@@ -189,7 +189,7 @@ class Solution:
                     orders -= (i+1)*(inventory[i]-inventory[i+1])
                     p += ((inventory[i]+inventory[i+1]+1)*(inventory[i]-inventory[i+1])//2)*(i+1)
 
-# V1''''
+# V1'''''
 # IDEA : GREEDY + BINARY SEARCH
 # https://leetcode.com/problems/sell-diminishing-valued-colored-balls/discuss/927526/Python-greedy-binary-search
 # time = O(n log(max(inventory)))   # n = len(inventory); binary search over value range, each step scans inventory
@@ -244,7 +244,7 @@ class Solution(object):
                 
         return ret
 
-# V1'''''
+# V1''''''
 # IDEA : heapq
 # https://leetcode.com/problems/sell-diminishing-valued-colored-balls/discuss/1474074/Python-Solution
 # time = O(n log n)   # n = len(inventory); heap push/pop operations
@@ -310,10 +310,10 @@ class Solution:
                 
         return totalCost % (10**9 + 7)
 
-# V1''''''''
+# V1'''''''
 # https://www.codeleading.com/article/96184919374/
 
-# V1''''''''''''''
+# V1''''''''
 # https://www.krammerliu.com/blog/leetcode-1648-sell-diminishing-valued-colored-balls/
 
 # V2

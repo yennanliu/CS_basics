@@ -1,5 +1,8 @@
 """
 
+547. Number of Provinces
+Medium
+
 # https://xiaoguan.gitbooks.io/leetcode/content/LeetCode/547-friend-circles-medium.html
 
 547. Friend Circles (Medium)

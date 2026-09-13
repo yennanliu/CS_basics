@@ -4,6 +4,8 @@
 """
 
 774. Minimize Max Distance to Gas Station
+Hard
+
 Description
 You are given an integer array stations that represents the positions of the gas stations on the x-axis. You are also given an integer k.
 

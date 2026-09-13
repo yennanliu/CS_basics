@@ -31,7 +31,6 @@ Constraints:
 3 <= colors.length <= 100
 0 <= colors[i] <= 1
 
-
 """
 
 # V0

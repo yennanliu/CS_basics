@@ -4,6 +4,9 @@
 # https://blog.csdn.net/fuxuemingzhu/article/details/82997932
 """
 
+808. Soup Servings
+Medium
+
 DP def
     all four servings are multiples of 25, so scale by 25 and the state is
     just the pair of remaining amounts

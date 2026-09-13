@@ -108,7 +108,7 @@ class Solution:
                 slow += 1
         return slow+1
 
-# V0'
+# V0-1
 # IDEA : TWO POINTER
 # TO NOTE : have to the list IN PLACE
 # DEMO
@@ -132,7 +132,7 @@ class Solution(object):
                 i += 1
         return i
 
-# V0''
+# V0-2
 # IDEA : 2 POINTERS
 # time = O(n)
 # space = O(1)

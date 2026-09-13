@@ -2,6 +2,7 @@
 
 3062. Winner of the Linked List Game
 Easy
+
 🔒 (premium)
 
 You are given the head of a linked list of even length containing integers.

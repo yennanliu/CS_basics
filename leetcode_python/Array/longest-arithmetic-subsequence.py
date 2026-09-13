@@ -48,7 +48,7 @@ class Solution:
                     dp[j, A[j] - A[i]] = dp.get((i, A[j] - A[i]), 1) + 1
             return max(dp.values())
 
-# V0'
+# V0-1
 # IDEA : HASH TABLE
 # https://leetcode.com/problems/longest-arithmetic-subsequence/discuss/274657/Short-Python-solution
 # time = O(n^2)
@@ -72,7 +72,7 @@ class Solution:
 # http://www.noteanddata.com/leetcode-1027-Longest-Arithmetic-Sequence-Google-Interview-Problem-java-solution-note.html
 # https://blog.csdn.net/w5688414/article/details/109696664
 
-# V1
+# V1'
 # IDEA : HASH
 # https://leetcode.com/problems/longest-arithmetic-subsequence/discuss/274657/Short-Python-solution
 # time = O(n^2)
@@ -91,7 +91,7 @@ class Solution:
         max_aux = max(max(d.values()) for a, d in aux.items() if d)
         return max(max_const, max_aux, 2)
 
-# V1'
+# V1''
 # https://leetcode.com/problems/longest-arithmetic-subsequence/discuss/275395/python-O(n**2)-solution
 # time = O(n^2)
 # space = O(n^2)
@@ -114,7 +114,7 @@ class Solution:
                     ansdic[a1, a2] = 2
         return ans
 
-# V1''
+# V1'''
 # IDEA : HASH SET
 # https://leetcode.com/problems/longest-arithmetic-subsequence/discuss/274625/simple-hash-Set-Python
 # time = O(n^2)
@@ -156,7 +156,7 @@ class Solution(object):
         
         return res
 
-# V1'''
+# V1''''
 # IDEA : DP
 # https://leetcode.com/problems/longest-arithmetic-subsequence/discuss/274611/JavaC%2B%2BPython-DP
 # time = O(n^2)
@@ -169,7 +169,7 @@ class Solution:
                     dp[j, A[j] - A[i]] = dp.get((i, A[j] - A[i]), 1) + 1
             return max(dp.values())
 
-# V1''''
+# V1'''''
 # IDEA : DP
 # https://leetcode.com/problems/longest-arithmetic-subsequence/discuss/514742/Python-DP
 # time = O(n^2)

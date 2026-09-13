@@ -1,10 +1,10 @@
 """
 
-# https://baihuqian.github.io/2018-08-09-moving-average-from-data-stream/
-# https://www.cnblogs.com/grandyang/p/5450001.html
-
 346. Moving Average from Data Stream
 Easy
+
+# https://baihuqian.github.io/2018-08-09-moving-average-from-data-stream/
+# https://www.cnblogs.com/grandyang/p/5450001.html
 
 Given a stream of integers and a window size, calculate the moving average of all integers in the sliding window.
 
@@ -58,7 +58,7 @@ class MovingAverage(object):
         self.cur += 1
         return sum(self.stack) / self.cur
 
-# V0
+# V0-1
 # IDEA : deque
 # time = O(w)  # w = window size; sum(self.q) scans window each call
 # space = O(w)
@@ -76,7 +76,7 @@ class MovingAverage(object):
             self.q.pop(0)
         return sum(self.q) / len(self.q)
 
-# V0'
+# V0-2
 # IDEA : deque
 # time = O(w)  # w = window size; sum(self.__q) scans window each call
 # space = O(w)

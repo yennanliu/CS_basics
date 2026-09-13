@@ -1,11 +1,8 @@
 """
 
 4008. Minimum Initial Strength to Defeat All Monsters
-Solved
 Medium
-premium lock icon
-Companies
-Hint
+
 You are given an integer array monsters, where monsters[i] represents the strength of the ith monster.
 
 You are also given a 2D integer array boosts, where boosts[i] = [li, ri, vi] indicates that vi is added to your temporary bonus while fighting any monster whose index lies in [li, ri]. Boost ranges may overlap, and the values of all applicable boosts are added together.
@@ -63,7 +60,6 @@ Constraints:
 boosts[i] == [li, ri, vi]
 0 <= li <= ri < monsters.length
 1 <= vi <= 109​​​​​​​
-
 
 """
 

@@ -2,6 +2,7 @@
 
 3155. Maximum Number of Upgradable Servers
 Medium
+
 🔒 (premium)
 
 You have n data centers and need to upgrade their servers.

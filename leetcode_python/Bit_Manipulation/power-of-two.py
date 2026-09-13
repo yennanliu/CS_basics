@@ -45,7 +45,7 @@ class Solution(object):
             n /= 2
         return True if n==1 else False
 
-# V0'
+# V0-1
 # IDEA : BIT OP
 # IDEA : Bitwise operators : Turn off the Rightmost 1-bit
 # https://leetcode.com/problems/power-of-two/solution/
@@ -64,7 +64,7 @@ class Solution(object):
             return False
         return n & (n - 1) == 0
 
-# V0''
+# V0-2
 # IDEA : BIT MANIPULATION
 # IDEA :
 # -> IF n is power of 2 

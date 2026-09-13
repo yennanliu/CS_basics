@@ -36,7 +36,6 @@ Constraints:
 1 <= nums.length <= 100
 0 <= nums[i] <= 100
 
-
 """
 
 
@@ -102,7 +101,7 @@ class Solution(object):
         nums[i + 1:] = reversed(nums[i + 1:])
 
 
-# V0
+# V0-1
 # IDEA: 2 POINTERS (GPT)
 """
 
@@ -377,7 +376,7 @@ class Solution(object):
         return nums
 
 
-# V0-0-1
+# V0-2
 # IDEA: 2 POINTERS
 class Solution(object):
     def nextPermutation(self, nums):
@@ -421,7 +420,7 @@ class Solution(object):
 
 
 
-# V0-1
+# V0-3
 # IDEA: 2 POINTERS (GEMINI)
 class Solution(object):
     def nextPermutation(self, nums):
@@ -456,7 +455,7 @@ class Solution(object):
             right -= 1
 
 
-# V0
+# V0-4
 # IDEA: 2 POINTERS (GPT)
 """
 NOTE !!!
@@ -572,7 +571,7 @@ class Solution(object):
         return nums
 
 
-# V0-1
+# V0-5
 # IDEA: 2 POINTERS (GEMINI)
 # time = O(n)
 # space = O(1)
@@ -612,7 +611,7 @@ class Solution(object):
             r -= 1
 
 
-# V0
+# V0-6
 # time = O(n)
 # space = O(1)
 class Solution:
@@ -633,7 +632,7 @@ class Solution:
             l +=1
             r -= 1
 
-# V0'
+# V0-7
 # time = O(n)
 # space = O(1)
 class Solution(object):
@@ -677,7 +676,7 @@ class Solution:
             l +=1
             r -= 1
 
-# V1
+# V1'
 # https://leetcode.com/problems/next-permutation/discuss/229211/Python-solution
 # IDEA :
 # First observe that if a list of numbers is in descending order, then there is no lexicographically next greater permutation. Hence for i in range(n-1,0,-1), we search for the first occurrence of i such that nums[i] < nums[i+1]. If no such i exists, the list is in descending order, and we use nums.reverse() to reverse the list in-place. Otherwise, if such i exists, then nums[i-1] will be updated to get the lexicographically next greater permutation. Next, we need to search for the smallest number in nums[i:] that's larger than nums[i-1], and swap it with nums[i-1]. Note that nums[i:] is sorted in descending order. Hence we start with j = i, and while j < n and nums[j] > nums[i-1], we do idx = j, j += 1. When we are out of the while loop, nums[idx] will be the smallest number in nums[i:] that's larger than nums[i]. We then swap nums[idx] and nums[i-1]. After the swap, we just need to sort nums[i:] in ascending order to get the lexicographically next greater permutation. This can be achieved fairly easily in-place, because nums[i:] is already in descending order, and we just need to invert nums[i:] in-place to sort nums[i:] in ascending order.
@@ -705,7 +704,7 @@ class Solution(object):
         else:
             nums.reverse()
 
-# V1 
+# V1''
 # https://zxi.mytechroad.com/blog/algorithms/array/leetcode-31-next-permutation/
 # VIDEO DEMO 
 # https://www.youtube.com/watch?v=1ja5s9TmwZM
@@ -725,7 +724,7 @@ class Solution:
     # reverse
     nums[i+1:] = nums[i+1:][::-1]
 
-# V1' 
+# V1'''
 # http://bookshadow.com/weblog/2016/09/09/leetcode-next-permutation/
 # time = O(n)
 # space = O(1)
@@ -747,7 +746,7 @@ class Solution(object):
         for z in range((size - x) / 2):
             nums[x + z], nums[size - z - 1] = nums[size - z - 1], nums[x + z]
 
-# V1
+# V1''''
 # https://leetcode.com/problems/next-permutation/discuss/162049/Explanations-(Java-Python)
 # time = O(n)
 # space = O(1)
@@ -769,7 +768,7 @@ class Solution:
     
         nums[first_inc + 1: len(nums)] = nums[first_inc + 1: len(nums)][::-1]
 
-# V1'' 
+# V1'''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/82113409
 # DMEO
 # STEP 1) given 12431
@@ -815,7 +814,7 @@ class Solution(object):
         """
         nums[i], nums[j] = nums[j], nums[i]
 
-# V1'''
+# V1''''''
 # https://www.jiuzhang.com/solution/next-permutation/#tag-highlight-lang-python
 # time = O(n)
 # space = O(1)
@@ -838,7 +837,7 @@ class Solution:
             num[i+j+1], num[len(num)-j-1] = num[len(num)-j-1], num[i+j+1]
         return num
 
-# V1
+# V1'''''''
 # IDEA : Single Pass Approach
 # https://leetcode.com/problems/next-permutation/solution/
 # JAVA

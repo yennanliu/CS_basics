@@ -7,6 +7,9 @@
 #            => cases : 1) buy stock today 2) not sales stock today
 """
 
+714. Best Time to Buy and Sell Stock with Transaction Fee
+Medium
+
 DP def
     (2 rolling states, fee is paid once per completed transaction)
 

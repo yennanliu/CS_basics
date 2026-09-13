@@ -95,7 +95,7 @@ class Solution(object):
         return root.val + max(left, right)
 
 
-# V0-0-1
+# V0-1
 # IDEA: post order DFS (GPT)
 class Solution(object):
     def maxPathSum(self, root):
@@ -132,7 +132,7 @@ class Solution(object):
 
 
 
-# V0-1
+# V0-2
 # IDEA: DFS (gemini)
 class Solution(object):
     def maxPathSum(self, root):
@@ -163,7 +163,7 @@ class Solution(object):
         return root.val + max(_left, _right)
 
 
-# V0
+# V0-3
 # IDEA : DFS
 # time = O(n)  # n = number of tree nodes
 # space = O(h)  # h = tree height (recursion stack)
@@ -242,7 +242,7 @@ class Solution(object):
         dfs(root)
         return self.maximum
 
-# V1
+# V1'
 # IDEA : DFS
 # https://leetcode.com/problems/binary-tree-maximum-path-sum/solution/
 # time = O(n)  # n = number of tree nodes
@@ -276,7 +276,7 @@ class Solution:
         max_gain(root)
         return max_sum
 
-# V1'
+# V1''
 # IDEA : DFS
 # https://leetcode.com/problems/binary-tree-maximum-path-sum/discuss/209995/Python-solution
 # time = O(n)  # n = number of tree nodes
@@ -302,7 +302,7 @@ class Solution(object):
         res = dfs(root)[1]
         return res if res != -float('inf') else 0
 
-# V1''
+# V1'''
 # IDEA : DFS + bottom up
 # https://leetcode.com/problems/binary-tree-maximum-path-sum/discuss/329033/Python-bottom-up-DFS-solution
 # time = O(n)  # n = number of tree nodes
@@ -323,7 +323,7 @@ class Solution(object):
         maxSum(root)
         return res[0]
 
-# V1'''
+# V1''''
 # https://leetcode.com/problems/binary-tree-maximum-path-sum/discuss/767709/Python-easy-as-hell-solution
 # time = O(n)  # n = number of tree nodes
 # space = O(h)  # h = tree height (recursion stack)

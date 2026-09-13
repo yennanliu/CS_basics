@@ -2,6 +2,7 @@
 
 2459. Sort Array by Moving Items to Empty Space
 Hard
+
 (premium / locked problem)
 
 You are given an integer array nums of size n containing each element from 0 to n - 1 (inclusive). Each of the elements from 1 to n - 1 represents an item, and the element 0 represents an empty space.

@@ -109,7 +109,7 @@ class Twitter(object):
     def unfollow(self, followerId, followeeId):
         self.follower_followees_map[followerId].discard(followeeId)
 
-# V0 : TODO : fix getNewsFeed returned format
+# V0-1 : TODO : fix getNewsFeed returned format
 from collections import defaultdict
 
 class Twitter(object):
@@ -159,7 +159,7 @@ class Twitter(object):
             idx = self.follower_followees[followeeId]
             self.follower_followees[followeeId].pop(idx)
 
-# V0''
+# V0-2
 import collections, itertools, heapq
 class Twitter(object):
 

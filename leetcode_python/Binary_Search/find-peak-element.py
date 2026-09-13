@@ -55,7 +55,7 @@ class Solution(object):
                 return i
         return len(nums) - 1
 
-# V0'
+# V0-1
 # IDEA :  Linear Scan + problem understanding
 # NOTE :  If the array contains multiple peaks, return the index to any of the peaks.
 #   -> e.g. for nums = [1,2,1,3,5,6,4], we can return EITHER index = 1 or 5
@@ -73,7 +73,7 @@ class Solution(object):
         if nums[-1] > nums[-2]:
             return len(nums) - 1
 
-# V0'
+# V0-2
 # IDEA : RECURSIVE BINARY SEARCH
 # time = O(logn)
 # space = O(logn)   # recursion stack
@@ -123,7 +123,7 @@ class Solution(object):
 
         return help(nums, 0, len(nums)-1)
 
-# V1
+# V1''
 # https://blog.csdn.net/aliceyangxi1987/article/details/50484982
 # time = O(logn)
 # space = O(logn)
@@ -148,7 +148,7 @@ class Solution(object):
             return self.helpsearch(nums,mid+1,end)
         return mid
 
-# V1'
+# V1'''
 # https://www.jiuzhang.com/solution/find-peak-element/#tag-highlight-lang-python
 # time = O(logn)
 # space = O(1)

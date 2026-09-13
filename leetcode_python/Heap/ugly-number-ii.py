@@ -77,7 +77,7 @@ class Solution(object):
         return cur
 
 
-# V0
+# V0-1
 # IDEA : PQ (gpt) + set
 import heapq
 
@@ -119,7 +119,7 @@ class Solution(object):
         return val
 
 
-# V0-1
+# V0-2
 # IDEA : PQ (gemini) + set
 import heapq
 
@@ -153,7 +153,7 @@ class Solution(object):
         return curr
 
 
-# V0
+# V0-3
 # IDEA : HEAP
 # using brute force is too slow -> time out error
 # -> so here we generate "ugly number" by ourself, and order them via heap (heappush)

@@ -95,7 +95,7 @@ class Solution(object):
                 return False
         return True
 
-# V0'
+# V0-1
 # https://zxi.mytechroad.com/blog/hashtable/leetcode-734-sentence-similarity/
 # time = O(n + p)  # n = num words, p = num pairs
 # space = O(p)
@@ -112,7 +112,7 @@ class Solution(object):
                 return False
         return True
 
-# V0''
+# V0-2
 # time = O(n + p)  # n = num words, p = num pairs
 # space = O(p)
 import collections

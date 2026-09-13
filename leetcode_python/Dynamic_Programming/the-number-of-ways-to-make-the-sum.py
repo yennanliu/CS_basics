@@ -2,6 +2,7 @@
 
 3183. The Number of Ways to Make the Sum
 Medium
+
 🔒 (premium)
 
 You have an infinite number of coins with values 1, 2, and 6, and there are also two coins with value 4.

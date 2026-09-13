@@ -4,6 +4,9 @@
 # http://bookshadow.com/weblog/2018/04/22/leetcode-binary-trees-with-factors/
 """
 
+823. Binary Trees With Factors
+Medium
+
 DP def
     (arr is SORTED first, so every factor is processed before its multiple)
 

@@ -39,7 +39,7 @@ class Solution(object):
         duplicated = sum(nums) - sum(nset)
         return [duplicated, missing]
 
-# V0'
+# V0-1
 # time = O(n)
 # space = O(n)
 from collections import Counter
@@ -51,7 +51,7 @@ class Solution(object):
         #print ("duplicate = " + str(duplicate))
         return [duplicate, duplicate+_diff]
 
-# V0''
+# V0-2
 # time = O(n)
 # space = O(n)
 from collections import Counter

@@ -3,12 +3,8 @@
 """
 
 1031. Maximum Sum of Two Non-Overlapping Subarrays
-Solved
 Medium
-Topics
-premium lock icon
-Companies
-Hint
+
 Given an integer array nums and two integers firstLen and secondLen, return the maximum sum of elements in two non-overlapping subarrays with lengths firstLen and secondLen.
 
 The array with length firstLen could occur before or after the array with length secondLen, but they have to be non-overlapping.
@@ -40,7 +36,6 @@ Constraints:
 2 <= firstLen + secondLen <= 1000
 firstLen + secondLen <= nums.length <= 1000
 0 <= nums[i] <= 1000
-
 
 """
 
@@ -120,7 +115,7 @@ class Solution(object):
 
         return ans
 
-# V0
+# V0-1
 # IDEA: PREFIX SUM (gpt)
 """
 
@@ -225,7 +220,7 @@ class Solution(object):
 
 
 
-# V0-0-1
+# V0-2
 # IDEA: PREFIX SUM (gemini)
 class Solution(object):
     def maxSumTwoNoOverlap(self, nums, firstLen, secondLen):
@@ -277,7 +272,7 @@ class Solution(object):
         return max_sum
 
 
-# V0
+# V0-3
 # IDEA: BRUTE FORCE + `Try both orders` (gpt)
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Array/MaximumSumOfTwoNonOverlappingSubarrays.java#L50
 """
@@ -319,7 +314,7 @@ class Solution(object):
         return max_sum
 
 
-# V1-1
+# V1
 # IDEA: PREFIX SUM (gpt)
 """
 
@@ -370,7 +365,7 @@ class Solution:
 
 
 
-# V1-2
+# V1'
 # IDEA: PREFIX SUM (gemini)
 class Solution(object):
     def maxSumTwoNoOverlap(self, nums, firstLen, secondLen):
@@ -421,7 +416,7 @@ class Solution(object):
 
 
 
-# V1-3
+# V1''
 # IDEA: PREFIX SUM (gpt)
 class Solution:
     def maxSumTwoNoOverlap(self, nums, firstLen, secondLen):

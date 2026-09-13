@@ -1,7 +1,7 @@
 """
 
 852. Peak Index in a Mountain Array
-Easy
+Medium
 
 Let's call an array arr a mountain if the following properties hold:
 
@@ -52,7 +52,7 @@ class Solution(object):
                 return i
         return -1
 
-# V0'
+# V0-1
 # IDEA : BINARY SEARCH
 # time = O(log n)
 # space = O(1)

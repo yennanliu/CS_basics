@@ -1,11 +1,8 @@
 """
 
 872. Leaf-Similar Trees
-Solved
 Easy
-Topics
-premium lock icon
-Companies
+
 Consider all the leaves of a binary tree, from left to right order, the values of those leaves form a leaf value sequence.
 
 

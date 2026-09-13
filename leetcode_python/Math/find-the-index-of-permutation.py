@@ -2,6 +2,7 @@
 
 3109. Find the Index of Permutation
 Medium
+
 🔒 (premium)
 
 Given an array perm of length n which is a permutation of [1, 2, ..., n], return the index of perm in the lexicographically sorted array of all of the permutations of [1, 2, ..., n].

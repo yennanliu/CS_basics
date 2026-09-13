@@ -102,7 +102,7 @@ class Solution(object):
             cur.pop()
 
 
-# V0
+# V0-1
 # IDEA : DFS + BACKTRACK
 # time = O(n^(t/m)), n = len(candidates), t = target, m = min(candidates)
 # space = O(t/m)
@@ -127,7 +127,7 @@ class Solution(object):
         return res
 
 
-# V0-1
+# V0-2
 # time = O(n^(t/m)), n = len(candidates), t = target, m = min(candidates)
 # space = O(t/m)
 class Solution(object):
@@ -161,7 +161,7 @@ class Solution(object):
 
 
 
-# V0'
+# V0-3
 # IDEA : DFS + BACKTRACK
 # time = O(n^(t/m)), n = len(candidates), t = target, m = min(candidates)
 # space = O(t/m)
@@ -211,7 +211,7 @@ class Solution(object):
                 return
             self.dfs(nums, target - nums[i], i, res, path + [nums[i]])
 
-# V1
+# V1'
 # https://github.com/neetcode-gh/leetcode/blob/main/python/0039-combination-sum.py
 # https://www.youtube.com/watch?v=GBKI9VSKdGg
 # time = O(n^(t/m)), n = len(candidates), t = target, m = min(candidates)
@@ -237,7 +237,7 @@ class Solution:
 
 ### Test case : dev
 
-# V1'
+# V1''
 # https://leetcode.com/problems/combination-sum/discuss/16554/Share-My-Python-Solution-beating-98.17
 # IDEA : BACKTRACKING
 # time = O(n^(t/m)), n = len(candidates), t = target, m = min(candidates)
@@ -260,7 +260,7 @@ class Solution(object):
         dfs(target, [])
         return result
 
-# V1''
+# V1'''
 # https://www.jiuzhang.com/solution/combination-sum/#tag-highlight-lang-python
 # time = O(n^(t/m)), n = len(candidates), t = target, m = min(candidates)
 # space = O(t/m)

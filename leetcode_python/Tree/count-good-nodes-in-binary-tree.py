@@ -115,7 +115,7 @@ class Solution(object):
         self.helper(node.right, new_max)
 
 
-# V0
+# V0-2
 # IDEA: RECURSION + HELPER + `max_so_far`
 # time = O(n)
 # space = O(h)  # h = tree height, worst O(n)
@@ -146,7 +146,7 @@ class Solution(object):
         return node.val >= max_so_far
 
 
-# V0-1
+# V0-3
 # IDEA: RECURSION + `max_so_far`
 # time = O(n)
 # space = O(h)  # h = tree height, worst O(n)
@@ -169,7 +169,7 @@ class Solution(object):
 
 
 
-# V0-2
+# V0-4
 # IDEA: RECURSION + `max_so_far`
 # time = O(n)
 # space = O(h)  # h = tree height, worst O(n)

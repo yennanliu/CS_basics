@@ -61,7 +61,7 @@ class Solution(object):
             result.append(str(digit % 10))
         return ''.join(result[::-1]) 
 
-# V0'
+# V0-1
 # IDEA : string + math
 # time = O(n^2)  # num1[:-1] slicing each iteration costs O(n)
 # space = O(n)
@@ -132,7 +132,7 @@ class Solution:
         
         return ''.join(str(x) for x in res[::-1])
 
-# V1
+# V1'
 # http://bookshadow.com/weblog/2016/10/09/leetcode-add-strings/
 # time = O(n)
 # space = O(n)
@@ -158,7 +158,7 @@ class Solution(object):
             result.append(str(digit % 10))
         return ''.join(result[::-1]) 
 
-# V1'
+# V1''
 # https://www.jiuzhang.com/solution/add-strings/#tag-highlight-lang-python
 # time = O(n)
 # space = O(n)

@@ -41,7 +41,7 @@ class Solution(object):
             i += 1
         return False
 
-# V0'
+# V0-1
 # IDEA : BINARY SEARCH
 # time = O(log num)
 # space = O(1)

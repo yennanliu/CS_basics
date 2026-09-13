@@ -150,7 +150,7 @@ class Solution:
             cur += val
         return res
 
-# V1''''''
+# V1'''''
 # https://zxi.mytechroad.com/blog/math/leetcode-1109-corporate-flight-bookings/
 # C++
 # class Solution {
@@ -168,7 +168,7 @@ class Solution:
 #   }
 # };
 
-# V1''''''''
+# V1''''''
 # https://blog.51cto.com/u_15344287/3646723
 # time = O(b + n)
 # space = O(n)

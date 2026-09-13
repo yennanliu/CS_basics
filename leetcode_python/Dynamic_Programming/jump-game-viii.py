@@ -2,6 +2,7 @@
 
 2297. Jump Game VIII
 Medium
+
 (premium / locked problem)
 
 You are given a 0-indexed integer array nums of length n. You are initially standing at index 0. You can jump from index i to index j where i < j if:

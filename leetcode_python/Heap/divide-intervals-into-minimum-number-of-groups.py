@@ -3,12 +3,8 @@
 """
 
 2406. Divide Intervals Into Minimum Number of Groups
-Solved
 Medium
-Topics
-premium lock icon
-Companies
-Hint
+
 You are given a 2D integer array intervals where intervals[i] = [lefti, righti] represents the inclusive interval [lefti, righti].
 
 You have to divide the intervals into one or more groups such that each interval is in exactly one group, and no two intervals that are in the same group intersect each other.
@@ -116,7 +112,7 @@ class Solution(object):
 # V1
 
 
-# V2-1
+# V2
 # IDEA: Sorting or Priority Queue
 # https://leetcode.com/problems/divide-intervals-into-minimum-number-of-groups/editorial/
 class Solution:
@@ -146,7 +142,7 @@ class Solution:
 
 
 
-# V2-2
+# V2'
 # IDEA: Line Sweep Algorithm With Ordered Container
 # https://leetcode.com/problems/divide-intervals-into-minimum-number-of-groups/editorial/
 class Solution:

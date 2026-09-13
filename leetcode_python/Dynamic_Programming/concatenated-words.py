@@ -33,7 +33,7 @@ words[i] consists of only lowercase English letters.
 
 # V0
 
-# V0'
+# V0-1
 # IDEA : DFS (TLE)
 # TODO : fix it
 # class Solution(object):
@@ -198,7 +198,7 @@ class Trie:
                 return False
         return node.isWord 
 
-# V1'''
+# V1''
 # IDEA : DFS
 # https://leetcode.com/problems/concatenated-words/discuss/224015/Python-DFS
 """
@@ -394,7 +394,7 @@ class Solution(object):
         
         return ret
 
-# V1''''''
+# V1'''''
 # https://www.jiuzhang.com/solution/concatenated-words/#tag-highlight-lang-python
 """
 
@@ -455,7 +455,7 @@ class Solution:
                 ans += words[i],
         return ans
 
-# V1''''''''
+# V1''''''
 """
 
 DP def

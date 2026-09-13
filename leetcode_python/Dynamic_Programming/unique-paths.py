@@ -124,7 +124,7 @@ class Solution(object):
 
         return dp[n - 1][m - 1]
 
-# V0
+# V0-2
 # IDEA : BFS + dp (memory)
 """
 
@@ -174,7 +174,7 @@ class Solution:
         
         return paths[-1][-1]
 
-# V0'
+# V0-3
 # IDEA : DP
 """
 
@@ -378,7 +378,7 @@ class Solution(object):
                 table[i][j] = table[i-1][j] + table[i][j-1]
         return table[m-1][n-1]
 
-# V1'''''
+# V1''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79337352
 # IDEA : DP 
 """
@@ -423,7 +423,7 @@ class Solution(object):
                 dp[i][j] = dp[i][j - 1] + dp[i - 1][j]
         return dp[m - 1][n - 1]
 
-# V1''''''
+# V1'''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79337352
 # IDEA : DP 
 """

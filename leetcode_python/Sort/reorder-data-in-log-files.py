@@ -1,7 +1,7 @@
 """
 
 937. Reorder Data in Log Files
-Easy
+Medium
 
 You are given an array of logs. Each log is a space-delimited string of words, where the first word is the identifier.
 
@@ -87,7 +87,7 @@ class Solution:
 
         return sorted(logs, key=get_key)
 
-# V1
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/83961188
 # IDEA :
 # THE NEEDED RETURN FORM :
@@ -107,7 +107,7 @@ class Solution(object):
         letters.sort()
         return [letter[1] + " " + letter[0] for letter in letters] + nums
 
-# V1'
+# V1''
 # https://leetcode.com/problems/reorder-data-in-log-files/solution/
 # IDEA : SORT BY KEY
 # time = O(n log n * l)  # n = len(logs), l = avg length of a log
@@ -121,7 +121,7 @@ class Solution:
 
         return sorted(logs, key=get_key)
 
-# V1'
+# V1'''
 # IDEA : Comparator
 # https://leetcode.com/problems/reorder-data-in-log-files/solution/
 # JAVA

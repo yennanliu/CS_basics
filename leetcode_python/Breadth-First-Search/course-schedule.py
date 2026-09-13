@@ -32,7 +32,6 @@ prerequisites[i].length == 2
 0 <= ai, bi < numCourses
 All the pairs prerequisites[i] are unique.
 
-
 """
 
 
@@ -99,7 +98,7 @@ class Solution(object):
         return True
 
 
-# V0
+# V0-1
 # IDEA 1) TOPO SORT
 from collections import deque
 
@@ -161,7 +160,7 @@ class Solution(object):
         return count == numCourses
 
 
-# V0
+# V0-2
 # IDEA: DFS + STATUS CHECK
 # time = O(V + E), V = numCourses, E = len(prerequisites)
 # space = O(V + E)
@@ -245,7 +244,7 @@ class Solution(object):
 
 
 
-# V0-1
+# V0-3
 # IDEA: DFS + STATUS CHECK
 # time = O(V + E), V = numCourses, E = len(prerequisites)
 # space = O(V + E)
@@ -295,7 +294,7 @@ class Solution(object):
         return True
 
 
-# V0
+# V0-4
 # IDEA : DFS, LC Course Schedule II
 from collections import defaultdict
 # time = O(V + E), V = numCourses, E = len(prerequisites)
@@ -338,7 +337,7 @@ class Solution(object):
                 return False
         return len(res) > 0
 
-# V0'
+# V0-5
 # IDEA : DFS
 # https://github.com/neetcode-gh/leetcode/blob/main/python/0207-course-schedule.py
 # https://www.youtube.com/watch?v=EgI5nU9etnU
@@ -374,7 +373,7 @@ class Solution:
                 return False
         return True
 
-# V0
+# V0-6
 # IDEA : DFS, LC Course Schedule II
 from collections import defaultdict
 # time = O(V + E), V = numCourses, E = len(prerequisites)
@@ -427,7 +426,7 @@ class Solution(object):
                 return False #[]
         return len(res) > 0
 
-# V0'
+# V0-7
 # IDEA : DFS
 from collections import defaultdict
 # time = O(V + E), V = numCourses, E = len(prerequisites)
@@ -481,7 +480,7 @@ class Solution(object):
                 return False
         return True
 
-# V0'
+# V0-8
 # IDEA : DFS
 from collections import defaultdict
 # time = O(V + E), V = numCourses, E = len(prerequisites)
@@ -531,7 +530,7 @@ class Solution(object):
                 return False
         return True
 
-# V0''
+# V0-9
 # IDEA : Backtracking
 # https://leetcode.com/problems/course-schedule/solution/
 # IDEA : -> check : if the corresponding graph is a DAG (Directed Acyclic Graph), i.e. there is no cycle existed in the graph.
@@ -579,7 +578,7 @@ class Solution(object):
         path[currCourse] = False
         return ret
 
-# V0''''
+# V0-10
 # IDEA : DFS + topological sort
 import collections
 # time = O(V + E), V = numCourses, E = len(prerequisites)
@@ -609,7 +608,7 @@ class Solution:
         visited[i] = 2
         return True
 
-# V0''''''
+# V0-11
 # IDEA : BFS + topological sort
 from collections import defaultdict, deque
 # time = O(V + E), V = numCourses, E = len(prerequisites)
@@ -647,7 +646,7 @@ class Solution:
         
         return len(stack) == numCourses
 
-# V0''''''''
+# V0-12
 # IDEA : DFS + topological sort
 import collections
 # time = O(V + E), V = numCourses, E = len(prerequisites)
@@ -676,7 +675,7 @@ class Solution(object):
         visited[i] = 2
         return True
 
-# V0''''''' (AGAIN!)
+# V0-13 (AGAIN!)
 # IDEA : BFS + topological sort
 # time = O(V^2), V = numCourses (nested scan for zero indegree each round)
 # space = O(V + E)
@@ -738,7 +737,7 @@ class Solution:
         
         return len(stack) == numCourses
 
-# V1
+# V1'
 # IDEA : Backtracking
 # https://leetcode.com/problems/course-schedule/solution/
 # IDEA : -> check : if the corresponding graph is a DAG (Directed Acyclic Graph), i.e. there is no cycle existed in the graph.
@@ -786,7 +785,7 @@ class Solution(object):
         path[currCourse] = False
         return ret
 
-# V1
+# V1''
 # IDEA : DFS
 # https://leetcode.com/problems/course-schedule/solution/
 # time = O(V + E), V = numCourses, E = len(prerequisites)
@@ -843,7 +842,7 @@ class Solution(object):
         checked[currCourse] = True
         return ret
 
-# V1
+# V1'''
 # IDEA : Topological Sort
 # https://leetcode.com/problems/course-schedule/solution/
 class GNode(object):
@@ -899,7 +898,7 @@ class Solution(object):
             # Due to the dead-lock (dependencies), we cannot remove the cyclic edges
             return False
 
-# V1''
+# V1''''
 # IDEA : BFS + topological sort
 # https://leetcode.com/problems/course-schedule/discuss/1656939/python
 from collections import defaultdict, deque
@@ -924,7 +923,7 @@ class Solution:
                         q.append(v)
             return n == 0
 
-# V1'''
+# V1'''''
 # IDEA : dfs + topological sort
 # https://leetcode.com/problems/course-schedule/discuss/1041737/Python-DFS
 # time = O(V + E), V = numCourses, E = len(prerequisites)
@@ -955,7 +954,7 @@ class Solution:
                 return False
         return True
 
-# V1''''
+# V1''''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/82951771
 # diagram explaination:
 # https://leetcode.com/problems/course-schedule/discuss/658379/Python-by-DFS-and-cycle-detection-w-Graph
@@ -991,7 +990,7 @@ class Solution(object):
         visited[i] = 2
         return True
 
-# V1'''''
+# V1'''''''
 # IDEA : DFS + topological sort
 # https://leetcode.com/problems/course-schedule/discuss/203028/Python-solution
 # IDEA :
@@ -1027,7 +1026,7 @@ class Solution(object):
                     return False
         return True
 
-# V1''''''
+# V1''''''''
 # https://www.jiuzhang.com/solution/course-schedule/#tag-highlight-lang-python
 from collections import deque
 # time = O(V + E), V = numCourses, E = len(prerequisites)
@@ -1060,7 +1059,7 @@ class Solution:
                     queue.append(x)
         return count == numCourses
 
-# V1''''''''
+# V1'''''''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/82951771
 # IDEA : BFS + topological sort
 # time = O(V^2), V = N (nested scan for zero indegree each round)

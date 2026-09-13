@@ -131,7 +131,7 @@ class Solution(object):
         return prev_str
 
 
-# V0
+# V0-2
 # IDEA : STACK (GPT)
 """
 NOTE !!!
@@ -188,7 +188,7 @@ class Solution(object):
         return curr_str
 
 
-# V0
+# V0-3
 # IDEA : STACK (GEMINI)
 # time = O(n), n = length of decoded output string
 # space = O(n)
@@ -230,7 +230,7 @@ class Solution(object):
         return current_str
 
 
-# V0
+# V0-4
 # IDEA : STACK
 # NOTE : treat before cases separately
 #        1) isdigit
@@ -276,7 +276,7 @@ class Solution:
         return string
 
 
-# V0-1
+# V0-5
 # IDEA: STACK (GPT)
 # time = O(n), n = length of decoded output string
 # space = O(n)
@@ -482,7 +482,7 @@ class Solution:
                 res = last_str + this_num * res
         return res
 
-# V1''''''
+# V1'''''
 # http://bookshadow.com/weblog/2016/09/04/leetcode-decode-string/
 # time = O(n), n = length of decoded output string
 # space = O(n)

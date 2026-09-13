@@ -126,7 +126,7 @@ class Solution(object):
         return dp[n1][n2]
 
 
-# V0
+# V0-1
 # IDEA: 2D DP
 """
 
@@ -208,7 +208,7 @@ class Solution(object):
 
 
 
-# V0-1
+# V0-2
 # IDEA: 2D DP
 """
 
@@ -488,7 +488,7 @@ class Solution:
                 
         return memo_solve(0, 0)
 
-# V1'''''
+# V1''''
 # IDEA : Improved Memoization
 # https://leetcode.com/problems/longest-common-subsequence/solution/
 """
@@ -543,7 +543,7 @@ class Solution:
             
         return memo_solve(0, 0)
 
-# V1''''''
+# V1'''''
 # IDEA : DP
 # https://leetcode.com/problems/longest-common-subsequence/solution/
 """
@@ -596,7 +596,7 @@ class Solution:
         # The original problem's answer is in dp_grid[0][0]. Return it.
         return dp_grid[0][0]
 
-# V1'''''''
+# V1''''''
 # IDEA : DP WITH SPACE OPTIMIZATION
 # https://leetcode.com/problems/longest-common-subsequence/solution/
 """
@@ -656,7 +656,7 @@ class Solution:
         # The original problem's answer is in previous[0]. Return it.
         return previous[0]
 
-# V1'''''''''
+# V1'''''''
 # IDEA : DP
 # https://leetcode.com/problems/longest-common-subsequence/discuss/1496789/python
 """

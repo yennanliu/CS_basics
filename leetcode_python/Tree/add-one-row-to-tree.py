@@ -1,11 +1,8 @@
 """
 
 623. Add One Row to Tree
-Solved
 Medium
-Topics
-premium lock icon
-Companies
+
 Given the root of a binary tree and two integers val and depth, add a row of nodes with value val at the given depth depth.
 
 Note that the root node is at depth 1.
@@ -216,7 +213,7 @@ class Solution(object):
 
 
 
-# V0-3-1
+# V0-3
 # IDEA: BFS (gpt)
 from collections import deque
 
@@ -260,7 +257,7 @@ class Solution(object):
         return root
 
 
-# V0-3
+# V0-4
 # IDEA: BFS (gpt)
 from collections import deque
 
@@ -319,7 +316,7 @@ class Solution(object):
 
 
 
-# V0-4
+# V0-5
 # IDEA: BFS (gemini)
 from collections import deque
 

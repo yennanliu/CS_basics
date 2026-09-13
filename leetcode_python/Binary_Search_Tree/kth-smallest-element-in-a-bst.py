@@ -55,7 +55,7 @@ class Solution(object):
         self.inorder_traversal(node.right)
 
 
-# V0
+# V0-1
 # IDEA 1) IN - ORDER DFS
 # time = O(k)  # stops early once kth element found
 # space = O(h)  # h = tree height (recursion stack)
@@ -81,7 +81,7 @@ class Solution(object):
         self.inorder(root.right)
 
 
-# V0-1
+# V0-2
 # time = O(h + k)
 # space = O(h)  # h = tree height (explicit stack)
 class Solution(object):
@@ -103,7 +103,7 @@ class Solution(object):
 
 
 
-# V0
+# V0-3
 # IDEA : DFS
 # -> pre order traversal BST, then sort it and get the k (from 1) smallest element
 # time = O(n log n)  # traversal O(n) + sort O(n log n)
@@ -126,7 +126,7 @@ class Solution(object):
         _list.sort()
         return _list[k-1]
 
-# V0'
+# V0-4
 # time = O(k)  # stops early once kth element found
 # space = O(h)  # h = tree height (recursion stack)
 class Solution(object):
@@ -210,7 +210,7 @@ class Solution:
 ### Test case
 # dev
 
-# V1'
+# V1'''
 # IDEA : Recursive
 # https://leetcode.com/problems/kth-smallest-element-in-a-bst/discuss/63829/Python-Easy-Iterative-and-Recursive-Solution
 # time = O(k)  # stops early once kth element found
@@ -232,7 +232,7 @@ class Solution(object):
             return
         self.dfs(node.right)
 
-# V1'''
+# V1''''
 # IDEA : Iterative
 # https://leetcode.com/problems/kth-smallest-element-in-a-bst/discuss/63829/Python-Easy-Iterative-and-Recursive-Solution
 # time = O(h + k)
@@ -291,7 +291,7 @@ class Solution:
                 return root.val
             root = root.right
 
-# V1''''''''
+# V1'''''''
 # https://blog.csdn.net/zhangpeterx/article/details/102879948
 # time = O(n)
 # space = O(n)

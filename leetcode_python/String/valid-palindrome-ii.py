@@ -119,7 +119,7 @@ class Solution(object):
         return True
 
 
-# V0-0-0-1
+# V0-1
 # time = O(n)
 # space = O(n)
 class Solution:
@@ -143,7 +143,7 @@ class Solution:
         return True 
 
 
-# V0-1
+# V0-2
 # IDEA: 2 POINTERS (gemini)
 class Solution(object):
     def validPalindrome(self, s):
@@ -173,7 +173,7 @@ class Solution(object):
         return True
 
 
-# V0-0-1
+# V0-3
 # IDEA: BRUTE FORCE + is_palindrome (TLE) (gpt)
 # time: O(N ^ 2)
 # space: O(N)
@@ -206,7 +206,7 @@ class Solution(object):
         return True
 
 
-# V0-0-2
+# V0-4
 # IDEA: BRUTE FORCE + is_palindrome (gpt)
 # time: O(N)
 # space: O(N)

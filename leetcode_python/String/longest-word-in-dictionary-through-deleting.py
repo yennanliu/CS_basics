@@ -1,11 +1,8 @@
 """
 
 524. Longest Word in Dictionary through Deleting
-Solved
 Medium
-Topics
-premium lock icon
-Companies
+
 Given a string s and a string array dictionary, return the longest string in the dictionary that can be formed by deleting some of the given string characters. If there is more than one possible result, return the longest word with the smallest lexicographical order. If there is no possible result, return the empty string.
 
  
@@ -89,7 +86,7 @@ class Solution(object):
         return False
 
 
-# V0
+# V0-1
 # IDEA: 2 POINTERS +  string comparision (`word < res`)
 # time = O(d * (n + l)), d = len(dictionary), n = len(s), l = avg word length
 # space = O(1)
@@ -129,7 +126,7 @@ class Solution(object):
         return res
 
 
-# V0
+# V0-2
 # IDEA: 2 POINTERS +  string comparision (`word < res`) (gpt)
 # time = O(d * (n + l)), d = len(dictionary), n = len(s), l = avg word length
 # space = O(1)
@@ -156,7 +153,7 @@ class Solution(object):
         return ress
 
 
-# V0-1
+# V0-3
 # IDEA: SORT + 2 POINTERS +  string comparision (`word < res`) (gemini)
 # time = O(d*log(d) + d * (n + l)), d = len(dictionary), n = len(s), l = avg word length
 # space = O(log d) (sort), O(1) extra

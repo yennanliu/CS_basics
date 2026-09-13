@@ -25,7 +25,6 @@ Constraints:
 The number of nodes in the tree is in the range [0, 104].
 -100 <= Node.val <= 100
 
-
 """
 
 # V0
@@ -60,7 +59,7 @@ class Solution(object):
         return max(left_depth, right_depth) + 1
 
 
-# V0-0-1
+# V0-1
 # IDEA: DFS (post order)
 class Solution(object):
     def maxDepth(self, root):
@@ -94,7 +93,7 @@ class Solution(object):
         self.helper(node.right, depth + 1)
 
 
-# V0-0-2
+# V0-2
 # IDEA: DFS (post order)
 # NOTE !!! we DON'T need global var
 # time = O(n)
@@ -115,7 +114,7 @@ class Solution(object):
         return max(left_depth, right_depth)
 
 
-# V0-1
+# V0-3
 # IDEA: DFS (post order) with attr var
 # NOTE !!! we init `max_depth_tracker` everytime when the function is called
 #          so the `max_depth_tracker` in test cases NOT affect each other
@@ -144,7 +143,7 @@ class Solution(object):
         self.traverse(node.right, current_depth + 1)
 
 
-# V0
+# V0-4
 # IDEA : BFS
 # compare with LC 111 : mininum Depth of Binary Tree
 # time = O(n)
@@ -175,7 +174,7 @@ class Solution(object):
         #print ("res = " + str(res))
         return max(res)
 
-# V0
+# V0-5
 # IDEA : DFS
 # time = O(n)
 # space = O(h), h is height of binary tree (recursion stack)
@@ -186,7 +185,7 @@ class Solution(object):
             return 0
         return 1 + max(self.maxDepth(root.left), self.maxDepth(root.right))
 
-# V0'
+# V0-6
 # bfs
 # time = O(n)
 # space = O(n)
@@ -208,7 +207,7 @@ class Solution(object):
                     q.append([tmp.right, layer+1])                   
         return res + 1
 
-# V0''
+# V0-7
 # IDEA : BFS
 # time = O(n)
 # space = O(n)
@@ -228,7 +227,7 @@ class Solution(object):
             _layer += 1
         return _layer
 
-# V0''''
+# V0-8
 # IDEA : DFS
 # time = O(n)
 # space = O(n), for cache list holding a layer number per node (plus O(h) recursion stack)
@@ -250,7 +249,7 @@ class Solution(object):
         print (str(cache))
         return max(cache) + 1
 
-# V0'''
+# V0-9
 # IDEA : DFS
 # time = O(n)
 # space = O(h), h is height of binary tree (recursion stack)

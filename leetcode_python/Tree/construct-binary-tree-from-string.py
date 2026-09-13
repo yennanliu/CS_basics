@@ -2,9 +2,8 @@
 
 """
 
-Leetcode 536. 
-Construct Binary Tree from String
-
+536. Construct Binary Tree from String
+Medium
 
 You need to construct a binary tree from a string consisting of parenthesis and integers.
 The whole input represents a binary tree. It contains an integer followed by zero, one or two pairs of parenthesis. The integer represents the root's value and a pair of parenthesis contains a child binary tree with the same structure.
@@ -22,7 +21,7 @@ Output: return the tree root node representing the following tree:
 
 Note:
 There will only be '(', ')', '-' and '0' ~ '9' in the input string.
-An empty tree is represented by "" instead of "()"
+An empty tree is represented by "" instead of "()'
 
 """
 
@@ -125,7 +124,7 @@ class Solution(object):
         return root, idx
 
 
-# V0
+# V0-3
 # IDEA : tree property + recursive
 # time = O(n), each char processed a constant number of times
 # space = O(n), recursion stack + string slicing
@@ -169,7 +168,7 @@ class Solution(object):
                 break
         return part, s
 
-# V0'
+# V0-4
 # IDEA : tree property + recursive
 # time = O(n)
 # space = O(h)  # h = tree height (recursion stack); index-based, no string slicing
@@ -203,7 +202,7 @@ class Solution(object):
 
         return str2treeHelper(s, 0)[0] if s else None
 
-# V0'
+# V0-5
 # time = O(n)
 # space = O(n)
 class Solution(object):

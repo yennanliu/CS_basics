@@ -90,7 +90,7 @@ class Solution(object):
 
 
 
-# V0
+# V0-1
 # time = O(n)
 # space = O(n)
 class Solution(object):
@@ -116,7 +116,7 @@ class Solution(object):
 
 
 
-# V0-1
+# V0-2
 # IDEA : PREFIX SUM, HASHMAP
 # time = O(n)
 # space = O(n)
@@ -150,7 +150,7 @@ class Solution(object):
         return max_len
 
 
-# V0
+# V0-3
 # IDEA : PREFIX SUM, LC 1248,560
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/count-number-of-nice-subarrays.py
 from collections import defaultdict
@@ -186,7 +186,7 @@ class Solution(object):
                 d[cum_sum] = i
         return res
 
-# V0
+# V0-4
 # IDEA : HashMap
 #     -> SET UP A DICT,
 #     -> FIND MAX SUB ARRAY LENGH WHEN COUNT(0) == COUNT(1)
@@ -229,7 +229,7 @@ class Solution(object):
                 d[tmp] = k ### NOTE : we just need to add index to dict at once, since what we need is MAX len of continous subarray with condition, so we only add 1st index to dist will make this work (max len subarray)
         return res
 
-# V0'
+# V0-5
 # IDEA : HashMap
 #     -> SET UP A DICT,
 #     -> FIND MAX SUB ARRAY LENGH WHEN COUNT(0) == COUNT(1)
@@ -255,7 +255,7 @@ class Solution(object):
                 _dict[cur] = k
         return r
 
-# V0''
+# V0-6
 # IDEA : SET UP A DICT, cur_sum, ans 
 # -> TO SAVE THE LENGTH OF SUB ARRAY WHEN COUNT OF 0 = COUNT OF 1, AND UPDATE cur_sum, ans  BY CASES 
 # -> RETURN THE MAX OF THE ans
@@ -279,7 +279,7 @@ class Solution:
                 index_sum[cur_sum] = i
         return ans
 
-# V0'''
+# V0-7
 # IDEA : BRUTE FROCE (Time Limit Exceeded)
 # time = O(n^3)
 # space = O(1)
@@ -374,7 +374,7 @@ class Solution:
                 index_map[total_sum] = i
         return res
 
-# V1''''
+# V1'''
 # JAVA
 # https://leetcode.com/problems/contiguous-array/solution/
 # IDEA : Using Extra Array 
@@ -398,7 +398,7 @@ class Solution:
 #     }
 # }
 
-# V1''''''
+# V1''''
 # https://leetcode.com/problems/contiguous-array/solution/
 # JAVA
 # IDEA : HashMap

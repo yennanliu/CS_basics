@@ -108,7 +108,7 @@ class Solution(object):
             ans += rr - ll
         return ans
 
-# V1'
+# V1''
 # IDEA : BINARY SEARCH
 # https://leetcode.com/problems/subarray-product-less-than-k/solution/
 # time = O(n log n)
@@ -128,7 +128,7 @@ class Solution(object):
             ans += j - i - 1
         return ans
 
-# V1''
+# V1'''
 # IDEA : SLIDING WINDOW
 # https://leetcode.com/problems/subarray-product-less-than-k/solution/
 # time = O(n)

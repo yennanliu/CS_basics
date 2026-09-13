@@ -1,3 +1,12 @@
+"""
+
+800. Similar RGB Color
+Easy
+
+https://leetcode.com/problems/similar-rgb-color/
+
+"""
+
 # In the following, every capital letter represents some hexadecimal digit from 0 to f.
 
 # The red-green-blue color "#AABBCC" can be written as "#ABC" in shorthand.  For example, "#15c" is shorthand for the color "#1155cc".
@@ -20,7 +29,9 @@
 # All inputs and outputs should use lowercase letters, and the output is 7 characters.
 
 
-# V1  : dev 
+# V0
+
+# V1 : dev
 
 # V2 
 # http://bookshadow.com/weblog/2018/03/18/leetcode-similar-rgb-color/

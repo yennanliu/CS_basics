@@ -1,8 +1,8 @@
 """
-191. Number of 1 Bits (Hamming weight)
+
+191. Number of 1 Bits
 Easy
 
-Share
 Write a function that takes an unsigned integer and returns the number of '1' bits it has (also known as the Hamming weight).
 
 Note:
@@ -49,7 +49,7 @@ class Solution(object):
         """
         return bin(n).count('1')
 
-# V0'
+# V0-1
 # IDEA : bit manipulation : n&(n-1) CAN REMOVE LAST 1 PER LOOP
 # https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E5%B8%B8%E7%94%A8%E7%9A%84%E4%BD%8D%E6%93%8D%E4%BD%9C.md
 # time = O(log n)  # loop runs once per set bit, bounded by bit length

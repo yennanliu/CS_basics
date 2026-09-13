@@ -89,7 +89,7 @@ class Solution(object):
         return st[0]
 
 
-# V0
+# V0-1
 # IDEA : STACK + eval
 # https://blog.csdn.net/fuxuemingzhu/article/details/79559703
 # time = O(n)
@@ -111,7 +111,7 @@ class Solution(object):
                 stack.append(str(res))
         return int(stack.pop())
 
-# V0'
+# V0-2
 # IDEA : STACK 
 # DEMO : call lambda via dict
 # In [13]: ops = {
@@ -200,7 +200,7 @@ def evalRPN(self, tokens: List[str]) -> int:
         
         return tokens[0]
 
-# V1
+# V1'
 # IDEA : Reducing the List In-place + NO lambda functions.
 # https://leetcode.com/problems/evaluate-reverse-polish-notation/solution/
 # time = O(n^2)  # list.pop(i) from middle shifts remaining elements
@@ -238,7 +238,7 @@ def evalRPN(self, tokens: List[str]) -> int:
         
     return tokens[0]
 
-# V1
+# V1''
 # IDEA : Evaluate with Stack
 # https://leetcode.com/problems/evaluate-reverse-polish-notation/solution/
 # time = O(n)
@@ -263,7 +263,7 @@ def evalRPN(self, tokens: List[str]) -> int:
             stack.append(int(token))
     return stack.pop()
 
-# V1
+# V1'''
 # https://leetcode.com/problems/evaluate-reverse-polish-notation/discuss/143004/Python-solution-O(n)-descriptive-solution
 # https://leetcode.com/problems/evaluate-reverse-polish-notation/discuss/168183/Python-simple-functional-solution-(no-stack)
 # IDEA : STACK
@@ -311,7 +311,7 @@ assert s.evalRPN(["4", "13", "5", "/", "+"]) == 6
 assert s.evalRPN(["1","1", "*"]) == 1
 assert s.evalRPN(["1","1", "1", "*", "+"]) == 2
 
-# V1'
+# V1''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79559703
 # time = O(n)
 # space = O(n)
@@ -336,7 +336,7 @@ class Solution(object):
                 stack.append(str(res))
         return int(stack.pop())
 
-# V1''
+# V1'''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79559703
 # time = O(n)
 # space = O(n)
@@ -361,7 +361,7 @@ class Solution(object):
                 stack.append(str(res))
         return int(stack.pop())
 
-# V1'''
+# V1''''''
 # https://leetcode.com/problems/evaluate-reverse-polish-notation/discuss/47537/6-7-lines-in-Python
 # IDEA : RECURSIVE
 # time = O(n)
@@ -375,7 +375,7 @@ class Solution(object):
             t = eval(a+t+b+'.')
         return int(t)
 
-# V1''''
+# V1'''''''
 # https://leetcode.com/problems/evaluate-reverse-polish-notation/discuss/47549/A-Python-solution-with-8-lines
 # time = O(n)
 # space = O(n)
@@ -390,7 +390,7 @@ class Solution(object):
                 stack.append( int( ops[s]( stack.pop(-2), stack.pop(-1) ) ) )
         return int( stack[-1] )
 
-# V1'''''
+# V1''''''''
 # https://leetcode.com/problems/evaluate-reverse-polish-notation/discuss/47537/6-7-lines-in-Python
 # IDEA : ITERATION
 # time = O(n)

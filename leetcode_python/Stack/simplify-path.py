@@ -59,7 +59,7 @@ class Solution:
 
         return "/"+"/".join(result)
 
-# V0'
+# V0-1
 # IDEA : STACK
 # time = O(n), n = len(path)
 # space = O(n)
@@ -77,7 +77,7 @@ class Solution(object):
                 stack.append(dir)
         return '/' + '/'.join(stack)
 
-# V0''
+# V0-2
 # time = O(n), n = len(path)
 # space = O(n)
 class Solution(object):
@@ -202,7 +202,7 @@ class Solution:
                         
         return '/' + '/'.join(stack)
 
-# V1'''''
+# V1''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/80812350
 # https://www.cnblogs.com/zuoyuan/p/3777289.html
 # IDEA  :  SIMULATE THE PROCESS

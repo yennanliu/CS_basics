@@ -62,7 +62,7 @@ class Solution(object):
 
         return res
 
-# V0
+# V0-1
 # IDEA : PREFIX SUM, LC 1248
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/count-number-of-nice-subarrays.py
 from collections import defaultdict
@@ -93,7 +93,7 @@ class Solution(object):
         #print ("d = " + str(d))
         return res
 
-# V0'
+# V0-2
 # IDEA : HASH TABLE + sub array sum
 # IDEA : https://blog.csdn.net/fuxuemingzhu/article/details/82767119
 # time = O(n)
@@ -131,7 +131,7 @@ class Solution(object):
             d[sum] += 1
         return res
 
-# V0'
+# V0-3
 # IDEA : HASH TABLE + sub array sum
 # time = O(n)
 # space = O(n)
@@ -154,7 +154,7 @@ class Solution:
                 d[nums[i]] += 1
         return ans
 
-# V0'
+# V0-4
 # -> TIME OUT ERROR
 # class Solution(object):
 #     def subarraySum(self, nums, k):
@@ -279,7 +279,7 @@ class Solution:
 #     }
 # }
 
-# V1
+# V1''''
 # https://leetcode.com/problems/subarray-sum-equals-k/solution/
 # IDEA : Using Cumulative Sum
 # JAVA
@@ -300,7 +300,7 @@ class Solution:
 #     }
 # }
 
-# V1
+# V1'''''
 # https://leetcode.com/problems/subarray-sum-equals-k/solution/
 # IDEA : WITH SPACE
 # JAVA
@@ -319,7 +319,7 @@ class Solution:
 #     }
 # }
 
-# V1
+# V1''''''
 # https://leetcode.com/problems/subarray-sum-equals-k/solution/
 # IDEA : HASHMAP
 # JAVA

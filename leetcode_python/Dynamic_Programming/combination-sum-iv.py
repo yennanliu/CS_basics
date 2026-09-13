@@ -1,11 +1,8 @@
 """
 
 377. Combination Sum IV
-Solved
 Medium
-Topics
-premium lock icon
-Companies
+
 Given an array of distinct integers nums and a target integer target, return the number of possible combinations that add up to target.
 
 The test cases are generated so that the answer can fit in a 32-bit integer.
@@ -41,7 +38,6 @@ All the elements of nums are unique.
  
 
 Follow up: What if negative numbers are allowed in the given array? How does it change the problem? What limitation we need to add to the question to allow negative numbers?
-
 
 """
 
@@ -100,7 +96,7 @@ class Solution(object):
         return dp[target]
 
 
-# V0-0-1
+# V0-1
 # IDEA: 1D DP (`combination` pattern)
 # https://yennj12.js.org/CS_basics/cheatsheets/knapsack.html#loop-order-combinations-vs-permutations
 # https://github.com/yennanliu/CS_basics/issues/103
@@ -290,7 +286,7 @@ class Solution(object):
                     dp[i] += dp[i - x]
         return dp[target]
 
-# V1''
+# V1'''
 # https://www.hrwhisper.me/leetcode-combination-sum-iv/
 # IDEA : DP
 # dp[i+num] += dp[i]

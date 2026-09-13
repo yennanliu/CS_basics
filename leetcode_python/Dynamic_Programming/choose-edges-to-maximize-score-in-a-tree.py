@@ -2,6 +2,7 @@
 
 2378. Choose Edges to Maximize Score in a Tree
 Medium
+
 (premium / locked problem)
 
 You are given a weighted rooted tree consisting of n nodes represented as a 0-indexed 2D integer array edges of size n where edges[i] = [par_i, weight_i] represents the parent node of node i (i.e., the root is node 0) and the weight of the edge between node i and its parent. Since the root does not have a parent, you have edges[0] = [-1, -1].

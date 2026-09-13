@@ -1,11 +1,8 @@
 """
 
 542. 01 Matrix
-Solved
 Medium
-Topics
-premium lock icon
-Companies
+
 Given an m x n binary matrix mat, return the distance of the nearest 0 for each cell.
 
 The distance between two cells sharing a common edge is 1.
@@ -35,7 +32,6 @@ There is at least one 0 in mat.
  
 
 Note: This question is the same as 1765: https://leetcode.com/problems/map-of-highest-peak/
-
 
 """
 
@@ -167,7 +163,7 @@ class Solution(object):
         return dist
 
 
-# V0-0-1
+# V0-1
 # IDEA: Multi-source BFS (GPT)
 from collections import deque
 
@@ -219,7 +215,7 @@ class Solution(object):
         return mat
 
 
-# V0-1
+# V0-2
 # IDEA: Multi-source BFS (GEMINI)
 # time = O(m * n)
 # space = O(m * n)

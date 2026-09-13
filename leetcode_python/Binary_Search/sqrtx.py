@@ -1,5 +1,8 @@
 """
 
+69. Sqrt(x)
+Easy
+
 Given a non-negative integer x, compute and return the square root of x.
 
 Since the return type is an integer, the decimal digits are truncated, and only the integer part of the result is returned.
@@ -51,7 +54,7 @@ class Solution(object):
             else:
                 r = mid - 1
 
-# V0
+# V0-1
 # IDEA : binary search
 # time = O(log num)
 # space = O(1)
@@ -71,7 +74,7 @@ class Solution(object):
                 l = mid + 1
         return l if l * l < num else l - 1
 
-# V0'
+# V0-2
 # IDEA : binary search
 # time = O(log x)
 # space = O(1)
@@ -88,7 +91,7 @@ class Solution(object):
             mid = int((low + high) / 2)
         return mid
 
-# V0''
+# V0-3
 # IDEA : binary search
 # time = O(log x)
 # space = O(1)

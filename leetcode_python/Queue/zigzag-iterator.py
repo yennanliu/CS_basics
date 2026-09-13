@@ -101,7 +101,7 @@ class ZigzagIterator:
     def hasNext(self) -> bool:
         return len(self.q) > 0     
 
-# V1
+# V1'
 # IDEA : TWO POINTERS
 # https://leetcode.com/problems/zigzag-iterator/solution/
 # time = O(1) per next()/hasNext() call (bounded by constant number of vectors); O(1) for __init__
@@ -142,7 +142,7 @@ class ZigzagIterator:
     def hasNext(self) -> bool:
         return self.output_count < self.total_num
 
-# V1'
+# V1''
 # IDEA : Queue of Pointers
 # https://leetcode.com/problems/zigzag-iterator/solution/
 # time = O(1) per next()/hasNext() call; O(1) for __init__ (constant # of vectors)
@@ -174,7 +174,7 @@ class ZigzagIterator:
     def hasNext(self) -> bool:
         return len(self.queue) > 0
 
-# V1''
+# V1'''
 # http://www.voidcn.com/article/p-wkwesfjj-zo.html
 class ZigzagIterator(object):
 
@@ -239,7 +239,7 @@ class ZigzagIterator(object):
 # V1'''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/101288956
 
-# V1''''''''
+# V1''''''
 # https://blog.csdn.net/qq_46105170/article/details/108675981
 
 # V2

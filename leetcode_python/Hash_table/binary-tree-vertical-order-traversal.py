@@ -59,7 +59,7 @@ class Solution(object):
         print ("d_res_ = " + str(d_res_))
         return [x[1] for x in d_res_]
 
-# V0'
+# V0-1
 # IDEA : DFS
 # time = O(n log n)
 # space = O(n)
@@ -95,7 +95,7 @@ class Solution:
 
         return ret
 
-# V0''
+# V0-2
 # IDEA : BFS + collections.defaultdict(list)
 # time = O(n log n)
 # space = O(n)
@@ -145,7 +145,7 @@ class Solution:
                         
         return [columnTable[x] for x in sorted(columnTable.keys())]
 
-# V1
+# V1'
 # IDEA : BFS WITHOUT SORTING
 # https://leetcode.com/problems/binary-tree-vertical-order-traversal/solution/
 # Definition for a binary tree node.
@@ -179,7 +179,7 @@ class Solution:
 
         return [columnTable[x] for x in range(min_column, max_column + 1)]
 
-# V1
+# V1''
 # IDEA : DFS
 # https://leetcode.com/problems/binary-tree-vertical-order-traversal/solution/
 # Definition for a binary tree node.
@@ -221,7 +221,7 @@ class Solution:
 
         return ret
 
-# V1 
+# V1'''
 # https://blog.csdn.net/qq508618087/article/details/50760661
 # https://blog.csdn.net/danspace1/article/details/86654851
 # IDEA : BFS + collections.defaultdict(list) 
@@ -257,7 +257,7 @@ class Solution(object):
             
         return [cols[c] for c in sorted(cols.keys())]
 
-# V1'
+# V1''''
 # https://www.jiuzhang.com/solution/binary-tree-vertical-order-traversal/#tag-highlight-lang-python
 # IDEA : BFS + collections.defaultdict(list)
 """

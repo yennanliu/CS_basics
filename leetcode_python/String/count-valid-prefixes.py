@@ -3,11 +3,8 @@
 """
 
 4006. Count Valid Prefixes
-Solved
 Easy
-premium lock icon
-Companies
-Hint
+
 You are given a binary string s.
 
 A prefix of s is considered valid if its characters can be rearranged to form an alternating string.
@@ -50,6 +47,7 @@ Constraints:
 1 <= s.length <= 100
 s consists only of '0' and '1'.
  
+
 """
 
 

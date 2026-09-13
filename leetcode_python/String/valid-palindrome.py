@@ -32,7 +32,6 @@ Constraints:
 1 <= s.length <= 2 * 105
 s consists only of printable ASCII characters.
 
-
 """
 
 
@@ -72,7 +71,7 @@ class Solution(object):
         return fixed_s == fixed_s[::-1]
 
 
-# V0
+# V0-1
 # IDEA : string + isalpha + isalnum
 # time = O(n)
 # space = O(n)

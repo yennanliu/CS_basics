@@ -1,11 +1,8 @@
 """
 
 435. Non-overlapping Intervals
-Solved
 Medium
-Topics
-premium lock icon
-Companies
+
 Given an array of intervals intervals where intervals[i] = [starti, endi], return the minimum number of intervals you need to remove to make the rest of the intervals non-overlapping.
 
 Note that intervals which only touch at a point are non-overlapping. For example, [1, 2] and [2, 3] are non-overlapping.
@@ -126,7 +123,7 @@ class Solution(object):
         return deletions
 
 
-# V0
+# V0-2
 # IDEA : 2 POINTERS + sorting + intervals
 # TODO : make it general : (sort by x[0] or x[1] and the op)
 # time = O(n log n)
@@ -153,7 +150,7 @@ class Solution(object):
                 last[1] = max(intervals[i][1], last[1])
         return cnt
 
-# V0'
+# V0-3
 # IDEA : 2 POINTERS + sorting + intervals
 # time = O(n log n)
 # space = O(1)
@@ -182,7 +179,7 @@ class Solution(object):
                 last = i
         return res
 
-# V0''
+# V0-4
 # IDEA : 2 POINTERS + sorting + intervals
 # time = O(n log n)
 # space = O(1)

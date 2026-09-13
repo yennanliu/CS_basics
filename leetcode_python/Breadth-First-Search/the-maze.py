@@ -1,5 +1,8 @@
 """
 
+490. The Maze
+Medium
+
 [LeetCode] 490. The Maze
 
 # https://www.cnblogs.com/grandyang/p/6381458.html
@@ -87,7 +90,7 @@ class Solution(object):
         visited = set()
         return dfs(start[0], start[1])
 
-# V0'
+# V0-1
 # IDEA : BFS
 # time = O(m*n*max(m,n)), m,n = maze dimensions; each cell marked visited via maze[i][j]=2 (visited once), each direction rolls up to O(max(m,n)) cells
 # space = O(m*n)

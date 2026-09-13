@@ -6,6 +6,9 @@
 # http://bookshadow.com/weblog/2016/06/13/leetcode-count-numbers-with-unique-digits/
 """
 
+357. Count Numbers with Unique Digits
+Medium
+
 DP def
     dp[i]: how many numbers with EXACTLY i digits have all-distinct digits
 

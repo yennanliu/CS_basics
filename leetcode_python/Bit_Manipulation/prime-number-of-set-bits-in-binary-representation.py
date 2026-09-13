@@ -54,7 +54,7 @@ class Solution(object):
                 res += 1
         return res
 
-# V0' : IDEA : check prime + brute force
+# V0-1 : IDEA : check prime + brute force
 # time = O(n * log R)  # n = R-L+1; per number: O(log R) bin() + O(sqrt(log R)) primality check
 # space = O(log R)  # bin() string per iteration
 class Solution(object):

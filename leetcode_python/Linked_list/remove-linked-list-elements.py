@@ -46,7 +46,7 @@ class Solution:
             cur = cur.next
         return dummy.next
 
-# V0'
+# V0-1
 # time = O(n)
 # space = O(1)
 class Solution:

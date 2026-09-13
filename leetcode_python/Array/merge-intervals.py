@@ -3,7 +3,6 @@
 56. Merge Intervals
 Medium
 
-
 Given an array of intervals where intervals[i] = [starti, endi], merge all overlapping intervals, and return an array of the non-overlapping intervals that cover all the intervals in the input.
 
  
@@ -51,7 +50,7 @@ class Solution(object):
 
         return res
 
-# V0'
+# V0-1
 # IDEA : interval op + last
 # time = O(n log n)
 # space = O(n)
@@ -78,7 +77,7 @@ class Solution(object):
             res.append(last)
         return res
 
-# V0''
+# V0-2
 # IDEA : interval op, LC 57
 # time = O(n log n)
 # space = O(n)
@@ -96,7 +95,7 @@ class Solution(object):
                 res[-1][1] = max(intervals[i][1], res[-1][1])
         return res
 
-# V0'''
+# V0-3
 # IDEA : interval op
 # https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E5%8C%BA%E9%97%B4%E8%B0%83%E5%BA%A6%E9%97%AE%E9%A2%98%E4%B9%8B%E5%8C%BA%E9%97%B4%E5%90%88%E5%B9%B6.md
 # time = O(n log n)
@@ -134,7 +133,7 @@ class Solution:
                 result[-1][1] = max(result[-1][1], interval[1])
         return result
 
-# V1''
+# V1'
 # https://leetcode.com/problems/merge-intervals/solution/
 # IDEA : Approach 1: Connected Components
 # time = O(n^2)
@@ -194,7 +193,7 @@ class Solution:
         return [self.mergeNodes(nodes_in_comp[comp]) for comp in range(number_of_comps)]
 
 
-# V1'''
+# V1''
 # https://leetcode.com/problems/merge-intervals/solution/
 # IDEA : SORTING
 # time = O(n log n)
@@ -217,7 +216,7 @@ class Solution:
 
         return merged
 
-# V1'
+# V1'''
 # https://www.cnblogs.com/zuoyuan/p/3782028.html
 # time = O(n log n)
 # space = O(n)
@@ -239,7 +238,7 @@ class Solution:
                     res.append(intervals[i])
         return res
 
-# V1''
+# V1''''
 # https://www.cnblogs.com/loadofleaf/p/5084209.html
 # Definition for an interval.
 # class Interval(object):

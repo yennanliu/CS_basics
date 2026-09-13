@@ -2,6 +2,7 @@
 
 2083. Substrings That Begin and End With the Same Letter
 Medium
+
 (premium / locked problem)
 
 You are given a 0-indexed string s consisting of only lowercase English letters. Return the number of substrings in s that begin and end with the same character.

@@ -52,7 +52,7 @@ class Solution(object):
         _res = help(num)
         return _res if not minus else "-" + _res
 
-# V0'
+# V0-1
 # IDEA : MATH : 10 based -> 7 based
 """
 ### NOTE :

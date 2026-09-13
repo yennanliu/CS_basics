@@ -8,6 +8,9 @@
 # dp[i][1] = sum(dp[j][1]), nums[j] < nums[i] and dp[j][0] == dp[i][0] - 1
 """
 
+673. Number of Longest Increasing Subsequence
+Medium
+
 DP def
     two tables side by side (here stored as dp[i] = [length, count])
 

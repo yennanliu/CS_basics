@@ -2,6 +2,7 @@
 
 2214. Minimum Health to Beat Game
 Medium
+
 (premium / locked problem)
 
 You are playing a game that has n levels numbered from 0 to n - 1. You are given a 0-indexed integer array damage where damage[i] is the amount of health you will lose to complete the ith level.

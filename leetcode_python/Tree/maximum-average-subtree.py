@@ -1,7 +1,7 @@
 """
 
 1120. Maximum Average Subtree
-Easy
+Medium
 
 Given the root of a binary tree, return the maximum average value of a subtree of that tree.
 Answers within 10^-5 of the actual answer will be accepted.

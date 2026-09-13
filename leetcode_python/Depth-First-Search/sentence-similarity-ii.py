@@ -57,7 +57,7 @@ class Solution(object):
         pass
 
 
-# V0-0-1
+# V0-1
 # IDEA: DFS + HASHMAP + GRAPH (GEMINI)
 # TODO: VALIDATE
 # time = O(n * p)  # n = len(sentence1), p = len(similarPairs)
@@ -131,7 +131,7 @@ class Solution(object):
         return False
 
 
-# V0
+# V0-2
 # IDEA: DFS + HASHMAP (GPT)
 # TODO: VALIDATE
 # time = O(n * p)  # n = len(sentence1), p = len(similarPairs)
@@ -194,7 +194,7 @@ class Solution(object):
 
 
 
-# V0-1
+# V0-3
 # IDEA: DFS + HASHMAP (GEMINI)
 # TODO: VALIDATE
 # time = O(n * p)  # n = len(sentence1), p = len(similarPairs)
@@ -257,7 +257,7 @@ class Solution(object):
         return False
 
 
-# V0
+# V0-4
 # IDEA : DFS
 # time = O(n * p)  # n = len(sentence1), p = len(similarPairs)
 # space = O(p)
@@ -290,7 +290,7 @@ class Solution(object):
                 return False
         return True
 
-# V0'
+# V0-5
 # IDEA : BFS
 # time = O(n * p)  # n = len(words1), p = len(pairs)
 # space = O(p)
@@ -329,7 +329,7 @@ class Solution:
         # If we work through all words we make it here, and we know they are similar.
         return True
 
-# V0'''
+# V0-6
 # IDEA : UNION FIND
 # time = O((n + p) * α(p))  # n = len(words1), p = len(pairs); α = inverse Ackermann
 # space = O(p)
@@ -373,7 +373,7 @@ class Solution(object):
                 return False
         return True
 
-# V0''''
+# V0-7
 # IDEA : DFS
 # https://zxi.mytechroad.com/blog/hashtable/leetcode-737-sentence-similarity-ii/
 # CONCEPT : 
@@ -449,7 +449,7 @@ class Solution:
         # If we work through all words we make it here, and we know they are similar.
         return True
 
-# V1''
+# V1'
 # IDEA : DICT + HASH TABLE + BFS/DFS 
 # http://bookshadow.com/weblog/2017/11/26/leetcode-sentence-similarity-ii/
 # https://zxi.mytechroad.com/blog/hashtable/leetcode-737-sentence-similarity-ii/
@@ -482,7 +482,7 @@ class Solution(object):
 ### Test case : dev 
 
 
-# V1'''
+# V1''
 # IDEA : DFS (queue format)
 # https://leetcode.com/problems/sentence-similarity-ii/solution/
 # time = O(n * p)  # n = len(words1), p = len(pairs)
@@ -508,7 +508,7 @@ class Solution(object):
                 return False
         return True
 
-# V1''''
+# V1'''
 # IDEA : UnionFind
 # https://leetcode.com/problems/sentence-similarity-ii/discuss/725681/Python-Union-Find-solution
 # time = O((n + p) * α(p))  # n = len(words1), p = len(pairs); α = inverse Ackermann
@@ -553,7 +553,7 @@ class Solution(object):
                 return False
         return True
 
-# V1''''''
+# V1''''
 # IDEA : UnionFind
 # https://leetcode.com/problems/sentence-similarity-ii/discuss/304988/Python-Solution%3A-standard-union-find
 # time = O((n + p) * α(p))  # n = len(words1), p = len(pairs); α = inverse Ackermann
@@ -615,7 +615,7 @@ class Solution:
 
         return words1 == words2 or all(w1 == w2 or w1 in word_dict and w2 in word_dict and uf.find(word_dict[w1]) == uf.find(word_dict[w2]) for w1, w2 in zip(words1, words2))
 
-# V1''''''''
+# V1'''''
 # IDEA : Union-Find
 # https://leetcode.com/problems/sentence-similarity-ii/solution/
 # time = O((n + p) * α(p))  # n = len(words1), p = len(pairs); α = inverse Ackermann
@@ -649,7 +649,7 @@ class Solution(object):
                    for w1, w2 in zip(words1, words2))
 
 
-# V1''''''''
+# V1''''''
 # IDEA : UNION FIND
 # https://leetcode.com/problems/sentence-similarity-ii/discuss/304988/Python-Solution%3A-standard-union-find
 # time = O((n + p) * α(p))  # n = len(words1), p = len(pairs); α = inverse Ackermann
@@ -690,7 +690,7 @@ class Solution:
                     return False
         return True
 
-# V1''''''''
+# V1'''''''
 # IDEA : UNION FIND
 # https://leetcode.com/problems/sentence-similarity-ii/discuss/574395/Python-Union-Find
 # time = O((n + p) * α(p))  # n = len(words1), p = len(pairs); α = inverse Ackermann
@@ -711,7 +711,7 @@ class Solution:
             union(w1, w2)
         return all(w1 == w2 or (w1 in UF and w2 in UF and find(w1) == find(w2)) for w1, w2 in zip(words1, words2))
 
-# V1'''''''''''
+# V1''''''''
 # https://www.jiuzhang.com/solution/sentence-similarity-ii/#tag-highlight-lang-python
 # IDEA : UNION FIND
 # time = O(n * p)  # n = len(words1), p = len(pairs)
@@ -738,7 +738,7 @@ class Solution():
                 return False
         return True
 
-# V1'''''''''''''''
+# V1'''''''''
 # IDEA : DFS
 # https://leetcode.com/problems/sentence-similarity-ii/discuss/109755/SHORT-Python-DFS-with-explanation
 # time = O(n + p)  # n = len(words1), p = len(pairs)
@@ -756,7 +756,7 @@ class Solution(object):
         [dfs(word, word) for word in words]
         return all(similar_words.get(w1, w1) == similar_words.get(w2, w2) for w1, w2 in zip(words1, words2))
 
-# V1'''''''''''''''
+# V1''''''''''
 # IDEA : DFS
 # https://leetcode.com/problems/sentence-similarity-ii/discuss/109755/SHORT-Python-DFS-with-explanation
 # time = O(n + p)  # n = len(words1), p = len(pairs)
@@ -785,7 +785,7 @@ class Solution(object):
         # Compare words.
         return all(similar_words.get(w1, w1) == similar_words.get(w2, w2) for w1, w2 in zip(words1, words2))
 
-# V1''''''''''''''
+# V1'''''''''''
 # IDEA : DFS
 # https://leetcode.com/problems/sentence-similarity-ii/discuss/221015/Python-solution
 # time = O(n + p)  # n = len(words1), p = len(pairs)

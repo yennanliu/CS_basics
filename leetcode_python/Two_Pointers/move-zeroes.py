@@ -1,4 +1,8 @@
 """
+
+283. Move Zeroes
+Easy
+
 Time:  O(n)
 Space: O(1)
 Given an array nums, write a function to move all 0's
@@ -41,7 +45,7 @@ class Solution(object):
                 y += 1
         return nums
 
-# V0'
+# V0-1
 # IDEA : 2 POINTERS
 # time = O(n)
 # space = O(1)
@@ -62,7 +66,14 @@ class Solution(object):
                 j += 1
         return nums
 
-# V0''
+# V0-2
+# time = O(n)
+# space = O(n)
+class Solution(object):
+    def moveZeroes(self, nums):
+        return [ x for x in nums if x != 0 ] + [ x for x in nums if x == 0 ]
+
+# V1
 # time = O(n)
 # space = O(n)
 class Solution(object):
@@ -70,13 +81,6 @@ class Solution(object):
         return [ x for x in nums if x != 0 ] + [ x for x in nums if x == 0 ]
 
 # V1'
-# time = O(n)
-# space = O(n)
-class Solution(object):
-    def moveZeroes(self, nums):
-        return [ x for x in nums if x != 0 ] + [ x for x in nums if x == 0 ]
-
-# V1''
 # https://www.jiuzhang.com/solution/move-zeroes/#tag-highlight-lang-python
 # time = O(n)
 # space = O(1)

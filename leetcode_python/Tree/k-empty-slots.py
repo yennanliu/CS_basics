@@ -1,8 +1,9 @@
 """
 
-# http://bookshadow.com/weblog/2017/09/24/leetcode-k-empty-slots/
+683. K Empty Slots
+Hard
 
-LeetCode 683. K Empty Slots
+# http://bookshadow.com/weblog/2017/09/24/leetcode-k-empty-slots/
 
 There is a garden with N slots. In each slot, there is a flower. The N flowers will bloom one by one in N days. In each day, there will be exactly one flower blooming and it will be in the status of blooming since then.
 

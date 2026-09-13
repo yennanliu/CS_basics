@@ -1,5 +1,8 @@
 """
 
+226. Invert Binary Tree
+Easy
+
 Given the root of a binary tree, invert the tree, and return its root.
 
 Example 1:
@@ -41,7 +44,6 @@ to
  / \   / \
 9   6 3   1
 
-
 """
 
 
@@ -62,7 +64,7 @@ class Solution(object):
 
         return root
 
-# V0
+# V0-1
 # IDEA : DFS
 # -> below code shows a good example that tree is a type of "linked list"
 # -> we don't really modify tree's "value", but we modify the pointer
@@ -81,7 +83,7 @@ class Solution(object):
         dfs(root)
         return root
 
-# V0'
+# V0-2
 # IDEA BFS
 # time = O(n)
 # space = O(n), queue can hold up to a full level of nodes
@@ -103,7 +105,7 @@ class Solution(object):
                     queue.append(tmp.right)
         return root
 
-# V0
+# V0-3
 # IDEA : DFS
 # time = O(n)
 # space = O(h), recursion stack

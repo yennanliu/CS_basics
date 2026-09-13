@@ -37,7 +37,6 @@ board and word consists of only lowercase and uppercase English letters.
 
 Follow up: Could you use search pruning to make your solution faster with a larger board?
 
-
 """
 
 # V0
@@ -125,7 +124,7 @@ class Solution(object):
 
 
 
-# V0
+# V0-1
 # IDEA : DFS + backtracking
 # time = O(m*n*4^L), L = word length
 # space = O(L)
@@ -175,7 +174,7 @@ class Solution(object):
         return found
 
 
-# V0
+# V0-2
 # IDEA : DFS + backtracking
 # time = O(m*n*4^L), L = word length
 # space = O(m*n)
@@ -221,7 +220,7 @@ class Solution(object):
         return result
    
 
-# V0-1
+# V0-3
 # time = O(m*n*4^L), L = word length
 # space = O(m*n)
 class Solution(object):
@@ -280,7 +279,7 @@ class Solution(object):
 
         return False
 
-# V0'
+# V0-4
 # IDEA : DFS
 # time = O(m*n*4^L), L = word length
 # space = O(L)
@@ -359,7 +358,7 @@ class Solution(object):
         # Tried all directions, and did not find any match
         return ret
 
-# V1
+# V1'
 # IDEA : BACKTEACKING
 # https://leetcode.com/problems/word-search/solution/
 
@@ -393,7 +392,7 @@ class Solution(object):
         # Tried all directions, and did not find any match
         return False
 
-# V1
+# V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79386066
 # IDEA : BACKTRACKING 
 # DEMO : 
@@ -428,7 +427,7 @@ class Solution(object):
         board[y][x] = board[y][x].swapcase() # if already visited all possible route within the route collection, then roll back the maked route (.swapcase(), e.g. a->A), and run the other visit again 
         return isexit
 
-# V1'
+# V1'''
 # https://www.cnblogs.com/zuoyuan/p/3769767.html
 # IDEA : DFS 
 # time = O(m*n*4^L), L = word length
@@ -473,7 +472,7 @@ class Solution:
                         return True
         return False
 
-# V1''
+# V1''''
 # https://www.jiuzhang.com/solution/word-search/#tag-highlight-lang-python
 # time = O(m*n*4^L), L = word length
 # space = O(m*n)

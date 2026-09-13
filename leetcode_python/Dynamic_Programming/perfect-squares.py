@@ -1,11 +1,8 @@
 """
 
 279. Perfect Squares
-Solved
 Medium
-Topics
-premium lock icon
-Companies
+
 Given an integer n, return the least number of perfect square numbers that sum to n.
 
 A perfect square is an integer that is the square of an integer; in other words, it is the product of some integer with itself. For example, 1, 4, 9, and 16 are perfect squares while 3 and 11 are not.
@@ -27,6 +24,7 @@ Explanation: 13 = 4 + 9.
 Constraints:
 
 1 <= n <= 104
+
 """
 
 
@@ -114,7 +112,7 @@ class Solution(object):
         return dp[n]
 
 
-# V0-1-1
+# V0-2
 # IDEA: 1D DP (1D DP / unbounded knapsack) (gpt)
 """
 
@@ -174,7 +172,7 @@ class Solution(object):
         return dp[n]
 
 
-# V0-2
+# V0-3
 # IDEA: 1D DP (1D DP / unbounded knapsack) (gemini)
 class Solution(object):
     def numSquares(self, n):
@@ -196,7 +194,7 @@ class Solution(object):
         return dp[n]
 
 
-# V0-3
+# V0-4
 # IDEA : BFS
 """
 

@@ -630,7 +630,7 @@ class Solution(object):
         return helper(queue)
 
 
-# V0
+# V0-2
 # IDEA : STACK
 # NOTE !!! 
 #   -> 1) we init pre_op = '+'
@@ -883,7 +883,7 @@ class Solution:
 #     }
 # }
 
-# V1''''''''
+# V1''''''
 # IDEA : Optimised Approach without the stack
 # https://leetcode.com/problems/basic-calculator-ii/solution/
 # JAVA

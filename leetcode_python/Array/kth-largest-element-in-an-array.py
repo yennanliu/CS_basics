@@ -38,7 +38,7 @@ class Solution:
         print ("nums = " + str(nums))
         return nums[k-1]
 
-# V0'
+# V0-1
 # IDEA : SORTED 
 # time = O(n log n)
 # space = O(1)
@@ -47,7 +47,7 @@ class Solution:
         nums.sort()
         return nums[-k]
 
-# V0''
+# V0-2
 # IDEA : bubble sort -> OK*** (reiew again!)
 # time = O(n*k)
 # space = O(1)
@@ -71,7 +71,7 @@ class Solution:
 #                     nums[j], nums[j+1] = nums[j+1], nums[j]
 #         return nums[-k]
 
-# V0'''
+# V0-3
 # IDEA : quick sort -> check again
 # time = O(n) ~ O(n^2)
 # space = O(n)

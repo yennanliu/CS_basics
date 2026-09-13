@@ -2,6 +2,7 @@
 
 3119. Maximum Number of Potholes That Can Be Fixed
 Medium
+
 🔒 (premium)
 
 You are given a string road, consisting only of characters "x" and ".", where each "x" denotes a pothole and each "." denotes a smooth road, and an integer budget.

@@ -1,6 +1,6 @@
 """
 
-3572. Maximize Y-Sum by Picking a Triplet of Distinct X-Values
+3572. Maximize Y‑Sum by Picking a Triplet of Distinct X‑Values
 Medium
 
 You are given two integer arrays x and y, each of length n. You must choose three distinct indices i, j, and k such that:

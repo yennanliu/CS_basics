@@ -2,6 +2,7 @@
 
 2408. Design SQL
 Medium
+
 (premium / locked problem)
 
 You are given two string arrays, names and columns, both of size n. The ith table is represented by the name names[i] and contains columns[i] number of columns.

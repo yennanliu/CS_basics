@@ -4,6 +4,9 @@
 # http://bookshadow.com/weblog/2017/12/03/leetcode-delete-and-earn/
 """
 
+740. Delete and Earn
+Medium
+
 DP def
     deleting x also deletes every x-1 and x+1, so the choice is per VALUE,
     not per index -> this becomes "house robber" over the value line

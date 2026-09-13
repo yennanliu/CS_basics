@@ -159,7 +159,7 @@ class Solution(object):
             data = data[x:]
         return True
 
-# V1'''''
+# V1''''
 # https://leetcode.com/problems/utf-8-validation/solution/
 # IDEA : String Manipulation
 # time complexity : O(N)
@@ -211,7 +211,7 @@ class Solution:
         # a particular UTF-8 character.
         return n_bytes == 0     
 
-# V1'''''''
+# V1'''''
 # https://leetcode.com/problems/utf-8-validation/solution/
 # Bit Manipulation
 # time complexity : O(N)
@@ -260,7 +260,7 @@ class Solution:
             n_bytes -= 1
         return n_bytes == 0     
 
-# V1''''''''''
+# V1''''''
 # https://github.com/xieqilu/Bloomberg/blob/master/UTF-8Decoding.cs
 # JAVA
 # bool valid_utf8(const vector<unsigned char>& data) {

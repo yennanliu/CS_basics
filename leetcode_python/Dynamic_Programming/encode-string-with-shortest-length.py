@@ -5,6 +5,9 @@
 # IDEA : DP + BACKTRACKING
 """
 
+471. Encode String with Shortest Length
+Hard
+
 DP def
     dp[i][j] (or memo keyed by the substring): the SHORTEST encoding of
 

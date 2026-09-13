@@ -56,7 +56,7 @@ class Solution(object):
         a, x = z.real, -z.imag
         return 'x=%d' % (a / x) if x else 'No solution' if a else 'Infinite solutions'
 
-# V0'
+# V0-1
 # IDEA : REGULAR EXPRESSION
 import re
 # time = O(n)  # n = len(equation)
@@ -78,7 +78,7 @@ class Solution(object):
                 b -= side * int(sign + num)
         return 'x=%d' % (b / a) if a else 'No solution' if b else 'Infinite solutions'
 
-# V0'
+# V0-2
 # time = O(n)  # n = len(equation)
 # space = O(n)
 class Solution(object):

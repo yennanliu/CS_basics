@@ -76,7 +76,7 @@ class Solution(object):
                 answer += 1
         return answer
 
-# V0'
+# V0-1
 # IDEA : SORT + BRUTE FORCE + BREAK
 # time = O(n^2)  # nested loop dominates; nums.sort() is O(n log n)
 # space = O(n)  # tmp list of found pairs
@@ -100,7 +100,7 @@ class Solution(object):
                     break
         return res
 
-# V0''
+# V0-2
 # IDEA : SORT + BRUTE FORCE + BREAK
 # time = O(n^2)  # nested loop dominates; nums.sort() is O(n log n)
 # space = O(n)  # tmp list of found pairs

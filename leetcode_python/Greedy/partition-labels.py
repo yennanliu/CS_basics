@@ -54,7 +54,7 @@ class Solution(object):
         _res = [res[0]] + [ res[i] - res[i-1] for i in range(1, len(res)) ]
         return _res
 
-# V0'
+# V0-1
 # IDEA : GREEDY
 # EXAMPLE :
 # x = "ababcbacadefegdehijhklij"
@@ -105,7 +105,7 @@ class Solution(object):
                 anchor = j + 1
         return ans
 
-# V0'
+# V0-2
 # IDEA : GREEDY + find the max index for each element
 # time = O(n)
 # space = O(n)
@@ -139,7 +139,7 @@ class Solution(object):
         # TODO : optimize below op, e.g. [9, 16, 24] -> [9, 7, 8]
         return [res[0]] + [ res[i] - res[i-1] for i in range(len(res)) if i >0 ]
 
-# V0''
+# V0-3
 # https://leetcode.com/problems/partition-labels/discuss/298474/Python-two-pointer-solution-with-explanation
 # time = O(n)
 # space = O(n)

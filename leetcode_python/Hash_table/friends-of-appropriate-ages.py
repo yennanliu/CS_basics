@@ -58,7 +58,7 @@ class Solution(object):
                 res += count[A] * (count[B] - int(A == B))
         return res
 
-# V0'
+# V0-1
 import collections
 # time = O(n + a^2), n = number of people, a = number of distinct ages
 # space = O(a)
@@ -73,7 +73,7 @@ class Solution:
         c = collections.Counter(ages)
         return sum(request(a, b) * c[a] * (c[b] - (a == b)) for a in c for b in c)
 
-# V0''
+# V0-2
 from collections import Counter
 # time = O(n + a^2), n = number of people, a = number of distinct ages
 # space = O(a)

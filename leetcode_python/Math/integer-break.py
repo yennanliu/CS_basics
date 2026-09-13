@@ -1,12 +1,8 @@
 """
 
 343. Integer Break
-Solved
 Medium
-Topics
-premium lock icon
-Companies
-Hint
+
 Given an integer n, break it into the sum of k positive integers, where k >= 2, and maximize the product of those integers.
 
 Return the maximum product you can get.
@@ -108,7 +104,7 @@ class Solution(object):
         return product
 
 
-# V0-0-0-1
+# V0-1
 # IDEA: MATH (gemini)
 """
 
@@ -186,7 +182,7 @@ class Solution(object):
         return product
 
 
-# V0-0-1
+# V0-2
 # IDEA: GREEDY (gpt)
 class Solution(object):
     def integerBreak(self, n):
@@ -208,7 +204,7 @@ class Solution(object):
         return 3 ** (n // 3) * 2
 
 
-# V0-0-2
+# V0-3
 # IDEA: 1D DP (gemini)
 """
 
@@ -251,7 +247,7 @@ class Solution(object):
         return dp[n]
 
 
-# V0-0-3
+# V0-4
 # IDEA: 1D DP (GPT)
 class Solution(object):
     def integerBreak(self, n):
@@ -283,7 +279,7 @@ class Solution(object):
         return dp[n]
 
 
-# V0-1
+# V0-5
 # IDEA: MATH (gpt)
 class Solution(object):
     def integerBreak(self, n):
@@ -356,7 +352,7 @@ class Solution(object):
         return product
 
 
-# V0-2
+# V0-6
 # IDEA: MATH (gemini)
 class Solution(object):
     def integerBreak(self, n):
@@ -390,7 +386,7 @@ class Solution(object):
         return (base ** (k - remainder)) * ((base + 1) ** remainder)
 
 
-# V0
+# V0-7
 # time = O(n)
 # space = O(n)
 class Solution(object):
@@ -457,7 +453,7 @@ class Solution2(object):
         remainder = n % m
         return quotient ** (m - remainder) * (quotient + 1) ** remainder
 
-# V2'
+# V2
 # EXAMPLE: 
 # 2  ->  1 * 1
 # 3  ->  2 * 1

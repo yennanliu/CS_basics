@@ -68,7 +68,7 @@ class Solution(object):
                 i += 1
         return i
 
-# V0
+# V0-1
 # IDEA : TWO POINTER
 # time = O(n)
 # space = O(1)
@@ -129,7 +129,7 @@ class Solution(object):
             last -= 1
         return len(nums) - len(rm_index)
 
-# V1
+# V1''
 # IDEA : 2 POINTERS
 # https://leetcode.com/problems/remove-element/solution/
 # JAVA
@@ -144,7 +144,7 @@ class Solution(object):
 #     return i;
 # }
 
-# V1
+# V1'''
 # IDEA : Two Pointers - when elements to remove are rare
 # https://leetcode.com/problems/remove-element/solution/
 # JAVA
@@ -163,7 +163,7 @@ class Solution(object):
 #     return n;
 # }
 
-# V1'' 
+# V1''''
 # https://blog.csdn.net/coder_orz/article/details/51578854
 # time = O(n)
 # space = O(1)

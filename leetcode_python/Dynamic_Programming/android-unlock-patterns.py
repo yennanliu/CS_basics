@@ -74,6 +74,9 @@
 # V2
 """
 
+351. Android Unlock Patterns
+Medium
+
 DP def
     dp[used][j]: number of valid unlock patterns that
 

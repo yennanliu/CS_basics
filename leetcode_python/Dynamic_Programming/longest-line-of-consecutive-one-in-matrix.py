@@ -11,6 +11,9 @@
 # a[x][y] = M[x][y] * (a[x + 1][y - 1]  + 1)
 """
 
+562. Longest Line of Consecutive One in Matrix
+Medium
+
 DP def
     one run-length table per DIRECTION, each counting consecutive 1s ending
     at (x, y):

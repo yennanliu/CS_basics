@@ -2,6 +2,7 @@
 
 302. Smallest Rectangle Enclosing Black Pixels
 Hard
+
 (premium)
 
 You are given an m x n binary matrix image where 0 represents a white pixel and

@@ -231,7 +231,7 @@ class Solution(object):
                         e = e-1
         return result
        
-# V1''''' 
+# V1''''
 # https://blog.csdn.net/qqxx6661/article/details/77104868
 # IDEA : DOUBLE POINTER 
 # time = O(n^3)
@@ -335,7 +335,7 @@ class Solution(object):
             i += 1 # check this 
         return res
 
-# V1'''''''' 
+# V1'''''''
 # https://www.jiuzhang.com/solution/4sum/#tag-highlight-lang-python
 # time = O(n^3)
 # space = O(1)

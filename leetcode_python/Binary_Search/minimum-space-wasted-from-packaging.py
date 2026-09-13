@@ -55,7 +55,7 @@ The elements in boxes[j] are distinct.
 # https://blog.csdn.net/zml66666/article/details/117854566
 # https://icode.best/i/49662541727831
 
-# V1
+# V1'
 # IDEA : BINARY SEARCH
 # https://leetcode.com/problems/minimum-space-wasted-from-packaging/discuss/1254116/JavaC%2B%2BPython-Binary-Search-should-not-use-prefix-sum
 # IDEA :
@@ -100,7 +100,7 @@ class Solution:
             return (res - sum(A)) % (10**9 + 7) if res < float('inf') else -1
 
 
-# V1
+# V1''
 # IDEA : Binary Search without PrefixSum
 # https://leetcode.com/problems/minimum-space-wasted-from-packaging/discuss/1254238/C%2B%2BJavaPython-Binary-Search-without-PrefixSum-Clean-and-Concise
 # time = O(N log N + M log M + M log N), N = len(packages), M = total box entries
@@ -127,7 +127,7 @@ class Solution:
             return -1
         return (minTotalBoxSize - sum(packages)) % 1_000_000_007  # minTotalWasted = minTotalBoxSize - totalPackageSize
 
-# V1
+# V1'''
 # IDEA :  Binary Search & Prefix Sum
 # https://leetcode.com/problems/minimum-space-wasted-from-packaging/discuss/1332294/Python-Binary-Search-and-Prefix-Sum
 # time = O(N log N + M log M + M log N), N = len(packages), M = total box entries
@@ -155,7 +155,7 @@ class Solution:
                 Min_waste=min(Min_waste,waste) 
         return Min_waste%mod if Min_waste!=sys.maxsize else -1
 
-# V1
+# V1''''
 # IDEA : HEAP
 # https://leetcode.com/problems/minimum-space-wasted-from-packaging/discuss/1253912/Python3.-Sort-packages-%2B-heapify-all-boxes
 # time = O(N log N + M log M), N = len(packages), M = total box entries (heap push/pop)
@@ -197,7 +197,7 @@ class Solution:
         else:
             return -1
 
-# V1
+# V1'''''
 # IDEA : BINARY SEARCH
 # https://leetcode.com/problems/minimum-space-wasted-from-packaging/discuss/1253949/python-Simple-Binary-Search-updating-explanation
 import bisect
@@ -247,7 +247,7 @@ class Solution:
             return -1
         return ret % M
 
-# V1
+# V1''''''
 # IDEA : Solution: Greedy + Binary Search
 # https://zxi.mytechroad.com/blog/algorithms/binary-search/leetcode-1889-minimum-space-wasted-from-packaging/
 # C++

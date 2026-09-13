@@ -50,6 +50,7 @@ Constraints:
 
 1 <= s.length <= 20
 s consists of only lowercase English letters and special characters *, #, and %.
+
 """
 
 # V0

@@ -2,9 +2,7 @@
 
 436. Find Right Interval
 Medium
-Topics
-premium lock icon
-Companies
+
 You are given an array of intervals, where intervals[i] = [starti, endi] and each starti is unique.
 
 The right interval for an interval i is an interval j such that startj >= endi and startj is minimized. Note that i may equal j.
@@ -40,7 +38,6 @@ intervals[i].length == 2
 -106 <= starti <= endi <= 106
 The start point of each interval is unique.
  
-
 
 """
 
@@ -267,7 +264,7 @@ class Solution(object):
         return res
 
 
-# V0
+# V0-3
 # IDEA: SORT + HASHMAP (TLE) (gpt)
 # time = O(n^2)
 # space = O(n)
@@ -303,7 +300,7 @@ class Solution(object):
 
 
 
-# V0-1
+# V0-4
 # IDEA: binary search (gemini)
 # time = O(n log n)
 # space = O(n)

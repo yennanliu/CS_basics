@@ -115,7 +115,7 @@ class Solution:
 
         return res % (10 ** 9 + 7)
 
-# V1''
+# V1'''
 # https://leetcode.com/problems/number-of-ways-to-split-a-string/discuss/830431/Solution-with-python-Code
 # time = O(n)
 # space = O(1)

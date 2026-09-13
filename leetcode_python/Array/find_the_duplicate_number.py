@@ -51,7 +51,7 @@ class Solution(object):
             if cnt[c] > 1:
                 return c
 
-# V0
+# V0-1
 # IDEA : DICT
 # time = O(n)
 # space = O(n)
@@ -65,7 +65,7 @@ class Solution:
                 if num not in seen:
                     seen[num] = 1
 
-# V0'
+# V0-2
 # IDEA : SET
 # time = O(n)
 # space = O(n)

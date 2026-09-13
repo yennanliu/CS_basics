@@ -2,6 +2,7 @@
 
 3088. Make String Anti-palindrome
 Hard
+
 🔒 (premium)
 
 We call a string s of even length n an anti-palindrome if for each index 0 <= i < n, s[i] != s[n - i - 1].

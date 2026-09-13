@@ -1,6 +1,6 @@
 """
 
-3024. Type of Triangle II
+3024. Type of Triangle
 Easy
 
 You are given a 0-indexed integer array nums of size 3 which can form the sides of a triangle.

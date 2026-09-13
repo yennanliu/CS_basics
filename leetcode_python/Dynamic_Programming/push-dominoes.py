@@ -4,6 +4,9 @@
 # https://blog.csdn.net/fuxuemingzhu/article/details/82714928
 """
 
+838. Push Dominoes
+Medium
+
 DP def
     a domino's fate depends only on the NEAREST pushed domino on each side, so
     pad the string as "L" + dominoes + "R" and process each gap between two

@@ -1,7 +1,7 @@
 """
 
 1770. Maximum Score from Performing Multiplication Operations
-Medium
+Hard
 
 You are given two 0-indexed integer arrays nums and multipliers of size n and m respectively, where n >= m.
 

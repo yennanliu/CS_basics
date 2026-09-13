@@ -1,7 +1,7 @@
 """
 
 1878. Get Biggest Three Rhombus Sums in a Grid
-Easy
+Medium
 
 You are given an m x n integer matrix grid.
 

@@ -59,7 +59,7 @@ class Solution(object):
             if str(number) == s[:i] and number <= 255:
                 self.dfs(s[i:], path + [s[:i]], res)
 
-# V0'
+# V0-1
 # IDEA : BFS (AGAIN)
 # time = O(1)  # bounded: at most 3^4 splits
 # space = O(1)
@@ -191,7 +191,7 @@ class Solution(object):
                     continue
                 self.helper(ans, s[i+1:], k-1, temp+[s[:i+1]])
 
-# V1'
+# V1''
 # https://leetcode.com/problems/restore-ip-addresses/discuss/30946/DFS-in-Python
 # IDEA : BFS
 # time = O(1)  # bounded: at most 3^4 splits
@@ -212,7 +212,7 @@ class Solution(object):
                     if s[0]=='0': break
         return res
 
-# V1''
+# V1'''
 # https://leetcode.com/problems/restore-ip-addresses/discuss/31211/Adding-a-python-solution-also-requesting-for-improvement
 # IDEA : BRUTE FORCE
 # time = O(1)  # bounded: at most 3^4 splits
@@ -250,7 +250,7 @@ class Solution:
                  return False
          return True
 
-# V1' 
+# V1''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/80657420
 # time = O(1)  # bounded: at most 3^4 splits
 # space = O(1)

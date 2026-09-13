@@ -3,11 +3,8 @@
 """
 
 3997. Count Dominant Nodes in a Binary Tree
-Solved
 Medium
-premium lock icon
-Companies
-Hint
+
 You are given the root of a complete binary tree.
 
 A node x is called dominant if its value is equal to the maximum value among all nodes in the subtree rooted at x.
@@ -50,7 +47,6 @@ The number of nodes in the tree is in the range [1, 105].
 1 <= Node.val <= 109
 The tree is guaranteed to be a complete binary tree.
  
-
 
 """
 

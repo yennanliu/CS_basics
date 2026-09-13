@@ -89,7 +89,7 @@ class Codec:
              
         return root
 
-# V0' : BFS + collection.dequeue op
+# V0-1 : BFS + collection.dequeue op
 # time = O(n)
 # space = O(n)
 class Codec:
@@ -150,7 +150,7 @@ class Codec:
              
         return root
 
-# V0''
+# V0-2
 # time = O(n)
 # space = O(n)  # recursion stack O(h) + vals list/deque O(n)
 class Codec:
@@ -318,7 +318,7 @@ class Codec:
         data = [int(x) for x in arr]
         return helper(data, 0, len(data)-1)
 
-# V1''
+# V1'''
 # http://bookshadow.com/weblog/2015/10/26/leetcode-serialize-and-deserialize-binary-tree/
 # time = O(n)
 # space = O(n)
@@ -347,7 +347,7 @@ class Codec:
         vals = iter(data.split())
         return doit()
 
-# V1'''
+# V1''''
 # http://bookshadow.com/weblog/2015/10/26/leetcode-serialize-and-deserialize-binary-tree/
 # Definition for a binary tree node.
 # class TreeNode(object):

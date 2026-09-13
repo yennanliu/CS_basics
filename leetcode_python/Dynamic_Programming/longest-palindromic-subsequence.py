@@ -8,6 +8,9 @@
 # dp[i][j]=max(dp[i+1][j],dp[i][j-1])\quad if(str[i]!=str[j])dp[i][j]=max(dp[i+1][j],dp[i][j−1])if(str[i]!=str[j])
 """
 
+516. Longest Palindromic Subsequence
+Medium
+
 DP def
     (INTERVAL DP)
 

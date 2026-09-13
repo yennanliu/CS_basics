@@ -226,7 +226,7 @@ class Solution(object):
 
 
 
-# V0-0-3
+# V0-3
 # IDEA : DFS (gemini)
 # time = O(n^2), n = number of nodes (sum(path) recomputed at each leaf)
 # space = O(n)

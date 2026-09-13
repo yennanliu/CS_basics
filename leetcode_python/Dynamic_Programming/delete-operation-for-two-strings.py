@@ -2,9 +2,7 @@
 
 583. Delete Operation for Two Strings
 Medium
-Topics
-premium lock icon
-Companies
+
 Given two strings word1 and word2, return the minimum number of steps required to make word1 and word2 the same.
 
 In one step, you can delete exactly one character in either string.
@@ -26,7 +24,6 @@ Constraints:
 
 1 <= word1.length, word2.length <= 500
 word1 and word2 consist of only lowercase English letters.
-
 
 """
 
@@ -249,7 +246,7 @@ class Solution(object):
 
 
 
-# V1
+# V1'
 # http://bookshadow.com/weblog/2017/05/15/leetcode-delete-operation-for-two-strings/
 # IDEA : DP + Longest Common Subsequence
 """
@@ -298,7 +295,7 @@ class Solution(object):
                     dp[x + 1][y + 1] = dp[x][y] + 1
         return dp[len1][len2]
 
-# V1'
+# V1''
 # http://bookshadow.com/weblog/2017/05/15/leetcode-delete-operation-for-two-strings/
 # IDEA : DP
 # DP EQUATION : 
@@ -352,7 +349,7 @@ class Solution(object):
         return dp[len1][len2]
 
 
-# V1'
+# V1'''
 # https://www.jiuzhang.com/solution/delete-operation-for-two-strings/#tag-highlight-lang-python
 """
 

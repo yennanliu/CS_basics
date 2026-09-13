@@ -28,7 +28,6 @@ Constraints:
 -1000 <= nums[i] <= 1000
 -104 <= target <= 104
 
-
 """
 
 # https://leetcode.com/problems/3sum-closest/description/
@@ -112,7 +111,7 @@ class Solution:
                 break
         return target - diff
 
-# V1
+# V1'
 # IEDA : BINARY SEARCH
 # https://leetcode.com/problems/3sum-closest/solution/
 # time = O(n^2 log n)
@@ -134,7 +133,7 @@ class Solution:
                 break
         return target - diff
 
-# V1 
+# V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/83116781
 # IDEA : SORT + DOUBLE POINTER
 # time = O(n^2)
@@ -163,7 +162,7 @@ class Solution(object):
                     return target
         return res
 
-# V1'
+# V1'''
 # https://www.cnblogs.com/zuoyuan/p/3699449.html
 # time = O(n^2)
 # space = O(1)

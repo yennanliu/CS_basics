@@ -25,6 +25,7 @@ Example 3:
 Input: coins = [1], amount = 0
 Output: 0
  
+
 """
 
 
@@ -92,7 +93,7 @@ class Solution(object):
         return dp[amount]
 
 
-# V0
+# V0-1
 # IDEA: 1D DP (unbound 0/1 knapsack) (gemini)
 """
 
@@ -127,7 +128,7 @@ class Solution(object):
         return dp[amount] if dp[amount] != float('inf') else -1
 
 
-# V0
+# V0-2
 # IDEA: 1D DP (unbound 0/1 knapsack)
 """
 
@@ -185,7 +186,7 @@ class Solution(object):
 
 
 
-# V0-0-1
+# V0-3
 # IDEA: 1D DP (unbound 0/1 knapsack)
 class Solution(object):
     def coinChange(self, coins, amount):
@@ -223,7 +224,7 @@ class Solution(object):
         return dp[amount]
 
 
-# V0-1
+# V0-4
 # IDEA: 1D DP
 """
 
@@ -286,7 +287,7 @@ class Solution(object):
         return dp[amount] if dp[amount] < INF else -1
 
 
-# V0
+# V0-5
 # IDEA : BFS
 """
 
@@ -337,7 +338,7 @@ class Solution(object):
                     steps[tmp + c] = level + 1
         return -1
 
-# V0'
+# V0-6
 # IDEA : DFS (TLE, need fix)
 """
 
@@ -380,7 +381,7 @@ class Solution(object):
             dfs(i, amount, 0)
         return self.res if self.res < 2**31-1 else -1
 
-# V0''
+# V0-7
 # IDEA : DFS, backtrack (TLE, need fix)
 """
 
@@ -562,7 +563,7 @@ class Solution(object):
 # }
 
 
-# V1''
+# V1'''
 # https://leetcode.com/problems/coin-change/solution/
 # IDEA : DP (BOTTOM UP)
 """
@@ -599,7 +600,7 @@ class Solution:
                 dp[x] = min(dp[x], dp[x - coin] + 1)
         return dp[amount] if dp[amount] != float('inf') else -1 
 
-# V1'''
+# V1''''
 # https://leetcode.com/problems/coin-change/discuss/114993/Four-kinds-of-solutions%3A-DP-BFS-DFS-improved-DFS
 # IDEA : DP
 """
@@ -636,7 +637,7 @@ class Solution:
         return dp[-1] if dp[-1] < M else -1
 
 
-# V1''''
+# V1'''''
 # https://leetcode.com/problems/coin-change/discuss/114993/Four-kinds-of-solutions%3A-DP-BFS-DFS-improved-DFS
 # IDEA : BFS
 """
@@ -685,7 +686,7 @@ class Solution:
         
         return -1 if amount else 0
 
-# V1'''''
+# V1''''''
 # https://leetcode.com/problems/coin-change/discuss/114993/Four-kinds-of-solutions%3A-DP-BFS-DFS-improved-DFS
 # IDDA : DFS
 """
@@ -746,7 +747,7 @@ class Solution:
         
         return self.cur if self.cur < float('inf') else -1
 
-# V1''''''
+# V1'''''''
 # https://leetcode.com/problems/coin-change/discuss/114993/Four-kinds-of-solutions%3A-DP-BFS-DFS-improved-DFS
 # IDEA : DFS
 """
@@ -802,7 +803,7 @@ class Solution:
         dfs(0, amount, 0)
         return self.ans if self.ans < float('inf') else -1
 
-# V1'''''''
+# V1''''''''
 # https://leetcode.com/problems/coin-change/discuss/77416/Python-11-line-280ms-DFS-with-early-termination-99-up
 # IDEA : DFS
 """

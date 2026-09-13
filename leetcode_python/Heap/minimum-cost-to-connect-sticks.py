@@ -1,6 +1,7 @@
 """
 
-LeetCode 1167. Minimum Cost to Connect Sticks
+1167. Minimum Cost to Connect Sticks
+Medium
 
 # https://code.dennyzhang.com/minimum-cost-to-connect-sticks
 
@@ -71,7 +72,7 @@ class Solution(object):
             heappush(sticks, s1 + s2)
         return res 
 
-# V1
+# V1'
 # IDEA : heapq + greedy
 # https://www.codeleading.com/article/65392003933/
 # time = O(n log n)
@@ -87,7 +88,7 @@ class Solution:
             heapq.heappush(sticks, a + b)
         return res
 
-# V1
+# V1''
 # JAVA
 # https://www.codeprj.com/zh/blog/b9c3a11.html
 #  class Solution {
@@ -112,7 +113,7 @@ class Solution:
 #     }
 # }
 
-# V1'
+# V1'''
 # C++
 # https://blog.csdn.net/fuxuemingzhu/article/details/101203701
 

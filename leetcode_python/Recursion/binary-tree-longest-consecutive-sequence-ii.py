@@ -3,6 +3,8 @@
 """
 
 549. Binary Tree Longest Consecutive Sequence II
+Medium
+
 Given a binary tree, you need to find the length of Longest Consecutive Path in Binary Tree.
 
 Especially, this path can be either increasing or decreasing. For example, [1,2,3,4] and [4,3,2,1] are both considered valid, but the path [1,2,4,3] is not valid. On the other hand, the path can be in the child-Parent-child order, where not necessarily be parent-child order.
@@ -36,7 +38,6 @@ Prime
 Company:
 Amazon Apple Facebook Google
 
-
 """
 
 
@@ -47,7 +48,7 @@ class Solution(object):
         pass
 
 
-# V1-1
+# V1
 # IDEA: POST ORDER DFS (bottom up) (gpt)
 # TODO: validate
 class Solution(object):
@@ -120,7 +121,7 @@ class Solution(object):
         return [inc, dec]
 
 
-# V1-2
+# V1'
 # IDEA: POST ORDER DFS (bottom up) (gemini)
 # TODO: validate
 class Solution(object):
@@ -161,7 +162,7 @@ class Solution(object):
         return self.max_len
 
 
-# V2-1
+# V2
 # IDEA: DFS
 # https://leetcode.ca/2017-06-01-549-Binary-Tree-Longest-Consecutive-Sequence-II/
 class Solution(object):
@@ -195,7 +196,7 @@ class Solution(object):
 
 
 
-# V2-2
+# V2'
 # IDEA: DFS
 # https://leetcode.ca/2017-06-01-549-Binary-Tree-Longest-Consecutive-Sequence-II/
 class Solution:
@@ -225,7 +226,7 @@ class Solution:
         return ans
 
 
-# V2-3
+# V2''
 # IDEA
 # https://leetcode.ca/2017-06-01-549-Binary-Tree-Longest-Consecutive-Sequence-II/
 class Solution: # issue with this solution, duplicated dfs() search

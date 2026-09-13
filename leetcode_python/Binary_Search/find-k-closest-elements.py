@@ -28,7 +28,6 @@ Constraints:
 arr is sorted in ascending order.
 -104 <= arr[i], x <= 104
 
-
 """
 
 
@@ -73,7 +72,7 @@ class Solution(object):
         return arr[l:r + 1]
 
 
-# V0-0-1
+# V0-1
 # IDEA: BINARY SEARCH (gemini)
 """
 CORE IDEA:
@@ -102,7 +101,7 @@ class Solution(object):
         return arr[l : l + k]
 
 
-# V0-0-2
+# V0-2
 # IDEA: BINARY SEARCH + WINDOW EXPAND (gpt)
 class Solution(object):
     def findClosestElements(self, arr, k, x):
@@ -157,7 +156,7 @@ class Solution(object):
         return res
 
 
-# V0-1
+# V0-3
 # IDEA: SLIDE WINDOW
 # time = O(n - k)
 # space = O(1)
@@ -175,7 +174,7 @@ class Solution(object):
         return arr[l:r+1]
 
 
-# V0-2
+# V0-4
 # IDEA: BINARY SEARCH
 # time = O(log(n - k))
 # space = O(1)
@@ -205,7 +204,7 @@ class Solution(object):
         return arr[l:l + k]
 
 
-# V0
+# V0-5
 # IDEA : TWO POINTERS
 # time = O(n - k)
 # space = O(1)
@@ -219,7 +218,7 @@ class Solution(object):
         return arr
 
 
-# V0'
+# V0-6
 # IDEA : SORTING
 # time = O(n log n)
 # space = O(n)
@@ -236,7 +235,7 @@ class Solution:
         # Sort again to have output in ascending order
         return sorted(result)
 
-# V0''
+# V0-7
 # IDEA : BINARY SEARCH
 # time = O(log(n - k))
 # space = O(1)
@@ -252,7 +251,7 @@ class Solution(object):
                 right = mid
         return arr[left : left + k]
 
-# V0'''
+# V0-8
 # IDEA : HASHMAP + brute force
 # time = O(n log n)   # sort distinct diffs
 # space = O(n)
@@ -362,7 +361,7 @@ class Solution(object):
         heapq.heapify(sub)
         return sorted([arr[heapq.heappop(sub)[1]] for i in range(k)])
 
-# V1'''''
+# V1''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/82968136
 # IDEA : TWO POINTERS
 # time = O(n - k)
@@ -381,7 +380,7 @@ class Solution(object):
                 arr.pop(0)
         return arr
 
-# V1'''''''
+# V1'''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/82968136
 # IDEA : BINARY SEARCH
 # time = O(log(n - k))
@@ -398,7 +397,7 @@ class Solution(object):
                 right = mid
         return arr[left : left + k]
 
-# V1'''''''
+# V1''''''
 # https://www.jiuzhang.com/solution/460-find-k-closest-elements/#tag-highlight-lang-python
 # time = O(logn + k)
 # space = O(1)

@@ -42,7 +42,6 @@ allowedSwaps[i].length == 2
 0 <= ai, bi <= n - 1
 ai != bi
 
-
 """
 
 # V0

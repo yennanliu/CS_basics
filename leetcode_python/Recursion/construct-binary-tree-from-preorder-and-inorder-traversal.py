@@ -3,8 +3,6 @@
 105. Construct Binary Tree from Preorder and Inorder Traversal
 Medium
 
-
-Share
 Given two integer arrays preorder and inorder where preorder is the preorder traversal of a binary tree and inorder is the inorder traversal of the same tree, construct and return the binary tree.
 
  
@@ -122,7 +120,7 @@ class Solution(object):
         return root
 
 
-# V0
+# V0-2
 # IDEA : BST property
 # time = O(n^2), index() lookup is O(n) at each of n recursive calls
 # space = O(n^2), slicing creates new lists at every recursion level

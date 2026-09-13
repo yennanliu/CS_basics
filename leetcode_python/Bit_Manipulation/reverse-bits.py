@@ -37,6 +37,7 @@ The input must be a binary string of length 32
  
 
 Follow up: If this function is called many times, how would you optimize it?
+
 """
 
 # V0
@@ -49,7 +50,7 @@ class Solution:
         t = s[::-1]
         return int(t,2)
 
-# V0'
+# V0-1
 # DEMO
 # n = 10100101000001111010011100
 # n =       10100101000001111010011100
@@ -65,7 +66,7 @@ class Solution:
         # Now we have a  proper binary representation, so we can make the final transformation
         return int(n[::-1],2)
 
-# V0''
+# V0-2
 # time = O(1)
 # space = O(1)
 class Solution(object):

@@ -61,7 +61,7 @@ class Solution(object):
         return dp[n]
 
 
-# V0-0-1
+# V0-1
 # IDEA: 1D DP (O(1) space) (GPT)
 """
 
@@ -143,7 +143,7 @@ class Solution(object):
         return p2
 
 
-# V0-0-2
+# V0-2
 # IDEA: 1D DP (O(1) space) (gemini)
 """
 
@@ -183,7 +183,7 @@ class Solution(object):
         return curr
 
 
-# V0
+# V0-3
 # IDEA : RECURSION + MEMORIZATION
 # https://leetcode.com/explore/learn/card/recursion-i/255/recursion-memoization/1662/
 """
@@ -222,7 +222,7 @@ class Solution(object):
             return res
         return help(n)
 
-# V0'
+# V0-4
 """
 
 DP def

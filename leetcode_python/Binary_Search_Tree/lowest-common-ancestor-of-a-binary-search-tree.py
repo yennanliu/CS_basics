@@ -1,5 +1,8 @@
 """
 
+235. Lowest Common Ancestor of a Binary Search Tree
+Medium
+
 Given a binary search tree (BST), find the lowest common ancestor (LCA) of two given nodes in the BST.
 
 According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes p and q as the lowest node in T that has both p and q as descendants (where we allow a node to be a descendant of itself).”
@@ -88,9 +91,9 @@ class Solution(object):
             return _right
 
 
-# V0
+# V0-2
 # IDEA : LC 236
-# V0
+# V0-3
 # IDEA : RECURSION + POST ORDER TRANSVERSAL
 # time = O(n)
 # space = O(h)  # h = tree height (recursion stack)
@@ -120,7 +123,7 @@ class Solution(object):
         # if p, q both in left sub tree or both in right sub tree
         return left if left else right
 
-# V0
+# V0-4
 # IDEA : RECURSION + POST ORDER TRANSVERSAL
 ### NOTE : we need POST ORDER TRANSVERSAL for this problem
 #          -> left -> right -> root
@@ -152,7 +155,7 @@ class Solution:
             ### NOTE : not root.val but root
             return root
 
-# V0'
+# V0-5
 # IDEA : RECURSION + POST ORDER TRANSVERSAL
 ### NOTE : we need POST ORDER TRANSVERSAL for this problem
 #          -> left -> right -> root
@@ -176,7 +179,7 @@ class Solution(object):
         else:
             return root
 
-# V0''
+# V0-6
 # IDEA : TREE property + recursive (same code as LC 236)
 # time = O(n)
 # space = O(h)  # h = tree height (recursion stack)
@@ -191,7 +194,7 @@ class Solution(object):
 
         return left if left else right
 
-# V0''
+# V0-7
 # IDEA : ITERATION
 # https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/solution/
 # time = O(h)  # h = tree height, BST-guided descent
@@ -230,7 +233,7 @@ class Solution:
                 # We have found the split point, i.e. the LCA node.
                 return node
 
-# V0''
+# V0-8
 # IDEA : GO THROUGH ALL BST (no need to use BFS, or DFS, can just use BST property)
 # THIS METHOD IS MORE GENERAL
 # time = O(h)  # h = tree height; two BST-guided path lookups
@@ -264,7 +267,7 @@ class Solution(object):
         path.append(p)
         return path
 
-# V0'''
+# V0-9
 # IDEA : BST PROPERTY
 # time = O(h)  # h = tree height, BST-guided descent
 # space = O(1)
@@ -285,7 +288,7 @@ class Solution(object):
             else:
                 return pointer
 
-# V0''''
+# V0-10
 # IDEA : BST PROPERTY
 # time = O(h)  # h = tree height, BST-guided descent
 # space = O(h)  # recursion stack
@@ -331,7 +334,7 @@ class Solution:
         else:
             return root
 
-# V1''
+# V1'
 # IDEA : ITERATION
 # https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/solution/
 # time = O(h)  # h = tree height, BST-guided descent
@@ -370,7 +373,7 @@ class Solution:
                 # We have found the split point, i.e. the LCA node.
                 return node
 
-# V1'
+# V1''
 # https://blog.csdn.net/coder_orz/article/details/51498796
 # Definition for a binary tree node.
 # class TreeNode(object):
@@ -397,7 +400,7 @@ class Solution(object):
             else:
                 return pointer
                 
-# V1''
+# V1'''
 # https://blog.csdn.net/coder_orz/article/details/51498796
 # time = O(h)  # h = tree height, BST-guided descent
 # space = O(h)  # recursion stack
@@ -418,7 +421,7 @@ class Solution(object):
         else:
             return root
 
-# V1'''
+# V1''''
 # https://blog.csdn.net/coder_orz/article/details/51498796
 # time = O(h)  # h = tree height; two BST-guided path lookups
 # space = O(h)  # each path list stores up to h nodes

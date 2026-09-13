@@ -1,11 +1,8 @@
 """
 
 127. Word Ladder
-Solved
 Hard
-Topics
-premium lock icon
-Companies
+
 A transformation sequence from word beginWord to word endWord using a dictionary wordList is a sequence of words beginWord -> s1 -> s2 -> ... -> sk such that:
 
 Every adjacent pair of words differs by a single letter.
@@ -36,7 +33,6 @@ wordList[i].length == beginWord.length
 beginWord, endWord, and wordList[i] consist of lowercase English letters.
 beginWord != endWord
 All the words in wordList are unique.
-
 
 """
 
@@ -93,7 +89,7 @@ class Solution(object):
         return 0
 
 
-# V0
+# V0-1
 # IDEA : BFS
 # NOTE !!! 
 #  1) since we use BFS, so the solution will be shortest one
@@ -201,7 +197,7 @@ class Solution(object):
                         visted.add(new_word)
         return 0
 
-# V1 
+# V1'''
 # IDEA : BFS
 # https://blog.csdn.net/fuxuemingzhu/article/details/82903681
 # time = O(M^2 * N)  # M = word length, N = len(wordList); each of the N words is dequeued once, and generates M*26 candidates each costing O(M) to build
@@ -239,7 +235,7 @@ class Solution(object):
             res += 1
         return 0
 
-# V1'
+# V1''''
 # https://leetcode.com/problems/word-ladder/solution/
 # IDEA : BFS 
 # time = O(M**2 * N)
@@ -293,7 +289,7 @@ class Solution(object):
                 all_combo_dict[intermediate_word] = []
         return 0
 
-# V1''
+# V1'''''
 # https://leetcode.com/problems/word-ladder/solution/
 # IDEA : Bidirectional Breadth First Search
 # time = O(M**2 * N)

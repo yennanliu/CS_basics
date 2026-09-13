@@ -4,9 +4,7 @@
 
 922. Sort Array By Parity II
 Easy
-Topics
-premium lock icon
-Companies
+
 Given an array of integers nums, half of the integers in nums are odd, and the other half are even.
 
 Sort the array so that whenever nums[i] is odd, i is odd, and whenever nums[i] is even, i is even.
@@ -73,7 +71,7 @@ class Solution(object):
         return 1
 
 
-# V0-0-1
+# V0-1
 # IDEA: CUSTOM SORT (gpt)
 class Solution(object):
     def sortArrayByParityII(self, nums):
@@ -97,7 +95,7 @@ class Solution(object):
 
 
 
-# V0-1
+# V0-2
 # IDEA: 2 POINTERS (swap in place) (gemini)
 class Solution(object):
     def sortArrayByParityII(self, nums):
@@ -123,7 +121,7 @@ class Solution(object):
         return nums
 
 
-# V0
+# V0-3
 # time = O(n log n)
 # space = O(n)
 class Solution:

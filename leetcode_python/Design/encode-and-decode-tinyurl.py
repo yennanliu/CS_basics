@@ -1,5 +1,8 @@
 """
 
+535. Encode and Decode TinyURL
+Medium
+
 Note: This is a companion problem to the System Design problem: Design TinyURL.
 TinyURL is a URL shortening service where you enter a URL such as https://leetcode.com/problems/design-tinyurl and it returns a short URL such as http://tinyurl.com/4e9iAk. Design a class to encode a URL and decode a tiny URL.
 
@@ -50,7 +53,7 @@ class Codec:
     def decode(self, shortUrl):
         return self.urls[int(shortUrl.split('/')[-1])]
 
-# V0'
+# V0-1
 ### TODO : optimize below via idea :  
 # https://leetcode.com/discuss/interview-question/124658/Design-a-URL-Shortener-(-TinyURL-)-System/
 # IDEA : DICT 
@@ -77,7 +80,7 @@ class Codec:
             return self.short_long[shortUrl]
         return False
 
-# V0
+# V0-2
 # In [27]: import string
 #
 # In [28]: string.ascii_letters
@@ -120,7 +123,7 @@ class Codec:
         else:
             return None
 
-# V0''
+# V0-3
 # IDEA : DICT 
 class Codec:
     # time = O(1)
@@ -141,7 +144,7 @@ class Codec:
     def decode(self, shortUrl):
         return self.d[int(shortUrl)]
 
-# V0''
+# V0-4
 import random
 class Codec:
     # time = O(1)

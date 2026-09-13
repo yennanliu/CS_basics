@@ -1,11 +1,8 @@
 """
 
 129. Sum Root to Leaf Numbers
-Solved
 Medium
-Topics
-premium lock icon
-Companies
+
 You are given the root of a binary tree containing digits from 0 to 9 only.
 
 Each root-to-leaf path in the tree represents a number.
@@ -150,7 +147,7 @@ class Solution(object):
         path.pop()
 
 
-# V0
+# V0-4
 # time = O(n)
 # space = O(h), h is height of binary tree (recursion stack)
 class Solution(object):

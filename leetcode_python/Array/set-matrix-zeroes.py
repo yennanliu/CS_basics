@@ -67,7 +67,7 @@ class Solution(object):
 
         #print ("matrix = " + str(matrix))
 
-# V0'
+# V0-1
 # IDEA : array op
 # time = O(m * n * (m + n))
 # space = O(m * n)
@@ -99,7 +99,7 @@ class Solution(object):
             matrix = help(matrix, xy)
         return matrix
 
-# V0''
+# V0-2
 # IDEA : array op
 # time = O(m * n)
 # space = O(m + n)
@@ -161,7 +161,7 @@ assert s.setZeroes([[1,2,3], [4,0,6], [7,8,9]]) == [[1,0,3], [0,0,0], [7,0,9]]
 assert s.setZeroes([[1,2,3,999], [4,0,6,0], [0,7,8,9]]) == [[0, 0, 3, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
 assert s.setZeroes([[0,0,0], [0,0,0], [0,0,0]]) == [[0,0,0], [0,0,0], [0,0,0]]
 
-# V1''
+# V1'
 # https://leetcode.com/problems/set-matrix-zeroes/solution/
 # IDEA : BRUTE FORCE + DOUBLE LOOP
 # TIME COMPLEXITY : O(N*M)
@@ -191,7 +191,7 @@ class Solution(object):
                 if i in rows or j in cols:
                     matrix[i][j] = 0
                     
-# V1'''
+# V1''
 # https://leetcode.com/problems/set-matrix-zeroes/solution/
 # TIME COMPLEXITY : O((N*M))
 # SPACE COMPLEXITY : O(1)
@@ -288,7 +288,7 @@ class Solution:
                 for i in range(m):
                     matrix[i][j]=0
 
-# V1'''''''
+# V1'''''
 # https://blog.csdn.net/qqxx6661/article/details/78279728
 # time = O(m * n * (m + n))
 # space = O(m * n)

@@ -3,7 +3,6 @@
 523. Continuous Subarray Sum
 Medium
 
-Share
 Given an integer array nums and an integer k, return true if nums has a continuous subarray of size at least two whose elements sum up to a multiple of k, or false otherwise.
 
 An integer x is a multiple of k if there exists an integer n such that x = n * k. 0 is always a multiple of k.
@@ -104,7 +103,7 @@ class Solution(object):
                 
         return False
 
-# V0
+# V0-1
 # IDEA : HASH TABLE
 # SAME IDEA AS LC 525 !!!!
 # -> if sum(nums[i:j]) % k == 0 for some i < j, 
@@ -148,7 +147,7 @@ class Solution(object):
                 _dict[tmp] = i
         return False
 
-# V0'
+# V0-2
 # IDEA : HASH TABLE
 # DEMO
 #    ...: nums = [23,2,4,6,7]
@@ -186,7 +185,7 @@ class Solution(object):
 
         return False
 
-# V0''
+# V0-3
 # IDEA : BRUTE FROCE (TIME OUT ERROR)
 # time = O(n^2)
 # space = O(1)

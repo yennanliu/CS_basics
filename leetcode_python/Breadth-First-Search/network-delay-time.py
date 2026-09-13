@@ -120,7 +120,7 @@ class Solution(object):
 
 
 
-# V0-0-1
+# V0-1
 # IDEA : Dijkstra (PQ + BFS)
 # time = O((V + E) log V)
 # space = O(V + E)
@@ -187,7 +187,7 @@ class Solution(object):
 
 
 
-# V0-1
+# V0-2
 # IDEA : Dijkstra (PQ + BFS)
 # time = O((V + E) log V)
 # space = O(V + E)
@@ -246,7 +246,7 @@ class Solution(object):
 
 
 
-# V0
+# V0-3
 # IDEA : Dijkstra
 # time = O(V^2 + E)
 # space = O(V + E)
@@ -330,7 +330,7 @@ class Solution:
 #     }
 # }
 
-# V1
+# V1'
 # IDEA : BFS
 # https://leetcode.com/problems/network-delay-time/solution/
 # class Solution {
@@ -394,7 +394,7 @@ class Solution:
 #     }
 # }
 
-# V1
+# V1''
 # IDEA : Dijkstra
 # https://leetcode.com/problems/network-delay-time/solution/
 # class Solution {
@@ -465,7 +465,7 @@ class Solution:
 #     }
 # }
 
-# V1
+# V1'''
 # IDEA : Dijkstra
 # https://blog.csdn.net/fuxuemingzhu/article/details/82862769
 # time = O(V^2 + E)
@@ -487,7 +487,7 @@ class Solution:
             done.add(smallest)
         return -1 if float('inf') in dist else max(dist)
 
-# V1'
+# V1''''
 # IDEA : Floyd-Warshall (TLE)
 # https://blog.csdn.net/fuxuemingzhu/article/details/82862769
 # time = O(V^3)
@@ -506,7 +506,7 @@ class Solution:
                     d[i][j] = min(d[i][j], d[i][k] + d[k][j])
         return -1 if float('inf') in d[K - 1] else max(d[K - 1])
 
-# V1''
+# V1'''''
 # IDEA : Bellman-Ford (TLE)
 # https://blog.csdn.net/fuxuemingzhu/article/details/82862769
 # time = O(V * E)
@@ -523,7 +523,7 @@ class Solution:
                 dist[v] = min(dist[v], dist[u] + w)
         return -1 if float('inf') in dist else max(dist)
 
-# V1''''
+# V1''''''
 # https://www.cnblogs.com/grandyang/p/8278115.html
 
 # V2 

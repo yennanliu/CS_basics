@@ -140,7 +140,7 @@ class Solution:
         
         return matchedWords
 
-# V1
+# V1'
 # IDEA : DFS + trie
 # https://leetcode.com/problems/word-search-ii/discuss/59808/Python-DFS-362ms
 # time = O(m*n*4^L), L = max word length
@@ -183,7 +183,7 @@ class Solution(object):
                 self.checkList(board, row, col, "", trie, rList)
         return list(rList)
 
-# V1
+# V1''
 # IDEA : DFS + trie
 # https://leetcode.com/problems/word-search-ii/discuss/59905/Python-AC-solution
 # time = O(m*n*4^L), L = max word length

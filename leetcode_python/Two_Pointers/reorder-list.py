@@ -158,7 +158,7 @@ class Solution(object):
 
 
 
-# V0
+# V0-1
 # IDEA : Reverse the Second Part of the List and Merge Two Sorted Lists
 # time = O(n)
 # space = O(1)
@@ -241,7 +241,7 @@ class Solution(object):
         # to prevent a circular reference loop cycle error
         nodes[l].next = None
 
-# V0'
+# V0-3
 # IDEA : Reverse the Second Part of the List and Merge Two Sorted Lists (simplified code from V1)
 # time = O(n)
 # space = O(1)
@@ -271,7 +271,7 @@ class Solution:
             first.next, first = second, first.next
             second.next, second = first, second.next
 
-# V0'''
+# V0-4
 # time = O(n)
 # space = O(1)
 class Solution:
@@ -440,7 +440,7 @@ class Solution:
             first.next, first = second, first.next
             second.next, second = first, second.next
 
-# V1''
+# V1'''
 # https://www.jiuzhang.com/solution/reorder-list/#tag-highlight-lang-python
 # time = O(n)
 # space = O(1)

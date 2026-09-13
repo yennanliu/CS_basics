@@ -3,7 +3,6 @@
 1022. Sum of Root To Leaf Binary Numbers
 Easy
 
-
 You are given the root of a binary tree where each node has a value 0 or 1. Each root-to-leaf path represents a binary number starting with the most significant bit.
 
 For example, if the path is 0 -> 1 -> 1 -> 0 -> 1, then this could represent 01101 in binary, which is 13.
@@ -73,7 +72,7 @@ class Solution(object):
         # 4. Undo (backtrack)
         path.pop(-1)
 
-# V0
+# V0-1
 # IDEA: DFS + PATH + binary op (gpt)
 class Solution(object):
     def sumRootToLeaf(self, root):
@@ -114,7 +113,7 @@ class Solution(object):
         self.helper(root.right, path)
 
 
-# V0
+# V0-2
 # IDEA : 257. Binary Tree Paths
 # time = O(n)
 # space = O(n)  # queue + path strings + res list
@@ -173,7 +172,7 @@ class Solution(object):
         if root.left == root.right: return val
         return self.sumRootToLeaf(root.left, val) + self.sumRootToLeaf(root.right, val)
 
-# V1
+# V1'
 # IDEA : DFS
 # https://leetcode.com/problems/sum-of-root-to-leaf-binary-numbers/discuss/366183/Python-DFS
 # time = O(n)
@@ -205,7 +204,7 @@ class Solution(object):
     def binaryStrToInt(self, string):
         return int(string,2)
 
-# V1
+# V1''
 # IDEA :  Iterative Preorder Traversal.
 # https://leetcode.com/problems/sum-of-root-to-leaf-binary-numbers/solution/
 # time = O(n)
@@ -228,7 +227,7 @@ class Solution:
                         
         return root_to_leaf
 
-# V1
+# V1'''
 # IDEA : Recursive Preorder Traversal.
 # https://leetcode.com/problems/sum-of-root-to-leaf-binary-numbers/solution/
 # time = O(n)
@@ -250,7 +249,7 @@ class Solution:
         preorder(root, 0)
         return root_to_leaf
 
-# V1
+# V1''''
 # IDEA : Morris Preorder Traversal.
 # https://leetcode.com/problems/sum-of-root-to-leaf-binary-numbers/solution/
 # time = O(n)

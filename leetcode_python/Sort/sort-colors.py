@@ -1,4 +1,5 @@
 """
+
 75. Sort Colors
 Medium
 
@@ -67,7 +68,7 @@ class Solution:
                 index += 1
         return A 
 
-# V0'
+# V0-1
 # IDEA : BUBBLE SORT
 # time = O(n^2)
 # space = O(1)
@@ -81,7 +82,7 @@ class Solution:
                     A[i], A[j] = A[j], A[i]
         return A
 
-# V0'' (may not validated)
+# V0-2 (may not validated)
 # time = O(n log n)
 # space = O(n)
 class Solution:
@@ -158,7 +159,7 @@ class Solution:
                 end -= 1
         return start
 
-# V1''
+# V1'''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79392195
 # time = O(n)
 # space = O(n)

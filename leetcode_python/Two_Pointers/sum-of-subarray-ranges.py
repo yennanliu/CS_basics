@@ -96,7 +96,7 @@ class Solution(object):
         return ans
 
 
-# V0-0-1
+# V0-2
 # IDEA: MONO STACK (gpt)
 """
 CORE IDEA:
@@ -270,7 +270,7 @@ class Solution:
 
 
 
-# V0-1
+# V0-3
 # IDEA: MONO STACK (gpt)
 # time = O(n)
 # space = O(n)
@@ -404,7 +404,7 @@ class Solution:
 
 
 
-# V0-2
+# V0-4
 # IDEA: MONO STACK (gemini)
 # time = O(n)
 # space = O(n)
@@ -496,7 +496,7 @@ class Solution(object):
 
 
 
-# V0
+# V0-5
 # IDEA : BRUTE FORCE
 # time = O(n^2)
 # space = O(1)
@@ -514,7 +514,7 @@ class Solution:
                 res += curMax - curMin
         return res
 
-# V0'
+# V0-6
 # IDEA : monotonic stack
 # https://zhuanlan.zhihu.com/p/444725220
 # time = O(n)
@@ -535,7 +535,7 @@ class Solution:
             s.append(i)
         return res 
 
-# V0''
+# V0-7
 # IDEA : INCREASING STACK
 # time = O(n)
 # space = O(n)
@@ -712,7 +712,7 @@ class Solution:
         
         return res
 
-# V1'''''''
+# V1''''''
 # IDEA : DP
 # https://leetcode.com/problems/sum-of-subarray-ranges/discuss/1624305/Python-DP-Solution
 # time = O(n^2)

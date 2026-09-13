@@ -74,7 +74,7 @@ class Solution(object):
 
         return max_len
 
-# V0 
+# V0-1
 # time complexity : O(N) | space complexity : O(N)
 # IDEA : HASH TBALE
 # -> have a var acc keep sum of all item in nums,
@@ -121,7 +121,7 @@ class Solution:
         return ans
 
 
-# V0'
+# V0-2
 # IDEA : BRUTE FORCE 
 # time complexity : O(N^2) | space complexity : O(N)
 # time = O(n^2)
@@ -218,7 +218,7 @@ class Solution:
                 m[sum[i] + k] = i
         return ans
         
-# V2 
+# V2'
 # time = O(n)
 # space = O(n)
 class Solution(object):

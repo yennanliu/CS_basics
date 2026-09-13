@@ -1,5 +1,8 @@
 """
 
+1102. Path With Maximum Minimum Value
+Medium
+
 # https://www.cnblogs.com/Dylan-Java-NYC/p/11297106.html
 # https://www.cnblogs.com/rookielet/p/11146393.html
 
@@ -35,7 +38,6 @@ Note:
 
 1 <= R, C <= 100
 0 <= A[i][j] <= 10^9
-
 
 """
 
@@ -89,7 +91,7 @@ class Solution(object):
         else:
             return dp[i][j]
 
-# V1'
+# V1'''
 # IDEA : DP
 # https://leetcode.com/discuss/interview-question/383669/Amazon-or-OAA-2019-or-Max-Min-Path-Value
 # time = O(m * n)
@@ -118,7 +120,7 @@ class Solution:
 
         print("ans: " + str(dp[N - 1][M - 1]))
 
-# V1''
+# V1''''
 # https://www.cnblogs.com/rookielet/p/11146393.html
 # https://www.codeprj.com/zh/blog/aa14991.html
 # C++
@@ -152,11 +154,11 @@ class Solution:
 #     }
 
 
-# V1'''
+# V1'''''
 # IDEA : SORT + UNION FIND
 # https://blog.csdn.net/fuxuemingzhu/article/details/101231938
 
-# V1''''
+# V1''''''
 # IDEA : PRIORITY QUEUE
 # https://blog.csdn.net/fuxuemingzhu/article/details/101231938
 

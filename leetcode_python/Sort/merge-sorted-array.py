@@ -89,7 +89,7 @@ class Solution(object):
             p -= 1
 
 
-# V0-0-1
+# V0-1
 # IDEA : 2 pointers
 ### NOTE : we need to merge the sorted arrat to nums1 with IN PLACE (CAN'T USE EXTRA CACHE)
 # -> SO WE START FROM RIGHT HAND SIDE (biggeest element) to LEFT HAND SIDE (smallest element)
@@ -113,7 +113,7 @@ class Solution(object):
         # if there're still elements in nums2, we just replace the ones in nums1[:q+1] with them (nums2[:q+1])
         nums1[:q+1] = nums2[:q+1]
 
-# V0'
+# V0-2
 # IDEA : 2 pointers + merge sort
 # https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/merge_sort.py
 # TRICK : START FROM BIGGEST -> SMALLEST
@@ -146,7 +146,7 @@ class Solution:
             pos-=1
             j-=1
 
-# V0''
+# V0-3
 # IDEA : 2 pointers
 # time = O(m + n)
 # space = O(1)
@@ -172,7 +172,7 @@ class Solution:
         if j >= 0:
             nums1[:j+1] = nums2[:j+1] 
 
-# V0'''
+# V0-4
 # IDEA : via sorted func (may not be accepted)
 # time = O((m+n) log(m+n))
 # space = O(m+n)
@@ -228,7 +228,7 @@ class Solution(object):
                 q = q-1
         nums1[:q+1] = nums2[:q+1]
 
-# V1'
+# V1''
 # https://www.jiuzhang.com/solution/merge-sorted-array/#tag-highlight-lang-python
 # time = O(m + n)
 # space = O(1)
@@ -264,7 +264,7 @@ class Solution:
             pos-=1
             j-=1
 
-# V1''
+# V1'''
 # https://blog.csdn.net/liuxiao214/article/details/77856326
 # time = O(m + n)
 # space = O(1)

@@ -42,7 +42,6 @@ queries[i].length == 2
 0 <= queries[i][0] <= limit
 1 <= queries[i][1] <= 10^9
 
-
 """
 
 # V0

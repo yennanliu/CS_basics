@@ -1,4 +1,5 @@
 """
+
 538. Convert BST to Greater Tree
 Medium
 
@@ -118,8 +119,8 @@ class Solution(object):
 
 
 
-# V0-0-1
-# V0
+# V0-1
+# V0-2
 # IDEA: BST PROPERTY + DFS (right -> root -> left) (GPT)
 # time = O(n)
 # space = O(h)
@@ -152,7 +153,7 @@ class Solution(object):
         self.helper(root.left)
 
 
-# V0
+# V0-3
 # IDEA : DFS + recursion
 #      -> NOTE : via DFS, the op will being executed in `INVERSE` order (last visit will be run first, then previous, then ...)
 #      -> e.g. node1 -> node2 -> ... nodeN
@@ -217,7 +218,7 @@ class Solution(object):
         self.dfs(node.left)
         #return node # this one is optional
 
-# V0'
+# V0-4
 # NOTE : the implementation difference on cur VS self.cur
 # 1) if cur : we need to ssign output of help() func to cur
 # 2) if self.cur : no need to assign, plz check V0 as reference
@@ -245,7 +246,7 @@ class Solution(object):
         help(cur, root)
         return root
 
-# V0''
+# V0-5
 # IDEA : BFS
 # time = O(n)
 # space = O(n), stack holds up to O(n) nodes in the worst (skewed) case

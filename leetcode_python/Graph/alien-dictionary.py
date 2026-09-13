@@ -264,7 +264,7 @@ class Solution(object):
         return "".join(res)
 
 
-# V1-1
+# V1
 # IDEA: TOPOLOGICAL SORT
 # https://leetcode.ca/2016-08-25-269-Alien-Dictionary/
 from collections import defaultdict, deque
@@ -320,7 +320,7 @@ class Solution:
 
 
 
-# V1-2
+# V1'
 # IDEA:
 # https://leetcode.ca/2016-08-25-269-Alien-Dictionary/
 
@@ -402,7 +402,7 @@ class Solution(object):
     return self.ans[::-1]
 
 
-# V1-3
+# V1''
 # IDEA:
 # https://leetcode.ca/2016-08-25-269-Alien-Dictionary/
 class Solution:
@@ -460,7 +460,7 @@ class Solution:
         return '' if len(ans) < cnt else ''.join(ans)
 
 
-# V1
+# V1'''
 # IDEA : BFS
 # https://leetcode.com/problems/alien-dictionary/solution/
 # time = O(n)  # n = total chars across all words
@@ -502,7 +502,7 @@ def alienOrder(self, words: List[str]) -> str:
     # Otherwise, convert the ordering we found into a string and return it.
     return "".join(output)
 
-# V1
+# V1''''
 # IDEA : DFS
 # https://leetcode.com/problems/alien-dictionary/solution/
 # time = O(n)  # n = total chars across all words
@@ -542,7 +542,7 @@ def alienOrder(self, words: List[str]) -> str:
 
     return "".join(output)
 
-# V1
+# V1'''''
 # https://blog.csdn.net/qq_37821701/article/details/108807236
 # IDEA : Topological sorting (official solution)
 # time = O(n)  # n = total chars across all words
@@ -601,7 +601,7 @@ class Solution:
         return "".join(ans)
 
 
-# V1''''
+# V1''''''
 # https://leetcode.jp/leetcode-269-alien-dictionary-%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF%E5%88%86%E6%9E%90/
 # JAVA
 # // 用于统计排在每种字母后面的所有字母
@@ -676,7 +676,7 @@ class Solution:
 # }
 
 
-# V1
+# V1'''''''
 # https://www.jiuzhang.com/solution/alien-dictionary/
 # IDEA : Topological sorting
 # time = O(n)  # n = total chars; heap over <=26 nodes is O(1) factor
@@ -727,7 +727,7 @@ class Solution:
                     heapq.heappush(q, ne)
         return ''.join(order) if len(order) == len(graph) else ''
 
-# V1'
+# V1''''''''
 # https://www.cnblogs.com/lightwindy/p/8531872.html
 # IDEA :BFS 
 # time = O(n)  # n = total chars across all words
@@ -787,7 +787,7 @@ class Solution(object):
 
 ### Test case : dev 
 
-# V1'
+# V1'''''''''
 # https://www.cnblogs.com/lightwindy/p/8531872.html
 # IDEA : DFS
 # time = O(n)  # n = total chars across all words
@@ -840,7 +840,7 @@ class Solution(object):
             return True
         return False
 
-# V1''
+# V1''''''''''
 # https://yao.page/posts/alien-dictionary-python/
 # time = O(n)  # n = total chars across all words
 # space = O(1)  # graph nodes/edges bounded by alphabet (<=26)
@@ -895,7 +895,7 @@ class Solution(object):
 
         return ''.join(res)
 
-# V1'''
+# V1'''''''''''
 # https://medium.com/@dimko1/alien-dictionary-6cf2da24bf3c
 # time = O(n)  # n = total chars across all words
 # space = O(1)  # graph nodes/edges bounded by alphabet (<=26)
@@ -922,12 +922,12 @@ class Solution(object):
                     charToProcess.add(b)
         return order * (set(order) == chars)
 
-# V1''''
+# V1''''''''''''
 # https://blog.csdn.net/a921122/article/details/60407972
 # IDEA : topology sort
 # IDEA : JAVA
 
-# V1'''''
+# V1'''''''''''''
 # https://www.jianshu.com/p/19b5459c53e2
 # IDEA : topology sort
 # IDEA : C++

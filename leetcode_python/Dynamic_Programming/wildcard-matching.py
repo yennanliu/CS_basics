@@ -2,9 +2,7 @@
 
 44. Wildcard Matching
 Hard
-Topics
-premium lock icon
-Companies
+
 Given an input string (s) and a pattern (p), implement wildcard pattern matching with support for '?' and '*' where:
 
 '?' Matches any single character.

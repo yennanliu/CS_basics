@@ -1,7 +1,7 @@
 """
 
 606. Construct String from Binary Tree
-Easy
+Medium
 
 Given the root of a binary tree, construct a string consisting of parenthesis and integers from a binary tree with the preorder traversal way, and return it.
 
@@ -72,7 +72,7 @@ class Solution(object):
         )
 
 
-# V0
+# V0-1
 # IDEA : recursive + tree + check problem examples
 #        -> if root.right and not root.left
 #        -> if root.left and not root.right
@@ -111,7 +111,7 @@ class Solution(object):
         res = dfs(root)
         return res
 
-# V0'
+# V0-2
 # IDEA : tree + check problem examples
 #        -> if root.right and not root.left
 #        -> if root.left and not root.right
@@ -138,7 +138,7 @@ class Solution(object):
         res = dfs(root)
         return res
 
-# V0''
+# V0-3
 # time = O(n)
 # space = O(h)
 class Solution:
@@ -156,7 +156,7 @@ class Solution:
         ### NOTICE HERE
         return str(t.val) + '(' + self.tree2str(t.left) + ')' + '(' + self.tree2str(t.right) + ')'
 
-# V0'''
+# V0-4
 # time = O(n)
 # space = O(h)
 class Solution:
@@ -175,7 +175,7 @@ class Solution:
             return str(root.val) + "()" + "(" + self.tree2str(root.right) + ")"
         #return str(root.val) + "(" + self.tree2str(root.left) + ")" +  "(" + self.tree2str(root.right) + ")"
 
-# V0'''''
+# V0-5
 # time = O(n)
 # space = O(h)
 class Solution(object):
@@ -188,7 +188,7 @@ class Solution(object):
             s += "(" + self.tree2str(t.right) + ")"
         return s
 
-# V0''''''
+# V0-6
 # time = O(n)
 # space = O(h)
 class Solution(object):
@@ -199,7 +199,7 @@ class Solution(object):
         if t.right: ans += '(' + self.tree2str(t.right) + ')'
         return ans
 
-# V0'''
+# V0-7
 # time = O(n)
 # space = O(h)
 class Solution(object):

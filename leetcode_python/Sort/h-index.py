@@ -1,5 +1,8 @@
 """
 
+274. H-Index
+Medium
+
 Given an array of integers citations where citations[i] is the number of citations a researcher received for their ith paper, return compute the researcher's h-index.
 
 According to the definition of h-index on Wikipedia: A scientist has an index h if h of their n papers have at least h citations each, and the other n − h papers have no more than h citations each.
@@ -39,7 +42,7 @@ class Solution(object):
                 return N - k
         return 0
 
-# V0'
+# V0-1
 # IDEA 
 # h-index = 1 : AT LEAST 0 essay with power 1 
 # h-index = 2 : AT LEAST 0 essay with power 2  
@@ -84,7 +87,7 @@ class Solution(object):
             sums += cnts[h]
         return 0
 
-# V1''
+# V1'
 # http://bookshadow.com/weblog/2015/09/03/leetcode-h-index/
 # time = O(n log n)
 # space = O(n)
@@ -99,7 +102,7 @@ class Solution(object):
                 return i
         return len(citations)
 
-# V1'''
+# V1''
 # http://bookshadow.com/weblog/2015/09/03/leetcode-h-index/
 # time = O(n log n)
 # space = O(n)
@@ -111,7 +114,7 @@ class Solution(object):
         """
         return sum(i < c for i, c in enumerate(sorted(citations, reverse = True)))
 
-# V1''''
+# V1'''
 # http://bookshadow.com/weblog/2015/09/03/leetcode-h-index/
 # time = O(n log n)
 # space = O(n)
@@ -127,7 +130,7 @@ class Solution(object):
                 return N - i
         return 0
 
-# V1'''''
+# V1''''
 # http://bookshadow.com/weblog/2015/09/03/leetcode-h-index/
 # time = O(n log n)
 # space = O(n)

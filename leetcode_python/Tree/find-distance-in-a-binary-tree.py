@@ -4,6 +4,8 @@
 """
 
 1740. Find Distance in a Binary Tree
+Medium
+
 Given the root of a binary tree and two integers p and q, return the distance between the nodes of value p and value q in the tree.
 
 The distance between two nodes is the number of edges on the path from one to the other.
@@ -46,7 +48,6 @@ Problem Solution
 1740-Find-Distance-in-a-Binary-Tree
 All Problems:
 Link to All Problems
-
 
 """
 
@@ -227,7 +228,7 @@ class Solution:
         return -1
 
 
-# V0
+# V0-2
 # time = O(n), LCA search + two distance searches, each O(n)
 # space = O(h), recursion stack
 class Solution:
@@ -311,7 +312,7 @@ class Solution:
         # Otherwise, return whatever the right subtree found (either a valid distance or -1)
         return right
 
-# V1-1
+# V1
 # IDEA: LCA + get_dist + DFS (gpt)
 # time = O(n)
 # space = O(h)
@@ -363,7 +364,7 @@ class Solution:
         return self.get_dist(root.right, target, dist + 1)
 
 
-# V1-2
+# V1'
 # IDEA: LCA + get_dist + DFS (GEMINI)
 # time = O(n)
 # space = O(h)
@@ -420,7 +421,7 @@ class Solution(object):
 
 
 
-# V2-1
+# V2
 # https://leetcode.ca/2021-03-23-1740-Find-Distance-in-a-Binary-Tree/
 # time = O(n)
 # space = O(h)
@@ -453,7 +454,7 @@ class Solution:
 
 
 
-# V2-2
+# V2'
 # https://leetcode.ca/2021-03-23-1740-Find-Distance-in-a-Binary-Tree/
 # time = O(n)
 # space = O(h)

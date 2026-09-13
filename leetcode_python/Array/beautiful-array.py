@@ -1,11 +1,8 @@
 """
 
 932. Beautiful Array
-Solved
 Medium
-Topics
-premium lock icon
-Companies
+
 An array nums of length n is beautiful if:
 
 nums is a permutation of the integers in the range [1, n].
@@ -28,12 +25,11 @@ Constraints:
 
 1 <= n <= 1000
 
-
 """
 
 
 
-# V0-1
+# V0
 # IDEA: Divide-and-Conquer (gpt)
 # time = O(n)
 # space = O(n)
@@ -99,7 +95,7 @@ class Solution(object):
 
 
 
-# V0-2
+# V0-1
 # IDEA: Divide-and-Conquer (GEMINI)
 # time = O(n log n)
 # space = O(n)

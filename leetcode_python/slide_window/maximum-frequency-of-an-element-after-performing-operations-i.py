@@ -38,7 +38,6 @@ Constraints:
 0 <= k <= 10^5
 0 <= numOperations <= nums.length
 
-
 """
 
 # V0

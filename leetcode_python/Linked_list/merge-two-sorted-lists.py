@@ -1,5 +1,8 @@
 """
 
+21. Merge Two Sorted Lists
+Easy
+
 Merge two sorted linked lists and return it as a sorted list. 
 The list should be made by splicing together the nodes of the first two lists.
 
@@ -112,7 +115,7 @@ class Solution(object):
         return dummy.next
 
 
-# V0
+# V0-2
 # IDEA : LOOP 2 LINKED LISTS
 # time = O(m + n)
 # space = O(1)
@@ -149,7 +152,7 @@ class Solution(object):
         ### NOTICE THIS : we return head.next
         return head.next
 
-# V0'
+# V0-3
 # IDEA : LOOP 2 LINKED LISTS
 # time = O(m + n)
 # space = O(1)
@@ -173,7 +176,7 @@ class Solution(object):
         #print ("head = " + str(head))
         return res.next
 
-# V0''
+# V0-4
 # IDEA : RECURSION
 # time = O(m + n)
 # space = O(m + n)
@@ -260,7 +263,7 @@ class Solution(object):
             l2.next = self.mergeTwoLists(l1, l2.next)
             return l2
 
-# V1''
+# V1'''
 # https://www.jiuzhang.com/solution/merge-two-sorted-lists/#tag-highlight-lang-python
 # IDEA : TWO POINTERS
 # time = O(m + n)
@@ -283,7 +286,7 @@ class Solution(object):
             tmp.next = l2
         return dummy.next
 
-# V1 
+# V1''''
 class ListNode(object):
     def __init__(self, x):
         self.val = x

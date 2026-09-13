@@ -333,7 +333,7 @@ class Solution:
 #     }
 # }
 
-# V1''''''
+# V1'''''''
 # IDEA : Using Memoization
 # https://leetcode.com/problems/frog-jump/solution/
 # JAVA
@@ -363,7 +363,7 @@ class Solution:
 #     }
 # }
 
-# V1'''''''
+# V1''''''''
 # IDEA : Using Memoization with Binary Search
 # https://leetcode.com/problems/frog-jump/solution/
 # JAVA

@@ -85,7 +85,7 @@ class Solution:
         recur(s,[])
         return out
 
-# V1
+# V1'
 # IDEA : BACKTRCK
 # https://leetcode.com/problems/word-break-ii/discuss/44404/Python-backtracking
 # time = O(n * 2^n)
@@ -116,7 +116,7 @@ class Solution:
                 stack.append([parent]+r)
         return res
 
-# V1
+# V1''
 # IDEA : BACKTRACK
 # time = O(n * 2^n)
 # space = O(n * 2^n)
@@ -138,7 +138,7 @@ class Solution:
         match(0)
         return result
 
-# V1
+# V1'''
 # IDEA : DFS
 # https://leetcode.com/problems/word-break-ii/discuss/222797/Python-solution
 # time = O(n * 2^n)
@@ -170,7 +170,7 @@ class Solution(object):
         wordSet = set(wordDict)
         return dfs(0)
 
-# V1
+# V1''''
 # IDEA : Top-Down Dynamic Programming
 # https://leetcode.com/problems/word-break-ii/solution/
 # time = O(n * 2^n)
@@ -206,7 +206,7 @@ class Solution:
         # chain up the lists of words into sentences.
         return [" ".join(words) for words in memo[s]]
 
-# V1
+# V1'''''
 # IDEA : Bottom-Up Dynamic Programming
 # https://leetcode.com/problems/word-break-ii/solution/
 # time = O(n * 2^n)
@@ -236,7 +236,7 @@ class Solution:
 
         return dp[len(s)]
 
-# V1
+# V1''''''
 # https://leetcode.com/problems/word-break-ii/solution/
 # time = O(n * 2^n)
 # space = O(n * 2^n)
@@ -273,7 +273,7 @@ class Solution:
             ret.append(" ".join(words))
         return ret
 
-# V1
+# V1'''''''
 # https://leetcode.com/problems/word-break-ii/solution/
 # time = O(n * 2^n)
 # space = O(n * 2^n)

@@ -32,7 +32,6 @@ The number of nodes in the list is sz.
 
 Follow up: Could you do this in one pass?
 
-
 """
 
 
@@ -75,7 +74,7 @@ class Solution(object):
         return dummy.next
 
 
-# V0
+# V0-1
 # IDEA: Move fast pointer n+1 steps ahead
 # time = O(n)
 # space = O(1)
@@ -103,7 +102,7 @@ class Solution(object):
         return dummy.next
 
 
-# V0
+# V0-2
 # IDEA : FAST-SLOW POINTERS (One pass algorithm)
 # Video : https://leetcode.com/problems/remove-nth-node-from-end-of-list/
 #
@@ -325,7 +324,7 @@ class Solution(object):
         getIndex(head)
         return head.next
 
-# V1''''''''' 
+# V1''''''''''
 # https://blog.csdn.net/coder_orz/article/details/51691267
 # time = O(n)
 # space = O(n)  # recursion stack
@@ -340,7 +339,7 @@ class Solution(object):
         ind, new_head = remove(head)
         return new_head
 
-# V1'''''''''
+# V1'''''''''''
 class ListNode:
     def __init__(self, x):
         self.val = x

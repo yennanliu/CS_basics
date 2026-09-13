@@ -1,12 +1,10 @@
 # https://leetcode.com/problems/count-nodes-with-the-highest-score/description/
 
 """
+
 2049. Count Nodes With the Highest Score
 Medium
-Topics
-premium lock icon
-Companies
-Hint
+
 There is a binary tree rooted at 0 consisting of n nodes. The nodes are labeled from 0 to n - 1. You are given a 0-indexed integer array parents representing the tree, where parents[i] is the parent of node i. Since node 0 is the root, parents[0] == -1.
 
 Each node has a score. To find the score of a node, consider if the node and the edges connected to it were removed. The tree would become one or more non-empty subtrees. The size of a subtree is the number of the nodes in it. The score of the node is the product of the sizes of all those subtrees.
@@ -57,7 +55,7 @@ parents represents a valid binary tree.
 #         :rtype: int
 #         """
 
-# V1-1
+# V1
 # IDEA: DFS (gpt)
 """
 
@@ -315,7 +313,7 @@ class Solution(object):
 
 
 
-# V1-2
+# V1'
 # IDEA: DFS (gemini)
 # time = O(n)  # n = number of nodes; one DFS to compute sizes + one linear scan
 # space = O(n)  # adjacency list + subtree_size array + recursion depth
@@ -376,7 +374,7 @@ class Solution(object):
         return max_score_count
 
 
-# V1-3
+# V1''
 # IDEA: TREE DP (gemini)
 # time = O(n)  # n = number of nodes; single post-order DFS
 # space = O(n)  # adjacency list + recursion depth

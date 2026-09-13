@@ -1,7 +1,7 @@
 """
 
 3248. Snake in Matrix
-Medium
+Easy
 
 There is a snake in an n x n matrix grid and can move in four possible directions. Each cell in the grid is identified by the position: grid[i][j] = (i * n) + j.
 

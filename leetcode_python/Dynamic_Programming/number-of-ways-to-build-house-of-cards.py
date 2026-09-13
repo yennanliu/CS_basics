@@ -2,6 +2,7 @@
 
 2189. Number of Ways to Build House of Cards
 Medium
+
 (premium / locked problem)
 
 You are given an integer n representing the number of playing cards you have. A house of cards meets the following conditions:

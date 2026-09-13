@@ -272,7 +272,7 @@ class Solution:
             prefix[mask] += 1
         return ans
 
-# V1''''''''
+# V1'''''''
 # IDEA : prefix sum (TLE)
 # https://leetcode.com/problems/number-of-wonderful-substrings/discuss/1412294/Python-or-Prefix-Sum-No-Bit-Vector-or-Slow-but-easy-to-understand
 # time = O(n)

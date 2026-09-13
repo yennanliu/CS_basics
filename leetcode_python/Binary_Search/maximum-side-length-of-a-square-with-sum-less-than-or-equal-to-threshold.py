@@ -3,12 +3,8 @@
 """
 
 1292. Maximum Side Length of a Square with Sum Less than or Equal to Threshold
-Solved
 Medium
-Topics
-premium lock icon
-Companies
-Hint
+
 Given a m x n matrix mat and an integer threshold, return the maximum side-length of a square with a sum less than or equal to threshold or return 0 if there is no such square.
 
  
@@ -34,7 +30,6 @@ n == mat[i].length
 0 <= threshold <= 105
  
 
-
 """
 
 
@@ -51,9 +46,9 @@ class Solution(object):
         pass
 
 
-# V0
+# V0-1
 
-# V1-1
+# V1
 # IDEA: PREFIX + BINARY SEARCH (gpt)
 """
 NOTE !!!
@@ -157,7 +152,7 @@ class Solution(object):
         return left
 
 
-# V1-2
+# V1'
 # IDEA: PREFIX + BINARY SEARCH (gpt)
 # time = O(m*n)
 # space = O(m*n)
@@ -206,7 +201,7 @@ class Solution(object):
         return max_len
 
 
-# V2-1
+# V2
 # IDEA: BINARY SEARCH
 # https://leetcode.com/problems/maximum-side-length-of-a-square-with-sum-less-than-or-equal-to-threshold/editorial/
 # time = O(m*n*log(min(m,n)))
@@ -245,7 +240,7 @@ class Solution:
 
 
 
-# V2-2
+# V2'
 # IDEA: Enumeration + Optimization
 # https://leetcode.com/problems/maximum-side-length-of-a-square-with-sum-less-than-or-equal-to-threshold/editorial/
 # time = O(m*n*min(m,n))

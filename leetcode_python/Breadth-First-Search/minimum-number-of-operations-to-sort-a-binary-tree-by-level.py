@@ -47,7 +47,6 @@ The number of nodes in the tree is in the range [1, 10^5].
 1 <= Node.val <= 10^5
 All the values of the tree are unique.
 
-
 """
 
 # V0

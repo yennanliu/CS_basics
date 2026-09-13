@@ -96,7 +96,7 @@ class Solution(object):
         self.path_map[prefix] -= 1
 
 
-# V0-0-1
+# V0-1
 # IDEA: DFS (tree -> graph (downward ONLY)) + BFS (get path) (gpt)
 from collections import defaultdict, deque
 
@@ -159,7 +159,7 @@ class Solution(object):
 
 
 
-# V0-0-2
+# V0-2
 # IDEA 1) dfs (pre-order) + prefix + hashmap + backtrack (GPT)
 # time = O(n)
 # space = O(h), h is height of binary tree (hashmap entries bounded by active path due to backtrack)
@@ -216,7 +216,7 @@ class Solution(object):
         self.cur_sum -= root.val
 
 
-# V0-0-0-1
+# V0-3
 # IDEA 1) dfs (pre-order) + prefix + hashmap + backtrack (GPT)
 # time = O(n)
 # space = O(h), h is height of binary tree (hashmap entries bounded by active path due to backtrack)
@@ -267,7 +267,7 @@ class Solution(object):
         prefix[cur_sum] -= 1
 
 
-# V0-0-2
+# V0-4
 # IDEA 1) dfs (pre-order) + prefix + hashmap + backtrack (gpt)
 # time = O(n)
 # space = O(h), h is height of binary tree (hashmap entries bounded by active path due to backtrack)
@@ -318,7 +318,7 @@ class Solution(object):
         self.path_map[prefix] -= 1
 
 
-# V0-1
+# V0-5
 # IDEA 1) dfs (pre-order) + prefix + hashmap + backtrack (GEMINI)
 # time = O(n)
 # space = O(h), h is height of binary tree (hashmap entries bounded by active path due to backtrack)
@@ -360,7 +360,7 @@ class Solution(object):
         self.path_map[prefix] -= 1
 
 
-# V0
+# V0-6
 # IDEA : BFS + DFS 
 # => USE BFS FIND EVERY NODE IN THE TREE, AND USE DFS GET THR PATH SUM ON EVERY NODE (FOUND BY BFS)
 # time = O(n^2), BFS visits every node, DFS from each node is O(n) worst case

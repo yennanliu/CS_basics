@@ -3,7 +3,6 @@
 165. Compare Version Numbers
 Medium
 
-
 Given two version numbers, version1 and version2, compare them.
 
 Version numbers consist of one or more revisions joined by a dot '.'. Each revision consists of digits and may contain leading zeros. Every revision contains at least one character. Revisions are 0-indexed from left to right, with the leftmost revision being revision 0, the next revision being revision 1, and so on. For example 2.5.33 and 0.1 are valid version numbers.
@@ -78,7 +77,7 @@ class Solution(object):
                     return -1
         return 0
 
-# V0'
+# V0-1
 # IDEA : STRING
 # time = O(n)
 # space = O(n)
@@ -141,7 +140,7 @@ assert s.compareVersion("0.0.1", "0") == 1
 assert s.compareVersion("0.1", "0.2") == -1
 
 
-# V1
+# V1'
 # IDEA : Split + Parse, Two Pass
 # https://leetcode.com/problems/compare-version-numbers/solution/
 # time = O(n)
@@ -162,7 +161,7 @@ class Solution:
         # the versions are equal
         return 0 
 
-# V1
+# V1''
 # IDEA : Two Pointers, One Pass
 # https://leetcode.com/problems/compare-version-numbers/solution/
 # time = O(n)

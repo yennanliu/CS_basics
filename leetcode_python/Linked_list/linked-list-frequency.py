@@ -1,7 +1,8 @@
 """
 
 3063. Linked List Frequency
-Medium
+Easy
+
 🔒 (premium)
 
 Given the head of a linked list containing k distinct elements, return the head to a linked list of length k containing the frequency of each distinct element in the given linked list in any order.

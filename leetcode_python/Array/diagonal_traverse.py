@@ -3,10 +3,6 @@
 498. Diagonal Traverse
 Medium
 
-
-Add to List
-
-Share
 Given an m x n matrix mat, return an array of all the elements of the array in a diagonal order.
 
 
@@ -28,7 +24,6 @@ n == mat[i].length
 1 <= m, n <= 104
 1 <= m * n <= 104
 -105 <= mat[i][j] <= 105
-
 
 """
 
@@ -65,7 +60,7 @@ class Solution(object):
             count += 1
         return res
 
-# V0'
+# V0-1
 # IDEA : Diagonal Iteration and Reversal
 # NOTE !!! : for "odd" diagoal traversal, we just need to go over it and REVERSE it before append tp res
 # time = O(m*n)
@@ -170,7 +165,7 @@ class Solution:
                 result.extend(intermediate)
         return result        
 
-# V1
+# V1'
 # IDEA : Simulation
 # https://leetcode.com/problems/diagonal-traverse/solution/
 # time = O(m*n)
@@ -245,7 +240,7 @@ class Solution:
                         
         return result
 
-# V1'
+# V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/82528226
 # time = O(m*n)
 # space = O(m*n)
@@ -280,7 +275,7 @@ class Solution(object):
             count += 1
         return res
 
-# V1''
+# V1'''
 # http://bookshadow.com/weblog/2017/02/05/leetcode-diagonal-traverse/
 # time = O(m*n)
 # space = O(m*n)

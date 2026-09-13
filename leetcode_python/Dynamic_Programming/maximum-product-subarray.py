@@ -96,7 +96,7 @@ class Solution(object):
         return global_max
 
 
-# V0-0-1
+# V0-1
 # Kadane algo
 """
 
@@ -157,7 +157,7 @@ class Solution(object):
         return global_max
 
 
-# V0-1
+# V0-2
 # Kadane algo
 """
 
@@ -224,7 +224,7 @@ class Solution(object):
         return global_max
 
 
-# V0
+# V0-3
 # IDEA : brute force + product
 """
 
@@ -461,7 +461,7 @@ class Solution(object):
             ans = max(ans, max_prod)
         return ans
 
-# V1'''''
+# V1''''
 # https://blog.csdn.net/XX_123_1_RJ/article/details/81321978
 # idea
 # dpmax[i] = max(nums[i], dpmax[i - 1] * nums[i], dpmin[i - 1] * nums[i])  # record the maximum

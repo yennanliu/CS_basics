@@ -3,11 +3,8 @@
 """
 
 984. String Without AAA or BBB
-Solved
 Medium
-Topics
-premium lock icon
-Companies
+
 Given two integers a and b, return any string s such that:
 
 s has length a + b and contains exactly a 'a' letters, and exactly b 'b' letters,
@@ -31,7 +28,6 @@ Constraints:
 0 <= a, b <= 100
 It is guaranteed such an s exists for the given a and b.
 
-
 """
 
 # V0
@@ -42,7 +38,7 @@ class Solution(object):
     	pass
 
 
-# V1-1
+# V1
 # IDEA: GREEDY (GPT)
 # time = O(n)   # n = a + b
 # space = O(n)
@@ -86,7 +82,7 @@ class Solution(object):
 
 
 
-# V1-2
+# V1'
 # IDEA: GREEDY (GPT)
 # time = O(n)   # n = a + b
 # space = O(n)

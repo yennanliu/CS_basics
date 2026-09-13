@@ -1,4 +1,8 @@
 """
+
+6. Zigzag Conversion
+Medium
+
 The string "PAYPALISHIRING" is written in a zigzag pattern on a given number of rows like this: (you may want to display this pattern in a fixed font for better legibility)
 
 P   A   H   N
@@ -23,6 +27,7 @@ P     I    N
 A   L S  I G
 Y A   H R
 P     I
+
 """
 
 # V0 

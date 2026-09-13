@@ -100,7 +100,7 @@ class Solution(object):
         return -1
 
 
-# V0-0-1
+# V0-1
 class Solution(object):
     def search(self, nums, target):
         """
@@ -142,7 +142,7 @@ class Solution(object):
         return -1
 
 
-# V0-1
+# V0-2
 # IDEA : BINARY SEARCH
 # CHECK IF MID is in left, or right part
 # time = O(log n)
@@ -185,7 +185,7 @@ class Solution(object):
         # CRITICAL FIX: Return -1 outside the loop if target is never encountered
         return -1
 
-# V0
+# V0-3
 # IDEA : BINARY SEARCH
 #        -> CHECK WHICH PART IS ORDERING
 #        -> CHECK IF TARGET IS IN WHICH PART
@@ -231,7 +231,7 @@ class Solution(object):
                     left = mid + 1
         return -1     
 
-# V0'
+# V0-4
 # IDEA : BINARY SEARCH
 # time = O(log n)
 # space = O(1)
@@ -369,7 +369,7 @@ class Solution(object):
                     left = mid + 1
         return -1     
 
-# V1''''
+# V1'''
 # https://www.jiuzhang.com/solution/search-in-rotated-sorted-array/#tag-highlight-lang-python
 # time = O(log n)
 # space = O(1)

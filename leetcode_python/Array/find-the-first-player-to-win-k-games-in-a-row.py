@@ -1,6 +1,6 @@
 """
 
-3175. Find The First Player To Win K Games in a Row
+3175. Find The First Player to win K Games in a Row
 Medium
 
 A competition consists of n players numbered from 0 to n - 1.

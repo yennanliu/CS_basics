@@ -2,6 +2,7 @@
 
 2123. Minimum Operations to Remove Adjacent Ones in Matrix
 Hard
+
 (premium / locked problem)
 
 You are given a 0-indexed binary matrix grid. In one operation, you can flip any 1 in grid to be 0.

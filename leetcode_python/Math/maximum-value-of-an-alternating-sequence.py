@@ -3,11 +3,8 @@
 """
 
 3993. Maximum Value of an Alternating Sequence
-Solved
 Medium
-premium lock icon
-Companies
-Hint
+
 You are given three integers n, s, and m.
 
 A sequence seq of integers of length n is considered valid if:

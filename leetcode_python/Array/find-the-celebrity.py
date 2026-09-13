@@ -65,7 +65,7 @@ class Solution:
                 return False
         return True
 
-# V0'
+# V0-1
 # time = O(n)
 # space = O(1)
 class Solution:
@@ -106,7 +106,7 @@ class Solution:
                 return False
         return True
 
-# V1
+# V1'
 # IDEA : Logical Deduction
 # https://leetcode.com/problems/find-the-celebrity/solution/
 # time = O(n)
@@ -129,7 +129,7 @@ class Solution:
                 return False
         return True
 
-# V1
+# V1''
 # IDEA :  Logical Deduction with Caching
 # https://leetcode.com/problems/find-the-celebrity/solution/
 # time = O(n)
@@ -159,7 +159,7 @@ class Solution:
                 return False
         return True
 
-# V1 
+# V1'''
 # https://www.jiuzhang.com/solution/find-the-celebrity/#tag-highlight-lang-python
 # IDEA :
 # AS A CELEBRITY, HE/SHE MOST KNOW NO ONE IN THE GROUP

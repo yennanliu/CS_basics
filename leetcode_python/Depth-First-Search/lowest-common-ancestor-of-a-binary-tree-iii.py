@@ -97,7 +97,7 @@ class Solution(object):
         return None
 
 
-# V0
+# V0-3
 # IDEA : HASH MAP
 # time = O(n)
 # space = O(n)
@@ -121,7 +121,7 @@ class Solution:
             if key in dic2:
                 return dic1[key]
 
-# V0'
+# V0-4
 # IDEA : recursive
 # time = O(n)
 # space = O(1)
@@ -133,7 +133,7 @@ class Solution:
             b = b.parent if b else p
         return a
 
-# V0''
+# V0-5
 # IDEA : set
 # time = O(n)
 # space = O(n)
@@ -184,7 +184,7 @@ class Solution:
         
         return dic
 
-# V1
+# V1'
 # IDEA : recursive
 # https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iii/discuss/1159063/Three-python-solutions
 # time = O(n)
@@ -197,7 +197,7 @@ class Solution:
             b = b.parent if b else p
         return a
 
-# V1
+# V1''
 # IDEA : set
 # https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iii/discuss/1159063/Three-python-solutions
 # time = O(n)
@@ -213,7 +213,7 @@ class Solution:
                 return q
             q = q.parent
 
-# V1
+# V1'''
 # https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iii/discuss/1159063/Three-python-solutions
 # time = O(n)
 # space = O(1)
@@ -225,7 +225,7 @@ class Solution:
             q = q.parent
         return q
 
-# V1
+# V1''''
 # https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iii/discuss/2002710/Python
 # time = O(n)
 # space = O(n)
@@ -242,7 +242,7 @@ class Solution:
                 return q
             q = q.parent
 
-# V1
+# V1'''''
 # https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iii/discuss/933696/Simple-Python-Solution-using-Recursion-%2B-Set()
 # time = O(n)
 # space = O(n)
@@ -257,7 +257,7 @@ class Solution(object):
             
         return traverse_up(p) or traverse_up(q)
 
-# V1
+# V1''''''
 # https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iii/discuss/979616/Python-iterative-solution
 # time = O(n)
 # space = O(n)
@@ -271,7 +271,7 @@ class Solution:
             q = q.parent 
         return q
 
-# V1
+# V1'''''''
 # https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iii/discuss/951584/Python%3A-Simple-Python-with-set-lookup
 # time = O(n)
 # space = O(n)

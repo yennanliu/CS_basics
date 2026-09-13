@@ -1,5 +1,8 @@
 """
 
+811. Subdomain Visit Count
+Medium
+
 A website domain like "discuss.leetcode.com" consists of various subdomains. 
 At the top level, we have "com", at the next level, we have "leetcode.com", 
 and at the lowest level, "discuss.leetcode.com". 
@@ -57,7 +60,7 @@ class Solution(object):
         #return r
         return [str(v) + ' ' + k for k,v in r.items()]
  
-# V0'
+# V0-1
 # IDEA : DEFAULT DICT
 # time = O(n)  # n = total chars across counts
 # space = O(n)

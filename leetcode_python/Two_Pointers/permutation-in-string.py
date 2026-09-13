@@ -3,7 +3,6 @@
 567. Permutation in String
 Medium
 
-Share
 Given two strings s1 and s2, return true if s2 contains a permutation of s1, or false otherwise.
 
 In other words, return true if one of s1's permutations is the substring of s2.
@@ -89,7 +88,7 @@ class Solution(object):
         return False
 
 
-# V0-0-1
+# V0-1
 # IDEA: HASHMAP + SLIDE WINDOW
 from collections import Counter
 
@@ -132,7 +131,7 @@ class Solution(object):
         return False
 
 
-# V0-1
+# V0-2
 # IDEA: HASHMAP + SLIDE WINDOW
 from collections import Counter
 
@@ -181,7 +180,7 @@ class Solution(object):
         return False
 
 
-# V0-2
+# V0-3
 # IDEA: SLIDE WINDOW + counter (gemini)
 from collections import Counter
 
@@ -231,7 +230,7 @@ class Solution(object):
         return False
 
 
-# V0
+# V0-4
 # IDEA : SORTRD + ARRAY INDEX
 # time = O((n2 - n1) * n1 * log(n1))
 # space = O(n1)
@@ -258,7 +257,7 @@ class Solution(object):
         return False
 
 
-# V0-1
+# V0-5
 # IDEA :  sliding window + HASHMAP
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/TwoPointer/PermutationInString.java#L48
 # time = O((n2 - n1) * n1)
@@ -293,7 +292,7 @@ class Solution(object):
         return False
 
 
-# V0-2
+# V0-6
 # IDEA :  sliding window
 # time = O(n1 + n2)
 # space = O(1)
@@ -323,7 +322,7 @@ class Solution(object):
 
         return False
 
-# V0-3
+# V0-7
 # time = O((n2 - n1) * n1 * log(n1))
 # space = O(n1)
 class Solution(object):
@@ -351,7 +350,7 @@ class Solution(object):
         return False
 
 
-# V0
+# V0-8
 # IDEA : collections + sliding window
 # time = O(n1 + n2)
 # space = O(1)
@@ -377,7 +376,7 @@ class Solution(object):
                 l += 1
         return False
 
-# V0'
+# V0-9
 # IDEA : collections + sliding window
 # time = O(n1 + n2)
 # space = O(1)
@@ -402,7 +401,7 @@ class Solution(object):
             l += 1
         return False
 
-# V0
+# V0-10
 # IDEA : collections + sliding window
 # time = O(n1 + n2)
 # space = O(1)
@@ -511,7 +510,7 @@ class Solution(object):
                 p += 1
         return False
 
-# V1'
+# V1''
 # https://www.jiuzhang.com/solution/permutation-in-string/#tag-highlight-lang-python
 # time = O(n1 + n2)
 # space = O(1)

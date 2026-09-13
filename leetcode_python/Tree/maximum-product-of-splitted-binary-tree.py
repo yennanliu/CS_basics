@@ -70,7 +70,7 @@ class Solution(object):
         sum(root)
         return max(sum * (sums[-1] - sum) for sum in sums) % (10**9 + 7)
 
-# V1
+# V1'
 # IDEA : ONE PASS DFS
 # https://leetcode.com/problems/maximum-product-of-splitted-binary-tree/solution/
 # time = O(n)
@@ -93,7 +93,7 @@ class Solution(object):
             best = max(best, s * (total - s))   
         return best % (10 ** 9 + 7)
 
-# V1
+# V1''
 # IDEA : TWO PASS DFS
 # https://leetcode.com/problems/maximum-product-of-splitted-binary-tree/solution/
 # time = O(n)
@@ -124,7 +124,7 @@ class Solution(object):
         tree_total_sum = tree_sum(root)
         return maximum_product(root, tree_total_sum) % (10 ** 9 + 7)
 
-# V1
+# V1'''
 # IDEA : DFS
 # https://leetcode.com/problems/maximum-product-of-splitted-binary-tree/discuss/768608/Python-solution
 # time = O(n)
@@ -148,7 +148,7 @@ class Solution:
             max_prod = max(max_prod, (total_sum - summ) * summ)
         return max_prod % MOD
 
-# V1
+# V1''''
 # https://leetcode.com/problems/maximum-product-of-splitted-binary-tree/discuss/1040798/Python
 # time = O(n)
 # space = O(n)
@@ -173,7 +173,7 @@ class Solution(object):
         subtree(root)
         return self.res % (10**9 + 7)
 
-# V1
+# V1'''''
 # IDEA : Advanced Strategies for Dealing with 32-Bit Integers
 # https://leetcode.com/problems/maximum-product-of-splitted-binary-tree/solution/
 # JAVA

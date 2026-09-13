@@ -105,7 +105,7 @@ class Solution(object):
         return max(val1, val2)
 
 
-# V0
+# V0-1
 # IDEA 1) 1D DP (2 DP)
 """
 
@@ -201,7 +201,7 @@ class Solution(object):
         return max(dp1[n - 2], dp2[n - 1])
 
 
-# V0-1
+# V0-2
 # IDEA: 1D DP
 """
 
@@ -472,7 +472,7 @@ class Solution:
 
         return t1
 
-# V1'''''
+# V1''''
 # IDEA : DP
 """
 

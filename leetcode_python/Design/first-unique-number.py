@@ -1,6 +1,7 @@
 """
 
 1429. First Unique Number
+Medium
 
 # https://leetcode.ca/all/1429.html
 
@@ -67,7 +68,6 @@ Constraints:
 1 <= nums[i] <= 10^8
 1 <= value <= 10^8
 At most 50000 calls will be made to showFirstUnique and add.
-
 
 """
 

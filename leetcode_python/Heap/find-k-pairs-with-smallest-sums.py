@@ -1,11 +1,8 @@
 """
 
 373. Find K Pairs with Smallest Sums
-Solved
 Medium
-Topics
-premium lock icon
-Companies
+
 You are given two integer arrays nums1 and nums2 sorted in non-decreasing order and an integer k.
 
 Define a pair (u, v) which consists of one element from the first array and one element from the second array.
@@ -34,7 +31,6 @@ nums1 and nums2 both are sorted in non-decreasing order.
 1 <= k <= 104
 k <= nums1.length * nums2.length
  
-
 
 """
 
@@ -116,7 +112,7 @@ class Solution(object):
         return ans
 
 
-# V0-0-1
+# V0-1
 # IDEA: HEAP (gpt)
 import heapq
 
@@ -215,7 +211,7 @@ class Solution(object):
 
 
 
-# V1-1
+# V1
 # IDEA: HEAP (gpt)
 import heapq
 class Solution(object):
@@ -263,7 +259,7 @@ class Solution(object):
 
 
 
-# V1-2
+# V1'
 # IDEA: HEAP (gemini)
 import heapq
 

@@ -3,12 +3,8 @@
 """
 
 3092. Most Frequent IDs
-Solved
 Medium
-Topics
-premium lock icon
-Companies
-Hint
+
 The problem involves tracking the frequency of IDs in a collection that changes over time. You have two integer arrays, nums and freq, of equal length n. Each element in nums represents an ID, and the corresponding element in freq indicates how many times that ID should be added to or removed from the collection at each step.
 
 Addition of IDs: If freq[i] is positive, it means freq[i] IDs with the value nums[i] are added to the collection at step i.
@@ -51,7 +47,6 @@ Constraints:
 -105 <= freq[i] <= 105
 freq[i] != 0
 The input is generated such that the occurrences of an ID will not be negative in any step.
-
 
 """
 

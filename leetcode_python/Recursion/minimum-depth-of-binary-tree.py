@@ -60,7 +60,7 @@ class Solution(object):
         #print ("res = " + str(res))
         return min(res)
 
-# V0'
+# V0-1
 # IDEA : DFS
 # compare with LC 104 : Maximum Depth of Binary Tree
 # time = O(n)
@@ -78,7 +78,7 @@ class Solution(object):
         else:
             return 1 + min(self.minDepth(root.left), self.minDepth(root.right))
 
-# V0''
+# V0-2
 # IDEA : BFS
 # time = O(n)
 # space = O(n)
@@ -119,7 +119,7 @@ class Solution(object):
         else:
             return 1 + min(self.minDepth(root.left), self.minDepth(root.right))
 
-# V1
+# V1'
 # http://bookshadow.com/weblog/2015/11/28/leetcode-minimum-depth-binary-tree/
 # IDEA : DFS
 # time = O(n)
@@ -138,7 +138,7 @@ class Solution(object):
             return min(left, right) + 1
         return max(left, right) + 1
 
-# V1'
+# V1''
 # http://bookshadow.com/weblog/2015/11/28/leetcode-minimum-depth-binary-tree/
 # IDEA : BFS
 # time = O(n)
@@ -158,7 +158,7 @@ class Solution(object):
                 if cur.right:
                     q.append([cur.right, step + 1])
 
-# V1''
+# V1'''
 # https://www.jiuzhang.com/solution/minimum-depth-of-binary-tree/#tag-highlight-lang-python
 """
 Definition of TreeNode:

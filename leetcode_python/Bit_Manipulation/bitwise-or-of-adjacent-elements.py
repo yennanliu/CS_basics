@@ -2,6 +2,7 @@
 
 3173. Bitwise OR of Adjacent Elements
 Easy
+
 🔒 (premium)
 
 Given an array nums of length n, return an array answer of length n - 1 such that answer[i] = nums[i] | nums[i + 1] where | is the bitwise OR operation.

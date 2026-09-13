@@ -50,7 +50,7 @@ class Solution(object):
 
         return res
 
-# V0
+# V0-1
 # IDEA: STACK
 # time = O(n)
 # space = O(n)
@@ -85,7 +85,7 @@ class Solution(object):
         return res
 
 
-# V0-1
+# V0-2
 # time = O(n)
 # space = O(n)
 class Solution(object):
@@ -110,7 +110,7 @@ class Solution(object):
         return res
 
 
-# V0
+# V0-3
 # IDEA : STACK
 # // https://www.bilibili.com/list/525438321?sort_field=pubtime&spm_id_from=333.999.0.0&oid=779764003&bvid=BV1my4y1Z7jj
 # time = O(n)
@@ -145,7 +145,7 @@ class Solution(object):
             stack.append([i, tmp[i]])
         return res
 
-# V0'
+# V0-4
 # IDEA : STACK
 # DEMO 
 #     ...: T=[73, 74, 75, 71, 69, 72, 76, 73]
@@ -184,7 +184,7 @@ class Solution(object):
             stack.append((t, i))
         return res
 
-# V0''
+# V0-5
 # IDEA : STACK
 # time = O(n)
 # space = O(n)
@@ -199,7 +199,7 @@ class Solution:
             stack.append(i)
         return res
 
-# V0'''
+# V0-6
 # IDEA : BRUTE FORCE : TLE
 # time = O(n^2)
 # space = O(n)
@@ -307,7 +307,7 @@ class Solution(object):
             ans.append(z - x if z else 0)
         return ans[::-1]
 
-# V1'''''
+# V1''''
 # https://leetcode-cn.com/problems/daily-temperatures/solution/zhan-by-oliver8641/
 # time = O(n)
 # space = O(n)
@@ -322,7 +322,7 @@ class Solution:
             stack.append(i)
         return res
 
-# V1'''''''
+# V1'''''
 # https://leetcode.com/problems/daily-temperatures/discuss/397728/Easy-Python-O(n)-time-O(1)-space-beat-99.9
 # time = O(n)
 # space = O(1) excluding the output array

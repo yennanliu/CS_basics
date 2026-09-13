@@ -1,6 +1,7 @@
 """
 
-LeetCode 588. Design In-Memory File System
+588. Design In-Memory File System
+Hard
 
 # http://bookshadow.com/weblog/2017/05/21/leetcode-design-in-memory-file-system/
 
@@ -193,7 +194,7 @@ class FileSystem(object):
             else: return node, 'file'
         return node, 'dir'
 
-# V1
+# V1'
 # IDEA :  Using separate Directory and File List
 # https://leetcode.com/problems/design-in-memory-file-system/solution/
 # JAVA
@@ -266,7 +267,7 @@ class FileSystem(object):
 #  */
 
 
-# V1
+# V1''
 # IDEA : Using unified Directory and File List
 # https://leetcode.com/problems/design-in-memory-file-system/solution/
 # JAVA
@@ -342,13 +343,13 @@ class FileSystem(object):
 #  */
 
 
-# V1'
+# V1'''
 # https://blog.csdn.net/magicbean2/article/details/78950619
 
-# V1''
+# V1''''
 # https://blog.csdn.net/Changxing_J/article/details/110877794
 
-# V1'''
+# V1'''''
 # https://leetcode.jp/leetcode-588-design-in-memory-file-system-%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF%E5%88%86%E6%9E%90/
 # JAVA
 # Node root = new Node();
@@ -410,7 +411,7 @@ class FileSystem(object):
 #     StringBuilder text= new StringBuilder();
 # }
 
-# V1''''
+# V1''''''
 # https://www.cnblogs.com/grandyang/p/6944331.html
 
 # V2

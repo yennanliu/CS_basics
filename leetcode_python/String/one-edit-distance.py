@@ -96,7 +96,7 @@ class Solution:
         return dp[n1][n2] == 1
 
 
-# V0-0-1
+# V0-1
 # IDEA: DP (gpt)
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/String/OneEditDistance.java#L415
 """
@@ -147,7 +147,7 @@ class Solution:
         return dp[m][n] == 1
 
 
-# V0-0-2
+# V0-2
 # IDEA: 2 POINTERS (gpt)
 class Solution:
     def isOneEditDistance(self, s, t):
@@ -192,7 +192,7 @@ class Solution:
         return n2 - n1 == 1
 
 
-# V0-1
+# V0-3
 # IDEA : RECURSION (gpt)
 class Solution:
     def isOneEditDistance(self, s, t):
@@ -220,7 +220,7 @@ class Solution:
         return n == m + 1
 
 
-# V0-2
+# V0-4
 # IDEA : RECURSION (gemini)
 class Solution:
     def isOneEditDistance(self, s: str, t: str) -> bool:
@@ -246,7 +246,7 @@ class Solution:
         # If all characters matched so far, return True if t has exactly 1 extra character at the end
         return ns + 1 == nt
 
-# V0
+# V0-5
 # IDEA : RECURSION
 # time = O(min(m, n))
 # space = O(min(m, n)) (recursion stack, at most 1 extra call)
@@ -267,7 +267,7 @@ class Solution:
                 return s[i:] == t[i + 1:]
         return m != n # double check this condition
 
-# V0
+# V0-6
 # IDEA : DEAL WITH ALL CASES (Exhaustive method)
 # time = O(min(m, n))
 # space = O(1)

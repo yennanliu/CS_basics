@@ -42,7 +42,6 @@ The number of nodes in the tree is in the range [1, 105].
 0 <= Node.val <= 106
 At most 105 calls will be made to hasNext, and next.
 
-
 """
 
 # V0
@@ -81,7 +80,7 @@ class BSTIterator(object):
         """
         return self.stack.pop(0)  # NOTE here
 
-# V0'
+# V0-1
 # IDEA : STACK + tree
 # time = O(n) init (full in-order traversal), O(1) amortized per next() (pop from end)
 # space = O(n)
@@ -289,7 +288,7 @@ class BSTIterator(object):
             self.stack.append(root)
             root = root.left
         
-# V1'''''
+# V1''''
 # https://www.jiuzhang.com/solution/binary-search-tree-iterator/#tag-highlight-lang-python
 # time = O(h) init, O(1) amortized per next() (O(n) total across all calls)
 # space = O(h), h = height of the tree
@@ -323,7 +322,7 @@ class BSTIterator:
         return next_node
 
 
-# V1''
+# V1'''''
 # https://www.jiuzhang.com/solution/binary-search-tree-iterator/#tag-highlight-lang-python
 # time = O(h) init, O(h) worst-case per next() (O(1) amortized, O(n) total)
 # space = O(h), h = height of the tree
@@ -361,7 +360,7 @@ class BSTIterator:
         return node
 
 
-# V1'''
+# V1''''''
 # https://www.jiuzhang.com/solution/binary-search-tree-iterator/#tag-highlight-lang-python
 # time = O(1) init, O(h) worst-case per next() (O(1) amortized, O(n) total)
 # space = O(h), h = height of the tree

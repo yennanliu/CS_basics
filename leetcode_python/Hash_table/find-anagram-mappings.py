@@ -1,5 +1,7 @@
 """
-LeetCode 760. Find Anagram Mappings
+
+760. Find Anagram Mappings
+Easy
 
 Given two lists Aand B, and B is an anagram of A. B is an anagram of A means B is made by randomizing the order of the elements in A.
 
@@ -62,7 +64,7 @@ class Solution(object):
             dmap[x].append(i)
         return [dmap[x].pop() for x in A]
 
-# V0'
+# V0-1
 # time = O(n^2)
 # space = O(1)
 class Solution(object):

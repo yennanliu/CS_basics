@@ -66,7 +66,7 @@ class Solution:
                 col -= 1
         return False
 
-# V0'
+# V0-1
 # IDEA : py array op (may not acceptable to interviewer)
 # time = O(m * n)
 # space = O(1)
@@ -84,7 +84,7 @@ class Solution(object):
             i += 1
         return target in matrix[l]
 
-# V0''
+# V0-2
 # IDEA : DFS (brute force)
 # time = O(m * n)
 # space = O(m * n)
@@ -111,7 +111,7 @@ class Solution(object):
         dfs(matrix, target, 0, 0)
         return True in res
 
-# V0'''
+# V0-3
 # IDEA : BINARY SEARCH
 # time = O(m * log(n))
 # space = O(1)

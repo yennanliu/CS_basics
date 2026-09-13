@@ -1,12 +1,8 @@
 """
 
-
 206. Reverse Linked List
-Solved
 Easy
-Topics
-premium lock icon
-Companies
+
 Given the head of a singly linked list, reverse the list, and return the reversed list.
 
  
@@ -36,6 +32,7 @@ The number of nodes in the list is the range [0, 5000].
 Follow up: A linked list can be reversed either iteratively or recursively. Could you implement both?
 
  
+
 """
 
 # V0
@@ -102,7 +99,7 @@ class Solution(object):
         return prev
 
 
-# V0
+# V0-2
 # IDEA : Linkedlist basics
 # STEPS)
 # -> STEP 1) cache "next"
@@ -128,7 +125,7 @@ class Solution(object):
             head = tmp
         return prev
 
-# V0'
+# V0-3
 # IDEA : Linkedlist basics
 # DEMO
 # input = [1,2,3,4,5]
@@ -159,7 +156,7 @@ class Solution(object):
         """
         return prev
 
-# V0'
+# V0-4
 # IDEA : Linkedlist basics
 # time = O(n)
 # space = O(1)
@@ -184,7 +181,7 @@ class Solution:
         return head
         #return _prev # this one works as well
 
-# V0'
+# V0-5
 # https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/linkedList.py
 # IDEA : Linkedlist basics
 # time = O(n)
@@ -246,7 +243,7 @@ class Solution:
             head = next
         return dummy.next
 
-# V1'
+# V1''
 # http://bookshadow.com/weblog/2015/05/05/leetcode-reverse-linked-list/
 # IDEA :  ITERATION
 # time = O(n)

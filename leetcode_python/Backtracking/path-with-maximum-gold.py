@@ -3,12 +3,8 @@
 """
 
 1219. Path with Maximum Gold
-Solved
 Medium
-Topics
-premium lock icon
-Companies
-Hint
+
 In a gold mine grid of size m x n, each cell in this mine has an integer representing the amount of gold in that cell, 0 if it is empty.
 
 Return the maximum amount of gold you can collect under the conditions:
@@ -49,7 +45,6 @@ n == grid[i].length
 1 <= m, n <= 15
 0 <= grid[i][j] <= 100
 There are at most 25 cells containing gold.
-
 
 """
 
@@ -278,7 +273,7 @@ class Solution(object):
 
 
 
-# V2-1
+# V2
 # IDEA: Depth-First Search with Backtracking
 # https://leetcode.com/problems/path-with-maximum-gold/editorial/
 # time = O(4^(m*n)), m = rows, n = cols
@@ -323,7 +318,7 @@ class Solution:
 
 
 
-# V2-2
+# V2'
 # IDEA: bfs with Backtracking
 # https://leetcode.com/problems/path-with-maximum-gold/editorial/
 # time = O(4^(m*n) * m*n), m = rows, n = cols (queue states each copy visited set)

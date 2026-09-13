@@ -50,7 +50,7 @@ class Solution:
                 return False
         return True
 
-# V0'
+# V0-1
 # IDEA : SORT
 # time = O(n log n)
 # space = O(n)
@@ -112,7 +112,7 @@ class Solution:
                 return False
         return True
 
-# V1''''
+# V1'''
 # https://blog.csdn.net/qq508618087/article/details/50750465
 # time = O(n log n)
 # space = O(n)

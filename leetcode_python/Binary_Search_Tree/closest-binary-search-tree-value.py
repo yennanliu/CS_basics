@@ -1,6 +1,7 @@
 """
 
-LeetCode 270. Closest Binary Search Tree Value
+270. Closest Binary Search Tree Value
+Easy
 
 https://goodtecher.com/leetcode-270-closest-binary-search-tree-value/
 
@@ -61,7 +62,7 @@ class Solution(object):
                 root = root.right
         return ans.val
 
-# V0'
+# V0-1
 # KEY : BST PROPERTY : RIGHT > ROOT > LEFT
 # time = O(h)  # h = tree height
 # space = O(h)  # recursion stack
@@ -73,7 +74,7 @@ class Solution(object):
         b = self.closestValue(kid, target)
         return min((b, a), key=lambda x: abs(target - x))
 
-# V0'' : IDEA : DFS + SORT -> NEED TO VALIDATE
+# V0-2 : IDEA : DFS + SORT -> NEED TO VALIDATE
 # class Solution(object):
 #     def closestValue(self, root, target):
 #

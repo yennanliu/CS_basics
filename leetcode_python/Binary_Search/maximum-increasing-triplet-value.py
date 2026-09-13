@@ -2,6 +2,7 @@
 
 3073. Maximum Increasing Triplet Value
 Medium
+
 🔒 (premium)
 
 Given an array nums, return the maximum value of a triplet (i, j, k) such that i < j < k and nums[i] < nums[j] < nums[k].

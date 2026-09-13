@@ -45,7 +45,6 @@ operations[i].length == 2
 operations[i][0] will exist in nums when applying the ith operation.
 operations[i][1] will not exist in nums when applying the ith operation.
 
-
 """
 
 # V0

@@ -59,7 +59,7 @@ class Solution(object):
         dfs([], 1)
         return result
 
-# V0'
+# V0-1
 # BACKTRACK
 # time = O(k * C(n, k))
 # space = O(k * C(n, k))
@@ -100,7 +100,7 @@ class Solution:
         go(1,0,[])
         return res
 
-# V1''
+# V1'
 # https://leetcode.com/problems/combinations/discuss/286994/python
 # IDEA : BACKTRACK + dfs
 # time = O(k * C(n, k))
@@ -129,7 +129,7 @@ class Solution(object):
         dfs([], 1)
         return result
 
-# V1'''
+# V1''
 # https://leetcode.com/problems/combinations/discuss/170834/Python-solution
 # IDEA : iteration
 # time = O(k * C(n, k))
@@ -153,7 +153,7 @@ class Solution(object):
             res += tmp
         return res          
 
-# V1''''
+# V1'''
 # https://leetcode.com/problems/combinations/discuss/170834/Python-solution
 # IDEA : iteration
 # time = O(k * C(n, k))
@@ -164,7 +164,7 @@ class Solution(object):
             return [[]]
         return [x+[tail] for tail in range(n,k-1,-1) for x in self.combine(tail-1, k-1)]
 
-# V1''''''
+# V1''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79515180
 # IDEA :  RECURSION 
 # DEMO : 
@@ -212,7 +212,7 @@ class Solution(object):
             self.helper(array[1:], k - 1, res, path + [array[0]])
             self.helper(array[1:], k, res, path)
 
-# V1''''''
+# V1'''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79515180
 # IDEA : BACKTRACKING 
 # time = O(k * C(n, k))

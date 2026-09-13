@@ -42,6 +42,9 @@
 # V2 
 """
 
+256. Paint House
+Medium
+
 DP def
     dp[i][c]: MIN cost to paint houses 0..i with house i painted colour c
 

@@ -3,11 +3,8 @@
 """
 
 3994. Minimum Adjacent Swaps to Partition Array
-Solved
 Medium
-premium lock icon
-Companies
-Hint
+
 You are given an integer array nums and two integers a and b such that a < b.
 
 An array is called good if it can be split into three contiguous parts, in this order, such that:
@@ -66,7 +63,6 @@ Constraints:
 1 <= nums.length <= 105
 ​​​​​​​1 <= nums[i] <= 109
 1 <= a < b <= 109​​​​​​​
-
 
 """
 

@@ -1,12 +1,8 @@
 """
 
 729. My Calendar I
-Solved
 Medium
-Topics
-premium lock icon
-Companies
-Hint
+
 You are implementing a program to use as your calendar. We can add a new event if adding the event will not cause a double booking.
 
 A double booking happens when two events have some non-empty intersection (i.e., some moment is common to both events.).
@@ -40,9 +36,8 @@ Constraints:
 At most 1000 calls will be made to book.
  
 
-
 """
-# V0-1
+# V0
 # IDEA: BRUTE FORCE
 class MyCalendar(object):
 
@@ -67,7 +62,7 @@ class MyCalendar(object):
         return True
 
 
-# V0-2
+# V0-1
 # IDEA: BINARY SEARCH (gemini)
 from bisect import bisect_left
 
@@ -99,7 +94,7 @@ class MyCalendar(object):
         return True
 
 
-# V0-3
+# V0-2
 # IDEA: SortedDict (gpt)
 from sortedcontainers import SortedDict
 
@@ -130,7 +125,7 @@ class MyCalendar(object):
         return True
 
 
-# V1-1
+# V1
 # IDEA: INTERVAL (gpt)
 class MyCalendar(object):
 
@@ -151,7 +146,7 @@ class MyCalendar(object):
         return False
 
 
-# V1-2
+# V1'
 # IDEA: INTERVAL (GEMINI)
 class MyCalendar(object):
 
@@ -178,7 +173,7 @@ class MyCalendar(object):
         return True
 
 
-# V2-1
+# V2
 # IDEA: BRUTE FORCE
 # https://leetcode.com/problems/my-calendar-i/editorial/
 class MyCalendar:
@@ -194,7 +189,7 @@ class MyCalendar:
         return True
 
 
-# V2-2
+# V2'
 # IDEA: Sorted List + Binary Search
 # https://leetcode.com/problems/my-calendar-i/editorial/
 from sortedcontainers import SortedList

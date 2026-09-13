@@ -1,5 +1,8 @@
 """
 
+234. Palindrome Linked List
+Easy
+
 Given the head of a singly linked list, return true if it is a palindrome.
 
 
@@ -49,7 +52,7 @@ class Solution(object):
             head = head.next
         return r == r[::-1]
 
-# V0
+# V0-1
 # IDEA : LINKED LIST -> LIST
 # time = O(n)
 # space = O(n)
@@ -188,7 +191,7 @@ class Solution(object):
             new_head = p
         return new_head
 
-# V1'''''
+# V1''''
 # http://bookshadow.com/weblog/2015/07/10/leetcode-palindrome-linked-list/
 # time = O(n)
 # space = O(1)
@@ -222,7 +225,7 @@ class Solution:
         slow.next = last
         return p1 is None
 
-# V1'''''''
+# V1'''''
 # https://blog.csdn.net/coder_orz/article/details/51306985
 # Definition for singly-linked list.
 class ListNode(object):

@@ -1,3 +1,12 @@
+"""
+
+259. 3Sum Smaller
+Medium
+
+https://leetcode.com/problems/3sum-smaller/
+
+"""
+
 # Given an array of n integers nums and a target, find the number of index tripletsi, j, k with 0 <= i < j < k < n that satisfy the conditionnums[i] + nums[j] + nums[k] < target.
 # For example, given nums = [-2, 0, 1, 3], and target = 2.
 # Return 2. Because there are two triplets which sums are less than 2:

@@ -110,7 +110,7 @@ class Solution(object):
         return total_cnt
 
 
-# V0
+# V0-2
 # IDEA : cumsum + dict (Prefix sum)
 # time = O(n)
 # space = O(n)
@@ -167,7 +167,7 @@ class Solution:
             d[cur_sum] += 1
         return res
 
-# V1''
+# V1'
 # IDEA : exact k
 # https://leetcode.com/problems/count-number-of-nice-subarrays/discuss/419668/Python-3-ways-summarize
 # IDEA :
@@ -193,7 +193,7 @@ class Solution:
                 return res
             return atmost(k)-atmost(k-1)
 
-# V1'''
+# V1''
 # IDEA : deque
 # https://leetcode.com/problems/count-number-of-nice-subarrays/discuss/419668/Python-3-ways-summarize
 # IDEA :
@@ -214,7 +214,7 @@ class Solution:
                     res+=que[1]-que[0]
             return res
 
-# V1'''''
+# V1'''
 # IDEA : prefix sum
 # https://leetcode.com/problems/count-number-of-nice-subarrays/discuss/419668/Python-3-ways-summarize
 # IDEA
@@ -234,7 +234,7 @@ class Solution:
                     res+=visited[cursum-k]
             return res
 
-# V1'''''''''
+# V1''''
 # https://leetcode.com/problems/count-number-of-nice-subarrays/discuss/421157/Simple-Python-solution
 # time = O(n)
 # space = O(n)
@@ -250,7 +250,7 @@ class Solution:
                 ans += memo[cur + 1 - k] - memo[cur - k]
         return ans
 
-# V1'''''''''
+# V1'''''
 # IDEA : LC 828 + windows
 # https://leetcode.com/problems/count-number-of-nice-subarrays/discuss/421003/Python-straightforward-solution
 # https://leetcode-cn.com/problems/count-number-of-nice-subarrays/
@@ -270,7 +270,7 @@ class Solution:
                 res += (lst[i] - lst[i-1]) * (lst[i+k] - lst[i+k-1])
             return res
 
-# V1''''''''''
+# V1''''''
 # https://leetcode.com/problems/count-number-of-nice-subarrays/discuss/420390/Simple-Python-Solution
 # time = O(n)
 # space = O(n)
@@ -284,7 +284,7 @@ class Solution:
             res += (odd[i]- odd[i-1]) * (odd[i + k] - odd[i + k - 1])
         return res
 
-# V1'''''''''''
+# V1'''''''
 # IDEA : AT MOST
 # https://leetcode.com/problems/count-number-of-nice-subarrays/discuss/419378/JavaC%2B%2BPython-Sliding-Window-O(1)-Space
 # time = O(n)
@@ -303,7 +303,7 @@ class Solution:
 
         return atMost(k) - atMost(k - 1)
 
-# V1''''''''''''
+# V1''''''''
 # IDEA : ONE PASS
 # https://leetcode.com/problems/count-number-of-nice-subarrays/discuss/419378/JavaC%2B%2BPython-Sliding-Window-O(1)-Space
 # time = O(n)
@@ -322,7 +322,7 @@ class Solution:
             res += count
         return res
 
-# V1''''''''''''''
+# V1'''''''''
 # https://littlebees.github.io/2021/08/leetcode-1248/
 # time = O(n)
 # space = O(1)
@@ -341,7 +341,7 @@ class Solution:
             return ret
         return atmost(k)-atmost(k-1)
 
-# V1'''''''''''''''
+# V1''''''''''
 # https://littlebees.github.io/2021/08/leetcode-1248/
 # time = O(n)
 # space = O(1)
