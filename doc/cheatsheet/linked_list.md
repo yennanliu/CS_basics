@@ -1335,6 +1335,22 @@ class Solution(object):
 ```
 
 
+### Follow-ups — the variants that separate `H` from `SH` ⭐⭐⭐⭐
+
+The main problem filters; the follow-up is where a Hire becomes a Strong Hire. Each row is a
+variant an interviewer actually asks, paired with **the one thing in the template that has to
+change**. If you can name that line, you understood the template; if you cannot, you memorised it.
+
+| You just solved | The follow-up | What changes |
+|---|---|---|
+| LC 206 Reverse List | "reverse only positions `m..n`" (LC 92) | identical three-pointer loop — but anchor it to a **dummy head** so reversing from position 1 needs no special case |
+| LC 206 Reverse List | "reverse in groups of `k`" (LC 25) | walk `k` ahead **first** to confirm a full group exists; a partial tail is left alone |
+| LC 141 Detect Cycle | "return the node where the cycle starts" (LC 142) | after the fast/slow meeting, reset one pointer to `head` and advance both one step at a time — they meet at the entry |
+| LC 21 Merge Two Sorted Lists | "merge `k` lists" (LC 23) | a size-k min-heap, O(N log k), or pairwise divide-and-conquer. Merging them one at a time is O(kN) and is the answer that costs the rung |
+| Fast/slow midpoint | "even length — which middle do you return?" | whether the loop is `while fast and fast.next` or `while fast.next and fast.next.next` — one gives the second middle, the other the first |
+| LC 138 Copy List with Random Pointer | "O(1) extra space" | drop the `{old: new}` map — interleave each copy after its original, wire the randoms off `node.next`, then unzip the two lists |
+| Any in-place rewiring | "what breaks if you lose a pointer?" | save `nxt = cur.next` **before** the rewrite. Dropping that line is the single most common linked-list bug in a live interview |
+
 ## 2) Pattern Selection
 
 Linked-list problems are rarely *about* lists. They are about **which handle you have to be

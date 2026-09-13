@@ -358,7 +358,9 @@ To verify a greedy choice, show that swapping the greedy pick with any other cho
 3. Repeat until OPT == G → greedy is optimal.
 ```
 
-Common exchange argument problems: LC 435 (Non-overlapping Intervals), LC 452 (Burst Balloons), Job Scheduling.
+Common exchange argument problems: LC 435 (Non-overlapping Intervals), LC 452 (Minimum Number of Arrows to Burst Balloons), Job Scheduling.
+
+> Do not confuse LC 452 with **LC 312 Burst Balloons** — that one is O(n³) interval DP, and no exchange argument applies to it.
 
 ### Minimum Spanning Tree (MST)
 

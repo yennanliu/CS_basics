@@ -658,6 +658,22 @@ class Solution(object):
 
 ---
 
+## Follow-ups — the variants that separate `H` from `SH` ⭐⭐⭐⭐
+
+The main problem filters; the follow-up is where a Hire becomes a Strong Hire. Each row is a
+variant an interviewer actually asks, paired with **the one thing in the template that has to
+change**. If you can name that line, you understood the template; if you cannot, you memorised it.
+
+| You just solved | The follow-up | What changes |
+|---|---|---|
+| LC 20 Valid Parentheses | "`*` may be `(`, `)` or empty" (LC 678) | a stack cannot branch — carry `(lo, hi)` counts of possible open brackets, clamp `lo` at 0, and accept if `lo == 0` at the end |
+| LC 20 Valid Parentheses | "the **longest valid** substring" (LC 32) | push *indices*, not characters, and seed the stack with `-1` as the base so a length is always `i - stack[-1]` |
+| LC 496 Next Greater Element | "the array is circular" (LC 503) | iterate `2n` times with `i % n`, and only write answers during the first pass |
+| LC 155 Min Stack | "O(1) `getMin` with O(1) **extra** space" | stop pushing a second stack — push the encoded value `2*val - min` and recover the previous min on pop |
+| LC 150 Evaluate RPN | "the input is infix with precedence" (LC 224 / LC 227) | one stack is no longer enough — two stacks (values and operators) or shunting-yard |
+| LC 232 Queue via Stacks | "what is the worst-case cost of one `pop`?" | O(n) for a single call, but **amortised O(1)** — each element moves between the two stacks exactly once |
+| Monotonic stack | "why does each element get pushed and popped once?" | that is the O(n) argument. If you cannot say it, the complexity looks guessed even when the number is right |
+
 ## Summary & Quick Reference
 
 ### Decision Table — Which Stack Pattern?

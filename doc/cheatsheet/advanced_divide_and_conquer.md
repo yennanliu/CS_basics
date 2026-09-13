@@ -750,7 +750,7 @@ public List<Integer> countSmaller(int[] nums) {
 }
 private void mergeSort(int[] nums, int[] idx, int[] counts, int l, int r) {
     if (l >= r) return;
-    int mid = (l + r) / 2;
+    int mid = l + (r - l) / 2;
     mergeSort(nums, idx, counts, l, mid);
     mergeSort(nums, idx, counts, mid + 1, r);
     int[] tmp = new int[r - l + 1];
@@ -828,7 +828,7 @@ public int reversePairs(int[] nums) {
 }
 private int mergeSort(int[] nums, int l, int r) {
     if (l >= r) return 0;
-    int mid = (l + r) / 2;
+    int mid = l + (r - l) / 2;
     int count = mergeSort(nums, l, mid) + mergeSort(nums, mid + 1, r);
     int j = mid + 1;
     for (int i = l; i <= mid; i++) {
@@ -910,7 +910,7 @@ public int countRangeSum(int[] nums, int lower, int upper) {
 }
 private int mergeSort(long[] p, int l, int r, int lo, int hi) {
     if (l >= r) return 0;
-    int mid = (l + r) / 2;
+    int mid = l + (r - l) / 2;
     int count = mergeSort(p, l, mid, lo, hi) + mergeSort(p, mid + 1, r, lo, hi);
     int j = mid + 1, k = mid + 1;
     for (int i = l; i <= mid; i++) {

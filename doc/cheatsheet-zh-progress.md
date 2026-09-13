@@ -41,11 +41,11 @@ half-translated sheet renders with English gaps rather than failing.
   is what makes a problem findable on LeetCode itself.
 
 
-## Status — 5066 / 5260 sections (96%)
+## Status — 5065 / 5273 sections (96%)
 
 | Sheet | Sections | 繁體中文 |
 |---|---:|:---:|
-| [2_pointers](./cheatsheet/2_pointers.md) | 41 | [✅](../i18n/zh/2_pointers.md) |
+| [2_pointers](./cheatsheet/2_pointers.md) | 42 | [41/42](../i18n/zh/2_pointers.md) |
 | [2_pointers_examples](./cheatsheet/2_pointers_examples.md) | 82 | [✅](../i18n/zh/2_pointers_examples.md) |
 | [2_pointers_linkedlist](./cheatsheet/2_pointers_linkedlist.md) | 16 | [✅](../i18n/zh/2_pointers_linkedlist.md) |
 | [2_pointers_quickselect](./cheatsheet/2_pointers_quickselect.md) | 17 | [✅](../i18n/zh/2_pointers_quickselect.md) |
@@ -58,23 +58,23 @@ half-translated sheet renders with English gaps rather than failing.
 | [advanced_divide_and_conquer](./cheatsheet/advanced_divide_and_conquer.md) | 45 | [✅](../i18n/zh/advanced_divide_and_conquer.md) |
 | [advanced_simulation](./cheatsheet/advanced_simulation.md) | 43 | [✅](../i18n/zh/advanced_simulation.md) |
 | [advanced_string_algorithms](./cheatsheet/advanced_string_algorithms.md) | 39 | [✅](../i18n/zh/advanced_string_algorithms.md) |
-| [array](./cheatsheet/array.md) | 43 | [✅](../i18n/zh/array.md) |
+| [array](./cheatsheet/array.md) | 44 | [43/44](../i18n/zh/array.md) |
 | [array_examples](./cheatsheet/array_examples.md) | 21 | [✅](../i18n/zh/array_examples.md) |
 | [array_overlap_explaination](./cheatsheet/array_overlap_explaination.md) | 24 | [✅](../i18n/zh/array_overlap_explaination.md) |
 | [backtrack](./cheatsheet/backtrack.md) | 41 | [✅](../i18n/zh/backtrack.md) |
 | [backtrack_advanced](./cheatsheet/backtrack_advanced.md) | 19 | [✅](../i18n/zh/backtrack_advanced.md) |
 | [backtrack_examples](./cheatsheet/backtrack_examples.md) | 23 | [✅](../i18n/zh/backtrack_examples.md) |
-| [bfs](./cheatsheet/bfs.md) | 51 | [✅](../i18n/zh/bfs.md) |
+| [bfs](./cheatsheet/bfs.md) | 52 | [51/52](../i18n/zh/bfs.md) |
 | [bfs_advanced](./cheatsheet/bfs_advanced.md) | 41 | [38/41](../i18n/zh/bfs_advanced.md) |
 | [bfs_examples](./cheatsheet/bfs_examples.md) | 31 | [✅](../i18n/zh/bfs_examples.md) |
 | [binary_indexed_tree](./cheatsheet/binary_indexed_tree.md) | 32 | [✅](../i18n/zh/binary_indexed_tree.md) |
 | [binary_search](./cheatsheet/binary_search.md) | 66 | [55/66](../i18n/zh/binary_search.md) |
 | [binary_search_examples](./cheatsheet/binary_search_examples.md) | 43 | [✅](../i18n/zh/binary_search_examples.md) |
-| [binary_search_on_answer](./cheatsheet/binary_search_on_answer.md) | 42 | [✅](../i18n/zh/binary_search_on_answer.md) |
-| [binary_tree](./cheatsheet/binary_tree.md) | 74 | [72/74](../i18n/zh/binary_tree.md) |
+| [binary_search_on_answer](./cheatsheet/binary_search_on_answer.md) | 43 | [42/43](../i18n/zh/binary_search_on_answer.md) |
+| [binary_tree](./cheatsheet/binary_tree.md) | 75 | [72/75](../i18n/zh/binary_tree.md) |
 | [bit_manipulation](./cheatsheet/bit_manipulation.md) | 41 | [39/41](../i18n/zh/bit_manipulation.md) |
 | [bit_manipulation_examples](./cheatsheet/bit_manipulation_examples.md) | 28 | [20/28](../i18n/zh/bit_manipulation_examples.md) |
-| [bst](./cheatsheet/bst.md) | 61 | [✅](../i18n/zh/bst.md) |
+| [bst](./cheatsheet/bst.md) | 62 | [61/62](../i18n/zh/bst.md) |
 | [bst_advanced](./cheatsheet/bst_advanced.md) | 51 | [✅](../i18n/zh/bst_advanced.md) |
 | [bst_examples](./cheatsheet/bst_examples.md) | 41 | [✅](../i18n/zh/bst_examples.md) |
 | [code_interview_general_cheatsheet](./cheatsheet/code_interview_general_cheatsheet.md) | 2 | [✅](../i18n/zh/code_interview_general_cheatsheet.md) |
@@ -98,10 +98,10 @@ half-translated sheet renders with English gaps rather than failing.
 | [dp_monotonic_stack](./cheatsheet/dp_monotonic_stack.md) | 31 | [✅](../i18n/zh/dp_monotonic_stack.md) |
 | [dp_pattern](./cheatsheet/dp_pattern.md) | 75 | [74/75](../i18n/zh/dp_pattern.md) |
 | [dp_string](./cheatsheet/dp_string.md) | 37 | [33/37](../i18n/zh/dp_string.md) |
-| [graph](./cheatsheet/graph.md) | 49 | [✅](../i18n/zh/graph.md) |
+| [graph](./cheatsheet/graph.md) | 50 | [49/50](../i18n/zh/graph.md) |
 | [graph_advanced](./cheatsheet/graph_advanced.md) | 37 | [✅](../i18n/zh/graph_advanced.md) |
 | [graph_examples](./cheatsheet/graph_examples.md) | 18 | [✅](../i18n/zh/graph_examples.md) |
-| [greedy](./cheatsheet/greedy.md) | 49 | [✅](../i18n/zh/greedy.md) |
+| [greedy](./cheatsheet/greedy.md) | 49 | [48/49](../i18n/zh/greedy.md) |
 | [greedy_examples](./cheatsheet/greedy_examples.md) | 28 | [✅](../i18n/zh/greedy_examples.md) |
 | [hash_map](./cheatsheet/hash_map.md) | 44 | [41/44](../i18n/zh/hash_map.md) |
 | [hash_map_examples](./cheatsheet/hash_map_examples.md) | 93 | [✅](../i18n/zh/hash_map_examples.md) |
@@ -116,11 +116,11 @@ half-translated sheet renders with English gaps rather than failing.
 | [java_trick_collections](./cheatsheet/java_trick_collections.md) | 57 | [✅](../i18n/zh/java_trick_collections.md) |
 | [java_trick_strings_sorting](./cheatsheet/java_trick_strings_sorting.md) | 42 | [✅](../i18n/zh/java_trick_strings_sorting.md) |
 | [kadane_algorithm](./cheatsheet/kadane_algorithm.md) | 42 | [✅](../i18n/zh/kadane_algorithm.md) |
-| [knapsack](./cheatsheet/knapsack.md) | 59 | [53/59](../i18n/zh/knapsack.md) |
+| [knapsack](./cheatsheet/knapsack.md) | 60 | [53/60](../i18n/zh/knapsack.md) |
 | [knapsack_01_zh](./cheatsheet/knapsack_01_zh.md) | 27 | [✅](../i18n/zh/knapsack_01_zh.md) |
 | [lc_category](./cheatsheet/lc_category.md) | 3 | [✅](../i18n/zh/lc_category.md) |
 | [lc_pattern](./cheatsheet/lc_pattern.md) | 72 | [✅](../i18n/zh/lc_pattern.md) |
-| [linked_list](./cheatsheet/linked_list.md) | 28 | [✅](../i18n/zh/linked_list.md) |
+| [linked_list](./cheatsheet/linked_list.md) | 29 | [28/29](../i18n/zh/linked_list.md) |
 | [linked_list_examples](./cheatsheet/linked_list_examples.md) | 34 | [✅](../i18n/zh/linked_list_examples.md) |
 | [math](./cheatsheet/math.md) | 46 | [✅](../i18n/zh/math.md) |
 | [math_logic_puzzles](./cheatsheet/math_logic_puzzles.md) | 14 | — |
@@ -150,11 +150,11 @@ half-translated sheet renders with English gaps rather than failing.
 | [set](./cheatsheet/set.md) | 37 | [✅](../i18n/zh/set.md) |
 | [set_examples](./cheatsheet/set_examples.md) | 32 | [✅](../i18n/zh/set_examples.md) |
 | [shortest_path_comparison](./cheatsheet/shortest_path_comparison.md) | 24 | [✅](../i18n/zh/shortest_path_comparison.md) |
-| [sliding_window](./cheatsheet/sliding_window.md) | 44 | [✅](../i18n/zh/sliding_window.md) |
+| [sliding_window](./cheatsheet/sliding_window.md) | 45 | [44/45](../i18n/zh/sliding_window.md) |
 | [sliding_window_advanced](./cheatsheet/sliding_window_advanced.md) | 76 | [✅](../i18n/zh/sliding_window_advanced.md) |
 | [sliding_window_examples](./cheatsheet/sliding_window_examples.md) | 18 | [✅](../i18n/zh/sliding_window_examples.md) |
 | [sort](./cheatsheet/sort.md) | 67 | [66/67](../i18n/zh/sort.md) |
-| [stack](./cheatsheet/stack.md) | 21 | [✅](../i18n/zh/stack.md) |
+| [stack](./cheatsheet/stack.md) | 22 | [21/22](../i18n/zh/stack.md) |
 | [stack_examples](./cheatsheet/stack_examples.md) | 33 | [✅](../i18n/zh/stack_examples.md) |
 | [stack_expression_parsing](./cheatsheet/stack_expression_parsing.md) | 13 | [✅](../i18n/zh/stack_expression_parsing.md) |
 | [stock_trading](./cheatsheet/stock_trading.md) | 37 | [✅](../i18n/zh/stock_trading.md) |
@@ -166,13 +166,13 @@ half-translated sheet renders with English gaps rather than failing.
 | [time_space_complexity](./cheatsheet/time_space_complexity.md) | 39 | [✅](../i18n/zh/time_space_complexity.md) |
 | [topology_sorting](./cheatsheet/topology_sorting.md) | 47 | [✅](../i18n/zh/topology_sorting.md) |
 | [topology_sorting_examples](./cheatsheet/topology_sorting_examples.md) | 16 | [✅](../i18n/zh/topology_sorting_examples.md) |
-| [tree](./cheatsheet/tree.md) | 55 | [52/55](../i18n/zh/tree.md) |
+| [tree](./cheatsheet/tree.md) | 56 | [52/56](../i18n/zh/tree.md) |
 | [tree2](./cheatsheet/tree2.md) | 101 | [100/101](../i18n/zh/tree2.md) |
 | [tree_backtrack](./cheatsheet/tree_backtrack.md) | 17 | [✅](../i18n/zh/tree_backtrack.md) |
 | [tree_codec](./cheatsheet/tree_codec.md) | 26 | [✅](../i18n/zh/tree_codec.md) |
 | [tree_construction](./cheatsheet/tree_construction.md) | 16 | [✅](../i18n/zh/tree_construction.md) |
 | [tree_examples](./cheatsheet/tree_examples.md) | 49 | [43/49](../i18n/zh/tree_examples.md) |
-| [tree_lca_distance](./cheatsheet/tree_lca_distance.md) | 37 | [✅](../i18n/zh/tree_lca_distance.md) |
+| [tree_lca_distance](./cheatsheet/tree_lca_distance.md) | 38 | [37/38](../i18n/zh/tree_lca_distance.md) |
 | [trie](./cheatsheet/trie.md) | 26 | [✅](../i18n/zh/trie.md) |
 | [trie_examples](./cheatsheet/trie_examples.md) | 11 | [✅](../i18n/zh/trie_examples.md) |
 | [union_find](./cheatsheet/union_find.md) | 23 | [✅](../i18n/zh/union_find.md) |

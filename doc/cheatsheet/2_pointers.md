@@ -991,6 +991,22 @@ void reverse(int[] nums){
 }
 ```
 
+## Follow-ups — the variants that separate `H` from `SH` ⭐⭐⭐⭐
+
+The main problem filters; the follow-up is where a Hire becomes a Strong Hire. Each row is a
+variant an interviewer actually asks, paired with **the one thing in the template that has to
+change**. If you can name that line, you understood the template; if you cannot, you memorised it.
+
+| You just solved | The follow-up | What changes |
+|---|---|---|
+| LC 167 Two Sum II (sorted) | "the array is **not** sorted" | two pointers dies — sorting loses the original indices the answer needs. Hash map, O(n) time / O(n) space (LC 1) |
+| LC 1 Two Sum | "return **all** pairs, not one" | sort, then the opposite-ends scan, and skip equal neighbours on both sides after a hit — that dedupe *is* the LC 15 inner loop |
+| LC 15 3Sum | "closest to a target instead of equal to it" (LC 16) | you can never `break` on a hit; track `bestDiff` and keep moving the pointer that shrinks it |
+| LC 26 Remove Duplicates | "allow each value **at most twice**" (LC 80) | the keep-test `nums[i] != nums[w-1]` becomes `nums[i] != nums[w-2]`. Generalises to k with `w-k` |
+| LC 125 Valid Palindrome | "you may delete **one** character" (LC 680) | on the first mismatch, return `isPal(l+1, r) or isPal(l, r-1)` — one mismatch budget, checked both ways |
+| LC 11 Container With Most Water | "why is moving the **shorter** line safe?" | not a code change — the proof. The shorter line caps the area, so every pair it still forms is ≤ what you have; discarding it loses nothing |
+| LC 42 Trapping Rain Water | "do it in O(1) space" | drop the two prefix arrays; keep `leftMax` / `rightMax` as scalars and advance the side with the smaller max |
+
 ## Summary & Quick Reference
 
 ### Pattern Selection Table

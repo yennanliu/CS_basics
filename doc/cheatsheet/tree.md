@@ -673,6 +673,22 @@ public class TreeNode {
 }
 ```
 
+### Follow-ups — the variants that separate `H` from `SH` ⭐⭐⭐⭐
+
+The main problem filters; the follow-up is where a Hire becomes a Strong Hire. Each row is a
+variant an interviewer actually asks, paired with **the one thing in the template that has to
+change**. If you can name that line, you understood the template; if you cannot, you memorised it.
+
+| You just solved | The follow-up | What changes |
+|---|---|---|
+| Recursive traversal | "do it iteratively" | pre-order is a plain stack; in-order needs a push-left-spine loop; post-order is the awkward one — easiest as reversed "root, right, left" |
+| Iterative traversal | "now do it in O(1) space" | Morris traversal — thread the predecessor's right pointer to the current node, then unthread on the way back |
+| LC 297 Serialize / Deserialize | "why do you need null markers?" | without them the structure is ambiguous — pre-order alone cannot tell a left child from a right child. The marker is the whole design |
+| LC 572 Subtree of Another Tree | "the trees are large" | the naive "try every node" is O(m·n) — serialise both with null markers and run a substring search, or compare subtree hashes |
+| LC 236 LCA | "the nodes have parent pointers" | no traversal at all — walk up from both and find the first shared ancestor; it is the linked-list-intersection problem |
+| Any depth/height recursion | "the tree is 10⁵ nodes deep" | recursion stack-overflows. Convert to an explicit stack, and note the recursion depth **is** the space bound |
+| Any binary-tree template | "the tree is n-ary" | the `left`/`right` pair becomes a `children` loop; nothing else in the shape changes |
+
 ## 2) Problems by Pattern Classification
 
 ### 2.1) Problem Categories & Templates ⭐⭐⭐⭐

@@ -614,6 +614,22 @@ private int atMostK(int[] nums, int k) {
 > the visual proof and the "why is direct exactly-K hard" argument all live in
 > [sliding_window_advanced.md](./sliding_window_advanced.md).
 
+## Follow-ups — the variants that separate `H` from `SH` ⭐⭐⭐⭐
+
+The main problem filters; the follow-up is where a Hire becomes a Strong Hire. Each row is a
+variant an interviewer actually asks, paired with **the one thing in the template that has to
+change**. If you can name that line, you understood the template; if you cannot, you memorised it.
+
+| You just solved | The follow-up | What changes |
+|---|---|---|
+| LC 3 Longest Substring Without Repeats | "at most `k` distinct characters" (LC 340 / LC 159) | only the shrink condition: `while len(count) > k` instead of `while count[c] > 1` |
+| "at most `k`" | "**exactly** `k` distinct" (LC 992) | you cannot do it with one window — `exactly(k) = atMost(k) - atMost(k-1)`. This trick is asked far more often than it is taught |
+| LC 76 Minimum Window Substring | "return the **first** smallest window on a tie" | update on strict `<`, never `<=`, or a later equal-length window overwrites the earlier one |
+| Any "subarray sum" window | "the numbers can now be negative" | the window stops being monotone — shrinking no longer lowers the sum, so the whole technique dies. Prefix sums + a monotonic deque (LC 862) |
+| Variable window | "the window is a **fixed** size `k` instead" | the shrink `while` becomes a single `if i >= k` eviction — no condition to re-check |
+| LC 239 Sliding Window Maximum | "why a deque and not a heap?" | a heap cannot evict the element that just left the window in O(1); it gives O(n log k) with lazy deletion vs the deque's O(n) |
+| Any window | "what is the amortised cost of the inner `while`?" | each index enters and leaves the window once, so the nested loop is O(n) total, not O(n²). Saying "amortised" out loud earns the verification point |
+
 ## Summary & Quick Reference
 
 ### Which Template? — Decision Table

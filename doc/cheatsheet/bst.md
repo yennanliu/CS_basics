@@ -825,6 +825,21 @@ class Solution(object):
 - LC 1373: Maximum Sum BST in Binary Tree - Complex validation
 - LC 124: Binary Tree Maximum Path Sum - Node-to-node max path
 
+## Follow-ups — the variants that separate `H` from `SH` ⭐⭐⭐⭐
+
+The main problem filters; the follow-up is where a Hire becomes a Strong Hire. Each row is a
+variant an interviewer actually asks, paired with **the one thing in the template that has to
+change**. If you can name that line, you understood the template; if you cannot, you memorised it.
+
+| You just solved | The follow-up | What changes |
+|---|---|---|
+| LC 700 Search in a BST | "delete a node instead" (LC 450) | the leaf and one-child cases are easy; the two-child case is the question — replace with the **inorder successor** (leftmost of the right subtree), then delete that successor |
+| Inorder traversal | "the kth smallest" (LC 230) | an in-order walk with a counter and an early return; O(h + k), not O(n) |
+| LC 230 Kth Smallest | "the tree is modified between queries, and k is queried often" | augment each node with its subtree size; a query becomes O(h) with no traversal, and inserts maintain the counts |
+| LC 98 Validate BST | "comparing each node to its parent is enough, right?" | no — `[10, 5, 15, null, null, 6, 20]`: 6 > its parent 15's left-child slot but is < 10, so it must fail. Carry `(low, high)` bounds down |
+| Any O(h) claim | "what is `h` in the worst case?" | O(n) — a sorted insert order builds a linked list. That is why the balanced variants (AVL, Red-Black) exist; state the distinction before being asked |
+| LC 235 LCA of a BST | "what if it were a plain binary tree?" (LC 236) | the value comparison no longer guides you — you lose O(h) descent and must recurse into both subtrees, O(n) |
+
 ## Summary & Quick Reference
 
 **Complexity** — one table only, at the top of this sheet: see

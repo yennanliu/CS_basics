@@ -802,7 +802,7 @@ public String longestDupSubstring(String s) {
     int lo = 1, hi = s.length() - 1;
     String ans = "";
     while (lo <= hi) {
-        int mid = (lo + hi) / 2;
+        int mid = lo + (hi - lo) / 2;
         String dup = findDuplicate(s, mid);
         if (dup != null) { ans = dup; lo = mid + 1; }
         else hi = mid - 1;
