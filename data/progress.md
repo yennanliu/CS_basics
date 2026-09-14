@@ -57,10 +57,10 @@
 		- `最長共同子序列（LCS）` 
 
 
+- linked_list_examples.md
 
-- Topological Sorting — Worked Examples
-	- https://yennj12.js.org/CS_basics/cheatsheets/topology_sorting_examples.zh.html
-		- 6) Find Eventual Safe States — LC 802
+
+
 
 
 
@@ -75,8 +75,6 @@
 - backtrack.zh.html
 	- `Template 2: start_idx — i vs i + 1`
 
-
-- linked_list_examples.md
 
 - Sorting Algorithms.md
 
@@ -136,7 +134,8 @@
 	- recursion_to_dp.zh.html
 		- again
 	- kadane_algorithm.md
-	-  Difference Array.md
+	- Difference Array.md
+	- Topological Sorting — Worked Examples
 
 
 
