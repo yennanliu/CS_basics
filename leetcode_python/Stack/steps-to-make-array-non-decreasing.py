@@ -43,6 +43,89 @@ class Solution(object):
         pass
 
 
+# V0-0-1
+# IDEA : Monotonic Stack + DP (GPT)
+"""
+CORE IDEA:
+
+1. 
+      st = [[val, steps_to_remove]]
+
+        -> 
+            ```
+            val  = element 的值
+            steps_to_remove = 這個 element 需要`幾輪`才會`被刪掉`
+            ```
+
+2.  steps_to_remove = 0
+        -> 這個 element (val) 永遠不會被刪掉
+        -> e.g.
+
+            -> 沒有比自己大的 element 在左邊
+                    → 永遠不會被刪
+
+
+3. steps_to_remove = 1
+    -> 下一輪就會被刪
+
+
+4.  steps_to_remove = 2
+    -> 
+        第一輪先讓前面的 element 消失
+        第二輪自己才會被刪
+
+5. steps_to_remove = 4
+
+    -> 
+        前面需要先經過 2 輪
+        第三輪自己才會被刪
+
+
+....
+
+
+6.  steps_to_remove = 「這個 element 第幾輪被刪」
+
+"""
+class Solution(object):
+    def totalSteps(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        # edge
+        if not nums:
+            return 0
+
+        # [[val, steps_to_remove]]
+        st = []
+
+        max_move = 0
+
+        for val in nums:
+
+            # current element needs at least 1 step
+            cur_move = 1
+
+            # remove elements that are smaller than current val
+            while st and st[-1][0] <= val:
+                cur_move = max(cur_move, st[-1][1] + 1)
+                st.pop()
+
+            # if there is a larger element on the left,
+            # current element may be removed after cur_move steps
+            if st:
+                max_move = max(max_move, cur_move)
+            else:
+                # no larger element on the left
+                # current element will never be removed
+                cur_move = 0
+
+            st.append([val, cur_move])
+
+        return max_move
+
+
 # V0-1
 # IDEA : Monotonic Stack + DP (gemini)
 """
