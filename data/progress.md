@@ -60,7 +60,7 @@
 
 - Topological Sorting — Worked Examples
 	- https://yennj12.js.org/CS_basics/cheatsheets/topology_sorting_examples.zh.html
-		- Alien Dictionary — LC 269
+		- 6) Find Eventual Safe States — LC 802
 
 
 
@@ -252,6 +252,8 @@
 				- 269
 				- 444
 				- 1136
+				- 802
+				- 310
 			- Parent map + BFS radiating outward
 				- 863
 		- 2 pointers
