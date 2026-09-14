@@ -279,6 +279,74 @@ const ageDays = Math.round(
 console.log(`  INFO  newest log entry ${lastLogged} (${ageDays}d ago), ` +
   `${progress.stats.attempts} attempts over ${progress.stats.days} days`);
 
+// The catalog the build folds in: without a title and a topic, every row on the
+// page is a bare number, the topic-balance table has nothing to group by, and
+// the planner has no weights to spend its slots on.
+ok('log rows carry README metadata', progress.stats.titled / progress.stats.problems > 0.9,
+   `${progress.stats.titled} of ${progress.stats.problems} problems titled`);
+ok('topics are weighted over the whole README', (progress.sections || []).length > 20,
+   `${(progress.sections || []).length} topics`);
+
+// ── 6b. The planner: the shipped scoring against the shipped log ─────────────
+//
+// Lifted verbatim out of the built page, the way search's score() is above, so
+// a scoring change that empties the plan or spends every slot on one topic
+// fails here rather than shipping a blank panel nobody notices.
+console.log('\n== review plan (shipped planner + shipped log) ==');
+const plannerSrc = (reviewHtml.match(/\/\/ ── planner:start[\s\S]*?\/\/ ── planner:end/) || [])[0];
+ok('planner lifted out of the shipped page', Boolean(plannerSrc));
+
+if (plannerSrc) {
+  const P = new Function(`${plannerSrc}
+    return { planSession, categoryBalance, dueness, scoreRow, intervalFor, streakOf, addDays, toKey, daysBetween };`)();
+
+  const todayKey = P.toKey(new Date());
+  const rows = progress.problems.map(p => {
+    const interval = P.intervalFor(p.dates.length);
+    const lastKey = p.dates[p.dates.length - 1];
+    return {
+      prob: p.id, probStr: String(p.id), dates: p.dates, count: p.dates.length,
+      lastKey, interval, nextKey: P.addDays(lastKey, interval),
+      againCount: p.againCount, emphasis: p.emphasis,
+      section: p.section || 'Unfiled', importance: p.importance || 0,
+      must: !!p.must, lists: p.lists || []
+    };
+  });
+
+  const cats = P.categoryBalance(rows, progress.sections, progress.days, todayKey, 30);
+  const shares = cats.reduce((n, c) => n + c.attentionShare, 0);
+  ok('attention shares add up', Math.abs(shares - 1) < 0.01 || shares === 0, shares.toFixed(3));
+  ok('every practised topic has a balance row',
+     rows.every(r => cats.some(c => c.section === r.section)));
+
+  const plan = P.planSession(rows, cats, { size: 8, balanced: true, todayKey });
+  ok('the planner fills the session it was asked for', plan.length === 8, `${plan.length} picks`);
+  ok('every pick is actually due',
+     plan.every(p => P.dueness(p.row, todayKey) > 0));
+  ok('no pick appears twice', new Set(plan.map(p => p.row.probStr)).size === plan.length);
+  ok('a balanced plan spreads across topics',
+     new Set(plan.map(p => p.row.section)).size >= 3,
+     [...new Set(plan.map(p => p.row.section))].join(', '));
+
+  // The balancing tilts the order, it does not replace it: an unbalanced plan
+  // is still a valid plan, and both must respect the skip list the "show me
+  // different ones" button builds.
+  const flat = P.planSession(rows, cats, { size: 8, balanced: false, todayKey });
+  ok('an unbalanced plan is score-ordered',
+     flat.every((p, i) => i === 0 || flat[i - 1].score >= p.score));
+  const skip = {}; plan.forEach(p => { skip[p.row.probStr] = true; });
+  const next = P.planSession(rows, cats, { size: 8, balanced: true, todayKey, skip });
+  ok('skipped problems do not come back',
+     next.every(p => !skip[p.row.probStr]), `${next.length} fresh picks`);
+
+  // Yesterday counts, or the streak reads 0 every morning before that day's
+  // session is logged.
+  ok('streak counts back from yesterday',
+     P.streakOf([P.addDays(todayKey, -1), P.addDays(todayKey, -2)], todayKey) === 2);
+  ok('streak is 0 after a two-day gap',
+     P.streakOf([P.addDays(todayKey, -3)], todayKey) === 0);
+}
+
 // ── 7. Discoverability ───────────────────────────────────────────────────────
 console.log('\n== seo / metadata ==');
 for (const f of ['sitemap.xml', 'robots.txt', '404.html']) {
@@ -324,7 +392,9 @@ ok('no external script tags', external.length === 0, external.join(' | '));
 // ── 9. Navigation reaches every tool ─────────────────────────────────────────
 console.log('\n== navigation ==');
 const CSNav = require(path.resolve(__dirname, 'nav.js'));
-const entries = [...CSNav.PRIMARY, ...CSNav.MORE];
+// `links()` flattens the dropdown's groups: an entry with children is a label
+// rather than a destination, and has no href to resolve.
+const entries = CSNav.links();
 ok('nav declares entries', entries.length > 0, `${entries.length} entries`);
 const deadNav = entries.filter(e => !e.external && !fs.existsSync(path.join(SITE, e.href)));
 ok('every nav entry resolves to a page', deadNav.length === 0, deadNav.map(e => e.id).join(', '));

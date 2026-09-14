@@ -98,6 +98,49 @@ The annotations are the point: `139(again!!)` and `139(ok)` are different rows.
 `again` beats `ok` when a note says both (`"ok, but again"`), and the bang count
 sorts `again!!!` above a bare `again`.
 
+#### What the build folds in
+
+The log records a bare LeetCode number, which is all a schedule needs and
+nowhere near enough to act on. So `build-review-plan.js` also reads `README.md`
+(via `parseReadmeProblems`) and [`data/problem_lists.json`](data/problem_lists.json),
+and attaches to every row its **title, topic, difficulty, slug, MUST/Google
+flags, curated-list membership and the solutions committed here** — plus a
+top-level `sections` array carrying each topic's weight over the *whole* README,
+not only the rows that happen to be in the log.
+
+- The weights are `script/suggest_review.py`'s (`W` in the module), so the
+  page's balance table and the CLI planner answer the same question the same
+  way. Change one, change the other.
+- The slug comes from the README link, never from the title — guessing is wrong
+  exactly where a dead link costs something (see [`/lc-add`](#adding-a-leetcode-solution--lc-add)).
+- A row README does not index keeps its schedule and lands in `Unfiled`.
+  Enrichment can never shrink the schedule; a test pins that.
+- Solution links ship relative to `payload.repo`, because the absolute form
+  repeated the same 52-character GitHub prefix three times per problem.
+
+#### The planner inside the page
+
+`lc-review-plan.html`'s first panel spends a fixed number of slots rather than
+printing the backlog: score = **how far past its interval** × **what the problem
+is worth** × **how starved its topic is**, then round-robin across topics in
+deficit order, exactly like `suggest_review.py`'s `pick()`. Two things that are
+easy to get wrong and are commented where they live:
+
+- **Overdue-ness is capped** (`DUE_CAP`). This log starts in 2020, so uncapped a
+  problem tried once in 2021 scores 2,300 and the weights contribute nothing —
+  the first plan the page produced was five of those.
+- **Breadth has a floor.** A topic whose best candidate scores under a fraction
+  of the strongest pick is skipped, and the leftover slots are filled by score,
+  so a five-problem session over four live topics still returns five.
+
+Everything between the `planner:start` / `planner:end` markers is pure, and
+`e2e-check.js` lifts that block verbatim out of the **built** page and runs it
+against the built `progress.json` — the same trick it uses for search's
+`score()`. `site/test/review-plan-page.test.js` goes further and boots the whole
+page in jsdom against the real log, because this page's value is entirely in a
+script no build step can see: it has shipped visibly broken twice, once with a
+filter bar wired to handlers that only existed inside `boot()`.
+
 ### The two finishing passes
 
 `finalize-pages.js` and `prune-images.js` run after everything else in `build.sh`,
@@ -136,9 +179,17 @@ Two consequences worth knowing:
 
 `index.html` is a landing page built by `build-site.js`; README lives at
 `problems.html`. Every count on the landing page — problems, cheatsheets, FAQs,
-visualizers, roadmap topics, quiz questions, OK vs AGAIN — is read from the source
-files at build time. **Do not hardcode one**; a typed number is one that goes stale
-the first week nobody re-checks it.
+visualizers, roadmap topics, quiz questions, agent skills, OK vs AGAIN — is read
+from the source files at build time. **Do not hardcode one**; a typed number is
+one that goes stale the first week nobody re-checks it.
+
+The cards are declared as `ENTRY_GROUPS` — three labelled groups (learn,
+practise, look up), not one grid of eleven — and the agent skills have a band of
+their own (`AGENT_SKILLS`, `.skills-band`). They are a different kind of thing
+from the rest of the site: markdown you install into your own agent, working on
+your code rather than on these pages, and as one card reading "Interview coach"
+among ten others that was invisible. A new skill page goes in that band and in
+the navbar's `agent skills` group, not in `ENTRY_GROUPS`.
 
 ### The algorithm visualizers
 
@@ -543,7 +594,8 @@ invariants, and the in-the-room talk track. It is plain markdown with no depende
 Gemini and other agents from the same source.
 
 `site/pages/skills.html` is its page on the site — intro, per-agent install, quick start —
-reached from the navbar's **more → coach** entry and from the landing page's card. It is a
+reached from the navbar's **more → agent skills → lc-coach** entry and from the landing page's
+Agent skills section. It is a
 hand-maintained page like the LC tools, so `build.sh` copies it and `finalize-pages.js` gives
 it the canonical and Open Graph tags. Editing the skill does **not** update that page's prose;
 keep the two in step by hand. Its *links* are enforced — see below.

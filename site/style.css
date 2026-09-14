@@ -814,9 +814,16 @@ h4 > a.header-anchor:hover { text-decoration: underline; }
   text-transform: uppercase; letter-spacing: 0.05em;
 }
 
+/* Three labelled groups rather than one eleven-card wall: the heading answers
+   "am I here to learn, to practise, or to look something up?" before any card
+   has to be read. */
+.entry-section { margin-bottom: 48px; }
+.entry-section h2 { margin-bottom: 4px; }
+.entry-section .section-note { margin-bottom: 16px; }
+
 .entry-grid {
   display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  border: 1px solid var(--border); margin: 16px 0 48px;
+  border: 1px solid var(--border); margin: 16px 0 0;
 }
 .entry-card {
   display: flex; flex-direction: column; gap: 8px;
@@ -830,6 +837,39 @@ h4 > a.header-anchor:hover { text-decoration: underline; }
 
 .section-note { font-size: 15px; color: var(--text-muted); max-width: 70ch; margin: 8px 0 24px; }
 
+/* ── Agent skills ───────────────────────────────────────────────────────────
+   A band, not another row of entry cards: these are markdown you install into
+   your own agent, not a page of this site, and as one card in a grid of eleven
+   the difference was invisible. */
+.skills-band {
+  border: 1px solid var(--border-strong); background: var(--surface);
+  padding: 28px 24px; margin: 0 0 48px;
+}
+.skills-band h2 { margin-top: 0; }
+.skill-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px; margin: 16px 0 20px;
+}
+.skill-card {
+  display: flex; flex-direction: column; gap: 8px;
+  padding: 18px; text-decoration: none; color: var(--text);
+  border: 1px solid var(--border); background: var(--bg);
+  transition: border-color 0.15s;
+}
+.skill-card:hover { border-color: var(--text); }
+.skill-cmd {
+  font-family: var(--mono, ui-monospace, monospace); font-size: 13px;
+  color: var(--text-muted); letter-spacing: 0.02em;
+}
+.skill-title { font-size: 17px; font-weight: 600; }
+.skill-blurb { font-size: 14px; line-height: 1.6; color: var(--text-muted); }
+.skill-install { margin-bottom: 8px; }
+.skills-band .skill-install-code {
+  margin: 0 0 20px; padding: 14px 16px; overflow-x: auto;
+  border: 1px solid var(--border); background: var(--bg);
+  font-size: 13px; line-height: 1.7;
+}
+
 .ref-figures { display: flex; flex-direction: column; gap: 24px; margin-bottom: 40px; }
 .ref-figures figure { margin: 0; border: 1px solid var(--border); padding: 12px; background: var(--surface); }
 .ref-figures img { display: block; width: 100%; height: auto; }
@@ -838,6 +878,8 @@ h4 > a.header-anchor:hover { text-decoration: underline; }
   .hero { padding: 32px 0 28px; }
   .hero h1 { font-size: 32px; }
   .hero-lede { font-size: 16px; }
+  .skills-band { padding: 20px 16px; }
+  .skill-grid { grid-template-columns: 1fr; }
   .entry-card { border-right: none; }
   .stat-cell { border-right: none; border-bottom: 1px solid var(--border); }
   .stat-cell:last-child { border-bottom: none; }

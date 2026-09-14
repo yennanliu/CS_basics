@@ -57,6 +57,14 @@
   // overflow the bar between 768px and 1024px. The roadmap took the slot the
   // random picker held, since the picker's siblings (similar, review) already
   // live down here.
+  //
+  // An entry with `children` is a labelled group inside the menu rather than a
+  // link of its own. The agent skills are the case it exists for: `lc-coach`
+  // and `lc-add` are one family — the same `.claude/skills/` tree, the same
+  // install, the same slash-command convention — and sat as two unrelated
+  // entries with the first of them labelled "coach", which named neither the
+  // command (`/lc-coach`) nor the directory. A group keeps them adjacent and
+  // lets the pair grow without spending a top-level slot per skill.
   var MORE = [
     { id: 'problems',           label: 'problems',   href: 'problems.html' },
     { id: 'patterns',           label: 'patterns',   href: 'patterns.html' },
@@ -65,11 +73,27 @@
     { id: 'lc-random-picker',   label: 'random',     href: 'lc-random-picker.html' },
     { id: 'lc-complexity-quiz', label: 'complexity', href: 'lc-complexity-quiz.html' },
     { id: 'suggest-review',     label: 'suggest',    href: 'suggest-review.html' },
-    { id: 'skills',             label: 'coach',      href: 'skills.html' },
-    { id: 'lc-add',             label: 'lc-add',     href: 'lc-add.html' },
+    { id: 'agent-skills',       label: 'agent skills', children: [
+      { id: 'lc-coach',         label: 'lc-coach',   href: 'skills.html' },
+      { id: 'lc-add',           label: 'lc-add',     href: 'lc-add.html' }
+    ] },
     { id: 'resources',          label: 'resources',  href: 'resources.html' },
     { id: 'github',             label: 'github',     href: 'https://github.com/yennanliu/CS_basics', external: true }
   ];
+
+  // Every entry that is a link, groups flattened. A group header is a label, not
+  // a destination, so it is not one — callers that walk the nav to check each
+  // href resolves (site/e2e-check.js) would otherwise trip over it.
+  function links() {
+    var flat = [];
+    [PRIMARY, MORE].forEach(function (list) {
+      list.forEach(function (item) {
+        if (item.children) flat.push.apply(flat, item.children);
+        else flat.push(item);
+      });
+    });
+    return flat;
+  }
 
   // ── Markup ──────────────────────────────────────────────────────────────
 
@@ -85,8 +109,14 @@
     return item.external ? item.href : (basePath || '') + item.href;
   }
 
+  // True for a page that lives behind the "more" button — including one nested
+  // in a group, or the group's own id.
   function isMoreEntry(id) {
-    for (var i = 0; i < MORE.length; i++) if (MORE[i].id === id) return true;
+    for (var i = 0; i < MORE.length; i++) {
+      if (MORE[i].id === id) return true;
+      var kids = MORE[i].children || [];
+      for (var j = 0; j < kids.length; j++) if (kids[j].id === id) return true;
+    }
     return false;
   }
 
@@ -95,6 +125,21 @@
     if (item.external) attrs += ' target="_blank" rel="noopener"';
     if (item.id === currentPage) attrs += ' class="active"';
     return '<a' + attrs + '>' + esc(item.label) + '</a>';
+  }
+
+  // A dropdown entry: either a link, or a group rendered as a heading with its
+  // children under it. The group is flattened markup rather than a nested
+  // flyout on purpose — a second hover layer is the part of a menu that fails
+  // on touch, and the drawer at <=768px has nowhere to fly out to.
+  function moreEntryHTML(item, currentPage, basePath) {
+    if (!item.children) return linkHTML(item, currentPage, basePath);
+    var open = item.children.some(function (child) { return child.id === currentPage; });
+    return '<div class="nav-group' + (open ? ' active' : '') + '">' +
+      '<span class="nav-group-label">' + esc(item.label) + '</span>' +
+      item.children.map(function (child) {
+        return linkHTML(child, currentPage, basePath);
+      }).join('') +
+    '</div>';
   }
 
   // The button names the language you would switch TO — the same rule the theme
@@ -114,7 +159,7 @@
     options = options || {};
     var currentPage = options.currentPage || '';
     var basePath = options.basePath || '';
-    var links = function (item) { return linkHTML(item, currentPage, basePath); };
+    var link = function (item) { return linkHTML(item, currentPage, basePath); };
 
     // The skip link ships with the navbar rather than with each page, for the
     // same reason the navbar itself does: there are four page families and this
@@ -132,14 +177,16 @@
           '<span></span><span></span><span></span>' +
         '</button>' +
         '<div class="nav-links" id="nav-links">' +
-          PRIMARY.map(links).join('') +
+          PRIMARY.map(link).join('') +
           '<div class="nav-more">' +
             '<button type="button" class="nav-more-btn' +
               (isMoreEntry(currentPage) ? ' active' : '') + '" ' +
               'aria-haspopup="true" aria-expanded="false">' +
               'more <span class="nav-more-caret">▾</span>' +
             '</button>' +
-            '<div class="nav-more-menu">' + MORE.map(links).join('') + '</div>' +
+            '<div class="nav-more-menu">' + MORE.map(function (item) {
+              return moreEntryHTML(item, currentPage, basePath);
+            }).join('') + '</div>' +
           '</div>' +
           langToggleHTML(options.lang, options.langAlt) +
           '<button type="button" id="theme-toggle" class="theme-toggle" ' +
@@ -304,10 +351,12 @@
   return {
     PRIMARY: PRIMARY,
     MORE: MORE,
+    links: links,
     THEME_EVENT: THEME_EVENT,
     esc: esc,
     hrefFor: hrefFor,
     isMoreEntry: isMoreEntry,
+    moreEntryHTML: moreEntryHTML,
     navHTML: navHTML,
     langToggleHTML: langToggleHTML,
     themeLabel: themeLabel,

@@ -101,6 +101,27 @@
 .nav-links .nav-more-menu a:hover { background: var(--nav-hover-bg); color: var(--nav-ink-active); }
 .nav-links .nav-more-menu a.active { color: var(--nav-ink-active); font-weight: 700; }
 
+/* ── A labelled group inside the dropdown ───────────────────────────────────
+   The agent skills (lc-coach, lc-add) are one family and read as one item with
+   two destinations. The label is a heading, not a link: it carries no href, so
+   it is skipped by keyboard navigation rather than being a tab stop that goes
+   nowhere. */
+.nav-more-menu .nav-group {
+  display: flex; flex-direction: column;
+  border-bottom: 1px solid var(--nav-line);
+}
+.nav-more-menu .nav-group:last-child { border-bottom: none; }
+.nav-more-menu .nav-group-label {
+  padding: 8px 14px 4px; font-size: 11px; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--nav-ink); opacity: 0.75;
+  user-select: none;
+}
+/* Indented under the label. The children keep the menu's own separators; the
+   last one loses its border to `a:last-child` above and the group's own border
+   draws the line to whatever follows it. */
+.nav-links .nav-more-menu .nav-group a { padding-left: 26px; }
+.nav-more-menu .nav-group.active .nav-group-label { color: var(--nav-ink-active); opacity: 1; }
+
 /* ── Theme toggle ─── */
 .theme-toggle {
   background: var(--nav-hover-bg); cursor: pointer; color: var(--nav-ink);
@@ -188,6 +209,8 @@
     padding: 14px 20px 14px 36px; font-size: 17px; min-height: 52px;
     border-bottom: 1px solid var(--nav-line);
   }
+  .nav-more-menu .nav-group-label { padding: 10px 20px 4px 36px; font-size: 12px; }
+  .nav-links .nav-more-menu .nav-group a { padding-left: 52px; }
 
   .nav-links a.lang-toggle {
     padding: 14px 20px; font-size: 17px; margin: 0;

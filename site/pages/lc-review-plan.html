@@ -7,6 +7,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <title>Review Plan — CS Basics</title>
+  <meta name="description" content="A spaced-repetition plan built from this repo's own practice log: what is overdue, which problems keep coming back marked again, which topics are getting less practice than their weight deserves, and a session picked for today.">
   <link rel="stylesheet" href="nav.css">
   <link rel="stylesheet" href="lc-page.css">
   <!-- Blocking on purpose: nav.js restores the stored theme before first paint. -->
@@ -26,27 +27,11 @@
     a { color:var(--text); text-decoration:underline; }
     a:hover { opacity:.6; }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /* ── Container ── */
     .container { max-width:1200px; margin:0 auto; padding:32px 32px; }
     h1 { font-size:24px; font-weight:700; margin-bottom:6px; }
-    .subtitle { color:var(--muted); font-size:14px; margin-bottom:28px; }
+    .subtitle { color:var(--muted); font-size:14px; margin-bottom:6px; }
+    .subtitle:last-of-type { margin-bottom:28px; }
 
     /* ── Stats row ── */
     .stats-row {
@@ -60,6 +45,7 @@
     .stat-card:last-child { border-right:none; }
     .stat-num { font-size:28px; font-weight:700; line-height:1; }
     .stat-label { font-size:12px; color:var(--muted); margin-top:6px; text-transform:uppercase; letter-spacing:.05em; }
+    .stat-sub { font-size:11px; color:var(--dim); margin-top:4px; }
 
     /* ── Tabs ── */
     .tabs { display:flex; gap:0; margin-bottom:0; border:1px solid var(--border); border-bottom:none; flex-wrap:wrap; }
@@ -78,6 +64,78 @@
     /* ── Section header ── */
     .sec-header { font-size:13px; font-weight:700; text-transform:uppercase;
                   letter-spacing:.06em; color:var(--muted); margin-bottom:16px; }
+    .sec-header.spaced { margin-top:40px; }
+    .panel-note { font-size:13px; color:var(--muted); margin-bottom:18px; max-width:78ch; }
+
+    /* ── Today's plan ──
+       The page used to answer "what is due?" and stop there. On a day with 60
+       overdue rows that is a wall, not a plan, so this panel spends a fixed
+       number of slots and says why each one got one. */
+    .plan-controls {
+      display:flex; gap:16px; align-items:center; flex-wrap:wrap;
+      padding-bottom:16px; margin-bottom:18px; border-bottom:1px solid var(--border);
+    }
+    .ctl { display:flex; align-items:center; gap:7px; font-size:13px; color:var(--muted); }
+    .ctl select, .ctl input[type=number] {
+      padding:6px 10px; font-family:inherit; font-size:13px;
+      background:var(--surface); border:1px solid var(--border); color:var(--text); cursor:pointer;
+    }
+    .btn {
+      padding:7px 14px; font-family:inherit; font-size:13px; cursor:pointer;
+      background:var(--surface); border:1px solid var(--border-s); color:var(--text);
+      transition:background .15s;
+    }
+    .btn:hover { background:var(--surface2); }
+    .btn.primary { background:var(--text); color:var(--bg); border-color:var(--text); }
+    .btn.primary:hover { opacity:.85; }
+
+    .plan-item {
+      display:grid; grid-template-columns:24px 1fr auto; gap:12px;
+      padding:14px 0; border-bottom:1px solid var(--border); align-items:start;
+    }
+    .plan-item:last-child { border-bottom:none; }
+    .plan-item.done .plan-head { opacity:.45; text-decoration:line-through; }
+    .plan-check { margin-top:5px; width:16px; height:16px; cursor:pointer; accent-color:var(--text); }
+    .plan-head { display:flex; flex-wrap:wrap; gap:8px; align-items:baseline; font-size:15px; }
+    .plan-rank { color:var(--dim); font-size:13px; min-width:22px; }
+    .plan-title { font-weight:600; }
+    .plan-why { display:flex; flex-wrap:wrap; gap:6px; margin-top:7px; }
+    .why {
+      font-size:11px; padding:1px 7px; border:1px solid var(--border);
+      background:var(--surface); color:var(--muted); white-space:nowrap;
+    }
+    .why.urgent { border-color:var(--text); color:var(--text); background:var(--surface2); font-weight:700; }
+    .why.topic { border-style:dashed; }
+    .plan-links { display:flex; flex-direction:column; gap:4px; align-items:flex-end; font-size:12px; }
+    .plan-links a { color:var(--muted); text-decoration:none; border-bottom:1px solid var(--border); }
+    .plan-links a:hover { color:var(--text); }
+    .plan-actions {
+      display:flex; gap:12px; align-items:center; flex-wrap:wrap;
+      margin-top:20px; padding-top:18px; border-top:1px solid var(--border);
+    }
+    .plan-line {
+      flex:1; min-width:240px; padding:8px 12px; font-family:inherit; font-size:13px;
+      background:var(--surface); border:1px solid var(--border); color:var(--text);
+    }
+    .copy-state { font-size:12px; color:var(--muted); }
+
+    /* ── Balance table ── */
+    .bal-table { width:100%; border-collapse:collapse; font-size:13px; }
+    .bal-table th {
+      text-align:left; padding:8px 10px; font-size:11px; text-transform:uppercase;
+      letter-spacing:.05em; border-bottom:2px solid var(--border-s);
+      background:var(--surface); color:var(--muted); white-space:nowrap;
+    }
+    .bal-table td { padding:7px 10px; border-bottom:1px solid var(--border); vertical-align:middle; }
+    .bal-table tr:hover td { background:var(--surface); }
+    .bal-table td.num { text-align:right; white-space:nowrap; }
+    .bal-name { font-weight:600; }
+    .bar-wrap { width:120px; height:10px; background:var(--surface2); display:block; }
+    .bar-fill { height:100%; background:var(--text); display:block; }
+    .bar-fill.att { background:var(--border-s); }
+    .flag { font-size:10px; padding:1px 6px; border:1px solid var(--border); color:var(--muted); }
+    .flag.under { background:var(--text); color:var(--bg); border-color:var(--text); font-weight:700; }
+    .flag.over { background:var(--surface2); }
 
     /* ── Due list — date grouped ── */
     .due-group { margin-bottom:28px; }
@@ -95,23 +153,26 @@
     .due-date-tag.tag-soon    { background:var(--surface2); }
 
     .due-row {
-      display:grid; grid-template-columns:60px 1fr auto;
-      align-items:center; gap:12px; padding:10px 0;
+      display:grid; grid-template-columns:1fr auto;
+      align-items:start; gap:12px; padding:10px 0;
       border-bottom:1px solid var(--border); font-size:15px;
     }
     .due-row:last-child { border-bottom:none; }
     .prob-num { font-weight:700; }
     .prob-num a { text-decoration:none; color:var(--text); }
     .prob-num a:hover { text-decoration:underline; }
-    .prob-history { display:flex; flex-wrap:wrap; gap:4px; align-items:center; }
+    .prob-line { display:flex; flex-wrap:wrap; gap:8px; align-items:baseline; }
+    .prob-title { font-weight:400; }
+    .prob-meta { font-size:12px; color:var(--dim); }
+    .prob-history { display:flex; flex-wrap:wrap; gap:4px; align-items:center; margin-top:6px; }
     .hist-date { font-size:12px; background:var(--surface); border:1px solid var(--border);
                  padding:1px 6px; color:var(--muted); }
     .hist-date.latest { background:var(--surface2); color:var(--text); border-color:var(--border-s); }
     .prob-interval { font-size:13px; color:var(--muted); white-space:nowrap; text-align:right; }
 
     /* ── All Problems table ── */
-    .filter-bar { display:flex; gap:12px; margin-bottom:16px; flex-wrap:wrap; }
-    .filter-bar input {
+    .filter-bar { display:flex; gap:12px; margin-bottom:16px; flex-wrap:wrap; align-items:center; }
+    .filter-bar input[type=text] {
       flex:1; min-width:200px; padding:8px 12px; font-family:inherit; font-size:14px;
       background:var(--surface); border:1px solid var(--border); color:var(--text);
       outline:none;
@@ -169,7 +230,8 @@
     /* ── Freq chart ── */
     .freq-chart { display:flex; flex-direction:column; gap:6px; }
     .freq-row { display:flex; align-items:center; gap:10px; font-size:14px; }
-    .freq-lbl { width:65px; text-align:right; color:var(--muted); flex-shrink:0; font-size:13px; }
+    .freq-lbl { width:190px; text-align:right; color:var(--muted); flex-shrink:0; font-size:12px;
+                white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .freq-bar-wrap { flex:1; background:var(--surface2); height:16px; overflow:hidden; }
     .freq-bar { height:100%; background:var(--text); transition:width .4s; }
     .freq-cnt { width:32px; text-align:right; color:var(--muted); font-size:13px; }
@@ -187,6 +249,7 @@
 
     /* ── Empty / misc ── */
     .empty { color:var(--muted); font-style:italic; font-size:14px; }
+    .more-link { font-size:12px; color:var(--muted); margin-top:14px; }
 
     /* ── Global mobile resets ── */
     html { -webkit-text-size-adjust:100%; text-size-adjust:100%; -webkit-tap-highlight-color:transparent; }
@@ -199,14 +262,6 @@
     /* ── Mobile ≤768px ── */
     @media(max-width:768px) {
       body { font-size:15px; }
-
-
-
-
-
-
-
-
       .container { padding:16px; }
       h1 { font-size:20px; }
       .subtitle { font-size:13px; }
@@ -218,20 +273,27 @@
       .tab-btn { padding:10px 12px; font-size:13px; min-height:44px; }
       .tab-panel { padding:16px; }
 
-      .due-row { grid-template-columns:54px 1fr; gap:8px; font-size:14px; }
+      .due-row { grid-template-columns:1fr; gap:8px; font-size:14px; }
       .prob-interval { display:none; }
       .hist-date { font-size:11px; }
+
+      .plan-item { grid-template-columns:24px 1fr; }
+      .plan-links { flex-direction:row; gap:10px; align-items:center;
+                    grid-column:2; margin-top:8px; }
 
       .all-table-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; }
       .all-table { font-size:13px; }
       .all-table th { font-size:11px; padding:6px 8px; }
       .all-table td { padding:6px 8px; font-size:13px; }
 
-      .filter-bar { flex-direction:column; }
+      .filter-bar { flex-direction:column; align-items:stretch; }
       .filter-bar input, .filter-bar select { min-width:0; width:100%; font-size:16px; min-height:44px; }
 
+      .bal-table-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+      .bar-wrap { width:70px; }
+
       .freq-row { font-size:13px; }
-      .freq-lbl { width:50px; font-size:12px; }
+      .freq-lbl { width:110px; font-size:11px; }
 
       .hm-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; }
 
@@ -249,21 +311,8 @@
     }
     /* ── iOS safe area ── */
     @supports(padding:env(safe-area-inset-left)) {
-
       .container { padding-left:max(16px,env(safe-area-inset-left)); padding-right:max(16px,env(safe-area-inset-right)); }
     }
-  
-
-
-
-
-
-
-
-
-
-
-
   </style>
 </head>
 <body>
@@ -273,29 +322,105 @@
 
 <div class="container">
   <h1>Spaced Repetition Review Plan</h1>
-  <p class="subtitle">Fibonacci intervals: 1 → 2 → 3 → 5 → 8 → 13 → 21 → 34 → 55 days</p>
+  <p class="subtitle">Fibonacci intervals: 1 → 2 → 3 → 5 → 8 → 13 → 21 → 34 → 55 days. Built from <a href="https://github.com/yennanliu/CS_basics/blob/master/data/progress.txt">data/progress.txt</a>, the daily practice log.</p>
   <p class="subtitle" id="data-range">Loading practice log…</p>
 
   <div class="stats-row" id="stats-row"></div>
 
-  <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('due',this)">Due for Review</button>
-    <button class="tab-btn"        onclick="switchTab('all',this)">All Problems</button>
-    <button class="tab-btn"        onclick="switchTab('heatmap',this)">Heatmap</button>
-    <button class="tab-btn"        onclick="switchTab('freq',this)">Frequency</button>
-    <button class="tab-btn"        onclick="switchTab('history',this)">History</button>
+  <div class="tabs" id="tabs">
+    <button class="tab-btn active" data-tab="today">Today's plan</button>
+    <button class="tab-btn"        data-tab="due">Due for review</button>
+    <button class="tab-btn"        data-tab="balance">Topic balance</button>
+    <button class="tab-btn"        data-tab="all">All problems</button>
+    <button class="tab-btn"        data-tab="activity">Activity</button>
+  </div>
+
+  <!-- Today's plan -->
+  <div id="tab-today" class="tab-panel active">
+    <p class="panel-note">
+      A session, not a backlog. Every overdue problem is scored by <b>how far past its interval it is</b>
+      × <b>how much it is worth</b> (MUST, Blind&nbsp;75, NeetCode, Top&nbsp;100 Liked, difficulty)
+      × <b>how often it has come back marked “again”</b>, and the slots are then spent one topic at a time,
+      starting with whichever topic is getting the least practice for its weight — so a good week on DP
+      cannot swallow the whole list. Same scoring as
+      <a href="suggest-review.html">suggest-review</a>, the command-line planner.
+    </p>
+    <div class="plan-controls">
+      <label class="ctl">session
+        <select id="plan-size">
+          <option value="3">3 problems</option>
+          <option value="5" selected>5 problems</option>
+          <option value="8">8 problems</option>
+          <option value="12">12 problems</option>
+          <option value="20">20 problems</option>
+        </select>
+      </label>
+      <label class="ctl"><input type="checkbox" id="plan-balance" checked> spread across topics</label>
+      <label class="ctl"><input type="checkbox" id="plan-again"> only problems marked “again”</label>
+      <button class="btn" type="button" id="plan-next">Show me different ones</button>
+    </div>
+    <div id="plan-list"></div>
+    <div class="plan-actions" id="plan-actions" hidden>
+      <button class="btn primary" type="button" id="plan-copy">Copy log line</button>
+      <input class="plan-line" id="plan-line" readonly aria-label="Today's line for data/progress.txt">
+      <span class="copy-state" id="plan-copy-state"></span>
+    </div>
+    <p class="more-link" id="plan-foot"></p>
   </div>
 
   <!-- Due for review -->
-  <div id="tab-due" class="tab-panel active">
+  <div id="tab-due" class="tab-panel">
     <div id="due-content"></div>
+  </div>
+
+  <!-- Topic balance -->
+  <div id="tab-balance" class="tab-panel">
+    <p class="panel-note">
+      <b>Importance</b> is each topic's share of the whole README — every problem it holds, weighted by
+      MUST, the curated lists and difficulty. <b>Attention</b> is its share of the practice actually logged
+      in the window below, weighted so that yesterday counts for more than three weeks ago, and counting
+      <i>sessions</i> rather than distinct problems: grinding one problem five times is five units spent on
+      that topic. A ratio near 1.0 means a topic is getting its fair share.
+    </p>
+    <div class="plan-controls">
+      <label class="ctl">window
+        <select id="bal-window">
+          <option value="14">last 14 days</option>
+          <option value="30" selected>last 30 days</option>
+          <option value="90">last 90 days</option>
+          <option value="365">last year</option>
+        </select>
+      </label>
+      <label class="ctl"><input type="checkbox" id="bal-hide-empty" checked> hide topics with no weight</label>
+    </div>
+    <div class="bal-table-wrap">
+      <table class="bal-table" id="bal-table">
+        <thead>
+          <tr>
+            <th>Topic</th>
+            <th class="num">Problems</th>
+            <th>Importance</th>
+            <th>Attention</th>
+            <th class="num">Ratio</th>
+            <th></th>
+            <th class="num">Last practised</th>
+          </tr>
+        </thead>
+        <tbody id="bal-tbody"></tbody>
+      </table>
+    </div>
+    <p class="more-link">
+      The command-line version reads git history as well, and can write the plan to markdown:
+      <a href="suggest-review.html">suggest-review</a>.
+    </p>
   </div>
 
   <!-- All problems -->
   <div id="tab-all" class="tab-panel">
     <div class="filter-bar">
-      <input id="prob-search" type="text" placeholder="Search problem # or date…" oninput="filterTable()" disabled>
-      <select id="prob-sort" onchange="sortTable()" disabled>
+      <input id="prob-search" type="text" placeholder="Search number, title or date…" disabled>
+      <select id="prob-topic" disabled><option value="">All topics</option></select>
+      <select id="prob-sort" disabled>
         <option value="num">Sort: Problem #</option>
         <option value="first">Sort: First seen</option>
         <option value="last">Sort: Last seen</option>
@@ -303,20 +428,20 @@
         <option value="next">Sort: Next due</option>
         <option value="again-desc">Sort: Most "again"</option>
       </select>
-      <label class="filter-toggle"><input type="checkbox" id="prob-again-only" onchange="filterTable()" disabled> only "again"</label>
+      <label class="filter-toggle"><input type="checkbox" id="prob-again-only" disabled> only "again"</label>
     </div>
     <div class="all-table-wrap">
       <table class="all-table" id="all-table">
         <thead>
           <tr>
-            <th onclick="setSortCol('num')">Problem <span class="sort-arrow" id="arr-num">↕</span></th>
-            <th onclick="setSortCol('first')">First seen <span class="sort-arrow" id="arr-first">↕</span></th>
-            <th onclick="setSortCol('last')">Last seen <span class="sort-arrow" id="arr-last">↕</span></th>
-            <th onclick="setSortCol('count-desc')">Times <span class="sort-arrow" id="arr-count-desc">↕</span></th>
-            <th onclick="setSortCol('next')">Next review <span class="sort-arrow" id="arr-next">↕</span></th>
-            <th onclick="setSortCol('again-desc')">Again <span class="sort-arrow" id="arr-again-desc">↕</span></th>
+            <th data-col="num">Problem <span class="sort-arrow" id="arr-num">↕</span></th>
+            <th data-col="topic">Topic <span class="sort-arrow" id="arr-topic">↕</span></th>
+            <th data-col="first">First seen <span class="sort-arrow" id="arr-first">↕</span></th>
+            <th data-col="last">Last seen <span class="sort-arrow" id="arr-last">↕</span></th>
+            <th data-col="count-desc">Times <span class="sort-arrow" id="arr-count-desc">↕</span></th>
+            <th data-col="next">Next review <span class="sort-arrow" id="arr-next">↕</span></th>
+            <th data-col="again-desc">Again <span class="sort-arrow" id="arr-again-desc">↕</span></th>
             <th>Status</th>
-            <th>All dates practiced</th>
           </tr>
         </thead>
         <tbody id="all-tbody"></tbody>
@@ -325,8 +450,9 @@
     <div class="all-count" id="all-count"></div>
   </div>
 
-  <!-- Heatmap -->
-  <div id="tab-heatmap" class="tab-panel">
+  <!-- Activity — heatmap, frequency and history, which are three views of the
+       same log and were three tabs nobody had a reason to switch between. -->
+  <div id="tab-activity" class="tab-panel">
     <div class="sec-header">Practice heatmap — last 52 weeks</div>
     <div class="hm-wrap">
       <div class="hm-months" id="hm-months"></div>
@@ -341,32 +467,25 @@
         More
       </div>
     </div>
-  </div>
 
-  <!-- Frequency -->
-  <div id="tab-freq" class="tab-panel">
-    <div class="sec-header">Most practiced problems (top 40)</div>
+    <div class="sec-header spaced">Most practiced problems (top 40)</div>
     <div class="freq-chart" id="freq-chart"></div>
-  </div>
 
-  <!-- History -->
-  <div id="tab-history" class="tab-panel">
-    <div class="sec-header">Recent practice sessions</div>
+    <div class="sec-header spaced">Recent practice sessions</div>
     <div class="tl" id="timeline"></div>
   </div>
 </div>
 
 <script>
-// ── Theme ────────────────────────────────────────────────────────────────
-// ── Tabs ──────────────────────────────────────────────────────────────────
-function switchTab(name, btn) {
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('tab-' + name).classList.add('active');
-}
+// ── planner:start ─────────────────────────────────────────────────────────
+//
+// Everything between these two markers is pure: dates in, numbers out, no DOM
+// and no globals. site/e2e-check.js lifts the block verbatim out of the built
+// page and runs it against the built data/progress.json, so a scoring change
+// that empties the plan fails the build rather than shipping a blank panel.
 
-// ── Date helpers ──────────────────────────────────────────────────────────
+var FIB = [1, 2, 3, 5, 8, 13, 21, 34, 55];
+
 function parseDate(s) {
   return new Date(+s.slice(0,4), +s.slice(4,6)-1, +s.slice(6,8));
 }
@@ -375,13 +494,232 @@ function toKey(d) {
     + String(d.getMonth()+1).padStart(2,'0')
     + String(d.getDate()).padStart(2,'0');
 }
-function fmtKey(k) { return `${k.slice(0,4)}-${k.slice(4,6)}-${k.slice(6,8)}`; }
+function fmtKey(k) { return k.slice(0,4) + '-' + k.slice(4,6) + '-' + k.slice(6,8); }
 function daysBetween(a, b) {
   return Math.round((parseDate(b) - parseDate(a)) / 86400000);
 }
 function addDays(key, n) {
   const d = parseDate(key); d.setDate(d.getDate() + n); return toKey(d);
 }
+
+// The interval a problem has earned: one Fibonacci step per completed pass.
+function intervalFor(count) {
+  return FIB[Math.min(Math.max(count, 1) - 1, FIB.length - 1)];
+}
+
+// How far past its own interval a problem is, in intervals. 1.0 = due exactly
+// today; 0 = practised today; above 1 = overdue.
+//
+// Expressed in intervals rather than in days on purpose: 8 days late on a
+// 1-day interval is a problem that has genuinely fallen out of memory, while 8
+// days late on a 55-day interval is noise.
+//
+// And capped, because this log goes back to 2020: uncapped, a problem tried
+// once in 2021 and never again scores 2,300 and nothing else in the pool can
+// reach it — the first plan this page produced was five of those, with the
+// weights and the "again" marks contributing nothing. Past six intervals a
+// problem is simply forgotten, further staleness says nothing more, and the
+// order inside that tie is decided by what the problem is worth — which is the
+// question the plan is supposed to answer.
+const DUE_CAP = 6;
+
+function dueness(row, todayKey) {
+  const elapsed = daysBetween(row.lastKey, todayKey);
+  return Math.min(Math.max(0, elapsed / row.interval), DUE_CAP);
+}
+
+// Why this problem is worth a slot, before any of the balancing. `importance`
+// is the build's — MUST, the curated lists, difficulty (site/build-review-plan.js
+// carries script/suggest_review.py's weights) — and the log's own "again" count
+// is added here, because a problem the log keeps re-opening is the single best
+// evidence the repo has that it has not been learned.
+//
+// The +1 floor keeps a problem that is on no list schedulable: the plan is a
+// review plan first, and being unfashionable is not a reason never to come up.
+function worth(row) {
+  const again = Math.min(row.againCount, 4) * 0.6 + Math.min(row.emphasis, 3) * 0.2;
+  return 1 + (row.importance || 0) + again;
+}
+
+function scoreRow(row, todayKey, multiplier) {
+  return worth(row) * dueness(row, todayKey) * (multiplier === undefined ? 1 : multiplier);
+}
+
+// Per topic: the share of importance it holds against the share of recent
+// practice it got. `sections` is the whole README universe, so "Linked list is
+// starving" stays a claim about the topic and not about whichever of its
+// problems happen to be in the log already.
+function categoryBalance(rows, sections, days, todayKey, windowDays) {
+  const imp = {}, att = {}, lastSeen = {}, counted = {};
+  let totalImp = 0;
+
+  (sections || []).forEach(function (s) {
+    imp[s.name] = s.importance;
+    counted[s.name] = s.n;
+    totalImp += s.importance;
+  });
+  // A topic that only exists in the log still needs a row, or its practice
+  // vanishes from the denominator and every other ratio is overstated.
+  rows.forEach(function (r) {
+    if (!(r.section in imp)) { imp[r.section] = 0; counted[r.section] = 0; }
+  });
+
+  const sectionOf = {};
+  rows.forEach(function (r) {
+    sectionOf[r.probStr] = r.section;
+    const prev = lastSeen[r.section];
+    if (!prev || r.lastKey > prev) lastSeen[r.section] = r.lastKey;
+  });
+
+  let totalAtt = 0;
+  const halfLife = Math.max(windowDays / 2, 1);
+  (days || []).forEach(function (day) {
+    const age = daysBetween(day.date, todayKey);
+    if (age < 0 || age > windowDays) return;
+    const weight = Math.pow(0.5, age / halfLife);
+    day.items.forEach(function (item) {
+      const section = sectionOf[String(item.id)];
+      if (!section) return;
+      att[section] = (att[section] || 0) + weight;
+      totalAtt += weight;
+    });
+  });
+
+  return Object.keys(imp).map(function (name) {
+    const impShare = totalImp ? imp[name] / totalImp : 0;
+    const attShare = totalAtt ? (att[name] || 0) / totalAtt : 0;
+    return {
+      section: name,
+      n: counted[name] || 0,
+      importance: imp[name],
+      importanceShare: impShare,
+      attentionShare: attShare,
+      // 1.0 = exactly its fair share. A topic with weight and no practice is 0.
+      ratio: impShare ? attShare / impShare : 0,
+      deficit: impShare - attShare,
+      lastKey: lastSeen[name] || null,
+      // Doubles the score of a topic getting nothing, halves one getting twice
+      // its share. Bounded, so balancing tilts the order and never replaces it.
+      multiplier: Math.max(0.4, Math.min(2, impShare ? 1 + (1 - attShare / impShare) : 1))
+    };
+  }).sort(function (a, b) { return b.deficit - a.deficit; });
+}
+
+// Spend `size` slots. Balanced: walk the topics in deficit order and take each
+// one's best remaining candidate in turn, so the list cannot be swallowed by
+// whichever topic is largest or hottest. Unbalanced: straight score order.
+//
+// Breadth has a floor, for the same reason the CLI planner's does: ordering by
+// deficit alone eventually reaches a five-row topic whose best candidate is
+// barely due, which is not worth a slot ahead of a second pass at a MUST. A
+// topic whose best scores under `floorFrac` of the strongest pick is skipped
+// and its slot goes back to the topics that cleared the bar.
+function planSession(rows, cats, opts) {
+  opts = opts || {};
+  const size = opts.size || 5;
+  const skip = opts.skip || {};
+  const floorFrac = opts.floorFrac === undefined ? 0.25 : opts.floorFrac;
+  const multOf = {};
+  (cats || []).forEach(function (c) { multOf[c.section] = c.multiplier; });
+
+  const pool = rows
+    .filter(function (r) { return !skip[r.probStr] && dueness(r, opts.todayKey) > 0; })
+    .map(function (r) {
+      return {
+        row: r,
+        base: scoreRow(r, opts.todayKey, 1),
+        score: scoreRow(r, opts.todayKey, opts.balanced ? (multOf[r.section] || 1) : 1)
+      };
+    })
+    .filter(function (c) { return c.score > 0; })
+    .sort(function (a, b) { return b.score - a.score; });
+
+  if (!opts.balanced) return pool.slice(0, size);
+  if (!pool.length) return [];
+
+  const byCat = {};
+  pool.forEach(function (c) { (byCat[c.row.section] = byCat[c.row.section] || []).push(c); });
+  const order = (cats || []).map(function (c) { return c.section; }).filter(function (s) { return byCat[s]; });
+  Object.keys(byCat).forEach(function (s) { if (order.indexOf(s) === -1) order.push(s); });
+
+  const floor = pool[0].score * floorFrac;
+  const perCat = Math.max(1, Math.ceil(size / 4));
+  const cursor = {}, used = {}, picks = [], taken = {};
+
+  while (picks.length < size) {
+    let progressed = false;
+    for (let i = 0; i < order.length && picks.length < size; i++) {
+      const section = order[i];
+      const queue = byCat[section];
+      if ((used[section] || 0) >= perCat) continue;
+      let index = cursor[section] || 0;
+      while (index < queue.length &&
+             (taken[queue[index].row.probStr] || queue[index].score < floor)) index++;
+      cursor[section] = index + 1;
+      if (index >= queue.length) continue;
+      picks.push(queue[index]);
+      taken[queue[index].row.probStr] = true;
+      used[section] = (used[section] || 0) + 1;
+      progressed = true;
+    }
+    if (!progressed) break;
+  }
+
+  // The cap and the floor are a preference for breadth, not a quota: once every
+  // eligible topic has had its share, the rest of the request is filled by
+  // score. Without this, a five-problem session over a log with four live
+  // topics returns four and reads as a bug.
+  for (let i = 0; i < pool.length && picks.length < size; i++) {
+    if (taken[pool[i].row.probStr]) continue;
+    picks.push(pool[i]);
+    taken[pool[i].row.probStr] = true;
+  }
+  return picks;
+}
+
+// The current run of consecutive days ending today or yesterday — yesterday
+// counts, or the streak would read 0 every morning before the day's session.
+function streakOf(dayKeys, todayKey) {
+  const seen = {};
+  dayKeys.forEach(function (k) { seen[k] = true; });
+  let cursor = seen[todayKey] ? todayKey : addDays(todayKey, -1);
+  if (!seen[cursor]) return 0;
+  let n = 0;
+  while (seen[cursor]) { n++; cursor = addDays(cursor, -1); }
+  return n;
+}
+// ── planner:end ───────────────────────────────────────────────────────────
+
+// ── Tabs ──────────────────────────────────────────────────────────────────
+//
+// The chosen tab survives a reload and is addressable as #balance, so a link
+// can point at the panel it is talking about.
+const TABS = ['today', 'due', 'balance', 'all', 'activity'];
+
+function switchTab(name, remember) {
+  if (TABS.indexOf(name) === -1) return;
+  document.querySelectorAll('.tab-btn').forEach(function (b) {
+    b.classList.toggle('active', b.getAttribute('data-tab') === name);
+  });
+  document.querySelectorAll('.tab-panel').forEach(function (p) {
+    p.classList.toggle('active', p.id === 'tab-' + name);
+  });
+  if (remember === false) return;
+  try { localStorage.setItem('reviewTab', name); } catch (e) { /* private mode */ }
+}
+
+document.getElementById('tabs').addEventListener('click', function (event) {
+  const btn = event.target.closest('.tab-btn');
+  if (btn) switchTab(btn.getAttribute('data-tab'));
+});
+
+(function restoreTab() {
+  const fromHash = location.hash.replace('#', '');
+  if (TABS.indexOf(fromHash) !== -1) return switchTab(fromHash);
+  let stored = null;
+  try { stored = localStorage.getItem('reviewTab'); } catch (e) { /* private mode */ }
+  if (stored) switchTab(stored, false);
+})();
 
 // ── Data ──────────────────────────────────────────────────────────────────
 //
@@ -390,32 +728,41 @@ function addDays(key, n) {
 // pasted into this file as a `const RAW` template literal, which meant the
 // schedule froze on the day someone last remembered to re-paste it — the
 // shipped copy had stopped four months short of the log.
-// The filter bar ships disabled and the sortable <th>s cannot be, so both kinds
-// of inline handler need a global to resolve against while the log is in flight.
-// Without these a click on a column header throws a ReferenceError; boot()
-// overwrites all three with the real implementations.
-window.setSortCol = window.sortTable = window.filterTable = function () {};
-
+//
+// Since then the build also folds in what the log cannot know: each problem's
+// title, topic, difficulty, curated-list membership and the solutions committed
+// to this repo, all read from README.md and data/problem_lists.json.
 fetch('./data/progress.json')
-  .then(res => { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
+  .then(function (res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
   .then(boot)
-  .catch(err => {
+  .catch(function (err) {
     document.getElementById('stats-row').innerHTML = '';
+    document.getElementById('plan-list').innerHTML =
+      '<p class="empty">Could not load the practice log (' + err.message + ').</p>';
     document.getElementById('due-content').innerHTML =
       '<p class="empty">Could not load the practice log (' + err.message + ').</p>';
   });
 
 function boot(data) {
 
+const esc = function (value) {
+  return String(value === null || value === undefined ? '' : value)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+};
+
 const dayMap  = {}; // YYYYMMDD → [prob, ...]
 const probMap = {}; // prob → sorted [YYYYMMDD, ...]
-const statusMap = {}; // prob → { status, againCount, emphasis }
+const metaMap = {}; // prob → everything README knows about it
 
-data.days.forEach(day => { dayMap[day.date] = day.items.map(item => String(item.id)); });
-data.problems.forEach(p => {
-  probMap[p.id] = p.dates.slice();
-  statusMap[p.id] = { status: p.status, againCount: p.againCount, emphasis: p.emphasis };
+data.days.forEach(function (day) {
+  dayMap[day.date] = day.items.map(function (item) { return String(item.id); });
 });
+data.problems.forEach(function (p) {
+  probMap[p.id] = p.dates.slice();
+  metaMap[p.id] = p;
+});
+
+const REPO = data.repo || 'https://github.com/yennanliu/CS_basics/blob/master';
 
 // The log's own verdict on a problem, carried through from its annotation:
 // "139(again!!)" is a very different row from "139(ok)" even when the two have
@@ -423,54 +770,293 @@ data.problems.forEach(p => {
 function statusChip(row) {
   if (row.status === 'again' || row.againCount > 0) {
     const bangs = row.emphasis > 0 ? '!'.repeat(Math.min(row.emphasis, 3)) : '';
-    const label = row.againCount > 1 ? `again ×${row.againCount}${bangs}` : `again${bangs}`;
-    return `<span class="st-chip st-again" title="the log has marked this &quot;again&quot; ${row.againCount} time(s)">${label}</span>`;
+    const label = row.againCount > 1 ? 'again ×' + row.againCount + bangs : 'again' + bangs;
+    return '<span class="st-chip st-again" title="the log has marked this &quot;again&quot; ' +
+      row.againCount + ' time(s)">' + label + '</span>';
   }
   if (row.status === 'todo') return '<span class="st-chip st-todo">todo</span>';
   if (row.status === 'ok')   return '<span class="st-chip st-ok">ok</span>';
   return '';
 }
 
-const FIB = [1, 2, 3, 5, 8, 13, 21, 34, 55];
+// A number is not a problem. Every row the build could match to a README entry
+// now carries its real title and links to the canonical LeetCode page rather
+// than to a search for the digits.
+function lcHref(row) {
+  return row.slug
+    ? 'https://leetcode.com/problems/' + row.slug + '/'
+    : 'https://leetcode.com/problems/?q=' + row.probStr;
+}
+function probLink(row, extraClass) {
+  return '<a class="' + (extraClass || '') + '" href="' + lcHref(row) + '" target="_blank" rel="noopener">#' +
+    row.probStr + '</a>';
+}
+function titleOf(row) { return row.title ? esc(row.title) : ''; }
+
 const today = new Date(); today.setHours(0,0,0,0);
 const todayKey = toKey(today);
 
-// Build dueItems
-const dueItems = Object.entries(probMap).map(([prob, dates]) => {
-  const count  = dates.length;
-  const firstKey = dates[0];
-  const lastKey  = dates[dates.length - 1];
-  const fibIdx = Math.min(count - 1, FIB.length - 1);
-  const interval = FIB[fibIdx];
-  const nextKey  = addDays(lastKey, interval);
-  const st = statusMap[prob] || { status: 'none', againCount: 0, emphasis: 0 };
-  return { prob: +prob, probStr: prob, lastKey, firstKey, nextKey, count, interval, dates,
-           status: st.status, againCount: st.againCount, emphasis: st.emphasis };
+// One row per problem: the log's history, the schedule derived from it, and
+// whatever README knew about the problem.
+const dueItems = Object.keys(probMap).map(function (prob) {
+  const dates = probMap[prob];
+  const meta = metaMap[prob] || {};
+  const count = dates.length;
+  const interval = intervalFor(count);
+  const lastKey = dates[count - 1];
+  return {
+    prob: +prob, probStr: prob, dates: dates, count: count,
+    firstKey: dates[0], lastKey: lastKey,
+    interval: interval, nextKey: addDays(lastKey, interval),
+    status: meta.status || 'none',
+    againCount: meta.againCount || 0,
+    emphasis: meta.emphasis || 0,
+    title: meta.title || null,
+    slug: meta.slug || null,
+    difficulty: meta.difficulty || null,
+    section: meta.section || 'Unfiled',
+    importance: meta.importance || 0,
+    must: !!meta.must,
+    lists: meta.lists || [],
+    solutions: meta.solutions || null
+  };
 });
-dueItems.sort((a,b) => a.nextKey.localeCompare(b.nextKey));
+dueItems.sort(function (a, b) { return a.nextKey.localeCompare(b.nextKey); });
 
 // ── Stats ─────────────────────────────────────────────────────────────────
-const totalDays    = Object.keys(dayMap).length;
-const totalProbs   = Object.keys(probMap).length;
-const overdueCount = dueItems.filter(x => x.nextKey < todayKey).length;
-const todayCount   = dueItems.filter(x => x.nextKey === todayKey).length;
-const weekCount    = dueItems.filter(x => x.nextKey > todayKey && daysBetween(todayKey, x.nextKey) <= 7).length;
+const dayKeys      = Object.keys(dayMap);
+const totalDays    = dayKeys.length;
+const totalProbs   = dueItems.length;
+const overdueCount = dueItems.filter(function (x) { return x.nextKey < todayKey; }).length;
+const todayCount   = dueItems.filter(function (x) { return x.nextKey === todayKey; }).length;
+const weekCount    = dueItems.filter(function (x) {
+  return x.nextKey > todayKey && daysBetween(todayKey, x.nextKey) <= 7;
+}).length;
 // The count that matters most: problems the log keeps marking "again" however
 // many times they have been attempted. A high number here is the reason a
 // review plan exists at all, so it gets a card of its own.
-const againCount   = dueItems.filter(x => x.againCount > 0).length;
+const againCount   = dueItems.filter(function (x) { return x.againCount > 0; }).length;
+const streak       = streakOf(dayKeys, todayKey);
+const last30       = dayKeys.filter(function (k) {
+  const age = daysBetween(k, todayKey);
+  return age >= 0 && age < 30;
+}).reduce(function (n, k) { return n + dayMap[k].length; }, 0);
 
-document.getElementById('stats-row').innerHTML = `
-  <div class="stat-card"><div class="stat-num">${totalProbs}</div><div class="stat-label">Unique Problems</div></div>
-  <div class="stat-card"><div class="stat-num">${totalDays}</div><div class="stat-label">Practice Days</div></div>
-  <div class="stat-card"><div class="stat-num" style="border-bottom:2px solid var(--text)">${overdueCount}</div><div class="stat-label">Overdue</div></div>
-  <div class="stat-card"><div class="stat-num" style="border-bottom:2px solid var(--border-s)">${todayCount}</div><div class="stat-label">Due Today</div></div>
-  <div class="stat-card"><div class="stat-num">${weekCount}</div><div class="stat-label">Due This Week</div></div>
-  <div class="stat-card"><div class="stat-num">${againCount}</div><div class="stat-label">Marked "again"</div></div>
-`;
+document.getElementById('stats-row').innerHTML =
+  '<div class="stat-card"><div class="stat-num" style="border-bottom:2px solid var(--text)">' + overdueCount +
+    '</div><div class="stat-label">Overdue</div></div>' +
+  '<div class="stat-card"><div class="stat-num" style="border-bottom:2px solid var(--border-s)">' + todayCount +
+    '</div><div class="stat-label">Due today</div></div>' +
+  '<div class="stat-card"><div class="stat-num">' + weekCount + '</div><div class="stat-label">Due this week</div></div>' +
+  '<div class="stat-card"><div class="stat-num">' + againCount + '</div><div class="stat-label">Marked "again"</div>' +
+    '<div class="stat-sub">' + (totalProbs ? Math.round(againCount / totalProbs * 100) : 0) + '% of all</div></div>' +
+  '<div class="stat-card"><div class="stat-num">' + streak + '</div><div class="stat-label">Day streak</div>' +
+    '<div class="stat-sub">' + last30 + ' attempts / 30d</div></div>' +
+  '<div class="stat-card"><div class="stat-num">' + totalProbs + '</div><div class="stat-label">Unique problems</div></div>' +
+  '<div class="stat-card"><div class="stat-num">' + totalDays + '</div><div class="stat-label">Practice days</div></div>';
 
 document.getElementById('data-range').textContent =
-  `${fmtKey(data.stats.firstDate)} → ${fmtKey(data.stats.lastDate)} · ${data.stats.attempts} attempts logged`;
+  fmtKey(data.stats.firstDate) + ' → ' + fmtKey(data.stats.lastDate) + ' · ' +
+  data.stats.attempts + ' attempts logged · ' + (data.sections || []).length + ' topics weighted';
+
+// ── Topic balance ─────────────────────────────────────────────────────────
+let cats = [];
+
+function renderBalance() {
+  const windowDays = +document.getElementById('bal-window').value;
+  const hideEmpty = document.getElementById('bal-hide-empty').checked;
+  cats = categoryBalance(dueItems, data.sections, data.days, todayKey, windowDays);
+
+  const scale = Math.max.apply(null, cats.map(function (c) {
+    return Math.max(c.importanceShare, c.attentionShare);
+  }).concat([0.01]));
+
+  const tbody = document.getElementById('bal-tbody');
+  const visible = cats.filter(function (c) {
+    return !hideEmpty || c.importanceShare >= 0.005 || c.attentionShare >= 0.005;
+  });
+
+  tbody.innerHTML = visible.map(function (c) {
+    const flag = c.ratio < 0.5 ? '<span class="flag under">UNDER</span>'
+      : c.ratio > 1.8 ? '<span class="flag over">over</span>' : '';
+    const last = c.lastKey
+      ? (daysBetween(c.lastKey, todayKey) === 0 ? 'today' : daysBetween(c.lastKey, todayKey) + 'd ago')
+      : '—';
+    const bar = function (share, cls) {
+      return '<span class="bar-wrap"><span class="bar-fill ' + cls + '" style="width:' +
+        (share / scale * 100).toFixed(1) + '%"></span></span>';
+    };
+    return '<tr>' +
+      '<td class="bal-name">' + esc(c.section) + '</td>' +
+      '<td class="num">' + c.n + '</td>' +
+      '<td title="' + (c.importanceShare * 100).toFixed(1) + '% of total weight">' + bar(c.importanceShare, 'imp') + '</td>' +
+      '<td title="' + (c.attentionShare * 100).toFixed(1) + '% of recent practice">' + bar(c.attentionShare, 'att') + '</td>' +
+      '<td class="num">' + c.ratio.toFixed(2) + '</td>' +
+      '<td>' + flag + '</td>' +
+      '<td class="num">' + last + '</td>' +
+    '</tr>';
+  }).join('');
+
+  if (!visible.length) tbody.innerHTML = '<tr><td colspan="7" class="empty">No topics to compare.</td></tr>';
+}
+
+document.getElementById('bal-window').addEventListener('change', function () { renderBalance(); renderPlan(); });
+document.getElementById('bal-hide-empty').addEventListener('change', renderBalance);
+renderBalance();
+
+// ── Today's plan ──────────────────────────────────────────────────────────
+const skipped = {};   // problems "show me different ones" has pushed aside
+const done = {};      // ticked off in this session
+
+// The sentence under each pick. It is the whole justification for spending a
+// slot here rather than on the next row down, so it names the schedule, the
+// log's verdict and the topic — never a bare score.
+function reasonsFor(entry) {
+  const row = entry.row;
+  const out = [];
+  const late = daysBetween(row.nextKey, todayKey);
+  if (late > 0) out.push('<span class="why urgent">' + late + 'd overdue</span>');
+  else if (late === 0) out.push('<span class="why urgent">due today</span>');
+  else out.push('<span class="why">due in ' + Math.abs(late) + 'd</span>');
+
+  if (row.againCount > 0) {
+    out.push('<span class="why urgent">came back "again"' +
+      (row.againCount > 1 ? ' ×' + row.againCount : '') + '</span>');
+  }
+  if (row.must) out.push('<span class="why">MUST</span>');
+  ['blind75', 'top100liked', 'neetcode150'].forEach(function (list) {
+    if (row.lists.indexOf(list) !== -1) out.push('<span class="why">' + list + '</span>');
+  });
+  out.push('<span class="why">seen ' + row.count + '× · ' + row.interval + 'd interval</span>');
+
+  const cat = cats.filter(function (c) { return c.section === row.section; })[0];
+  if (cat && cat.ratio < 0.5) {
+    out.push('<span class="why topic">' + esc(row.section) + ' under-practised</span>');
+  }
+  return out.join('');
+}
+
+function solutionLinks(row) {
+  const links = ['<a href="' + lcHref(row) + '" target="_blank" rel="noopener">leetcode</a>'];
+  const solutions = row.solutions || {};
+  Object.keys(solutions).slice(0, 2).forEach(function (lang) {
+    const href = /^https?:/.test(solutions[lang]) ? solutions[lang] : REPO + '/' + solutions[lang];
+    links.push('<a href="' + esc(href) + '" target="_blank" rel="noopener">' + esc(lang.toLowerCase()) + '</a>');
+  });
+  return links.join('');
+}
+
+function renderPlan() {
+  const size = +document.getElementById('plan-size').value;
+  const balanced = document.getElementById('plan-balance').checked;
+  const againOnly = document.getElementById('plan-again').checked;
+
+  const pool = againOnly ? dueItems.filter(function (r) { return r.againCount > 0; }) : dueItems;
+  const picks = planSession(pool, cats, {
+    size: size, balanced: balanced, todayKey: todayKey, skip: skipped
+  });
+
+  const list = document.getElementById('plan-list');
+  const actions = document.getElementById('plan-actions');
+  if (!picks.length) {
+    list.innerHTML = '<p class="empty">Nothing is due — every problem in the log is inside its interval. ' +
+      'Untick the filters above, or pick something new from the <a href="lc-explorer.html">problem explorer</a>.</p>';
+    actions.hidden = true;
+    document.getElementById('plan-foot').textContent = '';
+    return;
+  }
+
+  list.innerHTML = picks.map(function (entry, i) {
+    const row = entry.row;
+    const meta = [row.difficulty, row.section].filter(Boolean).join(' · ');
+    return '<div class="plan-item' + (done[row.probStr] ? ' done' : '') + '" data-prob="' + row.probStr + '">' +
+      '<input class="plan-check" type="checkbox" aria-label="mark #' + row.probStr + ' done"' +
+        (done[row.probStr] ? ' checked' : '') + '>' +
+      '<div>' +
+        '<div class="plan-head">' +
+          '<span class="plan-rank">' + (i + 1) + '.</span>' +
+          '<span class="prob-num">' + probLink(row) + '</span>' +
+          '<span class="plan-title">' + titleOf(row) + '</span>' +
+          (meta ? '<span class="prob-meta">' + esc(meta) + '</span>' : '') +
+        '</div>' +
+        '<div class="plan-why">' + reasonsFor(entry) + '</div>' +
+      '</div>' +
+      '<div class="plan-links">' + solutionLinks(row) + '</div>' +
+    '</div>';
+  }).join('');
+
+  actions.hidden = false;
+  updateLogLine(picks);
+
+  const topics = {};
+  picks.forEach(function (p) { topics[p.row.section] = true; });
+  document.getElementById('plan-foot').textContent =
+    picks.length + ' of ' + pool.filter(function (r) { return dueness(r, todayKey) > 0; }).length +
+    ' problems that are due, across ' + Object.keys(topics).length + ' topics.';
+}
+
+// The line to paste at the bottom of data/progress.txt when the session is
+// over — the log is hand-written, and the page's job ends at handing over
+// something in exactly its format.
+function updateLogLine(picks) {
+  const ticked = picks.filter(function (p) { return done[p.row.probStr]; });
+  const chosen = (ticked.length ? ticked : picks).map(function (p) { return p.row.probStr; });
+  document.getElementById('plan-line').value = todayKey + ': ' + chosen.join(', ');
+}
+
+document.getElementById('plan-list').addEventListener('change', function (event) {
+  const box = event.target.closest('.plan-check');
+  if (!box) return;
+  const item = box.closest('.plan-item');
+  const prob = item.getAttribute('data-prob');
+  done[prob] = box.checked;
+  item.classList.toggle('done', box.checked);
+  updateLogLine(currentPicks());
+});
+
+// Re-derive the visible picks from the DOM rather than holding a second copy in
+// a variable that the next render would leave stale.
+function currentPicks() {
+  return [].slice.call(document.querySelectorAll('.plan-item')).map(function (el) {
+    const prob = el.getAttribute('data-prob');
+    return { row: dueItems.filter(function (r) { return r.probStr === prob; })[0] };
+  });
+}
+
+document.getElementById('plan-next').addEventListener('click', function () {
+  document.querySelectorAll('.plan-item').forEach(function (el) {
+    skipped[el.getAttribute('data-prob')] = true;
+  });
+  renderPlan();
+});
+
+document.getElementById('plan-copy').addEventListener('click', function () {
+  const line = document.getElementById('plan-line');
+  const state = document.getElementById('plan-copy-state');
+  const finish = function (message) {
+    state.textContent = message;
+    setTimeout(function () { state.textContent = ''; }, 2500);
+  };
+  // Clipboard access is denied outright in some browsers and on any page not
+  // served over https, so the selection fallback is the actual path for some
+  // readers rather than a courtesy.
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(line.value)
+      .then(function () { finish('copied — paste it into data/progress.txt'); })
+      .catch(function () { line.select(); finish('press ⌘C / Ctrl-C to copy'); });
+  } else {
+    line.select();
+    finish('press ⌘C / Ctrl-C to copy');
+  }
+});
+
+['plan-size', 'plan-balance', 'plan-again'].forEach(function (id) {
+  document.getElementById(id).addEventListener('change', function () {
+    if (id !== 'plan-size') { for (const key in skipped) delete skipped[key]; }
+    renderPlan();
+  });
+});
+renderPlan();
 
 // ── Due for Review — date-grouped ─────────────────────────────────────────
 (function buildDue() {
@@ -478,13 +1064,11 @@ document.getElementById('data-range').textContent =
 
   // Group by nextKey, show overdue + next 60 days
   const cutoff = addDays(todayKey, 60);
-  const visible = dueItems.filter(x => x.nextKey <= cutoff);
+  const visible = dueItems.filter(function (x) { return x.nextKey <= cutoff; });
 
-  // Group by date
   const byDate = {};
-  visible.forEach(item => {
-    if (!byDate[item.nextKey]) byDate[item.nextKey] = [];
-    byDate[item.nextKey].push(item);
+  visible.forEach(function (item) {
+    (byDate[item.nextKey] = byDate[item.nextKey] || []).push(item);
   });
 
   const dates = Object.keys(byDate).sort();
@@ -493,48 +1077,55 @@ document.getElementById('data-range').textContent =
     return;
   }
 
-  // Sections: overdue, today, upcoming
   let overdueHTML = '', todayHTML = '', upcomingHTML = '';
 
-  dates.forEach(dateKey => {
+  dates.forEach(function (dateKey) {
     const items = byDate[dateKey];
     const diff = daysBetween(todayKey, dateKey); // negative = overdue
     const isOverdue = dateKey < todayKey;
     const isToday   = dateKey === todayKey;
 
     let tagClass = '', tagText = '';
-    if (isOverdue) { tagClass = 'tag-overdue'; tagText = `${Math.abs(diff)}d overdue`; }
+    if (isOverdue) { tagClass = 'tag-overdue'; tagText = Math.abs(diff) + 'd overdue'; }
     else if (isToday) { tagClass = 'tag-today'; tagText = 'today'; }
     else if (diff === 1) { tagClass = 'tag-soon'; tagText = 'tomorrow'; }
-    else if (diff <= 7) { tagClass = 'tag-soon'; tagText = `in ${diff} days`; }
-    else { tagText = `in ${diff} days`; }
+    else if (diff <= 7) { tagClass = 'tag-soon'; tagText = 'in ' + diff + ' days'; }
+    else { tagText = 'in ' + diff + ' days'; }
 
     let rowsHTML = '';
     // Within one due date, the problems still coming back "again" go first —
     // that is the queue you want to start at when the day's list is long.
-    items.sort((a,b) => (b.againCount - a.againCount) || (b.emphasis - a.emphasis) || (a.prob - b.prob))
-      .forEach(row => {
-      const { probStr, dates: dArr, count, interval } = row;
-      const datesHTML = dArr.map((d,i) =>
-        `<span class="hist-date${i===dArr.length-1?' latest':''}">${fmtKey(d)}</span>`
-      ).join('');
-      rowsHTML += `
-        <div class="due-row">
-          <div class="prob-num"><a href="https://leetcode.com/problems/?q=${probStr}" target="_blank">#${probStr}</a>${statusChip(row)}</div>
-          <div class="prob-history">${datesHTML}</div>
-          <div class="prob-interval">×${count} · next: ${interval}d</div>
-        </div>`;
+    items.sort(function (a, b) {
+      return (b.againCount - a.againCount) || (b.emphasis - a.emphasis) || (a.prob - b.prob);
+    }).forEach(function (row) {
+      const datesHTML = row.dates.map(function (d, i) {
+        return '<span class="hist-date' + (i === row.dates.length - 1 ? ' latest' : '') + '">' + fmtKey(d) + '</span>';
+      }).join('');
+      const meta = [row.difficulty, row.section].filter(Boolean).join(' · ');
+      rowsHTML +=
+        '<div class="due-row">' +
+          '<div>' +
+            '<div class="prob-line">' +
+              '<span class="prob-num">' + probLink(row) + '</span>' +
+              '<span class="prob-title">' + titleOf(row) + '</span>' +
+              statusChip(row) +
+              (meta ? '<span class="prob-meta">' + esc(meta) + '</span>' : '') +
+            '</div>' +
+            '<div class="prob-history">' + datesHTML + '</div>' +
+          '</div>' +
+          '<div class="prob-interval">×' + row.count + ' · next: ' + row.interval + 'd</div>' +
+        '</div>';
     });
 
-    const groupHTML = `
-      <div class="due-group">
-        <div class="due-date-header">
-          <span class="due-date">${fmtKey(dateKey)}</span>
-          <span class="due-date-tag ${tagClass}">${tagText}</span>
-          <span style="font-size:12px;color:var(--dim);margin-left:auto">${items.length} problem${items.length>1?'s':''}</span>
-        </div>
-        ${rowsHTML}
-      </div>`;
+    const groupHTML =
+      '<div class="due-group">' +
+        '<div class="due-date-header">' +
+          '<span class="due-date">' + fmtKey(dateKey) + '</span>' +
+          '<span class="due-date-tag ' + tagClass + '">' + tagText + '</span>' +
+          '<span style="font-size:12px;color:var(--dim);margin-left:auto">' + items.length +
+            ' problem' + (items.length > 1 ? 's' : '') + '</span>' +
+        '</div>' + rowsHTML +
+      '</div>';
 
     if (isOverdue) overdueHTML += groupHTML;
     else if (isToday) todayHTML += groupHTML;
@@ -542,25 +1133,37 @@ document.getElementById('data-range').textContent =
   });
 
   let html = '';
-  if (overdueHTML) html += `<div class="sec-header" style="color:var(--text)">── OVERDUE ──────────────────────────</div>${overdueHTML}`;
-  if (todayHTML)   html += `<div class="sec-header" style="margin-top:${overdueHTML?'24px':'0'}">── TODAY ────────────────────────────</div>${todayHTML}`;
-  if (upcomingHTML) html += `<div class="sec-header" style="margin-top:24px">── UPCOMING (next 60 days) ──────────</div>${upcomingHTML}`;
+  if (overdueHTML) html += '<div class="sec-header" style="color:var(--text)">── OVERDUE ──────────────────────────</div>' + overdueHTML;
+  if (todayHTML)   html += '<div class="sec-header" style="margin-top:' + (overdueHTML ? '24px' : '0') + '">── TODAY ────────────────────────────</div>' + todayHTML;
+  if (upcomingHTML) html += '<div class="sec-header" style="margin-top:24px">── UPCOMING (next 60 days) ──────────</div>' + upcomingHTML;
 
   container.innerHTML = html;
 })();
 
 // ── All Problems table ────────────────────────────────────────────────────
-let allRows = dueItems.map(item => ({...item}));
+let allRows = dueItems.slice();
 let sortCol = 'num';
 let sortAsc = true;
+
+(function fillTopics() {
+  const select = document.getElementById('prob-topic');
+  const names = {};
+  dueItems.forEach(function (r) { names[r.section] = (names[r.section] || 0) + 1; });
+  Object.keys(names).sort().forEach(function (name) {
+    const option = document.createElement('option');
+    option.value = name;
+    option.textContent = name + ' (' + names[name] + ')';
+    select.appendChild(option);
+  });
+})();
 
 function setSortCol(col) {
   if (sortCol === col) sortAsc = !sortAsc;
   else { sortCol = col; sortAsc = col !== 'count-desc' && col !== 'again-desc'; }
-  document.getElementById('prob-sort').value = col;
+  const picker = document.getElementById('prob-sort');
+  if ([].some.call(picker.options, function (o) { return o.value === col; })) picker.value = col;
   renderAllTable();
-  // update arrows
-  ['num','first','last','count-desc','next','again-desc'].forEach(c => {
+  ['num','topic','first','last','count-desc','next','again-desc'].forEach(function (c) {
     const el = document.getElementById('arr-' + c);
     if (el) el.textContent = c === sortCol ? (sortAsc ? '↑' : '↓') : '↕';
     const th = el && el.parentElement;
@@ -568,26 +1171,29 @@ function setSortCol(col) {
   });
 }
 
-function sortTable() { setSortCol(document.getElementById('prob-sort').value); }
-
 function filterTable() {
   const q = document.getElementById('prob-search').value.trim().toLowerCase();
+  const topic = document.getElementById('prob-topic').value;
   const againOnly = document.getElementById('prob-again-only').checked;
-  allRows = dueItems.filter(r =>
-    (!againOnly || r.againCount > 0) && (
-      r.probStr.includes(q) ||
-      r.firstKey.includes(q.replace(/-/g,'')) ||
-      r.lastKey.includes(q.replace(/-/g,'')) ||
-      r.dates.some(d => fmtKey(d).includes(q))
-    )
-  );
+  const bare = q.replace(/-/g, '');
+  allRows = dueItems.filter(function (r) {
+    if (againOnly && !r.againCount) return false;
+    if (topic && r.section !== topic) return false;
+    if (!q) return true;
+    return r.probStr.indexOf(bare) !== -1 ||
+      (r.title && r.title.toLowerCase().indexOf(q) !== -1) ||
+      r.firstKey.indexOf(bare) !== -1 ||
+      r.lastKey.indexOf(bare) !== -1 ||
+      r.dates.some(function (d) { return fmtKey(d).indexOf(q) !== -1; });
+  });
   renderAllTable();
 }
 
 function renderAllTable() {
-  const sorted = [...allRows].sort((a,b) => {
+  const sorted = allRows.slice().sort(function (a, b) {
     let va, vb;
     if (sortCol === 'num')        { va=a.prob;       vb=b.prob; }
+    else if (sortCol === 'topic') { va=a.section;    vb=b.section; }
     else if (sortCol === 'first') { va=a.firstKey;   vb=b.firstKey; }
     else if (sortCol === 'last')  { va=a.lastKey;    vb=b.lastKey; }
     else if (sortCol === 'count-desc') { va=a.count; vb=b.count; }
@@ -599,42 +1205,42 @@ function renderAllTable() {
     return 0;
   });
 
-  const tbody = document.getElementById('all-tbody');
-  tbody.innerHTML = '';
-  sorted.forEach(row => {
-    const { probStr, firstKey, lastKey, nextKey, count, interval, dates: dArr } = row;
-    const diff = daysBetween(todayKey, nextKey);
-    const isOverdue = nextKey < todayKey;
-    const isToday   = nextKey === todayKey;
+  document.getElementById('all-tbody').innerHTML = sorted.map(function (row) {
+    const diff = daysBetween(todayKey, row.nextKey);
     let statusClass = '', statusText = '';
-    if (isOverdue) { statusClass='overdue'; statusText=`${Math.abs(diff)}d overdue`; }
-    else if (isToday) { statusClass='today'; statusText='due today'; }
-    else { statusText=`in ${diff}d`; }
+    if (row.nextKey < todayKey) { statusClass='overdue'; statusText=Math.abs(diff) + 'd overdue'; }
+    else if (row.nextKey === todayKey) { statusClass='today'; statusText='due today'; }
+    else { statusText='in ' + diff + 'd'; }
 
-    const allDatesHTML = dArr.map((d,i) =>
-      `<span class="hist-date${i===dArr.length-1?' latest':''}">${fmtKey(d)}</span>`
-    ).join(' ');
-
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td><a class="prob-link" href="https://leetcode.com/problems/?q=${probStr}" target="_blank">#${probStr}</a> ${statusChip(row)}</td>
-      <td>${fmtKey(firstKey)}</td>
-      <td>${fmtKey(lastKey)}</td>
-      <td>${count}×</td>
-      <td>${fmtKey(nextKey)}<br><span style="font-size:11px;color:var(--muted)">interval: ${interval}d</span></td>
-      <td>${row.againCount ? row.againCount + '×' : '—'}</td>
-      <td><span class="status-pill ${statusClass}">${statusText}</span></td>
-      <td><div style="display:flex;flex-wrap:wrap;gap:3px">${allDatesHTML}</div></td>`;
-    tbody.appendChild(tr);
-  });
+    return '<tr>' +
+      '<td>' + probLink(row, 'prob-link') + ' ' + titleOf(row) + ' ' + statusChip(row) + '</td>' +
+      '<td>' + esc(row.section) + (row.difficulty ? '<br><span class="prob-meta">' + esc(row.difficulty) + '</span>' : '') + '</td>' +
+      '<td>' + fmtKey(row.firstKey) + '</td>' +
+      '<td>' + fmtKey(row.lastKey) + '</td>' +
+      '<td>' + row.count + '×</td>' +
+      '<td>' + fmtKey(row.nextKey) + '<br><span class="prob-meta">interval: ' + row.interval + 'd</span></td>' +
+      '<td>' + (row.againCount ? row.againCount + '×' : '—') + '</td>' +
+      '<td><span class="status-pill ' + statusClass + '">' + statusText + '</span></td>' +
+    '</tr>';
+  }).join('');
 
   document.getElementById('all-count').textContent =
-    `Showing ${sorted.length} of ${dueItems.length} problems`;
+    'Showing ' + sorted.length + ' of ' + dueItems.length + ' problems';
 }
 
-// Initial render with default sort
-allRows = dueItems;
+document.getElementById('prob-search').addEventListener('input', filterTable);
+document.getElementById('prob-topic').addEventListener('change', filterTable);
+document.getElementById('prob-again-only').addEventListener('change', filterTable);
+document.getElementById('prob-sort').addEventListener('change', function () { setSortCol(this.value); });
+document.querySelectorAll('#all-table th[data-col]').forEach(function (th) {
+  th.addEventListener('click', function () { setSortCol(th.getAttribute('data-col')); });
+});
 renderAllTable();
+
+// Safe to accept input only now that the handlers above are wired.
+['prob-search', 'prob-topic', 'prob-sort', 'prob-again-only'].forEach(function (id) {
+  document.getElementById(id).disabled = false;
+});
 
 // ── Heatmap ───────────────────────────────────────────────────────────────
 (function buildHeatmap() {
@@ -655,7 +1261,7 @@ renderAllTable();
     const cell = document.createElement('div');
     cell.className = 'hm-cell';
     cell.style.background = colors[Math.min(cnt, 4)];
-    if (cnt) cell.title = `${fmtKey(key)}: ${cnt} problem${cnt>1?'s':''}`;
+    if (cnt) cell.title = fmtKey(key) + ': ' + cnt + ' problem' + (cnt > 1 ? 's' : '');
     grid.appendChild(cell);
 
     if (cur.getMonth() !== lastMo) {
@@ -673,52 +1279,41 @@ renderAllTable();
 
 // ── Frequency ─────────────────────────────────────────────────────────────
 (function buildFreq() {
-  const sorted = Object.entries(probMap)
-    .sort((a,b) => b[1].length - a[1].length).slice(0, 40);
-  const max = sorted[0][1].length;
+  const sorted = dueItems.slice().sort(function (a, b) { return b.count - a.count; }).slice(0, 40);
+  const max = sorted.length ? sorted[0].count : 1;
   const el = document.getElementById('freq-chart');
-  sorted.forEach(([prob, dates]) => {
-    const pct = (dates.length / max * 100).toFixed(1);
-    const div = document.createElement('div');
-    div.className = 'freq-row';
-    div.innerHTML = `
-      <span class="freq-lbl">#${prob}</span>
-      <div class="freq-bar-wrap"><div class="freq-bar" style="width:${pct}%"></div></div>
-      <span class="freq-cnt">${dates.length}×</span>`;
-    el.appendChild(div);
-  });
+  el.innerHTML = sorted.map(function (row) {
+    const pct = (row.count / max * 100).toFixed(1);
+    const label = '#' + row.probStr + (row.title ? ' ' + row.title : '');
+    return '<div class="freq-row">' +
+      '<span class="freq-lbl" title="' + esc(label) + '">' + esc(label) + '</span>' +
+      '<div class="freq-bar-wrap"><div class="freq-bar" style="width:' + pct + '%"></div></div>' +
+      '<span class="freq-cnt">' + row.count + '×</span>' +
+    '</div>';
+  }).join('');
 })();
 
 // ── History ───────────────────────────────────────────────────────────────
 (function buildHistory() {
   const el = document.getElementById('timeline');
-  const days = Object.keys(dayMap).filter(k => k <= todayKey).sort().reverse();
+  const days = Object.keys(dayMap).filter(function (k) { return k <= todayKey; }).sort().reverse().slice(0, 120);
   if (!days.length) { el.innerHTML='<p class="empty">No data.</p>'; return; }
-  days.forEach(key => {
-    const probs = [...new Set(dayMap[key])].sort((a,b)=>+a-+b);
+  el.innerHTML = days.map(function (key) {
+    const probs = dayMap[key].filter(function (p, i, arr) { return arr.indexOf(p) === i; })
+      .sort(function (a, b) { return +a - +b; });
     const isToday = key === todayKey;
-    const div = document.createElement('div');
-    div.className = 'tl-item';
-    div.innerHTML = `
-      <div class="tl-dot${isToday?' today':''}"></div>
-      <div class="tl-date">${fmtKey(key)}${isToday?' (today)':''} — ${probs.length} problem${probs.length>1?'s':''}</div>
-      <div class="tl-probs">${probs.map(p=>`<span class="tl-tag">#${p}</span>`).join('')}</div>`;
-    el.appendChild(div);
-  });
+    const tags = probs.map(function (p) {
+      const meta = metaMap[p];
+      return '<span class="tl-tag" title="' + esc(meta && meta.title ? meta.title : 'not in README') + '">#' + p + '</span>';
+    }).join('');
+    return '<div class="tl-item">' +
+      '<div class="tl-dot' + (isToday ? ' today' : '') + '"></div>' +
+      '<div class="tl-date">' + fmtKey(key) + (isToday ? ' (today)' : '') + ' — ' + probs.length +
+        ' problem' + (probs.length > 1 ? 's' : '') + '</div>' +
+      '<div class="tl-probs">' + tags + '</div>' +
+    '</div>';
+  }).join('');
 })();
-
-// The table's controls are inline onclick/oninput/onchange handlers, which
-// resolve against the global scope. The page's code now lives inside boot() so
-// that it can run after the log has been fetched, so they need re-exporting.
-window.setSortCol  = setSortCol;
-window.sortTable   = sortTable;
-window.filterTable = filterTable;
-
-// Safe to accept input only now that the handlers above are the real ones.
-['prob-search', 'prob-sort', 'prob-again-only'].forEach(function (id) {
-  var el = document.getElementById(id);
-  if (el) el.disabled = false;
-});
 
 } // ── end boot() ───────────────────────────────────────────────────────────
 </script>

@@ -3,7 +3,8 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 
-const { parseProgress, classify, splitTopLevel, aggregate, mergeDays, buildPayload } =
+const { parseProgress, classify, splitTopLevel, aggregate, mergeDays, buildPayload,
+        importance, buildCatalog, attachCatalog, relativeSolutions, slugFromUrl, UNFILED } =
   require('../build-review-plan.js');
 
 const ROOT = path.join(__dirname, '..', '..');
@@ -214,6 +215,139 @@ test('the real data/progress.txt parses cleanly', () => {
       `implausible problem id ${problem.id}`);
     assert.ok(problem.dates.length > 0);
     assert.ok(problem.againCount <= problem.dates.length);
+  }
+});
+
+// ── The catalog ─────────────────────────────────────────────────────────────
+//
+// The log records a bare LeetCode number. Everything else the review page shows
+// — the title, the topic, whether the problem is on Blind 75, where this repo's
+// own solution is — comes from README.md and data/problem_lists.json, folded in
+// here rather than turned into a leetcode.com search at read time.
+
+const README_FIXTURE = [
+  '## Array',
+  '',
+  '| # | Title | Solution | Time | Space | Difficulty | Note | Status |',
+  '|---|-------|----------|------|-------|------------|------|--------|',
+  '| 1 | [Two Sum](https://leetcode.com/problems/two-sum/) | [Python](./leetcode_python/Array/two-sum.py) | O(n) | O(n) | Easy | google | OK |',
+  '| 42 | [Trapping Rain Water](https://leetcode.com/problems/trapping-rain-water/) | [Java](./leetcode_java/Trap.java) | O(n) | O(1) | Hard | amazon | MUST |',
+  '',
+  '## Linked list',
+  '',
+  '| # | Title | Solution | Time | Space | Difficulty | Note | Status |',
+  '|---|-------|----------|------|-------|------------|------|--------|',
+  '| 206 | [Reverse Linked List](https://leetcode.com/problems/reverse-linked-list/) |  | O(n) | O(1) | Easy |  | AGAIN |'
+].join('\n');
+
+const LISTS_FIXTURE = {
+  problems: [
+    { id: '1', title: 'Two Sum', slug: 'two-sum', difficulty: 'Easy', lists: ['blind75', 'neetcode150'] },
+    { id: '206', title: 'Reverse Linked List', slug: 'reverse-linked-list', difficulty: 'Easy', lists: ['neetcode250'] },
+    { id: '9999', title: 'Not In Readme', slug: 'not-in-readme', difficulty: 'Medium', lists: ['blind75'] }
+  ]
+};
+
+test('the catalog carries title, topic, difficulty and slug off the README row', () => {
+  const { byId } = buildCatalog(README_FIXTURE, LISTS_FIXTURE);
+  assert.equal(byId.get('1').title, 'Two Sum');
+  assert.equal(byId.get('1').section, 'Array');
+  assert.equal(byId.get('1').difficulty, 'Easy');
+  assert.equal(byId.get('206').section, 'Linked list');
+});
+
+test('the slug comes from the README link, never guessed from the title', () => {
+  // LC 4038's method name and its slug disagree; guessing is wrong exactly
+  // where being wrong costs a dead link.
+  assert.equal(slugFromUrl('https://leetcode.com/problems/two-sum/'), 'two-sum');
+  assert.equal(slugFromUrl('https://leetcode.com/problems/two-sum/description/'), 'two-sum');
+  assert.equal(slugFromUrl('https://example.com/nope'), null);
+  assert.equal(slugFromUrl(undefined), null);
+});
+
+test('importance uses the CLI planner\'s weights, and the NeetCode lists nest', () => {
+  // MUST 5 + Hard 0.3
+  assert.equal(importance({ must: true, difficulty: 'Hard' }), 5.3);
+  // blind75 wins outright — a Blind 75 problem is on all four NeetCode lists,
+  // and crediting each would weight it four times.
+  assert.equal(importance({ difficulty: 'Easy', lists: ['blind75', 'neetcode150', 'neetcode250'] }), 2.5);
+  assert.equal(importance({ difficulty: 'Easy', lists: ['neetcode150', 'neetcode250'] }), 1.5);
+  assert.equal(importance({ difficulty: 'Medium', lists: ['top100liked'] }), 3.0);
+  assert.equal(importance({ difficulty: 'Easy' }), 0);
+});
+
+test('section weights cover the whole README, not just the practised rows', () => {
+  const { sections } = buildCatalog(README_FIXTURE, LISTS_FIXTURE);
+  const array = sections.find((s) => s.name === 'Array');
+  assert.equal(array.n, 2);
+  // LC 1: google 1.5 + blind75 2.5 = 4.0 ; LC 42: MUST 5 + Hard 0.3 = 5.3
+  assert.equal(array.importance, 9.3);
+  // Sorted heaviest first, so the page can show the topics that matter.
+  assert.deepEqual(sections.map((s) => s.name).slice(0, 1), ['Array']);
+});
+
+test('a curated-list problem README has never indexed still gets a weight', () => {
+  const { byId, sections } = buildCatalog(README_FIXTURE, LISTS_FIXTURE);
+  assert.equal(byId.get('9999').section, UNFILED);
+  assert.ok(sections.find((s) => s.name === UNFILED));
+});
+
+test('solution links ship relative to the repo root, not as three full URLs each', () => {
+  const rel = relativeSolutions({
+    Python: 'https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/two-sum.py',
+    Other: 'https://example.com/elsewhere.py'
+  });
+  assert.equal(rel.Python, 'leetcode_python/Array/two-sum.py');
+  assert.equal(rel.Other, 'https://example.com/elsewhere.py', 'a foreign link is left alone');
+  assert.equal(relativeSolutions({}), undefined);
+});
+
+test('a problem the catalog does not know keeps its schedule and lands in Unfiled', () => {
+  const problems = attachCatalog(
+    [{ id: 1, dates: ['20260101'], againCount: 0 }, { id: 7777, dates: ['20260102'], againCount: 1 }],
+    buildCatalog(README_FIXTURE, LISTS_FIXTURE));
+  assert.equal(problems[0].title, 'Two Sum');
+  assert.equal(problems[1].title, undefined);
+  assert.equal(problems[1].section, UNFILED);
+  assert.equal(problems[1].importance, 0);
+  // The schedule is untouched either way — enrichment can never shrink it.
+  assert.deepEqual(problems.map((p) => p.dates.length), [1, 1]);
+});
+
+test('buildPayload works with no catalog at all', () => {
+  const { payload } = buildPayload('20260831: 1(ok), 42(again)');
+  assert.equal(payload.problems.length, 2);
+  assert.deepEqual(payload.sections, []);
+  assert.equal(payload.problems[0].title, undefined);
+});
+
+test('buildPayload folds the catalog into the problems it emits', () => {
+  const { payload } = buildPayload('20260831: 1(ok), 206(again!!)',
+    buildCatalog(README_FIXTURE, LISTS_FIXTURE));
+  const byId = new Map(payload.problems.map((p) => [p.id, p]));
+  assert.equal(byId.get(1).title, 'Two Sum');
+  assert.equal(byId.get(1).solutions.Python, 'leetcode_python/Array/two-sum.py');
+  assert.equal(byId.get(206).section, 'Linked list');
+  assert.equal(byId.get(206).againCount, 1);
+  assert.equal(payload.stats.titled, 2);
+  assert.ok(payload.repo.startsWith('https://github.com/'));
+});
+
+test('the real README and problem lists enrich almost all of the real log', () => {
+  const catalog = require('../build-review-plan.js').loadCatalog(ROOT);
+  const raw = fs.readFileSync(path.join(ROOT, 'data', 'progress.txt'), 'utf8');
+  const { payload } = buildPayload(raw, catalog);
+
+  assert.ok(payload.sections.length > 20, `only ${payload.sections.length} topics weighted`);
+  const ratio = payload.stats.titled / payload.stats.problems;
+  assert.ok(ratio > 0.95,
+    `only ${payload.stats.titled} of ${payload.stats.problems} problems matched a README row`);
+
+  for (const problem of payload.problems) {
+    if (!problem.title) continue;
+    assert.ok(problem.section, `#${problem.id} has no topic`);
+    assert.ok(typeof problem.importance === 'number', `#${problem.id} has no weight`);
+    if (problem.slug) assert.match(problem.slug, /^[a-z0-9-]+$/);
   }
 });
 
