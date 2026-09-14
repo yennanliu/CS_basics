@@ -60,7 +60,7 @@
 
 - Topological Sorting — Worked Examples
 	- https://yennj12.js.org/CS_basics/cheatsheets/topology_sorting_examples.zh.html
-		- Course Schedule — LC 207
+		- Alien Dictionary — LC 269
 
 
 
@@ -249,6 +249,9 @@
 			- topological sort
 				- 207
 				- 1361
+				- 269
+				- 444
+				- 1136
 			- Parent map + BFS radiating outward
 				- 863
 		- 2 pointers
