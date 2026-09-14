@@ -102,6 +102,136 @@ class Solution(object):
 
 
 # V0-2
+# IDEA: 2D DP (gpt)
+"""
+DP def
+
+    dp[i][j] = True
+
+    -> s[i:j+1] 是否為 palindrome。
+
+
+DP eq
+
+    ```
+        dp[i][j] =
+            True,  if s[i] == s[j] and (j-i == 1 or dp[i+1][j-1])
+            False, otherwise
+    ```
+
+
+----
+
+
+CORE IDEA:
+
+    兩端相同 + 中間是 palindrome → 整段就是 palindrome。
+
+
+"""
+class Solution(object):
+    def longestPalindrome(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        # edge
+        if not s:
+            return ""
+
+        n = len(s)
+
+        # dp[i][j] = whether s[i:j+1] is a palindrome
+        dp = [[False] * n for _ in range(n)]
+
+        # single character is always palindrome
+        for i in range(n):
+            dp[i][i] = True
+
+        start = 0
+        max_len = 1
+
+        # length = 2 ~ n
+        for length in range(2, n + 1):
+            for i in range(n - length + 1):
+                j = i + length - 1
+
+                # first and last chars must be the same
+                if s[i] == s[j]:
+                    # length 2: "aa"
+                    # length > 2: inner part must also be palindrome
+                    if length == 2 or dp[i + 1][j - 1]:
+                        dp[i][j] = True
+
+                        if length > max_len:
+                            max_len = length
+                            start = i
+
+        return s[start:start + max_len]
+
+
+# V0-3
+# IDEA: 2D DP (gemini)
+"""
+
+**狀態定義與轉移邏輯**
+
+* **狀態定義**：$dp[i][j]$ 表示字串從索引 $i$ 到 $j$（即 `s[i:j+1]`）是否為回文子字串（型態為 `bool`）。
+* **底線條件（Base Cases）**：
+* 長度為 1 時：所有單一字元皆為回文，即 $dp[i][i] = \text{True}$。
+* 長度為 2 時：若 $s[i] == s[i+1]$，則 $dp[i][i+1] = \text{True}$。
+
+
+* **狀態轉移方程式**：
+* 當長度 l >= 3  時，若首尾字元相同（$s[i] == s[j]$）且內部子字串為回文（$dp[i+1][j-1] == \text{True}$），則當前區間亦為回文：
+
+$$dp[i][j] = (s[i] == s[j]) \text{ and } dp[i+1][j-1]$$
+
+
+
+
+* **走訪順序（Order of Iteration）**：必須**外層依子字串長度 $l$ 從 $2$ 遞增到 $n$**，內層枚舉起點 $i$，確保在計算 $dp[i][j]$ 時，較小的內部子狀態 $dp[i+1][j-1]$ 已經被預先計算完畢。
+
+**複雜度分析**
+
+* **時間複雜度**：O(N^2) — 雙重迴圈遍歷所有長度與起點組合，共計約 $\frac{N(N-1)}{2}$ 個狀態。
+* **空間複雜度**： O(N^2)$ — 使用 $N \times N$ 的二維陣列儲存所有子字串的布林判定結果。
+
+
+"""
+class Solution(object):
+
+    def longestPalindrome(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        if not s:
+            return ""
+
+        n = len(s)
+        dp = [[False] * n for _ in range(n)]
+        start, max_len = 0, 1
+
+        # 長度為 1 的子字串必定是回文
+        for i in range(n):
+            dp[i][i] = True
+
+        # 由短到長枚舉子字串長度 l
+        for l in range(2, n + 1):
+            for i in range(n - l + 1):
+                j = i + l - 1
+                if s[i] == s[j]:
+                    if l == 2 or dp[i + 1][j - 1]:
+                        dp[i][j] = True
+                        if l > max_len:
+                            max_len = l
+                            start = i
+
+        return s[start : start + max_len]
+
+
+# V0-4
 # IDEA: 2D DP
 """
 
