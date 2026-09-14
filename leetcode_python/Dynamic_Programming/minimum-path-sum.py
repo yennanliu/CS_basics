@@ -62,6 +62,69 @@ class Solution(object):
         pass
 
 
+# V0-0-1
+# IDEA: 2D DP
+"""
+
+DP def:
+
+    dp[y][x] 表示走到 (y, x) 的最小 path sum。
+
+
+DP eq:
+
+    
+    dp[y][x] = min(
+                    dp[y - 1][x],
+                    dp[y][x - 1]
+                ) + val
+
+
+        (val = grid[y][x])
+
+"""
+class Solution(object):
+    def minPathSum(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        # edge
+        if not grid or len(grid) == 0:
+            return 0
+
+        if len(grid) == 1 and len(grid[0]) == 1:
+            return grid[0][0]
+
+        m = len(grid)
+        n = len(grid[0])
+
+        dp = [[0] * n for _ in range(m)]
+
+        # init first row
+        cum_sum = 0
+        for x in range(n):
+            cum_sum += grid[0][x]
+            dp[0][x] = cum_sum
+
+        # init first column
+        cum_sum = 0
+        for y in range(m):
+            cum_sum += grid[y][0]
+            dp[y][0] = cum_sum
+
+        # DP
+        for y in range(1, m):
+            for x in range(1, n):
+                val = grid[y][x]
+                dp[y][x] = min(
+                    dp[y - 1][x],
+                    dp[y][x - 1]
+                ) + val
+
+        return dp[m - 1][n - 1]
+
+
 # V0-1
 # IDEA: Dijkstra (gemini)
 """
