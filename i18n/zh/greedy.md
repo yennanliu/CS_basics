@@ -126,7 +126,7 @@
 | Task Scheduler | 621 | 頻率 | Medium |
 | Longest Happy String | 1405 | 堆積貪婪 | Medium |
 
-<!-- ea5ade40e821 -->
+<!-- 08d07555b8e2 -->
 ### **其他貪婪問題**
 | 題目 | LC # | 關鍵技巧 | Difficulty |
 |---------|------|---------------|------------|
@@ -136,6 +136,15 @@
 | Boats to Save People | 881 | 雙指標 | Medium |
 | Minimum Cost to Connect Sticks | 1167 | 最小堆積 | Medium |
 | Max Non-Overlapping Subarrays Sum=Target | 1546 | 前綴和＋貪婪重置 | Medium |
+| Car Fleet | 853 | 由前往後排序，數抵達時間的最大值出現幾次 | Medium |
+| Count Robot Groups | 4045 | 由右往左掃，比速度（沒有終點） | Medium |
+
+> **上面這兩題通常被當成堆疊題教，但它們不是。** LC 853 的教科書解法只把東西
+> 推進堆疊、**從來不彈出**，所以 `stack[-1]` 只是一個滾動最大值、`len(stack)` 只是
+> 一個計數器 — 兩個變數就能在 O(1) 空間做完同一件事。LC 4045 也一樣。這個家族裡
+> 堆疊真正值得存在的地方是 LC 1776（Car Fleet II）：那裡已經算出來的答案有可能被
+> 推翻，於是你真的需要彈出。完整對照見
+> [monotonic_stack.md](./monotonic_stack.md#2-10-the-car-fleet-family-lc-853--4045--1776--when-a-stack-is-really-a-greedy-)。
 
 <!-- 14cad3b3f9bb -->
 ## 決策框架

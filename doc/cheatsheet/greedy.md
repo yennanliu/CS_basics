@@ -270,6 +270,16 @@ def fractional_knapsack(items, capacity):
 | Boats to Save People | 881 | Two pointers | Medium |
 | Minimum Cost to Connect Sticks | 1167 | Min heap | Medium |
 | Max Non-Overlapping Subarrays Sum=Target | 1546 | Prefix sum + greedy reset | Medium |
+| Car Fleet | 853 | Sort front-first, count arrival-time maxima | Medium |
+| Count Robot Groups | 4045 | Right-to-left scan, compare speeds (no finish line) | Medium |
+
+> **The two above are usually taught as stack problems, and they are not.** The
+> textbook LC 853 solution appends to a stack and **never pops**, so `stack[-1]` is
+> just a running maximum and `len(stack)` just a counter — two variables do the same
+> job in O(1) space. Same for LC 4045. A stack only earns its keep in this family at
+> LC 1776 (Car Fleet II), where an already-computed answer can be invalidated and you
+> genuinely pop. Full comparison in
+> [monotonic_stack.md](./monotonic_stack.md#2-10-the-car-fleet-family-lc-853--4045--1776--when-a-stack-is-really-a-greedy-).
 
 ## Decision Framework
 

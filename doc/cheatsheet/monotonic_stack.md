@@ -1,7 +1,7 @@
 # Monotonic Stack Data Structure
 
 > **Scope** — Next greater / previous smaller / span / histogram problems — the stack stays sorted so each element is pushed and popped once.
-> **See also**: [stack.md](./stack.md) — plain LIFO problems; [monotonic_queue.md](./monotonic_queue.md) — the sliding-window counterpart; [heap.md](./heap.md) — when you need a global extreme instead of a neighbouring one.
+> **See also**: [stack.md](./stack.md) — plain LIFO problems; [monotonic_queue.md](./monotonic_queue.md) — the sliding-window counterpart; [heap.md](./heap.md) — when you need a global extreme instead of a neighbouring one; [greedy.md](./greedy.md) — where the append-only "stacks" of [§2-10](#2-10-the-car-fleet-family-lc-853--4045--1776--when-a-stack-is-really-a-greedy-) really belong.
 
 ## LeetCode Problem Lists
 
@@ -50,7 +50,7 @@
 
 ### **Pattern 6: Circular Arrays** — LC 503
 - **Description**: Handle circular or cyclic array problems
-- **Examples**: LC 503 (Next Greater Element II), LC 853 (Car Fleet II)
+- **Examples**: LC 503 (Next Greater Element II), LC 457 (Circular Array Loop)
 - **Pattern**: Process array twice or use modular arithmetic with monotonic stack
 
 ## Templates & Algorithms
@@ -385,8 +385,9 @@ def find_132_pattern(nums):
 |---------|------|---------------|------------|----------|
 | Maximum Score of Good Subarray | 1793 | Two pointers + stack | Hard | Template 2 |
 | Number of Visible People in Queue | 1944 | Line of sight | Medium | Template 1 |
-| Car Fleet | 853 | Time calculation | Medium | Template 1 |
-| Car Fleet II | 1776 | Collision time | Hard | Template 1 |
+| Car Fleet | 853 | Arrival-time running max — the stack never pops | Medium | [§2-10](#2-10-the-car-fleet-family-lc-853--4045--1776--when-a-stack-is-really-a-greedy-) |
+| Count Robot Groups | 4045 | Same greedy, no finish line — compare speeds | Medium | [§2-10](#2-10-the-car-fleet-family-lc-853--4045--1776--when-a-stack-is-really-a-greedy-) |
+| Car Fleet II | 1776 | Per-car collision time — a real stack, with pops | Hard | [§2-10](#2-10-the-car-fleet-family-lc-853--4045--1776--when-a-stack-is-really-a-greedy-) |
 | Buildings With Ocean View | 1762 | Right-to-left scan | Medium | Template 1 |
 | Find the Winner of Circular Game | 1823 | Josephus problem | Medium | Template 4 |
 | Maximum Width Ramp | 962 | Index difference | Medium | Template 1 |
@@ -397,7 +398,6 @@ def find_132_pattern(nums):
 | Problem | LC # | Key Technique | Difficulty | Template |
 |---------|------|---------------|------------|----------|
 | Next Greater Element II | 503 | Double array traversal | Medium | Template 4 |
-| Car Fleet II | 1776 | Circular collision | Hard | Template 4 |
 | Circular Array Loop | 457 | Cycle detection | Medium | Template 4 |
 | Design Circular Queue | 622 | Circular buffer | Medium | Template 4 |
 | Design Circular Deque | 641 | Double-ended circular | Medium | Template 4 |
@@ -987,27 +987,191 @@ private int largestRectangle(int[] heights) {
 }
 ```
 
-### 2-10) Car Fleet (LC 853) — Monotonic Stack on Speed
-> Sort by position; stack tracks fleets — a car joining a fleet is removed.
+### 2-10) The Car Fleet Family (LC 853 / 4045 / 1776) — When a "Stack" Is Really a Greedy ⭐⭐⭐⭐
+
+> `leetcode_python/Stack/car-fleet.py`, `leetcode_python/Stack/count-robot-groups.py`
+
+> **The section in this file with a negative lesson.** LC 853 is taught as a stack problem and tagged `**stack**` in this repo's README — but its stack **never pops**, so it is a two-variable greedy in a stack costume. Of the three problems here only LC 1776 needs a real stack. Being able to say which, and why, is the whole signal.
+
+#### The property all three share: the front dominates
+
+```text
+nobody can pass the entity ahead of it
+  -> you can only ever merge with the entity DIRECTLY ahead
+  -> a merged group moves at the FRONT member's speed (the rear one slows down)
+
+so: scan RIGHT -> LEFT (front -> back), and the survivors appear in order
+```
+
+That last line is why a single "frontmost survivor so far" variable is enough in 853 and 4045: a survivor is never revisited once found, and **a stack is only worth its name when you have to go back to an older candidate.**
+
+#### LC 853 Car Fleet — the stack that never pops
+
+There is a finish line at `target`, so each car collapses to **one number** — the time it would arrive if nothing were in its way:
+
+```text
+t_i = (target - position[i]) / speed[i]
+```
+
+A car joins the fleet ahead iff it would arrive **no later** than that fleet, i.e. `t_i <= max(t of everything ahead of it)`. So sort front-first and count how many times a new maximum appears:
+
+```python
+# python
+# LC 853 - Car Fleet  (the textbook "stack" version)
+# time = O(n log n), space = O(n)
+def carFleet(target, position, speed):
+    st = []
+    for p, s in sorted(zip(position, speed), reverse=True):   # front -> back
+        t = (target - p) / s
+        if not st or t > st[-1]:      # cannot catch the fleet ahead -> new fleet
+            st.append(t)
+        # else: t <= st[-1], it catches up and is absorbed — nothing to record
+    return len(st)
+```
+
+Look at what that loop never does: **it never pops.** So `st` is increasing, `st[-1]` is simply *the largest `t` seen so far*, and `len(st)` is simply *how many times that maximum went up*. Two variables do the same job:
+
+```python
+# python
+# LC 853 - the same algorithm, stack removed
+# time = O(n log n) (the sort), space = O(1)
+def carFleet(target, position, speed):
+    cnt, mx = 0, 0.0
+    for p, s in sorted(zip(position, speed), reverse=True):   # front -> back
+        t = (target - p) / s
+        if t > mx:                    # arrives later than anyone ahead -> its own fleet
+            cnt += 1
+            mx = t
+    return cnt
+```
 
 ```java
-// LC 853 - Car Fleet
-// IDEA: Sort by position DESC; use stack to count distinct fleets
-// time = O(N log N), space = O(N)
+// java
+// LC 853 - Car Fleet, running-max greedy
+// time = O(N log N), space = O(N) for the index array (O(1) beyond the sort)
 public int carFleet(int target, int[] position, int[] speed) {
     int n = position.length;
     Integer[] idx = new Integer[n];
     for (int i = 0; i < n; i++) idx[i] = i;
-    Arrays.sort(idx, (a, b) -> position[b] - position[a]);
-    Deque<Double> stack = new ArrayDeque<>();
+    Arrays.sort(idx, (a, b) -> position[b] - position[a]);   // front -> back
+    int cnt = 0;
+    double mx = 0.0;
     for (int i : idx) {
-        double time = (double)(target - position[i]) / speed[i];
-        if (stack.isEmpty() || time > stack.peek()) stack.push(time);
-        // if time <= top, this car catches up (joins the fleet)
+        double t = (double) (target - position[i]) / speed[i];
+        if (t > mx) { cnt++; mx = t; }
     }
-    return stack.size();
+    return cnt;
 }
 ```
+
+> Both versions agree on random inputs, as they must — they are the same algorithm. Keep whichever you can write under pressure; just do not claim the stack is doing any work.
+
+#### LC 4045 Count Robot Groups — the same greedy, with no finish line
+
+Robots move forever and there is a merge threshold `distance`. No finish line means **no arrival time exists**, so there is no single number per robot to compare — the state is the pair `(position, speed)` of a group's rightmost robot. Robot `i` is absorbed if *either* test fires:
+
+```text
+position[i+1] - position[i] <= distance   -> already touching at t = 0
+speed[i] > cur_s                          -> closing on the front group, and with
+                                             infinite time ANY positive closing rate
+                                             eventually eats ANY gap
+```
+
+```python
+# python
+# LC 4045 - Count Robot Groups   (position is given sorted, so no sort is needed)
+# IDEA: right -> left; `cur_s` is the speed of the frontmost group that survived.
+# time = O(n), space = O(1)
+def countGroups(position, speed, distance):
+    n = len(position)
+    cur_s = speed[n - 1]           # the frontmost robot is always a group on its own
+    cnt = 1
+    for i in range(n - 2, -1, -1):
+        # touching test -> the NEIGHBOUR;  closing test -> the FRONT group
+        if position[i + 1] - position[i] <= distance or speed[i] > cur_s:
+            continue               # absorbed
+        cnt += 1
+        cur_s = speed[i]           # a new frontmost survivor
+    return cnt
+```
+
+**The trap: the two tests use different references.** A merge adopts the *rightmost* robot's state, so `cur` does not move when someone joins from behind — but the `t = 0` merges are **simultaneous** and chain through neighbours:
+
+```text
+position = [18,19,22,24], distance = 3     gaps: 1, 3, 2  -> every pair touches
+all four collapse at t = 0, even though 18 is 6 away from the group's position 24
+```
+
+Test the `t = 0` touch against `cur_p` instead of `position[i+1]` and those chains vanish silently. The *speed* test is safe against `cur` on its own: if robot `i+1` survived only because it was faster than the front, and `i` is faster still, then `i` is faster than the front too — catching your neighbour implies catching the front group.
+
+#### 853 vs 4045 side by side
+
+| | **LC 853 Car Fleet** | **LC 4045 Count Robot Groups** |
+|---|---|---|
+| Horizon | finish line at `target` | **none** — robots run forever |
+| Per-entity state | **one scalar**: `t = (target - p) / s` | the pair `(position, speed)`; no scalar exists |
+| Merge test | `t_i <= max(t ahead)` — compare **times** | `speed[i] > cur_s` — compare **speeds** |
+| Merge threshold | bumper to bumper (gap 0) | gap `<= distance`, **plus** the `t = 0` touch rule |
+| Input order | positions unsorted → must sort | `position` given sorted → no sort |
+| Merged group takes | the **slower** (front) car's speed | the **rightmost** robot's position and speed |
+| Cost | O(n log n) / O(1) beyond the sort | O(n) / O(1) |
+| Stack needed? | no — append-only | no — two variables |
+
+**Why 853 gets a scalar and 4045 does not** is the one idea to carry away:
+
+- 853 has a **deadline**, so "does the rear catch the front?" becomes "does it arrive *no later*?" — a comparison of one number per car. Two cars can be closing on each other all the way and still be separate fleets, because they would have met past `target`. The deadline is what creates the scalar, and the scalar is what makes the running max work.
+- 4045 has **no deadline**, so a closing rate is all that matters: given infinite time, `speed[i] > cur_s` already *is* the answer — there is no arithmetic to do, because nobody ever arrives.
+
+#### LC 1776 Car Fleet II — the member that needs a real stack
+
+Same road, same "front dominates" rule, but the question changes: report the collision time **for every car**, not a count. That breaks the single-survivor invariant, because the car ahead is itself absorbed at a known time `ans[j]`:
+
+```text
+if car i reaches car j LATER than j's own collision time
+    -> j is already gone when i gets there
+    -> i's real target is whatever is further ahead
+    -> back up to an older candidate        <- THIS is a pop
+```
+
+```python
+# python
+# LC 1776 - Car Fleet II: ans[i] = when car i collides with the car ahead (-1 = never)
+# IDEA: right -> left monotonic stack of cars still catchable. Pop a candidate that
+#       cannot be caught, or that dies before we reach it.
+# time = O(n), space = O(n)
+def getCollisionTimes(cars):
+    n = len(cars)
+    ans = [-1.0] * n
+    st = []                                     # indices, front -> back
+    for i in range(n - 1, -1, -1):
+        p, s = cars[i]
+        while st:
+            j = st[-1]
+            pj, sj = cars[j]
+            # (a) not faster than j -> can never reach it
+            # (b) reaching j takes longer than j survives -> aim further ahead
+            if s <= sj or (ans[j] > 0 and (pj - p) / (s - sj) >= ans[j]):
+                st.pop()
+            else:
+                break
+        if st:
+            j = st[-1]
+            ans[i] = (cars[j][0] - p) / (s - cars[j][1])
+        st.append(i)
+    return ans
+
+# cars = [[1,2],[2,1],[4,3],[7,2]] -> [1.0, -1.0, 3.0, -1.0]
+# cars = [[3,4],[5,4],[6,3],[9,1]] -> [2.0, 1.0, 1.5, -1.0]
+```
+
+#### The rule to take into the room
+
+| You are asked for | Front's behaviour is | Structure |
+|---|---|---|
+| a **count** of surviving groups (853, 4045) | permanent — a survivor is never revisited | one or two variables (greedy) |
+| a **per-element** time or value (1776, 2289) | temporary — the front itself dies at a known time | a real stack, with pops |
+
+So the honest one-liner for an interviewer: *"853 and 4045 are the same right-to-left greedy — the usual stack solution for 853 never pops, so I will keep the running maximum instead. 1776 is where the stack earns its place, because an already-computed answer can be invalidated."*
 
 ### 2-11) Asteroid Collision (LC 735) — Stack Simulation
 > Right-moving asteroids stay on stack; left-moving collide with top until stable.
@@ -1707,8 +1871,9 @@ A `(value, steps)` pair stack works identically and drops the `dp` array — pus
 |---------|------|----------------|
 | Steps to Make Array Non-decreasing | 2289 | Popped element's dp is **inherited**: `dp[i] = max(popped dp) + 1` |
 | Online Stock Span | 901 | Same "carry a value through the pops", but the aggregate is a **sum** of popped spans, not a max+1 |
-| Car Fleet II | 1776 | Right-to-left stack where each car's collision time is derived from the popped cars — the same chaining, with a real-valued dp |
-| Car Fleet | 853 | Simulation collapsed to a stack, but the answer is the *number of survivors*, not when anyone dies |
+| Car Fleet II | 1776 | Right-to-left stack where each car's collision time is derived from the popped cars — the same chaining, with a real-valued dp ([§2-10](#2-10-the-car-fleet-family-lc-853--4045--1776--when-a-stack-is-really-a-greedy-)) |
+| Car Fleet | 853 | A **count** of survivors, not when anyone dies — so its stack never pops and two variables suffice ([§2-10](#2-10-the-car-fleet-family-lc-853--4045--1776--when-a-stack-is-really-a-greedy-)) |
+| Count Robot Groups | 4045 | The same greedy as 853 with no finish line, so there is no arrival time to compare — speeds instead ([§2-10](#2-10-the-car-fleet-family-lc-853--4045--1776--when-a-stack-is-really-a-greedy-)) |
 | Asteroid Collision | 735 | Same "stronger element eats weaker" simulation; the answer is the survivors, so no dp is carried |
 | Minimum Cost Tree From Leaf Values | 1130 | Pop while smaller and aggregate a **cost** at each pop instead of a round number |
 | Largest Rectangle in Histogram | 84 | Baseline contrast: the pop computes a **final** value (area) that nothing inherits |
