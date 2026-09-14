@@ -31,6 +31,14 @@ s[i] is '(', or ')'.
 """
 
 # V0
+class Solution(object):
+    def longestValidParentheses(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        pass
+
 
 # V1
 # IDEA : STACK
@@ -57,6 +65,87 @@ class Solution(object):
                             ml = max(ml, i - stack[len(stack)-1])
 
             return ml
+
+
+# V2
+# IDEA: 2D DP (gpt)
+class Solution(object):
+    def longestValidParentheses(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        # edge
+        if not s or len(s) <= 1:
+            return 0
+
+        n = len(s)
+
+        # dp[i] = longest valid parentheses
+        #         ending at index i
+        dp = [0] * n
+
+        res = 0
+
+        for i in range(1, n):
+            # Current character must be ')'
+            if s[i] == ')':
+
+                # Case 1:
+                # "()"
+                if s[i - 1] == '(':
+                    dp[i] = 2
+
+                    if i >= 2:
+                        dp[i] += dp[i - 2]
+
+                # Case 2:
+                # "...))"
+                else:
+                    # Find the character that may match s[i]
+                    prev = i - dp[i - 1] - 1
+
+                    if prev >= 0 and s[prev] == '(':
+                        dp[i] = dp[i - 1] + 2
+
+                        if prev >= 1:
+                            dp[i] += dp[prev - 1]
+
+            res = max(res, dp[i])
+
+        return res
+
+
+# V3
+# IDEA: STACK (gemini)
+class Solution(object):
+
+    def longestValidParentheses(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        if not s:
+            return 0
+
+        # 初始化堆疊放入一個基底 -1，用來計算從字串開頭起算的長度
+        stack = [-1]
+        max_len = 0
+
+        for i, char in enumerate(s):
+            if char == "(":
+                stack.append(i)
+            else:
+                stack.pop()
+                if not stack:
+                    # 若堆疊空了，代表當前的 ')' 是多餘的，將其當作新的基準點
+                    stack.append(i)
+                else:
+                    # 計算當前有效括號長度：當前索引減去堆疊頂端的起始基準
+                    max_len = max(max_len, i - stack[-1])
+
+        return max_len
+
 
 # V1'
 # IDEA : STACK
