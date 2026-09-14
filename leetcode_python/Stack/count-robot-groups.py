@@ -57,6 +57,12 @@ position is sorted in strictly increasing order
 
 """
 
+"""
+NOTE !!!
+
+    we DONT NO need `stack` for this LC
+"""
+
 # V0
 # IDEA : RIGHT -> LEFT SCAN (CAR FLEET), COLLAPSED TO 2 VARS
 #
@@ -96,12 +102,13 @@ position is sorted in strictly increasing order
 # time = O(n), space = O(1)
 class Solution(object):
     def countGroups(self, position, speed, distance):
+
         """
-        :type position: List[int]
-        :type speed: List[int]
-        :type distance: int
-        :rtype: int
+        NOTE !!!
+
+            we DONT NO need `stack` for this LC
         """
+
         # edge
         if not position:
             return 0
@@ -163,6 +170,14 @@ class Solution(object):
         :type distance: int
         :rtype: int
         """
+
+        """
+        NOTE !!!
+
+            we DONT NO need `stack` for this LC
+        """
+
+
         # edge
         if not position or not speed:
             return 0

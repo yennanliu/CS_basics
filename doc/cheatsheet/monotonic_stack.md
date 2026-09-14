@@ -1519,6 +1519,31 @@ Two things the "eating" metaphor makes obvious:
 - **What gets popped is what I outlive.** Anything `<= nums[i]` is doomed no later than `nums[i]` is, so its deadline is a lower bound on mine.
 - **`+1`, not `+ popped count`.** All deletions in a round happen simultaneously, so a whole block of popped elements can vanish in the *same* round; only the slowest one (`max`, not `sum`) delays my killer, and then by exactly one round.
 
+#### Reading the Stack: What `steps_to_remove` Means
+
+The stack is easiest to hold in your head as value/deadline pairs rather than indices:
+
+```text
+stack = [ [val, steps_to_remove], ... ]
+
+val             = the element's value
+steps_to_remove = WHICH ROUND this element is deleted in   (0 = never)
+```
+
+That second number is not a count of work, not a distance, not a nesting depth — it is a **round number on a calendar**. Read the ladder off it:
+
+| `steps_to_remove` | Meaning | Why |
+|---|---|---|
+| `0` | never deleted | nothing strictly greater sits to its left (it is a prefix maximum), so no element can ever delete it |
+| `1` | deleted in round 1 | its left neighbour is already strictly greater — the rule fires immediately, nobody has to clear the way |
+| `2` | deleted in round 2 | the block between it and its killer needs **1** round to disappear; it is exposed at the start of round 2 |
+| `3` | deleted in round 3 | that block needs **2** rounds; only then does the killer become its left neighbour |
+| `k` | deleted in round `k` | the block in front of it takes `k - 1` rounds to clear, and it dies in the next one |
+
+So `steps_to_remove = k` always means *“`k - 1` rounds ahead of me, then my turn”* — which is exactly why the recurrence is `max(popped) + 1` and why the answer is `max` over all the deadlines: the array is non-decreasing the round after the last scheduled deletion happens.
+
+One consequence worth stating, because it is the usual off-by-one: an element whose deadline is `0` is **not** an element deleted in round 0. It is an element with no deadline at all, which is why the code assigns `0` in the `stack is empty` branch and never feeds it into `res`.
+
 #### Visual Trace — `nums = [5,3,4,4,7]`
 
 ```text
@@ -1533,6 +1558,53 @@ dp = [0,1,2,3,0]  ->  answer 3
 check: round1 deletes 3 -> [5,4,4,7]; round2 deletes the first 4 -> [5,4,7];
        round3 deletes the second 4 -> [5,7]  ✓
 ```
+
+#### Dry Run — the Full LC Example, `(val, steps)` Pair Stack
+
+`nums = [5,3,4,4,7,3,6,11,8,5,11]`, expected answer **3**. Same algorithm, written with pairs so the deadline is visible on the stack itself. Pop while `stack[-1][0] <= val`, inherit `max(popped steps)`, then `+1` if something is left (else `0`):
+
+| # | `val` | stack before | popped | `steps` | stack after | `res` |
+|---|---|---|---|---|---|---|
+| 0 | `5` | `[]` | — | `0` — stack empty, prefix max, never dies | `[(5,0)]` | 0 |
+| 1 | `3` | `[(5,0)]` | — | `0 + 1 = 1` — `5 > 3` already, dies next round | `[(5,0),(3,1)]` | 1 |
+| 2 | `4` | `[(5,0),(3,1)]` | `(3,1)` | `1 + 1 = 2` — must outlive the `3`, then `5` takes it | `[(5,0),(4,2)]` | 2 |
+| 3 | `4` | `[(5,0),(4,2)]` | `(4,2)` | `2 + 1 = 3` — popped on `<=`; inherits deadline 2 | `[(5,0),(4,3)]` | **3** |
+| 4 | `7` | `[(5,0),(4,3)]` | `(4,3)`, `(5,0)` | `0` — stack emptied, new prefix max | `[(7,0)]` | 3 |
+| 5 | `3` | `[(7,0)]` | — | `0 + 1 = 1` | `[(7,0),(3,1)]` | 3 |
+| 6 | `6` | `[(7,0),(3,1)]` | `(3,1)` | `1 + 1 = 2` | `[(7,0),(6,2)]` | 3 |
+| 7 | `11` | `[(7,0),(6,2)]` | `(6,2)`, `(7,0)` | `0` — emptied again | `[(11,0)]` | 3 |
+| 8 | `8` | `[(11,0)]` | — | `0 + 1 = 1` | `[(11,0),(8,1)]` | 3 |
+| 9 | `5` | `[(11,0),(8,1)]` | — | `0 + 1 = 1` — `8 > 5` already; the `8` is irrelevant to the `5`'s deadline | `[(11,0),(8,1),(5,1)]` | 3 |
+| 10 | `11` | `[(11,0),(8,1),(5,1)]` | `(5,1)`, `(8,1)`, `(11,0)` | `0` | `[(11,0)]` | 3 |
+
+Result `max(steps) = 3`.
+
+Now read the deadlines back as a schedule and compare with the rounds the problem statement prints:
+
+```text
+idx     0  1  2  3  4  5  6  7  8  9 10
+nums    5  3  4  4  7  3  6 11  8  5 11
+steps   0  1  2  3  0  1  2  0  1  1  0
+                                          <- every nonzero entry is a scheduled funeral
+
+round 1  deletes steps==1  -> idx 1,5,8,9  (3, 3, 8, 5)
+         [5,3,4,4,7,3,6,11,8,5,11] -> [5,4,4,7,6,11,11]
+
+round 2  deletes steps==2  -> idx 2,6      (the first 4, and 6)
+         [5,4,4,7,6,11,11] -> [5,4,7,11,11]
+
+round 3  deletes steps==3  -> idx 3        (the second 4)
+         [5,4,7,11,11] -> [5,7,11,11]      non-decreasing, stop
+
+3 rounds  ==  max(steps)   ✓
+```
+
+Two rows are worth pausing on, because they are where the intuition usually breaks:
+
+- **Row 3 (the second `4`).** It is popped on `<=`, not `<`. Its own deadline is *not* 1 even though a `5` sits to its left, because the first `4` is standing in the way until round 2 — hence `3`. This is the row a strict `>` pop gets wrong, and the row that produces the whole answer.
+- **Row 9 (the `5` after the `8`).** Four elements are alive on the stack, yet the `5` dies in round 1: its immediate left neighbour `8` is already greater, so nothing has to be cleared first. A deep stack does not imply a late deadline — the deadline only depends on what stands **between** an element and its killer.
+
+And rows 4, 7, 10 show the other half of the invariant: whenever the stack empties, the new element is a prefix maximum, gets deadline `0`, and every deadline behind it has already been banked into `res` — the array in effect restarts from that element.
 
 #### The `>=` vs `>` trap
 
@@ -1627,7 +1699,7 @@ public int totalSteps(int[] nums) {
 }
 ```
 
-A `(value, steps)` pair stack works identically and drops the `dp` array — push `(num, cur)` instead of the index, pop on `stack[-1][0] <= num`. Use it when the indices are not needed for anything else.
+A `(value, steps)` pair stack works identically and drops the `dp` array — push `(num, cur)` instead of the index, pop on `stack[-1][0] <= num`; that is the form traced [above](#dry-run--the-full-lc-example-val-steps-pair-stack). Use it when the indices are not needed for anything else.
 
 #### Similar Problems
 
