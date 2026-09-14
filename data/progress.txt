@@ -1,4 +1,4 @@
-20260915: top 100 like(dp): 32, | top 100 like (binary tree):  105 | others: 300, 2D LIS (354), LCA: 1644, 1650, 1676, 310(todo)  | DP: 44(todo), 10(todo) |LC weekly:  2289(again!!!) | 
+20260915: top 100 like(dp): 32, 118, 139, 152, 198, 279 | top 100 like (binary tree):  105 | others: 300, 2D LIS (354), LCA: 1644, 1650, 1676, 310(todo)  | DP: 44(todo), 10(todo) |LC weekly:  2289(again!!!) | 
 
 
 20260914: top 100 like(dp): 5(again!, dp), 32(again), 62(ok), 64(ok), 70(ok) | top 100 like (binary tree):  105 | others: 300, 2D LIS (354), LCA: 1644, 1650, 1676, 310(todo)  | DP: 44(todo), 10(todo) |LC weekly:  2289(again!!!) | 
