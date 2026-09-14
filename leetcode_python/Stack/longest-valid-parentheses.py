@@ -68,7 +68,17 @@ class Solution(object):
 
 
 # V2
-# IDEA: 2D DP (gpt)
+# IDEA: 1D DP (gpt)
+"""
+DP def:
+
+    dp[i] = 以 s[i] 結尾的最長 valid parentheses 長度
+
+
+DP eq:
+
+
+"""
 class Solution(object):
     def longestValidParentheses(self, s):
         """
