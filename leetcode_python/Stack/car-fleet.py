@@ -51,6 +51,39 @@ All the values of position are unique.
 
 """
 
+
+"""
+
+LC 4045 VS LC 853
+
+
+**核心相似性**
+
+
+兩者本質上都是**一維空間中「追趕與合併」 (Catch-up and Merge)** 的類比問題，都需要將實體由右至左（由右側至左側）排序並掃描，以避免前方實體速度因合併而改變導致順序錯亂。
+
+**LC 853 (Car Fleet) 與 LC 4045 (Count Robot Groups) 的關鍵差異**
+
+| 維度 | LC 853: Car Fleet | LC 4045: Count Robot Groups |
+| --- | --- | --- |
+| **終點設定** | 有固定終點 `target` [cite: 1.2.1] | 無固定終點，無限向右移動 [cite: 1.1.2] |
+| **合併觸發條件** | 後車追上前車（在 `target` 前或剛好在 `target` 追上） [cite: 1.2.1] | 任意時刻兩者距離 $\le \text{distance}$ [cite: 1.1.2] |
+| **合併後的屬性** | 車隊速度變為較慢者的速度 [cite: 1.2.1] | 採用該群組中**最右側機器人**的位置與速度 [cite: 1.1.2] |
+| **初始狀態處理** | 每個車子各自獨立起步 [cite: 1.2.1] | $t = 0$ 瞬間，初始距離 $\le \text{distance}$ 的相鄰機器人必須先合併 [cite: 1.1.2] |
+
+**關於「一題用 Greedy、一題用 Stack」的迷思**
+其實**兩者都可以同時用 Greedy（貪心/單一變數維護）或 Monotonic Stack（單調堆疊）來解**：
+
+* **LC 853** 常被歸類在 Stack，但實際上你只需用一個變數 `prev_time` 記錄前車到達終點的時間（Greedy 貪心掃描），只要後車到達時間 `curr_time <= prev_time`，它就會被合併；大於才獨立成新車隊 [cite: 1.2.1]。Stack 只是把這個概念用 `stack[-1]` 具現化 [cite: 1.2.2]。
+* **LC 4045** 先在 $t = 0$ 貪心地將初始貼近的機器人合併（取最右者） [cite: 1.1.2]，接著由右至左掃描時，用單調棧維護速度或追趕關係，本質上也是利用貪心邏輯來決定後方群組會不會追上前方的群組 [cite: 1.1.1]。
+
+[Car Fleet LeetCode 853 Two Approaches Stack and Running Max](https://www.youtube.com/watch?v=c1wgX-HTSuU)
+
+這部影片對比了 Car Fleet (LC 853) 中使用單調棧與貪心滾動最大值的兩種解法，有助於釐清這類追趕合併問題的底層邏輯。
+
+"""
+
+
 # V0
 # IDEA : STACK
 # Step 1) Ordering by car position (big -> small)
