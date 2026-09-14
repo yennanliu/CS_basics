@@ -43,6 +43,48 @@ Constraints:
 #
 
 # V0 
+# IDEA: 1D DP (gpt)
+class Solution(object):
+    def generate(self, numRows):
+        """
+        :type numRows: int
+        :rtype: List[List[int]]
+        """
+        # edge
+        if numRows == 0:
+            return []
+
+        if numRows == 1:
+            return [[1]]
+
+        if numRows == 2:
+            return [[1], [1, 1]]
+
+        n = numRows
+
+        # dp[i] = the i-th row
+        dp = [None] * n
+
+        dp[0] = [1]
+        dp[1] = [1, 1]
+
+        for i in range(2, n):
+
+            new_val = []
+
+            # previous row
+            prev = dp[i - 1]
+
+            # calculate middle values
+            for j in range(len(prev) - 1):
+                new_val.append(prev[j] + prev[j + 1])
+
+            # NOTE !!! how we add [1] at beginning and end
+            # first and last are always 1
+            dp[i] = [1] + new_val + [1]
+
+        return dp
+
 
 
 # V1
