@@ -1724,6 +1724,70 @@ dp = [[False] * (n + 1) for _ in range(m + 1)]
 dp = [[float('inf')] * n for _ in range(m)]
 ```
 
+### Building a row with fixed ends — `[1] + middle + [1]`
+
+```python
+# python
+# List `+` makes a NEW list, so the ends can be glued on in one expression:
+#   [1]        -> the fixed first element
+#   new_val    -> the computed middle (may be empty)
+#   [1]        -> the fixed last element
+#
+# NOTE : this is concatenation, NOT append —
+#        [1] + [2, 3] + [1]  ->  [1, 2, 3, 1]
+#        [1].append([2, 3])  ->  None (mutates in place, returns nothing)
+
+# an empty middle still works — no special case needed
+[1] + [] + [1]        # [1, 1]
+```
+
+```python
+# python
+# LC 118 Pascal's Triangle
+# IDEA: 1D DP — row i is built from row i-1
+class Solution(object):
+    def generate(self, numRows):
+        # edge
+        if numRows == 0:
+            return []
+        if numRows == 1:
+            return [[1]]
+        if numRows == 2:
+            return [[1], [1, 1]]
+
+        n = numRows
+
+        # dp[i] = the i-th row
+        dp = [None] * n
+
+        dp[0] = [1]
+        dp[1] = [1, 1]
+
+        for i in range(2, n):
+
+            new_val = []
+
+            # previous row
+            prev = dp[i - 1]
+
+            # calculate middle values
+            for j in range(len(prev) - 1):
+                new_val.append(prev[j] + prev[j + 1])
+
+            # NOTE !!! how we add [1] at beginning and end
+            # first and last are always 1
+            dp[i] = [1] + new_val + [1]
+
+        return dp
+
+# time = O(n^2), space = O(n^2)
+```
+
+Same shape shows up whenever a sequence needs **sentinel ends**: `[1] + nums + [1]`
+(LC 312 Burst Balloons, so the out-of-range neighbours multiply as 1),
+`[0] + heights + [0]` (LC 84 Largest Rectangle, so the stack always drains), or
+`[float('-inf')] + arr + [float('-inf')]` to kill the edge cases in a peak scan.
+
 ### `nonlocal` and `global` in nested functions
 
 ```python
