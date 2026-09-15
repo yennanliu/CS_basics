@@ -40,6 +40,11 @@
 
 					- LC 2018 (note: Slot Partitioning)
 
+			- weekly 261
+				- https://leetcode.com/contest/weekly-contest-261
+					- LC 2028
+					- LC 2029
+
 
  	- blind 150 (doing)
 

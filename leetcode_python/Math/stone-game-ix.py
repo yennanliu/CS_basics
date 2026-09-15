@@ -67,6 +67,10 @@ Constraints:
 # time = O(n), space = O(1)
 class Solution(object):
     def stoneGameIX(self, stones):
+        """
+        :type stones: List[int]
+        :rtype: bool
+        """
         cnt = [0, 0, 0]
         for x in stones:
             cnt[x % 3] += 1

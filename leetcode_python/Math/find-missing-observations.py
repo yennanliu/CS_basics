@@ -55,6 +55,12 @@ m == rolls.length
 # time = O(n + m), space = O(n) for the output
 class Solution(object):
     def missingRolls(self, rolls, mean, n):
+        """
+        :type rolls: List[int]
+        :type mean: int
+        :type n: int
+        :rtype: List[int]
+        """
         m = len(rolls)
         need = mean * (n + m) - sum(rolls)
         if need < n or need > 6 * n:
