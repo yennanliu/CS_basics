@@ -39,6 +39,73 @@ class Solution(object):
 
 
 
+# V0-0-1
+# IDEA: 1D DP (1D DP / unbounded knapsack) (for ... for ...) (gpt)
+"""
+
+DP def:
+     
+        dp[j] = 組成 j 所需要的最少 square 數量
+
+
+DP eq:
+        
+        ```
+            dp[j] = min(
+            dp[j],
+            dp[j - val] + 1
+        )
+        ```
+
+"""
+class Solution(object):
+    def numSquares(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        # edge
+        if n == 1:
+            return 1
+
+        if n == 2:
+            return 2
+
+        # all perfect squares <= n
+        sq = []
+
+        i = 1
+        while i * i <= n:
+            sq.append(i * i)
+            i += 1
+
+        # dp[j] = minimum number of squares
+        # needed to make sum j
+        dp = [float("inf")] * (n + 1)
+
+        """
+        NOTE !!
+
+        
+        組成 0 → 需要 0 個 square
+        """
+        dp[0] = 0
+
+        # unbounded knapsack
+        for val in sq:
+            for j in range(val, n + 1):
+
+                # NOTE !!!
+                # DON'T forget to `+1`
+
+                dp[j] = min(
+                    dp[j],
+                    dp[j - val] + 1
+                )
+
+        return dp[n]
+
+
 # V0-1
 # IDEA: 1D DP (1D DP / unbounded knapsack) (for ... for ...) (gpt)
 """
