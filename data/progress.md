@@ -67,6 +67,12 @@
 		- `13) Plus One Linked List — LC 369`
 
 
+- stack_expression_parsing
+	- https://yennj12.js.org/CS_basics/cheatsheets/stack_expression_parsing.zh.html
+
+
+
+
 
 
 
@@ -177,6 +183,7 @@
 				- https://yennj12.js.org/CS_basics/cheatsheets/stack.html#1-5-delay-insert-to-stack-act-on-pre-op-not-current-op-lc-227
 				- Universal Calculator — LC 224 / 227 / 772 
 					- https://yennj12.js.org/CS_basics/cheatsheets/stack.html#2-5-universal-calculator-lc-224-227-772
+					- https://yennj12.js.org/CS_basics/cheatsheets/stack_expression_parsing.html#2-universal-calculator--lc-224--227--772-
 						- 224
 						- 227
 						- 772
