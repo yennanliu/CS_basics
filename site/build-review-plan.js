@@ -18,8 +18,12 @@
  * not graduating, so they are normalised and carried through to the page.
  */
 const fs = require('fs');
+const path = require('path');
+const { parseReadmeProblems, GH_BLOB } = require('./build-roadmap');
 
 const SOURCE = 'data/progress.txt';
+const README = 'README.md';
+const LISTS = 'data/problem_lists.json';
 const OUT = '_site/data/progress.json';
 
 // ── Status vocabulary ────────────────────────────────────────────────────────
@@ -222,28 +226,189 @@ function mergeDays(days) {
   return [...byDate.values()].sort((a, b) => a.date.localeCompare(b.date));
 }
 
-function buildPayload(raw) {
+function buildPayload(raw, catalog) {
   const parsed = parseProgress(raw);
   const warnings = parsed.warnings;
   const days = mergeDays(parsed.days);
-  const problems = aggregate(days);
+  const problems = attachCatalog(aggregate(days), catalog);
   return {
     payload: {
       generated: new Date().toISOString().slice(0, 10),
       source: SOURCE,
+      repo: GH_BLOB,
       days,
       problems,
+      // The whole README universe per topic, so the page can say which topic is
+      // getting less practice than its weight deserves — a claim about the
+      // topic, which the practised rows alone cannot support.
+      sections: catalog ? catalog.sections : [],
       stats: {
         days: days.length,
         problems: problems.length,
         attempts: days.reduce((n, d) => n + d.items.length, 0),
         again: problems.filter(p => p.againCount > 0).length,
+        titled: problems.filter(p => p.title).length,
         firstDate: days.length ? days[0].date : null,
         lastDate: days.length ? days[days.length - 1].date : null
       }
     },
     warnings
   };
+}
+
+// ── Catalog ──────────────────────────────────────────────────────────────────
+//
+// The log records a bare LeetCode number and nothing else, which is all a
+// schedule needs and nowhere near enough to act on: "#1094 is 12 days overdue"
+// tells you neither what the problem is, which pattern it drills, nor whether
+// it is worth the slot. Every one of those facts is already in the repo — the
+// README row (title, difficulty, section, MUST, the solutions committed here)
+// and data/problem_lists.json (Blind 75 / NeetCode / Top 100 Liked) — so the
+// page is handed them rather than turning a number into a leetcode.com search.
+//
+// The weights are `script/suggest_review.py`'s, so the page's balance table and
+// the CLI planner answer the same question the same way. The two signals that
+// script reads and this one cannot are the non-Google company tags and git
+// history; neither changes which section is starving, which is what the table
+// is for.
+const W = {
+  must: 5.0,
+  top100liked: 2.5,
+  blind75: 2.5,
+  neetcode150: 1.5,
+  neetcode250: 0.7,
+  google: 1.5,
+  difficulty: { Medium: 0.5, Hard: 0.3, Easy: 0.0 }
+};
+
+// Why a problem is worth a pass at all, in points. The NeetCode lists nest, so
+// only the narrowest one scores — a Blind 75 problem is on all four.
+function importance(meta) {
+  let score = 0;
+  const on = new Set(meta.lists || []);
+  if (meta.must) score += W.must;
+  if (on.has('top100liked')) score += W.top100liked;
+  if (on.has('blind75')) score += W.blind75;
+  else if (on.has('neetcode150')) score += W.neetcode150;
+  else if (on.has('neetcode250')) score += W.neetcode250;
+  if (meta.google) score += W.google;
+  score += W.difficulty[meta.difficulty] || 0;
+  return Math.round(score * 100) / 100;
+}
+
+// A problem the log names but README does not index still has to be schedulable
+// and still has to land somewhere on the balance table, so it gets a section of
+// its own rather than being dropped or silently folded into a real one.
+const UNFILED = 'Unfiled';
+
+/**
+ * Everything the page needs about a problem that the practice log cannot know.
+ * Returns { byId, sections } — sections carries the importance of the WHOLE
+ * README universe per topic, not only the problems that have been practised,
+ * because "this topic is starving" is a claim about the topic, not about the
+ * rows that happen to be in the log.
+ */
+function buildCatalog(readmeMarkdown, listsJson) {
+  const byId = new Map();
+  const listed = new Map();
+  for (const entry of (listsJson && listsJson.problems) || []) {
+    listed.set(String(parseInt(entry.id, 10)), entry);
+  }
+
+  const sections = new Map();
+  const bump = (name, imp) => {
+    const row = sections.get(name) || { name, n: 0, importance: 0 };
+    row.n += 1;
+    row.importance = Math.round((row.importance + imp) * 100) / 100;
+    sections.set(name, row);
+  };
+
+  for (const [id, p] of parseReadmeProblems(readmeMarkdown)) {
+    const extra = listed.get(id);
+    const meta = {
+      title: p.title,
+      difficulty: p.difficulty === 'Unknown' ? null : p.difficulty,
+      section: p.section || UNFILED,
+      slug: extra ? extra.slug : slugFromUrl(p.url),
+      must: p.must || undefined,
+      google: p.google || undefined,
+      lists: extra && extra.lists && extra.lists.length ? extra.lists : undefined,
+      solutions: relativeSolutions(p.solutions)
+    };
+    meta.importance = importance(meta);
+    byId.set(id, meta);
+    bump(meta.section, meta.importance);
+  }
+
+  // A curated-list problem README has never indexed is still a real problem
+  // with a real title, and the log does contain a few — so it goes in `byId`
+  // and its row on the page reads properly.
+  //
+  // It does NOT get a section weight. There are 363 of these, and counting them
+  // made `Unfiled` the third-largest topic on the balance table: a topic the
+  // repo has never claimed, permanently owed practice it was never going to
+  // get. The table compares the topics README organises; a logged problem with
+  // no README row still gets its own `Unfiled` line, added by the page, at zero
+  // weight.
+  for (const [id, entry] of listed) {
+    if (byId.has(id)) continue;
+    const meta = {
+      title: entry.title,
+      difficulty: entry.difficulty || null,
+      section: UNFILED,
+      slug: entry.slug,
+      lists: entry.lists && entry.lists.length ? entry.lists : undefined
+    };
+    meta.importance = importance(meta);
+    byId.set(id, meta);
+  }
+
+  return {
+    byId,
+    sections: [...sections.values()].sort((a, b) => b.importance - a.importance)
+  };
+}
+
+// Solution links are shipped relative to the repo root and rebuilt against
+// `repo` on the page: the absolute form repeated the same 52-character GitHub
+// prefix up to three times for each of 796 problems, which is a fifth of the
+// file for no information.
+function relativeSolutions(solutions) {
+  const out = {};
+  for (const [lang, href] of Object.entries(solutions || {})) {
+    out[lang] = href.startsWith(GH_BLOB + '/') ? href.slice(GH_BLOB.length + 1) : href;
+  }
+  return Object.keys(out).length ? out : undefined;
+}
+
+// README links to the canonical problem page, so the slug is already there for
+// every row that has one — deriving it from the title would guess wrong exactly
+// where guessing is expensive (LC 4038's title and its slug disagree).
+function slugFromUrl(url) {
+  const m = /leetcode\.com\/problems\/([^/?#]+)/.exec(url || '');
+  return m ? m[1] : null;
+}
+
+// Fold the catalog into the aggregated problems. A problem with no entry keeps
+// exactly the shape it had before, so the page's schedule never depends on it.
+function attachCatalog(problems, catalog) {
+  if (!catalog) return problems;
+  for (const problem of problems) {
+    const meta = catalog.byId.get(String(problem.id));
+    if (!meta) { problem.section = UNFILED; problem.importance = 0; continue; }
+    Object.assign(problem, meta);
+  }
+  return problems;
+}
+
+// `root` is the repo root. The build runs from there like every other script
+// here, so it defaults to the working directory; the tests run from site/ and
+// pass it explicitly rather than chdir-ing underneath the rest of the suite.
+function loadCatalog(root) {
+  const at = name => (root ? path.join(root, name) : name);
+  if (!fs.existsSync(at(README))) return null;
+  const lists = fs.existsSync(at(LISTS)) ? JSON.parse(fs.readFileSync(at(LISTS), 'utf8')) : null;
+  return buildCatalog(fs.readFileSync(at(README), 'utf8'), lists);
 }
 
 // ── Build ────────────────────────────────────────────────────────────────────
@@ -254,7 +419,8 @@ if (!fs.existsSync(SOURCE)) {
   process.exit(1);
 }
 
-const { payload, warnings } = buildPayload(fs.readFileSync(SOURCE, 'utf8'));
+const catalog = loadCatalog();
+const { payload, warnings } = buildPayload(fs.readFileSync(SOURCE, 'utf8'), catalog);
 
 if (payload.stats.days === 0) {
   console.error(`${SOURCE} produced no practice days — refusing to ship an empty review plan.`);
@@ -267,9 +433,15 @@ fs.writeFileSync(OUT, JSON.stringify(payload));
 console.log(`✓ Created ${OUT} (${payload.stats.days} practice days, ` +
   `${payload.stats.problems} problems, ${payload.stats.again} still marked "again")`);
 console.log(`    ${payload.stats.firstDate} → ${payload.stats.lastDate}`);
+console.log(`    ${payload.stats.titled} of ${payload.stats.problems} carry a title, ` +
+  `difficulty and topic from README; ${payload.sections.length} topics weighted`);
 for (const w of warnings) console.warn(`    warning: ${w}`);
 }
 
 if (require.main === module) main();
 
-module.exports = { parseProgress, classify, splitTopLevel, aggregate, mergeDays, buildPayload };
+module.exports = {
+  parseProgress, classify, splitTopLevel, aggregate, mergeDays, buildPayload,
+  importance, buildCatalog, attachCatalog, loadCatalog, slugFromUrl,
+  relativeSolutions, UNFILED, W
+};

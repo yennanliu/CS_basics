@@ -18,13 +18,73 @@ test('navHTML renders every primary entry inline, in order', () => {
 });
 
 test('navHTML puts the secondary entries inside the dropdown menu', () => {
-  const menu = CSNav.navHTML().match(/<div class="nav-more-menu">(.*?)<\/div>/)[1];
+  const menu = CSNav.navHTML().split('<div class="nav-more-menu">')[1];
   for (const item of CSNav.MORE) {
+    if (item.children) continue; // a group renders as a label, not a link
     assert.ok(menu.includes('>' + item.label + '</a>'), `${item.label} missing from dropdown`);
   }
   // ...and keeps them out of the inline row.
   const inline = CSNav.navHTML().split('<div class="nav-more">')[0];
   assert.ok(!inline.includes('>patterns</a>'));
+});
+
+// ── Grouped entries ───────────────────────────────────────────────────────
+//
+// The two agent skills are one family — same tree, same install, same
+// slash-command convention — and were two unrelated dropdown entries, the
+// first labelled "coach", which named neither the command (/lc-coach) nor the
+// directory it lives in.
+
+test('a MORE entry with children renders as a labelled group, not a link', () => {
+  const html = CSNav.moreEntryHTML(
+    { id: 'agent-skills', label: 'agent skills', children: [
+      { id: 'lc-coach', label: 'lc-coach', href: 'skills.html' }
+    ] }, '', '');
+  assert.match(html, /<div class="nav-group">/);
+  assert.match(html, /<span class="nav-group-label">agent skills<\/span>/);
+  assert.match(html, /<a href="skills\.html">lc-coach<\/a>/);
+  // The label is a heading: no href, so it is not a tab stop that goes nowhere.
+  assert.ok(!html.includes('<a href="">'));
+});
+
+test('the agent skills sit under one parent in the dropdown', () => {
+  const group = CSNav.MORE.find((i) => i.id === 'agent-skills');
+  assert.ok(group, 'the dropdown should declare an agent-skills group');
+  assert.deepEqual(group.children.map((c) => c.id), ['lc-coach', 'lc-add']);
+
+  const menu = CSNav.navHTML().split('<div class="nav-more-menu">')[1];
+  const block = menu.match(/<div class="nav-group[^"]*">[\s\S]*?<\/div>/)[0];
+  assert.ok(block.includes('>lc-coach</a>') && block.includes('>lc-add</a>'),
+    'both skills belong to the same group block');
+});
+
+test('the coach entry is named after its command, not "coach"', () => {
+  const coach = CSNav.links().find((i) => i.href === 'skills.html');
+  assert.equal(coach.id, 'lc-coach');
+  assert.equal(coach.label, 'lc-coach');
+});
+
+test('a group lights up when one of its children is the current page', () => {
+  const html = CSNav.navHTML({ currentPage: 'lc-add' });
+  assert.match(html, /<div class="nav-group active">/);
+  assert.match(html, /class="nav-more-btn active"/);
+  assert.match(html, /<a href="lc-add\.html" class="active">lc-add<\/a>/);
+});
+
+test('a group is inert when the current page is elsewhere', () => {
+  assert.match(CSNav.navHTML({ currentPage: 'home' }), /<div class="nav-group">/);
+});
+
+test('links() flattens groups so every entry it returns has an href', () => {
+  const flat = CSNav.links();
+  for (const item of flat) {
+    assert.ok(item.href, `${item.id} has no href`);
+    assert.ok(!item.children, `${item.id} is a group, not a link`);
+  }
+  const ids = flat.map((i) => i.id);
+  assert.ok(ids.includes('lc-coach') && ids.includes('lc-add'), 'group children are missing');
+  assert.ok(!ids.includes('agent-skills'), 'the group label is not a destination');
+  assert.equal(new Set(ids).size, ids.length);
 });
 
 test('navHTML marks the current primary entry active', () => {
@@ -77,8 +137,14 @@ test('isMoreEntry distinguishes dropdown entries from primary ones', () => {
   assert.equal(CSNav.isMoreEntry('home'), false);
 });
 
+test('isMoreEntry sees a page nested inside a group', () => {
+  assert.equal(CSNav.isMoreEntry('lc-coach'), true);
+  assert.equal(CSNav.isMoreEntry('agent-skills'), true);
+});
+
 test('every entry has a unique id', () => {
-  const ids = [...CSNav.PRIMARY, ...CSNav.MORE].map((i) => i.id);
+  const ids = [...CSNav.PRIMARY, ...CSNav.MORE,
+               ...CSNav.MORE.flatMap((i) => i.children || [])].map((i) => i.id);
   assert.equal(new Set(ids).size, ids.length);
 });
 

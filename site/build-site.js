@@ -820,29 +820,62 @@ const visualizerCount = stats[3][0];
 
 // The pitch for each tool is what it does for you, not what it is. "Explore
 // problems by tag" beats "LC Explorer" to someone who has never seen either.
-const ENTRY_POINTS = [
-  ['lc-roadmap.html', 'Study roadmap',
-   `A dependency-ordered path through ${roadmapTopics ? `${roadmapTopics} topics` : 'the topics'} — what to learn next, and what it needs first.`],
-  ['cheatsheets.html', 'Cheat sheets',
-   'Every pattern, with templates in Java and Python, ranked by how often interviews ask for it.'],
-  ['patterns.html', 'Pattern recognition',
-   'Read a problem statement, name the technique. The keyword-to-pattern table.'],
-  ['lc-explorer.html', 'Problem explorer',
-   'All indexed problems, filtered by tag, difficulty and acceptance rate, linked to the solutions here.'],
-  ['lc-review-plan.html', 'Review plan',
-   'Spaced repetition over the practice log — what is overdue, and what keeps coming back.'],
-  ['lc-complexity-quiz.html', 'Complexity quiz',
-   `Read a snippet, name its time and space.${quizQuestions ? ` ${quizQuestions} questions,` : ''} each with the trap it sets.`],
-  ['algo_demo/index.html', 'Visualizers',
-   `Step through Dijkstra, KMP, knapsack and ${visualizerCount - 3} more, one frame at a time.`],
-  ['skills.html', 'Interview coach',
-   'An agent skill that scores you the way an interviewer does — a six-point verdict, the debrief they would file, and what to drill next.'],
-  ['lc-add.html', 'File a solution',
-   'The agent skill that turns a solved problem into a committed one — the real slug, the house layout, a smoke test, and the README row.'],
-  ['suggest-review.html', 'Suggest review',
-   'A planner that measures which topics the practice is quietly skipping, then spends its picks on the ones that are owed them.'],
-  ['problems.html', 'Problem index',
-   'The full README table — every problem, its solutions, its tags and its status.']
+//
+// Grouped rather than listed. Eleven cards in one grid is a menu you read all
+// of before choosing any of it; the three groups below answer the question a
+// first visit actually arrives with — am I here to learn something, to practise
+// it, or to look something up?
+const ENTRY_GROUPS = [
+  ['Learn a pattern', 'Ordered so that one thing leads to the next, rather than by problem number.', [
+    ['lc-roadmap.html', 'Study roadmap',
+     `A dependency-ordered path through ${roadmapTopics ? `${roadmapTopics} topics` : 'the topics'} — what to learn next, and what it needs first.`],
+    ['cheatsheets.html', 'Cheat sheets',
+     'Every pattern, with templates in Java and Python, ranked by how often interviews ask for it.'],
+    ['patterns.html', 'Pattern recognition',
+     'Read a problem statement, name the technique. The keyword-to-pattern table.'],
+    ['algo_demo/index.html', 'Visualizers',
+     `Step through Dijkstra, KMP, knapsack and ${visualizerCount - 3} more, one frame at a time.`]
+  ]],
+  ['Practise it', 'Pick something to solve, then keep what you solved from going stale.', [
+    ['lc-explorer.html', 'Problem explorer',
+     'All indexed problems, filtered by tag, difficulty and acceptance rate, linked to the solutions here.'],
+    ['lc-review-plan.html', 'Review plan',
+     'Spaced repetition over the practice log — what is overdue, what keeps coming back, and a session picked for you.'],
+    ['lc-complexity-quiz.html', 'Complexity quiz',
+     `Read a snippet, name its time and space.${quizQuestions ? ` ${quizQuestions} questions,` : ''} each with the trap it sets.`],
+    ['lc-random-picker.html', 'Random picker',
+     'One problem, drawn from the list and difficulty you choose — for when choosing is the thing stopping you.']
+  ]],
+  ['Look something up', 'The index the rest of it is built from.', [
+    ['problems.html', 'Problem index',
+     'The full README table — every problem, its solutions, its tags and its status.'],
+    ['lc-similar.html', 'Similar problems',
+     'The graph of which problems share a technique, so a solved one points at its siblings.'],
+    ['search.html', 'Search',
+     'Every cheatsheet, FAQ and problem note, full-text. Press / from anywhere on the site.'],
+    ['resources.html', 'Resources',
+     'The books, courses and references the notes here were built from.']
+  ]]
+];
+
+// ── Agent skills ─────────────────────────────────────────────────────────────
+//
+// The repo ships agent skills as well as notes, and nothing on the front page
+// said so — the coach was one card reading "Interview coach" in a grid of
+// eleven, which is indistinguishable from another web page of the site. They
+// are a different kind of thing: markdown you install into your own agent, and
+// they work on your code rather than on this site's.
+const skillCount = fs.existsSync('.claude/skills')
+  ? fs.readdirSync('.claude/skills', { withFileTypes: true }).filter(e => e.isDirectory()).length
+  : 0;
+
+const AGENT_SKILLS = [
+  ['skills.html', '/lc-coach', 'Interview coach',
+   'Scores a solution the way an interviewer does — the six-point verdict (SH/H/LH/LNH/NH/SNH), ' +
+   'the debrief packet from their side of the table, the one line that sets the complexity, and what to drill next.'],
+  ['lc-add.html', '/lc-add', 'File a solution',
+   'Turns a solved problem into a committed one — the problem\'s real slug, the house file layout, ' +
+   'a smoke test against the examples, and the README row inserted in number order.']
 ];
 
 const landingContent = `
@@ -851,6 +884,7 @@ const landingContent = `
     <p class="hero-lede">Algorithms, data structures and system design, worked through in Java, Python and SQL — the notes and solutions behind one engineer's interview preparation.</p>
     <div class="hero-actions">
       <a class="hero-btn hero-btn-primary" href="lc-roadmap.html">Start with the roadmap</a>
+      <a class="hero-btn" href="lc-review-plan.html">What to review today</a>
       <a class="hero-btn" href="search.html">Search everything</a>
     </div>
   </div>
@@ -861,14 +895,42 @@ const landingContent = `
     ).join('')}
   </div>
 
-  <h2>Where to go</h2>
-  <div class="entry-grid">
-    ${ENTRY_POINTS.map(([href, title, blurb]) => `
-    <a class="entry-card" href="${href}">
-      <span class="entry-title">${title}</span>
-      <span class="entry-blurb">${blurb}</span>
-    </a>`).join('')}
-  </div>
+  ${ENTRY_GROUPS.map(([heading, note, cards]) => `
+  <section class="entry-section">
+    <h2>${heading}</h2>
+    <p class="section-note">${note}</p>
+    <div class="entry-grid">
+      ${cards.map(([href, title, blurb]) => `
+      <a class="entry-card" href="${href}">
+        <span class="entry-title">${title}</span>
+        <span class="entry-blurb">${blurb}</span>
+      </a>`).join('')}
+    </div>
+  </section>`).join('')}
+
+  <section class="skills-band">
+    <h2>Agent skills</h2>
+    <p class="section-note">
+      The repo ships ${skillCount ? `${skillCount} skills for coding agents` : 'skills for coding agents'} under
+      <code>.claude/skills/</code> — plain markdown, no dependencies, installed into your own agent rather than run here.
+      These two have pages of their own.
+    </p>
+    <div class="skill-grid">
+      ${AGENT_SKILLS.map(([href, command, title, blurb]) => `
+      <a class="skill-card" href="${href}">
+        <span class="skill-cmd">${command}</span>
+        <span class="skill-title">${title}</span>
+        <span class="skill-blurb">${blurb}</span>
+      </a>`).join('')}
+    </div>
+    <p class="section-note skill-install">Install one into Claude Code, Codex, Gemini or any agent that reads a markdown instruction file:</p>
+    <pre class="skill-install-code"><code>git clone --depth 1 https://github.com/yennanliu/CS_basics.git /tmp/cs_basics
+cp -r /tmp/cs_basics/.claude/skills/lc-coach ~/.claude/skills/</code></pre>
+    <p class="section-note">
+      Same idea without an agent: <a href="suggest-review.html">suggest-review</a> is a standard-library Python
+      script that measures which topics the practice is quietly skipping, then spends its picks on the ones that are owed them.
+    </p>
+  </section>
 
   <h2>Complexity, at a glance</h2>
   <p class="section-note">The reference charts, kept on the front page because they are the thing most often looked up. Source: <a href="https://www.bigocheatsheet.com/">bigocheatsheet.com</a>.</p>
