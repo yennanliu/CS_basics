@@ -188,8 +188,62 @@ class Solution(object):
         return False
 
 
-
 # V0-2
+# IDEA: 1D DP (gpt)
+"""
+DP def:
+
+        dp[i] = s[:i] 是否可以被 wordDict 組成
+
+
+DP eq:
+    
+        ```
+        if dp[i - w] and s[i-w:i] == word:
+            dp[i] = True
+        ```
+
+"""
+class Solution(object):
+    def wordBreak(self, s, wordDict):
+        """
+        :type s: str
+        :type wordDict: List[str]
+        :rtype: bool
+        """
+        # edge
+        if not s:
+            return True
+
+        if not wordDict:
+            return False
+
+        d_set = set(wordDict)
+
+        n = len(s)
+
+        # dp[i] = whether s[:i] can be formed
+        #         using words from wordDict
+        dp = [False] * (n + 1)
+
+        # empty string can be formed
+        dp[0] = True
+
+        for i in range(1, n + 1):
+            for word in d_set:
+                w = len(word)
+
+                if i >= w and dp[i - w]:
+                    if s[i - w:i] == word:
+                        dp[i] = True
+                        break
+
+        return dp[n]
+
+
+
+
+# V0-3
 # IDEA: 1D DP (gpt)
 """
 NOTE !!!
