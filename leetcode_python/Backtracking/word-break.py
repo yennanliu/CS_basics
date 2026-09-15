@@ -229,6 +229,35 @@ class Solution(object):
         # empty string can be formed
         dp[0] = True
 
+        """
+        NOTE !!!
+
+
+        we loop with below ordering:
+
+            ```
+            loop over idx  (1 -> n + 1)
+                loop over w  (w in dict)
+            ```
+
+        ->
+
+        Reason:
+
+            1. DP has dependency
+
+                -> dp[i] ← dp[i - len(word)]
+                -> 所以我們要先算前面的 prefix，再算後面的 prefix
+
+
+                -> e.g.
+
+                    確保子問題已經被計算過（滿足 DP 的遞推依賴性）
+
+                    -> 在動態規劃（DP）中，迴圈的巢狀順序取決於一個核心原則：
+                            在計算當前狀態 dp[i] 時，它所依賴的更小狀態必須已經被計算完畢
+
+        """
         for i in range(1, n + 1):
             for word in d_set:
                 w = len(word)
@@ -236,6 +265,11 @@ class Solution(object):
                 if i >= w and dp[i - w]:
                     if s[i - w:i] == word:
                         dp[i] = True
+
+                        # NOTE !!
+                        # if `dp[i] = True`, break inner loop directly
+                        #   -> since we already know dp[i] can be True
+                        #   -> no need to keep further checking
                         break
 
         return dp[n]
