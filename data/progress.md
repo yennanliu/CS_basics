@@ -59,7 +59,7 @@
 
 - linked_list_examples.md
 	- https://yennj12.js.org/CS_basics/cheatsheets/linked_list_examples.zh.html
-		- `合併與切分`
+		- `13) Plus One Linked List — LC 369`
 
 
 
@@ -403,9 +403,13 @@
 			- 39
 		- linked list
 			- 92
+			- 19
+			- 138
+			- 430
 			- 反轉-k-個節點的輔助函式模式
 				- LC 92、LC 25、LC 24、LC 206
 				- https://yennj12.js.org/CS_basics/cheatsheets/linked_list.zh.html#%E5%8F%8D%E8%BD%89-k-%E5%80%8B%E7%AF%80%E9%BB%9E%E7%9A%84%E8%BC%94%E5%8A%A9%E5%87%BD%E5%BC%8F%E6%A8%A1%E5%BC%8F-
+				- LC 725
 		- tree
 			- https://yennj12.js.org/CS_basics/cheatsheets/lc_pattern.html#tree-modification-lc-226
 				- 114 !!!
