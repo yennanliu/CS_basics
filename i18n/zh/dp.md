@@ -1,8 +1,8 @@
-<!-- e523fb13abb4 -->
+<!-- 2b94ade1e1e7 -->
 # 動態規劃（DP）
 
 > **範圍** — DP 的主文件 — 狀態設計、模式目錄，以及每個必會 DP 家族各一份標準模板；實作解法庫、冷門技巧，以及五個最重的子題目都各自獨立成篇，從這裡連過去。
-> **另見** — *從本檔拆出*：[dp_examples.md](./dp_examples.md) — LC 實作解法庫與依模式分類的題目索引；[dp_advanced.md](./dp_advanced.md) — 賽局理論、樹上 DP、區間與字串的深入探討、機率 DP；[knapsack.md](./knapsack.md) — 0/1 vs 完全背包、子集和、組合 vs 排列（[knapsack_01_zh.md](./knapsack_01_zh.md) — 0/1 背包的中文詳解版）；[dp_string.md](./dp_string.md) — 雙序列格子家族；[dp_bitmask.md](./dp_bitmask.md) — 狀態壓縮；[dp_digit.md](./dp_digit.md) — 按位數計數；[dp_monotonic_stack.md](./dp_monotonic_stack.md) — 堆疊裡帶著 DP 值。
+> **另見** — *從本檔拆出*：[dp_examples.md](./dp_examples.md) — LC 實作解法庫與依模式分類的題目索引；[dp_advanced.md](./dp_advanced.md) — 賽局理論、樹上 DP、區間與字串的深入探討、機率 DP；[knapsack.md](./knapsack.md) — 0/1 vs 完全背包、子集和、組合 vs 排列（[knapsack_01_zh.md](./knapsack_01_zh.md) — 0/1 背包的中文詳解版）；[dp_string.md](./dp_string.md) — 雙序列格子家族；[dp_bitmask.md](./dp_bitmask.md) — 狀態壓縮；[dp_digit.md](./dp_digit.md) — 按位數計數；[dp_monotonic_stack.md](./dp_monotonic_stack.md) — 堆疊裡帶著 DP 值；[dp_loop_order.md](./dp_loop_order.md) — 為什麼轉移式會決定迴圈的巢狀與方向，並把 LC 139 用五種寫法走一遍。
 > *相鄰文件*：[dp_pattern.md](./dp_pattern.md) — 精簡的模板索引，一個經典模式一節；[recursion_to_dp.md](./recursion_to_dp.md) — 一步步把能跑的遞迴改寫成 DP；[kadane_algorithm.md](./kadane_algorithm.md) — 最大子陣列家族的深入版；[stock_trading.md](./stock_trading.md) — LC 121/122/188/309/714 的狀態機。
 
 <!-- fd7fec51d5fa -->
@@ -273,15 +273,17 @@ Template 1a 的 `n+1` 尺寸就是為了這個形狀而存在的。`dp[i]` 講�
 
 <!--CODE-->
 
-<!-- 8233cf1806bf -->
+<!-- 5b9506075f13 -->
 #### ⚠️ 三個陷阱
 
 1. **直接對原本的 list 做 `in wordDict`。** `s[j:i] in wordDict` 如果 `wordDict` 是 *list*，
    那是一次線性掃描、每一步還要做字串比較 —— 單次查詢 O(k·L)，整體退化成 O(n²·k·L) 而 TLE。
    `set(wordDict)` 讓它變成一次雜湊。這是「看起來正確的 Word Break」超時最常見的原因。
-2. **迴圈跑字典，而不是跑切點。** 內層迴圈是 `range(i)` —— 跑*位置* —— 而不是 `for w in wordDict`。
-   以單字驅動的迴圈是 BFS／貪心的寫法，需要一個 `visited` 集合避免重複展開同一個邊界；
-   把兩種寫法混在一起，正是大多數 bug 的來源。
+2. **把字典迴圈放到外層。** 內層迴圈是 `range(i)` —— 跑*位置* —— 而不是 `for w in wordDict`。
+   以單字驅動的**內層**迴圈是可以的（它讀到的仍然都是已經算完的格子）；但以單字驅動的**外層**
+   迴圈不行，而且它會安靜地在題目自己的 Example 2 上出錯 —— `"applepenapple"` 在 `"pen"` 的前後
+   都要用到 `"apple"`，而一輪迴圈只能把一個單字放一次。原因與五種寫法的對照：
+   [dp_loop_order.md](./dp_loop_order.md#2-lc-139-word-break--one-recurrence-five-orders-)。
 3. **尺寸開錯之後回傳 `dp[-1]`。** 只開 `n` 格的話，`dp[0] = True` 這個 base case 根本沒地方放，
    於是每個答案都塌成 `False`。
 
@@ -387,7 +389,7 @@ Template 1a 的 `n+1` 尺寸就是為了這個形狀而存在的。`dp[i]` 講�
 而在那裡真正卡住人的很少是遞推式。是表格本身：**它是什麼形狀、遞推式會讀到哪些格子，因此哪一種
 迴圈順序才合法。** 這一節是它們共用的地圖，底下的模板都預設你看過。
 
-<!-- f3d96656a408 -->
+<!-- 901392aea820 -->
 #### 決定迴圈順序的那條規則
 
 > 先把轉移式寫出來。**右手邊**每一個 `dp[...]` 都是一支指*進* `dp[i][j]` 的箭頭。一種迴圈順序
@@ -404,6 +406,9 @@ Template 1a 的 `n+1` 尺寸就是為了這個形狀而存在的。`dp[i]` 講�
 
 這張表就是完整的決策流程，也就是為什麼 LC 516 的 `i` 要倒著跑、LC 72 的 `i` 要正著跑 — 不是風格，
 不是喜好，只是每個遞推式讀到哪些鄰居而已。
+
+> 這張表的一維版本 —— 外加迴圈順序的*另一個*軸，也就是 **item** 迴圈到底可不可以放在狀態迴圈
+> 外面 —— 在 [dp_loop_order.md](./dp_loop_order.md)。
 
 <!-- d3a22d642427 -->
 #### 我要蓋的是哪一種形狀？

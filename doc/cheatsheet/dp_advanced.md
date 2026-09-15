@@ -825,6 +825,8 @@ Amount outer: "To reach amount i, which coin did I place LAST?"
 
 LC 322 asks for the *minimum count*, not *how many ways* — so whether you count `[1,2]` and `[2,1]` separately doesn't matter; the minimum stays the same either way. Both loop orders are correct for LC 322.
 
+**And where this stops generalising**: coins *add*, so any multiset can be re-ordered into the coin loop's order — which is what makes coins-outer legal at all. Words *concatenate* at positions the string already fixed, so LC 139 Word Break has no legal item-outer order. The test, and LC 139 in five orders: [dp_loop_order.md](./dp_loop_order.md).
+
 **LeetCode Problem Map:**
 
 | LC # | Problem | Loop Order | Reason |

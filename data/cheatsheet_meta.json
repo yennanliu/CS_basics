@@ -204,6 +204,7 @@
     "backtrack":                        { "category": "Dynamic Programming & Recursion", "tier": 5, "title": "Backtracking" },
     "dp_pattern":                       { "category": "Dynamic Programming & Recursion", "tier": 4, "title": "DP Patterns — One-Screen Templates" },
     "dp_advanced":                      { "category": "Dynamic Programming & Recursion", "tier": 4 },
+    "dp_loop_order":                    { "category": "Dynamic Programming & Recursion", "tier": 4 },
     "dp_examples":                      { "category": "Dynamic Programming & Recursion", "tier": 3 },
     "backtrack_advanced":               { "category": "Dynamic Programming & Recursion", "tier": 4 },
     "backtrack_examples":               { "category": "Dynamic Programming & Recursion", "tier": 3 },

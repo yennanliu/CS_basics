@@ -1,7 +1,7 @@
 # Dynamic Programming (DP)
 
 > **Scope** — The main DP sheet — state design, the pattern catalogue, and one canonical template per must-know DP family; the worked-solution archive, the rare techniques, and the five heaviest sub-topics live in their own sheets and are linked from here.
-> **See also** — *split out of this file*: [dp_examples.md](./dp_examples.md) — the worked LC solution archive and the problems-by-pattern index; [dp_advanced.md](./dp_advanced.md) — game theory, tree DP, interval and string deep dives, probability DP; [knapsack.md](./knapsack.md) — 0/1 vs unbounded, subset sum, combinations vs permutations ([knapsack_01_zh.md](./knapsack_01_zh.md) — 0/1 背包的中文詳解版); [dp_string.md](./dp_string.md) — the two-sequence grid family; [dp_bitmask.md](./dp_bitmask.md) — state compression; [dp_digit.md](./dp_digit.md) — counting numbers by digit; [dp_monotonic_stack.md](./dp_monotonic_stack.md) — stack-carried DP values.
+> **See also** — *split out of this file*: [dp_examples.md](./dp_examples.md) — the worked LC solution archive and the problems-by-pattern index; [dp_advanced.md](./dp_advanced.md) — game theory, tree DP, interval and string deep dives, probability DP; [knapsack.md](./knapsack.md) — 0/1 vs unbounded, subset sum, combinations vs permutations ([knapsack_01_zh.md](./knapsack_01_zh.md) — 0/1 背包的中文詳解版); [dp_string.md](./dp_string.md) — the two-sequence grid family; [dp_bitmask.md](./dp_bitmask.md) — state compression; [dp_digit.md](./dp_digit.md) — counting numbers by digit; [dp_monotonic_stack.md](./dp_monotonic_stack.md) — stack-carried DP values; [dp_loop_order.md](./dp_loop_order.md) — why a transition forces its loop nesting and direction, with LC 139 worked in five orders.
 > *Neighbouring sheets*: [dp_pattern.md](./dp_pattern.md) — terse template index, one section per classic pattern; [recursion_to_dp.md](./recursion_to_dp.md) — converting a working recursion into DP step by step; [kadane_algorithm.md](./kadane_algorithm.md) — the maximum-subarray family in depth; [stock_trading.md](./stock_trading.md) — the LC 121/122/188/309/714 state machine.
 
 ## LeetCode Problem Lists
@@ -478,9 +478,11 @@ public boolean wordBreak(String s, List<String> wordDict) {
    TLEs. `set(wordDict)` makes it one hash. This is the single most common reason a correct-looking
    Word Break times out.
 2. **Looping over the dictionary instead of over the cut points.** The inner loop is `range(i)` —
-   *positions* — not `for w in wordDict`. The word-driven loop is the BFS/greedy formulation and
-   needs a `visited` set to avoid re-expanding a boundary; mixing the two is where most buggy
-   attempts land.
+   *positions* — not `for w in wordDict`. A word-driven **inner** loop is fine (it still reads only
+   finished cells); a word-driven **outer** loop is not, and it silently fails the problem's own
+   Example 2 — `"applepenapple"` needs `"apple"` on both sides of `"pen"`, and one pass per word can
+   only place a word once. Why, and all five orders side by side:
+   [dp_loop_order.md](./dp_loop_order.md#2-lc-139-word-break--one-recurrence-five-orders-).
 3. **Returning `dp[-1]` after mis-sizing.** With `n` slots instead of `n+1` there is nowhere to put
    the `dp[0] = True` base case, and every answer collapses to `False`.
 
@@ -634,6 +636,9 @@ assume it.
 
 That table is the whole decision procedure, and it is why LC 516's loop runs `i` backwards while
 LC 72's runs `i` forwards — not style, not taste, just which neighbours each recurrence reads.
+
+> The 1-D sibling of this table — plus the *other* loop-order axis, whether an **item** loop may sit
+> outside the state loop at all — is [dp_loop_order.md](./dp_loop_order.md).
 
 #### Which shape am I building?
 

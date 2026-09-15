@@ -224,11 +224,16 @@ LC 79 回傳 **boolean** 而且會短路（`if dfs(...): return True`）。下�
 
 <!--CODE-->
 
-<!-- bb8eea158bad -->
+<!-- 3ab1b20880eb -->
 ### 10) Word Break — LC 139
 
 > 放在這裡是因為它是下面 LC 140 的*判定版*雙胞胎 — 但注意它的解法是
 > **對起始索引做 BFS**，不是回溯：沒有東西需要 undo。
+>
+> DP 的寫法在 [dp.md Template 1b](./dp.md#template-1b-prefix-partition-dp---lc-139)，而那裡最容易
+> 寫錯的就是巢狀順序 —— `for i: for word:` 正確，`for word: for i:` 會在 `"applepenapple"` 上
+> 安靜地回傳 `False`：
+> [dp_loop_order.md](./dp_loop_order.md#2-lc-139-word-break--one-recurrence-five-orders-)。
 
 <!--CODE-->
 

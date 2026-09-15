@@ -54,6 +54,10 @@
 
 **🔑 Key Insight**: In unbounded knapsack problems (like Coin Change), the **order of nested loops** determines whether you count **combinations** or **permutations**.
 
+> Both orders here are *correct* DPs answering different questions — that is special to sums. When
+> the items are concatenated rather than added (LC 139 Word Break), the item-outer order is not a
+> different question, it is simply wrong: [dp_loop_order.md](./dp_loop_order.md#1-4-the-commutativity-test--when-item-outer-is-legal-).
+
 ---
 
 #### **🎯 Ultimate Cheat Sheet: When to Use Which Pattern**

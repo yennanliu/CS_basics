@@ -57,10 +57,14 @@
 <!-- ddc7f484e4af -->
 ## 模板與演算法
 
-<!-- 4bdf333ca0cf -->
+<!-- ceb09f3ae5da -->
 ### 迴圈順序：組合 vs 排列
 
 **🔑 關鍵洞見**：在完全背包類的題目（例如 Coin Change）中，**巢狀迴圈的順序**決定了你數的是**組合**還是**排列**。
+
+> 這裡兩種順序都是*正確*的 DP，只是在回答不同的問題 —— 那是「相加」才有的特權。當 items 是被
+> 「接起來」而不是「相加」時（LC 139 Word Break），item 放外層就不是換一個問題，而單純是錯的：
+> [dp_loop_order.md](./dp_loop_order.md#1-4-the-commutativity-test--when-item-outer-is-legal-)。
 
 ---
 

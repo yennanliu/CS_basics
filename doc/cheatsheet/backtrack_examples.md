@@ -1151,6 +1151,11 @@ class Solution(object):
 
 > Listed here because it is the *decision* twin of LC 140 below — but note the solution is a
 > **BFS over start indices**, not a backtrack: there is nothing to undo.
+>
+> The DP spelling is [dp.md Template 1b](./dp.md#template-1b-prefix-partition-dp---lc-139), and the
+> one thing it is easy to get wrong there is the loop nest — `for i: for word:` is correct,
+> `for word: for i:` silently returns `False` on `"applepenapple"`:
+> [dp_loop_order.md](./dp_loop_order.md#2-lc-139-word-break--one-recurrence-five-orders-).
 
 ```python
 # python

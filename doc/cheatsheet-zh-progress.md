@@ -41,7 +41,7 @@ half-translated sheet renders with English gaps rather than failing.
   is what makes a problem findable on LeetCode itself.
 
 
-## Status — 5074 / 5268 sections (96%)
+## Status — 5074 / 5302 sections (96%)
 
 | Sheet | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -95,6 +95,7 @@ half-translated sheet renders with English gaps rather than failing.
 | [dp_bitmask](./cheatsheet/dp_bitmask.md) | 18 | [15/18](../i18n/zh/dp_bitmask.md) |
 | [dp_digit](./cheatsheet/dp_digit.md) | 18 | [✅](../i18n/zh/dp_digit.md) |
 | [dp_examples](./cheatsheet/dp_examples.md) | 25 | [✅](../i18n/zh/dp_examples.md) |
+| [dp_loop_order](./cheatsheet/dp_loop_order.md) | 33 | — |
 | [dp_monotonic_stack](./cheatsheet/dp_monotonic_stack.md) | 31 | [✅](../i18n/zh/dp_monotonic_stack.md) |
 | [dp_pattern](./cheatsheet/dp_pattern.md) | 75 | [74/75](../i18n/zh/dp_pattern.md) |
 | [dp_string](./cheatsheet/dp_string.md) | 37 | [33/37](../i18n/zh/dp_string.md) |
@@ -138,7 +139,7 @@ half-translated sheet renders with English gaps rather than failing.
 | [prefix_sum_examples](./cheatsheet/prefix_sum_examples.md) | 17 | [13/17](../i18n/zh/prefix_sum_examples.md) |
 | [priority_queue](./cheatsheet/priority_queue.md) | 3 | [2/3](../i18n/zh/priority_queue.md) |
 | [python_gotchas](./cheatsheet/python_gotchas.md) | 44 | [✅](../i18n/zh/python_gotchas.md) |
-| [python_trick](./cheatsheet/python_trick.md) | 66 | [✅](../i18n/zh/python_trick.md) |
+| [python_trick](./cheatsheet/python_trick.md) | 67 | [66/67](../i18n/zh/python_trick.md) |
 | [python_trick_indexing](./cheatsheet/python_trick_indexing.md) | 28 | [✅](../i18n/zh/python_trick_indexing.md) |
 | [python_trick_stdlib](./cheatsheet/python_trick_stdlib.md) | 24 | [✅](../i18n/zh/python_trick_stdlib.md) |
 | [queue](./cheatsheet/queue.md) | 58 | [✅](../i18n/zh/queue.md) |
