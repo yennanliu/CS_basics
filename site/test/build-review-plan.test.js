@@ -286,10 +286,13 @@ test('section weights cover the whole README, not just the practised rows', () =
   assert.deepEqual(sections.map((s) => s.name).slice(0, 1), ['Array']);
 });
 
-test('a curated-list problem README has never indexed still gets a weight', () => {
+test('a curated-list problem README has never indexed still gets a title', () => {
   const { byId, sections } = buildCatalog(README_FIXTURE, LISTS_FIXTURE);
+  assert.equal(byId.get('9999').title, 'Not In Readme');
   assert.equal(byId.get('9999').section, UNFILED);
-  assert.ok(sections.find((s) => s.name === UNFILED));
+  // ...but no weight on the balance table. There are 363 of these in the real
+  // data, and counting them made Unfiled the third-largest topic on it.
+  assert.equal(sections.find((s) => s.name === UNFILED), undefined);
 });
 
 test('solution links ship relative to the repo root, not as three full URLs each', () => {

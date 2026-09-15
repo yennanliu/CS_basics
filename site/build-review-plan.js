@@ -341,7 +341,15 @@ function buildCatalog(readmeMarkdown, listsJson) {
   }
 
   // A curated-list problem README has never indexed is still a real problem
-  // with a real weight; the log does contain a few.
+  // with a real title, and the log does contain a few — so it goes in `byId`
+  // and its row on the page reads properly.
+  //
+  // It does NOT get a section weight. There are 363 of these, and counting them
+  // made `Unfiled` the third-largest topic on the balance table: a topic the
+  // repo has never claimed, permanently owed practice it was never going to
+  // get. The table compares the topics README organises; a logged problem with
+  // no README row still gets its own `Unfiled` line, added by the page, at zero
+  // weight.
   for (const [id, entry] of listed) {
     if (byId.has(id)) continue;
     const meta = {
@@ -353,7 +361,6 @@ function buildCatalog(readmeMarkdown, listsJson) {
     };
     meta.importance = importance(meta);
     byId.set(id, meta);
-    bump(UNFILED, meta.importance);
   }
 
   return {
