@@ -56,7 +56,9 @@
 
 - dp_pattern.md
 	- https://yennj12.js.org/CS_basics/cheatsheets/dp_pattern.zh.html
-		- again: `10. 數位 DP` 
+		- again: `10. 數位 DP`
+		- progress: `LC 44 vs LC 10 — 只差這兩行`
+ 
 
 
 - stack_expression_parsing
@@ -64,6 +66,12 @@
 
 
 
+- Matrix / 2D Grid.md
+	- https://yennj12.js.org/CS_basics/cheatsheets/matrix.zh.html
+
+
+
+	
 
 
 
@@ -72,7 +80,6 @@
 
 - binary tree.md
 
-- Matrix / 2D Grid.md
 
 - greedy.md
 
@@ -89,6 +96,9 @@
 
 - python_trick.md
 	- `2) LC Example`
+
+
+
 
 - OK:
   - (20260805 - )

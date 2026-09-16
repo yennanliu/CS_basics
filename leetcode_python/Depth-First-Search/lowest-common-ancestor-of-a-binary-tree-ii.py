@@ -45,6 +45,7 @@ Follow up: Can you find the LCA traversing the tree, without checking nodes exis
 
 """
 
+
 # V0
 # IDEA : POST ORDER DFS + COUNT THE HITS (LC 236, one pass)
 #
@@ -103,6 +104,67 @@ class Solution(object):
 
         # only a real LCA if BOTH p and q were actually met
         return lca if self.found == 2 else None
+
+
+# V0-0-1
+# IDEA: LCA + POST DFS + p, q existed check (gpt)
+# https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Depth-First-Search/lowest-common-ancestor-of-a-binary-tree.py
+# TODO: validate
+class Solution(object):
+    def lowestCommonAncestor(self, root, p, q):
+        """
+        :type root: TreeNode
+        :type p: TreeNode
+        :type q: TreeNode
+        :rtype: TreeNode
+        """
+        if not root:
+            return None
+
+        # NOTE !!! below
+        self.p_existed = False
+        self.q_existed = False
+
+        res = self.helper(root, p, q)
+
+        # NOTE !!! below
+        # Both p and q must exist
+        if not self.p_existed or not self.q_existed:
+            return None
+
+        return res
+
+    def helper(self, root, p, q):
+        if not root:
+            return None
+
+        # Found p or q
+        if root == p or root == q:
+
+            # NOTE !!! below
+            if root == p:
+                self.p_existed = True
+
+            if root == q:
+                self.q_existed = True
+
+            return root
+
+        left = self.helper(root.left, p, q)
+        right = self.helper(root.right, p, q)
+
+        # p and q are on different sides
+        if left and right:
+            return root
+
+        # Only one side has p/q
+        if left:
+            return left
+
+        if right:
+            return right
+
+        return None
 
 
 # V0-1
