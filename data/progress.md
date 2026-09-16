@@ -56,7 +56,7 @@
 
 - dp_pattern.md
 	- https://yennj12.js.org/CS_basics/cheatsheets/dp_pattern.zh.html
-		- `最長共同子序列（LCS）` 
+		- again: `10. 數位 DP` 
 
 
 - stack_expression_parsing
@@ -271,6 +271,13 @@
 		- DP
 			- 1D DP
 			- 2D DP
+			- 數位 DP
+				- 233
+				- 357
+				- 600
+				- 902
+				- 1012
+				- 2376
 			- Palindrome Substring DP 
 				- 5
 			- Combinations
@@ -335,6 +342,9 @@
 				- 1774
 			- DP on tree
 				- 124
+				- 337
+				- 1130
+				- 2246
 			- Wildcard / Regex Pattern Matching DP ⭐
 			- linear DP
 			- 2 states DP
