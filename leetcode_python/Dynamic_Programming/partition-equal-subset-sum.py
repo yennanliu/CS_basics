@@ -42,8 +42,19 @@ class Solution(object):
 
         target = total // 2
 
+        # NOTE !!!
+        # dp is boolean
         # dp[j] = can we make sum j using the numbers seen so far?
         dp = [False] * (target + 1)
+
+        """
+        NOTE !!!
+
+
+        init dp[0] as True
+
+            -> for target = 0, we always can make it (make total sum == 0). 
+        """
         dp[0] = True
 
 
