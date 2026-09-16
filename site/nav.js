@@ -75,7 +75,8 @@
     { id: 'suggest-review',     label: 'suggest',    href: 'suggest-review.html' },
     { id: 'agent-skills',       label: 'agent skills', children: [
       { id: 'lc-coach',         label: 'lc-coach',   href: 'skills.html' },
-      { id: 'lc-add',           label: 'lc-add',     href: 'lc-add.html' }
+      { id: 'lc-add',           label: 'lc-add',     href: 'lc-add.html' },
+      { id: 'lc-cheatsheet',    label: 'lc-cheatsheet', href: 'lc-cheatsheet.html' }
     ] },
     { id: 'resources',          label: 'resources',  href: 'resources.html' },
     { id: 'github',             label: 'github',     href: 'https://github.com/yennanliu/CS_basics', external: true }

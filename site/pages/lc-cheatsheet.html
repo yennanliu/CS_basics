@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <title>LC Cheatsheet — CS_basics</title>
+  <meta name="description" content="An agent skill that files a LeetCode problem into the cheatsheets the way the existing sections are written: the sheet whose Scope line owns the topic, one of four modes (example, variation, pattern, new sheet), every snippet run, the heading anchors the edit moved, and the 中文 overlay kept level.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📝</text></svg>">
+  <link rel="stylesheet" href="nav.css">
+  <link rel="stylesheet" href="lc-page.css">
+  <!-- Blocking on purpose: nav.js restores the stored theme before first paint. -->
+  <script src="nav.js"></script>
+  <style>
+    /* ── Page-local tokens ────────────────────────────────────────────────
+       The palette itself (--bg/--text/--border/--surface, light and dark)
+       comes from lc-page.css. Only things this page alone needs live here,
+       and deliberately in the vocabulary skills.html and lc-add.html use —
+       the three skill pages should read as one family, not three designs. */
+    :root {
+      --mono: 'SF Mono','JetBrains Mono','IBM Plex Mono',ui-monospace,'Menlo',monospace;
+      --grid-line: rgba(128,128,128,0.10);
+      --tint: rgba(128,128,128,0.06);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 0; font-family: var(--mono);
+      background: var(--bg); color: var(--text);
+      transition: background 0.2s, color 0.2s;
+      font-size: 13px; line-height: 1.65;
+    }
+    a { color: var(--text); }
+    ::selection { background: var(--text); color: var(--bg); }
+
+    .container { max-width: 940px; margin: 0 auto; padding: 0 1.5rem; }
+
+    .reveal { opacity: 1; transform: none; }
+    .js .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .js .reveal.in { opacity: 1; transform: none; }
+
+    /* ── Hero ─────────────────────────────────────────────────────────── */
+    .hero {
+      position: relative; overflow: hidden;
+      border-bottom: 1px solid var(--border);
+      padding: 4rem 0 3rem;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+      background-size: 28px 28px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 30%, transparent 75%);
+      -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 30%, transparent 75%);
+    }
+    .hero > * { position: relative; }
+
+    .kicker {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--text-light); margin: 0 0 1.1rem;
+      border: 1px solid var(--border); padding: 0.25rem 0.7rem; border-radius: 100px;
+    }
+    .dot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--text);
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
+
+    .hero h1 {
+      margin: 0 0 0.9rem; font-size: clamp(2.1rem, 6.5vw, 3.4rem);
+      line-height: 1.05; letter-spacing: -0.035em; font-weight: 700;
+    }
+    .hero h1 .thin { color: var(--text-light); font-weight: 400; }
+    .lede { color: var(--text-light); font-size: 0.98rem; max-width: 62ch; margin: 0 0 1.8rem; }
+
+    .hero-actions { display: flex; gap: 0.7rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+    .btn {
+      display: inline-block; padding: 0.6rem 1.2rem; font-size: 0.85rem;
+      text-decoration: none; border: 1px solid var(--border);
+      color: var(--text); background: var(--surface); font-family: inherit;
+      transition: border-color 0.15s, transform 0.15s;
+    }
+    .btn:hover { border-color: var(--text); transform: translateY(-1px); }
+    .btn.primary { background: var(--text); color: var(--bg); border-color: var(--text); }
+
+    /* ── Terminal ─────────────────────────────────────────────────────── */
+    .term {
+      border: 1px solid var(--border); background: var(--surface);
+      font-size: 0.76rem; line-height: 1.62;
+    }
+    .term-bar {
+      display: flex; align-items: center; gap: 0.45rem;
+      padding: 0.5rem 0.8rem; border-bottom: 1px solid var(--border);
+      color: var(--text-light); font-size: 0.68rem; letter-spacing: 0.05em;
+    }
+    .term-bar i { width: 8px; height: 8px; border-radius: 50%; border: 1px solid var(--text-light); display: block; }
+    .term-bar span { margin-left: auto; }
+    .term pre {
+      margin: 0; padding: 1rem; overflow-x: auto; white-space: pre; font-family: inherit;
+      min-height: 15.5rem;
+    }
+    .caret {
+      display: inline-block; width: 0.55em; height: 1em; background: var(--text);
+      vertical-align: -0.15em; animation: blink 1.05s step-end infinite;
+    }
+    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+
+    /* ── Sections ─────────────────────────────────────────────────────── */
+    section { padding: 3.25rem 0; border-bottom: 1px solid var(--border); }
+    section:last-of-type { border-bottom: none; }
+    .eyebrow {
+      font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--text-light); margin: 0 0 0.7rem;
+    }
+    h2 { font-size: 1.35rem; margin: 0 0 0.5rem; letter-spacing: -0.02em; }
+    .sub { color: var(--text-light); margin: 0 0 1.9rem; max-width: 72ch; }
+
+    /* ── Failure cards ────────────────────────────────────────────────── */
+    .fails { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1px;
+             background: var(--border); border: 1px solid var(--border); }
+    .fail { background: var(--bg); padding: 1.15rem 1.25rem; transition: background 0.15s; }
+    .fail:hover { background: var(--surface); }
+    .fail .glyph { font-size: 1.1rem; display: block; margin-bottom: 0.5rem; color: var(--text-light); }
+    .fail b { display: block; font-size: 0.95rem; margin-bottom: 0.4rem; }
+    .fail p { margin: 0 0 0.5rem; font-size: 0.82rem; color: var(--text-light); }
+    .fail p:last-child { margin-bottom: 0; }
+    .fail .cost { color: var(--text); }
+
+    /* ── The four modes ───────────────────────────────────────────────── */
+    .rail { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-bottom: 1.2rem; }
+    .step {
+      font-family: inherit; cursor: pointer; text-align: center;
+      border: 1px solid var(--border); background: var(--surface); color: var(--text);
+      padding: 0.85rem 0.25rem 0.7rem; transition: transform 0.15s, border-color 0.15s, background 0.15s;
+    }
+    .step:hover { border-color: var(--text); transform: translateY(-2px); }
+    .step[aria-checked="true"] { background: var(--text); color: var(--bg); border-color: var(--text); }
+    .step .n { display: block; font-size: 0.95rem; font-weight: 700; letter-spacing: -0.02em; }
+    .step .tag { display: block; font-size: 0.6rem; letter-spacing: 0.06em; text-transform: uppercase;
+                 margin-top: 0.35rem; color: var(--text-light); overflow: hidden; text-overflow: ellipsis; }
+    .step[aria-checked="true"] .tag { color: var(--bg); }
+    .step .bar { display: block; height: 3px; margin: 0.5rem 0.3rem 0; background: var(--text); }
+    .step[aria-checked="true"] .bar { background: var(--bg); }
+
+    .step-detail {
+      border: 1px solid var(--border); border-left: 3px solid var(--text);
+      background: var(--tint); padding: 1.1rem 1.3rem; min-height: 12.5rem;
+    }
+    .step-detail .sd-name { font-size: 1rem; font-weight: 700; margin: 0 0 0.35rem; }
+    .step-detail p { margin: 0 0 0.6rem; }
+    .step-detail .sd-rule { color: var(--text-light); margin: 0 0 0.75rem; }
+    .step-detail .sd-rule b { color: var(--text); font-weight: 700; }
+    .step-detail pre {
+      margin: 0; padding: 0.7rem 0.85rem; overflow-x: auto; font-size: 0.75rem;
+      background: var(--surface); border: 1px solid var(--border); font-family: inherit;
+    }
+
+    /* ── Tables ───────────────────────────────────────────────────────── */
+    .table-wrap { overflow-x: auto; border: 1px solid var(--border); }
+    table { border-collapse: collapse; width: 100%; min-width: 520px; font-size: 0.82rem; }
+    th, td { text-align: left; padding: 0.6rem 0.9rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    th { font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.09em;
+         color: var(--text-light); background: var(--surface); font-weight: 600; }
+    tbody tr:last-child td { border-bottom: none; }
+    td.num { white-space: nowrap; font-weight: 700; }
+    code { background: var(--surface); border: 1px solid var(--border);
+           padding: 0.05rem 0.3rem; font-size: 0.92em; font-family: inherit; }
+
+    /* ── Code blocks ──────────────────────────────────────────────────── */
+    .code-block { position: relative; background: var(--surface); border: 1px solid var(--border); margin: 0.75rem 0; }
+    .code-block pre { margin: 0; padding: 0.95rem 1rem; overflow-x: auto; font-size: 0.77rem; line-height: 1.6; font-family: inherit; }
+    .code-block code { background: none; border: none; padding: 0; }
+    .code-block .ann { color: var(--text-light); }
+    .copy {
+      position: absolute; top: 0.4rem; right: 0.4rem; background: var(--bg); color: var(--text-light);
+      border: 1px solid var(--border); font-family: inherit; font-size: 0.66rem;
+      padding: 0.2rem 0.5rem; cursor: pointer;
+    }
+    .copy:hover { color: var(--text); border-color: var(--text); }
+
+    /* ── Tabs (the installs) ──────────────────────────────────────────── */
+    .tabs { display: flex; flex-wrap: wrap; border-bottom: 1px solid var(--border); margin-bottom: 1.1rem; }
+    .tab {
+      background: none; border: none; border-bottom: 2px solid transparent; color: var(--text-light);
+      font-family: inherit; font-size: 0.82rem; padding: 0.55rem 0.9rem; cursor: pointer; margin-bottom: -1px;
+    }
+    .tab:hover { color: var(--text); }
+    .tab[aria-selected="true"] { color: var(--text); border-bottom-color: var(--text); }
+    .panel p:first-child { margin-top: 0; }
+
+    /* ── Won't-do list ────────────────────────────────────────────────── */
+    ul.nots { list-style: none; margin: 0; padding: 0; }
+    ul.nots li {
+      display: grid; grid-template-columns: 1.4rem 1fr; gap: 0.7rem;
+      padding: 0.7rem 0; border-bottom: 1px solid var(--border); align-items: baseline;
+    }
+    ul.nots li:last-child { border-bottom: none; }
+    ul.nots .x { color: var(--text-light); font-weight: 700; }
+    ul.nots b { font-weight: 700; }
+    ul.nots span.why { display: block; color: var(--text-light); font-size: 0.82rem; margin-top: 0.15rem; }
+
+    /* ── File list ────────────────────────────────────────────────────── */
+    ul.files { list-style: none; margin: 0; padding: 0; }
+    ul.files li { border-bottom: 1px solid var(--border); padding: 0.75rem 0; }
+    ul.files li:last-child { border-bottom: none; }
+    ul.files a { font-weight: 700; text-decoration: none; border-bottom: 1px solid var(--border); }
+    ul.files a:hover { border-bottom-color: var(--text); }
+    ul.files span { display: block; color: var(--text-light); font-size: 0.82rem; }
+
+    .note { color: var(--text-light); font-size: 0.82rem; }
+
+    @media (max-width: 760px) {
+      .rail { grid-template-columns: repeat(2, 1fr); }
+      .hero { padding-top: 2.5rem; }
+      .term pre { min-height: 18rem; }
+    }
+    /* nav.css carries the site-wide opt-out; these are this page's own. */
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+      .js .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="site-nav" data-page="lc-cheatsheet" data-base=""></div>
+<script>CSNav.mount();</script>
+
+<main id="main">
+
+  <!-- ── Hero ──────────────────────────────────────────────────────────── -->
+  <div class="hero">
+    <div class="container">
+      <p class="kicker"><span class="dot" aria-hidden="true"></span> Agent skill</p>
+      <h1>LC Cheatsheet<br><span class="thin">problem &rarr; pattern</span></h1>
+      <p class="lede">
+        A solved problem is worth more as a line in the sheet you reach for next time than as
+        one more file in the tree. <code>/lc-cheatsheet</code> files it there: the sheet whose
+        Scope line owns the topic, the pattern it actually belongs under, every snippet run
+        before it lands, the heading anchors the edit moved, and the 中文 overlay kept level.
+      </p>
+      <div class="hero-actions">
+        <a class="btn primary" href="#install">Install it</a>
+        <a class="btn" href="#modes">The four modes</a>
+        <a class="btn" href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-cheatsheet/SKILL.md">Read the source</a>
+      </div>
+
+      <div class="term">
+        <div class="term-bar">
+          <i aria-hidden="true"></i><i aria-hidden="true"></i><i aria-hidden="true"></i>
+          <span>/lc-cheatsheet 1650 into binary_tree as variation</span>
+        </div>
+        <pre id="tape" aria-live="off">1  sheet      binary_tree.md, as asked — plus tree_lca_distance.md, whose
+              Scope line owns LCA, so the depth goes there and binary_tree
+              gets the entry point. Found a bug on the way: the LC 236
+              template claimed it solved 1650
+
+2  mode       variation — 1650 breaks one precondition: no root, parent pointers
+
+3  neighbour  matched #### LCA Variant — Smallest Subtree with All Deepest Nodes
+
+4  write      family picker table (236/235/1644/1650/1676), two templates,
+              the step trace, the pitfalls · binary_tree.md: Template 6's
+              variations table, the 1650 code, the link onward
+
+5  anchors    slugify → #lca-variant--parent-pointers-no-root-lc-1650-
+              trailing dash: the star run leaves the space before it
+
+6  test       5 snippets vs the LC examples + a cross-tree pair → None
+
+7  中文        8 sections parked by the edit, all 8 re-keyed → 0 todo
+
+8  verify     build · e2e-check 76/76 · 418 unit tests green</pre>
+      </div>
+      <p class="note" style="margin-top:0.6rem">A real run — the LCA variation now in <a href="cheatsheets/tree_lca_distance.html">tree_lca_distance</a>, in the order it always happens.</p>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- ── Why it exists ───────────────────────────────────────────────── -->
+    <section id="why" class="reveal">
+      <p class="eyebrow">Why a skill and not a habit</p>
+      <h2>Three ways a cheatsheet edit rots</h2>
+      <p class="sub">
+        None of these are hypothetical — each one has landed in this repo, and none of them
+        looks wrong in a diff. A sheet is read as authoritative, which is exactly what makes a
+        quiet error in one expensive.
+      </p>
+      <div class="fails">
+        <div class="fail">
+          <span class="glyph" aria-hidden="true">&#9639;</span>
+          <b>It lands in the wrong sheet</b>
+          <p>Two sheets can plausibly own &ldquo;LCA&rdquo;. Filed into the wrong one it becomes a second copy that drifts, and the Scope lines that exist to prevent that go unread.</p>
+          <p class="cost">Rule: the Scope line decides, not the topic name.</p>
+        </div>
+        <div class="fail">
+          <span class="glyph" aria-hidden="true">&#9636;</span>
+          <b>It is appended, not filed</b>
+          <p>An <code>LC Examples</code> block at the end of the file, re-solving what a template above already solved. That is the Aug 2026 cleanup this repo already paid for once.</p>
+          <p class="cost">Fix: file it under the pattern it belongs to.</p>
+        </div>
+        <div class="fail">
+          <span class="glyph" aria-hidden="true">&#9676;</span>
+          <b>The edit breaks what it touched</b>
+          <p>A changed heading moves its anchor and every link to it dangles. An edited section parks its 中文 translation, and the Chinese page quietly falls back to English.</p>
+          <p class="cost">Both are followed in the same commit.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── The four modes ──────────────────────────────────────────────── -->
+    <section id="modes" class="reveal">
+      <p class="eyebrow">One argument decides the shape</p>
+      <h2>Four modes</h2>
+      <p class="sub">
+        <code>as &lt;mode&gt;</code> is the whole interface. It is inferred from what the sheet
+        already contains, so it is worth passing only to overrule that — and the mode, not the
+        problem, is what determines where the section goes and which tables have to move with it.
+      </p>
+
+      <div class="rail" role="radiogroup" aria-label="Modes">
+        <button class="step" role="radio" aria-checked="true" data-n="example"
+          data-name="as example — the default"
+          data-body="The sheet already has the template and this problem is another instance of it. The section lands under that template, and the pattern's similar-problems table gains a row."
+          data-rule="If the sheet already solves the problem, this is not the mode — one canonical solution per problem."
+          data-code="/lc-cheatsheet 239 into sliding_window">
+          <span class="n">example</span><span class="bar" aria-hidden="true"></span><span class="tag">default</span>
+        </button>
+        <button class="step" role="radio" aria-checked="false" data-n="variation"
+          data-name="as variation — the valuable one"
+          data-body="The sheet's template does not quite solve it: exactly one precondition differs. It lands as a variant under the template it varies, and the report has to name which precondition changed."
+          data-rule="This is the mode that teaches which template to reach for — the thing readers get wrong under time pressure."
+          data-code="/lc-cheatsheet 1650 into binary_tree as variation
+  -> LC 236 assumes a root. 1650 has parent pointers
+     and none, so it is LC 160, not a tree search.">
+          <span class="n">variation</span><span class="bar" aria-hidden="true"></span><span class="tag">one precondition</span>
+        </button>
+        <button class="step" role="radio" aria-checked="false" data-n="pattern"
+          data-body="The sheet has no template for the technique at all. A new pattern section is written in the sheet's own skeleton, and it has to be made reachable: the category table, the selection strategy, and the decision tree at the end."
+          data-name="as pattern — a technique the sheet lacks"
+          data-rule="A section nothing links to is a section nobody finds. Reachability is half the job."
+          data-code="/lc-cheatsheet 496 as pattern">
+          <span class="n">pattern</span><span class="bar" aria-hidden="true"></span><span class="tag">new template</span>
+        </button>
+        <button class="step" role="radio" aria-checked="false" data-n="sheet"
+          data-name="as sheet — nothing owns the topic"
+          data-body="A whole new doc/cheatsheet/<slug>.md: H1, the Scope line that claims the topic, the LeetCode problem lists, and Skeleton A or B chosen by size — under ~800 lines or over. Plus its entry in data/cheatsheet_meta.json."
+          data-rule="The build fails without the meta entry, on purpose, so nothing lands in an unsorted bucket."
+          data-code="/lc-cheatsheet monotonic_queue as sheet
+  -> data/cheatsheet_meta.json
+     { category: ..., tier: 4 }">
+          <span class="n">sheet</span><span class="bar" aria-hidden="true"></span><span class="tag">new file</span>
+        </button>
+      </div>
+
+      <div class="step-detail" id="sd" aria-live="polite">
+        <p class="sd-name"></p>
+        <p class="sd-body"></p>
+        <p class="sd-rule"></p>
+        <pre class="sd-code"></pre>
+      </div>
+
+      <p class="note" style="margin-top:1.2rem">
+        The sheet itself is inferred too — from the technique the solution uses and from
+        <code>README.md</code>'s topic heading for that LC number. <code>into &lt;slug&gt;</code>
+        names one explicitly, and a sheet you name is never left untouched: it gets the entry
+        point — its own table row, the code a reader of <em>that</em> sheet needs, the link
+        onward. If its Scope line does not claim the topic the full section goes to the sheet
+        whose line does, and the report names both — one edit in the common case, two when
+        the topic lives next door.
+      </p>
+    </section>
+
+    <!-- ── The two things it always does ───────────────────────────────── -->
+    <section id="after" class="reveal">
+      <p class="eyebrow">The half that gets forgotten</p>
+      <h2>What every edit drags behind it</h2>
+      <p class="sub">
+        Writing the section is the visible part. These two are what turn a good section into a
+        broken page, and both are mechanical enough to be written down once.
+      </p>
+
+      <h3 style="font-size:0.92rem;margin:0 0 0.7rem">1. The anchors the heading moved</h3>
+      <p>
+        Heading ids come from <code>slugify</code> in the build, which strips a
+        <code>&#11088;</code> run but <em>not</em> the space before it — so a star run leaves a
+        trailing <code>-</code> on the id. Anchors are computed, never hand-written:
+      </p>
+      <div class="code-block">
+        <button class="copy" type="button">copy</button>
+<pre><code>node -e "console.log(require('./site/build-lib.js').slugify('$HEADING'))"
+grep -rn "#the-old-anchor" doc/ site/pages/     <span class="ann">&lt;- every link that moves with it</span></code></pre>
+      </div>
+      <p class="note">
+        <code>e2e-check.js</code>'s dangling-<code>#fragment</code> rule is what catches a missed
+        one, so the gate runs rather than the grep being trusted.
+      </p>
+
+      <h3 style="font-size:0.92rem;margin:2.2rem 0 0.7rem">2. The 中文 sections the edit parked</h3>
+      <p>
+        There is one markdown tree, the English one;
+        <a href="cheatsheets.zh.html">the Chinese pages</a> are a sparse overlay keyed per
+        section. Edit a section and its translation goes missing, so the page falls back to
+        English exactly there:
+      </p>
+      <div class="code-block">
+        <button class="copy" type="button">copy</button>
+<pre><code>node script/zh.js sync &lt;slug&gt;      <span class="ann">&lt;- park what the edit invalidated</span>
+node script/zh.js todo &lt;slug&gt;      <span class="ann">&lt;- the sections needing one, keys included</span>
+node script/zh.js sync &lt;slug&gt;      <span class="ann">&lt;- tidy, after writing them back</span>
+node script/zh.js status --write</code></pre>
+      </div>
+      <p class="note">
+        The check is arithmetic: the sheet must not end up with more untranslated sections than
+        it started with. One LCA edit parked eight of them in a sheet that had been fully
+        translated.
+      </p>
+    </section>
+
+    <!-- ── House rules ─────────────────────────────────────────────────── -->
+    <section id="rules" class="reveal">
+      <p class="eyebrow">Non-negotiable</p>
+      <h2>The house rules it applies</h2>
+      <p class="sub">
+        Straight out of the cheatsheet style guide in <code>CLAUDE.md</code>, which is where they
+        stay — the skill applies them, it does not restate them as a second copy that can drift.
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Rule</th><th>Why it is a rule</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="num">Tag every fence</td><td><code>python</code>, <code>java</code>, or <code>text</code> for traces, diagrams and program output. A bare fence loses highlighting and reads as prose.</td></tr>
+            <tr><td class="num">IDEA, then complexity</td><td><code># IDEA: &lt;one line&gt;</code> opens a snippet; <code># time = O(...), space = O(...)</code> is the first comment, stated once per section.</td></tr>
+            <tr><td class="num">Stars on the heading</td><td>The <code>&#11088;</code> run is rendered as a badge and surfaces 4&#11088;/5&#11088; sections in the page's table of contents. In the prose underneath it is invisible.</td></tr>
+            <tr><td class="num">Levels never skip</td><td><code>h3</code> &rarr; <code>h4</code>, never <code>h3</code> &rarr; <code>h5</code>. The table of contents is built from the tree, not from the text.</td></tr>
+            <tr><td class="num">Each LC number once</td><td>Per heading &mdash; not <code>&hellip; (LC 1650) &mdash; LC 1650</code>.</td></tr>
+            <tr><td class="num">One canonical solution</td><td>A second variant needs a stated reason: different complexity, a distinct trick, a different language idiom. Not a different spelling of the same loop.</td></tr>
+            <tr><td class="num">Match the neighbour</td><td>The sibling section is the template &mdash; heading depth, fence labels, where complexity sits. <code>00_template.md</code> wins only where the sheet has drifted.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── Won't do ────────────────────────────────────────────────────── -->
+    <section id="wont" class="reveal">
+      <p class="eyebrow">Bounded on purpose</p>
+      <h2>What it will not do</h2>
+      <ul class="nots">
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Append an <code>LC Examples</code> section.</b><span class="why">Re-solving what a template above already solves is how the sheets grew to need a cleanup. It goes under the pattern instead.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Open a catch-all.</b><span class="why">A <code>Missing Google Patterns</code> bucket is a decision deferred, not a section. New material is filed under the pattern it belongs to.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Copy a section into a second sheet.</b><span class="why">A cross-reference is one table row and a link. Two copies of a section are two sections that disagree in six months.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Hand back an untested snippet.</b><span class="why">Every snippet runs against the problem's own examples first. Variants in one section must agree with each other.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Touch <code>data/progress.txt</code>.</b><span class="why">The practice log is your own record and the single source for the <a href="lc-review-plan.html">review plan</a> &mdash; nothing else writes to it.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Commit or push unless asked.</b><span class="why">It writes files, runs the gates, and stops. The commit is yours to shape.</span></span></li>
+      </ul>
+    </section>
+
+    <!-- ── Install ─────────────────────────────────────────────────────── -->
+    <section id="install" class="reveal">
+      <p class="eyebrow">One markdown file, no dependencies</p>
+      <h2>Install</h2>
+      <p class="sub">
+        <code>SKILL.md</code> is the whole recipe &mdash; nothing to build and no network calls,
+        so the same source runs on any agent that takes a system prompt. Pick yours.
+      </p>
+
+      <div class="tabs" role="tablist" aria-label="Install target">
+        <button class="tab" role="tab" id="tab-cc"     aria-controls="p-cc"     aria-selected="true">Claude Code</button>
+        <button class="tab" role="tab" id="tab-claude" aria-controls="p-claude" aria-selected="false">Claude app</button>
+        <button class="tab" role="tab" id="tab-codex"  aria-controls="p-codex"  aria-selected="false">Codex</button>
+        <button class="tab" role="tab" id="tab-gemini" aria-controls="p-gemini" aria-selected="false">Gemini</button>
+        <button class="tab" role="tab" id="tab-other"  aria-controls="p-other"  aria-selected="false">Anything else</button>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-cc" aria-labelledby="tab-cc">
+        <p>Drop the skill directory into your user-level skills folder and it loads in every repo:</p>
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code>git clone --depth 1 https://github.com/yennanliu/CS_basics.git /tmp/cs_basics
+mkdir -p ~/.claude/skills
+cp -r /tmp/cs_basics/.claude/skills/lc-cheatsheet ~/.claude/skills/</code></pre>
+        </div>
+        <p class="note">
+          Already installed inside this repo at <code>.claude/skills/lc-cheatsheet/</code>, so a
+          clone of CS_basics needs no setup at all. Claude Code matches it on the description, or
+          you can call <code>/lc-cheatsheet</code> by name &mdash; the directory name <em>is</em>
+          the command.
+        </p>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-claude" aria-labelledby="tab-claude" hidden>
+        <p>Zip the directory, then <em>Customize &rarr; Skills &rarr; + &rarr; + Create skill &rarr; Upload a skill</em>:</p>
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code>cd .claude/skills &amp;&amp; zip -r lc-cheatsheet.zip lc-cheatsheet</code></pre>
+        </div>
+        <p class="note">
+          Leave the YAML frontmatter in <code>SKILL.md</code> intact. <code>description</code> is
+          what Claude matches your request against when deciding to load the skill on its own;
+          <code>name</code> is the display label, and the directory name is what supplies the
+          slash command.
+        </p>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-codex" aria-labelledby="tab-codex" hidden>
+        <p>Codex reads <code>AGENTS.md</code> at the repo root automatically. Point it at the skill:</p>
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code>## Updating a cheatsheet
+
+When asked to add an LC problem to a cheatsheet, to document a pattern,
+or to update a section under doc/cheatsheet/, follow
+`.claude/skills/lc-cheatsheet/SKILL.md`.</code></pre>
+        </div>
+        <p class="note">A pointer, not a copy &mdash; one source of truth means a fix reaches every agent at once.</p>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-gemini" aria-labelledby="tab-gemini" hidden>
+        <p>Same shape in <code>GEMINI.md</code>, or point at it for a single session:</p>
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code>gemini -p "Follow the recipe in .claude/skills/lc-cheatsheet/SKILL.md. \
+Add LC 1650 to doc/cheatsheet/binary_tree.md as a variation \
+of the LCA template — solution in @lca_iii.py"</code></pre>
+        </div>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-other" aria-labelledby="tab-other" hidden>
+        <p>
+          Paste <code>SKILL.md</code> in as the system prompt. It is self-contained and has no
+          <code>references/</code> to carry. For Cursor or Windsurf, put the Codex pointer above
+          into a rule file (<code>.cursor/rules/lc-cheatsheet.mdc</code> or the editor's
+          equivalent).
+        </p>
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code>curl -sL https://raw.githubusercontent.com/yennanliu/CS_basics/master/.claude/skills/lc-cheatsheet/SKILL.md</code></pre>
+        </div>
+        <p class="note">
+          Three steps are this repo's: the <code>zh.js</code> overlay, the
+          <code>cheatsheet_meta.json</code> registration and the <code>slugify</code> anchor
+          calculation. Away from CS_basics they are no-ops &mdash; the sheet-choosing, the four
+          modes and the house rules carry over to any markdown notes tree.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── What's inside ───────────────────────────────────────────────── -->
+    <section id="inside" class="reveal">
+      <p class="eyebrow">Under the hood</p>
+      <h2>What is inside</h2>
+      <p class="sub">
+        One file. The steps live there and nowhere else &mdash; this page describes them, but
+        <code>SKILL.md</code> is what actually runs, so the two cannot drift into two recipes.
+      </p>
+      <ul class="files">
+        <li>
+          <a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-cheatsheet/SKILL.md">SKILL.md</a>
+          <span>The whole recipe &mdash; the five prime directives, the four modes, the nine steps with their commands, the house rules, what each mode has to make reachable, the do-not list, and the LC 1650 worked example.</span>
+        </li>
+      </ul>
+      <p class="note" style="margin-top:1.2rem">
+        Gated in CI by
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/script/check_skills.py">check_skills.py</a> &mdash;
+        frontmatter every host can parse, the directory name pinned to the command name, and
+        whether the links on this page still resolve.
+      </p>
+    </section>
+
+    <!-- ── Where it fits ───────────────────────────────────────────────── -->
+    <section id="fits" class="reveal">
+      <p class="eyebrow">The rest of the loop</p>
+      <h2>Where it fits</h2>
+      <p class="sub">
+        <a href="lc-add.html">/lc-add</a> files the solution; <code>/lc-cheatsheet</code> files
+        what you learned from it, which is the part that transfers to the next problem. From
+        there the <a href="cheatsheets.html">cheatsheet index</a> lists it, the
+        <a href="lc-roadmap.html">roadmap</a> points at it from the topic it teaches,
+        <a href="search.html">search</a> indexes its headings, and
+        <a href="skills.html">LC Coach</a> is the one to ask whether you can now solve the
+        sibling problems the new section names.
+      </p>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <p>CS_basics — computer science fundamentals &amp; interview preparation</p>
+    <p>
+      <a href="https://github.com/yennanliu/CS_basics">github</a> |
+      <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+      <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Sections are visible in the stylesheet and only hidden once `.js` is on the
+  // root, so a page with no JS never gets stuck blank. The above-the-fold ones
+  // are marked revealed in the same synchronous block — one paint, no flash.
+  var reveals = [].slice.call(document.querySelectorAll('.reveal'));
+  var onscreen = reveals.filter(function (el) {
+    return el.getBoundingClientRect().top < (window.innerHeight || 0);
+  });
+  document.documentElement.classList.add('js');
+  onscreen.forEach(function (el) { el.classList.add('in'); });
+
+  // ── Hero tape ─────────────────────────────────────────────────────────
+  // The run is written into the <pre> in the HTML, so it is there whatever
+  // happens to this script, and it is typed out by clipping that text rather
+  // than by assembling it here. Reduced motion keeps the finished frame.
+  var tape = document.getElementById('tape');
+  if (tape && !reduced) {
+    var TAPE = tape.textContent;
+    var caret = document.createElement('span');
+    caret.className = 'caret';
+    var text = document.createTextNode('');
+    tape.textContent = '';
+    tape.appendChild(text);
+    tape.appendChild(caret);
+    var i = 0;
+    (function tick() {
+      i += i < 60 ? 1 : 3;
+      text.nodeValue = TAPE.slice(0, i);
+      if (i < TAPE.length) setTimeout(tick, i < 60 ? 26 : 12);
+      else caret.remove();
+    })();
+  }
+
+  // ── Mode selector ─────────────────────────────────────────────────────
+  var steps = [].slice.call(document.querySelectorAll('.step'));
+  var sd = document.getElementById('sd');
+
+  function showStep(step) {
+    steps.forEach(function (s) {
+      s.setAttribute('aria-checked', String(s === step));
+      s.tabIndex = s === step ? 0 : -1;
+    });
+    sd.querySelector('.sd-name').textContent = step.dataset.name;
+    sd.querySelector('.sd-body').textContent = step.dataset.body;
+    // The rule is the line worth reading twice, so it gets a label. Every
+    // dataset value is plain text and is set as text — the label is a real
+    // element rather than a string concatenated into innerHTML.
+    var rule = sd.querySelector('.sd-rule');
+    rule.textContent = '';
+    var label = document.createElement('b');
+    label.textContent = 'Rule: ';
+    rule.appendChild(label);
+    rule.appendChild(document.createTextNode(step.dataset.rule));
+    sd.querySelector('.sd-code').textContent = step.dataset.code;
+  }
+
+  steps.forEach(function (step, idx) {
+    step.addEventListener('click', function () { showStep(step); });
+    step.addEventListener('keydown', function (e) {
+      var delta = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (!delta) return;
+      e.preventDefault();
+      var next = steps[(idx + delta + steps.length) % steps.length];
+      showStep(next);
+      next.focus();
+    });
+  });
+  if (steps.length) showStep(document.querySelector('.step[aria-checked="true"]') || steps[0]);
+
+  // ── Tabs ──────────────────────────────────────────────────────────────
+  // Panels toggle with the `hidden` attribute rather than a class, so a hidden
+  // panel is out of the accessibility tree and out of find-in-page too.
+  [].slice.call(document.querySelectorAll('[role="tablist"]')).forEach(function (list) {
+    var tabs = [].slice.call(list.querySelectorAll('.tab'));
+    if (!tabs.length) return;
+
+    function select(tab) {
+      tabs.forEach(function (t) {
+        var on = t === tab;
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+      });
+    }
+    tabs.forEach(function (tab, i) {
+      tab.addEventListener('click', function () { select(tab); });
+      tab.addEventListener('keydown', function (e) {
+        var delta = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (!delta) return;
+        e.preventDefault();
+        var next = tabs[(i + delta + tabs.length) % tabs.length];
+        select(next);
+        next.focus();
+      });
+    });
+  });
+
+  // ── Copy buttons ──────────────────────────────────────────────────────
+  // clipboard.writeText needs a secure context; on plain http it rejects, so
+  // the button says so instead of silently doing nothing. The `.ann` spans are
+  // margin notes about the command, not part of it, so they are stripped from
+  // a clone before the text is read.
+  function codeText(block) {
+    var node = block.querySelector('code').cloneNode(true);
+    [].slice.call(node.querySelectorAll('.ann')).forEach(function (a) {
+      a.parentNode.removeChild(a);
+    });
+    return node.textContent.replace(/[ \t]+$/gm, '');
+  }
+
+  [].slice.call(document.querySelectorAll('.copy')).forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var code = codeText(btn.parentElement);
+      var done = function (label) {
+        btn.textContent = label;
+        setTimeout(function () { btn.textContent = 'copy'; }, 1400);
+      };
+      if (!navigator.clipboard) return done('select it');
+      navigator.clipboard.writeText(code).then(function () { done('copied'); },
+                                               function () { done('select it'); });
+    });
+  });
+
+  // ── Reveal on scroll ──────────────────────────────────────────────────
+  if (reduced || !('IntersectionObserver' in window)) {
+    reveals.forEach(function (el) { el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      });
+    }, { rootMargin: '0px 0px -12% 0px' });
+    reveals.forEach(function (el) { io.observe(el); });
+  }
+})();
+</script>
+
+</body>
+</html>

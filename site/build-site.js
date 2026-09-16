@@ -875,7 +875,10 @@ const AGENT_SKILLS = [
    'the debrief packet from their side of the table, the one line that sets the complexity, and what to drill next.'],
   ['lc-add.html', '/lc-add', 'File a solution',
    'Turns a solved problem into a committed one — the problem\'s real slug, the house file layout, ' +
-   'a smoke test against the examples, and the README row inserted in number order.']
+   'a smoke test against the examples, and the README row inserted in number order.'],
+  ['lc-cheatsheet.html', '/lc-cheatsheet', 'Update a cheatsheet',
+   'Files what a problem taught you into the sheet that owns the topic — as an example, a variation ' +
+   'on a template, a new pattern or a new sheet — then follows the anchors and translations it moved.']
 ];
 
 const landingContent = `
