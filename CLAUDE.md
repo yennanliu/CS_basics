@@ -322,6 +322,53 @@ same way it reads `skills.html`.
 
 ---
 
+## Updating a cheatsheet — `/lc-cheatsheet`
+
+`.claude/skills/lc-cheatsheet/` is `/lc-add`'s counterpart for the notes rather than
+the solutions: it files what a problem taught you into `doc/cheatsheet/`, in the shape
+the ~130 existing sheets use. One argument decides everything:
+
+```text
+/lc-cheatsheet 1650 into binary_tree as variation
+/lc-cheatsheet 239 into sliding_window          # mode inferred -> example
+/lc-cheatsheet 496 as pattern                   # sheet inferred from the technique
+/lc-cheatsheet monotonic_queue as sheet         # a whole new file + its meta entry
+add LC 1650 to the LCA part of binary_tree.md   # the plain-English form works too
+```
+
+| `as <mode>` | Lands as |
+|---|---|
+| `example` *(default)* | a worked LC example under the template that already solves it |
+| `variation` | a variant section under the template it varies — name **which** precondition differs |
+| `pattern` | a new pattern section, plus its row in the sheet's category and selection tables |
+| `sheet` | a new `doc/cheatsheet/<slug>.md` **and** its [`data/cheatsheet_meta.json`](data/cheatsheet_meta.json) entry |
+
+**The steps live in `SKILL.md`, not here** — the [style guide below](#cheatsheet-style-guide)
+is what it applies, so the rules have one home. What the skill adds on top of them is the
+four things an edit drags behind it, each of which has actually been got wrong here:
+
+- **the sheet is chosen by its Scope line**, not by the topic name — that block exists to
+  stop two files growing into the same document, and two sheets can both plausibly own
+  "LCA";
+- **it is filed under the pattern it belongs to**, never appended as an `LC Examples`
+  section that re-solves a template above (the Aug 2026 cleanup);
+- **the anchors the heading moved**, computed with `build-lib.js`'s `slugify` rather than
+  hand-written — a `⭐` run leaves a trailing `-` on the id (see
+  [Formatting Rules](#formatting-rules));
+- **the 中文 sections the edit parked** — one LCA edit invalidated eight of them in a sheet
+  that had been fully translated (see [Traditional Chinese cheatsheets](#traditional-chinese-cheatsheets)).
+
+Like `/lc-add` it never touches `data/progress.txt`, and it stops at the gates rather than
+committing: `bash site/build.sh`, `node site/e2e-check.js _site`, `npm test --prefix site`.
+
+`site/pages/lc-cheatsheet.html` is its page on the site — the three ways an edit rots, the
+four modes as a selector, the anchor and translation commands, per-agent install. It is
+hand-maintained like `skills.html` and `lc-add.html`, so editing `SKILL.md` does **not**
+update its prose, and its `.claude/skills/...` links are enforced by
+[the skills gate](#the-skills-gate).
+
+---
+
 ## Cheatsheet Style Guide
 
 Cheatsheets live in `doc/cheatsheet/`. [`doc/cheatsheet/00_template.md`](doc/cheatsheet/00_template.md) is the authoritative structure — read it before creating or restructuring a cheatsheet.

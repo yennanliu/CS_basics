@@ -50,12 +50,13 @@ test('a MORE entry with children renders as a labelled group, not a link', () =>
 test('the agent skills sit under one parent in the dropdown', () => {
   const group = CSNav.MORE.find((i) => i.id === 'agent-skills');
   assert.ok(group, 'the dropdown should declare an agent-skills group');
-  assert.deepEqual(group.children.map((c) => c.id), ['lc-coach', 'lc-add']);
+  assert.deepEqual(group.children.map((c) => c.id), ['lc-coach', 'lc-add', 'lc-cheatsheet']);
 
   const menu = CSNav.navHTML().split('<div class="nav-more-menu">')[1];
   const block = menu.match(/<div class="nav-group[^"]*">[\s\S]*?<\/div>/)[0];
-  assert.ok(block.includes('>lc-coach</a>') && block.includes('>lc-add</a>'),
-    'both skills belong to the same group block');
+  assert.ok(block.includes('>lc-coach</a>') && block.includes('>lc-add</a>')
+    && block.includes('>lc-cheatsheet</a>'),
+    'every skill belongs to the same group block');
 });
 
 test('the coach entry is named after its command, not "coach"', () => {
@@ -82,7 +83,8 @@ test('links() flattens groups so every entry it returns has an href', () => {
     assert.ok(!item.children, `${item.id} is a group, not a link`);
   }
   const ids = flat.map((i) => i.id);
-  assert.ok(ids.includes('lc-coach') && ids.includes('lc-add'), 'group children are missing');
+  assert.ok(ids.includes('lc-coach') && ids.includes('lc-add') && ids.includes('lc-cheatsheet'),
+    'group children are missing');
   assert.ok(!ids.includes('agent-skills'), 'the group label is not a destination');
   assert.equal(new Set(ids).size, ids.length);
 });

@@ -25,6 +25,7 @@ on:
       - '.claude/skills/**'
       - 'site/pages/skills.html'
       - 'site/pages/lc-add.html'
+      - 'site/pages/lc-cheatsheet.html'
       - 'script/check_skills.py'
       - '.github/workflows/skills-check.yml'
   pull_request:
@@ -33,6 +34,7 @@ on:
       - '.claude/skills/**'
       - 'site/pages/skills.html'
       - 'site/pages/lc-add.html'
+      - 'site/pages/lc-cheatsheet.html'
       - 'script/check_skills.py'
       - '.github/workflows/skills-check.yml'
   workflow_dispatch:
@@ -74,7 +76,7 @@ jobs:
         run: python3 script/check_skills.py --install
 
   # ── Build ───────────────────────────────────────────────────────────────────
-  # skills.html and lc-add.html document a skill and link into it, but
+  # Each skill's page under site/pages/ documents it and links into it, but
   # validate-pages.yml's path filter does not watch .claude/, so a skill-only
   # change would otherwise never rebuild the page that advertises it.
   # e2e-check.js already holds both in its required list and its shared-palette
