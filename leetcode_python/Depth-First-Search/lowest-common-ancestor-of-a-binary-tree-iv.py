@@ -42,7 +42,83 @@ All nodes[i] are distinct.
 
 """
 
-# V0
+# V0-1
+# IDEA: LCA + (post order) DFS (gpt)
+class Solution(object):
+    def lowestCommonAncestor(self, root, nodes):
+        """
+        :type root: TreeNode
+        :type nodes: List[TreeNode]
+        :rtype: TreeNode
+        """
+
+        if not root or not nodes:
+            return None
+
+        # Convert nodes to a set for O(1) lookup
+        target = set(nodes)
+
+        return self.helper(root, target)
+
+    def helper(self, root, target):
+        if not root:
+            return None
+
+        # Current node is one of the target nodes
+        if root in target:
+            return root
+
+        left = self.helper(root.left, target)
+        right = self.helper(root.right, target)
+
+        # Target nodes exist on both sides
+        if left and right:
+            return root
+
+        # Target nodes only exist on one side
+        if left:
+            return left
+
+        if right:
+            return right
+
+        return None
+
+
+# V0-2
+# IDEA: LCA + DFS (post order) (gemini)
+class Solution(object):
+
+  def lowestCommonAncestor(self, root, nodes):
+    """
+        :type root: TreeNode
+        :type nodes: List[TreeNode]
+        :rtype: TreeNode
+        """
+    # 將目標節點放入 set 中，方便以 O(1) 時間判斷當前節點是否為目標之一
+    target_set = set(nodes)
+
+    def helper(node):
+      # 基地條件：若節點為空，或當前節點就是我們要找的目標之一
+      if not node or node in target_set:
+        return node
+
+      # 遞迴搜尋左右子樹
+      left = helper(node.left)
+      right = helper(node.right)
+
+      # 如果左右子樹分別都找到了目標節點，代表當前節點就是它們的最低共同祖先
+      if left and right:
+        return node
+
+      # 否則回傳不為空的那個分支（代表目標集中在單一側，或兩者皆無）
+      return left if left else right
+
+    return helper(root)
+
+
+
+# V0-3
 # IDEA : DFS "BUBBLE UP A HIT" (the classic LCA recursion, targets held in a set)
 #
 #   dfs(node) returns the LCA of all targets found inside node's subtree,
