@@ -1,6 +1,6 @@
 # Progress
 
-# 2026-09-16
+# 2026-09-17
 
 - TODO:
 	- `must_lc_list.md` -> done
@@ -11,7 +11,10 @@
 			- binary search (done)
 			- binary tree (done)
 			- dp (done)
-			- graph
+			- graph (pass)
+			- greedy (pass)
+			- hashing (done)
+			- heap (ing)
 
 
 	- classics_lc_hard.txt
