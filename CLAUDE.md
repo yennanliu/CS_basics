@@ -349,7 +349,10 @@ four things an edit drags behind it, each of which has actually been got wrong h
 
 - **the sheet is chosen by its Scope line**, not by the topic name — that block exists to
   stop two files growing into the same document, and two sheets can both plausibly own
-  "LCA";
+  "LCA". An `into <slug>` that is not the Scope owner is honoured rather than overruled:
+  the named sheet gets the entry point, the owner gets the full section, and the report
+  names both — `/lc-cheatsheet 1650 into binary_tree` edited `binary_tree.md` *and*
+  `tree_lca_distance.md`;
 - **it is filed under the pattern it belongs to**, never appended as an `LC Examples`
   section that re-solves a template above (the Aug 2026 cleanup);
 - **the anchors the heading moved**, computed with `build-lib.js`'s `slugify` rather than

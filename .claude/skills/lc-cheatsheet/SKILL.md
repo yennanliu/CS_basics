@@ -32,6 +32,20 @@ uses and from `README.md`'s topic heading for that LC number, the mode from what
 already contains (step 2). Ask only when two sheets both plausibly own it and their Scope
 lines do not settle it.
 
+**Precedence, when `into <slug>` and the Scope lines disagree.** Both are honoured, and they
+are honoured differently — the named sheet is never ignored, and the Scope line still decides
+where the depth lives:
+
+| | |
+|---|---|
+| `into <slug>` | **always edited.** It is where you said you were working, so it gets the entry point: the row in its own table, the code a reader of *that* sheet needs, and the link onward |
+| the Scope owner | **gets the full section**, if it is a different sheet. Depth belongs to the file whose Scope line claims the topic, or the two sheets grow into one document |
+
+So `/lc-cheatsheet 1650 into binary_tree` edits `binary_tree.md` **and**
+`tree_lca_distance.md`, and says so in the report. Nothing is silently redirected; a sheet you
+named is never left untouched. When the named sheet *is* the Scope owner — the common case —
+the two collapse into one edit.
+
 ## Prime directives
 
 1. **The Scope line decides which sheet, not the topic name.** Every sheet opens with
@@ -66,7 +80,10 @@ Read out of that:
 
 - **Which sheet's Scope line claims the topic.** `binary_tree.md` owns "which direction DFS
   state flows, plus the structural templates"; `tree_lca_distance.md` owns "LCA, distance and
-  path problems". An LCA variation belongs to the second, with a pointer from the first.
+  path problems". An LCA variation's depth belongs to the second. A sheet named by `into`
+  that is not the owner still gets its entry point (the precedence table above) — here
+  `binary_tree.md`'s Template 6 gained the variations table, the LC 1650 code and the link
+  onward.
 - **Whether the problem is already there.** If it is, the job is `variation` or a correction,
   never a second copy — one canonical solution per problem.
 - **Whether a mention is wrong.** A sheet claiming LC 1650 is solved by the LC 236 post-order
@@ -186,10 +203,11 @@ A build failure on a new sheet is usually the missing `cheatsheet_meta.json` ent
 
 ### 9. Report what was assumed
 
-Close with: the sheet and the heading it landed under, the mode and **why that mode**, the
-snippets run and their output, every anchor that moved, the zh sections re-translated, and
-each inference — the sheet chosen when two could have owned it, a complexity stated for a
-snippet whose bound was not in the source.
+Close with: **every sheet edited** and the heading it landed under in each — naming both when
+the precedence rule split the work, so the reader never has to go looking for where a section
+went — the mode and **why that mode**, the snippets run and their output, every anchor that
+moved, the zh sections re-translated, and each inference (the sheet chosen when two could have
+owned it, a complexity stated for a snippet whose bound was not in the source).
 
 ## Do not
 
@@ -209,7 +227,7 @@ snippet whose bound was not in the source.
 
 | Step | What it produced |
 |---|---|
-| 1 | `tree_lca_distance.md`'s Scope line owns LCA, so the section lands there; `binary_tree.md` gets the variations table and a pointer. Found a bug on the way: the LC 236 template's header comment claimed it also solved 1650, which has no `root` |
+| 1 | **both sheets**, per the precedence rule: `binary_tree.md` was named, so it gets the entry point (Template 6's variations table, the LC 1650 code, the link onward); `tree_lca_distance.md`'s Scope line owns LCA, so the full section lands there. Found a bug on the way: the LC 236 template's header comment claimed it also solved 1650, which has no `root` |
 | 2 | `variation` — 1650 breaks one precondition of the post-order template (no root, `parent` pointers instead) |
 | 3 | matched the sibling `#### LCA Variant — Smallest Subtree with All Deepest Nodes` — `##### **1. Core Idea**`, a `text` trace, a pitfalls list |
 | 4 | wrote the family picker table (236/235/1644/1650/1676), the set-of-ancestors and two-pointer templates, the step trace, the pitfalls; split the `Problem Categories` LCA row, since 1650 and 235 do not use the post-order template it named |
@@ -217,4 +235,4 @@ snippet whose bound was not in the source.
 | 6 | ran all five snippets against the LC examples plus a cross-tree pair (both pointers hit `null` together → `None`) |
 | 7 | the edit parked 8 zh sections in a sheet that was 100% translated; re-keyed all 8, back to 0 todo |
 | 8 | build, `e2e-check` (76 checks) and 418 unit tests green |
-| 9 | flagged: `tree_examples.md` had LC 1676 labelled "LCA III … in forest after deletion"; it is LCA IV, N target nodes — fixed in the same pass |
+| 9 | reported both sheets and the heading in each, and flagged: `tree_examples.md` had LC 1676 labelled "LCA III … in forest after deletion"; it is LCA IV, N target nodes — fixed in the same pass |

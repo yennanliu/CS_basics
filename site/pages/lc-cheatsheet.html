@@ -254,15 +254,18 @@
           <i aria-hidden="true"></i><i aria-hidden="true"></i><i aria-hidden="true"></i>
           <span>/lc-cheatsheet 1650 into binary_tree as variation</span>
         </div>
-        <pre id="tape" aria-live="off">1  sheet      tree_lca_distance.md — its Scope line owns LCA, not binary_tree.md
-              found a bug on the way: the LC 236 template claimed it solved 1650
+        <pre id="tape" aria-live="off">1  sheet      binary_tree.md, as asked — plus tree_lca_distance.md, whose
+              Scope line owns LCA, so the depth goes there and binary_tree
+              gets the entry point. Found a bug on the way: the LC 236
+              template claimed it solved 1650
 
 2  mode       variation — 1650 breaks one precondition: no root, parent pointers
 
 3  neighbour  matched #### LCA Variant — Smallest Subtree with All Deepest Nodes
 
 4  write      family picker table (236/235/1644/1650/1676), two templates,
-              the step trace, the pitfalls · binary_tree.md gets the pointer
+              the step trace, the pitfalls · binary_tree.md: Template 6's
+              variations table, the 1650 code, the link onward
 
 5  anchors    slugify → #lca-variant--parent-pointers-no-root-lc-1650-
               trailing dash: the star run leaves the space before it
@@ -365,7 +368,11 @@
       <p class="note" style="margin-top:1.2rem">
         The sheet itself is inferred too — from the technique the solution uses and from
         <code>README.md</code>'s topic heading for that LC number. <code>into &lt;slug&gt;</code>
-        overrules it.
+        names one explicitly, and a sheet you name is never left untouched: it gets the entry
+        point — its own table row, the code a reader of <em>that</em> sheet needs, the link
+        onward. If its Scope line does not claim the topic the full section goes to the sheet
+        whose line does, and the report names both — one edit in the common case, two when
+        the topic lives next door.
       </p>
     </section>
 
