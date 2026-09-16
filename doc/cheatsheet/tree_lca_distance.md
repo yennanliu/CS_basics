@@ -27,7 +27,9 @@ return value, and whether you are allowed to walk **upward** to a parent.
 
 | Category | Question it answers | Template | Examples |
 |----------|--------------------|----------|----------|
-| **LCA** | where do `p` and `q` meet? | post-order DFS returning the first node that sees both | LC 236, 235, 1650, 865, 1123 |
+| **LCA (root given)** | where do `p` and `q` meet? | post-order DFS returning the first node that sees both | LC 236, 1644, 1676, 865, 1123 |
+| **LCA (no root)** | same, but I only hold `p`, `q` and `parent` pointers | walk **up** both parent chains — LC 160 in disguise | LC 1650 |
+| **LCA (ordered tree)** | same, on a BST | walk **down** while both targets are on one side | LC 235 |
 | **Distance (downward)** | how many edges from an ancestor to a target? | pre-order DFS carrying `depth`, `-1` sentinel | LC 1740 |
 | **Distance (any direction)** | which nodes are `k` away, in any direction? | parent map → undirected graph → BFS | LC 863, 742 |
 | **Root-to-leaf paths** | which paths sum to / look like X? | pre-order DFS + backtracking | LC 112, 113, 257 |
@@ -41,7 +43,7 @@ return value, and whether you are allowed to walk **upward** to a parent.
 ```python
 # LC 236 Lowest Common Ancestor of a Binary Tree
 # LC 235 Lowest Common Ancestor of a Binary Search Tree
-# LC 1650 Lowest Common Ancestor of a Binary Tree III
+# (for LC 1650 -- parent pointers, no root -- see the variant below)
 # V0
 # IDEA : RECURSION + POST ORDER TRANSVERSAL
 ### NOTE : we need POST ORDER TRANSVERSAL for this problem
@@ -88,6 +90,220 @@ TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q){
     // case 3
     return left == null ? right: left;
 }
+```
+
+#### The LCA family — pick the template by **what you are handed** ⭐⭐⭐⭐⭐
+
+All five problems say "lowest common ancestor". The post-order template above only fits the
+first row; the others change one precondition each, and that precondition decides the shape.
+
+| LC | What changes vs 236 | Shape that fits | Complexity |
+|----|--------------------|-----------------|------------|
+| **236** | — (baseline: root given, `p`, `q` guaranteed present) | post-order, return found-or-null | O(N) / O(H) |
+| **235** | the tree is a **BST** | no recursion on both sides — walk **down** while `p`, `q` are on the same side | O(H) / O(1) |
+| **1644** | `p`, `q` may **not exist** in the tree | same post-order, but also count how many targets were seen; answer only if `count == 2` | O(N) / O(H) |
+| **1650** | **no root** — every node has a `parent` pointer | walk **up**, not down → this is LC 160 (two linked lists) | O(H) / O(1) |
+| **1676** | **N targets** instead of 2 | same post-order against a `set` of targets | O(N) / O(H) |
+
+> **The one question that picks the template**: *can I reach `p` and `q` from a root?*
+> If yes → recurse **down** (236 / 1644 / 1676). If I am *standing on* `p` and `q` with
+> `parent` pointers → walk **up** (1650); there is no tree to search at all.
+
+#### LCA Variant — Parent Pointers, No Root (LC 1650) ⭐⭐⭐⭐
+
+##### **1. Core Idea**
+
+**Key Insight**: `lowestCommonAncestor(p, q)` — note the missing `root`. You cannot search a
+tree you have no handle on. But `p.parent.parent…` is a **linked list ending at the root**, so
+two nodes give two lists that merge at exactly the LCA. **This is LC 160, Intersection of Two
+Linked Lists**, wearing a tree costume.
+
+```text
+root = [3,5,1,6,2,0,8,null,null,7,4],  p = 4,  q = 1
+
+  path(4) : 4 -> 2 -> 5 -> 3      (len 4)
+  path(1) : 1 -> 3                (len 2)
+                     ^
+                     the lists merge here -> LCA = 3
+```
+
+So the two useful shapes are LC 160's two shapes: **a set of one path**, or **two pointers**.
+
+##### **2. Template A — set of ancestors (the one to say first)**
+
+```python
+# python
+# LC 1650 - Lowest Common Ancestor of a Binary Tree III
+# IDEA: SET + walk UP (p has a parent chain, so collect it, then re-walk from q)
+# time = O(h), space = O(h)
+class Solution(object):
+    def lowestCommonAncestor(self, p, q):
+        # NOTE !!! walk UP via `parent`, there is no root to walk down from
+        ancestors = set()
+        node = p
+        while node:
+            ancestors.add(node)
+            node = node.parent
+
+        # the FIRST hit going up from q is the LOWEST one
+        node = q
+        while node:
+            if node in ancestors:
+                return node
+            node = node.parent
+
+        return None
+```
+
+> **Why the first hit is the lowest**: walking up from `q` visits its ancestors in increasing
+> height order, so the earliest common node is the deepest common node. Same reason the
+> insertion-ordered-dict variant of this solution works.
+> **Hash nodes, not `node.val`** — `val` only happens to be unique here (the constraints say so);
+> the node objects are always unique.
+
+##### **3. Template B — two pointers, "swap the tails" (O(1) space) ⭐⭐⭐⭐⭐**
+
+The two parent chains have **different lengths**, so walking both up in lock-step misses the
+meeting point. The fix is LC 160's: when a pointer runs off the top, restart it at the *other*
+starting node. Each pointer then covers `len(path(p)) + len(path(q))` steps, so both arrive at
+every node of the shared tail **in the same iteration**.
+
+```python
+# python
+# LC 1650 - Lowest Common Ancestor of a Binary Tree III
+# IDEA: 2 POINTERS ON THE PARENT CHAIN ("swap the tails") -- same trick as LC 160
+# time = O(h), space = O(1)
+class Solution(object):
+    def lowestCommonAncestor(self, p, q):
+        # edge
+        if not p or not q:
+            return None
+
+        a, b = p, q
+        while a != b:
+            # NOTE !!! `if a else q`, NOT `a.parent or q`
+            a = a.parent if a else q
+            b = b.parent if b else p
+        return a
+```
+
+```java
+// java
+// LC 1650 - Lowest Common Ancestor of a Binary Tree III
+// IDEA: 2 pointers on the parent chain; swap tails on hitting null
+// time = O(h), space = O(1)
+public Node lowestCommonAncestor(Node p, Node q) {
+    // edge
+    if (p == null || q == null) {
+        return null;
+    }
+
+    Node a = p, b = q;
+    while (a != b) {
+        // NOTE !!! consume the null step itself, so both pointers walk the same distance
+        a = (a == null) ? q : a.parent;
+        b = (b == null) ? p : b.parent;
+    }
+    return a;
+}
+```
+
+**Visual trace** (`p = 4`, `q = 1` from the tree above):
+
+```text
+step :  0    1    2     3     4     5    6
+a    :  4    2    5     3     null  1    3
+b    :  1    3    null  4     2     5    3   -> a == b == 3  ✓
+```
+
+**Common pitfalls:**
+- ❌ `a = a.parent or q` / `a = (a.parent != null) ? a.parent : q` — this **skips the `null` step**.
+  Consuming `null` is what equalises the two total distances; skip it and the pointers are
+  permanently off by one and can pass each other forever.
+- ❌ Comparing `a.val != b.val` instead of `a != b` — fine here, but it is the identity of the
+  node you want, and it breaks the moment values repeat.
+- ❌ Assuming `p` and `q` share a root. If they sit in **different** trees both pointers land on
+  `null` on the same step, `a == b == null`, and the loop exits returning `null` — the two-pointer
+  form terminates for free, the naive lock-step one does not.
+- ❌ Reaching for the post-order template. There is no `root` parameter to pass it.
+
+##### **4. The sibling variants in one place**
+
+**LC 1644 — `p` / `q` may not be in the tree.** The 236 template returns `p` whenever it meets
+`p`, so it happily reports an "LCA" for a `q` that does not exist. Fix: never short-circuit, and
+**count the targets you actually saw**.
+
+```python
+# python
+# LC 1644 - Lowest Common Ancestor of a Binary Tree II
+# IDEA: 236's post-order, but do NOT return early -- count the hits, then validate
+# time = O(N), space = O(H)
+class Solution(object):
+    def lowestCommonAncestor(self, root, p, q):
+        self.found = 0
+
+        def dfs(node):
+            if not node:
+                return None
+            # NOTE !!! recurse FIRST, even if node is p or q (no early return)
+            left = dfs(node.left)
+            right = dfs(node.right)
+            if node == p or node == q:
+                self.found += 1
+                return node
+            if left and right:
+                return node
+            return left if left else right
+
+        lca = dfs(root)
+        # only trust the answer if BOTH targets really exist
+        return lca if self.found == 2 else None
+```
+
+**LC 1676 — N targets instead of 2.** Swap the two `==` checks for a `set` membership test;
+nothing else moves.
+
+```python
+# python
+# LC 1676 - Lowest Common Ancestor of a Binary Tree IV
+# IDEA: 236's post-order against a SET of targets (all nodes guaranteed to exist)
+# time = O(N), space = O(H + k)
+class Solution(object):
+    def lowestCommonAncestor(self, root, nodes):
+        targets = set(nodes)
+
+        def dfs(node):
+            if not node or node in targets:
+                return node
+            left = dfs(node.left)
+            right = dfs(node.right)
+            if left and right:
+                return node
+            return left if left else right
+
+        return dfs(root)
+```
+
+**LC 235 — the tree is a BST.** Ordering removes the need to look at both subtrees: while both
+targets sit on the same side of `node.val`, the LCA is on that side, so walk there.
+
+```python
+# python
+# LC 235 - Lowest Common Ancestor of a Binary Search Tree
+# IDEA: walk DOWN while p, q are on the same side; the first split point is the LCA
+# time = O(h), space = O(1)
+class Solution(object):
+    def lowestCommonAncestor(self, root, p, q):
+        node = root
+        while node:
+            if p.val < node.val and q.val < node.val:
+                node = node.left
+            elif p.val > node.val and q.val > node.val:
+                node = node.right
+            else:
+                # split point (or node IS p or q) -> LCA
+                return node
+        return None
 ```
 
 #### LCA Variant — Smallest Subtree with All Deepest Nodes (LC 865 / LC 1123) ⭐⭐⭐⭐
@@ -280,7 +496,7 @@ class Solution(object):
 | Lowest Common Ancestor of a Binary Tree | 236 | `node` (found-or-null) | targets `p`, `q` are **given**; tie case = both children non-null |
 | LCA of a BST | 235 | — | BST property lets you walk down in O(H), no post-order needed |
 | LCA of a Binary Tree II | 1644 | `(node, count)` | `p`/`q` may not exist → must also return a found-count |
-| LCA of a Binary Tree III | 1650 | — | parent pointers → becomes "intersection of two linked lists" |
+| LCA of a Binary Tree III | 1650 | — | parent pointers, **no root** → becomes "intersection of two linked lists"; see [the variant above](#lca-variant--parent-pointers-no-root-lc-1650-) |
 | LCA of a Binary Tree IV | 1676 | `node` | N target nodes instead of 2 |
 | Find Distance in a Binary Tree | 1740 | depth | find LCA first, then `d(root,p) + d(root,q) - 2*d(root,lca)` |
 
@@ -307,6 +523,7 @@ class Solution(object):
 ```text
 "smallest subtree containing X"      -> post-order (metric, node)   [LC 865]
 "LCA of given nodes p, q"            -> post-order found-or-null     [LC 236]
+"LCA but I have no root, only parent" -> walk up both chains (LC 160)  [LC 1650]
 "longest/max path through any node"  -> post-order + global var      [LC 543, 124]
 "deepest / leftmost / level info"    -> BFS level-order              [LC 513, 199]
 ```

@@ -1378,7 +1378,7 @@ Result: [1(with subtree [2,4]), 6, 7]
 | Delete Nodes And Return Forest | 1110 | Base pattern |
 | Delete Leaves With Given Value | 1325 | Recursive deletion (delete after children are processed) |
 | Trim a Binary Search Tree | 669 | Range-based filtering instead of value-based deletion |
-| Lowest Common Ancestor III | 1676 | Find LCA in forest after deletion |
+| Lowest Common Ancestor IV | 1676 | LCA of **N** target nodes (not a deletion problem — the shared skeleton is post-order "return what my subtree found") |
 
 **Common Applications:**
 - Tree pruning with multiple resulting subtrees

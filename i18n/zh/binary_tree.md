@@ -282,9 +282,27 @@ A vs B 這個問題只對**由上而下**的題目有意義：也就是一個節
 ### 模板 5：樹的性質
 <!--CODE-->
 
-<!-- e74041ec85db -->
+<!-- 5254817bcd91 -->
 ### 模板 6：LCA（最近共同祖先）
 <!--CODE-->
+
+**變形** — 上面這個模板假設了兩件事：*有一個 root 可以開始搜*，以及*兩個目標都存在*。每個變形打破其中一個，而那就決定了解法的形狀：
+
+| LC | 差在哪 | 形狀 | 複雜度 |
+|----|--------------|-------|------------|
+| 236 | — （基準題） | 就是這個模板 | O(N) / O(H) |
+| 235 | 樹是 **BST** | 只要兩個目標在同一側就往**下**走；第一個分岔點就是 LCA | O(H) / O(1) |
+| 1644 | `p`、`q` **可能不存在** | 一樣的後序，但絕不提早 return — 數看到幾個目標，只有 `count == 2` 才算答案 | O(N) / O(H) |
+| 1650 | **沒有 root**，每個節點有 `parent` | 往**上**走兩條父鏈 → 就是 LC 160，兩條鏈結串列的交點 | O(H) / O(1) |
+| 1676 | 目標有 **N 個**而不是 2 個 | 一樣的後序，只是比對一個目標 `set` | O(N) / O(H) |
+
+- **LC 1650（父指標）** — 變化點：函式簽名是 `lowestCommonAncestor(p, q)`，**沒有 `root`**，所以根本沒有一棵樹能遞迴下去。但 `p.parent.parent…` 是一條以 root 結尾的鏈結串列，兩個節點就給出兩條在 LCA 合流的串列。往上走，碰到 `null` 就換尾巴：
+
+<!--CODE-->
+
+> 要先講的 O(h) 空間解更單純：把 `p` 的所有祖先丟進一個 **set**，再從 `q` 往上走，回傳第一個命中的 — 往上走的第一個命中*就是*最低的那個。要 hash **節點**，不是 `node.val`。
+
+完整的變形詳解（1650 一步步追蹤，加上 1644 / 1676 / 235 的程式碼）在 [tree_lca_distance.md](./tree_lca_distance.md#the-lca-family--pick-the-template-by-what-you-are-handed-)。
 
 <!-- 1f09a6578af2 -->
 ### 模板 7：在樹上做二分搜尋
@@ -463,19 +481,6 @@ A vs B 這個問題只對**由上而下**的題目有意義：也就是一個節
 | Serialize and Deserialize Tree | 297 | Hard | BFS／DFS | 模板 3 |
 | Construct from String | 536 | Medium | 堆疊／遞迴 | 模板 3 |
 
-<!-- 03979f7da904 -->
-#### **模式 3：路徑題目**
-| 題目 | LC # | 難度 | 關鍵技巧 | 模板 |
-|---------|------|------------|---------------|----------|
-| Path Sum | 112 | Easy | DFS | 模板 4 |
-| Path Sum II | 113 | Medium | DFS + 回溯 | 模板 4 |
-| Binary Tree Paths | 257 | Easy | DFS + 記錄路徑 | 模板 4 |
-| Sum Root to Leaf Numbers | 129 | Medium | DFS | 模板 4 |
-| Binary Tree Maximum Path Sum | 124 | Hard | DFS + 全域最大值 | 模板 4 |
-| Longest Consecutive Sequence | 298 | Medium | DFS + 計數器 | 模板 4（見 §0-2：由上而下**和**由下而上都能解） |
-| Longest Consecutive Sequence II | 549 | Medium | DFS + 狀態組 | 模板 9（路徑可轉彎，`inc + dec - 1`） |
-| Path Sum III | 437 | Medium | 前綴和 | 模板 4 |
-
 <!-- e9741f38c8d9 -->
 #### **模式 4：樹性質題目**
 | 題目 | LC # | 難度 | 關鍵技巧 | 模板 |
@@ -498,12 +503,15 @@ A vs B 這個問題只對**由上而下**的題目有意義：也就是一個節
 | Most Frequent Subtree Sum | 508 | Medium | 由下而上的子樹和 + 頻率表 → **模板 9** |
 | Binary Tree Tilt / Longest Univalue Path | 563 / 687 | Easy / Medium | 往上回傳一個值，同時把另一個值累加進全域變數 → **模板 9** |
 
-<!-- f5d4753f0da6 -->
+<!-- 8021335fc46b -->
 #### **模式 5：LCA 與距離題目**
 | 題目 | LC # | 難度 | 關鍵技巧 | 模板 |
 |---------|------|------------|---------------|----------|
 | Lowest Common Ancestor | 236 | Medium | DFS | 模板 6 |
 | LCA of BST | 235 | Easy | BST 性質 | 模板 6 |
+| LCA II（目標可能不存在） | 1644 | Medium | DFS + 數找到幾個 | 模板 6 的變形 |
+| LCA III（有父指標、沒有 root） | 1650 | Medium | 往**上**走兩條父鏈（LC 160） | 模板 6 的變形 |
+| LCA IV（N 個目標） | 1676 | Medium | 對著目標 `set` 做 DFS | 模板 6 的變形 |
 | Distance K from Target | 863 | Medium | 轉成圖 | 模板 6 |
 | LCA of Deepest Leaves | 1123 | Medium | DFS + 深度 | 模板 6 |
 
@@ -536,30 +544,6 @@ A vs B 這個問題只對**由上而下**的題目有意義：也就是一個節
 - LC 257: Binary Tree Paths - 蒐集路徑
 - LC 543: Diameter of Binary Tree - 全域最大值模式
 - LC 572: Subtree of Another Tree - 樹的比對
-
-<!-- a839fb67f861 -->
-#### Medium 題（核心）
-- LC 102: Binary Tree Level Order Traversal - BFS 基礎
-- LC 103: Binary Tree Zigzag Level Order - 帶方向的層序
-- LC 105: Construct from Preorder & Inorder - 索引對照表
-- LC 106: Construct from Inorder & Postorder - 陣列切片
-- LC 113: Path Sum II - 回溯路徑
-- LC 114: Flatten Binary Tree - 原地修改
-- LC 116: Populating Next Right Pointers - 串接同層節點
-- LC 129: Sum Root to Leaf Numbers - 組出數字
-- LC 173: Binary Search Tree Iterator - iterator 設計
-- LC 199: Binary Tree Right Side View - 每層最後一個元素
-- LC 222: Count Complete Tree Nodes - 在樹上二分搜尋
-- LC 230: Kth Smallest in BST - 中序性質
-- LC 236: Lowest Common Ancestor - 經典 LCA
-- LC 298: Binary Tree Longest Consecutive - 路徑追蹤
-- LC 314: Binary Tree Vertical Order - 欄位索引
-- LC 437: Path Sum III - 樹上的前綴和
-- LC 513: Find Bottom Left Tree Value - 層序的變形
-- LC 536: Construct from String - 解析成樹
-- LC 549: Binary Tree Longest Consecutive II - 可轉彎的路徑，(inc, dec) 狀態
-- LC 654: Maximum Binary Tree - 單調堆疊
-- LC 863: All Nodes Distance K - 轉成圖
 
 <!-- c16e609153d1 -->
 #### Hard 題（進階）
@@ -704,3 +688,53 @@ A vs B 這個問題只對**由上而下**的題目有意義：也就是一個節
 **面試必會題**：LC 94、102、104、105、110、124、222、226、236、297、543
 **進階題**：LC 124、222（最佳化版）、297、437、863、968
 **關鍵字**：二元樹、走訪、DFS、BFS、遞迴、路徑、LCA、建構、在樹上二分搜尋、完全樹
+
+<!-- stale: e74041ec85db -->
+### 模板 6：LCA（最近共同祖先）
+<!--CODE-->
+
+<!-- stale: 03979f7da904 -->
+#### **模式 3：路徑題目**
+| 題目 | LC # | 難度 | 關鍵技巧 | 模板 |
+|---------|------|------------|---------------|----------|
+| Path Sum | 112 | Easy | DFS | 模板 4 |
+| Path Sum II | 113 | Medium | DFS + 回溯 | 模板 4 |
+| Binary Tree Paths | 257 | Easy | DFS + 記錄路徑 | 模板 4 |
+| Sum Root to Leaf Numbers | 129 | Medium | DFS | 模板 4 |
+| Binary Tree Maximum Path Sum | 124 | Hard | DFS + 全域最大值 | 模板 4 |
+| Longest Consecutive Sequence | 298 | Medium | DFS + 計數器 | 模板 4（見 §0-2：由上而下**和**由下而上都能解） |
+| Longest Consecutive Sequence II | 549 | Medium | DFS + 狀態組 | 模板 9（路徑可轉彎，`inc + dec - 1`） |
+| Path Sum III | 437 | Medium | 前綴和 | 模板 4 |
+
+<!-- stale: f5d4753f0da6 -->
+#### **模式 5：LCA 與距離題目**
+| 題目 | LC # | 難度 | 關鍵技巧 | 模板 |
+|---------|------|------------|---------------|----------|
+| Lowest Common Ancestor | 236 | Medium | DFS | 模板 6 |
+| LCA of BST | 235 | Easy | BST 性質 | 模板 6 |
+| Distance K from Target | 863 | Medium | 轉成圖 | 模板 6 |
+| LCA of Deepest Leaves | 1123 | Medium | DFS + 深度 | 模板 6 |
+
+<!-- stale: a839fb67f861 -->
+#### Medium 題（核心）
+- LC 102: Binary Tree Level Order Traversal - BFS 基礎
+- LC 103: Binary Tree Zigzag Level Order - 帶方向的層序
+- LC 105: Construct from Preorder & Inorder - 索引對照表
+- LC 106: Construct from Inorder & Postorder - 陣列切片
+- LC 113: Path Sum II - 回溯路徑
+- LC 114: Flatten Binary Tree - 原地修改
+- LC 116: Populating Next Right Pointers - 串接同層節點
+- LC 129: Sum Root to Leaf Numbers - 組出數字
+- LC 173: Binary Search Tree Iterator - iterator 設計
+- LC 199: Binary Tree Right Side View - 每層最後一個元素
+- LC 222: Count Complete Tree Nodes - 在樹上二分搜尋
+- LC 230: Kth Smallest in BST - 中序性質
+- LC 236: Lowest Common Ancestor - 經典 LCA
+- LC 298: Binary Tree Longest Consecutive - 路徑追蹤
+- LC 314: Binary Tree Vertical Order - 欄位索引
+- LC 437: Path Sum III - 樹上的前綴和
+- LC 513: Find Bottom Left Tree Value - 層序的變形
+- LC 536: Construct from String - 解析成樹
+- LC 549: Binary Tree Longest Consecutive II - 可轉彎的路徑，(inc, dec) 狀態
+- LC 654: Maximum Binary Tree - 單調堆疊
+- LC 863: All Nodes Distance K - 轉成圖

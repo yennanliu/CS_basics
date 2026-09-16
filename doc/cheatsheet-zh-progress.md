@@ -41,7 +41,7 @@ half-translated sheet renders with English gaps rather than failing.
   is what makes a problem findable on LeetCode itself.
 
 
-## Status — 5074 / 5302 sections (96%)
+## Status — 5080 / 5308 sections (96%)
 
 | Sheet | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -173,7 +173,7 @@ half-translated sheet renders with English gaps rather than failing.
 | [tree_codec](./cheatsheet/tree_codec.md) | 26 | [✅](../i18n/zh/tree_codec.md) |
 | [tree_construction](./cheatsheet/tree_construction.md) | 16 | [✅](../i18n/zh/tree_construction.md) |
 | [tree_examples](./cheatsheet/tree_examples.md) | 49 | [43/49](../i18n/zh/tree_examples.md) |
-| [tree_lca_distance](./cheatsheet/tree_lca_distance.md) | 37 | [✅](../i18n/zh/tree_lca_distance.md) |
+| [tree_lca_distance](./cheatsheet/tree_lca_distance.md) | 43 | [✅](../i18n/zh/tree_lca_distance.md) |
 | [trie](./cheatsheet/trie.md) | 26 | [✅](../i18n/zh/trie.md) |
 | [trie_examples](./cheatsheet/trie_examples.md) | 11 | [✅](../i18n/zh/trie_examples.md) |
 | [union_find](./cheatsheet/union_find.md) | 23 | [✅](../i18n/zh/union_find.md) |

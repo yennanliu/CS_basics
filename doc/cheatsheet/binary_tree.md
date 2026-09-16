@@ -574,6 +574,43 @@ def find_lca(root, p, q):
     return left if left else right
 ```
 
+**Variations** — the template above assumes *a root to search from* and *both targets present*. Each variant breaks one of those, and that decides the shape:
+
+| LC | What changes | Shape | Complexity |
+|----|--------------|-------|------------|
+| 236 | — (baseline) | this template | O(N) / O(H) |
+| 235 | tree is a **BST** | walk **down** while both targets sit on one side; first split point is the LCA | O(H) / O(1) |
+| 1644 | `p`, `q` may **not exist** | same post-order, but never return early — count the targets seen, answer only if `count == 2` | O(N) / O(H) |
+| 1650 | **no root**, every node has `parent` | walk **up** both parent chains → LC 160, intersection of two linked lists | O(H) / O(1) |
+| 1676 | **N targets** instead of 2 | same post-order against a `set` of targets | O(N) / O(H) |
+
+- **LC 1650 (parent pointers)** — twist: the signature is `lowestCommonAncestor(p, q)` with **no `root`**, so there is no tree to recurse into. `p.parent.parent…` is a linked list ending at the root, so two nodes give two lists that merge at the LCA. Walk both up and swap tails on `null`:
+
+```python
+# python
+# LC 1650 - Lowest Common Ancestor of a Binary Tree III
+# IDEA: 2 pointers on the parent chain; on hitting null, restart at the OTHER node
+#       -> each pointer walks len(path(p)) + len(path(q)) steps, so they meet at the LCA
+# time = O(h), space = O(1)
+class Solution(object):
+    def lowestCommonAncestor(self, p, q):
+        # edge
+        if not p or not q:
+            return None
+
+        a, b = p, q
+        while a != b:
+            # NOTE !!! `if a else q`, NOT `a.parent or q` -- the None step itself
+            #          must be consumed, or the two walks differ by one and never meet
+            a = a.parent if a else q
+            b = b.parent if b else p
+        return a
+```
+
+> The O(h)-space answer to say first is simpler: put every ancestor of `p` in a **set**, then walk up from `q` and return the first hit — first hit going up *is* the lowest. Hash the **nodes**, not `node.val`.
+
+Full worked variants (1650 traced step by step, plus 1644 / 1676 / 235 code) live in [tree_lca_distance.md](./tree_lca_distance.md#the-lca-family--pick-the-template-by-what-you-are-handed-).
+
 ### Template 7: Binary Search on Trees
 ```python
 def count_complete_tree_nodes(root):
@@ -1252,6 +1289,9 @@ class Solution:
 |---------|------|------------|---------------|----------|
 | Lowest Common Ancestor | 236 | Medium | DFS | Template 6 |
 | LCA of BST | 235 | Easy | BST Property | Template 6 |
+| LCA II (targets may not exist) | 1644 | Medium | DFS + found-count | Template 6 variation |
+| LCA III (parent pointers, no root) | 1650 | Medium | Walk **up** both parent chains (LC 160) | Template 6 variation |
+| LCA IV (N targets) | 1676 | Medium | DFS against a target `set` | Template 6 variation |
 | Distance K from Target | 863 | Medium | Graph Convert | Template 6 |
 | LCA of Deepest Leaves | 1123 | Medium | DFS + Depth | Template 6 |
 
