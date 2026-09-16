@@ -54,6 +54,9 @@ DP def:
         So dp size = (n1 + 1) × (n2 + 1)
 
 
+       -> dp[i][j]:「前 i / 前 j 個字元的 LCS」
+
+
 
 DP eq:
 
@@ -82,6 +85,29 @@ class Solution(object):
         # dp[i][j] =
         # LCS length of text1[:i] and text2[:j]
         dp = [[0] * (n2 + 1) for _ in range(n1 + 1)]
+
+
+        """
+        NOTE !!!
+
+        below is WRONG !!!
+
+        -> since dp[i][j]:「前 i / 前 j 個字元的 LCS」
+
+            -> dp[0][0] MUST be 0 !!!!
+
+            ->
+            text1[:0] vs text2[:0]
+            "" vs ""
+
+
+            -> 0
+
+            
+
+        #if text1[0] == text2[0]:
+        #    dp[0][0] = 1
+        """
 
 
         """
