@@ -346,6 +346,10 @@
 				- 1130
 				- 2246
 			- Wildcard / Regex Pattern Matching DP ⭐
+				- 44
+				- 10
+				- 97
+				- 72
 			- linear DP
 			- 2 states DP
 			- Unbounded Knapsack VS Knapsack DP
