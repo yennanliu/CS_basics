@@ -31,7 +31,65 @@ The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit int
 
 """
 
+
 # V0
+# 1D DP - Kadane algo + local min, max cache (GPT)
+class Solution(object):
+    def maxProduct(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        # edge case
+        if not nums:
+            return 0
+
+        if len(nums) == 1:
+            return nums[0]
+
+        # l_max = max product of subarray ending at i
+        # l_min = min product of subarray ending at i
+        l_max = nums[0]
+        l_min = nums[0]
+
+        # global maximum
+        g_max = nums[0]
+
+        n = len(nums)
+
+        """
+        NOTE !!!
+
+
+        idx starts from `1` !!!
+
+            -> since we already init them as nums[0]
+        """
+        for i in range(1, n):
+            val = nums[i]
+
+            # Must save old l_max/l_min
+            l_max_cache = l_max
+            l_min_cache = l_min
+
+            l_max = max(
+                l_max_cache * val,
+                l_min_cache * val,
+                val
+            )
+
+            l_min = min(
+                l_max_cache * val,
+                l_min_cache * val,
+                val
+            )
+
+            g_max = max(g_max, l_max)
+
+        return g_max
+
+
+# V0-0-1
 # Kadane algo
 """
 
