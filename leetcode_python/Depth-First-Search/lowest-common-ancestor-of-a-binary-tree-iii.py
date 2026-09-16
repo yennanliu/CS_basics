@@ -49,6 +49,42 @@ p and q exist in the tree.
 """
 
 # V0
+# IDEA: SET + move upward to tree (gpt)
+"""
+LC 1650:
+    
+    -> 有 parent → 直接往上走
+
+
+----
+
+LC 236：
+
+    -> Tree 沒有 parent → 往下 DFS
+
+"""
+class Solution(object):
+    def lowestCommonAncestor(self, root, p, q):
+        ancestors = set()
+
+        # Put p and all its ancestors into a set
+        node = p
+        while node:
+            ancestors.add(node)
+            node = node.parent
+
+        # Find the first common ancestor from q upward
+        node = q
+        while node:
+            if node in ancestors:
+                return node
+            node = node.parent
+
+        return None
+
+
+
+# V0
 # IDEA : 2 POINTERS ON THE PARENT CHAIN ("swap the tails")
 #
 #   There is no root here, only parent pointers -- so walk UP from both nodes.
