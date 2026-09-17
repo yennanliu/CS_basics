@@ -12,7 +12,7 @@ const {
   buildCheatsheetIndex, splitLeadingH1, buildPageContent, extractScope,
   titleCaseFromFile, summariseDoc
 } = require('./build-lib');
-const { compose, parseStore } = require('./i18n');
+const { compose, parseStore, docs: zhDocs, orphanStores } = require('./i18n');
 
 // A commit that only retouches a header or fixes a link is not a content update.
 // Without this floor, one repo-wide formatting pass stamps today's date on every
@@ -395,6 +395,9 @@ if (cheatsheetFiles.length > 0) {
 
     cheatsheets.push({
       file: baseName,
+      // The markdown this page was rendered from. It is how the 繁體中文 pass
+      // pairs a page with its overlay, which lives at the same path under i18n/zh.
+      src: filePath,
       title,
       category,
       tier,
@@ -429,24 +432,23 @@ if (cheatsheetFiles.length > 0) {
   );
 }
 
-// ── Traditional Chinese cheatsheets ──────────────────────────────────────────
+// ── Traditional Chinese docs ─────────────────────────────────────────────────
 //
-// There is one markdown tree, the English one. i18n/zh/<slug>.md holds a sparse
-// overlay of translated *sections*, keyed by a hash of the English text, and the
-// Chinese document is composed here: English structure, translated prose, the
-// original code blocks. Nothing is stored twice, so nothing can drift — see
-// site/i18n.js.
+// There is one markdown tree per family, the English one. A translation is a
+// sparse overlay of translated *sections* in i18n/zh, keyed by a hash of the
+// English text, and the Chinese document is composed here: English structure,
+// translated prose, the original code blocks. Nothing is stored twice, so
+// nothing can drift — see site/i18n.js, which also owns the table of which
+// trees are translated and where each one's overlay lives.
 //
-// A section with no entry falls back to English, so a half-translated sheet is a
-// Chinese page with English gaps. Category, tier and kind are the English sheet's.
+// A section with no entry falls back to English, so a half-translated document
+// is a Chinese page with English gaps. Everything the index shows about a doc —
+// category, tier, kind — is the English page's, never restated in the
+// translation, so the two indexes can never disagree.
 //
-// A translation is optional. A sheet without one simply gets no 中文 button, which
+// A translation is optional. A doc without one simply gets no 中文 button, which
 // is why the toggle can never link into a 404.
 
-// Repo-relative, like cheatsheetDir: buildLastModifiedMap keys off the paths git
-// reports, which are relative to the repo root build.sh runs from.
-const zhDir = 'i18n/zh';
-const zhSheets = [];
 const ZH_LABELS = {
   home: '首頁',
   updated: '更新於',
@@ -455,108 +457,121 @@ const ZH_LABELS = {
 };
 const ZH_TOC_LABELS = { contents: '目錄', sections: n => `${n} 個章節` };
 
-if (fs.existsSync(zhDir)) {
-  const zhFiles = fs.readdirSync(zhDir).filter(f => f.endsWith('.md'));
-  const orphans = zhFiles
-    .map(f => path.basename(f, '.md'))
-    .filter(b => !fs.existsSync(path.join(cheatsheetDir, `${b}.md`)));
-  if (orphans.length) {
-    throw new Error(
-      `i18n/zh has translations with no English sheet: ${orphans.join(', ')}\n` +
-      'Every i18n/zh/<slug>.md must mirror a doc/cheatsheet/<slug>.md of the same name.'
-    );
-  }
+// A translation nobody can reach: its English document was renamed or deleted.
+// Failing here is the point — the alternative is a store file quietly going
+// unread until someone wonders why their Chinese page never changed.
+const zhOrphans = orphanStores();
+if (zhOrphans.length) {
+  throw new Error(
+    `i18n/zh has translations with no English document:\n  ${zhOrphans.join('\n  ')}\n` +
+    'Every overlay must mirror the path of the markdown it translates ' +
+    '(see the CORPORA table in site/i18n.js).'
+  );
+}
+
+/**
+ * Compose the 繁體中文 page for every doc of one family that has a translation.
+ *
+ * `pages` is that family's English page list, in the order it was built, so the
+ * translated pages thread the same prev/next ladder. Each entry carries `file`
+ * (its page name), `src` (the markdown it was rendered from) and `enHeadingIds`
+ * (captured before its H1 was split off, so the two documents line up
+ * heading-for-heading). The two families differ in nothing else, so the chips
+ * under the title and the one-line description arrive as callbacks.
+ */
+function composeZhPages({ corpus, pages, outDir, indexHref, indexLabel, type, describe, meta }) {
+  const byEn = new Map(zhDocs(corpus).map(doc => [doc.en, doc]));
+  const translated = pages
+    .map(page => ({ page, doc: byEn.get(page.src) }))
+    .filter(({ doc }) => doc && fs.existsSync(doc.store));
+  if (!translated.length) return [];
 
   // Known up front so a sibling link inside a translation (./bst.md) can resolve
   // to the translated page rather than bouncing the reader back into English.
-  const zhSlugs = new Set(zhFiles.map(f => path.basename(f, '.md')));
+  const names = new Set(translated.map(({ page }) => page.file));
   // A composed page changes when either side does, so it is dated by whichever
-  // was touched last — the translation, or the English sheet under it.
-  const zhLastMod = buildLastModifiedMap(
-    zhFiles.map(f => path.join(zhDir, f)).concat(zhFiles.map(f => path.join(cheatsheetDir, f)))
-  );
+  // was touched last — the translation, or the English document under it.
+  const lastMod = buildLastModifiedMap(translated.flatMap(({ doc }) => [doc.en, doc.store]));
   const laterOf = (a, b) => (a && b ? (new Date(a) >= new Date(b) ? a : b) : a || b || null);
 
   // Two passes, because a link inside one translation can point at a *section of
-  // another one* — so every sheet has to be rendered before any of them can have
+  // another one* — so every page has to be rendered before any of them can have
   // its anchors retargeted.
-  //
-  // Pass 1: render, and learn how each sheet's English heading ids line up with
-  // its translated ones. Walked in the English order so prev/next threads the
-  // same category ladder.
-  const drafts = [];
-  const anchorMaps = new Map();
-  for (const sheet of cheatsheets) {
-    if (!zhSlugs.has(sheet.file)) continue;
-    const filePath = path.join(zhDir, `${sheet.file}.md`);
+  const drafts = translated.map(({ page, doc }) => {
     const raw = compose(
-      fs.readFileSync(path.join(cheatsheetDir, `${sheet.file}.md`), 'utf8'),
-      parseStore(fs.readFileSync(filePath, 'utf8'))
+      fs.readFileSync(doc.en, 'utf8'),
+      parseStore(fs.readFileSync(doc.store, 'utf8'))
     );
-    const html = ensureHeadingIds(renderContent(raw, cheatsheetDir, 'cheatsheets'));
-    anchorMaps.set(sheet.file, anchorMap(sheet.enHeadingIds, headingIds(html)));
-    drafts.push({ sheet, filePath, raw, html });
-  }
+    const html = ensureHeadingIds(renderContent(raw, path.dirname(doc.en), outDir));
+    return { page, doc, raw, html, anchors: anchorMap(page.enHeadingIds, headingIds(html)) };
+  });
+  const anchorMaps = new Map(drafts.map(d => [d.page.file, d.anchors]));
 
-  // Pass 2: retarget the links, then build the page.
-  for (const { sheet, filePath, raw, html } of drafts) {
+  return drafts.map(({ page, doc, raw, html }) => {
     let htmlContent = html.replace(
       /href="([^"#]+)(\.html)(#[^"]*)?"/g,
-      (full, slug, ext, hash) => (zhSlugs.has(slug) ? `href="${slug}.zh.html${hash || ''}"` : full)
+      (full, name, ext, hash) => (names.has(name) ? `href="${name}.zh.html${hash || ''}"` : full)
     );
     // A hand-written `[見 §3](#two-pointers)` still names the *English* heading
     // slug, which does not exist on this page. Point it at the translated
     // heading in the same position — here, or in a sibling translation.
-    htmlContent = retargetAnchors(htmlContent, page => {
-      if (!page) return anchorMaps.get(sheet.file);
-      const sibling = page.match(/^([^/]+)\.zh\.html$/);
+    htmlContent = retargetAnchors(htmlContent, linked => {
+      if (!linked) return anchorMaps.get(page.file);
+      const sibling = linked.match(/^([^/]+)\.zh\.html$/);
       return sibling ? anchorMaps.get(sibling[1]) : null;
     });
     const { title: h1Title, titleId, html: bodyHtml } = splitLeadingH1(htmlContent);
     const { html: annotated, hasPriority } = annotatePriorityHeadings(bodyHtml);
     htmlContent = annotated;
-    const title = h1Title || sheet.title;
-    const description = extractScope(raw) || sheet.description;
+    const title = h1Title || page.title;
+    const headings = extractHeadings(htmlContent);
+    const description = describe(raw, headings) || page.description;
 
-    searchRecords.push({
-      title,
-      url: `cheatsheets/${sheet.file}.zh.html`,
-      category: sheet.category,
-      type: 'Cheatsheet (中文)',
-      tier: sheet.tier,
-      summary: description,
-      headings: extractHeadings(htmlContent).slice(0, 40)
-    });
-
-    zhSheets.push({
-      // Category, tier and kind are the English sheet's — never restated in the
-      // translation, so the two indexes can never disagree about where a sheet goes.
-      file: sheet.file,
+    return {
+      ...page,
       title,
       description,
-      category: sheet.category,
-      tier: sheet.tier,
-      kind: sheet.kind,
+      // Kept so the caller can write the search record without re-deriving it.
+      headings: headings.slice(0, 40),
       content: buildPageContent({
         title,
         htmlContent,
         toc: generateTOC(htmlContent, ZH_TOC_LABELS),
-        lastMod: laterOf(
-          zhLastMod.get(filePath),
-          zhLastMod.get(path.join(cheatsheetDir, `${sheet.file}.md`))
-        ),
-        indexHref: 'cheatsheets.zh.html',
-        indexLabel: '速查表',
-        githubHref: `https://github.com/yennanliu/CS_basics/blob/master/i18n/zh/${sheet.file}.md`,
+        lastMod: laterOf(lastMod.get(doc.store), lastMod.get(doc.en)),
+        indexHref,
+        indexLabel,
+        githubHref: `https://github.com/yennanliu/CS_basics/blob/master/${doc.store}`,
         titleId,
         labels: ZH_LABELS,
-        meta: `<span class="cat-chip">${sheet.category}</span>` +
-          `<span class="tier-chip tier-${sheet.tier}">${prioBadge(sheet.tier)}` +
-          `<span class="tier-label">${cheatsheetMeta.tierLabels[String(sheet.tier)].label}</span></span>`,
+        meta: meta(page),
         legend: hasPriority ? PRIORITY_LEGEND : ''
       })
-    });
-  }
+    };
+  });
+}
+
+const zhSheets = composeZhPages({
+  corpus: 'cheatsheet',
+  pages: cheatsheets,
+  outDir: 'cheatsheets',
+  indexHref: 'cheatsheets.zh.html',
+  indexLabel: '速查表',
+  describe: raw => extractScope(raw),
+  meta: sheet => `<span class="cat-chip">${sheet.category}</span>` +
+    `<span class="tier-chip tier-${sheet.tier}">${prioBadge(sheet.tier)}` +
+    `<span class="tier-label">${cheatsheetMeta.tierLabels[String(sheet.tier)].label}</span></span>`
+});
+
+for (const sheet of zhSheets) {
+  searchRecords.push({
+    title: sheet.title,
+    url: `cheatsheets/${sheet.file}.zh.html`,
+    category: sheet.category,
+    type: 'Cheatsheet (中文)',
+    tier: sheet.tier,
+    summary: sheet.description,
+    headings: sheet.headings
+  });
 }
 
 // ── FAQs ─────────────────────────────────────────────────────────────────────
@@ -601,6 +616,9 @@ if (faqFiles.length > 0) {
     const raw = fs.readFileSync(filePath, 'utf8');
     let htmlContent = renderContent(raw, path.dirname(filePath), 'faqs');
     htmlContent = ensureHeadingIds(htmlContent);
+    // Captured before the H1 is split off, so the translated page — measured at
+    // the same point — lines up heading-for-heading with it.
+    const enHeadingIds = headingIds(htmlContent);
     const { title: h1Title, titleId, html: bodyHtml } = splitLeadingH1(htmlContent);
     const { html: annotated, hasPriority } = annotatePriorityHeadings(bodyHtml);
     htmlContent = annotated;
@@ -620,6 +638,8 @@ if (faqFiles.length > 0) {
 
     faqs.push({
       file: uniqueName,
+      src: filePath,
+      enHeadingIds,
       // The card used to show a filename-derived title ("Jvm") while the page
       // showed the H1 ("JVM FAQ"). One title, from the file itself.
       title: pageTitle,
@@ -639,6 +659,49 @@ if (faqFiles.length > 0) {
       })
     });
   }
+}
+
+// ── Traditional Chinese FAQs ─────────────────────────────────────────────────
+//
+// The same overlay and the same composer as the cheatsheets. An FAQ differs only
+// in having no Scope line, so its card description is summarised from the
+// *composed* Chinese rather than lifted out of a line the author wrote.
+
+// The FAQ index's own words, and the categories build-site.js derives from the
+// directory names. Only the ones that are English are translated: Java, Redis,
+// Kafka and Flink are product names in both languages.
+const FAQ_ZH = {
+  h1: 'FAQ - 常見面試問答',
+  intro: '涵蓋 Java、後端、資料庫、串流系統等主題的面試問答整理。',
+  tip: '<strong>💡 提示：</strong>這些問答是為技術面試準備時的快速查閱而寫的。',
+  source: '在 <a href="https://github.com/yennanliu/CS_basics/tree/master/doc/faq">GitHub</a> 上瀏覽全部 FAQ。',
+  categories: {
+    General: '綜合', Java: 'Java', Backend: '後端', Database: '資料庫', SQL: 'SQL',
+    Redis: 'Redis', Kafka: 'Kafka', 'Spark & Hadoop': 'Spark 與 Hadoop',
+    Flink: 'Flink', Streaming: '串流處理'
+  }
+};
+
+const zhFaqCategory = category => FAQ_ZH.categories[category] || category;
+
+const zhFaqs = composeZhPages({
+  corpus: 'faq',
+  pages: faqs,
+  outDir: 'faqs',
+  indexHref: 'faqs.zh.html',
+  indexLabel: '常見問答',
+  describe: (raw, headings) => summariseDoc(raw, headings),
+  meta: faq => `<span class="cat-chip">${zhFaqCategory(faq.category)}</span>`
+});
+
+for (const faq of zhFaqs) {
+  searchRecords.push({
+    title: faq.title,
+    url: `faqs/${faq.file}.zh.html`,
+    category: faq.category,
+    type: 'FAQ (中文)',
+    headings: faq.headings
+  });
 }
 
 // ── HTML template ─────────────────────────────────────────────────────────────
@@ -1045,30 +1108,72 @@ const faqCategoryOrder = [
   ...Object.keys(faqGrouped).filter(cat => !knownFaqCategoryOrder.includes(cat))
 ];
 
-let faqIndexContent = '<h1>FAQ - Frequently Asked Questions</h1>' +
-  '<p class="intro">Interview preparation FAQs covering Java, Backend, Database, Streaming, and more.</p>' +
-  buildIndexGrid(faqGrouped, faqCategoryOrder, 'faqs') +
+// The tip panel the index closes with, in whichever language the index is in.
+const faqIndexFoot = t =>
   `\n<div style="margin-top: 3rem; padding: 1.5rem; background: var(--bg-secondary); border-radius: 8px;">
-  <p><strong>💡 Tip:</strong> These FAQs are designed for quick reference during technical interview preparation.</p>
-  <p>View all FAQs on <a href="https://github.com/yennanliu/CS_basics/tree/master/doc/faq">GitHub</a>.</p>
+  <p>${t.tip}</p>
+  <p>${t.source}</p>
 </div>`;
 
-fs.writeFileSync('_site/faqs.html', htmlTemplate('FAQs', faqIndexContent, 'faqs', '', {
+const faqIndexContent = '<h1>FAQ - Frequently Asked Questions</h1>' +
+  '<p class="intro">Interview preparation FAQs covering Java, Backend, Database, Streaming, and more.</p>' +
+  buildIndexGrid(faqGrouped, faqCategoryOrder, 'faqs') +
+  faqIndexFoot({
+    tip: '<strong>💡 Tip:</strong> These FAQs are designed for quick reference during technical interview preparation.',
+    source: 'View all FAQs on <a href="https://github.com/yennanliu/CS_basics/tree/master/doc/faq">GitHub</a>.'
+  });
+
+// Built only when translations exist, so a repo with none ships exactly the page
+// it did before — the same rule the cheatsheet index follows.
+const bilingualFaqIndex = zhFaqs.length > 0;
+
+fs.writeFileSync('_site/faqs.html', htmlTemplate('FAQs', faqIndexContent, 'faqs', '', Object.assign({
   url: 'faqs.html',
   description: `${faqs.length} interview FAQs on Java, backend, databases, SQL and streaming systems.`
-}));
+}, bilingualFaqIndex ? { lang: 'en', langAlt: 'faqs.zh.html' } : {})));
 console.log('✓ Created faqs.html index');
+
+if (bilingualFaqIndex) {
+  const zhFaqGrouped = groupByCategory(zhFaqs);
+  const zhFaqIndexContent = `<h1>${FAQ_ZH.h1}</h1>` +
+    `<p class="intro">${FAQ_ZH.intro}</p>` +
+    buildIndexGrid(zhFaqGrouped, faqCategoryOrder, 'faqs', { lang: 'zh', catName: zhFaqCategory }) +
+    faqIndexFoot(FAQ_ZH);
+  fs.writeFileSync('_site/faqs.zh.html', htmlTemplate(FAQ_ZH.h1, zhFaqIndexContent, 'faqs', '', {
+    lang: 'zh', langAlt: 'faqs.html', url: 'faqs.zh.html',
+    description: `${zhFaqs.length} 篇技術面試問答的繁體中文版，涵蓋 Java、後端、資料庫與串流系統。`
+  }));
+  console.log(`✓ Created faqs.zh.html index (${zhFaqs.length} translated FAQs)`);
+}
+
+const translatedFaqs = new Set(zhFaqs.map(f => f.file));
 
 if (faqs.length > 0) {
   fs.mkdirSync('_site/faqs', { recursive: true });
   faqs.forEach((faq, idx) => {
     let fixedContent = faq.content.replace(/src\s*=\s*"doc\//g, 'src="../doc/');
     fixedContent += buildPrevNext(faqs, idx);
+    fs.writeFileSync(`_site/faqs/${faq.file}.html`, htmlTemplate(faq.title, fixedContent, 'faqs', '../', Object.assign({
+      url: `faqs/${faq.file}.html`, description: faq.description
+    }, translatedFaqs.has(faq.file) ? { lang: 'en', langAlt: `${faq.file}.zh.html` } : {})));
+  });
+  console.log(`✓ Created ${faqs.length} individual FAQ pages`);
+}
+
+if (zhFaqs.length > 0) {
+  // prev/next has to thread the .zh pages, so it gets a list whose `file` carries
+  // the suffix — the FAQs themselves stay keyed by the bare page name so the index
+  // and the toggle can pair the two languages up.
+  const zhPages = zhFaqs.map(f => ({ ...f, file: `${f.file}.zh` }));
+  zhPages.forEach((faq, idx) => {
+    let fixedContent = faq.content.replace(/src\s*=\s*"doc\//g, 'src="../doc/');
+    fixedContent += buildPrevNext(zhPages, idx);
     fs.writeFileSync(`_site/faqs/${faq.file}.html`, htmlTemplate(faq.title, fixedContent, 'faqs', '../', {
+      lang: 'zh', langAlt: `${zhFaqs[idx].file}.html`,
       url: `faqs/${faq.file}.html`, description: faq.description
     }));
   });
-  console.log(`✓ Created ${faqs.length} individual FAQ pages`);
+  console.log(`✓ Created ${zhFaqs.length} 繁體中文 FAQ pages`);
 }
 
 if (fs.existsSync('doc/pattern_recognition.md')) {

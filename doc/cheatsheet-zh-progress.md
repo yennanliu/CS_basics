@@ -1,9 +1,10 @@
 # 繁體中文 Cheatsheets — Translation Progress
 
-The cheatsheets under [`doc/cheatsheet/`](./cheatsheet/) are the only markdown
-tree. A translation is a *sparse overlay* of translated sections in
-`i18n/zh/<slug>.md`, and the site composes the two into a full Chinese document
-at build time — see the *Traditional Chinese cheatsheets* section of
+The cheatsheets under [`doc/cheatsheet/`](./cheatsheet/) are the only
+markdown tree.
+A translation is a *sparse overlay* of translated sections in
+`i18n/zh/<id>.md`, and the site composes the two into a full Chinese
+document at build time — see the *Traditional Chinese docs* section of
 [CLAUDE.md](../CLAUDE.md).
 
 **This file is generated. Do not edit it by hand:**
@@ -18,20 +19,21 @@ Roughly 70% of these sheets is fenced code, and that code must read identically
 in both languages — so it is never stored twice:
 
 ```text
-doc/cheatsheet/<slug>.md          the only markdown tree
+doc/cheatsheet/<id>.md
    │  every fence lifts out to a one-line <!--CODE--> marker
    │  the prose is cut into sections at each heading
    ▼
-i18n/zh/<slug>.md                 <!-- hash --> + the translated section
+i18n/zh/<id>.md
+   │  <!-- hash --> + the translated section
    │  compose — English structure, translated prose, original code
    ▼
-_site/cheatsheets/<slug>.zh.html
+_site/cheatsheets/<page>.zh.html
 ```
 
 Each section is keyed by a hash of **its English text**. Edit one section of an
-English sheet and only that section's translation goes missing; the rest of the
-sheet stays current. A section with no entry falls back to English, so a
-half-translated sheet renders with English gaps rather than failing.
+English document and only that section's translation goes missing; the rest of
+the file stays current. A section with no entry falls back to English, so a
+half-translated document renders with English gaps rather than failing.
 
 ## Known limitations
 
@@ -43,7 +45,7 @@ half-translated sheet renders with English gaps rather than failing.
 
 ## Status — 5080 / 5308 sections (96%)
 
-| Sheet | Sections | 繁體中文 |
+| Cheatsheet | Sections | 繁體中文 |
 |---|---:|:---:|
 | [2_pointers](./cheatsheet/2_pointers.md) | 41 | [✅](../i18n/zh/2_pointers.md) |
 | [2_pointers_examples](./cheatsheet/2_pointers_examples.md) | 82 | [✅](../i18n/zh/2_pointers_examples.md) |
