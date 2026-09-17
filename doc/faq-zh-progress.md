@@ -45,16 +45,16 @@ half-translated document renders with English gaps rather than failing.
   usually the text already there.
 
 
-## Status — 3 / 902 sections (0%)
+## Status — 95 / 902 sections (11%)
 
 | FAQ | Sections | 繁體中文 |
 |---|---:|:---:|
 | [backend/api_design](./faq/backend/api_design.md) | 14 | — |
-| [backend/authentication](./faq/backend/authentication.md) | 17 | — |
+| [backend/authentication](./faq/backend/authentication.md) | 17 | [✅](../i18n/zh/faq/backend/authentication.md) |
 | [backend/be_programming_notes](./faq/backend/be_programming_notes.md) | 36 | — |
 | [backend/be_programming_notes_pt2](./faq/backend/be_programming_notes_pt2.md) | 46 | — |
 | [backend/be_programming_notes_pt3](./faq/backend/be_programming_notes_pt3.md) | 33 | — |
-| [backend/db_isolation_demo_mysql](./faq/backend/db_isolation_demo_mysql.md) | 14 | — |
+| [backend/db_isolation_demo_mysql](./faq/backend/db_isolation_demo_mysql.md) | 14 | [✅](../i18n/zh/faq/backend/db_isolation_demo_mysql.md) |
 | [backend/llm_tool_idempotency](./faq/backend/llm_tool_idempotency.md) | 27 | — |
 | [backend/overbooking_prevention](./faq/backend/overbooking_prevention.md) | 9 | — |
 | [backend/web_long_connections](./faq/backend/web_long_connections.md) | 13 | — |
@@ -62,10 +62,10 @@ half-translated document renders with English gaps rather than failing.
 | [cs_basic](./faq/cs_basic.md) | 38 | — |
 | [db/faq_DB_DW](./faq/db/faq_DB_DW.md) | 19 | — |
 | [db/faq_redshift](./faq/db/faq_redshift.md) | 1 | — |
-| [db/postgre](./faq/db/postgre.md) | 15 | — |
-| [faq_Airflow](./faq/faq_Airflow.md) | 1 | — |
-| [faq_DE](./faq/faq_DE.md) | 4 | — |
-| [faq_ML](./faq/faq_ML.md) | 2 | — |
+| [db/postgre](./faq/db/postgre.md) | 15 | [✅](../i18n/zh/faq/db/postgre.md) |
+| [faq_Airflow](./faq/faq_Airflow.md) | 1 | [✅](../i18n/zh/faq/faq_Airflow.md) |
+| [faq_DE](./faq/faq_DE.md) | 4 | [✅](../i18n/zh/faq/faq_DE.md) |
+| [faq_ML](./faq/faq_ML.md) | 2 | [✅](../i18n/zh/faq/faq_ML.md) |
 | [faq_data_model](./faq/faq_data_model.md) | 15 | — |
 | [faq_dev_interview](./faq/faq_dev_interview.md) | 30 | — |
 | [faq_devops](./faq/faq_devops.md) | 76 | — |
@@ -85,16 +85,16 @@ half-translated document renders with English gaps rather than failing.
 | [java/java_modern](./faq/java/java_modern.md) | 12 | — |
 | [java/java_multi_thread](./faq/java/java_multi_thread.md) | 14 | — |
 | [java/java_spring](./faq/java/java_spring.md) | 13 | — |
-| [java/java_tdd](./faq/java/java_tdd.md) | 7 | — |
+| [java/java_tdd](./faq/java/java_tdd.md) | 7 | [✅](../i18n/zh/faq/java/java_tdd.md) |
 | [java/jmm](./faq/java/jmm.md) | 9 | — |
 | [java/jvm](./faq/java/jvm.md) | 23 | — |
 | [kafka/faq_kafka](./faq/kafka/faq_kafka.md) | 22 | — |
-| [redis/redis_backend](./faq/redis/redis_backend.md) | 5 | — |
+| [redis/redis_backend](./faq/redis/redis_backend.md) | 5 | [✅](../i18n/zh/faq/redis/redis_backend.md) |
 | [redis/redis_info](./faq/redis/redis_info.md) | 11 | — |
-| [redis/redis_leaderboard](./faq/redis/redis_leaderboard.md) | 15 | — |
-| [spark/faq_hadoop](./faq/spark/faq_hadoop.md) | 2 | — |
-| [spark/faq_mapreduce](./faq/spark/faq_mapreduce.md) | 2 | — |
+| [redis/redis_leaderboard](./faq/redis/redis_leaderboard.md) | 15 | [✅](../i18n/zh/faq/redis/redis_leaderboard.md) |
+| [spark/faq_hadoop](./faq/spark/faq_hadoop.md) | 2 | [✅](../i18n/zh/faq/spark/faq_hadoop.md) |
+| [spark/faq_mapreduce](./faq/spark/faq_mapreduce.md) | 2 | [✅](../i18n/zh/faq/spark/faq_mapreduce.md) |
 | [spark/faq_spark_hadoop](./faq/spark/faq_spark_hadoop.md) | 2 | — |
-| [sql/faq_mysql](./faq/sql/faq_mysql.md) | 5 | — |
+| [sql/faq_mysql](./faq/sql/faq_mysql.md) | 5 | [✅](../i18n/zh/faq/sql/faq_mysql.md) |
 | [sql/faq_sql](./faq/sql/faq_sql.md) | 37 | — |
-| [stream/faq_stream](./faq/stream/faq_stream.md) | 3 | — |
+| [stream/faq_stream](./faq/stream/faq_stream.md) | 3 | [✅](../i18n/zh/faq/stream/faq_stream.md) |
