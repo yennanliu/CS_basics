@@ -136,7 +136,7 @@
 	- 每個 consumer 自己記錄／維護 offset，可以避免資料遺失
 	- offset 可以存在客戶端的檔案系統、資料庫、Redis……
 
-<!-- 2b8f1f013352 -->
+<!-- c064329e2f2b -->
 ### 3') 說明 kafka 的 `ACK`？
 - `request.required.acks`：kafka 把生產者的訊息寫進自己的副本時，要怎麼確認
 - 這是效率（回應速度）與可靠性（容錯）之間的取捨
@@ -146,7 +146,7 @@
 	- `ack = 0`
 		- producer -> kafka broker，送出去就算成功。速度最快，broker 掛掉就掉資料
 	- `ack = -1（或 all）`
-		- producer -> kafka broker 時，必須等 `leader 與所有 follower 都確認`。速度最慢，但保證不掉資料。
+		- leader 會等 `目前 ISR 裡的每一個副本` —— 不是每一個 follower。速度最慢，而且它只有搭配 `min.insync.replicas` 才構成耐久性保證（例如 `replication.factor=3` + `min.insync.replicas=2`）—— 這樣當副本掉出同步時，寫入才會失敗，而不是被單一份副本確認掉。見第 6) 與第 10) 題。
 - 參考
 	- https://blog.51cto.com/u_15193673/2850009
 	- https://blog.51cto.com/u_15278282/2932140
@@ -200,7 +200,7 @@
 - 步驟 6) 有成員加入／離開，或超過 `max.poll.interval.ms`（通常是「處理太慢了」）時會 `rebalance` —— partition 重新分配，回到步驟 3
 - 步驟 7) `close()`：乾淨地離開 group，免得 group 要等 `session.timeout.ms` 才發現
 
-<!-- 93e83f0bfd9d -->
+<!-- 67974d24da1b -->
 ### 8) 說明 kafka 的冪等性（Idempotence）
 - 冪等性 -> 同一個流程跑很多次，結果都該一樣
 - 核心概念：PID（Producer ID）、sequence number
@@ -221,7 +221,7 @@
 			- producer 重啟就會拿到新的 PID
 			- 每個 PID 的 sequence number 都從 0 開始
 			- 每個 topic-partition 有各自獨立的 sequence number
-			- 透過 ZK 申請 PID：
+			- PID 是怎麼配發的。注意：這一段 ZK 的流程講的是 `KRaft 之前的舊版 Kafka`；KIP-500 之後 PID 由 controller 經由中繼資料日誌配發，而交易協調器負責 `__transaction_state`。保留它是因為它仍然解釋得清楚「id 區塊」的想法：
 				- 步驟 1) 從 zk 取 `/latest_producer_id_block`，看最近配發的 PID
 				- 步驟 2) 若該節點是新的，PID 從 0 開始（0-1000），一次拿 1000 個（預設）
 				- 步驟 3) 若該節點已存在，讀它的資料，依 block_end 取 PID
@@ -231,7 +231,7 @@
 - 參考
 	- https://blog.csdn.net/zc19921215/article/details/108466393#:~:text=Kafka%E5%B9%82%E7%AD%89%E6%80%A7%EF%BC%9A,number%E8%BF%99%E4%B8%A4%E4%B8%AA%E6%A6%82%E5%BF%B5%E3%80%82
 
-<!-- bcf2dc712fff -->
+<!-- 3fbc8e765178 -->
 ### 9) 說明 kafka 的事務性（transactional）
 - 提供「分區寫入」的`原子性` -> 只有所有操作都成功才提交、才算成功，否則就回滾（全部成功或全部失敗）
 - 核心概念：
@@ -243,17 +243,17 @@
 		- 兩種：COMMIT、ABORT（提交成功與否）
 	- TransactionCoordinator
 - 為什麼不直接用 producer id（PID），而要引入 TransactionalId？
-	- producer id（PID）在 producer 重啟時會換掉，所以`我們用 TransactionalId 讓每個事件保持唯一`
+	- PID 在 producer 重啟時會被重新指派，所以它無法跨重啟辨識*同一個邏輯上的 producer*。`transactional.id` 就是那個穩定的身分：它讓協調器找出上一個 session 沒結束的交易並中止它們，而把它的 `producer epoch` 加一就能隔離掉舊實例（見 9'）。讓「單一個事件」唯一的不是它 —— 那是 `<PID, partition, sequence number>` 這個三元組的工作（見第 8 題）
 - 藉此確保 exactly once
 - 實作
 	- 步驟 1) 找到 `Transaction Coordinator（TC）`
 		- producer 送 `FindCoordinatorRequest` 給某個 broker，找到 TC 並取得它的 node_id、host、port
 	- 步驟 2) 初始化 initTransaction
-		- producer 送 `InitpidRequest` 給 TC 取得 PID（producer ID），TC 會把 `<TransactionalId,pid>` 記錄到 Transaction Log，也包含狀態資訊（例如 `Empty/Ongoing/PrepareCommit/PrepareAbort/CompleteCommit/CompleteAbort/Dead`）
+		- `initTransactions()` 送一個 `InitProducerIdRequest` 給 TC，TC 回傳 PID 與加一後的 producer epoch，並把 `<transactional.id, PID, epoch, 狀態>` 記錄到交易日誌（狀態有：`Empty/Ongoing/PrepareCommit/PrepareAbort/CompleteCommit/CompleteAbort/Dead`）。這件事`只在任何 send 之前做一次` —— 它同時隔離掉前一個實例，並處理掉它留下的未完成交易
 		- 提交／中止那些還沒完成的任務
 		- 把 PID 加上 epoch，讓 producer 進入交易狀態
 	- 步驟 3) 開始交易
-		- 執行 producer 的 `beginTransacion()`。它會在本地紀錄裡把這筆交易標成「開始」狀態。
+		- `beginTransaction()` 只在 producer 自己的本地狀態裡把這筆交易標成已開始 —— TC 是延遲才知道的，要等第一筆紀錄真的送到某個 partition 時的 `AddPartitionsToTxnRequest`。
 	- 步驟 4) read-process-write
 		- producer 一開始送事件，TC 就會把 `<Transaction, Topic, Partition>` 存進 Transaction Log 並設成「開始」狀態，同時記下時間。
 		- Broker 會把送來的事件寫進磁碟（尚未 commit/abort）。如果之後是 abort，broker 上的訊息不會被刪掉，而是把狀態改成 abort

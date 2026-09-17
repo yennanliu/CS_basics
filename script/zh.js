@@ -34,6 +34,7 @@ const I = require('../site/i18n.js');
 const ROOT = path.join(__dirname, '..');
 const abs = p => path.join(ROOT, p);
 
+/** Every translatable document, across every tree site/i18n.js knows about. */
 const allDocs = () => I.docs();
 
 /**
@@ -60,6 +61,7 @@ function resolve(args) {
   return docs.filter(d => picked.has(d.id));
 }
 
+/** A document's live translations, or an empty map when it has none yet. */
 const readStore = doc =>
   fs.existsSync(abs(doc.store)) ? I.parseStore(fs.readFileSync(abs(doc.store), 'utf8')) : new Map();
 
@@ -88,9 +90,17 @@ function survey(docs) {
   });
 }
 
+/** Total a field over survey rows. */
 const sum = (rows, pick) => rows.reduce((n, r) => n + pick(r), 0);
+/** A percentage that is 0 rather than NaN for an empty corpus. */
 const pct = (done, total) => (total ? (100 * done) / total : 0);
 
+/**
+ * Coverage: one headline figure, then a block per tree.
+ *
+ * `--write` refreshes each tree's generated progress doc instead of listing the
+ * documents that still need work.
+ */
 function cmdStatus(docs, write) {
   const rows = survey(docs);
   const orphans = sum(rows, r => r.orphans);
@@ -111,8 +121,13 @@ function cmdStatus(docs, write) {
       `${mine.filter(r => r.done > 0).length}/${mine.length} documents`
     );
     if (write) {
-      fs.writeFileSync(abs(c.tracker), tracker(c, mine));
-      console.log(`  ✓ wrote ${c.tracker}`);
+      // A tracker describes a whole tree, so it is written from the whole tree even
+      // when the command names one document. Writing `mine` meant
+      // `status faq/java --write` rewrote doc/faq-zh-progress.md with that one
+      // directory's 14 rows and dropped the other 35 documents.
+      const all = survey(I.docs(c.name));
+      fs.writeFileSync(abs(c.tracker), tracker(c, all));
+      console.log(`  ✓ wrote ${c.tracker} (${all.length} documents)`);
       continue;
     }
     for (const r of mine) {
@@ -122,6 +137,10 @@ function cmdStatus(docs, write) {
   }
 }
 
+/**
+ * Print the sections with no translation, each under the key it must be stored
+ * against — the output is meant to be pasted into the store file and filled in.
+ */
 function cmdTodo(docs) {
   let n = 0;
   let parked = 0;
@@ -230,6 +249,7 @@ const TRACKER_LIMITS = {
   usually the text already there.`,
 };
 
+/** The generated preamble of one tree's progress doc. */
 function trackerHead(c) {
   return `# 繁體中文 ${c.label}s — Translation Progress
 
@@ -273,6 +293,7 @@ ${TRACKER_LIMITS[c.name]}
 `;
 }
 
+/** One tree's progress doc: the preamble, then a row per document. */
 function tracker(c, rows) {
   const done = sum(rows, r => r.done);
   const total = sum(rows, r => r.total);
@@ -293,6 +314,7 @@ function tracker(c, rows) {
   return out.join('\n');
 }
 
+/** Parse `<command> [--flags] [id ...]` and dispatch. */
 function main() {
   const [cmd, ...rest] = process.argv.slice(2);
   const write = rest.includes('--write');

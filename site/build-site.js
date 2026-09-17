@@ -480,9 +480,14 @@ if (zhOrphans.length) {
  * under the title and the one-line description arrive as callbacks.
  */
 function composeZhPages({ corpus, pages, outDir, indexHref, indexLabel, type, describe, meta }) {
-  const byEn = new Map(zhDocs(corpus).map(doc => [doc.en, doc]));
+  // Keyed on a normalised path: `docs()` builds its side with path.posix.join and a
+  // page records whatever its family walked the tree with, so `./doc/faq/x.md` and
+  // `doc/faq/x.md` are the same document and must not miss each other here. A miss
+  // is silent — the page simply ships without its translation.
+  const key = p => path.posix.normalize(p.split(path.sep).join('/'));
+  const byEn = new Map(zhDocs(corpus).map(doc => [key(doc.en), doc]));
   const translated = pages
-    .map(page => ({ page, doc: byEn.get(page.src) }))
+    .map(page => ({ page, doc: byEn.get(key(page.src)) }))
     .filter(({ doc }) => doc && fs.existsSync(doc.store));
   if (!translated.length) return [];
 
@@ -492,6 +497,7 @@ function composeZhPages({ corpus, pages, outDir, indexHref, indexLabel, type, de
   // A composed page changes when either side does, so it is dated by whichever
   // was touched last — the translation, or the English document under it.
   const lastMod = buildLastModifiedMap(translated.flatMap(({ doc }) => [doc.en, doc.store]));
+  /** The later of two date strings, tolerating either being absent. */
   const laterOf = (a, b) => (a && b ? (new Date(a) >= new Date(b) ? a : b) : a || b || null);
 
   // Two passes, because a link inside one translation can point at a *section of
@@ -682,6 +688,7 @@ const FAQ_ZH = {
   }
 };
 
+/** An FAQ category's Chinese name, falling back to the English product name. */
 const zhFaqCategory = category => FAQ_ZH.categories[category] || category;
 
 const zhFaqs = composeZhPages({
@@ -1108,7 +1115,7 @@ const faqCategoryOrder = [
   ...Object.keys(faqGrouped).filter(cat => !knownFaqCategoryOrder.includes(cat))
 ];
 
-// The tip panel the index closes with, in whichever language the index is in.
+/** The tip panel the index closes with, in whichever language the index is in. */
 const faqIndexFoot = t =>
   `\n<div style="margin-top: 3rem; padding: 1.5rem; background: var(--bg-secondary); border-radius: 8px;">
   <p>${t.tip}</p>

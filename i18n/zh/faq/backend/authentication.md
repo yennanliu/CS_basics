@@ -77,14 +77,25 @@ JWT 由三部分組成，以 `.` 分隔：`xxxxx.yyyyy.zzzzz`
 
 > Payload 只是 Base64 編碼，**任何人都能解碼**。絕對不要存密碼等敏感資料！
 
-<!-- ecd962cd3232 -->
+<!-- 75e99caf8201 -->
 ### 標準流程
 
 1. **登入**：使用者送出帳密
 2. **簽發 Token**：伺服器驗證成功後，生成 JWT 回傳給前端
-3. **前端儲存**：存放在 `HttpOnly Cookie`（較安全）或 `localStorage`（方便但較不安全）
-4. **請求驗證**：前端在 Header 加入 `Authorization: Bearer <token>`
-5. **伺服器校驗**：伺服器用 Secret Key 重新計算簽章，若一致且未過期，則視為合法
+3. **怎麼帶 token**：這裡有**兩條互斥的路**，不要混在一起講 ——
+
+| | `HttpOnly Cookie` 流程 | `Authorization: Bearer` 流程 |
+|---|---|---|
+| Token 放哪 | 伺服器用 `Set-Cookie` 寫入，JavaScript **讀不到** | 前端自己保管（記憶體 / `localStorage`） |
+| 怎麼送出 | **瀏覽器自動附帶**，前端不用也不能組 header | 前端每次請求自己加 `Authorization: Bearer <token>` |
+| XSS | 較安全：腳本偷不走 token | 較危險：腳本讀得到就偷得走 |
+| CSRF | **會有**，要靠 `SameSite=Lax/Strict` + CSRF token 防 | 天生免疫（攻擊者的頁面沒辦法叫你的瀏覽器加這個 header） |
+| 適合 | 同站的網頁應用 | 行動 App、跨網域 API、第三方客戶端 |
+
+> 常見的錯誤就是「存在 `HttpOnly Cookie`，然後前端在 header 裡加 Bearer」—— `HttpOnly` 的重點正是讓
+> JavaScript 讀不到那個值，所以第 4 步組不出來。要嘛讓瀏覽器自動送 cookie，要嘛把 token 交給前端保管。
+
+4. **伺服器校驗**：伺服器用 Secret Key 重新計算簽章，若一致且未過期，則視為合法
 
 <!-- 8ecc7bd729de -->
 ### 雙 Token 機制（推薦實作）

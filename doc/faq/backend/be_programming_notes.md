@@ -320,7 +320,8 @@ public class DistributedIdempotentProcessor {
     public Resp processRequest(Request req) {
         String key = KEY_PREFIX + req.getReqId();
 
-        // SETNX with expiration - atomic operation
+        // SET key value NX EX ttl - sets the key and its TTL in ONE atomic command.
+        // (bare SETNX has no expiry: SETNX then EXPIRE can crash in between and leak a permanent lock)
         String result = redis.set(
             key,
             String.valueOf(System.currentTimeMillis()),
@@ -355,7 +356,7 @@ public class DistributedIdempotentProcessor {
 | Aspect | Single Instance | Distributed |
 |--------|-----------------|-------------|
 | Storage | `ConcurrentHashMap` | Redis / Database |
-| Atomicity | `compute()` / `computeIfAbsent()` | `SETNX` with TTL |
+| Atomicity | `compute()` / `computeIfAbsent()` | `SET key val NX EX ttl` (one command; bare `SETNX` has no expiry) |
 | Cleanup | `ScheduledExecutorService` | Redis TTL auto-expiry |
 | Failure Handling | Remove from map on error | Delete key on error |
 
@@ -989,7 +990,7 @@ NOT sufficient for: `counter++` (read-modify-write needs AtomicInteger)
 | Conditional map update | `ConcurrentHashMap.compute()` |
 | Read-heavy cache | `ReadWriteLock` or `StampedLock` |
 | Request deduplication (single node) | `ConcurrentHashMap` + TTL cleanup |
-| Request deduplication (distributed) | Redis `SETNX` with TTL |
+| Request deduplication (distributed) | Redis `SET … NX EX ttl` |
 | Rate limiting | Token Bucket / Sliding Window |
 | Fault tolerance | Circuit Breaker |
 | Producer-Consumer | `BlockingQueue` |

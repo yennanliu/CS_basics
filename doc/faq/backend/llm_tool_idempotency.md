@@ -205,7 +205,10 @@ def payload_key(session_id: str, tool_name: str, kwargs: dict) -> str:
 
 如果 API 執行失敗（網路斷線、第三方金流 500），**絕對不能把失敗結果當成功快取起來**。
 
-只有成功的結果才存入 24 小時快取；一旦拋出 Exception，就立即刪除鎖，允許下一次重試。
+只有成功的結果才存入 24 小時快取。但**失敗要分成兩種**，不能一律釋放鎖：
+
+- **確定失敗**（金流明確回 4xx／業務拒絕）：沒有副作用發生，釋放鎖讓重試進來是對的。
+- **結果未定**（timeout、連線中斷、5xx）：對方**可能已經扣款成功**，只是回應沒回來。這時把鎖刪掉，下一次重試就會變成**第二次退款**。正確做法是留下 `IN_PROGRESS` 的持久狀態、帶著**同一個下游 idempotency key** 重送（讓金流端自己去重），或先去對帳查詢真實結果，確認之後才放行。
 
 ```python
 # python
@@ -232,11 +235,16 @@ async def request_refund(order_id: str, amount: float):
         await redis.setex(idem_key, 86400, json.dumps(result))
         return result
 
-    except Exception as e:
-        # 5. 失敗：不做冪等快取，交由 finally 釋放鎖，允許後續重試
-        raise e
-    finally:
+    except DefiniteFailure as e:
+        # 5a. 確定失敗（對方明確拒絕，沒有副作用）：釋放鎖，允許重試
         await redis.delete(lock_key)
+        raise e
+
+    except (TimeoutError, ConnectionError) as e:
+        # 5b. 結果未定：對方可能已經扣款了。**不要**釋放鎖 ——
+        #     留下待對帳的狀態，讓後續由對帳流程或帶同一個 idem key 的重送來收尾
+        await redis.setex(f"reconcile:refund:{order_id}", 86400, "UNKNOWN")
+        raise e
 ```
 
 ### 狀態流轉圖
@@ -261,14 +269,10 @@ async def request_refund(order_id: str, amount: float):
      └────┬─────────┬────┘
    成功    │         │  失敗
           ▼         ▼
-  ┌──────────────┐ ┌──────────────────┐
-  │SETEX idem 24H│ │ 不寫快取，拋例外  │
-  └──────┬───────┘ └────────┬─────────┘
-         └────────┬─────────┘
-                  ▼
-          ┌──────────────┐
-          │ DEL lock_key │  ← finally 一定執行
-          └──────────────┘
+  ┌──────────────┐ ┌──────────────────────────────┐
+  │SETEX idem 24H│ │ 確定失敗 → DEL lock（可重試）│
+  │ + DEL lock   │ │ 結果未定 → 留鎖 + 待對帳      │
+  └──────────────┘ └──────────────────────────────┘
 ```
 
 ### 三個關鍵設計點
@@ -279,7 +283,10 @@ async def request_refund(order_id: str, amount: float):
 | `ex=30`（鎖 TTL） | 服務中途 crash 時，鎖會自動過期，不會永久卡死 |
 | 冪等快取 TTL = 86400 | 必須**大於**所有可能的重試時間窗（Orchestrator retry + 使用者重送） |
 
-> ⚠️ **鎖 TTL 必須大於業務執行時間**。若退款 API 平均 5s、P99 25s，`ex=30` 才安全；否則鎖提前過期 → 第二個請求進來 → 併發雙扣。
+> ⚠️ **鎖 TTL 必須大於業務執行時間，但 P99 並不是上界**。平均 5s、P99 25s 只代表百分之一的請求會跑得比 25s *更久* —— 所以 `ex=30` 並不安全：尾端那些請求還在跑，鎖就過期了，第二個請求進來就併發雙扣。要靠三件事一起，而不是把 TTL 調大：
+> 1. 給業務呼叫一個**明確的逾時上限**，而且這個上限要**小於**鎖的租期（例如 timeout 10s、TTL 30s）；
+> 2. 需要跑更久就用 **watchdog 續期**，而且續期前要**檢查持有者**（比對 lock value 裡的 owner token，別把別人的鎖續掉）；
+> 3. 最終還是要有**下游的幕等保證**（同一個 idempotency key 送給金流），鎖只是減少併發，不是正確性的唯一依據。
 
 ---
 
@@ -330,7 +337,7 @@ order_1001
 | **只有 GET/SET，沒有鎖** | 同一秒併發雙扣 | `SET NX EX` 分散式鎖 |
 | **把失敗結果也快取** | 暫時性錯誤被鎖死 24 小時，永遠無法重試 | 只快取成功結果 |
 | **TTL 太短** | 使用者 5 分鐘後重送 → 重複執行 | TTL > 最大重試窗（建議 24H） |
-| **鎖 TTL < 業務耗時** | 鎖提前過期造成併發 | 鎖 TTL > P99 latency，或用 watchdog 續期 |
+| **鎖 TTL < 業務耗時** | 鎖提前過期造成併發 | 業務逾時上限 < 鎖租期，尾端用 owner-checked watchdog 續期，並保留下游幕等 |
 | **Redis 單點掛掉** | 冪等層全失效，副作用直接穿透 | DB unique index 兜底（見下） |
 | **只擋不回結果** | 第二次呼叫回 `duplicate` error，LLM 誤判失敗又重試 | **回傳與第一次相同的成功結果**，讓 LLM 認為完成 |
 | **參數不同卻共用 Key** | 退 $300 被當成退 $100 的重複 | Key 納入 payload hash，或比對參數不同時報錯 |
@@ -374,7 +381,7 @@ except UniqueViolation:
 - [ ] `idempotency_key` 由誰生成？（Orchestrator / 前端 / 模型原生 ID）
 - [ ] Key 裡**沒有**時間戳記或隨機值
 - [ ] 有用 `SET NX EX` 做併發鎖
-- [ ] 鎖 TTL > 業務 P99 執行時間
+- [ ] 業務呼叫有明確逾時上限，且該上限 < 鎖租期（不要只看 P99）
 - [ ] **只快取成功結果**，失敗時釋放鎖
 - [ ] 快取 TTL ≥ 24H（涵蓋所有重試窗）
 - [ ] 重複呼叫時**回傳原本的成功結果**，而不是丟 error

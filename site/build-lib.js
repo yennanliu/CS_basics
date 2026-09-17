@@ -244,6 +244,11 @@
     zh: { docCount: n => `${n} 篇`, readMore: '閱讀全文 →' }
   };
 
+  /**
+   * The plain category-and-cards grid the FAQ indexes use, in either language.
+   * `lang` picks the grid's own words and the `.zh` page suffix; `catName`
+   * renames a category for display without changing how docs are grouped.
+   */
   function buildIndexGrid(grouped, categoryOrder, subFolder, { lang = 'en', catName = c => c } = {}) {
     const t = GRID_TEXT[lang] || GRID_TEXT.en;
     const href = item => `${subFolder}/${item.file}${lang === 'zh' ? '.zh' : ''}.html`;

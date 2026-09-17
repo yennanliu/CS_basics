@@ -334,10 +334,12 @@ resources:
 
 ### Requests vs Limits 設定原則
 
+下面的比例是**起始值，不是通則** —— 一定要先用負載測試量過自己的服務再調。
+
 | 資源 | Requests | Limits |
 |------|----------|--------|
-| CPU | 預期用量的 70～80% | requests 的 1.5～2x（超出只會限流，不會崩潰） |
-| Memory | 接近實際用量 | 略高於 requests（超出直接 OOM Kill，要謹慎） |
+| CPU | 量到的用量（排程是照 requests 算的） | 起始值可設 requests 的 1.5～2x。超出**不會被砍，但會被 throttle**，而 throttle 會變成延遲上升、probe 失敗、上游 timeout —— 對延遲敏感的服務常見的做法反而是**不設 CPU limit**，只把 requests 設準 |
+| Memory | 接近實際用量（含 JVM/runtime 的額外開銷） | 略高於 requests。超出直接 OOM Kill，所以要留足夠 headroom，並看真實的 peak 而不是平均 |
 
 ### 不同應用類型的特性
 

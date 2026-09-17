@@ -5,9 +5,10 @@
 ### 1. 什麼是 Apache Flink？
 -  Flink 的核心是一個用 Java 與 Scala 寫的分散式串流資料流引擎。它以資料平行、管線化的方式執行每一個資料流程式。
 
-<!-- 5c2edb5c2986 -->
+<!-- 55345da18a37 -->
 ### 2. 說明 Apache Flink 的架構？
-- Apache Flink 建立在 Kappa 架構之上。Kappa 架構只有一種處理器 —— 串流：所有資訊都以串流形式進來，由串流引擎即時處理。在 kappa 架構裡，批次資料也是串流資料的一種形式。
+- Flink 是 `Kappa 架構`會建立在上面的那種引擎，但 Kappa 是*應用層*的架構，不是 Flink 的內部構造。Kappa 只保留一條處理路徑 —— 所有東西都以串流進來、由串流引擎處理，批次則視為有界的串流。
+- Flink 本身`有界與無界串流都能處理`（見第 4、5 題），所以它能服務 Kappa 風格的設計，但並不被它定義。它自己的架構是下面第 3 題的 JobManager / TaskManager / slot 模型。
 
 - 參考
 	- 見下面的說明！！！
@@ -140,7 +141,7 @@ Apache Flink 可以用下列方式部署與設定。
 - 參考
 	- https://zhuanlan.zhihu.com/p/79526638
 
-<!-- 886678c4ee80 -->
+<!-- 51bd852b3e60 -->
 ### 17. 說明 flink 的 `checkpoint`？
 - checkpoint 保存 flink 當下的狀態，是一種「容錯」機制
 	- flink 的狀態
@@ -152,12 +153,12 @@ Apache Flink 可以用下列方式部署與設定。
 - 由 flink 管理與操作。使用者只需要設定參數
 - flink 自動執行
 - 預設 `concurrent = 1` -> 每個 flink 應用同時只會有一個在跑
-- 有三個元件參與 checkpoint：JM、TM、ZK
+- 誰參與其中：`JobManager` 的 CheckpointCoordinator、執行這些 task 的 `TaskManager`，以及設定好的 `checkpoint 儲存`（HDFS / S3 / 檔案系統）。ZooKeeper 只在 HA 架構下出現，而且是負責 leader 選舉與 checkpoint 的*中繼資料指標* —— 從來不是存放狀態本身的地方
 - 機制
 	- JM 週期性地觸發 checkpoint
-	- TM 收齊所有 CheckpointBarrier 之後就開始做 checkpoint，完成後通知 JM。只有當所有 sink operator 都完成 checkpoint 並回報 JM，這個 checkpoint 才算完成
-		- 在 HA 架構下，checkpoint 也會存進 ZK
-		- CheckpointBarrier 是一種特殊事件，會往下游 operator 流動；只有 sink operator 收到它，我們才說 checkpoint 完成
+	- 一個 task 在所有輸入的 barrier 都對齊之後就對自己的狀態做快照、寫進 checkpoint 儲存，然後向 coordinator 回報確認。checkpoint 要等到 `CheckpointCoordinator 收到每一個參與 task 的確認`才算完成 —— 不是 sink 看到 barrier 就算
+		- 狀態寫進設定好的 checkpoint 儲存；在 HA 架構下，ZooKeeper 保存的是指向最近一次完成的 checkpoint 的*指標*，讓新的 JobManager 找得到它
+		- CheckpointBarrier 是一種特殊事件，會跟著紀錄往下游流動；barrier 抵達 sink 代表那個 operator 可以做快照了，不代表 checkpoint 已完成 —— coordinator 還得把每一份確認都收齊
 		- 注意：CheckpointBarrier 的對齊時間也要一併考慮
 	<p align="center"><img src="../../pic/checkpoint2.png" alt="Flink checkpoint barrier flowing through the operator chain"></p>
 	<p align="center"><img src="../../pic/Checkpoint3.png" alt="Flink checkpoint barrier alignment at a two-input operator"></p>
@@ -182,11 +183,11 @@ Apache Flink 可以用下列方式部署與設定。
 	- https://tech.youzan.com/flink_checkpoint_mechanism/
 	- https://zhuanlan.zhihu.com/p/79526638
 
-<!-- b264f3a625a1 -->
+<!-- 8c2ee511d4a0 -->
 ### 17' 說明 flink 的 `Barrier`？
 - 一種特殊事件
 - 會跟著事件從上游 operator 流到下游 operator
-- 只有當「最後」的 operator（例如 sink operator）收到 Barrier 並確認 checkpoint 沒問題，這個 checkpoint 才算完成
+- 每個 operator 在 Barrier 抵達時做快照，並向 CheckpointCoordinator 回報確認；checkpoint 要等到 `coordinator 收齊每一個參與 task 的確認`才算完成，sink 也包含在內
 
 <!-- 981fe053665c -->
 ### 18. 說明 flink 的`背壓（backpressure）`？

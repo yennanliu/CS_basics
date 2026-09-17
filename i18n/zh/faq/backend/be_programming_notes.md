@@ -72,13 +72,13 @@
 
 ---
 
-<!-- e55ce2107220 -->
+<!-- 1237ac5b0f98 -->
 ### 幕等處理的重點整理
 
 | 面向 | 單一節點 | 分散式 |
 |--------|-----------------|-------------|
 | 儲存 | `ConcurrentHashMap` | Redis / 資料庫 |
-| 原子性 | `compute()` / `computeIfAbsent()` | 帶 TTL 的 `SETNX` |
+| 原子性 | `compute()` / `computeIfAbsent()` | `SET key val NX EX ttl`（單一指令；裸的 `SETNX` 沒有過期時間） |
 | 清理 | `ScheduledExecutorService` | Redis TTL 自動過期 |
 | 失敗處理 | 出錯時從 map 移除 | 出錯時刪掉該 key |
 
@@ -231,7 +231,7 @@
 
 ---
 
-<!-- 3789b5d86abf -->
+<!-- 3b918797dfa0 -->
 ## 總結：怎麼挑對工具
 
 | 情境 | 解法 |
@@ -240,7 +240,7 @@
 | 有條件的 map 更新 | `ConcurrentHashMap.compute()` |
 | 讀多的快取 | `ReadWriteLock` 或 `StampedLock` |
 | 請求去重（單節點） | `ConcurrentHashMap` + TTL 清理 |
-| 請求去重（分散式） | 帶 TTL 的 Redis `SETNX` |
+| 請求去重（分散式） | Redis `SET … NX EX ttl` |
 | 限流 | Token Bucket／滑動視窗 |
 | 容錯 | 斷路器 |
 | 生產者-消費者 | `BlockingQueue` |

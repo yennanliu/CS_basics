@@ -1,4 +1,4 @@
-<!-- 78301ff4dcc7 -->
+<!-- aaf75032c211 -->
 # SPARK / HADOOP 生態系 FAQ
 
 0. - Spark 教學
@@ -12,11 +12,11 @@
 - ***Hadoop*** 是一套大數據框架，透過 `Map-Reduce` 對大規模資料集做運算，並把資料集切成 `data block`（`HDFS`）存到各個節點（data node）上
 	- Data node：存放切開後資料區塊的元件
 	- Name node：管理資料存放位置的元件
-	- 做資料運算時`不會把資料留在記憶體裡`
+	- `階段之間不會把資料集留在記憶體裡` —— 每一輪 map/reduce 都經由 HDFS 或本機磁碟來回（它仍然會用記憶體做排序與 shuffle 的緩衝）
 
 - ***Spark*** 同樣是存取大規模資料集的大數據框架，並負責 ETL、串流、機器學習等處理……
 
-	- 做運算時`會把資料以 RDD 的形式放在記憶體裡`，這就是 Spark 比 Hadoop 快的原因（運算時資料在記憶體）（但這只在資料沒有真的`超大規模`時成立）
+	- `可以把資料集跨階段留在記憶體裡`。RDD 是*延遲求值的邏輯*資料集，不是已經被快取的東西 —— 只有在你 `cache()`/`persist()` 之後它才留在記憶體，而放不下的持久化分區會溢寫到磁碟。Spark 通常比較快，是因為它避開了每個階段的磁碟來回、又能把窄轉換融合起來，不是因為所有東西永遠都在記憶體裡
 
 - 簡單說，`Spark` 靠 RDD 與 `DAG`（
   Map-Reduce-Map-Reduce ……）能做更有彈性的資料任務，速度也更快（資料在記憶體裡），但 `Spark` 的工作也`很吃記憶體`。所以如果資料真的是`超大規模`，Spark 未必是好選擇，改用 `Hadoop` 反而合適 —— 它只做 Map-Reduce，理論上記憶體成本只花在存放 key-value pair。
@@ -122,10 +122,10 @@
 	<p align="center"><img src="../../pic/spark_driver_workder_executor.png" width="500" height="300"></p>
 
 	- Driver
-		- 跑在機器 master 節點上的程式，宣告要對資料 RDD 做哪些 transformation 與 action。簡單說，Spark 裡的 driver 會建立 `SparkContext`，連上指定的 Spark Master。Driver 也會把 RDD 圖交給 Master，standalone cluster manager 就跑在那裡。
-		- Driver 是叢集裡的其中一個節點。
+		- 執行你的 `main()` 的那個行程，負責宣告要對 RDD 做哪些 transformation 與 action。它建立 `SparkContext`、向 cluster manager 要 executor、把 RDD 圖轉成 stage 與 task，然後排程它們。在 `client` 模式下它跑在你送出作業的地方；在 `cluster` 模式下由 cluster manager 在叢集的某個節點上啟動它 —— 無論哪一種，它*都不是* master。
+		- Driver 是一個行程，不是一個節點 —— 多個 driver 可以共用同一個叢集。
 		- Driver 不做運算（filter、map、reduce 等等）。
-		- 它在 Spark 叢集裡扮演 master 節點的角色。
+		- 它是*它自己那個應用*的協調者；叢集的 master／資源管理器是另一個元件，負責把資源配給每一個應用。
 		- 當你對一個 RDD 或 Dataset 呼叫 collect() 時，`整份資料`都會被送到 `Driver`。所以呼叫 collect() 要很小心。
 
 	- Master
@@ -289,10 +289,10 @@
 	- 例如：用 .read 從磁碟讀檔案，再跑 .map 與 .filter，全程`不需要 shuffle`，所以可以放進`同一個` stage。
 
 - Task
-	- 一個 Task 是在某個特定 RDD 分區上發生的`單一操作（.map 或 .filter）`。
+	- 一個 Task 是在`一個分區`上跑完該 stage 的`整條管線` —— 不是單一個 `.map` 或 `.filter`。stage 裡的窄轉換會被融合，所以先 `.map` 再 `.filter` 是每個分區一個 task，不是兩個。
 	- 每個 Task 在 Executor 裡以單一執行緒執行
 	- 如果你的資料集有 2 個分區，一次 filter() 之類的操作就會觸發 2 個 Task，每個分區一個。
-	- Stage 是一個 TaskSet，把 stage 的結果分給不同 Executor 就是 task
+	- 排程器以 `TaskSet` 的形式送出一個 stage —— 也就是該 stage 的那組 task，每個分區一個。TaskSet 是 stage 被*排程*的方式，不是 stage *本身*。
 
 - 每個 `stage` 裡的 `task` 數量，等於該 `RDD` 的 `分區`數
 	- 也就是 partition（RDD 的一部分）-> task（stage 的一部分）

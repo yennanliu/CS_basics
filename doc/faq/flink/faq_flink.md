@@ -4,7 +4,8 @@
 -  Flink is built around a distributed streaming data-flow engine written in Java and Scala. Flink runs every dataflow programm in a data-parallel and pipelined fashion.
 
 ### 2. Explain Apache Flink Architecture?
-- Apache Flink is based on the Kappa architecture. The Kappa architecture uses a single processor - stream, who accepts all information as a stream, and the streaming engine processes data in real-time. Batch data in kappa architecture is a form of streaming data.
+- Flink is the kind of engine a `Kappa architecture` is built on, but Kappa is an *application* architecture, not Flink's internals. Kappa keeps a single processing path — everything arrives as a stream and the streaming engine handles it, with batch treated as a bounded stream.
+- Flink itself processes `both bounded and unbounded` streams (see 4 and 5), so it serves Kappa-style designs without being defined by them. Its own architecture is the JobManager / TaskManager / slot model in 3 below.
 
 - Ref
 	- note below !!!
@@ -133,12 +134,12 @@ Apache Flink can be deployed and configured in below ways.
 - managed/op by flink. Users only need to define parameter
 - Auto op by flink
 - default `concurrent = 1` -> there is ONLY ONE runs per flink app
-- 3 components work on checkpoint : JM, TM, ZK
+- Who is involved : the `JobManager`'s CheckpointCoordinator, the `TaskManagers` running the tasks, and the configured `checkpoint storage` (HDFS / S3 / filesystem). ZooKeeper appears only in an HA setup, and then for leader election and checkpoint *metadata pointers* — never as the store for the state itself
 - Mechanisms
 	- JM triggers checkpoint periodically
-	- Once TM receive all CheckpointBarrier, it will start checkpoint op, once completed, TM will inform JM. ONLY when all sink operator finish their checkpoint, and send back to JM, such checkpoint is called completed
-		- in HA, checkpoint will be saved in ZK as well
-		- CheckpointBarrier is a special event, will flow to downstream operator, ONLY when skink operator receive it, we say checkpoint completed
+	- A task snapshots its state once it has aligned the barriers on all of its inputs, writes that state to checkpoint storage, and acknowledges to the coordinator. The checkpoint is complete when the `CheckpointCoordinator has an acknowledgement from every participating task` — not merely when a sink has seen the barrier
+		- state goes to the configured checkpoint storage; in HA, ZooKeeper holds the *pointer* to the latest completed checkpoint so a new JobManager can find it
+		- CheckpointBarrier is a special event that flows downstream with the records; a barrier reaching the sink means that operator can snapshot, not that the checkpoint is done — the coordinator still has to collect every acknowledgement
 		- NOTE : CheckpointBarrier sync time also need to be considered
 	<p align="center"><img src="../../pic/checkpoint2.png" alt="Flink checkpoint barrier flowing through the operator chain"></p>
 	<p align="center"><img src="../../pic/Checkpoint3.png" alt="Flink checkpoint barrier alignment at a two-input operator"></p>
@@ -166,7 +167,7 @@ Apache Flink can be deployed and configured in below ways.
 ### 17' Explain flink `Barrier` ?
 - A special event
 - Will follow event from upstream operator to downstream operator
-- ONLY when "final" operator (e.g. sink operator) receive Barrier, and confirm checkpoint is OK, then this "checkpoint" is completed
+- Each operator snapshots when the Barrier arrives and acknowledges to the CheckpointCoordinator; the checkpoint is only `completed once the coordinator has every participating task's acknowledgement`, the sinks included
 
 ### 18. Explain flink `backpressure` ?
 - Is a common concept in stream framework

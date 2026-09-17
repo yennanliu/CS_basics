@@ -258,6 +258,7 @@ const CORPORA = [
   },
 ];
 
+/** One tree's entry by name, or undefined for a name no tree uses. */
 const corpus = name => CORPORA.find(c => c.name === name);
 
 /** Every .md under `dir`, relative to it, sorted. Missing dir → nothing. */
