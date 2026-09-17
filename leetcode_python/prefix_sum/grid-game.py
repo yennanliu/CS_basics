@@ -184,3 +184,86 @@ class Solution(object):
             bottom_sum += grid[1][c]
 
         return res
+
+
+# V0-2
+# IDEA: PREFIX SUM (gpt)
+class Solution(object):
+    def gridGame(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        if not grid or not grid[0]:
+            return 0
+
+        n = len(grid[0])
+
+        # Robot 1 initially takes the entire top row
+        top_sum = sum(grid[0])
+
+        # Robot 1 will turn down at some column.
+        # Before turning down, remove the current top cell.
+        #
+        # Robot 2 can then get:
+        # 1. top row cells AFTER Robot 1 turns down
+        # 2. bottom row cells BEFORE Robot 1 turns down
+        bottom_sum = 0
+
+        res = float("inf")
+
+        for x in range(n):
+            # Robot 1 takes grid[0][x]
+            top_sum -= grid[0][x]
+
+            # If Robot 1 turns down at x:
+            #
+            # Robot 2's best choice is either:
+            # - remaining top row
+            # - accumulated bottom row
+            robot2 = max(top_sum, bottom_sum)
+
+            # Robot 1 wants to minimize Robot 2's score
+            res = min(res, robot2)
+
+            # For the next turning point, bottom[x] becomes available
+            bottom_sum += grid[1][x]
+
+        return res
+
+
+# V0-3
+# IDEA: PREFIX SUM (gemini)
+class Solution(object):
+
+  def gridGame(self, grid):
+    n = len(grid[0])
+
+    # 計算第一列與第二列的總和（或透過前綴和維護）
+    top_sum = sum(grid[0])
+    bottom_sum = sum(grid[1])
+
+    top_curr = 0  # 第一列累積和 (0 到 i)
+    bottom_curr = 0  # 第二列累積和 (0 到 i-1)
+
+    min_robot2_score = float("inf")
+
+    for i in range(n):
+      # 掉落點在 column i 時：
+      # 第一列剩餘給 Robot 2 的分數在 i 右側 = 總和 - 前 i+1 個元素
+      top_remaining = top_sum - top_curr - grid[0][i]
+
+      # 第二列剩餘給 Robot 2 的分數在 i 左側 = i 以前累積的和
+      bottom_remaining = bottom_curr
+
+      # Robot 2 會採取最優策略（拿兩者中的較大值）
+      robot2_score = max(top_remaining, bottom_remaining)
+
+      # Robot 1 要使 Robot 2 的得分最小化
+      min_robot2_score = min(min_robot2_score, robot2_score)
+
+      # 更新累積和給下一輪迭代使用
+      top_curr += grid[0][i]
+      bottom_curr += grid[1][i]
+
+    return min_robot2_score
