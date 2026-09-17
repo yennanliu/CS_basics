@@ -1,7 +1,7 @@
 # Prefix Sum (前缀和)
 
 > **Scope** — Prefix / running sums — subarray sums, 2D prefix sums, prefix + hashmap counting.
-> **See also**: [prefix_sum_advanced.md](./prefix_sum_advanced.md) — templates 9–13, the ones that borrow another structure; [prefix_sum_examples.md](./prefix_sum_examples.md) — the worked problems no template already solves; [difference_array.md](./difference_array.md) — range *updates* instead of range queries; [binary_indexed_tree.md](./binary_indexed_tree.md) — when the array also changes; [kadane_algorithm.md](./kadane_algorithm.md) — max subarray without prefix sums; [tree_backtrack.md](./tree_backtrack.md) — the root→leaf path DFS that template 14 generalises.
+> **See also**: [prefix_sum_advanced.md](./prefix_sum_advanced.md) — templates 9–14, the ones that borrow another structure; [prefix_sum_examples.md](./prefix_sum_examples.md) — the worked problems no template already solves; [difference_array.md](./difference_array.md) — range *updates* instead of range queries; [binary_indexed_tree.md](./binary_indexed_tree.md) — when the array also changes; [kadane_algorithm.md](./kadane_algorithm.md) — max subarray without prefix sums; [tree_backtrack.md](./tree_backtrack.md) — the root→leaf path DFS that template 14 generalises.
 
 <p align="center"><img src="../pic/prefix_sum.png"></p>
 
@@ -75,7 +75,7 @@
 - **Description**: Calculate sum of absolute differences between indices efficiently
 - **Examples**: LC 2615 - Sum of Distances (LC 2121 - Intervals Between Identical Elements is the **same problem**), LC 1685 - Sum of Absolute Differences, LC 2602 - Minimum Operations to Make All Array Elements Equal
 - **Pattern**: Group by value, then split each group into left/right parts and use the `count * value - sum` formula
-- **Key Insight**: For index `i`, distance = `(i * countLeft - sumLeft) + (sumRight - i * countRight)`, which collapses to `total - 2*prefixSum + i*(2*rank - groupSize)`
+- **Key Insight**: For index `idx` at rank `k` in its group, distance = `(idx * countLeft - sumLeft) + (sumRight - idx * countRight)`, which collapses to `total - 2*prefix[k] + idx*(2*k - m)`
 
 ### **Pattern 8: Prefix Maximum (Greedy Chunk / Partition)** — LC 769
 - **Description**: Track the running maximum of the array. When `maxSoFar == i`, the prefix `[0..i]` contains exactly the elements `{0, 1, ..., i}` and can form an independent sorted chunk.
@@ -766,7 +766,7 @@ left + right
 ```python
 # python
 # LC 2615 - Sum of Distances  (collapsed form)
-# IDEA: total - 2*prefixSum + idx*(2i - m) is exactly leftDist + rightDist
+# IDEA: total - 2*prefix[k] + idx*(2k - m) is exactly leftDist + rightDist  (k = rank, m = group size)
 # time = O(n), space = O(n)
 from collections import defaultdict
 
@@ -1111,7 +1111,7 @@ structure:
 | Sum of Distances | 2615 | Group + left-right split | Medium | Template 7 |
 | Intervals Between Identical Elements | 2121 | **The same problem as 2615**, different title | Medium | Template 7 |
 | Sum of Absolute Differences in a Sorted Array | 1685 | One group — the array is already sorted, no map | Medium | Template 7 |
-| Minimum Operations to Make All Array Elements Equal | 2602 | Pivot is a **query**: binary search its rank, then the same two halves | Hard | Template 7 + binary search |
+| Minimum Operations to Make All Array Elements Equal | 2602 | Pivot is a **query**: binary search its rank, then the same two halves | Medium | Template 7 + binary search |
 | Minimum Cost to Make Array Equal | 2448 | Weighted — prefix over `w` and over `w*v` | Hard | Template 7 weighted |
 | Minimum Moves to Equal Array Elements II | 462 | Only the best pivot is wanted, and that is the median | Medium | Template 7 (median shortcut) |
 | Sum of Distances in Tree | 834 | Tree version (DFS + reroot) | Hard | Template 7 + DFS |
@@ -1237,7 +1237,7 @@ Problem Analysis Flowchart:
 | "XOR of subarray", "even count of every letter", "parity" | Template 12 | LC 1310, 1915, 1738 |
 | "2 x n grid", "one turn", "best split point", "both play optimally" | Template 15 | LC 2017, 724, 1422, 2483 |
 
-> Templates **9–13** are written out in [prefix_sum_advanced.md](./prefix_sum_advanced.md).
+> Templates **9–14** are written out in [prefix_sum_advanced.md](./prefix_sum_advanced.md).
 
 ### Problem Identification Patterns
 
@@ -1346,7 +1346,7 @@ is grafted into the templates as notes.
 | **Template 4** | Range Updates | `diff[start] += val; diff[end+1] -= val` |
 | **Template 5** | 2D Matrix | `prefix[i][j] = val + left + top - topleft` |
 | **Template 6** | Transform Count | `transform array first, then apply prefix sum` |
-| **Template 7** | Sum of Distances | `left = idx*countLeft - sumLeft; right = sumRight - idx*countRight` — or in one line, `total - 2*prefixSum + idx*(2*i - m)` |
+| **Template 7** | Sum of Distances | `left = idx*countLeft - sumLeft; right = sumRight - idx*countRight` — or in one line, `total - 2*prefix[k] + idx*(2*k - m)` (`k` = rank in the group, `m` = group size) |
 | **Template 8** | Prefix Maximum | `maxSoFar = max(maxSoFar, arr[i]); if (maxSoFar == i) chunks++` |
 | **Template 9** | Complement (both ends) | `ans = total - min(window of length n-k)` |
 | **Template 10** | Monotonic Deque (negatives) | `while p[i]-p[dq[0]]>=k: ans=min(ans,i-dq.popleft())` |
@@ -1355,7 +1355,7 @@ is grafted into the templates as notes.
 | **Template 13** | Sparse Diff (HashMap) | `d[start]+=v; d[end+1]-=v; for k in sorted(d): cur+=d[k]` |
 | **Template 15** | Prefix + Suffix Split | `top-=a[i]; res=min(res,max(top,bottom)); bottom+=b[i]` |
 
-> Templates **9–13** are written out in [prefix_sum_advanced.md](./prefix_sum_advanced.md).
+> Templates **9–14** are written out in [prefix_sum_advanced.md](./prefix_sum_advanced.md).
 
 ### Core Mathematical Insights
 
