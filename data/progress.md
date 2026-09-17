@@ -71,7 +71,7 @@
 
 - Matrix / 2D Grid.md
 	- https://yennj12.js.org/CS_basics/cheatsheets/matrix.zh.html
-		- 模板 4：矩陣修改
+		- 模板 7：矩陣路徑 DP
 
 
 
