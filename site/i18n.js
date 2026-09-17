@@ -28,6 +28,8 @@
 'use strict';
 
 const crypto = require('node:crypto');
+const fs = require('node:fs');
+const path = require('node:path');
 
 /** A lifted-out code block. Unnumbered: order alone puts them back. */
 const CODE = '<!--CODE-->';
@@ -214,6 +216,99 @@ function survey(enText, store) {
   }).filter(row => row.en.trim() !== '');
 }
 
+/* ── The translated trees ─────────────────────────────────────────────────────
+
+   Everything above is pure text: it never learns which files it is composing.
+   This is the one place that knows, so `script/zh.js`, `build-site.js` and the
+   corpus test agree on where a translation lives instead of each hard-coding a
+   directory — the same reason `mdToPage` is built once in build-site.js.
+
+   A document's **id is its store path**: relative to `i18n/zh`, without the
+   `.md`. `heap` is a cheatsheet, `faq/java/jvm` an FAQ. Ids are therefore unique
+   across trees for free, and the CLI address of a doc says where its Chinese is.
+
+   The cheatsheet store stayed flat at the root of `i18n/zh` when the FAQ tree
+   was added — nesting it under `i18n/zh/cheatsheet/` would have been 129 renames
+   to buy a tidier listing, and `nested` is one boolean. It is also what keeps
+   `i18n/zh/faq/` out of the cheatsheets' own orphan check.
+*/
+
+const ROOT = path.join(__dirname, '..');
+
+const CORPORA = [
+  {
+    name: 'cheatsheet',
+    enDir: 'doc/cheatsheet',
+    storeDir: 'i18n/zh',
+    nested: false,
+    // The authoring skeleton and the directory listing are not pages, so they
+    // are not documents to translate either — build-site.js skips both.
+    skip: new Set(['00_template', 'README']),
+    tracker: 'doc/cheatsheet-zh-progress.md',
+    label: 'Cheatsheet',
+  },
+  {
+    name: 'faq',
+    enDir: 'doc/faq',
+    storeDir: 'i18n/zh/faq',
+    nested: true,
+    skip: new Set(['README']),
+    tracker: 'doc/faq-zh-progress.md',
+    label: 'FAQ',
+  },
+];
+
+/** One tree's entry by name, or undefined for a name no tree uses. */
+const corpus = name => CORPORA.find(c => c.name === name);
+
+/** Every .md under `dir`, relative to it, sorted. Missing dir → nothing. */
+function listMd(dir, nested) {
+  const abs = path.join(ROOT, dir);
+  if (!fs.existsSync(abs)) return [];
+  const walk = sub => fs.readdirSync(path.join(abs, sub), { withFileTypes: true })
+    .flatMap(entry => {
+      const rel = path.posix.join(sub, entry.name);
+      if (entry.isDirectory()) return nested ? walk(rel) : [];
+      return entry.name.endsWith('.md') ? [rel] : [];
+    });
+  return walk('').sort();
+}
+
+/**
+ * One row per translatable document: `{ id, corpus, en, store }`, with both
+ * paths repo-relative — which is what `git log` and `buildLastModifiedMap` want,
+ * and what the build already uses everywhere else.
+ *
+ * `store` is where the translation goes, whether or not it exists yet: a doc with
+ * no store file is simply an untranslated one, and the site renders it in English.
+ */
+function docs(name) {
+  return CORPORA.filter(c => !name || c.name === name).flatMap(c => {
+    const prefix = path.posix.relative('i18n/zh', c.storeDir);
+    return listMd(c.enDir, c.nested)
+      .filter(rel => !c.skip.has(path.basename(rel, '.md')))
+      .map(rel => ({
+        id: path.posix.join(prefix, rel).replace(/\.md$/, ''),
+        corpus: c.name,
+        en: path.posix.join(c.enDir, rel),
+        store: path.posix.join(c.storeDir, rel),
+      }));
+  });
+}
+
+/**
+ * Store files with no English document — left behind by a rename upstream, or a
+ * typo'd path. The build fails on these rather than shipping a translation that
+ * can never be reached, and `zh.js` is where you go to find out which.
+ */
+function orphanStores(name) {
+  return CORPORA.filter(c => !name || c.name === name).flatMap(c =>
+    listMd(c.storeDir, c.nested)
+      .filter(rel => !fs.existsSync(path.join(ROOT, c.enDir, rel)))
+      .map(rel => path.posix.join(c.storeDir, rel))
+  );
+}
+
 module.exports = {
   CODE,
   normalise,
@@ -227,4 +322,8 @@ module.exports = {
   formatStore,
   compose,
   survey,
+  CORPORA,
+  corpus,
+  docs,
+  orphanStores,
 };

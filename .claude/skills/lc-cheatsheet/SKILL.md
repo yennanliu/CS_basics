@@ -182,7 +182,7 @@ node script/zh.js todo <slug>       # the sections needing one, keys included
 #   adapt each parked translation into a live `<!-- key -->` entry in i18n/zh/<slug>.md,
 #   keeping every <!--CODE--> marker it was given, in order
 node script/zh.js sync <slug>       # tidy; delete the parked copies you used
-node script/zh.js status --write    # refresh doc/cheatsheet-zh-progress.md
+node script/zh.js status --write    # refresh the generated progress docs
 ```
 
 Compare `todo` counts before and after the edit: the sheet must not end up with **more**

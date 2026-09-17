@@ -359,7 +359,7 @@ four things an edit drags behind it, each of which has actually been got wrong h
   hand-written — a `⭐` run leaves a trailing `-` on the id (see
   [Formatting Rules](#formatting-rules));
 - **the 中文 sections the edit parked** — one LCA edit invalidated eight of them in a sheet
-  that had been fully translated (see [Traditional Chinese cheatsheets](#traditional-chinese-cheatsheets)).
+  that had been fully translated (see [Traditional Chinese docs](#traditional-chinese-docs)).
 
 Like `/lc-add` it never touches `data/progress.txt`, and it stops at the gates rather than
 committing: `bash site/build.sh`, `node site/e2e-check.js _site`, `npm test --prefix site`.
@@ -495,7 +495,7 @@ The build fails on a taxonomy key that is missing, points at an unknown topic, o
 - Complexity: inside code as first comment — `// time = O(...), space = O(...)`
 - Images: `<p align="center"><img src="../pic/filename.png"></p>`
 - Priority markers: a trailing `⭐`…`⭐⭐⭐⭐⭐` run on a heading marks how interview-critical that section is (5 = memorise it). The site strips the run out of the heading, renders it as a star badge, weights the heading's left rule by it, and surfaces 4★/5★ sections in the page's table of contents — so put the run **on the heading**, not in the prose under it. Leave ordinary background sections unmarked; if everything is starred, nothing is.
-  **Adding or changing a run moves the heading's anchor** — the stars are stripped from the slug but the space before them is not, so the id gains a trailing `-`. Every link aimed at that heading has to move with it, in the same commit; `e2e-check.js`'s dangling-`#fragment` rule is what catches it if you forget. Sections are also the unit the 繁體中文 overlay is keyed on, so re-key the translation rather than letting `sync` park it (see [Traditional Chinese cheatsheets](#traditional-chinese-cheatsheets)).
+  **Adding or changing a run moves the heading's anchor** — the stars are stripped from the slug but the space before them is not, so the id gains a trailing `-`. Every link aimed at that heading has to move with it, in the same commit; `e2e-check.js`'s dangling-`#fragment` rule is what catches it if you forget. Sections are also the unit the 繁體中文 overlay is keyed on, so re-key the translation rather than letting `sync` park it (see [Traditional Chinese docs](#traditional-chinese-docs)).
 - Heading levels never skip (`h2` → `h3`, never `h2` → `h4`)
 - State each LC number **once** per heading — not `... (LC 347) — LC 347`
 - Complexity is stated **once** in the header: either the `## Time Complexity` table *or* a Key Properties bullet, never both
@@ -539,45 +539,67 @@ The build fails on a taxonomy key that is missing, points at an unknown topic, o
 
 ---
 
-## Traditional Chinese cheatsheets
+## Traditional Chinese docs
 
-There is **one markdown tree**, the English one. A translation is a *sparse
-overlay* of translated sections in `i18n/zh/<slug>.md`, and the site composes the
-two into a full Chinese document at build time (`site/i18n.js`). The navbar shows
-a **中文 / EN** button that swaps between counterparts; `cheatsheets.html` ↔
-`cheatsheets.zh.html` is the way in. Progress lives in
-[`doc/cheatsheet-zh-progress.md`](doc/cheatsheet-zh-progress.md) (generated).
+Two families are translated — the cheatsheets and the FAQs — and both work the
+same way. There is **one markdown tree** per family, the English one. A
+translation is a *sparse overlay* of translated sections that mirrors the English
+path under `i18n/zh/`, and the site composes the two into a full Chinese document
+at build time (`site/i18n.js`). The navbar shows a **中文 / EN** button that swaps
+between counterparts; `cheatsheets.html` ↔ `cheatsheets.zh.html` and
+`faqs.html` ↔ `faqs.zh.html` are the ways in.
 
-**Why an overlay and not a second tree.** Roughly 70% of a sheet is fenced code
-that must read identically in both languages, and every English sheet was edited
-in the last six months. A parallel tree stored that code twice and tracked
-staleness per *file*, so a 45-line edit invalidated a 1,000-line translation. The
-overlay stores prose only, keyed per *section* (median 249 bytes), so an edit
-invalidates only the section it touched.
+| | English tree | Overlay | Progress (generated) |
+|---|---|---|---|
+| Cheatsheets | `doc/cheatsheet/<slug>.md` | `i18n/zh/<slug>.md` | [`doc/cheatsheet-zh-progress.md`](doc/cheatsheet-zh-progress.md) |
+| FAQs | `doc/faq/<path>.md` | `i18n/zh/faq/<path>.md` | [`doc/faq-zh-progress.md`](doc/faq-zh-progress.md) |
+
+**[`site/i18n.js`'s `CORPORA` is the only place that table lives.](site/i18n.js)**
+`script/zh.js`, `build-site.js` and `site/test/i18n.corpus.test.js` all read it, so
+a third translated tree is an entry there rather than three copies of a directory
+name. A document's **id is its store path** minus the `.md` — `heap`,
+`faq/java/jvm` — which is also the address the CLI takes. The cheatsheet overlay
+stayed flat at the root of `i18n/zh/` rather than moving under `i18n/zh/cheatsheet/`:
+129 renames to buy a tidier listing, against one `nested` boolean.
+
+**Why an overlay and not a second tree.** Roughly 70% of a cheatsheet (two fifths
+of an FAQ) is fenced code that must read identically in both languages, and every
+English sheet was edited in the last six months. A parallel tree stored that code
+twice and tracked staleness per *file*, so a 45-line edit invalidated a 1,000-line
+translation. The overlay stores prose only, keyed per *section* (median 249
+bytes), so an edit invalidates only the section it touched.
 
 **Rules for a translation**
 
 - **Only prose is stored.** Every fence is lifted out to a one-line `<!--CODE-->`
   marker before storage and spliced back at compose time. A translated section
   must keep every marker it was given, in order — `compose` throws otherwise.
-- **Structure comes from the English sheet.** Headings and their order are the
+- **Structure comes from the English document.** Headings and their order are the
   English document's, so a translation cannot add or drop one and the two can
   never disagree about shape. Translate the heading *text* only.
-- **A missing section falls back to English**, so a half-translated sheet renders
-  as a Chinese page with English gaps rather than failing.
+- **A missing section falls back to English**, so a half-translated document
+  renders as a Chinese page with English gaps rather than failing. That is what
+  makes translating one section at a time safe, and it is why the FAQ tree could
+  ship the day the first FAQ was translated.
 - **Links keep their English targets.** `[見 §3](#two-pointers)` still names the
   English slug; the build pairs the two documents' headings by position, retargets
-  every fragment, and then asserts that no cheatsheet link is left dangling.
+  every fragment, and then asserts that no link is left dangling.
 - No `category` / `tier` / `kind` in a translation: the build reads them off the
-  English sheet, so the two indexes can never disagree.
+  English document, so the two indexes can never disagree.
 - The Scope line becomes `> **範圍** — …` (the build reads either spelling for the
-  card description).
-- The zh index's category names, blurbs, tier labels and "start here" reasons come
-  from the `zh` block in [`data/cheatsheet_meta.json`](data/cheatsheet_meta.json);
-  anything missing there falls back to English rather than failing the build.
-  The page's own sentences are `INDEX_TEXT` in `site/build-lib.js`.
+  card description). An FAQ has no Scope line, so its card is summarised from the
+  *composed Chinese* — translate the lead paragraph and the card follows.
+- API, class and command names stay in English: `ConcurrentHashMap`,
+  `SELECT … FOR UPDATE`, `kafka-topics.sh`. They are what you type, and what an
+  interviewer will say.
+- The zh cheatsheet index's category names, blurbs, tier labels and "start here"
+  reasons come from the `zh` block in
+  [`data/cheatsheet_meta.json`](data/cheatsheet_meta.json); anything missing there
+  falls back to English rather than failing the build. The page's own sentences
+  are `INDEX_TEXT` in `site/build-lib.js`, and the FAQ index's are `FAQ_ZH` in
+  `site/build-site.js`.
 
-**Workflow** — after an English sheet is edited, its changed sections simply go
+**Workflow** — after an English document is edited, its changed sections simply go
 missing from the store:
 
 ```bash
@@ -586,7 +608,16 @@ node script/zh.js todo heap           # the sections needing a translation, keys
 #   adapt each parked translation, keeping every <!--CODE--> line, and write it back
 #   into i18n/zh/heap.md as a live `<!-- key -->` entry
 node script/zh.js sync heap           # tidy, and drop the parked copies you used
-node script/zh.js status --write      # refresh the progress doc
+node script/zh.js status --write      # refresh both progress docs
+```
+
+Every command takes documents by id, and **an id prefix stands for everything
+under it** — so one command can take a whole tree, one directory, or one file:
+
+```bash
+node script/zh.js todo faq            # every untranslated FAQ section
+node script/zh.js todo faq/java       # one directory of them
+node script/zh.js status faq/java/jvm # one document
 ```
 
 `sync` **parks** rather than deletes: a translation whose English section changed
@@ -597,9 +628,10 @@ translation revives on the next `sync` — same text, same key. Only
 `sync --prune` throws parked entries away.
 
 A section counts as translated when the store **has an entry** for it, not when
-its Chinese differs from the English: 238 sections are an LC-titled heading over a
-code block, and house rule keeps LC titles in English, so their correct
-translation *is* the English text.
+its Chinese differs from the English: 238 cheatsheet sections are an LC-titled
+heading over a code block, and house rule keeps LC titles in English, so their
+correct translation *is* the English text. The same goes for the handful of FAQs
+that were written in Chinese to begin with.
 
 ---
 

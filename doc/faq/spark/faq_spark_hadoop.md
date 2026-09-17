@@ -11,11 +11,11 @@
 - ***Hadoop*** is a big data framework that make large scale dataset operation via `Map-Reduce`, do storage via split the dataset (`HDFS`) into `data block` and save in each node (data node)
 	- Data node : the components save split data block
 	- Name node : the components manage data storage places
-	- `Doesn't save data in memory` when do data op
+	- `Keeps no dataset in memory between stages` — each map/reduce round trips through HDFS or local disk (it still uses memory for sort/shuffle buffers)
 
 - ***Spark*** is a big data framework that access large scale dataset like above, and doing processing like : ETL, stream, machine learning and so on...
 
-	- `Does save data in memory` as `RDD` when do data op, so that's why spark is faster than hadoop (since it saves data in memory when do op) (only work when data is not really in `large` scale)
+	- `Can keep a dataset in memory across stages`. An RDD is a *lazy logical* dataset, not a cached one — it lives in memory only once you `cache()`/`persist()` it, and what happens to a partition that does not fit depends on the `StorageLevel`: `cache()` / default `persist()` is `MEMORY_ONLY`, which **recomputes** it on next use, while `MEMORY_AND_DISK` spills it. Spark is usually faster because it avoids the per-stage disk round trip and can fuse narrow transformations, not because everything is always resident
 
 - In short, `Spark` can do more flexible data task via RDD and `DAG`( 
   Map-Reduce-Map-Reduce ...) ops and faster speed (data in memory), but `Spark` job also `heavy memory costing`. So if the data is really in a `large` scale, then Spark may not be a good choice, but would use `Hadoop` since it only do Map-Reduce, all the momory cost is only for key-value pairs saving theoretically. 
@@ -134,10 +134,10 @@
 	<p align="center"><img src="../../pic/spark_driver_workder_executor.png" width="500" height="300"></p>
 
 	- Driver 
-		- The program that runs on the master node of the machine and declares transformations and actions on data RDDs. In simple terms, a driver in Spark creates `SparkContext`, connected to a given Spark Master. The driver also delivers the RDD graphs to Master, where the standalone cluster manager runs.
-		- The Driver is one of the nodes in the Cluster.
+		- The process running your `main()`, which declares the transformations and actions on the RDDs. It creates the `SparkContext`, asks the cluster manager for executors, turns the RDD graph into stages and tasks, and schedules them. In `client` mode it runs where you submitted from; in `cluster` mode the cluster manager starts it on one of the cluster's nodes — either way it is *not* the same thing as the master.
+		- The Driver is a process, not a node — several drivers can share a cluster.
 		- The driver does not run computations (filter,map, reduce, etc).
-		- It plays the role of a master node in the Spark cluster.
+		- It is the coordinator of *its own application*; the cluster's master/resource manager is a separate component that hands out resources to every application.
 		- When you call collect() on an RDD or Dataset, the` whole data` is sent to the `Driver`. This is why you should be careful when calling collect().
 
 	- Master
@@ -308,10 +308,10 @@ rdd.groupByKey().mapValue(_.sum)
 	- e.g. : using .read to read a file from disk, then runnning .map and .filter can all be done `without a shuffle`, so it can fit in a `single` stage.
 
 - Task 
-	- A Task is a single operation `(.map or .filter)` happening on a specific RDD partition.
+	- A Task runs the stage's `whole pipeline` over `one partition` — not one `.map` or `.filter`. The narrow transformations in a stage are fused, so `.map` then `.filter` is one task per partition, not two.
 	- Each Task is executed as a single thread in an Executor
 	- If your dataset has 2 Partitions, an operation such as a filter() will trigger 2 Tasks, one for each Partition.
-	- Stage is a TaskSet, split the stage result to different Executors is a task
+	- The scheduler submits a stage as a `TaskSet` — the group of that stage's tasks, one per partition. The TaskSet is how a stage is *scheduled*, not what a stage *is*.
 
 - Each `stage` contains as many `tasks` as `partitions` of the `RDD`
 	- i.e. partition  (part of RDD) -> task (part of stage)

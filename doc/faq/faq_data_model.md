@@ -82,11 +82,11 @@ TIME_ID
 - OLTP 
     - `Online Transaction Processing System`
     - OLTP maintains the transactional data of the business & is highly `normalized` generally.
-    - star schema
+    - a normalized (3NF-ish) model, not a dimensional one — star and snowflake are warehouse shapes
 - OLAP
     - `Online Analytical Processing System`
-    - OLAP is for `analysis and reporting` purposes & it is in `denormalized` form.
-    - snowflake schema
+    - OLAP is for `analysis and reporting`. That is a *workload*, not a schema property — it commonly uses a `dimensional` model, and there the star schema de-normalizes its dimensions while the snowflake schema normalizes them.
+    - `star` or `snowflake` schema — star when you want fewer joins, snowflake when a dimension is big enough that normalizing it pays off (see 1 and 2 above)
 - extra
     - MPP (massively parallel processing)
         - An MPP database is a database that is optimized to be processed in parallel for many operations to be performed by many processing units at a time.
@@ -99,7 +99,7 @@ TIME_ID
 - `Surrogate Key` is a `unique identifier or a system-generated sequence number key that can act as a primary key`. It can be `a column or a combination of columns`. Unlike a primary key, it is `not` picked up from the `existing` application data fields.
 
 ### 9) Is this true that all databases should be in 3NF?
-- It is not mandatory for a database to be in 3NF. However, if your purpose is the easy maintenance of data, less redundancy, and efficient access then you should go with a de-normalized database.
+- It is not mandatory for a database to be in 3NF. But note which way round the trade-off runs: `easy maintenance and less redundancy are what normalization buys you`. De-normalize when a specific read or analytics workload needs the joins gone, and accept that the duplicated copies now have to be kept in step on every write.
 
 
 ### 10) Explain 1NF, 2NF, 3NF, 4NF, 5NF?
@@ -125,7 +125,7 @@ TIME_ID
     - `Don’t denormalize until and unless you have a solid & clear business reason to do so because de-normalization creates redundant data which is difficult to maintain`.
 
 ### 12)  If a unique constraint is applied to a column then will it throw an error if you try to insert two nulls into it?
-- No, it will `not` throw any error in this case because `a null value is NOT equal to another null value`. So, more than one null will be inserted in the column without any error.
+- It depends on the engine, so say which one. Under the SQL standard `a null value is NOT equal to another null value`, so a `UNIQUE` column accepts many nulls — that is what PostgreSQL, MySQL, Oracle and SQLite do. `SQL Server is the exception`: it allows only a single null per unique column (use a filtered index `WHERE col IS NOT NULL` if you need the standard behaviour there).
 
 ### 13) What is cardinality?
 - Thinking mathematically, it is the number of elements in a set. Thinking in the database world, cardinality has to do with the counts in a relationship, `one-to-one, one-to-many, or many-to-many`.

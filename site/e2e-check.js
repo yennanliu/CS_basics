@@ -206,7 +206,7 @@ console.log('\n== responsive containment ==');
 // Only the markdown-generated pages: the hand-written tools lay out their own
 // tables inside their own scroll containers (.all-table-wrap and friends), which
 // this cannot see and should not second-guess.
-const GENERATED = /^(index|patterns|resources|faqs|cheatsheets(\.zh)?)\.html$|^(cheatsheets|faqs)\//;
+const GENERATED = /^(index|patterns|resources|(faqs|cheatsheets)(\.zh)?)\.html$|^(cheatsheets|faqs)\//;
 const unwrappedTables = [];
 for (const p of pages.filter(p => GENERATED.test(rel(p)))) {
   const html = stripScripts(sources.get(p));

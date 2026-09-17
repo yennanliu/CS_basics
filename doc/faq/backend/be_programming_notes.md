@@ -320,7 +320,8 @@ public class DistributedIdempotentProcessor {
     public Resp processRequest(Request req) {
         String key = KEY_PREFIX + req.getReqId();
 
-        // SETNX with expiration - atomic operation
+        // SET key value NX EX ttl - sets the key and its TTL in ONE atomic command.
+        // (bare SETNX has no expiry: SETNX then EXPIRE can crash in between and leak a permanent lock)
         String result = redis.set(
             key,
             String.valueOf(System.currentTimeMillis()),
@@ -336,8 +337,16 @@ public class DistributedIdempotentProcessor {
         try {
             return executeBusinessLogic(req);
         } catch (Exception e) {
-            // On failure, delete key to allow retry
-            redis.del(key);
+            // On failure, delete the key so a retry can run — but only if we still
+            // own it. Comparing the stored value first (here via a Lua CAS-delete)
+            // stops a slow attempt whose TTL already expired from deleting the lock
+            // a *newer* attempt is now holding. And note "failure" here must mean a
+            // definite one: after a timeout the side effect may already have
+            // happened, so that case belongs in reconciliation, not in a retry.
+            redis.eval(
+                "if redis.call('get', KEYS[1]) == ARGV[1] "
+                + "then return redis.call('del', KEYS[1]) else return 0 end",
+                1, key, ownerToken);
             return new Resp("ERROR", "Processing failed");
         }
     }
@@ -355,7 +364,7 @@ public class DistributedIdempotentProcessor {
 | Aspect | Single Instance | Distributed |
 |--------|-----------------|-------------|
 | Storage | `ConcurrentHashMap` | Redis / Database |
-| Atomicity | `compute()` / `computeIfAbsent()` | `SETNX` with TTL |
+| Atomicity | `compute()` / `computeIfAbsent()` | `SET key val NX EX ttl` (one command; bare `SETNX` has no expiry) |
 | Cleanup | `ScheduledExecutorService` | Redis TTL auto-expiry |
 | Failure Handling | Remove from map on error | Delete key on error |
 
@@ -989,7 +998,7 @@ NOT sufficient for: `counter++` (read-modify-write needs AtomicInteger)
 | Conditional map update | `ConcurrentHashMap.compute()` |
 | Read-heavy cache | `ReadWriteLock` or `StampedLock` |
 | Request deduplication (single node) | `ConcurrentHashMap` + TTL cleanup |
-| Request deduplication (distributed) | Redis `SETNX` with TTL |
+| Request deduplication (distributed) | Redis `SET … NX EX ttl` |
 | Rate limiting | Token Bucket / Sliding Window |
 | Fault tolerance | Circuit Breaker |
 | Producer-Consumer | `BlockingQueue` |

@@ -154,7 +154,7 @@
 	- `ack = 0`
 		- whenever producer -> kafka broker, mark it as success. Highest speed, will lost data if broker down
 	- `ack = -1 (or all)`
-		- when producer -> kafka broker, have to wait `leader and ALL followers' confirmation`. Slowest speed, but make sure NO data lost. 
+		- the leader waits for `every replica currently in the ISR` — not every follower. Slowest, and it only guarantees durability together with `min.insync.replicas` (e.g. `replication.factor=3` + `min.insync.replicas=2`), which is what makes the write fail rather than be acknowledged by a single copy when replicas fall out of sync. See 6) and 10). 
 - Ref
 	- https://blog.51cto.com/u_15193673/2850009
 	- https://blog.51cto.com/u_15278282/2932140
@@ -230,7 +230,7 @@ consumer group "billing" : c1 → p0, c2 → p1+p2   (a 4th consumer would idle)
 			- if producer resrart, it will get a new PID
 			- for each PID,  sequence number starts from 0
 			- each topic-partition has a independent sequence number
-			- apply PID via ZK:
+			- how a PID is allocated. NOTE : this ZK block describes `old (pre-KRaft) Kafka`; since KIP-500 the PID is allocated by the controller through the metadata log, and the transaction coordinator owns `__transaction_state`. Kept because it still explains the id-block idea:
 				- step 1) get `/latest_producer_id_block` from zk for lastest allocated PID
 				- step 2) if such node is new, start PID from 0 (0-1000), get 1000 PID at once (default)
 				- step 3) if such node existed, get its data, get PID based on block_end
@@ -251,17 +251,17 @@ consumer group "billing" : c1 → p0, c2 → p1+p2   (a 4th consumer would idle)
 		- 2 types: COMMIT, ABORT (commuit success or not)
 	- TransactionCoordinator
 - why not use producer id (PID), but introduce TransactionalId ?
-	- producer id (PID) get refreshed when producer restart, so `we use TransactionalId make each event unique`
+	- the PID is reassigned when a producer restarts, so it cannot identify the *same logical producer* across restarts. `transactional.id` is that stable identity: it lets the coordinator find the previous session's unfinished transactions and abort them, and bumping its `producer epoch` fences the old instance (see 9'). It is not what makes an individual event unique — the `<PID, partition, sequence number>` triple does that (see 8)
 - make sure "exactly once"
 - Implementation
 	- step 1) find `Tranaction Corordinator (TC)`
 		- producer sends `FindCoordinatorRequest` to a broker, then finds a TC, and gets its node_id, host, port
 	- step 2) init initTransaction
-		- producer sends `InitpidRequest` to TC, gets PID (producer ID), TC will record `<TransactionalId,pid>` to Transaction Log, state infromation (e.g. `Empty/Ongoing/PrepareCommit/PrepareAbort/CompleteCommit/CompleteAbort/Dead`) is also included
+		- `initTransactions()` sends an `InitProducerIdRequest` to the TC, which returns the PID and a bumped producer epoch, and records `<transactional.id, PID, epoch, state>` in the transaction log (states: `Empty/Ongoing/PrepareCommit/PrepareAbort/CompleteCommit/CompleteAbort/Dead`). This happens `once, before any send` — it both fences the previous instance and resolves whatever it left open
 		- Commit/Abort non-completed tasks
 		- add PIC with epoch, make transaction in producer
 	- step 3) begin Transaction
-		- run producer's `beginTransacion()`. Will mark a transaction as "start" state in local record. 
+		- `beginTransaction()` marks the transaction as started in the producer's local state only — the TC learns of it lazily, from the first `AddPartitionsToTxnRequest` when a record is actually sent to a partition. 
 	- step 4) read-process-write
 		- Once producer start sending event, TC will save `<Transaction, Topic, Partition>` to Transaction Log, and set it "start" state, also record the time.
 		- Broker will save sent event in its disk (without commit/abort). If there is an "abort", msg on broker will NOT be canceled, but changed state to "abort"

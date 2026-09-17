@@ -236,21 +236,36 @@
       '</nav>';
   }
 
-  function buildIndexGrid(grouped, categoryOrder, subFolder) {
+  // The grid's own words. Category names are not in here: they are the English
+  // page family's keys, so both languages group a doc identically, and the 中文
+  // index passes a `catName` that renames them for display only.
+  const GRID_TEXT = {
+    en: { docCount: n => `${n} doc${n === 1 ? '' : 's'}`, readMore: 'Read more →' },
+    zh: { docCount: n => `${n} 篇`, readMore: '閱讀全文 →' }
+  };
+
+  /**
+   * The plain category-and-cards grid the FAQ indexes use, in either language.
+   * `lang` picks the grid's own words and the `.zh` page suffix; `catName`
+   * renames a category for display without changing how docs are grouped.
+   */
+  function buildIndexGrid(grouped, categoryOrder, subFolder, { lang = 'en', catName = c => c } = {}) {
+    const t = GRID_TEXT[lang] || GRID_TEXT.en;
+    const href = item => `${subFolder}/${item.file}${lang === 'zh' ? '.zh' : ''}.html`;
     let html = '';
     for (const category of categoryOrder) {
       if (!grouped[category] || grouped[category].length === 0) continue;
       const count = grouped[category].length;
-      html += `<h2 class="cat-heading">${category}` +
-        `<span class="cat-count">${count} doc${count === 1 ? '' : 's'}</span></h2>` +
+      html += `<h2 class="cat-heading">${catName(category)}` +
+        `<span class="cat-count">${t.docCount(count)}</span></h2>` +
         '<div class="cheatsheet-grid sheet-grid">';
       for (const item of grouped[category]) {
         html += `\n        <article class="cheatsheet-card sheet-card">` +
           '<div class="card-top">' +
-          `<h3 class="card-title"><a href="${subFolder}/${item.file}.html">${item.title}</a></h3></div>` +
+          `<h3 class="card-title"><a href="${href(item)}">${item.title}</a></h3></div>` +
           (item.description
             ? `<p class="card-desc">${item.description}</p>`
-            : `<p><a href="${subFolder}/${item.file}.html" class="read-more">Read more →</a></p>`) +
+            : `<p><a href="${href(item)}" class="read-more">${t.readMore}</a></p>`) +
           '</article>';
       }
       html += '</div>';

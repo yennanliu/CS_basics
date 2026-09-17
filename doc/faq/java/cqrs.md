@@ -7,11 +7,16 @@
 |---|---------|-------|
 | Changes state | **Yes** | No |
 | Returns data | No (an id/ack at most) | **Yes** |
-| Model | Normalized, strongly consistent, invariant-enforcing | De-normalized, read-optimised (materialized views) |
+| Model *(typical, not required)* | Normalized, strongly consistent, invariant-enforcing | De-normalized, read-optimised (materialized views) |
 | Scales with | Write throughput | Read throughput — usually the far larger number |
 
 **CQRS is not event sourcing**; the two are often used together (events as the write log,
 projections as the read model) but either works without the other.
+
+**What CQRS actually requires is only the split** — separate models (or even just separate
+code paths) for commands and queries. The row above is what teams *usually* reach for, not
+part of the contract: you can do CQRS against one normalized database with no projector and
+no eventual consistency at all (see the middle ground in *When to use it*).
 
 - 命令與查詢責任分離 (command, query)
 - 分開設計以下兩種操作：會改變系統狀態但不會回傳值的操作，稱之為Command，
