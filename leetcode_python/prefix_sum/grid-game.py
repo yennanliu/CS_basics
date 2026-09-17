@@ -188,6 +188,222 @@ class Solution(object):
 
 # V0-2
 # IDEA: PREFIX SUM (gpt)
+"""
+CORE IDEA:
+
+### 核心概念
+
+Robot 1 的 path 在 2-row grid 中一定長這樣：
+
+```text
+→ → → → ↓
+          ↓
+          → → →
+```
+
+也就是只需要決定：
+
+> **在哪一個 column 從 top row 往下走？**
+
+假設 Robot 1 在 `x` 轉彎：
+
+```text
+Top:     [拿走] [拿走] [拿走] | [剩下給 Robot 2]
+Bottom:  [剩下給 Robot 2]      | [拿走]
+                            ↑
+                         turn here
+```
+
+所以 Robot 2 只能從兩個區域拿：
+
+```text
+top_sum    = turn 後面的 top row
+bottom_sum = turn 前面的 bottom row
+```
+
+Robot 2 當然會選比較大的：
+
+```python
+robot2 = max(top_sum, bottom_sum)
+```
+
+而 Robot 1 要讓 Robot 2 越少越好：
+
+```python
+res = min(res, robot2)
+```
+
+---
+
+### Dry run
+
+例如：
+
+```text
+grid =
+[
+ [2, 5, 4],
+ [1, 5, 1]
+]
+```
+
+一開始：
+
+```text
+top_sum = 2 + 5 + 4 = 11
+bottom_sum = 0
+```
+
+#### x = 0
+
+Robot 1 拿走 `2`：
+
+```text
+top_sum = 9
+bottom_sum = 0
+```
+
+Robot 2：
+
+```text
+max(9, 0) = 9
+```
+
+所以：
+
+```text
+res = 9
+```
+
+然後：
+
+```text
+bottom_sum += 1
+```
+
+變成：
+
+```text
+bottom_sum = 1
+```
+
+---
+
+#### x = 1
+
+Robot 1 拿走 `5`：
+
+```text
+top_sum = 4
+bottom_sum = 1
+```
+
+Robot 2：
+
+```text
+max(4, 1) = 4
+```
+
+所以：
+
+```text
+res = min(9, 4) = 4
+```
+
+---
+
+#### x = 2
+
+Robot 1 拿走 `4`：
+
+```text
+top_sum = 0
+bottom_sum = 6
+```
+
+Robot 2：
+
+```text
+max(0, 6) = 6
+```
+
+所以：
+
+```text
+res = min(4, 6) = 4
+```
+
+答案：
+
+```text
+4
+```
+
+---
+
+這題真正需要的是：
+
+```text
+假設 Robot 1 在每個可能的 column 下去
+→ 計算 Robot 2 最多可以拿多少
+→ 找 minimum
+```
+
+不需要真的修改 grid。
+
+---
+
+### Complexity
+
+只需要掃一次 columns：
+
+```text
+Time:  O(N)
+Space: O(1)
+```
+
+這也是這題最重要的面試解法。
+
+### 面試記憶點
+
+**LC 2017 = 2 rows + choose turning point**
+
+看到：
+
+```text
+top
+bottom
+```
+
+直接想：
+
+```text
+Robot 1 的 path
+→ → → ↓ → → →
+```
+
+每個 column 都試一次：
+
+```python
+top_sum -= grid[0][x]
+
+robot2 = max(
+    top_sum,
+    bottom_sum
+)
+
+res = min(res, robot2)
+
+bottom_sum += grid[1][x]
+```
+
+一句話記：
+
+> **Robot 1 選轉彎點；Robot 2 選上下較大的剩餘區域；所以是 `min(max(top, bottom))`。**
+
+
+
+"""
 class Solution(object):
     def gridGame(self, grid):
         """
