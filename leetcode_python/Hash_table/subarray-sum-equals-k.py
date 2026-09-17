@@ -3,11 +3,6 @@
 560. Subarray Sum Equals K
 Medium
 
-10533
-
-343
-
-Add to List
 
 Share
 Given an array of integers nums and an integer k, return the total number of continuous subarrays whose sum equals to k.
@@ -44,7 +39,12 @@ class Solution(object):
         """
         NOTE !!!
 
-        we init map as {0:1}
+        init map as {0:1}
+
+
+        ->
+
+        在開始任何元素之前，prefix sum = 0，出現一次。
         """
         count_map = {0: 1}  # prefix sum frequency
         prefix = 0
@@ -53,6 +53,32 @@ class Solution(object):
         for num in nums:
             prefix += num
 
+            """
+            NOTE !!!
+
+            why `prefix - k` ?
+
+
+            prefix_a - prefix_b = k
+
+             ->
+
+                prefix_b = prefix_a - k
+
+
+            e.g.
+
+            ```
+            current_prefix - previous_prefix = k
+
+            ->
+            
+            previous_prefix = current_prefix - k
+            
+            ```
+
+
+            """
             # check if there is a prefix that makes subarray sum = k
             if prefix - k in count_map:
                 res += count_map[prefix - k]
@@ -61,6 +87,8 @@ class Solution(object):
             count_map[prefix] = count_map.get(prefix, 0) + 1
 
         return res
+
+
 
 # V0-1
 # IDEA : PREFIX SUM, LC 1248
