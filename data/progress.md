@@ -68,17 +68,11 @@
 	- https://yennj12.js.org/CS_basics/cheatsheets/stack_expression_parsing.zh.html
 
 
-
-- Matrix / 2D Grid.md
-	- https://yennj12.js.org/CS_basics/cheatsheets/matrix.zh.html
-		- `必備的矩陣性質`
-
-
-
-
-
-
 	
+- backtrack.zh.html
+	- `Template 2: start_idx — i vs i + 1`
+		- https://yennj12.js.org/CS_basics/cheatsheets/backtrack.zh.html
+
 
 
 
@@ -87,12 +81,7 @@
 
 - binary tree.md
 
-
 - greedy.md
-
-- backtrack.zh.html
-	- `Template 2: start_idx — i vs i + 1`
-
 
 - Sorting Algorithms.md
 
@@ -103,6 +92,8 @@
 
 - python_trick.md
 	- `2) LC Example`
+
+
 
 
 
@@ -158,6 +149,7 @@
 	- Difference Array.md
 	- Topological Sorting — Worked Examples
 	- linked_list_examples.md
+	- Matrix / 2D Grid.md
 
 
 
