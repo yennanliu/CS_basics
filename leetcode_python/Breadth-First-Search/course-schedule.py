@@ -161,6 +161,76 @@ class Solution(object):
 
 
 # V0-2
+# IDEA: DFS + STATUS CHECK (gpt)
+# time = O(V + E), V = numCourses, E = len(prerequisites)
+# space = O(V + E)
+from collections import defaultdict
+
+
+class Solution(object):
+
+    def canFinish(self, numCourses, prerequisites):
+        """
+        :type numCourses: int
+        :type prerequisites: List[List[int]]
+        :rtype: bool
+        """
+
+        if numCourses <= 1:
+            return True
+
+        # 0 = not processed
+        # 1 = currently processing
+        # 2 = fully processed
+        state = [0] * numCourses
+
+        # graph[course] = list of prerequisites
+        #
+        # [ai, bi] means:
+        # bi -> ai
+        #
+        # We use:
+        # ai -> bi
+        # because we want to DFS from a course to its prerequisites.
+        self.graph = defaultdict(list)
+
+        for ai, bi in prerequisites:
+            self.graph[ai].append(bi)
+
+        # Check every course
+        for course in range(numCourses):
+            if state[course] == 0:
+                if not self.helper(course, state):
+                    return False
+
+        return True
+
+    def helper(self, course, state):
+        # Already completely processed
+        if state[course] == 2:
+            return True
+
+        # Found a node that is currently in the DFS path
+        # => cycle detected
+        if state[course] == 1:
+            return False
+
+        # Mark as currently processing
+        state[course] = 1
+
+        # DFS all prerequisites
+        for prev in self.graph[course]:
+            if not self.helper(prev, state):
+                return False
+
+        # All prerequisites are valid.
+        # Mark this course as completely processed.
+        state[course] = 2
+
+        return True
+
+
+# V0-2
 # IDEA: DFS + STATUS CHECK
 # time = O(V + E), V = numCourses, E = len(prerequisites)
 # space = O(V + E)
