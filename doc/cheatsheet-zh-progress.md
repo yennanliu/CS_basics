@@ -43,7 +43,7 @@ half-translated document renders with English gaps rather than failing.
   is what makes a problem findable on LeetCode itself.
 
 
-## Status — 5080 / 5308 sections (96%)
+## Status — 5128 / 5308 sections (97%)
 
 | Cheatsheet | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -136,9 +136,9 @@ half-translated document renders with English gaps rather than failing.
 | [ood_design](./cheatsheet/ood_design.md) | 34 | [✅](../i18n/zh/ood_design.md) |
 | [palindrome](./cheatsheet/palindrome.md) | 66 | [✅](../i18n/zh/palindrome.md) |
 | [patience_sorting](./cheatsheet/patience_sorting.md) | 24 | — |
-| [prefix_sum](./cheatsheet/prefix_sum.md) | 92 | [61/92](../i18n/zh/prefix_sum.md) |
-| [prefix_sum_advanced](./cheatsheet/prefix_sum_advanced.md) | 23 | [10/23](../i18n/zh/prefix_sum_advanced.md) |
-| [prefix_sum_examples](./cheatsheet/prefix_sum_examples.md) | 17 | [13/17](../i18n/zh/prefix_sum_examples.md) |
+| [prefix_sum](./cheatsheet/prefix_sum.md) | 92 | [✅](../i18n/zh/prefix_sum.md) |
+| [prefix_sum_advanced](./cheatsheet/prefix_sum_advanced.md) | 23 | [✅](../i18n/zh/prefix_sum_advanced.md) |
+| [prefix_sum_examples](./cheatsheet/prefix_sum_examples.md) | 17 | [✅](../i18n/zh/prefix_sum_examples.md) |
 | [priority_queue](./cheatsheet/priority_queue.md) | 3 | [2/3](../i18n/zh/priority_queue.md) |
 | [python_gotchas](./cheatsheet/python_gotchas.md) | 44 | [✅](../i18n/zh/python_gotchas.md) |
 | [python_trick](./cheatsheet/python_trick.md) | 67 | [66/67](../i18n/zh/python_trick.md) |
