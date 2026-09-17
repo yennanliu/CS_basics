@@ -42,6 +42,70 @@ m == rolls.length
 """
 
 # V0
+class Solution(object):
+    def missingRolls(self, rolls, mean, n):
+        """
+        :type rolls: List[int]
+        :type mean: int
+        :type n: int
+        :rtype: List[int]
+        """
+        pass
+
+# V0-1
+# IDEA: MATH (gemini)
+class Solution(object):
+
+  def missingRolls(self, rolls, mean, n):
+    m = len(rolls)
+    total_sum = mean * (n + m)
+    missing_sum = total_sum - sum(rolls)
+
+    # 檢核邊界條件：missing_sum 必須落在 [n * 1, n * 6] 之間
+    if missing_sum < n or missing_sum > n * 6:
+      return []
+
+    base = missing_sum // n
+    remainder = missing_sum % n
+
+    # 初始化長度為 n 的基本陣列
+    res = [base] * n
+
+    # 將餘數分配給前 remainder 個元素（每個多分配 1 點）
+    for i in range(remainder):
+      res[i] += 1
+
+    return res
+
+
+# V0-2
+# IDEA: MATH (GPT)
+class Solution(object):
+    def missingRolls(self, rolls, mean, n):
+        # Total sum needed for all rolls
+        total_sum = (len(rolls) + n) * mean
+
+        # Sum needed from the missing rolls
+        missing_sum = total_sum - sum(rolls)
+
+        # Each missing roll must be between 1 and 6
+        if missing_sum < n or missing_sum > n * 6:
+            return []
+
+        # Give every missing roll the minimum value first
+        base = missing_sum // n
+        remain = missing_sum % n
+
+        res = [base] * n
+
+        # Distribute the remaining value
+        for i in range(remain):
+            res[i] += 1
+
+        return res
+
+# V0-3
+# (claude)
 # IDEA : MATH — DISTRIBUTE THE MISSING SUM AS EVENLY AS POSSIBLE
 #
 #   need = mean * (n + m) - sum(rolls)   is the total the n missing dice
