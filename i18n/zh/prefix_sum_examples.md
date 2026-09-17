@@ -1,22 +1,7 @@
-<!-- ac9f84a6543f -->
-# 前綴和 — 範例詳解
-
-> **範圍** — [prefix_sum.md](./prefix_sum.md) 背後的解題存檔：八道模板無法從頭到尾解掉的題目，依照它們需要哪種前綴和形狀分組。
-> **另見**：[prefix_sum.md](./prefix_sum.md) — 母文件：模板 1–8、觀念與決策框架；[prefix_sum_advanced.md](./prefix_sum_advanced.md) — 模板 9–13；[difference_array.md](./difference_array.md) — 區間更新本身的完整討論，含 LC 370；[sliding_window.md](./sliding_window.md) — 當所有數值都非負時的替代解法；[hash_map.md](./hash_map.md) — 這裡有四題的關鍵結構。
-
 <!-- 1d1496862506 -->
 ## LeetCode 題目清單
 
 - [Prefix Sum](https://leetcode.com/problem-list/prefix-sum/)
-
-<!-- bc6b5aa57dcd -->
-## 總覽
-
-這是 [prefix_sum.md](./prefix_sum.md) 的長尾，而且刻意寫得很短。母文件的十三個模板各自標明了自己解掉的
-LC 題號，所以一個把那些題目重解一遍的範例區塊，就是整份檔案最大的重複來源 — 有十四個 LC 題號
-出現在不只一個章節標題裡，是整個文件庫測出來最糟的數字。
-
-留下來的，是沒有任何模板能直接完整解掉的題目。
 
 <!-- e6fdeebe2326 -->
 ### 關鍵性質
@@ -188,3 +173,18 @@ LC 題號，所以一個把那些題目重解一遍的範例區塊，就是整�
 | Max Chunks To Make Sorted | 769 | 輸入是排列，所以 `prefixMax == i` 直接取代了整個後綴陣列 —— 模板 8 |
 | Trapping Rain Water | 42 | 前綴最大值*與*後綴最大值都要真的存出來，再用 `min(...) - height[i]` 合併 |
 | Product of Array Except Self | 238 | 同樣的左掃／右掃拆分，只是把極值換成乘積 |
+
+<!-- 5544bbb5fe75 -->
+# 前綴和 — 範例詳解
+
+> **範圍** — [prefix_sum.md](./prefix_sum.md) 背後的解題存檔：八道模板無法從頭到尾解掉的題目，依照它們需要哪種前綴和形狀分組。
+> **另見**：[prefix_sum.md](./prefix_sum.md) — 母文件：模板 1–8、觀念與決策框架；[prefix_sum_advanced.md](./prefix_sum_advanced.md) — 模板 9–14；[difference_array.md](./difference_array.md) — 區間更新本身的完整討論，含 LC 370；[sliding_window.md](./sliding_window.md) — 當所有數值都非負時的替代解法；[hash_map.md](./hash_map.md) — 這裡有四題的關鍵結構。
+
+<!-- 8a36a202e73f -->
+## 總覽
+
+這是 [prefix_sum.md](./prefix_sum.md) 的長尾，而且刻意寫得很短。母文件的各個模板各自標明了自己解掉的
+LC 題號，所以一個把那些題目重解一遍的範例區塊，就是整份檔案最大的重複來源 — 有十四個 LC 題號
+出現在不只一個章節標題裡，是整個文件庫測出來最糟的數字。
+
+留下來的，是沒有任何模板能直接完整解掉的題目。

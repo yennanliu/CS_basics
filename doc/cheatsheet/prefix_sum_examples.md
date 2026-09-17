@@ -1,7 +1,7 @@
 # Prefix Sum — Worked Examples
 
 > **Scope** — The worked-solution archive behind [prefix_sum.md](./prefix_sum.md): the eight problems the templates do not already solve end to end, grouped by which prefix-sum shape they need.
-> **See also**: [prefix_sum.md](./prefix_sum.md) — the parent sheet: templates 1–8, the concept and the decision framework; [prefix_sum_advanced.md](./prefix_sum_advanced.md) — templates 9–13; [difference_array.md](./difference_array.md) — range updates in their own right, including LC 370; [sliding_window.md](./sliding_window.md) — the alternative when all values are non-negative; [hash_map.md](./hash_map.md) — the structure four of these turn on.
+> **See also**: [prefix_sum.md](./prefix_sum.md) — the parent sheet: templates 1–8, the concept and the decision framework; [prefix_sum_advanced.md](./prefix_sum_advanced.md) — templates 9–14; [difference_array.md](./difference_array.md) — range updates in their own right, including LC 370; [sliding_window.md](./sliding_window.md) — the alternative when all values are non-negative; [hash_map.md](./hash_map.md) — the structure four of these turn on.
 
 ## LeetCode Problem Lists
 
@@ -10,7 +10,7 @@
 ## Overview
 
 This is the long tail of [prefix_sum.md](./prefix_sum.md), and it is deliberately short. The
-parent sheet's thirteen templates each name the LC problem they solve, so an example section
+parent sheet's templates each name the LC problem they solve, so an example section
 that re-solved those problems was the file's largest source of duplication — fourteen LC numbers
 appeared in more than one section heading, the worst count measured anywhere in the corpus.
 

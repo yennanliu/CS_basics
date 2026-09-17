@@ -1,11 +1,3 @@
-<!-- 43f173b6c2fc -->
-# Prefix Sum (前綴和)
-
-> **範圍** — 前綴和／累積和 — 子陣列和、二維前綴和、前綴和搭配雜湊表做計數。
-> **另見**：[prefix_sum_advanced.md](./prefix_sum_advanced.md) — 模板 9–13，也就是那些要借用其他資料結構的；[prefix_sum_examples.md](./prefix_sum_examples.md) — 模板沒有直接解掉的實作題；[difference_array.md](./difference_array.md) — 區間*更新*而非區間查詢；[binary_indexed_tree.md](./binary_indexed_tree.md) — 陣列本身也會變動時；[kadane_algorithm.md](./kadane_algorithm.md) — 不靠前綴和求最大子陣列；[tree_backtrack.md](./tree_backtrack.md) — 模板 14 所一般化的那個 root→leaf 路徑 DFS。
-
-<p align="center"><img src="../pic/prefix_sum.png"></p>
-
 <!-- 1d1496862506 -->
 ## LeetCode 題目清單
 
@@ -82,13 +74,6 @@
 - **例子**：LC 1248 - Count Nice Subarrays、LC 926 - Flip String to Monotone
 - **模式**：把元素轉成 0/1，再套帶條件的前綴和
 - **關鍵洞見**：把題目轉化成更單純的前綴和問題
-
-<!-- 4cfb62d640dd -->
-### **模式 7：距離總和（左右拆分）** — LC 2615
-- **說明**：高效率地算出索引之間絕對差值的總和
-- **例子**：LC 2615 - Sum of Distances（LC 2121 - Intervals Between Identical Elements 是**同一題**）、LC 1685 - Sum of Absolute Differences、LC 2602 - Minimum Operations to Make All Array Elements Equal
-- **模式**：先依值分組，再把每一組拆成左右兩半，套 `count * value - sum` 這條公式
-- **關鍵洞見**：對索引 `i`，距離 = `(i * countLeft - sumLeft) + (sumRight - i * countRight)`，而它可以收成 `total - 2*prefixSum + i*(2*rank - groupSize)`
 
 <!-- 807b3b1bf27d -->
 ### **模式 8：前綴最大值（貪婪分塊／分割）** — LC 769
@@ -535,19 +520,6 @@ LC 2017 是最乾淨的例子。格子是 `2 x n`，合法路徑是沿著 row 0 
 | Max Chunks To Make Sorted | 769 | 比較總和 | Medium | 模板 6 |
 | Longest Arithmetic Subsequence | 1027 | 轉成差值 | Medium | 模板 6 |
 
-<!-- 3268821dda10 -->
-#### **模式 7：距離總和**
-| 題目 | LC # | 關鍵技巧 | 難度 | 模板 |
-|---------|------|---------------|------------|----------|
-| Sum of Distances | 2615 | 分組 + 左右拆分 | Medium | 模板 7 |
-| Intervals Between Identical Elements | 2121 | **和 2615 完全同一題**，只是換標題 | Medium | 模板 7 |
-| Sum of Absolute Differences in a Sorted Array | 1685 | 只有一組 —— 陣列本來就排好，不用 map | Medium | 模板 7 |
-| Minimum Operations to Make All Array Elements Equal | 2602 | 拆分點是**查詢值**：先二分搜出它的序號，再套同樣的兩半 | Hard | 模板 7 + 二分搜尋 |
-| Minimum Cost to Make Array Equal | 2448 | 帶權重 —— 對 `w` 與 `w*v` 各做前綴和 | Hard | 模板 7 加權版 |
-| Minimum Moves to Equal Array Elements II | 462 | 只要最好的那個拆分點，而那就是中位數 | Medium | 模板 7（中位數捷徑） |
-| Sum of Distances in Tree | 834 | 樹上的版本（DFS + 換根） | Hard | 模板 7 + DFS |
-| Minimum Total Distance Traveled | 2463 | DP + 距離計算 | Hard | 模板 7 + DP |
-
 <!-- 9d9b8929ecb6 -->
 #### **模式 8：前綴最大值**
 | 題目 | LC # | 關鍵技巧 | 難度 | 模板 |
@@ -618,27 +590,6 @@ LC 2017 是最乾淨的例子。格子是 `2 x n`，合法路徑是沿著 row 0 
 ### 前綴和題目的決策框架
 
 <!--CODE-->
-
-<!-- 0cb4ec2c47ac -->
-### 模板選擇指南
-
-| 題目關鍵字 | 建議模板 | 例題 |
-|------------------|---------------------|------------------|
-| 「range sum」、「query」 | 模板 1 | LC 303, 304 |
-| 「subarray sum equals」、「count subarrays」 | 模板 2 | LC 560, 325 |
-| 「divisible by」、「remainder」、「modulo」 | 模板 3 | LC 974, 523 |
-| 「range addition」、「updates」、「intervals」 | 模板 4 | LC 370, 1094 |
-| 「2D」、「matrix」、「rectangle」 | 模板 5 | LC 304, 1314 |
-| 「odd numbers」、「binary」、「transform」 | 模板 6 | LC 1248, 926 |
-| 「sum of distances」、「absolute differences」、「identical elements」，以及任何在可排序集合上求 `sum of \|x-y\|` | 模板 7 | LC 2615, 2121, 1685, 2602 |
-| 「max chunks」、「partition to sort」、「split into sorted segments」 | 模板 8 | LC 769, 768 |
-| 「take from both ends」、「remove from left or right」 | 模板 9 | LC 1423, 1658 |
-| 「shortest subarray with sum ≥ K」**且允許負數** | 模板 10 | LC 862（對比 LC 209 的視窗解） |
-| 「submatrix sum ≤ k」、「count submatrices」、「rectangle + condition」 | 模板 11 | LC 363, 1074 |
-| 「XOR of subarray」、「even count of every letter」、「parity」 | 模板 12 | LC 1310, 1915, 1738 |
-| 「2 x n grid」、「one turn」、「best split point」、「both play optimally」 | 模板 15 | LC 2017, 724, 1422, 2483 |
-
-> 模板 **9–13** 的完整內容寫在 [prefix_sum_advanced.md](./prefix_sum_advanced.md)。
 
 <!-- a80576cca94b -->
 ### 怎麼認出各個模板
@@ -742,28 +693,6 @@ LC 2017 是最乾淨的例子。格子是 `2 x n`，合法路徑是沿著 row 0 
 | 二維區間查詢 | O(1) | O(1) | 前處理完之後 |
 | 差分陣列更新 | O(k) | O(n) | k 次更新，陣列大小 n |
 | 前綴 + 後綴拆分的掃描 | O(n) | O(1) | 兩個累加值，不留陣列 |
-
-<!-- dba405ad7383 -->
-### 模板速查
-
-| 模板 | 模式 | 關鍵程式片段 |
-|----------|---------|------------------|
-| **模板 1** | 基本區間求和 | `prefix[i+1] = prefix[i] + nums[i]` |
-| **模板 2** | HashMap + 目標值 | `if prefix_sum - k in map: count += map[prefix_sum - k]` |
-| **模板 3** | 取模／整除 | `remainder = prefix_sum % k; if remainder in map...` |
-| **模板 4** | 區間更新 | `diff[start] += val; diff[end+1] -= val` |
-| **模板 5** | 二維矩陣 | `prefix[i][j] = val + left + top - topleft` |
-| **模板 6** | 轉換後計數 | `先轉換陣列，再套前綴和` |
-| **模板 7** | 距離總和 | `left = idx*countLeft - sumLeft; right = sumRight - idx*countRight` —— 或寫成一行，`total - 2*prefixSum + idx*(2*i - m)` |
-| **模板 8** | 前綴最大值 | `maxSoFar = max(maxSoFar, arr[i]); if (maxSoFar == i) chunks++` |
-| **模板 9** | 補集（取兩端） | `ans = total - min(window of length n-k)` |
-| **模板 10** | 單調雙端佇列（有負數） | `while p[i]-p[dq[0]]>=k: ans=min(ans,i-dq.popleft())` |
-| **模板 11** | 列對壓縮 | `for top: for bot: colSum[c]+=mat[bot][c]` → 再用一維解法 |
-| **模板 12** | 前綴 XOR | `p[i+1] = p[i] ^ a[i]; xor(l,r) = p[r+1] ^ p[l]` |
-| **模板 13** | 稀疏差分（HashMap） | `d[start]+=v; d[end+1]-=v; for k in sorted(d): cur+=d[k]` |
-| **模板 15** | 前綴 + 後綴拆分 | `top-=a[i]; res=min(res,max(top,bottom)); bottom+=b[i]` |
-
-> 模板 **9–13** 的完整內容寫在 [prefix_sum_advanced.md](./prefix_sum_advanced.md)。
 
 <!-- 2cf2928ac75c -->
 ### 核心數學洞見
@@ -884,3 +813,74 @@ LC 2017 是最乾淨的例子。格子是 `2 x n`，合法路徑是沿著 row 0 
 - **環狀陣列**：改寫模板來處理繞回頭的情況
 
 這份 cheatsheet 涵蓋了所有主要的前綴和模式，並提供一套有系統的方法，讓你能高效率地解掉 40 多題 LeetCode。
+
+<!-- 5995a12ca0fe -->
+# Prefix Sum (前綴和)
+
+> **範圍** — 前綴和／累積和 — 子陣列和、二維前綴和、前綴和搭配雜湊表做計數。
+> **另見**：[prefix_sum_advanced.md](./prefix_sum_advanced.md) — 模板 9–14，也就是那些要借用其他資料結構的；[prefix_sum_examples.md](./prefix_sum_examples.md) — 模板沒有直接解掉的實作題；[difference_array.md](./difference_array.md) — 區間*更新*而非區間查詢；[binary_indexed_tree.md](./binary_indexed_tree.md) — 陣列本身也會變動時；[kadane_algorithm.md](./kadane_algorithm.md) — 不靠前綴和求最大子陣列；[tree_backtrack.md](./tree_backtrack.md) — 模板 14 所一般化的那個 root→leaf 路徑 DFS。
+
+<p align="center"><img src="../pic/prefix_sum.png"></p>
+
+<!-- d840122007b3 -->
+### **模式 7：距離總和（左右拆分）** — LC 2615
+- **說明**：高效率地算出索引之間絕對差值的總和
+- **例子**：LC 2615 - Sum of Distances（LC 2121 - Intervals Between Identical Elements 是**同一題**）、LC 1685 - Sum of Absolute Differences、LC 2602 - Minimum Operations to Make All Array Elements Equal
+- **模式**：先依值分組，再把每一組拆成左右兩半，套 `count * value - sum` 這條公式
+- **關鍵洞見**：對組內序號 `k` 上的索引 `idx`，距離 = `(idx * countLeft - sumLeft) + (sumRight - idx * countRight)`，而它可以收成 `total - 2*prefix[k] + idx*(2*k - m)`
+
+<!-- 084f925b20d2 -->
+#### **模式 7：距離總和**
+| 題目 | LC # | 關鍵技巧 | 難度 | 模板 |
+|---------|------|---------------|------------|----------|
+| Sum of Distances | 2615 | 分組 + 左右拆分 | Medium | 模板 7 |
+| Intervals Between Identical Elements | 2121 | **和 2615 完全同一題**，只是換標題 | Medium | 模板 7 |
+| Sum of Absolute Differences in a Sorted Array | 1685 | 只有一組 —— 陣列本來就排好，不用 map | Medium | 模板 7 |
+| Minimum Operations to Make All Array Elements Equal | 2602 | 拆分點是**查詢值**：先二分搜出它的序號，再套同樣的兩半 | Medium | 模板 7 + 二分搜尋 |
+| Minimum Cost to Make Array Equal | 2448 | 帶權重 —— 對 `w` 與 `w*v` 各做前綴和 | Hard | 模板 7 加權版 |
+| Minimum Moves to Equal Array Elements II | 462 | 只要最好的那個拆分點，而那就是中位數 | Medium | 模板 7（中位數捷徑） |
+| Sum of Distances in Tree | 834 | 樹上的版本（DFS + 換根） | Hard | 模板 7 + DFS |
+| Minimum Total Distance Traveled | 2463 | DP + 距離計算 | Hard | 模板 7 + DP |
+
+<!-- 60be45c7edf2 -->
+### 模板選擇指南
+
+| 題目關鍵字 | 建議模板 | 例題 |
+|------------------|---------------------|------------------|
+| 「range sum」、「query」 | 模板 1 | LC 303, 304 |
+| 「subarray sum equals」、「count subarrays」 | 模板 2 | LC 560, 325 |
+| 「divisible by」、「remainder」、「modulo」 | 模板 3 | LC 974, 523 |
+| 「range addition」、「updates」、「intervals」 | 模板 4 | LC 370, 1094 |
+| 「2D」、「matrix」、「rectangle」 | 模板 5 | LC 304, 1314 |
+| 「odd numbers」、「binary」、「transform」 | 模板 6 | LC 1248, 926 |
+| 「sum of distances」、「absolute differences」、「identical elements」，以及任何在可排序集合上求 `sum of \|x-y\|` | 模板 7 | LC 2615, 2121, 1685, 2602 |
+| 「max chunks」、「partition to sort」、「split into sorted segments」 | 模板 8 | LC 769, 768 |
+| 「take from both ends」、「remove from left or right」 | 模板 9 | LC 1423, 1658 |
+| 「shortest subarray with sum ≥ K」**且允許負數** | 模板 10 | LC 862（對比 LC 209 的視窗解） |
+| 「submatrix sum ≤ k」、「count submatrices」、「rectangle + condition」 | 模板 11 | LC 363, 1074 |
+| 「XOR of subarray」、「even count of every letter」、「parity」 | 模板 12 | LC 1310, 1915, 1738 |
+| 「2 x n grid」、「one turn」、「best split point」、「both play optimally」 | 模板 15 | LC 2017, 724, 1422, 2483 |
+
+> 模板 **9–13** 的完整內容寫在 [prefix_sum_advanced.md](./prefix_sum_advanced.md)。
+
+<!-- e8646adc93ac -->
+### 模板速查
+
+| 模板 | 模式 | 關鍵程式片段 |
+|----------|---------|------------------|
+| **模板 1** | 基本區間求和 | `prefix[i+1] = prefix[i] + nums[i]` |
+| **模板 2** | HashMap + 目標值 | `if prefix_sum - k in map: count += map[prefix_sum - k]` |
+| **模板 3** | 取模／整除 | `remainder = prefix_sum % k; if remainder in map...` |
+| **模板 4** | 區間更新 | `diff[start] += val; diff[end+1] -= val` |
+| **模板 5** | 二維矩陣 | `prefix[i][j] = val + left + top - topleft` |
+| **模板 6** | 轉換後計數 | `先轉換陣列，再套前綴和` |
+| **模板 7** | 距離總和 | `left = idx*countLeft - sumLeft; right = sumRight - idx*countRight` —— 或寫成一行，`total - 2*prefix[k] + idx*(2*k - m)`（`k` ＝ 組內序號，`m` ＝ 組大小） |
+| **模板 8** | 前綴最大值 | `maxSoFar = max(maxSoFar, arr[i]); if (maxSoFar == i) chunks++` |
+| **模板 9** | 補集（取兩端） | `ans = total - min(window of length n-k)` |
+| **模板 10** | 單調雙端佇列（有負數） | `while p[i]-p[dq[0]]>=k: ans=min(ans,i-dq.popleft())` |
+| **模板 11** | 列對壓縮 | `for top: for bot: colSum[c]+=mat[bot][c]` → 再用一維解法 |
+| **模板 12** | 前綴 XOR | `p[i+1] = p[i] ^ a[i]; xor(l,r) = p[r+1] ^ p[l]` |
+| **模板 13** | 稀疏差分（HashMap） | `d[start]+=v; d[end+1]-=v; for k in sorted(d): cur+=d[k]` |
+| **模板 15** | 前綴 + 後綴拆分 | `top-=a[i]; res=min(res,max(top,bottom)); bottom+=b[i]` |
+
+> 模板 **9–13** 的完整內容寫在 [prefix_sum_advanced.md](./prefix_sum_advanced.md)。
