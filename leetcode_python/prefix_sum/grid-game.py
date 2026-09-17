@@ -86,6 +86,44 @@ NOTE !!! Dijkstra is NOT working for this LC
 """
 
 
+"""
+NOTE !!!
+
+
+
+the robot can ONLY change direction once
+
+->
+
+
+since it's a 2 x n matrix, we move down once and reach the bottom,
+there is NO way to move down again 
+
+
+答案是：不行，Robot 1 不能多次切換上下方向（如 →↓→↓）。
+它在整趟路程中只能「往下轉折一次」，這也完全對應你給的第二個範例
+
+
+e.g.
+
+```
+Row 0: → → → → ↓ 
+Row 1:           → → →
+```
+
+
+->
+
+(實際上在網格上視覺化就是：在某個欄位 $i$ 從第一列往下掉到第二列，然後一路向右)
+
+
+->
+
+bot 只能轉折一次
+
+
+"""
+
 
 # V0
 # IDEA: PREFIX (BOTTOM) + SUFFIX (TOP) SUM OVER THE TURNING COLUMN
@@ -170,6 +208,16 @@ class Solution(object):
 
         res = float('inf')
 
+        """
+        NOTE !!!
+
+
+
+        Robot 1, 2 不能多次切換上下方向（如 →↓→↓）。
+        
+            -> 它在整趟路程中只能「往下轉折一次」
+
+        """
         for c in range(N):
             # 機器人 1 經過 grid[0][c]，第一行剩餘分數減少
             top_sum -= grid[0][c]
