@@ -15,7 +15,7 @@
 
 - ***Spark*** is a big data framework that access large scale dataset like above, and doing processing like : ETL, stream, machine learning and so on...
 
-	- `Can keep a dataset in memory across stages`. An RDD is a *lazy logical* dataset, not a cached one — it lives in memory only once you `cache()`/`persist()` it, and a persisted partition that does not fit spills to disk. Spark is usually faster because it avoids the per-stage disk round trip and can fuse narrow transformations, not because everything is always resident
+	- `Can keep a dataset in memory across stages`. An RDD is a *lazy logical* dataset, not a cached one — it lives in memory only once you `cache()`/`persist()` it, and what happens to a partition that does not fit depends on the `StorageLevel`: `cache()` / default `persist()` is `MEMORY_ONLY`, which **recomputes** it on next use, while `MEMORY_AND_DISK` spills it. Spark is usually faster because it avoids the per-stage disk round trip and can fuse narrow transformations, not because everything is always resident
 
 - In short, `Spark` can do more flexible data task via RDD and `DAG`( 
   Map-Reduce-Map-Reduce ...) ops and faster speed (data in memory), but `Spark` job also `heavy memory costing`. So if the data is really in a `large` scale, then Spark may not be a good choice, but would use `Hadoop` since it only do Map-Reduce, all the momory cost is only for key-value pairs saving theoretically. 

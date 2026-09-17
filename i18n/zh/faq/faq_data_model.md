@@ -79,7 +79,7 @@
         - 「某個部門在某一天有多少員工出勤？」
 <!--CODE-->
 
-<!-- d32369ad54cc -->
+<!-- 990e8fab4ada -->
 ### 7) OLTP 與 OLAP 有什麼差別？
 - OLTP
     - `線上交易處理系統（Online Transaction Processing System）`
@@ -87,7 +87,7 @@
     - 用的是正規化（接近 3NF）的模型，不是維度模型 —— 星型與雪花是資料倉儲的形狀
 - OLAP
     - `線上分析處理系統（Online Analytical Processing System）`
-    - OLAP 用於`分析與報表`，屬於`反正規化`的形式。
+    - OLAP 用於`分析與報表`。那是一種*工作負載*，不是 schema 的性質 —— 它通常採用`維度`模型，而在維度模型裡，星型 schema 把維度反正規化，雪花 schema 則把維度正規化。
     - `星型`或`雪花` schema —— 想少 join 就用星型，某個維度大到正規化划得來時就用雪花（見上面第 1、2 題）
 - 補充
     - MPP（大規模平行處理）

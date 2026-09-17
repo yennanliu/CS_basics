@@ -85,7 +85,7 @@ TIME_ID
     - a normalized (3NF-ish) model, not a dimensional one — star and snowflake are warehouse shapes
 - OLAP
     - `Online Analytical Processing System`
-    - OLAP is for `analysis and reporting` purposes & it is in `denormalized` form.
+    - OLAP is for `analysis and reporting`. That is a *workload*, not a schema property — it commonly uses a `dimensional` model, and there the star schema de-normalizes its dimensions while the snowflake schema normalizes them.
     - `star` or `snowflake` schema — star when you want fewer joins, snowflake when a dimension is big enough that normalizing it pays off (see 1 and 2 above)
 - extra
     - MPP (massively parallel processing)

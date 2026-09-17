@@ -132,8 +132,10 @@ memory management, scheduling, standard library, and platform abstraction.
 
 - **JVM (Java)**: loads bytecode, verifies it, JIT-compiles, manages GC and threads.
   "Write once, run anywhere" — bytecode is portable across JVM implementations.
-- **Language VMs / interpreters**: they parse and execute, and bring their own GC.
-  Whether they *also* JIT varies: **V8** (JavaScript) does, aggressively;
+- **Language VMs / interpreters**: they parse and execute. A *managed* one also
+  brings its own memory management — that is a property of the implementation, not
+  of "being an interpreter" (a Lua or C interpreter embedded in a host may have
+  none). Whether they *also* JIT varies: **V8** (JavaScript) does, aggressively;
   **CPython** does not in a standard build — it interprets bytecode and reclaims
   memory by reference counting plus a cycle collector (3.13 ships an experimental
   JIT, and PyPy is the JIT-ing alternative implementation).

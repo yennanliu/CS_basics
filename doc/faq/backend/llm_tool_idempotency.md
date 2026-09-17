@@ -222,8 +222,15 @@ async def request_refund(order_id: str, amount: float):
     if cached:
         return json.loads(cached)
 
-    # 2. 併發防護：搶占執行鎖（防止同一秒內多個請求同時進來）
-    acquired = await redis.set(lock_key, "IN_PROGRESS", nx=True, ex=30)
+    # 1'. 上一次的結果未定（timeout / 連線中斷）就不能再打一次：
+    #     交給對帳流程收尾，或帶同一個 idem key 去查金流端的真實結果
+    if await redis.get(f"reconcile:refund:{order_id}"):
+        raise NeedsReconciliation(order_id)
+
+    # 2. 併發防護：搶占執行鎖。value 放一個「本次嘗試」的 owner token，
+    #    這樣釋放時才能確認要刪的是自己的鎖（見下方 5a）
+    owner = uuid.uuid4().hex
+    acquired = await redis.set(lock_key, owner, nx=True, ex=LOCK_TTL)
     if not acquired:
         raise Exception("操作正在處理中，請勿重複送出")
 
@@ -236,14 +243,21 @@ async def request_refund(order_id: str, amount: float):
         return result
 
     except DefiniteFailure as e:
-        # 5a. 確定失敗（對方明確拒絕，沒有副作用）：釋放鎖，允許重試
-        await redis.delete(lock_key)
+        # 5a. 確定失敗：只有金流端「明確拒絕且沒有產生副作用」才算（依它的錯誤碼
+        #     契約判斷，不要只看 HTTP 4xx）。釋放鎖，允許重試 ——
+        #     但要比對 owner token 再刪，否則租期過後可能刪掉別人的新鎖
+        await redis.eval(
+            "if redis.call('get', KEYS[1]) == ARGV[1] "
+            "then return redis.call('del', KEYS[1]) else return 0 end",
+            1, lock_key, owner,
+        )
         raise e
 
     except (TimeoutError, ConnectionError) as e:
-        # 5b. 結果未定：對方可能已經扣款了。**不要**釋放鎖 ——
-        #     留下待對帳的狀態，讓後續由對帳流程或帶同一個 idem key 的重送來收尾
-        await redis.setex(f"reconcile:refund:{order_id}", 86400, "UNKNOWN")
+        # 5b. 結果未定：對方可能已經扣款了。**不要**釋放鎖，而且要先把
+        #     「未定」寫成持久狀態（TTL 要長到蓋過所有重試窗，且由 1' 檢查），
+        #     否則鎖一過期就有人能再打一次退款
+        await redis.setex(f"reconcile:refund:{order_id}", IDEM_TTL, "UNKNOWN")
         raise e
 ```
 
@@ -281,7 +295,7 @@ async def request_refund(order_id: str, amount: float):
 |--------|------|
 | `nx=True` | Redis `SET NX` 是**原子操作**，等同 CAS，才能真正防併發 |
 | `ex=30`（鎖 TTL） | 服務中途 crash 時，鎖會自動過期，不會永久卡死 |
-| 冪等快取 TTL = 86400 | 必須**大於**所有可能的重試時間窗（Orchestrator retry + 使用者重送） |
+| 冪等快取 TTL = 86400 | 只是例子。真正的要求是**大於系統允許的最長重試窗**（Orchestrator retry + 使用者重送 + 對帳延遲）；沒有明訂重試上限的話，24 小時並不保證安全 |
 
 > ⚠️ **鎖 TTL 必須大於業務執行時間，但 P99 並不是上界**。平均 5s、P99 25s 只代表百分之一的請求會跑得比 25s *更久* —— 所以 `ex=30` 並不安全：尾端那些請求還在跑，鎖就過期了，第二個請求進來就併發雙扣。要靠三件事一起，而不是把 TTL 調大：
 > 1. 給業務呼叫一個**明確的逾時上限**，而且這個上限要**小於**鎖的租期（例如 timeout 10s、TTL 30s）；
@@ -382,8 +396,8 @@ except UniqueViolation:
 - [ ] Key 裡**沒有**時間戳記或隨機值
 - [ ] 有用 `SET NX EX` 做併發鎖
 - [ ] 業務呼叫有明確逾時上限，且該上限 < 鎖租期（不要只看 P99）
-- [ ] **只快取成功結果**，失敗時釋放鎖
-- [ ] 快取 TTL ≥ 24H（涵蓋所有重試窗）
+- [ ] **只快取成功結果**；只有 `DefiniteFailure` 釋放鎖（帶 owner token 比對），結果未定要留給對帳
+- [ ] 快取 TTL **大於系統實際允許的最長重試窗**（24H 只是例子 —— 要嘛明訂重試上限，要嘛把 TTL 調到蓋過它）
 - [ ] 重複呼叫時**回傳原本的成功結果**，而不是丟 error
 - [ ] DB 有 unique index 當最後防線
 - [ ] `force_retry` 只允許人工 / 系統觸發，**不暴露給 LLM**

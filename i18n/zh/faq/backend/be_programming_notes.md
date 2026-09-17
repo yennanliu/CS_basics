@@ -7,7 +7,7 @@
 ## 目錄
 
 1. [高流量模式](#high-traffic-patterns)
-   - [幕等的請求處理](#1-idempotent-request-processing)
+   - [冪等的請求處理](#1-idempotent-request-processing)
    - [限流](#2-rate-limiting)
    - [斷路器](#3-circuit-breaker)
    - [用分散式鎖做請求去重](#4-request-deduplication-with-distributed-lock)
@@ -24,7 +24,7 @@
 ## 高流量模式
 
 <!-- 8b5ce0f97991 -->
-### 1. 幕等的請求處理
+### 1. 冪等的請求處理
 
 **問題**：設計一個機制，在可設定的時間窗內，避免同一個 `requestId` 的請求被重複處理。
 
@@ -73,7 +73,7 @@
 ---
 
 <!-- 1237ac5b0f98 -->
-### 幕等處理的重點整理
+### 冪等處理的重點整理
 
 | 面向 | 單一節點 | 分散式 |
 |--------|-----------------|-------------|
@@ -161,7 +161,7 @@
 ## API 設計模式
 
 <!-- 91f0fbf1ec80 -->
-### 幕等鍵（Idempotency Key）模式
+### 冪等鍵（Idempotency Key）模式
 
 <!--CODE-->
 

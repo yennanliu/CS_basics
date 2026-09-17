@@ -337,8 +337,16 @@ public class DistributedIdempotentProcessor {
         try {
             return executeBusinessLogic(req);
         } catch (Exception e) {
-            // On failure, delete key to allow retry
-            redis.del(key);
+            // On failure, delete the key so a retry can run — but only if we still
+            // own it. Comparing the stored value first (here via a Lua CAS-delete)
+            // stops a slow attempt whose TTL already expired from deleting the lock
+            // a *newer* attempt is now holding. And note "failure" here must mean a
+            // definite one: after a timeout the side effect may already have
+            // happened, so that case belongs in reconciliation, not in a retry.
+            redis.eval(
+                "if redis.call('get', KEYS[1]) == ARGV[1] "
+                + "then return redis.call('del', KEYS[1]) else return 0 end",
+                1, key, ownerToken);
             return new Resp("ERROR", "Processing failed");
         }
     }

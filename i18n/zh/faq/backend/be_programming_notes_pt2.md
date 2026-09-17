@@ -111,7 +111,7 @@
 ## 訊息佇列模式
 
 <!-- 40cea190ec26 -->
-### 1. At-Least-Once 投遞加上幕等
+### 1. At-Least-Once 投遞加上冪等
 
 <!--CODE-->
 
@@ -240,9 +240,9 @@
 <!-- 1b9e86aefc42 -->
 ### Q3：怎麼做到 exactly-once 處理？
 
-**答：**真正的 exactly-once 很難。改用幕等：
-1. **幕等操作**：把操作設計成可以安全重複執行
-2. **幕等鍵**：記下已處理過的 request ID
+**答：**真正的 exactly-once 很難。改用冪等：
+1. **冪等操作**：把操作設計成可以安全重複執行
+2. **冪等鍵**：記下已處理過的 request ID
 3. **Transactional outbox**：原子地同時更新資料庫與 outbox
 
 <!--CODE-->
@@ -285,7 +285,7 @@
 | 事件驅動的交易 | Saga（Choreography） |
 | 快取沒中時怎麼辦 | Cache-Aside + 鎖 |
 | 寫入效能 | Write-Behind |
-| 訊息可靠性 | At-least-once + 幕等 |
+| 訊息可靠性 | At-least-once + 冪等 |
 | 失敗訊息怎麼辦 | 死信佇列 |
 
 ---

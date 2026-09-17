@@ -196,7 +196,7 @@
 - 步驟 4) `定位`：每個被分到的 partition，從已提交的 offset 開始；沒有的話就依 `auto.offset.reset`（`earliest` / `latest`）
 - 步驟 5) `poll 迴圈`：`poll()` 從各個 partition leader 拉批次資料，同時也送 heartbeat 並觸發 rebalance。處理完紀錄之後再提交
 	- `enable.auto.commit=true`：在背景提交 -> 有 `at most once` 的風險（提交完但處理前就掛了）
-	- 處理完之後手動 `commitSync` -> `at least once`，所以要把 consumer 寫成幕等的
+	- 處理完之後手動 `commitSync` -> `at least once`，所以要把 consumer 寫成冪等的
 - 步驟 6) 有成員加入／離開，或超過 `max.poll.interval.ms`（通常是「處理太慢了」）時會 `rebalance` —— partition 重新分配，回到步驟 3
 - 步驟 7) `close()`：乾淨地離開 group，免得 group 要等 `session.timeout.ms` 才發現
 

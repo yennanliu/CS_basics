@@ -141,7 +141,7 @@ Apache Flink 可以用下列方式部署與設定。
 - 參考
 	- https://zhuanlan.zhihu.com/p/79526638
 
-<!-- 51bd852b3e60 -->
+<!-- 27fc2e750bc8 -->
 ### 17. 說明 flink 的 `checkpoint`？
 - checkpoint 保存 flink 當下的狀態，是一種「容錯」機制
 	- flink 的狀態
@@ -156,7 +156,7 @@ Apache Flink 可以用下列方式部署與設定。
 - 誰參與其中：`JobManager` 的 CheckpointCoordinator、執行這些 task 的 `TaskManager`，以及設定好的 `checkpoint 儲存`（HDFS / S3 / 檔案系統）。ZooKeeper 只在 HA 架構下出現，而且是負責 leader 選舉與 checkpoint 的*中繼資料指標* —— 從來不是存放狀態本身的地方
 - 機制
 	- JM 週期性地觸發 checkpoint
-	- 一個 task 在所有輸入的 barrier 都對齊之後就對自己的狀態做快照、寫進 checkpoint 儲存，然後向 coordinator 回報確認。checkpoint 要等到 `CheckpointCoordinator 收到每一個參與 task 的確認`才算完成 —— 不是 sink 看到 barrier 就算
+	- 在 `aligned`（對齊，預設）checkpoint 下，一個 task 要等 barrier 從`每一個`輸入都抵達才做快照 —— 所以雙輸入的 operator 不會在第一個 barrier 就快照，它會把那條 channel 緩衝起來等其他的追上。而 `unaligned`（非對齊，1.11+）則不等待就快照，改成把在途的紀錄一起持久化，這就是它能在背壓下讓 checkpoint 繼續推進的原因。兩種模式都一樣會把狀態寫進 checkpoint 儲存，然後向 coordinator 回報確認。checkpoint 要等到 `CheckpointCoordinator 收到每一個參與 task 的確認`才算完成 —— 不是 sink 看到 barrier 就算
 		- 狀態寫進設定好的 checkpoint 儲存；在 HA 架構下，ZooKeeper 保存的是指向最近一次完成的 checkpoint 的*指標*，讓新的 JobManager 找得到它
 		- CheckpointBarrier 是一種特殊事件，會跟著紀錄往下游流動；barrier 抵達 sink 代表那個 operator 可以做快照了，不代表 checkpoint 已完成 —— coordinator 還得把每一份確認都收齊
 		- 注意：CheckpointBarrier 的對齊時間也要一併考慮
@@ -183,11 +183,11 @@ Apache Flink 可以用下列方式部署與設定。
 	- https://tech.youzan.com/flink_checkpoint_mechanism/
 	- https://zhuanlan.zhihu.com/p/79526638
 
-<!-- 8c2ee511d4a0 -->
+<!-- 90fda8bf820c -->
 ### 17' 說明 flink 的 `Barrier`？
 - 一種特殊事件
 - 會跟著事件從上游 operator 流到下游 operator
-- 每個 operator 在 Barrier 抵達時做快照，並向 CheckpointCoordinator 回報確認；checkpoint 要等到 `coordinator 收齊每一個參與 task 的確認`才算完成，sink 也包含在內
+- 每個 operator 在 Barrier 抵達時做快照 —— 在對齊式 checkpoint 下，意思是它要從`所有`輸入都收到才做 —— 並向 CheckpointCoordinator 回報確認；checkpoint 要等到 `coordinator 收齊每一個參與 task 的確認`才算完成，sink 也包含在內
 
 <!-- 981fe053665c -->
 ### 18. 說明 flink 的`背壓（backpressure）`？

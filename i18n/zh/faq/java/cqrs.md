@@ -2,7 +2,7 @@
 # 命令查詢責任分離（CQRS）
 
 > **範圍** — 把系統的寫入模型與讀取模型拆開：CQRS 帶來什麼（簡單、可擴展、速度）、代價是什麼（最終一致性、投影器、重複的程式碼），以及什麼時候值得這樣做。
-> **另見**：[`../backend/api_design.md`](../backend/api_design.md) — 擺在它前面的 API 介面；[`../backend/be_programming_notes_pt2.md`](../backend/be_programming_notes_pt2.md) — outbox、saga 與幕等消費者，CQRS 的投影器都會用到。
+> **另見**：[`../backend/api_design.md`](../backend/api_design.md) — 擺在它前面的 API 介面；[`../backend/be_programming_notes_pt2.md`](../backend/be_programming_notes_pt2.md) — outbox、saga 與冪等消費者，CQRS 的投影器都會用到。
 
 | | Command（命令） | Query（查詢） |
 |---|---------|-------|

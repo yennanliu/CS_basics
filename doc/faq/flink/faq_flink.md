@@ -137,7 +137,7 @@ Apache Flink can be deployed and configured in below ways.
 - Who is involved : the `JobManager`'s CheckpointCoordinator, the `TaskManagers` running the tasks, and the configured `checkpoint storage` (HDFS / S3 / filesystem). ZooKeeper appears only in an HA setup, and then for leader election and checkpoint *metadata pointers* — never as the store for the state itself
 - Mechanisms
 	- JM triggers checkpoint periodically
-	- A task snapshots its state once it has aligned the barriers on all of its inputs, writes that state to checkpoint storage, and acknowledges to the coordinator. The checkpoint is complete when the `CheckpointCoordinator has an acknowledgement from every participating task` — not merely when a sink has seen the barrier
+	- With `aligned` checkpoints (the default) a task snapshots once the barrier has arrived on `every` input — so a two-input operator does not snapshot on the first barrier, it buffers that channel until the others catch up. With `unaligned` checkpoints (1.11+) it snapshots without waiting and persists the in-flight records instead, which is what keeps checkpoints progressing under backpressure. Either way it writes the state to checkpoint storage and acknowledges to the coordinator. The checkpoint is complete when the `CheckpointCoordinator has an acknowledgement from every participating task` — not merely when a sink has seen the barrier
 		- state goes to the configured checkpoint storage; in HA, ZooKeeper holds the *pointer* to the latest completed checkpoint so a new JobManager can find it
 		- CheckpointBarrier is a special event that flows downstream with the records; a barrier reaching the sink means that operator can snapshot, not that the checkpoint is done — the coordinator still has to collect every acknowledgement
 		- NOTE : CheckpointBarrier sync time also need to be considered
@@ -167,7 +167,7 @@ Apache Flink can be deployed and configured in below ways.
 ### 17' Explain flink `Barrier` ?
 - A special event
 - Will follow event from upstream operator to downstream operator
-- Each operator snapshots when the Barrier arrives and acknowledges to the CheckpointCoordinator; the checkpoint is only `completed once the coordinator has every participating task's acknowledgement`, the sinks included
+- Each operator snapshots when the Barrier arrives — under aligned checkpointing that means once it has arrived on `all` of its inputs — and acknowledges to the CheckpointCoordinator; the checkpoint is only `completed once the coordinator has every participating task's acknowledgement`, the sinks included
 
 ### 18. Explain flink `backpressure` ?
 - Is a common concept in stream framework
