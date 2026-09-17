@@ -11,7 +11,7 @@
 			- binary search (done)
 			- binary tree (done)
 			- dp (done)
-			- graph (pass)
+			- graph (ing)
 			- greedy (pass)
 			- hashing (done)
 			- heap (ing)
