@@ -77,3 +77,58 @@ class Solution(object):
         if cnt[0] % 2 == 0:
             return cnt[1] >= 1 and cnt[2] >= 1
         return abs(cnt[1] - cnt[2]) > 2
+
+
+# V0-1
+# IDEA: MATH (gemini)
+class Solution(object):
+
+  def stoneGameIX(self, stones):
+    """
+        :type stones: List[int]
+        :rtype: bool
+        """
+    cnt = [0, 0, 0]
+    for x in stones:
+      cnt[x % 3] += 1
+
+    # 1. 如果完全沒有餘數 1 或 2 的石頭，遊戲一開始就會因選取第一個數（若為 3 的倍數直接輸，或無解）判斷失敗
+    if cnt[1] == 0 and cnt[2] == 0:
+      return False
+
+    # 2. 依據餘數 0 的奇偶性分類討論
+    c0, c1, c2 = cnt[0], cnt[1], cnt[2]
+    if c0 % 2 == 0:
+      # c0 為偶數時，Alice 勝利條件：c1 與 c2 必須同時大於 0
+      return c1 > 0 and c2 > 0
+    else:
+      # c0 為奇數時，Alice 勝利條件：兩者數量差距大於 2
+      return abs(c1 - c2) > 2
+
+
+# V0-2
+# IDEA: MATH (gpt)
+class Solution(object):
+    def stoneGameIX(self, stones):
+        """
+        :type stones: List[int]
+        :rtype: bool
+        """
+        cnt = [0, 0, 0]
+
+        for stone in stones:
+            cnt[stone % 3] += 1
+
+        # cnt[0] = number of stones divisible by 3
+        # cnt[1] = number of stones with remainder 1
+        # cnt[2] = number of stones with remainder 2
+
+        if cnt[0] % 2 == 0:
+            # Alice can win if both remainder groups exist
+            return cnt[1] > 0 and cnt[2] > 0
+
+        # cnt[0] is odd
+        #
+        # Alice needs one of cnt[1] / cnt[2] to be sufficiently larger
+        # than the other.
+        return abs(cnt[1] - cnt[2]) > 2

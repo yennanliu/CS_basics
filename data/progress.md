@@ -71,7 +71,7 @@
 
 - Matrix / 2D Grid.md
 	- https://yennj12.js.org/CS_basics/cheatsheets/matrix.zh.html
-		- 模板 7：矩陣路徑 DP
+		- `必備的矩陣性質`
 
 
 
