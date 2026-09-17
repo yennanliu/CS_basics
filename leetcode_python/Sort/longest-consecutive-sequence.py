@@ -80,6 +80,44 @@ class Solution(object):
 
 
 
+# V0-0-1
+# IDEA: SET + ONLY loop nums and check existed (GEMINI)
+class Solution(object):
+
+  def longestConsecutive(self, nums):
+    """
+        :type nums: List[int]
+        :rtype: int
+        """
+    if not nums:
+      return 0
+
+    num_set = set(nums)
+    max_len = 0
+
+    for num in num_set:
+
+      # NOTE !!!!
+      # 關鍵：只有當 num - 1 不在集合中時，它才是某個連續序列的「起點」
+      if num - 1 not in num_set:
+        curr = num
+        streak = 1
+
+        """
+        NOTE !!!
+
+        use `while loop`
+        """
+        # 持續往右尋找下一個連續數字
+        while curr + 1 in num_set:
+          curr += 1
+          streak += 1
+
+        max_len = max(max_len, streak)
+
+    return max_len
+
+
 # V0-1
 # IDEA: SET + ONLY loop nums and check existed (GPT)
 class Solution(object):
