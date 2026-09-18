@@ -1,4 +1,4 @@
-20260918: top 100 like(heap):  215(ok), 295, 347(ok) | top 100 like(graph):  207(ok), 994 | top 100 like(dp): 32, 300 | top 100 like (binary tree):  105 | others: 357(dp, todo), 300, 2D LIS (354), LCA: 310(again!!), 2028(again), 2017 (again), 1650(again) | DP: wildcard 44(todo), 10(todo), 97(todo) |LC weekly:  2289(again!!!) | 
+20260918: top 100 like(heap):  215(ok), 295, 347(ok) | top 100 like(graph):  207(ok), 994 | top 100 like(dp): 32, 300 | top 100 like (binary tree):  105 | others: 357(dp, todo), 300, 2D LIS (354), LCA: 310(again!!), 2028(again), 2017 (again), 1650(again), 1676(again!!) | DP: wildcard 44(todo), 10(todo), 97(todo) |LC weekly:  2289(again!!!) | 
 
 
 20260917: top 100 like(hashing): 1(ok), 49(ok), 128(again!!!), 560(again) | top 100 like(graph): 200(ok), 207, 994 | top 100 like(dp): 32, 300 | top 100 like (binary tree):  105 | others: 357(dp, todo), 300, 2D LIS (354), LCA: 310(todo), 2028(again), 2017 (again) | DP: wildcard 44(todo), 10(todo), 97(todo) |LC weekly:  2289(again!!!) | 
