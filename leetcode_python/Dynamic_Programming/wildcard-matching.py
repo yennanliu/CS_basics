@@ -75,9 +75,47 @@ class Solution(object):
 
         for i in range(1, m + 1):
             for j in range(1, n + 1):
+
+
+                """
+                NOTE !!!
+
+                the "*"  case, 2 cases
+
+                -> 
+
+                    1. match `0` char  (匹配 0 個 character)
+
+                        - dp[i - 1][j]
+                        - (* 完全不吃任何 character)
+
+
+
+                    2. match `1+` char  (匹配 1 個以上 character)
+
+                        - dp[i-1][j]
+                        - (* 不能被消耗掉)
+
+
+                ->
+
+                            pattern
+                                *
+                                │
+                        ┌───────┴───────┐
+                        │               │
+                     match 0         match 1+
+                        │               │
+                        ↓               ↓
+                   dp[i][j-1]      dp[i-1][j]
+
+
+                """
                 if p[j - 1] == '*':
                     # NOTE !!! '*' can match zero chars (dp[i][j-1]) or one more char (dp[i-1][j])
                     dp[i][j] = dp[i][j - 1] or dp[i - 1][j]
+                
+
                 elif p[j - 1] == '?' or p[j - 1] == s[i - 1]:
                     dp[i][j] = dp[i - 1][j - 1]
 
