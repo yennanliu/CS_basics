@@ -69,12 +69,6 @@
 	- https://yennj12.js.org/CS_basics/cheatsheets/stack_expression_parsing.zh.html
 
 
-	
-- backtrack.zh.html
-	- https://yennj12.js.org/CS_basics/cheatsheets/backtrack.zh.html
-		- `Template 8: Palindrome Partitioning — LC 131`
-
-
 
 
 
@@ -152,6 +146,11 @@
 	- Topological Sorting — Worked Examples
 	- linked_list_examples.md
 	- Matrix / 2D Grid.md
+	- backtrack.zh.html
+
+	
+
+
 
 
 
@@ -431,6 +430,7 @@
 			- 20
 			- 22
 			- 39
+			- 93
 		- linked list
 			- 92
 			- 19
