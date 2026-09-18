@@ -65,6 +65,21 @@ LC 236：
 """
 class Solution(object):
     def lowestCommonAncestor(self, root, p, q):
+
+
+        """
+        NOTE !!!
+
+        1. use `set` for patent collection
+
+        2. a single `set` is enough for this LC.
+
+            -> we'll iterate over q (another node),
+               and check if its every `parent` is in the set 
+
+               NOTE: this first (lowest) found parent is returned directly,
+                     since this LC is asking for LCA (`lowest` common ancestors)
+        """
         ancestors = set()
 
         # Put p and all its ancestors into a set
