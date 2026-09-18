@@ -140,8 +140,10 @@
       "Math": "math",
       "Geometry": "math",
       "Bit Manipulation": "bit-manipulation",
+      "Constructive Algorithms": "greedy",
       "Simulation": null,
       "Concurrency": null,
+      "Pandas": null,
       "SQL": null,
       "Shell Script": null
     }
