@@ -43,7 +43,7 @@ half-translated document renders with English gaps rather than failing.
   is what makes a problem findable on LeetCode itself.
 
 
-## Status — 5128 / 5308 sections (97%)
+## Status — 5135 / 5315 sections (97%)
 
 | Cheatsheet | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -141,7 +141,7 @@ half-translated document renders with English gaps rather than failing.
 | [prefix_sum_examples](./cheatsheet/prefix_sum_examples.md) | 17 | [✅](../i18n/zh/prefix_sum_examples.md) |
 | [priority_queue](./cheatsheet/priority_queue.md) | 3 | [2/3](../i18n/zh/priority_queue.md) |
 | [python_gotchas](./cheatsheet/python_gotchas.md) | 44 | [✅](../i18n/zh/python_gotchas.md) |
-| [python_trick](./cheatsheet/python_trick.md) | 67 | [66/67](../i18n/zh/python_trick.md) |
+| [python_trick](./cheatsheet/python_trick.md) | 74 | [73/74](../i18n/zh/python_trick.md) |
 | [python_trick_indexing](./cheatsheet/python_trick_indexing.md) | 28 | [✅](../i18n/zh/python_trick_indexing.md) |
 | [python_trick_stdlib](./cheatsheet/python_trick_stdlib.md) | 24 | [✅](../i18n/zh/python_trick_stdlib.md) |
 | [queue](./cheatsheet/queue.md) | 58 | [✅](../i18n/zh/queue.md) |
