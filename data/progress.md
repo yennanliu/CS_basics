@@ -71,8 +71,9 @@
 
 	
 - backtrack.zh.html
-	- `Template 2: start_idx — i vs i + 1`
-		- https://yennj12.js.org/CS_basics/cheatsheets/backtrack.zh.html
+	- https://yennj12.js.org/CS_basics/cheatsheets/backtrack.zh.html
+		- `Template 8: Palindrome Partitioning — LC 131`
+
 
 
 

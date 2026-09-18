@@ -60,7 +60,7 @@ class Solution(object):
 
             Tree
              ↓
-            找所有 leaves (degree == 1)
+            找所有 leaves (degree == 1) !!!!
              ↓
             移除 leaves
              ↓
@@ -177,6 +177,14 @@ class Solution(object):
 
         # Build graph
         for u, v in edges:
+
+            """
+            NOTE !!!
+
+            the graph is a `undirected` graph` one,
+            so we need to add both nodes (start, and end)
+
+            """
             graph[u].append(v)
             graph[v].append(u)
 
@@ -217,6 +225,12 @@ class Solution(object):
             答案
 
             """
+
+            """
+            NOTE !!!
+
+            ONLY add to q when `degree == 1`
+            """
             if degree[i] == 1:
                 q.append(i)
 
@@ -236,6 +250,29 @@ class Solution(object):
             size = len(q)
             remaining -= size
 
+            """
+            NOTE !!!
+
+
+            we need to process bfs `by later`,
+            e.g. process `all same layer nodes` in the same time.
+
+            ->
+
+            example: for below, we HAVE to process `0, 1, 4, 3` ON THE SAME time.
+
+            ```
+                   0
+                   |
+            1 ---- 2 ---- 3
+                   |
+                   4
+            ```
+
+
+
+
+            """
             for _ in range(size):
                 leaf = q.popleft()
 
@@ -251,6 +288,61 @@ class Solution(object):
 
         # 1 or 2 nodes remain -> MHT roots
         return list(q)
+
+
+
+# V0-0-1
+# IDEA: TOPOLOGICAL SORT / BFS (GPT)
+from collections import defaultdict, deque
+
+
+class Solution(object):
+    def findMinHeightTrees(self, n, edges):
+        """
+        :type n: int
+        :type edges: List[List[int]]
+        :rtype: List[int]
+        """
+
+        if n == 1:
+            return [0]
+
+        # Undirected graph
+        self.graph = defaultdict(list)
+        degree = [0] * n
+
+        for cur, prev in edges:
+            self.graph[cur].append(prev)
+            self.graph[prev].append(cur)
+
+            degree[cur] += 1
+            degree[prev] += 1
+
+        # Start from all leaves
+        q = deque()
+
+        for node in range(n):
+            if degree[node] == 1:
+                q.append(node)
+
+        remain = n
+
+        # Remove leaves layer by layer
+        while remain > 2:
+            size = len(q)
+            remain -= size
+
+            for _ in range(size):
+                cur = q.popleft()
+
+                for neighbor in self.graph[cur]:
+                    degree[neighbor] -= 1
+
+                    if degree[neighbor] == 1:
+                        q.append(neighbor)
+
+        return list(q)
+
 
 
 # V0-2
