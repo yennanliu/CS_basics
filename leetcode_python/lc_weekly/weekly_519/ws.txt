@@ -1,0 +1,41 @@
+#-------------------------------
+# biweekly-contest-xxx
+
+# https://leetcode.com/contest/weekly-contest-519/
+
+
+(67 mins)
+
+10.53 - 12.00 pm
+#-------------------------------
+
+
+#------------------------------------------------
+
+# LC 4052
+# https://leetcode.com/problems/cyclically-shift-rows-and-columns/description/
+#------------------------------------------------
+
+
+
+#------------------------------------------------
+
+# LC 4053
+# https://leetcode.com/problems/minimum-operations-to-make-every-element-palindromic/description/
+#------------------------------------------------
+
+
+
+#------------------------------------------------
+
+# LC 4054
+# https://leetcode.com/problems/count-shadow-pairs-i/description/
+#------------------------------------------------
+
+
+
+#------------------------------------------------
+
+# LC 4055
+# https://leetcode.com/problems/count-shadow-pairs-ii/description/
+#------------------------------------------------

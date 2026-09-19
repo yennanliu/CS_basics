@@ -26,8 +26,8 @@
 
 	- LC weekly
 		- `data/lc_weekly/lc_weekly_gpt.md`
-			- Weekly Contest 518 (doing)
-				- https://leetcode.com/contest/weekly-contest-518/
+			- Weekly Contest 519 (doing)
+				- https://leetcode.com/contest/weekly-contest-519/
 		- LC docs contest
 			- https://leetcode.doocs.org/contest/
 
@@ -545,6 +545,11 @@
 		- 2 pointers (similar to LC 31)
 			- table with LC 31, 1053, 556, 60, 46, 47, 3348
 		- topo_sort
+
+
+
+
+
 
 
 
