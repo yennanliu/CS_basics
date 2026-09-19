@@ -118,6 +118,7 @@ nums: int arr
         -> bigger: 525 or 626 or 727 .....
 
 
+# idea 2) greedy
 
 class Solution(object):
     def minOperations(self, nums):
@@ -286,6 +287,11 @@ Output: 3
 
 
 #---------------
+
+
+
+# idea 2) 2 pointers + smallest_till_now, biggest_till_now 
+
 
 class Solution(object):
     def shadowPairs(self, nums):
