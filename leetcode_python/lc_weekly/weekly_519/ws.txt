@@ -89,6 +89,82 @@ class Solution(object):
 #------------------------------------------------
 
 
+->
+
+Return the `minimum number of operations` 
+required to make every element in nums a `positive` palindrome 回文.
+
+
+
+
+nums: int arr
+
+
+
+# idea 1) brute force
+
+
+# idea 2) greedy
+    - if len == 2:
+        -> min move to len == 1
+
+    - else:
+        -> find the bigger, and smaller next `positive` palindrome
+
+        -> e.g. : 125
+
+        -> smaller: 121 or 2 ...
+
+        -> bigger: 525 or 626 or 727 .....
+
+
+
+class Solution(object):
+    def minOperations(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        # edge
+        if not nums or len(nums) == 0:
+            return 0
+
+        cnt = 0
+
+        for x in nums:
+            if not self.is_palindrome(x):
+                cnt += self.get_op(x)
+
+        return cnt
+
+
+    def get_op(self, x):
+        pass
+
+
+    def is_palindrome(self, x):
+        if len(x) <= 1:
+            return True
+
+        x_str = str(x)
+        l = 0
+        r = len(x_str) - 1
+
+        while r > l:
+            if x[l] != x[r]:
+                return False
+            l += 1
+            r -= 1
+
+        return True
+
+
+
+
+
+
+
+
 
 #------------------------------------------------
 
