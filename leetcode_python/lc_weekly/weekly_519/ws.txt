@@ -186,13 +186,163 @@ class Solution(object):
 
 
 
-
-
 #------------------------------------------------
 
 # LC 4054
 # https://leetcode.com/problems/count-shadow-pairs-i/description/
 #------------------------------------------------
+
+
+->
+
+Return the `total number` of `shadow` pairs.`
+
+
+
+
+nums: int arr, size = n
+
+
+(i, j) is `shadow pair`:
+    if ALL of below are true:
+
+        - 0 <= i < j < n
+
+        - nums[i] < nums[j]
+
+        - DOES NOT exist an idx k
+          s.t.
+
+            - i < k < j 
+            and 
+            - nums[k] < nums[i] < nums[j].
+
+
+
+
+
+# idea 1) brute force
+    - double loop
+        loop over nums
+        and check above `shadow pair` condition
+
+
+# idea 2) 2 pointers + smallest_till_now, biggest_till_now 
+
+
+
+#---------------
+
+
+ex 1)
+
+Input: nums = [3,1,4,1,5]
+
+Output: 3
+
+
+->
+
+[3,1,4,1,5]
+   i            
+
+ smallest = [  3, 1, 1, 1, 5 ]
+ biggest = [   3, 3, 4, 4, 5 ]
+
+
+[3,1,4,1,5]
+ i j 
+
+[3,1,4,1,5]
+   i j         idx_list = [[1,2]]
+
+[3,1,4,1,5]
+   i   j         idx_list = [ [1,2] ]
+
+
+
+[3,1,4,1,5]
+   i     j         idx_list = [ [1,2], [1,4] ]
+
+
+
+
+[3,1,4,1,5]
+     i j         idx_list = [ [1,2], [1,4] ]
+
+
+
+[3,1,4,1,5]
+     i   j         idx_list = [ [1,2], [1,4] ]
+
+
+
+
+[3,1,4,1,5]
+       i j         idx_list = [ [1,2], [1,4], [3,4] ]
+
+
+
+
+
+#---------------
+
+class Solution(object):
+    def shadowPairs(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        # edge
+        if not nums or len(nums) <= 1:
+            return 0
+
+        if len(nums) == 2:
+            return 1 if nums[1] > nums[0] else 0
+
+        cnt = 0
+
+        smallest_seen = []
+        biggest_seen = []
+
+        smallest = float('inf') # ??
+        biggest = float('-1 * inf') # ??
+
+        for x in nums:
+            smallest = min(x, smallest)
+            smallest_seen.append(x)
+
+
+        for x in nums:
+            biggest = max(x, biggest)
+            biggest.append(x)
+
+
+        # slide window
+        n = len(nums)
+
+        for l in range(n - 1):
+            r = l + 1
+
+            # ??
+            while r < n:
+
+                l_val = nums[l]
+                r_val = nums[r]
+
+                if r_val > l_val and r - l == 1:
+                    cnt += 1
+
+                # neglect the remaining loop (with cur r) 
+                if r - l > 1 and nums[r - 1] > l_val:
+                    break
+
+                if r_val > l_val and smallest_seen[r] >= l_val and biggest_seen[r] >= l_val:
+                    cnt += 1
+
+
+        return cnt
+        
 
 
 
