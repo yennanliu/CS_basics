@@ -1,7 +1,7 @@
 # Progress
 
 
-# 2026-09-19
+# 2026-09-20
 
 - TODO:
 	- `must_lc_list.md` -> done
@@ -89,7 +89,7 @@
 - python_trick.md
 	- `2) LC Example`
 
-
+	- `常見操作的複雜度`
 
 
 
