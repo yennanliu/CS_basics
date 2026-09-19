@@ -33,32 +33,53 @@ It is guaranteed that the list represents a number that does not have leading ze
 """
 
 # V0
-# time = O(n + m)  # n = len(l1), m = len(l2)
-# space = O(n + m)
+# IDEA: LINKED LIST OP (gpt)
 class Solution(object):
     def addTwoNumbers(self, l1, l2):
-        str1 = ""
-        str2 = ""
-
-        while l1:
-            str1 += str(l1.val)
-            l1 = l1.next
-
-        while l2:
-            str2 += str(l2.val)
-            l2 = l2.next
-
-        num1 = int(str1[::-1])
-        num2 = int(str2[::-1])
-
-        res = str(num1 + num2)[::-1]
-
         dummy = ListNode(0)
-        curr = dummy
+        node = dummy
 
-        for ch in res:
-            curr.next = ListNode(int(ch))
-            curr = curr.next
+        carry = 0
+
+        """
+        NOTE !!!
+
+        below
+
+        ->  either l1 or l2 or carry
+        
+            -> keep while loop
+
+        """
+        while l1 or l2 or carry:
+            val1 = l1.val if l1 else 0
+            val2 = l2.val if l2 else 0
+
+            total = val1 + val2 + carry
+
+
+            """
+            NOTE !!!
+
+            below
+
+            -> get cur digit, and the `carry` (bring to next round)
+            """
+
+            # Current digit
+            digit = total % 10
+
+            # Carry for next digit
+            carry = total // 10
+
+            node.next = ListNode(digit)
+            node = node.next
+
+            if l1:
+                l1 = l1.next
+
+            if l2:
+                l2 = l2.next
 
         return dummy.next
 
@@ -92,6 +113,37 @@ class Solution(object):
 
 
 # V0-2
+# time = O(n + m)  # n = len(l1), m = len(l2)
+# space = O(n + m)
+class Solution(object):
+    def addTwoNumbers(self, l1, l2):
+        str1 = ""
+        str2 = ""
+
+        while l1:
+            str1 += str(l1.val)
+            l1 = l1.next
+
+        while l2:
+            str2 += str(l2.val)
+            l2 = l2.next
+
+        num1 = int(str1[::-1])
+        num2 = int(str2[::-1])
+
+        res = str(num1 + num2)[::-1]
+
+        dummy = ListNode(0)
+        curr = dummy
+
+        for ch in res:
+            curr.next = ListNode(int(ch))
+            curr = curr.next
+
+        return dummy.next
+
+
+# V0-3
 # time = O(max(n, m))  # n = len(l1), m = len(l2)
 # space = O(max(n, m))
 class Solution(object):
