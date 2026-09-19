@@ -6,7 +6,7 @@
 
 (67 mins)
 
-10.53 - 12.00 pm
+3:45 - 4.52  pm
 #-------------------------------
 
 
@@ -15,6 +15,70 @@
 # LC 4052
 # https://leetcode.com/problems/cyclically-shift-rows-and-columns/description/
 #------------------------------------------------
+
+
+->
+
+Return the `resulting gri`d after 
+performing `all the shifts.`
+
+
+
+2D matrix: n x n
+
+
+rowShift, colShift: int arr, size = n
+
+
+
+
+rowShift[i]: 
+    the number of positions to 
+    cyclically shift the i-th row of grid to the `left.`
+
+
+
+colShift[j]:
+    represents the number of positions to cyclically 
+    shift the j-th column of grid `upward.`
+
+
+
+
+# idea 1) brute force (simulate the process)
+
+
+class Solution(object):
+    def cyclicShift(self, n, grid, rowShift, colShift):
+        if not grid or len(grid) == 0:
+            return None
+
+        if len(grid) == 1 and len(grid[0]) == 1:
+            return grid
+
+        """
+        A cyclic left shift of a row by k positions moves the element at column j to column (j - k + n) % n. All other rows remain unchanged.
+
+        """
+        for y in rowShift:
+            # ???
+            for j in range(n):
+                tmp_val = grid[y][x]
+                grid[y][(j - y + n) % n] = tmp_val
+
+        for x in colShift:
+            # ???
+            for i in range(n):
+                tmp_val = grid[y][x]
+                grid[(i - x + n) % n][x] = tmp_val
+
+        return grid
+
+
+
+
+
+
 
 
 
