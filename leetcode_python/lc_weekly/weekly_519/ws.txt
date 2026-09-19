@@ -343,6 +343,11 @@ class Solution(object):
                 if r - l > 1 and nums[r - 1] > l_val:
                     break
 
+                # ???
+                smallest = min(nums[l+1 : r])
+                biggest = max(nums[l+1 : r])
+
+
                 if r_val > l_val and smallest_seen[r] >= l_val and biggest_seen[r] >= l_val:
                     cnt += 1
 
