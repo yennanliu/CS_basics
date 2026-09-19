@@ -36,6 +36,116 @@ Follow up: Could you do this in one pass?
 
 
 # V0
+# IDEA: Dummy node + MOVE `len - n` steps (gpt)
+class Solution(object):
+    def removeNthFromEnd(self, head, n):
+        """
+        :type head: Optional[ListNode]
+        :type n: int
+        :rtype: Optional[ListNode]
+        """
+
+        # Edge case
+        if not head:
+            return None
+
+        # 1. Get linked list length
+        length = 0
+        node = head
+
+        while node:
+            length += 1
+            node = node.next
+
+        # 2. Dummy node
+        dummy = ListNode(0)
+        dummy.next = head
+        node = dummy
+
+
+        """
+        NOTE !!!
+
+        since we move from `dummy node` (psudeo node),
+
+            -> the `move` is   `length - n - 1 + 1` 
+                    -> `length - n`
+
+
+
+        ---
+
+        Example:
+
+ 
+        -> 
+            length = 5
+            n = 2
+
+        ->
+
+            ```
+            1 → 2 → 3 → 4 → 5
+                        ↑
+                      target
+            ```
+
+
+        -> (but our moves starts from `dummy` node)
+
+
+            ```
+            dummy → 1 → 2 → 3 → 4 → 5
+              ↑
+             node
+            ```
+
+
+        -> and we want node STOP at
+
+
+            ```
+            dummy → 1 → 2 → 3 → 4 → 5
+                            ↑
+                           node
+            ```
+
+        -> so we need `lenght - n`
+
+            = 5 - 2
+
+            = 3 moves (move from dummy)
+
+        """
+        # 3. Move to the node BEFORE the target
+        # target index from the front = length - n
+        moves = length - n
+
+        for _ in range(moves):
+            node = node.next
+
+        """
+        NOTE !!!
+
+
+        use ``dummy node` (psudeo node)` can BOTH handle below edge cases,
+            
+            -> e.g. no need have the other if-else branch handle them
+
+            1. if delete first node
+            2. if delete `last` node
+
+
+
+        """
+        # 4. Remove target node
+        node.next = node.next.next
+
+        return dummy.next
+
+
+
+# V0-0-1
 # IDEA: MOVE len - n steps (gpt)
 class Solution(object):
     def removeNthFromEnd(self, head, n):
