@@ -139,7 +139,29 @@ class Solution(object):
 
 
     def get_op(self, x):
-        pass
+
+        # len == 2
+        if len(str(x)) == 2:
+            # ??
+            return  floor((x - 9) / 2)
+
+        incre_op = 0
+        decre_op = 0
+
+        tmp = x
+
+        # try smaller
+        while not self.is_palindrome(str(tmp)):
+            tmp -= 2
+
+
+        tmp = x
+
+        # try bigger
+        while not self.is_palindrome(str(tmp)):
+            tmp += 2
+
+        return min(incre_op, decre_op)
 
 
     def is_palindrome(self, x):
