@@ -1,7 +1,7 @@
 # Progress
 
 
-# 2026-09-18
+# 2026-09-19
 
 - TODO:
 	- `must_lc_list.md` -> done
@@ -15,7 +15,8 @@
 			- graph (ing)
 			- greedy (pass)
 			- hashing (done)
-			- heap (ing)
+			- heap (done)
+			- linked list (ing)
 
 
 	- classics_lc_hard.txt
