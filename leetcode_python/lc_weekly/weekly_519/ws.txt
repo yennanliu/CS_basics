@@ -149,20 +149,43 @@ class Solution(object):
         incre_op = 0
         decre_op = 0
 
-        tmp = x
+        tmp_big = x
+        tmp_small = x
 
         # try smaller
-        while not self.is_palindrome(str(tmp)):
-            tmp -= 2
+        #while not self.is_palindrome(str(tmp)):
+        #    tmp -= 2
+
+        while (self.get_next_big_palindrome(tmp_big) - x) // 2 != 0:
+            tmp_big = self.get_next_big_palindrome(tmp_big)
 
 
-        tmp = x
+        while (self.get_next_small_palindrome(tmp_big) - x) // 2 != 0:
+            #incre_op = 
+            tmp_small = self.get_next_small_palindrome(tmp_big)
+
+
+        incre_op = (tmp_big - x) // 2
+        incre_op = (x - tmp_small) // 2
+
+
+
+
+        #tmp = x
 
         # try bigger
-        while not self.is_palindrome(str(tmp)):
-            tmp += 2
+        #while not self.is_palindrome(str(tmp)):
+       #     tmp += 2
 
         return min(incre_op, decre_op)
+
+
+    def get_next_big_palindrome(self, x):
+        pass
+
+
+    def get_next_small_palindrome(self, x):
+        pass
 
 
     def is_palindrome(self, x):
