@@ -158,7 +158,70 @@ class Solution(object):
         return dummy.next
 
 
+
 # V0-1
+# IDEA: LINKED LIST + HELPER FUNC (gpt)
+class Solution(object):
+    def swapPairs(self, head):
+        """
+        :type head: Optional[ListNode]
+        :rtype: Optional[ListNode]
+        """
+
+        if not head or not head.next:
+            return head
+
+        dummy = ListNode(0)
+        dummy.next = head
+
+        prev = dummy
+
+        while prev.next and prev.next.next:
+            # Swap the next two nodes
+            first = prev.next
+            second = first.next
+
+            # helper() returns the new head of this pair
+            new_head = self.helper(first)
+
+            # Connect previous part -> swapped pair
+            prev.next = new_head
+
+            # Move prev to the tail of the swapped pair
+            prev = first
+
+        return dummy.next
+
+    def helper(self, node):
+        """
+        Swap two nodes:
+
+        Input:
+            node -> node.next
+
+        Example:
+            1 -> 2 -> 3
+
+        Return:
+            2 -> 1 -> 3
+
+        Return the new head of this pair.
+        """
+
+        first = node
+        second = node.next
+
+        # 1 -> 3
+        first.next = second.next
+
+        # 2 -> 1
+        second.next = first
+
+        # New head is 2
+        return second
+
+
+# V0-2
 # IDEA : LINKED LIST (gemini)
 class Solution(object):
     def swapPairs(self, head):
@@ -195,7 +258,7 @@ class Solution(object):
         return _next_
 
 
-# V0-2
+# V0-3
 # IDEA : LINKED LIST
 # NOTE : 
 #   1) define 2 node via : n1, n2 = head.next, head.next.next
