@@ -766,8 +766,91 @@ class Solution(object):
 | 206 | Reverse Linked List | One call, `k = length` — only `new_head` matters |
 | 92  | Reverse Linked List II | Locate segment, one call with `k = right - left + 1`, reconnect both ends |
 | 25  | Reverse Nodes in k-Group | Loop the helper per group; skip the final `< k` tail |
-| 24  | Swap Nodes in Pairs | Special case `k = 2` per group |
+| 24  | Swap Nodes in Pairs | Special case `k = 2` — so small the helper is not worth calling; [worked below](#pairwise-swap--the-k--2-instance-lc-24) |
 | 61  | Rotate List | Different op, but same "locate boundary + re-stitch" discipline |
+
+---
+
+#### **Pairwise Swap — the k = 2 instance (LC 24)**
+
+At `k = 2` the helper still works — `reverse_helper(start, 2)` plus the LC 25 loop solves LC 24
+unchanged — but reversing *two* nodes is two assignments, so the loop inside the helper earns
+nothing. Unroll it and the three handles stop being return values and become local names:
+
+| The helper returns | At `k = 2` it is | Which is written as |
+|---|---|---|
+| `new_head` | `second` | `prev.next = second` |
+| `new_tail` | `first` | `prev = first` — the next iteration's `prev` |
+| `next_node` | `second.next` | folded straight into `first.next = second.next` |
+
+```python
+# python
+# LC 24 - Swap Nodes in Pairs
+# IDEA: the k = 2 case of the helper above, unrolled — only the reconnection survives.
+#       `prev` is the ONLY cursor: both members of the pair are reachable from it,
+#       so there is no second `head` walker to keep in step.
+# time = O(n), space = O(1)
+class Solution(object):
+    def swapPairs(self, head):
+        dummy = ListNode(0)
+        dummy.next = head
+        prev = dummy                  # node BEFORE the pair
+
+        # prev.next and prev.next.next ARE the pair -> no separate cursor needed
+        while prev.next and prev.next.next:
+            first = prev.next         # becomes the pair's tail  (new_tail)
+            second = first.next       # becomes the pair's front (new_head)
+
+            # reverse the 2-node segment
+            first.next = second.next  # (A) carry `next_node` straight into the new tail
+            second.next = first       # (B) flip the pair
+
+            # reconnect the front
+            prev.next = second        # (C) prev adopts the new front
+
+            # prev = new_tail: after the swap `first` sits before the next pair
+            prev = first
+
+        return dummy.next
+```
+
+**Why `prev` alone is enough.** The loop condition reads the pair *through* `prev`
+(`prev.next`, `prev.next.next`), so the cursor that guards the loop and the cursor that owns
+the incoming link are the same node. A form that also walks a separate `head` pointer has to
+advance both, and the two can fall out of step. It is also why the empty and single-node cases
+need no guard: `prev.next.next` is already `None`, so the loop simply never runs.
+
+```text
+input: 1 -> 2 -> 3 -> 4
+
+dummy -> 1 -> 2 -> 3 -> 4
+  ^prev  ^first
+              ^second
+
+(A) first.next  = second.next     # 1 -> 3
+(B) second.next = first           # 2 -> 1
+(C) prev.next   = second          # dummy -> 2
+
+dummy -> 2 -> 1 -> 3 -> 4
+
+prev = first
+
+dummy -> 2 -> 1 -> 3 -> 4
+              ^prev
+                   ^first
+                        ^second   <- next iteration reads the pair off prev again
+
+... repeat on (3, 4); then prev.next.next is None -> stop
+return dummy.next  =>  2 -> 1 -> 4 -> 3
+```
+
+> **Key insight**: `prev = first` here and `prev = new_tail` in the LC 25 loop are the *same
+> move* — a segment's old head is its new tail, which is exactly the node that must own the
+> incoming link for the next segment. Recognise that once and LC 24 stops being its own problem.
+
+The full walkthrough — the three anchors, why `(A)` must precede `(B)`, the per-iteration dry
+run and the recursive form — is in
+[linked_list_examples.md 3)](./linked_list_examples.md#3-swap-nodes-in-pairs--lc-24).
 
 ---
 

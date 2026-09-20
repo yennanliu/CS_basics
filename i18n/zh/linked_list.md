@@ -267,7 +267,7 @@
 
 ---
 
-<!-- 1960db2abf58 -->
+<!-- 256bdeff2adf -->
 #### **反轉 K 個節點的輔助函式模式** ⭐⭐⭐⭐⭐
 
 **核心想法**：幾乎每一題「反轉某一*段*」（LC 92、LC 25、LC 24、LC 206）都是**同一個基本操作** — 從某個 `head` 開始反轉 `k` 個節點，然後把線接回去。把這個基本操作抽成一個可重用的輔助函式，外層解法就只要煩惱**定位那一段**和**把兩頭縫回去**。
@@ -310,8 +310,31 @@
 | 206 | Reverse Linked List | 呼叫一次，`k = length` — 只有 `new_head` 有用 |
 | 92  | Reverse Linked List II | 定位那一段，用 `k = right - left + 1` 呼叫一次，兩頭都接回去 |
 | 25  | Reverse Nodes in k-Group | 每組呼叫一次；最後不足 `k` 的尾巴跳過 |
-| 24  | Swap Nodes in Pairs | 就是每組 `k = 2` 的特例 |
+| 24  | Swap Nodes in Pairs | `k = 2` 的特例 — 小到不值得呼叫輔助函式；[下面有完整寫法](#pairwise-swap--the-k--2-instance-lc-24) |
 | 61  | Rotate List | 操作不同，但一樣是「定位邊界 + 重新縫合」那套紀律 |
+
+---
+
+<!-- a9e3a76baa43 -->
+#### **成對交換 — k = 2 的特例（LC 24）**
+
+在 `k = 2` 時輔助函式依然可用 — `reverse_helper(start, 2)` 搭配 LC 25 的迴圈就能原封不動解掉 LC 24 — 但反轉*兩個*節點只是兩行賦值，輔助函式裡的那個迴圈什麼也賺不到。把它展開，三個把手就不再是回傳值，而變成區域變數名稱：
+
+| 輔助函式回傳 | 在 `k = 2` 時就是 | 實際寫成 |
+|---|---|---|
+| `new_head` | `second` | `prev.next = second` |
+| `new_tail` | `first` | `prev = first` — 下一輪的 `prev` |
+| `next_node` | `second.next` | 直接折進 `first.next = second.next` |
+
+<!--CODE-->
+
+**為什麼只靠 `prev` 就夠了。** 迴圈條件是*透過* `prev` 去讀那一對節點（`prev.next`、`prev.next.next`），所以守住迴圈的指標和擁有入邊的指標是同一個節點。另一種還要再走一個 `head` 指標的寫法，兩個都得各自前進，而它們有可能走不同步。這也是為什麼空串列和單一節點的情況不需要額外判斷：`prev.next.next` 本來就是 `None`，迴圈根本不會跑。
+
+<!--CODE-->
+
+> **關鍵洞見**：這裡的 `prev = first` 和 LC 25 迴圈裡的 `prev = new_tail` 是*同一個動作* — 一段的舊 head 就是它的新 tail，而那正是下一段的入邊必須掛上去的節點。認出這件事，LC 24 就不再是一題獨立的題目。
+
+完整的走查 — 三個錨點、為什麼 `(A)` 必須排在 `(B)` 前面、逐輪的 dry run，以及遞迴寫法 — 在 [linked_list_examples.md 3)](./linked_list_examples.md#3-swap-nodes-in-pairs--lc-24)。
 
 ---
 
