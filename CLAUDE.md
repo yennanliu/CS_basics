@@ -352,6 +352,63 @@ page's prose. Their `.claude/skills/...` links are enforced by
 
 ---
 
+## Tracking the practice — `/lc-log` and `/lc-again`
+
+Two skills for the two records a practice session leaves behind. **The steps live in each
+`SKILL.md`, not here.**
+
+`.claude/skills/lc-log/` appends the day to [`data/progress.txt`](data/progress.txt). That
+file is the only copy — nothing else in the repo records that a problem was *practised* —
+and `site/build-review-plan.js` compiles it into the review plan on every build, so a line
+in the wrong shape does not fail the build. It produces a smaller schedule.
+
+Two shapes lose data silently, and both are already in the log:
+
+- **a number glued to its bucket label.** Each comma-chunk must *start* with the digits, so
+  `others: 678(todo)` looks exactly like a named drill (`topo_sort`, `weekly_331`) and is
+  dropped whole, taking LC 678 with it. **93 attempts sit in a chunk shaped like that**, and
+  the log's two readers disagree about them: `script/suggest_review.py` strips labels first
+  (`_strip_label`), `site/build-review-plan.js` does not. A comma after the label —
+  `others:, 678(todo)` — makes both agree, and is the shape `/lc-log` writes;
+- **a number after its description.** `2D LIS (354)` is read as LC **2**, because the regex
+  takes the first digits in the chunk. 16 entries do this, and neither reader recovers it.
+  `354(2D LIS)` is correct.
+
+Fixing the 109 historical entries is a separate job that moves `build-review-plan.js` and
+its tests first; `/lc-log` writes today's line and never rewrites a past day.
+
+`.claude/skills/lc-again/` owns the other record — README's **status column**, which reads
+325 `AGAIN` against 124 `OK`, with 106 problems still marked after twelve or more passes.
+[`doc/lc-readiness-guide.md`](doc/lc-readiness-guide.md) already says why that ratio is a
+floor rather than a measurement: nothing in the repo promotes a row, so the marker only
+accretes, and `suggest_review.py` reads a high pass count on an `AGAIN` row as *difficulty*
+— so a problem that has actually been mastered keeps scoring as a gap.
+
+`/lc-again` is the missing half. Its bar for a promotion is all four of: re-derived
+**unaided**, the invariant stated, the line that sets the complexity named, the edges
+handled. Anything short of that is *another pass* (`AGAIN**` → `AGAIN***`), which is the
+common case. Three pieces of the cell are load-bearing and survive every edit — the
+`OK`/`AGAIN` word, the trailing `*` run (which is the recorded pass count that both
+`suggest_review.py` and the readiness cost curve read), and `MUST` in any casing. So
+`AGAIN*************** (7) (MUST)` becomes `OK*************** (7) (MUST)`: only the word
+moves. With 403 distinct spellings in that column, this is not the commit that
+standardises them.
+
+```text
+/lc-log 23 ok, 24 again!!, 25        # + "log today's practice" works too
+/lc-again 128                        # asks the four questions before deciding
+/lc-again 560 came back again        # demote, keeping the stars
+```
+
+The two never write each other's file: a practice attempt and a mastery verdict are
+different records, and each skill says which one is still owed.
+
+`site/pages/lc-log.html` and `site/pages/lc-again.html` are their pages on the site, hand-
+maintained like the others — `build.sh` copies them, `finalize-pages.js` gives them the
+canonical and Open Graph tags, and editing a `SKILL.md` does **not** update a page's prose.
+
+---
+
 ## Updating a cheatsheet — `/lc-cheatsheet`
 
 `.claude/skills/lc-cheatsheet/` is `/lc-python`'s counterpart for the notes rather than
@@ -725,7 +782,8 @@ python3 script/check_skills.py --install   # what CI runs
 
 It checks frontmatter every host can parse, that no reference file is orphaned, and that every
 `.claude/skills/...` path named by `CLAUDE.md`, an `INSTALL.md` or a skill's page under
-`site/pages/` (`skills.html`, `lc-python.html`, `lc-java.html`)
+`site/pages/` (`skills.html`, `lc-python.html`, `lc-java.html`, `lc-log.html`,
+`lc-again.html`)
 still resolves — that last one because those links are absolute `github.com` URLs, which
 `e2e-check.js` cannot resolve and never will. `--install` performs both documented installs
 (the `cp -r`, and the zip the Claude app uploads) into a temp directory and re-runs every check

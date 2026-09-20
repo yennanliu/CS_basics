@@ -77,7 +77,9 @@
       { id: 'lc-coach',         label: 'lc-coach',   href: 'skills.html' },
       { id: 'lc-python',        label: 'lc-python',  href: 'lc-python.html' },
       { id: 'lc-java',          label: 'lc-java',    href: 'lc-java.html' },
-      { id: 'lc-cheatsheet',    label: 'lc-cheatsheet', href: 'lc-cheatsheet.html' }
+      { id: 'lc-cheatsheet',    label: 'lc-cheatsheet', href: 'lc-cheatsheet.html' },
+      { id: 'lc-log',           label: 'lc-log',     href: 'lc-log.html' },
+      { id: 'lc-again',         label: 'lc-again',   href: 'lc-again.html' }
     ] },
     { id: 'resources',          label: 'resources',  href: 'resources.html' },
     { id: 'github',             label: 'github',     href: 'https://github.com/yennanliu/CS_basics', external: true }

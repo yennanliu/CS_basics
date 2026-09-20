@@ -951,7 +951,13 @@ const AGENT_SKILLS = [
    'a compile and a run, and the [Java] link added to the row the problem already has.'],
   ['lc-cheatsheet.html', '/lc-cheatsheet', 'Update a cheatsheet',
    'Files what a problem taught you into the sheet that owns the topic — as an example, a variation ' +
-   'on a template, a new pattern or a new sheet — then follows the anchors and translations it moved.']
+   'on a template, a new pattern or a new sheet — then follows the anchors and translations it moved.'],
+  ['lc-log.html', '/lc-log', 'Log the session',
+   'Appends today to the practice log in the shape the review plan\'s parser actually reads, ' +
+   'so no problem number is silently dropped and the annotations survive.'],
+  ['lc-again.html', '/lc-again', 'Graduate an AGAIN',
+   'Moves the README status cell after a re-solve — promoting only what was genuinely re-derived ' +
+   'unaided, and keeping the star run that records what the problem cost.']
 ];
 
 const landingContent = `

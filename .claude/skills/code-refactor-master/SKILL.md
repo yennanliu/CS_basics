@@ -1,7 +1,7 @@
 ---
 name: code-refactor-master
 description: Code refactoring expert for improving code quality, readability, maintainability, and performance. Specializes in Java and Python refactoring patterns, eliminating code smells, and applying clean code principles. Use when refactoring code, improving existing implementations, or cleaning up technical debt.
-allowed-tools: Read, Glob, Grep, Edit, LSP
+allowed-tools: Read, Glob, Grep, Edit
 ---
 
 # Code Refactor Master
