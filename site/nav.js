@@ -60,7 +60,7 @@
   //
   // An entry with `children` is a labelled group inside the menu rather than a
   // link of its own. The agent skills are the case it exists for: `lc-coach`
-  // and `lc-add` are one family — the same `.claude/skills/` tree, the same
+  // and `lc-python` are one family — the same `.claude/skills/` tree, the same
   // install, the same slash-command convention — and sat as two unrelated
   // entries with the first of them labelled "coach", which named neither the
   // command (`/lc-coach`) nor the directory. A group keeps them adjacent and
@@ -75,8 +75,15 @@
     { id: 'suggest-review',     label: 'suggest',    href: 'suggest-review.html' },
     { id: 'agent-skills',       label: 'agent skills', children: [
       { id: 'lc-coach',         label: 'lc-coach',   href: 'skills.html' },
-      { id: 'lc-add',           label: 'lc-add',     href: 'lc-add.html' },
-      { id: 'lc-cheatsheet',    label: 'lc-cheatsheet', href: 'lc-cheatsheet.html' }
+      { id: 'lc-python',        label: 'lc-python',  href: 'lc-python.html' },
+      { id: 'lc-java',          label: 'lc-java',    href: 'lc-java.html' },
+      { id: 'lc-cheatsheet',    label: 'lc-cheatsheet', href: 'lc-cheatsheet.html' },
+      { id: 'lc-log',           label: 'lc-log',     href: 'lc-log.html' },
+      { id: 'lc-again',         label: 'lc-again',   href: 'lc-again.html' },
+      { id: 'lc-zh-translate',  label: 'lc-zh-translate', href: 'lc-zh-translate.html' },
+      { id: 'lc-algo-demo',     label: 'lc-algo-demo', href: 'lc-algo-demo.html' },
+      { id: 'lc-site-data',     label: 'lc-site-data', href: 'lc-site-data.html' },
+      { id: 'lc-faq-add',       label: 'lc-faq-add', href: 'lc-faq-add.html' }
     ] },
     { id: 'resources',          label: 'resources',  href: 'resources.html' },
     { id: 'github',             label: 'github',     href: 'https://github.com/yennanliu/CS_basics', external: true }

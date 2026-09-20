@@ -6,9 +6,9 @@
   <meta name="theme-color" content="#000000">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <title>LC Cheatsheet — CS_basics</title>
-  <meta name="description" content="An agent skill that files a LeetCode problem into the cheatsheets the way the existing sections are written: the sheet whose Scope line owns the topic, one of four modes (example, variation, pattern, new sheet), every snippet run, the heading anchors the edit moved, and the 中文 overlay kept level.">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📝</text></svg>">
+  <title>LC Log — CS_basics</title>
+  <meta name="description" content="An agent skill that appends today's practice session to data/progress.txt in the shape the review plan's parser actually reads: the bucket labels comma-terminated so no problem number is silently dropped, the annotations kept verbatim, and the line round-tripped before it is reported done.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📅</text></svg>">
   <link rel="stylesheet" href="nav.css">
   <link rel="stylesheet" href="lc-page.css">
   <!-- Blocking on purpose: nav.js restores the stored theme before first paint. -->
@@ -16,9 +16,9 @@
   <style>
     /* ── Page-local tokens ────────────────────────────────────────────────
        The palette itself (--bg/--text/--border/--surface, light and dark)
-       comes from lc-page.css. Only things this page alone needs live here,
-       and deliberately in the vocabulary skills.html and lc-python.html use —
-       the skill pages should read as one family, not one design each. */
+       comes from lc-page.css. Only things this page alone needs live here.
+       Deliberately the same vocabulary skills.html uses — the two skill pages
+       should read as one family, not as two designs. */
     :root {
       --mono: 'SF Mono','JetBrains Mono','IBM Plex Mono',ui-monospace,'Menlo',monospace;
       --grid-line: rgba(128,128,128,0.10);
@@ -37,6 +37,8 @@
 
     .container { max-width: 940px; margin: 0 auto; padding: 0 1.5rem; }
 
+    /* Sections fade up as they arrive. Everything is visible by default, so a
+       page with JS off (or reduced motion) simply shows the finished state. */
     .reveal { opacity: 1; transform: none; }
     .js .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.5s ease, transform 0.5s ease; }
     .js .reveal.in { opacity: 1; transform: none; }
@@ -47,6 +49,8 @@
       border-bottom: 1px solid var(--border);
       padding: 4rem 0 3rem;
     }
+    /* A faint engineering grid. Purely decorative, so it is aria-hidden and
+       drawn in a pseudo-element rather than as an element in the flow. */
     .hero::before {
       content: ''; position: absolute; inset: 0; pointer-events: none;
       background-image:
@@ -118,6 +122,7 @@
     }
     h2 { font-size: 1.35rem; margin: 0 0 0.5rem; letter-spacing: -0.02em; }
     .sub { color: var(--text-light); margin: 0 0 1.9rem; max-width: 72ch; }
+    h3 { font-size: 0.92rem; margin: 2.2rem 0 0.7rem; }
 
     /* ── Failure cards ────────────────────────────────────────────────── */
     .fails { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1px;
@@ -130,16 +135,17 @@
     .fail p:last-child { margin-bottom: 0; }
     .fail .cost { color: var(--text); }
 
-    /* ── The four modes ───────────────────────────────────────────────── */
-    .rail { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-bottom: 1.2rem; }
+    /* ── The pipeline stepper ─────────────────────────────────────────── */
+    .rail { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 1.2rem; }
     .step {
+      position: relative;                /* anchors the visually-hidden .tag below 760px */
       font-family: inherit; cursor: pointer; text-align: center;
       border: 1px solid var(--border); background: var(--surface); color: var(--text);
       padding: 0.85rem 0.25rem 0.7rem; transition: transform 0.15s, border-color 0.15s, background 0.15s;
     }
     .step:hover { border-color: var(--text); transform: translateY(-2px); }
     .step[aria-checked="true"] { background: var(--text); color: var(--bg); border-color: var(--text); }
-    .step .n { display: block; font-size: 0.95rem; font-weight: 700; letter-spacing: -0.02em; }
+    .step .n { display: block; font-size: 1.05rem; font-weight: 700; letter-spacing: -0.02em; }
     .step .tag { display: block; font-size: 0.6rem; letter-spacing: 0.06em; text-transform: uppercase;
                  margin-top: 0.35rem; color: var(--text-light); overflow: hidden; text-overflow: ellipsis; }
     .step[aria-checked="true"] .tag { color: var(--bg); }
@@ -148,7 +154,7 @@
 
     .step-detail {
       border: 1px solid var(--border); border-left: 3px solid var(--text);
-      background: var(--tint); padding: 1.1rem 1.3rem; min-height: 12.5rem;
+      background: var(--tint); padding: 1.1rem 1.3rem; min-height: 11.5rem;
     }
     .step-detail .sd-name { font-size: 1rem; font-weight: 700; margin: 0 0 0.35rem; }
     .step-detail p { margin: 0 0 0.6rem; }
@@ -182,7 +188,7 @@
     }
     .copy:hover { color: var(--text); border-color: var(--text); }
 
-    /* ── Tabs (the installs) ──────────────────────────────────────────── */
+    /* ── Tabs (the anatomy, and the installs) ─────────────────────────── */
     .tabs { display: flex; flex-wrap: wrap; border-bottom: 1px solid var(--border); margin-bottom: 1.1rem; }
     .tab {
       background: none; border: none; border-bottom: 2px solid transparent; color: var(--text-light);
@@ -214,7 +220,15 @@
     .note { color: var(--text-light); font-size: 0.82rem; }
 
     @media (max-width: 760px) {
-      .rail { grid-template-columns: repeat(2, 1fr); }
+      .rail { grid-template-columns: repeat(4, 1fr); }
+      /* Not display:none. The tag is the step's only descriptive text — `.bar`
+         is aria-hidden and `.n` is just a number — so hiding it that way leaves
+         a radio whose accessible name is "1". Visually hidden keeps it in the
+         accessibility tree. */
+      .step .tag {
+        position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+        overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+      }
       .hero { padding-top: 2.5rem; }
       .term pre { min-height: 18rem; }
     }
@@ -227,7 +241,7 @@
 </head>
 <body>
 
-<div id="site-nav" data-page="lc-cheatsheet" data-base=""></div>
+<div id="site-nav" data-page="lc-log" data-base=""></div>
 <script>CSNav.mount();</script>
 
 <main id="main">
@@ -236,47 +250,45 @@
   <div class="hero">
     <div class="container">
       <p class="kicker"><span class="dot" aria-hidden="true"></span> Agent skill</p>
-      <h1>LC Cheatsheet<br><span class="thin">problem &rarr; pattern</span></h1>
+      <h1>LC Log<br><span class="thin">the only copy</span></h1>
       <p class="lede">
-        A solved problem is worth more as a line in the sheet you reach for next time than as
-        one more file in the tree. <code>/lc-cheatsheet</code> files it there: the sheet whose
-        Scope line owns the topic, the pattern it actually belongs under, every snippet run
-        before it lands, the heading anchors the edit moved, and the 中文 overlay kept level.
+        <code>data/progress.txt</code> is the daily practice log, and nothing else in this
+        repo records that a problem was practised. The
+        <a href="lc-review-plan.html">review plan</a> is compiled from it on every build, so a
+        line written in the wrong shape does not fail &mdash; it produces a smaller schedule.
+        <code>/lc-log</code> writes the day in the shape the parser actually reads.
       </p>
       <div class="hero-actions">
         <a class="btn primary" href="#install">Install it</a>
-        <a class="btn" href="#modes">The four modes</a>
-        <a class="btn" href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-cheatsheet/SKILL.md">Read the source</a>
+        <a class="btn" href="#pipeline">See the pipeline</a>
+        <a class="btn" href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-log/SKILL.md">Read the source</a>
       </div>
 
       <div class="term">
         <div class="term-bar">
           <i aria-hidden="true"></i><i aria-hidden="true"></i><i aria-hidden="true"></i>
-          <span>/lc-cheatsheet 1650 into binary_tree as variation</span>
+          <span>/lc-log 23 ok, 24 again!!!, 25, 138 came back</span>
         </div>
-        <pre id="tape" aria-live="off">1  sheet      binary_tree.md, as asked — plus tree_lca_distance.md, whose
-              Scope line owns LCA, so the depth goes there and binary_tree
-              gets the entry point. Found a bug on the way: the LC 236
-              template claimed it solved 1650
+        <pre id="tape" aria-live="off">1  read       head of data/progress.txt → yesterday's open buckets
+              top 100 like(linked list) · (heap) · (dp) · others · DP
 
-2  mode       variation — 1650 breaks one precondition: no root, parent pointers
+2  sort       23, 24, 25, 138 → top 100 like(linked list)
+              the other buckets carry forward untouched
 
-3  neighbour  matched #### LCA Variant — Smallest Subtree with All Deepest Nodes
+3  write      20260921: top 100 like(linked list):, 23(ok), 24(again!!!), 25,
+                        138(again) | top 100 like(heap):, 295 | ... |
+                                                        ^ the comma after every
+                                                          label. Without it, 23 is
+                                                          silently dropped.
 
-4  write      family picker table (236/235/1644/1650/1676), two templates,
-              the step trace, the pitfalls · binary_tree.md: Template 6's
-              variations table, the 1650 code, the link onward
+4  scope      README, again_problems.txt, solution files — untouched
 
-5  anchors    slugify → #lca-variant--parent-pointers-no-root-lc-1650-
-              trailing dash: the star run leaves the space before it
+5  gate       build-review-plan.js → 822 days, 799 problems, 294 again
+              round-trip → 23(ok) 24(again!!!) 25 138(again)   all four present
 
-6  test       5 snippets vs the LC examples + a cross-tree pair → None
-
-7  中文        8 sections parked by the edit, all 8 re-keyed → 0 todo
-
-8  verify     build · e2e-check 76/76 · 418 unit tests green</pre>
+6  assumed    25 has no verdict because none was given. Correct me.</pre>
       </div>
-      <p class="note" style="margin-top:0.6rem">A real run — the LCA variation now in <a href="cheatsheets/tree_lca_distance.html">tree_lca_distance</a>, in the order it always happens.</p>
+      <p class="note" style="margin-top:0.6rem">A real run: read the open buckets, sort today into them, write one line, check it round-trips, then say what was guessed.</p>
     </div>
   </div>
 
@@ -285,76 +297,88 @@
     <!-- ── Why it exists ───────────────────────────────────────────────── -->
     <section id="why" class="reveal">
       <p class="eyebrow">Why a skill and not a habit</p>
-      <h2>Three ways a cheatsheet edit rots</h2>
+      <h2>Two shapes that lose data, silently</h2>
       <p class="sub">
-        None of these are hypothetical — each one has landed in this repo, and none of them
-        looks wrong in a diff. A sheet is read as authoritative, which is exactly what makes a
-        quiet error in one expensive.
+        The log's format is hand-written and forgiving, which is the point &mdash; and also
+        the problem. Neither of these produces a warning. Both are already in the file.
       </p>
       <div class="fails">
         <div class="fail">
           <span class="glyph" aria-hidden="true">&#9639;</span>
-          <b>It lands in the wrong sheet</b>
-          <p>Two sheets can plausibly own &ldquo;LCA&rdquo;. Filed into the wrong one it becomes a second copy that drifts, and the Scope lines that exist to prevent that go unread.</p>
-          <p class="cost">Rule: the Scope line decides, not the topic name.</p>
+          <b>A number glued to its label</b>
+          <p>Each comma-chunk has to <em>start</em> with the digits. <code>others: 678(todo)</code> starts with a letter, so it looks exactly like a named drill and is dropped whole &mdash; taking LC 678 with it.</p>
+          <p class="cost">Cost: 93 attempts in the log sit in a chunk shaped like that.</p>
         </div>
         <div class="fail">
           <span class="glyph" aria-hidden="true">&#9636;</span>
-          <b>It is appended, not filed</b>
-          <p>An <code>LC Examples</code> block at the end of the file, re-solving what a template above already solved. That is the Aug 2026 cleanup this repo already paid for once.</p>
-          <p class="cost">Fix: file it under the pattern it belongs to.</p>
+          <b>A number after its description</b>
+          <p><code>2D LIS (354)</code> is read as LC <b>2</b>, because the regex takes the first digits it finds. Writing <code>354(2D LIS)</code> instead records the problem you actually did.</p>
+          <p class="cost">Cost: 16 entries log the wrong problem.</p>
         </div>
         <div class="fail">
           <span class="glyph" aria-hidden="true">&#9676;</span>
-          <b>The edit breaks what it touched</b>
-          <p>A changed heading moves its anchor and every link to it dangles. An edited section parks its 中文 translation, and the Chinese page quietly falls back to English.</p>
-          <p class="cost">Both are followed in the same commit.</p>
+          <b>The two readers disagree</b>
+          <p><code>suggest_review.py</code> strips bucket labels before parsing; <code>build-review-plan.js</code> does not. So the CLI planner sees those 93 attempts and this site's review plan does not.</p>
+          <p class="cost">Fix: a comma after the label makes both agree.</p>
         </div>
       </div>
     </section>
 
-    <!-- ── The four modes ──────────────────────────────────────────────── -->
-    <section id="modes" class="reveal">
-      <p class="eyebrow">One argument decides the shape</p>
-      <h2>Four modes</h2>
+    <!-- ── The pipeline ────────────────────────────────────────────────── -->
+    <section id="pipeline" class="reveal">
+      <p class="eyebrow">One pass, no branches</p>
+      <h2>Six steps, in order</h2>
       <p class="sub">
-        <code>as &lt;mode&gt;</code> is the whole interface. It is inferred from what the sheet
-        already contains, so it is worth passing only to overrule that — and the mode, not the
-        problem, is what determines where the section goes and which tables have to move with it.
+        The steps never reorder and none of them is optional. Pick one to see what it does and
+        the rule that step exists to enforce.
       </p>
 
-      <div class="rail" role="radiogroup" aria-label="Modes">
-        <button class="step" role="radio" aria-checked="true" data-n="example"
-          data-name="as example — the default"
-          data-body="The sheet already has the template and this problem is another instance of it. The section lands under that template, and the pattern's similar-problems table gains a row."
-          data-rule="If the sheet already solves the problem, this is not the mode — one canonical solution per problem."
-          data-code="/lc-cheatsheet 239 into sliding_window">
-          <span class="n">example</span><span class="bar" aria-hidden="true"></span><span class="tag">default</span>
+      <div class="rail" role="radiogroup" aria-label="Pipeline steps">
+        <button class="step" role="radio" aria-checked="true" data-n="1"
+                data-name="Read the last few days"
+                data-body="New entries go at the top of the file, newest first. Yesterday's line carries the buckets still in play — top 100 like(dp), LCA, DP, LC weekly, others. They are your own running agenda, so they carry forward with their wording intact, and a bucket is dropped only when you say it is finished."
+                data-rule="Use today's real date, checked rather than assumed. An impossible date is warned about and the whole day is dropped from the schedule."
+                data-code="head -20 data/progress.txt">
+          <span class="n">1</span><span class="bar" aria-hidden="true"></span><span class="tag">read</span>
         </button>
-        <button class="step" role="radio" aria-checked="false" data-n="variation"
-          data-name="as variation — the valuable one"
-          data-body="The sheet's template does not quite solve it: exactly one precondition differs. It lands as a variant under the template it varies, and the report has to name which precondition changed."
-          data-rule="This is the mode that teaches which template to reach for — the thing readers get wrong under time pressure."
-          data-code="/lc-cheatsheet 1650 into binary_tree as variation
-  -> LC 236 assumes a root. 1650 has parent pointers
-     and none, so it is LC 160, not a tree search.">
-          <span class="n">variation</span><span class="bar" aria-hidden="true"></span><span class="tag">one precondition</span>
+        <button class="step" role="radio" aria-checked="false" data-n="2"
+                data-name="Sort what you said into buckets"
+                data-body="Each problem goes in the bucket it belongs to, matching the labels already in use; anything unplaced goes in others. A new bucket is fine when you name a new theme — the label stays short and gets reused the next day."
+                data-rule="Never invent an attempt. Not what you were supposed to do, not the carried-over todo bucket as though it had been attempted, and not a problem that /lc-python or /lc-java filed in the same session. Filing a solution is not practising it."
+                data-code="23 ok · 24 again!!! · 25 · 138 came back
+        -> top 100 like(linked list)">
+          <span class="n">2</span><span class="bar" aria-hidden="true"></span><span class="tag">sort</span>
         </button>
-        <button class="step" role="radio" aria-checked="false" data-n="pattern"
-          data-body="The sheet has no template for the technique at all. A new pattern section is written in the sheet's own skeleton, and it has to be made reachable: the category table, the selection strategy, and the decision tree at the end."
-          data-name="as pattern — a technique the sheet lacks"
-          data-rule="A section nothing links to is a section nobody finds. Reachability is half the job."
-          data-code="/lc-cheatsheet 496 as pattern">
-          <span class="n">pattern</span><span class="bar" aria-hidden="true"></span><span class="tag">new template</span>
+        <button class="step" role="radio" aria-checked="false" data-n="3"
+                data-name="Write the line"
+                data-body="One physical line per day, at the top of the file, two blank lines above the entry below it. Every label ends with a comma, every problem is number-first, sessions are separated by a pipe, and the line ends with a trailing pipe like its neighbours."
+                data-rule="A number must start its own comma-chunk or it is silently lost — and the LC number comes before the description, never after it."
+                data-code="20260921: top 100 like(linked list):, 23(ok), 24(again!!!), 25 | others:, 354(2D LIS) |">
+          <span class="n">3</span><span class="bar" aria-hidden="true"></span><span class="tag">write</span>
         </button>
-        <button class="step" role="radio" aria-checked="false" data-n="sheet"
-          data-name="as sheet — nothing owns the topic"
-          data-body="A whole new doc/cheatsheet/<slug>.md: H1, the Scope line that claims the topic, the LeetCode problem lists, and Skeleton A or B chosen by size — under ~800 lines or over. Plus its entry in data/cheatsheet_meta.json."
-          data-rule="The build fails without the meta entry, on purpose, so nothing lands in an unsorted bucket."
-          data-code="/lc-cheatsheet monotonic_queue as sheet
-  -> data/cheatsheet_meta.json
-     { category: ..., tier: 4 }">
-          <span class="n">sheet</span><span class="bar" aria-hidden="true"></span><span class="tag">new file</span>
+        <button class="step" role="radio" aria-checked="false" data-n="4"
+                data-name="Do not touch anything else"
+                data-body="This skill writes exactly one new line in one file. Not README's status column, not a solution file, not data/again_problems.txt."
+                data-rule="The status column is /lc-again's job, and it has its own rules about what earns a promotion. A practice attempt and a mastery verdict are different records."
+                data-code="one file  data/progress.txt
+one line  today">
+          <span class="n">4</span><span class="bar" aria-hidden="true"></span><span class="tag">scope</span>
+        </button>
+        <button class="step" role="radio" aria-checked="false" data-n="5"
+                data-name="Run the gate"
+                data-body="The parser never errors on a badly shaped line — it just reads fewer problems. So the check is the numbers, not the exit code: build the review plan's data, run the tests that pin the real log to zero warnings, then round-trip today's line and confirm every number you gave came back."
+                data-rule="If a number is missing from the round-trip, the line is wrong. Fix the line, not the expectation."
+                data-code="node site/build-review-plan.js
+npm test --prefix site">
+          <span class="n">5</span><span class="bar" aria-hidden="true"></span><span class="tag">gate</span>
+        </button>
+        <button class="step" role="radio" aria-checked="false" data-n="6"
+                data-name="Report"
+                data-body="Close with the date written, the problems grouped by bucket, the round-trip output, and anything inferred: a bucket chosen for a problem you did not place, a carried-over bucket dropped because it looked finished, a verdict left blank because none was given."
+                data-rule="Say what was assumed, so it can be corrected. An unflagged guess is the one that survives."
+                data-code="assumed  25 recorded with no verdict - none was given
+dropped  LC weekly: - you said 2289 was finally done">
+          <span class="n">6</span><span class="bar" aria-hidden="true"></span><span class="tag">report</span>
         </button>
       </div>
 
@@ -364,101 +388,141 @@
         <p class="sd-rule"></p>
         <pre class="sd-code"></pre>
       </div>
-
-      <p class="note" style="margin-top:1.2rem">
-        The sheet itself is inferred too — from the technique the solution uses and from
-        <code>README.md</code>'s topic heading for that LC number. <code>into &lt;slug&gt;</code>
-        names one explicitly, and a sheet you name is never left untouched: it gets the entry
-        point — its own table row, the code a reader of <em>that</em> sheet needs, the link
-        onward. If its Scope line does not claim the topic the full section goes to the sheet
-        whose line does, and the report names both — one edit in the common case, two when
-        the topic lives next door.
-      </p>
     </section>
 
-    <!-- ── The two things it always does ───────────────────────────────── -->
-    <section id="after" class="reveal">
-      <p class="eyebrow">The half that gets forgotten</p>
-      <h2>What every edit drags behind it</h2>
+    <!-- ── The format ──────────────────────────────────────────────────── -->
+    <section id="layout" class="reveal">
+      <p class="eyebrow">What lands in the file</p>
+      <h2>The format, as the parser reads it</h2>
       <p class="sub">
-        Writing the section is the visible part. These two are what turn a good section into a
-        broken page, and both are mechanical enough to be written down once.
+        One line, and the vocabulary inside it. The annotations are not decoration &mdash;
+        they are the entire signal the spaced-repetition schedule runs on.
       </p>
 
-      <h3 style="font-size:0.92rem;margin:0 0 0.7rem">1. The anchors the heading moved</h3>
-      <p>
-        Heading ids come from <code>slugify</code> in the build, which strips a
-        <code>&#11088;</code> run but <em>not</em> the space before it — so a star run leaves a
-        trailing <code>-</code> on the id. Anchors are computed, never hand-written:
+      <div class="tabs" role="tablist" aria-label="Format">
+        <button class="tab" role="tab" id="t-file" aria-controls="a-file" aria-selected="true">The line</button>
+        <button class="tab" role="tab" id="t-row"  aria-controls="a-row"  aria-selected="false">Annotations</button>
+        <button class="tab" role="tab" id="t-var"  aria-controls="a-var"  aria-selected="false">The losing shapes</button>
+      </div>
+
+      <div class="panel" role="tabpanel" id="a-file" aria-labelledby="t-file">
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code>20260921: top 100 like(dp):, 32(ok), 300 | LCA:, 236(again!!) | others:, 354(2D LIS) |
+^^^^^^^^                   ^          ^^^^                                          ^
+|                          |          |                                             |
+|                          |          |                       <span class="ann">trailing pipe, like its neighbours</span>
+|                          |          <span class="ann">a bare number is fine: practised, no verdict</span>
+|                          <span class="ann">the comma that keeps the next number alive</span>
+<span class="ann">a real calendar date. An impossible one drops the whole day.</span></code></pre>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Piece</th><th>Rule</th></tr></thead>
+            <tbody>
+              <tr><td class="num">YYYYMMDD:</td><td>Must be a real calendar date. Newest entry at the <b>top</b> of the file.</td></tr>
+              <tr><td class="num">|</td><td>Groups the day into sessions. Cosmetic to the parser, structural to the reader.</td></tr>
+              <tr><td class="num">,</td><td>The real separator. A <code>.</code> splits too, but that is typo-tolerance, not a convention.</td></tr>
+              <tr><td class="num">123(note)</td><td>Commas and nested parens inside the note are safe: <code>70(ok*, o(1) space!!)</code> is one entry.</td></tr>
+              <tr><td class="num">topo_sort</td><td>A named drill. Parsed and ignored &mdash; no LC number to schedule, which is intended.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel" role="tabpanel" id="a-row" aria-labelledby="t-row" hidden>
+        <p>
+          The classifier takes the <b>first</b> of <code>again</code>, <code>todo</code>,
+          <code>ok</code> that appears in the note &mdash; <code>again</code> first, on purpose:
+        </p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Written</th><th>Read as</th><th>Why it matters</th></tr></thead>
+            <tbody>
+              <tr><td class="num">141(ok)</td><td>ok</td><td>graduated this pass</td></tr>
+              <tr><td class="num">994(ok*)</td><td>ok</td><td>the <code>*</code> is your own shading, carried through as the note</td></tr>
+              <tr><td class="num">128(again!!!)</td><td>again, emphasis 3</td><td>bangs are counted anywhere in the note and sort it above a bare <code>again</code></td></tr>
+              <tr><td class="num">44(again !!)</td><td>again, emphasis 2</td><td>spaces inside the note are fine</td></tr>
+              <tr><td class="num">139(ok, but again)</td><td><b>again</b></td><td><code>again</code> is checked first &mdash; a problem that still needs a pass</td></tr>
+              <tr><td class="num">79(todo)</td><td>todo</td><td>intended, not attempted &mdash; still records the intent</td></tr>
+              <tr><td class="num">300</td><td>none</td><td>practised, no verdict. Legitimate; a verdict is never invented</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">
+          Your own wording is kept. <code>again!!</code> is not flattened to <code>again</code>,
+          and a bare <code>again</code> is not inflated to three bangs.
+        </p>
+      </div>
+
+      <div class="panel" role="tabpanel" id="a-var" aria-labelledby="t-var" hidden>
+        <p>Both of these are in the log today, and neither produces a warning:</p>
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code>20260920: top 100 like(linked list):  23, 24(again!!!), 25 | ...
+                                      <span class="ann">^^ dropped. 24 and 25 survive.</span>
+
+20260920: top 100 like(linked list):, 23, 24(again!!!), 25 | ...
+                                    <span class="ann">^ one character. All three survive.</span>
+
+
+2D LIS (354)        <span class="ann">-&gt; logged as LC 2, note "D LIS" discarded</span>
+354(2D LIS)         <span class="ann">-&gt; logged as LC 354, note "2D LIS"</span></code></pre>
+        </div>
+        <p class="note">
+          Fixing the 109 historical entries is a separate job from writing today's line, and it
+          moves <code>site/build-review-plan.js</code> and its tests first. This skill does not
+          rewrite past days.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── How to call it ──────────────────────────────────────────────── -->
+    <section id="use" class="reveal">
+      <p class="eyebrow">Arguments are inferred, not interrogated</p>
+      <h2>How to call it</h2>
+      <p class="sub">
+        Say what you practised, however you would say it out loud. The verdicts are taken from
+        your own words.
       </p>
       <div class="code-block">
         <button class="copy" type="button">copy</button>
-<pre><code>node -e "console.log(require('./site/build-lib.js').slugify('$HEADING'))"
-grep -rn "#the-old-anchor" doc/ site/pages/     <span class="ann">&lt;- every link that moves with it</span></code></pre>
-      </div>
-      <p class="note">
-        <code>e2e-check.js</code>'s dangling-<code>#fragment</code> rule is what catches a missed
-        one, so the gate runs rather than the grep being trusted.
-      </p>
+<pre><code>/lc-log 23 ok, 24 again!!, 25
+/lc-log 141 and 142 clean, 128 still fighting me
 
-      <h3 style="font-size:0.92rem;margin:2.2rem 0 0.7rem">2. The 中文 sections the edit parked</h3>
-      <p>
-        There is one markdown tree, the English one;
-        <a href="cheatsheets.zh.html">the Chinese pages</a> are a sparse overlay keyed per
-        section. Edit a section and its translation goes missing, so the page falls back to
-        English exactly there:
-      </p>
-      <div class="code-block">
-        <button class="copy" type="button">copy</button>
-<pre><code>node script/zh.js sync &lt;slug&gt;      <span class="ann">&lt;- park what the edit invalidated</span>
-node script/zh.js todo &lt;slug&gt;      <span class="ann">&lt;- the sections needing one, keys included</span>
-node script/zh.js sync &lt;slug&gt;      <span class="ann">&lt;- tidy, after writing them back</span>
-node script/zh.js status --write</code></pre>
+log today's practice
+record that I did the linked list set
+update progress</code></pre>
       </div>
-      <p class="note">
-        The check is arithmetic: the sheet must not end up with more untranslated sections than
-        it started with. One LCA edit parked eight of them in a sheet that had been fully
-        translated.
-      </p>
-    </section>
 
-    <!-- ── House rules ─────────────────────────────────────────────────── -->
-    <section id="rules" class="reveal">
-      <p class="eyebrow">Non-negotiable</p>
-      <h2>The house rules it applies</h2>
-      <p class="sub">
-        Straight out of the cheatsheet style guide in <code>CLAUDE.md</code>, which is where they
-        stay — the skill applies them, it does not restate them as a second copy that can drift.
-      </p>
       <div class="table-wrap">
         <table>
-          <thead>
-            <tr><th>Rule</th><th>Why it is a rule</th></tr>
-          </thead>
+          <thead><tr><th>Left out</th><th>What happens</th></tr></thead>
           <tbody>
-            <tr><td class="num">Tag every fence</td><td><code>python</code>, <code>java</code>, or <code>text</code> for traces, diagrams and program output. A bare fence loses highlighting and reads as prose.</td></tr>
-            <tr><td class="num">IDEA, then complexity</td><td><code># IDEA: &lt;one line&gt;</code> opens a snippet; <code># time = O(...), space = O(...)</code> is the first comment, stated once per section.</td></tr>
-            <tr><td class="num">Stars on the heading</td><td>The <code>&#11088;</code> run is rendered as a badge and surfaces 4&#11088;/5&#11088; sections in the page's table of contents. In the prose underneath it is invisible.</td></tr>
-            <tr><td class="num">Levels never skip</td><td><code>h3</code> &rarr; <code>h4</code>, never <code>h3</code> &rarr; <code>h5</code>. The table of contents is built from the tree, not from the text.</td></tr>
-            <tr><td class="num">Each LC number once</td><td>Per heading &mdash; not <code>&hellip; (LC 1650) &mdash; LC 1650</code>.</td></tr>
-            <tr><td class="num">One canonical solution</td><td>A second variant needs a stated reason: different complexity, a distinct trick, a different language idiom. Not a different spelling of the same loop.</td></tr>
-            <tr><td class="num">Match the neighbour</td><td>The sibling section is the template &mdash; heading depth, fence labels, where complexity sits. <code>00_template.md</code> wins only where the sheet has drifted.</td></tr>
+            <tr><td class="num">Bucket</td><td>Matched to the labels already in use, or <code>others</code>. Flagged in the report when it was a judgement call.</td></tr>
+            <tr><td class="num">Verdict</td><td>Left blank. A bare number is a legitimate entry and a verdict is never invented.</td></tr>
+            <tr><td class="num">Date</td><td>Today, checked rather than assumed. Back-dating happens only when you ask for it.</td></tr>
+            <tr><td class="num">What you practised</td><td>The one thing it will ask for. It will not assemble a session out of yesterday's <code>todo</code> bucket.</td></tr>
           </tbody>
         </table>
       </div>
     </section>
 
-    <!-- ── Won't do ────────────────────────────────────────────────────── -->
-    <section id="wont" class="reveal">
-      <p class="eyebrow">Bounded on purpose</p>
+    <!-- ── What it will not do ─────────────────────────────────────────── -->
+    <section id="rules" class="reveal">
+      <p class="eyebrow">The guardrails</p>
       <h2>What it will not do</h2>
+      <p class="sub">
+        This file is a record of what happened. A tool that improves the record is a tool that
+        destroys it.
+      </p>
       <ul class="nots">
-        <li><span class="x" aria-hidden="true">&times;</span><span><b>Append an <code>LC Examples</code> section.</b><span class="why">Re-solving what a template above already solves is how the sheets grew to need a cleanup. It goes under the pattern instead.</span></span></li>
-        <li><span class="x" aria-hidden="true">&times;</span><span><b>Open a catch-all.</b><span class="why">A <code>Missing Google Patterns</code> bucket is a decision deferred, not a section. New material is filed under the pattern it belongs to.</span></span></li>
-        <li><span class="x" aria-hidden="true">&times;</span><span><b>Copy a section into a second sheet.</b><span class="why">A cross-reference is one table row and a link. Two copies of a section are two sections that disagree in six months.</span></span></li>
-        <li><span class="x" aria-hidden="true">&times;</span><span><b>Hand back an untested snippet.</b><span class="why">Every snippet runs against the problem's own examples first. Variants in one section must agree with each other.</span></span></li>
-        <li><span class="x" aria-hidden="true">&times;</span><span><b>Touch <code>data/progress.txt</code>.</b><span class="why">The practice log is your own record and the single source for the <a href="lc-review-plan.html">review plan</a> &mdash; nothing else writes to it.</span></span></li>
-        <li><span class="x" aria-hidden="true">&times;</span><span><b>Commit or push unless asked.</b><span class="why">It writes files, runs the gates, and stops. The commit is yours to shape.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Invent an attempt.</b><span class="why">Only what you say you practised goes in &mdash; not the carried-over <code>todo</code> bucket, and not a problem <a href="lc-python.html">/lc-python</a> filed in the same session. Filing a solution is not practising it.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Rewrite a previous day.</b><span class="why">A problem that went badly on Tuesday still went badly on Tuesday. The log is append-only.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Flatten or inflate your emphasis.</b><span class="why"><code>again!!</code> is not <code>again</code>. The bang count is what sorts a chronic problem above an ordinary one.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Touch README's status column.</b><span class="why">That is <a href="lc-again.html">/lc-again</a>'s job, and a promotion there has to be earned. A practice attempt and a mastery verdict are different records.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Report done without the round-trip.</b><span class="why">A misread line produces no error &mdash; it produces a smaller schedule. The only check that catches it is reading the numbers back.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Commit or push unless asked.</b><span class="why">The practice log gets its own commit. It always has.</span></span></li>
       </ul>
     </section>
 
@@ -485,13 +549,12 @@ node script/zh.js status --write</code></pre>
           <button class="copy" type="button">copy</button>
 <pre><code>git clone --depth 1 https://github.com/yennanliu/CS_basics.git /tmp/cs_basics
 mkdir -p ~/.claude/skills
-cp -r /tmp/cs_basics/.claude/skills/lc-cheatsheet ~/.claude/skills/</code></pre>
+cp -r /tmp/cs_basics/.claude/skills/lc-log ~/.claude/skills/</code></pre>
         </div>
         <p class="note">
-          Already installed inside this repo at <code>.claude/skills/lc-cheatsheet/</code>, so a
-          clone of CS_basics needs no setup at all. Claude Code matches it on the description, or
-          you can call <code>/lc-cheatsheet</code> by name &mdash; the directory name <em>is</em>
-          the command.
+          Already installed inside this repo at <code>.claude/skills/lc-log/</code>, so a clone
+          of CS_basics needs no setup at all. Claude Code matches it on the description, or you
+          can call <code>/lc-log</code> by name &mdash; the directory name <em>is</em> the command.
         </p>
       </div>
 
@@ -499,13 +562,11 @@ cp -r /tmp/cs_basics/.claude/skills/lc-cheatsheet ~/.claude/skills/</code></pre>
         <p>Zip the directory, then <em>Customize &rarr; Skills &rarr; + &rarr; + Create skill &rarr; Upload a skill</em>:</p>
         <div class="code-block">
           <button class="copy" type="button">copy</button>
-<pre><code>cd .claude/skills &amp;&amp; zip -r lc-cheatsheet.zip lc-cheatsheet</code></pre>
+<pre><code>cd .claude/skills &amp;&amp; zip -r lc-log.zip lc-log</code></pre>
         </div>
         <p class="note">
           Leave the YAML frontmatter in <code>SKILL.md</code> intact. <code>description</code> is
-          what Claude matches your request against when deciding to load the skill on its own;
-          <code>name</code> is the display label, and the directory name is what supplies the
-          slash command.
+          what Claude matches your request against when deciding to load the skill on its own.
         </p>
       </div>
 
@@ -513,11 +574,10 @@ cp -r /tmp/cs_basics/.claude/skills/lc-cheatsheet ~/.claude/skills/</code></pre>
         <p>Codex reads <code>AGENTS.md</code> at the repo root automatically. Point it at the skill:</p>
         <div class="code-block">
           <button class="copy" type="button">copy</button>
-<pre><code>## Updating a cheatsheet
+<pre><code>## Logging a practice session
 
-When asked to add an LC problem to a cheatsheet, to document a pattern,
-or to update a section under doc/cheatsheet/, follow
-`.claude/skills/lc-cheatsheet/SKILL.md`.</code></pre>
+When asked to log practice, record what was solved today, or update the
+progress file, follow `.claude/skills/lc-log/SKILL.md`.</code></pre>
         </div>
         <p class="note">A pointer, not a copy &mdash; one source of truth means a fix reaches every agent at once.</p>
       </div>
@@ -526,9 +586,8 @@ or to update a section under doc/cheatsheet/, follow
         <p>Same shape in <code>GEMINI.md</code>, or point at it for a single session:</p>
         <div class="code-block">
           <button class="copy" type="button">copy</button>
-<pre><code>gemini -p "Follow the recipe in .claude/skills/lc-cheatsheet/SKILL.md. \
-Add LC 1650 to doc/cheatsheet/binary_tree.md as a variation \
-of the LCA template — solution in @lca_iii.py"</code></pre>
+<pre><code>gemini -p "Follow the recipe in .claude/skills/lc-log/SKILL.md. \
+Log today: 23 ok, 24 again!!, 25, 138 came back"</code></pre>
         </div>
       </div>
 
@@ -536,18 +595,15 @@ of the LCA template — solution in @lca_iii.py"</code></pre>
         <p>
           Paste <code>SKILL.md</code> in as the system prompt. It is self-contained and has no
           <code>references/</code> to carry. For Cursor or Windsurf, put the Codex pointer above
-          into a rule file (<code>.cursor/rules/lc-cheatsheet.mdc</code> or the editor's
-          equivalent).
+          into a rule file (<code>.cursor/rules/lc-log.mdc</code> or the editor's equivalent).
         </p>
         <div class="code-block">
           <button class="copy" type="button">copy</button>
-<pre><code>curl -sL https://raw.githubusercontent.com/yennanliu/CS_basics/master/.claude/skills/lc-cheatsheet/SKILL.md</code></pre>
+<pre><code>curl -sL https://raw.githubusercontent.com/yennanliu/CS_basics/master/.claude/skills/lc-log/SKILL.md</code></pre>
         </div>
         <p class="note">
-          Three steps are this repo's: the <code>zh.js</code> overlay, the
-          <code>cheatsheet_meta.json</code> registration and the <code>slugify</code> anchor
-          calculation. Away from CS_basics they are no-ops &mdash; the sheet-choosing, the four
-          modes and the house rules carry over to any markdown notes tree.
+          One caveat away from this repo: step 5's gate is this repo's build and tests. Point it
+          at whatever compiles your own log, or the round-trip check is the only one left.
         </p>
       </div>
     </section>
@@ -562,15 +618,16 @@ of the LCA template — solution in @lca_iii.py"</code></pre>
       </p>
       <ul class="files">
         <li>
-          <a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-cheatsheet/SKILL.md">SKILL.md</a>
-          <span>The whole recipe &mdash; the five prime directives, the four modes, the nine steps with their commands, the house rules, what each mode has to make reachable, the do-not list, and the LC 1650 worked example.</span>
+          <a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-log/SKILL.md">SKILL.md</a>
+          <span>The whole recipe &mdash; the five prime directives, the format as the parser reads it, the annotation vocabulary, the two shapes that lose data, the six steps, the do-not list, and a worked run.</span>
         </li>
       </ul>
       <p class="note" style="margin-top:1.2rem">
         Gated in CI by
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/script/check_skills.py">check_skills.py</a> &mdash;
-        frontmatter every host can parse, the directory name pinned to the command name, and
-        whether the links on this page still resolve.
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/script/check_skills.py">check_skills.py</a>,
+        and the log it writes is gated by
+        <code>site/test/build-review-plan.test.js</code>, which pins the real
+        <code>data/progress.txt</code> to zero parser warnings.
       </p>
     </section>
 
@@ -579,14 +636,12 @@ of the LCA template — solution in @lca_iii.py"</code></pre>
       <p class="eyebrow">The rest of the loop</p>
       <h2>Where it fits</h2>
       <p class="sub">
+        <code>/lc-log</code> is the step after the practice, not after the solving:
         <a href="lc-python.html">/lc-python</a> and <a href="lc-java.html">/lc-java</a> file the
-        solution; <code>/lc-cheatsheet</code> files what you learned from it, which is the part
-        that transfers to the next problem. From
-        there the <a href="cheatsheets.html">cheatsheet index</a> lists it, the
-        <a href="lc-roadmap.html">roadmap</a> points at it from the topic it teaches,
-        <a href="search.html">search</a> indexes its headings, and
-        <a href="skills.html">LC Coach</a> is the one to ask whether you can now solve the
-        sibling problems the new section names.
+        code, <code>/lc-log</code> records the attempt, and <a href="lc-again.html">/lc-again</a>
+        moves the verdict once a problem finally sticks. What it writes is what the
+        <a href="lc-review-plan.html">review plan</a> schedules and what
+        <a href="suggest-review.html">suggest review</a> spends its picks on.
       </p>
     </section>
 
@@ -611,8 +666,10 @@ of the LCA template — solution in @lca_iii.py"</code></pre>
   var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // Sections are visible in the stylesheet and only hidden once `.js` is on the
-  // root, so a page with no JS never gets stuck blank. The above-the-fold ones
-  // are marked revealed in the same synchronous block — one paint, no flash.
+  // root, so a page with no JS never gets stuck blank. The cost is that adding
+  // the class here would blank whatever is already on screen for a frame, so
+  // the above-the-fold sections are marked revealed in the *same* synchronous
+  // block — one paint, no flash.
   var reveals = [].slice.call(document.querySelectorAll('.reveal'));
   var onscreen = reveals.filter(function (el) {
     return el.getBoundingClientRect().top < (window.innerHeight || 0);
@@ -635,6 +692,8 @@ of the LCA template — solution in @lca_iii.py"</code></pre>
     tape.appendChild(caret);
     var i = 0;
     (function tick() {
+      // Whole lines at a time once past the first: character-by-character for
+      // 700 characters is a long time to make someone watch.
       i += i < 60 ? 1 : 3;
       text.nodeValue = TAPE.slice(0, i);
       if (i < TAPE.length) setTimeout(tick, i < 60 ? 26 : 12);
@@ -642,7 +701,7 @@ of the LCA template — solution in @lca_iii.py"</code></pre>
     })();
   }
 
-  // ── Mode selector ─────────────────────────────────────────────────────
+  // ── Pipeline stepper ──────────────────────────────────────────────────
   var steps = [].slice.call(document.querySelectorAll('.step'));
   var sd = document.getElementById('sd');
 
@@ -651,7 +710,7 @@ of the LCA template — solution in @lca_iii.py"</code></pre>
       s.setAttribute('aria-checked', String(s === step));
       s.tabIndex = s === step ? 0 : -1;
     });
-    sd.querySelector('.sd-name').textContent = step.dataset.name;
+    sd.querySelector('.sd-name').textContent = step.dataset.n + '. ' + step.dataset.name;
     sd.querySelector('.sd-body').textContent = step.dataset.body;
     // The rule is the line worth reading twice, so it gets a label. Every
     // dataset value is plain text and is set as text — the label is a real
@@ -680,7 +739,8 @@ of the LCA template — solution in @lca_iii.py"</code></pre>
 
   // ── Tabs ──────────────────────────────────────────────────────────────
   // Panels toggle with the `hidden` attribute rather than a class, so a hidden
-  // panel is out of the accessibility tree and out of find-in-page too.
+  // panel is out of the accessibility tree and out of find-in-page too. Each
+  // tablist is handled independently, so the two on this page cannot fight.
   [].slice.call(document.querySelectorAll('[role="tablist"]')).forEach(function (list) {
     var tabs = [].slice.call(list.querySelectorAll('.tab'));
     if (!tabs.length) return;
@@ -717,9 +777,14 @@ of the LCA template — solution in @lca_iii.py"</code></pre>
 
   // ── Copy buttons ──────────────────────────────────────────────────────
   // clipboard.writeText needs a secure context; on plain http it rejects, so
-  // the button says so instead of silently doing nothing. The `.ann` spans are
-  // margin notes about the command, not part of it, so they are stripped from
-  // a clone before the text is read.
+  // the button says so instead of silently doing nothing.
+  //
+  // The `.ann` spans are margin notes about the code, not part of it, so they
+  // are stripped from a clone before the text is read — copying the anatomy
+  // block otherwise hands back Python with "<- docstring first" inside it. The
+  // strip leaves the padding that positioned each note, hence the trailing
+  // whitespace pass. textContent, not innerText: the clone is detached, and in
+  // a <pre> the two agree anyway.
   function codeText(block) {
     var node = block.querySelector('code').cloneNode(true);
     [].slice.call(node.querySelectorAll('.ann')).forEach(function (a) {

@@ -630,8 +630,10 @@ if (faqFiles.length > 0) {
     htmlContent = annotated;
     const pageTitle = h1Title || title;
     const docHeadings = extractHeadings(htmlContent);
-    // FAQs have no Scope line, so the card description comes from the lead
-    // paragraph, or failing that from the sections the doc covers.
+    // summariseDoc falls back in order: the Scope line if the FAQ has one (17
+    // of 49 do), else the lead paragraph, else the sections the doc covers.
+    // The earlier comment here claimed FAQs never carry a Scope line, which is
+    // what led a skill to tell authors to drop it.
     const description = summariseDoc(raw, docHeadings);
 
     searchRecords.push({
@@ -670,7 +672,7 @@ if (faqFiles.length > 0) {
 // ── Traditional Chinese FAQs ─────────────────────────────────────────────────
 //
 // The same overlay and the same composer as the cheatsheets. An FAQ differs only
-// in having no Scope line, so its card description is summarised from the
+// in usually having no Scope line, so its card description falls back to the
 // *composed* Chinese rather than lifted out of a line the author wrote.
 
 // The FAQ index's own words, and the categories build-site.js derives from the
@@ -939,16 +941,47 @@ const skillCount = fs.existsSync('.claude/skills')
   ? fs.readdirSync('.claude/skills', { withFileTypes: true }).filter(e => e.isDirectory()).length
   : 0;
 
+// Ten cards in one flat grid is a list, not a band — so they are declared as
+// three labelled groups, the same way ENTRY_GROUPS splits the main cards. The
+// split is by what the skill touches: your solutions, your practice record, or
+// this site.
 const AGENT_SKILLS = [
-  ['skills.html', '/lc-coach', 'Interview coach',
-   'Scores a solution the way an interviewer does — the six-point verdict (SH/H/LH/LNH/NH/SNH), ' +
-   'the debrief packet from their side of the table, the one line that sets the complexity, and what to drill next.'],
-  ['lc-add.html', '/lc-add', 'File a solution',
-   'Turns a solved problem into a committed one — the problem\'s real slug, the house file layout, ' +
-   'a smoke test against the examples, and the README row inserted in number order.'],
-  ['lc-cheatsheet.html', '/lc-cheatsheet', 'Update a cheatsheet',
-   'Files what a problem taught you into the sheet that owns the topic — as an example, a variation ' +
-   'on a template, a new pattern or a new sheet — then follows the anchors and translations it moved.']
+  ['File what you solved', [
+    ['lc-python.html', '/lc-python', 'File a Python solution',
+     'Turns a solved problem into a committed one — the problem\'s real slug, the house file layout, ' +
+     'a smoke test against the docstring\'s own examples, and the README row inserted in number order.'],
+    ['lc-java.html', '/lc-java', 'File a Java solution',
+     'The Java counterpart — the package its pattern owns, markers that match the method names, ' +
+     'a compile and a run, and the [Java] link added to the row the problem already has.'],
+    ['lc-cheatsheet.html', '/lc-cheatsheet', 'Update a cheatsheet',
+     'Files what a problem taught you into the sheet that owns the topic — as an example, a variation ' +
+     'on a template, a new pattern or a new sheet — then follows the anchors and translations it moved.']
+  ]],
+  ['Track the practice', [
+    ['skills.html', '/lc-coach', 'Interview coach',
+     'Scores a solution the way an interviewer does — the six-point verdict (SH/H/LH/LNH/NH/SNH), ' +
+     'the debrief packet from their side of the table, the one line that sets the complexity, and what to drill next.'],
+    ['lc-log.html', '/lc-log', 'Log the session',
+     'Appends today to the practice log in the shape the review plan\'s parser actually reads, ' +
+     'so no problem number is silently dropped and the annotations survive.'],
+    ['lc-again.html', '/lc-again', 'Graduate an AGAIN',
+     'Moves the README status cell after a re-solve — promoting only what was genuinely re-derived ' +
+     'unaided, and keeping the star run that records what the problem cost.']
+  ]],
+  ['Maintain the site', [
+    ['lc-algo-demo.html', '/lc-algo-demo', 'Add a visualizer',
+     'Writes the 37th visualizer against the contract the other 36 obey — the shared palette, the ' +
+     'canvas wrapper, the structured step trace, and the repaint a theme switch depends on.'],
+    ['lc-site-data.html', '/lc-site-data', 'Roadmap &amp; quiz data',
+     'Adds a roadmap topic or a quiz question so the build-time validators accept it first time — ' +
+     'no implied edge, no duplicate id, and answers that parse as complexity expressions.'],
+    ['lc-zh-translate.html', '/lc-zh-translate', 'Translate to 中文',
+     'Works the 繁體中文 overlay — prose only, keyed per section, every code fence stored once and ' +
+     'spliced back at compose time.'],
+    ['lc-faq-add.html', '/lc-faq-add', 'File an FAQ answer',
+     'Files an interview question into the FAQ its Scope line owns, under the section it belongs to — ' +
+     'and writes the Chinese half in the same change.']
+  ]]
 ];
 
 const landingContent = `
@@ -986,16 +1019,18 @@ const landingContent = `
     <p class="section-note">
       The repo ships ${skillCount ? `${skillCount} skills for coding agents` : 'skills for coding agents'} under
       <code>.claude/skills/</code> — plain markdown, no dependencies, installed into your own agent rather than run here.
-      These two have pages of their own.
+      These have pages of their own.
     </p>
+    ${AGENT_SKILLS.map(([label, cards]) => `
+    <h3 class="skill-group">${label}</h3>
     <div class="skill-grid">
-      ${AGENT_SKILLS.map(([href, command, title, blurb]) => `
+      ${cards.map(([href, command, title, blurb]) => `
       <a class="skill-card" href="${href}">
         <span class="skill-cmd">${command}</span>
         <span class="skill-title">${title}</span>
         <span class="skill-blurb">${blurb}</span>
       </a>`).join('')}
-    </div>
+    </div>`).join('')}
     <p class="section-note skill-install">Install one into Claude Code, Codex, Gemini or any agent that reads a markdown instruction file:</p>
     <pre class="skill-install-code"><code>git clone --depth 1 https://github.com/yennanliu/CS_basics.git /tmp/cs_basics
 cp -r /tmp/cs_basics/.claude/skills/lc-coach ~/.claude/skills/</code></pre>

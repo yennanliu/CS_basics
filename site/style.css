@@ -848,8 +848,16 @@ h4 > a.header-anchor:hover { text-decoration: underline; }
 .skills-band h2 { margin-top: 0; }
 .skill-grid {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 16px; margin: 16px 0 20px;
+  gap: 16px; margin: 12px 0 24px;
 }
+/* The group label. Ten cards in one grid read as a list; three labelled runs
+   read as a band with a shape. */
+.skill-group {
+  margin: 4px 0 0; font-size: 13px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+.skill-group + .skill-grid { margin-top: 10px; }
 .skill-card {
   display: flex; flex-direction: column; gap: 8px;
   padding: 18px; text-decoration: none; color: var(--text);

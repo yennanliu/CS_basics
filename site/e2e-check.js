@@ -49,8 +49,10 @@ const rel = p => path.relative(SITE, p);
 console.log('\n== required artefacts ==');
 const REQUIRED = [
   'index.html', 'problems.html', 'resources.html', 'cheatsheets.html', 'faqs.html',
-  'patterns.html', 'search.html', 'lc-roadmap.html', 'skills.html', 'lc-add.html',
-  'lc-cheatsheet.html', '404.html',
+  'patterns.html', 'search.html', 'lc-roadmap.html', 'skills.html', 'lc-python.html',
+  'lc-java.html', 'lc-cheatsheet.html', 'lc-log.html', 'lc-again.html',
+  'lc-zh-translate.html', 'lc-algo-demo.html', 'lc-site-data.html', 'lc-faq-add.html',
+  '404.html',
   'style.css', 'nav.css', 'nav.js', 'lc-page.css', 'site.js', 'roadmap.js', 'complexity.js',
   'vendor/d3.min.js', 'vendor/highlight/atom-one-dark.min.css',
   'data/roadmap.json', 'data/complexity-quiz.json', 'data/lc-problems.json',
@@ -415,7 +417,9 @@ ok('nav.css honours prefers-reduced-motion',
 // that had already drifted apart.
 console.log('\n== tool pages ==');
 const TOOL_PAGES = ['lc-explorer', 'lc-similar', 'lc-review-plan', 'lc-random-picker', 'lc-complexity-quiz',
-                    'skills', 'suggest-review', 'lc-add', 'lc-cheatsheet'];
+                    'skills', 'suggest-review', 'lc-python', 'lc-java', 'lc-cheatsheet',
+                    'lc-log', 'lc-again', 'lc-zh-translate', 'lc-algo-demo',
+                    'lc-site-data', 'lc-faq-add'];
 for (const name of TOOL_PAGES) {
   const html = sources.get(path.join(SITE, `${name}.html`));
   ok(`${name} uses the shared palette`,

@@ -6,9 +6,9 @@
   <meta name="theme-color" content="#000000">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <title>LC Cheatsheet — CS_basics</title>
-  <meta name="description" content="An agent skill that files a LeetCode problem into the cheatsheets the way the existing sections are written: the sheet whose Scope line owns the topic, one of four modes (example, variation, pattern, new sheet), every snippet run, the heading anchors the edit moved, and the 中文 overlay kept level.">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📝</text></svg>">
+  <title>LC FAQ Add — CS_basics</title>
+  <meta name="description" content="An agent skill that files an interview question into doc/faq/ — the file its Scope line owns, the numbered section it belongs under, tagged fences — and writes the matching 繁體中文 overlay section in the same change.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>❓</text></svg>">
   <link rel="stylesheet" href="nav.css">
   <link rel="stylesheet" href="lc-page.css">
   <!-- Blocking on purpose: nav.js restores the stored theme before first paint. -->
@@ -16,9 +16,9 @@
   <style>
     /* ── Page-local tokens ────────────────────────────────────────────────
        The palette itself (--bg/--text/--border/--surface, light and dark)
-       comes from lc-page.css. Only things this page alone needs live here,
-       and deliberately in the vocabulary skills.html and lc-python.html use —
-       the skill pages should read as one family, not one design each. */
+       comes from lc-page.css. Only things this page alone needs live here.
+       Deliberately the same vocabulary skills.html uses — the two skill pages
+       should read as one family, not as two designs. */
     :root {
       --mono: 'SF Mono','JetBrains Mono','IBM Plex Mono',ui-monospace,'Menlo',monospace;
       --grid-line: rgba(128,128,128,0.10);
@@ -37,6 +37,8 @@
 
     .container { max-width: 940px; margin: 0 auto; padding: 0 1.5rem; }
 
+    /* Sections fade up as they arrive. Everything is visible by default, so a
+       page with JS off (or reduced motion) simply shows the finished state. */
     .reveal { opacity: 1; transform: none; }
     .js .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.5s ease, transform 0.5s ease; }
     .js .reveal.in { opacity: 1; transform: none; }
@@ -47,6 +49,8 @@
       border-bottom: 1px solid var(--border);
       padding: 4rem 0 3rem;
     }
+    /* A faint engineering grid. Purely decorative, so it is aria-hidden and
+       drawn in a pseudo-element rather than as an element in the flow. */
     .hero::before {
       content: ''; position: absolute; inset: 0; pointer-events: none;
       background-image:
@@ -118,6 +122,7 @@
     }
     h2 { font-size: 1.35rem; margin: 0 0 0.5rem; letter-spacing: -0.02em; }
     .sub { color: var(--text-light); margin: 0 0 1.9rem; max-width: 72ch; }
+    h3 { font-size: 0.92rem; margin: 2.2rem 0 0.7rem; }
 
     /* ── Failure cards ────────────────────────────────────────────────── */
     .fails { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1px;
@@ -130,16 +135,17 @@
     .fail p:last-child { margin-bottom: 0; }
     .fail .cost { color: var(--text); }
 
-    /* ── The four modes ───────────────────────────────────────────────── */
-    .rail { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-bottom: 1.2rem; }
+    /* ── The pipeline stepper ─────────────────────────────────────────── */
+    .rail { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 1.2rem; }
     .step {
+      position: relative;                /* anchors the visually-hidden .tag below 760px */
       font-family: inherit; cursor: pointer; text-align: center;
       border: 1px solid var(--border); background: var(--surface); color: var(--text);
       padding: 0.85rem 0.25rem 0.7rem; transition: transform 0.15s, border-color 0.15s, background 0.15s;
     }
     .step:hover { border-color: var(--text); transform: translateY(-2px); }
     .step[aria-checked="true"] { background: var(--text); color: var(--bg); border-color: var(--text); }
-    .step .n { display: block; font-size: 0.95rem; font-weight: 700; letter-spacing: -0.02em; }
+    .step .n { display: block; font-size: 1.05rem; font-weight: 700; letter-spacing: -0.02em; }
     .step .tag { display: block; font-size: 0.6rem; letter-spacing: 0.06em; text-transform: uppercase;
                  margin-top: 0.35rem; color: var(--text-light); overflow: hidden; text-overflow: ellipsis; }
     .step[aria-checked="true"] .tag { color: var(--bg); }
@@ -148,7 +154,7 @@
 
     .step-detail {
       border: 1px solid var(--border); border-left: 3px solid var(--text);
-      background: var(--tint); padding: 1.1rem 1.3rem; min-height: 12.5rem;
+      background: var(--tint); padding: 1.1rem 1.3rem; min-height: 11.5rem;
     }
     .step-detail .sd-name { font-size: 1rem; font-weight: 700; margin: 0 0 0.35rem; }
     .step-detail p { margin: 0 0 0.6rem; }
@@ -182,7 +188,7 @@
     }
     .copy:hover { color: var(--text); border-color: var(--text); }
 
-    /* ── Tabs (the installs) ──────────────────────────────────────────── */
+    /* ── Tabs (the anatomy, and the installs) ─────────────────────────── */
     .tabs { display: flex; flex-wrap: wrap; border-bottom: 1px solid var(--border); margin-bottom: 1.1rem; }
     .tab {
       background: none; border: none; border-bottom: 2px solid transparent; color: var(--text-light);
@@ -214,7 +220,15 @@
     .note { color: var(--text-light); font-size: 0.82rem; }
 
     @media (max-width: 760px) {
-      .rail { grid-template-columns: repeat(2, 1fr); }
+      .rail { grid-template-columns: repeat(4, 1fr); }
+      /* Not display:none. The tag is the step's only descriptive text — `.bar`
+         is aria-hidden and `.n` is just a number — so hiding it that way leaves
+         a radio whose accessible name is "1". Visually hidden keeps it in the
+         accessibility tree. */
+      .step .tag {
+        position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+        overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+      }
       .hero { padding-top: 2.5rem; }
       .term pre { min-height: 18rem; }
     }
@@ -227,7 +241,7 @@
 </head>
 <body>
 
-<div id="site-nav" data-page="lc-cheatsheet" data-base=""></div>
+<div id="site-nav" data-page="lc-faq-add" data-base=""></div>
 <script>CSNav.mount();</script>
 
 <main id="main">
@@ -236,47 +250,45 @@
   <div class="hero">
     <div class="container">
       <p class="kicker"><span class="dot" aria-hidden="true"></span> Agent skill</p>
-      <h1>LC Cheatsheet<br><span class="thin">problem &rarr; pattern</span></h1>
+      <h1>LC FAQ Add<br><span class="thin">both languages, one pass</span></h1>
       <p class="lede">
-        A solved problem is worth more as a line in the sheet you reach for next time than as
-        one more file in the tree. <code>/lc-cheatsheet</code> files it there: the sheet whose
-        Scope line owns the topic, the pattern it actually belongs under, every snippet run
-        before it lands, the heading anchors the edit moved, and the 中文 overlay kept level.
+        The <a href="faqs.html">interview FAQs</a> are 49 documents across 12 sub-trees, and the
+        tree is <b>100% translated &mdash; 902 of 902 sections</b>. So a new English answer does
+        not leave it "mostly translated": it leaves a hole nothing reports until someone next
+        runs <code>status</code>, and a Chinese page renders with an English gap in the middle.
+        <code>/lc-faq-add</code> writes both halves in the same change.
       </p>
       <div class="hero-actions">
         <a class="btn primary" href="#install">Install it</a>
-        <a class="btn" href="#modes">The four modes</a>
-        <a class="btn" href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-cheatsheet/SKILL.md">Read the source</a>
+        <a class="btn" href="#pipeline">See the pipeline</a>
+        <a class="btn" href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-faq-add/SKILL.md">Read the source</a>
       </div>
 
       <div class="term">
         <div class="term-bar">
           <i aria-hidden="true"></i><i aria-hidden="true"></i><i aria-hidden="true"></i>
-          <span>/lc-cheatsheet 1650 into binary_tree as variation</span>
+          <span>/lc-faq-add kafka rebalancing</span>
         </div>
-        <pre id="tape" aria-live="off">1  sheet      binary_tree.md, as asked — plus tree_lca_distance.md, whose
-              Scope line owns LCA, so the depth goes there and binary_tree
-              gets the entry point. Found a bug on the way: the LC 236
-              template claimed it solved 1650
+        <pre id="tape" aria-live="off">1  scope      three candidates. The Kafka file's Scope line owns
+              consumer-group behaviour; the Streaming one owns
+              processing semantics. -> kafka, and said so.
 
-2  mode       variation — 1650 breaks one precondition: no root, parent pointers
+2  place      under "## 4) Consumer Groups" as "### 4-3) Rebalancing"
+              appended WITHIN the section — nothing renumbered,
+              so no anchor moved and no link had to follow
 
-3  neighbour  matched #### LCA Variant — Smallest Subtree with All Deepest Nodes
+3  write      leads with "a rebalance stops the whole group"
+              then the trigger list
+              ```text  timeline    ```bash  kafka-consumer-groups.sh
 
-4  write      family picker table (236/235/1644/1650/1676), two templates,
-              the step trace, the pitfalls · binary_tree.md: Template 6's
-              variations table, the 1650 code, the link onward
+4  zh         todo -> one key. Translated, both &lt;!--CODE--&gt; markers
+              in place. max.poll.interval.ms left in English.
 
-5  anchors    slugify → #lca-variant--parent-pointers-no-root-lc-1650-
-              trailing dash: the star run leaves the space before it
+5  gate       build clean · e2e 80/80 · status faq 903/903
 
-6  test       5 snippets vs the LC examples + a cross-tree pair → None
-
-7  中文        8 sections parked by the edit, all 8 re-keyed → 0 todo
-
-8  verify     build · e2e-check 76/76 · 418 unit tests green</pre>
+6  assumed    the Streaming FAQ gained a "See also" pointing here</pre>
       </div>
-      <p class="note" style="margin-top:0.6rem">A real run — the LCA variation now in <a href="cheatsheets/tree_lca_distance.html">tree_lca_distance</a>, in the order it always happens.</p>
+      <p class="note" style="margin-top:0.6rem">A real run: the Scope line picks the file, the section numbering decides where it goes, and the Chinese ships with it.</p>
     </div>
   </div>
 
@@ -285,76 +297,95 @@
     <!-- ── Why it exists ───────────────────────────────────────────────── -->
     <section id="why" class="reveal">
       <p class="eyebrow">Why a skill and not a habit</p>
-      <h2>Three ways a cheatsheet edit rots</h2>
+      <h2>Three ways an FAQ edit goes wrong</h2>
       <p class="sub">
-        None of these are hypothetical — each one has landed in this repo, and none of them
-        looks wrong in a diff. A sheet is read as authoritative, which is exactly what makes a
-        quiet error in one expensive.
+        None of these are stylistic. Each one leaves the tree measurably worse in a way that is
+        invisible in the diff.
       </p>
       <div class="fails">
         <div class="fail">
           <span class="glyph" aria-hidden="true">&#9639;</span>
-          <b>It lands in the wrong sheet</b>
-          <p>Two sheets can plausibly own &ldquo;LCA&rdquo;. Filed into the wrong one it becomes a second copy that drifts, and the Scope lines that exist to prevent that go unread.</p>
-          <p class="cost">Rule: the Scope line decides, not the topic name.</p>
+          <b>The file is picked by its name</b>
+          <p><b>17 of the 49 FAQs open with a Scope line</b>, and it exists to stop two files growing into the same document. "Connection pooling" could plausibly land in <code>db/</code>, <code>backend/</code> or <code>java/</code> &mdash; where one exists, only the Scope line says which owns it.</p>
+          <p class="cost">Rule: read the Scope lines, not the filenames.</p>
         </div>
         <div class="fail">
           <span class="glyph" aria-hidden="true">&#9636;</span>
-          <b>It is appended, not filed</b>
-          <p>An <code>LC Examples</code> block at the end of the file, re-solving what a template above already solved. That is the Aug 2026 cleanup this repo already paid for once.</p>
-          <p class="cost">Fix: file it under the pattern it belongs to.</p>
+          <b>A renumber that leaves the links behind</b>
+          <p>The FAQs are numbered documents &mdash; <code>## 3)</code> then <code>### 3-2)</code>. Inserting in the middle renumbers everything after it, which <em>moves their anchors</em>.</p>
+          <p class="cost">Fix: append within the owning section, or sweep every link in the same change.</p>
         </div>
         <div class="fail">
           <span class="glyph" aria-hidden="true">&#9676;</span>
-          <b>The edit breaks what it touched</b>
-          <p>A changed heading moves its anchor and every link to it dangles. An edited section parks its 中文 translation, and the Chinese page quietly falls back to English.</p>
-          <p class="cost">Both are followed in the same commit.</p>
+          <b>The English ships alone</b>
+          <p>The tree is at 902/902. An untranslated new section is the only gap in it, and nothing reports the gap until the next <code>status</code> run.</p>
+          <p class="cost">Rule: the 中文 section ships in the same change.</p>
         </div>
       </div>
     </section>
 
-    <!-- ── The four modes ──────────────────────────────────────────────── -->
-    <section id="modes" class="reveal">
-      <p class="eyebrow">One argument decides the shape</p>
-      <h2>Four modes</h2>
+    <!-- ── The pipeline ────────────────────────────────────────────────── -->
+    <section id="pipeline" class="reveal">
+      <p class="eyebrow">One pass, no branches</p>
+      <h2>Six steps, in order</h2>
       <p class="sub">
-        <code>as &lt;mode&gt;</code> is the whole interface. It is inferred from what the sheet
-        already contains, so it is worth passing only to overrule that — and the mode, not the
-        problem, is what determines where the section goes and which tables have to move with it.
+        Pick one to see what it does and the rule that step exists to enforce.
       </p>
 
-      <div class="rail" role="radiogroup" aria-label="Modes">
-        <button class="step" role="radio" aria-checked="true" data-n="example"
-          data-name="as example — the default"
-          data-body="The sheet already has the template and this problem is another instance of it. The section lands under that template, and the pattern's similar-problems table gains a row."
-          data-rule="If the sheet already solves the problem, this is not the mode — one canonical solution per problem."
-          data-code="/lc-cheatsheet 239 into sliding_window">
-          <span class="n">example</span><span class="bar" aria-hidden="true"></span><span class="tag">default</span>
+      <div class="rail" role="radiogroup" aria-label="Pipeline steps">
+        <button class="step" role="radio" aria-checked="true" data-n="1"
+                data-name="Find the file whose Scope line owns it"
+                data-body="Read the Scope lines of every plausible candidate, not just the one whose filename matches. If the best file is not the obvious one, that gets said in the report along with which Scope line decided it."
+                data-rule="A new FAQ file is right only when no existing Scope line claims the area and the topic is worth more than a section — and then the neighbouring file gains a See also line too, so the pair points both ways."
+                data-code="grep -n &quot;Scope&quot; doc/faq/*/*.md doc/faq/*.md | grep -i rebalanc">
+          <span class="n">1</span><span class="bar" aria-hidden="true"></span><span class="tag">scope</span>
         </button>
-        <button class="step" role="radio" aria-checked="false" data-n="variation"
-          data-name="as variation — the valuable one"
-          data-body="The sheet's template does not quite solve it: exactly one precondition differs. It lands as a variant under the template it varies, and the report has to name which precondition changed."
-          data-rule="This is the mode that teaches which template to reach for — the thing readers get wrong under time pressure."
-          data-code="/lc-cheatsheet 1650 into binary_tree as variation
-  -> LC 236 assumes a root. 1650 has parent pointers
-     and none, so it is LC 160, not a tree search.">
-          <span class="n">variation</span><span class="bar" aria-hidden="true"></span><span class="tag">one precondition</span>
+        <button class="step" role="radio" aria-checked="false" data-n="2"
+                data-name="Read a neighbour, then place the section"
+                data-body="The heading numbering is positional. Appending within the owning section moves no anchors; inserting in the middle renumbers everything after it and every link aimed at those headings has to move in the same change."
+                data-rule="File it under the pattern it belongs to — never appended to the end of the file as a loose question."
+                data-code="grep -n '^## \|^### ' doc/faq/kafka/faq_kafka.md
+grep -rn &quot;#&lt;old-anchor&gt;&quot; doc/ i18n/ site/pages/">
+          <span class="n">2</span><span class="bar" aria-hidden="true"></span><span class="tag">place</span>
         </button>
-        <button class="step" role="radio" aria-checked="false" data-n="pattern"
-          data-body="The sheet has no template for the technique at all. A new pattern section is written in the sheet's own skeleton, and it has to be made reachable: the category table, the selection strategy, and the decision tree at the end."
-          data-name="as pattern — a technique the sheet lacks"
-          data-rule="A section nothing links to is a section nobody finds. Reachability is half the job."
-          data-code="/lc-cheatsheet 496 as pattern">
-          <span class="n">pattern</span><span class="bar" aria-hidden="true"></span><span class="tag">new template</span>
+        <button class="step" role="radio" aria-checked="false" data-n="3"
+                data-name="Write the answer"
+                data-body="These are interview notes. The answer leads with the thing you would say out loud, then the mechanism, then code if code helps. A tutorial that builds up to the answer is the wrong shape for the page."
+                data-rule="Every fence is tagged — java, python, sql, bash, or text for ASCII diagrams and program output. Never a bare fence. And headings never skip a level."
+                data-code="### 4-3) Rebalancing
+
+A rebalance **stops the whole group** ...
+
+```text
+t0  consumer C joins
+```">
+          <span class="n">3</span><span class="bar" aria-hidden="true"></span><span class="tag">write</span>
         </button>
-        <button class="step" role="radio" aria-checked="false" data-n="sheet"
-          data-name="as sheet — nothing owns the topic"
-          data-body="A whole new doc/cheatsheet/<slug>.md: H1, the Scope line that claims the topic, the LeetCode problem lists, and Skeleton A or B chosen by size — under ~800 lines or over. Plus its entry in data/cheatsheet_meta.json."
-          data-rule="The build fails without the meta entry, on purpose, so nothing lands in an unsorted bucket."
-          data-code="/lc-cheatsheet monotonic_queue as sheet
-  -> data/cheatsheet_meta.json
-     { category: ..., tier: 4 }">
-          <span class="n">sheet</span><span class="bar" aria-hidden="true"></span><span class="tag">new file</span>
+        <button class="step" role="radio" aria-checked="false" data-n="4"
+                data-name="Write the 中文 section in the same pass"
+                data-body="sync then todo gives the new section's key. The translation goes into the mirrored path under i18n/zh/faq/, keeping every <!--CODE--> marker in order — compose throws otherwise. Structure and heading order come from the English document; links keep their English anchors."
+                data-rule="If the English FAQ has a Scope line, translate it as 範圍 — the build reads either spelling, so the translated line becomes the Chinese card. Never drop it. For the 32 FAQs without one the card falls back to the COMPOSED Chinese lead paragraph, so translating that lead is what moves the card."
+                data-code="node script/zh.js sync faq/kafka/faq_kafka
+node script/zh.js todo faq/kafka/faq_kafka
+node script/zh.js status --write">
+          <span class="n">4</span><span class="bar" aria-hidden="true"></span><span class="tag">zh</span>
+        </button>
+        <button class="step" role="radio" aria-checked="false" data-n="5"
+                data-name="Gate"
+                data-body="e2e-check.js is where a dangling fragment from a renumbered heading, an untagged fence that rendered wrong, a broken relative link or a missing page description surfaces. Then open both the English and the .zh page."
+                data-rule="The navbar's 中文 / EN button swaps between counterparts, so checking one language is checking half the change."
+                data-code="SKIP_FONTS=1 bash site/build.sh
+node site/e2e-check.js _site
+npm test --prefix site">
+          <span class="n">5</span><span class="bar" aria-hidden="true"></span><span class="tag">gate</span>
+        </button>
+        <button class="step" role="radio" aria-checked="false" data-n="6"
+                data-name="Report"
+                data-body="Close with the file and section, which Scope line decided it, whether anything was renumbered and what links moved with it, the zh key written, the new coverage line, and anything left deliberately in English."
+                data-rule="API, class and command names stay in English: kafka-consumer-groups.sh, max.poll.interval.ms. They are what you type and what an interviewer will say."
+                data-code="flagged  doc/faq/stream/faq_stream.md gained a See also
+         pointing here - its Scope touches the same area">
+          <span class="n">6</span><span class="bar" aria-hidden="true"></span><span class="tag">report</span>
         </button>
       </div>
 
@@ -364,101 +395,130 @@
         <p class="sd-rule"></p>
         <pre class="sd-code"></pre>
       </div>
-
-      <p class="note" style="margin-top:1.2rem">
-        The sheet itself is inferred too — from the technique the solution uses and from
-        <code>README.md</code>'s topic heading for that LC number. <code>into &lt;slug&gt;</code>
-        names one explicitly, and a sheet you name is never left untouched: it gets the entry
-        point — its own table row, the code a reader of <em>that</em> sheet needs, the link
-        onward. If its Scope line does not claim the topic the full section goes to the sheet
-        whose line does, and the report names both — one edit in the common case, two when
-        the topic lives next door.
-      </p>
     </section>
 
-    <!-- ── The two things it always does ───────────────────────────────── -->
-    <section id="after" class="reveal">
-      <p class="eyebrow">The half that gets forgotten</p>
-      <h2>What every edit drags behind it</h2>
+    <!-- ── The layout ──────────────────────────────────────────────────── -->
+    <section id="layout" class="reveal">
+      <p class="eyebrow">What lands in the tree</p>
+      <h2>Where a file lives, and what that decides</h2>
       <p class="sub">
-        Writing the section is the visible part. These two are what turn a good section into a
-        broken page, and both are mechanical enough to be written down once.
+        The directory <em>is</em> the index category, and the H1 and lead paragraph <em>are</em>
+        the card. None of it is configured anywhere.
       </p>
 
-      <h3 style="font-size:0.92rem;margin:0 0 0.7rem">1. The anchors the heading moved</h3>
-      <p>
-        Heading ids come from <code>slugify</code> in the build, which strips a
-        <code>&#11088;</code> run but <em>not</em> the space before it — so a star run leaves a
-        trailing <code>-</code> on the id. Anchors are computed, never hand-written:
-      </p>
-      <div class="code-block">
-        <button class="copy" type="button">copy</button>
-<pre><code>node -e "console.log(require('./site/build-lib.js').slugify('$HEADING'))"
-grep -rn "#the-old-anchor" doc/ site/pages/     <span class="ann">&lt;- every link that moves with it</span></code></pre>
+      <div class="tabs" role="tablist" aria-label="The layout">
+        <button class="tab" role="tab" id="t-file" aria-controls="a-file" aria-selected="true">The file header</button>
+        <button class="tab" role="tab" id="t-row"  aria-controls="a-row"  aria-selected="false">Directory → category</button>
+        <button class="tab" role="tab" id="t-var"  aria-controls="a-var"  aria-selected="false">The zh half</button>
       </div>
-      <p class="note">
-        <code>e2e-check.js</code>'s dangling-<code>#fragment</code> rule is what catches a missed
-        one, so the gate runs rather than the grep being trusted.
-      </p>
 
-      <h3 style="font-size:0.92rem;margin:2.2rem 0 0.7rem">2. The 中文 sections the edit parked</h3>
-      <p>
-        There is one markdown tree, the English one;
-        <a href="cheatsheets.zh.html">the Chinese pages</a> are a sparse overlay keyed per
-        section. Edit a section and its translation goes missing, so the page falls back to
-        English exactly there:
-      </p>
-      <div class="code-block">
-        <button class="copy" type="button">copy</button>
-<pre><code>node script/zh.js sync &lt;slug&gt;      <span class="ann">&lt;- park what the edit invalidated</span>
-node script/zh.js todo &lt;slug&gt;      <span class="ann">&lt;- the sections needing one, keys included</span>
-node script/zh.js sync &lt;slug&gt;      <span class="ann">&lt;- tidy, after writing them back</span>
-node script/zh.js status --write</code></pre>
+      <div class="panel" role="tabpanel" id="a-file" aria-labelledby="t-file">
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code># OOP FAQ                               <span class="ann">&lt;- the card title comes from the H1</span>
+
+&gt; **Scope** — OOP fundamentals for Java interviews: the four pillars,
+&gt; interface vs abstract class, composition over inheritance, SOLID…
+                                       <span class="ann">^ what this file owns, and what it does not</span>
+&gt; **See also**: [`../../cheatsheet/ood_design.md`](…) — class-modeling
+&gt; prompts; [`java_design_pattern.md`](…) — the patterns these produce.
+
+---
+
+## 1) The Four Pillars of OOP      <span class="ann">&lt;- numbering is positional</span>
+
+### 1-1) Encapsulation             <span class="ann">&lt;- and so are the anchors</span></code></pre>
+        </div>
+        <p class="note">
+          The card description is summarised from the <b>lead paragraph</b>, so both the H1 and
+          the opening are worth writing as something a reader would recognise on the index.
+        </p>
       </div>
-      <p class="note">
-        The check is arithmetic: the sheet must not end up with more untranslated sections than
-        it started with. One LCA edit parked eight of them in a sheet that had been fully
-        translated.
-      </p>
+
+      <div class="panel" role="tabpanel" id="a-row" aria-labelledby="t-row" hidden>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Directory</th><th>Card category</th></tr></thead>
+            <tbody>
+              <tr><td class="num">doc/faq/java/</td><td>Java</td></tr>
+              <tr><td class="num">doc/faq/backend/</td><td>Backend</td></tr>
+              <tr><td class="num">doc/faq/db/</td><td>Database</td></tr>
+              <tr><td class="num">redis/ kafka/ flink/ sql/</td><td>Redis, Kafka, Flink, SQL</td></tr>
+              <tr><td class="num">doc/faq/spark/</td><td>Spark &amp; Hadoop</td></tr>
+              <tr><td class="num">doc/faq/stream/</td><td>Streaming</td></tr>
+              <tr><td class="num">a file at the root</td><td>General</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">
+          An unmapped sub-directory becomes its own capitalised category rather than failing
+          &mdash; so a new directory is a decision about the index, and worth naming in the
+          report. The page name folds the sub-directory in:
+          <code>doc/faq/java/faq_OOP.md</code> &rarr; <code>faqs/java_faq_OOP.html</code>.
+        </p>
+      </div>
+
+      <div class="panel" role="tabpanel" id="a-var" aria-labelledby="t-var" hidden>
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code>i18n/zh/faq/kafka/faq_kafka.md          <span class="ann">&lt;- mirrors the English path</span>
+
+&lt;!-- 7c1d…  --&gt;                         <span class="ann">&lt;- the key `todo` printed</span>
+### 4-3) 重新平衡（Rebalancing）
+
+重新平衡會**讓整個 consumer group 停止處理**…
+
+&lt;!--CODE--&gt;                             <span class="ann">&lt;- every marker, in order</span>
+
+&lt;!--CODE--&gt;</code></pre>
+        </div>
+        <p class="note">
+          The full rules live in <a href="lc-zh-translate.html">/lc-zh-translate</a> &mdash;
+          structure from the English document, English anchor targets, API and command names in
+          English, no <code>category</code> / <code>tier</code> / <code>kind</code>. This skill
+          applies them to one section; that one drives a whole backlog.
+        </p>
+      </div>
     </section>
 
-    <!-- ── House rules ─────────────────────────────────────────────────── -->
-    <section id="rules" class="reveal">
-      <p class="eyebrow">Non-negotiable</p>
-      <h2>The house rules it applies</h2>
-      <p class="sub">
-        Straight out of the cheatsheet style guide in <code>CLAUDE.md</code>, which is where they
-        stay — the skill applies them, it does not restate them as a second copy that can drift.
-      </p>
+    <!-- ── How to call it ──────────────────────────────────────────────── -->
+    <section id="use" class="reveal">
+      <p class="eyebrow">Arguments are inferred, not interrogated</p>
+      <h2>How to call it</h2>
+      <div class="code-block">
+        <button class="copy" type="button">copy</button>
+<pre><code>/lc-faq-add kafka rebalancing
+/lc-faq-add java virtual threads
+
+add a question about virtual threads to the java FAQ
+document this interview question
+start a FAQ for gRPC</code></pre>
+      </div>
       <div class="table-wrap">
         <table>
-          <thead>
-            <tr><th>Rule</th><th>Why it is a rule</th></tr>
-          </thead>
+          <thead><tr><th>Left out</th><th>What happens</th></tr></thead>
           <tbody>
-            <tr><td class="num">Tag every fence</td><td><code>python</code>, <code>java</code>, or <code>text</code> for traces, diagrams and program output. A bare fence loses highlighting and reads as prose.</td></tr>
-            <tr><td class="num">IDEA, then complexity</td><td><code># IDEA: &lt;one line&gt;</code> opens a snippet; <code># time = O(...), space = O(...)</code> is the first comment, stated once per section.</td></tr>
-            <tr><td class="num">Stars on the heading</td><td>The <code>&#11088;</code> run is rendered as a badge and surfaces 4&#11088;/5&#11088; sections in the page's table of contents. In the prose underneath it is invisible.</td></tr>
-            <tr><td class="num">Levels never skip</td><td><code>h3</code> &rarr; <code>h4</code>, never <code>h3</code> &rarr; <code>h5</code>. The table of contents is built from the tree, not from the text.</td></tr>
-            <tr><td class="num">Each LC number once</td><td>Per heading &mdash; not <code>&hellip; (LC 1650) &mdash; LC 1650</code>.</td></tr>
-            <tr><td class="num">One canonical solution</td><td>A second variant needs a stated reason: different complexity, a distinct trick, a different language idiom. Not a different spelling of the same loop.</td></tr>
-            <tr><td class="num">Match the neighbour</td><td>The sibling section is the template &mdash; heading depth, fence labels, where complexity sits. <code>00_template.md</code> wins only where the sheet has drifted.</td></tr>
+            <tr><td class="num">Which file</td><td>Decided by the Scope lines, not the filenames &mdash; and the deciding line is quoted in the report.</td></tr>
+            <tr><td class="num">Which section</td><td>The one that owns the concept. Appended within it, so nothing renumbers.</td></tr>
+            <tr><td class="num">The translation</td><td>Never left out. It ships in the same change.</td></tr>
+            <tr><td class="num">The question</td><td>The one thing it will ask for.</td></tr>
           </tbody>
         </table>
       </div>
     </section>
 
-    <!-- ── Won't do ────────────────────────────────────────────────────── -->
-    <section id="wont" class="reveal">
-      <p class="eyebrow">Bounded on purpose</p>
+    <!-- ── What it will not do ─────────────────────────────────────────── -->
+    <section id="rules" class="reveal">
+      <p class="eyebrow">The guardrails</p>
       <h2>What it will not do</h2>
       <ul class="nots">
-        <li><span class="x" aria-hidden="true">&times;</span><span><b>Append an <code>LC Examples</code> section.</b><span class="why">Re-solving what a template above already solves is how the sheets grew to need a cleanup. It goes under the pattern instead.</span></span></li>
-        <li><span class="x" aria-hidden="true">&times;</span><span><b>Open a catch-all.</b><span class="why">A <code>Missing Google Patterns</code> bucket is a decision deferred, not a section. New material is filed under the pattern it belongs to.</span></span></li>
-        <li><span class="x" aria-hidden="true">&times;</span><span><b>Copy a section into a second sheet.</b><span class="why">A cross-reference is one table row and a link. Two copies of a section are two sections that disagree in six months.</span></span></li>
-        <li><span class="x" aria-hidden="true">&times;</span><span><b>Hand back an untested snippet.</b><span class="why">Every snippet runs against the problem's own examples first. Variants in one section must agree with each other.</span></span></li>
-        <li><span class="x" aria-hidden="true">&times;</span><span><b>Touch <code>data/progress.txt</code>.</b><span class="why">The practice log is your own record and the single source for the <a href="lc-review-plan.html">review plan</a> &mdash; nothing else writes to it.</span></span></li>
-        <li><span class="x" aria-hidden="true">&times;</span><span><b>Commit or push unless asked.</b><span class="why">It writes files, runs the gates, and stops. The commit is yours to shape.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Pick the file by topic name.</b><span class="why">Where a Scope line exists it is what stops two files growing into the same document, and the only thing that can settle an overlap.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Drop a Scope line when translating.</b><span class="why">It becomes <code>&gt; **範圍** — …</code>. The build reads either spelling, so the translated line <em>is</em> the Chinese card description.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Append a loose question to the end.</b><span class="why">It goes under the section that owns the concept. A file with a tail of unfiled questions is a file nobody can navigate.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Ship the English alone.</b><span class="why">The tree is at 902/902. The gap would not be reported until the next <code>status</code> run, and the Chinese page would render with an English hole.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Renumber without sweeping the links.</b><span class="why">The anchors are positional. <code>e2e-check.js</code>'s dangling-fragment rule is what catches it, but only after the fact.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Leave a fence untagged.</b><span class="why"><code>text</code> counts &mdash; for ASCII diagrams and program output. A bare fence is the one that renders wrong.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Start a new FAQ file needlessly.</b><span class="why">If an existing Scope line already claims the area, a new file is the start of two documents about one topic.</span></span></li>
       </ul>
     </section>
 
@@ -485,13 +545,11 @@ node script/zh.js status --write</code></pre>
           <button class="copy" type="button">copy</button>
 <pre><code>git clone --depth 1 https://github.com/yennanliu/CS_basics.git /tmp/cs_basics
 mkdir -p ~/.claude/skills
-cp -r /tmp/cs_basics/.claude/skills/lc-cheatsheet ~/.claude/skills/</code></pre>
+cp -r /tmp/cs_basics/.claude/skills/lc-faq-add ~/.claude/skills/</code></pre>
         </div>
         <p class="note">
-          Already installed inside this repo at <code>.claude/skills/lc-cheatsheet/</code>, so a
-          clone of CS_basics needs no setup at all. Claude Code matches it on the description, or
-          you can call <code>/lc-cheatsheet</code> by name &mdash; the directory name <em>is</em>
-          the command.
+          Already installed inside this repo at <code>.claude/skills/lc-faq-add/</code>. The
+          directory name <em>is</em> the command.
         </p>
       </div>
 
@@ -499,25 +557,19 @@ cp -r /tmp/cs_basics/.claude/skills/lc-cheatsheet ~/.claude/skills/</code></pre>
         <p>Zip the directory, then <em>Customize &rarr; Skills &rarr; + &rarr; + Create skill &rarr; Upload a skill</em>:</p>
         <div class="code-block">
           <button class="copy" type="button">copy</button>
-<pre><code>cd .claude/skills &amp;&amp; zip -r lc-cheatsheet.zip lc-cheatsheet</code></pre>
+<pre><code>cd .claude/skills &amp;&amp; zip -r lc-faq-add.zip lc-faq-add</code></pre>
         </div>
-        <p class="note">
-          Leave the YAML frontmatter in <code>SKILL.md</code> intact. <code>description</code> is
-          what Claude matches your request against when deciding to load the skill on its own;
-          <code>name</code> is the display label, and the directory name is what supplies the
-          slash command.
-        </p>
+        <p class="note">Leave the YAML frontmatter intact &mdash; <code>description</code> is what Claude matches your request against.</p>
       </div>
 
       <div class="panel" role="tabpanel" id="p-codex" aria-labelledby="tab-codex" hidden>
         <p>Codex reads <code>AGENTS.md</code> at the repo root automatically. Point it at the skill:</p>
         <div class="code-block">
           <button class="copy" type="button">copy</button>
-<pre><code>## Updating a cheatsheet
+<pre><code>## Filing a Q&amp;A into the FAQs
 
-When asked to add an LC problem to a cheatsheet, to document a pattern,
-or to update a section under doc/cheatsheet/, follow
-`.claude/skills/lc-cheatsheet/SKILL.md`.</code></pre>
+When asked to add an FAQ entry, document an interview question, or start
+a new FAQ file, follow `.claude/skills/lc-faq-add/SKILL.md`.</code></pre>
         </div>
         <p class="note">A pointer, not a copy &mdash; one source of truth means a fix reaches every agent at once.</p>
       </div>
@@ -526,28 +578,25 @@ or to update a section under doc/cheatsheet/, follow
         <p>Same shape in <code>GEMINI.md</code>, or point at it for a single session:</p>
         <div class="code-block">
           <button class="copy" type="button">copy</button>
-<pre><code>gemini -p "Follow the recipe in .claude/skills/lc-cheatsheet/SKILL.md. \
-Add LC 1650 to doc/cheatsheet/binary_tree.md as a variation \
-of the LCA template — solution in @lca_iii.py"</code></pre>
+<pre><code>gemini -p "Follow the recipe in .claude/skills/lc-faq-add/SKILL.md. \
+Add a question about Kafka rebalancing."</code></pre>
         </div>
       </div>
 
       <div class="panel" role="tabpanel" id="p-other" aria-labelledby="tab-other" hidden>
         <p>
-          Paste <code>SKILL.md</code> in as the system prompt. It is self-contained and has no
-          <code>references/</code> to carry. For Cursor or Windsurf, put the Codex pointer above
-          into a rule file (<code>.cursor/rules/lc-cheatsheet.mdc</code> or the editor's
-          equivalent).
+          Paste <code>SKILL.md</code> in as the system prompt. For Cursor or Windsurf, put the
+          Codex pointer above into a rule file
+          (<code>.cursor/rules/lc-faq-add.mdc</code> or the editor's equivalent).
         </p>
         <div class="code-block">
           <button class="copy" type="button">copy</button>
-<pre><code>curl -sL https://raw.githubusercontent.com/yennanliu/CS_basics/master/.claude/skills/lc-cheatsheet/SKILL.md</code></pre>
+<pre><code>curl -sL https://raw.githubusercontent.com/yennanliu/CS_basics/master/.claude/skills/lc-faq-add/SKILL.md</code></pre>
         </div>
         <p class="note">
-          Three steps are this repo's: the <code>zh.js</code> overlay, the
-          <code>cheatsheet_meta.json</code> registration and the <code>slugify</code> anchor
-          calculation. Away from CS_basics they are no-ops &mdash; the sheet-choosing, the four
-          modes and the house rules carry over to any markdown notes tree.
+          Away from this repo, the transferable parts are the Scope-line rule for choosing a
+          file and the answer-first shape. The translation half is specific to a tree that is
+          already fully translated.
         </p>
       </div>
     </section>
@@ -556,21 +605,17 @@ of the LCA template — solution in @lca_iii.py"</code></pre>
     <section id="inside" class="reveal">
       <p class="eyebrow">Under the hood</p>
       <h2>What is inside</h2>
-      <p class="sub">
-        One file. The steps live there and nowhere else &mdash; this page describes them, but
-        <code>SKILL.md</code> is what actually runs, so the two cannot drift into two recipes.
-      </p>
       <ul class="files">
         <li>
-          <a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-cheatsheet/SKILL.md">SKILL.md</a>
-          <span>The whole recipe &mdash; the five prime directives, the four modes, the nine steps with their commands, the house rules, what each mode has to make reachable, the do-not list, and the LC 1650 worked example.</span>
+          <a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-faq-add/SKILL.md">SKILL.md</a>
+          <span>The whole recipe &mdash; why the translation is part of the job, the five prime directives, the directory-to-category map, the six steps, the do-not list, and a worked run.</span>
         </li>
       </ul>
       <p class="note" style="margin-top:1.2rem">
         Gated in CI by
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/script/check_skills.py">check_skills.py</a> &mdash;
-        frontmatter every host can parse, the directory name pinned to the command name, and
-        whether the links on this page still resolve.
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/script/check_skills.py">check_skills.py</a>,
+        and what it writes is gated by <code>e2e-check.js</code> &mdash; dangling fragments,
+        broken links and missing descriptions, on every built page.
       </p>
     </section>
 
@@ -579,14 +624,11 @@ of the LCA template — solution in @lca_iii.py"</code></pre>
       <p class="eyebrow">The rest of the loop</p>
       <h2>Where it fits</h2>
       <p class="sub">
-        <a href="lc-python.html">/lc-python</a> and <a href="lc-java.html">/lc-java</a> file the
-        solution; <code>/lc-cheatsheet</code> files what you learned from it, which is the part
-        that transfers to the next problem. From
-        there the <a href="cheatsheets.html">cheatsheet index</a> lists it, the
-        <a href="lc-roadmap.html">roadmap</a> points at it from the topic it teaches,
-        <a href="search.html">search</a> indexes its headings, and
-        <a href="skills.html">LC Coach</a> is the one to ask whether you can now solve the
-        sibling problems the new section names.
+        <a href="lc-cheatsheet.html">/lc-cheatsheet</a> files what a <em>problem</em> taught you;
+        <code>/lc-faq-add</code> files what a <em>question</em> taught you &mdash; the systems,
+        language and tooling side that no LeetCode number covers.
+        <a href="lc-zh-translate.html">/lc-zh-translate</a> owns the rules its second half
+        applies, and the result lands on the <a href="faqs.html">FAQ index</a> in both languages.
       </p>
     </section>
 
@@ -611,8 +653,10 @@ of the LCA template — solution in @lca_iii.py"</code></pre>
   var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // Sections are visible in the stylesheet and only hidden once `.js` is on the
-  // root, so a page with no JS never gets stuck blank. The above-the-fold ones
-  // are marked revealed in the same synchronous block — one paint, no flash.
+  // root, so a page with no JS never gets stuck blank. The cost is that adding
+  // the class here would blank whatever is already on screen for a frame, so
+  // the above-the-fold sections are marked revealed in the *same* synchronous
+  // block — one paint, no flash.
   var reveals = [].slice.call(document.querySelectorAll('.reveal'));
   var onscreen = reveals.filter(function (el) {
     return el.getBoundingClientRect().top < (window.innerHeight || 0);
@@ -635,6 +679,8 @@ of the LCA template — solution in @lca_iii.py"</code></pre>
     tape.appendChild(caret);
     var i = 0;
     (function tick() {
+      // Whole lines at a time once past the first: character-by-character for
+      // 700 characters is a long time to make someone watch.
       i += i < 60 ? 1 : 3;
       text.nodeValue = TAPE.slice(0, i);
       if (i < TAPE.length) setTimeout(tick, i < 60 ? 26 : 12);
@@ -642,7 +688,7 @@ of the LCA template — solution in @lca_iii.py"</code></pre>
     })();
   }
 
-  // ── Mode selector ─────────────────────────────────────────────────────
+  // ── Pipeline stepper ──────────────────────────────────────────────────
   var steps = [].slice.call(document.querySelectorAll('.step'));
   var sd = document.getElementById('sd');
 
@@ -651,7 +697,7 @@ of the LCA template — solution in @lca_iii.py"</code></pre>
       s.setAttribute('aria-checked', String(s === step));
       s.tabIndex = s === step ? 0 : -1;
     });
-    sd.querySelector('.sd-name').textContent = step.dataset.name;
+    sd.querySelector('.sd-name').textContent = step.dataset.n + '. ' + step.dataset.name;
     sd.querySelector('.sd-body').textContent = step.dataset.body;
     // The rule is the line worth reading twice, so it gets a label. Every
     // dataset value is plain text and is set as text — the label is a real
@@ -680,7 +726,8 @@ of the LCA template — solution in @lca_iii.py"</code></pre>
 
   // ── Tabs ──────────────────────────────────────────────────────────────
   // Panels toggle with the `hidden` attribute rather than a class, so a hidden
-  // panel is out of the accessibility tree and out of find-in-page too.
+  // panel is out of the accessibility tree and out of find-in-page too. Each
+  // tablist is handled independently, so the two on this page cannot fight.
   [].slice.call(document.querySelectorAll('[role="tablist"]')).forEach(function (list) {
     var tabs = [].slice.call(list.querySelectorAll('.tab'));
     if (!tabs.length) return;
@@ -717,9 +764,14 @@ of the LCA template — solution in @lca_iii.py"</code></pre>
 
   // ── Copy buttons ──────────────────────────────────────────────────────
   // clipboard.writeText needs a secure context; on plain http it rejects, so
-  // the button says so instead of silently doing nothing. The `.ann` spans are
-  // margin notes about the command, not part of it, so they are stripped from
-  // a clone before the text is read.
+  // the button says so instead of silently doing nothing.
+  //
+  // The `.ann` spans are margin notes about the code, not part of it, so they
+  // are stripped from a clone before the text is read — copying the anatomy
+  // block otherwise hands back Python with "<- docstring first" inside it. The
+  // strip leaves the padding that positioned each note, hence the trailing
+  // whitespace pass. textContent, not innerText: the clone is detached, and in
+  // a <pre> the two agree anyway.
   function codeText(block) {
     var node = block.querySelector('code').cloneNode(true);
     [].slice.call(node.querySelectorAll('.ann')).forEach(function (a) {

@@ -639,9 +639,9 @@ suggest what to practise next, or write an interviewer debrief, follow
         the <a href="cheatsheets.html">cheatsheets</a> hold the templates, the
         <a href="lc-complexity-quiz.html">complexity quiz</a> drills the analysis, the
         <a href="lc-review-plan.html">review plan</a> schedules what keeps coming back, and
-        <a href="lc-add.html">LC Add</a> — the other skill here — files the solution once you
-        are done with it. This page is for the part none of those cover: whether the thing you
-        just wrote would actually pass.
+        <a href="lc-python.html">LC Python</a> and <a href="lc-java.html">LC Java</a> file the
+        solution once you are done with it. This page is for the part none of those cover:
+        whether the thing you just wrote would actually pass.
       </p>
     </section>
 
@@ -741,6 +741,10 @@ suggest what to practise next, or write an interviewer debrief, follow
       tabs.forEach(function (t) {
         var on = t === tab;
         t.setAttribute('aria-selected', on ? 'true' : 'false');
+        // Roving tabindex: the tablist is ONE Tab stop and the arrows move
+        // inside it. Without this every tab is its own stop, and the arrow
+        // handler below has nothing to return focus order to.
+        t.tabIndex = on ? 0 : -1;
         document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
       });
     }
@@ -755,6 +759,9 @@ suggest what to practise next, or write an interviewer debrief, follow
         next.focus();
       });
     });
+    // The markup marks one tab selected; run it through select() so the
+    // tabIndex state matches from the first paint rather than the first click.
+    select(list.querySelector('.tab[aria-selected="true"]') || tabs[0]);
   });
 
   // ── Copy buttons ──────────────────────────────────────────────────────
