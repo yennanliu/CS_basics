@@ -170,6 +170,114 @@ class Solution(object):
         return res
 
 
+# V0-0-1
+# IDEA: PREFIX SUM (gpt)
+class Solution(object):
+    def gridGame(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+
+        n = len(grid[0])
+
+        # Robot 1 initially has all top-row points
+        top_sum = sum(grid[0])
+
+        # Robot 1 wants to minimize Robot 2's maximum score
+        answer = float('inf')
+
+        bottom_left = 0
+
+        for x in range(n):
+
+            # Robot 1 takes grid[0][x]
+            # So these top cells are no longer available to Robot 2
+            top_sum -= grid[0][x]
+
+            # Robot 2 can go:
+            #
+            # Option 1:
+            # Stay on top row and collect everything to the right
+            top_right = top_sum
+
+            # Option 2:
+            # Go down earlier and collect bottom row on the left
+            bottom_left_score = bottom_left
+
+            # Robot 2 chooses the better option
+            robot_2_score = max(
+                top_right,
+                bottom_left_score
+            )
+
+            # Robot 1 chooses the column that minimizes
+            # Robot 2's score
+            answer = min(answer, robot_2_score)
+
+            # Prepare bottom prefix for next iteration
+            bottom_left += grid[1][x]
+
+        return answer
+
+
+# V0-0-X
+# IDEA: MATRIX + prblem understading (gpt)
+"""
+NOTE !!!
+
+    - the grid is ALWAYS `2 x n` size
+        -> so the robot can ONLY `change direction` as once
+
+    e.g.
+        -> 
+
+            Row 0: → → → → ↓ 
+            Row 1:           → → →
+
+"""
+class Solution(object):
+    def gridGame(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+
+        n = len(grid[0])
+
+        # Robot 1 initially has the sum of the top row
+        top_sum = sum(grid[0])
+
+        # Robot 2 will collect the maximum remaining points
+        robot_2_max = float('inf')
+
+        # Points already passed by Robot 1 on the top row
+        top_left = 0
+
+        # Try every possible column where Robot 1 goes down
+        for x in range(n):
+            # Remove current top cell because Robot 1 takes it
+            top_sum -= grid[0][x]
+
+            # Robot 2 can choose:
+            # 1. remaining top row on the right
+            robot_2_top = top_sum
+
+            # 2. bottom row on the left
+            robot_2_bottom = sum(grid[1][:x])
+
+            # Robot 2 will choose the better of the two
+            robot_2_score = max(robot_2_top, robot_2_bottom)
+
+            # Robot 1 wants to minimize Robot 2's score
+            robot_2_max = min(robot_2_max, robot_2_score)
+
+            # Move to next column
+            top_left += grid[0][x]
+
+        return robot_2_max
+
+
 # V0-1
 # IDEA: PREFIX (BOTTOM) + SUFFIX (TOP) SUM OVER THE TURNING COLUMN (gemini)
 """
