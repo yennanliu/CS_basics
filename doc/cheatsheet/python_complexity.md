@@ -58,7 +58,7 @@ has to `memmove` the tail.
 | `x in l`, `l.index(x)`, `l.count(x)` | **O(n)** | O(1) | Linear scan with `==` on each element. ⚠️ The single most common accidental O(n²) |
 | `l[i:j]` (slice) | O(k) | O(k) | Copies `k` pointers into a **new** list |
 | `l[::-1]` | O(n) | O(n) | New list. Use `reversed(l)` when you only iterate |
-| `l1 + l2` | O(n + m) | O(n + m) | New list. ⚠️ `+=` in a loop is O(n²); `append` instead |
+| `l1 + l2` | O(n + m) | O(n + m) | New list. ⚠️ `l = l + chunk` in a loop is **O(n²)** — it rebuilds every time. `l += chunk` is *not* the same operation: it calls `extend`, mutating in place at amortized O(k) |
 | `l * k` | O(n · k) | O(n · k) | ⚠️ `[[0] * n] * m` shares **one** row object — see [2D array initialization](./python_trick.md#2d-array-matrix-initialization) |
 | `l[:]` / `l.copy()` / `list(l)` | O(n) | O(n) | Shallow — copies n pointers, not the objects |
 | `copy.deepcopy(l)` | O(total nodes) | O(total nodes) | Walks the whole object graph and keeps a memo dict for shared refs |
@@ -128,7 +128,7 @@ insertion order — which is where ordering guarantees and the compact memory co
 | `d[k]`, `k in d`, `d.get(k)` | **O(1)** | O(n) | O(1) | Hash → slot → probe. Worst case = every key collides (adversarial input) |
 | `d[k] = v`, `s.add(x)` | **O(1) amortized** | O(n) | O(1) | Resizes when the load factor is exceeded (dict at 2/3 full, set at 3/5) — a resize **rehashes everything**, O(n) |
 | `del d[k]`, `s.discard(x)` | **O(1)** | O(n) | O(1) | Leaves a *dummy* marker so later probe chains do not break |
-| `hash(key)` | O(size of key) | — | O(1) | ⚠️ Hashing a **string or tuple key** is O(len), not O(1) — a dict keyed on length-L strings costs O(L) per op |
+| `hash(key)` | **O(1)** once cached | O(len) first time | O(1) | The hash walks the whole key, then `str` **caches** it in the object — so only the *first* hash of a new string costs O(L), not every lookup. ⚠️ A `tuple` had no such cache before CPython 3.14, so there a dict keyed on length-L tuples pays O(L) on **every** op |
 | Iterating `d` / `d.items()` | O(n) | — | O(1) | Walks the dense entry array (the view itself is O(1) to create) |
 | Iterating a `set` | O(capacity) | — | O(1) | Sets have **no** dense array — iteration walks empty slots too |
 | `d.keys() \| other`, `set` union `a \| b` | O(n + m) | — | O(n + m) | |

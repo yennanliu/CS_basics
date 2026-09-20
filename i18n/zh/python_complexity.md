@@ -45,7 +45,7 @@
 | `str(n)` / `int(s)` | O(d) | O(d) | `d` = 位數。對超大整數是超線性的（CPython 3.11+ 甚至預設上限 4300 位） |
 | `bin(n)` / `hex(n)` | O(log n) | O(log n) | 每個 bit / nibble 一個字元 |
 
-<!-- 8c3d55d92517 -->
+<!-- 8bb085f315fa -->
 ## `list` — 一個指標的動態陣列
 
 CPython 的 list 是一塊連續的 `PyObject **` 記憶體，外加長度與容量。**不管裝什麼，每個元素都佔一個
@@ -61,7 +61,7 @@ CPython 的 list 是一塊連續的 `PyObject **` 記憶體，外加長度與容
 | `x in l`、`l.index(x)`、`l.count(x)` | **O(n)** | O(1) | 逐一用 `==` 比對。⚠️ 這是最常見的「不小心變成 O(n²)」 |
 | `l[i:j]`（切片） | O(k) | O(k) | 把 `k` 個指標複製到一個**新的** list |
 | `l[::-1]` | O(n) | O(n) | 產生新 list。只是要走訪的話請用 `reversed(l)` |
-| `l1 + l2` | O(n + m) | O(n + m) | 產生新 list。⚠️ 在迴圈裡用 `+=` 是 O(n²)；改用 `append` |
+| `l1 + l2` | O(n + m) | O(n + m) | 產生新 list。⚠️ 在迴圈裡寫 `l = l + chunk` 是 **O(n²)** — 每次都重建一份。`l += chunk` *不是*同一個操作：它會呼叫 `extend`，原地修改，攤還 O(k) |
 | `l * k` | O(n · k) | O(n · k) | ⚠️ `[[0] * n] * m` 會共用**同一個**列物件 — 見 [2D array initialization](./python_trick.md#2d-array-matrix-initialization) |
 | `l[:]` / `l.copy()` / `list(l)` | O(n) | O(n) | 淺複製 — 複製 n 個指標，不是複製物件本身 |
 | `copy.deepcopy(l)` | O(全部節點) | O(全部節點) | 走遍整張物件圖，並用一個 memo dict 處理共用參考 |
@@ -99,7 +99,7 @@ CPython 的 list 是一塊連續的 `PyObject **` 記憶體，外加長度與容
 > 有時候會把 O(n²) 藏起來。**不要依賴它** — 只要有第二個名字指向這個字串就失效，而且 PyPy/Jython
 > 上根本沒有。面試時就講 `join`。
 
-<!-- 405384e1975d -->
+<!-- 752e2ff06ec8 -->
 ## `dict` 與 `set` — 開放定址的雜湊表 ⭐⭐⭐⭐
 
 兩者都是開放定址表（碰撞時往下一個 slot 探測，沒有 bucket 串鏈）。3.6 之後的 dict 是*分離式*的：
@@ -111,7 +111,7 @@ CPython 的 list 是一塊連續的 `PyObject **` 記憶體，外加長度與容
 | `d[k]`、`k in d`、`d.get(k)` | **O(1)** | O(n) | O(1) | hash → slot → 探測。最壞情況是每個 key 都碰撞（對抗式輸入） |
 | `d[k] = v`、`s.add(x)` | **攤還 O(1)** | O(n) | O(1) | 超過負載係數就重新配置（dict 是 2/3 滿，set 是 3/5）— 重新配置會**把所有 key 重新 hash**，O(n) |
 | `del d[k]`、`s.discard(x)` | **O(1)** | O(n) | O(1) | 會留下一個 *dummy* 標記，免得後面的探測鏈斷掉 |
-| `hash(key)` | O(key 的長度) | — | O(1) | ⚠️ 對**字串或 tuple 當 key** 而言 hash 是 O(len) 而非 O(1) — 用長度 L 的字串當 key，每次操作就是 O(L) |
+| `hash(key)` | 快取後 **O(1)** | 第一次 O(len) | O(1) | hash 要掃過整個 key，但 `str` 算完後會把它**快取**在物件裡 — 所以只有*第一次*對新字串取 hash 才是 O(L)，不是每次查詢都付。⚠️ `tuple` 在 CPython 3.14 之前沒有這個快取，在那些版本上用長度 L 的 tuple 當 key，**每次**操作都是 O(L) |
 | 走訪 `d` / `d.items()` | O(n) | — | O(1) | 走的是緊密條目陣列（view 本身的建立是 O(1)） |
 | 走訪 `set` | O(容量) | — | O(1) | set **沒有**緊密陣列 — 走訪時連空 slot 也要走過 |
 | `d.keys() \| other`、set 聯集 `a \| b` | O(n + m) | — | O(n + m) | |
