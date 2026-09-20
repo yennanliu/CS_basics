@@ -50,9 +50,12 @@ class Solution(object):
             return head
 
         """
+        
         NOTE !!!
 
-        we init node as `None`
+        we init node as `None` 
+
+
         """
         node = None
 
@@ -100,6 +103,28 @@ class Solution(object):
 
 
 # V0-2
+# IDEA : Linkedlist (recursion) (gemini)
+class Solution(object):
+
+  def reverseList(self, head):
+    """
+        :type head: Optional[ListNode]
+        :rtype: Optional[ListNode]
+        """
+    # Base case: 空串列或只剩一個節點
+    if not head or not head.next:
+      return head
+
+    new_head = self.reverseList(head.next)
+
+    # 讓後方回傳的子串列頭尾接回當前節點
+    head.next.next = head
+    head.next = None
+
+    return new_head
+
+
+# V0-2
 # IDEA : Linkedlist basics
 # STEPS)
 # -> STEP 1) cache "next"
@@ -124,6 +149,7 @@ class Solution(object):
             # move head to "next"
             head = tmp
         return prev
+
 
 # V0-3
 # IDEA : Linkedlist basics
