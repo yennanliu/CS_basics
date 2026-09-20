@@ -58,6 +58,38 @@ class Solution(object):
         return dummy.next
 
 
+
+# V0-0-1
+# IDEA : LINKED LIST (gpt)
+class Solution(object):
+    def swapPairs(self, head):
+        """
+        :type head: Optional[ListNode]
+        :rtype: Optional[ListNode]
+        """
+
+        dummy = ListNode(0)
+        dummy.next = head
+
+        prev = dummy
+
+        while prev.next and prev.next.next:
+            first = prev.next
+            second = first.next
+
+            # 1. second -> first
+            first.next = second.next
+            second.next = first
+
+            # 2. prev -> second
+            prev.next = second
+
+            # Move to the next pair
+            prev = first
+
+        return dummy.next
+
+
 # V0-1
 # IDEA : LINKED LIST (gemini)
 class Solution(object):
