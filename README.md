@@ -384,6 +384,7 @@ python3 script/fix_readme_tags.py            # rewrite the Note column
 | 2644 | [Find the Maximum Divisibility Score](https://leetcode.com/problems/find-the-maximum-divisibility-score) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Array/FindTheMaximumDivisibilityScore.java) | _O(n * m)_ | _O(1)_ | Easy | **array**, sort | Again (1) |
 | 3195 | [Find the Minimum Area to Cover All Ones I](https://leetcode.com/problems/find-the-minimum-area-to-cover-all-ones-i/description/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Array/findTheMinimumAreaToCoverAllOnesI.java) | _O(m * n)_ | _O(1)_ | Medium | **array**, LC weekly | AGAIN (1) |
 | 3964 | [Minimum Lights to Illuminate a Road](https://leetcode.com/problems/minimum-lights-to-illuminate-a-road/description/) | [Python](./leetcode_python/Array/minimum-lights-to-illuminate-a-road.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Array/MinimumLightsToIlluminateARoad.java) | _O(n)_ | _O(n)_ | Medium | **array**, diff array, LC bi weekly | AGAIN (1) |
+| 4052 | [Cyclically Shift Rows and Columns](https://leetcode.com/problems/cyclically-shift-rows-and-columns/description/) | [Python](./leetcode_python/Array/cyclically-shift-rows-and-columns.py) | _O(n^2)_ | _O(n^2)_ | Easy | **array**, matrix simulation, rows first THEN cols, write into a NEW grid (in-place overwrites unread cells), composed one-pass index as V0-1, LC weekly | AGAIN(1) |
 
 
 ## Set
