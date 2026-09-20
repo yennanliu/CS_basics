@@ -171,7 +171,65 @@ class Solution(object):
 
 
 # V0-0-1
-# IDEA: PREFIX SUM (gpt)
+# IDEA: PREFIX + SUFFIX SUM + min-max greedy (gpt)
+"""
+
+Q:
+
+1 why max() then min() ?
+
+    -> KEY !!!
+
+    ```
+    robot_2_score = max(top_right, bottom_left)
+    ```
+
+    
+    -> robot 2 wants higgest val
+
+        -> given
+
+            ```
+            Top:     [ X X X | X X ]
+                               ↑
+                             Robot 1
+            Bottom:  [ X X X | X X ]
+            ```
+
+
+        -> robot 2 can ONLY choose from
+
+            ```
+            A. 右邊 top
+            B. 左邊 bottom
+            ```
+
+
+        -> so robot 2 will choose
+
+            ```
+            max(top_right, bottom_left)
+            ```
+
+        -> but, robot 1 knows above, so robot 1 will choose:
+
+            ```
+            min(robot_2_score)
+            ```
+
+
+        -> so overall, for this LC: (min-max greedy)
+
+
+            ```
+                Robot 1:
+                    min(
+                        Robot 2:
+                            max(top-right, bottom-left)
+                    )
+            ```
+        
+"""
 class Solution(object):
     def gridGame(self, grid):
         """
