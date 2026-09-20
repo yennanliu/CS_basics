@@ -51,6 +51,66 @@ Node.random is null or is pointing to some node in the linked list.
 # time = O(n)  # n = number of nodes
 # space = O(n)
 class Solution(object):
+
+    def copyRandomList(self, head):
+        """
+        :type head: Node
+        :rtype: Node
+        """
+
+        if not head:
+            return None
+
+        """
+        NOTE !!!
+
+
+        use `hashmap` to make sure to `reuse` `copied nodes`
+
+        """
+        # original node -> copied node
+        visited = {}
+
+        return self.helper(head, visited)
+
+    def helper(self, head, visited):
+
+        if not head:
+            return None
+
+        # Already copied
+        if head in visited:
+            return visited[head]
+
+        # Create copied node
+        copied = Node(head.val)
+
+        # Save it before processing next/random
+        visited[head] = copied
+
+        """
+        NOTE !!!
+
+
+        `random` is a `Node` as well,
+        so we need to use recursion copy its values.
+
+        """
+        # Copy next
+        copied.next = self.helper(head.next, visited)
+
+        # Copy random
+        copied.random = self.helper(head.random, visited)
+
+        return copied
+
+
+
+# V0-0-1
+# IDEA: RECURSION + HASHMAP
+# time = O(n)  # n = number of nodes
+# space = O(n)
+class Solution(object):
     def copyRandomList(self, head):
         # NOTE !!!
         # we need this map
@@ -83,6 +143,7 @@ class Solution(object):
         newNode.random = self.copyHelper(node.random)
 
         return newNode
+
 
 # V0-1
 # IDEA: 2 PASS + HASHMAP
