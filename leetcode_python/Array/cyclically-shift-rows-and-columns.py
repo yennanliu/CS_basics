@@ -161,3 +161,52 @@ class Solution2(object):
                 res[i][j] = grid[r][(j + rowShift[r]) % n]
 
         return res
+
+
+# V0-2
+# IDEA: 雙階段座標映射矩陣建構 (gemini)
+# Time: O(N^2)
+# Space: O(N^2)
+"""
+CORE IDEA:
+
+用二階段矩陣（先做 row shift，再做 col shift）
+透過安全座標對應直接產出結果，完全避開原地覆寫與指標打架：
+
+"""
+class Solution(object):
+
+  def cyclicShift(self, n, grid, rowShift, colShift):
+    if not grid or len(grid) == 0:
+      return None
+
+    if len(grid) == 1 and len(grid[0]) == 1:
+      return grid
+
+    # 1. 處理 Row Shift: 
+    # 原本在 (i, j) 的元素，經過左移 rowShift[i] 後移動到 (i, (j - k + n) % n)
+    inter_grid = [[0] * n for _ in range(n)]
+    for i in range(n):
+      k = rowShift[i] if isinstance(rowShift, list) else rowShift.get(i, 0)
+      # 兼容陣列或字典型態
+      if not isinstance(rowShift, (list, tuple)):
+        # 如果 rowShift 是全域單一值或陣列
+        pass
+
+    # 假設 rowShift[i] 與 colShift[j] 為矩陣對應索引 0..n-1
+    for i in range(n):
+      k = rowShift[i]
+      for j in range(n):
+        target_j = (j - k + n) % n
+        inter_grid[i][target_j] = grid[i][j]
+
+    # 2. 處理 Col Shift (基於 inter_grid 進行垂直位移):
+    # 原本在 (i, j) 的元素，經過垂直左/上移 colShift[j] 後移動到 ((i - k + n) % n, j)
+    final_grid = [[0] * n for _ in range(n)]
+    for j in range(n):
+      k = colShift[j]
+      for i in range(n):
+        target_i = (i - k + n) % n
+        final_grid[target_i][j] = inter_grid[i][j]
+
+    return final_grid
