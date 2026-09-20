@@ -834,17 +834,34 @@ execute before pushing. `.github/workflows/skills-check.yml` calls it and then b
 because `validate-pages.yml`'s path filter does not watch `.claude/`.
 
 ```bash
-python3 script/check_skills.py --install   # what CI runs
+python3 script/test_check_skills.py         # the gate's own tests
+python3 script/check_skills.py --install --run   # what CI runs
 ```
 
-It checks frontmatter every host can parse, that no reference file is orphaned, and that every
-`.claude/skills/...` path named by `CLAUDE.md`, an `INSTALL.md` or a skill's page under
-`site/pages/` (`skills.html`, `lc-python.html`, `lc-java.html`, and the other skill
-pages)
-still resolves — that last one because those links are absolute `github.com` URLs, which
-`e2e-check.js` cannot resolve and never will. `--install` performs both documented installs
-(the `cp -r`, and the zip the Claude app uploads) into a temp directory and re-runs every check
-on the copy, which is the only way to prove a skill works with none of this repo around it.
+It checks frontmatter every host can parse, the **house shape the `lc-*` recipes share** (an
+`**Invocation**` line naming its own command, `## The steps` / `## Do not` / `## Worked
+example`, step headings running `1..n` with no gap, every fence tagged), that no reference file
+is orphaned, and that every `.claude/skills/...` path named by `CLAUDE.md`, an `INSTALL.md` or
+a skill's page under `site/pages/` still resolves — that last one because those links are
+absolute `github.com` URLs, which `e2e-check.js` cannot resolve and never will.
+
+Two flags do the parts a markdown file cannot prove about itself:
+
+- **`--install`** performs both documented installs (the `cp -r`, and the zip the Claude app
+  uploads) into a temp directory and re-runs every check on the copy, which is the only way to
+  prove a skill works with none of this repo around it. It is what caught a sibling skill
+  linked as `../lc-java/SKILL.md`: fine here, resolving to nothing once installed alone.
+- **`--run`** executes the commands each skill tells an agent to type. Everything else proves
+  the *file* is well-formed; only this proves the *recipe* still works, because nothing points
+  *at* a skill — the skill points at the repo — so a renamed script leaves every other check
+  green. It skips templates (`<placeholder>`) and anything that writes a tracked file, reaches
+  the network or blocks, printing the reason for each. It found a broken command the day it
+  landed: `lc-site-data` documented `d['topics']` for a roadmap file whose array is `nodes`.
+
+`script/test_check_skills.py` unit-tests the gate itself, because **a checker that quietly
+stops matching reports PASS for every skill in the repo** — so each rule is asserted against a
+bad synthetic skill as well as a good one, and the real tree is asserted to still produce a
+non-zero number of paths and runnable commands.
 
 Full detail in [`doc/utility-scripts.md`](doc/utility-scripts.md).
 

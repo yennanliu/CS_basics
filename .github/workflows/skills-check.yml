@@ -1,18 +1,27 @@
 name: Agent Skills Check
 
-# A skill is markdown, so no compiler, linter or test ever looks at it. The two
-# ways one breaks are both invisible in a diff: a frontmatter fence that a host
-# cannot parse (the skill loads as inert prose and is never matched), and a
-# renamed file that leaves every pointer to it — including the install
-# instructions and the links on a skill's page under site/pages/ — aimed at
-# nothing.
+# A skill is markdown, so no compiler, linter or test ever looks at it. The ways
+# one breaks are all invisible in a diff: a frontmatter fence that a host cannot
+# parse (the skill loads as inert prose and is never matched), a renamed file
+# that leaves every pointer to it — including the install instructions and the
+# links on a skill's page under site/pages/ — aimed at nothing, and a recipe
+# whose commands stopped working because a script it names was renamed or its
+# flags changed.
+#
+# That last one is what --run is for. Everything else proves the *file* is
+# well-formed; only --run proves the *recipe* still works, by executing the
+# read-only commands each skill tells an agent to type. It found a broken
+# command the day it was added: lc-site-data documented d['topics'] for a
+# roadmap file whose array is called `nodes`.
 #
 # The rules live in script/check_skills.py rather than in a run: block here, for
 # the reason CLAUDE.md gives about site/e2e-check.js: a gate that only exists
 # inside a workflow cannot be run before pushing, cannot be tested, and gets
-# routed around. Reproduce either job locally with:
+# routed around. The gate itself is unit-tested, because a checker that silently
+# stops matching passes every skill in the repo. Reproduce each job locally:
 #
-#   python3 script/check_skills.py --install
+#   python3 script/test_check_skills.py
+#   python3 script/check_skills.py --install --run
 #   bash site/build.sh && node site/e2e-check.js _site
 
 # The two path lists are duplicated rather than shared through a YAML anchor:
@@ -34,6 +43,7 @@ on:
       - 'site/pages/lc-site-data.html'
       - 'site/pages/lc-faq-add.html'
       - 'script/check_skills.py'
+      - 'script/test_check_skills.py'
       - '.github/workflows/skills-check.yml'
   pull_request:
     branches: [ master ]
@@ -50,6 +60,7 @@ on:
       - 'site/pages/lc-site-data.html'
       - 'site/pages/lc-faq-add.html'
       - 'script/check_skills.py'
+      - 'script/test_check_skills.py'
       - '.github/workflows/skills-check.yml'
   workflow_dispatch:
 
@@ -58,10 +69,10 @@ permissions:
   contents: read
 
 jobs:
-  # ── Syntax and install ──────────────────────────────────────────────────────
+  # ── Syntax, install and run ─────────────────────────────────────────────────
   # Standard library only, so there is nothing to install before it can run.
   skill:
-    name: Syntax and install
+    name: Syntax, install and run
     runs-on: ubuntu-latest
 
     steps:
@@ -73,12 +84,29 @@ jobs:
         with:
           python-version: '3.x'
 
-      # Frontmatter every host can parse, bodies that are actually there, and
-      # every .claude/skills path named by CLAUDE.md, an INSTALL.md or the site
-      # page still resolving. The last of those is what catches a renamed
-      # reference file breaking the published page: those links are absolute
-      # github.com URLs, so e2e-check.js cannot resolve them and never will.
-      - name: Syntax and wiring check
+      # --run executes the node commands the recipes document (zh.js status,
+      # build-review-plan.js). No npm ci: they are standard-library only, and
+      # the site job already covers anything that is not.
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # The gate before the thing it gates. A checker whose regex quietly stops
+      # matching reports PASS for every skill in the repo, so the negative cases
+      # — a bad frontmatter, a gap in the step numbering, a renamed script — are
+      # asserted to still fail, and the extractors are asserted to still find
+      # something.
+      - name: Unit-test the gate itself
+        run: python3 script/test_check_skills.py
+
+      # Frontmatter every host can parse, bodies that are actually there, the
+      # house shape the recipe skills share, and every .claude/skills path named
+      # by CLAUDE.md, an INSTALL.md or the site page still resolving. The last of
+      # those is what catches a renamed reference file breaking the published
+      # page: those links are absolute github.com URLs, so e2e-check.js cannot
+      # resolve them and never will.
+      - name: Syntax, format and wiring check
         run: python3 script/check_skills.py --verbose
 
       # The documented installs, actually run: a `cp -r` into a throwaway HOME
@@ -88,6 +116,15 @@ jobs:
       # install cannot promise.
       - name: Install check (copy + zip)
         run: python3 script/check_skills.py --install
+
+      # The recipes, executed. Only what can be shown to be safe runs: a command
+      # carrying a <placeholder> is a template, and anything that writes a
+      # tracked file, reaches the network or blocks is skipped by name with the
+      # reason printed, so the count that actually ran is visible rather than
+      # assumed. Node is needed but the site's npm packages are not — every
+      # command that survives the filter uses the standard library only.
+      - name: Run the commands the skills document
+        run: python3 script/check_skills.py --run
 
   # ── Build ───────────────────────────────────────────────────────────────────
   # Each skill's page under site/pages/ documents it and links into it, but

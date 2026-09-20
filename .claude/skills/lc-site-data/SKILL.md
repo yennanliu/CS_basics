@@ -24,7 +24,8 @@ They are read from `README.md` at build time. A typed copy is a copy that goes s
 
 ## Part A — a roadmap topic
 
-`lc-roadmap.html` is driven entirely by `data/roadmap.json`.
+`lc-roadmap.html` is driven entirely by `data/roadmap.json` — one entry per topic in
+its `nodes` array.
 
 ```json
 {
@@ -126,7 +127,7 @@ and why it is wrong — not a restatement of the right one.
 ### 1. Check what already exists
 
 ```bash
-python3 -c "import json;d=json.load(open('data/roadmap.json'));print([t['id'] for t in d['topics']])"
+python3 -c "import json;d=json.load(open('data/roadmap.json'));print([n['id'] for n in d['nodes']])"
 grep -n '"id":' data/complexity_quiz.json | wc -l
 grep -n "^| *0*<lc> " README.md          # the number must be there
 ls doc/cheatsheet/<slug>.md               # the sheet must be there

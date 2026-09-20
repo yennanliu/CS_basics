@@ -264,18 +264,57 @@ markdown, so no compiler, linter or test sees it, and both of the ways one break
 are invisible in a diff.
 
 ```bash
-python3 script/check_skills.py             # structure + wiring
+python3 script/check_skills.py             # structure + format + wiring
 python3 script/check_skills.py --install   # ...and exercise both documented installs
+python3 script/check_skills.py --run       # ...and run the commands the skills document
 python3 script/check_skills.py --verbose   # list every path it resolved
+python3 script/test_check_skills.py        # unit tests for the gate itself
 ```
 
-Three groups, matching the three things that rot independently:
+Five groups, matching the five things that rot independently:
 
 | Group | Checks |
 |-------|--------|
 | **structure** | the `---` fenced frontmatter parses as `key: value`; `name` is kebab-case and matches the directory; `description` exists, fits in 1024 chars and is a sentence rather than a name echo; the body is really there; code fences balance |
+| **format** | the house shape the `lc-*` recipe skills share — an H1, an `**Invocation**` line naming *its own* command, `## The steps` / `## Do not` / `## Worked example`, step headings running `1..n` with no gap or repeat, a `Do not` list of `❌` items, every opening fence tagged. Headings inside a fence are examples, not structure. `lc-coach` is exempt (a persona with modes, not a recipe with steps) and the pre-house-shape generic skills are reported, not enforced |
+| **referenced paths** | every complete repo path a skill's commands name (`script/…`, `site/…`, `data/…`, `doc/…`, `algo_demo/…`, `i18n/…`) still exists. Nothing points *at* a skill — the skill points at the file — so a rename leaves every other check green and breaks the recipe |
 | **wiring** | every `.claude/skills/...` path named by `CLAUDE.md`, an `INSTALL.md` or a skill's page under `site/pages/` (`skills.html`, `lc-python.html`, …) still resolves; no reference file is orphaned; no absolute `/Users/...` path is baked in |
 | **install** | the `cp -r` into `~/.claude/skills` and the zip the Claude app uploads are both performed into a temp directory, then re-checked — the only way to prove a skill works with none of this repo around it |
+| **run** | the commands a skill tells an agent to type, executed for real against this repo |
+
+### `--run`, and what it refuses to run
+
+Everything else proves the *file* is well-formed. Only `--run` proves the *recipe*
+still works: a renamed script or a changed flag leaves a skill that validates green
+and then fails on the first line the agent types. It earned its place immediately —
+`lc-site-data` documented `d['topics']` for a roadmap file whose array is called
+`nodes`.
+
+It executes only what it can show is safe, and prints the reason for everything it
+skips, so the count that actually ran is visible rather than assumed:
+
+- a command carrying a `<placeholder>` is a template the agent fills in;
+- anything matching `MUTATING` is skipped **by name** — it writes a tracked file
+  (`zh.js sync`, `status --write`, `get_again_problems.sh`), reaches the network
+  (`fetch_problem_lists.py`, `curl`), never returns (`http.server`), or is already
+  covered by another job (`build.sh`, `npm test`, `e2e-check.js`);
+- a `node -e "…"` spanning several lines is joined until its quotes balance, because
+  splitting it per line hands `/bin/sh` half a string.
+
+It is not quite read-only: `node site/build-review-plan.js` regenerates
+`_site/data/progress.json` and creates `_site/` if absent. That tree is gitignored
+build output, and it is the gate the practice-log recipe actually depends on.
+
+### The gate's own tests
+
+`script/test_check_skills.py` is to `check_skills.py` what
+`site/test/build-review-plan.test.js` is to the log parser. The gate is the only
+thing that ever looks at a skill, so **the gate going quiet is indistinguishable
+from every skill being fine** — a tightened regex that stops matching reports PASS
+for all fourteen. So every rule is asserted against a *bad* synthetic skill as well
+as a good one, and `LiveSkills` guards against a vacuous pass on the real tree: the
+extractors must still find paths and commands, and nothing in `MUTATING` may ever
+reach the run list.
 
 The wiring group is the one that earns the file. A skill's page links each of its
 files by name as an **absolute** `github.com` URL, so
