@@ -71,8 +71,6 @@
 		- to review: `general form`
 
 
-
-
 - time_space_complexity.md
 
 - binary tree.md
@@ -89,7 +87,7 @@
 - python_trick.md
 	- https://yennj12.js.org/CS_basics/cheatsheets/python_trick.zh.html
 		- `2) LC Example`
-		- `常見操作的複雜度`
+		- `多重 key 的 tuple 排序：key=lambda x: (x[0], x[1])`
 
 
 
@@ -151,6 +149,7 @@
 	- Matrix / 2D Grid.md
 	- backtrack.zh.html
 	- stack_expression_parsing
+	- greedy_examples.zh.html
 
 	
 
