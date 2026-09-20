@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <title>LC FAQ Add — CS_basics</title>
+  <meta name="description" content="An agent skill that files an interview question into doc/faq/ — the file its Scope line owns, the numbered section it belongs under, tagged fences — and writes the matching 繁體中文 overlay section in the same change.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>❓</text></svg>">
+  <link rel="stylesheet" href="nav.css">
+  <link rel="stylesheet" href="lc-page.css">
+  <!-- Blocking on purpose: nav.js restores the stored theme before first paint. -->
+  <script src="nav.js"></script>
+  <style>
+    /* ── Page-local tokens ────────────────────────────────────────────────
+       The palette itself (--bg/--text/--border/--surface, light and dark)
+       comes from lc-page.css. Only things this page alone needs live here.
+       Deliberately the same vocabulary skills.html uses — the two skill pages
+       should read as one family, not as two designs. */
+    :root {
+      --mono: 'SF Mono','JetBrains Mono','IBM Plex Mono',ui-monospace,'Menlo',monospace;
+      --grid-line: rgba(128,128,128,0.10);
+      --tint: rgba(128,128,128,0.06);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 0; font-family: var(--mono);
+      background: var(--bg); color: var(--text);
+      transition: background 0.2s, color 0.2s;
+      font-size: 13px; line-height: 1.65;
+    }
+    a { color: var(--text); }
+    ::selection { background: var(--text); color: var(--bg); }
+
+    .container { max-width: 940px; margin: 0 auto; padding: 0 1.5rem; }
+
+    /* Sections fade up as they arrive. Everything is visible by default, so a
+       page with JS off (or reduced motion) simply shows the finished state. */
+    .reveal { opacity: 1; transform: none; }
+    .js .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .js .reveal.in { opacity: 1; transform: none; }
+
+    /* ── Hero ─────────────────────────────────────────────────────────── */
+    .hero {
+      position: relative; overflow: hidden;
+      border-bottom: 1px solid var(--border);
+      padding: 4rem 0 3rem;
+    }
+    /* A faint engineering grid. Purely decorative, so it is aria-hidden and
+       drawn in a pseudo-element rather than as an element in the flow. */
+    .hero::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+      background-size: 28px 28px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 30%, transparent 75%);
+      -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 30%, transparent 75%);
+    }
+    .hero > * { position: relative; }
+
+    .kicker {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--text-light); margin: 0 0 1.1rem;
+      border: 1px solid var(--border); padding: 0.25rem 0.7rem; border-radius: 100px;
+    }
+    .dot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--text);
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
+
+    .hero h1 {
+      margin: 0 0 0.9rem; font-size: clamp(2.1rem, 6.5vw, 3.4rem);
+      line-height: 1.05; letter-spacing: -0.035em; font-weight: 700;
+    }
+    .hero h1 .thin { color: var(--text-light); font-weight: 400; }
+    .lede { color: var(--text-light); font-size: 0.98rem; max-width: 62ch; margin: 0 0 1.8rem; }
+
+    .hero-actions { display: flex; gap: 0.7rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+    .btn {
+      display: inline-block; padding: 0.6rem 1.2rem; font-size: 0.85rem;
+      text-decoration: none; border: 1px solid var(--border);
+      color: var(--text); background: var(--surface); font-family: inherit;
+      transition: border-color 0.15s, transform 0.15s;
+    }
+    .btn:hover { border-color: var(--text); transform: translateY(-1px); }
+    .btn.primary { background: var(--text); color: var(--bg); border-color: var(--text); }
+
+    /* ── Terminal ─────────────────────────────────────────────────────── */
+    .term {
+      border: 1px solid var(--border); background: var(--surface);
+      font-size: 0.76rem; line-height: 1.62;
+    }
+    .term-bar {
+      display: flex; align-items: center; gap: 0.45rem;
+      padding: 0.5rem 0.8rem; border-bottom: 1px solid var(--border);
+      color: var(--text-light); font-size: 0.68rem; letter-spacing: 0.05em;
+    }
+    .term-bar i { width: 8px; height: 8px; border-radius: 50%; border: 1px solid var(--text-light); display: block; }
+    .term-bar span { margin-left: auto; }
+    .term pre {
+      margin: 0; padding: 1rem; overflow-x: auto; white-space: pre; font-family: inherit;
+      min-height: 15.5rem;
+    }
+    .caret {
+      display: inline-block; width: 0.55em; height: 1em; background: var(--text);
+      vertical-align: -0.15em; animation: blink 1.05s step-end infinite;
+    }
+    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+
+    /* ── Sections ─────────────────────────────────────────────────────── */
+    section { padding: 3.25rem 0; border-bottom: 1px solid var(--border); }
+    section:last-of-type { border-bottom: none; }
+    .eyebrow {
+      font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--text-light); margin: 0 0 0.7rem;
+    }
+    h2 { font-size: 1.35rem; margin: 0 0 0.5rem; letter-spacing: -0.02em; }
+    .sub { color: var(--text-light); margin: 0 0 1.9rem; max-width: 72ch; }
+    h3 { font-size: 0.92rem; margin: 2.2rem 0 0.7rem; }
+
+    /* ── Failure cards ────────────────────────────────────────────────── */
+    .fails { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1px;
+             background: var(--border); border: 1px solid var(--border); }
+    .fail { background: var(--bg); padding: 1.15rem 1.25rem; transition: background 0.15s; }
+    .fail:hover { background: var(--surface); }
+    .fail .glyph { font-size: 1.1rem; display: block; margin-bottom: 0.5rem; color: var(--text-light); }
+    .fail b { display: block; font-size: 0.95rem; margin-bottom: 0.4rem; }
+    .fail p { margin: 0 0 0.5rem; font-size: 0.82rem; color: var(--text-light); }
+    .fail p:last-child { margin-bottom: 0; }
+    .fail .cost { color: var(--text); }
+
+    /* ── The pipeline stepper ─────────────────────────────────────────── */
+    .rail { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 1.2rem; }
+    .step {
+      font-family: inherit; cursor: pointer; text-align: center;
+      border: 1px solid var(--border); background: var(--surface); color: var(--text);
+      padding: 0.85rem 0.25rem 0.7rem; transition: transform 0.15s, border-color 0.15s, background 0.15s;
+    }
+    .step:hover { border-color: var(--text); transform: translateY(-2px); }
+    .step[aria-checked="true"] { background: var(--text); color: var(--bg); border-color: var(--text); }
+    .step .n { display: block; font-size: 1.05rem; font-weight: 700; letter-spacing: -0.02em; }
+    .step .tag { display: block; font-size: 0.6rem; letter-spacing: 0.06em; text-transform: uppercase;
+                 margin-top: 0.35rem; color: var(--text-light); overflow: hidden; text-overflow: ellipsis; }
+    .step[aria-checked="true"] .tag { color: var(--bg); }
+    .step .bar { display: block; height: 3px; margin: 0.5rem 0.3rem 0; background: var(--text); }
+    .step[aria-checked="true"] .bar { background: var(--bg); }
+
+    .step-detail {
+      border: 1px solid var(--border); border-left: 3px solid var(--text);
+      background: var(--tint); padding: 1.1rem 1.3rem; min-height: 11.5rem;
+    }
+    .step-detail .sd-name { font-size: 1rem; font-weight: 700; margin: 0 0 0.35rem; }
+    .step-detail p { margin: 0 0 0.6rem; }
+    .step-detail .sd-rule { color: var(--text-light); margin: 0 0 0.75rem; }
+    .step-detail .sd-rule b { color: var(--text); font-weight: 700; }
+    .step-detail pre {
+      margin: 0; padding: 0.7rem 0.85rem; overflow-x: auto; font-size: 0.75rem;
+      background: var(--surface); border: 1px solid var(--border); font-family: inherit;
+    }
+
+    /* ── Tables ───────────────────────────────────────────────────────── */
+    .table-wrap { overflow-x: auto; border: 1px solid var(--border); }
+    table { border-collapse: collapse; width: 100%; min-width: 520px; font-size: 0.82rem; }
+    th, td { text-align: left; padding: 0.6rem 0.9rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    th { font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.09em;
+         color: var(--text-light); background: var(--surface); font-weight: 600; }
+    tbody tr:last-child td { border-bottom: none; }
+    td.num { white-space: nowrap; font-weight: 700; }
+    code { background: var(--surface); border: 1px solid var(--border);
+           padding: 0.05rem 0.3rem; font-size: 0.92em; font-family: inherit; }
+
+    /* ── Code blocks ──────────────────────────────────────────────────── */
+    .code-block { position: relative; background: var(--surface); border: 1px solid var(--border); margin: 0.75rem 0; }
+    .code-block pre { margin: 0; padding: 0.95rem 1rem; overflow-x: auto; font-size: 0.77rem; line-height: 1.6; font-family: inherit; }
+    .code-block code { background: none; border: none; padding: 0; }
+    .code-block .ann { color: var(--text-light); }
+    .copy {
+      position: absolute; top: 0.4rem; right: 0.4rem; background: var(--bg); color: var(--text-light);
+      border: 1px solid var(--border); font-family: inherit; font-size: 0.66rem;
+      padding: 0.2rem 0.5rem; cursor: pointer;
+    }
+    .copy:hover { color: var(--text); border-color: var(--text); }
+
+    /* ── Tabs (the anatomy, and the installs) ─────────────────────────── */
+    .tabs { display: flex; flex-wrap: wrap; border-bottom: 1px solid var(--border); margin-bottom: 1.1rem; }
+    .tab {
+      background: none; border: none; border-bottom: 2px solid transparent; color: var(--text-light);
+      font-family: inherit; font-size: 0.82rem; padding: 0.55rem 0.9rem; cursor: pointer; margin-bottom: -1px;
+    }
+    .tab:hover { color: var(--text); }
+    .tab[aria-selected="true"] { color: var(--text); border-bottom-color: var(--text); }
+    .panel p:first-child { margin-top: 0; }
+
+    /* ── Won't-do list ────────────────────────────────────────────────── */
+    ul.nots { list-style: none; margin: 0; padding: 0; }
+    ul.nots li {
+      display: grid; grid-template-columns: 1.4rem 1fr; gap: 0.7rem;
+      padding: 0.7rem 0; border-bottom: 1px solid var(--border); align-items: baseline;
+    }
+    ul.nots li:last-child { border-bottom: none; }
+    ul.nots .x { color: var(--text-light); font-weight: 700; }
+    ul.nots b { font-weight: 700; }
+    ul.nots span.why { display: block; color: var(--text-light); font-size: 0.82rem; margin-top: 0.15rem; }
+
+    /* ── File list ────────────────────────────────────────────────────── */
+    ul.files { list-style: none; margin: 0; padding: 0; }
+    ul.files li { border-bottom: 1px solid var(--border); padding: 0.75rem 0; }
+    ul.files li:last-child { border-bottom: none; }
+    ul.files a { font-weight: 700; text-decoration: none; border-bottom: 1px solid var(--border); }
+    ul.files a:hover { border-bottom-color: var(--text); }
+    ul.files span { display: block; color: var(--text-light); font-size: 0.82rem; }
+
+    .note { color: var(--text-light); font-size: 0.82rem; }
+
+    @media (max-width: 760px) {
+      .rail { grid-template-columns: repeat(4, 1fr); }
+      .step .tag { display: none; }
+      .hero { padding-top: 2.5rem; }
+      .term pre { min-height: 18rem; }
+    }
+    /* nav.css carries the site-wide opt-out; these are this page's own. */
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+      .js .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="site-nav" data-page="lc-faq-add" data-base=""></div>
+<script>CSNav.mount();</script>
+
+<main id="main">
+
+  <!-- ── Hero ──────────────────────────────────────────────────────────── -->
+  <div class="hero">
+    <div class="container">
+      <p class="kicker"><span class="dot" aria-hidden="true"></span> Agent skill</p>
+      <h1>LC FAQ Add<br><span class="thin">both languages, one pass</span></h1>
+      <p class="lede">
+        The <a href="faqs.html">interview FAQs</a> are 49 documents across 12 sub-trees, and the
+        tree is <b>100% translated &mdash; 902 of 902 sections</b>. So a new English answer does
+        not leave it "mostly translated": it leaves a hole nothing reports until someone next
+        runs <code>status</code>, and a Chinese page renders with an English gap in the middle.
+        <code>/lc-faq-add</code> writes both halves in the same change.
+      </p>
+      <div class="hero-actions">
+        <a class="btn primary" href="#install">Install it</a>
+        <a class="btn" href="#pipeline">See the pipeline</a>
+        <a class="btn" href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-faq-add/SKILL.md">Read the source</a>
+      </div>
+
+      <div class="term">
+        <div class="term-bar">
+          <i aria-hidden="true"></i><i aria-hidden="true"></i><i aria-hidden="true"></i>
+          <span>/lc-faq-add kafka rebalancing</span>
+        </div>
+        <pre id="tape" aria-live="off">1  scope      three candidates. The Kafka file's Scope line owns
+              consumer-group behaviour; the Streaming one owns
+              processing semantics. -> kafka, and said so.
+
+2  place      under "## 4) Consumer Groups" as "### 4-3) Rebalancing"
+              appended WITHIN the section — nothing renumbered,
+              so no anchor moved and no link had to follow
+
+3  write      leads with "a rebalance stops the whole group"
+              then the trigger list
+              ```text  timeline    ```bash  kafka-consumer-groups.sh
+
+4  zh         todo -> one key. Translated, both &lt;!--CODE--&gt; markers
+              in place. max.poll.interval.ms left in English.
+
+5  gate       build clean · e2e 80/80 · status faq 903/903
+
+6  assumed    the Streaming FAQ gained a "See also" pointing here</pre>
+      </div>
+      <p class="note" style="margin-top:0.6rem">A real run: the Scope line picks the file, the section numbering decides where it goes, and the Chinese ships with it.</p>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- ── Why it exists ───────────────────────────────────────────────── -->
+    <section id="why" class="reveal">
+      <p class="eyebrow">Why a skill and not a habit</p>
+      <h2>Three ways an FAQ edit goes wrong</h2>
+      <p class="sub">
+        None of these are stylistic. Each one leaves the tree measurably worse in a way that is
+        invisible in the diff.
+      </p>
+      <div class="fails">
+        <div class="fail">
+          <span class="glyph" aria-hidden="true">&#9639;</span>
+          <b>The file is picked by its name</b>
+          <p>Every FAQ opens with a <b>Scope</b> line, and it exists to stop two files growing into the same document. "Connection pooling" could plausibly land in <code>db/</code>, <code>backend/</code> or <code>java/</code> &mdash; only the Scope lines say which owns it.</p>
+          <p class="cost">Rule: read the Scope lines, not the filenames.</p>
+        </div>
+        <div class="fail">
+          <span class="glyph" aria-hidden="true">&#9636;</span>
+          <b>A renumber that leaves the links behind</b>
+          <p>The FAQs are numbered documents &mdash; <code>## 3)</code> then <code>### 3-2)</code>. Inserting in the middle renumbers everything after it, which <em>moves their anchors</em>.</p>
+          <p class="cost">Fix: append within the owning section, or sweep every link in the same change.</p>
+        </div>
+        <div class="fail">
+          <span class="glyph" aria-hidden="true">&#9676;</span>
+          <b>The English ships alone</b>
+          <p>The tree is at 902/902. An untranslated new section is the only gap in it, and nothing reports the gap until the next <code>status</code> run.</p>
+          <p class="cost">Rule: the 中文 section ships in the same change.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── The pipeline ────────────────────────────────────────────────── -->
+    <section id="pipeline" class="reveal">
+      <p class="eyebrow">One pass, no branches</p>
+      <h2>Six steps, in order</h2>
+      <p class="sub">
+        Pick one to see what it does and the rule that step exists to enforce.
+      </p>
+
+      <div class="rail" role="radiogroup" aria-label="Pipeline steps">
+        <button class="step" role="radio" aria-checked="true" data-n="1"
+                data-name="Find the file whose Scope line owns it"
+                data-body="Read the Scope lines of every plausible candidate, not just the one whose filename matches. If the best file is not the obvious one, that gets said in the report along with which Scope line decided it."
+                data-rule="A new FAQ file is right only when no existing Scope line claims the area and the topic is worth more than a section — and then the neighbouring file gains a See also line too, so the pair points both ways."
+                data-code="grep -n &quot;Scope&quot; doc/faq/*/*.md doc/faq/*.md | grep -i rebalanc">
+          <span class="n">1</span><span class="bar" aria-hidden="true"></span><span class="tag">scope</span>
+        </button>
+        <button class="step" role="radio" aria-checked="false" data-n="2"
+                data-name="Read a neighbour, then place the section"
+                data-body="The heading numbering is positional. Appending within the owning section moves no anchors; inserting in the middle renumbers everything after it and every link aimed at those headings has to move in the same change."
+                data-rule="File it under the pattern it belongs to — never appended to the end of the file as a loose question."
+                data-code="grep -n '^## \|^### ' doc/faq/kafka/faq_kafka.md
+grep -rn &quot;#&lt;old-anchor&gt;&quot; doc/ i18n/ site/pages/">
+          <span class="n">2</span><span class="bar" aria-hidden="true"></span><span class="tag">place</span>
+        </button>
+        <button class="step" role="radio" aria-checked="false" data-n="3"
+                data-name="Write the answer"
+                data-body="These are interview notes. The answer leads with the thing you would say out loud, then the mechanism, then code if code helps. A tutorial that builds up to the answer is the wrong shape for the page."
+                data-rule="Every fence is tagged — java, python, sql, bash, or text for ASCII diagrams and program output. Never a bare fence. And headings never skip a level."
+                data-code="### 4-3) Rebalancing
+
+A rebalance **stops the whole group** ...
+
+```text
+t0  consumer C joins
+```">
+          <span class="n">3</span><span class="bar" aria-hidden="true"></span><span class="tag">write</span>
+        </button>
+        <button class="step" role="radio" aria-checked="false" data-n="4"
+                data-name="Write the 中文 section in the same pass"
+                data-body="sync then todo gives the new section's key. The translation goes into the mirrored path under i18n/zh/faq/, keeping every <!--CODE--> marker in order — compose throws otherwise. Structure and heading order come from the English document; links keep their English anchors."
+                data-rule="An FAQ has no Scope line, so its card is summarised from the COMPOSED Chinese. If the lead paragraph changed, translate it and the card follows."
+                data-code="node script/zh.js sync faq/kafka/faq_kafka
+node script/zh.js todo faq/kafka/faq_kafka
+node script/zh.js status --write">
+          <span class="n">4</span><span class="bar" aria-hidden="true"></span><span class="tag">zh</span>
+        </button>
+        <button class="step" role="radio" aria-checked="false" data-n="5"
+                data-name="Gate"
+                data-body="e2e-check.js is where a dangling fragment from a renumbered heading, an untagged fence that rendered wrong, a broken relative link or a missing page description surfaces. Then open both the English and the .zh page."
+                data-rule="The navbar's 中文 / EN button swaps between counterparts, so checking one language is checking half the change."
+                data-code="SKIP_FONTS=1 bash site/build.sh
+node site/e2e-check.js _site
+npm test --prefix site">
+          <span class="n">5</span><span class="bar" aria-hidden="true"></span><span class="tag">gate</span>
+        </button>
+        <button class="step" role="radio" aria-checked="false" data-n="6"
+                data-name="Report"
+                data-body="Close with the file and section, which Scope line decided it, whether anything was renumbered and what links moved with it, the zh key written, the new coverage line, and anything left deliberately in English."
+                data-rule="API, class and command names stay in English: kafka-consumer-groups.sh, max.poll.interval.ms. They are what you type and what an interviewer will say."
+                data-code="flagged  doc/faq/stream/faq_stream.md gained a See also
+         pointing here - its Scope touches the same area">
+          <span class="n">6</span><span class="bar" aria-hidden="true"></span><span class="tag">report</span>
+        </button>
+      </div>
+
+      <div class="step-detail" id="sd" aria-live="polite">
+        <p class="sd-name"></p>
+        <p class="sd-body"></p>
+        <p class="sd-rule"></p>
+        <pre class="sd-code"></pre>
+      </div>
+    </section>
+
+    <!-- ── The layout ──────────────────────────────────────────────────── -->
+    <section id="layout" class="reveal">
+      <p class="eyebrow">What lands in the tree</p>
+      <h2>Where a file lives, and what that decides</h2>
+      <p class="sub">
+        The directory <em>is</em> the index category, and the H1 and lead paragraph <em>are</em>
+        the card. None of it is configured anywhere.
+      </p>
+
+      <div class="tabs" role="tablist" aria-label="The layout">
+        <button class="tab" role="tab" id="t-file" aria-controls="a-file" aria-selected="true">The file header</button>
+        <button class="tab" role="tab" id="t-row"  aria-controls="a-row"  aria-selected="false">Directory → category</button>
+        <button class="tab" role="tab" id="t-var"  aria-controls="a-var"  aria-selected="false">The zh half</button>
+      </div>
+
+      <div class="panel" role="tabpanel" id="a-file" aria-labelledby="t-file">
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code># OOP FAQ                               <span class="ann">&lt;- the card title comes from the H1</span>
+
+&gt; **Scope** — OOP fundamentals for Java interviews: the four pillars,
+&gt; interface vs abstract class, composition over inheritance, SOLID…
+                                       <span class="ann">^ what this file owns, and what it does not</span>
+&gt; **See also**: [`../../cheatsheet/ood_design.md`](…) — class-modeling
+&gt; prompts; [`java_design_pattern.md`](…) — the patterns these produce.
+
+---
+
+## 1) The Four Pillars of OOP      <span class="ann">&lt;- numbering is positional</span>
+
+### 1-1) Encapsulation             <span class="ann">&lt;- and so are the anchors</span></code></pre>
+        </div>
+        <p class="note">
+          The card description is summarised from the <b>lead paragraph</b>, so both the H1 and
+          the opening are worth writing as something a reader would recognise on the index.
+        </p>
+      </div>
+
+      <div class="panel" role="tabpanel" id="a-row" aria-labelledby="t-row" hidden>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Directory</th><th>Card category</th></tr></thead>
+            <tbody>
+              <tr><td class="num">doc/faq/java/</td><td>Java</td></tr>
+              <tr><td class="num">doc/faq/backend/</td><td>Backend</td></tr>
+              <tr><td class="num">doc/faq/db/</td><td>Database</td></tr>
+              <tr><td class="num">redis/ kafka/ flink/ sql/</td><td>Redis, Kafka, Flink, SQL</td></tr>
+              <tr><td class="num">doc/faq/spark/</td><td>Spark &amp; Hadoop</td></tr>
+              <tr><td class="num">doc/faq/stream/</td><td>Streaming</td></tr>
+              <tr><td class="num">a file at the root</td><td>General</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">
+          An unmapped sub-directory becomes its own capitalised category rather than failing
+          &mdash; so a new directory is a decision about the index, and worth naming in the
+          report. The page name folds the sub-directory in:
+          <code>doc/faq/java/faq_OOP.md</code> &rarr; <code>faqs/java_faq_OOP.html</code>.
+        </p>
+      </div>
+
+      <div class="panel" role="tabpanel" id="a-var" aria-labelledby="t-var" hidden>
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code>i18n/zh/faq/kafka/faq_kafka.md          <span class="ann">&lt;- mirrors the English path</span>
+
+&lt;!-- 7c1d…  --&gt;                         <span class="ann">&lt;- the key `todo` printed</span>
+### 4-3) 重新平衡（Rebalancing）
+
+重新平衡會**讓整個 consumer group 停止處理**…
+
+&lt;!--CODE--&gt;                             <span class="ann">&lt;- every marker, in order</span>
+
+&lt;!--CODE--&gt;</code></pre>
+        </div>
+        <p class="note">
+          The full rules live in <a href="lc-zh-translate.html">/lc-zh-translate</a> &mdash;
+          structure from the English document, English anchor targets, API and command names in
+          English, no <code>category</code> / <code>tier</code> / <code>kind</code>. This skill
+          applies them to one section; that one drives a whole backlog.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── How to call it ──────────────────────────────────────────────── -->
+    <section id="use" class="reveal">
+      <p class="eyebrow">Arguments are inferred, not interrogated</p>
+      <h2>How to call it</h2>
+      <div class="code-block">
+        <button class="copy" type="button">copy</button>
+<pre><code>/lc-faq-add kafka rebalancing
+/lc-faq-add java virtual threads
+
+add a question about virtual threads to the java FAQ
+document this interview question
+start a FAQ for gRPC</code></pre>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Left out</th><th>What happens</th></tr></thead>
+          <tbody>
+            <tr><td class="num">Which file</td><td>Decided by the Scope lines, not the filenames &mdash; and the deciding line is quoted in the report.</td></tr>
+            <tr><td class="num">Which section</td><td>The one that owns the concept. Appended within it, so nothing renumbers.</td></tr>
+            <tr><td class="num">The translation</td><td>Never left out. It ships in the same change.</td></tr>
+            <tr><td class="num">The question</td><td>The one thing it will ask for.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── What it will not do ─────────────────────────────────────────── -->
+    <section id="rules" class="reveal">
+      <p class="eyebrow">The guardrails</p>
+      <h2>What it will not do</h2>
+      <ul class="nots">
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Pick the file by topic name.</b><span class="why">The Scope line is what stops two files growing into the same document, and it is the only thing that can settle an overlap.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Append a loose question to the end.</b><span class="why">It goes under the section that owns the concept. A file with a tail of unfiled questions is a file nobody can navigate.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Ship the English alone.</b><span class="why">The tree is at 902/902. The gap would not be reported until the next <code>status</code> run, and the Chinese page would render with an English hole.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Renumber without sweeping the links.</b><span class="why">The anchors are positional. <code>e2e-check.js</code>'s dangling-fragment rule is what catches it, but only after the fact.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Leave a fence untagged.</b><span class="why"><code>text</code> counts &mdash; for ASCII diagrams and program output. A bare fence is the one that renders wrong.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Start a new FAQ file needlessly.</b><span class="why">If an existing Scope line already claims the area, a new file is the start of two documents about one topic.</span></span></li>
+      </ul>
+    </section>
+
+    <!-- ── Install ─────────────────────────────────────────────────────── -->
+    <section id="install" class="reveal">
+      <p class="eyebrow">One markdown file, no dependencies</p>
+      <h2>Install</h2>
+      <p class="sub">
+        <code>SKILL.md</code> is the whole recipe &mdash; nothing to build and no network calls,
+        so the same source runs on any agent that takes a system prompt. Pick yours.
+      </p>
+
+      <div class="tabs" role="tablist" aria-label="Install target">
+        <button class="tab" role="tab" id="tab-cc"     aria-controls="p-cc"     aria-selected="true">Claude Code</button>
+        <button class="tab" role="tab" id="tab-claude" aria-controls="p-claude" aria-selected="false">Claude app</button>
+        <button class="tab" role="tab" id="tab-codex"  aria-controls="p-codex"  aria-selected="false">Codex</button>
+        <button class="tab" role="tab" id="tab-gemini" aria-controls="p-gemini" aria-selected="false">Gemini</button>
+        <button class="tab" role="tab" id="tab-other"  aria-controls="p-other"  aria-selected="false">Anything else</button>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-cc" aria-labelledby="tab-cc">
+        <p>Drop the skill directory into your user-level skills folder and it loads in every repo:</p>
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code>git clone --depth 1 https://github.com/yennanliu/CS_basics.git /tmp/cs_basics
+mkdir -p ~/.claude/skills
+cp -r /tmp/cs_basics/.claude/skills/lc-faq-add ~/.claude/skills/</code></pre>
+        </div>
+        <p class="note">
+          Already installed inside this repo at <code>.claude/skills/lc-faq-add/</code>. The
+          directory name <em>is</em> the command.
+        </p>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-claude" aria-labelledby="tab-claude" hidden>
+        <p>Zip the directory, then <em>Customize &rarr; Skills &rarr; + &rarr; + Create skill &rarr; Upload a skill</em>:</p>
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code>cd .claude/skills &amp;&amp; zip -r lc-faq-add.zip lc-faq-add</code></pre>
+        </div>
+        <p class="note">Leave the YAML frontmatter intact &mdash; <code>description</code> is what Claude matches your request against.</p>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-codex" aria-labelledby="tab-codex" hidden>
+        <p>Codex reads <code>AGENTS.md</code> at the repo root automatically. Point it at the skill:</p>
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code>## Filing a Q&amp;A into the FAQs
+
+When asked to add an FAQ entry, document an interview question, or start
+a new FAQ file, follow `.claude/skills/lc-faq-add/SKILL.md`.</code></pre>
+        </div>
+        <p class="note">A pointer, not a copy &mdash; one source of truth means a fix reaches every agent at once.</p>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-gemini" aria-labelledby="tab-gemini" hidden>
+        <p>Same shape in <code>GEMINI.md</code>, or point at it for a single session:</p>
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code>gemini -p "Follow the recipe in .claude/skills/lc-faq-add/SKILL.md. \
+Add a question about Kafka rebalancing."</code></pre>
+        </div>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-other" aria-labelledby="tab-other" hidden>
+        <p>
+          Paste <code>SKILL.md</code> in as the system prompt. For Cursor or Windsurf, put the
+          Codex pointer above into a rule file
+          (<code>.cursor/rules/lc-faq-add.mdc</code> or the editor's equivalent).
+        </p>
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code>curl -sL https://raw.githubusercontent.com/yennanliu/CS_basics/master/.claude/skills/lc-faq-add/SKILL.md</code></pre>
+        </div>
+        <p class="note">
+          Away from this repo, the transferable parts are the Scope-line rule for choosing a
+          file and the answer-first shape. The translation half is specific to a tree that is
+          already fully translated.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── What's inside ───────────────────────────────────────────────── -->
+    <section id="inside" class="reveal">
+      <p class="eyebrow">Under the hood</p>
+      <h2>What is inside</h2>
+      <ul class="files">
+        <li>
+          <a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-faq-add/SKILL.md">SKILL.md</a>
+          <span>The whole recipe &mdash; why the translation is part of the job, the five prime directives, the directory-to-category map, the six steps, the do-not list, and a worked run.</span>
+        </li>
+      </ul>
+      <p class="note" style="margin-top:1.2rem">
+        Gated in CI by
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/script/check_skills.py">check_skills.py</a>,
+        and what it writes is gated by <code>e2e-check.js</code> &mdash; dangling fragments,
+        broken links and missing descriptions, on every built page.
+      </p>
+    </section>
+
+    <!-- ── Where it fits ───────────────────────────────────────────────── -->
+    <section id="fits" class="reveal">
+      <p class="eyebrow">The rest of the loop</p>
+      <h2>Where it fits</h2>
+      <p class="sub">
+        <a href="lc-cheatsheet.html">/lc-cheatsheet</a> files what a <em>problem</em> taught you;
+        <code>/lc-faq-add</code> files what a <em>question</em> taught you &mdash; the systems,
+        language and tooling side that no LeetCode number covers.
+        <a href="lc-zh-translate.html">/lc-zh-translate</a> owns the rules its second half
+        applies, and the result lands on the <a href="faqs.html">FAQ index</a> in both languages.
+      </p>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <p>CS_basics — computer science fundamentals &amp; interview preparation</p>
+    <p>
+      <a href="https://github.com/yennanliu/CS_basics">github</a> |
+      <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+      <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Sections are visible in the stylesheet and only hidden once `.js` is on the
+  // root, so a page with no JS never gets stuck blank. The cost is that adding
+  // the class here would blank whatever is already on screen for a frame, so
+  // the above-the-fold sections are marked revealed in the *same* synchronous
+  // block — one paint, no flash.
+  var reveals = [].slice.call(document.querySelectorAll('.reveal'));
+  var onscreen = reveals.filter(function (el) {
+    return el.getBoundingClientRect().top < (window.innerHeight || 0);
+  });
+  document.documentElement.classList.add('js');
+  onscreen.forEach(function (el) { el.classList.add('in'); });
+
+  // ── Hero tape ─────────────────────────────────────────────────────────
+  // The run is written into the <pre> in the HTML, so it is there whatever
+  // happens to this script, and it is typed out by clipping that text rather
+  // than by assembling it here. Reduced motion keeps the finished frame.
+  var tape = document.getElementById('tape');
+  if (tape && !reduced) {
+    var TAPE = tape.textContent;
+    var caret = document.createElement('span');
+    caret.className = 'caret';
+    var text = document.createTextNode('');
+    tape.textContent = '';
+    tape.appendChild(text);
+    tape.appendChild(caret);
+    var i = 0;
+    (function tick() {
+      // Whole lines at a time once past the first: character-by-character for
+      // 700 characters is a long time to make someone watch.
+      i += i < 60 ? 1 : 3;
+      text.nodeValue = TAPE.slice(0, i);
+      if (i < TAPE.length) setTimeout(tick, i < 60 ? 26 : 12);
+      else caret.remove();
+    })();
+  }
+
+  // ── Pipeline stepper ──────────────────────────────────────────────────
+  var steps = [].slice.call(document.querySelectorAll('.step'));
+  var sd = document.getElementById('sd');
+
+  function showStep(step) {
+    steps.forEach(function (s) {
+      s.setAttribute('aria-checked', String(s === step));
+      s.tabIndex = s === step ? 0 : -1;
+    });
+    sd.querySelector('.sd-name').textContent = step.dataset.n + '. ' + step.dataset.name;
+    sd.querySelector('.sd-body').textContent = step.dataset.body;
+    // The rule is the line worth reading twice, so it gets a label. Every
+    // dataset value is plain text and is set as text — the label is a real
+    // element rather than a string concatenated into innerHTML.
+    var rule = sd.querySelector('.sd-rule');
+    rule.textContent = '';
+    var label = document.createElement('b');
+    label.textContent = 'Rule: ';
+    rule.appendChild(label);
+    rule.appendChild(document.createTextNode(step.dataset.rule));
+    sd.querySelector('.sd-code').textContent = step.dataset.code;
+  }
+
+  steps.forEach(function (step, idx) {
+    step.addEventListener('click', function () { showStep(step); });
+    step.addEventListener('keydown', function (e) {
+      var delta = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (!delta) return;
+      e.preventDefault();
+      var next = steps[(idx + delta + steps.length) % steps.length];
+      showStep(next);
+      next.focus();
+    });
+  });
+  if (steps.length) showStep(document.querySelector('.step[aria-checked="true"]') || steps[0]);
+
+  // ── Tabs ──────────────────────────────────────────────────────────────
+  // Panels toggle with the `hidden` attribute rather than a class, so a hidden
+  // panel is out of the accessibility tree and out of find-in-page too. Each
+  // tablist is handled independently, so the two on this page cannot fight.
+  [].slice.call(document.querySelectorAll('[role="tablist"]')).forEach(function (list) {
+    var tabs = [].slice.call(list.querySelectorAll('.tab'));
+    if (!tabs.length) return;
+
+    function select(tab) {
+      tabs.forEach(function (t) {
+        var on = t === tab;
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+      });
+    }
+    tabs.forEach(function (tab, i) {
+      tab.addEventListener('click', function () { select(tab); });
+      tab.addEventListener('keydown', function (e) {
+        var delta = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (!delta) return;
+        e.preventDefault();
+        var next = tabs[(i + delta + tabs.length) % tabs.length];
+        select(next);
+        next.focus();
+      });
+    });
+  });
+
+  // ── Copy buttons ──────────────────────────────────────────────────────
+  // clipboard.writeText needs a secure context; on plain http it rejects, so
+  // the button says so instead of silently doing nothing.
+  //
+  // The `.ann` spans are margin notes about the code, not part of it, so they
+  // are stripped from a clone before the text is read — copying the anatomy
+  // block otherwise hands back Python with "<- docstring first" inside it. The
+  // strip leaves the padding that positioned each note, hence the trailing
+  // whitespace pass. textContent, not innerText: the clone is detached, and in
+  // a <pre> the two agree anyway.
+  function codeText(block) {
+    var node = block.querySelector('code').cloneNode(true);
+    [].slice.call(node.querySelectorAll('.ann')).forEach(function (a) {
+      a.parentNode.removeChild(a);
+    });
+    return node.textContent.replace(/[ \t]+$/gm, '');
+  }
+
+  [].slice.call(document.querySelectorAll('.copy')).forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var code = codeText(btn.parentElement);
+      var done = function (label) {
+        btn.textContent = label;
+        setTimeout(function () { btn.textContent = 'copy'; }, 1400);
+      };
+      if (!navigator.clipboard) return done('select it');
+      navigator.clipboard.writeText(code).then(function () { done('copied'); },
+                                               function () { done('select it'); });
+    });
+  });
+
+  // ── Reveal on scroll ──────────────────────────────────────────────────
+  if (reduced || !('IntersectionObserver' in window)) {
+    reveals.forEach(function (el) { el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      });
+    }, { rootMargin: '0px 0px -12% 0px' });
+    reveals.forEach(function (el) { io.observe(el); });
+  }
+})();
+</script>
+
+</body>
+</html>

@@ -459,6 +459,63 @@ update its prose, and its `.claude/skills/...` links are enforced by
 
 ---
 
+## Maintaining the site — `/lc-algo-demo`, `/lc-site-data`, `/lc-zh-translate`, `/lc-faq-add`
+
+Four skills for the parts of this repo that are content rather than solutions. **The steps
+live in each `SKILL.md`, not here** — what follows is why each one exists.
+
+`.claude/skills/lc-algo-demo/` writes a page into `algo_demo/`. That directory is **36
+hand-written pages plus `common.js` and `style.css`, with no generator** — `build.sh` copies
+it wholesale — so every shared behaviour is held together by convention alone, and a page
+that reimplements one looks right until the theme changes. It enforces what
+[The algorithm visualizers](#the-algorithm-visualizers) already documents: colours from
+`VIZ` and never a literal, no second implementation of the `devicePixelRatio` canvas
+wrapper, the trace written in `createLogger`'s three shapes and living in its own
+full-width `.viz-trace` panel, and `draw = VIZ.repaintable(draw)` with
+`window.addEventListener('resize', draw.repaint)` for any `draw()` that takes arguments —
+because **a theme switch fires a resize**, so getting that wrong reverts the picture
+mid-run. It also adds the card to `algo_demo/index.html`, which is hand-maintained.
+
+`.claude/skills/lc-site-data/` edits [`data/roadmap.json`](data/roadmap.json) or
+[`data/complexity_quiz.json`](data/complexity_quiz.json). Both are validated at build time
+and **fail the build rather than warn**, so a five-line edit becomes a break-and-retry loop
+unless every constraint is met at once: a `row` strictly greater than every prereq's, no
+cycle, **no edge the graph already implies** (the roadmap must stay a transitive reduction),
+sheet slugs and LC numbers that exist, no duplicate quiz id, `accept` always an array, and
+every answer parseable by `site/complexity.js` — whose identifiers are **single letters**,
+so `O(n * a)` with a `vars` line, never `O(n * amount)`. It never types a title, difficulty
+or solution link into either file; those come from README. And it reads the per-list
+**"shown of" tally** the build prints, which is the only signal that a taxonomy mapping
+broke.
+
+`.claude/skills/lc-zh-translate/` drives the standing 繁體中文 backlog — **6040/6220
+sections, 17 parked entries, four sheets still at 0%** — through the `sync` → `todo` →
+write → `sync` → `status --write` loop documented under
+[Traditional Chinese docs](#traditional-chinese-docs). `/lc-cheatsheet` only re-translates
+what *an edit* parked; nothing else works the backlog. It never reaches for `sync --prune`,
+which is the only thing that discards parked work.
+
+`.claude/skills/lc-faq-add/` files an interview question into `doc/faq/`. Its second half is
+not optional: that tree is **100% translated (902/902)**, so an English-only section is the
+single gap in it, and nothing reports the gap until the next `status` run. Three things it
+gets right that are easy to get wrong — the file is chosen by its **Scope line**, not its
+name; the answer is filed under the numbered section that owns it rather than appended as a
+loose question; and a renumber moves anchors, so it either appends within a section or
+sweeps every link in the same change.
+
+```text
+/lc-algo-demo monotonic-stack
+/lc-site-data roadmap monotonic-stack     # or: /lc-site-data quiz for LC 239
+/lc-zh-translate faq/java                 # an id prefix stands for everything under it
+/lc-faq-add kafka rebalancing
+```
+
+Each has a hand-maintained page under `site/pages/`, carded on the landing page and in the
+navbar's **agent skills** group. As with the others, editing a `SKILL.md` does **not**
+update its page's prose.
+
+---
+
 ## Cheatsheet Style Guide
 
 Cheatsheets live in `doc/cheatsheet/`. [`doc/cheatsheet/00_template.md`](doc/cheatsheet/00_template.md) is the authoritative structure — read it before creating or restructuring a cheatsheet.
@@ -782,8 +839,8 @@ python3 script/check_skills.py --install   # what CI runs
 
 It checks frontmatter every host can parse, that no reference file is orphaned, and that every
 `.claude/skills/...` path named by `CLAUDE.md`, an `INSTALL.md` or a skill's page under
-`site/pages/` (`skills.html`, `lc-python.html`, `lc-java.html`, `lc-log.html`,
-`lc-again.html`)
+`site/pages/` (`skills.html`, `lc-python.html`, `lc-java.html`, and the other skill
+pages)
 still resolves — that last one because those links are absolute `github.com` URLs, which
 `e2e-check.js` cannot resolve and never will. `--install` performs both documented installs
 (the `cp -r`, and the zip the Claude app uploads) into a temp directory and re-runs every check

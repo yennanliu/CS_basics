@@ -274,7 +274,7 @@ Three groups, matching the three things that rot independently:
 | Group | Checks |
 |-------|--------|
 | **structure** | the `---` fenced frontmatter parses as `key: value`; `name` is kebab-case and matches the directory; `description` exists, fits in 1024 chars and is a sentence rather than a name echo; the body is really there; code fences balance |
-| **wiring** | every `.claude/skills/...` path named by `CLAUDE.md`, an `INSTALL.md` or a skill's page under `site/pages/` (`skills.html`, `lc-add.html`) still resolves; no reference file is orphaned; no absolute `/Users/...` path is baked in |
+| **wiring** | every `.claude/skills/...` path named by `CLAUDE.md`, an `INSTALL.md` or a skill's page under `site/pages/` (`skills.html`, `lc-python.html`, …) still resolves; no reference file is orphaned; no absolute `/Users/...` path is baked in |
 | **install** | the `cp -r` into `~/.claude/skills` and the zip the Claude app uploads are both performed into a temp directory, then re-checked — the only way to prove a skill works with none of this repo around it |
 
 The wiring group is the one that earns the file. A skill's page links each of its

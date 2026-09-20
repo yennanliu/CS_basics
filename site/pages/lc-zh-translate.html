@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <title>LC ZH Translate — CS_basics</title>
+  <meta name="description" content="An agent skill that fills in the 繁體中文 overlay under i18n/zh/ — prose only, keyed per section, with every code fence stored once and spliced back at compose time — using script/zh.js's sync, todo and status loop.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>文</text></svg>">
+  <link rel="stylesheet" href="nav.css">
+  <link rel="stylesheet" href="lc-page.css">
+  <!-- Blocking on purpose: nav.js restores the stored theme before first paint. -->
+  <script src="nav.js"></script>
+  <style>
+    /* ── Page-local tokens ────────────────────────────────────────────────
+       The palette itself (--bg/--text/--border/--surface, light and dark)
+       comes from lc-page.css. Only things this page alone needs live here.
+       Deliberately the same vocabulary skills.html uses — the two skill pages
+       should read as one family, not as two designs. */
+    :root {
+      --mono: 'SF Mono','JetBrains Mono','IBM Plex Mono',ui-monospace,'Menlo',monospace;
+      --grid-line: rgba(128,128,128,0.10);
+      --tint: rgba(128,128,128,0.06);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 0; font-family: var(--mono);
+      background: var(--bg); color: var(--text);
+      transition: background 0.2s, color 0.2s;
+      font-size: 13px; line-height: 1.65;
+    }
+    a { color: var(--text); }
+    ::selection { background: var(--text); color: var(--bg); }
+
+    .container { max-width: 940px; margin: 0 auto; padding: 0 1.5rem; }
+
+    /* Sections fade up as they arrive. Everything is visible by default, so a
+       page with JS off (or reduced motion) simply shows the finished state. */
+    .reveal { opacity: 1; transform: none; }
+    .js .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .js .reveal.in { opacity: 1; transform: none; }
+
+    /* ── Hero ─────────────────────────────────────────────────────────── */
+    .hero {
+      position: relative; overflow: hidden;
+      border-bottom: 1px solid var(--border);
+      padding: 4rem 0 3rem;
+    }
+    /* A faint engineering grid. Purely decorative, so it is aria-hidden and
+       drawn in a pseudo-element rather than as an element in the flow. */
+    .hero::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+      background-size: 28px 28px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 30%, transparent 75%);
+      -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 30%, transparent 75%);
+    }
+    .hero > * { position: relative; }
+
+    .kicker {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--text-light); margin: 0 0 1.1rem;
+      border: 1px solid var(--border); padding: 0.25rem 0.7rem; border-radius: 100px;
+    }
+    .dot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--text);
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
+
+    .hero h1 {
+      margin: 0 0 0.9rem; font-size: clamp(2.1rem, 6.5vw, 3.4rem);
+      line-height: 1.05; letter-spacing: -0.035em; font-weight: 700;
+    }
+    .hero h1 .thin { color: var(--text-light); font-weight: 400; }
+    .lede { color: var(--text-light); font-size: 0.98rem; max-width: 62ch; margin: 0 0 1.8rem; }
+
+    .hero-actions { display: flex; gap: 0.7rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+    .btn {
+      display: inline-block; padding: 0.6rem 1.2rem; font-size: 0.85rem;
+      text-decoration: none; border: 1px solid var(--border);
+      color: var(--text); background: var(--surface); font-family: inherit;
+      transition: border-color 0.15s, transform 0.15s;
+    }
+    .btn:hover { border-color: var(--text); transform: translateY(-1px); }
+    .btn.primary { background: var(--text); color: var(--bg); border-color: var(--text); }
+
+    /* ── Terminal ─────────────────────────────────────────────────────── */
+    .term {
+      border: 1px solid var(--border); background: var(--surface);
+      font-size: 0.76rem; line-height: 1.62;
+    }
+    .term-bar {
+      display: flex; align-items: center; gap: 0.45rem;
+      padding: 0.5rem 0.8rem; border-bottom: 1px solid var(--border);
+      color: var(--text-light); font-size: 0.68rem; letter-spacing: 0.05em;
+    }
+    .term-bar i { width: 8px; height: 8px; border-radius: 50%; border: 1px solid var(--text-light); display: block; }
+    .term-bar span { margin-left: auto; }
+    .term pre {
+      margin: 0; padding: 1rem; overflow-x: auto; white-space: pre; font-family: inherit;
+      min-height: 15.5rem;
+    }
+    .caret {
+      display: inline-block; width: 0.55em; height: 1em; background: var(--text);
+      vertical-align: -0.15em; animation: blink 1.05s step-end infinite;
+    }
+    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+
+    /* ── Sections ─────────────────────────────────────────────────────── */
+    section { padding: 3.25rem 0; border-bottom: 1px solid var(--border); }
+    section:last-of-type { border-bottom: none; }
+    .eyebrow {
+      font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--text-light); margin: 0 0 0.7rem;
+    }
+    h2 { font-size: 1.35rem; margin: 0 0 0.5rem; letter-spacing: -0.02em; }
+    .sub { color: var(--text-light); margin: 0 0 1.9rem; max-width: 72ch; }
+    h3 { font-size: 0.92rem; margin: 2.2rem 0 0.7rem; }
+
+    /* ── Failure cards ────────────────────────────────────────────────── */
+    .fails { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1px;
+             background: var(--border); border: 1px solid var(--border); }
+    .fail { background: var(--bg); padding: 1.15rem 1.25rem; transition: background 0.15s; }
+    .fail:hover { background: var(--surface); }
+    .fail .glyph { font-size: 1.1rem; display: block; margin-bottom: 0.5rem; color: var(--text-light); }
+    .fail b { display: block; font-size: 0.95rem; margin-bottom: 0.4rem; }
+    .fail p { margin: 0 0 0.5rem; font-size: 0.82rem; color: var(--text-light); }
+    .fail p:last-child { margin-bottom: 0; }
+    .fail .cost { color: var(--text); }
+
+    /* ── The pipeline stepper ─────────────────────────────────────────── */
+    .rail { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 1.2rem; }
+    .step {
+      font-family: inherit; cursor: pointer; text-align: center;
+      border: 1px solid var(--border); background: var(--surface); color: var(--text);
+      padding: 0.85rem 0.25rem 0.7rem; transition: transform 0.15s, border-color 0.15s, background 0.15s;
+    }
+    .step:hover { border-color: var(--text); transform: translateY(-2px); }
+    .step[aria-checked="true"] { background: var(--text); color: var(--bg); border-color: var(--text); }
+    .step .n { display: block; font-size: 1.05rem; font-weight: 700; letter-spacing: -0.02em; }
+    .step .tag { display: block; font-size: 0.6rem; letter-spacing: 0.06em; text-transform: uppercase;
+                 margin-top: 0.35rem; color: var(--text-light); overflow: hidden; text-overflow: ellipsis; }
+    .step[aria-checked="true"] .tag { color: var(--bg); }
+    .step .bar { display: block; height: 3px; margin: 0.5rem 0.3rem 0; background: var(--text); }
+    .step[aria-checked="true"] .bar { background: var(--bg); }
+
+    .step-detail {
+      border: 1px solid var(--border); border-left: 3px solid var(--text);
+      background: var(--tint); padding: 1.1rem 1.3rem; min-height: 11.5rem;
+    }
+    .step-detail .sd-name { font-size: 1rem; font-weight: 700; margin: 0 0 0.35rem; }
+    .step-detail p { margin: 0 0 0.6rem; }
+    .step-detail .sd-rule { color: var(--text-light); margin: 0 0 0.75rem; }
+    .step-detail .sd-rule b { color: var(--text); font-weight: 700; }
+    .step-detail pre {
+      margin: 0; padding: 0.7rem 0.85rem; overflow-x: auto; font-size: 0.75rem;
+      background: var(--surface); border: 1px solid var(--border); font-family: inherit;
+    }
+
+    /* ── Tables ───────────────────────────────────────────────────────── */
+    .table-wrap { overflow-x: auto; border: 1px solid var(--border); }
+    table { border-collapse: collapse; width: 100%; min-width: 520px; font-size: 0.82rem; }
+    th, td { text-align: left; padding: 0.6rem 0.9rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    th { font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.09em;
+         color: var(--text-light); background: var(--surface); font-weight: 600; }
+    tbody tr:last-child td { border-bottom: none; }
+    td.num { white-space: nowrap; font-weight: 700; }
+    code { background: var(--surface); border: 1px solid var(--border);
+           padding: 0.05rem 0.3rem; font-size: 0.92em; font-family: inherit; }
+
+    /* ── Code blocks ──────────────────────────────────────────────────── */
+    .code-block { position: relative; background: var(--surface); border: 1px solid var(--border); margin: 0.75rem 0; }
+    .code-block pre { margin: 0; padding: 0.95rem 1rem; overflow-x: auto; font-size: 0.77rem; line-height: 1.6; font-family: inherit; }
+    .code-block code { background: none; border: none; padding: 0; }
+    .code-block .ann { color: var(--text-light); }
+    .copy {
+      position: absolute; top: 0.4rem; right: 0.4rem; background: var(--bg); color: var(--text-light);
+      border: 1px solid var(--border); font-family: inherit; font-size: 0.66rem;
+      padding: 0.2rem 0.5rem; cursor: pointer;
+    }
+    .copy:hover { color: var(--text); border-color: var(--text); }
+
+    /* ── Tabs (the anatomy, and the installs) ─────────────────────────── */
+    .tabs { display: flex; flex-wrap: wrap; border-bottom: 1px solid var(--border); margin-bottom: 1.1rem; }
+    .tab {
+      background: none; border: none; border-bottom: 2px solid transparent; color: var(--text-light);
+      font-family: inherit; font-size: 0.82rem; padding: 0.55rem 0.9rem; cursor: pointer; margin-bottom: -1px;
+    }
+    .tab:hover { color: var(--text); }
+    .tab[aria-selected="true"] { color: var(--text); border-bottom-color: var(--text); }
+    .panel p:first-child { margin-top: 0; }
+
+    /* ── Won't-do list ────────────────────────────────────────────────── */
+    ul.nots { list-style: none; margin: 0; padding: 0; }
+    ul.nots li {
+      display: grid; grid-template-columns: 1.4rem 1fr; gap: 0.7rem;
+      padding: 0.7rem 0; border-bottom: 1px solid var(--border); align-items: baseline;
+    }
+    ul.nots li:last-child { border-bottom: none; }
+    ul.nots .x { color: var(--text-light); font-weight: 700; }
+    ul.nots b { font-weight: 700; }
+    ul.nots span.why { display: block; color: var(--text-light); font-size: 0.82rem; margin-top: 0.15rem; }
+
+    /* ── File list ────────────────────────────────────────────────────── */
+    ul.files { list-style: none; margin: 0; padding: 0; }
+    ul.files li { border-bottom: 1px solid var(--border); padding: 0.75rem 0; }
+    ul.files li:last-child { border-bottom: none; }
+    ul.files a { font-weight: 700; text-decoration: none; border-bottom: 1px solid var(--border); }
+    ul.files a:hover { border-bottom-color: var(--text); }
+    ul.files span { display: block; color: var(--text-light); font-size: 0.82rem; }
+
+    .note { color: var(--text-light); font-size: 0.82rem; }
+
+    @media (max-width: 760px) {
+      .rail { grid-template-columns: repeat(4, 1fr); }
+      .step .tag { display: none; }
+      .hero { padding-top: 2.5rem; }
+      .term pre { min-height: 18rem; }
+    }
+    /* nav.css carries the site-wide opt-out; these are this page's own. */
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+      .js .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="site-nav" data-page="lc-zh-translate" data-base=""></div>
+<script>CSNav.mount();</script>
+
+<main id="main">
+
+  <!-- ── Hero ──────────────────────────────────────────────────────────── -->
+  <div class="hero">
+    <div class="container">
+      <p class="kicker"><span class="dot" aria-hidden="true"></span> Agent skill</p>
+      <h1>LC ZH Translate<br><span class="thin">a sparse overlay, not a second tree</span></h1>
+      <p class="lede">
+        The cheatsheets and FAQs are translated into 繁體中文 as an <em>overlay</em> &mdash;
+        translated prose keyed per section, composed with the English document at build time,
+        with every code fence stored exactly once. <code>/lc-zh-translate</code> works that
+        store: <b>6040 of 6220 sections</b> are done, 17 entries are parked, and four sheets
+        are still at zero.
+      </p>
+      <div class="hero-actions">
+        <a class="btn primary" href="#install">Install it</a>
+        <a class="btn" href="#pipeline">See the pipeline</a>
+        <a class="btn" href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-zh-translate/SKILL.md">Read the source</a>
+      </div>
+
+      <div class="term">
+        <div class="term-bar">
+          <i aria-hidden="true"></i><i aria-hidden="true"></i><i aria-hidden="true"></i>
+          <span>/lc-zh-translate dp_loop_order</span>
+        </div>
+        <pre id="tape" aria-live="off">1  status     dp_loop_order 0/33 — one of four sheets untouched
+              patience_sorting 0/24 · math_logic_puzzles 0/14
+              memory_constrained_algorithms 0/14
+
+2  sync       nothing parked — the document had no overlay at all
+
+3  todo       33 sections, each with its key
+              &lt;!-- 4e9c8ca0cfb6 --&gt;  the H1 and its Scope line
+
+4  write      i18n/zh/&lt;id&gt;.md
+              &gt; **範圍** — 為什麼自底向上 DP 的迴圈巢狀與方向…
+              ⭐⭐⭐⭐⭐ kept on the heading, verbatim
+              dp.md#template-1b-... left as the ENGLISH anchor
+              every &lt;!--CODE--&gt; marker in place, in order
+
+5  refresh    sync clean · status --write → 5171/5318
+
+6  gate       compose accepted every marker · e2e 80/80
+
+7  assumed    5 LC-titled headings: their Chinese IS the English title</pre>
+      </div>
+      <p class="note" style="margin-top:0.6rem">A real run. Code is never stored twice, so it can never drift between the two languages.</p>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- ── Why it exists ───────────────────────────────────────────────── -->
+    <section id="why" class="reveal">
+      <p class="eyebrow">Why an overlay and not a second tree</p>
+      <h2>Three ways a translation rots</h2>
+      <p class="sub">
+        The storage design is the answer to the first one. The skill is the answer to the
+        other two.
+      </p>
+      <div class="fails">
+        <div class="fail">
+          <span class="glyph" aria-hidden="true">&#9639;</span>
+          <b>A parallel tree stores the code twice</b>
+          <p>Roughly 70% of a cheatsheet is fenced code that must read identically in both languages, and it would be tracked per <em>file</em> &mdash; so a 45-line edit invalidates a 1,000-line translation.</p>
+          <p class="cost">Fix: prose only, keyed per section. Median 249 bytes.</p>
+        </div>
+        <div class="fail">
+          <span class="glyph" aria-hidden="true">&#9636;</span>
+          <b>A dropped <code>&lt;!--CODE--&gt;</code> marker</b>
+          <p>Every fence is lifted to a one-line marker before storage and spliced back at compose time. A section that drops one, adds one or reorders them makes <code>compose</code> throw.</p>
+          <p class="cost">Rule: count the markers before and after.</p>
+        </div>
+        <div class="fail">
+          <span class="glyph" aria-hidden="true">&#9676;</span>
+          <b>A helpfully translated anchor</b>
+          <p><code>[見 §3](#two-pointers)</code> keeps the <em>English</em> slug. The build pairs the two documents' headings by position, retargets every fragment, and then asserts nothing dangles.</p>
+          <p class="cost">Translate the anchor and the assertion fires.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── The pipeline ────────────────────────────────────────────────── -->
+    <section id="pipeline" class="reveal">
+      <p class="eyebrow">sync → todo → write → sync → status</p>
+      <h2>Seven steps, in order</h2>
+      <p class="sub">
+        Pick one to see what it does and the rule that step exists to enforce.
+      </p>
+
+      <div class="rail" role="radiogroup" aria-label="Pipeline steps">
+        <button class="step" role="radio" aria-checked="true" data-n="1"
+                data-name="See the backlog"
+                data-body="status prints per-document coverage, the orphan count, and the documents at 0%. When the ask is 'the backlog', start with a document at 0% rather than picking off single sections across many files — a document that composes fully in Chinese is worth more than the same effort spread thin."
+                data-rule="With no id given, it reports and asks. A translation campaign is your call about where to spend effort, not the agent's."
+                data-code="node script/zh.js status">
+          <span class="n">1</span><span class="bar" aria-hidden="true"></span><span class="tag">status</span>
+        </button>
+        <button class="step" role="radio" aria-checked="false" data-n="2"
+                data-name="Park what the English edits invalidated"
+                data-body="sync runs BEFORE todo, so parked entries are available to adapt. It parks rather than deletes: a translation whose English section changed is kept in the same file under a stale key, because the edit is usually small and the Chinese usually still most of the way there."
+                data-rule="compose ignores parked entries, so one can never reach a page. Reverting the English revives it on the next sync — same text, same key. Only sync --prune throws them away."
+                data-code="node script/zh.js sync heap">
+          <span class="n">2</span><span class="bar" aria-hidden="true"></span><span class="tag">sync</span>
+        </button>
+        <button class="step" role="radio" aria-checked="false" data-n="3"
+                data-name="List what is owed, with its keys"
+                data-body="Each section comes with its key — a hash of the English text. An id prefix stands for everything under it, so one command can take a whole tree (faq), a directory (faq/java) or a single document (faq/java/jvm)."
+                data-rule="The key is the join. It is not editable, and a translation filed under the wrong key is one the compose step will never find."
+                data-code="node script/zh.js todo faq/java">
+          <span class="n">3</span><span class="bar" aria-hidden="true"></span><span class="tag">todo</span>
+        </button>
+        <button class="step" role="radio" aria-checked="false" data-n="4"
+                data-name="Write each section"
+                data-body="The key comment, then the translated prose, with every marker in place. The Scope line becomes 範圍. No category, tier or kind — the build reads them off the English document, so the two indexes can never disagree. A ⭐ run is part of the heading and is kept exactly."
+                data-rule="A missing section falls back to English, so a half-translated document renders as a Chinese page with English gaps rather than failing — which is what makes translating one section at a time safe."
+                data-code="&lt;!-- 4e9c8ca0cfb6 --&gt;
+# DP 迴圈順序與相依性
+
+&gt; **範圍** — …
+
+&lt;!--CODE--&gt;">
+          <span class="n">4</span><span class="bar" aria-hidden="true"></span><span class="tag">write</span>
+        </button>
+        <button class="step" role="radio" aria-checked="false" data-n="5"
+                data-name="Tidy and refresh"
+                data-body="A second sync drops the parked copies that were adapted. status --write regenerates both progress docs — which are generated files and are never hand-edited."
+                data-rule="A section counts as translated when the store has an entry, not when its Chinese differs from the English. 238 cheatsheet sections are an LC-titled heading over a code block, and house rule keeps LC titles in English — so their correct translation IS the English text."
+                data-code="node script/zh.js sync heap
+node script/zh.js status --write">
+          <span class="n">5</span><span class="bar" aria-hidden="true"></span><span class="tag">refresh</span>
+        </button>
+        <button class="step" role="radio" aria-checked="false" data-n="6"
+                data-name="Gate"
+                data-body="The build is where a dropped marker surfaces (compose throws) and where a retargeted link that went dangling is caught. Then look at the composed page — the 中文 / EN button in the navbar swaps between counterparts."
+                data-rule="Never paste English prose into a section to make the percentage move. The percentage is not the point; a page a Chinese reader can use is."
+                data-code="SKIP_FONTS=1 bash site/build.sh
+node site/e2e-check.js _site
+npm test --prefix site">
+          <span class="n">6</span><span class="bar" aria-hidden="true"></span><span class="tag">gate</span>
+        </button>
+        <button class="step" role="radio" aria-checked="false" data-n="7"
+                data-name="Report"
+                data-body="Close with the document, sections translated over sections owed, how many parked entries were adapted versus written fresh, the new coverage line, and anything left deliberately in English."
+                data-rule="API, class and command names stay in English — ConcurrentHashMap, SELECT … FOR UPDATE, kafka-topics.sh. They are what you type, and what an interviewer will say."
+                data-code="assumed  5 LC-titled headings translate to themselves,
+         per the house rule on LC titles">
+          <span class="n">7</span><span class="bar" aria-hidden="true"></span><span class="tag">report</span>
+        </button>
+      </div>
+
+      <div class="step-detail" id="sd" aria-live="polite">
+        <p class="sd-name"></p>
+        <p class="sd-body"></p>
+        <p class="sd-rule"></p>
+        <pre class="sd-code"></pre>
+      </div>
+    </section>
+
+    <!-- ── The store ───────────────────────────────────────────────────── -->
+    <section id="layout" class="reveal">
+      <p class="eyebrow">What lands in the store</p>
+      <h2>How a translation is stored</h2>
+      <p class="sub">
+        One entry per section, keyed by a hash of its English text. Everything else is read off
+        the English document, so the two can never disagree.
+      </p>
+
+      <div class="tabs" role="tablist" aria-label="The store">
+        <button class="tab" role="tab" id="t-file" aria-controls="a-file" aria-selected="true">An entry</button>
+        <button class="tab" role="tab" id="t-row"  aria-controls="a-row"  aria-selected="false">The two families</button>
+        <button class="tab" role="tab" id="t-var"  aria-controls="a-var"  aria-selected="false">Parked, not deleted</button>
+      </div>
+
+      <div class="panel" role="tabpanel" id="a-file" aria-labelledby="t-file">
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code>&lt;!-- afb8deac2112 --&gt;                  <span class="ann">&lt;- the key: a hash of the English</span>
+# 堆積與優先佇列                        <span class="ann">&lt;- heading TEXT translated, position fixed</span>
+
+&gt; **範圍** — 堆積（heap，這個資料結構）以及它所實作的優先佇列…
+                                       <span class="ann">^ the Scope line, which becomes the card</span>
+
+&lt;!--CODE--&gt;                            <span class="ann">&lt;- a fence, stored once, in English only</span>
+
+一般來說，`heapq` 只實作 min-heap…      <span class="ann">&lt;- API names stay English</span>
+
+&lt;!--CODE--&gt;</code></pre>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Never in a translation</th><th>Why</th></tr></thead>
+            <tbody>
+              <tr><td class="num">a new or dropped heading</td><td>Structure is the English document's. The two cannot disagree about shape.</td></tr>
+              <tr><td class="num">a translated anchor target</td><td>The build retargets fragments by heading position, then asserts nothing dangles.</td></tr>
+              <tr><td class="num"><code>category</code> / <code>tier</code> / <code>kind</code></td><td>Read off the English document, so the two indexes can never disagree.</td></tr>
+              <tr><td class="num">an API, class or command name</td><td>They are what you type, and what an interviewer will say.</td></tr>
+              <tr><td class="num">an LC problem title</td><td>House rule — they stay English in both trees.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel" role="tabpanel" id="a-row" aria-labelledby="t-row" hidden>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th></th><th>English tree</th><th>Overlay</th><th>Progress</th></tr></thead>
+            <tbody>
+              <tr><td class="num">Cheatsheets</td><td><code>doc/cheatsheet/&lt;slug&gt;.md</code></td><td><code>i18n/zh/&lt;slug&gt;.md</code></td><td>5138/5318</td></tr>
+              <tr><td class="num">FAQs</td><td><code>doc/faq/&lt;path&gt;.md</code></td><td><code>i18n/zh/faq/&lt;path&gt;.md</code></td><td>902/902</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">
+          <code>CORPORA</code> in <code>site/i18n.js</code> is the only place that table lives
+          &mdash; <code>script/zh.js</code>, <code>build-site.js</code> and
+          <code>i18n.corpus.test.js</code> all read it, so a third translated tree is an entry
+          there rather than three copies of a directory name. A document's <b>id is its store
+          path</b> minus the <code>.md</code>, which is also the address the CLI takes.
+        </p>
+      </div>
+
+      <div class="panel" role="tabpanel" id="a-var" aria-labelledby="t-var" hidden>
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code>&lt;!-- stale: 51e9781a0030 --&gt;
+這一段的英文改過了，但中文大部分還可以用…</code></pre>
+        </div>
+        <p class="note">
+          When an English section changes, its translation simply goes missing from the store
+          &mdash; and <code>sync</code> <b>parks</b> it rather than deleting it, because the edit
+          is usually small and the Chinese usually still most of the way there.
+          <code>compose</code> ignores parked entries, so one can never reach a page. Reverting
+          the English revives it on the next <code>sync</code>, same text and same key.
+          <b><code>sync --prune</code> is the only thing that throws them away</b> &mdash; so it
+          is never reached for as a tidy-up.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── How to call it ──────────────────────────────────────────────── -->
+    <section id="use" class="reveal">
+      <p class="eyebrow">An id prefix stands for everything under it</p>
+      <h2>How to call it</h2>
+      <div class="code-block">
+        <button class="copy" type="button">copy</button>
+<pre><code>/lc-zh-translate heap                <span class="ann"># one cheatsheet</span>
+/lc-zh-translate faq                 <span class="ann"># the whole FAQ tree</span>
+/lc-zh-translate faq/java            <span class="ann"># one directory</span>
+/lc-zh-translate faq/java/jvm        <span class="ann"># one document</span>
+
+work the zh backlog
+what is still untranslated?</code></pre>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Left out</th><th>What happens</th></tr></thead>
+          <tbody>
+            <tr><td class="num">Which document</td><td>It reports the backlog and <b>asks</b>. A campaign is your call about where to spend effort.</td></tr>
+            <tr><td class="num">The keys</td><td>Taken from <code>todo</code>, never composed by hand.</td></tr>
+            <tr><td class="num">Structure</td><td>Read off the English document. A translation cannot add or drop a section.</td></tr>
+            <tr><td class="num">The progress docs</td><td>Regenerated by <code>status --write</code>, never hand-edited.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── What it will not do ─────────────────────────────────────────── -->
+    <section id="rules" class="reveal">
+      <p class="eyebrow">The guardrails</p>
+      <h2>What it will not do</h2>
+      <ul class="nots">
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Drop, add or reorder a <code>&lt;!--CODE--&gt;</code> marker.</b><span class="why"><code>compose</code> throws. The markers are how the code that is stored once gets back into both languages.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Add or remove a section.</b><span class="why">Structure is the English document's, which is why the two can never disagree about shape.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Translate an anchor, an API name or an LC title.</b><span class="why">The first breaks the link assertion; the other two are what you type and what an interviewer says.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Run <code>sync --prune</code> to tidy.</b><span class="why">It is the only thing that discards parked work, and parked work was kept on purpose.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Paste English prose to move the percentage.</b><span class="why">Coverage is a proxy. A page a Chinese reader can actually use is the thing.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Start a campaign you did not ask for.</b><span class="why">180 sections is a lot of tokens. Which ones is a decision worth making deliberately.</span></span></li>
+      </ul>
+    </section>
+
+    <!-- ── Install ─────────────────────────────────────────────────────── -->
+    <section id="install" class="reveal">
+      <p class="eyebrow">One markdown file, no dependencies</p>
+      <h2>Install</h2>
+      <p class="sub">
+        <code>SKILL.md</code> is the whole recipe &mdash; nothing to build and no network calls,
+        so the same source runs on any agent that takes a system prompt. Pick yours.
+      </p>
+
+      <div class="tabs" role="tablist" aria-label="Install target">
+        <button class="tab" role="tab" id="tab-cc"     aria-controls="p-cc"     aria-selected="true">Claude Code</button>
+        <button class="tab" role="tab" id="tab-claude" aria-controls="p-claude" aria-selected="false">Claude app</button>
+        <button class="tab" role="tab" id="tab-codex"  aria-controls="p-codex"  aria-selected="false">Codex</button>
+        <button class="tab" role="tab" id="tab-gemini" aria-controls="p-gemini" aria-selected="false">Gemini</button>
+        <button class="tab" role="tab" id="tab-other"  aria-controls="p-other"  aria-selected="false">Anything else</button>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-cc" aria-labelledby="tab-cc">
+        <p>Drop the skill directory into your user-level skills folder and it loads in every repo:</p>
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code>git clone --depth 1 https://github.com/yennanliu/CS_basics.git /tmp/cs_basics
+mkdir -p ~/.claude/skills
+cp -r /tmp/cs_basics/.claude/skills/lc-zh-translate ~/.claude/skills/</code></pre>
+        </div>
+        <p class="note">
+          Already installed inside this repo at <code>.claude/skills/lc-zh-translate/</code>.
+          The directory name <em>is</em> the command.
+        </p>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-claude" aria-labelledby="tab-claude" hidden>
+        <p>Zip the directory, then <em>Customize &rarr; Skills &rarr; + &rarr; + Create skill &rarr; Upload a skill</em>:</p>
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code>cd .claude/skills &amp;&amp; zip -r lc-zh-translate.zip lc-zh-translate</code></pre>
+        </div>
+        <p class="note">Leave the YAML frontmatter intact &mdash; <code>description</code> is what Claude matches your request against.</p>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-codex" aria-labelledby="tab-codex" hidden>
+        <p>Codex reads <code>AGENTS.md</code> at the repo root automatically. Point it at the skill:</p>
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code>## Translating into 繁體中文
+
+When asked to translate a cheatsheet or FAQ, work the zh backlog, or
+refresh the translation progress, follow
+`.claude/skills/lc-zh-translate/SKILL.md`.</code></pre>
+        </div>
+        <p class="note">A pointer, not a copy &mdash; one source of truth means a fix reaches every agent at once.</p>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-gemini" aria-labelledby="tab-gemini" hidden>
+        <p>Same shape in <code>GEMINI.md</code>, or point at it for a single session:</p>
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code>gemini -p "Follow the recipe in .claude/skills/lc-zh-translate/SKILL.md. \
+Translate the dp_loop_order sheet."</code></pre>
+        </div>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-other" aria-labelledby="tab-other" hidden>
+        <p>
+          Paste <code>SKILL.md</code> in as the system prompt. For Cursor or Windsurf, put the
+          Codex pointer above into a rule file
+          (<code>.cursor/rules/lc-zh-translate.mdc</code> or the editor's equivalent).
+        </p>
+        <div class="code-block">
+          <button class="copy" type="button">copy</button>
+<pre><code>curl -sL https://raw.githubusercontent.com/yennanliu/CS_basics/master/.claude/skills/lc-zh-translate/SKILL.md</code></pre>
+        </div>
+        <p class="note">
+          Away from this repo the transferable part is the storage idea: prose only, keyed per
+          section, structure taken from the source document, and code stored exactly once.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── What's inside ───────────────────────────────────────────────── -->
+    <section id="inside" class="reveal">
+      <p class="eyebrow">Under the hood</p>
+      <h2>What is inside</h2>
+      <ul class="files">
+        <li>
+          <a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-zh-translate/SKILL.md">SKILL.md</a>
+          <span>The whole recipe &mdash; what an overlay is and why, the five prime directives, the sync → todo → write → sync → status loop, the seven steps, the do-not list, and a worked run.</span>
+        </li>
+      </ul>
+      <p class="note" style="margin-top:1.2rem">
+        Gated in CI by
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/script/check_skills.py">check_skills.py</a>,
+        and the store it writes is gated by the build itself &mdash; <code>compose</code> throws
+        on a marker mismatch, and the link retargeting asserts nothing dangles.
+      </p>
+    </section>
+
+    <!-- ── Where it fits ───────────────────────────────────────────────── -->
+    <section id="fits" class="reveal">
+      <p class="eyebrow">The rest of the loop</p>
+      <h2>Where it fits</h2>
+      <p class="sub">
+        <a href="lc-cheatsheet.html">/lc-cheatsheet</a> re-translates the sections <em>an edit</em>
+        parked; <code>/lc-zh-translate</code> is the one that drives the standing backlog, and
+        <a href="lc-faq-add.html">/lc-faq-add</a> writes the Chinese for a new FAQ answer in the
+        same pass. The way in is the 中文 / EN button in the navbar, or
+        <a href="cheatsheets.zh.html">cheatsheets.zh</a> and <a href="faqs.zh.html">faqs.zh</a>.
+      </p>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <p>CS_basics — computer science fundamentals &amp; interview preparation</p>
+    <p>
+      <a href="https://github.com/yennanliu/CS_basics">github</a> |
+      <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+      <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Sections are visible in the stylesheet and only hidden once `.js` is on the
+  // root, so a page with no JS never gets stuck blank. The cost is that adding
+  // the class here would blank whatever is already on screen for a frame, so
+  // the above-the-fold sections are marked revealed in the *same* synchronous
+  // block — one paint, no flash.
+  var reveals = [].slice.call(document.querySelectorAll('.reveal'));
+  var onscreen = reveals.filter(function (el) {
+    return el.getBoundingClientRect().top < (window.innerHeight || 0);
+  });
+  document.documentElement.classList.add('js');
+  onscreen.forEach(function (el) { el.classList.add('in'); });
+
+  // ── Hero tape ─────────────────────────────────────────────────────────
+  // The run is written into the <pre> in the HTML, so it is there whatever
+  // happens to this script, and it is typed out by clipping that text rather
+  // than by assembling it here. Reduced motion keeps the finished frame.
+  var tape = document.getElementById('tape');
+  if (tape && !reduced) {
+    var TAPE = tape.textContent;
+    var caret = document.createElement('span');
+    caret.className = 'caret';
+    var text = document.createTextNode('');
+    tape.textContent = '';
+    tape.appendChild(text);
+    tape.appendChild(caret);
+    var i = 0;
+    (function tick() {
+      // Whole lines at a time once past the first: character-by-character for
+      // 700 characters is a long time to make someone watch.
+      i += i < 60 ? 1 : 3;
+      text.nodeValue = TAPE.slice(0, i);
+      if (i < TAPE.length) setTimeout(tick, i < 60 ? 26 : 12);
+      else caret.remove();
+    })();
+  }
+
+  // ── Pipeline stepper ──────────────────────────────────────────────────
+  var steps = [].slice.call(document.querySelectorAll('.step'));
+  var sd = document.getElementById('sd');
+
+  function showStep(step) {
+    steps.forEach(function (s) {
+      s.setAttribute('aria-checked', String(s === step));
+      s.tabIndex = s === step ? 0 : -1;
+    });
+    sd.querySelector('.sd-name').textContent = step.dataset.n + '. ' + step.dataset.name;
+    sd.querySelector('.sd-body').textContent = step.dataset.body;
+    // The rule is the line worth reading twice, so it gets a label. Every
+    // dataset value is plain text and is set as text — the label is a real
+    // element rather than a string concatenated into innerHTML.
+    var rule = sd.querySelector('.sd-rule');
+    rule.textContent = '';
+    var label = document.createElement('b');
+    label.textContent = 'Rule: ';
+    rule.appendChild(label);
+    rule.appendChild(document.createTextNode(step.dataset.rule));
+    sd.querySelector('.sd-code').textContent = step.dataset.code;
+  }
+
+  steps.forEach(function (step, idx) {
+    step.addEventListener('click', function () { showStep(step); });
+    step.addEventListener('keydown', function (e) {
+      var delta = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (!delta) return;
+      e.preventDefault();
+      var next = steps[(idx + delta + steps.length) % steps.length];
+      showStep(next);
+      next.focus();
+    });
+  });
+  if (steps.length) showStep(document.querySelector('.step[aria-checked="true"]') || steps[0]);
+
+  // ── Tabs ──────────────────────────────────────────────────────────────
+  // Panels toggle with the `hidden` attribute rather than a class, so a hidden
+  // panel is out of the accessibility tree and out of find-in-page too. Each
+  // tablist is handled independently, so the two on this page cannot fight.
+  [].slice.call(document.querySelectorAll('[role="tablist"]')).forEach(function (list) {
+    var tabs = [].slice.call(list.querySelectorAll('.tab'));
+    if (!tabs.length) return;
+
+    function select(tab) {
+      tabs.forEach(function (t) {
+        var on = t === tab;
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+      });
+    }
+    tabs.forEach(function (tab, i) {
+      tab.addEventListener('click', function () { select(tab); });
+      tab.addEventListener('keydown', function (e) {
+        var delta = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (!delta) return;
+        e.preventDefault();
+        var next = tabs[(i + delta + tabs.length) % tabs.length];
+        select(next);
+        next.focus();
+      });
+    });
+  });
+
+  // ── Copy buttons ──────────────────────────────────────────────────────
+  // clipboard.writeText needs a secure context; on plain http it rejects, so
+  // the button says so instead of silently doing nothing.
+  //
+  // The `.ann` spans are margin notes about the code, not part of it, so they
+  // are stripped from a clone before the text is read — copying the anatomy
+  // block otherwise hands back Python with "<- docstring first" inside it. The
+  // strip leaves the padding that positioned each note, hence the trailing
+  // whitespace pass. textContent, not innerText: the clone is detached, and in
+  // a <pre> the two agree anyway.
+  function codeText(block) {
+    var node = block.querySelector('code').cloneNode(true);
+    [].slice.call(node.querySelectorAll('.ann')).forEach(function (a) {
+      a.parentNode.removeChild(a);
+    });
+    return node.textContent.replace(/[ \t]+$/gm, '');
+  }
+
+  [].slice.call(document.querySelectorAll('.copy')).forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var code = codeText(btn.parentElement);
+      var done = function (label) {
+        btn.textContent = label;
+        setTimeout(function () { btn.textContent = 'copy'; }, 1400);
+      };
+      if (!navigator.clipboard) return done('select it');
+      navigator.clipboard.writeText(code).then(function () { done('copied'); },
+                                               function () { done('select it'); });
+    });
+  });
+
+  // ── Reveal on scroll ──────────────────────────────────────────────────
+  if (reduced || !('IntersectionObserver' in window)) {
+    reveals.forEach(function (el) { el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      });
+    }, { rootMargin: '0px 0px -12% 0px' });
+    reveals.forEach(function (el) { io.observe(el); });
+  }
+})();
+</script>
+
+</body>
+</html>

@@ -79,7 +79,11 @@
       { id: 'lc-java',          label: 'lc-java',    href: 'lc-java.html' },
       { id: 'lc-cheatsheet',    label: 'lc-cheatsheet', href: 'lc-cheatsheet.html' },
       { id: 'lc-log',           label: 'lc-log',     href: 'lc-log.html' },
-      { id: 'lc-again',         label: 'lc-again',   href: 'lc-again.html' }
+      { id: 'lc-again',         label: 'lc-again',   href: 'lc-again.html' },
+      { id: 'lc-zh-translate',  label: 'lc-zh-translate', href: 'lc-zh-translate.html' },
+      { id: 'lc-algo-demo',     label: 'lc-algo-demo', href: 'lc-algo-demo.html' },
+      { id: 'lc-site-data',     label: 'lc-site-data', href: 'lc-site-data.html' },
+      { id: 'lc-faq-add',       label: 'lc-faq-add', href: 'lc-faq-add.html' }
     ] },
     { id: 'resources',          label: 'resources',  href: 'resources.html' },
     { id: 'github',             label: 'github',     href: 'https://github.com/yennanliu/CS_basics', external: true }

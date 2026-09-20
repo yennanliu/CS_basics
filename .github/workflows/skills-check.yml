@@ -29,6 +29,10 @@ on:
       - 'site/pages/lc-cheatsheet.html'
       - 'site/pages/lc-log.html'
       - 'site/pages/lc-again.html'
+      - 'site/pages/lc-zh-translate.html'
+      - 'site/pages/lc-algo-demo.html'
+      - 'site/pages/lc-site-data.html'
+      - 'site/pages/lc-faq-add.html'
       - 'script/check_skills.py'
       - '.github/workflows/skills-check.yml'
   pull_request:
@@ -41,6 +45,10 @@ on:
       - 'site/pages/lc-cheatsheet.html'
       - 'site/pages/lc-log.html'
       - 'site/pages/lc-again.html'
+      - 'site/pages/lc-zh-translate.html'
+      - 'site/pages/lc-algo-demo.html'
+      - 'site/pages/lc-site-data.html'
+      - 'site/pages/lc-faq-add.html'
       - 'script/check_skills.py'
       - '.github/workflows/skills-check.yml'
   workflow_dispatch:
