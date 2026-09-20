@@ -32,6 +32,106 @@ The number of nodes in the list is in the range [0, 100].
 # IDEA : LINKED LIST (gpt)
 class Solution(object):
     def swapPairs(self, head):
+
+        dummy = ListNode(0)
+        dummy.next = head
+
+        prev = dummy
+
+        """
+
+        NOTE !!!
+
+
+        1. we cache `prev.next`, and `prev.next.next`
+
+
+        2. how the swap works ?
+
+
+        ->
+
+            input: 1 -> 2 -> 3 -> 4
+
+
+        ->  at begin:
+
+             ```
+             dummy -> 1 -> 2 -> 3 -> 4
+                      ↑
+                     first
+                           ↑
+                         second
+            ``
+
+        -> do
+
+            ```
+            first.next = second.next
+            second.next = first
+            prev.next = second
+            ```
+
+
+        -> becomes:
+
+            ```
+
+            dummy -> 2 -> 1 -> 3 -> 4
+
+            ```
+
+        -> do 
+
+            ```
+            prev = first
+            ```
+
+
+        -> becomes:
+
+
+
+            ```
+            dummy -> 2 -> 1 -> 3 -> 4
+                          ↑
+                         prev
+
+            ```
+
+        -> next handle:
+
+            ```
+            3 -> 4
+            ```
+
+
+        -> repeat above process...
+
+
+        """
+
+        while prev.next and prev.next.next:
+            first = prev.next
+            second = first.next # prev.next.next
+
+            # 1. second -> first
+            first.next = second.next
+            second.next = first
+
+            # 2. prev -> second
+            prev.next = second
+
+            # Move to the next pair
+            prev = first
+
+        return dummy.next
+
+
+# V0-0-1
+# IDEA : LINKED LIST (gpt)
+class Solution(object):
+    def swapPairs(self, head):
         if not head or not head.next:
             return head
 
@@ -54,38 +154,6 @@ class Solution(object):
             # advance
             prev = first
             head = first.next
-
-        return dummy.next
-
-
-
-# V0-0-1
-# IDEA : LINKED LIST (gpt)
-class Solution(object):
-    def swapPairs(self, head):
-        """
-        :type head: Optional[ListNode]
-        :rtype: Optional[ListNode]
-        """
-
-        dummy = ListNode(0)
-        dummy.next = head
-
-        prev = dummy
-
-        while prev.next and prev.next.next:
-            first = prev.next
-            second = first.next
-
-            # 1. second -> first
-            first.next = second.next
-            second.next = first
-
-            # 2. prev -> second
-            prev.next = second
-
-            # Move to the next pair
-            prev = first
 
         return dummy.next
 
