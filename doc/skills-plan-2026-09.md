@@ -1,12 +1,14 @@
 # Agent Skills — Expansion Plan (Sep 2026)
 
-**Status: planned, not implemented.** Nothing in this document has been built yet. It
-records *what* is going to be added to `.claude/skills/`, *why* each one earns its place,
-and *what else has to move* when it lands. Implementation is a separate commit per skill.
+**Status: implemented, Sep 2026.** Phases 1–7 landed in three commits; `lc-sql` and the
+`system-architecture` upgrade remain deferred, as planned. This document is kept as the
+record of *why* each skill earns its place and *what else had to move* when it landed — see
+[Order of work](#order-of-work) for what actually happened per phase.
 
 Background: the survey this plan came out of is in the "Where the gaps are" section below;
-the skills that exist today are documented in [CLAUDE.md](../CLAUDE.md) under
-*Adding a LeetCode solution*, *Updating a cheatsheet* and *Coaching a coding interview*.
+the skills are documented in [CLAUDE.md](../CLAUDE.md) under *Filing a solved problem*,
+*Tracking the practice*, *Maintaining the site*, *Updating a cheatsheet* and *Coaching a
+coding interview*.
 
 ---
 
@@ -322,15 +324,28 @@ Each phase is its own commit (or PR), and each ends green on
 `python3 script/check_skills.py --install`, `bash site/build.sh`,
 `node site/e2e-check.js _site`, `npm test --prefix site`.
 
-| Phase | Work | Rationale |
+| Phase | Work | Outcome |
 |---|---|---|
-| 1 | Rename `lc-add` → `lc-python`, all 12 wiring sites, no behaviour change | do it before six more skills are wired to the old name |
-| 2 | `lc-java` + retire `java-developer` | the largest measured gap: most-churned directory, no skill |
-| 3 | `lc-log` | most repeated hand edit; the review plan's only data source |
-| 4 | `lc-again` + retire `java-python-code-reviewer` into `lc-coach` | a named, measured failure (325 vs 124) |
-| 5 | `lc-zh-translate` | 180 sections and 17 orphans outstanding |
-| 6 | `lc-algo-demo`, `lc-site-data`, `lc-faq-add` | the site-maintenance family, in that order |
-| 7 | Regroup the skills band; revisit `lc-sql` and the `system-architecture` upgrade | after the band is too long to leave flat |
+| 1–2 | Rename `lc-add` → `lc-python`, add `lc-java`, retire `java-developer` | **done** — all 12 wiring sites in one commit |
+| 3–4 | `lc-log`, `lc-again`, retire `java-python-code-reviewer` into `lc-coach` | **done** — plus the `LSP` entry dropped from `code-refactor-master`'s `allowed-tools` |
+| 5–7 | `lc-zh-translate`, `lc-algo-demo`, `lc-site-data`, `lc-faq-add`; regroup the band | **done** — the band became three labelled groups at ten cards |
+| — | `lc-sql`, the `system-architecture` upgrade | **deferred**, as planned |
+
+Three things the implementation changed from what this document predicted:
+
+- **`/lc-log`'s job is bigger than the annotations.** Measuring the log before writing the
+  skill turned up two shapes that lose data with no warning — a number glued to its bucket
+  label (**93 attempts**, which `suggest_review.py` recovers via `_strip_label` and
+  `build-review-plan.js` does not) and a number written after its description
+  (`2D LIS (354)` → LC 2, **16 entries**). So the skill writes a line that round-trips, and
+  its gate is reading the numbers back rather than trusting an exit code. Fixing the 109
+  historical entries is still open, and moves `build-review-plan.js` and its tests first.
+- **Phase 7 came forward.** Ten flat cards is a list, so the band was regrouped in the same
+  commit as the last four skills rather than left for later.
+- **Cross-skill links are absolute.** `check_skills.py --install` proved its worth
+  immediately: a sibling referenced as `../lc-java/SKILL.md` resolves in this repo and
+  resolves to nothing once the skill is installed on its own. Every cross-skill link is a
+  `github.com` URL for that reason.
 
 ## Out of scope
 
