@@ -43,6 +43,32 @@ Follow up: Can you solve it using O(1) (i.e. constant) memory?
 """
 
 # V0
+# IDEA : SET
+# time = O(n)
+# space = O(n)
+class Solution(object):
+    def detectCycle(self, head):
+        """
+        :type head: ListNode
+        :rtype: bool
+        """
+
+        if not head or not head.next:
+          return None
+        
+        visited = set()
+
+        while head:
+          if head in visited:
+            return head
+          visited.add(head)
+          head = head.next
+
+        return None
+
+
+
+# V0
 # IDEA : 2 pointers + linked list basics
 # https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/2_pointers.md
 # time = O(n)
