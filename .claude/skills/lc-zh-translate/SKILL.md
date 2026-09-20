@@ -116,9 +116,10 @@ compose step will never find.
 ```
 
 - the key comment, then the translated prose, markers in place (directive 1);
-- the Scope line becomes `> **範圍** — …` (the build reads either spelling for the card
-  description). An FAQ has no Scope line, so its card is summarised from the *composed
-  Chinese* — translate the lead paragraph and the card follows;
+- a Scope line becomes `> **範圍** — …`, and the build reads either spelling, so the
+  translated line becomes the Chinese card description. Every cheatsheet has one; **17 of the
+  49 FAQs do**, and for the other 32 the card falls back to the *composed Chinese* lead
+  paragraph — so translating that lead paragraph is what moves the card;
 - **no `category` / `tier` / `kind`** in a translation. The build reads them off the English
   document, so the two indexes can never disagree;
 - a ⭐ run on a heading is part of the heading — keep it exactly, since the site strips it

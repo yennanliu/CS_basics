@@ -280,6 +280,18 @@ class Runnable(unittest.TestCase):
         self.assertFalse(cs.balanced('echo "hi'))
         self.assertTrue(cs.balanced("echo 'a' \"b\""))
 
+    def test_commands_run_under_bash_not_sh(self):
+        # Regression. `grep doc/cheatsheet/{a,b}.md` is brace expansion, which
+        # /bin/sh supports on macOS (bash in posix mode) and not on Ubuntu
+        # (dash). Leaving the shell to the default passed locally and failed in
+        # CI on exactly that line, so --run runs what the ```bash fence says.
+        brace = GOOD.replace("ls data/progress.txt",
+                             "ls data/{progress,again_problems}.txt")
+        with tempfile.TemporaryDirectory() as tmp:
+            ok, rep = run_check(lambda r, s: cs.check_run(r, s, timeout=30),
+                                build_skill(tmp, text=brace))
+        self.assertTrue(ok, f"brace expansion should work; {rep.failed} failed")
+
     def test_a_failing_command_fails_the_check(self):
         with tempfile.TemporaryDirectory() as tmp:
             skill = build_skill(tmp, text=GOOD.replace("ls data/progress.txt",

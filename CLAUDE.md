@@ -731,8 +731,10 @@ bytes), so an edit invalidates only the section it touched.
 - No `category` / `tier` / `kind` in a translation: the build reads them off the
   English document, so the two indexes can never disagree.
 - The Scope line becomes `> **範圍** — …` (the build reads either spelling for the
-  card description). An FAQ has no Scope line, so its card is summarised from the
-  *composed Chinese* — translate the lead paragraph and the card follows.
+  card description, so a translated Scope line becomes the Chinese card). Most
+  FAQs have no Scope line — 17 of 49 do — and for those the card falls back to
+  the *composed Chinese* lead paragraph, so translating that lead paragraph is
+  what moves the card.
 - API, class and command names stay in English: `ConcurrentHashMap`,
   `SELECT … FOR UPDATE`, `kafka-topics.sh`. They are what you type, and what an
   interviewer will say.

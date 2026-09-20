@@ -138,6 +138,7 @@
     /* ── The pipeline stepper ─────────────────────────────────────────── */
     .rail { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 1.2rem; }
     .step {
+      position: relative;                /* anchors the visually-hidden .tag below 760px */
       font-family: inherit; cursor: pointer; text-align: center;
       border: 1px solid var(--border); background: var(--surface); color: var(--text);
       padding: 0.85rem 0.25rem 0.7rem; transition: transform 0.15s, border-color 0.15s, background 0.15s;
@@ -220,7 +221,14 @@
 
     @media (max-width: 760px) {
       .rail { grid-template-columns: repeat(4, 1fr); }
-      .step .tag { display: none; }
+      /* Not display:none. The tag is the step's only descriptive text — `.bar`
+         is aria-hidden and `.n` is just a number — so hiding it that way leaves
+         a radio whose accessible name is "1". Visually hidden keeps it in the
+         accessibility tree. */
+      .step .tag {
+        position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+        overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+      }
       .hero { padding-top: 2.5rem; }
       .term pre { min-height: 18rem; }
     }
@@ -741,6 +749,12 @@ Log today: 23 ok, 24 again!!, 25, 138 came back"</code></pre>
       tabs.forEach(function (t) {
         var on = t === tab;
         t.setAttribute('aria-selected', on ? 'true' : 'false');
+        // Roving tabindex: the tablist is ONE Tab stop and the arrows move
+        // inside it. Without this, every tab is its own stop, so reaching the
+        // content past a five-tab install block costs five presses — and the
+        // arrow handler below, which already moves focus, has nothing to
+        // return focus order to. The stepper above does the same thing.
+        t.tabIndex = on ? 0 : -1;
         document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
       });
     }
@@ -755,6 +769,10 @@ Log today: 23 ok, 24 again!!, 25, 138 came back"</code></pre>
         next.focus();
       });
     });
+    // The markup marks one tab selected; run it through select() so the
+    // tabIndex state matches from the first paint rather than from the first
+    // click.
+    select(list.querySelector('.tab[aria-selected="true"]') || tabs[0]);
   });
 
   // ── Copy buttons ──────────────────────────────────────────────────────

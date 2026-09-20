@@ -689,6 +689,12 @@ of the LCA template — solution in @lca_iii.py"</code></pre>
       tabs.forEach(function (t) {
         var on = t === tab;
         t.setAttribute('aria-selected', on ? 'true' : 'false');
+        // Roving tabindex: the tablist is ONE Tab stop and the arrows move
+        // inside it. Without this, every tab is its own stop, so reaching the
+        // content past a five-tab install block costs five presses — and the
+        // arrow handler below, which already moves focus, has nothing to
+        // return focus order to. The stepper above does the same thing.
+        t.tabIndex = on ? 0 : -1;
         document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
       });
     }
@@ -703,6 +709,10 @@ of the LCA template — solution in @lca_iii.py"</code></pre>
         next.focus();
       });
     });
+    // The markup marks one tab selected; run it through select() so the
+    // tabIndex state matches from the first paint rather than from the first
+    // click.
+    select(list.querySelector('.tab[aria-selected="true"]') || tabs[0]);
   });
 
   // ── Copy buttons ──────────────────────────────────────────────────────

@@ -630,8 +630,10 @@ if (faqFiles.length > 0) {
     htmlContent = annotated;
     const pageTitle = h1Title || title;
     const docHeadings = extractHeadings(htmlContent);
-    // FAQs have no Scope line, so the card description comes from the lead
-    // paragraph, or failing that from the sections the doc covers.
+    // summariseDoc falls back in order: the Scope line if the FAQ has one (17
+    // of 49 do), else the lead paragraph, else the sections the doc covers.
+    // The earlier comment here claimed FAQs never carry a Scope line, which is
+    // what led a skill to tell authors to drop it.
     const description = summariseDoc(raw, docHeadings);
 
     searchRecords.push({
@@ -670,7 +672,7 @@ if (faqFiles.length > 0) {
 // ── Traditional Chinese FAQs ─────────────────────────────────────────────────
 //
 // The same overlay and the same composer as the cheatsheets. An FAQ differs only
-// in having no Scope line, so its card description is summarised from the
+// in usually having no Scope line, so its card description falls back to the
 // *composed* Chinese rather than lifted out of a line the author wrote.
 
 // The FAQ index's own words, and the categories build-site.js derives from the

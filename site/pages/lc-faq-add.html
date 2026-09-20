@@ -138,6 +138,7 @@
     /* ── The pipeline stepper ─────────────────────────────────────────── */
     .rail { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 1.2rem; }
     .step {
+      position: relative;                /* anchors the visually-hidden .tag below 760px */
       font-family: inherit; cursor: pointer; text-align: center;
       border: 1px solid var(--border); background: var(--surface); color: var(--text);
       padding: 0.85rem 0.25rem 0.7rem; transition: transform 0.15s, border-color 0.15s, background 0.15s;
@@ -220,7 +221,14 @@
 
     @media (max-width: 760px) {
       .rail { grid-template-columns: repeat(4, 1fr); }
-      .step .tag { display: none; }
+      /* Not display:none. The tag is the step's only descriptive text — `.bar`
+         is aria-hidden and `.n` is just a number — so hiding it that way leaves
+         a radio whose accessible name is "1". Visually hidden keeps it in the
+         accessibility tree. */
+      .step .tag {
+        position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+        overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+      }
       .hero { padding-top: 2.5rem; }
       .term pre { min-height: 18rem; }
     }
@@ -298,7 +306,7 @@
         <div class="fail">
           <span class="glyph" aria-hidden="true">&#9639;</span>
           <b>The file is picked by its name</b>
-          <p>Every FAQ opens with a <b>Scope</b> line, and it exists to stop two files growing into the same document. "Connection pooling" could plausibly land in <code>db/</code>, <code>backend/</code> or <code>java/</code> &mdash; only the Scope lines say which owns it.</p>
+          <p><b>17 of the 49 FAQs open with a Scope line</b>, and it exists to stop two files growing into the same document. "Connection pooling" could plausibly land in <code>db/</code>, <code>backend/</code> or <code>java/</code> &mdash; where one exists, only the Scope line says which owns it.</p>
           <p class="cost">Rule: read the Scope lines, not the filenames.</p>
         </div>
         <div class="fail">
@@ -356,7 +364,7 @@ t0  consumer C joins
         <button class="step" role="radio" aria-checked="false" data-n="4"
                 data-name="Write the 中文 section in the same pass"
                 data-body="sync then todo gives the new section's key. The translation goes into the mirrored path under i18n/zh/faq/, keeping every <!--CODE--> marker in order — compose throws otherwise. Structure and heading order come from the English document; links keep their English anchors."
-                data-rule="An FAQ has no Scope line, so its card is summarised from the COMPOSED Chinese. If the lead paragraph changed, translate it and the card follows."
+                data-rule="If the English FAQ has a Scope line, translate it as 範圍 — the build reads either spelling, so the translated line becomes the Chinese card. Never drop it. For the 32 FAQs without one the card falls back to the COMPOSED Chinese lead paragraph, so translating that lead is what moves the card."
                 data-code="node script/zh.js sync faq/kafka/faq_kafka
 node script/zh.js todo faq/kafka/faq_kafka
 node script/zh.js status --write">
@@ -504,7 +512,8 @@ start a FAQ for gRPC</code></pre>
       <p class="eyebrow">The guardrails</p>
       <h2>What it will not do</h2>
       <ul class="nots">
-        <li><span class="x" aria-hidden="true">&times;</span><span><b>Pick the file by topic name.</b><span class="why">The Scope line is what stops two files growing into the same document, and it is the only thing that can settle an overlap.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Pick the file by topic name.</b><span class="why">Where a Scope line exists it is what stops two files growing into the same document, and the only thing that can settle an overlap.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Drop a Scope line when translating.</b><span class="why">It becomes <code>&gt; **範圍** — …</code>. The build reads either spelling, so the translated line <em>is</em> the Chinese card description.</span></span></li>
         <li><span class="x" aria-hidden="true">&times;</span><span><b>Append a loose question to the end.</b><span class="why">It goes under the section that owns the concept. A file with a tail of unfiled questions is a file nobody can navigate.</span></span></li>
         <li><span class="x" aria-hidden="true">&times;</span><span><b>Ship the English alone.</b><span class="why">The tree is at 902/902. The gap would not be reported until the next <code>status</code> run, and the Chinese page would render with an English hole.</span></span></li>
         <li><span class="x" aria-hidden="true">&times;</span><span><b>Renumber without sweeping the links.</b><span class="why">The anchors are positional. <code>e2e-check.js</code>'s dangling-fragment rule is what catches it, but only after the fact.</span></span></li>
@@ -727,6 +736,12 @@ Add a question about Kafka rebalancing."</code></pre>
       tabs.forEach(function (t) {
         var on = t === tab;
         t.setAttribute('aria-selected', on ? 'true' : 'false');
+        // Roving tabindex: the tablist is ONE Tab stop and the arrows move
+        // inside it. Without this, every tab is its own stop, so reaching the
+        // content past a five-tab install block costs five presses — and the
+        // arrow handler below, which already moves focus, has nothing to
+        // return focus order to. The stepper above does the same thing.
+        t.tabIndex = on ? 0 : -1;
         document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
       });
     }
@@ -741,6 +756,10 @@ Add a question about Kafka rebalancing."</code></pre>
         next.focus();
       });
     });
+    // The markup marks one tab selected; run it through select() so the
+    // tabIndex state matches from the first paint rather than from the first
+    // click.
+    select(list.querySelector('.tab[aria-selected="true"]') || tabs[0]);
   });
 
   // ── Copy buttons ──────────────────────────────────────────────────────

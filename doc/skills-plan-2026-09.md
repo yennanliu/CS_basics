@@ -14,10 +14,17 @@ coding interview*.
 
 ## The naming convention this plan settles
 
-**Every repo-native skill is `lc-<verb>`.** The `lc-` prefix is not decoration — it is what
-separates a skill that knows this repo's house style from a generic persona that does not,
-and it keeps the whole family adjacent in `.claude/skills/`, in the navbar's *agent skills*
-group and in a `/lc-<tab>` completion.
+**Every repo-native skill is `lc-` plus a kebab-case name.** The `lc-` prefix is not
+decoration — it is what separates a skill that knows this repo's house style from a generic
+persona that does not, and it keeps the whole family adjacent in `.claude/skills/`, in the
+navbar's *agent skills* group and in a `/lc-<tab>` completion.
+
+What follows the prefix is whatever reads most clearly at the call site, which in practice
+is a mix: a verb where the skill *does* something to a thing (`lc-log`, `lc-again`,
+`lc-zh-translate`), and the thing itself where the verb would be noise (`lc-python`,
+`lc-java`, `lc-site-data`, `lc-algo-demo` — "file a Python solution" is the only thing
+`/lc-python` could mean). `check_skills.py` enforces the kebab-case rule and that the name
+matches the directory; it does not enforce a part of speech.
 
 The directory name **is** the slash command, and `script/check_skills.py` pins the
 frontmatter `name` to the directory — so a rename is a rename of the command, and the two
@@ -142,9 +149,10 @@ last regenerated in **Nov 2025**. Nothing in the repo ever promotes a row from `
 `OK` — the marker only accretes, which the stored readiness assessment already names as a
 known failure mode.
 
-**What it does:** takes a problem just re-solved and decides whether it *graduates* — re-solved
-unaided, the invariant stated out loud, the line that sets the complexity named — then edits
-the README status cell (`AGAIN***` → `OK`, preserving the attempt count), and refreshes
+**What it does:** takes a problem just re-solved and decides whether it *graduates* — **all
+four** of: re-solved unaided, the invariant stated out loud, the line that sets the complexity
+named, and the edge cases handled — then edits the README status cell (`AGAIN***` → `OK`,
+preserving the attempt count), and refreshes
 `data/again_problems.txt` via `script/get_again_problems.sh`. Refuses to graduate a problem the
 user could not re-derive; that is the whole point of the marker.
 
@@ -305,8 +313,9 @@ every other count on that page.
 
 ### 3c. What the band looks like when this is done
 
-Nine cards would be too many for one band. The skills band should be grouped the way
-`ENTRY_GROUPS` already groups the main cards — proposed:
+**Landed at ten cards, grouped** — see the note under [Order of work](#order-of-work) on why
+this came forward. Ten in one flat grid is a list, not a band, so `AGENT_SKILLS` is three
+labelled groups the way `ENTRY_GROUPS` already groups the main cards:
 
 | Group | Skills |
 |---|---|
@@ -314,7 +323,8 @@ Nine cards would be too many for one band. The skills band should be grouped the
 | **Track the practice** | `lc-log`, `lc-again`, `lc-coach` |
 | **Maintain the site** | `lc-algo-demo`, `lc-site-data`, `lc-zh-translate`, `lc-faq-add` |
 
-That grouping is itself a design decision to make when the band is next touched, not before.
+`lc-coach` sits under *Track the practice* rather than with the filing skills: it scores the
+attempt, it does not file anything. `lc-sql` would join the first group when it lands.
 
 ---
 

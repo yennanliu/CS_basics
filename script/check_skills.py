@@ -63,6 +63,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 SKILLS_DIR = ROOT / ".claude" / "skills"
+# The skills document their commands in ```bash fences, so --run honours that
+# rather than whatever /bin/sh happens to be.
+BASH = shutil.which("bash") or "/bin/bash"
 
 # Anthropic's limit on the field a host matches a request against. A description
 # over it is truncated, and a truncated description matches badly.
@@ -515,8 +518,13 @@ def check_run(rep, skill_dir, timeout=180):
     ok = True
     for command in run:
         try:
-            proc = subprocess.run(command, shell=True, cwd=ROOT, timeout=timeout,
-                                  capture_output=True, text=True)
+            # bash, not the default /bin/sh. The fences say ```bash and the
+            # commands use bash features — `grep doc/cheatsheet/{a,b}.md` is
+            # brace expansion. /bin/sh is bash-in-posix-mode on macOS and dash
+            # on Ubuntu, so leaving this to the default passed locally and
+            # failed in CI on exactly that line.
+            proc = subprocess.run(command, shell=True, executable=BASH, cwd=ROOT,
+                                  timeout=timeout, capture_output=True, text=True)
             rc = proc.returncode
             detail = f"exit {rc}"
             if rc != 0:

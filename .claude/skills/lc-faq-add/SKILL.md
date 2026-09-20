@@ -123,8 +123,11 @@ Write it into `i18n/zh/faq/<dir>/<file>.md` under the key `todo` printed, keepin
 come from the English document; translate the heading *text* only. Links keep their English
 anchor targets. API, class and command names stay in English.
 
-An FAQ has **no Scope line**, so its card is summarised from the *composed Chinese* — if the
-lead paragraph changed, translate it, and the card follows.
+**If the English FAQ has a Scope line, translate it** as `> **範圍** — …` — `extractScope`
+reads both spellings, so the translated line becomes the Chinese card description. Never drop
+it: on a file that has one, the Scope line is what defines ownership. For the 32 FAQs with no
+Scope line the card falls back to the *composed Chinese* lead paragraph, so translating that
+lead paragraph is what moves the card.
 
 The full rules, and the campaign workflow for a backlog, are
 [`/lc-zh-translate`](https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-zh-translate/SKILL.md)'s.
