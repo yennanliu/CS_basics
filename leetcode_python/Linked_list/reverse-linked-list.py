@@ -50,11 +50,39 @@ class Solution(object):
             return head
 
         """
-        
+
         NOTE !!!
 
         we init node as `None` 
 
+
+
+        ---
+
+
+        NOTE !!!
+
+        `dummy = ListNode(0)` <--- is WRONG !!!!
+    
+        -> why ?
+
+        -> node should init as `None`
+ 
+        -> 
+
+            ```
+            Before:
+
+            1 → 2 → 3 → None
+
+
+            After:
+
+            None ← 1 ← 2 ← 3
+                           ↑
+                          prev
+
+            ```
 
         """
         node = None
