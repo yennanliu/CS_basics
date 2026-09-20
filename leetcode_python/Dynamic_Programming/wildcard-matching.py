@@ -86,7 +86,7 @@ class Solution(object):
 
                     1. match `0` char  (匹配 0 個 character)
 
-                        - dp[i - 1][j]
+                        - dp[i][j - 1]
                         - (* 完全不吃任何 character)
 
 
@@ -113,6 +113,13 @@ class Solution(object):
                 """
                 if p[j - 1] == '*':
                     # NOTE !!! '*' can match zero chars (dp[i][j-1]) or one more char (dp[i-1][j])
+                    """
+
+                    dp[i][j] = dp[i][j - 1] or dp[i - 1][j]
+                              ^^^^^^^^^^^    ^^^^^^^^^^^^^
+                              0 chars        1+ chars
+
+                    """
                     dp[i][j] = dp[i][j - 1] or dp[i - 1][j]
                 
 
