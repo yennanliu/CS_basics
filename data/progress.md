@@ -87,9 +87,9 @@
 	- git commit msg
 
 - python_trick.md
-	- `2) LC Example`
-
-	- `常見操作的複雜度`
+	- https://yennj12.js.org/CS_basics/cheatsheets/python_trick.zh.html
+		- `2) LC Example`
+		- `常見操作的複雜度`
 
 
 
