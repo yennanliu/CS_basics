@@ -6,9 +6,9 @@
   <meta name="theme-color" content="#000000">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <title>LC Add — CS_basics</title>
-  <meta name="description" content="An agent skill that files a solved LeetCode problem into this repo the way the other solutions are filed: the real slug off the problem page, a neighbour's layout copied rather than invented, a smoke test against the docstring's own examples, and a README row inserted in LC-number order.">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📥</text></svg>">
+  <title>LC Java — CS_basics</title>
+  <meta name="description" content="An agent skill that files a LeetCode solution into leetcode_java/ the way the other 1626 files are filed: the package its pattern owns, a javadoc header with no leetcode.com page furniture, V-markers that match the method names, a compile and a run, and the [Java] link added to the README row the problem already has.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☕</text></svg>">
   <link rel="stylesheet" href="nav.css">
   <link rel="stylesheet" href="lc-page.css">
   <!-- Blocking on purpose: nav.js restores the stored theme before first paint. -->
@@ -233,7 +233,7 @@
 </head>
 <body>
 
-<div id="site-nav" data-page="lc-add" data-base=""></div>
+<div id="site-nav" data-page="lc-java" data-base=""></div>
 <script>CSNav.mount();</script>
 
 <main id="main">
@@ -242,43 +242,49 @@
   <div class="hero">
     <div class="container">
       <p class="kicker"><span class="dot" aria-hidden="true"></span> Agent skill</p>
-      <h1>LC Add<br><span class="thin">solved &rarr; filed</span></h1>
+      <h1>LC Java<br><span class="thin">the other half of the tree</span></h1>
       <p class="lede">
-        Solving the problem is the interesting half. The other half is filing it: the real
-        slug off the problem page, the layout every neighbouring file already uses, a smoke
-        test against the docstring's own examples, and a README row that lines up with the
-        table it was inserted into. <code>/lc-add</code> does that half, in one pass, the
-        same way every time.
+        <code>leetcode_java/</code> is the most-churned directory in this repo and the one
+        furthest behind: 1244 README rows carry a Java link against 2898 that carry a Python
+        one. <code>/lc-java</code> files a solution into it the way the other 1626 files are
+        filed &mdash; the package its pattern owns, markers that match the method names, a
+        compile and a run, and the <code>[Java]</code> link added to the row the problem
+        <em>already has</em>.
       </p>
       <div class="hero-actions">
         <a class="btn primary" href="#install">Install it</a>
         <a class="btn" href="#pipeline">See the pipeline</a>
-        <a class="btn" href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-add/SKILL.md">Read the source</a>
+        <a class="btn" href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-java/SKILL.md">Read the source</a>
       </div>
 
       <div class="term">
         <div class="term-bar">
           <i aria-hidden="true"></i><i aria-hidden="true"></i><i aria-hidden="true"></i>
-          <span>/lc-add 4038 Hash_table</span>
+          <span>/lc-java 25 LinkedList</span>
         </div>
-        <pre id="tape" aria-live="off">1  slug       weekly_517/ws.txt → count-integers-appearing-in-a-single-block
-              the method is countSpecialIntegers. That is not the slug.
+        <pre id="tape" aria-live="off">1  row        README:0025 already exists — Hard, _O(n)_ / _O(1)_, Python only
+              so the title, difficulty and complexity are already settled
 
-2  neighbour  read Hash_table/count-special-triplets.py, matched its shape
+2  draft      ws/Workspace26.java → // LC 25, with your "reverse in iteration" note
 
-3  write      leetcode_python/Hash_table/count-integers-…-single-block.py
-              V0 · IDEA : HASH MAP {val : [idx_1, idx_2, ...]}
-              time = O(n), space = O(n)
+3  neighbour  read LinkedList/ReverseLinkedList.java, matched its shape
 
-4  variant    + V0-1, keeps only (first, last, cnt) — O(distinct) space
+4  write      LeetCodeJava/LinkedList/ReverseNodesInKGroup.java
+              package LeetCodeJava.LinkedList;
+              V0 · IDEA: REVERSE IN GROUPS OF K  ·  time = O(N), space = O(1)
 
-5  test       [1,1,2,2,3]→3  [1,2,1]→1  [5]→1  []→0   V0 and V0-1 agree
+5  variant    + V0-1, dummy-node walk — O(1) space, not O(n/k) frames
 
-6  readme     row inserted after LC 4007 — README.md:494
+6  compile    javac clean · [1,2,3,4,5] k=2 → [2,1,4,3,5] · k=3 → [3,2,1,4,5]
+              k=1 → unchanged · single node — V0 and V0-1 agree
 
-7  assumed    Easy, inferred from its position in weekly 517. Correct me.</pre>
+7  readme     [Java] appended to row 0025's Solution cell. No other cell touched.
+
+8  coverage   find_missing_java.py no longer lists 25
+
+9  assumed    package LinkedList over TwoPointer. Correct me.</pre>
       </div>
-      <p class="note" style="margin-top:0.6rem">A real run, in the order it always happens: find the slug, copy a neighbour, write, test, file, then say what was guessed.</p>
+      <p class="note" style="margin-top:0.6rem">A real run, in the order it always happens: find the row that exists, pick up the draft, copy a neighbour, write, compile, file, check the coverage join, then say what was guessed.</p>
     </div>
   </div>
 
@@ -287,30 +293,30 @@
     <!-- ── Why it exists ───────────────────────────────────────────────── -->
     <section id="why" class="reveal">
       <p class="eyebrow">Why a skill and not a habit</p>
-      <h2>Three ways filing a solution goes wrong</h2>
+      <h2>Three ways filing Java goes wrong</h2>
       <p class="sub">
-        None of these are hypothetical — each one has actually landed in this repo, and each
-        one is invisible in a diff. They are why the recipe is written down once instead of
-        remembered differently every time.
+        None of these are hypothetical — each one has actually landed in this repo, at a scale
+        that took a 1481-file sweep to undo. They are why the recipe is written down once
+        instead of remembered differently every time.
       </p>
       <div class="fails">
         <div class="fail">
           <span class="glyph" aria-hidden="true">&#9639;</span>
-          <b>The slug is guessed</b>
-          <p>LC 4038's method is <code>countSpecialIntegers</code>. Its problem is <em>Count Integers Appearing in a Single Block</em>. A file named after the method is a file nobody finds.</p>
-          <p class="cost">Cost: a wrong file name and a dead README link.</p>
+          <b>A marker is renumbered</b>
+          <p>The marker <em>names</em> the method: <code>// V1-2</code> documents <code>findMedianSortedArrays_1_2</code>. Closing a gap in the numbering silently renames a method, so markers are never renumbered — only a genuine collision is reassigned.</p>
+          <p class="cost">Cost: 47 collisions, where two solutions answered to one name.</p>
         </div>
         <div class="fail">
           <span class="glyph" aria-hidden="true">&#9636;</span>
-          <b>The layout is invented</b>
-          <p>Every file in a pattern directory has the same shape — docstring, <code>V0</code>, <code>IDEA</code>, complexity, class. A file that invents its own is the one that breaks a later sweep over the tree.</p>
-          <p class="cost">Fix: read a neighbour before writing.</p>
+          <b>The page came with the file</b>
+          <p>A statement pasted from leetcode.com drags its furniture in — <code>Solved</code>, <code>Topics</code>, <code>Companies</code>, <code>Hint</code>, the premium lock, and sometimes the whole page footer with vote counts and Acceptance Rate.</p>
+          <p class="cost">Cost: 1445 headers had to have it stripped back out.</p>
         </div>
         <div class="fail">
           <span class="glyph" aria-hidden="true">&#9676;</span>
-          <b>Nothing was run</b>
-          <p>The file name has dashes, so it is not importable — which makes it just slightly too annoying to test, which is how untested code gets committed and a README row lands with the wrong columns.</p>
-          <p class="cost">Rule: untested is unfinished.</p>
+          <b>A second README row</b>
+          <p>Most problems here are Python-first, so the row already exists and the Java link belongs <em>in it</em>. A second row for the same problem is invisible in a diff and nothing in the build catches it.</p>
+          <p class="cost">Rule: update the row, never add one.</p>
         </div>
       </div>
     </section>
@@ -318,7 +324,7 @@
     <!-- ── The pipeline ────────────────────────────────────────────────── -->
     <section id="pipeline" class="reveal">
       <p class="eyebrow">One pass, no branches</p>
-      <h2>Seven steps, in order</h2>
+      <h2>Nine steps, in order</h2>
       <p class="sub">
         The steps never reorder and none of them is optional. Pick one to see what it does and
         the rule that step exists to enforce.
@@ -326,60 +332,79 @@
 
       <div class="rail" role="radiogroup" aria-label="Pipeline steps">
         <button class="step" role="radio" aria-checked="true" data-n="1"
-                data-name="Find the problem's source of truth"
-                data-body="For a contest problem that is the weekly scratch file — it already holds the LC number, the problem URL, your idea notes and your draft, usually with the bug you hit and a (fixed) version under it. If you pasted a URL or the statement instead, that is the source of truth and this step is already done."
-                data-rule="The problem page is the authority on the title; the class name is not. Two things get read out of it — the URL slug IS the file name, and the position in the contest implies the difficulty."
-                data-code="grep -rn &quot;LC 4038&quot; leetcode_python/lc_weekly/*/ws.txt">
-          <span class="n">1</span><span class="bar" aria-hidden="true"></span><span class="tag">slug</span>
+                data-name="Settle the problem, and find the row that already exists"
+                data-body="Most problems here were filed in Python first. If README has the row, it is the source of truth for the title, the difficulty, the leetcode url and the complexity columns — all settled when the Python file landed, and not re-derived here. Only a Java-first problem gets a new row."
+                data-rule="Check for the file under another spelling before writing a new one. LC 211 is add-and-search-word-data-structure-design in Python and design-add-and-search-words-data-structure on the problem page."
+                data-code="grep -n &quot;^| *0*25 &quot; README.md">
+          <span class="n">1</span><span class="bar" aria-hidden="true"></span><span class="tag">row</span>
         </button>
         <button class="step" role="radio" aria-checked="false" data-n="2"
-                data-name="Read a neighbour before writing"
-                data-body="Open one recent file from the target directory and match it. The documented layout is the current house shape, but a directory that has drifted wins — the point is that the new file looks like the ones beside it, not like the spec."
-                data-rule="Copy a neighbour, never invent the layout."
-                data-code="ls leetcode_python/Hash_table/
-git log --oneline -12 --name-only">
-          <span class="n">2</span><span class="bar" aria-hidden="true"></span><span class="tag">neighbour</span>
+                data-name="Pick up the draft from the workspace"
+                data-body="Drafts get written in ws/Workspace26.java and filed later — that is what the `update ws` commits are. The draft usually carries your idea notes above it and sometimes the bug you hit. When it is filed, it comes out of the workspace in the same change, so the scratchpad does not accumulate committed work."
+                data-rule="Your approach is the solution. The draft gets its bugs fixed and keeps its idea and its notes — replacing it with a cleverer one teaches nothing."
+                data-code="grep -n &quot;// LC 25&quot; leetcode_java/src/main/java/ws/Workspace26.java">
+          <span class="n">2</span><span class="bar" aria-hidden="true"></span><span class="tag">draft</span>
         </button>
         <button class="step" role="radio" aria-checked="false" data-n="3"
-                data-name="Write the solution file"
-                data-body="Problem docstring first — before any import — then # V0 with a one-line IDEA header, an indented why that gives the invariant rather than restating the loop, and the time/space line as the last comment before the code. LeetCode's :type / :rtype docstring stays on the method, because these files get pasted back into LC."
-                data-rule="Your approach is the solution. A pasted draft gets its bugs fixed and keeps its idea as V0 — replacing it with a cleverer one teaches nothing and hides the bug you wanted found."
-                data-code="leetcode_python/&lt;Pattern_Dir&gt;/&lt;slug&gt;.py">
-          <span class="n">3</span><span class="bar" aria-hidden="true"></span><span class="tag">write</span>
+                data-name="Read a neighbour before writing"
+                data-body="LeetCodeJava/Array/MedianOfTwoSortedArrays.java is the file the whole tree was normalised onto. Open one recent file from the target package and match it — the documented layout is the current house shape, but a package that has drifted wins."
+                data-rule="A normal problem goes under LeetCodeJava/&lt;Pattern&gt;/, a contest under LCWeekly/ as one class per contest, a pure algorithm under AlgorithmJava/, and a shared structure under LeetCodeJava/DataStructure/ — where it is imported, never re-declared."
+                data-code="ls leetcode_java/src/main/java/LeetCodeJava/LinkedList/">
+          <span class="n">3</span><span class="bar" aria-hidden="true"></span><span class="tag">neighbour</span>
         </button>
         <button class="step" role="radio" aria-checked="false" data-n="4"
-                data-name="A second variant needs a stated reason"
-                data-body="One canonical solution per problem. A second is justified by a different complexity, a distinct trick or a different language idiom — not a different spelling of the same loop. V0-1 is a variation on V0, V1 is a genuinely different approach, and the class is Solution2 / Solution3 so the file still imports."
-                data-rule="No reason, no variant. The reason goes in the IDEA block, where the next reader will look for it."
-                data-code="# V0-1
-# IDEA : ONE PASS, KEEP ONLY (first_idx, last_idx, count)
-# time = O(n), space = O(k), k = number of distinct values">
-          <span class="n">4</span><span class="bar" aria-hidden="true"></span><span class="tag">variant</span>
+                data-name="Write the solution file"
+                data-body="package first, then the url comment, then imports, then the file-level javadoc, then the class. The javadoc header is exactly the number, the exact title, and the difficulty on its own line — and nothing else: no leetcode.com page furniture, ever."
+                data-rule="The directory is the package line. LeetCodeJava/LinkedList/ means package LeetCodeJava.LinkedList — a file in the wrong directory compiles nowhere, and the mismatch stays invisible until a whole-tree javac."
+                data-code="package LeetCodeJava.LinkedList;
+
+// https://leetcode.com/problems/reverse-nodes-in-k-group/description/
+
+import LeetCodeJava.DataStructure.ListNode;">
+          <span class="n">4</span><span class="bar" aria-hidden="true"></span><span class="tag">write</span>
         </button>
         <button class="step" role="radio" aria-checked="false" data-n="5"
-                data-name="Smoke-test before reporting done"
-                data-body="The file name has dashes, so it is loaded by path rather than imported. Run the docstring's own examples plus the edges — empty, single element, all-same. Every variant gets the same call and they must agree."
-                data-rule="If an example from the problem statement disagrees, the solution is wrong. Say so, rather than adjusting the example to fit."
-                data-code="spec = importlib.util.spec_from_file_location('m', path)
-m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
-print([m.Solution().countSpecialIntegers(x) for x in cases])">
-          <span class="n">5</span><span class="bar" aria-hidden="true"></span><span class="tag">test</span>
+                data-name="A second variant needs a stated reason"
+                data-body="One canonical solution per problem. A second is justified by a different complexity, a distinct trick or a different language idiom — not a different spelling of the same loop. V0-x varies your own approach; V1-x is a reference solution from elsewhere and says where it came from."
+                data-rule="The marker names the method, so the pair moves together: // V0-1 documents &lt;method&gt;_0_1. Zero, not the letter O — 14 files had // VO and looked as though they had no canonical solution at all."
+                data-code="// V0-1
+// IDEA: DUMMY NODE + GROUP REVERSE  (gpt)
+/**
+ * time = O(N)
+ * space = O(1)
+ */
+public ListNode reverseKGroup_0_1(ListNode head, int k) {">
+          <span class="n">5</span><span class="bar" aria-hidden="true"></span><span class="tag">variant</span>
         </button>
         <button class="step" role="radio" aria-checked="false" data-n="6"
-                data-name="Add the README row"
-                data-body="Find the pattern's table and insert in ascending LC-number order — a four-digit contest problem goes at the end of it. Match the spacing of the rows already there. A Java link joins the same cell only if that file actually exists under leetcode_java/."
-                data-rule="Tags earn their place — the pattern in bold first, then the trick worth grepping for later, then LC weekly for a contest problem. Status is AGAIN(1) on a first pass, and a status you already set is never downgraded."
-                data-code="| 4038 | [Count Integers …](…) | [Python](./leetcode_python/Hash_table/…py) | _O(n)_ | _O(n)_ | Easy | **hash table**, hashmap, `span == cnt` trick | AGAIN(1) |">
-          <span class="n">6</span><span class="bar" aria-hidden="true"></span><span class="tag">readme</span>
+                data-name="Compile and smoke-test"
+                data-body="The file is not runnable on its own, so it compiles against the tree's source root and runs from a throwaway driver. No main method goes into a solution file and no test file is left behind. Every variant gets the same call and they must agree."
+                data-rule="The known-good baseline is 8 errors, all of them missing-JUnit errors under dev/Sorting/. Everything under LeetCodeJava/ compiles. If a run shows 9, the ninth is yours."
+                data-code="javac -d /tmp/lcjava LeetCodeJava/LinkedList/ReverseNodesInKGroup.java">
+          <span class="n">6</span><span class="bar" aria-hidden="true"></span><span class="tag">compile</span>
         </button>
         <button class="step" role="radio" aria-checked="false" data-n="7"
+                data-name="Update the README row"
+                data-body="The [Java] link goes at the end of the existing row's Solution cell, after the Python one, matching the spacing of the rows already there. Only a problem with no row at all gets a new one, inserted in ascending LC-number order."
+                data-rule="Do not touch the other cells. Complexity, difficulty, tags and status belong to the problem, not to the language — and the status column is your own record, never downgraded or refreshed."
+                data-code="| 0015 | [3 Sum](…) | [Python](…/3sum.py), [Java](…/ThreeSum.java) | _O(n^2)_ | _O(1)_ | Medium | … |">
+          <span class="n">7</span><span class="bar" aria-hidden="true"></span><span class="tag">readme</span>
+        </button>
+        <button class="step" role="radio" aria-checked="false" data-n="8"
+                data-name="Check the coverage join sees it"
+                data-body="find_missing_java.py answers &quot;which problems still need Java?&quot; by joining Python to Java on three signals — the LC number in the javadoc header, the leetcode.com/problems/&lt;slug&gt; url, and the title normalised to a class name. It needs three because LeetCode renames slugs and ~60 files have no url at all."
+                data-rule="A file the script still reports as missing has a broken url comment or a header the parser cannot read. Fix it now, not later — that is the whole reason the url comment is load-bearing."
+                data-code="python3 script/find_missing_java.py | grep -c &quot;25&quot;   # expect 0">
+          <span class="n">8</span><span class="bar" aria-hidden="true"></span><span class="tag">coverage</span>
+        </button>
+        <button class="step" role="radio" aria-checked="false" data-n="9"
                 data-name="Report what was assumed"
-                data-body="Close with the file, the README line number, the test results, and every inference made along the way: difficulty read off the contest position, examples written from the rule because the scratch file kept only the statement, a Java link deliberately left out."
+                data-body="Close with the file, the README line number, the compile and test results, and every inference made along the way: the package chosen and why, complexity columns taken from the existing row rather than re-derived, a neetcode url left out, the workspace draft removed."
                 data-rule="Say what was assumed, so it can be corrected. An unflagged guess is the one that survives."
-                data-code="assumed  Easy, inferred from its position in weekly 517
-assumed  Example 3 written from the rule - ws.txt kept only the statement
-omitted  no Java link: leetcode_java/ has no counterpart">
-          <span class="n">7</span><span class="bar" aria-hidden="true"></span><span class="tag">report</span>
+                data-code="assumed  package LinkedList over TwoPointer
+kept     _O(n)_ / _O(1)_ as the python pass set them - not re-derived
+removed  the // LC 25 draft from ws/Workspace26.java">
+          <span class="n">9</span><span class="bar" aria-hidden="true"></span><span class="tag">report</span>
         </button>
       </div>
 
@@ -396,9 +421,9 @@ omitted  no Java link: leetcode_java/ has no counterpart">
       <p class="eyebrow">What lands in the tree</p>
       <h2>The house layout</h2>
       <p class="sub">
-        Two artefacts, every time: one Python file and one README row. Both are shown here as
-        they were actually written for LC 4038 — the run the skill's own worked example
-        describes.
+        Two artefacts, every time: one Java file and one <em>edited</em> README row. Both are
+        shown here as they were actually written for LC 25 — the run the skill's own worked
+        example describes.
       </p>
 
       <div class="tabs" role="tablist" aria-label="Artefacts">
@@ -410,118 +435,114 @@ omitted  no Java link: leetcode_java/ has no counterpart">
       <div class="panel" role="tabpanel" id="a-file" aria-labelledby="t-file">
         <div class="code-block">
           <button class="copy" type="button">copy</button>
-<pre><code>"""                                    <span class="ann">&lt;- docstring first, before any import</span>
+<pre><code>package LeetCodeJava.LinkedList;        <span class="ann">&lt;- the directory, spelled out</span>
 
-4038. Count Integers Appearing in a Single Block
-Easy                                   <span class="ann">&lt;- number, exact title, difficulty</span>
+// https://leetcode.com/problems/reverse-nodes-in-k-group/description/
+                                       <span class="ann">&lt;- load-bearing: the coverage join reads it</span>
+import LeetCodeJava.DataStructure.ListNode;
+                                       <span class="ann">&lt;- imported, never re-declared</span>
+/**
+ * 25. Reverse Nodes in k-Group        <span class="ann">&lt;- number, exact title</span>
+ * Hard                                <span class="ann">&lt;- difficulty, own line, nothing else</span>
+ *
+ * Given the head of a linked list, reverse the nodes of the list k at
+ * a time, and return the modified list.
+ *
+ * Example 1:
+ *
+ * Input: head = [1,2,3,4,5], k = 2
+ * Output: [2,1,4,3,5]
+ *
+ * Constraints:
+ *
+ * 1 &lt;= k &lt;= n &lt;= 5000
+ *
+ */
+public class ReverseNodesInKGroup {     <span class="ann">&lt;- title in PascalCase, = the file name</span>
 
-An integer x is called special if all occurrences of x in nums
-appear in a single contiguous block.
+    // V0                               <span class="ann">&lt;- zero, not the letter O</span>
+    // IDEA: REVERSE IN GROUPS OF K
+    /**
+     * time = O(N)                      <span class="ann">&lt;- equals sign, not a colon</span>
+     * space = O(1)
+     */
+    public ListNode reverseKGroup(ListNode head, int k) {
+        // edge case
+        if (head == null || k &lt;= 1) {
+            return head;
+        }
 
-Example 1:
+        int len = 0;
+        ListNode dummy = new ListNode();
+        dummy.next = head;
+        ListNode cur = head;
+        while (cur != null) { len += 1; cur = cur.next; }
 
-Input: nums = [1,1,2,2,3]
-
-Output: 3
-...
-"""
-
-# V0                                   <span class="ann">&lt;- the canonical solution</span>
-# IDEA : HASH MAP {val : [idx_1, idx_2, ....]}
-#
-#   collect every index a value lands on, then a value is special
-#   ONLY if its indices are consecutive.
-#
-#   the cheap way to test "consecutive" is NOT to walk the list, but
-#   to compare the span against the count:
-#
-#      last_idx - first_idx + 1 == number_of_occurrences
-#
-#   e.g. nums = [1,2,1] -&gt; idx of 1 = [0,2] -&gt; 2 - 0 + 1 = 3 != 2
-#
-# time = O(n), space = O(n)             <span class="ann">&lt;- last comment before the code</span>
-from collections import defaultdict
-
-
-class Solution(object):                 <span class="ann">&lt;- Python 2 style, like the whole tree</span>
-    def countSpecialIntegers(self, nums):
-        """
-        :type nums: List[int]           <span class="ann">&lt;- kept: these get pasted back into LC</span>
-        :rtype: int
-        """
-        # edge
-        if not nums:
-            return 0
-
-        my_map = defaultdict(list)
-        for i in range(len(nums)):
-            my_map[nums[i]].append(i)
-
-        cnt = 0
-        for k in my_map:
-            indices = my_map[k]
-            # NOTE !!! span == count  &lt;=&gt;  indices are consecutive
-            if indices[-1] - indices[0] + 1 == len(indices):
-                cnt += 1
-        return cnt</code></pre>
+        ListNode prevGroupEnd = dummy;
+        cur = head;
+        // NOTE !!! only reverse while a FULL group of k remains
+        while (len &gt;= k) {
+            ...
+        }
+        return dummy.next;
+    }
+}</code></pre>
         </div>
         <p class="note">
-          <code># NOTE !!!</code> marks the one line a reader would get wrong. Once per file —
-          five of them mark nothing.
+          No <code>main</code> method in a solution file, and no test file left behind — step 6
+          compiles it against the tree and drives it from a throwaway class.
         </p>
       </div>
 
       <div class="panel" role="tabpanel" id="a-row" aria-labelledby="t-row" hidden>
-        <p>Inserted into the pattern's own table, in ascending LC-number order:</p>
+        <p>
+          The row already existed, filed with the Python solution. Only the Solution cell
+          changes — the <code>[Java]</code> link is appended after the Python one:
+        </p>
         <div class="code-block">
           <button class="copy" type="button">copy</button>
-<pre><code>| 4038 | [Count Integers Appearing in a Single Block](https://leetcode.com/problems/count-integers-appearing-in-a-single-block/) | [Python](./leetcode_python/Hash_table/count-integers-appearing-in-a-single-block.py) | _O(n)_ | _O(n)_ | Easy | **hash table**, hashmap, `span == cnt` trick, first/last idx, LC weekly | AGAIN(1) |</code></pre>
+<pre><code>| 0025 | [Reverse Nodes in k-Group](https://leetcode.com/problems/reverse-nodes-in-k-group/) | [Python](./leetcode_python/Linked_list/reverse-nodes-in-k-group.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/LinkedList/ReverseNodesInKGroup.java) | _O(n)_ | _O(1)_ | Hard | **linked list**, `reverse in k group` | AGAIN** (2) |</code></pre>
         </div>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>Column</th><th>Where it comes from</th></tr></thead>
+            <thead><tr><th>Column</th><th>What happens to it</th></tr></thead>
             <tbody>
-              <tr><td class="num">Title</td><td>The problem page — never the method name.</td></tr>
-              <tr><td class="num">Python / Java</td><td>The file just written. A Java link joins the same cell <b>only if that file exists</b> — checked, not assumed.</td></tr>
-              <tr><td class="num">O(t) / O(s)</td><td>The <code>time = / space =</code> line on <code>V0</code>, so the row and the file cannot disagree.</td></tr>
-              <tr><td class="num">Tags</td><td>Pattern in bold first, then the trick worth grepping for later, then <code>LC weekly</code>, then company tags in backticks if known.</td></tr>
-              <tr><td class="num">Status</td><td><code>AGAIN(1)</code> on a first pass. A status you have already set is never downgraded.</td></tr>
+              <tr><td class="num">Title</td><td>Untouched. It was settled when the Python file was filed.</td></tr>
+              <tr><td class="num">Solution</td><td><b>The only cell edited.</b> <code>[Java](…)</code> appended after the Python link, matching the spacing already there.</td></tr>
+              <tr><td class="num">O(t) / O(s)</td><td>Untouched. Complexity belongs to the problem, not the language — and re-deriving it here is how the row and the Python file drift apart.</td></tr>
+              <tr><td class="num">Tags</td><td>Untouched.</td></tr>
+              <tr><td class="num">Status</td><td>Untouched. It is your own record of how the problem went, and a Java port is not an attempt at it.</td></tr>
             </tbody>
           </table>
         </div>
+        <p class="note">
+          Only a problem with no row at all gets a new one — inserted in ascending LC-number
+          order, exactly as <a href="lc-python.html">/lc-python</a> does it.
+        </p>
       </div>
 
       <div class="panel" role="tabpanel" id="a-var" aria-labelledby="t-var" hidden>
         <p>
-          The same problem earned a second block, because it is a genuinely different space
-          bound — not a different spelling of the same loop:
+          A second block is justified here by a real space bound, and its marker and its method
+          name move together:
         </p>
         <div class="code-block">
           <button class="copy" type="button">copy</button>
-<pre><code># V0-1
-# IDEA : ONE PASS, KEEP ONLY (first_idx, last_idx, count)
-#
-#   same "span == count" check as V0, but there is no need to KEEP
-#   every index : first, last and the count are all the check reads
-#
-#   -&gt; still O(n) space, but O(distinct) instead of O(n) list cells
-#
-# time = O(n), space = O(k), k = number of distinct values
-class Solution2(object):                <span class="ann">&lt;- so the file still imports</span>
-    def countSpecialIntegers(self, nums):
-        info = {}
-        for i, v in enumerate(nums):
-            if v not in info:
-                info[v] = [i, i, 1]
-            else:
-                info[v][1] = i
-                info[v][2] += 1
-        return sum(1 for first, last, cnt in info.values()
-                   if last - first + 1 == cnt)</code></pre>
+<pre><code>    // V0-1                             <span class="ann">&lt;- the marker</span>
+    // IDEA: DUMMY NODE + IN-PLACE GROUP REVERSE  (gpt)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
+    public ListNode reverseKGroup_0_1(ListNode head, int k) {
+                                 <span class="ann">^^^ the method name IS the marker</span>
+        ...
+    }</code></pre>
         </div>
         <p class="note">
-          Both variants get the same smoke test and the results have to agree. A variant that
-          disagrees with <code>V0</code> is a bug found before the commit rather than after.
+          This pairing is why markers are <b>never renumbered to close a gap</b>: renumbering
+          silently renames a method. Only a genuine collision — two blocks answering to one
+          name — is reassigned, and 47 of those had to be untangled once already.
         </p>
       </div>
     </section>
@@ -531,27 +552,27 @@ class Solution2(object):                <span class="ann">&lt;- so the file stil
       <p class="eyebrow">Arguments are inferred, not interrogated</p>
       <h2>How to call it</h2>
       <p class="sub">
-        The slash form and plain English do the same thing. Paste a draft under the command
-        and it becomes <code>V0</code>; leave it out and the draft is usually already in the
-        contest scratch file, which is step 1's job to find.
+        The slash form and plain English do the same thing. Paste a draft under the command and
+        it becomes the solution; leave it out and the draft is usually already in
+        <code>ws/Workspace26.java</code>, which is step 2's job to find.
       </p>
       <div class="code-block">
         <button class="copy" type="button">copy</button>
-<pre><code>/lc-add 4038 Hash_table          <span class="ann"># + paste your draft under it</span>
-/lc-add 239 Sliding_Window
+<pre><code>/lc-java 25 LinkedList              <span class="ann"># + paste your draft under it</span>
+/lc-java 239 SlideWindow
 
-add LC 4038 to leetcode_python/Hash_table/
-file yesterday's contest Q1
-add this solution and update the README</code></pre>
+add LC 25 to leetcode_java in java
+file my workspace draft
+port LC 207 to java</code></pre>
       </div>
 
       <div class="table-wrap">
         <table>
           <thead><tr><th>Left out</th><th>What happens</th></tr></thead>
           <tbody>
-            <tr><td class="num">Pattern dir</td><td>Inferred from the technique the solution actually uses — not from the problem's LeetCode tags.</td></tr>
-            <tr><td class="num">Language</td><td>Taken from wherever the draft came from. Python by default.</td></tr>
-            <tr><td class="num">Difficulty</td><td>Read off the problem page, or inferred from the contest position (Q1 Easy, then Medium, Medium/Hard, Hard) — and flagged as an inference in the report.</td></tr>
+            <tr><td class="num">Package</td><td>Inferred from the technique the solution actually uses — not from the problem's LeetCode tags. Flagged in the report when the call was close.</td></tr>
+            <tr><td class="num">Class name</td><td>The problem title in PascalCase. Never derived from the method name.</td></tr>
+            <tr><td class="num">Title / difficulty / complexity</td><td>Read off the README row that already exists, not re-derived. Only a Java-first problem sends it to the problem page.</td></tr>
             <tr><td class="num">LC number</td><td>The one thing it will ask for. Everything else keys off it.</td></tr>
           </tbody>
         </table>
@@ -563,26 +584,28 @@ add this solution and update the README</code></pre>
       <p class="eyebrow">End to end</p>
       <h2>A worked run</h2>
       <p class="sub">
-        <code>/lc-add 4038 Hash_table</code> with a draft pasted under it — the run the hero
-        terminal is showing, step by step and with what each one actually produced.
+        <code>/lc-java 25 LinkedList</code> with the draft picked up from the workspace — the
+        run the hero terminal is showing, step by step and with what each one actually produced.
       </p>
       <div class="table-wrap">
         <table>
           <thead><tr><th>Step</th><th>What it produced</th></tr></thead>
           <tbody>
-            <tr><td class="num">1 slug</td><td><code>weekly_517/ws.txt</code> &rarr; <code>count-integers-appearing-in-a-single-block</code>; first of 4038/4039/4040/4041, so Easy</td></tr>
-            <tr><td class="num">2 neighbour</td><td>read <code>count-special-triplets.py</code> from the same directory</td></tr>
-            <tr><td class="num">3 write</td><td>wrote the file; the <code>IDEA</code> explains why <code>last - first + 1 == count</code> <b>is</b> the contiguity test</td></tr>
-            <tr><td class="num">4 variant</td><td>added <code>V0-1</code> keeping only <code>first/last/cnt</code> — justified: <code>O(distinct)</code> space, not <code>O(n)</code> cells</td></tr>
-            <tr><td class="num">5 test</td><td><code>[1,1,2,2,3]&rarr;3</code>, <code>[1,2,1]&rarr;1</code>, <code>[5]&rarr;1</code>, <code>[1,2,1,3,3,2]&rarr;1</code>, <code>[]&rarr;0</code> — both variants agreeing</td></tr>
-            <tr><td class="num">6 readme</td><td>row inserted after LC 4007, the last row of the hash-table table</td></tr>
-            <tr><td class="num">7 report</td><td>flagged: difficulty inferred from contest position, examples written from the rule</td></tr>
+            <tr><td class="num">1 row</td><td>README row 0025 already there — <em>Reverse Nodes in k-Group</em>, Hard, <code>_O(n)_</code> / <code>_O(1)_</code>, Python-only</td></tr>
+            <tr><td class="num">2 draft</td><td><code>ws/Workspace26.java</code> &rarr; the <code>// LC 25</code> draft plus the <code>// IDEA: reverse in iteration</code> note above it</td></tr>
+            <tr><td class="num">3 neighbour</td><td>read <code>LinkedList/ReverseLinkedList.java</code>, matched its shape</td></tr>
+            <tr><td class="num">4 write</td><td><code>ReverseNodesInKGroup.java</code> — package line, url comment, <code>25. Reverse Nodes in k-Group / Hard</code> javadoc, <code>ListNode</code> imported</td></tr>
+            <tr><td class="num">5 variant</td><td><code>V0</code> the iterative pass; <code>V0-1</code> the dummy-node variant — justified: O(1) space instead of O(n/k) recursion frames</td></tr>
+            <tr><td class="num">6 compile</td><td><code>javac</code> clean; <code>k=2 &rarr; [2,1,4,3,5]</code>, <code>k=3 &rarr; [3,2,1,4,5]</code>, <code>k=1 &rarr; unchanged</code>, single node — both variants agreeing</td></tr>
+            <tr><td class="num">7 readme</td><td><code>[Java](…)</code> appended to row 0025's Solution cell; no other cell touched</td></tr>
+            <tr><td class="num">8 coverage</td><td><code>find_missing_java.py</code> no longer lists 25</td></tr>
+            <tr><td class="num">9 report</td><td>flagged: package chosen as <code>LinkedList</code> over <code>TwoPointer</code>; complexity columns left as the Python pass set them</td></tr>
           </tbody>
         </table>
       </div>
       <p class="note" style="margin-top:1rem">
         The file it produced is in the tree:
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/count-integers-appearing-in-a-single-block.py">count-integers-appearing-in-a-single-block.py</a>.
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/LinkedList/ReverseNodesInKGroup.java">ReverseNodesInKGroup.java</a>.
       </p>
     </section>
 
@@ -595,10 +618,11 @@ add this solution and update the README</code></pre>
         line, which defeats the point of having it.
       </p>
       <ul class="nots">
-        <li><span class="x" aria-hidden="true">&times;</span><span><b>Rewrite your approach into its own.</b><span class="why">A pasted draft gets its bugs fixed and keeps its idea. The bug you hit is the thing worth seeing fixed.</span></span></li>
-        <li><span class="x" aria-hidden="true">&times;</span><span><b>Hand back untested code.</b><span class="why">The docstring's own examples plus the edges run before anything is reported done.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Renumber a <code>// V</code> marker.</b><span class="why">The marker names the method, so closing a gap in the numbering renames one. Only a genuine collision is reassigned.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Add a second README row.</b><span class="why">The problem almost always has one already. Nothing in the build catches a duplicate, which is what makes it the expensive mistake.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Re-derive the other columns.</b><span class="why">Complexity, difficulty and tags belong to the problem, not the language. A Java port is not a reason to touch them.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Hand back code that was not compiled.</b><span class="why">A <code>javac</code> plus the javadoc's own examples run before anything is reported done.</span></span></li>
         <li><span class="x" aria-hidden="true">&times;</span><span><b>Touch <code>data/progress.txt</code>.</b><span class="why">The practice log is your own record and gets its own commit — it is also the single source for the <a href="lc-review-plan.html">review plan</a>, so nothing else writes to it.</span></span></li>
-        <li><span class="x" aria-hidden="true">&times;</span><span><b>Downgrade a status you set.</b><span class="why"><code>AGAIN(1)</code> is for a first pass. An <code>OK</code> you earned stays <code>OK</code>.</span></span></li>
         <li><span class="x" aria-hidden="true">&times;</span><span><b>Commit or push unless asked.</b><span class="why">It writes files and stops. The commit is yours to shape.</span></span></li>
       </ul>
     </section>
@@ -626,12 +650,12 @@ add this solution and update the README</code></pre>
           <button class="copy" type="button">copy</button>
 <pre><code>git clone --depth 1 https://github.com/yennanliu/CS_basics.git /tmp/cs_basics
 mkdir -p ~/.claude/skills
-cp -r /tmp/cs_basics/.claude/skills/lc-add ~/.claude/skills/</code></pre>
+cp -r /tmp/cs_basics/.claude/skills/lc-java ~/.claude/skills/</code></pre>
         </div>
         <p class="note">
-          Already installed inside this repo at <code>.claude/skills/lc-add/</code>, so a clone
+          Already installed inside this repo at <code>.claude/skills/lc-java/</code>, so a clone
           of CS_basics needs no setup at all. Claude Code matches it on the description, or you
-          can call <code>/lc-add</code> by name — the directory name <em>is</em> the command.
+          can call <code>/lc-java</code> by name — the directory name <em>is</em> the command.
         </p>
       </div>
 
@@ -639,7 +663,7 @@ cp -r /tmp/cs_basics/.claude/skills/lc-add ~/.claude/skills/</code></pre>
         <p>Zip the directory, then <em>Customize &rarr; Skills &rarr; + &rarr; + Create skill &rarr; Upload a skill</em>:</p>
         <div class="code-block">
           <button class="copy" type="button">copy</button>
-<pre><code>cd .claude/skills &amp;&amp; zip -r lc-add.zip lc-add</code></pre>
+<pre><code>cd .claude/skills &amp;&amp; zip -r lc-java.zip lc-java</code></pre>
         </div>
         <p class="note">
           Leave the YAML frontmatter in <code>SKILL.md</code> intact. <code>description</code> is
@@ -653,11 +677,11 @@ cp -r /tmp/cs_basics/.claude/skills/lc-add ~/.claude/skills/</code></pre>
         <p>Codex reads <code>AGENTS.md</code> at the repo root automatically. Point it at the skill:</p>
         <div class="code-block">
           <button class="copy" type="button">copy</button>
-<pre><code>## Filing a LeetCode solution
+<pre><code>## Filing a LeetCode Java solution
 
-When asked to add an LC problem to the repo, to file a problem just
-solved, or to wire an existing solution file into README, follow
-`.claude/skills/lc-add/SKILL.md`.</code></pre>
+When asked to add an LC problem in Java, to file a draft out of the
+workspace scratch file, or to port an existing Python solution, follow
+`.claude/skills/lc-java/SKILL.md`.</code></pre>
         </div>
         <p class="note">A pointer, not a copy — one source of truth means a fix reaches every agent at once.</p>
       </div>
@@ -666,8 +690,8 @@ solved, or to wire an existing solution file into README, follow
         <p>Same shape in <code>GEMINI.md</code>, or point at it for a single session:</p>
         <div class="code-block">
           <button class="copy" type="button">copy</button>
-<pre><code>gemini -p "Follow the recipe in .claude/skills/lc-add/SKILL.md. \
-File LC 4038 into leetcode_python/Hash_table/ — draft in @draft.py"</code></pre>
+<pre><code>gemini -p "Follow the recipe in .claude/skills/lc-java/SKILL.md. \
+File LC 25 into LeetCodeJava/LinkedList — draft in @Draft.java"</code></pre>
         </div>
       </div>
 
@@ -675,16 +699,16 @@ File LC 4038 into leetcode_python/Hash_table/ — draft in @draft.py"</code></pr
         <p>
           Paste <code>SKILL.md</code> in as the system prompt. It is self-contained and has no
           <code>references/</code> to carry. For Cursor or Windsurf, put the Codex pointer above
-          into a rule file (<code>.cursor/rules/lc-add.mdc</code> or the editor's equivalent).
+          into a rule file (<code>.cursor/rules/lc-java.mdc</code> or the editor's equivalent).
         </p>
         <div class="code-block">
           <button class="copy" type="button">copy</button>
-<pre><code>curl -sL https://raw.githubusercontent.com/yennanliu/CS_basics/master/.claude/skills/lc-add/SKILL.md</code></pre>
+<pre><code>curl -sL https://raw.githubusercontent.com/yennanliu/CS_basics/master/.claude/skills/lc-java/SKILL.md</code></pre>
         </div>
         <p class="note">
-          One caveat away from this repo: steps 2 and 6 read a neighbouring solution file and an
-          existing README table. Point it at whatever plays those roles in your own tree, or it
-          falls back to the layout documented in <code>SKILL.md</code>.
+          Two caveats away from this repo: steps 1 and 7 read an existing README table, and
+          step 8 runs <code>find_missing_java.py</code>. Point it at whatever plays those roles
+          in your own tree, or it falls back to the layout documented in <code>SKILL.md</code>.
         </p>
       </div>
     </section>
@@ -699,8 +723,8 @@ File LC 4038 into leetcode_python/Hash_table/ — draft in @draft.py"</code></pr
       </p>
       <ul class="files">
         <li>
-          <a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-add/SKILL.md">SKILL.md</a>
-          <span>The whole recipe — the five prime directives, the seven steps with their commands, the file layout, the README row shape, the do-not list, and the LC 4038 worked example.</span>
+          <a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-java/SKILL.md">SKILL.md</a>
+          <span>The whole recipe — the five prime directives, the nine steps with their commands, the file layout, the README row rule, the do-not list, and the LC 25 worked example.</span>
         </li>
       </ul>
       <p class="note" style="margin-top:1.2rem">
@@ -716,11 +740,13 @@ File LC 4038 into leetcode_python/Hash_table/ — draft in @draft.py"</code></pr
       <p class="eyebrow">The rest of the loop</p>
       <h2>Where it fits</h2>
       <p class="sub">
-        <code>/lc-add</code> is the step right after you solve something — it turns a scratch
-        draft into a file the rest of the site can see. From there the
+        <code>/lc-java</code> is <a href="lc-python.html">/lc-python</a>'s counterpart: the same
+        recipe shape, a different tree, and one README row shared between them rather than one
+        each.
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/add-time-space/SKILL.md">/add-time-space</a>
+        is the one to run over a whole package once the files are in. From there the
         <a href="lc-explorer.html">explorer</a> indexes it, the
         <a href="lc-review-plan.html">review plan</a> schedules it once you log the attempt,
-        <a href="suggest-review.html">suggest review</a> decides when it is owed another look,
         and <a href="skills.html">LC Coach</a> is the one to ask whether the solution you just
         filed would actually have passed.
       </p>

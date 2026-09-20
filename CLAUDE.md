@@ -112,7 +112,8 @@ not only the rows that happen to be in the log.
   page's balance table and the CLI planner answer the same question the same
   way. Change one, change the other.
 - The slug comes from the README link, never from the title — guessing is wrong
-  exactly where a dead link costs something (see [`/lc-add`](#adding-a-leetcode-solution--lc-add)).
+  exactly where a dead link costs something (see
+  [`/lc-python`](#filing-a-solved-problem--lc-python-and-lc-java)).
 - A row README does not index keeps its schedule and lands in `Unfiled`.
   Enrichment can never shrink the schedule; a test pins that.
 - Solution links ship relative to `payload.repo`, because the absolute form
@@ -282,25 +283,32 @@ See [`doc/utility-scripts.md`](doc/utility-scripts.md) for full usage of all scr
 
 ---
 
-## Adding a LeetCode solution — `/lc-add`
+## Filing a solved problem — `/lc-python` and `/lc-java`
 
-`.claude/skills/lc-add/` is the recipe for filing a solved problem into the repo:
-find the problem's real slug, write `leetcode_python/<Pattern_Dir>/<slug>.py` in the
-house layout (problem docstring → `# V0` → `# IDEA` → `# time = O(...), space = O(...)`
-→ `class Solution(object)`), smoke-test it against the docstring's own examples, and
-insert the README row in LC-number order.
+Two skills, one recipe shape, one README row between them. **The steps live in each
+`SKILL.md`, not here** — one copy, so they cannot drift.
+
+`.claude/skills/lc-python/` files into `leetcode_python/<Pattern_Dir>/<slug>.py`: find the
+problem's real slug, write the house layout (problem docstring → `# V0` → `# IDEA` →
+`# time = O(...), space = O(...)` → `class Solution(object)`), smoke-test it against the
+docstring's own examples, and insert the README row in LC-number order.
+
+`.claude/skills/lc-java/` is its counterpart for
+`leetcode_java/src/main/java/LeetCodeJava/<Package>/<ClassName>.java`, and exists because
+that tree is both the most-churned directory in the repo and the one furthest behind —
+1244 README rows carry a Java link against 2898 carrying a Python one.
 
 ```text
-/lc-add 4038 Hash_table          # + paste the draft solution under it
-/lc-add 239 Sliding_Window
+/lc-python 4038 Hash_table       # + paste the draft solution under it
+/lc-python 239 slide_window
+/lc-java 25 LinkedList           # + the draft, or it is picked up from ws/Workspace26.java
 add LC 4038 to leetcode_python/Hash_table/    # the plain-English form works too
 ```
 
-As with `/lc-coach`, the skill directory name **is** the command, and
-`check_skills.py` pins the frontmatter `name` to it.
+As with `/lc-coach`, a skill directory name **is** the command, and `check_skills.py` pins
+the frontmatter `name` to it.
 
-**The steps live in `SKILL.md`, not here** — one copy, so the two cannot drift. The
-three things it exists to prevent, all of which have actually happened:
+The three things `/lc-python` exists to prevent, all of which have actually happened:
 
 - a slug guessed from the method name (LC 4038's method is `countSpecialIntegers`;
   the problem is `count-integers-appearing-in-a-single-block`), which yields a wrong
@@ -309,22 +317,44 @@ three things it exists to prevent, all of which have actually happened:
 - code handed back untested, and a README row whose columns do not match the table
   it was inserted into.
 
-It never touches `data/progress.txt` — the practice log is the user's own record and
+`/lc-java`'s three are different, and each was found at scale by the 1481-file
+normalisation pass (`db49955`):
+
+- **a renumbered `// V` marker.** The marker *names* the method — `// V1-2` documents
+  `findMedianSortedArrays_1_2` — so closing a gap in the numbering silently renames one.
+  Markers are never renumbered; only a genuine collision is reassigned, and 47 of those
+  had to be untangled;
+- **leetcode.com page furniture pasted into the javadoc header** — `Solved`, `Topics`,
+  `Companies`, `Hint`, the premium lock, sometimes the whole page footer. 1445 headers
+  were carrying it;
+- **a second README row.** Most problems here are Python-first, so the row already exists
+  and the `[Java]` link belongs *in it*, after the Python one. Nothing in the build
+  catches a duplicate row, which is what makes it the expensive one.
+
+`/lc-java` also leaves every other cell of that row alone: complexity, difficulty, tags
+and status belong to the problem, not to the language. It compiles what it writes — the
+known-good baseline is 8 errors, all pre-existing missing-JUnit errors under
+`dev/Sorting/` — and finishes by checking that `script/find_missing_java.py` no longer
+reports the problem as missing, which is what the `leetcode.com/problems/<slug>` url
+comment in the header is for.
+
+Neither ever touches `data/progress.txt` — the practice log is the user's own record and
 gets its own commit (see [Review plan data](#the-review-plans-data)).
 
-`site/pages/lc-add.html` is its page on the site — the three failure modes it exists to
-prevent, the seven steps as a stepper, the house layout shown as the file it actually
-produced for LC 4038, per-agent install. It is hand-maintained like `skills.html`, so
-`build.sh` copies it and `finalize-pages.js` gives it the canonical and Open Graph tags;
-editing `SKILL.md` does **not** update that page's prose. Its `.claude/skills/...` links
-are enforced by [the skills gate](#the-skills-gate) — `check_skills.py` reads it, the
-same way it reads `skills.html`.
+`site/pages/lc-python.html` and `site/pages/lc-java.html` are their pages on the site —
+the three failure modes each exists to prevent, the steps as a stepper, the house layout
+shown as the file it actually produced (LC 4038 and LC 25), per-agent install. They are
+hand-maintained like `skills.html`, so `build.sh` copies them and `finalize-pages.js`
+gives them the canonical and Open Graph tags; editing a `SKILL.md` does **not** update a
+page's prose. Their `.claude/skills/...` links are enforced by
+[the skills gate](#the-skills-gate) — `check_skills.py` reads them, the same way it reads
+`skills.html`.
 
 ---
 
 ## Updating a cheatsheet — `/lc-cheatsheet`
 
-`.claude/skills/lc-cheatsheet/` is `/lc-add`'s counterpart for the notes rather than
+`.claude/skills/lc-cheatsheet/` is `/lc-python`'s counterpart for the notes rather than
 the solutions: it files what a problem taught you into `doc/cheatsheet/`, in the shape
 the ~130 existing sheets use. One argument decides everything:
 
@@ -361,12 +391,12 @@ four things an edit drags behind it, each of which has actually been got wrong h
 - **the 中文 sections the edit parked** — one LCA edit invalidated eight of them in a sheet
   that had been fully translated (see [Traditional Chinese docs](#traditional-chinese-docs)).
 
-Like `/lc-add` it never touches `data/progress.txt`, and it stops at the gates rather than
+Like `/lc-python` it never touches `data/progress.txt`, and it stops at the gates rather than
 committing: `bash site/build.sh`, `node site/e2e-check.js _site`, `npm test --prefix site`.
 
 `site/pages/lc-cheatsheet.html` is its page on the site — the three ways an edit rots, the
 four modes as a selector, the anchor and translation commands, per-agent install. It is
-hand-maintained like `skills.html` and `lc-add.html`, so editing `SKILL.md` does **not**
+hand-maintained like `skills.html` and `lc-python.html`, so editing `SKILL.md` does **not**
 update its prose, and its `.claude/skills/...` links are enforced by
 [the skills gate](#the-skills-gate).
 
@@ -695,7 +725,7 @@ python3 script/check_skills.py --install   # what CI runs
 
 It checks frontmatter every host can parse, that no reference file is orphaned, and that every
 `.claude/skills/...` path named by `CLAUDE.md`, an `INSTALL.md` or a skill's page under
-`site/pages/` (`skills.html`, `lc-add.html`)
+`site/pages/` (`skills.html`, `lc-python.html`, `lc-java.html`)
 still resolves — that last one because those links are absolute `github.com` URLs, which
 `e2e-check.js` cannot resolve and never will. `--install` performs both documented installs
 (the `cp -r`, and the zip the Claude app uploads) into a temp directory and re-runs every check

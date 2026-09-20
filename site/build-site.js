@@ -943,9 +943,12 @@ const AGENT_SKILLS = [
   ['skills.html', '/lc-coach', 'Interview coach',
    'Scores a solution the way an interviewer does — the six-point verdict (SH/H/LH/LNH/NH/SNH), ' +
    'the debrief packet from their side of the table, the one line that sets the complexity, and what to drill next.'],
-  ['lc-add.html', '/lc-add', 'File a solution',
+  ['lc-python.html', '/lc-python', 'File a Python solution',
    'Turns a solved problem into a committed one — the problem\'s real slug, the house file layout, ' +
-   'a smoke test against the examples, and the README row inserted in number order.'],
+   'a smoke test against the docstring\'s own examples, and the README row inserted in number order.'],
+  ['lc-java.html', '/lc-java', 'File a Java solution',
+   'The Java counterpart — the package its pattern owns, markers that match the method names, ' +
+   'a compile and a run, and the [Java] link added to the row the problem already has.'],
   ['lc-cheatsheet.html', '/lc-cheatsheet', 'Update a cheatsheet',
    'Files what a problem taught you into the sheet that owns the topic — as an example, a variation ' +
    'on a template, a new pattern or a new sheet — then follows the anchors and translations it moved.']

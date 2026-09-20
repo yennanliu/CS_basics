@@ -24,7 +24,8 @@ on:
     paths:
       - '.claude/skills/**'
       - 'site/pages/skills.html'
-      - 'site/pages/lc-add.html'
+      - 'site/pages/lc-python.html'
+      - 'site/pages/lc-java.html'
       - 'site/pages/lc-cheatsheet.html'
       - 'script/check_skills.py'
       - '.github/workflows/skills-check.yml'
@@ -33,7 +34,8 @@ on:
     paths:
       - '.claude/skills/**'
       - 'site/pages/skills.html'
-      - 'site/pages/lc-add.html'
+      - 'site/pages/lc-python.html'
+      - 'site/pages/lc-java.html'
       - 'site/pages/lc-cheatsheet.html'
       - 'script/check_skills.py'
       - '.github/workflows/skills-check.yml'

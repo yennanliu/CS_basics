@@ -50,12 +50,13 @@ test('a MORE entry with children renders as a labelled group, not a link', () =>
 test('the agent skills sit under one parent in the dropdown', () => {
   const group = CSNav.MORE.find((i) => i.id === 'agent-skills');
   assert.ok(group, 'the dropdown should declare an agent-skills group');
-  assert.deepEqual(group.children.map((c) => c.id), ['lc-coach', 'lc-add', 'lc-cheatsheet']);
+  assert.deepEqual(group.children.map((c) => c.id),
+    ['lc-coach', 'lc-python', 'lc-java', 'lc-cheatsheet']);
 
   const menu = CSNav.navHTML().split('<div class="nav-more-menu">')[1];
   const block = menu.match(/<div class="nav-group[^"]*">[\s\S]*?<\/div>/)[0];
-  assert.ok(block.includes('>lc-coach</a>') && block.includes('>lc-add</a>')
-    && block.includes('>lc-cheatsheet</a>'),
+  assert.ok(block.includes('>lc-coach</a>') && block.includes('>lc-python</a>')
+    && block.includes('>lc-java</a>') && block.includes('>lc-cheatsheet</a>'),
     'every skill belongs to the same group block');
 });
 
@@ -66,10 +67,10 @@ test('the coach entry is named after its command, not "coach"', () => {
 });
 
 test('a group lights up when one of its children is the current page', () => {
-  const html = CSNav.navHTML({ currentPage: 'lc-add' });
+  const html = CSNav.navHTML({ currentPage: 'lc-python' });
   assert.match(html, /<div class="nav-group active">/);
   assert.match(html, /class="nav-more-btn active"/);
-  assert.match(html, /<a href="lc-add\.html" class="active">lc-add<\/a>/);
+  assert.match(html, /<a href="lc-python\.html" class="active">lc-python<\/a>/);
 });
 
 test('a group is inert when the current page is elsewhere', () => {
@@ -83,7 +84,8 @@ test('links() flattens groups so every entry it returns has an href', () => {
     assert.ok(!item.children, `${item.id} is a group, not a link`);
   }
   const ids = flat.map((i) => i.id);
-  assert.ok(ids.includes('lc-coach') && ids.includes('lc-add') && ids.includes('lc-cheatsheet'),
+  assert.ok(ids.includes('lc-coach') && ids.includes('lc-python')
+    && ids.includes('lc-java') && ids.includes('lc-cheatsheet'),
     'group children are missing');
   assert.ok(!ids.includes('agent-skills'), 'the group label is not a destination');
   assert.equal(new Set(ids).size, ids.length);

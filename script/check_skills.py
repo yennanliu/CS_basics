@@ -47,8 +47,8 @@ SKILLS_DIR = ROOT / ".claude" / "skills"
 MAX_DESCRIPTION = 1024
 
 # Files that name a skill path and go stale when a skill is renamed.
-WIRING_SOURCES = ["CLAUDE.md", "site/pages/skills.html", "site/pages/lc-add.html",
-                  "site/pages/lc-cheatsheet.html"]
+WIRING_SOURCES = ["CLAUDE.md", "site/pages/skills.html", "site/pages/lc-python.html",
+                  "site/pages/lc-java.html", "site/pages/lc-cheatsheet.html"]
 
 NAME_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 FRONTMATTER_RE = re.compile(r"\A---\n(.*?)\n---\n", re.S)

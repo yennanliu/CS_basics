@@ -1,21 +1,28 @@
 ---
-name: lc-add
-description: File a LeetCode solution into this repo the way the existing ones are filed — find the problem's real slug, write the Python file in the house layout (problem docstring, V0 with an IDEA block and a time/space line), smoke-test it against the examples, and insert the README row. Use when asked to "add LC <number>", to file a problem just solved in a weekly contest, to turn a pasted draft into a committed solution, or to wire an existing solution file into README. Triggers - "add LC 4038 to Hash_table", "/lc-add 239 Sliding_Window", "add this solution and update the README", "file yesterday's contest Q1".
+name: lc-python
+description: File a LeetCode **Python** solution into this repo the way the existing ones are filed — find the problem's real slug, write the Python file in the house layout (problem docstring, V0 with an IDEA block and a time/space line), smoke-test it against the examples, and insert the README row. Use when asked to "add LC <number>" in Python, to file a problem just solved in a weekly contest, to turn a pasted draft into a committed solution, or to wire an existing solution file into README. For the Java counterpart use lc-java instead. Triggers - "add LC 4038 to Hash_table", "/lc-python 239 slide_window", "add this python solution and update the README", "file yesterday's contest Q1".
 allowed-tools: Read, Glob, Grep, Bash, Write, Edit
 ---
 
-# Add a LeetCode solution
+# Add a LeetCode Python solution
 
 Turn an LC number (plus, usually, a draft the user already wrote) into a committed-quality
-solution file **and** its README row, in the shape the other ~826 Python files already use.
+Python solution file **and** its README row, in the shape the other ~826 files under
+`leetcode_python/` already use.
 
-**Invocation**: `/lc-add <LC number> <pattern dir>` — e.g. `/lc-add 4038 Hash_table`.
+**Invocation**: `/lc-python <LC number> <pattern dir>` — e.g. `/lc-python 4038 Hash_table`.
 A reference or draft solution pasted under the command is used as `V0`; with no draft, the
 draft is usually already in the contest scratch file (step 1).
 
 Missing arguments are inferred, not asked about: the pattern dir from the technique the
-solution actually uses, the language from where the draft came from (default Python).
-Ask only if the number itself is missing or the dir is genuinely ambiguous.
+solution actually uses. Ask only if the number itself is missing or the dir is genuinely
+ambiguous.
+
+**Wrong skill?** This one owns `leetcode_python/` only. A Java solution goes to
+[`/lc-java`](https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-java/SKILL.md) — it files into
+`leetcode_java/src/main/java/LeetCodeJava/` and *updates* the README row this skill created
+rather than adding a second one. If the user pasted Java, say so and switch rather than
+translating it to Python.
 
 ## Prime directives
 
@@ -164,8 +171,10 @@ grep -n "leetcode_python/<Pattern_Dir>" README.md | tail -5
 
 - Match the spacing of the rows already there. `git show <sha> -- README.md` on a previous
   `update <NNN> py` commit shows the exact column shape.
-- Add a second `Java` link into the same cell **only if that file exists under
-  `leetcode_java/`** — check, do not assume the pair.
+- Add a second `Java` link into the same cell **only if that file already exists under
+  `leetcode_java/`** — check, do not assume the pair. Do not write the Java file to make the
+  link true. That is [`/lc-java`](https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-java/SKILL.md)'s
+  job, and it edits this same row.
 - Tags: the pattern in bold first, then the trick worth grepping for later
   (`hashmap`, `prefix sum`, `span == cnt trick`), then `LC weekly` for a contest problem,
   then company tags in backticks if known.
@@ -189,7 +198,7 @@ the statement, a Java link deliberately omitted.
 
 ## Worked example
 
-`lc-add 4038 Hash_table`, with the user's draft pasted:
+`/lc-python 4038 Hash_table`, with the user's draft pasted:
 
 | Step | What it produced |
 |---|---|
