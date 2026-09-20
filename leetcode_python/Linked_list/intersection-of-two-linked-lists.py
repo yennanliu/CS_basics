@@ -65,6 +65,31 @@ Follow up: Could you write a solution that runs in O(n) time and use only O(1) m
 """
 
 # V0
+# IDEA: LINKED LIST OP + SET
+class Solution(object):
+    def getIntersectionNode(self, headA, headB):
+        """
+        :type head1, head1: ListNode
+        :rtype: ListNode
+        """
+        visited_a = set()
+
+        while headA:
+            visited_a.add(headA)
+            headA = headA.next
+
+
+        while headB:
+            if headB in visited_a:
+                return headB
+
+            headB = headB.next
+
+
+        return None
+
+
+# V0
 # IDEA : if the given 2 linked list have intersection, then 
 #        they must overlap in SOMEWHERE if we go through
 #        each of them in the same length
