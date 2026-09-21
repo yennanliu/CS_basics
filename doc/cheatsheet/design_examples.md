@@ -516,6 +516,7 @@ class CustomStack:
 | Allow up to K overlaps / report max overlap | ordered map as **delta / sweep-line counter** (`+1` at start, `-1` at end) | LC 731, LC 732 |
 | Track a set of covered ranges (add / remove / query) | ordered map of **merged disjoint** intervals | LC 715 |
 | Find largest value `<=` / `>=` x in a live multiset | ordered map `value -> count` | LC 2034 |
+| Max **and** min of a live multiset, no ordered map available | two lazy heaps + hashmap of truth — [heap_advanced.md](./heap_advanced.md#variant--two-mirrored-lazy-heaps-over-one-map-lc-2034-) | LC 2034 |
 
 #### Template A - reject overlap (`floor` / `ceiling`)
 
@@ -740,7 +741,7 @@ class RangeModule:
 | 715 | Range Module | mutable covered set (add/remove/query) → Template C |
 | 352 | Data Stream as Disjoint Intervals | `addNum` = `addRange(v, v+1)` of Template C; `getIntervals` returns the merged list |
 | 855 | Exam Room | ordered **set of seats**; on `seat()` scan gaps for max distance to nearest neighbour |
-| 2034 | Stock Price Fluctuation | ordered map `price -> count` (multiset) for O(log N) max/min + HashMap `timestamp -> price` for corrections |
+| 2034 | Stock Price Fluctuation | ordered map `price -> count` (multiset) for O(log N) max/min + HashMap `timestamp -> price` for corrections. Without an ordered multiset (plain Python), use **two mirrored lazy heaps** instead — [heap_advanced.md](./heap_advanced.md#variant--two-mirrored-lazy-heaps-over-one-map-lc-2034-) |
 
 ### 8) Two Heaps — running median, LC 295 ⭐⭐⭐⭐⭐
 

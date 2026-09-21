@@ -82,13 +82,14 @@
 - **範例**：LC 239、480、1438 - Sliding Window Maximum、Sliding Median、Longest Subarray
 - **模式**：用堆積搭配延遲刪除，或用雙端佇列追蹤極值
 
-<!-- 91f4447a4cbf -->
+<!-- 76559c5df81f -->
 #### **模式 5：排程問題**
 - **描述**：依優先權／時間安排任務或事件
 - **範例**：LC 1353、502、630、621、1834 - Max Events、IPO、Course Schedule III、Task Scheduler、Single-Threaded CPU
 - **模式**：用堆積依開始／結束時間或優先權維護事件
 - **關鍵洞察（時間掃描 + 截止期限堆積）**：依視窗**起點**排序，讓元素按時間順序進堆積；堆積依視窗**終點**排序，這樣每個時間格都服務**最急迫（最早截止）**的元素；過期的堆頂用延遲刪除清掉
 - **特徵**：*「每單位時間只能處理一件事」* + *「每件事有有效區間／截止期限」* → 見 [heap_examples.md § LC 1353](./heap_examples.md#7-maximum-number-of-events-that-can-be-attended--lc-1353)
+- **陷阱**：**不要**套用 LC 253 的計數掃描。在那題裡 `[1,3]` 是*佔用*第 1～3 天；在這裡它只花掉 `{1,2,3}` 中的**一天**，而且每天最多一個事件 — 所以用最大重疊數會高估（`[[1,1],[1,1],[1,1]]` → 掃描得 3，答案是 1）。見 [heap_examples.md § LC 1353](./heap_examples.md#7-maximum-number-of-events-that-can-be-attended--lc-1353)
 
 <!-- 1692ad150603 -->
 #### **模式 6：資料串流問題**
@@ -104,7 +105,7 @@
 - **關鍵洞察**：一般 BFS 每個格子要 O(N²)；用優先佇列可降到每格 O(log N)
 - **相似題**：LC 778（Swim in Rising Water）、LC 1631（Path With Minimum Effort）
 
-<!-- 8ec8200fe604 -->
+<!-- 47a523b8fcb8 -->
 #### **模式 8：延遲刪除（堆積中的過期資料）** ⭐⭐⭐⭐⭐
 - **描述**：堆積裡的值後來會被**更新／失效**，但二元堆積沒有
   「decrease-key」／「移除任意元素」的操作 — 所以我們直接 push 新值，把舊的留在裡面
@@ -114,6 +115,12 @@
 - **關鍵洞察**：你從來不去堆積裡搜尋過期資料。你只檢查 `heap[0]`，
   而每筆過期資料整段執行下來最多被 pop 一次 → 攤還 O(log n)
 - **另見**：[heap_advanced.md § 延遲刪除](./heap_advanced.md#1-lazy-deletion--heap--hashmap-of-truth-) · [heap_examples.md § LC 3092](./heap_examples.md#18-most-frequent-ids--lc-3092)
+- **同時要兩個極值**（LC 2034）：把堆積做成鏡像 — 一份真值對照表，加上存同樣 `(price, ts)` 的
+  最大堆積與最小堆積，兩邊用同一個判定清理 →
+  [heap_advanced.md § LC 2034 變形](./heap_advanced.md#variant--two-mirrored-lazy-heaps-over-one-map-lc-2034-)
+- **同一個想法在別處**：雜湊表的墓碑、LSM-tree 的刪除、MVCC 的死列、Dijkstra 的
+  `d > dist[u]` 跳過 →
+  [heap_advanced.md § 堆積之外](./heap_advanced.md#lazy-deletion-outside-the-heap--the-same-idea-in-other-structures-)
 
 <!-- 31bcc46f2a90 -->
 #### **模式 9：掃描線 + 「存活」區間堆積** ⭐⭐⭐⭐⭐
@@ -344,13 +351,13 @@ LC 632「最小覆蓋範圍」的變化：[heap_advanced.md § K 路合併變形
 
 <!--CODE-->
 
-<!-- c06ae600c7c6 -->
+<!-- 46a604cc33c7 -->
 ### 模板 4：區間排程模式 — LC 253
 <!--CODE-->
 
 <!--CODE-->
 
-**變形：Maximum Number of Events That Can Be Attended（LC 1353）** — 變化點：堆積裡放的是**目前開放中事件的結束日**，而且你是*一天一天*掃描（不是一個區間一個區間），每天參加**最早結束**的那個事件。LC 253 數的是同時重疊的區間數；LC 1353 則是每天貪婪地*挑一個*。
+**變形：Maximum Number of Events That Can Be Attended（LC 1353）** — 變化點：堆積裡放的是**目前開放中事件的結束日**，而且你是*一天一天*掃描（不是一個區間一個區間），每天參加**最早結束**的那個事件。LC 253 數的是同時重疊的區間數；LC 1353 則是每天貪婪地*挑一個*。這兩題不是同一個掃描的變形：LC 253 的區間**佔用**整段期間，LC 1353 的區間只花掉裡面**任一天**，所以在這裡數重疊會高估。
 
 <!--CODE-->
 

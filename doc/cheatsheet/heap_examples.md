@@ -1642,6 +1642,7 @@ class Solution {
 |---------|------|-----------------|-----------|------------|
 | Most Frequent IDs | 3092 | An ID's frequency changed | `heapVal != map[id]` | Medium |
 | Design a Number Container System | 2349 | An index was reassigned a new number | `heapIdx`'s current number != this number | Medium |
+| Stock Price Fluctuation | 2034 | A timestamp's price was corrected — stale in **two** mirrored heaps | `price != price_map[ts]` | Medium |
 | Single-Threaded CPU | 1834 | — (pure availability sweep) | pointer + time gate | Medium |
 | Sliding Window Median | 480 | Element slid out of the window | `val in removed` counter | Hard |
 | Finding MK Average | 1825 | Element left the last-m stream | delete-set / multiset | Hard |

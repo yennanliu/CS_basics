@@ -50,7 +50,7 @@
 ### 6) Least Number of Unique Integers after K Removals — LC 1481
 <!--CODE-->
 
-<!-- fb0f75b1d4b4 -->
+<!-- af5751955937 -->
 ### 7) Maximum Number of Events That Can Be Attended — LC 1353
 
 <!--CODE-->
@@ -60,6 +60,24 @@
 如果今天有兩個活動都可以參加，選**結束日較早**的那一個永遠不會比較差：結束較晚的那個至少還剩下一樣多的天數可以安排。依開始日排序只控制*活動什麼時候進入堆積*；堆積依結束日排序，則控制*今天這一天要花在哪個活動上*。
 
 <!--CODE-->
+
+
+**陷阱：這題看起來像 LC 253，而 LC 253 的掃描會給出錯的答案。**
+
+`[start, end]` 在這兩題裡的意思根本不同，所以那套計數掃描（最大同時重疊數）不能拿來用：
+
+| | LC 253 Meeting Rooms II | LC 1353 Max Events Attended |
+|---|---|---|
+| `[1, 3]` 的意思 | **佔用**第 1、2、3 天 | 只花掉**一天**，`{1, 2, 3}` 裡任選 |
+| 問的是 | 尖峰同時數 | 盡量讓多一點活動各分到不同的一天 |
+| 容量 | 尖峰時房間無上限 | 每天剛好 **1 個活動** |
+| 答案是 | 最大重疊數 | 成功 pop 出堆積的次數 |
+
+<!--CODE-->
+
+計數掃描回答的是*「第 X 天被幾個區間覆蓋？」*。LC 1353 問的是
+*「今天這一天要花在哪個活動上，才不會浪費掉後面的某一天？」* — 每天都要做這個選擇，
+正是它是「貪婪 + 堆積」而不是同時數統計的原因。
 
 **模式：時間掃描 + 截止日最小堆積（最早截止優先，earliest-deadline-first）**
 
@@ -79,7 +97,7 @@
 |------|---------|---------------|----------------|
 | 1751 | Max Number of Events That Can Be Attended II | 輸入的活動資料相同 | 活動佔用**整段**區間並帶有價值 → DP + 二分搜尋，**不是**堆積 |
 | 621 | Task Scheduler | 時間掃描 + 堆積，每個時刻一個時段 | 依頻率的最大堆積 + 冷卻佇列（見 [§ 17](#17-task-scheduler--lc-621-)） |
-| 253 | Meeting Rooms II | 依開始排序，結束時間的最小堆積 | 數的是*同時進行*的區間數，不是挑出一個子集合 |
+| 253 | Meeting Rooms II | 依開始排序，結束時間的最小堆積 | 數的是*同時進行*的區間數，不是挑出一個子集合 — 它的掃描在這裡會**高估**（見上面的陷阱） |
 | 2406 | Divide Intervals Into Min Number of Groups | 依開始排序，結束時間的最小堆積 | 與 253 相同，只是換成區間分組的說法（見 [§ 15](#15-divide-intervals-into-minimum-number-of-groups--lc-2406)） |
 | 630 | Course Schedule III | 依截止日貪婪 + 堆積 | 最大堆積做**替換**：超時就丟掉耗時最長的課 |
 | 502 | IPO | 依一個鍵排序，依另一個鍵建堆積 | 雙堆積貪婪（資本 → 利潤的最大堆積） |
@@ -160,7 +178,7 @@
 | 1675 | Minimize Deviation in Array | 最大堆積 + 貪婪縮小 |
 | 295 | Find Median from Data Stream | 雙堆積系統 |
 
-<!-- 92c61ab96b74 -->
+<!-- 11e1afe91a6b -->
 ### 18) Most Frequent IDs — LC 3092
 
 > 模式：**延遲刪除(Lazy Deletion)** — 通用形式見 [heap_advanced.md § Lazy Deletion](./heap_advanced.md#1-lazy-deletion--heap--hashmap-of-truth-)。
@@ -200,6 +218,7 @@
 |---------|------|-----------------|-----------|------------|
 | Most Frequent IDs | 3092 | 某個 ID 的頻率改變了 | `heapVal != map[id]` | Medium |
 | Design a Number Container System | 2349 | 某個索引被指派了新的數字 | `heapIdx` 目前的數字 != 這個數字 | Medium |
+| Stock Price Fluctuation | 2034 | 某個時間戳的價格被更正了 — 在**兩個**鏡像堆積裡都過期 | `price != price_map[ts]` | Medium |
 | Single-Threaded CPU | 1834 | —（純粹的可用性掃描） | 指標 + 時間閘門 | Medium |
 | Sliding Window Median | 480 | 元素滑出視窗了 | `val in removed` 計數器 | Hard |
 | Finding MK Average | 1825 | 元素離開了最後 m 筆的串流 | delete-set / multiset | Hard |
@@ -213,10 +232,6 @@
 > 💡 **Dijkstra 是最有名的延遲刪除演算法。** 那行經典的
 > `if d > dist[u]: continue` *就是*一次延遲刪除 — 它直接丟掉一筆過期的距離資料，
 > 而不是對堆積做 decrease-key。同樣的模式，換件衣服而已。
-
-
-> 下面五個範例來自舊的 `priority_queue.md`，是**以 Java 為主**的 — 對應的
-> Python 版本放在 [heap.md](./heap.md) 的模板裡。
 
 <!-- 229af6d3483e -->
 ### 19) K Closest Points to Origin — LC 973 ⭐⭐⭐⭐⭐

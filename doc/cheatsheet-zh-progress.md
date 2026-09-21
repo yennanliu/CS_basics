@@ -43,7 +43,7 @@ half-translated document renders with English gaps rather than failing.
   is what makes a problem findable on LeetCode itself.
 
 
-## Status — 5141 / 5321 sections (97%)
+## Status — 5146 / 5323 sections (97%)
 
 | Cheatsheet | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -109,9 +109,9 @@ half-translated document renders with English gaps rather than failing.
 | [hash_map](./cheatsheet/hash_map.md) | 44 | [41/44](../i18n/zh/hash_map.md) |
 | [hash_map_examples](./cheatsheet/hash_map_examples.md) | 93 | [✅](../i18n/zh/hash_map_examples.md) |
 | [hashing](./cheatsheet/hashing.md) | 47 | [45/47](../i18n/zh/hashing.md) |
-| [heap](./cheatsheet/heap.md) | 54 | [52/54](../i18n/zh/heap.md) |
-| [heap_advanced](./cheatsheet/heap_advanced.md) | 24 | [✅](../i18n/zh/heap_advanced.md) |
-| [heap_examples](./cheatsheet/heap_examples.md) | 29 | [28/29](../i18n/zh/heap_examples.md) |
+| [heap](./cheatsheet/heap.md) | 54 | [✅](../i18n/zh/heap.md) |
+| [heap_advanced](./cheatsheet/heap_advanced.md) | 26 | [✅](../i18n/zh/heap_advanced.md) |
+| [heap_examples](./cheatsheet/heap_examples.md) | 29 | [✅](../i18n/zh/heap_examples.md) |
 | [heap_language_apis](./cheatsheet/heap_language_apis.md) | 20 | [✅](../i18n/zh/heap_language_apis.md) |
 | [intervals](./cheatsheet/intervals.md) | 70 | [68/70](../i18n/zh/intervals.md) |
 | [iterator](./cheatsheet/iterator.md) | 14 | [✅](../i18n/zh/iterator.md) |

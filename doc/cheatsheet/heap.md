@@ -100,6 +100,12 @@
 - **Key Insight**: You never search the heap for the stale entry. You only ever check `heap[0]`,
   and a stale entry costs at most one pop over the whole run → amortized O(log n)
 - **See**: [heap_advanced.md § Lazy Deletion](./heap_advanced.md#1-lazy-deletion--heap--hashmap-of-truth-) · [heap_examples.md § LC 3092](./heap_examples.md#18-most-frequent-ids--lc-3092)
+- **Two extremes at once** (LC 2034): mirror the heap — one truth map, a max-heap and a min-heap of
+  the same `(price, ts)` pairs, cleaned with the same test →
+  [heap_advanced.md § the LC 2034 variant](./heap_advanced.md#variant--two-mirrored-lazy-heaps-over-one-map-lc-2034-)
+- **Same idea elsewhere**: hash-table tombstones, LSM-tree deletes, MVCC dead tuples, Dijkstra's
+  `d > dist[u]` skip →
+  [heap_advanced.md § outside the heap](./heap_advanced.md#lazy-deletion-outside-the-heap--the-same-idea-in-other-structures-)
 
 #### **Pattern 9: Sweep Line + Heap of "Alive" Intervals** ⭐⭐⭐⭐⭐
 - **Description**: Sweep a coordinate; the heap holds every interval **currently covering** it

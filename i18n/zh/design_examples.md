@@ -82,7 +82,7 @@
 <!-- 9b8b342e95a1 -->
 ## 有序 Map、堆積與時間視窗
 
-<!-- 4118bfd2a65c -->
+<!-- ac555d3f2f17 -->
 ### 7) 用有序 Map（TreeMap）做訂位／區間設計 — LC 715 / 729 / 731 / 732 / 2034 ⭐⭐⭐⭐⭐
 
 
@@ -100,6 +100,7 @@
 | 允許最多 K 層重疊／回報最大重疊數 | 把有序 map 當成**差分／掃描線計數器**（起點 `+1`，終點 `-1`） | LC 731, LC 732 |
 | 追蹤一組被覆蓋的範圍（新增／移除／查詢） | 存**已合併且互斥**區間的有序 map | LC 715 |
 | 在動態 multiset 中找 `<=` / `>=` x 的最大值 | 有序 map `value -> count` | LC 2034 |
+| 動態 multiset 的最大值**和**最小值，但手上沒有有序 map | 兩個延遲堆積 + 記錄真值的雜湊表 — [heap_advanced.md](./heap_advanced.md#variant--two-mirrored-lazy-heaps-over-one-map-lc-2034-) | LC 2034 |
 
 <!-- ed509f24a2a7 -->
 #### 模板 A - 拒絕重疊（`floor` / `ceiling`）
@@ -119,7 +120,7 @@
 
 <!--CODE-->
 
-<!-- 3af9c5d7b979 -->
+<!-- 40198ab8bbc1 -->
 #### 模板 C - 合併後的互斥範圍（新增／移除／查詢）
 
 **轉折**：範圍是**可變的** — 寫入時必須跟鄰居合併，刪除時必須把它們切開。
@@ -140,7 +141,7 @@
 | 715 | Range Module | 可變的覆蓋集合（新增／移除／查詢）→ 模板 C |
 | 352 | Data Stream as Disjoint Intervals | `addNum` 就是模板 C 的 `addRange(v, v+1)`；`getIntervals` 回傳合併後的清單 |
 | 855 | Exam Room | 有序的**座位集合**；`seat()` 時掃過所有空隙，找離最近鄰居距離最大的位置 |
-| 2034 | Stock Price Fluctuation | 有序 map `price -> count`（multiset）做 O(log N) 最大／最小值 + HashMap `timestamp -> price` 處理更正 |
+| 2034 | Stock Price Fluctuation | 有序 map `price -> count`（multiset）做 O(log N) 最大／最小值 + HashMap `timestamp -> price` 處理更正。如果手上沒有有序 multiset（純 Python），改用**兩個鏡像的延遲堆積** — [heap_advanced.md](./heap_advanced.md#variant--two-mirrored-lazy-heaps-over-one-map-lc-2034-) |
 
 <!-- e194ce6355a7 -->
 ### 8) 兩個堆積 — 動態中位數, LC 295 ⭐⭐⭐⭐⭐

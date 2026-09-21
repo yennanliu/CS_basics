@@ -24,7 +24,8 @@ below is a different way of working around that with pushes and top-of-heap pops
 
 | Pattern | Signature in the problem statement | Anchor problems |
 |---|---|---|
-| **Lazy deletion** | a pushed value later *changes* or *is removed* | LC 3092, 2349, 2034, 480, 1825 |
+| **Lazy deletion** | a pushed value later *changes* or *is removed* | LC 3092, 2349, 480, 1825 |
+| **Two mirrored lazy heaps** | *max* **and** *min* over the same map of corrections | LC 2034 |
 | **Sweep + alive heap** | *"at every x, the max/min over all intervals covering x"* | LC 218, 1851 |
 | **Bounded regret heap** | *k free passes* + a budget for everything else | LC 1642, 1792 |
 | **Greedy with regret** | you only learn you overcommitted *later* | LC 871, 630, 502 |
@@ -148,14 +149,239 @@ class LazyMaxTracker {
 | **Expired by time / index** | `pq[0].end < day` or `pq[0].idx <= i - k` | LC 1353 Max Events, LC 239 Sliding Window Max |
 
 **Gotchas**
-- ⚠️ **Clean at READ time, not write time.** Popping after every push may throw away entries you
-  still need; popping before reading is both correct and cheaper.
+- ⚠️ **Clean at READ time by default.** Cleaning after every push is *safe* whenever staleness is a
+  pure function of the truth map — but it is wasted work when reads are rare, and it is not even
+  defined for the *expired-by-time* flavour, where the query decides what has expired. When reads
+  dominate it becomes a deliberate trade for O(1) reads; see
+  [the LC 2034 variant](#variant--two-mirrored-lazy-heaps-over-one-map-lc-2034-).
 - ⚠️ **`while`, not `if`.** Several stale entries can pile up on top of each other.
 - ⚠️ **Guard `pq` non-empty** inside the while condition *and* before reading `pq[0]` — the
   collection can legitimately become empty (LC 3092 example 2 → answer `0`).
 - ⚠️ **Don't try to delete the old entry.** That's O(n) search and defeats the whole point.
 - ⚠️ Heap can grow to O(n) entries even if only a few distinct keys exist — that's the space
   you trade for the speed.
+
+#### **Variant — two mirrored lazy heaps over one map (LC 2034)** ⭐⭐⭐⭐⭐
+
+**What changes.** The template above tracks **one** extreme of a map whose values *accumulate*.
+LC 2034 Stock Price Fluctuation breaks two of its preconditions at once:
+
+| Template 1 assumes | LC 2034 gives you |
+|---|---|
+| one extreme is asked for | `maximum()` **and** `minimum()` over the same map |
+| the value accumulates — `truth[k] += delta` | the value is **overwritten** — a later record *corrects* the price at a timestamp already seen |
+| you may read the extreme rarely | 10^5 mixed calls, reads and writes interleaved |
+
+The correction is what kills the naive heap: after `update(1, 3)` the entry `(-10, 1)` sitting in
+the max-heap is a price that **never existed** any more, and there is no way to reach it.
+
+**Core idea** — one map of truth, *two* heaps mirroring it, and the **same** stale test in both:
+
+```text
+price_map[ts] = price      <- SOURCE OF TRUTH (one per timestamp, overwritten on correction)
+max_heap: (-price, ts)     <- CANDIDATES for maximum()
+min_heap: ( price, ts)     <- CANDIDATES for minimum()
+
+an entry is STALE  iff  its price != price_map[its ts]
+```
+
+`current()` needs no heap at all — track `max_time` as a running maximum and read the map, O(1).
+
+**Where to clean** — this is the decision the problem actually turns on, and both answers are
+correct here:
+
+| | clean at **read** time (`maximum()` / `minimum()`) | clean at **write** time (end of `update`) |
+|---|---|---|
+| `update` | O(log n) worst case | O(log n) **amortised** |
+| `maximum` / `minimum` | O(log n) **amortised** | **O(1) worst case** — the top is always valid |
+| safe when | always | staleness is a *pure function of the map* |
+| prefer when | reads are rare, or a query defines "expired" | reads dominate, or you want a flat read latency |
+
+Write-time cleaning is available here **only** because `price_map` is the sole thing that can make
+an entry stale, and only `update` touches it. With the *expired-by-time* flavour the query decides
+what has expired, so there is nothing to clean at write time.
+
+**Python**
+
+```python
+# python
+# LC 2034 - Stock Price Fluctuation
+# IDEA: one hashmap of truth + two mirrored lazy heaps; clean both tops inside update()
+# time = update O(log n) amortised, current/maximum/minimum O(1), space = O(n)
+import heapq
+
+class StockPrice(object):
+    def __init__(self):
+        self.price_map = {}    # timestamp -> CURRENT price   (SOURCE OF TRUTH)
+        self.max_time = 0      # biggest timestamp seen  -> current() is O(1)
+        self.max_heap = []     # (-price, timestamp)     (CANDIDATES, may be stale)
+        self.min_heap = []     # ( price, timestamp)
+
+    def update(self, timestamp, price):
+        # 1. overwrite the truth -- this is what makes old heap entries stale
+        self.price_map[timestamp] = price
+        self.max_time = max(self.max_time, timestamp)
+
+        # 2. push into BOTH heaps; never remove the old entries
+        heapq.heappush(self.max_heap, (-price, timestamp))
+        heapq.heappush(self.min_heap, (price, timestamp))
+
+        """
+        NOTE !!!  lazy delete, done here rather than in the readers
+
+        -> pop ONLY while the top disagrees with price_map, then STOP
+        -> stale entries deeper in the heap are left alone forever
+        -> no `while heap and ...` guard is needed: the entry just pushed
+           is valid by construction, so neither heap can empty
+        """
+        # 3. clean both tops
+        while -self.max_heap[0][0] != self.price_map[self.max_heap[0][1]]:
+            heapq.heappop(self.max_heap)
+        while self.min_heap[0][0] != self.price_map[self.min_heap[0][1]]:
+            heapq.heappop(self.min_heap)
+
+    def current(self):
+        return self.price_map[self.max_time]
+
+    def maximum(self):
+        return -self.max_heap[0][0]   # top is clean -> O(1)
+
+    def minimum(self):
+        return self.min_heap[0][0]
+```
+
+Move the two `while` loops into `maximum()` / `minimum()` and you have the read-time spelling —
+same heaps, same test, the amortisation moved to the other side. Then the `while ... and ...`
+non-empty guard *is* required, because a reader can be called before any clean.
+
+**Java**
+
+```java
+// java
+// LC 2034 - Stock Price Fluctuation
+// IDEA: HashMap of truth + two mirrored lazy heaps; both tops cleaned inside update()
+// time = update O(log n) amortised, current/maximum/minimum O(1), space = O(n)
+class StockPrice {
+    private final Map<Integer, Integer> priceMap = new HashMap<>();   // ts -> CURRENT price
+    private int maxTime = 0;
+    // both heaps hold {price, timestamp}; only the ordering differs
+    private final PriorityQueue<int[]> maxHeap =
+        new PriorityQueue<>((a, b) -> Integer.compare(b[0], a[0]));
+    private final PriorityQueue<int[]> minHeap =
+        new PriorityQueue<>((a, b) -> Integer.compare(a[0], b[0]));
+
+    public void update(int timestamp, int price) {
+        priceMap.put(timestamp, price);
+        maxTime = Math.max(maxTime, timestamp);
+        maxHeap.offer(new int[]{price, timestamp});
+        minHeap.offer(new int[]{price, timestamp});
+
+        /** NOTE !!! clean BOTH tops; the entry just pushed is valid, so neither can empty */
+        while (maxHeap.peek()[0] != priceMap.get(maxHeap.peek()[1])) maxHeap.poll();
+        while (minHeap.peek()[0] != priceMap.get(minHeap.peek()[1])) minHeap.poll();
+    }
+
+    public int current() { return priceMap.get(maxTime); }
+    public int maximum() { return maxHeap.peek()[0]; }
+    public int minimum() { return minHeap.peek()[0]; }
+}
+```
+
+**Trace** — the official example, showing the one pop the correction costs:
+
+```text
+update(1,10)  price_map={1:10}        max_heap=[(-10,1)]                 max=10  min=10
+update(2, 5)  price_map={1:10, 2:5}   max_heap=[(-10,1),(-5,2)]          max=10  min=5
+update(1, 3)  price_map={1:3,  2:5}   top (-10,1): price_map[1]=3 != 10  -> STALE, pop
+                                      top  (-5,2): price_map[2]=5 == 5   -> valid, STOP
+                                      max_heap=[(-5,2),(-3,1)]           max=5   min=3
+update(4, 2)  price_map={1:3,2:5,4:2} max_heap=[(-5,2),(-3,1),(-2,4)]    max=5   min=2
+
+min_heap still holds the stale (10,1) from step 1 — it is below (2,4),(3,1),(5,2),
+so nothing ever asks about it. That is the point: it is never paid for.
+```
+
+**Pitfalls**
+- ⚠️ **Don't decide staleness by timestamp.** `(-10, 1)` and `(-3, 1)` share a timestamp; only
+  the *price* comparison against the map separates them.
+- ⚠️ **`current()` is not `maximum()`'s neighbour.** It is the price at the **latest timestamp**,
+  not the latest price pushed — a correction to an old timestamp must not move it. Track
+  `max_time = max(max_time, timestamp)` and never decrease it.
+- ⚠️ **Two heaps, two cleans.** A correction invalidates an entry in *both* mirrors; cleaning only
+  the one you are about to read leaves the other wrong on its next call.
+- ⚠️ Pushing an unchanged price re-pushes a duplicate. Harmless — both copies are valid — but it
+  is why the heaps are O(number of updates), not O(number of timestamps).
+
+**The alternative** — an **ordered multiset** (`TreeMap<price, count>` / `SortedList`) deletes the
+old price on the spot, so no entry is ever stale and `maximum()` is exactly `lastKey()`. It costs a
+real `O(log n)` delete per update and a structure `heapq` does not have; see
+[design_examples.md § Ordered Map](./design_examples.md#7-ordered-map-treemap-for-booking--interval-design--lc-715--729--731--732--2034-).
+**Two lazy heaps is the answer to give first** — it is the one you can write in Python without
+`sortedcontainers`.
+
+**Similar problems — the mirrored / overwritten flavour**
+
+| Problem | LC # | Truth map | What a write invalidates |
+|---|---|---|---|
+| Stock Price Fluctuation | 2034 | `timestamp -> price` | the old price of that timestamp, in **both** heaps |
+| Design a Number Container System | 2349 | `index -> number` | the old number at that index |
+| Most Frequent IDs | 3092 | `id -> frequency` | the previous frequency of that id |
+| Maximum Frequency Stack | 895 | `value -> count` | nothing — counts only rise, so no lazy delete is needed |
+| Sliding Window Median | 480 | delete-counter | an element that left the window |
+| LRU / LFU Cache | 146 / 460 | `key -> node` | why these use a **linked list**, not a heap: they need O(1), not O(log n) |
+
+#### **Lazy deletion outside the heap — the same idea in other structures** ⭐⭐⭐⭐
+
+Lazy deletion is not a heap trick. It is a general answer to one situation, and once you can name
+it you will see it in half the systems you use:
+
+> **The structure's invariant is expensive to restore, but cheap to *test*.**
+> So don't restore it on write — mark, and test on read.
+
+Every instance answers the same three questions:
+
+1. **What marks a record dead?** a tombstone, a counter, a newer version, or a mismatch with a
+   separate source of truth.
+2. **Who checks?** the read path — always, and it must check *before* trusting what it found.
+3. **Who reclaims the space?** either the read that trips over it, or a background compaction.
+
+| Structure | Deletion it cannot do cheaply | What is left behind | Validity test on read | Who reclaims |
+|---|---|---|---|---|
+| **Binary heap** | remove-arbitrary / decrease-key (O(n) to even *find* the element) | the superseded `(value, key)` entry | `value != truth[key]` | the read that reaches the top |
+| **Open-addressing hash table** | delete — blanking a slot cuts every probe chain through it | a **tombstone** slot, distinct from `EMPTY` | probe *skips* tombstones, stops only at `EMPTY` | rehash when the load factor counts tombstones in |
+| **BST / trie** | two-child delete (splice in the successor, rebalance) | the node, with a `deleted` flag | traversal ignores flagged nodes | periodic rebuild when flagged > half |
+| **Dijkstra's PQ** | decrease-key on an improved distance | the old `(dist, node)` pair | `if d > dist[u]: continue` | the pop itself |
+| **LSM-tree** (RocksDB, Cassandra, HBase) | in-place delete — the SSTables are immutable | a **tombstone record** with a newer timestamp | newest version of the key wins on merge-read | compaction |
+| **MVCC database** (PostgreSQL) | in-place update — concurrent readers still need the old row | the old row version, stamped dead | snapshot visibility check | `VACUUM` |
+| **Redis key expiry** | scanning every key the instant its TTL lapses | the expired key, still in the dict | TTL checked when the key is touched | that touch, plus a sampling cycle |
+| **Tracing GC** | knowing at `x = null` that nothing else points there | the unreachable object | reachability from the roots | the GC cycle |
+
+So the **`if d > dist[u]: continue` line in Dijkstra and the `DELETED` marker in a hash table are
+the same idea**, and a Cassandra tombstone is that idea at disk scale. The vocabulary differs
+("stale entry", "tombstone", "dead tuple", "garbage"); the shape does not.
+
+**Two things it is often confused with**
+
+- **Lazy propagation** in a segment tree defers *work*, not *removal* — a pending `+v` parked on a
+  node, pushed down when a query descends. The deferred update is eventually applied to **every**
+  descendant; a tombstone is applied to nothing, ever. Same adjective, opposite lifecycle. See
+  [segment_tree.md](./segment_tree.md).
+- **The monotonic deque** (LC 239) is the *eager* counterpart: it pops dominated elements at write
+  time, and it can, because domination is permanent — an element smaller than a newer one is
+  useless **forever**. Reach for lazy deletion only when you *cannot* prove that; when you can,
+  eager is strictly better (O(1) and no wasted space). See
+  [monotonic_queue.md](./monotonic_queue.md).
+
+**What it costs you, stated honestly**
+
+- **Amortised, not worst case.** Total pops ≤ total pushes, so the average is O(log n) — but one
+  unlucky read can pop a long run of stale tops. If a *latency* bound is asked for rather than a
+  throughput bound, say so, and offer the ordered multiset (or write-time cleaning, above).
+- **Space is the currency.** The container holds every version ever written until something
+  reclaims it; this is exactly why a Cassandra table with a delete-heavy workload degrades until
+  compaction runs, and why a tombstone-saturated hash table slows down before it is ever full.
+- **Reads become non-trivial.** The read path is now the only thing enforcing correctness, so a
+  reader that forgets the check is a silent wrong answer, not a crash.
 
 ### 2) Sweep Line + Max Heap of "Alive" Intervals ⭐⭐⭐⭐⭐
 
@@ -1062,6 +1288,8 @@ class LazyHeap:
 | Signal in the problem | Pattern | Section |
 |---|---|---|
 | a pushed value changed / was removed | heap of candidates + hashmap of truth | [1](#1-lazy-deletion--heap--hashmap-of-truth-) |
+| **both** max and min over one mutating map | two mirrored lazy heaps sharing the truth map | [1](#variant--two-mirrored-lazy-heaps-over-one-map-lc-2034-) |
+| "where else is this idea?" — tombstones | hash tables, LSM-trees, MVCC, GC, Dijkstra | [1](#lazy-deletion-outside-the-heap--the-same-idea-in-other-structures-) |
 | "max/min over everything covering x" | sweep + alive heap, evict by coordinate | [2](#2-sweep-line--max-heap-of-alive-intervals-) |
 | "k ladders / k free upgrades" | min-heap capped at k, pay for the evicted | [3](#3-bounded-regret-heap--keep-the-k-best-pay-for-the-rest-) |
 | "minimum number of stops / max courses" | take everything, `poll()` the worst when stuck | [4](#4-greedy-with-regret--undo-the-worst-past-decision-) |
