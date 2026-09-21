@@ -49,24 +49,12 @@
 	- neetcode 150
 	- review all `cheatsheets`
 
-
-- dp_pattern.md
-	- https://yennj12.js.org/CS_basics/cheatsheets/dp_pattern.zh.html
-		- again: `10. 數位 DP`
-		- progress: `LC 44 vs LC 10 — 只差這兩行`
- 
+	
 
 
 - stack_expression_parsing
 	- https://yennj12.js.org/CS_basics/cheatsheets/stack_expression_parsing.zh.html
 		- to review: `general form`
-
-
-
-- Sorting Algorithms.md
-	- https://yennj12.js.org/CS_basics/cheatsheets/sort.zh.html
-		- `模板 8：依值域做桶排序（bucket = value / width）— LC 220`
-
 
 
 
@@ -82,6 +70,8 @@
 
 
 - Monotonic Queue.md
+
+
 
 - review `all recent updated cheatsheets`
 	- git commit msg
@@ -152,6 +142,8 @@
 	- backtrack.zh.html
 	- stack_expression_parsing
 	- greedy_examples.zh.html
+	- Sorting Algorithms.md
+	- dp_pattern.md
 
 	
 
