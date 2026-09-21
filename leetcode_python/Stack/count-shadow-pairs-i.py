@@ -142,6 +142,34 @@ class Solution(object):
 
 # V0-3
 # IDEA: STACK (gpt)
+"""
+# Time: O(N)
+    
+    ->  每個元素 x 最多被 push 進 stack 一次、pop 出 stack 一次
+        ，均攤 O(1)
+
+
+# Space: O(K)
+    -> K 為相異數值或單調分組的數量，最壞情況 (N)
+"""
+
+"""
+CORE IDEA:
+
+
+stack：
+    `[value, freq]`
+    用來紀錄歷史出現過的數值與其頻率（維持數值單調遞增）。
+
+total：
+    當前堆疊中所有元素頻率的總和
+    （代表目前「有效歷史候選元素」的總數量）。
+
+
+cnt：最終要回傳的配對計數。
+
+
+"""
 class Solution(object):
     def shadowPairs(self, nums):
         """
@@ -157,17 +185,53 @@ class Solution(object):
 
         for x in nums:
 
+            """
+            Step 1) 清理大於當前元素 x 的歷史資料
+    
+
+                -> 含意：若歷史堆疊頂端的數值大於當前 x，
+                        因不符合後續遞增/條件或被當前 x「截斷/覆蓋」
+                        ，将其彈出並從 total 扣除。
+
+
+                   保證：執行完這個迴圈後，
+                        堆疊內剩下的所有元素值均 <= x
+
+            """
             # Values > x can no longer be valid candidates.
             while stack and stack[-1][0] > x:
                 total -= stack[-1][1]
                 stack.pop()
 
+            """
+            
+            case 1) stack is empty
+
+                ->  含意：前面沒有任何候選元素，直接把當前 x 以頻率 1 壓入堆疊。
+
+            """
             # No candidate
             if not stack:
                 stack.append([x, 1])
                 total += 1
                 continue
 
+            """
+            
+            case 2) 堆疊頂端值等於 x (stack[-1][0] == x)
+
+                ->  含意：碰到跟堆疊頂端一樣數值的 x
+
+
+                    計數邏輯：
+                        total - freq 代表「堆疊總數減去等於 x 的頻率」，
+                        也就是堆疊中所有嚴格小於 x 的歷史元素數量。
+                        將當前 x 與這些較小元素配對，故累加 total - freq。
+
+
+                    更新：把該數值的頻率 freq 加 1 放回堆疊，並更新 total。
+
+            """
             # Same value
             if stack[-1][0] == x:
                 value, freq = stack.pop()
@@ -180,6 +244,26 @@ class Solution(object):
                 stack.append([value, freq])
                 total += 1
 
+
+            """
+            case 3) 堆疊頂端值小於 x (stack[-1][0] < x)
+
+
+                ->
+
+                    含意：因為前一步已清掉所有 > x 的元素，
+                         且堆疊有序，此時堆疊頂端 < x 
+                         意味著堆疊內所有元素都嚴格小於 x
+
+
+
+                    計數邏輯：當前 x 可以跟堆疊內所有歷史元素配對，
+                             直接 cnt += total。
+
+                    
+                    更新：壓入新分組 [x, 1]，更新 total。
+
+            """
             # x is greater than the top value
             else:
                 # All remaining candidates are smaller than x.
