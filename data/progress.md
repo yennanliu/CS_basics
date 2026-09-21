@@ -34,18 +34,9 @@
 
 		- `scan` (ONLY idea, no implement)
 			- 第 258 场周赛(2021-09-12 10:30, 90 分钟) 参赛人数 4519
-			- weekly 260
-				- https://leetcode.com/contest/weekly-contest-260/
-					- LC 2002
-					- LC 2012
-					- LC 2017
+			- weekly 262
+				- https://leetcode.com/contest/weekly-contest-262
 
-					- LC 2018 (note: Slot Partitioning)
-
-			- weekly 261
-				- https://leetcode.com/contest/weekly-contest-261
-					- LC 2028
-					- LC 2029
 
 
  	- blind 150 (doing)
