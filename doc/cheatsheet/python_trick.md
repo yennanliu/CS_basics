@@ -1658,6 +1658,54 @@ first = next(iter(d))      # peek the OLDEST key   -> 'b'   (no popitem(last=Fal
 d.popitem()                # pops the NEWEST pair  -> ('a', 1)
 ```
 
+The basic operations are a plain `dict`'s — it *is* a `dict` subclass, so indexing, `get`,
+`in`, `len` and `del` all behave exactly as you expect. Only the ordering calls are extra:
+
+```python
+# IDEA: OrderedDict basics — build, iterate in insertion order, pop from either end
+from collections import OrderedDict
+
+#----------------------------
+# build (three equivalent ways)
+#----------------------------
+d = OrderedDict()
+d['a'] = 1
+d['b'] = 2
+d['c'] = 3
+
+d = OrderedDict([('a', 1), ('b', 2), ('c', 3)])   # from pairs
+d = OrderedDict(a=1, b=2, c=3)                    # from kwargs
+
+#----------------------------
+# iterate — always in INSERTION order
+#----------------------------
+for key, value in d.items():
+    print(key, value)       # a 1 / b 2 / c 3
+
+list(d)                     # ['a', 'b', 'c']   keys
+list(reversed(d))           # ['c', 'b', 'a']   newest first
+
+#----------------------------
+# read / write — ordinary dict behaviour
+#----------------------------
+d['b']                      # 2
+d.get('z', 0)               # 0   (no KeyError)
+'a' in d                    # True
+len(d)                      # 3
+
+d['a'] = 99                 # NOTE: updating a value does NOT reorder -> ['a', 'b', 'c']
+d.move_to_end('a')          # this is what reorders           -> ['b', 'c', 'a']
+
+#----------------------------
+# pop — the argument picks the END, not the count
+#----------------------------
+d = OrderedDict([('a', 1), ('b', 2), ('c', 3)])
+d.popitem(last=False)       # ('a', 1)  FIFO — the EARLIEST inserted  (the LRU victim)
+d.popitem()                 # ('c', 3)  LIFO — the latest  (the default)
+del d['b']                  # by key, like any dict
+# popitem() on an empty OrderedDict raises KeyError('dictionary is empty')
+```
+
 What a plain `dict` still cannot do is `move_to_end(k, last=False)` and
 `popitem(last=False)` — an O(1) *evict the oldest entry*, which is the LRU step in LC 146 —
 and its `==` ignores order, where `OrderedDict`'s does not. Both live with the rest of the

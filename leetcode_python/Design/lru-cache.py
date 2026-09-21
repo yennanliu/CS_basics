@@ -49,6 +49,8 @@ At most 2 * 105 calls will be made to get and put.
 # IDEA: OrderedDict
 # time = O(1) per get/put operation
 # space = O(capacity)
+# https://ithelp.ithome.com.tw/m/articles/10354270
+# https://docs.python.org/zh-tw/3.13/library/collections.html#collections.OrderedDict
 from collections import OrderedDict
 
 class LRUCache(object):
