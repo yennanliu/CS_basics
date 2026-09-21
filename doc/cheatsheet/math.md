@@ -761,7 +761,7 @@ Note `n = 4` and `n = 5` give the same answer — an even trailing step can only
 | LC 1846 - Maximum Element After Decreasing and Rearranging | maximize final element under `|adjacent diff| <= 1` → greedy `prev + 1` |
 | LC 1936 - Add Minimum Number of Rungs | adjacent gap capped at `dist` → `ceil(gap/dist) - 1` per gap (counting, not simulation) |
 | LC 453 - Minimum Moves to Equal Array Elements | reframe "increment n-1" as "decrement 1" → `sum - n*min`, O(1) math |
-| LC 462 - Minimum Moves to Equal Array Elements II | move to median; closed-form cost instead of trying each target |
+| LC 462 - Minimum Moves to Equal Array Elements II | move to median; closed-form cost instead of trying each target — see [1-1-12](#1-1-12-equalize-an-array-with-a-fixed-step--feasibility-mod-x-then-the-median-) |
 
 #### 1-1-7) Split `n` into `k` parts as evenly as possible → **max product** (`divmod` pattern) ⭐⭐⭐⭐⭐
 
@@ -1014,7 +1014,7 @@ class Solution(object):
 | **Integer Break** | **343** | **Max product of an integer partition — the base pattern** |
 | Maximize Number of Nice Divisors | 1808 | Same "as many 3s as possible" trick, but answer is `mod 1e9+7` → needs fast pow |
 | Maximum Product After K Increments | 2233 | Max product ⇒ keep values **even** — always increment the current min (heap) |
-| Minimum Moves to Equal Array Elements II | 462 | Even-out toward the **median**; cost formula instead of simulation |
+| Minimum Moves to Equal Array Elements II | 462 | Even-out toward the **median**; cost formula instead of simulation — see [1-1-12](#1-1-12-equalize-an-array-with-a-fixed-step--feasibility-mod-x-then-the-median-) |
 | Minimize Maximum of Array | 2439 | Spread a prefix evenly → `ceil(prefixSum / count)` |
 | Split Array Largest Sum | 410 | Split into `k` parts minimizing the max sum — binary search (parts not free-sized) |
 | Capacity To Ship Packages Within D Days | 1011 | Same even-split-under-constraint shape, solved by binary search |
@@ -1824,7 +1824,148 @@ class RandomizedSet(object):
 | LC 380 `del self.idx[val]` **before** `self.idx[last] = i` | when `val == last` you delete the entry you just wrote | re-point `last` first, delete `val` last |
 | LC 380 `list.remove(value)` in Java | that's remove-by-value → `O(n)` and wrong for `Integer` | `arr.remove(arr.size() - 1)` (by index) |
 
-#### 1-1-12) Quick reference — other high-frequency math LC
+#### 1-1-12) Equalize an array with a fixed step — feasibility `mod x`, then the median ⭐⭐⭐⭐
+
+**Pattern:** every operation moves one value by exactly `±x`, so "make everything equal, as cheaply as possible" splits into two independent questions — answer them in this order:
+
+1. **Is it reachable at all?** `v` can reach `t` only when `(v - t) % x == 0`, so every value must share the **same remainder mod `x`**. One disagreement ⇒ `-1`, and no sorting is needed.
+2. **Which target is cheapest?** targeting `t` costs `sum(abs(v - t)) / x`, and a sum of absolute deviations is minimized at the **median**.
+
+**Why the median — the one-line derivative argument:**
+
+```text
+f(t) = sum |v_i - t|
+
+slide t up by a tiny d:
+  every v BELOW t gets d further away   ->  + (#below) * d
+  every v ABOVE t gets d closer         ->  - (#above) * d
+
+  f(t + d) - f(t) = (#below - #above) * d
+
+  -> while #below < #above  (t too low)  f still DECREASES
+  -> while #below > #above  (t too high) f INCREASES
+  -> the minimum sits where the two sides balance == the MEDIAN
+
+n odd  -> the middle element is the unique minimizer
+n even -> every t in [v[n/2 - 1], v[n/2]] ties; take either endpoint
+```
+
+Two consequences worth saying out loud in an interview:
+
+- the optimum is **an existing element** (`sorted[n // 2]`), so you never search over candidate targets — and any other value with the right remainder is strictly worse;
+- the **mean is the wrong answer here**. The mean minimizes `sum((v - t)^2)` (L2); the median minimizes `sum(abs(v - t))` (L1). A single outlier drags the mean and leaves the median where it was.
+
+```python
+# python
+# GENERAL PATTERN: equalize with step x -> remainder check, then the median
+# time = O(n log n), space = O(n)     (the sort dominates)
+def min_ops_to_equalize(vals, x):
+    ### NOTE !!! feasibility FIRST - one bad remainder kills the whole input
+    r = vals[0] % x
+    if any(v % x != r for v in vals):
+        return -1
+
+    vals.sort()
+    median = vals[len(vals) // 2]          # upper median; the lower one ties
+    return sum(abs(v - median) // x for v in vals)
+```
+
+```java
+// java
+// GENERAL PATTERN: equalize with step x -> remainder check, then the median
+// time = O(n log n), space = O(1) extra (sorts in place)
+int minOpsToEqualize(int[] vals, int x) {
+    /** NOTE !!! java's % keeps the sign of the DIVIDEND -> normalize if vals can be negative */
+    int r = ((vals[0] % x) + x) % x;
+    for (int v : vals) {
+        if (((v % x) + x) % x != r) {
+            return -1;
+        }
+    }
+
+    Arrays.sort(vals);
+    int median = vals[vals.length / 2];
+
+    long ops = 0;                       // NOTE !!! the total can outgrow int
+    for (int v : vals) {
+        ops += Math.abs(v - median) / x;
+    }
+    return (int) ops;
+}
+```
+
+##### Applying it — LC 2033 Minimum Operations to Make a Uni-Value Grid
+
+The 2D shape adds exactly one step — flatten it; after that the template above runs verbatim.
+
+```python
+# python
+# LC 2033. Minimum Operations to Make a Uni-Value Grid
+# IDEA: FEASIBILITY BY REMAINDER mod x, THEN THE MEDIAN MINIMIZES THE COST
+# time = O(m * n * log(m * n)), space = O(m * n)
+class Solution(object):
+    def minOperations(self, grid, x):
+        vals = [v for row in grid for v in row]
+
+        ### NOTE !!! every cell must agree mod x, else no common target exists
+        r = vals[0] % x
+        if any(v % x != r for v in vals):
+            return -1
+
+        vals.sort()
+        median = vals[len(vals) // 2]
+        return sum(abs(v - median) // x for v in vals)
+```
+
+```text
+grid = [[2,4],[6,8]], x = 2
+
+flatten + sort -> [2, 4, 6, 8]
+remainders     -> [0, 0, 0, 0]        all equal -> feasible
+median         -> vals[4 // 2] = 6
+
+  v = 2 -> |2 - 6| / 2 = 2
+  v = 4 -> |4 - 6| / 2 = 1
+  v = 6 ->               0
+  v = 8 -> |8 - 6| / 2 = 1
+                        ---
+                          4      <-- the expected answer (target 4 also costs 4: the even-n tie)
+
+grid = [[1,2],[3,4]], x = 2
+remainders -> [1, 0, 1, 0]        1 != 0 -> return -1 before any sorting
+```
+
+##### Common Pitfalls
+
+| Pitfall | Why it breaks | Fix |
+|---------|---------------|-----|
+| Targeting the **mean** | the mean minimizes squared error, not absolute error — it is pulled by outliers | sort, then `vals[n // 2]` |
+| Skipping the remainder check | you return a plausible positive count for a grid that can never be equalized | check `v % x` against `vals[0] % x` first |
+| Counting `abs(v - median)` as the cost | one operation moves `x`, not `1` | `abs(v - median) // x` |
+| Java `%` on negative values (LC 462-shaped inputs) | `-3 % 5 == -3`, so two congruent values compare unequal | normalize: `((v % x) + x) % x` |
+| Trying every candidate target | `O(n * range)` → TLE at `m * n = 1e5` | the median **is** the argmin — one pass after the sort |
+| Accumulating the total in an `int` | `1e5` cells × `1e4` range overflows | sum into a `long` (Python ints are unbounded) |
+
+##### Similar Problems
+
+| Problem | LC# | Key Difference |
+|---------|-----|----------------|
+| **Minimum Operations to Make a Uni-Value Grid** | **2033** | **the base pattern — 2D flatten, step `x`, so feasibility is a `mod x` check** |
+| Minimum Moves to Equal Array Elements II | 462 | the same median argument with `x = 1`, so it is always feasible — no remainder check |
+| Minimum Moves to Equal Array Elements | 453 | "increment `n-1`" reframes as "decrement 1" → `sum - n*min`; no median involved |
+| Best Meeting Point | 296 | 2D Manhattan distance separates into the two axes → take a median on each independently |
+| Minimum Cost to Make Array Equal | 2448 | each index has a cost → **weighted** median (or binary search on the convex cost curve) |
+| Allocate Mailboxes | 1478 | `k` medians instead of one → DP over segments, each segment priced by this same cost |
+| Sum of Absolute Differences in a Sorted Array | 1685 | the same `sum(abs(v - t))` for *every* `t` → prefix sums, `O(n)` for all targets |
+| Minimum Operations to Make All Array Elements Equal | 2602 | the cost queried at many targets → sorted + prefix sums + binary search per query |
+| Minimum Number of Operations to Make Arrays Similar | 2366 | moves are `+2 / -2` → the invariant is **parity**; split by it, then match sorted pairs |
+
+**Key takeaways (transferable):**
+- **Invariant first, optimum second.** Any "each move shifts a value by `±k`" problem has a `mod k` invariant — values in different residue classes can never meet, and that check is `O(n)` with no sorting.
+- **L1 → median, L2 → mean.** Weighted L1 → the weighted median (LC 2448); L1 in 2D separates per axis (LC 296).
+- Once the array is sorted, the cost at the median is one pass; if *many* targets are asked about, precompute prefix sums and answer each in `O(log n)` (LC 1685, LC 2602).
+
+#### 1-1-13) Quick reference — other high-frequency math LC
 
 Small patterns that don't need a full template, plus pointers to sibling cheatsheets (avoid duplicating them here).
 

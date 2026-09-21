@@ -205,7 +205,7 @@
 | LC 303 - Range Sum Query - Immutable | 預先算好前綴和，而非每次查詢重算 |
 | LC 189 - Rotate Array | 真的做實體旋轉（反轉技巧）— 對比：沒有彙總公式，只是重新排列元素 |
 
-<!-- 62f99e88473c -->
+<!-- 8921c4f5a4b7 -->
 #### 1-1-6) 貪婪鋸齒建構 — 用閉合式 O(1) 取代模擬
 
 **題型形態（LC 3993 - Maximum Value of an Alternating Sequence）：**
@@ -264,7 +264,7 @@
 | LC 1846 - Maximum Element After Decreasing and Rearranging | 在 `|adjacent diff| <= 1` 下最大化最後一個元素 → 貪婪取 `prev + 1` |
 | LC 1936 - Add Minimum Number of Rungs | 相鄰間距上限為 `dist` → 每個間距 `ceil(gap/dist) - 1`（用算的，不是模擬） |
 | LC 453 - Minimum Moves to Equal Array Elements | 把「增加 n-1 個」重新想成「減少 1 個」→ `sum - n*min`，O(1) 數學 |
-| LC 462 - Minimum Moves to Equal Array Elements II | 移向中位數；用閉合式算成本，而不是逐一嘗試目標值 |
+| LC 462 - Minimum Moves to Equal Array Elements II | 移向中位數；用閉合式算成本，而不是逐一嘗試目標值 — 見 [1-1-12](#1-1-12-equalize-an-array-with-a-fixed-step--feasibility-mod-x-then-the-median-) |
 
 <!-- 37b1c4d972ff -->
 #### 1-1-7) 把 `n` 盡量平均拆成 `k` 份 → **最大乘積**（`divmod` 模式）⭐⭐⭐⭐⭐
@@ -360,7 +360,7 @@
 | 拆得不平均（`[8,1,1]`） | 違反 AM–GM | `divmod` → `r` 份 `q+1`、`k-r` 份 `q` |
 | Java `int` 溢位 | 對較大的 `n`，`3^19` 已經超出 `int` | 用 `long` / Python 的大整數 |
 
-<!-- 6c43a964f48a -->
+<!-- aa1d9ef890bb -->
 ##### 相似題目
 
 | 題目 | LC# | 關鍵差異 |
@@ -368,7 +368,7 @@
 | **Integer Break** | **343** | **整數分拆的最大乘積 — 基礎模式** |
 | Maximize Number of Nice Divisors | 1808 | 同樣的「盡量多的 3」技巧，但答案要 `mod 1e9+7` → 需要快速冪 |
 | Maximum Product After K Increments | 2233 | 最大乘積 ⇒ 讓各值**盡量平均** — 永遠對當前最小值做遞增（堆積(heap)） |
-| Minimum Moves to Equal Array Elements II | 462 | 朝**中位數**拉平；用成本公式取代模擬 |
+| Minimum Moves to Equal Array Elements II | 462 | 朝**中位數**拉平；用成本公式取代模擬 — 見 [1-1-12](#1-1-12-equalize-an-array-with-a-fixed-step--feasibility-mod-x-then-the-median-) |
 | Minimize Maximum of Array | 2439 | 把前綴平均攤開 → `ceil(prefixSum / count)` |
 | Split Array Largest Sum | 410 | 拆成 `k` 段並最小化最大段和 — 二分搜尋（每段大小不自由） |
 | Capacity To Ship Packages Within D Days | 1011 | 同樣是「在限制下平均拆分」的形態，用二分搜尋解 |
@@ -561,8 +561,70 @@
 | LC 380 在 `self.idx[last] = i` **之前**就 `del self.idx[val]` | 當 `val == last` 時，你會刪掉剛剛才寫入的那筆 | 先重新指向 `last`，最後才刪 `val` |
 | Java 裡 LC 380 用 `list.remove(value)` | 那是依值刪除 → `O(n)`，而且對 `Integer` 語意也不對 | 用 `arr.remove(arr.size() - 1)`（依索引） |
 
-<!-- 570d07d13e48 -->
-#### 1-1-12) 速查 — 其他高頻的數學類 LC
+<!-- af849e2478c1 -->
+#### 1-1-12) 用固定步長拉平陣列 — 先看 `mod x` 可行性，再取中位數 ⭐⭐⭐⭐
+
+**模式：** 每次操作剛好把某個值移動 `±x`，所以「用最小代價把所有數變成一樣」會拆成兩個彼此獨立的問題 — 而且要照這個順序回答：
+
+1. **到底做不做得到？** `v` 能走到 `t` 的前提是 `(v - t) % x == 0`，所以每個值對 `x` 的**餘數都必須相同**。只要有一個對不上就是 `-1`，連排序都不必。
+2. **哪個目標值最便宜？** 以 `t` 為目標的成本是 `sum(abs(v - t)) / x`，而絕對差之和會在**中位數**取得最小值。
+
+**為什麼是中位數 — 一行微分論證：**
+
+<!--CODE-->
+
+兩個值得在面試中講出來的推論：
+
+- 最佳解一定是**既有的元素**（`sorted[n // 2]`），所以你根本不用在候選目標上搜尋 — 任何其他同餘的值都嚴格更差；
+- 這裡**平均數是錯的答案**。平均數最小化的是 `sum((v - t)^2)`（L2）；中位數最小化的才是 `sum(abs(v - t))`（L1）。一個離群值就會把平均數拖走，中位數卻文風不動。
+
+<!--CODE-->
+
+<!--CODE-->
+
+<!-- 880679991500 -->
+##### 套用它 — LC 2033 Minimum Operations to Make a Uni-Value Grid
+
+二維的形狀只多了一個步驟 — 先壓平；之後上面的模板原封不動就能跑。
+
+<!--CODE-->
+
+<!--CODE-->
+
+<!-- 508b12747e41 -->
+##### 常見陷阱
+
+| 陷阱 | 為什麼會壞 | 修正 |
+|---------|---------------|-----|
+| 拿**平均數**當目標 | 平均數最小化的是平方誤差而不是絕對誤差 — 會被離群值拉走 | 排序(sorting)後取 `vals[n // 2]` |
+| 略過餘數檢查 | 對一個永遠拉不平的格子，你會回傳一個看似合理的正整數 | 先用 `vals[0] % x` 逐一比對 `v % x` |
+| 把 `abs(v - median)` 當成成本 | 一次操作移動的是 `x`，不是 `1` | `abs(v - median) // x` |
+| Java 的 `%` 遇到負數（LC 462 那種輸入） | `-3 % 5 == -3`，於是兩個同餘的值會比不相等 | 正規化：`((v % x) + x) % x` |
+| 逐一嘗試每個候選目標 | `O(n * range)` → 在 `m * n = 1e5` 會 TLE | 中位數**就是**最佳解 — 排序後掃一遍即可 |
+| 用 `int` 累加總數 | `1e5` 個格子 × `1e4` 的值域會溢位 | 累加到 `long`（Python 的整數沒有上限） |
+
+<!-- 3c4b0531eebc -->
+##### 相似題目
+
+| 題目 | LC# | 關鍵差異 |
+|---------|-----|----------------|
+| **Minimum Operations to Make a Uni-Value Grid** | **2033** | **基礎模式 — 二維壓平、步長為 `x`，所以可行性是一個 `mod x` 檢查** |
+| Minimum Moves to Equal Array Elements II | 462 | 同一套中位數論證，但 `x = 1`，所以永遠可行 — 不需要餘數檢查 |
+| Minimum Moves to Equal Array Elements | 453 | 把「增加 `n-1` 個」重新想成「減少 1 個」→ `sum - n*min`；跟中位數無關 |
+| Best Meeting Point | 296 | 二維曼哈頓距離可以拆成兩軸 → 各軸分別取中位數 |
+| Minimum Cost to Make Array Equal | 2448 | 每個索引有自己的成本 → **加權**中位數（或對凸的成本曲線二分搜尋） |
+| Allocate Mailboxes | 1478 | 要 `k` 個中位數而不是一個 → 對分段做動態規劃，每段的成本就用這裡的算法 |
+| Sum of Absolute Differences in a Sorted Array | 1685 | 一樣是 `sum(abs(v - t))`，但要*每一個* `t` → 前綴和，全部目標共 `O(n)` |
+| Minimum Operations to Make All Array Elements Equal | 2602 | 對很多目標值查詢成本 → 排序 + 前綴和 + 每次查詢做二分搜尋 |
+| Minimum Number of Operations to Make Arrays Similar | 2366 | 操作是 `+2 / -2` → 不變量變成**奇偶性**；先依它分組，再把排序後的兩邊配對 |
+
+**關鍵心得（可遷移）：**
+- **先找不變量，再談最佳化。** 任何「每步把某個值移動 `±k`」的題目都有一個 `mod k` 不變量 — 不同餘數類的值永遠碰不到面，而這個檢查是 `O(n)` 且不用排序。
+- **L1 → 中位數，L2 → 平均數。** 加權 L1 → 加權中位數（LC 2448）；二維的 L1 可以逐軸拆開（LC 296）。
+- 排序後算出中位數的成本只要掃一遍；如果會問到*很多*目標值，就先算前綴和，每次查詢 `O(log n)`（LC 1685、LC 2602）。
+
+<!-- 7348205e5016 -->
+#### 1-1-13) 速查 — 其他高頻的數學類 LC
 
 一些不需要完整模板的小模式，外加指向姊妹作弊表的連結（避免在這裡重複）。
 
