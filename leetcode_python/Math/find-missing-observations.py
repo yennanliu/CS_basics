@@ -42,6 +42,17 @@ m == rolls.length
 """
 
 # V0
+# IDEA : MATH — DISTRIBUTE THE MISSING SUM AS EVENLY AS POSSIBLE
+#
+#   need = mean * (n + m) - sum(rolls)   is the total the n missing dice
+#   must add up to. it is achievable iff  n <= need <= 6 * n  (each die is
+#   in [1, 6]).
+#
+#   then split `need` into n parts : q = need // n for everybody, and hand
+#   out the remaining r = need % n as +1 to the first r dice. every part
+#   lands in [1, 6] automatically once the feasibility check passes.
+#
+# time = O(n + m), space = O(n) for the output
 class Solution(object):
     def missingRolls(self, rolls, mean, n):
         """
@@ -50,7 +61,12 @@ class Solution(object):
         :type n: int
         :rtype: List[int]
         """
-        pass
+        m = len(rolls)
+        need = mean * (n + m) - sum(rolls)
+        if need < n or need > 6 * n:
+            return []
+        q, r = divmod(need, n)
+        return [q + 1] * r + [q] * (n - r)
 
 # V0-1
 # IDEA: MATH (gemini)
@@ -103,31 +119,3 @@ class Solution(object):
             res[i] += 1
 
         return res
-
-# V0-3
-# (claude)
-# IDEA : MATH — DISTRIBUTE THE MISSING SUM AS EVENLY AS POSSIBLE
-#
-#   need = mean * (n + m) - sum(rolls)   is the total the n missing dice
-#   must add up to. it is achievable iff  n <= need <= 6 * n  (each die is
-#   in [1, 6]).
-#
-#   then split `need` into n parts : q = need // n for everybody, and hand
-#   out the remaining r = need % n as +1 to the first r dice. every part
-#   lands in [1, 6] automatically once the feasibility check passes.
-#
-# time = O(n + m), space = O(n) for the output
-class Solution(object):
-    def missingRolls(self, rolls, mean, n):
-        """
-        :type rolls: List[int]
-        :type mean: int
-        :type n: int
-        :rtype: List[int]
-        """
-        m = len(rolls)
-        need = mean * (n + m) - sum(rolls)
-        if need < n or need > 6 * n:
-            return []
-        q, r = divmod(need, n)
-        return [q + 1] * r + [q] * (n - r)
