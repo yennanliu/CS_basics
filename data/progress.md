@@ -16,7 +16,8 @@
 			- greedy (pass)
 			- hashing (done)
 			- heap (done)
-			- linked list (ing)
+			- linked list (done)
+			- matrix (ing)
 
 
 	- classics_lc_hard.txt
@@ -34,7 +35,8 @@
 
 		- `scan` (ONLY idea, no implement)
 			- 第 258 场周赛(2021-09-12 10:30, 90 分钟) 参赛人数 4519
-			- weekly 262
+			- weekly 261 (done)
+			- weekly 262 (done)
 				- https://leetcode.com/contest/weekly-contest-262
 
 

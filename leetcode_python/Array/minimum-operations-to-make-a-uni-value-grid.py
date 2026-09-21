@@ -93,7 +93,17 @@ class Solution(object):
 
 
 # V0-2
-# IDEA: MATH + SORT (GPT)
+# IDEA: MATH + SORT + `median` (GPT)
+"""
+CORE IDEA:
+
+
+1. 先判斷能不能做到：所有數字對 x 的餘數必須相同。
+2. 把 2D grid flatten 成 1D。
+3. 排序後，讓所有數字變成 `median`（中位數），總 operation 最少。
+4. 每個元素需要幾次操作就是 abs(num - median) // x。
+
+"""
 class Solution(object):
     def minOperations(self, grid, x):
         # Flatten the 2D grid into a 1D array
