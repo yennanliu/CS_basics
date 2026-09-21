@@ -43,7 +43,95 @@ n == grid[i].length
 
 """
 
+
 # V0
+class Solution(object):
+    def minOperations(self, grid, x):
+        """
+        :type grid: List[List[int]]
+        :type x: int
+        :rtype: int
+        """
+        pass
+
+
+# V0-1
+# IDEA: MATH + SORT (gemini)
+class Solution(object):
+
+  def minOperations(self, grid, x):
+    """
+        :type grid: List[List[int]]
+        :type x: int
+        :rtype: int
+        """
+    # 1. 將 2D 矩陣壓平為 1D 串列，便於後續的模組檢查與中位數計算
+    arr = []
+    for row in grid:
+      arr.extend(row)
+
+    # 2. 檢查可行性：所有元素對 x 取餘數必須一致
+    # 只要存在任一元素的餘數不同於基準元素，就無法透過增減 x 互通
+    base_rem = arr[0] % x
+    for val in arr:
+      if val % x != base_rem:
+        return -1
+
+    # 3. 排序 1D 陣列。根據 L1 範數（Manhattan 距離性質），
+    # 將所有數轉為同一個目標值的最小總步數，目標值選在「中位數」最優。
+    arr.sort()
+    n = len(arr)
+    median = arr[n // 2]
+
+    # 4. 計算每個元素變成中位數所需的步數
+    # 每次操作可以加減 x，故所需次數為 abs(val - median) // x
+    total_ops = 0
+    for val in arr:
+      total_ops += abs(val - median) // x
+
+    return total_ops
+
+
+# V0-2
+# IDEA: MATH + SORT (GPT)
+class Solution(object):
+    def minOperations(self, grid, x):
+        # Flatten the 2D grid into a 1D array
+        nums = []
+
+        for row in grid:
+            for num in row:
+                nums.append(num)
+
+        # All numbers must have the same remainder modulo x.
+        # Otherwise, we can never make them equal.
+        remainder = nums[0] % x
+
+        for num in nums:
+            if num % x != remainder:
+                return -1
+
+        # Sort the numbers so we can find the median.
+        nums.sort()
+
+        # The median minimizes the total absolute distance:
+        #
+        #     sum(abs(nums[i] - target))
+        #
+        # Since every operation changes the value by x,
+        # minimizing distance is equivalent to minimizing operations.
+        median = nums[len(nums) // 2]
+
+        operations = 0
+
+        for num in nums:
+            # Number of +x / -x operations needed
+            operations += abs(num - median) // x
+
+        return operations
+
+
+# V0-3
 # IDEA : FEASIBILITY BY REMAINDER mod x, THEN THE MEDIAN MINIMIZES THE COST
 #
 #   every operation moves a value by exactly x, so two cells can ever meet
