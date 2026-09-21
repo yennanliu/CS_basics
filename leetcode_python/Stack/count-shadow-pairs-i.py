@@ -192,7 +192,7 @@ class Solution(object):
 
 
 # V0-4
-# IDEA: BRUTE FORCE (gemini)
+# IDEA: BRUTE FORCE (gemini) (TLE)
 class Solution(object):
 
   def shadowPairs(self, nums):
