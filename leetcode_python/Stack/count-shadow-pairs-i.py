@@ -245,27 +245,27 @@ class Solution(object):
                 total += 1
 
 
-            """
-            case 3) 堆疊頂端值小於 x (stack[-1][0] < x)
-
-
-                ->
-
-                    含意：因為前一步已清掉所有 > x 的元素，
-                         且堆疊有序，此時堆疊頂端 < x 
-                         意味著堆疊內所有元素都嚴格小於 x
-
-
-
-                    計數邏輯：當前 x 可以跟堆疊內所有歷史元素配對，
-                             直接 cnt += total。
-
-                    
-                    更新：壓入新分組 [x, 1]，更新 total。
-
-            """
             # x is greater than the top value
             else:
+                """
+                case 3) 堆疊頂端值小於 x (stack[-1][0] < x)
+
+
+                    ->
+
+                        含意：因為前一步已清掉所有 > x 的元素，
+                             且堆疊有序，此時堆疊頂端 < x 
+                             意味著堆疊內所有元素都嚴格小於 x
+
+
+
+                        計數邏輯：當前 x 可以跟堆疊內所有歷史元素配對，
+                                 直接 cnt += total。
+
+                    
+                        更新：壓入新分組 [x, 1]，更新 total。
+
+                """
                 # All remaining candidates are smaller than x.
                 cnt += total
 
