@@ -33,7 +33,39 @@ Follow up: Can you sort the linked list in O(n logn) time and O(1) memory (i.e. 
 
 """
 
+
 # V0
+# IDEA: array + sort + linked list
+# time = O(n log n)
+# space = O(n)
+class Solution(object):
+    def sortList(self, head):
+        """
+        :type head: Optional[ListNode]
+        :rtype: Optional[ListNode]
+        """
+        # edge
+
+        arr = []
+        
+        while head:
+            arr.append(head.val)
+            head = head.next
+
+        # sort (small -> big)
+        arr.sort()
+
+        # to linked list
+        dummy = node = ListNode(0)
+
+        for x in arr:
+            node.next = ListNode(x)
+            node = node.next
+
+        return dummy.next
+
+
+# V0-1
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Linked_list/reverse-linked-list.py
 # TO VALIDATE
 # time = O(n log n)
