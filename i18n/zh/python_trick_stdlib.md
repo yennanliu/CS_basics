@@ -258,10 +258,68 @@ Java 原版：
 
 <!--CODE-->
 
-<!-- e63fdfd02c0c -->
-### `OrderedDict`（雜湊表 + 鏈結串列）
+<!-- ea10b294034a -->
+### `OrderedDict`（雜湊表 + 鏈結串列）⭐⭐⭐
 
-- 參見 [Collection.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/Collection.md)
+從 Python 3.7 起，一般的 `dict` 就已經保有插入順序，所以 `OrderedDict` 的重點不再是
+「**擁有**順序」，而是「**在既有順序裡低成本地搬動某一筆**」——兩個一般 `dict` 沒有的方法，
+而且都是 O(1)：
+
+| 呼叫 | 作用 | 一般 `dict` 的等價寫法 |
+|---|---|---|
+| `d.move_to_end(k)` | 把 `k` 送到**最右端**（最新） | `d[k] = d.pop(k)` — 同樣 O(1)，但多一次雜湊查找 |
+| `d.move_to_end(k, last=False)` | 把 `k` 送到**最左端**（最舊） | 沒有一行寫法 — 只能重建整個 dict，O(n) |
+| `d.popitem()` | 彈出**最新**的一對（LIFO） | `d.popitem()` — 相同 |
+| `d.popitem(last=False)` | 彈出**最舊**的一對（FIFO） | `d.pop(next(iter(d)))` — 仍是 O(1)，但要兩個敘述 |
+
+最後一列就是這個型別在面試裡仍然存在的全部理由：**O(1) 的「淘汰最舊的一筆」**正好就是 LRU
+的淘汰步驟，而一般的 `dict` 沒有任何單一呼叫可以做到。
+
+<!--CODE-->
+
+<!-- 236221191812 -->
+#### **`OrderedDict` as an LRU cache (LC 146)**
+
+把這個 dict 由左往右讀成「最久沒用到 → 最近剛用到」。每次存取就把該 key 往右搬；淘汰永遠
+從左端取。兩者都是上面那些 O(1) 呼叫，這正是讓 `get` 與 `put` 能達到題目要求的 O(1)，而
+不必手寫一條雙向鏈結串列的原因。
+
+<!--CODE-->
+
+<!--CODE-->
+
+**陷阱**
+
+- **容量檢查要放在插入之後。** 先淘汰會在「插入的 key 本來就存在」時差一個：對已存在的 key
+  做 `put` 從來不會讓 dict 變大，所以它絕不該觸發淘汰。
+- **對已存在的 key 做 `put` 也算一次使用。** 在那個分支漏掉 `move_to_end`，key 就會留在舊
+  位置而被太早淘汰。（單獨寫 `self.cache[key] = value` **不會**重排一個已存在的 key——只有
+  新 key 才會落在最右端。）
+- **`move_to_end` 對不存在的 key 會丟 `KeyError`**；`popitem` 對空 dict 也會丟 `KeyError`。
+  兩者都靠你原本就在做的成員檢查擋住。
+- **`last` 是命名上的陷阱，不是語法上的**：`popitem(last=False)` 彈出的是**最舊**的那筆。
+  把它讀成「彈出最後一筆」會得到一個 MRU 快取——它會通過第一個範例，然後其餘全錯。
+
+<!-- 503f7911ebf9 -->
+#### **When a plain `dict` is not enough**
+
+<!--CODE-->
+
+其他情況優先用一般的 `dict`：它更快也更輕。只有在需要 LRU 式的重排（LC 146）、FIFO 淘汰，
+或需要對順序敏感的相等比較時，才動用 `OrderedDict`。
+
+**還會在哪裡出現**
+
+| 題目 | 用法 |
+|---|---|
+| LC 146 LRU Cache | 上面那個範本 |
+| LC 460 LFU Cache | **每個頻率桶各一個** `OrderedDict`；`popitem(last=False)` 用最近使用時間打破 LFU 的平手 |
+| LC 1670 Design Front Middle Back Queue | 兩端都是 O(1) — 不過一般解法是兩個 `deque` |
+
+- Java 的對應物是 `LinkedHashMap`（搭配 `accessOrder=true` 與 `removeEldestEntry`）——
+  見 [java_trick_collections.md](./java_trick_collections.md)。
+- 想看「選容器」的角度而非 API，見 [Collection.md](./Collection.md)；想看 LC 146 同樣接受的
+  手寫雜湊表 + 雙向鏈結串列，見 [design.md](./design.md)。
 
 <!-- d5d7f6d0ab5b -->
 ## `itertools`

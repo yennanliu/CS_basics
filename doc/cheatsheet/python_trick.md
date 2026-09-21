@@ -22,6 +22,7 @@ things by what they do.
 | divide, round, take a remainder, or avoid overflow surprises | [Numbers & Math](#numbers--math) |
 | loop over two things at once, or build a list in one line | [Iteration, Comprehensions & Functional Tools](#iteration-comprehensions--functional-tools) |
 | count things, or use a default instead of a `KeyError` | [Dicts & Sets](#dicts--sets), or `Counter` / `defaultdict` in [python_trick_stdlib.md](./python_trick_stdlib.md) |
+| keep a dict in an order I control, or evict its oldest entry (LRU) | [Dict ordering, and when you need `OrderedDict`](#dict-ordering-and-when-you-need-ordereddict) |
 | write to a variable from inside a nested function | [Structure, Scope & Return Values](#structure-scope--return-values) |
 | use a heap, a binary search, an ordered map, or `itertools` | [python_trick_stdlib.md](./python_trick_stdlib.md) |
 | insert into a list, slice a subarray, or get an off-by-one right | [python_trick_indexing.md](./python_trick_indexing.md) |
@@ -1642,6 +1643,26 @@ inv = {v: k for k, v in squares.items()}
 # filter dict
 evens = {k: v for k, v in squares.items() if v % 2 == 0}
 ```
+
+### Dict ordering, and when you need `OrderedDict`
+
+A plain `dict` has been insertion-ordered since Python 3.7, so `OrderedDict` is **not** what
+you reach for to get an order — it is what you reach for to **move an entry within** one.
+
+```python
+# plain dict: insertion order is guaranteed, and these two idioms cover most needs
+d = {'a': 1, 'b': 2, 'c': 3}
+
+d['a'] = d.pop('a')        # "move to the end"     -> ['b', 'c', 'a']
+first = next(iter(d))      # peek the OLDEST key   -> 'b'   (no popitem(last=False) here)
+d.popitem()                # pops the NEWEST pair  -> ('a', 1)
+```
+
+What a plain `dict` still cannot do is `move_to_end(k, last=False)` and
+`popitem(last=False)` — an O(1) *evict the oldest entry*, which is the LRU step in LC 146 —
+and its `==` ignores order, where `OrderedDict`'s does not. Both live with the rest of the
+`collections` API in
+[python_trick_stdlib.md § `OrderedDict`](./python_trick_stdlib.md#ordereddict-hash-map--linked-list-).
 
 ### Set operations
 

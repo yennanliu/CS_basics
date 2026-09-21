@@ -934,9 +934,148 @@ def maxSlidingWindow(nums, k):
     return result
 ```
 
-### `OrderedDict` (hash map + linked list)
+### `OrderedDict` (hash map + linked list) ⭐⭐⭐
 
-- check [Collection.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/Collection.md)
+Since Python 3.7 a plain `dict` is insertion-ordered, so `OrderedDict` is no longer about
+*having* an order. It is about **cheaply moving an entry within that order** — two methods a
+plain `dict` does not have, both O(1):
+
+| Call | Does | Plain-`dict` equivalent |
+|---|---|---|
+| `d.move_to_end(k)` | send `k` to the **right** end (newest) | `d[k] = d.pop(k)` — same O(1), but two hash lookups |
+| `d.move_to_end(k, last=False)` | send `k` to the **left** end (oldest) | no one-liner — rebuild the dict, O(n) |
+| `d.popitem()` | pop the **newest** pair (LIFO) | `d.popitem()` — same |
+| `d.popitem(last=False)` | pop the **oldest** pair (FIFO) | `d.pop(next(iter(d)))` — O(1) but two statements |
+
+That last row is the whole reason the type still exists in interviews: **an O(1) "evict the
+oldest entry"** is exactly the LRU eviction step, and a plain `dict` has no single call for it.
+
+```python
+# IDEA: move_to_end / popitem(last=False) — reorder an entry without rebuilding the dict
+# time = O(1) per call, space = O(n)
+from collections import OrderedDict
+
+#----------------------------
+# move_to_end(key, last=True)
+#----------------------------
+d = OrderedDict.fromkeys('abcde')   # a b c d e
+
+d.move_to_end('b')                  # to the RIGHT end (default)
+print("".join(d))                   # 'acdeb'
+
+d.move_to_end('b', last=False)      # to the LEFT end
+print("".join(d))                   # 'bacde'
+
+d.move_to_end('zzz')                # KeyError: 'zzz'  -> guard with `in` first
+
+#----------------------------
+# popitem(last=True) — the end you pop from is the argument
+#----------------------------
+d = OrderedDict([('a', 1), ('b', 2), ('c', 3)])
+
+print(d.popitem())                  # ('c', 3)  LIFO — newest  (stack)
+print(d.popitem(last=False))        # ('a', 1)  FIFO — oldest  (queue / LRU victim)
+print(list(d))                      # ['b']
+
+#----------------------------
+# delete + reinsert IS move_to_end — same result, one more statement
+#----------------------------
+d = OrderedDict([('a', 1), ('b', 2), ('c', 3)])
+v = d['a']; del d['a']; d['a'] = v  # ['b', 'c', 'a']
+# equivalently, and preferred:
+#   d.move_to_end('a')
+```
+
+#### **`OrderedDict` as an LRU cache (LC 146)**
+
+Read the dict left-to-right as least-recently-used → most-recently-used. Every access moves
+its key right; eviction always takes from the left. Both are the O(1) calls above, which is
+what lets `get` and `put` hit the problem's O(1) requirement without hand-writing a doubly
+linked list.
+
+```python
+# IDEA: OrderedDict keeps LRU order for us — move_to_end on touch, popitem(last=False) to evict
+# time = O(1) per get/put, space = O(capacity)
+# LC 146 - LRU Cache
+from collections import OrderedDict
+
+class LRUCache:
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.cache = OrderedDict()   # leftmost = LRU, rightmost = MRU
+
+    def get(self, key):
+        if key not in self.cache:
+            return -1
+        self.cache.move_to_end(key)          # touched -> now the most recent
+        return self.cache[key]
+
+    def put(self, key, value):
+        if key in self.cache:
+            self.cache.move_to_end(key)      # NOTE: an overwrite is also a "use"
+        self.cache[key] = value
+        if len(self.cache) > self.capacity:  # check AFTER insert, not before
+            self.cache.popitem(last=False)   # evict the leftmost = the LRU
+```
+
+```text
+capacity = 2, ops from the LC 146 example
+
+put(1,1)   {1:1}            left = LRU ──────────► right = MRU
+put(2,2)   {1:1, 2:2}
+get(1) -> 1                 move_to_end(1)      {2:2, 1:1}
+put(3,3)   over capacity -> popitem(last=False) evicts 2   {1:1, 3:3}
+get(2) -> -1
+put(4,4)   over capacity -> popitem(last=False) evicts 1   {3:3, 4:4}
+get(1) -> -1 ,  get(3) -> 3 ,  get(4) -> 4
+```
+
+**Pitfalls**
+
+- **The capacity check goes after the insert.** Evicting first is off by one whenever the key
+  being inserted is already present — `put` on an existing key never grows the dict, so it
+  must never evict.
+- **`put` on an existing key is a use.** Forgetting the `move_to_end` in that branch leaves
+  the key at its old position and evicts it too early. (Assigning `self.cache[key] = value`
+  on its own does **not** reorder an existing key — only a new key lands at the right end.)
+- **`move_to_end` raises `KeyError`** on a missing key; `popitem` raises `KeyError` on an
+  empty dict. Both need the membership check you are already doing.
+- **`last` is a keyword-only trap of naming, not of syntax**: `popitem(last=False)` pops the
+  *oldest*. Reading it as "pop the last one" gives you an MRU cache that passes the first
+  example and fails the rest.
+
+#### **When a plain `dict` is not enough**
+
+```python
+# IDEA: the two behaviours 3.7+ dict ordering does NOT give you
+from collections import OrderedDict
+
+# 1) equality is order-SENSITIVE (a plain dict's == ignores order)
+OrderedDict([('a', 1), ('b', 2)]) == OrderedDict([('b', 2), ('a', 1)])   # False
+{'a': 1, 'b': 2} == {'b': 2, 'a': 1}                                     # True
+# mixed comparison falls back to plain-dict rules -> order ignored:
+OrderedDict([('a', 1), ('b', 2)]) == {'b': 2, 'a': 1}                    # True
+
+# 2) O(1) move / pop at EITHER end (the LRU primitives above)
+#    plain dict: no move_to_end, and no popitem(last=False)
+```
+
+Otherwise prefer a plain `dict`: it is faster and lighter. Reach for `OrderedDict` when you
+need an LRU-style reorder (LC 146), FIFO eviction, or order-sensitive equality.
+
+**Where else it shows up**
+
+| Problem | Use |
+|---|---|
+| LC 146 LRU Cache | the template above |
+| LC 460 LFU Cache | one `OrderedDict` **per frequency bucket**; `popitem(last=False)` breaks the LFU tie by recency |
+| LC 1670 Design Front Middle Back Queue | either end in O(1) — though two `deque`s are the usual answer |
+
+- Java's counterpart is `LinkedHashMap` (with `accessOrder=true` plus `removeEldestEntry`) —
+  see [java_trick_collections.md](./java_trick_collections.md).
+- For the container-choosing view rather than the API, see
+  [Collection.md](./Collection.md); for the hand-rolled hash map + doubly linked list that
+  LC 146 also accepts, see [design.md](./design.md).
 
 ## `itertools`
 

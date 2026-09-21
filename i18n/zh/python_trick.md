@@ -9,7 +9,7 @@
 
 - [Python](https://leetcode.com/problemset/all/?languageTags=python3)
 
-<!-- 4cd6a4875cc0 -->
+<!-- 1b35029b0f82 -->
 ## 總覽
 
 這份速查表以前是 3,672 行、全部塞在單一個 `## 1) Examples` 標題底下，68 個條目以
@@ -25,6 +25,7 @@
 | 做除法、取整、取餘數，或避開溢位的意外 | [數字與數學](#numbers--math) |
 | 同時走訪兩個東西，或用一行建出一個 list | [走訪、生成式與函數式工具](#iteration-comprehensions--functional-tools) |
 | 計數，或用預設值取代 `KeyError` | [Dict 與 Set](#dicts--sets)，或 [python_trick_stdlib.md](./python_trick_stdlib.md) 裡的 `Counter` / `defaultdict` |
+| 讓 dict 保持在我控制的順序，或淘汰它最舊的一筆（LRU） | [Dict 排序，以及何時需要 `OrderedDict`](#dict-ordering-and-when-you-need-ordereddict) |
 | 在巢狀函式裡面寫入外層變數 | [結構、作用域與回傳值](#structure-scope--return-values) |
 | 用堆積(heap)、二分搜尋、有序 map 或 `itertools` | [python_trick_stdlib.md](./python_trick_stdlib.md) |
 | 插入 list、切出子陣列，或把差一算對 | [python_trick_indexing.md](./python_trick_indexing.md) |
@@ -436,6 +437,19 @@ tuple 依然是逐元素（由左到右）比較，所以第一個欄位就是�
 ### Dict 的 `get()`、`setdefault()`、生成式
 
 <!--CODE-->
+
+<!-- 6339dde13a8e -->
+### Dict 排序，以及何時需要 `OrderedDict`
+
+從 Python 3.7 起一般的 `dict` 就保有插入順序，所以 `OrderedDict` **不是**你為了拿到順序而
+使用的東西——它是你為了**在順序裡搬動某一筆**而使用的東西。
+
+<!--CODE-->
+
+一般 `dict` 仍然做不到的是 `move_to_end(k, last=False)` 與 `popitem(last=False)`——也就是
+O(1) 的*淘汰最舊的一筆*，正是 LC 146 裡的 LRU 步驟——而且它的 `==` 會忽略順序，`OrderedDict`
+的則不會。兩者都與其餘 `collections` API 一起放在
+[python_trick_stdlib.md § `OrderedDict`](./python_trick_stdlib.md#ordereddict-hash-map--linked-list-)。
 
 <!-- 8c7a98c1ff3b -->
 ### Set 運算

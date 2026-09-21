@@ -82,6 +82,198 @@ class LRUCache(object):
             self.cache.popitem(last=False)
 
 
+
+# V0-0-1
+# IDEA:  HASHMAP + doubly linked list ( most recent used + least recent used ) (GPT)
+"""
+
+- HashMap: key → node
+- Doubly Linked List:
+  - most recently used near tail
+  - least recently used near head
+"""
+class Node(object):
+    def __init__(self, key, value):
+        self.key = key
+        self.value = value
+        self.prev = None
+        self.next = None
+
+
+class LRUCache(object):
+
+    def __init__(self, capacity):
+        """
+        :type capacity: int
+        """
+        self.capacity = capacity
+
+        # { key: Node }
+        self.k_v_map = {}
+
+        # dummy head / dummy tail
+        self.head = Node(0, 0)
+        self.tail = Node(0, 0)
+
+        self.head.next = self.tail
+        self.tail.prev = self.head
+
+    def get(self, key):
+        """
+        :type key: int
+        :rtype: int
+        """
+        if key not in self.k_v_map:
+            return -1
+
+        node = self.k_v_map[key]
+
+        # This node was recently used,
+        # so move it to the MRU position.
+        self.remove(node)
+        self.add(node)
+
+        return node.value
+
+    def put(self, key, value):
+        """
+        :type key: int
+        :type value: int
+        :rtype: None
+        """
+        # Key already exists
+        if key in self.k_v_map:
+            node = self.k_v_map[key]
+
+            # Update value
+            node.value = value
+
+            # Mark as recently used
+            self.remove(node)
+            self.add(node)
+
+            return
+
+        # Add new node
+        node = Node(key, value)
+        self.k_v_map[key] = node
+        self.add(node)
+
+        # Capacity exceeded
+        if len(self.k_v_map) > self.capacity:
+            lru = self.head.next
+
+            self.remove(lru)
+            del self.k_v_map[lru.key]
+
+    def remove(self, node):
+        """
+        Remove node from linked list.
+        """
+        prev_node = node.prev
+        next_node = node.next
+
+        prev_node.next = next_node
+        next_node.prev = prev_node
+
+    def add(self, node):
+        """
+        Add node to the MRU position,
+        right before dummy tail.
+        """
+        last = self.tail.prev
+
+        last.next = node
+        node.prev = last
+
+        node.next = self.tail
+        self.tail.prev = node
+
+
+
+# V0-0-2
+# IDEA:  HASHMAP + doubly linked list ( most recent used + least recent used ) (gemini)
+"""
+
+- HashMap: key → node
+- Doubly Linked List:
+  - most recently used near tail
+  - least recently used near head
+"""
+class DNode:
+
+  def __init__(self, key=0, val=0):
+    self.key = key
+    self.val = val
+    self.prev = None
+    self.next = None
+
+
+class LRUCache(object):
+
+  def __init__(self, capacity):
+    """
+        :type capacity: int
+        """
+    self.capacity = capacity
+    self.k_v_map = {}  # key -> DNode
+
+    # 雙向鏈結串列哨兵頭尾
+    self.head = DNode()
+    self.tail = DNode()
+    self.head.next = self.tail
+    self.tail.prev = self.head
+
+  def _remove(self, node):
+    """從雙向鏈結串列中拔除指定節點 O(1)"""
+    prev_node = node.prev
+    next_node = node.next
+    prev_node.next = next_node
+    next_node.prev = prev_node
+
+  def _add_to_head(self, node):
+    """將節點插入至 head 之後（代表剛被使用，MRU） O(1)"""
+    node.next = self.head.next
+    node.prev = self.head
+    self.head.next.prev = node
+    self.head.next = node
+
+  def get(self, key):
+    """
+        :type key: int
+        :rtype: int
+        """
+    if key not in self.k_v_map:
+      return -1
+    node = self.k_v_map[key]
+    # 命中後提升至最常使用（MRU）
+    self._remove(node)
+    self._add_to_head(node)
+    return node.val
+
+  def put(self, key, value):
+    """
+        :type key: int
+        :type value: int
+        :rtype: None
+        """
+    if key in self.k_v_map:
+      node = self.k_v_map[key]
+      self._remove(node)
+      node.val = value
+      self._add_to_head(node)
+    else:
+      if len(self.k_v_map) >= self.capacity:
+        # 淘汰 LRU 節點（tail 的前一個）
+        lru_node = self.tail.prev
+        self._remove(lru_node)
+        del self.k_v_map[lru_node.key]
+
+      new_node = DNode(key, value)
+      self._add_to_head(new_node)
+      self.k_v_map[key] = new_node
+
+
 # V0-1
 # IDEA:  HASHMAP + doubly linked list( most recent used + least recent used )
 """
