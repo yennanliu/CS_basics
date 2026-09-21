@@ -60,7 +60,19 @@ Constraints:
 
 """
 
+
 # V0
+class Solution(object):
+    def shadowPairs(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        pass
+
+
+
+# V0-1
 # IDEA : MONOTONIC STACK (NEXT STRICTLY SMALLER) + THE EQUAL-VALUE CHAIN
 #
 #   the killing condition only ever mentions nums[i], so for a FIXED i the
@@ -128,7 +140,96 @@ class Solution(object):
         return res
 
 
-# V0-1
+# V0-3
+# IDEA: STACK (gpt)
+class Solution(object):
+    def shadowPairs(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        if not nums or len(nums) <= 1:
+            return 0
+
+        stack = []
+        cnt = 0
+        total = 0
+
+        for x in nums:
+
+            # Values > x can no longer be valid candidates.
+            while stack and stack[-1][0] > x:
+                total -= stack[-1][1]
+                stack.pop()
+
+            # No candidate
+            if not stack:
+                stack.append([x, 1])
+                total += 1
+                continue
+
+            # Same value
+            if stack[-1][0] == x:
+                value, freq = stack.pop()
+
+                # Equal values cannot form a pair because
+                # nums[i] < nums[j] must be strict.
+                cnt += total - freq
+
+                freq += 1
+                stack.append([value, freq])
+                total += 1
+
+            # x is greater than the top value
+            else:
+                # All remaining candidates are smaller than x.
+                cnt += total
+
+                stack.append([x, 1])
+                total += 1
+
+        return cnt
+
+
+# V0-4
+# IDEA: BRUTE FORCE (gemini)
+class Solution(object):
+
+  def shadowPairs(self, nums):
+    """
+        :type nums: List[int]
+        :rtype: int
+        """
+    if not nums or len(nums) <= 1:
+      return 0
+
+    n = len(nums)
+    if n == 2:
+      return 1 if nums[1] > nums[0] else 0
+
+    cnt = 0
+
+    # 雙迴圈走訪所有合法區間對 (l, r)，維持 O(N^2) 內可控範圍
+    for l in range(n - 1):
+      l_val = nums[l]
+      for r in range(l + 1, n):
+        r_val = nums[r]
+
+        # 基礎條件：右端點大於左端點
+        if r_val > l_val:
+          if r - l == 1:
+            cnt += 1
+          else:
+            # 檢查夾在中間的區間元素 nums[l+1 : r] 是否滿足條件
+            sub_arr = nums[l + 1 : r]
+            # 假設 shadow pair 的條件為中間所有元素皆 >= l_val (可依實際題意調整)
+            if all(x >= l_val for x in sub_arr):
+              cnt += 1
+
+    return cnt
+
+
+# V0-5
 # IDEA : BRUTE FORCE, BUT BREAK AT THE FIRST SMALLER ELEMENT (the contest draft)
 #
 #   walk r forward from l and stop the instant nums[r] < nums[l], because from

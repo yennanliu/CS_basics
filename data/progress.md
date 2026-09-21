@@ -26,7 +26,7 @@
 
 	- LC weekly
 		- `data/lc_weekly/lc_weekly_gpt.md`
-			- Weekly Contest 519 (doing)
+			- Weekly Contest 519 (done)
 				- https://leetcode.com/contest/weekly-contest-519/
 		- LC docs contest
 			- https://leetcode.doocs.org/contest/
