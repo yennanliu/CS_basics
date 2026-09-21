@@ -581,7 +581,6 @@ python3 script/fix_readme_tags.py            # rewrite the Note column
 | 2289 | [Steps to Make Array Non-decreasing](https://leetcode.com/problems/steps-to-make-array-non-decreasing) | [Python](./leetcode_python/Stack/steps-to-make-array-non-decreasing.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Stack/StepsToMakeArrayNonDecreasing.java) | _O(n)_ | _O(n)_ | Medium | **stack**, mono stack, mono stack + dp, good trick | AGAIN************  (2) (MUST) |
 | 4045 | [Count Robot Groups](https://leetcode.com/problems/count-robot-groups/description/) | [Python](./leetcode_python/Stack/count-robot-groups.py) | _O(n)_ | _O(1)_ | Medium | **stack**, car fleet (LC 853), right -> left scan, merge keeps the rightmost robot's state, t=0 touch chains via the neighbour, LC weekly | AGAIN(1) |
 | 4054 | [Count Shadow Pairs I](https://leetcode.com/problems/count-shadow-pairs-i/description/) | [Python](./leetcode_python/Stack/count-shadow-pairs-i.py) | _O(n)_ | _O(n)_ | Medium | **stack**, MONOTONIC STACK (NEXT STRICTLY SMALLER) — pairs(i) = window size − equal-value chain, pop on >= not >, O(n^2) early-break draft kept as V0-1, good trick, Frequency Grouping, LC weekly | AGAIN************ (1) (MUST) |
->>>>>>> Stashed changes
 
 
 
