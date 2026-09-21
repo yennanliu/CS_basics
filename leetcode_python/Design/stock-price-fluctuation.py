@@ -51,8 +51,118 @@ At most 10^5 calls will be made in total to update, current, maximum, and minimu
 
 """
 
+
 # V0
-# IDEA : HASH MAP (timestamp -> price) + TWO LAZY HEAPS
+class StockPrice(object):
+
+    def __init__(self):
+        
+
+    def update(self, timestamp, price):
+        """
+        :type timestamp: int
+        :type price: int
+        :rtype: None
+        """
+        
+
+    def current(self):
+        """
+        :rtype: int
+        """
+        
+
+    def maximum(self):
+        """
+        :rtype: int
+        """
+        
+
+    def minimum(self):
+        """
+        :rtype: int
+        """
+        
+
+# V0-1
+# IDEA: BIG, SMALL PQ + Lazy Deletion (GEMINI)
+import heapq
+
+
+class StockPrice(object):
+
+  def __init__(self):
+    # 記錄每個時間戳對應的最新價格：{timestamp: price}
+    self.price_map = {}
+
+    # 追蹤當前最大的時間戳（對應最新時間）
+    self.max_time = 0
+
+    # 最大堆疊（Max-Heap 模擬）：存入 (-price, timestamp)
+    # Python 預設為 Min-Heap，透過價格取負號來實現最大堆頂
+    self.max_heap = []
+
+    # 最小堆疊（Min-Heap）：存入 (price, timestamp)
+    self.min_heap = []
+
+  def update(self, timestamp, price):
+    """
+        :type timestamp: int
+        :type price: int
+        :rtype: None
+        """
+    # 1. 更新或覆寫該時間點的最新價格
+    self.price_map[timestamp] = price
+
+    # 2. 維護全域最新時間戳
+    self.max_time = max(self.max_time, timestamp)
+
+    # 3. 將新的價格與時間戳直接推入雙堆疊（允許重複/過期數據累積）
+    heapq.heappush(self.max_heap, (-price, timestamp))
+    heapq.heappush(self.min_heap, (price, timestamp))
+
+    """
+    NOTE !!!
+
+
+        -> Lazy Deletion
+    """
+    # 4. 進行 Lazy Deletion（在 update 時順便清掉堆頂過期/被覆寫的資料）
+    # 條件：如果堆頂紀錄的價格與 price_map 裡的真實最新價格不符，代表過期
+    while self.max_heap and -self.max_heap[0][0] != self.price_map[
+        self.max_heap[0][1]
+    ]:
+      heapq.heappop(self.max_heap)
+
+    while self.min_heap and self.min_heap[0][0] != self.price_map[
+        self.min_heap[0][1]
+    ]:
+      heapq.heappop(self.min_heap)
+
+  def current(self):
+    """
+        回傳最新時間戳的價格
+        :rtype: int
+        """
+    return self.price_map[self.max_time]
+
+  def maximum(self):
+    """
+        回傳最大價格（因在 update 已做清理，堆頂必為合法最新極值）
+        :rtype: int
+        """
+    return -self.max_heap[0][0]
+
+  def minimum(self):
+    """
+        回傳最小價格（同上，堆頂必為合法最新極值）
+        :rtype: int
+        """
+    return self.min_heap[0][0]
+
+
+# V0-2
+# IDEA : HASH MAP (timestamp -> price) + TWO LAZY HEAPS (CLAUDE CODE)
 #
 #   `prices[t]` is the source of truth. `latest` tracks the biggest timestamp
 #   seen so far, so current() is O(1).
@@ -108,7 +218,7 @@ class StockPrice(object):
 # param_4 = obj.minimum()
 
 
-# V0-1
+# V0-3
 # IDEA: BIG, SMALL PQ (gpt)
 import heapq
 
@@ -196,4 +306,3 @@ class StockPrice(object):
                 return price
 
             heapq.heappop(self.min_prices)
-
