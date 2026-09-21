@@ -96,6 +96,18 @@ class LRUCache(object):
 """
 class Node(object):
     def __init__(self, key, value):
+
+        """
+        NOTE !!!
+
+
+        `Node` has 4 attributions !!
+
+
+            - key, value (int)
+
+            - prev, next (ListNode)
+        """
         self.key = key
         self.value = value
         self.prev = None
@@ -168,6 +180,13 @@ class LRUCache(object):
             self.remove(lru)
             del self.k_v_map[lru.key]
 
+
+    """
+    NOTE !!!
+
+
+    helper func: remove
+    """
     def remove(self, node):
         """
         Remove node from linked list.
@@ -178,6 +197,12 @@ class LRUCache(object):
         prev_node.next = next_node
         next_node.prev = prev_node
 
+    """
+    NOTE !!!
+
+
+    helper func: add
+    """
     def add(self, node):
         """
         Add node to the MRU position,
