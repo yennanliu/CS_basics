@@ -580,6 +580,7 @@ python3 script/fix_readme_tags.py            # rewrite the Note column
 | 2104 | [Sum of Subarray Ranges](https://leetcode.com/problems/sum-of-subarray-ranges/) | [Python](./leetcode_python/Two_Pointers/sum-of-subarray-ranges.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Stack/SumOfSubarrayRanges.java) | _O(n)_ | _O(n)_ | Medium | **stack**, LC 907, good basic, monotonic stack, brute force, dp, `amazon` | AGAIN************ (5) |
 | 2289 | [Steps to Make Array Non-decreasing](https://leetcode.com/problems/steps-to-make-array-non-decreasing) | [Python](./leetcode_python/Stack/steps-to-make-array-non-decreasing.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Stack/StepsToMakeArrayNonDecreasing.java) | _O(n)_ | _O(n)_ | Medium | **stack**, mono stack, mono stack + dp, good trick | AGAIN************  (2) (MUST) |
 | 4045 | [Count Robot Groups](https://leetcode.com/problems/count-robot-groups/description/) | [Python](./leetcode_python/Stack/count-robot-groups.py) | _O(n)_ | _O(1)_ | Medium | **stack**, car fleet (LC 853), right -> left scan, merge keeps the rightmost robot's state, t=0 touch chains via the neighbour, LC weekly | AGAIN(1) |
+| 4054 | [Count Shadow Pairs I](https://leetcode.com/problems/count-shadow-pairs-i/description/) | [Python](./leetcode_python/Stack/count-shadow-pairs-i.py) | _O(n)_ | _O(n)_ | Medium | **stack**, MONOTONIC STACK (NEXT STRICTLY SMALLER) — pairs(i) = window size − equal-value chain, pop on >= not >, O(n^2) early-break draft kept as V0-1, LC weekly | AGAIN**** (1) |
 
 
 
@@ -917,6 +918,7 @@ python3 script/fix_readme_tags.py            # rewrite the Note column
 | 3190 | [Find Minimum Operations to Make All Elements Divisible by Three](https://leetcode.com/problems/find-minimum-operations-to-make-all-elements-divisible-by-three/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Math/FindMinimumOperationsToMakeAllElementsDivisibleByThree.java) | _O(n)_ | _O(1)_ | Easy | **math**, LC weekly | OK |
 | 3194 | [Minimum Average of Smallest and Largest Elements](https://leetcode.com/problems/minimum-average-of-smallest-and-largest-elements/description/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Math/minimumAverageOfSmallestAndLargestElements.java) | _O(nlogn)_ | _O(1)_ | Easy | **math**, LC weekly, `array`, `two pointers`, `sort` | OK |
 | 3993 | [Maximum Value of an Alternating Sequence](https://leetcode.com/problems/maximum-value-of-an-alternating-sequence/description/) | [Python](./leetcode_python/Math/maximum-value-of-an-alternating-sequence.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Math/MaximumValueOfAnAlternatingSequence.java) | _O(1)_ | _O(1)_ | Medium | **math**, LC weekly, good trick | again**** (1) |
+| 4053 | [Minimum Operations to Make Every Element Palindromic](https://leetcode.com/problems/minimum-operations-to-make-every-element-palindromic/description/) | [Python](./leetcode_python/Math/minimum-operations-to-make-every-element-palindromic.py) | _O(P log P + n log P)_ | _O(P)_ | Medium | **math**, +2/-2 KEEPS PARITY — BISECT THE NEAREST SAME-PARITY PALINDROME, precomputed palindrome table (a palindrome is fixed by its first half), complex, LC weekly | AGAIN (not start) |
 
 
 
@@ -3388,7 +3390,6 @@ Ranges covered so far: 0001-1000 (127 problems) and 1001-3687 (1855 problems) �
 | 3666 | [Minimum Operations to Equalize Binary String](https://leetcode.com/problems/minimum-operations-to-equalize-binary-string/) | [Python](./leetcode_python/Breadth-First-Search/minimum-operations-to-equalize-binary-string.py) | _O(n * alpha(n))_ | _O(n)_ | Hard | **math**, COLLAPSE THE STATE TO "HOW MANY ZEROS" AND BFS OVER INTERVALS, new |  |
 | 3671 | [Sum of Beautiful Subsequences](https://leetcode.com/problems/sum-of-beautiful-subsequences/) | [Python](./leetcode_python/Math/sum-of-beautiful-subsequences.py) | _O(V log V + sum_x d(x) * log n)_ | _O(V + sum_x d(x))_ | Hard | **math**, DIVISOR SUM + EULER'S PHI COLLAPSES THE "EXACTLY g" CONDITION, new |  |
 | 3677 | [Count Binary Palindromic Numbers](https://leetcode.com/problems/count-binary-palindromic-numbers/) | [Python](./leetcode_python/Math/count-binary-palindromic-numbers.py) | _O(log^2 n)_ | _O(log n)_ | Hard | **math**, A PALINDROME IS DETERMINED BY ITS FIRST HALF -- COUNT HALVES, new |  |
-| 4053 | [Minimum Operations to Make Every Element Palindromic](https://leetcode.com/problems/minimum-operations-to-make-every-element-palindromic/description/) | [Python](./leetcode_python/Math/minimum-operations-to-make-every-element-palindromic.py) | _O(P log P + n log P)_ | _O(P)_ | Medium | **math**, +2/-2 KEEPS PARITY — BISECT THE NEAREST SAME-PARITY PALINDROME, precomputed palindrome table (a palindrome is fixed by its first half), complex, LC weekly | AGAIN (not start) |
 
 ### Pandas
 
@@ -3546,7 +3547,6 @@ Ranges covered so far: 0001-1000 (127 problems) and 1001-3687 (1855 problems) �
 | 3113 | [Find the Number of Subarrays Where Boundary Elements Are Maximum](https://leetcode.com/problems/find-the-number-of-subarrays-where-boundary-elements-are-maximum/) | [Python](./leetcode_python/Stack/find-the-number-of-subarrays-where-boundary-elements-are-maximum.py) | _O(n)_ | _O(n)_ | Hard | **stack**, MONOTONIC STACK OF (VALUE, HOW MANY COPIES ARE STILL "VISIBLE"), new |  |
 | 3174 | [Clear Digits](https://leetcode.com/problems/clear-digits/) | [Python](./leetcode_python/Stack/clear-digits.py) | _O(n)_ | _O(n)_ | Easy | **stack**, A STACK — A DIGIT ALWAYS CANCELS WHATEVER IS ON TOP, new |  |
 | 3676 | [Count Bowl Subarrays](https://leetcode.com/problems/count-bowl-subarrays/) | [Python](./leetcode_python/Stack/count-bowl-subarrays.py) | _O(n)_ | _O(n)_ | Medium | **stack**, MONOTONIC STACK — COUNT "MUTUALLY VISIBLE" INDEX PAIRS, new |  |
-| 4054 | [Count Shadow Pairs I](https://leetcode.com/problems/count-shadow-pairs-i/description/) | [Python](./leetcode_python/Stack/count-shadow-pairs-i.py) | _O(n)_ | _O(n)_ | Medium | **stack**, MONOTONIC STACK (NEXT STRICTLY SMALLER) — pairs(i) = window size − equal-value chain, pop on >= not >, O(n^2) early-break draft kept as V0-1, LC weekly | AGAIN**** (1) |
 
 ### String
 
