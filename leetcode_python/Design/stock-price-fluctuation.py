@@ -106,3 +106,94 @@ class StockPrice(object):
 # param_2 = obj.current()
 # param_3 = obj.maximum()
 # param_4 = obj.minimum()
+
+
+# V0-1
+# IDEA: BIG, SMALL PQ (gpt)
+import heapq
+
+
+class StockPrice(object):
+
+    def __init__(self):
+        # { timestamp: current price }
+        self.price_map = {}
+
+        # Latest timestamp
+        self.max_time = 0
+
+        """
+        NOTE !!!
+
+
+        PQ save info: (-price, timestamp)
+        """
+        # Max heap: (-price, timestamp)
+        self.max_prices = []
+
+
+        """
+        NOTE !!!
+
+
+        PQ save info: (price, timestamp)
+        """
+        # Min heap: (price, timestamp)
+        self.min_prices = []
+
+    def update(self, timestamp, price):
+        """
+        :type timestamp: int
+        :type price: int
+        :rtype: None
+        """
+        # Update the latest price for this timestamp
+        self.price_map[timestamp] = price
+
+        # Track latest timestamp
+        self.max_time = max(self.max_time, timestamp)
+
+        # Add new price to both heaps
+        heapq.heappush(
+            self.max_prices,
+            (-price, timestamp)
+        )
+
+        heapq.heappush(
+            self.min_prices,
+            (price, timestamp)
+        )
+
+    def current(self):
+        """
+        :rtype: int
+        """
+        return self.price_map[self.max_time]
+
+    def maximum(self):
+        """
+        :rtype: int
+        """
+        # Remove stale prices
+        while self.max_prices:
+            neg_price, timestamp = self.max_prices[0]
+            price = -neg_price
+
+            if self.price_map[timestamp] == price:
+                return price
+
+            heapq.heappop(self.max_prices)
+
+    def minimum(self):
+        """
+        :rtype: int
+        """
+        # Remove stale prices
+        while self.min_prices:
+            price, timestamp = self.min_prices[0]
+
+            if self.price_map[timestamp] == price:
+                return price
+
+            heapq.heappop(self.min_prices)
+
