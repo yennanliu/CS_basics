@@ -296,7 +296,7 @@
     <!-- ── Why it exists ───────────────────────────────────────────────── -->
     <section id="why" class="reveal">
       <p class="eyebrow">Why a skill and not a habit</p>
-      <h2>Three ways filing a solution goes wrong</h2>
+      <h2>Four ways filing a solution goes wrong</h2>
       <p class="sub">
         None of these are hypothetical — each one has actually landed in this repo, and each
         one is invisible in a diff. They are why the recipe is written down once instead of
@@ -320,6 +320,12 @@
           <b>Nothing was run</b>
           <p>The file name has dashes, so it is not importable — which makes it just slightly too annoying to test, which is how untested code gets committed and a README row lands with the wrong columns.</p>
           <p class="cost">Rule: untested is unfinished.</p>
+        </div>
+        <div class="fail">
+          <span class="glyph" aria-hidden="true">&#9638;</span>
+          <b>The row lands in the wrong table</b>
+          <p>README carries <em>two</em> sets of topic tables — the main <code>##</code> index, and the imported <code>## Newly Added (kamyu104 gap)</code> with its own <code>###</code> sub-tables. The imported set is the bigger one and duplicates 23 topic names, so grepping the solution path and taking the last hit always lands there.</p>
+          <p class="cost">Cost: a row that renders fine ~2500 lines from where anyone looks. Anchor on the heading, not the path.</p>
         </div>
       </div>
     </section>
@@ -709,7 +715,7 @@ File LC 4038 into leetcode_python/Hash_table/ — draft in @draft.py"</code></pr
       <ul class="files">
         <li>
           <a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-python/SKILL.md">SKILL.md</a>
-          <span>The whole recipe — the five prime directives, the seven steps with their commands, the file layout, the README row shape, the do-not list, and the LC 4038 worked example.</span>
+          <span>The whole recipe — the six prime directives, the seven steps with their commands, the file layout, the README row shape, the do-not list, and the LC 4038 worked example.</span>
         </li>
       </ul>
       <p class="note" style="margin-top:1.2rem">
