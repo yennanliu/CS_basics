@@ -308,14 +308,22 @@ add LC 4038 to leetcode_python/Hash_table/    # the plain-English form works too
 As with `/lc-coach`, a skill directory name **is** the command, and `check_skills.py` pins
 the frontmatter `name` to it.
 
-The three things `/lc-python` exists to prevent, all of which have actually happened:
+The four things `/lc-python` exists to prevent, all of which have actually happened:
 
 - a slug guessed from the method name (LC 4038's method is `countSpecialIntegers`;
   the problem is `count-integers-appearing-in-a-single-block`), which yields a wrong
   file name and a dead README link;
 - an invented file layout, instead of copying a neighbour in the target dir;
 - code handed back untested, and a README row whose columns do not match the table
-  it was inserted into.
+  it was inserted into;
+- **the row filed in the wrong one of README's two table sets.** The main index is the
+  `## ` headings; everything under `## Newly Added (kamyu104 gap)` is an imported index
+  with its own `### ` sub-tables. The imported set is the *bigger* one (1982 rows against
+  1309) and duplicates 23 topic names, so `grep -n "leetcode_python/<Dir>" README.md | tail`
+  — which is what the skill used to say — always lands there. All 17 recent contest rows
+  (LC 3964-4054) belong to a main `## ` table. A misfiled row renders fine and is ~2500
+  lines from where anyone looks, so nothing reports it; `/lc-java` inherits the mistake,
+  because it edits the row the number matches.
 
 `/lc-java`'s three are different, and each was found at scale by the 1481-file
 normalisation pass (`db49955`):

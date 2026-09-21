@@ -42,6 +42,10 @@ The two are counterparts and share one README row — see
    Python-first. The Java link goes into that row's Solution cell, after the Python one. A
    duplicate row is the single most expensive mistake this skill can make, because nothing
    in the build catches it.
+   **The number can match two rows.** README carries two sets of topic tables — the main
+   `## ` ones and the imported `## Newly Added (kamyu104 gap)` / `### ` ones — and 10 LC
+   numbers appear in both. When the grep returns two hits, edit the one under a `## `
+   heading; that is the row `/lc-python` maintains and the one the user reads.
 5. **Untested is unfinished.** `javac` it and run it against the javadoc's own examples
    before reporting done.
 
@@ -219,6 +223,13 @@ run shows 9, the ninth is yours.
 
 ```bash
 grep -n "^| *0*<number> " README.md
+```
+
+More than one hit means the imported table also carries the problem (directive 4) — print
+the heading each candidate sits under and take the `## ` one:
+
+```bash
+awk -v L=<hit line> 'NR<=L && /^#{1,3} /{h=$0} NR==L{print h}' README.md   # want "## Stack"
 ```
 
 Append the Java link to the end of the existing row's **Solution** cell, after the Python

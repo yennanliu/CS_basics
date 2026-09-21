@@ -38,6 +38,13 @@ translating it to Python.
 4. **Untested is unfinished.** Run the docstring's own examples before reporting done.
 5. **Say what was assumed.** Difficulty inferred from contest position, examples written
    from the rule rather than copied from LC — state it, so it can be corrected.
+6. **README has TWO sets of topic tables; only the main one takes a new row.** The `##`
+   headings near the top are the real index. Everything under `## Newly Added (kamyu104
+   gap)` is an *imported* index with its own `###` sub-tables — and it is the bigger of
+   the two (1982 rows against 1309), duplicating **23 topic names** (`### Stack`,
+   `### Math`, `### Array`, …). Every one of the 17 most recent contest rows
+   (LC 3964-4054) lives in a main `##` table and none in the imported one. A row filed
+   there renders fine and is ~2500 lines from where the user looks.
 
 ## The steps
 
@@ -159,11 +166,26 @@ statement disagrees, the solution is wrong — say so rather than adjusting the 
 ### 6. Add the README row
 
 Find the pattern's table and insert in **ascending LC-number order** (a 4-digit contest
-problem goes at the end of that table):
+problem goes at the end of that table).
+
+**Anchor on the heading, never on the solution path.** Grepping the path matches both table
+sets, and `tail` then hands back whichever one sits *later* in the file — which is always
+the imported `### ` one (directive 6). Locate the heading first:
 
 ```bash
-grep -n "leetcode_python/<Pattern_Dir>" README.md | tail -5
+grep -n "^## \|^### " README.md | grep -i "stack"   # -> two hits: "## Stack" AND "### Stack"
 ```
+
+Take the `## ` line. Its table runs to the next heading; read the tail of *that* range and
+insert after the last row:
+
+```bash
+# <start>/<end> = the "## " heading's line, and the next heading's line
+awk 'NR>=536 && NR<=585 && /^\| [0-9]/{print NR": "substr($0,1,60)}' README.md | tail -3
+```
+
+If the topic somehow has no `## ` heading, the row still does **not** go in the imported
+table — file it under the closest main table and say so in the report.
 
 ```text
 | <num> | [<Title>](<leetcode url>) | [Python](./leetcode_python/<Dir>/<slug>.py) | _O(t)_ | _O(s)_ | <Difficulty> | **<pattern>**, <tags>, LC weekly | AGAIN(1) |
@@ -179,6 +201,12 @@ grep -n "leetcode_python/<Pattern_Dir>" README.md | tail -5
   (`hashmap`, `prefix sum`, `span == cnt trick`), then `LC weekly` for a contest problem,
   then company tags in backticks if known.
 - Status column: `AGAIN(1)` for a first pass. Never downgrade a status the user has set.
+- **Verify the row landed in the main table** before reporting done — print the heading it
+  now sits under, which must start with `## ` and not `### `:
+
+```bash
+awk -v L=583 'NR<=L && /^#{1,3} /{h=$0} NR==L{print h}' README.md   # -> ## Stack
+```
 
 ### 7. Report what was assumed
 
@@ -194,6 +222,8 @@ the statement, a Java link deliberately omitted.
 - ❌ rewrite the user's approach into your own
 - ❌ touch `data/progress.txt` — the practice log is the user's own record and gets its own
   commit
+- ❌ file the row under `## Newly Added (kamyu104 gap)` / any `### ` table — main `## ` only
+  (directive 6), and prove it with the `awk` check in step 6
 - ❌ commit or push unless asked
 
 ## Worked example
@@ -207,5 +237,5 @@ the statement, a Java link deliberately omitted.
 | 3 | wrote the file; `IDEA` explains why `last - first + 1 == count` **is** the contiguity test |
 | 4 | added `V0-1` (keep only `first/last/cnt`) — justified: `O(distinct)` space, not `O(n)` cells |
 | 5 | `[1,1,2,2,3]→3`, `[1,2,1]→1`, `[5]→1`, `[1,2,1,3,3,2]→1`, `[]→0`, both variants agreeing |
-| 6 | README row inserted after LC 4007, the last row of the hash-table table |
+| 6 | `grep -n "^## \|^### " README.md | grep -i hash` → two hits; took **`## Hash Table`**, not `### Hash Table`; row inserted after LC 4007, its last row; `awk` re-printed `## Hash Table` |
 | 7 | flagged: difficulty inferred from contest position, examples written from the rule |
