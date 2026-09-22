@@ -35,6 +35,7 @@ CS_basics is a comprehensive computer science fundamentals repository containing
   - `style.css` - Stylesheet for the generated doc pages
   - `nav.css` - Navbar, skip link and the `prefers-reduced-motion` opt-out. Loaded by **every** page family
   - `lc-page.css` - Shared palette and footer for the hand-written pages in `pages/`, which do not load `style.css`
+  - `skill-page.css` / `skill-page.js` - The **agent-skill** pages' shared chrome — the hero, the stepper, the tabs, the trace tape, the copy buttons. Nine pages load both; see [The agent-skill pages](#the-agent-skill-pages)
   - `package.json` / `package-lock.json` - Node.js dependencies (markdown-it, highlight.js, d3)
 
 ### The site is built by CI — never commit `_site/`
@@ -191,6 +192,45 @@ from the rest of the site: markdown you install into your own agent, working on
 your code rather than on these pages, and as one card reading "Interview coach"
 among ten others that was invisible. A new skill page goes in that band and in
 the navbar's `agent skills` group, not in `ENTRY_GROUPS`.
+
+### The agent-skill pages
+
+`site/pages/lc-{python,java,log,again,cheatsheet,algo-demo,site-data,zh-translate,faq-add}.html`
+are one design, not nine. They load **`site/skill-page.css` and
+`site/skill-page.js`** — the hero, the reveal-on-scroll, the pipeline stepper,
+the tab groups, the trace tape and the copy buttons — and the pair is a pair:
+the CSS leaves `.reveal` visible so a page with no JS is never stuck blank, and
+the JS is what hides it. A page with one half and not the other shows every
+section at once.
+
+Both were pasted into each page until Sep 2026: eight byte-identical copies of a
+225-line `<style>` and a 162-line `<script>`, plus lc-cheatsheet's, already 32
+lines adrift. ~2,700 lines, and a one-line change to the shared chrome meant
+editing nine files and getting it right nine times. `site/test/page-assets.test.js`
+fails if two pages inline the same block over 20 lines again.
+
+Two things a page still owns:
+
+- **`--rail-cols` / `--rail-cols-sm` on its `.rail` element**, its step count and
+  what that wraps to under 760px (`ceil(steps / 2)`). The count was hardcoded at
+  lc-python's 7 and copied to pages with 5, 6 and 9, so six rails drew ragged
+  until Sep 2026 — lc-java's ninth step at a seventh of the width. A test pins
+  the two to agree.
+- **anything genuinely its own**, in a small local `<style>` *after* the link.
+  lc-cheatsheet is the only one with any: four named modes rather than seven
+  numbered steps, so its `.step .n` is smaller, its detail panel taller, and its
+  mode label stays visible on a phone where a number can be hidden.
+
+`skills.html` and `suggest-review.html` are deliberately **not** on these files.
+Their copies are only ~70% the same — a different layout wearing the same class
+names — so folding them in would be a redesign, not a de-duplication.
+
+The **prose** is still hand-maintained: editing a `SKILL.md` does not update its
+page. The pages restate ~55% of their skill's own words (the `description:`
+frontmatter as the meta description, the step headings, the prime directives as
+the step rules, the `## Do not` bullets, the worked example as the tape), so a
+change to a recipe has to be carried across by hand — which is why the Sep 2026
+`PROBLEMS.md` rename touched 69 lines across eight of them.
 
 ### The algorithm visualizers
 
