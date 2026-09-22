@@ -53,6 +53,133 @@ At most 10^5 calls will be made in total to update, current, maximum, and minimu
 
 
 # V0
+# IDEA : HASH MAP (timestamp -> price) + 2 LAZY PQ (gpt)
+"""
+NOTE !!!
+
+1. use 2 PQ (small, big PQ)
+     
+     - self.big_values (Max PQ)
+
+     - self.small_values (Small PQ)
+
+
+
+2. PQ save (price, time)
+
+    -> save `price` first,  since we need to sort by price
+
+
+
+3. the `lazy deletion` pattern:
+    
+
+    ```
+    _price, _time = pq[0]
+
+    while pq:
+        if _price == kv_map[_time]:
+                break
+
+        heapq.heappop(pq)
+
+    ```
+
+
+4. we add `new` `time, price` to PQ anyway
+
+"""
+import heapq
+
+class StockPrice(object):
+
+    def __init__(self):
+
+        # Max heap:
+        # (-price, timestamp)
+        self.big_values = []
+
+        # Min heap:
+        # (price, timestamp)
+        self.small_values = []
+
+        # timestamp -> latest price
+        self.kv_map = {}
+
+        # Latest timestamp
+        self.max_time = 0
+
+    def update(self, timestamp, price):
+        """
+        :type timestamp: int
+        :type price: int
+        :rtype: None
+        """
+
+        # Update latest price for this timestamp
+        self.kv_map[timestamp] = price
+
+        # Track latest timestamp
+        self.max_time = max(self.max_time, timestamp)
+
+
+        """
+        NOTE !!!
+
+
+        we add new time, price to PQ anyway
+        """
+
+        # Add new price to both heaps
+        heapq.heappush(
+            self.big_values,
+            (-price, timestamp)
+        )
+
+        heapq.heappush(
+            self.small_values,
+            (price, timestamp)
+        )
+
+        # Lazy delete stale entries from max heap
+        while self.big_values:
+            neg_price, ts = self.big_values[0]
+
+            if -neg_price == self.kv_map[ts]:
+                break
+
+            heapq.heappop(self.big_values)
+
+        # Lazy delete stale entries from min heap
+        while self.small_values:
+            price_at_ts, ts = self.small_values[0]
+
+            if price_at_ts == self.kv_map[ts]:
+                break
+
+            heapq.heappop(self.small_values)
+
+    def current(self):
+        """
+        :rtype: int
+        """
+        return self.kv_map[self.max_time]
+
+    def maximum(self):
+        """
+        :rtype: int
+        """
+        return -self.big_values[0][0]
+
+    def minimum(self):
+        """
+        :rtype: int
+        """
+        return self.small_values[0][0]
+
+
+
+# V0
 # IDEA : HASH MAP (timestamp -> price) + 2 LAZY HEAPS
 #
 #   prices[timestamp] is the ONLY source of truth. an update just overwrites
