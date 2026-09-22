@@ -45,9 +45,10 @@ class Solution(object):
         """
         pass
 
-
 # V0-1
-# IDEA: DEQUE  (gemini)
+# IDEA: the `Universal basic calculator` (stack + queue + recursion)  (gemini)
+# https://github.com/yennanliu/CS_basics/issues/168
+# https://yennj12.js.org/CS_basics/cheatsheets/stack_expression_parsing.zh.html
 """
 NOTE !!!
 
