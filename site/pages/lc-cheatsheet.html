@@ -16,8 +16,9 @@
   <link rel="stylesheet" href="skill-page.css">
   <style>
     /* Four named modes rather than seven numbered steps. Everything else is
-       skill-page.css; these are the only rules this page does not share. */
-    :root { --rail-cols: 4; --rail-cols-sm: 2; }
+       skill-page.css; these are the only rules this page does not share.
+       The column counts are on the .rail element itself, with every other
+       stepper's. */
     .step .n { font-size: 0.95rem; }
     .sd { min-height: 12.5rem; }
     @media (max-width: 760px) {
@@ -129,7 +130,7 @@
         problem, is what determines where the section goes and which tables have to move with it.
       </p>
 
-      <div class="rail" role="radiogroup" aria-label="Modes">
+      <div class="rail" style="--rail-cols:4;--rail-cols-sm:2" role="radiogroup" aria-label="Modes">
         <button class="step" role="radio" aria-checked="true" data-n="example"
           data-name="as example — the default"
           data-body="The sheet already has the template and this problem is another instance of it. The section lands under that template, and the pattern's similar-problems table gains a row."

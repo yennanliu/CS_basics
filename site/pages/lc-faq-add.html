@@ -108,7 +108,7 @@
         Pick one to see what it does and the rule that step exists to enforce.
       </p>
 
-      <div class="rail" role="radiogroup" aria-label="Pipeline steps">
+      <div class="rail" style="--rail-cols:6;--rail-cols-sm:3" role="radiogroup" aria-label="Pipeline steps">
         <button class="step" role="radio" aria-checked="true" data-n="1"
                 data-name="Find the file whose Scope line owns it"
                 data-body="Read the Scope lines of every plausible candidate, not just the one whose filename matches. If the best file is not the obvious one, that gets said in the report along with which Scope line decided it."

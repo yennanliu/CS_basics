@@ -78,3 +78,21 @@ test('the shared files exist and build.sh copies them', () => {
   assert.match(buildSh, /skill-page\.css/, 'build.sh does not copy skill-page.css to _site/');
   assert.match(buildSh, /skill-page\.js/, 'build.sh does not copy skill-page.js to _site/');
 });
+// The rail is a CSS grid with a fixed column count, and the count was written
+// for lc-python's seven steps before the block was copied to pages with five,
+// six and nine. A page whose count disagrees with its step count renders a
+// ragged rail: nine steps in seven columns wrap two onto a second row at a
+// seventh of the width each, and five leave two empty tracks.
+test('every stepper declares as many columns as it has steps', () => {
+  const wrong = [];
+  for (const page of pages) {
+    const html = read(page);
+    if (!html.includes('skill-page.css')) continue;
+    const steps = (html.match(/class="step"/g) || []).length;
+    if (!steps) continue;
+    const declared = html.match(/--rail-cols:\s*(\d+)/);
+    const cols = declared ? Number(declared[1]) : 7; // skill-page.css's default
+    if (cols !== steps) wrong.push(`${page}: ${steps} steps, ${cols} columns`);
+  }
+  assert.deepEqual(wrong, [], 'set --rail-cols in the page\'s own <style> to its step count');
+});
