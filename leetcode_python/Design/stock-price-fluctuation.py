@@ -53,36 +53,67 @@ At most 10^5 calls will be made in total to update, current, maximum, and minimu
 
 
 # V0
+# IDEA : HASH MAP (timestamp -> price) + 2 LAZY HEAPS
+#
+#   prices[timestamp] is the ONLY source of truth. an update just overwrites
+#   it, and `latest` tracks the biggest timestamp seen, so current() is O(1).
+#
+#   for maximum()/minimum() we push (price, timestamp) on EVERY update and
+#   never delete. on a query, pop from the top while the top is STALE, i.e.
+#   prices[ts] != price -> that record was corrected later. the first top
+#   that agrees with prices is the true extreme.
+#
+#   NOTE : heapq is a min-heap, so the max-heap negates the price.
+import heapq
+
+
 class StockPrice(object):
 
+    # time = O(1), space = O(n)
     def __init__(self):
-        
+        self.prices = {}
+        self.latest = 0
+        self.max_heap = []  # (-price, timestamp)
+        self.min_heap = []  # (price, timestamp)
 
+    # time = O(log n), space = O(n)
     def update(self, timestamp, price):
         """
         :type timestamp: int
         :type price: int
         :rtype: None
         """
-        
+        self.prices[timestamp] = price
+        self.latest = max(self.latest, timestamp)
+        heapq.heappush(self.max_heap, (-price, timestamp))
+        heapq.heappush(self.min_heap, (price, timestamp))
 
+    # time = O(1), space = O(1)
     def current(self):
         """
         :rtype: int
         """
-        
+        return self.prices[self.latest]
 
+    # time = O(log n) amortized, space = O(1)
     def maximum(self):
         """
         :rtype: int
         """
-        
+        # lazy deletion : drop tops that were corrected by a later update
+        while -self.max_heap[0][0] != self.prices[self.max_heap[0][1]]:
+            heapq.heappop(self.max_heap)
+        return -self.max_heap[0][0]
 
+    # time = O(log n) amortized, space = O(1)
     def minimum(self):
         """
         :rtype: int
         """
-        
+        while self.min_heap[0][0] != self.prices[self.min_heap[0][1]]:
+            heapq.heappop(self.min_heap)
+        return self.min_heap[0][0]
+
 
 # V0-1
 # IDEA: BIG, SMALL PQ + Lazy Deletion (GEMINI)
