@@ -37,7 +37,9 @@
 			- 第 258 场周赛(2021-09-12 10:30, 90 分钟) 参赛人数 4519
 			- weekly 261 (done)
 			- weekly 262 (done)
-				- https://leetcode.com/contest/weekly-contest-262
+			- weekly 263 (ing)
+				- https://leetcode.com/contest/weekly-contest-263
+					- 2043 (ok)
 
 
 
