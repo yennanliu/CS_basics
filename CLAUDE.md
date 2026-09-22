@@ -25,8 +25,8 @@ CS_basics is a comprehensive computer science fundamentals repository containing
   - `build.sh` - **The** build recipe: builds the whole `_site/` tree. Both workflows call it
   - `build-site.js` - Builds HTML pages from markdown docs
   - `build-leetcode.js` - Generates LeetCode JSON data for the LC Explorer
-  - `build-roadmap.js` - Resolves [`data/roadmap.json`](data/roadmap.json) against `README.md` and [`data/problem_lists.json`](data/problem_lists.json) into the Study Roadmap's data; fails the build on a bad topic id, cheatsheet slug, LC number or list mapping
-  - `build-quiz.js` - Resolves [`data/complexity_quiz.json`](data/complexity_quiz.json) against `README.md` into the Complexity Quiz's data; fails the build on a duplicate id, an LC number README does not know, or an answer the grader cannot parse
+  - `build-roadmap.js` - Resolves [`data/roadmap.json`](data/roadmap.json) against `PROBLEMS.md` and [`data/problem_lists.json`](data/problem_lists.json) into the Study Roadmap's data; fails the build on a bad topic id, cheatsheet slug, LC number or list mapping
+  - `build-quiz.js` - Resolves [`data/complexity_quiz.json`](data/complexity_quiz.json) against `PROBLEMS.md` into the Complexity Quiz's data; fails the build on a duplicate id, an LC number the index does not know, or an answer the grader cannot parse
   - `build-review-plan.js` - Compiles [`data/progress.txt`](data/progress.txt) into the Review Plan's data. **The practice log is the only copy** — see [Review plan data](#the-review-plans-data) below
   - `finalize-pages.js` / `prune-images.js` - The two finishing passes; they run last because they need the whole `_site/` tree (see [Finishing passes](#the-two-finishing-passes))
   - `e2e-check.js` - Post-build validation of every generated page. Both workflows run it; run it locally too
@@ -36,6 +36,50 @@ CS_basics is a comprehensive computer science fundamentals repository containing
   - `nav.css` - Navbar, skip link and the `prefers-reduced-motion` opt-out. Loaded by **every** page family
   - `lc-page.css` - Shared palette and footer for the hand-written pages in `pages/`, which do not load `style.css`
   - `package.json` / `package-lock.json` - Node.js dependencies (markdown-it, highlight.js, d3)
+
+### `README.md` is a landing page; `PROBLEMS.md` is the index
+
+GitHub renders only the **first 512,000 bytes** of a markdown file. Past that it
+stops mid-element and says nothing — no notice, no truncation warning, the tables
+simply end.
+
+`README.md` crossed that line and nobody noticed for months. At 1,137,734 bytes
+the cut fell inside the LC 1480 row, so **1,929 of the 3,287 problem rows** and
+every heading after them were not on the repo's front page at all, and
+find-in-page failed on two thirds of the index with no sign that it had.
+
+So the index moved to [`PROBLEMS.md`](PROBLEMS.md) — at the repo root, because
+every one of its 3,287 rows links solutions as `./leetcode_python/…` and moving
+it into a subdirectory would break all of them — and `README.md` became a short
+landing page pointing at the site.
+
+- **`site/build-roadmap.js` names the path once** (`PROBLEM_INDEX`) and exports
+  it. Four builders and eight scripts read the index; none of the builders spells
+  the filename itself.
+- **The front door is checked on every build.** `build-site.js` fails if
+  `README.md` is over the cap, and `site/test/render-cap.test.js` pins the same
+  rule so `npm test` catches it without a build. `PROBLEMS.md` is deliberately
+  exempt and says so in its own header.
+- **The site is where the index is meant to be read.** `problems.html` renders it
+  in full, and `search.html` now covers every row — see
+  [Searching for a problem](#searching-for-a-problem).
+- The CLI planners take `--index`, and still accept `--readme` as an alias.
+
+### Searching for a problem
+
+Search's problem half used to read `data/lc-problems.json` alone, which
+`build-leetcode.js` builds from `doc/google_leetcode_problems_by_tags.md` — 1,135
+problems. The index holds 3,287, so two thirds of this repo's own problems could
+not be found anywhere on the site: searching `2071` returned nothing while
+`PROBLEMS.md` had the row all along.
+
+`build-site.js` now also writes `_site/data/problem-index.json` — the whole index,
+built with the review plan's `buildCatalog`, so a row carries the same title,
+topic, difficulty, slug and solution links in both places (paths relative to
+`repo`, as there). `search.html` merges the two by id: an id the tag dataset
+already has keeps its richer tags, and every other row is appended.
+`e2e-check.js` queries both with the page's own lifted `score()`, so a number the
+index knows and search cannot find fails the build.
 
 ### The site is built by CI — never commit `_site/`
 
@@ -101,20 +145,20 @@ sorts `again!!!` above a bare `again`.
 #### What the build folds in
 
 The log records a bare LeetCode number, which is all a schedule needs and
-nowhere near enough to act on. So `build-review-plan.js` also reads `README.md`
+nowhere near enough to act on. So `build-review-plan.js` also reads `PROBLEMS.md`
 (via `parseReadmeProblems`) and [`data/problem_lists.json`](data/problem_lists.json),
 and attaches to every row its **title, topic, difficulty, slug, MUST/Google
 flags, curated-list membership and the solutions committed here** — plus a
-top-level `sections` array carrying each topic's weight over the *whole* README,
+top-level `sections` array carrying each topic's weight over the *whole* index,
 not only the rows that happen to be in the log.
 
 - The weights are `script/suggest_review.py`'s (`W` in the module), so the
   page's balance table and the CLI planner answer the same question the same
   way. Change one, change the other.
-- The slug comes from the README link, never from the title — guessing is wrong
+- The slug comes from the index link, never from the title — guessing is wrong
   exactly where a dead link costs something (see
   [`/lc-python`](#filing-a-solved-problem--lc-python-and-lc-java)).
-- A row README does not index keeps its schedule and lands in `Unfiled`.
+- A row the index does not carry keeps its schedule and lands in `Unfiled`.
   Enrichment can never shrink the schedule; a test pins that.
 - Solution links ship relative to `payload.repo`, because the absolute form
   repeated the same 52-character GitHub prefix three times per problem.
@@ -178,8 +222,8 @@ Two consequences worth knowing:
 
 ### The landing page and the problem index
 
-`index.html` is a landing page built by `build-site.js`; README lives at
-`problems.html`. Every count on the landing page — problems, cheatsheets, FAQs,
+`index.html` is a landing page built by `build-site.js`; the problem index
+([`PROBLEMS.md`](PROBLEMS.md)) lives at `problems.html`. Every count on the landing page — problems, cheatsheets, FAQs,
 visualizers, roadmap topics, quiz questions, agent skills, OK vs AGAIN — is read
 from the source files at build time. **Do not hardcode one**; a typed number is
 one that goes stale the first week nobody re-checks it.
@@ -285,18 +329,18 @@ See [`doc/utility-scripts.md`](doc/utility-scripts.md) for full usage of all scr
 
 ## Filing a solved problem — `/lc-python` and `/lc-java`
 
-Two skills, one recipe shape, one README row between them. **The steps live in each
+Two skills, one recipe shape, one `PROBLEMS.md` row between them. **The steps live in each
 `SKILL.md`, not here** — one copy, so they cannot drift.
 
 `.claude/skills/lc-python/` files into `leetcode_python/<Pattern_Dir>/<slug>.py`: find the
 problem's real slug, write the house layout (problem docstring → `# V0` → `# IDEA` →
 `# time = O(...), space = O(...)` → `class Solution(object)`), smoke-test it against the
-docstring's own examples, and insert the README row in LC-number order.
+docstring's own examples, and insert the index row in LC-number order.
 
 `.claude/skills/lc-java/` is its counterpart for
 `leetcode_java/src/main/java/LeetCodeJava/<Package>/<ClassName>.java`, and exists because
 that tree is both the most-churned directory in the repo and the one furthest behind —
-1244 README rows carry a Java link against 2898 carrying a Python one.
+1244 index rows carry a Java link against 2898 carrying a Python one.
 
 ```text
 /lc-python 4038 Hash_table       # + paste the draft solution under it
@@ -312,14 +356,14 @@ The four things `/lc-python` exists to prevent, all of which have actually happe
 
 - a slug guessed from the method name (LC 4038's method is `countSpecialIntegers`;
   the problem is `count-integers-appearing-in-a-single-block`), which yields a wrong
-  file name and a dead README link;
+  file name and a dead link in the index;
 - an invented file layout, instead of copying a neighbour in the target dir;
-- code handed back untested, and a README row whose columns do not match the table
+- code handed back untested, and an index row whose columns do not match the table
   it was inserted into;
-- **the row filed in the wrong one of README's two table sets.** The main index is the
+- **the row filed in the wrong one of the index's two table sets.** The main set is the
   `## ` headings; everything under `## Newly Added (kamyu104 gap)` is an imported index
   with its own `### ` sub-tables. The imported set is the *bigger* one (1982 rows against
-  1309) and duplicates 23 topic names, so `grep -n "leetcode_python/<Dir>" README.md | tail`
+  1309) and duplicates 23 topic names, so `grep -n "leetcode_python/<Dir>" PROBLEMS.md | tail`
   — which is what the skill used to say — always lands there. All 17 recent contest rows
   (LC 3964-4054) belong to a main `## ` table. A misfiled row renders fine and is ~2500
   lines from where anyone looks, so nothing reports it; `/lc-java` inherits the mistake,
@@ -335,7 +379,7 @@ normalisation pass (`db49955`):
 - **leetcode.com page furniture pasted into the javadoc header** — `Solved`, `Topics`,
   `Companies`, `Hint`, the premium lock, sometimes the whole page footer. 1445 headers
   were carrying it;
-- **a second README row.** Most problems here are Python-first, so the row already exists
+- **a second index row.** Most problems here are Python-first, so the row already exists
   and the `[Java]` link belongs *in it*, after the Python one. Nothing in the build
   catches a duplicate row, which is what makes it the expensive one.
 
@@ -385,7 +429,7 @@ Two shapes lose data silently, and both are already in the log:
 Fixing the 109 historical entries is a separate job that moves `build-review-plan.js` and
 its tests first; `/lc-log` writes today's line and never rewrites a past day.
 
-`.claude/skills/lc-again/` owns the other record — README's **status column**, which reads
+`.claude/skills/lc-again/` owns the other record — the index's **status column**, which reads
 325 `AGAIN` against 124 `OK`, with 106 problems still marked after twelve or more passes.
 [`doc/lc-readiness-guide.md`](doc/lc-readiness-guide.md) already says why that ratio is a
 floor rather than a measurement: nothing in the repo promotes a row, so the marker only
@@ -492,7 +536,7 @@ cycle, **no edge the graph already implies** (the roadmap must stay a transitive
 sheet slugs and LC numbers that exist, no duplicate quiz id, `accept` always an array, and
 every answer parseable by `site/complexity.js` — whose identifiers are **single letters**,
 so `O(n * a)` with a `vars` line, never `O(n * amount)`. It never types a title, difficulty
-or solution link into either file; those come from README. And it reads the per-list
+or solution link into either file; those come from the index. And it reads the per-list
 **"shown of" tally** the build prints, which is the only signal that a taxonomy mapping
 broke.
 
@@ -586,9 +630,9 @@ The roadmap page (`lc-roadmap.html`) is driven entirely by [`data/roadmap.json`]
 }
 ```
 
-Titles, difficulty and links to this repo's solutions come from `README.md` at build time — never repeat them here. `site/build-roadmap.js` fails the build if:
+Titles, difficulty and links to this repo's solutions come from `PROBLEMS.md` at build time — never repeat them here. `site/build-roadmap.js` fails the build if:
 
-- a `problems` id is not in a README table, or a `sheets` slug is not a file in `doc/cheatsheet/`;
+- a `problems` id is not in a `PROBLEMS.md` table, or a `sheets` slug is not a file in `doc/cheatsheet/`;
 - `row` is not strictly greater than every prereq's `row` (edges must point downward);
 - the prereqs contain a cycle, or an edge the graph **already implies** — the roadmap has to stay a transitive reduction, or the drawing turns into spaghetti.
 
@@ -598,8 +642,9 @@ Within a row, topics are drawn in the order they appear in the file, so put a to
 
 The page shows one problem set at a time. `roadmap` is the curated path above; the rest are well-known lists filed onto the same topics. All of them are declared in `data/roadmap.json`:
 
-- **`lists`** — the picker's entries. `from` says where membership comes from: `curated` (the ids on the nodes), `list:<flag>` (a flag in [`data/problem_lists.json`](data/problem_lists.json)), or `readme:<field>` (`google` / `must`, read straight out of README's tag and status columns).
-- **`topicSources`** — each source files problems under its own taxonomy (NeetCode's `Arrays & Hashing`, LeetCode's plan group `Hashing`, README's `## Array` heading). These maps put them on roadmap topics; `null` means *deliberately* off the roadmap (SQL, shell, JavaScript-only exercises). A list's `topicFrom` names which taxonomies to try, in order, so a coarse group falls through to a finer one.
+- **`lists`** — the picker's entries. `from` says where membership comes from: `curated` (the ids on the nodes), `list:<flag>` (a flag in [`data/problem_lists.json`](data/problem_lists.json)), or `readme:<field>` (`google` / `must`, read straight out of the index's tag and status
+  columns — the source key is still spelled `readme:`).
+- **`topicSources`** — each source files problems under its own taxonomy (NeetCode's `Arrays & Hashing`, LeetCode's plan group `Hashing`, the index's `## Array` heading). These maps put them on roadmap topics; `null` means *deliberately* off the roadmap (SQL, shell, JavaScript-only exercises). A list's `topicFrom` names which taxonomies to try, in order, so a coarse group falls through to a finer one.
 
 Only the curated list has a teaching order, so only it renders locks and prerequisites.
 
@@ -621,9 +666,9 @@ The quiz page (`lc-complexity-quiz.html`) draws from [`data/complexity_quiz.json
 }
 ```
 
-Titles, difficulty and the link to this repo's solution come from `README.md` at build time — never repeat them here. Set `title` and `difficulty` yourself only for an entry with `"lc": null` (a pure algorithm or Python drill). `site/build-quiz.js` fails the build if:
+Titles, difficulty and the link to this repo's solution come from `PROBLEMS.md` at build time — never repeat them here. Set `title` and `difficulty` yourself only for an entry with `"lc": null` (a pure algorithm or Python drill). `site/build-quiz.js` fails the build if:
 
-- an `id` repeats, or an `lc` number is not in a README table;
+- an `id` repeats, or an `lc` number is not in a `PROBLEMS.md` table;
 - an entry with an `lc` number sets its own `title` or `difficulty`, or one without an `lc` number omits them;
 - an `accept` field is not an array (a bare string survives validation and then breaks the page's feedback);
 - any answer — `time`, `space`, or an `accept` alternative — does not parse as a complexity expression. Answers are normalised by `site/complexity.js`, whose identifiers are **single letters**, so write `O(n * a)` with a `vars` line rather than `O(n * amount)`.
@@ -798,7 +843,7 @@ For the full guide, see [`doc/add-time-space-guide.md`](doc/add-time-space-guide
 ## Evaluating Interview Readiness
 
 `script/eval_lc_readiness.py` scores a LeetCode profile against a Google SWE coding bar
-(`--level L3` by default) using the public GraphQL API plus `README.md`'s status column.
+(`--level L3` by default) using the public GraphQL API plus `PROBLEMS.md`'s status column.
 
 For the full guide — flags, how to read each section, and which numbers to act on — see
 [`doc/lc-readiness-guide.md`](doc/lc-readiness-guide.md). Quick start:

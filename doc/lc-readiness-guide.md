@@ -17,7 +17,7 @@ python3 script/eval_lc_readiness.py
 ```
 
 No install, no dependencies, no LeetCode login, no Premium. It reads the public
-GraphQL API and this repo's `README.md`.
+GraphQL API and this repo's `PROBLEMS.md`.
 
 ### All the flags
 
@@ -28,7 +28,7 @@ GraphQL API and this repo's `README.md`.
 | `--offline` | off | Replay the cache, make no network calls. Fails if any cache file for the requested user, year, or the shared tag universe is missing. |
 | `--json <path>` | — | Write the evaluated report as JSON, for tracking over time. It is everything the terminal shows minus the raw tag map, not the untouched evaluator result. |
 | `--cache-dir <dir>` | `.lc_cache/` | Where fetched JSON lands. Gitignored. |
-| `--readme <path>` | `README.md` | The status-column source. |
+| `--index <path>` | `PROBLEMS.md` | The status-column source. `--readme` is accepted as an alias. |
 | `--year <yyyy>` | current year | Which year's submission calendar to summarise. |
 
 ```bash
@@ -91,11 +91,11 @@ for what has actually been accepted on the platform:
 | `matchedUser.userCalendar` | streak, active days, per-day submission counts |
 | `questionList(filters:{tags})` | how many problems exist per tag — the denominator |
 
-**2. This repo's `README.md`** — ground truth for *your own assessment* of each
+**2. This repo's `PROBLEMS.md`** — ground truth for *your own assessment* of each
 problem: the `OK` / `AGAIN` status, the trailing `*` run that counts review passes,
 and the note column's `google` / `MUST` tags.
 
-The gap between them is informative. A problem can have a README row, a Java file
+The gap between them is informative. A problem can have an index row, a Java file
 and a Python file, and still have never been accepted on LeetCode — which is exactly
 what the graph topics turned out to look like.
 
@@ -220,7 +220,7 @@ lightly drilled is the one that will surprise you.
 Six columns:
 
 - **solved** — distinct problems accepted with that tag. A leading `~` means the
-  number came from a README regex, not the API (see below).
+  number came from an index regex, not the API (see below).
 - **of** — how many problems carry that tag in total, fetched from LeetCode.
 - **cov** — solved ÷ of.
 - **x base** — coverage divided by your overall coverage of all of LeetCode.
@@ -236,10 +236,10 @@ on. `thin` = under 60% but low weight. `n/a` = not measurable.
 Three quirks, all deliberate:
 
 - **`~` rows.** LeetCode's skill-stats endpoint returns only a curated tag set and
-  silently omits Heap/PQ and prefix sum. Those fall back to a regex over the README
+  silently omits Heap/PQ and prefix sum. Those fall back to a regex over the index
   rows, which is a *lower bound* — it counts only what this repo tracks — so they are
   measured but not compared against a denominator.
-- **`n/a` rows.** BST is omitted by the API and its README notes are full of
+- **`n/a` rows.** BST is omitted by the API and its index notes are full of
   "check with BST" cross-references, so any regex over-counts. Rather than report a
   bad number, it is excluded from the score entirely. An unmeasured topic is not a
   proven gap. Tree coverage is the honest proxy.
@@ -253,14 +253,14 @@ This is the most useful part of the report and none of it is visible from LeetCo
 ```text
   tracked rows 1191   OK 337   AGAIN 854   -> 28% marked solid
 
-  Cost curve - mean review passes per problem, by README section.
+  Cost curve - mean review passes per problem, by index section.
   High mean = the topic keeps costing you re-learns. Ranked worst first:
     section                      n   OK  AGAIN  mean passes
     Recursion                   30    3     27       7.3  █████████░
     Math                        81   19     62       1.1  █░░░░░░░░░
 ```
 
-`parse_readme()` also recognises `TODO` and `NOT_OK`. Neither appears in the README
+`parse_index()` also recognises `TODO` and `NOT_OK`. Neither appears in the index
 today, but they are counted in their own bucket rather than folded into `AGAIN`, so the
 per-section totals always reconcile with the header line. They stay in the mastery
 denominator — a `TODO` row is tracked but not solid.
@@ -361,7 +361,7 @@ Everything tunable is at the top of the script:
 
 - `LEVELS` — per-level volume targets, signal targets, and the topic target scale.
 - `GOOGLE_TOPICS` — the topic list, as
-  `(tag slug, display name, target, weight, README fallback regex)`.
+  `(tag slug, display name, target, weight, index fallback regex)`.
 - `grade()` — the letter cutoffs.
 - The axis weights are in `evaluate()`, on the line that computes `overall`.
 

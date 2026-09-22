@@ -272,7 +272,7 @@
         <pre id="tape" aria-live="off">1  check      monotonic-stack not present · stack is row 1
               doc/cheatsheet/monotonic_stack.md  exists
               doc/cheatsheet/monotonic_queue.md  exists
-              496 503 85 901 907  all in README
+              496 503 85 901 907  all in the index
 
 2  write      row 2, prereqs: ["stack"]
               "array" left OFF — stack already requires it, and an
@@ -285,7 +285,7 @@
 
 5  assumed    row 2 over row 3 — nothing on row 2 depends on it</pre>
       </div>
-      <p class="note" style="margin-top:0.6rem">Never repeat a title, a difficulty or a solution link in either file. They are read from README at build time; a typed copy is one that goes stale.</p>
+      <p class="note" style="margin-top:0.6rem">Never repeat a title, a difficulty or a solution link in either file. They are read from the index at build time; a typed copy is one that goes stale.</p>
     </div>
   </div>
 
@@ -332,9 +332,9 @@
       <div class="rail" role="radiogroup" aria-label="Pipeline steps">
         <button class="step" role="radio" aria-checked="true" data-n="1"
                 data-name="Check what already exists"
-                data-body="A quiz id that repeats and a roadmap topic that duplicates an existing one are both build failures, so the check comes first. Every problems id must be in a README table, and every sheets slug must be a real file under doc/cheatsheet/."
-                data-rule="Never repeat a title, difficulty or solution link in either file. They are read from README at build time."
-                data-code="grep -n &quot;^| *0*496 &quot; README.md
+                data-body="A quiz id that repeats and a roadmap topic that duplicates an existing one are both build failures, so the check comes first. Every problems id must be in an index table, and every sheets slug must be a real file under doc/cheatsheet/."
+                data-rule="Never repeat a title, difficulty or solution link in either file. They are read from the index at build time."
+                data-code="grep -n &quot;^| *0*496 &quot; PROBLEMS.md
 ls doc/cheatsheet/monotonic_stack.md">
           <span class="n">1</span><span class="bar" aria-hidden="true"></span><span class="tag">check</span>
         </button>
@@ -409,14 +409,14 @@ left off &quot;array&quot; — stack already implies it">
   "prereqs": ["stack"],                  <span class="ann">&lt;- IMMEDIATE prereqs only</span>
   "sheets": ["monotonic_stack", "monotonic_queue"],
   "blurb": "One sentence on what the topic buys you.",
-  "problems": [496, 503, 85, 901, 907]   <span class="ann">&lt;- README must know each one</span>
+  "problems": [496, 503, 85, 901, 907]   <span class="ann">&lt;- the index must know each one</span>
 }</code></pre>
         </div>
         <div class="table-wrap">
           <table>
             <thead><tr><th>Fails the build if</th><th>Why the rule exists</th></tr></thead>
             <tbody>
-              <tr><td class="num">a <code>problems</code> id is not in a README table</td><td>a number README does not know has no title, difficulty or solution link to attach</td></tr>
+              <tr><td class="num">a <code>problems</code> id is not in an index table</td><td>a number the index does not know has no title, difficulty or solution link to attach</td></tr>
               <tr><td class="num">a <code>sheets</code> slug is not a file</td><td>a dead sheet link on a teaching page is worse than no link</td></tr>
               <tr><td class="num"><code>row</code> is not strictly greater than every prereq's</td><td>edges must point downward</td></tr>
               <tr><td class="num">the prereqs contain a cycle</td><td>&mdash;</td></tr>
@@ -435,7 +435,7 @@ left off &quot;array&quot; — stack already implies it">
           <button class="copy" type="button">copy</button>
 <pre><code>{
   "id": "two-sum-hash",
-  "lc": 1,                               <span class="ann">&lt;- README must know it; title/difficulty come from there</span>
+  "lc": 1,                               <span class="ann">&lt;- the index must know it; title/difficulty come from there</span>
   "topic": "Arrays &amp; Hashing",
   "vars": "n = len(nums)",               <span class="ann">&lt;- what the single letters mean</span>
   "code": ["def twoSum(nums, target):", "    ..."],
@@ -450,8 +450,8 @@ left off &quot;array&quot; — stack already implies it">
             <thead><tr><th>Fails the build if</th><th>Note</th></tr></thead>
             <tbody>
               <tr><td class="num">an <code>id</code> repeats</td><td>&mdash;</td></tr>
-              <tr><td class="num">an <code>lc</code> number is not in a README table</td><td>&mdash;</td></tr>
-              <tr><td class="num">an entry <b>with</b> an <code>lc</code> sets its own title/difficulty</td><td>they come from README</td></tr>
+              <tr><td class="num">an <code>lc</code> number is not in an index table</td><td>&mdash;</td></tr>
+              <tr><td class="num">an entry <b>with</b> an <code>lc</code> sets its own title/difficulty</td><td>they come from the index</td></tr>
               <tr><td class="num">an entry <b>without</b> an <code>lc</code> omits them</td><td>a pure algorithm or Python drill</td></tr>
               <tr><td class="num"><code>accept</code> is a bare string</td><td>it survives validation and then breaks the page's feedback</td></tr>
               <tr><td class="num">any answer does not parse</td><td><code>time</code>, <code>space</code>, and each <code>accept</code></td></tr>
@@ -474,8 +474,8 @@ left off &quot;array&quot; — stack already implies it">
           <table>
             <thead><tr><th>Key</th><th>What it does</th></tr></thead>
             <tbody>
-              <tr><td class="num">lists</td><td>The picker's entries. <code>from</code> says where membership comes from: <code>curated</code> (the ids on the nodes), <code>list:&lt;flag&gt;</code> (a flag in <code>problem_lists.json</code>), or <code>readme:&lt;field&gt;</code> (<code>google</code> / <code>must</code>, read out of README's own columns).</td></tr>
-              <tr><td class="num">topicSources</td><td>Each source files problems under its own taxonomy &mdash; NeetCode's <code>Arrays &amp; Hashing</code>, LeetCode's plan group <code>Hashing</code>, README's <code>## Array</code> heading. These maps put them on roadmap topics. <b><code>null</code> means <em>deliberately</em> off the roadmap</b> (SQL, shell, JavaScript-only exercises).</td></tr>
+              <tr><td class="num">lists</td><td>The picker's entries. <code>from</code> says where membership comes from: <code>curated</code> (the ids on the nodes), <code>list:&lt;flag&gt;</code> (a flag in <code>problem_lists.json</code>), or <code>readme:&lt;field&gt;</code> (<code>google</code> / <code>must</code>, read out of the index's own columns).</td></tr>
+              <tr><td class="num">topicSources</td><td>Each source files problems under its own taxonomy &mdash; NeetCode's <code>Arrays &amp; Hashing</code>, LeetCode's plan group <code>Hashing</code>, the index's <code>## Array</code> heading. These maps put them on roadmap topics. <b><code>null</code> means <em>deliberately</em> off the roadmap</b> (SQL, shell, JavaScript-only exercises).</td></tr>
               <tr><td class="num">topicFrom</td><td>Which taxonomies a list tries, in order, so a coarse group falls through to a finer one.</td></tr>
             </tbody>
           </table>
@@ -508,7 +508,7 @@ the roadmap build is failing</code></pre>
           <tbody>
             <tr><td class="num">Row</td><td>Chosen as the lowest row strictly below every prereq, then named in the report.</td></tr>
             <tr><td class="num">Prereqs</td><td>Reduced to the immediate ones. An implied edge would fail the build anyway.</td></tr>
-            <tr><td class="num">Title / difficulty / links</td><td>Never written. They come from README at build time, in both files.</td></tr>
+            <tr><td class="num">Title / difficulty / links</td><td>Never written. They come from the index at build time, in both files.</td></tr>
             <tr><td class="num">Which file</td><td>Inferred from what you asked for &mdash; a topic or a question.</td></tr>
           </tbody>
         </table>
@@ -520,7 +520,7 @@ the roadmap build is failing</code></pre>
       <p class="eyebrow">The guardrails</p>
       <h2>What it will not do</h2>
       <ul class="nots">
-        <li><span class="x" aria-hidden="true">&times;</span><span><b>Type a title, difficulty or solution link.</b><span class="why">They come from README at build time. A typed copy is one that goes stale the first week nobody re-checks it.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Type a title, difficulty or solution link.</b><span class="why">They come from the index at build time. A typed copy is one that goes stale the first week nobody re-checks it.</span></span></li>
         <li><span class="x" aria-hidden="true">&times;</span><span><b>List an implied prereq.</b><span class="why">The roadmap stays a transitive reduction. Only the immediate prerequisites go in.</span></span></li>
         <li><span class="x" aria-hidden="true">&times;</span><span><b>Write a multi-letter identifier.</b><span class="why"><code>O(n * amount)</code> does not parse. <code>O(n * a)</code> plus a <code>vars</code> line does.</span></span></li>
         <li><span class="x" aria-hidden="true">&times;</span><span><b>Use <code>accept</code> for spelling variants.</b><span class="why"><code>O(n log n)</code>, <code>nlogn</code> and <code>N·logN</code> already grade the same. <code>accept</code> is for a genuinely defensible different answer.</span></span></li>

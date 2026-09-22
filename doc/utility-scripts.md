@@ -37,17 +37,17 @@ The doc → tag mapping lives in `DOC_TAGS` inside the script; edit it there rat
 
 ## fix_readme_tags.py
 
-Normalises and completes the tags in `README.md`'s **Note** column — the leading bold
+Normalises and completes the tags in `PROBLEMS.md`'s **Note** column — the leading bold
 type tag, the company tags, and the curated-list tags.
 
 ```bash
-# Rewrite README.md (idempotent — a second run changes nothing)
+# Rewrite PROBLEMS.md (idempotent — a second run changes nothing)
 python3 script/fix_readme_tags.py
 
 # What would change, without writing
 python3 script/fix_readme_tags.py --report
 
-# Exit 1 if README.md has drifted (for CI or a pre-commit check)
+# Exit 1 if PROBLEMS.md has drifted (for CI or a pre-commit check)
 python3 script/fix_readme_tags.py --check
 ```
 
@@ -82,7 +82,7 @@ What it does, in order:
    **deleted, not renamed**: they sat on a fraction of the rows they belonged on, and 2
    of the 75 rows saying "Curated Top 75" were not on Blind 75 at all, so renaming in
    place would have preserved the error.
-6. **Adds missing company tags** for the nine companies the README tracks widely: google,
+6. **Adds missing company tags** for the nine companies the index tracks widely: google,
    amazon, fb, apple, netflix, microsoft, uber, linkedin, bloomberg — the first five
    being FAANG. Widening this set pushes some rows past twenty tags, at which point the
    column stops being readable — the long tail (airbnb, twitter, garena, shopee…) is
@@ -92,13 +92,13 @@ Three vendored caches feed it, so a normal run needs neither the network nor the
 
 | File | Source | Refresh with |
 |------|--------|--------------|
-| `data/lc_topic_tags.json` | LeetCode's public GraphQL API — official `topicTags` + difficulty for the 1388 problems the README lists | `--refresh-topics` |
+| `data/lc_topic_tags.json` | LeetCode's public GraphQL API — official `topicTags` + difficulty for the 1388 problems the index lists | `--refresh-topics` |
 | `data/company_lc_tags.json` | the company-frequency PDFs under `doc/` (via `pdftotext`), unioned with `doc/google_leetcode_problems_by_tags.md` for Google | `--refresh-companies` |
 | `data/problem_lists.json` | Blind 75 / NeetCode 150 / 250 / Top 100 Liked membership, shared with the site's roadmap filter | `script/fetch_problem_lists.py` |
 
 All three are **vendored, not built** — the site build never touches the network.
 Refresh them by hand. Sharing `data/problem_lists.json` with `site/build-roadmap.js` is
-the point: the README and the roadmap's list picker answer "is this on Blind 75?" from
+the point: the index and the roadmap's list picker answer "is this on Blind 75?" from
 one file, so they cannot disagree.
 
 The Google column feeds the site: `site/build-roadmap.js` reads `google` out of this
@@ -119,7 +119,7 @@ therefore validates before it writes, and every failure is fatal:
   genuinely short prints (55–86%) rather than bad parses.
 - A refresh that ends with no problems for one of the nine companies raises rather than
   writing the cache — a silently short parse would not produce a visibly broken file, it
-  would quietly *delete* that company's README tags on the next run.
+  would quietly *delete* that company's index tags on the next run.
 
 `doc/leetcode_company_V4` is not read: it is a prose interview guide with no problem
 table.
@@ -178,7 +178,7 @@ Two traps the parser has to dodge, both of which silently inflate coverage:
 
 Scores a LeetCode profile against a Google SWE coding bar and prints a terminal report.
 Pulls the public LeetCode GraphQL API (no auth, no premium) and cross-references it with
-`README.md`'s status column.
+`PROBLEMS.md`'s status column.
 
 ```bash
 python3 script/eval_lc_readiness.py                    # fetch + report, L3 bar
@@ -206,12 +206,12 @@ fetch for free. Four axes, weighted into one grade:
 |------|------------------|--------|
 | Volume | solved counts and the Easy/Medium/Hard mix vs target | LC `submitStats` |
 | Breadth | per-topic solved vs a target for each topic Google asks, weighted by how often it comes up | LC `tagProblemCounts` |
-| Mastery | share of README rows marked `OK` rather than `AGAIN` | README status column |
+| Mastery | share of index rows marked `OK` rather than `AGAIN` | the `PROBLEMS.md` status column |
 | Signal | contest rating, contests attended, active days — the only speed-under-pressure proxy available | LC contest + calendar |
 
 Two views carry most of the diagnostic value:
 
-- **Cost curve** — mean review passes per problem, per README section. A high mean means
+- **Cost curve** — mean review passes per problem, per index section. A high mean means
   the topic keeps costing re-learns even after it is "solved"; ranking sections by it
   separates *never seen* from *never stuck*.
 - **Chronic blind spots** — rows still marked `AGAIN` after 12+ passes. More passes have
@@ -223,9 +223,9 @@ each section of the output means, and which numbers to act on versus ignore.
 Two caveats the output flags on its own:
 
 - LeetCode's skill-stats endpoint reports only a curated tag set and silently omits three
-  of the topics scored here. Heap/PQ and Prefix Sum fall back to a regex over the README
+  of the topics scored here. Heap/PQ and Prefix Sum fall back to a regex over the index
   rows and print with a `~` — a lower bound, since it counts only what this repo tracks.
-  BST has no usable fallback (its README notes are full of "check with BST"
+  BST has no usable fallback (its index notes are full of "check with BST"
   cross-references, so any regex over-counts), so it prints `n/a` and is left out of the
   breadth score entirely — an unmeasured topic is not a proven gap.
 - The `OK`/`AGAIN` marker behaves as a permanent review-queue tag, not a mastery verdict
@@ -357,12 +357,12 @@ Nothing is invented; all three signals are already in the repo.
 
 | Source | What it contributes |
 |--------|---------------------|
-| `README.md` | The problem universe **and** this repo's own judgement of what matters: the `MUST` marker, the curated-list tags (`blind75` / `neetcode150` / `neetcode250` / `top100liked`), the company tags, and the status column's `OK`/`AGAIN` plus its `*` run of review passes. |
+| `PROBLEMS.md` | The problem universe **and** this repo's own judgement of what matters: the `MUST` marker, the curated-list tags (`blind75` / `neetcode150` / `neetcode250` / `top100liked`), the company tags, and the status column's `OK`/`AGAIN` plus its `*` run of review passes. |
 | git history | When each problem was last *worked on* — the commit that touched its solution file, or named its LC number in the subject. |
 | [`data/progress.txt`](../data/progress.txt) | When it was last *practised*, which is not the same thing: a re-read that produced no commit still counts. |
 
-[`doc/must_lc_list.md`](must_lc_list.md) is generated from the same README rows by
-`extract_must_lc.py`, so reading README covers it — and `--self-test` asserts the
+[`doc/must_lc_list.md`](must_lc_list.md) is generated from the same index rows by
+`extract_must_lc.py`, so reading the index covers it — and `--self-test` asserts the
 two scripts agree on which rows carry `MUST`, so the rule cannot drift apart.
 
 ### How a problem is chosen
@@ -378,7 +378,7 @@ two scripts agree on which rows carry `MUST`, so the rule cannot drift apart.
   [`lc-readiness-guide.md`](lc-readiness-guide.md).
 - **Staleness** — `1 − 0.5 ^ (days / half-life)`, half-life 21 days. Touched
   today scores 0, never touched saturates near 1.
-- **Category balance** — each README section's share of total importance
+- **Category balance** — each index section's share of total importance
   compared against its share of *recent attention*. A section getting none of
   the practice it is owed nearly doubles its problems' scores; one getting twice
   its share is cut to 0.4.
@@ -433,13 +433,13 @@ the failure mode is not a crash — it is a parser that quietly reads fewer rows
 than there are and returns a plausible but shrunken plan. Every fixture in
 [`test_suggest_review.py`](../script/test_suggest_review.py) is therefore a line
 that is really in those files: a `MUST` in the status cell vs. the word "must" in
-prose, a duplicate README row for one LC, an annotation containing a comma, a
+prose, a duplicate index row for one LC, an annotation containing a comma, a
 line wrapped mid-annotation, a `DP:` label, a stray period between entries, a
 `git log` whose commit adds twenty files at once.
 
 The split mirrors `site/test/*.test.js`: the unit tests run against those
 fixtures so they do not move whenever a row does, and a `LiveFiles` class holds
-the real `README.md` and `data/progress.txt` — including the cross-check that
+the real `PROBLEMS.md` and `data/progress.txt` — including the cross-check that
 `suggest_review.py` and `extract_must_lc.py` still agree on what a `MUST` row is,
 and that `EXCLUDED_SECTIONS` still names sections that exist (a renamed one would
 silently start competing for review slots).

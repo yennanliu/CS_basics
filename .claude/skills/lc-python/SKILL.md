@@ -1,13 +1,14 @@
 ---
 name: lc-python
-description: File a LeetCode **Python** solution into this repo the way the existing ones are filed — find the problem's real slug, write the Python file in the house layout (problem docstring, V0 with an IDEA block and a time/space line), smoke-test it against the examples, and insert the README row. Use when asked to "add LC <number>" in Python, to file a problem just solved in a weekly contest, to turn a pasted draft into a committed solution, or to wire an existing solution file into README. For the Java counterpart use lc-java instead. Triggers - "add LC 4038 to Hash_table", "/lc-python 239 slide_window", "add this python solution and update the README", "file yesterday's contest Q1".
+description: File a LeetCode **Python** solution into this repo the way the existing ones are filed — find the problem's real slug, write the Python file in the house layout (problem docstring, V0 with an IDEA block and a time/space line), smoke-test it against the examples, and insert its row in PROBLEMS.md. Use when asked to "add LC <number>" in Python, to file a problem just solved in a weekly contest, to turn a pasted draft into a committed solution, or to wire an existing solution file into the problem index. For the Java counterpart use lc-java instead. Triggers - "add LC 4038 to Hash_table", "/lc-python 239 slide_window", "add this python solution and update the index", "file yesterday's contest Q1".
 allowed-tools: Read, Glob, Grep, Bash, Write, Edit
 ---
 
 # Add a LeetCode Python solution
 
 Turn an LC number (plus, usually, a draft the user already wrote) into a committed-quality
-Python solution file **and** its README row, in the shape the other ~826 files under
+Python solution file **and** its row in [`PROBLEMS.md`](https://github.com/yennanliu/CS_basics/blob/master/PROBLEMS.md)
+(the problem index — it was `README.md` until Sep 2026), in the shape the other ~826 files under
 `leetcode_python/` already use.
 
 **Invocation**: `/lc-python <LC number> <pattern dir>` — e.g. `/lc-python 4038 Hash_table`.
@@ -20,7 +21,7 @@ ambiguous.
 
 **Wrong skill?** This one owns `leetcode_python/` only. A Java solution goes to
 [`/lc-java`](https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-java/SKILL.md) — it files into
-`leetcode_java/src/main/java/LeetCodeJava/` and *updates* the README row this skill created
+`leetcode_java/src/main/java/LeetCodeJava/` and *updates* the index row this skill created
 rather than adding a second one. If the user pasted Java, say so and switch rather than
 translating it to Python.
 
@@ -29,7 +30,7 @@ translating it to Python.
 1. **The problem page is the authority on the title; the class name is not.** LC 4038's
    method is `countSpecialIntegers` and its problem is *Count Integers Appearing in a
    Single Block*. A slug guessed from a method name lands on the wrong file name and a
-   dead README link.
+   dead link in the index.
 2. **Copy a neighbour, never invent the layout.** Every file in a pattern dir has the same
    shape. Read one from the target dir before writing.
 3. **The user's approach is the solution.** When a draft is pasted, fix its bugs and keep
@@ -38,7 +39,7 @@ translating it to Python.
 4. **Untested is unfinished.** Run the docstring's own examples before reporting done.
 5. **Say what was assumed.** Difficulty inferred from contest position, examples written
    from the rule rather than copied from LC — state it, so it can be corrected.
-6. **README has TWO sets of topic tables; only the main one takes a new row.** The `##`
+6. **`PROBLEMS.md` has TWO sets of topic tables; only the main one takes a new row.** The `##`
    headings near the top are the real index. Everything under `## Newly Added (kamyu104
    gap)` is an *imported* index with its own `###` sub-tables — and it is the bigger of
    the two (1982 rows against 1309), duplicating **23 topic names** (`### Stack`,
@@ -163,7 +164,7 @@ print([s.<method>(x) for x in ([1,1,2,2,3], [1,2,1], [5], [])])"
 Every variant gets the same call, and they must agree. If an example from the problem
 statement disagrees, the solution is wrong — say so rather than adjusting the example.
 
-### 6. Add the README row
+### 6. Add the index row
 
 Find the pattern's table and insert in **ascending LC-number order** (a 4-digit contest
 problem goes at the end of that table).
@@ -173,15 +174,15 @@ sets, and `tail` then hands back whichever one sits *later* in the file — whic
 the imported `### ` one (directive 6). Locate the heading first:
 
 ```bash
-grep -n "^## \|^### " README.md | grep -i "stack"   # -> two hits: "## Stack" AND "### Stack"
+grep -n "^## \|^### " PROBLEMS.md | grep -i "stack"   # -> two hits: "## Stack" AND "### Stack"
 ```
 
 Take the `## ` line. Its table runs to the next heading; read the tail of *that* range and
 insert after the last row:
 
 ```bash
-# <start>/<end> = the "## " heading's line, and the next heading's line
-awk 'NR>=536 && NR<=585 && /^\| [0-9]/{print NR": "substr($0,1,60)}' README.md | tail -3
+# <start>/<end> = the "## " heading's line, and the line before the next heading
+awk 'NR>=432 && NR<=482 && /^\| [0-9]/{print NR": "substr($0,1,60)}' PROBLEMS.md | tail -3
 ```
 
 If the topic somehow has no `## ` heading, the row still does **not** go in the imported
@@ -191,7 +192,7 @@ table — file it under the closest main table and say so in the report.
 | <num> | [<Title>](<leetcode url>) | [Python](./leetcode_python/<Dir>/<slug>.py) | _O(t)_ | _O(s)_ | <Difficulty> | **<pattern>**, <tags>, LC weekly | AGAIN(1) |
 ```
 
-- Match the spacing of the rows already there. `git show <sha> -- README.md` on a previous
+- Match the spacing of the rows already there. `git show <sha> -- PROBLEMS.md` on a previous
   `update <NNN> py` commit shows the exact column shape.
 - Add a second `Java` link into the same cell **only if that file already exists under
   `leetcode_java/`** — check, do not assume the pair. Do not write the Java file to make the
@@ -205,12 +206,12 @@ table — file it under the closest main table and say so in the report.
   now sits under, which must start with `## ` and not `### `:
 
 ```bash
-awk -v L=583 'NR<=L && /^#{1,3} /{h=$0} NR==L{print h}' README.md   # -> ## Stack
+awk -v L=479 'NR<=L && /^#{1,3} /{h=$0} NR==L{print h}' PROBLEMS.md   # -> ## Stack
 ```
 
 ### 7. Report what was assumed
 
-Close with the file, the README line number, the test results, and every inference:
+Close with the file, the `PROBLEMS.md` line number, the test results, and every inference:
 difficulty from contest position, examples written from the rule because `ws.txt` kept only
 the statement, a Java link deliberately omitted.
 
@@ -237,5 +238,5 @@ the statement, a Java link deliberately omitted.
 | 3 | wrote the file; `IDEA` explains why `last - first + 1 == count` **is** the contiguity test |
 | 4 | added `V0-1` (keep only `first/last/cnt`) — justified: `O(distinct)` space, not `O(n)` cells |
 | 5 | `[1,1,2,2,3]→3`, `[1,2,1]→1`, `[5]→1`, `[1,2,1,3,3,2]→1`, `[]→0`, both variants agreeing |
-| 6 | `grep -n "^## \|^### " README.md | grep -i hash` → two hits; took **`## Hash Table`**, not `### Hash Table`; row inserted after LC 4007, its last row; `awk` re-printed `## Hash Table` |
+| 6 | `grep -n "^## \|^### " PROBLEMS.md | grep -i hash` → two hits; took **`## Hash Table`**, not `### Hash Table`; row inserted after LC 4007, its last row; `awk` re-printed `## Hash Table` |
 | 7 | flagged: difficulty inferred from contest position, examples written from the rule |

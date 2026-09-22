@@ -31,10 +31,10 @@ mkdir -p _site/doc _site/faqs _site/vendor/highlight
 cp -r doc/pic _site/doc/pic
 
 # ── Generated pages ───────────────────────────────────────────────────────────
-node site/build-site.js       # doc/**.md      -> HTML pages + search index
+node site/build-site.js       # doc/**.md + PROBLEMS.md -> HTML pages + search data
 node site/build-leetcode.js   # leetcode_*/**  -> _site/data/lc-problems.json
-node site/build-roadmap.js    # data/roadmap.json + README.md -> _site/data/roadmap.json
-node site/build-quiz.js       # data/complexity_quiz.json + README.md -> _site/data/complexity-quiz.json
+node site/build-roadmap.js    # data/roadmap.json + PROBLEMS.md -> _site/data/roadmap.json
+node site/build-quiz.js       # data/complexity_quiz.json + PROBLEMS.md -> _site/data/complexity-quiz.json
 node site/build-review-plan.js # data/progress.txt -> _site/data/progress.json
 
 # ── Shared CSS + JS ───────────────────────────────────────────────────────────

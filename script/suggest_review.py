@@ -17,13 +17,13 @@ So the pick is made in two stages:
 
 Three signals feed it, all already in the repo — nothing is invented here:
 
-  README.md            the problem universe, and this repo's own judgement of
+  PROBLEMS.md          the problem universe, and this repo's own judgement of
                        what matters: the `MUST` marker, the curated-list tags
                        (`blind75` / `neetcode150` / `neetcode250` / `top100liked`),
                        the company tags, and the status column's `OK`/`AGAIN`
                        plus its `*` run of review passes.
                        `doc/must_lc_list.md` is generated from these same rows
-                       (script/extract_must_lc.py), so reading README covers it.
+                       (script/extract_must_lc.py), so reading the index covers it.
   git history          when each problem was last *worked on* — the commit that
                        touched its solution file, or named its LC number.
   data/progress.txt    when it was last *practised*, which is not the same
@@ -107,9 +107,9 @@ MUST_TAG_TOKEN = re.compile(r"(?<![A-Za-z])MUST(?![A-Za-z])")
 STATUS_WORD = re.compile(r"\b(OK|AGAIN|NOT_OK|TODO)\b")
 
 
-# ── README ──────────────────────────────────────────────────────────────────
-def parse_readme(path):
-    """README.md -> {lc: problem}.  Columns are
+# ── The problem index ───────────────────────────────────────────────────────
+def parse_index(path):
+    """PROBLEMS.md -> {lc: problem}.  Columns are
     `# | Title | Solution | Time | Space | Difficulty | Note | Status`.
 
     A handful of problems are filed under two sections (LC 200 under both DFS
@@ -200,7 +200,7 @@ def parse_readme(path):
 def load_problem_lists(path):
     """data/problem_lists.json -> {lc: {list names}}.
 
-    README only tags the narrowest list a row sits on, so this file is the
+    The index only tags the narrowest list a row sits on, so this file is the
     complete membership and is what the scoring reads.
     """
     if not os.path.exists(path):
@@ -243,7 +243,7 @@ def git_touch_history(repo, universe, bulk_limit=BULK_FILE_LIMIT):
     """-> ({lc: [unix_ts, ...]} newest first, n_commits_skipped).
 
     `universe` maps a repo-relative solution path to the LC numbers that claim
-    it, built from README, so a commit is attributed to a problem only when the
+    it, built from the index, so a commit is attributed to a problem only when the
     repo already says that file belongs to it.
     """
     cmd = ["git", "-C", repo, "log", "--no-merges",
@@ -788,7 +788,11 @@ def main(argv=None):
         description=__doc__.split("\n\n")[0],
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="Read the balance table first; the picks are one way to act on it.")
-    ap.add_argument("--readme", default=os.path.join(REPO, "README.md"))
+    # `--readme` still works: the index was README.md until Sep 2026, when the
+    # file passed GitHub's 512,000-byte render cap and the tables moved out.
+    ap.add_argument("--index", "--readme", dest="index", metavar="PATH",
+                    default=os.path.join(REPO, "PROBLEMS.md"),
+                    help="the problem index (default PROBLEMS.md)")
     ap.add_argument("--progress", default=os.path.join(REPO, "data", "progress.txt"))
     ap.add_argument("--lists", default=os.path.join(REPO, "data", "problem_lists.json"))
     ap.add_argument("--repo", default=REPO)
@@ -811,7 +815,7 @@ def main(argv=None):
                                        "neetcode250", "top100liked", "google", "again"],
                     help="restrict the pool to one marker")
     ap.add_argument("--section", action="append", default=[],
-                    help="restrict to a README section (repeatable, case-insensitive)")
+                    help="restrict to an index section (repeatable, case-insensitive)")
     ap.add_argument("--difficulty", action="append", default=[], choices=list(DIFFS),
                     help="restrict to a difficulty (repeatable)")
     ap.add_argument("--all-sections", action="store_true",
@@ -841,9 +845,9 @@ def main(argv=None):
 
     now = time.time()
 
-    problems = parse_readme(args.readme)
+    problems = parse_index(args.index)
     if not problems:
-        print("no problem rows found in %s" % args.readme, file=sys.stderr)
+        print("no problem rows found in %s" % args.index, file=sys.stderr)
         return 1
     lists = load_problem_lists(args.lists)
 

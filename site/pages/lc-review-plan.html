@@ -376,7 +376,7 @@
   <!-- Topic balance -->
   <div id="tab-balance" class="tab-panel">
     <p class="panel-note">
-      <b>Importance</b> is each topic's share of the whole README — every problem it holds, weighted by
+      <b>Importance</b> is each topic's share of the whole index — every problem it holds, weighted by
       MUST, the curated lists and difficulty. <b>Attention</b> is its share of the practice actually logged
       in the window below, weighted so that yesterday counts for more than three weeks ago, and counting
       <i>sessions</i> rather than distinct problems: grinding one problem five times is five units spent on
@@ -546,7 +546,7 @@ function scoreRow(row, todayKey, multiplier) {
 }
 
 // Per topic: the share of importance it holds against the share of recent
-// practice it got. `sections` is the whole README universe, so "Linked list is
+// practice it got. `sections` is the whole indexed universe, so "Linked list is
 // starving" stays a claim about the topic and not about whichever of its
 // problems happen to be in the log already.
 function categoryBalance(rows, sections, days, todayKey, windowDays) {
@@ -731,7 +731,7 @@ document.getElementById('tabs').addEventListener('click', function (event) {
 //
 // Since then the build also folds in what the log cannot know: each problem's
 // title, topic, difficulty, curated-list membership and the solutions committed
-// to this repo, all read from README.md and data/problem_lists.json.
+// to this repo, all read from PROBLEMS.md and data/problem_lists.json.
 fetch('./data/progress.json')
   .then(function (res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
   .then(boot)
@@ -752,7 +752,7 @@ const esc = function (value) {
 
 const dayMap  = {}; // YYYYMMDD → [prob, ...]
 const probMap = {}; // prob → sorted [YYYYMMDD, ...]
-const metaMap = {}; // prob → everything README knows about it
+const metaMap = {}; // prob → everything the index knows about it
 
 data.days.forEach(function (day) {
   dayMap[day.date] = day.items.map(function (item) { return String(item.id); });
@@ -779,7 +779,7 @@ function statusChip(row) {
   return '';
 }
 
-// A number is not a problem. Every row the build could match to a README entry
+// A number is not a problem. Every row the build could match to an index entry
 // now carries its real title and links to the canonical LeetCode page rather
 // than to a search for the digits.
 function lcHref(row) {
@@ -797,7 +797,7 @@ const today = new Date(); today.setHours(0,0,0,0);
 const todayKey = toKey(today);
 
 // One row per problem: the log's history, the schedule derived from it, and
-// whatever README knew about the problem.
+// whatever the index knew about the problem.
 const dueItems = Object.keys(probMap).map(function (prob) {
   const dates = probMap[prob];
   const meta = metaMap[prob] || {};
@@ -1304,7 +1304,7 @@ renderAllTable();
     const isToday = key === todayKey;
     const tags = probs.map(function (p) {
       const meta = metaMap[p];
-      return '<span class="tl-tag" title="' + esc(meta && meta.title ? meta.title : 'not in README') + '">#' + p + '</span>';
+      return '<span class="tl-tag" title="' + esc(meta && meta.title ? meta.title : 'not in the index') + '">#' + p + '</span>';
     }).join('');
     return '<div class="tl-item">' +
       '<div class="tl-dot' + (isToday ? ' today' : '') + '"></div>' +

@@ -20,7 +20,7 @@ than warn — deliberately, so nothing lands in an unsorted bucket — which tur
 edit into a build-break-and-retry loop unless every constraint is satisfied at once.
 
 **Never repeat a title, a difficulty, or a link to this repo's solutions in either file.**
-They are read from `README.md` at build time. A typed copy is a copy that goes stale.
+They are read from `PROBLEMS.md` at build time. A typed copy is a copy that goes stale.
 
 ## Part A — a roadmap topic
 
@@ -43,7 +43,7 @@ its `nodes` array.
 
 | Rule | Why it exists |
 |---|---|
-| every `problems` id is in a README table | a number README does not know has no title, difficulty or solution link to attach |
+| every `problems` id is in a `PROBLEMS.md` table | a number the index does not know has no title, difficulty or solution link to attach |
 | every `sheets` slug is a file in `doc/cheatsheet/` | a dead sheet link on a teaching page is worse than no link |
 | `row` is **strictly greater** than every prereq's `row` | edges must point downward |
 | no cycle in `prereqs` | — |
@@ -62,9 +62,10 @@ The page shows one problem set at a time, and all of them are declared in the sa
 
 - **`lists`** — the picker's entries. `from` says where membership comes from: `curated`
   (the ids on the nodes), `list:<flag>` (a flag in `data/problem_lists.json`), or
-  `readme:<field>` (`google` / `must`, read out of README's tag and status columns).
+  `readme:<field>` (`google` / `must`, read out of the index's tag and status columns — the
+  source is still spelled `readme:` in the data file).
 - **`topicSources`** — each source files problems under its own taxonomy (NeetCode's
-  `Arrays & Hashing`, LeetCode's plan group `Hashing`, README's `## Array` heading). These
+  `Arrays & Hashing`, LeetCode's plan group `Hashing`, the index's `## Array` heading). These
   maps put them on roadmap topics; **`null` means *deliberately* off the roadmap** (SQL,
   shell, JavaScript-only exercises). A list's `topicFrom` names which taxonomies to try, in
   order, so a coarse group falls through to a finer one.
@@ -106,8 +107,8 @@ python3 script/fetch_problem_lists.py --check   # exit 1 if it is stale
 | Rule | Note |
 |---|---|
 | no duplicate `id` | — |
-| an `lc` number is in a README table | — |
-| an entry **with** an `lc` sets **no** `title`/`difficulty` | they come from README |
+| an `lc` number is in a `PROBLEMS.md` table | — |
+| an entry **with** an `lc` sets **no** `title`/`difficulty` | they come from the index |
 | an entry **without** an `lc` sets **both** | a pure algorithm or Python drill |
 | `accept` is an **array**, never a bare string | a bare string survives validation and then breaks the page's feedback |
 | every answer parses as a complexity expression | `time`, `space`, and each `accept` |
@@ -129,7 +130,7 @@ and why it is wrong — not a restatement of the right one.
 ```bash
 python3 -c "import json;d=json.load(open('data/roadmap.json'));print([n['id'] for n in d['nodes']])"
 grep -n '"id":' data/complexity_quiz.json | wc -l
-grep -n "^| *0*<lc> " README.md          # the number must be there
+grep -n "^| *0*<lc> " PROBLEMS.md        # the number must be there
 ls doc/cheatsheet/<slug>.md               # the sheet must be there
 ```
 
@@ -181,7 +182,7 @@ lines), and anything inferred: the row chosen, a prereq deliberately left off as
 
 ## Do not
 
-- ❌ repeat a title, difficulty or solution link in either file — they come from README
+- ❌ repeat a title, difficulty or solution link in either file — they come from the index
 - ❌ list a prereq the graph already implies (transitive reduction)
 - ❌ give a topic a `row` equal to or below a prereq's
 - ❌ write `O(n * amount)` — identifiers are single letters, with a `vars` line
@@ -198,7 +199,7 @@ lines), and anything inferred: the row chosen, a prereq deliberately left off as
 
 | Step | What it produced |
 |---|---|
-| 1 | `monotonic-stack` not present; `stack` is row 1; `doc/cheatsheet/monotonic_stack.md` and `monotonic_queue.md` both exist; 496/503/85/901/907 all in README |
+| 1 | `monotonic-stack` not present; `stack` is row 1; `doc/cheatsheet/monotonic_stack.md` and `monotonic_queue.md` both exist; 496/503/85/901/907 all in `PROBLEMS.md` |
 | 2 | entry written at row 2, `prereqs: ["stack"]` only — `array` left off because `stack` already requires it, which would have failed the transitive-reduction check |
 | 3 | build printed `30 topics over 7 rows`; every "shown of" tally unchanged |
 | 4 | the drawing put it one column from `stack`, so the edge is short |

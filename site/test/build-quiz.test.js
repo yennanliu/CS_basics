@@ -4,14 +4,14 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const { answerStrings, resolveQuestion, buildQuiz } = require('../build-quiz.js');
-const { parseReadmeProblems } = require('../build-roadmap.js');
+const { parseProblemIndex, PROBLEM_INDEX } = require('../build-roadmap.js');
 const CSComplexity = require('../complexity.js');
 
 const ROOT = path.join(__dirname, '..', '..');
 
-// A stand-in README, so the unit tests do not move whenever a row in the real
+// A stand-in index, so the unit tests do not move whenever a row in the real
 // one does. The corpus test at the bottom is what holds the real file.
-const README = parseReadmeProblems([
+const INDEX = parseProblemIndex([
   '## Array',
   '| 1 | [Two Sum](https://leetcode.com/problems/two-sum/) |'
     + ' [Python](./leetcode_python/Array/two-sum.py) | _O(n)_ | _O(n)_ | Easy | `blind75` | OK |',
@@ -44,8 +44,8 @@ test('answerStrings works with no accept block', () => {
 
 // ── resolveQuestion ───────────────────────────────────────────────────────
 
-test('an LC question takes its title, difficulty and links from README', () => {
-  const resolved = resolveQuestion(question(), README);
+test('an LC question takes its title, difficulty and links from the index', () => {
+  const resolved = resolveQuestion(question(), INDEX);
   assert.equal(resolved.title, 'Two Sum');
   assert.equal(resolved.difficulty, 'Easy');
   assert.equal(resolved.links.lc, 'https://leetcode.com/problems/two-sum/');
@@ -53,21 +53,21 @@ test('an LC question takes its title, difficulty and links from README', () => {
 });
 
 test('code lines are joined into one snippet', () => {
-  assert.equal(resolveQuestion(question(), README).code, 'def f(nums):\n    return len(nums)');
+  assert.equal(resolveQuestion(question(), INDEX).code, 'def f(nums):\n    return len(nums)');
 });
 
 test('accept always resolves to a pair of arrays', () => {
-  assert.deepEqual(resolveQuestion(question(), README).accept, { time: [], space: [] });
+  assert.deepEqual(resolveQuestion(question(), INDEX).accept, { time: [], space: [] });
   assert.deepEqual(
-    resolveQuestion(question({ accept: { space: ['O(n)'] } }), README).accept,
+    resolveQuestion(question({ accept: { space: ['O(n)'] } }), INDEX).accept,
     { time: [], space: ['O(n)'] }
   );
 });
 
-test('an LC question may not restate what README already says', () => {
+test('an LC question may not restate what the index already says', () => {
   for (const field of ['title', 'difficulty']) {
     assert.throws(
-      () => resolveQuestion(question({ [field]: 'Something Else' }), README),
+      () => resolveQuestion(question({ [field]: 'Something Else' }), INDEX),
       new RegExp(`sets its own ${field}`),
       `an authored ${field} on an LC question should be rejected`
     );
@@ -79,14 +79,14 @@ test('a scalar accept field is rejected rather than shipped', () => {
   // element — and then throw in the page, where the feedback maps over it.
   for (const field of ['time', 'space']) {
     assert.throws(
-      () => resolveQuestion(question({ accept: { [field]: 'O(n)' } }), README),
+      () => resolveQuestion(question({ accept: { [field]: 'O(n)' } }), INDEX),
       new RegExp(`accept\\.${field} that is not an array`),
       `a scalar accept.${field} should be rejected`
     );
   }
   // …and the array spelling of the same thing still passes.
   assert.deepEqual(
-    resolveQuestion(question({ accept: { time: ['O(n)'], space: ['O(1)'] } }), README).accept,
+    resolveQuestion(question({ accept: { time: ['O(n)'], space: ['O(1)'] } }), INDEX).accept,
     { time: ['O(n)'], space: ['O(1)'] }
   );
 });
@@ -94,7 +94,7 @@ test('a scalar accept field is rejected rather than shipped', () => {
 test('a non-LC question carries its own title and difficulty', () => {
   const resolved = resolveQuestion(question({
     id: 'drill', lc: null, title: 'Doubling loop', difficulty: 'Easy',
-  }), README);
+  }), INDEX);
   assert.equal(resolved.title, 'Doubling loop');
   assert.equal(resolved.difficulty, 'Easy');
   assert.deepEqual(resolved.links, {});
@@ -102,19 +102,19 @@ test('a non-LC question carries its own title and difficulty', () => {
 
 test('a non-LC question without its own title is rejected', () => {
   assert.throws(
-    () => resolveQuestion(question({ lc: null, difficulty: 'Easy' }), README),
+    () => resolveQuestion(question({ lc: null, difficulty: 'Easy' }), INDEX),
     /must set its own title/
   );
 });
 
-test('an lc number README does not know is rejected', () => {
-  assert.throws(() => resolveQuestion(question({ lc: 99999 }), README), /not in README/);
+test('an lc number the index does not know is rejected', () => {
+  assert.throws(() => resolveQuestion(question({ lc: 99999 }), INDEX), /not in PROBLEMS\.md/);
 });
 
 test('a missing required field is rejected, and named', () => {
   for (const field of ['id', 'topic', 'code', 'time', 'space', 'why']) {
     assert.throws(
-      () => resolveQuestion(question({ [field]: undefined }), README),
+      () => resolveQuestion(question({ [field]: undefined }), INDEX),
       new RegExp(`missing a ${field}`),
       `${field} should be required`
     );
@@ -124,10 +124,10 @@ test('a missing required field is rejected, and named', () => {
 test('an unparseable answer is rejected wherever it appears', () => {
   // This is the guard that matters: "O(amount * n)" reads as a product of six
   // one-letter variables, so nothing a user could type would ever match it.
-  assert.throws(() => resolveQuestion(question({ time: 'O(amount * n)' }), README), /cannot parse/);
-  assert.throws(() => resolveQuestion(question({ space: 'linear-ish' }), README), /cannot parse/);
+  assert.throws(() => resolveQuestion(question({ time: 'O(amount * n)' }), INDEX), /cannot parse/);
+  assert.throws(() => resolveQuestion(question({ space: 'linear-ish' }), INDEX), /cannot parse/);
   assert.throws(
-    () => resolveQuestion(question({ accept: { time: ['O(n)', 'no idea'] } }), README),
+    () => resolveQuestion(question({ accept: { time: ['O(n)', 'no idea'] } }), INDEX),
     /cannot parse/
   );
 });
@@ -139,28 +139,28 @@ test('buildQuiz lists the distinct topics, sorted', () => {
     question({ id: 'a', topic: 'Heap' }),
     question({ id: 'b', topic: 'Arrays & Hashing' }),
     question({ id: 'c', topic: 'Heap' }),
-  ] }, README);
+  ] }, INDEX);
   assert.deepEqual(built.topics, ['Arrays & Hashing', 'Heap']);
   assert.equal(built.questions.length, 3);
 });
 
 test('buildQuiz rejects a duplicate id', () => {
   assert.throws(
-    () => buildQuiz({ questions: [question(), question()] }, README),
+    () => buildQuiz({ questions: [question(), question()] }, INDEX),
     /duplicate question id "sample"/
   );
 });
 
 test('buildQuiz rejects an empty bank', () => {
-  assert.throws(() => buildQuiz({ questions: [] }, README), /no questions/);
+  assert.throws(() => buildQuiz({ questions: [] }, INDEX), /no questions/);
 });
 
 // ── The real bank ─────────────────────────────────────────────────────────
 
-test('data/complexity_quiz.json builds against the real README', () => {
+test('data/complexity_quiz.json builds against the real index', () => {
   const bank = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/complexity_quiz.json'), 'utf8'));
-  const readme = parseReadmeProblems(fs.readFileSync(path.join(ROOT, 'README.md'), 'utf8'));
-  const built = buildQuiz(bank, readme);
+  const index = parseProblemIndex(fs.readFileSync(path.join(ROOT, PROBLEM_INDEX), 'utf8'));
+  const built = buildQuiz(bank, index);
 
   assert.ok(built.questions.length >= 25, 'the bank should be big enough to draw 25 without repeats');
   for (const q of built.questions) {

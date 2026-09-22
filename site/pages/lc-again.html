@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <title>LC Again — CS_basics</title>
-  <meta name="description" content="An agent skill that moves a problem's README status cell after a re-solve — promoting AGAIN to OK only when it was genuinely re-derived unaided, keeping the trailing star run that records what the problem cost, and refreshing data/again_problems.txt.">
+  <meta name="description" content="An agent skill that moves a problem's status cell in PROBLEMS.md after a re-solve — promoting AGAIN to OK only when it was genuinely re-derived unaided, keeping the trailing star run that records what the problem cost, and refreshing data/again_problems.txt.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✔</text></svg>">
   <link rel="stylesheet" href="nav.css">
   <link rel="stylesheet" href="lc-page.css">
@@ -252,7 +252,7 @@
       <p class="kicker"><span class="dot" aria-hidden="true"></span> Agent skill</p>
       <h1>LC Again<br><span class="thin">the marker that never graduates</span></h1>
       <p class="lede">
-        README's status column reads <b>325 AGAIN against 124 OK</b>, and 106 problems carry
+        PROBLEMS.md's status column reads <b>325 AGAIN against 124 OK</b>, and 106 problems carry
         the marker after twelve or more review passes. Nothing in this repo ever promotes a
         row, so <code>AGAIN</code> behaves as a permanent tag rather than a verdict &mdash;
         which means a problem you have actually mastered keeps scoring as a gap and keeps
@@ -269,7 +269,7 @@
           <i aria-hidden="true"></i><i aria-hidden="true"></i><i aria-hidden="true"></i>
           <span>/lc-again 128</span>
         </div>
-        <pre id="tape" aria-live="off">1  row        README:937 — AGAIN*************** (7) (MUST)
+        <pre id="tape" aria-live="off">1  row        PROBLEMS.md:836 — AGAIN*************** (7) (MUST)
               15 stars, 7 in the paren, and a MUST that has to survive
 
 2  establish  re-derived unaided?                        yes
@@ -320,7 +320,7 @@
         <div class="fail">
           <span class="glyph" aria-hidden="true">&#9676;</span>
           <b>The derived list goes stale</b>
-          <p><code>data/again_problems.txt</code> is generated from README, and was last regenerated in November 2025 &mdash; ten months of edits it has not seen.</p>
+          <p><code>data/again_problems.txt</code> is generated from the index, and was last regenerated in November 2025 &mdash; ten months of edits it has not seen.</p>
           <p class="cost">Rule: the edit and the refresh are one step, not two.</p>
         </div>
       </div>
@@ -338,9 +338,9 @@
       <div class="rail" role="radiogroup" aria-label="Pipeline steps">
         <button class="step" role="radio" aria-checked="true" data-n="1"
                 data-name="Find the row and read the cell"
-                data-body="A problem can legitimately have two rows — LC 547 is filed under both DFS and Graph, and there are two of them in README today. Check the count, then edit both or say which one you edited and why."
+                data-body="A problem can legitimately have two rows — LC 547 is filed under both DFS and Graph, and there are two of them in the index today. Check the count, then edit both or say which one you edited and why."
                 data-rule="Read the verdict word, the star count and the notes out of the cell before changing anything. The column is free text — 403 distinct spellings — so there is no canonical form to assume."
-                data-code="grep -n &quot;^| *0*128 |&quot; README.md">
+                data-code="grep -n &quot;^| *0*128 |&quot; PROBLEMS.md">
           <span class="n">1</span><span class="bar" aria-hidden="true"></span><span class="tag">row</span>
         </button>
         <button class="step" role="radio" aria-checked="false" data-n="2"
@@ -361,7 +361,7 @@ the complexity line?  the edges?">
         </button>
         <button class="step" role="radio" aria-checked="false" data-n="4"
                 data-name="Refresh the derived list"
-                data-body="data/again_problems.txt is generated from README and has been stale since Nov 2025, so the first run produces a large diff. That is the point — it is reported rather than hidden, and kept as a separate concern from the one-row edit."
+                data-body="data/again_problems.txt is generated from the index and has been stale since Nov 2025, so the first run produces a large diff. That is the point — it is reported rather than hidden, and kept as a separate concern from the one-row edit."
                 data-rule="The edit and the refresh are one step. A derived file that is regenerated only when someone remembers is a derived file nobody can trust."
                 data-code="bash script/get_again_problems.sh">
           <span class="n">4</span><span class="bar" aria-hidden="true"></span><span class="tag">refresh</span>

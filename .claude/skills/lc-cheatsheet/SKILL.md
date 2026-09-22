@@ -28,7 +28,7 @@ add LC 1650 to the LCA part of binary_tree.md   # the plain-English form works t
 | `sheet` | no sheet owns the topic | a new `doc/cheatsheet/<slug>.md` **and** its `data/cheatsheet_meta.json` entry |
 
 Missing arguments are inferred, not asked about: the sheet from the technique the solution
-uses and from `README.md`'s topic heading for that LC number, the mode from what the sheet
+uses and from `PROBLEMS.md`'s topic heading for that LC number, the mode from what the sheet
 already contains (step 2). Ask only when two sheets both plausibly own it and their Scope
 lines do not settle it.
 
@@ -73,7 +73,7 @@ the two collapse into one edit.
 ```bash
 grep -rn "LC 1650\|1650\b" doc/cheatsheet/ | head -20        # who already mentions it
 grep -n "^> \*\*Scope\*\*" doc/cheatsheet/{binary_tree,tree_lca_distance}.md
-grep -n "^## \|1650" README.md | grep -B 2 1650               # README's topic heading
+grep -n "^## \|1650" PROBLEMS.md | grep -B 2 1650            # the index's topic heading
 ```
 
 Read out of that:

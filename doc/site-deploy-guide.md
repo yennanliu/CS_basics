@@ -62,7 +62,7 @@ Output lands in `_site/`. Open `_site/index.html` in a browser to preview locall
 
 Runs on push to `master` when any of these paths change:
 
-- `doc/**`, `README.md`, `site/**`, `vendor/**`, `algo_demo/**`
+- `doc/**`, `README.md`, `PROBLEMS.md`, `site/**`, `vendor/**`, `algo_demo/**`
 - `.github/workflows/deploy-pages.yml`
 
 Code-only changes (`leetcode_java/`, `leetcode_python/`, etc.) skip the deploy.  

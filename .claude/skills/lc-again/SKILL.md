@@ -1,12 +1,13 @@
 ---
 name: lc-again
-description: Move a problem's README status cell after a re-solve — promote AGAIN to OK when it was genuinely re-derived unaided, add a review pass when it was not, or demote OK back to AGAIN when a solid problem comes back. Keeps the trailing `*` run, which is the recorded pass count that the cost curve and the review planner both read, and refreshes data/again_problems.txt. Use when asked to mark a problem solid, to graduate an AGAIN marker, to record another failed pass, or to update the status column after drilling something. Triggers - "I finally got 128, mark it OK", "/lc-again 139", "promote 1143 to OK", "560 came back again", "refresh the again list".
+description: Move a problem's status cell in PROBLEMS.md after a re-solve — promote AGAIN to OK when it was genuinely re-derived unaided, add a review pass when it was not, or demote OK back to AGAIN when a solid problem comes back. Keeps the trailing `*` run, which is the recorded pass count that the cost curve and the review planner both read, and refreshes data/again_problems.txt. Use when asked to mark a problem solid, to graduate an AGAIN marker, to record another failed pass, or to update the status column after drilling something. Triggers - "I finally got 128, mark it OK", "/lc-again 139", "promote 1143 to OK", "560 came back again", "refresh the again list".
 allowed-tools: Read, Glob, Grep, Bash, Write, Edit
 ---
 
 # Move a problem's status
 
-Edit the **status column** of a problem's README row after a re-solve, and refresh
+Edit the **status column** of a problem's row in `PROBLEMS.md` (the problem index — it
+was `README.md` until Sep 2026) after a re-solve, and refresh
 `data/again_problems.txt`.
 
 **Invocation**: `/lc-again <LC number> [verdict]` — e.g. `/lc-again 128 ok`,
@@ -33,7 +34,7 @@ direction.
 
 ## What the cell actually means
 
-The column is free text — **403 distinct spellings** across the README — but three pieces
+The column is free text — **403 distinct spellings** across the index — but three pieces
 are read by tooling and must survive any edit:
 
 | Piece | Read by | Meaning |
@@ -96,14 +97,14 @@ A row marked `(not start)` has never been attempted; a first attempt makes it an
 ### 1. Find the row and read the cell
 
 ```bash
-grep -n "^| *0*<number> |" README.md
+grep -n "^| *0*<number> |" PROBLEMS.md
 ```
 
 A problem can legitimately have **two rows** — LC 547 is filed under both DFS and Graph.
 Check, and edit both, or say which one you edited and why:
 
 ```bash
-grep -cn "^| *0*<number> |" README.md
+grep -cn "^| *0*<number> |" PROBLEMS.md
 ```
 
 Read out of the cell, before changing anything: the verdict word, the star count, and
@@ -147,7 +148,7 @@ the pipes, and the tables are read by column position in places.
 bash script/get_again_problems.sh
 ```
 
-`data/again_problems.txt` is generated from README and was last regenerated in **Nov 2025**,
+`data/again_problems.txt` is generated from the index and was last regenerated in **Nov 2025**,
 so the first run after this will produce a large diff. That is the point — say so in the
 report rather than hiding it, and keep it as a separate concern from the one-row edit.
 
@@ -186,7 +187,7 @@ reminder that the attempt itself still needs `/lc-log`.
 
 | Step | What it produced |
 |---|---|
-| 1 | one row, README:937 — `AGAIN*************** (7) (MUST)`: 15 stars, 7 passes recorded in the paren, and a MUST marker |
+| 1 | one row, PROBLEMS.md:836 — `AGAIN*************** (7) (MUST)`: 15 stars, 7 passes recorded in the paren, and a MUST marker |
 | 2 | asked the four; the user re-derived it unaided, named the invariant (*only start a run at a number whose `n-1` is absent*), named the `while (s.contains(n+1))` walk as the one amortising the scan to O(n), and covered the empty and all-duplicates cases |
 | 3 | cell changed to `OK*************** (7) (MUST)` — every star, the `(7)` and the `(MUST)` kept verbatim; only the word moved |
 | 4 | `get_again_problems.sh` rerun; `again_problems.txt` went from 879 lines to 876, having been stale since Nov 2025 |

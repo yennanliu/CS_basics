@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Add a README table row for every Java LC solution that has none.
+"""Add a problem-index table row for every Java LC solution that has none.
 
-The README's per-pattern tables are the repo's index, but they only ever grew by
+PROBLEMS.md's per-pattern tables are the repo's index, but they only ever grew by
 hand: 223 Java solution files were absent from them, so the index under-reported
 what the repo actually contains. This appends the missing rows, one per Java
 file, to the table of the section that matches the file's package.
@@ -15,7 +15,7 @@ three-signal matcher as find_missing_java.py.
 Usage
 -----
     python3 script/sync_readme_java.py --dry-run     # report what would be added
-    python3 script/sync_readme_java.py               # rewrite README.md in place
+    python3 script/sync_readme_java.py               # rewrite PROBLEMS.md in place
 
 Run from the repository root. Existing rows are never touched or reordered.
 """
@@ -28,7 +28,11 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
-# README section heading -> Java package directory. Most are the same word with
+# The problem index. It was README.md until Sep 2026, when the file passed
+# GitHub's 512,000-byte markdown render cap and the tables moved out.
+INDEX = "PROBLEMS.md"
+
+# Index section heading -> Java package directory. Most are the same word with
 # spaces removed; the exceptions are the ones worth writing down.
 SECTION_TO_PKG = {
     "Array": "Array",
@@ -90,7 +94,7 @@ def clean_complexity(raw):
 
 
 def row_for(path, mod, py_by_key):
-    """Build one README row, or None if the file is not a problem solution."""
+    """Build one index row, or None if the file is not a problem solution."""
     text = mod.read(path)
     num, title = mod.lc_id(text)
     slug_match = mod.SLUG_RE.search(text)
@@ -136,15 +140,15 @@ def row_for(path, mod, py_by_key):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--dry-run", action="store_true", help="report only, do not write README.md")
+    ap.add_argument("--dry-run", action="store_true", help="report only, do not write PROBLEMS.md")
     args = ap.parse_args()
 
-    if not os.path.isfile("README.md"):
+    if not os.path.isfile(INDEX):
         sys.exit("run this from the repository root")
 
     mod = load_matcher()
-    readme = open("README.md").read()
-    linked_java = set(re.findall(r'\./leetcode_java/([^\)\s,]+\.java)', readme))
+    index_md = open(INDEX).read()
+    linked_java = set(re.findall(r'\./leetcode_java/([^\)\s,]+\.java)', index_md))
 
     # LC number / title -> python path, so a new row can link both languages.
     py_by_key = {}
@@ -182,7 +186,7 @@ def main():
         if section:
             pkg_to_section[pkg] = section
 
-    lines = readme.split("\n")
+    lines = index_md.split("\n")
     # Where each section's table ends (last consecutive `|` row).
     inserts = {}
     for i, line in enumerate(lines):
@@ -219,16 +223,16 @@ def main():
 
     print()
     print("rows to add   : %d" % added)
-    print("unplaced      : %d (no README section for the package)" % len(unplaced))
+    print("unplaced      : %d (no index section for the package)" % len(unplaced))
     print("skipped       : %d (no LC number/title/url in the file - not a problem solution)"
           % len(skipped))
     for path in skipped[:10]:
         print("    %s" % path)
 
     if not args.dry_run and added:
-        with open("README.md", "w") as fh:
+        with open(INDEX, "w") as fh:
             fh.write("\n".join(lines))
-        print("\nREADME.md updated")
+        print("\n%s updated" % INDEX)
 
 
 if __name__ == "__main__":

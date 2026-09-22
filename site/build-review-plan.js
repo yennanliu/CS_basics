@@ -19,10 +19,9 @@
  */
 const fs = require('fs');
 const path = require('path');
-const { parseReadmeProblems, GH_BLOB } = require('./build-roadmap');
+const { parseProblemIndex, PROBLEM_INDEX, GH_BLOB } = require('./build-roadmap');
 
 const SOURCE = 'data/progress.txt';
-const README = 'README.md';
 const LISTS = 'data/problem_lists.json';
 const OUT = '_site/data/progress.json';
 
@@ -238,7 +237,7 @@ function buildPayload(raw, catalog) {
       repo: GH_BLOB,
       days,
       problems,
-      // The whole README universe per topic, so the page can say which topic is
+      // The whole indexed universe per topic, so the page can say which topic is
       // getting less practice than its weight deserves — a claim about the
       // topic, which the practised rows alone cannot support.
       sections: catalog ? catalog.sections : [],
@@ -262,7 +261,7 @@ function buildPayload(raw, catalog) {
 // schedule needs and nowhere near enough to act on: "#1094 is 12 days overdue"
 // tells you neither what the problem is, which pattern it drills, nor whether
 // it is worth the slot. Every one of those facts is already in the repo — the
-// README row (title, difficulty, section, MUST, the solutions committed here)
+// indexed row (title, difficulty, section, MUST, the solutions committed here)
 // and data/problem_lists.json (Blind 75 / NeetCode / Top 100 Liked) — so the
 // page is handed them rather than turning a number into a leetcode.com search.
 //
@@ -296,7 +295,7 @@ function importance(meta) {
   return Math.round(score * 100) / 100;
 }
 
-// A problem the log names but README does not index still has to be schedulable
+// A problem the log names but the index does not carry still has to be schedulable
 // and still has to land somewhere on the balance table, so it gets a section of
 // its own rather than being dropped or silently folded into a real one.
 const UNFILED = 'Unfiled';
@@ -304,11 +303,11 @@ const UNFILED = 'Unfiled';
 /**
  * Everything the page needs about a problem that the practice log cannot know.
  * Returns { byId, sections } — sections carries the importance of the WHOLE
- * README universe per topic, not only the problems that have been practised,
+ * indexed universe per topic, not only the problems that have been practised,
  * because "this topic is starving" is a claim about the topic, not about the
  * rows that happen to be in the log.
  */
-function buildCatalog(readmeMarkdown, listsJson) {
+function buildCatalog(indexMarkdown, listsJson) {
   const byId = new Map();
   const listed = new Map();
   for (const entry of (listsJson && listsJson.problems) || []) {
@@ -323,7 +322,7 @@ function buildCatalog(readmeMarkdown, listsJson) {
     sections.set(name, row);
   };
 
-  for (const [id, p] of parseReadmeProblems(readmeMarkdown)) {
+  for (const [id, p] of parseProblemIndex(indexMarkdown)) {
     const extra = listed.get(id);
     const meta = {
       title: p.title,
@@ -340,15 +339,15 @@ function buildCatalog(readmeMarkdown, listsJson) {
     bump(meta.section, meta.importance);
   }
 
-  // A curated-list problem README has never indexed is still a real problem
+  // A curated-list problem the index has never carried is still a real problem
   // with a real title, and the log does contain a few — so it goes in `byId`
   // and its row on the page reads properly.
   //
   // It does NOT get a section weight. There are 363 of these, and counting them
   // made `Unfiled` the third-largest topic on the balance table: a topic the
   // repo has never claimed, permanently owed practice it was never going to
-  // get. The table compares the topics README organises; a logged problem with
-  // no README row still gets its own `Unfiled` line, added by the page, at zero
+  // get. The table compares the topics the index organises; a logged problem with
+  // no indexed row still gets its own `Unfiled` line, added by the page, at zero
   // weight.
   for (const [id, entry] of listed) {
     if (byId.has(id)) continue;
@@ -381,7 +380,7 @@ function relativeSolutions(solutions) {
   return Object.keys(out).length ? out : undefined;
 }
 
-// README links to the canonical problem page, so the slug is already there for
+// The index links to the canonical problem page, so the slug is already there for
 // every row that has one — deriving it from the title would guess wrong exactly
 // where guessing is expensive (LC 4038's title and its slug disagree).
 function slugFromUrl(url) {
@@ -406,9 +405,9 @@ function attachCatalog(problems, catalog) {
 // pass it explicitly rather than chdir-ing underneath the rest of the suite.
 function loadCatalog(root) {
   const at = name => (root ? path.join(root, name) : name);
-  if (!fs.existsSync(at(README))) return null;
+  if (!fs.existsSync(at(PROBLEM_INDEX))) return null;
   const lists = fs.existsSync(at(LISTS)) ? JSON.parse(fs.readFileSync(at(LISTS), 'utf8')) : null;
-  return buildCatalog(fs.readFileSync(at(README), 'utf8'), lists);
+  return buildCatalog(fs.readFileSync(at(PROBLEM_INDEX), 'utf8'), lists);
 }
 
 // ── Build ────────────────────────────────────────────────────────────────────
@@ -434,7 +433,7 @@ console.log(`✓ Created ${OUT} (${payload.stats.days} practice days, ` +
   `${payload.stats.problems} problems, ${payload.stats.again} still marked "again")`);
 console.log(`    ${payload.stats.firstDate} → ${payload.stats.lastDate}`);
 console.log(`    ${payload.stats.titled} of ${payload.stats.problems} carry a title, ` +
-  `difficulty and topic from README; ${payload.sections.length} topics weighted`);
+  `difficulty and topic from ${PROBLEM_INDEX}; ${payload.sections.length} topics weighted`);
 for (const w of warnings) console.warn(`    warning: ${w}`);
 }
 

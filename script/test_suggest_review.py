@@ -8,7 +8,7 @@ Unit tests for script/suggest_review.py.
     python3 script/suggest_review.py --self-test    # the same suite, quietly
 
 Three of the planner's four inputs are hand-written files whose shape nobody
-controls — README rows, the practice log, commit subjects. The failure mode
+controls — index rows, the practice log, commit subjects. The failure mode
 there is not a crash, it is a parser that quietly reads fewer rows than there
 are and hands back a plausible but shrunken plan. So the fixtures below are not
 invented shapes: every one of them is a line that is really in those files, kept
@@ -46,8 +46,8 @@ class TempFileCase(unittest.TestCase):
         self.addCleanup(self._tmp.cleanup)
 
 
-# ── README ──────────────────────────────────────────────────────────────────
-README = """
+# ── The problem index ───────────────────────────────────────────────────────
+INDEX = """
 ## Resource
 
 | 999 | above the first LC section | | | | Easy | | OK |
@@ -80,11 +80,11 @@ union find, `google` | AGAIN* |
 class ParseReadme(TempFileCase):
     def setUp(self):
         super().setUp()
-        self.rows = sr.parse_readme(write(self.tmpdir, "README.md", README))
+        self.rows = sr.parse_index(write(self.tmpdir, "PROBLEMS.md", INDEX))
 
     def test_rows_above_the_first_lc_section_are_not_problems(self):
         # Everything above `## Array` is intro prose — the Note tags table in
-        # the real README is pipe-delimited too.
+        # the real index is pipe-delimited too.
         self.assertNotIn(999, self.rows)
 
     def test_each_lc_number_appears_once(self):
@@ -141,7 +141,7 @@ class ParseReadme(TempFileCase):
                          ["leetcode_python/Array/rotate-image.py"])
 
     def test_separator_and_prose_rows_are_skipped(self):
-        rows = sr.parse_readme(write(self.tmpdir, "sep.md", textwrap.dedent("""
+        rows = sr.parse_index(write(self.tmpdir, "sep.md", textwrap.dedent("""
             ## Array
 
             |  #  | Title | Solution | Time | Space | Difficulty | Note | Status |
@@ -341,7 +341,7 @@ class GitTouchHistory(unittest.TestCase):
         self.assertEqual(sorted(touches), [48])
         self.assertEqual(bulk, 0)
 
-    def test_a_file_the_readme_does_not_claim_is_ignored(self):
+    def test_a_file_the_index_does_not_claim_is_ignored(self):
         log = "\x01100\x01update ws\nleetcode_java/src/main/java/dev/Workspace18.java\n"
         with self.fake_log(log):
             touches, _ = sr.git_touch_history("/repo", self.UNIVERSE)
@@ -427,7 +427,7 @@ class Importance(unittest.TestCase):
         self.assertEqual(score, sr.W_BLIND75 + sr.W_TOP100)
         self.assertIn("top100liked", reasons)
 
-    def test_a_readme_list_tag_counts_when_problem_lists_json_is_missing(self):
+    def test_an_index_list_tag_counts_when_problem_lists_json_is_missing(self):
         score, _ = sr.importance(problem(difficulty="", tags={"neetcode150"}), {})
         self.assertEqual(score, sr.W_NEETCODE150)
 
@@ -665,17 +665,17 @@ class Formatting(unittest.TestCase):
 
 # ── The real files ──────────────────────────────────────────────────────────
 class LiveFiles(unittest.TestCase):
-    """Held against the repo's own README and practice log, the way
+    """Held against the repo's own problem index and practice log, the way
     site/test/i18n.corpus.test.js is held against the real cheatsheets."""
 
-    README = os.path.join(REPO, "README.md")
+    INDEX = os.path.join(REPO, "PROBLEMS.md")
     PROGRESS = os.path.join(REPO, "data", "progress.txt")
 
     @classmethod
     def setUpClass(cls):
-        cls.rows = sr.parse_readme(cls.README)
+        cls.rows = sr.parse_index(cls.INDEX)
 
-    def test_readme_still_parses_as_a_table_of_problems(self):
+    def test_the_index_still_parses_as_a_table_of_problems(self):
         self.assertGreater(len(self.rows), 1000)
 
     def test_every_row_has_a_section_and_a_difficulty(self):
@@ -689,7 +689,7 @@ class LiveFiles(unittest.TestCase):
         # agree exactly or one of the two docs is lying.
         import extract_must_lc
 
-        theirs = {num for num, _, _, _, _ in extract_must_lc.parse(self.README)}
+        theirs = {num for num, _, _, _, _ in extract_must_lc.parse(self.INDEX)}
         mine = {lc for lc, r in self.rows.items() if r["must"]}
         self.assertEqual(mine, theirs)
 

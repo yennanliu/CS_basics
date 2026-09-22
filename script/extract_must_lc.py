@@ -2,7 +2,7 @@
 """
 extract_must_lc.py
 
-Scan the repo README.md and extract every LeetCode problem whose row is
+Scan the repo's problem index (PROBLEMS.md) and extract every problem whose row is
 flagged with `MUST` (the high-priority marker used in the status/tag columns).
 
 Output: a markdown doc grouped by category, each row showing
@@ -10,7 +10,7 @@ Output: a markdown doc grouped by category, each row showing
 
 Usage:
     python3 script/extract_must_lc.py                       # writes doc/must_lc_list.md
-    python3 script/extract_must_lc.py --readme README.md --out doc/must_lc_list.md
+    python3 script/extract_must_lc.py --index PROBLEMS.md --out doc/must_lc_list.md
     python3 script/extract_must_lc.py --stdout              # print to stdout instead
 
 Notes:
@@ -38,8 +38,8 @@ MUST_TAG_TOKEN = re.compile(r"(?<![A-Za-z])MUST(?![A-Za-z])")
 FIRST_LC_SECTION = "Array"
 
 
-def parse(readme_path):
-    with open(readme_path, encoding="utf-8") as f:
+def parse(index_path):
+    with open(index_path, encoding="utf-8") as f:
         lines = f.readlines()
 
     current_cat = None
@@ -102,7 +102,7 @@ def render(results):
     out.append("# LeetCode `MUST` Problems")
     out.append("")
     out.append(
-        f"Auto-generated from `README.md` by `script/extract_must_lc.py`. "
+        f"Auto-generated from `PROBLEMS.md` by `script/extract_must_lc.py`. "
         f"Total: **{len(results)}** problems across **{len(groups)}** categories."
     )
     out.append("")
@@ -132,12 +132,15 @@ def main():
     repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--readme", default=os.path.join(repo_root, "README.md"))
+    # `--readme` still works: the index was README.md until Sep 2026.
+    ap.add_argument("--index", "--readme", dest="index", metavar="PATH",
+                    default=os.path.join(repo_root, "PROBLEMS.md"),
+                    help="the problem index (default PROBLEMS.md)")
     ap.add_argument("--out", default=os.path.join(repo_root, "doc", "must_lc_list.md"))
     ap.add_argument("--stdout", action="store_true", help="print to stdout instead of writing a file")
     args = ap.parse_args()
 
-    results = parse(args.readme)
+    results = parse(args.index)
     doc = render(results)
 
     if args.stdout:

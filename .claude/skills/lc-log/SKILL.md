@@ -148,7 +148,7 @@ Insert at the **top** of the file, above the current newest day.
 
 ### 4. Do not touch anything else
 
-This skill writes exactly one new line in one file. Not README's status column — that is
+This skill writes exactly one new line in one file. Not the index's status column — that is
 [`/lc-again`](https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-again/SKILL.md)'s
 job and it has its own rules about what earns a promotion. Not a solution file. Not
 `data/again_problems.txt`.
@@ -191,7 +191,7 @@ bucket dropped because it looked finished, a verdict left blank because none was
 - ❌ write `2D LIS (354)` — it logs LC 2
 - ❌ edit or "tidy" a previous day's line
 - ❌ inflate or flatten the user's emphasis — `again!!` is not `again`
-- ❌ touch README's status column, `data/again_problems.txt`, or any solution file
+- ❌ touch `PROBLEMS.md`'s status column, `data/again_problems.txt`, or any solution file
 - ❌ report done without the round-trip in step 5
 - ❌ commit or push unless asked — the practice log gets its own commit
 
@@ -204,6 +204,6 @@ bucket dropped because it looked finished, a verdict left blank because none was
 | 1 | read the top of the log: yesterday's open buckets were `top 100 like(linked list)`, `top 100 like(heap)`, `top 100 like(dp)`, `others`, `DP` |
 | 2 | 23/24/25/138 all sort into `top 100 like(linked list)`; the rest of yesterday's buckets carry forward untouched |
 | 3 | `20260921: top 100 like(linked list):, 23(ok), 24(again!!!), 25, 138(again) \| top 100 like(heap):, 295 \| ...` written at the top |
-| 4 | README, `again_problems.txt` and the solution files left alone |
+| 4 | `PROBLEMS.md`, `again_problems.txt` and the solution files left alone |
 | 5 | `build-review-plan.js` → 822 days, 799 problems; round-trip prints `20260921 23(ok) 24(again!!!) 25 138(again)` — all four present |
 | 6 | flagged: 25 recorded with no verdict because none was given; `LC weekly:` dropped, as the user said 2289 was finally done |

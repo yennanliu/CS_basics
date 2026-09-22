@@ -1,164 +1,60 @@
-<h1 align="center"><a href="https://leetcode.com/problemset/algorithms/">CS_BASICS</a></h1>
+# LeetCode Problem Index
 
-<h5 align="center"><a href="https://www.bigocheatsheet.com/">pic_source</a></h5>
+> **Scope** — every problem this repo has a solution for, by topic: the LeetCode
+> number, the solutions committed here in each language, the time and space bounds,
+> the difficulty, the [tags](#note-tags), and the hand-kept `OK` / `AGAIN` status.
+> The repo's front door is [README.md](./README.md).
 
-<p align="center"><img src ="./doc/pic/bigO_complexity_chart.png"></p>
+> ⚠️ **GitHub cannot render this whole file, and gives no warning when it gives up.**
+> The file is over 1 MB; GitHub's markdown renderer stops at 512,000 bytes, mid-table,
+> with no notice — so most of the tables below are simply not on this page, and your
+> browser's find-in-page will not see them. Read it on the site instead, where it
+> renders in full:
+>
+> - **[Problem index](https://yennanliu.github.io/CS_basics/problems.html)** — this
+>   file, complete
+> - **[Search](https://yennanliu.github.io/CS_basics/search.html)** — find a problem
+>   by number, title or tag
+> - **[LC Explorer](https://yennanliu.github.io/CS_basics/lc-explorer.html)** — filter
+>   by tag and difficulty
 
-<p align="center"><img src ="./doc/pic/common_ds_op_cost.png" ></p>
+## Topics
 
-<p align="center"><img src ="./doc/pic/sort_algorithm_complexity.png" ></p>
+Reference tables, not LeetCode problems: [Data Structure](#data-structure) ·
+[Algorithm](#algorithm)
 
-<p align="center"><img src ="./doc/pic/sort_algorithm_complexity_2.jpeg" ></p>
-
-<p align="center"><img src ="./doc/pic/big-o-cheat-sheet-poster.png" ></p>
-
-<p align="center"><img src ="./doc/pic/data_structure_2.png" ></p>
-
-<p align="center"><img src ="./doc/pic/common_ds.png" ></p>
-
-<p align="center"><img src ="./doc/pic/needcode_roadmap.png" ></p>
-
-[![Star History Chart](https://api.star-history.com/svg?repos=yennanliu/CS_basics&type=Date)](https://star-history.com/#yennanliu/CS_basics&Date)
-
-
-## Cmd
-
-```bash
-# 1) (claude code) add time, space complexity to java class
-claude
-
-/add-time-space BinarySearch
-/add-time-space BFS
-
-# ....
-```
-
-
-## Resource
-
-* LC classics problems
-	- [Blind Curated 75](https://leetcode.com/list/xoqag3yj/)
-	- [Grind 75](https://www.techinterviewhandbook.org/grind75/)
-	- [Grind 169](https://www.techinterviewhandbook.org/grind75/?weeks=28&hours=6)
-	- [leetcode wiki repo](https://github.com/doocs/leetcode)
-	- [leetcode wiki](https://leetcode.doocs.org/)
-	- [LC 官神Github題目分類整理](https://github.com/wisdompeak/LeetCode/tree/master)
-	- [LC top 100 likes](https://leetcode.com/studyplan/top-100-liked/)
-	- [neetcode 150 LC list](https://neetcode.io/practice)
-		- [My Brain after 569 Leetcode Problems](https://youtu.be/8wysIxzqgPI)
-	- [jiakaobo LC](https://www.jiakaobo.com/leetcode.html) : LC code & video
-	- [LC pattern @ blind](https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time-OaM1orEU) : Curated-List-of-Top-100-LeetCode-Questions-to-Save-Your-Time
-	- [LC Algorithm Problem Classification](https://www.programcreek.com/2013/08/leetcode-problem-classification/)
-	- [cheatsheet-leetcode-a4](https://cheatsheet.dennyzhang.com/cheatsheet-leetcode-a4)
-	- [14-patterns-to-ace-any-coding-interview-question](https://hackernoon.com/14-patterns-to-ace-any-coding-interview-question-c5bb3357f6ed)
-	- [grokking-the-coding-interview](https://www.educative.io/courses/grokking-the-coding-interview)
-
-
-* LC experiences
-	- [LC難度表](https://zerotrac.github.io/leetcode_problem_rating/#/)
-		- 數字越高, 題目越難, 挑與自己LC排名接近的題庫
-		- (e.g. LC rank ~= 1600, pick 1600 problem)
-	- [代碼隨想錄](https://github.com/youngyangyang04/leetcode-master)
-	- [Leetcode cookbook](https://github.com/halfrost/LeetCode-Go)
-	- [fucking-algorithm](https://github.com/labuladong/fucking-algorithm)
-	- [fucking-algorithm website](https://labuladong.github.io/algo/)
-	- [FAANG 面試準備經驗與建議（一）](https://arthur-lin.medium.com/faang-%E9%9D%A2%E8%A9%A6%E6%BA%96%E5%82%99%E7%B6%93%E9%A9%97%E8%88%87%E5%BB%BA%E8%AD%B0-%E4%B8%80-b7add6a7b9a6)
-	- [FAANG 面試準備經驗與建議（二）](https://arthur-lin.medium.com/faang-%E9%9D%A2%E8%A9%A6%E6%BA%96%E5%82%99%E7%B6%93%E9%A9%97%E8%88%87%E5%BB%BA%E8%AD%B0-%E4%BA%8C-%E6%A8%A1%E6%93%AC%E9%9D%A2%E8%A9%A6%E8%88%87%E8%B3%87%E6%BA%90%E4%BB%8B%E7%B4%B9-b06cc097b665)
-	- [LC 小知識](https://ithelp.ithome.com.tw/articles/10299626)
-	- [Meta SWE isnterview prep](https://www.metacareers.com/profile/trial/?redirect=job_details&chooseView=Arrays)
-	- [0到100的軟體工程師面試之路](https://ithelp.ithome.com.tw/users/20152262/ironman/5615?page=2)
-	- 來和大家聊聊我是如何刷題的 : pt1, pt2, pt3
-		- https://blog.csdn.net/azl397985856/article/details/110358828
-		- https://mp.weixin.qq.com/s/guCR2DCTGoWf4ojeqq2M8A
-		- https://mp.weixin.qq.com/s/P_RMRmugmxvIHGyn2EHl7g
-
-* LC Flow
-	- high level idea : data structure, algorithm
-	- offer time & space complexity
-	- code implementation
-	- offer test case (consider edge case)
-	- discussion & follow up
-
-- [Resource.md](./doc/Resource.md) - `Resource` for coding interview (**keep updating**)
-- [Teach yourself CS](https://teachyourselfcs.com/)
-- [MindMapCodeInterview](./doc/cheatsheet/mind_map_code_interview.png) - Mind map for coding interview 
-- [CodeInterviewCheatsheet](./doc/cheatsheet/code_interview_cheatsheet.pdf) - Coding interview cheetsheet
-- [repl.it](https://repl.it/) - Coding online!
-
-* Visualization
-	- [Algorithms viz](https://www.cs.usfca.edu/~galles/visualization/Algorithms.html)
-	- [visualgo - DFS / BFS](https://visualgo.net/en/dfsbfs?slide=1) - DFS, BFS visualization
-	- [visualgo - linkedlist](https://visualgo.net/en/list) - Linkedlist visualization
-	- [visualgo - BST](https://visualgo.net/bn/bst) - binary search tree visualization
-	- [toptal-sorting-algorithms](https://www.toptal.com/developers/sorting-algorithms)- sorting algorithms online
-
-- [How to: Work at Google](https://www.youtube.com/watch?v=XKu_SEDAykw) — Example Coding/Engineering Interview
-- [bit_manipulation.md](./doc/bit_manipulation.md) - Bit Manipulation Cheat Sheet
-- [Py TimeComplexity](https://wiki.python.org/moin/TimeComplexity) - Py basic data structure `Time Complexity` ref
-- [Py data model](https://docs.python.org/3/reference/datamodel.html) - Python data model doc 
-- [pgexercises](https://pgexercises.com/questions/aggregates/) - Postgre exercises
-- [sqlservertutorial](https://www.sqlservertutorial.net/)
-- [Books](https://github.com/yennanliu/data_science_repo/tree/master/book)
-- [freecodecamp - data-structures](https://www.freecodecamp.org/news/tag/data-structures/)
-- [LC interview-experience](https://leetcode.com/discuss/interview-experience?currentPage=1&orderBy=hot&query=)
-- [Cheatsheet](https://github.com/yennanliu/CS_basics/tree/master/doc/cheatsheet)
-
-* Data structure
-	- [py core data structure interview](https://python.plainenglish.io/python-for-interviewing-an-overview-of-the-core-data-structures-666abdf8b698)
-
-* System design
-	- [system_design readme](https://github.com/yennanliu/CS_basics/tree/master/system_design)
-	- [sys_design_resource](https://github.com/yennanliu/CS_basics/blob/master/system_design/sys_design_resource.md)
-
-* Tools
-	- https://coderpad.io/
-	- https://codeshare.io/
-	- http://sqlfiddle.com/
-
-* LC SQL resources
-	- [LC SQL resource](./doc/lc_sql_resource.md)
-
-## Algorithms content
-
-* [Bit Manipulation](https://github.com/yennanliu/CS_basics#bit-manipulation)
-* [Array](https://github.com/yennanliu/CS_basics#array)
-* [String](https://github.com/yennanliu/CS_basics#string)
-* [Linked List](https://github.com/yennanliu/CS_basics#linked-list)
-* [Stack](https://github.com/yennanliu/CS_basics#stack)
-* [Queue](https://github.com/yennanliu/CS_basics#queue)
-* [Heap](https://github.com/yennanliu/CS_basics#heap)
-* [Tree](https://github.com/yennanliu/CS_basics#tree)
-* [Hash Table](https://github.com/yennanliu/CS_basics#hash-table)
-* [Math](https://github.com/yennanliu/CS_basics#math)
-* [Two Pointers](https://github.com/yennanliu/CS_basics#two-pointers)
-* [Scan Line](https://github.com/yennanliu/CS_basics#scan-line)
-* [Sort](https://github.com/yennanliu/CS_basics#sort)
-* [Recursion](https://github.com/yennanliu/CS_basics#recursion)
-* [Binary Search](https://github.com/yennanliu/CS_basics#binary-search)
-* [Binary Search Tree](https://github.com/yennanliu/CS_basics#binary-search-tree)
-* [Breadth-First Search](https://github.com/yennanliu/CS_basics#breadth-first-search)
-* [Depth-First Search](https://github.com/yennanliu/CS_basics#depth-first-search)
-* [Backtracking](https://github.com/yennanliu/CS_basics#backtracking)
-* [Dynamic Programming](https://github.com/yennanliu/CS_basics#dynamic-programming)
-* [Greedy](https://github.com/yennanliu/CS_basics#greedy)
-* [Graph](https://github.com/yennanliu/CS_basics#graph)
-* [Geometry](https://github.com/yennanliu/CS_basics#geometry)
-* [Prefix Sum](https://github.com/yennanliu/CS_basics#prefix-sum)
-* [Simulation](https://github.com/yennanliu/CS_basics#simulation)
-* [Design](https://github.com/yennanliu/CS_basics#Design)
-* [Concurrency](https://github.com/yennanliu/CS_basics#Concurrency)
-
-## Database
-
-* [SQL](https://github.com/yennanliu/CS_basics#sql)
-
-## Shell
-
-* [Shell Script](https://github.com/yennanliu/CS_basics#shell-script)
-
-<br>
-
-# Progress 
+- [Array](#array)
+- [Set](#set)
+- [Slide Window](#slide-window)
+- [Hash Table](#hash-table)
+- [Linked list](#linked-list)
+- [Stack](#stack)
+- [Tree](#tree)
+- [Heap](#heap)
+- [Bit Manipulation](#bit-manipulation)
+- [String](#string)
+- [Queue](#queue)
+- [Math](#math)
+- [Scan Line](#scan-line)
+- [Sort](#sort)
+- [Two Pointers](#two-pointers)
+- [Recursion](#recursion)
+- [Binary Search](#binary-search)
+- [Binary Search Tree](#binary-search-tree)
+- [Breadth-First Search](#breadth-first-search)
+- [Depth-First Search](#depth-first-search)
+- [Backtracking](#backtracking)
+- [Dynamic Programming](#dynamic-programming)
+- [Greedy](#greedy)
+- [Graph](#graph)
+- [Geometry](#geometry)
+- [Design](#design)
+- [Prefix Sum](#prefix-sum)
+- [Simulation](#simulation)
+- [Concurrency](#concurrency)
+- [SQL](#sql)
+- [Shell Script](#shell-script)
+- [Newly Added (kamyu104 gap)](#newly-added-kamyu104-gap)
 
 ## Note tags
 

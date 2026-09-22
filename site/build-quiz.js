@@ -4,16 +4,16 @@
  * Build the complexity-quiz question bank.
  *
  *   data/complexity_quiz.json  (hand-authored snippets and answers)
- * + README.md                  (the repo's master problem index)
+ * + PROBLEMS.md                (the repo's master problem index)
  * → _site/data/complexity-quiz.json
  *
  * As with the roadmap, a question carries only the LeetCode number; its title,
- * difficulty and links to this repo's solutions are resolved from README at
+ * difficulty and links to this repo's solutions are resolved from the index at
  * build time so they live in exactly one place.
  *
  * Everything inconsistent is a hard failure rather than a dropped question: an
  * answer the grader cannot parse would be unscoreable no matter what the user
- * typed, and an lc number README does not know would render as a blank card.
+ * typed, and an lc number the index does not know would render as a blank card.
  *
  * Run via site/build.sh; exported helpers are unit-tested in site/test.
  */
@@ -21,7 +21,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const { parseReadmeProblems } = require('./build-roadmap.js');
+const { parseProblemIndex, PROBLEM_INDEX } = require('./build-roadmap.js');
 const CSComplexity = require('./complexity.js');
 
 const ROOT = path.join(__dirname, '..');
@@ -40,12 +40,12 @@ function answerStrings(question) {
 }
 
 /**
- * Resolves one authored question against README, or throws explaining why it
+ * Resolves one authored question against the index, or throws explaining why it
  * cannot be shown.
  *
- * `readme` is the Map from parseReadmeProblems, keyed by the id as a string.
+ * `index` is the Map from parseProblemIndex, keyed by the id as a string.
  */
-function resolveQuestion(question, readme) {
+function resolveQuestion(question, index) {
   const where = `question "${question.id || '(missing id)'}"`;
 
   for (const field of ['id', 'topic', 'code', 'time', 'space', 'why']) {
@@ -94,7 +94,7 @@ function resolveQuestion(question, readme) {
   };
 
   if (question.lc == null) {
-    // A pure algorithm or Python drill: it has no README row to borrow from,
+    // A pure algorithm or Python drill: it has no indexed row to borrow from,
     // so it has to carry its own label.
     for (const field of ['title', 'difficulty']) {
       if (!question[field]) {
@@ -106,17 +106,17 @@ function resolveQuestion(question, readme) {
     return resolved;
   }
 
-  const problem = readme.get(String(question.lc));
+  const problem = index.get(String(question.lc));
   if (!problem) {
-    throw new Error(`${where} points at LC ${question.lc}, which is not in README.md`);
+    throw new Error(`${where} points at LC ${question.lc}, which is not in ${PROBLEM_INDEX}`);
   }
-  // README is the single source for these, so an authored one is not merely
+  // The index is the single source for these, so an authored one is not merely
   // redundant — it is a second copy free to drift. Rejecting beats ignoring:
   // a silently-dropped title is exactly the failure this builder exists to
   // make loud.
   for (const field of ['title', 'difficulty']) {
     if (question[field]) {
-      throw new Error(`${where} sets its own ${field}, but LC ${question.lc} takes that from README.md`);
+      throw new Error(`${where} sets its own ${field}, but LC ${question.lc} takes that from ${PROBLEM_INDEX}`);
     }
   }
   resolved.title = problem.title;
@@ -129,7 +129,7 @@ function resolveQuestion(question, readme) {
 }
 
 /** Resolves the whole bank, rejecting duplicate ids. */
-function buildQuiz(bank, readme) {
+function buildQuiz(bank, index) {
   const questions = (bank && bank.questions) || [];
   if (!questions.length) throw new Error('data/complexity_quiz.json has no questions');
 
@@ -141,7 +141,7 @@ function buildQuiz(bank, readme) {
       throw new Error(`duplicate question id "${question.id}"`);
     }
     seen.add(question.id);
-    return resolveQuestion(question, readme);
+    return resolveQuestion(question, index);
   });
 
   const topics = [...new Set(resolved.map(q => q.topic))].sort();
@@ -152,8 +152,8 @@ function buildQuiz(bank, readme) {
 
 function main() {
   const bank = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/complexity_quiz.json'), 'utf8'));
-  const readme = parseReadmeProblems(fs.readFileSync(path.join(ROOT, 'README.md'), 'utf8'));
-  const built = buildQuiz(bank, readme);
+  const index = parseProblemIndex(fs.readFileSync(path.join(ROOT, PROBLEM_INDEX), 'utf8'));
+  const built = buildQuiz(bank, index);
 
   const outDir = path.join(ROOT, '_site/data');
   fs.mkdirSync(outDir, { recursive: true });

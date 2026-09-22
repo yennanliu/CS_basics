@@ -2,7 +2,7 @@
 
 ###############################################################################
 # Script: get_must_problems.sh
-# Description: Scan README.md for LeetCode problems marked with "MUST"
+# Description: Scan PROBLEMS.md (the problem index) for LeetCode problems
 #              and output to CLI and save to file
 # Usage: ./get_must_problems.sh
 ###############################################################################
@@ -19,12 +19,12 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 # Define paths
-README_FILE="$PROJECT_ROOT/README.md"
+INDEX_FILE="$PROJECT_ROOT/PROBLEMS.md"
 OUTPUT_FILE="$PROJECT_ROOT/data/must_problems.txt"
 
-# Check if README.md exists
-if [ ! -f "$README_FILE" ]; then
-    echo -e "${RED}Error: README.md not found at $README_FILE${NC}"
+# Check if the problem index exists
+if [ ! -f "$INDEX_FILE" ]; then
+    echo -e "${RED}Error: PROBLEMS.md not found at $INDEX_FILE${NC}"
     exit 1
 fi
 
@@ -35,7 +35,7 @@ echo -e "${BLUE}========================================${NC}"
 echo ""
 
 # Extract lines containing "MUST" and save to variable
-MUST_LINES=$(grep -i "MUST" "$README_FILE")
+MUST_LINES=$(grep -i "MUST" "$INDEX_FILE")
 
 # Count total problems found
 TOTAL_COUNT=$(echo "$MUST_LINES" | wc -l)
