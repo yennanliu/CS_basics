@@ -33,6 +33,12 @@ All the integers in each column are sorted in ascending order.
 
 """
 
+"""
+CAN NOT use `binary search` for this LC.
+    
+    -> flatten array is NOT sorted (NOT in increasing or decreasing order)
+"""
+
 # V0
 # IDEA : 2D array op + matrix properties (this problem only)
 ## NOTE :
@@ -65,6 +71,42 @@ class Solution:
             elif matrix[row][col] > target: 
                 col -= 1
         return False
+
+
+# V0-0-1
+# IDEA : 2D array op + matrix properties (this problem only)
+class Solution(object):
+    def searchMatrix(self, matrix, target):
+        """
+        :type matrix: List[List[int]]
+        :type target: int
+        :rtype: bool
+        """
+        if not matrix or not matrix[0]:
+            return False
+
+        rows = len(matrix)
+        cols = len(matrix[0])
+
+        row = 0
+        col = cols - 1
+
+        while row < rows and col >= 0:
+            val = matrix[row][col]
+
+            if val == target:
+                return True
+
+            elif val > target:
+                # 太大 → 往左
+                col -= 1
+
+            else:
+                # 太小 → 往下
+                row += 1
+
+        return False
+
 
 # V0-1
 # IDEA : py array op (may not acceptable to interviewer)
