@@ -41,6 +41,19 @@ class Solution(object):
         # step 1) i, j -> j, i
         l = len(matrix)
         w = len(matrix[0])
+
+
+        """
+        NOTE !!!
+
+            ```
+            for i in range(l):
+                for j in range(i + 1, w):
+
+                    matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+            ```
+
+        """
         for i in range(l):
             """
             NOTE !!!
@@ -80,6 +93,62 @@ class Solution(object):
         for i in range(l):
             matrix[i] = matrix[i][::-1]
         return matrix
+
+
+# V0-0-1
+# IDEA : TRANSPOSE (i,j -> j,i) -> REVERSE  (gpt)
+# time = O(n^2)
+# space = O(1)
+class Solution(object):
+    def rotate(self, matrix):
+        """
+        :type matrix: List[List[int]]
+        :rtype: None
+        """
+
+        # Edge case
+        if not matrix or len(matrix) == 0:
+            return None
+
+        n = len(matrix)
+
+        # --------------------------------------------------
+        # Step 1: Transpose the matrix
+        #
+        # (row, col) -> (col, row)
+        #
+        # Example:
+        #
+        # 1 2 3        1 4 7
+        # 4 5 6   ->   2 5 8
+        # 7 8 9        3 6 9
+        #
+        # Only swap the upper triangle with the lower triangle.
+        #
+        #   -> Start x from `y + 1` 
+        #          -> so we don't swap the `same pair` `twice`.
+        # --------------------------------------------------
+        for y in range(n):
+            for x in range(y + 1, n):
+                matrix[y][x], matrix[x][y] = \
+                    matrix[x][y], matrix[y][x]
+
+        # --------------------------------------------------
+        # Step 2: Reverse every row
+        #
+        # 1 4 7        7 4 1
+        # 2 5 8   ->   8 5 2
+        # 3 6 9        9 6 3
+        #
+        # This gives us a 90-degree clockwise rotation.
+        # --------------------------------------------------
+        for y in range(n):
+            matrix[y].reverse()
+
+        # The problem asks for in-place modification.
+        # Do not return matrix.
+        return None
+
 
 # V0-1
 # IDEA : TRANSPOSE (i,j -> j,i) -> REVERSE 

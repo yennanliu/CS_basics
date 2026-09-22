@@ -1,4 +1,4 @@
-20260922: top 100 like(matrix): 48, 54, 73, 240 | top 100 like(linked list):  23 25 | top 100 like(heap):  295 | top 100 like(graph):  | top 100 like(dp): 32, 300 | top 100 like (binary tree):  105(ok*) | others: 678(todo), 738(todo), 316(todo), 402(todo), 357(dp, todo), 300, 2D LIS (354) | DP: wildcard: 10(todo), 97(todo)| 
+20260922: top 100 like(matrix): 48(again), 54, 73, 240 | top 100 like(linked list):  23 25 | top 100 like(heap):  295 | top 100 like(graph):  | top 100 like(dp): 32, 300 | top 100 like (binary tree):  105(ok*) | others: 678(todo), 738(todo), 316(todo), 402(todo), 357(dp, todo), 300, 2D LIS (354) | DP: wildcard: 10(todo), 97(todo)| 
 
 
 20260921: top 100 like(linked list):  23 25, 146(again!!), 148(ok), 160(ok), 206(again), 234(ok) | top 100 like(heap):  295 | top 100 like(graph):  | top 100 like(dp): 32, 300 | top 100 like (binary tree):  105(ok*) | others: 678(todo), 738(todo), 316(todo), 402(todo), 357(dp, todo), 300, 2D LIS (354), 4054(again!!!, to note), 2033(again), 2034(again) | DP: wildcard: 10(todo), 97(todo)| 
