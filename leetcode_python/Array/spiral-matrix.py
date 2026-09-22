@@ -28,7 +28,96 @@ n == matrix[i].length
 
 """
 
+
 # V0
+# IDEA : 4 cases : right, down, left, up + boundary condition (gpt)
+class Solution(object):
+    def spiralOrder(self, matrix):
+        """
+        :type matrix: List[List[int]]
+        :rtype: List[int]
+        """
+
+        # Edge case
+        if not matrix:
+            return []
+
+        l = len(matrix)
+        w = len(matrix[0])
+
+        res = []
+
+        min_x = 0
+        max_x = w - 1
+
+        min_y = 0
+        max_y = l - 1
+
+        while len(res) < l * w:
+
+            # --------------------------------
+            # 1. RIGHT
+            # --------------------------------
+            #
+            # Need +1 because range() excludes
+            # the right boundary.
+            #
+            # Example:
+            # min_x = 0, max_x = 2
+            # range(0, 3) -> 0, 1, 2
+            #
+            for x in range(min_x, max_x + 1):
+                res.append(matrix[min_y][x])
+
+            # Top row is done
+            min_y += 1
+
+            # --------------------------------
+            # 2. DOWN
+            # --------------------------------
+            #
+            # Need to make sure there is still
+            # an unprocessed row.
+            #
+            if min_y <= max_y:
+                for y in range(min_y, max_y + 1):
+                    res.append(matrix[y][max_x])
+
+            # Right column is done
+            max_x -= 1
+
+            # --------------------------------
+            # 3. LEFT
+            # --------------------------------
+            #
+            # Need to make sure there is still
+            # an unprocessed row.
+            #
+            if min_y <= max_y:
+                for x in range(max_x, min_x - 1, -1):
+                    res.append(matrix[max_y][x])
+
+                # Bottom row is done
+                max_y -= 1
+
+            # --------------------------------
+            # 4. UP
+            # --------------------------------
+            #
+            # Need to make sure there is still
+            # an unprocessed column.
+            #
+            if min_x <= max_x:
+                for y in range(max_y, min_y - 1, -1):
+                    res.append(matrix[y][min_x])
+
+                # Left column is done
+                min_x += 1
+
+        return res
+
+
+# V0-0-1
 # IDEA : 4 cases : right, down, left, up + boundary condition
 # PATTERN:
 # while condition:
