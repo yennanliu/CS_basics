@@ -53,31 +53,10 @@
 
 	
 
-
-- stack_expression_parsing
-	- https://yennj12.js.org/CS_basics/cheatsheets/stack_expression_parsing.zh.html
-		- to review: `general form`
-
-
-
-
-
-
-
-
-
-- time_space_complexity.md
-
 - binary tree.md
 
 
-- Monotonic Queue.md
-	- https://yennj12.js.org/CS_basics/cheatsheets/monotonic_queue.zh.html
 
-
-
-- review `all recent updated cheatsheets`
-	- git commit msg
 
 - python_trick.md
 	- https://yennj12.js.org/CS_basics/cheatsheets/python_trick.zh.html
@@ -87,6 +66,20 @@
 
 
 
+
+
+
+
+
+- stack_expression_parsing
+	- https://yennj12.js.org/CS_basics/cheatsheets/stack_expression_parsing.zh.html
+		- to review: `general form`
+
+- time_space_complexity.md
+
+
+- review `all recent updated cheatsheets`
+	- git commit msg
 
 
 
@@ -147,6 +140,9 @@
 	- greedy_examples.zh.html
 	- Sorting Algorithms.md
 	- dp_pattern.md
+	- Monotonic Queue.md
+
+
 
 	
 
