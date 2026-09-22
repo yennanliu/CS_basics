@@ -35,10 +35,10 @@
 - **範例**：LC 496（Next Greater Element I）、LC 503（Next Greater Element II）、LC 739（Daily Temperatures）
 - **模式**：用遞減單調堆疊，遇到更大的元素就彈出
 
-<!-- 61739f0cd485 -->
+<!-- e4f9a2bae664 -->
 ### **模式 2：Next/Previous Smaller Element** — LC 84
 - **描述**：找出比目前元素小的下一個或前一個元素
-- **範例**：LC 84（Largest Rectangle）、LC 42（Trapping Rain Water）、LC 907（Sum of Subarray Minimums）
+- **範例**：LC 84（Largest Rectangle）、LC 42（Trapping Rain Water）、LC 907（Sum of Subarray Minimums）、LC 4054（Count Shadow Pairs I — next *strictly* smaller）
 - **模式**：用遞增單調堆疊，遇到更小的元素就彈出
 
 <!-- e6c573186815 -->
@@ -93,8 +93,12 @@
 
 <!--CODE-->
 
-<!-- 75f120a39672 -->
+<!-- f577e8f27595 -->
 ### 模板 2：Next Smaller Element（遞增堆疊） — LC 84
+
+> 彈出條件寫 `>` 的話，這個模板找到的是下一個更小**或相等**的元素。當題目說的是*嚴格*更小，
+> 彈出條件就要改成 `>=` — 見
+> [§2-19](#2-19-count-shadow-pairs-i-lc-4054--template-2-variant-next-strictly-smaller-)。
 
 <!--CODE-->
 
@@ -139,7 +143,7 @@
 | Shortest Unsorted Array | 581 | 兩趟堆疊 | Medium | 模板 1 |
 | Sum of Subarray Ranges | 2104 | next greater + smaller | Medium | 模板 1+2 |
 
-<!-- c58b3c0ea998 -->
+<!-- 6b4925231416 -->
 #### **模式 2：Next/Previous Smaller Element 題目**
 | 題目 | LC # | 關鍵技巧 | 難度 | 模板 |
 |---------|------|---------------|------------|----------|
@@ -150,6 +154,7 @@
 | Minimum Cost Tree From Leaf Values | 1130 | 最佳合併 | Medium | 模板 2 |
 | Find the Most Competitive Subsequence | 1673 | 選子序列 | Medium | 模板 2 |
 | Maximum Subarray Min-Product | 1856 | 以最小值為樞紐 | Medium | 模板 2 |
+| Count Shadow Pairs I | 4054 | Next **strictly** smaller 的窗口，再扣掉相等值的串接 | Medium | 模板 2 的變形 |
 
 <!-- 533d2a1d1c45 -->
 #### **模式 3：直方圖與面積題目**
@@ -710,7 +715,7 @@
 **經典 bug：** 只在 `val < mins.peek()`（嚴格）時才推入新的最小值。碰到 `push(0); push(0); pop();`，那唯一存下的 `0` 會被移掉，`getMin()` 就回傳錯的值。要用 `<=`。
 **省空間的變形：** 在單一堆疊裡存 `(val, minSoFar)` 這種 pair — 操作一樣是 O(1)，而且面試壓力下比較好講清楚。
 
-<!-- a6e487ff662c -->
+<!-- 974bdd4ee317 -->
 ### 2-17) 既有模板的各種變形
 
 | LC # | 題目 | 基礎模板 | 變化點 |
@@ -720,6 +725,7 @@
 | 768 | Max Chunks To Make Sorted II | 模板 1（遞減彈出） | 堆疊裡放的是**各區塊的最大值**，不是原始元素；答案 = 最後的堆疊大小 |
 | 769 | Max Chunks To Make Sorted | 模板 1（退化版） | 值是 `0..n-1` 的排列，所以用一個 running max 就能取代堆疊：只要 `runningMax == i` 就切一塊 |
 | 1047 / 1209 | Remove All Adjacent Duplicates In String (I / II) | 模板 5（堆疊帶資訊） | 堆疊存 `(char, count)`；`count` 到 `k` 就彈出 — LC 1047 就是 `k = 2` 的特例 |
+| 4054 | Count Shadow Pairs I | 模板 2（next smaller） | 是 next **strictly** smaller — 彈出改用 `>=`，然後還要扣掉窗口內相等的值，因為配對條件同樣是嚴格的（[§2-19](#2-19-count-shadow-pairs-i-lc-4054--template-2-variant-next-strictly-smaller-)） |
 
 **Max Chunks To Make Sorted II (LC 768) — 區塊最大值堆疊**
 
@@ -838,7 +844,7 @@
 
 改用 `(值, 步數)` 的配對堆疊完全等價，還可以省掉 `dp` 陣列 — 推入 `(num, cur)` 而不是索引，彈出條件改成 `stack[-1][0] <= num`；[上面](#dry-run--the-full-lc-example-val-steps-pair-stack)逐步演練用的就是這種寫法。當索引沒有別的用途時就用它。
 
-<!-- 36b495321f29 -->
+<!-- c7af98a96b2a -->
 #### 相似題目
 
 | 題目 | LC # | 關鍵差異 |
@@ -851,9 +857,76 @@
 | Asteroid Collision | 735 | 同樣是「大的吃掉小的」模擬；答案是存活者，所以不需要帶 dp |
 | Minimum Cost Tree From Leaf Values | 1130 | 一樣是比較小就彈出，但每次彈出彙總的是**成本**，不是輪數 |
 | Largest Rectangle in Histogram | 84 | 當作對照：那裡的彈出算出的是**最終值**（面積），沒有人會去繼承它 |
+| Count Shadow Pairs I | 4054 | 同樣是由右往左的 `>=` 彈出、同樣的嚴格性理由，但彈出時什麼都不帶 — 被數的是它們留下的那個窗口（[§2-19](#2-19-count-shadow-pairs-i-lc-4054--template-2-variant-next-strictly-smaller-)） |
 
-<!-- b8724fc0868e -->
-### 2-19) 值得知道的經典堆疊題（非單調）
+<!-- af03ab8963b7 -->
+### 2-19) Count Shadow Pairs I (LC 4054) — 模板 2 的變形：Next STRICTLY Smaller ⭐⭐⭐⭐
+
+> `leetcode_python/Stack/count-shadow-pairs-i.py`
+
+> **變化點：**[模板 2](#template-2-next-smaller-element-increasing-stack--lc-84) 的彈出條件是 `>`，會停在**相等**的值。這題的窗口必須停在下一個*嚴格*更小的元素，所以彈出條件要改成 `>=` — 而且因為配對條件 `nums[i] < nums[j]` 同樣是嚴格的，落在窗口*裡面*那些相等的值還得再扣回來。
+
+<!-- 7836e32fa027 -->
+#### 核心想法
+
+一組 `(i, j)` 會被任何嚴格落在中間、且 `nums[k] < nums[i]` 的 `k` 殺掉。這個條件**只提到 `nums[i]`** — 從來沒提 `nums[j]` — 所以固定 `i`，改問它往右最多還能伸到哪裡：
+
+- 令 `nxt[i]` = `i` 右邊第一個值**嚴格小於** `nums[i]` 的索引（沒有的話就是 `n`）；
+- 落在 `(i, nxt[i])` 裡的每個 `j` 都滿足 `nums[j] >= nums[i]`，所以中間不可能有人殺掉這組配對 — `j` 只需要再通過 `nums[j] > nums[i]`，也就是**不能相等**；
+- `j = nxt[i]` 本身永遠配不成：它的值更小，`nums[i] < nums[j]` 不成立；
+- `nxt[i]` 之後的 `j` 也都配不成，因為此時 `k = nxt[i]` 已經嚴格落在中間了。
+
+於是整題塌縮成每個索引一個窗口的算術：
+
+<!--CODE-->
+
+而那些相等的值會**串接**起來，這正是讓第二項維持每個索引 O(1) 的關鍵：若 `ne` 是 `i` 右邊最近一個 `nums[ne] == nums[i]` 的索引，且 `ne < nxt[i]`，那麼 `nxt[ne] == nxt[i]` — 值相同，中間又沒有更小的 — 所以
+
+<!--CODE-->
+
+這就是[貢獻法](#contribution-method-for-subarrays)，只是 LC 907 求的是總和，這裡求的是**個數**：同一個窗口，算的是 `window - equals` 而不是 `arr[i] * left * right`。
+
+<!-- de66941da27a -->
+#### 視覺化追蹤 — `nums = [6,7,6,6,7]`
+
+由右往左，所以堆疊裡永遠已經放好 `i` 後面的所有東西：
+
+<!--CODE-->
+
+<!-- ce9811b7e4b3 -->
+#### 模板 2 沒有做的兩個修正
+
+這兩件事其實是同一個詞 — *嚴格* — 在兩個不同的地方各讀一次，而且只做其中一個仍然會算錯：
+
+| | 在哪裡出問題 | 弄錯的話 |
+|---|---|---|
+| **彈出用 `>=`，不是 `>`** | `nxt[i]` 必須是第一個**嚴格**更小的值 | 用 `>` 彈出會停在相等的值，於是每個窗口都被縮短 — `[6,7,6,6,7]` 會回傳 `2` 而不是 `4` |
+| **扣掉相等值的串接** | `nums[i] < nums[j]` 是嚴格的，而窗口只保證 `>=` | 只算窗口大小，會把 `[6,7,6,6,7]` 裡的 `(2,3)` 也算進去，而那兩端都是 `6` |
+
+掃描方向決定了運算子怎麼寫，和 [§2-18](#2-18-steps-to-make-array-non-decreasing-lc-2289--monotonic-stack-carrying-a-dp-value-) 完全一樣：這裡是**由右往左**，把所有 `>=` 當前值的東西都彈掉，剩在頂端的自然就是第一個嚴格更小的。
+
+**在 Java 裡答案放不進 `int`。** `n` 最大到 `10^5`，而嚴格遞增的陣列會讓每一組配對都成立，所以個數會達到 `n(n-1)/2 = 4,999,950,000`。
+
+<!-- fcbe13e84e94 -->
+#### 從另一端數 — 單趟掃描，不用陣列
+
+值得再留一個解，因為它回答的是*另一個*問題：不是問每個 `i` 能往右伸多遠，而是問每個 `j` 能收掉多少個還活著的候選。這樣兩個陣列都不需要了，只要每個還存活的相異值一個分組，而且是**由左往右**掃 — 所以彈出條件又翻回 `>`，因為相等的值現在正是被拿來計數的那一組，必須留著。
+
+<!--CODE-->
+
+<!-- 15db1b4ac4b2 -->
+#### 相似題目
+
+| 題目 | LC # | 關鍵差異 |
+|---------|------|----------------|
+| Number of Valid Subarrays | 1063 | 同一個窗口，但不必做任何修正：它數的是**第一個元素就是最小值**的子陣列，所以相等的值仍然合法，`nxt[i] - i` 本身就是答案 |
+| Sum of Subarray Minimums | 907 | 同一個窗口，但是**加總**而不是計數，而那裡的嚴格性是花在避免重複計算相等的最小值（[§2-7](#2-7-sum-of-subarray-minimums-lc-907--monotonic-stack)） |
+| Number of Visible People in a Queue | 1944 | 同樣是數沒有被遮住的配對，但遮擋條件要讀**兩端**（中間的 `max` 必須小於 `min(h[i], h[j])`），所以單憑 `i` 無法固定窗口 |
+| Steps to Make Array Non-decreasing | 2289 | 因為同樣的理由用同樣的 `>=` 彈出，但彈出時往上帶的是 dp 值，不是個數（[§2-18](#2-18-steps-to-make-array-non-decreasing-lc-2289--monotonic-stack-carrying-a-dp-value-)） |
+| Final Prices With a Special Discount | 1475 | 反過來的鏡像：它要的本來就是 next smaller **或相等**，所以那裡的 `>=` 是原本的語意，不是修正 |
+
+<!-- b8bddffe7013 -->
+### 2-20) 值得知道的經典堆疊題（非單調）
 
 > 這些用的是普通堆疊（沒有單調不變式），但常常和上面那些模式一起出現。
 

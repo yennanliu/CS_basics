@@ -43,7 +43,7 @@ half-translated document renders with English gaps rather than failing.
   is what makes a problem findable on LeetCode itself.
 
 
-## Status — 5146 / 5323 sections (97%)
+## Status — 5158 / 5335 sections (97%)
 
 | Cheatsheet | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -125,13 +125,13 @@ half-translated document renders with English gaps rather than failing.
 | [lc_pattern](./cheatsheet/lc_pattern.md) | 72 | [✅](../i18n/zh/lc_pattern.md) |
 | [linked_list](./cheatsheet/linked_list.md) | 29 | [✅](../i18n/zh/linked_list.md) |
 | [linked_list_examples](./cheatsheet/linked_list_examples.md) | 34 | [✅](../i18n/zh/linked_list_examples.md) |
-| [math](./cheatsheet/math.md) | 46 | [✅](../i18n/zh/math.md) |
+| [math](./cheatsheet/math.md) | 50 | [✅](../i18n/zh/math.md) |
 | [math_logic_puzzles](./cheatsheet/math_logic_puzzles.md) | 14 | — |
 | [matrix](./cheatsheet/matrix.md) | 67 | [✅](../i18n/zh/matrix.md) |
 | [matrix_examples](./cheatsheet/matrix_examples.md) | 27 | [✅](../i18n/zh/matrix_examples.md) |
 | [memory_constrained_algorithms](./cheatsheet/memory_constrained_algorithms.md) | 14 | — |
 | [monotonic_queue](./cheatsheet/monotonic_queue.md) | 23 | [✅](../i18n/zh/monotonic_queue.md) |
-| [monotonic_stack](./cheatsheet/monotonic_stack.md) | 90 | [✅](../i18n/zh/monotonic_stack.md) |
+| [monotonic_stack](./cheatsheet/monotonic_stack.md) | 98 | [✅](../i18n/zh/monotonic_stack.md) |
 | [n_sum](./cheatsheet/n_sum.md) | 16 | [✅](../i18n/zh/n_sum.md) |
 | [ood_design](./cheatsheet/ood_design.md) | 34 | [✅](../i18n/zh/ood_design.md) |
 | [palindrome](./cheatsheet/palindrome.md) | 66 | [✅](../i18n/zh/palindrome.md) |

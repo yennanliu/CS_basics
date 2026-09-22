@@ -30,7 +30,7 @@
 
 ### **Pattern 2: Next/Previous Smaller Element** — LC 84
 - **Description**: Find the next or previous element that is smaller than current element
-- **Examples**: LC 84 (Largest Rectangle), LC 42 (Trapping Rain Water), LC 907 (Sum of Subarray Minimums)
+- **Examples**: LC 84 (Largest Rectangle), LC 42 (Trapping Rain Water), LC 907 (Sum of Subarray Minimums), LC 4054 (Count Shadow Pairs I — next *strictly* smaller)
 - **Pattern**: Use increasing monotonic stack, pop when finding smaller element
 
 ### **Pattern 3: Histogram and Area Problems** — LC 84
@@ -183,6 +183,10 @@ public int[] nextGreaterElement(int[] nums) {
 ```
 
 ### Template 2: Next Smaller Element (Increasing Stack) — LC 84
+
+> Popping on `>` leaves this finding the next smaller **or equal** element. When a problem
+> says *strictly* smaller, the pop becomes `>=` — see
+> [§2-19](#2-19-count-shadow-pairs-i-lc-4054--template-2-variant-next-strictly-smaller-).
 
 ```python
 def next_smaller_element(nums):
@@ -357,6 +361,7 @@ def find_132_pattern(nums):
 | Minimum Cost Tree From Leaf Values | 1130 | Optimal merging | Medium | Template 2 |
 | Find the Most Competitive Subsequence | 1673 | Subsequence selection | Medium | Template 2 |
 | Maximum Subarray Min-Product | 1856 | Min value as pivot | Medium | Template 2 |
+| Count Shadow Pairs I | 4054 | Next **strictly** smaller window, minus the equal-value chain | Medium | Template 2 variant |
 
 #### **Pattern 3: Histogram and Area Problems**
 | Problem | LC # | Key Technique | Difficulty | Template |
@@ -1597,6 +1602,7 @@ class MinStack:
 | 768 | Max Chunks To Make Sorted II | Template 1 (decreasing pops) | Stack holds **chunk maxima**, not raw elements; answer = final stack size |
 | 769 | Max Chunks To Make Sorted | Template 1 (degenerate) | Values are a permutation of `0..n-1`, so a running max replaces the stack: cut a chunk whenever `runningMax == i` |
 | 1047 / 1209 | Remove All Adjacent Duplicates In String (I / II) | Template 5 (stack with info) | Stack stores `(char, count)` pairs; pop when `count` reaches `k` — LC 1047 is the `k = 2` special case |
+| 4054 | Count Shadow Pairs I | Template 2 (next smaller) | Next **strictly** smaller — pop on `>=`, then subtract the equal values inside the window, since the pair test is strict too ([§2-19](#2-19-count-shadow-pairs-i-lc-4054--template-2-variant-next-strictly-smaller-)) |
 
 **Max Chunks To Make Sorted II (LC 768) — chunk-maxima stack**
 
@@ -1877,8 +1883,175 @@ A `(value, steps)` pair stack works identically and drops the `dp` array — pus
 | Asteroid Collision | 735 | Same "stronger element eats weaker" simulation; the answer is the survivors, so no dp is carried |
 | Minimum Cost Tree From Leaf Values | 1130 | Pop while smaller and aggregate a **cost** at each pop instead of a round number |
 | Largest Rectangle in Histogram | 84 | Baseline contrast: the pop computes a **final** value (area) that nothing inherits |
+| Count Shadow Pairs I | 4054 | The same right-to-left `>=` pop, for the same strictness reason, but the pops carry nothing — the window they leave behind is counted ([§2-19](#2-19-count-shadow-pairs-i-lc-4054--template-2-variant-next-strictly-smaller-)) |
 
-### 2-19) Classic Stack Problems Worth Knowing (non-monotonic)
+### 2-19) Count Shadow Pairs I (LC 4054) — Template 2 Variant: Next STRICTLY Smaller ⭐⭐⭐⭐
+
+> `leetcode_python/Stack/count-shadow-pairs-i.py`
+
+> **The variation:** [Template 2](#template-2-next-smaller-element-increasing-stack--lc-84) pops on `>`, which stops at an **equal** value. Here the window has to end at the next *strictly* smaller element, so the pop becomes `>=` — and then, because the pair test `nums[i] < nums[j]` is strict too, the equal values sitting *inside* that window have to be subtracted back out.
+
+#### Core Idea
+
+A pair `(i, j)` is killed by any `k` strictly inside it with `nums[k] < nums[i]`. That condition names **only `nums[i]`** — never `nums[j]` — so fix `i` and ask how far right it can still reach:
+
+- let `nxt[i]` = the first index `> i` whose value is **strictly smaller** than `nums[i]` (`n` if there is none);
+- every `j` in `(i, nxt[i])` has `nums[j] >= nums[i]`, so nothing between them can kill the pair — `j` only has to pass `nums[j] > nums[i]`, i.e. **not be equal**;
+- `j = nxt[i]` itself can never pair: its value is smaller, so `nums[i] < nums[j]` fails;
+- no `j` past `nxt[i]` can pair either, because `k = nxt[i]` now sits strictly inside.
+
+So the whole problem collapses to arithmetic over one window per index:
+
+```text
+pairs(i) = (nxt[i] - i - 1)  -  #{ j in (i, nxt[i]) : nums[j] == nums[i] }
+            window size          the equal-value chain
+```
+
+And those equal ones **chain**, which is what keeps the second term O(1) per index: if `ne` is the nearest index right of `i` with `nums[ne] == nums[i]`, and `ne < nxt[i]`, then `nxt[ne] == nxt[i]` — same value, and nothing smaller in between — so
+
+```text
+eq[i] = 1 + eq[ne]      if ne < nxt[i]
+      = 0               otherwise
+```
+
+This is [the contribution method](#contribution-method-for-subarrays) with a **count** where LC 907 has a sum: same window, `window - equals` instead of `arr[i] * left * right`.
+
+#### Visual Trace — `nums = [6,7,6,6,7]`
+
+Right → left, so the stack always already holds everything after `i`:
+
+```text
+i=4  v=7   stack []        -> nxt=5  eq=0   pairs = (5-4-1) - 0 = 0
+i=3  v=6   pop 7 (>= 6)    -> nxt=5  eq=0   pairs = (5-3-1) - 0 = 1   (3,4)
+i=2  v=6   pop 6 (>= 6)    -> nxt=5  eq=1   pairs = (5-2-1) - 1 = 1   (2,4)
+                idx 3 is equal and inside the window -> eq = 1 + eq[3] = 1
+i=1  v=7   top 6 stays     -> nxt=2  eq=0   pairs = (2-1-1) - 0 = 0
+i=0  v=6   pop 7, pop 6    -> nxt=5  eq=2   pairs = (5-0-1) - 2 = 2   (0,1) (0,4)
+                idx 2 is equal and inside the window -> eq = 1 + eq[2] = 2
+                                                              total  = 4
+```
+
+#### Two corrections Template 2 does not make
+
+Both are the same word — *strict* — read in two different places, and each one alone still gives a wrong answer:
+
+| | Where it bites | Get it wrong and |
+|---|---|---|
+| **Pop on `>=`, not `>`** | `nxt[i]` has to be the first **strictly** smaller value | popping on `>` stops at an equal value, so every window shrinks — `[6,7,6,6,7]` returns `2` instead of `4` |
+| **Subtract the equal chain** | `nums[i] < nums[j]` is strict, while the window only guarantees `>=` | the window size alone counts `(2,3)` in `[6,7,6,6,7]`, whose two ends are both `6` |
+
+The scan direction is what fixes the operator, exactly as in [§2-18](#2-18-steps-to-make-array-non-decreasing-lc-2289--monotonic-stack-carrying-a-dp-value-): this one runs **right → left** and pops everything `>=` the current value, so whatever is left on top is the first thing strictly smaller.
+
+**In Java the answer does not fit in an `int`.** `n` goes up to `10^5`, and a strictly increasing array makes every pair a shadow pair, so the count reaches `n(n-1)/2 = 4,999,950,000`.
+
+#### Pattern (Python)
+
+```python
+# python
+# LC 4054 - Count Shadow Pairs I
+# IDEA: nxt[i] = next STRICTLY smaller (so the stack pops on >=); every j in
+#       (i, nxt[i]) is a candidate, less the ones equal to nums[i], which chain
+# time = O(n), space = O(n)
+def shadowPairs(nums):
+    n = len(nums)
+    nxt = [n] * n            # first idx > i whose value is strictly smaller
+    eq = [0] * n             # how many nums[j] == nums[i] sit inside (i, nxt[i])
+    last_same = {}           # value -> the smallest idx > i seen so far
+    stack = []               # indices, values increasing towards the top
+    res = 0
+
+    # right -> left, so the stack already holds everything after i
+    for i in range(n - 1, -1, -1):
+        while stack and nums[stack[-1]] >= nums[i]:    # NOTE: >= , not >
+            stack.pop()
+        nxt[i] = stack[-1] if stack else n
+
+        ne = last_same.get(nums[i], n)
+        eq[i] = 1 + eq[ne] if ne < nxt[i] else 0
+
+        res += (nxt[i] - i - 1) - eq[i]
+
+        stack.append(i)
+        last_same[nums[i]] = i
+
+    return res
+```
+
+#### Pattern (Java)
+
+```java
+// java
+// LC 4054 - Count Shadow Pairs I
+// IDEA: the same nxt[] / eq[] pass, right -> left. NOTE the return type: the
+//       count reaches ~5e9 on a strictly increasing array, so int overflows
+// time = O(n), space = O(n)
+public long shadowPairs(int[] nums) {
+    int n = nums.length;
+    int[] nxt = new int[n];                    // first idx > i with a strictly smaller value
+    int[] eq = new int[n];                     // equal values sitting inside (i, nxt[i])
+    Map<Integer, Integer> lastSame = new HashMap<>();
+    Deque<Integer> stack = new ArrayDeque<>(); // indices, values increasing towards the top
+    long res = 0;
+
+    for (int i = n - 1; i >= 0; i--) {
+        while (!stack.isEmpty() && nums[stack.peek()] >= nums[i]) stack.pop();   // >= , not >
+        nxt[i] = stack.isEmpty() ? n : stack.peek();
+
+        int ne = lastSame.getOrDefault(nums[i], n);
+        eq[i] = ne < nxt[i] ? 1 + eq[ne] : 0;
+
+        res += (nxt[i] - i - 1) - eq[i];
+
+        stack.push(i);
+        lastSame.put(nums[i], i);
+    }
+    return res;
+}
+```
+
+#### Counting From the Other End — One Pass, No Arrays
+
+Worth carrying a second solution because it answers a *different* question: rather than asking how far each `i` reaches, it asks how many live candidates each `j` can close. That drops both arrays for one group per distinct surviving value, and it runs **left → right** — so the pop condition flips back to `>`, because the equal values are now the group being counted against and have to survive.
+
+```python
+# python
+# LC 4054 - Count Shadow Pairs I
+# IDEA: stack of [value, freq] groups, increasing, plus `total` = sum of freqs.
+#       Anything > x is dead the moment x arrives; whatever is left is <= x, so x
+#       closes `total` pairs, less its own equal group (the pair test is strict)
+# time = O(n), space = O(k)   k = distinct surviving values
+def shadowPairs(nums):
+    stack = []               # [value, freq], values strictly increasing
+    total = 0                # live candidates = sum of the freqs on the stack
+    cnt = 0
+
+    for x in nums:
+        while stack and stack[-1][0] > x:      # NOTE: > here — the equals must stay
+            total -= stack.pop()[1]
+
+        if stack and stack[-1][0] == x:
+            cnt += total - stack[-1][1]        # skip its own group: needs a strict <
+            stack[-1][1] += 1
+        else:
+            cnt += total                       # everything left is strictly smaller
+            stack.append([x, 1])
+
+        total += 1
+
+    return cnt
+```
+
+#### Similar Problems
+
+| Problem | LC # | Key Difference |
+|---------|------|----------------|
+| Number of Valid Subarrays | 1063 | The same window with no correction to make: it counts subarrays whose **first element is the minimum**, so equal values stay legal and `nxt[i] - i` is already the answer |
+| Sum of Subarray Minimums | 907 | Same window, **summed** rather than counted, and there the strictness is spent on not double-counting equal minima ([§2-7](#2-7-sum-of-subarray-minimums-lc-907--monotonic-stack)) |
+| Number of Visible People in a Queue | 1944 | Also counts unblocked pairs, but the blocker test reads **both** endpoints (`max` between must be under `min(h[i], h[j])`), so `i` alone does not fix the window |
+| Steps to Make Array Non-decreasing | 2289 | The same `>=` pop for the same reason, carrying a dp value up through the pops instead of a count ([§2-18](#2-18-steps-to-make-array-non-decreasing-lc-2289--monotonic-stack-carrying-a-dp-value-)) |
+| Final Prices With a Special Discount | 1475 | The mirror image: it genuinely wants next smaller **or equal**, so there `>=` is the intended semantics rather than a correction |
+
+### 2-20) Classic Stack Problems Worth Knowing (non-monotonic)
 
 > These use a plain stack (no monotonic invariant) but show up constantly alongside the patterns above.
 
