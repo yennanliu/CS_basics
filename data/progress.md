@@ -1,6 +1,550 @@
 # Progress
 
 
+# 2026-09-23
+
+- TODO:
+	- `must_lc_list.md` -> done
+
+	- LC Top 100 like
+		- https://leetcode.com/studyplan/top-100-liked/
+			- backtrack (done)
+			- binary search (done)
+			- binary tree (done)
+			- dp (done)
+			- graph (done)
+			- greedy (done)
+			- hashing (done)
+			- heap (done)
+			- linked list (done)
+			- matrix (done)
+			- slide window (ing)
+
+
+	- classics_lc_hard.txt
+		- review chearsheet:
+			- https://github.com/yennanliu/CS_basics/pull/140
+				- dp_bitmask.md
+
+	- LC weekly
+		- `data/lc_weekly/lc_weekly_gpt.md`
+			- Weekly Contest 519 (done)
+				- https://leetcode.com/contest/weekly-contest-519/
+		- LC docs contest
+			- https://leetcode.doocs.org/contest/
+
+
+		- `scan` (ONLY idea, no implement)
+			- 第 258 场周赛(2021-09-12 10:30, 90 分钟) 参赛人数 4519
+			- weekly 261 (done)
+			- weekly 262 (done)
+			- weekly 263 (ing)
+				- https://leetcode.com/contest/weekly-contest-263
+					- 2043 (ok)
+
+
+
+ 	- blind 150 (doing)
+
+ 	- blind 75 (done)
+
+
+		- stack
+
+	- neetcode 150
+	- review all `cheatsheets`
+
+	
+
+- binary tree.md
+
+
+
+
+- python_trick.md
+	- https://yennj12.js.org/CS_basics/cheatsheets/python_trick.zh.html
+		- `2) LC Example`
+		- `多重 key 的 tuple 排序：key=lambda x: (x[0], x[1])`
+
+
+
+
+
+
+
+
+
+- stack_expression_parsing
+	- https://yennj12.js.org/CS_basics/cheatsheets/stack_expression_parsing.zh.html
+		- to review: `general form`
+
+- time_space_complexity.md
+
+
+- review `all recent updated cheatsheets`
+	- git commit msg
+
+
+
+- OK:
+  - (20260805 - )
+  - heap.md
+  - time_space_complexity.md
+  - monotonic_stack.md
+  - Collection.md
+  - array.md
+  - binary_tree.md
+  - Difference Array.md
+  - hash_map.md
+  - BST.md
+  - Graph.md
+  - dp_pattern.md
+  - Heap.md
+  - set.md
+  - 2_pointers.md
+  - bfs.md
+  - Binary Search.md
+  - dfs.md
+  - stack.md
+
+  - prefix_sum.md
+  - dp_string.md
+  - Python Tricks & Idioms.md
+  - Sliding Window.md
+  - Intervals.md
+  - strings.md (?)
+  - complexity_cheatsheet.md
+  - lc_pattern (again)
+  - topology_sorting.md
+		- Template 7: Tree Centroid Finding (Leaf Trimming for Undirected Trees): again
+	- Linked List.md
+		- `1-1-6) 反轉串列中間的 N 個節點（以 start, end 表示區間）（遞迴） — LC 92`
+  - dp.md
+  - dp_examples.md
+  - bit_manipulation.zh.html (again)
+  - dp_string.md
+		- `Valid Parenthesis String Pattern (LC 678)`
+		- `LC 678 - Valid Parenthesis String` DP again
+	- dp_bitmask.md
+		- again
+	- knapsack_01_zh.md
+	- dp_monotonic_stack.zh.html
+	- bit_manipulation_examples.zh.html
+		- again
+	- recursion_to_dp.zh.html
+		- again
+	- kadane_algorithm.md
+	- Difference Array.md
+	- Topological Sorting — Worked Examples
+	- linked_list_examples.md
+	- Matrix / 2D Grid.md
+	- backtrack.zh.html
+	- stack_expression_parsing
+	- greedy_examples.zh.html
+	- Sorting Algorithms.md
+	- dp_pattern.md
+	- Monotonic Queue.md
+
+
+
+	
+
+
+
+
+
+
+- Others
+	- recent updated cheatsheet
+	- TODO LC:
+		- 34(todo),875(todo),81(todo)
+		- 377(todo, Permutations DP),210
+		- 312
+		- 1143, 72
+		- 663,508
+		- 701,450
+		- scanning_line
+		- prefix sum
+		- Difference array
+			- 3964
+		- Binary Search
+			- 35
+			- 34
+			- find peak
+				- 162
+				- 852
+			- Minimize the Maximum
+				- 2616
+			- recursive
+				- 704
+			- Binary Search on Answer Space
+				- 410
+		- stack
+			- 1963
+			- Delay-Insert to Stack (act on pre_op, not current op)
+				- https://yennj12.js.org/CS_basics/cheatsheets/stack.html#1-5-delay-insert-to-stack-act-on-pre-op-not-current-op-lc-227
+				- Universal Calculator — LC 224 / 227 / 772 
+					- https://yennj12.js.org/CS_basics/cheatsheets/stack.html#2-5-universal-calculator-lc-224-227-772
+					- https://yennj12.js.org/CS_basics/cheatsheets/stack_expression_parsing.html#2-universal-calculator--lc-224--227--772-
+						- 224
+						- 227
+						- 772
+				- 394
+				- 224
+				- 772
+				- brack match
+					- 20
+					- 1249
+					- 921
+					- 32
+				- Sum of Subarray Minimums / ranges !!
+					- 907
+					- 2104
+		- 2 pointers
+			- Exactly K Problems (At Most K Transformation) -
+				- Exactly K = At Most K - At Most (K-1) 
+					- 992
+					- 2062
+			- “Exactly K”  VS "at most K"
+				- https://yennj12.js.org/CS_basics/cheatsheets/sliding_window.html#pattern-recognition-when-to-use-this-technique
+		- DFS
+		 	- get nodes !!!
+		 		- depth
+		 		- height
+		 		- distance
+			- 2049
+			- 990
+			- 652
+			- 388
+			- 538
+			- 662
+			- 663
+			- 737
+			- Print Binary Tree
+				- 655
+			- Serialize and Deserialize
+				- 297
+				- 449
+			- paths
+				- 112
+				- 113
+				- 129
+			- Binary Tree Paths
+				- 257
+			- Evaluate Division
+				- 399
+			- Split BST
+				- 776
+			- Delete Node in a BST
+				— 450
+			- N-ary Tree Post-Order Value Aggregation
+				- 559
+				- 3965
+			- DFS that Returns a String / Consumes a String (Tree ⟷ String Codec)
+				- 606
+				- 536
+			- Bidirectional Graph with Direction Tracking
+				- 1466
+		- BFS
+			- 126
+			- 1091
+			- 623
+			- Level BFS wires the next links
+				- 116
+				- 117
+			- Route-Level BFS
+				- 815
+			- BFS on Abstract Graph (Number Decomposition)
+				- 279
+			- Tree -> graph + BFS
+				- 742
+			- BFS Leaf Trimming
+				- 310
+			- topological sort
+				- 207
+				- 1361
+				- 269
+				- 444
+				- 1136
+				- 802
+				- 310
+			- Parent map + BFS radiating outward
+				- 863
+		- 2 pointers
+			- 31 (Next Permutation)
+			- 647
+			- 2104 (mono stack)
+			- 42
+			- 680
+			- 88
+		- DP
+			- 1D DP
+			- 2D DP
+			- 數位 DP
+				- 233
+				- 357
+				- 600
+				- 902
+				- 1012
+				- 2376
+			- Palindrome Substring DP 
+				- 5
+			- Combinations
+				- Problem asks for “number of ways” without considering order
+			- Permutations
+				- Problem asks for different sequences/orderings
+			- Combinations VS Permutations VS 0/1 Knapsack  VS unboud  0/1 Knapsack !!!
+				- https://yennj12.js.org/CS_basics/cheatsheets/dp.html#code-templates-by-pattern
+				```
+				(OK)
+
+				Combinations — order does NOT matter
+					LC 518 — Coin Change II
+					LC 39 — Combination Sum
+					LC 40 — Combination Sum II
+				
+				Permutations — order DOES matter
+					LC 377 — Combination Sum IV
+					LC 46 — Permutations
+					LC 47 — Permutations II
+				
+				0/1 Knapsack — each item can be used at most once
+					LC 416 — Partition Equal Subset Sum
+					LC 494 — Target Sum
+					LC 1049 — Last Stone Weight II
+				
+				Unbounded Knapsack — each item can be used unlimited times
+					LC 322 — Coin Change
+					LC 518 — Coin Change II
+					LC 279 — Perfect Squares
+				```
+				```
+				Combinations
+		     → order doesn't matter
+		     → coin/item loop OUTSIDE
+
+			  Permutations
+			    → order matters
+			    → amount/target loop OUTSIDE
+
+			0/1 Knapsack
+			    → use each item ONCE
+			    → usually iterate capacity BACKWARD
+
+			Unbounded Knapsack
+			    → reuse item
+			    → usually iterate capacity FORWARD
+				```
+			- Longest Increasing Subsequence (LIS)
+			- Longest Common Subsequence
+			- (0/1 Knapsack DP)
+			- decode way
+			- Unbounded Knapsack
+				- 322
+				- 518
+				- 139
+				- 140
+			- bounded Knapsack
+				- 「每個東西最多 k 次」→ 二進位拆分後套 0/1
+				- https://yennj12.js.org/CS_basics/cheatsheets/knapsack_01_zh.zh.html#1-5-%E4%B8%89%E7%A8%AE%E8%83%8C%E5%8C%85%E7%9A%84%E5%AE%8C%E6%95%B4%E5%B0%8D%E7%85%A7
+				- 2585
+				- 1774
+			- DP on tree
+				- 124
+				- 337
+				- 1130
+				- 2246
+			- Wildcard / Regex Pattern Matching DP ⭐
+				- 44
+				- 10
+				- 97
+				- 72
+			- linear DP
+			- 2 states DP
+			- Unbounded Knapsack VS Knapsack DP
+			- Kadane’s algo
+					- 918
+						- 環狀最大子陣列（LC 918)
+					- 1186
+					- 2 state Kadane
+						- 714
+					- 2 D Kadane
+						- 221
+		- set
+			- 187
+			- 532
+			- 380
+		- graph
+			- 742
+			- 743
+			- 797
+			- 787
+			- 947
+			- DFS on a Weighted (Ratio) Graph
+				- 399
+			- topo sort
+				- 210
+			- Bipartite Graphs
+				- 785
+				- 886
+				- 1042
+		- hashmap
+			- 525
+			- 146
+			- 438
+			- 554
+			- 1257
+			- 1726
+			- 2471
+			- char replace
+				- 424
+			- min swap
+				- 670
+			- bi direction map
+				- 205
+				- 290
+			- graph with hashmap
+				- LC 133, LC 1257
+			- treeMap
+				- LC 729/731/732 - My Calendar seriess
+		- Array
+			- 341
+			- freq arr + running cnt
+				- 2657
+				- 349
+				- 350
+				- 442
+			- Index Contribution Counting
+				- 2063
+				- 907
+				- 2104
+			- 670
+			- 1567
+			- 334
+			- 41
+			- 251
+			- prefix sum
+				- 1109
+		- backtrack
+			- 20
+			- 22
+			- 39
+			- 93
+		- linked list
+			- 92
+			- 19
+			- 138
+			- 430
+			- 1171
+			- 反轉-k-個節點的輔助函式模式
+				- LC 92、LC 25、LC 24、LC 206
+				- https://yennj12.js.org/CS_basics/cheatsheets/linked_list.zh.html#%E5%8F%8D%E8%BD%89-k-%E5%80%8B%E7%AF%80%E9%BB%9E%E7%9A%84%E8%BC%94%E5%8A%A9%E5%87%BD%E5%BC%8F%E6%A8%A1%E5%BC%8F-
+				- LC 725
+		- tree
+			- https://yennj12.js.org/CS_basics/cheatsheets/lc_pattern.html#tree-modification-lc-226
+				- 114 !!!
+			- 1644
+			- 1650
+			- 1676
+		- topo sort
+			- 1136
+		- tree - distance
+			- 1740
+			- 863
+			- 865/1123
+		- tree -> graph
+			- 863
+		- mono stack
+			- 853
+			- 84
+			- 503
+			- 456
+			- 901
+			- 907
+			- 402
+			- 2104
+		- tree
+			- 1110
+			- 652
+			- 742
+			- 863
+		- binary tree
+			- 297
+			- 536
+			- 108
+			- 117
+			- 257
+			- 298
+			- tree DP
+				- 337
+		- bst
+			- 1382
+			- 669
+			- 776
+			- 1026
+			- 109
+			- 95
+			- 96
+			- 449
+			- 538
+			- https://yennj12.js.org/CS_basics/cheatsheets/bst.html#similar-problems
+			- split BST
+				- 776
+			- delete node in bst
+				- 450
+			- trim bst
+				- 669
+			- insert into bst
+				- 701
+			- BST Lazy Traversal
+				-	 173
+		- Dijkstra
+			- 1631
+			- 1976
+		- heap
+			- 1492
+			- 1353
+			- 1481
+			- 264
+			- 1647
+			- 2406
+			- 621
+			- 1405, 767
+			- 871
+			- cool down
+				- 358
+			- lazy delete
+				- 3092
+				- 480
+				- 1825
+				- 1353
+				- 239
+				- 218
+			- Frequency Uniqueness Template (Greedy + Heap/HashSet)
+				- 1647
+				- 1481
+			- 2 heap
+				- 1438
+		- interval
+			- 729
+			- 731
+			- 732
+			- 1024
+		- queue
+			- 239
+		- trie
+			- 1268
+			- delete op
+				- https://yennj12.js.org/CS_basics/cheatsheets/trie.html#template-6-trie-with-delete-operation
+		- lazy_bst_in_order(todo),173(todo),2616(todo, compare PQ)
+		- 2 pointers (similar to LC 31)
+			- table with LC 31, 1053, 556, 60, 46, 47, 3348
+		- topo_sort
+
+
+
+
+
 # 2026-09-21
 
 - TODO:
