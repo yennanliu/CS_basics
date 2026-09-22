@@ -61,6 +61,11 @@ Constraints:
 from collections import deque
 class Solution(object):
     def shortestSubarray(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: int
+        """
         n = len(nums)
 
         # prefix[i] = sum of the first i elements
