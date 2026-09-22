@@ -31,6 +31,37 @@ n == matrix[i].length
 
 # V0
 # IDEA : 4 cases : right, down, left, up + boundary condition (gpt)
+"""
+NOTE !!!
+
+
+1.  init vars:
+
+        min_x = 0
+        max_x = w
+
+        min_y = 0
+        max_y = l
+
+
+2. check boudary:
+
+    if min_y < max_y:
+
+
+    if min_x < max_x:
+
+
+3. update boudary:
+    
+
+    min_y += 1
+
+    max_x -= 1
+
+    ...
+
+"""
 class Solution(object):
     def spiralOrder(self, matrix):
         """
@@ -47,71 +78,74 @@ class Solution(object):
 
         res = []
 
+        # Use EXCLUSIVE upper bounds.
+        #
+        # x range: [min_x, max_x)
+        # y range: [min_y, max_y)
+        #
+        # Example:
+        # w = 3 -> x = 0, 1, 2
+        # l = 3 -> y = 0, 1, 2
         min_x = 0
-        max_x = w - 1
+        max_x = w
 
         min_y = 0
-        max_y = l - 1
+        max_y = l
 
-        while len(res) < l * w:
+        while min_x < max_x and min_y < max_y:
 
             # --------------------------------
             # 1. RIGHT
             # --------------------------------
             #
-            # Need +1 because range() excludes
-            # the right boundary.
+            # Top row:
+            # x = min_x ... max_x - 1
             #
-            # Example:
-            # min_x = 0, max_x = 2
-            # range(0, 3) -> 0, 1, 2
-            #
-            for x in range(min_x, max_x + 1):
+            for x in range(min_x, max_x):
                 res.append(matrix[min_y][x])
 
-            # Top row is done
+            # Top row is done.
             min_y += 1
 
             # --------------------------------
             # 2. DOWN
             # --------------------------------
             #
-            # Need to make sure there is still
-            # an unprocessed row.
+            # Right column:
+            # y = min_y ... max_y - 1
             #
-            if min_y <= max_y:
-                for y in range(min_y, max_y + 1):
-                    res.append(matrix[y][max_x])
+            for y in range(min_y, max_y):
+                res.append(matrix[y][max_x - 1])
 
-            # Right column is done
+            # Right column is done.
             max_x -= 1
 
             # --------------------------------
             # 3. LEFT
             # --------------------------------
             #
-            # Need to make sure there is still
-            # an unprocessed row.
+            # Need to make sure there is
+            # still an unprocessed row.
             #
-            if min_y <= max_y:
-                for x in range(max_x, min_x - 1, -1):
-                    res.append(matrix[max_y][x])
+            if min_y < max_y:
+                for x in range(max_x - 1, min_x - 1, -1):
+                    res.append(matrix[max_y - 1][x])
 
-                # Bottom row is done
+                # Bottom row is done.
                 max_y -= 1
 
             # --------------------------------
             # 4. UP
             # --------------------------------
             #
-            # Need to make sure there is still
-            # an unprocessed column.
+            # Need to make sure there is
+            # still an unprocessed column.
             #
-            if min_x <= max_x:
-                for y in range(max_y, min_y - 1, -1):
+            if min_x < max_x:
+                for y in range(max_y - 1, min_y - 1, -1):
                     res.append(matrix[y][min_x])
 
-                # Left column is done
+                # Left column is done.
                 min_x += 1
 
         return res
