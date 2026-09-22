@@ -169,6 +169,25 @@ total：
 cnt：最終要回傳的配對計數。
 
 
+
+----
+
+
+
+NOTE !!!
+
+
+
+for x in nums:
+
+    case 1) stack is empty
+
+    case 2) 堆疊頂端值等於 x (stack[-1][0] == x)
+
+    case 3) 堆疊頂端值小於 x (stack[-1][0] < x)
+
+
+
 """
 class Solution(object):
     def shadowPairs(self, nums):
@@ -247,6 +266,8 @@ class Solution(object):
                 stack.append([value, freq])
                 total += 1
 
+
+            # case 3) 堆疊頂端值小於 x (stack[-1][0] < x)
 
             # x is greater than the top value
             else:
