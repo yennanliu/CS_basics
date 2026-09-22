@@ -181,6 +181,9 @@ class Solution(object):
 
         stack = []
         cnt = 0
+
+        # NOTE !!!
+        # total = 目前 stack 裡所有「有效 candidate 的元素數量」
         total = 0
 
         for x in nums:
