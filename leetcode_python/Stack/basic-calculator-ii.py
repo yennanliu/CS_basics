@@ -38,6 +38,66 @@ The answer is guaranteed to fit in a 32-bit integer
 """
 
 # V0
+# IDEA: the `Universal basic calculator` (stack + queue + recursion)  (gemini)
+# https://github.com/yennanliu/CS_basics/issues/168
+# https://yennj12.js.org/CS_basics/cheatsheets/stack_expression_parsing.zh.html
+"""
+NOTE !!!
+
+this is an universal algo that work for 
+
+LC 224, LC 227, and LC 772 (Basic Calculator III).
+
+"""
+import collections
+
+class Solution(object):
+    def calculate(self, s):
+        # 1. Remove spaces and convert to a queue for easy left-to-right parsing
+        queue = collections.deque(s.replace(" ", ""))
+        
+        def helper(q):
+            stack = []
+            curr_num = 0
+            op = '+' # Default first operation
+            
+            while q:
+                char = q.popleft()
+                
+                if char.isdigit():
+                    curr_num = curr_num * 10 + int(char)
+                    
+                elif char == '(':
+                    # RECURSION: Evaluate the parentheses completely first
+                    curr_num = helper(q)
+                    
+                # If we hit an operator, a closing parenthesis, or the queue is empty
+                if char in "+-*/" or char == ')' or not q:
+                    if op == '+':
+                        stack.append(curr_num)
+                    elif op == '-':
+                        stack.append(-curr_num)
+                    elif op == '*':
+                        stack.append(stack.pop() * curr_num)
+                    elif op == '/':
+                        # Safely truncate toward zero
+                        stack.append(int(float(stack.pop()) / curr_num))
+                        
+                    # Reset the current number and update the operator
+                    curr_num = 0
+                    op = char
+                    
+                if char == ')':
+                    # End of this scope, break and return the sum to the caller
+                    break
+                    
+            return sum(stack)
+            
+        return helper(queue)
+
+
+
+# V0
 # IDEA : STACK (gemini)
 """
 Steps:
