@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Normalise and complete the `Note` column tags in README.md.
+Normalise and complete the `Note` column tags in PROBLEMS.md (the problem index).
 
 The Note column carries two kinds of tag that this script owns:
 
@@ -16,7 +16,7 @@ The Note column carries two kinds of tag that this script owns:
                  `MS`, `msft` and `microsoft` all meant Microsoft, which broke
                  `script/get_company_LC.sh` and the roadmap's Google list). The
                  script canonicalises every one of them and adds the missing
-                 ones for the nine companies the README already tracks widely —
+                 ones for the nine companies the index already tracks widely —
                  which covers FAANG in full.
 
   list tag       `blind75`, `neetcode150`, `neetcode250`, `top100liked`: which
@@ -24,7 +24,7 @@ The Note column carries two kinds of tag that this script owns:
                  (`Curated Top 75`, `LC top 100 like`) on a fraction of the rows
                  they belong on, and two of those rows were simply wrong. The
                  script drops the prose and writes the tag from the vendored
-                 list data instead, so the README and the site's roadmap filter
+                 list data instead, so the index and the site's roadmap filter
                  answer "is this on Blind 75?" from one source.
 
 Three vendored caches feed it, so a normal run needs neither the network nor the
@@ -38,7 +38,7 @@ PDFs:
                                membership, from script/fetch_problem_lists.py
 
 Usage:
-    python3 script/fix_readme_tags.py                 # rewrite README.md
+    python3 script/fix_readme_tags.py                 # rewrite PROBLEMS.md
     python3 script/fix_readme_tags.py --check         # exit 1 if out of date
     python3 script/fix_readme_tags.py --report        # what would change, no write
     python3 script/fix_readme_tags.py --refresh-topics     # re-fetch from LeetCode
@@ -57,14 +57,14 @@ from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-README = ROOT / "README.md"
+INDEX = ROOT / "PROBLEMS.md"
 TOPIC_CACHE = ROOT / "data" / "lc_topic_tags.json"
 COMPANY_CACHE = ROOT / "data" / "company_lc_tags.json"
 LISTS_CACHE = ROOT / "data" / "problem_lists.json"
 
 # ── Vocabulary ───────────────────────────────────────────────────────────────
 
-# The nine companies the README tags. The first eight it already carried on
+# The nine companies the index tags. The first eight it already carried on
 # hundreds of rows; `netflix` is here to close FAANG — its PDF names only four
 # problems, so it costs four tags and makes the acronym mean what it says.
 # Missing tags are filled in for these only: widening the set past this pushes
@@ -83,7 +83,7 @@ NEETCODE_LADDER = ["blind75", "neetcode150", "neetcode250"]
 CROSS_LISTS = ["top100liked"]
 
 # `neetcodeAll` is deliberately not tagged: at 972 problems it is the practice
-# site's whole catalogue, so it would land on 607 README rows while telling a
+# site's whole catalogue, so it would land on 607 index rows while telling a
 # reader nothing about which ones to do first.
 
 # Every list tag the script owns, and so may remove. A row's list tags are made
@@ -102,7 +102,7 @@ LEGACY_LIST_TAG = re.compile(
     r"|blind\s*(curated\s*)?(top\s*)?\s*75"
     r"|neet\s*code\s*(150|250))$")
 
-# Every spelling seen in the README (and the obvious neighbours), lowercased,
+# Every spelling seen in the index (and the obvious neighbours), lowercased,
 # mapped to the one form kept. `fb` beats `facebook`/`meta` because it is what
 # 221 rows already used.
 COMPANY_ALIASES = {
@@ -179,7 +179,7 @@ TYPE_TAG_TOPICS = {
     "shell": {"shell"},
 }
 
-# LeetCode topic slug -> the label this README writes it as.
+# LeetCode topic slug -> the label the index writes it as.
 #
 # Deliberately not exhaustive. A slug missing here is never appended, which is
 # how `suffix-automaton`, `range-minimum-maximum-query` and the rest of
@@ -232,7 +232,7 @@ MAX_TOPICS_ADDED = 3
 # Sections whose rows LeetCode does not tag with algorithm topics.
 NON_ALGO_SECTIONS = {"SQL", "Shell Script", "Concurrency"}
 
-# ── README parsing ───────────────────────────────────────────────────────────
+# ── Index parsing ────────────────────────────────────────────────────────────
 
 ROW_ID = re.compile(r"^\s*(\d+)")
 
@@ -360,7 +360,7 @@ def normalise_cell(cell):
     return ",".join(out), changed
 
 
-# Shorthand the README already uses for a topic, so an appended tag does not
+# Shorthand the index already uses for a topic, so an appended tag does not
 # restate what the row says in its own words.
 TOPIC_SYNONYMS = {
     "mono stack": "monotonic stack", "monostack": "monotonic stack",
@@ -477,10 +477,10 @@ def replace_note_cell(line, new_cell):
 
 
 TOPIC_COMMENT = (
-    "LeetCode's official topicTags and difficulty for every problem README.md "
+    "LeetCode's official topicTags and difficulty for every problem PROBLEMS.md "
     "lists. Fetched from the public GraphQL API by "
     "script/fix_readme_tags.py --refresh-topics and read back by that script to "
-    "complete the README's type tags. Vendored, not built — refresh by hand."
+    "complete the index's type tags. Vendored, not built — refresh by hand."
 )
 
 COMPANY_COMMENT = (
@@ -488,7 +488,7 @@ COMPANY_COMMENT = (
     "company-frequency PDFs under doc/ (and, for Google, unioned with "
     "doc/google_leetcode_problems_by_tags.md) by "
     "script/fix_readme_tags.py --refresh-companies. Only the nine companies "
-    "README.md tags widely are kept. Vendored, not built — refresh by hand."
+    "PROBLEMS.md tags widely are kept. Vendored, not built — refresh by hand."
 )
 
 
@@ -548,8 +548,8 @@ def refresh_topics():
         if skip >= data["total"]:
             break
         time.sleep(0.4)
-    # keep only what the README asks about, so the cache stays reviewable
-    wanted = {str(lc) for _, lc, _, _, _ in iter_rows(README.read_text().split("\n"))}
+    # keep only what the index asks about, so the cache stays reviewable
+    wanted = {str(lc) for _, lc, _, _, _ in iter_rows(INDEX.read_text().split("\n"))}
     trimmed = {k: out[k] for k in sorted(wanted & set(out), key=int)}
     write_cache(TOPIC_CACHE, TOPIC_COMMENT, trimmed)
     print("wrote %s (%d problems)" % (TOPIC_CACHE, len(trimmed)), file=sys.stderr)
@@ -636,7 +636,7 @@ def refresh_companies():
     """
     Re-parse the company-frequency PDFs into data/company_lc_tags.json.
 
-    Every failure mode here is fatal on purpose. The cache drives ~2300 README
+    Every failure mode here is fatal on purpose. The cache drives ~2300 index
     tags, so a silently short parse would not produce a visibly broken file —
     it would quietly *delete* company tags on the next run.
     """
@@ -666,7 +666,7 @@ def refresh_companies():
     if missing:
         raise RuntimeError(
             "no problems collected for %s — refusing to write a cache that "
-            "would strip their README tags" % ", ".join(missing))
+            "would strip their index tags" % ", ".join(missing))
 
     write_cache(COMPANY_CACHE, COMPANY_COMMENT,
                 {k: sorted(out[k]) for k in sorted(out)})
@@ -758,7 +758,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--check", action="store_true",
-                    help="exit 1 if README.md is not already normalised")
+                    help="exit 1 if PROBLEMS.md is not already normalised")
     ap.add_argument("--report", action="store_true",
                     help="print the per-row diff summary without writing")
     ap.add_argument("--refresh-topics", action="store_true",
@@ -785,7 +785,7 @@ def main():
     topics = load_cache(TOPIC_CACHE)
     companies = load_cache(COMPANY_CACHE)
     lists = load_lists()
-    text = README.read_text()
+    text = INDEX.read_text()
     lines = text.split("\n")
     new_lines, stats = rewrite(lines, topics, companies, lists)
 
@@ -802,7 +802,7 @@ def main():
         return 0
     if args.check:
         return 1 if stats["rows_changed"] else 0
-    README.write_text("\n".join(new_lines))
+    INDEX.write_text("\n".join(new_lines))
     return 0
 
 

@@ -56,7 +56,7 @@ const REQUIRED = [
   'style.css', 'nav.css', 'nav.js', 'lc-page.css', 'site.js', 'roadmap.js', 'complexity.js',
   'vendor/d3.min.js', 'vendor/highlight/atom-one-dark.min.css',
   'data/roadmap.json', 'data/complexity-quiz.json', 'data/lc-problems.json',
-  'data/search-index.json', 'data/progress.json'
+  'data/search-index.json', 'data/progress.json', 'data/problem-index.json'
 ];
 const missingFiles = REQUIRED.filter(f => {
   const p = path.join(SITE, f);
@@ -224,6 +224,7 @@ console.log('\n== search (shipped score() + shipped index) ==');
 const searchHtml = read(`${SITE}/search.html`);
 const index = json(`${SITE}/data/search-index.json`);
 const lc = json(`${SITE}/data/lc-problems.json`);
+const indexed = json(`${SITE}/data/problem-index.json`);
 
 const scoreSrc = (searchHtml.match(/function score\(rec, tokens\)[\s\S]*?\n    \}/) || [])[0];
 ok('score() lifted out of the shipped page', Boolean(scoreSrc));
@@ -245,6 +246,42 @@ if (scoreSrc) {
     ok(`query "${q}" returns hits`, hits.length > 0, hits.length ? `${hits.length}, top: ${hits[0].title}` : '');
   }
   ok('nonsense query returns nothing', query('zzzqqq').length === 0);
+
+  // The problem half of search — the page's own mergeProblems(), lifted the same
+  // way score() is, rather than a second copy of it here. This is the regression
+  // that shipped for months: lc-problems.json covers a third of the repo's
+  // problems, so a number the index knew perfectly well — 2071 — found nothing
+  // anywhere on the site.
+  const mergeSrc = (searchHtml.match(/\/\/ merge:start([\s\S]*?)\/\/ merge:end/) || [])[1];
+  ok('mergeProblems() lifted out of the shipped page', Boolean(mergeSrc));
+
+  if (mergeSrc) {
+    const mergeProblems = new Function(`${mergeSrc}; return mergeProblems;`)();
+    const merged = mergeProblems(lc.problems, indexed.problems, indexed.repo);
+    ok('the merge keeps every problem from both sources',
+       merged.length >= indexed.problems.length && merged.length >= lc.problems.length,
+       `${lc.problems.length} tagged + ${indexed.problems.length} indexed -> ${merged.length}`);
+    ok('the merge does not duplicate an id',
+       new Set(merged.map(p => p.id)).size === merged.length);
+
+    const lcQuery = q => merged
+      .map(r => ({ r, s: score(r, q.toLowerCase().split(/\s+/)) }))
+      .filter(x => x.s >= 0)
+      .sort((a, b) => b.s - a.s)
+      .map(x => x.r);
+
+    for (const q of ['2071', '239', '1480', 'sliding window maximum']) {
+      const hits = lcQuery(q);
+      ok(`problem query "${q}" returns hits`, hits.length > 0, hits.length ? hits[0].title : '');
+    }
+    // A row that only the index knows has to come back with its topic and a
+    // usable solution link, not just a title.
+    const only = lcQuery('2071')[0];
+    ok('a problem only the index knows is fully rendered',
+       Boolean(only && only.tags.length && only.solutions && only.solutions.python &&
+               only.solutions.python.startsWith('http')),
+       only ? `${only.tags.join('/')} ${only.solutions ? Object.keys(only.solutions).join('+') : 'no links'}` : '');
+  }
 }
 
 const missingIndexed = index.records.filter(r => !fs.existsSync(path.join(SITE, r.url.split('#')[0])));
@@ -254,6 +291,30 @@ ok('every search-index url resolves', missingIndexed.length === 0,
 // ── 5. LC explorer data ──────────────────────────────────────────────────────
 console.log('\n== lc data ==');
 ok('problems present', lc.problems.length > 1000, `${lc.problems.length} problems`);
+
+// Every row of the problem index is searchable. It is the one dataset that knows
+// which problems this repo actually has, so a number here that is missing from
+// problems.html would be a row the page dropped.
+ok('the problem index shipped in full', indexed.problems.length > 3000,
+   `${indexed.problems.length} problems`);
+ok('the problem index carries titles and topics',
+   indexed.problems.every(p => p.id && p.title && p.section),
+   `${indexed.problems.filter(p => !(p.id && p.title && p.section)).length} incomplete`);
+{
+  // Every row of PROBLEMS.md has to be on the page it renders to. The id column
+  // is zero-padded in places ("0026"), so compare on the integer.
+  const problemsHtml = read(`${SITE}/problems.html`);
+  const onPage = new Set(
+    [...problemsHtml.matchAll(/<td>(\d{1,4})<\/td>/g)].map(m => String(parseInt(m[1], 10)))
+  );
+  // `Unfiled` rows come from data/problem_lists.json, not from the index, so they
+  // have no row on the page by definition — the review plan adds them for titles.
+  const fromIndex = indexed.problems.filter(p => p.section !== 'Unfiled');
+  const missingOnPage = fromIndex.filter(p => !onPage.has(p.id));
+  ok('every indexed problem is on problems.html', missingOnPage.length === 0,
+     `${fromIndex.length} indexed, ${onPage.size} on the page` +
+     (missingOnPage.length ? `, missing e.g. ${missingOnPage.slice(0, 5).map(p => p.id).join(', ')}` : ''));
+}
 ok('tags present', lc.tags.length > 100, `${lc.tags.length} tags`);
 ok('stats consistent', lc.stats.totalProblems === lc.problems.length);
 const withSolutions = lc.problems.filter(p => p.solutions);
@@ -287,7 +348,7 @@ console.log(`  INFO  newest log entry ${lastLogged} (${ageDays}d ago), ` +
 // the planner has no weights to spend its slots on.
 ok('log rows carry README metadata', progress.stats.titled / progress.stats.problems > 0.9,
    `${progress.stats.titled} of ${progress.stats.problems} problems titled`);
-ok('topics are weighted over the whole README', (progress.sections || []).length > 20,
+ok('topics are weighted over the whole index', (progress.sections || []).length > 20,
    `${(progress.sections || []).length} topics`);
 
 // ── 6b. The planner: the shipped scoring against the shipped log ─────────────

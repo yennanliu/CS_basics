@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <title>LC Java — CS_basics</title>
-  <meta name="description" content="An agent skill that files a LeetCode solution into leetcode_java/ the way the other 1626 files are filed: the package its pattern owns, a javadoc header with no leetcode.com page furniture, V-markers that match the method names, a compile and a run, and the [Java] link added to the README row the problem already has.">
+  <meta name="description" content="An agent skill that files a LeetCode solution into leetcode_java/ the way the other 1626 files are filed: the package its pattern owns, a javadoc header with no leetcode.com page furniture, V-markers that match the method names, a compile and a run, and the [Java] link added to the index row the problem already has.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☕</text></svg>">
   <link rel="stylesheet" href="nav.css">
   <link rel="stylesheet" href="lc-page.css">
@@ -253,7 +253,7 @@
       <h1>LC Java<br><span class="thin">the other half of the tree</span></h1>
       <p class="lede">
         <code>leetcode_java/</code> is the most-churned directory in this repo and the one
-        furthest behind: 1244 README rows carry a Java link against 2898 that carry a Python
+        furthest behind: 1244 index rows carry a Java link against 2898 that carry a Python
         one. <code>/lc-java</code> files a solution into it the way the other 1626 files are
         filed &mdash; the package its pattern owns, markers that match the method names, a
         compile and a run, and the <code>[Java]</code> link added to the row the problem
@@ -270,7 +270,7 @@
           <i aria-hidden="true"></i><i aria-hidden="true"></i><i aria-hidden="true"></i>
           <span>/lc-java 25 LinkedList</span>
         </div>
-        <pre id="tape" aria-live="off">1  row        README:0025 already exists — Hard, _O(n)_ / _O(1)_, Python only
+        <pre id="tape" aria-live="off">1  row        PROBLEMS.md:0025 already exists — Hard, _O(n)_ / _O(1)_, Python only
               so the title, difficulty and complexity are already settled
 
 2  draft      ws/Workspace26.java → // LC 25, with your "reverse in iteration" note
@@ -322,7 +322,7 @@
         </div>
         <div class="fail">
           <span class="glyph" aria-hidden="true">&#9676;</span>
-          <b>A second README row</b>
+          <b>A second index row</b>
           <p>Most problems here are Python-first, so the row already exists and the Java link belongs <em>in it</em>. A second row for the same problem is invisible in a diff and nothing in the build catches it.</p>
           <p class="cost">Rule: update the row, never add one.</p>
         </div>
@@ -341,9 +341,9 @@
       <div class="rail" role="radiogroup" aria-label="Pipeline steps">
         <button class="step" role="radio" aria-checked="true" data-n="1"
                 data-name="Settle the problem, and find the row that already exists"
-                data-body="Most problems here were filed in Python first. If README has the row, it is the source of truth for the title, the difficulty, the leetcode url and the complexity columns — all settled when the Python file landed, and not re-derived here. Only a Java-first problem gets a new row."
+                data-body="Most problems here were filed in Python first. If the index has the row, it is the source of truth for the title, the difficulty, the leetcode url and the complexity columns — all settled when the Python file landed, and not re-derived here. Only a Java-first problem gets a new row."
                 data-rule="Check for the file under another spelling before writing a new one. LC 211 is add-and-search-word-data-structure-design in Python and design-add-and-search-words-data-structure on the problem page."
-                data-code="grep -n &quot;^| *0*25 &quot; README.md">
+                data-code="grep -n &quot;^| *0*25 &quot; PROBLEMS.md">
           <span class="n">1</span><span class="bar" aria-hidden="true"></span><span class="tag">row</span>
         </button>
         <button class="step" role="radio" aria-checked="false" data-n="2"
@@ -392,7 +392,7 @@ public ListNode reverseKGroup_0_1(ListNode head, int k) {">
           <span class="n">6</span><span class="bar" aria-hidden="true"></span><span class="tag">compile</span>
         </button>
         <button class="step" role="radio" aria-checked="false" data-n="7"
-                data-name="Update the README row"
+                data-name="Update the index row"
                 data-body="The [Java] link goes at the end of the existing row's Solution cell, after the Python one, matching the spacing of the rows already there. Only a problem with no row at all gets a new one, inserted in ascending LC-number order."
                 data-rule="Do not touch the other cells. Complexity, difficulty, tags and status belong to the problem, not to the language — and the status column is your own record, never downgraded or refreshed."
                 data-code="| 0015 | [3 Sum](…) | [Python](…/3sum.py), [Java](…/ThreeSum.java) | _O(n^2)_ | _O(1)_ | Medium | … |">
@@ -407,7 +407,7 @@ public ListNode reverseKGroup_0_1(ListNode head, int k) {">
         </button>
         <button class="step" role="radio" aria-checked="false" data-n="9"
                 data-name="Report what was assumed"
-                data-body="Close with the file, the README line number, the compile and test results, and every inference made along the way: the package chosen and why, complexity columns taken from the existing row rather than re-derived, a neetcode url left out, the workspace draft removed."
+                data-body="Close with the file, the index line number, the compile and test results, and every inference made along the way: the package chosen and why, complexity columns taken from the existing row rather than re-derived, a neetcode url left out, the workspace draft removed."
                 data-rule="Say what was assumed, so it can be corrected. An unflagged guess is the one that survives."
                 data-code="assumed  package LinkedList over TwoPointer
 kept     _O(n)_ / _O(1)_ as the python pass set them - not re-derived
@@ -429,14 +429,14 @@ removed  the // LC 25 draft from ws/Workspace26.java">
       <p class="eyebrow">What lands in the tree</p>
       <h2>The house layout</h2>
       <p class="sub">
-        Two artefacts, every time: one Java file and one <em>edited</em> README row. Both are
+        Two artefacts, every time: one Java file and one <em>edited</em> index row. Both are
         shown here as they were actually written for LC 25 — the run the skill's own worked
         example describes.
       </p>
 
       <div class="tabs" role="tablist" aria-label="Artefacts">
         <button class="tab" role="tab" id="t-file" aria-controls="a-file" aria-selected="true">Solution file</button>
-        <button class="tab" role="tab" id="t-row"  aria-controls="a-row"  aria-selected="false">README row</button>
+        <button class="tab" role="tab" id="t-row"  aria-controls="a-row"  aria-selected="false">index row</button>
         <button class="tab" role="tab" id="t-var"  aria-controls="a-var"  aria-selected="false">Second variant</button>
       </div>
 
@@ -580,7 +580,7 @@ port LC 207 to java</code></pre>
           <tbody>
             <tr><td class="num">Package</td><td>Inferred from the technique the solution actually uses — not from the problem's LeetCode tags. Flagged in the report when the call was close.</td></tr>
             <tr><td class="num">Class name</td><td>The problem title in PascalCase. Never derived from the method name.</td></tr>
-            <tr><td class="num">Title / difficulty / complexity</td><td>Read off the README row that already exists, not re-derived. Only a Java-first problem sends it to the problem page.</td></tr>
+            <tr><td class="num">Title / difficulty / complexity</td><td>Read off the index row that already exists, not re-derived. Only a Java-first problem sends it to the problem page.</td></tr>
             <tr><td class="num">LC number</td><td>The one thing it will ask for. Everything else keys off it.</td></tr>
           </tbody>
         </table>
@@ -599,7 +599,7 @@ port LC 207 to java</code></pre>
         <table>
           <thead><tr><th>Step</th><th>What it produced</th></tr></thead>
           <tbody>
-            <tr><td class="num">1 row</td><td>README row 0025 already there — <em>Reverse Nodes in k-Group</em>, Hard, <code>_O(n)_</code> / <code>_O(1)_</code>, Python-only</td></tr>
+            <tr><td class="num">1 row</td><td>index row 0025 already there — <em>Reverse Nodes in k-Group</em>, Hard, <code>_O(n)_</code> / <code>_O(1)_</code>, Python-only</td></tr>
             <tr><td class="num">2 draft</td><td><code>ws/Workspace26.java</code> &rarr; the <code>// LC 25</code> draft plus the <code>// IDEA: reverse in iteration</code> note above it</td></tr>
             <tr><td class="num">3 neighbour</td><td>read <code>LinkedList/ReverseLinkedList.java</code>, matched its shape</td></tr>
             <tr><td class="num">4 write</td><td><code>ReverseNodesInKGroup.java</code> — package line, url comment, <code>25. Reverse Nodes in k-Group / Hard</code> javadoc, <code>ListNode</code> imported</td></tr>
@@ -627,7 +627,7 @@ port LC 207 to java</code></pre>
       </p>
       <ul class="nots">
         <li><span class="x" aria-hidden="true">&times;</span><span><b>Renumber a <code>// V</code> marker.</b><span class="why">The marker names the method, so closing a gap in the numbering renames one. Only a genuine collision is reassigned.</span></span></li>
-        <li><span class="x" aria-hidden="true">&times;</span><span><b>Add a second README row.</b><span class="why">The problem almost always has one already. Nothing in the build catches a duplicate, which is what makes it the expensive mistake.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Add a second index row.</b><span class="why">The problem almost always has one already. Nothing in the build catches a duplicate, which is what makes it the expensive mistake.</span></span></li>
         <li><span class="x" aria-hidden="true">&times;</span><span><b>Re-derive the other columns.</b><span class="why">Complexity, difficulty and tags belong to the problem, not the language. A Java port is not a reason to touch them.</span></span></li>
         <li><span class="x" aria-hidden="true">&times;</span><span><b>Hand back code that was not compiled.</b><span class="why">A <code>javac</code> plus the javadoc's own examples run before anything is reported done.</span></span></li>
         <li><span class="x" aria-hidden="true">&times;</span><span><b>Touch <code>data/progress.txt</code>.</b><span class="why">The practice log is your own record and gets its own commit — it is also the single source for the <a href="lc-review-plan.html">review plan</a>, so nothing else writes to it.</span></span></li>
@@ -714,7 +714,7 @@ File LC 25 into LeetCodeJava/LinkedList — draft in @Draft.java"</code></pre>
 <pre><code>curl -sL https://raw.githubusercontent.com/yennanliu/CS_basics/master/.claude/skills/lc-java/SKILL.md</code></pre>
         </div>
         <p class="note">
-          Two caveats away from this repo: steps 1 and 7 read an existing README table, and
+          Two caveats away from this repo: steps 1 and 7 read an existing index table, and
           step 8 runs <code>find_missing_java.py</code>. Point it at whatever plays those roles
           in your own tree, or it falls back to the layout documented in <code>SKILL.md</code>.
         </p>
@@ -732,7 +732,7 @@ File LC 25 into LeetCodeJava/LinkedList — draft in @Draft.java"</code></pre>
       <ul class="files">
         <li>
           <a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-java/SKILL.md">SKILL.md</a>
-          <span>The whole recipe — the five prime directives, the nine steps with their commands, the file layout, the README row rule, the do-not list, and the LC 25 worked example.</span>
+          <span>The whole recipe — the five prime directives, the nine steps with their commands, the file layout, the index row rule, the do-not list, and the LC 25 worked example.</span>
         </li>
       </ul>
       <p class="note" style="margin-top:1.2rem">
@@ -749,7 +749,7 @@ File LC 25 into LeetCodeJava/LinkedList — draft in @Draft.java"</code></pre>
       <h2>Where it fits</h2>
       <p class="sub">
         <code>/lc-java</code> is <a href="lc-python.html">/lc-python</a>'s counterpart: the same
-        recipe shape, a different tree, and one README row shared between them rather than one
+        recipe shape, a different tree, and one index row shared between them rather than one
         each.
         <a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/add-time-space/SKILL.md">/add-time-space</a>
         is the one to run over a whole package once the files are in. From there the

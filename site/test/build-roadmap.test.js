@@ -8,9 +8,9 @@ const lib = require('../build-roadmap.js');
 
 const ROOT = path.join(__dirname, '..', '..');
 
-// ── parseReadmeProblems ───────────────────────────────────────────────────
+// ── parseProblemIndex ───────────────────────────────────────────────────
 
-const README_SAMPLE = [
+const INDEX_SAMPLE = [
   '## Array',
   '',
   '| # | Problem | Solution | Time | Space | Difficulty | Tag | Note |',
@@ -23,33 +23,33 @@ const README_SAMPLE = [
   '| 026 | [Remove Duplicates](https://leetcode.com/problems/remove-duplicates/) | [Scala](./leetcode_scala/rd.scala) | _O(n)_ | _O(1)_ | Medium | **graph** |  |',
 ].join('\n');
 
-test('parseReadmeProblems normalises the zero-padded id column', () => {
-  const problems = lib.parseReadmeProblems(README_SAMPLE);
+test('parseProblemIndex normalises the zero-padded id column', () => {
+  const problems = lib.parseProblemIndex(INDEX_SAMPLE);
   assert.ok(problems.has('26'), 'id 026 should be indexed as "26"');
   assert.ok(!problems.has('026'));
   assert.equal(problems.get('26').title, 'Remove Duplicates');
 });
 
-test('parseReadmeProblems turns repo-relative solution paths into GitHub blob URLs', () => {
-  const solutions = lib.parseReadmeProblems(README_SAMPLE).get('121').solutions;
+test('parseProblemIndex turns repo-relative solution paths into GitHub blob URLs', () => {
+  const solutions = lib.parseProblemIndex(INDEX_SAMPLE).get('121').solutions;
   assert.deepEqual(solutions, { Java: `${lib.GH_BLOB}/leetcode_java/BT.java` });
 });
 
 // A problem listed under two sections lists different languages in each. Losing
 // one of them would silently drop a solution link the repo actually has.
-test('parseReadmeProblems unions solution links across duplicate rows', () => {
-  const problem = lib.parseReadmeProblems(README_SAMPLE).get('26');
+test('parseProblemIndex unions solution links across duplicate rows', () => {
+  const problem = lib.parseProblemIndex(INDEX_SAMPLE).get('26');
   assert.deepEqual(Object.keys(problem.solutions).sort(), ['Java', 'Python', 'Scala']);
   // First row wins for the scalar fields, so the topic tables cannot fight over them.
   assert.equal(problem.difficulty, 'Easy');
   assert.equal(problem.section, 'Array');
 });
 
-// README has both `[Swim in Rising Water]( https://…)` and `[Java ](./path)`.
+// The index has both `[Swim in Rising Water]( https://…)` and `[Java ](./path)`.
 // A strict link pattern drops those rows, and the roadmap build then fails on a
 // problem id that is demonstrably in the file.
-test('parseReadmeProblems tolerates stray whitespace inside markdown links', () => {
-  const problems = lib.parseReadmeProblems(
+test('parseProblemIndex tolerates stray whitespace inside markdown links', () => {
+  const problems = lib.parseProblemIndex(
     '| 778 | [Swim in Rising Water]( https://leetcode.com/problems/swim/) ' +
     '| [Java ](./leetcode_java/Swim.java) | _O(n)_ | _O(n)_ | Medium | **graph** |  |'
   );
@@ -58,8 +58,8 @@ test('parseReadmeProblems tolerates stray whitespace inside markdown links', () 
   assert.deepEqual(problem.solutions, { Java: `${lib.GH_BLOB}/leetcode_java/Swim.java` });
 });
 
-test('parseReadmeProblems keeps a row whose difficulty column is malformed', () => {
-  const problems = lib.parseReadmeProblems(
+test('parseProblemIndex keeps a row whose difficulty column is malformed', () => {
+  const problems = lib.parseProblemIndex(
     '| 1242 | [Web Crawler](https://leetcode.com/problems/web-crawler/) | + \\ |  |  |  |  |  |'
   );
   assert.equal(problems.get('1242').difficulty, 'Unknown');
@@ -73,18 +73,18 @@ const ROW = (tags, status) =>
 
 test('the status column marks MUST in any casing', () => {
   for (const status of ['MUST', 'must', '(MUST again)', 'AGAIN*** (5) (MUST)']) {
-    assert.equal(lib.parseReadmeProblems(ROW('**array**', status)).get('42').must, true, status);
+    assert.equal(lib.parseProblemIndex(ROW('**array**', status)).get('42').must, true, status);
   }
-  assert.equal(lib.parseReadmeProblems(ROW('**array**', 'AGAIN (2)')).get('42').must, false);
+  assert.equal(lib.parseProblemIndex(ROW('**array**', 'AGAIN (2)')).get('42').must, false);
 });
 
 test('the tags column marks MUST only as a standalone all-caps token', () => {
-  assert.equal(lib.parseReadmeProblems(ROW('**array**, MUST, `fb`', '')).get('42').must, true);
-  assert.equal(lib.parseReadmeProblems(ROW('**array**, MUSTARD', '')).get('42').must, false);
+  assert.equal(lib.parseProblemIndex(ROW('**array**, MUST, `fb`', '')).get('42').must, true);
+  assert.equal(lib.parseProblemIndex(ROW('**array**, MUSTARD', '')).get('42').must, false);
 });
 
 /**
- * 155 README rows leave the trailing status cell blank. Taking "the last
+ * 155 index rows leave the trailing status cell blank. Taking "the last
  * non-empty cell" as the status walked back onto the tags cell, where the
  * case-insensitive status rule then classified ordinary prose as a marker —
  * silently widening the MUST list and defeating the strict tag-token rule.
@@ -92,28 +92,28 @@ test('the tags column marks MUST only as a standalone all-caps token', () => {
  */
 test('an empty status cell does not turn tag prose into a MUST marker', () => {
   const row = ROW('**array**, the window must be non-decreasing', '');
-  assert.equal(lib.parseReadmeProblems(row).get('42').must, false);
+  assert.equal(lib.parseProblemIndex(row).get('42').must, false);
 });
 
 test('the trailing columns are read from the end, so a stray pipe cannot shift them', () => {
-  // README carries one row with an extra pipe in the solutions column.
+  // The index carries one row with an extra pipe in the solutions column.
   const row = '| 42 | [Trapping Rain Water](https://leetcode.com/problems/trapping-rain-water/) ' +
     '| [Java](./J.java) | + \\ | extra | _O(n)_ | _O(1)_ | Hard | **array**, `google` | MUST |';
-  const problem = lib.parseReadmeProblems(row).get('42');
+  const problem = lib.parseProblemIndex(row).get('42');
   assert.equal(problem.must, true);
   assert.equal(problem.google, true);
 });
 
 test('the google marker is a company tag, not the word inside prose', () => {
-  assert.equal(lib.parseReadmeProblems(ROW('**array**, `google`', '')).get('42').google, true);
-  assert.equal(lib.parseReadmeProblems(ROW('**array**, google, `fb`', '')).get('42').google, true);
-  assert.equal(lib.parseReadmeProblems(ROW('**array**, googler', '')).get('42').google, false);
+  assert.equal(lib.parseProblemIndex(ROW('**array**, `google`', '')).get('42').google, true);
+  assert.equal(lib.parseProblemIndex(ROW('**array**, google, `fb`', '')).get('42').google, true);
+  assert.equal(lib.parseProblemIndex(ROW('**array**, googler', '')).get('42').google, false);
 });
 
 // LC 322 is listed twice and only the second row carries its MUST marker.
 // Testing the deduplicated representative would drop it.
 test('google and must are unioned across every row for an id', () => {
-  const problems = lib.parseReadmeProblems([
+  const problems = lib.parseProblemIndex([
     ROW('**array**', ''),
     ROW('**array**, MUST, `google`', '')
   ].join('\n'));
@@ -121,8 +121,8 @@ test('google and must are unioned across every row for an id', () => {
   assert.equal(problems.get('42').google, true);
 });
 
-test('parseReadmeProblems skips separator rows and rows with no linked title', () => {
-  const problems = lib.parseReadmeProblems([
+test('parseProblemIndex skips separator rows and rows with no linked title', () => {
+  const problems = lib.parseProblemIndex([
     '| # | Problem |',
     '|---|---------|',
     '| 42 | Trapping Rain Water |',
@@ -177,7 +177,7 @@ test('validateGraph reports unknown prereqs, sheets and problem ids', () => {
   assert.equal(errors.length, 3);
   assert.ok(errors.some(e => /unknown prereq "ghost"/.test(e)));
   assert.ok(errors.some(e => /unknown cheatsheet "nope"/.test(e)));
-  assert.ok(errors.some(e => /#999, which is not in README/.test(e)));
+  assert.ok(errors.some(e => /#999, which is not in PROBLEMS\.md/.test(e)));
 });
 
 test('validateGraph reports duplicates rather than quietly de-duplicating them', () => {
@@ -272,7 +272,7 @@ test('validateGraph surfaces a redundant edge as an error', () => {
 // A three-topic graph plus one imported list, wired the way data/roadmap.json
 // is: the curated ids sit on the nodes, and the imported list is placed by
 // taxonomy. #9 exists only on the imported list, so it also covers a problem
-// this repo has no README row for.
+// this repo has no indexed row for.
 function scenario() {
   return {
     roadmap: {
@@ -327,7 +327,7 @@ test('buildRoadmap emits ids on the nodes and the records once', () => {
   const built = buildScenario();
   assert.deepEqual(built.nodes[0].lists.roadmap, ['1']);
   assert.deepEqual(Object.keys(built.problems).sort((x, y) => Number(x) - Number(y)), ['1', '2', '9']);
-  // `section` and `must` are README bookkeeping and have no business shipping.
+  // `section` and `must` are index bookkeeping and have no business shipping.
   assert.deepEqual(Object.keys(built.problems['1']).sort(),
     ['difficulty', 'solutions', 'title', 'url']);
 });
@@ -358,7 +358,7 @@ test('buildRoadmap keeps the curated order but sorts an imported list by difficu
 
 // A problem on an imported list that this repo has never solved still has to
 // render — with a LeetCode link built from the list's own slug.
-test('buildRoadmap falls back to the list data for a problem README lacks', () => {
+test('buildRoadmap falls back to the list data for a problem the index lacks', () => {
   const built = buildScenario();
   assert.deepEqual(built.problems['9'], {
     title: 'Nine',
@@ -526,7 +526,7 @@ test('buildSheetTitles prefers the meta override, then the H1, and skips the tem
 // actually run against it. This is the same gate site/build-roadmap.js applies.
 function realInputs() {
   const roadmap = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/roadmap.json'), 'utf8'));
-  const problems = lib.parseReadmeProblems(fs.readFileSync(path.join(ROOT, 'README.md'), 'utf8'));
+  const problems = lib.parseProblemIndex(fs.readFileSync(path.join(ROOT, lib.PROBLEM_INDEX), 'utf8'));
   const sheetTitles = lib.buildSheetTitles(
     path.join(ROOT, 'doc/cheatsheet'),
     JSON.parse(fs.readFileSync(path.join(ROOT, 'data/cheatsheet_meta.json'), 'utf8'))
@@ -547,7 +547,7 @@ test('the checked-in roadmap passes every validation against the real inputs', (
 test('every problem on the curated path links to a solution in this repo', () => {
   const { roadmap, problems, sheetTitles, listed } = realInputs();
   const built = lib.buildRoadmap(roadmap, problems, sheetTitles, listed);
-  // That link is the whole reason the curated list is drawn from README rather
+  // That link is the whole reason the curated list is drawn from the index rather
   // than from an imported set — the imported ones reach further and are
   // allowed to include problems this repo has not solved.
   const unlinked = [];
@@ -572,11 +572,11 @@ test('every list places nearly all of its problems onto topics', () => {
 
 /**
  * The MUST marker is the repo's own, and `script/extract_must_lc.py` owns its
- * definition. parseReadmeProblems reimplements that rule in JS, so this pins
+ * definition. parseProblemIndex reimplements that rule in JS, so this pins
  * the two together against `doc/must_lc_list.md`, which the script generates.
  *
  * Checked in one direction only. The doc is a checked-in snapshot that goes
- * stale whenever README gains a marker and nobody re-runs the script — it is
+ * stale whenever the index gains a marker and nobody re-runs the script — it is
  * currently one problem behind, which says nothing about this build. What must
  * never happen is the reverse: a problem the script found that the roadmap
  * misses would mean the JS rule had quietly narrowed.

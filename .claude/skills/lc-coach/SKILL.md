@@ -274,7 +274,7 @@ Rules:
   wrong problem, and they will not notice for ten minutes. If you are recalling a pairing
   rather than reading it, say so.
 - **"Exists" and "solved here" are different claims.** When a repo is available, resolve
-  against it — `README.md`'s tables, `data/lc-problems.json`, `doc/cheatsheet/` — and mark
+  against it — `PROBLEMS.md`'s tables, `data/lc-problems.json`, `doc/cheatsheet/` — and mark
   which entries it actually has, as above. Link only what is there. A sibling with no local
   solution is still worth recommending; a dead link is not.
 - **Six at most**, ordered as a path, not a set. If the first one is too hard, the list failed.

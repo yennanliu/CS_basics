@@ -222,10 +222,10 @@ test('the real data/progress.txt parses cleanly', () => {
 //
 // The log records a bare LeetCode number. Everything else the review page shows
 // — the title, the topic, whether the problem is on Blind 75, where this repo's
-// own solution is — comes from README.md and data/problem_lists.json, folded in
+// own solution is — comes from PROBLEMS.md and data/problem_lists.json, folded in
 // here rather than turned into a leetcode.com search at read time.
 
-const README_FIXTURE = [
+const INDEX_FIXTURE = [
   '## Array',
   '',
   '| # | Title | Solution | Time | Space | Difficulty | Note | Status |',
@@ -248,15 +248,15 @@ const LISTS_FIXTURE = {
   ]
 };
 
-test('the catalog carries title, topic, difficulty and slug off the README row', () => {
-  const { byId } = buildCatalog(README_FIXTURE, LISTS_FIXTURE);
+test('the catalog carries title, topic, difficulty and slug off the indexed row', () => {
+  const { byId } = buildCatalog(INDEX_FIXTURE, LISTS_FIXTURE);
   assert.equal(byId.get('1').title, 'Two Sum');
   assert.equal(byId.get('1').section, 'Array');
   assert.equal(byId.get('1').difficulty, 'Easy');
   assert.equal(byId.get('206').section, 'Linked list');
 });
 
-test('the slug comes from the README link, never guessed from the title', () => {
+test('the slug comes from the index link, never guessed from the title', () => {
   // LC 4038's method name and its slug disagree; guessing is wrong exactly
   // where being wrong costs a dead link.
   assert.equal(slugFromUrl('https://leetcode.com/problems/two-sum/'), 'two-sum');
@@ -276,8 +276,8 @@ test('importance uses the CLI planner\'s weights, and the NeetCode lists nest', 
   assert.equal(importance({ difficulty: 'Easy' }), 0);
 });
 
-test('section weights cover the whole README, not just the practised rows', () => {
-  const { sections } = buildCatalog(README_FIXTURE, LISTS_FIXTURE);
+test('section weights cover the whole index, not just the practised rows', () => {
+  const { sections } = buildCatalog(INDEX_FIXTURE, LISTS_FIXTURE);
   const array = sections.find((s) => s.name === 'Array');
   assert.equal(array.n, 2);
   // LC 1: google 1.5 + blind75 2.5 = 4.0 ; LC 42: MUST 5 + Hard 0.3 = 5.3
@@ -286,8 +286,8 @@ test('section weights cover the whole README, not just the practised rows', () =
   assert.deepEqual(sections.map((s) => s.name).slice(0, 1), ['Array']);
 });
 
-test('a curated-list problem README has never indexed still gets a title', () => {
-  const { byId, sections } = buildCatalog(README_FIXTURE, LISTS_FIXTURE);
+test('a curated-list problem the index has never carried still gets a title', () => {
+  const { byId, sections } = buildCatalog(INDEX_FIXTURE, LISTS_FIXTURE);
   assert.equal(byId.get('9999').title, 'Not In Readme');
   assert.equal(byId.get('9999').section, UNFILED);
   // ...but no weight on the balance table. There are 363 of these in the real
@@ -308,7 +308,7 @@ test('solution links ship relative to the repo root, not as three full URLs each
 test('a problem the catalog does not know keeps its schedule and lands in Unfiled', () => {
   const problems = attachCatalog(
     [{ id: 1, dates: ['20260101'], againCount: 0 }, { id: 7777, dates: ['20260102'], againCount: 1 }],
-    buildCatalog(README_FIXTURE, LISTS_FIXTURE));
+    buildCatalog(INDEX_FIXTURE, LISTS_FIXTURE));
   assert.equal(problems[0].title, 'Two Sum');
   assert.equal(problems[1].title, undefined);
   assert.equal(problems[1].section, UNFILED);
@@ -326,7 +326,7 @@ test('buildPayload works with no catalog at all', () => {
 
 test('buildPayload folds the catalog into the problems it emits', () => {
   const { payload } = buildPayload('20260831: 1(ok), 206(again!!)',
-    buildCatalog(README_FIXTURE, LISTS_FIXTURE));
+    buildCatalog(INDEX_FIXTURE, LISTS_FIXTURE));
   const byId = new Map(payload.problems.map((p) => [p.id, p]));
   assert.equal(byId.get(1).title, 'Two Sum');
   assert.equal(byId.get(1).solutions.Python, 'leetcode_python/Array/two-sum.py');
@@ -336,7 +336,7 @@ test('buildPayload folds the catalog into the problems it emits', () => {
   assert.ok(payload.repo.startsWith('https://github.com/'));
 });
 
-test('the real README and problem lists enrich almost all of the real log', () => {
+test('the real index and problem lists enrich almost all of the real log', () => {
   const catalog = require('../build-review-plan.js').loadCatalog(ROOT);
   const raw = fs.readFileSync(path.join(ROOT, 'data', 'progress.txt'), 'utf8');
   const { payload } = buildPayload(raw, catalog);
@@ -344,7 +344,7 @@ test('the real README and problem lists enrich almost all of the real log', () =
   assert.ok(payload.sections.length > 20, `only ${payload.sections.length} topics weighted`);
   const ratio = payload.stats.titled / payload.stats.problems;
   assert.ok(ratio > 0.95,
-    `only ${payload.stats.titled} of ${payload.stats.problems} problems matched a README row`);
+    `only ${payload.stats.titled} of ${payload.stats.problems} problems matched an indexed row`);
 
   for (const problem of payload.problems) {
     if (!problem.title) continue;

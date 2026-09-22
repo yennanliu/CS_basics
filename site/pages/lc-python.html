@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <title>LC Python — CS_basics</title>
-  <meta name="description" content="An agent skill that files a solved LeetCode problem into leetcode_python/ the way the other solutions are filed: the real slug off the problem page, a neighbour's layout copied rather than invented, a smoke test against the docstring's own examples, and a README row inserted in LC-number order.">
+  <meta name="description" content="An agent skill that files a solved LeetCode problem into leetcode_python/ the way the other solutions are filed: the real slug off the problem page, a neighbour's layout copied rather than invented, a smoke test against the docstring's own examples, and an index row inserted in LC-number order.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐍</text></svg>">
   <link rel="stylesheet" href="nav.css">
   <link rel="stylesheet" href="lc-page.css">
@@ -254,7 +254,7 @@
       <p class="lede">
         Solving the problem is the interesting half. The other half is filing it: the real
         slug off the problem page, the layout every neighbouring file already uses, a smoke
-        test against the docstring's own examples, and a README row that lines up with the
+        test against the docstring's own examples, and an index row that lines up with the
         table it was inserted into. <code>/lc-python</code> does that half for
         <code>leetcode_python/</code>, in one pass, the same way every time &mdash;
         <a href="lc-java.html">/lc-java</a> is its counterpart for the Java tree.
@@ -283,7 +283,7 @@
 
 5  test       [1,1,2,2,3]→3  [1,2,1]→1  [5]→1  []→0   V0 and V0-1 agree
 
-6  readme     row inserted after LC 4007 — README.md:494
+6  readme     row inserted after LC 4007 — PROBLEMS.md:396
 
 7  assumed    Easy, inferred from its position in weekly 517. Correct me.</pre>
       </div>
@@ -307,7 +307,7 @@
           <span class="glyph" aria-hidden="true">&#9639;</span>
           <b>The slug is guessed</b>
           <p>LC 4038's method is <code>countSpecialIntegers</code>. Its problem is <em>Count Integers Appearing in a Single Block</em>. A file named after the method is a file nobody finds.</p>
-          <p class="cost">Cost: a wrong file name and a dead README link.</p>
+          <p class="cost">Cost: a wrong file name and a dead link in the index.</p>
         </div>
         <div class="fail">
           <span class="glyph" aria-hidden="true">&#9636;</span>
@@ -318,13 +318,13 @@
         <div class="fail">
           <span class="glyph" aria-hidden="true">&#9676;</span>
           <b>Nothing was run</b>
-          <p>The file name has dashes, so it is not importable — which makes it just slightly too annoying to test, which is how untested code gets committed and a README row lands with the wrong columns.</p>
+          <p>The file name has dashes, so it is not importable — which makes it just slightly too annoying to test, which is how untested code gets committed and an index row lands with the wrong columns.</p>
           <p class="cost">Rule: untested is unfinished.</p>
         </div>
         <div class="fail">
           <span class="glyph" aria-hidden="true">&#9638;</span>
           <b>The row lands in the wrong table</b>
-          <p>README carries <em>two</em> sets of topic tables — the main <code>##</code> index, and the imported <code>## Newly Added (kamyu104 gap)</code> with its own <code>###</code> sub-tables. The imported set is the bigger one and duplicates 23 topic names, so grepping the solution path and taking the last hit always lands there.</p>
+          <p>The index carries <em>two</em> sets of topic tables — the main <code>##</code> index, and the imported <code>## Newly Added (kamyu104 gap)</code> with its own <code>###</code> sub-tables. The imported set is the bigger one and duplicates 23 topic names, so grepping the solution path and taking the last hit always lands there.</p>
           <p class="cost">Cost: a row that renders fine ~2500 lines from where anyone looks. Anchor on the heading, not the path.</p>
         </div>
       </div>
@@ -381,7 +381,7 @@ print([m.Solution().countSpecialIntegers(x) for x in cases])">
           <span class="n">5</span><span class="bar" aria-hidden="true"></span><span class="tag">test</span>
         </button>
         <button class="step" role="radio" aria-checked="false" data-n="6"
-                data-name="Add the README row"
+                data-name="Add the index row"
                 data-body="Find the pattern's table and insert in ascending LC-number order — a four-digit contest problem goes at the end of it. Match the spacing of the rows already there. A Java link joins the same cell only if that file actually exists under leetcode_java/."
                 data-rule="Tags earn their place — the pattern in bold first, then the trick worth grepping for later, then LC weekly for a contest problem. Status is AGAIN(1) on a first pass, and a status you already set is never downgraded."
                 data-code="| 4038 | [Count Integers …](…) | [Python](./leetcode_python/Hash_table/…py) | _O(n)_ | _O(n)_ | Easy | **hash table**, hashmap, `span == cnt` trick | AGAIN(1) |">
@@ -389,7 +389,7 @@ print([m.Solution().countSpecialIntegers(x) for x in cases])">
         </button>
         <button class="step" role="radio" aria-checked="false" data-n="7"
                 data-name="Report what was assumed"
-                data-body="Close with the file, the README line number, the test results, and every inference made along the way: difficulty read off the contest position, examples written from the rule because the scratch file kept only the statement, a Java link deliberately left out."
+                data-body="Close with the file, the index line number, the test results, and every inference made along the way: difficulty read off the contest position, examples written from the rule because the scratch file kept only the statement, a Java link deliberately left out."
                 data-rule="Say what was assumed, so it can be corrected. An unflagged guess is the one that survives."
                 data-code="assumed  Easy, inferred from its position in weekly 517
 assumed  Example 3 written from the rule - ws.txt kept only the statement
@@ -411,14 +411,14 @@ omitted  no Java link: leetcode_java/ has no counterpart">
       <p class="eyebrow">What lands in the tree</p>
       <h2>The house layout</h2>
       <p class="sub">
-        Two artefacts, every time: one Python file and one README row. Both are shown here as
+        Two artefacts, every time: one Python file and one index row. Both are shown here as
         they were actually written for LC 4038 — the run the skill's own worked example
         describes.
       </p>
 
       <div class="tabs" role="tablist" aria-label="Artefacts">
         <button class="tab" role="tab" id="t-file" aria-controls="a-file" aria-selected="true">Solution file</button>
-        <button class="tab" role="tab" id="t-row"  aria-controls="a-row"  aria-selected="false">README row</button>
+        <button class="tab" role="tab" id="t-row"  aria-controls="a-row"  aria-selected="false">index row</button>
         <button class="tab" role="tab" id="t-var"  aria-controls="a-var"  aria-selected="false">Second variant</button>
       </div>
 
@@ -557,7 +557,7 @@ class Solution2(object):                <span class="ann">&lt;- so the file stil
 
 add LC 4038 to leetcode_python/Hash_table/
 file yesterday's contest Q1
-add this solution and update the README</code></pre>
+add this solution and update the index</code></pre>
       </div>
 
       <div class="table-wrap">
@@ -671,7 +671,7 @@ cp -r /tmp/cs_basics/.claude/skills/lc-python ~/.claude/skills/</code></pre>
 <pre><code>## Filing a LeetCode solution
 
 When asked to add an LC problem to the repo, to file a problem just
-solved, or to wire an existing solution file into README, follow
+solved, or to wire an existing solution file into the index, follow
 `.claude/skills/lc-python/SKILL.md`.</code></pre>
         </div>
         <p class="note">A pointer, not a copy — one source of truth means a fix reaches every agent at once.</p>
@@ -698,7 +698,7 @@ File LC 4038 into leetcode_python/Hash_table/ — draft in @draft.py"</code></pr
         </div>
         <p class="note">
           One caveat away from this repo: steps 2 and 6 read a neighbouring solution file and an
-          existing README table. Point it at whatever plays those roles in your own tree, or it
+          existing index table. Point it at whatever plays those roles in your own tree, or it
           falls back to the layout documented in <code>SKILL.md</code>.
         </p>
       </div>
@@ -715,7 +715,7 @@ File LC 4038 into leetcode_python/Hash_table/ — draft in @draft.py"</code></pr
       <ul class="files">
         <li>
           <a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-python/SKILL.md">SKILL.md</a>
-          <span>The whole recipe — the six prime directives, the seven steps with their commands, the file layout, the README row shape, the do-not list, and the LC 4038 worked example.</span>
+          <span>The whole recipe — the six prime directives, the seven steps with their commands, the file layout, the index row shape, the do-not list, and the LC 4038 worked example.</span>
         </li>
       </ul>
       <p class="note" style="margin-top:1.2rem">
@@ -733,7 +733,7 @@ File LC 4038 into leetcode_python/Hash_table/ — draft in @draft.py"</code></pr
       <p class="sub">
         <code>/lc-python</code> is the step right after you solve something — it turns a scratch
         draft into a file the rest of the site can see. <a href="lc-java.html">/lc-java</a>
-        does the same for the Java tree and adds its link to the <em>same</em> README row
+        does the same for the Java tree and adds its link to the <em>same</em> index row
         rather than a second one. From there the
         <a href="lc-explorer.html">explorer</a> indexes it, the
         <a href="lc-review-plan.html">review plan</a> schedules it once you log the attempt,

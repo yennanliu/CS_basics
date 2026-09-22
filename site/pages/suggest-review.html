@@ -290,7 +290,7 @@ python3 script/suggest_review.py --self-test         <span class="dim"># the uni
           <thead><tr><th>Source</th><th>What it contributes</th></tr></thead>
           <tbody>
             <tr>
-              <td><b>README.md</b></td>
+              <td><b>PROBLEMS.md</b></td>
               <td>The problem universe <em>and</em> this repo's own judgement of what matters: the
                   <code>MUST</code> marker, the curated-list tags (<code>blind75</code>,
                   <code>neetcode150</code>, <code>neetcode250</code>, <code>top100liked</code>), the
@@ -311,7 +311,7 @@ python3 script/suggest_review.py --self-test         <span class="dim"># the uni
         </table>
       </div>
       <p class="note" style="margin-top:0.8rem">
-        <code>doc/must_lc_list.md</code> is generated from the same README rows, so reading README
+        <code>doc/must_lc_list.md</code> is generated from the same index rows, so reading the index
         covers it — and a test asserts this script and <code>extract_must_lc.py</code> still agree
         on which rows carry <code>MUST</code>.
       </p>
@@ -347,7 +347,7 @@ python3 script/suggest_review.py --self-test         <span class="dim"># the uni
         <div class="factor">
           <span class="op">×</span>
           <b>category balance</b>
-          <p>Each README section's share of total importance against its share of <em>recent
+          <p>Each index section's share of total importance against its share of <em>recent
              attention</em>. A section getting none of the practice it is owed nearly doubles its
              problems' scores; one getting twice its share is cut to 0.4.</p>
         </div>
@@ -593,7 +593,7 @@ python3 script/suggest_review.py --self-test         <span class="dim"># the uni
                     <code>neetcode250</code>, <code>top100liked</code>, <code>google</code>,
                     <code>again</code>.</td></tr>
             <tr><td class="flag">--section NAME</td><td class="dflt">—</td>
-                <td>A README section such as <code>"Binary Search"</code>. Repeatable and
+                <td>A index section such as <code>"Binary Search"</code>. Repeatable and
                     case-insensitive.</td></tr>
             <tr><td class="flag">--difficulty D</td><td class="dflt">—</td>
                 <td><code>Easy</code>, <code>Medium</code> or <code>Hard</code>. Repeatable.</td></tr>
@@ -692,9 +692,9 @@ python3 script/suggest_review.py --self-test    <span class="dim"># the same sui
 
       <p>
         Every fixture is a line that is really in those files: a <code>MUST</code> in the status
-        cell versus the word “must” in prose, a duplicate README row for one LC, an annotation
+        cell versus the word “must” in prose, a duplicate index row for one LC, an annotation
         containing a comma, a line wrapped mid-annotation, a <code>DP:</code> label, a stray period
-        between entries. A <code>LiveFiles</code> class then holds the real <code>README.md</code>
+        between entries. A <code>LiveFiles</code> class then holds the real <code>PROBLEMS.md</code>
         and <code>data/progress.txt</code>, so a format drift fails a test instead of silently
         shrinking the plan.
       </p>

@@ -2,10 +2,10 @@
 """Score LeetCode readiness against a Google SWE coding bar.
 
 Pulls the public LeetCode GraphQL profile (no auth, no premium) and cross-references
-it with this repo's README status column, then scores four axes:
+it with this repo's problem index (PROBLEMS.md) status column, then scores four axes:
 
   volume     - are enough problems solved, with the right Easy/Medium/Hard mix
-  mastery    - how many solved problems are still marked AGAIN in README
+  mastery    - how many solved problems are still marked AGAIN in the index
   breadth    - per-topic coverage vs the topics Google actually asks
   signal     - contest rating + consistency, the only speed/pressure proxy available
 
@@ -72,8 +72,8 @@ LEVELS = {
 #
 # LeetCode's skill-stats endpoint only reports a curated tag set, and silently
 # omits Heap, BST, Prefix Sum and Intervals. For those, `fallback` is a regex run
-# over the README rows so the topic is measured instead of scored as zero. A
-# README count is a lower bound (only what this repo tracks), so it is flagged (~).
+# over the index rows so the topic is measured instead of scored as zero. An
+# index count is a lower bound (only what this repo tracks), so it is flagged (~).
 GOOGLE_TOPICS = [
     # slug,                   display,               target, weight, fallback
     ("array",                 "Array",                  120, 3, None),
@@ -89,7 +89,7 @@ GOOGLE_TOPICS = [
      r"\bheap\b|priority ?queue|\bpq\b|kth largest|top k"),
     ("linked-list",           "Linked List",             30, 1, None),
     ("tree",                  "Tree",                    70, 2, None),
-    # BST: the skill-stats API omits it and the README notes are full of "check
+    # BST: the skill-stats API omits it and the index notes are full of "check
     # with BST" cross-references, so any regex over-counts. Tree coverage is the
     # honest proxy; left here as n/a rather than scored on a bad number.
     ("binary-search-tree",    "BST",                     25, 2, None),
@@ -293,7 +293,7 @@ def fetch_all(user, cache_dir, offline, year):
 
 
 # ---------------------------------------------------------------------------
-# README parsing
+# Problem-index parsing
 # ---------------------------------------------------------------------------
 ROW = re.compile(r"^\|\s*(\d{1,4})\s*\|(.+)$")
 STATUS = re.compile(r"\b(OK|AGAIN|NOT_OK|TODO)\b")
@@ -301,7 +301,7 @@ DIFF = re.compile(r"\b(Easy|Medium|Hard)\b")
 COMPANIES = ("google", "amazon", "fb", "meta", "apple", "microsoft", "m\\$", "uber", "netflix")
 
 
-def parse_readme(path):
+def parse_index(path):
     """Yield one dict per problem row, keyed by LC number (last row wins)."""
     problems = {}
     section = None
@@ -424,7 +424,7 @@ def evaluate(data, problems, year, level="L4"):
     wsum = sum(t["weight"] for t in scored)
     breadth_score = sum(t["score"] * t["weight"] for t in scored) / wsum
 
-    # --- mastery (README status column)
+    # --- mastery (the index status column)
     tracked = [p for p in problems.values() if p["status"]]
     ok = [p for p in tracked if p["status"] == "OK"]
     again = [p for p in tracked if p["status"] == "AGAIN"]
@@ -440,7 +440,7 @@ def evaluate(data, problems, year, level="L4"):
         b = by_section[p["section"] or "?"]
         # Bucket by the actual status. Lumping every non-OK row into `again`
         # would make these counts disagree with the top-level AGAIN total, since
-        # parse_readme also recognises TODO and NOT_OK.
+        # parse_index also recognises TODO and NOT_OK.
         b["ok" if p["status"] == "OK" else
           "again" if p["status"] == "AGAIN" else "other"] += 1
         b["reps"] += p["reps"]
@@ -599,9 +599,9 @@ def render(r):
         vb = f"{t['vs_baseline']:.2f}x" if t["vs_baseline"] else "-"
         p(f"  {flag}{t['topic']:<22}{str(sv_):>7}{str(tt):>6}{cov:>6}{vb:>8}  {t['weight']}"
           f"  {bar(t['score'], 10)}")
-    p("  (~ = counted from README rows; LeetCode's skill-stats API omits that tag)")
+    p("  (~ = counted from index rows; LeetCode's skill-stats API omits that tag)")
     p("")
-    p("-- Mastery: this repo's README status column " + "-" * 29)
+    p("-- Mastery: this repo's PROBLEMS.md status column " + "-" * 26)
     rd = r["readme"]
     other_bit = f"   TODO/NOT_OK {rd['other']}" if rd.get("other") else ""
     p(f"  tracked rows {rd['tracked']}   OK {rd['ok']}   AGAIN {rd['again']}{other_bit}"
@@ -609,7 +609,7 @@ def render(r):
     p(f"  google-tagged  {rd['google_ok']}/{rd['google_tracked']} OK")
     p(f"  MUST-tagged    {rd['must_ok']}/{rd['must_tracked']} OK")
     p("")
-    p("  Cost curve - mean review passes per problem, by README section.")
+    p("  Cost curve - mean review passes per problem, by index section.")
     p("  High mean = the topic keeps costing you re-learns. Ranked worst first:")
     def sec_n(v):
         return v["ok"] + v["again"] + v.get("other", 0)
@@ -652,7 +652,10 @@ def main():
     ap.add_argument("--user", default="yennanliu")
     ap.add_argument("--level", default="L3", choices=sorted(LEVELS),
                     help="Google level to score against (default L3)")
-    ap.add_argument("--readme", default=os.path.join(ROOT, "README.md"))
+    # `--readme` still works: the index was README.md until Sep 2026.
+    ap.add_argument("--index", "--readme", dest="index", metavar="PATH",
+                    default=os.path.join(ROOT, "PROBLEMS.md"),
+                    help="the problem index (default PROBLEMS.md)")
     ap.add_argument("--year", type=int, default=datetime.now().year)
     ap.add_argument("--cache-dir", default=os.path.join(ROOT, ".lc_cache"))
     ap.add_argument("--offline", action="store_true", help="use cached JSON only")
@@ -662,7 +665,7 @@ def main():
     a = ap.parse_args()
 
     data = fetch_all(a.user, a.cache_dir, a.offline, a.year)
-    problems = parse_readme(a.readme)
+    problems = parse_index(a.index)
     result = evaluate(data, problems, a.year, a.level)
     print(render(result))
     if a.json_out:

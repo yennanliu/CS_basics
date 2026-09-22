@@ -78,7 +78,7 @@ test('every pick says why it earned the slot', async () => {
 test('a pick names the problem, not just its number', async () => {
   const dom = await render(log());
   const titled = $$(dom, '.plan-item').filter((el) => text(el.querySelector('.plan-title')));
-  assert.ok(titled.length >= 4, 'README titles should reach the plan');
+  assert.ok(titled.length >= 4, 'indexed titles should reach the plan');
   // ...and links to the canonical problem page rather than a search for digits.
   const href = $(dom, '.plan-item .prob-num a').getAttribute('href');
   assert.match(href, /^https:\/\/leetcode\.com\/problems\/[a-z0-9-]+\/$/);
@@ -230,7 +230,7 @@ test('the tabs switch panels and remember the choice', async () => {
 // ── Failure modes ───────────────────────────────────────────────────────────
 
 test('a log the build could not enrich still schedules', async () => {
-  // No README, no problem_lists.json: every row is a bare number with no topic
+  // No PROBLEMS.md, no problem_lists.json: every row is a bare number with no topic
   // and no weight. The schedule is the part that must survive that.
   const bare = buildPayload(fs.readFileSync(path.join(ROOT, 'data', 'progress.txt'), 'utf8')).payload;
   const dom = await render(bare);

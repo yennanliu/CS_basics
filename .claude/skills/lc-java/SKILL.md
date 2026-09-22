@@ -1,13 +1,14 @@
 ---
 name: lc-java
-description: File a LeetCode **Java** solution into this repo the way the existing ones are filed — put it in the package its pattern owns, write the file-level javadoc header (`<number>. <Title>` then difficulty then the statement), mark the solution blocks `// V0` / `// V0-1` / `// V1-1` so the markers match the method names, add the `time =` / `space =` javadoc, compile and run it, then add the `[Java]` link to the README row the problem already has. Use when asked to "add LC <number> in Java", to file a draft out of `ws/Workspace26.java`, to port an existing Python solution to Java, or to close part of the Java coverage gap. Triggers - "add LC 25 to LinkedList in java", "/lc-java 239 SlideWindow", "file my workspace draft", "port LC 207 to java".
+description: File a LeetCode **Java** solution into this repo the way the existing ones are filed — put it in the package its pattern owns, write the file-level javadoc header (`<number>. <Title>` then difficulty then the statement), mark the solution blocks `// V0` / `// V0-1` / `// V1-1` so the markers match the method names, add the `time =` / `space =` javadoc, compile and run it, then add the `[Java]` link to the PROBLEMS.md row the problem already has. Use when asked to "add LC <number> in Java", to file a draft out of `ws/Workspace26.java`, to port an existing Python solution to Java, or to close part of the Java coverage gap. Triggers - "add LC 25 to LinkedList in java", "/lc-java 239 SlideWindow", "file my workspace draft", "port LC 207 to java".
 allowed-tools: Read, Glob, Grep, Bash, Write, Edit
 ---
 
 # Add a LeetCode Java solution
 
 Turn an LC number (plus, usually, a draft sitting in `ws/Workspace26.java`) into a
-committed-quality Java file **and** the `[Java]` link on its README row, in the shape the
+committed-quality Java file **and** the `[Java]` link on its row in `PROBLEMS.md` (the
+problem index — it was `README.md` until Sep 2026), in the shape the
 other ~1626 files under `leetcode_java/` already use.
 
 **Invocation**: `/lc-java <LC number> <Package>` — e.g. `/lc-java 25 LinkedList`.
@@ -20,7 +21,7 @@ missing or the package is genuinely ambiguous.
 
 **Wrong skill?** This one owns `leetcode_java/` only. A Python solution goes to
 [`/lc-python`](https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-python/SKILL.md).
-The two are counterparts and share one README row — see
+The two are counterparts and share one index row — see
 [directive 4](#prime-directives).
 
 ## Prime directives
@@ -38,11 +39,11 @@ The two are counterparts and share one README row — see
    `leetcode.com/problems/<slug>` url, and the title normalised to a class name — because
    LeetCode renames slugs and ~60 files have no url at all. Leave the url out and the file
    is invisible to coverage counting.
-4. **The README row already exists — update it, never add a second.** Most problems here are
+4. **The index row already exists — update it, never add a second.** Most problems here are
    Python-first. The Java link goes into that row's Solution cell, after the Python one. A
    duplicate row is the single most expensive mistake this skill can make, because nothing
    in the build catches it.
-   **The number can match two rows.** README carries two sets of topic tables — the main
+   **The number can match two rows.** `PROBLEMS.md` carries two sets of topic tables — the main
    `## ` ones and the imported `## Newly Added (kamyu104 gap)` / `### ` ones — and 10 LC
    numbers appear in both. When the grep returns two hits, edit the one under a `## `
    heading; that is the row `/lc-python` maintains and the one the user reads.
@@ -54,11 +55,11 @@ The two are counterparts and share one README row — see
 ### 1. Settle the problem, and find the row that already exists
 
 ```bash
-grep -n "^| *0*<number> " README.md          # the existing row: title, difficulty, tags, status
+grep -n "^| *0*<number> " PROBLEMS.md        # the existing row: title, difficulty, tags, status
 grep -rn "leetcode.com/problems/" leetcode_python/*/*<slug>*.py
 ```
 
-If README has the row, **it is the source of truth** for the title, the difficulty, the
+If the index has the row, **it is the source of truth** for the title, the difficulty, the
 leetcode url and the complexity columns — they were settled when the Python file was filed,
 and this skill does not re-derive or "correct" them.
 
@@ -219,17 +220,17 @@ solution is wrong — say so rather than adjusting the example.
 missing-JUnit errors under `dev/Sorting/`. Everything under `LeetCodeJava/` compiles. If a
 run shows 9, the ninth is yours.
 
-### 7. Update the README row
+### 7. Update the index row
 
 ```bash
-grep -n "^| *0*<number> " README.md
+grep -n "^| *0*<number> " PROBLEMS.md
 ```
 
 More than one hit means the imported table also carries the problem (directive 4) — print
 the heading each candidate sits under and take the `## ` one:
 
 ```bash
-awk -v L=<hit line> 'NR<=L && /^#{1,3} /{h=$0} NR==L{print h}' README.md   # want "## Stack"
+awk -v L=<hit line> 'NR<=L && /^#{1,3} /{h=$0} NR==L{print h}' PROBLEMS.md   # want "## Stack"
 ```
 
 Append the Java link to the end of the existing row's **Solution** cell, after the Python
@@ -257,7 +258,7 @@ cannot read (directive 3). Fix it now, not later.
 
 ### 9. Report what was assumed
 
-Close with the file, the README line number, the compile and test results, and every
+Close with the file, the `PROBLEMS.md` line number, the compile and test results, and every
 inference: the package chosen and why, complexity columns taken from the existing row rather
 than re-derived, a neetcode url deliberately omitted, the workspace draft removed.
 
@@ -266,7 +267,7 @@ than re-derived, a neetcode url deliberately omitted, the workspace draft remove
 - ❌ renumber a `// V` marker to close a gap — it renames the method (directive 1)
 - ❌ write `// VO` with the letter O
 - ❌ paste leetcode.com page furniture into the javadoc header (step 4)
-- ❌ add a second README row for a problem that already has one (directive 4)
+- ❌ add a second index row for a problem that already has one (directive 4)
 - ❌ re-declare `ListNode` / `TreeNode` instead of importing `LeetCodeJava.DataStructure`
 - ❌ add a `main` method to a solution file, or leave a driver behind
 - ❌ hand back code that was not compiled and run (step 6)
@@ -281,7 +282,7 @@ than re-derived, a neetcode url deliberately omitted, the workspace draft remove
 
 | Step | What it produced |
 |---|---|
-| 1 | README row 0025 already there — title *Reverse Nodes in k-Group*, Hard, `_O(n)_` / `_O(1)_`, Python-only |
+| 1 | `PROBLEMS.md` row 0025 already there — title *Reverse Nodes in k-Group*, Hard, `_O(n)_` / `_O(1)_`, Python-only |
 | 2 | `ws/Workspace26.java` → `// LC 25` draft plus the user's `// IDEA: reverse in iteration` note |
 | 3 | read `LinkedList/ReverseLinkedList.java`, matched its shape |
 | 4 | wrote `LeetCodeJava/LinkedList/ReverseNodesInKGroup.java` — `package LeetCodeJava.LinkedList`, url comment, `25. Reverse Nodes in k-Group / Hard` javadoc, `import LeetCodeJava.DataStructure.ListNode` |

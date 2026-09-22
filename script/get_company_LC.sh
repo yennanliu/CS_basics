@@ -17,4 +17,4 @@ header2='|-----|---------------- | --------------- | --------------- | ---------
 echo $header1 >> $OUTPUT_FILE
 echo $header2 >> $OUTPUT_FILE
 
-cat README.md | grep $COMPANY >> $OUTPUT_FILE
+grep "$COMPANY" PROBLEMS.md >> $OUTPUT_FILE

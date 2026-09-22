@@ -13,6 +13,8 @@ const {
   titleCaseFromFile, summariseDoc
 } = require('./build-lib');
 const { compose, parseStore, docs: zhDocs, orphanStores } = require('./i18n');
+const { parseProblemIndex, PROBLEM_INDEX, GH_BLOB } = require('./build-roadmap');
+const { loadCatalog } = require('./build-review-plan');
 
 // A commit that only retouches a header or fixes a link is not a content update.
 // Without this floor, one repo-wide formatting pass stamps today's date on every
@@ -180,7 +182,7 @@ function processLinks(html, srcDir = '.', outDir = '') {
 // style.css hides the body's horizontal overflow, and `table { min-width: 400px }`
 // keeps a table at least that wide. On a phone that combination does not merely
 // squash a wide table — it clips it, with no way to scroll to the columns on the
-// right. README alone renders 55 tables, several of them eight columns wide with
+// right. The problem index alone renders 55 tables, several eight columns wide with
 // a tag column full of company names.
 //
 // The `.table-wrap` scroll container this needs has been in style.css all along;
@@ -282,9 +284,11 @@ function faqPageName(filePath) {
   return subDir === '.' ? baseName : `${subDir}_${baseName}`.replace(/\//g, '_');
 }
 
-// README renders to problems.html; index.html is the hand-built landing page, so
-// a link to README.md has to resolve to the problem index, not to the front door.
-registerPage('README.md', 'problems.html');
+// PROBLEMS.md renders to problems.html. README.md is the repo's landing page and
+// index.html is the site's, so a link to one resolves to the other — and a link to
+// the index lands on the index, not on the front door.
+registerPage(PROBLEM_INDEX, 'problems.html');
+registerPage('README.md', 'index.html');
 if (fs.existsSync('doc/Resource.md')) registerPage('doc/Resource.md', 'resources.html');
 if (fs.existsSync('doc/pattern_recognition.md')) registerPage('doc/pattern_recognition.md', 'patterns.html');
 for (const file of cheatsheetFiles) {
@@ -296,8 +300,34 @@ for (const filePath of faqFiles) {
 
 // ── Data collection ─────────────────────────────────────────────────────────
 
-const readme = fs.readFileSync('README.md', 'utf8');
-const content = renderContent(readme, '.', '');
+// ── GitHub's markdown render cap ─────────────────────────────────────────────
+//
+// GitHub renders only the first 512,000 bytes of a markdown file. Past that it
+// stops mid-element and says nothing: no notice on the page, no truncation
+// warning, the tables simply end. README.md crossed that line and nobody noticed
+// for months — at 1,137,734 bytes the cut fell inside the LC 1480 row, hiding
+// 1,929 of the 3,287 problem rows and every heading after them, so a reader's
+// find-in-page quietly failed on two thirds of the index.
+//
+// That is why the index moved to PROBLEMS.md and README.md became a landing
+// page. This asserts the front door stays a front door. PROBLEMS.md itself is
+// deliberately over the cap — it says so in its own header, and the site is
+// where it is meant to be read.
+const GITHUB_RENDER_CAP = 512000;
+{
+  const size = fs.statSync('README.md').size;
+  if (size > GITHUB_RENDER_CAP) {
+    throw new Error(
+      `README.md is ${size.toLocaleString('en-US')} bytes; GitHub renders only the first ` +
+      `${GITHUB_RENDER_CAP.toLocaleString('en-US')} and drops the rest with no warning. ` +
+      `Move the content that grew into ${PROBLEM_INDEX} (the problem index) or its own doc — ` +
+      'the README is the one file every visitor reads first.'
+    );
+  }
+}
+
+const problemIndex = fs.readFileSync(PROBLEM_INDEX, 'utf8');
+const content = renderContent(problemIndex, '.', '');
 
 let resourceContent = '';
 if (fs.existsSync('doc/Resource.md')) {
@@ -838,22 +868,21 @@ const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '', o
 
 // ── Landing page ─────────────────────────────────────────────────────────────
 //
-// index.html used to be README rendered straight through: a 915 KB page of 55
+// index.html used to be the problem index rendered straight through: a 915 KB page of 55
 // tables and 1,512 problem rows, which is the right shape for a repository
 // listing and the wrong one for a front door. It showed a first-time visitor a
 // wall of LeetCode numbers and no sign that the site has a search, a roadmap, a
 // spaced-repetition plan or 37 algorithm visualizers.
 //
-// So the README keeps its page — it is the problem index, and it is genuinely
-// useful — but at problems.html, with a landing page in front of it.
+// So the index keeps its page — it is genuinely useful — but at problems.html,
+// with a landing page in front of it.
 
-const { parseReadmeProblems } = require('./build-roadmap');
-const readmeProblems = parseReadmeProblems(readme);
+const indexedProblems = parseProblemIndex(problemIndex);
 
-// README's last column is a hand-kept verdict — "OK******* (7)", "AGAIN**** (3)".
-// parseReadmeProblems does not carry it (the roadmap has no use for it), so it is
+// The index's last column is a hand-kept verdict — "OK******* (7)", "AGAIN**** (3)".
+// parseProblemIndex does not carry it (the roadmap has no use for it), so it is
 // read here: "still marked AGAIN" is the one number on this page worth acting on.
-function readmeStatusCounts(markdown) {
+function indexStatusCounts(markdown) {
   const counts = { ok: 0, again: 0, todo: 0 };
   for (const line of markdown.split('\n')) {
     if (!line.startsWith('|')) continue;
@@ -867,12 +896,12 @@ function readmeStatusCounts(markdown) {
   }
   return counts;
 }
-const statusCounts = readmeStatusCounts(readme);
+const statusCounts = indexStatusCounts(problemIndex);
 
 // Counted, never typed: a hardcoded "1,300+" is a number that goes stale the
 // first week nobody remembers it is there.
 const stats = [
-  [readmeProblems.size.toLocaleString('en-US'), 'LeetCode problems indexed'],
+  [indexedProblems.size.toLocaleString('en-US'), 'LeetCode problems indexed'],
   [cheatsheets.length, 'cheatsheets'],
   [faqs.length, 'interview FAQs'],
   [fs.existsSync('algo_demo')
@@ -920,7 +949,7 @@ const ENTRY_GROUPS = [
   ]],
   ['Look something up', 'The index the rest of it is built from.', [
     ['problems.html', 'Problem index',
-     'The full README table — every problem, its solutions, its tags and its status.'],
+     'Every problem, its solutions, its tags and its status — the whole index, rendered in full.'],
     ['lc-similar.html', 'Similar problems',
      'The graph of which problems share a technique, so a solved one points at its siblings.'],
     ['search.html', 'Search',
@@ -949,7 +978,7 @@ const AGENT_SKILLS = [
   ['File what you solved', [
     ['lc-python.html', '/lc-python', 'File a Python solution',
      'Turns a solved problem into a committed one — the problem\'s real slug, the house file layout, ' +
-     'a smoke test against the docstring\'s own examples, and the README row inserted in number order.'],
+     'a smoke test against the docstring\'s own examples, and the index row inserted in number order.'],
     ['lc-java.html', '/lc-java', 'File a Java solution',
      'The Java counterpart — the package its pattern owns, markers that match the method names, ' +
      'a compile and a run, and the [Java] link added to the row the problem already has.'],
@@ -965,7 +994,7 @@ const AGENT_SKILLS = [
      'Appends today to the practice log in the shape the review plan\'s parser actually reads, ' +
      'so no problem number is silently dropped and the annotations survive.'],
     ['lc-again.html', '/lc-again', 'Graduate an AGAIN',
-     'Moves the README status cell after a re-solve — promoting only what was genuinely re-derived ' +
+     'Moves the index\'s status cell after a re-solve — promoting only what was genuinely re-derived ' +
      'unaided, and keeping the star run that records what the problem cost.']
   ]],
   ['Maintain the site', [
@@ -1066,15 +1095,15 @@ cp -r /tmp/cs_basics/.claude/skills/lc-coach ~/.claude/skills/</code></pre>
 
 fs.writeFileSync('_site/index.html', htmlTemplate('Home', landingContent, 'home', '', {
   url: 'index.html',
-  description: `Algorithms, data structures, system design and ${readmeProblems.size} LeetCode solutions in Java, Python and SQL — with ${cheatsheets.length} cheatsheets, a study roadmap and a spaced-repetition review plan.`
+  description: `Algorithms, data structures, system design and ${indexedProblems.size} LeetCode solutions in Java, Python and SQL — with ${cheatsheets.length} cheatsheets, a study roadmap and a spaced-repetition review plan.`
 }));
-console.log(`✓ Created index.html (landing page, ${readmeProblems.size} problems indexed)`);
+console.log(`✓ Created index.html (landing page, ${indexedProblems.size} problems indexed)`);
 
 fs.writeFileSync('_site/problems.html', htmlTemplate('Problem Index', content, 'problems', '', {
   url: 'problems.html',
-  description: `All ${readmeProblems.size} LeetCode problems in this repo, by topic, with links to the Java, Python and SQL solutions and the tags each one carries.`
+  description: `All ${indexedProblems.size} LeetCode problems in this repo, by topic, with links to the Java, Python and SQL solutions and the tags each one carries.`
 }));
-console.log('✓ Created problems.html (the README index)');
+console.log(`✓ Created problems.html (${PROBLEM_INDEX}, ${indexedProblems.size} problems)`);
 
 if (resourceContent) {
   fs.writeFileSync('_site/resources.html', htmlTemplate('Resources', resourceContent, 'resources', '', {
@@ -1250,10 +1279,38 @@ fs.mkdirSync('_site/data', { recursive: true });
 fs.writeFileSync('_site/data/search-index.json', JSON.stringify({ records: searchRecords }));
 console.log(`✓ Created data/search-index.json (${searchRecords.length} doc records)`);
 
+// ── Searchable problems ──────────────────────────────────────────────────────
+//
+// Search's problem half used to read data/lc-problems.json alone, which is built
+// from doc/google_leetcode_problems_by_tags.md — 1,135 problems. The index holds
+// 3,287, so two thirds of this repo's own problems could not be found anywhere
+// on the site: searching "2071" returned nothing while PROBLEMS.md had the row.
+//
+// This ships the index itself. buildCatalog is the review plan's, so a row gets
+// the same title, topic, difficulty, slug and solution links there and here,
+// with the paths relative to `repo` for the same reason they are there.
+{
+  const catalog = loadCatalog();
+  const problems = catalog
+    ? [...catalog.byId].map(([id, meta]) => ({
+        id,
+        title: meta.title,
+        difficulty: meta.difficulty || undefined,
+        section: meta.section,
+        slug: meta.slug || undefined,
+        must: meta.must,
+        solutions: meta.solutions
+      }))
+    : [];
+  fs.writeFileSync('_site/data/problem-index.json',
+    JSON.stringify({ repo: GH_BLOB, problems }));
+  console.log(`✓ Created data/problem-index.json (${problems.length} searchable problems)`);
+}
+
 const searchBody = `
   <div class="cheatsheet-header">
     <h1>Search</h1>
-    <p>Search across cheatsheets, FAQs, guides, and LeetCode problems. Press <kbd>/</kbd> or <kbd>⌘K</kbd> from any page to get here.</p>
+    <p>Search every cheatsheet, FAQ, guide and problem in the repo — by topic, by title, or by LeetCode number. Press <kbd>/</kbd> or <kbd>⌘K</kbd> from any page to get here.</p>
   </div>
   <input type="text" id="q" placeholder="Search topics, patterns, problems…" autofocus
     style="width:100%;padding:0.8rem 1rem;font-size:1.05rem;border:1px solid var(--border);border-radius:8px;background:var(--bg-secondary);color:var(--text);margin-bottom:0.5rem;">
@@ -1270,22 +1327,59 @@ const searchBody = `
 
     Promise.all([
       fetch('data/search-index.json').then(function(r){ return r.json(); }).catch(function(){ return {records:[]}; }),
-      fetch('data/lc-problems.json').then(function(r){ return r.json(); }).catch(function(){ return {problems:[]}; })
+      fetch('data/lc-problems.json').then(function(r){ return r.json(); }).catch(function(){ return {problems:[]}; }),
+      fetch('data/problem-index.json').then(function(r){ return r.json(); }).catch(function(){ return {problems:[]}; })
     ]).then(function (res) {
       docs = (res[0].records || []).map(function (d) {
         return { kind:'doc', title:d.title, url:d.url, category:d.category, type:d.type,
                  tier:d.tier || 0, summary:d.summary || '',
                  hay:(d.title + ' ' + (d.category||'') + ' ' + (d.summary||'') + ' ' + (d.headings||[]).join(' ')).toLowerCase() };
       });
-      problems = (res[1].problems || []).map(function (p) {
-        return { kind:'lc', id:p.id, title:p.title, difficulty:p.difficulty, tags:p.tags||[],
-                 solutions:p.solutions||null,
-                 hay:('#' + p.id + ' ' + p.title + ' ' + (p.tags||[]).join(' ') + ' leetcode').toLowerCase() };
-      });
+      problems = mergeProblems(res[1].problems, res[2].problems, res[2].repo || '');
       meta.textContent = docs.length + ' docs · ' + problems.length + ' problems indexed. Type to search.';
       var url = new URLSearchParams(location.search);
       if (url.get('q')) { q.value = url.get('q'); run(); }
     });
+
+    // merge:start
+    // Two problem datasets, one list.
+    //
+    // data/lc-problems.json is the tag-and-acceptance dataset the LC Explorer is
+    // built on, and it covers a third of this repo's problems. The rest come from
+    // data/problem-index.json, which is PROBLEMS.md itself and the only source
+    // that knows a row exists at all — searching "2071" found nothing for months
+    // because it was in the index and not in the tag dataset.
+    //
+    // So an id the tag dataset already has keeps its richer tags, and every other
+    // row is appended rather than lost. Solution paths in the index are relative
+    // to the repo root; only the first Python and first Java link is shown, which is
+    // what the rows from the other source carry too.
+    function mergeProblems(tagged, indexed, repo) {
+      var out = (tagged || []).map(function (p) {
+        return { kind:'lc', id:p.id, title:p.title, difficulty:p.difficulty, tags:p.tags||[],
+                 solutions:p.solutions||null, slug:'',
+                 hay:('#' + p.id + ' ' + p.title + ' ' + (p.tags||[]).join(' ') + ' leetcode').toLowerCase() };
+      });
+      var seen = {};
+      out.forEach(function (p) { seen[p.id] = true; });
+      (indexed || []).forEach(function (p) {
+        if (seen[p.id]) return;
+        var links = null;
+        Object.keys(p.solutions || {}).forEach(function (lang) {
+          var key = /^py/i.test(lang) ? 'python' : (/^java/i.test(lang) ? 'java' : null);
+          if (!key) return;
+          var href = p.solutions[lang];
+          if (href.indexOf('http') !== 0) href = repo + '/' + href;
+          links = links || {};
+          if (!links[key]) links[key] = href;
+        });
+        out.push({ kind:'lc', id:p.id, title:p.title, difficulty:p.difficulty || '',
+                   tags: p.section ? [p.section] : [], solutions: links, slug: p.slug || '',
+                   hay:('#' + p.id + ' ' + p.title + ' ' + (p.section || '') + ' leetcode').toLowerCase() });
+      });
+      return out;
+    }
+    // merge:end
 
     function score(rec, tokens) {
       var t = rec.title.toLowerCase();
@@ -1330,7 +1424,7 @@ const searchBody = `
         html += '<h2 style="margin-top:2rem;">LeetCode Problems</h2><div style="display:flex;flex-direction:column;gap:0.4rem;">';
         lcHits.forEach(function(x){
           var p = x.r;
-          var links = '<a href="https://leetcode.com/problems/' + lcSlug(p.title) + '/" target="_blank" rel="noopener">LC</a>';
+          var links = '<a href="https://leetcode.com/problems/' + (p.slug || lcSlug(p.title)) + '/" target="_blank" rel="noopener">LC</a>';
           if (p.solutions && p.solutions.java) links += ' · <a href="' + esc(p.solutions.java) + '" target="_blank" rel="noopener">Java</a>';
           if (p.solutions && p.solutions.python) links += ' · <a href="' + esc(p.solutions.python) + '" target="_blank" rel="noopener">Py</a>';
           html += '<div style="display:flex;gap:0.75rem;align-items:baseline;padding:0.5rem 0.75rem;background:var(--bg-secondary);border-radius:6px;">' +

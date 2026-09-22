@@ -4,17 +4,17 @@
  * Build the study-roadmap data.
  *
  *   data/roadmap.json  (hand-authored topic graph)
- * + README.md          (the repo's master problem index)
+ * + PROBLEMS.md        (the repo's master problem index)
  * → _site/data/roadmap.json  (enriched, laid out, ready to render)
  *
  * The roadmap is a DAG: each node is a topic, each `prereqs` entry is an edge,
  * and `row` is the layer the topic is drawn on. Problem titles, difficulty and
- * links to the solutions in this repo are resolved from README.md at build time
+ * links to the solutions in this repo are resolved from PROBLEMS.md at build time
  * so that they live in exactly one place — data/roadmap.json carries only the
  * LeetCode ids.
  *
  * Every inconsistency is a hard failure rather than a silently-dropped node: a
- * typo'd cheatsheet slug or a problem id that is not in README would otherwise
+ * typo'd cheatsheet slug or a problem id that is not in the index would otherwise
  * ship as an empty box on the page.
  *
  * Run via site/build.sh; exported helpers are unit-tested in site/test.
@@ -26,16 +26,23 @@ const path = require('path');
 const GH_BLOB = 'https://github.com/yennanliu/CS_basics/blob/master';
 const DIFFICULTIES = ['Easy', 'Medium', 'Hard'];
 
-// `[Label](href)`, tolerating the stray whitespace the README has in places —
+// The problem index. It was README.md until Sep 2026, when the file passed
+// 1 MB: GitHub renders only the first 512,000 bytes of a markdown file and
+// drops the rest mid-table with no notice, so two thirds of the index was
+// invisible on the repo's front page. README.md is now a landing page and the
+// index lives here — named once, because six builders and eight scripts read it.
+const PROBLEM_INDEX = 'PROBLEMS.md';
+
+// `[Label](href)`, tolerating the stray whitespace the index has in places —
 // `[Swim in Rising Water]( https://…)` and `[Java ](./path)` both occur, and a
 // strict pattern silently drops those rows.
 const MD_LINK = /\[([^\]]+)\]\(\s*([^)\s]+)/;
 const MD_LINK_ALL = new RegExp(MD_LINK.source, 'g');
 
-// ── README problem index ─────────────────────────────────────────────────────
+// ── The problem index ─────────────────────────────────────────────────────
 
 /**
- * Parses the LeetCode tables in README.md into a Map of id → problem.
+ * Parses the LeetCode tables in PROBLEMS.md into a Map of id → problem.
  *
  * Row shape: `| <id> | [Title](lc-url) | [Java](path), [Python](path) | time |
  * space | Difficulty | tags | status |`. The id column is zero-padded in places
@@ -56,7 +63,7 @@ const MD_LINK_ALL = new RegExp(MD_LINK.source, 'g');
  * marker; testing the deduplicated representative would drop it, and the count
  * would then disagree with `script/extract_must_lc.py`.
  */
-function parseReadmeProblems(markdown) {
+function parseProblemIndex(markdown) {
   const problems = new Map();
   let h2 = null;
   let h3 = null;
@@ -123,7 +130,7 @@ const MUST_TAG_TOKEN = /(?<![A-Za-z])MUST(?![A-Za-z])/;
  * The trailing `| tags | status |` pair, read from the END of the row.
  *
  * Positionally, and relative to the end, for two reasons. Taking "the last
- * *non-empty* cell" as the status is wrong: 155 README rows leave the status
+ * *non-empty* cell" as the status is wrong: 155 index rows leave the status
  * blank, and the search then walks back onto the tags cell, where the
  * case-insensitive status rule would classify ordinary prose ("window must be
  * non-decreasing") as a MUST marker — defeating the whole point of the
@@ -237,7 +244,7 @@ function validateGraph(nodes, { problems, sheetSlugs }) {
       if (seen.has(id)) errors.push(`node "${node.id}" repeats problem #${id}`);
       seen.add(id);
       if (!problems.has(id)) {
-        errors.push(`node "${node.id}" lists problem #${id}, which is not in README.md`);
+        errors.push(`node "${node.id}" lists problem #${id}, which is not in ${PROBLEM_INDEX}`);
       }
     }
   }
@@ -401,7 +408,9 @@ const DIFFICULTY_RANK = { Easy: 0, Medium: 1, Hard: 2, Unknown: 3 };
  * Three kinds of membership, named by the list's `from` field:
  *   `curated`        — the ids hand-authored on the nodes themselves
  *   `list:<flag>`    — a flag in data/problem_lists.json (Blind 75, NeetCode …)
- *   `readme:<field>` — a marker in README.md's own tables (google, must)
+ *   `readme:<field>` — a marker in this repo's own index tables (google, must).
+ *       The name predates the move of the index out of README.md; it still
+ *       means "read it off our own rows", as opposed to a vendored list.
  */
 function membersOf(list, { roadmap, listed, readme }) {
   if (list.from === 'curated') {
@@ -425,7 +434,7 @@ function membersOf(list, { roadmap, listed, readme }) {
  * Which roadmap topic a problem belongs to, or null.
  *
  * Every source files problems under its own taxonomy — NeetCode's "Arrays &
- * Hashing", LeetCode's plan group "Hashing", README's `## Array` heading — and
+ * Hashing", LeetCode's plan group "Hashing", the index's `## Array` heading — and
  * data/roadmap.json maps each of those onto a topic. A list names the
  * taxonomies to try, in order, so LeetCode's catch-all "Misc" group (which maps
  * to nothing) falls through to NeetCode's finer classification rather than
@@ -505,9 +514,9 @@ function byDifficultyThenId({ listedById, readme }) {
 /**
  * The shared problem dictionary the page renders from.
  *
- * README is preferred for every field, because only it knows which solutions
+ * The index is preferred for every field, because only it knows which solutions
  * this repo actually has. A problem that appears on an imported list but has no
- * README row still gets a title, a difficulty and a LeetCode link from the list
+ * indexed row still gets a title, a difficulty and a LeetCode link from the list
  * data — it simply has no `solutions`, which the page shows as a gap rather
  * than hiding.
  */
@@ -538,7 +547,7 @@ function buildProblemDictionary(ids, { readme, listedById }) {
 // ── Assembly ─────────────────────────────────────────────────────────────────
 
 /**
- * Resolves each node's problem ids against the README index and stamps on the
+ * Resolves each node's problem ids against the problem index and stamps on the
  * layout fields the page needs: `row` (authored) plus `col`/`rowSize`, which
  * place the node horizontally within its row in authored order.
  */
@@ -618,8 +627,8 @@ function buildRoadmap(roadmap, problems, sheetTitles = new Map(), listed = []) {
 
 function main() {
   const roadmap = JSON.parse(fs.readFileSync('data/roadmap.json', 'utf8'));
-  const problems = parseReadmeProblems(fs.readFileSync('README.md', 'utf8'));
-  console.log(`Indexed ${problems.size} problems from README.md`);
+  const problems = parseProblemIndex(fs.readFileSync(PROBLEM_INDEX, 'utf8'));
+  console.log(`Indexed ${problems.size} problems from ${PROBLEM_INDEX}`);
 
   const cheatsheetMeta = JSON.parse(fs.readFileSync('data/cheatsheet_meta.json', 'utf8'));
   const sheetTitles = buildSheetTitles('doc/cheatsheet', cheatsheetMeta);
@@ -668,7 +677,8 @@ if (require.main === module) {
 
 module.exports = {
   GH_BLOB,
-  parseReadmeProblems,
+  PROBLEM_INDEX,
+  parseProblemIndex,
   parseSolutionLinks,
   buildSheetTitles,
   validateGraph,
