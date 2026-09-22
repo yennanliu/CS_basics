@@ -37,6 +37,43 @@ Could you devise a constant space solution?
 
 """
 
+
+# V0
+# IDEA: ARRAY OP
+# time = O(m * n)
+# space = O(m + n)
+class Solution(object):
+    def setZeroes(self, matrix):
+        """
+        :type matrix: List[List[int]]
+        :rtype: None Do not return anything, modify matrix in-place instead.
+        """
+        # edge
+        if not matrix:
+            return None
+
+        l = len(matrix)
+        w = len(matrix[0])
+
+        zero_list = []
+
+        for y in range(l):
+            for x in range(w):
+                if matrix[y][x] == 0:
+                    zero_list.append([x, y])
+
+        for x, y in zero_list:
+
+            # make all same x cell to zero
+            matrix[y] = [0] * w
+
+            # make all same y cell to zero
+            for _y in range(l):
+                matrix[_y][x] = 0
+
+        return matrix
+
+
 # V0
 # IDEA : array op
 # time = O(m * n)
@@ -66,6 +103,7 @@ class Solution(object):
                 matrix[j][i] = 0
 
         #print ("matrix = " + str(matrix))
+
 
 # V0-1
 # IDEA : array op
