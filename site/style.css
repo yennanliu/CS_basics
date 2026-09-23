@@ -892,3 +892,18 @@ h4 > a.header-anchor:hover { text-decoration: underline; }
   .stat-cell { border-right: none; border-bottom: 1px solid var(--border); }
   .stat-cell:last-child { border-bottom: none; }
 }
+
+/* ── "In the room" on the cheatsheet index ─────────────────────────────────
+   A tier-5 sheet's derivation bullets, folded under the card description.
+   Closed by default so the grid keeps its rhythm; the sheet page has the
+   same block in full, template included. */
+.card-room { margin: 0; font-size: 14px; }
+.card-room > summary { cursor: pointer; color: var(--text-muted); list-style: none; }
+.card-room > summary::-webkit-details-marker { display: none; }
+.card-room > summary::before { content: '▸ '; }
+.card-room[open] > summary::before { content: '▾ '; }
+.card-room dl { margin: 8px 0 0; display: grid; grid-template-columns: max-content 1fr; gap: 4px 10px; }
+.card-room dt { font-weight: 600; color: var(--text); }
+.card-room dd { margin: 0; color: var(--text-muted); line-height: 1.45; }
+.card-room-more { margin: 8px 0 0; font-size: 13px; }
+@media (max-width: 600px) { .card-room dl { grid-template-columns: 1fr; } .card-room dd { margin-bottom: 4px; } }

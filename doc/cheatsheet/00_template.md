@@ -55,6 +55,29 @@ Add it to `startHere` only if it belongs in the beginner reading ladder.
 
 ---
 
+## Tier-5 sheets: the "In the room" block
+
+A tier-5 sheet is what a candidate reads the week before the loop, and a 2,000-line reference is not readable in a week. So every tier-5 sheet carries one fixed-shape section directly under its Scope block — the derivation, not the catalogue:
+
+````markdown
+## In the room ⭐⭐⭐⭐⭐
+
+- **Brute force** — what a candidate says first, with its cost.
+- **The observation** — the one idea that turns it into the template.
+- **Invariant** — one sentence; the reason the template is correct.
+- **The line that sets the complexity** — `the line` → O(…).
+- **Prove it on** — LC a, LC b, LC c.
+- **Follow-up they ask** — the variant, and the one-line change it needs.
+
+```python
+# the template, ≤ ~20 lines, one language
+```
+````
+
+Keep the six labels and the `- **Label** — text` shape: `site/build-lib.js`'s `extractRoom` lifts the bullets into the sheet's card on `cheatsheets.html` (the fence stays on the page), and a bullet it cannot parse is silently absent from the card. Tier 4 and below do not carry the block — if everything has one, nothing does.
+
+---
+
 ## Mark the interview-critical sections
 
 A trailing `⭐` run on a heading says how interview-critical that section is. The site strips the run out of the heading text, renders it as a star badge, weights the heading's left rule by it, and pulls 4★/5★ `h4`s into the page's table of contents.

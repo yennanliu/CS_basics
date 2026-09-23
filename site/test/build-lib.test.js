@@ -749,3 +749,61 @@ test('buildCheatsheetIndex leaves the English index untouched when a zh block ex
   const without = lib.buildCheatsheetIndex(SHEETS, META);
   assert.equal(withZh, without);
 });
+
+// ── extractRoom and the card's "In the room" state ─────────────────────────
+
+const ROOM_MD = `# Sliding Window
+
+> **Scope** — Windows.
+
+## In the room ⭐⭐⭐⭐⭐
+
+- **Brute force** — every subarray, O(n²).
+- **The observation** — the fix is always at the *left* end; \`r\` never moves back.
+- **Prove it on** — [LC 3](https://leetcode.com/problems/x/), LC 76.
+- a bullet without a bold label is not part of the block
+
+\`\`\`python
+while invalid(): l += 1   # - **Not a bullet** — inside the fence
+\`\`\`
+
+## LeetCode Problem Lists
+- **Not this either** — a later section
+`;
+
+test('extractRoom lifts the bold-labelled bullets and flattens their markdown', () => {
+  assert.deepEqual(lib.extractRoom(ROOM_MD), [
+    { label: 'Brute force', text: 'every subarray, O(n²).' },
+    { label: 'The observation', text: 'the fix is always at the left end; r never moves back.' },
+    { label: 'Prove it on', text: 'LC 3, LC 76.' }
+  ]);
+});
+
+test('extractRoom returns null for a sheet without the block', () => {
+  assert.equal(lib.extractRoom('# Heap\n\n> **Scope** — Heaps.\n\n## Overview\n'), null);
+  assert.equal(lib.extractRoom('## In the room ⭐⭐⭐⭐⭐\n\nprose only\n'), null);
+});
+
+const ROOM_SHEETS = SHEETS.map(s => s.file === 'array'
+  ? { ...s, room: [{ label: 'Brute force', text: 'nested loops, O(n²).' }, { label: 'Invariant', text: 'a < b & "c"' }] }
+  : s);
+
+test('buildCheatsheetIndex folds the room bullets under the card, escaped, with a link to the block', () => {
+  const d = parse(lib.buildCheatsheetIndex(ROOM_SHEETS, META));
+  const rooms = d.querySelectorAll('.card-room');
+  assert.equal(rooms.length, 1, 'only the sheet that carries a block gets the state');
+  const room = rooms[0];
+  assert.equal(room.closest('.sheet-card').querySelector('.card-title').textContent, 'Array');
+  assert.equal(room.querySelector('summary').textContent, 'In the room');
+  assert.deepEqual([...room.querySelectorAll('dt')].map(e => e.textContent), ['Brute force', 'Invariant']);
+  assert.equal(room.querySelectorAll('dd')[1].textContent, 'a < b & "c"');
+  assert.equal(room.querySelector('.card-room-more a').getAttribute('href'), 'cheatsheets/array.html#in-the-room-');
+  // the description still comes first; the details element is closed by default
+  assert.equal(room.previousElementSibling.className, 'card-desc');
+  assert.equal(room.hasAttribute('open'), false);
+});
+
+test('buildCheatsheetIndex in zh does not show the (untranslated) room bullets', () => {
+  const d = parse(lib.buildCheatsheetIndex(ROOM_SHEETS.map(s => ({ ...s, title: s.title + '（中文）' })), ZH_META, 'zh'));
+  assert.equal(d.querySelectorAll('.card-room').length, 0);
+});

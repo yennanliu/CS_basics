@@ -3,6 +3,31 @@
 > **Scope** — Systematic search with undo: the choose/explore/un-choose skeleton, `start_idx` control, duplicate skipping, pruning, and exactly one canonical template per must-know shape — the long tail of worked solutions and the hard-tier state-carrying templates live in its two satellites.
 > **See also**: [backtrack_examples.md](./backtrack_examples.md) — the worked LC solutions for these templates; [backtrack_advanced.md](./backtrack_advanced.md) — Trie-pruned grid search, expression building, deletion budgets, memoised partitioning; [dfs.md](./dfs.md) — traversal without the undo step; [recursion.md](./recursion.md) — recursion mechanics; [tree_backtrack.md](./tree_backtrack.md) — root→leaf path problems; [dp.md](./dp.md) — when memoising the search beats exploring it.
 
+## In the room ⭐⭐⭐⭐⭐
+
+- **Brute force** — generate all 2ⁿ subsets or n! orderings, then filter the valid ones — correct, and it never finishes for n = 20.
+- **The observation** — build the candidate one choice at a time and *abandon the branch* the moment the partial candidate cannot lead to a solution. Three dials control the search: a `start` index (combinations — never look back), a `used` set (permutations — never reuse), and sorted input with skip-equal-siblings (no duplicate results).
+- **Invariant** — `path` is always a valid partial candidate, and after every recursive call the state is *exactly* what it was before it — the undo is the other half of the choose.
+- **The line that sets the complexity** — branching factor to the power of depth: O(2ⁿ) for subsets, O(n!) for permutations, times O(n) to copy each result. Pruning changes the constant; it does not change the class, and saying so is the point.
+- **Prove it on** — LC 78 (subsets — `start`), LC 46 (permutations — `used`), LC 39 (combination sum — reuse allowed: recurse with `i`, not `i + 1`), LC 90 (subsets with duplicates — sort and skip).
+- **Follow-up they ask** — "Duplicates in the input?" — `if i > start and nums[i] == nums[i-1]: continue`; "can you prune?" — sort, then `break` when `remaining − nums[i] < 0`; "iteratively?" — the explicit stack of `(path, start)`.
+
+```python
+def subsets(nums):                    # LC 78: choose / explore / un-choose
+    out, path = [], []
+    def go(start):
+        out.append(path[:])           # every node of the tree is a subset
+        for i in range(start, len(nums)):
+            path.append(nums[i])      # choose
+            go(i + 1)                 # explore: never look back
+            path.pop()                # un-choose: state exactly as before
+    go(0)
+    return out
+
+# dials: permutations -> `used[i]` and go(); no duplicates -> nums.sort()
+#        and `if i > start and nums[i] == nums[i-1]: continue`
+```
+
 ## LeetCode Problem Lists
 
 - [Backtracking](https://leetcode.com/problem-list/backtracking/)

@@ -4,6 +4,28 @@
 > **See also** — *split out of this file*: [dp_examples.md](./dp_examples.md) — the worked LC solution archive and the problems-by-pattern index; [dp_advanced.md](./dp_advanced.md) — game theory, tree DP, interval and string deep dives, probability DP; [knapsack.md](./knapsack.md) — 0/1 vs unbounded, subset sum, combinations vs permutations ([knapsack_01_zh.md](./knapsack_01_zh.md) — 0/1 背包的中文詳解版); [dp_string.md](./dp_string.md) — the two-sequence grid family; [dp_bitmask.md](./dp_bitmask.md) — state compression; [dp_digit.md](./dp_digit.md) — counting numbers by digit; [dp_monotonic_stack.md](./dp_monotonic_stack.md) — stack-carried DP values; [dp_loop_order.md](./dp_loop_order.md) — why a transition forces its loop nesting and direction, with LC 139 worked in five orders.
 > *Neighbouring sheets*: [dp_pattern.md](./dp_pattern.md) — terse template index, one section per classic pattern; [recursion_to_dp.md](./recursion_to_dp.md) — converting a working recursion into DP step by step; [kadane_algorithm.md](./kadane_algorithm.md) — the maximum-subarray family in depth; [stock_trading.md](./stock_trading.md) — the LC 121/122/188/309/714 state machine.
 
+## In the room ⭐⭐⭐⭐⭐
+
+- **Brute force** — recurse over the choices — take or skip, which coin, which split — and let it be exponential. Write this first: its *arguments* are the state.
+- **The observation** — the recursion revisits the same arguments; memoise them and the tree of calls collapses to a table with one cell per state. Then order the table so every cell is computed after the cells it reads, and the recursion disappears.
+- **Invariant** — `dp[state]` is the exact answer to the subproblem that state names — not an approximation, not "so far" — and it is final once written, so the transition may read it.
+- **The line that sets the complexity** — number of states × cost of one transition: `for i in range(n): for choice in choices:` is O(n · |choices|); a 2-D table is O(m · n). Name the two factors separately.
+- **Prove it on** — LC 70 (climbing stairs — the 1-D shape), LC 322 (coin change — min over choices), LC 1143 (LCS — the 2-D grid), LC 300 (LIS — O(n²) table, then the O(n log n) trick).
+- **Follow-up they ask** — "Space?" — keep only the rows the transition reads (two rows, or one row backwards); "the actual solution, not just the value?" — store the choice that won and walk back; "top-down or bottom-up?" — same table; top-down skips unreachable states, bottom-up has no recursion depth.
+
+```python
+def coin_change(coins, amount):       # LC 322, from recursion to table
+    # 1) the recursion: f(a) = 1 + min(f(a - c))    -> state = remaining amount
+    # 2) memoise: one cell per amount                -> dp[a]
+    # 3) order: dp[a] reads smaller amounts           -> fill a = 1..amount
+    dp = [0] + [float('inf')] * amount
+    for a in range(1, amount + 1):
+        for c in coins:               # states x choices = O(amount * coins)
+            if c <= a:
+                dp[a] = min(dp[a], dp[a - c] + 1)
+    return dp[amount] if dp[amount] != float('inf') else -1
+```
+
 ## LeetCode Problem Lists
 
 - [Dynamic Programming](https://leetcode.com/problem-list/dynamic-programming/)

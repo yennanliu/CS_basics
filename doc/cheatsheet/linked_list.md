@@ -3,6 +3,34 @@
 > **Scope** — Pointer surgery on singly and doubly linked lists — reversal, merging, reordering, dummy-head technique, and cycle handling.
 > **See also**: [linked_list_examples.md](./linked_list_examples.md) — the worked solutions these templates are for; [2_pointers_linkedlist.md](./2_pointers_linkedlist.md) — the fast/slow pointer specialisation; [design.md](./design.md) — LRU and other list+map designs; [heap.md](./heap.md) — k-way list merging; [recursion.md](./recursion.md) — recursive list rewriting.
 
+## In the room ⭐⭐⭐⭐⭐
+
+- **Brute force** — copy the nodes into an array, do the work with indices, rebuild — O(n) extra space, and the point of the question was the pointers.
+- **The observation** — every list operation is a constant-size rewiring if you name three pointers (`prev`, `cur`, `nxt`) and save `nxt` *before* overwriting `cur.next`; a dummy head removes every "is this the first node" branch.
+- **Invariant** — `prev` is the head of the finished (reversed / merged) part; `cur` is the first unprocessed node; nothing reachable from `cur` has been touched.
+- **The line that sets the complexity** — `nxt = cur.next; cur.next = prev; prev, cur = cur, nxt` — one pass, four assignments → O(n) time, O(1) space.
+- **Prove it on** — LC 206 (reverse), LC 21 (merge two sorted — the dummy head), LC 19 (remove k-th from end — two pointers k apart), LC 141/142 (Floyd's cycle).
+- **Follow-up they ask** — "Reverse in groups of k?" — LC 25: count k ahead, reverse the segment, splice with the dummy; "where does the cycle start?" — after the pointers meet, walk one from the head and one from the meeting point.
+
+```python
+def reverse(head):                    # LC 206
+    prev, cur = None, head
+    while cur:
+        nxt = cur.next                # save before you overwrite
+        cur.next = prev
+        prev, cur = cur, nxt
+    return prev
+
+def merge(a, b):                      # LC 21: the dummy head
+    dummy = tail = ListNode()
+    while a and b:
+        if a.val <= b.val: tail.next, a = a, a.next
+        else:              tail.next, b = b, b.next
+        tail = tail.next
+    tail.next = a or b
+    return dummy.next
+```
+
 ## LeetCode Problem Lists
 
 - [Linked List](https://leetcode.com/problem-list/linked-list/)

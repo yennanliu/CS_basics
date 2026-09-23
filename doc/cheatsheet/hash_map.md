@@ -4,6 +4,33 @@
 > **See also** — *deep dives split out of this file*: [hash_map_examples.md](./hash_map_examples.md) — the worked-solution archive, the single-problem deep dives (bucket sort, rolling hash, split-and-probe, max-frequency arithmetic) and the ordered-map (Java `TreeMap` / Python `SortedDict`) reference.
 > *Neighbouring sheets*: [hashing.md](./hashing.md) — how hashing works, plus counting and rolling-hash idioms; [set.md](./set.md) — membership only, no values; [Collection.md](./Collection.md) — picking a container in the first place.
 
+## In the room ⭐⭐⭐⭐⭐
+
+- **Brute force** — for each element, scan the rest for its partner — O(n²).
+- **The observation** — store what you have seen, keyed by what you will later need to look up — the *complement*, not the element. One pass, one lookup each.
+- **Invariant** — `seen` holds every earlier element (its index, or its count) and nothing from the future — which is why a lookup before the insert never matches an element with itself.
+- **The line that sets the complexity** — `if target - x in seen:` — O(1) expected → O(n) for the pass; the same shape with a running prefix gives subarray counts (LC 560).
+- **Prove it on** — LC 1 (two sum), LC 560 (subarray sum = k, prefix as the key), LC 49 (group by signature), LC 128 (set membership walk).
+- **Follow-up they ask** — "Sorted input?" — two pointers, O(1) space; "count instead of exists?" — store counts and add `seen[complement]`; "worst case?" — hashing is O(n) per op adversarially, which is why the answer is *expected* O(1).
+
+```python
+def two_sum(nums, target):            # LC 1
+    seen = {}                         # value -> index, earlier elements only
+    for i, x in enumerate(nums):
+        if target - x in seen:        # look up BEFORE inserting x
+            return [seen[target - x], i]
+        seen[x] = i
+    return []
+
+def subarray_sum(nums, k):            # LC 560: the prefix as the key
+    seen, prefix, ans = defaultdict(int, {0: 1}), 0, 0
+    for x in nums:
+        prefix += x
+        ans += seen[prefix - k]
+        seen[prefix] += 1
+    return ans
+```
+
 ## LeetCode Problem Lists
 
 - [Hash Table](https://leetcode.com/problem-list/hash-table/)

@@ -347,6 +347,8 @@
       startHere: 'Start here',
       startBlurb: n => `${n} sheets in reading order. Together they cover the large majority of what a ` +
         'coding round will actually ask.',
+      room: 'In the room',
+      roomMore: 'The full block, template included →',
       catalogue: 'Full catalogue',
       filterLabel: 'Filter',
       filterPlaceholder: 'Title, topic or description — e.g. window, dijkstra, knapsack',
@@ -374,6 +376,8 @@
       starsFoot: '每份速查表內部的章節也標了同一套星等，所以即使面對四千行的文件，' +
         '也能一眼看出哪些模板是非背不可的。',
       startHere: '從這裡開始',
+      room: '面試間裡',
+      roomMore: '完整區塊（含模板）→',
       startBlurb: n => `${n} 份速查表，依閱讀順序排列。讀完這一串，就涵蓋了程式面試絕大多數會問到的內容。`,
       catalogue: '完整目錄',
       filterLabel: '篩選',
@@ -475,12 +479,22 @@
         // only knows the English term can still find the 中文 card.
         const haystack = [item.title, category, catName(category), item.description || '',
           item.file.replace(/_/g, ' ')].join(' ').toLowerCase().replace(/"/g, '');
+        // The sheet's "In the room" bullets, folded under the description. Only
+        // the English index shows them: the block is prose keyed per section
+        // like everything else, and until it is translated the 中文 card should
+        // not carry an English paragraph the rest of the card does not.
+        const room = lang === 'en' && item.room && item.room.length
+          ? `<details class="card-room"><summary>${t.room}</summary><dl>` +
+            item.room.map(r => `<dt>${escapeHtml(r.label)}</dt><dd>${escapeHtml(r.text)}</dd>`).join('') +
+            `</dl><p class="card-room-more"><a href="${href(item.file)}#in-the-room-">${t.roomMore}</a></p></details>`
+          : '';
         html += `\n        <article class="cheatsheet-card sheet-card tier-${item.tier}"` +
           ` data-tier="${item.tier}" data-search="${haystack}">` +
           '<div class="card-top">' +
           `<h4 class="card-title"><a href="${href(item.file)}">${item.title}</a></h4>` +
           `${prioBadge(item.tier, 'prio-compact')}</div>` +
           (item.description ? `<p class="card-desc">${item.description}</p>` : '') +
+          room +
           (kindChip ? `<p class="card-tags">${kindChip}</p>` : '') +
           '</article>';
       }
@@ -571,6 +585,31 @@
       .trim();
   }
 
+  // The "In the room" block a tier-5 sheet carries under its Scope line: a fixed
+  // run of bold-labelled bullets (brute force → observation → invariant → the
+  // complexity line → prove it on → follow-up) and one template fence. The index
+  // shows the bullets as a card's expandable state, so the sheet's derivation is
+  // readable without opening the sheet; the fence stays on the page.
+  const ROOM_HEADING = /^##\s+In the room\b/;
+
+  function escapeHtml(text) {
+    return String(text).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  }
+
+  function extractRoom(rawMarkdown) {
+    const lines = rawMarkdown.split('\n');
+    const start = lines.findIndex(l => ROOM_HEADING.test(l));
+    if (start === -1) return null;
+    const items = [];
+    for (let i = start + 1; i < lines.length; i++) {
+      const line = lines[i];
+      if (/^#{1,6} /.test(line) || line.startsWith('```')) break;
+      const m = line.match(/^- \*\*([^*]+)\*\*\s*—\s*(.*)$/);
+      if (m) items.push({ label: m[1].trim(), text: flattenInlineMarkdown(m[2]) });
+    }
+    return items.length ? items : null;
+  }
+
   function titleCaseFromFile(baseName) {
     return baseName.replace(/_/g, ' ').split(' ')
       .map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
@@ -597,6 +636,7 @@
     splitLeadingH1,
     buildPageContent,
     extractScope,
+    extractRoom,
     titleCaseFromFile,
     summariseDoc,
   };

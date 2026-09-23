@@ -4,6 +4,40 @@
 > **See also** — *deep dives split out of this file*: [2_pointers_examples.md](./2_pointers_examples.md) — the worked LC catalogue, one canonical solution per problem; [2_pointers_quickselect.md](./2_pointers_quickselect.md) — QuickSelect / partition-based Kth-element selection, which is a selection algorithm rather than a two-pointer scan.
 > *Neighbouring sheets*: [sliding_window.md](./sliding_window.md) — variable-size windows driven by a condition; [2_pointers_linkedlist.md](./2_pointers_linkedlist.md) — the same idea on nodes instead of indices; [n_sum.md](./n_sum.md) — the sorted-array k-sum specialisation; [palindrome.md](./palindrome.md) — expand-from-centre in depth.
 
+## In the room ⭐⭐⭐⭐⭐
+
+- **Brute force** — every pair — O(n²); every triple — O(n³).
+- **The observation** — once the array is sorted, only one pointer can usefully move: sum too small → the left pointer is the only one that can raise it; too big → the right one is the only one that can lower it. Every pair skipped is provably not the answer.
+- **Invariant** — if a solution exists it lies within `[l, r]`; the pairs excluded so far were all too small (from the left) or too large (from the right).
+- **The line that sets the complexity** — `while l < r:` with exactly one pointer moving each iteration → O(n) after the O(n log n) sort; 3-sum fixes one element and converges the other two, O(n²).
+- **Prove it on** — LC 167 (two sum II), LC 15 (3-sum), LC 11 (container — move the shorter wall), LC 125 (palindrome, converging).
+- **Follow-up they ask** — "Duplicates?" — skip equal neighbours after each move (`while l < r and a[l] == a[l-1]: l += 1`); "unsorted and O(n)?" — that is the hash map, not two pointers.
+
+```python
+def two_sum_sorted(a, target):        # LC 167
+    l, r = 0, len(a) - 1
+    while l < r:
+        s = a[l] + a[r]
+        if s == target: return [l, r]
+        if s < target: l += 1         # only the left can raise the sum
+        else: r -= 1                  # only the right can lower it
+    return []
+
+def three_sum(nums):                  # LC 15: fix one, converge two
+    nums.sort(); out = []
+    for i in range(len(nums) - 2):
+        if i and nums[i] == nums[i-1]: continue
+        l, r = i + 1, len(nums) - 1
+        while l < r:
+            s = nums[i] + nums[l] + nums[r]
+            if s < 0: l += 1
+            elif s > 0: r -= 1
+            else:
+                out.append([nums[i], nums[l], nums[r]]); l += 1; r -= 1
+                while l < r and nums[l] == nums[l-1]: l += 1
+    return out
+```
+
 ## LeetCode Problem Lists
 
 - [Two Pointers](https://leetcode.com/problem-list/two-pointers/)

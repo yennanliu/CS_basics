@@ -5,6 +5,32 @@
 
 > Basic linear data structure
 
+## In the room ⭐⭐⭐⭐⭐
+
+- **Brute force** — rebuild into a new array, or nest two loops over pairs — O(n) extra space or O(n²) time, and the interviewer's first question is whether it can be in place.
+- **The observation** — the array's own indices can carry the state: a *write* pointer for compaction, the position `i` for what belongs at `i`, a sign flip or an offset for "seen". Reading and writing run on two pointers over the same array.
+- **Invariant** — everything before the write pointer is finished output; everything from the read pointer on is untouched input.
+- **The line that sets the complexity** — `nums[write] = x; write += 1` — one pass, no second array → O(n) time, O(1) space. Rotation by three reversals is the same idea: each reversal is one linear pass.
+- **Prove it on** — LC 26 (remove duplicates), LC 189 (rotate by reversal), LC 41 (first missing positive — the index *is* the hash), LC 75 (Dutch flag, three pointers).
+- **Follow-up they ask** — "Can you do it without extra space?" — the write pointer is the answer; "stable?" — the write pointer preserves order, swapping does not.
+
+```python
+def remove_duplicates(nums):          # LC 26: read/write on one array
+    write = 0
+    for x in nums:
+        if write == 0 or nums[write - 1] != x:
+            nums[write] = x
+            write += 1
+    return write                      # nums[:write] is the answer
+
+def rotate(nums, k):                  # LC 189: three reversals, O(1) space
+    def rev(i, j):
+        while i < j:
+            nums[i], nums[j] = nums[j], nums[i]; i += 1; j -= 1
+    n = len(nums); k %= n
+    rev(0, n - 1); rev(0, k - 1); rev(k, n - 1)
+```
+
 ## LeetCode Problem Lists
 
 - [Array](https://leetcode.com/problem-list/array/)

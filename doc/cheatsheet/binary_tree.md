@@ -3,6 +3,28 @@
 > **Scope** — Binary-tree-specific reasoning: **which direction DFS state flows** (down vs up), plus the 11 structural templates built on that.
 > **See also**: [tree.md](./tree.md) — general tree concepts and traversal strategy; [tree2.md](./tree2.md) — ready-made per-pattern templates; [bst.md](./bst.md) — when the tree is ordered.
 
+## In the room ⭐⭐⭐⭐⭐
+
+- **Brute force** — recompute a subtree property for every node — `height()` called at each node for balance is O(n²); or flatten the tree and work on the list.
+- **The observation** — decide which way the state flows. *Down* (a parameter: the path so far, the allowed range) or *up* (a return value: height, sum, whether a target was found). A post-order return computes each subtree's fact once, and the parent combines two of them.
+- **Invariant** — `f(node)` returns a fact about `node`'s subtree and nothing outside it; `f(None)` is the base case (0, True, None). The parent trusts both returns and does O(1) work.
+- **The line that sets the complexity** — `return 1 + max(f(node.left), f(node.right))` — every node visited once → O(n) time; the recursion stack is O(h), O(n) on a degenerate tree.
+- **Prove it on** — LC 104 (depth, pure return), LC 110 (balanced — return `-1` as a sentinel), LC 543 (diameter — return height, update a global), LC 236 (LCA — return the found node).
+- **Follow-up they ask** — "Iteratively?" — an explicit stack of `(node, visited_children)`; "why a global for diameter?" — the answer is not the value the parent needs, so it cannot ride the return; "O(1) extra space?" — Morris traversal, name it, do not write it.
+
+```python
+def diameter(root):                   # LC 543: return height UP, keep best GLOBAL
+    best = 0
+    def height(node):
+        nonlocal best
+        if not node: return 0                      # base: empty subtree
+        l, r = height(node.left), height(node.right)
+        best = max(best, l + r)                    # the path through node
+        return 1 + max(l, r)                       # the fact the parent needs
+    height(root)
+    return best
+```
+
 ## LeetCode Problem Lists
 
 - [Binary Tree](https://leetcode.com/problem-list/binary-tree/)

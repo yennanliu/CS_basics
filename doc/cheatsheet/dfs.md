@@ -4,6 +4,30 @@
 > **See also** — *deep dives split out of this file*: [dfs_advanced.md](./dfs_advanced.md) — Euler paths (Hierholzer), Tarjan bridges, trie + wildcard DFS, depth-indexed stack DFS, distance-bucket leaf pairing, N-ary and `parent[]` rollups; [dfs_examples.md](./dfs_examples.md) — the worked-solution archive and the full problem index by pattern and difficulty.
 > *Neighbouring sheets*: [bfs.md](./bfs.md) — the breadth-first counterpart and how to choose; [backtrack.md](./backtrack.md) — DFS that undoes state on the way back up; [graph.md](./graph.md) — representation; [tree.md](./tree.md) — DFS on trees.
 
+## In the room ⭐⭐⭐⭐⭐
+
+- **Brute force** — enumerate every path, or recompute the same subtree answer at each node — exponential, or O(n²) for something one post-order pass does in O(n).
+- **The observation** — recursion *is* a stack. Decide two things and the template writes itself: what a call *carries down* (the path, the parent, the bound) and what it *returns up* (size, count, a found node); and mark a node visited *before* descending so the same component is never entered twice.
+- **Invariant** — `dfs(u)` fully handles `u`'s component (or subtree) exactly once; every node reachable from `u` is marked by the time it returns.
+- **The line that sets the complexity** — `seen.add(v)` before the recursive call — each node entered once, each edge examined once → O(V + E); on a grid O(rows · cols), and the recursion depth is the space.
+- **Prove it on** — LC 200 (number of islands — flood fill), LC 695 (max area — return the size up), LC 133 (clone — the visited map is the wiring table), LC 417 (Pacific Atlantic — start DFS from the borders, not from every cell).
+- **Follow-up they ask** — "Recursion limit?" — the explicit-stack version, same order; "directed cycle?" — three colours (unvisited / on the stack / done); "why start from the boundary?" — boundary elimination, LC 130/417: one DFS per border cell instead of one per cell.
+
+```python
+def num_islands(grid):                # LC 200: flood fill, mark before descending
+    m, n, count = len(grid), len(grid[0]), 0
+    def fill(r, c):
+        if not (0 <= r < m and 0 <= c < n) or grid[r][c] != '1': return
+        grid[r][c] = '#'              # visited, in place
+        for dr, dc in ((1,0),(-1,0),(0,1),(0,-1)):
+            fill(r + dr, c + dc)
+    for r in range(m):
+        for c in range(n):
+            if grid[r][c] == '1':
+                count += 1; fill(r, c) # one DFS per component
+    return count
+```
+
 ## LeetCode Problem Lists
 
 - [Depth-First Search](https://leetcode.com/problem-list/depth-first-search/)

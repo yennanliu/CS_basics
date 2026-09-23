@@ -4,6 +4,26 @@
 > **See also** — *split out of this file*: [string_examples.md](./string_examples.md) — the worked LC solution archive; [string_operations.md](./string_operations.md) — the Python/Java string API, `StringBuilder`, char arithmetic and case/Unicode gotchas.
 > *Neighbouring sheets*: [palindrome.md](./palindrome.md) — the palindrome family, centre expansion through Manacher; [string_matching_kmp_rolling_hash.md](./string_matching_kmp_rolling_hash.md) — substring search (KMP, Rabin-Karp); [advanced_string_algorithms.md](./advanced_string_algorithms.md) — Z-algorithm, suffix arrays, DFA validation; [dp_string.md](./dp_string.md) — the two-sequence grid family; [sliding_window.md](./sliding_window.md) — condition-driven character windows; [hashing.md](./hashing.md) — frequency maps and canonical keys; [trie.md](./trie.md) — prefix structures.
 
+## In the room ⭐⭐⭐⭐⭐
+
+- **Brute force** — compare every pair of strings character by character, or build every substring — O(n² · L).
+- **The observation** — a fixed alphabet makes a 26-count array a *signature*: two strings are anagrams iff their signatures are equal, so grouping by signature replaces n² comparisons with n hash inserts.
+- **Invariant** — `groups[key]` holds exactly the strings seen so far whose letter counts are `key`.
+- **The line that sets the complexity** — `key = tuple(count)` — O(L) per word instead of O(L log L) for `sorted(word)`; the whole pass is O(n · L).
+- **Prove it on** — LC 242 (valid anagram), LC 49 (group anagrams), LC 438 (anagram windows — the signature as a sliding count).
+- **Follow-up they ask** — "Unicode?" — a `Counter` keyed by character instead of a 26-slot array, same complexity; "streaming?" — keep the count and the window, LC 438.
+
+```python
+def group_anagrams(strs):             # LC 49
+    groups = defaultdict(list)
+    for w in strs:
+        count = [0] * 26
+        for c in w:
+            count[ord(c) - 97] += 1
+        groups[tuple(count)].append(w)   # the signature is the key
+    return list(groups.values())
+```
+
 ## LeetCode Problem Lists
 
 - [String](https://leetcode.com/problem-list/string/)

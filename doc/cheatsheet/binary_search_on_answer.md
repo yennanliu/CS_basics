@@ -4,6 +4,28 @@
 > **See also** — *parent sheet*: [binary_search.md](./binary_search.md) — loop invariants, the boundary (lower/upper bound) templates, rotated arrays and 2D search; [binary_search_examples.md](./binary_search_examples.md) — the worked-problem archive for the index-space templates.
 > *Neighbouring sheets*: [greedy.md](./greedy.md) — the greedy scan most of these predicates are built from; [bfs.md](./bfs.md) — the traversal used as a predicate in LC 1631 / LC 778; [heap.md](./heap.md) — the k-th-element alternative to value-domain counting.
 
+## In the room ⭐⭐⭐⭐⭐
+
+- **Brute force** — try every candidate answer in increasing order and stop at the first that works — O(range · n).
+- **The observation** — feasibility is *monotone in the answer*: if speed `s` finishes in time, so does `s + 1`; if capacity `c` fits, so does `c + 1`. That is exactly the `false … true` predicate — so binary-search the answer and use the check as the predicate.
+- **Invariant** — `[lo, hi]` brackets the boundary: `lo − 1` is infeasible (or `lo` is the minimum possible), `hi` is feasible; `can(mid)` says which side the boundary is on.
+- **The line that sets the complexity** — `if can(mid): hi = mid else: lo = mid + 1` — O(log(range)) probes × O(n) per `can` → O(n log(range)); the range is `[max(nums), sum(nums)]` for a capacity, `[1, max(piles)]` for a speed.
+- **Prove it on** — LC 875 (Koko — minimum speed), LC 1011 (ship capacity — minimise the maximum), LC 410 (split array — same), LC 1482 (bouquets — the answer is a day).
+- **Follow-up they ask** — "Maximise the minimum instead?" — flip the predicate and move `lo` on success; "real-valued answer?" — a fixed number of iterations instead of `lo < hi`; "k-th smallest in a matrix?" — the predicate becomes a *count* (LC 378, 668).
+
+```python
+def min_feasible(lo, hi, can):        # smallest x in [lo, hi] with can(x) True
+    while lo < hi:                    # can(hi) is True by construction
+        mid = (lo + hi) // 2
+        if can(mid): hi = mid         # feasible: try smaller
+        else:        lo = mid + 1     # infeasible: must go bigger
+    return lo
+
+def min_eating_speed(piles, h):       # LC 875
+    def can(k): return sum((p + k - 1) // k for p in piles) <= h
+    return min_feasible(1, max(piles), can)
+```
+
 ## LeetCode Problem Lists
 
 - [Binary Search](https://leetcode.com/problem-list/binary-search/)

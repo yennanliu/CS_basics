@@ -3,6 +3,34 @@
 > **Scope** — LIFO fundamentals and the canonical stack templates: bracket matching, min-stack, the short monotonic-stack form, explicit-stack traversal and the scope/context ledger.
 > **See also**: [stack_expression_parsing.md](./stack_expression_parsing.md) — calculators, decode-string and postfix evaluation, the whole expression-parsing family; [stack_examples.md](./stack_examples.md) — the worked-solution archive behind these templates; [monotonic_stack.md](./monotonic_stack.md) — next-greater / previous-smaller / span problems in depth; [queue.md](./queue.md) — the FIFO counterpart; [iterator.md](./iterator.md) — stack-backed iterators.
 
+## In the room ⭐⭐⭐⭐⭐
+
+- **Brute force** — for each element scan to the right for the next greater (or the matching bracket) — O(n²).
+- **The observation** — an element on the stack that is smaller than the one arriving can never be the answer for anything later — so pop it and answer it *now*, with the arriving element. The stack only ever holds candidates still waiting.
+- **Invariant** — the stack holds indices whose values are monotonically decreasing bottom to top; each is still waiting for its next greater element.
+- **The line that sets the complexity** — `while stack and A[stack[-1]] < x: ans[stack.pop()] = i` — each index is pushed once and popped at most once → amortised O(n).
+- **Prove it on** — LC 20 (brackets — the stack top is the only thing that can match), LC 739 (next warmer day), LC 84 (largest rectangle — pop resolves a bar's width), LC 155 (min-stack, a paired stack).
+- **Follow-up they ask** — "Circular?" — iterate the indices twice, `i % n`; "previous smaller instead?" — mirror the comparison; "O(1) getMin?" — push `(x, min(x, top.min))`.
+
+```python
+def next_greater(A):                  # LC 739 shape: resolve on pop
+    ans, stack = [0] * len(A), []     # stack: indices, values decreasing
+    for i, x in enumerate(A):
+        while stack and A[stack[-1]] < x:
+            j = stack.pop()
+            ans[j] = i - j            # x is j's first greater to the right
+        stack.append(i)
+    return ans                        # still on the stack -> no answer (0)
+
+def valid_brackets(s):                # LC 20
+    pair, stack = {')': '(', ']': '[', '}': '{'}, []
+    for c in s:
+        if c in pair:
+            if not stack or stack.pop() != pair[c]: return False
+        else: stack.append(c)
+    return not stack
+```
+
 ## LeetCode Problem Lists
 
 - [Stack](https://leetcode.com/problem-list/stack/)

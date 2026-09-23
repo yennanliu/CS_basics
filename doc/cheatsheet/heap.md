@@ -4,6 +4,33 @@
 > **See also** — *deep dives split out of this file*: [heap_advanced.md](./heap_advanced.md) — lazy deletion, sweep-line "alive" heaps, regret greedy, resource-pool allocators, grid best-first search; [heap_examples.md](./heap_examples.md) — the worked LC solution archive, one canonical solution per problem per language; [heap_language_apis.md](./heap_language_apis.md) — the full `heapq` / `PriorityQueue` API reference and the peek-without-popping rules.
 > *Neighbouring sheets*: [priority_queue.md](./priority_queue.md) — redirect stub; [monotonic_queue.md](./monotonic_queue.md) — when a deque beats a heap for sliding-window extrema; [Dijkstra.md](./Dijkstra.md) — the canonical PQ algorithm; [streaming_algorithms.md](./streaming_algorithms.md) — top-k over a stream; [sort.md](./sort.md) — heap sort in context.
 
+## In the room ⭐⭐⭐⭐⭐
+
+- **Brute force** — sort everything and take the top k — O(n log n); or scan for the max on every request — O(n) per request.
+- **The observation** — you only ever need the *best* element next, never the full order. A heap gives the best in O(log n), and keeping the heap at size k makes its top the k-th best of everything seen.
+- **Invariant** — the heap holds the k largest elements seen so far, so `heap[0]` is the k-th largest; a new element enters only by evicting the current smallest.
+- **The line that sets the complexity** — `heappushpop(heap, x)` when `len(heap) == k` — O(log k) per element → O(n log k), which beats sorting whenever k ≪ n.
+- **Prove it on** — LC 215 (k-th largest), LC 347 (top-k frequent — heap of `(count, value)`), LC 23 (k-way merge — heap of `(val, list_idx)`), LC 295 (median — two heaps).
+- **Follow-up they ask** — "Streaming?" — the size-k heap already is; "max-heap in Python?" — push negatives; "O(n) instead?" — quickselect for k-th, and say the expected/worst-case caveat.
+
+```python
+def kth_largest(nums, k):             # LC 215: min-heap of size k
+    heap = []
+    for x in nums:
+        if len(heap) < k: heappush(heap, x)
+        elif x > heap[0]: heappushpop(heap, x)   # evict the smallest of the k
+    return heap[0]                    # the k-th largest
+
+def merge_k(lists):                   # LC 23: (value, which list) tuples
+    heap = [(l.val, i, l) for i, l in enumerate(lists) if l]
+    heapify(heap); dummy = tail = ListNode()
+    while heap:
+        _, i, node = heappop(heap)
+        tail.next = tail = node
+        if node.next: heappush(heap, (node.next.val, i, node.next))
+    return dummy.next
+```
+
 ## LeetCode Problem Lists
 
 - [Heap (Priority Queue)](https://leetcode.com/problem-list/heap-priority-queue/)

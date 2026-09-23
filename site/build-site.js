@@ -9,7 +9,7 @@ const {
   annotatePriorityHeadings, PRIORITY_LEGEND, generateTOC, extractHeadings,
   headingIds, anchorMap, retargetAnchors,
   ensureHeadingIds, groupByCategory, buildPrevNext, buildIndexGrid,
-  buildCheatsheetIndex, splitLeadingH1, buildPageContent, extractScope,
+  buildCheatsheetIndex, splitLeadingH1, buildPageContent, extractScope, extractRoom,
   titleCaseFromFile, summariseDoc
 } = require('./build-lib');
 const { compose, parseStore, docs: zhDocs, orphanStores } = require('./i18n');
@@ -374,6 +374,8 @@ if (cheatsheetFiles.length > 0) {
     const tier = sheetMeta.tier;
     const kind = sheetMeta.kind || 'sheet';
     const description = extractScope(raw);
+    // The tier-5 "In the room" bullets, for the card's expandable state.
+    const room = extractRoom(raw);
 
     searchRecords.push({
       title,
@@ -403,6 +405,7 @@ if (cheatsheetFiles.length > 0) {
       tier,
       kind,
       description,
+      room,
       enHeadingIds,
       content: buildPageContent({
         title,

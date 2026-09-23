@@ -3,6 +3,31 @@
 > **Scope** — Lowest common ancestor, node-to-node distance, parent-map (bidirectional) traversal and the root-to-leaf path templates — every tree problem whose answer is a path or a meeting point rather than a shape.
 > **See also**: [tree.md](./tree.md) — the pattern catalogue and traversal templates these build on; [tree_examples.md](./tree_examples.md) — the rest of the worked tree problems; [tree_backtrack.md](./tree_backtrack.md) — root→leaf paths that undo state on the way back up; [bst.md](./bst.md) — LCA on an ordered tree (LC 235).
 
+## In the room ⭐⭐⭐⭐⭐
+
+- **Brute force** — record the root-to-node path for both targets, then walk the two paths while they agree — two traversals and O(n) extra space for a question one traversal answers.
+- **The observation** — post-order tells the parent whether `p` or `q` was found below: the first node that hears "yes" from *both* sides (or is one target and hears the other) is the LCA. Distance is then `depth(p) + depth(q) − 2 · depth(lca)`, and "nodes at distance k" is a BFS once every node knows its parent.
+- **Invariant** — `lca(node)` returns the LCA if both targets are in `node`'s subtree, the one target found if only one is, and `None` if neither — so a non-`None` return from both children means *this* node.
+- **The line that sets the complexity** — `return node if left and right else left or right` — one post-order visit per node → O(n); on a BST the ordering makes it O(h) with no recursion: the LCA is the first node between the two values.
+- **Prove it on** — LC 236 (LCA, general tree), LC 235 (LCA on a BST — the split point), LC 863 (all nodes at distance k — parent map + BFS), LC 1650 (LCA with parent pointers — two pointers, like linked-list intersection).
+- **Follow-up they ask** — "Many queries?" — binary lifting, O(log n) each after O(n log n) preprocessing; "one target missing?" — LC 1644: count how many were found; "distance between two nodes?" — the depth formula through the LCA.
+
+```python
+def lca(root, p, q):                  # LC 236: post-order, "did you see p or q?"
+    if not root or root is p or root is q:
+        return root                   # a target (or the empty tree) reports itself
+    left  = lca(root.left,  p, q)
+    right = lca(root.right, p, q)
+    if left and right: return root    # one on each side: this is the split point
+    return left or right              # otherwise pass up whatever was found
+
+def lca_bst(root, p, q):              # LC 235: the ordering does the work, O(h)
+    while root:
+        if p.val < root.val and q.val < root.val: root = root.left
+        elif p.val > root.val and q.val > root.val: root = root.right
+        else: return root
+```
+
 ## LeetCode Problem Lists
 
 - [Tree](https://leetcode.com/problem-list/tree/)

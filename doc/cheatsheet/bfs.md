@@ -4,6 +4,29 @@
 > **See also** — *deep dives split out of this file*: [bfs_advanced.md](./bfs_advanced.md) — bidirectional BFS, 0-1 BFS with a deque, state-space / implicit-graph BFS, all-shortest-path DAG enumeration, and the multi-source vs independent-runs distinction; [bfs_examples.md](./bfs_examples.md) — the worked-solution archive (LC 130 / 207 / 279 / 286 / 310 / 417 / 623 / 742 / 752 / 909 / 116-117 …) plus the LC 994 timing walkthrough.
 > *Neighbouring sheets*: [dfs.md](./dfs.md) — the depth-first counterpart and how to choose; [graph.md](./graph.md) — representation and the graph catalogue; [Dijkstra.md](./Dijkstra.md) — once edges have weights; [topology_sorting.md](./topology_sorting.md) — Kahn's algorithm is BFS.
 
+## In the room ⭐⭐⭐⭐⭐
+
+- **Brute force** — DFS every path and keep the shortest — exponential; or run Dijkstra on unit weights — O(E log V) for a graph where a queue does it in O(V + E).
+- **The observation** — on an unweighted graph the *first* time BFS reaches a node it is by a shortest path, because the queue processes distance d completely before distance d+1. Mark visited when you *enqueue*, not when you dequeue, or a node is queued twice.
+- **Invariant** — the queue holds every node at distance `d`, then every node at `d+1`; `for _ in range(len(q))` is exactly one level.
+- **The line that sets the complexity** — `if v not in seen: seen.add(v); q.append(v)` — each node enqueued once, each edge examined once → O(V + E); on a grid, O(rows · cols).
+- **Prove it on** — LC 102 (level order), LC 994 (rotting oranges — multi-source: seed every rotten cell), LC 127 (word ladder — neighbours by one-letter change), LC 542 (distance to nearest 0 — start from the zeros, not the ones).
+- **Follow-up they ask** — "Weights 0 and 1?" — 0-1 BFS with a deque (`appendleft` for weight 0); "two ends?" — bidirectional BFS, expand the smaller frontier; "state, not position?" — the node is `(r, c, keys)` and visited is over states (LC 864).
+
+```python
+def bfs_levels(start, neighbours):    # distance by level
+    seen, q, dist = {start}, deque([start]), 0
+    while q:
+        for _ in range(len(q)):       # everything in q is at distance `dist`
+            u = q.popleft()
+            if is_target(u): return dist
+            for v in neighbours(u):
+                if v not in seen:     # mark on ENQUEUE
+                    seen.add(v); q.append(v)
+        dist += 1
+    return -1
+```
+
 ## LeetCode Problem Lists
 
 - [Breadth-First Search](https://leetcode.com/problem-list/breadth-first-search/)

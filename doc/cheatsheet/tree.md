@@ -4,6 +4,37 @@
 > **See also** — *deep dives split out of this file*: [tree_lca_distance.md](./tree_lca_distance.md) — LCA, node distance, parent maps and root-to-leaf path templates; [tree_codec.md](./tree_codec.md) — subtree serialization and tree ⟷ string codecs; [tree_construction.md](./tree_construction.md) — building a tree from traversals, strings and index ranges; [tree_examples.md](./tree_examples.md) — the worked LC archive for the patterns taught here.
 > *Neighbouring sheets*: [tree2.md](./tree2.md) — one numbered, copy-paste template per pattern; [binary_tree.md](./binary_tree.md) — binary-tree DFS state-flow and structural templates; [bst.md](./bst.md) — ordered trees; [tree_backtrack.md](./tree_backtrack.md) — root→leaf path problems that undo state on the way back up.
 
+## In the room ⭐⭐⭐⭐⭐
+
+- **Brute force** — recurse the same way for every question and hope the order does not matter — it does: a level-order question done with DFS needs a depth map, a "children first" question done pre-order recomputes.
+- **The observation** — pick the traversal by *where the answer is needed*: pre-order when the parent decides for the children (path so far, serialisation), post-order when the children decide for the parent (height, sum, delete), inorder for sorted order on a BST, BFS when the level itself is the answer.
+- **Invariant** — a traversal visits every node exactly once in a fixed order; the explicit stack or queue holds exactly the frontier, so its size *is* the space bound.
+- **The line that sets the complexity** — one visit per node → O(n) time; space is O(h) for any DFS (the stack) and O(w) for BFS (the widest level) — `len(q)` at a level is the width.
+- **Prove it on** — LC 94 (inorder, iterative), LC 102 (level order), LC 105 (build from preorder + inorder — the root is `pre[0]`, inorder splits the children), LC 297 (serialise — pre-order with null markers).
+- **Follow-up they ask** — "Without recursion?" — the explicit-stack inorder below; "O(1) space?" — Morris threading, name it; "which order for LC 105?" — pre-order gives roots, inorder gives sizes.
+
+```python
+def inorder(root):                    # LC 94, iterative: push left spine, pop, go right
+    out, stack, node = [], [], root
+    while node or stack:
+        while node:
+            stack.append(node); node = node.left
+        node = stack.pop()
+        out.append(node.val)
+        node = node.right
+    return out
+
+def level_order(root):                # LC 102: len(q) is the level's width
+    out, q = [], deque([root] if root else [])
+    while q:
+        out.append([])
+        for _ in range(len(q)):
+            node = q.popleft(); out[-1].append(node.val)
+            if node.left: q.append(node.left)
+            if node.right: q.append(node.right)
+    return out
+```
+
 ## LeetCode Problem Lists
 
 - [Tree](https://leetcode.com/problem-list/tree/)

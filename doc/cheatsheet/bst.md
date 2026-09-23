@@ -4,6 +4,29 @@
 
 > **See also**: [bst_examples.md](./bst_examples.md) — the worked LC solution archive for these templates, plus the tree path-sum family; [bst_advanced.md](./bst_advanced.md) — order-statistic (rank) queries, the lazy O(h) iterator, recovering a broken BST and the construction-variant catalogue; [binary_tree.md](./binary_tree.md) — unordered binary trees; [tree.md](./tree.md) — general tree concepts; [segment_tree.md](./segment_tree.md) — range queries over an array instead of a tree.
 
+## In the room ⭐⭐⭐⭐⭐
+
+- **Brute force** — treat it as a plain binary tree: inorder-traverse everything into a list, then answer from the list — O(n) time and space for a question the ordering answers in O(h).
+- **The observation** — `left < root < right` means one comparison discards a whole subtree — *descend*, do not traverse. And an inorder walk yields the keys in sorted order for free, so any "k-th" or "range" question is an inorder walk that stops early.
+- **Invariant** — for search: the target, if present, is in the current subtree. For validation: every value in `node`'s subtree lies in an open range `(lo, hi)` inherited from the ancestors — checking only against the parent is the classic wrong answer.
+- **The line that sets the complexity** — `node = node.left if key < node.val else node.right` — O(h), which is O(log n) balanced and O(n) degenerate; say both.
+- **Prove it on** — LC 98 (validate with bounds), LC 230 (k-th smallest — inorder, stop at k), LC 235 (LCA — the split point), LC 450 (delete — successor swap).
+- **Follow-up they ask** — "k-th in O(log n) with updates?" — augment each node with its subtree size; "validate iteratively?" — inorder and check strictly increasing; "why open bounds?" — duplicates are not allowed, so equality fails.
+
+```python
+def is_valid(root):                   # LC 98: the range flows DOWN
+    def ok(node, lo, hi):
+        if not node: return True
+        if not (lo < node.val < hi): return False
+        return ok(node.left, lo, node.val) and ok(node.right, node.val, hi)
+    return ok(root, float('-inf'), float('inf'))
+
+def search(node, key):                # O(h): one comparison drops a subtree
+    while node and node.val != key:
+        node = node.left if key < node.val else node.right
+    return node
+```
+
 ## LeetCode Problem Lists
 
 - [Binary Search Tree](https://leetcode.com/problem-list/binary-search-tree/)

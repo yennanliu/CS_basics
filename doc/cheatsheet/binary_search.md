@@ -5,6 +5,29 @@
 > *Neighbouring sheets*: [patience_sorting.md](./patience_sorting.md) — §1.5's scan told as the card game, with reconstruction, the pile/Dilworth proof and the LIS-reduction problems; [sort.md](./sort.md) — getting the array sorted first; [advanced_divide_and_conquer.md](./advanced_divide_and_conquer.md) — halving *with* a merge step; [bst.md](./bst.md) — the same invariant as a data structure; [heap.md](./heap.md) — k-th element without ordering; [monotonic_stack.md](./monotonic_stack.md) — the *positional* "next greater", which is the pattern lower bound is most often confused with.
 
 
+## In the room ⭐⭐⭐⭐⭐
+
+- **Brute force** — scan — O(n). The interviewer is waiting for the word *monotonic*.
+- **The observation** — the predicate is monotone over the index — `false … false true … true` — so the search is for the *boundary*, not for a value that happens to be equal. Write the half-open invariant `[l, r)` once and never mix it with the closed one.
+- **Invariant** — everything left of `l` fails the predicate; everything at or right of `r` passes; the answer (the first `true`) is in `[l, r]`. The loop ends with `l == r` pointing at it.
+- **The line that sets the complexity** — `mid = (l + r) // 2` and one of `l = mid + 1` / `r = mid` — the range halves every step → O(log n). In Java write `l + (r - l) / 2`; Python integers do not overflow but say why anyway.
+- **Prove it on** — LC 704 (plain search), LC 35 (insert position — the lower bound *is* the answer), LC 34 (first and last — two lower bounds), LC 153 (rotated minimum — compare `mid` with `r`).
+- **Follow-up they ask** — "Duplicates?" — first occurrence is `lower_bound(x)`, last is `lower_bound(x+1) − 1`; "rotated with duplicates?" — LC 154, shrink `r` by one on a tie; "the answer is a value, not an index?" — binary search on the answer, next sheet.
+
+```python
+def lower_bound(a, x):                # first index i with a[i] >= x, in [0, n]
+    l, r = 0, len(a)                  # half-open: answer in [l, r]
+    while l < r:
+        mid = (l + r) // 2
+        if a[mid] < x: l = mid + 1    # mid fails: answer is right of it
+        else:          r = mid        # mid passes: answer is mid or left
+    return l
+
+def search(a, x):                     # LC 704 via the boundary
+    i = lower_bound(a, x)
+    return i if i < len(a) and a[i] == x else -1
+```
+
 ## LeetCode Problem Lists
 
 - [Binary Search](https://leetcode.com/problem-list/binary-search/)

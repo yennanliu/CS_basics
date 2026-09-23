@@ -4,6 +4,26 @@
 > **See also** — *split out of this file*: [sliding_window_examples.md](./sliding_window_examples.md) — the worked LC solution archive, one canonical solution per problem per language; [sliding_window_advanced.md](./sliding_window_advanced.md) — deque extrema, at-most-K generalisations, exactly-K beyond one instance, complement / word-level / bucketed windows.
 > *Neighbouring sheets*: [2_pointers.md](./2_pointers.md) — pointers that converge instead of trailing; [hash_map.md](./hash_map.md) — the counting map most windows carry; [monotonic_queue.md](./monotonic_queue.md) — window extrema in O(n); [prefix_sum.md](./prefix_sum.md) — when the window can be negative-valued.
 
+## In the room ⭐⭐⭐⭐⭐
+
+- **Brute force** — check every subarray — O(n²) subarrays, O(n) each to validate, O(n³) naive.
+- **The observation** — when the window becomes invalid, the only fix is at the *left* end, and the right end never has to move back. So each element enters once and leaves once.
+- **Invariant** — after the shrink loop, `s[l..r]` is the longest valid window ending at `r`; the state (count map, sum) describes exactly that window.
+- **The line that sets the complexity** — `while invalid(): remove(s[l]); l += 1` — amortised O(n): `l` moves right at most `n` times over the whole run, however many times the loop fires.
+- **Prove it on** — LC 3 (no repeats), LC 209 (min length ≥ target), LC 76 (min window covering), LC 424 (at most k replacements).
+- **Follow-up they ask** — "Exactly k?" — `atMost(k) − atMost(k−1)`; "fixed size?" — shrink when `r − l + 1 > k`, one `if`, not a `while`; "negative numbers?" — the window breaks, use a prefix-sum map (LC 560).
+
+```python
+def longest_valid(s):                 # the variable-window skeleton
+    state, l, best = {}, 0, 0         # state describes s[l..r]
+    for r, c in enumerate(s):
+        add(state, c)                 # 1) expand: r joins the window
+        while not valid(state):       # 2) contract from the left only
+            remove(state, s[l]); l += 1
+        best = max(best, r - l + 1)   # 3) s[l..r] is the best ending at r
+    return best
+```
+
 ## LeetCode Problem Lists
 
 - [Sliding Window](https://leetcode.com/problem-list/sliding-window/)

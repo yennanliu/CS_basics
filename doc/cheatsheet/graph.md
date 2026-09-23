@@ -4,6 +4,34 @@
 > **See also** — *deep dives split out of this file*: [graph_advanced.md](./graph_advanced.md) — Tarjan (SCC, bridges, articulation points), Euler circuits, max flow / min cut, bipartite matching and k-colouring; [graph_examples.md](./graph_examples.md) — the worked-solution archive (LC 133 / 200 / 207 / 323 / 329 / 399 / 695 / 742 / 802 / 815 / 886 / 947 / 1319).
 > *Neighbouring sheets*: [bfs.md](./bfs.md) — breadth-first traversal; [dfs.md](./dfs.md) — depth-first traversal; [topology_sorting.md](./topology_sorting.md) — DAG ordering; [union_find.md](./union_find.md) — undirected connectivity; [shortest_path_comparison.md](./shortest_path_comparison.md) — **choosing** a weighted shortest-path algorithm; [Dijkstra.md](./Dijkstra.md) — non-negative weights; [Bellman-Ford.md](./Bellman-Ford.md) — negative weights / bounded hops; [Floyd-Warshall.md](./Floyd-Warshall.md) — all-pairs.
 
+## In the room ⭐⭐⭐⭐⭐
+
+- **Brute force** — an adjacency matrix and repeated full scans — O(V²) space and O(V²) per traversal, for a graph that is usually sparse.
+- **The observation** — build an adjacency list once, keep one visited set, and every classic question is a count of something: components = number of DFS launches; an undirected cycle = a union that finds the same root twice; a directed cycle = a node still on the recursion stack, or a topological sort that comes up short.
+- **Invariant** — each node is discovered exactly once and each edge examined a constant number of times; in union-find, `count` equals the number of disjoint sets after every successful union.
+- **The line that sets the complexity** — `for v in adj[u]:` summed over all `u` is O(E), so traversal is O(V + E); union-find with path compression is O(E · α(V)), effectively linear.
+- **Prove it on** — LC 323 (components — union-find counter), LC 261 (valid tree — n−1 edges and no cycle), LC 207 (course schedule — Kahn's), LC 785 (bipartite — two-colour BFS).
+- **Follow-up they ask** — "Weighted shortest path?" — Dijkstra with a heap of `(dist, node)`; "directed vs undirected cycle?" — union-find only works undirected; directed needs colours or in-degrees; "order the nodes?" — topological sort, and say why it needs a DAG.
+
+```python
+def components(n, edges):             # LC 323: union-find with a counter
+    parent, count = list(range(n)), n
+    def find(x):
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]; x = parent[x]   # path compression
+        return x
+    for a, b in edges:
+        ra, rb = find(a), find(b)
+        if ra != rb:
+            parent[ra] = rb; count -= 1                    # one fewer set
+    return count
+
+def adjacency(n, edges):              # the list every traversal starts from
+    adj = [[] for _ in range(n)]
+    for a, b in edges: adj[a].append(b); adj[b].append(a)
+    return adj
+```
+
 ## LeetCode Problem Lists
 
 - [Graph Theory](https://leetcode.com/problem-list/graph/)

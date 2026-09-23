@@ -556,6 +556,38 @@ Both lines are **required on every file**, not only when topics overlap:
 - The H1 is what the site shows as the page title and on the index card — write it as a name a reader would recognise, not as a filename echo.
 - The Scope line is what stops two files from silently growing into the same doc, **and** it is lifted verbatim into the sheet's card description on `cheatsheets.html`. One sentence, plain prose, no lead-in.
 
+#### The "In the room" block (tier-5 sheets)
+
+Every **tier-5** sheet carries one more section directly under its Scope block, before
+`## LeetCode Problem Lists`:
+
+````markdown
+## In the room ⭐⭐⭐⭐⭐
+
+- **Brute force** — what a candidate says first, with its cost.
+- **The observation** — the one idea that turns it into the template.
+- **Invariant** — one sentence; the reason the template is correct.
+- **The line that sets the complexity** — `the line` → O(…).
+- **Prove it on** — LC a, LC b, LC c.
+- **Follow-up they ask** — the variant, and the one-line change it needs.
+
+```python
+# the template, ≤ ~20 lines, one language
+```
+````
+
+It exists because the Sep 2026 review found the sheets strong on *recognition* and thin on
+*derivation* — 17 of 22 tier-5 sheets opened at the optimal template with no brute-force
+baseline and no route back to it — and because a 2,000-line sheet is a reference, not a
+syllabus. The block is the syllabus: a candidate reads twenty of them, not 40,000 lines.
+
+Two things read it, so keep the shape exact: `build-lib.js`'s `extractRoom` lifts the
+**bold-labelled bullets** (`- **Label** — text`) into the card's expandable state on
+`cheatsheets.html`, and the ⭐⭐⭐⭐⭐ run puts the heading at the top of the page's TOC.
+The fence stays on the page only. Bullets the extractor cannot parse are silently absent
+from the card — `site/test/build-lib.test.js` pins the format. The heading's anchor is
+`#in-the-room-` (trailing dash, from the star run — see Formatting Rules).
+
 ### Registering a new cheatsheet
 
 A new `doc/cheatsheet/*.md` must also get an entry in [`data/cheatsheet_meta.json`](data/cheatsheet_meta.json) — the build fails otherwise, on purpose, so nothing lands in an unsorted bucket:

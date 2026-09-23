@@ -3,6 +3,31 @@
 > **Scope** — The knapsack family in full: 0/1 vs unbounded vs bounded vs group, the subset-sum reduction, why the 0/1 inner loop runs backward, and the loop-order rule that separates combinations from permutations.
 > **See also**: [dp.md](./dp.md) — the one-screen knapsack template and the rest of the DP patterns; [knapsack_01_zh.md](./knapsack_01_zh.md) — 0/1 背包的中文詳解 — a Traditional Chinese walkthrough of the 0/1 case only; [combinatorics_math_patterns.md](./combinatorics_math_patterns.md) — counting without DP.
 
+## In the room ⭐⭐⭐⭐⭐
+
+- **Brute force** — try every subset of items — 2ⁿ — and keep the best that fits.
+- **The observation** — the state is (items considered so far, capacity left); each item is *taken or not*, so row `i` depends only on row `i − 1`. Collapse to one row — and the direction of the capacity loop is the whole difference between 0/1 (backward, so this row still reads last row's values) and unbounded (forward, so an item can be reused).
+- **Invariant** — `dp[c]` is the best value achievable within capacity `c` using exactly the items processed so far; after the last item it is the answer for every `c`.
+- **The line that sets the complexity** — `for c in range(W, w - 1, -1)` (0/1) or `range(w, W + 1)` (unbounded) — O(n · W) time, O(W) space. *Pseudo*-polynomial: `W` is a value, not a count, and the interviewer wants that word.
+- **Prove it on** — LC 416 (partition — boolean 0/1, target = sum/2), LC 494 (target sum — counting 0/1), LC 322 (coin change — unbounded, min), LC 518 (coin change II — unbounded, count *combinations*: coins outer, amounts inner).
+- **Follow-up they ask** — "Permutations instead of combinations?" — swap the loops (amount outer, coins inner; LC 377); "each item at most k times?" — bounded: split into binary copies or nest a count loop; "exactly full?" — initialise `dp` to −∞ except `dp[0] = 0`.
+
+```python
+def knapsack_01(weights, values, W):  # each item at most once
+    dp = [0] * (W + 1)
+    for w, v in zip(weights, values):
+        for c in range(W, w - 1, -1):          # BACKWARD: dp[c - w] is still last row
+            dp[c] = max(dp[c], dp[c - w] + v)
+    return dp[W]
+
+def knapsack_unbounded(weights, values, W):    # items reusable
+    dp = [0] * (W + 1)
+    for w, v in zip(weights, values):
+        for c in range(w, W + 1):              # FORWARD: dp[c - w] may already include w
+            dp[c] = max(dp[c], dp[c - w] + v)
+    return dp[W]
+```
+
 ## LeetCode Problem Lists
 
 - [Dynamic Programming](https://leetcode.com/problem-list/dynamic-programming/)
