@@ -450,6 +450,38 @@ test('validateLists accepts the scenario as authored', () => {
   assert.deepEqual(lib.validateLists(roadmap, { listed, readme }), []);
 });
 
+// The fourth list kind reads a generated data/<name>.json. The build must not
+// trust it: data/l3_core.json is written by a script from a rule over README,
+// and a stale copy would ship a list whose problems have no title.
+test('a file: list is accepted when its ids are in README, and placed like an imported list', () => {
+  const { roadmap, listed, readme } = listContext();
+  roadmap.lists.push({ id: 'core', label: 'Core', from: 'file:core', topicFrom: ['readme'] });
+  const fileLists = { core: [1, 2] };
+  assert.deepEqual(lib.validateLists(roadmap, { listed, readme, fileLists }), []);
+  const members = lib.membersOf(roadmap.lists[3], { roadmap, listed, readme, fileLists });
+  assert.deepEqual([...members].sort(), ['1', '2']);
+  const built = lib.buildRoadmap(roadmap, readme, new Map(), listed, fileLists);
+  assert.deepEqual(built.nodes[0].lists.core, ['1']);
+  assert.deepEqual(built.nodes[1].lists.core, ['2']);
+  const summary = built.lists.find(l => l.id === 'core');
+  assert.equal(summary.total, 2);
+  assert.equal(summary.curated, false);
+});
+
+test('a file: list is rejected when an id is not in README, or the file is missing or empty', () => {
+  const { roadmap, listed, readme } = listContext();
+  roadmap.lists.push({ id: 'core', label: 'Core', from: 'file:core', topicFrom: ['readme'] });
+  let errors = lib.validateLists(roadmap, { listed, readme, fileLists: { core: [1, 999] } });
+  assert.equal(errors.length, 1);
+  assert.match(errors[0], /"core" names #999, which is not in README/);
+
+  errors = lib.validateLists(roadmap, { listed, readme, fileLists: { core: [] } });
+  assert.ok(errors.some(e => /lists no ids/.test(e)));
+
+  errors = lib.validateLists(roadmap, { listed, readme, fileLists: { other: [1] } });
+  assert.ok(errors.some(e => /data\/core\.json does not exist/.test(e)));
+});
+
 // A taxonomy key nobody mapped would silently drop every problem filed under
 // it — a whole "Sliding Window" group vanishing with nothing to show for it.
 test('validateLists rejects a taxonomy key that nothing maps', () => {

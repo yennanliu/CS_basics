@@ -454,6 +454,58 @@ Writing them turned up one live difference worth knowing:
 first problem after a label. This script strips them; the site build is
 untouched.
 
+## l3_core.py
+
+**Skill**: [`/l3-core`](../.claude/skills/l3-core/SKILL.md) —
+**on the site**: [`l3-core.html`](../site/pages/l3-core.html).
+
+Where the **L3 core set** stands, and what to drill from it next. The set is a fixed
+rule over the other sources — `blind75 | (neetcode150 & readme:must)`, 98 problems
+in Sep 2026 — pinned so that its `ok` share means the same thing month to month.
+`suggest_review.py` picks from all 3,270 indexed problems; this picks from the ~100
+an L3 loop is most likely to draw on.
+
+```bash
+python3 script/l3_core.py                      # status: every problem, latest log verdict, README cell
+python3 script/l3_core.py status --only again  # the ones still coming back
+python3 script/l3_core.py status --section dp  # one README section
+python3 script/l3_core.py next 5               # a session, round-robin across sections
+python3 script/l3_core.py refresh              # (re)write data/l3_core.json from the rule
+python3 script/l3_core.py refresh --check      # exit 1 if that file is stale
+python3 script/l3_core.py status --json out.json   # the summary, for monthly tracking
+python3 script/test_l3_core.py                 # the unit tests
+```
+
+### What it reads
+
+- **`data/progress.txt`** — the primary record. The verdict reported for a problem is
+  the **latest** annotation the log gives it: `ok`, `again` (which beats `ok` when a
+  note says both), or none — a `todo`, a bare number, or a free note. Parsed with
+  `suggest_review.py`'s own helpers, so the two never disagree about a line.
+- **`README.md`** — for the set's second half (the `MUST` marker), and for the `OK` /
+  `AGAIN` cell and star run shown *beside* the log's verdict, never instead of it.
+- **`data/problem_lists.json`** — for Blind 75 and NeetCode 150 membership.
+
+### What it writes
+
+Only [`data/l3_core.json`](../data/l3_core.json), and only on `refresh`: the rule, the
+count and the ids. Titles, difficulty and links are never stored — `build-roadmap.js`
+resolves them from README at build time when it reads the file as the roadmap's
+**L3 core** list (`from: "file:l3_core"`). The file is committed; `refresh --check` and
+`test_l3_core.py` both fail when a MUST marker or a list moved and it was not
+regenerated.
+
+### How a session is chosen
+
+Priority buckets, then round-robin across README sections so five problems are not
+five DP rows: never logged → attempted without a verdict → `again`, oldest first →
+an `ok` more than 30 days old. A fresh `ok` is never offered, and nothing logged in
+the last three days is (`--exclude-recent`). The output ends with the `/lc-log` shape
+for each pick, because 35 of the 98 have been attempted and never given a verdict, and
+that is the cheapest number on the page to move.
+
+It never writes the log or a README cell — those are `/lc-log` and `/lc-again`.
+
 ## Other Scripts
 
 | Script | Purpose |

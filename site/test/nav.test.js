@@ -52,14 +52,15 @@ test('the agent skills sit under one parent in the dropdown', () => {
   assert.ok(group, 'the dropdown should declare an agent-skills group');
   assert.deepEqual(group.children.map((c) => c.id),
     ['lc-coach', 'lc-python', 'lc-java', 'lc-cheatsheet', 'lc-log', 'lc-again',
-     'lc-zh-translate', 'lc-algo-demo', 'lc-site-data', 'lc-faq-add']);
+     'lc-zh-translate', 'lc-algo-demo', 'lc-site-data', 'lc-faq-add', 'l3-core']);
 
   const menu = CSNav.navHTML().split('<div class="nav-more-menu">')[1];
   const block = menu.match(/<div class="nav-group[^"]*">[\s\S]*?<\/div>/)[0];
   assert.ok(block.includes('>lc-coach</a>') && block.includes('>lc-python</a>')
     && block.includes('>lc-java</a>') && block.includes('>lc-cheatsheet</a>')
     && block.includes('>lc-log</a>') && block.includes('>lc-again</a>')
-    && block.includes('>lc-site-data</a>') && block.includes('>lc-faq-add</a>'),
+    && block.includes('>lc-site-data</a>') && block.includes('>lc-faq-add</a>')
+    && block.includes('>l3-core</a>'),
     'every skill belongs to the same group block');
 });
 
@@ -91,7 +92,8 @@ test('links() flattens groups so every entry it returns has an href', () => {
     && ids.includes('lc-java') && ids.includes('lc-cheatsheet')
     && ids.includes('lc-log') && ids.includes('lc-again')
     && ids.includes('lc-zh-translate') && ids.includes('lc-algo-demo')
-    && ids.includes('lc-site-data') && ids.includes('lc-faq-add'),
+    && ids.includes('lc-site-data') && ids.includes('lc-faq-add')
+    && ids.includes('l3-core'),
     'group children are missing');
   assert.ok(!ids.includes('agent-skills'), 'the group label is not a destination');
   assert.equal(new Set(ids).size, ids.length);

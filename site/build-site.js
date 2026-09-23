@@ -966,7 +966,10 @@ const AGENT_SKILLS = [
      'so no problem number is silently dropped and the annotations survive.'],
     ['lc-again.html', '/lc-again', 'Graduate an AGAIN',
      'Moves the README status cell after a re-solve — promoting only what was genuinely re-derived ' +
-     'unaided, and keeping the star run that records what the problem cost.']
+     'unaided, and keeping the star run that records what the problem cost.'],
+    ['l3-core.html', '/l3-core', 'The L3 core set',
+     'Blind 75 plus the NeetCode 150 problems marked MUST, held fixed so the number means something — ' +
+     'where each one stands in the practice log, the ok share, and the next five to drill.']
   ]],
   ['Maintain the site', [
     ['lc-algo-demo.html', '/lc-algo-demo', 'Add a visualizer',
