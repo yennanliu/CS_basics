@@ -32,6 +32,71 @@ Constraints:
 """
 
 # V0
+# IDEA: SLIDE WINDOW + HASHMAP (gpt)
+"""
+SLIDE WINDOW template:
+
+for r in range(len(s)):
+    while some_conditons():
+        l += 1
+
+    res = do_sth
+
+return res
+
+"""
+from collections import defaultdict
+
+class Solution(object):
+    def lengthOfLongestSubstring(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        if not s:
+            return 0
+
+        if len(s) == 1:
+            return 1
+
+        cnt_map = defaultdict(int)
+
+        max_len = 0
+        n = len(s)
+
+        l = 0
+
+        for r in range(n):
+
+            r_val = s[r]
+
+            # Step 1) update r_val cnt
+            # Add current character
+            cnt_map[r_val] += 1
+
+
+            # Step 2) shrink l_val cnt
+            # Shrink window until all characters are unique
+            while cnt_map[r_val] > 1:
+
+                l_val = s[l]
+
+                cnt_map[l_val] -= 1
+
+                if cnt_map[l_val] == 0:
+                    del cnt_map[l_val]
+
+                l += 1
+
+            # Step 3) update max_len
+            # Current window [l, r] has no duplicate
+            max_len = max(max_len, r - l + 1)
+
+        return max_len
+
+
+
+# V0-0-1
 # IDEA: SLIDE WINDOW + HASHMAP
 """
 SLIDE WINDOW template:
