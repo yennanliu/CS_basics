@@ -539,15 +539,15 @@ the page is built.
 | dates | a `YYYYMMDD` header in the log is not a real date | |
 | unlinked | — | solution files no row links to are **reported, never failed**: contest problems are routinely filed before their README row |
 
-**The baseline.** ~30 dead links point at another repo's `C++/` and `Python/` layout
-and cannot be fixed from here, and the duplicates each need a decision, so the gate
-fails on *regressions*: anything not in
+**The baseline.** The gate fails on *regressions*: anything not in
 [`data/readme_check_baseline.json`](../data/readme_check_baseline.json). The baseline
 holds **one entry per finding** — the row's LC number with the exact offending string
 (`{"id": 1242, "target": "./C++/web-crawler.cpp"}`, `{"id": 139, "status": "AGAIN !!! (2)"}`),
 never a line number — and each entry excuses exactly one finding. So a fix shrinks it
 visibly, a new problem cannot hide behind an old one, and a baselined value that turns
-up on a *second* row is a regression, not a tolerated one. `test_check_readme.py`
+up on a *second* row is a regression, not a tolerated one. That also makes the file the
+burn-down list: the Sep 2026 pass took it from 59 entries to the 10 cross-set duplicates,
+each of which needs a decision about which row survives. `test_check_readme.py`
 fails if the committed baseline no longer matches what the README produces, in either
 direction.
 
