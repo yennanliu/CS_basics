@@ -59,7 +59,31 @@ At most 2 * 105 calls will be made to get and put.
 
 
 # V0
-# IDEA: DOUBLY LINKED LIST + HASHMAP (gpt)
+# IDEA: CUSTOM CLASS + DOUBLY LINKED LIST + HASHMAP (gpt)
+"""
+
+1. we custom our own `ListNode` (DOUBLY LINKED LIST)
+   with attr:
+    
+    ```
+    key, val, prev, next
+    ```
+
+
+2. the value of hash map is `ListNode` type.
+    self.k_v_map = {} 
+
+
+3.  need to init head, tail as ListNode
+
+
+4.  need to setup 2 helper func:
+
+    - remove
+
+    - add_to_tail
+
+"""
 class ListNode(object):
     def __init__(self, key=0, value=0):
         self.key = key
