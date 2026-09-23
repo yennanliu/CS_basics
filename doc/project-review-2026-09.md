@@ -9,6 +9,8 @@
 > teaches derivation. This one asks whether the whole thing is pointed at the goal.
 > **See also**: [`lc-readiness-guide.md`](./lc-readiness-guide.md) — the per-candidate
 > readiness score this review borrows its bar from.
+> **繁體中文版**: [`project-review-2026-09.zh.md`](./project-review-2026-09.zh.md) — same
+> numbers, same conclusions.
 
 Reviewed at `953902764` (master, 2026-09-23), against the live site at
 <https://yennj12.js.org/CS_basics/>. Every number below was produced from the tree by
