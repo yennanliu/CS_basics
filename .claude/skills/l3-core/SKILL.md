@@ -175,6 +175,6 @@ owed. If step 1 regenerated the file, say what moved and that it needs a commit.
 | 1 | `refresh --check` → `data/l3_core.json is up to date (98 problems)` |
 | 2 | `status` → 98 problems: latest log verdict `ok` 39 (40%), `again` 24, no verdict 35, never logged 0; chronic (`again`, 8+ attempts): 139, 91, 5, 128, 39, 206, 1143, 48, 124, 143, 211, 19, 271, 72, 131, 543, 621, 208; Backtracking 0 `ok` of 11, String 0 of 7 |
 | 3 | `next 5` → LC 371 Sum of Two Integers (attempted 3×, no verdict), 217 Contains Duplicate (4×, no verdict), 242 Valid Anagram (3×, no verdict), 78 Subsets (4×, no verdict), 56 Merge Intervals (10×, no verdict) — five sections, all from the no-verdict bucket because nothing on the set is unlogged |
-| 4 | the user drills them; the report hands over `371(ok|again), 217(ok|again), 242(ok|again), 78(ok|again), 56(ok|again)` for `/lc-log` |
+| 4 | the user drills them; the report hands over `371(ok\|again), 217(ok\|again), 242(ok\|again), 78(ok\|again), 56(ok\|again)` for `/lc-log` |
 | 5 | not run — it is the monthly step |
 | 6 | reported: 40% `ok` on 98; 35 attempts still owe a verdict, which is the cheapest number on the page to move |

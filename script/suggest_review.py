@@ -353,7 +353,9 @@ def _strip_label(entry):
 def _classify(note):
     text = (note or "").lower()
     for word in STATUS_WORDS:          # `again` before `ok`: "(ok, but again)"
-        if word in text:               # is a problem that still needs a pass
+        # Whole words only: "token issue" is not an `ok`, "look" is not either.
+        # `ok*` and `again!!!` still match — `*` and `!` are not word characters.
+        if re.search(r"\b%s\b" % word, text):   # is a problem that still needs a pass
             return word
     return "other" if text else "none"
 

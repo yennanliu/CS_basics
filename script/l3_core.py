@@ -269,19 +269,30 @@ def pick(rows, n, recent_days=RECENT_DAYS):
         eligible.append((pr, r))
     eligible.sort(key=lambda t: (t[0], t[1]["lc"]))
 
-    queues = OrderedDict()
+    # One round-robin per verdict bucket, and a bucket is exhausted before the
+    # next one starts. A single round-robin over everything let a `none` in
+    # section B jump a second `never` in section A, because the loop moved on
+    # to B before coming back to A — so the documented order only held for
+    # the first pick in each section.
+    buckets = OrderedDict()
     for pr, r in eligible:
-        queues.setdefault(r["section"], []).append(r)
-    # sections in the order of their best candidate
-    order = sorted(queues, key=lambda s: _priority(queues[s][0]))
+        buckets.setdefault(pr[0], []).append((pr, r))
 
     out = []
-    while len(out) < n and any(queues.values()):
-        for s in order:
-            if queues[s]:
-                out.append(queues[s].pop(0))
-                if len(out) == n:
-                    break
+    for tier in buckets.values():
+        queues = OrderedDict()
+        for pr, r in tier:
+            queues.setdefault(r["section"], []).append(r)
+        # sections in the order of their best candidate
+        order = sorted(queues, key=lambda s: _priority(queues[s][0]))
+        while len(out) < n and any(queues.values()):
+            for s in order:
+                if queues[s]:
+                    out.append(queues[s].pop(0))
+                    if len(out) == n:
+                        break
+        if len(out) == n:
+            break
     return out
 
 
@@ -378,8 +389,12 @@ def main(argv=None):
     rf = sub.add_parser("refresh", help="(re)write data/l3_core.json from the rule")
     rf.add_argument("--check", action="store_true", help="exit 1 if the file is stale instead of writing it")
 
-    args = ap.parse_args(argv)
-    cmd = args.cmd or "status"
+    # No subcommand means `status`, and it has to be parsed *as* `status`:
+    # a bare parse leaves a Namespace without `only`/`section`/`json`, and
+    # the documented default invocation crashed on the first of them.
+    argv = sys.argv[1:] if argv is None else list(argv)
+    args = ap.parse_args(argv or ["status"])
+    cmd = args.cmd
 
     problems = sr.parse_readme(README)
     lists = sr.load_problem_lists(LISTS)

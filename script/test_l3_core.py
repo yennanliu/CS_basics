@@ -138,6 +138,17 @@ class Session(unittest.TestCase):
         picked = lc.pick(self.rows(), 3)
         self.assertEqual(len({r["section"] for r in picked}), 3)
 
+    def test_a_bucket_is_exhausted_before_the_next_one_starts(self):
+        # Two never-logged rows in one section and a no-verdict row in another:
+        # both `never`s come first. The round-robin runs *inside* a bucket, so
+        # section B's `none` cannot jump section A's second `never`.
+        now = ts("20260301")
+        problems = {1: problem(1, "Array"), 2: problem(2, "Array"), 3: problem(3, "Tree")}
+        log = {3: {"verdict": "none", "ts": now - 100 * lc.DAY, "attempts": 1, "first_ts": now}}
+        rows = lc.build_rows([1, 2, 3], problems, log, now=now)
+        self.assertEqual([r["lc"] for r in lc.pick(rows, 2)], [1, 2])
+        self.assertEqual([r["lc"] for r in lc.pick(rows, 3)], [1, 2, 3])
+
     def test_summary_counts_and_chronic(self):
         s = lc.summarise(self.rows())
         self.assertEqual((s["size"], s["ok"], s["again"], s["none"], s["never"]), (7, 2, 3, 1, 1))
@@ -160,6 +171,16 @@ class Live(unittest.TestCase):
         data = lc.load_core()
         self.assertIsNotNone(data, "data/l3_core.json is missing — run: python3 script/l3_core.py refresh")
         self.assertEqual(data["ids"], ids, "data/l3_core.json is stale — run: python3 script/l3_core.py refresh")
+
+    def test_no_arguments_means_status(self):
+        # The documented default invocation. It used to parse to a Namespace
+        # without `status`'s options and crash on the first one it read.
+        import contextlib
+        import io
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            self.assertEqual(lc.main([]), 0)
+        self.assertIn("title", out.getvalue().splitlines()[0])
 
     def test_the_log_parses_to_verdicts(self):
         state, warnings = lc.latest_verdicts()
