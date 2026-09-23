@@ -55,21 +55,37 @@ class Solution:
     def searchMatrix(self, matrix, target):
         if len(matrix) == 0:
             return False
+        
         ### NOTE : col starts from len(matrix[0]) - 1; while row starts from 0     
         row, col = 0, len(matrix[0]) - 1
+        
+
+        """
+        NOTE !!!
+
+            the while loop conditons:
+
+             - col >= 0
+
+             - row < len(matrix)
+        """
         ### NOTE : since row = 0 at first, so col >= 0
         #          row = len(matrix[0]) - 1, so  row < len(matrix)
         while row < len(matrix) and col >= 0:
+            
             # 3 cases
             # case 1) matrix[row][col] == target -> find the target
             if matrix[row][col] == target: 
                 return True
+            
             # case 2) matrix[row][col] < target -> move to next row
             elif matrix[row][col] < target: 
                 row += 1
+            
             # case 3) matrix[row][col] > target -> move to next col
             elif matrix[row][col] > target: 
                 col -= 1
+        
         return False
 
 
@@ -91,6 +107,16 @@ class Solution(object):
         row = 0
         col = cols - 1
 
+
+        """
+        NOTE !!!
+
+            the while loop conditons:
+
+             - col >= 0
+
+             - row < len(matrix)
+        """
         while row < rows and col >= 0:
             val = matrix[row][col]
 
