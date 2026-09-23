@@ -76,7 +76,8 @@ WIRING_SOURCES = ["CLAUDE.md", "site/pages/skills.html", "site/pages/lc-python.h
                   "site/pages/lc-java.html", "site/pages/lc-cheatsheet.html",
                   "site/pages/lc-log.html", "site/pages/lc-again.html",
                   "site/pages/lc-zh-translate.html", "site/pages/lc-algo-demo.html",
-                  "site/pages/lc-site-data.html", "site/pages/lc-faq-add.html"]
+                  "site/pages/lc-site-data.html", "site/pages/lc-faq-add.html",
+                  "site/pages/l3-core.html"]
 
 NAME_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 FRONTMATTER_RE = re.compile(r"\A---\n(.*?)\n---\n", re.S)

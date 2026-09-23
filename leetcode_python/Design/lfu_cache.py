@@ -57,6 +57,116 @@ At most 2 * 105 calls will be made to get and put.
 
 """
 
+
+# V0
+# IDEA: DOUBLY LINKED LIST + HASHMAP (gpt)
+class ListNode(object):
+    def __init__(self, key=0, value=0):
+        self.key = key
+        self.val = value
+        self.prev = None
+        self.next = None
+
+
+class LRUCache(object):
+
+    def __init__(self, capacity):
+        """
+        :type capacity: int
+        """
+
+        # key -> node
+        self.k_v_map = {}
+
+        # Dummy head / tail
+        # head <-> ... <-> tail
+        self.head = ListNode()
+        self.tail = ListNode()
+
+        self.head.next = self.tail
+        self.tail.prev = self.head
+
+        self.capacity = capacity
+
+    def get(self, key):
+        """
+        :type key: int
+        :rtype: int
+        """
+
+        if key not in self.k_v_map:
+            return -1
+
+        node = self.k_v_map[key]
+
+        # 被 get 代表最近使用
+        self.remove(node)
+        self.add_to_tail(node)
+
+        return node.val
+
+    def put(self, key, value):
+        """
+        :type key: int
+        :type value: int
+        :rtype: None
+        """
+
+        # key 已經存在
+        if key in self.k_v_map:
+            node = self.k_v_map[key]
+
+            # 更新 value
+            node.val = value
+
+            # 更新成 MRU
+            self.remove(node)
+            self.add_to_tail(node)
+
+            return
+
+        # 新 key
+        node = ListNode(key, value)
+        self.k_v_map[key] = node
+
+        # 新 node 放到 MRU
+        self.add_to_tail(node)
+
+        # 超過 capacity
+        if len(self.k_v_map) > self.capacity:
+
+            # head 後面的就是 LRU
+            lru = self.head.next
+
+            self.remove(lru)
+            del self.k_v_map[lru.key]
+
+    def remove(self, node):
+        """
+        從 linked list 移除 node
+        """
+
+        prev_node = node.prev
+        next_node = node.next
+
+        prev_node.next = next_node
+        next_node.prev = prev_node
+
+    def add_to_tail(self, node):
+        """
+        把 node 加到 tail 前面
+        => MRU
+        """
+
+        prev_node = self.tail.prev
+
+        prev_node.next = node
+        node.prev = prev_node
+
+        node.next = self.tail
+        self.tail.prev = node
+
+
 # V0
 from collections import OrderedDict
 class Node:

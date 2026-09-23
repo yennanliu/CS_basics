@@ -68,6 +68,7 @@
   var MORE = [
     { id: 'problems',           label: 'problems',   href: 'problems.html' },
     { id: 'patterns',           label: 'patterns',   href: 'patterns.html' },
+    { id: 'cards',              label: 'cards',      href: 'derivation-cards.html' },
     { id: 'lc-similar',         label: 'similar',    href: 'lc-similar.html' },
     { id: 'lc-review-plan',     label: 'review',     href: 'lc-review-plan.html' },
     { id: 'lc-random-picker',   label: 'random',     href: 'lc-random-picker.html' },
@@ -83,7 +84,8 @@
       { id: 'lc-zh-translate',  label: 'lc-zh-translate', href: 'lc-zh-translate.html' },
       { id: 'lc-algo-demo',     label: 'lc-algo-demo', href: 'lc-algo-demo.html' },
       { id: 'lc-site-data',     label: 'lc-site-data', href: 'lc-site-data.html' },
-      { id: 'lc-faq-add',       label: 'lc-faq-add', href: 'lc-faq-add.html' }
+      { id: 'lc-faq-add',       label: 'lc-faq-add', href: 'lc-faq-add.html' },
+      { id: 'l3-core',          label: 'l3-core',    href: 'l3-core.html' }
     ] },
     { id: 'resources',          label: 'resources',  href: 'resources.html' },
     { id: 'github',             label: 'github',     href: 'https://github.com/yennanliu/CS_basics', external: true }

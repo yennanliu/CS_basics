@@ -6,7 +6,7 @@
     "intro": "A dependency graph over the topics in this repo. Start at the top, unlock a topic once its prerequisites are done, and tick problems off as you solve them — progress is stored in your browser."
   },
 
-  "_lists_comment": "The problem sets the page's dropdown offers. `from` says where membership comes from: `curated` = the ids on the nodes below; `list:<flag>` = a flag in data/problem_lists.json (refresh with script/fetch_problem_lists.py); `readme:<field>` = a marker in README.md's own tables. `topicFrom` names the taxonomies, in order, that decide which topic each problem lands in — the first one that maps wins, so a coarse source can fall through to a finer one.",
+  "_lists_comment": "The problem sets the page's dropdown offers. `from` says where membership comes from: `curated` = the ids on the nodes below; `list:<flag>` = a flag in data/problem_lists.json (refresh with script/fetch_problem_lists.py); `readme:<field>` = a marker in README.md's own tables. `file:<name>` = the `ids` of a generated data/<name>.json (data/l3_core.json is written by script/l3_core.py from a rule over the other two). `topicFrom` names the taxonomies, in order, that decide which topic each problem lands in — the first one that maps wins, so a coarse source can fall through to a finer one.",
 
   "defaultList": "roadmap",
 
@@ -16,6 +16,13 @@
       "label": "Roadmap picks",
       "blurb": "The curated path — a handful of problems per topic, in teaching order.",
       "from": "curated"
+    },
+    {
+      "id": "l3-core",
+      "label": "L3 core",
+      "blurb": "Blind 75 plus the NeetCode 150 problems marked MUST — the fixed set this repo measures its own readiness on. `python3 script/l3_core.py` for where each one stands.",
+      "from": "file:l3_core",
+      "topicFrom": ["neetcode", "readme"]
     },
     {
       "id": "blind75",

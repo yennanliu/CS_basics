@@ -287,6 +287,9 @@ function faqPageName(filePath) {
 registerPage('README.md', 'problems.html');
 if (fs.existsSync('doc/Resource.md')) registerPage('doc/Resource.md', 'resources.html');
 if (fs.existsSync('doc/pattern_recognition.md')) registerPage('doc/pattern_recognition.md', 'patterns.html');
+// Registered before README renders, so the `[card](doc/derivation_cards.md#…)`
+// links in its Note column land on the local page rather than on GitHub.
+if (fs.existsSync('doc/derivation_cards.md')) registerPage('doc/derivation_cards.md', 'derivation-cards.html');
 for (const file of cheatsheetFiles) {
   registerPage(`${cheatsheetDir}/${file}`, `cheatsheets/${path.basename(file, '.md')}.html`);
 }
@@ -966,7 +969,10 @@ const AGENT_SKILLS = [
      'so no problem number is silently dropped and the annotations survive.'],
     ['lc-again.html', '/lc-again', 'Graduate an AGAIN',
      'Moves the README status cell after a re-solve — promoting only what was genuinely re-derived ' +
-     'unaided, and keeping the star run that records what the problem cost.']
+     'unaided, and keeping the star run that records what the problem cost.'],
+    ['l3-core.html', '/l3-core', 'The L3 core set',
+     'Blind 75 plus the NeetCode 150 problems marked MUST, held fixed so the number means something — ' +
+     'where each one stands in the practice log, the ok share, and the next five to drill.']
   ]],
   ['Maintain the site', [
     ['lc-algo-demo.html', '/lc-algo-demo', 'Add a visualizer',
@@ -1241,6 +1247,37 @@ if (fs.existsSync('doc/pattern_recognition.md')) {
     category: 'Guide',
     type: 'Guide',
     headings: extractHeadings(patternHtml).slice(0, 60)
+  });
+}
+
+// One card per chronic problem — the invariant, the line that sets the
+// complexity, the edges — for the forty problems the log and README's pass
+// counts agree cost the most. README's Note column links each row to its card,
+// so this is built as a page and not left as a GitHub-only markdown file.
+if (fs.existsSync('doc/derivation_cards.md')) {
+  let cardsHtml = renderContent(fs.readFileSync('doc/derivation_cards.md', 'utf8'), 'doc', '');
+  cardsHtml = ensureHeadingIds(cardsHtml);
+  const { html: cardsBody } = splitLeadingH1(cardsHtml);
+  const cardsContent = `
+    <div class="cheatsheet-header">
+      <h1>Derivation Cards</h1>
+      <p>Forty chronic problems, one card each: the invariant, the one line that sets the complexity, the edges that keep failing — reviewed instead of re-solved.</p>
+    </div>
+    ${generateTOC(cardsBody)}
+    <div class="cheatsheet-content">${cardsBody}</div>
+  `;
+  fs.writeFileSync('_site/derivation-cards.html', htmlTemplate('Derivation Cards', cardsContent, 'cards', '', {
+    url: 'derivation-cards.html',
+    description: 'One derivation card per chronic LeetCode problem — the invariant, the contract of the recursion or loop state, the line that sets the complexity, and the edges — for the forty problems this repo has re-solved the most.'
+  }));
+  console.log('✓ Created derivation-cards.html');
+
+  searchRecords.push({
+    title: 'Derivation Cards',
+    url: 'derivation-cards.html',
+    category: 'Guide',
+    type: 'Guide',
+    headings: extractHeadings(cardsBody).slice(0, 60)
   });
 }
 
