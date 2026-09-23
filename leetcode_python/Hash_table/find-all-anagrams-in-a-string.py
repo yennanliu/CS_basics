@@ -34,7 +34,7 @@ s and p consist of lowercase English letters.
 """
 
 # V0
-# IDEA : SLIDING WINDOW + collections.Counter()
+# IDEA : FIXED SIZE SLIDING WINDOW + collections.Counter()
 # time = O(n)
 # space = O(1)  # Counter bounded by 26 lowercase letters
 from collections import Counter
@@ -46,16 +46,36 @@ class Solution(object):
 
         res = []
 
+        # NOTE !!!
+        # use `Counter` for simpler op
         p_cnt = Counter(p)
         window = Counter()
 
         l = 0
         k = len(p)
 
+        """
+        NOTE !!! 
+
+            we loop over `r` (right pointer)
+        """
         for r in range(len(s)):
+
+
+            """
+            # NOTE !!!
+                
+                add new char anyway (and shrink later)
+            """
             # Add new character
             window[s[r]] += 1
 
+    
+            """
+            # NOTE !!!
+                
+                shrink left pointer (when window size > p len)
+            """
             # Window is too large
             if r - l + 1 > k:
                 window[s[l]] -= 1
@@ -179,6 +199,53 @@ class Solution(object):
                 if sCounter[s[index - (n - 1)]] == 0:   # NOTE : HAVE TO REMOVE "COUNT = 0" CASE IN COUNTER 
                     del sCounter[s[index - (n - 1)]]
         return answer
+
+
+# V0-5
+# IDEA :  Sliding Window + defaultdict, Counter  with HashMap (GPT)
+from collections import defaultdict, Counter
+
+class Solution(object):
+    def findAnagrams(self, s, p):
+        """
+        :type s: str
+        :type p: str
+        :rtype: List[int]
+        """
+        if not s or not p or len(p) > len(s):
+            return []
+
+        s_map = defaultdict(int)
+        p_map = Counter(p)
+
+        res = []
+
+        l = 0
+        n = len(s)
+        window_size = len(p)
+
+        for r in range(n):
+
+            # Add current character
+            r_val = s[r]
+            s_map[r_val] += 1
+
+            # Keep window size == len(p)
+            if r - l + 1 > window_size:
+                l_val = s[l]
+
+                s_map[l_val] -= 1
+
+                if s_map[l_val] == 0:
+                    del s_map[l_val]
+
+                l += 1
+
+            # Current window has the same frequency as p
+            if s_map == p_map:
+                res.append(l)
+
+        return res
 
 # V1
 # IDEA :  Sliding Window with HashMap
