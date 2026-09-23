@@ -1,0 +1,51 @@
+name: Check README index
+
+# The gate for README.md's problem index and data/progress.txt — what
+# validate-pages.yml is for _site/ and skills-check.yml is for .claude/skills/.
+#
+# No path filter on purpose. README links into twelve top-level trees
+# (leetcode_python/, leetcode_java/, leetcode_SQL/, C++/, archived/, doc/, …),
+# so a rename or delete anywhere in the repo can leave a dead solution link, and
+# a filter narrow enough to be worth having is one that misses the next tree.
+# The job is standard-library Python and runs in seconds, so running it on every
+# push costs less than one missed link.
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+# The job only reads the tree it checks out.
+permissions:
+  contents: read
+
+jobs:
+  check-readme:
+    name: Problem index and practice log
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      # The gate's own tests first: each rule against a bad fixture and a good
+      # one, plus the live tests that the checked-in README, log and baseline
+      # still agree. A checker that quietly stops matching reports PASS for
+      # everything, so the tests are what make the PASS below mean anything.
+      - name: Test the checker
+        run: python3 script/test_check_readme.py
+
+      # Dead solution links, an id filed in both table sets, a status cell the
+      # planners cannot read, an impossible date in the practice log.
+      # e2e-check.js cannot see any of these — the links are GitHub URLs by the
+      # time the page exists — and README is the only complete copy of the index.
+      # Fails on regressions against data/readme_check_baseline.json; the
+      # script's docstring says why a baseline.
+      - name: Check the problem index and the practice log
+        run: python3 script/check_readme.py

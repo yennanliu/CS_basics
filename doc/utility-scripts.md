@@ -510,7 +510,9 @@ It never writes the log or a README cell — those are `/lc-log` and `/lc-again`
 
 The gate for `README.md`'s problem index and `data/progress.txt` — what
 `site/e2e-check.js` is for `_site/` and `check_skills.py` is for `.claude/skills/`.
-`validate-pages.yml` runs it after the site tests.
+`.github/workflows/check-readme.yml` runs it on every push and pull request — no path
+filter, because README links into twelve top-level trees and a rename in any of them
+can leave a dead link; the job is standard-library Python and takes seconds.
 
 ```bash
 python3 script/check_readme.py                    # PASS/FAIL lines; exit 1 on any FAIL
@@ -531,7 +533,7 @@ the page is built.
 | Rule | Fails when | Notes |
 |---|---|---|
 | rows | a row has no LC number or no linked title | |
-| links | a relative solution link resolves to nothing | URLs are not checked |
+| links | a relative solution link is not a regular file inside the repo | URLs are not checked; a directory, the root (`..`) or a `../` out of the tree all count as dead |
 | duplicates | an id is in both the main `##` tables and `## Newly Added` | two *main* sections (LC 547 under DFS and Graph) is reported, not failed |
 | status | a main-table status cell is not `<OK\|AGAIN\|not start> <stars> (<note>)…` | the notes stay free text; only the word and the star run are pinned, because that is what `suggest_review.py`, `extract_must_lc.py` and `eval_lc_readiness.py` read |
 | dates | a `YYYYMMDD` header in the log is not a real date | |
@@ -541,10 +543,13 @@ the page is built.
 and cannot be fixed from here, and the duplicates each need a decision, so the gate
 fails on *regressions*: anything not in
 [`data/readme_check_baseline.json`](../data/readme_check_baseline.json). The baseline
-holds the exact offending strings — targets, ids, cells, dates — never line numbers,
-so a fix shrinks it visibly and a new problem cannot hide behind an old one.
-`test_check_readme.py` fails if the committed baseline no longer matches what the
-README produces, in either direction.
+holds **one entry per finding** — the row's LC number with the exact offending string
+(`{"id": 1242, "target": "./C++/web-crawler.cpp"}`, `{"id": 139, "status": "AGAIN !!! (2)"}`),
+never a line number — and each entry excuses exactly one finding. So a fix shrinks it
+visibly, a new problem cannot hide behind an old one, and a baselined value that turns
+up on a *second* row is a regression, not a tolerated one. `test_check_readme.py`
+fails if the committed baseline no longer matches what the README produces, in either
+direction.
 
 ## Other Scripts
 

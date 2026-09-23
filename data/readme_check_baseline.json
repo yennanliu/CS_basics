@@ -1,37 +1,130 @@
 {
-  "_comment": "Known problems in README.md / data/progress.txt that script/check_readme.py tolerates. The gate fails on anything NOT listed here, so a fix shrinks this file and a new problem cannot hide behind an old one. Regenerate with `python3 script/check_readme.py --update-baseline`; see the script's docstring.",
+  "_comment": "Known problems in README.md / data/progress.txt that script/check_readme.py tolerates. One entry per finding \u2014 the row's LC number and the exact offending string, never a line number \u2014 and each entry excuses exactly one, so the gate fails on anything NOT listed here, a fix shrinks this file, and a known-bad value reappearing on another row fails. Regenerate with `python3 script/check_readme.py --update-baseline`; see the script's docstring.",
   "dead_links": [
-    "./C++/Design/peeking-iterator.cpp",
-    "./C++/building-h2o.cpp",
-    "./C++/design-bounded-blocking-queue.cpp",
-    "./C++/design-compressed-string-iterator.cpp",
-    "./C++/design-excel-sum-formula.cpp",
-    "./C++/design-file-system.cpp",
-    "./C++/design-log-storage-system.cpp",
-    "./C++/design-skiplist.cpp",
-    "./C++/dinner-plate-stacks.cpp",
-    "./C++/fizz-buzz-multithreaded.cpp",
-    "./C++/insert-delete-getrandom-o1-duplicates-allowed.cpp",
-    "./C++/print-foobar-alternately.cpp",
-    "./C++/print-in-order.cpp",
-    "./C++/print-zero-even-odd.cpp",
-    "./C++/range-module.cpp",
-    "./C++/rle-iterator.cpp",
-    "./C++/the-dining-philosophers.cpp",
-    "./C++/traffic-light-controlled-intersection.cpp",
-    "./C++/walking-robot-simulation.cpp",
-    "./C++/web-crawler-multithreaded.cpp",
-    "./C++/web-crawler.cpp",
-    "./Python/building-h2o.py",
-    "./Python/design-bounded-blocking-queue.py",
-    "./Python/fizz-buzz-multithreaded.py",
-    "./Python/print-foobar-alternately.py",
-    "./Python/print-in-order.py",
-    "./Python/print-zero-even-odd.py",
-    "./Python/the-dining-philosophers.py",
-    "./Python/traffic-light-controlled-intersection.py",
-    "./Python/web-crawler-multithreaded.py",
-    "./leetcode_python/Design/design-circular-dequeue.py"
+    {
+      "id": 1114,
+      "target": "./C++/print-in-order.cpp"
+    },
+    {
+      "id": 1114,
+      "target": "./Python/print-in-order.py"
+    },
+    {
+      "id": 1115,
+      "target": "./C++/print-foobar-alternately.cpp"
+    },
+    {
+      "id": 1115,
+      "target": "./Python/print-foobar-alternately.py"
+    },
+    {
+      "id": 1116,
+      "target": "./C++/print-zero-even-odd.cpp"
+    },
+    {
+      "id": 1116,
+      "target": "./Python/print-zero-even-odd.py"
+    },
+    {
+      "id": 1117,
+      "target": "./C++/building-h2o.cpp"
+    },
+    {
+      "id": 1117,
+      "target": "./Python/building-h2o.py"
+    },
+    {
+      "id": 1166,
+      "target": "./C++/design-file-system.cpp"
+    },
+    {
+      "id": 1172,
+      "target": "./C++/dinner-plate-stacks.cpp"
+    },
+    {
+      "id": 1188,
+      "target": "./C++/design-bounded-blocking-queue.cpp"
+    },
+    {
+      "id": 1188,
+      "target": "./Python/design-bounded-blocking-queue.py"
+    },
+    {
+      "id": 1195,
+      "target": "./C++/fizz-buzz-multithreaded.cpp"
+    },
+    {
+      "id": 1195,
+      "target": "./Python/fizz-buzz-multithreaded.py"
+    },
+    {
+      "id": 1206,
+      "target": "./C++/design-skiplist.cpp"
+    },
+    {
+      "id": 1226,
+      "target": "./C++/the-dining-philosophers.cpp"
+    },
+    {
+      "id": 1226,
+      "target": "./Python/the-dining-philosophers.py"
+    },
+    {
+      "id": 1236,
+      "target": "./C++/web-crawler.cpp"
+    },
+    {
+      "id": 1242,
+      "target": "./C++/web-crawler-multithreaded.cpp"
+    },
+    {
+      "id": 1242,
+      "target": "./Python/web-crawler-multithreaded.py"
+    },
+    {
+      "id": 1279,
+      "target": "./C++/traffic-light-controlled-intersection.cpp"
+    },
+    {
+      "id": 1279,
+      "target": "./Python/traffic-light-controlled-intersection.py"
+    },
+    {
+      "id": 284,
+      "target": "./C++/Design/peeking-iterator.cpp"
+    },
+    {
+      "id": 381,
+      "target": "./C++/insert-delete-getrandom-o1-duplicates-allowed.cpp"
+    },
+    {
+      "id": 604,
+      "target": "./C++/design-compressed-string-iterator.cpp"
+    },
+    {
+      "id": 631,
+      "target": "./C++/design-excel-sum-formula.cpp"
+    },
+    {
+      "id": 635,
+      "target": "./C++/design-log-storage-system.cpp"
+    },
+    {
+      "id": 641,
+      "target": "./leetcode_python/Design/design-circular-dequeue.py"
+    },
+    {
+      "id": 715,
+      "target": "./C++/range-module.cpp"
+    },
+    {
+      "id": 874,
+      "target": "./C++/walking-robot-simulation.cpp"
+    },
+    {
+      "id": 900,
+      "target": "./C++/rle-iterator.cpp"
+    }
   ],
   "cross_duplicates": [
     363,
@@ -46,23 +139,74 @@
     959
   ],
   "bad_status": [
-    "AGAIN !!! (2)",
-    "AGAIN !!!!!!!!!! (5)",
-    "AGAIN (1)**********",
-    "AGAIN (2)*******",
-    "AGAIN (3) *****",
-    "AGAIN (not start)s",
-    "AGAIN(1) *****",
-    "AGAIN(1)***** not start",
-    "AGAIN(5)************ (MUST)",
-    "AGAIN*** (1)s",
-    "AGAIN********* (4) MUST",
-    "AGAIN***s (3)",
-    "AGAIN1 (1) (not start)",
-    "OK (1)****",
-    "OK (but again)*********** (7)",
-    "OK**** (2) (but again !!!",
-    "not start AGAIN (1)"
+    {
+      "id": 1095,
+      "status": "AGAIN (not start)s"
+    },
+    {
+      "id": 1170,
+      "status": "AGAIN*** (1)s"
+    },
+    {
+      "id": 1254,
+      "status": "AGAIN (1)**********"
+    },
+    {
+      "id": 1353,
+      "status": "AGAIN********* (4) MUST"
+    },
+    {
+      "id": 14,
+      "status": "AGAIN !!!!!!!!!! (5)"
+    },
+    {
+      "id": 155,
+      "status": "OK (but again)*********** (7)"
+    },
+    {
+      "id": 23,
+      "status": "OK**** (2) (but again !!!"
+    },
+    {
+      "id": 2331,
+      "status": "OK (1)****"
+    },
+    {
+      "id": 2646,
+      "status": "not start AGAIN (1)"
+    },
+    {
+      "id": 2765,
+      "status": "AGAIN(1) *****"
+    },
+    {
+      "id": 308,
+      "status": "AGAIN(1)***** not start"
+    },
+    {
+      "id": 648,
+      "status": "AGAIN (2)*******"
+    },
+    {
+      "id": 72,
+      "status": "AGAIN(5)************ (MUST)"
+    },
+    {
+      "id": 778,
+      "status": "AGAIN1 (1) (not start)"
+    },
+    {
+      "id": 82,
+      "status": "AGAIN (3) *****"
+    },
+    {
+      "id": 939,
+      "status": "AGAIN !!! (2)"
+    },
+    {
+      "id": 951,
+      "status": "AGAIN***s (3)"
+    }
   ],
   "bad_dates": [
     "20260229"

@@ -13,9 +13,6 @@ on:
       - 'algo_demo/**'
       - 'data/complexity_quiz.json'
       - 'data/progress.txt'
-      - 'data/readme_check_baseline.json'
-      - 'script/check_readme.py'
-      - 'script/test_check_readme.py'
       - 'i18n/**'
       - 'site/**.js'
       - 'site/build.sh'
@@ -37,9 +34,6 @@ on:
       - 'algo_demo/**'
       - 'data/complexity_quiz.json'
       - 'data/progress.txt'
-      - 'data/readme_check_baseline.json'
-      - 'script/check_readme.py'
-      - 'script/test_check_readme.py'
       - 'i18n/**'
       - 'site/**.js'
       - 'site/build.sh'
@@ -85,17 +79,6 @@ jobs:
 
     - name: Run JS unit tests
       run: npm test --prefix site
-
-    # The index itself, before the site built from it: dead solution links, an
-    # id filed in both table sets, a status cell the planners cannot read, an
-    # impossible date in the practice log. e2e-check.js cannot see any of these
-    # (the links are GitHub URLs by the time the page exists), and README is the
-    # only complete copy of the index. Fails on regressions against
-    # data/readme_check_baseline.json; the script's docstring says why a baseline.
-    - name: Check the problem index and the practice log
-      run: |
-        python3 script/test_check_readme.py
-        python3 script/check_readme.py
 
     # The checks used to live here as a ~280-line heredoc, which meant they could
     # not be run locally, could not be unit tested, and quietly warned rather than

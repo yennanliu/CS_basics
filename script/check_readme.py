@@ -33,9 +33,12 @@ What it checks, per rule:
 The baseline. The index has ~30 dead links this repo cannot fix by itself
 (they point at another repo's `C++/` and `Python/` layout) and 21 duplicates
 that need a decision each, so the gate fails on *regressions*: anything not in
-data/readme_check_baseline.json. The baseline is a list of the exact offending
-strings, not a count, so a fix shrinks it visibly and a new problem cannot hide
-behind an old one. `--update-baseline` rewrites it; `--strict` ignores it.
+data/readme_check_baseline.json. The baseline holds each finding's identity —
+the row's LC number with the exact offending string, never a line number — and
+every entry excuses exactly one finding. So a fix shrinks it visibly, a new
+problem cannot hide behind an old one, and a baselined value that reappears on
+another row (`AGAIN !!! (2)` on LC 300 when only LC 139 was excused) fails like
+any other regression. `--update-baseline` rewrites it; `--strict` ignores it.
 
 Row shape: `| # | Title | Solution | Time | Space | Difficulty | Note | Status |`
 (read from the ends, as site/build-roadmap.js and script/suggest_review.py do,
@@ -144,7 +147,21 @@ def local_path(target):
     """A relative solution link -> repo-relative path, or None for a URL."""
     if re.match(r"^[a-z][a-z0-9+.-]*:", target):
         return None
-    return target.split("#")[0].lstrip("./")
+    return re.sub(r"^(\./)+", "", target.split("#")[0])
+
+
+def resolves(root, rel):
+    """True when `rel` names a regular file inside `root`.
+
+    Not `os.path.exists`: that accepts a directory (`./leetcode_python/` is not a
+    solution, and `..` walks up to the root itself and "exists") and follows a
+    `../` out of the repo. A solution link has to land on a file we ship.
+    """
+    root_real = os.path.realpath(root)
+    candidate = os.path.realpath(os.path.join(root_real, rel))
+    return (os.path.commonpath((root_real, candidate)) == root_real
+            and candidate != root_real
+            and os.path.isfile(candidate))
 
 
 def walk(root, tree, ext):
@@ -186,7 +203,7 @@ def findings(readme_text, progress_text, root=ROOT):
             rel = local_path(target)
             if rel is None:
                 continue
-            if os.path.exists(os.path.join(root, rel)):
+            if resolves(root, rel):
                 linked.add(rel)
             else:
                 dead.append({"line": r["line"], "id": r["id"], "label": label, "target": target})
@@ -223,31 +240,70 @@ def findings(readme_text, progress_text, root=ROOT):
 
 
 # ── The baseline ────────────────────────────────────────────────────────────
+# One entry per finding, and each entry excuses exactly one. The identity is the
+# row's LC number plus the exact offending string — never a line number, which
+# moves on every edit — so the same dead target or unparseable cell turning up
+# on a *second* row is a new finding, not a baselined one. The date list is a
+# multiset for the same reason: two `20260229` headers need two entries.
+BASELINE_KEYS = ("dead_links", "cross_duplicates", "bad_status", "bad_dates")
+
+
+def identity(key, finding):
+    """The baseline entry for one finding, as JSON-shaped data."""
+    if key == "dead_links":
+        return {"id": finding["id"], "target": finding["target"]}
+    if key == "bad_status":
+        return {"id": finding["id"], "status": finding["status"]}
+    if key == "bad_dates":
+        return finding[1]
+    return finding  # cross_duplicates: the id itself
+
+
 def baseline_of(f):
-    """The exact strings that may stay wrong. Targets, ids and cells — never
-    line numbers, which move on every edit."""
-    return {
+    """The findings that may stay wrong, one entry each."""
+    out = {
         "_comment": "Known problems in README.md / data/progress.txt that script/check_readme.py "
-                    "tolerates. The gate fails on anything NOT listed here, so a fix shrinks this "
-                    "file and a new problem cannot hide behind an old one. Regenerate with "
+                    "tolerates. One entry per finding — the row's LC number and the exact offending "
+                    "string, never a line number — and each entry excuses exactly one, so the gate "
+                    "fails on anything NOT listed here, a fix shrinks this file, and a known-bad value "
+                    "reappearing on another row fails. Regenerate with "
                     "`python3 script/check_readme.py --update-baseline`; see the script's docstring.",
-        "dead_links": sorted({d["target"] for d in f["dead_links"]}),
-        "cross_duplicates": f["cross_duplicates"],
-        "bad_status": sorted({r["status"] for r in f["bad_status"]}),
-        "bad_dates": sorted({d for _, d in f["bad_dates"]}),
     }
+    for key in BASELINE_KEYS:
+        out[key] = sorted((identity(key, x) for x in f[key]), key=json.dumps)
+    return out
 
 
 def load_baseline(path):
     if not os.path.exists(path):
-        return {"dead_links": [], "cross_duplicates": [], "bad_status": [], "bad_dates": []}
+        return {key: [] for key in BASELINE_KEYS}
     with open(path, encoding="utf-8") as fh:
         return json.load(fh)
 
 
+def allower(base, strict=False):
+    """-> allow(key, finding): True once per matching baseline entry.
+
+    Entries are consumed, so a value listed once excuses one finding and the
+    second occurrence is reported. `--strict` excuses nothing.
+    """
+    pool = {key: list(base.get(key, [])) for key in BASELINE_KEYS}
+
+    def allow(key, finding):
+        if strict:
+            return False
+        try:
+            pool[key].remove(identity(key, finding))
+        except ValueError:
+            return False
+        return True
+
+    return allow
+
+
 # ── The report ──────────────────────────────────────────────────────────────
 def run(rep, f, base, strict=False):
-    allow = (lambda key, value: False) if strict else (lambda key, value: value in base.get(key, []))
+    allow = allower(base, strict)
 
     rep.section("rows")
     rep.check("every row has an LC number and a linked title", not f["bad_rows"],
@@ -255,7 +311,7 @@ def run(rep, f, base, strict=False):
               else "; ".join("line %d" % r["line"] for r in f["bad_rows"][:5]))
 
     rep.section("solution links")
-    new_dead = [d for d in f["dead_links"] if not allow("dead_links", d["target"])]
+    new_dead = [d for d in f["dead_links"] if not allow("dead_links", d)]
     known_dead = len(f["dead_links"]) - len(new_dead)
     rep.check("every relative solution link resolves", not new_dead,
               "%d resolve, %d dead%s" % (f["linked"], len(f["dead_links"]),
@@ -278,7 +334,7 @@ def run(rep, f, base, strict=False):
     rep.info("filed in two main sections (allowed): %s" % ", ".join(str(i) for i in f["main_duplicates"]))
 
     rep.section("status column")
-    new_status = [r for r in f["bad_status"] if not allow("bad_status", r["status"])]
+    new_status = [r for r in f["bad_status"] if not allow("bad_status", r)]
     rep.check("every main-table status cell parses (word, stars, notes)", not new_status,
               "%d cells checked, %d unparseable%s" % (
                   sum(1 for r in f["rows"] if not r["imported"]), len(f["bad_status"]),
@@ -288,7 +344,7 @@ def run(rep, f, base, strict=False):
         print("        line %d  LC %d  %r" % (r["line"], r["id"], r["status"]))
 
     rep.section("practice log")
-    new_dates = [(i, d) for i, d in f["bad_dates"] if not allow("bad_dates", d)]
+    new_dates = [x for x in f["bad_dates"] if not allow("bad_dates", x)]
     rep.check("every date header in data/progress.txt is a real date", not new_dates,
               "%d dates, %d impossible%s" % (f["dates"], len(f["bad_dates"]),
                                              ", %d baselined" % (len(f["bad_dates"]) - len(new_dates))
@@ -323,13 +379,12 @@ def main(argv=None):
     f = findings(readme_text, progress_text)
 
     if args.update_baseline:
+        base = baseline_of(f)
         with open(args.baseline, "w", encoding="utf-8") as fh:
-            json.dump(baseline_of(f), fh, indent=2)
+            json.dump(base, fh, indent=2)
             fh.write("\n")
         print("wrote %s: %d dead links, %d cross duplicates, %d status cells, %d dates" % (
-            os.path.relpath(args.baseline, ROOT), len(set(d["target"] for d in f["dead_links"])),
-            len(f["cross_duplicates"]), len(set(r["status"] for r in f["bad_status"])),
-            len(set(d for _, d in f["bad_dates"]))))
+            (os.path.relpath(args.baseline, ROOT),) + tuple(len(base[k]) for k in BASELINE_KEYS)))
         return 0
 
     rep = Report(verbose=args.verbose)

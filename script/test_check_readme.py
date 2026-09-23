@@ -112,11 +112,28 @@ class Links(unittest.TestCase):
         finally:
             fx.cleanup()
 
+    def test_a_directory_or_a_path_outside_the_repo_is_not_a_solution(self):
+        """os.path.exists would pass all four: a directory, the root itself
+        (`..` reduced to nothing), and two files that exist but outside `root`."""
+        fx = Fixture(HEADER + row(1, sol="[Python](./leetcode_python/Array), [Java](./leetcode_python/), "
+                                         "[C++](../..), [Scala](./leetcode_python/../../outside.py)"))
+        try:
+            outside = os.path.join(os.path.dirname(fx.dir), "outside.py")
+            open(outside, "w").close()
+            self.assertTrue(os.path.isfile(outside))  # the traversal target really exists
+            f = fx.findings()
+            self.assertEqual([d["label"] for d in f["dead_links"]], ["Python", "Java", "C++", "Scala"])
+            self.assertEqual(f["linked"], 0)
+            self.assertIn("FAIL  every relative solution link resolves", run(f)[1])
+        finally:
+            os.remove(outside)
+            fx.cleanup()
+
     def test_the_baseline_tolerates_a_known_dead_link_but_not_a_new_one(self):
         fx = Fixture(HEADER + row(1, sol="[C++](./C++/old.cpp), [Python](./leetcode_python/Array/new-typo.py)"))
         try:
             f = fx.findings()
-            base = {"dead_links": ["./C++/old.cpp"]}
+            base = {"dead_links": [{"id": 1, "target": "./C++/old.cpp"}]}
             failed, out = run(f, base)
             self.assertIn("FAIL  every relative solution link resolves", out)
             self.assertIn("new-typo.py", out)
@@ -126,6 +143,24 @@ class Links(unittest.TestCase):
             f = fx.findings()
             self.assertIn("PASS", run(f, base)[1].split("solution links")[1].split("\n")[1])
             self.assertIn("FAIL", run(f, base, strict=True)[1].split("solution links")[1].split("\n")[1])
+        finally:
+            fx.cleanup()
+
+    def test_a_baselined_dead_target_on_a_second_row_is_a_regression(self):
+        """The baseline excuses a finding, not a value: the same dead target
+        copied onto another row is new, and so is a second copy on the same row."""
+        fx = Fixture(HEADER + row(1, sol="[C++](./C++/old.cpp)") + row(2, sol="[C++](./C++/old.cpp)"))
+        try:
+            base = {"dead_links": [{"id": 1, "target": "./C++/old.cpp"}]}
+            f = fx.findings()
+            failed, out = run(f, base)
+            self.assertEqual(failed, 1)
+            self.assertIn("LC 2  [C++](./C++/old.cpp)", out)
+            self.assertNotIn("LC 1  [C++]", out)
+            # the same row linking the same dead file twice needs two entries
+            fx.readme = HEADER + row(1, sol="[C++](./C++/old.cpp), [C++](./C++/old.cpp)")
+            self.assertEqual(run(fx.findings(), base)[0], 1)
+            self.assertEqual(run(fx.findings(), {"dead_links": base["dead_links"] * 2})[0], 0)
         finally:
             fx.cleanup()
 
@@ -171,7 +206,19 @@ class Status(unittest.TestCase):
             self.assertEqual([r["id"] for r in f["bad_status"]], [1])
             failed, out = run(f)
             self.assertIn("FAIL  every main-table status cell parses", out)
-            self.assertEqual(run(f, {"bad_status": ["AGAIN*** (1)s"]})[1].count("FAIL"), 0)
+            self.assertEqual(run(f, {"bad_status": [{"id": 1, "status": "AGAIN*** (1)s"}]})[1].count("FAIL"), 0)
+        finally:
+            fx.cleanup()
+
+    def test_a_baselined_cell_on_another_row_is_a_regression(self):
+        fx = Fixture(HEADER + row(1, status="AGAIN !!! (2)") + row(2, status="AGAIN !!! (2)"))
+        try:
+            base = {"bad_status": [{"id": 1, "status": "AGAIN !!! (2)"}]}
+            failed, out = run(fx.findings(), base)
+            self.assertEqual(failed, 1)
+            self.assertIn("LC 2  'AGAIN !!! (2)'", out)
+            self.assertNotIn("LC 1  ", out)
+            self.assertIn("1 baselined", out)
         finally:
             fx.cleanup()
 
@@ -186,23 +233,36 @@ class Dates(unittest.TestCase):
             self.assertIn("FAIL  every date header", run(f)[1])
             self.assertEqual(run(f, {"bad_dates": ["20260229"]})[1].count("FAIL"), 0)
             self.assertIn("FAIL  every date header", run(f, {"bad_dates": ["20260229"]}, strict=True)[1])
+            # the date list is a multiset: a second 20260229 header is a new finding
+            fx.progress = "20260229: 1\n20260229: 2\n"
+            f = fx.findings()
+            self.assertEqual(run(f, {"bad_dates": ["20260229"]})[0], 1)
+            self.assertEqual(run(f, {"bad_dates": ["20260229", "20260229"]})[0], 0)
         finally:
             fx.cleanup()
 
 
 class Baseline(unittest.TestCase):
-    def test_baseline_records_strings_not_line_numbers_and_round_trips(self):
-        fx = Fixture(HEADER + row(1, sol="[C++](./C++/x.cpp)", status="weird cell"),
+    def test_baseline_records_one_identity_per_finding_never_a_line_number_and_round_trips(self):
+        fx = Fixture(HEADER + row(1, sol="[C++](./C++/x.cpp)", status="weird cell") +
+                     row(2, sol="[C++](./C++/x.cpp)", status="weird cell"),
                      progress="20260229: 1\n")
         try:
             f = fx.findings()
             base = cr.baseline_of(f)
-            self.assertEqual(base["dead_links"], ["./C++/x.cpp"])
-            self.assertEqual(base["bad_status"], ["weird cell"])
+            self.assertEqual(base["dead_links"], [{"id": 1, "target": "./C++/x.cpp"}, {"id": 2, "target": "./C++/x.cpp"}])
+            self.assertEqual(base["bad_status"], [{"id": 1, "status": "weird cell"}, {"id": 2, "status": "weird cell"}])
             self.assertEqual(base["bad_dates"], ["20260229"])
             data_only = {k: v for k, v in base.items() if k != "_comment"}
             self.assertNotIn("line", json.dumps(data_only))
             self.assertEqual(run(f, base)[0], 0)
+            # the file is JSON: what round-trips through json.dumps still excuses the same findings
+            self.assertEqual(run(f, json.loads(json.dumps(base)))[0], 0)
+            # and dropping one entry exposes exactly that finding
+            base["bad_status"].pop()
+            failed, out = run(f, base)
+            self.assertEqual(failed, 1)
+            self.assertIn("LC 2  'weird cell'", out)
         finally:
             fx.cleanup()
 
@@ -231,8 +291,8 @@ class Live(unittest.TestCase):
             progress = fh.read()
         current = cr.baseline_of(cr.findings(readme, progress))
         committed = cr.load_baseline(cr.BASELINE)
-        for key in ("dead_links", "cross_duplicates", "bad_status", "bad_dates"):
-            self.assertEqual(sorted(committed.get(key, [])), sorted(current[key]),
+        for key in cr.BASELINE_KEYS:
+            self.assertEqual(committed.get(key, []), current[key],
                              "%s: run python3 script/check_readme.py --update-baseline" % key)
 
 
