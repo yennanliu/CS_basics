@@ -68,6 +68,7 @@
   var MORE = [
     { id: 'problems',           label: 'problems',   href: 'problems.html' },
     { id: 'patterns',           label: 'patterns',   href: 'patterns.html' },
+    { id: 'cards',              label: 'cards',      href: 'derivation-cards.html' },
     { id: 'lc-similar',         label: 'similar',    href: 'lc-similar.html' },
     { id: 'lc-review-plan',     label: 'review',     href: 'lc-review-plan.html' },
     { id: 'lc-random-picker',   label: 'random',     href: 'lc-random-picker.html' },
