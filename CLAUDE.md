@@ -79,6 +79,28 @@ built index, so a scoring change that breaks queries fails here.
 heredoc inside `validate-pages.yml`, where they could not be run locally, could
 not be tested, and only warned.
 
+### `check_readme.py` is the contract for the index
+
+`e2e-check.js` sees the built pages; it cannot see that a README solution link
+points at a file that is not there, because by then the link is a GitHub URL.
+[`script/check_readme.py`](script/check_readme.py) reads the source: every relative
+solution link resolves, no id sits in both of README's table sets, every main-table
+status cell parses as `<OK|AGAIN|not start> <stars> (<note>)…`, and every date in
+`data/progress.txt` is a real date. A link resolves only to a **regular file inside
+the repo** — a directory, the root itself or a `../` out of the tree "exists" and is
+still not a solution. `.github/workflows/check-readme.yml` runs it on **every** push
+and PR, with no path filter, because README links into twelve top-level trees and a
+rename in any of them leaves a dead link.
+
+It fails on **regressions** against [`data/readme_check_baseline.json`](data/readme_check_baseline.json):
+~30 dead links point at another repo's `C++/` layout and cannot be fixed from here.
+The baseline holds **one entry per finding** — the row's LC number plus the exact
+offending string, never a line number — and each entry excuses exactly one, so a
+known-bad cell reappearing on a second row fails like anything new. `--update-baseline`
+after a fix; `--strict` to see everything. Unlinked solution files are reported, not
+failed — contest problems are filed before their row. Full detail in
+[`doc/utility-scripts.md`](doc/utility-scripts.md).
+
 ### The review plan's data
 
 [`data/progress.txt`](data/progress.txt) — the daily practice log — is the single
