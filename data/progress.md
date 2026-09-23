@@ -1,7 +1,7 @@
 # Progress
 
 
-# 2026-09-23
+# 2026-09-24
 
 - TODO:
 	- `must_lc_list.md` -> done
@@ -18,7 +18,8 @@
 			- heap (done)
 			- linked list (done)
 			- matrix (done)
-			- slide window (ing)
+			- slide window (done)
+			- stack (ing)
 
 
 	- classics_lc_hard.txt
