@@ -261,7 +261,7 @@ function validateGraph(nodes, { problems, sheetSlugs }) {
  * means a whole group of problems — every "Sliding Window" problem, say — would
  * quietly disappear from the page with nothing to show that it had.
  */
-function validateLists(roadmap, { listed, readme }) {
+function validateLists(roadmap, { listed, readme, fileLists }) {
   const errors = [];
   const lists = roadmap.lists || [];
   const nodeIds = new Set(roadmap.nodes.map(node => node.id));
@@ -274,10 +274,30 @@ function validateLists(roadmap, { listed, readme }) {
     if (seen.has(list.id)) errors.push(`duplicate list id "${list.id}"`);
     seen.add(list.id);
     if (!list.label) errors.push(`list "${list.id}" is missing a "label"`);
-    if (!/^(curated|list:.+|readme:.+)$/.test(list.from || '')) {
+    if (!/^(curated|list:.+|readme:.+|file:.+)$/.test(list.from || '')) {
       errors.push(`list "${list.id}" has an unrecognised "from": ${JSON.stringify(list.from)}`);
     }
     if (list.from === 'curated') continue;
+    // A generated file is only as good as the run that wrote it, so its ids are
+    // checked against README here rather than trusted: a stale data/l3_core.json
+    // would otherwise ship a list whose problems have no title.
+    const fileName = (list.from.match(/^file:(.+)$/) || [])[1];
+    if (fileName) {
+      let ids;
+      try {
+        ids = readIdFile(fileName, { fileLists });
+      } catch (err) {
+        errors.push(`list "${list.id}": ${err.message}`);
+      }
+      if (ids) {
+        if (!ids.length) errors.push(`list "${list.id}" reads data/${fileName}.json, which lists no ids`);
+        const unknown = ids.map(String).filter(id => !readme.has(id));
+        if (unknown.length) {
+          errors.push(`list "${list.id}" names #${unknown.slice(0, 5).join(', #')}${unknown.length > 5 ? ', …' : ''}, ` +
+            `which ${unknown.length === 1 ? 'is' : 'are'} not in README`);
+        }
+      }
+    }
     if (!(list.topicFrom || []).length) {
       errors.push(`list "${list.id}" needs a "topicFrom" naming which taxonomies place its problems`);
     }
@@ -396,14 +416,38 @@ function findCycles(nodes) {
 const DIFFICULTY_RANK = { Easy: 0, Medium: 1, Hard: 2, Unknown: 3 };
 
 /**
+ * The ids of a generated `data/<name>.json` — `{ "ids": [...] }`, the shape
+ * script/l3_core.py writes. Tests hand the ids in as `fileLists` so they never
+ * touch the disk; the build reads the committed file.
+ */
+function readIdFile(name, { fileLists } = {}) {
+  if (fileLists && fileLists[name]) return fileLists[name];
+  // Anchored on the repo, not the cwd: build.sh runs from the root, but the
+  // live tests run from site/, and both must read the same committed file.
+  const file = path.join(__dirname, '..', 'data', `${name}.json`);
+  if (!fs.existsSync(file)) {
+    throw new Error(`data/${name}.json does not exist — generate it (data/l3_core.json: python3 script/l3_core.py refresh)`);
+  }
+  const ids = JSON.parse(fs.readFileSync(file, 'utf8')).ids;
+  if (!Array.isArray(ids)) throw new Error(`data/${name}.json has no "ids" array`);
+  return ids;
+}
+
+/**
  * Which problems belong to `list`, as a Set of LeetCode ids.
  *
- * Three kinds of membership, named by the list's `from` field:
+ * Four kinds of membership, named by the list's `from` field:
  *   `curated`        — the ids hand-authored on the nodes themselves
  *   `list:<flag>`    — a flag in data/problem_lists.json (Blind 75, NeetCode …)
  *   `readme:<field>` — a marker in README.md's own tables (google, must)
+ *   `file:<name>`    — the `ids` of a generated data/<name>.json (the L3 core set,
+ *                      which script/l3_core.py derives from the other two)
  */
-function membersOf(list, { roadmap, listed, readme }) {
+function membersOf(list, { roadmap, listed, readme, fileLists }) {
+  const fileMatch = list.from.match(/^file:(.+)$/);
+  if (fileMatch) {
+    return new Set(readIdFile(fileMatch[1], { fileLists }).map(String));
+  }
   if (list.from === 'curated') {
     const ids = new Set();
     roadmap.nodes.forEach(node => node.problems.forEach(id => ids.add(String(id))));
@@ -542,13 +586,14 @@ function buildProblemDictionary(ids, { readme, listedById }) {
  * layout fields the page needs: `row` (authored) plus `col`/`rowSize`, which
  * place the node horizontally within its row in authored order.
  */
-function buildRoadmap(roadmap, problems, sheetTitles = new Map(), listed = []) {
+function buildRoadmap(roadmap, problems, sheetTitles = new Map(), listed = [], fileLists = undefined) {
   const listedById = new Map(listed.map(p => [p.id, p]));
   const context = {
     roadmap,
     readme: problems,
     listed,
     listedById,
+    fileLists,
     topicSources: roadmap.topicSources || {}
   };
 

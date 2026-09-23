@@ -225,6 +225,16 @@ class ParseProgress(TempFileCase):
         self.assertEqual(self.notes[34]["again"], 1)
         self.assertEqual(self.notes[70]["ok"], 1)
 
+    def test_a_status_word_is_matched_as_a_whole_word(self):
+        # "token" contains "ok" and "look" does not make a problem `ok`.
+        self.assertEqual(sr._classify("token issue"), "other")
+        self.assertEqual(sr._classify("look at it"), "other")
+        # The punctuation the log actually writes after a verdict still matches.
+        self.assertEqual(sr._classify("ok*"), "ok")
+        self.assertEqual(sr._classify("again!!!"), "again")
+        self.assertEqual(sr._classify("again !!!, to note"), "again")
+        self.assertEqual(sr._classify("OK"), "ok")
+
     def test_dates_are_newest_first(self):
         multi = sr.parse_progress(write(self.tmpdir, "two.txt",
                                         "20260901: 1\n\n20260909: 1\n"))[0]

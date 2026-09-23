@@ -83,7 +83,8 @@
       { id: 'lc-zh-translate',  label: 'lc-zh-translate', href: 'lc-zh-translate.html' },
       { id: 'lc-algo-demo',     label: 'lc-algo-demo', href: 'lc-algo-demo.html' },
       { id: 'lc-site-data',     label: 'lc-site-data', href: 'lc-site-data.html' },
-      { id: 'lc-faq-add',       label: 'lc-faq-add', href: 'lc-faq-add.html' }
+      { id: 'lc-faq-add',       label: 'lc-faq-add', href: 'lc-faq-add.html' },
+      { id: 'l3-core',          label: 'l3-core',    href: 'l3-core.html' }
     ] },
     { id: 'resources',          label: 'resources',  href: 'resources.html' },
     { id: 'github',             label: 'github',     href: 'https://github.com/yennanliu/CS_basics', external: true }
