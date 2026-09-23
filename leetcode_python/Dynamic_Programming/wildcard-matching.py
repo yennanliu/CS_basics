@@ -129,6 +129,58 @@ class Solution(object):
         return dp[m][n]
 
 
+# V0-0-1
+# IDEA: 2D DP + '*' cases handling (gpt)
+class Solution(object):
+    def isMatch(self, s, p):
+        """
+        :type s: str
+        :type p: str
+        :rtype: bool
+        """
+
+        m, n = len(s), len(p)
+
+        # dp[i][j]:
+        # s[0:i] 是否可以被 p[0:j] match
+        dp = [[False] * (n + 1) for _ in range(m + 1)]
+
+        # empty string matches empty pattern
+        dp[0][0] = True
+
+        # Empty string can only be matched by leading '*'
+        for j in range(1, n + 1):
+            if p[j - 1] == '*':
+                dp[0][j] = dp[0][j - 1]
+            else:
+                break
+
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+
+                # Case 1:
+                # normal character OR '?'
+                if s[i - 1] == p[j - 1] or p[j - 1] == '?':
+                    dp[i][j] = dp[i - 1][j - 1]
+
+                # Case 2:
+                # '*'
+                elif p[j - 1] == '*':
+                    dp[i][j] = (
+                        # Case 2-1:
+                        # '*' matches one or more characters
+                        dp[i - 1][j]
+
+                        or
+
+                        # Case 2-2:
+                        # '*' matches zero characters
+                        dp[i][j - 1]
+                    )
+
+        return dp[m][n]
+
+
 # V1
 # IDEA : GREEDY (two pointers)
 #
