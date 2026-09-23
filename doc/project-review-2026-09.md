@@ -19,6 +19,20 @@ typed from memory. The bar throughout is the one already recorded for this proje
 **Google L3 coding loop** — a clean medium in 35–45 minutes, complexity stated, edges
 handled, out loud — not L5, and not a system-design round.
 
+**Conventions this review takes as given**, confirmed by the owner on 2026-09-23 and
+corrected here where a first draft had them wrong:
+
+- **`# V0` / `// V0` is the favoured, canonical solution** in every file; `V1+` are
+  references. It is *not* a first attempt.
+- **Python is the tier-1 interview language; Java is tier 2.** The Java coverage gap is
+  therefore not on the critical path.
+- **`data/progress.txt` is the primary progress record.** README's status column is
+  updated only when needed, so it lags the log; mastery is measured from the log here,
+  with the README column quoted as corroboration.
+- **The target is DSA foundations, algorithm patterns and clean code** for the L3 loop.
+  `doc/faq/` and `system_design/` are out of scope by decision; documentation effort goes
+  to `doc/cheatsheet/`.
+
 ## Table of Contents
 
 - [Verdict](#verdict)
@@ -49,13 +63,14 @@ site's own test suite is 418 tests, all green. Very little of that needs more of
 
 What the material does not yet do is **convert**. The repo's own records say so:
 
-- Of the 1,266 problems whose status is tracked, **997 are `AGAIN` and 269 are `OK`**.
-  On the lists an interviewer actually draws from, the ratio is worse — Blind 75 is
-  **15 OK / 60 AGAIN**, NeetCode 150 is 24 / 125, Top 100 Liked is 16 / 84. Of 150
-  tracked Hard problems, **6** are OK.
-- **125 problems carry `AGAIN` after twelve or more recorded passes.** The marker
-  accretes and never graduates, so it is a floor, not a measurement — but a floor that
-  low still says the loop from *solved* to *solid* is not closing.
+- In the practice log, the **latest verdict on Blind 75 is `ok` for 14 problems and
+  `again` for 34**, and 25 have never received a verdict at all. NeetCode 150 is 18 `ok`
+  / 69 `again`; Top 100 Liked 22 / 53. README's status column, updated less often, says
+  the same thing — 15 `OK` / 60 `AGAIN` on Blind 75, **6 `OK` of 150 tracked Hards**.
+- **83 problems whose latest verdict is `again` have been attempted eight or more
+  times** (LC 300, 207, 105, 322, 139, 97, 394, 153, 295, 104, 133, 79 …); only 12
+  problems with that many attempts end on `ok`. README's marker agrees — 125 rows carry
+  `AGAIN` after 12+ passes. The loop from *solved* to *solid* is not closing.
 - The pass-count curve is steepest exactly where a coding round lives: Recursion
   averages **7.4** passes per problem, BST 7.0, Stack and Backtracking 6.3, BFS 6.2,
   Tree 6.1 — against Math 1.1, SQL 1.6, Bit Manipulation 1.8.
@@ -63,19 +78,20 @@ What the material does not yet do is **convert**. The repo's own records say so:
   anything, Java has **no test tree**, and the August readiness run found a 31–44%
   submission rejection rate that is *higher* on Easy than on Hard.
 
-So the highest-value work is no longer adding — it is closing loops: turning `AGAIN`
-into `OK` on a fixed 75-problem set under a stated bar, adding a timed session mode to a
+So the highest-value work is no longer adding — it is closing loops: turning `again`
+into `ok` on a fixed 75-problem set under a stated bar, adding a timed session mode to a
 site that has every other tool, teaching derivation (brute force → observation →
-template) in the sheets that currently open at the answer, and cleaning the solution
-archive so a reader can find the one canonical answer among an average of three.
+template) in the sheets that currently open at the answer, and making each file's `V0`
+read as the model answer it is meant to be — which, for an L3 loop that scores coding
+quality, is a clean-code job as much as a tidying one.
 
 | Axis | Grade | The one thing that would move it |
 |---|---|---|
-| LC coverage | **A** (breadth) / **C** (mastery) | Run `/lc-again` as a campaign over Blind 75's 60 `AGAIN` rows under the four-question bar |
-| Solution code | **B−** | Mark one canonical solution per file; strip the AI-attribution and duplicate-javadoc leftovers; emit the docstring's examples as a runnable check |
-| Docs | **B** | A one-screen "in the room" block at the top of each tier-5 sheet; an index for `doc/` that says which plan is current |
+| LC coverage | **A** (breadth) / **C** (mastery) | Run `/lc-again` as a campaign over Blind 75's 34 `again` + 25 unverdicted problems, under the four-question bar, measured in the log |
+| Solution code | **B−** | Make `V0` self-evidently the model answer: strip the AI-attribution and debug narration, calm the `NOTE !!!` commentary, dedupe the javadoc; emit the docstring's examples as a runnable check |
+| Docs | **B** | A one-screen "in the room" block at the top of each tier-5 cheatsheet; an index for `doc/` that says which plan is current |
 | Site | **B+** | A timed practice mode wired to the random picker and the log |
-| Direction | **B** | Stop adding problems; ship a named "L3 core" list and measure OK-share on it monthly |
+| Direction | **B** | Stop adding problems; ship a named "L3 core" list and measure its `ok` share from the log monthly |
 
 ---
 
@@ -91,14 +107,16 @@ archive so a reader can find the one canonical answer among an average of three.
 | Broken solution links | 42 — 16 Python, 21 C++ (the `C++/` tree is not in the repo), 4 Shell, 1 MySQL | link check |
 | Solution files no README row links to | 53 Python, **347 Java** (22% of `LeetCodeJava/`) | tree walk |
 | `time = O(...)` annotated | Python 2,867 / 2,897 (99%) · Java 1,247 / 1,554 (80%) | grep |
-| Solution variants (`# V0`, `# V1`…) | Python 8,479 blocks over 2,897 files (avg 2.9; 753 files with ≥ 4) · Java 5,990 over 1,554 | grep |
+| Solution variants (`# V0` canonical, `# V1`… references) | Python 8,479 blocks over 2,897 files (avg 2.9; 753 files with ≥ 4) · Java 5,990 over 1,554 | grep |
 | Files carrying tool attribution in the IDEA line (`(gpt)`, `fixed by gemini`) | 457 Java, 202 Python | grep |
+| Clean-code signals, Python | 1,027 `NOTE !!!` comments in 395 files; 875 files with triple-quoted comment blocks inside function bodies; 2,750 `class Solution(object)`; 205 files with type hints; 42 with `xrange` / print-statement spellings | grep |
 | Files that execute anything (`assert`, `__main__`, `main()`) | 73 Python, 2 Java; `leetcode_java/src/test` does not exist on master | grep |
 | Cheatsheets | 135 files, 145,163 lines; 14 sheets over 1,900 lines; every fence tagged; 42 mention an invariant | `doc/cheatsheet/` |
 | FAQs | 49, 100% translated | `doc/faq/` |
-| Practice log | 827 days, 2020-04-29 → 2026-09-23; 30 of the last 30 days, 87 of the last 90; 3,261 attempt mentions over 860 distinct problems; one impossible date (`20260229`, line 269) | `data/progress.txt` |
+| Practice log | 827 days, 2020-04-29 → 2026-09-23; 30 of the last 30 days, 87 of the last 90; 3,261 attempt mentions over 860 distinct problems; 405 problems touched in 2026 (latest verdict: 207 `again`, 33 `ok`, 159 none); one impossible date (`20260229`, line 269) | `data/progress.txt` |
+| Latest log verdict on the curated lists | Blind 75: 14 `ok` · 34 `again` · 25 no verdict — NC150: 18 · 69 · 62 — Top 100: 22 · 53 · 24 | `data/progress.txt` × `problem_lists.json` |
 | Curated-list coverage | Blind 75 · NC150 · NC250 · Top 100: **100% indexed**; NeetCode All 905 / 972 (29 of the 67 missing are the JavaScript-only group) | `data/problem_lists.json` |
-| Java on the curated lists | Blind 75 and Top 100: complete; NC150 lacks one (LC 704); 300 `google`-tagged rows and 13 `MUST` rows have no Java | solution column |
+| Java (tier 2) on the curated lists | Blind 75 and Top 100: complete; NC150 lacks one (LC 704); 300 `google`-tagged rows and 13 `MUST` rows have no Java | solution column |
 | Site | 18 hand-written pages, 36 visualizers, 29 roadmap topics, 208 quiz questions, 14 agent skills; 418 unit tests passing | `site/`, `data/`, `.claude/skills/` |
 
 ---
@@ -121,30 +139,40 @@ therefore about the problems already here.
 
 ### 1.2 The mastery record says "not ready" on exactly the lists an interviewer draws from
 
-| List | Indexed | `OK` | `AGAIN` | OK share |
-|---|---|---|---|---|
-| Blind 75 | 75 | 15 | 60 | 20% |
-| NeetCode 150 | 150 | 24 | 125 | 16% |
-| NeetCode 250 | 250 | 39 | 206 | 16% |
-| Top 100 Liked | 100 | 16 | 84 | 16% |
-| All tracked | 1,266 | 269 | 997 | 21% |
+The practice log is the primary record, so the measure here is *the latest verdict the
+log gives each problem* — `ok`, `again`, or nothing (a `todo` or a bare number). README's
+status column is quoted beside it as the slower-moving corroboration.
 
-By difficulty: Easy 168 OK / 171 AGAIN, Medium 95 / 682, **Hard 6 / 144**.
+| List | Indexed | Log: latest `ok` | Log: latest `again` | Log: no verdict | README `OK` / `AGAIN` |
+|---|---|---|---|---|---|
+| Blind 75 | 75 | 14 (19%) | 34 | 25 | 15 / 60 |
+| NeetCode 150 | 150 | 18 (12%) | 69 | 62 | 24 / 125 |
+| NeetCode 250 | 250 | 21 (8%) | 99 | 122 | 39 / 206 |
+| Top 100 Liked | 100 | 22 (22%) | 53 | 24 | 16 / 84 |
 
-This is a floor rather than a measurement — [`lc-readiness-guide.md`](./lc-readiness-guide.md)
-already explains why (`AGAIN` is only ever *added*), and `/lc-again` exists to fix it.
-But `/lc-again` is a per-problem tool and the backlog is a list. **Recommendation:**
-run it as a campaign with a fixed scope and a finish line, not opportunistically:
+The two records agree. README adds the difficulty split — Easy 168 `OK` / 171 `AGAIN`,
+Medium 95 / 682, **Hard 6 / 144** — and the log adds the shape of the backlog: **a third
+of Blind 75 has never been given a verdict at all.** Those 25 are not failures; they are
+attempts that were logged without the `(ok)` / `(again)` the whole schedule keys on.
 
-1. Scope: the 60 `AGAIN` rows on Blind 75. Sixty problems is four weeks at two a day.
+Both markers are floors rather than measurements — [`lc-readiness-guide.md`](./lc-readiness-guide.md)
+explains why (`AGAIN` is only ever *added*), and `/lc-again` exists to graduate a row when
+the owner chooses to update README. But `/lc-again` is a per-problem tool and the backlog
+is a list. **Recommendation:** run it as a campaign with a fixed scope and a finish line,
+not opportunistically:
+
+1. Scope: Blind 75's 34 `again` and 25 unverdicted problems. Fifty-nine problems is four
+   weeks at two a day.
 2. Bar: the four `/lc-again` questions — re-derived unaided, invariant stated, the line
    that sets the complexity named, edges handled — plus the readiness guide's time box
-   (under 20 minutes for a medium).
-3. Finish line: Blind 75 OK share ≥ 80%. Then NeetCode 150's remaining 50.
+   (under 20 minutes for a medium). A pass is logged as `(ok)`; anything short as
+   `(again)`. **Every attempt gets a verdict** — that alone closes the 25.
+3. Finish line: Blind 75 latest-`ok` share ≥ 80% in the log. Then NeetCode 150's 131.
 
-Publish the share on the landing page next to the existing `269 OK / 997 AGAIN` counts
-so the number is looked at. Both counts are already computed at build time; the list
-intersection is a five-line addition to `build-site.js`.
+Publish the share on the landing page beside the existing `269 OK / 997 AGAIN` counts so
+the number is looked at — computed from `progress.json`, which `build-review-plan.js`
+already derives from the log, so it moves the day the log does rather than the day
+README is next edited.
 
 ### 1.3 The cost curve is steepest on interview-core topics
 
@@ -173,8 +201,16 @@ Average recorded passes per tracked problem, by main README section:
 Backtracking is 34 for 34 `AGAIN`. Recursive structure costs three to six times what
 array manipulation costs, and a Google L3 loop is mostly recursive structure.
 
-**Recommendation:** a *derivation card* for each of the ~40 highest-cost problems (12+
-passes, interview-core section), written once and reviewed instead of re-solved:
+The log names the individuals. **83 problems end on `again` after eight or more logged
+attempts**; the most-attempted are LC 300 (LIS), 207 (Course Schedule), 105 (build tree
+from preorder/inorder), 322 (Coin Change), 139 (Word Break), 97 (Interleaving String),
+394 (Decode String), 153 (rotated-array minimum), 295 (median stream), 104, 133, 79,
+323, 261, 297, 206, 1143, 32, 310, 776, 518, 647, 53, 316. Only 12 problems with that
+many attempts end on `ok`.
+
+**Recommendation:** a *derivation card* for each of the ~40 highest-cost problems (the
+list above, extended by README's 12+-pass `AGAIN` rows in interview-core sections),
+written once and reviewed instead of re-solved:
 the invariant in one sentence, the recursion's contract (what the call returns, what it
 may assume), the one line that sets the complexity, the two edges that keep failing.
 The readiness guide's "Acting on it" §3 already says *"write invariants for the chronic
@@ -232,16 +268,21 @@ that does not match one grammar (`(OK|AGAIN)\*{0,}( \(\d+\))?( \(MUST\))?`), and
 unparseable log date — run from `validate-pages.yml`. The grammar migration is one regex
 pass over 1,266 cells; the 420 spellings collapse to a few dozen.
 
-### 1.7 Pick the interview language and say so
+### 1.7 Python is the interview language; treat the Java gap as tier 2
 
 Python has 2,897 solutions to Java's 1,210. Both cover Blind 75 and Top 100 fully; NC150
-lacks only LC 704 in Java. But 300 `google`-tagged rows and 13 `MUST` rows have no Java.
-Nothing in the repo states which language the interview will be in. If it is Java, those
-13 `MUST` rows are the first thing `/lc-java` should close; if it is Python, the Java gap
-is not a priority at all and the `1244 vs 2898` framing in `CLAUDE.md` is measuring the
-wrong thing. **Recommendation:** one line in the README's Resource section naming the
-interview language, and a `--must` flag on `find_missing_java.py` so the report that
-matters is one command.
+lacks only LC 704 in Java; 300 `google`-tagged rows and 13 `MUST` rows have no Java. The
+owner's decision is that **Python is the language the interview will be in** and Java —
+used for LeetCode earlier — is the second tier. Two things follow:
+
+- **The Java gap is not on the critical path.** `CLAUDE.md`'s framing of `/lc-java` as
+  closing the directory "furthest behind" (`1244` Java rows against `2898` Python)
+  measures a tier-2 goal; the recommendation is to say so where it is stated, so that a
+  future session does not spend a week on Java parity. `/lc-java` stays useful for
+  filing a Java draft when one exists; it should not drive what gets solved.
+- **Nothing in the repo records the decision.** One line in the README's Resource section
+  — *Python first; Java kept for reference* — is enough, and it is the line every skill
+  and review will otherwise have to rediscover.
 
 ---
 
@@ -251,21 +292,24 @@ The house layout is good and consistently applied: 2,897 of 2,897 Python files o
 the problem docstring and a `# V0` block; 99% carry a `time =` line. The problem is
 what sits inside that layout.
 
-### 2.1 An average of three solutions per file, with no canonical one marked
+### 2.1 `V0` is the canonical solution — and nothing tells the reader so
 
 8,479 `# V…` blocks over 2,897 Python files; 753 files carry four or more variants. Java
-is 5,990 blocks over 1,554 files. By convention `V0` is the author's own and `V1+` are
-references — but `V0` is often the *first* attempt (see 2.2), and a reader preparing for
-an interview needs the *best* one and the reason it is best, not the chronology.
+is 5,990 blocks over 1,554 files. The convention is clear to the owner: **`V0` is the
+favoured solution, the one to learn; `V1+` are references.** It is stated nowhere a
+reader would see it — not in the files, not in `CLAUDE.md`'s description of the house
+layout (`# V0` → `# IDEA` → `# time = …`), not on the site, whose explorer links to the
+top of the file. A visitor sees three to five solutions and no signal about which is the
+model answer.
 
-The cheatsheet style guide already states the rule for new cheatsheet code: *one
-canonical solution per problem; a second variant needs a stated reason.* The solution
-tree has no equivalent. **Recommendation:** adopt a marker the skills write and the site
-can read — `# V0 ★` or a `# CANONICAL` line — and have `/lc-python` and `/lc-java` set it.
-Then the explorer and the roadmap can link straight to the canonical block's anchor, and a
-later pass can fold the near-duplicate `V0'`/`V0''` spellings the August cheatsheet review
-counted (~450 in the sheets alone). Do not delete variants in that pass; the `// V`
-marker names the method in Java, and `CLAUDE.md` records what renumbering costs.
+**Recommendation:** make the convention visible, not add a new one. One sentence in the
+house-layout description in `CLAUDE.md` and both filing skills (*`V0` is the solution to
+learn; later blocks are references*); a `# V0` comment line that says the same in the
+file template `/lc-python` writes; and the explorer and roadmap linking to `V0`'s line
+(`#L<n>`) rather than the file top. A later pass can fold the near-duplicate `V0'`/`V0''`
+spellings the August cheatsheet review counted (~450 in the sheets alone) — without
+deleting variants, because the `// V` marker names the method in Java and `CLAUDE.md`
+records what renumbering costs.
 
 ### 2.2 Tool attribution and debugging commentary have leaked into the archive
 
@@ -276,9 +320,10 @@ assistant's own commentary as code comments — *"1. Correctly find the maximum 
 The original loop was missing the comparison logic"* — and **two** javadoc blocks stating
 the complexity in two formats (`Time Complexity: O(N)` then `time = O(N)`).
 
-None of this helps a reader, and some of it hurts: *"fixed by gemini"* on a `V0` block
-tells them the author's version was wrong without saying where, which is the one thing a
-learner would want to know. **Recommendation:** a normalisation pass in the spirit of
+None of this helps a reader, and some of it hurts: *"fixed by gemini"* sits on `V0` —
+the canonical block — and tells them the model answer needed a fix without saying what
+the fix was, which is the one thing a learner would want to know. **Recommendation:** a
+normalisation pass in the spirit of
 `db49955` (the 1,481-file Java header cleanup) — move the attribution to a single
 trailing `# ref:` line, delete debugging narration, dedupe the complexity javadoc — and
 one rule added to both filing skills' `## Do not`: *no tool attribution in the IDEA line;
@@ -312,6 +357,31 @@ complete, the higher-value check is *correctness*: the complexity quiz's grader
 (`site/complexity.js`) can already parse and normalise a bound, so a script that
 compares each file's `time =` line against the README row's complexity column would
 find the ones that disagree. Nothing currently compares them.
+
+### 2.5 Clean code is a scored signal, and `V0` is what gets reproduced under pressure
+
+An L3 loop scores *coding* as one of four signals — naming, structure, idiom, the
+absence of noise — and what a candidate writes in 35 minutes is whatever their hands
+have practised. In this archive that is `V0`. Sampled at LC 438 (filed 2026-09-22),
+`V0` is a correct O(n) fixed-window `Counter` solution, and inside its twenty-line loop
+there are three triple-quoted comment blocks and two `# NOTE !!!` markers saying *add the
+new char anyway*, *shrink the left pointer*. Across the tree:
+
+- **1,027 `NOTE !!!` comments in 395 files**, and **875 files with triple-quoted string
+  blocks used as comments inside function bodies**;
+- **2,750 files declare `class Solution(object)`** — the Python 2 spelling, which
+  LeetCode's Python 3 runtime accepts but no 2026 codebase writes — against **205 files
+  with type hints**; 42 still carry `xrange` or print-statement spellings;
+- the tool attribution and debug narration of §2.2.
+
+These are learning notes, and useful as such — but they live *inside* the block that is
+meant to be the model answer, so the model answer is not what a clean submission would
+look like. **Recommendation:** a house style for `V0` only, enforced by `/lc-python`
+going forward: type-hinted signature (`def findAnagrams(self, s: str, p: str) -> List[int]`),
+the reasoning in the `# IDEA` block above the code, at most one short comment per
+non-obvious line inside it, no shouting. Then a one-off clean-`V0` pass over the **L3
+core set only** (§5.3, ~100 files) — not the archive — and `lc-coach`'s coding rubric
+run against a handful of them to check the style reads as *Hire* on that signal.
 
 ---
 
@@ -367,15 +437,15 @@ taxonomy, as it should be.)
 exists for this purpose). Merge the three prep plans into one that names the L3 bar, and
 fold `code_interview_general_cheatsheet.md` into a neighbour as the August review said.
 
-### 3.4 Say which docs serve the coding loop
+### 3.4 The FAQs and system design are out of scope — label them so
 
 Forty-nine FAQs (Java, JVM, Kafka, Spark, Redis, Flink, Airflow) and eleven
-`system_design/` case studies — each a single file — are backend and data-engineering
-interview material. They are good, 100% translated, and not what a Google L3 coding
-loop tests. The project's own memory says to deprioritise system design until the goal
-changes. That is the right call; the missing step is to *label* it, on the landing page
-and in `doc/README.md`, so a visitor preparing for a coding loop does not spend the
-evening in `faq_kafka.md`.
+`system_design/` case studies are backend and data-engineering interview material, not
+what a Google L3 coding loop tests. The owner's decision is that they stay as they are
+and documentation effort goes to `doc/cheatsheet/`. This review makes no recommendation
+about their content. The one thing worth doing is on the *landing page*, not in those
+trees: mark them as outside the coding-loop path, so a visitor preparing for one does
+not spend the evening in `faq_kafka.md`.
 
 ### 3.5 The formatting rules are holding
 
@@ -423,16 +493,20 @@ finally it prints the `progress.txt` line for the session (`1234(ok), 567(again!
 ready to paste. Entirely client-side, no new data, and it reuses three things the site
 already owns — the list picker, the complexity grader and the log grammar.
 
-### 4.3 Three progress records that do not talk to each other
+### 4.3 Three progress records, and the primary one is not the one the site leads with
 
-Progress lives in three places: the README status column (`OK`/`AGAIN`, hand-edited via
-`/lc-again`), `data/progress.txt` (the log, via `/lc-log`), and the roadmap's per-browser
-`localStorage` checkboxes, which the page itself says are *"stored in this browser only
-and never uploaded"*. The review plan already merges the first two at build time into
-`progress.json`. **Recommendation:** have the roadmap read the same `progress.json` and
-render `OK` as done and `AGAIN` as in-progress, keeping `localStorage` only for the
-browser's own ticks. Then the roadmap's locks mean something, and a candidate sees one
-picture of where they are.
+Progress lives in three places: `data/progress.txt` (the log — **the primary record**,
+written daily via `/lc-log`), the README status column (`OK`/`AGAIN`, updated only when
+needed via `/lc-again`, so it lags), and the roadmap's per-browser `localStorage`
+checkboxes, which the page itself says are *"stored in this browser only and never
+uploaded"*. The review plan already compiles the log into `progress.json` at build time
+and folds README in. But the landing page's `269 OK / 997 AGAIN` is the README column,
+and the roadmap reads neither. **Recommendation:** make `progress.json` — the log's
+compiled form — the source for every progress display: the landing counts become
+*latest verdict in the log*, the roadmap renders `ok` as done and `again` as in-progress,
+and `localStorage` keeps only the browser's own ticks. Then the roadmap's locks mean
+something, and a candidate sees one picture of where they are that moves the day the
+log does.
 
 ### 4.4 The explorer's facets do not include the ones a candidate uses
 
@@ -488,8 +562,8 @@ scores A, more solved problems cannot move the overall grade."* Volume scores A.
 2. **Verification (weeks 1–12):** asserts before running, on every filing (§2.3).
 3. **Cost curve (weeks 1–8):** derivation cards for the 40 highest-cost problems (§1.3);
    review the card, not the problem.
-4. **Mastery (weeks 2–10):** the Blind 75 `/lc-again` campaign to 80% OK (§1.2), then
-   NeetCode 150.
+4. **Mastery (weeks 2–10):** the Blind 75 campaign to 80% latest-`ok` in the log (§1.2),
+   then NeetCode 150.
 5. **Volume:** none. Freeze the problem count at 3,270 for the quarter and say so in the
    README.
 
@@ -500,17 +574,19 @@ Ship a named list — call it **`l3-core`** — in `data/roadmap.json` (`from: c
 which is roughly 100 problems. Then the numbers to watch each month, all of which the
 build already computes or one step from it:
 
-| Metric | Now | Target (90 days) |
-|---|---|---|
-| OK share on Blind 75 | 20% | 80% |
-| OK share on NeetCode 150 | 16% | 50% |
-| Problems `AGAIN` at 12+ passes | 125 | < 60 |
-| Avg passes — Recursion / BST / Backtracking | 7.4 / 7.0 / 6.3 | flat (stop re-solving them) |
-| Timed sessions logged | 0 in the log's grammar | 24 |
-| Submission rejection rate (readiness script) | 31–44% | < 25%, Easy below Hard |
+| Metric | Source | Now | Target (90 days) |
+|---|---|---|---|
+| Latest-`ok` share on Blind 75 | log | 19% (14/75) | 80% |
+| Blind 75 problems with no verdict | log | 25 | 0 |
+| Latest-`ok` share on NeetCode 150 | log | 12% (18/150) | 50% |
+| Problems ending on `again` after 8+ attempts | log | 83 | < 40 |
+| Avg passes — Recursion / BST / Backtracking | README stars | 7.4 / 7.0 / 6.3 | flat (stop re-solving them) |
+| Timed sessions logged | log | 0 in the log's grammar | 24 |
+| Submission rejection rate | readiness script | 31–44% | < 25%, Easy below Hard |
 
 `eval_lc_readiness.py --json data/readiness-YYYY-MM.json` is already the tracking
-command; the guide says monthly. Add the OK-share line to its output and it is done.
+command; the guide says monthly. Add the log-based `ok`-share lines to its output and it
+is done.
 
 ---
 
@@ -521,22 +597,22 @@ weekend, **L** a multi-week thread.
 
 | # | Action | Axis | Effort | Where |
 |---|---|---|---|---|
-| 1 | Blind 75 `/lc-again` campaign to 80% OK, under the four-question bar | Mastery | L (practice time, not code) | `README.md` status column |
+| 1 | Blind 75 campaign to 80% latest-`ok` in the log, under the four-question bar; every attempt gets a verdict | Mastery | L (practice time, not code) | `data/progress.txt` via `/lc-log`; README via `/lc-again` when the owner chooses |
 | 2 | Timed session mode: countdown, complexity check before reveal, `progress.txt` line out | Site | M | `site/pages/lc-random-picker.html` or a new `lc-session.html` |
 | 3 | `/lc-python` emits the docstring examples as `__main__` asserts; CI runs them | Code | S + S | `.claude/skills/lc-python/SKILL.md`, `python-syntax-check.yml` |
 | 4 | Derivation cards for the ~40 highest-cost problems | Docs | L | new `doc/derivation_cards.md`, linked from the Note column |
 | 5 | One-screen "in the room" block under the Scope line of each tier-5 sheet; land PR #155 | Docs | L | `doc/cheatsheet/*.md`, `build-site.js` card render |
 | 6 | Gate the index: dead links, unlinked files, duplicate ids, status grammar, log dates | Coverage | M | new `script/check_readme.py`, `validate-pages.yml` |
-| 7 | Normalise the archive: attribution → `ref:` line, delete debug narration, dedupe javadoc | Code | M (scripted) | `leetcode_python/`, `leetcode_java/` |
-| 8 | Canonical-solution marker written by the filing skills, read by the site | Code | S then L | skills, `build-leetcode.js` |
+| 7 | Normalise the archive: attribution → `ref:` line, delete debug narration, dedupe javadoc; then a clean-`V0` pass (type hints, no `NOTE !!!`, reasoning in `# IDEA`) over the L3 core set only | Code | M (scripted) + M | `leetcode_python/`, `leetcode_java/` |
+| 8 | Say that `V0` is the canonical solution — in `CLAUDE.md`'s layout description, both filing skills and the file template; site links to `V0`'s line | Code | S | `CLAUDE.md`, skills, `build-leetcode.js` |
 | 9 | Explorer facets: status, curated list, language | Site | S | `site/pages/lc-explorer.html`, `build-leetcode.js` |
-| 10 | Roadmap reads `progress.json`; `OK` = done | Site | S | `site/roadmap.js`, `build-roadmap.js` |
-| 11 | `l3-core` list + OK-share on the landing page and in the readiness JSON | Direction | S | `data/roadmap.json`, `build-site.js`, `eval_lc_readiness.py` |
+| 10 | Roadmap and landing counts read `progress.json` (the log); latest `ok` = done | Site | S | `site/roadmap.js`, `build-roadmap.js`, `build-site.js` |
+| 11 | `l3-core` list + its log-based `ok` share on the landing page and in the readiness JSON | Direction | S | `data/roadmap.json`, `build-site.js`, `eval_lc_readiness.py` |
 | 12 | `doc/README.md` (current / historical / vendored); archive the two superseded prep plans | Docs | S | `doc/` |
-| 13 | Explain `OK` / `AGAIN` on the landing page; label the backend FAQs and system design as non-coding-loop | Site | S | `build-site.js` |
+| 13 | Explain `ok` / `again` on the landing page; mark the FAQs and system design as outside the coding-loop path | Site | S | `build-site.js` |
 | 14 | Mark imported rows (`imported` status) so counts and facets can distinguish them; make the 21 duplicates a build error | Coverage | M | `fix_readme_tags.py`, `build-roadmap.js` |
-| 15 | Finish Java `time =` coverage (307 files) with `/add-time-space`; then diff against the README column | Code | M | `leetcode_java/` |
-| 16 | Name the interview language; close the 13 `MUST` rows without Java if it is Java | Coverage | S | `README.md`, `/lc-java` |
+| 15 | Finish Java `time =` coverage (307 files) with `/add-time-space` — tier 2, when there is nothing above it to do | Code | M | `leetcode_java/` |
+| 16 | Record "Python first, Java for reference" in README; re-word `CLAUDE.md`'s `/lc-java` framing so Java parity stops reading as a goal | Coverage | S | `README.md`, `CLAUDE.md` |
 | 17 | Sweep stale `backup-*` / `worktree-*` branches; close or land the eleven open PRs | Direction | S | GitHub |
 
 Items 1–5 are the ones that move the grade. Items 6–17 are the ones that stop it
@@ -615,6 +691,32 @@ find doc/faq -name '*.md' | wc -l
 # Practice log
 grep -oE "^[0-9]{8}" data/progress.txt | sort -u | wc -l
 grep -oE "[0-9]{1,4}\((again!*|ok\*?|todo)" data/progress.txt | sed -E 's/.*\(//; s/[!*]//g' | sort | uniq -c
+
+# Practice log: latest verdict per problem, then the share per curated list
+python3 - <<'EOF'
+import json, re, collections
+txt = open('data/progress.txt').read(); lists = json.load(open('data/problem_lists.json'))
+latest, cur = {}, None
+for line in txt.split('\n'):
+    m = re.match(r'^(\d{8})', line)
+    if m: cur = m.group(1)
+    if not cur: continue
+    for num, note in re.findall(r'(?<![\w\d])(\d{1,4})\(([^)]*)\)', line):
+        n = note.lower()
+        latest[num] = 'again' if 'again' in n else 'ok' if re.search(r'\bok\b', n) else 'none'
+    bare = re.sub(r'\d{1,4}\([^)]*\)', '', line)
+    for num in re.findall(r'(?<![\w\d])(\d{1,4})(?=[,| \t]|$)', bare):
+        if not re.match(r'^\d{8}$', num): latest[num] = 'none'
+for L in ('blind75', 'neetcode150', 'neetcode250', 'top100liked'):
+    ids = [str(p['id']) for p in lists['problems'] if L in p['lists']]
+    print(L, collections.Counter(latest.get(i, 'never') for i in ids))
+EOF
+
+# Clean-code signals in the Python archive
+grep -c "NOTE !!!" leetcode_python/*/*.py | awk -F: '{s+=$2} END{print s}'
+grep -lE '^\s{8,}"""' leetcode_python/*/*.py | wc -l
+grep -l "class Solution(object)" leetcode_python/*/*.py | wc -l
+grep -lE "def [a-zA-Z_]+\(self, [^)]*: " leetcode_python/*/*.py | wc -l
 
 # Site
 npm test --prefix site           # 418 tests

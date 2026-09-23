@@ -15,6 +15,15 @@ tree 裡算出來的；沒有一個是憑記憶寫的。全文的標準是這個
 **Google L3 coding loop** — 35–45 分鐘內乾淨地解出一題 medium、說出複雜度、處理好邊界、全程出聲 —
 不是 L5，也不是 system design 那一輪。
 
+**本審查視為既定的慣例**，由作者於 2026-09-23 確認；初稿寫錯的地方已在此修正：
+
+- **`# V0` / `// V0` 是每個檔案裡偏好的、正典的解法**；`V1+` 是參考。它*不是*第一次嘗試。
+- **Python 是第一梯隊的面試語言；Java 是第二梯隊。** 因此 Java 的覆蓋缺口不在關鍵路徑上。
+- **`data/progress.txt` 是主要的進度紀錄。** README 的 status 欄只在需要時更新，所以落後於紀錄；
+  這裡的掌握度從紀錄量測，README 欄位作為佐證引用。
+- **目標是 L3 loop 所需的 DSA 基礎、演算法模式與 clean code。** `doc/faq/` 與 `system_design/`
+  依決定不在範圍內；文件方面的心力放在 `doc/cheatsheet/`。
+
 ## 目錄
 
 - [結論](#結論)
@@ -42,27 +51,29 @@ roadmap、208 題的複雜度測驗、一個由六年練習紀錄驅動的間隔
 
 這套教材還沒做到的，是**轉換**。repo 自己的紀錄就這麼說：
 
-- 在 1,266 個有追蹤狀態的題目中，**997 個是 `AGAIN`，269 個是 `OK`**。
-  在面試官真正會抽題的清單上，比例更差 — Blind 75 是 **15 OK / 60 AGAIN**，NeetCode 150 是
-  24 / 125，Top 100 Liked 是 16 / 84。150 個有追蹤的 Hard 題裡，**6** 個是 OK。
-- **125 個題目在記錄了十二次以上之後仍然掛著 `AGAIN`。** 這個標記只會累積、永不畢業，所以它是地板而不是
-  量測 — 但地板低到這個程度，仍然說明從*解出*到*穩固*的迴圈沒有閉合。
+- 在練習紀錄裡，**Blind 75 最新一次的判定是 `ok` 的有 14 題、`again` 的有 34 題**，還有 25 題從來沒有
+  得到任何判定。NeetCode 150 是 18 `ok` / 69 `again`；Top 100 Liked 是 22 / 53。更新頻率較低的 README
+  status 欄說的是同一件事 — Blind 75 是 15 `OK` / 60 `AGAIN`，**150 個有追蹤的 Hard 題裡 6 個 `OK`**。
+- **83 個題目在嘗試八次以上之後，最新判定仍是 `again`**（LC 300、207、105、322、139、97、394、153、
+  295、104、133、79 …）；嘗試那麼多次而最後是 `ok` 的只有 12 題。README 的標記也一致 — 125 列在 12 次
+  以上之後仍掛著 `AGAIN`。從*解出*到*穩固*的迴圈沒有閉合。
 - 通過次數曲線最陡的地方，正是 coding round 所在之處：Recursion 平均每題 **7.4** 次，BST 7.0，
   Stack 與 Backtracking 6.3，BFS 6.2，Tree 6.1 — 對比 Math 1.1、SQL 1.6、Bit Manipulation 1.8。
 - 驗證幾乎不存在於產出物中：**2,897 個 Python 檔案裡只有 73 個**會執行任何東西，Java **沒有測試目錄**，
   而八月的 readiness 評估發現 31–44% 的提交被拒率，且 Easy *高於* Hard。
 
-所以最有價值的工作已不再是新增 — 而是閉合迴圈：在一組固定的 75 題上、以明確的標準把 `AGAIN` 轉成 `OK`；
+所以最有價值的工作已不再是新增 — 而是閉合迴圈：在一組固定的 75 題上、以明確的標準把 `again` 轉成 `ok`；
 給一個其他工具都有的網站加上限時練習模式；在目前一開頭就給答案的 cheatsheet 裡教推導
-（暴力解 → 觀察 → 模板）；並清理解題存檔，讓讀者能在平均三個版本裡找到那一個正典解答。
+（暴力解 → 觀察 → 模板）；並讓每個檔案的 `V0` 讀起來就是它應該是的範本解答 — 對一個會評 coding 品質的
+L3 loop 來說，這既是整理，也是 clean code 的工作。
 
 | 軸線 | 分數 | 最能推動它的一件事 |
 |---|---|---|
-| LC 覆蓋率 | **A**（廣度）/ **C**（掌握度） | 以四個問題的標準，把 `/lc-again` 當成一場戰役跑過 Blind 75 的 60 個 `AGAIN` |
-| 解題程式碼 | **B−** | 每個檔案標出一個正典解法；清掉 AI 署名與重複 javadoc 的殘留；把 docstring 的範例輸出成可執行的檢查 |
-| 文件 | **B** | 每份 tier-5 sheet 頂端放一頁「在面試間裡」區塊；給 `doc/` 一份說明哪份計畫是現行版的索引 |
+| LC 覆蓋率 | **A**（廣度）/ **C**（掌握度） | 以四個問題的標準、在紀錄中量測，把 `/lc-again` 當成一場戰役跑過 Blind 75 的 34 個 `again` 與 25 個未判定 |
+| 解題程式碼 | **B−** | 讓 `V0` 一眼就是範本解答：清掉 AI 署名與除錯旁白、收斂 `NOTE !!!` 註解、去重 javadoc；把 docstring 的範例輸出成可執行的檢查 |
+| 文件 | **B** | 每份 tier-5 cheatsheet 頂端放一頁「在面試間裡」區塊；給 `doc/` 一份說明哪份計畫是現行版的索引 |
 | 網站 | **B+** | 一個接上 random picker 與練習紀錄的限時練習模式 |
-| 方向 | **B** | 停止新增題目；出一份命名為「L3 core」的清單，每月量它的 OK 佔比 |
+| 方向 | **B** | 停止新增題目；出一份命名為「L3 core」的清單，每月從紀錄量它的 `ok` 佔比 |
 
 ---
 
@@ -78,14 +89,16 @@ roadmap、208 題的複雜度測驗、一個由六年練習紀錄驅動的間隔
 | 失效的解法連結 | 42 — 16 Python、21 C++（`C++/` 目錄不在 repo 裡）、4 Shell、1 MySQL | 連結檢查 |
 | 沒有任何 README 列指向的解法檔 | 53 Python、**347 Java**（佔 `LeetCodeJava/` 的 22%） | 走訪目錄 |
 | 有 `time = O(...)` 註解 | Python 2,867 / 2,897（99%）· Java 1,247 / 1,554（80%） | grep |
-| 解法版本數（`# V0`、`# V1`…） | Python 2,897 個檔案共 8,479 個區塊（平均 2.9；753 個檔案 ≥ 4）· Java 1,554 個檔案共 5,990 個 | grep |
+| 解法版本數（`# V0` 正典、`# V1`… 參考） | Python 2,897 個檔案共 8,479 個區塊（平均 2.9；753 個檔案 ≥ 4）· Java 1,554 個檔案共 5,990 個 | grep |
 | IDEA 行帶有工具署名（`(gpt)`、`fixed by gemini`）的檔案 | 457 Java、202 Python | grep |
+| Clean-code 訊號，Python | 395 個檔案共 1,027 個 `NOTE !!!` 註解；875 個檔案在函式本體內用三引號字串當註解；2,750 個 `class Solution(object)`；205 個檔案有 type hint；42 個仍有 `xrange` / print 陳述式寫法 | grep |
 | 會執行任何東西的檔案（`assert`、`__main__`、`main()`） | 73 Python、2 Java；master 上不存在 `leetcode_java/src/test` | grep |
 | Cheatsheets | 135 個檔案，145,163 行；14 份超過 1,900 行；所有 fence 都有語言標記；42 份提到 invariant | `doc/cheatsheet/` |
 | FAQs | 49 份，100% 已翻譯 | `doc/faq/` |
-| 練習紀錄 | 827 天，2020-04-29 → 2026-09-23；最近 30 天有 30 天、最近 90 天有 87 天；3,261 次嘗試提及、860 個不同題目；一個不可能的日期（`20260229`，第 269 行） | `data/progress.txt` |
+| 練習紀錄 | 827 天，2020-04-29 → 2026-09-23；最近 30 天有 30 天、最近 90 天有 87 天；3,261 次嘗試提及、860 個不同題目；2026 年碰過 405 題（最新判定：207 `again`、33 `ok`、159 無）；一個不可能的日期（`20260229`，第 269 行） | `data/progress.txt` |
+| 精選清單上紀錄的最新判定 | Blind 75：14 `ok` · 34 `again` · 25 無判定 — NC150：18 · 69 · 62 — Top 100：22 · 53 · 24 | `data/progress.txt` × `problem_lists.json` |
 | 精選清單覆蓋率 | Blind 75 · NC150 · NC250 · Top 100：**100% 索引**；NeetCode All 905 / 972（缺的 67 題中 29 題是 JavaScript-only 那一組） | `data/problem_lists.json` |
-| 精選清單上的 Java | Blind 75 與 Top 100：完整；NC150 缺一題（LC 704）；300 個帶 `google` 標籤的列與 13 個 `MUST` 列沒有 Java | solution 欄 |
+| 精選清單上的 Java（第二梯隊） | Blind 75 與 Top 100：完整；NC150 缺一題（LC 704）；300 個帶 `google` 標籤的列與 13 個 `MUST` 列沒有 Java | solution 欄 |
 | 網站 | 18 個手寫頁面、36 個視覺化 demo、29 個 roadmap 主題、208 題測驗、14 個 agent skill；418 個單元測試通過 | `site/`、`data/`、`.claude/skills/` |
 
 ---
@@ -105,27 +118,33 @@ Greedy（59/67）、Heap（29/33）與 Trees（88/93）— 到處都只差個位
 
 ### 1.2 掌握度紀錄在面試官會抽的清單上說「還沒準備好」
 
-| 清單 | 已索引 | `OK` | `AGAIN` | OK 佔比 |
-|---|---|---|---|---|
-| Blind 75 | 75 | 15 | 60 | 20% |
-| NeetCode 150 | 150 | 24 | 125 | 16% |
-| NeetCode 250 | 250 | 39 | 206 | 16% |
-| Top 100 Liked | 100 | 16 | 84 | 16% |
-| 全部有追蹤者 | 1,266 | 269 | 997 | 21% |
+練習紀錄是主要的紀錄，所以這裡的量測是*紀錄給每一題的最新判定* — `ok`、`again`，或什麼都沒有
+（一個 `todo` 或一個光溜溜的題號）。README 的 status 欄作為變動較慢的佐證放在旁邊。
 
-依難度：Easy 168 OK / 171 AGAIN，Medium 95 / 682，**Hard 6 / 144**。
+| 清單 | 已索引 | 紀錄：最新 `ok` | 紀錄：最新 `again` | 紀錄：無判定 | README `OK` / `AGAIN` |
+|---|---|---|---|---|---|
+| Blind 75 | 75 | 14（19%） | 34 | 25 | 15 / 60 |
+| NeetCode 150 | 150 | 18（12%） | 69 | 62 | 24 / 125 |
+| NeetCode 250 | 250 | 21（8%） | 99 | 122 | 39 / 206 |
+| Top 100 Liked | 100 | 22（22%） | 53 | 24 | 16 / 84 |
 
-這是地板而不是量測 — [`lc-readiness-guide.md`](./lc-readiness-guide.md) 已經解釋過原因
-（`AGAIN` 只會被*加上*），而 `/lc-again` 就是為了修它而存在。但 `/lc-again` 是逐題的工具，
-而 backlog 是一份清單。**建議：** 把它當成一場有固定範圍、有終點線的戰役來跑，而不是有空才做：
+兩份紀錄一致。README 補上難度分佈 — Easy 168 `OK` / 171 `AGAIN`，Medium 95 / 682，**Hard 6 / 144** —
+而紀錄補上 backlog 的形狀：**Blind 75 有三分之一從來沒有被給過判定。** 那 25 題不是失敗；它們是記了下來
+卻沒有加上整個排程所依賴的 `(ok)` / `(again)` 的嘗試。
 
-1. 範圍：Blind 75 上的 60 個 `AGAIN` 列。六十題，一天兩題，四週。
+兩種標記都是地板而不是量測 — [`lc-readiness-guide.md`](./lc-readiness-guide.md) 解釋過原因
+（`AGAIN` 只會被*加上*），而 `/lc-again` 就是為了在作者選擇更新 README 時讓一列畢業而存在。但 `/lc-again`
+是逐題的工具，而 backlog 是一份清單。**建議：** 把它當成一場有固定範圍、有終點線的戰役來跑，而不是有空才做：
+
+1. 範圍：Blind 75 的 34 個 `again` 與 25 個未判定。五十九題，一天兩題，四週。
 2. 標準：`/lc-again` 的四個問題 — 不靠提示重新推導、說出 invariant、點名決定複雜度的那一行、處理好
-   邊界 — 加上 readiness guide 的時間盒（一題 medium 20 分鐘內）。
-3. 終點線：Blind 75 的 OK 佔比 ≥ 80%。接著是 NeetCode 150 剩下的 50 題。
+   邊界 — 加上 readiness guide 的時間盒（一題 medium 20 分鐘內）。通過記為 `(ok)`；差一點的都記為
+   `(again)`。**每一次嘗試都要有判定** — 光這一點就能關掉那 25 題。
+3. 終點線：紀錄中 Blind 75 最新 `ok` 的佔比 ≥ 80%。接著是 NeetCode 150 的 131 題。
 
-把這個佔比發佈在首頁，放在現有的 `269 OK / 997 AGAIN` 計數旁邊，讓這個數字被看見。兩個計數都已在
-build 時算好；清單交集只是 `build-site.js` 裡五行的加法。
+把這個佔比發佈在首頁，放在現有的 `269 OK / 997 AGAIN` 計數旁邊，讓這個數字被看見 — 從
+`build-review-plan.js` 已經由紀錄推導出來的 `progress.json` 計算，所以它在紀錄更新的那一天就動，
+而不是下次有人編輯 README 的那一天。
 
 ### 1.3 成本曲線在面試核心主題上最陡
 
@@ -154,8 +173,13 @@ build 時算好；清單交集只是 `build-site.js` 裡五行的加法。
 Backtracking 是 34 題 34 個 `AGAIN`。遞迴結構的成本是陣列操作的三到六倍，而 Google L3 loop
 大部分就是遞迴結構。
 
-**建議：** 為成本最高的約 40 題（12 次以上、面試核心段落）各寫一張*推導卡*，寫一次，之後複習卡片而不是
-重解題：一句話的 invariant、遞迴的契約（這個 call 回傳什麼、可以假設什麼）、決定複雜度的那一行、
+紀錄點得出名字。**83 個題目在記錄了八次以上的嘗試後仍以 `again` 收尾**；嘗試最多的是 LC 300（LIS）、
+207（Course Schedule）、105（由 preorder/inorder 建樹）、322（Coin Change）、139（Word Break）、
+97（Interleaving String）、394（Decode String）、153（旋轉陣列最小值）、295（資料流中位數）、104、133、
+79、323、261、297、206、1143、32、310、776、518、647、53、316。嘗試那麼多次而以 `ok` 收尾的只有 12 題。
+
+**建議：** 為成本最高的約 40 題（上面這份清單，再加上 README 裡面試核心段落中 12 次以上的 `AGAIN` 列）
+各寫一張*推導卡*，寫一次，之後複習卡片而不是重解題：一句話的 invariant、遞迴的契約（這個 call 回傳什麼、可以假設什麼）、決定複雜度的那一行、
 一直失敗的那兩個邊界。readiness guide 的「Acting on it」§3 早就說了*「為慢性清單寫 invariant；
 停止重解」*；repo 裡還沒有一個地方可以讓 invariant 住下來。`/lc-cheatsheet 1650 into binary_tree as variation`
 接近，但它是歸檔進一份 2,000 行的 sheet；一張卡片想要的是屬於那一列自己的筆記。最便宜的家是新開一份
@@ -198,13 +222,17 @@ review plan 已經靠讀 tag 欄而不是標題解決了這件事；README 頁�
 間重複的 id、不符合單一文法（`(OK|AGAIN)\*{0,}( \(\d+\))?( \(MUST\))?`）的 status 欄、無法解析的紀錄
 日期就失敗 — 從 `validate-pages.yml` 執行。文法遷移是對 1,266 個欄位跑一次 regex；420 種寫法會收斂成幾十種。
 
-### 1.7 選定面試語言，並說出來
+### 1.7 Python 是面試語言；把 Java 的缺口當第二梯隊
 
-Python 有 2,897 個解法，Java 1,210 個。兩者都完整覆蓋 Blind 75 與 Top 100；NC150 的 Java 只缺 LC 704。
-但 300 個帶 `google` 標籤的列與 13 個 `MUST` 列沒有 Java。repo 裡沒有任何地方說面試會用哪種語言。
-如果是 Java，那 13 個 `MUST` 列是 `/lc-java` 該優先補的；如果是 Python，Java 的缺口根本不是優先事項，
-而 `CLAUDE.md` 裡 `1244 vs 2898` 的框架量的就是錯的東西。**建議：** 在 README 的 Resource 段落加一行寫明
-面試語言，並給 `find_missing_java.py` 一個 `--must` flag，讓真正重要的報告是一條指令。
+Python 有 2,897 個解法，Java 1,210 個。兩者都完整覆蓋 Blind 75 與 Top 100；NC150 的 Java 只缺 LC 704；
+300 個帶 `google` 標籤的列與 13 個 `MUST` 列沒有 Java。作者的決定是：**面試會用 Python**，而早期刷題用的
+Java 是第二梯隊。由此推出兩件事：
+
+- **Java 的缺口不在關鍵路徑上。** `CLAUDE.md` 把 `/lc-java` 框成在補「落後最多」的目錄（Java 列 `1244`
+  對 Python `2898`），量的是一個第二梯隊的目標；建議在它被陳述的地方就這麼說，免得未來某個 session 花一週
+  追 Java 對等。`/lc-java` 在有 Java 草稿要歸檔時仍然有用；它不該決定要解什麼題。
+- **repo 裡沒有任何地方記錄這個決定。** README 的 Resource 段落一行 — *Python 優先；Java 留作參考* —
+  就夠了，而那正是每個 skill 和每份審查否則都得重新發現的那一行。
 
 ---
 
@@ -213,17 +241,18 @@ Python 有 2,897 個解法，Java 1,210 個。兩者都完整覆蓋 Blind 75 與
 house layout 很好且一致地被套用：2,897 個 Python 檔中的 2,897 個都以題目 docstring 和 `# V0` 區塊開頭；
 99% 帶有 `time =` 行。問題在於這個 layout 裡面裝的東西。
 
-### 2.1 每個檔案平均三個解法，沒有標出正典的那一個
+### 2.1 `V0` 就是正典解法 — 但沒有任何東西告訴讀者
 
 2,897 個 Python 檔共 8,479 個 `# V…` 區塊；753 個檔案有四個以上版本。Java 是 1,554 個檔共 5,990 個。
-依慣例 `V0` 是作者自己的、`V1+` 是參考 — 但 `V0` 常常是*第一次*嘗試（見 2.2），而一個準備面試的讀者需要的是
-*最好的*那一個和它為什麼最好，不是時間順序。
+慣例對作者來說很清楚：**`V0` 是偏好的解法、要學的那一個；`V1+` 是參考。** 但它沒有寫在任何讀者看得到的地方 —
+不在檔案裡、不在 `CLAUDE.md` 對 house layout 的描述裡（`# V0` → `# IDEA` → `# time = …`）、不在網站上
+（explorer 連到的是檔案頂端）。訪客看到三到五個解法，沒有任何訊號說哪一個是範本解答。
 
-cheatsheet style guide 已經為新 cheatsheet 程式碼定下規則：*每題一個正典解法；第二個版本需要一個明說的理由。*
-解法目錄沒有對應的規則。**建議：** 採用一個 skill 會寫、網站能讀的標記 — `# V0 ★` 或一行 `# CANONICAL` —
-並讓 `/lc-python` 和 `/lc-java` 設定它。之後 explorer 和 roadmap 就能直接連到正典區塊的 anchor，後續也能
-再做一趟合併，把八月 cheatsheet 審查數出來的近似重複的 `V0'`/`V0''` 寫法（僅 sheet 裡就約 450 個）收攏。
-那一趟不要刪版本；Java 裡 `// V` 標記就是方法的名字，`CLAUDE.md` 記錄了重新編號的代價。
+**建議：** 讓既有的慣例被看見，而不是加一個新的。在 `CLAUDE.md` 的 house-layout 描述和兩個歸檔 skill 裡各加一句
+（*`V0` 是要學的解法；後面的區塊是參考*）；在 `/lc-python` 產出的檔案模板裡，`# V0` 那行的註解說同一件事；
+讓 explorer 和 roadmap 連到 `V0` 那一行（`#L<n>`）而不是檔案頂端。後續可以再做一趟合併，把八月 cheatsheet
+審查數出來的近似重複的 `V0'`/`V0''` 寫法（僅 sheet 裡就約 450 個）收攏 — 不刪版本，因為 Java 裡 `// V` 標記
+就是方法的名字，`CLAUDE.md` 記錄了重新編號的代價。
 
 ### 2.2 工具署名與除錯旁白滲進了存檔
 
@@ -233,8 +262,8 @@ cheatsheet style guide 已經為新 cheatsheet 程式碼定下規則：*每題�
 *「1. Correctly find the maximum element… The original loop was missing the comparison logic」* — 並有
 **兩個** javadoc 區塊以兩種格式陳述複雜度（先 `Time Complexity: O(N)` 再 `time = O(N)`）。
 
-這些對讀者都沒有幫助，有些還有害：`V0` 區塊上的 *「fixed by gemini」* 告訴讀者作者的版本錯了卻沒說錯在哪，
-而那正是學習者唯一想知道的事。**建議：** 一趟 `db49955`（1,481 個 Java 檔的標頭清理）精神的標準化 — 把署名移到
+這些對讀者都沒有幫助，有些還有害：*「fixed by gemini」* 掛在 `V0` — 正典區塊 — 上，告訴讀者範本解答曾經
+需要修正，卻沒說修了什麼，而那正是學習者唯一想知道的事。**建議：** 一趟 `db49955`（1,481 個 Java 檔的標頭清理）精神的標準化 — 把署名移到
 單一一行結尾的 `# ref:`、刪掉除錯敘述、去除重複的複雜度 javadoc — 並在兩個歸檔 skill 的 `## Do not` 各加一條規則：
 *IDEA 行不放工具署名；說錯在哪，不說誰修的。*
 
@@ -259,6 +288,26 @@ Python 在 99%；Java 在 80%（307 個檔案沒有 `time = O` javadoc）。`/ad
 文件裡也寫明是逐目錄的掃描。覆蓋完整之後，價值更高的檢查是*正確性*：複雜度測驗的評分器（`site/complexity.js`）
 已經能解析並正規化一個 bound，所以一支把每個檔案的 `time =` 行拿去和 README 列的複雜度欄比對的 script，
 可以找出不一致的那些。目前沒有任何東西在比對它們。
+
+### 2.5 Clean code 是會被評分的訊號，而 `V0` 是壓力下會被重現的東西
+
+L3 loop 把 *coding* 當四個訊號之一來評 — 命名、結構、慣用寫法、沒有雜訊 — 而候選人在 35 分鐘內寫出來的，
+就是他的手練過的東西。在這個存檔裡，那是 `V0`。抽樣 LC 438（2026-09-22 歸檔）：`V0` 是正確的 O(n) 固定
+視窗 `Counter` 解法，而它二十行的迴圈裡有三個三引號註解區塊和兩個 `# NOTE !!!` 標記，說著*先把新字元加進去*、
+*收縮左指標*。放大到整個目錄：
+
+- **395 個檔案共 1,027 個 `NOTE !!!` 註解**，以及 **875 個檔案在函式本體內用三引號字串當註解**；
+- **2,750 個檔案宣告 `class Solution(object)`** — Python 2 的寫法，LeetCode 的 Python 3 執行環境接受它，
+  但 2026 年沒有哪個 codebase 會這樣寫 — 對比 **205 個有 type hint 的檔案**；42 個仍帶著 `xrange` 或
+  print 陳述式的寫法；
+- §2.2 的工具署名與除錯旁白。
+
+這些是學習筆記，作為筆記是有用的 — 但它們住在*應該是範本解答*的那個區塊裡，所以範本解答不是一份乾淨提交
+該有的樣子。**建議：** 只針對 `V0` 的 house style，由 `/lc-python` 往後強制：帶 type hint 的簽名
+（`def findAnagrams(self, s: str, p: str) -> List[int]`）、推理寫在程式碼上方的 `# IDEA` 區塊、程式碼內
+每個不顯而易見的行最多一則短註解、不要大喊。然後對 **L3 core 集合**（§5.3，約 100 個檔案）— 而不是整個
+存檔 — 做一次性的 clean-`V0`，並拿 `lc-coach` 的 coding 評分規準跑其中幾個，確認這個風格在那個訊號上讀起來
+是 *Hire*。
 
 ---
 
@@ -301,12 +350,12 @@ Python 在 99%；Java 在 80%（307 個檔案沒有 `time = O` javadoc）。`/ad
 `archived/`（它已經為此存在）。把三份備考計畫合併成一份寫明 L3 標準的，並依八月審查所說把
 `code_interview_general_cheatsheet.md` 併入鄰居。
 
-### 3.4 說清楚哪些文件服務 coding loop
+### 3.4 FAQ 與 system design 不在範圍內 — 標示出來
 
-四十九份 FAQ（Java、JVM、Kafka、Spark、Redis、Flink、Airflow）和十一個 `system_design/` 案例 — 每個都只有
-單一檔案 — 是後端與資料工程的面試材料。它們很好、100% 已翻譯，且不是 Google L3 coding loop 會考的東西。
-專案自己的記憶說在目標改變前先降低 system design 的優先度。那是對的決定；缺的那一步是*標示*它，在首頁和
-`doc/README.md` 上，讓一個為 coding loop 準備的訪客不會把晚上耗在 `faq_kafka.md` 裡。
+四十九份 FAQ（Java、JVM、Kafka、Spark、Redis、Flink、Airflow）和十一個 `system_design/` 案例是後端與
+資料工程的面試材料，不是 Google L3 coding loop 會考的東西。作者的決定是它們維持現狀，文件方面的心力放在
+`doc/cheatsheet/`。本審查對它們的內容不做任何建議。唯一值得做的事在*首頁*、不在那些目錄裡：把它們標示為
+coding-loop 路徑之外，讓一個為 coding loop 準備的訪客不會把晚上耗在 `faq_kafka.md` 裡。
 
 ### 3.5 格式規則守住了
 
@@ -342,13 +391,15 @@ Python 在 99%；Java 在 80%（307 個檔案沒有 `time = O` javadoc）。`/ad
 *然後*才揭露 repo 的解法；最後印出這個 session 的 `progress.txt` 行（`1234(ok), 567(again!!)`）供貼上。
 完全在 client 端、不需要新資料，並重用網站已擁有的三樣東西 — 清單選擇器、複雜度評分器、紀錄文法。
 
-### 4.3 三份彼此不通的進度紀錄
+### 4.3 三份進度紀錄，而網站帶頭顯示的不是主要的那一份
 
-進度住在三個地方：README 的 status 欄（`OK`/`AGAIN`，經 `/lc-again` 手動編輯）、`data/progress.txt`
-（紀錄，經 `/lc-log`），以及 roadmap 每個瀏覽器自己的 `localStorage` 勾選框 — 頁面自己說它們*「只存在這個
-瀏覽器裡，永不上傳」*。review plan 已經在 build 時把前兩者合併成 `progress.json`。**建議：** 讓 roadmap 讀同一份
-`progress.json`，把 `OK` 渲染為完成、`AGAIN` 為進行中，`localStorage` 只留給瀏覽器自己的勾選。這樣 roadmap 的
-鎖才有意義，候選人也能看到一張自己在哪裡的圖。
+進度住在三個地方：`data/progress.txt`（紀錄 — **主要的那一份**，每天經 `/lc-log` 寫入）、README 的 status
+欄（`OK`/`AGAIN`，只在需要時經 `/lc-again` 更新，所以落後），以及 roadmap 每個瀏覽器自己的 `localStorage`
+勾選框 — 頁面自己說它們*「只存在這個瀏覽器裡，永不上傳」*。review plan 已經在 build 時把紀錄編譯成
+`progress.json` 並把 README 折進去。但首頁的 `269 OK / 997 AGAIN` 是 README 欄，而 roadmap 兩者都不讀。
+**建議：** 讓 `progress.json` — 紀錄的編譯形式 — 成為每一處進度顯示的來源：首頁計數改為*紀錄中的最新判定*，
+roadmap 把 `ok` 渲染為完成、`again` 為進行中，`localStorage` 只留給瀏覽器自己的勾選。這樣 roadmap 的鎖才有
+意義，候選人也能看到一張自己在哪裡的圖，而且它在紀錄更新的那一天就會動。
 
 ### 4.4 explorer 的 facet 不包含候選人會用的那些
 
@@ -393,7 +444,7 @@ CS_basics 是一份**個人備考紀錄**（status 欄、練習紀錄、readines
    九年一場比賽是量出來最弱的數字。
 2. **驗證（第 1–12 週）：** 每次歸檔都先寫 assert 再執行（§2.3）。
 3. **成本曲線（第 1–8 週）：** 為成本最高的 40 題寫推導卡（§1.3）；複習卡片，不重解題。
-4. **掌握度（第 2–10 週）：** Blind 75 的 `/lc-again` 戰役到 80% OK（§1.2），接著 NeetCode 150。
+4. **掌握度（第 2–10 週）：** Blind 75 的戰役到紀錄中 80% 最新 `ok`（§1.2），接著 NeetCode 150。
 5. **Volume：** 不做。這一季把題數凍結在 3,270，並在 README 裡說明。
 
 ### 5.3 每月量，在固定的集合上
@@ -402,17 +453,18 @@ CS_basics 是一份**個人備考紀錄**（status 欄、練習紀錄、readines
 `problem_lists.json` 裡一個新 flag）：Blind 75 ∪（NeetCode 150 ∩ `google`），大約 100 題。
 接著是每個月該看的數字，全部都是 build 已經算好、或離它一步的：
 
-| 指標 | 現在 | 目標（90 天） |
-|---|---|---|
-| Blind 75 的 OK 佔比 | 20% | 80% |
-| NeetCode 150 的 OK 佔比 | 16% | 50% |
-| 12 次以上仍 `AGAIN` 的題目 | 125 | < 60 |
-| 平均次數 — Recursion / BST / Backtracking | 7.4 / 7.0 / 6.3 | 持平（停止重解它們） |
-| 紀錄裡的限時 session | 以紀錄文法計為 0 | 24 |
-| 提交被拒率（readiness script） | 31–44% | < 25%，且 Easy 低於 Hard |
+| 指標 | 來源 | 現在 | 目標（90 天） |
+|---|---|---|---|
+| Blind 75 最新 `ok` 的佔比 | 紀錄 | 19%（14/75） | 80% |
+| Blind 75 沒有判定的題目 | 紀錄 | 25 | 0 |
+| NeetCode 150 最新 `ok` 的佔比 | 紀錄 | 12%（18/150） | 50% |
+| 8 次以上嘗試後仍以 `again` 收尾的題目 | 紀錄 | 83 | < 40 |
+| 平均次數 — Recursion / BST / Backtracking | README 星號 | 7.4 / 7.0 / 6.3 | 持平（停止重解它們） |
+| 紀錄裡的限時 session | 紀錄 | 以紀錄文法計為 0 | 24 |
+| 提交被拒率 | readiness script | 31–44% | < 25%，且 Easy 低於 Hard |
 
-`eval_lc_readiness.py --json data/readiness-YYYY-MM.json` 已經是追蹤指令；guide 說每月一次。把 OK 佔比那一行
-加進它的輸出，就完成了。
+`eval_lc_readiness.py --json data/readiness-YYYY-MM.json` 已經是追蹤指令；guide 說每月一次。把基於紀錄的
+`ok` 佔比那幾行加進它的輸出，就完成了。
 
 ---
 
@@ -422,22 +474,22 @@ CS_basics 是一份**個人備考紀錄**（status 欄、練習紀錄、readines
 
 | # | 行動 | 軸線 | 工作量 | 位置 |
 |---|---|---|---|---|
-| 1 | Blind 75 的 `/lc-again` 戰役到 80% OK，用四個問題的標準 | 掌握度 | L（練習時間，不是程式） | `README.md` status 欄 |
+| 1 | Blind 75 戰役到紀錄中 80% 最新 `ok`，用四個問題的標準；每次嘗試都有判定 | 掌握度 | L（練習時間，不是程式） | `data/progress.txt` 經 `/lc-log`；作者選擇時再經 `/lc-again` 更新 README |
 | 2 | 限時 session 模式：倒數、揭露前檢查複雜度、輸出 `progress.txt` 行 | 網站 | M | `site/pages/lc-random-picker.html` 或新的 `lc-session.html` |
 | 3 | `/lc-python` 把 docstring 範例輸出成 `__main__` assert；CI 執行它們 | 程式碼 | S + S | `.claude/skills/lc-python/SKILL.md`、`python-syntax-check.yml` |
 | 4 | 為約 40 個成本最高的題目寫推導卡 | 文件 | L | 新的 `doc/derivation_cards.md`，從 Note 欄連過去 |
 | 5 | 每份 tier-5 sheet 的 Scope 行下放一頁「在面試間裡」區塊；合入 PR #155 | 文件 | L | `doc/cheatsheet/*.md`、`build-site.js` 卡片渲染 |
 | 6 | 把關索引：失效連結、未連結檔案、重複 id、status 文法、紀錄日期 | 覆蓋率 | M | 新的 `script/check_readme.py`、`validate-pages.yml` |
-| 7 | 標準化存檔：署名 → `ref:` 行、刪除除錯敘述、去重 javadoc | 程式碼 | M（腳本化） | `leetcode_python/`、`leetcode_java/` |
-| 8 | 由歸檔 skill 寫、網站讀的正典解法標記 | 程式碼 | S 然後 L | skills、`build-leetcode.js` |
+| 7 | 標準化存檔：署名 → `ref:` 行、刪除除錯敘述、去重 javadoc；然後只對 L3 core 集合做一趟 clean-`V0`（type hint、不要 `NOTE !!!`、推理放 `# IDEA`） | 程式碼 | M（腳本化）+ M | `leetcode_python/`、`leetcode_java/` |
+| 8 | 說明 `V0` 是正典解法 — 在 `CLAUDE.md` 的 layout 描述、兩個歸檔 skill 和檔案模板裡；網站連到 `V0` 那一行 | 程式碼 | S | `CLAUDE.md`、skills、`build-leetcode.js` |
 | 9 | explorer facet：狀態、精選清單、語言 | 網站 | S | `site/pages/lc-explorer.html`、`build-leetcode.js` |
-| 10 | roadmap 讀 `progress.json`；`OK` = 完成 | 網站 | S | `site/roadmap.js`、`build-roadmap.js` |
-| 11 | `l3-core` 清單 + 首頁與 readiness JSON 裡的 OK 佔比 | 方向 | S | `data/roadmap.json`、`build-site.js`、`eval_lc_readiness.py` |
+| 10 | roadmap 與首頁計數讀 `progress.json`（紀錄）；最新 `ok` = 完成 | 網站 | S | `site/roadmap.js`、`build-roadmap.js`、`build-site.js` |
+| 11 | `l3-core` 清單 + 首頁與 readiness JSON 裡基於紀錄的 `ok` 佔比 | 方向 | S | `data/roadmap.json`、`build-site.js`、`eval_lc_readiness.py` |
 | 12 | `doc/README.md`（現行 / 歷史 / vendored）；歸檔兩份被取代的備考計畫 | 文件 | S | `doc/` |
-| 13 | 在首頁解釋 `OK` / `AGAIN`；把後端 FAQ 和 system design 標示為非 coding-loop | 網站 | S | `build-site.js` |
+| 13 | 在首頁解釋 `ok` / `again`；把 FAQ 和 system design 標示為 coding-loop 路徑之外 | 網站 | S | `build-site.js` |
 | 14 | 標記匯入列（`imported` 狀態）讓計數與 facet 能區分；讓 21 個重複成為 build 錯誤 | 覆蓋率 | M | `fix_readme_tags.py`、`build-roadmap.js` |
-| 15 | 用 `/add-time-space` 補完 Java 的 `time =`（307 個檔）；再與 README 欄比對 | 程式碼 | M | `leetcode_java/` |
-| 16 | 寫明面試語言；若是 Java 就補齊 13 個沒有 Java 的 `MUST` 列 | 覆蓋率 | S | `README.md`、`/lc-java` |
+| 15 | 用 `/add-time-space` 補完 Java 的 `time =`（307 個檔）— 第二梯隊，前面的事都做完再做 | 程式碼 | M | `leetcode_java/` |
+| 16 | 在 README 記下「Python 優先，Java 留作參考」；改寫 `CLAUDE.md` 對 `/lc-java` 的框架，讓 Java 對等不再讀起來像目標 | 覆蓋率 | S | `README.md`、`CLAUDE.md` |
 | 17 | 掃除過期的 `backup-*` / `worktree-*` 分支；關閉或合入十一個開著的 PR | 方向 | S | GitHub |
 
 第 1–5 項是會推動分數的。第 6–17 項是防止它滑回去的。
@@ -511,6 +563,32 @@ find doc/faq -name '*.md' | wc -l
 # 練習紀錄
 grep -oE "^[0-9]{8}" data/progress.txt | sort -u | wc -l
 grep -oE "[0-9]{1,4}\((again!*|ok\*?|todo)" data/progress.txt | sed -E 's/.*\(//; s/[!*]//g' | sort | uniq -c
+
+# 練習紀錄：每題的最新判定，再算各精選清單的佔比
+python3 - <<'EOF'
+import json, re, collections
+txt = open('data/progress.txt').read(); lists = json.load(open('data/problem_lists.json'))
+latest, cur = {}, None
+for line in txt.split('\n'):
+    m = re.match(r'^(\d{8})', line)
+    if m: cur = m.group(1)
+    if not cur: continue
+    for num, note in re.findall(r'(?<![\w\d])(\d{1,4})\(([^)]*)\)', line):
+        n = note.lower()
+        latest[num] = 'again' if 'again' in n else 'ok' if re.search(r'\bok\b', n) else 'none'
+    bare = re.sub(r'\d{1,4}\([^)]*\)', '', line)
+    for num in re.findall(r'(?<![\w\d])(\d{1,4})(?=[,| \t]|$)', bare):
+        if not re.match(r'^\d{8}$', num): latest[num] = 'none'
+for L in ('blind75', 'neetcode150', 'neetcode250', 'top100liked'):
+    ids = [str(p['id']) for p in lists['problems'] if L in p['lists']]
+    print(L, collections.Counter(latest.get(i, 'never') for i in ids))
+EOF
+
+# Python 存檔的 clean-code 訊號
+grep -c "NOTE !!!" leetcode_python/*/*.py | awk -F: '{s+=$2} END{print s}'
+grep -lE '^\s{8,}"""' leetcode_python/*/*.py | wc -l
+grep -l "class Solution(object)" leetcode_python/*/*.py | wc -l
+grep -lE "def [a-zA-Z_]+\(self, [^)]*: " leetcode_python/*/*.py | wc -l
 
 # 網站
 npm test --prefix site           # 418 個測試
