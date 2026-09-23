@@ -144,6 +144,27 @@ function attachSolutions(problems) {
            pyTotal: pyMap.size, javaTotal: javaMap.size };
 }
 
+// README's verdict on each problem, folded to one word so the explorer can
+// facet on it without re-reading a status cell: `ok` / `again` from the main
+// tables, `imported` for the coverage-audit drafts, `untracked` for a main row
+// with no verdict yet. A problem README does not index gets no field at all.
+function attachStatus(problems) {
+  const { parseReadmeProblems } = require('./build-roadmap');
+  const readme = parseReadmeProblems(fs.readFileSync('README.md', 'utf8'));
+  const counts = {};
+  for (const p of problems.values()) {
+    const row = readme.get(String(p.id));
+    if (!row) continue;
+    const word = row.status.toUpperCase();
+    p.status = row.imported ? 'imported'
+      : word.includes('AGAIN') ? 'again'
+      : word.includes('OK') ? 'ok'
+      : 'untracked';
+    counts[p.status] = (counts[p.status] || 0) + 1;
+  }
+  return counts;
+}
+
 // Main execution
 try {
   console.log('Parsing doc/google_leetcode_problems_by_tags.md...');
@@ -154,6 +175,10 @@ try {
   console.log(`✓ Cross-linked solutions: ${linkStats.pyLinked} Python, ${linkStats.javaLinked} Java ` +
     `(from ${linkStats.pyTotal} .py / ${linkStats.javaTotal} .java files scanned; ` +
     `skipped ${linkStats.skippedTruncated} truncated + ${linkStats.skippedAmbiguous} ambiguous titles)`);
+
+  const statusCounts = attachStatus(problems);
+  console.log(`✓ Attached README status: ${Object.entries(statusCounts)
+    .map(([word, n]) => `${n} ${word}`).join(', ')}`);
 
   // Create output directory
   if (!fs.existsSync('_site')) fs.mkdirSync('_site', { recursive: true });
@@ -172,7 +197,8 @@ try {
     stats: {
       totalProblems: problems.size,
       totalTags: tagMap.size,
-      problemsWithSolutions: withSolutions
+      problemsWithSolutions: withSolutions,
+      status: statusCounts
     }
   };
 

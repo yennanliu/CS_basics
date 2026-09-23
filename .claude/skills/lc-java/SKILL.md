@@ -43,9 +43,10 @@ The two are counterparts and share one README row — see
    duplicate row is the single most expensive mistake this skill can make, because nothing
    in the build catches it.
    **The number can match two rows.** README carries two sets of topic tables — the main
-   `## ` ones and the imported `## Newly Added (kamyu104 gap)` / `### ` ones — and 10 LC
-   numbers appear in both. When the grep returns two hits, edit the one under a `## `
-   heading; that is the row `/lc-python` maintains and the one the user reads.
+   `## ` ones and the imported `## Newly Added (kamyu104 gap)` / `### ` ones, whose rows
+   carry the status `imported`. No number may appear in both any more (`check_readme.py`
+   and the site build fail on one), but if a grep ever returns two hits, edit the one
+   under a `## ` heading; that is the row `/lc-python` maintains and the one the user reads.
 5. **Untested is unfinished.** `javac` it and run it against the javadoc's own examples
    before reporting done.
 

@@ -55,6 +55,15 @@ const MD_LINK_ALL = new RegExp(MD_LINK.source, 'g');
  * first one. LC 322 is listed twice and only the second row carries its MUST
  * marker; testing the deduplicated representative would drop it, and the count
  * would then disagree with `script/extract_must_lc.py`.
+ *
+ * README has two table sets: the main `##` tables — the author's own index, with
+ * a hand-kept status cell — and everything under `## Newly Added (kamyu104 gap)`,
+ * an imported index of generated drafts whose status cell reads `imported`.
+ * Each problem carries `imported` (which set its first row is in) and `status`
+ * (the raw cell), and two flags that `validateIndex` turns into build errors:
+ * `crossFiled` when the same id has a row in both sets, and `misfiled` when a
+ * row's status cell disagrees with the set it sits in — the shape a `/lc-python`
+ * row filed under the wrong heading takes.
  */
 function parseReadmeProblems(markdown) {
   const problems = new Map();
@@ -85,12 +94,16 @@ function parseReadmeProblems(markdown) {
     const { tags, status } = trailingCells(line);
     const google = GOOGLE_TAG.test(tags);
     const must = isMustRow(tags, status);
+    const imported = h2 !== null && IMPORTED_HEADING.test(h2);
+    const misfiled = imported !== (status === IMPORTED_STATUS);
 
     const existing = problems.get(id);
     if (existing) {
       Object.assign(existing.solutions, solutions, existing.solutions);
       existing.google = existing.google || google;
       existing.must = existing.must || must;
+      if (existing.imported !== imported) existing.crossFiled = true;
+      if (misfiled) existing.misfiled = true;
       continue;
     }
     problems.set(id, {
@@ -101,10 +114,44 @@ function parseReadmeProblems(markdown) {
       section: h3 || h2,
       solutions,
       google,
-      must
+      must,
+      imported,
+      status,
+      crossFiled: false,
+      misfiled
     });
   }
   return problems;
+}
+
+// The `##` heading that opens the imported set, and the status cell every row
+// under it carries. script/check_readme.py reads the same two strings.
+const IMPORTED_HEADING = /Newly Added/;
+const IMPORTED_STATUS = 'imported';
+
+/**
+ * The two ways a README row can be in the wrong table set, as build errors.
+ *
+ * Nothing else reports either. A duplicate renders fine on problems.html and
+ * sits ~2500 lines from where anyone looks; the Sep 2026 review found 21 ids in
+ * both sets, and the imported set is exactly where `/lc-python` used to misfile
+ * a row. The status cell is what makes the second check possible: an imported
+ * row says `imported`, a main row never does, so a row whose cell disagrees
+ * with its heading was filed under the wrong one.
+ */
+function validateIndex(problems) {
+  const errors = [];
+  for (const p of problems.values()) {
+    if (p.crossFiled) {
+      errors.push(`LC ${p.id} is filed in both the main tables and the imported set — keep one row`);
+    }
+    if (p.misfiled) {
+      errors.push(p.imported
+        ? `LC ${p.id} sits under "Newly Added" but its status cell is ${JSON.stringify(p.status)}, not "imported"`
+        : `LC ${p.id} sits in a main table but its status cell reads "imported" — move the row or fix the cell`);
+    }
+  }
+  return errors;
 }
 
 // A company tag, not the word inside prose. Backticked (`google`) and bare
@@ -567,6 +614,10 @@ function buildProblemDictionary(ids, { readme, listedById }) {
         difficulty: local.difficulty,
         solutions: local.solutions
       };
+      // Only when true, so the 1,300 practised rows cost nothing. A curated-list
+      // problem that exists here only as an imported draft is a different thing
+      // from one the author has worked, and the page can now tell them apart.
+      if (local.imported) dictionary[id].imported = true;
     } else {
       dictionary[id] = {
         title: listed.title,
@@ -675,6 +726,11 @@ function main() {
   const listed = JSON.parse(fs.readFileSync('data/problem_lists.json', 'utf8')).problems;
   console.log(`Loaded ${listed.length} problems from data/problem_lists.json`);
 
+  const indexErrors = validateIndex(problems);
+  if (indexErrors.length) {
+    throw new Error(`README.md's problem index is inconsistent:\n  - ${indexErrors.join('\n  - ')}`);
+  }
+
   const errors = [
     ...validateGraph(roadmap.nodes, { problems, sheetSlugs: new Set(sheetTitles.keys()) }),
     ...validateLists(roadmap, { listed, readme: problems })
@@ -716,6 +772,7 @@ module.exports = {
   parseReadmeProblems,
   parseSolutionLinks,
   buildSheetTitles,
+  validateIndex,
   validateGraph,
   validateLists,
   findCycles,

@@ -40,11 +40,13 @@ translating it to Python.
    from the rule rather than copied from LC — state it, so it can be corrected.
 6. **README has TWO sets of topic tables; only the main one takes a new row.** The `##`
    headings near the top are the real index. Everything under `## Newly Added (kamyu104
-   gap)` is an *imported* index with its own `###` sub-tables — and it is the bigger of
-   the two (1982 rows against 1309), duplicating **23 topic names** (`### Stack`,
-   `### Math`, `### Array`, …). Every one of the 17 most recent contest rows
-   (LC 3964-4054) lives in a main `##` table and none in the imported one. A row filed
-   there renders fine and is ~2500 lines from where the user looks.
+   gap)` is an *imported* index with its own `###` sub-tables whose every row carries the
+   status `imported` — and it is the bigger of the two (1971 rows against 1310),
+   duplicating **23 topic names** (`### Stack`, `### Math`, `### Array`, …). Every one of
+   the 17 most recent contest rows (LC 3964-4054) lives in a main `##` table and none in
+   the imported one. A row filed there renders fine and is ~2500 lines from where the user
+   looks; `script/check_readme.py` and the site build both fail on it now (a row under
+   that heading without the `imported` cell), but only after the fact.
 
 ## The steps
 
