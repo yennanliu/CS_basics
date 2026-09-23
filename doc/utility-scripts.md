@@ -454,6 +454,46 @@ Writing them turned up one live difference worth knowing:
 first problem after a label. This script strips them; the site build is
 untouched.
 
+## check_readme.py
+
+The gate for `README.md`'s problem index and `data/progress.txt` — what
+`site/e2e-check.js` is for `_site/` and `check_skills.py` is for `.claude/skills/`.
+`validate-pages.yml` runs it after the site tests.
+
+```bash
+python3 script/check_readme.py                    # PASS/FAIL lines; exit 1 on any FAIL
+python3 script/check_readme.py --verbose          # name every offending row, baselined ones too
+python3 script/check_readme.py --strict           # ignore the baseline
+python3 script/check_readme.py --update-baseline  # accept the current state as the new floor
+python3 script/test_check_readme.py               # the gate's own tests
+```
+
+Why it exists: README is the only complete copy of the index, and nothing read it
+back. The Sep 2026 review found 44 solution links pointing at files that did not
+exist (`letcode_python/`, `.py.py`, files that had moved to another directory), ids
+filed in both of README's table sets, 17 status cells the planners could not read,
+and an impossible date (`20260229`) in the log that every reader parsed as a string.
+`e2e-check.js` cannot see any of it — the solution links are GitHub URLs by the time
+the page is built.
+
+| Rule | Fails when | Notes |
+|---|---|---|
+| rows | a row has no LC number or no linked title | |
+| links | a relative solution link resolves to nothing | URLs are not checked |
+| duplicates | an id is in both the main `##` tables and `## Newly Added` | two *main* sections (LC 547 under DFS and Graph) is reported, not failed |
+| status | a main-table status cell is not `<OK\|AGAIN\|not start> <stars> (<note>)…` | the notes stay free text; only the word and the star run are pinned, because that is what `suggest_review.py`, `extract_must_lc.py` and `eval_lc_readiness.py` read |
+| dates | a `YYYYMMDD` header in the log is not a real date | |
+| unlinked | — | solution files no row links to are **reported, never failed**: contest problems are routinely filed before their README row |
+
+**The baseline.** ~30 dead links point at another repo's `C++/` and `Python/` layout
+and cannot be fixed from here, and the duplicates each need a decision, so the gate
+fails on *regressions*: anything not in
+[`data/readme_check_baseline.json`](../data/readme_check_baseline.json). The baseline
+holds the exact offending strings — targets, ids, cells, dates — never line numbers,
+so a fix shrinks it visibly and a new problem cannot hide behind an old one.
+`test_check_readme.py` fails if the committed baseline no longer matches what the
+README produces, in either direction.
+
 ## Other Scripts
 
 | Script | Purpose |
