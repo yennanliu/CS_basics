@@ -251,6 +251,101 @@ const missingIndexed = index.records.filter(r => !fs.existsSync(path.join(SITE, 
 ok('every search-index url resolves', missingIndexed.length === 0,
    `${index.records.length} records, ${missingIndexed.length} missing`);
 
+// ── 4b. The problem index's filter: the shipped script on the shipped page ───
+//
+// problems.html is the only complete copy of the index anywhere — GitHub stops
+// rendering README at 512 KB and it passed 1.1 MB — so the filter is the only
+// way to find a row in it. Structural checks alone would not have caught the
+// break this is really for: a filter that boots, looks right, and hides every
+// row. So the built script is run against the built page, the way search's
+// score() and the review plan's planner are above.
+console.log('\n== problem index filter (shipped script + shipped page) ==');
+const problemsHtml = read(`${SITE}/problems.html`);
+ok('problems.html carries the filter bar', problemsHtml.includes('id="problem-filter"'));
+ok('problems.html loads the filter script', /<script src="problems-filter\.js"/.test(problemsHtml));
+// The bar ships hidden and the script reveals it, so a reader without
+// JavaScript gets the plain full index instead of a box that does nothing.
+ok('the filter bar ships hidden', /id="problem-filter"[^>]*\shidden/.test(problemsHtml));
+
+const shippedRows = (problemsHtml.match(/<tbody>[\s\S]*?<\/tbody>/g) || [])
+  .reduce((n, body) => n + (body.match(/<tr>/g) || []).length, 0);
+// Counted at build time from the rendered README, never typed — the same rule
+// the landing page's stats follow.
+const advertised = Number(((problemsHtml.match(/Filter ([\d,]+) rows/) || [])[1] || '')
+  .replace(/,/g, ''));
+ok('the advertised row count is the real one', advertised === shippedRows,
+   `placeholder says ${advertised}, page has ${shippedRows}`);
+
+{
+  const { JSDOM } = require('jsdom');
+  // 'outside-only': the page's own inline CSNav.mount() needs nav.js, which is
+  // covered by nav.test.js. Only the filter is under test here, so only the
+  // filter is executed.
+  const dom = new JSDOM(problemsHtml, {
+    runScripts: 'outside-only', url: 'https://example.test/problems.html'
+  });
+  dom.window.eval(read(`${SITE}/problems-filter.js`));
+
+  const doc = dom.window.document;
+  // In the browser the deferred script boots itself off DOMContentLoaded;
+  // jsdom has not fired it yet at this point, so the same entry point is
+  // called directly. The auto-boot wiring is covered by the unit tests.
+  const api = dom.window.CSProblems.boot(doc);
+  ok('the shipped script boots against the shipped page', Boolean(api),
+     api ? `${api.sections.length} sections indexed` : 'boot() returned null');
+
+  const input = doc.getElementById('q');
+  const rows = () => Array.from(doc.querySelectorAll('.content tbody tr'));
+  const visible = () => rows().filter(tr => !tr.classList.contains('pf-off'));
+  const type = q => {
+    input.value = q;
+    input.dispatchEvent(new dom.window.Event('input', { bubbles: true }));
+    return visible();
+  };
+
+  ok('booting reveals the bar', doc.getElementById('problem-filter').hidden === false);
+  ok('an empty filter shows every row', visible().length === shippedRows,
+     `${visible().length} of ${shippedRows}`);
+
+  // A bare number is the problem number and nothing else. Substring-matching it
+  // would return LC 1239 and LC 2390 for "239", which is the behaviour Ctrl-F
+  // already gives and the reason this box exists.
+  const byNumber = type('239');
+  ok('a bare number matches that problem only', byNumber.length > 0 &&
+     byNumber.every(tr => tr.children[0].textContent.replace(/\D/g, '').replace(/^0+/, '') === '239'),
+     `${byNumber.length} rows`);
+
+  // The heading trail is part of what a row matches on, so a topic name
+  // returns its section rather than only the problems with it in the title.
+  for (const q of ['sliding window', 'dijkstra', 'blind75', 'two pointers']) {
+    ok(`query "${q}" returns rows`, type(q).length > 0, `${type(q).length} rows`);
+  }
+
+  const none = type('zzzqqq');
+  ok('a nonsense query returns nothing', none.length === 0);
+  ok('and says so rather than showing a blank page',
+     doc.getElementById('pf-empty').hidden === false);
+
+  // Headings and prose go with the rows they belong to — otherwise a filtered
+  // page is 60 headings standing over nothing, which reads as 60 empty results.
+  const narrowed = type('dijkstra');
+  const headings = Array.from(doc.querySelectorAll('.content h2'));
+  ok('empty sections are hidden with their rows',
+     narrowed.length > 0 && headings.some(h => h.classList.contains('pf-off')),
+     `${headings.filter(h => h.classList.contains('pf-off')).length} of ${headings.length} h2 hidden`);
+
+  const hard = doc.querySelector('.pf-chip[data-facet="difficulty"][data-value="hard"]');
+  hard.dispatchEvent(new dom.window.MouseEvent('click', { bubbles: true }));
+  const hardOnly = visible();
+  ok('a difficulty chip filters to that difficulty', hardOnly.length > 0 &&
+     hardOnly.every(tr => /hard/i.test(tr.children[5] ? tr.children[5].textContent : '')),
+     `${hardOnly.length} rows`);
+
+  doc.getElementById('pf-clear').dispatchEvent(new dom.window.MouseEvent('click', { bubbles: true }));
+  ok('clear restores the whole index', visible().length === shippedRows,
+     `${visible().length} of ${shippedRows}`);
+}
+
 // ── 5. LC explorer data ──────────────────────────────────────────────────────
 console.log('\n== lc data ==');
 ok('problems present', lc.problems.length > 1000, `${lc.problems.length} problems`);

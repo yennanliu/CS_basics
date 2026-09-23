@@ -234,6 +234,76 @@ blockquote p { margin: 0; }
 /* ── Images ─── */
 img { max-width: 100%; height: auto; border-radius: 0; margin: 8px 0; border: 1px solid var(--border); }
 
+/* ── Problem index filter (problems.html) ─── */
+
+/* `body { overflow-x: hidden }` above makes body a scroll container, and a
+   scroll container that never scrolls — the page scrolls the viewport — so
+   every `position: sticky` descendant of it silently does nothing. That is
+   measurable on the shipped site: scrolled 6,000px down, the navbar's own
+   top is at -6,000.
+   `clip` clips the same overflow without creating that scroll container, so
+   the bar sticks. Scoped to this page (and to the page having booted) rather
+   than fixed globally, because reviving sticky site-wide would also revive
+   `.toc-rail` and `.viz-controls`, which is a visible change to several
+   hundred pages and a decision of its own. In a browser too old for `clip`
+   the declaration is dropped, `hidden` stands, and the bar simply scrolls —
+   which is what it does everywhere today. */
+body.pf-page { overflow-x: clip; }
+
+/* Sticky, because the thing it filters is 3,300 rows long — a box that scrolls
+   away at row 40 is one you have to scroll back to the top to use again.
+   `top: 0`, not the navbar's height: the navbar is sticky but its wrapper is
+   exactly as tall as it is, so it has no room to slide and scrolls away. */
+.pf {
+  position: sticky; top: 0; z-index: 20;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 0 10px;
+  margin: 0 0 8px;
+}
+.pf-search { display: flex; align-items: center; gap: 12px; }
+.pf-input {
+  flex: 1 1 auto; min-width: 0;
+  padding: 10px 12px; font: inherit; font-size: 17px;
+  color: var(--text); background: var(--bg-alt);
+  border: 1px solid var(--border-strong); border-radius: 0;
+}
+.pf-input:focus { outline: 2px solid var(--text); outline-offset: -2px; }
+.pf-count { flex: 0 0 auto; font-size: 14px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.pf-facets { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; margin-top: 10px; }
+.pf-group { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.pf-label { font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-dim); }
+.pf-chip {
+  font: inherit; font-size: 14px; line-height: 1;
+  padding: 6px 10px; cursor: pointer;
+  color: var(--text-muted); background: none;
+  border: 1px solid var(--border-strong); border-radius: 0;
+}
+.pf-chip:hover { color: var(--text); }
+.pf-chip[aria-pressed="true"] { color: var(--bg); background: var(--text); border-color: var(--text); }
+.pf-clear {
+  font: inherit; font-size: 14px; padding: 6px 10px; cursor: pointer;
+  color: var(--text-muted); background: none; border: 1px dashed var(--border-strong);
+}
+.pf-clear:hover { color: var(--text); }
+.pf-hint { margin: 8px 0 0; font-size: 13px; color: var(--text-dim); }
+.pf-hint kbd {
+  font-family: var(--font-mono, monospace); font-size: 12px;
+  padding: 1px 5px; border: 1px solid var(--border-strong);
+}
+.pf-empty { margin: 32px 0; color: var(--text-muted); }
+
+/* The filter's one effect on the document. A class rather than an inline
+   `display` so a row's own styles are untouched. */
+.pf-off { display: none !important; }
+
+/* `nth-child(even)` counts the rows the filter hid, so a filtered table stripes
+   in a pattern that looks like a rendering fault. While the script is running
+   the stripe is a class it puts on the rows still showing; with no JavaScript
+   `body.pf-page` is never set and the CSS stripe above stands. */
+body.pf-page tbody tr:nth-child(even) { background: none; }
+body.pf-page tbody tr.pf-alt { background: var(--bg-alt); }
+
 /* ── Footer ─── */
 footer {
   background: var(--surface);
@@ -622,6 +692,17 @@ h4 > a.header-anchor:hover { text-decoration: underline; }
   .code-block-wrapper { overflow: hidden; }
   .code-block-wrapper pre { font-size: 15px !important; }
   .cheatsheet-content pre { font-size: 15px !important; }
+
+  /* ── Problem index filter ── */
+  /* The count moves under the box rather than squeezing it to nothing, and the
+     input goes to 16px because anything smaller makes iOS zoom the page in on
+     focus — on this page that lands you in a table you then cannot scroll out
+     of. The hint names a keyboard shortcut, so it goes. */
+  .pf { padding: 10px 0 8px; }
+  .pf-search { flex-wrap: wrap; gap: 6px 10px; }
+  .pf-input { flex: 1 1 100%; font-size: 16px; }
+  .pf-facets { gap: 6px 10px; margin-top: 8px; }
+  .pf-hint { display: none; }
 
   /* ── Tables ── */
   .table-wrap {

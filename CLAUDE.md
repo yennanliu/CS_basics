@@ -192,6 +192,46 @@ your code rather than on these pages, and as one card reading "Interview coach"
 among ten others that was invisible. A new skill page goes in that band and in
 the navbar's `agent skills` group, not in `ENTRY_GROUPS`.
 
+#### Filtering the problem index
+
+`problems.html` is the **only complete copy of the index anywhere**: GitHub stops
+rendering markdown at 512 KB and README passed 1.1 MB, so every other view of it
+is truncated. That is why the page is one 1.8 MB document of 60 tables and 3,340
+rows rather than something paged or split — and why finding LC 239 in it used to
+mean Ctrl-F and landing on whichever row came first.
+
+[`site/problems-filter.js`](site/problems-filter.js) filters those rows **in
+place**. There is no second copy of the data and no second renderer: the page
+still *is* the README, a query only adds a class to the rows that do not match,
+and clearing the box leaves the document byte-for-byte as it was. The bar itself
+is built by `build-site.js` and ships `hidden`, so a reader without JavaScript
+gets the plain, complete index instead of a search box that does nothing.
+
+Four things in it are load-bearing and are commented where they live:
+
+- **A bare number is a problem number**, matched exactly against the (zero-
+  stripped) `#` column. Substring-matching it returns LC 1239 and LC 2390 for
+  `239`, which is the Ctrl-F behaviour the box exists to replace.
+- **Columns are read by `<thead>` name**, never by index — 57 of the 60 tables
+  share the 8-column shape and three do not, and a fixed index reads "Use case"
+  as a difficulty on those three.
+- **A row answers to its whole heading trail**, so `sliding window` returns that
+  section and a parent heading survives on its children (`## Newly Added` owns no
+  rows of its own).
+- **`body { overflow-x: hidden }` breaks `position: sticky`** for everything
+  under it — measurably: scrolled 6,000px down, the navbar's own top is at
+  −6,000. `body.pf-page { overflow-x: clip }` clips the same overflow without
+  making body a scroll container. It is scoped to this page, and to the script
+  having booted, because reviving sticky site-wide would also revive
+  `.toc-rail` and `.viz-controls` — a visible change to several hundred pages
+  and a decision of its own. (The navbar has a second, separate problem: its
+  `#site-nav` wrapper is exactly as tall as it is, so it has no room to slide.)
+
+`e2e-check.js` runs the **built** script against the **built** page in jsdom —
+the same trick it uses for search's `score()` — so a filter that boots, looks
+right and hides every row fails the build. `site/test/problems-filter.test.js`
+states the rules above against a document small enough to read.
+
 ### The algorithm visualizers
 
 `algo_demo/` is 36 hand-written visualizer pages plus `common.js` and `style.css`.
