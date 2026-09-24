@@ -49,6 +49,63 @@ Constraints:
 
 
 # V0
+# IDEA: MAX PQ + SLIDE WINDOW (gpt)
+
+import heapq
+
+
+class Solution(object):
+    def maxSlidingWindow(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: List[int]
+        """
+
+        if not nums or k <= 0:
+            return []
+
+        n = len(nums)
+
+        if k == 1:
+            return nums
+
+        if k >= n:
+            return [max(nums)]
+
+        # Max heap:
+        # (-value, index)
+        big_pq = []
+
+        res = []
+
+        l = 0
+
+        for r in range(n):
+
+            # Add current element
+            heapq.heappush(
+                big_pq,
+                (-nums[r], r)
+            )
+
+            # Move left boundary
+            while r - l + 1 > k:
+                l += 1
+
+            # Remove stale elements
+            # Their index is outside current window.
+            while big_pq and big_pq[0][1] < l:
+                heapq.heappop(big_pq)
+
+            # Current maximum
+            if r - l + 1 == k:
+                res.append(-big_pq[0][0])
+
+        return res
+
+
+# V0-0-1
 # IDEA : monotonic queue (gpt)
 # time = O(n)  # each index pushed/popped from deque at most once
 # space = O(k)  # deque holds at most k indices
