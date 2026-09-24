@@ -52,6 +52,91 @@ class Solution(object):
 # V0-1
 # IDEA: 2D DP (gpt) + LC 44
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/wildcard-matching.py
+"""
+
+1. CORE IDEA:
+
+
+    ```
+    if p[j - 1] == '.' or p[j - 1] == s[i - 1]:
+        dp[i][j] = dp[i - 1][j - 1]
+
+    elif p[j - 1] == '*':
+        # '*' matches zero characters
+        dp[i][j] = dp[i][j - 2]
+
+        # '*' matches one or more characters
+        if p[j - 2] == '.' or p[j - 2] == s[i - 1]:
+            dp[i][j] = dp[i][j] or dp[i - 1][j]
+    ```
+
+
+
+2. "*" in this LC is different from LC 44
+
+    -> 
+
+    ```
+    a*  = zero or more of the preceding (前) element 'a'
+    .*  = zero or more of any character
+    ```
+
+
+    -> 所以 * 必須看 `前一個` pattern character
+
+
+3. Two state for "*"
+
+    Case 1：* match zero characters
+
+        -> 
+           ```
+           s = "b"
+           p = "a*"
+           ```
+
+        -> "a*" CAN NOT PASS NOT ALL (NOT used)
+
+            -> e.g.
+
+                ```
+                "b" vs "a*"
+
+                ->
+        
+                "b" vs ""
+                ```
+
+            -> dp[i][j] = dp[i][j - 2]
+
+
+
+
+    Case 2：* match one or more characters
+
+        ->
+
+            ```
+            s = "aaa"
+            p = "a*"
+            ```
+
+
+            ->
+
+            ```
+            s[i - 1] = 'a'
+            p[j - 2] = 'a'
+            ```
+
+
+            ->
+    
+            ```
+            dp[i][j] = dp[i - 1][j]
+            ```
+
+"""
 class Solution(object):
     def isMatch(self, s, p):
         """
@@ -68,7 +153,7 @@ class Solution(object):
         # empty string matches empty pattern
         dp[0][0] = True
 
-        # Handle empty string + pattern like a*, a*b*, a*b*c*
+        # Handle empty string + pattern like `a*, a*b*, a*b*c*`
         for j in range(2, n + 1):
             if p[j - 1] == '*':
                 dp[0][j] = dp[0][j - 2]
