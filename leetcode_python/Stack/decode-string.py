@@ -47,8 +47,44 @@ All the integers in s are in the range [1, 300].
 """
 NOTE:
 
-d_st: stack for storage `digit`
-s_st: stack for storage `string`
+
+1) 
+
+ 2 stack
+
+    d_st: stack for storage `digit`
+    s_st: stack for storage `string`
+
+
+2)
+
+    `prev_str` as final result
+
+
+3) when x == "]"
+    -> need to append cur_str to prev_str
+
+        cur_str = (repeat * prev)
+
+
+4) overall idea:
+
+    
+        ┌──────────────────────────┐
+        │ 遇到數字                  │
+        │ cur_int = cur_int * 10+d │
+        ├──────────────────────────┤
+        │ 遇到字母                  │
+        │ cur_str += x              │
+        ├──────────────────────────┤
+        │ 遇到 [                    │
+        │ push(cur_int, cur_str)    │
+        │ reset                     │
+        ├──────────────────────────┤
+        │ 遇到 ]                    │
+        │ pop(repeat, prev_str)     │
+        │ cur_str = prev + cur*cnt  │
+        └──────────────────────────┘
 
 """
 class Solution(object):
