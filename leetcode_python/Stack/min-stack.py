@@ -44,9 +44,92 @@ At most 3 * 104 calls will be made to push, pop, top, and getMin.
 
 
 # V0
-# IDEA: 2 STACKS
+# IDEA: 2 ARRAY (or deque) + `min val in layer track` (gpt)
 """
 NOTE !!!
+
+
+q   = 所有 element
+
+min_values = 每一層 stack 對應的 minimum
+
+
+
+->
+
+   how we define `min_values`,
+   and why it can do O(1) time complexity push, pop.
+
+
+"""
+from collections import deque
+
+
+class MinStack(object):
+
+    def __init__(self):
+        self.q = deque()
+
+        # Store the minimum value at each stack level
+        self.min_values = []
+
+    def push(self, value):
+        """
+        :type value: int
+        :rtype: None
+        """
+
+        self.q.append(value)
+
+        # First value OR new minimum
+        if not self.min_values:
+            self.min_values.append(value)
+        else:
+            self.min_values.append(
+                min(value, self.min_values[-1])
+            )
+
+    def pop(self):
+        """
+        :rtype: None
+        """
+
+        value = self.q.pop()
+
+        # Remove the corresponding minimum
+        self.min_values.pop()
+
+        return value
+
+    def top(self):
+        """
+        :rtype: int
+        """
+
+        return self.q[-1]
+
+    def getMin(self):
+        """
+        :rtype: int
+        """
+
+        return self.min_values[-1]
+
+
+
+# V0-0-1
+# IDEA: 2 Array
+"""
+NOTE !!!
+
+
+q   = 所有 element
+minStack = `每一層` stack 對應的 minimum
+
+
+
+
+------
 
 
 so `minStack` is NOT storing the `actual element in from min to max`,
