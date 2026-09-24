@@ -40,7 +40,7 @@
 
 ## Problem Categories
 
-Nine shapes cover almost every stack question. The **Where** column says which template
+Ten shapes cover almost every stack question. The **Where** column says which template
 below owns the code, or which sheet the worked solutions moved to.
 
 | Category | What the stack holds | LC | Where |
@@ -51,6 +51,7 @@ below owns the code, or which sheet the worked solutions moved to.
 | **Monotonic — greedy removal** | the best prefix built so far | 402, 316, 1081, 1673 | [stack_examples.md](./stack_examples.md) |
 | **Monotonic — span accumulation** | `[value, span]` pairs, streaming | 901, 735 | [stack_examples.md](./stack_examples.md) |
 | **Stack with `[element, count]` pairs** | a run-length-compressed prefix | 1047, 1209, 1544 | [stack_examples.md](./stack_examples.md) |
+| **O(1) aggregate on a stack** | one `min` / `max` / delta *state* per layer | 155, 716, 1381, 895 | [Template 4](#template-4-min-stack--o1-getmin--lc-155-) |
 | **Expression parsing** | operands / deferred terms / open scopes | 224, 227, 772, 394, 150, 682 | [stack_expression_parsing.md](./stack_expression_parsing.md) |
 | **Scope / context ledger** | the *enclosing* context, keyed by depth | 388, 636, 591, 71 | [Template 6](#template-6-scope--context-ledger--lc-388-lc-636-) |
 | **Order reversal / paused traversal** | work not yet done | 144, 145, 173, 341, 445 | [Template 5](#template-5-explicit-stack--iterative-traversal--lc-144-lc-145-) |
@@ -78,7 +79,7 @@ below owns the code, or which sheet the worked solutions moved to.
 | 1 — Basic operations | anything | — | O(1) per op | push / pop / peek idioms |
 | 2 — Bracket matching | opener chars | one pass, pop on closer | O(n) / O(n) | validate nesting, >1 bracket type |
 | 3 — Monotonic stack | `(value, index)` | `while` inside `for` | O(n) / O(n) | next greater / smaller / span |
-| 4 — Min stack | value + running min | — | O(1) per op | O(1) `getMin()` on a stack |
+| 4 — Min stack | value + one aggregate *state* per layer | — | O(1) per op | O(1) `getMin()` / `getMax()`; prefix aggregates, path state |
 | 5 — Explicit stack | pending nodes | `while stack` | O(n) / O(h) | iterative traversal, order reversal |
 | 6 — Scope ledger | enclosing context per depth | one pass, trim to depth | O(n) / O(depth) | indented input, start/end events |
 
@@ -297,64 +298,104 @@ for (int i = 0; i < n; i++) {
 
 ### Template 4: Min Stack — O(1) getMin — LC 155 ⭐⭐⭐⭐
 
-**Pattern: 2 Stacks (main stack + min-tracking stack)**
+**Pattern: one aggregate per layer** — `min_values[i] == min(stack[0..i])`
+
+The stack you are asked for is the ordinary one. The trick is a **second array that
+mirrors it layer for layer**, holding not the elements but *the answer to the query
+for everything at or below that layer*. For LC 155 the query is "minimum", so
+`min_values = 每一層 stack 對應的 minimum`. This is the design-problem face of a
+[prefix aggregate](./prefix_sum.md), and the same idea shows up far outside stacks —
+see [the classics table](#the-same-idea-beyond-stacks--the-classics-) at the end of
+this template.
+
+#### The general form — one aggregate per layer
 
 ```text
-Key Insight:
-  minStack does NOT store elements in sorted order.
-  Instead, minStack[i] stores the minimum value seen
-  in the main stack up to position i.
+Invariant:  min_values[i] = min(stack[0], stack[1], ..., stack[i])
+            -> min_values is NOT the elements sorted; it is a STATE per layer
 
-  -> This lets getMin() return the current minimum in O(1)
-     by simply reading minStack[-1] (the top).
+push(v):    min_values.append(min(v, min_values[-1]))   # new layer, new state
+pop():      min_values.pop()                             # the popped layer's state goes with it
+getMin():   min_values[-1]                               # the top layer's state IS the answer
 
-  Example: push -2, 0, -3
-    stack    = [-2,  0, -3]
-    minStack = [-2, -2, -3]   ← each entry is min-so-far, not sorted elements
-
-  After pop():
-    stack    = [-2,  0]
-    minStack = [-2, -2]       ← getMin() correctly returns -2
-
-When to Use:
-  - Need O(1) getMin() on a stack
-  - minStack mirrors the main stack size (one entry per push/pop)
-  - Both stacks are always the same length
+push -2, 0, -3        then pop()
+  stack      = [-2,  0, -3]      stack      = [-2,  0]
+  min_values = [-2, -2, -3]      min_values = [-2, -2]   <- getMin() = -2, nothing recomputed
+                  ^    ^    ^
+                  |    |    min of all three
+                  |    min of the first two (0 did not beat -2)
+                  min of the first one
 ```
+
+Three consequences fall straight out of the invariant:
+
+- **The two arrays are always the same length** — every `push` appends to both, every
+  `pop` removes from both. No `if` in `pop()`, no comparing the popped value against the
+  min: `min_values[-1]` is a *state* that belongs to the layer, not a copy of an element,
+  so popping the layer is the whole job. That is why V0 below does not need the
+  `stack.pop() == mins[-1]` check that the space-saving variant needs.
+- **Duplicates are free.** `push(0); push(0); pop()` leaves `min_values = [0]`, because
+  each `0` got its own layer. The variant that stores only *new* minima has to write `<=`
+  to get this right — the classic LC 155 bug (see
+  [monotonic_stack.md § 2-16](./monotonic_stack.md#2-16-min-stack-lc-155--auxiliary-non-increasing-stack-)).
+- **Any aggregate that is a function of the prefix works the same way** — `max`, a running
+  sum, a running GCD, a pending delta (LC 1381), a frequency count (LC 895). Replace
+  `min(...)` in `push` and nothing else changes.
+
+#### Why O(1) — the state was computed at push time
+
+`getMin()` reads one array cell. There is no scan, because the work was moved to `push`,
+and `push` only has to combine **two** numbers: the new value and the answer for the layer
+below. That is the whole argument — each operation touches the top of two arrays and
+nothing else.
+
+The point of *keeping every layer's state* instead of one `self.min` variable is `pop()`.
+A single variable can be lowered when a smaller value arrives, but cannot be **raised**
+back when that value leaves — the earlier minimum was overwritten. The array remembers it,
+because it was never overwritten; it was one layer down the whole time.
+
+| Approach | `push` | `pop` | `getMin` | Why it falls short |
+|---|---|---|---|---|
+| one `self.min` variable | O(1) | **O(n)** | O(1) | after popping the min, the previous min has to be rescanned |
+| heap (`heapq`) | O(log n) | O(log n) with lazy deletion | O(1) | pays a log for an ordering the stack never uses |
+| `{value: count}` map | O(1) | O(1) | **O(n)** | `min(counts)` is a scan (this is `min-stack.py`'s V0-1) |
+| **per-layer `min_values`** | O(1) | O(1) | O(1) | the answer for the current top was fixed when the top was pushed |
 
 ```python
 # LC 155. Min Stack
 # V0
-# IDEA: 2 STACKS
+# IDEA: 2 ARRAYS — stack holds the elements, min_values holds each layer's minimum
+# time = O(1) per operation, space = O(n)
 class MinStack(object):
 
     def __init__(self):
         self.stack = []
-        self.minStack = []
+        # min_values[i] == min(stack[0..i]) — a STATE per layer, not the elements sorted
+        self.min_values = []
 
     def push(self, val):
         self.stack.append(val)
-        # minStack tracks running minimum, NOT sorted elements
-        if not self.minStack:
-            self.minStack.append(val)
+        if not self.min_values:
+            self.min_values.append(val)
         else:
-            self.minStack.append(min(val, self.minStack[-1]))
+            self.min_values.append(min(val, self.min_values[-1]))
 
     def pop(self):
-        # both stacks must stay in sync — always pop together
-        self.minStack.pop()
+        # the popped layer's state leaves with it — no comparison needed
+        self.min_values.pop()
         return self.stack.pop()
 
     def top(self):
         return self.stack[-1]
 
     def getMin(self):
-        # top of minStack is always the current minimum — O(1)
-        return self.minStack[-1]
+        # the top layer's state IS the current minimum — O(1)
+        return self.min_values[-1]
 ```
 
 ```python
-# V1: single stack storing (value, current_min) tuples
+# V1: the same invariant in one stack of (value, min_so_far) tuples
+# time = O(1) per operation, space = O(n)
 class MinStack(object):
 
     def __init__(self):
@@ -375,6 +416,83 @@ class MinStack(object):
     def getMin(self):
         return self.stack[-1][1]
 ```
+
+#### The same idea beyond stacks — the classics ⭐⭐⭐⭐
+
+The invariant needs a container that **only changes at one end**, so that "the state one
+layer down" is still valid when the top goes away. Four things in the LC catalogue behave
+like that. Read the table by the first column: find what is playing the stack in your
+problem, and the aggregate you need to carry per layer follows.
+
+| What plays the stack | Per-layer state | Query it answers | Classic LC |
+|---|---|---|---|
+| **an explicit stack** | `min` / `max` so far | `getMin()` / `getMax()` in O(1) | **155** Min Stack, **716** Max Stack (`peekMax`) |
+| | a pending delta for everything below | bulk `increment(k, val)` in O(1) | **1381** Design a Stack With Increment Operation |
+| | one stack per frequency level | pop the most frequent in O(1) | **895** Maximum Frequency Stack |
+| **two stacks forming a queue** (LC 232) | `min` / `max` so far in *each* stack | window min / max in amortised O(1), without a monotonic deque | **239** Sliding Window Maximum, **1438** Longest Continuous Subarray With Absolute Diff ≤ Limit |
+| **an array that only grows** — index = layer | prefix `min` / `max` / `sum` / `product` | "best value at or before `i`" for every `i` | **121** Best Time to Buy and Sell Stock, **2016** Maximum Difference Between Increasing Elements, **42** Trapping Rain Water, **238** Product of Array Except Self, **303** Range Sum Query, **769** Max Chunks To Make Sorted, **915** Partition Array into Disjoint Intervals, **1477** Find Two Non-overlapping Sub-arrays Each With Target Sum |
+| **the recursion stack** — the root-to-node path | `(lo, hi)` / `max` / prefix value along the path | a per-node answer about its ancestors | **1026** Maximum Difference Between Node and Ancestor, **98** Validate Binary Search Tree, **1448** Count Good Nodes in Binary Tree, **129** Sum Root to Leaf Numbers |
+
+Two rules decide how much of the state to keep:
+
+- **Keep the whole array when a later query asks about a layer that is not the top.**
+  LC 42 needs `left_max[i]` for *every* `i` on the second pass; LC 238 needs every prefix
+  product; LC 769 / 915 compare a prefix max against a suffix min at each split. One
+  variable cannot answer for a layer it has already moved past.
+- **Collapse it to one variable when only the top is ever queried and nothing pops.**
+  LC 121 asks "min so far" once per index and never goes back, so `min_values` is a single
+  `lo` — the array's last cell, kept and the rest thrown away. LC 155 cannot do this
+  because `pop()` *does* go back.
+
+```python
+# LC 239 (as a min queue) / LC 1438 - a queue built from two min stacks
+# IDEA: a queue is two stacks (LC 232). Give each stack its per-layer min and the
+#       queue's min is the smaller of the two tops — no monotonic deque needed.
+#       Swap min -> max for LC 239 itself; run one of each for LC 1438.
+# time = O(1) amortised per operation, space = O(n)
+class MinQueue(object):
+
+    def __init__(self):
+        self.inbox, self.outbox = [], []      # each entry: (value, min_so_far)
+
+    @staticmethod
+    def _push(st, v):
+        st.append((v, v if not st else min(v, st[-1][1])))
+
+    def push(self, v):
+        self._push(self.inbox, v)
+
+    def pop(self):
+        if not self.outbox:                   # refill: each element moves once
+            while self.inbox:
+                self._push(self.outbox, self.inbox.pop()[0])
+        return self.outbox.pop()[0]
+
+    def getMin(self):
+        return min(st[-1][1] for st in (self.inbox, self.outbox) if st)
+```
+
+```python
+# LC 1026 - Maximum Difference Between Node and Ancestor
+# IDEA: the recursion stack IS the stack; (lo, hi) is that layer's aggregate over the
+#       root-to-node path. Returning from the call pops it — no bookkeeping at all.
+# time = O(n), space = O(h)
+def maxAncestorDiff(root):
+    def dfs(node, lo, hi):
+        if not node:
+            return hi - lo
+        lo, hi = min(lo, node.val), max(hi, node.val)
+        return max(dfs(node.left, lo, hi), dfs(node.right, lo, hi))
+    return dfs(root, root.val, root.val)
+```
+
+Where the depth lives for each row: the LC 1381 delta trick in
+[design_examples.md § 6](./design_examples.md#6-stack--auxiliary-state--o1-min-and-lazy-increment-lc-155--lc-1381-),
+the deque form of LC 239 in
+[monotonic_queue.md](./monotonic_queue.md#template-1-sliding-window-maximum-decreasing-deque--lc-239),
+prefix arrays in [prefix_sum.md](./prefix_sum.md), LC 121 in
+[stock_trading.md](./stock_trading.md), and the `(lo, hi)` bounds pattern in
+[bst_advanced.md](./bst_advanced.md).
 
 ---
 
@@ -672,6 +790,7 @@ class Solution(object):
 | **Lexicographically smallest** with duplicates | Monotonic + Last Occurrence | Greedy removal with "appears later" check | LC 316, 1081 |
 | **Streaming/online** frequency | Stack with Span Pairs | Accumulate counts in pairs | LC 901 |
 | **FIFO from LIFO** | Two Stacks | Use input/output stacks for queue | LC 232 |
+| **O(1) min / max** alongside push / pop | Per-layer aggregate | `min_values[i] = min(stack[0..i])`, popped with its layer | LC 155, 716, 1381 |
 | **Balanced-bracket** validation | Bracket Matching | Push openers, pop-and-verify on closers | LC 20, 1249, 32 |
 | **Nesting context** (indent, start/end events) | Scope / Context Ledger | `stack[depth]` = the enclosing context | LC 388, 636, 591 |
 | **Reverse** a forward-only sequence | Push-all, then pop | Popping yields reverse order | LC 445, 234, 143 |
