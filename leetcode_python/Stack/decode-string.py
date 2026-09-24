@@ -87,6 +87,212 @@ NOTE:
         └──────────────────────────┘
 
 """
+
+"""
+DRY RUN: 
+
+-> input = 3[a2[c]]
+
+
+->
+
+
+# 用 `3[a2[c]]` dry run
+
+這題最重要的是理解 nested structure。
+
+### 一開始
+
+```text
+cur_int = 0
+cur_str = ""
+```
+
+遇到：
+
+```text
+3
+```
+
+變成：
+
+```text
+cur_int = 3
+```
+
+遇到：
+
+```text
+[
+```
+
+把目前狀態存進 stack：
+
+```text
+int_st   = [3]
+alpha_st = [""]
+```
+
+然後 reset：
+
+```text
+cur_int = 0
+cur_str = ""
+```
+
+---
+
+### 接著 `a`
+
+```text
+cur_str = "a"
+```
+
+遇到：
+
+```text
+2
+```
+
+```text
+cur_int = 2
+```
+
+遇到第二個：
+
+```text
+[
+```
+
+push：
+
+```text
+int_st   = [3, 2]
+alpha_st = ["", "a"]
+```
+
+reset：
+
+```text
+cur_int = 0
+cur_str = ""
+```
+
+---
+
+### 接著 `c`
+
+```text
+cur_str = "c"
+```
+
+遇到：
+
+```text
+]
+```
+
+pop：
+
+```text
+repeat   = 2
+prev_str = "a"
+```
+
+所以：
+
+```python
+cur_str = "a" + "c" * 2
+```
+
+得到：
+
+```text
+cur_str = "acc"
+```
+
+---
+
+### 最後一個 `]`
+
+現在：
+
+```text
+int_st   = [3]
+alpha_st = [""]
+cur_str  = "acc"
+```
+
+pop：
+
+```text
+repeat   = 3
+prev_str = ""
+```
+
+所以：
+
+```text
+cur_str = "" + "acc" * 3
+```
+
+得到：
+
+```text
+"accaccacc"
+```
+
+"""
+class Solution(object):
+    def decodeString(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+
+        if not s:
+            return ""
+
+        # Stack for repeat counts
+        int_st = []
+
+        # Stack for strings before '['
+        alpha_st = []
+
+        cur_int = 0
+        cur_str = ""
+
+        for x in s:
+
+            # Build number
+            if x.isdigit():
+                cur_int = cur_int * 10 + int(x)
+
+            # Build current string
+            elif x.isalpha():
+                cur_str += x
+
+            # Start a new nested level
+            elif x == "[":
+                int_st.append(cur_int)
+                alpha_st.append(cur_str)
+
+                cur_int = 0
+                cur_str = ""
+
+            # End current nested level
+            elif x == "]":
+                repeat = int_st.pop()
+                prev_str = alpha_st.pop()
+
+                cur_str = prev_str + cur_str * repeat
+
+        return cur_str
+
+
+
+# V0-0-1
+# IDEA : STACK (2 stack)
 class Solution(object):
     def decodeString(self, s):
         d_st = []
