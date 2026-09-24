@@ -128,6 +128,77 @@ test('the checked-in README passes validateIndex', () => {
   assert.ok(problems.size - imported > 1000, `${problems.size - imported} main rows`);
 });
 
+// ── The status word ───────────────────────────────────────────────────────
+
+test('statusWord reads the leading verdict and ignores the notes', () => {
+  assert.equal(lib.statusWord('OK**** (5) (but again, MUST)'), 'ok');
+  assert.equal(lib.statusWord('AGAIN*** (3)'), 'again');
+  assert.equal(lib.statusWord('again************ (4)(MUST)'), 'again');
+  assert.equal(lib.statusWord('OK (1) (again !!!)'), 'ok');
+  assert.equal(lib.statusWord('Not start* (1)'), 'not start');
+  assert.equal(lib.statusWord('(not start)'), '');
+  assert.equal(lib.statusWord('imported'), '');
+  assert.equal(lib.statusWord(''), '');
+  assert.equal(lib.statusWord(undefined), '');
+});
+
+test('statusWord agrees with the leading word on every checked-in main row', () => {
+  const problems = lib.parseReadmeProblems(fs.readFileSync(path.join(ROOT, 'README.md'), 'utf8'));
+  let ok = 0, again = 0, notes = 0;
+  for (const p of problems.values()) {
+    if (p.imported) continue;
+    const word = lib.statusWord(p.status);
+    if (word === 'ok') ok++;
+    if (word === 'again') again++;
+    // The cells a substring test gets wrong: an OK whose note remembers an again.
+    if (word === 'ok' && /again/i.test(p.status)) notes++;
+    // A leading word, when present, is at the very start of the cell.
+    if (word) assert.match(p.status, /^\s*(ok|again|not start)/i);
+  }
+  assert.ok(ok > 100 && again > 100, `${ok} ok, ${again} again`);
+  assert.ok(notes > 50, `${notes} OK cells carry an again in their notes`);
+});
+
+// ── The practice log ──────────────────────────────────────────────────────
+
+test('readLogVerdicts keeps the latest ok or again per problem and nothing else', () => {
+  const log = '20260901: 1(ok), 2(again!!), 3, 4(todo), 6(ok)\n20260902: 2(ok), 5(again), 6\n';
+  const verdicts = lib.readLogVerdicts(log);
+  assert.deepEqual([...verdicts.entries()].sort(([a], [b]) => Number(a) - Number(b)), [
+    ['1', { status: 'ok', date: '20260901' }],
+    ['2', { status: 'ok', date: '20260902' }],     // the latest annotation wins
+    ['5', { status: 'again', date: '20260902' }]
+    // 3 was never judged, 4 is only a todo, and 6's bare re-attempt cleared its ok
+  ]);
+  assert.equal(lib.readLogVerdicts('').size, 0);
+});
+
+test('buildProblemDictionary stamps a verdict only where the log has one', () => {
+  const problems = lib.parseReadmeProblems(TWO_SETS);
+  const verdicts = new Map([['1', { status: 'again', date: '20260903' }]]);
+  const dict = lib.buildProblemDictionary(['1', '2'], { readme: problems, listedById: new Map(), verdicts });
+  assert.equal(dict['1'].verdict, 'again');
+  assert.equal(dict['1'].verdictDate, '20260903');
+  assert.equal(dict['2'].verdict, undefined);
+  assert.equal(dict['2'].verdictDate, undefined);
+});
+
+test('the checked-in log stamps verdicts onto the real roadmap and tallies them', () => {
+  const { roadmap, problems, sheetTitles, listed } = realInputs();
+  const verdicts = lib.readLogVerdicts(fs.readFileSync(path.join(ROOT, 'data/progress.txt'), 'utf8'));
+  const built = lib.buildRoadmap(roadmap, problems, sheetTitles, listed, undefined, verdicts);
+  const judged = Object.values(built.problems).filter(p => p.verdict);
+  assert.ok(judged.length > 50, `${judged.length} judged`);
+  assert.ok(judged.every(p => ['ok', 'again'].includes(p.verdict) && /^\d{8}$/.test(p.verdictDate)));
+  assert.equal(built.stats.log.ok + built.stats.log.again, judged.length);
+  assert.match(built.stats.log.lastDate, /^\d{8}$/);
+  // Without a log nothing is stamped and the tally is empty, so a checkout
+  // without data/progress.txt still builds.
+  const bare = lib.buildRoadmap(roadmap, problems, sheetTitles, listed);
+  assert.equal(Object.values(bare.problems).filter(p => p.verdict).length, 0);
+  assert.deepEqual(bare.stats.log, { ok: 0, again: 0, lastDate: null });
+});
+
 test('parseReadmeProblems keeps a row whose difficulty column is malformed', () => {
   const problems = lib.parseReadmeProblems(
     '| 1242 | [Web Crawler](https://leetcode.com/problems/web-crawler/) | + \\ |  |  |  |  |  |'

@@ -75,13 +75,14 @@ exactly like a named drill, so it is dropped whole — taking the number with it
                                       ^^ LC 23 is dropped. 24 and 25 survive.
 ```
 
-**93 attempts across the log sit in a chunk shaped like that**, and the two readers of the
-log disagree about them: `script/suggest_review.py` strips the label first (`_strip_label`,
-whose comment says so), while `site/build-review-plan.js` does not. So the CLI planner sees
-those attempts and the review-plan page does not.
+**93 attempts across the log sit in a chunk shaped like that.** The two readers of the log
+used to disagree about them — `script/suggest_review.py` strips the label first
+(`_strip_label`), and `site/build-review-plan.js` did not until Sep 2026, when it gained the
+same `stripLabel` because the roadmap stamps its done state from what that parser reads. Both
+read the chunk now; a reader that does not exist yet will not, so the shape is still avoided.
 
 The fix is one character — end the label with a comma so the number starts its own chunk,
-which makes both readers agree:
+which no reader has to be taught:
 
 ```text
 20260920: top 100 like(linked list):, 23, 24(again!!!), 25 | ...
@@ -101,9 +102,8 @@ digit hands the parser the wrong number. **Neither** reader recovers this one:
 
 Rule: **the LC number first, the description inside the parens.**
 
-Fixing the 109 historical entries is a separate job from writing today's line, and it moves
-`site/build-review-plan.js` and its tests first — this skill does not rewrite past days
-(directive 4).
+Fixing the 16 number-after-description entries is a separate job from writing today's line
+— this skill does not rewrite past days (directive 4).
 
 ## The steps
 

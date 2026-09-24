@@ -10,7 +10,8 @@ const {
   headingIds, anchorMap, retargetAnchors,
   ensureHeadingIds, groupByCategory, buildPrevNext, buildIndexGrid,
   buildCheatsheetIndex, splitLeadingH1, buildPageContent, extractScope,
-  titleCaseFromFile, summariseDoc
+  titleCaseFromFile, summariseDoc,
+  isoDate
 } = require('./build-lib');
 const { compose, parseStore, docs: zhDocs, orphanStores } = require('./i18n');
 
@@ -853,24 +854,39 @@ const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '', o
 const { parseReadmeProblems } = require('./build-roadmap');
 const readmeProblems = parseReadmeProblems(readme);
 
-// README's last column is a hand-kept verdict — "OK******* (7)", "AGAIN**** (3)" —
-// on the main tables, and the word `imported` on every row of the imported set.
-// The split matters on this page: "3,270 problems" counts both, and until the
-// cell said so nothing on the site told a visitor which rows had been practised
-// and which were generated drafts pulled in by the coverage audit.
-function readmeStatusCounts(problems) {
-  const counts = { ok: 0, again: 0, todo: 0, imported: 0, main: 0 };
-  for (const p of problems.values()) {
-    if (p.imported) { counts.imported++; continue; }
-    counts.main++;
-    const status = p.status.toUpperCase();
-    if (status.includes('AGAIN')) counts.again++;
-    else if (status.includes('OK')) counts.ok++;
-    else if (status) counts.todo++;
-  }
+// README's two table sets: the author's own rows, and the word `imported` on
+// every row of the coverage-audit set. The split matters on this page: "3,270
+// problems" counts both, and until the cell said so nothing on the site told a
+// visitor which rows had been practised and which were generated drafts.
+function readmeSetCounts(problems) {
+  const counts = { imported: 0, main: 0 };
+  for (const p of problems.values()) counts[p.imported ? 'imported' : 'main']++;
   return counts;
 }
-const statusCounts = readmeStatusCounts(readmeProblems);
+const setCounts = readmeSetCounts(readmeProblems);
+
+// Progress itself is read from the practice log, not from README's hand-kept
+// OK/AGAIN column. The column is updated when the author gets round to it and
+// lags the log by months; the log is written the day of the session, and
+// build-review-plan.js already compiles it for the review plan. So the numbers
+// here are the log's *latest verdict* per problem — the same reading the
+// roadmap's done state and /l3-core use — and they move the day the log does.
+const { buildPayload } = require('./build-review-plan');
+const logProgress = (() => {
+  if (!fs.existsSync('data/progress.txt')) return null;
+  // No catalog: the six numbers below come from the log alone, and attaching
+  // README metadata to every logged problem would re-parse the index for nothing.
+  const { payload } = buildPayload(fs.readFileSync('data/progress.txt', 'utf8'), null);
+  const by = status => payload.problems.filter(p => p.status === status).length;
+  return {
+    problems: payload.stats.problems,
+    days: payload.stats.days,
+    ok: by('ok'),
+    again: by('again'),
+    firstDate: payload.stats.firstDate,
+    lastDate: payload.stats.lastDate
+  };
+})();
 
 // Counted, never typed: a hardcoded "1,300+" is a number that goes stale the
 // first week nobody remembers it is there.
@@ -1063,10 +1079,10 @@ cp -r /tmp/cs_basics/.claude/skills/lc-coach ~/.claude/skills/</code></pre>
   </div>
 
   <p class="section-note">
-    ${statusCounts.imported > 0
-      ? `Of the ${readmeProblems.size.toLocaleString('en-US')} problems indexed, ${statusCounts.main.toLocaleString('en-US')} are the author's own rows and ${statusCounts.imported.toLocaleString('en-US')} are <strong>imported</strong> drafts from a coverage audit, marked as such in the <a href="problems.html">index</a>. `
-      : ''}${statusCounts.ok + statusCounts.again > 0
-      ? `Of the problems attempted so far, ${statusCounts.ok.toLocaleString('en-US')} are marked <strong>OK</strong> and ${statusCounts.again.toLocaleString('en-US')} are still marked <strong>AGAIN</strong> — the <a href="lc-review-plan.html">review plan</a> schedules the second group. `
+    ${setCounts.imported > 0
+      ? `Of the ${readmeProblems.size.toLocaleString('en-US')} problems indexed, ${setCounts.main.toLocaleString('en-US')} are the author's own rows and ${setCounts.imported.toLocaleString('en-US')} are <strong>imported</strong> drafts from a coverage audit, marked as such in the <a href="problems.html">index</a>. `
+      : ''}${logProgress
+      ? `Progress is read from the practice log, not from the index's hand-kept status column: ${logProgress.problems.toLocaleString('en-US')} problems attempted over ${logProgress.days.toLocaleString('en-US')} days, the last on ${isoDate(logProgress.lastDate)}. The latest verdict is <strong>ok</strong> for ${logProgress.ok.toLocaleString('en-US')} of them and <strong>again</strong> for ${logProgress.again.toLocaleString('en-US')} — the <a href="lc-review-plan.html">review plan</a> schedules the second group, and the <a href="lc-roadmap.html">roadmap</a> shows the first as done. `
       : ''}Everything here is built from the markdown in
     <a href="https://github.com/yennanliu/CS_basics">the repository</a> — corrections welcome.
   </p>

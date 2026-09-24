@@ -4,7 +4,13 @@
    Behaviour for lc-roadmap.html: a topic DAG where each box tracks how many
    of its problems you have solved, and a topic unlocks once its prerequisites
    are finished. `_site/data/roadmap.json` (built by site/build-roadmap.js) is
-   the only input; progress lives in localStorage and never leaves the browser.
+   the only input. A problem's state comes from one of two places. Where the
+   practice log has judged it — the build stamps the log's latest verdict on
+   the record as `verdict: 'ok'` or `'again'` — the log decides: an `ok` is
+   solved, an `again` is open, and the checkbox is disabled either way. The
+   log is the record; a stale tick must not outvote it in either direction.
+   Only a problem the log has never judged takes a tick, stored in this
+   browser's localStorage, which never leaves it.
 
    The page shows one *list* at a time — the curated roadmap path by default,
    or one of the imported sets (Blind 75, NeetCode 150/250/all, LeetCode's Top
@@ -118,11 +124,29 @@
     return (node.lists && node.lists[view.list]) || [];
   }
 
+  /** The practice log's latest verdict on a problem: 'ok', 'again' or null. */
+  function verdictOf(id, view) {
+    var record = view.problems[id];
+    return (record && record.verdict) || null;
+  }
+
+  // Where the log has a verdict it decides, in both directions; a tick counts
+  // only where the log is silent. Otherwise a tick from April would outvote an
+  // `again` logged in September, and the badge saying so would be hidden.
+  function isSolved(id, view, solved) {
+    var verdict = verdictOf(id, view);
+    if (verdict) return verdict === 'ok';
+    return Boolean(solved[id]);
+  }
+
   function statsFor(node, view, solved) {
     var ids = idsFor(node, view);
-    var done = 0;
-    for (var i = 0; i < ids.length; i++) if (solved[ids[i]]) done++;
-    return { done: done, total: ids.length };
+    var done = 0, again = 0;
+    for (var i = 0; i < ids.length; i++) {
+      if (isSolved(ids[i], view, solved)) done++;
+      else if (verdictOf(ids[i], view) === 'again') again++;
+    }
+    return { done: done, total: ids.length, again: again };
   }
 
   // A topic with nothing on the current list is neither done nor pending — it
@@ -137,6 +161,7 @@
   }
 
   function percent(s) { return s.total ? Math.round((s.done / s.total) * 100) : 0; }
+  function percentAgain(s) { return s.total ? Math.round((s.again / s.total) * 100) : 0; }
 
   /**
    * Prerequisite topics that are not finished yet.
@@ -166,9 +191,25 @@
     var seen = Object.create(null);
     for (var i = 0; i < nodes.length; i++) {
       var ids = idsFor(nodes[i], view);
-      for (var j = 0; j < ids.length; j++) if (solved[ids[j]]) seen[ids[j]] = true;
+      for (var j = 0; j < ids.length; j++) if (isSolved(ids[j], view, solved)) seen[ids[j]] = true;
     }
     return Object.keys(seen).length;
+  }
+
+  /** How many distinct problems on the current list the log judged, per verdict. */
+  function logTally(nodes, view) {
+    var seen = Object.create(null);
+    var tally = { ok: 0, again: 0 };
+    for (var i = 0; i < nodes.length; i++) {
+      var ids = idsFor(nodes[i], view);
+      for (var j = 0; j < ids.length; j++) {
+        if (seen[ids[j]]) continue;
+        seen[ids[j]] = true;
+        var verdict = verdictOf(ids[j], view);
+        if (verdict) tally[verdict]++;
+      }
+    }
+    return tally;
   }
 
   /**
@@ -191,7 +232,7 @@
     var ids = idsFor(best, view);
     var problem = null;
     for (var j = 0; j < ids.length; j++) {
-      if (!solved[ids[j]]) { problem = resolve(ids[j], view); break; }
+      if (!isSolved(ids[j], view, solved)) { problem = resolve(ids[j], view); break; }
     }
     return { node: best, problem: problem };
   }
@@ -201,8 +242,16 @@
     var record = view.problems[id] || { title: '#' + id, url: '', difficulty: 'Unknown', solutions: {} };
     return {
       id: id, title: record.title, url: record.url,
-      difficulty: record.difficulty, solutions: record.solutions || {}
+      difficulty: record.difficulty, solutions: record.solutions || {},
+      verdict: record.verdict || null, verdictDate: record.verdictDate || null
     };
+  }
+
+  /** 'YYYYMMDD' -> 'YYYY-MM-DD', for the tooltips that cite the log. */
+  function isoDate(compact) {
+    return compact && compact.length === 8
+      ? compact.slice(0, 4) + '-' + compact.slice(4, 6) + '-' + compact.slice(6, 8)
+      : compact || '';
   }
 
   // ── Markup ──────────────────────────────────────────────────────────────
@@ -218,6 +267,15 @@
     return 'Finish first: ' + unmet.map(function (id) { return byId[id].title; }).join(', ');
   }
 
+  // "3 of 5 solved, 1 marked again" — the again count only when there is one,
+  // so a topic the log has nothing to say about reads as it always did.
+  function nodeLabel(node, s, empty, lock) {
+    if (empty) return node.title + ' — nothing on this list';
+    return node.title + ' — ' + s.done + ' of ' + s.total + ' solved' +
+      (s.again ? ', ' + s.again + ' marked again in the log' : '') +
+      (lock ? '. ' + lock : '');
+  }
+
   function nodeHTML(node, view, byId, solved) {
     var s = statsFor(node, view, solved);
     var empty = isEmpty(node, view);
@@ -226,9 +284,7 @@
       (isDone(node, view, solved) ? ' done' : '') +
       (lock ? ' locked' : '') +
       (empty ? ' empty' : '');
-    var label = empty
-      ? node.title + ' — nothing on this list'
-      : node.title + ' — ' + s.done + ' of ' + s.total + ' solved' + (lock ? '. ' + lock : '');
+    var label = nodeLabel(node, s, empty, lock);
 
     return '<button type="button" class="' + cls + '" data-id="' + esc(node.id) + '"' +
       ' title="' + esc(label) + '" aria-label="' + esc(label) + '">' +
@@ -236,7 +292,8 @@
         '<span class="node-title">' + esc(node.title) + '</span>' +
         '<span class="node-count">' + (empty ? '—' : s.done + '/' + s.total) + '</span>' +
       '</span>' +
-      '<span class="node-bar"><i style="width:' + percent(s) + '%"></i></span>' +
+      '<span class="node-bar"><i style="width:' + percent(s) + '%"></i>' +
+        '<i class="again" style="width:' + percentAgain(s) + '%"></i></span>' +
     '</button>';
   }
 
@@ -264,13 +321,36 @@
       // empty gap that reads as a rendering bug.
       : '<span class="prob-gap" title="No solution in this repo yet">·</span>';
 
-    return '<div class="prob' + (solved[problem.id] ? ' solved' : '') + '">' +
+    // A judged problem is the log's to decide: the box shows the log's answer
+    // and is disabled, and the badge says which verdict and when. An `again`
+    // stays open even if this browser once ticked it. Only an unjudged problem
+    // has a live checkbox.
+    var judged = Boolean(problem.verdict);
+    var logged = problem.verdict === 'ok';
+    var done = judged ? logged : Boolean(solved[problem.id]);
+    var when = problem.verdictDate ? ' on ' + isoDate(problem.verdictDate) : '';
+    var badge = judged
+      ? '<span class="prob-verdict ' + esc(problem.verdict) + '" title="Latest verdict in the practice log' +
+        esc(when) + '">' + esc(problem.verdict) + '</span>'
+      : '';
+    var name = esc('#' + problem.id + ' ' + problem.title);
+    // The accessible name says what the control IS when it cannot be operated —
+    // "solved in the practice log on …" — rather than inviting a click on a
+    // disabled box; the date otherwise lives only in a title attribute.
+    var aria = judged
+      ? name + ' — ' + (logged ? 'solved' : 'marked again') + ' in the practice log' + esc(when)
+      : 'Mark ' + name + ' as solved';
+
+    return '<div class="prob' + (done ? ' solved' : '') + (logged ? ' logged' : '') +
+        (problem.verdict === 'again' ? ' again' : '') + '">' +
       '<input type="checkbox" data-check="' + esc(problem.id) + '"' +
-        (solved[problem.id] ? ' checked' : '') +
-        ' aria-label="Mark ' + esc('#' + problem.id + ' ' + problem.title) + ' as solved">' +
+        (done ? ' checked' : '') +
+        (judged ? ' disabled title="' + (logged ? 'Solved' : 'Marked again') + ' in the practice log' + esc(when) + '"' : '') +
+        ' aria-label="' + aria + '">' +
       '<span class="prob-id">#' + esc(problem.id) + '</span>' +
       '<a class="prob-title" href="' + esc(problem.url) + '" target="_blank" rel="noopener">' +
         esc(problem.title) + '</a>' +
+      badge +
       '<span class="diff-badge ' + esc(problem.difficulty) + '">' + esc(problem.difficulty) + '</span>' +
       '<span class="prob-links">' + links + '</span>' +
     '</div>';
@@ -396,6 +476,12 @@
 
     $('statProblems').textContent = done + ' / ' + total;
     $('statTopics').textContent = topicsDone + ' / ' + topicsWith.length;
+    var tally = logTally(nodes, state.view);
+    $('statLog').textContent = tally.ok + ' ok · ' + tally.again + ' again';
+    var log = state.roadmap.stats && state.roadmap.stats.log;
+    $('statLog').title = log && log.lastDate
+      ? 'Latest verdict in the practice log: ' + isoDate(log.lastDate)
+      : 'The practice log has no verdict on this list';
     $('summaryFill').style.width = pct + '%';
     $('summaryLabel').textContent = pct + '% of ' + state.view.label + ' solved';
     $('listBlurb').textContent = state.view.blurb || '';
@@ -425,9 +511,7 @@
       var s = statsFor(node, state.view, state.solved);
       var empty = isEmpty(node, state.view);
       var lock = lockLabel(node, state.view, state.byId, state.solved);
-      var label = empty
-        ? node.title + ' — nothing on this list'
-        : node.title + ' — ' + s.done + ' of ' + s.total + ' solved' + (lock ? '. ' + lock : '');
+      var label = nodeLabel(node, s, empty, lock);
       el.classList.toggle('done', isDone(node, state.view, state.solved));
       el.classList.toggle('locked', lock !== '');
       el.classList.toggle('empty', empty);
@@ -435,6 +519,7 @@
       el.setAttribute('aria-label', label);
       el.querySelector('.node-count').textContent = empty ? '—' : s.done + '/' + s.total;
       el.querySelector('.node-bar > i').style.width = percent(s) + '%';
+      el.querySelector('.node-bar > i.again').style.width = percentAgain(s) + '%';
     });
   }
 
@@ -508,7 +593,11 @@
     if (id ? location.hash !== '#' + id : location.hash) history.replaceState(null, '', target);
   }
 
+  // A problem the log has judged takes no tick: the verdict is the record, and
+  // a stored tick would outlive a later `again`. "tick all" runs through here
+  // too, so it cannot write logged ids into localStorage.
   function setSolved(id, on) {
+    if (verdictOf(id, state.view)) return;
     if (on) state.solved[id] = true;
     else delete state.solved[id];
   }
@@ -566,7 +655,8 @@
 
     $('resetBtn').addEventListener('click', function () {
       if (!Object.keys(state.solved).length) return;
-      if (typeof confirm === 'function' && !confirm('Clear all roadmap progress in this browser?')) return;
+      if (typeof confirm === 'function' &&
+          !confirm('Clear every tick stored in this browser? What the practice log says stays.')) return;
       state.solved = Object.create(null);
       afterChange();
     });
@@ -629,6 +719,9 @@
     idsFor: idsFor,
     resolve: resolve,
     statsFor: statsFor,
+    verdictOf: verdictOf,
+    isSolved: isSolved,
+    logTally: logTally,
     isEmpty: isEmpty,
     isDone: isDone,
     percent: percent,

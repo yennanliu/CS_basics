@@ -317,9 +317,9 @@
         </div>
         <div class="fail">
           <span class="glyph" aria-hidden="true">&#9676;</span>
-          <b>The two readers disagree</b>
-          <p><code>suggest_review.py</code> strips bucket labels before parsing; <code>build-review-plan.js</code> does not. So the CLI planner sees those 93 attempts and this site's review plan does not.</p>
-          <p class="cost">Fix: a comma after the label makes both agree.</p>
+          <b>The two readers used to disagree</b>
+          <p><code>suggest_review.py</code> strips bucket labels before parsing; <code>build-review-plan.js</code> did not until Sep 2026, so the CLI planner saw those 93 attempts and this site's review plan did not. Both read them now.</p>
+          <p class="cost">Still: a comma after the label needs no reader to be taught.</p>
         </div>
       </div>
     </section>
@@ -470,9 +470,8 @@ dropped  LC weekly: - you said 2289 was finally done">
 354(2D LIS)         <span class="ann">-&gt; logged as LC 354, note "2D LIS"</span></code></pre>
         </div>
         <p class="note">
-          Fixing the 109 historical entries is a separate job from writing today's line, and it
-          moves <code>site/build-review-plan.js</code> and its tests first. This skill does not
-          rewrite past days.
+          Fixing the 16 number-after-description entries is a separate job from writing today's
+          line. This skill does not rewrite past days.
         </p>
       </div>
     </section>

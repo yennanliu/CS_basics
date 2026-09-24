@@ -144,8 +144,12 @@
     .node-title { font-weight: 700; line-height: 1.35; }
     .node-count { font-size: 0.72rem; color: var(--text-light); white-space: nowrap; }
     .node.done .node-count { color: var(--edge-live); }
-    .node-bar { height: 4px; background: var(--edge); border-radius: 999px; margin-top: 0.65rem; overflow: hidden; }
+    /* Two segments: solved (from the log or a tick), then the problems the log
+       marks `again` — in progress, so they read as a lighter continuation of
+       the bar rather than as done. */
+    .node-bar { display: flex; height: 4px; background: var(--edge); border-radius: 999px; margin-top: 0.65rem; overflow: hidden; }
     .node-bar > i { display: block; height: 100%; width: 0; background: var(--text); transition: width 0.25s; }
+    .node-bar > i.again { background: var(--text-light); opacity: 0.55; }
     .node.done .node-bar > i { background: var(--edge-live); }
 
     /* ── Drawer ── */
@@ -201,6 +205,15 @@
     .prob-title { flex: 1; min-width: 0; font-size: 0.82rem; text-decoration: none; line-height: 1.35; }
     .prob-title:hover { text-decoration: underline; }
     .prob.solved .prob-title { color: var(--text-light); text-decoration: line-through; }
+    /* A judged problem is the log's: its box shows the log's answer and is not
+       changed from here, in either direction. */
+    .prob.logged input, .prob.again input { cursor: not-allowed; }
+    .prob-verdict {
+      flex-shrink: 0; font-size: 0.64rem; letter-spacing: 0.02em;
+      padding: 0.08rem 0.4rem; border-radius: 999px; border: 1px solid var(--border);
+      color: var(--text-light);
+    }
+    .prob-verdict.again { border-color: var(--text-light); color: var(--text); }
     .prob-links { display: flex; gap: 0.3rem; flex-shrink: 0; }
     .prob-links a {
       border: 1px solid var(--border); border-radius: 4px;
@@ -268,11 +281,12 @@
       </div>
       <div class="summary-figure"><b id="statProblems">–</b><span>problems</span></div>
       <div class="summary-figure"><b id="statTopics">–</b><span>topics done</span></div>
+      <div class="summary-figure"><b id="statLog">–</b><span>in the practice log</span></div>
       <div class="summary-bar-wrap">
         <div class="summary-bar"><i id="summaryFill"></i></div>
         <div class="summary-bar-label" id="summaryLabel"></div>
       </div>
-      <button class="btn" id="resetBtn" type="button">reset progress</button>
+      <button class="btn" id="resetBtn" type="button">reset ticks</button>
     </div>
     <p class="list-blurb" id="listBlurb"></p>
 
@@ -294,8 +308,12 @@
       depends on is finished, and the lock is a suggestion, not a gate. A faded topic is one the
       selected list has nothing filed under, and a <span class="prob-gap">·</span> in place of a
       language link means this repo has no solution for that problem yet.
-      Progress is keyed by problem, so a tick counts on every list and every topic the problem
-      appears on — it is stored in this browser only and is never uploaded.
+      Progress comes from two places. The <a href="lc-review-plan.html">practice log</a> is the
+      record: a problem whose latest verdict there is <strong>ok</strong> is shown as done, and one
+      marked <strong>again</strong> is badged as still in progress — neither can be changed from
+      this page, and both move the day the log does. A tick is for what the log has not judged;
+      it is keyed by problem, so it counts on every list and every topic the problem appears on,
+      and it is stored in this browser only and never uploaded.
     </p>
   </main>
 

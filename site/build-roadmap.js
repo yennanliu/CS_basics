@@ -192,6 +192,23 @@ function isMustRow(tags, status) {
 }
 
 /**
+ * The verdict word of a main-table status cell: 'ok', 'again', 'not start' or ''.
+ *
+ * Read from the LEADING token, never by substring. script/check_readme.py's
+ * grammar puts the word first and leaves the paren notes as free text, and 74
+ * cells say things like `OK**** (5) (but again, MUST)` — a row the author has
+ * marked OK whose note remembers the history. A substring test read those as
+ * AGAIN. The leading word is also what suggest_review.py and
+ * eval_lc_readiness.py take (their `\b(OK|AGAIN)\b` matches the first
+ * occurrence), so every reader of the cell agrees. `imported` rows have no
+ * verdict word and return ''.
+ */
+function statusWord(cell) {
+  const lead = (cell || '').match(/^\s*(ok|again|not start)\b/i);
+  return lead ? lead[1].toLowerCase() : '';
+}
+
+/**
  * `[Python](./leetcode_python/x.py), [Java](./y.java)` → `{Python: <gh url>, …}`.
  * Repo-relative paths become absolute GitHub blob URLs; anything already
  * absolute is passed through untouched.
@@ -207,6 +224,33 @@ function parseSolutionLinks(cell) {
       : `${GH_BLOB}/${href.replace(/^\.\//, '')}`;
   }
   return solutions;
+}
+
+// ── Practice log ─────────────────────────────────────────────────────────────
+//
+// data/progress.txt is the record of what was practised; README's status column
+// is hand-kept and lags it. Until Sep 2026 the roadmap read neither — progress
+// was a set of ticks in each browser's localStorage, so a problem solved and
+// logged years ago still showed as open, and the locks meant nothing. Each
+// problem the roadmap shows now carries the log's *latest* verdict, `ok` or
+// `again`, read through build-review-plan.js's parser so the roadmap, the
+// review plan and the landing page cannot disagree about a line of the log.
+// A bare re-attempt after an `ok` clears the verdict, exactly as /l3-core reads
+// it: the verdict is the latest annotation, not the best one.
+
+/** The raw log -> Map of id -> { status: 'ok' | 'again', date: 'YYYYMMDD' }. */
+function readLogVerdicts(rawLog) {
+  // Required here, not at the top: build-review-plan.js requires this module
+  // for parseReadmeProblems, and a top-level cycle would hand one of them an
+  // empty exports object.
+  const { parseProgress, mergeDays, aggregate } = require('./build-review-plan');
+  const verdicts = new Map();
+  if (!rawLog) return verdicts;
+  for (const p of aggregate(mergeDays(parseProgress(rawLog).days))) {
+    if (p.status !== 'ok' && p.status !== 'again') continue;
+    verdicts.set(String(p.id), { status: p.status, date: p.dates[p.dates.length - 1] });
+  }
+  return verdicts;
 }
 
 // ── Cheatsheet titles ────────────────────────────────────────────────────────
@@ -602,7 +646,7 @@ function byDifficultyThenId({ listedById, readme }) {
  * data — it simply has no `solutions`, which the page shows as a gap rather
  * than hiding.
  */
-function buildProblemDictionary(ids, { readme, listedById }) {
+function buildProblemDictionary(ids, { readme, listedById, verdicts }) {
   const dictionary = {};
   for (const id of [...ids].sort((a, b) => Number(a) - Number(b))) {
     const local = readme.get(id);
@@ -626,6 +670,14 @@ function buildProblemDictionary(ids, { readme, listedById }) {
         solutions: {}
       };
     }
+    // The log's latest verdict, only where the log has one. The page renders an
+    // `ok` as done and an `again` as in progress; a problem the log has never
+    // judged is left to the browser's own tick.
+    const verdict = verdicts && verdicts.get(id);
+    if (verdict) {
+      dictionary[id].verdict = verdict.status;
+      dictionary[id].verdictDate = verdict.date;
+    }
   }
   return dictionary;
 }
@@ -637,7 +689,8 @@ function buildProblemDictionary(ids, { readme, listedById }) {
  * layout fields the page needs: `row` (authored) plus `col`/`rowSize`, which
  * place the node horizontally within its row in authored order.
  */
-function buildRoadmap(roadmap, problems, sheetTitles = new Map(), listed = [], fileLists = undefined) {
+function buildRoadmap(roadmap, problems, sheetTitles = new Map(), listed = [], fileLists = undefined,
+                      verdicts = new Map()) {
   const listedById = new Map(listed.map(p => [p.id, p]));
   const context = {
     roadmap,
@@ -645,6 +698,7 @@ function buildRoadmap(roadmap, problems, sheetTitles = new Map(), listed = [], f
     listed,
     listedById,
     fileLists,
+    verdicts,
     topicSources: roadmap.topicSources || {}
   };
 
@@ -696,16 +750,25 @@ function buildRoadmap(roadmap, problems, sheetTitles = new Map(), listed = [], f
     slots: nodes.reduce((sum, node) => sum + node.lists[entry.id].length, 0)
   }));
 
+  const dictionary = buildProblemDictionary(referenced, context);
+  const judged = Object.values(dictionary).filter(p => p.verdict);
   return {
     meta: roadmap.meta || {},
     defaultList: roadmap.defaultList || roadmap.lists[0].id,
     lists,
-    problems: buildProblemDictionary(referenced, context),
+    problems: dictionary,
     nodes,
     stats: {
       topics: nodes.length,
       problems: referenced.size,
-      rows: rowCounts.size
+      rows: rowCounts.size,
+      // What the log says about the problems on the page, so it can tell the
+      // reader where its done state comes from and how fresh it is.
+      log: {
+        ok: judged.filter(p => p.verdict === 'ok').length,
+        again: judged.filter(p => p.verdict === 'again').length,
+        lastDate: judged.reduce((max, p) => (p.verdictDate > max ? p.verdictDate : max), '') || null
+      }
     }
   };
 }
@@ -739,7 +802,14 @@ function main() {
     throw new Error(`data/roadmap.json is inconsistent:\n  - ${errors.join('\n  - ')}`);
   }
 
-  const built = buildRoadmap(roadmap, problems, sheetTitles, listed);
+  // The practice log, for the done state. Optional so a checkout without the
+  // log still builds — the page then falls back to browser ticks alone.
+  const verdicts = fs.existsSync('data/progress.txt')
+    ? readLogVerdicts(fs.readFileSync('data/progress.txt', 'utf8'))
+    : new Map();
+  console.log(`Read ${verdicts.size} verdicts from data/progress.txt`);
+
+  const built = buildRoadmap(roadmap, problems, sheetTitles, listed, undefined, verdicts);
   fs.mkdirSync('_site/data', { recursive: true });
   fs.writeFileSync('_site/data/roadmap.json', JSON.stringify(built));
   console.log(
@@ -747,7 +817,8 @@ function main() {
     // input, so logging that path for the output reads as "your source file
     // was overwritten".
     `✓ Created _site/data/roadmap.json (${built.stats.topics} topics over ${built.stats.rows} rows, ` +
-    `${built.stats.problems} distinct problems)`
+    `${built.stats.problems} distinct problems; the log says ok for ${built.stats.log.ok}, ` +
+    `again for ${built.stats.log.again})`
   );
   for (const list of built.lists) {
     // A list whose problems mostly land nowhere is a broken mapping, and the
@@ -771,6 +842,7 @@ module.exports = {
   GH_BLOB,
   parseReadmeProblems,
   parseSolutionLinks,
+  statusWord,
   buildSheetTitles,
   validateIndex,
   validateGraph,
@@ -781,5 +853,6 @@ module.exports = {
   resolveTopic,
   buildLists,
   buildProblemDictionary,
+  readLogVerdicts,
   buildRoadmap
 };

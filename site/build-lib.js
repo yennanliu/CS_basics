@@ -576,8 +576,16 @@
       .map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   }
 
+  /** 'YYYYMMDD' (the practice log's date shape) -> 'YYYY-MM-DD'; anything else unchanged. */
+  function isoDate(compact) {
+    return typeof compact === 'string' && /^\d{8}$/.test(compact)
+      ? compact.slice(0, 4) + '-' + compact.slice(4, 6) + '-' + compact.slice(6, 8)
+      : compact;
+  }
+
   return {
     slugify,
+    isoDate,
     TIER_LABELS,
     prioBadge,
     PRIO_BADGE_RE,
