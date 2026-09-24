@@ -913,9 +913,22 @@ const countIn = (file, pick) => {
 const roadmapTopics = countIn('data/roadmap.json', d => (d.nodes || []).length);
 const quizQuestions = countIn('data/complexity_quiz.json', d => (d.questions || []).length);
 const visualizerCount = stats[3][0];
-const systemDesignCases = fs.existsSync('system_design')
-  ? fs.readdirSync('system_design', { withFileTypes: true }).filter(e => e.isDirectory() && e.name !== 'pic').length
+// Subdirectories of `dir`, minus any named in `exclude` — the shape both the
+// skills band and the off-path band count with.
+const countDirs = (dir, exclude = []) => fs.existsSync(dir)
+  ? fs.readdirSync(dir, { withFileTypes: true }).filter(e => e.isDirectory() && !exclude.includes(e.name)).length
   : 0;
+const systemDesignCases = countDirs('system_design', ['pic']);
+// The off-path blurbs name what the counts count, and both come from the tree:
+// the FAQ categories the index groups by, and the two sheets beside the case
+// studies. A typed list drifts the first time a directory is renamed.
+const faqTopics = [...new Set(faqs.map(f => f.category))].filter(c => c !== 'General').sort();
+const systemDesignSheets = [
+  ['system_design/00_template.md', 'a design template'],
+  ['system_design/capacity_estimation_cheatsheet.md', 'a capacity-estimation sheet']
+].filter(([f]) => fs.existsSync(f)).map(([, label]) => label);
+const listOf = items => items.length <= 1 ? items.join('')
+  : `${items.slice(0, -1).join(', ')} and ${items[items.length - 1]}`;
 
 // The pitch for each tool is what it does for you, not what it is. "Explore
 // problems by tag" beats "LC Explorer" to someone who has never seen either.
@@ -964,9 +977,7 @@ const ENTRY_GROUPS = [
 // eleven, which is indistinguishable from another web page of the site. They
 // are a different kind of thing: markdown you install into your own agent, and
 // they work on your code rather than on this site's.
-const skillCount = fs.existsSync('.claude/skills')
-  ? fs.readdirSync('.claude/skills', { withFileTypes: true }).filter(e => e.isDirectory()).length
-  : 0;
+const skillCount = countDirs('.claude/skills');
 
 // Ten cards in one flat grid is a list, not a band — so they are declared as
 // three labelled groups, the same way ENTRY_GROUPS splits the main cards. The
@@ -1036,7 +1047,7 @@ const landingContent = `
     <h2>Where the practice stands</h2>
     <p class="section-note">
       Progress is read from the <a href="lc-review-plan.html">practice log</a>, not from the index's
-      hand-kept status column: ${logProgress.problems.toLocaleString('en-US')} problems attempted over
+      hand-kept status column: ${logProgress.problems.toLocaleString('en-US')} problems logged over
       ${logProgress.days.toLocaleString('en-US')} days, the last on ${isoDate(logProgress.lastDate)}.
       The latest verdict is <strong>ok</strong> for ${logProgress.ok.toLocaleString('en-US')} of them and
       <strong>again</strong> for ${logProgress.again.toLocaleString('en-US')} — the
@@ -1056,6 +1067,12 @@ const landingContent = `
         <dd>Came back, or needed the solution. Anything short of the bar above is another pass, and the
         common case. Bangs mark how hard it fought — <code>again!!!</code> sorts above a bare
         <code>again</code> in the review plan.</dd>
+      </div>
+      <div>
+        <dt><code>todo</code></dt>
+        <dd>Written down to attempt, not attempted yet. Its own bucket in the review plan, ranked between
+        <code>again</code> and <code>ok</code> when a day records both — so a problem can be in the log
+        without ever having been worked.</dd>
       </div>
       <div>
         <dt>no verdict</dt>
@@ -1120,11 +1137,11 @@ cp -r /tmp/cs_basics/.claude/skills/lc-coach ~/.claude/skills/</code></pre>
     <div class="entry-grid">
       <a class="entry-card" href="faqs.html">
         <span class="entry-title">Interview FAQs <span class="offpath-tag">off path</span></span>
-        <span class="entry-blurb">${faqs.length} question-and-answer sheets on Java, the JVM, Kafka, Spark, Redis, Flink, Airflow and SQL — for a backend or data-engineering round.</span>
+        <span class="entry-blurb">${faqs.length} question-and-answer sheets${faqTopics.length ? ` on ${listOf(faqTopics)}` : ''} — for a backend or data-engineering round.</span>
       </a>
       <a class="entry-card" href="https://github.com/yennanliu/CS_basics/tree/master/system_design">
         <span class="entry-title">System design <span class="offpath-tag">off path</span></span>
-        <span class="entry-blurb">${systemDesignCases ? `${systemDesignCases} case studies` : 'Case studies'} — Twitter, Uber, Netflix, a URL shortener, a web crawler — plus a template and a capacity-estimation sheet, on GitHub. A separate interview round, not this one.</span>
+        <span class="entry-blurb">${systemDesignCases ? `${systemDesignCases} case studies` : 'Case studies'}${systemDesignSheets.length ? `, plus ${listOf(systemDesignSheets)}` : ''}, on GitHub. A separate interview round, not this one.</span>
       </a>
     </div>
   </section>

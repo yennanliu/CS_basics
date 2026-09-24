@@ -326,9 +326,14 @@ ok('landing page progress counts are the log\'s',
 ok('landing page names the log\'s newest day', landingHtml.includes(isoDate(lastLogged)));
 // The two words the counts above are made of, defined where the counts are —
 // and the two collections that are not on the coding-loop path, said so.
-ok('landing page defines ok and again next to the counts',
-   /<dt><code>ok<\/code><\/dt>/.test(landingHtml) && /<dt><code>again<\/code><\/dt>/.test(landingHtml) &&
+ok('landing page defines ok, again and todo next to the counts',
+   ['ok', 'again', 'todo'].every(w => landingHtml.includes(`<dt><code>${w}</code></dt>`)) &&
    landingHtml.includes('unaided'));
+// The navbar is rendered by the shipped nav.js, so the shipped module is asked.
+const shippedNav = require(path.resolve(SITE, 'nav.js'));
+ok('navbar keeps the off-path FAQs out of the inline row and the review plan in it',
+   !shippedNav.PRIMARY.some(i => i.id === 'faqs') && shippedNav.MORE.some(i => i.id === 'faqs') &&
+   shippedNav.PRIMARY.some(i => i.id === 'lc-review-plan'));
 ok('landing page marks the FAQs and system design as off the coding-loop path',
    landingHtml.includes('id="off-path"') && (landingHtml.match(/offpath-tag/g) || []).length === 2 &&
    landingHtml.includes('href="faqs.html"') && landingHtml.includes('tree/master/system_design'));

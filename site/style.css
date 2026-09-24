@@ -841,22 +841,26 @@ h4 > a.header-anchor:hover { text-decoration: underline; }
    The two words the whole spaced-repetition machinery keys on, defined once
    where a first-time visitor meets the numbers. A definition list, not prose:
    the reader is looking up a term, not reading an essay. */
-.progress-band .section-note { margin-bottom: 16px; }
 .verdicts {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 0; border: 1px solid var(--border); margin: 0 0 16px;
 }
+/* Every cell carries its right and bottom rule, as .entry-card does, so a row
+   that wraps at an in-between width still has a line above its orphan. */
 .verdicts > div {
-  padding: 16px 20px; border-right: 1px solid var(--border); background: var(--surface);
+  padding: 16px 20px; background: var(--surface);
+  border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
 }
-.verdicts > div:last-child { border-right: none; }
 .verdicts dt { font-size: 15px; font-weight: 600; margin: 0 0 6px; }
 .verdicts dt code { font-size: 14px; }
 .verdicts dd { margin: 0; font-size: 14px; line-height: 1.6; color: var(--text-muted); }
 
 /* ── Off the coding-loop path ───────────────────────────────────────────────
    Same card shape as the entry groups, so the two collections are findable,
-   plus a tag that says why they are not in the groups above. */
+   plus a tag that says why they are not in the groups above. Two cards, so
+   auto-fit rather than the groups' auto-fill: empty tracks collapse instead of
+   leaving blank columns inside the border. */
+.offpath-band .entry-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
 .offpath-tag {
   display: inline-block; margin-left: 8px; padding: 1px 7px; vertical-align: middle;
   font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase;
@@ -917,6 +921,4 @@ h4 > a.header-anchor:hover { text-decoration: underline; }
   .entry-card { border-right: none; }
   .stat-cell { border-right: none; border-bottom: 1px solid var(--border); }
   .stat-cell:last-child { border-bottom: none; }
-  .verdicts > div { border-right: none; border-bottom: 1px solid var(--border); }
-  .verdicts > div:last-child { border-bottom: none; }
 }
