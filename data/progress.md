@@ -60,7 +60,7 @@
 
 - binary tree.md
 	- https://yennj12.js.org/CS_basics/cheatsheets/binary_tree.zh.html
-		- `LC 298 vs LC 549`
+		- `2) LC 範例`
 
 
 
