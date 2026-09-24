@@ -10,7 +10,8 @@ const {
   headingIds, anchorMap, retargetAnchors,
   ensureHeadingIds, groupByCategory, buildPrevNext, buildIndexGrid,
   buildCheatsheetIndex, splitLeadingH1, buildPageContent, extractScope,
-  titleCaseFromFile, summariseDoc
+  titleCaseFromFile, summariseDoc,
+  isoDate
 } = require('./build-lib');
 const { compose, parseStore, docs: zhDocs, orphanStores } = require('./i18n');
 
@@ -870,10 +871,12 @@ const setCounts = readmeSetCounts(readmeProblems);
 // build-review-plan.js already compiles it for the review plan. So the numbers
 // here are the log's *latest verdict* per problem — the same reading the
 // roadmap's done state and /l3-core use — and they move the day the log does.
-const { buildPayload, loadCatalog } = require('./build-review-plan');
+const { buildPayload } = require('./build-review-plan');
 const logProgress = (() => {
   if (!fs.existsSync('data/progress.txt')) return null;
-  const { payload } = buildPayload(fs.readFileSync('data/progress.txt', 'utf8'), loadCatalog());
+  // No catalog: the six numbers below come from the log alone, and attaching
+  // README metadata to every logged problem would re-parse the index for nothing.
+  const { payload } = buildPayload(fs.readFileSync('data/progress.txt', 'utf8'), null);
   const by = status => payload.problems.filter(p => p.status === status).length;
   return {
     problems: payload.stats.problems,
@@ -884,7 +887,6 @@ const logProgress = (() => {
     lastDate: payload.stats.lastDate
   };
 })();
-const isoDate = d => (d && d.length === 8 ? `${d.slice(0, 4)}-${d.slice(4, 6)}-${d.slice(6, 8)}` : d);
 
 // Counted, never typed: a hardcoded "1,300+" is a number that goes stale the
 // first week nobody remembers it is there.

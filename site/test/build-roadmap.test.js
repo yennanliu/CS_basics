@@ -128,6 +128,37 @@ test('the checked-in README passes validateIndex', () => {
   assert.ok(problems.size - imported > 1000, `${problems.size - imported} main rows`);
 });
 
+// ── The status word ───────────────────────────────────────────────────────
+
+test('statusWord reads the leading verdict and ignores the notes', () => {
+  assert.equal(lib.statusWord('OK**** (5) (but again, MUST)'), 'ok');
+  assert.equal(lib.statusWord('AGAIN*** (3)'), 'again');
+  assert.equal(lib.statusWord('again************ (4)(MUST)'), 'again');
+  assert.equal(lib.statusWord('OK (1) (again !!!)'), 'ok');
+  assert.equal(lib.statusWord('Not start* (1)'), 'not start');
+  assert.equal(lib.statusWord('(not start)'), '');
+  assert.equal(lib.statusWord('imported'), '');
+  assert.equal(lib.statusWord(''), '');
+  assert.equal(lib.statusWord(undefined), '');
+});
+
+test('statusWord agrees with the leading word on every checked-in main row', () => {
+  const problems = lib.parseReadmeProblems(fs.readFileSync(path.join(ROOT, 'README.md'), 'utf8'));
+  let ok = 0, again = 0, notes = 0;
+  for (const p of problems.values()) {
+    if (p.imported) continue;
+    const word = lib.statusWord(p.status);
+    if (word === 'ok') ok++;
+    if (word === 'again') again++;
+    // The cells a substring test gets wrong: an OK whose note remembers an again.
+    if (word === 'ok' && /again/i.test(p.status)) notes++;
+    // A leading word, when present, is at the very start of the cell.
+    if (word) assert.match(p.status, /^\s*(ok|again|not start)/i);
+  }
+  assert.ok(ok > 100 && again > 100, `${ok} ok, ${again} again`);
+  assert.ok(notes > 50, `${notes} OK cells carry an again in their notes`);
+});
+
 // ── The practice log ──────────────────────────────────────────────────────
 
 test('readLogVerdicts keeps the latest ok or again per problem and nothing else', () => {

@@ -192,6 +192,23 @@ function isMustRow(tags, status) {
 }
 
 /**
+ * The verdict word of a main-table status cell: 'ok', 'again', 'not start' or ''.
+ *
+ * Read from the LEADING token, never by substring. script/check_readme.py's
+ * grammar puts the word first and leaves the paren notes as free text, and 74
+ * cells say things like `OK**** (5) (but again, MUST)` — a row the author has
+ * marked OK whose note remembers the history. A substring test read those as
+ * AGAIN. The leading word is also what suggest_review.py and
+ * eval_lc_readiness.py take (their `\b(OK|AGAIN)\b` matches the first
+ * occurrence), so every reader of the cell agrees. `imported` rows have no
+ * verdict word and return ''.
+ */
+function statusWord(cell) {
+  const lead = (cell || '').match(/^\s*(ok|again|not start)\b/i);
+  return lead ? lead[1].toLowerCase() : '';
+}
+
+/**
  * `[Python](./leetcode_python/x.py), [Java](./y.java)` → `{Python: <gh url>, …}`.
  * Repo-relative paths become absolute GitHub blob URLs; anything already
  * absolute is passed through untouched.
@@ -825,6 +842,7 @@ module.exports = {
   GH_BLOB,
   parseReadmeProblems,
   parseSolutionLinks,
+  statusWord,
   buildSheetTitles,
   validateIndex,
   validateGraph,

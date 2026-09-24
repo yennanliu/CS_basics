@@ -43,7 +43,10 @@ function classify(note) {
   const text = note.toLowerCase();
   let status = 'other';
   for (const candidate of STATUSES) {
-    if (text.includes(candidate)) { status = candidate; break; }
+    // Whole words, as script/suggest_review.py's _classify reads them: "took
+    // 40min" and "look at editorial" are not an `ok`. `ok*` and `again!!!`
+    // still match — `*` and `!` are not word characters.
+    if (new RegExp('\\b' + candidate + '\\b').test(text)) { status = candidate; break; }
   }
   // Bangs anywhere in the note, not just at the end: "(again!!, 3 get_dist)".
   const bangs = (note.match(/!/g) || []).length;
@@ -59,8 +62,19 @@ function classify(note) {
 //   20260819: 70(ok*, o(1) space!!),198(   a paren left open across a newline
 //   ok*),139(again* 1d dp)                 …and closed on the next one
 //   ,53(again),62                          a bare continuation of the day above
+//   others: 678(todo)                      a bucket label glued to its number
+//   top 100 like(dp): 5(again!, dp)        …or a label with its own parens
+//   (LC must) 438(again)                   a parenthesised label with no colon
 //   ------ review                          a separator, ignored
 //   ...,topo_sort,weekly_331               non-numeric entries, ignored
+//
+// A bucket label is stripped before the number is read (stripLabel), the way
+// script/suggest_review.py's _strip_label does. Until Sep 2026 this parser did
+// not, so a chunk like `others: 678(todo)` looked like a named drill and was
+// dropped whole — 93 attempts, and every session the log's newest lines file
+// under a label. The two readers of the log now agree about them, which the
+// roadmap's done state depends on: it stamps the latest verdict this parser
+// finds, and /l3-core reports the one the Python parser finds.
 //
 // Splitting on commas has to respect paren depth, or "(again, 2 pointers)"
 // becomes two entries and "2 pointers" turns into problem #2.
@@ -90,6 +104,26 @@ function depthAfter(text, depth) {
   return depth;
 }
 
+/**
+ * `others: 678(todo)` -> `678(todo)`; `(LC must) 438(again)` -> `438(again)`.
+ *
+ * Cuts at the LAST top-level colon, so a label that itself carries parens —
+ * `top 100 like(dp): 5(again!, dp)` — loses the whole label and keeps the whole
+ * annotation. Mirrors script/suggest_review.py's _strip_label exactly.
+ */
+function stripLabel(entry) {
+  let depth = 0, cut = -1;
+  for (let i = 0; i < entry.length; i++) {
+    const ch = entry[i];
+    if (ch === '(') depth++;
+    else if (ch === ')') depth = Math.max(0, depth - 1);
+    else if (ch === ':' && depth === 0) cut = i;
+  }
+  if (cut >= 0) entry = entry.slice(cut + 1).replace(/^\s+/, '');
+  const paren = entry.match(/^\([^)]*\)\s*(?=\d)/);
+  return paren ? entry.slice(paren[0].length) : entry;
+}
+
 function parseProgress(raw) {
   const days = [];
   const warnings = [];
@@ -108,7 +142,7 @@ function parseProgress(raw) {
       if (!entry) continue;
       // Greedy to the last ")", so a nested one survives: "70(ok*, o(1) space!!)"
       // is one annotation, not a note that stops at the first close paren.
-      const m = entry.match(/^(\d+)\s*(?:\((.*)\))?/);
+      const m = stripLabel(entry).match(/^(\d+)\s*(?:\((.*)\))?/);
       // Named drills — topo_sort, weekly_331, lazy_bst_in_order — are practice
       // but not LeetCode numbers, so they cannot join a per-problem schedule.
       if (!m) continue;
@@ -441,7 +475,7 @@ for (const w of warnings) console.warn(`    warning: ${w}`);
 if (require.main === module) main();
 
 module.exports = {
-  parseProgress, classify, splitTopLevel, aggregate, mergeDays, buildPayload,
+  parseProgress, classify, splitTopLevel, stripLabel, aggregate, mergeDays, buildPayload,
   importance, buildCatalog, attachCatalog, loadCatalog, slugFromUrl,
   relativeSolutions, UNFILED, W
 };

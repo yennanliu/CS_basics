@@ -221,8 +221,11 @@ test('a logged ok counts as solved with no tick, and a logged again counts as in
   assert.equal(CSRoadmap.isDone(f.nodes[1], v, solvedSet([])), true);
   assert.deepEqual(CSRoadmap.statsFor(f.nodes[2], v, solvedSet([])), { done: 0, total: 1, again: 1 });
   assert.equal(CSRoadmap.isDone(f.nodes[2], v, solvedSet([])), false);
-  // A tick on an `again` problem still counts: the log has not called it done, the reader has.
-  assert.deepEqual(CSRoadmap.statsFor(f.nodes[2], v, solvedSet([4])), { done: 1, total: 1, again: 0 });
+  // A stale tick does not outvote the log: an `again` stays open, ticked or not.
+  assert.deepEqual(CSRoadmap.statsFor(f.nodes[2], v, solvedSet([4])), { done: 0, total: 1, again: 1 });
+  assert.equal(CSRoadmap.isSolved('4', v, solvedSet([4])), false);
+  // …and a tick still counts where the log is silent.
+  assert.equal(CSRoadmap.isSolved('1', v, solvedSet([1])), true);
 });
 
 test('distinctSolved, logTally and nextUp read the log as well as the ticks', () => {
@@ -246,16 +249,25 @@ test('problemHTML renders a logged ok as done and untickable, and a logged again
   assert.match(ok.querySelector('input').getAttribute('title'), /practice log on 2026-09-01/);
   assert.equal(ok.querySelector('.prob-verdict').textContent, 'ok');
 
+  assert.match(ok.querySelector('input').getAttribute('aria-label'), /^#3 P3 — solved in the practice log on 2026-09-01$/);
+
   const again = parse(CSRoadmap.problemHTML(CSRoadmap.resolve('4', v), solvedSet([])));
   assert.ok(again.querySelector('.prob').classList.contains('again'));
   assert.ok(!again.querySelector('.prob').classList.contains('solved'));
   assert.equal(again.querySelector('.prob-verdict').textContent, 'again');
-  assert.equal(again.querySelector('input').disabled, false);
+  assert.equal(again.querySelector('input').disabled, true);
+  assert.equal(again.querySelector('input').checked, false);
+  assert.match(again.querySelector('input').getAttribute('aria-label'), /marked again in the practice log on 2026-09-02/);
+  // A tick this browser stored before the log said `again` changes nothing on screen.
+  const stale = parse(CSRoadmap.problemHTML(CSRoadmap.resolve('4', v), solvedSet([4])));
+  assert.equal(stale.querySelector('input').checked, false);
+  assert.equal(stale.querySelector('.prob-verdict').textContent, 'again');
 
   // A problem the log never judged renders exactly as before: no badge, tickable.
   const plain = parse(CSRoadmap.problemHTML(CSRoadmap.resolve('1', v), solvedSet([])));
   assert.equal(plain.querySelector('.prob-verdict'), null);
   assert.equal(plain.querySelector('input').disabled, false);
+  assert.equal(plain.querySelector('input').getAttribute('aria-label'), 'Mark #1 P1 as solved');
 });
 
 test('nodeHTML says how many the log marks again, and only when it does', () => {
@@ -580,6 +592,21 @@ test('the page shows the log tally, and reset keeps what the log says', () => {
   click(doc.getElementById('resetBtn'));
   assert.equal(doc.getElementById('statProblems').textContent, '1 / 4');
   assert.ok(doc.querySelector('.node[data-id="b"]').classList.contains('done'));
+});
+
+test('"tick all" and "clear all" never write a judged problem into storage', () => {
+  const doc = renderPage(loggedFixture());
+  // Topic c holds P4 (logged again); topic b holds P3 (logged ok).
+  click(doc.querySelector('.node[data-id="c"]'));
+  click(doc.getElementById('drawerBody').querySelector('[data-bulk="all"]'));
+  assert.deepEqual(Object.keys(CSRoadmap.readSolved()), []);
+  assert.equal(doc.getElementById('statProblems').textContent, '1 / 4');
+  assert.equal(doc.getElementById('drawerBody').querySelector('input[data-check="4"]').checked, false);
+  click(doc.getElementById('drawerBody').querySelector('[data-open="b"]') || doc.querySelector('.node[data-id="b"]'));
+  click(doc.getElementById('drawerBody').querySelector('[data-bulk="all"]'));
+  assert.deepEqual(Object.keys(CSRoadmap.readSolved()), []);
+  assert.equal(doc.getElementById('drawerBody').querySelector('.prob-verdict').textContent, 'ok');
+  assert.match(doc.getElementById('statLog').getAttribute('title'), /no verdict|Latest verdict/);
 });
 
 test('reset clears every tick and the stored value', () => {

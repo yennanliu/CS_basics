@@ -275,10 +275,9 @@ ok('log carries status annotations', progress.stats.again > 0,
 // What made the old page stale was the copy in the HTML, and that is what the
 // two checks above rule out: the data cannot lag the log any more, because there
 // is only one copy of it.
+const { isoDate } = require('./build-lib');
 const lastLogged = progress.stats.lastDate;
-const ageDays = Math.round(
-  (Date.now() - new Date(`${lastLogged.slice(0, 4)}-${lastLogged.slice(4, 6)}-${lastLogged.slice(6, 8)}`)) / 86400000
-);
+const ageDays = Math.round((Date.now() - new Date(isoDate(lastLogged))) / 86400000);
 console.log(`  INFO  newest log entry ${lastLogged} (${ageDays}d ago), ` +
   `${progress.stats.attempts} attempts over ${progress.stats.days} days`);
 
@@ -308,7 +307,15 @@ ok('every roadmap verdict is what the log says', stamped.every(id => logVerdict.
 ok('no ok/again in the log is missing from the roadmap', roadmapIds.every(id =>
   !['ok', 'again'].includes(logVerdict.get(id)) || roadmapData.problems[id].verdict === logVerdict.get(id)));
 ok('every stamped verdict carries its date', stamped.every(id => /^\d{8}$/.test(roadmapData.problems[id].verdictDate)));
-ok('roadmap page counts a logged ok as solved', read(`${SITE}/roadmap.js`).includes("verdictOf(id, view) === 'ok'"));
+// The shipped script, exercised rather than grepped: the log's verdict decides,
+// in both directions, and a browser tick only counts where the log is silent.
+const shippedRoadmap = require(path.resolve(SITE, 'roadmap.js'));
+const verdictView = { problems: { 1: { verdict: 'ok' }, 2: { verdict: 'again' }, 3: {} } };
+ok('shipped roadmap.js counts a logged ok as solved and a logged again as open, ticked or not',
+   shippedRoadmap.isSolved('1', verdictView, {}) === true &&
+   shippedRoadmap.isSolved('2', verdictView, { 2: true }) === false &&
+   shippedRoadmap.isSolved('3', verdictView, { 3: true }) === true &&
+   shippedRoadmap.isSolved('3', verdictView, {}) === false);
 const landingHtml = read(`${SITE}/index.html`);
 const logOk = progress.problems.filter(p => p.status === 'ok').length;
 const logAgain = progress.problems.filter(p => p.status === 'again').length;
@@ -316,8 +323,7 @@ ok('landing page progress counts are the log\'s',
    landingHtml.includes(`<strong>ok</strong> for ${logOk.toLocaleString('en-US')} of them`) &&
    landingHtml.includes(`<strong>again</strong> for ${logAgain.toLocaleString('en-US')}`),
    `${logOk} ok, ${logAgain} again`);
-ok('landing page names the log\'s newest day', landingHtml.includes(
-  `${lastLogged.slice(0, 4)}-${lastLogged.slice(4, 6)}-${lastLogged.slice(6, 8)}`));
+ok('landing page names the log\'s newest day', landingHtml.includes(isoDate(lastLogged)));
 
 // ── 6b. The planner: the shipped scoring against the shipped log ─────────────
 //

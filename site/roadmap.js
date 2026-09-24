@@ -4,11 +4,13 @@
    Behaviour for lc-roadmap.html: a topic DAG where each box tracks how many
    of its problems you have solved, and a topic unlocks once its prerequisites
    are finished. `_site/data/roadmap.json` (built by site/build-roadmap.js) is
-   the only input. A problem counts as solved from either of two places: the
-   practice log's latest verdict, which the build stamps on the problem record
-   as `verdict: 'ok'` (an `again` shows as in progress), or a tick stored in
-   this browser's localStorage, which never leaves it. The log wins — it is the
-   record — so a logged `ok` cannot be unticked here.
+   the only input. A problem's state comes from one of two places. Where the
+   practice log has judged it — the build stamps the log's latest verdict on
+   the record as `verdict: 'ok'` or `'again'` — the log decides: an `ok` is
+   solved, an `again` is open, and the checkbox is disabled either way. The
+   log is the record; a stale tick must not outvote it in either direction.
+   Only a problem the log has never judged takes a tick, stored in this
+   browser's localStorage, which never leaves it.
 
    The page shows one *list* at a time — the curated roadmap path by default,
    or one of the imported sets (Blind 75, NeetCode 150/250/all, LeetCode's Top
@@ -128,10 +130,13 @@
     return (record && record.verdict) || null;
   }
 
-  // Solved by the log or by this browser. The log's `ok` is the record; the
-  // tick is for what has not been logged (yet).
+  // Where the log has a verdict it decides, in both directions; a tick counts
+  // only where the log is silent. Otherwise a tick from April would outvote an
+  // `again` logged in September, and the badge saying so would be hidden.
   function isSolved(id, view, solved) {
-    return Boolean(solved[id]) || verdictOf(id, view) === 'ok';
+    var verdict = verdictOf(id, view);
+    if (verdict) return verdict === 'ok';
+    return Boolean(solved[id]);
   }
 
   function statsFor(node, view, solved) {
@@ -316,23 +321,32 @@
       // empty gap that reads as a rendering bug.
       : '<span class="prob-gap" title="No solution in this repo yet">·</span>';
 
-    // A logged `ok` is the record, so its box is checked and cannot be
-    // unticked here; a logged `again` is still open, badged so the reader sees
-    // why the roadmap is not calling it done.
+    // A judged problem is the log's to decide: the box shows the log's answer
+    // and is disabled, and the badge says which verdict and when. An `again`
+    // stays open even if this browser once ticked it. Only an unjudged problem
+    // has a live checkbox.
+    var judged = Boolean(problem.verdict);
     var logged = problem.verdict === 'ok';
-    var done = logged || Boolean(solved[problem.id]);
+    var done = judged ? logged : Boolean(solved[problem.id]);
     var when = problem.verdictDate ? ' on ' + isoDate(problem.verdictDate) : '';
-    var badge = problem.verdict && !solved[problem.id]
+    var badge = judged
       ? '<span class="prob-verdict ' + esc(problem.verdict) + '" title="Latest verdict in the practice log' +
         esc(when) + '">' + esc(problem.verdict) + '</span>'
       : '';
+    var name = esc('#' + problem.id + ' ' + problem.title);
+    // The accessible name says what the control IS when it cannot be operated —
+    // "solved in the practice log on …" — rather than inviting a click on a
+    // disabled box; the date otherwise lives only in a title attribute.
+    var aria = judged
+      ? name + ' — ' + (logged ? 'solved' : 'marked again') + ' in the practice log' + esc(when)
+      : 'Mark ' + name + ' as solved';
 
     return '<div class="prob' + (done ? ' solved' : '') + (logged ? ' logged' : '') +
-        (problem.verdict === 'again' && !solved[problem.id] ? ' again' : '') + '">' +
+        (problem.verdict === 'again' ? ' again' : '') + '">' +
       '<input type="checkbox" data-check="' + esc(problem.id) + '"' +
         (done ? ' checked' : '') +
-        (logged ? ' disabled title="Solved in the practice log' + esc(when) + '"' : '') +
-        ' aria-label="Mark ' + esc('#' + problem.id + ' ' + problem.title) + ' as solved">' +
+        (judged ? ' disabled title="' + (logged ? 'Solved' : 'Marked again') + ' in the practice log' + esc(when) + '"' : '') +
+        ' aria-label="' + aria + '">' +
       '<span class="prob-id">#' + esc(problem.id) + '</span>' +
       '<a class="prob-title" href="' + esc(problem.url) + '" target="_blank" rel="noopener">' +
         esc(problem.title) + '</a>' +
@@ -464,6 +478,10 @@
     $('statTopics').textContent = topicsDone + ' / ' + topicsWith.length;
     var tally = logTally(nodes, state.view);
     $('statLog').textContent = tally.ok + ' ok · ' + tally.again + ' again';
+    var log = state.roadmap.stats && state.roadmap.stats.log;
+    $('statLog').title = log && log.lastDate
+      ? 'Latest verdict in the practice log: ' + isoDate(log.lastDate)
+      : 'The practice log has no verdict on this list';
     $('summaryFill').style.width = pct + '%';
     $('summaryLabel').textContent = pct + '% of ' + state.view.label + ' solved';
     $('listBlurb').textContent = state.view.blurb || '';
@@ -575,7 +593,11 @@
     if (id ? location.hash !== '#' + id : location.hash) history.replaceState(null, '', target);
   }
 
+  // A problem the log has judged takes no tick: the verdict is the record, and
+  // a stored tick would outlive a later `again`. "tick all" runs through here
+  // too, so it cannot write logged ids into localStorage.
   function setSolved(id, on) {
+    if (verdictOf(id, state.view)) return;
     if (on) state.solved[id] = true;
     else delete state.solved[id];
   }

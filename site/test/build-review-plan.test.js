@@ -75,6 +75,39 @@ test('separator lines end the current day rather than joining it', () => {
   assert.deepEqual(days[0].items.map(i => i.id), [1920]);
 });
 
+test('a bucket label glued to its number is stripped, so the attempt is kept', () => {
+  const { stripLabel } = require('../build-review-plan.js');
+  assert.equal(stripLabel('others: 678(todo)'), '678(todo)');
+  assert.equal(stripLabel('top 100 like(dp): 5(again!, dp)'), '5(again!, dp)');
+  assert.equal(stripLabel('(LC must) 438(again)'), '438(again)');
+  assert.equal(stripLabel('438(again)'), '438(again)');
+  assert.equal(stripLabel('topo_sort'), 'topo_sort');
+
+  const { days } = parseProgress('20260914: others: 678(todo), top 100 like(dp): 5(again!, dp), 1(ok)');
+  assert.deepEqual(days[0].items.map(i => [i.id, i.status, i.emphasis]),
+    [[678, 'todo', 0], [5, 'again', 1], [1, 'ok', 0]]);
+});
+
+test('the real log yields the same attempts whether or not a chunk carried a label', () => {
+  // Every labelled chunk in data/progress.txt is one the Python planner already
+  // reads; the JS parser used to drop them, and the roadmap's done state
+  // depends on the two agreeing about the newest sessions.
+  const raw = fs.readFileSync(path.join(ROOT, 'data', 'progress.txt'), 'utf8');
+  const labelled = raw.split('\n').filter(l => /^\d{8}/.test(l) && /[A-Za-z_)][^,|(]*:\s*\d/.test(l.replace(/^\d{8}\s*[:.]?/, '')));
+  assert.ok(labelled.length > 10, `${labelled.length} labelled lines`);
+  const { days } = parseProgress(raw);
+  const byDate = new Map(days.map(d => [d.date, d]));
+  for (const line of labelled.slice(0, 40)) {
+    const date = line.slice(0, 8);
+    const day = byDate.get(date);
+    assert.ok(day, `${date} parsed`);
+    // Each labelled chunk's leading number appears among that day's items.
+    for (const m of line.matchAll(/[A-Za-z_)][^,|(]*:\s*(\d+)/g)) {
+      assert.ok(day.items.some(i => i.id === Number(m[1])), `${date}: LC ${m[1]} kept from a labelled chunk`);
+    }
+  }
+});
+
 test('named drills are skipped — they have no LeetCode number to schedule', () => {
   const { days } = parseProgress('20260613: 53,weekly_331,topo_sort,55');
   assert.deepEqual(days[0].items.map(i => i.id), [53, 55]);
@@ -119,6 +152,9 @@ test('classify reads the log\'s vocabulary', () => {
   assert.equal(classify('OK').status, 'ok');
   assert.equal(classify('').status, 'none');
   assert.equal(classify('to note').status, 'other');
+  // Whole words, as suggest_review.py reads them: neither of these is an ok.
+  assert.equal(classify('took 40min').status, 'other');
+  assert.equal(classify('look at editorial').status, 'other');
 });
 
 test('"again" wins over "ok" when a note says both', () => {

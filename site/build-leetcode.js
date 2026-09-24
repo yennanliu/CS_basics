@@ -144,21 +144,23 @@ function attachSolutions(problems) {
            pyTotal: pyMap.size, javaTotal: javaMap.size };
 }
 
-// README's verdict on each problem, folded to one word so the explorer can
-// facet on it without re-reading a status cell: `ok` / `again` from the main
-// tables, `imported` for the coverage-audit drafts, `untracked` for a main row
-// with no verdict yet. A problem README does not index gets no field at all.
+// README's verdict on each problem, folded to one word: `ok` / `again` from the
+// main tables' leading status word (statusWord — never a substring test, or
+// `OK (but again)` reads as again), `imported` for the coverage-audit drafts,
+// `untracked` for a main row with no verdict yet. A problem README does not
+// index gets no field at all. Nothing on the explorer reads it yet; it is the
+// data a status facet needs, one build step ahead of the facet.
 function attachStatus(problems) {
-  const { parseReadmeProblems } = require('./build-roadmap');
+  const { parseReadmeProblems, statusWord } = require('./build-roadmap');
   const readme = parseReadmeProblems(fs.readFileSync('README.md', 'utf8'));
   const counts = {};
   for (const p of problems.values()) {
     const row = readme.get(String(p.id));
     if (!row) continue;
-    const word = row.status.toUpperCase();
+    const word = statusWord(row.status);
     p.status = row.imported ? 'imported'
-      : word.includes('AGAIN') ? 'again'
-      : word.includes('OK') ? 'ok'
+      : word === 'again' ? 'again'
+      : word === 'ok' ? 'ok'
       : 'untracked';
     counts[p.status] = (counts[p.status] || 0) + 1;
   }

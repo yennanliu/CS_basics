@@ -410,16 +410,19 @@ Two shapes lose data silently, and both are already in the log:
 
 - **a number glued to its bucket label.** Each comma-chunk must *start* with the digits, so
   `others: 678(todo)` looks exactly like a named drill (`topo_sort`, `weekly_331`) and is
-  dropped whole, taking LC 678 with it. **93 attempts sit in a chunk shaped like that**, and
-  the log's two readers disagree about them: `script/suggest_review.py` strips labels first
-  (`_strip_label`), `site/build-review-plan.js` does not. A comma after the label —
-  `others:, 678(todo)` — makes both agree, and is the shape `/lc-log` writes;
+  dropped whole, taking LC 678 with it. **93 attempts sit in a chunk shaped like that.** The
+  log's two readers used to disagree about them — `script/suggest_review.py` stripped labels
+  first (`_strip_label`), `site/build-review-plan.js` did not — until Sep 2026, when the JS
+  parser gained the same `stripLabel`, because the roadmap's done state is stamped from what
+  it reads and the newest sessions are all labelled. Both now read the chunk. A comma after
+  the label — `others:, 678(todo)` — is still the shape `/lc-log` writes, so a third reader
+  never has to know;
 - **a number after its description.** `2D LIS (354)` is read as LC **2**, because the regex
   takes the first digits in the chunk. 16 entries do this, and neither reader recovers it.
   `354(2D LIS)` is correct.
 
-Fixing the 109 historical entries is a separate job that moves `build-review-plan.js` and
-its tests first; `/lc-log` writes today's line and never rewrites a past day.
+The 16 number-after-description entries still lose data in both readers; fixing them is a
+separate job. `/lc-log` writes today's line and never rewrites a past day.
 
 `.claude/skills/lc-again/` owns the other record — README's **status column**, which reads
 325 `AGAIN` against 124 `OK`, with 106 problems still marked after twelve or more passes.

@@ -205,8 +205,9 @@
     .prob-title { flex: 1; min-width: 0; font-size: 0.82rem; text-decoration: none; line-height: 1.35; }
     .prob-title:hover { text-decoration: underline; }
     .prob.solved .prob-title { color: var(--text-light); text-decoration: line-through; }
-    /* A logged `ok` is the record: checked, and not unticked from here. */
-    .prob.logged input { cursor: not-allowed; }
+    /* A judged problem is the log's: its box shows the log's answer and is not
+       changed from here, in either direction. */
+    .prob.logged input, .prob.again input { cursor: not-allowed; }
     .prob-verdict {
       flex-shrink: 0; font-size: 0.64rem; letter-spacing: 0.02em;
       padding: 0.08rem 0.4rem; border-radius: 999px; border: 1px solid var(--border);
