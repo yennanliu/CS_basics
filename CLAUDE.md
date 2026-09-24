@@ -213,9 +213,19 @@ Two consequences worth knowing:
 
 `index.html` is a landing page built by `build-site.js`; README lives at
 `problems.html`. Every count on the landing page — problems, cheatsheets, FAQs,
-visualizers, roadmap topics, quiz questions, agent skills, the log's ok vs again — is
-read from the source files at build time. **Do not hardcode one**; a typed number is
+visualizers, roadmap topics, quiz questions, agent skills, practice days, the log's ok
+vs again, system design cases — is read from the source files at build time. **Do not hardcode one**; a typed number is
 one that goes stale the first week nobody re-checks it.
+
+Under the stat strip, **"Where the practice stands"** (`.progress-band`) gives the log's
+counts and defines `ok` / `again` / no verdict once, where a first-time visitor meets the
+numbers — the same three words `/lc-log`, `/lc-again`, the review plan and the roadmap key
+on. Near the bottom, **"Off the coding-loop path"** (`.offpath-band`) cards the FAQs and
+`system_design/` with an `off path` tag: they are backend and data-engineering material the
+author decided to keep as reference, and nothing on the roadmap, the review plan or the L3
+core set reads them. The FAQ count moved there from the stat strip for the same reason. The
+hero lede names the target (the Google L3 coding loop, Python first) rather than listing
+every directory.
 
 The cards are declared as `ENTRY_GROUPS` — three labelled groups (learn,
 practise, look up), not one grid of eleven — and the agent skills have a band of

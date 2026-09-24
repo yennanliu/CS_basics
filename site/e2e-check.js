@@ -324,6 +324,14 @@ ok('landing page progress counts are the log\'s',
    landingHtml.includes(`<strong>again</strong> for ${logAgain.toLocaleString('en-US')}`),
    `${logOk} ok, ${logAgain} again`);
 ok('landing page names the log\'s newest day', landingHtml.includes(isoDate(lastLogged)));
+// The two words the counts above are made of, defined where the counts are —
+// and the two collections that are not on the coding-loop path, said so.
+ok('landing page defines ok and again next to the counts',
+   /<dt><code>ok<\/code><\/dt>/.test(landingHtml) && /<dt><code>again<\/code><\/dt>/.test(landingHtml) &&
+   landingHtml.includes('unaided'));
+ok('landing page marks the FAQs and system design as off the coding-loop path',
+   landingHtml.includes('id="off-path"') && (landingHtml.match(/offpath-tag/g) || []).length === 2 &&
+   landingHtml.includes('href="faqs.html"') && landingHtml.includes('tree/master/system_design'));
 
 // ── 6b. The planner: the shipped scoring against the shipped log ─────────────
 //

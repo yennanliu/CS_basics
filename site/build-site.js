@@ -890,14 +890,19 @@ const logProgress = (() => {
 
 // Counted, never typed: a hardcoded "1,300+" is a number that goes stale the
 // first week nobody remembers it is there.
+//
+// Four cells, all on the coding-loop path. The FAQ count used to sit here; it
+// now lives in the off-path band below, because a first-time visitor read the
+// strip as "what this site is for", and 49 backend FAQs are not that.
 const stats = [
   [readmeProblems.size.toLocaleString('en-US'), 'LeetCode problems indexed'],
   [cheatsheets.length, 'cheatsheets'],
-  [faqs.length, 'interview FAQs'],
+  [logProgress ? logProgress.days.toLocaleString('en-US') : 0, 'practice days logged'],
   [fs.existsSync('algo_demo')
     ? fs.readdirSync('algo_demo').filter(f => f.endsWith('.html') && f !== 'index.html').length
     : 0, 'algorithm visualizers']
 ];
+
 
 // Counts inside a blurb come from the same files the pages themselves are built
 // from. A sentence saying "29 topics" is a sentence that will be wrong the next
@@ -908,6 +913,9 @@ const countIn = (file, pick) => {
 const roadmapTopics = countIn('data/roadmap.json', d => (d.nodes || []).length);
 const quizQuestions = countIn('data/complexity_quiz.json', d => (d.questions || []).length);
 const visualizerCount = stats[3][0];
+const systemDesignCases = fs.existsSync('system_design')
+  ? fs.readdirSync('system_design', { withFileTypes: true }).filter(e => e.isDirectory() && e.name !== 'pic').length
+  : 0;
 
 // The pitch for each tool is what it does for you, not what it is. "Explore
 // problems by tag" beats "LC Explorer" to someone who has never seen either.
@@ -1009,7 +1017,7 @@ const AGENT_SKILLS = [
 const landingContent = `
   <div class="hero">
     <h1>CS_basics</h1>
-    <p class="hero-lede">Algorithms, data structures and system design, worked through in Java, Python and SQL — the notes and solutions behind one engineer's interview preparation.</p>
+    <p class="hero-lede">The notes, solutions and practice record behind one engineer's preparation for the Google L3 coding loop — data-structure and algorithm patterns, worked in Python first and Java second, with the tools that turn a practice log into a study plan.</p>
     <div class="hero-actions">
       <a class="hero-btn hero-btn-primary" href="lc-roadmap.html">Start with the roadmap</a>
       <a class="hero-btn" href="lc-review-plan.html">What to review today</a>
@@ -1022,6 +1030,46 @@ const landingContent = `
       `<div class="stat-cell"><span class="stat-n">${n}</span><span class="stat-l">${label}</span></div>`
     ).join('')}
   </div>
+
+  ${logProgress ? `
+  <section class="entry-section progress-band" id="progress">
+    <h2>Where the practice stands</h2>
+    <p class="section-note">
+      Progress is read from the <a href="lc-review-plan.html">practice log</a>, not from the index's
+      hand-kept status column: ${logProgress.problems.toLocaleString('en-US')} problems attempted over
+      ${logProgress.days.toLocaleString('en-US')} days, the last on ${isoDate(logProgress.lastDate)}.
+      The latest verdict is <strong>ok</strong> for ${logProgress.ok.toLocaleString('en-US')} of them and
+      <strong>again</strong> for ${logProgress.again.toLocaleString('en-US')} — the
+      <a href="lc-review-plan.html">review plan</a> schedules the second group, and the
+      <a href="lc-roadmap.html">roadmap</a> shows the first as done.
+    </p>
+    <dl class="verdicts">
+      <div>
+        <dt><code>ok</code></dt>
+        <dd>Re-derived <strong>unaided</strong> in that session — the invariant stated, the line that sets
+        the complexity named, the edge cases handled. The bar <a href="lc-again.html">/lc-again</a> asks
+        before promoting a row. The roadmap counts it as solved and <a href="l3-core.html">/l3-core</a>
+        counts it as solid.</dd>
+      </div>
+      <div>
+        <dt><code>again</code></dt>
+        <dd>Came back, or needed the solution. Anything short of the bar above is another pass, and the
+        common case. Bangs mark how hard it fought — <code>again!!!</code> sorts above a bare
+        <code>again</code> in the review plan.</dd>
+      </div>
+      <div>
+        <dt>no verdict</dt>
+        <dd>Attempted and not judged. The verdict is the <em>latest</em> annotation, not the best one:
+        a bare re-attempt after an <code>ok</code> clears it, so a problem stays solid only while it keeps
+        being re-derived.</dd>
+      </div>
+    </dl>
+    <p class="section-note">
+      The <a href="problems.html">problem index</a> carries a hand-kept <strong>OK</strong> / <strong>AGAIN</strong>
+      column with the same meaning and a star run counting the passes; it is updated when the author gets
+      round to it, so it lags the log and nothing on this site reads progress from it.
+    </p>
+  </section>` : ''}
 
   ${ENTRY_GROUPS.map(([heading, note, cards]) => `
   <section class="entry-section">
@@ -1062,6 +1110,25 @@ cp -r /tmp/cs_basics/.claude/skills/lc-coach ~/.claude/skills/</code></pre>
     </p>
   </section>
 
+  <section class="entry-section offpath-band" id="off-path">
+    <h2>Off the coding-loop path</h2>
+    <p class="section-note">
+      Two collections here are backend and data-engineering interview material, not what a Google L3
+      coding loop asks. They are kept as reference and stay off the roadmap, the review plan and the
+      L3 core set — so a visitor preparing for the coding loop can skip them without missing anything.
+    </p>
+    <div class="entry-grid">
+      <a class="entry-card" href="faqs.html">
+        <span class="entry-title">Interview FAQs <span class="offpath-tag">off path</span></span>
+        <span class="entry-blurb">${faqs.length} question-and-answer sheets on Java, the JVM, Kafka, Spark, Redis, Flink, Airflow and SQL — for a backend or data-engineering round.</span>
+      </a>
+      <a class="entry-card" href="https://github.com/yennanliu/CS_basics/tree/master/system_design">
+        <span class="entry-title">System design <span class="offpath-tag">off path</span></span>
+        <span class="entry-blurb">${systemDesignCases ? `${systemDesignCases} case studies` : 'Case studies'} — Twitter, Uber, Netflix, a URL shortener, a web crawler — plus a template and a capacity-estimation sheet, on GitHub. A separate interview round, not this one.</span>
+      </a>
+    </div>
+  </section>
+
   <h2>Complexity, at a glance</h2>
   <p class="section-note">The reference charts, kept on the front page because they are the thing most often looked up. Source: <a href="https://www.bigocheatsheet.com/">bigocheatsheet.com</a>.</p>
   <div class="ref-figures">
@@ -1081,8 +1148,6 @@ cp -r /tmp/cs_basics/.claude/skills/lc-coach ~/.claude/skills/</code></pre>
   <p class="section-note">
     ${setCounts.imported > 0
       ? `Of the ${readmeProblems.size.toLocaleString('en-US')} problems indexed, ${setCounts.main.toLocaleString('en-US')} are the author's own rows and ${setCounts.imported.toLocaleString('en-US')} are <strong>imported</strong> drafts from a coverage audit, marked as such in the <a href="problems.html">index</a>. `
-      : ''}${logProgress
-      ? `Progress is read from the practice log, not from the index's hand-kept status column: ${logProgress.problems.toLocaleString('en-US')} problems attempted over ${logProgress.days.toLocaleString('en-US')} days, the last on ${isoDate(logProgress.lastDate)}. The latest verdict is <strong>ok</strong> for ${logProgress.ok.toLocaleString('en-US')} of them and <strong>again</strong> for ${logProgress.again.toLocaleString('en-US')} — the <a href="lc-review-plan.html">review plan</a> schedules the second group, and the <a href="lc-roadmap.html">roadmap</a> shows the first as done. `
       : ''}Everything here is built from the markdown in
     <a href="https://github.com/yennanliu/CS_basics">the repository</a> — corrections welcome.
   </p>
@@ -1090,7 +1155,7 @@ cp -r /tmp/cs_basics/.claude/skills/lc-coach ~/.claude/skills/</code></pre>
 
 fs.writeFileSync('_site/index.html', htmlTemplate('Home', landingContent, 'home', '', {
   url: 'index.html',
-  description: `Algorithms, data structures, system design and ${readmeProblems.size} LeetCode solutions in Java, Python and SQL — with ${cheatsheets.length} cheatsheets, a study roadmap and a spaced-repetition review plan.`
+  description: `${readmeProblems.size} LeetCode problems indexed, ${cheatsheets.length} pattern cheatsheets, a study roadmap and a spaced-repetition review plan — one engineer's preparation for the Google L3 coding loop, in Python and Java.`
 }));
 console.log(`✓ Created index.html (landing page, ${readmeProblems.size} problems indexed)`);
 
