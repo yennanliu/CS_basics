@@ -31,7 +31,7 @@ DELETE=0
 for arg in "$@"; do
   case "$arg" in
     --delete) DELETE=1 ;;
-    -h|--help) sed -n '2,29p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    -h|--help) awk 'NR == 1 { next } !/^#/ { exit } { sub(/^# ?/, ""); print }' "$0"; exit 0 ;;
     *) echo "unknown argument: $arg" >&2; exit 2 ;;
   esac
 done
@@ -39,6 +39,9 @@ done
 git fetch --prune --quiet "$REMOTE"
 base_ref="$REMOTE/$BASE"
 git rev-parse --verify --quiet "$base_ref" >/dev/null || { echo "no such ref: $base_ref" >&2; exit 2; }
+# The remote's default branch is never a candidate, even when BASE is something else.
+default_ref=$(git symbolic-ref --quiet --short "refs/remotes/$REMOTE/HEAD" || true)
+default_name=${default_ref#"$REMOTE/"}
 
 prune=()
 keep=()
@@ -46,6 +49,7 @@ while IFS= read -r ref; do
   name=${ref#"$REMOTE/"}
   [ "$name" = "$BASE" ] && continue
   [ "$name" = "HEAD" ] && continue
+  [ -n "$default_name" ] && [ "$name" = "$default_name" ] && continue
   if git merge-base --is-ancestor "$ref" "$base_ref"; then
     prune+=("$name merged")
   elif [ -z "$(git cherry "$base_ref" "$ref" | grep '^+' || true)" ]; then
