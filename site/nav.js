@@ -45,7 +45,7 @@
     { id: 'search',      label: 'search',      href: 'search.html' },
     { id: 'lc-roadmap',  label: 'roadmap',     href: 'lc-roadmap.html' },
     { id: 'cheatsheets', label: 'cheatsheets', href: 'cheatsheets.html' },
-    { id: 'faqs',        label: 'faqs',        href: 'faqs.html' },
+    { id: 'lc-review-plan', label: 'review',   href: 'lc-review-plan.html' },
     { id: 'lc-explorer', label: 'lc-explorer', href: 'lc-explorer.html' },
     { id: 'visualizer',  label: 'visualizer',  href: 'algo_demo/index.html' }
   ];
@@ -55,8 +55,10 @@
   //
   // The inline row is capacity-bound, not preference-bound: eight entries
   // overflow the bar between 768px and 1024px. The roadmap took the slot the
-  // random picker held, since the picker's siblings (similar, review) already
-  // live down here.
+  // random picker held, since the picker's siblings (similar, random) already
+  // live down here. The review plan took the FAQs' slot in Sep 2026: the landing
+  // page marks the FAQs as off the coding-loop path, and the bar cannot say the
+  // opposite — the review plan is the hero's second call to action.
   //
   // An entry with `children` is a labelled group inside the menu rather than a
   // link of its own. The agent skills are the case it exists for: `lc-coach`
@@ -70,7 +72,7 @@
     { id: 'patterns',           label: 'patterns',   href: 'patterns.html' },
     { id: 'cards',              label: 'cards',      href: 'derivation-cards.html' },
     { id: 'lc-similar',         label: 'similar',    href: 'lc-similar.html' },
-    { id: 'lc-review-plan',     label: 'review',     href: 'lc-review-plan.html' },
+    { id: 'faqs',               label: 'faqs',       href: 'faqs.html' },
     { id: 'lc-random-picker',   label: 'random',     href: 'lc-random-picker.html' },
     { id: 'lc-complexity-quiz', label: 'complexity', href: 'lc-complexity-quiz.html' },
     { id: 'suggest-review',     label: 'suggest',    href: 'suggest-review.html' },

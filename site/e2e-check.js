@@ -298,7 +298,10 @@ ok('topics are weighted over the whole README', (progress.sections || []).length
 // agree, id by id, rather than trusted to.
 console.log('\n== progress source ==');
 const roadmapData = json(`${SITE}/data/roadmap.json`);
-const logVerdict = new Map(progress.problems.map(p => [String(p.id), p.status]));
+// `latest` is the log's last word per problem — the reading the roadmap and the
+// landing page use. `status` is the schedule's strongest-signal reading and can
+// legitimately differ on a day that logs a problem twice.
+const logVerdict = new Map(progress.problems.map(p => [String(p.id), p.latest]));
 const roadmapIds = Object.keys(roadmapData.problems);
 const stamped = roadmapIds.filter(id => roadmapData.problems[id].verdict);
 ok('roadmap problems carry the log\'s latest verdict', stamped.length > 50,
@@ -317,13 +320,26 @@ ok('shipped roadmap.js counts a logged ok as solved and a logged again as open, 
    shippedRoadmap.isSolved('3', verdictView, { 3: true }) === true &&
    shippedRoadmap.isSolved('3', verdictView, {}) === false);
 const landingHtml = read(`${SITE}/index.html`);
-const logOk = progress.problems.filter(p => p.status === 'ok').length;
-const logAgain = progress.problems.filter(p => p.status === 'again').length;
+const logOk = progress.problems.filter(p => p.latest === 'ok').length;
+const logAgain = progress.problems.filter(p => p.latest === 'again').length;
 ok('landing page progress counts are the log\'s',
    landingHtml.includes(`<strong>ok</strong> for ${logOk.toLocaleString('en-US')} of them`) &&
    landingHtml.includes(`<strong>again</strong> for ${logAgain.toLocaleString('en-US')}`),
    `${logOk} ok, ${logAgain} again`);
 ok('landing page names the log\'s newest day', landingHtml.includes(isoDate(lastLogged)));
+// The two words the counts above are made of, defined where the counts are —
+// and the two collections that are not on the coding-loop path, said so.
+ok('landing page defines ok, again and todo next to the counts',
+   ['ok', 'again', 'todo'].every(w => landingHtml.includes(`<dt><code>${w}</code></dt>`)) &&
+   landingHtml.includes('unaided'));
+// The navbar is rendered by the shipped nav.js, so the shipped module is asked.
+const shippedNav = require(path.resolve(SITE, 'nav.js'));
+ok('navbar keeps the off-path FAQs out of the inline row and the review plan in it',
+   !shippedNav.PRIMARY.some(i => i.id === 'faqs') && shippedNav.MORE.some(i => i.id === 'faqs') &&
+   shippedNav.PRIMARY.some(i => i.id === 'lc-review-plan'));
+ok('landing page marks the FAQs and system design as off the coding-loop path',
+   landingHtml.includes('id="off-path"') && (landingHtml.match(/offpath-tag/g) || []).length === 2 &&
+   landingHtml.includes('href="faqs.html"') && landingHtml.includes('tree/master/system_design'));
 
 // ── 6b. The planner: the shipped scoring against the shipped log ─────────────
 //

@@ -837,6 +837,36 @@ h4 > a.header-anchor:hover { text-decoration: underline; }
 
 .section-note { font-size: 15px; color: var(--text-muted); max-width: 70ch; margin: 8px 0 24px; }
 
+/* ── Where the practice stands ──────────────────────────────────────────────
+   The two words the whole spaced-repetition machinery keys on, defined once
+   where a first-time visitor meets the numbers. A definition list, not prose:
+   the reader is looking up a term, not reading an essay. */
+.verdicts {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0; border: 1px solid var(--border); margin: 0 0 16px;
+}
+/* Every cell carries its right and bottom rule, as .entry-card does, so a row
+   that wraps at an in-between width still has a line above its orphan. */
+.verdicts > div {
+  padding: 16px 20px; background: var(--surface);
+  border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
+}
+.verdicts dt { font-size: 15px; font-weight: 600; margin: 0 0 6px; }
+.verdicts dt code { font-size: 14px; }
+.verdicts dd { margin: 0; font-size: 14px; line-height: 1.6; color: var(--text-muted); }
+
+/* ── Off the coding-loop path ───────────────────────────────────────────────
+   Same card shape as the entry groups, so the two collections are findable,
+   plus a tag that says why they are not in the groups above. Two cards, so
+   auto-fit rather than the groups' auto-fill: empty tracks collapse instead of
+   leaving blank columns inside the border. */
+.offpath-band .entry-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+.offpath-tag {
+  display: inline-block; margin-left: 8px; padding: 1px 7px; vertical-align: middle;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase;
+  color: var(--text-muted); border: 1px solid var(--border-strong); border-radius: 999px;
+}
+
 /* ── Agent skills ───────────────────────────────────────────────────────────
    A band, not another row of entry cards: these are markdown you install into
    your own agent, not a page of this site, and as one card in a grid of eleven

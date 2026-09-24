@@ -106,9 +106,9 @@ test('navHTML marks the current primary entry active', () => {
 });
 
 test('navHTML activates the "more" button when the page is inside the dropdown', () => {
-  const html = CSNav.navHTML({ currentPage: 'lc-review-plan' });
+  const html = CSNav.navHTML({ currentPage: 'lc-random-picker' });
   assert.match(html, /class="nav-more-btn active"/);
-  assert.match(html, /<a href="lc-review-plan\.html" class="active">review<\/a>/);
+  assert.match(html, /<a href="lc-random-picker\.html" class="active">random<\/a>/);
 });
 
 test('navHTML leaves the "more" button inactive for a primary page', () => {
@@ -163,12 +163,12 @@ test('every entry has a unique id', () => {
 // ── Mounting ──────────────────────────────────────────────────────────────
 
 test('mount fills #site-nav and reads its data attributes', () => {
-  document.getElementById('site-nav').setAttribute('data-page', 'faqs');
+  document.getElementById('site-nav').setAttribute('data-page', 'cheatsheets');
   document.getElementById('site-nav').setAttribute('data-base', '../');
   CSNav.mount();
 
   assert.ok(document.querySelector('nav.navbar'), 'navbar not rendered');
-  assert.equal(document.querySelector('.nav-links a.active').textContent, 'faqs');
+  assert.equal(document.querySelector('.nav-links a.active').textContent, 'cheatsheets');
   assert.equal(document.querySelector('.nav-brand').getAttribute('href'), '../index.html');
 });
 

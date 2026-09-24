@@ -235,8 +235,11 @@ function parseSolutionLinks(cell) {
 // problem the roadmap shows now carries the log's *latest* verdict, `ok` or
 // `again`, read through build-review-plan.js's parser so the roadmap, the
 // review plan and the landing page cannot disagree about a line of the log.
-// A bare re-attempt after an `ok` clears the verdict, exactly as /l3-core reads
-// it: the verdict is the latest annotation, not the best one.
+// The verdict is the log's LAST WORD on the problem — aggregate()'s `latest`,
+// the final entry in date and file order — not the review plan's `status`,
+// which keeps the strongest signal on a day for scheduling. So `1(again), 1(ok)`
+// on one line is ok, and a bare re-attempt after an ok clears it, exactly as
+// script/l3_core.py reads the same line.
 
 /** The raw log -> Map of id -> { status: 'ok' | 'again', date: 'YYYYMMDD' }. */
 function readLogVerdicts(rawLog) {
@@ -247,8 +250,8 @@ function readLogVerdicts(rawLog) {
   const verdicts = new Map();
   if (!rawLog) return verdicts;
   for (const p of aggregate(mergeDays(parseProgress(rawLog).days))) {
-    if (p.status !== 'ok' && p.status !== 'again') continue;
-    verdicts.set(String(p.id), { status: p.status, date: p.dates[p.dates.length - 1] });
+    if (p.latest !== 'ok' && p.latest !== 'again') continue;
+    verdicts.set(String(p.id), { status: p.latest, date: p.dates[p.dates.length - 1] });
   }
   return verdicts;
 }

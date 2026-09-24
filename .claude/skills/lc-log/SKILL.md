@@ -67,12 +67,13 @@ this skill exists rather than a habit.
 
 ### A number sharing a chunk with its bucket label
 
-Each comma-chunk must **start** with the digits. A chunk that starts with a label looks
-exactly like a named drill, so it is dropped whole — taking the number with it:
+Each comma-chunk used to have to **start** with the digits. A chunk that starts with a label
+looked exactly like a named drill to the site's parser, so until Sep 2026 it was dropped
+whole — taking the number with it:
 
 ```text
 20260920: top 100 like(linked list):  23, 24(again!!!), 25 | ...
-                                      ^^ LC 23 is dropped. 24 and 25 survive.
+                                      ^^ LC 23 was dropped. 24 and 25 survived.
 ```
 
 **93 attempts across the log sit in a chunk shaped like that.** The two readers of the log

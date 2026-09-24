@@ -213,9 +213,20 @@ Two consequences worth knowing:
 
 `index.html` is a landing page built by `build-site.js`; README lives at
 `problems.html`. Every count on the landing page — problems, cheatsheets, FAQs,
-visualizers, roadmap topics, quiz questions, agent skills, the log's ok vs again — is
-read from the source files at build time. **Do not hardcode one**; a typed number is
+visualizers, roadmap topics, quiz questions, agent skills, practice days, the log's ok
+vs again, system design cases — is read from the source files at build time. **Do not hardcode one**; a typed number is
 one that goes stale the first week nobody re-checks it.
+
+Under the stat strip, **"Where the practice stands"** (`.progress-band`) gives the log's
+counts and defines `ok` / `again` / `todo` / no verdict once, where a first-time visitor
+meets the numbers — the words `/lc-log`, `/lc-again`, the review plan and the roadmap key
+on. Near the bottom, **"Off the coding-loop path"** (`.offpath-band`) cards the FAQs and
+`system_design/` with an `off path` tag: they are backend and data-engineering material the
+author decided to keep as reference, and nothing on the roadmap, the review plan or the L3
+core set reads them. The FAQ count moved there from the stat strip for the same reason, and `faqs`
+moved out of the navbar's inline row into `more` (the review plan took its slot), because
+the bar cannot call first-class what the landing page calls off path. The hero lede names
+the target (the Google L3 coding loop, Python first) rather than listing every directory.
 
 The cards are declared as `ENTRY_GROUPS` — three labelled groups (learn,
 practise, look up), not one grid of eleven — and the agent skills have a band of
@@ -408,9 +419,9 @@ in the wrong shape does not fail the build. It produces a smaller schedule.
 
 Two shapes lose data silently, and both are already in the log:
 
-- **a number glued to its bucket label.** Each comma-chunk must *start* with the digits, so
-  `others: 678(todo)` looks exactly like a named drill (`topo_sort`, `weekly_331`) and is
-  dropped whole, taking LC 678 with it. **93 attempts sit in a chunk shaped like that.** The
+- **a number glued to its bucket label.** Each comma-chunk used to have to *start* with the
+  digits, so `others: 678(todo)` looked exactly like a named drill (`topo_sort`, `weekly_331`)
+  and was dropped whole, taking LC 678 with it. **93 attempts sit in a chunk shaped like that.** The
   log's two readers used to disagree about them — `script/suggest_review.py` stripped labels
   first (`_strip_label`), `site/build-review-plan.js` did not — until Sep 2026, when the JS
   parser gained the same `stripLabel`, because the roadmap's done state is stamped from what
