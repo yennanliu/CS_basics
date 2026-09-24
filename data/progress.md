@@ -43,7 +43,7 @@
 			- weekly 264 (ing)
 				- https://leetcode.com/contest/weekly-contest-264
 
-						- 2048 (ing)
+						- 2048 (ing) -> note, again!!
 
 
 

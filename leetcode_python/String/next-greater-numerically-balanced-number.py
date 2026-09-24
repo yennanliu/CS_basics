@@ -70,3 +70,34 @@ class Solution(object):
         while not balanced(x):
             x += 1
         return x
+
+
+# V0-1
+# IDEA: BRUTE FORCE (gpt)
+class Solution(object):
+    def nextBeautifulNumber(self, n):
+
+        def is_balanced(num):
+            count = [0] * 10
+
+            while num > 0:
+                digit = num % 10
+                count[digit] += 1
+                num //= 10
+
+            # digit 0 can NEVER appear
+            if count[0] > 0:
+                return False
+
+            for digit in range(1, 10):
+                if count[digit] != 0 and count[digit] != digit:
+                    return False
+
+            return True
+
+        n += 1
+
+        while not is_balanced(n):
+            n += 1
+
+        return n
