@@ -39,6 +39,98 @@ It is guaranteed for each appearance of the character '*', there will be a previ
 """
 
 # V0
+class Solution(object):
+    def isMatch(self, s, p):
+        """
+        :type s: str
+        :type p: str
+        :rtype: bool
+        """
+        pass
+
+
+# V0-1
+# IDEA: 2D DP (gpt) + LC 44
+# https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/wildcard-matching.py
+class Solution(object):
+    def isMatch(self, s, p):
+        """
+        :type s: str
+        :type p: str
+        :rtype: bool
+        """
+        m, n = len(s), len(p)
+
+        # dp[i][j] =
+        # whether s[:i] matches p[:j]
+        dp = [[False] * (n + 1) for _ in range(m + 1)]
+
+        # empty string matches empty pattern
+        dp[0][0] = True
+
+        # Handle empty string + pattern like a*, a*b*, a*b*c*
+        for j in range(2, n + 1):
+            if p[j - 1] == '*':
+                dp[0][j] = dp[0][j - 2]
+
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+
+                # Normal character or '.'
+                if p[j - 1] == '.' or p[j - 1] == s[i - 1]:
+                    dp[i][j] = dp[i - 1][j - 1]
+
+                # '*'
+                elif p[j - 1] == '*':
+                    # Case 1: '*' matches zero occurrences
+                    dp[i][j] = dp[i][j - 2]
+
+                    # Case 2: '*' matches one or more occurrences
+                    if p[j - 2] == '.' or p[j - 2] == s[i - 1]:
+                        dp[i][j] = dp[i][j] or dp[i - 1][j]
+
+        return dp[m][n]
+
+
+# V0-2
+# IDEA: 2D DP (GEMINI) + LC 44
+class Solution(object):
+
+  def isMatch(self, s, p):
+    """
+        :type s: str
+        :type p: str
+        :rtype: bool
+        """
+    m, n = len(s), len(p)
+    dp = [[False] * (n + 1) for _ in range(m + 1)]
+
+    # 1. 空字串與空 pattern 匹配
+    dp[0][0] = True
+
+    # 2. 初始化空字串被形如 "a*", "a*b*" 的 pattern 匹配的情況
+    for j in range(2, n + 1):
+      if p[j - 1] == '*':
+        dp[0][j] = dp[0][j - 2]
+
+    # 3. 填表
+    for i in range(1, m + 1):
+      for j in range(1, n + 1):
+        if p[j - 1] == '*':
+          # 情況 A：'*' 讓前置字元（p[j-2]）出現 0 次（直接跳過 p[j-2] 和 p[j-1]）
+          dp[i][j] = dp[i][j - 2]
+
+          # 情況 B：'*' 讓前置字元出現 1 次以上（前提是 p[j-2] 能匹配當前 s[i-1]）
+          if p[j - 2] == s[i - 1] or p[j - 2] == '.':
+            dp[i][j] = dp[i][j] or dp[i - 1][j]
+
+        else:
+          # 普通字元或 '.'
+          if p[j - 1] == s[i - 1] or p[j - 1] == '.':
+            dp[i][j] = dp[i - 1][j - 1]
+
+    return dp[m][n]
+
 
 # V1
 # IDEA : RECURSIVE
