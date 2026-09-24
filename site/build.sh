@@ -38,7 +38,7 @@ node site/build-quiz.js       # data/complexity_quiz.json + README.md -> _site/d
 node site/build-review-plan.js # data/progress.txt -> _site/data/progress.json
 
 # ── Shared CSS + JS ───────────────────────────────────────────────────────────
-cp site/style.css site/nav.css site/lc-page.css site/nav.js site/site.js site/roadmap.js site/complexity.js _site/
+cp site/style.css site/nav.css site/lc-page.css site/nav.js site/site.js site/roadmap.js site/complexity.js site/problems-filter.js _site/
 
 # ── Hand-maintained static pages (LC tools, 404) ──────────────────────────────
 cp site/pages/*.html _site/
