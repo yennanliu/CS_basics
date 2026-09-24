@@ -168,7 +168,7 @@ class Links(unittest.TestCase):
 class Duplicates(unittest.TestCase):
     def test_an_id_in_both_table_sets_fails_and_two_main_sections_is_allowed(self):
         text = HEADER + row(1) + row(5) + "\n## Graph\n\n|a|b|c|d|e|f|g|h|\n|-|-|-|-|-|-|-|-|\n" + row(5) + \
-            "\n## Newly Added (kamyu104 gap)\n\n### Array\n\n|a|b|c|d|e|f|g|h|\n|-|-|-|-|-|-|-|-|\n" + row(1, status="")
+            "\n## Newly Added (kamyu104 gap)\n\n### Array\n\n|a|b|c|d|e|f|g|h|\n|-|-|-|-|-|-|-|-|\n" + row(1, status="imported")
         fx = Fixture(text)
         try:
             f = fx.findings()
@@ -203,10 +203,46 @@ class Status(unittest.TestCase):
         fx = Fixture(text)
         try:
             f = fx.findings()
+            # The imported row's cell is the `imported` rule's business, not the grammar's.
             self.assertEqual([r["id"] for r in f["bad_status"]], [1])
+            self.assertEqual([r["id"] for r in f["misfiled"]], [2])
             failed, out = run(f)
             self.assertIn("FAIL  every main-table status cell parses", out)
-            self.assertEqual(run(f, {"bad_status": [{"id": 1, "status": "AGAIN*** (1)s"}]})[1].count("FAIL"), 0)
+            self.assertIn("PASS  every main-table status cell parses",
+                          run(f, {"bad_status": [{"id": 1, "status": "AGAIN*** (1)s"}]})[1])
+        finally:
+            fx.cleanup()
+
+
+class Imported(unittest.TestCase):
+    IMPORTED = "\n## Newly Added (kamyu104 gap)\n\n### Array\n\n|a|b|c|d|e|f|g|h|\n|-|-|-|-|-|-|-|-|\n"
+
+    def test_a_row_whose_cell_disagrees_with_its_heading_fails_either_way(self):
+        # LC 2 sits in a main table but says `imported`; LC 3 sits under Newly
+        # Added and says nothing — the shape a misfiled /lc-python row takes.
+        text = HEADER + row(1) + row(2, status="imported") + self.IMPORTED + row(3, status="") + row(4, status="imported")
+        fx = Fixture(text)
+        try:
+            f = fx.findings()
+            self.assertEqual([(r["id"], r["imported"]) for r in f["misfiled"]], [(2, False), (3, True)])
+            failed, out = run(f)
+            self.assertIn("FAIL  every imported row says `imported`", out)
+            self.assertIn("LC 2  in a main table, status 'imported'", out)
+            self.assertIn("LC 3  under Newly Added, status ''", out)
+            # No baseline key: the set was stamped in one pass, so this cannot be excused.
+            self.assertNotIn("misfiled", cr.BASELINE_KEYS)
+            self.assertIn("FAIL  every imported row", run(f, cr.baseline_of(f))[1])
+        finally:
+            fx.cleanup()
+
+    def test_a_correctly_stamped_index_passes_and_reports_both_counts(self):
+        fx = Fixture(HEADER + row(1) + row(2, status="") + self.IMPORTED + row(3, status="imported"))
+        try:
+            f = fx.findings()
+            self.assertEqual(f["misfiled"], [])
+            failed, out = run(f)
+            self.assertEqual(failed, 0)
+            self.assertIn("1 imported rows, 2 main rows", out)
         finally:
             fx.cleanup()
 

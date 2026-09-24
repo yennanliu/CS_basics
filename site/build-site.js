@@ -853,24 +853,24 @@ const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '', o
 const { parseReadmeProblems } = require('./build-roadmap');
 const readmeProblems = parseReadmeProblems(readme);
 
-// README's last column is a hand-kept verdict — "OK******* (7)", "AGAIN**** (3)".
-// parseReadmeProblems does not carry it (the roadmap has no use for it), so it is
-// read here: "still marked AGAIN" is the one number on this page worth acting on.
-function readmeStatusCounts(markdown) {
-  const counts = { ok: 0, again: 0, todo: 0 };
-  for (const line of markdown.split('\n')) {
-    if (!line.startsWith('|')) continue;
-    const cells = line.split('|').map(c => c.trim());
-    // A data row is "| # | Title | … | Status |", so cells[1] is the number.
-    if (cells.length < 4 || !/^\d+$/.test(cells[1])) continue;
-    const status = cells[cells.length - 2].toUpperCase();
+// README's last column is a hand-kept verdict — "OK******* (7)", "AGAIN**** (3)" —
+// on the main tables, and the word `imported` on every row of the imported set.
+// The split matters on this page: "3,270 problems" counts both, and until the
+// cell said so nothing on the site told a visitor which rows had been practised
+// and which were generated drafts pulled in by the coverage audit.
+function readmeStatusCounts(problems) {
+  const counts = { ok: 0, again: 0, todo: 0, imported: 0, main: 0 };
+  for (const p of problems.values()) {
+    if (p.imported) { counts.imported++; continue; }
+    counts.main++;
+    const status = p.status.toUpperCase();
     if (status.includes('AGAIN')) counts.again++;
     else if (status.includes('OK')) counts.ok++;
     else if (status) counts.todo++;
   }
   return counts;
 }
-const statusCounts = readmeStatusCounts(readme);
+const statusCounts = readmeStatusCounts(readmeProblems);
 
 // Counted, never typed: a hardcoded "1,300+" is a number that goes stale the
 // first week nobody remembers it is there.
@@ -1063,7 +1063,9 @@ cp -r /tmp/cs_basics/.claude/skills/lc-coach ~/.claude/skills/</code></pre>
   </div>
 
   <p class="section-note">
-    ${statusCounts.ok + statusCounts.again > 0
+    ${statusCounts.imported > 0
+      ? `Of the ${readmeProblems.size.toLocaleString('en-US')} problems indexed, ${statusCounts.main.toLocaleString('en-US')} are the author's own rows and ${statusCounts.imported.toLocaleString('en-US')} are <strong>imported</strong> drafts from a coverage audit, marked as such in the <a href="problems.html">index</a>. `
+      : ''}${statusCounts.ok + statusCounts.again > 0
       ? `Of the problems attempted so far, ${statusCounts.ok.toLocaleString('en-US')} are marked <strong>OK</strong> and ${statusCounts.again.toLocaleString('en-US')} are still marked <strong>AGAIN</strong> — the <a href="lc-review-plan.html">review plan</a> schedules the second group. `
       : ''}Everything here is built from the markdown in
     <a href="https://github.com/yennanliu/CS_basics">the repository</a> — corrections welcome.

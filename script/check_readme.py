@@ -23,6 +23,10 @@ What it checks, per rule:
   duplicates   no id appears in both the main `##` tables and the imported
                `## Newly Added` set (a problem may sit in two *main* sections —
                LC 547 is under both DFS and Graph — that is reported, not failed)
+  imported     every row under `## Newly Added` carries the status `imported`
+               and no main-table row does — the cell is what lets the site
+               count practised rows apart from imported drafts, and a row whose
+               cell disagrees with its heading was filed under the wrong one
   status       every main-table status cell parses as
                  <OK|AGAIN|not start> <stars> (<note>)…  — the shape three
                scripts already read; the notes stay free text
@@ -35,8 +39,9 @@ data/readme_check_baseline.json. When it landed the baseline excused 31 dead
 links, 17 status cells, 10 duplicates and one date; the Sep 2026 burn-down
 repointed the 30 `C++/` and `Python/` links at the kamyu104 repo the rows were
 imported from (every target verified to exist there), fixed the one typo,
-rewrote the 17 cells into the grammar and corrected the date, so only the
-duplicates remain — each needs a decision about which row survives. The baseline holds each finding's identity —
+rewrote the 17 cells into the grammar, corrected the date, and then merged
+the 10 duplicates into their main rows — so the file is empty, and stays the
+place a finding goes when it genuinely cannot be fixed yet. The baseline holds each finding's identity —
 the row's LC number with the exact offending string, never a line number — and
 every entry excuses exactly one finding. So a fix shrinks it visibly, a new
 problem cannot hide behind an old one, and a baselined value that reappears on
@@ -60,6 +65,7 @@ PROGRESS = os.path.join(ROOT, "data", "progress.txt")
 BASELINE = os.path.join(ROOT, "data", "readme_check_baseline.json")
 
 IMPORTED_HEADING = "Newly Added"
+IMPORTED_STATUS = "imported"  # the status cell of every row in the imported set
 ROW_RE = re.compile(r"^\|\s*(\d{1,4})\s*\|")
 LINK_RE = re.compile(r"\[([^\]]*)\]\(\s*([^)\s]+)\s*\)")
 
@@ -219,6 +225,7 @@ def findings(readme_text, progress_text, root=ROOT):
     within_main = sorted(i for i, rs in main_ids.items() if len(rs) > 1)
 
     bad_status = [r for r in rows if not r["imported"] and not STATUS_RE.match(r["status"])]
+    misfiled = [r for r in rows if r["imported"] != (r["status"] == IMPORTED_STATUS)]
 
     dates = log_dates(progress_text)
     bad_dates = [(i, d) for i, d, ok in dates if not ok]
@@ -235,6 +242,7 @@ def findings(readme_text, progress_text, root=ROOT):
         "cross_duplicates": cross,
         "main_duplicates": within_main,
         "bad_status": bad_status,
+        "misfiled": misfiled,
         "bad_dates": bad_dates,
         "dates": len(dates),
         "unlinked": unlinked,
@@ -335,6 +343,18 @@ def run(rep, f, base, strict=False):
     if new_cross:
         print("        " + ", ".join(str(i) for i in new_cross))
     rep.info("filed in two main sections (allowed): %s" % ", ".join(str(i) for i in f["main_duplicates"]))
+
+    rep.section("imported set")
+    # No baseline for this one: the set was stamped in one pass, so any row
+    # whose cell disagrees with its heading is a new misfiling, not old debt.
+    rep.check("every imported row says `imported` and no main row does", not f["misfiled"],
+              "%d imported rows, %d main rows" % (
+                  sum(1 for r in f["rows"] if r["imported"]),
+                  sum(1 for r in f["rows"] if not r["imported"]))
+              if not f["misfiled"] else "%d misfiled" % len(f["misfiled"]))
+    for r in f["misfiled"][:10]:
+        print("        line %d  LC %d  %s, status %r" % (
+            r["line"], r["id"], "under Newly Added" if r["imported"] else "in a main table", r["status"]))
 
     rep.section("status column")
     new_status = [r for r in f["bad_status"] if not allow("bad_status", r)]

@@ -58,6 +58,76 @@ test('parseReadmeProblems tolerates stray whitespace inside markdown links', () 
   assert.deepEqual(problem.solutions, { Java: `${lib.GH_BLOB}/leetcode_java/Swim.java` });
 });
 
+// ── The two table sets ────────────────────────────────────────────────────
+
+const TWO_SETS = [
+  '## Array',
+  '',
+  '| # | Problem | Solution | Time | Space | Difficulty | Tag | Note |',
+  '|---|---------|----------|------|-------|------------|-----|------|',
+  '| 001 | [Two Sum](https://leetcode.com/problems/two-sum/) | [Python](./leetcode_python/Array/ts.py) | _O(n)_ | _O(n)_ | Easy | **array** | OK* (2) |',
+  '| 002 | [Add Two Numbers](https://leetcode.com/problems/add-two-numbers/) | [Python](./leetcode_python/Array/atn.py) | _O(n)_ | _O(1)_ | Medium | **array** |  |',
+  '',
+  '## Newly Added (kamyu104 gap)',
+  '',
+  '### Array',
+  '',
+  '| # | Problem | Solution | Time | Space | Difficulty | Tag | Note |',
+  '|---|---------|----------|------|-------|------------|-----|------|',
+  '| 003 | [Longest Substring](https://leetcode.com/problems/longest-substring/) | [Python](./leetcode_python/Array/ls.py) | _O(n)_ | _O(1)_ | Medium | **array** | imported |',
+].join('\n');
+
+test('parseReadmeProblems marks which table set a row is in and carries the status cell', () => {
+  const problems = lib.parseReadmeProblems(TWO_SETS);
+  assert.equal(problems.get('1').imported, false);
+  assert.equal(problems.get('1').status, 'OK* (2)');
+  assert.equal(problems.get('2').status, '');
+  assert.equal(problems.get('3').imported, true);
+  assert.equal(problems.get('3').status, 'imported');
+  assert.equal(problems.get('3').section, 'Array');
+  assert.deepEqual(lib.validateIndex(problems), []);
+});
+
+test('validateIndex fails an id filed in both table sets', () => {
+  const dup = TWO_SETS + '\n| 001 | [Two Sum](https://leetcode.com/problems/two-sum/) | [Java](./leetcode_java/TS.java) | _O(n)_ | _O(n)_ | Easy | **array** | imported |';
+  const problems = lib.parseReadmeProblems(dup);
+  assert.equal(problems.get('1').crossFiled, true);
+  // The union of links still happens — the error is about the rows, not the data.
+  assert.deepEqual(Object.keys(problems.get('1').solutions).sort(), ['Java', 'Python']);
+  const errors = lib.validateIndex(problems);
+  assert.equal(errors.length, 1);
+  assert.match(errors[0], /LC 1 is filed in both/);
+});
+
+test('validateIndex fails a row whose status cell disagrees with its heading, either way', () => {
+  const misfiled = TWO_SETS
+    .replace('| **array** |  |', '| **array** | imported |')          // LC 2: main row saying imported
+    .replace('| **array** | imported |\n', '| **array** | imported |\n')
+    + '\n| 004 | [Median](https://leetcode.com/problems/median/) | [Python](./leetcode_python/Array/m.py) | _O(n)_ | _O(1)_ | Hard | **array** |  |';
+  const problems = lib.parseReadmeProblems(misfiled);
+  assert.equal(problems.get('2').misfiled, true);
+  assert.equal(problems.get('4').misfiled, true);
+  const errors = lib.validateIndex(problems);
+  assert.equal(errors.length, 2);
+  assert.match(errors[0], /LC 2 sits in a main table but its status cell reads "imported"/);
+  assert.match(errors[1], /LC 4 sits under "Newly Added" but its status cell is ""/);
+});
+
+test('buildProblemDictionary flags an imported problem and only that one', () => {
+  const problems = lib.parseReadmeProblems(TWO_SETS);
+  const dict = lib.buildProblemDictionary(['1', '3'], { readme: problems, listedById: new Map() });
+  assert.equal(dict['1'].imported, undefined);
+  assert.equal(dict['3'].imported, true);
+});
+
+test('the checked-in README passes validateIndex', () => {
+  const problems = lib.parseReadmeProblems(fs.readFileSync(path.join(ROOT, 'README.md'), 'utf8'));
+  assert.deepEqual(lib.validateIndex(problems), []);
+  const imported = [...problems.values()].filter(p => p.imported).length;
+  assert.ok(imported > 1000, `${imported} imported rows`);
+  assert.ok(problems.size - imported > 1000, `${problems.size - imported} main rows`);
+});
+
 test('parseReadmeProblems keeps a row whose difficulty column is malformed', () => {
   const problems = lib.parseReadmeProblems(
     '| 1242 | [Web Crawler](https://leetcode.com/problems/web-crawler/) | + \\ |  |  |  |  |  |'

@@ -535,6 +535,7 @@ the page is built.
 | rows | a row has no LC number or no linked title | |
 | links | a relative solution link is not a regular file inside the repo | URLs are not checked; a directory, the root (`..`) or a `../` out of the tree all count as dead |
 | duplicates | an id is in both the main `##` tables and `## Newly Added` | two *main* sections (LC 547 under DFS and Graph) is reported, not failed |
+| imported | a row under `## Newly Added` does not say `imported`, or a main-table row does | no baseline: the set was stamped in one pass (Sep 2026), so a disagreeing cell is a misfiled row, not old debt. `site/build-roadmap.js`'s `validateIndex` fails the build on the same two shapes |
 | status | a main-table status cell is not `<OK\|AGAIN\|not start> <stars> (<note>)…` | the notes stay free text; only the word and the star run are pinned, because that is what `suggest_review.py`, `extract_must_lc.py` and `eval_lc_readiness.py` read |
 | dates | a `YYYYMMDD` header in the log is not a real date | |
 | unlinked | — | solution files no row links to are **reported, never failed**: contest problems are routinely filed before their README row |
@@ -546,8 +547,8 @@ holds **one entry per finding** — the row's LC number with the exact offending
 never a line number — and each entry excuses exactly one finding. So a fix shrinks it
 visibly, a new problem cannot hide behind an old one, and a baselined value that turns
 up on a *second* row is a regression, not a tolerated one. That also makes the file the
-burn-down list: the Sep 2026 pass took it from 59 entries to the 10 cross-set duplicates,
-each of which needs a decision about which row survives. `test_check_readme.py`
+burn-down list: the Sep 2026 pass took it from 59 entries to none, so anything in it now
+is a finding that genuinely cannot be fixed yet. `test_check_readme.py`
 fails if the committed baseline no longer matches what the README produces, in either
 direction.
 

@@ -1,18 +1,7 @@
 {
   "_comment": "Known problems in README.md / data/progress.txt that script/check_readme.py tolerates. One entry per finding \u2014 the row's LC number and the exact offending string, never a line number \u2014 and each entry excuses exactly one, so the gate fails on anything NOT listed here, a fix shrinks this file, and a known-bad value reappearing on another row fails. Regenerate with `python3 script/check_readme.py --update-baseline`; see the script's docstring.",
   "dead_links": [],
-  "cross_duplicates": [
-    363,
-    381,
-    499,
-    604,
-    631,
-    641,
-    715,
-    874,
-    937,
-    959
-  ],
+  "cross_duplicates": [],
   "bad_status": [],
   "bad_dates": []
 }
