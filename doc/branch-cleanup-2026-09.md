@@ -5,17 +5,26 @@
 > **See also**: [`utility-scripts.md`](./utility-scripts.md#prune_branchessh) — the script that does the
 > repeatable half.
 
-The remote carried **126 branches** and **14 open pull requests**. Every worktree session pushes a
-`worktree-*` branch and the merge leaves it behind, so `git branch -r` had stopped being a readable list
-of what was in flight. The sweep has two halves, and only the first is mechanical.
+When the sweep began on the morning of 2026-09-24, the remote carried **127 branches besides `master`**
+and **14 open pull requests**: the 100 branches master already contained, listed below with their tips, and
+27 with commits it did not. (The 126 quoted in the first draft was taken after the first branch had
+already gone by hand.) Two more branches were pushed during the session, so the closing list of what is
+left runs to 29. Every worktree session pushes a `worktree-*` branch and the merge leaves it behind, so
+`git branch -r` had stopped being a readable list of what was in flight. The sweep has two halves, and
+only the first is mechanical.
 
 ## What was deleted — 100 branches master already contained
 
 Deleted with `bash script/prune_branches.sh --delete`, whose rule is: a branch goes when it is an
 ancestor of `origin/master`, or when `git cherry` finds a patch-identical twin in master for every
-commit it has beyond master (a squash- or rebase-merge). **Nothing here lost a commit** — that is what
-qualified them — and each tip SHA is recorded so the ref can be put back with
-`git push origin <sha>:refs/heads/<name>` if anyone wants the pointer itself.
+commit it has beyond master (a squash- or rebase-merge). **Nothing here lost a change** — that is what
+qualified them — and each tip SHA is recorded. For the 96 `merged` branches the commits themselves are in
+master's history, and `git push origin <sha>:refs/heads/<name>` puts the pointer back from any clone. The
+four `patch-equivalent` branches are different: master holds the same patches under other commit ids, and
+the deleted ref was the last thing on the remote pointing at the originals, so their tips can only be pushed
+back from a clone that fetched them before the sweep and has not garbage-collected since. The script now
+keeps every tip it deletes under `refs/pruned/<name>` in the clone that ran it; this first sweep ran before
+it did.
 
 `lc-coverage-kamyu-batch2` went first, by hand, as the test that a remote delete is permitted from this
 machine; the script removed the other ninety-nine. Two of them deserve a word. `lc-java-dev-1-add-time-space-complexity` and
@@ -128,7 +137,8 @@ unique), so they were pre-rewrite snapshots of history master already has, not d
 
 ## What was left — 29 branches with commits master does not have
 
-Deleting these is a decision, not a chore, so the script only lists them. Grouped by what the decision is.
+27 at the snapshot, plus the two pushed during the session and noted under the open PRs. Deleting these is a
+decision, not a chore, so the script only lists them. Grouped by what the decision is.
 
 ### Open pull requests — merge or close from GitHub
 
@@ -166,7 +176,7 @@ session hand-over; merge them in order after #177.
 | `lc-coverage-kamyu` | 2026-08-15 | 1 | 50 Python solutions for LC 2095–2151, none in master; PR #71 was closed unmerged | Decide whether those 50 generated drafts are wanted; if not, delete. |
 | `feat/java-multi-version` | 2026-08-20 | 1 | WIP: V1/V2 alternates on 79 Java solutions; PR #100 closed unmerged | Delete — superseded by the normalisation pass. |
 | `feat/py-multi-version-wave4` | 2026-08-25 | 1 | 4 Array variants; PR #136 closed unmerged | Delete. |
-| `chore/untrack-vendored-node-modules`, `rebase/pr130` | 2026-09-02/03 | 9 / 8 | Untrack the vendored aws-sdk `node_modules`; PRs #130, #134, #135 all closed unmerged | Check whether the tree still carries it (`git ls-files | grep node_modules`); redo as a fresh PR or delete both. |
+| `chore/untrack-vendored-node-modules`, `rebase/pr130` | 2026-09-02/03 | 9 / 8 | Untrack the vendored aws-sdk `node_modules`; PRs #130, #134, #135 all closed unmerged | Check whether the tree still carries it (`git ls-files -- '*node_modules*'`); redo as a fresh PR or delete both. |
 | `worktree-site-doocs-comparison` | 2026-09-02 | 1 | A doc comparing the site against leetcode.doocs.org | Open a PR into `doc/`, or delete. |
 
 ### Ancient forks — delete when you are sure
