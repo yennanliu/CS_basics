@@ -51,6 +51,34 @@ Constraints:
 # V0
 # IDEA: MAX PQ + SLIDE WINDOW (gpt)
 
+"""
+NOTE !!!
+
+
+1. need to save below in PQ:
+
+    -> (Heap 裡存 (value, index))
+
+        -> 這樣我們才能知道 heap 裡的元素是不是已經過期。
+
+
+2.  Steps:
+
+
+    - step 1) move right pointer
+
+    - step 2) shrink left pointer (slide window)
+
+    - step 3) remove `stale` elements (!!!) (lazy update)
+
+                -> remove the element NOT existed anymore
+                    (# Their index is outside current window.)
+
+
+    - step 4) update max val in window (when size == k)
+
+"""
+
 import heapq
 
 
