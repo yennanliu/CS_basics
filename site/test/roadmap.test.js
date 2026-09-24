@@ -83,9 +83,9 @@ test('view marks the curated list and nothing else', () => {
 
 test('statsFor counts only what the topic contributes to the current list', () => {
   const roadmap = fixture();
-  assert.deepEqual(CSRoadmap.statsFor(roadmap.nodes[0], viewOf('roadmap'), solvedSet([1])), { done: 1, total: 2 });
-  assert.deepEqual(CSRoadmap.statsFor(roadmap.nodes[0], viewOf('tagged'), solvedSet([1])), { done: 1, total: 2 });
-  assert.deepEqual(CSRoadmap.statsFor(roadmap.nodes[2], viewOf('tagged'), solvedSet([4])), { done: 0, total: 0 });
+  assert.deepEqual(CSRoadmap.statsFor(roadmap.nodes[0], viewOf('roadmap'), solvedSet([1])), { done: 1, total: 2, again: 0 });
+  assert.deepEqual(CSRoadmap.statsFor(roadmap.nodes[0], viewOf('tagged'), solvedSet([1])), { done: 1, total: 2, again: 0 });
+  assert.deepEqual(CSRoadmap.statsFor(roadmap.nodes[2], viewOf('tagged'), solvedSet([4])), { done: 0, total: 0, again: 0 });
 });
 
 test('isEmpty separates "nothing on this list" from "nothing done yet"', () => {
@@ -203,7 +203,72 @@ test('nextUp returns null when everything on the list is solved', () => {
   assert.equal(CSRoadmap.nextUp(roadmap.nodes, viewOf('tagged'), byId, solvedSet([1, 9, 3])), null);
 });
 
-// ── Markup ────────────────────────────────────────────────────────────────
+// ── The practice log's verdicts ───────────────────────────────────────────
+
+// The build stamps the log's latest verdict onto a problem record. P3 (topic
+// b's only problem) was logged `ok`; P4 (topic c's) was logged `again`.
+function loggedFixture() {
+  const f = fixture();
+  f.problems[3] = record(3, { verdict: 'ok', verdictDate: '20260901' });
+  f.problems[4] = record(4, { verdict: 'again', verdictDate: '20260902' });
+  return f;
+}
+
+test('a logged ok counts as solved with no tick, and a logged again counts as in progress', () => {
+  const f = loggedFixture();
+  const v = CSRoadmap.view(f, 'roadmap');
+  assert.deepEqual(CSRoadmap.statsFor(f.nodes[1], v, solvedSet([])), { done: 1, total: 1, again: 0 });
+  assert.equal(CSRoadmap.isDone(f.nodes[1], v, solvedSet([])), true);
+  assert.deepEqual(CSRoadmap.statsFor(f.nodes[2], v, solvedSet([])), { done: 0, total: 1, again: 1 });
+  assert.equal(CSRoadmap.isDone(f.nodes[2], v, solvedSet([])), false);
+  // A tick on an `again` problem still counts: the log has not called it done, the reader has.
+  assert.deepEqual(CSRoadmap.statsFor(f.nodes[2], v, solvedSet([4])), { done: 1, total: 1, again: 0 });
+});
+
+test('distinctSolved, logTally and nextUp read the log as well as the ticks', () => {
+  const f = loggedFixture();
+  const v = CSRoadmap.view(f, 'roadmap');
+  assert.equal(CSRoadmap.distinctSolved(f.nodes, v, solvedSet([])), 1);
+  assert.deepEqual(CSRoadmap.logTally(f.nodes, v), { ok: 1, again: 1 });
+  // With a's problems ticked, b is finished by the log, so the next open topic is c.
+  const next = CSRoadmap.nextUp(f.nodes, v, CSRoadmap.indexNodes(f.nodes), solvedSet([1, 2]));
+  assert.equal(next.node.id, 'c');
+  assert.equal(next.problem.id, '4');
+});
+
+test('problemHTML renders a logged ok as done and untickable, and a logged again with its badge', () => {
+  const v = CSRoadmap.view(loggedFixture(), 'roadmap');
+  const ok = parse(CSRoadmap.problemHTML(CSRoadmap.resolve('3', v), solvedSet([])));
+  assert.ok(ok.querySelector('.prob').classList.contains('solved'));
+  assert.ok(ok.querySelector('.prob').classList.contains('logged'));
+  assert.equal(ok.querySelector('input').checked, true);
+  assert.equal(ok.querySelector('input').disabled, true);
+  assert.match(ok.querySelector('input').getAttribute('title'), /practice log on 2026-09-01/);
+  assert.equal(ok.querySelector('.prob-verdict').textContent, 'ok');
+
+  const again = parse(CSRoadmap.problemHTML(CSRoadmap.resolve('4', v), solvedSet([])));
+  assert.ok(again.querySelector('.prob').classList.contains('again'));
+  assert.ok(!again.querySelector('.prob').classList.contains('solved'));
+  assert.equal(again.querySelector('.prob-verdict').textContent, 'again');
+  assert.equal(again.querySelector('input').disabled, false);
+
+  // A problem the log never judged renders exactly as before: no badge, tickable.
+  const plain = parse(CSRoadmap.problemHTML(CSRoadmap.resolve('1', v), solvedSet([])));
+  assert.equal(plain.querySelector('.prob-verdict'), null);
+  assert.equal(plain.querySelector('input').disabled, false);
+});
+
+test('nodeHTML says how many the log marks again, and only when it does', () => {
+  const f = loggedFixture();
+  const v = CSRoadmap.view(f, 'roadmap');
+  const byId = CSRoadmap.indexNodes(f.nodes);
+  const c = parse(CSRoadmap.nodeHTML(f.nodes[2], v, byId, solvedSet([1, 2]))).querySelector('.node');
+  assert.equal(c.getAttribute('title'), 'C — 0 of 1 solved, 1 marked again in the log');
+  assert.equal(c.querySelector('.node-bar > i.again').style.width, '100%');
+  const a = parse(CSRoadmap.nodeHTML(f.nodes[0], v, byId, solvedSet([]))).querySelector('.node');
+  assert.equal(a.getAttribute('title'), 'A — 0 of 2 solved');
+});
+
 
 function parse(html) {
   return new JSDOM(`<!DOCTYPE html><html><body>${html}</body></html>`).window.document;
@@ -500,6 +565,21 @@ test('a prereq chip in the drawer navigates to that prereq', () => {
   click(doc.querySelector('.node[data-id="d"]'));
   click(doc.getElementById('drawerBody').querySelector('[data-open="b"]'));
   assert.equal(doc.getElementById('drawerTitle').textContent, 'B');
+});
+
+test('the page shows the log tally, and reset keeps what the log says', () => {
+  const doc = renderPage(loggedFixture());
+  assert.equal(doc.getElementById('statProblems').textContent, '1 / 4');
+  assert.equal(doc.getElementById('statLog').textContent, '1 ok · 1 again');
+  // b is done from the log alone, so its edge into d is live before any tick.
+  assert.ok(doc.querySelector('.node[data-id="b"]').classList.contains('done'));
+  global.confirm = () => true;
+  click(doc.querySelector('.node[data-id="a"]'));
+  click(doc.getElementById('drawerBody').querySelector('[data-bulk="all"]'));
+  assert.equal(doc.getElementById('statProblems').textContent, '3 / 4');
+  click(doc.getElementById('resetBtn'));
+  assert.equal(doc.getElementById('statProblems').textContent, '1 / 4');
+  assert.ok(doc.querySelector('.node[data-id="b"]').classList.contains('done'));
 });
 
 test('reset clears every tick and the stored value', () => {

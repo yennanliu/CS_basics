@@ -128,6 +128,46 @@ test('the checked-in README passes validateIndex', () => {
   assert.ok(problems.size - imported > 1000, `${problems.size - imported} main rows`);
 });
 
+// ── The practice log ──────────────────────────────────────────────────────
+
+test('readLogVerdicts keeps the latest ok or again per problem and nothing else', () => {
+  const log = '20260901: 1(ok), 2(again!!), 3, 4(todo), 6(ok)\n20260902: 2(ok), 5(again), 6\n';
+  const verdicts = lib.readLogVerdicts(log);
+  assert.deepEqual([...verdicts.entries()].sort(([a], [b]) => Number(a) - Number(b)), [
+    ['1', { status: 'ok', date: '20260901' }],
+    ['2', { status: 'ok', date: '20260902' }],     // the latest annotation wins
+    ['5', { status: 'again', date: '20260902' }]
+    // 3 was never judged, 4 is only a todo, and 6's bare re-attempt cleared its ok
+  ]);
+  assert.equal(lib.readLogVerdicts('').size, 0);
+});
+
+test('buildProblemDictionary stamps a verdict only where the log has one', () => {
+  const problems = lib.parseReadmeProblems(TWO_SETS);
+  const verdicts = new Map([['1', { status: 'again', date: '20260903' }]]);
+  const dict = lib.buildProblemDictionary(['1', '2'], { readme: problems, listedById: new Map(), verdicts });
+  assert.equal(dict['1'].verdict, 'again');
+  assert.equal(dict['1'].verdictDate, '20260903');
+  assert.equal(dict['2'].verdict, undefined);
+  assert.equal(dict['2'].verdictDate, undefined);
+});
+
+test('the checked-in log stamps verdicts onto the real roadmap and tallies them', () => {
+  const { roadmap, problems, sheetTitles, listed } = realInputs();
+  const verdicts = lib.readLogVerdicts(fs.readFileSync(path.join(ROOT, 'data/progress.txt'), 'utf8'));
+  const built = lib.buildRoadmap(roadmap, problems, sheetTitles, listed, undefined, verdicts);
+  const judged = Object.values(built.problems).filter(p => p.verdict);
+  assert.ok(judged.length > 50, `${judged.length} judged`);
+  assert.ok(judged.every(p => ['ok', 'again'].includes(p.verdict) && /^\d{8}$/.test(p.verdictDate)));
+  assert.equal(built.stats.log.ok + built.stats.log.again, judged.length);
+  assert.match(built.stats.log.lastDate, /^\d{8}$/);
+  // Without a log nothing is stamped and the tally is empty, so a checkout
+  // without data/progress.txt still builds.
+  const bare = lib.buildRoadmap(roadmap, problems, sheetTitles, listed);
+  assert.equal(Object.values(bare.problems).filter(p => p.verdict).length, 0);
+  assert.deepEqual(bare.stats.log, { ok: 0, again: 0, lastDate: null });
+});
+
 test('parseReadmeProblems keeps a row whose difficulty column is malformed', () => {
   const problems = lib.parseReadmeProblems(
     '| 1242 | [Web Crawler](https://leetcode.com/problems/web-crawler/) | + \\ |  |  |  |  |  |'
