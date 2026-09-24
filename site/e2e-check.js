@@ -126,6 +126,26 @@ ok('no broken internal links', brokenLinks.length === 0,
 ok('no root-relative links', absoluteLinks.length === 0,
    absoluteLinks.length ? `${absoluteLinks.length}, e.g. ${absoluteLinks.slice(0, 4).join(' | ')}` : '');
 
+// The rule above reads href= only, and stripScripts has already removed every
+// <script> by the time it runs -- so a `src` pointing at nothing was invisible
+// here. It matters now: the skill pages' behaviour left the page and became
+// skill-page.js, and a file build.sh forgot to copy is nine pages whose
+// steppers, tabs and copy buttons silently do nothing, with every other check
+// on this list still green.
+const brokenScripts = [];
+for (const p of pages) {
+  for (const m of sources.get(p).matchAll(/<script[^>]*\ssrc="([^"]+)"/g)) {
+    const src = m[1];
+    if (/^([a-z][a-z0-9+.-]*:|\/\/)/i.test(src)) continue; // external: its own rule below
+    if (src.startsWith('/')) { absoluteLinks.push(`${rel(p)} -> ${src}`); continue; }
+    if (!fs.existsSync(path.resolve(path.dirname(p), src.split('?')[0]))) {
+      brokenScripts.push(`${rel(p)} -> ${src}`);
+    }
+  }
+}
+ok('every local script src resolves', brokenScripts.length === 0,
+   brokenScripts.length ? `${brokenScripts.length}: ${brokenScripts.slice(0, 4).join(' | ')}` : '');
+
 // A `.md` href that survived the build is a link into the source tree that the
 // reader cannot follow — the failure mode this check was written for.
 const mdLinks = [];
