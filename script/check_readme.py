@@ -30,10 +30,13 @@ What it checks, per rule:
   unlinked     solution files no row links to — REPORTED, never failed, because
                contest problems are routinely filed before their README row
 
-The baseline. The index has ~30 dead links this repo cannot fix by itself
-(they point at another repo's `C++/` and `Python/` layout) and 21 duplicates
-that need a decision each, so the gate fails on *regressions*: anything not in
-data/readme_check_baseline.json. The baseline holds each finding's identity —
+The baseline. The gate fails on *regressions*: anything not in
+data/readme_check_baseline.json. When it landed the baseline excused 31 dead
+links, 17 status cells, 10 duplicates and one date; the Sep 2026 burn-down
+repointed the 30 `C++/` and `Python/` links at the kamyu104 repo the rows were
+imported from (every target verified to exist there), fixed the one typo,
+rewrote the 17 cells into the grammar and corrected the date, so only the
+duplicates remain — each needs a decision about which row survives. The baseline holds each finding's identity —
 the row's LC number with the exact offending string, never a line number — and
 every entry excuses exactly one finding. So a fix shrinks it visibly, a new
 problem cannot hide behind an old one, and a baselined value that reappears on

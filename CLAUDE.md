@@ -92,9 +92,10 @@ still not a solution. `.github/workflows/check-readme.yml` runs it on **every** 
 and PR, with no path filter, because README links into twelve top-level trees and a
 rename in any of them leaves a dead link.
 
-It fails on **regressions** against [`data/readme_check_baseline.json`](data/readme_check_baseline.json):
-~30 dead links point at another repo's `C++/` layout and cannot be fixed from here.
-The baseline holds **one entry per finding** — the row's LC number plus the exact
+It fails on **regressions** against [`data/readme_check_baseline.json`](data/readme_check_baseline.json),
+which is also the burn-down list: the 30 links into another repo's `C++/` and `Python/`
+layout now point at the kamyu104 repo they were imported from, so what is left in it is
+the cross-set duplicates, each needing a decision about which row survives. The baseline holds **one entry per finding** — the row's LC number plus the exact
 offending string, never a line number — and each entry excuses exactly one, so a
 known-bad cell reappearing on a second row fails like anything new. `--update-baseline`
 after a fix; `--strict` to see everything. Unlinked solution files are reported, not
