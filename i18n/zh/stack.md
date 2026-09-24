@@ -44,10 +44,10 @@
 - 影片
     - [Stack Fundamentals](https://www.bilibili.com/list/525438321?sort_field=pubtime&spm_id_from=333.999.0.0&oid=779764003&bvid=BV1my4y1Z7jj)
 
-<!-- 116ce5bd9d0a -->
+<!-- 1ffb6f5b8fdf -->
 ## 題型分類
 
-九種形狀幾乎涵蓋所有堆疊題。**在哪裡**這一欄告訴你程式碼放在下面哪個模板，或是解法搬到了哪一份表。
+十種形狀幾乎涵蓋所有堆疊題。**在哪裡**這一欄告訴你程式碼放在下面哪個模板，或是解法搬到了哪一份表。
 
 | 題型 | 堆疊裡放的是什麼 | LC | 在哪裡 |
 |---|---|---|---|
@@ -57,6 +57,7 @@
 | **單調 —— 貪婪移除** | 目前建出來最好的前綴 | 402, 316, 1081, 1673 | [stack_examples.md](./stack_examples.md) |
 | **單調 —— span 累積** | `[value, span]` 配對，串流式處理 | 901, 735 | [stack_examples.md](./stack_examples.md) |
 | **放 `[element, count]` 配對的堆疊** | 前綴的遊程壓縮表示 | 1047, 1209, 1544 | [stack_examples.md](./stack_examples.md) |
+| **堆疊上的 O(1) 彙總值** | 每一層一個 `min`／`max`／delta 的*狀態* | 155, 716, 1381, 895 | [模板 4](#template-4-min-stack--o1-getmin--lc-155-) |
 | **運算式剖析** | 運算元／延後的項／未關閉的作用域 | 224, 227, 772, 394, 150, 682 | [stack_expression_parsing.md](./stack_expression_parsing.md) |
 | **作用域／上下文帳本** | *外層*的上下文，以深度為鍵 | 388, 636, 591, 71 | [模板 6](#template-6-scope--context-ledger--lc-388-lc-636-) |
 | **順序反轉／暫停的走訪** | 還沒做完的工作 | 144, 145, 173, 341, 445 | [模板 5](#template-5-explicit-stack--iterative-traversal--lc-144-lc-145-) |
@@ -79,7 +80,7 @@
 <!-- ddc7f484e4af -->
 ## 模板與演算法
 
-<!-- 413bb2ee673a -->
+<!-- d76895692e39 -->
 ### 模板對照表
 
 | 模板 | 堆疊元素 | 迴圈形狀 | 複雜度 | 什麼時候用 |
@@ -87,7 +88,7 @@
 | 1 —— 基本操作 | 任何東西 | — | 每次操作 O(1) | push／pop／peek 的慣用寫法 |
 | 2 —— 括號配對 | 左括號字元 | 掃一趟，遇右括號就 pop | O(n)／O(n) | 驗證巢狀，且括號種類 >1 |
 | 3 —— 單調堆疊 | `(value, index)` | `for` 裡包一層 `while` | O(n)／O(n) | next greater／smaller／span |
-| 4 —— Min stack | 值 + 當下最小值 | — | 每次操作 O(1) | 堆疊上的 O(1) `getMin()` |
+| 4 —— Min stack | 值 + 每一層一個彙總*狀態* | — | 每次操作 O(1) | O(1) `getMin()`／`getMax()`；前綴彙總、路徑狀態 |
 | 5 —— 顯式堆疊 | 待處理的節點 | `while stack` | O(n)／O(h) | 迭代式走訪、順序反轉 |
 | 6 —— 作用域帳本 | 每層深度的外層上下文 | 掃一趟，截到當前深度 | O(n)／O(depth) | 有縮排的輸入、start/end 事件 |
 
@@ -155,16 +156,92 @@
 
 ---
 
-<!-- 1bab10284f25 -->
+<!-- 89e354dcb27a -->
 ### 模板 4：Min Stack —— O(1) getMin —— LC 155 ⭐⭐⭐⭐
 
-**模式：2 個堆疊（主堆疊 + 追蹤最小值的堆疊）**
+**模式：每一層一個彙總值** —— `min_values[i] == min(stack[0..i])`
+
+題目要的那個堆疊就是普通堆疊。竅門在於再開**一個逐層對映的陣列**，裡面放的不是元素本身，
+而是*「這一層以下所有東西」對這個查詢的答案*。LC 155 的查詢是「最小值」，所以
+`min_values = 每一層 stack 對應的 minimum`。這是[前綴彙總](./prefix_sum.md)在設計題裡的長相，
+而同一個想法在堆疊之外也到處出現 —— 見本模板最後的
+[經典題表](#the-same-idea-beyond-stacks--the-classics-)。
+
+<!-- 8beb13ab263a -->
+#### 一般形式 —— 每一層一個彙總值
+
+<!--CODE-->
+
+從這個不變量直接推出三件事：
+
+- **兩個陣列永遠等長** —— 每次 `push` 兩邊都 append，每次 `pop` 兩邊都移掉。`pop()` 裡不需要
+  `if`，也不用把 pop 出來的值跟最小值比：`min_values[-1]` 是屬於那一層的*狀態*，不是某個元素的
+  副本，所以把那一層 pop 掉就是全部的工作。這就是為什麼下面的 V0 不需要省空間變形那個
+  `stack.pop() == mins[-1]` 的檢查。
+- **重複值不用特別處理。** `push(0); push(0); pop()` 之後 `min_values = [0]`，因為每個 `0`
+  都有自己的一層。只存*新*最小值的那種變形必須寫 `<=` 才能做對 —— 這是 LC 155 的經典 bug（見
+  [monotonic_stack.md § 2-16](./monotonic_stack.md#2-16-min-stack-lc-155--auxiliary-non-increasing-stack-)）。
+- **任何是前綴函數的彙總值都一樣可行** —— `max`、累加和、累積 GCD、待套用的 delta（LC 1381）、
+  出現次數（LC 895）。把 `push` 裡的 `min(...)` 換掉，其他一行都不用動。
+
+<!-- 702552b2994e -->
+#### 為什麼是 O(1) —— 狀態在 push 時就算好了
+
+`getMin()` 只讀一個陣列格子。不需要掃描，因為工作已經搬到 `push` 那邊去做了，而 `push` 只要合併
+**兩個**數字：新值，以及下一層的答案。整個論證就這樣 —— 每個操作只碰兩個陣列的頂端，其他什麼
+都不碰。
+
+*保留每一層的狀態*而不是只用一個 `self.min` 變數，關鍵在 `pop()`。單一變數在更小的值進來時可以往下
+調，但那個值離開時卻**調不回去** —— 更早的最小值已經被覆寫掉了。陣列記得，因為它從來沒被覆寫；
+它一直就在下一層。
+
+| 做法 | `push` | `pop` | `getMin` | 差在哪裡 |
+|---|---|---|---|---|
+| 單一 `self.min` 變數 | O(1) | **O(n)** | O(1) | 把最小值 pop 掉之後，得重新掃一遍找前一個最小值 |
+| heap（`heapq`） | O(log n) | O(log n)，需搭配 lazy deletion | O(1) | 為一個堆疊根本用不到的排序付 log 的代價 |
+| `{value: count}` map | O(1) | O(1) | **O(n)** | `min(counts)` 是一次掃描（`min-stack.py` 的 V0-1 就是這個） |
+| **逐層的 `min_values`** | O(1) | O(1) | O(1) | 當前頂端的答案在它被 push 的那一刻就定下來了 |
 
 <!--CODE-->
 
 <!--CODE-->
 
+<!-- c99d6881498a -->
+#### 同一個想法走出堆疊 —— 經典題 ⭐⭐⭐⭐
+
+這個不變量需要一個**只在一端變動**的容器，這樣頂端消失時「下一層的狀態」才仍然成立。LC 題庫裡有
+四種東西是這樣運作的。看表時從第一欄下手：找到你的題目裡是什麼在扮演堆疊，每層該帶什麼彙總值就
+跟著出來了。
+
+| 什麼在扮演堆疊 | 每層的狀態 | 回答的查詢 | 經典 LC |
+|---|---|---|---|
+| **一個顯式堆疊** | 至今的 `min`／`max` | O(1) 的 `getMin()`／`getMax()` | **155** Min Stack、**716** Max Stack（`peekMax`） |
+| | 對下方所有元素待套用的 delta | O(1) 的整批 `increment(k, val)` | **1381** Design a Stack With Increment Operation |
+| | 每個頻率等級一個堆疊 | O(1) pop 出現最多次的元素 | **895** Maximum Frequency Stack |
+| **兩個堆疊組成的佇列**（LC 232） | *每個*堆疊各自至今的 `min`／`max` | 攤銷 O(1) 的視窗 min／max，不需要單調 deque | **239** Sliding Window Maximum、**1438** Longest Continuous Subarray With Absolute Diff ≤ Limit |
+| **一個只會變長的陣列** —— 索引 = 層 | 前綴 `min`／`max`／`sum`／`product` | 對每個 `i` 回答「`i` 之前（含）的最佳值」 | **121** Best Time to Buy and Sell Stock、**2016** Maximum Difference Between Increasing Elements、**42** Trapping Rain Water、**238** Product of Array Except Self、**303** Range Sum Query、**769** Max Chunks To Make Sorted、**915** Partition Array into Disjoint Intervals、**1477** Find Two Non-overlapping Sub-arrays Each With Target Sum |
+| **遞迴堆疊** —— 根到節點的路徑 | 沿路徑的 `(lo, hi)`／`max`／前綴值 | 每個節點關於其祖先的答案 | **1026** Maximum Difference Between Node and Ancestor、**98** Validate Binary Search Tree、**1448** Count Good Nodes in Binary Tree、**129** Sum Root to Leaf Numbers |
+
+該保留多少狀態，由兩條規則決定：
+
+- **之後的查詢會問到「不是頂端」的那一層時，整個陣列都要留著。** LC 42 第二趟需要*每個* `i` 的
+  `left_max[i]`；LC 238 需要每個前綴乘積；LC 769／915 在每個切點把前綴 max 跟後綴 min 比。單一變數
+  回答不了它已經走過的那一層。
+- **只會查頂端、而且永遠不 pop 時，可以塌成一個變數。** LC 121 每個索引問一次「至今最小」，從不回頭，
+  所以 `min_values` 就是單一個 `lo` —— 只留陣列的最後一格，其餘丟掉。LC 155 不能這樣做，因為
+  `pop()` *確實會*回頭。
+
 <!--CODE-->
+
+<!--CODE-->
+
+各列的深入內容在哪裡：LC 1381 的 delta 技巧在
+[design_examples.md § 6](./design_examples.md#6-stack--auxiliary-state--o1-min-and-lazy-increment-lc-155--lc-1381-)，
+LC 239 的 deque 寫法在
+[monotonic_queue.md](./monotonic_queue.md#template-1-sliding-window-maximum-decreasing-deque--lc-239)，
+前綴陣列在 [prefix_sum.md](./prefix_sum.md)，LC 121 在
+[stock_trading.md](./stock_trading.md)，`(lo, hi)` 邊界傳遞的模式在
+[bst_advanced.md](./bst_advanced.md)。
 
 ---
 
@@ -203,7 +280,7 @@
 <!-- ea4fa3974f42 -->
 ## 摘要與速查
 
-<!-- e50f14588e93 -->
+<!-- 0428218e9466 -->
 ### 決策表 —— 該用哪一種堆疊模式？
 
 | 問題類型 | 模式 | 核心想法 | 例題 |
@@ -216,6 +293,7 @@
 | 有重複字元時求**字典序最小** | 單調 + 最後出現位置 | 貪婪移除，搭配「後面還會出現」的檢查 | LC 316, 1081 |
 | **串流／線上**頻率統計 | 帶 span 配對的堆疊 | 用配對累加計數 | LC 901 |
 | **用 LIFO 做出 FIFO** | 兩個堆疊 | 用 input／output 兩個堆疊模擬佇列 | LC 232 |
+| push／pop 之外還要 **O(1) min／max** | 逐層彙總值 | `min_values[i] = min(stack[0..i])`，跟著那一層一起 pop | LC 155, 716, 1381 |
 | **括號平衡**驗證 | 括號配對 | push 左括號，遇右括號 pop 並驗證 | LC 20, 1249, 32 |
 | **巢狀上下文**（縮排、start/end 事件） | 作用域／上下文帳本 | `stack[depth]` = 外層上下文 | LC 388, 636, 591 |
 | **反轉**一個只能往前走的序列 | 全部 push，再全部 pop | pop 出來就是逆序 | LC 445, 234, 143 |
