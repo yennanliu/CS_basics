@@ -419,9 +419,9 @@ in the wrong shape does not fail the build. It produces a smaller schedule.
 
 Two shapes lose data silently, and both are already in the log:
 
-- **a number glued to its bucket label.** Each comma-chunk must *start* with the digits, so
-  `others: 678(todo)` looks exactly like a named drill (`topo_sort`, `weekly_331`) and is
-  dropped whole, taking LC 678 with it. **93 attempts sit in a chunk shaped like that.** The
+- **a number glued to its bucket label.** Each comma-chunk used to have to *start* with the
+  digits, so `others: 678(todo)` looked exactly like a named drill (`topo_sort`, `weekly_331`)
+  and was dropped whole, taking LC 678 with it. **93 attempts sit in a chunk shaped like that.** The
   log's two readers used to disagree about them — `script/suggest_review.py` stripped labels
   first (`_strip_label`), `site/build-review-plan.js` did not — until Sep 2026, when the JS
   parser gained the same `stripLabel`, because the roadmap's done state is stamped from what

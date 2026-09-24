@@ -672,6 +672,16 @@
     state.roadmap = roadmap;
     state.byId = indexNodes(roadmap.nodes);
     state.solved = readSolved();
+    // A tick stored before the log judged the problem is superseded, and it
+    // must not resurface the day a bare re-attempt clears the verdict again.
+    // Dropped here and persisted, so the store only ever holds unjudged ids.
+    var judged = Object.keys(state.solved).filter(function (id) {
+      return roadmap.problems && roadmap.problems[id] && roadmap.problems[id].verdict;
+    });
+    if (judged.length) {
+      judged.forEach(function (id) { delete state.solved[id]; });
+      writeSolved(state.solved);
+    }
     state.view = view(roadmap, readStored(LIST_KEY) || roadmap.defaultList);
     // A browser renders once per page load, but `state` outlives a re-render.
     // Carrying an open topic — or a focus target belonging to the previous

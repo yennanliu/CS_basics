@@ -298,7 +298,10 @@ ok('topics are weighted over the whole README', (progress.sections || []).length
 // agree, id by id, rather than trusted to.
 console.log('\n== progress source ==');
 const roadmapData = json(`${SITE}/data/roadmap.json`);
-const logVerdict = new Map(progress.problems.map(p => [String(p.id), p.status]));
+// `latest` is the log's last word per problem — the reading the roadmap and the
+// landing page use. `status` is the schedule's strongest-signal reading and can
+// legitimately differ on a day that logs a problem twice.
+const logVerdict = new Map(progress.problems.map(p => [String(p.id), p.latest]));
 const roadmapIds = Object.keys(roadmapData.problems);
 const stamped = roadmapIds.filter(id => roadmapData.problems[id].verdict);
 ok('roadmap problems carry the log\'s latest verdict', stamped.length > 50,
@@ -317,8 +320,8 @@ ok('shipped roadmap.js counts a logged ok as solved and a logged again as open, 
    shippedRoadmap.isSolved('3', verdictView, { 3: true }) === true &&
    shippedRoadmap.isSolved('3', verdictView, {}) === false);
 const landingHtml = read(`${SITE}/index.html`);
-const logOk = progress.problems.filter(p => p.status === 'ok').length;
-const logAgain = progress.problems.filter(p => p.status === 'again').length;
+const logOk = progress.problems.filter(p => p.latest === 'ok').length;
+const logAgain = progress.problems.filter(p => p.latest === 'again').length;
 ok('landing page progress counts are the log\'s',
    landingHtml.includes(`<strong>ok</strong> for ${logOk.toLocaleString('en-US')} of them`) &&
    landingHtml.includes(`<strong>again</strong> for ${logAgain.toLocaleString('en-US')}`),

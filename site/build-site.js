@@ -877,7 +877,9 @@ const logProgress = (() => {
   // No catalog: the six numbers below come from the log alone, and attaching
   // README metadata to every logged problem would re-parse the index for nothing.
   const { payload } = buildPayload(fs.readFileSync('data/progress.txt', 'utf8'), null);
-  const by = status => payload.problems.filter(p => p.status === status).length;
+  // `latest` — the log's last word, the reading the roadmap renders — not
+  // `status`, the strongest signal the schedule keys on.
+  const by = word => payload.problems.filter(p => p.latest === word).length;
   return {
     problems: payload.stats.problems,
     days: payload.stats.days,
@@ -1084,7 +1086,8 @@ const landingContent = `
     <p class="section-note">
       The <a href="problems.html">problem index</a> carries a hand-kept <strong>OK</strong> / <strong>AGAIN</strong>
       column with the same meaning and a star run counting the passes; it is updated when the author gets
-      round to it, so it lags the log and nothing on this site reads progress from it.
+      round to it, so it lags the log. The <a href="problems.html">index</a> shows that column as written;
+      every progress figure on this page and every verdict on the roadmap comes from the log instead.
     </p>
   </section>` : ''}
 

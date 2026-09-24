@@ -212,12 +212,25 @@ function rank(h) {
 
 // One entry per problem, newest last, so the page can compute an interval from
 // the repetition count without re-walking every day.
+//
+// Two readings of "the latest verdict" come out of this, and they answer
+// different questions:
+//   `status`  — the strongest signal on the newest day (again > todo > ok): what
+//               the schedule wants, because a problem that fought back once that
+//               day still needs the pass.
+//   `latest`  — the LAST entry in date and file order, exactly as
+//               script/l3_core.py reads it ("within one day the later entry
+//               wins, so 139(again), … 139(ok) reads ok"): the log's last word,
+//               which is what the roadmap renders as done and the landing page
+//               counts. A bare re-attempt after an ok clears it.
 function aggregate(days) {
   const byProblem = new Map();
+  const lastWord = new Map();
   for (const day of days) {
     for (const item of day.items) {
       if (!byProblem.has(item.id)) byProblem.set(item.id, []);
       byProblem.get(item.id).push({ date: day.date, status: item.status, emphasis: item.emphasis });
+      lastWord.set(item.id, item.status);
     }
   }
 
@@ -237,6 +250,7 @@ function aggregate(days) {
         dates: dedup.map(h => h.date),
         statuses: dedup.map(h => h.status),
         status: latest.status,
+        latest: lastWord.get(id),
         emphasis: Math.max(...dedup.map(h => h.emphasis)),
         // How many times it has come back marked "again" — the count that says a
         // problem is not graduating, however many times it has been attempted.

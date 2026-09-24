@@ -594,6 +594,18 @@ test('the page shows the log tally, and reset keeps what the log says', () => {
   assert.ok(doc.querySelector('.node[data-id="b"]').classList.contains('done'));
 });
 
+test('a tick stored before the log judged the problem is dropped on load, and stays dropped', () => {
+  // P3 (logged ok) and P4 (logged again) were ticked in this browser earlier; P1 was not judged.
+  const doc = renderPage(loggedFixture(), undefined, { [CSRoadmap.STORE_KEY]: JSON.stringify(['1', '3', '4']) });
+  assert.deepEqual(Object.keys(CSRoadmap.readSolved()), ['1']);
+  assert.equal(doc.getElementById('statProblems').textContent, '2 / 4');
+  // Were P4's verdict cleared by a bare re-attempt tomorrow, no stale tick would resurface.
+  const cleared = loggedFixture();
+  delete cleared.problems[4].verdict;
+  const doc2 = renderPage(cleared, undefined, { [CSRoadmap.STORE_KEY]: JSON.stringify(['1']) });
+  assert.equal(doc2.getElementById('statProblems').textContent, '2 / 4');
+});
+
 test('"tick all" and "clear all" never write a judged problem into storage', () => {
   const doc = renderPage(loggedFixture());
   // Topic c holds P4 (logged again); topic b holds P3 (logged ok).

@@ -162,12 +162,13 @@ test('statusWord agrees with the leading word on every checked-in main row', () 
 // ── The practice log ──────────────────────────────────────────────────────
 
 test('readLogVerdicts keeps the latest ok or again per problem and nothing else', () => {
-  const log = '20260901: 1(ok), 2(again!!), 3, 4(todo), 6(ok)\n20260902: 2(ok), 5(again), 6\n';
+  const log = '20260901: 1(ok), 2(again!!), 3, 4(todo), 6(ok), 7(again), 7(ok)\n20260902: 2(ok), 5(again), 6\n';
   const verdicts = lib.readLogVerdicts(log);
   assert.deepEqual([...verdicts.entries()].sort(([a], [b]) => Number(a) - Number(b)), [
     ['1', { status: 'ok', date: '20260901' }],
     ['2', { status: 'ok', date: '20260902' }],     // the latest annotation wins
-    ['5', { status: 'again', date: '20260902' }]
+    ['5', { status: 'again', date: '20260902' }],
+    ['7', { status: 'ok', date: '20260901' }]      // twice on one day: the later entry wins, as /l3-core reads it
     // 3 was never judged, 4 is only a todo, and 6's bare re-attempt cleared its ok
   ]);
   assert.equal(lib.readLogVerdicts('').size, 0);

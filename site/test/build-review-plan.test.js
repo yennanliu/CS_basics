@@ -75,6 +75,20 @@ test('separator lines end the current day rather than joining it', () => {
   assert.deepEqual(days[0].items.map(i => i.id), [1920]);
 });
 
+test('aggregate carries the last word beside the strongest signal', () => {
+  // Same day, twice: the schedule keeps `again` (it fought back), the roadmap
+  // takes the last word (`ok`), as script/l3_core.py does. A bare re-attempt
+  // is a last word too, and clears an earlier ok.
+  const days = mergeDays(parseProgress('20260901: 7(again), 7(ok), 8(ok), 8\n20260902: 9(ok)\n20260903: 9(again), 9\n').days);
+  const by = Object.fromEntries(aggregate(days).map(p => [p.id, p]));
+  assert.equal(by[7].status, 'again');
+  assert.equal(by[7].latest, 'ok');
+  assert.equal(by[8].status, 'ok');
+  assert.equal(by[8].latest, 'none');
+  assert.equal(by[9].status, 'again');
+  assert.equal(by[9].latest, 'none');
+});
+
 test('a bucket label glued to its number is stripped, so the attempt is kept', () => {
   const { stripLabel } = require('../build-review-plan.js');
   assert.equal(stripLabel('others: 678(todo)'), '678(todo)');
