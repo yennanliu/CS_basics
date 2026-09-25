@@ -27,8 +27,8 @@ Return the `number` of `pairs` of `indices` (i, j)
 
 
 intersect:
-	Two intervals intersect if they have at least one point in common, 
-	including when they only share an endpoint.
+    Two intervals intersect if they have at least one point in common, 
+    including when they only share an endpoint.
 
 
 
@@ -37,7 +37,7 @@ intervals: 2D arr, n elements
 
 
 intervals[i] = [starti, endi] 
-	- close intervals
+    - close intervals
 
 
 
@@ -64,9 +64,9 @@ Output: 2
 
       | ----- |
       2       3
- 			
- 			  |---|
- 			  3   4
+            
+              |---|
+              3   4
 
 
 
@@ -102,10 +102,10 @@ class Solution(object):
         """
         # edge
         if not intervals or len(intervals) == 0:
-        	return 0
+            return 0
 
         if len(intervals) == 1:
-        	return 0
+            return 0
 
         # sort: on 1st: small -> big, second: small -> big,
         # ???
@@ -116,19 +116,19 @@ class Solution(object):
         n = len(intervals)
 
         for i in range(n):
-        	for j in range(i+1, n):
-        		# overlap
-        		"""
-        		since already sort on 1st, 2nd element
+            for j in range(i+1, n):
+                # overlap
+                """
+                since already sort on 1st, 2nd element
 
-        		|-------|
-        		           |----|
-        		""" 
-        		cur = intervals[j]
-        		prev = intervals[i]
+                |-------|
+                           |----|
+                """ 
+                cur = intervals[j]
+                prev = intervals[i]
 
-        		if not (cur[0] > prev[1]):
-        			cnt += 1
+                if not (cur[0] > prev[1]):
+                    cnt += 1
 
 
         return cnt
@@ -147,12 +147,98 @@ class Solution(object):
 
 
 
+->
+
+Return the `number of pairs` of indices (i, j) 
+such that 
+0 <= i < j < n and 
+
+intervals[i] and  intervals[j] `intersect.`
+
+
+
+# idea 1) brute force
+
+# idea 2) scan line + C(n, 2) ????
+
+
+class Solution(object):
+    def countIntersectingIntervals(self, intervals):
+        """
+        :type intervals: List[List[int]]
+        :rtype: int
+        """
+        # edge
+        if not intervals or len(intervals) == 0:
+            return 0
+
+        if len(intervals) == 1:
+            return 0
+
+
+        tmp = []
+
+        for s, e in intervals:
+            tmp.append([s, 1])
+            tmp.append([e, -1])
+
+
+        # sort ??
+        # intervals.sort(key = lambda x: (x[0], x[1]) )
+        tmp.sort(key = lambda: x[0])
+
+
+        max_cnt = 0
+        tmp_cnt = 0
+
+
+        for _time, _status in tmp:
+            if _status == 1:
+                tmp_cnt += 1
+
+            else:
+                tmp_cnt -= 1
+
+            # ???
+            max_cnt = max(max_cnt, self.helper(tmp_cnt))
+
+
+        return max_cnt
+
+
+    def helper(self, x):
+        if x == 0:
+            return 0
+
+        """
+        C(x, 2)
+
+        = (x!) * (2!) / (x-2) !
+
+        = (x-1)(x) / 2
+        """
+        return (x-1)(x) // 2
+
+
+
+
+
 
 #------------------------------------------------
 
 # LC 4058
 # https://leetcode.com/problems/maximum-pulse-value-after-one-subarray-rotation/description/
 #------------------------------------------------
+
+
+
+
+
+
+
+
+
+
 
 
 
