@@ -129,6 +129,12 @@ class Solution(object):
 
                 if not (cur[0] > prev[1]):
                     cnt += 1
+                
+                # optimization:
+                # if NOT possible to overlap anymore,
+                # negelect all of the remain loop for j
+                else:
+                    break
 
 
         return cnt
