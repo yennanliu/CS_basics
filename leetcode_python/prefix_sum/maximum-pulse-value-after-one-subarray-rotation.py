@@ -130,3 +130,165 @@ class Solution(object):
             best_neg = max(best_neg, -nums[k] - pre - sign * nums[k])
 
         return base + best_gain
+
+
+# V0-1
+# IDEA: alternating prefix sum (GPT)
+"""
+CORE IDEA:
+
+LeetCode 的官方 hint 其實就是利用 alternating prefix sum，
+把每個 (l, r) 的 rotation gain 在 O(1) 算出來，再用 parity 分組維護最大 prefix。
+
+"""
+class Solution(object):
+    def maxValue(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+
+        n = len(nums)
+
+        if n == 1:
+            return nums[0]
+
+        # P[i] = alternating sum of nums[0:i]
+        #
+        # P[0] = 0
+        # P[1] = nums[0]
+        # P[2] = nums[0] - nums[1]
+        # P[3] = nums[0] - nums[1] + nums[2]
+        prefix = [0] * (n + 1)
+
+        for i in range(n):
+            if i % 2 == 0:
+                prefix[i + 1] = prefix[i] + nums[i]
+            else:
+                prefix[i + 1] = prefix[i] - nums[i]
+
+        # No rotation
+        max_sum = prefix[n]
+
+        # best_prefix[l_parity]
+        #
+        # Used for:
+        # l and r have different parity
+        #
+        # gain = 2 * (P[l] - P[r + 1])
+        best_prefix = [None, None]
+
+        # best_prefix_plus[l_parity]
+        #
+        # Used for:
+        # l and r have same parity
+        #
+        # gain = 2 * (P[l + 1] - P[r + 1])
+        best_prefix_plus = [None, None]
+
+        for r in range(1, n):
+
+            # Add l = r - 1
+            # so that l < r
+            l = r - 1
+            parity = l % 2
+
+            if best_prefix[parity] is None:
+                best_prefix[parity] = prefix[l]
+            else:
+                best_prefix[parity] = max(
+                    best_prefix[parity],
+                    prefix[l]
+                )
+
+            if best_prefix_plus[parity] is None:
+                best_prefix_plus[parity] = prefix[l + 1]
+            else:
+                best_prefix_plus[parity] = max(
+                    best_prefix_plus[parity],
+                    prefix[l + 1]
+                )
+
+            # Case 1:
+            # l and r have the same parity
+            #
+            # gain = 2 * (P[l + 1] - P[r + 1])
+            parity = r % 2
+
+            if best_prefix_plus[parity] is not None:
+                gain = 2 * (
+                    best_prefix_plus[parity]
+                    - prefix[r + 1]
+                )
+
+                max_sum = max(
+                    max_sum,
+                    prefix[n] + gain
+                )
+
+            # Case 2:
+            # l and r have different parity
+            #
+            # gain = 2 * (P[l] - P[r + 1])
+            opposite = 1 - (r % 2)
+
+            if best_prefix[opposite] is not None:
+                gain = 2 * (
+                    best_prefix[opposite]
+                    - prefix[r + 1]
+                )
+
+                max_sum = max(
+                    max_sum,
+                    prefix[n] + gain
+                )
+
+        return max_sum
+
+
+# V0-2
+# IDEA: 前綴和 + 奇偶狀態追蹤 (gemini)
+class Solution(object):
+
+  def maxValue(self, nums):
+    """
+        :type nums: List[int]
+        :rtype: int
+        """
+    if not nums:
+      return 0
+
+    n = len(nums)
+
+    # 1. 計算原始 Pulse Value 與交錯前綴和陣列 P
+    initial_pulse = 0
+    p = [0] * (n + 1)
+
+    for i in range(n):
+      a_i = nums[i] if i % 2 == 0 else -nums[i]
+      initial_pulse += a_i
+      p[i + 1] = p[i] + a_i
+
+    # 2. 尋找偶數長度子陣列的最小區間和 (Min Even-Length Subarray Sum)
+    # 區間和 = P[r] - P[l]，當 len 為偶數時，r 與 l 同奇或同偶
+    max_p_even = p[0]  # 同為偶數索引時的最大 P[l]
+    max_p_odd = float('-inf')  # 同為奇數索引時的最大 P[l]
+    min_even_subarray_sum = float('inf')
+
+    for r in range(1, n + 1):
+      if r % 2 == 0:
+        # r 為偶數，與 max_p_even 匹配
+        min_even_subarray_sum = min(min_even_subarray_sum, p[r] - max_p_even)
+        max_p_even = max(max_p_even, p[r])
+      else:
+        # r 為奇數，與 max_p_odd 匹配
+        if max_p_odd != float('-inf'):
+          min_even_subarray_sum = min(min_even_subarray_sum, p[r] - max_p_odd)
+        max_p_odd = max(max_p_odd, p[r])
+
+    # 3. 計算最大 Delta（如果不進行旋轉，Delta 為 0）
+    max_delta = 0
+    if min_even_subarray_sum != float('inf'):
+      max_delta = max(0, -2 * min_even_subarray_sum)
+
+    return initial_pulse + max_delta
