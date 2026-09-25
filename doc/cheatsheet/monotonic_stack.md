@@ -219,9 +219,10 @@ def largest_rectangle_area(heights):
     """
     stack = []  # Store indices
     max_area = 0
-    heights.append(0)  # Add sentinel
     
-    for i, h in enumerate(heights):
+    # Sentinel 0 flushes every bar left on the stack; `heights + [0]` rather than
+    # heights.append(0), so the caller's list is not mutated
+    for i, h in enumerate(heights + [0]):
         # Pop taller bars and calculate area
         while stack and heights[stack[-1]] > h:
             height = heights[stack.pop()]
@@ -720,6 +721,93 @@ public int largestRectangleArea(int[] heights) {
     return maxArea;
 }
 ```
+
+#### **Why It Works — Each Pop Owns One Maximal Rectangle (Python)** ⭐⭐⭐⭐⭐
+
+> `leetcode_python/Greedy/largest-rectangle-in-histogram.py`
+
+**Core idea:** fix a bar as the rectangle's *height*, and its best rectangle is as wide as it can stretch before a shorter bar blocks it on each side:
+
+```text
+   left boundary  = previous SMALLER bar  -> the index just under it on the stack
+   right boundary = next SMALLER bar      -> the index i that pops it
+
+         left            popped            i
+          |    >= h   [   h   ]   >= h     |
+   width = i - stack[-1] - 1     (stack empty after the pop -> width = i)
+```
+
+The increasing stack hands you **both** boundaries at the moment of the pop — the right one is the bar doing the popping, the left one is whatever is left on top — so every bar's maximal rectangle is computed exactly once, in O(n) total.
+
+**Why checking only the maximal rectangle per bar is enough:** take the optimal rectangle, spanning `[l, r]`. Its height is `min(heights[l..r])`, reached at some bar `k`. Bar `k`'s maximal span contains `[l, r]` (nothing inside is shorter than it), so the area computed when `k` is popped is **≥** the optimum. Narrower rectangles at the same height — `1 × 2` when `1 × 3` was available — are dominated and never need enumerating.
+
+```python
+# python
+# LC 84 - Largest Rectangle in Histogram (two-phase: main loop + drain)
+# IDEA: increasing stack of indices; a pop fixes the popped bar's height, the current
+#       index is its right boundary, the new stack top is its left boundary
+# time = O(n), space = O(n)
+def largestRectangleArea(heights):
+    stack, max_area, n = [], 0, len(heights)
+    for i in range(n):
+        while stack and heights[stack[-1]] > heights[i]:
+            h = heights[stack.pop()]
+            width = i if not stack else i - stack[-1] - 1
+            max_area = max(max_area, h * width)
+        stack.append(i)
+    # Drain: nothing shorter ever arrived on their right, so they extend to n
+    while stack:
+        h = heights[stack.pop()]
+        width = n if not stack else n - stack[-1] - 1
+        max_area = max(max_area, h * width)
+    return max_area
+```
+
+**Why the trailing `while stack:` drain:** a bar is only scored when a *shorter* bar pops it. An increasing histogram (`[1, 2, 3]`) never pops anything, and on any input, whatever is still on the stack when the loop ends had no shorter bar to its right. Its right boundary is the end of the array, `n`. The drain is exactly the sentinel `0` of [Template 3](#template-3-largest-rectangle-in-histogram--lc-84) written out by hand — pick one, never both.
+
+**Visual trace on `heights = [2,1,5,6,2,3]`** (expected `10`; `i = 6` is the drain):
+
+```text
+i=0 h=2 : push                          stack=[0]
+i=1 h=1 : pop 0 (h=2) left=-1 w=1  area=2   best=2
+          push                          stack=[1]
+i=2 h=5 : push                          stack=[1,2]
+i=3 h=6 : push                          stack=[1,2,3]
+i=4 h=2 : pop 3 (h=6) left=2  w=1  area=6   best=6
+          pop 2 (h=5) left=1  w=2  area=10  best=10   <- bars 2..3 at height 5
+          push                          stack=[1,4]
+i=5 h=3 : push                          stack=[1,4,5]
+i=6 end : pop 5 (h=3) left=4  w=1  area=3
+          pop 4 (h=2) left=1  w=4  area=8
+          pop 1 (h=1) left=-1 w=6  area=6   best=10
+```
+
+**Variant — stack of `(start, height)`.** A second form worth knowing because it drops the `stack[-1]` boundary arithmetic and the empty-stack branch: each entry records how far **left** its height reaches. A shorter bar that pops an entry inherits that entry's `start`, since it can stretch at least that far too:
+
+```python
+# python
+# LC 84 - Largest Rectangle in Histogram ((start, height) stack)
+# IDEA: stack entries are (leftmost index this height reaches, height), heights increasing;
+#       a popped entry's rectangle is [start, i), and the popper inherits its start
+# time = O(n), space = O(n)
+def largestRectangleArea(heights):
+    st, max_area = [], 0
+    for i, h in enumerate(heights):
+        start = i
+        while st and st[-1][1] > h:
+            start, prev_h = st.pop()
+            max_area = max(max_area, prev_h * (i - start))
+        st.append((start, h))
+    n = len(heights)
+    for start, h in st:              # survivors reach the right end
+        max_area = max(max_area, h * (n - start))
+    return max_area
+```
+
+**Pitfalls**
+- Empty stack after the pop means no shorter bar on the left: width is `i`, not `i - 1`.
+- `>` vs `>=` in the pop: **both** give the right *maximum*. With `>`, an equal bar below the popped one understates that bar's width, but the lower equal bar is popped later with the full span. Do not reuse the per-bar widths for a problem that needs each bar's exact span (LC 907 needs the asymmetric `>=` / `>` pair).
+- Brute force is O(n²) with a running minimum; divide and conquer on the minimum is O(n log n) on average but O(n²) on sorted input. Neither is the answer an interviewer wants.
 
 ### 2-3) Next Greater Element I (LC 496) — Monotonic Stack + HashMap
 > Precompute next greater element for nums2, then answer queries for nums1.

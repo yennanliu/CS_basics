@@ -43,7 +43,7 @@ half-translated document renders with English gaps rather than failing.
   is what makes a problem findable on LeetCode itself.
 
 
-## Status — 5161 / 5338 sections (97%)
+## Status — 5162 / 5339 sections (97%)
 
 | Cheatsheet | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -131,7 +131,7 @@ half-translated document renders with English gaps rather than failing.
 | [matrix_examples](./cheatsheet/matrix_examples.md) | 27 | [✅](../i18n/zh/matrix_examples.md) |
 | [memory_constrained_algorithms](./cheatsheet/memory_constrained_algorithms.md) | 14 | — |
 | [monotonic_queue](./cheatsheet/monotonic_queue.md) | 23 | [✅](../i18n/zh/monotonic_queue.md) |
-| [monotonic_stack](./cheatsheet/monotonic_stack.md) | 98 | [✅](../i18n/zh/monotonic_stack.md) |
+| [monotonic_stack](./cheatsheet/monotonic_stack.md) | 99 | [✅](../i18n/zh/monotonic_stack.md) |
 | [n_sum](./cheatsheet/n_sum.md) | 16 | [✅](../i18n/zh/n_sum.md) |
 | [ood_design](./cheatsheet/ood_design.md) | 34 | [✅](../i18n/zh/ood_design.md) |
 | [palindrome](./cheatsheet/palindrome.md) | 66 | [✅](../i18n/zh/palindrome.md) |
