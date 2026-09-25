@@ -928,6 +928,8 @@ python3 script/fix_readme_tags.py            # rewrite the Note column
 |  #  | Title | Solution | Time | Space | Difficulty | Note | Status |
 |-----|-------|----------|------|-------|------------|------|--------|
 | 1943 | [Describe the Painting](https://leetcode.com/problems/describe-the-painting) | [Java](./leetcode_java/src/main/java/LeetCodeJava/ScanLine/DescribeThePainting.java) | _O(nlogn)_ | _O(n)_ | Medium | **scan line**, treeMap, delta, good basic, `google`, `array`, `hash table`, `sort` | AGAIN***** (1)(MUST) |
+| 4056 | [Number of Intersecting Interval Pairs I](https://leetcode.com/problems/number-of-intersecting-interval-pairs-i/description/) | [Python](./leetcode_python/Sort/number-of-intersecting-interval-pairs-i.py) | _O(n^2)_ | _O(1)_ | Easy | **scan line**, sort by start + double loop, break once start[j] > end[i], closed intervals (shared endpoint counts), LC weekly | AGAIN(1) |
+| 4057 | [Number of Intersecting Interval Pairs II](https://leetcode.com/problems/number-of-intersecting-interval-pairs-ii/description/) | [Python](./leetcode_python/Sort/number-of-intersecting-interval-pairs-ii.py) | _O(nlogn)_ | _O(n)_ | Medium | **scan line**, each start meets every open interval -> res += active, starts before ends at same pos, NOT max C(active,2), LC 4056, LC weekly | AGAIN(1) |
 
 
 
@@ -1547,6 +1549,7 @@ python3 script/fix_readme_tags.py            # rewrite the Note column
 | 1124 | [Longest Well-Performing Interval](https://leetcode.com/problems/longest-well-performing-interval) | [Python](./leetcode_python/prefix_sum/longest-well-performing-interval.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/PrefixSum/LongestWellPerformingInterval.java) | _O(n)_ | _O(n)_ | Medium | **prefix sum**, hashmap, first idx, Monotonic Stack, good basic, `google` | AGAIN************* (3)(MUST) |
 | 2012 | [Sum of Beauty in the Array](https://leetcode.com/problems/sum-of-beauty-in-the-array/description/) | [Python](./leetcode_python/prefix_sum/sum-of-beauty-in-the-array.py) | _O(n)_ | _O(n)_ | Medium | **prefix sum**, good basics, prefix, suffix sum, LC weekly| AGAIN****** (2) |
 | 2017 | [Grid Game](https://leetcode.com/problems/grid-game/description/) | [Python](./leetcode_python/prefix_sum/grid-game.py) | _O(n)_ | _O(1)_ | Medium | **prefix sum**, 2 x n grid, path == turning column, prefix (bottom) + suffix (top) sum, minimax, greedy, LC weekly | AGAIN(1) |
+| 4058 | [Maximum Pulse Value After One Subarray Rotation](https://leetcode.com/problems/maximum-pulse-value-after-one-subarray-rotation/description/) | [Python](./leetcode_python/prefix_sum/maximum-pulse-value-after-one-subarray-rotation.py) | _O(n)_ | _O(1)_ | Medium | **prefix sum**, left rotate flips sign of nums[l+1..r], gain = P[r] - P[l] + (sign[r] - sign[l]) * nums[l], best left end so far split by sign, NOT just a swap, LC weekly | AGAIN(1) |
 
 
 
