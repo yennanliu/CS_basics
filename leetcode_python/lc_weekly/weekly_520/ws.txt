@@ -207,8 +207,8 @@ class Solution(object):
 
 
     def helper(self, x):
-        if x == 0:
-            return 0
+        if x <= 1:
+            return x
 
         """
         C(x, 2)
@@ -229,6 +229,187 @@ class Solution(object):
 # LC 4058
 # https://leetcode.com/problems/maximum-pulse-value-after-one-subarray-rotation/description/
 #------------------------------------------------
+
+
+
+->
+
+Return the `maximum` `pulse` 脈衝 value 
+that can be obtained after performing
+ at most one such operation.
+
+
+
+nums: int arr, size = n
+
+
+pulse value :
+    
+    pulse(arr) = arr[0] - arr[1] + arr[2] - arr[3] + ...
+
+
+
+may at most one operation on nums:
+    
+    - Choose two indices l and r such that 0 <= l < r < n.
+
+    - `Left`-rotate the `subarray` nums[l..r] by exactly one position. 
+
+        -> e.g.
+
+            -> [a, b, c, d] becomes [b, c, d, a].
+
+
+
+# idea 1) brute force (simulate the process)
+
+
+# idea 2) try to find min `negative group` ???
+
+
+
+# idea 3) loop over every pair, swap to make the `bigger` one in positive group ??
+
+
+# idea 4) obervation + compare 2 swap op
+
+
+
+#----------------------
+
+
+ex 1)
+
+Input: nums = [1,5,2]
+
+Output: 6
+
+
+
+[1,5,2]
+ p   p        1+2 - 5 = -2
+
+
+[5,1,2]
+ p   p         5+2-1= 6
+
+
+
+ex 2)
+
+
+Input: nums = [6,4,3]
+
+Output: 7
+
+
+
+[6,4,3]
+ p   p      6+3-4 = 5
+
+
+[6,3,4]   6+4-3 = 7
+ p   p
+
+
+
+-> try to make the `biggest negative val` 
+   to positive group ???
+
+
+
+xxxx biggest_negative yyyy
+
+#----------------------
+
+
+
+
+# idea 4) obervation + compare 2 swap op
+
+
+class Solution(object):
+    def maxValue(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        
+        # edge
+        if not nums or len(nums) == 0:
+            return 0
+
+        if len(nums) == 1:
+            return nums[0]
+
+        #max_sum = 0
+
+        n = len(nums)
+
+        # init
+        p_val = 0
+        n_val = 0
+
+        max_negative = -1
+        max_negative_idx = -1
+
+
+
+        for i in range(0, n, 2):
+            p_val += nums[i]
+
+
+        for i in range(1, n, 2):
+            n_val += nums[i]
+
+            max_negative = max(max_negative, n_val)
+            max_negative_idx = i
+
+        max_sum = p_val - n_val
+
+
+        # compare all of the possible swap ways
+
+        """
+
+        xxxx biggest_negative yyyy
+
+        """
+        for i in range(0, max_negative_idx):
+
+            max_sum = max(max_sum, self.get_swap_pulse_val(max_sum, nums, i, max_negative_idx))
+
+
+        for j in range(max_negative_idx, n):
+
+            max_sum = max(max_sum, self.get_swap_pulse_val(max_sum, nums, max_negative_idx, j))
+
+
+        return max_sum
+
+
+    def get_swap_pulse_val(self, max_sum, nums, start_idx, end_idx):
+        # ??
+        val_1 = nums[start_idx]
+        val_2 = nums[end_idx]
+
+        max_sum += (val_2) * 2
+        max_sum -= (val_2) * 2
+
+        return max_sum
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
