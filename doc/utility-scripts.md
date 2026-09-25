@@ -460,7 +460,7 @@ untouched.
 **on the site**: [`l3-core.html`](../site/pages/l3-core.html).
 
 Where the **L3 core set** stands, and what to drill from it next. The set is a fixed
-rule over the other sources — `blind75 | (neetcode150 & readme:must)`, 98 problems
+rule over the other sources — `blind75 | (neetcode150 & readme:must)`, 99 problems
 in Sep 2026 — pinned so that its `ok` share means the same thing month to month.
 `suggest_review.py` picks from all 3,270 indexed problems; this picks from the ~100
 an L3 loop is most likely to draw on.

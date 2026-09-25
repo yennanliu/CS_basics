@@ -1,6 +1,6 @@
 ---
 name: l3-core
-description: Report where the L3 core set stands and pick the next problems to drill from it. The set is Blind 75 plus the NeetCode 150 problems README marks MUST — 98 problems, held fixed in data/l3_core.json so its ok share means something month to month — and the verdict for each is the latest annotation in data/progress.txt, not README's status column. Use when asked what to practise today, how ready the core set is, how many of Blind 75 are solid, which problems keep coming back, or to refresh the set after a MUST marker or a list changed. Triggers - "/l3-core", "/l3-core next 5", "what should I drill today?", "how is the core set looking?", "which Blind 75 are still again?", "refresh the l3 core list".
+description: Report where the L3 core set stands and pick the next problems to drill from it. The set is Blind 75 plus the NeetCode 150 problems README marks MUST — 99 problems, held fixed in data/l3_core.json so its ok share means something month to month — and the verdict for each is the latest annotation in data/progress.txt, not README's status column. Use when asked what to practise today, how ready the core set is, how many of Blind 75 are solid, which problems keep coming back, or to refresh the set after a MUST marker or a list changed. Triggers - "/l3-core", "/l3-core next 5", "what should I drill today?", "how is the core set looking?", "which Blind 75 are still again?", "refresh the l3 core list".
 allowed-tools: Read, Glob, Grep, Bash
 ---
 
@@ -29,7 +29,7 @@ against it, so the same question asked next month is the same question.
 ## What the set is
 
 ```text
-blind75 | (neetcode150 & readme:must)          -> 98 problems (Sep 2026)
+blind75 | (neetcode150 & readme:must)          -> 99 problems (Sep 2026)
 ```
 
 - **Blind 75** because every interviewer has seen it.

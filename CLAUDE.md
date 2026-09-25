@@ -475,7 +475,7 @@ next?* **The steps live in its `SKILL.md`, not here.**
 
 The set is `blind75 | (neetcode150 & readme:must)` — Blind 75 because every interviewer
 has seen it, plus the NeetCode 150 problems README marks `MUST` because that marker is
-the owner's own must-know verdict. 98 problems in Sep 2026. It is **generated** by
+the owner's own must-know verdict. 99 problems in Sep 2026. It is **generated** by
 `script/l3_core.py refresh` into [`data/l3_core.json`](data/l3_core.json) (ids only;
 titles come from README at build time), committed, and read by `build-roadmap.js` as the
 roadmap's **L3 core** list through a `from: "file:l3_core"` entry — the fourth list kind,
