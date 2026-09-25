@@ -40,6 +40,33 @@ class Solution(object):
 
 # V0-1
 # IDEA: Monotonic Stack (gemini)
+# time = O(n)
+# space = O(n)
+"""
+CORE IDEA:
+
+
+對於每一個柱子（高度為 $h$），以它作為矩形高度能延伸的最大寬度，取決於：
+
+
+    1. 左邊界：第一個小於 h 的柱子位置。
+
+    2. 右邊界：第一個小於 h 的柱子位置。
+
+
+
+    ->
+
+     我們可以使用一個`單調遞增堆疊`（只儲存`索引`）。
+
+     當我們遇到一個小於堆疊頂端高度的柱子時，
+     就代表找到了堆疊頂端那個柱子的右邊界（就是當前索引），
+     而此時堆疊中它左邊相鄰的元素就是它的左邊界。
+
+     藉此可以在線性時間內算出以該柱子為高的最大矩形面積。
+
+      
+"""
 class Solution(object):
 
   def largestRectangleArea(self, heights):
@@ -81,6 +108,8 @@ class Solution(object):
 
 # V0-2
 # IDEA: Monotonic Stack (gpt)
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def largestRectangleArea(self, heights):
         """
