@@ -23,14 +23,22 @@ master's history, and `git push origin <sha>:refs/heads/<name>` puts the pointer
 four `patch-equivalent` branches are different: master holds the same patches under other commit ids, and
 the deleted ref was the last thing on the remote pointing at the originals, so their tips can only be pushed
 back from a clone that fetched them before the sweep and has not garbage-collected since. The script now
-keeps every tip it deletes under `refs/pruned/<name>` in the clone that ran it; this first sweep ran before
-it did.
+keeps every tip it deletes under `refs/pruned/<name>@<sha>` in the clone that ran it; this first sweep ran
+before it did.
 
 `lc-coverage-kamyu-batch2` went first, by hand, as the test that a remote delete is permitted from this
 machine; the script removed the other ninety-nine. Two of them deserve a word. `lc-java-dev-1-add-time-space-complexity` and
 `lc-java-dev-2-add-time-complexity` were 2025 forks that `git rev-list` counted as 4,000+ commits ahead —
 but `git cherry` matched every one of those commits to a patch in master (4,173 and 4,176 twins, zero
 unique), so they were pre-rewrite snapshots of history master already has, not divergent work.
+
+The script has tightened since this sweep ran, and the four `patch-equivalent` deletions were re-checked
+against the stricter rules. All four pass the whitespace-sensitive test that replaced `git cherry`'s
+whitespace-blind one: every commit has a byte-identical twin in master. The two Java forks would **not**
+qualify today, because they carry 14 and 15 merge commits beyond master, and branches with merge commits are
+now kept. Nothing was lost by deleting them. Both tips are still reachable on the remote through
+`backup-20260318`, `cheatsheet-web-page` and `dev-2-cheatsheet-to-website`, so
+`git push origin <sha>:refs/heads/<name>` still restores either one.
 
 | Branch | Tip | Why |
 |---|---|---|
