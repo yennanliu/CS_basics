@@ -29,6 +29,109 @@ Constraints:
 """
 
 # V0
+class Solution(object):
+    def largestRectangleArea(self, heights):
+        """
+        :type heights: List[int]
+        :rtype: int
+        """
+        pass
+
+
+# V0-1
+# IDEA: Monotonic Stack (gemini)
+class Solution(object):
+
+  def largestRectangleArea(self, heights):
+    """
+        :type heights: List[int]
+        :rtype: int
+        """
+    if not heights:
+      return 0
+
+    stack = []  # 儲存柱子的索引（對應高度保持單調遞增）
+    max_area = 0
+    n = len(heights)
+
+    for i in range(n):
+      # 當前高度小於堆疊頂端的高度時，代表找到了堆疊頂端柱子的右邊界
+      while stack and heights[stack[-1]] > heights[i]:
+        h_idx = stack.pop()
+        h = heights[h_idx]
+
+        # 計算寬度：
+        # - 如果 stack 為空，代表左邊沒有比它小的，寬度延伸到 0（即 i）
+        # - 如果 stack 不為空，左邊界為 stack[-1]，寬度為 i - stack[-1] - 1
+        width = i if not stack else i - stack[-1] - 1
+        max_area = max(max_area, h * width)
+
+      stack.append(i)
+
+    # 處理堆疊中剩餘的柱子（它們的右邊界延伸到陣列最右側 n）
+    while stack:
+      h_idx = stack.pop()
+      h = heights[h_idx]
+      width = n if not stack else n - stack[-1] - 1
+      max_area = max(max_area, h * width)
+
+    return max_area
+
+
+
+# V0-2
+# IDEA: Monotonic Stack (gpt)
+class Solution(object):
+    def largestRectangleArea(self, heights):
+        """
+        :type heights: List[int]
+        :rtype: int
+        """
+
+        # Stack stores [start_index, height]
+        # Heights in stack are increasing
+        st = []
+
+        max_area = 0
+
+        for i, h in enumerate(heights):
+
+            start = i
+
+            # Current bar is shorter than stack top
+            while st and st[-1][1] > h:
+
+                prev_start, prev_height = st.pop()
+
+                # prev_height can extend from prev_start
+                # all the way to i - 1
+                width = i - prev_start
+
+                area = prev_height * width
+
+                max_area = max(max_area, area)
+
+                # The current shorter bar can also extend
+                # to the left where prev_height started
+                start = prev_start
+
+            st.append((start, h))
+
+        # Process remaining bars
+        n = len(heights)
+
+        while st:
+            start, height = st.pop()
+
+            width = n - start
+
+            area = height * width
+
+            max_area = max(max_area, area)
+
+        return max_area
+
+
 
 # V1
 # IDEA : BRURE FORCE
