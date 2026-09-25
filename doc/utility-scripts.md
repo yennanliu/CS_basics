@@ -552,6 +552,41 @@ is a finding that genuinely cannot be fixed yet. `test_check_readme.py`
 fails if the committed baseline no longer matches what the README produces, in either
 direction.
 
+## prune_branches.sh
+
+Deletes the remote branches `origin/master` already contains, and lists the rest.
+
+```bash
+bash script/prune_branches.sh            # dry run: what would go, what stays and how far ahead it is
+bash script/prune_branches.sh --delete   # delete the first group on origin
+REMOTE=origin BASE=master bash script/prune_branches.sh
+```
+
+Every worktree session pushes a `worktree-*` branch and the merge leaves it behind; by Sep 2026 the
+remote had 127 branches besides master, 100 of which qualified for deletion. A branch qualifies when it
+is an **ancestor** of `origin/master`, or when **every** commit it has beyond master has a byte-identical
+twin in master (`git patch-id --verbatim`) and none of those commits is a merge — a rebase-merge or
+cherry-pick, which `--merged` alone misses. It is not `git cherry` alone, because `git cherry`'s patch ids
+ignore whitespace, so a branch whose only change is re-indentation would pass as merged; `git cherry` still
+runs first, as the fast filter, since anything it cannot match has no verbatim twin either. Merge commits
+have no patch id, so a branch that has one beyond master is kept and says why: its merge resolution could
+carry a change no twin accounts for. The script refuses to run in a shallow clone, where it could not see
+the whole history it is judging. Anything else is unmerged work and is only
+listed, with its date and how many commits it is ahead: deciding what to do with unmerged work is a
+person's job, and the script never touches a branch that looks stale — not even a `backup-*`. The
+remote's default branch is never a candidate, whatever `BASE` is set to.
+
+`--delete` removes each branch under `--force-with-lease` against the tip it classified, so a push that
+lands between the fetch and the delete fails that one deletion instead of removing work nobody looked at.
+Each deleted branch is printed with its tip SHA and kept in the clone under `refs/pruned/<name>@<sha>`,
+and the script prints that ref as it writes it: a merged branch's commits are in master anyway, but a
+patch-equivalent branch's are only *equivalent* to master's, and the deleted ref was their last holder on
+the remote. The SHA is in the name so a reused branch name pruned a second time adds a keepsake rather
+than overwriting the first. The branch comes back with
+`git push origin refs/pruned/<name>@<sha>:refs/heads/<name>`; `git update-ref -d refs/pruned/<name>@<sha>`
+drops a keepsake, and `git for-each-ref refs/pruned/` lists them. Deleting a remote branch leaves local branches and worktrees alone. The Sep 2026 sweep and
+the decisions it left open are in [`branch-cleanup-2026-09.md`](./branch-cleanup-2026-09.md).
+
 ## Other Scripts
 
 | Script | Purpose |
