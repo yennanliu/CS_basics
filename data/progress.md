@@ -60,26 +60,10 @@
 	- neetcode 150
 	- review all `cheatsheets`
 
-	
-
-- binary tree.md
-	- https://yennj12.js.org/CS_basics/cheatsheets/binary_tree.zh.html
-		- `2) LC 範例`
-
-
-
-
 - python_trick.md
 	- https://yennj12.js.org/CS_basics/cheatsheets/python_trick.zh.html
 		- `2) LC Example`
 		- `多重 key 的 tuple 排序：key=lambda x: (x[0], x[1])`
-
-
-
-
-
-
-
 
 
 - stack_expression_parsing
@@ -152,7 +136,7 @@
 	- Sorting Algorithms.md
 	- dp_pattern.md
 	- Monotonic Queue.md
-
+	- binary tree.md
 
 
 	
