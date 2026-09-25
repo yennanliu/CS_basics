@@ -74,8 +74,8 @@ view, never instead of it. The log is parsed with the same helpers
    and a README cell is moved with
    [`/lc-again`](https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-again/SKILL.md).
    This skill reads; it says what is owed.
-4. **Every attempt gets a verdict.** 35 of the 98 have been attempted and never given
-   one. The report ends with the exact `/lc-log` shape — `371(ok|again)` — for each
+4. **Every attempt gets a verdict.** 35 of the 99 (Sep 2026) have been attempted and never
+   given one. The report ends with the exact `/lc-log` shape — `371(ok|again)` — for each
    problem picked, so the gap does not grow.
 5. **Breadth in a session.** `next` round-robins across README sections in priority
    order; five problems should not be five DP rows.

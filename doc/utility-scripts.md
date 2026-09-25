@@ -501,7 +501,7 @@ Priority buckets, then round-robin across README sections so five problems are n
 five DP rows: never logged → attempted without a verdict → `again`, oldest first →
 an `ok` more than 30 days old. A fresh `ok` is never offered, and nothing logged in
 the last three days is (`--exclude-recent`). The output ends with the `/lc-log` shape
-for each pick, because 35 of the 98 have been attempted and never given a verdict, and
+for each pick, because 35 of the 99 (Sep 2026) have been attempted and never given a verdict, and
 that is the cheapest number on the page to move.
 
 It never writes the log or a README cell — those are `/lc-log` and `/lc-again`.
