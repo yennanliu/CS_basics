@@ -20,14 +20,9 @@ Use this Skill when:
 
 ### 1. Structure Guidelines
 
-**Every document should have:**
-1. Clear title (H1)
-2. Brief description
-3. Table of contents (for long docs)
-4. Well-organized sections (H2, H3)
-5. Code examples
-6. Complexity analysis (for algorithms)
-7. References/links
+**A document outside `doc/cheatsheet/` and `doc/faq/` usually has** a clear H1, a
+one-paragraph description, and sections that never skip a heading level. Those two
+trees have their own required shape (see Project-Specific Guidelines below).
 
 **Standard Template:**
 ```markdown
@@ -461,23 +456,11 @@ def pattern_template(arr):
 
 **For CS_basics repository:**
 
-1. **Algorithm problems**: Use detailed format with multiple languages
-2. **System design**: Follow `00_template.md` structure
-3. **Cheat sheets**: Keep in `doc/` directory
-4. **Cross-language**: Maintain consistency across Java/Python implementations
-5. **Interview prep**: Focus on pattern recognition and problem-solving approach
-
-**File organization:**
-```
-doc/
-├── algorithm_patterns/
-│   ├── two_pointers.md
-│   └── sliding_window.md
-├── data_structure/
-│   └── complexity_chart.md
-└── system_design/
-    └── case_studies/
-```
+- **Cheatsheets** live in `doc/cheatsheet/` and follow the Cheatsheet Style Guide in
+  `CLAUDE.md` (Skeleton A/B, the mandatory Scope line, a `data/cheatsheet_meta.json`
+  entry). Use `/lc-cheatsheet` for them; this skill is for everything else.
+- **FAQs** live in `doc/faq/` and have a zh overlay; use `/lc-faq-add`.
+- **System design** docs follow `system_design/00_template.md`.
 
 ## Quality Checklist
 

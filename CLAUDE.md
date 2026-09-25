@@ -586,8 +586,8 @@ or solution link into either file; those come from README. And it reads the per-
 **"shown of" tally** the build prints, which is the only signal that a taxonomy mapping
 broke.
 
-`.claude/skills/lc-zh-translate/` drives the standing 繁體中文 backlog — **6040/6220
-sections, 17 parked entries, four sheets still at 0%** — through the `sync` → `todo` →
+`.claude/skills/lc-zh-translate/` drives the standing 繁體中文 backlog (the current
+figure is `node script/zh.js status`, never a number typed here) through the `sync` → `todo` →
 write → `sync` → `status --write` loop documented under
 [Traditional Chinese docs](#traditional-chinese-docs). `/lc-cheatsheet` only re-translates
 what *an edit* parked; nothing else works the backlog. It never reaches for `sync --prune`,

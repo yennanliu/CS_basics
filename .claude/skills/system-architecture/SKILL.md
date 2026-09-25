@@ -344,5 +344,4 @@ Use this structure (based on `system_design/00_template.md`):
 
 - Templates in `system_design/00_template.md`
 - Case studies in `system_design/*.md`
-- Reference materials in `doc/system_design/`
 - Follow the established documentation pattern

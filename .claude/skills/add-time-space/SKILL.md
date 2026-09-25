@@ -22,14 +22,9 @@ When the user runs `/add-time-space [DIRECTORY]`, follow these steps:
 
 3. **Manual Processing (if needed)**:
    - Check for any files that weren't processed automatically
-   - For files without inline comments, analyze the code and add Javadoc manually:
-     - Single loop: O(N) time
-     - Nested loops: O(N²) time
-     - Sorting: O(N log N) time
-     - Binary search: O(log N) time
-     - Backtracking: O(2^N) or O(N!) depending on problem
-     - New array of size N: O(N) space
-     - Only variables: O(1) space
+   - For files without inline comments, work out the complexity from the code and add the
+     Javadoc by hand. Name the line that sets each bound, and count the recursion stack
+     and the output as space where they apply.
 
 4. **Verify Changes**:
    ```bash
@@ -37,17 +32,13 @@ When the user runs `/add-time-space [DIRECTORY]`, follow these steps:
    ```
    - Confirm only comments changed, no logic modified
 
-5. **Commit Changes**:
-   ```bash
-   git add leetcode_java/src/main/java/LeetCodeJava/[DIRECTORY]/
-   git commit -m "Add time/space complexity Javadoc comments to LeetCode Java [DIRECTORY] solutions"
-   ```
+5. **Stop at the diff.** Don't commit or push unless asked.
 
 6. **Report Results**:
    - Number of files processed
    - Number of files that needed manual processing
    - Any files skipped and why
-   - Git commit hash
+   - The `git diff --stat` for the directory
 
 **Transformation Pattern**:
 ```java
