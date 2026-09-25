@@ -97,3 +97,75 @@ class Solution(object):
                 cnt += 1
 
         return cnt
+
+
+# V0-1
+# IDEA: BRUTE FORCE (gpt)
+class Solution(object):
+    def countIntersectingIntervals(self, intervals):
+        """
+        :type intervals: List[List[int]]
+        :rtype: int
+        """
+
+        # Edge case
+        if not intervals or len(intervals) < 2:
+            return 0
+
+        # Sort by start, then end
+        intervals.sort(key=lambda x: (x[0], x[1]))
+
+        cnt = 0
+        n = len(intervals)
+
+        for i in range(n):
+            for j in range(i + 1, n):
+
+                prev = intervals[i]
+                cur = intervals[j]
+
+                # Since intervals are sorted by start:
+                #
+                # cur[0] <= prev[1]
+                # => overlap
+                #
+                # cur[0] > prev[1]
+                # => no future interval can overlap prev
+                if cur[0] <= prev[1]:
+                    cnt += 1
+                else:
+                    break
+
+        return cnt
+
+# V0-2
+# IDEA: BRUTE FORCE (gemini)
+class Solution(object):
+
+  def countIntersectingIntervals(self, intervals):
+    """
+        :type intervals: List[List[int]]
+        :rtype: int
+        """
+    if not intervals or len(intervals) <= 1:
+      return 0
+
+    # 1. 依照起始時間排序，若起始時間相同則依結束時間排序
+    intervals.sort(key=lambda x: (x[0], x[1]))
+
+    cnt = 0
+    n = len(intervals)
+
+    for i in range(n):
+      prev = intervals[i]
+      for j in range(i + 1, n):
+        cur = intervals[j]
+
+        # 2. 檢查是否相交：當前區間的起點 <= 前一區間的終點
+        if cur[0] <= prev[1]:
+          cnt += 1
+        else:
+          # 3. 提早中斷：後面區間的起點更大，絕對不可能再相交
+          break
+
+    return cnt
