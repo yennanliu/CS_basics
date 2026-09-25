@@ -377,12 +377,18 @@ class Solution(object):
         """
         for i in range(0, max_negative_idx):
 
-            max_sum = max(max_sum, self.get_swap_pulse_val(max_sum, nums, i, max_negative_idx))
+            max_sum = max(
+                max_sum, 
+                self.get_swap_pulse_val(max_sum, nums, i, max_negative_idx)
+                )
 
 
         for j in range(max_negative_idx, n):
 
-            max_sum = max(max_sum, self.get_swap_pulse_val(max_sum, nums, max_negative_idx, j))
+            max_sum = max(
+            max_sum, 
+            self.get_swap_pulse_val(max_sum, nums, max_negative_idx, j)
+            )
 
 
         return max_sum
@@ -390,11 +396,28 @@ class Solution(object):
 
     def get_swap_pulse_val(self, max_sum, nums, start_idx, end_idx):
         # ??
-        val_1 = nums[start_idx]
-        val_2 = nums[end_idx]
+        #val_1 = nums[start_idx]
+        #val_2 = nums[end_idx]
 
-        max_sum += (val_2) * 2
-        max_sum -= (val_2) * 2
+        max_sum += nums[end_idx] * 2
+        max_sum -= nums[start_idx]  * 2
+
+        """
+        [1,5,2]
+         s e
+
+        1 - 5 + 2 = -2.
+
+
+        [5, 1, 2]
+
+
+        5 - 1 + 2 
+
+
+        -2 + (5*2) - (1*2) = -2 + 10 - 2 = 6
+
+        """
 
         return max_sum
 
