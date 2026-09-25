@@ -108,3 +108,108 @@ class Solution(object):
                 active -= 1
 
         return res
+
+
+# V0-1
+# IDEA: SCAN LINE (gpt)
+class Solution(object):
+    def countIntersectingIntervals(self, intervals):
+        """
+        :type intervals: List[List[int]]
+        :rtype: int
+        """
+
+        if not intervals or len(intervals) < 2:
+            return 0
+
+        events = []
+
+        for start, end in intervals:
+            events.append((start, 1))   # start
+            events.append((end, -1))    # end
+
+        # IMPORTANT:
+        # If start == end, start must be processed BEFORE end
+        # because intervals are inclusive.
+        events.sort(key=lambda x: (x[0], -x[1]))
+
+        active = 0
+        res = 0
+
+        for time, status in events:
+
+            if status == 1:
+                # Current interval intersects with
+                # all currently active intervals.
+                res += active
+
+                active += 1
+
+            else:
+                active -= 1
+
+        return res
+
+
+# V0-2
+# IDEA: 排序 + 樹狀陣列（Binary Indexed Tree / Fenwick Tree）(gemini)
+class BIT:
+  """ 樹狀陣列（Binary Indexed Tree）支援動態頻率統計與前綴和查詢 """
+
+  def __init__(self, size):
+    self.size = size
+    self.tree = [0] * (size + 1)
+
+  def update(self, i, delta):
+    while i <= self.size:
+      self.tree[i] += delta
+      i += i & (-i)
+
+  def query(self, i):
+    s = 0
+    while i > 0:
+      s += self.tree[i]
+      i -= i & (-i)
+    return s
+
+
+class Solution(object):
+
+  def countIntersectingIntervals(self, intervals):
+    """
+        :type intervals: List[List[int]]
+        :rtype: int
+        """
+    if not intervals or len(intervals) <= 1:
+      return 0
+
+    # 1. 依照區間起點由小到大排序
+    intervals.sort(key=lambda x: (x[0], x[1]))
+
+    # 2. 座標離散化（Coordinate Compression），將大數值對應到樹狀陣列的索引
+    coords = set()
+    for s, e in intervals:
+      coords.add(s)
+      coords.add(e)
+    sorted_coords = sorted(list(coords))
+    coord_map = {val: idx + 1 for idx, val in enumerate(sorted_coords)}
+
+    n_coords = len(sorted_coords)
+    bit = BIT(n_coords)
+    total_pairs = 0
+    active_count = 0
+
+    # 3. 掃描與查詢相交對數
+    for s, e in intervals:
+      # 查詢先前已開始的區間中，其結束時間小於當前起點 s 的數量
+      less_than_s = bit.query(coord_map[s] - 1)
+
+      # 與當前區間相交的先前區間數 = 總已開始區間數 - 結束時間小於 s 的區間數
+      intersect_count = active_count - less_than_s
+      total_pairs += intersect_count
+
+      # 將當前區間的結束時間加入樹狀陣列，並遞增已開始區間計數
+      bit.update(coord_map[e], 1)
+      active_count += 1
+
+    return total_pairs
