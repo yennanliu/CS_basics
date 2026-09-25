@@ -30,8 +30,8 @@
 
 	- LC weekly
 		- `data/lc_weekly/lc_weekly_gpt.md`
-			- Weekly Contest 519 (done)
-				- https://leetcode.com/contest/weekly-contest-519/
+			- Weekly Contest 520 (ing)
+				- https://leetcode.com/contest/weekly-contest-520/
 		- LC docs contest
 			- https://leetcode.doocs.org/contest/
 
@@ -50,15 +50,12 @@
 
 
 
- 	- blind 150 (doing)
-
- 	- blind 75 (done)
-
-
-		- stack
-
 	- neetcode 150
 	- review all `cheatsheets`
+
+
+- LeetCode Pattern Guide
+	- https://yennj12.js.org/CS_basics/cheatsheets/lc_pattern.zh.html
 
 - python_trick.md
 	- https://yennj12.js.org/CS_basics/cheatsheets/python_trick.zh.html
