@@ -56,6 +56,20 @@
 
 - LeetCode Pattern Guide
 	- https://yennj12.js.org/CS_basics/cheatsheets/lc_pattern.zh.html
+		- `🔹 7. 堆積與優先佇列`
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 - python_trick.md
 	- https://yennj12.js.org/CS_basics/cheatsheets/python_trick.zh.html
