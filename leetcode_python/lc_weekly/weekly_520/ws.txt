@@ -6,7 +6,7 @@
 
 (67 mins)
 
-10.53 - 12.00 pm
+2.51 - 3.58  pm
 #-------------------------------
 
 
@@ -16,6 +16,14 @@
 # https://leetcode.com/problems/number-of-intersecting-interval-pairs-i/description/
 #------------------------------------------------
 
+
+class Solution(object):
+    def countIntersectingIntervals(self, intervals):
+        """
+        :type intervals: List[List[int]]
+        :rtype: int
+        """
+        pass
 
 
 
