@@ -475,7 +475,7 @@ next?* **The steps live in its `SKILL.md`, not here.**
 
 The set is `blind75 | (neetcode150 & readme:must)` — Blind 75 because every interviewer
 has seen it, plus the NeetCode 150 problems README marks `MUST` because that marker is
-the owner's own must-know verdict. 98 problems in Sep 2026. It is **generated** by
+the owner's own must-know verdict. 99 problems in Sep 2026. It is **generated** by
 `script/l3_core.py refresh` into [`data/l3_core.json`](data/l3_core.json) (ids only;
 titles come from README at build time), committed, and read by `build-roadmap.js` as the
 roadmap's **L3 core** list through a `from: "file:l3_core"` entry — the fourth list kind,
@@ -586,8 +586,8 @@ or solution link into either file; those come from README. And it reads the per-
 **"shown of" tally** the build prints, which is the only signal that a taxonomy mapping
 broke.
 
-`.claude/skills/lc-zh-translate/` drives the standing 繁體中文 backlog — **6040/6220
-sections, 17 parked entries, four sheets still at 0%** — through the `sync` → `todo` →
+`.claude/skills/lc-zh-translate/` drives the standing 繁體中文 backlog (the current
+figure is `node script/zh.js status`, never a number typed here) through the `sync` → `todo` →
 write → `sync` → `status --write` loop documented under
 [Traditional Chinese docs](#traditional-chinese-docs). `/lc-cheatsheet` only re-translates
 what *an edit* parked; nothing else works the backlog. It never reaches for `sync --prune`,

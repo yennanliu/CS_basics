@@ -460,7 +460,7 @@ untouched.
 **on the site**: [`l3-core.html`](../site/pages/l3-core.html).
 
 Where the **L3 core set** stands, and what to drill from it next. The set is a fixed
-rule over the other sources — `blind75 | (neetcode150 & readme:must)`, 98 problems
+rule over the other sources — `blind75 | (neetcode150 & readme:must)`, 99 problems
 in Sep 2026 — pinned so that its `ok` share means the same thing month to month.
 `suggest_review.py` picks from all 3,270 indexed problems; this picks from the ~100
 an L3 loop is most likely to draw on.
@@ -501,7 +501,7 @@ Priority buckets, then round-robin across README sections so five problems are n
 five DP rows: never logged → attempted without a verdict → `again`, oldest first →
 an `ok` more than 30 days old. A fresh `ok` is never offered, and nothing logged in
 the last three days is (`--exclude-recent`). The output ends with the `/lc-log` shape
-for each pick, because 35 of the 98 have been attempted and never given a verdict, and
+for each pick, because 35 of the 99 (Sep 2026) have been attempted and never given a verdict, and
 that is the cheapest number on the page to move.
 
 It never writes the log or a README cell — those are `/lc-log` and `/lc-again`.
