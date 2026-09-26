@@ -6,7 +6,7 @@ const markdownItAnchor = require('markdown-it-anchor');
 const hljs = require('highlight.js');
 const {
   slugify, TIER_LABELS, prioBadge, PRIO_BADGE_RE, headingText,
-  annotatePriorityHeadings, PRIORITY_LEGEND, generateTOC, extractHeadings,
+  annotatePriorityHeadings, PRIORITY_LEGEND, PRIO_TEXT, priorityLegend, generateTOC, extractHeadings,
   headingIds, anchorMap, retargetAnchors,
   ensureHeadingIds, groupByCategory, buildPrevNext, buildIndexGrid,
   buildCheatsheetIndex, splitLeadingH1, buildPageContent, extractScope,
@@ -459,7 +459,7 @@ const ZH_LABELS = {
   backTo: label => `返回${label}`,
   edit: '在 GitHub 上編輯'
 };
-const ZH_TOC_LABELS = { contents: '目錄', sections: n => `${n} 個章節` };
+const ZH_TOC_LABELS = { contents: '目錄', sections: n => `${n} 個章節`, tiers: PRIO_TEXT.zh.tiers };
 
 // A translation nobody can reach: its English document was renamed or deleted.
 // Failing here is the point — the alternative is a store file quietly going
@@ -531,7 +531,7 @@ function composeZhPages({ corpus, pages, outDir, indexHref, indexLabel, type, de
       return sibling ? anchorMaps.get(sibling[1]) : null;
     });
     const { title: h1Title, titleId, html: bodyHtml } = splitLeadingH1(htmlContent);
-    const { html: annotated, hasPriority } = annotatePriorityHeadings(bodyHtml);
+    const { html: annotated, hasPriority } = annotatePriorityHeadings(bodyHtml, 'zh');
     htmlContent = annotated;
     const title = h1Title || page.title;
     const headings = extractHeadings(htmlContent);
@@ -554,7 +554,7 @@ function composeZhPages({ corpus, pages, outDir, indexHref, indexLabel, type, de
         titleId,
         labels: ZH_LABELS,
         meta: meta(page),
-        legend: hasPriority ? PRIORITY_LEGEND : ''
+        legend: hasPriority ? priorityLegend('zh') : ''
       })
     };
   });
@@ -567,9 +567,9 @@ const zhSheets = composeZhPages({
   indexHref: 'cheatsheets.zh.html',
   indexLabel: '速查表',
   describe: raw => extractScope(raw),
-  meta: sheet => `<span class="cat-chip">${sheet.category}</span>` +
-    `<span class="tier-chip tier-${sheet.tier}">${prioBadge(sheet.tier)}` +
-    `<span class="tier-label">${cheatsheetMeta.tierLabels[String(sheet.tier)].label}</span></span>`
+  meta: sheet => `<span class="cat-chip">${(cheatsheetMeta.zh.categories || {})[sheet.category] || sheet.category}</span>` +
+    `<span class="tier-chip tier-${sheet.tier}">${prioBadge(sheet.tier, '', 'zh')}` +
+    `<span class="tier-label">${((cheatsheetMeta.zh.tierLabels || {})[String(sheet.tier)] || cheatsheetMeta.tierLabels[String(sheet.tier)]).label}</span></span>`
 });
 
 for (const sheet of zhSheets) {

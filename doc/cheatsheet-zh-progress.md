@@ -43,7 +43,7 @@ half-translated document renders with English gaps rather than failing.
   is what makes a problem findable on LeetCode itself.
 
 
-## Status — 5162 / 5339 sections (97%)
+## Status — 5165 / 5339 sections (97%)
 
 | Cheatsheet | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -106,7 +106,7 @@ half-translated document renders with English gaps rather than failing.
 | [graph_examples](./cheatsheet/graph_examples.md) | 18 | [✅](../i18n/zh/graph_examples.md) |
 | [greedy](./cheatsheet/greedy.md) | 49 | [✅](../i18n/zh/greedy.md) |
 | [greedy_examples](./cheatsheet/greedy_examples.md) | 28 | [✅](../i18n/zh/greedy_examples.md) |
-| [hash_map](./cheatsheet/hash_map.md) | 44 | [41/44](../i18n/zh/hash_map.md) |
+| [hash_map](./cheatsheet/hash_map.md) | 44 | [✅](../i18n/zh/hash_map.md) |
 | [hash_map_examples](./cheatsheet/hash_map_examples.md) | 93 | [✅](../i18n/zh/hash_map_examples.md) |
 | [hashing](./cheatsheet/hashing.md) | 47 | [45/47](../i18n/zh/hashing.md) |
 | [heap](./cheatsheet/heap.md) | 54 | [✅](../i18n/zh/heap.md) |

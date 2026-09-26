@@ -48,12 +48,38 @@
     1: 'Nice to have'
   };
 
-  function prioBadge(level, extraClass = '') {
+  // The badge, legend and TOC wording on a translated page. Keyed by `lang` so
+  // a 中文 page does not carry English tooltips and screen-reader text on every
+  // starred heading.
+  const PRIO_TEXT = {
+    en: {
+      tiers: TIER_LABELS,
+      sr: (n, label) => `Priority ${n} of 5 — ${label}`,
+      legendLabel: 'Section priority',
+      legendNote: 'Marked on the sections that carry it — unmarked sections are background/reference.'
+    },
+    zh: {
+      tiers: {
+        5: '必備 — 幾乎每一輪面試都會出現',
+        4: '高價值 — 這裡有缺口就會掉關',
+        3: '值得會 — 多半是必備模式的變形',
+        2: '冷門 — 讀過一次即可，除非目標公司已知會問',
+        1: '加分項'
+      },
+      sr: (n, label) => `優先度 ${n}／5 — ${label}`,
+      legendLabel: '章節優先度',
+      legendNote: '只標在真正需要的章節上 —— 沒標的是背景／參考資料。'
+    }
+  };
+  const prioText = lang => PRIO_TEXT[lang] || PRIO_TEXT.en;
+
+  function prioBadge(level, extraClass = '', lang = 'en') {
     const n = Math.max(1, Math.min(5, level));
     const stars = '★'.repeat(n) + '☆'.repeat(5 - n);
-    return `<span class="prio prio-${n}${extraClass ? ' ' + extraClass : ''}" title="${TIER_LABELS[n]}">` +
+    const t = prioText(lang);
+    return `<span class="prio prio-${n}${extraClass ? ' ' + extraClass : ''}" title="${t.tiers[n]}">` +
       `<span class="prio-stars" aria-hidden="true">${stars}</span>` +
-      `<span class="sr-only">Priority ${n} of 5 — ${TIER_LABELS[n]}</span></span>`;
+      `<span class="sr-only">${t.sr(n, t.tiers[n])}</span></span>`;
   }
 
   // Matches exactly what prioBadge() emits. Anything reading a heading's *text*
@@ -71,7 +97,7 @@
 
   // Rewrites ⭐ runs in h2–h4 into a badge. Heading ids are left untouched (they
   // were slugified from the star-bearing text, so existing deep links keep working).
-  function annotatePriorityHeadings(htmlContent) {
+  function annotatePriorityHeadings(htmlContent, lang = 'en') {
     let maxLevel = 0;
     const html = htmlContent.replace(/<h([2-4])([^>]*)>([\s\S]*?)<\/h\1>/g, (full, level, attrs, inner) => {
       const stars = inner.match(/⭐{1,5}/);
@@ -79,23 +105,27 @@
       const n = Math.min(5, stars[0].length);
       if (n > maxLevel) maxLevel = n;
       const cleaned = inner.replace(/⭐{1,5}/g, '').replace(/\s{2,}/g, ' ').trim();
-      return `<h${level}${attrs} data-prio="${n}">${cleaned}${prioBadge(n, 'prio-heading')}</h${level}>`;
+      return `<h${level}${attrs} data-prio="${n}">${cleaned}${prioBadge(n, 'prio-heading', lang)}</h${level}>`;
     });
     return { html, hasPriority: maxLevel > 0 };
   }
 
-  const PRIORITY_LEGEND =
-    '<div class="prio-legend"><span class="prio-legend-label">Section priority</span>' +
-    [5, 4, 3, 2].map(n =>
-      `<span class="prio-legend-item">${prioBadge(n)}<span class="prio-legend-text">${TIER_LABELS[n].split(' — ')[0]}</span></span>`
-    ).join('') +
-    '<span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>';
+  function priorityLegend(lang = 'en') {
+    const t = prioText(lang);
+    return `<div class="prio-legend"><span class="prio-legend-label">${t.legendLabel}</span>` +
+      [5, 4, 3, 2].map(n =>
+        `<span class="prio-legend-item">${prioBadge(n, '', lang)}<span class="prio-legend-text">${t.tiers[n].split(' — ')[0]}</span></span>`
+      ).join('') +
+      `<span class="prio-legend-note">${t.legendNote}</span></div>`;
+  }
+  const PRIORITY_LEGEND = priorityLegend('en');
 
   // Nested TOC: h2 → h3, plus any h4 that carries a priority marker (those are the
   // per-pattern templates people actually navigate to). Rendered as a sticky rail
   // on wide screens and a collapsed <details> panel on narrow ones.
   const TOC_LABELS = {
     contents: 'Contents',
+    tiers: TIER_LABELS,
     // Given a section count, the word that follows it in the summary line.
     sections: n => `${n} section${n === 1 ? '' : 's'}`
   };
@@ -126,7 +156,7 @@
     const entry = h =>
       `<li class="toc-item toc-l${h.level}${h.prio >= 4 ? ' toc-hot' : ''}">` +
       `<a href="#${h.id}">${h.text}` +
-      (h.prio ? `<span class="toc-prio prio-${h.prio}" title="${TIER_LABELS[h.prio]}" aria-hidden="true">${'★'.repeat(h.prio)}</span>` : '') +
+      (h.prio ? `<span class="toc-prio prio-${h.prio}" title="${L.tiers[h.prio]}" aria-hidden="true">${'★'.repeat(h.prio)}</span>` : '') +
       '</a>';
 
     let toc = '';
@@ -422,7 +452,7 @@
     html += `<section class="tier-key" aria-label="${t.starsAria}">` +
       `<h2 class="key-heading">${t.starsHeading}</h2><ul class="tier-key-list">` +
       [5, 4, 3, 2].map(n =>
-        `<li class="tier-key-item">${prioBadge(n)}<span class="tier-key-label">${tierLabel(n)}</span>` +
+        `<li class="tier-key-item">${prioBadge(n, '', lang)}<span class="tier-key-label">${tierLabel(n)}</span>` +
         `<span class="tier-key-note">${tierNote(n)}</span></li>`
       ).join('') +
       `</ul><p class="tier-key-foot">${t.starsFoot}</p></section>`;
@@ -431,7 +461,7 @@
       `<p class="cat-blurb">${t.startBlurb(startHere.length)}</p><ol class="start-list">`;
     for (const s of startHere) {
       html += `<li class="start-item"><a class="start-title" href="${href(s.file)}">${s.title}</a>` +
-        `${prioBadge(s.tier, 'prio-compact')}<span class="start-why">${s.why}</span></li>`;
+        `${prioBadge(s.tier, 'prio-compact', lang)}<span class="start-why">${s.why}</span></li>`;
     }
     html += '</ol></section>';
 
@@ -479,7 +509,7 @@
           ` data-tier="${item.tier}" data-search="${haystack}">` +
           '<div class="card-top">' +
           `<h4 class="card-title"><a href="${href(item.file)}">${item.title}</a></h4>` +
-          `${prioBadge(item.tier, 'prio-compact')}</div>` +
+          `${prioBadge(item.tier, 'prio-compact', lang)}</div>` +
           (item.description ? `<p class="card-desc">${item.description}</p>` : '') +
           (kindChip ? `<p class="card-tags">${kindChip}</p>` : '') +
           '</article>';
@@ -592,6 +622,8 @@
     headingText,
     annotatePriorityHeadings,
     PRIORITY_LEGEND,
+    PRIO_TEXT,
+    priorityLegend,
     generateTOC,
     extractHeadings,
     headingIds,
