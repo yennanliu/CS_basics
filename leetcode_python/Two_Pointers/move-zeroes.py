@@ -20,6 +20,12 @@ Minimize the total number of operations.
 
 # V0
 # IDEA : 2 POINTERS (gemini)
+"""
+CORE IDEA:
+
+    l = 下一個 non-zero 應該放的位置
+    r = 目前正在掃描的位置
+"""
 class Solution(object):
 
   def moveZeroes(self, nums):
@@ -45,6 +51,12 @@ class Solution(object):
 
 # V0-1
 # IDEA : 2 POINTERS (GPT)
+"""
+CORE IDEA:
+
+    l = 下一個 non-zero 應該放的位置
+    r = 目前正在掃描的位置
+"""
 class Solution(object):
     def moveZeroes(self, nums):
         """
