@@ -61,6 +61,17 @@ test('prioBadge carries the tier wording in both the tooltip and a screen-reader
   assert.equal(d.querySelector('.prio-stars').getAttribute('aria-hidden'), 'true');
 });
 
+test('a zh badge, legend and heading carry no English wording', () => {
+  const d = parse(lib.prioBadge(5, '', 'zh'));
+  assert.equal(d.querySelector('.prio').getAttribute('title'), lib.PRIO_TEXT.zh.tiers[5]);
+  assert.match(d.querySelector('.sr-only').textContent, /^優先度 5／5 — /);
+  const { html } = lib.annotatePriorityHeadings('<h3 id="x">模板 ⭐⭐⭐⭐</h3>', 'zh');
+  const legend = lib.priorityLegend('zh');
+  for (const out of [html, legend]) assert.doesNotMatch(out, /Priority|Must know|High value|Marked on/);
+  // The badge regex has to strip the zh badge too, or the TOC label keeps it.
+  assert.equal(lib.headingText(html.replace(/^<h3[^>]*>|<\/h3>$/g, '')), '模板');
+});
+
 test('prioBadge appends an extra class without dropping the tier class', () => {
   const cls = parse(lib.prioBadge(2, 'prio-compact')).querySelector('.prio').className;
   assert.equal(cls, 'prio prio-2 prio-compact');

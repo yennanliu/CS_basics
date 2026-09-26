@@ -1,0 +1,6 @@
+// The overlay is a sparse store, not a readable document: its links keep the
+// English heading slugs on purpose, and the build retargets them onto the
+// translated headings (site/i18n.js, retargetAnchors). MD051 cannot see that.
+{
+  "MD051": false
+}
