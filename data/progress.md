@@ -67,6 +67,7 @@
 
 - 雙指標
 	- https://yennj12.js.org/CS_basics/cheatsheets/2_pointers.zh.html
+		- `模板 2：兩端向內收斂的雙指標`
 
 
 
