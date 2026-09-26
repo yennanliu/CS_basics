@@ -65,10 +65,9 @@
 	- https://yennj12.js.org/CS_basics/cheatsheets/complexity_cheatsheet.html
 
 
-- Hash Map Cheatsheet（雜湊表速查）
-	- https://yennj12.js.org/CS_basics/cheatsheets/hash_map.zh.html
+- 雙指標
+	- https://yennj12.js.org/CS_basics/cheatsheets/2_pointers.zh.html
 
-		- `模板 5：滑動視窗搭配雜湊表`
 
 
 - 雜湊表 — 題目詳解
@@ -103,6 +102,7 @@
 
 - OK:
 	- Array.md
+	- Hash Map Cheatsheet（雜湊表速查
 
 
 - Others
