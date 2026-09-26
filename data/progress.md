@@ -61,13 +61,12 @@
 		- `🔹 7. 堆積與優先佇列`
 
 
+- Complexity Cheat Sheet
+	- https://yennj12.js.org/CS_basics/cheatsheets/complexity_cheatsheet.html
 
 
-
-
-
-
-
+- Hash Map Cheatsheet（雜湊表速查）
+	- https://yennj12.js.org/CS_basics/cheatsheets/hash_map.zh.html
 
 
 
@@ -92,6 +91,7 @@
 
 
 - OK:
+	- Array.md
 
 
 - Others
