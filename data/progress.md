@@ -1,7 +1,7 @@
 # Progress
 
 
-# 2026-09-26
+# 2026-09-27
 
 - TODO:
 	- `must_lc_list.md` -> done
@@ -22,6 +22,8 @@
 			- stack (done)
 			- 2 pointers (done)
 			- trie (ing)
+			- misc (ing)
+			
 
 
 
