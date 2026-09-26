@@ -19,6 +19,51 @@ Minimize the total number of operations.
 """
 
 # V0
+# IDEA : 2 POINTERS (gemini)
+class Solution(object):
+
+  def moveZeroes(self, nums):
+    """
+        :type nums: List[int]
+        :rtype: None Do not return anything, modify nums in-place.
+        """
+    if not nums:
+      return
+
+    # 記錄下一個非零元素應該放的位置
+    last_non_zero_found_at = 0
+
+    for i in range(len(nums)):
+      # 如果當前元素不為零，就把它與 last_non_zero_found_at 位置的元素交換
+      if nums[i] != 0:
+        nums[last_non_zero_found_at], nums[i] = (
+            nums[i],
+            nums[last_non_zero_found_at],
+        )
+        last_non_zero_found_at += 1
+
+
+# V0-1
+# IDEA : 2 POINTERS (GPT)
+class Solution(object):
+    def moveZeroes(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: None
+        """
+        if not nums:
+            return
+
+        l = 0
+
+        for r in range(len(nums)):
+            # nums[r] 是非 0
+            if nums[r] != 0:
+                nums[l], nums[r] = nums[r], nums[l]
+                l += 1
+
+
+# V0-2
 # IDEA : 2 POINTERS
 # NOTE : BOTH POINTERS START FROM index = 0
 # DEMO 
