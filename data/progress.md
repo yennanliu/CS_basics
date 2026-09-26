@@ -68,7 +68,7 @@
 - Hash Map Cheatsheet（雜湊表速查）
 	- https://yennj12.js.org/CS_basics/cheatsheets/hash_map.zh.html
 
-		- `相關的 LC 題目（同一模式）：`
+		- `模板 5：滑動視窗搭配雜湊表`
 
 
 - 雜湊表 — 題目詳解
