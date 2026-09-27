@@ -42,6 +42,7 @@ Constraints:
 # V0
 # IDEA: 2 POINTERS (GPT)
 """
+
 CORE IDEA !!! -> 4 STEPS
 
 
@@ -49,13 +50,29 @@ Step 1: Right → left,
         find the `first` i where nums[i] < nums[i+1]. i is the pivot.
 
 Step 2: Right → left, 
-        find the `first` j where nums[j] > nums[i].
+        find the `first` j where nums[j] > nums[i]. 
+
+        (i is the pivot.)
 
 
 Step 3: Swap nums[i] and nums[j].
 
 
 Step 4: Reverse nums[i+1:].
+
+
+
+---
+
+CORE IDEA !!! -> 4 STEPS (V2)
+
+
+> **Pivot → Bigger → Swap → Reverse**
+>
+> 1. 從右找第一個 `nums[i] < nums[i+1]`
+> 2. 從右找第一個 `> nums[pivot]`
+> 3. Swap
+> 4. Reverse pivot 後面的 suffix
 
 
 
@@ -99,6 +116,53 @@ class Solution(object):
 
         # Step 4: Reverse the suffix
         nums[i + 1:] = reversed(nums[i + 1:])
+
+
+# V0-0-1
+# IDEA: 2 POINERS (GEMINI)
+class Solution(object):
+
+  def nextPermutation(self, nums):
+    """
+        :type nums: List[int]
+        :rtype: None Do not return anything, modify nums in-place instead.
+        """
+    if not nums or len(nums) <= 1:
+      return
+
+    n = len(nums)
+    pivot_idx = -1
+
+    # 1. 從右向左找出第一個破壞遞減順序的元素（Pivot）
+    for i in range(n - 1, 0, -1):
+      if nums[i] > nums[i - 1]:
+        pivot_idx = i - 1
+        break
+
+    # 2. 如果整個陣列完全遞減（例如 [3, 2, 1]），說明已經是最大排列，直接反轉為最小排列
+    if pivot_idx == -1:
+      nums.reverse()
+      return
+
+    # 3. 從右向左找出第一個大於 nums[pivot_idx] 的元素
+    first_bigger_idx = -1
+    for i in range(n - 1, pivot_idx, -1):
+      if nums[i] > nums[pivot_idx]:
+        first_bigger_idx = i
+        break
+
+    # 4. 交換這兩個元素
+    nums[pivot_idx], nums[first_bigger_idx] = (
+        nums[first_bigger_idx],
+        nums[pivot_idx],
+    )
+
+    # 5. 將 pivot_idx 後面的所有元素進行反轉（因為該區段原本是遞減的，反轉後會變成最小字典序）
+    l, r = pivot_idx + 1, n - 1
+    while l < r:
+      nums[l], nums[r] = nums[r], nums[l]
+      l += 1
+      r -= 1
 
 
 # V0-1
@@ -374,6 +438,59 @@ class Solution(object):
             right -= 1
 
         return nums
+
+
+
+
+# V0-3
+# IDEA: 2 POINERS (gpt)
+class Solution(object):
+    def nextPermutation(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: None
+        """
+        n = len(nums)
+
+        if n <= 1:
+            return
+
+        # 1. Find the first decreasing position from right.
+        # nums[pivot_idx] < nums[pivot_idx + 1]
+        pivot_idx = -1
+
+        for i in range(n - 2, -1, -1):
+            if nums[i] < nums[i + 1]:
+                pivot_idx = i
+                break
+
+        # 2. Already the largest permutation.
+        # Reverse to get the smallest permutation.
+        if pivot_idx == -1:
+            nums.reverse()
+            return
+
+        # 3. Find the smallest number > nums[pivot_idx].
+        # Since suffix is decreasing, scan from right.
+        first_bigger_idx = n - 1
+
+        while nums[first_bigger_idx] <= nums[pivot_idx]:
+            first_bigger_idx -= 1
+
+        # 4. Swap pivot with the next larger number.
+        nums[pivot_idx], nums[first_bigger_idx] = (
+            nums[first_bigger_idx],
+            nums[pivot_idx]
+        )
+
+        # 5. Reverse suffix to make it as small as possible.
+        l = pivot_idx + 1
+        r = n - 1
+
+        while l < r:
+            nums[l], nums[r] = nums[r], nums[l]
+            l += 1
+            r -= 1
 
 
 # V0-2
