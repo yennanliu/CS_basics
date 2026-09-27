@@ -43,7 +43,7 @@ half-translated document renders with English gaps rather than failing.
   is what makes a problem findable on LeetCode itself.
 
 
-## Status — 5339 / 5339 sections (100%)
+## Status — 5340 / 5340 sections (100%)
 
 | Cheatsheet | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -148,7 +148,7 @@ half-translated document renders with English gaps rather than failing.
 | [queue](./cheatsheet/queue.md) | 58 | [✅](../i18n/zh/queue.md) |
 | [recursion](./cheatsheet/recursion.md) | 32 | [✅](../i18n/zh/recursion.md) |
 | [recursion_to_dp](./cheatsheet/recursion_to_dp.md) | 64 | [✅](../i18n/zh/recursion_to_dp.md) |
-| [scanning_line](./cheatsheet/scanning_line.md) | 60 | [✅](../i18n/zh/scanning_line.md) |
+| [scanning_line](./cheatsheet/scanning_line.md) | 61 | [✅](../i18n/zh/scanning_line.md) |
 | [scanning_line_examples](./cheatsheet/scanning_line_examples.md) | 25 | [✅](../i18n/zh/scanning_line_examples.md) |
 | [segment_tree](./cheatsheet/segment_tree.md) | 52 | [✅](../i18n/zh/segment_tree.md) |
 | [set](./cheatsheet/set.md) | 37 | [✅](../i18n/zh/set.md) |

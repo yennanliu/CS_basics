@@ -39,8 +39,8 @@ Key: transform `change` to `event`, so we can handle the `changed state` via pro
 
 ### **Pattern 1: Interval Overlap**
 - **Description**: Finding maximum overlapping intervals at any point
-- **Examples**: LC 253, 1094, 2021, 2406, 2848
-- **Pattern**: Track active intervals using counter
+- **Examples**: LC 253, 1094, 2021, 2406, 2848, 4057
+- **Pattern**: Track active intervals using counter — read it at the peak for *max concurrent*, or at every start (`res += active`) for *number of intersecting pairs* (Variation 1-1)
 
 ### **Pattern 2: Skyline Problems**
 - **Description**: Computing visible outline from overlapping rectangles
@@ -93,6 +93,7 @@ Key: transform `change` to `event`, so we can handle the `changed state` via pro
 | Template Type | Use Case | Event Types | Complexity | When to Use |
 |---------------|----------|-------------|------------|-------------|
 | **Basic Sweep** | Count overlaps | Start/End | O(n log n) | Meeting rooms, intervals |
+| **Pair-Count Sweep** | Number of intersecting pairs | Start/End | O(n log n) | `res += active` at each start (LC 4057) |
 | **Weighted Sweep** | Sum of overlaps | Start/End + value | O(n log n) | Brightness, bandwidth |
 | **Skyline** | Height tracking | Start/End + height | O(n log n) | Building outline |
 | **Difference Array** | Range updates | Update points | O(n) | Batch updates |
@@ -179,6 +180,76 @@ public int maxOverlap(int[][] intervals) {
     return maxOverlap;
 }
 ```
+
+#### Variation 1-1: count intersecting pairs, not the peak — LC 4057 ⭐⭐⭐⭐
+
+> **Twist**: the same event stream, but the question is *how many pairs* `(i, j)` intersect rather than *how many at once*. The counter stays; what changes is **when you read it** — at every start event, not at the peak.
+
+**Key Idea**: two intervals intersect iff, when the **later-starting** one opens, the other is still open. So each pair is counted exactly once, at the moment its second interval starts: `res += active`, then `active += 1`.
+
+```python
+# python
+# LC 4057 - Number of Intersecting Interval Pairs II
+# IDEA: sweep +1/-1 events; each new start meets every interval still open -> res += active
+# time = O(n log n), space = O(n)
+class Solution(object):
+    def countIntersectingIntervals(self, intervals):
+        events = []
+        for s, e in intervals:
+            events.append((s, 1))
+            events.append((e, -1))
+
+        # closed intervals: at the same pos, start (+1) BEFORE end (-1),
+        # so [1,2] is still open when [2,3] starts
+        events.sort(key=lambda x: (x[0], -x[1]))
+
+        res = active = 0
+        for _pos, delta in events:
+            if delta == 1:
+                res += active          # the new interval meets every open one
+                active += 1
+            else:
+                active -= 1
+        return res
+```
+
+```java
+// java
+// LC 4057 - Number of Intersecting Interval Pairs II
+// IDEA: sweep +1/-1 events; each new start meets every interval still open
+// time = O(N log N), space = O(N)
+public long countIntersectingIntervals(int[][] intervals) {
+    int n = intervals.length;
+    int[][] events = new int[2 * n][];
+    for (int i = 0; i < n; i++) {
+        events[2 * i] = new int[]{intervals[i][0], 1};
+        events[2 * i + 1] = new int[]{intervals[i][1], -1};
+    }
+    // same pos: start (+1) before end (-1) -> touching closed intervals intersect
+    Arrays.sort(events, (a, b) -> a[0] != b[0] ? Integer.compare(a[0], b[0]) : b[1] - a[1]);
+
+    long res = 0;                       // up to C(10^5, 2) ~ 5e9: overflows int
+    int active = 0;
+    for (int[] ev : events) {
+        if (ev[1] == 1) { res += active; active++; }
+        else active--;
+    }
+    return res;
+}
+```
+
+```text
+[[1,5],[2,4],[3,6]]
+events: (1,+) (2,+) (3,+) (4,-) (5,-) (6,-)
+start 1: res += 0 -> 0   active 1
+start 2: res += 1 -> 1   active 2
+start 3: res += 2 -> 3   active 3        -> 3 pairs
+```
+
+**🚫 Traps**:
+- **`max(C(active, 2))` is not the answer** — that is only the largest group overlapping at a *single point*. `[[1,2],[2,3],[3,4]]` peaks at 2 open (`C = 1`) but has 2 pairs.
+- **Tie order decides touching pairs.** Closed intervals sharing an endpoint intersect, so starts go first (`(x, -delta)`); for half-open intervals flip it — see [Event Ordering & Tie-Break Rules](#event-ordering--tie-break-rules-deep-dive).
+- The O(n²) double loop (LC 4056, sort by start, break once `start[j] > end[i]`) is the brute force this replaces; `n = 10^5` rules it out.
 
 ### Template 2: Weighted Interval Overlap — LC 2021
 ```python
@@ -820,6 +891,7 @@ events.sort((a, b) -> a[0] != b[0] ? a[0] - b[0] : b[1] - a[1]);  // start(+1) f
 | Maximum Sum Obtained | 2848 | Points on line | Medium |
 | Describe the Painting | 1943 | Segment merging | Medium |
 | Divide Intervals Into Minimum Number of Groups | 2406 | Event sweep, max concurrent overlaps | Medium |
+| Number of Intersecting Interval Pairs II | 4057 | Event sweep, `res += active` at each start (Variation 1-1) | Medium |
 
 #### **Skyline Problems**
 | Problem | LC # | Key Technique | Difficulty |
@@ -938,6 +1010,7 @@ Problem Analysis Flowchart:
 | Template | Pattern | Key Code |
 |----------|---------|----------|
 | **Basic Sweep** | Count overlaps | `events.sort(); count += delta` |
+| **Pair-Count Sweep** | Intersecting pairs | `if start: res += active; active += 1` |
 | **Weighted** | Sum values | `weight += delta * value` |
 | **Skyline** | Track heights | `heapq for max height` |
 | **Calendar** | Booking conflicts | `if count >= k: reject` |
@@ -1042,6 +1115,7 @@ max_height = -heights[0]           # Get max
 
 1. **Problem Recognition**
    - "Maximum overlapping" → Sweep line
+   - "How many **pairs** intersect" → same sweep, `res += active` at each start — not `C(max, 2)` (Variation 1-1)
    - "Skyline/outline" → Height tracking
    - "Free time" → Merge then find gaps (`count == 0`)
    - "Intersection of TWO interval lists" → 2 pointers (O(m+n)); sweep with `count == 2` if unsorted / k lists (Template 2-7)
