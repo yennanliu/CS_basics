@@ -50,6 +50,60 @@ class Solution(object):
 
         return res
 
+
+# V0-0-1
+# IDEA : interval op + sort
+class Solution(object):
+    def merge(self, intervals):
+        """
+        :type intervals: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        # edge
+        if not intervals or len(intervals) <= 1:
+            return intervals
+
+
+        # sort:
+        # 1st key: 1st element (small -> big)
+        # 2nd key: 2nd element (small -> big)
+        intervals.sort(key = lambda x: (x[0], x[1]))
+
+        res = []
+
+        n = len(intervals)
+
+        res.append(intervals[0])
+
+        for i in range(1, n):
+            # if NOT overlap
+            cur = intervals[i]
+            prev = res[-1]
+
+            # Case 1) NOT overlap
+            """
+            # already sorted, below is the ONLY possible NOT overlap
+            |---|
+                    
+                    |---|
+            """
+            if prev[1] < cur[0]:
+                res.append(cur)
+
+            # Case 2) overlap
+            else:
+                res.pop(-1)
+                res.append(
+                    [
+                    min(prev[0], cur[0]), 
+                    max(prev[1], cur[1])
+                    ]
+                )
+
+
+        return res
+
+
 # V0-1
 # IDEA : interval op + last
 # time = O(n log n)
