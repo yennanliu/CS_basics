@@ -30,6 +30,47 @@ Constraints:
 
 """
 
+
+"""
+NOTE !!!
+
+
+`Sum-Difference Approach` is NOT working for this LC.
+
+->
+
+### 🔍 為什麼總和法（Sum-Difference Approach）在 LC 41 中依然會失敗？
+
+你試圖透過加入 `_min > 1` 的檢查以及處理邊界，這是一個很好的思考方向！
+但是，**數學總和法（`expected_total - _sum`）
+在這道題目的本質上有無法克服的缺陷**。
+
+
+
+
+#### 💡 致命的反例：`nums = [2, 2]`
+
+* 你的程式碼計算：
+* `_sum = 4`
+* `_min = 2`, `_max = 2`, `_size = 1`
+* `expected_total = (2 + 2) * 1 // 2 = 2`
+* `expected_total - _sum = 2 - 4 = -2`（小於 0）
+* 走進你的防護網：回傳 `_max + 1 = 3`。
+
+
+* **正確答案**：**`1`**（因為正整數 `1` 完全沒有出現在陣列中）。
+
+**原因所在**：總和法只知道「數字加起來是多少」，
+但它完全不知道「有哪些具體的數字重複了、或是哪些數字漏掉了」。
+如果有重複數字（例如兩個 `2`），總和會被灌水，導致數學公式徹底崩潰。
+
+
+"""
+
+
+
+
+
 # V0
 # IDEA : for loop + while loop + problem understanding
 # time = O(n)
