@@ -659,7 +659,7 @@
 - LC 417: Pacific Atlantic Water Flow - 多源 DFS
 - LC 450: Delete Node in BST - 重構樹結構
 - LC 449: Serialize/Deserialize BST - BST 性質
-- LC 472: Concatenated Words - Word break DFS
+- LC 472: Concatenated Words - Word Break 式的 DFS
 - LC 508: Most Frequent Subtree Sum - 彙總
 - LC 529: Minesweeper - 網格探索
 - LC 538: Convert BST to Greater Tree - 反向中序

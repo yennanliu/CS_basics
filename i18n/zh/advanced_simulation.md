@@ -324,3 +324,4 @@
 |---------|------|---------------|------------|
 | Text Justification | 68 | 貪婪塞行：只要 `len + words <= maxWidth` 就繼續塞字，然後把 `maxWidth - lettersLen` 個空白分配到 `gaps` 個空隙，用 `q, r = divmod(spaces, gaps)`（左邊的空隙多拿一個）；最後一行與只有一個字的行採靠左對齊 | Hard |
 | Contain Virus | 749 | 多階段的格子模擬：每一輪對每個病毒區域做 flood-fill，只隔離威脅最多乾淨格子的那一區，然後讓其餘所有區域擴散 | Hard |
+| Where Will the Ball Fall | 1706 | 逐顆球沿著欄位往下走；只有在 `grid[r][c] == grid[r][c + grid[r][c]]`（沒有 V 形擋板）時球才會往下掉 | Medium |

@@ -26,7 +26,7 @@
 ## 0) 概念
 - https://blog.csdn.net/fuxuemingzhu/article/details/79388432
 - 樹 + dict
-    - `put Node into dict`（例如 defaultdict(Node)）
+    - 把 `Node` 放進 dict（例如 defaultdict(Node)）
 
 <p align="center"><img src="../pic/trie_1.png"></p>
 

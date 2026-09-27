@@ -276,6 +276,110 @@
 
 <!--CODE-->
 
+<!-- 1a398c8e7e06 -->
+### 模板 6：由下而上（後序）DFS — LC 543 ⭐⭐⭐⭐⭐
+- **說明**：先處理子樹並由下往上彙總結果；也用來找目標節點的最低共同祖先
+- **辨識**："Subtree sum"、"duplicate subtrees"、"LCA"、"smallest subtree containing"、"lowest common ancestor"、"deepest leaves"、"minimum moves between adjacent nodes"
+- **例題**：LC 508、LC 652、LC 236、LC 663、LC 865、LC 979、LC 1123
+- **什麼時候用 LCA 解法**：
+  - 兩個（或更多）目標節點分別落在不同子樹，而你要找第一個「同時看得到兩邊」的節點
+  - 「包含〔條件 X〕的最小子樹」— 這其實就是換皮的 LCA
+  - 目標可能是**題目給定**的（LC 236：找 p、q 的 LCA），也可能是**隱含**的（LC 865/1123：所有最深層的節點）
+- **核心想法（後序／由下而上）**：
+  1. 先遞迴左右子樹（後序）
+  2. 每個子樹往上回傳一組 `(node, depth/info)`
+  3. 在每個節點比較左右結果：
+     - **左邊較深** → 答案在左子樹，把左邊的結果往上傳
+     - **右邊較深** → 答案在右子樹，把右邊的結果往上傳
+     - **深度相同** → 目前節點就是 LCA（最深的路徑在這裡交會），回傳目前節點
+  4. 遞迴的根節點持有最終答案
+- **主要變體**：
+  - **標準 LCA（LC 236）**：目標 p、q 已給定；回傳第一個在不同子樹看到兩者的節點
+  - **以深度為基準的 LCA（LC 865/1123）**：目標是找出來的（最深的節點）；用深度比較找出最深路徑收斂處
+  - **先標記再作答（LC 865 官解 V1）**：兩趟 — 第一趟 DFS 算出所有深度，第二趟 DFS 找出包含所有最深節點的子樹
+  - **BFS + parent 對照表（LC 865 V0-4）**：先 BFS 找出最深的一層，再沿著 parent 往上走，直到全部收斂到同一個節點
+- **相似的經典 LC 題目**：
+  - LC 236 - Lowest Common Ancestor of a Binary Tree（標準 LCA）
+  - LC 235 - Lowest Common Ancestor of a Binary Search Tree（用 BST 性質最佳化）
+  - LC 865 - Smallest Subtree with all the Deepest Nodes（以深度為基準的 LCA）
+  - LC 1123 - Lowest Common Ancestor of Deepest Leaves（同 LC 865）
+  - LC 1644 - Lowest Common Ancestor of a Binary Tree II（節點可能不存在）
+  - LC 1650 - Lowest Common Ancestor of a Binary Tree III（有 parent 指標）
+  - LC 1676 - Lowest Common Ancestor of a Binary Tree IV（多個目標節點）
+
+<!--CODE-->
+
+<!-- dbba4d58947e -->
+#### 全域累加器寫法 — LC 124 Binary Tree Maximum Path Sum
+
+> 來源：[`binary-tree-maximum-path-sum.py`](../../leetcode_python/Tree/binary-tree-maximum-path-sum.py)
+
+- **關鍵想法**：一個節點會算出**兩個不同的值**，把它們搞混就是這題全部的難處：
+  1. **答案候選**（`left + right + node.val`）—— 在這個節點*轉彎*、同時用到**兩個**子節點的路徑。
+     它被記進全域最大值，**從不回傳**。
+  2. **回傳給父節點的值**（`max(left, right) + node.val`）—— 繼續往上延伸的路徑只能用**一個**子節點，
+     因為路徑是一串節點，不是分叉。
+- **辨識**：「路徑不必經過 root」、「路徑可以在某個節點轉彎」、「對所有路徑取最大值」——
+  任何最佳的局部答案*不是*父節點所需之值的情況。
+- **為什麼要 `max(0, ...)`**：往下最佳總和為負的子樹就直接**丟掉** —— 接上它只會讓路徑更糟。
+  夾到 `0` 就是「丟掉」的寫法。
+- **為什麼用 `float('-inf')` 而不是 `0`**：路徑必須非空，所以全為負數的樹（`[-3]` → `-3`）必須能勝出。
+  用 `0` 當初值，在那裡會悄悄回傳 `0`。
+- **不要把 `left + right + node.val` 往上回傳。** 這是最常見的單一 bug：它交給父節點一條分叉的路徑，
+  父節點再分叉一次，產生的形狀根本不是路徑。
+
+<!--CODE-->
+
+<!--CODE-->
+
+<!-- 25202195595b -->
+##### 變體：不夾到 0 —— 改成把節點帶進負的分支
+
+外面看得到的等價寫法：不把負的子節點夾到 `0`，而是讓分支從 `node.val` 重新開始。
+這樣兩個分支值各自都**已經包含** `node.val`，所以轉彎候選值必須把它扣回一次。
+
+<!--CODE-->
+
+> 優先用 `max(0, ...)` 的寫法。它比較短，`- node.val` 的修正很容易忘記，而且夾到 0
+> 直接讀起來就是不變量*「負的子樹永遠不值得接上」*。
+
+<!-- 468c9b14a335 -->
+#### 變化：後序**餘額／流量**累加 — LC 979 Distribute Coins in Binary Tree
+
+- **說明**：後序 DFS，每個節點回傳其子樹的**盈餘／短缺**（`balance`），同時用一個全域計數器累加每條邊上的 `|balance|`
+- **辨識**：「在**相鄰**節點間移動一個單位」、「最少移動次數」、「讓每個節點恰好有一個 X」、「總供給等於總需求」
+- **關鍵技巧**：答案是對**邊**求和，不是對節點。每條樹邊都是一座**橋**：切斷子樹上方的邊，會把樹恰好分成兩個連通元件，所以越過它的硬幣只能是 `|balance(subtree)|`。流量是*被迫*的 —— 沒有東西要搜尋或最佳化，只需要計數。
+- **例題**：LC 979（Distribute Coins in Binary Tree）
+- **核心想法**：
+  1. `balance(node) = node.val - 1 + balance(left) + balance(right)` —— 節點自己留 1 枚硬幣，子樹其餘的淨盈餘（`> 0`）或短缺（`< 0`）往上推給父節點。
+  2. 每枚越過一條邊的硬幣就是**一步**，所以子樹上方的邊花費 `|balance(subtree)|` 步 → `moves += |balance|`。
+  3. **只有大小重要**：往上流的硬幣和往下流的硬幣花費相同，所以累加時取 `abs()`。
+  4. `balance(root) == 0` 永遠成立（題目保證 `Σ node.val == n`）—— 正是這個不變量讓貪婪的邊計數成為最佳解。
+- **兩個等價的累加位置**（外面兩種都看得到，總和相同）：
+  - **由父節點收費**：回傳前 `self.moves += abs(left) + abs(right)` —— 每個非 root 節點以某人子節點的身分被收一次費。
+  - **由節點自己收費**：算出後 `self.moves += abs(current_balance)` —— 每個節點為自己通往父節點的邊付費；root 加的是 `|0| = 0`。
+- **重要提醒**：
+  - 回傳**帶正負號**的 balance，但累加**絕對值**。把 `abs(...)` 往上回傳是經典 bug：`-2` 的短缺必須保持負數，才能在父節點和兄弟的 `+2` 盈餘抵銷。
+  - `node.val - 1` 就是整個技巧 ——「每個節點恰好留一枚硬幣」把分配問題變成流量守恆問題。
+  - **不要**在 `node.val == 1` 時提早返回；局部平衡的節點仍然是子樹流量的通道。
+  - **不要**把樹攤平成無向鄰接串列再用 BFS 擴散硬幣 —— 這是常見的錯誤直覺。BFS 的前緣是*局部*的：它看不到左子樹缺 3 枚而右子樹多 3 枚，因此無法得知那 3 枚必須**往上經過 root 再往下**。它最後會沿著非最佳的路徑搬硬幣（或陷入迴圈），因為它沒有子樹淨需求的概念。
+  - 後序彙總提供的正是缺少的**全域**視角：`balance(subtree)` 是整個連通元件的淨盈餘／短缺，而且只能由下而上得到。把樹重新建模成圖，會丟掉上述的切割結構（每條邊都是橋），而正是這個結構讓每條邊的成本成為封閉形式而非搜尋。
+
+<!--CODE-->
+
+<!--CODE-->
+
+<!--CODE-->
+
+- **相似的經典 LC 題目**：
+  - LC 979 - Distribute Coins in Binary Tree（典型的後序餘額／流量）
+  - LC 2477 - Minimum Fuel Cost to Report to the Capital（同樣的邊流量計數，但每條邊是 `ceil(people / seats)`）
+  - LC 1443 - Minimum Time to Collect All Apples in a Tree（後序，每條有用的邊算 2）
+  - LC 1339 - Maximum Product of Splitted Binary Tree（後序子樹總和，再切斷一條邊）
+  - LC 508 - Most Frequent Subtree Sum（每棵子樹的值以後序彙總）
+  - LC 124 - Binary Tree Maximum Path Sum（往上回傳一個值，全域彙總另一個值）
+  - LC 2049 - Count Nodes With the Highest Score（子樹大小彙總 —— 見下方變化）
+
 <!-- 44959c0e78bf -->
 #### 變體：子樹大小彙總（移除節點後計分） — LC 2049
 - **說明**：後序 DFS 回傳每個節點的**子樹大小**，同時算出由「移除該節點後形成的各連通分量大小」推導出的每個節點的值（分數）

@@ -4,7 +4,7 @@
 > **範圍** — **模板索引**：每個經典 DP 模式各佔一小節（Kadane、LIS、MCM、LCS、背包、狀態機、格子、位元遮罩、數位、樹上 DP、正規表達式、加權區間排程、切分、記憶化 DAG）。
 > **另見**：[dp.md](./dp.md) — 這些模板背後的解釋與實作範例；[recursion_to_dp.md](./recursion_to_dp.md) — 怎麼從一段遞迴*推導*出其中一個模板。
 
-- https://leetcode.com/discuss/study-guide/1308617/Dynamic-Programming-Patterns
+- 參考：https://leetcode.com/discuss/study-guide/1308617/Dynamic-Programming-Patterns
 
 <!-- 6417951bd971 -->
 ## LeetCode 題目清單
@@ -95,6 +95,32 @@
 
 **Python：**
 <!--CODE-->
+
+<!-- 6e03850156af -->
+### 變形：當一邊的值互不相同時，LCS 變成 LIS（LC 1713）
+
+**LC 1713 Minimum Operations to Make a Subsequence** 問的是：最少要往 `arr` 插入幾次，才能讓 `target`
+成為它的子序列。答案是 `len(target) - LCS(target, arr)` — 已經共有的全部保留，缺少的全部插入。
+
+陷阱在於限制條件：兩個陣列都可以長到 `10^5`，所以 `O(n * m)` 的 LCS 表格有 `10^10` 格，毫無希望。
+出路在題目敘述的*另一句話* — **`target` 的值互不相同**：
+
+<!--CODE-->
+
+這個等價關係只在一個地方需要「互不相同」：若有重複，`arr` 的某個元素就會對應到*好幾個* target 索引，
+化簡就不成立了。
+
+<!--CODE-->
+
+<!--CODE-->
+
+**可重複使用的想法**：只有當*兩個*序列都可能有重複值時，`O(n·m)` 的 LCS 才無法避免。只要其中一個是
+排列（或值互不相同），就依位置重新編號，問題就變成 LIS。留意限制條件中的「**`target` contains no
+duplicates**」這句話 — 它從來不是裝飾。
+
+**相似題目**：LC 1035 Uncrossed Lines（單純的 LCS — 兩邊的值都會重複，所以表格就是答案）、
+LC 2926 Maximum Balanced Subsequence Sum（LIS 的形狀，但用線段樹取代 `tails`），以及上面的 LC 354，
+另一個「排序／重新編號，再做 LIS」的化簡。
 
 <!-- 0b196ed39f88 -->
 ## 3. 矩陣連乘（MCM）／區間 DP ⭐⭐⭐⭐

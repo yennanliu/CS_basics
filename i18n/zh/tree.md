@@ -206,7 +206,7 @@
 | 中序   | 左 → 根 → 右 | 依**排序順序**處理節點        | BST 驗證、第 k 小、有序走訪                     |
 | BFS        | 一層一層      | 逐層處理                | 最小深度、鋸齒走訪、右視圖、串接 next 指標            |
 
-<!-- edf79cc56c42 -->
+<!-- d70cbbe2b2cd -->
 #### 面試快速判斷
 
 **步驟 1 — 題目要什麼？**
@@ -231,8 +231,10 @@
 **面試小技巧（來自 LC 437）：**
 > 如果路徑**不需要**從根開始或在葉子結束，而且問的是數量，
 > 就用**前序 DFS + 前綴和雜湊表**（樹上的「2-sum」模式）。
+> 完整模板 — 為什麼回程時必須把 map **復原**、基底情況的兩種寫法，以及 Java 中的 `long` 溢位陷阱 —
+> 見 [prefix_sum_advanced.md 的 Template 14](./prefix_sum_advanced.md#template-14-prefix-sum-on-a-tree-dfs--hashmap--backtrack---lc-437)。
 
-<!-- bb184aa8989e -->
+<!-- 75ee8358437b -->
 #### 依走訪類型分類的經典 LC 題
 
 **前序 DFS + 回溯（根 → 葉的路徑）**
@@ -242,7 +244,7 @@
 | 112   | Path Sum                       | 前序 DFS，用剩餘的和在葉子做檢查  |
 | 113   | Path Sum II                    | 前序 DFS + 回溯，收集所有路徑  |
 | 257   | Binary Tree Paths              | 前序 DFS + 回溯，組出字串路徑 |
-| 437   | Path Sum III                   | 前序 DFS + 前綴和雜湊表，2-sum 技巧：查 map 裡有沒有 (curSum-target) |
+| 437   | Path Sum III                   | 前序 DFS + 前綴和雜湊表，2-sum 技巧：查 map 裡有沒有 (curSum-target) — [模板](./prefix_sum_advanced.md#template-14-prefix-sum-on-a-tree-dfs--hashmap--backtrack---lc-437) |
 | 129   | Sum Root to Leaf Numbers       | 前序 DFS，把累積的數字往下帶           |
 | 404   | Sum of Left Leaves             | 前序 DFS，把 `isLeft` 旗標往下帶；只有「以左子身分抵達的葉子」才加值 |
 
@@ -378,7 +380,7 @@
 | 迭代堆疊 | O(n) | O(h) | 不會 |
 | **Morris** | O(n) | **O(1)** | 暫時會（之後還原） |
 
-<!-- 54d021cbd218 -->
+<!-- 05bc477d1bab -->
 ##### Morris **穿線家族** — 暫時的線 vs 永久的重接
 
 上面的 Morris 走訪與 O(1) 空間的**攤平**（LC 114）共用**同一個核心步驟**：從當前節點出發，找到**左子樹最右邊的節點**（中序前驅），用它空著的 `right` 指標「穿線」到某處。兩者的差別只在拿這條線做什麼：
@@ -393,6 +395,8 @@
 **心智模型：** 對每個有左子節點的節點來說，左子樹被「插進」該節點與它原本的右子樹之間，因為左子樹的前序走訪必須緊接在該節點之後、右子樹之前。而左子樹最右邊的節點，正好就是右子樹該重新接回去的位置。
 
 <!--CODE-->
+
+> 遞迴版的對應寫法 — 後序遞迴，每次呼叫**回傳**它所攤平子樹的**尾端**，讓父節點知道要接在哪裡 — 詳見 [tree_examples 16)](./tree_examples.md#16-flatten-binary-tree-to-linked-list--lc-114)，包括為什麼尾端要依 右 → 左 → 節點 的順序檢查。
 
 > **什麼時候該掏出這招：** 任何「原地、O(1) 空間、沿著右脊重整樹」的題目。`while rightmost.right` 這個找前驅的步驟就是它的招牌。要認出它跟 Morris 走訪是**同一套機械** — 只有線指向哪裡、以及要不要還原，這兩點不同。
 

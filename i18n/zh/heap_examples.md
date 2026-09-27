@@ -233,6 +233,10 @@
 > `if d > dist[u]: continue` *就是*一次延遲刪除 — 它直接丟掉一筆過期的距離資料，
 > 而不是對堆積做 decrease-key。同樣的模式，換件衣服而已。
 
+
+> 下面五個例子來自舊的 `priority_queue.md`，而且以 **Java 為主** — 它們對應的
+> Python 版本在 [heap.md](./heap.md) 的模板裡。
+
 <!-- 229af6d3483e -->
 ### 19) K Closest Points to Origin — LC 973 ⭐⭐⭐⭐⭐
 <!--CODE-->

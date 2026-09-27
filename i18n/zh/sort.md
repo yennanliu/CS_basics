@@ -269,6 +269,62 @@
 
 **什麼時候該拿出循環排序**：陣列長度是 `n`，**而且**值被限制在 `1..n`（或 `0..n-1`），而追問要求 O(n) 時間 / O(1) 空間（所以不能用 HashSet、不能用計數陣列）。變動的部分是排序後的掃描 — 「第一個不對的索引」就能回答缺失數／重複數／第一個缺失正整數這類問題。
 
+<!-- 65b08820a1ce -->
+### Template 11：離線查詢 — 連「查詢」也一起排序，然後掃描 — LC 1847 ⭐⭐⭐⭐
+
+**使用時機**：每個查詢都各自獨立回答、所有查詢一開始就全部給定，而單獨回答一個查詢的成本太高。把*查詢*
+和資料一起排序，可以把 `q` 次獨立搜尋變成**一次掃描** — 但前提是你記得把答案放回原本的順序。
+
+<!--CODE-->
+
+做法永遠是這四步：
+
+1. 依查詢所篩選的維度排序資料。
+2. 依同一個維度排序**查詢的索引** — 保留索引，這就是全部的訣竅。
+3. 掃描：隨著門檻放寬，用單一個移動指標把項目送進一個可搜尋的結構。
+4. 把每個答案寫進 `ans[originalIndex]`。
+
+**LC 1847 Closest Room**：每個查詢是 `(preferred id, minSize)` — 在 `size >= minSize` 的房間中，回傳
+id 最接近 `preferred` 的那一間，平手時取較小的 id。
+
+- 把房間依大小**遞減**排序，查詢依 `minSize` **遞減**排序。隨著 `minSize` 放寬，房間只會被*加入* —
+  從不移除。單調的門檻正是一個指標就夠用的原因。
+- 這個結構必須能回答「最接近 `x` 的值」，所以它需要有序：Java 用 `TreeSet`（`floor` / `ceiling`），
+  Python 用 `SortedList`。
+
+<!--CODE-->
+
+<!--CODE-->
+
+> **`insort` vs 真正的平衡集合。** `bisect.insort` 以 `O(log n)` 找到位置，但會搬移尾端，所以每次插入
+> 是 `O(n)`，整個掃描是 `O(n^2)` — 對 LC 1847 的 `n <= 10^5` 還行，因為搬移是一次 `memmove`，而且不需要
+> 標準函式庫以外的任何東西。`O(n log n)` 的版本是第三方套件 `sortedcontainers` 中的 `SortedList`
+> （LeetCode 上已預先安裝，但**不在**標準函式庫中，所以要在這裡執行得先 `pip install sortedcontainers`）：
+> 把 `ids = []` 換成 `ids = SortedList()`、`insort(ids, x)` 換成 `ids.add(x)`、
+> `bisect_left(ids, x)` 換成 `ids.bisect_left(x)`。上面 Java 的 `TreeSet` 才是真正對數時間的結構，
+> 不需要這種但書。
+
+**常見錯誤**
+
+- **直接排序查詢本身。** 這樣答案會以排序後的順序輸出，評測看到的是正確陣列的一個排列。要排序索引陣列，
+  或把索引放進 tuple 裡一起帶著。
+- **非單調的門檻。** 如果掃描前進時必須*移除*項目，一個指標就不夠 — 你需要支援刪除的結構，或者兩次掃描。
+- **只檢查 `ceiling`。** 最接近的值可能在任一側；兩個鄰居都必須比較，並依題目敘述套用平手規則。
+
+**這個模板還會出現在哪裡**
+
+| 題目 | 排序依據 | 掃描進去的結構 |
+|---|---|---|
+| LC 1847 Closest Room | 房間大小／`minSize`，遞減 | id 的 `TreeSet` |
+| LC 1697 Checking Existence of Edge Length Limited Paths | 邊權重／查詢上限，遞增 | union-find |
+| LC 2070 Most Beautiful Item for Each Query | 價格，遞增 | 價格上的前綴最大值 |
+| LC 1146 Snapshot Array | — | *線上*，所以改為對每個鍵做二分搜尋 |
+
+> **離線 vs 線上是真正的面試訊號。** 「所有查詢以陣列形式給你」代表你可以重新排列它們；「實作一個有
+> `query()` 方法的類別」則不行。把你假設的是哪一種大聲說出來 — 它會改變可達成的複雜度。
+
+---
+
 <!-- c8b75ab397b3 -->
 ## 依模式分類的題目
 
@@ -313,11 +369,11 @@
 #### **第 K 個元素題目**
 | 題目 | LC # | 關鍵技巧 | 難度 |
 |---------|------|---------------|------------|
-| Kth Largest Element | 215 | Quick select | Medium |
+| Kth Largest Element | 215 | 快速選擇（Quick select） | Medium |
 | Top K Frequent Elements | 347 | 桶排序 | Medium |
 | Kth Smallest in Matrix | 378 | 二分搜尋 | Medium |
 | Find K Closest Elements | 658 | 雙指標 | Medium |
-| K Closest Points to Origin | 973 | Quick select | Medium |
+| K Closest Points to Origin | 973 | 快速選擇（Quick select） | Medium |
 | Kth Largest in Stream | 703 | 最小堆積 | Easy |
 
 <!-- c4891d89d22e -->
