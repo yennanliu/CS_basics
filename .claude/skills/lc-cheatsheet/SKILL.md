@@ -183,10 +183,12 @@ node script/zh.js todo <slug>       # the sections needing one, keys included
 #   keeping every <!--CODE--> marker it was given, in order
 node script/zh.js sync <slug>       # tidy; delete the parked copies you used
 node script/zh.js status --write    # refresh the generated progress docs
+node script/zh.js check <slug>      # CI fails the PR unless this passes
 ```
 
-Compare `todo` counts before and after the edit: the sheet must not end up with **more**
-untranslated sections than it started with. Keep LC titles in English — that is the house
+The sheet must end with **no** untranslated sections: `.github/workflows/zh-check.yml`
+runs `zh.js check cheatsheet`, so an English edit that parks a translation fails CI until
+the Chinese is back. Keep LC titles in English — that is the house
 rule, so an LC-titled heading's correct translation is the English text.
 
 ### 8. Verify the way CI does

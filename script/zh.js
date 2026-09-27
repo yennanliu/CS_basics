@@ -7,6 +7,8 @@
  *   node script/zh.js sync [--prune] [id ...]
  *                                          reorder to match English, park what it dropped
  *                                          (--prune: forget the parked entries)
+ *   node script/zh.js check [id ...]       exit 1 unless every section is translated,
+ *                                          composes, and kept its English shape
  *
  * A document's id is its store path under i18n/zh, without the .md — `heap` for a
  * cheatsheet, `faq/java/jvm` for an FAQ. An id prefix stands for everything under
@@ -314,6 +316,67 @@ function tracker(c, rows) {
   return out.join('\n');
 }
 
+/**
+ * The gate: exit 1 unless every named document is completely translated.
+ *
+ * `status` reports coverage and never fails, which is right for authoring and
+ * useless in CI — it is how 26 cheatsheets drifted to 174 untranslated sections,
+ * and binary_search.zh.html to 11 English ones, without anything going red. Four
+ * rules, each of which a real page broke:
+ *
+ * - **untranslated** — a section with no entry falls back to English, so the
+ *   page renders half in each language. The usual cause is an English edit that
+ *   moved the section's key; `sync` parks the old translation to adapt.
+ * - **orphaned** — a live entry the English no longer has. It can never reach a
+ *   page; `sync` parks it, where `todo` offers it back.
+ * - **compose** — a dropped or extra `<!--CODE-->` marker, which fails the build.
+ * - **shape** — a translated section with more or fewer table rows, list items,
+ *   blockquotes, links or images than its English (see `shapeDiff`). Coverage
+ *   counts an entry as done however much of the English it lost, so this is the
+ *   only rule that sees a dropped bullet or an old table left under a new one.
+ *
+ * CI runs it on `cheatsheet`, so an English cheatsheet edit lands with its
+ * translation — `/lc-cheatsheet` already writes both.
+ */
+function cmdCheck(docs) {
+  let failures = 0;
+  const rows = survey(docs);
+  for (const { doc, rows: sections, orphans } of rows) {
+    const problems = [];
+    const missing = sections.filter(r => r.zh === undefined);
+    if (missing.length) {
+      problems.push(`${missing.length} untranslated section(s): ` +
+        missing.map(r => `${r.key} "${r.en.split('\n')[0].slice(0, 60)}"`).join('; '));
+    }
+    if (orphans) problems.push(`${orphans} orphaned entr${orphans === 1 ? 'y' : 'ies'} — run: node script/zh.js sync ${doc.id}`);
+    try {
+      I.compose(fs.readFileSync(abs(doc.en), 'utf8'), readStore(doc));
+    } catch (err) {
+      problems.push(`does not compose: ${err.message}`);
+    }
+    for (const r of sections) {
+      if (r.zh === undefined) continue;
+      const diff = I.shapeDiff(r.en, r.zh);
+      if (!diff.length) continue;
+      problems.push(`${r.key} "${r.en.split('\n')[0].slice(0, 60)}" — ` +
+        diff.map(d => `${d.what}: English ${d.en}, 中文 ${d.zh}`).join(', '));
+    }
+    if (!problems.length) continue;
+    failures += problems.length;
+    console.log(`\n✗ ${doc.id} (${doc.store})`);
+    for (const p of problems) console.log(`    ${p}`);
+  }
+  const total = sum(rows, r => r.total);
+  if (failures) {
+    console.log(`\n${failures} problem(s) across ${docs.length} document(s). ` +
+      'Fix with: node script/zh.js sync <id> && node script/zh.js todo <id> ' +
+      '(or /lc-zh-translate <id>), then re-run this check.');
+    process.exit(1);
+  }
+  console.log(`✓ ${docs.length} document(s), ${total} section(s): every section translated, ` +
+    'composed, and the same shape as its English');
+}
+
 /** Parse `<command> [--flags] [id ...]` and dispatch. */
 function main() {
   const [cmd, ...rest] = process.argv.slice(2);
@@ -322,9 +385,10 @@ function main() {
   if (cmd === 'status') cmdStatus(docs, write);
   else if (cmd === 'todo') cmdTodo(docs);
   else if (cmd === 'sync') cmdSync(docs, rest.includes('--prune'));
+  else if (cmd === 'check') cmdCheck(docs);
   else {
     console.error('usage: node script/zh.js status [--write] | todo [id ...] | ' +
-                  'sync [--prune] [id ...]');
+                  'sync [--prune] [id ...] | check [id ...]');
     process.exit(1);
   }
 }
