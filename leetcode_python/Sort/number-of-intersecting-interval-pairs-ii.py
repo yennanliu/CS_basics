@@ -59,6 +59,83 @@ intervals[i] = [starti, endi]
 
 # V0
 # IDEA : SCAN LINE + SORT (gpt)
+"""
+CORE IDEA: 
+
+ `Active event`  (active_intervals)
+
+
+ -> 「目前已經開始，但還沒有結束的 interval 數量」
+
+    
+
+ -> example:
+
+
+
+                例如：
+
+                ```text
+                [1, 5]
+                [2, 6]
+                [4, 7]
+                ```
+
+                Sweep line 掃過去：
+
+                ```text
+                time = 1
+                [1,5] 開始
+
+                active = 1
+                ```
+
+                ```text
+                time = 2
+                [2,6] 開始
+
+                active = 2
+                ```
+
+                現在：
+
+                ```text
+                [1,5]  ← active
+                [2,6]  ← active
+                ```
+
+                所以新的 `[2,6]` 和原本的 `[1,5]` 產生 **1 個 intersection pair**：
+
+                ```python
+                cnt += active
+                # cnt += 1
+                ```
+
+                接著：
+
+                ```text
+                time = 4
+                [4,7] 開始
+
+                active = 2
+                ```
+
+                代表現在已經有：
+
+                ```text
+                [1,5]  ← active
+                [2,6]  ← active
+                [4,7]  ← new
+                ```
+
+                所以 `[4,7]` 會跟前面兩個都 intersect：
+
+                ```python
+                cnt += active
+                # cnt += 2
+                ```
+
+"""
 class Solution(object):
 
     def countIntersectingIntervals(self, intervals):
