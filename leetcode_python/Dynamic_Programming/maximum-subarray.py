@@ -34,6 +34,7 @@ Follow up: If you have figured out the O(n) solution, try coding another solutio
 
 """
 
+
 # V0
 # IDEA : DP (Kadane’s algo)
 """
@@ -62,19 +63,41 @@ DP eq
 """
 # time = O(n)
 # space = O(1)
+# V0-1-1
+# IDEA : DP (Kadane’s algo) (gpt)
 class Solution(object):
     def maxSubArray(self, nums):
-        max_sum = nums[0]
-        cur = 0
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        if not nums:
+            return 0
 
-        for num in nums:
-            cur += num
-            max_sum = max(max_sum, cur)
+        # Best subarray sum ending at current position
+        local_max = nums[0]
 
-            if cur < 0:
-                cur = 0
+        # Best subarray sum found so far
+        global_max = nums[0]
 
-        return max_sum
+        for i in range(1, len(nums)):
+            val = nums[i]
+
+            # Either:
+            # 1. Extend the previous subarray
+            # 2. Start a new subarray from nums[i]
+            local_max = max(
+                local_max + val,
+                val
+            )
+
+            global_max = max(
+                global_max,
+                local_max
+            )
+
+        return global_max
+
 
 
 # V0-1
@@ -120,6 +143,12 @@ class Solution(object):
 
         # start from index 1
         for i in range(1, len(nums)):
+
+            # Either:
+            # 1. Extend the previous subarray
+            # 2. Start a new subarray from nums[i]
+
+
             # either extend previous subarray or start new one
             cur_sum = max(nums[i], cur_sum + nums[i])
 
