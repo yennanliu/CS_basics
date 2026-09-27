@@ -156,6 +156,16 @@ class Solution(object):
             events.append([start, 1])
             events.append([end, -1])
 
+        """
+        NOTE !!!
+
+
+        sort on 2 keys
+
+            1. time ascending
+            2. start event before end event at the same time
+
+        """
         # Sort by:
         # 1. time ascending
         # 2. start event before end event at the same time
@@ -176,6 +186,18 @@ class Solution(object):
         intersection_pairs = 0
 
         for time, status in events:
+
+
+            """
+            NOTE !!!
+
+            
+            (when status == 1)
+            
+                update final answer first (intersection_pairs),
+                then update tmp val (active_intervals)
+
+            """
 
             if status == 1:
                 # This interval starts now.
