@@ -46,6 +46,169 @@ At most 2 * 105 calls will be made to get and put.
 
 
 # V0
+# IDEA:  custom class + HASHMAP + doubly linked list ( most recent used + least recent used ) (GPT)
+"""
+
+- HashMap: key → node
+- Doubly Linked List:
+  - most recently used near tail
+  - least recently used near head
+"""
+
+"""
+NOTE !!!
+
+    custom class:
+
+        k: int (init val = 0)
+        val: int (init val = 0)
+
+        prev: MyNode
+        next: MyNode
+"""
+class MyNode(object):
+
+    def __init__(self, key=0, val=0):
+        self.k = key
+        self.val = val
+
+        self.prev = None
+        self.next = None
+
+
+
+"""
+NOTE !!!
+
+ 
+    2 helper methods:
+
+        - remove: remove node from linked list
+
+        - add_to_tail: add node to the end of linked list
+"""
+class LRUCache(object):
+
+    def __init__(self, capacity):
+        """
+        :type capacity: int
+        """
+        self.capacity = capacity
+
+
+        """
+        NOTE !!!
+
+
+        key: int
+
+        val: `MyNode`
+
+
+            - so we can use val directly
+            - more simpler linked list op
+
+
+
+        head: MyNode
+
+        tail: MyNode
+
+        """
+        # {key: Node}
+        self.kv_map = {}
+
+        # Dummy head / tail
+        self.head = MyNode()
+        self.tail = MyNode()
+
+        self.head.next = self.tail
+        self.tail.prev = self.head
+
+    def get(self, key):
+        """
+        :type key: int
+        :rtype: int
+        """
+        if key not in self.kv_map:
+            return -1
+
+        node = self.kv_map[key]
+
+        # Move to MRU position
+        self.remove(node)
+        self.add_to_tail(node)
+
+        return node.val
+
+    def put(self, key, value):
+        """
+        :type key: int
+        :type value: int
+        :rtype: None
+        """
+
+        # Key already exists
+        if key in self.kv_map:
+            node = self.kv_map[key]
+
+            node.val = value
+
+            # Existing key becomes most recently used
+            self.remove(node)
+            self.add_to_tail(node)
+
+            return
+
+        # New key
+        node = MyNode(key, value)
+
+        self.kv_map[key] = node
+        self.add_to_tail(node)
+
+        # Remove LRU if over capacity
+        if len(self.kv_map) > self.capacity:
+            lru_node = self.head.next
+
+            self.remove(lru_node)
+
+            del self.kv_map[lru_node.k]
+
+
+    """
+    NOTE !!!
+
+     
+        2 helper methods:
+
+            - remove: remove node from linked list
+
+            - add_to_tail: add node to the end of linked list
+    """
+    def remove(self, node):
+        """
+        Remove node from linked list.
+        """
+        prev_node = node.prev
+        next_node = node.next
+
+        prev_node.next = next_node
+        next_node.prev = prev_node
+
+    def add_to_tail(self, node):
+        """
+        Add node before dummy tail.
+        """
+        prev_node = self.tail.prev
+
+        prev_node.next = node
+        node.prev = prev_node
+
+        node.next = self.tail
+        self.tail.prev = node
+
+
+# V0-0-1
 # IDEA: OrderedDict
 # time = O(1) per get/put operation
 # space = O(capacity)
