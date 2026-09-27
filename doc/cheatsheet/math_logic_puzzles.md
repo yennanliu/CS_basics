@@ -40,7 +40,7 @@ k^t >= N        ->        t >= log_k(N)
 - A yes/no test: `k = 2`, and `log2(1000) = 9.97`, so 1,000 cases need at least 10 tests.
 - A balance scale: `k = 3` (left heavier, right heavier, level). Naming which of 12 balls is
   the odd one **and** whether it is heavy or light is 24 cases, and `3^3 = 27 >= 24`, so
-  three weighings can just do it — which is why the puzzle says 12 and never 14 (28 cases,
+  three weighings are not ruled out — and a known scheme does achieve it — which is why the puzzle says 12 and never 14 (28 cases,
   more than 27, provably impossible).
 - A comparison sort: `k = 2`, `N = n!` possible orderings, so `t >= log2(n!) = O(n log n)`.
   The famous sorting lower bound *is* this same count.

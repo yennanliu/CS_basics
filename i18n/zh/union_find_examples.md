@@ -285,7 +285,7 @@ Python 參考：`leetcode_python/Depth-First-Search/count-unreachable-pairs-of-n
 <!--CODE-->
 <!--CODE-->
 
-<!-- 50f977c3254d -->
+<!-- a3f9a2989de6 -->
 ### 18) Most Stones Removed with Same Row or Column — LC 947
 
 > 把同列或同欄的石頭 union 起來；答案 = 石頭數 − 元件數。
@@ -293,7 +293,30 @@ Python 參考：`leetcode_python/Depth-First-Search/count-unreachable-pairs-of-n
 <!--CODE-->
 <!--CODE-->
 
-> **變化題 — LC 765 Couples Holding Hands**：改用**情侶 id** 而不是人的 id 來 union——對每組座位配對 `(2i, 2i+1)` 做 `union(row[2i]/2, row[2i+1]/2)`。答案 = `n_couples − components`（大小為 `k` 的元件需要 `k−1` 次交換）。和 LC 947 是同一套「元件數 → 答案」的算術。
+<!-- 8a1f1c9a12b2 -->
+### 18-1) Couples Holding Hands — LC 765 — 元件數 → 交換次數
+
+> **union 的對象是「情侶」，不是「人」。** 把情侶編號為 `0 .. n-1`，於是人 `p` 屬於情侶 `p / 2`。
+> 每組座位配對 `(2i, 2i+1)` 代表「這兩對情侶糾纏在一起」— 把它們 union 起來。由 `k` 對情侶構成的
+> 連通元件是一個環，恰好需要 `k - 1` 次交換才能解開，所以答案和上面 LC 947 一樣是 `n - components` 的算術。
+
+<!--CODE-->
+
+<!--CODE-->
+
+**貪婪的替代做法**寫起來更短，也值得知道，因為它不只是計算交換次數，還能*產生*那些交換：走訪偶數
+座位，如果 `row[i]` 旁邊的人不是他的伴侶，就把伴侶從所在位置換過來。每次交換都會永久安頓一對情侶，
+所以貪婪是最佳的，兩種方法的答案也永遠一致。
+
+<!--CODE-->
+
+> **為什麼 `p ^ 1` 就是伴侶** — 情侶是 `(0,1), (2,3), (4,5)…`，所以伴侶之間只差最低位元。
+> `p ^ 1` 勝過 `p + 1 if p % 2 == 0 else p - 1`，這也是情侶 id 為 `p / 2`（等同 `p >> 1`）的原因。
+
+**同樣的算術，不同的題目**：LC 947 Most Stones Removed（上面）的答案也是 `items - components`。
+LC 839 Similar String Groups 建出的是*相同的*元件，但回傳的是元件**數量**本身 — 所以是同一套
+union-find，只有最後一行不同。要帶走的模式是「*大小為 k 的元件需要 k-1 次操作*」，而無論哪種情況，
+你數的都是根，而不是 union 的次數。
 
 <!-- 36c3188fc807 -->
 ### 19) Smallest Subtree with all the Deepest Nodes — LC 865 — BFS + 併查集式上爬

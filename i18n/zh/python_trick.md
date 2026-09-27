@@ -36,7 +36,7 @@
 <!-- eb123fd9a375 -->
 ### 賦值 vs 淺複製 vs 深複製
 
-- https://www.runoob.com/w3cnote/python-understanding-dict-copy-shallow-or-deep.html
+- 參考：https://www.runoob.com/w3cnote/python-understanding-dict-copy-shallow-or-deep.html
 - https://iter01.com/578999.html
 - 複製的種類：深複製(deep copy)、淺複製(shallow copy)、參考複製(reference copy)
 <!--CODE-->
@@ -473,6 +473,18 @@ O(1) 的*淘汰最舊的一筆*，正是 LC 146 裡的 LRU 步驟——而且它
 ### 二維陣列（矩陣）初始化
 
 <!--CODE-->
+
+<!-- d863cc4fec46 -->
+### 建立兩端固定的列 — `[1] + middle + [1]`
+
+<!--CODE-->
+
+<!--CODE-->
+
+只要序列需要**哨兵端點**，就會出現同樣的形狀：`[1] + nums + [1]`
+（LC 312 Burst Balloons，讓超出範圍的鄰居以 1 相乘）、
+`[0] + heights + [0]`（LC 84 Largest Rectangle，讓堆疊一定會被清空），或是
+`[float('-inf')] + arr + [float('-inf')]`，用來消除找峰值掃描中的邊界情況。
 
 <!-- e1d144984ec2 -->
 ### 巢狀函式中的 `nonlocal` 與 `global`

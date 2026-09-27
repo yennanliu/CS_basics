@@ -1922,7 +1922,7 @@ If null returned 0 (uncovered), every leaf would be forced to have a camera — 
 |------|---------|--------|----------------|
 | 968 | Binary Tree Cameras | 0/1/2 (uncovered/camera/covered) | Delay cameras upward, place at parents of leaves |
 | 337 | House Robber III | rob/skip per node | Max(rob current + skip children, skip current + best of children) |
-| 979 | Distribute Coins in Binary Tree | excess coins per subtree | Each edge transfer = 1 move; count |excess| bottom-up |
+| 979 | Distribute Coins in Binary Tree | excess coins per subtree | Each edge transfer = 1 move; count \|excess\| bottom-up |
 | 1373 | Max Sum BST in Binary Tree | valid/invalid BST + sum | Bottom-up validate BST property + track max sum |
 
 ## Summary

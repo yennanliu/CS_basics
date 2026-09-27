@@ -28,7 +28,7 @@
   「每條邊只用一次」、縮排、一個 `parent[]` 陣列）
 - **先備知識**：[dfs.md](./dfs.md) 裡的核心模板
 
-<!-- 6bb0aa36c9eb -->
+<!-- d28446469548 -->
 ## 題型分類
 
 | # | 模式 | 辨識關鍵字 | 代表題 | 其他 |
@@ -41,7 +41,7 @@
 | 6 | 字典樹 + DFS 萬用字元搜尋 | 「`.` 可以配任何字母」、「只差一個編輯」、「魔法字典」 | LC 211 | 676 |
 | 7 | 以深度為索引的堆疊 DFS | tab 縮排的輸入、用 `/` 分隔的路徑、「最長絕對路徑」 | LC 388 | 1233 |
 | 8 | 後序距離桶彙總 | 「good leaf pairs」、「葉子之間距離 ≤ k」 | LC 1530 | 124, 543, 687 |
-| 9 | N 元樹後序的子節點 min/max 彙總 | 樹以 `edges` 給定、根為 0，只要求根的答案 | LC 3965 | 559, 590, 1376 |
+| 9 | N 元樹後序的子節點 min/max 彙總 | 樹以 `edges` 給定、根為 0，只要求根的答案 | LC 3965 | 3967, 559, 590, 1376 |
 | 10 | 樹 ⟷ 字串編解碼 | DFS **回傳一個字串**／解析巢狀字串 | LC 606 / LC 536 | 297, 449, 331, 652 |
 | 11 | parent 陣列樹、記憶化的向上求深度 | 輸入是 `parent[]` / `manager[]`，根是 `-1` | LC 4015 | 1376, 1483, 1650 |
 
@@ -413,8 +413,8 @@ Hierholzer 是線性的。
 | Sum of Distances in Tree | 834 | 後序算子樹計數 + 換根 DP（進階延伸） |
 ---
 
-<!-- 8f40fbbe3a52 -->
-### 模板 9：N 元樹後序的值彙總（子節點 min/max 彙總） — LC 3965
+<!-- 98781e89678f -->
+### 模板 9：N 元樹後序的值彙總（子節點 min/max 彙總） — LC 3965 ⭐⭐⭐⭐
 
 **a. 核心想法**
 
@@ -426,6 +426,8 @@ Hierholzer 是線性的。
 LC 3965 的公式是：
 <!--CODE-->
 
+可以這樣理解：父節點必須等到它**最慢**的子節點完成（`latest`）才能開始，並且會因子節點之間的落差而*受罰*（`latest - earliest`，也就是閒置的差距）。只有一個子節點、或所有子節點同時完成的節點，差距為 `0`，成本恰好就是它自己的 `baseTime`。
+
 **讓它成為 N 元樹（而不是二元樹）模式的兩件事：**
 1. 從 `edges` 陣列建一份**鄰接串列** `graph[parent] = [child, ...]` — 你跑的是 `for child in graph[node]`，*不是* `node.left / node.right`。
 2. `edges[i] = [u, v]` 代表 **u 是 v 的父節點** → 把 `v` append 到 `graph[u]`（方向很重要，不要建成無向的）。
@@ -434,10 +436,24 @@ LC 3965 的公式是：
 
 <!--CODE-->
 
+<!--CODE-->
+
 **辨識訊號**
 - 樹是用 **`edges` 給的、根是 0**（N 元樹／一般樹），不是有 `.left/.right` 的 `TreeNode`。
 - 某個節點的答案是**子節點回傳值**（min/max/sum）加上自己權重的純函數 → 經典的**由下而上後序**。
 - 你只需要**根**的結果 → 讓 DFS 直接回傳值，不用全域變數。
+
+**決定能否通過的陷阱**
+- **遞迴深度。** `n` 最多到 `10^5`，而且樹可能是一條**鏈**，所以上面的遞迴寫法是*用來說明的*版本 —
+  在最壞輸入下會撐爆預設的堆疊。在 Python 裡可以 `sys.setrecursionlimit(2 * 10**5)`，或改用雙堆疊的
+  迭代寫法（上面的 Java 區塊）；在 Java 中無法從解答裡調整這個上限，所以迭代版才是安全的預設。
+- **溢位。** 完成時間只保證 `< 2^53`，放不進 `int`。子節點時間差很大的節點會回傳
+  `latest + (latest - earliest) + base`，也就是接近其最慢子節點的*兩倍*，所以數值會隨深度累積放大 —
+  在 Java 中要用 `long` 累加。Python 的整數是任意精度，所以只有 Java 會踩到。
+- **葉子判斷。** 「葉子」是指*沒有子節點*，也就是 `graph[node]` 為空 — 不是「度數為 1」。把圖建成無向的
+  正好會破壞這個判斷，因為那樣每個非根節點都會把父節點當成鄰居。
+- **一邊走訪一邊用 `defaultdict`。** `if not graph[node]` 會替葉子*插入*一個空清單。在這裡無害，
+  但不要在同一趟中又在別處走訪 `graph`。
 
 > **與二元樹由下而上（模式 6 / 15）的對照：** 同樣是「往上回傳一個值、在父節點合併」的形狀，只是子節點變成從鄰接串列來的任意長度清單，而不是固定的 `left`/`right`。建圖時要注意邊的方向。
 
@@ -446,11 +462,13 @@ LC 3965 的公式是：
 | 題目 | LC # | 和這個模式的關聯 |
 |---------|------|----------------------|
 | Finish Time of Tasks I | 3965 | N 元樹後序 min/max 子節點彙總的代表題 |
-| Sum of Nodes with Even-Valued Grandparent | 1315 | 對整棵樹做後序，從後代往上彙總 |
+| Finish Time of Tasks II | 3967 | 同樣的彙總，但做成**可查詢** — 3965 的直接延伸題 |
 | Maximum Depth of N-ary Tree | 559 | `1 + max(子節點深度)` — N 元樹後序取最大值 |
 | N-ary Tree Postorder Traversal | 590 | N 元樹後序走訪的代表題 |
 | Time Needed to Inform All Employees | 1376 | 用 manager 陣列表示的有根樹，`max(子節點時間) + 自己` |
+| Sum of Nodes with Even-Valued Grandparent | 1315 | 對照組，不是往上彙總：把父節點與祖父節點的值沿 DFS **往下**帶 |
 | Count Nodes With the Highest Score | 2049 | 後序的子樹彙總（[dfs.md Template 6](./dfs.md#template-6-bottom-up-post-order-dfs--lc-543-)） |
+| Binary Tree Maximum Path Sum | 124 | 同樣形狀的二元樹版本：在節點上合併子節點回傳的值 |
 ---
 
 <!-- 70912a343597 -->
@@ -492,7 +510,7 @@ LC 3965 的公式是：
 > **完整說明**（編／解碼的對稱表、LC 606 的情況分析 + 視覺追蹤、LC 536 的兩種解析器寫法、Java 版本）：[`tree_codec.md` → Tree ⟷ String Codec Pattern](./tree_codec.md#3-tree--string-codec-pattern-)
 ---
 
-<!-- f6ca235aeffd -->
+<!-- 0e2ab8924616 -->
 ### 模板 11：parent 陣列樹 — 記憶化的向上求深度 — LC 4015
 
 **a. 核心想法**
@@ -541,7 +559,7 @@ LC 3965 的公式是：
 - 輸入叫 `parent` / `manager` / `parents` — 一個**祖先陣列**，用 `-1` 標出根。
 - 答案需要的是**深度、高度或某個祖先** — 不是子樹的彙總。（一旦需要子樹總和或子節點的
   min/max，就該翻回由上而下：反轉成子節點清單，然後用
-  [模板 9](#template-9-n-ary-tree-post-order-value-aggregation-child-minmax-rollup--lc-3965)。）
+  [模板 9](#template-9-n-ary-tree-post-order-value-aggregation-child-minmax-rollup--lc-3965-)。）
 - `n` 到 `10^5` 而且樹可能是長條形 → 記憶化是必要的，在 Python 連迭代版也是必要的。
 
 > **與併查集的對照：** 這種「往上爬 + 記憶化」在結構上跟帶路徑壓縮的 DSU `find()` 是同一種走法，

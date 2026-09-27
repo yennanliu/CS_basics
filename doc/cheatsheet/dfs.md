@@ -699,7 +699,7 @@ private TreeNode _dfs(TreeNode node){
 - **Core Idea (Post-Order / Bottom-Up)**:
   1. Recurse left and right subtrees first (post-order)
   2. Each subtree returns a `(node, depth/info)` pair upward
-  3. At each node, compare left vs right results:
+  3. At each node, compare left vs right results (the depth-based form, LC 865/1123 — for LC 236, check which sides found a target instead):
      - **Left deeper** → answer is in the left subtree, propagate left result up
      - **Right deeper** → answer is in the right subtree, propagate right result up
      - **Equal depth** → current node is the LCA (deepest paths meet here), return current node

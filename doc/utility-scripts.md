@@ -243,6 +243,7 @@ Chinese document at build time, so code is never stored twice and cannot drift.
 node script/zh.js status [--write]          # coverage; --write refreshes the tracker doc
 node script/zh.js todo [slug ...]           # the sections still needing a translation
 node script/zh.js sync [--prune] [slug ...] # reorder to match English, park what it dropped
+node script/zh.js check [slug ...]          # exit 1 unless fully translated, composed, same shape
 ```
 
 With no slugs, every sheet is processed. Edit an English section and its
@@ -252,7 +253,18 @@ English until it is filled in.
 `sync` parks an invalidated translation under `<!-- stale: key -->` in the same
 file rather than deleting it, so the replacement starts from the old Chinese
 instead of from nothing; reverting the English revives it. `--prune` is the only
-thing that discards parked entries. See
+thing that discards parked entries.
+
+`check` is the gate, and `.github/workflows/zh-check.yml` runs `check cheatsheet`
+on every change to `doc/cheatsheet/` or `i18n/`, so **an English cheatsheet edit
+lands with its translation**. It fails on four things: a section with no entry
+(the page falls back to English), a live entry the English no longer has, a
+store that does not compose, and a translated section whose table rows, list
+items, blockquotes, links or images differ in number from its English
+(`shapeDiff` in `site/i18n.js`). That last rule exists because coverage counts
+an entry as done however much it lost — a dropped bullet in
+`faq_data_model`, and an old table left under its replacement in `dp_bitmask`,
+both read as 100%. The FAQs are not gated; `check faq` runs by hand. See
 [`cheatsheet-zh-progress.md`](cheatsheet-zh-progress.md) for the current state and
 CLAUDE.md for the translation conventions.
 

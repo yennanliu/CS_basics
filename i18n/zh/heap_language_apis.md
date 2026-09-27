@@ -38,19 +38,19 @@ API 用錯，不是演算法想錯。
     - 在 Python 裡，heapq 是 `MIN heap`
         - 如果要最大堆積，可以用 `-1 * val`
             - LC 1492
-    - 在 Python 的實作中，`index start from 0`
+    - 在 Python 的實作中，索引從 `0` 開始
     - `pop()` 會回傳 `min` 元素（不是最大的那個）
     - 建堆積的兩種方式（Python）
         - heappush(heap, num)
         - heapify(array)
     - 複雜度
         - push/pop（各自）
-            - time : O(log(N))
-            - space : O(N)
-            - ref : [SF - whats-the-time-complexity-of-functions-in-heapq-library](https://stackoverflow.com/questions/38806202/whats-the-time-complexity-of-functions-in-heapq-library#:~:text=heapq%20is%20a%20binary%20heap,O(n%20log%20n))
+            - 時間 : O(log(N))
+            - 空間 : O(N)
+            - 參考 : [SF - whats-the-time-complexity-of-functions-in-heapq-library](https://stackoverflow.com/questions/38806202/whats-the-time-complexity-of-functions-in-heapq-library#:~:text=heapq%20is%20a%20binary%20heap,O(n%20log%20n))
         - 所以如果對所有元素都做一次 push/pop，成本是
-            - time : O(N log(N))
-            - space : O(N)
+            - 時間 : O(N log(N))
+            - 空間 : O(N)
 - 基本 API
     - heapify : 把 list 轉成堆積
     - heappush : 把元素放進堆積

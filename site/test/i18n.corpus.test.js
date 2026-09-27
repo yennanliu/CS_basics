@@ -6,11 +6,11 @@
  * what ships, and it runs at build time, so a bad store entry would otherwise
  * surface as a broken deploy rather than a failing test.
  *
- * Deliberately NOT checked here: entries the English no longer has. Those are
- * the normal state of a document whose English was edited and whose translation has
- * not caught up, and failing CI on them would mean an English-only edit could not
- * land until someone re-translated. `node script/zh.js status` reports them, and
- * `sync` clears them.
+ * Deliberately NOT checked here: coverage — sections with no entry, and entries
+ * the English no longer has. That is `node script/zh.js check`'s job, and CI runs
+ * it for the cheatsheets only (.github/workflows/zh-check.yml), so this suite
+ * stays green for an FAQ whose English is edited ahead of its translation.
+ * What is checked is that each entry that exists is a complete one.
  */
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -94,6 +94,23 @@ test('every stored translation keeps the code markers its English section had', 
     for (const row of I.survey(read(doc.en), store)) {
       if (row.zh !== undefined && count(row.zh) !== count(row.en)) {
         bad.push(`${doc.id} ${row.key}: ${count(row.en)} markers in English, ${count(row.zh)} stored`);
+      }
+    }
+  }
+  assert.deepEqual(bad, []);
+});
+
+// An entry counts as translated however much of the English it lost, so the
+// counts that no language changes — rows, items, quotes, links, images — are
+// what show a dropped bullet or a stale table left under its replacement.
+test('every stored translation has the table rows, items, quotes and links of its English', () => {
+  const bad = [];
+  for (const doc of translated) {
+    const store = I.parseStore(read(doc.store));
+    for (const row of I.survey(read(doc.en), store)) {
+      if (row.zh === undefined) continue;
+      for (const d of I.shapeDiff(row.en, row.zh)) {
+        bad.push(`${doc.id} ${row.key}: ${d.what} — ${d.en} in English, ${d.zh} stored`);
       }
     }
   }

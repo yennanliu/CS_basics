@@ -167,7 +167,9 @@ Two things to say out loud:
 - **Why a count is enough to pick the block.** The values are distinct, so a block of size
   `2^20` that received fewer than `2^20` of them provably has a hole. No need to know which.
 - **How to size the block.** Pass 1 needs `limit / BLOCK` counters, pass 2 needs `BLOCK`
-  bits, and both must fit. `BLOCK = 2^20` costs 8 KB + 128 KB, far inside 10 MB.
+  bits, and both must fit. `BLOCK = 2^20` costs 8 KB + 128 KB for the non-negative
+  `int` range above (2048 counters), or 16 KB + 128 KB for all `2^32` values — far inside
+  10 MB either way.
 
 The shape generalises as *count coarse, then zoom*. It is the on-disk form of a counting
 sort on the high bits, and it is how a k-th-largest query over a huge file is answered:
@@ -212,10 +214,12 @@ def count_words(lines, n_buckets, tmpdir):
 ```
 
 Pick `B` so the **largest** bucket fits, not the average — one skewed key (a URL hit a
-billion times) still lands in a single file; if a bucket overflows, shard it again with a
-different hash. This is what `GROUP BY` does in every distributed engine, and it is the
-honest answer to "how would you scale this": the buckets are independent, so they can move
-to separate machines unchanged.
+billion times) still lands in a single file, and no choice of hash can split it — pre-aggregate
+it instead (count or sum it in memory as it streams past) when the operation allows. If a
+bucket overflows because too many distinct keys share it, shard that bucket again with a
+different hash. This is what `GROUP BY` does in every distributed engine, and it is the honest answer
+to "how would you scale this": the buckets are independent, so they can move to separate
+machines unchanged.
 
 ### 1-4) External merge sort ⭐⭐⭐⭐
 

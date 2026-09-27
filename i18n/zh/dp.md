@@ -159,7 +159,7 @@ LC 2289 的 Java 與 Python 模板、直方圖面積 DP、最大正方形的遞�
 | 題型 | 遞迴式 | 範例 | 時間 | 空間 |
 |--------------|------------|---------|------|-------|
 | **Fibonacci** | dp[i] = dp[i-1] + dp[i-2] | LC 70 Climbing Stairs | O(n) | O(1) |
-| **House Robber** | dp[i] = max(dp[i-1], dp[i-2] + nums[i]) | LC 198 House Robber | O(n) | O(1) |
+| **House Robber（打家劫舍）** | dp[i] = max(dp[i-1], dp[i-2] + nums[i]) | LC 198 House Robber | O(n) | O(1) |
 | **Decode Ways** | dp[i] = dp[i-1] + dp[i-2]（合法時） | LC 91 Decode Ways | O(n) | O(1) |
 | **Word Break** → [Template 1b](#template-1b-prefix-partition-dp---lc-139) | dp[i] = OR(dp[j] AND s[j:i] in dict) | LC 139 Word Break | O(n²) 個切點，算進切片是 O(n³) | O(n) |
 
@@ -193,6 +193,40 @@ LC 53、LC 152（最大乘積）、LC 918（環狀）、LC 1191（重複陣列�
 
 **範例：LC 198（House Robber）**
 <!--CODE-->
+
+<!-- c4599082e0e0 -->
+#### **`s[i-1]` 陷阱 — 它是*目前*的字元，不是前一個**
+
+一旦表格長度是 `n+1`，`i` 就不再是位置，而是**長度**。正是這個改變，讓 `s[i-1]` 乍看之下讀起來不對：
+`-1` 看起來像是「往回退一個字元」，但它只是把*某個長度*換算成*該長度最後一個字元的索引*。
+
+<!--CODE-->
+
+把兩列對齊看一次，困惑就消失了 — 它們*本來就*差一，因為長度那一列在最前面多了一個「空前綴」的位置：
+
+<!--CODE-->
+
+| 迴圈步驟 | `i`（長度） | 前綴 `s[:i]` | 它的最後一個字元 | `val = s[i-1]` |
+|---|---|---|---|---|
+| 第 1 步 | 1 | `"0"`   | `'0'` | `s[0]` = `'0'` ✅ 目前 |
+| 第 2 步 | 2 | `"01"`  | `'1'` | `s[1]` = `'1'` ✅ 目前 |
+| 第 3 步 | 3 | `"010"` | `'0'` | `s[2]` = `'0'` ✅ 目前 |
+
+`s[i-1]` 永遠不是前一個字元 — 前一個字元是 `s[i-2]`，而你幾乎從來不需要它，因為關於它已經決定好的一切
+都已經折進 `dp[i-1]` 裡了。
+
+**用這個觀點寫 LC 926（Flip String to Monotone Increasing）** — `dp[i]` = 讓前 `i` 個字元變成單調遞增
+所需的最少翻轉次數：
+
+<!--CODE-->
+
+在 `s = "010"` 上的追蹤：
+
+<!--CODE-->
+
+有三個跡象代表你在用長度觀點，而且**三者必須一致** — `dp = [0] * (n + 1)`、
+`for i in range(1, n + 1)`、`return dp[n]`。只要其中一個混用了索引觀點，你不是讀到超出字串尾端的
+`s[n]`，就是無聲地漏掉它的最後一個字元。
 
 <!-- 55e3e08b076f -->
 #### **2. 處理「空」的初始條件**
@@ -356,7 +390,7 @@ Template 1a 的 `n+1` 尺寸就是為了這個形狀而存在的。`dp[i]` 講�
 <!-- af2e7d3bd912 -->
 #### **⚠️ LC 64 vs LC 1631：什麼時候用 DP、什麼時候用 Dijkstra**
 
-| | LC 64 (Min Path Sum) | LC 1631 (Min Effort Path) |
+| | LC 64（Min Path Sum，最小路徑和） | LC 1631（Min Effort Path，最小體力消耗路徑） |
 |---|---|---|
 | **移動方向** | 只能往右 + 往下 | 四個方向都可以 |
 | **成本** | 累加總和 | 各步高低差的最大值 |
@@ -373,7 +407,7 @@ Template 1a 的 `n+1` 尺寸就是為了這個形狀而存在的。`dp[i]` 講�
 | 題型 | 遞迴式 | 範例 | 時間 | 空間 |
 |--------------|------------|---------|------|-------|
 | **Unique Paths** | dp[i][j] = dp[i-1][j] + dp[i][j-1] | LC 62 Unique Paths | O(m×n) | O(n) |
-| **Min Path Sum** | dp[i][j] = min(dp[i-1][j], dp[i][j-1]) + grid[i][j] | LC 64 Min Path Sum | O(m×n) | O(n) |
+| **Min Path Sum（最小路徑和）** | dp[i][j] = min(dp[i-1][j], dp[i][j-1]) + grid[i][j] | LC 64 Min Path Sum | O(m×n) | O(n) |
 | **LCS** | 相符則 dp[i][j] = dp[i-1][j-1] + 1，否則 max(...) | LC 1143 LCS | O(m×n) | O(n) |
 | **Edit Distance** | dp[i][j] = min(插入, 刪除, 取代) | LC 72 Edit Distance | O(m×n) | O(n) |
 

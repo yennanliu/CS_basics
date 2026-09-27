@@ -1064,7 +1064,9 @@ grouped by which property of the bit operators they lean on:
 2. **Missing parentheses** — write `(x & 1) == 0`, never `x & 1 == 0`. ([§0-7](#0-7-precedence--parenthesise-everything-))
 3. **`Integer.MIN_VALUE` has no positive twin** — `Math.abs` and unary `-` both return it
    unchanged, so negate-then-divide silently breaks. ([§0-3](#0-3-twos-complement--how-negatives-are-stored-))
-4. **`1 << i` overflows at `i >= 31`** — use `1L << i` (and remember Java masks the shift
-   count, so `1 << 32 == 1`). ([§0-2](#0-2-fixed-width--an-int-is-a-32-bit-box), [§0-5](#0-5-shifts-left-arithmetic-right-and-logical-right))
+4. **`1 << 31` is the sign bit, and `1 << 32 == 1`** — `1 << 31` is `Integer.MIN_VALUE`,
+   still a correct mask for bit 31 but not the positive value `2^31`; Java masks an `int`
+   shift count to 5 bits and a `long` one to 6 (`1L << 64 == 1`), so use `1L << i` for
+   `i` in 32..63 or whenever you need `2^31` as a number. ([§0-2](#0-2-fixed-width--an-int-is-a-32-bit-box), [§0-5](#0-5-shifts-left-arithmetic-right-and-logical-right))
 5. **Porting a 32-bit loop to Python unchanged** — Python never overflows, so every step
    needs `& 0xFFFFFFFF` and the result needs converting back. ([§0-6](#0-6-python-is-not-java-here-))

@@ -63,6 +63,7 @@ node script/zh.js todo <id>               # the sections needing a translation, 
 #   ... write each one back into i18n/zh/<id>.md as a live `<!-- key -->` entry ...
 node script/zh.js sync <id>               # tidy, and drop the parked copies you used
 node script/zh.js status --write          # refresh both progress docs
+node script/zh.js check <id>              # the gate CI runs on the cheatsheets
 ```
 
 `sync` **parks** rather than deletes. `compose` ignores parked entries, so one can never
@@ -145,12 +146,16 @@ The progress docs are **generated** — never hand-edit `doc/cheatsheet-zh-progr
 ### 6. Gate
 
 ```bash
+node script/zh.js check <id>
 SKIP_FONTS=1 bash site/build.sh
 node site/e2e-check.js _site
 npm test --prefix site
 ```
 
-The build is where a dropped `<!--CODE-->` marker surfaces (`compose` throws) and where a
+`check` is what `.github/workflows/zh-check.yml` runs on every cheatsheet: it fails on an
+untranslated section, an orphaned entry, and a translated section whose table rows, list
+items, blockquotes, links or images differ in number from the English — the shape of a
+dropped bullet, or of the old table left under a parked entry you adapted. The build is where a dropped `<!--CODE-->` marker surfaces (`compose` throws) and where a
 retargeted link that went dangling is caught. Then look at the composed page — the 中文 / EN
 button in the navbar swaps between counterparts, and `cheatsheets.zh.html` /
 `faqs.zh.html` are the ways in.

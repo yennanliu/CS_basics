@@ -10,7 +10,7 @@
 > 拆成兩份檔案的結果，就是同一批題目（LC 215、23、253、295、347、378、621、703、373）
 > 被解了兩次，一種語言一次。現在 `heap.md` 兩邊都收。
 
-<!-- aa7b3aba93d4 -->
+<!-- ccf167dfc930 -->
 ## 東西搬去哪了
 
 | 你原本在找的 | 現在在 |
@@ -21,6 +21,7 @@
 | `PriorityQueue` API／不彈出就取頂 | [heap_language_apis.md](./heap_language_apis.md#java-priorityqueue) — 完整 API 參考；[heap.md → Language APIs](./heap.md#language-apis) 保留一頁式表格 |
 | 附 Java 解法的經典 LC 題 | [heap_examples.md → LC Examples](./heap_examples.md#lc-examples) |
 | PQ 模式 → 題目對照 | [heap.md → Decision Table](./heap.md#decision-table--which-heap-pattern) |
+| 貪婪 + PQ 排程（LC 1353 Max Events，以及為什麼 LC 253 的掃描線套不過來） | [heap_examples.md → LC 1353](./heap_examples.md#7-maximum-number-of-events-that-can-be-attended--lc-1353) — 核心想法、模式表、類似 LC；一行式特徵見 [heap.md → Pattern 5](./heap.md#problem-categories) |
 
 <!-- e203170927ee -->
 ## 另見

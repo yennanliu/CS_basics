@@ -142,7 +142,7 @@ A deadlock needs **all four** of these at once, so preventing any single one is 
 |---|---|---|
 | Mutual exclusion | A lock is held by one thread at a time | Rarely removable — it is the point of a lock |
 | Hold and wait | A thread holds one lock while asking for another | Acquire everything up front, or release before asking |
-| No preemption | A lock cannot be taken away | `tryLock(timeout)` — back off and retry instead of waiting |
+| No preemption | A lock cannot be taken away | `tryLock(timeout)` — on failure, release the locks you hold, back off and retry instead of waiting |
 | **Circular wait** | A cycle in "who waits for whom" | **A global lock order**, or cap the number of contenders |
 
 Circular wait is the one to attack in an interview: it is the cheapest to enforce and the

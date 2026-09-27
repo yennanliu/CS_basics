@@ -201,3 +201,33 @@ test('survey reports each section key and whether the store carries it', () => {
 test('survey drops empty sections, which are not translatable units', () => {
   assert.equal(I.survey('\n\n\n', new Map()).length, 0);
 });
+
+// ── shapeOf / shapeDiff ───────────────────────────────────────────────────
+// Coverage counts an entry as done however much of the English it lost, so the
+// shape is the only thing that sees a dropped bullet or a stale table left
+// under its replacement — both of which shipped (faq_data_model, dp_bitmask).
+
+test('shapeOf counts rows, items, quotes, links and images, not lines of prose', () => {
+  const md = '## T\n\n| a | b |\n|---|---|\n| 1 | 2 |\n\n- one\n- two\n1. three\n\n' +
+             '> a quote\n> wrapped\n\n> another\n\n[x](./x.md) <img src="p.png">\n';
+  assert.deepEqual(I.shapeOf(md), {
+    'table rows': 3, 'list items': 3, blockquotes: 2, links: 1, images: 1,
+  });
+});
+
+test('shapeDiff ignores rewrapping, which is how Chinese prose differs', () => {
+  const en = '> The first line\n> and the second.\n\n- an item that\n  wraps\n';
+  const zh = '> 第一行和第二行。\n\n- 一個換行的項目\n';
+  assert.deepEqual(I.shapeDiff(en, zh), []);
+});
+
+test('shapeDiff reports a dropped list item', () => {
+  assert.deepEqual(I.shapeDiff('- a\n- b\n', '- 甲\n'),
+    [{ what: 'list items', en: 2, zh: 1 }]);
+});
+
+test('shapeDiff reports an old table left under its replacement', () => {
+  const en = '| a |\n|---|\n| 1 |\n';
+  assert.deepEqual(I.shapeDiff(en, en + '\n|---|\n| 舊 |\n'),
+    [{ what: 'table rows', en: 3, zh: 5 }]);
+});

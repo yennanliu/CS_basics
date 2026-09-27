@@ -130,7 +130,7 @@
 |---------|------|----------------|-----------------|------------|
 | Find Index of First Occurrence | 28 | KMP | O(n + m) | Medium |
 | Repeated Substring Pattern | 459 | KMP/Z-Algorithm | O(n) | Easy |
-| Shortest Palindrome | 214 | KMP + Reverse | O(n) | Hard |
+| Shortest Palindrome | 214 | KMP + 反轉 | O(n) | Hard |
 
 <!-- bb668977aab7 -->
 ### **回文類**

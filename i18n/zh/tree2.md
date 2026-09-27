@@ -375,12 +375,12 @@
 
 ---
 
-<!-- fcd3b70bf1a2 -->
+<!-- 5a202344eba1 -->
 ### 7.2) 樹攤平模板 — LC 114
 
 **模式**：把樹攤平成鏈結串列
 **適用情境**：轉成全部往右倒的樹
-**時間複雜度**：O(n)
+**時間複雜度**：O(n·h) — `while current.right` 這段走訪會在每個節點重新掃過整條鏈（在歪斜的樹上是 O(n^2)）。改成回傳每棵子樹的尾端，就能降到 O(n)：見 [tree_examples 16)](./tree_examples.md#16-flatten-binary-tree-to-linked-list--lc-114)。
 **空間複雜度**：O(h)
 
 <!-- afd14a6c171a -->

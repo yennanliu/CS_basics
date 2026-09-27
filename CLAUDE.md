@@ -877,6 +877,18 @@ heading over a code block, and house rule keeps LC titles in English, so their
 correct translation *is* the English text. The same goes for the handful of FAQs
 that were written in Chinese to begin with.
 
+**The cheatsheets are gated at 100%.** `node script/zh.js check cheatsheet` fails
+on a section with no entry, an orphaned entry, a store that does not compose, and
+a translated section whose table rows, list items, blockquotes, links or images
+differ in number from its English (`shapeDiff` in `site/i18n.js`) — the shape a
+dropped bullet takes, and the shape of an old table left under a parked entry
+that was adapted. `.github/workflows/zh-check.yml` runs it on every change to
+`doc/cheatsheet/` or `i18n/`, so **an English cheatsheet edit lands with its
+translation**; the fallback to English is for a page mid-edit, not for `master`.
+It exists because nothing used to go red: by Sep 2026, 26 sheets carried 174
+English sections and `binary_search.zh.html` showed 11 of its 66 in English. The
+FAQs are not gated; `check faq` runs by hand.
+
 ---
 
 ## Adding Time/Space Complexity Javadoc Comments

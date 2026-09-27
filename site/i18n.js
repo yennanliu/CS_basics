@@ -216,6 +216,40 @@ function survey(enText, store) {
   }).filter(row => row.en.trim() !== '');
 }
 
+/**
+ * The countable structure of a section's prose: table rows, list items,
+ * blockquotes, links and images. None of these depend on the language, so a
+ * complete translation has exactly the English counts.
+ *
+ * Counts, not text, because prose wraps differently in Chinese: a blockquote is
+ * counted once per run of `>` lines, and a list item by its marker, so rewrapping
+ * a paragraph never changes the shape. What does change it is the thing a
+ * section-level store cannot otherwise see — a dropped row or bullet, or the
+ * previous version of a table left behind under the new one when a parked
+ * translation was adapted.
+ */
+function shapeOf(text) {
+  const lines = text.split('\n');
+  const quoted = l => /^\s*>/.test(l);
+  return {
+    'table rows': lines.filter(l => /^\s*\|.*\|\s*$/.test(l)).length,
+    'list items': lines.filter(l => /^\s*([-*+]|\d+[.)])\s+/.test(l)).length,
+    blockquotes: lines.filter((l, i) => quoted(l) && !(i && quoted(lines[i - 1]))).length,
+    links: (text.match(/\]\(/g) || []).length,
+    images: (text.match(/<img\b|!\[/g) || []).length,
+  };
+}
+
+/**
+ * How a translation's shape differs from its English section: one
+ * `{ what, en, zh }` per count that disagrees, or `[]` for a match.
+ */
+function shapeDiff(en, zh) {
+  const a = shapeOf(en);
+  const b = shapeOf(zh);
+  return Object.keys(a).filter(k => a[k] !== b[k]).map(k => ({ what: k, en: a[k], zh: b[k] }));
+}
+
 /* ── The translated trees ─────────────────────────────────────────────────────
 
    Everything above is pure text: it never learns which files it is composing.
@@ -322,6 +356,8 @@ module.exports = {
   formatStore,
   compose,
   survey,
+  shapeOf,
+  shapeDiff,
   CORPORA,
   corpus,
   docs,

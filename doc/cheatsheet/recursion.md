@@ -1448,8 +1448,9 @@ void hanoi(int n, Deque<Integer> src, Deque<Integer> dst, Deque<Integer> buf) {
 - **Why exponential, and why that is optimal.** `T(n) = 2T(n-1) + 1 = 2^n - 1`, and every one
   of those moves is genuinely required — the output has that many lines, so no algorithm can
   do better.
-- **The same shape elsewhere.** "Reverse a stack using recursion only" and "sort a stack with
-  one extra stack" (CtCI 3.5) are this move with the call stack itself as the buffer.
+- **The same shape elsewhere.** "Reverse a stack using recursion only" is this move with the
+  call stack itself as the buffer; "sort a stack with one extra stack" (CtCI 3.5) is the same
+  move with that extra stack as the buffer.
 
 ### 5-6) Weaving Two Sequences — Every Interleaving ⭐⭐⭐
 
@@ -1528,4 +1529,4 @@ Problems that fit patterns already covered above — listed for completeness:
 | 10 | Regular Expression Matching | Top-down recursion on `(i, j)` + memo — see `recursion_to_dp.md` |
 | 44 | Wildcard Matching | Same as LC 10, `*` matches a run instead of "prev char, 0+ times" |
 | 486 | Predict the Winner | Minimax recursion on `(l, r)` + memo — see `recursion_to_dp.md` |
-| 60 | Permutation Sequence | Factorial number system: pick each digit by `k / (n-1)!`, recurse on the rest |
+| 60 | Permutation Sequence | Factorial number system: make `k` 0-based (`k - 1`), pick each digit by `k / (n-1)!`, recurse on the rest |

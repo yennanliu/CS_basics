@@ -1,0 +1,77 @@
+name: Cheatsheet translation check
+
+# Every English cheatsheet under doc/cheatsheet/ must be fully translated into
+# 繁體中文 in its i18n/zh/ overlay. A section with no entry does not fail the
+# build — it silently falls back to English — so without this job the Chinese
+# pages rot one edit at a time: by Sep 2026, 26 sheets carried 174 English
+# sections and binary_search.zh.html showed 11 of its 66 in English, with every
+# other check green.
+#
+# The rules live in `node script/zh.js check` rather than in a run: block, for
+# the reason CLAUDE.md gives about site/e2e-check.js — so they can be run before
+# pushing. Reproduce this job locally:
+#
+#   node --test site/test/i18n.test.js site/test/i18n.corpus.test.js
+#   node script/zh.js check cheatsheet
+#
+# To fix a failure: `node script/zh.js sync <id>` parks what an English edit
+# invalidated, `node script/zh.js todo <id>` lists what is owed, or run
+# `/lc-zh-translate <id>`. `/lc-cheatsheet` writes both languages in one pass.
+#
+# The FAQs are not gated here; `node script/zh.js check faq` passes today and
+# can be run by hand.
+#
+# The two path lists are duplicated rather than shared through a YAML anchor:
+# GitHub Actions does not resolve anchors.
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - 'doc/cheatsheet/**'
+      - 'i18n/**'
+      - 'site/i18n.js'
+      - 'script/zh.js'
+      - 'site/test/i18n.test.js'
+      - 'site/test/i18n.corpus.test.js'
+      - '.github/workflows/zh-check.yml'
+  pull_request:
+    branches: [ master ]
+    paths:
+      - 'doc/cheatsheet/**'
+      - 'i18n/**'
+      - 'site/i18n.js'
+      - 'script/zh.js'
+      - 'site/test/i18n.test.js'
+      - 'site/test/i18n.corpus.test.js'
+      - '.github/workflows/zh-check.yml'
+  workflow_dispatch:
+
+# The job only reads the tree it checks out.
+permissions:
+  contents: read
+
+jobs:
+  zh-check:
+    name: Cheatsheets fully translated
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Standard library only — site/i18n.js needs no npm install.
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # The checker's own tests first: a shape rule that quietly stopped
+      # matching would pass every document in the repo.
+      - name: Test the checker
+        run: node --test site/test/i18n.test.js site/test/i18n.corpus.test.js
+
+      # Untranslated sections, orphaned entries, a dropped <!--CODE--> marker,
+      # and a translated section whose table rows, list items, blockquotes,
+      # links or images differ from its English.
+      - name: Check every cheatsheet is fully translated
+        run: node script/zh.js check cheatsheet

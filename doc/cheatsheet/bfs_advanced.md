@@ -1598,8 +1598,9 @@ def shortestPath(grid, k):
   earlier route after picking a key up, which is most of the test set.
 - Counting a key you already hold as a new state — harmless but doubles the queue; `nMask == mask`
   is caught by the `seen` check anyway.
-- In LC 1293, spending budget on the cell you **leave** instead of the one you **enter**. The start
-  cell is guaranteed to be `0`, so both happen to pass the sample and diverge on the real tests.
+- In LC 1293, checking the budget on the cell you **enter** but spending it on the cell you **leave**.
+  Either convention alone is correct — both endpoints are `0`, so a path pays for the same
+  obstacles — but mixing them lets a run of adjacent obstacles through on a budget of one.
 
 **Similar problems**: LC 787 Cheapest Flights Within K Stops (`(node, stops)`; weighted, so
 Dijkstra or Bellman-Ford), LC 1928 Minimum Cost to Reach Destination in Time (`(node, time)`),

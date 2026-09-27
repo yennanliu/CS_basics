@@ -416,7 +416,7 @@ With LC 139's constraints — `n ≤ 300`, `k ≤ 1000`, `L ≤ 20`:
 | **B** | index → cut | ✅ | O(n²) cuts × O(L) hash | ~1.8 × 10⁶ | **the default answer** |
 | **B-capped** | index → cut, `j ≥ i - L` | ✅ | O(n·L²) | ~1.2 × 10⁵ | the dictionary is large; the fastest here |
 | **C** | word → index | ❌ | — | — | never |
-| **C-fixpoint** | word → index, repeated | ✅ | O(rounds·n·k·L) | rounds ≤ 16 | never, for this problem |
+| **C-fixpoint** | word → index, repeated | ✅ | O(rounds·n·k·L) | rounds ≤ n / min_word_len + 1 = 301 | never, for this problem |
 | **D** | BFS | ✅ | O(n²) | ~1.8 × 10⁶ | you find reachability easier to reason about |
 | **E** | memo | ✅ | O(n²·L) | — | you want the recurrence checked, or top-down is more natural |
 
