@@ -1414,7 +1414,7 @@ public long finishTime(int n, int[][] edges, int[] baseTime) {
 | Maximum Depth of N-ary Tree | 559 | `1 + max(child depths)` — N-ary post-order max rollup |
 | N-ary Tree Postorder Traversal | 590 | canonical post-order visit of an N-ary tree |
 | Time Needed to Inform All Employees | 1376 | rooted tree via manager array, `max(child times) + own` |
-| Sum of Nodes with Even-Valued Grandparent | 1315 | post-order over tree, aggregate from descendants |
+| Sum of Nodes with Even-Valued Grandparent | 1315 | contrast, not a rollup: carry parent and grandparent values **down** the DFS |
 | Count Nodes With the Highest Score | 2049 | post-order subtree aggregation ([dfs.md Template 6](./dfs.md#template-6-bottom-up-post-order-dfs--lc-543-)) |
 | Binary Tree Maximum Path Sum | 124 | binary sibling of the same shape: combine children's returned values at the node |
 ---

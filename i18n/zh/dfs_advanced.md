@@ -413,7 +413,7 @@ Hierholzer 是線性的。
 | Sum of Distances in Tree | 834 | 後序算子樹計數 + 換根 DP（進階延伸） |
 ---
 
-<!-- c84e2a9c996d -->
+<!-- 98781e89678f -->
 ### 模板 9：N 元樹後序的值彙總（子節點 min/max 彙總） — LC 3965 ⭐⭐⭐⭐
 
 **a. 核心想法**
@@ -466,7 +466,7 @@ LC 3965 的公式是：
 | Maximum Depth of N-ary Tree | 559 | `1 + max(子節點深度)` — N 元樹後序取最大值 |
 | N-ary Tree Postorder Traversal | 590 | N 元樹後序走訪的代表題 |
 | Time Needed to Inform All Employees | 1376 | 用 manager 陣列表示的有根樹，`max(子節點時間) + 自己` |
-| Sum of Nodes with Even-Valued Grandparent | 1315 | 對整棵樹做後序，從後代往上彙總 |
+| Sum of Nodes with Even-Valued Grandparent | 1315 | 對照組，不是往上彙總：把父節點與祖父節點的值沿 DFS **往下**帶 |
 | Count Nodes With the Highest Score | 2049 | 後序的子樹彙總（[dfs.md Template 6](./dfs.md#template-6-bottom-up-post-order-dfs--lc-543-)） |
 | Binary Tree Maximum Path Sum | 124 | 同樣形狀的二元樹版本：在節點上合併子節點回傳的值 |
 ---

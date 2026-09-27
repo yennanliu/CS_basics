@@ -507,7 +507,7 @@
 
 <!--CODE-->
 
-<!-- 33cd21fc3fa7 -->
+<!-- bf5676cccbde -->
 #### LC 1293 — 資源是倒數計數
 
 同樣的骨架，`mask` 變成「我還能移除的障礙物數」。有兩件事值得帶進面試：
@@ -523,7 +523,7 @@
 
 - 在**格子**上標記 `seen` — LC 864 就會在「撿到鑰匙後必須穿越自己先前路線」時回報 `-1`，而測資大多是這種情況。
 - 把已經持有的鑰匙算成新狀態 — 無害但會讓佇列加倍；`nMask == mask` 反正會被 `seen` 檢查擋下。
-- 在 LC 1293 中，把預算花在**離開**的格子而非**進入**的格子。起點保證為 `0`，所以兩種寫法都能通過範例，卻在真正的測資上分歧。
+- 在 LC 1293 中，在**進入**的格子檢查預算，卻在**離開**的格子扣預算。單獨採用任一種慣例都正確 —— 兩個端點都是 `0`，所以一條路徑付費的障礙物相同 —— 但混用兩者，會讓一整串相鄰的障礙物只用 1 的預算就通過。
 
 **相似題目**：LC 787 Cheapest Flights Within K Stops（`(node, stops)`；有權重，所以用 Dijkstra 或 Bellman-Ford）、LC 1928 Minimum Cost to Reach Destination in Time（`(node, time)`）、LC 1129 Shortest Path with Alternating Colors（`(node, lastColour)`）、LC 847 Shortest Path Visiting All Nodes（`(node, visitedMask)` — 見 [dp_bitmask.md](./dp_bitmask.md)）。當額外的維度讓邊變成*有權重*時，同樣的狀態改放進堆積而不是佇列 — [Dijkstra.md](./Dijkstra.md)。
 

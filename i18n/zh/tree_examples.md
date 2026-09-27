@@ -412,7 +412,7 @@
 
 <!--CODE-->
 
-<!-- 7d405bd88168 -->
+<!-- 4bddd441cf81 -->
 ### 19) Binary Tree Cameras — LC 968（由下而上的多狀態貪婪）
 
 
@@ -477,7 +477,7 @@
 |------|---------|--------|----------------|
 | 968 | Binary Tree Cameras | 0/1/2（未覆蓋／有攝影機／已覆蓋） | 把攝影機往上拖延，裝在葉子的父節點 |
 | 337 | House Robber III | 每個節點 rob/skip | Max(搶自己 + 跳過子節點, 跳過自己 + 子節點的最佳解) |
-| 979 | Distribute Coins in Binary Tree | 每棵子樹多出來的硬幣數 | 每條邊搬一次算 1 步；由下而上累加 |excess| |
+| 979 | Distribute Coins in Binary Tree | 每棵子樹多出來的硬幣數 | 每條邊搬一次算 1 步；由下而上累加 \|excess\| |
 | 1373 | Max Sum BST in Binary Tree | BST 合法／不合法 + 總和 | 由下而上驗證 BST 性質，同時追蹤最大總和 |
 
 <!-- 6e672d17de2f -->

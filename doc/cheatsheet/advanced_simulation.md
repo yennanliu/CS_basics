@@ -1149,4 +1149,4 @@ def isRobotBounded(instructions):
 |---------|------|---------------|------------|
 | Text Justification | 68 | Greedy line packing: fit words while `len + words <= maxWidth`, then distribute `maxWidth - lettersLen` spaces across `gaps` as `q, r = divmod(spaces, gaps)` (left gaps get one extra); last line + single-word lines are left-justified | Hard |
 | Contain Virus | 749 | Multi-phase grid simulation: each round, flood-fill every virus region, quarantine only the region threatening the most fresh cells, then spread all the others | Hard |
-| Where Will the Ball Fall | 1706 | Per-ball column walk; a ball falls only if `grid[r][c] == grid[r][c + grid[r][c]]` (no V-shaped wall) | Medium |
+| Where Will the Ball Fall | 1706 | Per-ball column walk; a ball falls only if `0 <= c + grid[r][c] < n` and `grid[r][c] == grid[r][c + grid[r][c]]` (no side wall, no V-shaped wall) | Medium |

@@ -212,10 +212,11 @@ def count_words(lines, n_buckets, tmpdir):
 ```
 
 Pick `B` so the **largest** bucket fits, not the average — one skewed key (a URL hit a
-billion times) still lands in a single file; if a bucket overflows, shard it again with a
-different hash. This is what `GROUP BY` does in every distributed engine, and it is the
-honest answer to "how would you scale this": the buckets are independent, so they can move
-to separate machines unchanged.
+billion times) still lands in a single file, and no choice of hash can split it; if a bucket
+overflows because too many distinct keys share it, shard that bucket again with a different
+hash. This is what `GROUP BY` does in every distributed engine, and it is the honest answer
+to "how would you scale this": the buckets are independent, so they can move to separate
+machines unchanged.
 
 ### 1-4) External merge sort ⭐⭐⭐⭐
 

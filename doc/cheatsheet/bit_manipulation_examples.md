@@ -966,4 +966,4 @@ def print_binary(num):
 
 That last line is the whole point of the question, and the same fact behind
 `0.1 + 0.2 != 0.3` — see [python_gotchas.md](./python_gotchas.md). A fraction terminates in
-binary only when its denominator is a power of two.
+binary only when its denominator, in lowest terms, is a power of two.

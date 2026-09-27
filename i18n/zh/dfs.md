@@ -276,7 +276,7 @@
 
 <!--CODE-->
 
-<!-- 1a398c8e7e06 -->
+<!-- 7fadaa71be54 -->
 ### 模板 6：由下而上（後序）DFS — LC 543 ⭐⭐⭐⭐⭐
 - **說明**：先處理子樹並由下往上彙總結果；也用來找目標節點的最低共同祖先
 - **辨識**："Subtree sum"、"duplicate subtrees"、"LCA"、"smallest subtree containing"、"lowest common ancestor"、"deepest leaves"、"minimum moves between adjacent nodes"
@@ -288,7 +288,7 @@
 - **核心想法（後序／由下而上）**：
   1. 先遞迴左右子樹（後序）
   2. 每個子樹往上回傳一組 `(node, depth/info)`
-  3. 在每個節點比較左右結果：
+  3. 在每個節點比較左右結果（這是依深度的形式，LC 865/1123 —— 若是 LC 236，改為檢查哪一側找到了目標）：
      - **左邊較深** → 答案在左子樹，把左邊的結果往上傳
      - **右邊較深** → 答案在右子樹，把右邊的結果往上傳
      - **深度相同** → 目前節點就是 LCA（最深的路徑在這裡交會），回傳目前節點
