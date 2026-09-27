@@ -56,8 +56,74 @@ intervals[i] = [starti, endi]
 
 """
 
+
 # V0
-# IDEA : SCAN LINE — EACH NEW START MEETS EVERY INTERVAL STILL OPEN
+# IDEA : SCAN LINE + SORT (gpt)
+class Solution(object):
+
+    def countIntersectingIntervals(self, intervals):
+        """
+        :type intervals: List[List[int]]
+        :rtype: int
+        """
+        if not intervals or len(intervals) <= 1:
+            return 0
+
+        # Create start/end events for every interval.
+        #
+        # status = 1  -> interval starts
+        # status = -1 -> interval ends
+        events = []
+
+        for start, end in intervals:
+            events.append([start, 1])
+            events.append([end, -1])
+
+        # Sort by:
+        # 1. time ascending
+        # 2. start event before end event at the same time
+        #
+        # This is important because intervals are inclusive.
+        # Example:
+        # [1, 3] and [3, 5] are considered intersecting.
+        events.sort(key=lambda event: (event[0], -event[1]))
+
+        # Number of intervals that have started
+        # but have not ended yet.
+        #
+        # In other words:
+        # active_intervals = currently overlapping intervals
+        active_intervals = 0
+
+        # Total number of intersecting interval pairs.
+        intersection_pairs = 0
+
+        for time, status in events:
+
+            if status == 1:
+                # This interval starts now.
+                #
+                # It intersects with every interval that is
+                # currently active.
+                #
+                # Example:
+                # active_intervals = 3
+                # new interval -> creates 3 new pairs.
+                intersection_pairs += active_intervals
+
+                # The new interval is now active.
+                active_intervals += 1
+
+            else:
+                # This interval ends now,
+                # so it is no longer active after this event.
+                active_intervals -= 1
+
+        return intersection_pairs
+
+
+# V0-0-1
+# IDEA : SCAN LINE — EACH NEW START MEETS EVERY INTERVAL STILL OPEN (claude)
 #
 #   n = 10^5, so the double loop of LC 4056 is out. turn every interval into two
 #   events, (start, +1) and (end, -1), and sweep left -> right keeping `active`

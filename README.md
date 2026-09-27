@@ -929,7 +929,7 @@ python3 script/fix_readme_tags.py            # rewrite the Note column
 |-----|-------|----------|------|-------|------------|------|--------|
 | 1943 | [Describe the Painting](https://leetcode.com/problems/describe-the-painting) | [Java](./leetcode_java/src/main/java/LeetCodeJava/ScanLine/DescribeThePainting.java) | _O(nlogn)_ | _O(n)_ | Medium | **scan line**, treeMap, delta, good basic, `google`, `array`, `hash table`, `sort` | AGAIN***** (1)(MUST) |
 | 4056 | [Number of Intersecting Interval Pairs I](https://leetcode.com/problems/number-of-intersecting-interval-pairs-i/description/) | [Python](./leetcode_python/Sort/number-of-intersecting-interval-pairs-i.py) | _O(n^2)_ | _O(1)_ | Easy | **scan line**, sort by start + double loop, break once start[j] > end[i], closed intervals (shared endpoint counts), LC weekly | AGAIN(1) |
-| 4057 | [Number of Intersecting Interval Pairs II](https://leetcode.com/problems/number-of-intersecting-interval-pairs-ii/description/) | [Python](./leetcode_python/Sort/number-of-intersecting-interval-pairs-ii.py) | _O(nlogn)_ | _O(n)_ | Medium | **scan line**, each start meets every open interval -> res += active, starts before ends at same pos, NOT max C(active,2), LC 4056, LC weekly | AGAIN(1) |
+| 4057 | [Number of Intersecting Interval Pairs II](https://leetcode.com/problems/number-of-intersecting-interval-pairs-ii/description/) | [Python](./leetcode_python/Sort/number-of-intersecting-interval-pairs-ii.py) | _O(nlogn)_ | _O(n)_ | Medium | **scan line**, each start meets every open interval -> res += active, starts before ends at same pos, NOT max C(active,2), LC 4056, LC weekly | AGAIN****** (2) |
 
 
 
