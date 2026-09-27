@@ -67,9 +67,9 @@
 	- https://yennj12.js.org/CS_basics/cheatsheets/complexity_cheatsheet.html
 
 
-- 雙指標
-	- https://yennj12.js.org/CS_basics/cheatsheets/2_pointers.zh.html
-		- `模板 2：兩端向內收斂的雙指標`
+- Binary Search
+	- https://yennj12.js.org/CS_basics/cheatsheets/binary_search.zh.html
+		- `應用：Search Insert Position (LC 35)`
 
 
 
@@ -105,7 +105,9 @@
 
 - OK:
 	- Array.md
-	- Hash Map Cheatsheet（雜湊表速查
+	- Hash Map Cheatsheet（雜湊表速查)
+	- 雙指標
+	- 滑動視窗
 
 
 - Others
