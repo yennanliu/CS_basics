@@ -602,7 +602,21 @@ partition 都會 — 都會被它無聲地清成 0。**用一個暫存變數。*
 | 「1 的個數相同的下一個數字」 | 翻轉最右邊的非尾端 0，再重新排好那些 1 | [位元欄位手術](./bit_manipulation_examples.md#bit-field-surgery) |
 | 「兩個數字的最大 XOR」 | 二元字典樹 — 見 [trie.md](./trie.md) | — |
 
-<!-- 2d37034aeb5b -->
+<!-- 6bb65baf7e94 -->
+### 讓位元運算題掛掉的五個 bug
+
+1. **對負的 `int` 跑 `while (x != 0) x >>= 1`** — 算術右移會一直補 1 進來。
+   Java 要用 `>>>`，Python 要改成 `for i in range(32)`。（[§0-5](#0-5-shifts-left-arithmetic-right-and-logical-right)、[§0-6](#0-6-python-is-not-java-here-)）
+2. **少了括號** — 要寫 `(x & 1) == 0`，絕不要寫 `x & 1 == 0`。（[§0-7](#0-7-precedence--parenthesise-everything-)）
+3. **`Integer.MIN_VALUE` 沒有對應的正數** — `Math.abs` 和一元 `-` 算完都還是它本身，
+   所以「先取負再相除」會無聲地壞掉。（[§0-3](#0-3-twos-complement--how-negatives-are-stored-)）
+4. **`1 << 31` 是符號位，而且 `1 << 32 == 1`** — `1 << 31` 就是 `Integer.MIN_VALUE`，
+   當作第 31 位的遮罩仍然正確，但它不是正數 `2^31`；Java 會把 `int` 的位移量取低 5 位、
+   `long` 的取低 6 位（`1L << 64 == 1`），所以 `i` 在 32..63，或需要 `2^31` 這個數值時，要用 `1L << i`。（[§0-2](#0-2-fixed-width--an-int-is-a-32-bit-box)、[§0-5](#0-5-shifts-left-arithmetic-right-and-logical-right)）
+5. **把 32 位元的迴圈原封不動搬到 Python** — Python 永遠不會溢位，所以每一步都要
+   `& 0xFFFFFFFF`，最後還要把結果轉回有號數。（[§0-6](#0-6-python-is-not-java-here-)）
+
+<!-- stale: 2d37034aeb5b -->
 ### 讓位元運算題掛掉的五個 bug
 
 1. **對負的 `int` 跑 `while (x != 0) x >>= 1`** — 算術右移會一直補 1 進來。
