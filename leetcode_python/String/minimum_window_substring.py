@@ -43,50 +43,108 @@ Follow up: Could you find an algorithm that runs in O(m + n) time?
 """
 
 # V0
+# IDEA: SLIDE WINDOW + COUNTER (hashmap)
+from collections import Counter
+
+class Solution(object):
+    def minWindow(self, s, t):
+        """
+        :type s: str
+        :type t: str
+        :rtype: str
+        """
+        # edge cases
+        if not s or not t or len(t) > len(s):
+            return ""
+
+        cnt_t = Counter(t)
+        cnt_s = Counter()
+
+        n = len(s)
+
+        l = 0
+        ans = ""
+
+        for r in range(n):
+            val_r = s[r]
+
+            # Add current character into window
+            cnt_s[val_r] += 1
+
+            # Try to shrink the window
+            while self.is_valid(cnt_s, cnt_t):
+
+                # Update answer BEFORE removing s[l]
+                if not ans or r - l + 1 < len(ans):
+                    ans = s[l:r + 1]
+
+                # Remove left character
+                val_l = s[l]
+                cnt_s[val_l] -= 1
+                l += 1
+
+        return ans
+
+    def is_valid(self, cnt_s, cnt_t):
+        for k in cnt_t:
+            if cnt_s[k] < cnt_t[k]:
+                return False
+
+        return True
+
+
 
 # V0-1
-# TODO : FIX BELOW
-# from collections import Counter
-# class Solution(object):
-#     def check(self, x, y):
-#         for key in y.keys():
-#             if x[key] < y[key]:
-#                 return False
-#         return True
-#   
-#     def minWindow(self, s, t):
-#         if len(t) > len(s):
-#             return ""
-#         if len(t) == len(s):
-#             return s if Counter(s) == Counter(t) else ""
-#       
-#         t_cnt = Counter(t)
-#         s_cnt = Counter()
-#         tmp = []
-#         res = []
-#
-#         for i in range(len(s)):
-#             tmp = []
-#             for j in range(i,len(s)):
-#                 #print ("i = " + str(i) + " j = " + str(j) + " s_cnt = " + str(s_cnt))
-#                 if s[j] in t:
-#                     #if 
-#                     s_cnt[s[j]] += 1
-#                 tmp.append(s[j])
-#                 #if s_cnt == t_cnt:
-#                 if self.check(s_cnt, t_cnt):
-#                     res.append([j-i+1, "".join(tmp)])
-#                     tmp = []
-#                     s_cnt = Counter()
-#                     break
-#
-#         _res =  [item for item in res if len(item[1]) >= len(t)]
-#         _res.sort(key = lambda x : x[0] )
-#     
-#         if len(_res) == 0:
-#             return ""
-#        
-#         return _res[0][1]
+# IDEA: SLIDE WINDOW + COUNTER (hashmap)
+
+from collections import Counter
+
+
+class Solution(object):
+
+  def minWindow(self, s, t):
+    """:type s: str :type t: str :rtype: str"""
+    if not s or not t or len(s) < len(t):
+      return ""
+
+    # 統計 t 中每個字元的所需頻率
+    dict_t = Counter(t)
+    required = len(dict_t)  # t 中不重複字元的總種類數
+
+    # 當前視窗中滿足 dict_t 頻率要求的字元種類數
+    formed = 0
+    window_counts = {}
+
+    # 記錄最小視窗的 (長度, left, right)
+    ans = float("inf"), None, None
+
+    l = 0
+    for r in range(len(s)):
+      c = s[r]
+      window_counts[c] = window_counts.get(c, 0) + 1
+
+      # 如果當前字元的數量符合 t 中的要求，formed 數值加 1
+      if c in dict_t and window_counts[c] == dict_t[c]:
+        formed += 1
+
+      # 當視窗已經包含了所有 t 所需的字元，嘗試從左側收縮以尋找更短的子字串
+      while l <= r and formed == required:
+        character = s[l]
+
+        # 更新目前找到的最小視窗
+        if (r - l + 1) < ans[0]:
+          ans = (r - l + 1, l, r)
+
+        # 左邊界字元即將移出視窗
+        window_counts[character] -= 1
+        if character in dict_t and window_counts[character] < dict_t[character]:
+          formed -= 1
+
+        l += 1
+
+    return "" if ans[0] == float("inf") else s[ans[1] : ans[2] + 1]
+
+
 
 # V1
 # IDEA : SLIDING WINDOW
