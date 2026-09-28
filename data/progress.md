@@ -69,7 +69,7 @@
 
 - Binary Search
 	- https://yennj12.js.org/CS_basics/cheatsheets/binary_search.zh.html
-		- `1.4) 對答案空間做二分搜尋`
+		- `相似題目：同樣是 tails + lower bound`
 
 
 
