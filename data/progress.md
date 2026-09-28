@@ -67,9 +67,8 @@
 	- https://yennj12.js.org/CS_basics/cheatsheets/complexity_cheatsheet.html
 
 
-- Binary Search
-	- https://yennj12.js.org/CS_basics/cheatsheets/binary_search.zh.html
-		- `相似題目：同樣是 tails + lower bound`
+- 二元樹
+	- https://yennj12.js.org/CS_basics/cheatsheets/binary_tree.zh.html
 
 
 
@@ -108,6 +107,9 @@
 	- Hash Map Cheatsheet（雜湊表速查)
 	- 雙指標
 	- 滑動視窗
+	- Binary Search
+
+
 
 
 - Others
