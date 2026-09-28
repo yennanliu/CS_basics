@@ -58,7 +58,7 @@
 	- review all `cheatsheets`
 
 
-- LeetCode Pattern Guide
+- LeetCode Patterns Guide
 	- https://yennj12.js.org/CS_basics/cheatsheets/lc_pattern.zh.html
 		- `🔹 7. 堆積與優先佇列`
 
@@ -69,7 +69,7 @@
 
 - Binary Search
 	- https://yennj12.js.org/CS_basics/cheatsheets/binary_search.zh.html
-		- `應用：Search Insert Position (LC 35)`
+		- `1.4) 對答案空間做二分搜尋`
 
 
 
