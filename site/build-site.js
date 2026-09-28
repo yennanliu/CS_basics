@@ -810,7 +810,9 @@ const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '', o
   <link rel="stylesheet" href="${basePath}vendor/highlight/atom-one-dark.min.css">
   <!-- Blocking on purpose: nav.js restores the stored theme before first paint. -->
   <script src="${basePath}nav.js"></script>
-  <script src="${basePath}site.js"></script>
+  <script src="${basePath}site.js"></script>${
+    (opts.scripts || []).map(s => `\n  <script src="${basePath}${s}" defer></script>`).join('')
+  }
 </head>
 <body>
   <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
@@ -962,7 +964,7 @@ const ENTRY_GROUPS = [
   ]],
   ['Look something up', 'The index the rest of it is built from.', [
     ['problems.html', 'Problem index',
-     'The full README table — every problem, its solutions, its tags and its status.'],
+     'The whole README — every problem, its solutions, its tags and its status — filtered as you type.'],
     ['lc-similar.html', 'Similar problems',
      'The graph of which problems share a technique, so a solved one points at its siblings.'],
     ['search.html', 'Search',
@@ -1179,11 +1181,59 @@ fs.writeFileSync('_site/index.html', htmlTemplate('Home', landingContent, 'home'
 }));
 console.log(`✓ Created index.html (landing page, ${readmeProblems.size} problems indexed)`);
 
-fs.writeFileSync('_site/problems.html', htmlTemplate('Problem Index', content, 'problems', '', {
+// ── The problem index's filter bar ───────────────────────────────────────────
+//
+// problems.html carries the whole README because nothing else can: GitHub stops
+// rendering markdown at 512 KB and README passed 1.1 MB, so the index is
+// truncated everywhere except here. The cost of that is a 1.8 MB page in which
+// finding LC 239 meant Ctrl-F and landing on whichever of its four rows came
+// first.
+//
+// The bar below is the markup only; site/problems-filter.js does the work, and
+// ships the bar hidden until it boots so a reader without JavaScript still gets
+// the plain, complete index rather than a search box that does nothing.
+//
+// Counted, never typed — same rule as the landing page's stats.
+const problemRowCount = (content.match(/<tbody>[\s\S]*?<\/tbody>/g) || [])
+  .reduce((n, body) => n + (body.match(/<tr>/g) || []).length, 0);
+
+const FACETS = [
+  ['Difficulty', 'difficulty', [['Easy', 'easy'], ['Medium', 'medium'], ['Hard', 'hard']]],
+  ['Status', 'status', [['OK', 'ok'], ['AGAIN', 'again'], ['Not started', 'todo']]],
+  ['', 'must', [['MUST', '']]]
+];
+
+const filterBar = `
+<div class="pf" id="problem-filter" data-pf-chrome hidden>
+  <div class="pf-search">
+    <input type="search" id="q" class="pf-input" autocomplete="off" spellcheck="false"
+      aria-label="Filter the problem index"
+      placeholder="Filter ${problemRowCount.toLocaleString('en-US')} rows — number, title, topic, tag, language…">
+    <span class="pf-count" id="pf-count" role="status"></span>
+  </div>
+  <div class="pf-facets">
+    ${FACETS.map(([label, facet, values]) => `
+    <span class="pf-group"${label ? ` role="group" aria-label="${label}"` : ''}>
+      ${label ? `<span class="pf-label">${label}</span>` : ''}
+      ${values.map(([text, value]) =>
+        `<button type="button" class="pf-chip" data-facet="${facet}"${
+          value ? ` data-value="${value}"` : ''
+        } aria-pressed="false">${text}</button>`).join('')}
+    </span>`).join('')}
+    <button type="button" class="pf-clear" id="pf-clear" hidden>clear</button>
+  </div>
+  <p class="pf-hint">A bare number matches that problem number exactly; anything else matches
+    anywhere in the row, including its section. Press <kbd>/</kbd> to jump here.</p>
+</div>
+<p class="pf-empty" id="pf-empty" data-pf-chrome hidden>No rows match. Try fewer words, or <a href="search.html">search the whole site</a>.</p>
+`;
+
+fs.writeFileSync('_site/problems.html', htmlTemplate('Problem Index', filterBar + content, 'problems', '', {
   url: 'problems.html',
+  scripts: ['problems-filter.js'],
   description: `All ${readmeProblems.size} LeetCode problems in this repo, by topic, with links to the Java, Python and SQL solutions and the tags each one carries.`
 }));
-console.log('✓ Created problems.html (the README index)');
+console.log(`✓ Created problems.html (the README index, ${problemRowCount} filterable rows)`);
 
 if (resourceContent) {
   fs.writeFileSync('_site/resources.html', htmlTemplate('Resources', resourceContent, 'resources', '', {
