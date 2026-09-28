@@ -70,6 +70,7 @@
 
 - BFS（廣度優先搜尋）
 	- https://yennj12.js.org/CS_basics/cheatsheets/bfs.zh.html
+		- `Pattern 3.2：搭配方向陣列的格子 BFS — LC 1091`
 
 
 - 雜湊表 — 題目詳解
