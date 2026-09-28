@@ -41,7 +41,164 @@ lists[i] is sorted in ascending order.
 The sum of lists[i].length won't exceed 10^4.
 
 """
+
+
+
 # V0
+# IDEA: LINKED LIST OP + merge on pair (gpt)
+class Solution(object):
+    def mergeKLists(self, lists):
+        """
+        :type lists: List[Optional[ListNode]]
+        :rtype: Optional[ListNode]
+        """
+        # edge cases
+        if not lists:
+            return None
+
+        if len(lists) == 1:
+            return lists[0]
+
+        n = len(lists)
+
+        # Merge lists pair by pair
+        for i in range(0, n, 2):
+
+            first = lists[i]
+
+            # If there is no second list,
+            # keep the first list as-is.
+            if i + 1 >= n:
+                second = None
+            else:
+                second = lists[i + 1]
+
+            lists[i] = self.mergeTwoLists(first, second)
+
+        # Now merge all merged lists together
+        result = lists[0]
+
+        for i in range(2, n, 2):
+            result = self.mergeTwoLists(result, lists[i])
+
+        return result
+
+    def mergeTwoLists(self, first, second):
+        dummy = ListNode(0)
+        curr = dummy
+
+        while first and second:
+
+            if first.val <= second.val:
+                curr.next = first
+                first = first.next
+            else:
+                curr.next = second
+                second = second.next
+
+            curr = curr.next
+
+        # Attach remaining nodes
+        if first:
+            curr.next = first
+        else:
+            curr.next = second
+
+        return dummy.next
+
+
+
+# V0-1
+# IDEA: LINKED LIST OP +  Divide & Conquer (gpt)
+class Solution(object):
+    def mergeKLists(self, lists):
+        """
+        :type lists: List[Optional[ListNode]]
+        :rtype: Optional[ListNode]
+        """
+        # edge case
+        if not lists:
+            return None
+
+        # Merge lists pair by pair
+        interval = 1
+
+        while interval < len(lists):
+
+            for i in range(0, len(lists) - interval, interval * 2):
+
+                lists[i] = self.mergeTwoLists(
+                    lists[i],
+                    lists[i + interval]
+                )
+
+            interval *= 2
+
+        return lists[0]
+
+    def mergeTwoLists(self, first, second):
+
+        dummy = ListNode(0)
+        curr = dummy
+
+        while first and second:
+
+            if first.val <= second.val:
+                curr.next = first
+                first = first.next
+            else:
+                curr.next = second
+                second = second.next
+
+            curr = curr.next
+
+        # Attach remaining nodes
+        if first:
+            curr.next = first
+        else:
+            curr.next = second
+
+        return dummy.next
+
+
+
+# V0-3
+# IDEA: PQ (gemini)
+import heapq
+
+
+class Solution(object):
+
+  def mergeKLists(self, lists):
+    """:type lists: List[Optional[ListNode]] :rtype: Optional[ListNode]"""
+    if not lists:
+      return None
+
+    dummy = ListNode(0)
+    curr = dummy
+    min_heap = []
+
+    # 1. 將所有非空鏈結串列的頭節點放入 min-heap
+    # 放入 (node.val, i, node) 以避免 node 本身無法比較的 Type Error
+    for i, l in enumerate(lists):
+      if l:
+        heapq.heappush(min_heap, (l.val, i, l))
+
+    # 2. 持續彈出最小值並推進下一個節點
+    while min_heap:
+      val, i, node = heapq.heappop(min_heap)
+
+      curr.next = node
+      curr = curr.next
+
+      # 如果該節點後面還有節點，將其推入 heap 中
+      if node.next:
+        heapq.heappush(min_heap, (node.next.val, i, node.next))
+
+    return dummy.next
+
+
+# V0-5
 # IDEA : LC 021 + implement mergeTwoLists on each of the 2 linked list
 # time = O(k * n), k = number of lists, n = total number of nodes
 # space = O(1)
