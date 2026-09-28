@@ -1,21 +1,21 @@
 # LeetCode Practice List (2025-2026) - By Category
 
-**Total Unique Problems: 225**
+**Total Unique Problems: 226**
 
 Generated from: `data/progress.md`
-Date: 2026-09-21
+Date: 2026-09-28
 
 ---
 
 ## Table of Contents
 
-- [Array](#array) (18 problems)
+- [Array](#array) (17 problems)
 - [Backtracking](#backtracking) (9 problems)
 - [Binary Search](#binary-search) (10 problems)
-- [Binary Search Tree](#binary-search-tree) (6 problems)
+- [Binary Search Tree](#binary-search-tree) (5 problems)
 - [Breadth-First-Search](#breadth-first-search) (18 problems)
 - [Depth-First-Search](#depth-first-search) (16 problems)
-- [Design](#design) (4 problems)
+- [Design](#design) (5 problems)
 - [Dynamic Programming](#dynamic-programming) (26 problems)
 - [Graph](#graph) (4 problems)
 - [Greedy](#greedy) (8 problems)
@@ -24,11 +24,11 @@ Date: 2026-09-21
 - [Linked List](#linked-list) (6 problems)
 - [Math](#math) (9 problems)
 - [Queue](#queue) (2 problems)
-- [Recursion](#recursion) (10 problems)
+- [Recursion](#recursion) (11 problems)
 - [Set](#set) (1 problems)
 - [Sort](#sort) (2 problems)
 - [Stack](#stack) (14 problems)
-- [String](#string) (7 problems)
+- [String](#string) (8 problems)
 - [Tree](#tree) (18 problems)
 - [Two Pointers](#two-pointers) (9 problems)
 - [Prefix Sum](#prefix-sum) (2 problems)
@@ -38,10 +38,10 @@ Date: 2026-09-21
 
 ## Array
 
-**Count: 18**
+**Count: 17**
 
-10, 31, 41, 215, 251, 334, 442, 670, 729, 731
-732, 918, 921, 947, 1094, 1109, 1567, 2018
+31, 41, 215, 251, 334, 442, 670, 729, 731, 732
+918, 921, 947, 1094, 1109, 1567, 2018
 
 ---
 
@@ -63,9 +63,9 @@ Date: 2026-09-21
 
 ## Binary Search Tree
 
-**Count: 6**
+**Count: 5**
 
-220, 449, 450, 776, 968, 1382
+449, 450, 776, 968, 1382
 
 ---
 
@@ -89,9 +89,9 @@ Date: 2026-09-21
 
 ## Design
 
-**Count: 4**
+**Count: 5**
 
-146, 380, 1268, 1825
+146, 380, 1268, 1825, 2043
 
 ---
 
@@ -164,9 +164,10 @@ Date: 2026-09-21
 
 ## Recursion
 
-**Count: 10**
+**Count: 11**
 
-95, 108, 109, 114, 116, 117, 129, 298, 337, 669
+10, 95, 108, 109, 114, 116, 117, 129, 298, 337
+669
 
 ---
 
@@ -197,9 +198,9 @@ Date: 2026-09-21
 
 ## String
 
-**Count: 7**
+**Count: 8**
 
-5, 161, 524, 647, 678, 680, 809
+5, 161, 524, 647, 678, 680, 809, 2048
 
 ---
 
@@ -242,24 +243,24 @@ These problems were not found in the leetcode_python or leetcode_java directory 
 
 | Category | Count | Percentage |
 |----------|-------|------------|
-| Dynamic Programming | 26 | 11.6% |
-| Array | 18 | 8.0% |
+| Dynamic Programming | 26 | 11.5% |
 | Tree | 18 | 8.0% |
 | Breadth-First-Search | 18 | 8.0% |
+| Array | 17 | 7.5% |
 | Depth-First-Search | 16 | 7.1% |
 | Hash Table | 14 | 6.2% |
 | Stack | 14 | 6.2% |
+| Recursion | 11 | 4.9% |
 | Binary Search | 10 | 4.4% |
-| Recursion | 10 | 4.4% |
 | Heap | 10 | 4.4% |
 | Two Pointers | 9 | 4.0% |
 | Backtracking | 9 | 4.0% |
 | Math | 9 | 4.0% |
-| Greedy | 8 | 3.6% |
-| String | 7 | 3.1% |
+| String | 8 | 3.5% |
+| Greedy | 8 | 3.5% |
 | Linked List | 6 | 2.7% |
-| Binary Search Tree | 6 | 2.7% |
-| Design | 4 | 1.8% |
+| Design | 5 | 2.2% |
+| Binary Search Tree | 5 | 2.2% |
 | Graph | 4 | 1.8% |
 | Sort | 2 | 0.9% |
 | Queue | 2 | 0.9% |
