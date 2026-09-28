@@ -77,6 +77,11 @@ NOTE !!!
 
     - step 4) update max val in window (when size == k)
 
+
+
+3. NO need to mantain a `tmp` array
+    
+    -> a big PQ + slide window can solve this LC
 """
 
 import heapq
@@ -101,6 +106,14 @@ class Solution(object):
         if k >= n:
             return [max(nums)]
 
+        """
+        NOTE !!!
+
+
+        PQ structure
+
+            -> save value and `index` on the same time
+        """
         # Max heap:
         # (-value, index)
         big_pq = []
@@ -109,28 +122,45 @@ class Solution(object):
 
         l = 0
 
+
+        """
+        NO need to mantain a `tmp` array
+    
+            -> a big PQ + slide window can solve this LC
+        """
+
+
+        # Step 1) loop over nums (right pointer)
         for r in range(n):
 
+
+            # Step 2) add to PQ
             # Add current element
             heapq.heappush(
                 big_pq,
                 (-nums[r], r)
             )
 
+            # Step 3) update window
             # Move left boundary
             while r - l + 1 > k:
                 l += 1
 
+
+            # Step 4) remove `out of boundary` elements from PQ
             # Remove stale elements
             # Their index is outside current window.
             while big_pq and big_pq[0][1] < l:
                 heapq.heappop(big_pq)
 
+
+            # Step 5) update res
             # Current maximum
             if r - l + 1 == k:
                 res.append(-big_pq[0][0])
 
         return res
+
 
 
 # V0-0-1
