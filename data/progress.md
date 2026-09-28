@@ -67,9 +67,9 @@
 	- https://yennj12.js.org/CS_basics/cheatsheets/complexity_cheatsheet.html
 
 
-- 二元樹
-	- https://yennj12.js.org/CS_basics/cheatsheets/binary_tree.zh.html
 
+- BFS（廣度優先搜尋）
+	- https://yennj12.js.org/CS_basics/cheatsheets/bfs.zh.html
 
 
 - 雜湊表 — 題目詳解
@@ -108,6 +108,7 @@
 	- 雙指標
 	- 滑動視窗
 	- Binary Search
+	- 二元樹
 
 
 
