@@ -230,3 +230,94 @@ class Solution(object):
             else:
                 lo = mid + 1
         return lo
+
+
+# V1-1
+# IDEA: BINARY SEARCH
+# https://leetcode.com/problems/minimized-maximum-of-products-distributed-to-any-store/editorial/
+class Solution:
+    def can_distribute(self, x: int, quantities: List[int], n: int) -> bool:
+        # Pointer to the first not fully distributed product type
+        j = 0
+        # Remaining quantity of the jth product type
+        remaining = quantities[j]
+
+        # Loop through each store
+        for i in range(n):
+            # Check if the remaining quantity of the jth product type
+            # can be fully distributed to the ith store
+            if remaining <= x:
+                # If yes, move the pointer to the next product type
+                j += 1
+                # Check if all products have been distributed
+                if j == len(quantities):
+                    return True
+                else:
+                    remaining = quantities[j]
+            else:
+                # Distribute the maximum possible quantity (x) to the ith store
+                remaining -= x
+
+        return False
+
+    def minimizedMaximum(self, n: int, quantities: List[int]) -> int:
+        # Initialize the boundaries of the binary search
+        left = 0
+        right = max(quantities)
+
+        # Perform binary search until the boundaries converge
+        while left < right:
+            middle = (left + right) // 2
+            if self.can_distribute(middle, quantities, n):
+                # Try for a smaller maximum
+                right = middle
+            else:
+                # Increase the minimum possible maximum
+                left = middle + 1
+
+        return left
+
+
+# V1-1
+# IDEA: Greedy Approach Using a Heap (PQ)
+# https://leetcode.com/problems/minimized-maximum-of-products-distributed-to-any-store/editorial/
+class Solution:
+    def minimizedMaximum(self, n, quantities):
+        m = len(quantities)
+
+        # Create a list of tuples (-ratio, quantity, stores_assigned)
+        type_store_pairs = [(-q, q, 1) for q in quantities]
+
+        # Use heapq.heapify() to convert the list into a heap in O(m) time
+        heapq.heapify(type_store_pairs)
+
+        # Iterate over the remaining n - m stores
+        for _ in range(n - m):
+            # Pop the element with the maximum ratio (due to negative sign it's min-heap)
+            (
+                neg_ratio,
+                total_quantity_of_type,
+                stores_assigned_to_type,
+            ) = heapq.heappop(type_store_pairs)
+
+            # Calculate the new ratio after assigning one more store
+            new_stores_assigned_to_type = stores_assigned_to_type + 1
+            new_ratio = total_quantity_of_type / new_stores_assigned_to_type
+
+            # Push the updated pair back into the heap
+            heapq.heappush(
+                type_store_pairs,
+                (
+                    -new_ratio,
+                    total_quantity_of_type,
+                    new_stores_assigned_to_type,
+                ),
+            )
+
+        # Pop the first element to get the final ratio
+        _, total_quantity_of_type, stores_assigned_to_type = heapq.heappop(
+            type_store_pairs
+        )
+
+        # Return the maximum minimum ratio
+        return math.ceil(total_quantity_of_type / stores_assigned_to_type)
