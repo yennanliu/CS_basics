@@ -80,3 +80,88 @@ class Solution(object):
             else:
                 lo = mid + 1
         return lo
+
+
+# V0-1
+# IDEA: BINARY SEARCH (GPT)
+class Solution(object):
+    def minimizedMaximum(self, n, quantities):
+        """
+        :type n: int
+        :type quantities: List[int]
+        :rtype: int
+        """
+        # edge
+        if n == 1 and len(quantities) == 1:
+            return quantities[0]
+
+        if n == 1 and len(quantities) > 1:
+            # can't allocate
+            return -1
+
+        # no prodcut to allocate
+        if not quantities or len(quantities) == 0:
+            return 0
+
+        # binary search
+        # ??
+        l = 1
+        r = max(quantities)
+
+        # ???
+        ans = r
+
+        # >=
+        while r >= l:
+            mid = l + (r - l) // 2
+
+            # find max allocated prod cnt
+            cnt, max_prod = self.can_allocate(mid, n, quantities)
+
+            if cnt <= n:
+                ans = min(ans, max_prod)
+
+                # try smaller candidates
+                r = mid - 1
+            else:
+                l = mid + 1
+
+        return ans
+
+    def can_allocate(self, prod_per_store, n, quantities):
+        # ??
+        max_prod = 0
+        cnt = 0
+
+        print(">>> prod_per_store = " + str(prod_per_store))
+
+        for prod_cnt in quantities:
+            # print(">>> prod_cnt = " + str(prod_cnt) + ", prod_per_store = " + str(prod_per_store))
+
+            if prod_cnt > prod_per_store:
+                """
+                prod_per_store = 11
+
+                ->
+                prod_cnt = 11, group = 1, remain = 0
+                prod_cnt = 6, group = 0, remain = 6
+                """
+                group = prod_cnt // prod_per_store
+                remain = prod_cnt % prod_per_store
+
+                max_prod = max(max_prod, prod_per_store)
+
+                cnt += group
+
+                if remain > 0:
+                    cnt += 1
+
+                # print(">>> group = " + str(group) + ", reamin = " + str(remain) + ", prod_cnt = " + str(prod_cnt) + ", prod_per_store = " + str(prod_per_store) + ", cnt = " + str(cnt))
+
+            else:
+                max_prod = max(max_prod, prod_cnt)
+                cnt += 1
+
+                # print("cnt = " + str(cnt))
+
+        return cnt, max_prod
