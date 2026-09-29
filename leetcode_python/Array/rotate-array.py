@@ -37,7 +37,40 @@ Could you do it in-place with O(1) extra space?
 
 """
 
+
 # V0
+# IDEA: MATH + ARRAY OP (gpt)
+class Solution(object):
+    def rotate(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: None
+        """
+
+        # Edge case
+        if not nums or len(nums) <= 1:
+            return
+
+        n = len(nums)
+
+        # k can be larger than n
+        k = k % n
+
+
+        """
+        NOTE !!!
+
+
+        -> we need to modify the array `in place`
+
+            -> e.g. CAN'T create a new array
+        """
+        # Rotate right by k positions
+        nums[:] = nums[n - k:] + nums[:n - k]
+
+
+# V0-0-1
 # IDEA: MATH (GPT)
 """
 KEY IDEA:
@@ -302,6 +335,38 @@ class Solution(object):
     def rotate(self, nums, k):
         k = k % len(nums) # since the rotate operation is cyclic. i.e. if len(nums)=7, k=17 -> rotate(17) = rotate(17%7) = rotate(3)
         nums[:k], nums[k:] = nums[len(nums)-k:], nums[:len(nums)-k]
+
+
+# V0-12
+# IDEA: in place REVERSE (gemini)
+class Solution(object):
+
+  def rotate(self, nums, k):
+    """:type nums: List[int] :type k: int :rtype: None Do not return anything, modify nums in-place instead."""
+    if not nums:
+      return
+
+    n = len(nums)
+    k = k % n  # 防止 k 大於陣列長度
+    if k == 0:
+      return
+
+    # 定義一個內部輔助函式，用雙指標在原地反轉指定的區間 [start, end]
+    def reverse(start, end):
+      while start < end:
+        nums[start], nums[end] = nums[end], nums[start]
+        start += 1
+        end -= 1
+
+    # 1. 反轉整個陣列
+    reverse(0, n - 1)
+
+    # 2. 反轉前 k 個元素
+    reverse(0, k - 1)
+
+    # 3. 反轉剩餘的 n - k 個元素
+    reverse(k, n - 1)
+
 
 # V1
 # https://blog.csdn.net/coder_orz/article/details/52052767

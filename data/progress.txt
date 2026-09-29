@@ -1,4 +1,4 @@
-20260929: top 100 like(misc): 189, 238, 287 | top 100 like(trie): 208 | top 100 like(2 pointers): 15(again), 42 | top 100 like(linked list):  25 | top 100 like(heap):  295 | top 100 like(graph):  | top 100 like(dp): 32, 300 | top 100 like (binary tree): | others: 678(todo), 738(todo), 316(todo), 402(todo), 357(dp, todo), 300, 2D LIS (354), 460(todo), 710(todo), 27(todo), 26(todo)| DP: wildcard: 97(todo)| 
+20260929: top 100 like(misc): 189(again), 238, 287 | top 100 like(trie): 208 | top 100 like(2 pointers): 15(again), 42 | top 100 like(linked list):  25 | top 100 like(heap):  295 | top 100 like(graph):  | top 100 like(dp): 32, 300 | top 100 like (binary tree): | others: 678(todo), 738(todo), 316(todo), 402(todo), 357(dp, todo), 300, 2D LIS (354), 460(todo), 710(todo), 27(todo), 26(todo)| DP: wildcard: 97(todo)| 
 
 
 
