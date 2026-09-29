@@ -1,12 +1,12 @@
 # Progress
 
 
-# 2026-09-29
+# 2026-09-30
 
 - TODO:
 	- `must_lc_list.md` -> done
 
-	- LC Top 100 like
+	- LC Top 100 like -> done
 		- https://leetcode.com/studyplan/top-100-liked/
 			- backtrack (done)
 			- binary search (done)
@@ -22,7 +22,7 @@
 			- stack (done)
 			- 2 pointers (done)
 			- trie (ing)
-			- misc (ing)
+			- misc (done)
 			
 
 
@@ -31,6 +31,12 @@
 		- review chearsheet:
 			- https://github.com/yennanliu/CS_basics/pull/140
 				- dp_bitmask.md
+
+
+
+
+
+
 
 	- LC weekly
 		- `data/lc_weekly/lc_weekly_gpt.md`
