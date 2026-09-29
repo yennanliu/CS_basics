@@ -58,6 +58,7 @@ At most 2 * 105 calls will be made to get and put.
 """
 NOTE !!!
 
+1.
     custom class:
 
         k: int (init val = 0)
@@ -65,6 +66,18 @@ NOTE !!!
 
         prev: MyNode
         next: MyNode
+
+
+
+
+2. hashmap value is `MyNode` type
+
+    -> # {key: Node}
+
+
+
+3. need `remove`, `add_to_end` helper method
+
 """
 class MyNode(object):
 
@@ -118,6 +131,29 @@ class LRUCache(object):
         # {key: Node}
         self.kv_map = {}
 
+        """
+
+        NOTE !!!
+
+
+        self.head 和 self.tail 都是 `虛擬`節點（Dummy Nodes / 哨兵節點
+
+
+        -> 
+
+        so when we remove node from head,
+        we need the `self.head.next` node
+        as the correct node to deal with.
+
+        -> e.g.
+
+            ```
+            lru_node = self.head.next
+
+            self.remove(lru_node)
+            ```
+
+        """
         # Dummy head / tail
         self.head = MyNode()
         self.tail = MyNode()
@@ -199,6 +235,124 @@ class LRUCache(object):
         """
         Add node before dummy tail.
         """
+        prev_node = self.tail.prev
+
+        prev_node.next = node
+        node.prev = prev_node
+
+        node.next = self.tail
+        self.tail.prev = node
+
+
+# V0-0-0-1
+# IDEA:  custom class + HASHMAP + doubly linked list ( most recent used + least recent used ) (GPT)
+class MyNode(object):
+
+    def __init__(self, key=0, value=0):
+        self.key = key
+        self.value = value
+
+        self.prev = None
+        self.next = None
+
+
+class LRUCache(object):
+
+    def __init__(self, capacity):
+        """
+        :type capacity: int
+        """
+        self.capacity = capacity
+
+        # {key: MyNode}
+        self.kv_map = {}
+
+        # Dummy head / tail
+        self.head = MyNode()
+        self.tail = MyNode()
+
+        self.head.next = self.tail
+        self.tail.prev = self.head
+
+
+    def get(self, key):
+        """
+        :type key: int
+        :rtype: int
+        """
+
+        if key not in self.kv_map:
+            return -1
+
+        node = self.kv_map[key]
+
+        # This key is recently used.
+        # Move it to the end (MRU position).
+        self.remove(node)
+        self.add_to_end(node)
+
+        return node.value
+
+
+    def put(self, key, value):
+        """
+        :type key: int
+        :type value: int
+        :rtype: None
+        """
+
+        # Case 1: key already exists
+        if key in self.kv_map:
+
+            node = self.kv_map[key]
+
+            # Update value
+            node.value = value
+
+            # This key becomes recently used.
+            self.remove(node)
+            self.add_to_end(node)
+
+            return
+
+        # Case 2: new key
+        node = MyNode(key, value)
+
+        # HashMap: key -> node
+        self.kv_map[key] = node
+
+        # Add to MRU position
+        self.add_to_end(node)
+
+        # Cache is over capacity.
+        if len(self.kv_map) > self.capacity:
+
+            # The first real node is LRU.
+            lru_node = self.head.next
+
+            self.remove(lru_node)
+
+            # Remove from HashMap too.
+            del self.kv_map[lru_node.key]
+
+
+    def remove(self, node):
+        """
+        Remove node from the linked list.
+        """
+
+        prev_node = node.prev
+        next_node = node.next
+
+        prev_node.next = next_node
+        next_node.prev = prev_node
+
+
+    def add_to_end(self, node):
+        """
+        Add node before dummy tail.
+        """
+
         prev_node = self.tail.prev
 
         prev_node.next = node
@@ -462,6 +616,80 @@ class LRUCache(object):
       new_node = DNode(key, value)
       self._add_to_head(new_node)
       self.k_v_map[key] = new_node
+
+
+# V0-0-3
+# IDEA:  HASHMAP + doubly linked list ( most recent used + least recent used ) (gemini)
+class MyNode(object):
+
+  def __init__(self, key=0, value=0):
+    self.prev = None
+    self.next = None
+    self.key = key
+    self.value = value
+
+
+class LRUCache(object):
+
+  def __init__(self, capacity):
+    """:type capacity: int"""
+    self.capacity = capacity
+    self.kv_map = {}  # 存放 key -> MyNode 物件的對應
+
+    # 建立偽頭部 (head) 與偽尾部 (tail) 作為哨兵節點，免去繁瑣的邊界判斷
+    self.head = MyNode()
+    self.tail = MyNode()
+    self.head.next = self.tail
+    self.tail.prev = self.head
+
+  def _remove(self, node):
+    """內部輔助函式：從雙向鏈結串列中拔除指定節點"""
+    prev_node = node.prev
+    next_node = node.next
+
+    prev_node.next = next_node
+    next_node.prev = prev_node
+
+  def _add_to_head(self, node):
+    """內部輔助函式：將節點安插在 head 的後方（代表最近剛被使用）"""
+    node.prev = self.head
+    node.next = self.head.next
+
+    self.head.next.prev = node
+    self.head.next = node
+
+  def get(self, key):
+    """:type key: int :rtype: int"""
+    if key not in self.kv_map:
+      return -1
+
+    node = self.kv_map[key]
+    # 訪問過後，將其移到最前方（標示為最近使用）
+    self._remove(node)
+    self._add_to_head(node)
+
+    return node.value
+
+  def put(self, key, value):
+    """:type key: int :type value: int :rtype: None"""
+    if key in self.kv_map:
+      # Case 1: key 已存在，更新數值並移到最前方
+      node = self.kv_map[key]
+      node.value = value
+      self._remove(node)
+      self._add_to_head(node)
+    else:
+      # Case 2: key 不存在，檢查是否超出容量
+      if len(self.kv_map) >= self.capacity:
+        # 移除最久未使用的節點（即 tail 前方的節點）
+        lru = self.tail.prev
+        self._remove(lru)
+        del self.kv_map[lru.key]
+
+      # 建立新節點並掛載到最前方
+      new_node = MyNode(key, value)
+      self.kv_map[key] = new_node
+      self._add_to_head(new_node)
 
 
 # V0-1
