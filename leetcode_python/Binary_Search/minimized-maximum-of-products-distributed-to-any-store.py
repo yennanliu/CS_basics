@@ -50,7 +50,157 @@ m == quantities.length
 """
 
 # V0
-# IDEA : BINARY SEARCH ON THE ANSWER (minimise the maximum)
+class Solution(object):
+    def minimizedMaximum(self, n, quantities):
+        """
+        :type n: int
+        :type quantities: List[int]
+        :rtype: int
+        """
+        pass
+     
+
+# V0-1
+# IDEA: BINARY SEARCH (GPT)
+class Solution(object):
+    def minimizedMaximum(self, n, quantities):
+        """
+        :type n: int
+        :type quantities: List[int]
+        :rtype: int
+        """
+
+        # Edge case:
+        # Only one store and only one product type.
+        if n == 1 and len(quantities) == 1:
+            return quantities[0]
+
+        # If there is more than one product type,
+        # one store cannot handle multiple product types
+        # because each store can only receive products
+        # from one type.
+        if n == 1 and len(quantities) > 1:
+            return -1
+
+        # No products to allocate.
+        if not quantities or len(quantities) == 0:
+            return 0
+
+        # ---------------------------------------------------------
+        # Binary Search
+        # ---------------------------------------------------------
+        #
+        # We are searching for the minimum possible
+        # "maximum products per store".
+        #
+        # Example:
+        #
+        # quantities = [11, 6]
+        #
+        # Possible maximum products per store:
+        #
+        # 1, 2, 3, ..., 11
+        #
+        # We use binary search instead of checking every value.
+        #
+        l = 1
+        r = max(quantities)
+
+        # Initial answer is the largest possible value.
+        ans = r
+
+        while l <= r:
+            # Candidate:
+            # Assume each store can have at most `mid` products.
+            mid = l + (r - l) // 2
+
+            # Check how many stores are required
+            # if each store can hold at most `mid` products.
+            cnt, max_prod = self.can_allocate(
+                mid,
+                n,
+                quantities
+            )
+
+            # If we can distribute all products using
+            # <= n stores, `mid` is a valid candidate.
+            if cnt <= n:
+                # Keep the smallest valid maximum.
+                ans = min(ans, max_prod)
+
+                # Try to find an even smaller maximum.
+                r = mid - 1
+
+            else:
+                # We need more capacity per store.
+                # Therefore, increase the candidate.
+                l = mid + 1
+
+        return ans
+
+    def can_allocate(self, prod_per_store, n, quantities):
+        """
+        Check how many stores are required if each store
+        can contain at most `prod_per_store` products.
+
+        Returns:
+            cnt      = total number of stores required
+            max_prod = maximum products in any store
+        """
+
+        # Total number of stores required.
+        cnt = 0
+
+        # Track the actual maximum products assigned
+        # to any single store.
+        max_prod = 0
+
+        for prod_cnt in quantities:
+
+            # If this product type has more products
+            # than one store can hold, we need multiple stores.
+            if prod_cnt > prod_per_store:
+
+                # Number of completely filled stores.
+                #
+                # Example:
+                # prod_cnt = 11
+                # prod_per_store = 3
+                #
+                # 11 // 3 = 3 full stores
+                #
+                group = prod_cnt // prod_per_store
+
+                # Remaining products after the full stores.
+                #
+                # 11 % 3 = 2
+                #
+                remain = prod_cnt % prod_per_store
+
+                # Add the full stores.
+                cnt += group
+
+                # If there are remaining products,
+                # we need one additional store.
+                if remain > 0:
+                    cnt += 1
+
+                # Every store can have at most
+                # `prod_per_store` products.
+                max_prod = max(max_prod, prod_per_store)
+
+            else:
+                # This product type fits into one store.
+                cnt += 1
+
+                # The store receives all `prod_cnt` products.
+                max_prod = max(max_prod, prod_cnt)
+
+        return cnt, max_prod
+
+
+# V0-2
+# IDEA : BINARY SEARCH ON THE ANSWER (minimise the maximum) (claude)
 #
 #   feasibility is monotone: if a cap of x products per store works, then
 #   any larger cap works too. so binary search the smallest feasible x.
@@ -80,88 +230,3 @@ class Solution(object):
             else:
                 lo = mid + 1
         return lo
-
-
-# V0-1
-# IDEA: BINARY SEARCH (GPT)
-class Solution(object):
-    def minimizedMaximum(self, n, quantities):
-        """
-        :type n: int
-        :type quantities: List[int]
-        :rtype: int
-        """
-        # edge
-        if n == 1 and len(quantities) == 1:
-            return quantities[0]
-
-        if n == 1 and len(quantities) > 1:
-            # can't allocate
-            return -1
-
-        # no prodcut to allocate
-        if not quantities or len(quantities) == 0:
-            return 0
-
-        # binary search
-        # ??
-        l = 1
-        r = max(quantities)
-
-        # ???
-        ans = r
-
-        # >=
-        while r >= l:
-            mid = l + (r - l) // 2
-
-            # find max allocated prod cnt
-            cnt, max_prod = self.can_allocate(mid, n, quantities)
-
-            if cnt <= n:
-                ans = min(ans, max_prod)
-
-                # try smaller candidates
-                r = mid - 1
-            else:
-                l = mid + 1
-
-        return ans
-
-    def can_allocate(self, prod_per_store, n, quantities):
-        # ??
-        max_prod = 0
-        cnt = 0
-
-        print(">>> prod_per_store = " + str(prod_per_store))
-
-        for prod_cnt in quantities:
-            # print(">>> prod_cnt = " + str(prod_cnt) + ", prod_per_store = " + str(prod_per_store))
-
-            if prod_cnt > prod_per_store:
-                """
-                prod_per_store = 11
-
-                ->
-                prod_cnt = 11, group = 1, remain = 0
-                prod_cnt = 6, group = 0, remain = 6
-                """
-                group = prod_cnt // prod_per_store
-                remain = prod_cnt % prod_per_store
-
-                max_prod = max(max_prod, prod_per_store)
-
-                cnt += group
-
-                if remain > 0:
-                    cnt += 1
-
-                # print(">>> group = " + str(group) + ", reamin = " + str(remain) + ", prod_cnt = " + str(prod_cnt) + ", prod_per_store = " + str(prod_per_store) + ", cnt = " + str(cnt))
-
-            else:
-                max_prod = max(max_prod, prod_cnt)
-                cnt += 1
-
-                # print("cnt = " + str(cnt))
-
-        return cnt, max_prod
