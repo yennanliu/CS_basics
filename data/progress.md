@@ -69,7 +69,7 @@
 
 - DFS（深度優先搜尋）
 	- https://yennj12.js.org/CS_basics/cheatsheets/dfs.zh.html
-		- `模板 5：樹結構修改 — LC 450`
+		- `變體：子樹大小彙總（移除節點後計分） — LC 2049`
 
 
 - 雜湊表 — 題目詳解
