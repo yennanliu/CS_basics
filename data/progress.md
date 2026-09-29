@@ -69,7 +69,7 @@
 
 - DFS（深度優先搜尋）
 	- https://yennj12.js.org/CS_basics/cheatsheets/dfs.zh.html
-		- `變體：子樹大小彙總（移除節點後計分） — LC 2049`
+		- `模板 9：網格 DFS + 回溯 — 三種寫法比較（LC 1219 Path with Maximum Gold）`
 
 
 - 雜湊表 — 題目詳解
