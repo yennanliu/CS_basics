@@ -222,6 +222,131 @@ class Solution(object):
 
 
 # V0-0-1
+# IDEA : SCAN LINE + SORT + ACTIVE EVENT TRACK (GPT)
+"""
+
+## Dry run
+
+例如：
+
+```python
+intervals = [
+    [1, 5],
+    [2, 6],
+    [4, 7]
+]
+```
+
+events：
+
+```text
+[1, +1]
+[2, +1]
+[4, +1]
+[5, -1]
+[6, -1]
+[7, -1]
+```
+
+處理：
+
+| time | status | active before | new pairs | total pairs | active after |
+| ---: | -----: | ------------: | --------: | ----------: | -----------: |
+|    1 |     +1 |             0 |         0 |           0 |            1 |
+|    2 |     +1 |             1 |         1 |           1 |            2 |
+|    4 |     +1 |             2 |         2 |           3 |            3 |
+|    5 |     -1 |             3 |         — |           3 |            2 |
+|    6 |     -1 |             2 |         — |           3 |            1 |
+|    7 |     -1 |             1 |         — |           3 |            0 |
+
+最後：
+
+```text
+3
+```
+
+三組 intersection pairs：
+
+```text
+[1,5] ↔ [2,6]
+[1,5] ↔ [4,7]
+[2,6] ↔ [4,7]
+```
+
+
+
+----
+
+### 最重要的 pattern
+
+看到：
+
+```text
+Interval + Count pairs
+```
+
+可以想到：
+
+```text
+Sort events
+    ↓
+Sweep Line
+    ↓
+active_intervals
+    ↓
+new interval starts
+    ↓
+new pairs += active_intervals
+```
+
+"""
+class Solution(object):
+    def countIntersectingIntervals(self, intervals):
+        """
+        :type intervals: List[List[int]]
+        :rtype: int
+        """
+        # edge cases
+        if not intervals or len(intervals) <= 1:
+            return 0
+
+        # [time, status]
+        # status:
+        #   1  -> interval starts
+        #  -1  -> interval ends
+        events = []
+
+        for start, end in intervals:
+            events.append([start, 1])
+            events.append([end, -1])
+
+        # If same time:
+        # start (+1) should come before end (-1)
+        # because intervals are inclusive.
+        events.sort(key=lambda x: (x[0], -x[1]))
+
+        active_intervals = 0
+        intersection_pairs = 0
+
+        for i in range(len(events)):
+
+            status = events[i][1]
+
+            if status == 1:
+                # Current interval intersects
+                # with every currently active interval.
+                intersection_pairs += active_intervals
+
+                active_intervals += 1
+
+            else:
+                active_intervals -= 1
+
+        return intersection_pairs
+
+
+
+# V0-0-2
 # IDEA : SCAN LINE — EACH NEW START MEETS EVERY INTERVAL STILL OPEN (claude)
 #
 #   n = 10^5, so the double loop of LC 4056 is out. turn every interval into two
