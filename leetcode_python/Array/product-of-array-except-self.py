@@ -34,6 +34,69 @@ Follow up: Can you solve the problem in O(1) extra space complexity? (The output
 
 
 # V0
+# IDEA: prefix,  suffix (gemini)
+# Time: O(N)
+# Space: O(1)
+"""
+CORE IDEA:
+
+    -> 
+
+        這道題目的經典解法是利用回傳陣列 ans 本身來暫存「左側乘積」，
+        然後用一個變數在右側回掃時動態維護「右側乘積」，
+        這樣可以將額外空間複雜度壓到 O(1)
+        （輸出陣列不計入額外空間
+
+
+---
+
+Example:
+
+    
+    nums = [1, 2, 3, 4]
+
+    ->
+
+    index 0 → 2 × 3 × 4
+    index 1 → 1 × 3 × 4
+    index 2 → 1 × 2 × 4
+    index 3 → 1 × 2 × 3
+
+
+    ->
+
+    ans[i]
+    = product(left of i)
+    × product(right of i)
+
+
+"""
+class Solution(object):
+
+  def productExceptSelf(self, nums):
+    """:type nums: List[int] :rtype: List[int]"""
+    if not nums:
+      return []
+
+    n = len(nums)
+    ans = [1] * n
+
+    # 1. 第一輪掃描：計算每個元素左側所有數字的乘積，並存入 ans
+    left_prod = 1
+    for i in range(n):
+      ans[i] = left_prod
+      left_prod *= nums[i]  # 累積左側乘積，供下一個元素使用
+
+    # 2. 第二輪掃描（從右往左）：用變數維護右側乘積，並直接乘以 ans 中的左側乘積
+    right_prod = 1
+    for i in range(n - 1, -1, -1):
+      ans[i] *= right_prod  # 左側乘積 * 右側乘積 = 除自身外的乘積
+      right_prod *= nums[i]  # 累積右側乘積，供上一個元素使用
+
+    return ans
+
+
+# V0
 # IDEA: prefix,  suffix
 """
 Dry run: (input = [-1, 1, 0, -3, 3])
