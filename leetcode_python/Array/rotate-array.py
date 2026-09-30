@@ -116,6 +116,27 @@ class Solution(object):
         return res
 
 
+# V0-0-2
+# IDEA: ARRAY SAMPLE OP
+class Solution(object):
+    def rotate(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: None Do not return anything, modify nums in-place instead.
+        """
+        # edge
+
+        n = len(nums)
+
+        if k > n:
+            k = k % n
+
+        nums[:] = nums[n - k : ] + nums[: n - k]
+
+        return nums
+
+
 # V0-1
 # IDEA: BRUTE FORCE (TLE) (GPT)
 class Solution(object):
