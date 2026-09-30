@@ -48,12 +48,171 @@ parents represents a valid binary tree.
 """
 
 # V0
-# class Solution(object):
-#     def countHighestScoreNodes(self, parents):
-#         """
-#         :type parents: List[int]
-#         :rtype: int
-#         """
+class Solution(object):
+    def countHighestScoreNodes(self, parents):
+        """
+        :type parents: List[int]
+        :rtype: int
+        """
+        pass
+
+
+# V0-1
+# IDEA: DFS (gpt)
+class Solution(object):
+    def countHighestScoreNodes(self, parents):
+        """
+        :type parents: List[int]
+        :rtype: int
+        """
+
+        n = len(parents)
+
+        # Build the tree:
+        #
+        # children[parent] = [child1, child2]
+        #
+        # parents[i] tells us who the parent of i is.
+        children = [[] for _ in range(n)]
+
+        for i in range(1, n):
+            parent = parents[i]
+            children[parent].append(i)
+
+        # Track:
+        # 1. highest score seen so far
+        # 2. number of nodes with that score
+        self.max_score = 0
+        self.count = 0
+
+        # DFS from root.
+        self.helper(children, 0, n)
+
+        return self.count
+
+    def helper(self, children, node, n):
+        """
+        Return the size of the subtree rooted at `node`.
+
+        At the same time, calculate the score of `node`.
+        """
+
+        # Current node itself
+        subtree_size = 1
+
+        # Score starts at 1 because
+        # we will multiply all resulting subtree sizes.
+        score = 1
+
+        # Visit children
+        for child in children[node]:
+
+            # Get the size of this child's subtree.
+            child_size = self.helper(
+                children,
+                child,
+                n
+            )
+
+            # This child subtree becomes one
+            # component after removing `node`.
+            score *= child_size
+
+            # Add child subtree to current subtree size.
+            subtree_size += child_size
+
+        # Nodes outside current subtree become
+        # another component after removing `node`.
+        #
+        # Example:
+        #
+        # total nodes = 10
+        # current subtree = 4
+        #
+        # outside = 10 - 4 = 6
+        outside_size = n - subtree_size
+
+        # Only multiply if this component is non-empty.
+        #
+        # For the root:
+        # outside_size = 0
+        #
+        # We should NOT multiply by 0 because there is
+        # no outside component.
+        if outside_size > 0:
+            score *= outside_size
+
+        # Update global maximum score.
+        if score > self.max_score:
+            self.max_score = score
+            self.count = 1
+
+        # Same score -> another node with highest score.
+        elif score == self.max_score:
+            self.count += 1
+
+        # Return subtree size to parent.
+        return subtree_size
+
+
+# V0-2
+# IDEA: DFS (gemini)
+class Solution(object):
+
+  def countHighestScoreNodes(self, parents):
+    """:type parents: List[int] :rtype: int"""
+    n = len(parents)
+
+    # 1. 建立樹的鄰接串列（Adjacency List）
+    children = [[] for _ in range(n)]
+    for child_node, parent_node in enumerate(parents):
+      if parent_node != -1:
+        children[parent_node].append(child_node)
+
+    self.max_score = 0
+    self.max_count = 0
+
+    # 2. 定義 DFS 函式：回傳以 node 為根的子樹節點總數
+    def dfs(node):
+      left_size = 0
+      right_size = 0
+      sub_tree_total = 1  # 包含當前節點本身
+
+      # 二元樹最多有兩個子節點
+      if len(children[node]) >= 1:
+        left_size = dfs(children[node][0])
+        sub_tree_total += left_size
+
+      # 修正此處的括號錯誤
+      if len(children[node]) == 2:
+        right_size = dfs(children[node][1])
+        sub_tree_total += right_size
+
+      # 計算拔除當前節點後，剩餘的上方/其他部分節點數
+      rest_size = n - sub_tree_total
+
+      # 計算當前節點的分數（只相乘大於 0 的部分）
+      score = 1
+      if left_size > 0:
+        score *= left_size
+      if right_size > 0:
+        score *= right_size
+      if rest_size > 0:
+        score *= rest_size
+
+      # 更新最高分數與對應的節點個數
+      if score > self.max_score:
+        self.max_score = score
+        self.max_count = 1
+      elif score == self.max_score:
+        self.max_count += 1
+
+      return sub_tree_total
+
+    # 從根節點 (0) 開始遞迴
+    dfs(0)
+    return self.max_count
+
 
 # V1
 # IDEA: DFS (gpt)
@@ -452,4 +611,3 @@ class Solution:
             return s + 1                         # return number of children node + 1 (self)
         count_nodes(0)                           # starting from root (0)
         return d[max(d.keys())]                  # return max count
-
