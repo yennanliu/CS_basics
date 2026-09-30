@@ -49,12 +49,13 @@ class myNode(object):
         NOTE !!!
 
 
-        ONLY below 2 attr is needed
+        ONLY below `2` attr is needed
 
         e.g.
 
-        child
-        is_end
+        child: hashMap
+
+        is_end: boolean
         """
         self.child = {}
         self.is_end = False
@@ -238,6 +239,97 @@ class Trie():
                 return False
         return True
 
+
+# V0-3
+# IDEA: TRIE + HASHMAP + CUSTOM NODE (gpt)
+class MyNode(object):
+
+    def __init__(self, key=None):
+        self.key = key
+
+        # {character: MyNode}
+        self.child = {}
+
+        # True means a complete word ends at this node
+        self.is_end = False
+
+
+class Trie(object):
+
+    def __init__(self):
+        # Root node does not represent any character
+        self.node = MyNode()
+
+
+    def insert(self, word):
+        """
+        :type word: str
+        :rtype: None
+        """
+
+        if not word:
+            return
+
+        node = self.node
+
+        for w in word:
+
+            # Create the child only if it does not exist
+            if w not in node.child:
+                node.child[w] = MyNode(w)
+
+            # Move to the next node
+            node = node.child[w]
+
+        # The last character represents the end of a word
+        node.is_end = True
+
+
+    def search(self, word):
+        """
+        :type word: str
+        :rtype: bool
+        """
+
+        if not word:
+            return False
+
+        node = self.node
+
+        for w in word:
+
+            if w not in node.child:
+                return False
+
+            node = node.child[w]
+
+        # Make sure this path represents a complete word
+        return node.is_end
+
+
+    def startsWith(self, prefix):
+        """
+        :type prefix: str
+        :rtype: bool
+        """
+
+        if not prefix:
+            return False
+
+        node = self.node
+
+        for w in prefix:
+
+            if w not in node.child:
+                return False
+
+            node = node.child[w]
+
+        # We found the entire prefix
+        return True
+
+
+
 # V0-3
 # IDEA : trie concept :  dict + tree
 # https://blog.csdn.net/fuxuemingzhu/article/details/79388432
@@ -320,6 +412,7 @@ class Trie(object):
             # for validating if "search to the end" (check '#' in the node or not)    
             p = p[c]
         return p
+
 
 # V1
 # IDEA : USE dict AS data structure (# TrieNode: is dict, or hashmap)
