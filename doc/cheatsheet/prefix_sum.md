@@ -85,7 +85,7 @@
 
 ### **Pattern 9: Prefix + Suffix Split (Minimax over a Split Point)** — LC 2017
 - **Description**: The whole choice the problem offers collapses to **one index**; what lies left of it is a prefix sum and what lies right of it is a suffix sum, so every candidate is scored in one pass
-- **Examples**: LC 2017 - Grid Game, LC 724 - Find Pivot Index, LC 1422 - Maximum Score After Splitting a String, LC 2483 - Minimum Penalty for a Shop
+- **Examples**: LC 2017 - Grid Game, LC 724 - Find Pivot Index, LC 238 - Product of Array Except Self, LC 1422 - Maximum Score After Splitting a String, LC 2483 - Minimum Penalty for a Shop
 - **Pattern**: Sweep the split left to right holding two running sums — shrink the suffix **before** the compare, grow the prefix **after** it, so the split cell belongs to neither side
 - **Key Insight**: Once "a choice" is reduced to "an index", `min`/`max` over all choices is an O(n) scan, not a search — no DP and no graph algorithm (see Template 15)
 
@@ -1008,6 +1008,131 @@ answer = 4   (robot 1 turns at column 1, robot 2 takes the lone 4 on the top row
 - **Overflow in Java.** `n <= 5 * 10^4` and values `<= 10^5` put the row total at `5 * 10^9`;
   accumulate in `long`.
 
+#### Product Variant — No Inverse, So Build Both Sides (LC 238) ⭐⭐⭐⭐⭐
+
+**Which precondition breaks.** Template 15 never builds the suffix: it starts `top` at the
+total and *subtracts* its way down, because subtraction undoes addition. For a product that
+undo is a **division** — which LC 238 forbids outright, and which is undefined the moment the
+array holds a `0`. So the suffix has to be accumulated **in its own right-to-left pass**, and
+that second pass is the whole difference.
+
+```text
+ans[i] = product(nums[0 .. i-1])  ×  product(nums[i+1 .. n-1])
+         └──── prefix, exclusive ┘    └──── suffix, exclusive ┘
+               left-to-right pass           right-to-left pass
+
+both sides start at 1 (the empty product), and index i is on NEITHER side —
+the same split-cell rule as LC 2017
+```
+
+Why division is a trap rather than a shortcut: `total / nums[i]` needs casework for exactly one
+zero (every other index is `0`, the zero's index is the product of the rest) and for two or more
+zeros (everything is `0`). The two-pass form handles all three cases with no branch at all.
+
+**Two arrays** — the version to derive first, because each array has a one-line definition:
+
+```python
+# python
+# LC 238 - Product of Array Except Self
+# IDEA: ans[i] = (product left of i) * (product right of i), each built in its own pass
+# time = O(n), space = O(n)
+class Solution(object):
+    def productExceptSelf(self, nums):
+        n = len(nums)
+        prefix = [1] * n                      # prefix[i] = nums[0] * ... * nums[i-1]
+        for i in range(1, n):
+            prefix[i] = prefix[i - 1] * nums[i - 1]
+        suffix = [1] * n                      # suffix[i] = nums[i+1] * ... * nums[n-1]
+        for i in range(n - 2, -1, -1):        # stop is -1, so index 0 is filled
+            suffix[i] = suffix[i + 1] * nums[i + 1]
+        return [prefix[i] * suffix[i] for i in range(n)]
+```
+
+**O(1) extra space** — the follow-up, and a genuinely different bound: the output array holds
+the prefix, and the suffix shrinks to one running variable. Inside each loop the order is
+**write, then absorb** — the same "split cell on neither side" ordering as Template 15:
+
+```python
+# python
+# LC 238 - Product of Array Except Self
+# IDEA: store the prefix in ans itself, then sweep back with one running suffix product
+# time = O(n), space = O(1) extra (the output array does not count)
+class Solution(object):
+    def productExceptSelf(self, nums):
+        n = len(nums)
+        ans = [1] * n
+        left = 1
+        for i in range(n):
+            ans[i] = left          # 1. write: product of nums[0 .. i-1]
+            left *= nums[i]        # 2. THEN absorb nums[i], for index i+1
+        right = 1
+        for i in range(n - 1, -1, -1):
+            ans[i] *= right        # 1. multiply in: product of nums[i+1 .. n-1]
+            right *= nums[i]       # 2. THEN absorb nums[i], for index i-1
+        return ans
+```
+
+```java
+// java
+// LC 238 - Product of Array Except Self
+// IDEA: prefix product stored in ans, suffix product as one running int
+// time = O(n), space = O(1) extra
+public int[] productExceptSelf(int[] nums) {
+    int n = nums.length;
+    int[] ans = new int[n];
+    int left = 1;
+    for (int i = 0; i < n; i++) {
+        ans[i] = left;             // product of nums[0 .. i-1]
+        left *= nums[i];
+    }
+    int right = 1;
+    for (int i = n - 1; i >= 0; i--) {
+        ans[i] *= right;           // times product of nums[i+1 .. n-1]
+        right *= nums[i];
+    }
+    return ans;
+}
+```
+
+##### Visual Trace — `nums = [-1, 1, 0, -3, 3]`
+
+```text
+pass 1 (->): ans[i] = left, then left *= nums[i]
+
+ i | nums[i] | ans[i] = left | left after
+---+---------+---------------+-----------
+ 0 |   -1    |       1       |    -1
+ 1 |    1    |      -1       |    -1
+ 2 |    0    |      -1       |     0
+ 3 |   -3    |       0       |     0
+ 4 |    3    |       0       |     0        ans = [1, -1, -1, 0, 0]  (= prefix)
+
+pass 2 (<-): ans[i] *= right, then right *= nums[i]
+
+ i | right before | ans[i]          | right after
+---+--------------+-----------------+------------
+ 4 |      1       |  0 *  1 =  0    |     3
+ 3 |      3       |  0 *  3 =  0    |    -9
+ 2 |     -9       | -1 * -9 =  9    |     0
+ 1 |      0       | -1 *  0 =  0    |     0
+ 0 |      0       |  1 *  0 =  0    |     0
+
+answer = [0, 0, 9, 0, 0]  ✓   only index 2 skips the zero, so only it survives
+```
+
+##### Traps
+
+- **Write before you absorb.** Swap the two lines in either loop and `ans[i]` includes
+  `nums[i]` — an inclusive prefix, which is the ordinary Template 1 array and the wrong answer.
+- **Start at `1`, not `0`.** `1` is the empty product; a `0` start zeroes the whole output.
+- **The reverse loop stops at `-1`.** `range(n - 1, 0, -1)` never visits index 0, so `ans[0]` keeps
+  only its (empty) prefix. In the two-array form the loop starts at `n - 2` because
+  `suffix[n-1] = 1` is already set.
+- **Do not reach for `total / nums[i]`.** It is forbidden here, and even where it is allowed the
+  zero cases make it longer than the two passes.
+- **When there is a modulus, this is the only way.** LC 2906 takes products mod `12345`, which is
+  not prime, so no modular inverse exists either — prefix × suffix is the answer there too.
+
 #### Similar Problems — the split-point family
 
 Same shape every time: one index decides the answer, the left of it is a prefix and the right a
@@ -1016,7 +1141,8 @@ suffix.
 | Problem | LC # | What the split index is | Difference from LC 2017 |
 |---|---|---|---|
 | **Find Pivot Index** | 724 | the pivot | the plain case: find a split where prefix `==` suffix, no min/max |
-| **Product of Array Except Self** | 238 | every index in turn | prefix **product** × suffix product instead of sums |
+| **Product of Array Except Self** | 238 | every index in turn | products have no inverse, so the suffix gets its own pass — [the product variant above](#product-variant--no-inverse-so-build-both-sides-lc-238-) |
+| **Construct Product Matrix** | 2906 | every cell, row-major | LC 238 on the flattened grid, mod `12345` — not prime, so no modular inverse either |
 | **Maximum Score After Splitting a String** | 1422 | the cut | **maximise** zeros-left + ones-right — one scan, same two counters |
 | **Minimum Penalty for a Shop** | 2483 | the closing hour | **minimise** customers-lost-before + no-customer-hours-after |
 | **Flip String to Monotone Increasing** | 926 | the `0 → 1` boundary | minimise ones-left + zeros-right; already a Template 6 transform |
@@ -1056,7 +1182,6 @@ structure:
 |---------|------|---------------|------------|----------|
 | Range Sum Query - Immutable | 303 | Basic prefix sum array | Easy | Template 1 |
 | Range Sum Query 2D - Immutable | 304 | 2D prefix sum | Medium | Template 5 |
-| Product of Array Except Self | 238 | Left/right prefix products | Medium | Modified Template 1 |
 | Running Sum of 1d Array | 1480 | Direct prefix sum | Easy | Template 1 |
 | Find Pivot Index | 724 | Left sum vs right sum | Easy | Template 1 |
 
@@ -1065,7 +1190,7 @@ structure:
 |---------|------|---------------|------------|----------|
 | Subarray Sum Equals K | 560 | HashMap + prefix sum | Medium | Template 2 |
 | Maximum Size Subarray Sum Equals k | 325 | HashMap with indices | Medium | Template 2 |
-| Subarray Sum Equals K II | 713 | Product version | Medium | Modified Template 2 |
+| Subarray Product Less Than K | 713 | Product version — positive values, so a sliding window (or `log` turns it into sums) | Medium | Modified Template 2 |
 | Binary Subarrays With Sum | 930 | Transform to sum equals | Medium | Template 6 |
 | Number of Subarrays with Bounded Maximum | 795 | Range sum technique | Medium | Template 2 |
 | Longest Well-Performing Interval | 1124 | First-occurrence map + score-1 trick | Medium | Template 2 variant |
@@ -1130,7 +1255,8 @@ structure:
 |---------|------|---------------|------------|----------|
 | Grid Game | 2017 | Turning column + suffix(row 0) / prefix(row 1), minimax | Medium | Template 15 |
 | Find Pivot Index | 724 | Split where prefix == suffix | Easy | Template 15 (plain case) |
-| Product of Array Except Self | 238 | Prefix product × suffix product | Medium | Template 15 (products) |
+| Product of Array Except Self | 238 | Prefix product × suffix product, two passes, no division | Medium | Template 15 (product variant) |
+| Construct Product Matrix | 2906 | LC 238 on a flattened grid, mod 12345 | Medium | Template 15 (product variant) |
 | Maximum Score After Splitting a String | 1422 | Maximise zeros-left + ones-right | Easy | Template 15 |
 | Minimum Penalty for a Shop | 2483 | Minimise loss-before + idle-after | Medium | Template 15 |
 | Partition Array Into Three Parts With Equal Sum | 1013 | Two splits at `total/3` | Easy | Template 15 (two cuts) |
@@ -1213,7 +1339,7 @@ Problem Analysis Flowchart:
    └── NO → Continue to 6
 
 6. Special cases:
-   ├── Product instead of sum → Modified Template 1
+   ├── Product instead of sum, "except self" → Template 15 product variant (no division: build the suffix in its own pass)
    ├── Tree path sums → Template 2 + Tree traversal
    ├── Sliding window + prefix → Combine templates
    └── Advanced merge/sort → Custom approach
@@ -1236,6 +1362,7 @@ Problem Analysis Flowchart:
 | "submatrix sum ≤ k", "count submatrices", "rectangle + condition" | Template 11 | LC 363, 1074 |
 | "XOR of subarray", "even count of every letter", "parity" | Template 12 | LC 1310, 1915, 1738 |
 | "2 x n grid", "one turn", "best split point", "both play optimally" | Template 15 | LC 2017, 724, 1422, 2483 |
+| "except self", "without using division", product of everything else | Template 15 (product variant) | LC 238, 2906 |
 
 > Templates **9–14** are written out in [prefix_sum_advanced.md](./prefix_sum_advanced.md).
 
@@ -1298,6 +1425,8 @@ Problem Analysis Flowchart:
   score both sides in O(1)
 - Watch the ordering: shrink the suffix *before* scoring, grow the prefix *after*, so the split
   cell lands on neither side
+- If the operation has **no inverse** (product with division banned or zeros present, a non-prime
+  modulus), the suffix cannot be `total - prefix` — build it in a second, right-to-left pass (LC 238)
 - If the objective is `min(max(...))` or `max(min(...))`, it is minimax — a greedy "take the best
   for me" pass is the wrong objective, not just a weaker one
 
@@ -1335,6 +1464,7 @@ is grafted into the templates as notes.
 | 2D range query | O(1) | O(1) | After preprocessing |
 | Difference array updates | O(k) | O(n) | k updates, n array size |
 | Prefix + suffix split scan | O(n) | O(1) | Two running sums, no array kept |
+| Prefix × suffix product (LC 238) | O(n) | O(1) extra | Prefix stored in the output, suffix as one variable |
 
 ### Template Quick Reference
 
@@ -1354,6 +1484,7 @@ is grafted into the templates as notes.
 | **Template 12** | Prefix XOR | `p[i+1] = p[i] ^ a[i]; xor(l,r) = p[r+1] ^ p[l]` |
 | **Template 13** | Sparse Diff (HashMap) | `d[start]+=v; d[end+1]-=v; for k in sorted(d): cur+=d[k]` |
 | **Template 15** | Prefix + Suffix Split | `top-=a[i]; res=min(res,max(top,bottom)); bottom+=b[i]` |
+| **Template 15 (product)** | Except-self product | `ans[i]=left; left*=a[i]` → then backwards `ans[i]*=right; right*=a[i]` |
 
 > Templates **9–14** are written out in [prefix_sum_advanced.md](./prefix_sum_advanced.md).
 

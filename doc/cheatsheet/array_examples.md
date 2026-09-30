@@ -296,34 +296,13 @@ private void reverse(int[] nums, int start, int end) {
 
 ### 3) Product of Array Except Self — LC 238 ⭐⭐⭐⭐⭐
 
-```python
-# 238 Product of Array Except Self
-# IDEA : 
-# SINCE output[i] = (x0 * x1 * ... * xi-1) * (xi+1 * .... * xn-1)
-# -> SO DO A 2 LOOP
-# -> 1ST LOOP : GO THROGH THE ARRAY (->) : (x0 * x1 * ... * xi-1)
-# -> 2ND LOOP : GO THROGH THE ARRAY (<-) : (xi+1 * .... * xn-1)
-# e.g.
-# given [1,2,3,4], return [24,12,8,6].
-# -> output = [2*3*4, 1,1,1]  <-- 2*3*4    (right of 1: 2,3,4)
-# -> output = [2*3*4, 1*3*4,1,1] <-- 1*3*4 (left of 2 :1, right of 2: 3,4)
-# -> output = [2*3*4, 1*3*4,1*2*4,1] <-- 1*2*4 (left of 3: 1,2 right of 3 : 4)
-# -> output = [2*3*4, 1*3*4,1*2*4,1*2*3] <-- 1*2*3 (left of 4 : 1,2,3)
-# -> final output  = [2*3*4, 1*3*4,1*2*4,1*2*3] = [24,12,8,6]
-class Solution:
-    def productExceptSelf(self, nums):
-        size = len(nums)
-        output = [1] * size
-        left = 1
-        for x in range(size - 1):
-            left *= nums[x]
-            output[x + 1] *= left
-        right = 1
-        for x in range(size - 1, 0, -1):
-            right *= nums[x]
-            output[x - 1] *= right
-        return output
-```
+The in-place trick here is that **the output array doubles as the prefix-product array**: one
+left-to-right pass writes `product(nums[0 .. i-1])` into `ans[i]`, and one right-to-left pass
+multiplies in the suffix from a single running variable — O(1) extra space, no division.
+
+The pattern belongs to the prefix / suffix family, so the canonical solution lives there — both
+the two-array and the O(1) forms, Java, a trace on the zero case and the traps:
+[prefix_sum.md § Product Variant — No Inverse, So Build Both Sides](./prefix_sum.md#product-variant--no-inverse-so-build-both-sides-lc-238-).
 
 ### 4) Maximum Swap — LC 670
 

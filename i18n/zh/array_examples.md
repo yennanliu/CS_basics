@@ -67,10 +67,14 @@ LC 1109 在 [difference_array.md](./difference_array.md)、LC 1567 在
 
 <!--CODE-->
 
-<!-- b5caa55f2fd9 -->
+<!-- 3ddebc2b64b9 -->
 ### 3) Product of Array Except Self — LC 238 ⭐⭐⭐⭐⭐
 
-<!--CODE-->
+這題的原地技巧在於**輸出陣列同時兼任前綴乘積陣列**：一趟由左往右把 `product(nums[0 .. i-1])` 寫進 `ans[i]`，
+再一趟由右往左、用一個累乘變數把後綴乘進去 —— O(1) 額外空間，不用除法。
+
+這個模式屬於前綴／後綴家族，所以標準解法放在那裡 —— 兩個陣列版與 O(1) 版、Java、在含 0 情況上的逐步追蹤，以及陷阱：
+[prefix_sum.md § Product Variant — No Inverse, So Build Both Sides](./prefix_sum.md#product-variant--no-inverse-so-build-both-sides-lc-238-)。
 
 <!-- 3304547287a8 -->
 ### 4) Maximum Swap — LC 670
