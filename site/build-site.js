@@ -974,58 +974,13 @@ const ENTRY_GROUPS = [
 
 // ── Agent skills ─────────────────────────────────────────────────────────────
 //
-// The repo ships agent skills as well as notes, and nothing on the front page
-// said so — the coach was one card reading "Interview coach" in a grid of
-// eleven, which is indistinguishable from another web page of the site. They
-// are a different kind of thing: markdown you install into your own agent, and
-// they work on your code rather than on this site's.
+// The skills are a different kind of thing from the rest of the site — markdown
+// you install into your own agent — so they get one band of their own. It used
+// to card all eleven, with an install snippet, which made the landing page's
+// longest section the one furthest from its purpose. The directory now lives on
+// agent-skills.html; the landing page only points at it.
 const skillCount = countDirs('.claude/skills');
-
-// Ten cards in one flat grid is a list, not a band — so they are declared as
-// three labelled groups, the same way ENTRY_GROUPS splits the main cards. The
-// split is by what the skill touches: your solutions, your practice record, or
-// this site.
-const AGENT_SKILLS = [
-  ['File what you solved', [
-    ['lc-python.html', '/lc-python', 'File a Python solution',
-     'Turns a solved problem into a committed one — the problem\'s real slug, the house file layout, ' +
-     'a smoke test against the docstring\'s own examples, and the README row inserted in number order.'],
-    ['lc-java.html', '/lc-java', 'File a Java solution',
-     'The Java counterpart — the package its pattern owns, markers that match the method names, ' +
-     'a compile and a run, and the [Java] link added to the row the problem already has.'],
-    ['lc-cheatsheet.html', '/lc-cheatsheet', 'Update a cheatsheet',
-     'Files what a problem taught you into the sheet that owns the topic — as an example, a variation ' +
-     'on a template, a new pattern or a new sheet — then follows the anchors and translations it moved.']
-  ]],
-  ['Track the practice', [
-    ['skills.html', '/lc-coach', 'Interview coach',
-     'Scores a solution the way an interviewer does — the six-point verdict (SH/H/LH/LNH/NH/SNH), ' +
-     'the debrief packet from their side of the table, the one line that sets the complexity, and what to drill next.'],
-    ['lc-log.html', '/lc-log', 'Log the session',
-     'Appends today to the practice log in the shape the review plan\'s parser actually reads, ' +
-     'so no problem number is silently dropped and the annotations survive.'],
-    ['lc-again.html', '/lc-again', 'Graduate an AGAIN',
-     'Moves the README status cell after a re-solve — promoting only what was genuinely re-derived ' +
-     'unaided, and keeping the star run that records what the problem cost.'],
-    ['l3-core.html', '/l3-core', 'The L3 core set',
-     'Blind 75 plus the NeetCode 150 problems marked MUST, held fixed so the number means something — ' +
-     'where each one stands in the practice log, the ok share, and the next five to drill.']
-  ]],
-  ['Maintain the site', [
-    ['lc-algo-demo.html', '/lc-algo-demo', 'Add a visualizer',
-     'Writes the 37th visualizer against the contract the other 36 obey — the shared palette, the ' +
-     'canvas wrapper, the structured step trace, and the repaint a theme switch depends on.'],
-    ['lc-site-data.html', '/lc-site-data', 'Roadmap &amp; quiz data',
-     'Adds a roadmap topic or a quiz question so the build-time validators accept it first time — ' +
-     'no implied edge, no duplicate id, and answers that parse as complexity expressions.'],
-    ['lc-zh-translate.html', '/lc-zh-translate', 'Translate to 中文',
-     'Works the 繁體中文 overlay — prose only, keyed per section, every code fence stored once and ' +
-     'spliced back at compose time.'],
-    ['lc-faq-add.html', '/lc-faq-add', 'File an FAQ answer',
-     'Files an interview question into the FAQ its Scope line owns, under the section it belongs to — ' +
-     'and writes the Chinese half in the same change.']
-  ]]
-];
+const SKILL_TEASER = ['/lc-python', '/lc-log', '/lc-again', '/l3-core', '/lc-coach'];
 
 const landingContent = `
   <div class="hero">
@@ -1105,29 +1060,14 @@ const landingContent = `
   </section>`).join('')}
 
   <section class="skills-band">
-    <h2>Agent skills</h2>
-    <p class="section-note">
-      The repo ships ${skillCount ? `${skillCount} skills for coding agents` : 'skills for coding agents'} under
-      <code>.claude/skills/</code> — plain markdown, no dependencies, installed into your own agent rather than run here.
-      These have pages of their own.
-    </p>
-    ${AGENT_SKILLS.map(([label, cards]) => `
-    <h3 class="skill-group">${label}</h3>
-    <div class="skill-grid">
-      ${cards.map(([href, command, title, blurb]) => `
-      <a class="skill-card" href="${href}">
-        <span class="skill-cmd">${command}</span>
-        <span class="skill-title">${title}</span>
-        <span class="skill-blurb">${blurb}</span>
-      </a>`).join('')}
-    </div>`).join('')}
-    <p class="section-note skill-install">Install one into Claude Code, Codex, Gemini or any agent that reads a markdown instruction file:</p>
-    <pre class="skill-install-code"><code>git clone --depth 1 https://github.com/yennanliu/CS_basics.git /tmp/cs_basics
-cp -r /tmp/cs_basics/.claude/skills/lc-coach ~/.claude/skills/</code></pre>
-    <p class="section-note">
-      Same idea without an agent: <a href="suggest-review.html">suggest-review</a> is a standard-library Python
-      script that measures which topics the practice is quietly skipping, then spends its picks on the ones that are owed them.
-    </p>
+    <a class="skills-cta" href="agent-skills.html">
+      <span class="skills-cta-text">
+        <span class="entry-title">Agent skills →</span>
+        <span class="entry-blurb">${skillCount ? `${skillCount} slash commands` : 'Slash commands'} for coding agents —
+        file a solution, log a session, pick what to drill next. Browse them and install in one command.</span>
+      </span>
+      <span class="skills-cta-cmds" aria-hidden="true">${SKILL_TEASER.map(c => `<code>${c}</code>`).join('')}</span>
+    </a>
   </section>
 
   <section class="entry-section offpath-band" id="off-path">

@@ -868,44 +868,23 @@ h4 > a.header-anchor:hover { text-decoration: underline; }
 }
 
 /* ── Agent skills ───────────────────────────────────────────────────────────
-   A band, not another row of entry cards: these are markdown you install into
-   your own agent, not a page of this site, and as one card in a grid of eleven
-   the difference was invisible. */
-.skills-band {
+   One link-card, not a directory: the skills are markdown you install into your
+   own agent, so the landing page only points at agent-skills.html, which lists
+   them. A band of its own so it still reads as a different kind of thing from
+   the entry cards above. */
+.skills-band { margin: 0 0 48px; }
+.skills-cta {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px 24px;
+  flex-wrap: wrap; padding: 22px 24px; text-decoration: none; color: var(--text);
   border: 1px solid var(--border-strong); background: var(--surface);
-  padding: 28px 24px; margin: 0 0 48px;
-}
-.skills-band h2 { margin-top: 0; }
-.skill-grid {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 16px; margin: 12px 0 24px;
-}
-/* The group label. Ten cards in one grid read as a list; three labelled runs
-   read as a band with a shape. */
-.skill-group {
-  margin: 4px 0 0; font-size: 13px; font-weight: 600;
-  text-transform: uppercase; letter-spacing: 0.08em;
-  color: var(--text-muted);
-}
-.skill-group + .skill-grid { margin-top: 10px; }
-.skill-card {
-  display: flex; flex-direction: column; gap: 8px;
-  padding: 18px; text-decoration: none; color: var(--text);
-  border: 1px solid var(--border); background: var(--bg);
   transition: border-color 0.15s;
 }
-.skill-card:hover { border-color: var(--text); }
-.skill-cmd {
-  font-family: var(--mono, ui-monospace, monospace); font-size: 13px;
-  color: var(--text-muted); letter-spacing: 0.02em;
-}
-.skill-title { font-size: 17px; font-weight: 600; }
-.skill-blurb { font-size: 14px; line-height: 1.6; color: var(--text-muted); }
-.skill-install { margin-bottom: 8px; }
-.skills-band .skill-install-code {
-  margin: 0 0 20px; padding: 14px 16px; overflow-x: auto;
+.skills-cta:hover { border-color: var(--text); }
+.skills-cta-text { display: flex; flex-direction: column; gap: 6px; flex: 1 1 320px; min-width: 0; }
+.skills-cta-cmds { display: flex; flex-wrap: wrap; gap: 6px; }
+.skills-cta-cmds code {
+  font-size: 12px; padding: 3px 8px; color: var(--text-muted);
   border: 1px solid var(--border); background: var(--bg);
-  font-size: 13px; line-height: 1.7;
 }
 
 .ref-figures { display: flex; flex-direction: column; gap: 24px; margin-bottom: 40px; }
@@ -916,8 +895,7 @@ h4 > a.header-anchor:hover { text-decoration: underline; }
   .hero { padding: 32px 0 28px; }
   .hero h1 { font-size: 32px; }
   .hero-lede { font-size: 16px; }
-  .skills-band { padding: 20px 16px; }
-  .skill-grid { grid-template-columns: 1fr; }
+  .skills-cta { padding: 18px 16px; }
   .entry-card { border-right: none; }
   .stat-cell { border-right: none; border-bottom: 1px solid var(--border); }
   .stat-cell:last-child { border-bottom: none; }

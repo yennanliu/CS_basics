@@ -77,6 +77,7 @@
     { id: 'lc-complexity-quiz', label: 'complexity', href: 'lc-complexity-quiz.html' },
     { id: 'suggest-review',     label: 'suggest',    href: 'suggest-review.html' },
     { id: 'agent-skills',       label: 'agent skills', children: [
+      { id: 'skills-hub',       label: 'all skills', href: 'agent-skills.html' },
       { id: 'lc-coach',         label: 'lc-coach',   href: 'skills.html' },
       { id: 'lc-python',        label: 'lc-python',  href: 'lc-python.html' },
       { id: 'lc-java',          label: 'lc-java',    href: 'lc-java.html' },
