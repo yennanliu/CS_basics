@@ -118,6 +118,15 @@ class Solution(object):
         # (-value, index)
         big_pq = []
 
+
+        """
+        NOTE !!!
+
+        init res as `empty arr`,
+        so we can append cur max val per window,
+        and NO need to deal with `which idx` to insert
+
+        """
         res = []
 
         l = 0
@@ -135,12 +144,20 @@ class Solution(object):
 
 
             # Step 2) add to PQ
-            # Add current element
+            #   -> Add current element to PQ anyway
             heapq.heappush(
                 big_pq,
                 (-nums[r], r)
             )
 
+            """
+            NOTE !!!
+
+            we update left pointer (l)
+            via the `window size` check
+
+                -> shrink left pointer if the window size > k
+            """
             # Step 3) update window
             # Move left boundary
             while r - l + 1 > k:
