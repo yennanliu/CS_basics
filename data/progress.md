@@ -125,14 +125,17 @@
 - Others
 	- recent updated cheatsheet
 	- TODO LC:
+		- PQ:
+			- 862
+
+
+
 		- 34(todo),875(todo),81(todo)
 		- 377(todo, Permutations DP),210
 		- 312
 		- 1143, 72
 		- 663,508
 		- 701,450
-		- scanning_line
-		- prefix sum
 		- Difference array
 			- 3964
 		- Binary Search
