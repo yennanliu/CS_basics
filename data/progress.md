@@ -68,6 +68,7 @@
 
 - 動態規劃（DP）
 	- https://yennj12.js.org/CS_basics/cheatsheets/dp.zh.html
+		- `模板 1a：一維陣列大小與迴圈邊界（n vs n+1）`
 
 
 
