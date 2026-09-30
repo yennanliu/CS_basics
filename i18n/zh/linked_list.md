@@ -225,7 +225,7 @@
 
 ---
 
-<!-- 66372205aaa6 -->
+<!-- b710f3a9f3bb -->
 #### **雙向鏈結串列 + HashMap（LRU Cache 模式）** ⭐⭐⭐⭐⭐
 
 **核心想法**：用 HashMap 做 O(1) 的 key 查找，配上雙向鏈結串列做 O(1) 的有序淘汰。最近用過的節點靠近**尾端**；最久沒用的靠近**開頭**。頭尾各放一個哨兵節點，所有邊界情況的指標檢查就全消失了。
@@ -240,20 +240,44 @@
 **時間複雜度**：get 與 put 都是 O(1)  
 **空間複雜度**：O(capacity)
 
-**關鍵輔助操作**：
-- `_remove(node)` — 用 O(1) 把節點從串列中摘掉
-- `_insert(node)` — 用 O(1) 把節點插到 tail 前面（MRU 位置）
+**關鍵輔助操作** — 整個類別就是這兩個，成對呼叫：
+- `remove(node)` — 用 O(1) 把節點從串列中摘掉；只需要節點本身，因為它帶著前後兩個鄰居
+- `add_to_tail(node)` — 用 O(1) 把節點插到 dummy tail 前面（MRU 位置）
+- 「碰一下」某個 key = `remove(node)` 再 `add_to_tail(node)` — `get` **和** `put` 更新既有 key 時都用它
 
 **模板**：
 <!--CODE-->
 
-**視覺追蹤**（capacity=2）：
+**視覺追蹤**（capacity=2，LC 146 範例 1）：
 <!--CODE-->
 
 **為什麼要哨兵節點？**
-- `_remove` 和 `_insert` 永遠拿得到合法的 `.prev`/`.next` 鄰居
+- `remove` 和 `add_to_tail` 永遠拿得到合法的 `.prev`/`.next` 鄰居
 - 不需要 `if node.prev is None` 或 `if node.next is None` 這種防護
 - 刪頭、刪尾、刪中間都是同一套程式碼
+- LRU 是 `head.next`，永遠不是 `head` — `head` 是 dummy，在 map 裡沒有對應的 entry
+
+**節點為什麼要存自己的 `key`？** map 的方向是 key → node，但淘汰是從反方向來的：它透過
+`head.next` 找到要淘汰的節點，接著必須刪掉這個節點在 map 裡的 entry。少了 `node.key`，
+就沒有 O(1) 的方法從節點走回 map — 忘了它，map 會留著過期的 entry，`len(kv_map)` 永遠不會
+變小，`get` 還會回傳一個早已不在串列裡的節點。
+
+**`put` 的兩種順序，都正確**：
+
+| | 先插入、再淘汰（上面的模板） | 先淘汰、再插入 |
+|---|---|---|
+| 容量判斷 | 插入後 `len(kv_map) > capacity` | 插入前 `len(kv_map) == capacity` |
+| 淘汰對象 | `head.next` — 新節點在尾端，所以絕不會是它自己 | `head.next` |
+| 陷阱 | 沒有額外陷阱 | 淘汰必須放在「新 key」分支**裡面**；如果在檢查 key 是否存在之前就淘汰，單純的更新也會丟掉一筆 entry |
+
+**方向只是慣例，不是模式本身。** 有些解法把 MRU 插在 `head` 後面（`add_to_head`），淘汰
+`tail.prev`。那是同一個結構的鏡像：從一端插入，從另一端淘汰。兩種混用 — 插在尾端卻淘汰
+`tail.prev` — 會把剛碰過的 key 淘汰掉。
+
+**函式庫捷徑**：Python 的 `OrderedDict`（`move_to_end(key)`、`popitem(last=False)`）和
+Java 的 `LinkedHashMap`（access-order 建構子 + `removeEldestEntry`）*本身就是*這個 hash map +
+雙向鏈結串列。面試時可以先講出來，但要準備好手刻 — OrderedDict 的寫法在
+[design_examples.md 1)](./design_examples.md#1-lru-cache--lc-146-)。
 
 **類似的 LC 題目**：
 | # | 題目 | 差別在哪 |

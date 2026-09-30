@@ -496,22 +496,27 @@ head(dummy) <-> [LRU] <-> ... <-> [MRU] <-> tail(dummy)
 
 **When to Use**:
 - Need O(1) get + O(1) put with ordered eviction (LRU/MFU)
-- Any problem requiring a ordered access-tracked collection
+- Any problem requiring an ordered, access-tracked collection
 
 **Time Complexity**: O(1) get and put  
 **Space Complexity**: O(capacity)
 
-**Key Helper Operations**:
-- `_remove(node)` — splice a node out of the list in O(1)
-- `_insert(node)` — insert a node just before tail (MRU position) in O(1)
+**Key Helper Operations** — the whole class is these two, called in pairs:
+- `remove(node)` — splice a node out of the list in O(1); needs only the node, because it carries both neighbours
+- `add_to_tail(node)` — insert a node just before the dummy tail (MRU position) in O(1)
+- "touch" a key = `remove(node)` then `add_to_tail(node)` — used by `get` **and** by `put` on an existing key
 
 **Template Pattern**:
 ```python
 # python
 # LC 146 - LRU Cache
+# IDEA: map key -> node for O(1) lookup; the doubly linked list holds recency order,
+#       MRU just before `tail`, LRU just after `head`. put inserts first, then evicts
+#       `head.next` if the map has grown past capacity.
+# time = O(1) per get/put, space = O(capacity)
 class Node:
-    def __init__(self, key, val):
-        self.key = key
+    def __init__(self, key=0, val=0):
+        self.key = key        # NOTE !!! kept so eviction can delete the map entry
         self.val = val
         self.prev = None
         self.next = None
@@ -519,66 +524,99 @@ class Node:
 class LRUCache:
     def __init__(self, capacity):
         self.capacity = capacity
-        self.cache = {}  # key -> Node
+        self.kv_map = {}  # key -> Node
 
         # sentinel boundaries: head <-> ... <-> tail
-        self.head = Node(0, 0)  # LRU side
-        self.tail = Node(0, 0)  # MRU side
+        self.head = Node()  # LRU side
+        self.tail = Node()  # MRU side
         self.head.next = self.tail
         self.tail.prev = self.head
 
-    def _remove(self, node):
-        prev = node.prev
-        nxt  = node.next
-        prev.next = nxt
-        nxt.prev  = prev
+    def remove(self, node):
+        prev_node = node.prev
+        next_node = node.next
+        prev_node.next = next_node
+        next_node.prev = prev_node
 
-    def _insert(self, node):          # insert just before tail (MRU)
-        prev = self.tail.prev
-        prev.next  = node
-        node.prev  = prev
-        node.next  = self.tail
+    def add_to_tail(self, node):      # insert just before tail (MRU)
+        prev_node = self.tail.prev
+        prev_node.next = node
+        node.prev = prev_node
+        node.next = self.tail
         self.tail.prev = node
 
     def get(self, key):
-        if key not in self.cache:
+        if key not in self.kv_map:
             return -1
-        node = self.cache[key]
-        self._remove(node)
-        self._insert(node)            # move to MRU
+        node = self.kv_map[key]
+        self.remove(node)
+        self.add_to_tail(node)        # move to MRU
         return node.val
 
     def put(self, key, value):
-        if key in self.cache:
-            node = self.cache[key]
+        # case 1) key exists: update in place, refresh to MRU — never evicts
+        if key in self.kv_map:
+            node = self.kv_map[key]
             node.val = value
-            self._remove(node)
-            self._insert(node)        # refresh to MRU
+            self.remove(node)
+            self.add_to_tail(node)
             return
 
-        if len(self.cache) == self.capacity:
-            lru = self.head.next      # evict LRU (closest to head)
-            self._remove(lru)
-            del self.cache[lru.key]
-
+        # case 2) new key: insert first ...
         node = Node(key, value)
-        self.cache[key] = node
-        self._insert(node)
+        self.kv_map[key] = node
+        self.add_to_tail(node)
+
+        # ... then evict the LRU (the first REAL node, not the dummy) if over capacity
+        if len(self.kv_map) > self.capacity:
+            lru_node = self.head.next
+            self.remove(lru_node)
+            del self.kv_map[lru_node.key]
 ```
 
-**Visual Trace** (capacity=2):
+**Visual Trace** (capacity=2, LC 146 Example 1):
 ```text
 put(1,1): head <-> [1] <-> tail
 put(2,2): head <-> [1] <-> [2] <-> tail
-get(1):   head <-> [2] <-> [1] <-> tail   ← 1 moved to MRU
-put(3,3): evict head.next=[2]
+get(1):   head <-> [2] <-> [1] <-> tail          ← 1 moved to MRU, returns 1
+put(3,3): head <-> [2] <-> [1] <-> [3] <-> tail  ← size 3 > 2
+          evict head.next=[2]
           head <-> [1] <-> [3] <-> tail
+get(2):   -1
+put(4,4): evict head.next=[1]
+          head <-> [3] <-> [4] <-> tail
+get(1) = -1, get(3) = 3, get(4) = 4
 ```
 
 **Why sentinel nodes?**
-- `_remove` and `_insert` always have valid `.prev`/`.next` neighbors
+- `remove` and `add_to_tail` always have valid `.prev`/`.next` neighbors
 - No `if node.prev is None` or `if node.next is None` guards needed
 - Works uniformly for head removal, tail removal, and middle removal
+- The LRU is `head.next`, never `head` — `head` is a dummy with no map entry
+
+**Why does the node store its `key`?** The map goes key → node, but eviction arrives from
+the other direction: it reaches the victim through `head.next`, and must then delete that
+victim's map entry. Without `node.key` there is no O(1) way back from the node to the map —
+forget it and the map keeps a stale entry, so `len(kv_map)` never shrinks and `get` returns a
+node that is no longer in the list.
+
+**Two orders for `put`, both correct**:
+
+| | Insert, then evict (template above) | Evict, then insert |
+|---|---|---|
+| Capacity test | `len(kv_map) > capacity` after inserting | `len(kv_map) == capacity` before inserting |
+| Victim | `head.next` — the new node is at the tail, so never itself | `head.next` |
+| The trap | none extra | the eviction must sit **inside** the new-key branch; evicting before the existing-key check drops an entry on a plain update |
+
+**Orientation is a convention, not the pattern.** Some solutions insert MRU right after `head`
+(`add_to_head`) and evict `tail.prev`. It is the same structure mirrored: insert at one end,
+evict from the other. Mixing the two — adding at the tail but evicting `tail.prev` — evicts the
+key just touched.
+
+**Library shortcut**: Python's `OrderedDict` (`move_to_end(key)`, `popitem(last=False)`) and
+Java's `LinkedHashMap` (access-order constructor + `removeEldestEntry`) *are* this hash map +
+doubly linked list. Say so in an interview, then be ready to build it by hand — the OrderedDict
+form is worked in [design_examples.md 1)](./design_examples.md#1-lru-cache--lc-146-).
 
 **Similar LC Problems**:
 | # | Problem | Key Difference |
