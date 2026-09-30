@@ -35,6 +35,171 @@ Follow up: Can you solve the problem in O(1) extra space complexity? (The output
 
 # V0
 # IDEA: prefix,  suffix (gemini)
+class Solution(object):
+
+  def productExceptSelf(self, nums):
+    """:type nums: List[int] :rtype: List[int]"""
+    n = len(nums)
+    if not nums:
+      return []
+
+    # 1. 建立 prefix 陣列：
+    # prefix[i] 代表「索引 i 左側所有元素的乘積」
+    # 註：prefix[0] = 1，因為索引 0 的左邊沒有任何元素
+    prefix = [1] * n
+    for i in range(1, n):
+      # 當前左側累積乘積 = 上一個左側累積乘積 * 上一個數字
+      prefix[i] = prefix[i - 1] * nums[i - 1]
+
+    # 2. 建立 suffix 陣列：
+    # suffix[i] 代表「索引 i 右側所有元素的乘積」
+    # 註：suffix[n-1] = 1，因為最後一個元素的右邊沒有任何元素
+    suffix = [1] * n
+
+    # [Python 遞減迴圈小筆記]
+    # range(start, stop, step) -> range(n-2, -1, -1)
+    # 確保終點為 -1 才能順利涵蓋並處理到索引 0
+    for i in range(n - 2, -1, -1):
+      # 當前右側累積乘積 = 下一個右側累積乘積 * 下一個數字
+      suffix[i] = suffix[i + 1] * nums[i + 1]
+
+    # 3. 結合左右兩側乘積得出最終結果：
+    # 除了自身以外的乘積 = (左側所有元素乘積) * (右側所有元素乘積)
+    res = [1] * n
+    for i in range(n):
+      res[i] = prefix[i] * suffix[i]
+
+    return res
+
+
+
+# V0-0-1
+# IDEA: PREFIX, SUFFIX (gpt)
+class Solution(object):
+    def productExceptSelf(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[int]
+
+        Key idea:
+        For each index i:
+
+            result[i] =
+                product of elements BEFORE i
+                *
+                product of elements AFTER i
+
+        We pre-compute these two products using:
+        1. prefix[i]
+        2. suffix[i]
+        """
+
+        n = len(nums)
+
+        # ---------------------------------------------------------
+        # 1. Build prefix product
+        # ---------------------------------------------------------
+        #
+        # prefix[i] = product of all elements BEFORE index i
+        #
+        # Example:
+        #
+        # nums   = [-1, 1, 0, -3, 3]
+        #
+        # prefix = [1, -1, -1, 0, 0]
+        #
+        # Why prefix[0] = 1?
+        #
+        # There is no element before index 0.
+        # We use 1 as the multiplicative identity:
+        #
+        #     1 * anything = anything
+        #
+        prefix = [1] * n
+
+        # Start from index 1 because:
+        # prefix[0] is already initialized to 1.
+        for i in range(1, n):
+
+            # Everything before i =
+            # everything before (i - 1)
+            # * nums[i - 1]
+            prefix[i] = prefix[i - 1] * nums[i - 1]
+
+        # ---------------------------------------------------------
+        # 2. Build suffix product
+        # ---------------------------------------------------------
+        #
+        # suffix[i] = product of all elements AFTER index i
+        #
+        # Example:
+        #
+        # nums   = [-1, 1, 0, -3, 3]
+        #
+        # suffix = [0, 0, -9, 3, 1]
+        #
+        # Why suffix[n - 1] = 1?
+        #
+        # There is no element after the last index.
+        #
+        suffix = [1] * n
+
+        # Iterate from right to left.
+        #
+        # range(n - 2, -1, -1) means:
+        #
+        #     start = n - 2
+        #     stop  = -1  (exclusive)
+        #     step  = -1
+        #
+        # Example:
+        #
+        # n = 5
+        #
+        # range(3, -1, -1)
+        # -> 3, 2, 1, 0
+        #
+        # We start at n - 2 because suffix[n - 1] = 1
+        # is already initialized.
+        for i in range(n - 2, -1, -1):
+
+            # Everything after i =
+            # everything after (i + 1)
+            # * nums[i + 1]
+            suffix[i] = suffix[i + 1] * nums[i + 1]
+
+        # ---------------------------------------------------------
+        # 3. Build final result
+        # ---------------------------------------------------------
+        #
+        # For every index i:
+        #
+        #     result[i]
+        #         =
+        #     prefix[i] * suffix[i]
+        #
+        # Example:
+        #
+        # nums = [-1, 1, 0, -3, 3]
+        #
+        # i = 2:
+        #
+        # prefix[2] = -1
+        # suffix[2] = -9
+        #
+        # result[2] = (-1) * (-9) = 9
+        #
+        res = [1] * n
+
+        for i in range(n):
+            res[i] = prefix[i] * suffix[i]
+
+        return res
+
+
+
+# V0-0-2
+# IDEA: prefix,  suffix (gemini)
 # Time: O(N)
 # Space: O(1)
 """
