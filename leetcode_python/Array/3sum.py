@@ -72,6 +72,126 @@ class Solution(object):
         return [list(t) for t in res]
 
 
+# V0-0-1
+# IDEA: DOUBLE LOOP + HASHMAP (gpt)
+class Solution(object):
+    def threeSum(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+
+        # Edge case
+        if not nums or len(nums) < 3:
+            return []
+
+        n = len(nums)
+
+        result = set()
+
+        # Fix the first number nums[i]
+        for i in range(n - 2):
+
+
+            """
+            NOTE !!!
+
+
+            re-build the hashmap in every loop (i)
+            """
+            # {value: index}
+            # This map is rebuilt for each i.
+            my_map = {}
+
+            for j in range(i + 1, n):
+
+                val_i = nums[i]
+                val_j = nums[j]
+
+                # We need:
+                #
+                # val_i + val_j + val_k = 0
+                #
+                # Therefore:
+                #
+                # val_k = -(val_i + val_j)
+                target = -(val_i + val_j)
+
+                # If target has already appeared in this
+                # current range, we found a valid triplet.
+                if target in my_map:
+
+                    triplet = [val_i, val_j, target]
+
+                    # Sort so that the same combination
+                    # always has the same representation.
+                    #
+                    # Example:
+                    # [0, -1, 1] -> [-1, 0, 1]
+                    triplet.sort()
+
+                    # tuple is hashable, so it can be stored
+                    # inside a set for deduplication.
+                    result.add(tuple(triplet))
+
+                # Store the current value for future pairs.
+                my_map[val_j] = j
+
+        # Convert tuples back to lists
+        return [list(x) for x in result]
+
+
+
+# V0-1
+# IDEA: SORT + 2 POINTERS (GEMINI)
+# time = O(n^2)
+# space = O(1)
+class Solution(object):
+
+  def threeSum(self, nums):
+    """:type nums: List[int] :rtype: List[List[int]]"""
+    if not nums or len(nums) < 3:
+      return []
+
+    n = len(nums)
+    nums.sort()  # 1. 先將陣列排序，方便去重與雙指標移動
+    res = []
+
+    for i in range(n - 2):
+      # 2. 如果當前固定數字大於 0，因為後面都是正數，三數相加絕對大於 0，直接提早結束
+      if nums[i] > 0:
+        break
+
+      # 3. 去重：如果當前數字和上一個數字相同，跳過以避免重複的三元組
+      if i > 0 and nums[i] == nums[i - 1]:
+        continue
+
+      # 4. 雙指標夾逼
+      l = i + 1
+      r = n - 1
+
+      while l < r:
+        total = nums[i] + nums[l] + nums[r]
+
+        if total == 0:
+          res.append([nums[i], nums[l], nums[r]])
+
+          # 5. 找到答案後，左右指標同時去重
+          while l < r and nums[l] == nums[l + 1]:
+            l += 1
+          while l < r and nums[r] == nums[r - 1]:
+            r -= 1
+
+          l += 1
+          r -= 1
+        elif total < 0:
+          l += 1  # 總和太小，左指標向右移以增大數值
+        else:
+          r -= 1  # 總和太大，右指標向左移以減小數值
+
+    return res
+
+
 # V0-1
 # IDEA: SORT + 2 POINTERS
 # time = O(n^2)
