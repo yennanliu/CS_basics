@@ -9,7 +9,7 @@
 
 - [Python](https://leetcode.com/problemset/all/?languageTags=python3)
 
-<!-- 1b35029b0f82 -->
+<!-- fa5e7397e6b0 -->
 ## 總覽
 
 這份速查表以前是 3,672 行、全部塞在單一個 `## 1) Examples` 標題底下，68 個條目以
@@ -28,6 +28,7 @@
 | 讓 dict 保持在我控制的順序，或淘汰它最舊的一筆（LRU） | [Dict 排序，以及何時需要 `OrderedDict`](#dict-ordering-and-when-you-need-ordereddict) |
 | 在巢狀函式裡面寫入外層變數 | [結構、作用域與回傳值](#structure-scope--return-values) |
 | 用堆積(heap)、二分搜尋、有序 map 或 `itertools` | [python_trick_stdlib.md](./python_trick_stdlib.md) |
+| 查看 heap 的頂端元素 — 就是 `pq[0]`（取負存放的 max-heap 用 `-small_pq[0]`，min-heap 用 `big_pq[0]`，見 LC 295） | [`heapq` 基礎](./python_trick_stdlib.md#heapq-basics-min-heap-by-default-) |
 | 插入 list、切出子陣列，或把差一算對 | [python_trick_indexing.md](./python_trick_indexing.md) |
 
 <!-- 111d3bcbf551 -->

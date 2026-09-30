@@ -129,6 +129,17 @@ for v in [5, 3, 7]:
     heapq.heappush(max_heap, -v)
 largest = -max_heap[0]   # 7   (peek, NOT pop)
 
+# ── two heaps : BOTH tops are index 0 (LC 295 Find Median from Data Stream) ──
+#   small_pq : max-heap of the smaller half (stored NEGATED)
+#   big_pq   : min-heap of the bigger half
+small_pq, big_pq = [], []
+heapq.heappush(small_pq, -1)  # stream [1, 2] : 1 -> small half
+heapq.heappush(big_pq, 2)     #                2 -> big half
+max_of_small = -small_pq[0]   # 1  -> top of max-heap: negate back
+min_of_big   = big_pq[0]      # 2  -> top of min-heap: as-is
+median = (max_of_small + min_of_big) / 2.0    # 1.5
+# odd count (small_pq holds the extra one) -> median = float(-small_pq[0])
+
 # ── other ways to peek, and why they are WORSE ──
 #   heap[0]                    -> O(1)   ✅ idiomatic
 #   heapq.nsmallest(1, heap)[0]-> O(n)   ❌ scans whole list
