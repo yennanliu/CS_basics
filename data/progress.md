@@ -73,9 +73,10 @@
 	- https://yennj12.js.org/CS_basics/cheatsheets/complexity_cheatsheet.html
 
 
-- DFS（深度優先搜尋）
-	- https://yennj12.js.org/CS_basics/cheatsheets/dfs.zh.html
-		- `模板 9：網格 DFS + 回溯 — 三種寫法比較（LC 1219 Path with Maximum Gold）`
+
+- 堆積與優先佇列
+	- https://yennj12.js.org/CS_basics/cheatsheets/heap.zh.html
+
 
 
 - 雜湊表 — 題目詳解
@@ -116,6 +117,7 @@
 	- Binary Search
 	- 二元樹
 	- BFS（廣度優先搜尋)
+	- DFS（深度優先搜尋)
 
 
 
