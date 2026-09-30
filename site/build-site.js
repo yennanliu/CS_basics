@@ -1030,7 +1030,7 @@ const AGENT_SKILLS = [
 const landingContent = `
   <div class="hero">
     <h1>CS_basics</h1>
-    <p class="hero-lede">The notes, solutions and practice record behind one engineer's preparation for the Google L3 coding loop — data-structure and algorithm patterns, worked in Python first and Java second, with the tools that turn a practice log into a study plan.</p>
+    <p class="hero-lede">The notes, solutions and practice record behind one engineer's preparation for the G L3 coding loop — data-structure and algorithm patterns, worked in Python first and Java second, with the tools that turn a practice log into a study plan.</p>
     <div class="hero-actions">
       <a class="hero-btn hero-btn-primary" href="lc-roadmap.html">Start with the roadmap</a>
       <a class="hero-btn" href="lc-review-plan.html">What to review today</a>
@@ -1133,7 +1133,7 @@ cp -r /tmp/cs_basics/.claude/skills/lc-coach ~/.claude/skills/</code></pre>
   <section class="entry-section offpath-band" id="off-path">
     <h2>Off the coding-loop path</h2>
     <p class="section-note">
-      Two collections here are backend and data-engineering interview material, not what a Google L3
+      Two collections here are backend and data-engineering interview material, not what a G L3
       coding loop asks. They are kept as reference and stay off the roadmap, the review plan and the
       L3 core set — so a visitor preparing for the coding loop can skip them without missing anything.
     </p>
@@ -1175,7 +1175,7 @@ cp -r /tmp/cs_basics/.claude/skills/lc-coach ~/.claude/skills/</code></pre>
 
 fs.writeFileSync('_site/index.html', htmlTemplate('Home', landingContent, 'home', '', {
   url: 'index.html',
-  description: `${readmeProblems.size} LeetCode problems indexed, ${cheatsheets.length} pattern cheatsheets, a study roadmap and a spaced-repetition review plan — one engineer's preparation for the Google L3 coding loop, in Python and Java.`
+  description: `${readmeProblems.size} LeetCode problems indexed, ${cheatsheets.length} pattern cheatsheets, a study roadmap and a spaced-repetition review plan — one engineer's preparation for the G L3 coding loop, in Python and Java.`
 }));
 console.log(`✓ Created index.html (landing page, ${readmeProblems.size} problems indexed)`);
 
