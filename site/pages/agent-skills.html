@@ -207,6 +207,9 @@
     .group-h::after { content: ''; flex: 1; height: 1px; background: var(--border); }
     .group-h:first-of-type { margin-top: 0; }
     .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; }
+    /* The display rules above beat the user-agent [hidden] rule, so the filter's
+       hidden attribute needs saying again or empty families stay on screen. */
+    .group-h[hidden], .cards[hidden] { display: none; }
 
     .card {
       --mx: 50%; --my: 0%;
