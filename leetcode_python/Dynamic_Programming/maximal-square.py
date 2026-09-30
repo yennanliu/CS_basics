@@ -32,7 +32,102 @@ matrix[i][j] is '0' or '1'.
 
 """
 
-# V0  
+# V0
+class Solution(object):
+    def maximalSquare(self, matrix):
+        """
+        :type matrix: List[List[str]]
+        :rtype: int
+        """
+        pass
+
+
+# V0-1
+# IDEA: 2D DP (gpt)
+class Solution(object):
+    def maximalSquare(self, matrix):
+        """
+        :type matrix: List[List[str]]
+        :rtype: int
+        """
+
+        # Edge case
+        if not matrix or len(matrix) == 0:
+            return 0
+
+        rows = len(matrix)
+        cols = len(matrix[0])
+
+        # dp[i][j] = largest square side length
+        # whose bottom-right corner is at (i - 1, j - 1)
+        #
+        # Extra row and column make boundary handling easier.
+        dp = [
+            [0] * (cols + 1)
+            for _ in range(rows + 1)
+        ]
+
+        max_side = 0
+
+        for i in range(1, rows + 1):
+            for j in range(1, cols + 1):
+
+                # Matrix contains strings: "0" / "1"
+                if matrix[i - 1][j - 1] == "1":
+
+                    # Current cell can form a square.
+                    #
+                    # The square size is limited by the
+                    # smallest of:
+                    #   top
+                    #   left
+                    #   top-left
+                    dp[i][j] = min(
+                        dp[i - 1][j],
+                        dp[i][j - 1],
+                        dp[i - 1][j - 1]
+                    ) + 1
+
+                    max_side = max(
+                        max_side,
+                        dp[i][j]
+                    )
+
+        # Return area
+        return max_side * max_side
+
+
+# V0-2
+# IDEA: 2D DP (GEMINI)
+class Solution(object):
+
+  def maximalSquare(self, matrix):
+    """:type matrix: List[List[str]] :rtype: int"""
+    if not matrix or not matrix[0]:
+      return 0
+
+    rows = len(matrix)
+    cols = len(matrix[0])
+
+    # dp[i][j] 代表以 (i-1, j-1) 為右下角所能組成的最大正方形邊長
+    # 多開一行一列 (Padding) 讓邊界處理變得很單純，預設值皆為 0
+    dp = [[0] * (cols + 1) for _ in range(rows + 1)]
+    max_side = 0
+
+    for i in range(1, rows + 1):
+      for j in range(1, cols + 1):
+        # 記得 matrix 裡裝的是字串 '1'，不是整數 1
+        if matrix[i - 1][j - 1] == "1":
+          # 狀態轉移方程：由上方、左方、左上方的最小值決定當前能擴展的最大正方形邊長
+          dp[i][j] = (
+              min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]) + 1
+          )
+          # 持續更新全域見過的最大邊長
+          max_side = max(max_side, dp[i][j])
+
+    # 題目要求回傳的是「面積」（邊長的平方）
+    return max_side * max_side
+
 
 # V1 
 # http://bookshadow.com/weblog/2015/06/03/leetcode-maximal-square/
