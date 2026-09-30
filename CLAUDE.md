@@ -226,7 +226,7 @@ author decided to keep as reference, and nothing on the roadmap, the review plan
 core set reads them. The FAQ count moved there from the stat strip for the same reason, and `faqs`
 moved out of the navbar's inline row into `more` (the review plan took its slot), because
 the bar cannot call first-class what the landing page calls off path. The hero lede names
-the target (the Google L3 coding loop, Python first) rather than listing every directory.
+the target (the G L3 coding loop, Python first) rather than listing every directory.
 
 The cards are declared as `ENTRY_GROUPS` — three labelled groups (learn,
 practise, look up), not one grid of eleven — and the agent skills have a band of
