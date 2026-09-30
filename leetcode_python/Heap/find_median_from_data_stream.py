@@ -68,7 +68,7 @@ class MedianFinder(object):
 
 
 # V0-1
-# IDEA: 2 PQ (small, big) (gemini)
+# IDEA: 2 PQ (small, big) + SIZE BALANCE, ELEMENTS MOVES (gemini)
 """
 
 1. Steps:
@@ -108,6 +108,16 @@ maintain PQ as
     -> small 的長度只可能等於 len(large) 或 len(large) + 1
 
     -> len(small_half) >= len(large_half)
+
+
+
+4. Top element in PQ is idx=0
+
+    ->
+
+     small_pq[0]
+
+     big_pq[0]
 """
 import heapq
 
@@ -132,26 +142,32 @@ class MedianFinder(object):
         :rtype: None
         """
 
+        #------------------------------
         # Step 1:
         # 先把 num 放進 small_half
+        #------------------------------
         heapq.heappush(self.small_half, -num)
 
+        #------------------------------
         # Step 2:
         # 把 small_half 最大的數字移到 large_half
         #
         # 因為 small_half 存負數，
         # heap top 是「負數中最小」= 原本最大的數字
+        #------------------------------
         moved_num = -heapq.heappop(self.small_half)
 
         heapq.heappush(self.large_half, moved_num)
 
+        #------------------------------
         # Step 3:
         # 維持：
         #
-        # len(small_half) >= len(large_half)
+        # len(small_half) >= len(large_half)  !!!!
         #
         # 如果 large_half 比 small_half 多，
         # 就把 large_half 最小的數字移回 small_half
+        #------------------------------
         if len(self.large_half) > len(self.small_half):
             moved_num = heapq.heappop(self.large_half)
             heapq.heappush(self.small_half, -moved_num)
@@ -163,6 +179,16 @@ class MedianFinder(object):
 
         small_size = len(self.small_half)
         large_size = len(self.large_half)
+
+        """
+        NOTE !!!
+
+
+        2 cases:
+
+            - totoal element cnt is odd
+            - totoal element cnt is even
+        """
 
         # Case 1:
         # 奇數個數字
@@ -180,8 +206,103 @@ class MedianFinder(object):
         return (-self.small_half[0] + self.large_half[0]) / 2.0
 
 
-
 # V0-2
+# IDEA: 2 PQ (small, big) + SIZE BALANCE, ELEMENTS MOVES (GPT)
+import heapq
+
+
+class MedianFinder(object):
+
+    def __init__(self):
+
+        # Max heap
+        # Store the smaller half of numbers.
+        #
+        # Python only has min heap,
+        # so store negative values.
+        self.small_half = []
+
+        # Min heap
+        # Store the bigger half of numbers.
+        self.big_half = []
+
+
+    def addNum(self, num):
+        """
+        :type num: int
+        :rtype: None
+        """
+
+        # Step 1:
+        # Push num into the smaller half first.
+        heapq.heappush(self.small_half, -num)
+
+        # Step 2:
+        # Make sure every number in small_half
+        # is <= every number in big_half.
+        #
+        # If the largest value in small_half
+        # is bigger than the smallest value in big_half,
+        # move it to big_half.
+        if self.big_half and (
+            -self.small_half[0] > self.big_half[0]
+        ):
+            small_max = -heapq.heappop(self.small_half)
+
+            heapq.heappush(
+                self.big_half,
+                small_max
+            )
+
+        # Step 3:
+        # Balance the sizes.
+        #
+        # small_half can have at most ONE more element
+        # than big_half.
+        if len(self.small_half) > len(self.big_half) + 1:
+
+            small_max = -heapq.heappop(self.small_half)
+
+            heapq.heappush(
+                self.big_half,
+                small_max
+            )
+
+        elif len(self.big_half) > len(self.small_half):
+
+            big_min = heapq.heappop(self.big_half)
+
+            heapq.heappush(
+                self.small_half,
+                -big_min
+            )
+
+
+    def findMedian(self):
+        """
+        :rtype: float
+        """
+
+        small_size = len(self.small_half)
+        big_size = len(self.big_half)
+
+        # Odd number of elements
+        if small_size > big_size:
+
+            # small_half has one extra element.
+            return float(-self.small_half[0])
+
+        # Even number of elements
+        else:
+
+            small_max = -self.small_half[0]
+            big_min = self.big_half[0]
+
+            return (small_max + big_min) / 2.0
+
+
+
+# V0-3
 # IDEA: 2 PQ (small, big PQ) (gpt)
 """
 NOTE !!!
