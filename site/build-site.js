@@ -1109,8 +1109,10 @@ const landingContent = `
     <p class="section-note">
       The repo ships ${skillCount ? `${skillCount} skills for coding agents` : 'skills for coding agents'} under
       <code>.claude/skills/</code> — plain markdown, no dependencies, installed into your own agent rather than run here.
-      These have pages of their own.
+      These have pages of their own, and <a href="agent-skills.html">one page for all of them</a> —
+      searchable, with the practice loop they form and an install builder.
     </p>
+    <p><a class="hero-btn hero-btn-primary" href="agent-skills.html">Browse every skill →</a></p>
     ${AGENT_SKILLS.map(([label, cards]) => `
     <h3 class="skill-group">${label}</h3>
     <div class="skill-grid">

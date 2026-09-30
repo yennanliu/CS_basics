@@ -49,7 +49,7 @@ const rel = p => path.relative(SITE, p);
 console.log('\n== required artefacts ==');
 const REQUIRED = [
   'index.html', 'problems.html', 'resources.html', 'cheatsheets.html', 'faqs.html',
-  'patterns.html', 'search.html', 'lc-roadmap.html', 'skills.html', 'lc-python.html',
+  'patterns.html', 'search.html', 'lc-roadmap.html', 'agent-skills.html', 'skills.html', 'lc-python.html',
   'lc-java.html', 'lc-cheatsheet.html', 'lc-log.html', 'lc-again.html',
   'lc-zh-translate.html', 'lc-algo-demo.html', 'lc-site-data.html', 'lc-faq-add.html',
   'l3-core.html', '404.html',

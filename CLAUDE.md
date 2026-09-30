@@ -32,6 +32,7 @@ CS_basics is a comprehensive computer science fundamentals repository containing
   - `finalize-pages.js` / `prune-images.js` - The two finishing passes; they run last because they need the whole `_site/` tree (see [Finishing passes](#the-two-finishing-passes))
   - `e2e-check.js` - Post-build validation of every generated page. Both workflows run it; run it locally too
   - `pages/` - Hand-maintained static pages (LC Explorer/Similar/Review-Plan/Random-Picker/Roadmap/Complexity-Quiz, Skills, Suggest-Review, 404)
+  - `pages/agent-skills.html` - The hub for every agent skill: a searchable directory of the `lc-*` skills, the practice loop they form, and an install builder. First entry of the navbar's **agent skills** group; a new skill page gets a card here too
   - `nav.js` / `roadmap.js` / `complexity.js` - Browser scripts copied to `_site/`; unit-tested under `site/test/`
   - `style.css` - Stylesheet for the generated doc pages
   - `nav.css` - Navbar, skip link and the `prefers-reduced-motion` opt-out. Loaded by **every** page family

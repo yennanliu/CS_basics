@@ -51,7 +51,7 @@ test('the agent skills sit under one parent in the dropdown', () => {
   const group = CSNav.MORE.find((i) => i.id === 'agent-skills');
   assert.ok(group, 'the dropdown should declare an agent-skills group');
   assert.deepEqual(group.children.map((c) => c.id),
-    ['lc-coach', 'lc-python', 'lc-java', 'lc-cheatsheet', 'lc-log', 'lc-again',
+    ['skills-hub', 'lc-coach', 'lc-python', 'lc-java', 'lc-cheatsheet', 'lc-log', 'lc-again',
      'lc-zh-translate', 'lc-algo-demo', 'lc-site-data', 'lc-faq-add', 'l3-core']);
 
   const menu = CSNav.navHTML().split('<div class="nav-more-menu">')[1];

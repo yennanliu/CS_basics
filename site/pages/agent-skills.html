@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <title>Agent Skills — CS_basics</title>
+  <meta name="description" content="Every agent skill this repo ships under .claude/skills/ in one place — the slash commands that file a solution, log a practice session, graduate an AGAIN marker, pick the next L3 core problems and keep the site's data valid — with a search, the practice loop they form, and a one-command install for Claude Code, Codex or Gemini.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧩</text></svg>">
+  <link rel="stylesheet" href="nav.css">
+  <link rel="stylesheet" href="lc-page.css">
+  <!-- Blocking on purpose: nav.js restores the stored theme before first paint. -->
+  <script src="nav.js"></script>
+  <style>
+    /* ── Page-local tokens ────────────────────────────────────────────────
+       The palette (--bg/--text/--border/--surface, both themes) comes from
+       lc-page.css. This is the hub the eleven per-skill pages hang off, so it
+       keeps their vocabulary — mono face, hairline grid, kicker pill — and adds
+       only what a directory needs: a filter, a card grid and the loop diagram.
+       The site is monochrome; "glow" here is the text colour at low alpha, so
+       it inverts correctly with the theme instead of needing a hue per mode. */
+    :root {
+      --mono: 'SF Mono','JetBrains Mono','IBM Plex Mono',ui-monospace,'Menlo',monospace;
+      --grid-line: rgba(128,128,128,0.10);
+      --tint: rgba(128,128,128,0.06);
+      --glow: rgba(0,0,0,0.07);
+    }
+    [data-theme="dark"] { --glow: rgba(255,255,255,0.075); }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 0; font-family: var(--mono);
+      background: var(--bg); color: var(--text);
+      transition: background 0.2s, color 0.2s;
+      font-size: 13px; line-height: 1.65;
+    }
+    a { color: var(--text); }
+    ::selection { background: var(--text); color: var(--bg); }
+    code { font-family: inherit; }
+
+    .container { max-width: 1180px; margin: 0 auto; padding: 0 1.5rem; }
+
+    .reveal { opacity: 1; transform: none; }
+    .js .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .js .reveal.in { opacity: 1; transform: none; }
+
+    /* ── Hero ─────────────────────────────────────────────────────────── */
+    .hero {
+      position: relative; overflow: hidden;
+      border-bottom: 1px solid var(--border);
+      padding: 4.5rem 0 3.5rem;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+      background-size: 28px 28px;
+      mask-image: radial-gradient(ellipse 80% 65% at 50% 30%, #000 30%, transparent 75%);
+      -webkit-mask-image: radial-gradient(ellipse 80% 65% at 50% 30%, #000 30%, transparent 75%);
+    }
+    /* A slow orb behind the headline — decoration only. */
+    .hero::after {
+      content: ''; position: absolute; width: 520px; height: 520px; border-radius: 50%;
+      top: -180px; right: -120px; pointer-events: none;
+      background: radial-gradient(circle, var(--glow) 0%, transparent 65%);
+      animation: drift 14s ease-in-out infinite alternate;
+    }
+    @keyframes drift { from { transform: translate(0,0); } to { transform: translate(-90px, 60px); } }
+    .hero > * { position: relative; z-index: 1; }
+
+    .hero-grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: 2.5rem; align-items: center; }
+    /* Grid items default to min-width: auto, so the terminal's longest line
+       would otherwise set the column width on a phone. */
+    .hero-grid > * { min-width: 0; }
+
+    .kicker {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--text-light); margin: 0 0 1.1rem;
+      border: 1px solid var(--border); padding: 0.25rem 0.7rem; border-radius: 100px;
+    }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text); animation: pulse 2.4s ease-in-out infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
+
+    .hero h1 {
+      margin: 0 0 1rem; font-size: clamp(2.3rem, 7vw, 3.9rem);
+      line-height: 1.02; letter-spacing: -0.04em; font-weight: 700;
+    }
+    .hero h1 .thin { color: var(--text-light); font-weight: 400; }
+    .lede { color: var(--text-light); font-size: 0.98rem; max-width: 56ch; margin: 0 0 1.8rem; }
+    .lede code { color: var(--text); }
+
+    .hero-actions { display: flex; gap: 0.7rem; flex-wrap: wrap; margin-bottom: 2rem; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.62rem 1.2rem; font-size: 0.85rem;
+      text-decoration: none; border: 1px solid var(--border);
+      color: var(--text); background: var(--surface); font-family: inherit;
+      transition: border-color 0.15s, transform 0.15s;
+    }
+    .btn:hover { border-color: var(--text); transform: translateY(-1px); }
+    .btn.primary { background: var(--text); color: var(--bg); border-color: var(--text); }
+
+    .stats { display: flex; gap: 0; border: 1px solid var(--border); width: fit-content; max-width: 100%; flex-wrap: wrap; }
+    .stat { padding: 0.6rem 1.1rem; border-right: 1px solid var(--border); }
+    .stat:last-child { border-right: none; }
+    .stat b { display: block; font-size: 1.35rem; letter-spacing: -0.03em; line-height: 1.1; }
+    .stat span { font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-light); }
+
+    /* ── Terminal ─────────────────────────────────────────────────────── */
+    .term {
+      border: 1px solid var(--border); background: var(--surface);
+      font-size: 0.78rem; line-height: 1.62;
+      box-shadow: 0 30px 80px -30px var(--glow), 0 0 0 1px var(--tint);
+    }
+    .term-bar {
+      display: flex; align-items: center; gap: 0.45rem;
+      padding: 0.5rem 0.8rem; border-bottom: 1px solid var(--border);
+      color: var(--text-light); font-size: 0.68rem; letter-spacing: 0.05em;
+    }
+    .term-bar i { width: 8px; height: 8px; border-radius: 50%; border: 1px solid var(--text-light); display: block; }
+    .term-bar span { margin-left: auto; }
+    .term pre { margin: 0; padding: 1rem 1.1rem; overflow-x: auto; white-space: pre-wrap; font-family: inherit; min-height: 16.5rem; }
+    .term .dim { color: var(--text-light); }
+    .term .ok  { font-weight: 700; }
+    .caret {
+      display: inline-block; width: 0.55em; height: 1em; background: var(--text);
+      vertical-align: -0.15em; animation: blink 1.05s step-end infinite;
+    }
+    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+
+    /* ── Sections ─────────────────────────────────────────────────────── */
+    section { padding: 3.5rem 0; border-bottom: 1px solid var(--border); }
+    section:last-of-type { border-bottom: none; }
+    .eyebrow { font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-light); margin: 0 0 0.7rem; }
+    h2 { font-size: 1.45rem; margin: 0 0 0.5rem; letter-spacing: -0.02em; }
+    .sub { color: var(--text-light); margin: 0 0 2rem; max-width: 74ch; }
+    .sub code { color: var(--text); }
+
+    /* ── The loop ─────────────────────────────────────────────────────── */
+    .loop { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0; position: relative; counter-reset: loop; }
+    .loop::before {
+      /* The rail the six stops sit on; a lit segment travels along it. */
+      content: ''; position: absolute; left: 8%; right: 8%; top: 22px; height: 1px; background: var(--border);
+    }
+    .loop::after {
+      content: ''; position: absolute; top: 21px; height: 3px; width: 12%; left: 8%;
+      background: linear-gradient(90deg, transparent, var(--text), transparent);
+      animation: travel 6s linear infinite;
+    }
+    @keyframes travel { from { left: 4%; } to { left: 84%; } }
+    .stop { position: relative; text-align: center; padding: 0 0.4rem; text-decoration: none; display: block; }
+    .stop .node {
+      width: 44px; height: 44px; margin: 0 auto 0.8rem; border-radius: 50%;
+      border: 1px solid var(--border); background: var(--bg);
+      display: grid; place-items: center; font-size: 0.8rem; font-weight: 700;
+      transition: border-color 0.2s, transform 0.2s, background 0.2s, color 0.2s;
+      position: relative; z-index: 1;
+    }
+    .stop:hover .node, .stop:focus-visible .node { border-color: var(--text); background: var(--text); color: var(--bg); transform: scale(1.08); }
+    .stop b { display: block; font-size: 0.78rem; margin-bottom: 0.2rem; }
+    .stop span { display: block; font-size: 0.72rem; color: var(--text-light); line-height: 1.45; }
+    .loop-back {
+      margin-top: 1.4rem; text-align: center; font-size: 0.72rem; color: var(--text-light);
+      border: 1px dashed var(--border); padding: 0.45rem 0.8rem; width: fit-content; margin-left: auto; margin-right: auto;
+    }
+
+    /* ── Directory: filter bar ────────────────────────────────────────── */
+    .filter {
+      position: sticky; top: var(--nav-h, 0px); z-index: 5;
+      display: flex; gap: 0.8rem; align-items: center; flex-wrap: wrap;
+      padding: 0.9rem 0; margin-bottom: 1.4rem;
+      background: var(--bg); border-bottom: 1px solid var(--border);
+    }
+    .search {
+      flex: 1 1 260px; display: flex; align-items: center; gap: 0.5rem;
+      border: 1px solid var(--border); background: var(--surface); padding: 0 0.7rem;
+      transition: border-color 0.15s;
+    }
+    .search:focus-within { border-color: var(--text); }
+    .search svg { flex: none; opacity: 0.6; }
+    .search input {
+      flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--text);
+      font: inherit; font-size: 0.85rem; padding: 0.6rem 0;
+    }
+    .search kbd {
+      font: inherit; font-size: 0.66rem; color: var(--text-light);
+      border: 1px solid var(--border); padding: 0 0.35rem; border-radius: 3px;
+    }
+    .chips { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .chip {
+      font: inherit; font-size: 0.74rem; cursor: pointer;
+      border: 1px solid var(--border); background: transparent; color: var(--text-light);
+      padding: 0.42rem 0.8rem; border-radius: 100px; transition: all 0.15s;
+    }
+    .chip:hover { color: var(--text); border-color: var(--text-light); }
+    .chip[aria-pressed="true"] { background: var(--text); color: var(--bg); border-color: var(--text); }
+    .chip .n { opacity: 0.6; margin-left: 0.3rem; }
+    .count { font-size: 0.72rem; color: var(--text-light); margin-left: auto; }
+
+    /* ── Directory: cards ─────────────────────────────────────────────── */
+    .group-h { font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-light);
+               margin: 2rem 0 0.8rem; display: flex; align-items: center; gap: 0.7rem; }
+    .group-h::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .group-h:first-of-type { margin-top: 0; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; }
+
+    .card {
+      --mx: 50%; --my: 0%;
+      position: relative; display: flex; flex-direction: column;
+      border: 1px solid var(--border); background: var(--bg);
+      padding: 1.25rem 1.3rem 1.1rem; overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    /* Spotlight that follows the pointer — set by a pointermove handler below. */
+    .card::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0;
+      background: radial-gradient(420px circle at var(--mx) var(--my), var(--glow), transparent 45%);
+      transition: opacity 0.25s;
+    }
+    .card:hover { border-color: var(--text-light); transform: translateY(-2px); }
+    .card:hover::before { opacity: 1; }
+    .card > * { position: relative; }
+    .card[hidden] { display: none; }
+
+    .card-top { display: flex; align-items: baseline; justify-content: space-between; gap: 0.6rem; margin-bottom: 0.35rem; }
+    .cmd { font-size: 1.12rem; font-weight: 700; letter-spacing: -0.02em; }
+    .cmd::before { content: '/'; color: var(--text-light); font-weight: 400; }
+    .tag { font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-light);
+           border: 1px solid var(--border); padding: 0.1rem 0.5rem; border-radius: 100px; white-space: nowrap; }
+    .card h3 { font-size: 0.86rem; margin: 0 0 0.55rem; font-weight: 600; }
+    .card p { margin: 0 0 0.9rem; font-size: 0.8rem; color: var(--text-light); flex: 1; }
+
+    .eg {
+      display: flex; align-items: center; gap: 0.5rem;
+      border: 1px solid var(--border); background: var(--surface);
+      padding: 0.45rem 0.4rem 0.45rem 0.7rem; font-size: 0.76rem; margin-bottom: 0.8rem;
+    }
+    .eg code { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+    .eg code::before { content: '› '; color: var(--text-light); }
+
+    .touches { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-bottom: 0.9rem; }
+    .touches span { font-size: 0.66rem; color: var(--text-light); background: var(--tint); padding: 0.1rem 0.45rem; }
+    .touches span.ro { border: 1px dashed var(--border); background: transparent; }
+
+    .card-links { display: flex; gap: 1rem; font-size: 0.76rem; border-top: 1px solid var(--border); padding-top: 0.75rem; }
+    .card-links a { text-decoration: none; color: var(--text-light); transition: color 0.15s; }
+    .card-links a:hover { color: var(--text); }
+    .card-links a.go { color: var(--text); margin-right: auto; }
+    .card-links a.go:hover { text-decoration: underline; }
+
+    .copy {
+      font: inherit; font-size: 0.66rem; cursor: pointer; flex: none;
+      border: 1px solid var(--border); background: var(--bg); color: var(--text-light);
+      padding: 0.2rem 0.55rem; transition: all 0.15s;
+    }
+    .copy:hover { color: var(--text); border-color: var(--text); }
+
+    .empty { display: none; text-align: center; padding: 3rem 1rem; color: var(--text-light); border: 1px dashed var(--border); }
+    .empty.show { display: block; }
+
+    .more-skills { margin-top: 2.2rem; font-size: 0.8rem; color: var(--text-light); }
+    .more-skills ul { list-style: none; padding: 0; margin: 0.6rem 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 0.5rem; }
+    .more-skills li { border: 1px solid var(--border); padding: 0.55rem 0.8rem; }
+    .more-skills li a { font-weight: 700; text-decoration: none; }
+    .more-skills li a:hover { text-decoration: underline; }
+    .more-skills li span { display: block; font-size: 0.72rem; }
+
+    /* ── Install builder ──────────────────────────────────────────────── */
+    .builder { display: grid; grid-template-columns: 240px 1fr; gap: 0; border: 1px solid var(--border); }
+    .picker { border-right: 1px solid var(--border); padding: 0.6rem; max-height: 440px; overflow-y: auto; }
+    .picker label {
+      display: flex; align-items: center; gap: 0.6rem; cursor: pointer;
+      padding: 0.42rem 0.6rem; font-size: 0.8rem; color: var(--text-light); transition: all 0.12s;
+    }
+    .picker label:hover { color: var(--text); background: var(--tint); }
+    .picker input { accent-color: currentColor; margin: 0; }
+    .picker label:has(input:checked) { color: var(--text); background: var(--surface); }
+    .picker .all { border-bottom: 1px solid var(--border); margin-bottom: 0.35rem; padding-bottom: 0.6rem; }
+
+    .out { padding: 1.1rem 1.2rem; min-width: 0; }
+    .tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 1rem; overflow-x: auto; }
+    .tab {
+      font: inherit; font-size: 0.78rem; cursor: pointer; background: none; border: 0;
+      color: var(--text-light); padding: 0.5rem 0.9rem; border-bottom: 2px solid transparent; margin-bottom: -1px; white-space: nowrap;
+    }
+    .tab:hover { color: var(--text); }
+    .tab[aria-selected="true"] { color: var(--text); border-bottom-color: var(--text); }
+    .out .note { color: var(--text-light); font-size: 0.78rem; margin: 0 0 0.8rem; }
+    .code-block { position: relative; border: 1px solid var(--border); background: var(--surface); }
+    .code-block .copy { position: absolute; top: 0.5rem; right: 0.5rem; }
+    .code-block pre { margin: 0; padding: 0.95rem 1rem; padding-right: 4.5rem; overflow-x: auto; font-size: 0.76rem; line-height: 1.6; font-family: inherit; }
+
+    /* ── How it works ─────────────────────────────────────────────────── */
+    .how { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+    .how div { background: var(--bg); padding: 1.3rem 1.3rem; }
+    .how .n { font-size: 2rem; font-weight: 700; letter-spacing: -0.04em; color: var(--text-light); line-height: 1; display: block; margin-bottom: 0.6rem; }
+    .how b { display: block; margin-bottom: 0.35rem; font-size: 0.9rem; }
+    .how p { margin: 0; font-size: 0.8rem; color: var(--text-light); }
+    .how code { color: var(--text); }
+
+    /* ── Responsive ───────────────────────────────────────────────────── */
+    @media (max-width: 860px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .hero { padding-top: 2.8rem; }
+      .loop { grid-template-columns: repeat(3, 1fr); row-gap: 1.8rem; }
+      .loop::before, .loop::after { display: none; }
+      .builder { grid-template-columns: 1fr; }
+      .picker { border-right: none; border-bottom: 1px solid var(--border); max-height: 220px; }
+      .how { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 520px) {
+      .container { padding: 0 1rem; }
+      .loop { grid-template-columns: repeat(2, 1fr); }
+      .cards { grid-template-columns: 1fr; }
+      .count { margin-left: 0; width: 100%; }
+      .search kbd { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+      .js .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="site-nav" data-page="skills-hub" data-base=""></div>
+<script>CSNav.mount();</script>
+
+<main id="main">
+
+  <!-- ── Hero ──────────────────────────────────────────────────────────── -->
+  <div class="hero">
+    <div class="container hero-grid">
+      <div>
+        <p class="kicker"><span class="dot" aria-hidden="true"></span> Agent skills</p>
+        <h1>Slash commands<br><span class="thin">for the practice loop</span></h1>
+        <p class="lede">
+          The repo ships its own recipes for coding agents under <code>.claude/skills/</code> &mdash;
+          plain markdown, no dependencies. Each one does a single job this repo has got wrong by
+          hand before: filing a solution, logging a session, graduating an <code>AGAIN</code>,
+          picking what to drill next, keeping the site's data valid.
+        </p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#directory">Browse the skills ↓</a>
+          <a class="btn" href="#install">Install one</a>
+        </div>
+        <div class="stats" aria-label="At a glance">
+          <div class="stat"><b>11</b><span>lc skills</span></div>
+          <div class="stat"><b>3</b><span>families</span></div>
+          <div class="stat"><b>0</b><span>dependencies</span></div>
+          <div class="stat"><b>4+</b><span>agents</span></div>
+        </div>
+      </div>
+
+      <div class="term" aria-label="Example session">
+        <div class="term-bar" aria-hidden="true"><i></i><i></i><i></i><span>claude — CS_basics</span></div>
+        <pre id="term"><span class="dim">›</span> /lc-python 239 Sliding_Window
+<span class="dim">  slug      sliding-window-maximum</span>
+<span class="dim">  file      Sliding_Window/sliding_window_maximum.py</span>
+<span class="dim">  smoke     3/3 docstring examples pass</span>
+<span class="ok">  ✓ README row inserted under ## Sliding Window</span>
+
+<span class="dim">›</span> /lc-log 239 ok, 76 again!!
+<span class="ok">  ✓ 20260930 appended to data/progress.txt</span>
+
+<span class="dim">›</span> /l3-core next 5
+<span class="dim">  1. 76   again   Sliding Window</span>
+<span class="dim">  2. 124  —       Tree</span>
+<span class="dim">  …</span> <span class="caret"></span></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── The loop ──────────────────────────────────────────────────────── -->
+  <section class="reveal" aria-labelledby="loop-h">
+    <div class="container">
+      <p class="eyebrow">How they fit together</p>
+      <h2 id="loop-h">One practice day, six commands</h2>
+      <p class="sub">
+        The skills are not a toolbox so much as a loop. Each one writes exactly one record and names
+        the one it leaves for the next &mdash; so a solution, a practice attempt and a mastery verdict
+        never end up in each other's file.
+      </p>
+      <div class="loop">
+        <a class="stop" href="l3-core.html"><span class="node">1</span><b>/l3-core next 5</b><span>pick today's problems from the fixed core set</span></a>
+        <a class="stop" href="skills.html"><span class="node">2</span><b>/lc-coach</b><span>mock-interview it, get the verdict</span></a>
+        <a class="stop" href="lc-python.html"><span class="node">3</span><b>/lc-python · /lc-java</b><span>file the solution and its README row</span></a>
+        <a class="stop" href="lc-cheatsheet.html"><span class="node">4</span><b>/lc-cheatsheet</b><span>file what it taught you</span></a>
+        <a class="stop" href="lc-log.html"><span class="node">5</span><b>/lc-log</b><span>record the attempt in the practice log</span></a>
+        <a class="stop" href="lc-again.html"><span class="node">6</span><b>/lc-again</b><span>promote it only when re-derived unaided</span></a>
+      </div>
+      <p class="loop-back">↺ tomorrow, <code>/l3-core</code> reads the log you just wrote</p>
+    </div>
+  </section>
+
+  <!-- ── Directory ─────────────────────────────────────────────────────── -->
+  <section id="directory" class="reveal" aria-labelledby="dir-h">
+    <div class="container">
+      <p class="eyebrow">Directory</p>
+      <h2 id="dir-h">Every skill, one page each</h2>
+      <p class="sub">
+        Grouped by what the skill touches: your solutions, your practice record, or this site. Each
+        card links to the skill's own page &mdash; the failure modes it exists to prevent, its steps,
+        and a worked example &mdash; and to the <code>SKILL.md</code> an agent actually reads.
+      </p>
+
+      <div class="filter" role="search">
+        <label class="search">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="q" type="search" placeholder="Search — log, readme, java, translate…" aria-label="Search skills" autocomplete="off">
+          <kbd aria-hidden="true">/</kbd>
+        </label>
+        <div class="chips" role="group" aria-label="Filter by family">
+          <button class="chip" type="button" data-group="all" aria-pressed="true">all<span class="n">11</span></button>
+          <button class="chip" type="button" data-group="file" aria-pressed="false">file<span class="n">3</span></button>
+          <button class="chip" type="button" data-group="track" aria-pressed="false">track<span class="n">4</span></button>
+          <button class="chip" type="button" data-group="site" aria-pressed="false">site<span class="n">4</span></button>
+        </div>
+        <span class="count" id="count" aria-live="polite">11 skills</span>
+      </div>
+
+      <h3 class="group-h" data-for="file">File what you solved</h3>
+      <div class="cards" data-group="file">
+        <article class="card" data-group="file" data-keys="python solution readme slug file add leetcode_python docstring smoke test contest">
+          <div class="card-top"><span class="cmd">lc-python</span><span class="tag">file</span></div>
+          <h3>File a Python solution</h3>
+          <p>Finds the problem's real slug, writes the house layout (docstring → V0 → IDEA → time/space), smoke-tests it against the docstring's own examples, and inserts the README row in the right table set.</p>
+          <div class="eg"><code>/lc-python 4038 Hash_table</code><button class="copy" type="button">copy</button></div>
+          <div class="touches"><span>leetcode_python/</span><span>README.md</span></div>
+          <div class="card-links"><a class="go" href="lc-python.html">Open page →</a><a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-python/SKILL.md">SKILL.md ↗</a></div>
+        </article>
+        <article class="card" data-group="file" data-keys="java solution readme package javadoc compile port workspace leetcode_java">
+          <div class="card-top"><span class="cmd">lc-java</span><span class="tag">file</span></div>
+          <h3>File a Java solution</h3>
+          <p>The package its pattern owns, a clean javadoc header, <code>// V</code> markers that match the method names, a compile and a run &mdash; and the <code>[Java]</code> link added to the row the problem already has.</p>
+          <div class="eg"><code>/lc-java 25 LinkedList</code><button class="copy" type="button">copy</button></div>
+          <div class="touches"><span>leetcode_java/</span><span>README.md</span></div>
+          <div class="card-links"><a class="go" href="lc-java.html">Open page →</a><a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-java/SKILL.md">SKILL.md ↗</a></div>
+        </article>
+        <article class="card" data-group="file" data-keys="cheatsheet notes pattern variation example sheet doc anchor translation">
+          <div class="card-top"><span class="cmd">lc-cheatsheet</span><span class="tag">file</span></div>
+          <h3>Update a cheatsheet</h3>
+          <p>Files what a problem taught you into the sheet whose Scope line owns it &mdash; as an example, a variation, a new pattern or a whole sheet &mdash; then fixes the anchors and 中文 sections the edit moved.</p>
+          <div class="eg"><code>/lc-cheatsheet 1650 into binary_tree as variation</code><button class="copy" type="button">copy</button></div>
+          <div class="touches"><span>doc/cheatsheet/</span><span>i18n/zh/</span></div>
+          <div class="card-links"><a class="go" href="lc-cheatsheet.html">Open page →</a><a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-cheatsheet/SKILL.md">SKILL.md ↗</a></div>
+        </article>
+      </div>
+
+      <h3 class="group-h" data-for="track">Track the practice</h3>
+      <div class="cards" data-group="track">
+        <article class="card" data-group="track" data-keys="coach interview mock review verdict debrief packet score rubric drill next complexity">
+          <div class="card-top"><span class="cmd">lc-coach</span><span class="tag">track</span></div>
+          <h3>Interview coach</h3>
+          <p>Scores a solution the way an interviewer does on the six-point scale (SH / H / LH / LNH / NH / SNH), writes the debrief packet, names the line that sets the complexity, and says what to drill next.</p>
+          <div class="eg"><code>/lc-coach mock interview me on LC 239</code><button class="copy" type="button">copy</button></div>
+          <div class="touches"><span class="ro">read-only</span></div>
+          <div class="card-links"><a class="go" href="skills.html">Open page →</a><a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-coach/SKILL.md">SKILL.md ↗</a></div>
+        </article>
+        <article class="card" data-group="track" data-keys="log progress practice today session record annotate ok again todo review plan">
+          <div class="card-top"><span class="cmd">lc-log</span><span class="tag">track</span></div>
+          <h3>Log the session</h3>
+          <p>Appends today to the practice log in the shape the review plan's parser actually reads &mdash; labels comma-terminated, annotations verbatim &mdash; so no problem number is silently dropped.</p>
+          <div class="eg"><code>/lc-log 23 ok, 24 again!!, 25</code><button class="copy" type="button">copy</button></div>
+          <div class="touches"><span>data/progress.txt</span></div>
+          <div class="card-links"><a class="go" href="lc-log.html">Open page →</a><a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-log/SKILL.md">SKILL.md ↗</a></div>
+        </article>
+        <article class="card" data-group="track" data-keys="again ok promote demote status readme graduate mastery stars pass">
+          <div class="card-top"><span class="cmd">lc-again</span><span class="tag">track</span></div>
+          <h3>Graduate an AGAIN</h3>
+          <p>Moves README's status cell after a re-solve. Promotes only on all four: re-derived unaided, invariant stated, complexity line named, edges handled &mdash; and always keeps the star run.</p>
+          <div class="eg"><code>/lc-again 128</code><button class="copy" type="button">copy</button></div>
+          <div class="touches"><span>README.md</span><span>data/again_problems.txt</span></div>
+          <div class="card-links"><a class="go" href="lc-again.html">Open page →</a><a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-again/SKILL.md">SKILL.md ↗</a></div>
+        </article>
+        <article class="card" data-group="track" data-keys="l3 core blind75 neetcode must next drill status readiness google set today">
+          <div class="card-top"><span class="cmd">l3-core</span><span class="tag">track</span></div>
+          <h3>The L3 core set</h3>
+          <p>Blind 75 plus the NeetCode 150 problems marked MUST, held fixed so the number means something: where each stands in the log, the ok share, and the next five to drill.</p>
+          <div class="eg"><code>/l3-core next 5</code><button class="copy" type="button">copy</button></div>
+          <div class="touches"><span class="ro">read-only</span><span>data/l3_core.json on refresh</span></div>
+          <div class="card-links"><a class="go" href="l3-core.html">Open page →</a><a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/l3-core/SKILL.md">SKILL.md ↗</a></div>
+        </article>
+      </div>
+
+      <h3 class="group-h" data-for="site">Maintain the site</h3>
+      <div class="cards" data-group="site">
+        <article class="card" data-group="site" data-keys="visualizer demo animate algo canvas trace palette page">
+          <div class="card-top"><span class="cmd">lc-algo-demo</span><span class="tag">site</span></div>
+          <h3>Add a visualizer</h3>
+          <p>Writes a visualizer against the contract the other 36 obey &mdash; the shared palette, the canvas wrapper, the structured step trace, and the repaint a theme switch depends on.</p>
+          <div class="eg"><code>/lc-algo-demo monotonic-stack</code><button class="copy" type="button">copy</button></div>
+          <div class="touches"><span>algo_demo/</span></div>
+          <div class="card-links"><a class="go" href="lc-algo-demo.html">Open page →</a><a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-algo-demo/SKILL.md">SKILL.md ↗</a></div>
+        </article>
+        <article class="card" data-group="site" data-keys="roadmap quiz complexity data json topic prereq validator build">
+          <div class="card-top"><span class="cmd">lc-site-data</span><span class="tag">site</span></div>
+          <h3>Roadmap &amp; quiz data</h3>
+          <p>Adds a roadmap topic or a quiz question so the build-time validators accept it first time &mdash; no implied edge, no duplicate id, answers that parse as complexity expressions.</p>
+          <div class="eg"><code>/lc-site-data roadmap monotonic-stack</code><button class="copy" type="button">copy</button></div>
+          <div class="touches"><span>data/roadmap.json</span><span>data/complexity_quiz.json</span></div>
+          <div class="card-links"><a class="go" href="lc-site-data.html">Open page →</a><a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-site-data/SKILL.md">SKILL.md ↗</a></div>
+        </article>
+        <article class="card" data-group="site" data-keys="translate chinese zh 中文 i18n overlay backlog sync">
+          <div class="card-top"><span class="cmd">lc-zh-translate</span><span class="tag">site</span></div>
+          <h3>Translate to 中文</h3>
+          <p>Works the 繁體中文 overlay one section at a time &mdash; prose only, every code fence kept as a marker, parked translations adapted rather than started from nothing.</p>
+          <div class="eg"><code>/lc-zh-translate faq/java</code><button class="copy" type="button">copy</button></div>
+          <div class="touches"><span>i18n/zh/</span></div>
+          <div class="card-links"><a class="go" href="lc-zh-translate.html">Open page →</a><a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-zh-translate/SKILL.md">SKILL.md ↗</a></div>
+        </article>
+        <article class="card" data-group="site" data-keys="faq question answer interview backend java sql kafka doc">
+          <div class="card-top"><span class="cmd">lc-faq-add</span><span class="tag">site</span></div>
+          <h3>File an FAQ answer</h3>
+          <p>Files an interview question into the FAQ its Scope line owns, under the numbered section it belongs to &mdash; and writes the Chinese half in the same change.</p>
+          <div class="eg"><code>/lc-faq-add kafka rebalancing</code><button class="copy" type="button">copy</button></div>
+          <div class="touches"><span>doc/faq/</span><span>i18n/zh/faq/</span></div>
+          <div class="card-links"><a class="go" href="lc-faq-add.html">Open page →</a><a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-faq-add/SKILL.md">SKILL.md ↗</a></div>
+        </article>
+      </div>
+
+      <p class="empty" id="empty">No skill matches that. Try <code>readme</code>, <code>log</code> or <code>translate</code>.</p>
+
+      <div class="more-skills">
+        Also in the tree &mdash; general-purpose skills that predate the <code>lc-</code> recipes and have no page of their own:
+        <ul>
+          <li><a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/add-time-space/SKILL.md">/add-time-space ↗</a><span>time/space javadoc for a Java directory</span></li>
+          <li><a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/code-refactor-master/SKILL.md">/code-refactor-master ↗</a><span>refactoring Java and Python</span></li>
+          <li><a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/markdown-doc-writer/SKILL.md">/markdown-doc-writer ↗</a><span>technical markdown docs</span></li>
+          <li><a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/system-architecture/SKILL.md">/system-architecture ↗</a><span>system design write-ups</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Install ───────────────────────────────────────────────────────── -->
+  <section id="install" class="reveal" aria-labelledby="install-h">
+    <div class="container">
+      <p class="eyebrow">Install</p>
+      <h2 id="install-h">Pick the skills, pick the agent, copy one command</h2>
+      <p class="sub">
+        Inside a clone of this repo there is nothing to install &mdash; the skills are already at
+        <code>.claude/skills/</code> and Claude Code loads them. To use them anywhere else, build the
+        command here.
+      </p>
+
+      <div class="builder">
+        <div class="picker" id="picker" role="group" aria-label="Skills to install">
+          <label class="all"><input type="checkbox" id="pick-all"> all eleven</label>
+          <label><input type="checkbox" value="lc-python" checked> lc-python</label>
+          <label><input type="checkbox" value="lc-java"> lc-java</label>
+          <label><input type="checkbox" value="lc-cheatsheet"> lc-cheatsheet</label>
+          <label><input type="checkbox" value="lc-coach" checked> lc-coach</label>
+          <label><input type="checkbox" value="lc-log" checked> lc-log</label>
+          <label><input type="checkbox" value="lc-again"> lc-again</label>
+          <label><input type="checkbox" value="l3-core"> l3-core</label>
+          <label><input type="checkbox" value="lc-algo-demo"> lc-algo-demo</label>
+          <label><input type="checkbox" value="lc-site-data"> lc-site-data</label>
+          <label><input type="checkbox" value="lc-zh-translate"> lc-zh-translate</label>
+          <label><input type="checkbox" value="lc-faq-add"> lc-faq-add</label>
+        </div>
+        <div class="out">
+          <div class="tabs" role="tablist" aria-label="Agent">
+            <button class="tab" role="tab" type="button" data-agent="claude-code" aria-selected="true">Claude Code</button>
+            <button class="tab" role="tab" type="button" data-agent="claude-app" aria-selected="false">Claude app</button>
+            <button class="tab" role="tab" type="button" data-agent="codex" aria-selected="false">Codex</button>
+            <button class="tab" role="tab" type="button" data-agent="gemini" aria-selected="false">Gemini</button>
+          </div>
+          <p class="note" id="install-note">Copied into your user-level skills folder, so every repo gets them.</p>
+          <div class="code-block">
+            <button class="copy" type="button">copy</button>
+<pre><code id="install-code">git clone --depth 1 https://github.com/yennanliu/CS_basics.git /tmp/cs_basics
+mkdir -p ~/.claude/skills
+cp -r /tmp/cs_basics/.claude/skills/{lc-python,lc-coach,lc-log} ~/.claude/skills/</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── How it works ──────────────────────────────────────────────────── -->
+  <section class="reveal" aria-labelledby="how-h">
+    <div class="container">
+      <p class="eyebrow">Under the hood</p>
+      <h2 id="how-h">What a skill actually is</h2>
+      <p class="sub">No runtime, no server. A skill is a directory an agent reads, and this repo checks every one of them in CI.</p>
+      <div class="how">
+        <div><span class="n">01</span><b>A markdown recipe</b><p><code>SKILL.md</code> carries a frontmatter <code>description</code> the agent matches your request against, an <code>Invocation</code> line, numbered steps, a <em>Do not</em> list and a worked example.</p></div>
+        <div><span class="n">02</span><b>The directory is the command</b><p>Renaming <code>.claude/skills/lc-log/</code> renames <code>/lc-log</code>. Plain English works too &mdash; &ldquo;log today's practice&rdquo; loads the same skill.</p></div>
+        <div><span class="n">03</span><b>Gated like code</b><p><code>script/check_skills.py --install --run</code> installs each skill into a temp dir, re-checks it alone, and runs the commands it tells an agent to type.</p></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <p>CS_basics — computer science fundamentals &amp; interview preparation</p>
+    <p>
+      <a href="https://github.com/yennanliu/CS_basics">github</a> |
+      <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+      <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  document.documentElement.classList.add('js');
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return [].slice.call((r || document).querySelectorAll(s)); };
+
+  // The navbar is sticky too, so the filter bar parks under it rather than
+  // behind it. Its height changes at the mobile breakpoint, hence on resize.
+  function navHeight() {
+    var nav = $('.navbar');
+    document.documentElement.style.setProperty('--nav-h', (nav ? nav.offsetHeight : 0) + 'px');
+  }
+  navHeight();
+  window.addEventListener('resize', navHeight);
+
+  // ── Filter ────────────────────────────────────────────────────────────
+  // Search matches the command, the card's text and a hand-written keyword
+  // list (data-keys), so "readme" finds every skill that writes README.md
+  // even where the blurb does not say so.
+  var q = $('#q'), count = $('#count'), empty = $('#empty');
+  var cards = $$('.card');
+  var group = 'all';
+
+  function apply() {
+    var terms = q.value.toLowerCase().trim().split(/\s+/).filter(Boolean);
+    var shown = 0;
+    cards.forEach(function (card) {
+      var hay = (card.textContent + ' ' + card.getAttribute('data-keys')).toLowerCase();
+      var ok = (group === 'all' || card.getAttribute('data-group') === group) &&
+               terms.every(function (t) { return hay.indexOf(t) !== -1; });
+      card.hidden = !ok;
+      if (ok) shown++;
+    });
+    // A family heading with nothing under it is noise, so it goes too.
+    $$('.cards').forEach(function (grid) {
+      var any = $$('.card', grid).some(function (c) { return !c.hidden; });
+      grid.hidden = !any;
+      var h = $('.group-h[data-for="' + grid.getAttribute('data-group') + '"]');
+      if (h) h.hidden = !any;
+    });
+    count.textContent = shown + (shown === 1 ? ' skill' : ' skills');
+    empty.classList.toggle('show', shown === 0);
+  }
+
+  // Chip counts come from the cards, so adding a card cannot leave a stale number.
+  $$('.chip').forEach(function (chip) {
+    var g = chip.getAttribute('data-group');
+    var n = cards.filter(function (c) { return g === 'all' || c.getAttribute('data-group') === g; }).length;
+    $('.n', chip).textContent = n;
+  });
+
+  q.addEventListener('input', apply);
+  $$('.chip').forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      group = chip.getAttribute('data-group');
+      $$('.chip').forEach(function (c) { c.setAttribute('aria-pressed', String(c === chip)); });
+      apply();
+    });
+  });
+
+  // "/" or Cmd/Ctrl-K jumps to the search, unless you are already typing.
+  document.addEventListener('keydown', function (e) {
+    var typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
+    if ((e.key === '/' && !typing) || ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k')) {
+      e.preventDefault();
+      q.focus();
+      q.select();
+    } else if (e.key === 'Escape' && document.activeElement === q) {
+      q.value = '';
+      apply();
+      q.blur();
+    }
+  });
+
+  // ── Card spotlight ────────────────────────────────────────────────────
+  if (!reduced) {
+    cards.forEach(function (card) {
+      card.addEventListener('pointermove', function (e) {
+        var r = card.getBoundingClientRect();
+        card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+        card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+      });
+    });
+  }
+
+  // ── Install builder ───────────────────────────────────────────────────
+  var picks = $$('#picker input[value]');
+  var all = $('#pick-all');
+  var agent = 'claude-code';
+  var code = $('#install-code'), note = $('#install-note');
+  var REPO = 'https://github.com/yennanliu/CS_basics.git';
+
+  function chosen() {
+    return picks.filter(function (p) { return p.checked; }).map(function (p) { return p.value; });
+  }
+  // Brace expansion only when there is more than one name: `{lc-log}` is
+  // passed through literally by bash and names a directory that is not there.
+  function brace(names) { return names.length === 1 ? names[0] : '{' + names.join(',') + '}'; }
+
+  function render() {
+    var names = chosen();
+    all.checked = names.length === picks.length;
+    all.indeterminate = names.length > 0 && names.length < picks.length;
+    if (!names.length) {
+      code.textContent = '# pick at least one skill';
+      return;
+    }
+    var text;
+    if (agent === 'claude-code') {
+      note.textContent = 'Copied into your user-level skills folder, so every repo gets them. Call each by name, or just describe the job.';
+      text = 'git clone --depth 1 ' + REPO + ' /tmp/cs_basics\n' +
+             'mkdir -p ~/.claude/skills\n' +
+             'cp -r /tmp/cs_basics/.claude/skills/' + brace(names) + ' ~/.claude/skills/';
+    } else if (agent === 'claude-app') {
+      note.textContent = 'One zip per skill; upload each under Customize → Skills → + → Create skill → Upload a skill. Keep the frontmatter intact.';
+      text = 'git clone --depth 1 ' + REPO + ' /tmp/cs_basics\n' +
+             'cd /tmp/cs_basics/.claude/skills\n' +
+             names.map(function (n) { return 'zip -r ~/Desktop/' + n + '.zip ' + n; }).join('\n');
+    } else {
+      var file = agent === 'codex' ? 'AGENTS.md' : 'GEMINI.md';
+      note.textContent = (agent === 'codex' ? 'Codex' : 'Gemini CLI') + ' reads ' + file +
+        ' at the repo root. Paste this into it — a pointer, not a copy, so a fix to a skill reaches every agent.';
+      text = '## Agent skills (CS_basics)\n\n' +
+             'When a request matches one of these, follow its SKILL.md step by step:\n\n' +
+             names.map(function (n) { return '- /' + n + ' → `.claude/skills/' + n + '/SKILL.md`'; }).join('\n');
+    }
+    code.textContent = text;
+  }
+
+  picks.forEach(function (p) { p.addEventListener('change', render); });
+  all.addEventListener('change', function () {
+    picks.forEach(function (p) { p.checked = all.checked; });
+    render();
+  });
+
+  var tabs = $$('.tab');
+  function selectTab(tab) {
+    tabs.forEach(function (t) {
+      var on = t === tab;
+      t.setAttribute('aria-selected', String(on));
+      t.tabIndex = on ? 0 : -1;
+    });
+    agent = tab.getAttribute('data-agent');
+    render();
+  }
+  tabs.forEach(function (tab, i) {
+    tab.addEventListener('click', function () { selectTab(tab); });
+    tab.addEventListener('keydown', function (e) {
+      var d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (!d) return;
+      e.preventDefault();
+      var next = tabs[(i + d + tabs.length) % tabs.length];
+      selectTab(next);
+      next.focus();
+    });
+  });
+  selectTab(tabs[0]);
+
+  // ── Copy buttons ──────────────────────────────────────────────────────
+  // clipboard.writeText needs a secure context; on plain http it rejects, so
+  // the button says so instead of silently doing nothing.
+  $$('.copy').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var text = btn.parentElement.querySelector('code').textContent;
+      var done = function (label) {
+        btn.textContent = label;
+        setTimeout(function () { btn.textContent = 'copy'; }, 1400);
+      };
+      if (!navigator.clipboard) return done('select it');
+      navigator.clipboard.writeText(text).then(function () { done('copied'); },
+                                               function () { done('select it'); });
+    });
+  });
+
+  // ── Reveal on scroll ──────────────────────────────────────────────────
+  var reveals = $$('.reveal');
+  if (reduced || !('IntersectionObserver' in window)) {
+    reveals.forEach(function (el) { el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    reveals.forEach(function (el) { io.observe(el); });
+  }
+})();
+</script>
+
+</body>
+</html>

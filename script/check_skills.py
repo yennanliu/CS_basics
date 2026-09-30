@@ -72,7 +72,8 @@ BASH = shutil.which("bash") or "/bin/bash"
 MAX_DESCRIPTION = 1024
 
 # Files that name a skill path and go stale when a skill is renamed.
-WIRING_SOURCES = ["CLAUDE.md", "site/pages/skills.html", "site/pages/lc-python.html",
+WIRING_SOURCES = ["CLAUDE.md", "site/pages/agent-skills.html",
+                  "site/pages/skills.html", "site/pages/lc-python.html",
                   "site/pages/lc-java.html", "site/pages/lc-cheatsheet.html",
                   "site/pages/lc-log.html", "site/pages/lc-again.html",
                   "site/pages/lc-zh-translate.html", "site/pages/lc-algo-demo.html",
