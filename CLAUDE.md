@@ -32,7 +32,7 @@ CS_basics is a comprehensive computer science fundamentals repository containing
   - `finalize-pages.js` / `prune-images.js` - The two finishing passes; they run last because they need the whole `_site/` tree (see [Finishing passes](#the-two-finishing-passes))
   - `e2e-check.js` - Post-build validation of every generated page. Both workflows run it; run it locally too
   - `pages/` - Hand-maintained static pages (LC Explorer/Similar/Review-Plan/Random-Picker/Roadmap/Complexity-Quiz, Skills, Suggest-Review, 404)
-  - `pages/agent-skills.html` - The hub for every agent skill: a searchable directory of the `lc-*` skills, the practice loop they form, and an install builder. First entry of the navbar's **agent skills** group; a new skill page gets a card here too
+  - `pages/agent-skills.html` - The hub for every agent skill: a searchable directory of the `lc-*` skills, the practice loop they form, and an install builder. First entry of the navbar's **agent skills** group, and the landing page's only link to the skills; a new skill page gets a card here too
   - `nav.js` / `roadmap.js` / `complexity.js` - Browser scripts copied to `_site/`; unit-tested under `site/test/`
   - `style.css` - Stylesheet for the generated doc pages
   - `nav.css` - Navbar, skip link and the `prefers-reduced-motion` opt-out. Loaded by **every** page family
@@ -231,11 +231,13 @@ the target (the G L3 coding loop, Python first) rather than listing every direct
 
 The cards are declared as `ENTRY_GROUPS` — three labelled groups (learn,
 practise, look up), not one grid of eleven — and the agent skills have a band of
-their own (`AGENT_SKILLS`, `.skills-band`). They are a different kind of thing
-from the rest of the site: markdown you install into your own agent, working on
-your code rather than on these pages, and as one card reading "Interview coach"
-among ten others that was invisible. A new skill page goes in that band and in
-the navbar's `agent skills` group, not in `ENTRY_GROUPS`.
+their own (`.skills-band`). They are a different kind of thing from the rest of
+the site: markdown you install into your own agent, working on your code rather
+than on these pages. Since Sep 2026 that band is a single link-card to
+`agent-skills.html`, which holds the directory; it used to card all eleven skills
+and was the landing page's longest section. A new skill page gets a card on
+`agent-skills.html` and an entry in the navbar's `agent skills` group, not in
+`ENTRY_GROUPS` or on the landing page.
 
 ### The algorithm visualizers
 
