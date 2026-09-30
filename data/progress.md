@@ -64,6 +64,17 @@
 	- review all `cheatsheets`
 
 
+
+
+- 動態規劃（DP）
+	- https://yennj12.js.org/CS_basics/cheatsheets/dp.zh.html
+
+
+
+
+
+
+
 - LeetCode Patterns Guide
 	- https://yennj12.js.org/CS_basics/cheatsheets/lc_pattern.zh.html
 		- `🔹 7. 堆積與優先佇列`
@@ -74,8 +85,7 @@
 
 
 
-- 堆積與優先佇列
-	- https://yennj12.js.org/CS_basics/cheatsheets/heap.zh.html
+
 
 
 
@@ -126,7 +136,14 @@
 	- recent updated cheatsheet
 	- TODO LC:
 		- PQ:
-			- 862
+			- 模板 3：Shortest Subarray with Sum ≥ K（LC 862
+				- 862
+			- 模板 4：滑動視窗中位數 — 有序多重集合／兩個堆積（LC 480）
+				- 480
+			- 模板 6：環狀子陣列 — 加倍前綴和＋受限雙端佇列（LC 918）
+				- 918
+
+
 
 
 
