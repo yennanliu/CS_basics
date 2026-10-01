@@ -64,10 +64,10 @@
 	- review all `cheatsheets`
 
 
-- 堆疊（Stack）
-	- https://yennj12.js.org/CS_basics/cheatsheets/stack.zh.html
+- 圖論演算法
+	- https://yennj12.js.org/CS_basics/cheatsheets/graph.zh.html
 
-
+s
 
 
 
@@ -84,6 +84,8 @@
 
 - Complexity Cheat Sheet
 	- https://yennj12.js.org/CS_basics/cheatsheets/complexity_cheatsheet.html
+
+
 
 
 
@@ -128,6 +130,7 @@
 	- DFS（深度優先搜尋)
 	- 動態規劃（DP)
 	- 字串演算法與操作
+	- 堆疊（Stack）
 
 
 
@@ -157,6 +160,17 @@
 				- 1249
 			- Template 8：依最後出現位置貪婪切分 — LC 763
 				- 763 !!!
+
+
+		- stack
+			- 括號家族 —— 同一個模板的四種變形
+				- 1249
+				- 856
+			- 模板 4：Min Stack —— O(1) getMin —— LC 155
+				- 155
+			- 模板 6：作用域／上下文帳本 —— LC 388, LC 636  !!!! (g !!!)
+				- 388
+				- 636
 
 
 
