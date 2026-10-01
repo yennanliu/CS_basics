@@ -64,11 +64,11 @@
 	- review all `cheatsheets`
 
 
+- 字串演算法與操作
+	- https://yennj12.js.org/CS_basics/cheatsheets/string.zh.html
 
 
-- 動態規劃（DP）
-	- https://yennj12.js.org/CS_basics/cheatsheets/dp.zh.html
-		- `模板 7：最長遞增子序列 — LC 300`
+
 
 
 
@@ -129,6 +129,7 @@
 	- 二元樹
 	- BFS（廣度優先搜尋)
 	- DFS（深度優先搜尋)
+	- 動態規劃（DP)
 
 
 
