@@ -52,6 +52,11 @@ class Solution:
 
 # V0-1
 # IDEA: GREEDY (gemini)
+"""
+CORE IDEA:
+
+    從右往左找 digits[i-1] > digits[i]，把左邊減 1，然後右邊全部變 9
+"""
 class Solution(object):
 
   def monotoneIncreasingDigits(self, n):
@@ -82,6 +87,11 @@ class Solution(object):
 
 # V0-2
 # IDEA: GREEDY (GPT)
+"""
+CORE IDEA:
+
+    從右往左找 digits[i-1] > digits[i]，把左邊減 1，然後右邊全部變 9
+"""
 class Solution(object):
     def monotoneIncreasingDigits(self, n):
         """
