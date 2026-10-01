@@ -1,4 +1,6 @@
-20261001: top 100 like(2 pointers): 42, s | top 100 like(linked list):  25 | top 100 like(dp): 32, 300 | others: 738(again), 402(again!!), 357(dp, todo), 300, 2D LIS (354), 460(todo), 710(todo), 1696(todo, dp + mono deque) | DP: wildcard: 97(todo), 5(todo), 647(todo)
+20261001: top 100 like(2 pointers): 42, s | top 100 like(linked list):  25 | top 100 like(dp): 32, 300 | others: 738(again), 402(again!!), 357(dp, todo), 300, 2D LIS (354), 460(todo), 710(todo), 1696(todo, dp + mono deque) | DP: wildcard: 97(todo)
+
+
 
 
 20260930: top 100 like(misc): 189(OK), 238(again), 287(ok) | top 100 like(trie): 208(again) | top 100 like(2 pointers): 42, 15(again) | top 100 like(linked list):  25 | top 100 like(heap):  295(again)  | top 100 like(dp): 32, 300 | others: 678(OK**), 738(todo), 316(todo), 402(todo), 357(dp, todo), 300, 2D LIS (354), 460(todo), 710(todo), 27(todo), 26(todo), 1696(todo, dp + mono deque), 221(again!, 2D DP) | DP: wildcard: 97(todo), 239(again!!!), 2049(again) | 

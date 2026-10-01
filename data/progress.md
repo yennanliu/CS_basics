@@ -66,6 +66,7 @@
 
 - 字串演算法與操作
 	- https://yennj12.js.org/CS_basics/cheatsheets/string.zh.html
+		- `Template 3：Run-Length 分組（連續相同字元的組） — LC 696`
 
 
 
@@ -144,6 +145,13 @@
 				- 480
 			- 模板 6：環狀子陣列 — 加倍前綴和＋受限雙端佇列（LC 918）
 				- 918
+
+		- DP:
+			- 5
+			- 647
+		- String:
+			- Template 3：Run-Length 分組
+				- 696
 
 
 
