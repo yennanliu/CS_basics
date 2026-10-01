@@ -49,6 +49,72 @@ class Solution:
         s = "".join(s)        
         return int(s) 
 
+
+# V0-1
+# IDEA: GREEDY (gemini)
+class Solution(object):
+
+  def monotoneIncreasingDigits(self, n):
+    """:type n: int :rtype: int"""
+    # 將數字轉為字元陣列，方便進行修改
+    s = list(str(n))
+    n_len = len(s)
+
+    # 記錄從哪個索引開始，後面的數字全部要變成 '9'
+    marker = n_len
+
+    # 從右向左掃描（從倒數第二個字元開始）
+    for i in range(n_len - 1, 0, -1):
+      # 如果前一個數字大於當前數字，破壞了單調性
+      if s[i - 1] > s[i]:
+        # 將前一個數字減 1（實現借位）
+        s[i - 1] = str(int(s[i - 1]) - 1)
+        # 標記從當前位置 i 開始，後續所有字元都要變成 '9'
+        marker = i
+
+    # 將 marker 之後的所有字元統一設為 '9'
+    for i in range(marker, n_len):
+      s[i] = "9"
+
+    # 轉回整數回傳
+    return int("".join(s))
+
+
+# V0-2
+# IDEA: GREEDY (GPT)
+class Solution(object):
+    def monotoneIncreasingDigits(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        digits = list(str(n))
+        length = len(digits)
+
+        # mark = where we start turning digits into 9
+        mark = length
+
+        # Scan from right to left
+        for i in range(length - 1, 0, -1):
+
+            # Violation:
+            # digits[i - 1] > digits[i]
+            if digits[i - 1] > digits[i]:
+
+                # Decrease the left digit by 1
+                digits[i - 1] = str(int(digits[i - 1]) - 1)
+
+                # Everything from i onward becomes 9
+                mark = i
+
+        # Make suffix all 9
+        for i in range(mark, length):
+            digits[i] = "9"
+
+        return int("".join(digits))
+
+
+
 # V0-1
 # brute force -> time out error
 # time = O(N * D)   # D = number of digits = O(log N)
