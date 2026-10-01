@@ -68,7 +68,7 @@
 
 - 動態規劃（DP）
 	- https://yennj12.js.org/CS_basics/cheatsheets/dp.zh.html
-		- `模板 2：二維格子 DP — LC 64`
+		- `模板 4：0/1 背包 — LC 416`
 
 
 
