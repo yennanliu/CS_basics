@@ -68,6 +68,7 @@
 
 - BST (Binary Search Tree)（二元搜尋樹)
 	- https://yennj12.js.org/CS_basics/cheatsheets/bst.zh.html
+		- `模板 1：BST 搜尋`
 
 
 
