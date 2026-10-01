@@ -64,9 +64,9 @@
 	- review all `cheatsheets`
 
 
-- 字串演算法與操作
-	- https://yennj12.js.org/CS_basics/cheatsheets/string.zh.html
-		- `Template 3：Run-Length 分組（連續相同字元的組） — LC 696`
+- 堆疊（Stack）
+	- https://yennj12.js.org/CS_basics/cheatsheets/stack.zh.html
+
 
 
 
@@ -84,10 +84,6 @@
 
 - Complexity Cheat Sheet
 	- https://yennj12.js.org/CS_basics/cheatsheets/complexity_cheatsheet.html
-
-
-
-
 
 
 
@@ -131,6 +127,7 @@
 	- BFS（廣度優先搜尋)
 	- DFS（深度優先搜尋)
 	- 動態規劃（DP)
+	- 字串演算法與操作
 
 
 
@@ -158,6 +155,8 @@
 				- 388
 			- Template 7：原地 char 陣列 — 先標記再重建 — LC 1249
 				- 1249
+			- Template 8：依最後出現位置貪婪切分 — LC 763
+				- 763 !!!
 
 
 
