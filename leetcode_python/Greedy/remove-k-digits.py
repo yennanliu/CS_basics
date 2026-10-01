@@ -68,7 +68,9 @@ Answer:
 NOTE !!!
 
 
-1. Monotonic Stack
+1. Monotonic `increasing` stack
+    
+    -> 前一個 digit > current digit 時 pop
 
 2. code structure
 
@@ -107,11 +109,19 @@ class Solution(object):
         
         # NOTE !!! use `for loop`
         for digit in num:
+
+            """
+            NOTE !!!
+
+
+                -> 前一個 digit > current digit 時 pop
+            """
             # Pop from stack if the top is GREATER than the current digit
             # and we still have operations left (k > 0)
             while k > 0 and st and st[-1] > digit:
                 st.pop()
                 k -= 1
+            
             st.append(digit)
             
 
