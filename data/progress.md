@@ -65,9 +65,10 @@
 
 
 
+- 二分搜尋
+	- https://yennj12.js.org/CS_basics/cheatsheets/binary_search.zh.html
 
-- 堆積與優先佇列
-	- https://yennj12.js.org/CS_basics/cheatsheets/heap.zh.html
+
 
 
 
@@ -129,7 +130,7 @@
 	- 堆疊（Stack）
 	- 圖論演算法
 	- BST (Binary Search Tree)（二元搜尋樹)
-
+  - 堆積與優先佇列
 
 
 
@@ -144,6 +145,8 @@
 				- 480
 			- 模板 6：環狀子陣列 — 加倍前綴和＋受限雙端佇列（LC 918）
 				- 918
+			- 5. 滑動視窗極值 — 兩個堆積 + 依索引過期
+				- 1438
 
 		- DP:
 			- 5
