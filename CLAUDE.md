@@ -510,6 +510,34 @@ like the others.
 
 ---
 
+## Scanning recent interview posts — `/lc-discussion`
+
+`.claude/skills/lc-discussion/` searches recent LeetCode Discuss posts by keyword, reads
+the ones that describe a real question, maps each question to an LC number, and writes a
+繁體中文 summary under `doc/ws/` — the posts worth reading, the patterns that repeated, and
+which of the problems the log has never seen. **The steps live in its `SKILL.md`, not here.**
+
+`leetcode.com/discuss/` renders in the browser, so the skill goes through
+[`script/lc_discussion.py`](script/lc_discussion.py): `search` and `fetch` call the same
+public GraphQL fields the page does (reusing `scrape_lc_discuss_company.py`'s `gql()` and
+its WAF back-off), and `xref` is offline — README's row and the log's latest verdict,
+through `l3_core.py`'s parser. That script is the interactive counterpart of the bulk
+`scrape_lc_discuss_company.py`: a few calls on any keywords, with the agent reading posts,
+so a question that names no LC number still gets mapped — labelled `相近`, never passed
+off as named. A compiled "questions Google asks" post is a list, not a sighting.
+
+```text
+/lc-discussion google
+/lc-discussion google l3 --days 30
+/lc-discussion amazon oa
+```
+
+`doc/ws/` is not built into the site. The skill never writes the log or README; a drill it
+suggests is logged with `/lc-log`. It has a card on `agent-skills.html` but no page of its
+own yet.
+
+---
+
 ## Updating a cheatsheet — `/lc-cheatsheet`
 
 `.claude/skills/lc-cheatsheet/` is `/lc-python`'s counterpart for the notes rather than

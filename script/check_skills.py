@@ -441,6 +441,8 @@ MUTATING = [
     ("cp -r", "an install path; --install already exercises it"),
     ("zip -r", "an install path; --install already exercises it"),
     ("curl", "reaches the network"),
+    ("lc_discussion.py search", "reaches the network"),
+    ("lc_discussion.py fetch", "reaches the network"),
     ("gemini", "invokes another agent"),
     ("cd ", "changes the directory the rest of the block assumes"),
     ("javac", "compiles a template path filled in per problem"),

@@ -418,12 +418,12 @@
           <kbd aria-hidden="true">/</kbd>
         </label>
         <div class="chips" role="group" aria-label="Filter by family">
-          <button class="chip" type="button" data-group="all" aria-pressed="true">all<span class="n">11</span></button>
+          <button class="chip" type="button" data-group="all" aria-pressed="true">all<span class="n">12</span></button>
           <button class="chip" type="button" data-group="file" aria-pressed="false">file<span class="n">3</span></button>
-          <button class="chip" type="button" data-group="track" aria-pressed="false">track<span class="n">4</span></button>
+          <button class="chip" type="button" data-group="track" aria-pressed="false">track<span class="n">5</span></button>
           <button class="chip" type="button" data-group="site" aria-pressed="false">site<span class="n">4</span></button>
         </div>
-        <span class="count" id="count" aria-live="polite">11 skills</span>
+        <span class="count" id="count" aria-live="polite">12 skills</span>
       </div>
 
       <h3 class="group-h" data-for="file">File what you solved</h3>
@@ -487,6 +487,14 @@
           <div class="eg"><code>/l3-core next 5</code><button class="copy" type="button">copy</button></div>
           <div class="touches"><span class="ro">read-only</span><span>data/l3_core.json on refresh</span></div>
           <div class="card-links"><a class="go" href="l3-core.html">Open page →</a><a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/l3-core/SKILL.md">SKILL.md ↗</a></div>
+        </article>
+        <article class="card" data-group="track" data-keys="discuss discussion recent interview experience company google meta amazon scan summary chinese doc">
+          <div class="card-top"><span class="cmd">lc-discussion</span><span class="tag">track</span></div>
+          <h3>Scan LC Discuss</h3>
+          <p>Searches recent LeetCode Discuss posts by keyword, reads the ones that describe a real question, maps each to an LC number, checks it against the practice log, and writes a 繁體中文 summary doc.</p>
+          <div class="eg"><code>/lc-discussion google l3</code><button class="copy" type="button">copy</button></div>
+          <div class="touches"><span>doc/ws/</span></div>
+          <div class="card-links"><a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-discussion/SKILL.md">SKILL.md ↗</a></div>
         </article>
       </div>
 
@@ -553,7 +561,7 @@
 
       <div class="builder">
         <div class="picker" id="picker" role="group" aria-label="Skills to install">
-          <label class="all"><input type="checkbox" id="pick-all"> all eleven</label>
+          <label class="all"><input type="checkbox" id="pick-all"> all twelve</label>
           <label><input type="checkbox" value="lc-python" checked> lc-python</label>
           <label><input type="checkbox" value="lc-java"> lc-java</label>
           <label><input type="checkbox" value="lc-cheatsheet"> lc-cheatsheet</label>
@@ -561,6 +569,7 @@
           <label><input type="checkbox" value="lc-log" checked> lc-log</label>
           <label><input type="checkbox" value="lc-again"> lc-again</label>
           <label><input type="checkbox" value="l3-core"> l3-core</label>
+          <label><input type="checkbox" value="lc-discussion"> lc-discussion</label>
           <label><input type="checkbox" value="lc-algo-demo"> lc-algo-demo</label>
           <label><input type="checkbox" value="lc-site-data"> lc-site-data</label>
           <label><input type="checkbox" value="lc-zh-translate"> lc-zh-translate</label>
