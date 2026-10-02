@@ -67,6 +67,7 @@
 
 - Linked List（鏈結串列）
 	- https://yennj12.js.org/CS_basics/cheatsheets/linked_list.zh.html
+		- `雙向鏈結串列 + HashMap（LRU Cache 模式`
 
 
 
@@ -213,6 +214,12 @@
 			 - Path
 			 	-  LC 687 Longest Univalue Path
 
+
+		Linked list
+			- 從已排序串列移除重複 
+				— LC 83
+			- Partition List：用兩個虛擬節點。分別把 < x 這條鏈和 >= x 這條鏈各自接好
+				- LC 86
 
 
 
