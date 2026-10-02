@@ -152,6 +152,31 @@ Useful flags: `--delay` (default 2.5s — below ~2s trips LeetCode's WAF, which 
 
 The script's module docstring records the reverse-engineered schema, since introspection is disabled. The sharpest trap: `ugcArticleDiscussionArticle(topicId:)` takes `ID` while `topicComments(topicId:)` takes `Int!` — the same argument name with two different types.
 
+## lc_discussion.py
+
+The interactive counterpart of `scrape_lc_discuss_company.py`, and the script behind
+[`/lc-discussion`](../.claude/skills/lc-discussion/SKILL.md).
+
+```bash
+python3 script/lc_discussion.py search google --days 90 --summary   # every term must appear
+python3 script/lc_discussion.py search google l3 --order MOST_RELEVANT
+python3 script/lc_discussion.py fetch 8543506 8527382 --dir /tmp/posts
+python3 script/lc_discussion.py xref 1235 3026 963                    # offline
+```
+
+- `search` lists posts newest first (date, upvotes, topic id, title, URL). The API's keyword
+  match is loose, so a post is kept only when its title or summary carries every term;
+  `--loose` turns that off. It stops paging once a page ends past `--days`.
+- `fetch` prints each post's markdown with a `named:` line of the LC links and numbers it
+  contains, pausing 1.5s between posts for the WAF.
+- `xref` prints README's title and status and the practice log's latest verdict, attempts
+  and last date for each number, through `l3_core.py`'s parser — so it agrees with
+  `/l3-core` about every line.
+
+The bulk scraper reads every post and its comments for a company tag (~1 hour) and ranks
+LC numbers by mention count; this one reads a handful of posts so a question that names no
+number can still be mapped by hand. `script/test_lc_discussion.py` tests the offline parts.
+
 ## find_missing_java.py
 
 Lists LeetCode problems that have a Python solution under `leetcode_python/` but no Java one. Drives the Java-backfill batches.
