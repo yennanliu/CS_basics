@@ -65,11 +65,15 @@
 
 
 
+- Linked List（鏈結串列）
+	- https://yennj12.js.org/CS_basics/cheatsheets/linked_list.zh.html
 
 
 
-- 樹的 LCA、距離與路徑問題
-	- https://yennj12.js.org/CS_basics/cheatsheets/tree_lca_distance.zh.html
+
+
+
+
 
 
 - LeetCode Patterns Guide
@@ -130,6 +134,8 @@
 	- BST (Binary Search Tree)（二元搜尋樹)
   - 堆積與優先佇列
   - 二分搜尋
+  - 樹的 LCA、距離與路徑問題
+
 
 
 
@@ -199,7 +205,13 @@
 			 - Move Parent 模式 - 雙向樹走訪
 			 	- 863
 			 - 兩節點之間的距離
-			 	— LC 1740
+			 	- 1740
+			 - 2 sum on tree
+			 	- LC 437 Path Sum III
+			 	- LC 113 Path Sum II
+			 	- LC 127 Path Sum
+			 - Path
+			 	-  LC 687 Longest Univalue Path
 
 
 
