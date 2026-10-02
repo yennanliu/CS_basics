@@ -66,12 +66,8 @@
 
 
 
-- BST (Binary Search Tree)（二元搜尋樹)
-	- https://yennj12.js.org/CS_basics/cheatsheets/bst.zh.html
-		- `模板 1：BST 搜尋`
-
-
-
+- 堆積與優先佇列
+	- https://yennj12.js.org/CS_basics/cheatsheets/heap.zh.html
 
 
 
@@ -132,6 +128,7 @@
 	- 字串演算法與操作
 	- 堆疊（Stack）
 	- 圖論演算法
+	- BST (Binary Search Tree)（二元搜尋樹)
 
 
 
