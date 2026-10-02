@@ -65,13 +65,11 @@
 
 
 
-- 二分搜尋
-	- https://yennj12.js.org/CS_basics/cheatsheets/binary_search.zh.html
 
 
 
-
-
+- 樹的 LCA、距離與路徑問題
+	- https://yennj12.js.org/CS_basics/cheatsheets/tree_lca_distance.zh.html
 
 
 - LeetCode Patterns Guide
@@ -131,6 +129,7 @@
 	- 圖論演算法
 	- BST (Binary Search Tree)（二元搜尋樹)
   - 堆積與優先佇列
+  - 二分搜尋
 
 
 
@@ -181,6 +180,16 @@
 		- Trie
 			- 反向 Trie —— 串流上的後綴比對（LC 1032
 				- 1032
+
+
+		- binary search
+			- 2.4) 雙調 / 山脈陣列 — 遞減順序的翻轉
+				- 1095			
+			- 2.5) 沒有右端點 — 指數（Galloping
+				- 702
+			- others
+				- 275 
+					- H-Index II
 
 
 
