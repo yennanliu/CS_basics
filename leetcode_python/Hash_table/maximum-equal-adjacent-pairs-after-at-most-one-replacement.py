@@ -65,7 +65,134 @@ Constraints:
 """
 
 # V0
-# IDEA : HASH MAP {(x, y) : how many times x and y sit next to each other}
+class Solution(object):
+    def maxEqualAdjacentPairs(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        pass
+
+
+# V0-1
+# IDEA: HASH MAP + BASE LINE (gemini)
+"""
+
+1. 
+
+CORE IDEA:
+
+
+單次掃描雜湊法（Hash Map, O(N))
+
+->
+
+我們只需要遍歷一次陣列：
+
+    - 如果 nums[i] == nums[i+1]：代表原本就相等，基礎計數器 base_equal += 1。
+
+    - 如果 nums[i] != nums[i+1]：把這對數字排序為 (min(x, y), max(x, y)) 存入 Hash Map 進行計數，記錄哪一對不相等的組合出現最多次。
+
+
+
+---
+
+
+2. KEY IDEA:
+
+
+    ```
+    總相等對數 =  原本就相等的對數 + max(任意相異相鄰對 (x,y) 出現的最多次數)
+    ```
+
+
+- 原本就相等的相鄰對，替換後「必定保持相等」：
+     - 若原本就有 nums[i] == nums[i+1] == x，即使我們把 $x$ 換成 $y$，它們也會同時變成 $y$，依然相等！
+
+- 替換 $x \to y$「只會讓原本是 $(x, y)$ 或 $(y, x)$ 的相鄰對變成相等」：
+    - 任何其他組合（例如 $(a, b)$）都不會因為替換 $x \to y$ 而變成相等。
+
+
+"""
+from collections import Counter
+
+
+class Solution(object):
+
+  def maxEqualAdjacentPairs(self, nums):
+    """:type nums: List[int] :rtype: int"""
+    if not nums or len(nums) <= 1:
+      return 0
+
+    base_equal = 0
+    unequal_pair_cnt = Counter()
+    max_newly_equal = 0
+
+    # 1. 單次掃描所有相鄰對
+    for i in range(len(nums) - 1):
+      x, y = nums[i], nums[i + 1]
+
+      if x == y:
+        # 原本就相等的對，替換後必定依然相等
+        base_equal += 1
+      else:
+        # 不相等的對：用 (min, max) 確保 (x, y) 和 (y, x) 視為同一組組合
+        pair = (min(x, y), max(x, y))
+        unequal_pair_cnt[pair] += 1
+        max_newly_equal = max(max_newly_equal, unequal_pair_cnt[pair])
+
+    # 2. 最終答案 = 基礎相等對數 + 透過替換獲得的最大新相等對數
+    return base_equal + max_newly_equal
+
+
+# V0-2
+# IDEA: HASH MAP (gpt)
+from collections import defaultdict
+
+
+class Solution(object):
+    def maxEqualAdjacentPairs(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+
+        # Number of pairs that are already equal.
+        baseline = 0
+
+        # {unordered_pair: number_of_adjacent_cross_pairs}
+        cross_pairs = defaultdict(int)
+
+        for i in range(1, len(nums)):
+
+            a = nums[i - 1]
+            b = nums[i]
+
+            if a == b:
+                baseline += 1
+            else:
+                # (x, y) and (y, x) are the same pair
+                # because replacing one value can make them equal.
+                if a < b:
+                    key = (a, b)
+                else:
+                    key = (b, a)
+
+                cross_pairs[key] += 1
+
+        # We can choose to do nothing.
+        ans = baseline
+
+        # Replacing one value of the pair with the other
+        # turns every cross pair into an equal pair.
+        for gain in cross_pairs.values():
+            ans = max(ans, baseline + gain)
+
+        return ans
+
+
+# V0-3
+# IDEA : HASH MAP {(x, y) : how many times x and y sit next to each other} (claude)
 #
 #   the brute force (try every distinct (x, y), replace, re-count) is
 #   O(k^2 * n) and times out, so ask instead : what does ONE replacement
