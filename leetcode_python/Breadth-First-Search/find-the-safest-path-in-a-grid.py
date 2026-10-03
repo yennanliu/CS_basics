@@ -52,8 +52,230 @@ There is at least one thief in the grid.
 
 """
 
-# V0
-# IDEA : MULTI-SOURCE BFS + MAX-MIN (WIDEST PATH) DIJKSTRA
+
+# V0-1
+# IDEA: MULTI SOURCE BFS + Dijkstra (gemini)
+from collections import deque
+import heapq
+
+
+class Solution(object):
+
+  def maximumSafenessFactor(self, grid):
+    """:type grid: List[List[int]] :rtype: int"""
+    n = len(grid)
+
+    # 邊界特判：如果起點或終點本身就是小偷，安全係數直接為 0
+    if grid[0][0] == 1 or grid[n - 1][n - 1] == 1:
+      return 0
+
+    # ----------------------------------------------------
+    # 步驟 1：多源 BFS 計算每個格子到最近小偷的曼哈頓距離
+    # ----------------------------------------------------
+    dist = [[-1] * n for _ in range(n)]
+    q = deque()
+
+    for r in range(n):
+      for c in range(n):
+        if grid[r][c] == 1:
+          dist[r][c] = 0
+          q.append((r, c))
+
+    directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+
+    while q:
+      r, c = q.popleft()
+      for dr, dc in directions:
+        nr, nc = r + dr, c + dc
+        if 0 <= nr < n and 0 <= nc < n and dist[nr][nc] == -1:
+          dist[nr][nc] = dist[r][c] + 1
+          q.append((nr, nc))
+
+    # ----------------------------------------------------
+    # 步驟 2：Dijkstra 結合 Max-Heap 尋找最高安全路徑
+    # ----------------------------------------------------
+    # Python 的 heapq 是 Min-Heap，所以我們把安全係數取負數來模擬 Max-Heap
+    # 儲存格式：(-safeness, r, c)
+    max_heap = [(-dist[0][0], 0, 0)]
+    visited = [[False] * n for _ in range(n)]
+    visited[0][0] = True
+
+    while max_heap:
+      safe, r, c = heapq.heappop(max_heap)
+      safe = -safe  # 轉回正數
+
+      # 如果成功抵達右下角，由於是 Max-Heap 優先擴展，此時的 safe 即為最優解
+      if r == n - 1 and c == n - 1:
+        return safe
+
+      for dr, dc in directions:
+        nr, nc = r + dr, c + dc
+        if 0 <= nr < n and 0 <= nc < n and not visited[nr][nc]:
+          visited[nr][nc] = True
+          # 新路徑的瓶頸安全係數為：當前安全係數與下一個格子距離的最小值
+          next_safe = min(safe, dist[nr][nc])
+          heapq.heappush(max_heap, (-next_safe, nr, nc))
+
+    return 0
+
+
+# V0-2
+# IDEA: MULTI SOURCE BFS + Dijkstra (GPT)
+from collections import deque
+
+
+class Solution(object):
+    def maximumSafenessFactor(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+
+        n = len(grid)
+
+        # --------------------------------------------------
+        # Step 1:
+        # Multi-Source BFS
+        #
+        # dist[r][c] = distance from (r, c)
+        #               to the nearest thief.
+        # --------------------------------------------------
+
+        dist = [[-1] * n for _ in range(n)]
+
+        q = deque()
+
+        # Put ALL thieves into the queue first.
+        #
+        # This is the key idea of Multi-Source BFS.
+        for r in range(n):
+            for c in range(n):
+                if grid[r][c] == 1:
+                    dist[r][c] = 0
+                    q.append((r, c))
+
+        directions = [
+            (1, 0),
+            (-1, 0),
+            (0, 1),
+            (0, -1)
+        ]
+
+        # BFS from all thieves simultaneously.
+        while q:
+            r, c = q.popleft()
+
+            for dr, dc in directions:
+                nr = r + dr
+                nc = c + dc
+
+                # Check boundary
+                if nr < 0 or nr >= n or nc < 0 or nc >= n:
+                    continue
+
+                # Already visited
+                if dist[nr][nc] != -1:
+                    continue
+
+                dist[nr][nc] = dist[r][c] + 1
+                q.append((nr, nc))
+
+        # --------------------------------------------------
+        # Step 2:
+        # Binary Search on the answer.
+        #
+        # We want the MAXIMUM safeness factor.
+        #
+        # low  = known possible value
+        # high = possible upper bound
+        # --------------------------------------------------
+
+        low = 0
+        high = n * 2
+
+        answer = 0
+
+        while low <= high:
+
+            mid = (low + high) // 2
+
+            # Check whether we can reach the destination
+            # while every cell has safety >= mid.
+            if self.can_reach(dist, mid):
+
+                # mid is possible.
+                answer = mid
+
+                # Try to get an even safer path.
+                low = mid + 1
+
+            else:
+
+                # mid is impossible.
+                # Need a smaller safeness factor.
+                high = mid - 1
+
+        return answer
+
+    def can_reach(self, dist, safeness):
+        """
+        Return True if there exists a path from
+        (0, 0) to (n-1, n-1) where every cell has:
+
+            dist[r][c] >= safeness
+        """
+
+        n = len(dist)
+
+        # Start itself must satisfy the requirement.
+        if dist[0][0] < safeness:
+            return False
+
+        # BFS for path existence.
+        q = deque()
+        q.append((0, 0))
+
+        visited = [[False] * n for _ in range(n)]
+        visited[0][0] = True
+
+        directions = [
+            (1, 0),
+            (-1, 0),
+            (0, 1),
+            (0, -1)
+        ]
+
+        while q:
+            r, c = q.popleft()
+
+            # Reached destination.
+            if r == n - 1 and c == n - 1:
+                return True
+
+            for dr, dc in directions:
+                nr = r + dr
+                nc = c + dc
+
+                # Boundary check
+                if nr < 0 or nr >= n or nc < 0 or nc >= n:
+                    continue
+
+                # Already visited
+                if visited[nr][nc]:
+                    continue
+
+                # This cell is too close to a thief.
+                if dist[nr][nc] < safeness:
+                    continue
+
+                visited[nr][nc] = True
+                q.append((nr, nc))
+
+        return False
+
+
+# V0-3
+# IDEA : MULTI-SOURCE BFS + MAX-MIN (WIDEST PATH) DIJKSTRA (CLAUDE)
 #
 #   Step 1 : multi-source BFS starting from EVERY thief at once gives
 #            dist[r][c] = manhattan distance from (r, c) to the nearest thief.
