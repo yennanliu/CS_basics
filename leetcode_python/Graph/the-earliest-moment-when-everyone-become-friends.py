@@ -1,3 +1,6 @@
+# https://leetcode.ca/all/1101.html
+
+
 """
 
 1101. The Earliest Moment When Everyone Become Friends
@@ -55,7 +58,13 @@ All the pairs (x_i, y_i) occur at most one time in the input.
 """
 
 # V0
-# IDEA: SORT by timestamp + UNION FIND (count components)
+class Solution(object):
+    def earliestAcq(self, logs, n):
+        pass
+
+
+# V0-1
+# IDEA: SORT by timestamp + UNION FIND (count components) (claude)
 #
 #   process the logs in chronological order, every SUCCESSFUL union
 #   merges 2 groups -> component count - 1.
@@ -87,4 +96,64 @@ class Solution(object):
             if groups == 1:
                 return t
 
+        return -1
+
+
+# 1-1
+# IDEA: Sorting + Union-Find
+# https://leetcode.ca/2018-12-05-1101-The-Earliest-Moment-When-Everyone-Become-Friends/
+class Solution:
+    def earliestAcq(self, logs: List[List[int]], n: int) -> int:
+        def find(x):
+            if p[x] != x:
+                p[x] = find(p[x])
+            return p[x]
+
+        p = list(range(n))
+        for t, x, y in sorted(logs):
+            if find(x) == find(y):
+                continue
+            p[find(x)] = find(y)
+            n -= 1
+            if n == 1:
+                return t
+        return -1
+
+
+# 1-2
+# IDEA:
+# https://leetcode.ca/2018-12-05-1101-The-Earliest-Moment-When-Everyone-Become-Friends/
+class UnionFind:
+    __slots__ = ('p', 'size')
+
+    def __init__(self, n):
+        self.p = list(range(n))
+        self.size = [1] * n
+
+    def find(self, x: int) -> int:
+        if self.p[x] != x:
+            self.p[x] = self.find(self.p[x])
+        return self.p[x]
+
+    def union(self, a: int, b: int) -> bool:
+        pa, pb = self.find(a), self.find(b)
+        if pa == pb:
+            return False
+        if self.size[pa] > self.size[pb]:
+            self.p[pb] = pa
+            self.size[pa] += self.size[pb]
+        else:
+            self.p[pa] = pb
+            self.size[pb] += self.size[pa]
+        return True
+
+
+class Solution:
+    def earliestAcq(self, logs: List[List[int]], n: int) -> int:
+        uf = UnionFind(n)
+        for t, x, y in sorted(logs):
+            if uf.union(x, y):
+                n -= 1
+                if n == 1:
+                    return t
         return -1
