@@ -50,6 +50,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: HASH MAP DP (gpt)
+# time: O(N)
+# space: O(N)
 class Solution(object):
     def longestSubsequence(self, arr, difference):
         """
@@ -96,6 +98,28 @@ class Solution(object):
 
 # V0-2
 # IDEA: HASH MAP DP (gemini)
+# time: O(N)
+# space: O(N)
+"""
+CORE IDEA:
+
+
+-> 正確的突破口：以「數值」為鍵值的雜湊表 DP
+
+
+    -> 我們不需要開一個陣列去記每個索引，而是用一個雜湊表（Dictionary）來記錄：
+
+        - dp[x]：以數字 x 結尾的最長等差子序列長度。
+
+        - 於每一個數字 x，它想要接續的「前一個數字」固定是 x - difference。
+
+        - 因此，狀態轉移方程可以直接寫成：
+
+            ```
+            dp[x] = dp[x - diff] + 1
+            ```
+
+"""
 class Solution(object):
 
   def longestSubsequence(self, arr, difference):
