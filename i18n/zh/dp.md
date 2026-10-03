@@ -51,13 +51,15 @@
 <!-- 5ab0cfa81ec9 -->
 ## 題型分類
 
-<!-- 3b36662d7f44 -->
+<!-- e48d9ca9e33a -->
 ### **分類 1：線性 DP**
 - **說明**：單一序列、相依關係呈線性的題目
 - **範例**：LC 70（Climbing Stairs）、LC 198（House Robber）、LC 300（LIS）
 - **模式**：dp[i] 依賴 dp[i-1]、dp[i-2] 等等
 - **子型態 — 前綴切分**：dp[i] 改成掃過*每一個*切點 j < i，並檢查整段 s[j:i] —
   LC 139（Word Break）、LC 132、LC 279。見 [Template 1b](#template-1b-prefix-partition-dp---lc-139)。
+- **子型態 — 以值為鍵（DP + 雜湊表）**：x 唯一合法的前一個元素是某個已知的值
+  （x - d），所以 dp 存在以「值」為鍵的雜湊表裡，內層迴圈就消失了 — LC 1218。見 [Template 7a](#template-7a-value-keyed-dp-dp--hash-map---lc-1218)。
 
 <!-- a05f8caf7ae7 -->
 ### **分類 2：格子／二維 DP**
@@ -134,7 +136,7 @@ LC 2289 的 Java 與 Python 模板、直方圖面積 DP、最大正方形的遞�
 <!-- ddc7f484e4af -->
 ## 模板與演算法
 
-<!-- b06ac42e2594 -->
+<!-- 23f0412f36d6 -->
 ### 模板比較表
 | 模板類型 | 適用情境 | 狀態定義 | 什麼時候用 |
 |---------------|----------|------------------|-------------|
@@ -143,6 +145,7 @@ LC 2289 的 Java 與 Python 模板、直方圖面積 DP、最大正方形的遞�
 | **區間** | 子陣列／子字串 | dp[i][j] = 區間 [i,j] | 回文、分割 |
 | **背包** | 帶容量上限的選取 | dp[i][w] = 物品與重量 | 0/1、完全背包 |
 | **狀態機** | 多個狀態 | dp[i][state] = 在 i 且處於 state | 買賣股票 |
+| **以值為鍵（雜湊表）** | 固定步長的鏈 | dp[value] = 以 value 結尾的最佳鏈長 | 前一個元素是唯一已知的值 |
 
 <!-- 29d01a0555bb -->
 ### 通用 DP 模板
@@ -905,6 +908,60 @@ Java 用另一套裝扮呈現同一個 bug — 宣告在迴圈外的 `cur` 需�
 **範例推演：**
 <!--CODE-->
 
+<!-- 174ac8993231 -->
+### Template 7a: 以值為鍵的 DP（DP + 雜湊表）⭐⭐⭐⭐ — LC 1218
+
+> **模式**：形狀跟 LIS 一樣的「以這裡結尾的最長鏈」DP，差別在於能排在 `x` **前面**的元素不是
+> 「任何比它小的」— 而是**恰好一個值**，`x - d`。所以 [Template 7](#template-7-longest-increasing-subsequence---lc-300)
+> 裡的內層 `for j < i` 迴圈縮成一次雜湊表查詢，DP 改以**值**而非索引為鍵：
+> `O(n^2)` → `O(n)`。
+
+<!-- 50afafc0ffec -->
+#### 🎯 辨認模式
+
+| 訊號 | 為什麼用雜湊表而不是陣列 |
+|--------|-------------------------|
+| 「相鄰元素相差**固定** `difference` 的最長子序列」 | 前一個元素完全由目前的值決定 |
+| 值域 `-10^4..10^4`（或更大）、`n` 可達 `10^5` | 用陣列存 `dp[value]` 會很稀疏或需要負索引；`O(n^2)` 太慢 |
+| 「每一步都是前一個加／減某個東西的鏈」 | 鍵就是你原本要去搜尋的那個東西 |
+
+<!-- 4abcac68d12c -->
+#### 💡 核心想法（LC 1218 Longest Arithmetic Subsequence of Given Difference）
+
+<!--CODE-->
+
+由左往右掃，正是它保持**子序列**性質的原因：讀到 `x` 時，`dp` 只存著較早索引的值，
+所以 `x - difference` 只可能指向它之前出現的元素。同一個值出現兩次就直接覆蓋舊的紀錄 —
+後出現的那次鏈長至少一樣長，而且之後的元素要接的也正是它。
+
+<!--CODE-->
+
+<!--CODE-->
+
+<!--CODE-->
+
+<!-- b254baab131f -->
+#### ⚠️ 常見陷阱
+
+- **伸手就寫 `O(n^2)` 的 LIS 迴圈。** 它是對的，但在 `n = 10^5` 時會超時；固定的公差正是拿掉內層迴圈的關鍵。
+- **用值當陣列索引。** `arr[i]` 和 `difference` 都可能是負數；位移過的陣列只有在連 `x - difference`
+  的範圍也算進去時才行得通。雜湊表沒有這種邊界問題。
+- **先寫 `dp[x]` 再讀 `dp[x - difference]`。** 當 `difference = 0` 時兩個鍵是同一個；要先讀，
+  否則同一個值的每次重複都會被多算一次。
+
+<!-- 7d9c6fbec6ea -->
+#### 以值為鍵的題型家族
+
+| LC | 題目 | 鍵 | 成本 |
+|----|---------|-----|------|
+| 1218 | Longest Arithmetic Subsequence of Given Difference | 值本身；`d` 固定 | 一個雜湊表，`O(n)` |
+| 1027 | Longest Arithmetic Subsequence | `(index, difference)` — `d` 不固定，所以**每個索引**一個雜湊表 | `O(n^2)` |
+| 446 | Arithmetic Slices II - Subsequence | `(index, difference)`，存的是**個數** | `O(n^2)` |
+| 1048 | Longest String Chain | 單字；前一個是少一個字母的單字（先依長度排序） | `O(n · L^2)` |
+
+LC 1027 和 LC 446 — 公差是狀態的一部分而不是題目給定的 — 完整解法在
+[dp_advanced.md](./dp_advanced.md#a-hash-map-as-the-state-dimension--lc-446-)。
+
 <!-- 15f5f09905c9 -->
 ### 模板 8：編輯距離 ⭐⭐⭐⭐ — LC 72
 
@@ -1119,7 +1176,7 @@ LC 902（用指定數字集組出的數）、數位和與不可有連續數字�
 <!-- 8f2cc298e06a -->
 ### 該用哪個 DP 模式？
 
-<!-- 21e2fbcdb8ee -->
+<!-- 655244852570 -->
 #### 模式快速選擇表
 
 | 題型 | 辨認關鍵字 | DP 分類 | 範例題目 |
@@ -1128,6 +1185,7 @@ LC 902（用指定數字集組出的數）、數位和與不可有連續數字�
 | **打家劫舍** | "non-adjacent"、"cannot pick consecutive" | 線性 DP | LC 198, 213, 337 |
 | **前綴切分** | "break/segment a string"、"cut into valid pieces" | [前綴切分 DP](#template-1b-prefix-partition-dp---lc-139) | LC 139, 140, 132, 279 |
 | **最長遞增** | "longest increasing"、"LIS"、"envelope" | 線性 DP | LC 300, 354, 673 |
+| **固定步長的鏈** | "subsequence with given difference"、"each step is prev ± d" | [以值為鍵的 DP](#template-7a-value-keyed-dp-dp--hash-map---lc-1218) | LC 1218, 1048 |
 | **路徑計數** | "unique paths"、"number of ways to reach" | 格子 DP | LC 62, 63, 980 |
 | **路徑和（最小／最大）** | "minimum path sum"、"maximum sum" | 格子 DP | LC 64, 120, 174 |
 | **正方形／矩形** | "maximal square"、"largest rectangle" | 格子 DP | LC 221, 85 |
@@ -1141,7 +1199,7 @@ LC 902（用指定數字集組出的數）、數位和與不可有連續數字�
 | **LCS/LPS** | "longest common subsequence"、"palindrome" | 字串 DP | LC 1143, 516, 647 |
 | **Bitmask／子集** | "visit all nodes"、"assign tasks"、"TSP" | 狀態壓縮 | LC 847, 1723, 691 |
 
-<!-- 232abbecd1b0 -->
+<!-- 793449e20c77 -->
 #### 訊號 → 模式
 
 | 訊號 | 模式 |
@@ -1152,6 +1210,7 @@ LC 902（用指定數字集組出的數）、數位和與不可有連續數字�
 | 「賽局：兩人都最佳決策」 | Minimax DP：dp[i][j] = 分差 |
 | 「數出符合位數限制的數字」 | 數位 DP：(pos, tight, accumulator) |
 | 「把字串切成合法單字」 | [前綴切分 DP](#template-1b-prefix-partition-dp---lc-139)：dp[i] 跑前綴長度 + 單字集合 |
+| 「給定公差的最長子序列」 | [以值為鍵的 DP](#template-7a-value-keyed-dp-dp--hash-map---lc-1218)：在雜湊表裡做 dp[x] = dp[x - d] + 1 |
 | 「買賣股票的各種變形」 | 狀態機（持有／賣出／休息） |
 | 「編輯距離、LCS、交錯字串」 | 二維 DP → 一維空間優化 |
 

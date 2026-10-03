@@ -49,6 +49,8 @@ Step 4. get the result
 - **Pattern**: dp[i] depends on dp[i-1], dp[i-2], etc.
 - **Sub-shape — prefix partition**: dp[i] instead scans *every* cut point j < i and tests the whole
   segment s[j:i] — LC 139 (Word Break), LC 132, LC 279. See [Template 1b](#template-1b-prefix-partition-dp---lc-139).
+- **Sub-shape — value-keyed (DP + hash map)**: the only legal predecessor of x is one known value
+  (x - d), so dp lives in a map keyed by value and the inner loop disappears — LC 1218. See [Template 7a](#template-7a-value-keyed-dp-dp--hash-map---lc-1218).
 
 ### **Category 2: Grid/2D DP**
 - **Description**: Problems on 2D grids or matrices
@@ -125,6 +127,7 @@ square recurrence, and the LC 926 one-pass DP.
 | **Interval** | Subarray/substring | dp[i][j] = [i,j] interval | Palindrome, partition |
 | **Knapsack** | Selection with limit | dp[i][w] = items & weight | 0/1, unbounded selection |
 | **State Machine** | Multiple states | dp[i][state] = at i in state | Buy/sell stocks |
+| **Value-Keyed (Hash Map)** | Chain with a fixed step | dp[value] = best chain ending with value | Predecessor is one known value |
 
 ### Universal DP Template
 ```python
@@ -1652,6 +1655,107 @@ Result: max(dp) = 4
 LIS: [2, 3, 7, 101] or [2, 5, 7, 101] or others
 ```
 
+### Template 7a: Value-Keyed DP (DP + Hash Map) ⭐⭐⭐⭐ — LC 1218
+
+> **Pattern**: an LIS-shaped "longest chain ending here" DP, except the element that may come
+> **before** `x` is not "any smaller one" — it is **exactly one value**, `x - d`. So the inner
+> `for j < i` loop of [Template 7](#template-7-longest-increasing-subsequence---lc-300) collapses
+> into a single hash-map lookup, and the DP is keyed by **value** instead of by index:
+> `O(n^2)` → `O(n)`.
+
+#### 🎯 Pattern Recognition
+
+| Signal | Why a map, not an array |
+|--------|-------------------------|
+| "longest subsequence where adjacent elements differ by a **fixed** `difference`" | the predecessor is fully determined by the current value |
+| values span `-10^4..10^4` (or larger), `n` up to `10^5` | `dp[value]` as an array is sparse or negative-indexed; `O(n^2)` is too slow |
+| "chain where each step is the previous one plus/minus one thing" | the key is the thing you would have searched for |
+
+#### 💡 Core Idea (LC 1218 Longest Arithmetic Subsequence of Given Difference)
+
+```text
+dp[x] = length of the longest valid subsequence ENDING with value x (seen so far)
+
+scan left -> right:
+    dp[x] = dp.get(x - difference, 0) + 1       # extend the chain ending at x - d, or start one
+    ans   = max(ans, dp[x])
+```
+
+Scanning left to right is what keeps it a **subsequence**: when `x` is read, `dp` only holds values
+from earlier indices, so `x - difference` can only ever refer to something that came before it.
+A value that appears twice simply overwrites its entry — the later occurrence's chain is at least
+as long, and it is the one any later element would extend.
+
+```python
+# python
+# LC 1218 - Longest Arithmetic Subsequence of Given Difference
+# IDEA: dp keyed by value — the only legal predecessor of x is x - difference
+# time = O(n), space = O(n)
+def longestSubsequence(arr, difference):
+    dp = {}            # value -> longest chain ending with that value
+    max_len = 0
+    for x in arr:
+        prev = x - difference
+        # read the predecessor BEFORE writing dp[x] (matters when difference == 0)
+        dp[x] = dp.get(prev, 0) + 1
+        max_len = max(max_len, dp[x])
+    return max_len
+```
+
+```java
+// java
+// LC 1218 - Longest Arithmetic Subsequence of Given Difference
+// IDEA: dp keyed by value — the only legal predecessor of x is x - difference
+// time = O(n), space = O(n)
+public int longestSubsequence(int[] arr, int difference) {
+    Map<Integer, Integer> dp = new HashMap<>();   // value -> longest chain ending with it
+    int maxLen = 0;
+    for (int x : arr) {
+        int len = dp.getOrDefault(x - difference, 0) + 1;
+        dp.put(x, len);
+        maxLen = Math.max(maxLen, len);
+    }
+    return maxLen;
+}
+```
+
+```text
+arr = [1,5,7,8,5,3,4,2,1], difference = -2      (predecessor of x is x + 2)
+
+x=1  dp[3]? no  -> dp[1]=1
+x=5  dp[7]? no  -> dp[5]=1
+x=7  dp[9]? no  -> dp[7]=1
+x=8  dp[10]? no -> dp[8]=1
+x=5  dp[7]=1    -> dp[5]=2        (overwrites the first 5's entry)
+x=3  dp[5]=2    -> dp[3]=3
+x=4  dp[6]? no  -> dp[4]=1
+x=2  dp[4]=1    -> dp[2]=2
+x=1  dp[3]=3    -> dp[1]=4        7 -> 5 -> 3 -> 1
+
+answer = 4
+```
+
+#### ⚠️ Common Pitfalls
+
+- **Reaching for the `O(n^2)` LIS loop.** It is correct and times out at `n = 10^5`; the fixed
+  difference is exactly what removes the inner loop.
+- **Indexing an array by value.** `arr[i]` and `difference` are both negative-capable; a shifted
+  array works only if you size it for `x - difference` too. The map has no such edge.
+- **Writing `dp[x]` before reading `dp[x - difference]`.** With `difference = 0` the two keys are
+  the same; read first, or every repeat of a value is counted twice.
+
+#### The value-keyed family
+
+| LC | Problem | Key | Cost |
+|----|---------|-----|------|
+| 1218 | Longest Arithmetic Subsequence of Given Difference | the value; `d` is fixed | one map, `O(n)` |
+| 1027 | Longest Arithmetic Subsequence | `(index, difference)` — `d` is free, so one map **per index** | `O(n^2)` |
+| 446 | Arithmetic Slices II - Subsequence | `(index, difference)`, storing a **count** | `O(n^2)` |
+| 1048 | Longest String Chain | the word; predecessors are the word minus one letter (sort by length first) | `O(n · L^2)` |
+
+LC 1027 and LC 446 — where the difference is part of the state rather than given — are worked in
+[dp_advanced.md](./dp_advanced.md#a-hash-map-as-the-state-dimension--lc-446-).
+
 ### Template 8: Edit Distance ⭐⭐⭐⭐ — LC 72
 
 **Pattern**: the minimum number of insert / delete / replace operations that turn `word1` into
@@ -2031,6 +2135,7 @@ DP Problem Identification Flowchart:
 | **House Robber** | "non-adjacent", "cannot pick consecutive" | Linear DP | LC 198, 213, 337 |
 | **Prefix Partition** | "break/segment a string", "cut into valid pieces" | [Prefix Partition DP](#template-1b-prefix-partition-dp---lc-139) | LC 139, 140, 132, 279 |
 | **Longest Increasing** | "longest increasing", "LIS", "envelope" | Linear DP | LC 300, 354, 673 |
+| **Fixed-Step Chain** | "subsequence with given difference", "each step is prev ± d" | [Value-keyed DP](#template-7a-value-keyed-dp-dp--hash-map---lc-1218) | LC 1218, 1048 |
 | **Path Counting** | "unique paths", "number of ways to reach" | Grid DP | LC 62, 63, 980 |
 | **Path Sum (Min/Max)** | "minimum path sum", "maximum sum" | Grid DP | LC 64, 120, 174 |
 | **Square/Rectangle** | "maximal square", "largest rectangle" | Grid DP | LC 221, 85 |
@@ -2055,6 +2160,7 @@ DP Problem Identification Flowchart:
 | "game: two players pick optimally" | Minimax DP: dp[i][j] = score diff |
 | "count numbers with digit constraint" | Digit DP: (pos, tight, accumulator) |
 | "break string into valid words" | [Prefix partition DP](#template-1b-prefix-partition-dp---lc-139): dp[i] over prefix lengths + word set |
+| "longest subsequence with a given difference" | [Value-keyed DP](#template-7a-value-keyed-dp-dp--hash-map---lc-1218): dp[x] = dp[x - d] + 1 in a hash map |
 | "stock buy/sell variants" | State machine (held/sold/rest) |
 | "edit distance, LCS, interleaving" | 2D DP → 1D space optimization |
 
