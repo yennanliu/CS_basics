@@ -125,6 +125,19 @@ class Solution(object):
       return 0
 
     base_equal = 0
+
+    """
+    NOTE !!!
+
+
+    unequal_pair_cnt: {(x,y) : cnt}
+
+
+    key: (int, int)
+        -> key in a tuple. (pair)
+
+    val: int
+    """
     unequal_pair_cnt = Counter()
     max_newly_equal = 0
 
@@ -136,8 +149,35 @@ class Solution(object):
         # 原本就相等的對，替換後必定依然相等
         base_equal += 1
       else:
+
+        # NOTE !!
+        # -> 不管左右順序，只看這兩個 value 是不是同一組
+        #
         # 不相等的對：用 (min, max) 確保 (x, y) 和 (y, x) 視為同一組組合
         pair = (min(x, y), max(x, y))
+
+
+        """
+        NOTE !!!
+
+        what below code is doing?
+
+        ->
+
+        找出「哪一組 (x,y) 出現最多次」
+
+
+
+        unequal_pair_cnt: 記錄的是「特定這一組相鄰對 (x,y) 目前出現了幾次」
+
+
+        max_newly_equal:
+        
+            - 每次遇到一組相鄰對，更新了它的累計次數後，就順手用 max() 取全域最大值
+
+            - 這樣迴圈跑完後，max_newly_equal 留下來的就是「我們下決定做那唯一一次替換時，最多能額外創造出多少組相等對」。
+
+        """
         unequal_pair_cnt[pair] += 1
         max_newly_equal = max(max_newly_equal, unequal_pair_cnt[pair])
 
