@@ -84,6 +84,14 @@ class Solution(object):
 
       # 3. 更新雜湊表：
       # 為了讓未來的相減結果最大，我們只在「該數值尚未存在」或「當前前綴和更小」時才更新索引
+
+
+      """
+      NOTE !!!
+
+      we need to update the hash map (value_min_prefix_idx)
+      to save the min prefix sum
+      """
       if (
           val not in val_to_min_prefix_idx
           or prefix_sum[i] < prefix_sum[val_to_min_prefix_idx[val]]
@@ -121,6 +129,13 @@ class Solution(object):
         for i in range(n):
             prefix_sum[i + 1] = prefix_sum[i] + nums[i]
 
+
+        """
+        NOTE !!!
+
+
+         -> # 2. value_min_prefix_idx ：{ 數值 : 擁有該數值且對應 prefix_sum 最小的起始索引 }
+        """
         # {value: index of the minimum prefix sum}
         #
         # For each value, we keep the index that gives
@@ -180,6 +195,12 @@ class Solution(object):
 
             else:
 
+                """
+                NOTE !!!
+
+                we need to update the hash map (value_min_prefix_idx)
+                to save the min prefix sum
+                """
                 old_idx = value_min_prefix_idx[val]
 
                 if prefix_sum[i] < prefix_sum[old_idx]:
