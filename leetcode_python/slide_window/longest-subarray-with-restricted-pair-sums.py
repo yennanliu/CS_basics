@@ -54,7 +54,238 @@ Constraints:
 """
 
 # V0
-# IDEA : SLIDING WINDOW + PAIR-SUM HASHMAP, UPDATED INCREMENTALLY
+class Solution(object):
+    def maxSubarray(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        pass
+
+
+# V0-1
+# IDEA: SLIDE WINDOW + array val mapping (gpt)
+class Solution(object):
+    def maxSubarray(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+
+        # Edge case
+        if not nums:
+            return 0
+
+        n = len(nums)
+
+        # nums[i] <= 500
+        #
+        # count[x] = how many times value x
+        # appears in the current window.
+        count = [0] * 501
+
+        # Number of invalid triples
+        # currently inside the window.
+        #
+        # Invalid triple:
+        #
+        # nums[i] + nums[j] == nums[k]
+        #
+        # where i, j, k are distinct indices.
+        bad_count = 0
+
+        max_len = 0
+        l = 0
+
+        for r in range(n):
+
+            x = nums[r]
+
+            # Add nums[r].
+            #
+            # Calculate how many NEW invalid triples
+            # are created by adding x.
+            bad_count += self.count_new_bad_triples(
+                x,
+                count
+            )
+
+            count[x] += 1
+
+            # If window is invalid,
+            # move left until it becomes valid.
+            while bad_count > 0:
+
+                x_left = nums[l]
+
+                # Remove x_left first.
+                count[x_left] -= 1
+
+                # Calculate how many invalid triples
+                # disappear because x_left was removed.
+                bad_count -= self.count_new_bad_triples(
+                    x_left,
+                    count
+                )
+
+                l += 1
+
+            # Current window [l, r] is valid.
+            max_len = max(
+                max_len,
+                r - l + 1
+            )
+
+        return max_len
+
+    def count_new_bad_triples(self, x, count):
+        """
+        Assume x is about to be added.
+
+        Return the number of NEW invalid triples
+        created by this occurrence of x.
+
+        There are two cases:
+
+        1. a + b = x
+        2. x + y = z
+        """
+
+        new_bad = 0
+
+        # -----------------------------------------
+        # Case 1:
+        #
+        # a + b = x
+        #
+        # Example:
+        #
+        # x = 5
+        # 2 + 3 = 5
+        # -----------------------------------------
+
+        for a in range(1, x):
+
+            b = x - a
+
+            # Avoid checking the same pair twice.
+            #
+            # Example:
+            #
+            # 2 + 3 = 5
+            # 3 + 2 = 5
+            #
+            # These represent the same pair of values.
+            if b < a:
+                break
+
+            if count[a] == 0 or count[b] == 0:
+                continue
+
+            if a == b:
+                # Need two DIFFERENT indices.
+                #
+                # Example:
+                #
+                # [2, 2, 4]
+                #
+                # We need two 2s.
+                if count[a] >= 2:
+                    new_bad += (
+                        count[a] * (count[a] - 1) // 2
+                    )
+
+            else:
+                # Choose one a and one b.
+                new_bad += count[a] * count[b]
+
+        # -----------------------------------------
+        # Case 2:
+        #
+        # x + y = z
+        #
+        # Example:
+        #
+        # x = 2
+        # y = 3
+        # z = 5
+        #
+        # The newly added x forms:
+        #
+        # 2 + 3 = 5
+        # -----------------------------------------
+
+        for y in range(1, 501 - x):
+
+            z = x + y
+
+            if count[y] == 0 or count[z] == 0:
+                continue
+
+            new_bad += count[y] * count[z]
+
+        return new_bad
+
+
+# V0-2
+# IDEA: SLIDE WINDOW + hashmap (gemini)
+from collections import Counter
+
+
+class Solution(object):
+
+  def maxSubarray(self, nums):
+    """:type nums: List[int]
+
+    :rtype: int
+    """
+    n = len(nums)
+    # 邊界特判：長度 <= 2 的子陣列無法湊齊 3 個相異索引，必定合法
+    if n <= 2:
+      return n
+
+    freq = Counter()
+    l = 0
+    max_len = 0
+
+    # 檢查加入 x = nums[r] 後，是否會與當前視窗內的元素構成 nums[i] + nums[j] == nums[k]
+    def is_valid(x):
+      for a, count_a in freq.items():
+        # 情況 1：x 作為加數，與視窗中的 a 相加等於視窗中已有的元素 (x + a == existing)
+        if (x + a) in freq:
+          return False
+
+        # 情況 2：x 作為和，等於視窗中的 a 與另一個元素相加 (a + other == x)
+        other = x - a
+        if other > 0 and other in freq:
+          # 若 a != other，代表已有兩個相異數字；若 a == other，則需要視窗中至少有 2 個 a
+          if a != other or count_a >= 2:
+            return False
+
+      return True
+
+    # 滑動視窗 (Sliding Window)
+    for r in range(n):
+      x = nums[r]
+
+      # 若加入 x 會破壞合法性，收縮左界 l 直到 x 可以合法加入
+      while not is_valid(x):
+        freq[nums[l]] -= 1
+        if freq[nums[l]] == 0:
+          del freq[nums[l]]
+        l += 1
+
+      # 將 x 加入視窗
+      freq[x] += 1
+
+      # 更新最大合法子陣列長度
+      max_len = max(max_len, r - l + 1)
+
+    return max_len
+
+
+# V1-1
+# IDEA : SLIDING WINDOW + PAIR-SUM HASHMAP, UPDATED INCREMENTALLY (claude)
 #
 #   validity is MONOTONE : every sub-window of a valid window is valid (dropping
 #   elements can not create a triple). so two pointers work -- for each right
@@ -140,8 +371,8 @@ class Solution(object):
         return max_len
 
 
-# V0-1
-# IDEA : FIX THE LEFT END, GROW THE RIGHT END (same counters, no removal)
+# V1-2
+# IDEA : FIX THE LEFT END, GROW THE RIGHT END (same counters, no removal) (claude)
 #
 #   same pair-sum hashmap as V0, but the window is rebuilt from scratch for each
 #   left end and only ever grows, so there is no removal bookkeeping to get
@@ -198,8 +429,8 @@ class Solution2(object):
         return max_len
 
 
-# V1
-# IDEA : SLIDING WINDOW OVER VALUE COUNTS, CHECK ONLY THE NEW ELEMENT
+# V1-3
+# IDEA : SLIDING WINDOW OVER VALUE COUNTS, CHECK ONLY THE NEW ELEMENT (claude)
 #
 #   V0 tracks every pair in the window. but the window before nums[right] joins
 #   is already valid, so the ONLY triples that can exist afterwards are the ones

@@ -1,4 +1,4 @@
-20261003: top 100 like(2 pointers): 42 | top 100 like(linked list):  25 | top 100 like(dp): 32, 300 | others:  357(dp, todo), 300, 2D LIS (354), 460(todo), 710(todo), 1696(todo, dp + mono deque), 388 (todo), 636(todo) | DP: wildcard: 97(todo) | g recent:  1235、3026(again!!)、1218(again!!!)、2812(again)、1101, LFU, LRU(LC 146, linked list), 4066(again)
+20261003: top 100 like(2 pointers): 42 | top 100 like(linked list):  25 | top 100 like(dp): 32, 300 | others:  357(dp, todo), 300, 2D LIS (354), 460(todo), 710(todo), 1696(todo, dp + mono deque), 388 (todo), 636(todo) | DP: wildcard: 97(todo) | g recent:  1235、3026(again!!)、1218(again!!!)、2812(again)、1101, LFU, LRU(LC 146, linked list), 4066(again), 4067(again)
 
 
 20261002: top 100 like(2 pointers): 42 | top 100 like(linked list):  25 | top 100 like(dp): 32, 300 | others:  357(dp, todo), 300, 2D LIS (354), 460(todo), 710(todo), 1696(todo, dp + mono deque), 388 (todo), 636(todo) | DP: wildcard: 97(todo) | g recent:  1235、3026、1218、2812、1101
