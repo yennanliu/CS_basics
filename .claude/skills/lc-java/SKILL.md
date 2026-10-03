@@ -287,27 +287,24 @@ cat > /tmp/Drive.java <<'EOF'
 import LeetCodeJava.<Package>.<ClassName>;
 public class Drive { public static void main(String[] a) {
     <ClassName> s = new <ClassName>();
-    // one call per filed block, same input (directive 1: the marker names the method)
     Object v0  = s.<method>(...);         // V0
     Object v01 = s.<method>_0_1(...);     // V0-1, if filed
     Object v1  = s.<method>_1(...);       // V1, if filed
     System.out.println(v0);
-    // every version must agree: equals() for objects/boxed values,
-    // Arrays.equals / deepEquals for arrays
-    if (!java.util.Objects.equals(v0, v01) || !java.util.Objects.equals(v0, v1)) {
-        throw new AssertionError("versions disagree: " + v0 + " / " + v01 + " / " + v1);
-    }
+    System.out.println(java.util.Objects.equals(v0, v01) && java.util.Objects.equals(v0, v1));  // must print true
 } }
 EOF
 javac -d /tmp/lcjava -cp /tmp/lcjava /tmp/Drive.java && java -cp /tmp/lcjava Drive
 ```
 
-Every filed block gets the same input, and they must agree — the driver throws if one does
-not. A method that mutates its input (a linked list reversed in place, an array sorted)
-gets a **fresh copy** of the input per call, or the second version runs on the first one's
-output. When the answer is not unique (any valid order), compare what the problem pins
-down rather than raw equality. If a statement example disagrees, the
-solution is wrong — say so rather than adjusting the example.
+Every filed block gets one call with the same input — the marker names the method (directive
+1), so `// V1` is `<method>_1` — and they must agree: the last line has to print `true`.
+`Objects.equals` covers boxed values and collections; an array result needs `Arrays.equals`
+(or `Arrays.deepEquals` for a 2-D one) instead. A method that mutates its input (a linked
+list reversed in place, an array sorted) gets a **fresh copy** of the input per call, or the
+second version runs on the first one's output. When the answer is not unique (any valid
+order), compare what the problem pins down rather than raw equality. If a statement example
+disagrees, the solution is wrong — say so rather than adjusting the example.
 
 **Known-good baseline**: a whole-tree `javac` reports 8 pre-existing errors, all of them
 missing-JUnit errors under `dev/Sorting/`. Everything under `LeetCodeJava/` compiles. If a
