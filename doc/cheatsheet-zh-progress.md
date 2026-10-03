@@ -43,7 +43,7 @@ half-translated document renders with English gaps rather than failing.
   is what makes a problem findable on LeetCode itself.
 
 
-## Status — 5350 / 5350 sections (100%)
+## Status — 5351 / 5351 sections (100%)
 
 | Cheatsheet | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -154,7 +154,7 @@ half-translated document renders with English gaps rather than failing.
 | [set](./cheatsheet/set.md) | 37 | [✅](../i18n/zh/set.md) |
 | [set_examples](./cheatsheet/set_examples.md) | 32 | [✅](../i18n/zh/set_examples.md) |
 | [shortest_path_comparison](./cheatsheet/shortest_path_comparison.md) | 24 | [✅](../i18n/zh/shortest_path_comparison.md) |
-| [sliding_window](./cheatsheet/sliding_window.md) | 44 | [✅](../i18n/zh/sliding_window.md) |
+| [sliding_window](./cheatsheet/sliding_window.md) | 45 | [✅](../i18n/zh/sliding_window.md) |
 | [sliding_window_advanced](./cheatsheet/sliding_window_advanced.md) | 76 | [✅](../i18n/zh/sliding_window_advanced.md) |
 | [sliding_window_examples](./cheatsheet/sliding_window_examples.md) | 18 | [✅](../i18n/zh/sliding_window_examples.md) |
 | [sort](./cheatsheet/sort.md) | 67 | [✅](../i18n/zh/sort.md) |

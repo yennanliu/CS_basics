@@ -1,6 +1,6 @@
 # Sliding Window
 
-> **Scope** — Windows that grow and shrink on a condition — fixed-size, variable-size, at-most-k, and exactly-k by subtraction; owns the expand/contract loop and the six canonical window templates.
+> **Scope** — Windows that grow and shrink on a condition — fixed-size, variable-size, at-most-k, and exactly-k by subtraction; owns the expand/contract loop and the seven canonical window templates.
 > **See also** — *split out of this file*: [sliding_window_examples.md](./sliding_window_examples.md) — the worked LC solution archive, one canonical solution per problem per language; [sliding_window_advanced.md](./sliding_window_advanced.md) — deque extrema, at-most-K generalisations, exactly-K beyond one instance, complement / word-level / bucketed windows.
 > *Neighbouring sheets*: [2_pointers.md](./2_pointers.md) — pointers that converge instead of trailing; [hash_map.md](./hash_map.md) — the counting map most windows carry; [monotonic_queue.md](./monotonic_queue.md) — window extrema in O(n); [prefix_sum.md](./prefix_sum.md) — when the window can be negative-valued.
 
@@ -89,23 +89,26 @@
 | Variable (minimize) | Find smallest valid window | Shrink while window is valid | LC 76 (Min Window Substring) |
 | Variable (maximize) | Find largest valid window | Shrink while window is invalid | LC 3 (Longest No-Repeat) |
 | Exactly K → AtMost | Count windows with exact constraint | N/A — use subtraction trick | LC 992, LC 1248 |
+| Variable (maximize), rule over pairs / triples | "no `i, j, k` in the window with …" | Shrink while the **newcomer** would break the rule | LC 4067 (Restricted Pair Sums) |
 
 ## Templates & Algorithms
 
-Six templates cover every must-know sliding-window shape. Template 2 is the one to write from
-memory first — every variable-size window in the family is that loop with a different validity
-test and a different result update.
+Six templates cover every must-know sliding-window shape, and a seventh covers the case where
+the validity test, not the loop, is the hard part. Template 2 is the one to write from memory
+first — every variable-size window in the family is that loop with a different validity test and
+a different result update.
 
 ### Template Comparison Table
 
 | # | Template | Shape | Result update | Time / Space | Anchor problems |
 |---|----------|-------|---------------|--------------|-----------------|
 | 1 | Fixed-Size Window | `for i` + evict `i - k` | test when `i >= k - 1` | O(n) / O(k) | LC 643, 438, 567 |
-| 2 | Grow-Then-Shrink (the `while` invariant) | `for right` + `while invalid: shrink` | any valid window | O(n) / O(k) | the base of 3–6 |
+| 2 | Grow-Then-Shrink (the `while` invariant) | `for right` + `while invalid: shrink` | any valid window | O(n) / O(k) | the base of 3–7 |
 | 3 | Longest Window Satisfying P | shrink **while invalid** | `max(res, r - l + 1)` | O(n) / O(k) | LC 3, 424, 1004 |
 | 4 | Shortest Window Satisfying P | shrink **while valid** | `min(res, r - l + 1)` | O(n) / O(k) | LC 209, 76 |
 | 5 | Char-Count Window (`have`/`need`) | freq map + match counter | on `have == need` | O(n) / O(charset) | LC 76, 438, 567 |
 | 6 | Exactly K via At-Most Subtraction | two at-most passes | `count += r - l + 1` | O(n) / O(k) | LC 992, 1248, 930 |
+| 7 | Hereditary Constraint — test only the newcomer | `while joins(a[r]): shrink`, then add | `max(res, r - l + 1)` | O(n · V) / O(V) | LC 4067 |
 
 > Rows 3 and 4 differ by **one word**: longest shrinks while the window is *invalid*, shortest
 > shrinks while it is *valid*. Get that word wrong and the answer is silently off.
@@ -614,6 +617,151 @@ private int atMostK(int[] nums, int k) {
 > the visual proof and the "why is direct exactly-K hard" argument all live in
 > [sliding_window_advanced.md](./sliding_window_advanced.md).
 
+### Template 7: Hereditary Constraint — Test Only the Newcomer — LC 4067 ⭐⭐⭐
+
+**Use Cases**: "longest subarray with no two / no three elements such that …" — a validity rule
+stated over **every pair or triple** in the window, not over a count or a sum
+**Pattern**: Template 3's loop, but `valid()` asks one question about the element about to join,
+never a question about the whole window
+
+Templates 3–6 lean on two facts they never have to state. Both must be checked before this loop
+is sound, and the second is what makes it fast:
+
+1. **Validity is hereditary** — every sub-window of a valid window is valid. That is what lets
+   `left` only move right: once `[left, right]` is invalid, so is every window containing it.
+   Dropping elements can never *create* a forbidden pair or triple, so "no `i, j, k` with
+   `nums[i] + nums[j] == nums[k]`" is hereditary. "Sum equals k" over negatives is **not**, which
+   is why LC 560 is a prefix sum and not a window.
+2. **The window before the newcomer joins is valid** — the loop invariant at the top of every
+   iteration. So the only violations that can appear are the ones that *use* `nums[right]`, and
+   `valid()` shrinks from "is there any triple in the window" (O(w²) per step, O(n³) overall)
+   to "does `nums[right]` complete a triple with what is already here".
+
+For LC 4067 the newcomer `v` can play two roles, and each question is one scan of the value
+range `1..V` rather than of the window:
+
+```text
+v is the sum    :  a + b == v   with a and b both in the window   (a == b needs two copies)
+v is an addend  :  a and a + v  both in the window
+```
+
+Values are ≥ 1, so a pair's sum is strictly bigger than both of its members: the `k` matching a
+pair is never one of the pair's own indices, and "three **distinct** indices" comes for free
+(`3 + 3 = 6` from two different 3s still counts, and the two-copies check sees it).
+
+```python
+# LC 4067 Longest Subarray With Restricted Pair Sums
+# IDEA : SLIDING WINDOW OVER VALUE COUNTS — test only the newcomer
+# time = O(n * V), space = O(V)   (V = max(nums) <= 500)
+class Solution(object):
+    def maxSubarray(self, nums):
+        n = len(nums)
+        if n <= 2:                       # fewer than 3 elements can not form a triple
+            return n
+        max_val = max(nums)
+        cnt = [0] * (max_val + 1)        # value -> copies inside the window
+        left = 0
+        best = 0
+        for right in range(n):
+            v = nums[right]
+            # the window WITHOUT v is valid (loop invariant), so the only
+            # triples that can appear are the ones that use v
+            while self.joins_triple(cnt, v, max_val):
+                cnt[nums[left]] -= 1     # removing can never create a triple
+                left += 1
+            cnt[v] += 1
+            best = max(best, right - left + 1)
+        return best
+
+    def joins_triple(self, cnt, v, max_val):
+        # 1) v is the sum : a + b == v, a <= b, both present (a == b needs two copies)
+        for a in range(1, v // 2 + 1):
+            b = v - a
+            if a == b:
+                if cnt[a] >= 2:
+                    return True
+            elif cnt[a] >= 1 and cnt[b] >= 1:
+                return True
+        # 2) v is an addend : a and a + v both present (a + v > a, so distinct indices)
+        for a in range(1, max_val - v + 1):
+            if cnt[a] >= 1 and cnt[a + v] >= 1:
+                return True
+        return False
+```
+
+```java
+// LC 4067 - Longest Subarray With Restricted Pair Sums
+// IDEA: Sliding window over value counts; the window before nums[r] joins is valid,
+//       so only a triple that uses nums[r] can appear — test the newcomer, not the window
+// time = O(n * V), space = O(V)   (V = max(nums) <= 500)
+public int maxSubarray(int[] nums) {
+    int n = nums.length;
+    if (n <= 2) return n;                 // fewer than 3 elements can not form a triple
+    int maxVal = 0;
+    for (int x : nums) maxVal = Math.max(maxVal, x);
+    int[] cnt = new int[maxVal + 1];      // value -> copies inside the window
+    int l = 0, best = 0;
+    for (int r = 0; r < n; r++) {
+        int v = nums[r];
+        // the window WITHOUT v is valid, so shrink until v completes no triple
+        while (joinsTriple(cnt, v, maxVal)) {
+            cnt[nums[l++]]--;             // removing can never create a triple
+        }
+        cnt[v]++;
+        best = Math.max(best, r - l + 1);
+    }
+    return best;
+}
+
+private boolean joinsTriple(int[] cnt, int v, int maxVal) {
+    // 1) v is the sum: a + b == v, a <= b, both present (a == b needs two copies)
+    for (int a = 1; a <= v / 2; a++) {
+        int b = v - a;
+        if (a == b) {
+            if (cnt[a] >= 2) return true;
+        } else if (cnt[a] >= 1 && cnt[b] >= 1) {
+            return true;
+        }
+    }
+    // 2) v is an addend: a and a + v both present (a + v > a, so distinct indices)
+    for (int a = 1; a + v <= maxVal; a++) {
+        if (cnt[a] >= 1 && cnt[a + v] >= 1) return true;
+    }
+    return false;
+}
+```
+
+```text
+nums = [2,3,5,3,2,1]
+
+r=0  v=2  window {}       joins nothing                         -> [2]        len 1
+r=1  v=3  window {2}      2+3=5 absent, no a+b=3                -> [2,3]      len 2
+r=2  v=5  window {2,3}    sum: 2+3 = 5     -> drop 2 -> {3} ok  -> [3,5]      len 2
+r=3  v=3  window {3,5}    3+3=6, 3+5=8 absent, no a+b=3         -> [3,5,3]    len 3  <- answer
+r=4  v=2  window {3,5,3}  addend: 3 and 3+2=5 -> drop 3, still  -> drop 5 -> [3,2]  len 2
+r=5  v=1  window {3,2}    addend: 2 and 2+1=3 -> drop 3         -> [2,1]      len 2
+```
+
+> Note the order inside the loop: **test, shrink, then add**. Template 2 adds first and shrinks
+> after, which works when `valid()` reads a count or a sum. Here the question is "does `v` fit
+> with what is *already* there", so `v` must not be in `cnt` while it is asked — adding first
+> only happens to survive because values are ≥ 1 and `v` can never be its own partner.
+
+**Where it goes wrong**:
+- **Testing the whole window** instead of the newcomer — correct, O(n³), and over the limit at
+  n = 1000. The invariant is what you are being asked to notice.
+- **Forgetting that `a == b` needs two copies.** `[2, 2, 4]` is invalid; `[2, 4]` is not.
+- **Skipping the hereditary check.** If dropping an element could turn an invalid window valid
+  *and* a valid one invalid, `left` is not monotone and this loop is unsound — reach for
+  [prefix_sum.md](./prefix_sum.md) instead.
+- **The O(n²) first draft** keeps a `pair_sum -> count` map plus a `conflicts` counter and
+  updates both for every element the newcomer pairs with, with mirror-image add/remove
+  bookkeeping to get wrong. The version above is that solution after one observation — *only the
+  newcomer can be in a new triple* — so nothing about the pairs needs keeping. The pair map earns
+  its place only when the values are unbounded; the
+  [solution file](../../leetcode_python/slide_window/longest-subarray-with-restricted-pair-sums.py)
+  carries both.
+
 ## Summary & Quick Reference
 
 ### Which Template? — Decision Table
@@ -626,10 +774,11 @@ private int atMostK(int[] nums, int k) {
 | Match a character multiset | 5 — Char-Count (`have`/`need`) | freq map + match counter | LC 76, 438, 567 |
 | **Count** valid subarrays | 6 — Counting slot | `count += right-left+1` | LC 713, 992 |
 | **Exactly K** distinct/unique | 6 — At-Most Subtraction | `atMostK(k) - atMostK(k-1)` | LC 992, 1248, 930 |
+| Rule over **every pair / triple** in the window | 7 — Test the newcomer | hereditary check, then `while joins(v): shrink` | LC 4067 |
 | Window max/min in O(1) | *not a template here* | monotonic deque | LC 239 → [monotonic_queue.md](./monotonic_queue.md) |
 | Values may be **negative** | *not a window at all* | prefix sum + HashMap | LC 560, 974 → [prefix_sum.md](./prefix_sum.md) |
 
-**How to read**: Start with your problem goal (maximum/minimum/count/exact), then choose the matching template. Template 2 underlies rows 2-6 — it is the loop, not a separate answer.
+**How to read**: Start with your problem goal (maximum/minimum/count/exact), then choose the matching template. Template 2 underlies rows 2-7 — it is the loop, not a separate answer.
 
 ### Template Complexity Reference
 
@@ -641,6 +790,7 @@ private int atMostK(int[] nums, int k) {
 | 4 — Shortest Window | O(n) | O(k) | freq map / counter |
 | 5 — Char-Count | O(n + m) | O(charset) | two maps sized by the alphabet |
 | 6 — Exactly K via At-Most | O(n) | O(k) | one map, two passes over the array |
+| 7 — Test the newcomer | O(n · V) | O(V) | a count per value; the test scans the value range, not the window |
 
 > O(n) throughout because `left` never moves backwards: each element is added once and removed at
 > most once. **Optimization**: use a fixed `int[26]` / `int[128]` array instead of a HashMap when
@@ -665,6 +815,7 @@ private int atMostK(int[] nums, int k) {
 | Max Consecutive Ones III | 1004 | K flips constraint | Medium |
 | Longest Substring with At Most K Distinct Characters | 340 | Distinct character counting | Medium |
 | Longest Substring with At Most Two Distinct Characters | 159 | Two distinct constraint | Medium |
+| Longest Subarray With Restricted Pair Sums | 4067 | Hereditary constraint — test only the newcomer over the value range | Medium |
 
 #### **Variable Size - Minimum Length** 
 | Problem | LC # | Key Technique | Difficulty |
@@ -764,6 +915,7 @@ count += right - left + 1  # All subarrays ending at 'right'
 | "exactly k distinct/odd/..." | AtMost(k) - AtMost(k-1) |
 | "window maximum/minimum in O(n)" | Monotonic deque |
 | "permutation/anagram in string" | Fixed window + Counter comparison |
+| "longest subarray with no two / three elements such that …" | Check the rule is hereditary, then test only the newcomer (Template 7) |
 
 ### Where the Rest Lives
 
