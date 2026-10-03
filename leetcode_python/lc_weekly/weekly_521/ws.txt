@@ -177,6 +177,9 @@ class Solution(object):
                 cnt = self.get_adj_pair_cnt(nums, x, y) 
                 ans = max(cnt, ans)
 
+        # optimization
+        # do above with max freq k and 2nd max freq k
+
 
         # ???
         #for k in cnt.keys():
@@ -372,7 +375,7 @@ class Solution(object):
 
                 val_l = nums[l]
 
-                tmp.pop(0)
+                tmp.pop(l)
 
                 l += 1
 
