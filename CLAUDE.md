@@ -345,6 +345,14 @@ docstring's own examples, and insert the README row in LC-number order.
 that tree is both the most-churned directory in the repo and the one furthest behind —
 1244 README rows carry a Java link against 2898 carrying a Python one.
 
+Both write **readable over clever** (Oct 2026): every block is the standard, editorial
+approach — explicit loops, names that say what they hold, a comment on each non-obvious
+step, no syntactic sugar that hides the algorithm (one-liners, nested comprehensions,
+lambda/stream chains, walrus, uncommented bit tricks) — and production-ready about edges.
+When a problem has several solutions that pass and are each worth knowing, every one is
+filed: `V0` (the user's or the most standard), `V0-x` (a variation on it), then `V1`,
+`V2`, … (different approaches, most standard first). The rule lists live in each `SKILL.md`.
+
 ```text
 /lc-python 4038 Hash_table       # + paste the draft solution under it
 /lc-python 239 slide_window

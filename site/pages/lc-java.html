@@ -362,7 +362,7 @@
         </button>
         <button class="step" role="radio" aria-checked="false" data-n="4"
                 data-name="Write the solution file"
-                data-body="package first, then the url comment, then imports, then the file-level javadoc, then the class. The javadoc header is exactly the number, the exact title, and the difficulty on its own line — and nothing else: no leetcode.com page furniture, ever."
+                data-body="package first, then the url comment, then imports, then the file-level javadoc, then the class. The javadoc header is exactly the number, the exact title, and the difficulty on its own line — and nothing else: no leetcode.com page furniture, ever. Every block is the standard, readable approach: explicit loops, names that say what they hold, a comment on each non-obvious step, and no syntactic sugar — no stream pipelines, merge/compute chains, nested ternaries or uncommented bit tricks."
                 data-rule="The directory is the package line. LeetCodeJava/LinkedList/ means package LeetCodeJava.LinkedList — a file in the wrong directory compiles nowhere, and the mismatch stays invisible until a whole-tree javac."
                 data-code="package LeetCodeJava.LinkedList;
 
@@ -372,8 +372,8 @@ import LeetCodeJava.DataStructure.ListNode;">
           <span class="n">4</span><span class="bar" aria-hidden="true"></span><span class="tag">write</span>
         </button>
         <button class="step" role="radio" aria-checked="false" data-n="5"
-                data-name="A second variant needs a stated reason"
-                data-body="One canonical solution per problem. A second is justified by a different complexity, a distinct trick or a different language idiom — not a different spelling of the same loop. V0-x varies your own approach; V1-x is a reference solution from elsewhere and says where it came from."
+                data-name="File every good approach as its own block"
+                data-body="When several solutions pass LC's constraints and are each worth knowing — BFS and DFS, heap and quickselect, memo and bottom-up DP — every one is filed. // V0 is your approach, or the most standard one; // V0-x varies V0's idea; // V1, // V2, … are different approaches, most standard first, as method_1, method_2. Each carries its own IDEA and time/space javadoc; a brute force that times out is not a version."
                 data-rule="The marker names the method, so the pair moves together: // V0-1 documents &lt;method&gt;_0_1. Zero, not the letter O — 14 files had // VO and looked as though they had no canonical solution at all."
                 data-code="// V0-1
 // IDEA: DUMMY NODE + GROUP REVERSE  (gpt)
@@ -627,6 +627,8 @@ port LC 207 to java</code></pre>
       </p>
       <ul class="nots">
         <li><span class="x" aria-hidden="true">&times;</span><span><b>Renumber a <code>// V</code> marker.</b><span class="why">The marker names the method, so closing a gap in the numbering renames one. Only a genuine collision is reassigned.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>Write clever instead of clear.</b><span class="why">The standard approach, explicit loops, real names and a comment on each non-obvious step — no stream pipelines, nested ternaries, <code>a[0] - b[0]</code> comparators or uncommented bit tricks.</span></span></li>
+        <li><span class="x" aria-hidden="true">&times;</span><span><b>File one approach when there are several.</b><span class="why">Every solution that passes and is worth knowing gets its own <code>// V1</code>, <code>// V2</code>, … — and a second spelling of the same loop does not count as one.</span></span></li>
         <li><span class="x" aria-hidden="true">&times;</span><span><b>Add a second README row.</b><span class="why">The problem almost always has one already. Nothing in the build catches a duplicate, which is what makes it the expensive mistake.</span></span></li>
         <li><span class="x" aria-hidden="true">&times;</span><span><b>Re-derive the other columns.</b><span class="why">Complexity, difficulty and tags belong to the problem, not the language. A Java port is not a reason to touch them.</span></span></li>
         <li><span class="x" aria-hidden="true">&times;</span><span><b>Hand back code that was not compiled.</b><span class="why">A <code>javac</code> plus the javadoc's own examples run before anything is reported done.</span></span></li>
