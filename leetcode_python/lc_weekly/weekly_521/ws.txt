@@ -1,0 +1,38 @@
+#-------------------------------
+# weekly-contest-521
+
+# https://leetcode.doocs.org/contest/#
+
+# https://leetcode.com/contest/weekly-contest-521/
+
+(67 mins)
+
+10.53 - 12.00 pm
+#-------------------------------
+
+
+#------------------------------------------------
+
+# LC 4065
+# https://leetcode.com/problems/rearrange-array-by-removing-distinct-values/description/
+#------------------------------------------------
+
+
+
+#------------------------------------------------
+
+# LC 4066
+# https://leetcode.com/problems/maximum-equal-adjacent-pairs-after-at-most-one-replacement/description/
+#------------------------------------------------
+
+
+#------------------------------------------------
+
+# LC 4067
+# https://leetcode.com/problems/longest-subarray-with-restricted-pair-sums/description/
+#------------------------------------------------
+
+
+
+
+

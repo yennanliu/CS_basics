@@ -40,8 +40,8 @@
 
 	- LC weekly
 		- `data/lc_weekly/lc_weekly_gpt.md`
-			- Weekly Contest 520 (ing)
-				- https://leetcode.com/contest/weekly-contest-520/
+			- Weekly Contest 521 (ing)
+				- https://leetcode.com/contest/weekly-contest-521/
 		- LC docs contest
 			- https://leetcode.doocs.org/contest/
 
