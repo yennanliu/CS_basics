@@ -7,7 +7,7 @@
 
 (67 mins)
 
-10.53 - 12.00 pm
+3.35 - 4.42 pm
 #-------------------------------
 
 
@@ -16,6 +16,71 @@
 # LC 4065
 # https://leetcode.com/problems/rearrange-array-by-removing-distinct-values/description/
 #------------------------------------------------
+
+
+-> Return the array ans
+
+
+nums: int arr
+
+You start with an `empty` array `ans`. 
+Repeat the following op
+ until `nums` is` empty`:
+
+ - Identify all `distinct` values currently 
+    present in `nums.`
+
+ - Remove `one occurrence` of every `distinct` value currently in nums
+    , and append those values to ans in `ascending` order.
+
+
+
+# idea 1) hashmap brute force (do as what LC says)
+
+
+from collections import Counter
+
+
+class Solution(object):
+    def rearrangeArray(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[int]
+        """
+        # edge
+        if not nums or len(nums) <= 1:
+        	return nums
+
+        ans = []
+
+        cnt = Counter(nums)
+
+        # ??
+        while cnt:
+        	k_list = cnt.keys()
+
+        	tmp = []
+
+        	for k in k_list:
+        		tmp.append(k)
+
+        		cnt[k] -= 1
+
+        		if cnt[k] == 0:
+        			del cnt[k]
+
+        	# sort (small -> big)
+        	tmp.sort()
+
+        	# append to res
+        	for x in tmp:
+        		ans.append(x)
+
+        return ans
+
+
+
+
 
 
 
@@ -31,6 +96,9 @@
 # LC 4067
 # https://leetcode.com/problems/longest-subarray-with-restricted-pair-sums/description/
 #------------------------------------------------
+
+
+
 
 
 
