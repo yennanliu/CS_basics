@@ -168,4 +168,9 @@ class Solution2(object):
                 info[v][1] = i
                 info[v][2] += 1
 
-        return sum(1 for first, last, cnt in info.values() if last - first + 1 == cnt)
+        count = 0
+        for first, last, cnt in info.values():
+            # contiguous exactly when the span equals the number of occurrences
+            if last - first + 1 == cnt:
+                count += 1
+        return count
