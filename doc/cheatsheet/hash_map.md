@@ -198,7 +198,7 @@ In [6]:
 | 1 | Frequency counter | `{item: count}`, or `{item: (first, last, count)}` | "count", "frequency", "anagram", "top-K", "all occurrences in one contiguous block" | 242, 49, 347, 451, 4038 |
 | 2 | Seen-before index map | `{value: index}` | "find a pair", "target sum", complement | 1, 15, 532, 1010 |
 | 3 | Grouping by a computed key | `{canonical_key: [items]}` | "group", "same line", "same signature" | 49, 149, 609, 987 |
-| 4 | Prefix sum → count map | `{prefixSum: count}` / `{prefixSum: firstIndex}` | "subarray sum equals / divisible by K" | 560, 974, 525, 325 |
+| 4 | Prefix sum → count map | `{prefixSum: count}` / `{prefixSum: firstIndex}` / `{startValue: minPrefix}` | "subarray sum equals / divisible by K", "max sum where the ends satisfy ..." | 560, 974, 525, 325, 3026 |
 | 5 | Sliding window + char counts | `{char: count in window}` | "longest / shortest substring such that ..." | 3, 76, 424, 438, 567 |
 | 6 | Rank map | `{value: rank}` | "according to the order given in ..." | 953, 791, 105 |
 | 7 | Bijection (two maps) | `{x: y}` **and** `{y: x}` | "one-to-one", "isomorphic", "follows the pattern" | 205, 290 |
@@ -558,6 +558,7 @@ Result: count=2 (subarrays [1,1] and [1,1])
 | Find LONGEST subarray | `index` (first occurrence) | LC 325, 525 | Store only first occurrence |
 | Find LONGEST (with transformation) | `index` (first occurrence) | **LC 525** | **Transform 0→-1, 1→+1; init {0:-1}** |
 | Find if EXISTS | `boolean/index` | LC 523 | Any occurrence works |
+| Find MAX SUM, condition on the endpoints | `min prefix`, keyed by the **start value** | **LC 3026** | **Key is `nums[i]`, not the prefix sum** — see [the variation below](#variation-key-by-the-starts-value-keep-the-min-prefix--lc-3026-) |
 
 **Common Mistakes**:
 1. ❌ Using `{prefixSum: index}` for counting problems
@@ -565,6 +566,87 @@ Result: count=2 (subarrays [1,1] and [1,1])
 3. ❌ Forgetting `map.put(0, 1)` initialization
 4. ❌ Not handling the case where prefix sum itself equals k
 5. ❌ **[LC 974] Forgetting to handle negative remainders** (Java/Python `-7 % 5 = -2`, need to add k to get 3)
+
+#### Variation: key by the start's value, keep the min prefix — LC 3026 ⭐⭐⭐
+
+**Pattern**: the condition is on the subarray's **endpoints**, not on its sum, and the question asks for the **max sum**. So the key changes and so does the value:
+
+- **key = the value at the start**, `nums[i]`, because "good" (`|nums[i] - nums[j]| == k`) pins the start's *value*, not its prefix sum;
+- **value = the smallest `pre[i]` seen for that value**, because the sum ending at `j` is `pre[j+1] - pre[i]`, and a smaller `pre[i]` always gives a bigger sum.
+
+```text
+sum(nums[i..j]) = pre[j+1] - pre[i]
+fixed j  ->  maximise  = minimise pre[i]   over every i with nums[i] in {nums[j]-k, nums[j]+k}
+best[v]  = min pre[i] over every i seen so far with nums[i] == v
+```
+
+**Key Idea**: this is Kadane's "subtract the smallest prefix so far" (LC 53), split into one bucket per start value. A count map answers "how many"; a min-prefix map answers "how much".
+
+```python
+# python
+# LC 3026 - Maximum Good Subarray Sum
+# IDEA: best[v] = min prefix sum just before an index holding v; close at x from v = x-k or x+k
+# time = O(n), space = O(n)
+def maximumSubarraySum(nums: list, k: int) -> int:
+    best = {}                       # {start value: min prefix sum before it}
+    res = float('-inf')
+    pre = 0                         # pre = sum(nums[:j]), i.e. before x
+    for x in nums:
+        for v in (x - k, x + k):    # the two start values that make [i..j] good
+            if v in best:
+                res = max(res, pre + x - best[v])
+        # NOTE !!! record x as a future START with the prefix BEFORE it
+        if x not in best or pre < best[x]:
+            best[x] = pre
+        pre += x
+    return 0 if res == float('-inf') else res
+```
+
+```java
+// java
+// LC 3026 - Maximum Good Subarray Sum
+// IDEA: same map; long, because n * |nums[i]| reaches 1e14
+// time = O(n), space = O(n)
+public long maximumSubarraySum(int[] nums, int k) {
+    Map<Integer, Long> best = new HashMap<>();   // {start value: min prefix before it}
+    long res = Long.MIN_VALUE, pre = 0;
+    for (int x : nums) {
+        for (int v : new int[]{x - k, x + k}) {      // |x ± k| <= 2e9 still fits an int
+            Long p = best.get(v);
+            if (p != null) res = Math.max(res, pre + x - p);
+        }
+        best.merge(x, pre, Math::min);
+        pre += x;
+    }
+    return res == Long.MIN_VALUE ? 0 : res;
+}
+```
+
+**Trace** — `nums = [-1,3,2,4,5], k = 3`:
+
+```text
+x    pre(before x)  look up x-k, x+k          candidate          best after
+-1    0             -4, 2   -> none            -                  {-1:0}
+ 3   -1              0, 6   -> none            -                  {-1:0, 3:-1}
+ 2    2             -1, 5   -> -1: 2+2-0 = 4   4  ([-1,3,2])      {..., 2:2}
+ 4    4              1, 7   -> none            -                  {..., 4:4}
+ 5    8              2, 8   -> 2: 8+5-2 = 11   11 ([2,4,5])       {..., 5:8}
+-> 11
+```
+
+**Four traps**:
+1. **Starting `res` at 0** — a good subarray can have a negative sum (`[-1,-2,-3,-4], k = 2` → `-6`). Use `-inf`, and fall back to 0 only when **no** good subarray exists.
+2. **Storing the prefix *including* the start** — the subarray contains `nums[i]`, so subtract `pre[i]`, the sum *before* it. Record `best[x]` before `pre += x`.
+3. **Keeping the latest or first prefix for a value** — neither is the best start. Keep the **minimum**, the way LC 325 keeps the first index.
+4. **`int` in Java** — 1e5 values of 1e9 overflow; the prefix and the answer are `long` (the keys `x ± k` stay within ±2e9 and fit an `int`).
+
+**Variations** (same "best start per key" move):
+
+| Problem | LC# | What the map keeps, and why |
+|---------|-----|-----------------------------|
+| Maximum Subarray | 53 | Every start qualifies, so the map collapses to **one** global min prefix — Kadane's algorithm |
+| Maximum Good Subarray Sum | 3026 | `{start value: min prefix}`; look up `x - k` and `x + k` |
+| Maximum Size Subarray Sum Equals k | 325 | `{prefix sum: first index}` — "best start" means *earliest*, because the goal is the longest |
 
 ---
 
@@ -1014,7 +1096,7 @@ def top_k_frequent(nums, k):
 | Frequency of elements, characters or patterns; "most frequent", "anagram", duplicates, or *where* a value occurs ("one contiguous block") | Counting / frequency map, incl. the [index-span variation](#variation-index-span-map--span--count-proves-contiguity-) | [T1](#template-1-frequency-counter) | O(n) / O(n) | 242, 49, 451, 347, 692, 387, 819, 811, 1207, 383, 299, 349, 350, 4038, 763, 219 |
 | A pair, triplet or complement that hits a target; "two sum", "k-diff", "divisible by 60" | Seen-before index map | [T2](#template-2-seen-before-index-map-two-sum-shape) | O(n) / O(n) | 1, 15, 16, 18, 167, 532, 653, 1010, 1679, 1711, 2006 |
 | Items that belong together under some *derived* form; "group", "same line", "same row or column" | Grouping by a computed key | [T3](#template-3-grouping-by-a-computed-key) | O(n·k) / O(n) | 49, 149, 609, 939, 947, 987 |
-| A subarray property: sum equals k, sum divisible by k, equal 0s and 1s, exactly k odds | Prefix sum → count map | [T4](#template-4-prefix-sum--count-map-) | O(n) / O(n) | 560, 325, 523, 525, 930, 974, 1248, 724 |
+| A subarray property: sum equals k, sum divisible by k, equal 0s and 1s, exactly k odds; or the max sum of a subarray whose **ends** satisfy a condition | Prefix sum → count map, incl. the [min-prefix-per-start variation](#variation-key-by-the-starts-value-keep-the-min-prefix--lc-3026-) | [T4](#template-4-prefix-sum--count-map-) | O(n) / O(n) | 560, 325, 523, 525, 930, 974, 1248, 724, 3026 |
 | A window that grows and shrinks on a condition over characters | Sliding window + char counts | [T5](#template-5-sliding-window-with-hash-map) | O(n) / O(k) | 3, 76, 424, 438, 567, 159, 340, 904, 1004, 1208, 1234 |
 | "According to the order given in ...", a custom alphabet, a permutation, an index split | Rank map | [T6](#template-6-rank-map--value-to-position-) | O(n) / O(n) | 953, 791, 105, 106 |
 | A mapping that must be one-to-one in **both** directions | Bijection (two maps) | [T7](#template-7-bijection-two-way-mapping) | O(n) / O(n) | 205, 290 |
