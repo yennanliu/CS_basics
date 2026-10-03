@@ -126,6 +126,16 @@ class Solution(object):
         # prefix_sum = [0, 1, 3, 6]
         prefix_sum = [0] * (n + 1)
 
+
+        """
+        NOTE !!!
+
+
+        -> how we build pre-fix sum array
+
+        https://yennj12.js.org/CS_basics/cheatsheets/prefix_sum.html#how-to-build-the-prefix-sum-array-%E6%A0%B8%E5%BF%83
+
+        """
         for i in range(n):
             prefix_sum[i + 1] = prefix_sum[i] + nums[i]
 
