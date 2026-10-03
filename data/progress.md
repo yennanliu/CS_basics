@@ -64,10 +64,10 @@
 	- review all `cheatsheets`
 
 
+- 回溯（Backtracking)
+	- https://yennj12.js.org/CS_basics/cheatsheets/backtrack.zh.html
 
-- Linked List（鏈結串列）
-	- https://yennj12.js.org/CS_basics/cheatsheets/linked_list.zh.html
-		- `雙向鏈結串列 + HashMap（LRU Cache 模式`
+
 
 
 
@@ -136,6 +136,7 @@
   - 堆積與優先佇列
   - 二分搜尋
   - 樹的 LCA、距離與路徑問題
+  - Linked List（鏈結串列）
 
 
 
