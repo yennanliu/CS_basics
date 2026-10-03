@@ -524,7 +524,7 @@ LC 2017 是最乾淨的例子。格子是 `2 x n`，合法路徑是沿著 row 0 
 | Running Sum of 1d Array | 1480 | 直接前綴和 | Easy | 模板 1 |
 | Find Pivot Index | 724 | 左邊和 vs 右邊和 | Easy | 模板 1 |
 
-<!-- 7459e3e302d7 -->
+<!-- e0a23be10b79 -->
 #### **模式 2：子陣列和等於目標值**
 | 題目 | LC # | 關鍵技巧 | 難度 | 模板 |
 |---------|------|---------------|------------|----------|
@@ -534,6 +534,7 @@ LC 2017 是最乾淨的例子。格子是 `2 x n`，合法路徑是沿著 row 0 
 | Binary Subarrays With Sum | 930 | 轉換成求和等於目標 | Medium | 模板 6 |
 | Number of Subarrays with Bounded Maximum | 795 | 區間求和技巧 | Medium | 模板 2 |
 | Longest Well-Performing Interval | 1124 | 首次出現 map + 分數 ±1 技巧 | Medium | 模板 2 變形 |
+| Maximum Good Subarray Sum | 3026 | `{起點的值: 最小前綴}` —— 求最大和，條件落在兩端（[hash_map.md](./hash_map.md#variation-key-by-the-starts-value-keep-the-min-prefix--lc-3026-)） | Medium | 模板 2 變形 |
 
 <!-- 3e09aff9357b -->
 #### **模式 3：帶整除／取餘的子陣列**

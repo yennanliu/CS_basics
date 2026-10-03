@@ -1194,6 +1194,7 @@ structure:
 | Binary Subarrays With Sum | 930 | Transform to sum equals | Medium | Template 6 |
 | Number of Subarrays with Bounded Maximum | 795 | Range sum technique | Medium | Template 2 |
 | Longest Well-Performing Interval | 1124 | First-occurrence map + score-1 trick | Medium | Template 2 variant |
+| Maximum Good Subarray Sum | 3026 | `{start value: min prefix}` — max sum, condition on the endpoints ([hash_map.md](./hash_map.md#variation-key-by-the-starts-value-keep-the-min-prefix--lc-3026-)) | Medium | Template 2 variant |
 
 #### **Pattern 3: Subarray with Divisibility/Modulo Problems**
 | Problem | LC # | Key Technique | Difficulty | Template |
