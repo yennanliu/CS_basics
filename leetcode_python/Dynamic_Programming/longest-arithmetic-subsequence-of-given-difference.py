@@ -36,8 +36,89 @@ Constraints:
 
 """
 
+
 # V0
-# IDEA: HASH MAP DP
+class Solution(object):
+    def longestSubsequence(self, arr, difference):
+        """
+        :type arr: List[int]
+        :type difference: int
+        :rtype: int
+        """
+        pass
+
+
+# V0-1
+# IDEA: HASH MAP DP (gpt)
+class Solution(object):
+    def longestSubsequence(self, arr, difference):
+        """
+        :type arr: List[int]
+        :type difference: int
+        :rtype: int
+        """
+
+        # dp[value] =
+        # longest arithmetic subsequence ending with `value`
+        #
+        # Example:
+        # difference = 2
+        #
+        # 1 -> 3 -> 5
+        #
+        # dp[1] = 1
+        # dp[3] = 2
+        # dp[5] = 3
+        dp = {}
+
+        max_len = 0
+
+        for val in arr:
+
+            # To make an arithmetic subsequence ending at val,
+            # the previous value must be:
+            #
+            # val - difference
+            #
+            prev = val - difference
+
+            # If prev exists:
+            # extend the previous subsequence.
+            #
+            # Otherwise:
+            # start a new subsequence with val.
+            dp[val] = dp.get(prev, 0) + 1
+
+            max_len = max(max_len, dp[val])
+
+        return max_len
+
+
+# V0-2
+# IDEA: HASH MAP DP (gemini)
+class Solution(object):
+
+  def longestSubsequence(self, arr, difference):
+    """:type arr: List[int] :type difference: int :rtype: int"""
+    # 雜湊表記錄：{ 結尾數值 : 以該數值結尾的最長等差子序列長度 }
+    dp = {}
+    max_len = 0
+
+    for x in arr:
+      # 1. 尋找這個等差數列在當前數字之前的「前一個數字」是什麼
+      prev_val = x - difference
+
+      # 2. 如果前一個數字存在於 dp 中，長度就 +1；否則代表這是新數列的開端，長度從 1 開始
+      dp[x] = dp.get(prev_val, 0) + 1
+
+      # 3. 即時更新全域最大長度
+      max_len = max(max_len, dp[x])
+
+    return max_len
+
+
+# V0-3
+# IDEA: HASH MAP DP (claude)
 """
  DP def:
     - dp[x] = length of the longest valid subsequence ENDING with value x
