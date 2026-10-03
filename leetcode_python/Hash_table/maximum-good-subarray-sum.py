@@ -48,8 +48,151 @@ class Solution(object):
         pass
         
 
-
 # V0-1
+# IDEA: 前綴和 + 雜湊表（Prefix Sum + Hash Map） (gemini)
+class Solution(object):
+
+  def maximumSubarraySum(self, nums, k):
+    """:type nums: List[int] :type k: int :rtype: int"""
+    if not nums or len(nums) <= 1:
+      return 0
+
+    n = len(nums)
+    max_sub_sum = -float('inf')
+
+    # 1. 建立前綴和陣列 (prefix_sum[i] 代表前 i 個數字的總和)
+    prefix_sum = [0] * (n + 1)
+    for i in range(1, n + 1):
+      prefix_sum[i] = prefix_sum[i - 1] + nums[i - 1]
+
+    # 2. 雜湊表記錄：{ 數值 : 擁有該數值且對應 prefix_sum 最小的起始索引 }
+    val_to_min_prefix_idx = {}
+
+    for i in range(n):
+      val = nums[i]
+
+      # 檢查是否存在能與當前 val 形成差值 k 的歷史起點
+      if (val + k) in val_to_min_prefix_idx:
+        pre_idx = val_to_min_prefix_idx[val + k]
+        tmp_sum = prefix_sum[i + 1] - prefix_sum[pre_idx]
+        max_sub_sum = max(max_sub_sum, tmp_sum)
+
+      if (val - k) in val_to_min_prefix_idx:
+        pre_idx = val_to_min_prefix_idx[val - k]
+        tmp_sum = prefix_sum[i + 1] - prefix_sum[pre_idx]
+        max_sub_sum = max(max_sub_sum, tmp_sum)
+
+      # 3. 更新雜湊表：
+      # 為了讓未來的相減結果最大，我們只在「該數值尚未存在」或「當前前綴和更小」時才更新索引
+      if (
+          val not in val_to_min_prefix_idx
+          or prefix_sum[i] < prefix_sum[val_to_min_prefix_idx[val]]
+      ):
+        val_to_min_prefix_idx[val] = i
+
+    # 如果沒有找到任何合規的好子陣列，依題意回傳 0
+    return max_sub_sum if max_sub_sum != -float('inf') else 0
+
+
+# V0-2
+class Solution(object):
+
+    def maximumSubarraySum(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: int
+        """
+
+        # Edge case
+        if not nums or len(nums) <= 1:
+            return 0
+
+        n = len(nums)
+
+        # prefix_sum[i] = sum(nums[0:i])
+        #
+        # Example:
+        # nums = [1, 2, 3]
+        #
+        # prefix_sum = [0, 1, 3, 6]
+        prefix_sum = [0] * (n + 1)
+
+        for i in range(n):
+            prefix_sum[i + 1] = prefix_sum[i] + nums[i]
+
+        # {value: index of the minimum prefix sum}
+        #
+        # For each value, we keep the index that gives
+        # the smallest prefix sum.
+        #
+        # This allows us to maximize:
+        #
+        # current_prefix_sum - previous_prefix_sum
+        value_min_prefix_idx = {}
+
+        # Answer can be negative
+        max_sub_sum = float("-inf")
+
+        for i in range(n):
+
+            val = nums[i]
+
+            # We need:
+            #
+            # abs(val - previous_val) == k
+            #
+            # => previous_val = val - k
+            #                    or
+            #                    val + k
+
+            # Case 1:
+            # previous_val = val + k
+            if val + k in value_min_prefix_idx:
+
+                pre_idx = value_min_prefix_idx[val + k]
+
+                # Sum of subarray:
+                # nums[pre_idx ... i]
+                tmp_sum = prefix_sum[i + 1] - prefix_sum[pre_idx]
+
+                max_sub_sum = max(max_sub_sum, tmp_sum)
+
+            # Case 2:
+            # previous_val = val - k
+            if val - k in value_min_prefix_idx:
+
+                pre_idx = value_min_prefix_idx[val - k]
+
+                # Sum of subarray:
+                # nums[pre_idx ... i]
+                tmp_sum = prefix_sum[i + 1] - prefix_sum[pre_idx]
+
+                max_sub_sum = max(max_sub_sum, tmp_sum)
+
+            # prefix_sum[i] is the prefix sum BEFORE nums[i].
+            #
+            # For future subarrays, we want the smallest
+            # prefix sum for this value.
+            if val not in value_min_prefix_idx:
+
+                value_min_prefix_idx[val] = i
+
+            else:
+
+                old_idx = value_min_prefix_idx[val]
+
+                if prefix_sum[i] < prefix_sum[old_idx]:
+                    value_min_prefix_idx[val] = i
+
+        # No valid subarray found
+        if max_sub_sum == float("-inf"):
+            return 0
+
+        return max_sub_sum
+
+
+# V0-3
 # IDEA: 前綴和 + 雜湊表（Prefix Sum + Hash Map） (gemini)
 class Solution(object):
 
@@ -83,7 +226,7 @@ class Solution(object):
     return ans if ans != -float("inf") else 0
 
 
-# V0-2
+# V0-4
 # IDEA: 前綴和 + 雜湊表（Prefix Sum + Hash Map） (GPT)
 class Solution(object):
 
@@ -158,7 +301,7 @@ class Solution(object):
         return max_sub_sum
 
 
-# V0-3
+# V0-5
 # IDEA : PREFIX SUMS + "CHEAPEST START PER VALUE" (claude)
 #
 #   the sum of nums[i..j] is pre[j+1] - pre[i], so for a fixed right end j
