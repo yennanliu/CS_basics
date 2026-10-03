@@ -49,7 +49,7 @@ class Solution(object):
         """
         # edge
         if not nums or len(nums) <= 1:
-        	return nums
+            return nums
 
         ans = []
 
@@ -57,24 +57,24 @@ class Solution(object):
 
         # ??
         while cnt:
-        	k_list = cnt.keys()
+            k_list = cnt.keys()
 
-        	tmp = []
+            tmp = []
 
-        	for k in k_list:
-        		tmp.append(k)
+            for k in k_list:
+                tmp.append(k)
 
-        		cnt[k] -= 1
+                cnt[k] -= 1
 
-        		if cnt[k] == 0:
-        			del cnt[k]
+                if cnt[k] == 0:
+                    del cnt[k]
 
-        	# sort (small -> big)
-        	tmp.sort()
+            # sort (small -> big)
+            tmp.sort()
 
-        	# append to res
-        	for x in tmp:
-        		ans.append(x)
+            # append to res
+            for x in tmp:
+                ans.append(x)
 
         return ans
 
@@ -89,6 +89,102 @@ class Solution(object):
 # LC 4066
 # https://leetcode.com/problems/maximum-equal-adjacent-pairs-after-at-most-one-replacement/description/
 #------------------------------------------------
+
+
+->
+
+Return the `maximum` possible `number `
+of `pairs` of `adjacent elements `
+that are equal after performing the op.
+
+
+
+nums: 1 based idx, int arr
+
+
+can choose any distinct x, and y and do below op
+AT MOST ONCE !!!:
+
+    - Replace every occurrence of x in nums with y.
+
+
+
+# idea 1) brute force ???
+    loop every pair, try the op, and find the max val
+
+
+# idea 2) greedy ??
+
+    -> find the cur max freq val
+    -> see its neighbor, try the ``pairs` of `adjacent elements `
+       if do the op
+
+
+
+from collections import Counter
+
+class Solution(object):
+    def maxEqualAdjacentPairs(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        # edge
+        if not nums or len(nums) <= 1:
+            return 0
+
+        cnt = Counter(nums)
+
+        most_freq_k = []
+        max_freq = max(cnt.values())
+
+        for k in cnt.keys():
+            if cnt[k] == max_freq:
+                #max_freq_k = k
+                #break
+                max_freq_k.append(k)
+
+        # if there is a tie ??
+        # e.g. multiple k with same max freq
+
+        # assume no for now
+        ans = 0
+
+        # ???
+        for k in cnt.keys():
+            for max_freq_k in most_freq_k:
+                #if k not in max_freq_k:
+                if k != max_freq_k:
+                    cnt = self.get_adj_pair_cnt(nums, k, max_freq_k)
+                    ans = max(cnt, ans)
+
+        return ans
+
+
+
+    # change all x in nums to y
+    # and get the max cnt of adj pair
+    # which has same val
+    def get_adj_pair_cnt(self, nums, x, y):
+        # ??
+        n = len(nums)
+        for i in range(nums):
+            if nums[i] == x:
+                nums[i] = y
+        cnt = 0
+
+        for i in range(i, n):
+            if nums[i] == y and nums[i-1] == y:
+                cnt += 1
+
+        return cnt
+
+
+
+
+
+
+
 
 
 #------------------------------------------------
