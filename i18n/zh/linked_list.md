@@ -39,13 +39,13 @@
 
 <!--CODE-->
 
-<!-- 5a48b64a19a2 -->
+<!-- 021e93bf5c07 -->
 ### 0-1) 型別
 - 鏈結串列
 - 環狀鏈結串列
 - 雙向鏈結串列
 - 雙向串列（Double Linked list）
-    - LC 146
+    - LC 146、LC 460
 - 其他
     - LC 138：
 <!--CODE-->
@@ -225,7 +225,7 @@
 
 ---
 
-<!-- b710f3a9f3bb -->
+<!-- 8ab804906fea -->
 #### **雙向鏈結串列 + HashMap（LRU Cache 模式）** ⭐⭐⭐⭐⭐
 
 **核心想法**：用 HashMap 做 O(1) 的 key 查找，配上雙向鏈結串列做 O(1) 的有序淘汰。最近用過的節點靠近**尾端**；最久沒用的靠近**開頭**。頭尾各放一個哨兵節點，所有邊界情況的指標檢查就全消失了。
@@ -283,11 +283,59 @@ Java 的 `LinkedHashMap`（access-order 建構子 + `removeEldestEntry`）*本�
 | # | 題目 | 差別在哪 |
 |---|---------|----------------|
 | 146 | LRU Cache | 經典模式 — 淘汰最久沒用的 |
-| 460 | LFU Cache | 兩層結構：頻率表 + 每個頻率一條雙向鏈結串列 |
+| 460 | LFU Cache | 兩層結構：每個頻率一條 LRU 串列 + `min_freq` — [詳見下方](#lfu-variant--one-list-per-frequency-plus-a-min_freq-pointer-lc-460-) |
 | 432 | All O(1) Data Structure | 由計數桶組成的雙向鏈結串列 |
 | 1472 | Design Browser History | 雙向鏈結串列，訪問新頁時把前方截斷 |
 | 641 | Design Circular Deque | 固定容量的雙向鏈結串列，兩端都能操作 |
 | 716 | Max Stack | 堆疊 + 雙向鏈結串列 + TreeMap，做到 O(log n) 的 popMax |
+
+---
+
+<!-- 94ba19f75f99 -->
+#### **LFU 變體 — 每個頻率一條串列，再加一個 `min_freq` 指標（LC 460）** ⭐⭐⭐⭐
+
+**改了什麼**：LRU 依*最近使用度*淘汰，所以一條串列就夠 — 它的 `head.next` 永遠是淘汰對象。
+LFU 依*使用頻率*淘汰，最近使用度只拿來打破平手 — 所以那一條串列變成**每個頻率一條 LRU
+串列**，再用一個整數 `min_freq` 指出淘汰對象住在哪一條。每一條頻率串列都正是上面模板裡那條
+帶哨兵的串列；指標手術沒有任何新東西，新的只有外圍的記帳。
+
+**結構配置**：
+<!--CODE-->
+
+**三個動作** — 每個操作都是其中的一到兩個，依這個順序：
+
+| 動作 | 做什麼 | `min_freq` 怎麼走 |
+|---|---|---|
+| **touch(node)** — `get`，以及 `put` 更新既有 key | 從 `freq_to_list[f]` 摘下、`f += 1`、接到 `freq_to_list[f]` 的尾端 | 如果剛離開的那條串列空了**而且** `f == min_freq`：`min_freq += 1`。這是精確值，不是搜尋 — 這個節點自己剛落在 `f + 1`，所以那條串列必定非空 |
+| **evict** — `put` 新 key 且快取已滿 | 淘汰對象是 `freq_to_list[min_freq].head.next`；把它摘下並刪掉 map 裡的 entry | 不動 — 接下來的插入會重設它 |
+| **insert** — `put` 新 key | 新的 `Node(key, value, 1)` 接到 `freq_to_list[1]` 的尾端 | `min_freq = 1`，每次都是 — 全新的 key 依定義就是最不常用的 |
+
+**模板**：
+<!--CODE-->
+
+**視覺追蹤**（capacity=2，LC 460 範例 1；每條串列依 LRU → MRU 顯示）：
+<!--CODE-->
+
+**陷阱 — 會把 O(1) 賠掉的那幾個**：
+- **`min_freq += 1` 是精確值，從來不是掃描。** 執行途中最小那條串列會變空的唯一方式，是它
+  最後一個節點搬到 `min_freq + 1`，所以新的最小值不用找就知道。在這裡寫 `min(freq_to_list)`，
+  每次 touch 就變成 O(不同頻率的數量)。
+- **每次插入新 key 都要 `min_freq = 1`**，不是只有快取為空時：不管裡面已經有什麼，新 key
+  都是最不常用的。
+- **先淘汰再插入，而且只在新 key 的路徑上。** `put` 更新既有 key 是一次 touch，絕不是淘汰 —
+  跟 LRU「先淘汰、再插入」順序的陷阱一模一樣。
+- **`capacity == 0` 的防護是必要的。** 少了它，第一次 `put` 會去 `freq_to_list[0]` 淘汰，
+  而那條串列不存在。
+- **平手是用*同一條串列內*的最近使用度打破。** 接在尾端、從開頭淘汰；兩端混用會把剛碰過的
+  key 淘汰掉，跟 LRU 完全一樣。
+- **節點除了 `key` 也要存 `freq`。** `key` 是讓淘汰能走回 map；`freq` 是讓 touch 能找到它
+  必須離開的那條串列。
+
+**函式庫捷徑**：每個頻率一個 `OrderedDict` — `popitem(last=False)` 就是 `pop_head`，
+`move_to_end` 就是接到尾端 — Java 則是每個頻率一個 `LinkedHashSet<Integer>`。那個寫法詳寫在
+[design_examples.md 2)](./design_examples.md#2-lfu-cache--lc-460-)；帶你走到這組搭配的那張表在
+[design.md](./design.md)。LC 432 再往前一步，把*桶本身*也串成一條雙向鏈結串列，於是連
+`min_freq` 這個整數都不必維護。
 
 ---
 
@@ -409,7 +457,7 @@ Java 的 `LinkedHashMap`（access-order 建構子 + `removeEldestEntry`）*本�
 
 <!--CODE-->
 
-<!-- 60b02c28c4c7 -->
+<!-- c0bd478f1a69 -->
 ## 2) 模式選擇
 
 鏈結串列題其實很少真的在考串列。它們考的是：動手術的當下，**你手上必須握著哪個把手** — 這份文件上的每個技巧，存在的理由都是確保你握著它。挑法要看答案需要什麼，不是看題目叫什麼名字。
@@ -424,7 +472,7 @@ Java 的 `LinkedHashMap`（access-order 建構子 + `removeEldestEntry`）*本�
 | **重排** — 交錯、切分、旋轉、回文判斷 | **快慢指標切一半 → 反轉後半 → 合併** | 每一題重排都是這三個基本操作依序組合；沒有一個是新東西 | [examples 2)](./linked_list_examples.md#2-reorder-list--lc-143)、[7)](./linked_list_examples.md#7-palindrome-linked-list--lc-234) |
 | 合併**兩條**已排序串列 | **虛擬節點 + 一趟合併走訪**，接節點而不是複製值 | 尾端指標就是全部的訣竅：`cur.next = l1 or l2` 收尾 | [examples 4)](./linked_list_examples.md#4-merge-two-sorted-lists--lc-21) |
 | 合併 **k** 條已排序串列，或把一條串列排序 | **分治法** — 兩兩合併，或用中點做合併排序 | O(n log k) / O(n log n)；用堆積則是拿 O(k) 空間換掉遞迴 | [examples 5)](./linked_list_examples.md#5-merge-k-sorted-lists--lc-23)、[14)](./linked_list_examples.md#14-sort-list-merge-sort-on-a-linked-list--lc-148-)、[heap.md](./heap.md) |
-| 同時要**任意位置**讀取*和* O(1) 淘汰 | **雙向鏈結串列 + 雜湊表** | 表給你節點，雙向節點給你它的鄰居 — 少了任一個都不夠 | [雙向鏈結串列 + HashMap](#doubly-linked-list--hashmap-lru-cache-pattern-)、[design.md](./design.md) |
+| 同時要**任意位置**讀取*和* O(1) 淘汰 — 依最近使用度，或依使用頻率 | **雙向鏈結串列 + 雜湊表** — 一條串列，或每個頻率一條 | 表給你節點，雙向節點給你它的鄰居 — 少了任一個都不夠 | [雙向鏈結串列 + HashMap](#doubly-linked-list--hashmap-lru-cache-pattern-)、[LFU 變體](#lfu-variant--one-list-per-frequency-plus-a-min_freq-pointer-lc-460-)、[design.md](./design.md) |
 | 對存成串列的位數做**算術** | **在虛擬節點上跑進位迴圈**，若最高位在前就先反轉 | 進位會活得比兩個輸入都久，所以迴圈條件是 `l1 or l2 or carry` | [1-1-7)](#1-1-7-add-2-linked-list--lc-2)、[examples 13)](./linked_list_examples.md#13-plus-one-linked-list--lc-369) |
 | 回答需要**隨機存取或視窗**的問題 | **先倒進陣列，再用陣列的技巧** | 前綴和與單調堆疊都需要索引，串列沒有；而且通常允許 O(n) 額外空間 | [examples 15)](./linked_list_examples.md#15-prefix-sum--hashmap-on-a-linked-list--lc-1171-)、[16)](./linked_list_examples.md#16-monotonic-stack-over-a-linked-list--lc-1019-) |
 

@@ -118,6 +118,10 @@ class LRUCache(OrderedDict):
 
 ### 2) LFU Cache — LC 460 ⭐⭐⭐⭐
 
+The `OrderedDict`-per-frequency form. The hand-built form — one sentinel doubly linked list per
+frequency, and why `min_freq += 1` is exact rather than a scan — is worked in
+[linked_list.md](./linked_list.md#lfu-variant--one-list-per-frequency-plus-a-min_freq-pointer-lc-460-).
+
 ```python
 # LC 460. LFU Cache
 # V0

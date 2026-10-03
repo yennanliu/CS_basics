@@ -29,8 +29,12 @@
 
 <!--CODE-->
 
-<!-- d4a2f633067d -->
+<!-- f3c2e33d07f8 -->
 ### 2) LFU Cache — LC 460 ⭐⭐⭐⭐
+
+每個頻率一個 `OrderedDict` 的寫法。手刻版 — 每個頻率一條帶哨兵的雙向鏈結串列，以及為什麼
+`min_freq += 1` 是精確值而不是掃描 — 詳寫在
+[linked_list.md](./linked_list.md#lfu-variant--one-list-per-frequency-plus-a-min_freq-pointer-lc-460-)。
 
 <!--CODE-->
 

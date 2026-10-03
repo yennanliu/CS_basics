@@ -43,7 +43,7 @@ half-translated document renders with English gaps rather than failing.
   is what makes a problem findable on LeetCode itself.
 
 
-## Status — 5349 / 5349 sections (100%)
+## Status — 5350 / 5350 sections (100%)
 
 | Cheatsheet | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -123,7 +123,7 @@ half-translated document renders with English gaps rather than failing.
 | [knapsack_01_zh](./cheatsheet/knapsack_01_zh.md) | 27 | [✅](../i18n/zh/knapsack_01_zh.md) |
 | [lc_category](./cheatsheet/lc_category.md) | 3 | [✅](../i18n/zh/lc_category.md) |
 | [lc_pattern](./cheatsheet/lc_pattern.md) | 72 | [✅](../i18n/zh/lc_pattern.md) |
-| [linked_list](./cheatsheet/linked_list.md) | 29 | [✅](../i18n/zh/linked_list.md) |
+| [linked_list](./cheatsheet/linked_list.md) | 30 | [✅](../i18n/zh/linked_list.md) |
 | [linked_list_examples](./cheatsheet/linked_list_examples.md) | 34 | [✅](../i18n/zh/linked_list_examples.md) |
 | [math](./cheatsheet/math.md) | 50 | [✅](../i18n/zh/math.md) |
 | [math_logic_puzzles](./cheatsheet/math_logic_puzzles.md) | 14 | [✅](../i18n/zh/math_logic_puzzles.md) |

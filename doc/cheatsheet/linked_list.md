@@ -109,7 +109,7 @@ public class Node {
 - Cycle linked list
 - Bi-direction linked list
 - Double Linked list
-    - LC 146
+    - LC 146, LC 460
 - Others
     - LC 138 : 
     ```python
@@ -622,11 +622,176 @@ form is worked in [design_examples.md 1)](./design_examples.md#1-lru-cache--lc-1
 | # | Problem | Key Difference |
 |---|---------|----------------|
 | 146 | LRU Cache | Classic pattern — evict least recently used |
-| 460 | LFU Cache | Two-level structure: frequency map + per-freq doubly linked list |
+| 460 | LFU Cache | Two-level structure: one LRU list per frequency + `min_freq` — [worked below](#lfu-variant--one-list-per-frequency-plus-a-min_freq-pointer-lc-460-) |
 | 432 | All O(1) Data Structure | Doubly linked list of count buckets |
 | 1472 | Design Browser History | Doubly linked list, truncate forward on visit |
 | 641 | Design Circular Deque | Doubly linked list with fixed capacity, both ends |
 | 716 | Max Stack | Stack + doubly linked list + TreeMap for O(log n) popMax |
+
+---
+
+#### **LFU Variant — one list per frequency, plus a `min_freq` pointer (LC 460)** ⭐⭐⭐⭐
+
+**What changed**: LRU evicts by *recency*, so one list is enough — its `head.next` is always the
+victim. LFU evicts by *frequency*, and recency only breaks ties — so the one list becomes **one
+LRU list per frequency**, and an integer `min_freq` names the list the victim lives in. Each
+per-frequency list is exactly the sentinel list from the template above; none of the pointer
+surgery is new, only the bookkeeping around it.
+
+**Layout**:
+```text
+key_to_node  : key  -> Node(key, val, freq)
+freq_to_list : freq -> head(dummy) <-> [LRU] <-> ... <-> [MRU] <-> tail(dummy)
+min_freq     : the smallest freq whose list is non-empty
+
+freq 1: head <-> [c] <-> tail                <- min_freq = 1, victim = this list's head.next
+freq 2: head <-> [a] <-> [b] <-> tail        <- a is older than b
+freq 5: head <-> [d] <-> tail
+```
+
+**The three moves** — every operation is one or two of these, in this order:
+
+| Move | What it does | Where `min_freq` goes |
+|---|---|---|
+| **touch(node)** — `get`, and `put` on an existing key | unlink from `freq_to_list[f]`, `f += 1`, append to the tail of `freq_to_list[f]` | if the list just left is now empty **and** `f == min_freq`: `min_freq += 1`. Exact, not a search — the node itself just landed in `f + 1`, so that list is non-empty |
+| **evict** — `put` on a new key, cache full | the victim is `freq_to_list[min_freq].head.next`; unlink it and delete its map entry | untouched — the insert that follows resets it |
+| **insert** — `put` on a new key | a new `Node(key, value, 1)` appended to `freq_to_list[1]` | `min_freq = 1`, every time — a brand-new key is the least frequent by definition |
+
+**Template Pattern**:
+```python
+# python
+# LC 460 - LFU Cache
+# IDEA: the LRU template, once per frequency. key_to_node finds the node in O(1);
+#       freq_to_list[f] is a sentinel doubly linked list of every key seen f times,
+#       LRU at head.next and MRU before tail; min_freq names the list the victim is in.
+# time = O(1) per get/put, space = O(capacity)
+class Node:
+    def __init__(self, key=0, val=0, freq=0):
+        self.key = key            # NOTE !!! for eviction to delete the map entry (as in LRU)
+        self.val = val
+        self.freq = freq          # NOTE !!! and freq, to know which list to unlink from
+        self.prev = None
+        self.next = None
+
+class DLinkedList:
+    """the LRU template's list: sentinel head/tail, O(1) unlink and append"""
+    def __init__(self):
+        self.head = Node()        # LRU side
+        self.tail = Node()        # MRU side
+        self.head.next = self.tail
+        self.tail.prev = self.head
+        self.size = 0
+
+    def remove(self, node):
+        node.prev.next = node.next
+        node.next.prev = node.prev
+        self.size -= 1
+
+    def add_to_tail(self, node):  # insert just before tail (MRU)
+        prev_node = self.tail.prev
+        prev_node.next = node
+        node.prev = prev_node
+        node.next = self.tail
+        self.tail.prev = node
+        self.size += 1
+
+    def pop_head(self):           # the LRU node of this frequency
+        node = self.head.next
+        self.remove(node)
+        return node
+
+class LFUCache:
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.key_to_node = {}     # key  -> Node
+        self.freq_to_list = {}    # freq -> DLinkedList
+        self.min_freq = 0
+
+    def touch(self, node):
+        """move node from its freq list to the freq+1 list, keeping min_freq exact"""
+        old_list = self.freq_to_list[node.freq]
+        old_list.remove(node)
+        if old_list.size == 0:
+            del self.freq_to_list[node.freq]       # keep the map tidy
+            # the minimum list just emptied, and this node is about to land one up
+            if self.min_freq == node.freq:
+                self.min_freq += 1
+
+        node.freq += 1
+        if node.freq not in self.freq_to_list:
+            self.freq_to_list[node.freq] = DLinkedList()
+        self.freq_to_list[node.freq].add_to_tail(node)
+
+    def get(self, key):
+        if key not in self.key_to_node:
+            return -1
+        node = self.key_to_node[key]
+        self.touch(node)
+        return node.val
+
+    def put(self, key, value):
+        if self.capacity == 0:
+            return
+
+        # case 1) key exists: update in place, count the access — never evicts
+        if key in self.key_to_node:
+            node = self.key_to_node[key]
+            node.val = value
+            self.touch(node)
+            return
+
+        # case 2) new key and the cache is full: evict the LRU node of the least-frequent list
+        if len(self.key_to_node) == self.capacity:
+            victim_list = self.freq_to_list[self.min_freq]
+            victim = victim_list.pop_head()
+            del self.key_to_node[victim.key]
+            if victim_list.size == 0:
+                del self.freq_to_list[self.min_freq]
+
+        # case 3) insert at freq 1 — a brand-new key is the least frequent by definition
+        node = Node(key, value, 1)
+        self.key_to_node[key] = node
+        if 1 not in self.freq_to_list:
+            self.freq_to_list[1] = DLinkedList()
+        self.freq_to_list[1].add_to_tail(node)
+        self.min_freq = 1
+```
+
+**Visual Trace** (capacity=2, LC 460 Example 1; each list shown LRU → MRU):
+```text
+put(1,1): f1: [1]                              min_freq=1
+put(2,2): f1: [1, 2]                           min_freq=1
+get(1):   f1: [2]       f2: [1]                -> 1   f1 still non-empty, min_freq stays 1
+put(3,3): full -> evict f1.head.next = [2]
+          f1: [3]       f2: [1]                min_freq=1  (reset by the insert)
+get(2):   -1
+get(3):   f1: []        f2: [1, 3]             -> 3   f1 emptied AND was the min -> min_freq=2
+put(4,4): full -> evict f2.head.next = [1]     1 and 3 both have freq 2; 1 is the older
+          f1: [4]       f2: [3]                min_freq=1
+get(1) = -1, get(3) = 3, get(4) = 4
+```
+
+**Pitfalls — the ones that cost the O(1)**:
+- **`min_freq += 1` is exact, never a scan.** The only way the minimum list empties mid-run is
+  its last node moving to `min_freq + 1`, so the new minimum is known without looking. A
+  `min(freq_to_list)` here makes every touch O(#distinct frequencies).
+- **`min_freq = 1` on every new insert**, not only when the cache was empty: the new key is
+  the least frequent no matter what was there.
+- **Evict before insert, and only on the new-key path.** `put` on an existing key is a touch,
+  never an eviction — the same trap as LRU's "evict, then insert" order.
+- **The `capacity == 0` guard is load-bearing.** Without it the first `put` evicts from
+  `freq_to_list[0]`, which does not exist.
+- **The tie-break is recency *inside* one list.** Append at the tail, evict at the head; mixing
+  ends evicts the key just touched, exactly as in LRU.
+- **The node stores `freq` as well as `key`.** `key` is for eviction to reach the map;
+  `freq` is for a touch to reach the list it must leave.
+
+**Library shortcut**: one `OrderedDict` per frequency — `popitem(last=False)` is `pop_head`,
+`move_to_end` is the append — and in Java one `LinkedHashSet<Integer>` per frequency. That form
+is worked in [design_examples.md 2)](./design_examples.md#2-lfu-cache--lc-460-); the structure
+pairing that gets you there is the table in [design.md](./design.md). LC 432 goes one step
+further and threads the *buckets themselves* on a doubly linked list, so there is no
+`min_freq` integer to maintain at all.
 
 ---
 
@@ -1472,7 +1637,7 @@ are holding it. Pick by what the answer needs, not by the problem's title.
 | **reorder** — interleave, split, rotate, palindrome-check | **split with fast/slow → reverse the back half → merge** | every reorder problem is those three primitives in sequence; none of them is new | [examples 2)](./linked_list_examples.md#2-reorder-list--lc-143), [7)](./linked_list_examples.md#7-palindrome-linked-list--lc-234) |
 | merge **two** sorted lists | **dummy + a merge walk**, splicing nodes rather than copying values | the tail pointer is the whole trick: `cur.next = l1 or l2` finishes it | [examples 4)](./linked_list_examples.md#4-merge-two-sorted-lists--lc-21) |
 | merge **k** sorted lists, or sort one list | **divide and conquer** — pairwise merge, or merge sort via the middle | O(n log k) / O(n log n); a heap trades the recursion for O(k) space | [examples 5)](./linked_list_examples.md#5-merge-k-sorted-lists--lc-23), [14)](./linked_list_examples.md#14-sort-list-merge-sort-on-a-linked-list--lc-148-), [heap.md](./heap.md) |
-| do **arbitrary-position** reads *and* O(1) eviction | **doubly linked list + hash map** | the map gives you the node, the doubly-linked node gives you its neighbours — neither alone is enough | [Doubly Linked List + HashMap](#doubly-linked-list--hashmap-lru-cache-pattern-), [design.md](./design.md) |
+| do **arbitrary-position** reads *and* O(1) eviction — by recency, or by frequency | **doubly linked list + hash map** — one list, or one per frequency | the map gives you the node, the doubly-linked node gives you its neighbours — neither alone is enough | [Doubly Linked List + HashMap](#doubly-linked-list--hashmap-lru-cache-pattern-), [LFU Variant](#lfu-variant--one-list-per-frequency-plus-a-min_freq-pointer-lc-460-), [design.md](./design.md) |
 | do **arithmetic** on digits stored as a list | **carry loop over a dummy**, reversing first if the list is most-significant-first | the carry outlives both inputs, so the loop condition is `l1 or l2 or carry` | [1-1-7)](#1-1-7-add-2-linked-list--lc-2), [examples 13)](./linked_list_examples.md#13-plus-one-linked-list--lc-369) |
 | answer a question that needs **random access or a window** | **dump to an array first, then use the array technique** | prefix sums and monotonic stacks need indices; a list has none, and O(n) extra space is usually allowed | [examples 15)](./linked_list_examples.md#15-prefix-sum--hashmap-on-a-linked-list--lc-1171-), [16)](./linked_list_examples.md#16-monotonic-stack-over-a-linked-list--lc-1019-) |
 

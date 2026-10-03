@@ -228,7 +228,7 @@
 - **LC 353. Design Snake Game**（Medium）- 佇列 + 集合
 - **LC 1286. Iterator for Combination**（Medium）
 
-<!-- 6653fcae8b57 -->
+<!-- fff9323455ed -->
 ## 2) 模式選擇
 
 「設計一個 X」從來不是單一結構就能解掉的。解法都是：**先指出哪一個操作用直覺的結構會很慢，再加上第二個結構，而它唯一的工作就是讓那個操作變快。** 先把題目要求的操作抄下來，再選搭配。
@@ -236,7 +236,7 @@
 | 每個操作都必須… | 搭配 | 為什麼單一結構不夠 | 實作在 |
 |---|---|---|---|
 | O(1) get *以及* 依最近使用度 O(1) 淘汰 | **雜湊表 + 雙向鏈結串列** | 表負責找到節點；只有雙向節點能 O(1) 把自己拆下來 | [1) LRU](./design_examples.md#1-lru-cache--lc-146-) |
-| O(1) get *以及* 依使用頻率 O(1) 淘汰 | **雜湊表 + 頻率 → 鏈結串列的 map** | 有了頻率，淘汰就變成「最小非空桶的頭」 | [2) LFU](./design_examples.md#2-lfu-cache--lc-460-)、[3) All O(1)](./design_examples.md#3-all-o1-data-structure--lc-432-) |
+| O(1) get *以及* 依使用頻率 O(1) 淘汰 | **雜湊表 + 頻率 → 鏈結串列的 map** | 有了頻率，淘汰就變成「最小非空桶的頭」 | [2) LFU](./design_examples.md#2-lfu-cache--lc-460-)（`OrderedDict` 桶；手刻的串列和 `min_freq` 規則在 [linked_list.md](./linked_list.md#lfu-variant--one-list-per-frequency-plus-a-min_freq-pointer-lc-460-)）、[3) All O(1)](./design_examples.md#3-all-o1-data-structure--lc-432-) |
 | O(1) 插入、刪除 *以及* **均勻隨機取值** | **雜湊表 + 陣列，刪除時與尾端交換** | 隨機取值需要連續索引，刪除需要查找 — 交換讓兩者都成立 | [4) Insert Delete GetRandom](./design_examples.md#4-insert-delete-getrandom-o1--lc-380-) |
 | O(1) push/pop *再加上* O(1) 取最小、最大或計數 | **堆疊 + 一個平行的聚合值堆疊** | 聚合值只對堆疊的某個前綴有效，所以必須跟著一起 push 和 pop | [6) Min Stack](./design_examples.md#6-stack--auxiliary-state--o1-min-and-lazy-increment-lc-155--lc-1381-) |
 | 有序查詢 — floor、ceiling、範圍 | **平衡二元搜尋樹／TreeMap**（`SortedDict`、`TreeMap`） | 雜湊表沒有順序，重疊與鄰居查詢會退化成 O(n) | [7) Ordered Map](./design_examples.md#7-ordered-map-treemap-for-booking--interval-design--lc-715--729--731--732--2034-) |
