@@ -138,25 +138,53 @@ class Solution(object):
         most_freq_k = []
         max_freq = max(cnt.values())
 
-        for k in cnt.keys():
-            if cnt[k] == max_freq:
-                #max_freq_k = k
-                #break
-                max_freq_k.append(k)
+        # edge
+        if max_freq == 1:
+            return len(nums) - 1
+
+
+        #for k in cnt.keys():
+        #    if cnt[k] == max_freq:
+        #        #max_freq_k = k
+        #        #break
+        #        max_freq_k.append(k)
 
         # if there is a tie ??
         # e.g. multiple k with same max freq
 
+
+        # just choose every pair (x, y)
+        # do the op, and find the max 
+        # Maximum Equal Adjacent Pairs After at Most One Replacement
+
         # assume no for now
         ans = 0
 
+        # just choose every pair (x, y)
+        # do the op, and find the max 
+        # Maximum Equal Adjacent Pairs After at Most One Replacement
+
+        key_list = cnt.keys()
+
+        n = len(key_list)
+
+        for i in range(n):
+            for j in range(i + 1, n):
+
+                x = key_list[i]
+                y = key_list[j]
+
+                cnt = self.get_adj_pair_cnt(nums, x, y) 
+                ans = max(cnt, ans)
+
+
         # ???
-        for k in cnt.keys():
-            for max_freq_k in most_freq_k:
-                #if k not in max_freq_k:
-                if k != max_freq_k:
-                    cnt = self.get_adj_pair_cnt(nums, k, max_freq_k)
-                    ans = max(cnt, ans)
+        #for k in cnt.keys():
+        #    for max_freq_k in most_freq_k:
+        #        #if k not in max_freq_k:
+        #        if k != max_freq_k:
+        #            cnt = self.get_adj_pair_cnt(nums, k, max_freq_k)
+        #            ans = max(cnt, ans)
 
         return ans
 
@@ -292,6 +320,17 @@ ex 3)
 
 
 5, 7, 5, 
+
+
+
+# ex 4)
+
+
+[3, 5, 3]
+
+->
+
+prefix =  [0, 3, 8, 3]
 
 
 
