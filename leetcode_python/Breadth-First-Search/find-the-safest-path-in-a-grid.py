@@ -1,5 +1,9 @@
 """
 
+# https://leetcode.cn/problems/find-the-safest-path-in-a-grid/
+
+
+
 2812. Find the Safest Path in a Grid
 Medium
 
@@ -53,8 +57,65 @@ There is at least one thief in the grid.
 """
 
 
+"""
+
+2812. 找出最安全路径
+
+給你一個下標從 0 開始、大小為 n x n 的二維矩陣 grid ，其中 (r, c) 表示：
+
+如果 grid[r][c] = 1 ，則表示一個存在小偷的單元格
+如果 grid[r][c] = 0 ，則表示一個空白儲存格
+你最開始位於單元格 (0, 0) 。在一步移動中，你可以移動到矩陣中的任一相鄰單元格，包括存在小偷的單元格。
+
+矩陣中路徑的 安全係數 定義為：從路徑中任一單元格到矩陣中任一小偷所在單元格的 最小 曼哈頓距離。
+
+傳回所有通往儲存格 (n - 1, n - 1) 的路徑中的 最大安全係數 。
+
+單元格 (r, c) 的某個 相鄰 單元格，是指在矩陣中存在的 (r, c + 1)、(r, c - 1)、(r + 1, c) 和 (r - 1, c) 之一。
+
+兩個單元格 (a, b) 和 (x, y) 之間的 曼哈頓距離 等於 | a - x | + | b - y | ，其中 |val| 表示 val 的絕對值。
+
+"""
+
+
 # V0-1
 # IDEA: MULTI SOURCE BFS + Dijkstra (gemini)
+"""
+
+1. CORE IDEA:
+
+
+        ```
+        ① Multi-Source BFS
+           ↓
+        算每個 cell 到最近 thief 的距離
+
+        ② Binary Search
+           ↓
+        猜 safeness = K
+
+        ③ BFS
+           ↓
+        只走 dist >= K 的 cell
+           ↓
+        能到終點嗎？
+        ```
+
+
+
+2.
+
+
+    所以 LC 2812 本質上是一個很典型的：
+
+    Maximum Bottleneck Path / Max-Min Path
+
+    而你前面看到的：
+
+    Multi-Source BFS + Binary Search + BFS
+
+S
+"""
 from collections import deque
 import heapq
 
