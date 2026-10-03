@@ -300,6 +300,7 @@ ex 3)
 
 
 
+from collection import deque
 
 class Solution(object):
     def maxSubarray(self, nums):
@@ -318,7 +319,9 @@ class Solution(object):
 
         l = 0
 
-        tmp = []
+        #tmp = []
+        # ??
+        tmp = deque()
 
         for r in range(n):
 
@@ -342,7 +345,23 @@ class Solution(object):
 
 
     def is_valid(self, arr):
-        pass
+        # get all pair cnt
+        n = len(arr)
+        cnt = Counter()
+
+        for i in range(n):
+            for j in range(i+1 , n):
+                x = arr[i]
+                y = arr[j]
+
+                cnt[x+y] += 1
+
+        # ??
+        for k in cnt:
+            if cnt[k] > 1:
+                return False
+
+        return True
 
 
 
