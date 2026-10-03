@@ -226,18 +226,26 @@ is a genuinely different idea:
 ### 5. Smoke-test before reporting done
 
 The file name has dashes, so it is not importable — load it by path and run the docstring's
-examples plus the edges (empty, single element, all-same):
+examples plus the edges (empty, single element, all-same) through **every** filed version —
+one entry per class in `versions`:
 
 ```bash
 python3 -c "
 import importlib.util
 spec = importlib.util.spec_from_file_location('m', 'leetcode_python/<Dir>/<slug>.py')
 m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
-s = m.Solution()
-print([s.<method>(x) for x in ([1,1,2,2,3], [1,2,1], [5], [])])"
+versions = [m.Solution, m.Solution2]          # every class the file defines, in file order
+cases = ([1,1,2,2,3], [1,2,1], [5], [])
+results = [[cls().<method>(x) for x in cases] for cls in versions]
+print(results[0])
+assert all(r == results[0] for r in results), results"
 ```
 
-Every version gets the same call, and they must agree. If an example from the problem
+Every version gets the same cases, and they must agree — the `assert` is the check, so
+a disagreeing version fails loudly. A fresh instance per version keeps any state a class
+holds from leaking between them. When the answer is not unique (any valid order, any
+optimal path), compare what the problem pins down — sort both lists, or check validity —
+rather than `==` on the raw output. If an example from the problem
 statement disagrees, the solution is wrong — say so rather than adjusting the example.
 
 ### 6. Add the README row

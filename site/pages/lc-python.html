@@ -531,8 +531,12 @@ class Solution2(object):                <span class="ann">&lt;- so the file stil
             else:
                 info[v][1] = i
                 info[v][2] += 1
-        return sum(1 for first, last, cnt in info.values()
-                   if last - first + 1 == cnt)</code></pre>
+        count = 0
+        for first, last, cnt in info.values():
+            # contiguous exactly when the span equals the number of occurrences
+            if last - first + 1 == cnt:
+                count += 1
+        return count</code></pre>
         </div>
         <p class="note">
           Both variants get the same smoke test and the results have to agree. A variant that

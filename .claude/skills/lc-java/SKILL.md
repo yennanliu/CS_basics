@@ -287,13 +287,26 @@ cat > /tmp/Drive.java <<'EOF'
 import LeetCodeJava.<Package>.<ClassName>;
 public class Drive { public static void main(String[] a) {
     <ClassName> s = new <ClassName>();
-    System.out.println(s.<method>(...));
+    // one call per filed block, same input (directive 1: the marker names the method)
+    Object v0  = s.<method>(...);         // V0
+    Object v01 = s.<method>_0_1(...);     // V0-1, if filed
+    Object v1  = s.<method>_1(...);       // V1, if filed
+    System.out.println(v0);
+    // every version must agree: equals() for objects/boxed values,
+    // Arrays.equals / deepEquals for arrays
+    if (!java.util.Objects.equals(v0, v01) || !java.util.Objects.equals(v0, v1)) {
+        throw new AssertionError("versions disagree: " + v0 + " / " + v01 + " / " + v1);
+    }
 } }
 EOF
 javac -d /tmp/lcjava -cp /tmp/lcjava /tmp/Drive.java && java -cp /tmp/lcjava Drive
 ```
 
-Every version gets the same call, and they must agree. If a statement example disagrees, the
+Every filed block gets the same input, and they must agree — the driver throws if one does
+not. A method that mutates its input (a linked list reversed in place, an array sorted)
+gets a **fresh copy** of the input per call, or the second version runs on the first one's
+output. When the answer is not unique (any valid order), compare what the problem pins
+down rather than raw equality. If a statement example disagrees, the
 solution is wrong — say so rather than adjusting the example.
 
 **Known-good baseline**: a whole-tree `javac` reports 8 pre-existing errors, all of them
