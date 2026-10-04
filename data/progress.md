@@ -66,7 +66,7 @@
 
 - 回溯（Backtracking)
 	- https://yennj12.js.org/CS_basics/cheatsheets/backtrack.zh.html
-		- `Template 7: Combination Sum — LC 39 / LC 4`
+		- `Template 8: Palindrome Partitioning — LC 131`
 
 
 
