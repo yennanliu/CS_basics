@@ -60,6 +60,13 @@ class Solution(object):
         :rtype: int
         """
 
+        """
+        NOTE !!!
+
+
+        a simple hash map is enough for this LC
+        """
+
         # dp[value] =
         # longest arithmetic subsequence ending with `value`
         #
@@ -76,6 +83,19 @@ class Solution(object):
         max_len = 0
 
         for val in arr:
+
+            """
+            NOTE !!!
+
+
+            in order to form an Arithmetic Subsequence with diff,
+
+            ->  we need to check if `val - difference`  already visited before
+
+                -> and if it existed, update len from it.
+
+                    -> dp.get(val - difference, 0) + 1
+            """
 
             # To make an arithmetic subsequence ending at val,
             # the previous value must be:
