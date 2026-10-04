@@ -197,7 +197,7 @@ In [6]:
 |---|----------|-----------|-----------------|------------|
 | 1 | Frequency counter | `{item: count}`, or `{item: (first, last, count)}` | "count", "frequency", "anagram", "top-K", "all occurrences in one contiguous block" | 242, 49, 347, 451, 4038 |
 | 2 | Seen-before index map | `{value: index}` | "find a pair", "target sum", complement | 1, 15, 532, 1010 |
-| 3 | Grouping by a computed key | `{canonical_key: [items]}` | "group", "same line", "same signature" | 49, 149, 609, 987 |
+| 3 | Grouping by a computed key | `{canonical_key: [items]}`, or `{(min, max): count}` | "group", "same line", "same signature", "`(x, y)` same as `(y, x)`" | 49, 149, 609, 987, 4066 |
 | 4 | Prefix sum → count map | `{prefixSum: count}` / `{prefixSum: firstIndex}` / `{startValue: minPrefix}` | "subarray sum equals / divisible by K", "max sum where the ends satisfy ..." | 560, 974, 525, 325, 3026 |
 | 5 | Sliding window + char counts | `{char: count in window}` | "longest / shortest substring such that ..." | 3, 76, 424, 438, 567 |
 | 6 | Rank map | `{value: rank}` | "according to the order given in ..." | 953, 791, 105 |
@@ -411,6 +411,112 @@ def maxPoints(points: list) -> int:
 | Minimum Area Rectangle | 939 | Key = the point itself in a set; iterate **diagonal pairs** `(x1,y1),(x2,y2)` with `x1!=x2 && y1!=y2` and test whether the other two corners exist |
 | Most Stones Removed with Same Row or Column | 947 | Key = `row` and `~col` (bitwise-not keeps rows and cols in disjoint id spaces) → union-find over a map |
 | Vertical Order Traversal of a Binary Tree | 987 | Key = **column offset** `col` (root = 0, left = `col-1`, right = `col+1`); value = list of `(row, val)` to sort |
+
+#### Pattern: unordered-pair key — `(min, max)` counts `{x, y}` in either order ⭐⭐⭐
+
+**Pattern**: when the relationship you are counting is **symmetric** — `(x, y)` means the same thing as `(y, x)` — key the map by the pair in canonical order, `(min(x, y), max(x, y))`. Both orientations then land in one bucket, and the bucket's count is the number you actually want. It is the smallest normalized invariant there is: the canonical form of an unordered pair.
+
+```python
+pair = (min(x, y), max(x, y))      # (2, 5) and (5, 2) -> the same key (2, 5)
+pair_count[pair] += 1
+best = max(best, pair_count[pair]) # running max: counts only go up, so no second pass
+```
+
+**Key Idea (LC 4066)**: replace every `x` with `y`, at most once, to maximise equal adjacent pairs. Ask what one replacement `x -> y` does to each adjacent pair:
+
+```text
+(x, y) or (y, x)   -> (y, y)   unequal -> equal       +1
+(x, x)             -> (y, y)   equal   -> equal        0   (never lost)
+(x, a), a != y     -> (y, a)   unequal -> unequal      0
+anything without x -> untouched                        0
+```
+
+So no equal pair is ever lost, and the gain is **exactly** the number of adjacent positions holding one `x` and one `y` — in either order. That is an unordered-pair count:
+
+```text
+answer = (adjacent pairs already equal) + max over x != y of (adjacent {x, y} pairs)
+```
+
+```python
+# python
+# LC 4066 - Maximum Equal Adjacent Pairs After at Most One Replacement
+# IDEA: already-equal pairs survive any replacement; x -> y gains one per adjacent {x, y},
+#       so count adjacent unequal pairs under an unordered (min, max) key and take the max
+# time = O(n), space = O(n)
+from collections import defaultdict
+
+def maxEqualAdjacentPairs(nums: list) -> int:
+    already_equal = 0
+    unequal_pair_cnt = defaultdict(int)   # {(smaller, larger): adjacent occurrences}
+    max_newly_equal = 0                   # 0 = do no operation (e.g. [1, 1, 1])
+
+    for i in range(len(nums) - 1):
+        x, y = nums[i], nums[i + 1]
+        if x == y:
+            already_equal += 1
+        else:
+            # NOTE !!! (2, 5) and (5, 2) are fixed by the same replacement -> one key
+            pair = (min(x, y), max(x, y))
+            unequal_pair_cnt[pair] += 1
+            max_newly_equal = max(max_newly_equal, unequal_pair_cnt[pair])
+
+    return already_equal + max_newly_equal
+```
+
+```java
+// java
+// LC 4066 - Maximum Equal Adjacent Pairs After at Most One Replacement
+// IDEA: same unordered (min, max) key, packed into one long (values <= 10^9 fit in 32 bits)
+// time = O(n), space = O(n)
+public int maxEqualAdjacentPairs(int[] nums) {
+    int alreadyEqual = 0;
+    int maxNewlyEqual = 0;
+    Map<Long, Integer> unequalPairCnt = new HashMap<>();
+
+    for (int i = 0; i + 1 < nums.length; i++) {
+        int x = nums[i];
+        int y = nums[i + 1];
+        if (x == y) {
+            alreadyEqual++;
+        } else {
+            long small = Math.min(x, y);
+            long large = Math.max(x, y);
+            long pairKey = (small << 32) | large;   // canonical order, one key per {x, y}
+            int cnt = unequalPairCnt.merge(pairKey, 1, Integer::sum);
+            maxNewlyEqual = Math.max(maxNewlyEqual, cnt);
+        }
+    }
+    return alreadyEqual + maxNewlyEqual;
+}
+```
+
+```text
+nums = [1,2,1,2,1]
+  i  pair    key     cnt   max_newly_equal
+  0  (1,2)   (1,2)   1     1
+  1  (2,1)   (1,2)   2     2      <- an ordered key would have started (2,1) at 1
+  2  (1,2)   (1,2)   3     3
+  3  (2,1)   (1,2)   4     4
+  already_equal = 0  ->  answer = 0 + 4 = 4   (replace 1 -> 2: [2,2,2,2,2])
+
+nums = [1,2,3,2]  -> {1,2}: 1, {2,3}: 2  -> 0 + 2 = 2
+nums = [1,1,1]    -> already_equal = 2, map empty -> 2 + 0 = 2   (no operation)
+```
+
+**Four traps**:
+1. **An ordered key** — `(x, y)` as-is splits `[1,2,1,2,1]` into `(1,2): 2` and `(2,1): 2` and answers 2 instead of 4. The replacement does not care which side `x` is on, so neither may the key.
+2. **Fearing the replacement breaks equal pairs** — `(x, x)` becomes `(y, y)`, still equal. Nothing is subtracted, which is why the answer is a plain sum.
+3. **Starting the best gain at 1, or requiring an operation** — "at most once" allows none; a map with no entries must contribute 0.
+4. **A string key in Java** — `"1" + "23"` and `"12" + "3"` collide without a delimiter (the [delimiter trap](./hashing.md#template-6-canonical-composite-key-lc-36)). Pack into a `long` when the values fit in 32 bits, or use `x + "," + y`.
+
+> **Why the running max is safe**: `max(best, cnt[pair])` after each increment equals the max over the final counts only because counts never decrease. In a sliding window, where counts drop, keep a separate pass or a structure that supports removal.
+
+**Variations** (same unordered-pair key):
+
+| Problem | LC# | The twist — what the `(min, max)` key counts |
+|---------|-----|----------------------------------------------|
+| Number of Equivalent Domino Pairs | 1128 | `[a, b]` ≡ `[b, a]`; count dominoes per key, then add `k*(k-1)/2` — or add the running count before each increment |
+| Maximal Network Rank | 1615 | Undirected edges as a set of `(min, max)` keys, so "are `u` and `v` connected?" is one O(1) lookup regardless of order |
 ---
 
 ### Template 4: Prefix Sum → Count Map ⭐⭐⭐⭐⭐
@@ -1095,7 +1201,7 @@ def top_k_frequent(nums, k):
 |-----------------|---------|----------|--------------|----------|
 | Frequency of elements, characters or patterns; "most frequent", "anagram", duplicates, or *where* a value occurs ("one contiguous block") | Counting / frequency map, incl. the [index-span variation](#variation-index-span-map--span--count-proves-contiguity-) | [T1](#template-1-frequency-counter) | O(n) / O(n) | 242, 49, 451, 347, 692, 387, 819, 811, 1207, 383, 299, 349, 350, 4038, 763, 219 |
 | A pair, triplet or complement that hits a target; "two sum", "k-diff", "divisible by 60" | Seen-before index map | [T2](#template-2-seen-before-index-map-two-sum-shape) | O(n) / O(n) | 1, 15, 16, 18, 167, 532, 653, 1010, 1679, 1711, 2006 |
-| Items that belong together under some *derived* form; "group", "same line", "same row or column" | Grouping by a computed key | [T3](#template-3-grouping-by-a-computed-key) | O(n·k) / O(n) | 49, 149, 609, 939, 947, 987 |
+| Items that belong together under some *derived* form; "group", "same line", "same row or column"; a **symmetric** pair where `(x, y)` counts as `(y, x)` | Grouping by a computed key, incl. the [unordered-pair key](#pattern-unordered-pair-key--min-max-counts-x-y-in-either-order-) | [T3](#template-3-grouping-by-a-computed-key) | O(n·k) / O(n) | 49, 149, 609, 939, 947, 987, 4066, 1128, 1615 |
 | A subarray property: sum equals k, sum divisible by k, equal 0s and 1s, exactly k odds; or the max sum of a subarray whose **ends** satisfy a condition | Prefix sum → count map, incl. the [min-prefix-per-start variation](#variation-key-by-the-starts-value-keep-the-min-prefix--lc-3026-) | [T4](#template-4-prefix-sum--count-map-) | O(n) / O(n) | 560, 325, 523, 525, 930, 974, 1248, 724, 3026 |
 | A window that grows and shrinks on a condition over characters | Sliding window + char counts | [T5](#template-5-sliding-window-with-hash-map) | O(n) / O(k) | 3, 76, 424, 438, 567, 159, 340, 904, 1004, 1208, 1234 |
 | "According to the order given in ...", a custom alphabet, a permutation, an index split | Rank map | [T6](#template-6-rank-map--value-to-position-) | O(n) / O(n) | 953, 791, 105, 106 |
@@ -1119,6 +1225,7 @@ def top_k_frequent(nums, k):
 **Interview signals to watch for:**
 - "Find duplicate / repeated substring" → rolling hash or binary search + hash
 - "Map one set of values to another consistently" → bijection (two maps)
+- "Replace every `x` with `y`" / "`(a, b)` is the same as `(b, a)`" → unordered-pair key `(min, max)`
 - "Optimize caching" → LRU with OrderedDict / doubly-linked list
 - Follow-up "What if the array is very large?" → space-efficient hash (rolling hash, coordinate compression)
 
