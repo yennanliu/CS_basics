@@ -142,6 +142,76 @@ class Solution(object):
 
 
 # V0-3
+# IDEA: HASH MAP DP (GPT)
+class Solution(object):
+    def longestSubsequence(self, arr, difference):
+        """
+        :type arr: List[int]
+        :type difference: int
+        :rtype: int
+        """
+
+        if not arr:
+            return 0
+
+        # dp[value] =
+        # longest arithmetic subsequence ending with "value"
+        dp = {}
+
+        max_seq_len = 1
+
+        for val in arr:
+
+            # To append val to an existing sequence,
+            # the previous value must be:
+            #
+            # val - difference
+            #
+            # Example:
+            # difference = 2
+            # 1 -> 3 -> 5
+            #
+            # When val = 5,
+            # we look for sequence ending at 3.
+            prev = val - difference
+
+            # If prev exists, extend that sequence.
+            # Otherwise, start a new sequence with val.
+            dp[val] = dp.get(prev, 0) + 1
+
+            max_seq_len = max(max_seq_len, dp[val])
+
+        return max_seq_len
+
+
+# V0-4
+# IDEA: HASH MAP DP (GEMINI)
+class Solution(object):
+
+  def longestSubsequence(self, arr, difference):
+    """:type arr: List[int]
+
+    :type difference: int
+    :rtype: int
+    """
+    # dp[x] 記錄以 x 結尾的最長等差子序列長度
+    dp = {}
+    max_len = 0
+
+    for x in arr:
+      # 前一個需要的數字是 x - difference
+      prev_len = dp.get(x - difference, 0)
+
+      # 當前 x 結尾的長度 = 前一個數字的長度 + 1
+      dp[x] = prev_len + 1
+
+      # 即時更新全域最大長度
+      max_len = max(max_len, dp[x])
+
+    return max_len
+
+
+# V0-5
 # IDEA: HASH MAP DP (claude)
 """
  DP def:
