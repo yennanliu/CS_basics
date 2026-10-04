@@ -64,6 +64,162 @@ class Solution(object):
 
 
 # V0-1
+# IDEA: SORT by timestamp + UNION FIND (count components) (gemini)
+# https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/union_find.py
+class UF(object):
+
+  def __init__(self, n):
+    self.n = n
+    # 1. 初始時每個人獨立成一個連通塊，數量為 n
+    self.cluster_cnt = n
+    # 2. 初始時每個人的父節點皆為自己
+    self.parents = [x for x in range(n)]
+
+  def get_parent(self, x):
+    # 路徑壓縮 (Path Compression)
+    if self.parents[x] != x:
+
+      """
+      # NOTE !!! 
+
+        use `self.parents[x]` as param
+
+
+      -> `self.get_parent(self.parents[x])`
+      """
+      self.parents[x] = self.get_parent(self.parents[x])
+    return self.parents[x]
+
+  def union(self, x, y):
+    parent_x = self.get_parent(x)
+    parent_y = self.get_parent(y)
+
+    # 如果根節點相同，代表已經在同一個連通塊中，不需合併
+    if parent_x == parent_y:
+      return False
+
+      """
+      # NOTE !!! 
+
+        use `parent_x` as param
+
+
+      ->  point `parent_x` parent to `parent_y`
+      """
+    # NOTE !!! below
+    # 關鍵修正：將 x 的「根節點」指向 y 的「根節點」
+    self.parents[parent_x] = parent_y
+
+    # 成功合併兩個獨立連通塊，總數量減 1
+    self.cluster_cnt -= 1
+
+    return True
+
+  def get_cluster_cnt(self):
+    return self.cluster_cnt
+
+
+class Solution(object):
+
+  def earliestAcq(self, logs, n):
+    """:type logs: List[List[int]]
+
+    :type n: int
+    :rtype: int
+    """
+    uf = UF(n)
+
+    # 1. 將日誌按時間由小到大排序 O(M log M)
+    logs.sort(key=lambda log: log[0])
+
+    # 2. 依序合併朋友關係
+    for t, x, y in logs:
+      uf.union(x, y)
+
+      # 3. 當所有人合併為同一個連通塊（數量變為 1）時，回傳當前時間
+      if uf.get_cluster_cnt() == 1:
+        return t
+
+    return -1
+
+
+# V0-2
+# IDEA: SORT by timestamp + UNION FIND (count components) (GPT)
+class UF(object):
+
+    def __init__(self, n):
+
+        self.n = n
+
+        # Initially, every person is an independent cluster.
+        self.cluster_cnt = n
+
+        # Each node is its own parent at first.
+        self.parents = [x for x in range(self.n)]
+
+    def union(self, x, y):
+
+        # Find the root parent of x and y.
+        parent_x = self.get_parent(x)
+        parent_y = self.get_parent(y)
+
+        # x and y are already in the same cluster.
+        if parent_x == parent_y:
+            return False
+
+        # Merge the two clusters.
+        self.parents[parent_x] = parent_y
+
+        # Two clusters become one cluster.
+        self.cluster_cnt -= 1
+
+        return True
+
+    def get_parent(self, x):
+
+        # If x is its own parent, x is the root.
+        if self.parents[x] == x:
+            return x
+
+        # Path compression:
+        # directly connect x to the root parent.
+        self.parents[x] = self.get_parent(self.parents[x])
+
+        return self.parents[x]
+
+    def is_same_parent(self, x, y):
+
+        return self.get_parent(x) == self.get_parent(y)
+
+    def get_cluster_cnt(self):
+
+        return self.cluster_cnt
+
+
+class Solution(object):
+
+    def earliestAcq(self, logs, n):
+
+        uf = UF(n)
+
+        # Process logs from earliest time to latest time.
+        logs.sort(key=lambda x: x[0])
+
+        for t, x, y in logs:
+
+            # If x and y are in different clusters,
+            # union() will merge them and decrease cluster_cnt.
+            uf.union(x, y)
+
+            # Everyone is connected.
+            if uf.get_cluster_cnt() == 1:
+                return t
+
+        return -1
+
+
+
+# V0-3
 # IDEA: SORT by timestamp + UNION FIND (count components) (claude)
 #
 #   process the logs in chronological order, every SUCCESSFUL union
@@ -100,7 +256,7 @@ class Solution(object):
 
 
 # 1-1
-# IDEA: Sorting + Union-Find
+# IDEA: DFS
 # https://leetcode.ca/2018-12-05-1101-The-Earliest-Moment-When-Everyone-Become-Friends/
 class Solution:
     def earliestAcq(self, logs: List[List[int]], n: int) -> int:
@@ -121,7 +277,7 @@ class Solution:
 
 
 # 1-2
-# IDEA:
+# IDEA: Sorting + Union-Find
 # https://leetcode.ca/2018-12-05-1101-The-Earliest-Moment-When-Everyone-Become-Friends/
 class UnionFind:
     __slots__ = ('p', 'size')
