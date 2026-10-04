@@ -41,10 +41,67 @@ class Solution(object):
 
 
 # V0-1
+# IDEA: STACK (gpt)
+class Solution(object):
+
+    def longestValidParentheses(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+
+        max_len = 0
+
+        # Store indices.
+        # Start with -1 as the base index.
+        st = [-1]
+
+        for i in range(len(s)):
+
+            if s[i] == "(":
+                st.append(i)
+
+            else:
+                # Try to match this ')'
+                st.pop()
+
+                # No matching '('.
+                if not st:
+                    # Current ')' becomes the new boundary.
+                    st.append(i)
+                else:
+                    # Valid substring length.
+                    max_len = max(max_len, i - st[-1])
+
+        return max_len
 
 
 # V0-2
+# IDEA: STACK (gemini)
+class Solution(object):
 
+  def longestValidParentheses(self, s):
+    """:type s: str :rtype: int"""
+    if not s:
+      return 0
+
+    # 堆疊用於存放索引，初始放入 -1 作為邊界哨兵
+    stack = [-1]
+    max_len = 0
+
+    for i, char in enumerate(s):
+      if char == '(':
+        stack.append(i)
+      else:
+        stack.pop()
+        if not stack:
+          # 堆疊為空，代表當前的 ')' 無法配對，將其作為新的邊界基準點
+          stack.append(i)
+        else:
+          # 當前合法長度 = 當前位置 - 堆疊頂端的最新邊界
+          max_len = max(max_len, i - stack[-1])
+
+    return max_len
 
 
 # V0-3

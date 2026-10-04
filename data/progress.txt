@@ -1,4 +1,4 @@
-20261004: top 100 like(2 pointers): 42 | top 100 like(linked list):  25 | top 100 like(dp): 32(again!), 300(again!!) | others:  357(dp, todo), 2D LIS (354), 460(todo), 710(todo), 1696(todo, dp + mono deque), 388 (todo), 636(todo) | DP: wildcard: 97(todo) | g recent:  1235、1101(again), LFU, LRU(LC 146, linked list) | basics: pre-fix sum, union find
+20261004: top 100 like(2 pointers): 42 | top 100 like(linked list):  25 | top 100 like(dp): 32(again!, to note !!!), 300(again!!) | others:  357(dp, todo), 2D LIS (354), 460(todo), 710(todo), 1696(todo, dp + mono deque), 388 (todo), 636(todo) | DP: wildcard: 97(todo) | g recent:  1235、1101(again), LFU, LRU(LC 146, linked list) | basics: pre-fix sum, union find
 
 
 
