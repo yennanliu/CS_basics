@@ -80,7 +80,7 @@ class Solution(object):
 
 1. 
 
-CORE IDEA:
+CORE IDEA V1
 
 
 單次掃描雜湊法（Hash Map, O(N))
@@ -94,11 +94,21 @@ CORE IDEA:
     - 如果 nums[i] != nums[i+1]：把這對數字排序為 (min(x, y), max(x, y)) 存入 Hash Map 進行計數，記錄哪一對不相等的組合出現最多次。
 
 
+2. CODE IDEA V2:
+
+
+
+先算原本已經相等的 pair，再找「哪一組不同的數字最常相鄰出現」，
+
+因為把其中一個 value 全部替換成另一個 value，就可以一次讓這些 pair 變成相等。
+
+
+
 
 ---
 
 
-2. KEY IDEA:
+3. KEY IDEA:
 
 
     ```
@@ -137,6 +147,38 @@ class Solution(object):
         -> key in a tuple. (pair)
 
     val: int
+
+
+    ---
+
+    Example:
+
+            Dictionary:
+
+            key          value
+            ------------------
+            (x, y)         次數
+
+    
+    ->
+
+        ```
+        unequal_pair_cnt = {
+        (1, 2): 3,
+        (2, 5): 2,
+        (3, 7): 1
+        }
+        ```
+
+
+    ->
+
+        ```
+        (1,2) 這組相鄰 pair 出現 3 次
+        (2,5) 這組相鄰 pair 出現 2 次
+        (3,7) 這組相鄰 pair 出現 1 次
+        ```
+
     """
     unequal_pair_cnt = Counter()
     max_newly_equal = 0
@@ -154,6 +196,32 @@ class Solution(object):
         # -> 不管左右順序，只看這兩個 value 是不是同一組
         #
         # 不相等的對：用 (min, max) 確保 (x, y) 和 (y, x) 視為同一組組合
+
+        """
+        Example:
+
+
+            (2,5) and (5,2) are the `same` in terms of `replacement`
+
+
+            ->
+
+            e.g.
+
+            replace as (2,2)
+
+            or 
+
+            replace as (5,5)
+
+
+            ->
+
+            so, we should treat (2,5) and (5,2) as
+            a SAME GROUP
+
+
+        """
         pair = (min(x, y), max(x, y))
 
 
