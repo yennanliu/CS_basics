@@ -103,6 +103,101 @@ class Solution(object):
 
 
 # V0-2
+# IDEA: HASH MAP + PREFIX SUM (gpt)
+class Solution(object):
+    def maximumSubarraySum(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: int
+        """
+
+        if not nums:
+            return 0
+
+        n = len(nums)
+
+        # prefix_sum[i] = sum of nums[0:i]
+        prefix_sum = [0] * (n + 1)
+
+        for i in range(n):
+            prefix_sum[i + 1] = prefix_sum[i] + nums[i]
+
+        # {value: index of the minimum prefix sum}
+        #
+        # For a fixed value, we want the earliest/best
+        # prefix position that gives us the maximum
+        # subarray sum.
+        val_min_prefix_idx = {}
+
+        max_sub_sum = float("-inf")
+
+        for i in range(n):
+
+            val = nums[i]
+
+            # We need:
+            #
+            # abs(x - val) = k
+            #
+            # x = val + k
+            # or
+            # x = val - k
+
+            # Case 1:
+            # previous value = val + k
+            target = val + k
+
+            if target in val_min_prefix_idx:
+
+                pre_idx = val_min_prefix_idx[target]
+
+                # sum(nums[pre_idx:i+1])
+                sub_sum = prefix_sum[i + 1] - prefix_sum[pre_idx]
+
+                max_sub_sum = max(max_sub_sum, sub_sum)
+
+            # Case 2:
+            # previous value = val - k
+            target = val - k
+
+            if target in val_min_prefix_idx:
+
+                pre_idx = val_min_prefix_idx[target]
+
+                # sum(nums[pre_idx:i+1])
+                sub_sum = prefix_sum[i + 1] - prefix_sum[pre_idx]
+
+                max_sub_sum = max(max_sub_sum, sub_sum)
+
+            # nums[i] can become the starting point
+            # for a future subarray.
+            #
+            # prefix_sum[i] is the sum BEFORE nums[i].
+            if val not in val_min_prefix_idx:
+                val_min_prefix_idx[val] = i
+            else:
+
+                """
+                NOTE !!!
+
+                below
+                """
+                old_idx = val_min_prefix_idx[val]
+
+                # Keep the index with the smaller prefix sum.
+                if prefix_sum[i] < prefix_sum[old_idx]:
+                    val_min_prefix_idx[val] = i
+
+        # No valid subarray found.
+        if max_sub_sum == float("-inf"):
+            return 0
+
+        return max_sub_sum
+
+
+
+# V0-3
 class Solution(object):
 
     def maximumSubarraySum(self, nums, k):
