@@ -40,6 +40,102 @@ class Solution(object):
         pass
 
 
+# V0-1
+
+
+# V0-2
+
+
+
+# V0-3
+# Idea 1: Brute force (TLE) (gpt)
+class Solution(object):
+
+    def longestValidParentheses(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+
+        # Edge case
+        if not s or len(s) <= 1:
+            return 0
+
+        n = len(s)
+        max_len = 0
+
+        # Try every substring s[j:i+1].
+        for i in range(n):
+            for j in range(i):
+
+                # A valid parentheses string must have even length.
+                cur_len = i - j + 1
+
+                if cur_len % 2 != 0:
+                    continue
+
+                if self.helper(s[j:i + 1]):
+                    max_len = max(max_len, cur_len)
+
+        return max_len
+
+    def helper(self, s):
+        """
+        Return True if the whole string is valid parentheses.
+        """
+
+        if not s:
+            return False
+
+        st = []
+
+        for x in s:
+
+            if x == "(":
+                st.append(x)
+
+            else:
+                # No '(' available to match this ')'.
+                if not st:
+                    return False
+
+                st.pop()
+
+        # All '(' must be matched.
+        return len(st) == 0
+
+
+# V0-4
+# Idea 1: Brute force (TLE) (GEMINI)
+class Solution(object):
+
+  def longestValidParentheses(self, s):
+    """:type s: str :rtype: int"""
+    n = len(s)
+    max_len = 0
+
+    # 1. 窮舉所有偶數長度的子字串區間 [i, j)
+    for i in range(n):
+      for j in range(i + 2, n + 1, 2):  # 合法括號字串長度必定為偶數
+        if self.is_valid(s[i:j]):
+          max_len = max(max_len, j - i)
+
+    return max_len
+
+  def is_valid(self, sub):
+    balance = 0
+    for char in sub:
+      if char == '(':
+        balance += 1
+      else:
+        balance -= 1
+      # 過程中右括號比左括號多，立刻判定無效
+      if balance < 0:
+        return False
+    # 最終必須剛好平衡
+    return balance == 0
+
+
 # V1
 # IDEA : STACK
 # https://leetcode.com/problems/longest-valid-parentheses/discuss/582820/Java-and-Python-using-stack
