@@ -104,7 +104,155 @@ class Solution(object):
     return max_len
 
 
-# V0-3
+# V0-4
+# IDEA: 1D DP (gemini)
+class Solution(object):
+
+  def longestValidParentheses(self, s):
+    """:type s: str :rtype: int"""
+    if not s or len(s) <= 1:
+      return 0
+
+    n = len(s)
+    dp = [0] * n
+    max_len = 0
+
+    for i in range(1, n):
+      if s[i] == ')':
+        # 情況 1：形如 "...()"
+        if s[i - 1] == '(':
+          dp[i] = (dp[i - 2] if i >= 2 else 0) + 2
+
+        # 情況 2：形如 "...))"
+        elif i - dp[i - 1] > 0 and s[i - dp[i - 1] - 1] == '(':
+          # 外層長度 (dp[i-1] + 2) + 跨過左括號後前面的合法長度
+          prev_valid = dp[i - dp[i - 1] - 2] if i - dp[i - 1] >= 2 else 0
+          dp[i] = dp[i - 1] + 2 + prev_valid
+
+        max_len = max(max_len, dp[i])
+
+    return max_len
+
+
+# V0-5
+# IDEA: 1D DP (GPT)
+class Solution(object):
+
+    def longestValidParentheses(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+
+        # Edge case
+        if not s or len(s) <= 1:
+            return 0
+
+        n = len(s)
+
+        # dp[i] = longest valid parentheses substring
+        # ending at index i
+        dp = [0] * n
+
+        max_len = 0
+
+        for i in range(1, n):
+
+            # A valid parentheses substring must end with ')'.
+            if s[i] == ")":
+
+                # Case 1:
+                # "...()"
+                #
+                # Example:
+                # s = "(()"
+                #          i
+                #
+                # If s[i-1] == '(',
+                # we have a new pair "()".
+                if s[i - 1] == "(":
+                    dp[i] = 2
+
+                    # There may be a valid substring
+                    # before this "()", so connect it.
+                    if i >= 2:
+                        dp[i] += dp[i - 2]
+
+                # Case 2:
+                # "...))"
+                #
+                # We need to find the '(' that matches
+                # the current ')'.
+                elif s[i - 1] == ")":
+
+                    # dp[i-1] is the length of the valid
+                    # parentheses substring immediately
+                    # before i.
+                    prev_len = dp[i - 1]
+
+                    # Index of the character just before
+                    # that valid substring.
+                    open_idx = i - prev_len - 1
+
+                    # Make sure that index is valid
+                    # and that it is '('.
+                    if open_idx >= 0 and s[open_idx] == "(":
+
+                        # Add the matching pair "()".
+                        dp[i] = dp[i - 1] + 2
+
+                        # There may also be another valid
+                        # substring before the matching '('.
+                        if open_idx >= 1:
+                            dp[i] += dp[open_idx - 1]
+
+            max_len = max(max_len, dp[i])
+
+        return max_len
+
+
+# V0-6
+# IDEA: 2 SCAN (left -> right, right -> left) (gemini)
+class Solution(object):
+
+  def longestValidParentheses(self, s):
+    """:type s: str :rtype: int"""
+    if not s:
+      return 0
+
+    left = right = 0
+    max_len = 0
+
+    # 第一遍：從左到右掃描
+    for char in s:
+      if char == '(':
+        left += 1
+      else:
+        right += 1
+
+      if left == right:
+        max_len = max(max_len, 2 * right)
+      elif right > left:  # 右括號過多，重置
+        left = right = 0
+
+    left = right = 0
+
+    # 第二遍：從右到左掃描
+    for char in reversed(s):
+      if char == '(':
+        left += 1
+      else:
+        right += 1
+
+      if left == right:
+        max_len = max(max_len, 2 * left)
+      elif left > right:  # 左括號過多，重置
+        left = right = 0
+
+    return max_len
+
+
+# V0-7
 # Idea 1: Brute force (TLE) (gpt)
 class Solution(object):
 
@@ -162,7 +310,7 @@ class Solution(object):
         return len(st) == 0
 
 
-# V0-4
+# V0-8
 # Idea 1: Brute force (TLE) (GEMINI)
 class Solution(object):
 
@@ -445,120 +593,5 @@ class Solution(object):
                         res = max(res, ending_here[i])
         return res
 
-# V1''''''
-# IDEA : BRUTE FORCE
-# https://leetcode.com/problems/longest-valid-parentheses/solution/
-# JAVA
-# public class Solution {
-#     public boolean isValid(String s) {
-#         Stack<Character> stack = new Stack<Character>();
-#         for (int i = 0; i < s.length(); i++) {
-#             if (s.charAt(i) == '(') {
-#                 stack.push('(');
-#             } else if (!stack.empty() && stack.peek() == '(') {
-#                 stack.pop();
-#             } else {
-#                 return false;
-#             }
-#         }
-#         return stack.empty();
-#     }
-#     public int longestValidParentheses(String s) {
-#         int maxlen = 0;
-#         for (int i = 0; i < s.length(); i++) {
-#             for (int j = i + 2; j <= s.length(); j+=2) {
-#                 if (isValid(s.substring(i, j))) {
-#                     maxlen = Math.max(maxlen, j - i);
-#                 }
-#             }
-#         }
-#         return maxlen;
-#     }
-# }
-
-# V1'''''''
-# IDEA : DP
-# https://leetcode.com/problems/longest-valid-parentheses/solution/
-# JAVA
-# public class Solution {
-#     public int longestValidParentheses(String s) {
-#         int maxans = 0;
-#         int dp[] = new int[s.length()];
-#         for (int i = 1; i < s.length(); i++) {
-#             if (s.charAt(i) == ')') {
-#                 if (s.charAt(i - 1) == '(') {
-#                     dp[i] = (i >= 2 ? dp[i - 2] : 0) + 2;
-#                 } else if (i - dp[i - 1] > 0 && s.charAt(i - dp[i - 1] - 1) == '(') {
-#                     dp[i] = dp[i - 1] + ((i - dp[i - 1]) >= 2 ? dp[i - dp[i - 1] - 2] : 0) + 2;
-#                 }
-#                 maxans = Math.max(maxans, dp[i]);
-#             }
-#         }
-#         return maxans;
-#     }
-# }
-
-# V1''''''''
-# IDEA : STACK
-# https://leetcode.com/problems/longest-valid-parentheses/solution/
-# JAVA
-# public class Solution {
-#
-#     public int longestValidParentheses(String s) {
-#         int maxans = 0;
-#         Stack<Integer> stack = new Stack<>();
-#         stack.push(-1);
-#         for (int i = 0; i < s.length(); i++) {
-#             if (s.charAt(i) == '(') {
-#                 stack.push(i);
-#             } else {
-#                 stack.pop();
-#                 if (stack.empty()) {
-#                     stack.push(i);
-#                 } else {
-#                     maxans = Math.max(maxans, i - stack.peek());
-#                 }
-#             }
-#         }
-#         return maxans;
-#     }
-# }
-
-
-# V1'''''''''
-# IDEA : WITHOUT EXTRA SPACE
-# https://leetcode.com/problems/longest-valid-parentheses/solution/
-# JAVA
-# public class Solution {
-#     public int longestValidParentheses(String s) {
-#         int left = 0, right = 0, maxlength = 0;
-#         for (int i = 0; i < s.length(); i++) {
-#             if (s.charAt(i) == '(') {
-#                 left++;
-#             } else {
-#                 right++;
-#             }
-#             if (left == right) {
-#                 maxlength = Math.max(maxlength, 2 * right);
-#             } else if (right >= left) {
-#                 left = right = 0;
-#             }
-#         }
-#         left = right = 0;
-#         for (int i = s.length() - 1; i >= 0; i--) {
-#             if (s.charAt(i) == '(') {
-#                 left++;
-#             } else {
-#                 right++;
-#             }
-#             if (left == right) {
-#                 maxlength = Math.max(maxlength, 2 * left);
-#             } else if (left >= right) {
-#                 left = right = 0;
-#             }
-#         }
-#         return maxlength;
-#     }
-# }
 
 # V2
