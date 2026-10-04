@@ -153,7 +153,8 @@ Similar LC:
   - LC 20    Valid Parentheses                        (base template)
   - LC 1249  Minimum Remove to Make Valid Parentheses (stack of indices -> delete)
   - LC 921   Minimum Add to Make Parentheses Valid    (balance counter)
-  - LC 32    Longest Valid Parentheses                (index stack + `-1` base)
+  - LC 32    Longest Valid Parentheses                (index stack + `-1` base;
+                                                    also 1D DP, or two counter scans for O(1) space)
   - LC 856   Score of Parentheses                     (stack of partial scores)
   - LC 1541  Minimum Insertions to Balance a Parentheses String  ( `(` needs `))` )
   - LC 1614  Maximum Nesting Depth of the Parentheses (max depth = max balance)

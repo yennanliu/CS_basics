@@ -383,10 +383,10 @@
 4. **位置很重要**：萬用字元可以代表不同東西時，它出現的位置就有意義（堆疊解法）
 5. **多種典範**：同一題可以用區間 DP、狀態 DP、貪婪和堆疊解出來
 
-<!-- 7bd210aa822a -->
+<!-- 1457479298bc -->
 #### **相關題目**
 - LC 20 (Valid Parentheses) - 沒有 '*' 的簡單版
-- LC 32 (Longest Valid Parentheses) - 找最長的合法子字串
+- LC 32 (Longest Valid Parentheses) - 找最長的合法子字串；1D DP，`dp[i]` = **以 `i` 結尾**的最長合法區段 — 見 [stack_examples.md §15](./stack_examples.md#15-longest-valid-parentheses--lc-32-)
 - LC 301 (Remove Invalid Parentheses) - 刪最少字元讓它合法
 - LC 921 (Minimum Add to Make Parentheses Valid) - 最少需要補幾個
 

@@ -749,7 +749,7 @@ public boolean checkValidString(String s) {
 
 #### **Related Problems**
 - LC 20 (Valid Parentheses) - simpler version without '*'
-- LC 32 (Longest Valid Parentheses) - find longest valid substring
+- LC 32 (Longest Valid Parentheses) - find longest valid substring; 1D DP with `dp[i]` = longest valid run **ending at** `i` — see [stack_examples.md §15](./stack_examples.md#15-longest-valid-parentheses--lc-32-)
 - LC 301 (Remove Invalid Parentheses) - remove minimum to make valid
 - LC 921 (Minimum Add to Make Parentheses Valid) - min additions needed
 

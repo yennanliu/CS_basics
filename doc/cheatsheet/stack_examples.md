@@ -1413,6 +1413,185 @@ i  c   action                       stack        res
 5  )   pop 0 -> empty -> new base   [5]          4
 ```
 
+**Two more solutions worth knowing.** The stack is the one to write first; these two are
+here because each one teaches something the stack does not.
+
+| Approach | Time | Space | What it teaches |
+|---|---|---|---|
+| Index stack + `-1` base (above) | O(n) | O(n) | the base sentinel turns a match into a length |
+| 1D DP — `dp[i]` = longest valid run **ending at** `i` | O(n) | O(n) | jump back over the run ending at `i-1` to find `s[i]`'s partner |
+| Two counter scans (left→right, then right→left) | O(n) | **O(1)** | one counter cannot see a surplus of `(`, so scan again backwards |
+
+> **1D DP**: a valid run can only end on `)`, so `dp[i] = 0` whenever `s[i] == '('`. On `)`:
+> - **`...()`** — `s[i-1] == '('`: a new pair, glued to the run ending just before it: `dp[i] = dp[i-2] + 2`.
+> - **`...))`** — the run ending at `i-1` is `dp[i-1]` long, so `s[i]`'s partner can only sit at `open_idx = i - dp[i-1] - 1`. If that is `(`, then `dp[i] = dp[i-1] + 2 + dp[open_idx-1]` — the last term glues on the run that ended right before the partner, which is the part everyone forgets.
+
+```java
+// java
+// LC 32 - Longest Valid Parentheses
+// IDEA: 1D DP — dp[i] = longest valid substring ENDING at i
+// time = O(n), space = O(n)
+public int longestValidParentheses(String s) {
+    int n = s.length();
+    int[] dp = new int[n];
+    int res = 0;
+    for (int i = 1; i < n; i++) {
+        if (s.charAt(i) == '(') {
+            continue;                       // a valid run never ends with '('
+        }
+        if (s.charAt(i - 1) == '(') {
+            // case 1: "...()" -> the new pair + the run ending at i-2
+            dp[i] = 2 + (i >= 2 ? dp[i - 2] : 0);
+        } else {
+            // case 2: "...))" -> jump over the run ending at i-1 to s[i]'s partner
+            int openIdx = i - dp[i - 1] - 1;
+            if (openIdx >= 0 && s.charAt(openIdx) == '(') {
+                dp[i] = dp[i - 1] + 2;
+                /** NOTE !!! glue on the valid run that ends right before the partner */
+                if (openIdx >= 1) {
+                    dp[i] += dp[openIdx - 1];
+                }
+            }
+        }
+        res = Math.max(res, dp[i]);
+    }
+    return res;
+}
+```
+
+```python
+# python
+# LC 32 - Longest Valid Parentheses
+# IDEA: 1D DP — dp[i] = longest valid substring ENDING at i
+# time = O(n), space = O(n)
+class Solution(object):
+    def longestValidParentheses(self, s):
+        n = len(s)
+        dp = [0] * n
+        res = 0
+        for i in range(1, n):
+            if s[i] == '(':
+                continue                  # a valid run never ends with '('
+            if s[i - 1] == '(':
+                # case 1: "...()" -> the new pair + the run ending at i-2
+                dp[i] = 2 + (dp[i - 2] if i >= 2 else 0)
+            else:
+                # case 2: "...))" -> jump over the run ending at i-1 to s[i]'s partner
+                open_idx = i - dp[i - 1] - 1
+                if open_idx >= 0 and s[open_idx] == '(':
+                    dp[i] = dp[i - 1] + 2
+                    if open_idx >= 1:
+                        dp[i] += dp[open_idx - 1]   # glue the run before the partner
+            res = max(res, dp[i])
+        return res
+```
+
+```text
+Visual trace — s = "()(())"
+
+i  c   case                                             dp
+0  (   '(' ends nothing                                 [0,0,0,0,0,0]
+1  )   "()": 2 + dp[-1 -> 0]                            [0,2,0,0,0,0]
+2  (   -                                                [0,2,0,0,0,0]
+3  (   -                                                [0,2,0,0,0,0]
+4  )   "()": 2 + dp[2] = 2                              [0,2,0,0,2,0]
+5  )   "))": open_idx = 5 - dp[4] - 1 = 2, s[2] = '('
+           dp[5] = dp[4] + 2 + dp[1] = 2 + 2 + 2 = 6    [0,2,0,0,2,6]  <- answer
+```
+
+> **Two counter scans**: count `opens` and `closes` left→right. `opens == closes` closes a valid
+> run of length `2 * closes`; `closes > opens` means this `)` can never be matched, so reset both.
+> The catch: left→right never sees `opens == closes` on `"(()"` — the extra `(` keeps `opens`
+> ahead forever — so run the mirror pass right→left, resetting when `opens > closes`. Every
+> valid run is caught by at least one of the two passes. This is the only O(1)-space answer.
+
+```java
+// java
+// LC 32 - Longest Valid Parentheses
+// IDEA: 2 SCANS with open/close counters — left->right, then right->left
+// time = O(n), space = O(1)
+public int longestValidParentheses(String s) {
+    int res = 0;
+
+    // pass 1: left -> right; a surplus ')' can never be matched -> reset
+    int opens = 0, closes = 0;
+    for (int i = 0; i < s.length(); i++) {
+        if (s.charAt(i) == '(') {
+            opens++;
+        } else {
+            closes++;
+        }
+        if (opens == closes) {
+            res = Math.max(res, 2 * closes);
+        } else if (closes > opens) {
+            opens = 0;
+            closes = 0;
+        }
+    }
+
+    /** NOTE !!! pass 2 catches runs pass 1 misses, e.g. "(()" (opens stays ahead) */
+    opens = 0;
+    closes = 0;
+    for (int i = s.length() - 1; i >= 0; i--) {
+        if (s.charAt(i) == '(') {
+            opens++;
+        } else {
+            closes++;
+        }
+        if (opens == closes) {
+            res = Math.max(res, 2 * opens);
+        } else if (opens > closes) {
+            opens = 0;
+            closes = 0;
+        }
+    }
+    return res;
+}
+```
+
+```python
+# python
+# LC 32 - Longest Valid Parentheses
+# IDEA: 2 SCANS with open/close counters — left->right, then right->left
+# time = O(n), space = O(1)
+class Solution(object):
+    def longestValidParentheses(self, s):
+        res = 0
+
+        # pass 1: left -> right; a surplus ')' can never be matched -> reset
+        opens = closes = 0
+        for c in s:
+            if c == '(':
+                opens += 1
+            else:
+                closes += 1
+            if opens == closes:
+                res = max(res, 2 * closes)
+            elif closes > opens:
+                opens = closes = 0
+
+        # pass 2: right -> left; catches "(()", where opens stays ahead in pass 1
+        opens = closes = 0
+        for c in reversed(s):
+            if c == '(':
+                opens += 1
+            else:
+                closes += 1
+            if opens == closes:
+                res = max(res, 2 * opens)
+            elif opens > closes:
+                opens = closes = 0
+        return res
+```
+
+```text
+Why one pass is not enough — s = "(()"
+
+left -> right:  (  o=1 c=0     (  o=2 c=0     )  o=2 c=1     never equal -> 0   ✗
+right -> left:  )  o=0 c=1     (  o=1 c=1 -> 2               (  o=2 c=1 -> reset
+                                                              answer = 2         ✓
+```
+
 #### 16) Score of Parentheses — LC 856
 
 > **Twist**: each stack slot holds the **score accumulated inside that depth**. `(` opens a new frame (push `0`), `)` closes it: an empty frame scores `1`, otherwise it doubles — `max(2 * inner, 1)` — and is folded into the parent frame.

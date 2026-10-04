@@ -1565,7 +1565,7 @@ def longestValidParentheses(s: str) -> int:
 **Pitfalls**
 - Forgetting the `-1` seed breaks every run that starts at index `0`.
 - The stack holds **indices**, never characters — the whole trick is the index arithmetic.
-- O(1)-space alternative: two passes (left→right, then right→left) with `open`/`close` counters, resetting when `close > open` (resp. `open > close`).
+- O(1)-space alternative: two passes (left→right, then right→left) with `open`/`close` counters, resetting when `close > open` (resp. `open > close`). That and the 1D DP (`dp[i]` = longest valid run ending at `i`) are written out, tested, in [stack_examples.md §15](./stack_examples.md#15-longest-valid-parentheses--lc-32-).
 
 ### 2-15) Maximum Binary Tree (LC 654) — Monotonic Decreasing Stack Builds a Cartesian Tree ⭐⭐⭐⭐
 
