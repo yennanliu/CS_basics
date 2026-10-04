@@ -64,6 +64,126 @@ class Solution(object):
 
 
 # V0-1
+# IDEA: SLIDE WINDOW + hashmap (gemini)
+"""
+CORE IDEA:
+
+
+-> explain `is_valid(x)` func below
+
+
+-> 
+
+    題目的核心限制是：**子陣列中不能存在 3 個不同位置（索引）的數字使得「數字 A + 數字 B = 數字 C」**。
+
+    當滑動視窗加入一個新數字 $x$ 時，**舊視窗原本已經是合法的**。因此，如果加入 $x$ 後產生違規，這個新數字 $x$ **必定參與了這條等式**。
+
+    $x$ 在等式中只有兩種可能扮演的角色：
+
+    ---
+
+    ### 角色 1：x 充當「加數」（x + a = b）
+
+    * **邏輯**：新加入的 x，跟視窗裡原本有的某個數字 a 相加，**結果恰好也是視窗裡原本就有的數字 b **。
+    * **舉例**：
+    * 視窗原本有：`[2, 5]`
+    * 新加入：x = 3
+    * 檢查： 3(x) + 2(a) = 5(b)。因為 2 和 5 都在視窗裡，違規！
+
+
+    * **為什麼索引必定不同？**
+    * x 是最新位置，a 與 b 是視窗舊位置，這三個數字在陣列中的位置天然就是 3 個完全不同的索引。
+
+
+
+    ---
+
+    ### 角色 2：x 充當「總和」（a + b = x）
+
+    * **邏輯**：新加入的 x，能否由視窗裡原本的**兩個數字**相加湊出來？
+    * 這裡必須區分「兩個加數是否相同」，因為題目嚴格限制「必須是 3 個不同位置」：
+
+    #### 情況 2A：兩個加數不相同（$a \neq b$）
+
+    * **舉例**：
+    * 視窗原本有：`[2, 3]`
+    * 新加入：$x = 5$
+    * 檢查：$5 - 2 = 3$。$2$ 與 $3$ 是兩個不同的數字，分別佔用兩個不同位置，相加等於 $x(5)$，違規！
+
+
+
+    #### 情況 2B：兩個加數相同（a == b，即 x = 2a）
+
+    * **舉例**：
+    * 新加入： x = 6，這需要兩個 3 相加（3 + 3 = 6）。
+    * **若視窗裡只有 1 個 3**（例如視窗為 `[3]`）：
+    * 我們不能把「同一個位置的 3」重複使用兩次來湊成 6，因為這只佔用了 2 個索引位置。**因此不違規**。
+
+
+    * **若視窗裡有 2 個（或更多）3**（例如視窗為 `[3, 3]`）：
+    * 我們可以用第一個位置的 3 + 第二個位置的 3 = 第三個位置的 $6(x)$，湊滿了 3 個不同位置，**違規！**
+
+
+    * 這就是為什麼程式碼在 a == b 時，必須檢查 `count_a >= 2`（視窗內至少要有 2 個 a）。
+
+"""
+from collections import Counter
+
+
+class Solution(object):
+
+  def maxSubarray(self, nums):
+    """:type nums: List[int]
+
+    :rtype: int
+    """
+    n = len(nums)
+    # 邊界特判：長度 <= 2 的子陣列無法湊齊 3 個相異索引，必定合法
+    if n <= 2:
+      return n
+
+    freq = Counter()
+    l = 0
+    max_len = 0
+
+    # 檢查加入 x = nums[r] 後，是否會與當前視窗內的元素構成 nums[i] + nums[j] == nums[k]
+    def is_valid(x):
+      for a, count_a in freq.items():
+        # 情況 1：x 作為加數，與視窗中的 a 相加等於視窗中已有的元素 (x + a == existing)
+        if (x + a) in freq:
+          return False
+
+        # 情況 2：x 作為和，等於視窗中的 a 與另一個元素相加 (a + other == x)
+        other = x - a
+        if other > 0 and other in freq:
+          # 若 a != other，代表已有兩個相異數字；若 a == other，則需要視窗中至少有 2 個 a
+          if a != other or count_a >= 2:
+            return False
+
+      return True
+
+    # 滑動視窗 (Sliding Window)
+    for r in range(n):
+      x = nums[r]
+
+      # 若加入 x 會破壞合法性，收縮左界 l 直到 x 可以合法加入
+      while not is_valid(x):
+        freq[nums[l]] -= 1
+        if freq[nums[l]] == 0:
+          del freq[nums[l]]
+        l += 1
+
+      # 將 x 加入視窗
+      freq[x] += 1
+
+      # 更新最大合法子陣列長度
+      max_len = max(max_len, r - l + 1)
+
+    return max_len
+
+
+
+# V0-2
 # IDEA: SLIDE WINDOW + array val mapping (gpt)
 class Solution(object):
     def maxSubarray(self, nums):
@@ -225,125 +345,6 @@ class Solution(object):
             new_bad += count[y] * count[z]
 
         return new_bad
-
-
-# V0-2
-# IDEA: SLIDE WINDOW + hashmap (gemini)
-"""
-CORE IDEA:
-
-
--> explain `is_valid(x)` func below
-
-
--> 
-
-    題目的核心限制是：**子陣列中不能存在 3 個不同位置（索引）的數字使得「數字 A + 數字 B = 數字 C」**。
-
-    當滑動視窗加入一個新數字 $x$ 時，**舊視窗原本已經是合法的**。因此，如果加入 $x$ 後產生違規，這個新數字 $x$ **必定參與了這條等式**。
-
-    $x$ 在等式中只有兩種可能扮演的角色：
-
-    ---
-
-    ### 角色 1：$x$ 充當「加數」（$x + a = b$）
-
-    * **邏輯**：新加入的 $x$，跟視窗裡原本有的某個數字 $a$ 相加，**結果恰好也是視窗裡原本就有的數字 $b$**。
-    * **舉例**：
-    * 視窗原本有：`[2, 5]`
-    * 新加入：$x = 3$
-    * 檢查：$3(x) + 2(a) = 5(b)$。因為 $2$ 和 $5$ 都在視窗裡，違規！
-
-
-    * **為什麼索引必定不同？**
-    * $x$ 是最新位置，$a$ 與 $b$ 是視窗舊位置，這三個數字在陣列中的位置天然就是 3 個完全不同的索引。
-
-
-
-    ---
-
-    ### 角色 2：$x$ 充當「總和」（$a + b = x$）
-
-    * **邏輯**：新加入的 $x$，能否由視窗裡原本的**兩個數字**相加湊出來？
-    * 這裡必須區分「兩個加數是否相同」，因為題目嚴格限制「必須是 3 個不同位置」：
-
-    #### 情況 2A：兩個加數不相同（$a \neq b$）
-
-    * **舉例**：
-    * 視窗原本有：`[2, 3]`
-    * 新加入：$x = 5$
-    * 檢查：$5 - 2 = 3$。$2$ 與 $3$ 是兩個不同的數字，分別佔用兩個不同位置，相加等於 $x(5)$，違規！
-
-
-
-    #### 情況 2B：兩個加數相同（$a == b$，即 $x = 2a$）
-
-    * **舉例**：
-    * 新加入：$x = 6$，這需要兩個 $3$ 相加（$3 + 3 = 6$）。
-    * **若視窗裡只有 1 個 $3$**（例如視窗為 `[3]`）：
-    * 我們不能把「同一個位置的 $3$」重複使用兩次來湊成 $6$，因為這只佔用了 2 個索引位置。**因此不違規**。
-
-
-    * **若視窗裡有 2 個（或更多）$3$**（例如視窗為 `[3, 3]`）：
-    * 我們可以用第一個位置的 $3$ + 第二個位置的 $3$ = 第三個位置的 $6(x)$，湊滿了 3 個不同位置，**違規！**
-
-
-    * 這就是為什麼程式碼在 $a == b$ 時，必須檢查 `count_a >= 2`（視窗內至少要有 2 個 $a$）。
-
-"""
-from collections import Counter
-
-
-class Solution(object):
-
-  def maxSubarray(self, nums):
-    """:type nums: List[int]
-
-    :rtype: int
-    """
-    n = len(nums)
-    # 邊界特判：長度 <= 2 的子陣列無法湊齊 3 個相異索引，必定合法
-    if n <= 2:
-      return n
-
-    freq = Counter()
-    l = 0
-    max_len = 0
-
-    # 檢查加入 x = nums[r] 後，是否會與當前視窗內的元素構成 nums[i] + nums[j] == nums[k]
-    def is_valid(x):
-      for a, count_a in freq.items():
-        # 情況 1：x 作為加數，與視窗中的 a 相加等於視窗中已有的元素 (x + a == existing)
-        if (x + a) in freq:
-          return False
-
-        # 情況 2：x 作為和，等於視窗中的 a 與另一個元素相加 (a + other == x)
-        other = x - a
-        if other > 0 and other in freq:
-          # 若 a != other，代表已有兩個相異數字；若 a == other，則需要視窗中至少有 2 個 a
-          if a != other or count_a >= 2:
-            return False
-
-      return True
-
-    # 滑動視窗 (Sliding Window)
-    for r in range(n):
-      x = nums[r]
-
-      # 若加入 x 會破壞合法性，收縮左界 l 直到 x 可以合法加入
-      while not is_valid(x):
-        freq[nums[l]] -= 1
-        if freq[nums[l]] == 0:
-          del freq[nums[l]]
-        l += 1
-
-      # 將 x 加入視窗
-      freq[x] += 1
-
-      # 更新最大合法子陣列長度
-      max_len = max(max_len, r - l + 1)
-
-    return max_len
 
 
 # V1-1
