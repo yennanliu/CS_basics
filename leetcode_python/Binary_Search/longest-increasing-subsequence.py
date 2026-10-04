@@ -3,8 +3,6 @@
 300. Longest Increasing Subsequence
 Medium
 
-11275
-
 Given an integer array nums, return the length of the longest strictly increasing subsequence.
 
 A subsequence is a sequence that can be derived from an array by deleting some or no elements without changing the order of the remaining elements. For example, [3,6,2,7] is a subsequence of the array [0,3,1,6,2,2,7].
@@ -194,6 +192,44 @@ class Solution(object):
 
         return ans
 
+
+# V0-0-1
+# IDEA: 1D DP
+# time = O(n^2)
+# space = O(n)
+"""
+
+DP def
+
+    dp[i] 代表以 nums[i] 為`結尾`的`最長遞增子序列長度`
+
+
+DP eq
+
+    ```
+       if nums[j] < nums[i]:
+          dp[i] = max(dp[i], dp[j] + 1)
+    ```
+
+"""
+class Solution(object):
+
+  def lengthOfLIS(self, nums):
+    """:type nums: List[int] :rtype: int"""
+    if not nums:
+      return 0
+
+    n = len(nums)
+    # 每個數字自身長度初始皆為 1
+    dp = [1] * n
+
+    for i in range(1, n):
+      for j in range(i):
+        # 只要前面的數字 nums[j] 比當前 nums[i] 小，就能延伸遞增子序列
+        if nums[j] < nums[i]:
+          dp[i] = max(dp[i], dp[j] + 1)
+
+    return max(dp)
 
 
 # V0-1
