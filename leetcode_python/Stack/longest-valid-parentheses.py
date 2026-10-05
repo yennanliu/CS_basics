@@ -30,6 +30,18 @@ s[i] is '(', or ')'.
 
 """
 
+
+"""
+NOTE !!!
+
+
+1.  s = "(())" is a valid parentheses string
+
+
+
+"""
+
+
 # V0
 class Solution(object):
     def longestValidParentheses(self, s):
@@ -223,31 +235,78 @@ class Solution(object):
     left = right = 0
     max_len = 0
 
+    #-----------------------------
     # 第一遍：從左到右掃描
+    #-----------------------------
     for char in s:
       if char == '(':
         left += 1
       else:
         right += 1
 
+      
+      """
+      NOTE !!!
+
+      
+      1. how we update `max_len`
+
+        -> when `left == right`
+
+
+
+          and note that we scan on BOTH directions
+
+            - left -> right
+            - right -> left
+
+
+                -> so s = "(()" will be covered by `right -> left` scan
+
+
+
+        2. 
+            we use `left` cnt to calculate valid parenthese
+                when move `left -> right`
+
+
+            we use `right` cnt to calculate valid parenthese
+                when move `right -> left`
+      """
       if left == right:
         max_len = max(max_len, 2 * right)
+      
+      
       elif right > left:  # 右括號過多，重置
         left = right = 0
 
     left = right = 0
 
+    #-----------------------------
     # 第二遍：從右到左掃描
+    #-----------------------------
     for char in reversed(s):
       if char == '(':
         left += 1
       else:
         right += 1
 
+      
+      """
+      NOTE !!!
+
+      how we update `max_len`
+
+        -> when `left == right`
+      """
       if left == right:
         max_len = max(max_len, 2 * left)
+      
+
       elif left > right:  # 左括號過多，重置
         left = right = 0
+
+    
 
     return max_len
 
