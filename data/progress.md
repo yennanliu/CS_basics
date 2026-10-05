@@ -64,9 +64,35 @@
 	- review all `cheatsheets`
 
 
-- 回溯（Backtracking)
-	- https://yennj12.js.org/CS_basics/cheatsheets/backtrack.zh.html
-		- `Template 8: Palindrome Partitioning — LC 131`
+- ★★★★★
+
+	- 樹狀資料結構 — 概念與模式
+		- https://yennj12.js.org/CS_basics/cheatsheets/tree.zh.html
+
+
+
+
+
+
+	- 對答案做二分搜尋
+		- https://yennj12.js.org/CS_basics/cheatsheets/binary_search_on_answer.zh.html
+
+
+	- 0/1 背包 DP（0/1 Knapsack 中文詳解）
+		- https://yennj12.js.org/CS_basics/cheatsheets/knapsack_01_zh.zh.html
+
+
+	- 背包 DP（0/1、完全背包、Coin Change）
+		- https://yennj12.js.org/CS_basics/cheatsheets/knapsack.zh.html
+
+
+	- 回溯（Backtracking)
+		- https://yennj12.js.org/CS_basics/cheatsheets/backtrack.zh.html
+			- `Template 9: Grid / Word Search — LC 79`
+
+
+	- 複雜度速查表 — 經典演算法與資料結構
+		- https://yennj12.js.org/CS_basics/cheatsheets/complexity_cheatsheet.zh.html
 
 
 
