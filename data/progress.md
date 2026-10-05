@@ -8,30 +8,12 @@
 
 	- LC Top 100 like -> done
 		- https://leetcode.com/studyplan/top-100-liked/
-			- backtrack (done)
-			- binary search (done)
-			- binary tree (done)
-			- dp (done)
-			- graph (done)
-			- greedy (done)
-			- hashing (done)
-			- heap (done)
-			- linked list (done)
-			- matrix (done)
-			- slide window (done)
-			- stack (done)
-			- 2 pointers (done)
-			- trie (ing)
-			- misc (done)
-			
-
 
 
 	- classics_lc_hard.txt
 		- review chearsheet:
 			- https://github.com/yennanliu/CS_basics/pull/140
 				- dp_bitmask.md
-
 
 
 
@@ -261,6 +243,7 @@
 				- 206
 
 
+		- =================
 
 		- 34(todo),875(todo),81(todo)
 		- 377(todo, Permutations DP),210
