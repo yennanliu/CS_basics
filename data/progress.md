@@ -91,7 +91,8 @@
 
 	- 回溯（Backtracking)
 		- https://yennj12.js.org/CS_basics/cheatsheets/backtrack.zh.html
-			- `Template 9: Grid / Word Search — LC 79`
+			- `Template 10: N-Queens — LC 51`
+
 
 
 	- 複雜度速查表 — 經典演算法與資料結構

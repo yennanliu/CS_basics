@@ -86,6 +86,107 @@ class Solution(object):
         print (d)
         return longest
 
+
+# VO-1
+# IDEA: STR + STACK OP (gpt)
+class Solution(object):
+
+    def lengthLongestPath(self, input):
+        """
+        :type input: str
+        :rtype: int
+        """
+
+        if not input:
+            return 0
+
+        lines = input.split("\n")
+
+        # path_len[depth] = total path length
+        # from root to this depth
+        #
+        # Example:
+        #
+        # dir
+        #     subdir1
+        #         file.ext
+        #
+        # path_len[0] = len("dir")
+        # path_len[1] = len("dir/subdir1")
+        # path_len[2] = len("dir/subdir1/file.ext")
+        path_len = [0] * len(lines)
+
+        max_len = 0
+
+        for line in lines:
+
+            # Count directory depth
+            depth = line.count("\t")
+
+            # Remove all "\t"
+            name = line.lstrip("\t")
+
+            # Check whether this is a file
+            is_file = "." in name
+
+            # Current name length
+            name_len = len(name)
+
+            # Root level
+            if depth == 0:
+                current_len = name_len
+
+            else:
+                # Parent path length + "/" + current name
+                current_len = path_len[depth - 1] + 1 + name_len
+
+            # Store current path length
+            path_len[depth] = current_len
+
+            # Only files can be the final answer
+            if is_file:
+                max_len = max(max_len, current_len)
+
+        return max_len
+
+
+# V0-2
+# IDEA: STR + STACK OP (GEMINI)
+class Solution(object):
+
+  def lengthLongestPath(self, input):
+    """:type input: str
+
+    :rtype: int
+    """
+    if not input:
+      return 0
+
+    # stack[i] 代表第 i 層累積的路徑長度 (包含 '/')
+    # 初始放入 0，方便第 0 層計算
+    stack = [0]
+    max_len = 0
+
+    for line in input.split('\n'):
+      # 計算前導 \t 的數量作為 depth
+      name = line.lstrip('\t')
+      depth = len(line) - len(name)
+
+      # 彈出超過當前深度 parent 的記錄
+      while len(stack) > depth + 1:
+        stack.pop()
+
+      # 當前路徑累積長度 = 父目錄長度 + 當前檔名長度 + 1 (加斜線 '/')
+      curr_len = stack[-1] + len(name) + 1
+      stack.append(curr_len)
+
+      # 若包含 '.' 說明是檔案，更新最大長度 (扣除末尾多算的一個 '/')
+      if '.' in name:
+        max_len = max(max_len, curr_len - 1)
+
+    return max_len
+
+
 # V0-1
 # IDEA : HASH TABLE
 # time = O(n)
