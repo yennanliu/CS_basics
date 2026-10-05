@@ -86,6 +86,17 @@ class Solution(object):
 
         lines = input.split("\n")
 
+        """
+        NOTE !!!
+
+
+        use `path_len` to track len by depth
+        (can use hashmap as well)
+
+
+        -> `depth` is the key parameter
+        """
+
         # path_len[depth] = total path length
         # from root to this depth
         #
@@ -121,12 +132,33 @@ class Solution(object):
                 current_len = name_len
 
             else:
+                """
+                NOTE !!!
+
+                key idea !!!
+
+                    -> load prefix len from apper (prev) layer
+                        -> via path_len
+                """
                 # Parent path length + "/" + current name
                 current_len = path_len[depth - 1] + 1 + name_len
 
+
+            """
+            NOTE !!!
+
+
+            save len of cur depth
+            """
             # Store current path length
             path_len[depth] = current_len
 
+
+            """
+            NOTE !!!
+
+            only update max len if meet a `file`
+            """
             # Only files can be the final answer
             if is_file:
                 max_len = max(max_len, current_len)

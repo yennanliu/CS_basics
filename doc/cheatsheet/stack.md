@@ -704,6 +704,56 @@ class Solution(object):
 #   "file.ext"   d=2 -> res = 12 + 8 = 20
 ```
 
+> **Variant — overwrite instead of pop** (the form README files LC 388 under Hash_table). The trim loop is optional. The input is a pre-order listing, so a line at depth `d` reads only `path_len[d]`, and the last write to that slot was made by its own parent — no line at depth `≤ d-1` sits between the two. Deeper stale slots are never read before they are rewritten, so a map (or array) indexed by depth replaces the stack. Same `O(n)`; what it teaches is that the ledger is really *the last write per depth*.
+
+```java
+// java
+// LC 388 - Longest Absolute File Path
+// IDEA: HASH MAP by DEPTH — pathLen[d] = prefix length for children at depth d; overwrite, never pop
+// time = O(n), space = O(depth)
+public int lengthLongestPath(String input) {
+    int res = 0;
+    Map<Integer, Integer> pathLen = new HashMap<>();
+    pathLen.put(0, 0); // depth-0 entries have an empty prefix
+
+    for (String line : input.split("\n")) {
+        int depth = line.lastIndexOf('\t') + 1;   // tabs are leading and contiguous
+        String name = line.substring(depth);
+
+        if (name.contains(".")) {
+            res = Math.max(res, pathLen.get(depth) + name.length());
+        } else {
+            // NOTE !!! overwrite the slot for depth+1 — any stale deeper slot is rewritten before it is read
+            pathLen.put(depth + 1, pathLen.get(depth) + name.length() + 1);
+        }
+    }
+    return res;
+}
+```
+
+```python
+# python
+# LC 388 - Longest Absolute File Path
+# IDEA: HASH MAP by DEPTH — path_len[d] = prefix length for children at depth d; overwrite, never pop
+# time = O(n), space = O(depth)
+class Solution(object):
+    def lengthLongestPath(self, input):
+        res = 0
+        path_len = {0: 0}   # depth-0 entries have an empty prefix
+
+        for line in input.split('\n'):
+            name = line.lstrip('\t')
+            depth = len(line) - len(name)
+
+            if '.' in name:
+                res = max(res, path_len[depth] + len(name))
+            else:
+                # NOTE !!! overwrite the slot for depth+1 — any stale deeper slot is rewritten before it is read
+                path_len[depth + 1] = path_len[depth] + len(name) + 1
+
+        return res
+```
+
 ```java
 // java
 // LC 636 - Exclusive Time of Functions
