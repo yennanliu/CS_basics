@@ -59,48 +59,52 @@ At most 2 * 105 calls will be made to get and put.
 
 
 # V0
-# IDEA: CUSTOM CLASS + DOUBLY LINKED LIST + HASHMAP (gpt)
+class LFUCache(object):
+
+    def __init__(self, capacity):
+        """
+        :type capacity: int
+        """
+        
+
+    def get(self, key):
+        """
+        :type key: int
+        :rtype: int
+        """
+        
+
+    def put(self, key, value):
+        """
+        :type key: int
+        :type value: int
+        :rtype: None
+        """
+
+
+# V0-1
+# IDEA: LC 146, DOUBLE LINKED LIST + CUSTOM CLASS (gpt)
+from collections import Counter
+
+
 class MyNode(object):
 
     def __init__(self, k=0, v=0):
 
-        """
-        NOTE !!!
+        self.k = k
+        self.v = v
 
-
-        ONLY 4 attr in the custom node class
-
-            -> k, v, prev, next
-        """
-
-        # Store key / value directly in Node
-        # HashMap will be:
-        # {key: MyNode}
-        self.key = k
-        self.val = v
+        # Current frequency
+        self.freq = 1
 
         # Doubly Linked List
-        self.prev = None
         self.next = None
+        self.prev = None
 
 
-class LRUCache(object):
+class LFUCache(object):
 
     def __init__(self, capacity):
-
-        """
-        NOTE !!!
-
-
-        define 
-
-            - values (hash map) attr in this class
-
-            - head, tail attr in this class
-
-                - head, tail are `dummy` nodes
-        """
-
         """
         :type capacity: int
         """
@@ -108,18 +112,24 @@ class LRUCache(object):
         self.capacity = capacity
 
         # Number of nodes currently in cache
-        self.cnt = 0
+        self.size = 0
 
-        # HashMap:
-        # key -> Node
+        # key -> MyNode
         self.values = {}
 
-        # Dummy head / tail
-        self.head = MyNode()
-        self.tail = MyNode()
+        # freq -> Doubly Linked List
+        #
+        # Example:
+        #
+        # freq = 1:
+        # head <-> A <-> B <-> tail
+        #
+        # freq = 2:
+        # head <-> C <-> D <-> tail
+        self.freq_lists = {}
 
-        self.head.next = self.tail
-        self.tail.prev = self.head
+        # Minimum frequency currently in cache
+        self.min_freq = 0
 
 
     def get(self, key):
@@ -128,25 +138,16 @@ class LRUCache(object):
         :rtype: int
         """
 
-        """
-        NOTE !!!
-
-        in py, can use `self.values` to check if key is in hash map,
-        no need to use `self.values.keys()`
-        """
         # Key does not exist
         if key not in self.values:
             return -1
 
-        # Get the Node from HashMap
         node = self.values[key]
 
-        # This node was recently used,
-        # so move it to the end (MRU position)
-        self.remove(node)
-        self.add_to_end(node)
+        # Increase frequency
+        self.update_freq(node)
 
-        return node.val
+        return node.v
 
 
     def put(self, key, value):
@@ -156,6 +157,11 @@ class LRUCache(object):
         :rtype: None
         """
 
+        # Edge case
+        if self.capacity == 0:
+            return
+
+
         # Case 1:
         # Key already exists
         if key in self.values:
@@ -163,45 +169,100 @@ class LRUCache(object):
             node = self.values[key]
 
             # Update value
-            node.val = value
+            node.v = value
 
-            # Move to end because it is recently used
-            self.remove(node)
-            self.add_to_end(node)
+            # Updating an existing key also counts as usage
+            self.update_freq(node)
 
             return
 
 
         # Case 2:
         # Key does not exist
+
+        # Cache is full -> remove LFU
+        if self.size >= self.capacity:
+
+            # Get the list with minimum frequency
+            freq_list = self.freq_lists[self.min_freq]
+
+            # Within the same frequency,
+            # remove the LRU node
+            lru_node = freq_list.head.next
+
+            self.remove(lru_node, self.min_freq)
+
+            # Remove from HashMap
+            del self.values[lru_node.k]
+
+            self.size -= 1
+
+
+        # Create new node
         node = MyNode(key, value)
 
         # Add to HashMap
         self.values[key] = node
 
-        # Add to MRU position
-        self.add_to_end(node)
+        # New node always starts at frequency 1
+        self.min_freq = 1
 
-        self.cnt += 1
+        # Add to frequency-1 list
+        if 1 not in self.freq_lists:
+            self.freq_lists[1] = self.create_list()
 
-        # Cache is over capacity
-        if self.cnt > self.capacity:
+        self.add_to_end(node, 1)
 
-            # head.next is the LRU node
-            lru_node = self.head.next
-
-            # Remove from Linked List
-            self.remove(lru_node)
-
-            # IMPORTANT:
-            # Also remove from HashMap
-            del self.values[lru_node.key]
-
-            self.cnt -= 1
+        self.size += 1
 
 
-    # Helper function
-    def remove(self, node):
+    # --------------------------------------------------
+    # Frequency update
+    # --------------------------------------------------
+
+    def update_freq(self, node):
+
+        old_freq = node.freq
+        new_freq = old_freq + 1
+
+        # Remove from old frequency list
+        self.remove(node, old_freq)
+
+        # If old frequency was min_freq
+        # and there are no more nodes in that list,
+        # move min_freq forward
+        if old_freq == self.min_freq:
+            if self.is_empty(old_freq):
+                self.min_freq = new_freq
+
+        # Update node frequency
+        node.freq = new_freq
+
+        # Create new frequency list if necessary
+        if new_freq not in self.freq_lists:
+            self.freq_lists[new_freq] = self.create_list()
+
+        # Add node to MRU position
+        self.add_to_end(node, new_freq)
+
+
+    # --------------------------------------------------
+    # Doubly Linked List helpers
+    # --------------------------------------------------
+
+    def create_list(self):
+
+        # Dummy head / tail
+        head = MyNode()
+        tail = MyNode()
+
+        head.next = tail
+        tail.prev = head
+
+        return DoublyLinkedList(head, tail)
+
+
+    def remove(self, node, freq):
 
         _prev = node.prev
         _next = node.next
@@ -213,11 +274,12 @@ class LRUCache(object):
         _next.prev = _prev
 
 
-    def add_to_end(self, node):
+    def add_to_end(self, node, freq):
 
-        # Insert node right before tail
-        _tail = self.tail
-        _prev = self.tail.prev
+        freq_list = self.freq_lists[freq]
+
+        _tail = freq_list.tail
+        _prev = freq_list.tail.prev
 
         # Previous node -> new node
         _prev.next = node
@@ -228,357 +290,140 @@ class LRUCache(object):
         _tail.prev = node
 
 
+    def is_empty(self, freq):
 
-# V0-0-1
-# IDEA: CUSTOM CLASS + DOUBLY LINKED LIST + HASHMAP (gpt)
-"""
+        freq_list = self.freq_lists[freq]
 
-1. we custom our own `ListNode` (DOUBLY LINKED LIST)
-   with attr:
-    
-    ```
-    key, val, prev, next
-    ```
+        return freq_list.head.next == freq_list.tail
 
 
-2. the value of hash map is `ListNode` type.
-    self.k_v_map = {} 
+class DoublyLinkedList(object):
+
+    def __init__(self, head, tail):
+
+        self.head = head
+        self.tail = tail
 
 
-3.  need to init head, tail as ListNode
+# V0-2
+# IDEA: LC 146, DOUBLE LINKED LIST + CUSTOM CLASS (GEMINI)
+class Node(object):
+
+  def __init__(self, key=0, val=0):
+    self.key = key
+    self.val = val
+    self.freq = 1
+    self.prev = None
+    self.next = None
 
 
-4.  need to setup 2 helper func:
+class DoublyLinkedList(object):
 
-    - remove
+  def __init__(self):
+    self.head = Node()
+    self.tail = Node()
+    self.head.next = self.tail
+    self.tail.prev = self.head
+    self.size = 0
 
-    - add_to_tail
+  def add_to_end(self, node):
+    """將節點插入至末尾 (最新使用 MRU)"""
+    _prev = self.tail.prev
+    _prev.next = node
+    node.prev = _prev
+    node.next = self.tail
+    self.tail.prev = node
+    self.size += 1
 
-"""
-class ListNode(object):
-    def __init__(self, key=0, value=0):
-        self.key = key
-        self.val = value
-        self.prev = None
-        self.next = None
+  def remove(self, node):
+    """移除指定節點"""
+    _prev = node.prev
+    _next = node.next
+    _prev.next = _next
+    _next.prev = _prev
+    self.size -= 1
 
+  def remove_first(self):
+    """移除開頭第一個節點 (最久未使用 LRU)"""
+    if self.size == 0:
+      return None
+    first = self.head.next
+    self.remove(first)
+    return first
 
-class LRUCache(object):
+  def is_empty(self):
+    return self.size == 0
 
-    def __init__(self, capacity):
-        """
-        :type capacity: int
-        """
-
-        # key -> node
-        self.k_v_map = {}
-
-        # Dummy head / tail
-        # head <-> ... <-> tail
-        self.head = ListNode()
-        self.tail = ListNode()
-
-        self.head.next = self.tail
-        self.tail.prev = self.head
-
-        self.capacity = capacity
-
-    def get(self, key):
-        """
-        :type key: int
-        :rtype: int
-        """
-
-        if key not in self.k_v_map:
-            return -1
-
-        node = self.k_v_map[key]
-
-        # 被 get 代表最近使用
-        self.remove(node)
-        self.add_to_tail(node)
-
-        return node.val
-
-    def put(self, key, value):
-        """
-        :type key: int
-        :type value: int
-        :rtype: None
-        """
-
-        # key 已經存在
-        if key in self.k_v_map:
-            node = self.k_v_map[key]
-
-            # 更新 value
-            node.val = value
-
-            # 更新成 MRU
-            self.remove(node)
-            self.add_to_tail(node)
-
-            return
-
-        # 新 key
-        node = ListNode(key, value)
-        self.k_v_map[key] = node
-
-        # 新 node 放到 MRU
-        self.add_to_tail(node)
-
-        # 超過 capacity
-        if len(self.k_v_map) > self.capacity:
-
-            # head 後面的就是 LRU
-            lru = self.head.next
-
-            self.remove(lru)
-            del self.k_v_map[lru.key]
-
-    def remove(self, node):
-        """
-        從 linked list 移除 node
-        """
-
-        prev_node = node.prev
-        next_node = node.next
-
-        prev_node.next = next_node
-        next_node.prev = prev_node
-
-    def add_to_tail(self, node):
-        """
-        把 node 加到 tail 前面
-        => MRU
-        """
-
-        prev_node = self.tail.prev
-
-        prev_node.next = node
-        node.prev = prev_node
-
-        node.next = self.tail
-        self.tail.prev = node
-
-
-# V0-0-2
-from collections import OrderedDict
-class Node:
-    def __init__(self, key, val, count):
-        self.key=key
-        self.val=val
-        self.count=count
-# time = O(1) per get/put operation
-# space = O(k), k = capacity of cache
-class LFUCache:
-    
-    def __init__(self, capacity):
-        """
-        :type capacity: int
-        """
-        self.capacity=capacity
-        self.key_node={}
-        self.count_node={}
-        self.minV=None
-    def get(self, key):
-        """
-        :type key: int
-        :rtype: int
-        """
-        if not key in self.key_node:  return -1 
-        node = self.key_node[key]
-        del self.count_node[node.count][key]
-        if not self.count_node[node.count]:
-            del self.count_node[node.count] 
-        node.count+=1
-        if not node.count in self.count_node:
-            self.count_node[node.count]=OrderedDict()
-        
-        self.count_node[node.count][key]=node
-        
-        if not self.minV in self.count_node:
-            self.minV+=1
-        return node.val
-    def put(self, key, value):
-        """
-        :type key: int
-        :type value: int
-        :rtype: void
-        """
-        # if element exists, -> update value and count + 1 
-        if self.capacity==0: return None
-        if key in self.key_node:
-            self.key_node[key].val=value
-            self.get(key)
-        else:
-            if len(self.key_node) == self.capacity:
-                item=self.count_node[self.minV].popitem(last=False)
-                del self.key_node[item[0]]
-            node=Node(key,value,1)
-            self.key_node[key]=node
-            if not 1 in self.count_node:
-                self.count_node[1]=OrderedDict()
-            
-            self.count_node[1][key]=node
-            self.minV=1
-
-# V1
-# https://blog.csdn.net/Neekity/article/details/84765476
-from collections import OrderedDict
-class Node:
-    def __init__(self, key, val, count):
-        self.key=key
-        self.val=val
-        self.count=count
-# time = O(1) per get/put operation
-# space = O(k), k = capacity of cache
-class LFUCache:
-    
-    def __init__(self, capacity):
-        """
-        :type capacity: int
-        """
-        self.capacity=capacity
-        self.key_node={}
-        self.count_node={}
-        self.minV=None
-    def get(self, key):
-        """
-        :type key: int
-        :rtype: int
-        """
-        if not key in self.key_node:  return -1 
-        node = self.key_node[key]
-        del self.count_node[node.count][key]
-        if not self.count_node[node.count]:
-            del self.count_node[node.count] 
-        node.count+=1
-        if not node.count in self.count_node:
-            self.count_node[node.count]=OrderedDict()
-        
-        self.count_node[node.count][key]=node
-        
-        if not self.minV in self.count_node:
-            self.minV+=1
-        return node.val
-    def put(self, key, value):
-        """
-        :type key: int
-        :type value: int
-        :rtype: void
-        """
-        # if element exists, -> update value and count + 1 
-        if self.capacity==0: return None
-        if key in self.key_node:
-            self.key_node[key].val=value
-            self.get(key)
-        else:
-            if len(self.key_node) == self.capacity:
-                item=self.count_node[self.minV].popitem(last=False)
-                del self.key_node[item[0]]
-            node=Node(key,value,1)
-            self.key_node[key]=node
-            if not 1 in self.count_node:
-                self.count_node[1]=OrderedDict()
-            
-            self.count_node[1][key]=node
-            self.minV=1
-
-# V2
-# https://github.com/kamyu104/LeetCode-Solutions/blob/master/Python/lfu-cache.py
-# time = O(1), per operation
-# space = O(k), k is the capacity of cache
-import collections
-class ListNode(object):
-    def __init__(self, key, value, freq):
-        self.key = key
-        self.val = value
-        self.freq = freq
-        self.next = None
-        self.prev = None
-
-class LinkedList(object):
-    def __init__(self):
-        self.head = None
-        self.tail = None
-
-    def append(self, node):
-        node.next, node.prev = None, None  # avoid dirty node
-        if self.head is None:
-            self.head = node
-        else:
-            self.tail.next = node
-            node.prev = self.tail
-        self.tail = node
-
-    def delete(self, node):
-        if node.prev:
-            node.prev.next = node.next
-        else:
-            self.head = node.next
-        if node.next:
-            node.next.prev = node.prev
-        else:
-            self.tail = node.prev
-        node.next, node.prev = None, None  # make node clean
 
 class LFUCache(object):
 
-    def __init__(self, capacity):
-        """
-        :type capacity: int
-        """
-        self.__capa = capacity
-        self.__size = 0
-        self.__min_freq = 0
-        self.__freq_to_nodes = collections.defaultdict(LinkedList)
-        self.__key_to_node = {}
+  def __init__(self, capacity):
+    """:type capacity: int"""
+    self.capacity = capacity
+    self.min_freq = 0
+    self.key_to_node = {}  # key -> Node
+    self.freq_to_dll = {}  # freq -> DoublyLinkedList
 
+  def _update_freq(self, node):
+    """輔助函式：將節點的頻率 +1 並移動至新的頻率鏈結串列中"""
+    freq = node.freq
+    dll = self.freq_to_dll[freq]
+    dll.remove(node)
 
-    def get(self, key):
-        """
-        :type key: int
-        :rtype: int
-        """
-        if key not in self.__key_to_node:
-            return -1
+    # 若當前最低頻率的串列空了，將 min_freq 遞增
+    if dll.is_empty() and freq == self.min_freq:
+      self.min_freq += 1
 
-        old_node = self.__key_to_node[key]
-        self.__key_to_node[key] = ListNode(key, old_node.val, old_node.freq)
-        self.__freq_to_nodes[old_node.freq].delete(old_node)
-        if not self.__freq_to_nodes[self.__key_to_node[key].freq].head:
-            del self.__freq_to_nodes[self.__key_to_node[key].freq]
-            if self.__min_freq == self.__key_to_node[key].freq:
-                self.__min_freq += 1
+    node.freq += 1
+    new_freq = node.freq
 
-        self.__key_to_node[key].freq += 1
-        self.__freq_to_nodes[self.__key_to_node[key].freq].append(self.__key_to_node[key])
+    if new_freq not in self.freq_to_dll:
+      self.freq_to_dll[new_freq] = DoublyLinkedList()
 
-        return self.__key_to_node[key].val
+    self.freq_to_dll[new_freq].add_to_end(node)
 
+  def get(self, key):
+    """:type key: int
 
-    def put(self, key, value):
-        """
-        :type key: int
-        :type value: int
-        :rtype: void
-        """
-        if self.__capa <= 0:
-            return
+    :rtype: int
+    """
+    if key not in self.key_to_node:
+      return -1
 
-        if self.get(key) != -1:
-            self.__key_to_node[key].val = value
-            return
+    node = self.key_to_node[key]
+    self._update_freq(node)
+    return node.val
 
-        if self.__size == self.__capa:
-            del self.__key_to_node[self.__freq_to_nodes[self.__min_freq].head.key]
-            self.__freq_to_nodes[self.__min_freq].delete(self.__freq_to_nodes[self.__min_freq].head)
-            if not self.__freq_to_nodes[self.__min_freq].head:
-                del self.__freq_to_nodes[self.__min_freq]
-            self.__size -= 1
+  def put(self, key, value):
+    """:type key: int
 
-        self.__min_freq = 1
-        self.__key_to_node[key] = ListNode(key, value, self.__min_freq)
-        self.__freq_to_nodes[self.__key_to_node[key].freq].append(self.__key_to_node[key])
-        self.__size += 1
+    :type value: int
+    :rtype: None
+    """
+    if self.capacity == 0:
+      return
+
+    # 情況 1：Key 已存在，更新 Value 並提升頻率
+    if key in self.key_to_node:
+      node = self.key_to_node[key]
+      node.val = value
+      self._update_freq(node)
+    # 情況 2：Key 不存在
+    else:
+      # 若達到容量上限，刪除 min_freq 串列中最久未使用的節點
+      if len(self.key_to_node) >= self.capacity:
+        min_dll = self.freq_to_dll[self.min_freq]
+        evicted_node = min_dll.remove_first()
+        if evicted_node:
+          del self.key_to_node[evicted_node.key]
+
+      # 新增新節點 (初始頻率為 1)
+      new_node = Node(key, value)
+      self.key_to_node[key] = new_node
+      self.min_freq = 1  # 重置最小頻率為 1
+
+      if 1 not in self.freq_to_dll:
+        self.freq_to_dll[1] = DoublyLinkedList()
+
+      self.freq_to_dll[1].add_to_end(new_node)
+
