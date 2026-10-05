@@ -103,6 +103,25 @@ class Solution(object):
 
 # V0-1
 # IDEA: STACK
+"""
+CORE IDEA:
+
+    
+    ->
+
+
+        start:
+            先結算上一個 active function
+            push 新 function
+
+        end:
+            結算目前 function（+1）
+            pop
+
+        prev_time:
+            記錄「下一段 execution 從哪裡開始」
+
+"""
 class Solution(object):
 
     def exclusiveTime(self, n, logs):
@@ -118,6 +137,15 @@ class Solution(object):
         # ans[id] = exclusive execution time
         ans = [0] * n
 
+
+        """
+        NOTE !!!
+
+
+        stack save `task id`
+
+            -> [func_id_1, func_id_2, ...]
+        """
         # Stack stores currently running function IDs
         stack = []
 
@@ -134,6 +162,32 @@ class Solution(object):
             func_id = int(tmp[0])
             status = tmp[1]
             timestamp = int(tmp[2])
+
+
+            """
+            NOTE !!!
+
+
+            1. 
+                ONLY 2 cases
+
+                    - `start` event
+
+                    - `end` event
+
+
+            2. 
+
+                need to update `exe time` on BOTH event (start, end event)
+
+
+
+
+            3. 
+               when `start` envent, append func_id to stack
+
+               when `end` envent, pop func_id from stack
+            """
 
             # ---------------------------------------------
             # Start
