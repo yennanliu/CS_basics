@@ -1,36 +1,36 @@
 # LeetCode Practice List (2025-2026) - By Category
 
-**Total Unique Problems: 226**
+**Total Unique Problems: 245**
 
 Generated from: `data/progress.md`
-Date: 2026-09-28
+Date: 2026-10-05
 
 ---
 
 ## Table of Contents
 
-- [Array](#array) (17 problems)
-- [Backtracking](#backtracking) (9 problems)
-- [Binary Search](#binary-search) (10 problems)
+- [Array](#array) (18 problems)
+- [Backtracking](#backtracking) (10 problems)
+- [Binary Search](#binary-search) (13 problems)
 - [Binary Search Tree](#binary-search-tree) (5 problems)
 - [Breadth-First-Search](#breadth-first-search) (18 problems)
 - [Depth-First-Search](#depth-first-search) (16 problems)
-- [Design](#design) (5 problems)
+- [Design](#design) (6 problems)
 - [Dynamic Programming](#dynamic-programming) (26 problems)
 - [Graph](#graph) (4 problems)
-- [Greedy](#greedy) (8 problems)
+- [Greedy](#greedy) (9 problems)
 - [Hash Table](#hash-table) (14 problems)
 - [Heap](#heap) (10 problems)
-- [Linked List](#linked-list) (6 problems)
+- [Linked List](#linked-list) (9 problems)
 - [Math](#math) (9 problems)
 - [Queue](#queue) (2 problems)
-- [Recursion](#recursion) (11 problems)
+- [Recursion](#recursion) (12 problems)
 - [Set](#set) (1 problems)
 - [Sort](#sort) (2 problems)
-- [Stack](#stack) (14 problems)
-- [String](#string) (8 problems)
-- [Tree](#tree) (18 problems)
-- [Two Pointers](#two-pointers) (9 problems)
+- [Stack](#stack) (17 problems)
+- [String](#string) (9 problems)
+- [Tree](#tree) (20 problems)
+- [Two Pointers](#two-pointers) (11 problems)
 - [Prefix Sum](#prefix-sum) (2 problems)
 - [Uncategorized](#uncategorized) (2 problems)
 
@@ -38,26 +38,27 @@ Date: 2026-09-28
 
 ## Array
 
-**Count: 17**
+**Count: 18**
 
-31, 41, 215, 251, 334, 442, 670, 729, 731, 732
-918, 921, 947, 1094, 1109, 1567, 2018
+4, 31, 41, 215, 251, 334, 442, 670, 729, 731
+732, 918, 921, 947, 1094, 1109, 1567, 2018
 
 ---
 
 ## Backtracking
 
-**Count: 9**
+**Count: 10**
 
-22, 39, 40, 46, 47, 77, 93, 139, 140
+22, 39, 40, 46, 47, 77, 79, 93, 139, 140
 
 ---
 
 ## Binary Search
 
-**Count: 10**
+**Count: 13**
 
-34, 35, 81, 162, 300, 410, 704, 852, 875, 2616
+34, 35, 81, 162, 275, 300, 410, 702, 704, 852
+875, 1095, 2616
 
 ---
 
@@ -89,9 +90,9 @@ Date: 2026-09-28
 
 ## Design
 
-**Count: 5**
+**Count: 6**
 
-146, 380, 1268, 1825, 2043
+146, 380, 460, 1268, 1825, 2043
 
 ---
 
@@ -115,9 +116,9 @@ Date: 2026-09-28
 
 ## Greedy
 
-**Count: 8**
+**Count: 9**
 
-84, 218, 358, 402, 621, 767, 1024, 1249
+84, 218, 358, 402, 621, 763, 767, 1024, 1249
 
 ---
 
@@ -140,9 +141,9 @@ Date: 2026-09-28
 
 ## Linked List
 
-**Count: 6**
+**Count: 9**
 
-2, 92, 138, 430, 725, 1171
+2, 25, 83, 92, 138, 206, 430, 725, 1171
 
 ---
 
@@ -164,10 +165,10 @@ Date: 2026-09-28
 
 ## Recursion
 
-**Count: 11**
+**Count: 12**
 
 10, 95, 108, 109, 114, 116, 117, 129, 298, 337
-669
+437, 669
 
 ---
 
@@ -189,35 +190,36 @@ Date: 2026-09-28
 
 ## Stack
 
-**Count: 14**
+**Count: 17**
 
-20, 32, 173, 224, 227, 341, 394, 456, 503, 772
-853, 895, 901, 1130
+20, 32, 155, 173, 224, 227, 341, 394, 456, 503
+636, 772, 853, 856, 895, 901, 1130
 
 ---
 
 ## String
 
-**Count: 8**
+**Count: 9**
 
-5, 161, 524, 647, 678, 680, 809, 2048
+5, 161, 524, 647, 678, 680, 696, 809, 2048
 
 ---
 
 ## Tree
 
-**Count: 18**
+**Count: 20**
 
 124, 297, 508, 536, 538, 559, 606, 623, 652, 655
-662, 663, 701, 863, 865, 979, 1026, 1740
+662, 663, 687, 701, 863, 865, 979, 1026, 1032, 1740
 
 ---
 
 ## Two Pointers
 
-**Count: 9**
+**Count: 11**
 
-19, 42, 349, 350, 567, 986, 1963, 2062, 2104
+19, 42, 86, 349, 350, 567, 862, 986, 1963, 2062
+2104
 
 ---
 
@@ -243,27 +245,27 @@ These problems were not found in the leetcode_python or leetcode_java directory 
 
 | Category | Count | Percentage |
 |----------|-------|------------|
-| Dynamic Programming | 26 | 11.5% |
-| Tree | 18 | 8.0% |
-| Breadth-First-Search | 18 | 8.0% |
-| Array | 17 | 7.5% |
-| Depth-First-Search | 16 | 7.1% |
-| Hash Table | 14 | 6.2% |
-| Stack | 14 | 6.2% |
-| Recursion | 11 | 4.9% |
-| Binary Search | 10 | 4.4% |
-| Heap | 10 | 4.4% |
-| Two Pointers | 9 | 4.0% |
-| Backtracking | 9 | 4.0% |
-| Math | 9 | 4.0% |
-| String | 8 | 3.5% |
-| Greedy | 8 | 3.5% |
-| Linked List | 6 | 2.7% |
-| Design | 5 | 2.2% |
-| Binary Search Tree | 5 | 2.2% |
-| Graph | 4 | 1.8% |
-| Sort | 2 | 0.9% |
-| Queue | 2 | 0.9% |
-| Prefix Sum | 2 | 0.9% |
+| Dynamic Programming | 26 | 10.6% |
+| Tree | 20 | 8.2% |
+| Array | 18 | 7.3% |
+| Breadth-First-Search | 18 | 7.3% |
+| Stack | 17 | 6.9% |
+| Depth-First-Search | 16 | 6.5% |
+| Hash Table | 14 | 5.7% |
+| Binary Search | 13 | 5.3% |
+| Recursion | 12 | 4.9% |
+| Two Pointers | 11 | 4.5% |
+| Backtracking | 10 | 4.1% |
+| Heap | 10 | 4.1% |
+| Linked List | 9 | 3.7% |
+| String | 9 | 3.7% |
+| Greedy | 9 | 3.7% |
+| Math | 9 | 3.7% |
+| Design | 6 | 2.4% |
+| Binary Search Tree | 5 | 2.0% |
+| Graph | 4 | 1.6% |
+| Sort | 2 | 0.8% |
+| Queue | 2 | 0.8% |
+| Prefix Sum | 2 | 0.8% |
 | Set | 1 | 0.4% |
-| Uncategorized | 2 | 0.9% |
+| Uncategorized | 2 | 0.8% |
