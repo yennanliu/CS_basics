@@ -419,7 +419,7 @@ def find_132_pattern(nums):
 | Evaluate Reverse Polish Notation | 150 | Postfix evaluation | Medium | Template 5 |
 | Decode String | 394 | Nested decoding | Medium | Template 5 |
 | Find Duplicate Subtrees | 652 | Tree serialization | Medium | Template 5 |
-| Exclusive Time of Functions | 636 | Call stack simulation | Medium | Template 5 |
+| Exclusive Time of Functions | 636 | Call stack simulation (not monotonic) | Medium | [stack.md Template 6](./stack.md#template-6-scope--context-ledger--lc-388-lc-636-) |
 | Minimum Window Subsequence | 727 | Two pointers + stack | Hard | Template 5 |
 
 ### Problem Difficulty Distribution

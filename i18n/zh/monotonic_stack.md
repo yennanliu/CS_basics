@@ -204,7 +204,7 @@
 | Design Circular Queue | 622 | 環狀緩衝區 | Medium | 模板 4 |
 | Design Circular Deque | 641 | 雙端環狀 | Medium | 模板 4 |
 
-<!-- 637355cce2fe -->
+<!-- f71eabcaef56 -->
 #### **進階／混合模式題目**
 | 題目 | LC # | 關鍵技巧 | 難度 | 模板 |
 |---------|------|---------------|------------|----------|
@@ -216,7 +216,7 @@
 | Evaluate Reverse Polish Notation | 150 | 後序求值 | Medium | 模板 5 |
 | Decode String | 394 | 巢狀解碼 | Medium | 模板 5 |
 | Find Duplicate Subtrees | 652 | 樹的序列化 | Medium | 模板 5 |
-| Exclusive Time of Functions | 636 | 模擬呼叫堆疊 | Medium | 模板 5 |
+| Exclusive Time of Functions | 636 | 模擬呼叫堆疊（不是單調堆疊） | Medium | [stack.md 模板 6](./stack.md#template-6-scope--context-ledger--lc-388-lc-636-) |
 | Minimum Window Subsequence | 727 | 雙指標 + 堆疊 | Hard | 模板 5 |
 
 <!-- fd42e616b25c -->

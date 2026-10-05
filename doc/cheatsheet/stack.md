@@ -825,6 +825,65 @@ class Solution(object):
         return res
 ```
 
+**LC 636 — what the stack and `prev` each hold.** The stack is the call stack the problem
+describes: its top is the function on the CPU *right now*. `prev` is a single cursor over the
+timeline — the first time unit nobody has been credited for yet. Every log line closes the
+slice `[prev, …]` and credits it to whoever was on top, then moves the cursor.
+
+```text
+n = 2, logs = ["0:start:0","0:start:2","0:end:5","1:start:6","1:end:6","0:end:7"]
+
+log          credit (to stack top)        stack      prev   res
+0:start:0    (stack empty)                [0]        0      [0, 0]
+0:start:2    res[0] += 2 - 0     = 2      [0, 0]     2      [2, 0]   <- recursive call, same id
+0:end:5      res[0] += 5 - 2 + 1 = 4      [0]        6      [6, 0]
+1:start:6    res[0] += 6 - 6     = 0      [0, 1]     6      [6, 0]   <- zero-length slice, harmless
+1:end:6      res[1] += 6 - 6 + 1 = 1      [0]        7      [6, 1]
+0:end:7      res[0] += 7 - 7 + 1 = 1      []         8      [7, 1]   -> answer [7, 1]
+```
+
+> **Why `+ 1` only on `end`.** `start:t` means *the beginning* of unit `t`, `end:t` means *the
+> end* of unit `t`. So a start boundary sits at `t` and an end boundary sits at `t + 1`. Convert
+> `end:t` to boundary `t + 1` the moment you parse it and both branches become the same
+> half-open `[prev, boundary)` subtraction — the form below. Same `O(n)`; the reason to know it
+> is that the off-by-one disappears instead of being remembered.
+
+```python
+# python
+# LC 636 - Exclusive Time of Functions
+# IDEA: normalise every log to a half-open BOUNDARY (end:t -> t + 1), so one formula credits both
+# time = O(n), space = O(n)
+class Solution(object):
+    def exclusiveTime(self, n, logs):
+        res = [0] * n
+        stack = []
+        prev = 0      # boundary where the current slice began
+        for log in logs:
+            fid, typ, t = log.split(':')
+            fid, t = int(fid), int(t)
+            boundary = t if typ == 'start' else t + 1
+            if stack:
+                # the stack top ran on [prev, boundary)
+                res[stack[-1]] += boundary - prev
+            if typ == 'start':
+                stack.append(fid)
+            else:
+                stack.pop()
+            prev = boundary
+        return res
+```
+
+Pitfalls specific to LC 636:
+
+- **Credit before you push or pop.** The slice that just ended belongs to the *old* top; pushing
+  first hands the caller's time to the callee.
+- **One frame per call, not one entry per id.** A function can call itself (example 2), so a
+  `{id: start_time}` map overwrites the outer call. Two frames with the same id is correct.
+- **`prev` is one global cursor, not a per-function start time.** The alternative keeps
+  `[id, resume_time]` frames and rewrites the caller's `resume_time = t + 1` after each pop —
+  the same idea with the cursor stored on the frame, and one more line to forget.
+- **A zero-length slice is fine.** `1:start:6` right after `prev = 6` credits `0`; no special case.
+
 ---
 
 ## Summary & Quick Reference

@@ -61,6 +61,33 @@ Each function has an "end" log for each "start" log.
 
 """
 
+"""
+NOTE !!!
+
+
+we CAN'T use `hashmap + event sort` for this LC,
+It's WRONG !!!
+
+-> 
+
+
+ 1. 核心資料結構誤用（缺乏 Call Stack）：
+
+        - 函式呼叫具備後進先出（LIFO）與巢狀暫停的特性
+          （例如 $A$ 呼叫 $B$ 時，$A$ 會被暫停，待 $B$ 執行完畢後 $A$ 才繼續）。
+
+
+        - 用一般的 Hash Map 做紀錄，無法處理遞迴呼叫或同一個函式被多次呼叫的情況
+          （因為 Key 會被覆蓋），也無法得知當前被暫停的父函式是誰。
+
+
+ 2.  對 logs 進行排序破壞了順序：
+
+        - logs 本身就已經按照時間線正確給出。
+          對其進行 sort 會破壞原本 start 與 end 的事件配對關係。
+
+"""
+
 
 # V0
 class Solution(object):
