@@ -36,8 +36,123 @@ n == nums.length
 """
 
 # V0
+class Solution(object):
+    def maxSubarraySumCircular(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        pass
 
-# V1 
+
+
+# V0-3
+# IDEA: 2 * ARRAY + BRUTE FORCE (TLE)
+class Solution(object):
+    def maxSubarraySumCircular(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        # Edge case
+        if not nums:
+            return 0
+
+        if len(nums) == 1:
+            return nums[0]
+
+        # Duplicate the array so we can handle circular subarrays.
+        #
+        # Example:
+        # nums   = [5, -3, 5]
+        # nums_2 = [5, -3, 5, 5, -3, 5]
+        nums_2 = nums + nums
+
+        n = len(nums)
+        max_sub_arr = nums[0]
+
+        # Try every starting position in the original array.
+        for i in range(n):
+            tmp = 0
+
+            # The subarray length cannot exceed n.
+            for j in range(n):
+                tmp += nums_2[i + j]
+
+                max_sub_arr = max(max_sub_arr, tmp)
+
+        return max_sub_arr
+
+
+# V1-1
+# IDEA: Enumerate prefix and suffix sums
+# https://leetcode.com/problems/maximum-sum-circular-subarray/editorial/
+# class Solution {
+#     public int maxSubarraySumCircular(int[] nums) {
+#         final int n = nums.length;
+#         final int[] rightMax = new int[n];
+#         rightMax[n - 1] = nums[n - 1];
+#         int suffixSum = nums[n - 1];
+#
+#         for (int i = n - 2; i >= 0; --i) {
+#             suffixSum += nums[i];
+#             rightMax[i] = Math.max(rightMax[i + 1], suffixSum);
+#         }
+#
+#         int maxSum = nums[0];
+#         int specialSum = nums[0];
+#         int curMax = 0;
+#         for (int i = 0, prefixSum = 0; i < n; ++i) {
+#             // This is Kadane's algorithm.
+#             curMax = Math.max(curMax, 0) + nums[i];
+#             maxSum = Math.max(maxSum, curMax);
+#
+#             prefixSum += nums[i];
+#             if (i + 1 < n) {
+#                 specialSum = Math.max(specialSum, prefixSum + rightMax[i + 1]);
+#             }
+#         }
+#
+#         return Math.max(maxSum, specialSum);  
+#     }
+# }
+
+
+
+# V1-2
+# IDEA: Calculate the "Minimum Subarray"
+# https://leetcode.com/problems/maximum-sum-circular-subarray/editorial/
+# class Solution {
+#     public int maxSubarraySumCircular(int[] nums) {
+#         int curMax = 0;
+#         int curMin = 0;
+#         int maxSum = nums[0];
+#         int minSum = nums[0];
+#         int totalSum = 0;
+#        
+#         for (int num: nums) {
+#             // Normal Kadane's
+#             curMax = Math.max(curMax, 0) + num;
+#             maxSum = Math.max(maxSum, curMax);
+#            
+#             // Kadane's but with min to find minimum subarray
+#             curMin = Math.min(curMin, 0) + num;
+#             minSum = Math.min(minSum, curMin);
+#            
+#             totalSum += num;  
+#         }
+#
+#         if (totalSum == minSum) {
+#             return maxSum;
+#         }
+#        
+#         return Math.max(maxSum, totalSum - minSum);
+#     }
+# }
+
+
+
+# V2 
 # https://buptwc.com/2018/10/08/Leetcode-918-Maximum-Sum-Circular-Subarray/
 # time = O(n)
 # space = O(n)
@@ -56,7 +171,7 @@ class Solution(object):
             res = max(res, s[-1] - s[i] + r_max[i])
         return res
 
-# V1'
+# V3
 # https://www.jiuzhang.com/solution/maximum-sum-circular-subarray/#tag-highlight-lang-python
 # time = O(n)
 # space = O(n)
@@ -92,7 +207,7 @@ class Solution(object):
             ans = max(ans, leftsum + maxright[i+2])
         return ans
         
-# V2 
+# V4
 # time = O(n)
 # space = O(1)
 class Solution(object):
