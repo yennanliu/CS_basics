@@ -60,6 +60,177 @@ At most 2 * 105 calls will be made to get and put.
 
 # V0
 # IDEA: CUSTOM CLASS + DOUBLY LINKED LIST + HASHMAP (gpt)
+class MyNode(object):
+
+    def __init__(self, k=0, v=0):
+
+        """
+        NOTE !!!
+
+
+        ONLY 4 attr in the custom node class
+
+            -> k, v, prev, next
+        """
+
+        # Store key / value directly in Node
+        # HashMap will be:
+        # {key: MyNode}
+        self.key = k
+        self.val = v
+
+        # Doubly Linked List
+        self.prev = None
+        self.next = None
+
+
+class LRUCache(object):
+
+    def __init__(self, capacity):
+
+        """
+        NOTE !!!
+
+
+        define 
+
+            - values (hash map) attr in this class
+
+            - head, tail attr in this class
+
+                - head, tail are `dummy` nodes
+        """
+
+        """
+        :type capacity: int
+        """
+
+        self.capacity = capacity
+
+        # Number of nodes currently in cache
+        self.cnt = 0
+
+        # HashMap:
+        # key -> Node
+        self.values = {}
+
+        # Dummy head / tail
+        self.head = MyNode()
+        self.tail = MyNode()
+
+        self.head.next = self.tail
+        self.tail.prev = self.head
+
+
+    def get(self, key):
+        """
+        :type key: int
+        :rtype: int
+        """
+
+        """
+        NOTE !!!
+
+        in py, can use `self.values` to check if key is in hash map,
+        no need to use `self.values.keys()`
+        """
+        # Key does not exist
+        if key not in self.values:
+            return -1
+
+        # Get the Node from HashMap
+        node = self.values[key]
+
+        # This node was recently used,
+        # so move it to the end (MRU position)
+        self.remove(node)
+        self.add_to_end(node)
+
+        return node.val
+
+
+    def put(self, key, value):
+        """
+        :type key: int
+        :type value: int
+        :rtype: None
+        """
+
+        # Case 1:
+        # Key already exists
+        if key in self.values:
+
+            node = self.values[key]
+
+            # Update value
+            node.val = value
+
+            # Move to end because it is recently used
+            self.remove(node)
+            self.add_to_end(node)
+
+            return
+
+
+        # Case 2:
+        # Key does not exist
+        node = MyNode(key, value)
+
+        # Add to HashMap
+        self.values[key] = node
+
+        # Add to MRU position
+        self.add_to_end(node)
+
+        self.cnt += 1
+
+        # Cache is over capacity
+        if self.cnt > self.capacity:
+
+            # head.next is the LRU node
+            lru_node = self.head.next
+
+            # Remove from Linked List
+            self.remove(lru_node)
+
+            # IMPORTANT:
+            # Also remove from HashMap
+            del self.values[lru_node.key]
+
+            self.cnt -= 1
+
+
+    # Helper function
+    def remove(self, node):
+
+        _prev = node.prev
+        _next = node.next
+
+        # Connect previous node to next node
+        _prev.next = _next
+
+        # Connect next node to previous node
+        _next.prev = _prev
+
+
+    def add_to_end(self, node):
+
+        # Insert node right before tail
+        _tail = self.tail
+        _prev = self.tail.prev
+
+        # Previous node -> new node
+        _prev.next = node
+        node.prev = _prev
+
+        # New node -> tail
+        node.next = _tail
+        _tail.prev = node
+
+
+
+# V0-0-1
+# IDEA: CUSTOM CLASS + DOUBLY LINKED LIST + HASHMAP (gpt)
 """
 
 1. we custom our own `ListNode` (DOUBLY LINKED LIST)
@@ -191,7 +362,7 @@ class LRUCache(object):
         self.tail.prev = node
 
 
-# V0
+# V0-0-2
 from collections import OrderedDict
 class Node:
     def __init__(self, key, val, count):
@@ -411,148 +582,3 @@ class LFUCache(object):
         self.__key_to_node[key] = ListNode(key, value, self.__min_freq)
         self.__freq_to_nodes[self.__key_to_node[key].freq].append(self.__key_to_node[key])
         self.__size += 1
-
-# V1'
-# TODO : fix this
-# IDEA : DOUBLY LINKED LIST + HASH TABLE
-# http://bookshadow.com/weblog/2016/11/22/leetcode-lfu-cache/
-# https://www.cnblogs.com/grandyang/p/6258459.html
-# class KeyNode(object):
-#     def __init__(self, key, value, freq = 1):
-#         self.key = key
-#         self.value = value
-#         self.freq = freq
-#         self.prev = self.next = None
-
-# class FreqNode(object):
-#     def __init__(self, freq, prev, next):
-#         self.freq = freq
-#         self.prev = prev
-#         self.next = next
-#         self.first = self.last = None
-
-# class LFUCache(object):
-
-#     def __init__(self, capacity):
-#         """
-        
-#         :type capacity: int
-#         """
-#         self.capacity = capacity
-#         self.keyDict = dict()
-#         self.freqDict = dict()
-#         self.head = None
-
-#     def get(self, key):
-#         """
-#         :type key: int
-#         :rtype: int
-#         """
-#         if key in self.keyDict:
-#             keyNode = self.keyDict[key]
-#             value = keyNode.value
-#             self.increase(key, value)
-#             return value
-#         return -1
-
-#     def set(self, key, value):
-#         """
-#         :type key: int
-#         :type value: int
-#         :rtype: void
-#         """
-#         if self.capacity == 0:
-#             return
-#         if key in self.keyDict:
-#             self.increase(key, value)
-#             return
-#         if len(self.keyDict) == self.capacity:
-#             self.removeKeyNode(self.head.last)
-#         self.insertKeyNode(key, value)
-
-#     def increase(self, key, value):
-#         """
-#         Increments the freq of an existing KeyNode<key, value> by 1.
-#         :type key: str
-#         :rtype: void
-#         """
-#         keyNode = self.keyDict[key]
-#         keyNode.value = value
-#         freqNode = self.freqDict[keyNode.freq]
-#         nextFreqNode = freqNode.next
-#         keyNode.freq += 1
-#         if nextFreqNode is None or nextFreqNode.freq > keyNode.freq:
-#             nextFreqNode = self.insertFreqNodeAfter(keyNode.freq, freqNode)
-#         self.unlinkKey(keyNode, freqNode)
-#         self.linkKey(keyNode, nextFreqNode)
-
-#     def insertKeyNode(self, key, value):
-#         """
-#         Inserts a new KeyNode<key, value> with freq 1.
-#         :type key: str
-#         :rtype: void
-#         """
-#         keyNode = self.keyDict[key] = KeyNode(key, value)
-#         freqNode = self.freqDict.get(1)
-#         if freqNode is None:
-#             freqNode = self.freqDict[1] = FreqNode(1, None, self.head)
-#             if self.head:
-#                 self.head.prev = freqNode
-#             self.head = freqNode
-#         self.linkKey(keyNode, freqNode)
-
-#     def delFreqNode(self, freqNode):
-#         """
-#         Delete freqNode.
-#         :rtype: void
-#         """
-#         prev, next = freqNode.prev, freqNode.next
-#         if prev: prev.next = next
-#         if next: next.prev = prev
-#         if self.head == freqNode: self.head = next
-#         del self.freqDict[freqNode.freq]
-
-#     def insertFreqNodeAfter(self, freq, node):
-#         """
-#         Insert a new FreqNode(freq) after node.
-#         :rtype: FreqNode
-#         """
-#         newNode = FreqNode(freq, node, node.next)
-#         self.freqDict[freq] = newNode
-#         if node.next: node.next.prev = newNode
-#         node.next = newNode
-#         return newNode
-
-#     def removeKeyNode(self, keyNode):
-#         """
-#         Remove keyNode
-#         :rtype: void
-#         """
-#         self.unlinkKey(keyNode, self.freqDict[keyNode.freq])
-#         del self.keyDict[keyNode.key]
-
-#     def unlinkKey(self, keyNode, freqNode):
-#         """
-#         Unlink keyNode from freqNode
-#         :rtype: void
-#         """
-#         next, prev = keyNode.next, keyNode.prev
-#         if prev: prev.next = next
-#         if next: next.prev = prev
-#         if freqNode.first == keyNode: freqNode.first = next
-#         if freqNode.last == keyNode: freqNode.last = prev
-#         if freqNode.first is None: self.delFreqNode(freqNode)
-
-#     def linkKey(self, keyNode, freqNode):
-#         """
-#         Link keyNode to freqNode
-#         :rtype: void
-#         """
-#         firstKeyNode = freqNode.first
-#         keyNode.prev = None
-#         keyNode.next = firstKeyNode
-#         if firstKeyNode: firstKeyNode.prev = keyNode
-#         freqNode.first = keyNode
-#         if freqNode.last is None: freqNode.last = keyNode
-
-# V2'
