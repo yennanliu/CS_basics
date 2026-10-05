@@ -61,7 +61,126 @@ Each function has an "end" log for each "start" log.
 
 """
 
+
 # V0
+class Solution(object):
+    def exclusiveTime(self, n, logs):
+        """
+        :type n: int
+        :type logs: List[str]
+        :rtype: List[int]
+        """
+        pass
+
+
+
+# V0-1
+# IDEA: STACK
+class Solution(object):
+
+    def exclusiveTime(self, n, logs):
+        """
+        :type n: int
+        :type logs: List[str]
+        :rtype: List[int]
+        """
+
+        if not logs:
+            return [0] * n
+
+        # ans[id] = exclusive execution time
+        ans = [0] * n
+
+        # Stack stores currently running function IDs
+        stack = []
+
+        # Previous timestamp
+        prev_time = 0
+
+        for log in logs:
+
+            # Example:
+            # "0:start:0"
+            # "1:end:5"
+            tmp = log.split(":")
+
+            func_id = int(tmp[0])
+            status = tmp[1]
+            timestamp = int(tmp[2])
+
+            # ---------------------------------------------
+            # Start
+            # ---------------------------------------------
+            if status == "start":
+
+                # If another function is already running,
+                # it runs from prev_time until timestamp - 1.
+                if stack:
+                    ans[stack[-1]] += timestamp - prev_time
+
+                # New function starts running
+                stack.append(func_id)
+
+                # Start timestamp is included
+                prev_time = timestamp
+
+
+            # ---------------------------------------------
+            # End
+            # ---------------------------------------------
+            else:
+
+                # Current function runs from prev_time
+                # through timestamp, INCLUDING timestamp.
+                ans[stack[-1]] += timestamp - prev_time + 1
+
+                # Current function is finished
+                stack.pop()
+
+                # Next timestamp starts after current function ends
+                prev_time = timestamp + 1
+
+        return ans
+
+
+# V0-2
+# IDEA : STACK  (gemini)
+class Solution(object):
+
+  def exclusiveTime(self, n, logs):
+    """:type n: int
+
+    :type logs: List[str]
+    :rtype: List[int]
+    """
+    ans = [0] * n
+    stack = []
+    prev_time = 0
+
+    for log in logs:
+      # 解析 log："fn_id:status:timestamp"
+      parts = log.split(':')
+      fn_id = int(parts[0])
+      status = parts[1]
+      timestamp = int(parts[2])
+
+      if status == 'start':
+        if stack:
+          # 當前棧頂函式被暫停，採計先前的獨佔執行時間
+          ans[stack[-1]] += timestamp - prev_time
+        stack.append(fn_id)
+        prev_time = timestamp
+      else:
+        # 當前函式結束，採計從 prev_time 到 timestamp (含) 的時間
+        top_fn = stack.pop()
+        ans[top_fn] += timestamp - prev_time + 1
+        # 下一個 CPU 時間點從 timestamp + 1 開始
+        prev_time = timestamp + 1
+
+    return ans
+
+
+# V0-3
 # IDEA : STACK 
 # IDEA : 
 #   STEP 1) init ans = [0] * n, stack = [], DEFINE element [function_id, timestamp]
@@ -137,6 +256,7 @@ class Solution(object):
                 if stack: stack[-1][1] = tmp + 1
         return ans
 
+
 # V1'
 # https://www.jiuzhang.com/solution/exclusive-time-of-functions/#tag-highlight-lang-python
 # time = O(m)  # m = len(logs)
@@ -158,7 +278,8 @@ class Solution:
                 result[stack.pop()] += timestamp - last_timestamp
             last_timestamp = timestamp 
         return result
-        
+
+    
 # V2
 # time = O(m)  # m = len(logs)
 # space = O(n + m)
