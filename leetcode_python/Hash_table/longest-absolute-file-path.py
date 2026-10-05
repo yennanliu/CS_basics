@@ -62,30 +62,14 @@ input may contain lowercase or uppercase English letters, a new line character '
 """
 
 # V0
-# IDEA : dict + replae, split
-# time = O(n * d)  # n = len(input), d = max depth (directory levels seen so far)
-# space = O(d)  # d = max depth of the paths
 class Solution(object):
     def lengthLongestPath(self, input):
-        # NOTE : we maintain a dict for collecting key and the length till now
-        d={}
-        longest=0
-        fileList=input.split("\n")
-        for i in fileList:
-            # directory
-            if "." not in i:
-                key = i.count("\t") # level of directory
-                value = len(i.replace("\t","")) # length after removing '\t'
-                d[key]=value
-            # file
-            else:
-                key=i.count("\t")
-                ### NOTE :　length of doc (all directory length + doc length + count of '\') 
-                length = sum([d[j] for j in d.keys() if j<key]) + len(i.replace("\t","")) + key
-                longest=max(longest,length)
-        print (d)
-        return longest
-
+        """
+        :type input: str
+        :rtype: int
+        """
+        pass
+        
 
 # VO-1
 # IDEA: STR + STACK OP (gpt)
@@ -149,7 +133,6 @@ class Solution(object):
 
         return max_len
 
-
 # V0-2
 # IDEA: STR + STACK OP (GEMINI)
 class Solution(object):
@@ -204,6 +187,34 @@ class Solution(object):
             else:
                 pathlen[depth + 1] = pathlen[depth] + len(name) + 1
         return maxlen
+
+
+
+# V0-4
+# IDEA : dict + replae, split
+# time = O(n * d)  # n = len(input), d = max depth (directory levels seen so far)
+# space = O(d)  # d = max depth of the paths
+class Solution(object):
+    def lengthLongestPath(self, input):
+        # NOTE : we maintain a dict for collecting key and the length till now
+        d={}
+        longest=0
+        fileList=input.split("\n")
+        for i in fileList:
+            # directory
+            if "." not in i:
+                key = i.count("\t") # level of directory
+                value = len(i.replace("\t","")) # length after removing '\t'
+                d[key]=value
+            # file
+            else:
+                key=i.count("\t")
+                ### NOTE :　length of doc (all directory length + doc length + count of '\') 
+                length = sum([d[j] for j in d.keys() if j<key]) + len(i.replace("\t","")) + key
+                longest=max(longest,length)
+        print (d)
+        return longest
+
 
 # V0-2
 # IDEA : stack + string op
