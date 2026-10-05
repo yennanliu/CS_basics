@@ -45,6 +45,130 @@ class Solution(object):
         pass
 
 
+# V0-1
+# IDEA: Kadane (gpt)
+"""
+CORE IDEA:
+
+
+->
+    ```
+    Circular Maximum
+    =
+    max(
+        normal maximum subarray,
+        total sum - minimum subarray
+    )
+    ```
+
+"""
+class Solution(object):
+    def maxSubarraySumCircular(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+
+        # Edge case
+        if not nums:
+            return 0
+
+        # Total sum of the array
+        total_sum = sum(nums)
+
+        # Kadane for maximum subarray
+        max_sum = nums[0]
+        cur_max = nums[0]
+
+        # Kadane for minimum subarray
+        min_sum = nums[0]
+        cur_min = nums[0]
+
+        for i in range(1, len(nums)):
+            val = nums[i]
+
+            # Maximum subarray ending at current position
+            cur_max = max(val, cur_max + val)
+            max_sum = max(max_sum, cur_max)
+
+            # Minimum subarray ending at current position
+            cur_min = min(val, cur_min + val)
+            min_sum = min(min_sum, cur_min)
+
+        # If all numbers are negative,
+        # total_sum - min_sum would become 0,
+        # which means choosing an empty subarray.
+        # That is not allowed.
+        if max_sum < 0:
+            return max_sum
+
+        # Two cases:
+        #
+        # 1. Normal subarray
+        #    -> max_sum
+        #
+        # 2. Circular subarray
+        #    -> total_sum - minimum subarray
+        #
+        # Example:
+        # [5, -3, 5]
+        # total = 7
+        # min subarray = [-3]
+        # circular max = 7 - (-3) = 10
+        return max(max_sum, total_sum - min_sum)
+
+
+# V0-2
+# IDEA:  Kadane 演算法 (最大與最小子陣列和) (gemini)
+"""
+CORE IDEA:
+
+    
+    情況 1：未跨越邊界 (Standard Kadane)
+    [  [ max subarray ]  ]
+    Ans = max_sum
+
+    情況 2：跨越環形邊界 (Total Sum - Min Subarray)
+    [ max_1 ] [ min subarray ] [ max_2 ]
+    Ans = total_sum - min_sum
+
+
+"""
+class Solution(object):
+
+  def maxSubarraySumCircular(self, nums):
+    """:type nums: List[int]
+
+    :rtype: int
+    """
+    total_sum = 0
+
+    # 維護未環繞的最大子陣列和 (Max Kadane)
+    cur_max = 0
+    max_sum = float('-inf')
+
+    # 維護中間被剔除的最小子陣列和 (Min Kadane)
+    cur_min = 0
+    min_sum = float('inf')
+
+    for x in nums:
+      total_sum += x
+
+      # 1. 標準 Kadane：求最大連續子陣列和
+      cur_max = max(x, cur_max + x)
+      max_sum = max(max_sum, cur_max)
+
+      # 2. 反向 Kadane：求最小連續子陣列和
+      cur_min = min(x, cur_min + x)
+      min_sum = min(min_sum, cur_min)
+
+    # 特例：若全為負數，max_sum < 0，此時 total_sum - min_sum 會得到 0 (非法空陣列)
+    if max_sum < 0:
+      return max_sum
+
+    # 答案取「未環繞最大和」與「環繞最大和 (全域和 - 最小和)」的較大值
+    return max(max_sum, total_sum - min_sum)
+
 
 # V0-3
 # IDEA: 2 * ARRAY + BRUTE FORCE (TLE)
