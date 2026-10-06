@@ -62,6 +62,31 @@ class Solution(object):
 
 # V0-1
 # IDEA: 2 PQ (small + big) + LAZY deletion + SLIDE WINDOW (GEMINI)
+"""
+DRY RUN:
+
+
+nums = [8, 2, 4, 7]
+limit = 4
+
+
+->
+
+
+| Step | `right` | `nums[right]` | `left` | Current Window | `small_pq[0]` → min | `big_pq[0]` → max | `max - min` | Action                              | `max_len` |
+| ---: | ------: | ------------: | -----: | -------------- | ------------------- | ----------------- | ----------: | ----------------------------------- | --------: |
+|    1 |       0 |             8 |      0 | `[8]`          | `[8, 0]` → 8        | `[-8, 0]` → 8     |         `0` | Valid                               |         1 |
+|    2 |       1 |             2 |      0 | `[8, 2]`       | `[2, 1]` → 2        | `[-8, 0]` → 8     |         `6` | `6 > 4` → `left = 1`                |         1 |
+|  2.1 |       1 |             — |      1 | `[2]`          | `[2, 1]` → 2        | `[-2, 1]` → 2     |         `0` | Lazy-delete index `0` from max heap |         1 |
+|    3 |       2 |             4 |      1 | `[2, 4]`       | `[2, 1]` → 2        | `[-4, 2]` → 4     |         `2` | Valid                               |         2 |
+|    4 |       3 |             7 |      1 | `[2, 4, 7]`    | `[2, 1]` → 2        | `[-7, 3]` → 7     |         `5` | `5 > 4` → `left = 2`                |         2 |
+|  4.1 |       3 |             — |      2 | `[4, 7]`       | `[4, 2]` → 4        | `[-7, 3]` → 7     |         `3` | Lazy-delete index `1` from min heap |         2 |
+
+
+NOTE:
+    -> 2.1, 4.1 are the `lazy deletion` step
+
+"""
 import heapq
 
 
