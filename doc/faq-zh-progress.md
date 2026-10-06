@@ -45,7 +45,7 @@ half-translated document renders with English gaps rather than failing.
   usually the text already there.
 
 
-## Status — 902 / 902 sections (100%)
+## Status — 915 / 915 sections (100%)
 
 | FAQ | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -58,6 +58,7 @@ half-translated document renders with English gaps rather than failing.
 | [backend/llm_tool_idempotency](./faq/backend/llm_tool_idempotency.md) | 27 | [✅](../i18n/zh/faq/backend/llm_tool_idempotency.md) |
 | [backend/overbooking_prevention](./faq/backend/overbooking_prevention.md) | 9 | [✅](../i18n/zh/faq/backend/overbooking_prevention.md) |
 | [backend/web_long_connections](./faq/backend/web_long_connections.md) | 13 | [✅](../i18n/zh/faq/backend/web_long_connections.md) |
+| [backend/webhook_integration](./faq/backend/webhook_integration.md) | 13 | [✅](../i18n/zh/faq/backend/webhook_integration.md) |
 | [backend/後端面試題總整理](./faq/backend/後端面試題總整理.md) | 88 | [✅](../i18n/zh/faq/backend/後端面試題總整理.md) |
 | [cs_basic](./faq/cs_basic.md) | 38 | [✅](../i18n/zh/faq/cs_basic.md) |
 | [db/faq_DB_DW](./faq/db/faq_DB_DW.md) | 19 | [✅](../i18n/zh/faq/db/faq_DB_DW.md) |
