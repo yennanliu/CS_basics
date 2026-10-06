@@ -410,6 +410,101 @@ def maxSubarraySumCircular(nums):
 # with the guard: if maxKadane < 0 (all negatives) return maxKadane.
 ```
 
+### Template 7: Two Deques — Window Max AND Min Under a Limit (LC 1438) ⭐⭐⭐⭐
+
+> **Twist vs Template 1**: the window is **variable-size** and needs **both** extremes. "Every
+> pair differs by at most `limit`" is the same as `max(window) - min(window) <= limit`, so run a
+> decreasing deque for the max and an increasing one for the min, and let the limit — not `k` —
+> decide when the front expires.
+
+```text
+nums = [10, 1, 2, 4, 7, 2], limit = 5
+
+r  x   max_q (after)  min_q (after)   max-min before shrink   left  len
+0  10  [10]           [10]             0                       0     1
+1  1   [1]            [1]              10-1 = 9 > 5  -> drop 10  1     1
+2  2   [2]            [1, 2]           1                       1     2
+3  4   [4]            [1, 2, 4]        3                       1     3
+4  7   [7]            [2, 4, 7]        7-1 = 6 > 5   -> drop 1   2     3
+5  2   [7, 2]         [2, 2]           5                       2     4   <- answer
+```
+
+```python
+# python
+# LC 1438 - Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit
+# IDEA: max_q decreasing, min_q increasing; fronts are the window max / min.
+#       Shrink left while max - min > limit, dropping a front only when it is nums[left].
+# time = O(N), space = O(N)
+from collections import deque
+
+def longestSubarray(nums, limit):
+    max_q = deque()   # values, decreasing
+    min_q = deque()   # values, increasing
+    left = 0
+    best = 0
+
+    for right in range(len(nums)):
+        x = nums[right]
+        # NOTE !!! strict < and > : equal values must stay (see pitfalls)
+        while max_q and max_q[-1] < x:
+            max_q.pop()
+        max_q.append(x)
+        while min_q and min_q[-1] > x:
+            min_q.pop()
+        min_q.append(x)
+
+        while max_q[0] - min_q[0] > limit:
+            if nums[left] == max_q[0]:
+                max_q.popleft()
+            if nums[left] == min_q[0]:
+                min_q.popleft()
+            left += 1
+
+        best = max(best, right - left + 1)
+
+    return best
+```
+
+```java
+// java
+// LC 1438 - Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit
+// IDEA: same two deques, but holding INDICES — comparing boxed Integer values with ==
+//       is only safe in [-128, 127], and nums[i] goes up to 1e9.
+// time = O(N), space = O(N)
+public int longestSubarray(int[] nums, int limit) {
+    Deque<Integer> maxQ = new ArrayDeque<>();   // indices, values decreasing
+    Deque<Integer> minQ = new ArrayDeque<>();   // indices, values increasing
+    int left = 0, best = 0;
+
+    for (int right = 0; right < nums.length; right++) {
+        while (!maxQ.isEmpty() && nums[maxQ.peekLast()] <= nums[right]) maxQ.pollLast();
+        maxQ.offerLast(right);
+        while (!minQ.isEmpty() && nums[minQ.peekLast()] >= nums[right]) minQ.pollLast();
+        minQ.offerLast(right);
+
+        while (nums[maxQ.peekFirst()] - nums[minQ.peekFirst()] > limit) {
+            if (maxQ.peekFirst() == left) maxQ.pollFirst();   // int == Integer unboxes: safe
+            if (minQ.peekFirst() == left) minQ.pollFirst();
+            left++;
+        }
+        best = Math.max(best, right - left + 1);
+    }
+    return best;
+}
+```
+
+**Pitfalls**
+
+- **Value deque → strict comparison.** With `<=`, `nums = [4, 4, 1, 4], limit = 2` keeps one `4`
+  in `max_q`; at `x = 1`, `left` passes the *first* `4`, `nums[left] == max_q[0]` pops the only
+  copy — the one still in the window — and `max_q[0]` raises `IndexError`.
+  An **index** deque has no such trap — indices are unique — so it may pop on `<=`.
+- **Check both fronts every step.** `nums[left]` can be the max *and* the min at once (a window
+  of equal values), so the two `if`s are independent, not `if / elif`.
+- **The heap alternative** — two heaps with lazy deletion by index, O(N log N) — is
+  [heap.md § 5](./heap.md#5-sliding-window-extrema--two-heaps--index-expiry-). Reach for it when
+  eviction is not oldest-first.
+
 ## Key Decision Guide
 
 ```text

@@ -489,9 +489,36 @@ public int longestSubarray(int[] nums, int limit) {
 }
 ```
 
-> **Heap vs monotonic deque**: LC 1438 also has an O(N) two-deque solution. Use the heap version
-> when the eviction rule is **not** "oldest first" (e.g. you evict by value or by an arbitrary
-> predicate) — a monotonic deque cannot express that.
+**Shrinking one step at a time** — the form most people write first, and also correct: advance
+`left` by 1 and purge after each step, instead of jumping. Same O(N log N) bound — `left` moves at
+most N times in total — it just loops more.
+
+```python
+# python
+# LC 1438 - shrink form: left += 1 per step, purge stale tops after each step
+# time = O(N log N), space = O(N)
+            while -max_h[0][0] - min_h[0][0] > limit:
+                left += 1
+                while max_h[0][1] < left:
+                    heapq.heappop(max_h)
+                while min_h[0][1] < left:
+                    heapq.heappop(min_h)
+```
+
+**Pitfalls**
+
+- **The tops are always fresh when you compare.** Every exit from the shrink loop has purged
+  both tops, and a newly pushed entry is never stale, so a second purge *before* the `while`
+  (right after the two pushes) does nothing. It is harmless, not needed.
+- **The purge loops need no `heap and` guard.** The entry just pushed has index `right >= left`,
+  so neither heap can empty while purging.
+- **Purge both heaps, not only the one whose top moved.** After the jump, the *other* heap's
+  top can also sit left of the new `left`.
+
+> **Heap vs monotonic deque**: LC 1438 also has an O(N) two-deque solution —
+> [monotonic_queue.md → Template 7](./monotonic_queue.md#template-7-two-deques--window-max-and-min-under-a-limit-lc-1438-).
+> Use the heap version when the eviction rule is **not** "oldest first" (e.g. you evict by value
+> or by an arbitrary predicate) — a monotonic deque cannot express that.
 
 **Variations of this template** (same "max-heap + expire by index/coordinate" shape):
 
