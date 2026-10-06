@@ -48,7 +48,8 @@ class Solution(object):
 # V0-1
 # IDEA: Kadane (gpt)
 """
-CORE IDEA:
+
+1. CORE IDEA:
 
 
 ->
@@ -60,6 +61,39 @@ CORE IDEA:
         total sum - minimum subarray
     )
     ```
+
+
+2.  `2 cases`
+
+
+
+    ->
+
+    Case 1: 不跨頭尾
+    [ - - - MAX - - - ]
+
+    => 普通 Kadane
+    => max_sum
+
+
+
+    Case 2: 跨頭尾
+
+    [ MAX ... MAX ]
+           ↑
+        中間不要
+
+    => total_sum - 中間最小的 subarray
+    => total_sum - min_sum   (NOTE this !!!)
+
+
+
+    -> so,
+
+        ```
+        answer = max(max_sum, total_sum - min_sum)
+        ```
+
 
 """
 class Solution(object):
@@ -95,6 +129,29 @@ class Solution(object):
             cur_min = min(val, cur_min + val)
             min_sum = min(min_sum, cur_min)
 
+
+        """
+        NOTE !!! edge case below (All negative)
+
+
+        ->
+
+        nums = [-3, -2, -5]
+
+
+        total_sum - min_sum = -10  - (-10) = 0
+
+        -> but 0 means choose NOTHING
+            -> which is NOT correct
+
+        -> so,
+
+            ```
+            if max_sum < 0:
+                return max_sum
+            ```
+
+        """
         # If all numbers are negative,
         # total_sum - min_sum would become 0,
         # which means choosing an empty subarray.
@@ -112,7 +169,7 @@ class Solution(object):
         #
         # Example:
         # [5, -3, 5]
-        # total = 7
+        # total = 7  ( sum([5, -3, 5]) = 7 )
         # min subarray = [-3]
         # circular max = 7 - (-3) = 10
         return max(max_sum, total_sum - min_sum)
