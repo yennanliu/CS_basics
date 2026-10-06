@@ -1,4 +1,4 @@
-20261006: top 100 like(2 pointers): 42 | top 100 like(linked list):  25 | others:  357(dp, todo), 2D LIS (354), 710(todo), 1696(todo, dp + mono deque)| DP: wildcard: 97(todo) | g recent:  1235 | others: 918(again) | basics: pre-fix sum, union find
+20261006: top 100 like(2 pointers): 42 | top 100 like(linked list):  25 | others:  357(dp, todo), 2D LIS (354), 710(todo), 1696(todo, dp + mono deque)| DP: wildcard: 97(todo) | g recent:  1235 | others: 918(again), 1438 | basics: pre-fix sum, union find
 
 
 20261005: top 100 like(2 pointers): 42 | top 100 like(linked list):  25 | others:  357(dp, todo), 2D LIS (354), 710(todo), 1696(todo, dp + mono deque), 388 (again!!), 636(again !!!) | DP: wildcard: 97(todo) | g recent:  1235 | others:  LFU(LC 460, again), LRU(LC 146 again !!!), 32(again!) | basics: pre-fix sum, union find

@@ -50,6 +50,17 @@ Constraints:
 """
 
 # V0
+class Solution(object):
+    def longestSubarray(self, nums, limit):
+        """
+        :type nums: List[int]
+        :type limit: int
+        :rtype: int
+        """
+        pass
+
+
+# V0-1
 # IDEA : SLIDE WINDOW + 2 MONOTONIC DEQUES (max deque decreasing, min deque increasing)
 #
 #   "every pair diff <= limit"  <=>  max(window) - min(window) <= limit,
