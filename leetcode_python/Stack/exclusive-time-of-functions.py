@@ -104,13 +104,15 @@ class Solution(object):
 # V0-1
 # IDEA: STACK
 """
-CORE IDEA:
+CORE IDEA V1:
 
     
     ->
 
 
         start:
+            (DON'T pop from stack)
+
             先結算上一個 active function
             push 新 function
 
@@ -120,6 +122,32 @@ CORE IDEA:
 
         prev_time:
             記錄「下一段 execution 從哪裡開始」
+
+
+
+CORE IDEA V2:
+
+
+
+        START:
+            (DON'T pop from stack)
+
+            settle previous function
+            push new function
+            prev_time = timestamp
+
+        END:
+            settle current function (+1)
+            pop current function
+            prev_time = timestamp + 1
+
+
+        ->
+
+
+        Start = 先結算舊的，再 push 新的。
+        End = 結算目前的（+1），再 pop。
+
 
 """
 class Solution(object):
@@ -145,6 +173,13 @@ class Solution(object):
         stack save `task id`
 
             -> [func_id_1, func_id_2, ...]
+
+
+
+        
+        -> `task id` is the ONLY thing we need to save (in stack) !!!
+
+
         """
         # Stack stores currently running function IDs
         stack = []
@@ -194,6 +229,20 @@ class Solution(object):
             # ---------------------------------------------
             if status == "start":
 
+                """
+                NOTE !!!
+
+
+                for `start` case,
+
+                we DON'T pop task from stack,
+                since the task ONLY go sleeping (pause),
+                NOT yet completed.
+
+                    -> CAN'T pop it from stack
+                        -> we will re-run the same task later.
+                """
+
                 # If another function is already running,
                 # it runs from prev_time until timestamp - 1.
                 if stack:
@@ -202,6 +251,13 @@ class Solution(object):
                 # New function starts running
                 stack.append(func_id)
 
+
+                """
+                NOTE !!!
+
+                we update cur time as prev time
+                (for next loop)
+                """
                 # Start timestamp is included
                 prev_time = timestamp
 
@@ -215,9 +271,18 @@ class Solution(object):
                 # through timestamp, INCLUDING timestamp.
                 ans[stack[-1]] += timestamp - prev_time + 1
 
+                # NOTE !!!
+                # ONLY pop when a task is finished
                 # Current function is finished
                 stack.pop()
 
+
+                """
+                NOTE !!!
+
+                we update cur time as prev time
+                (for next loop)
+                """
                 # Next timestamp starts after current function ends
                 prev_time = timestamp + 1
 
