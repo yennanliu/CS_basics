@@ -131,9 +131,34 @@ class Solution(object):
                 max_len = max(max_len, cur_depth)
 
 
+            """
             # NOTE !!!
-            # DON'T forget the update the len of current layer
-            # Store the path length at this layer.
+             
+
+             1 DON'T forget the update the len of current layer
+
+
+             2. we `Overwrite` the path len when meet same layer again later.
+
+
+                ->
+
+                    是的，完全正確！直接覆蓋（Overwrite）是必須且完全安全的。
+
+                    因為 LeetCode 388 的輸入格式本質上是檔案系統樹狀結構的 
+                    
+                    前序走訪（Pre-order DFS Traversal）。
+
+                ->
+
+                    當你在同一個層級 layer 遇到新的目錄或檔案時，代表前一個同層級的兄弟分支已經走訪完畢。
+
+                    後續如果出現更深層（layer + 1）的檔案，它只可能屬於最新出現的這個同層目錄，
+
+                    不可能屬於舊的目錄。因此，舊的長度記錄已經不再需要，直接覆蓋即可。
+
+            """
+            # Store / Overwrite the path length at this layer.
             layer_depth[layer] = cur_depth
 
         return max_len
