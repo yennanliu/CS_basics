@@ -77,7 +77,8 @@ AI tool calls, in [`llm_tool_idempotency.md`](./llm_tool_idempotency.md).
 
 Two mistakes interviewers listen for: returning `200 {"error": ...}` for failures (it
 breaks every client, proxy and monitor that reads the status line), and using `500` for a
-client's bad input.
+client's bad input. What each error means and how a client or server should handle it —
+retry or not, `502` vs `504` — is [`http_errors.md`](./http_errors.md).
 
 ---
 
