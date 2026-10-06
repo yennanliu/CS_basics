@@ -49,9 +49,28 @@ class Solution(object):
 
 
 # V0-1
-# IDEA: HASH MAP DP (gpt)
+# IDEA: `HASH MAP` DP (gpt)
 # time: O(N)
 # space: O(N)
+
+"""
+NOTE !!!
+
+
+DP def:
+
+    dp[x]：以數字 x 結尾的最長等差子序列長度。
+   
+
+
+DP eq:
+
+    prev = val - difference
+    
+    dp[val] = dp.get(prev, 0) + 1
+
+
+"""
 class Solution(object):
     def longestSubsequence(self, arr, difference):
         """
@@ -64,9 +83,20 @@ class Solution(object):
         NOTE !!!
 
 
-        a simple hash map is enough for this LC
+        a `simple hash map` is enough for this LC
         """
 
+
+
+        """
+        NOTE !!!
+
+        DP def:
+
+            dp[x]：以數字 x 結尾的最長等差子序列長度。
+
+        """
+       
         # dp[value] =
         # longest arithmetic subsequence ending with `value`
         #
