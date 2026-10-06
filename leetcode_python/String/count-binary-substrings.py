@@ -100,6 +100,34 @@ class Solution(object):
 
 
 # V0-1
+# IDEA :  Group By Character + continous sub-string (GEMINI)
+class Solution(object):
+
+  def countBinarySubstrings(self, s):
+    """:type s: str
+
+    :rtype: int
+    """
+    ans = 0
+    prev_cnt = 0  # 前一個連續字元群組的長度
+    curr_cnt = 1  # 當前連續字元群組的長度
+
+    for i in range(1, len(s)):
+      if s[i] == s[i - 1]:
+        curr_cnt += 1
+      else:
+        # 當字元切換時，結算前一對相鄰群組能構成的子字串數量
+        ans += min(prev_cnt, curr_cnt)
+        prev_cnt = curr_cnt
+        curr_cnt = 1
+
+    # 迴圈結束後，結算最後一對相鄰群組
+    ans += min(prev_cnt, curr_cnt)
+
+    return ans
+
+
+# V0-1
 # IDEA :  Group By Character + continous sub-string (gpt)
 """
 Core idea:
