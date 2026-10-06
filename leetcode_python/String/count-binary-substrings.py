@@ -264,29 +264,57 @@ class Solution(object):
         return ans + min(prev, cur)
 
 # V0-5
-# IDEA : BRUTE FORCE (TLE)
-# class Solution(object):
-#     def countBinarySubstrings(self, s):
-#         def check(x):
-#             #print ("x = " + str(x))
-#             _mid = len(x) // 2
-#             if ("0" * _mid + "1" * _mid) == x or ("1" * _mid + "0" * _mid) == x:
-#                 return True
-#             else:
-#                 return False  
-#         # edge case
-#         if not s:
-#             return 0
-#         #res = 0
-#         res = []
-#         for i in range(len(s)):
-#             for j in range(i+1, len(s)):
-#                 print ("s[i:j+1] = " + str(s[i:j+1]))
-#                 if (j - i + 1) % 2 == 0:
-#                     if check(s[i:j+1]):
-#                         res.append(s[i:j+1])
-#                         break
-#         return res
+# IDEA : BRUTE FORCE (TLE) (gpt)
+class Solution(object):
+    def countBinarySubstrings(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+
+        # Edge case
+        if not s or len(s) < 2:
+            return 0
+
+        n = len(s)
+        cnt = 0
+
+        for i in range(n):
+            for j in range(i + 1, n):
+
+                # Substring length must be even
+                length = j - i + 1
+
+                if length % 2 != 0:
+                    continue
+
+                mid = i + length // 2
+
+                # First half must be the same character
+                # Second half must be the other character.
+                #
+                # Example:
+                # 0011
+                # ----
+                # 00 | 11
+                #
+                # 0110
+                # ----
+                # 01 | 10 -> invalid
+                if len(set(s[i:mid])) != 1:
+                    continue
+
+                if len(set(s[mid:j + 1])) != 1:
+                    continue
+
+                # The two groups must be different.
+                if s[i] == s[mid]:
+                    continue
+
+                cnt += 1
+
+        return cnt
+
 
 # V1
 # IDEA :  Group By Character
