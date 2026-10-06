@@ -4,7 +4,8 @@
 > **See also**: [`authentication.md`](./authentication.md) — sessions and JWT;
 > [`be_programming_notes.md`](./be_programming_notes.md) — rate limiting, retries,
 > idempotency keys in code; [`web_long_connections.md`](./web_long_connections.md) —
-> streaming and push.
+> streaming and push; [`webhook_integration.md`](./webhook_integration.md) — receiving
+> webhooks reliably.
 
 "Design an API for X" is a warm-up in most backend interviews. What is being scored is
 whether you think about the **contract** — its evolution, its failure modes, and what a
@@ -200,7 +201,8 @@ GET  /jobs/9f2           → { "status": "running", "progress": 0.4 }
 Then let the client poll, or push with SSE/webhooks
 ([`web_long_connections.md`](./web_long_connections.md)). Webhooks you send need the same
 discipline you ask of others: signed payloads, at-least-once delivery with an event id so
-the receiver can dedupe, and retries with backoff.
+the receiver can dedupe, and retries with backoff. The receiving side — fast ACK, dedupe,
+DLQ, out-of-order events — is [`webhook_integration.md`](./webhook_integration.md).
 
 ---
 

@@ -1,11 +1,12 @@
-<!-- b72951692068 -->
+<!-- e75764621339 -->
 # API 設計 FAQ（REST，以及什麼時候不要用它）
 
 > **範圍** — 設計一支 HTTP API：資源建模、狀態碼、冪等、分頁、版本管理、錯誤格式、認證授權，以及 REST 和 GraphQL、gRPC 的比較。
 > **另見**：[`authentication.md`](./authentication.md) — session 與 JWT；
 > [`be_programming_notes.md`](./be_programming_notes.md) — 限流、重試、
 > 程式裡的冪等鍵；[`web_long_connections.md`](./web_long_connections.md) —
-> 串流與推播。
+> 串流與推播；[`webhook_integration.md`](./webhook_integration.md) — 可靠地
+> 接收 webhook。
 
 「幫 X 設計一支 API」是多數後端面試的暖身題。真正被評分的是：你有沒有在想這份
 **契約** —— 它怎麼演進、它會怎麼壞，以及客戶端要做什麼才能正確地用它。
@@ -161,7 +162,7 @@ Token 的機制 —— session 與 JWT、refresh token、撤銷 —— 在
 
 ---
 
-<!-- e27151a5cb95 -->
+<!-- 6842e3986f40 -->
 ## 8) 長時間與批次作業 ⭐⭐⭐
 
 任何慢到不該讓請求卡著等的事，就回一個 job：
@@ -171,7 +172,8 @@ Token 的機制 —— session 與 JWT、refresh token、撤銷 —— 在
 然後讓客戶端輪詢，或用 SSE／webhook 推給它
 （[`web_long_connections.md`](./web_long_connections.md)）。你送出去的 webhook 也要
 守你要求別人守的規矩：payload 要簽章、至少一次投遞並附事件 id 讓接收端去重，
-以及帶退避的重試。
+以及帶退避的重試。接收端的做法 —— 快速 ACK、去重、DLQ、亂序事件 —— 見
+[`webhook_integration.md`](./webhook_integration.md)。
 
 ---
 
