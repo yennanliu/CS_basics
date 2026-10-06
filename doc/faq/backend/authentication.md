@@ -80,19 +80,27 @@ app.post('/login', (req, res) => {
 
 ## 2. JWT（JSON Web Token）
 
+**JWT** 是一種開放標準（**RFC 7519**），用來在雙方之間安全地傳遞一個 JSON 物件。
+
+通俗來說，JWT 就像一張**數位工作證**：使用者登入成功後，伺服器發給他這張卡；之後每次請求只要出示這張卡，
+伺服器驗過上面的數位簽章沒被動過，就能確認身分並授予權限 —— **不需要回頭查資料庫或 Session 表**。
+
 ### 結構
 
-JWT 由三部分組成，以 `.` 分隔：`xxxxx.yyyyy.zzzzz`
+JWT 由三部分組成，以 `.` 分隔：`Header.Payload.Signature`（`xxxxx.yyyyy.zzzzz`）
 
-1. **Header（標頭）**：標註 token 類型（JWT）與加密演算法（如 HS256）
-2. **Payload（負載）**：存放非敏感使用者資料（如 `userId`、`role`、`exp` 過期時間）
-3. **Signature（簽章）**：伺服器用私鑰對前兩部分進行雜湊運算
+1. **Header（標頭）**：標註 token 類型（`JWT`）與簽章演算法（如 `HS256`、`RS256`）
+2. **Payload（負載）**：存放傳遞的資料，稱為 **Claims** —— 例如使用者 ID（`sub`）、過期時間（`exp`）、權限角色（`role`）
+3. **Signature（簽章）**：把 Base64URL 編碼後的 Header 與 Payload，用伺服器保管的金鑰簽名 —— 這是**防止 Token 被竄改**的關鍵
+   - `HS256`（HMAC）：簽發與驗證用**同一把共享密鑰**
+   - `RS256`（RSA）：**私鑰簽發、公鑰驗證**，適合多個服務只需驗證、不該能簽發的微服務架構
 
 ```text
 Signature = HMACSHA256(base64(Header) + "." + base64(Payload), SecretKey)
 ```
 
-> Payload 只是 Base64 編碼，**任何人都能解碼**。絕對不要存密碼等敏感資料！
+> **安全觀念**：Header 與 Payload 只是 Base64URL **編碼，不是加密**，任何人都能解碼讀出內容。
+> 簽章保證的是「**沒被竄改**」，不是「**看不到**」—— 絕對不要把密碼或敏感資料放進 Payload！
 
 ### 標準流程
 
@@ -111,7 +119,7 @@ Signature = HMACSHA256(base64(Header) + "." + base64(Payload), SecretKey)
 > 常見的錯誤就是「存在 `HttpOnly Cookie`，然後前端在 header 裡加 Bearer」—— `HttpOnly` 的重點正是讓
 > JavaScript 讀不到那個值，所以第 4 步組不出來。要嘛讓瀏覽器自動送 cookie，要嘛把 token 交給前端保管。
 
-4. **伺服器校驗**：伺服器用 Secret Key 重新計算簽章，若一致且未過期，則視為合法
+4. **伺服器校驗**：伺服器用金鑰重新驗證簽章，若一致且未過期（`exp`），則視為合法 —— **不需查資料庫**即可確認身分並回傳資料
 
 ### 雙 Token 機制（推薦實作）
 
@@ -180,6 +188,9 @@ function verifyToken(req, res, next) {
 | **擴充性** | 較難（多台伺服器需同步） | 極佳（適合微服務） |
 | **安全控制** | 高（可即時撤銷） | 較低（過期前難以撤銷） |
 | **頻寬消耗** | 小（只傳 Session ID） | 較大（含使用者資料與簽名） |
+| **伺服器記憶體** | 需維護 Session 表，多台伺服器需共用 Redis | 零負擔（伺服器不存任何狀態） |
+| **跨網域 / 微服務** | Cookie 受同源與 `SameSite` 限制 | 支援良好（帶 `Authorization` header 即可，適合分散式 API） |
+| **註銷 / 登出** | 刪除 Session 即刻失效 | 難以主動註銷（需黑名單，或靠短效 Access Token + Refresh Token） |
 | **主要攻擊** | Session Hijacking | XSS、Token 外洩 |
 
 ---
