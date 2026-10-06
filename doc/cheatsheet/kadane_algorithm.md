@@ -301,86 +301,135 @@ Index | nums[i] | maxProd              | minProd              | result
 
 ### 1-4) Circular Maximum Subarray (LC 918)
 
-**Key Insight:** Maximum can occur in two scenarios:
-1. **Normal**: Maximum subarray doesn't wrap around
-2. **Circular**: Maximum subarray wraps around edges
+**Key Insight:** a circular array gives the best subarray only two shapes, and each one is a plain Kadane:
 
-**Circular Maximum = Total Sum - Minimum Subarray**
+```text
+Case 1: no wrap                    Case 2: wraps the end
+[ . . [ max subarray ] . . ]       [ kept ][  min subarray  ][ kept ]
+answer = max_sum                   answer = total_sum - min_sum
+                                   (keeping both ends = dropping the cheapest middle)
+```
+
+**Circular Maximum = max(max_sum, total_sum - min_sum)**: one pass runs the max-Kadane and the min-Kadane side by side.
 
 ```python
-# Python
+# python
+# LC 918 - Maximum Sum Circular Subarray
+# IDEA: max-Kadane for the non-wrapping case, min-Kadane for the wrapping case
+# time = O(N), space = O(1)
 def maxSubarraySumCircular(nums):
-    """
-    Time: O(n)
-    Space: O(1)
-    """
-    def kadane(arr):
-        current = maximum = arr[0]
-        for i in range(1, len(arr)):
-            current = max(arr[i], current + arr[i])
-            maximum = max(maximum, current)
-        return maximum
-
-    # Case 1: Maximum subarray is normal (non-circular)
-    max_normal = kadane(nums)
-
-    # Case 2: Maximum subarray is circular
-    # Circular max = Total sum - minimum subarray
     total_sum = sum(nums)
 
-    # Find minimum subarray (negate array and find max)
-    negated = [-x for x in nums]
-    max_negated = kadane(negated)
-    min_subarray = -max_negated
+    # Kadane for the maximum subarray
+    cur_max = nums[0]
+    max_sum = nums[0]
 
-    max_circular = total_sum - min_subarray
+    # Kadane for the minimum subarray (the middle a wrap leaves out)
+    cur_min = nums[0]
+    min_sum = nums[0]
 
-    # Edge case: if all numbers are negative
-    if max_circular == 0:
-        return max_normal
+    for i in range(1, len(nums)):
+        val = nums[i]
 
-    return max(max_normal, max_circular)
+        # best / worst subarray ending exactly at i
+        cur_max = max(val, cur_max + val)
+        max_sum = max(max_sum, cur_max)
+
+        cur_min = min(val, cur_min + val)
+        min_sum = min(min_sum, cur_min)
+
+    # All negative: the min subarray is the whole array, so
+    # total_sum - min_sum == 0 is the EMPTY subarray, which is not allowed
+    if max_sum < 0:
+        return max_sum
+
+    return max(max_sum, total_sum - min_sum)
 ```
 
 ```java
-// Java
+// java
 // LC 918 - Maximum Sum Circular Subarray
+// IDEA: max-Kadane for the non-wrapping case, min-Kadane for the wrapping case
+// time = O(N), space = O(1)
 public int maxSubarraySumCircular(int[] nums) {
-    /**
-     * time = O(N)
-     * space = O(1)
-     */
-    int curMax = 0;
-    int curMin = 0;
-    int maxSum = nums[0];
-    int minSum = nums[0];
     int totalSum = 0;
+    int curMax = 0, maxSum = nums[0];
+    int curMin = 0, minSum = nums[0];
 
     for (int num : nums) {
-        // Normal Kadane's for maximum
+        // Normal Kadane's for the maximum subarray
         curMax = Math.max(curMax, 0) + num;
         maxSum = Math.max(maxSum, curMax);
 
-        // Kadane's for minimum (find minimum subarray)
+        // Kadane's for the minimum subarray
         curMin = Math.min(curMin, 0) + num;
         minSum = Math.min(minSum, curMin);
 
         totalSum += num;
     }
 
-    // Edge case: all negative numbers
-    if (totalSum == minSum) {
+    // All negative: totalSum - minSum would be the empty subarray
+    if (maxSum < 0) {
         return maxSum;
     }
-
-    // Return max of normal case or circular case
     return Math.max(maxSum, totalSum - minSum);
 }
 ```
 
-**Why it works:**
-- If max subarray wraps around, removing the middle part (minimum subarray) leaves the maximum
-- `Total Sum - Min Subarray = Max Circular Subarray`
+**Step-by-step example:** `nums = [5, -3, 5]`
+
+```text
+ i |  x | cur_max | max_sum | cur_min | min_sum
+---+----+---------+---------+---------+--------
+ 0 |  5 |    5    |    5    |    5    |    5
+ 1 | -3 |    2    |    5    |   -3    |   -3
+ 2 |  5 |    7    |    7    |    2    |   -3
+
+total_sum = 7
+Case 1 (no wrap)  : max_sum           = 7    [5, -3, 5]
+Case 2 (wrap)     : 7 - (-3)          = 10   [5] + [5], dropping [-3]
+answer            = max(7, 10)        = 10
+```
+
+**Why the guard is needed:** `nums = [-3, -2, -3]` gives `total_sum = -8`, `min_sum = -8` (the whole array), so `total_sum - min_sum = 0`, which is the sum of keeping *nothing*. The answer must be non-empty, so it is `max_sum = -2`. `if (totalSum == minSum) return maxSum;` is an equivalent check: it says "the min subarray is the whole array" directly.
+
+**Alternative: best prefix + best suffix.** Here no subtraction trick and no empty-subarray guard are needed, at the cost of an `O(N)` array. A wrapping subarray is a prefix `nums[0..i]` plus a suffix starting after `i`, so precompute the best suffix sum from each index:
+
+```python
+# python
+# LC 918 - Maximum Sum Circular Subarray
+# IDEA: answer = max(plain Kadane, best prefix + best suffix that does not overlap it)
+# time = O(N), space = O(N)
+def maxSubarraySumCircular(nums):
+    n = len(nums)
+
+    # right_max[i] = best sum of a suffix that starts at index >= i
+    right_max = [0] * n
+    right_max[n - 1] = nums[n - 1]
+    suffix_sum = nums[n - 1]
+    for i in range(n - 2, -1, -1):
+        suffix_sum += nums[i]
+        right_max[i] = max(right_max[i + 1], suffix_sum)
+
+    max_sum = nums[0]       # Case 1: plain Kadane
+    special_sum = nums[0]   # Case 2: prefix + suffix
+    cur_max = 0
+    prefix_sum = 0
+    for i in range(n):
+        cur_max = max(cur_max, 0) + nums[i]
+        max_sum = max(max_sum, cur_max)
+
+        prefix_sum += nums[i]
+        if i + 1 < n:
+            special_sum = max(special_sum, prefix_sum + right_max[i + 1])
+
+    return max(max_sum, special_sum)
+```
+
+**Pitfalls:**
+- Dropping the `max_sum < 0` guard returns `0` on an all-negative array.
+- Doubling the array (`nums + nums`) and trying every start with length `<= n` is correct but `O(N^2)`, which TLEs at `n = 3 * 10^4`. The doubled-array idea only reaches `O(N)` with prefix sums and a window-bounded deque: see [monotonic_queue.md](./monotonic_queue.md) (Template 6).
+- The min-Kadane must run in the **same** pass from the same start (`nums[0]`), so `min_sum` is a non-empty subarray.
 
 ---
 
@@ -875,25 +924,7 @@ public int maxProduct(int[] nums) {
 ```
 
 ### 6-3) Maximum Sum Circular Subarray (LC 918) — Kadane + Total Sum Trick
-> Max circular subarray = max(normal max subarray, total sum - min subarray).
-
-```java
-// LC 918 - Maximum Sum Circular Subarray
-// IDEA: max circular = max(kadane result, total - minSubarray)
-// time = O(N), space = O(1)
-public int maxSubarraySumCircular(int[] nums) {
-    int totalSum = 0, curMax = 0, curMin = 0, maxSum = nums[0], minSum = nums[0];
-    for (int num : nums) {
-        curMax = Math.max(curMax + num, num);
-        maxSum = Math.max(maxSum, curMax);
-        curMin = Math.min(curMin + num, num);
-        minSum = Math.min(minSum, curMin);
-        totalSum += num;
-    }
-    // if all negative, maxSum is the answer (totalSum - minSum = 0 is invalid)
-    return maxSum > 0 ? Math.max(maxSum, totalSum - minSum) : maxSum;
-}
-```
+> Max circular subarray = max(normal max subarray, total sum - min subarray). The full section, with the code, the trace, the all-negative guard and the prefix + suffix alternative, is [1-4) Circular Maximum Subarray](#1-4-circular-maximum-subarray-lc-918).
 
 ### 6-4) Best Time to Buy and Sell Stock (LC 121) — Kadane Variant
 > Track running minimum price; max profit = current price − running minimum.
