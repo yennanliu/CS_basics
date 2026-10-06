@@ -172,6 +172,22 @@ class Solution(object):
         # Compute dp[i] for every position
         for i in range(n):
 
+            """
+            NOTE !!!
+
+
+            in 2nd loop,
+
+            -> we loop from 0, to i (e.g. [0, i])
+
+            -> so,
+
+                |-----------|
+                     i      n
+
+                j -> i    
+            """
+
             # Look at every previous position
             for j in range(i):
 
