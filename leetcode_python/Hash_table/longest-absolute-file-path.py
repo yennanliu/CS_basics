@@ -62,14 +62,82 @@ input may contain lowercase or uppercase English letters, a new line character '
 """
 
 # V0
+# IDEA: HASHMAP + STR OP + Observation (gpt)
 class Solution(object):
     def lengthLongestPath(self, input):
         """
         :type input: str
         :rtype: int
         """
-        pass
-        
+
+        # Edge case
+        if not input:
+            return 0
+
+        # { layer: total path length at this layer }
+        #
+        # Example:
+        # layer 0 -> "dir"
+        # layer 1 -> "subdir"
+        # layer 2 -> "file.ext"
+        layer_depth = {}
+
+        input_list = input.split("\n")
+
+        max_len = 0
+
+        for x in input_list:
+
+            """
+            NOTE !!!
+
+
+            key of this LC
+
+             -> Number of "\t" means the layer of current file/path
+            """
+
+            # Number of "\t" tells us the current layer/depth.
+            #
+            # Example:
+            # "dir"            -> 0
+            # "\tsubdir"       -> 1
+            # "\t\tfile.ext"   -> 2
+            layer = x.count("\t")
+
+            # Remove leading "\t" so we can get the actual name.
+            name = x.lstrip("\t")
+
+            # Length of the current name
+            name_len = len(name)
+
+            
+            # update cur_depth
+            # case 1) root dir
+            if layer == 0:
+                # Root directory
+                cur_depth = name_len
+            
+            # case 2) not root
+            else:
+                # Parent path length + "/" + current name
+                prev_depth = layer_depth[layer - 1]
+                cur_depth = prev_depth + 1 + name_len
+
+
+            # update max len
+            # If this is a file, update the answer.
+            if "." in name:
+                max_len = max(max_len, cur_depth)
+
+
+            # NOTE !!!
+            # DON'T forget the update the len of current layer
+            # Store the path length at this layer.
+            layer_depth[layer] = cur_depth
+
+        return max_len
+
 
 # VO-1
 # IDEA: STR + STACK OP (gpt)
@@ -202,7 +270,43 @@ class Solution(object):
     return max_len
 
 
-# V0-1
+# V0-3
+# IDEA : HASH TABLE (gemini)
+class Solution(object):
+
+  def lengthLongestPath(self, input):
+    """:type input: str
+
+    :rtype: int
+    """
+    if not input:
+      return 0
+
+    # { layer: cumulative_length_without_slashes }
+    # 預設 -1 層長度為 0，方便第 0 層 (根目錄) 進行運算
+    path_len = {-1: 0}
+    max_len = 0
+
+    for line in input.split('\n'):
+      # 去除前導 \t 並計算當前層級 (depth)
+      name = line.lstrip('\t')
+      depth = len(line) - len(name)
+
+      # 當前總長度 (不含斜線) = 父目錄長度 + 當前名稱長度
+      curr_len = path_len[depth - 1] + len(name)
+
+      # 若名稱包含 '.' 說明是檔案，更新最大路徑長度
+      if '.' in name:
+        # 完整的絕對路徑長度 = 字元總長 + 斜線數量 (斜線數量恰好等於 depth)
+        max_len = max(max_len, curr_len + depth)
+      else:
+        # 若是目錄，記錄/覆蓋當前層級的累積長度
+        path_len[depth] = curr_len
+
+    return max_len
+
+
+# V0-4
 # IDEA : HASH TABLE
 # time = O(n)
 # space = O(d)  # d = max depth of the paths
@@ -222,7 +326,7 @@ class Solution(object):
 
 
 
-# V0-4
+# V0-5
 # IDEA : dict + replae, split
 # time = O(n * d)  # n = len(input), d = max depth (directory levels seen so far)
 # space = O(d)  # d = max depth of the paths
@@ -248,7 +352,7 @@ class Solution(object):
         return longest
 
 
-# V0-2
+# V0-6
 # IDEA : stack + string op
 # time = O(n)  # n = len(input); amortized stack push/pop
 # space = O(d)  # d = max depth of the paths
