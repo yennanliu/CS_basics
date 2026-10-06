@@ -101,6 +101,31 @@ class Solution(object):
 
 # V0-1
 # IDEA :  Group By Character + continous sub-string (GEMINI)
+"""
+CORE IDEA:
+
+    -> 連續相同字元的群組化 (Group Counting)
+
+
+
+    ->
+
+
+        1. 將連續相同的字元進行分組計數：
+
+                例如 s = "00011110"  連續數量為 [3, 4, 1]（3 個 '0'，4 個 '1'，1 個 '0'）。
+
+
+        2. 對於相鄰的兩個分組，例如 3 個 '0' 與 4 個 '1'：
+
+            它們所能組成的合法二元子字串數量為 min(3, 4) = 3$（即 "01", "0011", "000111"）。
+
+
+        3.
+
+        因此，總合法數量 = 所有相鄰分組數量的 min(prev_cnt, cur_cnt) 累加和。
+
+"""
 class Solution(object):
 
   def countBinarySubstrings(self, s):
