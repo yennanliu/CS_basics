@@ -49,8 +49,6 @@
 - ★★★★★
 
 	- 樹狀資料結構 — 概念與模式
-		- https://yennj12.js.org/CS_basics/cheatsheets/tree.zh.html
-			- `1.4-1) 不需要佇列的走訪`
 
 		- https://yennj12.js.org/CS_basics/cheatsheets/tree2.zh.html
 
@@ -150,7 +148,11 @@
   - 二分搜尋
   - 樹的 LCA、距離與路徑問題
   - Linked List（鏈結串列）
-
+	- 樹狀資料結構 — 概念與模式
+		- https://yennj12.js.org/CS_basics/cheatsheets/tree.zh.html
+			- `高度 vs 深度模式`
+				- again
+			
 
 
 
