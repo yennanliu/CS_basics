@@ -60,7 +60,104 @@ class Solution(object):
         pass
 
 
+
 # V0-1
+# IDEA: 2 PQ (small + big) + LAZY deletion (gpt)
+import heapq
+
+
+class Solution(object):
+    def longestSubarray(self, nums, limit):
+        """
+        :type nums: List[int]
+        :type limit: int
+        :rtype: int
+        """
+
+        if not nums:
+            return 0
+
+        # Min heap: (value, index)
+        small_pq = []
+
+        # Max heap: (-value, index)
+        big_pq = []
+
+        left = 0
+        max_len = 0
+
+        for right in range(len(nums)):
+            val = nums[right]
+
+            # Add current value into both heaps
+            heapq.heappush(small_pq, (val, right))
+            heapq.heappush(big_pq, (-val, right))
+
+            # Remove stale elements from min heap
+            while small_pq and small_pq[0][1] < left:
+                heapq.heappop(small_pq)
+
+            # Remove stale elements from max heap
+            while big_pq and big_pq[0][1] < left:
+                heapq.heappop(big_pq)
+
+            # Current window is invalid
+            while -big_pq[0][0] - small_pq[0][0] > limit:
+
+                left += 1
+
+                # Remove elements that are now outside the window
+                while small_pq and small_pq[0][1] < left:
+                    heapq.heappop(small_pq)
+
+                while big_pq and big_pq[0][1] < left:
+                    heapq.heappop(big_pq)
+
+            # Current window is valid
+            max_len = max(max_len, right - left + 1)
+
+        return max_len
+
+
+# V0-2
+# IDEA: 2 PQ (small + big) + LAZY deletion (GEMINI)
+import heapq
+
+
+class Solution(object):
+
+  def longestSubarray(self, nums, limit):
+    """:type nums: List[int]
+
+    :type limit: int
+    :rtype: int
+    """
+    min_heap = []  # (val, idx)
+    max_heap = []  # (-val, idx)
+    left = 0
+    max_len = 0
+
+    for right, val in enumerate(nums):
+      heapq.heappush(min_heap, (val, right))
+      heapq.heappush(max_heap, (-val, right))
+
+      # 當當前視窗最大值與最小值的差超過 limit 時，收縮左界
+      while -max_heap[0][0] - min_heap[0][0] > limit:
+        left += 1
+
+        # 惰性刪除：清除已經超出左界 left 的頂端過期元素
+        while min_heap[0][1] < left:
+          heapq.heappop(min_heap)
+
+        while max_heap[0][1] < left:
+          heapq.heappop(max_heap)
+
+      max_len = max(max_len, right - left + 1)
+
+    return max_len
+
+
+# V0-3
 # IDEA : SLIDE WINDOW + 2 MONOTONIC DEQUES (max deque decreasing, min deque increasing)
 #
 #   "every pair diff <= limit"  <=>  max(window) - min(window) <= limit,
@@ -129,7 +226,7 @@ class Solution(object):
 import heapq
 
 
-class Solution2(object):
+class Solution(object):
     def longestSubarray(self, nums, limit):
         """
         :type nums: List[int]
