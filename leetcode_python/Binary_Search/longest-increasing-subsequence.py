@@ -169,6 +169,17 @@ class Solution(object):
             j = a previous position that we try to connect to i.
 
         """
+
+        """
+        NOTE !!!
+
+
+        -> need double loop !!!
+
+            -> nums[i] 不一定只需要跟 nums[i-1] 比較，
+              而是要跟 `前面所有` nums[j] 比較。
+
+        """
         # Compute dp[i] for every position
         for i in range(n):
 
@@ -210,7 +221,74 @@ class Solution(object):
 
 
 # V0-0-1
-# IDEA: 1D DP
+# IDEA: 1D DP + DOUBLE LOOP
+# time = O(n^2)
+# space = O(n)
+"""
+
+DP def
+
+    dp[i] 代表以 nums[i] 為`結尾`的`最長遞增子序列長度`
+
+
+DP eq
+
+    ```
+       if nums[j] < nums[i]:
+          dp[i] = max(dp[i], dp[j] + 1)
+    ```
+
+"""
+class Solution(object):
+    def lengthOfLIS(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        # Edge case
+        if not nums:
+            return 0
+
+        if len(nums) == 1:
+            return 1
+
+        n = len(nums)
+
+        # dp[i] = length of the longest increasing subsequence
+        #         ending at nums[i]
+        dp = [1] * n
+
+        max_seq_len = 1
+
+        """
+        NOTE !!!
+
+
+        -> need double loop !!!
+
+            -> nums[i] 不一定只需要跟 nums[i-1] 比較，
+              而是要跟 `前面所有` nums[j] 比較。
+
+        """
+        for i in range(n):
+            val = nums[i]
+
+            # Check all previous elements
+            for j in range(i):
+                prev = nums[j]
+
+                # nums[j] can be the previous element
+                # of the increasing subsequence ending at nums[i]
+                if val > prev:
+                    dp[i] = max(dp[i], dp[j] + 1)
+
+            max_seq_len = max(max_seq_len, dp[i])
+
+        return max_seq_len
+
+
+# V0-0-2
+# IDEA: 1D DP + DOUBLE LOOP
 # time = O(n^2)
 # space = O(n)
 """
