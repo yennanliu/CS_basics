@@ -52,6 +52,92 @@ The test cases are generated such that there is only one possible originalText.
 
 """
 
+
+# V0-1
+# IDEA: MATRIX + ARRAY OP (gpt)
+class Solution(object):
+    def decodeCiphertext(self, encodedText, rows):
+        """
+        :type encodedText: str
+        :type rows: int
+        :rtype: str
+        """
+        # Edge case
+        if not encodedText:
+            return ""
+
+        if rows == 1:
+            return encodedText
+
+        # Get matrix width.
+        width = len(encodedText) // rows
+
+        # Build matrix.
+        matrix = [[""] * width for _ in range(rows)]
+
+        for i in range(len(encodedText)):
+            x = i % width
+            y = i // width
+            matrix[y][x] = encodedText[i]
+
+        # Prepare result.
+        res = []
+
+        # Read the matrix diagonally:
+        #
+        # (0, 0) -> (1, 1) -> (2, 2)
+        #
+        # (0, 1) -> (1, 2) -> (2, 3)
+        #
+        # (0, 2) -> (1, 3) -> (2, 4)
+        #
+        # Start from each column in the first row.
+        for start_x in range(width):
+            y = 0
+            x = start_x
+
+            # Move down + right.
+            while y < rows and x < width:
+                res.append(matrix[y][x])
+
+                y += 1
+                x += 1
+
+        # Remove trailing spaces.
+        return "".join(res).rstrip()
+
+
+# V0-2
+# IDEA: ARRAY OP (gemini)
+class Solution(object):
+
+  def decodeCiphertext(self, encodedText, rows):
+    """:type encodedText: str
+
+    :type rows: int
+    :rtype: str
+    """
+    if not encodedText or rows == 1:
+      return encodedText
+
+    cols = len(encodedText) // rows
+    res = []
+
+    # 對角線起點由第 0 列的每一欄 c (0 ~ cols-1) 開始
+    for c in range(cols):
+      # 沿著斜對角線向下移動：(r, c + r)
+      for r in range(rows):
+        if c + r < cols:
+          # 計算 2D 座標 (r, c + r) 在一維字串中的索引
+          idx = r * cols + (c + r)
+          res.append(encodedText[idx])
+        else:
+          break  # 超出右邊界，結束當前對角線
+
+    # 組合字串並去除尾隨空格
+    return "".join(res).rstrip()
+
+
 # V0
 # IDEA : REBUILD THE MATRIX SHAPE, THEN READ IT BACK ALONG ITS DIAGONALS
 #
