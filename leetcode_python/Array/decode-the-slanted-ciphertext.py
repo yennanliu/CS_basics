@@ -53,87 +53,103 @@ The test cases are generated such that there is only one possible originalText.
 """
 
 # V0
-# IDEA : READ THE MATRIX BACK ALONG ITS DIAGONALS
+# IDEA : REBUILD THE MATRIX SHAPE, THEN READ IT BACK ALONG ITS DIAGONALS
 #
-#   the matrix is rows x cols with  cols = len(encodedText) // rows, laid out
-#   row-wise in encodedText. the original text was written along the
-#   diagonals, so reading it back means, for each start column c :
-#       encodedText[0*cols + c], encodedText[1*cols + c+1], ... until the
-#       column index runs past cols
+#   encodedText is the rows x cols matrix flattened row by row, so
+#       cols = len(encodedText) // rows   and   cell (r, c) = encodedText[r * cols + c]
+#   originalText was written diagonal by diagonal (top-left -> bottom-right),
+#   starting from column 0, then column 1, ... -- so walking each diagonal in
+#   start-column order gives the characters back in their original order.
 #
-#   finally strip the padding: originalText has no TRAILING spaces (interior
-#   spaces are real, e.g. "i love leetcode"), so a single rstrip is correct.
+#   e.g. "ch   ie   pr", rows = 3 -> cols = 4
+#        c h _ _        diag from col 0 : c i p
+#        _ i e _        diag from col 1 : h e r
+#        _ _ p r        diag from col 2 : _ _ / col 3 : _
+#        -> "cipher  " -> strip trailing padding -> "cipher"
 #
-#   NOTE : rows == 1 (or an empty input) falls out of the same loop.
+#   the padding cells are spaces, and originalText has NO trailing spaces, so
+#   one rstrip removes exactly the padding (interior spaces are real text).
 #
-# time = O(len(encodedText)), space = O(len(encodedText))
+# time = O(n), space = O(n)   (n = len(encodedText))
 class Solution(object):
     def decodeCiphertext(self, encodedText, rows):
-        if rows == 0 or not encodedText:
+        """
+        :type encodedText: str
+        :type rows: int
+        :rtype: str
+        """
+        # edge case: nothing was encoded
+        if not encodedText:
             return ""
+
         cols = len(encodedText) // rows
-        out = []
-        for c in range(cols):
-            r, cc = 0, c
-            while r < rows and cc < cols:
-                out.append(encodedText[r * cols + cc])
-                r += 1
-                cc += 1
-        return ''.join(out).rstrip()
+
+        decoded_chars = []
+        # each start column begins one diagonal of the original text
+        for start_col in range(cols):
+            row = 0
+            col = start_col
+            # walk down-right until we fall off the bottom or the right edge
+            while row < rows and col < cols:
+                decoded_chars.append(encodedText[row * cols + col])
+                row += 1
+                col += 1
+
+        decoded = "".join(decoded_chars)
+
+        # NOTE !!! strip only the TRAILING padding -- interior spaces are part
+        #          of the original text (e.g. "i love leetcode")
+        return decoded.rstrip()
 
 
-# V0-1
-# IDEA : INVERSE INDEX MAP (SCATTER) + PREFIX SUMS
+# V1
+# IDEA : SCATTER -- SEND EACH ENCODED CHARACTER STRAIGHT TO ITS FINAL SLOT
 #
-#   instead of GATHERING the answer diagonal by diagonal, push every
-#   encoded character straight to the slot it occupies in originalText.
+#   V0 GATHERS the answer diagonal by diagonal. this goes the other way: one
+#   left-to-right pass over encodedText, writing every character directly
+#   into its position in the answer.
 #
-#   the diagonal starting at column d holds min(rows, cols - d) characters,
-#   so start[d] = sum of the earlier diagonal lengths tells where diagonal d
-#   begins inside originalText.
-#   encoded position p sits at (r, c) = divmod(p, cols) and belongs to
-#   diagonal d = c - r at offset r  ->  originalText[start[c - r] + r] = ch.
-#   cells with c < r are the padding the encoder wrote, so they are skipped.
+#   cell (r, c) lies on the diagonal that started at column d = c - r, at
+#   offset r along it. cells with c < r belong to no diagonal (padding).
+#   diagonal d holds min(rows, cols - d) cells, so a prefix sum over the
+#   diagonal lengths gives where diagonal d starts in the answer:
+#       answer[diag_start[d] + r] = encodedText[r * cols + c]
 #
-# time = O(len(encodedText)), space = O(len(encodedText))
-class Solution(object):
+#   NOTE : same bound as V0 and harder to say out loud -- learn V0 first.
+#
+# time = O(n), space = O(n)   (n = len(encodedText))
+class Solution2(object):
     def decodeCiphertext(self, encodedText, rows):
-        if rows == 0 or not encodedText:
+        """
+        :type encodedText: str
+        :type rows: int
+        :rtype: str
+        """
+        # edge case: nothing was encoded
+        if not encodedText:
             return ""
+
         cols = len(encodedText) // rows
-        start = [0] * cols
-        total = 0
+
+        # diag_start[d] = index in the answer where diagonal d begins
+        diag_start = [0] * cols
+        total_length = 0
         for d in range(cols):
-            start[d] = total
-            total += min(rows, cols - d)
+            diag_start[d] = total_length
+            diag_length = min(rows, cols - d)
+            total_length += diag_length
 
-        out = [' '] * total
-        for p, ch in enumerate(encodedText):
-            r, c = divmod(p, cols)
-            if c >= r:
-                out[start[c - r] + r] = ch
-        return ''.join(out).rstrip()
+        decoded_chars = [" "] * total_length
+        for pos in range(len(encodedText)):
+            row = pos // cols
+            col = pos % cols
+            # cells left of the main diagonal start no diagonal -> padding
+            if col < row:
+                continue
+            diag = col - row
+            decoded_chars[diag_start[diag] + row] = encodedText[pos]
 
+        decoded = "".join(decoded_chars)
 
-# V0-2
-# IDEA : A DIAGONAL IS AN ARITHMETIC PROGRESSION -> STRIDED SLICING
-#
-#   moving one step down-right in the matrix moves cols + 1 characters
-#   forward in the flat encodedText, so the whole diagonal starting at
-#   column c is just the slice encodedText[c :: cols + 1].
-#   that slice runs off the bottom of the matrix (it wraps into later rows'
-#   earlier columns), so cut it at its true length min(rows, cols - c).
-#
-#   no per-character indexing at all: cols slices, then one join.
-#
-# time = O(len(encodedText)), space = O(len(encodedText))
-class Solution(object):
-    def decodeCiphertext(self, encodedText, rows):
-        if rows == 0 or not encodedText:
-            return ""
-        cols = len(encodedText) // rows
-        step = cols + 1
-        out = []
-        for c in range(cols):
-            out.append(encodedText[c::step][:min(rows, cols - c)])
-        return ''.join(out).rstrip()
+        # strip only the trailing padding, as in V0
+        return decoded.rstrip()
