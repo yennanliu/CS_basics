@@ -46,7 +46,7 @@ class Solution(object):
 
 
 # V0-1
-# IDEA: Kadane (gpt)
+# IDEA: Kadane (DP) + max_sum, cur_max, min_sum, cur_min (gpt)
 """
 
 1. CORE IDEA:
@@ -95,6 +95,14 @@ class Solution(object):
         ```
 
 
+3. 
+    need to maintain 4 var (for Kadane):
+
+         max_sum
+         cur_max
+         min_sum
+         cur_min
+
 """
 class Solution(object):
     def maxSubarraySumCircular(self, nums):
@@ -118,6 +126,9 @@ class Solution(object):
         min_sum = nums[0]
         cur_min = nums[0]
 
+
+        # NOTE !!!
+        # i starts from 1
         for i in range(1, len(nums)):
             val = nums[i]
 
