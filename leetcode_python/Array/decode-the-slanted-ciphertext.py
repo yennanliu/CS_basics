@@ -138,6 +138,42 @@ class Solution(object):
     return "".join(res).rstrip()
 
 
+# V0-3
+# IDEA: MATRIX + ARRAY OP (GEMINI)
+class Solution(object):
+
+  def decodeCiphertext(self, encodedText, rows):
+    """:type encodedText: str
+
+    :type rows: int
+    :rtype: str
+    """
+    if not encodedText or rows == 1:
+      return encodedText
+
+    cols = len(encodedText) // rows
+
+    # 1. 建構 2D 矩陣
+    matrix = [[""] * cols for _ in range(rows)]
+    for i, ch in enumerate(encodedText):
+      r = i // cols
+      c = i % cols
+      matrix[r][c] = ch
+
+    res = []
+
+    # 2. 以第 0 列的每一欄 c 為起點，往右下角 (r+1, c+1) 走訪
+    for c in range(cols):
+      curr_r, curr_c = 0, c
+      while curr_r < rows and curr_c < cols:
+        res.append(matrix[curr_r][curr_c])
+        curr_r += 1
+        curr_c += 1
+
+    # 3. 回傳前必須去除尾隨空格
+    return "".join(res).rstrip()
+
+
 # V0
 # IDEA : REBUILD THE MATRIX SHAPE, THEN READ IT BACK ALONG ITS DIAGONALS
 #
