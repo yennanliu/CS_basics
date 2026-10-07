@@ -1,4 +1,4 @@
-20261007: top 100 like(2 pointers): 42 | top 100 like(linked list):  25 | DP: wildcard: 97(todo) | g recent:  1235 | others: 1438,   | basics: pre-fix sum, union find | others:  357(dp, todo), 2D LIS (354), 710(todo), 1696(todo, dp + mono deque), 696 (again), 1249 (again)
+20261007: top 100 like(2 pointers): 42 | top 100 like(linked list):  25 | DP: wildcard: 97(todo) | g recent:  1235 | others: 1438,   | basics: pre-fix sum, union find | others:  357(dp, todo), 2D LIS (354), 710(todo), 1696(todo, dp + mono deque), 696 (again), 1249 (again), 918(again)
 
 
 
