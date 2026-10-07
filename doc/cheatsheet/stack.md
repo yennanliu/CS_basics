@@ -151,7 +151,8 @@ Counter vs Stack (interview discriminator):
 
 Similar LC:
   - LC 20    Valid Parentheses                        (base template)
-  - LC 1249  Minimum Remove to Make Valid Parentheses (stack of indices -> delete)
+  - LC 1249  Minimum Remove to Make Valid Parentheses (stack of indices -> delete;
+                                                    also two counter scans, no stack)
   - LC 921   Minimum Add to Make Parentheses Valid    (balance counter)
   - LC 32    Longest Valid Parentheses                (index stack + `-1` base;
                                                     also 1D DP, or two counter scans for O(1) space)
@@ -228,7 +229,7 @@ class Solution(object):
 
 | LC | Twist | Stack holds |
 |----|-------|-------------|
-| 1249 | repair, not just validate | *indices* of unmatched `(` |
+| 1249 | repair, not just validate | *indices* of unmatched `(` — or no stack: two counter scans, one per direction |
 | 921 | one bracket type only, so a counter suffices — O(1) space | nothing (the stack degenerates to its size) |
 | 32 | length of the longest valid run | indices plus a `-1` **base** sentinel |
 | 856 | fold a score out of the nesting | the partial **result** of each depth |

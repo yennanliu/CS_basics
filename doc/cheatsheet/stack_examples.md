@@ -1304,6 +1304,100 @@ class Solution(object):
         return ''.join(arr)
 ```
 
+> **Two counter scans, no stack**: there is only one bracket type, so — as in LC 921 — the stack
+> can degenerate to a counter. A counter cannot remember *where* the surplus `(` sit, so split
+> the job by direction. Left→right, drop every `)` that arrives with no `(` open before it.
+> Whatever survives can only be broken by a `(` that has no `)` after it, so run the mirror
+> pass right→left and drop every `(` that arrives with no `)` open. Each pass removes only
+> brackets that *cannot* be matched, which is why the removal is minimal. Same O(n); the reason
+> to know it is the follow-up *"can you do it without the index stack?"*, and it is the same
+> two-direction trick as LC 32's counter scans.
+
+```java
+// java
+// LC 1249 - Minimum Remove to Make Valid Parentheses
+// IDEA: 2 SCANS with a balance counter — drop unmatched ')' left->right, unmatched '(' right->left
+// time = O(n), space = O(n) for the two output buffers; O(1) beyond them
+public String minRemoveToMakeValid(String s) {
+
+    // pass 1: left -> right; a ')' with no '(' open before it can never be matched
+    StringBuilder kept = new StringBuilder();
+    int openCnt = 0;
+    for (char c : s.toCharArray()) {
+        if (c == ')') {
+            if (openCnt == 0) {
+                continue;      // unmatched ')' -> drop
+            }
+            openCnt--;
+        } else if (c == '(') {
+            openCnt++;
+        }
+        kept.append(c);
+    }
+
+    /** NOTE !!! pass 2 is the mirror: a '(' with no ')' open after it can never be matched */
+    StringBuilder res = new StringBuilder();
+    int closeCnt = 0;
+    for (int i = kept.length() - 1; i >= 0; i--) {
+        char c = kept.charAt(i);
+        if (c == '(') {
+            if (closeCnt == 0) {
+                continue;      // unmatched '(' -> drop
+            }
+            closeCnt--;
+        } else if (c == ')') {
+            closeCnt++;
+        }
+        res.append(c);
+    }
+    return res.reverse().toString(); // pass 2 built it backwards
+}
+```
+
+```python
+# python
+# LC 1249 - Minimum Remove to Make Valid Parentheses
+# IDEA: 2 SCANS with a balance counter — drop unmatched ')' left->right, unmatched '(' right->left
+# time = O(n), space = O(n) for the two output buffers; O(1) beyond them
+class Solution(object):
+    def minRemoveToMakeValid(self, s):
+        # pass 1: left -> right; a ')' with no '(' open before it can never be matched
+        kept = []
+        open_cnt = 0
+        for c in s:
+            if c == ')':
+                if open_cnt == 0:
+                    continue        # unmatched ')' -> drop
+                open_cnt -= 1
+            elif c == '(':
+                open_cnt += 1
+            kept.append(c)
+
+        # pass 2: right -> left, the mirror; a '(' with no ')' open after it can never be matched
+        res = []
+        close_cnt = 0
+        for c in reversed(kept):
+            if c == '(':
+                if close_cnt == 0:
+                    continue        # unmatched '(' -> drop
+                close_cnt -= 1
+            elif c == ')':
+                close_cnt += 1
+            res.append(c)
+
+        res.reverse()               # pass 2 built it backwards
+        return ''.join(res)
+```
+
+```text
+Two passes — s = ")((a)"
+
+pass 1, left -> right   )  open=0 -> drop       (  open=1   (  open=2   a   )  open=1
+                        kept = "((a)"
+pass 2, right -> left   )  close=1   a   (  close=0   (  close=0 -> drop
+                        res  = "(a)"                                          ✓
+```
+
 #### 14) Minimum Add to Make Parentheses Valid — LC 921
 
 > **Twist**: with only `(` and `)`, the stack degenerates into its own **size**, so a running balance gives O(1) space. `balance < 0` means a `)` arrived too early → we must insert a `(` and reset.
