@@ -61,6 +61,11 @@ class Solution(object):
         if not s or len(s) <= 1:
             return s
 
+        """
+        NOTE !!!
+
+        stack: save "(" index
+        """
         st = []
         chars = list(s)
 
@@ -85,6 +90,7 @@ class Solution(object):
                     # This ')' has no matching '('
                     chars[i] = ""
 
+        # NOTE !!! below
         # Any '(' left in stack is unmatched.
         # Remove them.
         while st:
@@ -102,6 +108,13 @@ class Solution(object):
     """:type s: str
 
     :rtype: str
+    """
+
+
+    """
+    NOTE !!!
+
+    stack: save "(" index
     """
     stack = []  # 存放 '(' 的索引
     to_remove = set()  # 存放所有需刪除的 '(' 與 ')' 索引
