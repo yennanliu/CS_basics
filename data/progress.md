@@ -59,6 +59,9 @@
 
 	- 對答案做二分搜尋
 		- https://yennj12.js.org/CS_basics/cheatsheets/binary_search_on_answer.zh.html
+			- `Path With Minimum Effort — LC 1631，判定式是一張圖`S
+
+
 
 
 	- 0/1 背包 DP（0/1 Knapsack 中文詳解）
@@ -207,6 +210,10 @@
 			- others
 				- 275 
 					- H-Index II
+			- Split Array Largest Sum 
+				— LC 41
+			- 最小化最大值
+				- LC 2616
 
 		- Tree LCA
 			- p / q 可能不在樹裡。
