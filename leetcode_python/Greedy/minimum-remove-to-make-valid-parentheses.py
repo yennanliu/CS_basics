@@ -40,6 +40,96 @@ s[i] is either '(' , ')', or lowercase English letter.
 """
 
 # V0
+class Solution(object):
+    def minRemoveToMakeValid(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        pass
+
+# V0-1
+# IDEA: STACK (gpt)
+class Solution(object):
+    def minRemoveToMakeValid(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+
+        # Edge case
+        if not s or len(s) <= 1:
+            return s
+
+        st = []
+        chars = list(s)
+
+        n = len(chars)
+
+        # Find invalid ')'
+        for i in range(n):
+
+            val = chars[i]
+
+            if val == "(":
+                # Store the index of '('
+                st.append(i)
+
+            elif val == ")":
+
+                # We have a matching '('
+                if st:
+                    st.pop()
+
+                else:
+                    # This ')' has no matching '('
+                    chars[i] = ""
+
+        # Any '(' left in stack is unmatched.
+        # Remove them.
+        while st:
+            idx = st.pop()
+            chars[idx] = ""
+
+        return "".join(chars)
+
+
+# V0-2
+# IDEA: STACK (GEMINI)
+class Solution(object):
+
+  def minRemoveToMakeValid(self, s):
+    """:type s: str
+
+    :rtype: str
+    """
+    stack = []  # 存放 '(' 的索引
+    to_remove = set()  # 存放所有需刪除的 '(' 與 ')' 索引
+
+    # 1. 標記所有非法的 '(' 與 ')' 索引
+    for i, ch in enumerate(s):
+      if ch == "(":
+        stack.append(i)
+      elif ch == ")":
+        if stack:
+          stack.pop()  # 成功配對
+        else:
+          to_remove.add(i)  # 多餘的 ')'
+
+    # 2. stack 中剩餘的都是未被配對到的 '('
+    to_remove.update(stack)
+
+    # 3. 過濾非法索引，組合出合法字串
+    res = []
+    for i, ch in enumerate(s):
+      if i not in to_remove:
+        res.append(ch)
+
+    return "".join(res)
+
+
+
+# V0-3
 # IDEA : GREEDY, TWO PASSES
 """
  Pass 1 (left -> right) : drop every ')' that has no unmatched '(' before it

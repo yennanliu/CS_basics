@@ -173,10 +173,6 @@
 			- 647
 		
 		- String:
-			- Template 3：Run-Length 分組
-				- 696
-			- Template 6：解析結構化文字（分隔符切割 + 深度／堆疊
-				- 388
 			- Template 7：原地 char 陣列 — 先標記再重建 — LC 1249
 				- 1249
 			- Template 8：依最後出現位置貪婪切分 — LC 763
