@@ -394,38 +394,7 @@ def maxSubArray(nums):
 **🚫 The classic bug**: initialising `leftBest = 0`. That silently allows an *empty* suffix, so an all-negative array returns `0` instead of the largest single element. Start from `-infinity` and force both halves to be non-empty.
 
 #### **Variation: LC 918 — Maximum Sum Circular Subarray**
-> The twist: a wrap-around segment is exactly the complement of a **non**-wrapping one, so `answer = max(maxKadane, total - minKadane)`. Guard the all-negative case, where `total - minKadane == 0` describes the forbidden empty array.
-
-```java
-// java
-// LC 918 - Maximum Sum Circular Subarray
-// IDEA: best is either a normal subarray, or everything EXCEPT the minimum subarray
-// time = O(N), space = O(1)
-public int maxSubarraySumCircular(int[] nums) {
-    int total = 0, curMax = 0, best = Integer.MIN_VALUE, curMin = 0, worst = Integer.MAX_VALUE;
-    for (int x : nums) {
-        total  += x;
-        curMax = Math.max(curMax + x, x); best  = Math.max(best, curMax);
-        curMin = Math.min(curMin + x, x); worst = Math.min(worst, curMin);
-    }
-    return best > 0 ? Math.max(best, total - worst) : best;   // all-negative -> plain Kadane
-}
-```
-
-```python
-# python
-# LC 918 - Maximum Sum Circular Subarray
-# time = O(N), space = O(1)
-def maxSubarraySumCircular(nums):
-    total, cur_max, best, cur_min, worst = 0, 0, float('-inf'), 0, float('inf')
-    for x in nums:
-        total += x
-        cur_max = max(cur_max + x, x)
-        best = max(best, cur_max)
-        cur_min = min(cur_min + x, x)
-        worst = min(worst, cur_min)
-    return max(best, total - worst) if best > 0 else best
-```
+> The twist: a wrap-around segment is exactly the complement of a **non**-wrapping one, so `answer = max(maxKadane, total - minKadane)`. Guard the all-negative case, where `total - minKadane == 0` describes the forbidden empty array. That makes it an `O(N)` one-pass Kadane, not a midpoint combine. The code, the trace, the guard and the prefix + suffix alternative live in [kadane_algorithm.md — 1-4) Circular Maximum Subarray](./kadane_algorithm.md#1-4-circular-maximum-subarray-lc-918).
 
 ---
 

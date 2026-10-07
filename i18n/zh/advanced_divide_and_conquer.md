@@ -137,13 +137,9 @@
 
 **🚫 經典 bug**：把 `leftBest` 初始化成 `0`。這等於偷偷允許了*空*的後綴，於是全負數陣列會回傳 `0`，而不是最大的那個單一元素。要從 `-infinity` 開始，並且強制兩半都非空。
 
-<!-- bb8946c5ac48 -->
+<!-- 38990affa028 -->
 #### **變形：LC 918 —— Maximum Sum Circular Subarray**
-> 轉折點：繞回頭的區段，剛好就是某個**不**繞回頭區段的補集，所以 `answer = max(maxKadane, total - minKadane)`。要特別擋掉全負數的情況 —— 那時 `total - minKadane == 0` 描述的是被禁止的空陣列。
-
-<!--CODE-->
-
-<!--CODE-->
+> 轉折點：繞回頭的區段，剛好就是某個**不**繞回頭區段的補集，所以 `answer = max(maxKadane, total - minKadane)`。要特別擋掉全負數的情況 —— 那時 `total - minKadane == 0` 描述的是被禁止的空陣列。因此它是 `O(N)` 的一趟 Kadane，而不是跨中點合併。程式碼、逐步追蹤、全負數防護，以及 prefix + suffix 的替代解法，都在 [kadane_algorithm.md — 1-4) Circular Maximum Subarray](./kadane_algorithm.md#1-4-circular-maximum-subarray-lc-918)。
 
 ---
 
