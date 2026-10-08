@@ -55,52 +55,120 @@ The number of nodes in the list is in the range [1, 10^5].
 # V0
 # IDEA : WALK GROUP BY GROUP, REVERSE IN PLACE WHEN THE ACTUAL LENGTH IS EVEN
 #
-#   `prev` always points at the node just before the current group. for group
-#   size k, first count how many nodes are ACTUALLY there (the tail group may
-#   be short) — that real count, not k, decides odd/even.
+#   `prev` always points at the node just BEFORE the current group. for the
+#   group of target size k, first count how many nodes are ACTUALLY there —
+#   the tail group may be short, and that real count, not k, decides odd/even.
 #
-#   if even, reverse those `cnt` nodes with the standard head-insertion loop
-#   and re-link :  prev.next -> new head,  old head -> the rest.
+#   e.g. [1,1,0,6,5] -> groups [1] [1,0] [6,5] : the last group's target is 3
+#        but only 2 nodes remain -> even -> reversed -> [1,0,1,5,6]
 #
-#   NOTE : after reversing, the OLD group head becomes the group tail, which
-#          is the `prev` for the next round.
+#   if even, reverse those `count` nodes with the standard pointer-flip loop,
+#   then re-link both ends :  prev.next -> new group head,
+#                             old group head (now the tail) -> rest of list.
 #
 # time = O(n), space = O(1)
+
+
 # Definition for singly-linked list.
-# class ListNode(object):
-#     def __init__(self, val=0, next=None):
-#         self.val = val
-#         self.next = next
+class ListNode(object):
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+
 class Solution(object):
     def reverseEvenLengthGroups(self, head):
+        """
+        :type head: Optional[ListNode]
+        :rtype: Optional[ListNode]
+        """
+        # dummy node so the group before the first group always exists
         dummy = ListNode(0)
         dummy.next = head
         prev = dummy
-        k = 1
+        group_size = 1
+
         while prev.next:
-            # how many nodes does this group really have, and where does it end?
-            cnt = 0
+            # count the nodes this group really has, and remember its last node
+            count = 0
             node = prev.next
-            last = None
-            while node and cnt < k:
-                last = node
-                cnt += 1
+            group_tail = None
+            while node and count < group_size:
+                group_tail = node
+                count += 1
                 node = node.next
 
             group_head = prev.next
-            if cnt % 2 == 0:
-                # reverse `cnt` nodes starting at group_head
+            # NOTE !!! parity of the ACTUAL count, not of group_size
+            if count % 2 == 0:
+                # reverse `count` nodes starting at group_head
                 cur = group_head
-                new_head = None
-                for _ in range(cnt):
+                reversed_head = None
+                for _ in range(count):
                     nxt = cur.next
-                    cur.next = new_head
-                    new_head = cur
+                    cur.next = reversed_head
+                    reversed_head = cur
                     cur = nxt
-                prev.next = new_head
-                group_head.next = cur   # group_head is now the group tail
+                # cur is now the first node AFTER the group
+                prev.next = reversed_head
+                group_head.next = cur
+                # the old head is the new tail -> it precedes the next group
                 prev = group_head
             else:
-                prev = last             # untouched group -> its own last node
-            k += 1
+                # untouched group -> its own last node precedes the next group
+                prev = group_tail
+
+            group_size += 1
+
         return dummy.next
+
+
+# V1
+# IDEA : COPY VALUES INTO AN ARRAY, REVERSE EVEN GROUPS AS SLICES, WRITE BACK
+#
+#   the list's SHAPE never changes — only which value sits in which node.
+#   so read every value into an array, walk the same group boundaries over
+#   indices, reverse the values of each even-length group, then write the
+#   array back into the nodes in order.
+#
+#   NOTE : simpler to get right live (no pointer re-linking), but O(n) extra
+#          space — say so, and offer V0 when asked for O(1).
+#
+# time = O(n), space = O(n)
+class Solution2(object):
+    def reverseEvenLengthGroups(self, head):
+        """
+        :type head: Optional[ListNode]
+        :rtype: Optional[ListNode]
+        """
+        # collect values in list order
+        values = []
+        node = head
+        while node:
+            values.append(node.val)
+            node = node.next
+
+        n = len(values)
+        start = 0
+        group_size = 1
+        while start < n:
+            # the last group may be cut short by the end of the list
+            end = min(start + group_size, n)    # exclusive
+            if (end - start) % 2 == 0:
+                # reverse values[start:end] with two pointers
+                left = start
+                right = end - 1
+                while left < right:
+                    values[left], values[right] = values[right], values[left]
+                    left += 1
+                    right -= 1
+            start = end
+            group_size += 1
+
+        # write the (partly reversed) values back into the same nodes
+        node = head
+        for val in values:
+            node.val = val
+            node = node.next
+
+        return head
