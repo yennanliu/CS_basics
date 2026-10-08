@@ -84,6 +84,8 @@ class Solution(object):
         res = []
 
         # Read the matrix diagonally:
+        #  
+        # (x, y)
         #
         # (0, 0) -> (1, 1) -> (2, 2)
         #
@@ -92,14 +94,24 @@ class Solution(object):
         # (0, 2) -> (1, 3) -> (2, 4)
         #
         # Start from each column in the first row.
+
+        """
+        NOTE !!!
+
+        -> how we process matrix (with down + right direction)
+           via below trick
+
+        """
         for start_x in range(width):
             y = 0
             x = start_x
 
+            # NOTE !!! key
             # Move down + right.
             while y < rows and x < width:
                 res.append(matrix[y][x])
 
+                # NOTE !!! key
                 y += 1
                 x += 1
 
