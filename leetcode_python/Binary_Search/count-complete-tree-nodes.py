@@ -34,7 +34,59 @@ The tree is guaranteed to be complete.
 
 """
 
+# NOTE !!!
+# Design an algorithm that runs in less than O(n) time complexity.
+
 # V0 
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution(object):
+    def countNodes(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: int
+        """
+        
+        pass
+
+
+
+# V0-1
+# IDEA: DFS (TLE: should use < O(N) time complexity)
+class Solution(object):
+
+    def countNodes(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: int
+        """
+        # edge
+        if not root:
+            return 0
+
+        if not root.left and not root.right:
+            return 1
+
+        self.cnt = 0
+
+        self.helper(root)
+
+        return self.cnt
+
+
+    def helper(self, root):
+        if not root:
+            return
+        self.cnt += 1
+
+        self.helper(root.left)
+        self.helper(root.right)
+
+
 
 # V1 
 # http://bookshadow.com/weblog/2015/06/06/leetcode-count-complete-tree-nodes/
