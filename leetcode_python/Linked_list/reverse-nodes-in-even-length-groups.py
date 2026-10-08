@@ -108,6 +108,11 @@ class Solution(object):
 
         while cur and processed < _len:
 
+            # NOTE !!!
+            #   edge case:
+            #    -> last group size may smaller than expected (e.g. < group)
+            #    -> so we have this: ` g_len = min(group, _len - processed)`
+            
             # Actual group size may be smaller than expected
             # for the last group.
             g_len = min(group, _len - processed)
