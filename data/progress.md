@@ -48,13 +48,6 @@
 
 - ★★★★★
 
-	- 樹狀資料結構 — 概念與模式
-
-		- https://yennj12.js.org/CS_basics/cheatsheets/tree2.zh.html
-			- `3.7) 最長路徑模板 — LC 543`
-
-
-
 
 
 	- 0/1 背包 DP（0/1 Knapsack 中文詳解）
@@ -148,6 +141,7 @@
   - Linked List（鏈結串列）
 	- 樹狀資料結構 — 概念與模式
 		- https://yennj12.js.org/CS_basics/cheatsheets/tree.zh.html
+		- tree2.zh.html
 			- `高度 vs 深度模式`
 				- again
 	- 對答案做二分搜尋
@@ -233,6 +227,8 @@
 			 	- LC 437 Path Sum III
 			 	- LC 113 Path Sum II
 			 	- LC 127 Path Sum
+			 - 用前綴和數路徑
+			 	- LC 437
 			 - Path
 			 	-  LC 687 Longest Univalue Path
 			 - 高度驗證模板 — LC 110
@@ -261,7 +257,15 @@
 			 	  — LC 117
 			 	  - LC 116
 			 - 後序樹 DP（回傳一對值）模板
-			 	  — LC 337 
+			 	  — LC 337
+			 - 完全樹節點計數模板	
+			  	— LC 222 
+			 - 組出路徑的數值
+			  	- LC 129
+			 - 序列化／反序列化
+			 		- LC 105, 106
+			 - 樹轉字串
+			 	 - 606
 
 
 
