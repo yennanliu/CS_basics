@@ -54,8 +54,50 @@ class Solution(object):
         pass
 
 
-
 # V0-1
+# IDEA: binary tree property (gemini)
+class Solution(object):
+
+  def countNodes(self, root):
+    """:type root: Optional[TreeNode]
+
+    :rtype: int
+    """
+    if not root:
+      return 0
+
+    left_height = self.getLeftHeight(root)
+    right_height = self.getRightHeight(root)
+
+    # 若最左深度等於最右深度，說明此樹為滿二元樹，節點數為 2^h - 1
+    if left_height == right_height:
+
+      # V1
+      #return (1 << left_height) - 1
+
+      # V2
+      return 2**left_height - 1
+
+    # 否則遞迴計算左右子樹並加上根節點自己
+    return 1 + self.countNodes(root.left) + self.countNodes(root.right)
+
+  def getLeftHeight(self, node):
+    h = 0
+    while node:
+      h += 1
+      node = node.left
+    return h
+
+  def getRightHeight(self, node):
+    h = 0
+    while node:
+      h += 1
+      node = node.right
+    return h
+
+
+
+# V0-3
 # IDEA: DFS (TLE: should use < O(N) time complexity)
 class Solution(object):
 
@@ -164,4 +206,3 @@ class Solution(object):
                 node = node.right
             k >>= 1
         return node is not None
-
