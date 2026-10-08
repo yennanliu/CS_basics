@@ -48,7 +48,65 @@ class Solution(object):
         """
         pass
 
+
 # V0-1
+# IDEA: STACK (gpt)
+class Solution(object):
+    def minRemoveToMakeValid(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        # Edge case
+        if not s:
+            return ""
+
+        # Stack stores the index of unmatched "(".
+        st = []
+
+        n = len(s)
+
+        # Store indexes of characters that should be removed.
+        to_remove_idx = set()
+
+        for i in range(n):
+            val = s[i]
+
+            # Case 1: "("
+            if val == "(":
+                st.append(i)
+
+            # Case 2: ")"
+            elif val == ")":
+                if st:
+                    # Match this ")" with the latest "(".
+                    st.pop()
+                else:
+                    # No "(" available to match this ")".
+                    # Therefore, this ")" must be removed.
+                    to_remove_idx.add(i)
+
+            # Case 3: normal character
+            else:
+                # Normal characters do not affect parentheses balance.
+                continue
+
+        # Any remaining "(" in the stack are unmatched.
+        # They must also be removed.
+        while st:
+            to_remove_idx.add(st.pop())
+
+        # Build the final string.
+        tmp = []
+
+        for i in range(n):
+            if i not in to_remove_idx:
+                tmp.append(s[i])
+
+        return "".join(tmp)
+
+
+# V0-2
 # IDEA: STACK (gpt)
 class Solution(object):
     def minRemoveToMakeValid(self, s):
@@ -100,7 +158,7 @@ class Solution(object):
         return "".join(chars)
 
 
-# V0-2
+# V0-3
 # IDEA: STACK (GEMINI)
 class Solution(object):
 
@@ -142,7 +200,7 @@ class Solution(object):
 
 
 
-# V0-3
+# V0-4
 # IDEA : GREEDY, TWO PASSES
 """
  Pass 1 (left -> right) : drop every ')' that has no unmatched '(' before it
