@@ -57,13 +57,6 @@
 
 
 
-	- 對答案做二分搜尋
-		- https://yennj12.js.org/CS_basics/cheatsheets/binary_search_on_answer.zh.html
-			- `Path With Minimum Effort — LC 1631，判定式是一張圖`
-
-
-
-
 	- 0/1 背包 DP（0/1 Knapsack 中文詳解）
 		- https://yennj12.js.org/CS_basics/cheatsheets/knapsack_01_zh.zh.html
 
@@ -155,6 +148,7 @@
 		- https://yennj12.js.org/CS_basics/cheatsheets/tree.zh.html
 			- `高度 vs 深度模式`
 				- again
+	- 對答案做二分搜尋
 			
 
 
@@ -214,6 +208,8 @@
 				— LC 41
 			- 最小化最大值
 				- LC 2616
+			- 最大化最小值
+				- 1552
 			- work with graph
 				- LC 1631
 				- LC 778
