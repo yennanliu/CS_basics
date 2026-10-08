@@ -59,7 +59,7 @@
 
 	- 對答案做二分搜尋
 		- https://yennj12.js.org/CS_basics/cheatsheets/binary_search_on_answer.zh.html
-			- `Path With Minimum Effort — LC 1631，判定式是一張圖`S
+			- `Path With Minimum Effort — LC 1631，判定式是一張圖`
 
 
 
@@ -214,6 +214,10 @@
 				— LC 41
 			- 最小化最大值
 				- LC 2616
+			- work with graph
+				- LC 1631
+				- LC 778
+
 
 		- Tree LCA
 			- p / q 可能不在樹裡。
