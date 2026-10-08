@@ -52,8 +52,31 @@ The number of nodes in the list is in the range [1, 10^5].
 
 """
 
+
 # V0
-# IDEA : WALK GROUP BY GROUP, REVERSE IN PLACE WHEN THE ACTUAL LENGTH IS EVEN
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution(object):
+    def reverseEvenLengthGroups(self, head):
+        """
+        :type head: Optional[ListNode]
+        :rtype: Optional[ListNode]
+        """
+        pass
+   
+
+# V0-1
+
+
+# V0-2     
+
+
+
+# V0-5
+# IDEA : WALK GROUP BY GROUP, REVERSE IN PLACE WHEN THE ACTUAL LENGTH IS EVEN (CLAUDE)
 #
 #   `prev` always points at the node just BEFORE the current group. for the
 #   group of target size k, first count how many nodes are ACTUALLY there —
@@ -123,8 +146,8 @@ class Solution(object):
         return dummy.next
 
 
-# V1
-# IDEA : COPY VALUES INTO AN ARRAY, REVERSE EVEN GROUPS AS SLICES, WRITE BACK
+# V0-6
+# IDEA : COPY VALUES INTO AN ARRAY, REVERSE EVEN GROUPS AS SLICES, WRITE BACK (CLAUDE)
 #
 #   the list's SHAPE never changes — only which value sits in which node.
 #   so read every value into an array, walk the same group boundaries over
