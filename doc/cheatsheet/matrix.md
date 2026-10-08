@@ -461,6 +461,110 @@ for (int i = 0; i < m; i++)
 
 **Why row-major refill works:** traversal visits each diagonal's cells top-left → bottom-right, so polling the min-heap in that order writes values in ascending order along every diagonal.
 
+##### Diagonal Walk — step `(r + 1, c + 1)` from a start cell ⭐⭐⭐⭐
+
+The grouping key above **collects** a diagonal; this **walks** one, cell by cell, in order. Pick a
+start cell, then move down and right together until either index falls off the grid — no key, no
+map, and the cells come out in the order the diagonal was written. Reach for it when the *order*
+along each diagonal is the answer (read a message back, emit a traversal), not just which cells
+share a diagonal.
+
+**Key Idea**: one diagonal = one start cell + one step `(dr, dc)`. Which cells you start from
+decides which diagonals you see; the step decides the direction.
+
+```python
+# IDEA: walk each down-right diagonal from its start cell on the top row
+# time = O(m * n), space = O(1) beyond the output
+def walk_down_right_from_top_row(matrix):
+    rows, cols = len(matrix), len(matrix[0])
+    res = []
+    for start_col in range(cols):           # one diagonal per top-row cell
+        r, c = 0, start_col
+        while r < rows and c < cols:        # stop at the bottom OR the right edge
+            res.append(matrix[r][c])
+            r += 1                          # down ...
+            c += 1                          # ... and right, in the same step
+    return res
+```
+
+```java
+// java
+// IDEA: walk each down-right diagonal from its start cell on the top row
+// time = O(m * n), space = O(1) beyond the output
+List<Integer> walkDownRightFromTopRow(int[][] matrix) {
+    int rows = matrix.length, cols = matrix[0].length;
+    List<Integer> res = new ArrayList<>();
+    for (int startCol = 0; startCol < cols; startCol++) {
+        int r = 0, c = startCol;
+        while (r < rows && c < cols) {      // stop at the bottom OR the right edge
+            res.add(matrix[r][c]);
+            r++;                            // down ...
+            c++;                            // ... and right, in the same step
+        }
+    }
+    return res;
+}
+```
+
+**Which start cells, which diagonals** — the loop body never changes, only the starts and the step:
+
+| Walk | Step `(dr, dc)` | Start cells | Diagonals covered | Problems |
+|---|---|---|---|---|
+| ↘ top row only | `(+1, +1)` | `(0, c)` for every `c` | the main diagonal and everything **above** it | LC 2075 |
+| ↘ every diagonal | `(+1, +1)` | `(0, c)` for every `c`, then `(r, 0)` for `r ≥ 1` | all `m + n - 1` | LC 1329, 766 |
+| ↙ every anti-diagonal | `(+1, -1)` | `(0, c)` for every `c`, then `(r, n - 1)` for `r ≥ 1` | all `m + n - 1` | LC 498, 1424 |
+
+The cells a walk visits share the grouping key — `r - c` for ↘, `r + c` for ↙ — so a walk and a
+key are two views of the same diagonal. A walk is the one to use when the grid is implicit, as in
+LC 2075, where it is a flat string.
+
+###### LC 2075 — Decode the Slanted Ciphertext
+
+The plaintext was written ↘ diagonal by diagonal, starting from column 0, then 1, …, and the
+ciphertext is that grid read **row by row**. So rebuild the grid's shape and walk ↘ from each
+top-row cell — the top-row-only walk above, because the writer only ever started on row 0. Cells
+left of the main diagonal belong to no diagonal it wrote; they are padding.
+
+```python
+# LC 2075 - Decode the Slanted Ciphertext
+# IDEA: cols = len // rows, then walk down-right from each top-row cell; strip trailing padding
+# time = O(n), space = O(n)   (n = len(encodedText))
+class Solution(object):
+    def decodeCiphertext(self, encodedText, rows):
+        if not encodedText:
+            return ""
+        cols = len(encodedText) // rows      # the ciphertext is the grid, flattened row by row
+        decoded_chars = []
+        for start_col in range(cols):
+            row, col = 0, start_col
+            while row < rows and col < cols:
+                decoded_chars.append(encodedText[row * cols + col])   # cell (r, c) -> r * cols + c
+                row += 1
+                col += 1
+        # rstrip, not strip: interior spaces are real text ("i love leetcode")
+        return "".join(decoded_chars).rstrip()
+```
+
+```text
+encodedText = "ch   ie   pr", rows = 3  ->  cols = 12 // 3 = 4
+
+       c=0 c=1 c=2 c=3
+r=0     c   h   _   _        start (0,0): c i p
+r=1     _   i   e   _        start (0,1): h e r
+r=2     _   _   p   r        start (0,2): _ _      start (0,3): _
+
+"cip" + "her" + "  " + " "  ->  "cipher   "  ->  rstrip  ->  "cipher"
+```
+
+Pitfalls:
+
+- **Both bounds in the `while`.** A ↘ walk ends at the bottom edge *or* the right edge, whichever
+  comes first; checking one runs off the other on a non-square grid.
+- **No need to build the grid.** `encodedText[r * cols + c]` is the cell — see
+  [Matrix to 1D Index Conversion](#matrix-to-1d-index-conversion).
+- **`rstrip()`, never `strip()`.** The padding is only ever trailing, and the plaintext's own
+  spaces are interior; the problem guarantees no trailing space in the original.
+
 ##### Visual Example (4×4 Matrix, n=4)
 
 ```text
@@ -573,6 +677,7 @@ public int diagonalPrime(int[][] nums) {
 | Toeplitz Matrix | 766 | `i - j` | All cells on same diagonal must share same value |
 | Diagonal Traverse II | 1424 | `i + j` | Anti-diagonal grouping (key = `i + j`) |
 | Diagonal Traverse | 498 | direction flag | Alternate up/down per diagonal |
+| Decode the Slanted Ciphertext | 2075 | walk `(r+1, c+1)` | Walk ↘ from each top-row cell over a row-major string |
 | Matrix Diagonal Sum | 1572 | `i == j` / `i + j == n-1` | Primary + secondary diagonal sum |
 | Prime In Diagonal | 2614 | `i == j` / `i + j == n-1` | Find max prime on either diagonal |
 
@@ -611,6 +716,7 @@ def is_valid(row, col, rows, cols):
 | Spiral Matrix III | 885 | Expanding spiral with bounds checking | Medium | Traversal Template |
 | Matrix Cells in Distance Order | 1030 | Manhattan distance sorting | Easy | Traversal Template |
 | Shift 2D Grid | 1260 | Circular array shifting in 2D | Easy | Traversal Template |
+| Decode the Slanted Ciphertext | 2075 | Walk ↘ from each top-row cell, `r * cols + c` indexing | Medium | Diagonal Walk ([Diagonal Properties](#diagonal-properties)) |
 
 #### **Pattern 1b: Diagonal Grouping Problems** (`key = i - j`)
 > **Core idea**: cells sharing `i - j` lie on the same top-left→bottom-right diagonal → group by key, process, refill.
@@ -727,6 +833,7 @@ Matrix Problem Analysis Flowchart:
    ├── YES → Use Matrix Traversal Template
    │   ├── Spiral order? → Boundary tracking approach
    │   ├── Diagonal order? → Direction alternation approach
+   │   ├── Read each diagonal in order? → Diagonal walk, step (r+1, c+1) per start cell
    │   └── Custom order? → Direction vectors approach
    └── NO → Continue to 2
 
