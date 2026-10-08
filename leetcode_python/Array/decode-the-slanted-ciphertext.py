@@ -140,6 +140,48 @@ class Solution(object):
       # 沿著斜對角線向下移動：(r, c + r)
       for r in range(rows):
         if c + r < cols:
+
+          """
+          把 2D matrix 的座標 (r, c+r)，
+          轉換成原始一維字串 encodedText 的 index。
+
+
+          -> equation:
+
+                ```
+                index = row * cols + col
+                ```
+
+                NOTE:  `column` 不是固定的 c (右下斜線)
+
+
+                ->  column = c + r
+
+
+
+                        0   1   2   3   4
+                      +---+---+---+---+---+
+                  0   |   | X |   |   |   |
+                      +---+---+---+---+---+
+                  1   |   |   | X |   |   |
+                      +---+---+---+---+---+
+                  2   |   |   |   | X |   |
+                      +---+---+---+---+---+
+
+
+
+                -> e.g.
+
+                
+                index = row * cols + col
+
+                col = (c + r)
+
+                -> 
+
+                index = row * cols + (c + r)
+
+          """
           # 計算 2D 座標 (r, c + r) 在一維字串中的索引
           idx = r * cols + (c + r)
           res.append(encodedText[idx])
