@@ -43,7 +43,7 @@ half-translated document renders with English gaps rather than failing.
   is what makes a problem findable on LeetCode itself.
 
 
-## Status — 5354 / 5354 sections (100%)
+## Status — 5355 / 5355 sections (100%)
 
 | Cheatsheet | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -158,7 +158,7 @@ half-translated document renders with English gaps rather than failing.
 | [sliding_window_advanced](./cheatsheet/sliding_window_advanced.md) | 76 | [✅](../i18n/zh/sliding_window_advanced.md) |
 | [sliding_window_examples](./cheatsheet/sliding_window_examples.md) | 18 | [✅](../i18n/zh/sliding_window_examples.md) |
 | [sort](./cheatsheet/sort.md) | 67 | [✅](../i18n/zh/sort.md) |
-| [stack](./cheatsheet/stack.md) | 24 | [✅](../i18n/zh/stack.md) |
+| [stack](./cheatsheet/stack.md) | 25 | [✅](../i18n/zh/stack.md) |
 | [stack_examples](./cheatsheet/stack_examples.md) | 33 | [✅](../i18n/zh/stack_examples.md) |
 | [stack_expression_parsing](./cheatsheet/stack_expression_parsing.md) | 13 | [✅](../i18n/zh/stack_expression_parsing.md) |
 | [stock_trading](./cheatsheet/stock_trading.md) | 37 | [✅](../i18n/zh/stock_trading.md) |

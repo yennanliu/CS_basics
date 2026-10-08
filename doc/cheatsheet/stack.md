@@ -46,7 +46,7 @@ below owns the code, or which sheet the worked solutions moved to.
 | Category | What the stack holds | LC | Where |
 |---|---|---|---|
 | **Bracket / nesting validation** | the openers still owed a closer | 20, 921, 1541, 1614 | [Template 2](#template-2-bracket-matching--lc-20-) |
-| **Bracket repair / measurement** | *indices* of unmatched brackets | 1249, 32, 856 | [stack_examples.md](./stack_examples.md) |
+| **Bracket repair / measurement** | *indices* of unmatched brackets | 1249, 32, 856 | [Template 2 § LC 1249](#bracket-repair-variant--push-the-index-not-the-char-lc-1249-), [stack_examples.md](./stack_examples.md) |
 | **Monotonic — next greater / smaller** | elements still waiting for an answer | 496, 503, 739, 84, 907, 2104 | [Template 3](#template-3-monotonic-stack--next-greater--smaller--lc-739-), [monotonic_stack.md](./monotonic_stack.md) |
 | **Monotonic — greedy removal** | the best prefix built so far | 402, 316, 1081, 1673 | [stack_examples.md](./stack_examples.md) |
 | **Monotonic — span accumulation** | `[value, span]` pairs, streaming | 901, 735 | [stack_examples.md](./stack_examples.md) |
@@ -229,10 +229,90 @@ class Solution(object):
 
 | LC | Twist | Stack holds |
 |----|-------|-------------|
-| 1249 | repair, not just validate | *indices* of unmatched `(` — or no stack: two counter scans, one per direction |
+| 1249 | repair, not just validate — [below](#bracket-repair-variant--push-the-index-not-the-char-lc-1249-) | *indices* of unmatched `(` — or no stack: two counter scans, one per direction |
 | 921 | one bracket type only, so a counter suffices — O(1) space | nothing (the stack degenerates to its size) |
 | 32 | length of the longest valid run | indices plus a `-1` **base** sentinel |
 | 856 | fold a score out of the nesting | the partial **result** of each depth |
+
+#### Bracket Repair Variant — push the **index**, not the char (LC 1249) ⭐⭐⭐⭐
+
+> **What changed from LC 20**: LC 20 only answers *yes / no*, so the stack can hold the opener
+> characters and forget where they were. LC 1249 must **erase** the offenders, so it needs their
+> *positions* — push the **index** of each `(`. There is only one bracket type, so nothing has
+> to be compared on a pop: any open `(` matches any `)`.
+
+| | LC 20 — validate | LC 1249 — repair |
+|---|---|---|
+| Stack holds | opener **chars** | **indices** of unmatched `(` |
+| `)` with an empty stack | `return False` | mark index `i` for removal, keep scanning |
+| `)` with a non-empty stack | pop, check it is the partner | pop — the pair is kept |
+| End of scan | stack must be empty | every index **left on the stack** is an unmatched `(` → remove it too |
+| Output | a boolean | `s` minus the marked positions |
+
+**Why it is the minimum.** A `)` with no `(` open before it can never be matched by anything to
+its right, and an `(` still on the stack at the end has no `)` after it. Each removal is forced,
+and everything else pairs up, so nothing is removed that did not have to be.
+
+```python
+# python
+# LC 1249 - Minimum Remove to Make Valid Parentheses
+# IDEA: STACK OF '(' INDICES — blank out unmatched ')' on sight, unmatched '(' after the scan
+# time = O(n), space = O(n)
+class Solution(object):
+    def minRemoveToMakeValid(self, s):
+        chars = list(s)      # mutable copy, so a position can be blanked in O(1)
+        open_idx = []        # indices of '(' still waiting for a ')'
+
+        for i in range(len(chars)):
+            if chars[i] == '(':
+                open_idx.append(i)
+            elif chars[i] == ')':
+                if open_idx:
+                    open_idx.pop()     # matched -> keep both
+                else:
+                    chars[i] = ''      # NOTE !!! no '(' open before it -> can never match
+            # letters never affect the balance
+
+        # NOTE !!! the second flush: what is left on the stack are unmatched '('
+        for i in open_idx:
+            chars[i] = ''
+
+        return ''.join(chars)  # '' entries vanish in the join
+```
+
+```text
+s = "a)b(c)d"
+
+i  ch   action                          open_idx   chars
+0  a    letter                          []         a ) b ( c ) d
+1  )    stack empty -> blank index 1    []         a _ b ( c ) d
+2  b    letter                          []
+3  (    push 3                          [3]
+4  c    letter                          [3]
+5  )    pop 3 (matched)                 []
+6  d    letter                          []
+end     nothing left to flush                      -> "ab(c)d"
+
+s = "))(("   ->  ')' x2 blanked on sight, '(' x2 left on the stack and flushed  ->  ""
+```
+
+Pitfalls:
+
+- **Forgetting the second flush.** The scan alone only catches the surplus `)`; `"(()"`
+  needs the leftover index removed after the loop.
+- **No `len(s) <= 1: return s` shortcut.** `"("` and `")"` are each one character and each
+  invalid — the answer is `""`. The general loop already handles the short strings.
+- **Do not delete inside the loop.** `s = s[:i] + s[i+1:]` is O(n) per removal (O(n²) overall)
+  and shifts every index already on the stack. Mark now, rebuild once.
+- **A `set` of indices to remove works too** (`to_remove.update(open_idx)`, then keep
+  `i not in to_remove`). It is the same algorithm with one more structure. Blanking the
+  `list` copy is the leaner form.
+
+The Java version and the stack-free **two counter scans** (left→right drops the surplus `)`,
+right→left drops the surplus `(` — the follow-up an interviewer asks next) are in
+[stack_examples.md § 13](./stack_examples.md#13-minimum-remove-to-make-valid-parentheses--lc-1249);
+the same mark-then-rebuild idea framed as a string technique is
+[string.md Template 7](./string.md#template-7-in-place-char-array--mark-then-rebuild--lc-1249-).
 
 ---
 
