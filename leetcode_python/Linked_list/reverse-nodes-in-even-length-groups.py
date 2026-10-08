@@ -71,8 +71,177 @@ class Solution(object):
 # V0-1
 
 
-# V0-2     
+# V0-2
+# IDEA: LINKED LIST OP + HELPER FUNC (gpt)
+class Solution(object):
+    def reverseEvenLengthGroups(self, head):
+        """
+        :type head: Optional[ListNode]
+        :rtype: Optional[ListNode]
+        """
+        # Edge case
+        if not head or not head.next:
+            return head
 
+        # Get total linked list length
+        _len = 0
+        head_2 = head
+
+        while head_2:
+            _len += 1
+            head_2 = head_2.next
+
+        # group size: 1, 2, 3, 4, ...
+        group = 1
+
+        # Current node that we are going to process
+        cur = head
+
+        # Dummy node makes reconnecting easier
+        dummy = ListNode(0)
+        dummy.next = head
+
+        # Node before the current group
+        prev_group = dummy
+
+        processed = 0
+
+        while cur and processed < _len:
+
+            # Actual group size may be smaller than expected
+            # for the last group.
+            g_len = min(group, _len - processed)
+
+            if g_len % 2 == 0:
+                # Reverse current group
+                group_head, group_tail, next_node = self.reverse_nodes(
+                    cur, g_len
+                )
+            else:
+                # Keep current group as-is
+                group_head, group_tail, next_node = self.process_nodes(
+                    cur, g_len
+                )
+
+            # Reconnect previous group -> current group
+            prev_group.next = group_head
+
+            # Current group's tail -> next group
+            group_tail.next = next_node
+
+            # Move to next group
+            prev_group = group_tail
+            cur = next_node
+
+            processed += g_len
+            group += 1
+
+        return dummy.next
+
+    # Return:
+    # group_head = head of processed group
+    # group_tail = tail of processed group
+    # next_node  = first node of next group
+    def reverse_nodes(self, head, g_len):
+        """
+        Reverse exactly g_len nodes.
+        """
+
+        prev = None
+        cur = head
+
+        for _ in range(g_len):
+            next_node = cur.next
+
+            cur.next = prev
+            prev = cur
+            cur = next_node
+
+        # Original head becomes the tail after reversing.
+        group_head = prev
+        group_tail = head
+
+        # cur is the first node of the next group
+        next_node = cur
+
+        return group_head, group_tail, next_node
+
+    # Return:
+    # group_head = head of current group
+    # group_tail = tail of current group
+    # next_node  = first node of next group
+    def process_nodes(self, head, g_len):
+        """
+        Keep the current group in the original order.
+        """
+
+        group_head = head
+        cur = head
+
+        # Move to the last node of this group
+        for _ in range(g_len - 1):
+            cur = cur.next
+
+        group_tail = cur
+        next_node = cur.next
+
+        return group_head, group_tail, next_node
+
+
+# V0-3
+# IDEA: LINKED LIST OP  (gemini)
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution(object):
+
+  def reverseEvenLengthGroups(self, head):
+    """:type head: Optional[ListNode]
+
+    :rtype: Optional[ListNode]
+    """
+    if not head or not head.next:
+      return head
+
+    # 第一組長度為 1 (奇數)，永遠不反轉，因此從第一組的尾端 head 開始作為起點
+    prev_group_tail = head
+    group_size = 2  # 從第 2 組開始嘗試 (預計長度為 2)
+
+    while prev_group_tail.next:
+      curr = prev_group_tail.next
+
+      # 1. 探測並計算當前組的「實際節點長度」
+      actual_len = 0
+      ptr = curr
+      while ptr and actual_len < group_size:
+        actual_len += 1
+        ptr = ptr.next
+
+      # 2. 若實際長度為偶數，進行原地反轉
+      if actual_len % 2 == 0:
+        # ptr 此時指向下一組的頭節點，直接作為反轉後的終點指向
+        prev = ptr
+        node = curr
+        for _ in range(actual_len):
+          nxt = node.next
+          node.next = prev
+          prev = node
+          node = nxt
+
+        # 重新連接：前一組尾端指向新頭 (prev)，當前組舊頭 (curr) 變為新尾
+        prev_group_tail.next = prev
+        prev_group_tail = curr
+      else:
+        # 若實際長度為奇數，不反轉，僅將指標推進 actual_len 個位置
+        for _ in range(actual_len):
+          prev_group_tail = prev_group_tail.next
+
+      # 3. 遞增下一組的預期目標長度
+      group_size += 1
+
+    return head
 
 
 # V0-5
