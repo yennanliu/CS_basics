@@ -101,6 +101,8 @@
 
 
 
+- 樹的序列化與字串編解碼
+	- https://yennj12.js.org/CS_basics/cheatsheets/tree_codec.zh.html
 
 
 
@@ -224,6 +226,9 @@
 			 	- 863
 			 - 兩節點之間的距離
 			 	- 1740
+
+
+	  - Tree
 			 - 2 sum on tree
 			 	- LC 437 Path Sum III
 			 	- LC 113 Path Sum II
@@ -244,6 +249,20 @@
 			 	 — LC 437
 			 - 3.5) 路徑數值組建模板
 			 	 — LC 129
+			 - 3.7) 最長路徑模板
+			 	 — LC 543
+			 - 3.8) 同值路徑模板
+			 		— LC 687
+			 - 7.2) 樹攤平模板
+			 	  — LC 114
+			 - 7.3) 樹合併模板 
+			 	  — LC 617
+			 - O(1) 空間的層串接模板
+			 	  — LC 117
+			 	  - LC 116
+			 - 後序樹 DP（回傳一對值）模板
+			 	  — LC 337 
+
 
 
 		Linked list
