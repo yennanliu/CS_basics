@@ -6,7 +6,7 @@
 
 (67 mins)
 
-10.53 - 12.00 pm
+4.13 - 5.20 pm
 #-------------------------------
 
 
@@ -15,6 +15,76 @@
 # LC 4070
 # https://leetcode.com/problems/minimum-rotations-to-dial-a-number-i/description/
 #------------------------------------------------
+
+
+->
+Return the `minimum total number` of 
+`rotations` needed to `dial every digit of s.`
+
+ 
+
+#----------------------
+
+
+ex 1)
+
+
+Input: s = "0192837465"
+
+Output: 25
+
+
+0123456789
+
+
+
+
+
+
+#----------------------
+
+
+# idea 1) brute force + min(left_move, right_move)
+
+
+class Solution(object):
+    def minRotations(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        # edge
+        if not s or len(s) == 0:
+        	return 0
+
+        if len(s) == 0:
+        	val = int(s)
+        	return min(abs(9 - val) + 1, int(val))
+
+        moves = 0
+        pos = 0
+
+        for x in s:
+
+        	val = int(s)
+
+        	"""
+        	0123456789
+               i    j
+
+        	"""
+
+        	move = min(abs(val - pos), (pos + 1) + (9 - int))
+
+        	moves += move
+
+        	pos = int(x)
+
+
+        return moves
+        
+
+
 
 
 #------------------------------------------------
