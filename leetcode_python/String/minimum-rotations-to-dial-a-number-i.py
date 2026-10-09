@@ -46,7 +46,72 @@ s consists only of digits '0' to '9'
 
 """
 
-# V0
+
+# V0-1
+# IDEA: BRUTE FORCE (gpt)
+class Solution(object):
+    def minRotations(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        # Edge case
+        if not s:
+            return 0
+
+        moves = 0
+        pos = 0  # Start at digit 0
+
+        for x in s:
+            val = int(x)  # Current target digit
+
+            # Direct rotation
+            direct = abs(val - pos)
+
+            # Rotation through the circular boundary
+            wrap = 10 - direct
+
+            # Choose the shorter direction
+            move = min(direct, wrap)
+            moves += move
+
+            # Update current position
+            pos = val
+
+        return moves
+
+
+# V0-2
+# IDEA: BRUTE FORCE (gemini)
+class Solution(object):
+
+  def minRotations(self, s):
+    """:type s: str
+
+    :rtype: int
+    """
+    if not s:
+      return 0
+
+    moves = 0
+    pos = 0  # 撥號盤初始指針指向 0
+
+    for x in s:
+      target = int(x)
+
+      # 直線距離
+      diff = abs(target - pos)
+
+      # 順時針與逆時針取最小值 (總長 10)
+      moves += min(diff, 10 - diff)
+
+      # 更新當前指針位置
+      pos = target
+
+    return moves
+
+
+# V0-3
 # IDEA : SIMULATION + CIRCULAR DISTANCE = min(direct, 10 - direct)
 #
 #   Each step is independent: wherever the pointer ends up is fixed (it must

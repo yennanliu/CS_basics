@@ -59,22 +59,22 @@ class Solution(object):
         if not s or len(s) == 0:
             return 0
 
-        if len(s) == 0:
-            val = int(s)
-            return min(abs(9 - val) + 1, int(val))
-
         moves = 0
         pos = 0
 
         for x in s:
 
-            val = int(s)
+            val = int(x)
 
             """
             0123456789
                i    j
 
             """
+
+            direct = abs(val - pos)
+
+            rotate = (pos + 1) + (9 - int)
 
             move = min(abs(val - pos), (pos + 1) + (9 - int))
 
