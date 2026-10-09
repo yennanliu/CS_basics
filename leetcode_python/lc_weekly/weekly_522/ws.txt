@@ -47,6 +47,8 @@ Output: 25
 # idea 1) brute force + min(left_move, right_move)
 
 
+# time: O(N)
+# space:  O(1)
 class Solution(object):
     def minRotations(self, s):
         """
@@ -120,6 +122,9 @@ NOTE:
     try op on every idx (also try NOT do the op),
     and get the min rotation as res
 
+
+# time: O(N ^ 2)
+# space:  O(N)
 class Solution(object):
     def minRotations(self, n, s):
         """
