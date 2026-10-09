@@ -100,7 +100,6 @@ class Solution(object):
 # IDEA: DFS (tree -> graph (downward ONLY)) + BFS (get path) (gpt)
 from collections import defaultdict, deque
 
-
 class Solution(object):
     def pathSum(self, root, targetSum):
         """
@@ -217,6 +216,52 @@ class Solution(object):
 
 
 # V0-3
+# IDEA: BFS + DFS (gpt)
+class Solution(object):
+    def pathSum(self, root, targetSum):
+        """
+        :type root: Optional[TreeNode]
+        :type targetSum: int
+        :rtype: int
+        """
+        if not root:
+            return 0
+
+        self.cnt = 0
+
+        # Use BFS to try every node as a starting point
+        q = [root]
+
+        while q:
+            node = q.pop(0)
+
+            # Count paths starting from this node
+            self.helper(node, targetSum)
+
+            if node.left:
+                q.append(node.left)
+
+            if node.right:
+                q.append(node.right)
+
+        return self.cnt
+
+    def helper(self, root, targetSum):
+        if not root:
+            return
+
+        # Include the current node in the path
+        if root.val == targetSum:
+            self.cnt += 1
+
+        # Continue the path downward
+        remaining = targetSum - root.val
+
+        self.helper(root.left, remaining)
+        self.helper(root.right, remaining)
+
+
+# V0-4
 # IDEA 1) dfs (pre-order) + prefix + hashmap + backtrack (GPT)
 # time = O(n)
 # space = O(h), h is height of binary tree (hashmap entries bounded by active path due to backtrack)
@@ -267,7 +312,7 @@ class Solution(object):
         prefix[cur_sum] -= 1
 
 
-# V0-4
+# V0-5
 # IDEA 1) dfs (pre-order) + prefix + hashmap + backtrack (gpt)
 # time = O(n)
 # space = O(h), h is height of binary tree (hashmap entries bounded by active path due to backtrack)
@@ -318,7 +363,7 @@ class Solution(object):
         self.path_map[prefix] -= 1
 
 
-# V0-5
+# V0-6
 # IDEA 1) dfs (pre-order) + prefix + hashmap + backtrack (GEMINI)
 # time = O(n)
 # space = O(h), h is height of binary tree (hashmap entries bounded by active path due to backtrack)
@@ -431,7 +476,7 @@ class Solution:
     @return: nothing
     """
     def DFS(self, root, su, tmp):
-        if None==root:
+        if not root:
             return 0
         else:
             flag=0
@@ -441,7 +486,7 @@ class Solution:
     
     def pathSum(self, root, su):
         #write your code here
-        if None==root:
+        if not root:
             return 0
         else:
             return self.DFS(root, su, 0)+self.pathSum(root.left, su)+self.pathSum(root.right, su)
