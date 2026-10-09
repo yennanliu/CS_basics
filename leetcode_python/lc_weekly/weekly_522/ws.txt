@@ -74,7 +74,7 @@ class Solution(object):
 
             direct = abs(val - pos)
 
-            rotate = (pos + 1) + (9 - int)
+            rotate = 10 - 
 
             move = min(abs(val - pos), (pos + 1) + (9 - int))
 
@@ -140,7 +140,9 @@ class Solution(object):
         n = len(s)
 
         for i in range(n):
-            tmp_s = s[0: i] + s[i+1:][::-1]
+
+            # NOTE !!! below
+            tmp_s = s[:i] + s[i:][::-1]
 
             min_rotate = min(min_rotate, self.helper(tmp_s))
 
