@@ -815,6 +815,7 @@ python3 script/fix_readme_tags.py            # rewrite the Note column
 | 4006 | [Count Valid Prefixes](https://leetcode.com/problems/count-valid-prefixes/description/) | [Python](./leetcode_python/String/count-valid-prefixes.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/String/CountValidPrefixes.java) | _O(n)_ | _O(1)_ | Easy | **string**, prefix, good basic, LC weekly | OK |
 | 4043 | [Count Rotations With Exactly K Equal Adjacent Pairs](https://leetcode.com/problems/count-rotations-with-exactly-k-equal-adjacent-pairs/description/) | [Python](./leetcode_python/String/count-rotations-with-exactly-k-equal-adjacent-pairs.py) | _O(n)_ | _O(1)_ | Easy | **string**, cyclic pairs, a rotation only cuts ONE pair so score is C or C-1, brute force O(n^2) as V0, LC weekly | AGAIN(1) |
 | 4070 | [Minimum Rotations to Dial a Number I](https://leetcode.com/problems/minimum-rotations-to-dial-a-number-i/description/) | [Python](./leetcode_python/String/minimum-rotations-to-dial-a-number-i.py) | _O(n)_ | _O(1)_ | Easy | **string**, simulation, circular distance min(d, 10 - d), LC weekly | AGAIN(1) |
+| 4071 | [Minimum Rotations to Dial a Number II](https://leetcode.com/problems/minimum-rotations-to-dial-a-number-ii/description/) | [Python](./leetcode_python/String/minimum-rotations-to-dial-a-number-ii.py) | _O(n)_ | _O(n)_ | Medium | **string**, prefix sum, try every k, reversed suffix costs the same inside, LC weekly | AGAIN(1) |
 
 
 ## Queue
@@ -1393,6 +1394,7 @@ python3 script/fix_readme_tags.py            # rewrite the Note column
 | 2767 | [Partition String Into Minimum Beautiful Substrings](https://leetcode.com/problems/partition-string-into-minimum-beautiful-substrings) | [Java](./leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/PartitionStringIntoMinimumBeautifulSubstrings.java) | _O(n^2)_ | _O(n)_ | Medium | **dp**, dp over prefixes, powers of 5 written in binary | AGAIN(1) |
 | 3122 | [Minimum Number of Operations to Satisfy Conditions](https://leetcode.com/problems/minimum-number-of-operations-to-satisfy-conditions) | [Java](./leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/MinimumNumberOfOperationsToSatisfyConditions.java) | _O(m * n + n * 100)_ | _O(n * 10)_ | Medium | **dp**, LC weekly, PQ | Again (1) |
 | 3196 | [ Maximize Total Cost of Alternating Subarrays](https://leetcode.com/problems/maximize-total-cost-of-alternating-subarrays/description/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/maximizeTotalCostOfAlternatingSubarrays.java) | _O(n)_ | _O(1)_ | Medium | **dp**, LC weekly | Again |
+| 4072 | [Maximum Alternating Subarray Sum With One Deletion](https://leetcode.com/problems/maximum-alternating-subarray-sum-with-one-deletion/description/) | [Python](./leetcode_python/Dynamic_Programming/maximum-alternating-subarray-sum-with-one-deletion.py) | _O(n)_ | _O(1)_ | Medium | **dp**, kadane, 4 states (sign x deleted), one deletion like LC 1186, LC weekly | AGAIN(1) |
  
 
 ## Greedy
