@@ -73,6 +73,148 @@ s consists only of digits '0' to '9'
 
 
 # V0
+class Solution(object):
+    def minRotations(self, n, s):
+        """
+        :type n: int
+        :type s: str
+        :rtype: int
+        """
+        pass
+
+
+# V0-1
+# IDEA: SUFFIX/EDGE changes + MATH (gemini)
+class Solution(object):
+
+  def minRotations(self, n, s):
+    """:type n: int
+
+    :type s: str
+    :rtype: int
+    """
+    if not s:
+      return 0
+
+    # 1. 輔助函式：計算環形撥號盤上兩個數字間的最短距離 (總長 10)
+    def dist(a, b):
+      d = abs(int(a) - int(b))
+      return min(d, 10 - d)
+
+    # 2. 計算原始字串內部相鄰數字的總步數 T
+    total_internal = sum(dist(s[i - 1], s[i]) for i in range(1, n))
+
+    # 情況 A: 不翻轉 (k 不變) -> 從 0 走到 s[0]
+    cost_orig = dist('0', s[0]) + total_internal
+
+    # 情況 B: k = 0 (翻轉整條字串 s[0..n-1]) -> 從 0 走到原本的末尾 s[-1]
+    cost_rev_all = dist('0', s[-1]) + total_internal
+
+    min_cost = min(cost_orig, cost_rev_all)
+
+    # 情況 C: 1 <= k < n (翻轉後綴 s[k..n-1])
+    # 只需要將邊 (s[k-1] -> s[k]) 替換為 (s[k-1] -> s[-1])
+    for k in range(1, n):
+      cur_cost = (
+          dist('0', s[0])
+          + (total_internal - dist(s[k - 1], s[k]))
+          + dist(s[k - 1], s[-1])
+      )
+      min_cost = min(min_cost, cur_cost)
+
+    return min_cost
+
+
+# V0-2
+# IDEA: SUFFIX/EDGE changes + MATH (GPT)
+class Solution(object):
+    def minRotations(self, n, s):
+        """
+        :type n: int
+        :type s: str
+        :rtype: int
+        """
+        if not s:
+            return 0
+
+        n = len(s)
+
+        # Keep the original cost unchanged.
+        original_total = self.helper(s)
+
+        # The best answer cannot be worse than doing nothing.
+        min_rotate = original_total
+
+        for i in range(n):
+            # Digit immediately before the suffix
+            prev = 0 if i == 0 else int(s[i - 1])
+
+            # Original transition: prev -> s[i]
+            old_cost = self.get_distance(prev, int(s[i]))
+
+            # After reversing s[i:], the suffix starts with s[-1].
+            new_cost = self.get_distance(prev, int(s[-1]))
+
+            # Only the transition entering the suffix changes.
+            candidate = original_total - old_cost + new_cost
+
+            min_rotate = min(min_rotate, candidate)
+
+        return min_rotate
+
+    def helper(self, s):
+        op = 0
+        pos = 0
+
+        for x in s:
+            val = int(x)
+            op += self.get_distance(pos, val)
+            pos = val
+
+        return op
+
+    def get_distance(self, a, b):
+        direct = abs(a - b)
+        return min(direct, 10 - direct)
+
+
+# V0-3
+# IDEA: BRUTE FORCE (TLE)
+class Solution(object):
+
+  def minRotations(self, n, s):
+    """:type n: int
+
+    :type s: str
+    :rtype: int
+    """
+    if not s:
+      return 0
+
+    n = len(s)
+    min_rotate = self.helper(s)  # 情況 1: 不翻轉
+
+    for i in range(n):
+      # 修正：後綴切片應為 s[i:] 而非 s[i+1:]
+      tmp_s = s[:i] + s[i:][::-1]
+      min_rotate = min(min_rotate, self.helper(tmp_s))
+
+    return min_rotate
+
+  def helper(self, s):
+    op = 0
+    pos = 0  # 撥號盤指針初值為 0
+
+    for x in s:
+      val = int(x)
+      diff = abs(val - pos)
+      op += min(diff, 10 - diff)
+      pos = val
+
+    return op
+
+
+# V0-4
 # IDEA : TRY EVERY k + PREFIX / SUFFIX SUMS (price each reversal in O(1))
 #
 #   Brute force (the contest draft): build s[:k] + s[k:][::-1] for every k and
