@@ -62,7 +62,6 @@ class Solution(object):
 
             ```
 
-
          -> compare V0 and V0-0-1
         """
         self.path_map = {}
@@ -79,7 +78,36 @@ class Solution(object):
         # 1. Base case matching condition
         if prefix == targetSum:
             self.cnt += 1
+        
+        """
+        NOTE !!!
+
+
+        why `if (prefix - targetSum) in self.path_map:` ??
+
+        ->
+
+            prefix - previous_prefix == targetSum
+    
+            prefix - targetSum = previous_prefix
+
+            ->
+
+            so, all we need to check if:
+
+                if `prefix - targetSum` is in hashmap
+
+
             
+            e.g.
+
+
+                prefix_cur - prefix_prev = targetSum
+
+
+                prefix_cur - targetSum = prefix_prev
+
+        """
         # 2. FIX: Look up (prefix - targetSum) instead of (targetSum - prefix)
         # Also removed the leaf-node restriction so it runs on all valid tree nodes
         if (prefix - targetSum) in self.path_map:
