@@ -174,7 +174,7 @@
 
 <!--CODE-->
 
-<!-- fd8119e9cb86 -->
+<!-- 82aadb6ac63a -->
 #### 1-1-5) 加權旋轉和 — 疊縮遞迴式（避開 O(n²) 暴力法）
 
 **模式：**
@@ -197,10 +197,20 @@
 
 <!--CODE-->
 
+**變化題 — LC 4071 Minimum Rotations to Dial a Number II**（*變化點：狀態是「反轉了哪個後綴」，而轉移只動到一項*）：
+撥號 `s` 的成本是一串**相鄰配對成本**的和（`0 -> s[0]`、`s[0] -> s[1]`、…），其中 `dist(a, b) = min(|a - b|, 10 - |a - b|)`。反轉後綴 `s[k:]` 只會改變其中恰好一個配對：
+
+<!--CODE-->
+
+所以每個候選 `k` 只要拿未變動的 `total` 做 O(1) 調整，不必把整個字串重撥一次（O(n²) 暴力法，在 n = 10⁵ 時 TLE）。
+
+<!--CODE-->
+
 **相似 LC 題目（同樣的「狀態之間 O(1) 轉移」想法）：**
 | 題目 | 模式 |
 |---------|---------|
 | LC 396 - Rotate Function | 疊縮的加權和遞迴式：`F(k) = F(k-1) + sum - n*nums[n-k]` |
+| LC 4071 - Minimum Rotations to Dial a Number II | 相鄰配對成本的和；反轉後綴只換掉一條邊：`total - dist(prev, s[k]) + dist(prev, s[-1])` |
 | LC 238 - Product of Array Except Self | 滾動的前綴／後綴乘積，而非每個索引重算 |
 | LC 303 - Range Sum Query - Immutable | 預先算好前綴和，而非每次查詢重算 |
 | LC 189 - Rotate Array | 真的做實體旋轉（反轉技巧）— 對比：沒有彙總公式，只是重新排列元素 |

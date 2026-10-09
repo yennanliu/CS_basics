@@ -652,10 +652,57 @@ class Solution(object):
         return ans
 ```
 
+**Variation — LC 4071 Minimum Rotations to Dial a Number II** (*twist: the state is "which suffix was reversed", and the transition touches only one term*):
+the cost of dialing `s` is a sum of **adjacent-pair costs** (`0 -> s[0]`, `s[0] -> s[1]`, …), where `dist(a, b) = min(|a - b|, 10 - |a - b|)`. Reversing the suffix `s[k:]` changes exactly one of those pairs:
+
+```text
+s = "1502", reverse s[1:] -> "1205"
+
+original : 0->1  1->5  5->0  0->2     = 1 + 4 + 5 + 2 = 12
+reversed : 0->1  1->2  2->0  0->5     = 1 + 1 + 2 + 5 = 9
+                 ^^^^  ^^^^^^^^^^
+                 the   the suffix's inner pairs are the same pairs walked
+                 one   backwards -> same cost, because dist is symmetric
+                 edge
+                 that
+                 moved
+
+cost(k) = total - dist(prev, s[k]) + dist(prev, s[-1])     # prev = s[k-1], or 0 when k = 0
+```
+
+So each candidate `k` costs O(1) against the untouched `total`, instead of re-dialing the whole string (O(n²) brute force, TLE at n = 10⁵).
+
+```python
+# LC 4071 - Minimum Rotations to Dial a Number II
+# IDEA: dial once for the total; reversing s[k:] only swaps the edge entering the suffix
+# time = O(n), space = O(1)
+class Solution(object):
+    def minRotations(self, n, s):
+        total = 0
+        pos = 0
+        for ch in s:                     # cost of dialing s unchanged
+            total += self.dist(pos, int(ch))
+            pos = int(ch)
+
+        best = total                     # do no operation
+        last_digit = int(s[-1])
+        for k in range(len(s)):
+            prev = 0 if k == 0 else int(s[k - 1])
+            # NOTE !!! only the edge prev -> s[k] changes; it becomes prev -> s[-1]
+            candidate = total - self.dist(prev, int(s[k])) + self.dist(prev, last_digit)
+            best = min(best, candidate)
+        return best
+
+    def dist(self, a, b):
+        direct = abs(a - b)
+        return min(direct, 10 - direct)  # the dial is circular: 0 and 9 are adjacent
+```
+
 **Similar LC problems (same "O(1) transition between states" idea):**
 | Problem | Pattern |
 |---------|---------|
 | LC 396 - Rotate Function | telescoping weighted-sum recurrence: `F(k) = F(k-1) + sum - n*nums[n-k]` |
+| LC 4071 - Minimum Rotations to Dial a Number II | sum of adjacent-pair costs; reversing a suffix swaps one edge: `total - dist(prev, s[k]) + dist(prev, s[-1])` |
 | LC 238 - Product of Array Except Self | running prefix/suffix product instead of recomputing per index |
 | LC 303 - Range Sum Query - Immutable | precomputed prefix sum instead of recomputing per query |
 | LC 189 - Rotate Array | actual physical rotation (reverse trick) — contrast: no aggregate formula, just rearranges elements |
