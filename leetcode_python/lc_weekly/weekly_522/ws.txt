@@ -1,0 +1,31 @@
+#-------------------------------
+# weekly-contest-522
+
+# https://leetcode.com/contest/weekly-contest-522
+
+
+(67 mins)
+
+10.53 - 12.00 pm
+#-------------------------------
+
+
+#------------------------------------------------
+
+# LC 4070
+# https://leetcode.com/problems/minimum-rotations-to-dial-a-number-i/description/
+#------------------------------------------------
+
+
+#------------------------------------------------
+
+# LC 4071
+# https://leetcode.com/problems/minimum-rotations-to-dial-a-number-ii/description/
+#------------------------------------------------
+
+
+#------------------------------------------------
+
+# LC 4072
+# https://leetcode.com/problems/maximum-alternating-subarray-sum-with-one-deletion/description/
+#------------------------------------------------
