@@ -206,8 +206,8 @@ subarray:
         - delete, find the max sub arr sum
 
 
-
-
+# time: O(N) + O(N * (N + N)) ~= O(N ^ 2)
+# space:  O(N)
 
 class Solution(object):
     def maxAlternatingSum(self, nums):
@@ -226,6 +226,7 @@ class Solution(object):
         max_sub = self.get_max_sub(nums)
 
         for i in range(n):
+            # time complexity on below ???
             _nums = nums[0:i] + nums[i+1: ]
 
             max_sub = max(max_sub, self.get_max_sub(_nums))
