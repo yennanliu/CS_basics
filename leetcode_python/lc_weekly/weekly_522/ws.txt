@@ -55,30 +55,30 @@ class Solution(object):
         """
         # edge
         if not s or len(s) == 0:
-        	return 0
+            return 0
 
         if len(s) == 0:
-        	val = int(s)
-        	return min(abs(9 - val) + 1, int(val))
+            val = int(s)
+            return min(abs(9 - val) + 1, int(val))
 
         moves = 0
         pos = 0
 
         for x in s:
 
-        	val = int(s)
+            val = int(s)
 
-        	"""
-        	0123456789
+            """
+            0123456789
                i    j
 
-        	"""
+            """
 
-        	move = min(abs(val - pos), (pos + 1) + (9 - int))
+            move = min(abs(val - pos), (pos + 1) + (9 - int))
 
-        	moves += move
+            moves += move
 
-        	pos = int(x)
+            pos = int(x)
 
 
         return moves
@@ -105,20 +105,20 @@ op and which suffix to reverse.
 
 NOTE:
 
-	Before dialing, 
-	you may perform the following operation `at most once:`
+    Before dialing, 
+    you may perform the following operation `at most once:`
 
-		Choose an index k such that 0 <= k < n 
-		and reverse the suffix s[k..n - 1].
+        Choose an index k such that 0 <= k < n 
+        and reverse the suffix s[k..n - 1].
 
 
 
 
 
 # idea 1) brute force:
-	
-	try op on every idx (also try NOT do the op),
-	and get the min rotation as res
+    
+    try op on every idx (also try NOT do the op),
+    and get the min rotation as res
 
 class Solution(object):
     def minRotations(self, n, s):
@@ -129,36 +129,36 @@ class Solution(object):
         """
         # edge
         if not s or len(s) == 0:
-        	return 0
+            return 0
 
         min_rotate = self.helper(s)
         n = len(s)
 
         for i in range(n):
-        	tmp_s = s[0: i] + s[i+1:][::-1]
+            tmp_s = s[0: i] + s[i+1:][::-1]
 
-        	min_rotate = min(min_rotate, self.helper(tmp_s))
+            min_rotate = min(min_rotate, self.helper(tmp_s))
 
 
-       	return min_rotate
+        return min_rotate
 
 
      def helper(self, s):
-     	op = 0
-     	pos = 0
+        op = 0
+        pos = 0
 
-     	for x in s:
-     		
-     		val = int(x)
+        for x in s:
+            
+            val = int(x)
 
-     		move = min(abs(val - pos), (pos + 1) + (9 - int))
+            move = min(abs(val - pos), (pos + 1) + (9 - int))
 
-     		op += move
+            op += move
 
-     		pos = val
+            pos = val
 
 
-     	return op
+        return op
         
 
 
@@ -188,22 +188,22 @@ Can delete `at most one ` element from nums
 
 
 subarray:
-	is a `contiguous` non-empty 
-	sequence of elements within an array.
+    is a `contiguous` non-empty 
+    sequence of elements within an array.
 
 
 
 
-# idea 1) greedy:	
-		try every possible op, and try every sub arr
+# idea 1) greedy:   
+        try every possible op, and try every sub arr
 
 
 # idea 2) greedy ???
-	
-	2 cases
+    
+    2 cases
 
-		- NOT delete, find the max sub arr sum
-		- delete, find the max sub arr sum
+        - NOT delete, find the max sub arr sum
+        - delete, find the max sub arr sum
 
 
 
@@ -217,26 +217,56 @@ class Solution(object):
         """
         # edge
         if not nums or len(nums) == 0:
-        	return 0
+            return 0
         if len(nums) == 1:
-        	return nums[0]
+            return nums[0]
 
         n = len(nums)
 
         max_sub = self.get_max_sub(nums)
 
         for i in range(n):
-        	_nums = nums[0:i] + nums[i+1: ]
+            _nums = nums[0:i] + nums[i+1: ]
 
-        	max_sub = max(max_sub, self.get_max_sub(_nums))
+            max_sub = max(max_sub, self.get_max_sub(_nums))
 
 
         return max_sub
 
 
 
+    # slide window ???
+    # 1D DP: kanban
+    """
+    nums = [1,-2,1,2,-4]
+
+
+    """
     def get_max_sub(self, nums):
-    	pass
+        #res = 0
+        n = len(nums)
+
+        local_max = nums[0]
+        local_min = nums[0]
+
+        global_max = nums[0]
+
+        for r in range(1, n):
+
+            val = nums[r]
+
+            local_max += val
+            local_min += val
+
+            global_max = max(val, local_max, local_min)
+
+
+            if local_max < 0:
+                local_max = 0
+
+        return global_max
+
+        
 
 
 
