@@ -217,6 +217,19 @@ class Solution(object):
 
 # V0-3
 # IDEA: BFS + DFS (gpt)
+"""
+Time: O(N^2) worst case；也可以寫成較寬鬆的 O(NH) 上界
+Space: O(N+H)=O(N)，包含 BFS queue 和單次 DFS stack
+
+
+---
+
+
+why Space is NOT O(N * H) ??
+
+    -> 每次 helper() 呼叫結束後，遞迴 stack 會釋放，
+       不會把每次 DFS 的 stack 都累積起來。
+"""
 class Solution(object):
     def pathSum(self, root, targetSum):
         """
