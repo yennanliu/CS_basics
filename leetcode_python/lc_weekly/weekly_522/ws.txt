@@ -94,8 +94,76 @@ class Solution(object):
 #------------------------------------------------
 
 
+
+->
+Return the minimum total number of `rotations` 
+needed to dial the string 
+
+after optimally choosing whether to perform the 
+op and which suffix to reverse.
+
+
+NOTE:
+
+	Before dialing, 
+	you may perform the following operation `at most once:`
+
+		Choose an index k such that 0 <= k < n 
+		and reverse the suffix s[k..n - 1].
+
+
+
+
+
+# idea 1) brute force:
+	
+	try op on every idx (also try NOT do the op),
+	and get the min rotation as res
+
+class Solution(object):
+    def minRotations(self, n, s):
+        """
+        :type n: int
+        :type s: str
+        :rtype: int
+        """
+        # edge
+        if not s or len(s) == 0:
+        	return 0
+
+        min_rotate = self.helper(s)
+        n = len(s)
+
+        for i in range(n):
+        	tmp_s = s[0: i] + s[i+1:][::-1]
+
+        	min_rotate = min(min_rotate, self.helper(tmp_s))
+
+
+       	return min_rotate
+
+
+     def helper(self, s):
+     	pass
+        
+
+
+
+
+
+
+
 #------------------------------------------------
 
 # LC 4072
 # https://leetcode.com/problems/maximum-alternating-subarray-sum-with-one-deletion/description/
 #------------------------------------------------
+
+
+
+
+
+
+
+
+
