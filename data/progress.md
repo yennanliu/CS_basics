@@ -75,7 +75,7 @@
 
 - 樹的序列化與字串編解碼
 	- https://yennj12.js.org/CS_basics/cheatsheets/tree_codec.zh.html
-		- `2) 節點路徑模式 — 子樹序列化`
+		- `3) LC 297 — 同一段遞迴，換成逗號格式 + 明確的 null`
 
 
 
