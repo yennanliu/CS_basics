@@ -144,7 +144,21 @@ class Solution(object):
 
 
      def helper(self, s):
-     	pass
+     	op = 0
+     	pos = 0
+
+     	for x in s:
+     		
+     		val = int(x)
+
+     		move = min(abs(val - pos), (pos + 1) + (9 - int))
+
+     		op += move
+
+     		pos = val
+
+
+     	return op
         
 
 
