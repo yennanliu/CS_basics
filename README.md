@@ -814,6 +814,7 @@ python3 script/fix_readme_tags.py            # rewrite the Note column
 | 2048 | [Next Greater Numerically Balanced Number](https://leetcode.com/problems/next-greater-numerically-balanced-number/) | [Python](./leetcode_python/String/next-greater-numerically-balanced-number.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/String/NextGreaterNumericallyBalancedNumber.java) | _O(A * log A) with A the answer_ | _O(1)_ | Medium | **string**, BRUTE-FORCE SCAN UPWARD (the search space is provably tiny) | AGAIN(1) |
 | 4006 | [Count Valid Prefixes](https://leetcode.com/problems/count-valid-prefixes/description/) | [Python](./leetcode_python/String/count-valid-prefixes.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/String/CountValidPrefixes.java) | _O(n)_ | _O(1)_ | Easy | **string**, prefix, good basic, LC weekly | OK |
 | 4043 | [Count Rotations With Exactly K Equal Adjacent Pairs](https://leetcode.com/problems/count-rotations-with-exactly-k-equal-adjacent-pairs/description/) | [Python](./leetcode_python/String/count-rotations-with-exactly-k-equal-adjacent-pairs.py) | _O(n)_ | _O(1)_ | Easy | **string**, cyclic pairs, a rotation only cuts ONE pair so score is C or C-1, brute force O(n^2) as V0, LC weekly | AGAIN(1) |
+| 4070 | [Minimum Rotations to Dial a Number I](https://leetcode.com/problems/minimum-rotations-to-dial-a-number-i/description/) | [Python](./leetcode_python/String/minimum-rotations-to-dial-a-number-i.py) | _O(n)_ | _O(1)_ | Easy | **string**, simulation, circular distance min(d, 10 - d), LC weekly | AGAIN(1) |
 
 
 ## Queue
