@@ -166,12 +166,94 @@ class Solution(object):
 
 
 
-
 #------------------------------------------------
 
 # LC 4072
 # https://leetcode.com/problems/maximum-alternating-subarray-sum-with-one-deletion/description/
 #------------------------------------------------
+
+
+
+->
+
+Return the `maximum` possible
+ `alternating sum` of the `chosen subarray.`
+
+
+
+nums: int arr
+
+
+Can delete `at most one ` element from nums
+
+
+subarray:
+	is a `contiguous` non-empty 
+	sequence of elements within an array.
+
+
+
+
+# idea 1) greedy:	
+		try every possible op, and try every sub arr
+
+
+# idea 2) greedy ???
+	
+	2 cases
+
+		- NOT delete, find the max sub arr sum
+		- delete, find the max sub arr sum
+
+
+
+
+
+class Solution(object):
+    def maxAlternatingSum(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        # edge
+        if not nums or len(nums) == 0:
+        	return 0
+        if len(nums) == 1:
+        	return nums[0]
+
+        n = len(nums)
+
+        max_sub = self.get_max_sub(nums)
+
+        for i in range(n):
+        	_nums = nums[0:i] + nums[i+1: ]
+
+        	max_sub = max(max_sub, self.get_max_sub(_nums))
+
+
+        return max_sub
+
+
+
+    def get_max_sub(self, nums):
+    	pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
