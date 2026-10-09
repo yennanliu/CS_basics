@@ -73,6 +73,15 @@
 
 
 
+- 樹的序列化與字串編解碼
+	- https://yennj12.js.org/CS_basics/cheatsheets/tree_codec.zh.html
+		- `2) 節點路徑模式 — 子樹序列化`
+
+
+
+
+
+
 
 
 
@@ -91,14 +100,6 @@
 
 - 雜湊表 — 題目詳解
 	- https://yennj12.js.org/CS_basics/cheatsheets/hash_map_examples.zh.html
-
-
-
-- 樹的序列化與字串編解碼
-	- https://yennj12.js.org/CS_basics/cheatsheets/tree_codec.zh.html
-
-
-
 
 
 
@@ -266,6 +267,15 @@
 			 		- LC 105, 106
 			 - 樹轉字串
 			 	 - 606
+			 - Subtree of Another Tree
+			 	 - 572
+			 	- string <--> tree
+			 			- 606
+			 			- 536
+			 			- 297
+			 			- 449
+			 			- 652/572
+			 			- 331
 
 
 
