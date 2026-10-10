@@ -75,6 +75,52 @@ class Solution(object):
 
 
 # V0-2
+# IDEA: QUEUE + STR OP (gemini)
+class Solution(object):
+
+  def str2tree(self, s):
+    """:type s: str
+
+    :rtype: Optional[TreeNode]
+    """
+    if not s:
+      return None
+
+    stack = []
+    i = 0
+    n = len(s)
+
+    while i < n:
+      # 當遇到右括號，代表當前子樹建構完成，將其從 Stack 彈出
+      if s[i] == ")":
+        stack.pop()
+        i += 1
+      # 當遇到數字或負號，解析出完整的整數數值
+      elif s[i] == "-" or s[i].isdigit():
+        start = i
+        i += 1
+        while i < n and s[i].isdigit():
+          i += 1
+        val = int(s[start:i])
+        node = TreeNode(val)
+
+        # 如果 Stack 內有父節點，將其指派為左子樹或右子樹
+        if stack:
+          parent = stack[-1]
+          if not parent.left:
+            parent.left = node
+          else:
+            parent.right = node
+
+        stack.append(node)
+      else:
+        # 略過左括號 '('
+        i += 1
+
+    return stack[0] if stack else None
+
+
+# V0-2
 # IDEA: STR OP + DFS (gpt)
 # NOTE: validated (neg / multi-digit / leaf / deep-chain cases all OK)
 class Solution(object):
