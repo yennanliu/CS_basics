@@ -74,11 +74,6 @@
 
 
 
-- 樹的序列化與字串編解碼
-	- https://yennj12.js.org/CS_basics/cheatsheets/tree_codec.zh.html
-		- `3) LC 297 — 同一段遞迴，換成逗號格式 + 明確的 null`
-
-
 
 
 
@@ -147,6 +142,12 @@
 			- `高度 vs 深度模式`
 				- again
 	- 對答案做二分搜尋
+	- 樹的序列化與字串編解碼
+		- https://yennj12.js.org/CS_basics/cheatsheets/tree_codec.zh.html
+			- again:
+				- https://yennj12.js.org/CS_basics/cheatsheets/tree_codec.zh.html#%E7%94%A8%E5%89%8D%E5%BA%8F%E8%B5%B0%E8%A8%AA%E5%BA%8F%E5%88%97%E5%8C%96%E4%BA%8C%E5%85%83%E6%A8%B9
+
+
 			
 
 
@@ -266,6 +267,7 @@
 			  	- LC 129
 			 - 序列化／反序列化
 			 		- LC 105, 106
+			 		- 297
 			 - 樹轉字串
 			 	 - 606
 			 - Subtree of Another Tree
@@ -277,6 +279,7 @@
 			 			- 449
 			 			- 652/572
 			 			- 331
+			 			- 1028
 
 
 
