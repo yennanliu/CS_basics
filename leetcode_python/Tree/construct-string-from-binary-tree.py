@@ -32,6 +32,22 @@ The number of nodes in the tree is in the range [1, 104].
 
 
 # V0
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution(object):
+    def tree2str(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: str
+        """
+        pass
+
+
+# V0-1
 # IDEA: pre-order DFS + 3 cases check + string op + `Omission Rules for Parentheses` (gemini)
 """
 CORE IDEA:
@@ -70,6 +86,91 @@ class Solution(object):
             self.tree2str(root.left), 
             self.tree2str(root.right)
         )
+
+
+# V0-2
+# IDEA: pre-order DFS + 3 cases check + string op + `Omission Rules for Parentheses` (GPT)
+"""
+CORE IDEA:
+
+1. handle 3 cases
+
+    (`Omission Rules for Parentheses`)
+
+    - # Case 1: Leaf node (no children)
+
+    - # Case 2: Right child is missing -> omit right ()
+
+    - # Case 3: Right child exists (left child may be None, yielding "()")
+
+"""
+class Solution(object):
+    def tree2str(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: str
+        """
+        # Edge case
+        if not root:
+            return ""
+
+        return self.helper(root)
+
+    def helper(self, root):
+        # Empty subtree
+        if not root:
+            return ""
+
+        # Leaf node: no parentheses needed
+        if not root.left and not root.right:
+            return str(root.val)
+
+        # Recursively build left and right subtree strings
+        left = self.helper(root.left)
+        right = self.helper(root.right)
+
+        # If there is no left child, but there is a right child,
+        # we must keep empty parentheses for the left child.
+        if not root.left:
+            return "{}()({})".format(root.val, right)
+
+        # If there is a left child but no right child,
+        # omit the right-child parentheses.
+        if not root.right:
+            return "{}({})".format(root.val, left)
+
+        # Both children exist
+        return "{}({})({})".format(root.val, left, right)
+
+
+# V0-3
+# IDEA: pre-order DFS + 3 cases check + string op + `Omission Rules for Parentheses` (GEMINI)
+class Solution(object):
+
+  def tree2str(self, root):
+    """:type root: Optional[TreeNode]
+
+    :rtype: str
+    """
+    if not root:
+      return ""
+
+    # 情況 1：左右子樹皆為空（葉節點），直接回傳數值字串
+    if not root.left and not root.right:
+      return str(root.val)
+
+    # 情況 2：只有右子樹（左子樹為空），左邊必須補上空的括號 "()"
+    if not root.left:
+      return "{}()({})".format(root.val, self.tree2str(root.right))
+
+    # 情況 3：只有左子樹（右子樹為空），右邊的括號可以省略
+    if not root.right:
+      return "{}({})".format(root.val, self.tree2str(root.left))
+
+    # 情況 4：左右子樹皆存在
+    return "{}({})({})".format(
+        root.val, self.tree2str(root.left), self.tree2str(root.right)
+    )
 
 
 # V0-1
