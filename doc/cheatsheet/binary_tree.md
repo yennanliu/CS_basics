@@ -1551,73 +1551,105 @@ class BSTIterator(object):
 ```
 
 ### 2-6) Count Complete Tree Nodes (Binary Search on Trees) — LC 222
+
+**Key Idea**: walk the **leftmost** spine and the **rightmost** spine from the same node. If the two depths are equal, every level is full, so the subtree is **perfect**: it has `2^h - 1` nodes and is never visited. If they differ, count the root and recurse into both children.
+
+**Why it is `O(log²n)`, not `O(n)`**: in a complete tree, at least one of the two children is perfect, so it returns at the first spine check. Only one recursion per level goes deeper, and there are `O(log n)` levels. Each level does an `O(log n)` spine walk. A plain DFS/BFS count is `O(n)`, which the problem rules out ("design an algorithm that runs in less than O(n) time").
+
+```text
+        1            left spine  1-2-4 -> h = 3
+      /   \          right spine 1-3   -> h = 2   differ -> 1 + count(2) + count(3)
+     2     3
+    / \   /          count(2): spines 2-4 / 2-5 -> 2 == 2 -> perfect: 2^2 - 1 = 3
+   4   5 6           count(3): spines 3-6 / 3   -> 2 != 1 -> 1 + count(6) + count(None)
+                     count(6): 1 == 1 -> 2^1 - 1 = 1
+                     total = 1 + 3 + (1 + 1 + 0) = 6
+```
+
+```python
+# python
+# LC 222 - Count Complete Tree Nodes
+# IDEA: leftmost depth == rightmost depth -> perfect subtree -> 2^h - 1
+# time = O(log^2 N), space = O(log N)
+class Solution(object):
+    def countNodes(self, root):
+        if not root:
+            return 0
+
+        left_height = self.getLeftHeight(root)
+        right_height = self.getRightHeight(root)
+
+        # equal spines -> every level is full -> perfect tree, count without visiting
+        if left_height == right_height:
+            return 2 ** left_height - 1
+
+        # otherwise count the root, then recurse; one child is perfect and returns at once
+        return 1 + self.countNodes(root.left) + self.countNodes(root.right)
+
+    def getLeftHeight(self, node):
+        height = 0
+        while node:
+            height += 1
+            node = node.left
+        return height
+
+    def getRightHeight(self, node):
+        height = 0
+        while node:
+            height += 1
+            node = node.right
+        return height
+```
+
 ```java
-// LC 222. Count Complete Tree Nodes
-// Java Implementation
-
-// V0 - BFS Approach
-// IDEA: Level-order traversal to count all nodes
-/**
- * time = O(N)
- * space = O(N)
- */
-public int countNodes_BFS(TreeNode root) {
+// java
+// LC 222 - Count Complete Tree Nodes
+// IDEA: leftmost depth == rightmost depth -> perfect subtree -> 2^h - 1
+// time = O(log^2 N), space = O(log N)
+public int countNodes(TreeNode root) {
     if (root == null) {
         return 0;
     }
 
-    List<TreeNode> collected = new ArrayList<>();
-    Queue<TreeNode> q = new LinkedList<>();
-    q.add(root);
+    int leftHeight = getLeftHeight(root);
+    int rightHeight = getRightHeight(root);
 
-    while (!q.isEmpty()) {
-        TreeNode cur = q.poll();
-        collected.add(cur);
-
-        if (cur.left != null) {
-            q.add(cur.left);
-        }
-        if (cur.right != null) {
-            q.add(cur.right);
-        }
+    // equal spines -> perfect tree, count without visiting
+    if (leftHeight == rightHeight) {
+        return (1 << leftHeight) - 1;
     }
 
-    return collected.size();
+    // otherwise count the root, then recurse; one child is perfect and returns at once
+    return 1 + countNodes(root.left) + countNodes(root.right);
 }
 
-// V1 - DFS Approach
-// IDEA: Recursively count nodes in left and right subtrees
-/**
- * time = O(N)
- * space = O(log N)
- */
-public int countNodes_DFS(TreeNode root) {
-    if (root == null) {
-        return 0;
+private int getLeftHeight(TreeNode node) {
+    int height = 0;
+    while (node != null) {
+        height++;
+        node = node.left;
     }
-
-    // Recursively count the nodes in the left subtree
-    int leftCount = countNodes_DFS(root.left);
-
-    // Recursively count the nodes in the right subtree
-    int rightCount = countNodes_DFS(root.right);
-
-    // Return the total count (current node + left subtree + right subtree)
-    return 1 + leftCount + rightCount;
+    return height;
 }
 
-// V2 - Optimized Binary Search Approach for Complete Binary Tree
-// IDEA: Use complete tree property + binary search on height
-/**
- * time = O(log²N)
- * space = O(log N)
- *
- * Key Insight:
- * - In a complete binary tree, at least one subtree is a perfect binary tree
- * - For perfect binary tree with height h: nodes = 2^h - 1
- * - Check left and right subtree heights to determine which is perfect
- */
-public int countNodes_Optimized(TreeNode root) {
+private int getRightHeight(TreeNode node) {
+    int height = 0;
+    while (node != null) {
+        height++;
+        node = node.right;
+    }
+    return height;
+}
+```
+
+**Variant: compare the children's left-spine heights.** Same bound, one recursion per level instead of two: if `getHeight(root.left) == getHeight(root.right)`, the left subtree is perfect (`2^h - 1` nodes, plus the root makes `2^h`), so recurse right. Otherwise the right subtree is perfect at the smaller height, so recurse left. The binary search on the last level's node index (bit path from the root) is the third `O(log²n)` route; see [binary_search.md](./binary_search.md#27-quick-reference--other-binary-search-flavoured-problems).
+
+```java
+// java
+// LC 222 - Count Complete Tree Nodes (one recursion per level)
+// IDEA: compare left-spine heights of the two children; the equal side is perfect
+// time = O(log^2 N), space = O(log N)
+public int countNodes(TreeNode root) {
     if (root == null) {
         return 0;
     }
@@ -1626,20 +1658,14 @@ public int countNodes_Optimized(TreeNode root) {
     int rightHeight = getHeight(root.right);
 
     if (leftHeight == rightHeight) {
-        // Left subtree is perfect binary tree
-        // Nodes in left = 2^leftHeight - 1, plus root = 2^leftHeight
-        return (1 << leftHeight) + countNodes_Optimized(root.right);
-    } else {
-        // Right subtree is perfect binary tree
-        // Height = rightHeight, nodes = 2^rightHeight - 1, plus root = 2^rightHeight
-        return (1 << rightHeight) + countNodes_Optimized(root.left);
+        // left subtree is perfect: 2^leftHeight - 1 nodes, plus the root
+        return (1 << leftHeight) + countNodes(root.right);
     }
+    // right subtree is perfect (one level shorter): 2^rightHeight - 1 nodes, plus the root
+    return (1 << rightHeight) + countNodes(root.left);
 }
 
-/**
- * Helper: Get height by traversing left path only
- * Works because in complete tree, leftmost path gives height
- */
+// in a complete tree, the leftmost path gives the height
 private int getHeight(TreeNode node) {
     int height = 0;
     while (node != null) {
@@ -1649,6 +1675,11 @@ private int getHeight(TreeNode node) {
     return height;
 }
 ```
+
+**Pitfalls**
+- Comparing **both spines of the same node** is what proves the subtree is perfect. Two left spines (one per child) only tell you which child is perfect, which is the variant above.
+- `2 ** h - 1`, not `2 ** h`: a perfect tree of height `h` has `2^h - 1` nodes.
+- Counting every node with DFS/BFS is correct but `O(n)`, which misses the problem's stated requirement.
 
 ## Pattern Selection Strategy
 
