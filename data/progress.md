@@ -22,7 +22,7 @@
 
 	- LC weekly
 		- `data/lc_weekly/lc_weekly_gpt.md`
-			- Weekly Contest 522 (ing)
+			- Weekly Contest 522 (done)
 				- https://leetcode.com/contest/weekly-contest-522
 		- LC docs contest
 			- https://leetcode.doocs.org/contest/
@@ -156,7 +156,7 @@
 	- TODO LC:
 		
 		- PQ:
-			- 模板 3：Shortest Subarray with Sum ≥ K（LC 862
+			- 模板 3：Shortest Subarray with Sum ≥ K
 				- 862
 			- 模板 4：滑動視窗中位數 — 有序多重集合／兩個堆積（LC 480）
 				- 480

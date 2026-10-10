@@ -55,7 +55,13 @@ class Solution(object):
 
 
 # V0-1
-# IDEA: binary tree property (gemini)
+# IDEA: binary tree property + tree height (gemini)
+"""
+NOTE !!!!
+
+
+    `tree height` is the key for this LC.
+"""
 class Solution(object):
 
   def countNodes(self, root):
