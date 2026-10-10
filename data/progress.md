@@ -51,10 +51,6 @@
 
 
 
-	- 0/1 背包 DP（0/1 Knapsack 中文詳解）
-		- https://yennj12.js.org/CS_basics/cheatsheets/knapsack_01_zh.zh.html
-
-
 	- 背包 DP（0/1、完全背包、Coin Change）
 		- https://yennj12.js.org/CS_basics/cheatsheets/knapsack.zh.html
 
@@ -150,7 +146,7 @@
 			- again:
 				- https://yennj12.js.org/CS_basics/cheatsheets/tree_codec.zh.html#%E7%94%A8%E5%89%8D%E5%BA%8F%E8%B5%B0%E8%A8%AA%E5%BA%8F%E5%88%97%E5%8C%96%E4%BA%8C%E5%85%83%E6%A8%B9
 
-
+	- 0/1 背包 DP（0/1 Knapsack 中文詳解）
 			
 
 
@@ -170,6 +166,11 @@
 		- DP:
 			- 5
 			- 647
+
+		- 0/1 knapsack
+			- 二維容量
+				- LC 474 Ones and Zeroes
+			- LC 1049 - Last Stone Weight II
 		
 		- String:
 			- Template 7：原地 char 陣列 — 先標記再重建 — LC 1249
