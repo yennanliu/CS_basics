@@ -69,12 +69,27 @@ class Solution(object):
         self.helper(root, targetSum, 0)
         return self.cnt 
 
+    
+    """
+    NOTE !!!
+
+
+    -> pass `prefix` as param in helper func
+
+    -> DON'T declare it as a global var (e.g. DON'T use self.prefix)
+    """
     def helper(self, root, targetSum, prefix):
         if not root:
             return
         
         prefix += root.val
         
+        """
+        NOTE !!!
+
+        if `cur` `path sum` matching condition
+            -> update cnt as well
+        """
         # 1. Base case matching condition
         if prefix == targetSum:
             self.cnt += 1
@@ -120,6 +135,10 @@ class Solution(object):
         self.helper(root.left, targetSum, prefix)
         self.helper(root.right, targetSum, prefix)
         
+        
+        """
+        DON'T forget to `undo` (backtrack) !!!
+        """
         # 4. FIX: Backtrack! Clear the current branch's footprint from the global map
         self.path_map[prefix] -= 1
 
@@ -191,7 +210,6 @@ class Solution(object):
 # time = O(n)
 # space = O(h), h is height of binary tree (hashmap entries bounded by active path due to backtrack)
 from collections import defaultdict
-
 
 class Solution(object):
     def pathSum(self, root, targetSum):
@@ -483,6 +501,61 @@ class Solution(object):
             res[0] += 1
         self.dfs(root.left, res, path, target)
         self.dfs(root.right, res, path, target)
+
+
+# V0-7
+# IDEA 1) dfs (pre-order) + prefix + hashmap + backtrack (GPT)
+class Solution(object):
+    def pathSum(self, root, targetSum):
+        """
+        :type root: Optional[TreeNode]
+        :type targetSum: int
+        :rtype: int
+        """
+        # Edge case
+        if not root:
+            return 0
+
+        # {prefix_sum: frequency}
+        # Prefix sum 0 appears once before traversing the root.
+        self.prefix_map = {0: 1}
+        self.cnt = 0
+        self.prefix = 0
+
+        self.helper(root, targetSum)
+
+        return self.cnt
+
+    def helper(self, root, targetSum):
+        if not root:
+            return
+
+        # Save the current prefix before entering this node.
+        prev_prefix = self.prefix
+
+        # Step 1: Update the prefix sum.
+        self.prefix += root.val
+
+        # Step 2: Find previous prefix sums that form targetSum.
+        # current_prefix - previous_prefix = targetSum
+        target_prefix = self.prefix - targetSum
+        if target_prefix in self.prefix_map:
+            self.cnt += self.prefix_map[target_prefix]
+
+        # Step 3: Add the current prefix sum to the hashmap.
+        self.prefix_map[self.prefix] = (
+            self.prefix_map.get(self.prefix, 0) + 1
+        )
+
+        # Step 4: Traverse the left and right subtrees.
+        self.helper(root.left, targetSum)
+        self.helper(root.right, targetSum)
+
+        # Step 5: Backtrack.
+        # Remove the current prefix before returning to the parent.
+        self.prefix_map[self.prefix] -= 1
+        self.prefix = prev_prefix
+
 
 # V1
 # https://blog.csdn.net/xiaoxiaoley/article/details/79093996
