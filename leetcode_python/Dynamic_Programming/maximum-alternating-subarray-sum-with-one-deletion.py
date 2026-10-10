@@ -57,6 +57,88 @@ Constraints:
 
 
 # V0
+class Solution(object):
+    def maxAlternatingSum(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        pass
+
+# V0-1
+# IDEA: DP (KADANE WITH 4 STATES) (gpt)
+class Solution(object):
+    def maxAlternatingSum(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        if not nums:
+            return 0
+
+        # Use a very small value to represent an invalid state.
+        NEG_INF = float("-inf")
+
+        # No deletion used:
+        # odd:  selected subarray has odd length
+        # even: selected subarray has even length
+        no_del_odd = nums[0]
+        no_del_even = NEG_INF
+
+        # One deletion used:
+        # Track the best alternating sum for each retained length parity.
+        del_odd = NEG_INF
+        del_even = NEG_INF
+
+        # A one-element subarray has alternating sum nums[0].
+        answer = nums[0]
+
+        for i in range(1, len(nums)):
+            x = nums[i]
+
+            # Save previous states before updating.
+            prev_no_odd = no_del_odd
+            prev_no_even = no_del_even
+            prev_del_odd = del_odd
+            prev_del_even = del_even
+
+            #------------------------------------
+            # Case 1: Do not delete any element.
+            #------------------------------------
+            # Start a new subarray, or extend an even-length subarray.
+            no_del_odd = max(x, prev_no_even + x)
+
+            # Extend an odd-length subarray.
+            no_del_even = prev_no_odd - x
+
+            #------------------------------------
+            # Case 2: Use exactly one deletion.
+            #------------------------------------
+            # Either extend a previous deleted candidate,
+            # or delete the current element from a no-deletion candidate.
+            del_odd = max(
+                prev_del_even + x,
+                prev_no_odd
+            )
+
+            del_even = max(
+                prev_del_odd - x,
+                prev_no_even
+            )
+
+            # Keep the best valid non-empty subarray.
+            answer = max(
+                answer,
+                no_del_odd,
+                no_del_even,
+                del_odd,
+                del_even
+            )
+
+        return answer
+
+
+# V0-2
 # IDEA : DP (KADANE WITH 4 STATES: sign of the last element x deletion used)
 """
 
