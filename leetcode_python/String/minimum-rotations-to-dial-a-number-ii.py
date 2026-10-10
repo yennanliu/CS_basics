@@ -84,6 +84,139 @@ class Solution(object):
 
 
 # V0-1
+# IDEA: SUFFIX/EDGE changes + MATH (GPT)
+"""
+NOTE !!!! (key of this LC)
+
+
+    new_op = base_total - old_cost + new_cost
+
+
+    ->
+
+    令 base_total 為原始字串的總旋轉成本。
+
+
+    當反轉位置 i > 0 時：
+
+    ->
+
+        ```
+        candidate = base_total - dist(s[i-1], s[i]) + dist(s[n-1], s[i-1])
+        ```
+
+    ->
+
+    意思就是：
+        - 減去原本進入 suffix 的轉移成本。
+        - 加上反轉後進入 suffix 的轉移成本。
+        - 其他轉移成本完全不變。
+"""
+class Solution(object):
+    def minRotations(self, n, s):
+        """
+        :type n: int
+        :type s: str
+        :rtype: int
+        """
+        # Edge case
+        if not s:
+            return 0
+
+        n = len(s)
+
+        # Step 1: Calculate the original total rotation cost.
+        base_total = self.get_total_op(s)
+
+        # Option 1: Do not reverse any suffix.
+        res = base_total
+
+        # Step 2: Try reversing each suffix s[i:].
+        for i in range(n):
+
+            # Case 1) i == 0
+            # NOTE !!! for i == 0, it's a special case, need to handle specifically
+            if i == 0:
+                # Reverse the entire string.
+                # The first digit changes from s[0] to s[-1].
+                old_cost = self.get_distance(0, int(s[0]))
+                new_cost = self.get_distance(0, int(s[-1]))
+            
+            #  Case 2) i != 0
+            else:
+                # The transition entering the suffix changes:
+                # s[i - 1] -> s[i]
+                # becomes
+                # s[i - 1] -> s[-1]
+                prev = int(s[i - 1])
+
+                old_cost = self.get_distance(prev, int(s[i]))
+                new_cost = self.get_distance(prev, int(s[-1]))
+
+
+            """
+            NOTE !!!! (key of this LC)
+
+
+            new_op = base_total - old_cost + new_cost
+
+            
+            ->
+
+            令 base_total 為原始字串的總旋轉成本。
+
+            
+            當反轉位置 i > 0 時：
+
+            ->
+
+                ```
+                candidate = base_total - dist(s[i-1], s[i]) + dist(s[n-1], s[i-1])
+                ```
+
+            ->
+
+            意思就是：
+                - 減去原本進入 suffix 的轉移成本。
+                - 加上反轉後進入 suffix 的轉移成本。
+                - 其他轉移成本完全不變。
+
+
+            """
+            # Only replace the changed transition cost.
+            candidate = base_total - old_cost + new_cost
+
+            res = min(res, candidate)
+
+        return res
+
+
+    """
+    NOTE !!!
+
+    below helper func
+    """
+    def get_total_op(self, s):
+        # The pointer initially starts at digit 0.
+        total_op = self.get_distance(0, int(s[0]))
+
+        # Add the cost between every adjacent pair.
+        for i in range(1, len(s)):
+            prev = int(s[i - 1])
+            curr = int(s[i])
+
+            total_op += self.get_distance(prev, curr)
+
+        return total_op
+
+    def get_distance(self, a, b):
+        # Minimum distance on a circular dial from 0 to 9.
+        direct = abs(a - b)
+        return min(direct, 10 - direct)
+
+
+
+# V0-1
 # IDEA: SUFFIX/EDGE changes + MATH (gemini)
 class Solution(object):
 
