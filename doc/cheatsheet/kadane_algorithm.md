@@ -5,7 +5,7 @@
 
 - **Core idea**: Find maximum sum/product of contiguous subarray in O(n) time using dynamic programming
 - **When to use it**: Maximum subarray sum, optimization problems on arrays, product variations
-- **Key LeetCode problems**: LC 53, LC 152, LC 918, LC 1186, LC 121, LC 134, LC 122
+- **Key LeetCode problems**: LC 53, LC 152, LC 918, LC 1186, LC 4072, LC 121, LC 134, LC 122
 - **Data structures**: Array, variables to track current/global max
 - **Typical states**: Current maximum ending here vs global maximum so far
 
@@ -492,6 +492,54 @@ public int maximumSum(int[] arr) {
 }
 ```
 
+#### Example — Alternating Sum With One Deletion (LC 4072)
+
+**Problem:** delete at most one element, then pick a subarray; maximise its alternating sum `a0 - a1 + a2 - ...` (re-indexed from 0).
+
+**What changes from LC 1186:** the sign of each element depends on its position *inside* the subarray, so one state per "deletion used?" is not enough — each splits by the sign the last kept element got. **4 states = sign × deletion used.**
+
+- A deletion only matters **inside** the subarray: deleting an end is just a shorter subarray. A middle deletion flips the sign of everything after it — that is all it buys.
+- "Delete `nums[i-1]`" means the previous **kept** element is `nums[i-2]`, so the deletion states read the no-deletion states from **two** steps back.
+- A subarray must start with `+`, so only `plus0` may start fresh (`max(0, ...)`); a `-` state can only extend.
+
+```text
+plus0[i]  =  nums[i] + max(0, minus0[i-1])            # start here, or extend
+minus0[i] = -nums[i] + plus0[i-1]                     # a - can never start
+plus1[i]  =  nums[i] + max(minus1[i-1], minus0[i-2])  # deleted earlier, or delete nums[i-1]
+minus1[i] = -nums[i] + max(plus1[i-1],  plus0[i-2])
+
+nums = [10, -5, -100]
+plus0[0] = 10  ->  minus1[2] = -(-100) + plus0[0] = 110   (delete -5)
+```
+
+```python
+# python
+# LC 4072 - Maximum Alternating Subarray Sum With One Deletion
+# IDEA: Kadane with 4 states -- sign of the last kept element x deletion used
+# time = O(N), space = O(1)
+def maxAlternatingSum(nums):
+    NEG_INF = float('-inf')
+    prev_plus0 = prev_minus0 = NEG_INF          # states ending at i-1
+    prev_plus1 = prev_minus1 = NEG_INF
+    prev2_plus0 = prev2_minus0 = NEG_INF        # no-deletion states ending at i-2
+    best = NEG_INF
+
+    for val in nums:
+        plus0 = val + max(0, prev_minus0)
+        minus0 = -val + prev_plus0
+        # the deletion is already behind us, or it is nums[i-1] itself
+        plus1 = val + max(prev_minus1, prev2_minus0)
+        minus1 = -val + max(prev_plus1, prev2_plus0)
+
+        best = max(best, plus0, minus0, plus1, minus1)
+
+        prev2_plus0, prev2_minus0 = prev_plus0, prev_minus0
+        prev_plus0, prev_minus0 = plus0, minus0
+        prev_plus1, prev_minus1 = plus1, minus1
+
+    return best
+```
+
 ---
 
 ### 1-6) Two-State Machine Kadane (LC 714)
@@ -689,6 +737,7 @@ def maximalSquare(matrix):
 | LC 152 | Medium | Maximum Product | Track max & min |
 | LC 918 | Medium | Circular Subarray | Total - minimum |
 | LC 1186 | Medium | With One Deletion | Two states DP |
+| LC 4072 | Medium | Alternating Sum + One Deletion | Four states: sign x deletion used |
 | LC 121 | Easy | Stock Trading | Max difference |
 | LC 122 | Medium | Stock Trading II | Sum all gains |
 | LC 134 | Medium | Gas Station | Circular + greedy |

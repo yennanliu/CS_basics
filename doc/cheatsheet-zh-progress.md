@@ -43,7 +43,7 @@ half-translated document renders with English gaps rather than failing.
   is what makes a problem findable on LeetCode itself.
 
 
-## Status — 5355 / 5355 sections (100%)
+## Status — 5356 / 5356 sections (100%)
 
 | Cheatsheet | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -118,7 +118,7 @@ half-translated document renders with English gaps rather than failing.
 | [java_trick](./cheatsheet/java_trick.md) | 74 | [✅](../i18n/zh/java_trick.md) |
 | [java_trick_collections](./cheatsheet/java_trick_collections.md) | 57 | [✅](../i18n/zh/java_trick_collections.md) |
 | [java_trick_strings_sorting](./cheatsheet/java_trick_strings_sorting.md) | 42 | [✅](../i18n/zh/java_trick_strings_sorting.md) |
-| [kadane_algorithm](./cheatsheet/kadane_algorithm.md) | 42 | [✅](../i18n/zh/kadane_algorithm.md) |
+| [kadane_algorithm](./cheatsheet/kadane_algorithm.md) | 43 | [✅](../i18n/zh/kadane_algorithm.md) |
 | [knapsack](./cheatsheet/knapsack.md) | 59 | [✅](../i18n/zh/knapsack.md) |
 | [knapsack_01_zh](./cheatsheet/knapsack_01_zh.md) | 27 | [✅](../i18n/zh/knapsack_01_zh.md) |
 | [lc_category](./cheatsheet/lc_category.md) | 3 | [✅](../i18n/zh/lc_category.md) |
