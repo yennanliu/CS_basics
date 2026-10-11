@@ -30,6 +30,84 @@ s consists of lowercase English letters.
 
 """
 
+
+# V0-1
+# IDEA: 2D DP (GPT)
+"""
+DP def:
+
+     dp[i][j]: boolean, if is `palindrome`
+
+
+DP eq:
+
+    dp[i][j] = 
+
+       if j - i <= 1:
+            True
+
+       if j - i > 1:
+
+            dp[i+1][j-1]
+
+
+"""
+class Solution(object):
+    def countSubstrings(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        if not s:
+            return 0
+
+        n = len(s)
+
+        # dp[i][j] = True if s[i:j+1] is a palindrome
+        dp = [[False] * n for _ in range(n)]
+
+        cnt = 0
+
+        """
+        NOTE !!!
+
+        
+        1. double loop
+
+            
+            ```
+            loop from `right -> left` (<--)
+                
+                loop from `left -> right` (-->)
+            ```
+
+        """
+        # Iterate from right to left so dp[i+1][j-1]
+        # has already been computed.
+        for i in range(n - 1, -1, -1):
+            for j in range(i, n):
+
+                # The two endpoints must match.
+                if s[i] == s[j]:
+
+                    # Length 1 or 2 is automatically a palindrome
+                    # when the endpoints match.
+                    if j - i <= 1:
+                        dp[i][j] = True
+
+                    # For length >= 3, the inner substring
+                    # must also be a palindrome.
+                    else:
+                        dp[i][j] = dp[i + 1][j - 1]
+
+                # Every True cell represents one palindrome substring.
+                if dp[i][j]:
+                    cnt += 1
+
+        return cnt
+
+
+
 # V0
 # IDEA: 2D DP
 """
