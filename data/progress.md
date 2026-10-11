@@ -95,7 +95,7 @@
 
 - 雜湊表 — 題目詳解
 	- https://yennj12.js.org/CS_basics/cheatsheets/hash_map_examples.zh.html
-
+		- `雜湊表 + 記憶化／DP`
 
 
 
@@ -156,6 +156,12 @@
 	- recent updated cheatsheet
 	- TODO LC:
 
+		- HashMap
+			- xxx
+
+		- TreeMap 是 O(log n)
+			- LC 729
+
 		- Set:
 			- 變化型 B：查的是轉換過的 key，不是元素本身
 				— LC 532
@@ -201,6 +207,9 @@
 			- 模板 6：作用域／上下文帳本 —— LC 388, LC 636  !!!! (g !!!)
 				- 388
 				- 636
+
+		- Mono stack
+			- LC 853 - Car Fleet
 
 
 		- graph
