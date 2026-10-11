@@ -68,7 +68,9 @@
 
 
 
-
+	- 前綴和 — 範例詳解
+		- https://yennj12.js.org/CS_basics/cheatsheets/prefix_sum_examples.zh.html
+			- `4) Flip String to Monotone Increasing — LC 926`
 
 
 
@@ -152,6 +154,9 @@
 - Others
 	- recent updated cheatsheet
 	- TODO LC:
+
+		- prefix sum
+			- 1124
 
 		- HashMap
 			- xxx
