@@ -96,7 +96,7 @@ class Solution(object):
         NOTE !!! explaination for below code:
 
 
-        程式碼 意義
+        1. 程式碼 意義
 
         if ... == "("  
             檢查目前字元是否表示一個子樹開始
@@ -110,6 +110,37 @@ class Solution(object):
         self.i += 1
             子樹解析完成後，跳過它對應的`右`括號 )
 
+
+
+
+        2. why `Step 2` NOT runs recursively ??
+
+            -> 遞迴呼叫完成後，會回到呼叫它的那一層，從 `呼叫點的下一行` 繼續執行。
+               這就是為什麼 LC 536 解析完左子樹後，會接著執行 Step 3，解析右子樹。
+
+
+            -> example:
+
+                ```
+                def helper(level):
+                    print("start", level)
+
+                    if level < 2:
+                        helper(level + 1)
+
+                    print("end", level)
+                    return
+                ```
+
+            -> 
+                ```
+                start 0
+                start 1
+                start 2
+                end 2
+                end 1
+                end 0
+                ```
         """
 
         # Step 2: Parse the left subtree if '(' exists.
