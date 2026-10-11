@@ -228,15 +228,21 @@ class Solution(object):
         # Step 2: Try reversing each suffix s[i:].
         for i in range(n):
 
+            #--------------------------
             # Case 1) i == 0
-            # NOTE !!! for i == 0, it's a special case, need to handle specifically
+            #--------------------------
+            # NOTE !!! for i == 0, it's a special case
+            # for i = 0, `prev` val is `0`,
+            #  -> so need to handle seperately
             if i == 0:
                 # Reverse the entire string.
                 # The first digit changes from s[0] to s[-1].
                 old_cost = self.get_distance(0, int(s[0]))
                 new_cost = self.get_distance(0, int(s[-1]))
             
+            #--------------------------
             #  Case 2) i != 0
+            #--------------------------
             else:
                 # The transition entering the suffix changes:
                 # s[i - 1] -> s[i]
@@ -290,6 +296,10 @@ class Solution(object):
 
     below helper func
     """
+
+    # NOTE !!! below help func is the `general`S version of LC 4070
+    # (e.g. prev is NOT always 0)
+    # https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/minimum-rotations-to-dial-a-number-i.py#L53
     def get_total_op(self, s):
         # The pointer initially starts at digit 0.
         total_op = self.get_distance(0, int(s[0]))
