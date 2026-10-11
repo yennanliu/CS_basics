@@ -57,6 +57,19 @@ class Solution(object):
         if not s:
             return None
 
+        """
+        NOTE !!!
+
+
+        self.i  (shared val)
+
+        ->
+
+         self.i 是共用的讀取指標。遞迴負責建立子樹，
+         self.i += 1 則負責跳過括號。理解「遞迴回來時指標停在哪裡」，
+         就是讀懂這段程式碼的關鍵。
+
+        """
         self.i = 0
         return self.helper(s)
 
@@ -77,6 +90,27 @@ class Solution(object):
 
         val = int(s[start:self.i])
         node = TreeNode(val)
+
+
+        """
+        NOTE !!! explaination for below code:
+
+
+        程式碼 意義
+
+        if ... == "("  
+            檢查目前字元是否表示一個子樹開始
+        
+        self.i += 1 
+            跳過`左`括號 (，準備讀取子樹內容
+        
+        node.left = self.helper(s)
+            遞迴解析左子樹，並將回傳的節點接到 node.left
+        
+        self.i += 1
+            子樹解析完成後，跳過它對應的`右`括號 )
+
+        """
 
         # Step 2: Parse the left subtree if '(' exists.
         if self.i < n and s[self.i] == "(":
