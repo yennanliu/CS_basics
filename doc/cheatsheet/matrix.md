@@ -487,6 +487,23 @@ def walk_diagonals_down_right(grid):
     return cells
 ```
 
+The same walk is often written with screen coordinates, `x` = column and `y` = row. Then the bounds are `x < w` and `y < rows`, and the read is `matrix[y][x]`. **Row comes first**, so the index order is the reverse of the name order:
+
+```python
+# IDEA: same walk in (x, y) naming -- x is the column, y is the row
+# time = O(rows*w), space = O(rows*w) for the output
+for start_x in range(w):
+    x = start_x
+    y = 0
+
+    while x < w and y < rows:
+        res.append(matrix[y][x])   # matrix[row][col] == matrix[y][x], never matrix[x][y]
+
+        # Move diagonally down and right
+        x += 1
+        y += 1
+```
+
 **The grid does not have to be built.** When the input is the matrix flattened row by row, cell `(row, col)` is `text[row * cols + col]` — so the walk reads the string directly:
 
 ```python
@@ -526,6 +543,7 @@ start (0,3): (0,3)              -> _
 
 **Pitfalls**
 - Loop on **both** bounds, `row < rows and col < cols`; checking one only works for a square grid.
+- With `(x, y)` names, read `matrix[y][x]`. `matrix[x][y]` reads the transpose, and on a non-square grid it goes out of range.
 - The flat index is `row * cols + col` — multiply by the **column** count, not `rows`.
 - `rstrip()`, not `strip()`: the padding is trailing, and a leading space can be real text.
 
