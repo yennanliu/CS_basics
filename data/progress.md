@@ -97,6 +97,12 @@
 	- https://yennj12.js.org/CS_basics/cheatsheets/hash_map_examples.zh.html
 
 
+- Set — 實戰題解
+	- https://yennj12.js.org/CS_basics/cheatsheets/set_examples.zh.html
+		- `4) Linked List Cycle Detection — LC 141 — 同一個想法搬到鏈結串列上`
+
+
+
 
 
 - python_trick.md
@@ -154,6 +160,10 @@
 - Others
 	- recent updated cheatsheet
 	- TODO LC:
+
+		- Set:
+			- 變化型 B：查的是轉換過的 key，不是元素本身
+				— LC 532
 		
 		- PQ:
 			- 模板 3：Shortest Subarray with Sum ≥ K
