@@ -33,6 +33,21 @@ class Solution(object):
 
 # V0-0-1
 # IDEA: DFS + STR OP (gpt)
+"""
+NOTE !!!
+
+
+1. NO need to deal with ")", 
+    -> just `skip` it
+
+
+2. DFS (recursive) on left, right node build
+
+
+3. # Step 2, 3 are nearly the same
+
+    (for left, right node build)
+"""
 class Solution(object):
     def str2tree(self, s):
         """
