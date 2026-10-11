@@ -98,19 +98,44 @@ class Solution(object):
     :type limit: int
     :rtype: int
     """
+
+    """
+    NOTE !!!
+
+    -> PQ saves: [val, idx]
+    """
     min_heap = []  # (val, idx)
     max_heap = []  # (-val, idx)
     left = 0
     max_len = 0
 
+
     for right, val in enumerate(nums):
+
+      #------------------------------
+      # Step 1) add to PQ anyway
+      #------------------------------
       heapq.heappush(min_heap, (val, right))
       heapq.heappush(max_heap, (-val, right))
 
+
+      #------------------------------
+      # Step 2) shrink left pointer
+      #------------------------------
+      """
+      NOTE !!!
+
+       `TOP` element of PQ is `pq[0]`
+
+       (NOT `pq[-1]`)
+      """
       # 當當前視窗最大值與最小值的差超過 limit 時，收縮`左界` !!!
       while -max_heap[0][0] - min_heap[0][0] > limit:
         left += 1
 
+        #------------------------------
+        # Step 3) Lazy deletion
+        #------------------------------
         # 惰性刪除：清除已經超出左界 left 的頂端過期元素
         while min_heap[0][1] < left:
           heapq.heappop(min_heap)
@@ -118,6 +143,11 @@ class Solution(object):
         while max_heap[0][1] < left:
           heapq.heappop(max_heap)
 
+      #------------------------------
+      # Step 4) update cur max len
+      #------------------------------
+      # NOTE !!!
+      # `right - left + 1` -> window size of validated sub arr
       max_len = max(max_len, right - left + 1)
 
     return max_len
