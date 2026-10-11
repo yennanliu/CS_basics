@@ -97,12 +97,6 @@
 	- https://yennj12.js.org/CS_basics/cheatsheets/hash_map_examples.zh.html
 
 
-- Set — 實戰題解
-	- https://yennj12.js.org/CS_basics/cheatsheets/set_examples.zh.html
-		- `8) Valid Sudoku — LC 36 — 九個列、行、宮格的集合`
-
-
-
 
 
 - python_trick.md
@@ -153,6 +147,7 @@
 				- https://yennj12.js.org/CS_basics/cheatsheets/tree_codec.zh.html#%E7%94%A8%E5%89%8D%E5%BA%8F%E8%B5%B0%E8%A8%AA%E5%BA%8F%E5%88%97%E5%8C%96%E4%BA%8C%E5%85%83%E6%A8%B9
 
 	- 0/1 背包 DP（0/1 Knapsack 中文詳解）
+	- Set — 實戰題解
 			
 
 
@@ -172,6 +167,8 @@
 				- LC 939
 			- Number of Distinct Islands 一個裝正規化形狀的集合
 				- LC 694
+			- Insert Delete GetRandom O(1) (good trick) !!!
+				— LC 380
 		
 		- PQ:
 			- 模板 3：Shortest Subarray with Sum ≥ K
