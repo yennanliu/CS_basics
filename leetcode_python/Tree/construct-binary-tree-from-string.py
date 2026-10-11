@@ -31,6 +31,53 @@ class Solution(object):
         pass
 
 
+# V0-0-1
+# IDEA: DFS + STR OP (gpt)
+class Solution(object):
+    def str2tree(self, s):
+        """
+        :type s: str
+        :rtype: Optional[TreeNode]
+        """
+        if not s:
+            return None
+
+        self.i = 0
+        return self.helper(s)
+
+    def helper(self, s):
+        n = len(s)
+
+        if self.i >= n:
+            return None
+
+        # Step 1: Parse an optional negative sign and the number.
+        start = self.i
+
+        if s[self.i] == "-":
+            self.i += 1
+
+        while self.i < n and s[self.i].isdigit():
+            self.i += 1
+
+        val = int(s[start:self.i])
+        node = TreeNode(val)
+
+        # Step 2: Parse the left subtree if '(' exists.
+        if self.i < n and s[self.i] == "(":
+            self.i += 1  # Skip '('
+            node.left = self.helper(s)
+            self.i += 1  # Skip ')'
+
+        # Step 3: Parse the right subtree if '(' exists.
+        if self.i < n and s[self.i] == "(":
+            self.i += 1  # Skip '('
+            node.right = self.helper(s)
+            self.i += 1  # Skip ')'
+
+        return node
+
+
 # V0-1
 # IDEA: STR OP + DFS (gemini)
 # NOTE: validated (neg / multi-digit / leaf / deep-chain cases all OK)
