@@ -55,10 +55,6 @@
 		- https://yennj12.js.org/CS_basics/cheatsheets/knapsack.zh.html
 
 
-	- 回溯（Backtracking)
-		- https://yennj12.js.org/CS_basics/cheatsheets/backtrack.zh.html
-			- `Template 10: N-Queens — LC 51`
-
 
 
 	- 複雜度速查表 — 經典演算法與資料結構
@@ -148,6 +144,7 @@
 
 	- 0/1 背包 DP（0/1 Knapsack 中文詳解）
 	- Set — 實戰題解
+	- 回溯（Backtracking)
 			
 
 
