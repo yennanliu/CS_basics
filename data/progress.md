@@ -164,6 +164,8 @@
 		- Set:
 			- 變化型 B：查的是轉換過的 key，不是元素本身
 				— LC 532
+			- 把集合當索引
+				- 128
 		
 		- PQ:
 			- 模板 3：Shortest Subarray with Sum ≥ K
