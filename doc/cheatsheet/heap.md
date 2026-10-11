@@ -505,8 +505,24 @@ most N times in total — it just loops more.
                     heapq.heappop(min_h)
 ```
 
+**Trace** — shrink form on `nums = [8, 2, 4, 7]`, `limit = 4`. The `.1` rows are the lazy
+deletions: an entry is popped only once it is **on top** *and* its index is `< left`.
+
+```text
+step  r  v  left  window     min_h[0]  max_h[0]  max-min  action                          res
+1     0  8  0     [8]        (8,0)     (-8,0)    0        valid                           1
+2     1  2  0     [8,2]      (2,1)     (-8,0)    6        6 > 4 -> left = 1               1
+2.1   1  -  1     [2]        (2,1)     (-2,1)    0        pop (-8,0) from max_h: 0 < 1    1
+3     2  4  1     [2,4]      (2,1)     (-4,2)    2        valid                           2
+4     3  7  1     [2,4,7]    (2,1)     (-7,3)    5        5 > 4 -> left = 2               2
+4.1   3  -  2     [4,7]      (4,2)     (-7,3)    3        pop (2,1) from min_h: 1 < 2     2
+```
+
 **Pitfalls**
 
+- **The top is `h[0]`, never `h[-1]`.** A `heapq` list is only partially ordered, so `h[-1]` is
+  an arbitrary leaf, not the max (Common Mistake #7 below). Every read here is `max_h[0]` /
+  `min_h[0]`.
 - **The tops are always fresh when you compare.** Every exit from the shrink loop has purged
   both tops, and a newly pushed entry is never stale, so a second purge *before* the `while`
   (right after the two pushes) does nothing. It is harmless, not needed.

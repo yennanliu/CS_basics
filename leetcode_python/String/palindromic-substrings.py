@@ -217,6 +217,52 @@ class Solution(object):
 
 
 # V0-2
+# IDEA: 2 POINTERS + EXPAND + ODD/EVEN CASES (gpt)
+"""
+time: O(N^2)
+space: O(1)
+"""
+class Solution(object):
+    def countSubstrings(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        if not s or len(s) == 0:
+            return 0
+        if len(s) == 1:
+            return 1
+
+        cnt = 0
+        n = len(s)
+
+        for i in range(n):
+
+            # Case 1: Odd-length palindrome
+            # Example: "aba", center is "b"
+            l = i
+            r = i
+            while l >= 0 and r < n and s[l] == s[r]:
+                cnt += 1
+
+                l -= 1
+                r += 1
+
+            # Case 2: Even-length palindrome
+            # Example: "abba", center is between the two "b"s
+            l = i-1
+            r = i
+            while l >= 0 and r < n and s[l] == s[r]:
+                cnt += 1
+
+                l -= 1
+                r += 1
+                
+
+        return cnt
+
+
+# V0-2
 # IDEA : BRUTE FORCE
 # time = O(n^3)  # O(n^2) substrings, each palindrome check up to O(n)
 # space = O(n)
