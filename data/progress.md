@@ -99,7 +99,7 @@
 
 - Set — 實戰題解
 	- https://yennj12.js.org/CS_basics/cheatsheets/set_examples.zh.html
-		- `4) Linked List Cycle Detection — LC 141 — 同一個想法搬到鏈結串列上`
+		- `8) Valid Sudoku — LC 36 — 九個列、行、宮格的集合`
 
 
 
@@ -166,12 +166,19 @@
 				— LC 532
 			- 把集合當索引
 				- 128
+			- 變化型：同樣三組集合，但回溯時要加入／移除 
+				— LC 36, 37
+			-  Minimum Area Rectangle — 一個裝編碼過的點的集合
+				- LC 939
+			- Number of Distinct Islands 一個裝正規化形狀的集合
+				- LC 694
 		
 		- PQ:
 			- 模板 3：Shortest Subarray with Sum ≥ K
 				- 862
 			- 模板 4：滑動視窗中位數 — 有序多重集合／兩個堆積（LC 480）
 				- 480
+
 
 		- DP:
 			- 5
