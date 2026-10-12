@@ -93,7 +93,7 @@
 
 - 雜湊表 — 題目詳解
 	- https://yennj12.js.org/CS_basics/cheatsheets/hash_map_examples.zh.html
-		- `單字 → 索引的 Map 做配對查找（拆字探查）`
+		- `LC 範例`
 
 
 
@@ -161,6 +161,11 @@
 		- HashMap
 			- Palindrome Pairs
 				- LC 336
+			- 把奇數轉換掉 → 前綴和計數
+				- 1248
+				- LC 560 
+			- at_most
+				- https://yennj12.js.org/CS_basics/cheatsheets/hash_map_examples.zh.html#%E5%8F%A6%E4%B8%80%E7%A8%AE%E5%81%9A%E6%B3%95%E6%BB%91%E5%8B%95%E8%A6%96%E7%AA%97atmost-%E6%8A%80%E5%B7%A7
 
 		- TreeMap 是 O(log n)
 			- LC 729
