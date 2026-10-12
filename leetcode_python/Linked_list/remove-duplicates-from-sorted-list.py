@@ -28,6 +28,52 @@ The list is guaranteed to be sorted in ascending order.
 """
 
 # V0
+# IDEA: LINKED LIST OP (GPT)
+class Solution(object):
+    def deleteDuplicates(self, head):
+        """
+        :type head: Optional[ListNode]
+        :rtype: Optional[ListNode]
+        """
+        # Edge case
+        if not head:
+            return head
+
+        curr = head
+
+        while curr and curr.next:
+            if curr.val == curr.next.val:
+                # Remove the next node
+                curr.next = curr.next.next
+            else:
+                # Move forward only when values differ
+                curr = curr.next
+
+        return head
+
+
+# V0-1
+# IDEA: LINKED LIST OP (GEMINI)
+class Solution(object):
+
+  def deleteDuplicates(self, head):
+    """:type head: Optional[ListNode]
+
+    :rtype: Optional[ListNode]
+    """
+    curr = head
+
+    # 當前節點與下一個節點皆存在時進行檢查
+    while curr and curr.next:
+      if curr.val == curr.next.val:
+        # 發現重複，跳過下一個重複的節點
+        curr.next = curr.next.next
+      else:
+        # 沒有重複，指針正常往前推進
+        curr = curr.next
+
+    return head
+
 
 # V1 
 # https://blog.csdn.net/coder_orz/article/details/51506143
