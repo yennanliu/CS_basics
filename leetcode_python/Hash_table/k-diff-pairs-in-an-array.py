@@ -47,7 +47,48 @@ Constraints:
 
 """
 
+
 # V0
+# IDEA : HASH TABLE (GPT)
+# time = O(n)
+# space = O(n)
+from collections import Counter
+
+class Solution(object):
+    def findPairs(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: int
+        """
+        # Edge cases
+        if not nums or k < 0:
+            return 0
+
+        val_cnt = Counter(nums)
+        cnt = 0
+
+        for key in val_cnt:
+            if k == 0:
+                # 相同的數字至少出現兩次，才算一組 pair
+                if val_cnt[key] > 1:
+                    cnt += 1
+            else:
+                """
+                NOTE !!!
+
+
+                ONLY need to check if `key + k` is in hash map
+                """
+                # 每組不同數值的 pair 只計算一次
+                if key + k in val_cnt:
+                    cnt += 1
+
+        return cnt
+
+
+
+# V0-1
 # IDEA : HASH TABLE
 # time = O(n)
 # space = O(n)
