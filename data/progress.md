@@ -93,7 +93,7 @@
 
 - 雜湊表 — 題目詳解
 	- https://yennj12.js.org/CS_basics/cheatsheets/hash_map_examples.zh.html
-		- `LC 範例`
+		- `2-3) Group Anagrams — LC 49`
 
 
 
