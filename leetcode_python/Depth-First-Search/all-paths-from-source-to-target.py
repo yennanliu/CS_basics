@@ -77,6 +77,11 @@ class Solution(object):
             # Recursively explore the next node.
             self.helper(graph, next_node, cache, target)
 
+            """
+            NOTE !!!
+
+            need to `undo` below (BACKTRACK)
+            """
             # Backtrack: remove the node before exploring
             # the next neighbor.
             cache.pop()
@@ -107,8 +112,16 @@ class Solution(object):
       # 走訪當前節點的所有相鄰節點
       for neighbor in graph[curr_node]:
         path.append(neighbor)  # 1. 做選擇
+
+        
+        """
+        NOTE !!!
+
+        need to `undo` below (BACKTRACK)
+        """
         backtrack(neighbor, path)  # 2. 遞迴探索
         path.pop()  # 3. 撤銷選擇 (回溯)
+
 
     # 從節點 0 開始出發，初始路徑包含 [0]
     backtrack(0, [0])
