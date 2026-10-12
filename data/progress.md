@@ -228,9 +228,6 @@
 				- 1095			
 			- 2.5) 沒有右端點 — 指數（Galloping
 				- 702
-			- others
-				- 275 
-					- H-Index II
 			- Split Array Largest Sum 
 				— LC 41
 			- 最小化最大值
@@ -326,6 +323,9 @@
 
 
 		- =================
+
+
+
 
 		- 34(todo),875(todo),81(todo)
 		- 377(todo, Permutations DP),210

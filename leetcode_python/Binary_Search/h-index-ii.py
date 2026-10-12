@@ -18,7 +18,61 @@ https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/h-index.
 
 """
 
+
 # V0
+# IDEA : BINARY SEARCH
+# time = O(log n)
+# space = O(1)
+class Solution(object):
+    def hIndex(self, citations):
+        """
+        :type citations: List[int]
+        :rtype: int
+        """
+        if not citations:
+            return 0
+
+        n = len(citations)
+        l = 0
+        r = n
+
+        res = -1
+
+        # Binary search for the maximum valid H-index.
+        while l <= r:
+            mid = l + (r - l) // 2
+
+            """
+            NOTE !!!
+
+
+            為什麼是 citations[n - mid] >= mid？
+
+            -> 
+
+            H-index 的定義是：
+                至少有 h 篇論文，各自被引用至少 h 次。
+
+                由於 citations 是升序排列，如果要確認是否至少有 mid 
+                篇論文被引用至少 mid 次，只需要檢查第 n - mid 個 index：
+
+                    ```
+                    citations[n - mid] >= mid
+                    ```
+
+            """
+            # If at least mid papers have >= mid citations,
+            # then mid is a valid H-index.
+            if mid == 0 or citations[n - mid] >= mid:
+                l = mid + 1
+                res = max(res, mid)
+            else:
+                r = mid - 1
+
+        return res
+
+
+# V0-1
 # IDEA : BINARY SEARCH
 # time = O(log n)
 # space = O(1)
@@ -37,7 +91,7 @@ class Solution:
                 left = mid + 1 # NOTE this, we want mid become bigger
         return res
 
-# V0-1
+# V0-2
 # IDEA : SAME AS #274 H-Index
 # time = O(n log n)
 # space = O(n)
