@@ -34,6 +34,86 @@ The input graph is guaranteed to be a DAG.
 """
 
 # V0 
+class Solution(object):
+    def allPathsSourceTarget(self, graph):
+        """
+        :type graph: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        pass
+
+
+# V0-1
+
+
+
+# V0-2
+# IDEA: DFS + BACKTRACK (GPT)
+class Solution(object):
+    def allPathsSourceTarget(self, graph):
+        """
+        :type graph: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        n = len(graph)
+        self.res = []
+
+        # Start DFS from node 0.
+        cache = [0]
+        self.helper(graph, 0, cache, n - 1)
+
+        return self.res
+
+    def helper(self, graph, x, cache, target):
+        # Base case: reached the target.
+        if x == target:
+            self.res.append(cache[:])  # Save a copy of the path.
+            return
+
+        # Explore every neighbor.
+        for next_node in graph[x]:
+            cache.append(next_node)
+
+            # Recursively explore the next node.
+            self.helper(graph, next_node, cache, target)
+
+            # Backtrack: remove the node before exploring
+            # the next neighbor.
+            cache.pop()
+
+
+# V0-3
+# IDEA: DFS + BACKTRACK (GEMINI)
+class Solution(object):
+
+  def allPathsSourceTarget(self, graph):
+    """:type graph: List[List[int]]
+
+    :rtype: List[List[int]]
+    """
+    if not graph:
+      return []
+
+    res = []
+    n = len(graph)
+    target = n - 1
+
+    def backtrack(curr_node, path):
+      # 終點條件：如果當前節點已經是目標節點 (n - 1)
+      if curr_node == target:
+        res.append(list(path))  # 必須複製一份當前的路徑放入結果
+        return
+
+      # 走訪當前節點的所有相鄰節點
+      for neighbor in graph[curr_node]:
+        path.append(neighbor)  # 1. 做選擇
+        backtrack(neighbor, path)  # 2. 遞迴探索
+        path.pop()  # 3. 撤銷選擇 (回溯)
+
+    # 從節點 0 開始出發，初始路徑包含 [0]
+    backtrack(0, [0])
+    return res
+
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79624149
