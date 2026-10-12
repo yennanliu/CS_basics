@@ -79,6 +79,28 @@ class Solution(object):
 
 
                 ONLY need to check if `key + k` is in hash map
+
+
+                ->
+
+                Q: why don't need to check `if key - k or key + k in val_cnt:` ?
+
+
+                ->
+
+                關鍵在於：我們只需要找到每一組 unique pair 一次，不需要從兩個方向重複尋找。
+
+
+                ->
+                   |a - b| = k
+
+                   -> a - b = k or a - b = -k
+
+                   -> but we ONLY need to check `b + k`
+
+                    -> 因為每一組 pair 都會由較小的數字找到較大的數字。
+
+
                 """
                 # 每組不同數值的 pair 只計算一次
                 if key + k in val_cnt:
