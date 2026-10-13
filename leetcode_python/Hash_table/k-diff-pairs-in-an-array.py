@@ -69,6 +69,14 @@ class Solution(object):
         cnt = 0
 
         for key in val_cnt:
+
+            """
+            NOTE !!!
+
+            for k == 0,
+
+            we need to handle specially
+            """
             if k == 0:
                 # 相同的數字至少出現兩次，才算一組 pair
                 if val_cnt[key] > 1:
@@ -81,25 +89,46 @@ class Solution(object):
                 ONLY need to check if `key + k` is in hash map
 
 
-                ->
+                -> Q: why don't need to check `if key - k or key + k in val_cnt` ?
 
-                Q: why don't need to check `if key - k or key + k in val_cnt:` ?
+                    -> 是因為每一組 pair 只需要被計算一次
+
+                    ->  | a - b | = k
+
+                    -> either a > b or a < b
+
+                    -> e.g. a is bigger or a is smaller
+
+                    -> since we want to find a `pair`
+
+                    -> so ONLY need to focus on on val at a time
+
+                    -> if only focus on `a is a smaller val`
+
+                        -> a - b = - k
+
+                        -> b = a + k
+
+                        -> 所以我們只要固定較小的數字 key，檢查 key + k 是否存在即可
 
 
-                ->
-
-                關鍵在於：我們只需要找到每一組 unique pair 一次，不需要從兩個方向重複尋找。
 
 
-                ->
-                   |a - b| = k
+                -----
 
-                   -> a - b = k or a - b = -k
 
-                   -> but we ONLY need to check `b + k`
+                4. 面試時記住這個技巧
 
-                    -> 因為每一組 pair 都會由較小的數字找到較大的數字。
+                        當題目要求計算 unique pairs，且條件是：
+                        ```
+                        |a-b|=k, k>0
+                        ```
 
+                        你可以把它改寫成：
+
+                        ```
+                        b=a+k
+                        ```
 
                 """
                 # 每組不同數值的 pair 只計算一次
