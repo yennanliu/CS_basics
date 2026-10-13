@@ -64,6 +64,16 @@ class Solution(object):
         # Terminate the second list to avoid cycles
         p2.next = None
 
+        """
+        NOTE !!!
+
+        below trick !! 
+            -> how we re-connect nodes
+
+            -> so we DON'T need to trace the `last nodes in p2`,
+               but can just reuse the dummy_2.
+
+        """
         # Connect the two lists
         p1.next = dummy_2.next
 
