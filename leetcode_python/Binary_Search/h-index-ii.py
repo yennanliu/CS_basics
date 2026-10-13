@@ -23,6 +23,12 @@ https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/h-index.
 # IDEA : BINARY SEARCH
 # time = O(log n)
 # space = O(1)
+"""
+NOTE !!!
+
+
+DON'T need extra helper func for this LC
+"""
 class Solution(object):
     def hIndex(self, citations):
         """
@@ -110,6 +116,48 @@ class Solution(object):
         # BE AWARE OF IT
         # for the [] or [1] ... cases
         return len(citations)
+
+
+# V0-3
+# IDEA : BINARY SEARCH (gpt)
+class Solution(object):
+    def hIndex(self, citations):
+        """
+        :type citations: List[int]
+        :rtype: int
+        """
+        if not citations:
+            return 0
+
+        l = 0
+        r = max(citations)
+        res = 0
+
+        while l <= r:
+            mid = l + (r - l) // 2
+
+            cnt = self.helper(citations, mid)
+
+            if cnt >= mid:
+                # mid is a valid H-index candidate.
+                # Try to find a larger one.
+                res = mid
+                l = mid + 1
+            else:
+                # Not enough papers have at least mid citations.
+                # Try a smaller H-index.
+                r = mid - 1
+
+        return res
+
+    def helper(self, citations, x):
+        cnt = 0
+        for c in citations:
+            if c >= x:
+                cnt += 1
+
+        return cnt
+
 
 # V1
 # https://leetcode.com/problems/h-index-ii/discuss/709447/Python-O(logN)-Binary-Search
