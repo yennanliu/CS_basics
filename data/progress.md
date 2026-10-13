@@ -76,7 +76,9 @@
 
 	- 字串演算法 — 實作範例
 		- https://yennj12.js.org/CS_basics/cheatsheets/string_examples.zh.html
-			- `2-8) Roman to Integer — LC 13`
+			- `2-18) Expressive Words — LC 809`
+
+
 
 - LeetCode Patterns Guide
 	- https://yennj12.js.org/CS_basics/cheatsheets/lc_pattern.zh.html
@@ -161,6 +163,12 @@
 
 			- 模式：首／末出現位置 + 最小差值計數
 				- 1794
+
+			- 模式：枚舉切點 + 產生合法的數字格式
+				- 816
+
+			- 模式：逐步前綴驗證
+				- 720
 
 
 
