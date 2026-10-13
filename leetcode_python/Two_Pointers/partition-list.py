@@ -27,7 +27,91 @@ The number of nodes in the list is in the range [0, 200].
 
 """
 
-# V0
+# V0-1
+# IDEA: LINKED LIST OP (gpt)
+class Solution(object):
+    def partition(self, head, x):
+        """
+        :type head: Optional[ListNode]
+        :type x: int
+        :rtype: Optional[ListNode]
+        """
+        # Edge case
+        if not head:
+            return None
+
+        # Two linked lists:
+        # list 1: nodes with values < x
+        # list 2: nodes with values >= x
+        dummy_1 = ListNode()
+        dummy_2 = ListNode()
+
+        p1 = dummy_1
+        p2 = dummy_2
+
+        curr = head
+
+        while curr:
+            if curr.val < x:
+                p1.next = curr
+                p1 = p1.next
+            else:
+                p2.next = curr
+                p2 = p2.next
+
+            curr = curr.next
+
+        # Terminate the second list to avoid cycles
+        p2.next = None
+
+        # Connect the two lists
+        p1.next = dummy_2.next
+
+        return dummy_1.next
+
+
+# V0-2
+# IDEA: LINKED LIST OP (GEMINI)
+class Solution(object):
+
+  def partition(self, head, x):
+    """:type head: Optional[ListNode]
+
+    :type x: int
+    :rtype: Optional[ListNode]
+    """
+    if not head:
+      return None
+
+    # 1. 建立兩個 Dummy 節點與其追蹤指標
+    less_head = ListNode(0)
+    greater_head = ListNode(0)
+
+    less_ptr = less_head
+    greater_ptr = greater_head
+
+    curr = head
+
+    # 2. 走訪原串列，將節點分流
+    while curr:
+      if curr.val < x:
+        less_ptr.next = curr
+        less_ptr = less_ptr.next
+      else:
+        greater_ptr.next = curr
+        greater_ptr = greater_ptr.next
+
+      curr = curr.next
+
+    # 3. 關鍵步驟：切斷大於等於串列的尾巴，避免形成環狀鏈結 (Cycle)
+    greater_ptr.next = None
+
+    # 4. 將小於串列的尾巴接上大於串列的頭
+    less_ptr.next = greater_head.next
+
+    # 5. 回傳合併後的頭節點
+    return less_head.next
+
 
 # V1 
 class ListNode(object):
@@ -92,6 +176,3 @@ class Solution(object):
         greater.next = None
 
         return dummySmaller.__next__
-
-
-
