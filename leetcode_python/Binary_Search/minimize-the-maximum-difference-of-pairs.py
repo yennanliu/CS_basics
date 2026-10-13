@@ -45,6 +45,19 @@ Constraints:
 
 """
 
+
+"""
+NOTE !!!
+
+
+-> CAN'T just use `counter` (hash map), and find the pairs
+    -> since we need to get `p pairs` on the same time
+
+
+        -> 你原本使用 Counter、排序和雙層迴圈的方向可以理解
+          ，但這題不能只找出最小的一組差值，而是要同時選出 p 組 pair。
+"""
+
 # V0
 class Solution(object):
     def minimizeMax(self, nums, p):
@@ -55,10 +68,67 @@ class Solution(object):
         """
         pass
 
+# V0-1
+# IDEA: SORT + Binary Search + Greedy (GEMINI)
+"""
+STEPS:
+
+    1. 先排序 nums。
+
+    2. 二分搜尋答案 max_diff。
+
+    3. 每次用 Greedy 判斷：能不能選出`至少` p 組差值不超過 max_diff 的 pair？
+
+"""
+class Solution(object):
+
+  def minimizeMax(self, nums, p):
+    """:type nums: List[int]
+
+    :type p: int
+    :rtype: int
+    """
+    if p == 0:
+      return 0
+
+    nums.sort()
+    n = len(nums)
+
+    # 1. 二分搜的數值範圍：最小值 0，最大值 (最大值 - 最小值)
+    l, r = 0, nums[-1] - nums[0]
+    ans = r
+
+    while l <= r:
+      mid = l + (r - l) // 2
+
+      # 2. 檢查在當前容許差值 mid 下，能否湊出至少 p 個不重疊數對
+      if self.can_form_pairs(nums, mid, p):
+        ans = mid  # 成功，嘗試尋找更小的最大差值
+        r = mid - 1
+      else:
+        l = mid + 1  # 差值限制太嚴格，無法湊出 p 對，放寬限制
+
+    return ans
+
+  def can_form_pairs(self, nums, max_diff, p):
+    count = 0
+    i = 0
+    while i < len(nums) - 1:
+      # 如果相鄰元素差值小於等於限制，則成對
+      if nums[i + 1] - nums[i] <= max_diff:
+        count += 1
+        i += 2  # 跳過這兩個元素，確保 index 不重複使用
+      else:
+        i += 1  # 否則往後檢查下一個
+
+      if count >= p:
+        return True
+    return False
+
+
 
 # V0-1
 # IDEA: Binary Search + Greedy (GPT)
-
 class Solution(object):
     def minimizeMax(self, nums, p):
         """
@@ -104,54 +174,6 @@ class Solution(object):
                 left = mid + 1
 
         return left
-
-
-# V0-2
-# IDEA: SORT + Binary Search + Greedy (GEMINI)
-class Solution(object):
-
-  def minimizeMax(self, nums, p):
-    """:type nums: List[int]
-
-    :type p: int
-    :rtype: int
-    """
-    if p == 0:
-      return 0
-
-    nums.sort()
-    n = len(nums)
-
-    # 1. 二分搜的數值範圍：最小值 0，最大值 (最大值 - 最小值)
-    l, r = 0, nums[-1] - nums[0]
-    ans = r
-
-    while l <= r:
-      mid = l + (r - l) // 2
-
-      # 2. 檢查在當前容許差值 mid 下，能否湊出至少 p 個不重疊數對
-      if self.can_form_pairs(nums, mid, p):
-        ans = mid  # 成功，嘗試尋找更小的最大差值
-        r = mid - 1
-      else:
-        l = mid + 1  # 差值限制太嚴格，無法湊出 p 對，放寬限制
-
-    return ans
-
-  def can_form_pairs(self, nums, max_diff, p):
-    count = 0
-    i = 0
-    while i < len(nums) - 1:
-      # 如果相鄰元素差值小於等於限制，則成對
-      if nums[i + 1] - nums[i] <= max_diff:
-        count += 1
-        i += 2  # 跳過這兩個元素，確保 index 不重複使用
-      else:
-        i += 1  # 否則往後檢查下一個
-
-      if count >= p:
-        return True
-    return False
 
 
 # V0-3
