@@ -1,3 +1,6 @@
+# https://leetcode.ca/all/702.html
+
+
 """
 
 702. Search in a Sorted Array of Unknown Size
@@ -50,7 +53,18 @@ secret is sorted in a strictly increasing order.
 
 
 # V0
-# IDEA : EXPONENTIAL SEARCH + BINARY SEARCH
+class Solution:
+    def search(self, reader, target):
+        pass
+
+
+# V0-1
+
+# V0-2
+
+
+# V0-3
+# IDEA : EXPONENTIAL SEARCH + BINARY SEARCH (claude)
 #
 #   Step 1) we do NOT know the array length, so grow a right bound by doubling
 #           until reader.get(right) >= target. Out of bound reads return 2^31 - 1,
@@ -75,4 +89,23 @@ class Solution(object):
             else:
                 left = mid + 1
 
+        return left if reader.get(left) == target else -1
+
+
+# V1
+# https://leetcode.ca/2017-11-01-702-Search-in-a-Sorted-Array-of-Unknown-Size/
+class Solution:
+    def search(self, reader, target):
+        """
+        :type reader: ArrayReader
+        :type target: int
+        :rtype: int
+        """
+        left, right = 0, 20000
+        while left < right:
+            mid = (left + right) >> 1
+            if reader.get(mid) >= target:
+                right = mid
+            else:
+                left = mid + 1
         return left if reader.get(left) == target else -1
