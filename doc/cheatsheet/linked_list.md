@@ -310,7 +310,7 @@ def removeNthFromEnd(self, head, n):
 
 #### **Dummy Head — Other Applications**
 
-Two more problems where the dummy is what removes the special case. The rest of the
+One more problem where the dummy is what removes the special case. The rest of the
 family is worked where it belongs, not re-pasted here:
 
 | LC | Problem | Worked in |
@@ -319,6 +319,7 @@ family is worked where it belongs, not re-pasted here:
 | 21 | Merge Two Sorted Lists | [linked_list_examples.md](./linked_list_examples.md#4-merge-two-sorted-lists--lc-21) |
 | 2 | Add Two Numbers | [1-1-7) below](#1-1-7-add-2-linked-list--lc-2) |
 | 203 | Remove Linked List Elements | [Remove Elements by Value Pattern](#remove-elements-by-value-pattern) below |
+| 86 | Partition List | [Two Dummies — Split into Chains, then Join](#two-dummies--split-into-chains-then-join-lc-86-) below — *two* dummies, its own pattern |
 
 **Remove duplicates from a sorted list — LC 83**: the dummy holds the last *kept* node, so a
 run of equal values collapses without ever special-casing a duplicated head.
@@ -342,29 +343,6 @@ def deleteDuplicates(self, head):
     return dummy.next
 ```
 
-**Partition List — LC 86**: *two* dummies. Build the `< x` chain and the `>= x` chain
-independently, then join them — no in-place surgery, and stability falls out for free.
-```python
-def partition(self, head, x):
-    before_dummy = ListNode(0)
-    after_dummy = ListNode(0)
-    before = before_dummy
-    after = after_dummy
-
-    while head:
-        if head.val < x:
-            before.next = head
-            before = before.next
-        else:
-            after.next = head
-            after = after.next
-        head = head.next
-
-    # Connect the two parts
-    after.next = None
-    before.next = after_dummy.next
-    return before_dummy.next
-```
 **Key Benefits of Dummy Head**:
 
 | Aspect | Without Dummy | With Dummy |
@@ -482,6 +460,137 @@ Return: dummy.next = [3]
 - LC 237: Delete Node in a Linked List (different - no access to prev)
 - LC 1474: Delete N Nodes After M Nodes (pattern variation)
 - LC 2487: Remove Nodes From Linked List (stack-based variation)
+
+---
+
+#### **Two Dummies — Split into Chains, then Join (LC 86)** ⭐⭐⭐⭐
+
+**Core Idea**: When every node goes into one of two groups and each group must keep its
+original order (a **stable** partition), do not shuffle nodes in place. Give each group its own
+**dummy head** and its own **tail pointer**, walk the list once appending each node to the tail
+of its group, then join the two chains end to start. Every append is the same two lines, so
+there is no special case for an empty group, the head, or the last node.
+
+**When to Use**:
+- Split a list by a predicate on the **value** — `< x` vs `>= x` (LC 86)
+- Split it by a predicate on the **position** — odd vs even index (LC 328)
+- Any "stable partition" of a list — the array form (LC 2161) is the same idea with three buckets
+
+**Time Complexity**: O(n) — one pass
+**Space Complexity**: O(1) — the nodes are re-linked, never copied; only two dummies are new
+
+**The join is the trick.** After the loop you hold four handles:
+
+| Handle | What it is | Needed for |
+|---|---|---|
+| `dummy_1` | sits before the head of chain 1 | the answer — `return dummy_1.next` |
+| `p1` | the **tail** of chain 1 | the join: chain 1's tail must point at chain 2's head |
+| `dummy_2` | sits before the head of chain 2 | the join: `dummy_2.next` **is** chain 2's head |
+| `p2` | the **tail** of chain 2 | termination: `p2.next = None` |
+
+So the join is `p1.next = dummy_2.next`. You never track "the first node that went into chain
+2" — the dummy has been holding it since the first append. That is what the dummy buys a second
+time: it is a fixed handle on a chain's head while the tail pointer runs off down the list.
+
+**Template Pattern**:
+```python
+# python
+# LC 86 - Partition List
+# IDEA: two dummies -> append each node to the tail of its chain, then
+#       terminate chain 2 and hang it off chain 1's tail via dummy_2.next
+# time = O(n), space = O(1)
+class Solution(object):
+    def partition(self, head, x):
+        dummy_1 = ListNode(0)   # chain 1: values <  x
+        dummy_2 = ListNode(0)   # chain 2: values >= x
+        p1 = dummy_1            # tail of chain 1
+        p2 = dummy_2            # tail of chain 2
+
+        curr = head
+        while curr:
+            if curr.val < x:
+                p1.next = curr
+                p1 = p1.next
+            else:
+                p2.next = curr
+                p2 = p2.next
+            curr = curr.next
+
+        # NOTE !!! terminate chain 2: p2 may still point at a node now in chain 1
+        p2.next = None
+
+        # NOTE !!! join: dummy_2.next is chain 2's head, so it never has to be tracked
+        p1.next = dummy_2.next
+
+        return dummy_1.next
+```
+
+```java
+// java
+// LC 86 - Partition List
+// time = O(n), space = O(1)
+public ListNode partition(ListNode head, int x) {
+    ListNode dummy1 = new ListNode(0);   // chain 1: values <  x
+    ListNode dummy2 = new ListNode(0);   // chain 2: values >= x
+    ListNode p1 = dummy1;
+    ListNode p2 = dummy2;
+
+    ListNode curr = head;
+    while (curr != null) {
+        if (curr.val < x) {
+            p1.next = curr;
+            p1 = p1.next;
+        } else {
+            p2.next = curr;
+            p2 = p2.next;
+        }
+        curr = curr.next;
+    }
+
+    p2.next = null;            // terminate chain 2, or the result can loop
+    p1.next = dummy2.next;     // join: chain 1's tail -> chain 2's head
+
+    return dummy1.next;
+}
+```
+
+**Visual Trace** (`[1,4,3,2,5,2]`, `x = 3`):
+```text
+node  goes to   chain 1 (< 3)        chain 2 (>= 3)
+ 1    chain 1   d1 -> 1              d2
+ 4    chain 2   d1 -> 1              d2 -> 4
+ 3    chain 2   d1 -> 1              d2 -> 4 -> 3
+ 2    chain 1   d1 -> 1 -> 2         d2 -> 4 -> 3
+ 5    chain 2   d1 -> 1 -> 2         d2 -> 4 -> 3 -> 5
+ 2    chain 1   d1 -> 1 -> 2 -> 2    d2 -> 4 -> 3 -> 5
+                          ^p1                       ^p2
+
+p2.next = None        5.next was still the last 2 -> cut it
+p1.next = d2.next     2 -> 4
+
+d1 -> 1 -> 2 -> 2 -> 4 -> 3 -> 5   return d1.next  =>  [1,2,2,4,3,5]
+```
+
+**Pitfalls**:
+- **Forgetting `p2.next = None` makes a cycle.** The nodes are re-linked, not copied, so chain
+  2's last node still carries its *old* `next`. In the trace that is `5 -> 2`, and the final 2
+  sits in chain 1 *before* 5 — a loop. Only chain 2 needs the cut: chain 1's tail is about to be
+  overwritten by the join anyway.
+- **Join with `dummy_2.next`, not `dummy_2`.** The dummy is a placeholder value `0`; hanging the
+  dummy itself off `p1` inserts a phantom node.
+- **Empty groups need no guard.** All nodes `< x`: `dummy_2.next` is `None`, and the join just
+  re-terminates chain 1. All nodes `>= x`: `p1` is still `dummy_1`, so the join makes
+  `dummy_1.next` chain 2's head. Empty input returns `None` the same way.
+- **Do not reach for the array Dutch-flag partition.** LC 75's in-place swap is not stable, and
+  LC 86 requires the original relative order within each group.
+
+**Similar LC Problems**:
+| # | Problem | The predicate that picks the chain |
+|---|---------|-----------------------------------|
+| 86 | Partition List | `node.val < x` — the template above |
+| 328 | Odd Even Linked List | the node's **index** is even — the same two dummies, `p2.next = None`, `p1.next = dummy_2.next` |
+| 2161 | Partition Array According to Given Pivot | the array form: three buckets (`<`, `==`, `>`), concatenated in order |
+| 21 | Merge Two Sorted Lists | the reverse move — one dummy, *two* inputs, one chain out |
 
 ---
 
@@ -1631,6 +1740,7 @@ are holding it. Pick by what the answer needs, not by the problem's title.
 |---|---|---|---|
 | delete or insert **anywhere, head included** | **dummy head** | it gives `prev` a standing position one node *before* the head, so "remove the head" stops being a special case | [Dummy Head Technique](#dummy-head-technique) |
 | remove **every** node matching a value | **dummy + look-ahead on `curr.next`** | you have to be able to *stay put* after a deletion, or a run like `[6,6,6]` loses one | [Remove Elements by Value Pattern](#remove-elements-by-value-pattern) |
+| **split** the nodes into two groups, each keeping its order — by value or by index | **two dummies, one tail per chain, then join** | `p1.next = dummy_2.next` joins without ever tracking chain 2's head; `p2.next = None` stops the cycle | [Two Dummies — Split into Chains](#two-dummies--split-into-chains-then-join-lc-86-) |
 | reverse the **whole** list | **the 3-step loop**: cache next → flip → advance | O(1) space; the recursive form costs a frame per node for the same answer | [1-1-1)](#1-1-1-reverse-linked-list-iteration--lc-206) |
 | reverse a **segment** — `[left, right]`, every `k`, or pairs | **the reverse-k helper, returning 3 handles** | LC 92 / 25 / 24 differ only in *where the segment is*, never in how it reverses | [Reverse K Nodes Helper Pattern](#reverse-k-nodes-helper-pattern-) |
 | find the middle, detect a cycle, or reach the n-th **from the end** | **fast/slow pointers** | one pass, O(1) space, and no length to precompute | [1-1-8)](#1-1-8-find-linked-list-middle-point--lc-876), [2_pointers_linkedlist.md](./2_pointers_linkedlist.md) |

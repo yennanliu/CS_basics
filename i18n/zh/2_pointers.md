@@ -119,7 +119,7 @@
     - 陣列
     - 鏈結串列
 
-<!-- f391c282f6fc -->
+<!-- 498ff138b177 -->
 ### 模式 → 模板 → 題目
 
 | 題目裡的訊號 | 模板 | 實作在 |
@@ -129,7 +129,7 @@
 | 計算／尋找回文子字串 | [模板 3](#template-3-expand-from-centre--lc-5-lc-647-) | LC 5, LC 647, LC 680 |
 | 「A 是不是 B 的子序列」、樣式比對 | [模板 4](#template-4-subsequence-matching-one-pointer-always-moves--lc-392-) | LC 392, LC 524, LC 1023, LC 809 |
 | 原地合併兩個有序序列 | [模板 5](#template-5-merge-two-sorted-arrays-fill-from-the-back--lc-88-) | LC 88, LC 986, LC 977 |
-| 重排成 3 組／依值分割 | [模板 6](#template-6-three-way-partition-dutch-national-flag--lc-75-) | LC 75, LC 905, LC 86 |
+| 重排成 3 組／依值分割 | [模板 6](#template-6-three-way-partition-dutch-national-flag--lc-75-) | LC 75, LC 905 — 串列的**穩定**分割（LC 86）見 [linked_list.md 的兩個虛擬節點](./linked_list.md#two-dummies--split-into-chains-then-join-lc-86-) |
 | 鏈結串列有沒有環、找重複數字 | [模板 7](#template-7-fastslow-cycle-detection--lc-141-lc-142-) | LC 141, LC 142, LC 287 |
 | 視窗依一個條件變大、依另一個條件縮小 | [模板 8](#template-8-advance-right-then-advance-left-condition-driven) | LC 209, LC 567（見 [sliding_window.md](./sliding_window.md)） |
 | 第 k 大／最接近的 k 個（用選取，不要排序） | [2_pointers_quickselect.md](./2_pointers_quickselect.md) | LC 215, LC 973 |

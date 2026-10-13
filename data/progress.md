@@ -312,8 +312,6 @@
 
 
 		Linked list
-			- Partition List：用兩個虛擬節點。分別把 < x 這條鏈和 >= x 這條鏈各自接好
-				- LC 86
 			- LRU, LFU
 				- 146
 				- 460
