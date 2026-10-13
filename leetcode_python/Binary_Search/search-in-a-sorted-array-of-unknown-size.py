@@ -59,8 +59,56 @@ class Solution:
 
 
 # V0-1
+# IDEA: 倍增法擴展邊界 + 標準二分搜 (GPT)
+class Solution:
+    def search(self, reader, target):
+        # Step 1: Find the search range using exponential search
+        l, r = 0, 1
+
+        while reader.get(r) < target:
+            l = r + 1
+            r *= 2
+
+        # Step 2: Binary search within the range
+        while l <= r:
+            mid = l + (r - l) // 2
+            val = reader.get(mid)
+
+            if val == target:
+                return mid
+            elif val > target:
+                r = mid - 1
+            else:
+                l = mid + 1
+
+        return -1
+
+
 
 # V0-2
+# IDEA: 倍增法擴展邊界 + 標準二分搜 (GEMINI)
+class Solution:
+
+  def search(self, reader, target):
+    # 1. 透過倍增法 (Exponential Search) 動態尋找右界 r
+    l, r = 0, 1
+    while reader.get(r) < target:
+      l = r
+      r *= 2
+
+    # 2. 在範圍 [l, r] 內進行標準二分搜
+    while l <= r:
+      mid = l + (r - l) // 2
+      val = reader.get(mid)
+
+      if val == target:
+        return mid
+      elif val > target:
+        r = mid - 1
+      else:
+        l = mid + 1
+
+    return -1
 
 
 # V0-3
