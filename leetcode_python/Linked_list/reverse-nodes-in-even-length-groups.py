@@ -118,6 +118,18 @@ class Solution(object):
             g_len = min(group, _len - processed)
 
             if g_len % 2 == 0:
+
+                """
+                NOTE !!!
+
+
+                help func return 3 var:
+
+                    - group_head
+                    - group_tail
+                    - next_node
+
+                """
                 # Reverse current group
                 group_head, group_tail, next_node = self.reverse_nodes(
                     cur, g_len
@@ -183,6 +195,11 @@ class Solution(object):
         group_head = head
         cur = head
 
+        """
+        NOTE !!!
+
+        loop in `g_len - 1` range 
+        """
         # Move to the last node of this group
         for _ in range(g_len - 1):
             cur = cur.next
