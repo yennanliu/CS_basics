@@ -46,7 +46,116 @@ Constraints:
 """
 
 # V0
-# IDEA : SORT + BINARY SEARCH ON THE ANSWER (MINIMIZE THE MAXIMUM) + GREEDY CHECK
+class Solution(object):
+    def minimizeMax(self, nums, p):
+        """
+        :type nums: List[int]
+        :type p: int
+        :rtype: int
+        """
+        pass
+
+
+# V0-1
+# IDEA: Binary Search + Greedy (GPT)
+
+class Solution(object):
+    def minimizeMax(self, nums, p):
+        """
+        :type nums: List[int]
+        :type p: int
+        :rtype: int
+        """
+        # Edge case: need zero pairs
+        if p == 0:
+            return 0
+
+        nums.sort()
+        n = len(nums)
+
+        # Check if we can form at least p pairs
+        # where each pair's difference <= max_diff
+        def can_form_pairs(max_diff):
+            cnt = 0
+            i = 0
+
+            while i < n - 1:
+                if nums[i + 1] - nums[i] <= max_diff:
+                    cnt += 1
+                    i += 2  # Both indices are used
+                else:
+                    i += 1
+
+                if cnt >= p:
+                    return True
+
+            return False
+
+        # Binary search for the minimum feasible max difference
+        left = 0
+        right = nums[-1] - nums[0]
+
+        while left < right:
+            mid = left + (right - left) // 2
+
+            if can_form_pairs(mid):
+                right = mid
+            else:
+                left = mid + 1
+
+        return left
+
+
+# V0-2
+# IDEA: SORT + Binary Search + Greedy (GEMINI)
+class Solution(object):
+
+  def minimizeMax(self, nums, p):
+    """:type nums: List[int]
+
+    :type p: int
+    :rtype: int
+    """
+    if p == 0:
+      return 0
+
+    nums.sort()
+    n = len(nums)
+
+    # 1. 二分搜的數值範圍：最小值 0，最大值 (最大值 - 最小值)
+    l, r = 0, nums[-1] - nums[0]
+    ans = r
+
+    while l <= r:
+      mid = l + (r - l) // 2
+
+      # 2. 檢查在當前容許差值 mid 下，能否湊出至少 p 個不重疊數對
+      if self.can_form_pairs(nums, mid, p):
+        ans = mid  # 成功，嘗試尋找更小的最大差值
+        r = mid - 1
+      else:
+        l = mid + 1  # 差值限制太嚴格，無法湊出 p 對，放寬限制
+
+    return ans
+
+  def can_form_pairs(self, nums, max_diff, p):
+    count = 0
+    i = 0
+    while i < len(nums) - 1:
+      # 如果相鄰元素差值小於等於限制，則成對
+      if nums[i + 1] - nums[i] <= max_diff:
+        count += 1
+        i += 2  # 跳過這兩個元素，確保 index 不重複使用
+      else:
+        i += 1  # 否則往後檢查下一個
+
+      if count >= p:
+        return True
+    return False
+
+
+# V0-3
+# IDEA : SORT + BINARY SEARCH ON THE ANSWER (MINIMIZE THE MAXIMUM) + GREEDY CHECK (CLAUDE)
 #
 #   Binary search the answer `max_diff` over [0, max(nums) - min(nums)].
 #   The check "can we form p disjoint pairs, each with diff <= max_diff?" is

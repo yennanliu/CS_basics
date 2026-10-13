@@ -247,8 +247,6 @@
 		- binary search
 			- 2.4) 雙調 / 山脈陣列 — 遞減順序的翻轉
 				- 1095			
-			- 2.5) 沒有右端點 — 指數（Galloping
-				- 702
 			- Split Array Largest Sum 
 				— LC 41
 			- 最小化最大值
