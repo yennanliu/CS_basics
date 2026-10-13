@@ -1272,6 +1272,57 @@ int search(Listy list, int target) {
   galloping-searches each element instead of scanning, and Timsort's merge uses it to skip
   long runs from one side.
 
+#### LC 702 Variants — Where the Window Starts, and the Constraint Shortcut
+
+Every version of LC 702 is the same two phases; they differ only in **which left end the
+doubling hands to phase 2** and **which binary-search template runs inside the window**.
+All of them are correct, because the doubling loop only moves past an index whose value is
+already known to be `< target`:
+
+| Variant | Phase 1 (grow `hi`) | Window for phase 2 | Phase 2 template |
+|---|---|---|---|
+| Template above | `hi <<= 1` | `[hi // 2, hi]` — the last probe that was `< target` | closed `lo <= hi`, exact match (§2.1) |
+| Track `lo` while doubling | `lo = hi + 1; hi *= 2` | `[prev hi + 1, hi]` — one slot tighter | closed `lo <= hi`, exact match |
+| Lower bound | `hi <<= 1` | `[hi // 2, hi]` | half-open `lo < hi` → first index with `get >= target`, then check equality (§1.3) |
+| Constraint shortcut | none — `hi = 2 * 10^4` | `[0, 20000]` | lower bound |
+
+The lower-bound form makes **one** `reader.get` per halving step instead of the exact-match
+form's 3-way branch, and it is the template you already use for LC 34 / 35:
+
+```python
+# python
+# LC 702 - Search in a Sorted Array of Unknown Size (lower-bound variant)
+# IDEA: double hi until get(hi) >= target, then find the FIRST index in [hi // 2, hi]
+#       whose value is >= target; the target exists iff that index holds it
+# time = O(log p) where p is the target's index, space = O(1)
+class Solution(object):
+    def search(self, reader, target):
+        hi = 1
+        while reader.get(hi) < target:
+            hi *= 2
+
+        lo = hi // 2                          # get(lo) < target, or lo == 0
+        while lo < hi:
+            mid = (lo + hi) // 2
+            if reader.get(mid) >= target:     # sentinel 2^31-1 also lands here -> go left
+                hi = mid
+            else:
+                lo = mid + 1
+
+        return lo if reader.get(lo) == target else -1
+```
+
+**The constraint shortcut** skips phase 1: LC 702 caps the array at `10^4` elements, so
+`[0, 20000]` is guaranteed to contain the answer, and the sentinel keeps the predicate
+`get(i) >= target` monotone past the end. It is ~15 probes and accepted by the judge — but
+say out loud that it hard-codes a constraint the problem's whole premise is that you do not
+have. Lead with the doubling; mention the shortcut as the trade-off.
+
+- **`hi` must start at `1`, not `0`.** `0 << 1` is `0`, so a target past index 0 loops forever.
+- **`lo = hi // 2` rather than `lo = 0`** after the loop: `0` is still correct and still
+  `O(log p)`, but it throws away what the doubling learned — the window is twice as wide,
+  one wasted halving.
+
 ### 2.6) The Probe Can Land on a Hole — Sparse Search ⭐⭐⭐
 
 CtCI 10.5: a sorted array of strings padded with `""` at random positions. `mid` can land

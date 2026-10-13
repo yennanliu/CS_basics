@@ -43,7 +43,7 @@ half-translated document renders with English gaps rather than failing.
   is what makes a problem findable on LeetCode itself.
 
 
-## Status — 5357 / 5357 sections (100%)
+## Status — 5358 / 5358 sections (100%)
 
 | Cheatsheet | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -70,7 +70,7 @@ half-translated document renders with English gaps rather than failing.
 | [bfs_advanced](./cheatsheet/bfs_advanced.md) | 41 | [✅](../i18n/zh/bfs_advanced.md) |
 | [bfs_examples](./cheatsheet/bfs_examples.md) | 31 | [✅](../i18n/zh/bfs_examples.md) |
 | [binary_indexed_tree](./cheatsheet/binary_indexed_tree.md) | 32 | [✅](../i18n/zh/binary_indexed_tree.md) |
-| [binary_search](./cheatsheet/binary_search.md) | 66 | [✅](../i18n/zh/binary_search.md) |
+| [binary_search](./cheatsheet/binary_search.md) | 67 | [✅](../i18n/zh/binary_search.md) |
 | [binary_search_examples](./cheatsheet/binary_search_examples.md) | 43 | [✅](../i18n/zh/binary_search_examples.md) |
 | [binary_search_on_answer](./cheatsheet/binary_search_on_answer.md) | 42 | [✅](../i18n/zh/binary_search_on_answer.md) |
 | [binary_tree](./cheatsheet/binary_tree.md) | 74 | [✅](../i18n/zh/binary_tree.md) |
