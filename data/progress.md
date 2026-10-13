@@ -154,6 +154,16 @@
 	- recent updated cheatsheet
 	- TODO LC:
 
+		- String
+			- 953
+			- 模式：子序列檢查 + 追蹤最佳候選
+				- 524
+
+			- 模式：首／末出現位置 + 最小差值計數
+				- 1794
+
+
+
 		- prefix sum
 			- 1124
 
