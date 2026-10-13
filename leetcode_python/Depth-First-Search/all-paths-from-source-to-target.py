@@ -44,6 +44,45 @@ class Solution(object):
 
 
 # V0-1
+# IDEA: DFS + BACKTRACK (GPT)
+class Solution(object):
+    def allPathsSourceTarget(self, graph):
+        """
+        :type graph: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        self.res = []
+        self.n = len(graph)
+
+        # Start from node 0
+        """
+        NOTE !!!
+
+        -> need to add `starting poin` (e.g. 0 node) to path
+        """
+        self.helper(graph, 0, [0])
+
+        return self.res
+
+    def helper(self, graph, x, path):
+        # Base case: reached the target
+        if x == self.n - 1:
+            self.res.append(path[:])
+            return
+
+        # Explore all neighbors of current node x
+        for _next in graph[x]:
+            path.append(_next)
+
+            self.helper(graph, _next, path)
+
+            """
+            NOTE !!!
+
+            -> need to do backtrack (undo)
+            """
+            # Backtracking: undo the choice
+            path.pop()
 
 
 
