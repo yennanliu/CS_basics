@@ -141,6 +141,23 @@ public int findPairs(int[] nums, int k) {
 }
 ```
 
+**Why probe only `x + k`, and not `x - k` too?** Each pair must be counted **once**. With `k > 0`, `|a - b| = k` means one of the two is the smaller, and fixing the smaller as `x` forces the partner: `x - b = -k` → `b = x + k`. Every distinct pair `(x, x + k)` has exactly one smaller end, so walking the distinct values and probing only `x + k` meets each pair exactly once. Probing `x - k` as well meets the same pair again, from its larger end:
+
+```text
+nums = [3,1,4,1,5], k = 2        pool = {1, 3, 4, 5}
+
+probe x+k only                   probe x+k AND x-k
+x=1: 3 in pool -> (1,3)          x=1: 3 in pool -> (1,3)
+x=3: 5 in pool -> (3,5)          x=3: 5 in pool -> (3,5),  1 in pool -> (1,3) again
+x=4: 6 missing                   x=4: 6, 2 missing
+x=5: 7 missing                   x=5: 7 missing,           3 in pool -> (3,5) again
+count = 2  (correct)             count = 4  (every pair twice)
+```
+
+> **Interview rule**: for *unique* pairs with `|a - b| = k, k > 0`, rewrite the absolute value as `b = a + k`. Fixing the smaller end turns the condition into one hash probe per distinct value. The rewrite needs `k > 0`: with `k == 0`, `x + 0 = x` is always in the pool, which is why that case needs counts instead.
+>
+> The one-pass form (probe `num - k` and `num + k` against the values seen **so far**) is the one place both probes are correct. There the set holds only earlier elements, so either end of a pair can arrive second; it dedups by adding the pair's smaller end to a result set.
+
 ### 2) Single Number — LC 136 — and why a set is the wrong tool here
 
 ```python

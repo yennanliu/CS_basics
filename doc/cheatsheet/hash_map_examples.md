@@ -1728,7 +1728,9 @@ class Solution(object):
             # [b - a] = k
             #  -> b - a = +k or -k
             #  -> b = k + a or b = -k + a
-            #  -> however, 0 <= k <= 10^7, so ONLY b = k + a is possible
+            #  -> both are possible, but each pair has ONE smaller end:
+            #     fix the smaller as a -> b = a + k, so probe only a + k
+            #     (probing a - k too counts every pair twice)
 
             2 cases
                 -> case 1) k > 0 and num + k in cnt

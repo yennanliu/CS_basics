@@ -314,7 +314,8 @@ def two_sum_pattern(nums, target):
 
 # Variations:
 # - Multiple pairs: collect all instead of returning first
-# - K-diff pairs: check for num+k and num-k
+# - K-diff pairs (LC 532): over the DISTINCT values, probe only num+k
+#   (fix the smaller end -> each pair counted once; k == 0 needs counts)
 # - Examples: LC 1, LC 167, LC 15, LC 532, LC 1010
 ```
 
