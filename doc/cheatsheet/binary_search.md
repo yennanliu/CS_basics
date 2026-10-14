@@ -770,6 +770,157 @@ l=1 > r=0 → [-1, -1] ✓
 | **981** | Time Based Key-Value Store | `findRight` (largest timestamp `<=` query) |
 | **436** | Find Right Interval | `findLeft` on sorted starts |
 | **1898** | Maximum Number of Removable Characters | Boundary search on answer + feasibility check |
+| **2080** | Range Frequency Queries | Per-value index list; count = upper bound − lower bound — next section |
+
+#### Variant — Count in a Range: Upper Bound − Lower Bound (LC 2080) ⭐⭐⭐⭐
+
+LC 34 finds **where** a block of equal values starts and ends. Subtract the two ends and you
+get **how many** elements fall in the block. That subtraction counts the elements of a sorted
+list inside any closed range `[lo, hi]`:
+
+```text
+count of x in [lo, hi]  =  (# elements <= hi)  -  (# elements < lo)          # O(log N)
+                        =  bisect_right(xs, hi) - bisect_left(xs, lo)
+                        =  lower_bound(xs, hi + 1) - lower_bound(xs, lo)   # integers only
+```
+
+**The precondition that differs from LC 34.** The input array is **not sorted**, and sorting it
+would destroy the positions the query asks about. So the binary search does not run on the
+input. It runs on a sorted list that you **build**: for each value, the list of indices where
+it appears. That list is sorted for free, because a left-to-right scan appends indices in
+increasing order.
+
+```text
+"how often does value v appear in arr[left..right]?"
+    -> the indices of v form a sorted list
+    -> the question becomes "how many of those indices fall in [left, right]?"
+    -> two bound queries on that list
+```
+
+##### Core Idea
+
+```text
+arr      = [12, 33, 4, 56, 22, 2, 34, 33, 22, 12, 34, 56]
+index      0   1   2  3   4   5  6   7   8   9   10  11
+
+positions[33] = [1, 7]          positions[22] = [4, 8]
+
+query(0, 11, 33):  bisect_right([1,7], 11) = 2   (both indices <= 11)
+                   bisect_left ([1,7],  0) = 0   (no index  <  0)
+                   -> 2 - 0 = 2 ✓
+
+query(5, 7, 22):   bisect_right([4,8], 7)  = 1   (4 <= 7, 8 > 7)
+                   bisect_left ([4,8], 5)  = 1   (4 <  5)
+                   -> 1 - 1 = 0 ✓   (index 4 is before the range, index 8 is after it)
+```
+
+The two bounds are LC 34's `findLeft` and `findRight + 1`, so nothing new has to be
+memorised. It is §1.3's **Alternative 1** (`search(target)` and `search(target + 1)`)
+applied to a range instead of one value.
+
+```python
+# python
+# LC 2080 - Range Frequency Queries
+# IDEA: value -> sorted list of its indices (built in one scan),
+#       then count the indices inside [left, right] with two bound queries
+# time = O(n) build, O(log n) per query, space = O(n)
+import bisect
+from collections import defaultdict
+
+
+class RangeFreqQuery(object):
+
+    def __init__(self, arr):
+        # value -> every index it appears at; appended left to right, so already sorted
+        self.positions = defaultdict(list)
+        for idx, val in enumerate(arr):
+            self.positions[val].append(idx)
+
+    def query(self, left, right, value):
+        # `in` check first, so the defaultdict does not grow an empty list per miss
+        if value not in self.positions:
+            return 0
+        idx_list = self.positions[value]
+
+        start = bisect.bisect_left(idx_list, left)    # first index >= left
+        end = bisect.bisect_right(idx_list, right)    # first index >  right
+        # NOTE !!! idx_list[start:end] are exactly the indices in [left, right]
+        return end - start
+```
+
+```java
+// java
+// LC 2080 - Range Frequency Queries
+// IDEA: same lists; one hand-rolled lowerBound, called with left and right + 1
+// time = O(n) build, O(log n) per query, space = O(n)
+class RangeFreqQuery {
+    private final Map<Integer, List<Integer>> positions = new HashMap<>();
+
+    public RangeFreqQuery(int[] arr) {
+        for (int i = 0; i < arr.length; i++) {
+            positions.computeIfAbsent(arr[i], k -> new ArrayList<>()).add(i);
+        }
+    }
+
+    public int query(int left, int right, int value) {
+        List<Integer> idx = positions.get(value);
+        if (idx == null) {
+            return 0;
+        }
+        // right + 1 turns "<= right" into "< right + 1", so one helper serves both ends
+        return lowerBound(idx, right + 1) - lowerBound(idx, left);
+    }
+
+    /** first position whose index is >= target (half-open [l, r), == bisect_left) */
+    private int lowerBound(List<Integer> idx, int target) {
+        int l = 0, r = idx.size();
+        while (l < r) {
+            int mid = l + (r - l) / 2;
+            if (idx.get(mid) < target) l = mid + 1;
+            else r = mid;
+        }
+        return l;
+    }
+}
+```
+
+**Why not the alternatives:**
+
+| Approach | Build | Per query | Verdict |
+|---|---|---|---|
+| Scan `arr[left..right]` and count | — | `O(n)` | `10^5` queries × `10^5` elements = `10^10` → TLE |
+| Prefix count per value: `pre[v][i]` = count of `v` in `arr[0..i)` | `O(n · distinct)` | `O(1)` | `10^4` values × `10^5` cells → memory and build time blow up |
+| **Index list per value + two bounds** | `O(n)` | `O(log n)` | Every index is stored once, so the lists hold `n` entries in total |
+
+**Each query is `O(log N)`**: two binary searches on one value's index list, which is at most
+`N` long and usually much shorter. The `O(N)` scan in the constructor runs once and is not a
+sort, because it produces the lists already sorted.
+
+##### Common Pitfalls
+
+- ❌ `bisect_left` on both ends → drops the occurrence sitting exactly at `right`. The right end
+  is `bisect_right` (or `lower_bound(right + 1)`), because the range is **inclusive**.
+- ❌ `self.positions[value]` on a `defaultdict` for an absent value → returns `0` correctly but
+  inserts an empty list per miss. Check `in` first.
+- ❌ Sorting `arr` to "make it binary-searchable" → the query is about **positions**, and sorting
+  throws them away. Sort the *indices of each value*, which the scan already did.
+- ❌ Reaching for a segment tree → it works, but each node has to merge a frequency map, which is
+  heavier and slower than this, for a problem that has no updates.
+
+##### Similar Problems: Count or Jump Inside a Per-Key Index List
+
+| LC # | Problem | What changes |
+|------|---------|--------------|
+| **2080** | Range Frequency Queries | Baseline: count = `bisect_right(right) - bisect_left(left)` |
+| **792** | Number of Matching Subsequences | Per-**char** index list; `upper_bound` jumps to the next occurrence after the current position |
+| **1157** | Online Majority Element In Subarray | Same count query, used to **verify** a candidate picked by random sampling (or a segment tree) |
+| **981** | Time Based Key-Value Store | Per-**key** timestamp list; a single floor query (upper bound − 1) instead of a count |
+| **1146** | Snapshot Array | Per-**index** version list; the same floor query |
+| **2055** | Plates Between Candles | Sorted candle positions; two bounds find the innermost candles, then a prefix sum counts the plates |
+
+> **If `arr` mutates between queries** (`update(i, v)`), the lists stop being cheap to maintain,
+> because moving an index between two value lists is `O(n)` with plain arrays. Use `SortedList`
+> per value, or a BIT / segment tree keyed by position.
 
 ### 1.4) Binary Search on the Answer Space ⭐⭐⭐⭐⭐
 
@@ -1409,6 +1560,7 @@ One table for the whole sheet: given the shape of the input, this is the templat
 | **Left boundary** (first index `>= target`) | Lower bound — §1.3 | LC 34, LC 35, LC 278 |
 | **Right boundary** (last index `<= target`) | Upper bound − 1 — §1.3 | LC 34, LC 981 |
 | **Insert position** | Lower bound, return `l` unvalidated — §1.3 | LC 35 |
+| **How many** of value `v` sit in `arr[l..r]`, array unsorted | Per-value index list, `bisect_right(r) - bisect_left(l)` — §1.3 | LC 2080 |
 | **Peak / valley**, no target value | Half-open `while l < r`, `r = mid` | LC 162, LC 852 |
 | **Rotated** sorted array | Identify the sorted half — §1.2 | LC 33, LC 81, LC 153, LC 154 |
 | Array goes **up then down** (mountain / bitonic) | Peak + two ordered searches, one **descending** — §2.4 | LC 1095 |
@@ -1442,6 +1594,7 @@ One table for the whole sheet: given the shape of the input, this is the templat
 | "find minimum/maximum X such that..." | Binary search on answer |
 | "sorted array, find first/last occurrence" | Left/right boundary binary search |
 | "the smallest value **>=** X" / "largest **<=** X", asked once per element | Sort once + lower/upper bound — §1.3 |
+| "**frequency** of `value` in `arr[left..right]`", many queries | Per-value index list + upper − lower bound — §1.3 |
 | "the **first** element to the left/right that is bigger" (positional) | Monotonic stack, NOT binary search — §1.3 |
 | "the array has no `size()`" / "the API is paginated" | Exponential (galloping) search for a right end — §2.5 |
 | "matrix with row+col sorted" | Staircase search (NOT flat binary search) |
