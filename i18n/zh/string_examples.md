@@ -178,11 +178,17 @@
 **模式：首／末出現位置 + 最小差值計數**
 - LC 1794. Count Pairs of Equal Substrings With Minimum Difference (Medium)
 
-<!-- b27c87491922 -->
+<!-- 2d236fc7f29f -->
 #### 核心想法
 <!--CODE-->
 
-<!-- b6fc270c2b68 -->
+<!--CODE-->
+
+<!-- 5702dca96d27 -->
+#### Python 實作（O(n + m)）
+<!--CODE-->
+
+<!-- 78030815bf7c -->
 #### Java 實作（O(n + m)）
 <!--CODE-->
 
@@ -191,6 +197,7 @@
 
 **類似題目：**
 - LC 1624 Largest Substring Between Two Equal Characters（首／末出現位置的跨度）
+- LC 4038 Count Integers Appearing in a Single Block（`{value: (first, last, count)}` —— [hash_map.md 的索引跨度表](./hash_map.md#variation-index-span-map--span--count-proves-contiguity-)）
 - LC 387 First Unique Character in a String（追蹤第一次出現位置）
 - LC 1 Two Sum（用雜湊表做 O(1) 配對／查詢）
 - LC 242 Valid Anagram（字元次數陣列）
@@ -202,6 +209,10 @@
 **模式：枚舉切點 + 產生合法的數字格式**
 - LC 816. Ambiguous Coordinates (Medium)
 - 給一串數字如 `"(123)"`，插入一個逗號和（可選的）小數點，還原出所有可能的 `"(x, y)"` 座標。
+
+<!-- b27c87491922 -->
+#### 核心想法
+<!--CODE-->
 
 <!-- a77c7919a6e6 -->
 #### 合法性規則（麻煩的地方）

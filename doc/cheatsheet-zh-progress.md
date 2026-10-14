@@ -43,7 +43,7 @@ half-translated document renders with English gaps rather than failing.
   is what makes a problem findable on LeetCode itself.
 
 
-## Status — 5358 / 5358 sections (100%)
+## Status — 5359 / 5359 sections (100%)
 
 | Cheatsheet | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -164,7 +164,7 @@ half-translated document renders with English gaps rather than failing.
 | [stock_trading](./cheatsheet/stock_trading.md) | 37 | [✅](../i18n/zh/stock_trading.md) |
 | [streaming_algorithms](./cheatsheet/streaming_algorithms.md) | 46 | [✅](../i18n/zh/streaming_algorithms.md) |
 | [string](./cheatsheet/string.md) | 34 | [✅](../i18n/zh/string.md) |
-| [string_examples](./cheatsheet/string_examples.md) | 38 | [✅](../i18n/zh/string_examples.md) |
+| [string_examples](./cheatsheet/string_examples.md) | 39 | [✅](../i18n/zh/string_examples.md) |
 | [string_matching_kmp_rolling_hash](./cheatsheet/string_matching_kmp_rolling_hash.md) | 44 | [✅](../i18n/zh/string_matching_kmp_rolling_hash.md) |
 | [string_operations](./cheatsheet/string_operations.md) | 11 | [✅](../i18n/zh/string_operations.md) |
 | [time_space_complexity](./cheatsheet/time_space_complexity.md) | 39 | [✅](../i18n/zh/time_space_complexity.md) |

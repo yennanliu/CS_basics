@@ -133,7 +133,7 @@
 ### 模板 1：頻率計數
 <!--CODE-->
 
-<!-- 641b500da7bf -->
+<!-- cd33e5f600b0 -->
 #### 變形：索引跨度表 —— `span == count` 證明連續 ⭐⭐⭐
 
 **模式**：有時候題目問的不是某個值出現*幾次*，而是它出現在*哪裡*。改成記錄位置而不是次數，一條算術恆等式就能回答「這個值的所有出現位置是不是同一個連續區塊？」：
@@ -160,6 +160,7 @@
 |---------|-----|---------------------------------|
 | Partition Labels | 763 | `{char: last index}`；由左往右掃，把區塊的結尾延伸到目前看過最遠的 `last` —— 恰好在 `i == end` 的地方切一刀 |
 | Contains Duplicate II | 219 | `{value: last index}`；命中的條件是 `i - last <= k`，所以只有最近一次的位置有意義 |
+| Count Pairs of Equal Substrings With Minimum Difference | 1794 | 兩個字串各一張 map：一邊存 `{char: first index}`，另一邊存 `{char: last index}`；把 `first - last` 壓到最小，再數有幾個字元達到這個最小值 —— [完整解法在 string_examples.md](./string_examples.md#2-15-count-pairs-of-equal-substrings-with-minimum-difference--lc-1794) |
 | Longest Consecutive Sequence | 128 | 對照組：跨度是在**值**上而不是索引上 —— 一個 set，加上「只從 `v-1` 不存在的地方開始」 |
 
 <!-- 3268cef7a70d -->
@@ -480,12 +481,12 @@
 <!-- ea4fa3974f42 -->
 ## 總結與速查
 
-<!-- 4b35dcf3a429 -->
+<!-- 57929402021e -->
 ### 題目 → 模式決策表
 
 | 怎麼認出來 | 模式 | 模板 | 時間／空間 | 題目 |
 |-----------------|---------|----------|--------------|----------|
-| 元素、字元或 pattern 的出現次數；「出現最多次」、「anagram」、重複值，或某個值出現在*哪裡*（「同一個連續區塊」） | 計數／頻率表，含[索引跨度變形](#variation-index-span-map--span--count-proves-contiguity-) | [T1](#template-1-frequency-counter) | O(n) / O(n) | 242, 49, 451, 347, 692, 387, 819, 811, 1207, 383, 299, 349, 350, 4038, 763, 219 |
+| 元素、字元或 pattern 的出現次數；「出現最多次」、「anagram」、重複值，或某個值出現在*哪裡*（「同一個連續區塊」） | 計數／頻率表，含[索引跨度變形](#variation-index-span-map--span--count-proves-contiguity-) | [T1](#template-1-frequency-counter) | O(n) / O(n) | 242, 49, 451, 347, 692, 387, 819, 811, 1207, 383, 299, 349, 350, 4038, 763, 219, 1794 |
 | 湊出 target 的配對、三元組或補數；「two sum」、「k-diff」、「可被 60 整除」 | 已見過的索引表 | [T2](#template-2-seen-before-index-map-two-sum-shape) | O(n) / O(n) | 1, 15, 16, 18, 167, 532, 653, 1010, 1679, 1711, 2006 |
 | 依某種*推導出來*的形式歸為一類；「group」、「同一條線」、「同一列或同一行」；`(x, y)` 算作 `(y, x)` 的**對稱**配對 | 用算出來的鍵分組，含[無序配對鍵](#pattern-unordered-pair-key--min-max-counts-x-y-in-either-order-) | [T3](#template-3-grouping-by-a-computed-key) | O(n·k) / O(n) | 49, 149, 609, 939, 947, 987, 4066, 1128, 1615 |
 | 子陣列的某個性質：和等於 k、和可被 k 整除、0 和 1 一樣多、剛好 k 個奇數；或**兩端**滿足某條件的子陣列的最大和 | 前綴和 → 計數表，含[每個起點值存最小前綴的變形](#variation-key-by-the-starts-value-keep-the-min-prefix--lc-3026-) | [T4](#template-4-prefix-sum--count-map-) | O(n) / O(n) | 560, 325, 523, 525, 930, 974, 1248, 724, 3026 |

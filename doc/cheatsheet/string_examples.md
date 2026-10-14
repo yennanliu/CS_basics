@@ -760,15 +760,64 @@ Sorting approach trade-off:
 ```text
 Non-obvious key insight: optimal quadruples ALWAYS use single-character substrings.
 
-Why? For quadruple (i, j, a, b) minimizing j - a:
-  - Extending in firstString (j > i) increases j → diff gets larger
-  - Extending in secondString (b > a) decreases a → diff also gets larger
-  - Therefore i == j, a == b is always optimal → single characters only
+Why? Take any valid quadruple (i, j, a, b) whose substring has length > 1:
+  - its FIRST character alone, (i, i, a, a), is also a valid match
+  - same a, but j drops to i → j - a strictly smaller
+  - so a longer match is never optimal → i == j, a == b, single characters only
 
 For each character c shared by both strings:
   - FIRST occurrence in firstString  → smallest i, minimizes diff
   - LAST  occurrence in secondString → largest  a, minimizes diff
   - diff = i - a; track minimum and count characters achieving it
+  - each character gives exactly ONE best quadruple → count characters, not pairs
+```
+
+```text
+firstString = "abcd", secondString = "bccda"
+
+char  first i  last a  i - a
+ a       0       4      -4   <- minimum
+ b       1       0       1
+ c       2       2       0
+ d       3       3       0
+                             -> only 'a' reaches -4 -> answer 1
+```
+
+#### Python Implementation (O(n + m))
+```python
+# python
+# LC 1794 - Count Pairs of Equal Substrings With Minimum Difference
+# IDEA: char -> FIRST index in firstString, char -> LAST index in secondString
+# time = O(m + n), space = O(1)  (at most 26 keys per map)
+class Solution(object):
+    def countQuadruples(self, firstString, secondString):
+        # char -> its FIRST index in firstString
+        first_idx = {}
+        for i in range(len(firstString)):
+            ch = firstString[i]
+            if ch not in first_idx:
+                first_idx[ch] = i
+
+        # char -> its LAST index in secondString (later indices overwrite)
+        last_idx = {}
+        for a in range(len(secondString)):
+            last_idx[secondString[a]] = a
+
+        min_diff = float('inf')
+        count = 0
+        for ch in first_idx:
+            # a char missing from secondString cannot form any quadruple
+            if ch not in last_idx:
+                continue
+            diff = first_idx[ch] - last_idx[ch]
+            # NOTE !!! a strictly smaller diff RESETS the count to 1,
+            #          an equal diff adds one more quadruple
+            if diff < min_diff:
+                min_diff = diff
+                count = 1
+            elif diff == min_diff:
+                count += 1
+        return count
 ```
 
 #### Java Implementation (O(n + m))
@@ -827,6 +876,7 @@ Why FIRST in firstString + LAST in secondString:
 
 **Similar Problems:**
 - LC 1624 Largest Substring Between Two Equal Characters (first/last occurrence span)
+- LC 4038 Count Integers Appearing in a Single Block (`{value: (first, last, count)}` — [hash_map.md's index-span map](./hash_map.md#variation-index-span-map--span--count-proves-contiguity-))
 - LC 387 First Unique Character in a String (first occurrence tracking)
 - LC 1 Two Sum (hash map for O(1) pairing/lookup)
 - LC 242 Valid Anagram (character frequency array)

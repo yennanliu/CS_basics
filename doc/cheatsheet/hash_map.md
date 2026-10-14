@@ -294,6 +294,7 @@ def countSpecialIntegers(nums: list) -> int:
 |---------|-----|---------------------------------|
 | Partition Labels | 763 | `{char: last index}`; sweep left→right extending the block's end to the furthest `last` seen — a cut happens exactly where `i == end` |
 | Contains Duplicate II | 219 | `{value: last index}`; a hit needs `i - last <= k`, so only the most recent position matters |
+| Count Pairs of Equal Substrings With Minimum Difference | 1794 | Two maps over two strings: `{char: first index}` in one, `{char: last index}` in the other; minimise `first - last` and count the chars that reach it — [worked in string_examples.md](./string_examples.md#2-15-count-pairs-of-equal-substrings-with-minimum-difference--lc-1794) |
 | Longest Consecutive Sequence | 128 | The contrast case: spans over **values**, not indices — a set plus "start only where `v-1` is absent" |
 
 ### Template 2: Seen-Before Index Map (Two-Sum Shape)
@@ -1200,7 +1201,7 @@ def top_k_frequent(nums, k):
 
 | Recognise it by | Pattern | Template | Time / Space | Problems |
 |-----------------|---------|----------|--------------|----------|
-| Frequency of elements, characters or patterns; "most frequent", "anagram", duplicates, or *where* a value occurs ("one contiguous block") | Counting / frequency map, incl. the [index-span variation](#variation-index-span-map--span--count-proves-contiguity-) | [T1](#template-1-frequency-counter) | O(n) / O(n) | 242, 49, 451, 347, 692, 387, 819, 811, 1207, 383, 299, 349, 350, 4038, 763, 219 |
+| Frequency of elements, characters or patterns; "most frequent", "anagram", duplicates, or *where* a value occurs ("one contiguous block") | Counting / frequency map, incl. the [index-span variation](#variation-index-span-map--span--count-proves-contiguity-) | [T1](#template-1-frequency-counter) | O(n) / O(n) | 242, 49, 451, 347, 692, 387, 819, 811, 1207, 383, 299, 349, 350, 4038, 763, 219, 1794 |
 | A pair, triplet or complement that hits a target; "two sum", "k-diff", "divisible by 60" | Seen-before index map | [T2](#template-2-seen-before-index-map-two-sum-shape) | O(n) / O(n) | 1, 15, 16, 18, 167, 532, 653, 1010, 1679, 1711, 2006 |
 | Items that belong together under some *derived* form; "group", "same line", "same row or column"; a **symmetric** pair where `(x, y)` counts as `(y, x)` | Grouping by a computed key, incl. the [unordered-pair key](#pattern-unordered-pair-key--min-max-counts-x-y-in-either-order-) | [T3](#template-3-grouping-by-a-computed-key) | O(n·k) / O(n) | 49, 149, 609, 939, 947, 987, 4066, 1128, 1615 |
 | A subarray property: sum equals k, sum divisible by k, equal 0s and 1s, exactly k odds; or the max sum of a subarray whose **ends** satisfy a condition | Prefix sum → count map, incl. the [min-prefix-per-start variation](#variation-key-by-the-starts-value-keep-the-min-prefix--lc-3026-) | [T4](#template-4-prefix-sum--count-map-) | O(n) / O(n) | 560, 325, 523, 525, 930, 974, 1248, 724, 3026 |
