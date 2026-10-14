@@ -1,3 +1,5 @@
+# https://leetcode.ca/2021-05-16-1794-Count-Pairs-of-Equal-Substrings-With-Minimum-Difference/
+
 """
 
 1794. Count Pairs of Equal Substrings With Minimum Difference
@@ -48,7 +50,19 @@ Both strings consist only of lowercase English letters.
 """
 
 # V0
-# IDEA : HASH MAP (FIRST IDX IN firstString, LAST IDX IN secondString)
+class Solution2(object):
+    def countQuadruples(self, firstString, secondString):
+        pass
+
+
+# V0-1
+
+
+# V0-2
+
+
+# V0-3
+# IDEA : HASH MAP (FIRST IDX IN firstString, LAST IDX IN secondString) (claude)
 #
 #   only SINGLE-CHAR substrings can reach the minimum of j - a :
 #
@@ -109,8 +123,8 @@ class Solution(object):
         return count
 
 
-# V0-1
-# IDEA : ONE PASS OVER firstString + LAST-IDX ARRAY OF SIZE 26
+# V0-4
+# IDEA : ONE PASS OVER firstString + LAST-IDX ARRAY OF SIZE 26 (claude)
 #
 #   same observation as V0, but without the first-index map : scan
 #   firstString left to right and score EVERY occurrence.
@@ -150,3 +164,20 @@ class Solution2(object):
                 count += 1
 
         return count
+
+
+# V1
+# https://leetcode.ca/2021-05-16-1794-Count-Pairs-of-Equal-Substrings-With-Minimum-Difference/
+class Solution:
+    def countQuadruples(self, firstString: str, secondString: str) -> int:
+        last = {c: i for i, c in enumerate(secondString)}
+        ans, mi = 0, inf
+        for i, c in enumerate(firstString):
+            if c in last:
+                t = i - last[c]
+                if mi > t:
+                    mi = t
+                    ans = 1
+                elif mi == t:
+                    ans += 1
+        return ans
