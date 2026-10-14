@@ -153,8 +153,6 @@
 	- TODO LC:
 
 		- String
-			- easy
-				- 14
 
 			- 953
 			- 937

@@ -22,7 +22,73 @@ All given inputs are in lowercase letters a-z.
 
 """
 
+
 # V0
+class Solution(object):
+    def longestCommonPrefix(self, strs):
+        """
+        :type strs: List[str]
+        :rtype: str
+        """
+        pass
+
+
+# V0-1
+# IDEA: SORT + prefix + shortening prefix (GPT)
+class Solution(object):
+    def longestCommonPrefix(self, strs):
+        """
+        :type strs: List[str]
+        :rtype: str
+        """
+        # Edge case
+        if not strs:
+            return ""
+
+        # Sort by length: shortest -> longest
+        strs.sort(key=lambda x: len(x))
+
+        prefix = strs[0]
+
+        for i in range(1, len(strs)):
+            val = strs[i]
+
+            # Keep shortening prefix until it matches
+            while not val.startswith(prefix):
+                prefix = prefix[:-1]
+
+                if not prefix:
+                    return ""
+
+        return prefix
+
+
+# V0-2
+# IDEA: SORT + prefix + shortening prefix (gemini)
+class Solution(object):
+
+  def longestCommonPrefix(self, strs):
+    """:type strs: List[str]
+
+    :rtype: str
+    """
+    if not strs:
+      return ""
+
+    # 以第一個字串作為初始的共同前綴基準
+    prefix = strs[0]
+
+    for i in range(1, len(strs)):
+      # 當前字串不以 prefix 開頭時，不斷將 prefix 尾端縮減
+      while not strs[i].startswith(prefix):
+        prefix = prefix[:-1]
+        if not prefix:
+          return ""
+
+    return prefix
+
+
+# V0-3
 # time = O(n * k), n = number of strings, k = length of common prefix
 # space = O(k)
 class Solution:
