@@ -74,11 +74,6 @@
 
 
 
-	- 字串演算法 — 實作範例
-		- https://yennj12.js.org/CS_basics/cheatsheets/string_examples.zh.html
-			- `2-18) Expressive Words — LC 809`
-
-
 
 - LeetCode Patterns Guide
 	- https://yennj12.js.org/CS_basics/cheatsheets/lc_pattern.zh.html
@@ -148,6 +143,7 @@
 	- 0/1 背包 DP（0/1 Knapsack 中文詳解）
 	- Set — 實戰題解
 	- 回溯（Backtracking)
+	- 字串演算法 — 實作範例
 			
 
 
@@ -157,13 +153,24 @@
 	- TODO LC:
 
 		- String
+			- easy
+				- 14
+				- 205
+
+			- LC 205 的雙向映射
+				- 890
+
 			- 953
+			- 937
 
 			- 模式：枚舉切點 + 產生合法的數字格式
 				- 816
 
 			- 模式：逐步前綴驗證
 				- 720
+
+			- Expressive Words
+				— LC 809
 
 
 
