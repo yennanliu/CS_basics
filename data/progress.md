@@ -70,7 +70,7 @@
 
 	- 前綴和 — 範例詳解
 		- https://yennj12.js.org/CS_basics/cheatsheets/prefix_sum_examples.zh.html
-			- `4) Flip String to Monotone Increasing — LC 926`
+			- `7) Range Addition II / 差分陣列上的前綴和 — LC 1094`
 
 
 
@@ -176,6 +176,22 @@
 
 		- prefix sum
 			- 1124
+
+			- 固定視窗與成對視窗
+				- 1031
+				- 123
+				- 689
+				- 560
+				- 644
+
+			- 二維前綴和
+				- 1292
+				- 304
+				- 1314
+
+
+			- Flip String to Monotone Increasing - prefix sum + dp
+				- 926
 
 		- HashMap
 			- Palindrome Pairs
