@@ -56,7 +56,7 @@ class Solution(object):
 
 
 # V0-1
-# IDEA: HASHMAP + IDX IN STR  (gemini)
+# IDEA: get first, last idx of char + hashmap  (gemini)
 """
 CORE IDEA:
 
@@ -112,6 +112,23 @@ class Solution(object):
           count += 1
 
     return count
+
+
+# V0-2
+# IDEA: get first, last idx of char + hashmap 
+class Solution:
+    def countQuadruples(self, firstString: str, secondString: str) -> int:
+        last = {c: i for i, c in enumerate(secondString)}
+        ans, mi = 0, inf
+        for i, c in enumerate(firstString):
+            if c in last:
+                t = i - last[c]
+                if mi > t:
+                    mi = t
+                    ans = 1
+                elif mi == t:
+                    ans += 1
+        return ans
 
 
 # V0-2
