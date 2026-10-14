@@ -38,6 +38,184 @@ Constraints:
 
 """
 
+
+# V0-1
+# IDEA : HASHMAP (VALUE -> SORTED LIST OF ITS INDICES) + BINARY SEARCH (GPT)
+from collections import defaultdict
+class RangeFreqQuery(object):
+
+    def __init__(self, arr):
+        """
+        :type arr: List[int]
+        """
+        # {value: sorted list of indices}
+        self.val_idx = defaultdict(list)
+
+        for i, val in enumerate(arr):
+            self.val_idx[val].append(i)
+
+    def query(self, left, right, value):
+        """
+        :type left: int
+        :type right: int
+        :type value: int
+        :rtype: int
+        """
+        if value not in self.val_idx:
+            return 0
+
+        indices = self.val_idx[value]
+
+        # First position where indices[pos] >= left
+        l = self.get_left_bound(indices, left)
+
+        # First position where indices[pos] > right
+        r = self.get_right_bound(indices, right)
+
+        return r - l
+
+    def get_left_bound(self, indices, target):
+        l = 0
+        r = len(indices) - 1
+        res = len(indices)
+
+        while l <= r:
+            mid = l + (r - l) // 2
+
+            if indices[mid] >= target:
+                res = mid
+                r = mid - 1
+            else:
+                l = mid + 1
+
+        return res
+
+    def get_right_bound(self, indices, target):
+        l = 0
+        r = len(indices) - 1
+        res = len(indices)
+
+        while l <= r:
+            mid = l + (r - l) // 2
+
+            if indices[mid] > target:
+                res = mid
+                r = mid - 1
+            else:
+                l = mid + 1
+
+        return res
+
+
+# V0-2
+# IDEA: PREFIX SUM + HASHMAP (TLE)
+from collections import Counter
+class RangeFreqQuery(object):
+
+    def __init__(self, arr):
+        """
+        :type arr: List[int]
+        """
+        val_idx = Counter(arr)
+        n = len(arr)
+
+        self.prefix_map = {}
+
+        # Prefix sum + hashmap
+        for k in val_idx:
+            prefix = [0] * (n + 1)
+
+            for i in range(n):
+                # prefix[i + 1] counts occurrences in arr[0:i+1]
+                prefix[i + 1] = prefix[i]
+
+                if arr[i] == k:
+                    prefix[i + 1] += 1
+
+            self.prefix_map[k] = prefix
+
+    def query(self, left, right, value):
+        """
+        :type left: int
+        :type right: int
+        :type value: int
+        :rtype: int
+        """
+        if value not in self.prefix_map:
+            return 0
+
+        prefix = self.prefix_map[value]
+
+        # Inclusive range [left, right]
+        return prefix[right + 1] - prefix[left]
+
+
+# V0-3
+# IDEA : HASHMAP (VALUE -> SORTED LIST OF ITS INDICES) + BINARY SEARCH (GEMINI)
+from collections import defaultdict
+
+class RangeFreqQuery(object):
+
+  def __init__(self, arr):
+    """:type arr: List[int]
+    """
+    # {value: sorted list of indices}
+    self.val_idx = defaultdict(list)
+
+    for i, val in enumerate(arr):
+      self.val_idx[val].append(i)
+
+  def query(self, left, right, value):
+    """:type left: int
+    :type right: int
+    :type value: int
+    :rtype: int
+    """
+    if value not in self.val_idx:
+      return 0
+
+    indices = self.val_idx[value]
+
+    # 1. 尋找第一個大於或等於 left 的位置 (對應 bisect_left)
+    l = self.get_left_bound(indices, left)
+
+    # 2. 尋找第一個大於 right 的位置 (對應 bisect_right)
+    r = self.get_right_bound(indices, right)
+
+    return r - l
+
+  def get_left_bound(self, indices, target):
+    # 尋找第一個 indices[mid] >= target 的索引
+    l, r = 0, len(indices) - 1
+    res = len(indices)  # 預設值：若所有元素都小則回傳陣列長度
+
+    while r >= l:
+      mid = l + (r - l) // 2
+      if indices[mid] >= target:
+        res = mid  # 記錄當前符合條件的位置
+        r = mid - 1  # 嘗試往左邊繼續找更早出現的合規位置
+      else:
+        l = mid + 1  # 數值小於 target，往右找
+
+    return res
+
+  def get_right_bound(self, indices, target):
+    # 尋找第一個 indices[mid] > target 的索引
+    l, r = 0, len(indices) - 1
+    res = len(indices)  # 預設值：若所有元素都小於或等於 target 則回傳陣列長度
+
+    while r >= l:
+      mid = l + (r - l) // 2
+      if indices[mid] > target:
+        res = mid  # 記錄當前大於 target 的位置
+        r = mid - 1  # 嘗試往左邊找更前面有沒有符合條件的
+      else:
+        l = mid + 1  # 數值小於或等於 target，往右找
+
+    return res
+
+
+
 # V0
 # IDEA : HASHMAP (VALUE -> SORTED LIST OF ITS INDICES) + BINARY SEARCH
 #
