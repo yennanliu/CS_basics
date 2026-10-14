@@ -56,40 +56,24 @@ class Solution(object):
 
 
 # V0-1
-# IDEA: HASHMAP + IDX IN STR  (gpt)
+# IDEA: HASHMAP + IDX IN STR  (gemini)
 """
 CORE IDEA:
 
-->
-    找出相同子字串在兩個字串中的位置，並最大化 j-i，
-    其中 i 是第一個字串中子字串的起始位置，j 是第二個字串中子字串的起始位置。
+    
+    雜湊表紀錄`首, 末` 次出現位置
+
+
+
+Steps:
+
+    1. 雜湊表紀錄`首, 末` 次出現位置
+
+    2. get `min diff`
+
+    3. count how many different chars' diff equals to `min diff`
 
 """
-class Solution(object):
-    def countQuadruples(self, firstString, secondString):
-        """
-        :type firstString: str
-        :type secondString: str
-        :rtype: int
-        """
-        # Store the first occurrence of each character in secondString.
-        first_pos = {}
-        for j, ch in enumerate(secondString):
-            if ch not in first_pos:
-                first_pos[ch] = j
-
-        res = -1
-
-        # Find the maximum distance between matching characters.
-        for i, ch in enumerate(firstString):
-            if ch in first_pos:
-                res = max(res, first_pos[ch] - i)
-
-        return res
-
-
-# V0-2
-# IDEA: HASHMAP + IDX IN STR  (gemini)
 class Solution(object):
 
   def countQuadruples(self, firstString, secondString):
@@ -98,27 +82,88 @@ class Solution(object):
     :type secondString: str
     :rtype: int
     """
-    # 1. 記錄 secondString 中每個字元「第一次」出現的索引
-    second_map = {}
-    for j, char in enumerate(secondString):
-      if char not in second_map:
-        second_map[char] = j
-
-    # 2. 記錄 firstString 中每個字元「最後一次」出現的索引
-    first_map = {}
+    # 1. 記錄每個字元在 firstString 中「第一次」出現的索引 (min_i)
+    first_min = {}
     for i, char in enumerate(firstString):
-      first_map[char] = i  # 不斷覆蓋，保留最後一次出現的位置
+      if char not in first_min:
+        first_min[char] = i
 
+    # 2. 記錄每個字元在 secondString 中「最後一次」出現的索引 (max_a)
+    second_max = {}
+    for j, char in enumerate(secondString):
+      second_max[char] = j  # 持續覆蓋，保留最後一次出現的位置
+
+    # 3. 找出所有共同字元中的全域最小差值 (min_diff)
     min_diff = float("inf")
-
-    # 3. 尋找共同字元，計算最小差值 (j - i)
-    for char in first_map:
-      if char in second_map:
-        diff = second_map[char] - first_map[char]
+    for char in first_min:
+      if char in second_max:
+        diff = first_min[char] - second_max[char]
         if diff < min_diff:
           min_diff = diff
 
-    return min_diff if min_diff != float("inf") else -1
+    if min_diff == float("inf"):
+      return 0
+
+    # 4. 計算有多少個不同的字元剛好達到了這個全域最小差值
+    count = 0
+    for char in first_min:
+      if char in second_max:
+        if first_min[char] - second_max[char] == min_diff:
+          count += 1
+
+    return count
+
+
+# V0-2
+# IDEA: HASHMAP + IDX IN STR  (gpt)
+"""
+CORE IDEA:
+
+->
+    雜湊表紀錄首末次出現位置
+
+
+    找出相同子字串在兩個字串中的位置，並最大化 j-i，
+    其中 i 是第一個字串中子字串的起始位置，j 是第二個字串中子字串的起始位置。
+
+"""
+
+class Solution(object):
+    def countQuadruples(self, firstString, secondString):
+        """
+        :type firstString: str
+        :type secondString: str
+        :rtype: int
+        """
+        # Store all positions of each character in secondString.
+        positions = {}
+        for a, ch in enumerate(secondString):
+            positions.setdefault(ch, []).append(a)
+
+        min_diff = float("inf")
+        cnt = 0
+
+        # Enumerate all substrings of firstString.
+        n = len(firstString)
+
+        for i in range(n):
+            for j in range(i, n):
+                sub = firstString[i:j + 1]
+
+                # Find matching substrings in secondString.
+                for a in positions.get(sub[0], []):
+                    b = a + len(sub) - 1
+
+                    if b < len(secondString) and secondString[a:b + 1] == sub:
+                        diff = j - a
+
+                        if diff < min_diff:
+                            min_diff = diff
+                            cnt = 1
+                        elif diff == min_diff:
+                            cnt += 1
+
+        return cnt
 
 
 # V0-3
