@@ -65,6 +65,14 @@ class Solution(object):
         if not nums or k < 0:
             return 0
 
+        """
+        NOTE !!!
+
+
+        we use `counter` for this LC,
+        and do it at first place (before for loop)
+        
+        """
         val_cnt = Counter(nums)
         cnt = 0
 
