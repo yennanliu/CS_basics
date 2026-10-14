@@ -49,7 +49,7 @@ Constraints:
 
 
 # V0
-# IDEA : HASH TABLE (GPT)
+# IDEA : HASH TABLE (counter) (GPT)
 # time = O(n)
 # space = O(n)
 from collections import Counter
@@ -71,7 +71,7 @@ class Solution(object):
 
         we use `counter` for this LC,
         and do it at first place (before for loop)
-        
+
         """
         val_cnt = Counter(nums)
         cnt = 0
@@ -175,6 +175,45 @@ class Solution(object):
             if k == 0 and cnt[num] > 1:  # for cases k = 0 ->  pair like (1,1) will work. (i.e. 1 + (-1))
                 answer += 1
         return answer
+
+
+# V0-2
+# IDEA: HASHMAP (gpt)
+class Solution(object):
+    def findPairs(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: int
+        """
+        # Edge cases
+        if not nums or len(nums) <= 1 or k < 0:
+            return 0
+
+        # {value: frequency}
+        val_map = {}
+
+        for val in nums:
+            if val not in val_map:
+                val_map[val] = 1
+            else:
+                val_map[val] += 1
+
+        cnt = 0
+
+        for val in val_map:
+            if k == 0:
+                # Same value must appear at least twice
+                if val_map[val] > 1:
+                    cnt += 1
+            else:
+                # Count each unique pair only once
+                if val + k in val_map:
+                    cnt += 1
+
+        return cnt
+
+
 
 # V0-1
 # IDEA : SORT + BRUTE FORCE + BREAK
