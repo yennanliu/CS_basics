@@ -50,15 +50,75 @@ Both strings consist only of lowercase English letters.
 """
 
 # V0
-class Solution2(object):
+class Solution(object):
     def countQuadruples(self, firstString, secondString):
         pass
 
 
 # V0-1
+# IDEA: HASHMAP + IDX IN STR  (gpt)
+"""
+CORE IDEA:
+
+->
+    找出相同子字串在兩個字串中的位置，並最大化 j-i，
+    其中 i 是第一個字串中子字串的起始位置，j 是第二個字串中子字串的起始位置。
+
+"""
+class Solution(object):
+    def countQuadruples(self, firstString, secondString):
+        """
+        :type firstString: str
+        :type secondString: str
+        :rtype: int
+        """
+        # Store the first occurrence of each character in secondString.
+        first_pos = {}
+        for j, ch in enumerate(secondString):
+            if ch not in first_pos:
+                first_pos[ch] = j
+
+        res = -1
+
+        # Find the maximum distance between matching characters.
+        for i, ch in enumerate(firstString):
+            if ch in first_pos:
+                res = max(res, first_pos[ch] - i)
+
+        return res
 
 
 # V0-2
+# IDEA: HASHMAP + IDX IN STR  (gemini)
+class Solution(object):
+
+  def countQuadruples(self, firstString, secondString):
+    """:type firstString: str
+
+    :type secondString: str
+    :rtype: int
+    """
+    # 1. 記錄 secondString 中每個字元「第一次」出現的索引
+    second_map = {}
+    for j, char in enumerate(secondString):
+      if char not in second_map:
+        second_map[char] = j
+
+    # 2. 記錄 firstString 中每個字元「最後一次」出現的索引
+    first_map = {}
+    for i, char in enumerate(firstString):
+      first_map[char] = i  # 不斷覆蓋，保留最後一次出現的位置
+
+    min_diff = float("inf")
+
+    # 3. 尋找共同字元，計算最小差值 (j - i)
+    for char in first_map:
+      if char in second_map:
+        diff = second_map[char] - first_map[char]
+        if diff < min_diff:
+          min_diff = diff
+
+    return min_diff if min_diff != float("inf") else -1
 
 
 # V0-3

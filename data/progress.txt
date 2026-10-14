@@ -1,4 +1,4 @@
-20261014: top 100 like(2 pointers): 42 | top 100 like(linked list):  25 | DP: wildcard: 97(todo) | g recent:  1235 | sothers:   | basics: pre-fix sum, union find | others:  357(dp, todo), 2D LIS (354), 710(todo), 1696(todo, dp + mono deque), common_matrix_process, matrix_various_op, 647(DP again, to note: when need to reverse loop),524(again)
+20261014: top 100 like(2 pointers): 42 | top 100 like(linked list):  25 | DP: wildcard: 97(todo) | g recent:  1235 | sothers:   | basics: pre-fix sum, union find | others:  357(dp, todo), 2D LIS (354), 710(todo), 1696(todo, dp + mono deque), common_matrix_process, matrix_various_op, 647(DP again, to note: when need to reverse loop),524(again),1794(again)
 
 
 20261013: top 100 like(2 pointers): 42 | top 100 like(linked list):  25 | DP: wildcard: 97(todo) | g recent:  1235 | sothers:   | basics: pre-fix sum, union find | others:  357(dp, todo), 2D LIS (354), 710(todo), 1696(todo, dp + mono deque), common_matrix_process, matrix_various_op, 647(DP again, to note: when need to reverse loop),83(again),86(again!!),536(ok),797(OK*),275(again),532(again!!),2616(again!!),2074(again) 
