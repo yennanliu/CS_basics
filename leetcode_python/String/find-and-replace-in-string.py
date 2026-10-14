@@ -54,6 +54,170 @@ sources[i] and targets[i] consist of only lowercase English letters.
 """
 
 # V0 
+# IDEA: HASHMAP (map, reverse map) + LC 205
+class Solution(object):
+    def findAndReplacePattern(self, words, pattern):
+        """
+        :type words: List[str]
+        :type pattern: str
+        :rtype: List[str]
+        """
+        # edge
+        if not words or len(words) == 0:
+          return []
+
+        if not pattern or len(pattern) == 0:
+          return words
+
+        res = []
+
+        for w in words:
+          if self.helper(w, pattern):
+            res.append(w)
+
+
+        return res
+
+
+    def helper(self, w, pattern):
+        if w == pattern:
+          return True
+
+        if not w and not pattern:
+          return True
+
+        if not w or not pattern:
+          return False
+
+        if len(w) != len(pattern):
+          return False
+
+        # {w_val : p_val}
+        _map = {}
+
+        # {p_val: w_val}
+        _reverse_map = {}
+
+        _len = len(w)
+
+        for i in range(_len):
+
+          w_val = w[i]
+          p_val = pattern[i]
+
+          if w_val in _map:
+            if _map[w_val] != p_val:
+              return False
+
+          else:
+            _map[w_val] = p_val
+
+
+          if p_val in _reverse_map:
+            if _reverse_map[p_val] != w_val:
+              return False
+          else:
+            _reverse_map[p_val] = w_val
+
+
+        return True
+
+
+# V0-1
+# IDEA: HASHMAP (map, reverse map) + LC 205 (gpt)
+class Solution(object):
+    def findAndReplacePattern(self, words, pattern):
+        """
+        :type words: List[str]
+        :type pattern: str
+        :rtype: List[str]
+        """
+        if not words:
+            return []
+
+        res = []
+
+        for w in words:
+            if self.helper(w, pattern):
+                res.append(w)
+
+        return res
+
+    def helper(self, w, pattern):
+        # Strings must have the same length
+        if len(w) != len(pattern):
+            return False
+
+        # Mapping: word character -> pattern character
+        char_map = {}
+
+        # Reverse mapping: pattern character -> word character
+        reverse_map = {}
+
+        for i in range(len(w)):
+            w_val = w[i]
+            p_val = pattern[i]
+
+            # Check word -> pattern
+            if w_val in char_map:
+                if char_map[w_val] != p_val:
+                    return False
+            else:
+                char_map[w_val] = p_val
+
+            # Check pattern -> word
+            if p_val in reverse_map:
+                if reverse_map[p_val] != w_val:
+                    return False
+            else:
+                reverse_map[p_val] = w_val
+
+        return True
+
+
+# V0-2
+# IDEA: HASHMAP (map, reverse map) + LC 205 (GEMINI)
+class Solution(object):
+
+  def findAndReplacePattern(self, words, pattern):
+    """:type words: List[str]
+
+    :type pattern: str
+    :rtype: List[str]
+    """
+    if not words or not pattern:
+      return []
+
+    res = []
+    for w in words:
+      if self.isIsomorphic(w, pattern):
+        res.append(w)
+
+    return res
+
+  def isIsomorphic(self, w, pattern):
+    # 長度不同直接回傳 False
+    if len(w) != len(pattern):
+      return False
+
+    w_to_p = {}
+    p_to_w = {}
+
+    for char_w, char_p in zip(w, pattern):
+      # 1. 檢查 w 到 pattern 的對應是否衝突
+      if char_w in w_to_p and w_to_p[char_w] != char_p:
+        return False
+
+      # 2. 檢查 pattern 到 w 的對應是否衝突（防止多對一）
+      if char_p in p_to_w and p_to_w[char_p] != char_w:
+        return False
+
+      # 建立雙向對應
+      w_to_p[char_w] = char_p
+      p_to_w[char_p] = char_w
+
+    return True
+
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/81094404
