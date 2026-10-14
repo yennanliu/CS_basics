@@ -49,6 +49,59 @@ Both strings consist only of lowercase English letters.
 
 """
 
+"""
+NOTE !!!
+
+
+-> (i,j,a,b) 代表的是 兩個相同子字串的起點與終點，
+    所以子字串`不一定只有一個字元。`
+
+
+
+-> 
+
+注意：子字串可以有多個字元，但最小差值一定可以由單字元匹配達成。 
+這是因為任何多字元的匹配，都包含至少一個相同字元，
+而其結尾位置 j 不會比該匹配中的第一個字元更早。
+
+
+-> example:
+
+    ```
+    firstString  = "abcd"
+    secondString = "bc"
+    ```
+
+-> however, we ONLY need to check `len==1` cases.
+
+    -> 為什麼不用檢查長度大於 1 的子字串？
+
+    -> example
+
+    ```
+    firstString:  a b c
+                  └───┘
+                  i   j
+
+    secondString: a b c
+                  └───┘
+                  a   b
+    ```
+
+    -> 單字元的差值會比長度 3 的子字串小 2。任何長度大於 1 的匹配，都不可能達到全域最小差值。
+
+
+
+->
+
+面試結論： 雖然題目允許任意長度的子字串，
+         但我們只需要比較相同字元的位置，就能找出最小差值及其出現次數。
+         這讓原本需要列舉子字串的問題，簡化成 O(NM) 的雙層迴圈。
+
+
+
+"""
+
 # V0
 class Solution(object):
     def countQuadruples(self, firstString, secondString):
