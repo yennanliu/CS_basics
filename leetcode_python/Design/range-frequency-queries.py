@@ -39,14 +39,24 @@ Constraints:
 """
 
 # V0
-# IDEA : VALUE -> SORTED LIST OF ITS INDICES, THEN BINARY SEARCH THE RANGE
+# IDEA : HASHMAP (VALUE -> SORTED LIST OF ITS INDICES) + BINARY SEARCH
 #
-#   building the map is one pass, and because indices are appended in order
-#   each list is already sorted. a query is then
-#       bisect_right(idx, right) - bisect_left(idx, left)
-#   i.e. how many of that value's positions fall inside [left, right].
+#   one pass in __init__ records, for every value, the indices it sits at.
+#   indices are appended left to right, so each list is ALREADY sorted.
 #
-#   NOTE : a value never seen has no entry -> frequency 0.
+#   a query (left, right, value) then asks: how many of value's indices
+#   fall inside [left, right]? on a sorted list that is
+#
+#       (# indices <= right) - (# indices < left)
+#     = bisect_right(idx, right) - bisect_left(idx, left)
+#
+#   e.g. arr = [12,33,4,56,22,2,34,33,22,12,34,56], value = 33
+#        idx of 33 = [1, 7]
+#        query(0, 11, 33) -> bisect_right([1,7], 11) = 2
+#                            bisect_left([1,7], 0)   = 0   -> 2
+#
+#   brute force (scan arr[left..right] per query) is O(n) per query,
+#   O(n * q) = 10^10 overall -> TLE; this is why the index lists exist.
 #
 # time = O(n) build, O(log n) per query, space = O(n)
 import bisect
@@ -56,15 +66,94 @@ from collections import defaultdict
 class RangeFreqQuery(object):
 
     def __init__(self, arr):
-        self.pos = defaultdict(list)
-        for i, x in enumerate(arr):
-            self.pos[x].append(i)
+        """
+        :type arr: List[int]
+        """
+        # value -> sorted list of every index it appears at
+        self.positions = defaultdict(list)
+        for idx, val in enumerate(arr):
+            self.positions[val].append(idx)
 
     def query(self, left, right, value):
-        if value not in self.pos:
+        """
+        :type left: int
+        :type right: int
+        :type value: int
+        :rtype: int
+        """
+        # a value never seen in arr occurs 0 times in any range
+        # (check with `in` so the defaultdict does not grow an empty list)
+        if value not in self.positions:
             return 0
-        idx = self.pos[value]
-        return bisect.bisect_right(idx, right) - bisect.bisect_left(idx, left)
+
+        idx_list = self.positions[value]
+
+        # first position whose index is >= left
+        start = bisect.bisect_left(idx_list, left)
+        # first position whose index is > right
+        end = bisect.bisect_right(idx_list, right)
+
+        # NOTE !!! idx_list[start:end] are exactly the indices in [left, right]
+        return end - start
+
+
+# V0-1
+# IDEA : SAME AS V0, BUT THE BINARY SEARCH IS WRITTEN BY HAND
+#
+#   interviewers often say "no bisect". both bounds are one lower_bound:
+#
+#       lower_bound(idx, x) = first position whose index >= x
+#
+#       # indices in [left, right]
+#     = lower_bound(idx, right + 1) - lower_bound(idx, left)
+#
+#   the `right + 1` turns "<= right" into "< right + 1", so a single
+#   helper covers both ends (indices are integers, so nothing is skipped).
+#
+# time = O(n) build, O(log n) per query, space = O(n)
+class RangeFreqQuery2(object):
+
+    def __init__(self, arr):
+        """
+        :type arr: List[int]
+        """
+        # value -> sorted list of every index it appears at
+        self.positions = {}
+        for idx, val in enumerate(arr):
+            if val not in self.positions:
+                self.positions[val] = []
+            self.positions[val].append(idx)
+
+    def _lower_bound(self, idx_list, target):
+        """Return the first position in idx_list whose index is >= target."""
+        # search space is [lo, hi); hi = len means "every index < target"
+        lo = 0
+        hi = len(idx_list)
+        while lo < hi:
+            mid = (lo + hi) // 2
+            if idx_list[mid] < target:
+                # mid and everything left of it are too small
+                lo = mid + 1
+            else:
+                # mid could be the answer, keep it in range
+                hi = mid
+        return lo
+
+    def query(self, left, right, value):
+        """
+        :type left: int
+        :type right: int
+        :type value: int
+        :rtype: int
+        """
+        if value not in self.positions:
+            return 0
+
+        idx_list = self.positions[value]
+        start = self._lower_bound(idx_list, left)
+        # NOTE !!! right + 1, so indices equal to `right` are counted
+        end = self._lower_bound(idx_list, right + 1)
+        return end - start
 
 
 # Your RangeFreqQuery object will be instantiated and called as such:
