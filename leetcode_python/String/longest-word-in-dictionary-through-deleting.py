@@ -50,17 +50,14 @@ class Solution(object):
                 if len(x) > len(res):
                     res = x
 
-
-                 
-                """
-                NOTE !!!
-
-                below works for "abc", "def" as well
-
-                e.g. 
-                    x = "abc"
-                    res = "def"
-                """
+                # NOTE !!!
+                #
+                #   below works for "abc", "def" as well
+                #
+                #   e.g.
+                #       x = "abc"
+                #       res = "def"
+                #
                 # If lengths are equal, prefer lexicographically smaller
                 elif len(x) == len(res) and x < res:
                     res = x
