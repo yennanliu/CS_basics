@@ -38,6 +38,75 @@ Constraints:
 
 """
 
+# V0-0-1
+# IDEA : HASHMAP (VALUE -> SORTED LIST OF ITS INDICES) + BINARY SEARCH (GPT)
+from collections import defaultdict
+
+class RangeFreqQuery(object):
+
+    def __init__(self, arr):
+        """
+        :type arr: List[int]
+        """
+        self.val_idx = defaultdict(list)
+
+        for i in range(len(arr)):
+            val = arr[i]
+            self.val_idx[val].append(i)
+
+    def query(self, left, right, value):
+        """
+        :type left: int
+        :type right: int
+        :type value: int
+        :rtype: int
+        """
+        if value not in self.val_idx:
+            return 0
+
+        indices = self.val_idx[value]
+
+        # First position whose index >= left
+        l = self.get_left_idx(indices, left)
+
+        # First position whose index > right
+        r = self.get_right_idx(indices, right)
+
+        return r - l
+
+    def get_left_idx(self, arr, target):
+        l = 0
+        r = len(arr) - 1
+        res = len(arr)
+
+        while l <= r:
+            mid = l + (r - l) // 2
+
+            if arr[mid] >= target:
+                res = mid
+                r = mid - 1
+            else:
+                l = mid + 1
+
+        return res
+
+    def get_right_idx(self, arr, target):
+        l = 0
+        r = len(arr) - 1
+        res = len(arr)
+
+        while l <= r:
+            mid = l + (r - l) // 2
+
+            if arr[mid] > target:
+                res = mid
+                r = mid - 1
+            else:
+                l = mid + 1
+
+        return res
+
+
 
 # V0-1
 # IDEA : HASHMAP (VALUE -> SORTED LIST OF ITS INDICES) + BINARY SEARCH (GPT)
