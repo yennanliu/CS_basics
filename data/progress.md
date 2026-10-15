@@ -68,14 +68,6 @@
 
 
 
-	- 前綴和 — 範例詳解
-		- https://yennj12.js.org/CS_basics/cheatsheets/prefix_sum_examples.zh.html
-			- `7) Range Addition II / 差分陣列上的前綴和 — LC 1094`
-
-
-
-
-
 - LeetCode Patterns Guide
 	- https://yennj12.js.org/CS_basics/cheatsheets/lc_pattern.zh.html
 		- `🔹 7. 堆積與優先佇列`
@@ -146,6 +138,7 @@
 	- 回溯（Backtracking)
 	- 字串演算法 — 實作範例
 	- 陣列 — 題目實作
+	- 前綴和 — 範例詳解
 			
 
 
@@ -205,6 +198,12 @@
 		- prefix sum
 			- 1124
 
+			- 前綴最大值／後綴最小值的掃描
+				- 2012
+				- 768
+				- 769
+				- 42
+
 			- 固定視窗與成對視窗
 				- 1031
 				- 123
@@ -217,9 +216,13 @@
 				- 304
 				- 1314
 
+			- 7) Range Addition II / 差分陣列上的前綴和 
+				— LC 1094
 
 			- Flip String to Monotone Increasing - prefix sum + dp
 				- 926
+
+
 
 		- HashMap
 			- Palindrome Pairs
