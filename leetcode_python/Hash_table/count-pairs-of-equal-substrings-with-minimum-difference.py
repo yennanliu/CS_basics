@@ -108,6 +108,75 @@ class Solution(object):
         pass
 
 
+# V0-0-1
+# IDEA: HASH MAP + IDX LIST + MIN DIFF RESET (gpt)
+from collections import defaultdict
+
+
+class Solution(object):
+    def countQuadruples(self, firstString, secondString):
+        """
+        :type firstString: str
+        :type secondString: str
+        :rtype: int
+        """
+        first_idx = defaultdict(list)
+        second_idx = defaultdict(list)
+
+        # Store all positions of each character
+        for i, val in enumerate(firstString):
+            first_idx[val].append(i)
+
+        for i, val in enumerate(secondString):
+            second_idx[val].append(i)
+
+        min_diff = float("inf")
+        cnt = 0
+
+        # Compare positions of matching characters
+        for ch in first_idx:
+            if ch not in second_idx:
+                continue
+
+            """
+            NOTE !!!
+
+            1. 
+
+            if same key exists in both first_idx, second_idx (hashmap)
+            -> double loop find
+                - min diff
+                - the cnt
+
+
+            2.  how we reset `cnt` when find a smaller diff (min_diff)
+
+            ->
+
+            ```
+                    if diff < min_diff:
+                        min_diff = diff
+                        cnt = 1
+            ```
+
+            """
+            for i in first_idx[ch]:
+                for j in second_idx[ch]:
+                    diff = i - j
+
+                    # NOTE !!!
+                    # how we reset `cnt` when find a smaller diff (min_diff)
+                    if diff < min_diff:
+                        min_diff = diff
+                        cnt = 1
+                    elif diff == min_diff:
+                        cnt += 1
+
+        return cnt
+
+
+
+
 # V0-1
 # IDEA: get first, last idx of char + hashmap  (gemini)
 """
