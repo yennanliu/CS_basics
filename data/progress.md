@@ -73,6 +73,9 @@
 			- `7) Range Addition II / 差分陣列上的前綴和 — LC 1094`
 
 
+- 陣列 — 題目實作
+	- https://yennj12.js.org/CS_basics/cheatsheets/array_examples.zh.html
+
 
 
 - LeetCode Patterns Guide
@@ -151,6 +154,19 @@
 - Others
 	- recent updated cheatsheet
 	- TODO LC:
+
+		- array
+			- 1) First Missing Positive
+				— LC 41  (hard)
+
+			- 2) Rotate Array 
+				— LC 189 
+
+			- Product of Array Except Self
+				— LC 238 
+
+			- Maximum Swap 
+				— LC 670
 
 		- String
 

@@ -44,7 +44,7 @@ No
 
 
 # V0-1
-# IDEA: STR OP (gpt)
+# IDEA: STR OP  + left, right side approach (gpt)
 class Solution(object):
     def ambiguousCoordinates(self, s):
         """
@@ -59,6 +59,15 @@ class Solution(object):
 
         # Select where to put the comma
         for i in range(1, n):
+
+            """
+            NOTE !!!
+
+            -> left, right gen possible combinations
+
+            -> 左右兩側都可能有多種合法表示法
+
+            """
             left = s[:i]
             right = s[i:]
 
