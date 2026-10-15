@@ -43,6 +43,113 @@ No
 """
 
 
+# V0-1
+# IDEA: STR OP (gpt)
+class Solution(object):
+    def ambiguousCoordinates(self, s):
+        """
+        :type s: str
+        :rtype: List[str]
+        """
+        res = []
+
+        # Remove the outer parentheses
+        s = s[1:-1]
+        n = len(s)
+
+        # Select where to put the comma
+        for i in range(1, n):
+            left = s[:i]
+            right = s[i:]
+
+            # Generate all valid representations for each side
+            left_vals = self.get_valid(left)
+            right_vals = self.get_valid(right)
+
+            for x in left_vals:
+                for y in right_vals:
+                    res.append("(" + x + ", " + y + ")")
+
+        return res
+
+    def get_valid(self, s):
+        res = []
+        n = len(s)
+
+        # Integer representation
+        if n == 1 or s[0] != '0':
+            res.append(s)
+
+        # Decimal representations
+        for i in range(1, n):
+            left = s[:i]
+            right = s[i:]
+
+            # Integer part cannot have leading zeros
+            if len(left) > 1 and left[0] == '0':
+                continue
+
+            # Decimal part cannot end with zero
+            if right[-1] == '0':
+                continue
+
+            res.append(left + "." + right)
+
+        return res
+
+
+# V0-2
+# IDEA: STR OP (gemini)
+class Solution(object):
+
+  def ambiguousCoordinates(self, s):
+    """:type s: str
+
+    :rtype: List[str]
+    """
+    # 1. 剝除外層的 '(' 和 ')'
+    s = s[1:-1]
+    n = len(s)
+    res = []
+
+    # 2. 走訪所有可能的逗號切分點，將字串分為左半部 (x) 與右半部 (y)
+    for i in range(1, n):
+      left_str = s[:i]
+      right_str = s[i:]
+
+      # 取得左右兩半部各自所有合法的數字表示法
+      left_vals = self.get_valid_numbers(left_str)
+      right_vals = self.get_valid_numbers(right_str)
+
+      # 3. 雙層迴圈組合所有可能的座標對（使用 .format() 避免 f-string 版本相容性問題）
+      for x in left_vals:
+        for y in right_vals:
+          res.append("({}, {})".format(x, y))
+
+    return res
+
+  def get_valid_numbers(self, sub):
+    valid = []
+    n = len(sub)
+
+    # 情況 A：不加小數點（純整數）
+    if n == 1 or sub[0] != "0":
+      valid.append(sub)
+
+    # 情況 B：加小數點（從第 j 個字元切開）
+    for j in range(1, n):
+      integer_part = sub[:j]
+      fraction_part = sub[j:]
+
+      is_integer_valid = len(integer_part) == 1 or integer_part[0] != "0"
+      is_fraction_valid = fraction_part[-1] != "0"
+
+      if is_integer_valid and is_fraction_valid:
+        valid.append(integer_part + "." + fraction_part)
+
+    return valid
+
+
 # V0
 # IDEA: STRING SPLIT, `Cross multiply`
 """
