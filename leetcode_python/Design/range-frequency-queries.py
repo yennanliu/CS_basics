@@ -66,11 +66,51 @@ class RangeFreqQuery(object):
 
         indices = self.val_idx[value]
 
+        """
+        NOTE !!!
+
+        need to pass `left`, `right` (idx) (as target) to helper func
+        """
+
         # First position whose index >= left
         l = self.get_left_idx(indices, left)
 
         # First position whose index > right
         r = self.get_right_idx(indices, right)
+
+
+        """
+        NOTE !!!
+
+        why `r-l` can get freq in [left, right] ?
+
+        ->
+
+        Example:
+
+            indices = [1, 3, 4, 7, 9]
+            left = 3
+            right = 7
+
+            ->
+
+            符合範圍 [3, 7] 的原始 index 是 [3, 4, 7]
+
+
+
+            -> l = 1, r = 4
+
+            -> r - l = 4 - 1 = 3
+
+            ->
+
+            e.g. 
+
+                l：第一個 >= left 的位置。
+
+                r：第一個 > right 的位置。
+
+        """
 
         return r - l
 
