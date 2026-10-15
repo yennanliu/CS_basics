@@ -27,6 +27,72 @@ The number of nodes in the list is in the range [0, 200].
 
 """
 
+# V0
+# IDEA: 2 LINKED LIST + DUMMY NODE + RE-CONNECT (gpt)
+class Solution(object):
+    def partition(self, head, x):
+        """
+        :type head: Optional[ListNode]
+        :type x: int
+        :rtype: Optional[ListNode]
+        """
+        # Edge case
+        if not head or not head.next:
+            return head
+
+        """
+        NOTE !!!
+
+
+        1. 
+            need to setup 2 indep nodes for node 1, node 2;
+            otherwise it will cause some  cyclic reference  error
+
+    
+        2. 
+           dummy_1, dummy_2 for the `head` cache
+        """
+        # Two independent linked lists
+        dummy_1 = ListNode(0)  # Nodes with val < x
+        dummy_2 = ListNode(0)  # Nodes with val >= x
+
+        """
+        NOTE !!!
+
+
+        list_1, list_2 are the `actual` nodes
+        for the op
+        """
+        list_1 = dummy_1
+        list_2 = dummy_2
+
+        while head:
+            if head.val < x:
+                list_1.next = head
+                list_1 = list_1.next
+            else:
+                list_2.next = head
+                list_2 = list_2.next
+
+            head = head.next
+
+        """
+        NOTE !!!
+
+        1. make list_2 next to None
+            -> 第二條 linked list 的尾端必須設定 next = None，避免保留原本的連結，造成錯誤或循環。
+
+        2. re-connect
+
+            list_1 end to list_2 head (dummy_2.next)
+        """
+        # Connect the two lists
+        list_2.next = None
+        list_1.next = dummy_2.next
+
+        return dummy_1.next
+
+
 # V0-1
 # IDEA: LINKED LIST OP (gpt)
 class Solution(object):
