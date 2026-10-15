@@ -55,6 +55,29 @@ class Solution(object):
         """
         while curr and curr.next:
             if curr.val == curr.next.val:
+
+                """
+                NOTE !!!
+
+                1. if, else op are NOT symmetric
+                    - if
+                        curr.next = curr.next.next
+                    - else
+                        curr = curr.next
+
+
+                
+                2. 
+                
+                `re-connect` next to next.next node
+
+                -> `curr.next = curr.next.next`
+
+
+                NOTE !!!
+
+                NOT `curr = curr.next.next`
+                """
                 # Remove the next node
                 curr.next = curr.next.next
             else:
