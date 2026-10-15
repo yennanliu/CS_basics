@@ -28,6 +28,97 @@ s and dictionary[i] consist of lowercase English letters.
 """
 
 # V0
+# IDEA: 2 POINTERS +  string comparision (GPT)
+# time = O(d * (n + l)), d = len(dictionary), n = len(s), l = avg word length
+# space = O(1)
+class Solution(object):
+    def findLongestWord(self, s, dictionary):
+        """
+        :type s: str
+        :type dictionary: List[str]
+        :rtype: str
+        """
+        if not dictionary:
+            return ""
+
+        res = ""
+
+        for x in dictionary:
+            if self.helper(s, x):
+
+                # Prefer the longer word
+                if len(x) > len(res):
+                    res = x
+
+
+                 
+                """
+                NOTE !!!
+
+                below works for "abc", "def" as well
+
+                e.g. 
+                    x = "abc"
+                    res = "def"
+                """
+                # If lengths are equal, prefer lexicographically smaller
+                elif len(x) == len(res) and x < res:
+                    res = x
+
+        return res
+
+    def helper(self, s, x):
+        i = 0
+        j = 0
+
+
+        """
+        NOTE !!!
+
+        still do the matching logic when j == len(x) - 1
+
+            -> so if matched, j will equals len(x)
+
+
+        ---
+
+        example:
+
+            s = "abpcplea"
+                      i
+            
+            d = "ale"
+                  j
+
+
+            -> still do matching check in below step:
+
+
+            s = "abpcplea"
+                       i
+            
+            d = "ale"
+                   j
+
+        """
+        while i < len(s) and j < len(x):
+            if s[i] == x[j]:
+                j += 1
+            i += 1
+
+
+        """
+        NOTE !!!
+
+
+        -> via `j == len(x)`
+            -> we can know if s can match x (by deleteing some char)
+        """
+        # All characters in x were matched
+        return j == len(x)
+
+
+# V0-1
 # IDEA: 2 POINTERS +  string comparision (`word < res`) (GPT)
 # time = O(d * (n + l)), d = len(dictionary), n = len(s), l = avg word length
 # space = O(1)
