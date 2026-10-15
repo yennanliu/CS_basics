@@ -45,6 +45,11 @@ class Solution(object):
         if not strs:
             return ""
 
+        """
+        NOTE !!!
+
+        sorting is NOT necessary
+        """
         # Sort by length: shortest -> longest
         strs.sort(key=lambda x: len(x))
 
@@ -55,6 +60,32 @@ class Solution(object):
 
             # Keep shortening prefix until it matches
             while not val.startswith(prefix):
+                """
+                NOTE !!!
+
+
+                we shorten prefix from right hand side via below trick:
+
+                ```
+                prefix = prefix[:-1]
+                ```
+
+                ----
+
+                Demo:
+
+                ```
+                >>> x
+                'flower'
+                >>> x[:-1]
+                'flowe'
+                >>> x[:-1][:-1]
+                'flow'
+                >>> x[:-1][:-1][:-1]
+                'flo'
+                ```
+
+                """
                 prefix = prefix[:-1]
 
                 if not prefix:
@@ -89,6 +120,44 @@ class Solution(object):
 
 
 # V0-3
+# IDEA: SORT + prefix + TWO POINTERS (gemini)
+class Solution(object):
+
+  def longestCommonPrefix(self, strs):
+    """:type strs: List[str]
+
+    :rtype: str
+    """
+    if not strs:
+      return ""
+
+    """
+    NOTE !!!
+
+    sorting is NOT necessary
+    """
+    # 按照長度排序，讓最短的字串當作初始基準
+    strs.sort(key=lambda x: len(x))
+    prefix = strs[0]
+
+    for i in range(1, len(strs)):
+      val = strs[i]
+
+      # 直接找出 prefix 與當前 val 從頭開始匹配的最大長度 j
+      j = 0
+      while j < len(prefix) and j < len(val) and prefix[j] == val[j]:
+        j += 1
+
+      # 將 prefix 直接截斷到實際匹配的長度
+      prefix = prefix[:j]
+
+      if not prefix:
+        return ""
+
+    return prefix
+
+
+# V0-4
 # time = O(n * k), n = number of strings, k = length of common prefix
 # space = O(k)
 class Solution:
