@@ -75,7 +75,7 @@
 
 - 陣列 — 題目實作
 	- https://yennj12.js.org/CS_basics/cheatsheets/array_examples.zh.html
-
+		`6) Maximum Length of Subarray With Positive Product — LC 1567`
 
 
 - LeetCode Patterns Guide
