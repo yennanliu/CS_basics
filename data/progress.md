@@ -73,9 +73,7 @@
 			- `7) Range Addition II / 差分陣列上的前綴和 — LC 1094`
 
 
-- 陣列 — 題目實作
-	- https://yennj12.js.org/CS_basics/cheatsheets/array_examples.zh.html
-		`計數、訂位與模擬`
+
 
 
 - LeetCode Patterns Guide
@@ -147,6 +145,7 @@
 	- Set — 實戰題解
 	- 回溯（Backtracking)
 	- 字串演算法 — 實作範例
+	- 陣列 — 題目實作
 			
 
 
@@ -176,6 +175,15 @@
 
 			- 計數、訂位與模擬
 				- 1109
+
+			- Robot Bounded In Circle 
+				— LC 1041
+
+			- Queue Reconstruction by Height
+				— LC 406
+
+			- Flatten 2D Vector 
+				— LC 251
 
 
 		- String
