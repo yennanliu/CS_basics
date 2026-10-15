@@ -41,6 +41,18 @@ class Solution(object):
 
         curr = head
 
+        """
+        NOTE !!!
+
+
+        1. ONLY move `cur` node
+
+        2. if - else case
+
+            - if curr.val == curr.next.val
+
+            - else
+        """
         while curr and curr.next:
             if curr.val == curr.next.val:
                 # Remove the next node
@@ -50,6 +62,32 @@ class Solution(object):
                 curr = curr.next
 
         return head
+
+
+# V0-0-1
+
+class Solution(object):
+    def deleteDuplicates(self, head):
+        """
+        :type head: Optional[ListNode]
+        :rtype: Optional[ListNode]
+        """
+        # Edge case
+        if not head or not head.next:
+            return head
+
+        res = ListNode(0)
+        res.next = head
+
+        while head and head.next:
+            if head.val == head.next.val:
+                # Remove the next node
+                head.next = head.next.next
+            else:
+                # Move forward only when values differ
+                head = head.next
+
+        return res.next
 
 
 # V0-1
