@@ -75,7 +75,7 @@
 
 - 陣列 — 題目實作
 	- https://yennj12.js.org/CS_basics/cheatsheets/array_examples.zh.html
-		`6) Maximum Length of Subarray With Positive Product — LC 1567`
+		`計數、訂位與模擬`
 
 
 - LeetCode Patterns Guide
@@ -156,6 +156,8 @@
 	- TODO LC:
 
 		- array
+			- 1567
+
 			- 1) First Missing Positive
 				— LC 41  (hard)
 
@@ -171,6 +173,9 @@
 			- 5) Best Time to Buy and Sell Stock —
 				- LC 121
 				- LC 122
+
+			- 計數、訂位與模擬
+				- 1109
 
 
 		- String
