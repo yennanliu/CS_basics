@@ -293,6 +293,69 @@ for i in range(len(cur_gene)):
 > in-place index assignment works and avoids repeated string rebuilds.
 > For a single edit, the slice idiom above is the cleanest.
 
+### Dropping the last character — `s[:-1]` (shrinking a prefix)
+
+`s[:-1]` is "everything except the last character". Applied in a loop it shortens a
+string **from the right**, one character at a time — which is exactly how a candidate
+*prefix* is narrowed until another string starts with it.
+
+```python
+>>> x = 'flower'
+>>> x[:-1]
+'flowe'
+>>> x[:-1][:-1]
+'flow'
+>>> x[:-1][:-1][:-1]
+'flo'
+>>> ''[:-1]          # slicing never raises: an empty string stays empty
+''
+```
+
+**Classic LC use — LC 14 Longest Common Prefix**: start with the first word as the
+prefix, and for every other word chop the prefix from the right until the word starts
+with it.
+
+```python
+# LC 14 - Longest Common Prefix
+# IDEA: take strs[0] as the candidate prefix; for each other word, drop the prefix's
+#       last char (prefix[:-1]) until word.startswith(prefix)
+# time = O(n * m + m^2), n = number of strings, m = len(strs[0]); space = O(m)
+class Solution(object):
+    def longestCommonPrefix(self, strs):
+        if not strs:
+            return ""
+
+        prefix = strs[0]
+        for i in range(1, len(strs)):
+            word = strs[i]
+            # shorten prefix from the right until this word starts with it
+            while not word.startswith(prefix):
+                prefix = prefix[:-1]
+                # nothing left in common -> no later word can bring it back
+                if not prefix:
+                    return ""
+        return prefix
+```
+
+```text
+strs = ["flower", "flow", "flight"]
+
+word      prefix before   shrinks                      prefix after
+"flow"    "flower"        flower -> flowe -> flow      "flow"
+"flight"  "flow"          flow -> flo -> fl            "fl"
+                                                       answer = "fl"
+```
+
+- **The prefix only ever shrinks**, so across all words there are at most `m` chops —
+  that is the `m^2` term (each chop copies up to `m` chars), not `n * m^2`.
+- **Sorting `strs` first is not needed.** Starting from the shortest word saves a few
+  chops but changes nothing about correctness.
+- **The `if not prefix` guard is an early exit, not a termination fix.** Every string
+  starts with `""`, so the `while` would stop on its own; the guard just skips the
+  remaining words.
+- Chopping one char at a time is the readable form. To cut in one step instead, count
+  the matching leading chars `j` and take `prefix = prefix[:j]` — same bound, fewer copies.
+
 ### `split`
 
 ```python

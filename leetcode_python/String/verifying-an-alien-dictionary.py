@@ -57,6 +57,71 @@ class Solution(object):
         :type order: str
         :rtype: bool
         """
+        # Build mapping: character -> ranking
+        char_map = {}
+        for i, char in enumerate(order):
+            char_map[char] = i
+
+        # Compare adjacent words
+        """
+        NOTE !!!
+
+        ONLY need to compare `i and i + 1` word,
+            -> 因為字典序具備遞移性（Transitive）
+
+        -> double loops is NOT needed
+
+        -> e.g. below is no needed:
+            ```
+                    for i in range(n-1):
+                        for j in range(i+1, n):
+
+                          x = words[i]
+                          y = words[j]
+            ```
+        """
+        for i in range(len(words) - 1):
+            x = words[i]
+            y = words[i + 1]
+
+            if not self.is_in_order(x, y, char_map):
+                return False
+
+        return True
+
+    def is_in_order(self, x, y, char_map):
+        i = 0
+        len_x = len(x)
+        len_y = len(y)
+
+        while i < len_x and i < len_y:
+            val_x = x[i]
+            val_y = y[i]
+
+            # First different character determines the order
+            if char_map[val_x] < char_map[val_y]:
+                return True
+
+            if char_map[val_x] > char_map[val_y]:
+                return False
+
+            # Same character: check the next position
+            i += 1
+
+        # If y is a prefix of x, x is longer and comes after y
+        return len_x <= len_y
+
+
+
+# V0-1
+# IDEA: ordering MAPPING (gemini)
+class Solution(object):
+    def isAlienSorted(self, words, order):
+        """
+        :type words: List[str]
+        :type order: str
+        :rtype: bool
+        """
         # 1. Build the priority mapping
         order_arr = [0] * 26
         for i in range(len(order)):
