@@ -75,7 +75,7 @@ class Solution(object):
 
 
 # V0
-# IDEA: BRUTE FORCE + is_palindrome (gpt)
+# IDEA: 2 POINTERS + is_palindrome (gpt)
 # time: O(N)
 # space: O(N)
 """
@@ -174,6 +174,32 @@ class Solution(object):
 
 
 # V0-3
+# IDEA: 2 POINTERS (gemini)
+class Solution(object):
+
+  def validPalindrome(self, s):
+    """:type s: str
+
+    :rtype: bool
+    """
+    l, r = 0, len(s) - 1
+
+    while l < r:
+      if s[l] != s[r]:
+        # 當字元不相等時，嘗試跳過左邊 (l+1) 或跳過右邊 (r-1)
+        sub1 = s[l + 1 : r + 1]
+        sub2 = s[l:r]
+
+        # 只要其中一個是迴文，就回傳 True
+        return sub1 == sub1[::-1] or sub2 == sub2[::-1]
+
+      l += 1
+      r -= 1
+
+    return True
+
+
+# V0-4
 # IDEA: BRUTE FORCE + is_palindrome (TLE) (gpt)
 # time: O(N ^ 2)
 # space: O(N)
@@ -206,7 +232,7 @@ class Solution(object):
         return True
 
 
-# V0-4
+# V0-5
 # IDEA: BRUTE FORCE + is_palindrome (gpt)
 # time: O(N)
 # space: O(N)
