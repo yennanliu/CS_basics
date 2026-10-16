@@ -80,6 +80,17 @@ class Solution(object):
 
             """
             # check if there is a prefix that makes subarray sum = k
+
+            """
+            NOTE !!!
+
+
+            `prefix - k`
+
+            -> want to check if `prev prefix sum` (prefix_b) is in hashmap,
+               NOT the current one (prefix_a)
+               
+            """
             if prefix - k in count_map:
                 res += count_map[prefix - k]
 
