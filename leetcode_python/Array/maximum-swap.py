@@ -37,6 +37,7 @@ O(n) idea
 
 
 1. For every digit, know the last occurrence of every digit 0–9.
+
 2. loop over digit in num
     loop from 9 to 0 (inverse order)
         -> and find if we can `swap`
@@ -53,6 +54,10 @@ class Solution(object):
 
 
         last_idx: `last idx` of digit in num
+
+
+        -> we will use this info later
+        
         """
         # last occurrence of each digit
         last_idx = [-1] * 10
@@ -77,6 +82,11 @@ class Solution(object):
 
             we try val from `9` to `cur + 1`
                 -> try if we can `swap`
+
+
+            NOTE !!!
+
+            this is NOT a O(N^2) time complexity
             """
             # Try larger digits from 9 down to cur+1
             for d in range(9, cur, -1):

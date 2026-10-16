@@ -175,14 +175,10 @@
 			- 1) First Missing Positive
 				— LC 41  (hard)
 
-			- 2) Rotate Array 
-				— LC 189 
 
 			- Product of Array Except Self
 				— LC 238 
 
-			- Maximum Swap 
-				— LC 670
 
 			- 5) Best Time to Buy and Sell Stock —
 				- LC 121
