@@ -86,6 +86,10 @@
 
 
 
+- 雙指標 — 實例解析
+	- https://yennj12.js.org/CS_basics/cheatsheets/2_pointers_examples.zh.html
+
+
 - python_trick.md
 	- https://yennj12.js.org/CS_basics/cheatsheets/python_trick.zh.html
 		- `2) LC Example`
@@ -146,6 +150,24 @@
 - Others
 	- recent updated cheatsheet
 	- TODO LC:
+
+		- 2 pointers
+			- 原地改寫（快慢指標）
+				- 26
+				- 80
+			- Next Permutation
+				- 31
+				- 556
+				- 1053
+			- DI String Match 
+				— LC 942
+
+			- 3Sum Closest
+				— LC 16
+
+			- 模式：帶不匹配處理的雙指標
+				- 680
+
 
 		- array
 			- 1567
