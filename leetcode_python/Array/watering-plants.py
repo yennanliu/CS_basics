@@ -72,7 +72,7 @@ max(plants[i]) <= capacity <= 10^9
 """
 
 # V0
-# IDEA : ARRAY + SIMULATION (REFILL TRIP = 2 * i + 1 STEPS)
+# IDEA : ARRAY + SIMULATION (REFILL TRIP = 2 * i + 1 STEPS) (claude)
 #
 #   We stand at plant i - 1 (x = i - 1) about to water plant i.
 #   - enough water   -> 1 step forward
@@ -114,7 +114,59 @@ class Solution(object):
 
 
 # V0-1
-# IDEA : ARRAY + SIMULATION (COUNT FORWARD STEPS ONCE, ADD ROUND TRIPS)
+# IDEA: MATH + problem understanding (GPT)
+class Solution(object):
+    def wateringPlants(self, plants, capacity):
+        if not plants:
+            return 0
+
+        steps = 0
+        water = capacity
+        last_idx = -1
+
+        for i, need in enumerate(plants):
+            if water >= need:
+                # Walk from last position to plant i
+                steps += i - last_idx
+            else:
+                # Walk back to river, then from river to plant i
+                steps += (last_idx + 1) + (i + 1)
+                water = capacity
+
+            water -= need
+            last_idx = i
+
+        return steps
+
+
+# V0-2
+# IDEA: MATH + problem understanding (gemini)
+class Solution(object):
+
+  def wateringPlants(self, plants, capacity):
+    """:type plants: List[int]
+
+    :type capacity: int
+    :rtype: int
+    """
+    steps = 0
+    curr_water = capacity
+
+    for i in range(len(plants)):
+      # 如果當前水量夠澆第 i 株植物
+      if curr_water >= plants[i]:
+        curr_water -= plants[i]
+        steps += 1
+      else:
+        # 水不夠：走回河邊 (i 步) + 走回第 i 株植物 (i + 1 步) = 2 * i + 1 步
+        steps += 2 * i + 1
+        curr_water = capacity - plants[i]
+
+    return steps
+
+
+# V0-3
+# IDEA : ARRAY + SIMULATION (COUNT FORWARD STEPS ONCE, ADD ROUND TRIPS) (claude)
 #
 #   Every plant costs exactly one forward step no matter what, so the
 #   forward walk is always n steps in total. A refill before plant i only
