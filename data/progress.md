@@ -188,9 +188,6 @@
 				- LC 121
 				- LC 122
 
-			- 計數、訂位與模擬
-				- 1109
-
 			- Robot Bounded In Circle 
 				— LC 1041
 

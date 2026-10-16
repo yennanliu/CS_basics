@@ -46,6 +46,41 @@ bookings[i].length == 3
 """
 
 # V0
+# IDEA : ARRAY + prefix sum (gpt)
+class Solution(object):
+    def corpFlightBookings(self, bookings, n):
+        """
+        :type bookings: List[List[int]]
+        :type n: int
+        :rtype: List[int]
+        """
+        # Edge case
+        if n == 0:
+            return []
+
+        res = [0] * n
+
+        # Build difference array
+        for f, l, seats in bookings:
+
+            # NOTE !!! idx is `1 based` in this LC
+
+            # 1-based flight number -> 0-based index
+            res[f - 1] += seats
+
+            # NOTE !!! how we handle end idx
+            # End of the range: stop adding seats after flight l
+            if l < n:
+                res[l] -= seats
+
+        # Prefix sum to get seats for each flight
+        prefix = 0
+        for j in range(n):
+            prefix += res[j]
+            res[j] = prefix
+
+        return res
+
 
 # V1
 # IDEA : ARRAY + prefix sum
