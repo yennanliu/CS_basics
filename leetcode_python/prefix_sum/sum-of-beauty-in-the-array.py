@@ -50,6 +50,76 @@ class Solution(object):
         pass
 
 
+# V0-1
+# IDEA: PREFIX SUM + MIN ARR (gemini)
+"""
+-> 最佳化方向（預處理 + 動態維護）：
+
+
+對於 **LC 2012. Sum of Beauty in the Array**（陣列美麗值求和），題目的核心要求是針對陣列中每一個介於 `1` 到 `n-2` 的元素 `nums[i]`，檢查其滿足哪種美觀值條件（`2`、`1` 或 `0`），並將所有元素的總美觀值加總起來。
+
+---
+
+### 💡 核心解題思路
+
+1. **暴力解的盲點**：
+若對每個 `i` 都重新往左找最大值、往右找最小值，時間複雜度會高達 O(N^2S)。由於題目給定陣列長度可達 $10^5$，暴力解絕對會超時（TLE）。
+2. **最佳化方向（預處理 + 動態維護）**：
+* **右側最小值（Suffix Minimum / `right_min`）**：我們可以先花 O(N) 的時間建立一個後綴最小值陣列。`right_min[i]` 代表從索引 `i` 到結尾的最小值。
+* **左側最大值（Running Left Max）**：在從左到右掃描的過程中，用一個變數 `left_max` 動態記錄當前位置左側所有元素的最大值。
+* 如此一來，對於任何一個索引 `i`：
+* 只要 O(1) 就能知道左邊的極大值（`left_max`）與右邊的極小值（`right_min[i + 1]`）。
+* 滿足 `left_max < nums[i] < right_min[i + 1]`，美觀值即為 **2**。
+* 否則，若滿足 `nums[i - 1] < nums[i] < nums[i + 1]`，美觀值為 **1**。
+* 兩者皆非則為 **0**。
+
+---
+
+### ⏱️ 複雜度分析
+
+* **時間複雜度**：O(N) — 我們僅需花一次線性掃描建立 `right_min` 陣列，再花一次線性掃描計算總美觀值。
+* **空間複雜度**：O(N) — 用於儲存 `right_min` 後綴最小值陣列的額外空間。
+
+"""
+class Solution(object):
+
+  def sumOfBeauties(self, nums):
+    """:type nums: List[int]
+
+    :rtype: int
+    """
+    n = len(nums)
+
+    # 1. 建立 right_min 陣列：記錄從右側到當前位置的最小值
+    right_min = [0] * n
+    right_min[-1] = nums[-1]
+    for i in range(n - 2, -1, -1):
+      right_min[i] = min(right_min[i + 1], nums[i])
+
+    total_beauty = 0
+    left_max = nums[0]
+
+    # 2. 遍歷所有可能的中間元素 (1 到 n-2)
+    for i in range(1, n - 1):
+
+      #----------------------------
+      # 條件優先級 1：美觀值為 2 (大於左側所有元素，且小於右側所有元素)
+      #----------------------------
+      if left_max < nums[i] < right_min[i + 1]:
+        total_beauty += 2
+      
+      #----------------------------
+      # 條件優先級 2：美觀值為 1 (僅大於左鄰居，且小於右鄰居)
+      #----------------------------
+      elif nums[i - 1] < nums[i] < nums[i + 1]:
+        total_beauty += 1
+
+      # 動態更新左側最大值，供下一個迴圈使用
+      left_max = max(left_max, nums[i])
+
+    return total_beauty
+
+
 # V1
 # IDEA: PREFIX + SUFFIX SUM (GEMINI)
 """
@@ -101,6 +171,7 @@ class Solution:
             prefix_max = max(prefix_max, nums[i])
             
         return res
+
 
 # V2
 # IDEA: PREFIX + SUFFIX SUM (GPT)
