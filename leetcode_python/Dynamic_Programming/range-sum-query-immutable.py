@@ -38,6 +38,37 @@ There are many calls to sumRange function.
 
 
 # V0
+# IDEA: PREFIX SUM
+# https://yennj12.js.org/CS_basics/cheatsheets/prefix_sum.html
+class NumArray(object):
+
+    def __init__(self, nums):
+        """
+        :type nums: List[int]
+        """
+        n = len(nums)
+
+        self.prefix = [0] * (n + 1)
+
+        """
+        NOTE !!!
+
+        n loop from `0 to n`
+        """
+        for i in range(n):
+            self.prefix[i+1] = self.prefix[i] + nums[i]
+
+    def sumRange(self, left, right):
+        """
+        :type left: int
+        :type right: int
+        :rtype: int
+        """
+        if right < left:
+            return -1
+
+        return self.prefix[right + 1] - self.prefix[left]
+
 
 # V1
 """
@@ -153,4 +184,3 @@ class NumArray(object):
         :rtype: int
         """
         return self.accu[j + 1] - self.accu[i]
-
