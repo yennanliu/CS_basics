@@ -179,6 +179,18 @@
 			- Expressive Words 
 				— LC 809
 
+			- Compare Version Numbers 
+				— LC 165
+
+			- 在區間、矩陣與分割上的指標
+				- 986
+
+			- Insert Interval 
+				— LC 57
+
+			- Partition Labels
+				— LC 763
+
 			- 1023
 
 
