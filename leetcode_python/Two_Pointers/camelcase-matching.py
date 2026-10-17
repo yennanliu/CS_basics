@@ -1,0 +1,130 @@
+"""
+
+1023. Camelcase Matching
+Medium
+
+Given an array of strings queries and a string pattern, return a boolean array
+answer where answer[i] is true if queries[i] matches pattern, and false
+otherwise.
+
+A query word queries[i] matches pattern if you can insert lowercase English
+letters into the pattern so that it equals the query. You may insert a character
+at any position in pattern or you may choose not to insert any characters at all.
+
+Example 1:
+
+Input: queries = ["FooBar","FooBarTest","FootBall","FrameBuffer","ForceFeedBack"], pattern = "FB"
+Output: [true,false,true,true,false]
+Explanation: "FooBar" can be generated like this "F" + "oo" + "B" + "ar".
+"FootBall" can be generated like this "F" + "oot" + "B" + "all".
+"FrameBuffer" can be generated like this "F" + "rame" + "B" + "uffer".
+
+Example 2:
+
+Input: queries = ["FooBar","FooBarTest","FootBall","FrameBuffer","ForceFeedBack"], pattern = "FoBa"
+Output: [true,false,true,false,false]
+Explanation: "FooBar" can be generated like this "Fo" + "o" + "Ba" + "r".
+"FootBall" can be generated like this "Fo" + "ot" + "Ba" + "ll".
+
+Example 3:
+
+Input: queries = ["FooBar","FooBarTest","FootBall","FrameBuffer","ForceFeedBack"], pattern = "FoBaT"
+Output: [false,true,false,false,false]
+Explanation: "FooBarTest" can be generated like this "Fo" + "o" + "Ba" + "r" + "T" + "est".
+
+Constraints:
+
+1 <= pattern.length, queries.length <= 100
+1 <= queries[i].length <= 100
+queries[i] and pattern consist of English letters.
+
+"""
+
+# V0
+# IDEA : 2 POINTERS (SUBSEQUENCE CHECK + NO EXTRA UPPERCASE)
+#
+#   a query matches iff
+#     1) pattern is a SUBSEQUENCE of query, and
+#     2) every query char NOT used by the pattern is lowercase
+#   (we may only INSERT lowercase letters into the pattern)
+#
+#   walk the query with i, the pattern with j:
+#     - query[i] == pattern[j]  -> consume it (j += 1)
+#     - query[i] is lowercase   -> an inserted letter, skip it
+#     - query[i] is uppercase   -> an uppercase the pattern never asked for -> False
+#
+#   greedy matching is safe: taking the FIRST equal char never hurts, since a
+#   later copy of it could only be skipped if it were lowercase anyway.
+#
+#   e.g. pattern = "FB", query = "FootBall"
+#        F(match) o o t(skip) B(match) a l(skip) L -> extra uppercase -> False
+#
+# time = O(Q * L), space = O(1) besides the output
+#   (Q = number of queries, L = max query length)
+class Solution(object):
+    def camelMatch(self, queries, pattern):
+        """
+        :type queries: List[str]
+        :type pattern: str
+        :rtype: List[bool]
+        """
+        answer = []
+        for query in queries:
+            answer.append(self._matches(query, pattern))
+        return answer
+
+    def _matches(self, query, pattern):
+        """True if pattern can become query by inserting only lowercase letters."""
+        j = 0  # next pattern char still to be matched
+
+        for ch in query:
+            # case 1) the char the pattern needs next
+            if j < len(pattern) and ch == pattern[j]:
+                j += 1
+            # case 2) an inserted lowercase letter -> allowed
+            elif ch.islower():
+                continue
+            # case 3) an uppercase letter the pattern does not have -> not allowed
+            else:
+                return False
+
+        # NOTE !!! j == len(pattern), not len(pattern) - 1: j was incremented
+        #          past the last matched char, so a full match leaves it at the end
+        return j == len(pattern)
+
+
+# V1
+# IDEA : REGEX — SURROUND EVERY PATTERN CHAR WITH [a-z]*
+#
+#   "insert any lowercase letters anywhere" is exactly the regex
+#       ^[a-z]* p0 [a-z]* p1 [a-z]* ... [a-z]*$
+#   so build it once and fullmatch every query against it.
+#
+#   e.g. pattern = "FoB" -> [a-z]*F[a-z]*o[a-z]*B[a-z]*
+#
+#   NOTE : short to write, but the interviewer usually wants V0's pointer walk —
+#          learn V0 first.
+#
+# time = O(Q * L), space = O(P) for the compiled pattern
+import re
+
+
+class Solution2(object):
+    def camelMatch(self, queries, pattern):
+        """
+        :type queries: List[str]
+        :type pattern: str
+        :rtype: List[bool]
+        """
+        # build "[a-z]*F[a-z]*B[a-z]*" piece by piece
+        regex = "[a-z]*"
+        for ch in pattern:
+            # re.escape is a no-op for letters, but keeps the regex safe
+            regex += re.escape(ch) + "[a-z]*"
+        matcher = re.compile(regex)
+
+        answer = []
+        for query in queries:
+            # fullmatch: the whole query must be consumed, not just a prefix
+            answer.append(matcher.fullmatch(query) is not None)
+        return answer
