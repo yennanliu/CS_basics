@@ -9,7 +9,7 @@
 
 - [Python](https://leetcode.com/problemset/all/?languageTags=python3)
 
-<!-- fa5e7397e6b0 -->
+<!-- f36c58e45588 -->
 ## 總覽
 
 這份速查表以前是 3,672 行、全部塞在單一個 `## 1) Examples` 標題底下，68 個條目以
@@ -21,6 +21,7 @@
 | 知道某個內建操作要花多少成本 — `len`、`max`、`in`、`+`、`split`、切片、`dict`/`set` 操作 | [python_complexity.md](./python_complexity.md) |
 | 複製一份 list 或 dict，而且不是別名 | [複製與參考](#copying--references) |
 | 對字串做切片、補零、去空白、切分或重組 | [字串](#strings) |
+| 從索引 `i` 開始找下一個 `#`（或任何字元），如 LC 271 的解碼器 | [從某個索引開始找字元](#finding-a-char-from-an-index--sfindsub-start) |
 | 用自然順序以外的規則排序 | [排序與比較](#sorting--comparison) |
 | 做除法、取整、取餘數，或避開溢位的意外 | [數字與數學](#numbers--math) |
 | 同時走訪兩個東西，或用一行建出一個 list | [走訪、生成式與函數式工具](#iteration-comprehensions--functional-tools) |
@@ -127,6 +128,31 @@
 - **不需要先對 `strs` 排序。** 從最短的字開始可以少砍幾次，但對正確性沒有任何影響。
 - **`if not prefix` 這個判斷是提早結束，不是為了讓迴圈終止。** 每個字串都以 `""` 開頭，所以 `while` 本來就會自己停下；這個判斷只是跳過剩下的字。
 - 一次砍一個字元是最好讀的寫法。若想一步到位，先數出開頭相同的字元數 `j`，再取 `prefix = prefix[:j]`——複雜度上界相同，但複製次數更少。
+
+<!-- d73de797ecd7 -->
+### 從某個索引開始找字元 — `s.find(sub, start)`
+
+`s.find(sub, start)` 回傳在位置 `start`（含）之後**第一個** `sub` 的索引（找不到則回傳 `-1`）。
+讓它成為解析器利器的正是 `start` 參數：它取代了手寫的 `while s[j] != "#": j += 1` 掃描，
+而且回傳的索引仍是相對於**整個**字串，而不是相對於 `s[start:]`。
+
+<!--CODE-->
+
+**經典 LC 用法 — LC 271 Encode and Decode Strings**：每個字以 `len + "#" + word` 的形式儲存，
+所以解碼器從 `i` 開始找下一個 `#`，讀出它前面的長度，再讓 `i` 跳過整個字。
+
+<!--CODE-->
+
+<!--CODE-->
+
+- **傳入 `start`，絕不先切片。** `s[i:].find("#")` 每次呼叫都會複製尾段（整個迴圈變成 O(N²)），
+  而且回傳的索引是相對於 `i` 的，你還得再把 `i` 加回去。
+- **字裡面有 `#` 也安全。** `find` 永遠只從某個標頭起點開始找，接著用長度讓 `i` 跳過整個字 —
+  包含字裡面的任何 `#`。
+- **`find` 回傳 `-1`，`index` 會丟例外。** 輸入可能不合法時，要檢查 `sep == -1` —
+  否則 `s[i:-1]` 會不聲不響地切出幾乎整個字串。
+- 完整的 LC 271 解說，包括 `encode` 與這個迴圈的雙指標寫法，在
+  [2_pointers_examples.md](./2_pointers_examples.md#encode-and-decode-strings--lc-271)。
 
 <!-- 3407770955c2 -->
 ### `split`

@@ -18,6 +18,7 @@ things by what they do.
 | know what a built-in costs — `len`, `max`, `in`, `+`, `split`, slicing, `dict`/`set` ops | [python_complexity.md](./python_complexity.md) |
 | copy a list or dict without the copy being an alias | [Copying & References](#copying--references) |
 | slice, pad, strip, split or rebuild a string | [Strings](#strings) |
+| find the next `#` (or any char) starting from index `i`, as in LC 271's decoder | [Finding a char from an index](#finding-a-char-from-an-index--sfindsub-start) |
 | sort by something other than the natural order | [Sorting & Comparison](#sorting--comparison) |
 | divide, round, take a remainder, or avoid overflow surprises | [Numbers & Math](#numbers--math) |
 | loop over two things at once, or build a list in one line | [Iteration, Comprehensions & Functional Tools](#iteration-comprehensions--functional-tools) |
@@ -355,6 +356,66 @@ word      prefix before   shrinks                      prefix after
   remaining words.
 - Chopping one char at a time is the readable form. To cut in one step instead, count
   the matching leading chars `j` and take `prefix = prefix[:j]` — same bound, fewer copies.
+
+### Finding a char from an index — `s.find(sub, start)`
+
+`s.find(sub, start)` returns the index of the **first** `sub` at or after position `start`
+(`-1` if there is none). The `start` argument is what makes it a parser's tool: it replaces
+a hand-written `while s[j] != "#": j += 1` scan, and the index it returns is still an
+index into the **whole** string, not into `s[start:]`.
+
+```python
+>>> s = "5#Hello5#World"
+>>> s.find("#")          # from the beginning
+1
+>>> s.find("#", 7)       # search starts at index 7 -> next "#" is at 8
+8
+>>> s.find("#", 9)       # nothing at or after 9
+-1
+>>> s.find("#", 2, 7)    # optional end bound, exclusive: search s[2:7] only
+-1
+>>> s.index("#", 7)      # same search, but raises ValueError instead of -1
+8
+```
+
+**Classic LC use — LC 271 Encode and Decode Strings**: each word is stored as
+`len + "#" + word`, so the decoder finds the next `#` from `i`, reads the length in front
+of it, and jumps `i` past the word.
+
+```python
+# LC 271 - Encode and Decode Strings
+# IDEA: from header start i, s.find("#", i) locates the separator; the digits before it
+#       are the word length, so slice the word and jump i to the next header
+# time = O(N), N = len(s); space = O(N) for the output
+def decode(self, s):
+    res = []
+    i = 0
+    while i < len(s):
+        sep = s.find("#", i)        # find first "#" from position i
+        length = int(s[i:sep])
+        res.append(s[sep + 1 : sep + 1 + length])
+        i = sep + 1 + length
+    return res
+```
+
+```text
+s = "5#Hello5#World"
+
+i    s.find("#", i)   length = int(s[i:sep])   word                 next i
+0    1                5                        s[2:7]  = "Hello"    7
+7    8                5                        s[9:14] = "World"    14
+                                                                    14 == len(s) -> stop
+```
+
+- **Pass `start`, never slice first.** `s[i:].find("#")` copies the tail on every call
+  (O(N²) over the loop) and returns an index relative to `i`, so you would have to add `i`
+  back.
+- **A `#` inside a word is safe.** `find` only ever looks from a header start, and the
+  length then jumps `i` past the whole word — including any `#` it contains.
+- **`find` returns `-1`, `index` raises.** On input that may be malformed, check
+  `sep == -1` — `s[i:-1]` would silently slice almost everything.
+- The full LC 271 walkthrough, with `encode` and the two-pointer form of this loop, is in
+  [2_pointers_examples.md](./2_pointers_examples.md#encode-and-decode-strings--lc-271).
 
 ### `split`
 
