@@ -45,8 +45,102 @@ Follow up: As an added challenge, try to code it using only iterators in C++ or 
 
 """
 
+
 # V0
-# IDEA : ARRAY OP
+# IDEA : ARRAY OP (flatten all at once) (GPT)
+# time = O(n)
+# space = O(n)
+class Vector2D:
+
+    def __init__(self, vec):
+        self.flatten_arr = []
+        self.cur_idx = 0
+
+        for i in range(len(vec)):
+            for j in range(len(vec[i])):
+                self.flatten_arr.append(vec[i][j])
+
+        self.size = len(self.flatten_arr)
+
+    def next(self):
+        val = self.flatten_arr[self.cur_idx]
+        self.cur_idx += 1
+        return val
+
+    def hasNext(self):
+        return self.cur_idx < self.size
+
+
+# V0-1
+# IDEA : ARRAY OP (Lazy iterator) (GPT)
+# time = O(n)
+# space = O(n)
+class Vector2D:
+
+    def __init__(self, vec):
+        self.vec = vec
+        self.row = 0
+        self.col = 0
+
+    def hasNext(self):
+        """
+        NOTE !!! below
+        """
+        # Skip empty rows or exhausted rows
+        while self.row < len(self.vec):
+            if self.col < len(self.vec[self.row]):
+                return True
+
+            self.row += 1
+            self.col = 0
+
+        return False
+
+    def next(self):
+        if not self.hasNext():
+            raise StopIteration
+
+        val = self.vec[self.row][self.col]
+        self.col += 1
+        return val
+
+
+# V0-2
+# IDEA : ARRAY OP (Lazy iterator) (GEMINI)
+# time = O(n)
+# space = O(n)
+class Vector2D(object):
+
+  def __init__(self, vec):
+    """:type vec: List[List[int]]"""
+    self.vec = vec
+    self.row = 0
+    self.col = 0
+
+  def next(self):
+    """:rtype: int"""
+    # 假設呼叫 next 前已透過 hasNext 確保位置合法
+    val = self.vec[self.row][self.col]
+    self.col += 1
+    return val
+
+  def hasNext(self):
+    """:rtype: bool"""
+    # 動態尋找下一個合法的元素位置
+    while self.row < len(self.vec):
+      # 如果當前行的 col 還沒到底，代表找到了合法元素
+      if self.col < len(self.vec[self.row]):
+        return True
+      # 否則代表當前行已經走完（或當前行為空行），往下一行移動，並將 col 歸零
+      self.row += 1
+      self.col = 0
+
+    return False
+
+
+
+# V0-3
+# IDEA : ARRAY OP (flatten all at once)
 # time = O(n)
 # space = O(n)
 class Vector2D:
@@ -70,7 +164,7 @@ class Vector2D:
         # If the next position is a valid index of nums, return True.
         return self.position + 1 < len(self.nums)
 
-# V0-1
+# V0-4
 # IDEA : ARRAY OP
 # time = O(1)
 # space = O(1)
