@@ -1,3 +1,5 @@
+# https://leetcode.ca/all/251.html
+
 """
 
 251. Flatten 2D Vector
@@ -354,3 +356,73 @@ class Vector2D(object):
         :rtype: bool
         """
         return bool(self.stack)
+
+
+# V3-1
+# https://leetcode.ca/2016-08-07-251-Flatten-2D-Vector/
+class Vector2D:
+    def __init__(self, vec: List[List[int]]):
+        self.flatten = []
+        for item in vec:
+            for e in item:
+                self.flatten.append(e)
+        self.cur = -1
+
+    def next(self) -> int:
+        self.cur += 1
+        return self.flatten[self.cur]
+
+    def hasNext(self) -> bool:
+        return self.cur < len(self.flatten) - 1
+
+# V3-2
+# https://leetcode.ca/2016-08-07-251-Flatten-2D-Vector/
+class Vector2D:
+    def __init__(self, v: List[List[int]]):
+        self.i = 0 # which list
+        self.j = 0 # which index of current list
+        self.vector = v
+
+    def next(self) -> int:
+        self.hasNext()
+        value = self.vector[self.i][self.j]
+        self.j += 1 # in hasNext() guaranteed not end of row
+        return value
+
+    def hasNext(self) -> bool:
+        while self.i < len(self.vector):
+            if self.j < len(self.vector[self.i]):
+                return True
+            self.i += 1
+            self.j = 0
+        return False
+
+
+# V3-3
+# https://leetcode.ca/2016-08-07-251-Flatten-2D-Vector/
+class Vector2D(object):
+
+  def __init__(self, vec2d):
+    """
+    Initialize your data structure here.
+    :type vec2d: List[List[int]]
+    """
+    self.x = self.y = 0
+    self.m = vec2d
+
+  def next(self):
+    """
+    :rtype: int
+    """
+    self.y += 1
+    return self.m[self.x][self.y - 1]
+
+  def hasNext(self):
+    """
+    :rtype: bool
+    """
+    m = self.m
+    while self.x < len(m) and self.y >= len(m[self.x]):
+      self.x += 1
+      self.y = 0
+    return self.x < len(m)
