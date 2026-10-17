@@ -184,13 +184,10 @@
 				- LC 121
 				- LC 122
 
-			- Robot Bounded In Circle 
-				— LC 1041
-
 			- Queue Reconstruction by Height
 				— LC 406
 
-				
+
 		- String
 
 			- 953

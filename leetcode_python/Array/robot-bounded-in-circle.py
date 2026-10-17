@@ -40,6 +40,46 @@ instructions[i] is 'G', 'L' or, 'R'.
 """
 
 # V0
+# IDEA: ARRAY + MATH + HASHMAP (gpt)
+class Solution(object):
+    def isRobotBounded(self, instructions):
+        """
+        :type instructions: str
+        :rtype: bool
+        """
+        x = 0
+        y = 0
+        degree = 0
+
+        # degree: [dx, dy]
+        dire_map = {
+            0: [0, 1],      # North
+            90: [-1, 0],    # West
+            180: [0, -1],   # South
+            270: [1, 0]     # East
+        }
+
+        for instruction in instructions:
+            degree %= 360
+
+            if instruction == "G":
+                dx, dy = dire_map[degree]
+                x += dx
+                y += dy
+
+            elif instruction == "L":
+                degree += 90
+
+            elif instruction == "R":
+                degree -= 90
+
+        # NOTE !!!
+        # check if both coordination and direction equals to init vals
+        # Bounded if back at origin OR not facing north
+        return (x == 0 and y == 0) or degree % 360 != 0
+
+
+# V0-1
 # IDEA : math + array
 # time = O(n)
 # space = O(1)
@@ -70,40 +110,6 @@ class Solution:
                 y = y + dirs[idx][1]
         return (x == 0 and y ==0) or idx !=0
 
-# V0-1
-# TODO : fix below (cyclic case)
-# class Solution:
-#     def isRobotBounded(self, instructions):
-#         def get_dirc(degree):
-#             if degree < 0:
-#                 degree += 360
-#             degree %= 360
-#             if degree == 0:
-#                 return 0, 1
-#             elif degree == 90:
-#                 return 1, 0
-#             elif degree == 180:
-#                 return 0, -1
-#             else:
-#                 return -1, 0
-#         # edge case
-#         if not instructions:
-#             return True
-#         cur = [0,0]
-#         degree = 0
-#         for i in instructions:
-#             print ("i = " + str(i) + " degree = " + str(degree) + " cur = " + str(cur))
-#             #y_dirc, x_dirc = get_dirc(degree)
-#             if i == "G":
-#                 cur[1] += x_dirc * 1
-#                 cur[0] += y_dirc * 1
-#             elif i == "L":
-#                 degree -= 90
-#                 y_dirc, x_dirc = get_dirc(degree)
-#             elif i == "R":
-#                 degree += 90
-#                 y_dirc, x_dirc = get_dirc(degree)
-#         return True if cur == [0,0] else False
 
 # V1
 # https://leetcode.com/problems/robot-bounded-in-circle/discuss/1425424/Java-%2B-Python-solution
