@@ -88,7 +88,7 @@
 
 - 雙指標 — 實例解析
 	- https://yennj12.js.org/CS_basics/cheatsheets/2_pointers_examples.zh.html
-		- `Valid Palindrome II — LC 680`
+		- `Encode and Decode Strings — LC 271`
 
 
 
@@ -175,6 +175,11 @@
 			- Longest Mountain in Array
 				 — LC 845
 				 	- 前綴／後綴斜坡
+
+			- Expressive Words 
+				— LC 809
+
+			- 1023
 
 
 		- array
