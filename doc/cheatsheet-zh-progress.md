@@ -43,7 +43,7 @@ half-translated document renders with English gaps rather than failing.
   is what makes a problem findable on LeetCode itself.
 
 
-## Status — 5364 / 5364 sections (100%)
+## Status — 5365 / 5365 sections (100%)
 
 | Cheatsheet | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -60,7 +60,7 @@ half-translated document renders with English gaps rather than failing.
 | [advanced_divide_and_conquer](./cheatsheet/advanced_divide_and_conquer.md) | 45 | [✅](../i18n/zh/advanced_divide_and_conquer.md) |
 | [advanced_simulation](./cheatsheet/advanced_simulation.md) | 43 | [✅](../i18n/zh/advanced_simulation.md) |
 | [advanced_string_algorithms](./cheatsheet/advanced_string_algorithms.md) | 39 | [✅](../i18n/zh/advanced_string_algorithms.md) |
-| [array](./cheatsheet/array.md) | 43 | [✅](../i18n/zh/array.md) |
+| [array](./cheatsheet/array.md) | 44 | [✅](../i18n/zh/array.md) |
 | [array_examples](./cheatsheet/array_examples.md) | 21 | [✅](../i18n/zh/array_examples.md) |
 | [array_overlap_explaination](./cheatsheet/array_overlap_explaination.md) | 24 | [✅](../i18n/zh/array_overlap_explaination.md) |
 | [backtrack](./cheatsheet/backtrack.md) | 41 | [✅](../i18n/zh/backtrack.md) |

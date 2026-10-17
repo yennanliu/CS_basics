@@ -144,7 +144,11 @@ LC 1109 在 [difference_array.md](./difference_array.md)、LC 1567 在
 
 <!--CODE-->
 
-<!-- 19451d0c2733 -->
+<!-- 5d2d925c097d -->
 ### 13) Flatten 2D Vector — LC 251
+
+標準解是 [array.md §1-1-6](./array.md#1-1-6-flatten-array) 裡的
+**惰性雙游標迭代器（lazy iterator）**，額外空間 O(1)。這裡保留的積極（eager）版本，是用來
+對照惰性版本的基準：建構子會複製全部 `N` 個元素，所以額外空間是 O(N)。
 
 <!--CODE-->

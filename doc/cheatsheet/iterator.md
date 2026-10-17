@@ -197,6 +197,12 @@ class NestedIterator:
         return False
 ```
 
+> **Related — fixed depth: two cursors instead of a stack.** LC 251 (Flatten 2D Vector) is
+> the same normalize-in-`hasNext()` idiom when the nesting is always exactly two levels. A
+> `(row, col)` pair replaces the stack, `hasNext()` skips used-up and empty rows, and the extra
+> space drops to O(1). The template, trace and pitfalls are in
+> [`array.md`](./array.md#1-1-6-flatten-array).
+
 > **Related — explicit-stack iteration over a tree.** LC 173 (Binary Search Tree Iterator)
 > is the same "push the frontier, expand lazily" shape applied to in-order traversal
 > (push the left spine, pop, then push the right child's left spine). Full templates live

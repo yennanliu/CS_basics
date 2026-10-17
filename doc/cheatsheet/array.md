@@ -369,7 +369,7 @@ public class NestedIterator implements Iterator<Integer>{
 
     public boolean hasNext(){
         // for loop split elements in array until 1st element is Integer type
-        while (!list.isEmpty() && list.get(0).isIntger()){
+        while (!list.isEmpty() && !list.get(0).isIntger()){
             // when 1st element is array type, go into the loop
             List<NestedInteger> first = list.remove(0).getList();
             // flatten 1st array, and add to "start" in ordering
@@ -381,6 +381,117 @@ public class NestedIterator implements Iterator<Integer>{
     }
 }
 ```
+
+##### **Pattern: Lazy Iterator over a 2D Array - LC 251** ⭐⭐⭐⭐
+
+**Key Idea**: do not build the flat copy. Keep two cursors, `(row, col)`, into the
+**original** 2D array, and let `hasNext()` walk them past used-up and empty rows until they
+sit on a real element. `next()` only reads that element and steps `col`.
+
+| | Eager (flatten in the constructor) | **Lazy (two cursors)** |
+|---|---|---|
+| Constructor | O(N): copies every element | O(1) |
+| Extra space | O(N) | **O(1)** |
+| `next()` / `hasNext()` | O(1) | O(1) amortized: each row is skipped once over the whole pass, O(R + N) total |
+| Works on a huge or changing source | no: it is a snapshot | yes: nothing is pre-read |
+
+`N` = total number of elements, `R` = number of rows. The eager version is in
+[array_examples.md §13](./array_examples.md#13-flatten-2d-vector--lc-251). The lazy one is
+what an interviewer means by "design an iterator", and it is the 2D case of the
+[`hasNext()` / `next()` contract](./iterator.md#1-2-the-hasnext--next-contract-) in
+iterator.md: the depth is fixed at two, so two indices do the job of a stack.
+
+```python
+# python
+# LC 251 - Flatten 2D Vector
+# IDEA: lazy iterator - two cursors (row, col) into the ORIGINAL 2D array;
+#       hasNext() skips exhausted / empty rows, next() reads one element and steps col
+# time = O(1) amortized per call (O(R + N) over a full pass), space = O(1) extra
+class Vector2D:
+
+    def __init__(self, vec):
+        self.vec = vec      # no copy: iterate the input where it is
+        self.row = 0        # which inner list
+        self.col = 0        # which index inside vec[row]
+
+    def hasNext(self):
+        # normalize: move (row, col) onto the next real element, if there is one.
+        # re-entrant -> a second call finds col already valid and returns at once
+        while self.row < len(self.vec):
+            if self.col < len(self.vec[self.row]):
+                return True
+            # this row is used up (or was empty from the start): go to the next one
+            self.row += 1
+            self.col = 0
+        return False
+
+    def next(self):
+        # normalize first, so next() is correct even if the caller never called hasNext()
+        if not self.hasNext():
+            raise StopIteration
+        val = self.vec[self.row][self.col]
+        self.col += 1
+        return val
+```
+
+```java
+// java
+// LC 251 - Flatten 2D Vector
+// IDEA: same two cursors; hasNext() normalizes, next() is the only method that consumes
+// time = O(1) amortized per call, space = O(1) extra
+class Vector2D {
+    private final int[][] vec;
+    private int row = 0;   // which inner array
+    private int col = 0;   // which index inside vec[row]
+
+    public Vector2D(int[][] vec) {
+        this.vec = vec;
+    }
+
+    public boolean hasNext() {
+        // skip every used-up or empty row until (row, col) points at an element
+        while (row < vec.length) {
+            if (col < vec[row].length) {
+                return true;
+            }
+            row++;
+            col = 0;
+        }
+        return false;
+    }
+
+    public int next() {
+        if (!hasNext()) {
+            throw new NoSuchElementException();
+        }
+        int val = vec[row][col];
+        col++;
+        return val;
+    }
+}
+```
+
+```text
+vec = [[1, 2], [], [3]]          (row, col) after each call
+
+next()     -> 1                  (0, 1)
+next()     -> 2                  (0, 2)   row 0 is used up, but nothing moves yet
+hasNext()  -> true               (2, 0)   skipped row 0 (used up) and row 1 (empty)
+hasNext()  -> true               (2, 0)   idempotent: already on an element
+next()     -> 3                  (2, 1)
+hasNext()  -> false              (3, 0)   row == len(vec)
+```
+
+**Pitfalls**
+
+1. **A `next()` that trusts the cursor.** `self.col += 1; return vec[row][col - 1]` works only
+   if `hasNext()` ran first. On `[[], [3]]`, calling `next()` straight away reads the empty row 0
+   and crashes. Normalizing inside `next()` costs nothing and removes that dependency.
+2. **A `hasNext()` that consumes.** It may move past rows that hold nothing. It must never step
+   past a real element; only `next()` does that.
+3. **`if` where `while` is needed.** Two empty rows in a row (`[[1], [], [], [2]]`) need more
+   than one skip.
+4. **Forgetting `col = 0`** when moving to the next row.
 
 #### 1-1-7) go through 2 arrays (length could be different)
 ```python

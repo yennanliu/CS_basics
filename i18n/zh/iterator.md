@@ -85,10 +85,15 @@ peek、攤平、合併——而且 `next()` 還要維持攤還 `O(1)`。
 
 <!--CODE-->
 
-<!-- 9d5475242e00 -->
+<!-- 42189cfe107d -->
 ### 2-2) Flatten Nested List Iterator — LC 341
 
 <!--CODE-->
+
+> **相關題——深度固定：用兩個游標取代堆疊。** LC 251（Flatten 2D Vector）是同一個
+> 「在 `hasNext()` 裡正規化」的慣用法，只是巢狀永遠剛好兩層。一組 `(row, col)` 取代堆疊，
+> `hasNext()` 跳過已走完與空的列，額外空間降到 O(1)。模板、逐步追蹤與常見陷阱在
+> [`array.md`](./array.md#1-1-6-flatten-array)。
 
 > **相關題——用顯式堆疊走訪樹。** LC 173（Binary Search Tree Iterator）
 > 就是同一個「先推入邊界、需要時才展開」的形狀，套在中序走訪上

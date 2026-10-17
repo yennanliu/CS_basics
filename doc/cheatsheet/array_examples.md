@@ -724,10 +724,15 @@ class Solution(object):
 
 ### 13) Flatten 2D Vector — LC 251
 
+The canonical answer is the **lazy two-cursor iterator** in
+[array.md §1-1-6](./array.md#1-1-6-flatten-array), which uses O(1) extra
+space. This eager version is kept because it is the baseline the lazy one is measured
+against: the constructor copies all `N` elements, so it costs O(N) extra space.
+
 ```python
 # LC 251. Flatten 2D Vector
-# V0
-# IDEA : ARRAY OP
+# IDEA : ARRAY OP (eager - flatten everything in the constructor)
+# time = O(N) constructor, O(1) next / hasNext, space = O(N)
 class Vector2D:
 
     def __init__(self, v):
