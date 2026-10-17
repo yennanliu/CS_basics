@@ -88,6 +88,10 @@
 
 - 雙指標 — 實例解析
 	- https://yennj12.js.org/CS_basics/cheatsheets/2_pointers_examples.zh.html
+		- `Valid Palindrome II — LC 680`
+
+
+
 
 
 - python_trick.md
@@ -167,6 +171,10 @@
 
 			- 模式：帶不匹配處理的雙指標
 				- 680
+
+			- Longest Mountain in Array
+				 — LC 845
+				 	- 前綴／後綴斜坡
 
 
 		- array
