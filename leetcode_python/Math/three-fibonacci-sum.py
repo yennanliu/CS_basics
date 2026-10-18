@@ -52,6 +52,99 @@ Constraints:
 """
 
 # V0
+class Solution(object):
+    def threeFibonacciSum(self, n):
+        """
+        :type n: int
+        :rtype: bool
+        """
+        pass
+
+
+# V0-1
+# IDEA: 1D DP + check
+class Solution(object):
+    def threeFibonacciSum(self, n):
+        """
+        :type n: int
+        :rtype: bool
+        """
+        if n < 2:
+            return False
+
+        fib_seq = [0, 1, 1]
+
+        while True:
+            total = sum(fib_seq[-3:])
+
+            if total == n:
+                return True
+            if total > n:
+                return False
+
+            fib_seq.append(fib_seq[-1] + fib_seq[-2])
+
+# V0-2
+# IDEA: MATH + DP (gemini)
+"""
+
+數學性質 + 雜湊表預先計算（O(1) 查詢）
+
+
+1.
+
+費波那契數列中，
+任三個連續的數字相加具有一個非常強大的數學性質：
+
+
+    -> ``` F(i+1) = F(i+2) = 2 * F(i+2) ```
+
+    because
+
+    ->
+
+
+
+        F(i) + F(i+1) = F(i+2)
+
+        -> so,
+            F(i) + F(i+1) + F(i+2) =  F(i+2) + F(i+2) = 2 * F(i+2)
+
+
+    
+    
+-> so, ALL we need to check are:
+
+    1. `任何三個連續費波那契數`的`和`必定是`偶數`。
+
+    2. 將該和除以 2 之後（即 n / 2），必須剛好是一個費波那契數。
+
+
+"""
+class Solution(object):
+
+  def threeFibonacciSum(self, n):
+    """:type n: int
+
+    :rtype: bool
+    """
+    # 預先生成到 10^9 為止的費波那契數集合
+    _fib_set = set()
+    _a, _b = 0, 1
+    while _b <= 10**9:
+        _a, _b = _b, _a + _b
+        _fib_set.add(_b)
+
+    # 1. 三個連續費波那契數的和必定是偶數
+    if n % 2 != 0:
+      return False
+
+    # 2. 檢查 n / 2 是否存在於費波那契數集合中
+    return (n // 2) in _fib_set
+
+
+
+# V0
 # IDEA : GENERATE FIBONACCI TERMS + SLIDE A WINDOW OF 3 CONSECUTIVE TERMS
 #
 #   the terms grow exponentially, so only ~45 of them stay <= 10^9 : just
