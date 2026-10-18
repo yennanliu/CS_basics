@@ -57,7 +57,65 @@ words[i] consists of lowercase English letters.
 # - The length of words will be in the range [1, 1000].
 # - The length of words[i] will be in the range [1, 30].
 
-# V0 
+# V0
+class Solution(object):
+    def longestWord(self, words):
+        """
+        :type words: List[str]
+        :rtype: str
+        """
+        pass
+
+
+# V0-1
+# IDEA: SORT + STR OP + prefix (gpt)
+class Solution(object):
+    def longestWord(self, words):
+        """
+        :type words: List[str]
+        :rtype: str
+        """
+        words_set = set(words)
+        res = ""
+
+        for w in words:
+            # Every prefix must exist in the dictionary
+            if all(w[:i] in words_set for i in range(1, len(w))):
+                # Prefer longer words; for equal length, choose
+                # lexicographically smaller words
+                if len(w) > len(res) or (
+                    len(w) == len(res) and w < res
+                ):
+                    res = w
+
+        return res
+
+
+# V0-2
+# IDEA: 排序 + 雜湊表貪心法（Sorting + Hash Set）(gemini)
+class Solution(object):
+
+  def longestWord(self, words):
+    """:type words: List[str]
+
+    :rtype: str
+    """
+    # 1. 排序單字：讓短的在前、字典序小的在前
+    words.sort()
+
+    word_set = set()
+    longest = ""
+
+    for w in words:
+      # 2. 如果單字長度為 1，或者它的前綴 (去掉最後一個字元) 已經在 word_set 中
+      if len(w) == 1 or w[:-1] in word_set:
+        word_set.add(w)
+
+        # 3. 更新最長單字 (因為已經排序過，若長度相同不更新，直接保留字典序最小的第一個)
+        if len(w) > len(longest):
+          longest = w
+
+    return longest
 
 
 # V1
