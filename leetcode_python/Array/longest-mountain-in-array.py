@@ -68,6 +68,47 @@ class Solution(object):
         return max_len
 
 
+# V0-0-1
+# IDEA: prefix, suffix OP (gpt)
+"""
+IDEA:
+
+    -> 用兩個 DP arrays，分別計算每個位置往左的上升長度，以及往右的下降長度。
+"""
+class Solution(object):
+    def longestMountain(self, arr):
+        """
+        :type arr: List[int]
+        :rtype: int
+        """
+        n = len(arr)
+        if n < 3:
+            return 0
+
+        # Increasing sequence ending at i
+        max_incr_cnt_l = [1] * n
+        for i in range(1, n):
+            if arr[i] > arr[i - 1]:
+                max_incr_cnt_l[i] = max_incr_cnt_l[i - 1] + 1
+
+        # Decreasing sequence starting at i
+        max_incr_cnt_r = [1] * n
+        for i in range(n - 2, -1, -1):
+            if arr[i] > arr[i + 1]:
+                max_incr_cnt_r[i] = max_incr_cnt_r[i + 1] + 1
+
+        max_range = 0
+
+        for i in range(n):
+            # A valid mountain must have both an uphill
+            # and a downhill segment.
+            if max_incr_cnt_l[i] > 1 and max_incr_cnt_r[i] > 1:
+                curr_len = max_incr_cnt_l[i] + max_incr_cnt_r[i] - 1
+                max_range = max(max_range, curr_len)
+
+        return max_range
+
+
 # V0-1
 # IDEA: Single pass (two pointers) (GPT)
 class Solution(object):
