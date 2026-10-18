@@ -61,6 +61,9 @@ class Solution(object):
         # ???
         self.get_fib_seq(n)
 
+        """
+        arr = [1,2,3,4]
+        """
 
         for i in range(0, len(fib_seq) - 3):
             val = fib_seq[i] + fib_seq[i+1] + fib_seq[i+2]
@@ -82,9 +85,6 @@ class Solution(object):
             self.fib_seq.append(dp[i])
 
         #return dp[n]
-
-
-
 
 
 
@@ -131,9 +131,7 @@ class Solution(object):
         self.get_primes(n, s)
         self.primes = list(self.prime_set)
 
-
         res = []
-        #tmp = []
         _sum = 0
 
         l = 0
@@ -148,23 +146,27 @@ class Solution(object):
                 _sum -= val_l
                 l += 1
 
-
             if r - l + 1 > len(res):
-                res = self.primes[l, r]
+                res = self.primes[l: r]
 
 
         return res
 
 
+    """
+    get prime int <= s
 
+    ->
 
+    e.g. 2, 3, 5, 7, 11, ...
+    """
     def get_primes(self, n, s):
         # edge
-        #prime = set()
-        # ??
-        #non_prime = set()
 
-        for i in range(2, int(sqrt(s))):
+        i = 2
+
+        #for i in range(2, int(sqrt(s))):
+        while i * i <= s:
             # ???
             for x in self.prime_set:
                 if i % x == 0:
@@ -172,6 +174,8 @@ class Solution(object):
                 
             if i not in self.prime_set:
                 self.prime_set.add(i)
+
+            i += 1
 
 
 
