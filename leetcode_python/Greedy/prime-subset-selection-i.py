@@ -127,7 +127,7 @@ class Solution(object):
 
 
 # V0-3
-# IDEA : SIEVE OF ERATOSTHENES + GREEDY (TAKE THE SMALLEST PRIMES FIRST) (CLAUDE)
+# IDEA : (GREEDY) SIEVE OF ERATOSTHENES + GREEDY (TAKE THE SMALLEST PRIMES FIRST) (CLAUDE)
 #
 #   to maximise HOW MANY primes fit under the budget s, always spend the
 #   budget on the cheapest ones : the k smallest primes have the smallest
@@ -183,7 +183,7 @@ class Solution(object):
 
 
 # V1
-# IDEA : TRIAL DIVISION BY THE PRIMES FOUND SO FAR + GREEDY, STOP EARLY (CLAUDE)
+# IDEA : (GREEDY) TRIAL DIVISION BY THE PRIMES FOUND SO FAR + GREEDY, STOP EARLY (CLAUDE)
 #
 #   same greedy as V0, but primes are generated one by one in increasing
 #   order instead of sieving all of [2, n] up front : a candidate is prime
