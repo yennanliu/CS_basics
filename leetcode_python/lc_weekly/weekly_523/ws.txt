@@ -231,7 +231,6 @@ class MyNode(object):
         self.next = None
 
 
-
 class BusBooking(object):
 
     def __init__(self, n):
@@ -273,6 +272,8 @@ class BusBooking(object):
 
             self.add_node(seat)
 
+            self.booked.add(seat)
+
 
         # case 2) booked, un-book
         else:
@@ -281,6 +282,8 @@ class BusBooking(object):
             self.total_time -= to_remove_node.cost
 
             self.remove_node(to_remove_node)
+
+            self.booked.remove(set)
 
 
 
@@ -310,21 +313,27 @@ class BusBooking(object):
         return False
 
 
-    def remove_node(self, node):
-        pass
+    def remove_node(self, target):
+        tmp = self.book_history
+        while tmp and tmp.next != target:
+            tmp = tmp.next
+
+        tmp = tmp.next.next
  
 
     def add_node(self, node):
-        pass  
+        tmp = self.book_history
+        while tmp:
+            tmp = tmp.next
+
+        tmp.next = node  
 
 
     def get_node(self, node):
-        pass 
+        while self.book_history and  self.book_history != node:
+            self.book_history = self.book_history.next
 
-
-    def get_all_node(self, node):
-        pass 
-
+        return node
 
 
 
