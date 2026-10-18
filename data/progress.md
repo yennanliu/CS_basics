@@ -61,10 +61,8 @@
 		- https://yennj12.js.org/CS_basics/cheatsheets/complexity_cheatsheet.zh.html
 
 
-
-	- Matrix Data Structure
-		- https://yennj12.js.org/CS_basics/cheatsheets/matrix.zh.html#%E6%A8%A1%E6%9D%BF%E5%B0%8D%E7%85%A7%E8%A1%A8
-			- `對角線存取模板（Python）`
+	- Matrix — 實戰題解
+		- https://yennj12.js.org/CS_basics/cheatsheets/matrix_examples.zh.html
 
 
 
@@ -143,6 +141,7 @@
 	- 陣列 — 題目實作
 	- 前綴和 — 範例詳解
 	- 雙指標 — 實例解析
+	- Matrix Data Structure
 			
 
 
@@ -150,6 +149,18 @@
 - Others
 	- recent updated cheatsheet
 	- TODO LC:
+
+		- Matrix
+			- 在兩條對角線上找最大質數
+				- 2614
+			- 模式 1：矩陣走訪題
+				- https://yennj12.js.org/CS_basics/cheatsheets/matrix.zh.html#%E6%A8%A1%E5%BC%8F-1%E7%9F%A9%E9%99%A3%E8%B5%B0%E8%A8%AA%E9%A1%8C
+
+			- 模式 1b：對角線分組題（key = i - j）
+				- https://yennj12.js.org/CS_basics/cheatsheets/matrix.zh.html#%E6%A8%A1%E5%BC%8F-1b%E5%B0%8D%E8%A7%92%E7%B7%9A%E5%88%86%E7%B5%84%E9%A1%8Ckey--i---j
+
+			- 模式 5 的模板：矩陣乘法與運算
+			 	- https://yennj12.js.org/CS_basics/cheatsheets/matrix.zh.html#%E6%A8%A1%E5%BC%8F-5-%E7%9A%84%E6%A8%A1%E6%9D%BF%E7%9F%A9%E9%99%A3%E4%B9%98%E6%B3%95%E8%88%87%E9%81%8B%E7%AE%97
 
 		- 2 pointers
 			- 原地改寫（快慢指標）
