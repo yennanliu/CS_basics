@@ -230,9 +230,9 @@ booking history:
 
 class MyNode(object):
     def __init__(self, val=val, cost=cost, next=next):
-        self.val = val
-        self.cost = cost
-        self.next = None
+        self.val = val   # "D20"
+        self.cost = cost # cost time book this seat in sec
+        self.next = None  # next node (book history)
 
 
 class BusBooking(object):
@@ -314,7 +314,7 @@ class BusBooking(object):
         tmp_matrix = [ False * w for _ in range(l) ]
 
 
-        # book "a, d" first
+        # step 1) book "a, d" first
         for node in all_nodes:
 
             col = seat[0]
@@ -328,7 +328,7 @@ class BusBooking(object):
                 remain.append(node)
 
 
-        # book remaining nodes
+        # step 2) book remaining nodes
         for node in remain:
 
             col = seat[0]
