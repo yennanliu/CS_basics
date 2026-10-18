@@ -33,6 +33,49 @@ sum(wall[i]) is the same for each row i.
 
 """
 
+
+"""
+NOTE !!!
+
+Q: for LC 554, per code below, 
+
+can we caldulate the min crossed brink cnt directly ?
+
+
+
+-> 
+
+NO, it's hard and need to handle many edge cases
+
+
+答案是不行直接去計算「被切過的磚塊數」，
+我們必須透過「正難則反」的轉換，去計算「最多行共有的磚塊邊界（空隙）」，
+再用總列數去減。
+
+
+1. 
+
+直接算「被切過的磚塊」很複雜：
+
+每一列的磚塊寬度組合都不同。如果直接去判斷一條垂直線畫下去會切到哪些磚、
+產生多少殘缺的磚塊，會涉及大量的區間重疊與條件判斷，
+演算法會變得極其繁瑣且沒有效率。
+
+
+
+2.
+
+對偶轉換（Complement Principle）：
+
+題目要找的是「穿越最少磚塊（Min Crossed Bricks）」。
+
+這等價於找一條垂直線，讓它「穿過最多塊磚的縫隙（Max Aligned Gaps / Edges）」。
+
+只要找到了最多行共有的縫隙位置（也就是你的 count），那麼「總列數 - 該縫隙出現的次數」，剛好就是這條線所穿越的磚塊總數！這是一種經典的互補思維。
+
+"""
+
+
 # V0
 # IDEA : HASH TABLE + COUNTER UPDATE (looping every element in the list and cumsum and get the max count)
 ### DEMO : counter.update()
