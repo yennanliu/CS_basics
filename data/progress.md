@@ -266,6 +266,9 @@
 			- Brick Wall 
 				— LC 554
 
+			- Smallest Common Region 
+				— LC 1257
+
 			- Palindrome Pairs
 				- LC 336
 			- 把奇數轉換掉 → 前綴和計數
