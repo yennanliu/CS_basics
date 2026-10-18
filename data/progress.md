@@ -269,8 +269,15 @@
 			- Smallest Common Region 
 				— LC 1257
 
+			- 核心想法：配對乘積的頻率 → 組合計數
+				- 1726
+				- 1512
+				- 447
+				- 2266
+
 			- Palindrome Pairs
 				- LC 336
+
 			- 把奇數轉換掉 → 前綴和計數
 				- 1248
 				- LC 560 
