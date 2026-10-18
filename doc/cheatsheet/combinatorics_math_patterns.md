@@ -227,7 +227,9 @@ List<int[]> primeFactors(int n) {
 
 > The distinct-primes / all-divisors variants, the SPF sieve for factoring a whole array,
 > and LC 4032 live in [`math.md`](math.md) *1-1-2') get factors of x*. Kept here only in the
-> `(prime, exponent)` form the counting formulas below need.
+> `(prime, exponent)` form the counting formulas below need. Listing every prime below `x` —
+> Eratosthenes, trial division with early stop, and the linear sieve, compared — is
+> [`math.md`](math.md) *1-1-2-1) list all primes `< x`*.
 
 ### Legendre's Formula — exponent of a prime inside `n!` — LC 172 ⭐⭐⭐⭐
 **Key Idea**: you can read off the power of a prime `p` in `n!` **without ever building `n!`**.

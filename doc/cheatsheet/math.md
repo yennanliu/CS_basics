@@ -214,6 +214,170 @@ int countPrimes(int n){
 }
 ```
 
+#### 1-1-2-1) list all primes `< x` — trial division vs. sieve ⭐⭐⭐⭐
+
+Counting primes (1-1-2) and **listing** them are the same sieve; only the last loop changes.
+Pick the approach by how far you need to go and whether you can stop early:
+
+| Approach | Time | Space | Use when |
+|----------|------|-------|----------|
+| **A) Sieve of Eratosthenes** | O(x log log x) | O(x) | the default — you need every prime below a known bound |
+| **B) Trial division by the primes found so far** | O(x √x / log x) | O(π(x)) | you consume primes in order and may **stop early** (LC 4079) |
+| **C) Linear (Euler) sieve** | O(x) | O(x) | you also want each number's **smallest prime factor** |
+
+Checking each number with `check_prime` from 1-1-1 is `O(x √x)` — the baseline the three above beat.
+
+##### A) Sieve of Eratosthenes — cross out the multiples of every prime
+
+```text
+x = 20 -> candidates 2..19
+
+i = 2 : cross out 4, 6, 8, 10, 12, 14, 16, 18
+i = 3 : cross out 9, 15                (6, 12, 18 already crossed by 2)
+i = 4 : 4 * 4 = 16 > 19 -> stop        every composite <= 19 has a factor <= √19
+
+left : 2 3 5 7 11 13 17 19
+```
+
+```python
+# python
+# GENERAL PATTERN: every prime strictly less than x
+# IDEA: SIEVE OF ERATOSTHENES — each prime crosses out its multiples from i*i on
+# time = O(x log log x), space = O(x)
+def get_primes(x):
+    """Return all prime numbers strictly less than x."""
+    # there is no prime below 2
+    if x <= 2:
+        return []
+
+    # indices 0..x-1 -> exactly the candidates "strictly less than x"
+    is_prime = [True] * x
+    is_prime[0] = False
+    is_prime[1] = False
+
+    p = 2
+    # NOTE !!! `<` not `<=` : the largest candidate is x - 1, so p only needs p * p <= x - 1
+    while p * p < x:
+        if is_prime[p]:
+            # smaller multiples p*2, p*3, ... were already crossed out by smaller primes
+            for multiple in range(p * p, x, p):
+                is_prime[multiple] = False
+        p += 1
+
+    # collect what survived
+    primes = []
+    for num in range(2, x):
+        if is_prime[num]:
+            primes.append(num)
+    return primes
+
+# get_primes(20) -> [2, 3, 5, 7, 11, 13, 17, 19]
+# get_primes(2)  -> []
+```
+
+```java
+// java
+// GENERAL PATTERN: every prime strictly less than x
+// IDEA: SIEVE OF ERATOSTHENES — each prime crosses out its multiples from i*i on
+// time = O(x log log x), space = O(x)
+List<Integer> getPrimesLessThan(int x) {
+    List<Integer> primes = new ArrayList<>();
+    if (x <= 2) {
+        return primes;
+    }
+    boolean[] isComposite = new boolean[x];   // index 0..x-1, all false = "maybe prime"
+    // (long) i * i : i * i overflows int once i > 46340
+    for (int i = 2; (long) i * i < x; i++) {
+        if (!isComposite[i]) {
+            for (int j = i * i; j < x; j += i) {
+                isComposite[j] = true;
+            }
+        }
+    }
+    for (int num = 2; num < x; num++) {
+        if (!isComposite[num]) {
+            primes.add(num);
+        }
+    }
+    return primes;
+}
+```
+
+##### B) Trial division by the primes found so far — when you can stop early
+
+A candidate is prime iff **no prime `p` with `p * p <= candidate`** divides it — and those
+primes are exactly the ones already collected. No `O(x)` array, and the loop can `break` the
+moment the caller has enough (LC 4079 stops once the selected primes' sum passes `s`).
+
+```python
+# python
+# IDEA: TRIAL DIVISION — test each candidate only against the primes already found, up to √candidate
+# time = O(x √x / log x), space = O(π(x)) for the primes themselves
+def get_primes_less_than_trial(x):
+    primes = []
+    for candidate in range(2, x):
+        is_prime = True
+        for p in primes:
+            # a composite always has a prime factor <= its square root
+            if p * p > candidate:
+                break
+            if candidate % p == 0:
+                is_prime = False
+                break
+        if is_prime:
+            primes.append(candidate)
+    return primes
+```
+
+##### C) Linear (Euler) sieve — every composite crossed out exactly once
+
+Eratosthenes crosses `12` out twice (by 2 and by 3). The linear sieve crosses each composite
+**only by its smallest prime factor**: for each `i`, multiply it by the primes `p` found so far
+and stop right after `p` divides `i` — any larger `p` would not be the smallest factor of `p * i`.
+
+```python
+# python
+# IDEA: LINEAR (EULER) SIEVE — composite c is crossed out once, as spf(c) * (c / spf(c))
+# time = O(x), space = O(x)
+def get_primes_less_than_linear(x):
+    if x <= 2:
+        return []
+    is_composite = [False] * x
+    primes = []
+    for i in range(2, x):
+        if not is_composite[i]:
+            primes.append(i)
+        for p in primes:
+            if p * i >= x:
+                break
+            # p is the smallest prime factor of p * i, since p <= every prime factor of i
+            is_composite[p * i] = True
+            # NOTE !!! once p divides i, a bigger prime q would give q * i whose smallest
+            #          factor is p, not q -> that number is crossed out later, by p
+            if i % p == 0:
+                break
+    return primes
+```
+
+In an interview, write **A**; it is the one everyone recognises and the `log log x` factor is
+effectively a constant. Reach for B only when early stopping matters, and C only when you also
+need smallest prime factors (see the SPF sieve in 1-1-2' c).
+
+**Common pitfalls:**
+- **`< x` vs. `<= x`.** LC 204 counts primes **strictly less** than `n`; LC 4079 wants primes **`<= n`**. Size the array `x` for "less than", `x + 1` for "at most", and check it on `x = 2` (`[]` vs. `[2]`).
+- **Starting the inner loop at `2 * i`** is still correct, just slower — `i * i` is the optimisation, not a correctness rule.
+- **`i * i` overflows `int` in Java** once `i > 46340`; compare as `long` or loop `i <= x / i`.
+- **`x <= 2` must return early** — otherwise `is_prime[1] = False` indexes past a length-1 array when `x = 1`.
+
+**Similar LC problems:**
+| Problem | Pattern |
+|---------|---------|
+| LC 204 - Count Primes | sieve below `n`, then count instead of collect — see [1-1-2](#1-1-2-count-prime-number) |
+| LC 2523 - Closest Prime Numbers in Range | sieve up to `right`, scan adjacent primes in `[left, right]` |
+| LC 4079 - Prime Subset Selection I | sieve primes `<= n`, then greedily take the smallest while the sum fits |
+| LC 1175 - Prime Arrangements | count primes `<= n` with a sieve, answer is `p! * (n - p)!` |
+| LC 762 - Prime Number of Set Bits in Binary Representation | bound is tiny (≤ 20 bits) — a hard-coded prime set beats any sieve |
+
 #### 1-1-2') get factors of `x` — divisors & prime factors ⭐⭐⭐⭐
 
 Two different questions hide behind the word "factor". Both are answered by the **same
