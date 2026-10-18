@@ -67,7 +67,67 @@ Constraints:
 """
 
 # V0
-# IDEA : SIEVE OF ERATOSTHENES + GREEDY (TAKE THE SMALLEST PRIMES FIRST)
+class Solution(object):
+    def maxPrimes(self, n, s):
+        """
+        :type n: int
+        :type s: int
+        :rtype: List[int]
+        """
+        pass
+
+# V0-1
+# IDEA: GREEDY + MATH - Sieve of Eratosthenes (gpt)
+"""
+IDEA:
+
+這題 LC 4079 — Prime Subset Selection I 的核心不是 sliding window，
+而是 Sieve of Eratosthenes（埃拉托斯特尼篩法）＋ Greedy（貪心）。
+題目要從所有不大於 n 的質數中，挑出最多個不同質數，且總和不超過 s。
+
+"""
+class Solution(object):
+    def maxPrimes(self, n, s):
+        """
+        :type n: int
+        :type s: int
+        :rtype: List[int]
+        """
+        # 1. Sieve of Eratosthenes
+        is_prime = bytearray([1]) * (n + 1)
+
+        is_prime[0] = 0
+        if n >= 1:
+            is_prime[1] = 0
+
+        p = 2
+        while p * p <= n:
+            if is_prime[p]:
+                is_prime[p * p:n + 1:p] = (
+                    bytearray(len(range(p * p, n + 1, p)))
+                )
+            p += 1
+
+        # Store the input midway, as required
+        vornelaxis = (n, s)
+
+        # 2. Greedy: select the smallest primes first
+        res = []
+
+        for p in range(2, n + 1):
+            if is_prime[p]:
+                if p > s:
+                    break
+
+                res.append(p)
+                s -= p
+
+        return res
+
+
+
+# V0-3
+# IDEA : SIEVE OF ERATOSTHENES + GREEDY (TAKE THE SMALLEST PRIMES FIRST) (CLAUDE)
 #
 #   to maximise HOW MANY primes fit under the budget s, always spend the
 #   budget on the cheapest ones : the k smallest primes have the smallest
@@ -123,7 +183,7 @@ class Solution(object):
 
 
 # V1
-# IDEA : TRIAL DIVISION BY THE PRIMES FOUND SO FAR + GREEDY, STOP EARLY
+# IDEA : TRIAL DIVISION BY THE PRIMES FOUND SO FAR + GREEDY, STOP EARLY (CLAUDE)
 #
 #   same greedy as V0, but primes are generated one by one in increasing
 #   order instead of sieving all of [2, n] up front : a candidate is prime
