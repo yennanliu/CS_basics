@@ -98,6 +98,82 @@ class Solution(object):
 #------------------------------------------------
 
 
+->
+
+Return an `integer array` containing the `selected primes` 
+in `increasing` order.
+
+     If multiple optimal selections exist, 
+     return any of them.
+
+
+
+n, s: int
+
+
+
+# idea 1) hashset + get_prime + loop over collected primes
+and get the max cnt of `selected primes` + slide window ??
+
+
+
+class Solution(object):
+    def maxPrimes(self, n, s):
+        """
+        :type n: int
+        :type s: int
+        :rtype: List[int]
+        """
+        # edge
+
+        self.prime_set = set()
+
+        self.get_primes(n, s)
+        self.primes = list(self.prime_set)
+
+
+        res = []
+        #tmp = []
+        _sum = 0
+
+        l = 0
+
+        for r in range(len(self.primes)):
+
+            val_r = self.primes[r]
+            _sum += val_r
+
+            while _sum > s:
+                val_l = self.primes[l]
+                _sum -= val_l
+                l += 1
+
+
+            if r - l + 1 > len(res):
+                res = self.primes[l, r]
+
+
+        return res
+
+
+
+
+    def get_primes(self, n, s):
+        # edge
+        #prime = set()
+        # ??
+        #non_prime = set()
+
+        for i in range(2, int(sqrt(s))):
+            # ???
+            for x in self.prime_set:
+                if i % x == 0:
+                    break
+                
+            if i not in self.prime_set:
+                self.prime_set.add(i)
+
+
 
 
 #------------------------------------------------
