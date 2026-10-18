@@ -53,7 +53,7 @@
 
 	- 背包 DP（0/1、完全背包、Coin Change）
 		- https://yennj12.js.org/CS_basics/cheatsheets/knapsack.zh.html
-			- `LC 416 (Partition Equal Subset)：`
+			- `完整 Java 範例：LC 518 Coin Change II`
 
 
 
@@ -341,6 +341,10 @@
 
 		- DP:
 			- 5
+
+		- 組合 (LC 518)
+		- 排列 (LC 377)
+			- compare with `0/1 Knapsack`
 		
 		- String:
 			- Template 7：原地 char 陣列 — 先標記再重建 — LC 1249
