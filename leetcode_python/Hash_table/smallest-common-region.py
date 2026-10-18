@@ -1,3 +1,5 @@
+# https://leetcode.ca/all/1257.html
+
 """
 
 1257. Smallest Common Region
@@ -49,7 +51,12 @@ other regions, either directly or indirectly.
 """
 
 # V0
-# IDEA : HASH MAP (CHILD -> PARENT) + ANCESTOR SET  (LOWEST COMMON ANCESTOR)
+class Solution(object):
+    def findSmallestRegion(self, regions, region1, region2):
+        pass
+
+# V0-3
+# IDEA : HASH MAP (CHILD -> PARENT) + ANCESTOR SET  (LOWEST COMMON ANCESTOR)(claude)
 #
 #   every region has at most ONE direct parent, so the regions form a tree and
 #   "smallest region containing both" is the LCA of region1 and region2.
@@ -62,8 +69,6 @@ other regions, either directly or indirectly.
 #        New York -> United States -> North America  (in set) -> "North America"
 #
 # time = O(n), space = O(n)    (n = total number of region names)
-
-
 class Solution(object):
     def findSmallestRegion(self, regions, region1, region2):
         """
@@ -96,7 +101,7 @@ class Solution(object):
 
 
 # V0-1
-# IDEA : HASH MAP (CHILD -> PARENT) + TWO POINTERS (SAME AS LC 160 / LC 1650)
+# IDEA : HASH MAP (CHILD -> PARENT) + TWO POINTERS (SAME AS LC 160 / LC 1650) (claude)
 #
 #   same tree, but no ancestor set. Move two pointers up; when one passes the
 #   root, restart it at the OTHER region. Each pointer then walks
@@ -106,8 +111,6 @@ class Solution(object):
 #        on the second step without ever switching.
 #
 # time = O(n), space = O(n) for the map, O(1) extra for the walk
-
-
 class Solution2(object):
     def findSmallestRegion(self, regions, region1, region2):
         """
@@ -138,3 +141,24 @@ class Solution2(object):
                 pointer2 = region1
 
         return pointer1
+
+
+# V1
+# https://leetcode.ca/2019-05-10-1257-Smallest-Common-Region
+class Solution:
+    def findSmallestRegion(
+        self, regions: List[List[str]], region1: str, region2: str
+    ) -> str:
+        m = {}
+        for region in regions:
+            for r in region[1:]:
+                m[r] = region[0]
+        s = set()
+        while m.get(region1):
+            s.add(region1)
+            region1 = m[region1]
+        while m.get(region2):
+            if region2 in s:
+                return region2
+            region2 = m[region2]
+        return region1
