@@ -82,7 +82,7 @@
 
 - 雜湊表 — 題目詳解
 	- https://yennj12.js.org/CS_basics/cheatsheets/hash_map_examples.zh.html
-		- `2-3) Group Anagrams — LC 49`
+		- `2-17) Maximum Swap（LC 670）`
 
 
 
@@ -274,6 +274,13 @@
 				- 1512
 				- 447
 				- 2266
+
+			- Minimum Operations to Sort Binary Tree by Level
+				- LC 2471
+				- 1151
+				- 2134
+				- 765
+				- 41
 
 			- Palindrome Pairs
 				- LC 336
