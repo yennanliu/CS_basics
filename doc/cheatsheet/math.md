@@ -2012,7 +2012,107 @@ remainders -> [1, 0, 1, 0]        1 != 0 -> return -1 before any sorting
 - **L1 → median, L2 → mean.** Weighted L1 → the weighted median (LC 2448); L1 in 2D separates per axis (LC 296).
 - Once the array is sorted, the cost at the median is one pass; if *many* targets are asked about, precompute prefix sums and answer each in `O(log n)` (LC 1685, LC 2602).
 
-#### 1-1-13) Quick reference — other high-frequency math LC
+#### 1-1-13) Fibonacci identity — three consecutive terms sum to `2 * F(i+2)` ⭐⭐⭐
+
+**Problem shape (LC 4078 - Three Fibonacci Sum):**
+Given `n` (`1 <= n <= 1e9`), return whether `n` is the sum of **three consecutive** Fibonacci terms `0, 1, 1, 2, 3, 5, 8, 13, ...`.
+
+**Core Idea:**
+The definition already folds two of the three terms into the third:
+
+```text
+F(i) + F(i+1)          = F(i+2)                  (the definition)
+
+F(i) + F(i+1) + F(i+2) = F(i+2) + F(i+2)
+                       = 2 * F(i+2)
+```
+
+So the question collapses to two checks:
+
+1. **`n` must be even** — every such sum is `2 * F(k)`.
+2. **`n / 2` must be a Fibonacci term `F(k)` with `k >= 2`** — the first window is `0 + 1 + 1 = 2 * F(2)`.
+
+```text
+F  : 0  1  1  2  3  5  8  13  21
+     F0 F1 F2 F3 F4 F5 F6 F7  F8
+
+window (i)       sum   = 2 * F(i+2)
+0, 1, 1          2     = 2 * 1
+1, 1, 2          4     = 2 * 2
+1, 2, 3          6     = 2 * 3
+2, 3, 5          10    = 2 * 5
+3, 5, 8          16    = 2 * 8     <- n = 16 -> True
+                                   <- n = 8  -> 8 / 2 = 4, not a term -> False
+```
+
+Fibonacci terms grow exponentially (`F(k) ~ 1.618^k`), so only ~45 terms stay `<= 1e9`: walking them is `O(log n)`, and so is the brute force that sums every window. The identity does not beat the bound — it removes the window, and it is the thing to say out loud.
+
+**Pattern:**
+```python
+# python
+# LC 4078. Three Fibonacci Sum
+# IDEA: F(i) + F(i+1) + F(i+2) == 2 * F(i+2) -> n even and n // 2 is a Fibonacci term
+# time = O(log n), space = O(1)
+class Solution(object):
+    def threeFibonacciSum(self, n):
+        # 2 * F(k) is always even
+        if n % 2 == 1:
+            return False
+
+        half = n // 2
+
+        # walk F(2), F(3), ... = 1, 2, 3, 5, ... until it reaches half
+        prev = 1   # F(1)
+        cur = 1    # F(2)
+        while cur < half:
+            prev, cur = cur, prev + cur
+
+        return cur == half
+```
+
+```java
+// java
+// LC 4078 - Three Fibonacci Sum
+// IDEA: F(i) + F(i+1) + F(i+2) == 2 * F(i+2) -> n even and n / 2 is a Fibonacci term
+// time = O(log n), space = O(1)
+public boolean threeFibonacciSum(int n) {
+    // 2 * F(k) is always even
+    if (n % 2 == 1) {
+        return false;
+    }
+    int half = n / 2;
+
+    // walk F(2), F(3), ... until it reaches half; half <= 5e8, so int never overflows
+    int prev = 1;   // F(1)
+    int cur = 1;    // F(2)
+    while (cur < half) {
+        int next = prev + cur;
+        prev = cur;
+        cur = next;
+    }
+    return cur == half;
+}
+```
+
+**Common pitfalls:**
+- **"`n / 2` is a Fibonacci term" needs `k >= 2`.** `F(0) = 0` would accept `n = 0`; the constraints (`n >= 1`) rule it out, but start the walk at `F(2)`, not `F(0)`.
+- **Checking whether the sum is *in* the sequence** (instead of `== n`) is the bug to watch for in the brute force — `0 + 1 + 1 = 2` is a term, but that says nothing about `n`.
+- **Non-consecutive terms do not count:** `1 + 2 + 5 = 8`, yet `8` is `False`.
+
+**Key takeaways (transferable):**
+- Before simulating a recurrence, **substitute the recurrence into the expression** — a sum of neighbours often telescopes into one term.
+- Other identities from the same move: `F(0) + ... + F(n) = F(n+2) - 1`; `F(i) + F(i+2) = L(i+1)` (a Lucas number).
+
+**Similar LC problems:**
+| Problem | Pattern |
+|---------|---------|
+| LC 4078 - Three Fibonacci Sum | `F(i) + F(i+1) + F(i+2) = 2 * F(i+2)` → parity check + "is `n/2` a term" |
+| LC 509 - Fibonacci Number | the recurrence itself — iterate with two variables, `O(n)` / `O(1)` |
+| LC 1137 - N-th Tribonacci Number | the same rolling-variables loop with three terms |
+| LC 1414 - Find the Minimum Number of Fibonacci Numbers Whose Sum Is K | greedy: subtract the largest term `<= k` (Zeckendorf) |
+| LC 873 - Length of Longest Fibonacci Subsequence | DP over the last two terms of a Fibonacci-like sequence |
+
+#### 1-1-14) Quick reference — other high-frequency math LC
 
 Small patterns that don't need a full template, plus pointers to sibling cheatsheets (avoid duplicating them here).
 

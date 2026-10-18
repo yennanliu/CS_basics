@@ -43,7 +43,7 @@ half-translated document renders with English gaps rather than failing.
   is what makes a problem findable on LeetCode itself.
 
 
-## Status — 5366 / 5366 sections (100%)
+## Status — 5367 / 5367 sections (100%)
 
 | Cheatsheet | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -125,7 +125,7 @@ half-translated document renders with English gaps rather than failing.
 | [lc_pattern](./cheatsheet/lc_pattern.md) | 72 | [✅](../i18n/zh/lc_pattern.md) |
 | [linked_list](./cheatsheet/linked_list.md) | 31 | [✅](../i18n/zh/linked_list.md) |
 | [linked_list_examples](./cheatsheet/linked_list_examples.md) | 34 | [✅](../i18n/zh/linked_list_examples.md) |
-| [math](./cheatsheet/math.md) | 50 | [✅](../i18n/zh/math.md) |
+| [math](./cheatsheet/math.md) | 51 | [✅](../i18n/zh/math.md) |
 | [math_logic_puzzles](./cheatsheet/math_logic_puzzles.md) | 14 | [✅](../i18n/zh/math_logic_puzzles.md) |
 | [matrix](./cheatsheet/matrix.md) | 68 | [✅](../i18n/zh/matrix.md) |
 | [matrix_examples](./cheatsheet/matrix_examples.md) | 27 | [✅](../i18n/zh/matrix_examples.md) |
