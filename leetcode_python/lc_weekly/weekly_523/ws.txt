@@ -1,0 +1,35 @@
+#-------------------------------
+# weekly-contest-xxx
+
+# https://leetcode.com/contest/weekly-contest-523
+
+
+(67 mins)
+
+11.05 am - 12.12 pm
+
+
+#-------------------------------
+
+
+#------------------------------------------------
+
+# LC 4078
+# https://leetcode.com/problems/three-fibonacci-sum/description/
+#------------------------------------------------
+
+
+#------------------------------------------------
+
+# LC 4079
+# https://leetcode.com/problems/prime-subset-selection-i/description/
+#------------------------------------------------
+
+
+
+
+#------------------------------------------------
+
+# LC 4080
+# https://leetcode.com/problems/design-bus-seat-booking-system/description/
+#------------------------------------------------
