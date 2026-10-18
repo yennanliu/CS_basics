@@ -19,6 +19,78 @@
 #------------------------------------------------
 
 
+->
+
+Return `true` 
+    
+    - if n can be expressed as the 
+      `sum` of `three consecutive` terms in the Fibonacci sequence, 
+
+    - and false otherwise.
+
+
+n: int
+
+
+
+# idea 1) brute force
+
+# idea 2) 1d dp + boundary check
+
+
+class Solution(object):
+    def threeFibonacciSum(self, n):
+        """
+        :type n: int
+        :rtype: bool
+        """
+        # edge
+        if n <= 1:
+            return False
+
+        if n == 2:
+            return True
+
+
+        self.fib_seq = []
+
+        self.fib_seq.add(0)
+        self.fib_seq.add(1)
+        self.fib_seq.add(1)
+
+        # ???
+        self.get_fib_seq(n)
+
+
+        for i in range(0, len(fib_seq) - 3):
+            val = fib_seq[i] + fib_seq[i+1] + fib_seq[i+2]
+            if val in self.fib_seq:
+                return True
+
+        return False
+
+
+
+    def get_fib_seq(self, n):
+        dp = [0] * n
+        dp[0] = 0
+        dp[1] = 1
+        dp[2] = 1
+
+        for i in range(3, n):
+            dp[i] = dp[i-1] + dp[i-2]
+            self.fib_seq.append(dp[i])
+
+        #return dp[n]
+
+
+
+
+
+
+
+
+
 #------------------------------------------------
 
 # LC 4079
