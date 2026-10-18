@@ -299,7 +299,45 @@ class BusBooking(object):
         :rtype: int
         """
         # ??
-        return len(self.booked)
+        #return len(self.booked)
+        # get all nodes first
+        all_nodes = self.get_all_nodes()
+
+        # book all "A, D" first
+        remain = []
+        _time = 0
+
+        tmp_matrix = [ False * w for _ in range(l) ]
+
+
+        # book "a, d" first
+        for node in all_nodes:
+
+            col = seat[0]
+            row = self.seat_map(int(seat[1:]))
+            
+            if col in set("A", "D"):
+                _time += 1
+
+                tmp_matrix[row][col] = True
+            else:
+                remain.append(node)
+
+
+        # book remaining nodes
+        for node in remain:
+
+            col = seat[0]
+            row = self.seat_map(int(seat[1:]))
+            
+            if self.is_adj_booked(col, row):
+                _time += 3
+            else:
+                _time += 1
+
+
+        return _time
+
 
     # helper func
 
@@ -334,6 +372,16 @@ class BusBooking(object):
             self.book_history = self.book_history.next
 
         return node
+
+
+    def get_all_nodes(self):
+        all_nodes = []
+        tmp = self.book_history
+        while tmp:
+            all_nodes.append(tmp)
+            tmp = tmp.next
+
+        return all_nodes
 
 
 
