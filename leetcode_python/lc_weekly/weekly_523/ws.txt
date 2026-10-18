@@ -181,3 +181,159 @@ class Solution(object):
 # LC 4080
 # https://leetcode.com/problems/design-bus-seat-booking-system/description/
 #------------------------------------------------
+
+
+n rows, A, B, C, D col
+
+
+A, B: window
+
+C, D: middle
+
+
+
+# idea 1) 
+
+    2d matrix: booking status
+
+    linked list: book history
+
+    get_min_time: ALWAYS book "a, d" first
+
+
+
+
+#------------------------
+
+ex 1)
+
+
+booking history:
+    b3 -> a3 -> c3 -> d3
+
+
+
+ex 2)
+
+
+booking history:
+    d7
+
+  
+
+#------------------------
+
+
+class MyNode(object):
+    def __init__(self, val=val, cost=cost, next=next):
+        self.val = val
+        self.cost = cost
+        self.next = None
+
+
+
+class BusBooking(object):
+
+    def __init__(self, n):
+        """
+        :type n: int
+        """
+        self.w = 4
+        self.l = n
+        self.matrix =  [ False * w for _ in range(l) ]
+
+        # note !! first node is dummy
+        self.book_history = MyNode() #LinkedList(0)
+
+        self.booked = set()
+
+        self.seat_map = {"A": 0, "B" : 1, "C": 2, "D" : 3}
+
+        self.total_time = 0
+        
+
+    def toggle(self, seat):
+        """
+        :type seat: str
+        :rtype: None
+        """
+        col = seat[0]
+        row = self.seat_map(int(seat[1:]))
+
+
+        # case 1) not booked, book
+        if seat not in self.booked:
+
+            # if adj NOT book
+            if self.is_adj_booked(row, col):
+                self.total_time += 3
+
+            else:
+                self.total_time += 1
+
+            self.add_node(seat)
+
+
+        # case 2) booked, un-book
+        else:
+            to_remove_node = self.get_node(seat)
+
+            self.total_time -= to_remove_node.cost
+
+            self.remove_node(to_remove_node)
+
+
+
+    def getTotalTime(self):
+        """
+        :rtype: int
+        """
+        return self.total_time
+        
+
+    def getMinTime(self):
+        """
+        :rtype: int
+        """
+        # ??
+        return len(self.booked)
+
+    # helper func
+
+    def is_adj_booked(self, x, y):
+        if x + 1 < self.w and self.matrix[y][x + 1]:
+            reture True
+
+        if x - 1 >= 0 and self.matrix[y][x - 1]:
+            reture True
+
+        return False
+
+
+    def remove_node(self, node):
+        pass
+ 
+
+    def add_node(self, node):
+        pass  
+
+
+    def get_node(self, node):
+        pass 
+
+
+    def get_all_node(self, node):
+        pass 
+
+
+
+
+
+# Your BusBooking object will be instantiated and called as such:
+# obj = BusBooking(n)
+# obj.toggle(seat)
+# param_2 = obj.getTotalTime()
+# param_3 = obj.getMinTime()
+
+
+
