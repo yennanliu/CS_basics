@@ -58,14 +58,41 @@ words[i] consists of lowercase English letters.
 # - The length of words[i] will be in the range [1, 30].
 
 # V0
+# IDEA: BFS (gpt)
+from collections import deque
+
 class Solution(object):
     def longestWord(self, words):
         """
         :type words: List[str]
         :rtype: str
         """
-        pass
+        words_set = set(words)
+        q = deque()
 
+        # Start BFS from all valid 1-character words
+        for w in words:
+            if len(w) == 1:
+                q.append(w)
+
+        res = ""
+
+        while q:
+            word = q.popleft()
+
+            # Update answer: longer word, or lexicographically smaller
+            if (len(word) > len(res) or
+                (len(word) == len(res) and word < res)):
+                res = word
+
+            # Find valid words that extend the current word by one char
+            for c in "abcdefghijklmnopqrstuvwxyz":
+                next_word = word + c
+
+                if next_word in words_set:
+                    q.append(next_word)
+
+        return res
 
 # V0-1
 # IDEA: SORT + STR OP + prefix (gpt)
