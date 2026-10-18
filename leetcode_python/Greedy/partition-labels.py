@@ -30,7 +30,53 @@ s consists of lowercase English letters.
 
 """
 
+
 # V0
+# IDEA: LAST OCCUR IDX + GREEDY (gpt)
+class Solution(object):
+    def partitionLabels(self, s):
+        """
+        :type s: str
+        :rtype: List[int]
+        """
+        # edge
+        if not s or len(s) == 0:
+            return []
+
+        if len(s) == 1:
+            return [1]
+
+        
+        # {val: last_occur_idx}
+        last_idx = {}
+        n = len(s)
+
+        # prepare the last_occur_idx for every val
+        for i in range(n):
+            val = s[i]
+            last_idx[val] = i
+
+        res = []
+
+        l = 0
+
+        max_end_idx = 0
+
+        for r in range(n):
+            val_r = s[r]
+            # NOTE
+            # -> keep update the `max occur idx per processing elements`
+            max_end_idx = max(max_end_idx, last_idx[val_r])
+            
+            # if can split
+            if r == max_end_idx:
+                res.append(r - l + 1)
+                l = r + 1
+
+        return res
+
+
+# V0-1
 # IDEA : GREEDY
 # time = O(n)
 # space = O(n)
@@ -53,6 +99,7 @@ class Solution(object):
                 tmp.add(val)
         _res = [res[0]] + [ res[i] - res[i-1] for i in range(1, len(res)) ]
         return _res
+
 
 # V0-1
 # IDEA : GREEDY
