@@ -58,6 +58,21 @@ class Solution(object):
 
 # V0-1
 # IDEA : HASH MAP (CHILD -> PARENT) + ANCESTOR SET (LCA)  (LOWEST COMMON ANCESTOR)(GPT)
+"""
+CORE IDEA:
+
+
+1. 建立一個 child_to_parent 映射表，記錄每一個子區域的唯一父區域。
+
+
+2. 從 region1 開始，一路往上追溯所有的祖先，
+   並將它們全部存入一個雜湊集合（ancestors）中。
+
+3. 從 region2 開始也一路往上追溯，
+   第一個在 ancestors 集合中遇到的區域，
+   就是我們要找的「最小共同區域（Lowest Common Ancestor）」！
+
+"""
 from collections import defaultdict
 
 class Solution(object):
@@ -76,10 +91,25 @@ class Solution(object):
         region1_ancestors = set()
         curr = region1
 
+        """
+        NOTE !!!
+
+
+        從 region1 開始，一路向上收集所有祖先（包含自己）
+
+        """
         while curr:
             region1_ancestors.add(curr)
             curr = child_parent.get(curr)
 
+
+        """
+        NOTE !!!
+
+
+        從 region2 開始向上追溯，第一個出現在 ancestors 中的節點就是最低共同祖先
+        
+        """
         # Walk up from region2; the first match is the smallest common region
         curr = region2
 
