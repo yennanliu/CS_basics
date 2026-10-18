@@ -55,6 +55,79 @@ class Solution(object):
     def findSmallestRegion(self, regions, region1, region2):
         pass
 
+
+# V0-1
+# IDEA : HASH MAP (CHILD -> PARENT) + ANCESTOR SET (LCA)  (LOWEST COMMON ANCESTOR)(GPT)
+from collections import defaultdict
+
+class Solution(object):
+    def findSmallestRegion(self, regions, region1, region2):
+        # Map: {child: parent}
+        child_parent = {}
+
+        for info in regions:
+            parent = info[0]
+            children = info[1:]
+
+            for child in children:
+                child_parent[child] = parent
+
+        # Collect all ancestors of region1, including itself
+        region1_ancestors = set()
+        curr = region1
+
+        while curr:
+            region1_ancestors.add(curr)
+            curr = child_parent.get(curr)
+
+        # Walk up from region2; the first match is the smallest common region
+        curr = region2
+
+        while curr:
+            if curr in region1_ancestors:
+                return curr
+            curr = child_parent.get(curr)
+
+        return None
+
+
+# V0-2
+# 向上追溯法（Path Tracing / Lowest Common Ancestor） (gemini)
+class Solution(object):
+
+  def findSmallestRegion(self, regions, region1, region2):
+    """:type regions: List[List[str]]
+
+    :type region1: str
+    :type region2: str
+    :rtype: str
+    """
+    # 1. 記錄每個子區域對應的唯一父區域
+    child_to_parent = {}
+
+    for info in regions:
+      parent = info[0]
+      children = info[1:]
+      for child in children:
+        child_to_parent[child] = parent
+
+    # 2. 從 region1 開始，一路向上收集所有祖先（包含自己）
+    ancestors = set()
+    curr = region1
+    while curr:
+      ancestors.add(curr)
+      curr = child_to_parent.get(curr)
+
+    # 3. 從 region2 開始向上追溯，第一個出現在 ancestors 中的節點就是最低共同祖先
+    curr = region2
+    while curr:
+      if curr in ancestors:
+        return curr
+      curr = child_to_parent.get(curr)
+
+    return None
+
+
 # V0-3
 # IDEA : HASH MAP (CHILD -> PARENT) + ANCESTOR SET  (LOWEST COMMON ANCESTOR)(claude)
 #
@@ -100,7 +173,7 @@ class Solution(object):
         return current
 
 
-# V0-1
+# V0-4
 # IDEA : HASH MAP (CHILD -> PARENT) + TWO POINTERS (SAME AS LC 160 / LC 1650) (claude)
 #
 #   same tree, but no ancestor set. Move two pointers up; when one passes the
