@@ -39,8 +39,141 @@ s and words[i] consist of lowercase letters.
 """
 
 
-
 # V0
+# IDEA: 2 POINTERS (gpt)
+class Solution(object):
+    def expressiveWords(self, s, words):
+        """
+        :type s: str
+        :type words: List[str]
+        :rtype: int
+        """
+        if not words:
+            return 0
+
+        cnt = 0
+
+        for w in words:
+            if self.is_stretchy(s, w):
+                cnt += 1
+
+        return cnt
+
+    def is_stretchy(self, s, w):
+        if not s or not w:
+            return False
+
+        len_s = len(s)
+        len_w = len(w)
+
+        i = 0
+        j = 0
+
+        while i < len_s and j < len_w:
+            # Different characters at the current group
+            if s[i] != w[j]:
+                return False
+
+            char = s[i]
+
+            """
+            NOTE !!!
+
+            cnt (cnt_s, cnt_w) starts from 0
+            """
+            # Count consecutive occurrences in s
+            cnt_s = 0
+            while i < len_s and s[i] == char:
+                cnt_s += 1
+                i += 1
+
+            # Count consecutive occurrences in w
+            cnt_w = 0
+            while j < len_w and w[j] == char:
+                cnt_w += 1
+                j += 1
+
+            # w cannot have more occurrences than s
+            if cnt_w > cnt_s:
+                return False
+
+            """
+            NOTE !!!  the validation condition
+
+            
+                -> `if cnt_s < 3 and cnt_s != cnt_w`
+            """
+            # If s has fewer than 3 occurrences,
+            # both groups must have exactly the same length
+            if cnt_s < 3 and cnt_s != cnt_w:
+                return False
+
+        # Both strings must be fully consumed
+        return i == len_s and j == len_w
+
+
+# V0-1
+# IDEA: 2 POINTERS (GEMINI)
+class Solution(object):
+
+  def expressiveWords(self, s, words):
+    """:type s: str
+
+    :type words: List[str]
+    :rtype: int
+    """
+    if not words or not s:
+      return 0
+
+    cnt = 0
+    for w in words:
+      if self.is_stretchy(s, w):
+        cnt += 1
+
+    return cnt
+
+  def is_stretchy(self, s, w):
+    len_s = len(s)
+    len_w = len(w)
+
+    # 如果 w 比 s 還長，絕對無法透過擴展 s 得到 w
+    if len_w > len_s:
+      return False
+
+    i = 0
+    j = 0
+
+    while i < len_s and j < len_w:
+      # 1. 對應位置的字元必須相同
+      if s[i] != w[j]:
+        return False
+
+      char = s[i]
+
+      # 2. 計算 s 中當前連續相同字元的個數
+      i_start = i
+      while i < len_s and s[i] == char:
+        i += 1
+      cnt_s = i - i_start
+
+      # 3. 計算 w 中當前連續相同字元的個數
+      j_start = j
+      while j < len_w and w[j] == char:
+        j += 1
+      cnt_w = j - j_start
+
+      # 4. 驗證擴展規則：
+      # - s 的群組長度不能小於 w 的群組長度 (cnt_s < cnt_w)
+      # - 如果 s 的群組長度大於 w，則 s 的群組長度必須至少為 3 (cnt_s >= 3)
+      if cnt_s < cnt_w or (cnt_s > cnt_w and cnt_s < 3):
+        return False
+
+    # 5. 確保兩個字串都剛好完全走完
+    return i == len_s and j == len_w
+
+
+
+# V0-2
 # IDEA: Length Encoding (gpt)
 class Solution(object):
     def expressiveWords(self, s, words):
@@ -133,7 +266,7 @@ class Solution(object):
         return True
 
 
-# V0-1
+# V0-3
 # IDEA: 2 POINTERS (gemini)
 class Solution(object):
     def expressiveWords(self, s, words):

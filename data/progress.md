@@ -224,10 +224,6 @@
 			- 模式：逐步前綴驗證
 				- 720
 
-			- Expressive Words
-				— LC 809
-
-
 
 		- prefix sum
 			- 1124
