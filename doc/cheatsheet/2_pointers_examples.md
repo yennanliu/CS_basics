@@ -1306,65 +1306,12 @@ public int longestMountain_v1(int[] A) {
 
 **Alternative — precompute two arrays `up[]` / `down[]` (prefix/suffix slopes):**
 
-Instead of expanding from each peak, precompute at every index how far the strictly-increasing run reaches from the left and the strictly-decreasing run reaches to the right. Any index where **both** are non-zero is a peak, and its mountain length is `up[i] + down[i] + 1`. This trades O(1) space for O(N) space but is often the most intuitive to reason about.
-
-- `up[i]`   = length of the increasing run **ending** at `i`   (built left → right)
-- `down[i]` = length of the decreasing run **starting** at `i` (built right → left)
-- Valid peak ⇔ `up[i] > 0 && down[i] > 0`
-
-```python
-# python
-# LC 845 - Longest Mountain in Array
-# IDEA: precompute up[] (left slope) and down[] (right slope), combine at peaks
-# time = O(N), space = O(N)
-class Solution(object):
-    def longestMountain(self, arr):
-        n = len(arr)
-        if n < 3:
-            return 0
-
-        up = [0] * n    # up[i]   = length of increasing run ending at i
-        down = [0] * n  # down[i] = length of decreasing run starting at i
-
-        for i in range(1, n):            # build left slopes
-            if arr[i] > arr[i - 1]:
-                up[i] = up[i - 1] + 1
-
-        for i in range(n - 2, -1, -1):   # build right slopes
-            if arr[i] > arr[i + 1]:
-                down[i] = down[i + 1] + 1
-
-        ans = 0
-        for i in range(n):
-            if up[i] and down[i]:        # both slopes present → valid peak
-                ans = max(ans, up[i] + down[i] + 1)
-        return ans
-```
-
-```java
-// java
-// LC 845 - Longest Mountain in Array
-// time = O(N), space = O(N)
-public int longestMountain(int[] arr) {
-    int n = arr.length;
-    if (n < 3) return 0;
-
-    int[] up = new int[n];    // increasing run ending at i
-    int[] down = new int[n];  // decreasing run starting at i
-
-    for (int i = 1; i < n; i++)
-        if (arr[i] > arr[i - 1]) up[i] = up[i - 1] + 1;
-
-    for (int i = n - 2; i >= 0; i--)
-        if (arr[i] > arr[i + 1]) down[i] = down[i + 1] + 1;
-
-    int ans = 0;
-    for (int i = 0; i < n; i++)
-        if (up[i] > 0 && down[i] > 0)
-            ans = Math.max(ans, up[i] + down[i] + 1);
-    return ans;
-}
-```
+Instead of expanding from each peak, record at every index how long the strictly-increasing run
+**ending** there is (built left → right) and how long the strictly-decreasing run **starting**
+there is (built right → left). Any index with a real slope on both sides is a peak, and its
+mountain is the two runs with the shared peak counted once. That is a prefix / suffix scan rather
+than a pointer walk, so it is written out — Python, Java, trace and the LC 2100 / 2420 / 135
+siblings — in [prefix_sum.md's run-length variant](./prefix_sum.md#run-length-variant--the-side-resets-so-build-both-arrays-lc-845-).
 
 **Comparison of approaches:**
 
@@ -1372,7 +1319,7 @@ public int longestMountain(int[] arr) {
 |----------|-------------|------------|-------------|
 | Peak + expand (V0) | `i` scans for peaks; `left`/`right` expand | `i = right` after each mountain | Clearest structure |
 | Base + climb (V1) | `base` tracks mountain start | `base = max(end, base+1)` | Single-pass, no look-around |
-| Two arrays `up[]`/`down[]` (V2) | precomputed slope lengths per index | none — direct combine at peaks | Most intuitive; O(N) space |
+| Two arrays `up[]`/`down[]` (V2) — [prefix_sum.md](./prefix_sum.md#run-length-variant--the-side-resets-so-build-both-arrays-lc-845-) | precomputed slope lengths per index | none — direct combine at peaks | Most intuitive; O(N) space |
 
 **Invariant for a valid mountain:**
 1. Peak must not be at index 0 or n-1

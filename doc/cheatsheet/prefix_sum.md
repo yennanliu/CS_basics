@@ -85,7 +85,7 @@
 
 ### **Pattern 9: Prefix + Suffix Split (Minimax over a Split Point)** — LC 2017
 - **Description**: The whole choice the problem offers collapses to **one index**; what lies left of it is a prefix sum and what lies right of it is a suffix sum, so every candidate is scored in one pass
-- **Examples**: LC 2017 - Grid Game, LC 724 - Find Pivot Index, LC 238 - Product of Array Except Self, LC 1422 - Maximum Score After Splitting a String, LC 2483 - Minimum Penalty for a Shop
+- **Examples**: LC 2017 - Grid Game, LC 724 - Find Pivot Index, LC 238 - Product of Array Except Self, LC 845 - Longest Mountain in Array, LC 1422 - Maximum Score After Splitting a String, LC 2483 - Minimum Penalty for a Shop
 - **Pattern**: Sweep the split left to right holding two running sums — shrink the suffix **before** the compare, grow the prefix **after** it, so the split cell belongs to neither side
 - **Key Insight**: Once "a choice" is reduced to "an index", `min`/`max` over all choices is an O(n) scan, not a search — no DP and no graph algorithm (see Template 15)
 
@@ -1133,6 +1133,183 @@ answer = [0, 0, 9, 0, 0]  ✓   only index 2 skips the zero, so only it survives
 - **When there is a modulus, this is the only way.** LC 2906 takes products mod `12345`, which is
   not prime, so no modular inverse exists either — prefix × suffix is the answer there too.
 
+#### Run-Length Variant — the Side Resets, So Build Both Arrays (LC 845) ⭐⭐⭐⭐
+
+**Which precondition breaks.** Template 15's two sides are *sums*, so the suffix is just the
+total minus the prefix. Here each side is **the length of the monotone run touching `i`**, and a
+run length **resets** the moment the run breaks — there is nothing to subtract it from. So, as in
+LC 238, each side gets **its own pass**: left-to-right for the run that *ends* at `i`,
+right-to-left for the run that *starts* at `i`. The second thing that changes is where the split
+cell sits: in a mountain the peak belongs to **both** slopes, so it is counted twice and one copy
+comes off.
+
+```text
+up[i]   = length of the strictly increasing run ENDING at i     (pass ->, resets to 1)
+down[i] = length of the strictly decreasing run STARTING at i   (pass <-, resets to 1)
+
+i is a peak       <=>  up[i] > 1  and  down[i] > 1     (a real slope on each side)
+mountain at peak   =   up[i] + down[i] - 1              (the peak is in both runs)
+```
+
+Every member of the family below asks the same per-index question — *how far does the good
+stretch reach on my left, and on my right?* — and differs only in **what a side measures** (a run
+length, a Kadane sum, an LIS length, a max) and **whether `i` sits on both sides or neither**.
+
+```python
+# python
+# LC 845 - Longest Mountain in Array
+# IDEA: two DP arrays -- the increasing run ending at each index (built left to right)
+#       and the decreasing run starting at it (built right to left); every index with a
+#       real slope on both sides is a peak, and its mountain is up + down - 1
+# time = O(n), space = O(n)
+class Solution(object):
+    def longestMountain(self, arr):
+        n = len(arr)
+        if n < 3:
+            return 0
+
+        # up[i] = length of the strictly increasing run ending at i (a lone element is 1)
+        up = [1] * n
+        for i in range(1, n):
+            if arr[i] > arr[i - 1]:
+                up[i] = up[i - 1] + 1          # extend the run; otherwise it stays reset at 1
+
+        # down[i] = length of the strictly decreasing run starting at i
+        down = [1] * n
+        for i in range(n - 2, -1, -1):         # stop is -1, so index 0 is filled
+            if arr[i] > arr[i + 1]:
+                down[i] = down[i + 1] + 1
+
+        longest = 0
+        for i in range(n):
+            # a mountain needs an uphill AND a downhill: a run of 1 is no slope at all
+            if up[i] > 1 and down[i] > 1:
+                # the peak is counted in both runs, so remove one copy
+                longest = max(longest, up[i] + down[i] - 1)
+        return longest
+```
+
+```java
+// java
+// LC 845 - Longest Mountain in Array
+// IDEA: up[] = increasing run ending at i, down[] = decreasing run starting at i,
+//       combine at every index that has a slope on both sides
+// time = O(n), space = O(n)
+public int longestMountain(int[] arr) {
+    int n = arr.length;
+    if (n < 3) return 0;
+
+    int[] up = new int[n];
+    up[0] = 1;
+    for (int i = 1; i < n; i++) {
+        up[i] = (arr[i] > arr[i - 1]) ? up[i - 1] + 1 : 1;
+    }
+
+    int[] down = new int[n];
+    down[n - 1] = 1;
+    for (int i = n - 2; i >= 0; i--) {
+        down[i] = (arr[i] > arr[i + 1]) ? down[i + 1] + 1 : 1;
+    }
+
+    int longest = 0;
+    for (int i = 0; i < n; i++) {
+        if (up[i] > 1 && down[i] > 1) {
+            longest = Math.max(longest, up[i] + down[i] - 1);   // peak counted once
+        }
+    }
+    return longest;
+}
+```
+
+##### Visual Trace — `arr = [2, 1, 4, 7, 3, 2, 5]`
+
+```text
+index   0  1  2  3  4  5  6
+arr     2  1  4  7  3  2  5
+up      1  1  2  3  1  1  2      (->) 1 < 4 < 7 is a run of 3 ending at index 3
+down    2  1  1  3  2  1  1      (<-) 7 > 3 > 2 is a run of 3 starting at index 3
+
+peaks (up > 1 and down > 1):  index 3 only  ->  3 + 3 - 1 = 5
+
+answer = 5   mountain [1, 4, 7, 3, 2] ✓
+index 2 has up = 2 but down = 1 (still climbing); index 6 has up = 2 but no right side at all
+```
+
+**The other side of the split-cell rule — LC 2420.** A *good index* needs the `k` elements just
+**before** it non-increasing and the `k` just **after** it non-decreasing, and the index itself
+belongs to **neither** run — the LC 2017 placement, read off the neighbours `i - 1` and `i + 1`.
+The comparisons are also non-strict, which is the other knob this family turns:
+
+```python
+# python
+# LC 2420 - Find All Good Indices
+# IDEA: the same two run arrays (non-strict), but index i sits on NEITHER side,
+#       so read the left run at i-1 and the right run at i+1
+# time = O(n), space = O(n)
+class Solution(object):
+    def goodIndices(self, nums, k):
+        n = len(nums)
+
+        # non_inc[i] = length of the non-increasing run ending at i
+        non_inc = [1] * n
+        for i in range(1, n):
+            if nums[i] <= nums[i - 1]:
+                non_inc[i] = non_inc[i - 1] + 1
+
+        # non_dec[i] = length of the non-decreasing run starting at i
+        non_dec = [1] * n
+        for i in range(n - 2, -1, -1):
+            if nums[i] <= nums[i + 1]:
+                non_dec[i] = non_dec[i + 1] + 1
+
+        good = []
+        for i in range(k, n - k):
+            if non_inc[i - 1] >= k and non_dec[i + 1] >= k:
+                good.append(i)
+        return good
+```
+
+##### Traps
+
+- **Both sides must be a real slope.** `up[i] + down[i] - 1` alone scores a strictly increasing
+  array as a mountain of length `n`. Checking `> 1` on *both* sides is what makes `i` a peak.
+- **A flat step resets both runs.** `arr[i] > arr[i - 1]` is strict, so `[2, 2, 2]` gives runs of
+  1 everywhere and the answer `0`. LC 2100 and LC 2420 want `<=`; read which one the statement
+  says before writing the comparison.
+- **Count the shared cell once — or not at all.** With runs that start at `1`, a peak shared by
+  both sides is `up + down - 1`. Starting the arrays at `0` (counting *steps*, not elements)
+  makes the same mountain `up + down + 1` — either works, mixing them is off by two. LC 2420's
+  index is on neither side, so it is not added at all.
+- **The reverse loop stops at `-1`**, exactly as in LC 238; `down[n-1]` is already the base case.
+- **O(1) space exists, and it is a different algorithm.** Walking each mountain once from its
+  base (the find-peak-and-expand scan in
+  [2_pointers_examples.md](./2_pointers_examples.md#longest-mountain-in-array--lc-845)) drops
+  both arrays; the two-array form is the one to derive first, because each array has a one-line
+  definition.
+
+#### Similar Problems — the left-run / right-run family
+
+Same question at every index — *how far does it reach on the left, and on the right?* — answered
+by one array per direction and combined per index.
+
+| Problem | LC # | What each side measures | `i` is on | Combine |
+|---|---|---|---|---|
+| **Longest Mountain in Array** | 845 | strictly increasing / decreasing run length | both | `up + down - 1`, both `> 1` |
+| **Find Good Days to Rob the Bank** | 2100 | non-increasing run ending at `i` / non-decreasing run starting at `i` | both | both runs `>= time + 1` |
+| **Find All Good Indices** | 2420 | non-increasing run ending at `i-1` / non-decreasing run starting at `i+1` | neither | both runs `>= k` |
+| **Candy** | 135 | increasing-rating run from the left / from the right | both | `sum(max(left, right))` — the stricter neighbour wins |
+| **Minimum Number of Removals to Make Mountain Array** | 1671 | LIS ending at `i` / LDS starting at `i` — a *subsequence* DP, not a run | both | `n - (lis + lds - 1)`, both `> 1` — see [patience_sorting.md](./patience_sorting.md) |
+| **Maximum Subarray Sum with One Deletion** | 1186 | best sum ending at `i` / starting at `i` — Kadane each way | neither (the deleted cell) | `left[i-1] + right[i+1]` — see [kadane_algorithm.md](./kadane_algorithm.md) |
+| **Beautiful Towers II** | 2866 | best non-decreasing sum ending at the peak, built with a monotonic stack | both | `left + right - h[i]` |
+| **Minimum Sum of Mountain Triplets II** | 2909 | prefix min / suffix min | neither | `prefMin + nums[j] + sufMin` when both are smaller |
+| **Trapping Rain Water** | 42 | prefix max / suffix max | both | `min(left, right) - h[i]` |
+| **Product of Array Except Self** | 238 | prefix product / suffix product | neither | `left * right` — [the product variant above](#product-variant--no-inverse-so-build-both-sides-lc-238-) |
+
+> **Recognising it in the room.** The statement defines a property of index `i` in terms of a
+> stretch *to its left* and a stretch *to its right* — a peak, a good day, a pivot, a child who
+> needs more candy than both neighbours. Asking it literally at every `i` is O(n²); two passes
+> that each carry one running answer make every index O(1).
+
 #### Similar Problems — the split-point family
 
 Same shape every time: one index decides the answer, the left of it is a prefix and the right a
@@ -1263,6 +1440,10 @@ structure:
 | Partition Array Into Three Parts With Equal Sum | 1013 | Two splits at `total/3` | Easy | Template 15 (two cuts) |
 | Ways to Split Array Into Three Subarrays | 1712 | Two splits + binary search the second | Medium | Template 15 + binary search |
 | Trapping Rain Water | 42 | Prefix max / suffix max per index | Hard | Template 15 (max, not sum) |
+| Longest Mountain in Array | 845 | Increasing run ending at `i` + decreasing run starting at `i`, minus the shared peak | Medium | Template 15 (run-length variant) |
+| Find Good Days to Rob the Bank | 2100 | Non-increasing run in, non-decreasing run out, both `>= time + 1` | Medium | Template 15 (run-length variant) |
+| Find All Good Indices | 2420 | Runs read at `i-1` and `i+1` — the index is on neither side | Medium | Template 15 (run-length variant) |
+| Candy | 135 | Rating run from each side, keep the larger | Hard | Template 15 (run-length variant) |
 | Maximum Trailing Zeros in a Cornfield Path | 2245 | One turn in a grid, prefix counts of 2s and 5s | Medium | Template 15 (grid) |
 
 #### **Advanced/Mixed Pattern Problems**
@@ -1428,6 +1609,8 @@ Problem Analysis Flowchart:
   cell lands on neither side
 - If the operation has **no inverse** (product with division banned or zeros present, a non-prime
   modulus), the suffix cannot be `total - prefix` — build it in a second, right-to-left pass (LC 238)
+- If each side is a **run that resets** — "strictly increasing up to `i`, strictly decreasing after" —
+  build one run-length array per direction and combine per index (LC 845, 2100, 2420, 135)
 - If the objective is `min(max(...))` or `max(min(...))`, it is minimax — a greedy "take the best
   for me" pass is the wrong objective, not just a weaker one
 
@@ -1486,6 +1669,7 @@ is grafted into the templates as notes.
 | **Template 13** | Sparse Diff (HashMap) | `d[start]+=v; d[end+1]-=v; for k in sorted(d): cur+=d[k]` |
 | **Template 15** | Prefix + Suffix Split | `top-=a[i]; res=min(res,max(top,bottom)); bottom+=b[i]` |
 | **Template 15 (product)** | Except-self product | `ans[i]=left; left*=a[i]` → then backwards `ans[i]*=right; right*=a[i]` |
+| **Template 15 (run length)** | Left run / right run | `up[i]=up[i-1]+1 if a[i]>a[i-1] else 1`, mirror for `down`; peak `up+down-1` |
 
 > Templates **9–14** are written out in [prefix_sum_advanced.md](./prefix_sum_advanced.md).
 
