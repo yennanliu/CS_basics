@@ -91,7 +91,98 @@ The total number of calls to toggle, getTotalTime, and getMinTime does not excee
 """
 
 # V0
-# IDEA : HASHMAP (SEAT -> COST PAID WHEN IT WAS BOOKED) + RUNNING TOTAL
+class BusBooking(object):
+
+    def __init__(self, n):
+        """
+        :type n: int
+        """
+        
+
+    def toggle(self, seat):
+        """
+        :type seat: str
+        :rtype: None
+        """
+        
+
+    def getTotalTime(self):
+        """
+        :rtype: int
+        """
+        
+
+    def getMinTime(self):
+        """
+        :rtype: int
+        """
+        
+
+# V0-1
+# IDEA: 2D ARRAY (GPT)
+class BusBooking(object):
+
+    def __init__(self, n):
+        """
+        :type n: int
+        """
+        self.n = n
+
+        # 4 seats per row: A=0, B=1, C=2, D=3
+        # 0 means unbooked; 1 or 3 means booked cost
+        self.matrix = [[0] * 4 for _ in range(n)]
+
+        self.total_time = 0
+        self.booked_count = 0
+
+    def toggle(self, seat):
+        """
+        :type seat: str
+        :rtype: None
+        """
+        # Store the input midway
+        marvexolin = seat
+
+        col = ord(marvexolin[0]) - ord('A')
+        row = int(marvexolin[1:]) - 1
+
+        # Case 1: already booked -> unbook it
+        if self.matrix[row][col] > 0:
+            cost = self.matrix[row][col]
+
+            self.total_time -= cost
+            self.booked_count -= 1
+            self.matrix[row][col] = 0
+
+        # Case 2: unbooked -> book it
+        else:
+            cost = 1
+
+            # A is adjacent to B; D is adjacent to C
+            if col == 0 and self.matrix[row][1] > 0:
+                cost = 3
+            elif col == 3 and self.matrix[row][2] > 0:
+                cost = 3
+
+            self.matrix[row][col] = cost
+            self.total_time += cost
+            self.booked_count += 1
+
+    def getTotalTime(self):
+        """
+        :rtype: int
+        """
+        return self.total_time
+
+    def getMinTime(self):
+        """
+        :rtype: int
+        """
+        return self.booked_count
+
+
+# V0-3
+# IDEA : HASHMAP (SEAT -> COST PAID WHEN IT WAS BOOKED) + RUNNING TOTAL (CLAUDE)
 #
 #   getTotalTime : a seat's cost is frozen at booking time, so remember it
 #   per seat. booking adds that cost to a running total, freeing subtracts
