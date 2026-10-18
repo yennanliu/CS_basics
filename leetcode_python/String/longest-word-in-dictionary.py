@@ -118,6 +118,87 @@ class Solution(object):
     return longest
 
 
+# V0-3
+# IDEA: BFS (gpt)
+from collections import deque
+
+class Solution(object):
+    def longestWord(self, words):
+        """
+        :type words: List[str]
+        :rtype: str
+        """
+        words_set = set(words)
+        q = deque()
+
+        # Start BFS from all valid 1-character words
+        for w in words:
+            if len(w) == 1:
+                q.append(w)
+
+        res = ""
+
+        while q:
+            word = q.popleft()
+
+            # Update answer: longer word, or lexicographically smaller
+            if (len(word) > len(res) or
+                (len(word) == len(res) and word < res)):
+                res = word
+
+            # Find valid words that extend the current word by one char
+            for c in "abcdefghijklmnopqrstuvwxyz":
+                next_word = word + c
+
+                if next_word in words_set:
+                    q.append(next_word)
+
+        return res
+
+# V0-4
+# IDEA: BFS (gemini)
+from collections import deque
+
+
+class Solution(object):
+
+  def longestWord(self, words):
+    """:type words: List[str]
+
+    :rtype: str
+    """
+    # 1. 將所有單字放入 set 中，以供 O(1) 快速查找
+    word_set = set(words)
+
+    # 2. 找出所有長度為 1 且存在於 word_set 中的單字作為 BFS 的起始點
+    # 並且先進行排序，確保起始順序是字典序由小到大
+    start_words = sorted([w for w in word_set if len(w) == 1])
+
+    q = deque(start_words)
+    best_word = ""
+
+    # 3. 開始 BFS 逐層擴展
+    while q:
+      curr = q.popleft()
+
+      # 更新最長單字：
+      # 條件 1：當前長度大於目前紀錄的最長長度
+      # 條件 2：長度相同時，選擇字典序較小的單字
+      if len(curr) > len(best_word) or (
+          len(curr) == len(best_word) and curr < best_word
+      ):
+        best_word = curr
+
+      # 4. 嘗試在當前單字後面加上 'a' 到 'z'
+      # 因為迴圈順序是 'a' 到 'z'，所以字典序較小的擴展會先被放入 queue 中 (FIFO 保持優勢)
+      for i in range(26):
+        nxt = curr + chr(ord("a") + i)
+        if nxt in word_set:
+          q.append(nxt)
+
+    return best_word
+
+
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79123277
 # IDEA : GREEDY
