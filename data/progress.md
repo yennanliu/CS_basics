@@ -228,9 +228,6 @@
 				- LC 121
 				- LC 122
 
-			- Queue Reconstruction by Height
-				— LC 406
-
 
 		- String
 

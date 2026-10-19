@@ -37,6 +37,61 @@ It is guaranteed that the queue can be reconstructed.
 """
 
 # V0
+class Solution(object):
+    def reconstructQueue(self, people):
+        """
+        :type people: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        pass
+
+
+# V0-1
+# IDEA: SORT + INSERT (GPT)
+class Solution(object):
+    def reconstructQueue(self, people):
+        """
+        :type people: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        if not people:
+            return []
+
+        # 先按照身高遞減排序
+        # 身高相同時，k 遞增排序
+        people.sort(key=lambda x: (-x[0], x[1]))
+
+        res = []
+
+        for person in people:
+            # 將 person 插入索引 k 的位置
+            res.insert(person[1], person)
+
+        return res
+
+# V0-2
+# IDEA: SORT + INSERT (GEMINI)
+class Solution(object):
+
+  def reconstructQueue(self, people):
+    """:type people: List[List[int]]
+
+    :rtype: List[List[int]]
+    """
+    # 1. 依身高降冪排序 (-x[0])；若身高相同，依 k 值升冪排序 (x[1])
+    people.sort(key=lambda x: (-x[0], x[1]))
+
+    res = []
+
+    # 2. 依次將每個人插入到其 k 值對應的索引位置
+    for p in people:
+      # p[1] 即是 k 值，代表前面必須有 k 個身高大於或等於他的人
+      res.insert(p[1], p)
+
+    return res
+
+
+# V0-3
 # time = O(n^2)
 # space = O(n)
 class Solution(object):
