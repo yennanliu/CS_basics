@@ -38,6 +38,7 @@ All characters in words[i] and order are English lowercase letters.
 
 
 # V0
+# IDEA: STR OP + ordering MAPPING (gpt)
 class Solution(object):
     def isAlienSorted(self, words, order):
         """
@@ -45,7 +46,51 @@ class Solution(object):
         :type order: str
         :rtype: bool
         """
-        pass
+        # edge
+        if not words or len(words) <= 1:
+            return True
+
+        # build order map
+        # {val: order}
+        self.order_map = {}
+
+        for i in range(len(order)):
+            val = order[i]
+            self.order_map[val] = i
+
+        # compare each pair of the words
+        for i in range(len(words) - 1):
+            cur = words[i]
+            next = words[i + 1]
+
+            if not self.in_order(cur, next):
+                return False
+
+
+        return True
+
+
+    def in_order(self, x, y):
+        # edge
+        if x == y:
+            # ???
+            return True
+
+        _len = min(len(x), len(y))
+
+        for i in range(_len):
+            val_x = x[i]
+            val_y = y[i]
+
+            if self.order_map[val_x] < self.order_map[val_y]:
+                return True
+
+            elif self.order_map[val_x] > self.order_map[val_y]:
+                return False
+
+        # ??
+        return len(x) < len(y)
+
 
 
 # V0-1
