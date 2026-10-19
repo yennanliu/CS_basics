@@ -52,13 +52,70 @@ Constraints:
 """
 
 # V0
+# IDEA: 1D DP + check (gemini)
+class Solution(object):
+
+  def threeFibonacciSum(self, n):
+    """:type n: int
+
+    :rtype: bool
+    """
+    # 邊界條件：負數不可能達成
+    if n < 0:
+      return False
+
+    # 0 可以由 0 + 0 + 0 達成
+    if n == 0:
+      return True
+
+    # 建立費波那契數列表（大小 100 足以涵蓋大於 10^9 的數值）
+    dp = [0] * 101
+    dp[0] = 0
+    dp[1] = 1
+    dp[2] = 1
+
+    for i in range(2, 101):
+      if i >= 3:
+        dp[i] = dp[i - 1] + dp[i - 2]
+
+      # 三個連續費波那契數相加：dp[i-2] + dp[i-1] + dp[i]
+      tmp = dp[i - 2] + dp[i - 1] + dp[i]
+
+      if tmp == n:
+        return True
+
+      # 因為費波那契數是嚴格遞增的，一旦總和超過 n 就可以提早結束
+      if tmp > n:
+        return False
+
+    return False
+
+
+# V0-0-1
+# IDEA: 1D DP + check (GPT)
 class Solution(object):
     def threeFibonacciSum(self, n):
         """
         :type n: int
         :rtype: bool
         """
-        pass
+        if n < 0:
+            return False
+
+        # First three Fibonacci numbers: 0, 1, 1
+        a, b, c = 0, 1, 1
+
+        while True:
+            total = a + b + c
+
+            if total == n:
+                return True
+
+            if total > n:
+                return False
+
+            # Move to the next consecutive Fibonacci triple
+            a, b, c = b, c, b + c
 
 
 # V0-1
