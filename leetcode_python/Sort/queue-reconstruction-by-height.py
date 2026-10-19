@@ -57,6 +57,27 @@ class Solution(object):
         if not people:
             return []
 
+        """
+        NOTE !!!
+
+        how we sort, for the following insert op.
+
+        1. height (big -> small)
+
+            ->
+                為什麼要先按照身高遞減排序？ 
+
+                先處理最高的人，再逐漸處理較矮的人。
+                當我們插入較矮的人時，
+                不會改變已經排好位置的較高者所看到的
+                「前方較高或等高人數」。
+
+
+                接著，把每個人插入索引 k 的位置，就能滿足他的條件。
+
+
+        2. order (small -> big)
+        """
         # 先按照身高遞減排序
         # 身高相同時，k 遞增排序
         people.sort(key=lambda x: (-x[0], x[1]))
@@ -64,6 +85,13 @@ class Solution(object):
         res = []
 
         for person in people:
+            """
+            NOTE !!!
+
+            the `insert` syntax:
+
+              ->  ```insert(idx, val)```
+            """
             # 將 person 插入索引 k 的位置
             res.insert(person[1], person)
 
