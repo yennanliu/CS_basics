@@ -92,6 +92,61 @@ class Solution(object):
         :type s: str
         :rtype: bool
         """
+        if not s or len(s) <= 2:
+            return True
+
+        l = 0
+        r = len(s) - 1
+
+        while l < r:
+            # NOTE !!!
+            # -> `ONLY` call the helper func when `s[l] != s[r]`
+            # -> otherwise, we keep moving (l+=1, r-=1)
+            #
+            # -> if call the help func anyway,
+            #    -> will cause TLE error (as above)
+            if s[l] != s[r]:
+                # Try deleting the left character or right character
+                return (
+                    self.is_palindrome(s, l + 1, r)
+                    or self.is_palindrome(s, l, r - 1)
+                )
+
+            l += 1
+            r -= 1
+
+        return True
+
+    def is_palindrome(self, s, l_idx, r_idx):
+        while l_idx < r_idx:
+            if s[l_idx] != s[r_idx]:
+                return False
+
+            l_idx += 1
+            r_idx -= 1
+
+        return True
+
+
+
+# V0-0-1
+# IDEA: 2 POINTERS + is_palindrome (gpt)
+# time: O(N)
+# space: O(N)
+"""
+Core idea:
+
+
+Instead of trying every deletion, 
+ ->  `ONLY delete one of the two mismatched characters `
+     when the first mismatch occurs.
+"""
+class Solution(object):
+    def validPalindrome(self, s):
+        """
+        :type s: str
+        :rtype: bool
+        """
         l, r = 0, len(s) - 1
 
         while l < r:
