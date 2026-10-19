@@ -86,6 +86,13 @@ class Solution(object):
             return 0
 
         # Increasing sequence ending at i
+        """
+        NOTE !!!
+
+        seq len init as 1
+
+            -> max_incr_cnt_l = [1] * n
+        """
         max_incr_cnt_l = [1] * n
         for i in range(1, n):
             if arr[i] > arr[i - 1]:
@@ -102,7 +109,18 @@ class Solution(object):
         for i in range(n):
             # A valid mountain must have both an uphill
             # and a downhill segment.
+
+            """
+            NOTE !!!
+
+            a mountain is valid if left, right range are > 0
+
+                -> e.g. ```max_incr_cnt_l[i] > 1 and max_incr_cnt_r[i] > 1```
+            """
             if max_incr_cnt_l[i] > 1 and max_incr_cnt_r[i] > 1:
+
+                # NOTE !!!
+                # need to deduct the repeating calculated `i idx` len
                 curr_len = max_incr_cnt_l[i] + max_incr_cnt_r[i] - 1
                 max_range = max(max_range, curr_len)
 
