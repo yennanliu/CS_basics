@@ -70,16 +70,6 @@
 
 
 
-
-- 雜湊表 — 題目詳解
-	- https://yennj12.js.org/CS_basics/cheatsheets/hash_map_examples.zh.html
-		- `2-17) Maximum Swap（LC 670）`
-
-
-
-
-
-
 - python_trick.md
 	- https://yennj12.js.org/CS_basics/cheatsheets/python_trick.zh.html
 		- `2) LC Example`
@@ -141,7 +131,7 @@
 	- 雙指標 — 實例解析
 	- Matrix Data Structure
 	- 背包 DP（0/1、完全背包、Coin Change)
-
+	- 雜湊表 — 題目詳解
 
 
 - Others
