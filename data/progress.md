@@ -164,6 +164,18 @@
 			- 模式 5 的模板：矩陣乘法與運算
 			 	- https://yennj12.js.org/CS_basics/cheatsheets/matrix.zh.html#%E6%A8%A1%E5%BC%8F-5-%E7%9A%84%E6%A8%A1%E6%9D%BF%E7%9F%A9%E9%99%A3%E4%B9%98%E6%B3%95%E8%88%87%E9%81%8B%E7%AE%97
 
+			 - Diagonal Traverse   — (r+c) % 2 奇偶性
+			 		— LC 498
+			 		- 1424
+			 		- 54
+			 		- 59
+
+			 - 依 i - j 把格子分組（同一條對角線），各組排序後，再照 row-major 順序寫回矩陣。
+			 	- 1329
+
+
+
+
 		- 2 pointers
 			- 原地改寫（快慢指標）
 				- 26
