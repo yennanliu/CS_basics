@@ -51,9 +51,45 @@ other regions, either directly or indirectly.
 """
 
 # V0
+# IDEA : HASH MAP (CHILD -> PARENT) + ANCESTOR SET (LCA)  (LOWEST COMMON ANCESTOR)(GPT)
 class Solution(object):
     def findSmallestRegion(self, regions, region1, region2):
-        pass
+        # Map: {child: parent}
+        child_parent = {}
+
+        for info in regions:
+            parent = info[0]
+            children = info[1:]
+
+            for ch in children:
+                child_parent[ch] = parent
+
+        # Collect all ancestors of region1, including itself
+        parent_region_1 = set()
+        cur = region1
+
+        while cur:
+            # NOTE !!!
+            # DON'T forget to add region 1 to set first
+            parent_region_1.add(cur)
+
+            # NOTE !!!
+            # use `get` to avoid `KeyError` if key NOT existed
+            cur = child_parent.get(cur)
+
+        # Walk upward from region2
+        cur = region2
+
+        while cur:
+            # NOTE !!
+            # check if cur node is in set,
+            # then proceed to parent node
+            if cur in parent_region_1:
+                return cur
+
+            cur = child_parent.get(cur)
+
+        return None
 
 
 # V0-1
