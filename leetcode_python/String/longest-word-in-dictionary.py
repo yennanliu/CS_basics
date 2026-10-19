@@ -59,6 +59,7 @@ words[i] consists of lowercase English letters.
 
 # V0
 # IDEA: BFS (gpt)
+
 from collections import deque
 
 class Solution(object):
@@ -67,32 +68,40 @@ class Solution(object):
         :type words: List[str]
         :rtype: str
         """
-        words_set = set(words)
-        q = deque()
+        # Edge case
+        if not words:
+            return ""
 
-        # Start BFS from all valid 1-character words
+        q = deque()
+        w_set = set(words)
+
+        # Add ALL one-character words as BFS starting points
         for w in words:
             if len(w) == 1:
                 q.append(w)
 
+        alpha = "abcdefghijklmnopqrstuvwxyz"
         res = ""
 
         while q:
-            word = q.popleft()
+            cur = q.popleft()
 
-            # Update answer: longer word, or lexicographically smaller
-            if (len(word) > len(res) or
-                (len(word) == len(res) and word < res)):
-                res = word
+            # Update the answer:
+            # 1. Longer word wins
+            # 2. Same length: lexicographically smaller wins
+            if len(cur) > len(res):
+                res = cur
+            elif len(cur) == len(res) and cur < res:
+                res = cur
 
-            # Find valid words that extend the current word by one char
-            for c in "abcdefghijklmnopqrstuvwxyz":
-                next_word = word + c
-
-                if next_word in words_set:
+            # Extend the current word by one character
+            for ch in alpha:
+                next_word = cur + ch
+                if next_word in w_set:
                     q.append(next_word)
 
         return res
+
 
 # V0-1
 # IDEA: SORT + STR OP + prefix (gpt)
