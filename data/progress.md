@@ -187,16 +187,6 @@
 			- 模式：帶不匹配處理的雙指標
 				- 680
 
-			- Longest Mountain in Array
-				 — LC 845
-				 	- 前綴／後綴斜坡
-
-			- Expressive Words 
-				— LC 809
-
-			- Compare Version Numbers 
-				— LC 165
-
 			- 在區間、矩陣與分割上的指標
 				- 986
 

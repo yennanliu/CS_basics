@@ -42,7 +42,91 @@ All the given revisions in version1 and version2 can be stored in a 32-bit integ
 
 """
 
+
 # V0
+# IDEA: STR OP + 2 POINTERS (gpt)
+class Solution(object):
+    def compareVersion(self, version1, version2):
+        """
+        :type version1: str
+        :type version2: str
+        :rtype: int
+        """
+        arr_1 = version1.split(".")
+        arr_2 = version2.split(".")
+
+        len_1 = len(arr_1)
+        len_2 = len(arr_2)
+
+        i = 0
+
+        while i < len_1 or i < len_2:
+
+            """
+            NOTE !!!
+
+            python auto handle below (transform "0001" to int)
+
+            ```
+            >>> x = "0001"
+            >>> x
+            '0001'
+            >>> int(x)
+            1
+            ```
+
+            """
+            # Missing revision defaults to 0
+            val_1 = int(arr_1[i]) if i < len_1 else 0
+            val_2 = int(arr_2[i]) if i < len_2 else 0
+
+            if val_1 > val_2:
+                return 1
+            elif val_1 < val_2:
+                return -1
+
+            i += 1
+
+        return 0
+
+
+# V0-1
+# IDEA: STR OP + 2 POINTERS (GEMINI)
+class Solution(object):
+
+  def compareVersion(self, version1, version2):
+    """:type version1: str
+
+    :type version2: str
+    :rtype: int
+    """
+    arr_1 = version1.split(".")
+    arr_2 = version2.split(".")
+
+    len_1 = len(arr_1)
+    len_2 = len(arr_2)
+
+    i = 0
+    j = 0
+
+    # 同步走訪兩個版本號的每個區段，若超出長度則補 0
+    while i < len_1 or j < len_2:
+      # int() 會自動處理前導零（如 int("01") -> 1, int("0") -> 0）
+      val_1 = int(arr_1[i]) if i < len_1 else 0
+      val_2 = int(arr_2[j]) if j < len_2 else 0
+
+      if val_1 > val_2:
+        return 1
+      elif val_1 < val_2:
+        return -1
+
+      i += 1
+      j += 1
+
+    return 0
+
+
+# V0-3
 # IDEA : STRING + while op
 # time = O(n)
 # space = O(n)
@@ -77,7 +161,7 @@ class Solution(object):
                     return -1
         return 0
 
-# V0-1
+# V0-4
 # IDEA : STRING
 # time = O(n)
 # space = O(n)
