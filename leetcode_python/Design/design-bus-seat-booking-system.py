@@ -118,6 +118,63 @@ class BusBooking(object):
         """
         
 
+# V0-0-1
+# IDEA: 2D ARRAY + COL MAPPING (GPT)
+class BusBooking(object):
+
+    def __init__(self, n):
+        self.matrix = [[0] * 4 for _ in range(n)]
+        self.costs = [[0] * 4 for _ in range(n)]
+
+        self.col_map = {"A": 0, "B": 1, "C": 2, "D": 3}
+
+        self.total_time = 0
+        self.booked = 0
+
+    def toggle(self, seat):
+        col = seat[0]
+        row = int(seat[1:]) - 1
+        x = self.col_map[col]
+
+        # Find the adjacent middle seat for window seats
+        if x == 0:
+            adjacent_x = 1  # A <-> B
+        elif x == 3:
+            adjacent_x = 2  # D <-> C
+        else:
+            adjacent_x = -1  # B and C are middle seats
+
+        # Book a free seat
+        if self.matrix[row][x] == 0:
+            cost = 1
+
+            # A or D costs 3 if its adjacent middle seat is booked
+            if adjacent_x != -1 and self.matrix[row][adjacent_x] == 1:
+                cost = 3
+
+            self.matrix[row][x] = 1
+            self.costs[row][x] = cost
+
+            self.total_time += cost
+            self.booked += 1
+
+        # Free an already-booked seat
+        else:
+            self.total_time -= self.costs[row][x]
+
+            self.matrix[row][x] = 0
+            self.costs[row][x] = 0
+
+            self.booked -= 1
+
+    def getTotalTime(self):
+        return self.total_time
+
+    def getMinTime(self):
+        return self.booked
+
+
+
 # V0-1
 # IDEA: 2D ARRAY (GPT)
 class BusBooking(object):
