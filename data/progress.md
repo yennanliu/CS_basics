@@ -56,6 +56,8 @@
 
 	- Matrix — 實戰題解
 		- https://yennj12.js.org/CS_basics/cheatsheets/matrix_examples.zh.html
+			- `10) Kth Smallest Element in a Sorted Matrix — LC 378 — 對答案二分搜尋`
+
 
 
 
@@ -172,6 +174,9 @@
 
 			 - 依 i - j 把格子分組（同一條對角線），各組排序後，再照 row-major 順序寫回矩陣。
 			 	- 1329
+
+			 - Image Smoother  — 8 方向鄰域
+			 	— LC 661
 
 
 
