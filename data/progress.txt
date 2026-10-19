@@ -1,3 +1,7 @@
+20261020: top 100 like(2 pointers): 42 | top 100 like(linked list):  25 | DP: wildcard: 97(todo) | g recent:  1235 | basics: union find | others:  357(dp, todo), 2D LIS (354), 710(todo), 1696(todo, dp + mono deque), common_matrix_process, matrix_various_op, 647(DP again, to note: when need to reverse loop),82(todo),845(prefix, suffix -> again),get_prime(math),4040(todo),670(todo: hashmap, 3 pointers)
+
+
+
 20261019: top 100 like(2 pointers): 42 | top 100 like(linked list):  25 | DP: wildcard: 97(todo) | g recent:  1235 | basics: union find | others:  357(dp, todo), 2D LIS (354), 710(todo), 1696(todo, dp + mono deque), common_matrix_process, matrix_various_op, 647(DP again, to note: when need to reverse loop),82(todo),845(prefix, suffix -> again),get_prime(math),406(again),165(ok*),680(again),4040(todo),670(todo: hashmap, 3 pointers),1257(OK!),720(OK),845(ok**),4078(OK*),4079(again)
 
 
