@@ -76,13 +76,6 @@
 		- `多重 key 的 tuple 排序：key=lambda x: (x[0], x[1])`
 
 
-- stack_expression_parsing
-	- https://yennj12.js.org/CS_basics/cheatsheets/stack_expression_parsing.zh.html
-		- to review: `general form`
-
-
-
-
 
 
 - time_space_complexity.md
@@ -132,11 +125,23 @@
 	- Matrix Data Structure
 	- 背包 DP（0/1、完全背包、Coin Change)
 	- 雜湊表 — 題目詳解
+	- Trie — 實戰題解
 
 
 - Others
 	- recent updated cheatsheet
 	- TODO LC:
+
+		- Trie
+			- Add and Search Word
+				— LC 211
+
+			- Search Suggestions System 
+				— LC 1268 
+
+			- Word Search II 
+				— LC 212 — 有字典樹這題才做得動 
+
 
 		- 0/1 knapsack
 			- 二維容量
