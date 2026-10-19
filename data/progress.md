@@ -90,6 +90,11 @@
 	- https://yennj12.js.org/CS_basics/cheatsheets/stack_expression_parsing.zh.html
 		- to review: `general form`
 
+
+
+
+
+
 - time_space_complexity.md
 
 
@@ -253,6 +258,12 @@
 
 		- HashMap
 			- 1010
+
+			- {digit: last index} 雜湊表 + 由左往右的貪婪掃描
+				- 670
+
+			- 滑動視窗 + HashMap（頻率計數）+ 追蹤 max_freq
+				- 424
 
 			- K-diff Pairs in an Array
 				- 532

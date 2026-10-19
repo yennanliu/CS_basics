@@ -45,7 +45,7 @@ class Solution(object):
         max_freq = 0
 
         for r in range(len(s)):
-            r_val = s[r]\
+            r_val = s[r]
 
             """
             NOTE !!!
