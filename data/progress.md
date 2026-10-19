@@ -50,14 +50,6 @@
 - ★★★★★
 
 
-
-	- 背包 DP（0/1、完全背包、Coin Change）
-		- https://yennj12.js.org/CS_basics/cheatsheets/knapsack.zh.html
-			- `完整 Java 範例：LC 518 Coin Change II`
-
-
-
-
 	- 複雜度速查表 — 經典演算法與資料結構
 		- https://yennj12.js.org/CS_basics/cheatsheets/complexity_cheatsheet.zh.html
 
@@ -143,7 +135,7 @@
 	- 前綴和 — 範例詳解
 	- 雙指標 — 實例解析
 	- Matrix Data Structure
-			
+	- 背包 DP（0/1、完全背包、Coin Change)
 
 
 
@@ -157,6 +149,8 @@
 			- LC 1049 - Last Stone Weight II
 				- 494
 				- 416
+			- 深入：分組 0/1 背包 (分組背包)
+				— LC 4040
 
 		- Matrix
 			- 在兩條對角線上找最大質數
