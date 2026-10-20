@@ -54,11 +54,6 @@
 		- https://yennj12.js.org/CS_basics/cheatsheets/complexity_cheatsheet.zh.html
 
 
-	- Matrix — 實戰題解
-		- https://yennj12.js.org/CS_basics/cheatsheets/matrix_examples.zh.html
-			- `10) Kth Smallest Element in a Sorted Matrix — LC 378 — 對答案二分搜尋`
-
-
 
 
 - LeetCode Patterns Guide
@@ -128,6 +123,7 @@
 	- 背包 DP（0/1、完全背包、Coin Change)
 	- 雜湊表 — 題目詳解
 	- Trie — 實戰題解
+	- Matrix — 實戰題解
 
 
 - Others
@@ -155,6 +151,14 @@
 				— LC 4040
 
 		- Matrix
+
+			- Matrix Block Sum — 二維前綴和
+				— LC 1314
+				- 304
+				- 308
+				- 1292
+
+
 			- 在兩條對角線上找最大質數
 				- 2614
 			- 模式 1：矩陣走訪題
