@@ -46,7 +46,140 @@ searchWord consists of lowercase English letters.
 
 """
 
+
 # V0
+class Solution(object):
+    def suggestedProducts(self, products, searchWord):
+        """
+        :type products: List[str]
+        :type searchWord: str
+        :rtype: List[List[str]]
+        """
+        pass
+
+
+# V0-1
+# IDEA : TRIE (GPT)
+
+class MyNode(object):
+    def __init__(self):
+        self.child = {}
+        self.is_end = False
+
+
+class Solution(object):
+
+    def __init__(self):
+        self.node = MyNode()
+        self.products = []
+
+    def suggestedProducts(self, products, searchWord):
+        """
+        :type products: List[str]
+        :type searchWord: str
+        :rtype: List[List[str]]
+        """
+        self.node = MyNode()
+        self.products = sorted(products)
+
+        for p in self.products:
+            self.add_product(p)
+
+        res = []
+        prefix = ""
+
+        for ch in searchWord:
+            prefix += ch
+            resp = self.search(prefix)
+            res.append(resp)
+
+        return res
+
+    def add_product(self, product_name):
+        node = self.node
+
+        for ch in product_name:
+            if ch not in node.child:
+                node.child[ch] = MyNode()
+
+            node = node.child[ch]
+
+        node.is_end = True
+
+    def search(self, word):
+        node = self.node
+
+        # Follow the Trie path for this prefix
+        for ch in word:
+            if ch not in node.child:
+                return []
+            node = node.child[ch]
+
+        # Collect products that start with this prefix
+        result = []
+        for product in self.products:
+            if product.startswith(word):
+                result.append(product)
+                if len(result) == 3:
+                    break
+
+        return result
+
+
+# V0-2
+# IDEA : TRIE (GEMINI)
+class MyNode(object):
+
+  def __init__(self):
+    self.child = {}
+    # 每個節點直接儲存經過此處、字典序前 3 小的產品名稱
+    self.suggestions = []
+
+
+class Solution(object):
+
+  def suggestedProducts(self, products, searchWord):
+    """:type products: List[str]
+
+    :type searchWord: str
+    :rtype: List[List[str]]
+    """
+    # 1. 確保產品按照字典序排序
+    products.sort()
+
+    root = MyNode()
+
+    # 2. 建立 Trie，並在沿途節點記錄最多 3 個建議產品
+    for product in products:
+      node = root
+      for char in product:
+        if char not in node.child:
+          node.child[char] = MyNode()
+        node = node.child[char]
+
+        # 由於 products 已排序，先加入的必定字典序較小，維持最多 3 個
+        if len(node.suggestions) < 3:
+          node.suggestions.append(product)
+
+    # 3. 依據 searchWord 的每一個前綴進行查詢
+    res = []
+    node = root
+    found = True
+
+    for char in searchWord:
+      if found and char in node.child:
+        node = node.child[char]
+        res.append(node.suggestions)
+      else:
+        # 一旦某個字元找不到對應分支，後續所有前綴的建議清單都為空
+        found = False
+        res.append([])
+
+    return res
+
+
+
+# V0-3
 # IDEA : TRIE
 class TrieNode:
     # time = O(1)
