@@ -178,6 +178,12 @@
 			 - Image Smoother  — 8 方向鄰域
 			 	— LC 661
 
+			 - 對答案二分搜尋
+			 	- LC 378
+
+			 - 在 DAG 上做記憶化 DFS
+			 	- LC 329
+
 
 
 
@@ -336,15 +342,18 @@
 		- DP:
 			- 5
 
-		- 組合 (LC 518)
-		- 排列 (LC 377)
-			- compare with `0/1 Knapsack`
-		
-		- String:
-			- Template 7：原地 char 陣列 — 先標記再重建 — LC 1249
-				- 1249
-			- Template 8：依最後出現位置貪婪切分 — LC 763
-				- 763 !!!
+			Maximal Square 
+				— LC 221 
+
+			- 組合 (LC 518)
+			- 排列 (LC 377)
+				- compare with `0/1 Knapsack`
+			
+			- String:
+				- Template 7：原地 char 陣列 — 先標記再重建 — LC 1249
+					- 1249
+				- Template 8：依最後出現位置貪婪切分 — LC 763
+					- 763 !!!
 
 
 		- stack
