@@ -159,7 +159,7 @@ class Trie2 {
 }
 ```
 
-### 2) Add and Search Word — LC 211 — wildcard walk ⭐⭐⭐⭐
+### 2) Design Add and Search Words Data Structure — LC 211 — wildcard walk ⭐⭐⭐⭐
 
 
 **Key Idea**: plain trie for `addWord`, then a `helper(word, idx, node)` recursion for `search` that
@@ -167,7 +167,7 @@ splits on `ch == "."` (try every child) vs `ch != "."` (walk the single matching
 
 ```python
 # python
-# LC 211 Add and Search Word - Data structure design
+# LC 211 Design Add and Search Words Data Structure
 # V0
 # IDEA: TRIE + recursion
 # time = O(m) add / O(26^m) search worst  # m = word length
