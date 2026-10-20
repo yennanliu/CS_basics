@@ -60,7 +60,6 @@ class Solution(object):
 
 # V0-1
 # IDEA : TRIE (GPT)
-
 class MyNode(object):
     def __init__(self):
         self.child = {}
@@ -126,12 +125,90 @@ class Solution(object):
         return result
 
 
+# V0-0-1
+# IDEA: TRIE + `suggestions` propery (gpt)
+class MyNode(object):
+    def __init__(self):
+        self.child = {}
+        self.suggestions = []
+
+
+class Solution(object):
+    def __init__(self):
+        self.node = MyNode()
+
+    def suggestedProducts(self, products, searchWord):
+        """
+        :type products: List[str]
+        :type searchWord: str
+        :rtype: List[List[str]]
+        """
+        self.node = MyNode()
+        products.sort()
+
+        for product in products:
+            self.add_product(product)
+
+        res = []
+        node = self.node
+
+        for ch in searchWord:
+            # Once a prefix is missing, all longer prefixes fail too.
+            if node is None or ch not in node.child:
+                res.append([])
+                node = None
+                continue
+
+            node = node.child[ch]
+            res.append(node.suggestions[:])
+
+        return res
+
+    def add_product(self, product_name):
+        node = self.node
+
+        for ch in product_name:
+            if ch not in node.child:
+                node.child[ch] = MyNode()
+
+            node = node.child[ch]
+
+            if len(node.suggestions) < 3:
+                node.suggestions.append(product_name)
+
+
+
 # V0-2
-# IDEA : TRIE (GEMINI)
+# IDEA : Pre-sorted Trie Suggestions (GEMINI)
+"""
+CORE IDEA:
+
+-> 最佳解：Trie 節點預存優化法（Pre-sorted Trie Suggestions）
+
+    
+    -> 
+    與其在查詢時用複雜且容易出錯的 DFS 去動態收集與排序，
+    最乾淨、高效的作法是在建立 Trie 的同時，
+    讓每個節點直接記錄經過它的前 3 個字典序最小產品。
+
+
+"""
 class MyNode(object):
 
   def __init__(self):
     self.child = {}
+
+    """
+    NOTE !!!
+
+
+    we have a special attr:
+
+        - suggestions: array
+
+            - record the top 3 product for the cur node
+              enrich this attr when build the trie
+    """
     # 每個節點直接儲存經過此處、字典序前 3 小的產品名稱
     self.suggestions = []
 
@@ -144,12 +221,17 @@ class Solution(object):
     :type searchWord: str
     :rtype: List[List[str]]
     """
-    # 1. 確保產品按照字典序排序
+
+    #-----------------------------
+    # Step 1. 確保產品按照`字典序`排序
+    #-----------------------------
     products.sort()
 
     root = MyNode()
 
-    # 2. 建立 Trie，並在沿途節點記錄最多 3 個建議產品
+    #-----------------------------
+    # Step 2. 建立 Trie，並在`沿途`節點記錄`最多 3 個建議產品`
+    #-----------------------------
     for product in products:
       node = root
       for char in product:
@@ -161,16 +243,25 @@ class Solution(object):
         if len(node.suggestions) < 3:
           node.suggestions.append(product)
 
-    # 3. 依據 searchWord 的每一個前綴進行查詢
+    #-----------------------------
+    # Step 3. 依據 searchWord 的每一個前綴進行查詢
+    #-----------------------------
     res = []
     node = root
+
+    # helper flag
+    # check if a char is found or not
     found = True
 
     for char in searchWord:
       if found and char in node.child:
         node = node.child[char]
+        # NOTE !!! below
+        # -> update `suggestions` when process the nodes (trie)
         res.append(node.suggestions)
       else:
+
+        # NOTE !!! below
         # 一旦某個字元找不到對應分支，後續所有前綴的建議清單都為空
         found = False
         res.append([])
