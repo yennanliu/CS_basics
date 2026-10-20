@@ -140,6 +140,10 @@
 			- Word Search II 
 				— LC 212 — 有字典樹這題才做得動 
 
+			- 反向 Trie —— 串流上的後綴比對（LC 1032
+				- 1032
+
+
 
 		- 0/1 knapsack
 			- 二維容量
@@ -381,14 +385,6 @@
 
 		- Mono stack
 			- LC 853 - Car Fleet
-
-
-		- graph
-
-		- Trie
-			- 反向 Trie —— 串流上的後綴比對（LC 1032
-				- 1032
-
 
 		- binary search
 			- 2.4) 雙調 / 山脈陣列 — 遞減順序的翻轉
