@@ -41,6 +41,77 @@ logs[i] is guaranteed to have an identifier and at least one word after the iden
 """
 
 # V0
+class Solution(object):
+    def reorderLogFiles(self, logs):
+        """
+        :type logs: List[str]
+        :rtype: List[str]
+        """
+        pass
+
+
+# V0-1
+# IDEA: SORING (gpt)
+class Solution(object):
+    def reorderLogFiles(self, logs):
+        """
+        :type logs: List[str]
+        :rtype: List[str]
+        """
+        letter_logs = []
+        digit_logs = []
+
+        # Step 1: Separate letter-logs and digit-logs
+        for log in logs:
+            if self.is_letter_log(log):
+                letter_logs.append(log)
+            else:
+                digit_logs.append(log)
+
+        # Step 2: Sort letter-logs by content, then identifier
+        letter_logs.sort(
+            key=lambda log: (log.split(" ", 1)[1], log.split(" ", 1)[0])
+        )
+
+        # Step 3: Keep digit-logs in original order
+        return letter_logs + digit_logs
+
+    def is_letter_log(self, log):
+        identifier, content = log.split(" ", 1)
+        return content[0].isalpha()
+
+
+# V0-2
+# IDEA: SORING (gemini)
+class Solution(object):
+
+  def reorderLogFiles(self, logs):
+    """:type logs: List[str]
+
+    :rtype: List[str]
+    """
+    letters = []
+    digits = []
+
+    for log in logs:
+      # 將日誌切分為「識別碼 (identifier)」與「內容 (content)」兩部分
+      _id, content = log.split(" ", 1)
+
+      # 判斷內容的第一個字元是否為數字
+      if content[0].isdigit():
+        digits.append(log)
+      else:
+        letters.append(log)
+
+    # 依照題目要求排序 letter-logs：
+    # 優先以內容 (content) 排序；若內容相同，則以識別碼 (identifier) 排序
+    letters.sort(key=lambda x: (x.split(" ", 1)[1], x.split(" ", 1)[0]))
+
+    # 字母日誌在前，數字日誌在後（數字日誌維持原本相對順序）
+    return letters + digits
+
+
+# V0-3
 # IDEA : SORT BY KEY
 # time = O(n log n * l)  # n = len(logs), l = avg length of a log
 # space = O(n)
@@ -121,49 +192,6 @@ class Solution:
 
         return sorted(logs, key=get_key)
 
-# V1'''
-# IDEA : Comparator
-# https://leetcode.com/problems/reorder-data-in-log-files/solution/
-# JAVA
-# class Solution {
-#     public String[] reorderLogFiles(String[] logs) {
-#
-#         Comparator<String> myComp = new Comparator<String>() {
-#             @Override
-#             public int compare(String log1, String log2) {
-#                 // split each log into two parts: <identifier, content>
-#                 String[] split1 = log1.split(" ", 2);
-#                 String[] split2 = log2.split(" ", 2);
-#
-#                 boolean isDigit1 = Character.isDigit(split1[1].charAt(0));
-#                 boolean isDigit2 = Character.isDigit(split2[1].charAt(0));
-#
-#                 // case 1). both logs are letter-logs
-#                 if (!isDigit1 && !isDigit2) {
-#                     // first compare the content
-#                     int cmp = split1[1].compareTo(split2[1]);
-#                     if (cmp != 0)
-#                         return cmp;
-#                     // logs of same content, compare the identifiers
-#                     return split1[0].compareTo(split2[0]);
-#                 }
-#
-#                 // case 2). one of logs is digit-log
-#                 if (!isDigit1 && isDigit2)
-#                     // the letter-log comes before digit-logs
-#                     return -1;
-#                 else if (isDigit1 && !isDigit2)
-#                     return 1;
-#                 else
-#                     // case 3). both logs are digit-log
-#                     return 0;
-#             }
-#         };
-#
-#         Arrays.sort(logs, myComp);
-#         return logs;
-#     }
-# }
 
 # V2
 # https://www.programiz.com/python-programming/methods/string/isalpha
