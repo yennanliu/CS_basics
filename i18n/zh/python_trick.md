@@ -159,6 +159,16 @@
 
 <!--CODE-->
 
+<!-- 34d9e9dc226e -->
+#### **`split(" ", 1)` vs `split(" ")` — 只切一次，拆成兩個名稱**
+
+兩者差別在 `maxsplit`：`split(" ", 1)` **最多只切割一次**，所以結果（最多）只有兩段 —
+開頭那段，以及**保留空格的其餘部分**。`split(" ")` 則會切割**所有**空格。這正是 LC 937 裡
+「identifier + content」拆解能安全成立的原因：不設上限的話，內容超過一個字的 log
+會切出兩段以上，拆解就會丟出例外。
+
+<!--CODE-->
+
 <!-- 3e38a9177c28 -->
 ### 把字串補零
 
@@ -324,7 +334,7 @@ Timsort 是**穩定的**，所以你可以把排序串起來。規則：**先依
 - ✅ 寫不出單一元素的 key → `functools.cmp_to_key` / java `Comparator`
 - ✅ Java：用 `Integer.compare(b, a)` 而不是 `b - a` 以避開溢位；`.reversed()` 會作用在整條鏈上
 
-<!-- eb69c283cbfe -->
+<!-- 18cc1dde0872 -->
 ### 用具名 `key` 函式寫條件式的 tuple key
 
 
@@ -346,7 +356,7 @@ tuple 依然是逐元素（由左到右）比較，所以第一個欄位就是�
 - 所有分支必須回傳**長度相同**的 tuple，而且每個位置的型別要**可互相比較**
   （別在同一個欄位裡混用 `str` 和 `int`）。
 - 把某個數值欄位取負（`-item.priority`），就能讓那個欄位降冪、其餘維持升冪 —
-  跟 [1-11'] 節同一招。
+  跟 [多鍵 tuple 排序](#multi-key-tuple-sort-keylambda-x-x0-x1-) 同一招。
 - `key` 函式**每個元素只會被呼叫一次**（Schwartzian transform），所以就算裡面
   邏輯比較重也還是有效率。
 
@@ -357,6 +367,24 @@ tuple 依然是逐元素（由左到右）比較，所以第一個欄位就是�
 
 > **經驗法則**：只要排序規則出現*分支*，就該改用回傳 tuple 的具名 `key` 函式 —
 > 這比把 `if/else` 硬塞進 lambda 好讀太多。
+
+<!-- 69a546012e37 -->
+#### **同一個 key 的兩種寫法：`lambda` vs 輔助函式**
+
+就算沒有分支，同一個 key 也可以寫成 inline 或寫成輔助函式。這裡字母 log 已經先分出來了，
+所以 key 只需要是 `(content, identifier)`：
+
+<!--CODE-->
+
+| | `lambda` | 輔助函式 |
+|---|---|---|
+| 適合 | 不需要中間變數名稱的短 key | 需要區域變數名稱、分支或註解的 key |
+| 讀起來是 | `[1]`、`[0]` — 位置 | `content`、`identifier` — 名稱 |
+| 傳法 | `key=lambda x: ...` | `key=self.sort_key` / `key=sort_key` — **不加 `()`** |
+
+- `key=self.sort_key` 是把綁定方法(bound method)交給 `sort`；`key=self.sort_key(log)`
+  會先呼叫一次，傳進去的是它的**結果**，因此會失敗。
+- `key=lambda x: f(x)` 只是比較長的 `key=f` — 只有在需要多帶參數時才用 lambda 包一層函式。
 
 <!-- cbf75432ec6c -->
 ### 依出現次數排序一個 dict

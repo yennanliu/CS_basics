@@ -458,6 +458,29 @@ class Solution:
         return logs #sorted(logs, key = f)
 ```
 
+#### **`split(" ", 1)` vs `split(" ")` — split once, unpack into two names**
+
+The difference is `maxsplit`: `split(" ", 1)` cuts **at most once**, so the result always
+has (at most) two parts — the head and **the rest, spaces intact**. `split(" ")` cuts at
+**every** space. That is what makes the "identifier + content" unpacking safe in
+LC 937: with no limit, a log with more than one content word has more than two parts and
+the unpacking raises.
+
+```python
+# python
+log = "let1 art can"
+
+log.split(" ", 1)     # ['let1', 'art can']        <- head + the rest
+log.split(" ")        # ['let1', 'art', 'can']     <- every space
+
+identifier, content = log.split(" ", 1)   # ✅ always 2 parts here
+# identifier, content = log.split(" ")    # ❌ ValueError: too many values to unpack
+
+# the rest keeps its spaces, so it compares as one string
+content                # 'art can'
+content[0].isalpha()   # True  -> a letter-log (LC 937)
+```
+
 
 ### Zero-padding a string
 
@@ -1080,7 +1103,7 @@ own ordering rules (ASC, DESC via negation, different fields entirely).
 - All branches must return a tuple of the **same length** with **comparable types**
   position-by-position (don't mix `str` and `int` in the same slot).
 - Negate a numeric field (`-item.priority`) to sort that field DESC while keeping the
-  rest ASC — same trick as section [1-11'].
+  rest ASC — same trick as [Multi-key tuple sort](#multi-key-tuple-sort-keylambda-x-x0-x1-).
 - The `key` function is called **once per element** (Schwartzian transform), so it's
   efficient even with heavier logic inside.
 
@@ -1102,6 +1125,41 @@ class Solution:
 
 > **Rule of thumb**: reach for a named tuple-returning `key` function the moment the
 > ordering has *branches* — it reads far better than cramming `if/else` into a lambda.
+
+#### **Same key, two spellings: `lambda` vs a helper function**
+
+Even without branches, the same key can be written inline or as a helper. Here the
+letter-logs are already separated out, so the key only has to be `(content, identifier)`:
+
+```python
+# python
+# LC 937 - Reorder Data in Log Files (letter_logs already split from digit_logs)
+
+# V1: lambda — fine for a one-off, but it calls split TWICE per log
+letter_logs.sort(
+    key=lambda log: (log.split(" ", 1)[1], log.split(" ", 1)[0])
+)
+
+# V2: helper function — split once, unpack into names, return the tuple
+class Solution(object):
+    def sort_key(self, log):
+        identifier, content = log.split(" ", 1)
+        return (content, identifier)    # by content, then identifier
+
+    # ... inside reorderLogFiles:
+    #     letter_logs.sort(key=self.sort_key)   # pass the function, do NOT call it
+```
+
+| | `lambda` | helper function |
+|---|---|---|
+| fits | a short key with no intermediate names | a key that needs a local name, a branch, or a comment |
+| reads as | `[1]`, `[0]` — positions | `content`, `identifier` — names |
+| pass as | `key=lambda x: ...` | `key=self.sort_key` / `key=sort_key` — **no `()`** |
+
+- `key=self.sort_key` hands `sort` the bound method; `key=self.sort_key(log)` would call it
+  once and pass its **result**, which fails.
+- `key=lambda x: f(x)` is just a longer `key=f` — wrap a function in a lambda only when
+  you need to add an argument.
 
 ### Sorting a dict by frequency
 

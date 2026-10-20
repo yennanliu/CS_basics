@@ -43,7 +43,7 @@ half-translated document renders with English gaps rather than failing.
   is what makes a problem findable on LeetCode itself.
 
 
-## Status — 5375 / 5375 sections (100%)
+## Status — 5377 / 5377 sections (100%)
 
 | Cheatsheet | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -142,7 +142,7 @@ half-translated document renders with English gaps rather than failing.
 | [priority_queue](./cheatsheet/priority_queue.md) | 3 | [✅](../i18n/zh/priority_queue.md) |
 | [python_complexity](./cheatsheet/python_complexity.md) | 9 | [✅](../i18n/zh/python_complexity.md) |
 | [python_gotchas](./cheatsheet/python_gotchas.md) | 44 | [✅](../i18n/zh/python_gotchas.md) |
-| [python_trick](./cheatsheet/python_trick.md) | 70 | [✅](../i18n/zh/python_trick.md) |
+| [python_trick](./cheatsheet/python_trick.md) | 72 | [✅](../i18n/zh/python_trick.md) |
 | [python_trick_indexing](./cheatsheet/python_trick_indexing.md) | 28 | [✅](../i18n/zh/python_trick_indexing.md) |
 | [python_trick_stdlib](./cheatsheet/python_trick_stdlib.md) | 26 | [✅](../i18n/zh/python_trick_stdlib.md) |
 | [queue](./cheatsheet/queue.md) | 58 | [✅](../i18n/zh/queue.md) |
