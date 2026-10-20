@@ -355,6 +355,15 @@
 				- Template 8：依最後出現位置貪婪切分 — LC 763
 					- 763 !!!
 
+			- Count Square Submatrices with All Ones 
+				- (LC 1277)
+				- 1504
+
+			- Maximal Rectangle — 逐列降維成直方圖
+				-  LC 85
+				- 1504
+				- 221
+
 
 		- stack
 			- 括號家族 —— 同一個模板的四種變形
