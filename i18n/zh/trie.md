@@ -65,11 +65,60 @@
 
 <!--CODE-->
 
-<!-- 21a90ccf6aea -->
+<!-- 45354b4395d8 -->
 ### 模板 4：自動補完 Trie — LC 1268
+
+**核心想法**：給節點一個**自訂屬性**直接存答案，並在建 trie 的時候就把它填好。LC 1268 的這個屬性是
+`suggestions` — 路徑經過這個節點、字典序前（最多）3 小的產品。先把 `products` 排序，那麼最先經過某節點的
+3 個產品**就是**它的前 3 小，所以 `insert` 只要在清單還沒滿時 append 即可。查詢就變成單純走一趟，不用
+DFS 也不用排序：每個打出的前綴，答案就是它走到的那個節點。
+
+這比在查詢時才收集（本節最後的 DFS）更好：DFS 要依排序順序拜訪子節點、到上限就停、沿路還要拼回整個單字
+— 三個容易出錯的地方；這裡的順序只靠一次 `sort()` 就決定好了。
+
 <!--CODE-->
 
 <!--CODE-->
+
+<!--CODE-->
+
+**常見陷阱**
+- **先**排序再插入。沒排序的話，每個節點都要靠排序或 heap 才能維持前 3 小。
+- 某個字元一旦找不到，就一路維持找不到（`found = False`）。若重置回根節點，後面的字元會被錯誤地
+  從 trie 頂端重新比對。
+- 補 `[]`：輸出永遠有 `len(searchWord)` 個清單，即使走訪早已掉出 trie。
+
+<!-- d345128a15ff -->
+#### 查詢時 DFS 收集 — 當屬性無法預先算好時
+
+在每次查詢的上限不同，或查詢開始後還會持續加入新單字、無法重新排序時，用這個版本。它不存任何額外資訊，
+改在查詢時付出代價：走到前綴節點，再依排序順序 DFS 它的子節點，直到湊滿 `limit` 個單字。
+
+<!--CODE-->
+
+<!-- 59f41c1a054b -->
+#### Trie + 自訂節點屬性 — 相似題 ⭐⭐⭐⭐
+
+`children` + `is_end` 只是骨架。LC 208 之後的 trie 題，大多靠這個問題解開：**每個節點需要知道什麼，
+查詢才能只走一趟？** — 然後就只存那個東西，並在插入路徑上更新它。
+
+| LC | 題目 | 節點上的自訂屬性 | 何時填入 | 何時讀取 |
+|---|---|---|---|---|
+| 1268 | Search Suggestions System | `suggestions` — 經過此處、字典序前 3 小的單字 | 插入時（products 先排序） | 每一步前綴 |
+| 642 | Design Search Autocomplete System | `counts` / 經過此處的前 k 熱門句子 | 插入 + 每次 `#` | 每打一個字元 |
+| 677 | Map Sum Pairs | `score` — 經過此處的 key 的 value 總和 | 插入時（加上差值） | 前綴走完時 |
+| 1804 | Implement Trie II (Prefix Tree) | `prefix_count`、`end_count` | 插入 / 刪除（±1） | 走完時 |
+| 2416 | Sum of Prefix Scores of Strings | `count` — 經過此處的單字數 | 插入時 | 沿每個單字的路徑加總 |
+| 745 | Prefix and Suffix Search | `weight` — 經過此處的最大索引 | 插入 `suffix#word` 時 | 查詢走完時 |
+| 212 | Word Search II | `word` — 在此結束的完整單字 | 插入時 | DFS 碰到就收，然後清掉 |
+| 648 | Replace Words | `word`（或 `is_end`）— 最短字根 | 插入時 | 走訪時第一次命中 |
+| 720 | Longest Word in Dictionary | 每個結尾節點上的 `word` | 插入時 | 只沿結尾節點 DFS |
+| 336 | Palindrome Pairs | `word_index`、`palindrome_below` | 插入反轉單字時 | 走訪（模板 8） |
+| 1166 | Design File System | 每段路徑的 `value` | `createPath` | `get` |
+| 588 | Design In-Memory File System | `content`、`is_file` | `addContentToFile` | `ls` / `readContentFromFile` |
+
+它們共通的規則：**在插入路徑的每個節點上更新一個值，就能在 O(前綴長度) 內回答前綴查詢**。這和下面面試提示表裡的
+`count` 是同一招。
 
 <!-- 99705a8432b6 -->
 ### 模板 5：二元 Trie（XOR 題） — LC 421 ⭐⭐⭐
@@ -217,7 +266,7 @@ trie 裡只有*嚴格更短*的單字，所以任何切得成功的結果自動�
 
 <!--CODE-->
 
-<!-- 682a28ce5735 -->
+<!-- 15e98e3bd0ec -->
 ### 面試提示 — trie
 | 訊號 | 模式 |
 |--------|---------|
@@ -227,6 +276,7 @@ trie 裡只有*嚴格更短*的單字，所以任何切得成功的結果自動�
 | 「前綴**和**後綴都要」 | suffix#word trie |
 | 「萬用字元 `.` 比對」 | 在 `.` 節點做 DFS |
 | 「數有幾個單字帶這個前綴」 | 在 TrieNode 上加一個 `count` 欄位 |
+| 「每打一個前綴就給前 k 個建議」 | 在節點上存 `suggestions`（[模板 4](#template-4-autocomplete-trie--lc-1268)） |
 
 ---
 

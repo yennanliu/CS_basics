@@ -256,11 +256,146 @@ private boolean dfsSearch(String word, int index, TrieNode node) {
 ```
 
 ### Template 4: Autocomplete Trie — LC 1268
+
+**Key Idea**: give the node a **custom attribute** that stores the answer, and fill it in while
+building. For LC 1268 that attribute is `suggestions` — the (at most) 3 lexicographically smallest
+products whose path runs through the node. Sort `products` first, and the first 3 products to
+pass a node *are* its 3 smallest, so `insert` just appends while the list is short. A query is
+then one walk with no DFS and no sort: the answer for each typed prefix is the node it lands on.
+
+This beats collecting at query time (the DFS at the end of this section): the DFS has to visit
+children in sorted order, stop at the limit, and rebuild each word as it goes — three places to
+get it wrong — whereas here the order is settled once, by `sort()`.
+
+```text
+products sorted = [mobile, moneypot, monitor, mouse, mousepad]
+
+root ─ m  suggestions = [mobile, moneypot, monitor]     <- first 3 to pass, full; later ones skipped
+       └ o  suggestions = [mobile, moneypot, monitor]
+         ├ b ...                                        [mobile]
+         ├ n ...                                        [moneypot, monitor]
+         └ u  suggestions = [mouse, mousepad]
+           └ s ─ e ...                                  [mouse, mousepad]
+
+searchWord "mouse": m -> o -> u -> s -> e, append each node's suggestions
+a missing child ends the walk: that prefix and every longer one get []
+```
+
 ```python
+# python
+# LC 1268 - Search Suggestions System
+# IDEA: trie whose node stores `suggestions` (top 3 by lexicographic order), filled during insert
+# time = O(n log n * L + S + m), space = O(S)   # n = #products, L = max length, S = total chars, m = len(searchWord)
+class MyNode(object):
+
+    def __init__(self):
+        self.child = {}
+
+        """
+        NOTE !!!
+
+        we have a special attr:
+
+            - suggestions: array
+
+                - record the top 3 product for the cur node
+                  enrich this attr when build the trie
+        """
+        # 每個節點直接儲存經過此處、字典序前 3 小的產品名稱
+        self.suggestions = []
+
+
+class Solution(object):
+
+    def suggestedProducts(self, products, searchWord):
+        # Step 1. sort, so the first 3 products to reach a node are its 3 smallest
+        products.sort()
+
+        # Step 2. build the trie, recording at most 3 suggestions on every node along the path
+        root = MyNode()
+        for product in products:
+            node = root
+            for char in product:
+                if char not in node.child:
+                    node.child[char] = MyNode()
+                node = node.child[char]
+                if len(node.suggestions) < 3:
+                    node.suggestions.append(product)
+
+        # Step 3. walk searchWord once; each step's answer is the node's suggestions
+        res = []
+        node = root
+        found = True
+        for char in searchWord:
+            if found and char in node.child:
+                node = node.child[char]
+                res.append(node.suggestions)
+            else:
+                # NOTE !!! once a prefix has no branch, every longer prefix is [] too
+                found = False
+                res.append([])
+        return res
+```
+
+```java
+// java
+// LC 1268 - Search Suggestions System
+// IDEA: trie whose node stores `suggestions` (top 3 by lexicographic order), filled during insert
+// time = O(n log n * L + S + m), space = O(S)   // n = #products, L = max length, S = total chars, m = len(searchWord)
+class Solution {
+    class MyNode {
+        Map<Character, MyNode> child = new HashMap<>();
+        // NOTE !!! the custom attr: the 3 smallest products whose path passes this node
+        List<String> suggestions = new ArrayList<>();
+    }
+
+    public List<List<String>> suggestedProducts(String[] products, String searchWord) {
+        Arrays.sort(products);
+
+        MyNode root = new MyNode();
+        for (String product : products) {
+            MyNode node = root;
+            for (char c : product.toCharArray()) {
+                node.child.putIfAbsent(c, new MyNode());
+                node = node.child.get(c);
+                if (node.suggestions.size() < 3) {
+                    node.suggestions.add(product);
+                }
+            }
+        }
+
+        List<List<String>> res = new ArrayList<>();
+        MyNode node = root;
+        for (char c : searchWord.toCharArray()) {
+            // node == null: an earlier prefix already fell off the trie
+            node = (node == null) ? null : node.child.get(c);
+            res.add(node == null ? new ArrayList<>() : node.suggestions);
+        }
+        return res;
+    }
+}
+```
+
+**Pitfalls**
+- Sort **before** inserting. Without it, keeping the 3 smallest needs a sort or heap on every node.
+- Once a character misses, stay missed (`found = False`). Resetting to the root would wrongly
+  match a later character from the top of the trie.
+- The `[]` padding: the output always has `len(searchWord)` lists, even after the walk falls off.
+
+#### Query-time DFS collection — when the attribute cannot be precomputed
+
+Keep this one for when the limit changes per query, or when words keep arriving after queries
+start and re-sorting is not an option. It stores nothing extra and pays at query time instead:
+walk to the prefix node, then DFS its children in sorted order until `limit` words are found.
+
+```python
+# python
+# IDEA: walk to the prefix node, then DFS children in sorted order, stopping at `limit`
+# time = O(p + size of the subtree visited), space = O(L) recursion
 class AutocompleteTrie:
     def __init__(self):
         self.root = TrieNode()
-    
+
     def insert(self, word: str) -> None:
         node = self.root
         for char in word:
@@ -269,65 +404,50 @@ class AutocompleteTrie:
             node = node.children[char]
         node.is_end = True
         node.word = word
-    
+
     def search_prefix(self, prefix: str, limit: int = 3) -> List[str]:
-        """Return up to 'limit' words with given prefix"""
         node = self.root
-        
-        # Navigate to prefix end
         for char in prefix:
             if char not in node.children:
                 return []
             node = node.children[char]
-        
-        # Collect all words with this prefix
         results = []
         self._dfs_collect(node, results, limit)
         return results
-    
+
     def _dfs_collect(self, node: TrieNode, results: List[str], limit: int):
         if len(results) >= limit:
             return
-        
         if node.is_end:
             results.append(node.word)
-        
-        # Traverse in lexicographical order
+        # sorted() is what makes the collection lexicographic
         for char in sorted(node.children.keys()):
             self._dfs_collect(node.children[char], results, limit)
 ```
 
-```java
-// Java version with priority queue for top suggestions
-class AutocompleteTrie {
-    class TrieNode {
-        Map<Character, TrieNode> children = new HashMap<>();
-        Map<String, Integer> counts = new HashMap<>();  // Word -> frequency
-    }
-    
-    public List<String> getTopSuggestions(String prefix, int k) {
-        TrieNode node = root;
-        for (char c : prefix.toCharArray()) {
-            if (!node.children.containsKey(c)) {
-                return new ArrayList<>();
-            }
-            node = node.children.get(c);
-        }
-        
-        // Use heap to get top k
-        PriorityQueue<Map.Entry<String, Integer>> pq = new PriorityQueue<>(
-            (a, b) -> b.getValue() - a.getValue()
-        );
-        pq.addAll(node.counts.entrySet());
-        
-        List<String> result = new ArrayList<>();
-        while (!pq.isEmpty() && result.size() < k) {
-            result.add(pq.poll().getKey());
-        }
-        return result;
-    }
-}
-```
+#### Trie + custom node attribute — similar problems ⭐⭐⭐⭐
+
+`children` + `is_end` is only the skeleton. Most trie problems past LC 208 are solved by asking
+**what does each node need to know so the query is a single walk?** — then storing exactly that,
+updated on the insert path.
+
+| LC | Problem | Custom attribute on the node | Filled when | Read when |
+|---|---|---|---|---|
+| 1268 | Search Suggestions System | `suggestions` — top 3 smallest words through here | insert (products pre-sorted) | each prefix step |
+| 642 | Design Search Autocomplete System | `counts` / top-k hot sentences through here | insert + each `#` | each typed char |
+| 677 | Map Sum Pairs | `score` — sum of values of keys through here | insert (add the delta) | end of prefix walk |
+| 1804 | Implement Trie II (Prefix Tree) | `prefix_count`, `end_count` | insert / erase (±1) | end of walk |
+| 2416 | Sum of Prefix Scores of Strings | `count` — words through here | insert | sum along each word's path |
+| 745 | Prefix and Suffix Search | `weight` — largest index through here | insert of `suffix#word` | end of query walk |
+| 212 | Word Search II | `word` — the full word ending here | insert | DFS hits it, then clear it |
+| 648 | Replace Words | `word` (or `is_end`) — shortest root | insert | first hit on the walk |
+| 720 | Longest Word in Dictionary | `word` at each end node | insert | DFS only through end nodes |
+| 336 | Palindrome Pairs | `word_index`, `palindrome_below` | insert of reversed word | walk (Template 8) |
+| 1166 | Design File System | `value` per path segment | `createPath` | `get` |
+| 588 | Design In-Memory File System | `content`, `is_file` | `addContentToFile` | `ls` / `readContentFromFile` |
+
+The rule they share: **a value updated on every node of the insert path answers a prefix query
+in O(prefix length)**. That is the same move as `count` in the interview-tips table below.
 
 ### Template 5: Binary Trie (XOR Problems) — LC 421 ⭐⭐⭐
 ```python
@@ -1157,6 +1277,7 @@ def buildIndex(words):
 | "both prefix AND suffix" | Suffix#word trie |
 | "wildcard `.` matching" | DFS at `.` nodes |
 | "count words with prefix" | Add `count` field to TrieNode |
+| "top-k suggestions per typed prefix" | Store `suggestions` on the node ([Template 4](#template-4-autocomplete-trie--lc-1268)) |
 
 ---
 
