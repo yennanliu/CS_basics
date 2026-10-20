@@ -48,6 +48,7 @@ At most 10^4 calls will be made to addWord and search.
 #        so when pasting V0-1 / V1 back into LC, rename `WordDictionary2` /
 #        `WordDictionary3` to `WordDictionary`.
 
+
 # V0
 # IDEA : TRIE + RECURSION (DFS on index)
 #
@@ -87,7 +88,27 @@ class WordDictionary(object):
 
         for ch in word:
             if ch not in node.child:
+
+                """
+                NOTE !!!
+
+                the key of hashmap is `myNode` type.
+
+                -> so we should init it as `myNode()`,
+                       -> so we have the defined attr
+                            - child
+                            - is_end
+
+
+                -> NOTE !!!
+
+                   DON'T do below: (below is WRONG !!!!)
+
+                    ```node.child[ch] = {} ```
+
+                """
                 node.child[ch] = myNode()
+            
             node = node.child[ch]
 
         node.is_end = True
@@ -105,6 +126,31 @@ class WordDictionary(object):
         """
         return self.helper(word, 0, self.node)
 
+
+    """
+    NOTE !!!
+
+    the structure of dfs helper func
+
+
+    1. DON'T looping over word (explicitly)
+
+    2. pass `node` as param, so we don't need to deal with
+        `node = self.node` in helper func
+
+
+    3. deal with ch == "." case first
+
+        -> and if `can make it`, return True directly
+        -> otherwise, return False
+
+
+    4. finally, 
+       deal with ch != "." case  
+
+       -> e.g. ```self.helper(word, idx + 1, node.child[ch])```
+       
+    """
     def helper(self, word, idx, node):
         """Return True if word[idx:] can be matched starting from node."""
         if idx == len(word):

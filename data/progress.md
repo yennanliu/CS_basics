@@ -131,12 +131,8 @@
 	- TODO LC:
 
 		- Trie
-			- Add and Search Word
-				— LC 211
 
-			- Search Suggestions System 
-				— LC 1268 
-
+		
 			- Word Search II 
 				— LC 212 — 有字典樹這題才做得動 
 
