@@ -190,7 +190,7 @@ python3 script/find_missing_java.py --false-gaps       # what a slug-only scan g
 python3 script/find_missing_java.py --unidentified     # Python files with no parseable LC number
 ```
 
-Comparing `leetcode_python/<Cat>/<slug>.py` filenames against the `leetcode.com/problems/<slug>` comment in each Java file **over-reports by ~40 problems**, because one problem gets spelled several ways: LeetCode renames slugs (LC 211 is `add-and-search-word-data-structure-design` on the Python side, `design-add-and-search-words-data-structure` on the Java side), some Python files are underscored (`coin_change_2`), and ~60 Java files carry no url comment at all.
+Comparing `leetcode_python/<Cat>/<slug>.py` filenames against the `leetcode.com/problems/<slug>` comment in each Java file **over-reports by ~40 problems**, because one problem gets spelled several ways: LeetCode renames slugs (LC 1217 is `play-with-chips` on the Python side, `minimum-cost-to-move-chips-to-the-same-position` on the problem page), some Python files are underscored (`coin_change_2`), and ~60 Java files carry no url comment at all.
 
 So the join uses three signals, strongest first: the **LC number** parsed from the `123. Title` line both sides carry, then any **url slug** in the body, then the **title** normalised to a class-name key. A problem counts as covered if any signal hits.
 

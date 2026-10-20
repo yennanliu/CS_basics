@@ -8,10 +8,10 @@ The naive way to answer "which problems still need Java?" is to compare
 `https://leetcode.com/problems/<slug>` comment in each Java file. That
 over-reports, because a single problem can be spelled three different ways:
 
-  * LeetCode renamed the slug         - LC 211 is `add-and-search-word-data-structure-design`
-                                        in the Python filename but
-                                        `design-add-and-search-words-data-structure` in the
-                                        Java url comment.
+  * LeetCode renamed the slug         - LC 1217 is `play-with-chips` in the Python
+                                        filename but
+                                        `minimum-cost-to-move-chips-to-the-same-position`
+                                        on the problem page, so in a Java url comment.
   * the Python file is underscored    - `coin_change_2.py` vs `coin-change-2`
   * the Java file has no url comment  - ~60 files, mostly non-LC helpers
 

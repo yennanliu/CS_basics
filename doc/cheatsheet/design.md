@@ -33,7 +33,7 @@
 
 #### Pattern 3: Trie (Prefix Tree)
 - **Use Case**: Autocomplete, prefix search, word validation
-- **Examples**: Search Autocomplete System, Add and Search Word, Design Search System
+- **Examples**: Search Autocomplete System, Design Add and Search Words Data Structure, Design Search System
 - **Key Point**: Efficient prefix-based operations O(L) where L is word length
 
 #### Pattern 4: OOD (Object-Oriented Design)

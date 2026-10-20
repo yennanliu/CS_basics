@@ -38,10 +38,10 @@
 - **例子**：Design Twitter、串流上的 Top K Frequent Elements
 - **關鍵點**：雜湊表管資料，堆積管優先順序
 
-<!-- d6e1aada0e2d -->
+<!-- eafbf9e3b3c6 -->
 #### 模式 3：字典樹（Trie，前綴樹）
 - **適用情境**：自動補完、前綴搜尋、單字驗證
-- **例子**：Search Autocomplete System、Add and Search Word、Design Search System
+- **例子**：Search Autocomplete System、Design Add and Search Words Data Structure、Design Search System
 - **關鍵點**：前綴類操作只要 O(L)，L 是單字長度
 
 <!-- 4832e06b5458 -->

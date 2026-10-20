@@ -78,8 +78,8 @@ title, and the row is inserted in ascending LC-number order exactly as
 [`/lc-python`](https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-python/SKILL.md) step 6 describes.
 
 Check whether the file is already there under another spelling before writing a new one —
-LC 211 is `add-and-search-word-data-structure-design` in Python and
-`design-add-and-search-words-data-structure` on the problem page:
+LC 1217 is `play-with-chips` in Python and
+`minimum-cost-to-move-chips-to-the-same-position` on the problem page:
 
 ```bash
 grep -rln "problems/<slug>\|^ \* <number>\. " leetcode_java/src/main/java/

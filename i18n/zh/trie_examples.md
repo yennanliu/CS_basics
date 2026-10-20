@@ -31,8 +31,8 @@
 
 <!--CODE-->
 
-<!-- 414e7c95d8b8 -->
-### 2) Add and Search Word — LC 211 — 帶萬用字元的走訪 ⭐⭐⭐⭐
+<!-- 49704bb1dace -->
+### 2) Design Add and Search Words Data Structure — LC 211 — 帶萬用字元的走訪 ⭐⭐⭐⭐
 
 
 **關鍵想法**：`addWord` 用一般的字典樹；`search` 則寫成 `helper(word, idx, node)` 遞迴，依 `ch == "."`（每個子節點都試）或 `ch != "."`（只走那一個對得上的子節點）分兩條路。
