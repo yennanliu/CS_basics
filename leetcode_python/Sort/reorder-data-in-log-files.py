@@ -50,6 +50,64 @@ class Solution(object):
         pass
 
 
+# V0-0-1
+# IDEA: SORING + HELPER FUNC (gpt)
+class Solution(object):
+    def reorderLogFiles(self, logs):
+        """
+        :type logs: List[str]
+        :rtype: List[str]
+        """
+        letter_logs = []
+        digit_logs = []
+
+        # Step 1: Separate letter-logs and digit-logs
+        for log in logs:
+            if self.is_letter_log(log):
+                letter_logs.append(log)
+            else:
+                digit_logs.append(log)
+
+        # Step 2: Sort letter-logs by content, then identifier
+
+        # V1: lambda func
+        # letter_logs.sort(
+        #     key=lambda log: (log.split(" ", 1)[1], log.split(" ", 1)[0])
+        # )
+   
+        # V2: helper func + sort on func
+        letter_logs.sort(key=self.sort_key)
+
+        # Step 3: Keep digit-logs in original order
+        return letter_logs + digit_logs
+
+    def is_letter_log(self, log):
+        """
+        NOTE !!!
+
+        1. log.split(" ", 1) vs. log.split(" ")
+        
+        -> 兩者最大的差別是：split(" ", 1) 最多只切割一次；split(" ") 則會切割所有空格。
+
+
+        -> e.g.
+
+        ```
+        log = "let1 art can"
+        log.split(" ", 1)
+        # ["let1", "art can"]
+        ```
+
+        """
+        identifier, content = log.split(" ", 1)
+        return content[0].isalpha()
+
+    def sort_key(self, log):
+        identifier, content = log.split(" ", 1)
+        return (content, identifier)
+
+
+
 # V0-1
 # IDEA: SORING (gpt)
 class Solution(object):
@@ -68,6 +126,23 @@ class Solution(object):
             else:
                 digit_logs.append(log)
 
+        """
+        NOTE !!!
+
+        1. log.split(" ", 1) vs. log.split(" ")
+        
+        -> 兩者最大的差別是：split(" ", 1) 最多只切割一次；split(" ") 則會切割所有空格。
+
+
+        -> e.g.
+
+        ```
+        log = "let1 art can"
+        log.split(" ", 1)
+        # ["let1", "art can"]
+        ```
+
+        """
         # Step 2: Sort letter-logs by content, then identifier
         letter_logs.sort(
             key=lambda log: (log.split(" ", 1)[1], log.split(" ", 1)[0])
