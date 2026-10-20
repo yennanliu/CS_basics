@@ -35,6 +35,179 @@ All the strings of words are unique.
 """
 
 # V0
+class Solution(object):
+    def findWords(self, board, words):
+        """
+        :type board: List[List[str]]
+        :type words: List[str]
+        :rtype: List[str]
+        """
+        pass
+
+
+
+# V0-1
+# IDEA : DFS + trie  + BACKTRACK (GPT)
+class MyNode(object):
+    def __init__(self):
+        self.child = {}
+        self.is_end = False
+        self.word = None
+
+
+class Solution(object):
+
+    def __init__(self):
+        self.node = MyNode()
+        self.res = []
+        self.board = None
+        self.rows = 0
+        self.cols = 0
+
+    def findWords(self, board, words):
+        """
+        :type board: List[List[str]]
+        :type words: List[str]
+        :rtype: List[str]
+        """
+        if not board or not board[0] or not words:
+            return []
+
+        self.node = MyNode()
+        self.res = []
+        self.board = board
+        self.rows = len(board)
+        self.cols = len(board[0])
+
+        # Build Trie
+        for word in words:
+            self.add_word(word)
+
+        # DFS from every cell
+        for r in range(self.rows):
+            for c in range(self.cols):
+                self.dfs(r, c, self.node)
+
+        return self.res
+
+    def add_word(self, word):
+        node = self.node
+
+        for ch in word:
+            if ch not in node.child:
+                node.child[ch] = MyNode()
+            node = node.child[ch]
+
+        node.is_end = True
+        node.word = word
+
+    def dfs(self, r, c, node):
+        ch = self.board[r][c]
+
+        # Trie pruning: no word has this prefix
+        if ch not in node.child:
+            return
+
+        next_node = node.child[ch]
+
+        # Found a complete word
+        if next_node.is_end:
+            self.res.append(next_node.word)
+
+            # Avoid adding the same word more than once
+            next_node.is_end = False
+
+        # Mark current cell as visited
+        self.board[r][c] = "#"
+
+        # Explore four directions
+        for dr, dc in ((0, 1), (0, -1), (1, 0), (-1, 0)):
+            nr = r + dr
+            nc = c + dc
+
+            if (0 <= nr < self.rows and
+                    0 <= nc < self.cols and
+                    self.board[nr][nc] != "#"):
+                self.dfs(nr, nc, next_node)
+
+        # Backtrack: restore original character
+        self.board[r][c] = ch
+
+
+# V0-2
+# IDEA : DFS + trie + BACKTRACK (GEMINI)
+class TrieNode(object):
+
+  def __init__(self):
+    self.child = {}
+    # 直接在節點上儲存完整的單字，當到達結尾時可以秒速取得，不需回溯重建字串
+    self.word = None
+
+
+class Solution(object):
+
+  def findWords(self, board, words):
+    """:type board: List[List[str]]
+
+    :type words: List[str]
+    :rtype: List[str]
+    """
+    # 1. 建立 Trie 前綴樹
+    root = TrieNode()
+    for word in words:
+      node = root
+      for char in word:
+        if char not in node.child:
+          node.child[char] = TrieNode()
+        node = node.child[char]
+      node.word = word
+
+    rows = len(board)
+    cols = len(board[0])
+    res = set()
+
+    # 2. 定義 DFS (Backtracking) 函式
+    def dfs(r, c, node):
+      char = board[r][c]
+
+      # 若當前字元不在 Trie 的子節點中，直接返回（剪枝）
+      if char not in node.child:
+        return
+
+      next_node = node.child[char]
+
+      # 若找到一個完整的單字
+      if next_node.word:
+        res.add(next_node.word)
+        # 找到後將其設為 None，避免重複加入同一單字
+        next_node.word = None
+
+      # 將當前格子暫時標記為已訪問，防止原地打轉
+      board[r][c] = "#"
+
+      # 四個方向探索
+      for dr, dc in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+        nr, nc = r + dr, c + dc
+        if 0 <= nr < rows and 0 <= nc < cols and board[nr][nc] != "#":
+          dfs(nr, nc, next_node)
+
+      # 恢復當前格子的字元（回溯）
+      board[r][c] = char
+
+      # 優化剪枝 (Pruning)：若子節點已經空了，從 Trie 中刪除它，加速後續搜尋
+      if not next_node.child and not next_node.word:
+        del node.child[char]
+
+    # 3. 從網格中的每一個格子出發進行 DFS
+    for r in range(rows):
+      for c in range(cols):
+        if board[r][c] in root.child:
+          dfs(r, c, root)
+
+    return list(res)
+
+
+# V0-3
 # IDEA : DFS + trie
 # DEMO
 # >>> words = ['oath', 'pea', 'eat', 'rain'], trie = {'o': {'a': {'t': {'h': {'#': None}}}}, 'p': {'e': {'a': {'#': None}}}, 'e': {'a': {'t': {'#': None}}}, 'r': {'a': {'i': {'n': {'#': None}}}}}

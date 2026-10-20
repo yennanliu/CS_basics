@@ -132,14 +132,8 @@
 
 		- Trie
 
-		
-			- Word Search II 
-				— LC 212 — 有字典樹這題才做得動 
-
 			- 反向 Trie —— 串流上的後綴比對（LC 1032
 				- 1032
-
-
 
 		- 0/1 knapsack
 			- 二維容量
