@@ -99,15 +99,74 @@ class Solution(object):
 # V0-2
 # IDEA: MONO STACK (gpt)
 """
-CORE IDEA:
+
+1. CORE IDEA:
 
 
 
 For every subarray:
 
-\[
-\text{range} = \max(subarray) - \min(subarray)
-\]
+    ```
+    range = max(subarray) - min(subarray)
+
+    ```
+
+-----
+
+2.   Why above ??
+
+
+
+->
+
+假設 `nums[mid]` 是某些子陣列的最大值或最小值。
+
+
+->
+
+我們找出兩個邊界：
+
+    - left：左側最近一個會阻止 nums[mid] 繼續作為極值的元素。
+    - right：右側最近一個會阻止 nums[mid] 繼續作為極值的元素。
+
+
+->
+
+那麼，以 nums[mid] 作為所選極值的`子陣列` `數量`為：
+
+    
+    ```
+    count = (mid - left) * (right - mid)
+    ```
+
+    (因為左端點有 mid - left 種選擇，右端點有 right - mid 種選擇)
+
+
+
+
+->
+
+元素對答案的貢獻就是：
+    
+    ```
+    contribution = nums[mid] * count
+    ```
+
+
+
+-> understand in the other way
+
+    
+    -> 每一個子陣列的 Range，就是「最大值減掉最小值」。
+       所以把所有子陣列的 Range 加起來，
+       自然就等於「所有最大值的總和」減掉「所有最小值的總和」。
+
+
+
+-----
+
+3. 
+
 
 Return the sum of all subarray ranges.
 

@@ -208,9 +208,6 @@
 			- Partition Labels
 				— LC 763
 
-			- Sum of Subarray Ranges 
-				— LC 2104
-
 
 		- array
 			- 1567
