@@ -294,6 +294,34 @@ class Solution(object):
         """
         n = len(nums)
 
+        """
+        NOTE !!!
+
+        structure:
+
+
+        ```
+
+        for i in range(n + 1):
+
+            while st and (i == n or nums[st[-1]] < nums[i]):
+
+                # do sth
+                # ...
+
+
+            if i < n:
+                st.append(i)
+
+
+        # ...
+
+
+        ```
+
+
+        """
+
         # ==================================================
         # Part 1: Calculate the sum of all subarray maximums
         # ==================================================
