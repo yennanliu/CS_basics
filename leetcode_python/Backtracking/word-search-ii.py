@@ -52,6 +52,13 @@ class MyNode(object):
     def __init__(self):
         self.child = {}
         self.is_end = False
+
+        """
+        # NOTE !!!
+        
+            setup an extra attr: `word`
+                -> so we can append `cur word` from cur node to res
+        """
         self.word = None
 
 
@@ -83,9 +90,19 @@ class Solution(object):
         for word in words:
             self.add_word(word)
 
+        """
+        NOTE !!!
+
+
+        still loop over every cell,
+        for building the word (with the support from trie)
+
+        """
         # DFS from every cell
         for r in range(self.rows):
             for c in range(self.cols):
+
+                # NOTE !!! use `dfs` helper func
                 self.dfs(r, c, self.node)
 
         return self.res
@@ -104,16 +121,40 @@ class Solution(object):
     def dfs(self, r, c, node):
         ch = self.board[r][c]
 
+
+        """
+        NOTE !!!
+
+        edge case:
+
+            -> if ch NOT in trie
+            -> quit early
+
+            -> the `trie` property.
+
+        """
         # Trie pruning: no word has this prefix
         if ch not in node.child:
             return
 
+        """
+        NOTE !!!
+
+        get `next_node` via use `ch` as key from our trie
+        """
         next_node = node.child[ch]
 
         # Found a complete word
         if next_node.is_end:
             self.res.append(next_node.word)
 
+
+            """
+            NOTE !!!
+
+            mark `is_end` to avoid duplicated append
+                
+            """
             # Avoid adding the same word more than once
             next_node.is_end = False
 
@@ -130,6 +171,14 @@ class Solution(object):
                     self.board[nr][nc] != "#"):
                 self.dfs(nr, nc, next_node)
 
+        """
+        NOTE !!!
+
+        undo (Backtrack)
+
+        -> undo `self.board[r][c] = "#"`
+            
+        """
         # Backtrack: restore original character
         self.board[r][c] = ch
 
