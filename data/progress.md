@@ -74,6 +74,13 @@
 
 
 
+- Stack — 實戰題解
+	- https://yennj12.js.org/CS_basics/cheatsheets/stack_examples.zh.html
+		- `2) Next Greater Element II — LC 503`
+
+
+
+
 
 - time_space_complexity.md
 
@@ -358,6 +365,7 @@
 
 
 		- stack
+
 			- 括號家族 —— 同一個模板的四種變形
 				- 1249
 				- 856
@@ -368,7 +376,15 @@
 				- 636
 
 		- Mono stack
-			- LC 853 - Car Fleet
+			- 503
+			- 739
+
+			- 貢獻度計數：對每個元素問「它主宰了幾個子陣列？」 !!!
+				- 907
+				- 2104
+
+			- Car Fleet
+				- LC 853
 
 		- binary search
 			- 2.4) 雙調 / 山脈陣列 — 遞減順序的翻轉
