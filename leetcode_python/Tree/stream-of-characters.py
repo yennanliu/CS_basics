@@ -68,9 +68,75 @@ class StreamChecker(object):
         pass
         
 
+# V0-0-1
+# IDEA: TRIE + REVERSE processing / build (gpt)
+class MyNode(object):
+    def __init__(self):
+        self.child = {}
+        self.is_end = False
+
+
+class StreamChecker(object):
+
+    def __init__(self, words):
+        """
+        :type words: List[str]
+        """
+        self.node = MyNode()
+
+        # Store the `entire` stream `without` limiting its length.
+        self.stream = []
+
+        # Build a Reverse Trie.
+        for word in words:
+            self.add_word(word)
+
+    def query(self, letter):
+        """
+        :type letter: str
+        :rtype: bool
+        """
+        # Keep every character received so far.
+        self.stream.append(letter)
+
+        # NOTE !!!
+        # -> search backwards.
+        # -> 每次查詢都從最新字元開始，沿著 Reverse Trie 搜尋。
+        #
+        # Search backwards, starting from the newest character.
+        node = self.node
+
+        for ch in reversed(self.stream):
+            # No Trie path exists for this suffix.
+            if ch not in node.child:
+                return False
+
+            node = node.child[ch]
+
+            # Found a complete word matching the stream's suffix.
+            if node.is_end:
+                return True
+
+        return False
+
+    def add_word(self, word):
+        # Reverse the word before inserting it into the Trie.
+        word = word[::-1]
+        node = self.node
+
+        for ch in word:
+            if ch not in node.child:
+                node.child[ch] = MyNode()
+
+            node = node.child[ch]
+
+        node.is_end = True
+
+
+
 
 # V0-1
-# IDEA: TRIE + REVERSE processing / build (gpt)
+# IDEA: TRIE + REVERSE processing / build + max_len optimization (gpt)
 from collections import deque
 
 class MyNode(object):
@@ -180,12 +246,63 @@ class StreamChecker(object):
 
 
 
-# Your StreamChecker object will be instantiated and called as such:
-# obj = StreamChecker(words)
-# param_1 = obj.query(letter)
+# V0-3
+# IDEA: TRIE (gemini)
+class MyNode(object):
 
-# V0
-# IDEA : TRIE OF REVERSED WORDS + WALK THE STREAM BACKWARD
+  def __init__(self):
+    self.child = {}
+    self.is_end = False
+
+
+class StreamChecker(object):
+
+  def __init__(self, words):
+    """:type words: List[str]"""
+    self.root = MyNode()
+    # 使用集合記錄當前所有進行中的 Trie 節點
+    self.active_nodes = set()
+
+    # 1. 建立「正向」Trie
+    for word in words:
+      node = self.root
+      for w in word:
+        if w not in node.child:
+          node.child[w] = MyNode()
+        node = node.child[w]
+      node.is_end = True
+
+  def query(self, letter):
+    """:type letter: str
+
+    :rtype: bool
+    """
+    next_nodes = set()
+    found = False
+
+    # 2. 每個新字元都可以作為一個新單字的起點（從根節點出發）
+    if letter in self.root.child:
+      nxt = self.root.child[letter]
+      next_nodes.add(nxt)
+      if nxt.is_end:
+        found = True
+
+    # 3. 推進所有現有的活躍路徑
+    for node in self.active_nodes:
+      if letter in node.child:
+        nxt = node.child[letter]
+        next_nodes.add(nxt)
+        if nxt.is_end:
+          found = True
+
+    # 更新下一次的活躍節點集合
+    self.active_nodes = next_nodes
+    return found
+
+
+
+# V0-5
+# IDEA : TRIE OF REVERSED WORDS + WALK THE STREAM BACKWARD (claude)
 #
 #   a query asks "does the stream END with some word?" -> that is a SUFFIX test.
 #   a trie answers PREFIX tests, so reverse both sides:
@@ -264,7 +381,7 @@ class StreamChecker(object):
 
 
 # V1
-# IDEA : AHO-CORASICK (FORWARD TRIE + FAILURE LINKS)
+# IDEA : AHO-CORASICK (FORWARD TRIE + FAILURE LINKS) (claude)
 #
 #   keep ONE pointer "state" = the trie node for the longest suffix of the
 #   stream that is still a prefix of some word. a new letter either extends it
