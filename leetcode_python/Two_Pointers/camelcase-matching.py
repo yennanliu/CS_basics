@@ -43,6 +43,66 @@ queries[i] and pattern consist of English letters.
 # V0
 
 
+# V0-0-1
+# IDEA: 2 POINTERS (GPT)
+class Solution(object):
+
+    def camelMatch(self, queries, pattern):
+        """
+        :type queries: List[str]
+        :type pattern: str
+        :rtype: List[bool]
+        """
+        res = []
+
+        for q in queries:
+            res.append(self._is_match_v2(q, pattern))
+
+        return res
+
+    def _is_match_v2(self, x, p):
+        j = 0
+
+        for i in range(len(x)):
+            val_x = x[i]
+
+            """
+            NOTE !!!
+
+            make sure j is still in boundary
+            """
+            # Match the next pattern character
+            if j < len(p) and val_x == p[j]:
+                j += 1
+
+            # Extra uppercase characters are not allowed
+            elif val_x.isupper():
+                return False
+
+            # Extra lowercase characters can be skipped
+
+
+        """
+        NOTE !!!
+
+        make sure j matched the last char
+
+        ->
+
+        ```
+        if j < len(p) and val_x == p[j]:
+            j += 1
+        ```
+
+        -> 
+
+        so j will be equal to len(p) in the final iteration
+
+        """
+        # Every pattern character must be matched
+        return j == len(p)
+
+
 # V0-1
 # IDEA: 2 POINTERS (gemini)
 class Solution(object):
@@ -76,6 +136,7 @@ class Solution(object):
 
     # 4. 必須確保 pattern 的所有字元都有被匹配到
     return j == len(pattern)
+
 
 
 # V0-2
