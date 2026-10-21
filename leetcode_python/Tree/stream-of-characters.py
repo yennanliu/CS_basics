@@ -51,6 +51,140 @@ At most 4 * 10^4 calls will be made to query.
 """
 
 # V0
+class StreamChecker(object):
+
+    def __init__(self, words):
+        """
+        :type words: List[str]
+        """
+        pass
+        
+
+    def query(self, letter):
+        """
+        :type letter: str
+        :rtype: bool
+        """
+        pass
+        
+
+
+# V0-1
+# IDEA: TRIE + REVERSE processing / build (gpt)
+from collections import deque
+
+class MyNode(object):
+    def __init__(self):
+        self.child = {}
+        self.is_end = False
+
+
+class StreamChecker(object):
+
+    def __init__(self, words):
+        """
+        :type words: List[str]
+        """
+        self.node = MyNode()
+
+        """
+        NOTE !!!
+
+
+        the `self.max_len` is NOT necessary; just an optimization way.
+
+
+        ->
+
+        self.max_len 的主要用途是：限制我們需要記住的歷史字元數量，`避免儲存整個 stream。`
+
+
+            -> 在 LC 1032 中，我們只需要檢查目前 stream 的最後一段是否符合某個單字，
+               因此不需要保留所有歷史字元。
+
+
+            ->
+
+            補充：self.max_len 並不是 Trie 搜尋正確性的必要條件，
+                 因為 Trie 本身也會在路徑不存在時停止搜尋；但它能明確限制歷史資料的大小，
+                 讓記憶體使用量保持在 O(W)
+
+
+
+            ->
+                面試重點：
+                     當問題只需要檢查最近 W 個字元時，就不必儲存整段歷史。
+                     使用 deque(maxlen=W) 可以自動保留最近的 W 個字元，讓程式更有效率。
+
+
+        """
+
+        # Find the maximum word length.
+        # Use a loop for compatibility with older Python versions.
+        self.max_len = 0
+        for word in words:
+            self.max_len = max(self.max_len, len(word))
+
+        # Keep the newest character at the front.
+        # We only need to remember max_len characters.
+        self.stream = deque(maxlen=self.max_len)
+
+        # Build a reverse Trie.
+        for word in words:
+            self.add_word(word)
+
+    def query(self, letter):
+        """
+        :type letter: str
+        :rtype: bool
+        """
+        if self.max_len == 0:
+            return False
+
+        # Add the newest character to the front.
+        self.stream.appendleft(letter)
+
+        return self.is_matched()
+
+    def is_matched(self):
+        node = self.node
+
+        # Traverse from newest character to oldest.
+        for ch in self.stream:
+            if ch not in node.child:
+                return False
+
+            node = node.child[ch]
+
+            # A complete word has been matched.
+            if node.is_end:
+                return True
+
+        return False
+
+    def add_word(self, word):
+        if not word:
+            return
+
+        # Reverse the word before inserting it.
+        word = word[::-1]
+        node = self.node
+
+        for ch in word:
+            if ch not in node.child:
+                node.child[ch] = MyNode()
+
+            node = node.child[ch]
+
+        node.is_end = True
+
+
+
+# Your StreamChecker object will be instantiated and called as such:
+# obj = StreamChecker(words)
+# param_1 = obj.query(letter)
+
+# V0
 # IDEA : TRIE OF REVERSED WORDS + WALK THE STREAM BACKWARD
 #
 #   a query asks "does the stream END with some word?" -> that is a SUFFIX test.

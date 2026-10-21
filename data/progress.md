@@ -138,9 +138,9 @@
 	- TODO LC:
 
 		- Trie
+			- done
 
-			- 反向 Trie —— 串流上的後綴比對（LC 1032
-				- 1032
+
 
 		- 0/1 knapsack
 			- 二維容量
