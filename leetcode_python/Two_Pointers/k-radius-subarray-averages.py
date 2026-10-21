@@ -50,7 +50,92 @@ n == nums.length
 
 """
 
+
 # V0
+
+# V0-1
+# IDEA : PREFIX SUM (fixed-width window of size 2k+1) (gpt)
+class Solution(object):
+    def getAverages(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: List[int]
+        """
+        if not nums:
+            return []
+
+        n = len(nums)
+        res = [-1] * n
+
+        # prefix[i] = sum(nums[0:i])
+        # prefix[i] does NOT include nums[i].
+        prefix = [0] * (n + 1)
+
+        for i in range(n):
+            prefix[i + 1] = prefix[i] + nums[i]
+
+        window_size = 2 * k + 1
+
+        for i in range(n):
+            left = i - k
+            right = i + k
+
+            # Not enough elements on either side.
+            if left < 0 or right >= n:
+                continue
+
+            # Sum nums[left:right + 1] using prefix sum.
+            window_sum = prefix[right + 1] - prefix[left]
+
+            # Integer floor average.
+            res[i] = window_sum // window_size
+
+        return res
+
+
+# V0-2
+# IDEA : PREFIX SUM (fixed-width window of size 2k+1) (GEMINI)
+class Solution(object):
+
+  def getAverages(self, nums, k):
+    """:type nums: List[int]
+
+    :type k: int
+    :rtype: List[int]
+    """
+    n = len(nums)
+    res = [-1] * n
+
+    # 1. 邊界特例處理
+    if k == 0:
+      return nums
+
+    window_size = 2 * k + 1
+    # 如果視窗大小超過整個陣列長度，直接回傳全為 -1 的陣列
+    if window_size > n:
+      return res
+
+    # 2. 建立標準前綴和陣列 (prefix[i] 代表前 i 個元素的總和)
+    prefix = [0] * (n + 1)
+    for i in range(n):
+      prefix[i + 1] = prefix[i] + nums[i]
+
+    # 3. 遍歷所有合法的中心點 i (範圍從 k 到 n - k - 1)
+    for i in range(k, n - k):
+      left = i - k
+      right = i + k
+
+      # 利用前綴和 O(1) 取得 nums[left ... right] 的區間總和
+      sub_sum = prefix[right + 1] - prefix[left]
+
+      # 計算平均值 (向下取整)
+      res[i] = sub_sum // window_size
+
+    return res
+
+
+# V0-3
 # IDEA : PREFIX SUM (fixed-width window of size 2k+1)
 #
 #   index i has a full window iff  k <= i <= n-1-k. for those, the window sum
