@@ -76,7 +76,7 @@
 
 - Stack — 實戰題解
 	- https://yennj12.js.org/CS_basics/cheatsheets/stack_examples.zh.html
-		- `2) Next Greater Element II — LC 503`
+		- `9) Remove Duplicate Letters — LC 316`
 
 
 
@@ -379,9 +379,20 @@
 			- 503
 			- 739
 
+			- 單調堆疊 —— 貪婪移除與字典序
+				- 402
+				- 316
+				- 1081
+				- 1673
+
+
 			- 貢獻度計數：對每個元素問「它主宰了幾個子陣列？」 !!!
 				- 907
 				- 2104
+				- 84
+
+			- 串流版單調堆疊
+				- 901
 
 			- Car Fleet
 				- LC 853
