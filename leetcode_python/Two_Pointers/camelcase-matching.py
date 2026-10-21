@@ -41,7 +41,81 @@ queries[i] and pattern consist of English letters.
 """
 
 # V0
-# IDEA : 2 POINTERS (SUBSEQUENCE CHECK + NO EXTRA UPPERCASE)
+
+
+# V0-1
+# IDEA: 2 POINTERS (gemini)
+class Solution(object):
+
+  def camelMatch(self, queries, pattern):
+    """:type queries: List[str]
+
+    :type pattern: str
+    :rtype: List[bool]
+    """
+    res = []
+    for q in queries:
+      res.append(self._is_match(q, pattern))
+    return res
+
+  def _is_match(self, q, pattern):
+    i = 0  # query 指標
+    j = 0  # pattern 指標
+
+    while i < len(q):
+      # 1. 若字元相符，兩者皆前進
+      if j < len(pattern) and q[i] == pattern[j]:
+        i += 1
+        j += 1
+      # 2. 若 q[i] 是大寫字母，但無法與 pattern 匹配，代表非法大寫字母
+      elif q[i].isupper():
+        return False
+      # 3. 若 q[i] 是小寫字母，可以安全地略過（視為插入的小寫字元）
+      else:
+        i += 1
+
+    # 4. 必須確保 pattern 的所有字元都有被匹配到
+    return j == len(pattern)
+
+
+# V0-2
+# IDEA: 2 POINTERS (gpt)
+
+class Solution(object):
+    def camelMatch(self, queries, pattern):
+        """
+        :type queries: List[str]
+        :type pattern: str
+        :rtype: List[bool]
+        """
+        res = []
+
+        for query in queries:
+            i = 0  # Pointer for query
+            j = 0  # Pointer for pattern
+
+            matched = True
+
+            for ch in query:
+                if j < len(pattern) and ch == pattern[j]:
+                    # Match the current pattern character
+                    j += 1
+
+                elif ch.isupper():
+                    # Extra uppercase character cannot be ignored
+                    matched = False
+                    break
+
+                # Extra lowercase characters can be ignored
+
+            # All pattern characters must be matched
+            res.append(matched and j == len(pattern))
+
+        return res
+
+
+# V0-3
+# IDEA : 2 POINTERS (SUBSEQUENCE CHECK + NO EXTRA UPPERCASE) (claude)
 #
 #   a query matches iff
 #     1) pattern is a SUBSEQUENCE of query, and

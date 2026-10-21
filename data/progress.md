@@ -211,9 +211,6 @@
 			- Sum of Subarray Ranges 
 				— LC 2104
 
-			- 1023
-
-
 
 		- array
 			- 1567
