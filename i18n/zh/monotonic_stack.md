@@ -487,10 +487,10 @@
 
 <!--CODE-->
 
-<!-- 474f95c71ae0 -->
+<!-- 87d1b7f15c91 -->
 #### **貢獻法 — 把 `left[i]` / `right[i]` 視覺化（Python）** ⭐⭐⭐⭐⭐
 
-> `leetcode_python/Math/sum-of-subarray-minimums.py`
+> `leetcode_python/Stack/sum-of-subarray-minimums.py`
 
 **核心想法：** 每個子陣列都恰好有一個最小值，所以不要去列舉子陣列，而是反過來問*「有多少個子陣列的最小值是 `arr[i]`？」* — 然後把 `arr[i] * count` 全部加起來。
 

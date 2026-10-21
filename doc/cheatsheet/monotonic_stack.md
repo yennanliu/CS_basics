@@ -941,7 +941,7 @@ public int sumSubarrayMins(int[] arr) {
 
 #### **Contribution Method — Visualizing `left[i]` / `right[i]` (Python)** ⭐⭐⭐⭐⭐
 
-> `leetcode_python/Math/sum-of-subarray-minimums.py`
+> `leetcode_python/Stack/sum-of-subarray-minimums.py`
 
 **Core idea:** every subarray has exactly one minimum, so instead of enumerating subarrays we ask *"for how many subarrays is `arr[i]` the minimum?"* — then sum `arr[i] * count`.
 
