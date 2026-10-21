@@ -568,6 +568,14 @@ def sum_subarray_mins(arr):
         left[i] = stack[-1] if stack else -1
         stack.append(i)
     
+    # Calculate right boundaries (strict >, so equal values are counted once)
+    stack = []
+    for i in range(n - 1, -1, -1):
+        while stack and arr[stack[-1]] > arr[i]:
+            stack.pop()
+        right[i] = stack[-1] if stack else n
+        stack.append(i)
+    
     # Calculate contribution
     result = 0
     for i in range(n):
@@ -1301,15 +1309,22 @@ range(subarray) = max − min
 sum(all ranges) = sum(all subarray maxs) − sum(all subarray mins)
 ```
 
-For each element `nums[mid]`, find its **left** and **right** dominance boundaries:
-- **Left boundary** `L` — index of the previous element that would displace `nums[mid]` from the max/min role (or `-1` if none)
-- **Right boundary** `R` — index of the next element that displaces it (or `n` if none)
+**Why it works — count from each element's side, not each subarray's.** There are O(n²) subarrays but only n elements, and every subarray's max (and min) is *some* element. So flip the question: for each element, how many subarrays is it the max (or min) of?
 
-Number of subarrays where `nums[mid]` is the max/min:
+1. Suppose `nums[mid]` is the max (or min) of some subarrays.
+2. Find two boundaries — the nearest element on each side that **stops** `nums[mid]` from still being the extreme:
+   - **left** `L` — the previous element that would displace it (or `-1` if none)
+   - **right** `R` — the next element that displaces it (or `n` if none)
+3. Every subarray that starts in `(L, mid]` and ends in `[mid, R)` has `nums[mid]` as its chosen extreme. The left end has `mid − L` choices and the right end `R − mid`, independently, so:
+
 ```text
-count = (mid − L) × (R − mid)
+count        = (mid − L) × (R − mid)
 contribution = nums[mid] × count
 ```
+
+4. A monotonic stack hands you both boundaries at the same moment: when `mid` is popped, the index `i` doing the popping is its `R`, and the new stack top is its `L`.
+
+**The other way to see it.** Every subarray's range is its max minus its min, so adding up all the ranges is the same as adding up all the maxs and subtracting all the mins. LC 2104 is therefore LC 907 (sum of subarray minimums) run twice — once for the max role, once for the min role.
 
 The **sentinel loop** runs `i` from `0` to `n` inclusive. When `i == n`, it flushes every remaining index from the stack using `n` as the right boundary.
 
@@ -1418,14 +1433,27 @@ private long contribution(int[] nums, boolean isMax) {
 
 #### Similar Problems
 
-| Problem | LC# | Key Difference |
-|---------|-----|----------------|
-| Sum of Subarray Ranges | 2104 | `max_sum − min_sum`; two monotonic stack passes |
-| Sum of Subarray Minimums | 907 | Min contribution only; single increasing stack pass |
-| Maximum Subarray Min-Product | 1856 | Min contribution × subarray sum; prefix sums + stack |
-| Sum of Total Strength of Wizards | 2281 | Min × sum of sums; prefix of prefix sums + stack |
-| Largest Rectangle in Histogram | 84 | Area = height × width; pop on shorter bar |
-| Number of Visible People in Queue | 1944 | Count pops per element as the answer |
+All of these find, for each element, the window `(L, R)` in which it is the max/min (or the dominant one). What changes is what they do with that window: **sum** a contribution over every element, or **optimise** over the windows.
+
+| Problem | LC# | Uses the window `(L, R)` as | Twist |
+|---------|-----|-----------------------------|-------|
+| Sum of Subarray Minimums | 907 | Σ `nums[mid] × (mid − L) × (R − mid)`, min role | One increasing stack; answer mod 1e9+7 |
+| Sum of Subarray Ranges | 2104 | Σ over max role − Σ over min role | Two passes, one per role |
+| Sum of Total Strength of Wizards | 2281 | Σ `nums[mid] ×` (sum of the sums of every subarray through `mid`) | Prefix sums of prefix sums turn the inner sum into O(1) |
+| Apply Operations to Maximize Score | 2818 | `(mid − L) × (R − mid)` = how many subarrays pick `nums[mid]` | Dominance is by *prime score*, not value; then greedily spend `k` on the largest values |
+| Largest Rectangle in Histogram | 84 | max of `nums[mid] × (R − L − 1)` | Optimise, not sum: the window's width is the rectangle's |
+| Maximum Subarray Min-Product | 1856 | max of `nums[mid] × sum(L+1 .. R−1)` | Prefix sums for the window sum |
+| Maximum of Minimum Values in All Subarrays | 1950 | `ans[R − L − 2] = max(…, nums[mid])` | Then a suffix max, since a longer window's min also works for shorter ones |
+| Subarray With Elements Greater Than Varying Threshold | 2334 | return `w = R − L − 1` if `nums[mid] > threshold / w` | The min of the window decides the whole window |
+| Maximum Score of a Good Subarray | 1793 | max of `nums[mid] × (R − L − 1)` over windows that contain `k` | Also solvable by two pointers greedily expanding from `k` |
+
+The same `(i − L) × (R − i)` count also works **without a stack**, where the boundary is the previous/next occurrence of the same character rather than a smaller/larger value:
+
+| Problem | LC# | Count |
+|---------|-----|-------|
+| Count Unique Characters of All Substrings of a Given String | 828 | `(i − prev_same) × (next_same − i)` substrings where `s[i]` is the unique copy |
+| Total Appeal of A String | 2262 | `(i − prev_same) × (n − i)` substrings where `s[i]` is the first copy |
+| Sum of Subsequence Widths | 891 | Subsequences, not subarrays: sort, then `nums[i]` is the max of `2^i` and the min of `2^(n−1−i)` |
 
 ### 2-13) Longest Absolute File Path (LC 388) — Stack Indexed by Nesting Depth ⭐⭐⭐⭐⭐
 

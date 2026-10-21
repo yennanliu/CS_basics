@@ -620,17 +620,24 @@
 
 > `sum(ranges) = sum(subarray maxs) − sum(subarray mins)`。最大值與最小值各跑一趟單調堆疊；每彈出一個元素，就算出它以最大／最小值的身分主宰了多少個子陣列。
 
-<!-- c94b241d2d85 -->
+<!-- c0fc39246529 -->
 #### 核心想法
 
 <!--CODE-->
 
-對每個元素 `nums[mid]`，找出它的**左**、**右**主宰邊界：
-- **左邊界** `L` — 前一個會讓 `nums[mid]` 失去最大／最小身分的元素索引（沒有就是 `-1`）
-- **右邊界** `R` — 下一個會取代它的元素索引（沒有就是 `n`）
+**為什麼成立 — 從每個元素的角度數，而不是從每個子陣列的角度數。** 子陣列有 O(n²) 個，元素卻只有 n 個，而每個子陣列的最大值（和最小值）一定是*某一個*元素。所以把問題反過來問：每個元素是多少個子陣列的最大值（或最小值）？
 
-`nums[mid]` 擔任最大／最小值的子陣列數量：
+1. 假設 `nums[mid]` 是某些子陣列的最大值或最小值。
+2. 找出兩個邊界 — 兩側最近一個會**阻止** `nums[mid]` 繼續作為極值的元素：
+   - **left** `L` — 左側最近一個會取代它的元素（沒有就是 `-1`）
+   - **right** `R` — 右側最近一個會取代它的元素（沒有就是 `n`）
+3. 凡是起點落在 `(L, mid]`、終點落在 `[mid, R)` 的子陣列，所選的極值都是 `nums[mid]`。左端點有 `mid − L` 種選擇，右端點有 `R − mid` 種選擇，兩者互相獨立，所以：
+
 <!--CODE-->
+
+4. 單調堆疊會在同一刻把兩個邊界都交給你：`mid` 被彈出時，正在彈它的索引 `i` 就是它的 `R`，彈完之後的新堆疊頂端就是它的 `L`。
+
+**換個角度理解。** 每一個子陣列的 Range，就是「最大值減掉最小值」。所以把所有子陣列的 Range 加起來，自然就等於「所有最大值的總和」減掉「所有最小值的總和」。因此 LC 2104 就是把 LC 907（子陣列最小值之和）跑兩次 — 一次算最大值的角色，一次算最小值的角色。
 
 **哨兵迴圈**讓 `i` 從 `0` 跑到 `n`（含）。當 `i == n` 時，用 `n` 當右邊界把堆疊裡剩下的索引全部清掉。
 
@@ -666,17 +673,30 @@
 | 最小值那趟 | 單調**遞增** | `nums[mid] > nums[i]` | 所有子陣列最小值的總和 |
 | 兩趟都有 | `i = n` 的哨兵 | 一律清空 | 處理靠右邊界的元素 |
 
-<!-- 5c1ae72d15d1 -->
+<!-- a7a7c01acfd4 -->
 #### 相似題目
 
-| 題目 | LC# | 關鍵差異 |
-|---------|-----|----------------|
-| Sum of Subarray Ranges | 2104 | `max_sum − min_sum`；兩趟單調堆疊 |
-| Sum of Subarray Minimums | 907 | 只算最小值的貢獻；單趟遞增堆疊 |
-| Maximum Subarray Min-Product | 1856 | 最小值貢獻 × 子陣列和；前綴和 + 堆疊 |
-| Sum of Total Strength of Wizards | 2281 | 最小值 × 和的和；前綴和的前綴和 + 堆疊 |
-| Largest Rectangle in Histogram | 84 | 面積 = 高 × 寬；遇到較矮的柱子彈出 |
-| Number of Visible People in Queue | 1944 | 每個元素彈出的次數就是答案 |
+這些題目都是替每個元素找出它擔任最大／最小值（或主宰者）的視窗 `(L, R)`。差別在於拿這個視窗做什麼：把每個元素的貢獻**加總**，或是在所有視窗中**求最佳值**。
+
+| 題目 | LC# | 視窗 `(L, R)` 的用法 | 變化點 |
+|---------|-----|-----------------------------|-------|
+| Sum of Subarray Minimums | 907 | Σ `nums[mid] × (mid − L) × (R − mid)`，最小值角色 | 單一遞增堆疊；答案取 mod 1e9+7 |
+| Sum of Subarray Ranges | 2104 | 最大值角色的 Σ − 最小值角色的 Σ | 兩趟，每個角色各一趟 |
+| Sum of Total Strength of Wizards | 2281 | Σ `nums[mid] ×`（所有經過 `mid` 的子陣列之和的總和） | 前綴和的前綴和讓內層加總變成 O(1) |
+| Apply Operations to Maximize Score | 2818 | `(mid − L) × (R − mid)` = 有多少個子陣列會選到 `nums[mid]` | 主宰關係看的是*質因數分數*而不是數值；接著貪婪地把 `k` 次花在最大的值上 |
+| Largest Rectangle in Histogram | 84 | `nums[mid] × (R − L − 1)` 的最大值 | 求最佳值而非加總：視窗寬度就是矩形寬度 |
+| Maximum Subarray Min-Product | 1856 | `nums[mid] × sum(L+1 .. R−1)` 的最大值 | 用前綴和算視窗總和 |
+| Maximum of Minimum Values in All Subarrays | 1950 | `ans[R − L − 2] = max(…, nums[mid])` | 再做一次後綴最大值，因為較長視窗的最小值也適用於較短的視窗 |
+| Subarray With Elements Greater Than Varying Threshold | 2334 | 若 `nums[mid] > threshold / w` 就回傳 `w = R − L − 1` | 視窗的最小值決定整個視窗 |
+| Maximum Score of a Good Subarray | 1793 | 在包含 `k` 的視窗中取 `nums[mid] × (R − L − 1)` 的最大值 | 也可以用雙指標從 `k` 貪婪地往外擴 |
+
+同樣的 `(i − L) × (R − i)` 計數**不用堆疊**也能用，此時邊界是同一個字元的前／後一次出現位置，而不是較小／較大的值：
+
+| 題目 | LC# | 計數 |
+|---------|-----|-------|
+| Count Unique Characters of All Substrings of a Given String | 828 | `(i − prev_same) × (next_same − i)` 個子字串中 `s[i]` 是唯一的那個 |
+| Total Appeal of A String | 2262 | `(i − prev_same) × (n − i)` 個子字串中 `s[i]` 是第一次出現 |
+| Sum of Subsequence Widths | 891 | 是子序列而不是子陣列：先排序，`nums[i]` 是 `2^i` 個子序列的最大值、`2^(n−1−i)` 個的最小值 |
 
 <!-- ca6b89cc9b36 -->
 ### 2-13) Longest Absolute File Path (LC 388) — 以巢狀深度為索引的堆疊 ⭐⭐⭐⭐⭐
