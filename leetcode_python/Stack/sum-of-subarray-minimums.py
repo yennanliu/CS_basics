@@ -54,8 +54,6 @@ CORE IDEA !!!
 # right[i] = number of choices for right boundary
 
 
-
-
 """
 class Solution(object):
     def sumSubarrayMins(self, arr):
@@ -80,6 +78,24 @@ class Solution(object):
         #
         # Previous element strictly smaller
         # ----------------------------------------
+
+
+        """
+        NOTE !!!
+
+
+        structure:
+
+
+        ```
+        for i in range(n):
+            
+            while st and arr[st[-1]] > arr[i]:
+                # ...
+
+                
+        ```
+        """
 
         stack = []
 
