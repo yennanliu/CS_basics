@@ -76,7 +76,7 @@
 
 - Stack — 實戰題解
 	- https://yennj12.js.org/CS_basics/cheatsheets/stack_examples.zh.html
-		- `9) Remove Duplicate Letters — LC 316`
+		- `16) Score of Parentheses — LC 856`
 
 
 
@@ -374,9 +374,24 @@
 
 		- stack
 
-			- 括號家族 —— 同一個模板的四種變形
+			- 1047
+			- 1544
+			- 394
+
+			- 模式：帶字元計數配對的堆疊 !!!
+				- 1209
+				- 32 (dp, stack, "(, )" cnt) 
+
+			- 括號家族 —— 同一個模板的四種變形 / LC 20 模板的各種變化
 				- 1249
 				- 856
+
+				- 921
+
+			- 變化點：我們要的是最長合法區段的長度，所以堆疊存索引
+				- 32
+
+
 			- 模板 4：Min Stack —— O(1) getMin —— LC 155
 				- 155
 			- 模板 6：作用域／上下文帳本 —— LC 388, LC 636  !!!! (g !!!)
