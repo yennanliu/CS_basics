@@ -123,6 +123,102 @@ class Solution(object):
         return ans
 
 
+# V0-1
+# IDEA: 2 POINTERS + `MOVE SMALLER END IDX INTERVAL` (gemini)
+class Solution(object):
+
+  def intervalIntersection(self, firstList, secondList):
+    """:type firstList: List[List[int]]
+
+    :type secondList: List[List[int]]
+    :rtype: List[List[int]]
+    """
+    res = []
+    i = 0
+    j = 0
+
+    while i < len(firstList) and j < len(secondList):
+      start_f, end_f = firstList[i]
+      start_s, end_s = secondList[j]
+
+      # 1. 計算重疊區間的起點與終點
+      # 起點取兩者中較大的（max），終點取兩者中較小的（min）
+      start_max = max(start_f, start_s)
+      end_min = min(end_f, end_s)
+
+
+      """
+      NOTE !!!
+
+      below trick
+
+
+      -> check if overalp via checking
+
+         if `start_max <= end_min`
+
+    
+      """
+      # 2. 判斷是否有實質重疊（起點必須小於等於終點）
+      if start_max <= end_min:
+        res.append([start_max, end_min])
+
+      # 3. 誰先結束，誰的指標就往前推進（因為結束早的區間不可能再與後續區間相交）
+      if end_f < end_s:
+        i += 1
+      elif end_f > end_s:
+        j += 1
+      else:
+        # 兩者同時結束，雙方指標一起前進
+        i += 1
+        j += 1
+
+    return res
+
+
+
+# V0-2
+# IDEA: 2 POINTERS + `MOVE SMALLER END IDX INTERVAL` (gpt)
+class Solution(object):
+    def intervalIntersection(self, firstList, secondList):
+        """
+        :type firstList: List[List[int]]
+        :type secondList: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        if not firstList or not secondList:
+            return []
+
+        res = []
+
+        i = 0
+        j = 0
+
+        while i < len(firstList) and j < len(secondList):
+            inter_f = firstList[i]
+            inter_s = secondList[j]
+
+            # Calculate the intersection
+            start = max(inter_f[0], inter_s[0])
+            end = min(inter_f[1], inter_s[1])
+
+            # Closed intervals overlap when start <= end
+            if start <= end:
+                res.append([start, end])
+
+            # Move the pointer whose interval ends first
+            if inter_f[1] < inter_s[1]:
+                i += 1
+            elif inter_f[1] > inter_s[1]:
+                j += 1
+            else:
+                # Both intervals end at the same point
+                i += 1
+                j += 1
+
+        return res
+
+
 # V1
 # IDEA: interval + 2 pointers (gemini)
 class Solution(object):

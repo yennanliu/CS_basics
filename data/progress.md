@@ -205,14 +205,9 @@
 			- 3Sum Closest
 				— LC 16
 
-			- 在區間、矩陣與分割上的指標
-				- 986
-
 			- Insert Interval 
 				— LC 57
 
-			- Partition Labels
-				— LC 763
 
 
 		- array
@@ -490,6 +485,10 @@
 
 
 		- =================
+
+
+
+
 
 
 
