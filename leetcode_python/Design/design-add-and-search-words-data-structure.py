@@ -122,7 +122,16 @@ class WordDictionary(object):
         NOTE !!!
 
 
-        we simply call the helper func
+        1. we simply call the helper func
+
+
+        2. pass 3 param to the helper func:
+
+            ->
+                1. word
+                2. idx
+                3. node
+
         """
         return self.helper(word, 0, self.node)
 
@@ -156,6 +165,19 @@ class WordDictionary(object):
         if idx == len(word):
             return node.is_end
 
+
+        """
+        NOTE !!!
+
+
+        1. we DON'T loop over word
+
+        2. we use `idx` to get the char from word.
+
+            -> ch = word[idx]
+
+
+        """
         ch = word[idx]
 
 
@@ -184,6 +206,9 @@ class WordDictionary(object):
         if ch not in node.child:
             return False
 
+
+        # NOTE !!! below
+        # `node.child[ch]` is the `next node` in trie
         return self.helper(word, idx + 1, node.child[ch])
 
 
