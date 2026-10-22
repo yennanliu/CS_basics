@@ -1302,6 +1302,28 @@ public int[] asteroidCollision(int[] asteroids) {
 
 > `sum(ranges) = sum(subarray maxs) − sum(subarray mins)`. Use one monotonic stack pass per role; for each popped element compute how many subarrays it owns as the max/min.
 
+#### Baseline — Brute Force O(n²)
+
+With `n ≤ 1000`, fixing each start and extending the end while carrying a running min and max passes. It is the answer to give first; the problem's follow-up then asks for O(n), which is the stack pass below.
+
+```python
+# python
+# LC 2104 - Sum of Subarray Ranges
+# IDEA: fix the start i, extend the end j, keep the running min/max of nums[i..j]
+# time = O(n^2), space = O(1)
+def subArrayRanges(nums):
+    n = len(nums)
+    ans = 0
+    for i in range(n):
+        cur_min = nums[i]
+        cur_max = nums[i]
+        for j in range(i, n):
+            cur_min = min(cur_min, nums[j])
+            cur_max = max(cur_max, nums[j])
+            ans += cur_max - cur_min
+    return ans
+```
+
 #### Core Idea
 
 ```text
@@ -1422,6 +1444,32 @@ private long contribution(int[] nums, boolean isMax) {
     return total;
 }
 ```
+
+#### Sentinel vs Explicit Flush
+
+The `i == n` sentinel above and a separate `while stack:` loop after the scan are the same thing: the indices still on the stack never met a bigger (or smaller) element, so their right boundary is `n`. The explicit form is longer but harder to get wrong, because the pop condition stays a plain comparison:
+
+```python
+# python
+# the max pass with an explicit flush instead of the i == n sentinel
+for i in range(n):
+    while stack and nums[stack[-1]] < nums[i]:
+        mid = stack.pop()
+        left = stack[-1] if stack else -1
+        max_sum += nums[mid] * (mid - left) * (i - mid)
+    stack.append(i)
+
+while stack:                       # flush: these have no greater element to the right
+    mid = stack.pop()
+    left = stack[-1] if stack else -1
+    max_sum += nums[mid] * (mid - left) * (n - mid)
+```
+
+**Pitfalls**
+
+- **Forgetting the flush.** The array's global max is never popped in the max pass, and its global min is never popped in the min pass, so both always lose their whole contribution. Without it the examples give `5`, `1` and `-11` instead of `4`, `4` and `59`.
+- **Duplicates need one strict side and one non-strict side.** With a single stack this happens on its own: popping on `<` makes `R` the next *greater* and `L` the previous *greater-or-equal*, and popping on `<=` flips which side is strict — both are correct. The bug appears when `L` and `R` come from two separate scans that are **both** strict (`[2, 2]`: each `2` claims the whole array). Then a run of equal values is counted once per copy.
+- **Store indices, not values.** `left` and `right` are positions; the stack holds `i`, and `nums[i]` is read when needed.
 
 #### Two-Stack Logic Summary
 
