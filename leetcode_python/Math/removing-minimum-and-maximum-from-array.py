@@ -59,6 +59,54 @@ class Solution(object):
         pass
 
 
+# V0-0-1
+# MATH + 3 deletie ways + 2 sub cases
+# Time: O(N)
+# Space: O(1)
+class Solution(object):
+    def minimumDeletions(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        # edge
+        if not nums or len(nums) == 0:
+            return 0
+
+        if len(nums) == 1:
+            return 1
+
+        n = len(nums)
+
+        op = n
+
+        _min = min(nums)
+        _max = max(nums)
+
+        idx_min = nums.index(_min)
+        idx_max = nums.index(_max)
+
+
+        # case 1) remove from left (all op)
+        op_tmp = max(idx_min, idx_max) + 1
+        op = min(op, op_tmp)
+
+        # case 2) remove from right (all op)
+        op_tmp = max(n - 1 - idx_min, n - 1 - idx_max) + 1
+        op = min(op, op_tmp)
+
+
+        # case 3) remove from left, right (2 sub cases) (all op)
+        op_tmp_1 = (idx_min + 1) + (n - 1 - idx_max + 1)
+        op_tmp_2 = (idx_max + 1) + (n - 1 - idx_min + 1)
+
+        op = min(op, op_tmp_1, op_tmp_2)
+
+
+
+        return op
+
+
 # V0-1
 # MATH + 3 deletie ways + index Normalize (gpt)
 # Time: O(N)
@@ -101,8 +149,6 @@ class Solution(object):
         way3 = (left + 1) + (n - right)
 
         return min(way1, way2, way3)
-
-
 
 
 # V0-2
