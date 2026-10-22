@@ -76,7 +76,7 @@
 
 - Stack — 實戰題解
 	- https://yennj12.js.org/CS_basics/cheatsheets/stack_examples.zh.html
-		- `16) Score of Parentheses — LC 856`
+		- `20) Add Two Numbers II — LC 445`
 
 
 
@@ -383,6 +383,11 @@
 			- 1544
 			- 394
 
+
+			- 作用域、反轉與設計
+				- 71
+
+
 			- 模式：帶字元計數配對的堆疊 !!!
 				- 1209
 				- 32 (dp, stack, "(, )" cnt) 
@@ -396,6 +401,15 @@
 			- 變化點：我們要的是最長合法區段的長度，所以堆疊存索引
 				- 32
 
+			- 變化點：堆疊的每一格存的是那個深度裡累積的分數
+				- 856
+
+			- 把括號模板當成歸約器用
+				- 1963
+
+
+			-  顯式堆疊迭代器	
+				— LC 173, LC 341 
 
 			- 模板 4：Min Stack —— O(1) getMin —— LC 155
 				- 155
