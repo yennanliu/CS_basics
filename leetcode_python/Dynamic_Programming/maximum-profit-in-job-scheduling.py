@@ -39,7 +39,7 @@ Constraints:
 """
 
 # V0
-# IDEA: DP + BINARY SEARCH (weighted interval scheduling)
+# IDEA: DP + BINARY SEARCH (weighted interval scheduling) (claude)
 """
  DP def:
     - sort jobs by END time
@@ -74,6 +74,95 @@ class Solution(object):
             """
             k = bisect.bisect_right(ends, s, 0, i)
             dp[i + 1] = max(dp[i], dp[k] + p)
+
+        return dp[n]
+
+
+# V0-1
+# IDEA: DP + BINARY SEARCH (weighted interval scheduling) (GEMINI)
+import bisect
+
+class Solution(object):
+
+  def jobScheduling(self, startTime, endTime, profit):
+    """:type startTime: List[int]
+
+    :type endTime: List[int]
+    :type profit: List[int]
+    :rtype: int
+    """
+    # 1. 將工作打包並根據「結束時間」進行排序
+    jobs = sorted(zip(startTime, endTime, profit), key=lambda x: x[1])
+
+    # 提取排序後的結束時間，專門用於二分搜尋
+    ends = [job[1] for job in jobs]
+    n = len(jobs)
+
+    # dp[i] 表示考慮前 i 個工作（0 到 i-1）的最大利潤
+    dp = [0] * (n + 1)
+
+    for i in range(1, n + 1):
+      start, end, prof = jobs[i - 1]
+
+      # 2. 利用二分搜尋（bisect_right）尋找「結束時間 <= 當前 start」的最晚工作
+      # bisect_right 會找出第一個大於 start 的位置 idx，
+      # 因此 idx - 1 就是符合條件且結束時間最接近 start 的工作索引
+      idx = bisect.bisect_right(ends, start, 0, i - 1)
+
+      # 3. 狀態轉移：不選當前工作 vs 選當前工作（加上相容前置工作的最大利潤）
+      include_profit = prof + dp[idx]
+      exclude_profit = dp[i - 1]
+
+      dp[i] = max(include_profit, exclude_profit)
+
+    return dp[n]
+
+
+# V0-2
+# IDEA: DP + BINARY SEARCH (weighted interval scheduling) (GPT)
+from bisect import bisect_right
+
+class Solution(object):
+    def jobScheduling(self, startTime, endTime, profit):
+        """
+        :type startTime: List[int]
+        :type endTime: List[int]
+        :type profit: List[int]
+        :rtype: int
+        """
+        n = len(startTime)
+
+        # Sort jobs by end time.
+        jobs = sorted(
+            zip(startTime, endTime, profit),
+            key=lambda job: job[1]
+        )
+
+        # ends[i] is the end time of the i-th sorted job.
+        ends = [job[1] for job in jobs]
+
+        # dp[i] = maximum profit using the first i jobs.
+        # dp[0] = 0 because no jobs means no profit.
+        dp = [0] * (n + 1)
+
+        for i in range(n):
+            start, end, p = jobs[i]
+
+            # Find how many earlier jobs finish at or before
+            # this job starts.
+            #
+            # Search only [0, i), because the current job
+            # and later jobs must not be included.
+            prev = bisect_right(ends, start, 0, i)
+
+            # Option 1: Skip the current job.
+            skip = dp[i]
+
+            # Option 2: Take the current job.
+            # Combine its profit with the best compatible jobs.
+            take = dp[prev] + p
+
+            dp[i + 1] = max(skip, take)
 
         return dp[n]
 

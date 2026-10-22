@@ -1,4 +1,4 @@
-20261022: top 100 like: 42,25 | DP: wildcard: 97(todo) | g recent:  1235 | others:  357(dp, todo), 2D LIS (354), 710(todo), 1696(todo, dp + mono deque), matrix_various_op, 647(DP again, to note: when need to reverse loop),82(todo), get_prime(math),4040(todo),670(todo: hashmap, 3 pointers),329(todo),221(todo),211(again !!!),907(todo),901(todo),suffix_from_right,986(ok**),1124(again!!!),1047(todo),1209(todo),1249(todo),2090(ok),suffix_from_right(todo),2091(ok),212(again!!),211(again!!),2104(again!!!, mono stack),1023(again!!)
+20261022: top 100 like: 42 | DP: wildcard: 97(todo) | others:  357(dp, todo), 2D LIS (354), 710(todo), 1696(todo, dp + mono deque), matrix_various_op, 647(DP again, to note: when need to reverse loop),82(todo), get_prime(math),4040(todo),670(todo: hashmap, 3 pointers),329(todo),221(todo),211(again !!!),907(todo),901(todo),suffix_from_right,986(ok**),1124(again!!!),1047(todo),1209(todo),1249(todo),2090(ok),suffix_from_right(todo),2091(ok),212(again!!),211(again!!),2104(again!!!, mono stack),1023(again!!),1235(again)
 
 
 
