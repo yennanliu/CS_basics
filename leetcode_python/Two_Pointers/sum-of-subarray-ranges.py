@@ -290,37 +290,14 @@ class Solution(object):
         = sum of all subarray maximums
         - sum of all subarray minimums.
 
-        Use Monotonic Stack to calculate both sums in O(N).
+        Use Monotonic Stack + Contribution Counting.
+        Time: O(N)
+        Space: O(N)
         """
+        if not nums:
+            return 0
+
         n = len(nums)
-
-        """
-        NOTE !!!
-
-        structure:
-
-
-        ```
-
-        for i in range(n + 1):
-
-            while st and (i == n or nums[st[-1]] < nums[i]):
-
-                # do sth
-                # ...
-
-
-            if i < n:
-                st.append(i)
-
-
-        # ...
-
-
-        ```
-
-
-        """
 
         # ==================================================
         # Part 1: Calculate the sum of all subarray maximums
@@ -330,87 +307,118 @@ class Solution(object):
         stack = []  # Store indices, not values.
                     # Maintain a monotonically decreasing stack.
 
-        # Use i == n as a virtual boundary to flush the stack.
-        # Every remaining element must be processed at the end.
-        for i in range(n + 1):
+        # Process every real array element.
+        for i in range(n):
 
             # If the current value is greater than the value
-            # at the top of the stack, the top element's right
-            # boundary has been found.
-            #
-            # When i == n, flush all remaining elements.
-            while stack and (
-                i == n or nums[stack[-1]] < nums[i]
-            ):
-                # The popped index is the element whose
-                # contribution to the maximum sum we calculate.
+            # at the top of the stack, the current index i
+            # becomes the right boundary for the popped element.
+            while stack and nums[stack[-1]] < nums[i]:
+
                 mid = stack.pop()
 
                 # After popping:
                 # left  = previous index with value >= nums[mid]
-                # right = next index with value > nums[mid]
+                # right = current index i, where nums[i] > nums[mid]
                 #
                 # If no left boundary exists, use -1.
                 left = stack[-1] if stack else -1
                 right = i
 
-                # Count the subarrays in which nums[mid]
-                # is assigned as the maximum.
+                """
+                NOTE !!!
+
+
+                cnt = (mid - left) * (right - mid)
+
+                    (combinations)
+
+                ->
+
+                    
+                    # Combinatorics: total subarrays where nums[mid] is the maximum
+                
+                    # = (number of valid choices for left endpoint) * (number of choices for right endpoint)
+
+
+                """
+                # Number of subarrays where nums[mid] is counted
+                # as the maximum:
                 #
                 # Left endpoint choices:  mid - left
                 # Right endpoint choices: right - mid
-                #
-                # Multiply the two independent choices.
                 count = (mid - left) * (right - mid)
 
-                # nums[mid] is the maximum in 'count' subarrays,
-                # so its total contribution is value * count.
+                # Add nums[mid]'s contribution to the max sum.
                 max_sum += nums[mid] * count
 
-            # Push valid indices only.
-            # Index n is a virtual boundary, not a real element.
-            if i < n:
-                stack.append(i)
+            # Push the current index.
+            stack.append(i)
+
+
+        """
+        NOTE !!!
+
+        need to `Flush the remaining stack.`
+        """
+        
+        # Flush the remaining stack.
+        # These elements have no greater element to their right,
+        # so the right boundary is the end of the array: n.
+        while stack:
+            mid = stack.pop()
+
+            left = stack[-1] if stack else -1
+            right = n
+
+            count = (mid - left) * (right - mid)
+            max_sum += nums[mid] * count
 
         # ==================================================
         # Part 2: Calculate the sum of all subarray minimums
         # ==================================================
 
         min_sum = 0
-        stack = []  # Reset the stack for minimum calculation.
+        stack = []  # Reset the stack.
                     # Maintain a monotonically increasing stack.
 
-        for i in range(n + 1):
+        for i in range(n):
 
             # If the current value is smaller than the value
-            # at the top of the stack, the top element's right
-            # boundary has been found.
-            #
-            # When i == n, flush all remaining elements.
-            while stack and (
-                i == n or nums[stack[-1]] > nums[i]
-            ):
+            # at the top of the stack, the current index i
+            # becomes the right boundary for the popped element.
+            while stack and nums[stack[-1]] > nums[i]:
+
                 mid = stack.pop()
 
-                # Previous index with value <= nums[mid]
-                # Next index with value < nums[mid]
+                # left  = previous index with value <= nums[mid]
+                # right = current index i, where nums[i] < nums[mid]
                 left = stack[-1] if stack else -1
                 right = i
 
-                # Number of subarrays in which nums[mid]
-                # is assigned as the minimum.
+                # Number of subarrays where nums[mid] is counted
+                # as the minimum.
                 count = (mid - left) * (right - mid)
 
-                # Add nums[mid]'s total contribution
-                # to the sum of all subarray minimums.
+                # Add nums[mid]'s contribution to the min sum.
                 min_sum += nums[mid] * count
 
-            if i < n:
-                stack.append(i)
+            stack.append(i)
 
-        # Every subarray's range is maximum - minimum.
-        # Therefore, subtract the two aggregate sums.
+        # Flush the remaining stack.
+        # These elements have no smaller element to their right.
+        while stack:
+            mid = stack.pop()
+
+            left = stack[-1] if stack else -1
+            right = n
+
+            count = (mid - left) * (right - mid)
+            min_sum += nums[mid] * count
+
+        # Range = maximum - minimum for every subarray.
         return max_sum - min_sum
+
 
 
 # V0-2-1
@@ -712,8 +720,6 @@ class Solution(object):
             total_maxs += nums[i] * num_subarrays
             
         return total_maxs
-
-
 
 
 # V0-5
