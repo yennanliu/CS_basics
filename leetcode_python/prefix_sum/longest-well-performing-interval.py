@@ -101,6 +101,96 @@ class Solution(object):
 
         return max_len
 
+
+
+# V0-0-1
+# IDEA: PREFIX + HASHMAP (GPT)
+class Solution(object):
+    def longestWPI(self, hours):
+        """
+        :type hours: List[int]
+        :rtype: int
+        """
+        # prefix sum:
+        # tiring day (> 8 hours)     -> +1
+        # non-tiring day (<= 8 hours) -> -1
+        #
+        # A well-performing interval has sum > 0.
+
+        # Map: {prefix_sum: earliest_index}
+        # Prefix sum 0 exists before the array starts.
+        prefix_map = {0: -1}
+
+        prefix = 0
+        res = 0
+
+        for i, hr in enumerate(hours):
+
+            # Step 1: Update prefix sum
+            if hr > 8:
+                prefix += 1
+            else:
+                prefix -= 1
+
+            # Step 2: If the entire prefix has positive sum,
+            # hours[0:i+1] is a valid interval.
+            if prefix > 0:
+                res = i + 1
+
+            # Step 3: Otherwise, look for an earlier prefix
+            # sum that is exactly one smaller.
+            #
+            # prefix - (prefix - 1) = 1 > 0,
+            # so the interval between those prefix positions
+            # is well-performing.
+            elif prefix - 1 in prefix_map:
+                res = max(res, i - prefix_map[prefix - 1])
+
+            # Step 4: Keep only the earliest index for each
+            # prefix sum, because it produces the longest interval.
+            if prefix not in prefix_map:
+                prefix_map[prefix] = i
+
+        return res
+
+
+# V0-0-2
+# IDEA: PREFIX + HASHMAP (gemini)
+class Solution(object):
+
+  def longestWPI(self, hours):
+    """:type hours: List[int]
+
+    :rtype: int
+    """
+    if not hours:
+      return 0
+
+    score = 0
+    max_len = 0
+    # 雜湊表：記錄每個前綴和「最早出現」的索引位置 { score: index }
+    seen = {}
+
+    for i in range(len(hours)):
+      # 1. 大於 8 小時記為 +1，否則記為 -1
+      score += 1 if hours[i] > 8 else -1
+
+      # 2. 如果當前累計分數大於 0，代表從 0 到 i 全段都符合 WPI
+      if score > 0:
+        max_len = i + 1
+      else:
+        # 3. 如果 score <= 0，尋找是否有歷史前綴和為 score - 1
+        # 由於每次只變動 +/-1，最早出現的 score - 1 能保證跨越最大的區間長度
+        if score - 1 in seen:
+          max_len = max(max_len, i - seen[score - 1])
+
+      # 4. 為了讓區間盡可能長，只記錄每個 score 第一次出現的索引
+      if score not in seen:
+        seen[score] = i
+
+    return max_len
+
+
 # V0-1
 # IDEA: PREFIX + HASHMAP (gemini)
 class Solution(object):
