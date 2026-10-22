@@ -46,6 +46,114 @@ class Solution(object):
 
 
 
+# V0-0-1
+# IDEA : DFS + trie (extra attr)  + BACKTRACK (GEMINI)
+class MyNode(object):
+
+  def __init__(self):
+    self.child = {}
+    self.is_end = False
+
+    # NOTE !!!
+    # 直接在結尾節點儲存完整單字，省去動態拼字與集合檢查的開銷
+    self.word = None
+
+
+class Solution(object):
+
+  def __init__(self):
+    self.node = MyNode()
+    self.res = []
+
+  def findWords(self, board, words):
+    """:type board: List[List[str]]
+
+    :type words: List[str]
+    :rtype: List[str]
+    """
+    if not board or not board[0] or not words:
+      return []
+
+    # NOTE !!!
+    # can setup `class wise` val in a method
+    self.board = board
+    self.l = len(board)
+    self.w = len(board[0])
+    self.res = []
+
+    # 1. 建立 Trie
+    for word in words:
+      self.add_word(word)
+
+    # 2. 從網格中每一個格子出發進行 DFS 搜尋
+    for y in range(self.l):
+      for x in range(self.w):
+        char = board[y][x]
+        if char in self.node.child:
+          self.dfs(x, y, self.node)
+
+    return self.res
+
+  def dfs(self, x, y, node):
+    char = self.board[y][x]
+
+    # 若當前字元不在 Trie 子節點中，直接剪枝返回
+    if char not in node.child:
+      return
+
+    next_node = node.child[char]
+
+    # NOTE !!!
+    # how we know it's time to` append to res` ??
+    #   -> check the trie `word` attr
+    #     -> if `word` attr is NOT none
+    #     -> the word is in trie
+    #     -> add this to res
+    
+    # 3. 檢查是否走到某個單字的結尾
+    if next_node.word:
+      self.res.append(next_node.word)
+      # NOTE !!!!
+      # 找到後將其設為 None，防止重複加入同一單字
+      next_node.word = None
+
+
+    # 4. 標記當前格子為已造訪
+    self.board[y][x] = "#"
+
+    moves = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+    for m in moves:
+      x_ = x + m[0]
+      y_ = y + m[1]
+
+      # 修正：使用嚴格小於/大於等於，並用 continue 替代 return 避免中斷其他方向
+      if x_ < 0 or x_ >= self.w or y_ < 0 or y_ >= self.l:
+        continue
+      if self.board[y_][x_] == "#":
+        continue
+
+      self.dfs(x_, y_, next_node)
+
+    # 5. 回溯：恢復當前格子的字元 (backtrack, undo)
+    self.board[y][x] = char
+
+    # 6. 動態剪枝：若該子樹已經被搜空，從父節點中刪除它以加速後續搜尋
+    if not next_node.child and not next_node.word:
+      del node.child[char]
+
+  def add_word(self, word):
+    node = self.node
+    for w in word:
+      if w not in node.child:
+        node.child[w] = MyNode()
+      node = node.child[w]
+
+    # NOTE !!!
+    # ONLY update `word` attr when reach the end
+    node.word = word
+
+
+
 # V0-1
 # IDEA : DFS + trie  + BACKTRACK (GPT)
 class MyNode(object):
