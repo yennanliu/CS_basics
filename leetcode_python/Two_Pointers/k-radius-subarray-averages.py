@@ -52,9 +52,59 @@ n == nums.length
 
 
 # V0
+# IDEA : PREFIX SUM (fixed-width window of size 2k+1) (gpt)
+# time = O(n), space = O(n)
+class Solution(object):
+    def getAverages(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: List[int]
+        """
+
+        # edge
+        if not nums or len(nums) == 0:
+            return []
+
+        if k == 0:
+            return nums
+
+        if k > len(nums):
+            return [-1] * (len(nums))
+
+        n = len(nums)
+
+        prefix = [0] * (n + 1)
+
+        # NOTE !!!
+        # build prefix sum arr
+        for i in range(n):
+            prefix[i + 1] = prefix[i] + nums[i]
+
+        res = []
+
+        for i in range(n):
+            left = i - k
+            right = i + k
+
+            if left < 0 or right >= n:
+                res.append(-1)
+
+            else:
+                # NOTE !!!!
+                # get seq sum via `prefix sum`
+                _sum = prefix[right + 1] - prefix[left]
+                
+                _avg = int(_sum // (2 * k + 1))
+                
+                res.append(_avg)
+
+
+        return res
 
 # V0-1
 # IDEA : PREFIX SUM (fixed-width window of size 2k+1) (gpt)
+# time = O(n), space = O(n)
 class Solution(object):
     def getAverages(self, nums, k):
         """
