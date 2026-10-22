@@ -225,32 +225,65 @@ public int eraseOverlapIntervals(int[][] intervals) {
 ```
 
 #### Template 3: Two Pointer Intersection (LC 986)
-```python
-def interval_intersection(firstList, secondList):
-    """
-    Find intersection of two interval lists
-    Time: O(m + n), Space: O(min(m, n))
-    """
-    result = []
-    i = j = 0
-    
-    while i < len(firstList) and j < len(secondList):
-        # Find intersection
-        start = max(firstList[i][0], secondList[j][0])
-        end = min(firstList[i][1], secondList[j][1])
-        
-        # Valid intersection
-        if start <= end:
-            result.append([start, end])
-        
-        # Move pointer of interval that ends first
-        if firstList[i][1] < secondList[j][1]:
-            i += 1
-        else:
-            j += 1
-    
-    return result
+
+> **Key Idea**: build the *candidate* intersection first, then ask whether it is real. The overlap of `[s1, e1]` and `[s2, e2]` can only start at the **later start** and end at the **earlier end** — so compute `start_max = max(s1, s2)`, `end_min = min(e1, e2)`, and the two intervals overlap **iff `start_max <= end_min`**. One comparison does both jobs: it is the overlap test *and* it hands you the answer interval.
+
+**Why `start_max <= end_min` is the overlap test**: the only two ways closed intervals miss each other are `e1 < s2` (first is entirely left) or `e2 < s1` (first is entirely right). Either one makes the later start exceed the earlier end, so `start_max > end_min` ⇔ no overlap. It is `not (e1 < s2 or s1 > e2)` rewritten, without the double negative. Use `<=`, not `<` — the intervals are **closed**, so touching at a point (`[5,10]` ∩ `[1,5]` = `[5,5]`) is a real intersection.
+
+**Why advance the pointer that ends first**: the interval with the smaller end cannot reach anything further right in the *other* list (those start after the current one, which already extends at least as far), so it is finished. The one with the larger end may still overlap the next interval opposite it, so it stays.
+
+```text
+first  = [[0,2],[5,10],[13,23],[24,25]]
+second = [[1,5],[8,12],[15,24],[25,26]]
+
+i j  first   second   start_max end_min  overlap?      move
+0 0  [0,2]   [1,5]    1         2        yes -> [1,2]   i (2 < 5)
+1 0  [5,10]  [1,5]    5         5        yes -> [5,5]   j (5 < 10)
+1 1  [5,10]  [8,12]   8         10       yes -> [8,10]  i
+2 1  [13,23] [8,12]   13        12       NO  (13 > 12)  j
+2 2  [13,23] [15,24]  15        23       yes -> [15,23] i
+3 2  [24,25] [15,24]  24        24       yes -> [24,24] j
+3 3  [24,25] [25,26]  25        25       yes -> [25,25] i -> done
+
+res = [[1,2],[5,5],[8,10],[15,23],[24,24],[25,25]]
 ```
+
+```python
+# python
+# LC 986 - Interval List Intersections
+# IDEA: candidate overlap = [max(starts), min(ends)]; keep it iff start_max <= end_min; advance the earlier end
+# time = O(m + n), space = O(1) extra (output up to m + n intervals)
+def intervalIntersection(firstList, secondList):
+    res = []
+    i = 0
+    j = 0
+
+    while i < len(firstList) and j < len(secondList):
+        start_f, end_f = firstList[i]
+        start_s, end_s = secondList[j]
+
+        # 1. the overlap, if any, starts at the later start and ends at the earlier end
+        start_max = max(start_f, start_s)
+        end_min = min(end_f, end_s)
+
+        # 2. it is real only if it is non-empty (closed intervals: <=, a single point counts)
+        if start_max <= end_min:
+            res.append([start_max, end_min])
+
+        # 3. the interval that ends first can overlap nothing further on -> advance it
+        if end_f < end_s:
+            i += 1
+        elif end_f > end_s:
+            j += 1
+        else:
+            # both end together: both are finished
+            i += 1
+            j += 1
+
+    return res
+```
+
+**🚫 Traps**: (1) `start_max < end_min` drops the single-point intersections `[5,5]`, `[24,24]`, `[25,25]` from the example; (2) advancing by *start* instead of *end* skips overlaps — the long interval `[13,23]` has to stay put while `[8,12]` and `[15,24]` pass it; (3) on equal ends, advancing only one pointer is still correct (the next round finds no overlap and moves the other) — advancing both just saves that round.
 
 #### Template 4: Meeting Rooms with Priority Queue (LC 253)
 ```python
@@ -511,7 +544,7 @@ def point_in_interval(point, interval):
 |-----------|------|-------|-------|
 | Sort intervals | O(n log n) | O(1) | Essential first step |
 | Merge overlapping | O(n) | O(n) | After sorting |
-| Find intersections | O(m + n) | O(min(m,n)) | Two pointer approach |
+| Find intersections | O(m + n) | O(m + n) | Two pointer approach; output can hold m + n intervals |
 | Meeting rooms | O(n log n) | O(n) | Priority queue for end times |
 | Calendar booking | O(log n) | O(n) | Binary search per insertion |
 | Greedy scheduling | O(n log n) | O(1) | Sort by end time |
@@ -521,7 +554,7 @@ def point_in_interval(point, interval):
 |----------|---------|----------|
 | **Merge** | Overlapping intervals | `if last[1] < curr[0]: append else: merge` |
 | **Greedy** | Non-overlapping max | `sort(key=end); if curr[0] >= prev[1]: count++` |
-| **Two Pointer** | List intersection | `start=max(starts), end=min(ends)` |
+| **Two Pointer** | List intersection | `start=max(starts), end=min(ends); keep if start <= end; advance earlier end` |
 | **Priority Queue** | Resource management | `heappush(end_time); if heap[0] <= start: heappop` |
 | **Binary Search** | Dynamic insertion | `bisect.insort` or custom binary search |
 
