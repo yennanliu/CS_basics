@@ -503,6 +503,41 @@ class Solution(object):
 
 # V0-5
 # IDEA: 多源 BFS（Multi-source BFS） +  Dijkstra 演算法 + 最大堆（Max-Heap） (gemini)
+"""
+
+
+1. WHAT THIS LC IS ASKING ?
+
+->  從左上角 (0, 0) 走到右下角 (n-1, n-1)，
+    希望路徑上所有格子「到最近小偷的距離」的最小值（即安全係數）能夠達到最大
+
+
+
+2. CORE IDEA:
+
+    -> 這題需要分兩個主要階段來解決：
+
+
+        - 第一階段：多源 BFS（Multi-source BFS）
+
+
+            - 我們需要知道網格中每一個格子距離「最近的小偷（1）」有多遠。
+
+            - 將所有小偷的位置同時放入佇列中，進行一次多源廣度優先搜尋，
+              計算出每個格子的安全距離矩陣 dist。
+
+
+        - 第二階段：Dijkstra 演算法 + 最大堆（Max-Heap）
+
+
+            - 這屬於經典的「瓶頸最短路徑（Bottleneck Shortest Path）」問題。
+
+            - 我們要找一條從起點到終點的路徑，使得該路徑上的「最低安全距離」最大化。
+
+            - 使用最大堆（在 Python 中用負數模擬），
+              每次優先擴展當前累積安全係數最大的路徑，直到抵達終點為止。
+
+"""
 import heapq
 
 class Solution(object):
