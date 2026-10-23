@@ -78,6 +78,19 @@ There is at least one thief in the grid.
 """
 
 
+
+# V0
+class Solution(object):
+    def maximumSafenessFactor(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        pass
+
+
+
+
 # V0-1
 # IDEA: MULTI SOURCE BFS + Dijkstra (gemini)
 """
@@ -183,7 +196,6 @@ class Solution(object):
 # V0-2
 # IDEA: MULTI SOURCE BFS + Dijkstra (GPT)
 from collections import deque
-
 
 class Solution(object):
     def maximumSafenessFactor(self, grid):
@@ -403,3 +415,152 @@ class Solution(object):
                         best[x][y] = nd
                         heapq.heappush(heap, (-nd, x, y))
         return 0
+
+
+# V0-4
+# IDEA: BFS + BINARY SEARCH (gpt)
+
+from collections import deque
+
+class Solution(object):
+    def maximumSafenessFactor(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        n = len(grid)
+        directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+
+        # Step 1: Multi-source BFS
+        # dist[r][c] = distance to the nearest thief
+        dist = [[-1] * n for _ in range(n)]
+        q = deque()
+
+        # Start BFS from ALL thief cells
+        for r in range(n):
+            for c in range(n):
+                if grid[r][c] == 1:
+                    dist[r][c] = 0
+                    q.append((r, c))
+
+        while q:
+            r, c = q.popleft()
+
+            for dr, dc in directions:
+                nr, nc = r + dr, c + dc
+
+                if (0 <= nr < n and 0 <= nc < n
+                        and dist[nr][nc] == -1):
+                    dist[nr][nc] = dist[r][c] + 1
+                    q.append((nr, nc))
+
+        # Step 2: Check if a path exists with safeness >= k
+        def can_reach(k):
+            if dist[0][0] < k:
+                return False
+
+            visited = {(0, 0)}
+            q = deque([(0, 0)])
+
+            while q:
+                r, c = q.popleft()
+
+                if r == n - 1 and c == n - 1:
+                    return True
+
+                for dr, dc in directions:
+                    nr, nc = r + dr, c + dc
+
+                    if not (0 <= nr < n and 0 <= nc < n):
+                        continue
+
+                    if (nr, nc) in visited:
+                        continue
+
+                    # Only walk through cells safe enough
+                    if dist[nr][nc] < k:
+                        continue
+
+                    visited.add((nr, nc))
+                    q.append((nr, nc))
+
+            return False
+
+        # Step 3: Binary search for the maximum safeness
+        left, right = 0, max(max(row) for row in dist)
+        ans = 0
+
+        while left <= right:
+            mid = left + (right - left) // 2
+
+            if can_reach(mid):
+                ans = mid
+                left = mid + 1
+            else:
+                right = mid - 1
+
+        return ans
+
+# V0-5
+# IDEA: 多源 BFS（Multi-source BFS） +  Dijkstra 演算法 + 最大堆（Max-Heap） (gemini)
+import heapq
+
+class Solution(object):
+
+  def maximumSafenessFactor(self, grid):
+    """:type grid: List[List[int]]
+
+    :rtype: int
+    """
+    n = len(grid)
+    # 邊界特判：如果起點或終點本身就是小偷，安全係數直接為 0
+    if grid[0][0] == 1 or grid[n - 1][n - 1] == 1:
+      return 0
+
+    # -------------------------------------------------------------
+    # 階段一：多源 BFS，計算每個格子到最近小偷的距離
+    # -------------------------------------------------------------
+    dist = [[-1] * n for _ in range(n)]
+    queue = []
+
+    for r in range(n):
+      for c in range(n):
+        if grid[r][c] == 1:
+          dist[r][c] = 0
+          queue.append((r, c))
+
+    while queue:
+      next_queue = []
+      for r, c in queue:
+        for dr, dc in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+          nr, nc = r + dr, c + dc
+          if 0 <= nr < n and 0 <= nc < n and dist[nr][nc] == -1:
+            dist[nr][nc] = dist[r][c] + 1
+            next_queue.append((nr, nc))
+      queue = next_queue
+
+    # -------------------------------------------------------------
+    # 階段二：Dijkstra + 最大堆，尋找最大安全係數的路徑
+    # -------------------------------------------------------------
+    # Python 的 heapq 是最小堆，因此存入負數來模擬最大堆：(-safeness, r, c)
+    max_heap = [(-dist[0][0], 0, 0)]
+    visited = [[False] * n for _ in range(n)]
+    visited[0][0] = True
+
+    while max_heap:
+      safeness, r, c = heapq.heappop(max_heap)
+      safeness = -safeness  # 還原為正數
+
+      # 如果已經到達右下角終點，直接回傳當前的安全係數
+      if r == n - 1 and c == n - 1:
+        return safeness
+
+      for dr, dc in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+        nr, nc = r + dr, c + dc
+        if 0 <= nr < n and 0 <= nc < n and not visited[nr][nc]:
+          visited[nr][nc] = True
+          # 路徑的整體安全係數受限於整條路上「最小」的那格安全距離
+          next_safeness = min(safeness, dist[nr][nc])
+          heapq.heappush(max_heap, (-next_safeness, nr, nc))
+
+    return 0
