@@ -42,7 +42,94 @@ path is a valid absolute Unix path.
 
 """
 
+
 # V0
+class Solution(object):
+    def simplifyPath(self, path):
+        """
+        :type path: str
+        :rtype: str
+        """
+        pass
+
+
+
+# V0-0-1
+# IDEA : 使用 split("/") 搭配堆疊（Stack） (gpt)
+# time = O(n), n = len(path)
+# space = O(n)
+class Solution(object):
+    def simplifyPath(self, path):
+        """
+        :type path: str
+        :rtype: str
+        """
+        # Edge case
+        if not path:
+            return "/"
+
+        st = []
+
+        """
+        NOTE !!!
+
+        simply split the path by "/"
+
+        as the way to process char in string
+
+        """
+        # Split path by "/"
+        for x in path.split("/"):
+            if x == "" or x == ".":
+                # Ignore repeated slashes and current directory
+                continue
+
+            elif x == "..":
+                # Go to parent directory
+                if st:
+                    st.pop()
+
+            else:
+                # Normal directory name
+                st.append(x)
+
+        return "/" + "/".join(st)
+
+
+# V0-0-2
+# IDEA: 使用 split("/") 搭配堆疊（Stack） (gemini)
+class Solution(object):
+
+  def simplifyPath(self, path):
+    """:type path: str
+
+    :rtype: str
+    """
+    if not path:
+      return "/"
+
+    # 1. 根據斜線將路徑分割成各個片段
+    parts = path.split("/")
+    st = []
+
+    # 2. 逐一處理每個片段
+    for p in parts:
+      # 如果是空字串（對應多個連續斜線 //）或當前目錄 "."，直接忽略
+      if not p or p == ".":
+        continue
+      # 如果是 ".."，代表返回上一層目錄，堆疊若有資料則 pop
+      elif p == "..":
+        if st:
+          st.pop()
+      # 一般的資料夾名稱，推入堆疊
+      else:
+        st.append(p)
+
+    # 3. 將堆疊中的合法資料夾重新用 "/" 串接，並在最前面加上根目錄 "/"
+    return "/" + "/".join(st)
+
+
+# V0-1
 # IDEA : STACK
 # time = O(n), n = len(path)
 # space = O(n)
@@ -59,7 +146,8 @@ class Solution:
 
         return "/"+"/".join(result)
 
-# V0-1
+
+# V0-2
 # IDEA : STACK
 # time = O(n), n = len(path)
 # space = O(n)
