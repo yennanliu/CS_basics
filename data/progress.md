@@ -40,13 +40,6 @@
 						- 2048 (ing) -> note, again!!
 
 
-
-
-
-	- neetcode 150
-	- review all `cheatsheets`
-
-
 - ★★★★★
 
 
