@@ -76,7 +76,7 @@
 
 - 樹 — LeetCode 實戰題解
 	- https://yennj12.js.org/CS_basics/cheatsheets/tree_examples.zh.html
-
+		- `5) 檢查對稱樹 — LC 101`
 
 
 
@@ -532,6 +532,9 @@
 
 			 - Maximum Width of Binary Tree 
 			 		— LC 662
+
+
+			 - 計數問題有三種樣態 —— 一般樹、完美樹、完全樹（LC 222）—— 差別只在「結構讓你能跳過多少東西」。
 
 
 
