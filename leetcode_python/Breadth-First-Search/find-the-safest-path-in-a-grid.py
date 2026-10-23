@@ -90,6 +90,121 @@ class Solution(object):
 
 
 
+# V0-0-1
+# IDEA: 多源 BFS（Multi-source BFS） +  Dijkstra (PQ + BFS) (gemini)
+"""
+
+
+1. WHAT THIS LC IS ASKING ?
+
+->  從左上角 (0, 0) 走到右下角 (n-1, n-1)，
+    希望路徑上所有格子「到最近小偷的距離」的最小值（即安全係數）能夠達到最大
+
+
+
+2. CORE IDEA:
+
+    -> 這題需要分兩個主要階段來解決：
+
+
+        - 第一階段：多源 BFS（Multi-source BFS）
+
+
+            - 我們需要知道網格中每一個格子距離「最近的小偷（1）」有多遠。
+
+            - 將所有小偷的位置同時放入佇列中，進行一次多源廣度優先搜尋，
+              計算出每個格子的安全距離矩陣 dist。
+
+
+        - 第二階段：Dijkstra 演算法 + 最大堆（Max-Heap）
+
+
+            - 這屬於經典的「瓶頸最短路徑（Bottleneck Shortest Path）」問題。
+
+            - 我們要找一條從起點到終點的路徑，使得該路徑上的「最低安全距離」最大化。
+
+            - 使用最大堆（在 Python 中用負數模擬），
+              每次優先擴展當前累積安全係數最大的路徑，直到抵達終點為止。
+
+"""
+from collections import deque
+import heapq
+
+
+class Solution(object):
+
+  def maximumSafenessFactor(self, grid):
+    """:type grid: List[List[int]]
+
+    :rtype: int
+    """
+    n = len(grid)
+
+    # 邊界特判：如果起點或終點本身就是小偷，安全係數直接為 0
+    if grid[0][0] == 1 or grid[n - 1][n - 1] == 1:
+      return 0
+
+    # -------------------------------------------------------------
+    # 階段一：多源 BFS（使用 deque 與按層處理確保距離計算正確）
+    # -------------------------------------------------------------
+    dist = [[-1] * n for _ in range(n)]
+    queue = deque()
+
+    # 1. 將所有小偷位置放入佇列，初始距離設為 0
+    for r in range(n):
+      for c in range(n):
+        if grid[r][c] == 1:
+          dist[r][c] = 0
+          queue.append((r, c))
+
+    # 2. 按層進行多源 BFS 擴散
+    while queue:
+      level_size = len(queue)
+
+      """
+      NOTE !!!
+
+      process BFS layer by layer
+
+        -> to avoid prev round node status affect next rounds
+      """
+      # 鎖定當層大小，確保只處理當前距離的節點
+      for _ in range(level_size):
+        r, c = queue.popleft()
+
+        for dr, dc in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+          nr, nc = r + dr, c + dc
+          if 0 <= nr < n and 0 <= nc < n and dist[nr][nc] == -1:
+            dist[nr][nc] = dist[r][c] + 1
+            queue.append((nr, nc))
+
+    # -------------------------------------------------------------
+    # 階段二：Dijkstra 演算法 + 最大堆（尋找最大化最小安全係數的路徑）
+    # -------------------------------------------------------------
+    # Python 的 heapq 是最小堆，用負數模擬最大堆：(-safeness, r, c)
+    max_heap = [(-dist[0][0], 0, 0)]
+    visited = [[False] * n for _ in range(n)]
+    visited[0][0] = True
+
+    while max_heap:
+      safeness, r, c = heapq.heappop(max_heap)
+      safeness = -safeness  # 還原為正數
+
+      # 如果到達終點，因為是最大堆優先擴展，當下拿到的就是最優解
+      if r == n - 1 and c == n - 1:
+        return safeness
+
+      for dr, dc in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+        nr, nc = r + dr, c + dc
+        if 0 <= nr < n and 0 <= nc < n and not visited[nr][nc]:
+          visited[nr][nc] = True
+          # 整條路徑的安全係數取決於瓶頸（路徑上的最小值）
+          next_safeness = min(safeness, dist[nr][nc])
+          heapq.heappush(max_heap, (-next_safeness, nr, nc))
+
+    return 0
+
+
 
 # V0-1
 # IDEA: MULTI SOURCE BFS + Dijkstra (gemini)
@@ -500,102 +615,3 @@ class Solution(object):
                 right = mid - 1
 
         return ans
-
-# V0-5
-# IDEA: 多源 BFS（Multi-source BFS） +  Dijkstra 演算法 + 最大堆（Max-Heap） (gemini)
-"""
-
-
-1. WHAT THIS LC IS ASKING ?
-
-->  從左上角 (0, 0) 走到右下角 (n-1, n-1)，
-    希望路徑上所有格子「到最近小偷的距離」的最小值（即安全係數）能夠達到最大
-
-
-
-2. CORE IDEA:
-
-    -> 這題需要分兩個主要階段來解決：
-
-
-        - 第一階段：多源 BFS（Multi-source BFS）
-
-
-            - 我們需要知道網格中每一個格子距離「最近的小偷（1）」有多遠。
-
-            - 將所有小偷的位置同時放入佇列中，進行一次多源廣度優先搜尋，
-              計算出每個格子的安全距離矩陣 dist。
-
-
-        - 第二階段：Dijkstra 演算法 + 最大堆（Max-Heap）
-
-
-            - 這屬於經典的「瓶頸最短路徑（Bottleneck Shortest Path）」問題。
-
-            - 我們要找一條從起點到終點的路徑，使得該路徑上的「最低安全距離」最大化。
-
-            - 使用最大堆（在 Python 中用負數模擬），
-              每次優先擴展當前累積安全係數最大的路徑，直到抵達終點為止。
-
-"""
-import heapq
-
-class Solution(object):
-
-  def maximumSafenessFactor(self, grid):
-    """:type grid: List[List[int]]
-
-    :rtype: int
-    """
-    n = len(grid)
-    # 邊界特判：如果起點或終點本身就是小偷，安全係數直接為 0
-    if grid[0][0] == 1 or grid[n - 1][n - 1] == 1:
-      return 0
-
-    # -------------------------------------------------------------
-    # 階段一：多源 BFS，計算每個格子到最近小偷的距離
-    # -------------------------------------------------------------
-    dist = [[-1] * n for _ in range(n)]
-    queue = []
-
-    for r in range(n):
-      for c in range(n):
-        if grid[r][c] == 1:
-          dist[r][c] = 0
-          queue.append((r, c))
-
-    while queue:
-      next_queue = []
-      for r, c in queue:
-        for dr, dc in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
-          nr, nc = r + dr, c + dc
-          if 0 <= nr < n and 0 <= nc < n and dist[nr][nc] == -1:
-            dist[nr][nc] = dist[r][c] + 1
-            next_queue.append((nr, nc))
-      queue = next_queue
-
-    # -------------------------------------------------------------
-    # 階段二：Dijkstra + 最大堆，尋找最大安全係數的路徑
-    # -------------------------------------------------------------
-    # Python 的 heapq 是最小堆，因此存入負數來模擬最大堆：(-safeness, r, c)
-    max_heap = [(-dist[0][0], 0, 0)]
-    visited = [[False] * n for _ in range(n)]
-    visited[0][0] = True
-
-    while max_heap:
-      safeness, r, c = heapq.heappop(max_heap)
-      safeness = -safeness  # 還原為正數
-
-      # 如果已經到達右下角終點，直接回傳當前的安全係數
-      if r == n - 1 and c == n - 1:
-        return safeness
-
-      for dr, dc in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
-        nr, nc = r + dr, c + dc
-        if 0 <= nr < n and 0 <= nc < n and not visited[nr][nc]:
-          visited[nr][nc] = True
-          # 路徑的整體安全係數受限於整條路上「最小」的那格安全距離
-          next_safeness = min(safeness, dist[nr][nc])
-          heapq.heappush(max_heap, (-next_safeness, nr, nc))
-
-    return 0

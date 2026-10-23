@@ -1189,7 +1189,7 @@ python3 script/fix_readme_tags.py            # rewrite the Note column
 | 1905 | [Count Sub Islands](https://leetcode.com/problems/count-sub-islands) | [Python](./leetcode_python/Breadth-First-Search/count-sub-islands.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/BFS/CountSubIslands.java) | _O(m * n)_ | _O(m * n)_ | Medium | **bfs**, dfs, `amazon` | AGAIN (1) |
 | 2115 | [Find All Possible Recipes from Given Supplies](https://leetcode.com/problems/find-all-possible-recipes-from-given-supplies) | [Java](./leetcode_java/src/main/java/LeetCodeJava/BFS/FindAllPossibleRecipesFromGivenSupplies.java) | _O(n + e)_ | _O(n + e)_ | Medium | **bfs**, dfs, topological sort, `google`, `array`, `hash table`, `string` | OK (2) |
 | 2684 | [Maximum Number of Moves in a Grid](https://leetcode.com/problems/maximum-number-of-moves-in-a-grid) | [Java](./leetcode_java/src/main/java/LeetCodeJava/BFS/MaximumNumberOfMovesInAGrid.java) | _O(m * n)_ | _O(m * n)_ | Medium | **bfs**, top-down dp, bottom-up dp, LC weekly 345, `array`, `matrix` | again (1) |
-| 2812 | [Find the Safest Path in a Grid](https://leetcode.com/problems/find-the-safest-path-in-a-grid/) | [Python](./leetcode_python/Breadth-First-Search/find-the-safest-path-in-a-grid.py) | _O(n^2 * log n)_ | _O(n^2)_ | Medium | **bfs**, MULTI-SOURCE BFS + MAX-MIN (WIDEST PATH) DIJKSTRA, binary search + bfs, new, google | AGAIN********** (2) |
+| 2812 | [Find the Safest Path in a Grid](https://leetcode.com/problems/find-the-safest-path-in-a-grid/) | [Python](./leetcode_python/Breadth-First-Search/find-the-safest-path-in-a-grid.py) | _O(n^2 * log n)_ | _O(n^2)_ | Medium | **bfs**, MULTI-SOURCE BFS + MAX-MIN (WIDEST PATH) DIJKSTRA, binary search + bfs, new, google | AGAIN************** (2) (MUST) |
 
 
 
