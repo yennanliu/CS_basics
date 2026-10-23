@@ -451,7 +451,6 @@
 				— LC 41
 
 			- work with graph
-				- LC 1631
 				- LC 778
 
 			- 最小化最大值 (again!)

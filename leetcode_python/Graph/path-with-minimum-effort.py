@@ -52,6 +52,149 @@ class Solution(object):
         """
         pass
 
+
+
+# V0-0-1
+# IDEA 1) Dijkstra's (gemini)
+"""
+NOTE !!!
+
+
+    -> the `cost` in this LC is the `max height diff within neighbor cells`, but NOT accumulated cost
+
+        -> e.g. 但這題的路徑成本不是累加高度，而是路徑上相鄰格子的「最大高度差」
+"""
+import heapq
+
+class Solution(object):
+    def minimumEffortPath(self, heights):
+        """
+        :type heights: List[List[int]]
+        :rtype: int
+        """
+        if not heights or not heights[0]:
+            return 0
+
+        l = len(heights)
+        w = len(heights[0])
+
+        # Min Heap: [current_effort, x, y]
+        pq = []
+        heapq.heappush(pq, (0, 0, 0))
+
+        # Four directions: right, left, down, up
+        moves = [
+            [0, 1],
+            [0, -1],
+            [1, 0],
+            [-1, 0]
+        ]
+
+        # cost_matrix[y][x] = minimum known effort
+        # required to reach cell (x, y).
+        cost_matrix = [[float('inf')] * w for _ in range(l)]
+        cost_matrix[0][0] = 0
+
+        while pq:
+            cost, x, y = heapq.heappop(pq)
+
+            # Ignore outdated heap entries.
+            if cost > cost_matrix[y][x]:
+                continue
+
+            # Reaching the destination with the smallest
+            # effort means we have found the optimal answer.
+            if x == w - 1 and y == l - 1:
+                return cost
+
+            for dx, dy in moves:
+                _x = x + dx
+                _y = y + dy
+
+                # Check grid boundaries.
+                if not (0 <= _x < w and 0 <= _y < l):
+                    continue
+
+
+                """
+                NOTE !!! below
+                """
+                # Effort of this single move is the absolute
+                # difference between the two cell heights.
+                diff = abs(heights[_y][_x] - heights[y][x])
+
+                """
+                NOTE !!! below
+                """
+                # Path effort is the maximum single-step
+                # difference encountered along the path.
+                new_cost = max(cost, diff)
+
+                if new_cost < cost_matrix[_y][_x]:
+                    cost_matrix[_y][_x] = new_cost
+                    heapq.heappush(pq, (new_cost, _x, _y))
+
+        return 0
+
+
+
+# V0-0-2
+# IDEA 1) Dijkstra's (gemini)
+import heapq
+
+
+class Solution(object):
+
+  def minimumEffortPath(self, heights):
+    """:type heights: List[List[int]]
+
+    :rtype: int
+    """
+    if not heights or not heights[0]:
+      return 0
+
+    l = len(heights)  # 總行數
+    w = len(heights[0])  # 總列數
+
+    # 優先佇列（Min-Heap），儲存元素格式：(effort, x, y)
+    pq = [(0, 0, 0)]
+
+    # 記錄從起點到每個座標所需的最小努力值，初始化為無限大
+    dist = [[float("inf")] * w for _ in range(l)]
+    dist[0][0] = 0
+
+    # 四個移動方向：右、左、下、上
+    moves = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+
+    while pq:
+      effort, x, y = heapq.heappop(pq)
+
+      # 如果已經到達右下角終點，直接回傳當前的最小努力值
+      if x == w - 1 and y == l - 1:
+        return effort
+
+      # 如果當前記錄的努力值大於已知最佳解，跳過
+      if effort > dist[y][x]:
+        continue
+
+      for m in moves:
+        _x = x + m[0]
+        _y = y + m[1]
+
+        # 檢查是否在網格範圍內
+        if 0 <= _x < w and 0 <= _y < l:
+          # 計算到相鄰格子的努力值（路徑上的最大高度差）
+          diff = abs(heights[_y][_x] - heights[y][x])
+          new_effort = max(effort, diff)
+
+          # 如果新努力值小於該點歷史紀錄，更新並推入 Heap
+          if new_effort < dist[_y][_x]:
+            dist[_y][_x] = new_effort
+            heapq.heappush(pq, (new_effort, _x, _y))
+
+    return 0
+
+
 # V0-1
 # IDEA 1) Dijkstra's (gemini)
 import heapq
