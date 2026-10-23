@@ -299,6 +299,38 @@ class Solution(object):
 
         n = len(nums)
 
+
+        """
+        NOTE !!!
+
+
+        code structure:
+
+
+        ->
+
+
+        ```
+        for i in range(n):
+
+            while st and nums[st[-1]] < nums[i]:
+                # ....
+
+
+            st.append(i)
+
+
+        # handle remaining char in st
+        while st:
+            # ...
+
+
+
+        ```
+
+
+        """
+
         # ==================================================
         # Part 1: Calculate the sum of all subarray maximums
         # ==================================================
@@ -422,6 +454,75 @@ class Solution(object):
 
 
 # V0-2-1
+# IDEA: MONO STACK (GPT)
+class Solution(object):
+    def subArrayRanges(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        n = len(nums)
+
+        largest_contri = 0
+        smallest_contri = 0
+
+        # 1) Sum of subarray maximums
+        st = []
+
+        for i in range(n):
+            while st and nums[st[-1]] < nums[i]:
+                mid = st.pop()
+
+                left = st[-1] if st else -1
+                right = i
+
+                # Number of subarrays where nums[mid] is the maximum
+                count = (mid - left) * (right - mid)
+                largest_contri += nums[mid] * count
+
+            st.append(i)
+
+        # Flush remaining elements
+        while st:
+            mid = st.pop()
+
+            left = st[-1] if st else -1
+            right = n
+
+            count = (mid - left) * (right - mid)
+            largest_contri += nums[mid] * count
+
+        # 2) Sum of subarray minimums
+        st = []
+
+        for i in range(n):
+            while st and nums[st[-1]] > nums[i]:
+                mid = st.pop()
+
+                left = st[-1] if st else -1
+                right = i
+
+                # Number of subarrays where nums[mid] is the minimum
+                count = (mid - left) * (right - mid)
+                smallest_contri += nums[mid] * count
+
+            st.append(i)
+
+        # Flush remaining elements
+        while st:
+            mid = st.pop()
+
+            left = st[-1] if st else -1
+            right = n
+
+            count = (mid - left) * (right - mid)
+            smallest_contri += nums[mid] * count
+
+        return largest_contri - smallest_contri
+
+
+
+# V0-2-2
 # IDEA: MONO STACK (GEMINI)
 class Solution:
 
