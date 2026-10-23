@@ -23,35 +23,64 @@ Note:
 """
 
 # V0
+# IDEA : ONE PASS, KEEP THE BEST "LEFT HALF" SEEN SO FAR
+#
+#   score(i, j) = (values[i] + i) + (values[j] - j)     for i < j
+#
+#   the two halves are independent : for a fixed j, the best partner is
+#   just the max of (values[i] + i) over every i < j. so sweep j left to
+#   right, carrying that max — Kadane-style "best so far".
+#
+#   e.g. [8,1,5,2,6] : at j = 2, best_left = 8 + 0 = 8 -> 8 + (5 - 2) = 11
+#
+# time = O(n), space = O(1)
+class Solution(object):
+    def maxScoreSightseeingPair(self, values):
+        """
+        :type values: List[int]
+        :rtype: int
+        """
+        # best (values[i] + i) over every i to the left of the current j
+        best_left = values[0] + 0
+        best_score = float('-inf')
+
+        for j in range(1, len(values)):
+            # NOTE !!! score with j FIRST, then let j become a left candidate,
+            #          so a spot never pairs with itself
+            score = best_left + values[j] - j
+            best_score = max(best_score, score)
+            best_left = max(best_left, values[j] + j)
+
+        return best_score
+
 
 # V1
-# https://github.com/azl397985856/leetcode/blob/master/problems/1014.best-sightseeing-pair.md
-# time = O(n)
-# space = O(1)
-class Solution:
-    def maxScoreSightseeingPair(self, A: List[int]) -> int:
-        n = len(A)
-        pre = A[0] + 0
-        res = 0
-        for i in range(1, n):
-            res = max(res, pre + A[i] - i)
-            pre = max(pre, A[i] + i)
-        return res
+# IDEA : DP — PRECOMPUTE THE BEST "RIGHT HALF" FOR EVERY i
+#
+#   best_right[i] = max of (values[j] - j) over j > i
+#   answer        = max over i of  values[i] + i + best_right[i]
+#
+#   the same split as V0, written as an explicit suffix-max table — easier
+#   to explain first, then compress to V0's single variable.
+#
+# time = O(n), space = O(n)
+class Solution2(object):
+    def maxScoreSightseeingPair(self, values):
+        """
+        :type values: List[int]
+        :rtype: int
+        """
+        n = len(values)
+        NEG_INF = float('-inf')
 
-# V1'
-# https://github.com/azl397985856/leetcode/blob/master/problems/1014.best-sightseeing-pair.md
-# time = O(n)
-# space = O(1)
-class Solution:
-    def maxScoreSightseeingPair(self, A: List[int]) -> int:
-        n = len(A)
-        pre = A[0] + 0
-        res = 0
-        for i in range(1, n):
-            # res = max(res, pre + A[i] - i)
-            # pre = max(pre, A[i] + i)
-            res = res if res > pre + A[i] - i else pre + A[i] - i
-            pre = pre if pre > A[i] + i else A[i] + i
-        return res
+        # best_right[i] = max(values[j] - j) for j in (i, n)
+        best_right = [NEG_INF] * n
+        for i in range(n - 2, -1, -1):
+            candidate = values[i + 1] - (i + 1)
+            best_right[i] = max(best_right[i + 1], candidate)
 
-# V2
+        best_score = NEG_INF
+        for i in range(n - 1):
+            best_score = max(best_score, values[i] + i + best_right[i])
+
+        return best_score

@@ -48,15 +48,84 @@ directions[i] is either 'L', 'R', or 'S'.
 # IDEA : ONLY THE CARS THAT ESCAPE NEVER COLLIDE — STRIP THEM AND COUNT
 #
 #   a car drives away forever only if it is a leading 'L' (nothing to its
-#   left can ever reach it) or a trailing 'R'. every OTHER moving car ends up
-#   stopped by something, and each such stop adds exactly 1 to the total.
+#   left can ever reach it) or a trailing 'R' (nothing to its right).
+#   every OTHER moving car is eventually stopped by something, and each
+#   stop adds exactly 1 to the total — a head-on "R L" is two moving cars
+#   stopping, which is exactly the +2 the problem charges.
 #
-#   so : drop the leading 'L' run and the trailing 'R' run, then count the
-#   non-'S' characters that remain. that single count already accounts for
-#   the "+2" head-on case, since both of those cars are moving cars that stop.
+#   e.g. "RLRSLL" -> nothing to strip -> moving cars R,L,R,L,L -> 5
 #
-# time = O(n), space = O(n)
+# time = O(n), space = O(1)
 class Solution(object):
     def countCollisions(self, directions):
-        core = directions.lstrip('L').rstrip('R')
-        return sum(1 for c in core if c != 'S')
+        """
+        :type directions: str
+        :rtype: int
+        """
+        n = len(directions)
+
+        # skip the leading 'L' cars : they drive off to the left forever
+        left = 0
+        while left < n and directions[left] == 'L':
+            left += 1
+
+        # skip the trailing 'R' cars : they drive off to the right forever
+        right = n - 1
+        while right >= 0 and directions[right] == 'R':
+            right -= 1
+
+        # NOTE !!! every moving car left in [left, right] stops exactly once
+        collisions = 0
+        for i in range(left, right + 1):
+            if directions[i] != 'S':
+                collisions += 1
+
+        return collisions
+
+
+# V1
+# IDEA : STACK SIMULATION, LEFT TO RIGHT
+#
+#   keep the cars that are still "unresolved" on a stack. only a run of
+#   'R' cars can be waiting for something to hit; an 'L' either escapes
+#   (nothing stopped to its left) or crashes into whatever is there.
+#
+#   stopped = True once any car to the left has become stationary — after
+#   that, every incoming 'L' hits a wall and adds 1.
+#
+#   longer than V0, but it is the version you reach by simulating, and it
+#   shows WHY V0's counting rule holds.
+#
+# time = O(n), space = O(n)
+class Solution2(object):
+    def countCollisions(self, directions):
+        """
+        :type directions: str
+        :rtype: int
+        """
+        collisions = 0
+        pending_right = 0   # 'R' cars still moving, waiting to hit something
+        stopped = False     # is there a stationary car/wreck to the left?
+
+        for car in directions:
+            if car == 'R':
+                pending_right += 1
+            elif car == 'S':
+                # every waiting 'R' crashes into this stationary car
+                collisions += pending_right
+                pending_right = 0
+                stopped = True
+            else:  # car == 'L'
+                if pending_right > 0:
+                    # head-on with the nearest 'R' (+2), then the other
+                    # waiting 'R' cars pile into the wreck (+1 each)
+                    collisions += 2 + (pending_right - 1)
+                    pending_right = 0
+                    stopped = True
+                elif stopped:
+                    # runs into the wreck on its left
+                    collisions += 1
+                # else : nothing to its left, it escapes
+
+        # any 'R' still pending escapes to the right
+        return collisions

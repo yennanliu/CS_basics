@@ -57,60 +57,54 @@ tires[i].length == 2
 #   once  f * r^(k-1) > changeTime + f  it is strictly better to pit. that
 #   caps a useful stint at about 18 laps (2^17 already exceeds 10^5).
 #
-#   best[k] = cheapest total time to do k CONSECUTIVE laps on one fresh tire,
-#             minimised over all tires.
+#   DP def
+#     best_stint[k] : cheapest total time to run k CONSECUTIVE laps on one
+#                     fresh tire, minimised over all tires
+#     dp[i]         : min time to finish i laps, counting a pit stop BEFORE
+#                     every stint (including the first, subtracted at the end)
 #
-#   then, counting a pit stop BEFORE every stint (including the first, which
-#   is subtracted back at the end) :
-#       dp[i] = min over k of  dp[i - k] + changeTime + best[k]
-#   and the answer is dp[numLaps] - changeTime.
+#   DP eq
+#     best_stint[k] = min over tires (f, r) of  f + f*r + ... + f*r^(k-1)
+#     dp[i]         = min over k of  dp[i - k] + changeTime + best_stint[k]
 #
-"""
-
-DP def
-    best[k]: cheapest total time to run k CONSECUTIVE laps on one fresh tire,
-
-             minimised over all tires
-
-    dp[i]  : MIN time to finish i laps, counting a pit stop BEFORE every
-
-             stint (including the first, subtracted back at the end)
-
-DP eq
-
-     best[k] = min over tires (f, r) of  f + f*r + ... + f*r^(k-1)
-
-     dp[i]   = min over k of  dp[i-k] + changeTime + best[k]
-
-
-    -> e.g. a stint is never long: with r >= 2 the lap time at least
-              DOUBLES, so once f * r^(k-1) > changeTime + f it is strictly
-              better to pit -> k is capped at about 18 (2^17 > 10^5)
-
-     init: dp[0] = 0
-     ans = dp[numLaps] - changeTime
-
-"""
-# time = O(m * 18 + numLaps * 18), space = O(numLaps)
+#   init : dp[0] = 0          answer : dp[numLaps] - changeTime
+#
+# time = O(m * 18 + numLaps * 18), space = O(numLaps)    m = len(tires)
 class Solution(object):
     def minimumFinishTime(self, tires, changeTime, numLaps):
+        """
+        :type tires: List[List[int]]
+        :type changeTime: int
+        :type numLaps: int
+        :rtype: int
+        """
         MAX_STINT = 18
         INF = float('inf')
 
-        best = [INF] * (MAX_STINT + 1)
-        for f, r in tires:
-            lap, total = f, 0
-            for k in range(1, MAX_STINT + 1):
-                if lap > changeTime + f:      # pitting would already be cheaper
+        # best_stint[k] = cheapest way to run k laps without changing tires
+        best_stint = [INF] * (MAX_STINT + 1)
+        for first_lap, ratio in tires:
+            lap_time = first_lap
+            stint_total = 0
+            for laps in range(1, MAX_STINT + 1):
+                # NOTE !!! once this lap costs more than pitting + a fresh
+                #          first lap, no longer stint on this tire can win
+                if lap_time > changeTime + first_lap:
                     break
-                total += lap
-                best[k] = min(best[k], total)
-                lap *= r
+                stint_total += lap_time
+                best_stint[laps] = min(best_stint[laps], stint_total)
+                lap_time *= ratio
 
+        # dp[i] = min time for i laps, paying changeTime before every stint
         dp = [INF] * (numLaps + 1)
         dp[0] = 0
         for i in range(1, numLaps + 1):
-            for k in range(1, min(i, MAX_STINT) + 1):
-                if best[k] < INF and dp[i - k] < INF:
-                    dp[i] = min(dp[i], dp[i - k] + changeTime + best[k])
+            # the last stint covers laps (i - laps, i]
+            for laps in range(1, min(i, MAX_STINT) + 1):
+                if best_stint[laps] == INF:
+                    continue
+                candidate = dp[i - laps] + changeTime + best_stint[laps]
+                dp[i] = min(dp[i], candidate)
+
+        # the first stint did not actually need a pit stop
         return dp[numLaps] - changeTime

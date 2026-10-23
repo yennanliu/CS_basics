@@ -50,45 +50,63 @@ n == nums.length
 # IDEA : PREFIX SUMS + TWO COUNTERS OF THE "DIFFERENCE" 2*prefix - total
 #
 #   for pivot p (1 <= p < n) the split is balanced iff
-#       2 * prefix[p] == total          i.e.  d(p) = 2*prefix[p] - total == 0
+#       2 * prefix[p] == total          i.e.  diff(p) = 2*prefix[p] - total == 0
 #
 #   changing nums[i] to k shifts total by  delta = k - nums[i]  and shifts
 #   prefix[p] by delta only for p > i. so after the change :
-#       p <= i :  d'(p) = 2*prefix[p] - (total + delta) = d(p) - delta
-#       p >  i :  d'(p) = d(p) + 2*delta - delta        = d(p) + delta
+#       p <= i :  diff'(p) = 2*prefix[p] - (total + delta) = diff(p) - delta
+#       p >  i :  diff'(p) = diff(p) + 2*delta - delta     = diff(p) + delta
 #
 #   so the count for "change index i" is
-#       #{ p <= i : d(p) == delta } + #{ p > i : d(p) == -delta }
+#       #{ p <= i : diff(p) == delta } + #{ p > i : diff(p) == -delta }
 #
 #   sweep i from 0..n-1 moving pivots from a `right` counter into a `left`
 #   counter, and read both lookups in O(1).
 #
+#   trying every i and recounting every pivot is O(n^2) — too slow at 10^5.
+#
 #   NOTE : pivots live in [1, n-1]; index i = 0 starts with an empty left.
-#          the "leave unchanged" case is just the plain count of d(p) == 0.
+#          the "leave unchanged" case is just the plain count of diff(p) == 0.
 #
 # time = O(n), space = O(n)
-from collections import Counter
+from collections import defaultdict
 
 
 class Solution(object):
     def waysToPartition(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: int
+        """
         n = len(nums)
+
+        # prefix[p] = nums[0] + ... + nums[p - 1]
         prefix = [0] * (n + 1)
-        for i, x in enumerate(nums):
-            prefix[i + 1] = prefix[i] + x
+        for i in range(n):
+            prefix[i + 1] = prefix[i] + nums[i]
         total = prefix[n]
 
-        # d(p) for every valid pivot p in [1, n-1]
-        right = Counter(2 * prefix[p] - total for p in range(1, n))
-        left = Counter()
+        # right[d] = how many pivots p > i have diff(p) == d
+        # left[d]  = how many pivots p <= i have diff(p) == d
+        right = defaultdict(int)
+        left = defaultdict(int)
+        for pivot in range(1, n):
+            right[2 * prefix[pivot] - total] += 1
 
-        res = right[0]  # leave the array unchanged
+        # option 1 : leave the array unchanged
+        best = right[0]
+
+        # option 2 : change nums[i] to k, for every i
         for i in range(n):
             delta = k - nums[i]
-            res = max(res, left[delta] + right[-delta])
+            # NOTE !!! left side needs diff == delta, right side diff == -delta
+            best = max(best, left[delta] + right[-delta])
+
             # pivot p = i + 1 moves from the right side to the left side
             if i + 1 < n:
-                d = 2 * prefix[i + 1] - total
-                right[d] -= 1
-                left[d] += 1
-        return res
+                diff = 2 * prefix[i + 1] - total
+                right[diff] -= 1
+                left[diff] += 1
+
+        return best

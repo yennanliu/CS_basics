@@ -43,87 +43,113 @@ All the given points are unique.
 """
 
 # V0
-
-# V1 : dev 
-
-# V2
-# https://blog.csdn.net/fuxuemingzhu/article/details/83961509
-# time = O(n^2)  # n = len(points)
-# space = O(n)
-class Solution(object):
-    def minAreaRect(self, points):
-        """
-        :type points: List[List[int]]
-        :rtype: int
-        """
-        points = list(map(tuple, points))
-        points.sort()
-        pset = set(points)
-        N = len(points)
-        res = float('inf')
-        for i in range(N - 1):
-            p1 = points[i]
-            for j in range(i + 1, N):
-                p4 = points[j]
-                if p4[0] == p1[0] or p4[1] == p1[1]:
-                    continue
-                p2 = (p1[0], p4[1])
-                p3 = (p4[0], p1[1])
-                if p2 in pset and p3 in pset:
-                    res = min(res, abs(p3[0] - p1[0]) * abs(p2[1] - p1[1]))
-        return res if res != float("inf") else 0
-
-# V2'
-# time = O(n^3)  # n = len(points)
-# space = O(n)
-class Solution(object):
-    def minAreaRect(self, points):
-        """
-        :type points: List[List[int]]
-        :rtype: int
-        """
-        points = list(map(tuple, points))
-        points.sort()
-        xdict, ydict = collections.defaultdict(list), collections.defaultdict(list)
-        pset = set()
-        res = float("inf")
-        for point in points:
-            xdict[point[0]].append(point)
-            ydict[point[1]].append(point)
-            pset.add(point)
-        for x1 in list(xdict.keys()):
-            if len(xdict[x1]) == 1:
-                continue
-            for i in range(len(xdict[x1]) - 1):
-                p1 = xdict[x1][i]
-                for j in range(i + 1, len(xdict[x1])):
-                    p2 = xdict[x1][j]
-                    for p3 in ydict[p1[1]]:
-                        if p3 != p1:
-                            if (p3[0], p2[1]) in pset:
-                                res = min(res, abs((p3[0] - p1[0]) * (p2[1] - p1[1])))
-        return res if res != float("inf") else 0
-
-# V3
-# time = O(n^2) ~ O(n^3)  # n = len(points)
+# IDEA : GROUP POINT PAIRS BY DIAGONAL (MIDPOINT + LENGTH)
+#
+#   a quadrilateral is a rectangle  <=>  its two diagonals share the same
+#   midpoint AND have the same length. so treat every pair of points as a
+#   possible diagonal and bucket it by
+#       key = (x1 + x2, y1 + y2, squared length)
+#   (sums instead of midpoints keep everything in integers).
+#
+#   any two pairs in the same bucket are the two diagonals of a rectangle
+#   with corners p1, p3, p2, p4 — the sides are |p1 p3| and |p1 p4|.
+#
+#   e.g. [1,2]-[1,0] and [2,1]-[0,1] : both sum to (2,2), both length^2 4
+#        -> sides sqrt(2) * sqrt(2) -> area 2
+#
+#   brute force over 4 points is O(n^4); see V1 for the O(n^3) corner check.
+#
+# time = O(n^2) pairs + O(sum of bucket_size^2) to match them, worst O(n^4)
+#        in theory, near O(n^2) in practice
 # space = O(n^2)
-import collections
-import itertools
+import math
+from collections import defaultdict
+
+
 class Solution(object):
     def minAreaFreeRect(self, points):
         """
         :type points: List[List[int]]
         :rtype: float
         """
-        points.sort()
-        points = [complex(*z) for z in points]
-        lookup = collections.defaultdict(list)
-        for P, Q in itertools.combinations(points, 2):
-            lookup[P-Q].append((P+Q) / 2)
+        n = len(points)
 
-        result = float("inf")
-        for A, candidates in lookup.items():
-            for P, Q in itertools.combinations(candidates, 2):
-                if A.real * (P-Q).real + A.imag * (P-Q).imag == 0.0:
-                    result = min(result, abs(A) * abs(P-Q))
-        return result if result < float("inf") else 0.0
+        # (sum_x, sum_y, squared_length) -> list of point pairs on that diagonal
+        diagonals = defaultdict(list)
+        for i in range(n):
+            x1, y1 = points[i]
+            for j in range(i + 1, n):
+                x2, y2 = points[j]
+                squared_length = (x1 - x2) ** 2 + (y1 - y2) ** 2
+                key = (x1 + x2, y1 + y2, squared_length)
+                diagonals[key].append((points[i], points[j]))
+
+        min_area = float('inf')
+        for pairs in diagonals.values():
+            # every two diagonals in a bucket make one rectangle
+            for a in range(len(pairs)):
+                p1, p2 = pairs[a]
+                for b in range(a + 1, len(pairs)):
+                    p3, p4 = pairs[b]
+                    # NOTE !!! p1 is a corner; p3 and p4 are its neighbours
+                    side1 = math.hypot(p1[0] - p3[0], p1[1] - p3[1])
+                    side2 = math.hypot(p1[0] - p4[0], p1[1] - p4[1])
+                    min_area = min(min_area, side1 * side2)
+
+        if min_area == float('inf'):
+            return 0.0
+        return min_area
+
+
+# V1
+# IDEA : FIX A RIGHT-ANGLE CORNER, DERIVE THE FOURTH POINT
+#
+#   pick a corner p1 and two other points p2, p3. if the vectors
+#   (p2 - p1) and (p3 - p1) are perpendicular (dot product 0), the fourth
+#   corner must be  p4 = p2 + p3 - p1  — just look it up in a set.
+#
+#   n <= 50, so O(n^3) = 125k steps is well inside the limit, and this
+#   version needs no insight beyond "a rectangle has a right angle".
+#
+# time = O(n^3), space = O(n)
+class Solution2(object):
+    def minAreaFreeRect(self, points):
+        """
+        :type points: List[List[int]]
+        :rtype: float
+        """
+        point_set = set()
+        for x, y in points:
+            point_set.add((x, y))
+
+        n = len(points)
+        min_area = float('inf')
+        for i in range(n):
+            x1, y1 = points[i]
+            for j in range(n):
+                if j == i:
+                    continue
+                x2, y2 = points[j]
+                for k in range(j + 1, n):
+                    if k == i:
+                        continue
+                    x3, y3 = points[k]
+
+                    # the angle at p1 must be 90 degrees
+                    dot = (x2 - x1) * (x3 - x1) + (y2 - y1) * (y3 - y1)
+                    if dot != 0:
+                        continue
+
+                    # fourth corner closes the parallelogram
+                    x4 = x2 + x3 - x1
+                    y4 = y2 + y3 - y1
+                    if (x4, y4) not in point_set:
+                        continue
+
+                    side1 = math.hypot(x2 - x1, y2 - y1)
+                    side2 = math.hypot(x3 - x1, y3 - y1)
+                    min_area = min(min_area, side1 * side2)
+
+        if min_area == float('inf'):
+            return 0.0
+        return min_area
