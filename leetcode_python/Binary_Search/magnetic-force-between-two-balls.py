@@ -47,7 +47,128 @@ All integers in position are distinct.
 """
 
 # V0
-# IDEA : SORT + BINARY SEARCH ON ANSWER + GREEDY CHECK (LC 410, LC 1231)
+class Solution(object):
+    def maxDistance(self, position, m):
+        """
+        :type position: List[int]
+        :type m: int
+        :rtype: int
+        """
+        pass
+
+
+# V0-1
+# IDEA : SORT + BINARY SEARCH ON ANSWER + GREEDY CHECK (GEMINI)
+class Solution(object):
+
+  def maxDistance(self, position, m):
+    """:type position: List[int]
+
+    :type m: int
+    :rtype: int
+    """
+    if not position or len(position) < m:
+      return 0
+
+    # 1. 必須先將籃子位置排序，才能進行`貪婪`放置
+    position.sort()
+    n = len(position)
+
+    # 2. 二分搜尋的範圍：最小距離為 1，最大距離為`頭尾位置之差` (NOTE !!!!)
+    l = 1
+    r = position[-1] - position[0]
+    res = 0
+
+    while l <= r:
+      mid = l + (r - l) // 2
+
+      # 3. 檢查以 mid 作為最小距離時，是否能放得下至少 m 個球
+      if self.can_place(position, m, mid):
+        res = mid  # 記錄當前可行的最大化距離
+        l = mid + 1  # 嘗試挑戰更大的距離
+      else:
+        r = mid - 1  # 距離太大導致放不下，縮小範圍
+
+    return res
+
+  def can_place(self, position, m, min_dist):
+    # 貪婪地檢查在最小距離為 min_dist 的限制下，能放幾顆球
+    count = 1  # 第一顆球一定放在第一個位置
+    last_pos = position[0]
+
+    for i in range(1, len(position)):
+      # 如果當前籃子與上一顆球的位置大於等於指定距離，就可以放球
+      if position[i] - last_pos >= min_dist:
+        
+        count += 1
+        # NOTE !!! below
+        last_pos = position[i]
+        
+        # early quit
+        if count >= m:
+          return True
+
+    return count >= m
+
+
+# V0-2
+# IDEA : SORT + BINARY SEARCH ON ANSWER + GREEDY CHECK (GPT)
+class Solution(object):
+    def maxDistance(self, position, m):
+        """
+        :type position: List[int]
+        :type m: int
+        :rtype: int
+        """
+        # Sort basket positions from left to right
+        position.sort()
+
+        # Binary search the minimum distance between any two balls.
+        # The answer ranges from 1 to the entire position span.
+        left = 1
+        right = position[-1] - position[0]
+
+        res = 0
+
+        while left <= right:
+            mid = left + (right - left) // 2
+
+            # Can we place m balls with at least mid distance
+            # between every pair of adjacent placed balls?
+            if self.get_min_force(position, m, mid):
+                # mid is feasible. Try to maximize the distance.
+                res = mid
+                left = mid + 1
+            else:
+                # mid is too large. Try a smaller distance.
+                right = mid - 1
+
+        return res
+
+    def get_min_force(self, position, m, x):
+        """
+        Return True if we can place m balls such that
+        the minimum distance between any two balls is >= x.
+        """
+        count = 1
+        last_position = position[0]
+
+        # Greedily place each next ball in the earliest
+        # available basket at least x units away.
+        for i in range(1, len(position)):
+            if position[i] - last_position >= x:
+                count += 1
+                last_position = position[i]
+
+                if count >= m:
+                    return True
+
+        return False
+
+
+
+# V0
+# IDEA : SORT + BINARY SEARCH ON ANSWER + GREEDY CHECK (LC 410, LC 1231)(CLAUDE)
 #
 #   "max of the min gap" -> binary search the GAP, not an index.
 #   The check is monotonic: if m balls fit with every gap >= d, they also fit

@@ -444,13 +444,15 @@
 				- 1095			
 			- Split Array Largest Sum 
 				— LC 41
-			- 最小化最大值
-				- LC 2616
-			- 最大化最小值
-				- 1552
+
 			- work with graph
 				- LC 1631
 				- LC 778
+
+			- 最小化最大值 (again!)
+				- LC 2616
+			- 最大化最小值 (again!)
+				- 1552
 
 
 		- Tree LCA
