@@ -70,6 +70,13 @@ class Solution(object):
         """
         n = len(points)
 
+        """
+        NOTE !!!
+
+        the key of hashmap:
+
+            `(mid_x, mid_y, diagonal_sq)`
+        """
         # Group diagonals by (midpoint * 2, diagonal length squared)
         diagonals = defaultdict(list)
 
@@ -86,6 +93,13 @@ class Solution(object):
                 # Squared diagonal length
                 diagonal_sq = (x1 - x2) ** 2 + (y1 - y2) ** 2
 
+                """
+                NOTE !!!
+
+                the key of hashmap:
+
+                    `(mid_x, mid_y, diagonal_sq)`
+                """
                 diagonals[(mid_x, mid_y, diagonal_sq)].append(
                     (i, j)
                 )
@@ -95,6 +109,10 @@ class Solution(object):
         # Two diagonals with the same midpoint and length
         # can form a rectangle.
         for key, pairs in diagonals.items():
+
+            # NOTE !!!
+            # -> `key` is never used
+
             for i in range(len(pairs)):
                 a, b = pairs[i]
                 x1, y1 = points[a]
