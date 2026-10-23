@@ -73,7 +73,7 @@ class Solution(object):
 """
 STEPS:
 
-    1. 先排序 nums。
+    1. 先排序 nums。 !!!
 
     2. 二分搜尋答案 max_diff。
 
@@ -94,6 +94,17 @@ class Solution(object):
     nums.sort()
     n = len(nums)
 
+    """
+    NOTE !!!
+
+    binary search in this LC is looking for:
+
+        -> min `max diff` in pairs
+
+
+        ->  # 2. 二分搜尋差值的範圍：最小可能差值為 0，最大可能差值為 nums[-1] - nums[0]
+
+    """
     # 1. 二分搜的數值範圍：最小值 0，最大值 (最大值 - 最小值)
     l, r = 0, nums[-1] - nums[0]
     ans = r
@@ -113,6 +124,28 @@ class Solution(object):
   def can_form_pairs(self, nums, max_diff, p):
     count = 0
     i = 0
+
+    """
+    NOTE !!!
+
+
+    via below trick, we can easily find the min diff in pair within a sorted arr
+
+
+    -> 
+
+
+        1. while loop over a single idx (i)
+
+        2. check `nums[i+1] - nums[i]`
+
+            - if <= max_diff:
+                i += 2
+
+            - else:
+                i += 1
+
+    """
     while i < len(nums) - 1:
       # 如果相鄰元素差值小於等於限制，則成對
       if nums[i + 1] - nums[i] <= max_diff:
