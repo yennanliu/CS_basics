@@ -162,6 +162,7 @@ python3 script/lc_discussion.py search google --days 90 --summary   # every term
 python3 script/lc_discussion.py search google l3 --order MOST_RELEVANT
 python3 script/lc_discussion.py fetch 8543506 8527382 --dir /tmp/posts
 python3 script/lc_discussion.py xref 1235 3026 963                    # offline
+python3 script/lc_discussion.py snippets /tmp/hits.json google l3 --days 30   # offline
 ```
 
 - `search` lists posts newest first (date, upvotes, topic id, title, URL). The API's keyword
@@ -176,6 +177,20 @@ python3 script/lc_discussion.py xref 1235 3026 963                    # offline
 The bulk scraper reads every post and its comments for a company tag (~1 hour) and ranks
 LC numbers by mention count; this one reads a handful of posts so a question that names no
 number can still be mapped by hand. `script/test_lc_discussion.py` tests the offline parts.
+
+`snippets` is how Blind and Glassdoor get in, **without fetching either**: Blind's
+`robots.txt` disallows `ClaudeBot` and `anthropic-ai`, and Glassdoor returns a `403` bot
+wall to scripts. The agent runs site-restricted web searches and saves the results as a JSON
+list of `{url, title, snippet?, date?}`; `snippets` keeps the three sites only (a host
+matches a listed domain exactly or as its subdomain, so `www.glassdoor.co.uk` counts and
+`teamblind.example.com` does not), merges a post two searches both found, applies the same
+every-term filter as `search`, drops results dated outside `--days` (undated ones are kept
+and sort last — most are undated) and prints the LC numbers a result's **title** names.
+
+It checks the file rather than trusting it: an unreadable file, bad JSON or a non-list stops
+with a one-line `snippets:` message; an entry without a `url` is skipped and a date that is
+not `YYYY-MM-DD` is dropped, and both counts are printed. A source with no kept result is
+named (`no Glassdoor results kept`), because the doc has to say so.
 
 ## find_missing_java.py
 

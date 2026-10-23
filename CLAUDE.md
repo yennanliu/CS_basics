@@ -525,6 +525,13 @@ the ones that describe a real question, maps each question to an LC number, and 
 繁體中文 summary under `doc/ws/` — the posts worth reading, the patterns that repeated, and
 which of the problems the log has never seen. **The steps live in its `SKILL.md`, not here.**
 
+Blind and Glassdoor are covered too, but **through web-search results only — neither site is
+ever fetched.** Blind's `robots.txt` opts out of `ClaudeBot` and `anthropic-ai` by name, and
+Glassdoor puts a `403` bot wall in front of scripts; do not spoof a user agent past either.
+The agent saves its search results as JSON and `lc_discussion.py snippets` shortlists them
+offline. A question read from the search tool's summary cannot be tied to one post, so the
+doc labels it `搜尋摘要` and never counts it as a repeat on its own.
+
 `leetcode.com/discuss/` renders in the browser, so the skill goes through
 [`script/lc_discussion.py`](script/lc_discussion.py): `search` and `fetch` call the same
 public GraphQL fields the page does (reusing `scrape_lc_discuss_company.py`'s `gql()` and
