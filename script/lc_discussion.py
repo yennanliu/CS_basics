@@ -10,6 +10,7 @@ and line the problems they name up against this repo's index and practice log.
     python3 script/lc_discussion.py fetch 8543506 8527382         # full text of chosen posts
     python3 script/lc_discussion.py fetch 8543506 --dir /tmp/posts
     python3 script/lc_discussion.py xref 1235 3026 963            # offline: README row + log verdict
+    python3 script/lc_discussion.py snippets hits.json google     # offline: saved Blind/Glassdoor results
 
 Why a script. leetcode.com/discuss/ renders in the browser, so a plain page
 fetch returns an empty shell. The same GraphQL endpoint the page calls answers
@@ -34,6 +35,11 @@ read by the agent, so a question that names no LC number is still mapped. It
 reuses that script's `gql()` (retries, WAF back-off) rather than a second
 client.
 
+Blind and Glassdoor are read through search-engine snippets only, never
+fetched: Blind's robots.txt opts out of AI crawlers and Glassdoor blocks
+scripts. `snippets` shortlists the results the agent saved from its searches
+(see the section above `source_of`).
+
 It never writes README.md or data/progress.txt.
 """
 import argparse
@@ -42,6 +48,8 @@ import os
 import re
 import sys
 import time
+from collections import Counter
+from urllib.parse import urlparse
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
@@ -112,22 +120,32 @@ def post_url(node):
     return POST_URL.format(topic=node["topicId"], slug=node["slug"])
 
 
+def has_terms(text, keywords):
+    """True when every whitespace-separated term of `keywords` occurs in `text`."""
+    text = text.lower()
+    return all(t.lower() in text for k in keywords for t in k.split())
+
+
+def too_old(date, days, now):
+    """True when a YYYY-MM-DD `date` falls outside the last `days` days."""
+    if days is None:
+        return False
+    created = time.mktime(time.strptime(date[:10], "%Y-%m-%d"))
+    return now - created > days * 86400
+
+
 def shortlist(nodes, keywords, days=None, loose=False, now=None):
     """Dedupe, drop posts older than `days`, keep only posts whose title or
     summary carries every keyword term, newest first."""
     now = time.time() if now is None else now
-    terms = [t.lower() for k in keywords for t in k.split()]
     seen, out = set(), []
     for n in nodes:
         if n["topicId"] in seen:
             continue
         seen.add(n["topicId"])
-        if days is not None:
-            created = time.mktime(time.strptime(n["createdAt"][:10], "%Y-%m-%d"))
-            if now - created > days * 86400:
-                continue
-        text = (n.get("title", "") + " " + (n.get("summary") or "")).lower()
-        if not loose and not all(t in text for t in terms):
+        if too_old(n["createdAt"], days, now):
+            continue
+        if not loose and not has_terms(n.get("title", "") + " " + (n.get("summary") or ""), keywords):
             continue
         out.append(n)
     return sorted(out, key=lambda n: n["createdAt"], reverse=True)
@@ -142,6 +160,54 @@ def named_problems(text):
     not a name; the skill maps those by hand and labels them as a match."""
     return (sorted(set(LC_LINK_RE.findall(text))),
             sorted({int(n) for n in LC_NUM_RE.findall(text)}))
+
+
+# ── Search-engine snippets: Blind and Glassdoor ──────────────────────────────
+# Neither site is fetched. Blind's robots.txt disallows ClaudeBot and
+# anthropic-ai site-wide, and Glassdoor answers scripts with a 403 bot wall.
+# So the agent runs web searches (`site:teamblind.com google interview`) and
+# saves each result's url, title, snippet and, when the snippet shows one, a
+# YYYY-MM-DD date as a JSON list; `snippets` reads only that file.
+SOURCES = (("teamblind", "Blind"), ("glassdoor", "Glassdoor"), ("leetcode", "LC"))
+
+
+def source_of(url):
+    """'Blind' / 'Glassdoor' / 'LC' by the URL's host, None for any other site.
+    Matched on a whole host label, so glassdoor.co.uk counts and
+    notteamblind.com does not."""
+    labels = urlparse(url).netloc.lower().split(".")
+    for label, name in SOURCES:
+        if label in labels:
+            return name
+    return None
+
+
+def canonical(url):
+    """The URL with scheme, `www.`, query, fragment and trailing slash dropped,
+    so one post found by two searches is one hit."""
+    p = urlparse(url)
+    return p.netloc.lower().removeprefix("www.") + p.path.rstrip("/")
+
+
+def shortlist_snippets(hits, keywords, days=None, now=None):
+    """Keep on-site, deduped hits whose title or snippet carries every keyword
+    term, newest first. A hit with no date is kept (most snippets carry none)
+    and sorts last. Each kept hit gains `source` and `named` (LC numbers)."""
+    now = time.time() if now is None else now
+    seen, out = set(), []
+    for h in hits:
+        source = source_of(h["url"])
+        key = canonical(h["url"])
+        if source is None or key in seen:
+            continue
+        seen.add(key)
+        if h.get("date") and too_old(h["date"], days, now):
+            continue
+        text = h.get("title", "") + " " + h.get("snippet", "")
+        if not has_terms(text, keywords):
+            continue
+        out.append(dict(h, source=source, named=named_problems(text)[1]))
+    return sorted(out, key=lambda h: h.get("date") or "", reverse=True)
 
 
 # ── Commands ─────────────────────────────────────────────────────────────────
@@ -185,6 +251,28 @@ def cmd_fetch(args):
             print(head + (post["content"] or ""))
 
 
+def cmd_snippets(args):
+    with open(args.file, encoding="utf-8") as f:
+        hits = json.load(f)
+    kept = shortlist_snippets(hits, args.keywords, args.days)
+    for h in kept:
+        print("%-10s %-10s %s" % (h["source"], h.get("date") or "-", h.get("title", "").strip()))
+        print("    %s" % h["url"])
+        if args.summary:
+            print("    %s" % h.get("snippet", "")[:240].replace("\n", " "))
+        if h["named"]:
+            print("    named: %s" % " ".join(map(str, h["named"])))
+    by_source = Counter(h["source"] for h in kept)
+    off_site = sum(1 for h in hits if source_of(h["url"]) is None)
+    print("\n%d of %d results kept (%s); %d from other sites dropped"
+          % (len(kept), len(hits),
+             ", ".join("%s %d" % (s, by_source[s]) for _, s in SOURCES if by_source[s]) or "none",
+             off_site))
+    named = sorted({n for h in kept for n in h["named"]})
+    if named:
+        print("named: %s   (pass these to xref)" % " ".join(map(str, named)))
+
+
 def cmd_xref(args):
     import l3_core
     import suggest_review as sr
@@ -220,6 +308,13 @@ def main(argv=None):
     f.add_argument("topics", nargs="+")
     f.add_argument("--dir", help="write each post to DIR/<topicId>.md instead of stdout")
     f.set_defaults(func=cmd_fetch)
+
+    n = sub.add_parser("snippets", help="shortlist saved Blind / Glassdoor search results (offline)")
+    n.add_argument("file", help="JSON list of {url, title, snippet, date?} from web searches")
+    n.add_argument("keywords", nargs="+")
+    n.add_argument("--days", type=int, default=None, help="drop dated results older than this")
+    n.add_argument("--summary", action="store_true", help="print each result's snippet")
+    n.set_defaults(func=cmd_snippets)
 
     x = sub.add_parser("xref", help="README row and log verdict for LC numbers (offline)")
     x.add_argument("ids", nargs="+", type=int)

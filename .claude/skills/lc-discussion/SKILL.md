@@ -1,17 +1,18 @@
 ---
 name: lc-discussion
-description: Search recent LeetCode Discuss posts (leetcode.com/discuss/) by keyword — a company, a level, a round — read the ones that describe real interview questions, map each question to an LC number, check every one against README and the practice log, and write the result as a 繁體中文 summary doc under doc/ws/. Use when asked what a company has been asking lately, to scan LC discuss for interview experiences, to turn recent posts into a drill list, or to summarise discussion threads into a doc. Triggers - "/lc-discussion google", "/lc-discussion meta e4 --days 30", "scan LC discuss for recent Google L3 questions", "what is Amazon asking lately?", "summarise the latest interview posts into a doc".
-allowed-tools: Read, Write, Glob, Grep, Bash
+description: Search recent LeetCode Discuss posts (leetcode.com/discuss/) by keyword — a company, a level, a round — plus Blind and Glassdoor through web-search results (never fetched), read the ones that describe real interview questions, map each question to an LC number, check every one against README and the practice log, and write the result as a 繁體中文 summary doc under doc/ws/. Use when asked what a company has been asking lately, to scan LC discuss for interview experiences, to turn recent posts into a drill list, or to summarise discussion threads into a doc. Triggers - "/lc-discussion google", "/lc-discussion meta e4 --days 30", "scan LC discuss for recent Google L3 questions", "what is Amazon asking lately?", "summarise the latest interview posts into a doc", "what is Blind saying about Google L3?".
+allowed-tools: Read, Write, Glob, Grep, Bash, WebSearch
 ---
 
 # Recent LeetCode Discuss posts, summarised
 
-Turn the last few weeks of interview write-ups on LeetCode Discuss into one doc in
+Turn the last few weeks of interview write-ups on LeetCode Discuss, Blind and Glassdoor into one doc in
 繁體中文: the posts worth reading, the questions that came up more than once, and
 which of those problems this repo has never practised.
 
-**Invocation**: `/lc-discussion <keywords> [--days N]` — e.g. `/lc-discussion google`,
-`/lc-discussion google l3 --days 30`, `/lc-discussion amazon oa`.
+**Invocation**: `/lc-discussion <keywords> [--days N] [--sources lc,blind,glassdoor]` — e.g.
+`/lc-discussion google`, `/lc-discussion google l3 --days 30`,
+`/lc-discussion amazon oa --sources lc`. All three sources by default.
 
 ## Why this exists
 
@@ -28,6 +29,11 @@ does the mechanical part. It calls the GraphQL endpoint the page itself uses
 (no login), keeps only posts that carry every keyword term, fetches the full
 markdown of the ones you pick, and cross-references LC numbers against README and
 `data/progress.txt` offline, using the parsers `script/l3_core.py` uses.
+
+**Blind and Glassdoor are never fetched.** Blind's `robots.txt` disallows `ClaudeBot`
+and `anthropic-ai` site-wide, and Glassdoor answers a script with a `403` bot wall. Both
+are read through the agent's web search instead: the result titles and URLs, and the
+search tool's summary of them. `snippets` shortlists the saved results offline.
 
 ## Prime directives
 
@@ -48,6 +54,11 @@ markdown of the ones you pick, and cross-references LC numbers against README an
 5. **Read-only on the record.** This skill writes one file under `doc/ws/`. It
    never writes README or `data/progress.txt`. Drills it suggests are logged with
    `/lc-log`.
+6. **A search result is not a post.** Blind and Glassdoor are seen only as
+   titles, URLs and the search tool's summary. A question taken from that
+   summary cannot be tied to one post, so it is labelled `搜尋摘要`, cites every
+   result it could have come from, and never counts as a repeat on its own.
+   An LC number counts as *named* only when a result's own title names it.
 
 ## The steps
 
@@ -63,15 +74,41 @@ must appear in the title or summary; `--loose` drops that filter, and
 `--order MOST_RELEVANT` ranks by match instead of date. `--pages` (default 4
 × 50) widens the sweep. `--json FILE` keeps the list for later.
 
-### 2. Shortlist
+### 2. Search Blind and Glassdoor (search results only)
+
+Skip this step for `--sources lc`. Run the agent's web search, restricted to the
+site, with the same keywords:
+
+```text
+WebSearch  query="google l3 interview coding question"  allowed_domains=["teamblind.com"]
+WebSearch  query="google software engineer interview questions"  allowed_domains=["glassdoor.com"]
+```
+
+Two or three queries per site is enough; vary the level and the round (`phone
+screen`, `onsite`, `OA`). Save every result to `<scratch dir>/hits.json` — never
+inside the repo — as `{"url", "title"}`, adding `"snippet"` only for text tied to
+that one result and `"date"` (`YYYY-MM-DD`) only when the title or URL carries
+one (`...-march-2026-...`). Then:
+
+```bash
+python3 script/lc_discussion.py snippets <scratch dir>/hits.json google l3 --days 30
+```
+
+It keeps results from the three sites only, merges a post found by two searches,
+applies the every-term filter, drops results dated outside `--days` (undated ones
+stay, last), and prints the LC numbers named in a title. Note what the search
+summary said separately (directive 6).
+
+### 3. Shortlist
 
 Keep the posts that describe a **question**: interview experiences, phone
 screens, onsites, OAs, compiled question lists. Drop team matching, pay,
 timelines, "should I accept", and anything about another role family (SRE,
 FDE, data centre) unless the keywords asked for it. Put the target level first
-when there is one, and say how many posts were scanned and how many were kept.
+when there is one, and say how many posts were scanned and how many were kept,
+per source. A Blind or Glassdoor result is kept on its title alone.
 
-### 3. Read
+### 4. Read
 
 ```bash
 python3 script/lc_discussion.py fetch 8543506 8527382 8524882
@@ -80,9 +117,10 @@ python3 script/lc_discussion.py fetch 8543506 8527382 8524882
 The full markdown of each post, with a `named:` line listing any LC links or
 numbers it contains. For more than a handful, add `--dir <scratch dir>` and read
 the files from there; `--dir` never points inside the repo. Note each question,
-its follow-ups and, if the post gives one, the verdict the round got.
+its follow-ups and, if the post gives one, the verdict the round got. Only LC
+posts are fetched; Blind and Glassdoor stop at step 2.
 
-### 4. Map to LC numbers
+### 5. Map to LC numbers
 
 For each question, write down the LC number and whether it is `named` or `相近`
 (directive 2). Count repeats across **different** posts: a compiled list that
@@ -90,7 +128,7 @@ copies another post is not a second sighting. Patterns that repeat (the same tre
 DP from two candidates, three variants of a rate limiter) are the main finding
 of the doc.
 
-### 5. Cross-reference
+### 6. Cross-reference
 
 ```bash
 python3 script/lc_discussion.py xref 1235 3026 963 359 1101 2812
@@ -102,7 +140,7 @@ attempts there were, and whether it is in the L3 core set. Sort the doc's
 problems into three groups: **never logged**, **`again` or no verdict**, and
 **`ok`**.
 
-### 6. Write the doc
+### 7. Write the doc
 
 Write `doc/ws/lc_discussion_<keywords>_<YYYYMMDD>.md` (keywords joined with `_`,
 the date the scan ran) in 繁體中文 with this shape:
@@ -110,10 +148,13 @@ the date the scan ran) in 繁體中文 with this shape:
 ```markdown
 # LeetCode Discuss 掃描：<keywords>（<YYYY-MM-DD>）
 
-> 掃描範圍：<N> 篇貼文（<from> – <to>），保留 <M> 篇描述實際題目的貼文。
+> 掃描範圍：LC <N> 篇（<from> – <to>）、Blind <b> 筆、Glassdoor <g> 筆搜尋結果，保留 <M> 篇描述實際題目的貼文。
 
 ## 值得讀的貼文
-| 日期 | 貼文 | 內容 |
+| 日期 | 來源 | 貼文 | 內容 |
+
+## Blind / Glassdoor 搜尋摘要
+- `搜尋摘要`：<question>（[result](url)、[result](url)）
 
 ## 重複出現的題型
 - ...
@@ -128,10 +169,10 @@ the date the scan ran) in 繁體中文 with this shape:
 ```
 
 House rules: LC titles, API names and code stay in English; every post is a
-link; every LC number has its `xref` status; mark `相近` matches; tag every code
-fence. `doc/ws/` is not built into the site, so nothing else needs to change.
+link; every LC number has its `xref` status; mark `相近` matches and `搜尋摘要`
+questions; tag every code fence. `doc/ws/` is not built into the site, so nothing else needs to change.
 
-### 7. Report
+### 8. Report
 
 Tell the user the scan size and how many posts were kept, the two or three
 patterns that repeated, and the five never-logged problems you would drill first,
@@ -150,6 +191,10 @@ next step is `/lc-log`.
   (directive 5)
 - ❌ scrape the HTML page or send a login cookie; the public GraphQL endpoint is
   enough
+- ❌ fetch, curl or browse teamblind.com or glassdoor.com, or spoof a user agent to
+  get past either block; search results only (step 2)
+- ❌ credit a question from the search summary to one Blind or Glassdoor post
+  (directive 6)
 - ❌ commit or push unless asked
 
 ## Worked example
