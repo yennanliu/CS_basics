@@ -143,6 +143,10 @@
 	- recent updated cheatsheet
 	- TODO LC:
 
+		- LC discussions - G
+			- https://github.com/yennanliu/CS_basics/pull/200
+
+
 		- Trie
 			- done
 
@@ -503,8 +507,10 @@
 			 	  - LC 116
 			 - 後序樹 DP（回傳一對值）模板
 			 	  — LC 337
+			 
 			 - 完全樹節點計數模板	
 			  	— LC 222 
+
 			 - 組出路徑的數值
 			  	- LC 129
 			 - 序列化／反序列化
