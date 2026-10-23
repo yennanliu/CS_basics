@@ -12,7 +12,9 @@ which of those problems this repo has never practised.
 
 **Invocation**: `/lc-discussion <keywords> [--days N] [--sources lc,blind,glassdoor]` — e.g.
 `/lc-discussion google`, `/lc-discussion google l3 --days 30`,
-`/lc-discussion amazon oa --sources lc`. All three sources by default.
+`/lc-discussion amazon oa --sources lc`. All three sources by default; a source left out
+of `--sources` is not searched at all — step 1 runs only for `lc`, and step 2 runs
+one site's searches only for `blind` or `glassdoor`.
 
 ## Why this exists
 
@@ -64,6 +66,8 @@ search tool's summary of them. `snippets` shortlists the saved results offline.
 
 ### 1. Search
 
+Only when `lc` is in `--sources`.
+
 ```bash
 python3 script/lc_discussion.py search google --days 90 --summary
 python3 script/lc_discussion.py search google l3 --days 30
@@ -76,8 +80,8 @@ must appear in the title or summary; `--loose` drops that filter, and
 
 ### 2. Search Blind and Glassdoor (search results only)
 
-Skip this step for `--sources lc`. Run the agent's web search, restricted to the
-site, with the same keywords:
+Run the Blind searches only when `blind` is in `--sources`, and the Glassdoor ones
+only when `glassdoor` is. Restrict each to its site, with the same keywords:
 
 ```text
 WebSearch  query="google l3 interview coding question"  allowed_domains=["teamblind.com"]
@@ -98,6 +102,21 @@ It keeps results from the three sites only, merges a post found by two searches,
 applies the every-term filter, drops results dated outside `--days` (undated ones
 stay, last), and prints the LC numbers named in a title. Note what the search
 summary said separately (directive 6).
+
+**When a source fails, the scan goes on without it.** No source is required, and
+none has a fallback that fetches more:
+
+| What happens | What to do |
+|---|---|
+| `search` exits with `LeetCode GraphQL request failed` (WAF block, network down) | wait a minute and retry once; if it fails again, continue with Blind and Glassdoor |
+| a site's web search errors or returns nothing | continue; `snippets` then prints `no Blind results kept` |
+| `snippets` stops with `snippets: cannot read ...` | fix the JSON you wrote and rerun; it never half-reads a file |
+| `snippets` reports malformed entries or unreadable dates | the entries were skipped or kept undated; fix them if the count matters |
+| every selected source came back empty | write no doc; tell the user which sources failed and how |
+
+Never answer a failed or empty source by fetching the site, opening a cached copy or
+switching user agent. Every source that failed or came back empty is named on the
+doc's 掃描範圍 line (`Blind：搜尋無結果`), so a thin doc is never mistaken for a quiet month.
 
 ### 3. Shortlist
 
@@ -195,6 +214,8 @@ next step is `/lc-log`.
   get past either block; search results only (step 2)
 - ❌ credit a question from the search summary to one Blind or Glassdoor post
   (directive 6)
+- ❌ search a source the user left out of `--sources`, or leave a failed source off
+  the doc's scan line (step 2)
 - ❌ commit or push unless asked
 
 ## Worked example

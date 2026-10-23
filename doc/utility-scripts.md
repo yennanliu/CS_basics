@@ -181,10 +181,16 @@ number can still be mapped by hand. `script/test_lc_discussion.py` tests the off
 `snippets` is how Blind and Glassdoor get in, **without fetching either**: Blind's
 `robots.txt` disallows `ClaudeBot` and `anthropic-ai`, and Glassdoor returns a `403` bot
 wall to scripts. The agent runs site-restricted web searches and saves the results as a JSON
-list of `{url, title, snippet?, date?}`; `snippets` keeps the three sites only (matched on a
-whole host label, so `glassdoor.co.uk` counts), merges a post two searches both found,
-applies the same every-term filter as `search`, drops results dated outside `--days`
-(undated ones are kept and sort last — most are undated) and prints the LC numbers named.
+list of `{url, title, snippet?, date?}`; `snippets` keeps the three sites only (a host
+matches a listed domain exactly or as its subdomain, so `www.glassdoor.co.uk` counts and
+`teamblind.example.com` does not), merges a post two searches both found, applies the same
+every-term filter as `search`, drops results dated outside `--days` (undated ones are kept
+and sort last — most are undated) and prints the LC numbers a result's **title** names.
+
+It checks the file rather than trusting it: an unreadable file, bad JSON or a non-list stops
+with a one-line `snippets:` message; an entry without a `url` is skipped and a date that is
+not `YYYY-MM-DD` is dropped, and both counts are printed. A source with no kept result is
+named (`no Glassdoor results kept`), because the doc has to say so.
 
 ## find_missing_java.py
 

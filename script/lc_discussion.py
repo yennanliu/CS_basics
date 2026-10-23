@@ -168,16 +168,24 @@ def named_problems(text):
 # So the agent runs web searches (`site:teamblind.com google interview`) and
 # saves each result's url, title, snippet and, when the snippet shows one, a
 # YYYY-MM-DD date as a JSON list; `snippets` reads only that file.
-SOURCES = (("teamblind", "Blind"), ("glassdoor", "Glassdoor"), ("leetcode", "LC"))
+# Each source and the domains it answers on; a host matches a domain exactly or
+# as a subdomain of it, so www.glassdoor.co.uk counts and both
+# notteamblind.com and teamblind.example.com do not.
+SOURCES = (
+    ("Blind", ("teamblind.com",)),
+    ("Glassdoor", ("glassdoor.com", "glassdoor.co.uk", "glassdoor.ca", "glassdoor.co.in",
+                   "glassdoor.com.au", "glassdoor.ie", "glassdoor.sg", "glassdoor.de",
+                   "glassdoor.fr", "glassdoor.nl")),
+    ("LC", ("leetcode.com",)),
+)
+DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
 
 def source_of(url):
-    """'Blind' / 'Glassdoor' / 'LC' by the URL's host, None for any other site.
-    Matched on a whole host label, so glassdoor.co.uk counts and
-    notteamblind.com does not."""
-    labels = urlparse(url).netloc.lower().split(".")
-    for label, name in SOURCES:
-        if label in labels:
+    """'Blind' / 'Glassdoor' / 'LC' by the URL's host, None for any other site."""
+    host = (urlparse(url).hostname or "").lower()
+    for name, domains in SOURCES:
+        if any(host == d or host.endswith("." + d) for d in domains):
             return name
     return None
 
@@ -186,13 +194,40 @@ def canonical(url):
     """The URL with scheme, `www.`, query, fragment and trailing slash dropped,
     so one post found by two searches is one hit."""
     p = urlparse(url)
-    return p.netloc.lower().removeprefix("www.") + p.path.rstrip("/")
+    return (p.hostname or "").lower().removeprefix("www.") + p.path.rstrip("/")
+
+
+def load_hits(path):
+    """-> (hits, skipped, undated). The file is written by hand from search
+    results, so it is checked rather than trusted: an unreadable file or one
+    that is not a JSON list stops with a message, an entry without a string
+    `url` is skipped, and a date that is not YYYY-MM-DD is dropped (the hit is
+    kept as undated). Both counts are reported, never swallowed."""
+    try:
+        with open(path, encoding="utf-8") as f:
+            data = json.load(f)
+    except (OSError, ValueError) as e:
+        raise SystemExit("snippets: cannot read %s: %s" % (path, e))
+    if not isinstance(data, list):
+        raise SystemExit("snippets: %s must hold a JSON list of results" % path)
+    hits, skipped, undated = [], 0, 0
+    for h in data:
+        if not isinstance(h, dict) or not isinstance(h.get("url"), str):
+            skipped += 1
+            continue
+        if h.get("date") and not DATE_RE.match(str(h["date"])):
+            h = {k: v for k, v in h.items() if k != "date"}
+            undated += 1
+        hits.append(h)
+    return hits, skipped, undated
 
 
 def shortlist_snippets(hits, keywords, days=None, now=None):
     """Keep on-site, deduped hits whose title or snippet carries every keyword
-    term, newest first. A hit with no date is kept (most snippets carry none)
-    and sorts last. Each kept hit gains `source` and `named` (LC numbers)."""
+    term, newest first. A hit with no date is kept (most results carry none)
+    and sorts last. Each kept hit gains `source` and `named`: the LC numbers
+    its own title names. A snippet counts toward the keyword filter but never
+    names a problem (SKILL.md directive 6)."""
     now = time.time() if now is None else now
     seen, out = set(), []
     for h in hits:
@@ -200,13 +235,15 @@ def shortlist_snippets(hits, keywords, days=None, now=None):
         key = canonical(h["url"])
         if source is None or key in seen:
             continue
-        seen.add(key)
         if h.get("date") and too_old(h["date"], days, now):
             continue
-        text = h.get("title", "") + " " + h.get("snippet", "")
-        if not has_terms(text, keywords):
+        title = h.get("title") or ""
+        if not has_terms(title + " " + (h.get("snippet") or ""), keywords):
             continue
-        out.append(dict(h, source=source, named=named_problems(text)[1]))
+        # NOTE: claimed only once kept, so a stale or off-topic copy of a post
+        #       cannot hide a later copy that qualifies
+        seen.add(key)
+        out.append(dict(h, source=source, named=named_problems(title)[1]))
     return sorted(out, key=lambda h: h.get("date") or "", reverse=True)
 
 
@@ -252,22 +289,26 @@ def cmd_fetch(args):
 
 
 def cmd_snippets(args):
-    with open(args.file, encoding="utf-8") as f:
-        hits = json.load(f)
+    hits, skipped, undated = load_hits(args.file)
     kept = shortlist_snippets(hits, args.keywords, args.days)
     for h in kept:
-        print("%-10s %-10s %s" % (h["source"], h.get("date") or "-", h.get("title", "").strip()))
+        print("%-10s %-10s %s" % (h["source"], h.get("date") or "-", (h.get("title") or "").strip()))
         print("    %s" % h["url"])
-        if args.summary:
-            print("    %s" % h.get("snippet", "")[:240].replace("\n", " "))
+        if args.summary and h.get("snippet"):
+            print("    %s" % h["snippet"][:240].replace("\n", " "))
         if h["named"]:
             print("    named: %s" % " ".join(map(str, h["named"])))
     by_source = Counter(h["source"] for h in kept)
     off_site = sum(1 for h in hits if source_of(h["url"]) is None)
     print("\n%d of %d results kept (%s); %d from other sites dropped"
-          % (len(kept), len(hits),
-             ", ".join("%s %d" % (s, by_source[s]) for _, s in SOURCES if by_source[s]) or "none",
+          % (len(kept), len(hits) + skipped,
+             ", ".join("%s %d" % (s, by_source[s]) for s, _ in SOURCES if by_source[s]) or "none",
              off_site))
+    if skipped or undated:
+        print("%d malformed entries skipped, %d unreadable dates ignored" % (skipped, undated))
+    for name, _ in SOURCES[:2]:
+        if not by_source[name]:
+            print("no %s results kept: say so in the doc's scan line" % name)
     named = sorted({n for h in kept for n in h["named"]})
     if named:
         print("named: %s   (pass these to xref)" % " ".join(map(str, named)))
