@@ -45,6 +45,13 @@ All the integers in s are in the range [1, 300].
 # V0
 # IDEA : STACK (2 stack) (GPT)
 """
+CORE IDEA:
+
+    -> 這題的關鍵是遇到 `[` 時`保存外層狀態`，遇到 `]` 時`恢復外層狀態並合併結果`，
+       因此可以自然處理任意深度的巢狀括號。
+"""
+
+"""
 NOTE:
 
 
@@ -285,13 +292,76 @@ class Solution(object):
                 repeat = int_st.pop()
                 prev_str = alpha_st.pop()
 
+                """
+                NOTE !!!
+
+                for x == "]" case,
+                we DON'T insert cur_str to stack directly !!!
+
+                ; but wait till meet the next "["
+                """
                 cur_str = prev_str + cur_str * repeat
 
         return cur_str
 
 
-
 # V0-0-1
+# IDEA : STACK (2 stack) (alpha, number stack)
+"""
+CORE IDEA:
+
+    -> 這題的關鍵是遇到 `[` 時`保存外層狀態`，遇到 `]` 時`恢復外層狀態並合併結果`，
+       因此可以自然處理任意深度的巢狀括號。
+"""
+class Solution(object):
+    def decodeString(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        num_st = []
+        alpha_st = []
+
+        num = 0
+        alpha = ""
+
+        for x in s:
+            if x.isdigit():
+                # Build multi-digit number, e.g. "12"
+                num = num * 10 + int(x)
+
+            elif x.isalpha():
+                # Build current string
+                alpha += x
+
+            elif x == "[":
+                # Save the repeat count and previous string
+                num_st.append(num)
+                alpha_st.append(alpha)
+
+                # Reset for the substring inside brackets
+                num = 0
+                alpha = ""
+
+            elif x == "]":
+                
+                """
+                NOTE !!!
+
+                for x == "]" case,
+                we DON'T insert cur_str to stack directly !!!
+
+                ; but wait till meet the next "["
+                """
+                # Decode current substring
+                repeat = num_st.pop()
+                prev_alpha = alpha_st.pop()
+                alpha = prev_alpha + alpha * repeat
+
+        return alpha
+
+
+# V0-0-2
 # IDEA : STACK (2 stack)
 class Solution(object):
     def decodeString(self, s):
