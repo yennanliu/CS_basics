@@ -179,6 +179,19 @@ SOURCES = (
     ("LC", ("leetcode.com",)),
 )
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+TEXT_FIELDS = ("title", "snippet")
+
+
+def is_date(value):
+    """True for a real YYYY-MM-DD calendar date: 2026-13-01 has the shape but
+    would crash `too_old`, so the shape alone is not enough."""
+    if not isinstance(value, str) or not DATE_RE.match(value):
+        return False
+    try:
+        time.strptime(value, "%Y-%m-%d")
+    except ValueError:
+        return False
+    return True
 
 
 def source_of(url):
@@ -201,8 +214,9 @@ def load_hits(path):
     """-> (hits, skipped, undated). The file is written by hand from search
     results, so it is checked rather than trusted: an unreadable file or one
     that is not a JSON list stops with a message, an entry without a string
-    `url` is skipped, and a date that is not YYYY-MM-DD is dropped (the hit is
-    kept as undated). Both counts are reported, never swallowed."""
+    `url`, or with a `title` / `snippet` that is not a string, is skipped, and
+    a date that is not a real YYYY-MM-DD date is dropped (the hit is kept as
+    undated). Both counts are reported, never swallowed."""
     try:
         with open(path, encoding="utf-8") as f:
             data = json.load(f)
@@ -212,10 +226,11 @@ def load_hits(path):
         raise SystemExit("snippets: %s must hold a JSON list of results" % path)
     hits, skipped, undated = [], 0, 0
     for h in data:
-        if not isinstance(h, dict) or not isinstance(h.get("url"), str):
+        if not isinstance(h, dict) or not isinstance(h.get("url"), str) or \
+                any(h.get(f) is not None and not isinstance(h[f], str) for f in TEXT_FIELDS):
             skipped += 1
             continue
-        if h.get("date") and not DATE_RE.match(str(h["date"])):
+        if h.get("date") and not is_date(h["date"]):
             h = {k: v for k, v in h.items() if k != "date"}
             undated += 1
         hits.append(h)

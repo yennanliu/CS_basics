@@ -150,10 +150,24 @@ class LoadHits(unittest.TestCase):
         path = self.write(json.dumps([
             {"url": "https://teamblind.com/post/a", "title": "Google", "date": "last week"},
             {"title": "no url"}, "a string", {"url": 42},
+            {"url": "https://teamblind.com/post/c", "title": 42},
+            {"url": "https://teamblind.com/post/d", "title": "Google", "snippet": ["x"]},
+            {"url": "https://teamblind.com/post/e", "title": "Google", "date": "2026-13-01"},
+            {"url": "https://teamblind.com/post/f", "title": None},
             {"url": "https://teamblind.com/post/b", "title": "Google", "date": "2026-09-30"}]))
         hits, skipped, undated = d.load_hits(path)
-        self.assertEqual((len(hits), skipped, undated), (2, 3, 1))
+        self.assertEqual((len(hits), skipped, undated), (4, 5, 2))
         self.assertNotIn("date", hits[0])
+        self.assertNotIn("date", hits[1])
+
+    def test_loaded_hits_never_crash_the_filter(self):
+        path = self.write(json.dumps([
+            {"url": "https://teamblind.com/post/a", "title": 7, "date": "2026-02-30"},
+            {"url": "https://teamblind.com/post/b", "title": "Google", "date": "2026-02-30"},
+            {"url": "https://teamblind.com/post/c", "title": None, "snippet": "google"}]))
+        hits, _, _ = d.load_hits(path)
+        kept = d.shortlist_snippets(hits, ["google"], days=30, now=NOW)
+        self.assertEqual([h["url"][-1] for h in kept], ["b", "c"])
 
     def test_command_reports_the_counts_and_an_empty_source(self):
         path = self.write(json.dumps([{"url": "https://teamblind.com/post/a", "title": "Google"},
