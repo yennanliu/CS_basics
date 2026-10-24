@@ -45,6 +45,22 @@ Note: This question is the same as 1123: https://leetcode.com/problems/lowest-co
 """
 
 
+"""
+NOTE !!!
+
+
+面試重點： 
+
+    這題不只是找出最深的節點，而是找出 `所有最深節點的最低共同祖先（LCA）`。
+
+    Post-order DFS 同時回傳深度與答案，比先建立 node_depth 再掃描更直接。
+
+
+    -> we need `LCA` for all of the deepest nodes
+
+
+"""
+
 # V0
 class Solution(object):
     def subtreeWithAllDeepest(self, root):
@@ -86,6 +102,76 @@ class Solution(object):
             return (right_depth + 1, right_node)
 
         return (left_depth + 1, root)
+
+
+# V0-0-1
+# IDEA: POST ORDER DFS + LCA (gpt)
+class Solution(object):
+    def subtreeWithAllDeepest(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: Optional[TreeNode]
+        """
+
+        def dfs(node):
+            if not node:
+                # Return (depth, subtree root)
+                return 0, None
+
+            left_depth, left_node = dfs(node.left)
+            right_depth, right_node = dfs(node.right)
+
+            # Left subtree is deeper
+            if left_depth > right_depth:
+                return left_depth + 1, left_node
+
+            # Right subtree is deeper
+            if right_depth > left_depth:
+                return right_depth + 1, right_node
+
+            # Equal depths: current node is the LCA
+            # of all deepest nodes in this subtree
+            return left_depth + 1, node
+
+        _, res = dfs(root)
+        return res
+
+
+# V0-0-2
+# IDEA: POST ORDER DFS + LCA (GEMINI)
+class Solution(object):
+
+  def subtreeWithAllDeepest(self, root):
+    """:type root: TreeNode
+
+    :rtype: TreeNode
+    """
+
+    # 定義遞迴 helper 函數，回傳 (depth, lca_node)
+    def dfs(node):
+      if not node:
+        return 0, None
+
+      # 遞迴左右子樹
+      left_depth, left_lca = dfs(node.left)
+      right_depth, right_lca = dfs(node.right)
+
+      # 情況一：左子樹較深，最深節點在左側
+      if left_depth > right_depth:
+        return left_depth + 1, left_lca
+
+      # 情況二：右子樹較深，最深節點在右側
+      elif right_depth > left_depth:
+        return right_depth + 1, right_lca
+
+      # 情況三：左右子樹深度相同，當前節點即為包含所有最深節點的最小子樹根節點
+      else:
+        return left_depth + 1, node
+
+    # 執行 DFS 並取得對應的 LCA 節点
+    _, lca = dfs(root)
+    return lca
+
 
 
 # V0-2
