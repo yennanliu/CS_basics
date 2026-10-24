@@ -1,5 +1,5 @@
 <!-- ac792b10b137 -->
-# Dijkstra — 實作範例
+# Dijkstra — 實戰題解
 
 > **範圍** — [Dijkstra.md](./Dijkstra.md) 背後的解題實作庫：十一題、兩種語言，依「搜尋狀態長什麼樣」分組，因為那正是決定你需要 `dist[]`、需要第二個狀態維度、還是一個單純 `visited[]` 的關鍵。
 > **另見**：[Dijkstra.md](./Dijkstra.md) — 母文件：五個模板、兩個判斷問題與演算法比較；[Bellman-Ford.md](./Bellman-Ford.md) — 邊權可以是負的時候；[Floyd-Warshall.md](./Floyd-Warshall.md) — 全點對最短路徑；[shortest_path_comparison.md](./shortest_path_comparison.md) — 三者之間怎麼挑；[bfs.md](./bfs.md) — 無權重的情況與 0-1 BFS；[heap.md](./heap.md) — 撐起這一切的優先佇列。

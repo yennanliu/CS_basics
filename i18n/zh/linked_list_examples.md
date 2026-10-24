@@ -1,5 +1,5 @@
 <!-- f6695f0bc2ec -->
-# 鏈結串列 — 範例題解
+# 鏈結串列 — 實戰題解
 
 > **範圍** — [linked_list.md](./linked_list.md) 背後的題解存放處：反轉、合併、切分、複製、攤平與串列排序類題目，每題每語言各一份標準解，並依各自演練的技巧分組。
 > **另見**：[linked_list.md](./linked_list.md) — 母文件，擁有虛擬頭節點技巧、reverse-k 基本操作、基本操作與這些解法所演練的選擇表；[2_pointers_linkedlist.md](./2_pointers_linkedlist.md) — 環偵測與快慢指標家族本身；[design.md](./design.md) — LRU 以及其他「串列 + 雜湊表」的設計題；[heap.md](./heap.md) — LC 23 走堆積(heap)的那條路；[monotonic_stack.md](./monotonic_stack.md) — LC 1019 背後的理論；[prefix_sum.md](./prefix_sum.md) — LC 1171 背後的理論。

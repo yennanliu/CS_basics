@@ -1,5 +1,5 @@
 <!-- 8597a27dbfe5 -->
-# 字串演算法 — 實作範例
+# 字串演算法 — 實戰題解
 
 > **範圍** — 字串類 LeetCode 的範例庫，每題每種語言只留一份標準解，並歸檔到它所實作的母文件模板底下；概念、模式目錄與模板本身都留在主字串文件。
 > **另見**：[string.md](./string.md) — 母文件，每個範例對應的模板都在那裡；[string_operations.md](./string_operations.md) — 語言層級的字串 API，從同一份檔案拆出；[palindrome.md](./palindrome.md) — 回文家族的深入版；[string_matching_kmp_rolling_hash.md](./string_matching_kmp_rolling_hash.md) — 子字串搜尋；[sliding_window.md](./sliding_window.md) — 字元視窗類題目；[2_pointers_examples.md](./2_pointers_examples.md) — 雙指標範例庫，LC 165、524、763、809 和 953 那邊也有。

@@ -1,5 +1,5 @@
 <!-- 9b51ea1e012f -->
-# 貪婪 — 題目實作
+# 貪婪 — 實戰題解
 
 > **範圍** — [greedy.md](./greedy.md) 背後的題解倉庫：十四題，依貪婪選擇的形狀分組 — 往前延伸可達範圍、累積後歸零、依頻率交錯、排序後取走，或邊掃邊定案。
 > **另見**：[greedy.md](./greedy.md) — 母表：六個模板、交換論證、決策框架，以及貪婪失效的情況；[intervals.md](./intervals.md) — 自成一家的區間貪婪家族；[heap.md](./heap.md) — 頻率那組背後的資料結構；[monotonic_stack.md](./monotonic_stack.md) — LC 402 背後的理論；[dp.md](./dp.md) — 交換論證垮掉時該退回去用的東西。

@@ -1,5 +1,5 @@
 <!-- 98a6094d5331 -->
-# BST — LeetCode 實作範例
+# BST — 實戰題解
 
 > **範圍** — `bst.md` 教的那些 BST 模板的解題檔案庫：每題每個語言一份標準解，外加雖然歸在 BST、卻完全用不到大小順序的「根到葉」與「節點到節點」路徑家族。
 > **另見**：[bst.md](./bst.md) — 這些範例所套用的標準 BST 模板；[bst_advanced.md](./bst_advanced.md) — 順序統計查詢、延遲式迭代器、修復壞掉的 BST，以及各種建樹變形；[tree_backtrack.md](./tree_backtrack.md) — 回程要復原狀態的根→葉路徑。

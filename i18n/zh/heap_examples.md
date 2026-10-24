@@ -1,5 +1,5 @@
 <!-- d0cd2d660cc2 -->
-# 堆積(heap) — LC 題解範例
+# 堆積（Heap） — 實戰題解
 
 > **範圍** — 堆積 / 優先佇列(priority queue)家族的題解存放處：每題每種語言一份標準解，把推理過程、追蹤與陷阱完整寫出來。
 > **另見** — *主文件*：[heap.md](./heap.md) — 這些範例所實作的標準模板與模式選擇指南。*從同一份檔案拆出去的鄰近文件*：[heap_advanced.md](./heap_advanced.md) — 延遲刪除(lazy deletion)、反悔貪婪(regret greedy)、掃描線，以及較少見的堆積模板；[heap_language_apis.md](./heap_language_apis.md) — 完整的 `heapq` / `PriorityQueue` API 參考。

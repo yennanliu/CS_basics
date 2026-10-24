@@ -1,5 +1,5 @@
 <!-- a38aa6042a66 -->
-# DP 實戰題解
+# DP — 實戰題解
 
 > **範圍** — [dp.md](./dp.md) 背後的題解檔案庫：每一題經典 DP 各一份標準 Java / Python 解法，加上依模式分類的題目索引，本身不放模板也不談理論。
 > **另見**：[dp.md](./dp.md) — 這些解法所實作的模板；[dp_advanced.md](./dp_advanced.md) — 冷門技巧與深入探討；[dp_pattern.md](./dp_pattern.md) — 更精簡的「一個模式一節」模板索引；[stock_trading.md](./stock_trading.md) — 所有股票狀態機的變形。

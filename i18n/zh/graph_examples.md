@@ -1,5 +1,5 @@
 <!-- 942223f9ea59 -->
-# 圖論實作範例
+# 圖論 — 實戰題解
 
 > **範圍** — [graph.md](./graph.md) 的解法歸檔：針對格子圖、複製圖、連通性、比值圖、隱式 DAG 與「依屬性做併查集」這幾類題目，每題各給一份標準解，本身不包含任何模板或理論內容。
 > **另見**：[graph.md](./graph.md) — 表示法、走訪、連通性與環偵測，以及下面每份解法所實例化的那些模板；[graph_advanced.md](./graph_advanced.md) — Tarjan、尤拉路徑、最大流與二分圖的進階題材；[dfs_examples.md](./dfs_examples.md) 與 [bfs_examples.md](./bfs_examples.md) — 其中幾題從走訪速查表的角度再解一次；[union_find.md](./union_find.md) — 併查集那份文件自己對 LC 323 / 947 / 1319 的處理。
