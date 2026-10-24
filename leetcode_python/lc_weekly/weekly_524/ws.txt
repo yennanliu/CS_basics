@@ -84,6 +84,8 @@ class Solution(object):
         :rtype: List[int]
         """
         # edge
+        if not grid or len(grid) == 0:
+            return []
 
         # [[x_1, y_1], [x_2, y_2], ...]
         record = []
