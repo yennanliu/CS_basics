@@ -142,6 +142,21 @@
 		- LC discussions - G
 			- https://github.com/yennanliu/CS_basics/pull/200
 
+
+		- BFS
+			- 在狀態空間上做 BFS
+				- Open the Lock - LC 752
+
+				- 同樣的狀態空間 BFS，只是把盤面壓平成字串
+					- Sliding Puzzle（LC 773)
+					- 433
+
+			- 多源 BFS
+				- Walls and Gates（LC 286)
+
+
+
+
 		- Trie
 			- 前綴比對：找出有共同前綴的字
 				- 14
