@@ -1011,6 +1011,7 @@ def findJudge(n, trust):
 | 2923 Find Champion I | Easy | same as 2924, given as an adjacency **matrix** — find the row with no incoming `1` |
 | 1557 Minimum Number of Vertices to Reach All Nodes | Medium | `in == 0`, but return **all** of them (Template 10 above) |
 | 1361 Validate Binary Tree Nodes | Medium | `in <= 1` for all + exactly one `in == 0` + a reachability pass (Variation B below) |
+| 4085 Find Root of a Colored Tree | Medium | edges are **undirected**; a per-edge color rule orients each one, then the root is the unique `in == 0` (Variation C below) |
 | 2374 Node With Highest Edge Score | Medium | accumulate the **sum of labels** pointing in, not a count — same one-pass shape, different accumulator |
 | 1615 Maximal Network Rank | Medium | undirected, so one `degree` array; rank of a pair is `deg(a) + deg(b) - 1` when they are adjacent |
 
@@ -1094,6 +1095,158 @@ def validateBinaryTreeNodes(n, leftChild, rightChild):
     return seen == n
 ```
 
+#### Variation C — orient every edge first, then read the degrees (global scan): LC 4085 Find Root of a Colored Tree
+
+**Twist**: the edges arrive **undirected**, so there is no in-degree to count yet. The question
+asks for a root, and the obvious approach tries every node as the root and DFS-checks it, which is
+O(n²) and times out at n = 10⁵. The **global scan** instead asks each edge, once, which way it
+must point. If a **local** rule fixes every edge's direction, the whole tree is oriented in one
+pass, and the root is just Template 10's fingerprint: the only node with `in == 0`.
+
+**Core Idea** — turn the global condition into a per-edge one:
+
+1. The three allowed color sequences are **one cycle** `R → B → W → R`, started at different
+   colors. So "every depth has one color, following the cycle" means exactly
+   `color[child] == NEXT[color[parent]]` **on every edge**.
+2. With three colors in a cycle, for an edge `{u, v}` with `color[u] != color[v]` exactly one of
+   `NEXT[u] == v` / `NEXT[v] == u` holds, so **the edge's direction is forced**. Equal colors
+   satisfy neither, so no root can work → `-1`.
+3. After orienting all `n - 1` edges, read the degrees: any `in > 1` → `-1` (two parents);
+   any `out > 2` → `-1` (binary-tree property); otherwise the one node with `in == 0` is the root.
+
+**Why no reachability pass, unlike LC 1361**: the input is guaranteed to be a **tree** (connected,
+`n - 1` edges). With every `in ≤ 1` and `n - 1` edges, exactly one node has `in == 0`. Connectivity
+is given, so a detached cycle (Variation B's trap) cannot exist. The degree check is the whole proof.
+
+```text
+global scan — pseudo code
+    for each edge {u, v}:                      # one pass, O(1) per edge
+        if   NEXT[color[u]] == color[v]:  parent, child = u, v
+        elif NEXT[color[v]] == color[u]:  parent, child = v, u
+        else: return -1                        # equal colors: no direction works
+        in[child]  += 1
+        out[parent] += 1
+    for each node x:
+        if in[x] > 1 or out[x] > 2: return -1  # two parents / three children
+        if in[x] == 0: root = x                # exactly one, since edges = n - 1
+    return root
+```
+
+```text
+trace — edges = [[3,1],[3,2],[1,4],[2,0]], colors = "BRRWB"
+    node color : 0=B 1=R 2=R 3=W 4=B          NEXT: R->B, B->W, W->R
+    edge 3-1 : W -> R is a step   => 3 -> 1
+    edge 3-2 : W -> R is a step   => 3 -> 2
+    edge 1-4 : R -> B is a step   => 1 -> 4
+    edge 2-0 : R -> B is a step   => 2 -> 0
+    in  = [1, 1, 1, 0, 1]   out = [0, 1, 1, 2, 0]
+    no in > 1, no out > 2, in == 0 only at node 3   => return 3
+```
+
+```python
+# python
+# LC 4085 - Find Root of a Colored Tree
+# IDEA: each edge's color step forces its direction -> root = the only node with no parent
+def findColoredRoot(edges, colors):
+    # time = O(n), space = O(n)
+    n = len(colors)
+    # the color a child must have, given its parent's color
+    next_color = {"R": "B", "B": "W", "W": "R"}
+
+    parent_count = [0] * n
+    child_count = [0] * n
+
+    for u, v in edges:
+        if next_color[colors[u]] == colors[v]:
+            parent, child = u, v
+        elif next_color[colors[v]] == colors[u]:
+            parent, child = v, u
+        else:
+            # equal colors on an edge: whichever end is the parent, the color does not advance
+            return -1
+        parent_count[child] += 1
+        child_count[parent] += 1
+
+    root = -1
+    for node in range(n):
+        if parent_count[node] > 1:      # reached from two parents -> no orientation works
+            return -1
+        if child_count[node] > 2:       # binary-tree property
+            return -1
+        if parent_count[node] == 0:
+            root = node
+    return root
+```
+
+```java
+// java
+// LC 4085 - Find Root of a Colored Tree
+// IDEA: each edge's color step forces its direction -> root = the only node with no parent
+public class Solution {
+    // time = O(n), space = O(n)
+    public int findColoredRoot(int[][] edges, String colors) {
+        int n = colors.length();
+        int[] parentCount = new int[n];
+        int[] childCount = new int[n];
+
+        for (int[] e : edges) {
+            int u = e[0], v = e[1];
+            int parent, child;
+            if (nextColor(colors.charAt(u)) == colors.charAt(v)) {
+                parent = u;
+                child = v;
+            } else if (nextColor(colors.charAt(v)) == colors.charAt(u)) {
+                parent = v;
+                child = u;
+            } else {
+                return -1;   // equal colors: no direction makes the color advance
+            }
+            parentCount[child]++;
+            childCount[parent]++;
+        }
+
+        int root = -1;
+        for (int node = 0; node < n; node++) {
+            if (parentCount[node] > 1) return -1;   // two parents
+            if (childCount[node] > 2) return -1;    // binary-tree property
+            if (parentCount[node] == 0) root = node;
+        }
+        return root;
+    }
+
+    // the color a child must have, given its parent's color: R -> B -> W -> R
+    private char nextColor(char c) {
+        if (c == 'R') return 'B';
+        if (c == 'B') return 'W';
+        return 'R';
+    }
+}
+```
+
+**Pitfalls**
+
+1. **Don't try every root.** That's O(n) roots × O(n) DFS. The tell that a global scan works is
+   that the condition on the whole tree breaks down into a condition on **each edge** (here, "the
+   color advances by one step").
+2. **Equal colors on an edge is `-1` immediately.** Neither direction steps the cycle, so it is not
+   "pick either".
+3. **Check `out ≤ 2` on the root too.** The root has no parent, so all of its up-to-3 edges are
+   children; a degree-3 root fails the binary-tree property.
+4. **Two parents is the only way the orientation can fail** once every edge has a direction. With
+   `n - 1` edges and every `in ≤ 1`, the root is unique, so there's no "two roots" case to handle.
+
+**Similar problems — fix a direction (or a candidate) per edge, then read the answer off the counts**
+
+| Problem | Difficulty | What the scan settles, and what changes |
+|---------|------------|-----------------------------------------|
+| 4085 Find Root of a Colored Tree | Medium | the color step orients each edge; root = unique `in == 0` |
+| 1361 Validate Binary Tree Nodes | Medium | edges already directed; same `in ≤ 1` + one root, but **no** connectivity guarantee, so a reachability pass is needed (Variation B) |
+| 2924 Find Champion II | Medium | directed DAG given; root/champion = unique `in == 0` |
+| 685 Redundant Connection II | Hard | directed edges; the node with `in == 2` names the two candidate edges to delete, then union-find picks one |
+| 1791 Find Center of Star Graph | Easy | undirected; the center is the node shared by any two edges, a degree fingerprint with no orientation |
+| 310 Minimum Height Trees | Medium | the "try every root" problem with **no** local rule; leaf trimming (Template 7) replaces it |
+| 834 Sum of Distances in Tree | Hard | when an answer is needed for **every** root, use re-rooting DP ([tree.md](./tree.md#re-rooting-dp--answer-for-every-root)) |
+
 ## Problem Classification
 
 | Problem | Difficulty | Category | Key Technique |
@@ -1172,6 +1325,7 @@ def validateBinaryTreeNodes(n, leftChild, rightChild):
 | Unique Source | 2924, 2923 | Champion = the **only** in-degree-0 node, else `-1` |
 | Weighted Degree | 2374, 1615 | Accumulate labels or plain degrees instead of counting edges |
 | Validate Tree Shape | 1361 | in-degree ≤ 1 + one root + root reaches all n |
+| Orient, then Count (global scan) | 4085 | A per-edge rule forces each undirected edge's direction; root = the unique in-degree-0 node |
 
 #### Cycle Detection
 | Pattern | Problems | Key Insight |
