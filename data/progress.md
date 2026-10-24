@@ -24,16 +24,15 @@
 		- `data/lc_weekly/lc_weekly_gpt.md`
 			- Weekly Contest 524 (ing)
 				- https://leetcode.com/contest/weekly-contest-524
+		
 		- LC docs contest
 			- https://leetcode.doocs.org/contest/
-				- 
+
 
 
 		- `scan` (ONLY idea, no implement)
 			- 第 258 场周赛(2021-09-12 10:30, 90 分钟) 参赛人数 4519
-			- weekly 261 (done)
-			- weekly 262 (done)
-			- weekly 263 (done)
+			
 			- weekly 264 (ing)
 				- https://leetcode.com/contest/weekly-contest-264
 
@@ -70,11 +69,15 @@
 				- 4. 和節點間距離的關係
 				- 節點間距離 = 搭配 LCA，用 getDepth() 算兩次
 
+- BFS —— LeetCode 解題實作
+	- https://yennj12.js.org/CS_basics/cheatsheets/bfs_examples.zh.html
 
 
 - Bit Manipulation — 實戰題解
 	- https://yennj12.js.org/CS_basics/cheatsheets/bit_manipulation_examples.zh.html
 		- `3) Single Number III — LC 260 —— 用最低的相異位元切開`
+
+
 
 
 
