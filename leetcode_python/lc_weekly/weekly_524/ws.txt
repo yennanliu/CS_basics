@@ -5,7 +5,9 @@
 
 (67 mins)
 
-10.53 - 12.00 pm
+11.28 - 12.34 pm
+
+
 #-------------------------------
 
 
@@ -15,10 +17,119 @@
 #------------------------------------------------
 
 
+->
+
+Return the `minimum` number of 
+deletions needed to make nums `sharp.`
+
+
+
+
+
+
+class Solution(object):
+    def minDeletions(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        pass
+
+
+
+
+
+
+
+
+
+
+
 #------------------------------------------------
 # LC 4084
 # https://leetcode.com/problems/last-visited-cell-in-a-directional-grid/description/
 #------------------------------------------------
+
+
+->
+
+Return an integer array [r, c] representing 
+the row and column indices of the last visited cell.
+
+ The indices are 0-based.
+
+
+
+NOTE:
+
+The process `ends` 
+    
+    if the indicated move would either 
+        `leave the grid` 
+        or 
+        enter a cell that has already been visited. 
+
+        -> In either case, the move is not made.
+
+
+
+
+# idea 1) brute force (simulation) + record the path
+
+
+class Solution(object):
+    def lastVisitedCell(self, grid):
+        """
+        :type grid: List[List[str]]
+        :rtype: List[int]
+        """
+        # edge
+
+        # [[x_1, y_1], [x_2, y_2], ...]
+        record = []
+
+        # ([x_1, y_1])
+        visited = set()
+
+        l = len(grid)
+        w = len(grid[0])
+
+        op_map = {"L": [1,0], "R": [-1,0], "U": [0,1], "D": [0,-1]}
+
+        x = 0
+        y = 0
+
+        for row in grid:
+            for op in row:
+                move = op_map[op]
+
+                x_ = x + move[0]
+                y_ = x + move[1]
+
+                if x_ < 0 or x_ >= w or y_ < 0 or y_ >= l:
+                    return record[-1]
+
+                if (x_, y_) in visited:
+                    return record[-1]
+
+                visited.append([x_, y_])
+                record.append([x_, y_])
+
+        if len(record) == 1:
+            return record[-1]
+
+
+        return record[-2]
+
+
+
+
+
+
+
+
+
+
 
 
 
