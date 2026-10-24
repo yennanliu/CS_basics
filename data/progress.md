@@ -49,11 +49,6 @@
 
 
 
-- LeetCode Patterns Guide
-	- https://yennj12.js.org/CS_basics/cheatsheets/lc_pattern.zh.html
-		- `🔹 7. 堆積與優先佇列`
-
-
 - Complexity Cheat Sheet
 	- https://yennj12.js.org/CS_basics/cheatsheets/complexity_cheatsheet.html
 
@@ -134,6 +129,7 @@
 	- Trie — 實戰題解
 	- Matrix — 實戰題解
 	- Stack — 實戰題解
+	- LeetCode Patterns Guide
 
 
 - Others
@@ -149,6 +145,17 @@
 			- XOR Trie：解 XOR 問題的二進位字典樹
 				- 421
 				- 1707
+
+		- Topo sort
+			- 拓撲排序：把 DAG 的節點排序
+				- 207
+				- 209
+
+
+		- 數學與數論 — LC 204
+				- 快速冪：高效計算次方
+					- 50
+					- 372
 
 
 		- Greedy
