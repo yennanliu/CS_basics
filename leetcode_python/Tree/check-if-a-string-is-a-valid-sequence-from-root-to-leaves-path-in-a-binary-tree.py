@@ -1,3 +1,5 @@
+# https://leetcode.ca/2019-10-30-1430-Check-If-a-String-Is-a-Valid-Sequence-from-Root-to-Leaves-Path-in-a-Binary-Tree/
+
 """
 
 1430. Check If a String Is a Valid Sequence from Root to Leaves Path in a Binary Tree

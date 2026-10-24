@@ -1,3 +1,5 @@
+# https://leetcode.ca/2020-10-22-1788-Maximize-the-Beauty-of-the-Garden/
+
 """
 
 1788. Maximize the Beauty of the Garden

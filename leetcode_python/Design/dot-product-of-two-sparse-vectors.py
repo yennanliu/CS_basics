@@ -1,3 +1,5 @@
+# https://leetcode.ca/2020-03-18-1570-Dot-Product-of-Two-Sparse-Vectors/
+
 """
 
 1570. Dot Product of Two Sparse Vectors

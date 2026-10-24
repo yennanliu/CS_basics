@@ -1,3 +1,5 @@
+# https://leetcode.ca/2025-05-19-3526-Range-XOR-Queries-with-Subarray-Reversals/
+
 """
 
 3526. Range XOR Queries with Subarray Reversals

@@ -1,3 +1,5 @@
+# https://leetcode.ca/2025-09-26-3656-Determine-if-a-Simple-Graph-Exists/
+
 """
 
 3656. Determine if a Simple Graph Exists

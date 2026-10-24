@@ -1,3 +1,5 @@
+# https://leetcode.ca/2019-10-28-1428-Leftmost-Column-with-at-Least-a-One/
+
 """
 
 1428. Leftmost Column with at Least a One

@@ -1,3 +1,5 @@
+# https://leetcode.ca/2022-07-27-2431-Maximize-Total-Tastiness-of-Purchased-Fruits/
+
 """
 
 2431. Maximize Total Tastiness of Purchased Fruits

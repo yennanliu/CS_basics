@@ -1,3 +1,5 @@
+# https://leetcode.ca/2025-07-27-3595-Once-Twice/
+
 """
 
 3595. Once Twice

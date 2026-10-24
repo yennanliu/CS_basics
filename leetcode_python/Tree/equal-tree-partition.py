@@ -1,3 +1,5 @@
+# https://leetcode.ca/2017-09-23-663-Equal-Tree-Partition/
+
 """
 
 663. Equal Tree Partition

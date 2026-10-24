@@ -1,3 +1,5 @@
+# https://leetcode.ca/2020-12-25-1852-Distinct-Numbers-in-Each-Subarray/
+
 """
 
 1852. Distinct Numbers in Each Subarray

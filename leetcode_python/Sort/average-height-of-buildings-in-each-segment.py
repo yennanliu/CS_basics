@@ -1,3 +1,5 @@
+# https://leetcode.ca/2021-06-06-2015-Average-Height-of-Buildings-in-Each-Segment/
+
 """
 
 2015. Average Height of Buildings in Each Segment

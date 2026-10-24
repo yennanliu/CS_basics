@@ -1,3 +1,5 @@
+# https://leetcode.ca/2025-04-29-3506-Find-Time-Required-to-Eliminate-Bacterial-Strains/
+
 """
 
 3506. Find Time Required to Eliminate Bacterial Strains

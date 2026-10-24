@@ -1,3 +1,5 @@
+# https://leetcode.ca/2022-04-10-2323-Find-Minimum-Time-to-Finish-All-Jobs-II/
+
 """
 
 2323. Find Minimum Time to Finish All Jobs II

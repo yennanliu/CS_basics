@@ -1,3 +1,5 @@
+# https://leetcode.ca/2024-03-14-3063-Linked-List-Frequency/
+
 """
 
 3063. Linked List Frequency

@@ -1,3 +1,5 @@
+# https://leetcode.ca/2025-06-17-3555-Smallest-Subarray-to-Sort-in-Every-Sliding-Window/
+
 """
 
 3555. Smallest Subarray to Sort in Every Sliding Window

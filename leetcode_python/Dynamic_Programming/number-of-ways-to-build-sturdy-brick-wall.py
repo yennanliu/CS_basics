@@ -1,3 +1,5 @@
+# https://leetcode.ca/2021-11-22-2184-Number-of-Ways-to-Build-Sturdy-Brick-Wall/
+
 """
 
 2184. Number of Ways to Build Sturdy Brick Wall

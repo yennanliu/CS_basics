@@ -1,3 +1,5 @@
+# https://leetcode.ca/2019-05-09-1256-Encode-Number/
+
 """
 
 1256. Encode Number

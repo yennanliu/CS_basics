@@ -1,3 +1,5 @@
+# https://leetcode.ca/2019-02-24-1182-Shortest-Distance-to-Target-Color/
+
 """
 
 1182. Shortest Distance to Target Color

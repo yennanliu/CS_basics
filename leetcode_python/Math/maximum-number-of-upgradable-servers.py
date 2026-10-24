@@ -1,3 +1,5 @@
+# https://leetcode.ca/2024-06-04-3155-Maximum-Number-of-Upgradable-Servers/
+
 """
 
 3155. Maximum Number of Upgradable Servers

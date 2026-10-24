@@ -1,3 +1,5 @@
+# https://leetcode.ca/2019-03-13-1199-Minimum-Time-to-Build-Blocks/
+
 """
 
 1199. Minimum Time to Build Blocks

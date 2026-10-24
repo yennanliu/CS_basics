@@ -1,3 +1,5 @@
+# https://leetcode.ca/2016-05-18-170-Two-Sum-III-Data-structure-design/
+
 """
 
 170. Two Sum III - Data structure design

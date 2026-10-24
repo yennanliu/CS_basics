@@ -1,3 +1,5 @@
+# https://leetcode.ca/2016-08-05-249-Group-Shifted-Strings/
+
 """
 
 249. Group Shifted Strings

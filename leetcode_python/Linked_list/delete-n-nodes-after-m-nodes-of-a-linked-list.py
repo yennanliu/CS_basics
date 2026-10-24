@@ -1,3 +1,5 @@
+# https://leetcode.ca/2019-12-13-1474-Delete-N-Nodes-After-M-Nodes-of-a-Linked-List/
+
 """
 
 1474. Delete N Nodes After M Nodes of a Linked List

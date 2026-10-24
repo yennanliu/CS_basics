@@ -1,3 +1,5 @@
+# https://leetcode.ca/2024-08-31-3253-Construct-String-with-Minimum-Cost-(Easy)/
+
 """
 
 3253. Construct String with Minimum Cost (Easy)

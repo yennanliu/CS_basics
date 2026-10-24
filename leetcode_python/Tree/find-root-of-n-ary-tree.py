@@ -1,3 +1,5 @@
+# https://leetcode.ca/2020-01-14-1506-Find-Root-of-N-Ary-Tree/
+
 """
 
 1506. Find Root of N-Ary Tree

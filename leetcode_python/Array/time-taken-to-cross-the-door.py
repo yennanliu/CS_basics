@@ -1,3 +1,5 @@
+# https://leetcode.ca/2022-11-07-2534-Time-Taken-to-Cross-the-Door/
+
 """
 
 2534. Time Taken to Cross the Door

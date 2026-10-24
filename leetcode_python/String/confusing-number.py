@@ -1,3 +1,5 @@
+# https://leetcode.ca/2018-10-21-1056-Confusing-Number/
+
 """
 
 1056. Confusing Number

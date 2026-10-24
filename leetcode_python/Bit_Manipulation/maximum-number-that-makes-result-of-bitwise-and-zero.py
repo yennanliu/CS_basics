@@ -1,3 +1,5 @@
+# https://leetcode.ca/2024-05-15-3125-Maximum-Number-That-Makes-Result-of-Bitwise-AND-Zero/
+
 """
 
 3125. Maximum Number That Makes Result of Bitwise AND Zero

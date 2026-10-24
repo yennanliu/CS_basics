@@ -1,3 +1,5 @@
+# https://leetcode.ca/2016-11-03-339-Nested-List-Weight-Sum/
+
 """
 
 339. Nested List Weight Sum

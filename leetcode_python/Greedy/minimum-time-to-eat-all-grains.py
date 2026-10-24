@@ -1,3 +1,5 @@
+# https://leetcode.ca/2023-01-16-2604-Minimum-Time-to-Eat-All-Grains/
+
 """
 
 2604. Minimum Time to Eat All Grains

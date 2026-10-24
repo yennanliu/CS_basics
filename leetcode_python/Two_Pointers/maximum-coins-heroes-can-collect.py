@@ -1,3 +1,5 @@
+# https://leetcode.ca/2023-09-07-2838-Maximum-Coins-Heroes-Can-Collect/
+
 """
 
 2838. Maximum Coins Heroes Can Collect

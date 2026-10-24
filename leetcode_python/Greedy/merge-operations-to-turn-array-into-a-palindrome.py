@@ -1,3 +1,5 @@
+# https://leetcode.ca/2022-07-18-2422-Merge-Operations-to-Turn-Array-Into-a-Palindrome/
+
 """
 
 2422. Merge Operations to Turn Array Into a Palindrome

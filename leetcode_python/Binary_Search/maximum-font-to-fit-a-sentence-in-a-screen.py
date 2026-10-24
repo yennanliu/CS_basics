@@ -1,3 +1,5 @@
+# https://leetcode.ca/2020-05-05-1618-Maximum-Font-to-Fit-a-Sentence-in-a-Screen/
+
 """
 
 1618. Maximum Font to Fit a Sentence in a Screen

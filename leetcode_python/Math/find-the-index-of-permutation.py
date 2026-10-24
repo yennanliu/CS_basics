@@ -1,3 +1,5 @@
+# https://leetcode.ca/2024-04-29-3109-Find-the-Index-of-Permutation/
+
 """
 
 3109. Find the Index of Permutation

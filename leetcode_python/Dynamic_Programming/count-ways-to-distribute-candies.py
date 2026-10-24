@@ -1,3 +1,5 @@
+# https://leetcode.ca/2020-07-18-1692-Count-Ways-to-Distribute-Candies/
+
 """
 
 1692. Count Ways to Distribute Candies

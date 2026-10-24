@@ -1,3 +1,5 @@
+# https://leetcode.ca/2022-09-13-2479-Maximum-XOR-of-Two-Non-Overlapping-Subtrees/
+
 """
 
 2479. Maximum XOR of Two Non-Overlapping Subtrees

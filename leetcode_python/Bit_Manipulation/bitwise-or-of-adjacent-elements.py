@@ -1,3 +1,5 @@
+# https://leetcode.ca/2024-06-14-3173-Bitwise-OR-of-Adjacent-Elements/
+
 """
 
 3173. Bitwise OR of Adjacent Elements

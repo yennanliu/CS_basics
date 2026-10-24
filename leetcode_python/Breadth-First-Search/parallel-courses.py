@@ -1,3 +1,5 @@
+# https://leetcode.ca/2019-01-09-1136-Parallel-Courses/
+
 """
 
 1136. Parallel Courses

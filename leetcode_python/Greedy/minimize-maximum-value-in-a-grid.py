@@ -1,3 +1,5 @@
+# https://leetcode.ca/2022-05-28-2371-Minimize-Maximum-Value-in-a-Grid/
+
 """
 
 2371. Minimize Maximum Value in a Grid

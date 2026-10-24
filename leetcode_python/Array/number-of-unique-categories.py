@@ -1,3 +1,5 @@
+# https://leetcode.ca/2023-07-13-2782-Number-of-Unique-Categories/
+
 """
 
 2782. Number of Unique Categories

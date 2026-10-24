@@ -1,3 +1,5 @@
+# https://leetcode.ca/2021-09-06-2107-Number-of-Unique-Flavors-After-Sharing-K-Candies/
+
 """
 
 2107. Number of Unique Flavors After Sharing K Candies

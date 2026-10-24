@@ -1,3 +1,5 @@
+# https://leetcode.ca/2021-10-27-2158-Amount-of-New-Area-Painted-Each-Day/
+
 """
 
 2158. Amount of New Area Painted Each Day

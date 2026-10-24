@@ -1,3 +1,5 @@
+# https://leetcode.ca/2023-02-28-2647-Color-the-Triangle-Red/
+
 """
 
 2647. Color the Triangle Red

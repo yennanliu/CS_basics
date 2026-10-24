@@ -1,3 +1,5 @@
+# https://leetcode.ca/2020-12-31-1858-Longest-Word-With-All-Prefixes/
+
 """
 
 1858. Longest Word With All Prefixes

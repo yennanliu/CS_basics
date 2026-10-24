@@ -1,3 +1,5 @@
+# https://leetcode.ca/2016-07-30-243-Shortest-Word-Distance/
+
 """
 
 243. Shortest Word Distance

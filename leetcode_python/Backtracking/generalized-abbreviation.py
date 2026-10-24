@@ -1,3 +1,5 @@
+# https://leetcode.ca/2016-10-15-320-Generalized-Abbreviation/
+
 """
 
 320. Generalized Abbreviation

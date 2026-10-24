@@ -1,3 +1,5 @@
+# https://leetcode.ca/2022-10-14-2510-Check-if-There-is-a-Path-With-Equal-Number-of-0&apos;s-And-1&apos;s/
+
 """
 
 2510. Check if There is a Path With Equal Number of 0's And 1's

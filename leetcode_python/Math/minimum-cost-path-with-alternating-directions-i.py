@@ -1,3 +1,5 @@
+# https://leetcode.ca/2025-07-28-3596-Minimum-Cost-Path-with-Alternating-Directions-I/
+
 """
 
 3596. Minimum Cost Path with Alternating Directions I

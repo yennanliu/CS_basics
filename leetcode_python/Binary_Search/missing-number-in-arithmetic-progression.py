@@ -1,3 +1,5 @@
+# https://leetcode.ca/2019-04-11-1228-Missing-Number-In-Arithmetic-Progression/
+
 """
 
 1228. Missing Number In Arithmetic Progression

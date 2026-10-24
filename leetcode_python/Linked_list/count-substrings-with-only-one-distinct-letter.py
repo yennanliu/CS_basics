@@ -1,3 +1,5 @@
+# https://leetcode.ca/2019-02-22-1180-Count-Substrings-with-Only-One-Distinct-Letter/
+
 """
 
 1180. Count Substrings with Only One Distinct Letter

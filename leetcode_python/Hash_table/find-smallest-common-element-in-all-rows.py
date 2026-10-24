@@ -1,3 +1,5 @@
+# https://leetcode.ca/2019-03-12-1198-Find-Smallest-Common-Element-in-All-Rows/
+
 """
 
 1198. Find Smallest Common Element in All Rows

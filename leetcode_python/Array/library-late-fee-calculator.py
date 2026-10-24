@@ -1,3 +1,5 @@
+# https://leetcode.ca/2025-10-27-3687-Library-Late-Fee-Calculator/
+
 """
 
 3687. Library Late Fee Calculator

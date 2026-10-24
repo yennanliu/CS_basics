@@ -1,3 +1,5 @@
+# https://leetcode.ca/2016-07-31-244-Shortest-Word-Distance-II/
+
 """
 
 244. Shortest Word Distance II

@@ -1,3 +1,5 @@
+# https://leetcode.ca/2018-10-30-1065-Index-Pairs-of-a-String/
+
 """
 
 1065. Index Pairs of a String

@@ -1,3 +1,5 @@
+# https://leetcode.ca/2021-08-23-2093-Minimum-Cost-to-Reach-City-With-Discounts/
+
 """
 
 2093. Minimum Cost to Reach City With Discounts

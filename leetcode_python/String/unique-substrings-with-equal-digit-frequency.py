@@ -1,3 +1,5 @@
+# https://leetcode.ca/2021-11-06-2168-Unique-Substrings-With-Equal-Digit-Frequency/
+
 """
 
 2168. Unique Substrings With Equal Digit Frequency

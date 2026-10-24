@@ -1,3 +1,5 @@
+# https://leetcode.ca/2017-08-16-625-Minimum-Factorization/
+
 """
 
 625. Minimum Factorization

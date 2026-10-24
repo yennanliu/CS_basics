@@ -1,3 +1,5 @@
+# https://leetcode.ca/2020-11-23-1820-Maximum-Number-of-Accepted-Invitations/
+
 """
 
 1820. Maximum Number of Accepted Invitations

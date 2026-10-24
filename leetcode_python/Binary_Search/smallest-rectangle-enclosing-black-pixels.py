@@ -1,3 +1,5 @@
+# https://leetcode.ca/2016-09-27-302-Smallest-Rectangle-Enclosing-Black-Pixels/
+
 """
 
 302. Smallest Rectangle Enclosing Black Pixels

@@ -1,3 +1,5 @@
+# https://leetcode.ca/2022-11-06-2533-Number-of-Good-Binary-Strings/
+
 """
 
 2533. Number of Good Binary Strings

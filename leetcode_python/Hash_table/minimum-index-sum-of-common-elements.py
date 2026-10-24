@@ -1,3 +1,5 @@
+# https://leetcode.ca/2025-10-22-3682-Minimum-Index-Sum-of-Common-Elements/
+
 """
 
 3682. Minimum Index Sum of Common Elements

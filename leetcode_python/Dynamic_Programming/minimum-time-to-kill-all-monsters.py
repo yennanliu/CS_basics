@@ -1,3 +1,5 @@
+# https://leetcode.ca/2022-06-29-2403-Minimum-Time-to-Kill-All-Monsters/
+
 """
 
 2403. Minimum Time to Kill All Monsters

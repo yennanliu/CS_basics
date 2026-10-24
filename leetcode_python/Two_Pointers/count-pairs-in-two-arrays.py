@@ -1,3 +1,5 @@
+# https://leetcode.ca/2021-01-27-1885-Count-Pairs-in-Two-Arrays/
+
 """
 
 1885. Count Pairs in Two Arrays

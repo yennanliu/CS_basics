@@ -1,3 +1,5 @@
+# https://leetcode.ca/2022-09-23-2489-Number-of-Substrings-With-Fixed-Ratio/
+
 """
 
 2489. Number of Substrings With Fixed Ratio

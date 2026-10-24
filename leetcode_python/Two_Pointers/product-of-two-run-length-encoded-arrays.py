@@ -1,3 +1,5 @@
+# https://leetcode.ca/2021-01-10-1868-Product-of-Two-Run-Length-Encoded-Arrays/
+
 """
 
 1868. Product of Two Run-Length Encoded Arrays

@@ -1,3 +1,5 @@
+# https://leetcode.ca/2020-09-20-1756-Design-Most-Recently-Used-Queue/
+
 """
 
 1756. Design Most Recently Used Queue

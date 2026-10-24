@@ -1,3 +1,5 @@
+# https://leetcode.ca/2017-01-25-422-Valid-Word-Square/
+
 """
 
 422. Valid Word Square
