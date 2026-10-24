@@ -77,7 +77,152 @@ The input graph is a tree and every node has degree at most three.
 """
 
 # V0
-# IDEA : EACH EDGE'S COLOR STEP FIXES ITS DIRECTION -> ROOT = THE ONLY NODE WITH NO PARENT
+class Solution(object):
+    def findColoredRoot(self, edges, colors):
+        """
+        :type edges: List[List[int]]
+        :type colors: str
+        :rtype: int
+        """
+        pass
+
+
+# V0-1
+# IDEA: HASHMAP + GRPAH + COLOR CYCLE (gpt)
+"""
+CORE IDEA:
+    
+    -> 利用顏色差值確定邊方向（O(N) 演算法）
+"""
+class Solution(object):
+    def findColoredRoot(self, edges, colors):
+        """
+        :type edges: List[List[int]]
+        :type colors: str
+        :rtype: int
+        """
+        n = len(colors)
+
+        # Build undirected graph
+        graph = [[] for _ in range(n)]
+
+        for u, v in edges:
+            graph[u].append(v)
+            graph[v].append(u)
+
+        # Color cycle: R -> B -> W -> R
+        color_map = {
+            "R": 0,
+            "B": 1,
+            "W": 2
+        }
+
+        # Each node can have at most 1 parent and 2 children.
+        parent = [-1] * n
+        children_count = [0] * n
+
+        for u, v in edges:
+            color_u = color_map[colors[u]]
+            color_v = color_map[colors[v]]
+
+            # Same-colored adjacent nodes cannot be valid.
+            if color_u == color_v:
+                return -1
+
+            # Determine the parent-child direction.
+            # If u's color advances to v's color, u is parent.
+            if (color_u + 1) % 3 == color_v:
+                p, child = u, v
+            else:
+                p, child = v, u
+
+            # A node cannot have multiple parents.
+            if parent[child] != -1:
+                return -1
+
+            parent[child] = p
+            children_count[p] += 1
+
+            # Binary-tree property: at most 2 children.
+            if children_count[p] > 2:
+                return -1
+
+        # The root is the only node without a parent.
+        root = -1
+
+        for node in range(n):
+            if parent[node] == -1:
+                if root != -1:
+                    return -1
+                root = node
+
+        return root
+
+
+# V0-2
+# IDEA: HASHMAP + GRPAH + COLOR CYCLE (gemini)
+"""
+CORE IDEA:
+    
+    -> 利用顏色差值確定邊方向 (O(N) 演算法）
+"""
+class Solution(object):
+
+  def findColoredRoot(self, edges, colors):
+    """:type edges: List[List[int]]
+
+    :type colors: str
+    :rtype: int
+    """
+    n = len(colors)
+    color_map = {"W": 0, "R": 1, "B": 2}
+
+    # 1. 建立無向圖
+    graph = [[] for _ in range(n)]
+    for u, v in edges:
+      graph[u].append(v)
+      graph[v].append(u)
+
+    # 2. 檢查是否有節點度數超過 3（因為根節點最多 2 個子節點，其餘節點最多 1 個父節點 + 2 個子節點 = 3）
+    for u in range(n):
+      if len(graph[u]) > 3:
+        return -1
+
+    root_candidate = -1
+
+    # 3. 遍歷每個節點，檢查其父節點數量
+    for u in range(n):
+      u_color = color_map[colors[u]]
+      parent_count = 0
+
+      for v in graph[u]:
+        v_color = color_map[colors[v]]
+
+        # 父節點的顏色必須是 (u_color + 2) % 3
+        if v_color == (u_color + 2) % 3:
+          parent_count += 1
+        elif v_color == (u_color + 1) % 3:
+          # v 是 u 的子節點，合法，不增加 parent_count
+          pass
+        else:
+          # 相鄰節點顏色相同或不符合循環順序，無效
+          return -1
+
+      # 一個普通節點最多只能有一個父節點
+      if parent_count > 1:
+        return -1
+
+      # 根節點沒有父節點，且子節點數（即其度數）最多為 2
+      if parent_count == 0:
+        if len(graph[u]) > 2:
+          return -1
+        root_candidate = u
+
+    return root_candidate
+
+
+# V0-3
+# IDEA : EACH EDGE'S COLOR STEP FIXES ITS DIRECTION -> ROOT = THE ONLY NODE WITH NO PARENT (CLAUDE)
 #
 #   all 3 allowed sequences are the SAME cycle R -> B -> W -> R, just started
 #   at a different color. so "same depth, same color" is equivalent to :
