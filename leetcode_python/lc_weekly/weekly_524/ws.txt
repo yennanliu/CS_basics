@@ -209,11 +209,12 @@ class Solution(object):
             x, y = edges[i]
 
             graph[x] = y
-            graph[y] = x
+            # ???
+            #graph[y] = x
 
         # check if cycle
-        if self.is_cycle(grpah):
-            return -1
+        #if self.is_cycle(grpah):
+        #   return -1
 
         self.res = None
 
@@ -226,7 +227,7 @@ class Solution(object):
         # edge
 
         # check 1) if is binary tree
-        if lem(grpah[x]) > 2:
+        if lem(grpah[x]) >= 2:
             return False
 
         # check 2) if all sub tree color are the same
@@ -242,13 +243,11 @@ class Solution(object):
         _left = self.helper(colors, graph, x, color)
         _right = self.helper(colors, graph, x, color)
 
-        if 
+        if _left and _right:
+            self.res = x
+            return
+ 
 
-
-
-
-    def is_cycle(self, graph):
-        # pass
 
 
 
