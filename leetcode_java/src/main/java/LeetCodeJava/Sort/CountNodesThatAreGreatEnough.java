@@ -1,6 +1,7 @@
 package LeetCodeJava.Sort;
 
 // https://leetcode.com/problems/count-nodes-that-are-great-enough/
+// https://leetcode.ca/2023-07-23-2792-Count-Nodes-That-Are-Great-Enough/
 
 import java.util.Collections;
 import java.util.PriorityQueue;

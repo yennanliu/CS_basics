@@ -1,6 +1,7 @@
 package LeetCodeJava.HashTable;
 
 // https://leetcode.com/problems/shortest-word-distance-ii/
+// https://leetcode.ca/2016-07-31-244-Shortest-Word-Distance-II/
 
 import java.util.*;
 

@@ -1,6 +1,7 @@
 package LeetCodeJava.Tree;
 
 // https://leetcode.com/problems/serialize-and-deserialize-n-ary-tree/description/
+// https://leetcode.ca/2017-01-31-428-Serialize-and-Deserialize-N-ary-Tree/
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;

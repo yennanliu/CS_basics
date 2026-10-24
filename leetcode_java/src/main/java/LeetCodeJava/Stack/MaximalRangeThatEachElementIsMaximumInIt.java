@@ -1,6 +1,7 @@
 package LeetCodeJava.Stack;
 
 // https://leetcode.com/problems/maximal-range-that-each-element-is-maximum-in-it/
+// https://leetcode.ca/2023-09-01-2832-Maximal-Range-That-Each-Element-Is-Maximum-in-It/
 
 /**
  * 2832. Maximal Range That Each Element Is Maximum in It

@@ -1,6 +1,7 @@
 package LeetCodeJava.BitManipulation;
 
 // https://leetcode.com/problems/minimum-unique-word-abbreviation/description/
+// https://leetcode.ca/2017-01-14-411-Minimum-Unique-Word-Abbreviation/
 
 import java.util.Arrays;
 import java.util.Comparator;

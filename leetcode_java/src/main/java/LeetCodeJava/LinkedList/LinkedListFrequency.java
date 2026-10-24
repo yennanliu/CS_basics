@@ -1,6 +1,7 @@
 package LeetCodeJava.LinkedList;
 
 // https://leetcode.com/problems/linked-list-frequency/
+// https://leetcode.ca/2024-03-14-3063-Linked-List-Frequency/
 
 import java.util.HashMap;
 import java.util.Map;

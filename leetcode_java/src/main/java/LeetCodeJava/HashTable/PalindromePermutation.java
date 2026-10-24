@@ -1,6 +1,7 @@
 package LeetCodeJava.HashTable;
 
 // https://leetcode.com/problems/palindrome-permutation/
+// https://leetcode.ca/2016-08-22-266-Palindrome-Permutation/
 
 import java.util.*;
 

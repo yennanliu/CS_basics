@@ -1,6 +1,7 @@
 package LeetCodeJava.Greedy;
 
 // https://leetcode.com/problems/path-with-maximum-minimum-value/
+// https://leetcode.ca/2018-12-06-1102-Path-With-Maximum-Minimum-Value/
 
 import java.util.*;
 

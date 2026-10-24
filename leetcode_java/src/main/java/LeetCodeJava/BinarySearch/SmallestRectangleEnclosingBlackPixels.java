@@ -1,6 +1,7 @@
 package LeetCodeJava.BinarySearch;
 
 // https://leetcode.com/problems/smallest-rectangle-enclosing-black-pixels/description/
+// https://leetcode.ca/2016-09-27-302-Smallest-Rectangle-Enclosing-Black-Pixels/
 
 import java.util.ArrayDeque;
 import java.util.Deque;

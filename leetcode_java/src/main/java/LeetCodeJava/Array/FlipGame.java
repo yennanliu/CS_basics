@@ -1,6 +1,7 @@
 package LeetCodeJava.Array;
 
 // https://leetcode.com/problems/flip-game/
+// https://leetcode.ca/2016-09-18-293-Flip-Game/
 
 import java.util.ArrayList;
 import java.util.List;

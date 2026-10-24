@@ -1,6 +1,7 @@
 package LeetCodeJava.DynamicProgramming;
 
 // https://leetcode.com/problems/paint-fence/
+// https://leetcode.ca/2016-09-01-276-Paint-Fence/
 
 /**
  * 276. Paint Fence

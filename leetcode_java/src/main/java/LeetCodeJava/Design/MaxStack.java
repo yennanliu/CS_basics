@@ -1,6 +1,7 @@
 package LeetCodeJava.Design;
 
 // https://leetcode.com/problems/max-stack/
+// https://leetcode.ca/2017-11-15-716-Max-Stack/
 
 import java.util.ArrayDeque;
 import java.util.Deque;

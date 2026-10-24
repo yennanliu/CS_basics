@@ -1,6 +1,7 @@
 package LeetCodeJava.Recursion;
 
 // https://leetcode.com/problems/binary-tree-longest-consecutive-sequence-ii/
+// https://leetcode.ca/2017-06-01-549-Binary-Tree-Longest-Consecutive-Sequence-II/
 
 import LeetCodeJava.DataStructure.TreeNode;
 

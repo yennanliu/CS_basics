@@ -1,6 +1,7 @@
 package LeetCodeJava.HashTable;
 
 // https://leetcode.com/problems/binary-tree-vertical-order-traversal/description/
+// https://leetcode.ca/2016-10-09-314-Binary-Tree-Vertical-Order-Traversal/
 // https://www.youtube.com/watch?v=-JFngYs21Y8
 
 import DataStructure.Pair;

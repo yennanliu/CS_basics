@@ -1,6 +1,7 @@
 package LeetCodeJava.Tree;
 
 // https://leetcode.com/problems/find-root-of-n-ary-tree/
+// https://leetcode.ca/2020-01-14-1506-Find-Root-of-N-Ary-Tree/
 
 import java.util.ArrayList;
 import java.util.List;

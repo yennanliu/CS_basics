@@ -1,6 +1,7 @@
 package LeetCodeJava.LinkedList;
 
 // https://leetcode.com/problems/print-immutable-linked-list-in-reverse/
+// https://leetcode.ca/2019-05-18-1265-Print-Immutable-Linked-List-in-Reverse/
 
 import java.util.ArrayDeque;
 import java.util.Deque;

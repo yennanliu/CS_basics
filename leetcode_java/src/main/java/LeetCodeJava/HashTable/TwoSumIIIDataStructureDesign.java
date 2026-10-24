@@ -1,6 +1,7 @@
 package LeetCodeJava.HashTable;
 
 // https://leetcode.com/problems/two-sum-iii-data-structure-design/
+// https://leetcode.ca/2016-05-18-170-Two-Sum-III-Data-structure-design/
 
 import java.util.*;
 

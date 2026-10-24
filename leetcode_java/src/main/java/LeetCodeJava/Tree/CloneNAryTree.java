@@ -1,6 +1,7 @@
 package LeetCodeJava.Tree;
 
 // https://leetcode.com/problems/clone-n-ary-tree/
+// https://leetcode.ca/2019-12-29-1490-Clone-N-ary-Tree/
 
 import java.util.ArrayList;
 import java.util.List;

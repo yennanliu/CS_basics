@@ -1,6 +1,7 @@
 package LeetCodeJava.DynamicProgramming;
 
 // https://leetcode.com/problems/coin-path/description/
+// https://leetcode.ca/2017-09-16-656-Coin-Path/
 
 import java.util.Collections;
 import java.util.PriorityQueue;

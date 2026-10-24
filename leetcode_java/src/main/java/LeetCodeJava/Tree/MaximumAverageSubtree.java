@@ -1,6 +1,7 @@
 package LeetCodeJava.Tree;
 
 // https://leetcode.com/problems/maximum-average-subtree/
+// https://leetcode.ca/2018-12-24-1120-Maximum-Average-Subtree/
 
 import LeetCodeJava.DataStructure.TreeNode;
 

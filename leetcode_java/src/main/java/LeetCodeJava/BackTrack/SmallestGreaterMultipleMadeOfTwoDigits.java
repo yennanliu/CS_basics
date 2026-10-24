@@ -1,6 +1,7 @@
 package LeetCodeJava.BackTrack;
 
 // https://leetcode.com/problems/smallest-greater-multiple-made-of-two-digits/
+// https://leetcode.ca/2021-05-21-1999-Smallest-Greater-Multiple-Made-of-Two-Digits/
 
 import java.util.ArrayDeque;
 import java.util.Deque;

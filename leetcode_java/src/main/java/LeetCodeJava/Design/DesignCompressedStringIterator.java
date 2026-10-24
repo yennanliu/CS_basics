@@ -1,6 +1,7 @@
 package LeetCodeJava.Design;
 
 // https://leetcode.com/problems/design-compressed-string-iterator/description/
+// https://leetcode.ca/2017-07-26-604-Design-Compressed-String-Iterator/
 
 import java.util.ArrayDeque;
 import java.util.Deque;

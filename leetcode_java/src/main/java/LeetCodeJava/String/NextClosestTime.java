@@ -1,6 +1,7 @@
 package LeetCodeJava.String;
 
 // https://leetcode.com/problems/next-closest-time/
+// https://leetcode.ca/2017-10-11-681-Next-Closest-Time/
 
 import java.util.HashSet;
 import java.util.Set;

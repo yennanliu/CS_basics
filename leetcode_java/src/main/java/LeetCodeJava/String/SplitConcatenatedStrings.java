@@ -1,6 +1,7 @@
 package LeetCodeJava.String;
 
 // https://leetcode.com/problems/split-concatenated-strings/description/
+// https://leetcode.ca/2017-06-07-555-Split-Concatenated-Strings/
 /**
  * 555. Split Concatenated Strings
  * Medium

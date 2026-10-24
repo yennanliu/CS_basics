@@ -1,6 +1,7 @@
 package LeetCodeJava.HashTable;
 
 // https://leetcode.com/problems/before-and-after-puzzle/
+// https://leetcode.ca/2019-02-23-1181-Before-and-After-Puzzle/
 
 import java.util.ArrayList;
 import java.util.HashMap;

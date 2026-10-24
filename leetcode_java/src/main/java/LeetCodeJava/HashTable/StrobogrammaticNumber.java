@@ -1,6 +1,7 @@
 package LeetCodeJava.HashTable;
 
 // https://leetcode.com/problems/strobogrammatic-number/
+// https://leetcode.ca/2016-08-02-246-Strobogrammatic-Number/
 
 import java.util.HashMap;
 import java.util.Map;

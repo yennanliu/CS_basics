@@ -1,6 +1,7 @@
 package LeetCodeJava.BitManipulation;
 
 // https://leetcode.com/problems/subarrays-with-xor-at-least-k/
+// https://leetcode.ca/2025-09-02-3632-Subarrays-with-XOR-at-Least-K/
 
 import java.util.HashMap;
 import java.util.Map;

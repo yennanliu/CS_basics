@@ -1,6 +1,7 @@
 package LeetCodeJava.Math;
 
 // https://leetcode.com/problems/erect-the-fence-ii/
+// https://leetcode.ca/2021-03-07-1924-Erect-the-Fence-II/
 
 import java.util.Collections;
 import java.util.ArrayList;

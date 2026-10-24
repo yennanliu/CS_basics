@@ -1,6 +1,7 @@
 package LeetCodeJava.BackTrack;
 
 // https://leetcode.com/problems/word-pattern-ii/description/
+// https://leetcode.ca/2016-09-16-291-Word-Pattern-II/
 
 import java.util.HashMap;
 import java.util.HashSet;

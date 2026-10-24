@@ -1,6 +1,7 @@
 package LeetCodeJava.Queue;
 
 // https://leetcode.com/problems/moving-average-from-data-stream/
+// https://leetcode.ca/2016-11-10-346-Moving-Average-from-Data-Stream/
 
 import java.util.ArrayDeque;
 import java.util.Deque;

@@ -1,6 +1,7 @@
 package LeetCodeJava.Stack;
 
 // https://leetcode.com/problems/number-of-people-that-can-be-seen-in-a-grid/
+// https://leetcode.ca/2022-02-28-2282-Number-of-People-That-Can-Be-Seen-in-a-Grid/
 
 import java.util.ArrayDeque;
 import java.util.Deque;

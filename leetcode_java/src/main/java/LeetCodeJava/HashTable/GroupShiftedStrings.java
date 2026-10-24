@@ -1,6 +1,7 @@
 package LeetCodeJava.HashTable;
 
 // https://leetcode.com/problems/group-shifted-strings/
+// https://leetcode.ca/2016-08-05-249-Group-Shifted-Strings/
 /**
  * 249. Group Shifted Strings
  * Medium

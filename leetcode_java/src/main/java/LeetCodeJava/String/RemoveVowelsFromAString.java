@@ -1,6 +1,7 @@
 package LeetCodeJava.String;
 
 // https://leetcode.com/problems/remove-vowels-from-a-string/
+// https://leetcode.ca/2018-12-23-1119-Remove-Vowels-from-a-String/
 
 /**
  * 1119. Remove Vowels from a String

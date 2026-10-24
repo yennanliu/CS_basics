@@ -1,6 +1,7 @@
 package LeetCodeJava.BinarySearchTree;
 
 // https://leetcode.com/problems/closest-binary-search-tree-value/
+// https://leetcode.ca/2016-08-26-270-Closest-Binary-Search-Tree-Value/
 
 import LeetCodeJava.DataStructure.TreeNode;
 

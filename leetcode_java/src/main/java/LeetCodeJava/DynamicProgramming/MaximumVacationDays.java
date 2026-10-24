@@ -1,6 +1,7 @@
 package LeetCodeJava.DynamicProgramming;
 
 // https://leetcode.com/problems/maximum-vacation-days/description/
+// https://leetcode.ca/2017-06-20-568-Maximum-Vacation-Days/
 
 import java.util.ArrayList;
 import java.util.List;

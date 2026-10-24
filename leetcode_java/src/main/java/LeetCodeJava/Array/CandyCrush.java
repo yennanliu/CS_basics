@@ -1,6 +1,7 @@
 package LeetCodeJava.Array;
 
 // https://leetcode.com/problems/candy-crush/
+// https://leetcode.ca/2017-11-22-723-Candy-Crush/
 
 /**
  * 723. Candy Crush

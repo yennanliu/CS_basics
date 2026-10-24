@@ -1,6 +1,7 @@
 package LeetCodeJava.Recursion;
 
 // https://leetcode.com/problems/beautiful-pairs/
+// https://leetcode.ca/2023-01-25-2613-Beautiful-Pairs/
 
 import java.util.ArrayList;
 import java.util.Arrays;

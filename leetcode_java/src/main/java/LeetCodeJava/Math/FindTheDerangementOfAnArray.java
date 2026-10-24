@@ -1,6 +1,7 @@
 package LeetCodeJava.Math;
 
 // https://leetcode.com/problems/find-the-derangement-of-an-array/
+// https://leetcode.ca/2017-08-25-634-Find-the-Derangement-of-An-Array/
 
 /**
  * 634. Find the Derangement of An Array

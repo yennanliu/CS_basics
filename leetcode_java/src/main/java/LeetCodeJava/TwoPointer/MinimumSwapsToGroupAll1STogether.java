@@ -1,6 +1,7 @@
 package LeetCodeJava.TwoPointer;
 
 // https://leetcode.com/problems/minimum-swaps-to-group-all-1s-together/
+// https://leetcode.ca/2019-01-24-1151-Minimum-Swaps-to-Group-All-1&apos;s-Together/
 
 /**
  * 1151. Minimum Swaps to Group All 1's Together

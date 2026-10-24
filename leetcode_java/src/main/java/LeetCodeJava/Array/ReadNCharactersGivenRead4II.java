@@ -1,6 +1,7 @@
 package LeetCodeJava.Array;
 
 // https://leetcode.com/problems/read-n-characters-given-read4-ii-call-multiple-times/description/
+// https://leetcode.ca/2016-05-06-158-Read-N-Characters-Given-read4-II-Call-Multiple-Times/
 
 import java.util.LinkedList;
 import java.util.Queue;

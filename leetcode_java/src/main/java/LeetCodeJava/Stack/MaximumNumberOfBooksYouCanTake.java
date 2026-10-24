@@ -1,6 +1,7 @@
 package LeetCodeJava.Stack;
 
 // https://leetcode.com/problems/maximum-number-of-books-you-can-take/
+// https://leetcode.ca/2022-05-12-2355-Maximum-Number-of-Books-You-Can-Take/
 
 /**
  * 2355. Maximum Number of Books You Can Take

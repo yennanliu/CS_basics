@@ -1,6 +1,7 @@
 package LeetCodeJava.Sort;
 
 // https://leetcode.com/problems/minimum-unlocked-indices-to-sort-nums/
+// https://leetcode.ca/2025-02-13-3431-Minimum-Unlocked-Indices-to-Sort-Nums/
 
 /**
  * 3431. Minimum Unlocked Indices to Sort Nums

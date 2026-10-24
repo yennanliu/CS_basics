@@ -1,6 +1,7 @@
 package LeetCodeJava.String;
 
 // https://leetcode.com/problems/word-abbreviation/description/
+// https://leetcode.ca/2017-05-10-527-Word-Abbreviation/
 
 import java.util.Arrays;
 import java.util.ArrayList;

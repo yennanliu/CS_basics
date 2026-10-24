@@ -1,6 +1,7 @@
 package LeetCodeJava.BFS;
 
 // https://leetcode.com/problems/the-maze-ii/
+// https://leetcode.ca/2017-04-18-505-The-Maze-II/
 
 import java.util.PriorityQueue;
 

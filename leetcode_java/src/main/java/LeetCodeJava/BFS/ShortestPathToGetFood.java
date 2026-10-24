@@ -1,6 +1,7 @@
 package LeetCodeJava.BFS;
 
 // https://leetcode.com/problems/shortest-path-to-get-food/
+// https://leetcode.ca/2020-08-25-1730-Shortest-Path-to-Get-Food/
 
 import java.util.*;
 

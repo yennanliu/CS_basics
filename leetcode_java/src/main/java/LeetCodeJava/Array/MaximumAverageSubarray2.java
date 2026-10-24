@@ -1,6 +1,7 @@
 package LeetCodeJava.Array;
 
 // https://leetcode.com/problems/maximum-average-subarray-ii/description/
+// https://leetcode.ca/2017-09-04-644-Maximum-Average-Subarray-II/
 /**
  * 644. Maximum Average Subarray II
  * Hard

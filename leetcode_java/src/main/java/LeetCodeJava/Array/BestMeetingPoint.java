@@ -1,6 +1,7 @@
 package LeetCodeJava.Array;
 
 // https://leetcode.com/problems/best-meeting-point/description/
+// https://leetcode.ca/2016-09-21-296-Best-Meeting-Point/
 
 import java.util.ArrayList;
 import java.util.Collections;

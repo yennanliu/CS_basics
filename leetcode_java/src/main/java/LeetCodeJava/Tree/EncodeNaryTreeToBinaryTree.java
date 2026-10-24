@@ -1,6 +1,7 @@
 package LeetCodeJava.Tree;
 
 // https://leetcode.com/problems/encode-n-ary-tree-to-binary-tree/description/
+// https://leetcode.ca/2017-02-03-431-Encode-N-ary-Tree-to-Binary-Tree/
 
 import java.util.ArrayDeque;
 import java.util.Deque;

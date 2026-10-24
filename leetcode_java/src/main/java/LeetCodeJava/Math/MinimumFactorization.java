@@ -1,6 +1,7 @@
 package LeetCodeJava.Math;
 
 // https://leetcode.com/problems/minimum-factorization/
+// https://leetcode.ca/2017-08-16-625-Minimum-Factorization/
 
 /**
  * 625. Minimum Factorization

@@ -1,6 +1,7 @@
 package LeetCodeJava.DFS;
 
 // https://leetcode.com/problems/count-nodes-equal-to-sum-of-descendants/
+// https://leetcode.ca/2021-04-25-1973-Count-Nodes-Equal-to-Sum-of-Descendants/
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
