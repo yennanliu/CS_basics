@@ -71,6 +71,8 @@
 
 - BFS —— LeetCode 解題實作
 	- https://yennj12.js.org/CS_basics/cheatsheets/bfs_examples.zh.html
+		- `2-15) Closest Leaf in a Binary Tree（LC 742）—— 樹 → 圖 + BFS`
+
 
 
 - Bit Manipulation — 實戰題解
