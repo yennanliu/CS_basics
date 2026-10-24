@@ -52,8 +52,47 @@ Constraints:
 
 """
 
+
 # V0
-# IDEA : XOR == 0 <=> EQUAL VALUES -> COUNT ADJACENT EQUAL PAIRS
+# IDEA : XOR == 0 <=> EQUAL VALUES -> COUNT ADJACENT EQUAL PAIRS (GPT)
+class Solution(object):
+    def minDeletions(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        n = len(nums)
+        op = 0
+
+        for r in range(1, n):
+            if nums[r] == nums[r - 1]:
+                op += 1
+
+        return op
+
+
+# V0-1
+# IDEA : XOR == 0 <=> EQUAL VALUES -> COUNT ADJACENT EQUAL PAIRS (gemini)
+class Solution(object):
+
+  def minDeletions(self, nums):
+    """:type nums: List[int]
+
+    :rtype: int
+    """
+    if not nums:
+      return 0
+
+    op = 0
+    for i in range(1, len(nums)):
+      # 只要相鄰兩個元素相等，就必須進行一次刪除
+      if nums[i] == nums[i - 1]:
+        op += 1
+
+    return op
+
+# V0-3
+# IDEA : XOR == 0 <=> EQUAL VALUES -> COUNT ADJACENT EQUAL PAIRS (claude)
 #
 #   a XOR b == 0 exactly when a == b, so "sharp" just means
 #   "no two adjacent elements are equal".
