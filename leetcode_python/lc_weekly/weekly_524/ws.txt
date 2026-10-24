@@ -128,14 +128,146 @@ class Solution(object):
 
 
 
-
-
-
-
-
-
-
 #------------------------------------------------
 # LC 4085
 # https://leetcode.com/problems/find-root-of-a-colored-tree/description/
 #------------------------------------------------
+
+
+
+->
+
+Return the `index` of` any root` that `satisfies both conditions, `
+
+    - or -1 if no such root exists.
+
+
+undirected tree:
+    - n nodes
+    - 0 to n-1
+
+
+
+edges[i] = [ui, vi]
+    - undirected edge between nodes ui and vi.
+
+
+colors[i] is one of 'R', 'B', or 'W'
+    - color of node i
+
+
+
+A node chosen as `root` must satisfy `both`
+of the following conditions
+
+    - 1. Binary-tree property: 
+        Every node has `at most two children.`
+
+    - 2. Layered color pattern: 
+        All nodes at the `same depth` have the `same color`
+
+
+
+
+# idea 1) build tree + try evey node, to see if can be a `root`
+          -> check with the 2 conditions
+
+
+
+# idea 2) union find ???
+
+
+-> loop from parent -> next parent ...
+    (with post dfs checks)
+
+
+# idea 3) graph
+    - build graph
+    - check if there is cycle
+        - edge case
+
+    - post order dfs check
+
+
+from collections import defaultDict
+
+class Solution(object):
+    def findColoredRoot(self, edges, colors):
+        """
+        :type edges: List[List[int]]
+        :type colors: str
+        :rtype: int
+        """
+        # edge
+
+        # build grpah
+        # {node: [child_1, chile_2 ...]}
+        # ???
+        graph = defaultDict(list)
+
+        for i in range(len(edges))
+            x, y = edges[i]
+
+            graph[x] = y
+            graph[y] = x
+
+        # check if cycle
+        if self.is_cycle(grpah):
+            return -1
+
+        self.res = None
+
+        return self.res 
+
+
+
+    # return type: boolean
+    def helper(self, colors, grpah, x, pre_color):
+        # edge
+
+        # check 1) if is binary tree
+        if lem(grpah[x]) > 2:
+            return False
+
+        # check 2) if all sub tree color are the same
+        first_sub_color = colors[grpah[x]]
+        for i in range(1, len(graph[x])):
+            if colors[grpah[x][i]] != first_sub_color:
+                return False
+
+        # ??
+        # check 3) check if layer color as below:
+        # R → B → W ...  or B → W → R ...
+
+        _left = self.helper(colors, graph, x, color)
+        _right = self.helper(colors, graph, x, color)
+
+        if 
+
+
+
+
+    def is_cycle(self, graph):
+        # pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
