@@ -67,7 +67,103 @@ grid[i][j] is one of 'L', 'R', 'U', or 'D'.
 """
 
 # V0
-# IDEA : SIMULATION + VISITED SET
+class Solution(object):
+    def lastVisitedCell(self, grid):
+        """
+        :type grid: List[List[str]]
+        :rtype: List[int]
+        """
+        pass
+
+# V0-1
+# IDEA : SIMULATION + VISITED SET (gpt)
+class Solution(object):
+    def lastVisitedCell(self, grid):
+        """
+        :type grid: List[List[str]]
+        :rtype: List[int]
+        """
+        if not grid or not grid[0]:
+            return []
+
+        m = len(grid)
+        n = len(grid[0])
+
+        # L/R change column; U/D change row
+        op_map = {
+            "L": (0, -1),
+            "R": (0, 1),
+            "U": (-1, 0),
+            "D": (1, 0)
+        }
+
+        r, c = 0, 0
+        visited = set()
+
+        while True:
+            # Current cell is considered visited
+            visited.add((r, c))
+
+            dr, dc = op_map[grid[r][c]]
+            nr = r + dr
+            nc = c + dc
+
+            # Stop if the next cell is outside the grid
+            if not (0 <= nr < m and 0 <= nc < n):
+                return [r, c]
+
+            # Stop if the next cell has already been visited
+            if (nr, nc) in visited:
+                return [r, c]
+
+            # Move to the next cell
+            r, c = nr, nc
+
+
+# V0-2
+# IDEA : SIMULATION + VISITED SET (gemini)
+class Solution(object):
+
+  def lastVisitedCell(self, grid):
+    """:type grid: List[List[str]]
+
+    :rtype: List[int]
+    """
+    if not grid or not grid[0]:
+      return [0, 0]
+
+    m = len(grid)
+    n = len(grid[0])
+
+    # 定義四個方向的 (row_change, col_change)
+    op_map = {
+        "L": (0, -1),  # 左
+        "R": (0, 1),  # 右
+        "U": (-1, 0),  # 上
+        "D": (1, 0),  # 下
+    }
+
+    visited = set()
+    r, c = 0, 0
+
+    while True:
+      # 標記當前格子為已造訪
+      visited.add((r, c))
+
+      # 根據當前格子的字元取得移動偏移量
+      dr, dc = op_map[grid[r][c]]
+      nr, nc = r + dr, c + dc
+
+      # 檢查下一個格子是否超出邊界，或是否已經造訪過
+      if not (0 <= nr < m and 0 <= nc < n) or (nr, nc) in visited:
+        return [r, c]
+
+      # 移動到下一個格子
+      r, c = nr, nc
+
+
+# V0-3
+# IDEA : SIMULATION + VISITED SET (CLAUDE)
 #
 #   follow the arrows from (0, 0) one cell at a time; the CURRENT cell is
 #   always the last visited one, so the answer is wherever we stand when the
