@@ -69,7 +69,7 @@
 
 - 樹 — LeetCode 實戰題解
 	- https://yennj12.js.org/CS_basics/cheatsheets/tree_examples.zh.html
-		- `10) 樹的高度與深度操作`
+		- `修改與多狀態範例`
 			- again
 				- 2. 取得深度（前序 DFS）
 				- 4. 和節點間距離的關係
@@ -532,6 +532,9 @@
 
 			 	- Minimum Depth of Binary Tree
 			 		- LC 111
+
+			 	- Binary Tree Maximum Path Sum 
+			 		— LC 124
 
 
 
