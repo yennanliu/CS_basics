@@ -1,0 +1,28 @@
+#-------------------------------
+# weekly-contest-524
+
+# https://leetcode.com/contest/weekly-contest-524/
+
+(67 mins)
+
+10.53 - 12.00 pm
+#-------------------------------
+
+
+#------------------------------------------------
+# LC 4083
+# https://leetcode.com/problems/minimum-deletions-to-make-array-sharp/description/
+#------------------------------------------------
+
+
+#------------------------------------------------
+# LC 4084
+# https://leetcode.com/problems/last-visited-cell-in-a-directional-grid/description/
+#------------------------------------------------
+
+
+
+#------------------------------------------------
+# LC 4085
+# https://leetcode.com/problems/find-root-of-a-colored-tree/description/
+#------------------------------------------------
