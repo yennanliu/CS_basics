@@ -1,5 +1,5 @@
 <!-- f9ccdb161352 -->
-# 掃描線 — 範例詳解
+# 掃描線 — 實戰題解
 
 > **範圍** — [scanning_line.md](./scanning_line.md) 背後的完整解題檔案：六道題目，依「掃描究竟在數什麼」分組 — 重疊深度、加權總和、存活工作的堆積，或兩個有序清單的交集。
 > **另見**：[scanning_line.md](./scanning_line.md) — 母文件：十一個模板、事件排序與平手決勝規則，以及模式選擇策略；[intervals.md](./intervals.md) — 不需要掃描線的區間題；[heap.md](./heap.md) — 排程那一組背後的資料結構；[difference_array.md](./difference_array.md) — 事件掃描在陣列上的對應版本；[greedy.md](./greedy.md) — 為什麼截止期限堆積的排程是最佳解。

@@ -1,5 +1,5 @@
 <!-- 79ec37c79b3a -->
-# 樹 — LeetCode 實戰題解
+# 樹 — 實戰題解
 
 > **範圍** — 其他檔案所教的樹模式，其題解檔案庫：每題每種語言各一份標準解法，依「題目在問什麼」分組，而不是依技巧分組。
 > **另見**：[tree.md](./tree.md) — 這些範例所套用的觀念、走訪策略與模板；[tree_lca_distance.md](./tree_lca_distance.md) — LCA、距離與路徑題；[tree_codec.md](./tree_codec.md) — 序列化與 codec 題；[tree_construction.md](./tree_construction.md) — 建樹題。

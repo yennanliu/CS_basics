@@ -1,5 +1,5 @@
 <!-- ad4f7ba4f29a -->
-# 雙指標 — 實例解析
+# 雙指標 — 實戰題解
 
 > **範圍** — 雙指標的 LeetCode 實作題庫，每題每種語言各一份標準解，依它所套用的模板分組；概念、指標種類與模板本身留在雙指標主文件裡。
 > **另見**：[2_pointers.md](./2_pointers.md) — 概念，以及每個範例所套用的標準模板；[2_pointers_quickselect.md](./2_pointers_quickselect.md) — 第 k 個元素的選擇，從同一份文件拆出來；[sliding_window.md](./sliding_window.md) — 由條件驅動的視窗；[n_sum.md](./n_sum.md) — 深入 k-sum 家族；[palindrome.md](./palindrome.md) — 深入回文家族。

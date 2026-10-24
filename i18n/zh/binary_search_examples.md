@@ -1,5 +1,5 @@
 <!-- 196b7e2f99a8 -->
-# 二分搜尋 — 範例題解
+# 二分搜尋 — 實戰題解
 
 > **範圍** — [binary_search.md](./binary_search.md) 的題解存放處 — 索引空間類模板的每題一份標準解，附上主文放不下的追蹤過程與陷阱。
 > **另見** — *主文件*：[binary_search.md](./binary_search.md) — 迴圈不變式、邊界模板，以及「該用哪個模板」的決策表；[binary_search_on_answer.md](./binary_search_on_answer.md) — 所有對*答案*而非索引做二分搜尋的題目。

@@ -1,5 +1,5 @@
 <!-- c4e8a33857a1 -->
-# 滑動視窗 — 實戰範例
+# 滑動視窗 — 實戰題解
 
 > **範圍** — 滑動視窗的 LeetCode 實作目錄，每題每語言只留一份標準解，並歸到它所對應的模板底下；模板本身、概念與選擇表都留在主檔滑動視窗那份。
 > **另見**：[sliding_window.md](./sliding_window.md) — 每個範例所對應的六個標準模板，以及在它們之間做選擇的決策表；[sliding_window_advanced.md](./sliding_window_advanced.md) — 比較少見的視窗形狀（雙端佇列取極值、補集、以字為單位、分桶）；[hash_map.md](./hash_map.md) — 這些視窗大多要帶著的頻率表；[2_pointers_examples.md](./2_pointers_examples.md) — 對撞指標的實作目錄。

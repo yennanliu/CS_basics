@@ -1,5 +1,5 @@
 <!-- 9390d47fd058 -->
-# 併查集（Union Find）— 範例詳解
+# 併查集（Union Find） — 實戰題解
 
 > **範圍** — [union_find.md](./union_find.md) 背後的解題檔案庫：十九道題，依「一個節點代表什麼」分組——頂點、格子、帶比值的變數，或樹節點——因為題目之間變的就只有這件事。
 > **另見** — [union_find.md](./union_find.md)：母文件，收錄 DSU 模板、六大模式、最佳化與陷阱；[graph.md](./graph.md)：圖的表示法通論；[topology_sorting.md](./topology_sorting.md)：有向圖的對應做法；[diff_toposort_quickunion.md](./diff_toposort_quickunion.md)：判斷題目要的是兩者中的哪一個；[tree_lca_distance.md](./tree_lca_distance.md)：LC 236 以及第 19 個範例的遞迴 LCA 觀點。

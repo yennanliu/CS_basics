@@ -1,5 +1,5 @@
 <!-- c422e9bf6924 -->
-# Design — 完整範例
+# Design — 實戰題解
 
 > **範圍** — [design.md](./design.md) 背後的解法檔案庫：二十題 LC「設計一個 X」的完整解，依每題被迫採用的結構組合分組，而不是依題號。
 > **另見**：[design.md](./design.md) — 母文件：這些解法在演練的五大模式、五步驟方法與選型表；[design_patterns.md](./design_patterns.md) — 一致性雜湊、限流器與負載平衡，同一輪面試會問但不是 LC 題目；[ood_design.md](./ood_design.md) — LLD 關卡的類別建模與 SOLID；[iterator.md](./iterator.md) — 單獨談 iterator 的契約；[trie.md](./trie.md)、[heap.md](./heap.md)、[hash_map.md](./hash_map.md) — 被組合起來的個別結構。

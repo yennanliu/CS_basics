@@ -175,7 +175,7 @@
 | Product of Array Except Self | 238 | 同樣的左掃／右掃拆分，只是把極值換成乘積 |
 
 <!-- 5544bbb5fe75 -->
-# 前綴和 — 範例詳解
+# 前綴和 — 實戰題解
 
 > **範圍** — [prefix_sum.md](./prefix_sum.md) 背後的解題存檔：八道模板無法從頭到尾解掉的題目，依照它們需要哪種前綴和形狀分組。
 > **另見**：[prefix_sum.md](./prefix_sum.md) — 母文件：模板 1–8、觀念與決策框架；[prefix_sum_advanced.md](./prefix_sum_advanced.md) — 模板 9–14；[difference_array.md](./difference_array.md) — 區間更新本身的完整討論，含 LC 370；[sliding_window.md](./sliding_window.md) — 當所有數值都非負時的替代解法；[hash_map.md](./hash_map.md) — 這裡有四題的關鍵結構。

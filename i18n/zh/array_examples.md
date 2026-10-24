@@ -1,5 +1,5 @@
 <!-- c4244549ab07 -->
-# 陣列 — 題目實作
+# 陣列 — 實戰題解
 
 > **範圍** — [array.md](./array.md) 背後的題解倉庫：十三題真正在考「原地改寫陣列」或「拿索引當儲存空間」的題目，依各自用到的技巧分組。
 > **另見**：[array.md](./array.md) — 母表：基本操作、特殊演算法，以及告訴你一題到底該歸哪張表的選擇表；[2_pointers.md](./2_pointers.md)、[sliding_window.md](./sliding_window.md)、[prefix_sum.md](./prefix_sum.md)、[difference_array.md](./difference_array.md) — 吃掉大部分 array 標籤題目的四個模式家族；[sort.md](./sort.md)、[matrix.md](./matrix.md)、[kadane_algorithm.md](./kadane_algorithm.md)、[stock_trading.md](./stock_trading.md) — 選擇表會把題目導向的其他主表。

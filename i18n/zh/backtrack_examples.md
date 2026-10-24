@@ -1,5 +1,5 @@
 <!-- 359f530a086b -->
-# 回溯 — LC 題目實作
+# 回溯 — 實戰題解
 
 > **範圍** — 回溯題解的長尾（LC 17、39、79、78、90、77、46、22、93、139、140、207），附遞迴軌跡與差一點就一樣的變形，每題每種語言只留一份正典解 — 它本身不教任何模板，每一節都指回它所實例化的那一個。
 > **另見**：[backtrack.md](./backtrack.md) — 這裡每個範例所實例化的模板，以及挑模板用的決策表；[backtrack_advanced.md](./backtrack_advanced.md) — Hard 等級的模板（LC 212、282、301）；[tree_backtrack.md](./tree_backtrack.md) — 樹上 root→leaf 的路徑題。
