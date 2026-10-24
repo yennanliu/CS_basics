@@ -1,3 +1,5 @@
+# https://leetcode.ca/2023-06-04-2743-Count-Substrings-Without-Repeating-Character/
+
 """
 
 2743. Count Substrings Without Repeating Character

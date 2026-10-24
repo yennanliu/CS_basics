@@ -1,3 +1,5 @@
+# https://leetcode.ca/2022-11-12-2539-Count-the-Number-of-Good-Subsequences/
+
 """
 
 2539. Count the Number of Good Subsequences

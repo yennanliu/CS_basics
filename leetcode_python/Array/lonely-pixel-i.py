@@ -1,3 +1,5 @@
+# https://leetcode.ca/2017-05-14-531-Lonely-Pixel-I/
+
 """
 
 531. Lonely Pixel I

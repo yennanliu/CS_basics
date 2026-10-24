@@ -1,3 +1,5 @@
+# https://leetcode.ca/2016-09-21-296-Best-Meeting-Point/
+
 """
 
 296. Best Meeting Point

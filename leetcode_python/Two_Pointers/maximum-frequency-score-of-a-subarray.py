@@ -1,3 +1,5 @@
+# https://leetcode.ca/2022-10-28-2524-Maximum-Frequency-Score-of-a-Subarray/
+
 """
 
 2524. Maximum Frequency Score of a Subarray

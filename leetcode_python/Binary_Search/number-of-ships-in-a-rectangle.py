@@ -1,3 +1,5 @@
+# https://leetcode.ca/2019-05-27-1274-Number-of-Ships-in-a-Rectangle/
+
 """
 
 1274. Number of Ships in a Rectangle

@@ -1,3 +1,5 @@
+# https://leetcode.ca/2024-02-18-3037-Find-Pattern-in-Infinite-Stream-II/
+
 """
 
 3037. Find Pattern in Infinite Stream II

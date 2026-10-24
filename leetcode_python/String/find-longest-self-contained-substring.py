@@ -1,3 +1,5 @@
+# https://leetcode.ca/2024-04-24-3104-Find-Longest-Self-Contained-Substring/
+
 """
 
 3104. Find Longest Self-Contained Substring

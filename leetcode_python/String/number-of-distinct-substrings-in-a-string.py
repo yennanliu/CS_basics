@@ -1,3 +1,5 @@
+# https://leetcode.ca/2020-07-24-1698-Number-of-Distinct-Substrings-in-a-String/
+
 """
 
 1698. Number of Distinct Substrings in a String

@@ -1,3 +1,5 @@
+# https://leetcode.ca/2023-08-02-2802-Find-The-K-th-Lucky-Number/
+
 """
 
 2802. Find The K-th Lucky Number

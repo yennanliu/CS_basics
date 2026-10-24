@@ -1,3 +1,5 @@
+# https://leetcode.ca/2021-03-16-1933-Check-if-String-Is-Decomposable-Into-Value-Equal-Substrings/
+
 """
 
 1933. Check if String Is Decomposable Into Value-Equal Substrings

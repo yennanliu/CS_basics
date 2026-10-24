@@ -1,3 +1,5 @@
+# https://leetcode.ca/2017-10-13-683-K-Empty-Slots/
+
 """
 
 683. K Empty Slots

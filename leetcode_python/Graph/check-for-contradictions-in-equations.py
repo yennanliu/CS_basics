@@ -1,3 +1,5 @@
+# https://leetcode.ca/2022-03-25-2307-Check-for-Contradictions-in-Equations/
+
 """
 
 2307. Check for Contradictions in Equations

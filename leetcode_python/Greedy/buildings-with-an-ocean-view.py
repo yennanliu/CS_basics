@@ -1,3 +1,5 @@
+# https://leetcode.ca/2020-09-26-1762-Buildings-With-an-Ocean-View/
+
 """
 
 1762. Buildings With an Ocean View

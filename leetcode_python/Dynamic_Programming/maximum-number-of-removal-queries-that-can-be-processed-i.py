@@ -1,3 +1,5 @@
+# https://leetcode.ca/2024-01-29-3018-Maximum-Number-of-Removal-Queries-That-Can-Be-Processed-I/
+
 """
 
 3018. Maximum Number of Removal Queries That Can Be Processed I

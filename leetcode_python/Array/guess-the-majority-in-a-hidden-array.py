@@ -1,3 +1,5 @@
+# https://leetcode.ca/2020-02-15-1538-Guess-the-Majority-in-a-Hidden-Array/
+
 """
 
 1538. Guess the Majority in a Hidden Array

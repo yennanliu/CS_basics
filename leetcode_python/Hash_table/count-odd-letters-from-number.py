@@ -1,3 +1,5 @@
+# https://leetcode.ca/2025-07-13-3581-Count-Odd-Letters-from-Number/
+
 """
 
 3581. Count Odd Letters from Number

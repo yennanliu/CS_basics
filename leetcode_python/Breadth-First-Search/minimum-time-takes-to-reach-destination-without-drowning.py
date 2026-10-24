@@ -1,3 +1,5 @@
+# https://leetcode.ca/2023-08-14-2814-Minimum-Time-Takes-to-Reach-Destination-Without-Drowning/
+
 """
 
 2814. Minimum Time Takes to Reach Destination Without Drowning

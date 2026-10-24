@@ -1,3 +1,5 @@
+# https://leetcode.ca/2020-11-29-1826-Faulty-Sensor/
+
 """
 
 1826. Faulty Sensor

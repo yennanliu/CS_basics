@@ -1,3 +1,5 @@
+# https://leetcode.ca/2025-08-17-3616-Number-of-Student-Replacements/
+
 """
 
 3616. Number of Student Replacements

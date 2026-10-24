@@ -1,3 +1,5 @@
+# https://leetcode.ca/2024-02-03-3023-Find-Pattern-in-Infinite-Stream-I/
+
 """
 
 3023. Find Pattern in Infinite Stream I

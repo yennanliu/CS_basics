@@ -1,3 +1,5 @@
+# https://leetcode.ca/2025-10-12-3672-Sum-of-Weighted-Modes-in-Subarrays/
+
 """
 
 3672. Sum of Weighted Modes in Subarrays

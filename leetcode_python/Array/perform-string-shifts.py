@@ -1,3 +1,5 @@
+# https://leetcode.ca/2019-10-27-1427-Perform-String-Shifts/
+
 """
 
 1427. Perform String Shifts

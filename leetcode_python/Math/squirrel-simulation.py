@@ -1,3 +1,5 @@
+# https://leetcode.ca/2017-06-25-573-Squirrel-Simulation/
+
 """
 
 573. Squirrel Simulation

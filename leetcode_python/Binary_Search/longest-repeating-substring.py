@@ -1,3 +1,5 @@
+# https://leetcode.ca/2018-10-27-1062-Longest-Repeating-Substring/
+
 """
 
 1062. Longest Repeating Substring

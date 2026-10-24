@@ -1,3 +1,5 @@
+# https://leetcode.ca/2022-01-24-2247-Maximum-Cost-of-Trip-With-K-Highways/
+
 """
 
 2247. Maximum Cost of Trip With K Highways

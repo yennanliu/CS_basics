@@ -1,3 +1,5 @@
+# https://leetcode.ca/2020-08-09-1714-Sum-Of-Special-Evenly-Spaced-Elements-In-Array/
+
 """
 
 1714. Sum Of Special Evenly-Spaced Elements In Array

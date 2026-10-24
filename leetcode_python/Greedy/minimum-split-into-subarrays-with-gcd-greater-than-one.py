@@ -1,3 +1,5 @@
+# https://leetcode.ca/2022-08-01-2436-Minimum-Split-Into-Subarrays-With-GCD-Greater-Than-One/
+
 """
 
 2436. Minimum Split Into Subarrays With GCD Greater Than One

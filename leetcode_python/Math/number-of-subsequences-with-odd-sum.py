@@ -1,3 +1,5 @@
+# https://leetcode.ca/2024-08-25-3247-Number-of-Subsequences-with-Odd-Sum/
+
 """
 
 3247. Number of Subsequences with Odd Sum

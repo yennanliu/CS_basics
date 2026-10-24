@@ -1,3 +1,5 @@
+# https://leetcode.ca/2021-04-08-1956-Minimum-Time-For-K-Virus-Variants-to-Spread/
+
 """
 
 1956. Minimum Time For K Virus Variants to Spread

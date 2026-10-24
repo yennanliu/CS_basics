@@ -1,3 +1,5 @@
+# https://leetcode.ca/2024-03-24-3073-Maximum-Increasing-Triplet-Value/
+
 """
 
 3073. Maximum Increasing Triplet Value

@@ -1,3 +1,5 @@
+# https://leetcode.ca/2023-09-01-2832-Maximal-Range-That-Each-Element-Is-Maximum-in-It/
+
 """
 
 2832. Maximal Range That Each Element Is Maximum in It

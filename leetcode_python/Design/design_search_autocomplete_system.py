@@ -1,3 +1,5 @@
+# https://leetcode.ca/2017-09-02-642-Design-Search-Autocomplete-System/
+
 """
 
 642. Design Search Autocomplete System

@@ -1,3 +1,5 @@
+# https://leetcode.ca/2021-07-13-2052-Minimum-Cost-to-Separate-Sentence-Into-Rows/
+
 """
 
 2052. Minimum Cost to Separate Sentence Into Rows

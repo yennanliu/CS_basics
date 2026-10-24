@@ -1,3 +1,5 @@
+# https://leetcode.ca/2019-12-08-1469-Find-All-The-Lonely-Nodes/
+
 """
 
 1469. Find All The Lonely Nodes

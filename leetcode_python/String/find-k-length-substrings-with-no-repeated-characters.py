@@ -1,3 +1,5 @@
+# https://leetcode.ca/2018-12-04-1100-Find-K-Length-Substrings-With-No-Repeated-Characters/
+
 """
 
 1100. Find K-Length Substrings With No Repeated Characters

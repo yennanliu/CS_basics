@@ -1,3 +1,5 @@
+# https://leetcode.ca/2021-07-28-2067-Number-of-Equal-Count-Substrings/
+
 """
 
 2067. Number of Equal Count Substrings

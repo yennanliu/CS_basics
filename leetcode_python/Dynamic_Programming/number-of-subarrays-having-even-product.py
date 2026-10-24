@@ -1,3 +1,5 @@
+# https://leetcode.ca/2022-09-29-2495-Number-of-Subarrays-Having-Even-Product/
+
 """
 
 2495. Number of Subarrays Having Even Product

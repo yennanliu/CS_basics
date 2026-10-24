@@ -1,3 +1,5 @@
+# https://leetcode.ca/2017-05-10-527-Word-Abbreviation/
+
 """
 
 527. Word Abbreviation

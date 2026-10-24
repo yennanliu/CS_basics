@@ -1,3 +1,5 @@
+# https://leetcode.ca/2021-05-21-1999-Smallest-Greater-Multiple-Made-of-Two-Digits/
+
 """
 
 1999. Smallest Greater Multiple Made of Two Digits

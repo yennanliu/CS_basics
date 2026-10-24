@@ -1,3 +1,5 @@
+# https://leetcode.ca/2021-04-18-1966-Binary-Searchable-Numbers-in-an-Unsorted-Array/
+
 """
 
 1966. Binary Searchable Numbers in an Unsorted Array

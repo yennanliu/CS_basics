@@ -1,3 +1,5 @@
+# https://leetcode.ca/2021-03-07-1924-Erect-the-Fence-II/
+
 """
 
 1924. Erect the Fence II

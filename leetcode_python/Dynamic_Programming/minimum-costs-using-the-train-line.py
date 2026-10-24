@@ -1,3 +1,5 @@
+# https://leetcode.ca/2022-05-18-2361-Minimum-Costs-Using-the-Train-Line/
+
 """
 
 2361. Minimum Costs Using the Train Line

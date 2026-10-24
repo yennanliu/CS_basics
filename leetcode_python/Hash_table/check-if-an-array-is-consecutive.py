@@ -1,3 +1,5 @@
+# https://leetcode.ca/2022-01-06-2229-Check-if-an-Array-Is-Consecutive/
+
 """
 
 2229. Check if an Array Is Consecutive

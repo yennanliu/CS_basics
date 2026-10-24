@@ -1,3 +1,5 @@
+# https://leetcode.ca/2023-10-07-2868-The-Wording-Game/
+
 """
 
 2868. The Wording Game

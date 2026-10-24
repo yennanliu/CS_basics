@@ -1,3 +1,5 @@
+# https://leetcode.ca/2021-12-06-2198-Number-of-Single-Divisor-Triplets/
+
 """
 
 2198. Number of Single Divisor Triplets

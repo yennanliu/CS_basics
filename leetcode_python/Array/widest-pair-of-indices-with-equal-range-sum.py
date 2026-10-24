@@ -1,3 +1,5 @@
+# https://leetcode.ca/2021-05-05-1983-Widest-Pair-of-Indices-With-Equal-Range-Sum/
+
 """
 
 1983. Widest Pair of Indices With Equal Range Sum

@@ -1,3 +1,5 @@
+# https://leetcode.ca/2019-10-29-1429-First-Unique-Number/
+
 """
 
 1429. First Unique Number

@@ -1,3 +1,5 @@
+# https://leetcode.ca/2021-01-16-1874-Minimize-Product-Sum-of-Two-Arrays/
+
 """
 
 1874. Minimize Product Sum of Two Arrays

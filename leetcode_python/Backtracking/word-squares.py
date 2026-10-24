@@ -1,3 +1,5 @@
+# https://leetcode.ca/2017-01-28-425-Word-Squares/
+
 """
 
 425. Word Squares

@@ -1,3 +1,5 @@
+# https://leetcode.ca/2025-09-02-3632-Subarrays-with-XOR-at-Least-K/
+
 """
 
 3632. Subarrays with XOR at Least K

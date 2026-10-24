@@ -1,3 +1,5 @@
+# https://leetcode.ca/2020-04-29-1612-Check-If-Two-Expression-Trees-are-Equivalent/
+
 """
 
 1612. Check If Two Expression Trees are Equivalent

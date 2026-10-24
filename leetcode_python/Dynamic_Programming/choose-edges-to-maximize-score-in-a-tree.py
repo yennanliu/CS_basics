@@ -1,3 +1,5 @@
+# https://leetcode.ca/2022-06-04-2378-Choose-Edges-to-Maximize-Score-in-a-Tree/
+
 """
 
 2378. Choose Edges to Maximize Score in a Tree

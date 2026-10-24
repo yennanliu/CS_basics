@@ -1,3 +1,5 @@
+# https://leetcode.ca/2022-06-19-2393-Count-Strictly-Increasing-Subarrays/
+
 """
 
 2393. Count Strictly Increasing Subarrays

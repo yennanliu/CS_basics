@@ -1,3 +1,5 @@
+# https://leetcode.ca/2025-09-11-3641-Longest-Semi-Repeating-Subarray/
+
 """
 
 3641. Longest Semi-Repeating Subarray

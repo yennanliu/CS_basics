@@ -1,3 +1,5 @@
+# https://leetcode.ca/2025-01-13-3400-Maximum-Number-of-Matching-Indices-After-Right-Shifts/
+
 """
 
 3400. Maximum Number of Matching Indices After Right Shifts

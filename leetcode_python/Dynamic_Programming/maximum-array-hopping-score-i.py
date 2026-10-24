@@ -1,3 +1,5 @@
+# https://leetcode.ca/2024-07-14-3205-Maximum-Array-Hopping-Score-I/
+
 """
 
 3205. Maximum Array Hopping Score I

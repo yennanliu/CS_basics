@@ -1,3 +1,5 @@
+# https://leetcode.ca/2022-04-27-2340-Minimum-Adjacent-Swaps-to-Make-a-Valid-Array/
+
 """
 
 2340. Minimum Adjacent Swaps to Make a Valid Array

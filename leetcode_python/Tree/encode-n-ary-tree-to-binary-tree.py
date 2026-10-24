@@ -1,3 +1,5 @@
+# https://leetcode.ca/2017-02-03-431-Encode-N-ary-Tree-to-Binary-Tree/
+
 """
 
 431. Encode N-ary Tree to Binary Tree

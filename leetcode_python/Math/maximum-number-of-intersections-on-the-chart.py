@@ -1,3 +1,5 @@
+# https://leetcode.ca/2024-01-20-3009-Maximum-Number-of-Intersections-on-the-Chart/
+
 """
 
 3009. Maximum Number of Intersections on the Chart

@@ -1,3 +1,5 @@
+# https://leetcode.ca/2024-08-09-3231-Minimum-Number-of-Increasing-Subsequence-to-Be-Removed/
+
 """
 
 3231. Minimum Number of Increasing Subsequence to Be Removed

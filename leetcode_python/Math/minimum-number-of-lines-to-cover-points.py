@@ -1,3 +1,5 @@
+# https://leetcode.ca/2021-10-21-2152-Minimum-Number-of-Lines-to-Cover-Points/
+
 """
 
 2152. Minimum Number of Lines to Cover Points

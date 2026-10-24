@@ -1,3 +1,5 @@
+# https://leetcode.ca/2019-05-11-1258-Synonymous-Sentences/
+
 """
 
 1258. Synonymous Sentences

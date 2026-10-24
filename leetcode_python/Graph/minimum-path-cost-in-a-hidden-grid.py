@@ -1,3 +1,5 @@
+# https://leetcode.ca/2020-11-13-1810-Minimum-Path-Cost-in-a-Hidden-Grid/
+
 """
 
 1810. Minimum Path Cost in a Hidden Grid

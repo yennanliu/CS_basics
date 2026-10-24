@@ -1,3 +1,5 @@
+# https://leetcode.ca/2016-09-13-288-Unique-Word-Abbreviation/
+
 """
 
 288. Unique Word Abbreviation

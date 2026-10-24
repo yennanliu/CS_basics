@@ -1,3 +1,5 @@
+# https://leetcode.ca/2022-08-15-2450-Number-of-Distinct-Binary-Strings-After-Applying-Operations/
+
 """
 
 2450. Number of Distinct Binary Strings After Applying Operations

@@ -1,3 +1,5 @@
+# https://leetcode.ca/2025-02-04-3422-Minimum-Operations-to-Make-Subarray-Elements-Equal/
+
 """
 
 3422. Minimum Operations to Make Subarray Elements Equal

@@ -1,3 +1,5 @@
+# https://leetcode.ca/2023-01-25-2613-Beautiful-Pairs/
+
 """
 
 2613. Beautiful Pairs

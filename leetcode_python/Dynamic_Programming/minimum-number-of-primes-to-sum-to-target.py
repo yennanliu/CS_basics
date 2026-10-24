@@ -1,3 +1,5 @@
+# https://leetcode.ca/2025-08-11-3610-Minimum-Number-of-Primes-to-Sum-to-Target/
+
 """
 
 3610. Minimum Number of Primes to Sum to Target

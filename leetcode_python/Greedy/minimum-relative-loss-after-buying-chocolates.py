@@ -1,3 +1,5 @@
+# https://leetcode.ca/2023-08-19-2819-Minimum-Relative-Loss-After-Buying-Chocolates/
+
 """
 
 2819. Minimum Relative Loss After Buying Chocolates
