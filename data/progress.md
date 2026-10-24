@@ -139,11 +139,6 @@
 		- LC discussions - G
 			- https://github.com/yennanliu/CS_basics/pull/200
 
-
-		- Trie
-			- done
-
-
 		- 0/1 knapsack
 			- 二維容量
 				- LC 474 Ones and Zeroes
