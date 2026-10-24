@@ -70,6 +70,10 @@
 - 樹 — LeetCode 實戰題解
 	- https://yennj12.js.org/CS_basics/cheatsheets/tree_examples.zh.html
 		- `10) 樹的高度與深度操作`
+			- again
+				- 2. 取得深度（前序 DFS）
+				- 4. 和節點間距離的關係
+				- 節點間距離 = 搭配 LCA，用 getDepth() 算兩次
 
 
 
@@ -524,6 +528,10 @@
 
 			 	- Boundary of Binary Tree
 			 		- LC 545
+
+
+			 	- Minimum Depth of Binary Tree
+			 		- LC 111
 
 
 
