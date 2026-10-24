@@ -143,6 +143,36 @@
 		- LC discussions - G
 			- https://github.com/yennanliu/CS_basics/pull/200
 
+		- Trie
+			- 前綴比對：找出有共同前綴的字
+				- 14
+			- XOR Trie：解 XOR 問題的二進位字典樹
+				- 421
+				- 1707
+
+
+		- Greedy
+			- 活動選擇：選出最多互不重疊的活動
+				- 646
+
+		- 樹狀陣列（BIT）／線段樹 — LC 307
+			 - 區間和查詢：高效的前綴和
+			 	- 307, 308
+			 - 逆序對計數：數陣列裡的逆序對
+			 	- 315
+			 - 座標壓縮：處理超大的座標範圍
+			 	- 218
+
+	  - Union find
+
+	  	- 路徑壓縮：最佳化 find 操作
+	  		- 721
+
+	  	- 按秩合併：平衡樹高
+	  		- 1101
+
+
+
 		- 0/1 knapsack
 			- 二維容量
 				- LC 474 Ones and Zeroes
