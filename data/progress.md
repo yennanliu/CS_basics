@@ -153,6 +153,10 @@
 
 			- 多源 BFS
 				- Walls and Gates（LC 286)
+				- 542
+
+			- 在抽象圖上做 BFS（數字分解）
+				- Perfect Squares（LC 279)
 
 
 
@@ -168,6 +172,8 @@
 			- 拓撲排序：把 DAG 的節點排序
 				- 207
 				- 209
+			- BFS 剝葉子
+				-  Minimum Height Trees（LC 310）
 
 
 		- 數學與數論 — LC 204
