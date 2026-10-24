@@ -385,6 +385,7 @@ python3 script/fix_readme_tags.py            # rewrite the Note column
 | 3195 | [Find the Minimum Area to Cover All Ones I](https://leetcode.com/problems/find-the-minimum-area-to-cover-all-ones-i/description/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Array/findTheMinimumAreaToCoverAllOnesI.java) | _O(m * n)_ | _O(1)_ | Medium | **array**, LC weekly | AGAIN (1) |
 | 3964 | [Minimum Lights to Illuminate a Road](https://leetcode.com/problems/minimum-lights-to-illuminate-a-road/description/) | [Python](./leetcode_python/Array/minimum-lights-to-illuminate-a-road.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Array/MinimumLightsToIlluminateARoad.java) | _O(n)_ | _O(n)_ | Medium | **array**, diff array, LC bi weekly | AGAIN (1) |
 | 4052 | [Cyclically Shift Rows and Columns](https://leetcode.com/problems/cyclically-shift-rows-and-columns/description/) | [Python](./leetcode_python/Array/cyclically-shift-rows-and-columns.py) | _O(n^2)_ | _O(n^2)_ | Easy | **array**, matrix simulation, rows first THEN cols, write into a NEW grid (in-place overwrites unread cells), composed one-pass index as V0-1, LC weekly | AGAIN(1) |
+| 4083 | [Minimum Deletions to Make Array Sharp](https://leetcode.com/problems/minimum-deletions-to-make-array-sharp/description/) | [Python](./leetcode_python/Array/minimum-deletions-to-make-array-sharp.py) | _O(n)_ | _O(1)_ | Easy | **array**, XOR == 0 means equal, count adjacent equal pairs (a run of k keeps 1), count the trailing run too, LC weekly | AGAIN(1) |
 
 
 ## Set
@@ -656,6 +657,7 @@ python3 script/fix_readme_tags.py            # rewrite the Note column
 | 2641 | [Cousins in Binary Tree II](https://leetcode.com/problems/cousins-in-binary-tree-ii) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Tree/CousinsInBinaryTree2.java) | _O(n)_ | _O(n)_ | Medium | **tree**, LC weekly, LC 993 | AGAIN (1) |
 | 2707 | [Extra Characters in a String](https://leetcode.com/problems/extra-characters-in-a-string/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Trie/ExtraCharactersInAString.java) | _O(n^2)_ | _O(n + t)_ | Medium | **tree**, dp, Trie, `neetcode250` | AGAIN (not start) |
 | 3093 | [Longest Common Suffix Queries](https://leetcode.com/problems/longest-common-suffix-queries) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Trie/LongestCommonSuffixQueries.java) | _O(t + q * l)_ | _O(t)_ | Hard | **tree**, Trie | AGAIN (not start) |
+| 4085 | [Find Root of a Colored Tree](https://leetcode.com/problems/find-root-of-a-colored-tree/description/) | [Python](./leetcode_python/Tree/find-root-of-a-colored-tree.py) | _O(n)_ | _O(n)_ | Medium | **tree**, color step R->B->W forces each edge's direction, root = the only node with no parent, in-degree <= 1 + out-degree <= 2, equal colors on an edge -> -1, good trick, LC weekly | AGAIN(1) |
 
 
 
@@ -1577,6 +1579,7 @@ python3 script/fix_readme_tags.py            # rewrite the Note column
 |  #  | Title | Solution | Time | Space | Difficulty | Note | Status |
 |-----|-------|----------|------|-------|------------|------|--------|
 | 0874 | [Walking Robot Simulation](https://leetcode.com/problems/walking-robot-simulation/) | [C++](https://github.com/kamyu104/LeetCode-Solutions/blob/master/C++/walking-robot-simulation.cpp) [Python](./leetcode_python/Array/walking-robot-simulation.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Array/WalkingRobotSimulation.java) | _O(n + k)_ | _O(k)_ | Easy | **simulation**, hashset of obstacles, direction array, LC 1041, `good basic`, `amazon` |  |
+| 4084 | [Last Visited Cell in a Directional Grid](https://leetcode.com/problems/last-visited-cell-in-a-directional-grid/description/) | [Python](./leetcode_python/Array/last-visited-cell-in-a-directional-grid.py) | _O(m * n)_ | _O(m * n)_ | Medium | **simulation**, follow the arrows from (0, 0), visited set, stop BEFORE an out-of-grid or revisit move, 'U' is row - 1, LC weekly | AGAIN(1) |
 
 
 ## Concurrency
