@@ -1,6 +1,7 @@
 package LeetCodeJava.Sort;
 
 // https://leetcode.com/problems/minimum-moves-to-get-a-peaceful-board/
+// https://leetcode.ca/2024-06-28-3189-Minimum-Moves-to-Get-a-Peaceful-Board/
 
 import java.util.Arrays;
 

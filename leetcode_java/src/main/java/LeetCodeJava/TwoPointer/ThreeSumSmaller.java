@@ -1,6 +1,7 @@
 package LeetCodeJava.TwoPointer;
 
 // https://leetcode.com/problems/3sum-smaller/
+// https://leetcode.ca/2016-08-15-259-3Sum-Smaller/
 
 import java.util.Arrays;
 

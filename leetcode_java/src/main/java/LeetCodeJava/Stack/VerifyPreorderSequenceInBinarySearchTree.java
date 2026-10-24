@@ -1,6 +1,7 @@
 package LeetCodeJava.Stack;
 
 // https://leetcode.com/problems/verify-preorder-sequence-in-binary-search-tree/
+// https://leetcode.ca/2016-08-11-255-Verify-Preorder-Sequence-in-Binary-Search-Tree/
 
 import java.util.ArrayDeque;
 import java.util.Deque;

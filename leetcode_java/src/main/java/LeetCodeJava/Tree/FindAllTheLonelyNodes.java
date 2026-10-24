@@ -1,6 +1,7 @@
 package LeetCodeJava.Tree;
 
 // https://leetcode.com/problems/find-all-the-lonely-nodes/
+// https://leetcode.ca/2019-12-08-1469-Find-All-The-Lonely-Nodes/
 
 import java.util.ArrayList;
 import java.util.List;

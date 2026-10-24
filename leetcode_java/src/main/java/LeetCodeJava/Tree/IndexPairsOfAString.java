@@ -1,6 +1,7 @@
 package LeetCodeJava.Tree;
 
 // https://leetcode.com/problems/index-pairs-of-a-string/
+// https://leetcode.ca/2018-10-30-1065-Index-Pairs-of-a-String/
 
 import java.util.ArrayList;
 import java.util.HashMap;

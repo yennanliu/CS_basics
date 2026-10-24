@@ -1,6 +1,7 @@
 package LeetCodeJava.Array;
 
 // https://leetcode.com/problems/lonely-pixel-ii/
+// https://leetcode.ca/2017-05-16-533-Lonely-Pixel-II/
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,6 +1,7 @@
 package LeetCodeJava.Sort;
 
 // https://leetcode.com/problems/sort-array-by-absolute-value/
+// https://leetcode.ca/2025-10-07-3667-Sort-Array-By-Absolute-Value/
 
 import java.util.Arrays;
 

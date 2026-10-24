@@ -1,6 +1,7 @@
 package LeetCodeJava.DFS;
 
 // https://leetcode.com/problems/maximum-subtree-of-the-same-color/
+// https://leetcode.ca/2024-01-19-3004-Maximum-Subtree-of-the-Same-Color/
 
 import java.util.ArrayList;
 import java.util.Arrays;

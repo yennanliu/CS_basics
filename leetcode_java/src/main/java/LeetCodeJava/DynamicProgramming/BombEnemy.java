@@ -1,6 +1,7 @@
 package LeetCodeJava.DynamicProgramming;
 
 // https://leetcode.com/problems/bomb-enemy/
+// https://leetcode.ca/2016-11-25-361-Bomb-Enemy/
 
 /**
  * 361. Bomb Enemy

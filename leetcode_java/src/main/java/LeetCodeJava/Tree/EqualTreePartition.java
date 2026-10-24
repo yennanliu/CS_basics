@@ -1,6 +1,7 @@
 package LeetCodeJava.Tree;
 
 // https://leetcode.com/problems/equal-tree-partition/
+// https://leetcode.ca/2017-09-23-663-Equal-Tree-Partition/
 
 import LeetCodeJava.DataStructure.TreeNode;
 

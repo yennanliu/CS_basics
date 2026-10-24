@@ -1,6 +1,7 @@
 package LeetCodeJava.Sort;
 
 // https://leetcode.com/problems/brightest-position-on-street/
+// https://leetcode.ca/2021-06-12-2021-Brightest-Position-on-Street/
 
 import java.util.Map;
 import java.util.TreeMap;

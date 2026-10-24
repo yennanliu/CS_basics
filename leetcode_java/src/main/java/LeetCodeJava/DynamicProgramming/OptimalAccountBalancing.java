@@ -1,6 +1,7 @@
 package LeetCodeJava.DynamicProgramming;
 
 // https://leetcode.com/problems/optimal-account-balancing/description/
+// https://leetcode.ca/2017-03-09-465-Optimal-Account-Balancing/
 
 import java.util.Collections;
 import java.util.HashSet;

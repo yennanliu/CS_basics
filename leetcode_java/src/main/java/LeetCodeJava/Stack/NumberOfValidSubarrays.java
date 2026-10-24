@@ -1,6 +1,7 @@
 package LeetCodeJava.Stack;
 
 // https://leetcode.com/problems/number-of-valid-subarrays/
+// https://leetcode.ca/2018-10-28-1063-Number-of-Valid-Subarrays/
 
 import java.util.ArrayDeque;
 import java.util.Deque;

@@ -1,6 +1,7 @@
 package LeetCodeJava.Design;
 
 // https://leetcode.com/problems/web-crawler/
+// https://leetcode.ca/2019-04-19-1236-Web-Crawler/
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;

@@ -1,6 +1,7 @@
 package LeetCodeJava.Heap;
 
 // https://leetcode.com/problems/count-the-number-of-k-big-indices/
+// https://leetcode.ca/2022-10-23-2519-Count-the-Number-of-K-Big-Indices/
 
 import java.util.PriorityQueue;
 

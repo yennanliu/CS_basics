@@ -1,6 +1,7 @@
 package LeetCodeJava.Math;
 
 // https://leetcode.com/problems/remove-9/description/
+// https://leetcode.ca/2017-09-20-660-Remove-9/
 /**
  * 660. Remove 9
  * Hard

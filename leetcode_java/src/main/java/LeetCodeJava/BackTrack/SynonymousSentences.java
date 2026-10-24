@@ -1,6 +1,7 @@
 package LeetCodeJava.BackTrack;
 
 // https://leetcode.com/problems/synonymous-sentences/
+// https://leetcode.ca/2019-05-11-1258-Synonymous-Sentences/
 
 import java.util.ArrayList;
 import java.util.Collections;

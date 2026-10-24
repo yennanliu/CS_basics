@@ -1,6 +1,7 @@
 package LeetCodeJava.BFS;
 
 // https://leetcode.com/problems/the-maze/
+// https://leetcode.ca/2017-04-03-490-The-Maze/
 
 import java.util.ArrayDeque;
 import java.util.Deque;

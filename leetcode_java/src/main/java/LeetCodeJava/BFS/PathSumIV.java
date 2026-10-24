@@ -1,6 +1,7 @@
 package LeetCodeJava.BFS;
 
 // https://leetcode.com/problems/path-sum-iv/
+// https://leetcode.ca/2017-09-26-666-Path-Sum-IV/
 
 import java.util.*;
 

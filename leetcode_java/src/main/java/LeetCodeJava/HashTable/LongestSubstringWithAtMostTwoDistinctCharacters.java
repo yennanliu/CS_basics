@@ -1,6 +1,7 @@
 package LeetCodeJava.HashTable;
 
 // https://leetcode.com/problems/longest-substring-with-at-most-two-distinct-characters/description/
+// https://leetcode.ca/2016-05-07-159-Longest-Substring-with-At-Most-Two-Distinct-Characters/
 
 import java.util.Collections;
 import java.util.HashMap;

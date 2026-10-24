@@ -1,6 +1,7 @@
 package LeetCodeJava.Array;
 
 // https://leetcode.com/problems/max-consecutive-ones-ii/description/
+// https://leetcode.ca/2017-03-31-487-Max-Consecutive-Ones-II/
 
 import java.util.ArrayList;
 import java.util.List;

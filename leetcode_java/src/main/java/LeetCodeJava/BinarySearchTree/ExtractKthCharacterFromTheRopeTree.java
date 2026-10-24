@@ -1,6 +1,7 @@
 package LeetCodeJava.BinarySearchTree;
 
 // https://leetcode.com/problems/extract-kth-character-from-the-rope-tree/
+// https://leetcode.ca/2023-04-11-2689-Extract-Kth-Character-From-The-Rope-Tree/
 
 /**
  * 2689. Extract Kth Character From The Rope Tree

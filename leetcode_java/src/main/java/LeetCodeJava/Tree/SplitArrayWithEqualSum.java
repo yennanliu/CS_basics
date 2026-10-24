@@ -1,6 +1,7 @@
 package LeetCodeJava.Tree;
 
 // https://leetcode.com/problems/split-array-with-equal-sum/
+// https://leetcode.ca/2017-05-31-548-Split-Array-with-Equal-Sum/
 
 import java.util.HashSet;
 import java.util.Set;

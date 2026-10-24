@@ -1,6 +1,7 @@
 package LeetCodeJava.Design;
 
 // https://leetcode.com/problems/design-excel-sum-formula/description/
+// https://leetcode.ca/2017-08-22-631-Design-Excel-Sum-Formula/
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;

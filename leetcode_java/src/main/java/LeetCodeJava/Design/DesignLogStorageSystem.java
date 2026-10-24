@@ -1,6 +1,7 @@
 package LeetCodeJava.Design;
 
 // https://leetcode.com/problems/design-log-storage-system/
+// https://leetcode.ca/2017-08-26-635-Design-Log-Storage-System/
 
 import java.util.ArrayList;
 import java.util.HashMap;

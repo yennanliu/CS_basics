@@ -1,6 +1,7 @@
 package LeetCodeJava.BackTrack;
 
 // https://leetcode.com/problems/factor-combinations/
+// https://leetcode.ca/2016-08-10-254-Factor-Combinations/
 
 import java.util.*;
 

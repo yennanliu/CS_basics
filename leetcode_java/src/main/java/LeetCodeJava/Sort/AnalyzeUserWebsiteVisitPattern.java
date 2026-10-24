@@ -1,6 +1,7 @@
 package LeetCodeJava.Sort;
 
 // https://leetcode.com/problems/analyze-user-website-visit-pattern/
+// https://leetcode.ca/2019-01-25-1152-Analyze-User-Website-Visit-Pattern/
 
 import java.util.ArrayList;
 import java.util.Arrays;

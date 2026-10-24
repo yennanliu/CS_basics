@@ -1,6 +1,7 @@
 package LeetCodeJava.DynamicProgramming;
 
 // https://leetcode.com/problems/longest-line-of-consecutive-one-in-matrix/
+// https://leetcode.ca/2017-06-14-562-Longest-Line-of-Consecutive-One-in-Matrix/
 
 /**
  * 562. Longest Line of Consecutive One in Matrix

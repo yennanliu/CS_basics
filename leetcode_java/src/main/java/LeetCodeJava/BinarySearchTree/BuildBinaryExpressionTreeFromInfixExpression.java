@@ -1,6 +1,7 @@
 package LeetCodeJava.BinarySearchTree;
 
 // https://leetcode.com/problems/build-binary-expression-tree-from-infix-expression/
+// https://leetcode.ca/2020-04-14-1597-Build-Binary-Expression-Tree-From-Infix-Expression/
 
 import java.util.ArrayDeque;
 import java.util.Deque;

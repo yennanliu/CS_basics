@@ -1,6 +1,7 @@
 package LeetCodeJava.Design;
 
 // https://leetcode.com/problems/design-file-system/
+// https://leetcode.ca/2019-02-08-1166-Design-File-System/
 
 import java.util.HashMap;
 import java.util.Map;

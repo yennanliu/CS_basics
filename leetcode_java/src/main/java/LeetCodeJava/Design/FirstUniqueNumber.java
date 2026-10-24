@@ -1,6 +1,7 @@
 package LeetCodeJava.Design;
 
 // https://leetcode.com/problems/first-unique-number/
+// https://leetcode.ca/2019-10-29-1429-First-Unique-Number/
 
 import java.util.ArrayDeque;
 import java.util.Deque;

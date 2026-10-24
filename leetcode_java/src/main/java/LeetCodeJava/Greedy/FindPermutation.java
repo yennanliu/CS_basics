@@ -1,6 +1,7 @@
 package LeetCodeJava.Greedy;
 
 // https://leetcode.com/problems/find-permutation/description/
+// https://leetcode.ca/2017-03-28-484-Find-Permutation/
 
 import java.util.ArrayDeque;
 import java.util.Deque;

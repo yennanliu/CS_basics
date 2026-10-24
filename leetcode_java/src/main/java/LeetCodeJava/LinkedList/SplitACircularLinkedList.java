@@ -1,6 +1,7 @@
 package LeetCodeJava.LinkedList;
 
 // https://leetcode.com/problems/split-a-circular-linked-list/
+// https://leetcode.ca/2023-03-27-2674-Split-a-Circular-Linked-List/
 
 import LeetCodeJava.DataStructure.ListNode;
 

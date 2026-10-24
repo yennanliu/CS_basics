@@ -1,6 +1,7 @@
 package LeetCodeJava.Math;
 
 // https://leetcode.com/problems/minimum-time-for-k-virus-variants-to-spread/
+// https://leetcode.ca/2021-04-08-1956-Minimum-Time-For-K-Virus-Variants-to-Spread/
 
 import java.util.Arrays;
 

@@ -1,6 +1,7 @@
 package LeetCodeJava.HashTable;
 
 // https://leetcode.com/problems/find-anagram-mappings/
+// https://leetcode.ca/2017-12-29-760-Find-Anagram-Mappings/
 
 import java.util.HashMap;
 import java.util.Map;

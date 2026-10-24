@@ -1,6 +1,7 @@
 package LeetCodeJava.BitManipulation;
 
 // https://leetcode.com/problems/bitwise-or-of-all-subsequence-sums/
+// https://leetcode.ca/2022-10-09-2505-Bitwise-OR-of-All-Subsequence-Sums/
 
 /**
  * 2505. Bitwise OR of All Subsequence Sums

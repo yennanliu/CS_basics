@@ -1,6 +1,7 @@
 package LeetCodeJava.Array;
 
 // https://leetcode.com/problems/valid-word-square/
+// https://leetcode.ca/2017-01-25-422-Valid-Word-Square/
 
 import java.util.List;
 

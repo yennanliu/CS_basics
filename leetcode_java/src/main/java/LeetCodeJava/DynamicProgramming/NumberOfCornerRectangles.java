@@ -1,6 +1,7 @@
 package LeetCodeJava.DynamicProgramming;
 
 // https://leetcode.com/problems/number-of-corner-rectangles/
+// https://leetcode.ca/2017-12-19-750-Number-Of-Corner-Rectangles/
 
 import java.util.HashMap;
 import java.util.Map;

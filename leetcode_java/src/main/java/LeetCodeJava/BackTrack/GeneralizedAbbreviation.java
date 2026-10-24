@@ -1,6 +1,7 @@
 package LeetCodeJava.BackTrack;
 
 // https://leetcode.com/problems/generalized-abbreviation/
+// https://leetcode.ca/2016-10-15-320-Generalized-Abbreviation/
 
 import java.util.*;
 

@@ -1,6 +1,7 @@
 package LeetCodeJava.String;
 
 // https://leetcode.com/problems/count-substrings-with-only-one-distinct-letter/
+// https://leetcode.ca/2019-02-22-1180-Count-Substrings-with-Only-One-Distinct-Letter/
 
 /**
  * 1180. Count Substrings with Only One Distinct Letter

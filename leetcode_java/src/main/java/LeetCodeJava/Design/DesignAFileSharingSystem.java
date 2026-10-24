@@ -1,6 +1,7 @@
 package LeetCodeJava.Design;
 
 // https://leetcode.com/problems/design-a-file-sharing-system/
+// https://leetcode.ca/2020-01-08-1500-Design-a-File-Sharing-System/
 
 import java.util.ArrayList;
 import java.util.HashMap;

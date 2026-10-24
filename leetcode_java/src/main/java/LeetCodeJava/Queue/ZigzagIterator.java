@@ -1,6 +1,7 @@
 package LeetCodeJava.Queue;
 
 // https://leetcode.com/problems/zigzag-iterator/
+// https://leetcode.ca/2016-09-06-281-Zigzag-Iterator/
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;

@@ -1,6 +1,7 @@
 package LeetCodeJava.Array;
 
 // https://leetcode.com/problems/employee-free-time/
+// https://leetcode.ca/2017-12-28-759-Employee-Free-Time/
 
 import java.util.ArrayList;
 import java.util.Collections;

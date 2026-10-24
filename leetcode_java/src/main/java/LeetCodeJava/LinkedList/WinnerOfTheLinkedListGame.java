@@ -1,6 +1,7 @@
 package LeetCodeJava.LinkedList;
 
 // https://leetcode.com/problems/winner-of-the-linked-list-game/
+// https://leetcode.ca/2024-03-13-3062-Winner-of-the-Linked-List-Game/
 
 import LeetCodeJava.DataStructure.ListNode;
 

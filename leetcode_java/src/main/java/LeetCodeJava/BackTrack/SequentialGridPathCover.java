@@ -1,6 +1,7 @@
 package LeetCodeJava.BackTrack;
 
 // https://leetcode.com/problems/sequential-grid-path-cover/
+// https://leetcode.ca/2025-06-27-3565-Sequential-Grid-Path-Cover/
 
 import java.util.ArrayList;
 import java.util.List;

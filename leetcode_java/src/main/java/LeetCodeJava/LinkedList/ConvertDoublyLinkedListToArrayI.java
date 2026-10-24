@@ -1,6 +1,7 @@
 package LeetCodeJava.LinkedList;
 
 // https://leetcode.com/problems/convert-doubly-linked-list-to-array-i/
+// https://leetcode.ca/2024-09-10-3263-Convert-Doubly-Linked-List-to-Array-I/
 
 /**
  * 3263. Convert Doubly Linked List to Array I

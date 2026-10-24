@@ -1,6 +1,7 @@
 package LeetCodeJava.Array;
 
 // https://leetcode.com/problems/shortest-word-distance/
+// https://leetcode.ca/2016-07-30-243-Shortest-Word-Distance/
 
 import java.util.ArrayList;
 import java.util.List;

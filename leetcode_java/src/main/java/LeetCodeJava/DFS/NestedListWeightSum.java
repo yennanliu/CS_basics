@@ -1,6 +1,7 @@
 package LeetCodeJava.DFS;
 
 // https://leetcode.com/problems/nested-list-weight-sum/
+// https://leetcode.ca/2016-11-03-339-Nested-List-Weight-Sum/
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;

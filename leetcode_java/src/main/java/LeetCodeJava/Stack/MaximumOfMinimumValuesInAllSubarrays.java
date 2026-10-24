@@ -1,6 +1,7 @@
 package LeetCodeJava.Stack;
 
 // https://leetcode.com/problems/maximum-of-minimum-values-in-all-subarrays/
+// https://leetcode.ca/2021-04-02-1950-Maximum-of-Minimum-Values-in-All-Subarrays/
 
 /**
  * 1950. Maximum of Minimum Values in All Subarrays

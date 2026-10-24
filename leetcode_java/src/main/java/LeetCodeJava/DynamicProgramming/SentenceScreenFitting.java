@@ -1,6 +1,7 @@
 package LeetCodeJava.DynamicProgramming;
 
 // https://leetcode.com/problems/sentence-screen-fitting/
+// https://leetcode.ca/2017-01-21-418-Sentence-Screen-Fitting/
 
 /**
  * 418. Sentence Screen Fitting

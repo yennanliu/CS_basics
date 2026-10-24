@@ -1,6 +1,7 @@
 package LeetCodeJava.Design;
 
 // https://leetcode.com/problems/design-a-todo-list/
+// https://leetcode.ca/2023-01-02-2590-Design-a-Todo-List/
 
 import java.util.ArrayList;
 import java.util.Collections;

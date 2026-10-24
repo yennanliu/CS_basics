@@ -1,6 +1,7 @@
 package LeetCodeJava.Sort;
 
 // https://leetcode.com/problems/average-height-of-buildings-in-each-segment/
+// https://leetcode.ca/2021-06-06-2015-Average-Height-of-Buildings-in-Each-Segment/
 
 import java.util.ArrayList;
 import java.util.List;

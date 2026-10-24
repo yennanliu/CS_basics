@@ -1,6 +1,7 @@
 package LeetCodeJava.Design;
 
 // https://leetcode.com/problems/design-tic-tac-toe/
+// https://leetcode.ca/2016-11-12-348-Design-Tic-Tac-Toe/
 
 /**
  * 348. Design Tic-Tac-Toe

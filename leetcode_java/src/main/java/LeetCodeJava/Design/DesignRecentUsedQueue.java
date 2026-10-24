@@ -1,6 +1,7 @@
 package LeetCodeJava.Design;
 
 // https://leetcode.com/problems/design-most-recently-used-queue/
+// https://leetcode.ca/2020-09-20-1756-Design-Most-Recently-Used-Queue/
 
 import java.util.ArrayList;
 import java.util.List;

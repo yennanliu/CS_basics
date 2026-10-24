@@ -1,6 +1,7 @@
 package LeetCodeJava.Sort;
 
 // https://leetcode.com/problems/high-five/
+// https://leetcode.ca/2018-11-20-1086-High-Five/
 
 import java.util.ArrayList;
 import java.util.List;

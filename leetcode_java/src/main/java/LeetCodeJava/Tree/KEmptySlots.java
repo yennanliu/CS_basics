@@ -1,6 +1,7 @@
 package LeetCodeJava.Tree;
 
 // https://leetcode.com/problems/k-empty-slots/
+// https://leetcode.ca/2017-10-13-683-K-Empty-Slots/
 
 /**
  * 683. K Empty Slots

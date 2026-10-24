@@ -1,6 +1,7 @@
 package LeetCodeJava.Stack;
 
 // https://leetcode.com/problems/ternary-expression-parser/
+// https://leetcode.ca/2017-02-11-439-Ternary-Expression-Parser/
 
 import java.util.ArrayDeque;
 import java.util.Deque;
