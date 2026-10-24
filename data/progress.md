@@ -160,8 +160,18 @@
 			- 在抽象圖上做 BFS（數字分解）
 				- Perfect Squares（LC 279)
 
+			- 樹 → 圖 + BFS 
+				- Closest Leaf in a Binary Tree（LC 742）
+				- 863
+				- 1192
 
+			- 用層序 BFS 接好 next 指標
+				- 116
+				- 117
+				- 102
 
+			-  層序 BFS 停在 depth - 1 再重接指標
+				- Add One Row to Tree（LC 623
 
 		- Trie
 			- 前綴比對：找出有共同前綴的字
