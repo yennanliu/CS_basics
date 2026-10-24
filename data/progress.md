@@ -69,10 +69,6 @@
 				- 4. 和節點間距離的關係
 				- 節點間距離 = 搭配 LCA，用 getDepth() 算兩次
 
-- BFS —— LeetCode 解題實作
-	- https://yennj12.js.org/CS_basics/cheatsheets/bfs_examples.zh.html
-		- `2-15) Closest Leaf in a Binary Tree（LC 742）—— 樹 → 圖 + BFS`
-
 
 
 - Bit Manipulation — 實戰題解
@@ -135,6 +131,7 @@
 	- Matrix — 實戰題解
 	- Stack — 實戰題解
 	- LeetCode Patterns Guide
+	- BFS —— LeetCode 解題實作
 
 
 - Others
@@ -164,6 +161,10 @@
 				- Closest Leaf in a Binary Tree（LC 742）
 				- 863
 				- 1192
+				- 2385
+				- 742
+				- 1740
+				- 1530
 
 			- 用層序 BFS 接好 next 指標
 				- 116
@@ -171,7 +172,10 @@
 				- 102
 
 			-  層序 BFS 停在 depth - 1 再重接指標
-				- Add One Row to Tree（LC 623
+				- Add One Row to Tree - LC 623
+
+
+
 
 		- Trie
 			- 前綴比對：找出有共同前綴的字
