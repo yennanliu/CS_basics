@@ -49,7 +49,7 @@ Follow up: Can you find the LCA traversing the tree, without checking nodes exis
 
 
 # V0
-# IDEA : POST ORDER DFS + COUNT THE HITS (LC 236, one pass)
+# IDEA : POST ORDER DFS + COUNT THE HITS + EXTRA FLAG (LC 236, one pass)
 #
 #   LC 236's recursion is NOT enough here: it happily returns p when only p is in
 #   the tree, but this problem wants null unless BOTH exist. So run the same
@@ -82,6 +82,13 @@ class Solution(object):
         if not root or not p or not q:
             return None
 
+        """
+        NOTE !!!
+
+        use flag `self.found` to record
+        if BOTH q, q are found in the tree.
+
+        """
         self.found = 0
 
         def dfs(node):
