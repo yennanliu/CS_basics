@@ -65,8 +65,98 @@ root is a perfect binary tree.
 #         self.left = left
 #         self.right = right
 
+
 # V0
-# IDEA : DFS ON MIRROR PAIRS (left, right, level) -> SWAP VALUES ON ODD LEVELS
+class Solution(object):
+    def reverseOddLevels(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: Optional[TreeNode]
+        """
+        pass
+
+
+
+# V0-1
+# IDEA: DFS + MIRROR (GPT)
+class Solution(object):
+    def reverseOddLevels(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: Optional[TreeNode]
+        """
+        if not root:
+            return None
+
+        self.helper(root.left, root.right, 1)
+
+        return root
+
+    def helper(self, left, right, level):
+        if not left or not right:
+            return
+
+        # Reverse values at odd levels
+        if level % 2 == 1:
+            left.val, right.val = right.val, left.val
+
+        # Traverse symmetric child pairs
+        self.helper(left.left, right.right, level + 1)
+        self.helper(left.right, right.left, level + 1)
+
+
+
+# V0-2
+# IDEA: BFS + MIRROR (GEMINI)
+from collections import deque
+
+class Solution(object):
+
+  def reverseOddLevels(self, root):
+    """:type root: Optional[TreeNode]
+
+    :rtype: Optional[TreeNode]
+    """
+    if not root:
+      return None
+
+    queue = deque([root])
+    level = 0
+
+    while queue:
+      size = len(queue)
+      current_level_nodes = []
+
+      # 收集當前層的所有節點，並把下一層的子節點推入佇列
+      for _ in range(size):
+        node = queue.popleft()
+        current_level_nodes.append(node)
+
+        if node.left:
+          queue.append(node.left)
+        if node.right:
+          queue.append(node.right)
+
+      # 如果當前層是奇數層，反轉這一層所有節點的數值
+      if level % 2 == 1:
+        left, right = 0, len(current_level_nodes) - 1
+        while left < right:
+          # 交換左右對稱節點的值
+          current_level_nodes[left].val, current_level_nodes[right].val = (
+              current_level_nodes[right].val,
+              current_level_nodes[left].val,
+          )
+          left += 1
+          right -= 1
+
+      level += 1
+
+    return root
+
+
+
+# V0-3
+# IDEA : DFS ON MIRROR PAIRS (left, right, level) -> SWAP VALUES ON ODD LEVELS (CLAUDE)
 #
 #   reversing a level of a PERFECT tree = swapping each node with its MIRROR
 #   node (the one at the same position counted from the other end).
@@ -113,7 +203,7 @@ class Solution(object):
 
 
 # V1
-# IDEA : BFS LEVEL ORDER -> COLLECT EACH ODD LEVEL, REVERSE ITS VALUES WITH TWO POINTERS
+# IDEA : BFS LEVEL ORDER -> COLLECT EACH ODD LEVEL, REVERSE ITS VALUES WITH TWO POINTERS (CLAUDE)
 #
 #   the literal reading of the problem: walk the tree level by level, keep the
 #   nodes of the current level in a list, and on an odd level swap the values
