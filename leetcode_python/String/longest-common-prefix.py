@@ -34,7 +34,7 @@ class Solution(object):
 
 
 # V0-1
-# IDEA: SORT + prefix + shortening prefix (GPT)
+# IDEA: SORT + prefix + Prefix Shrinking  (GPT)
 class Solution(object):
     def longestCommonPrefix(self, strs):
         """
@@ -95,7 +95,7 @@ class Solution(object):
 
 
 # V0-2
-# IDEA: SORT + prefix + shortening prefix (gemini)
+# IDEA: SORT + prefix + Prefix Shrinking  (gemini)
 class Solution(object):
 
   def longestCommonPrefix(self, strs):
@@ -175,6 +175,66 @@ class Solution:
             r += strs[0][i]
         return r
     
+
+# V0-5
+# IDEA: SORT + prefix  (GPT)
+class Solution(object):
+    def longestCommonPrefix(self, strs):
+        """
+        :type strs: List[str]
+        :rtype: str
+        """
+        # Edge case
+        if not strs:
+            return ""
+
+        # Sort by length
+        strs.sort(key=lambda x: len(x))
+
+        # The shortest string is the maximum possible prefix
+        prefix = strs[0]
+
+        for i in range(1, len(strs)):
+            val = strs[i]
+
+            # Shrink prefix until it matches the current string
+            while prefix and not val.startswith(prefix):
+                prefix = prefix[:-1]
+
+            # No common prefix remains
+            if not prefix:
+                return ""
+
+        return prefix
+
+
+# V0-6
+# IDEA: 前綴縮減法（Prefix Shrinking  $\mathcal{O}(S)$ 演算法） (gemini)
+class Solution(object):
+
+  def longestCommonPrefix(self, strs):
+    """:type strs: List[str]
+
+    :rtype: str
+    """
+    if not strs:
+      return ""
+
+    # 將第一個字串作為初始的公共前綴候選
+    prefix = strs[0]
+
+    # 依次與其餘字串進行比對
+    for s in strs[1:]:
+      # 當前字串 s 不是以 prefix 開頭時，逐步縮減 prefix 的長度
+      while not s.startswith(prefix):
+        prefix = prefix[:-1]
+        if not prefix:
+          return ""
+
+    return prefix
+
+
+
 # V1
 # https://blog.csdn.net/coder_orz/article/details/51706442
 # time = O(n * k), n = number of strings, k = length of common prefix
