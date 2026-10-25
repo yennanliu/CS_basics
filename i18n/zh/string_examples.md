@@ -306,13 +306,13 @@
 
 <!--CODE-->
 
-<!-- 19e23567232a -->
+<!-- 6c61e741a785 -->
 ### 2-22) Additional High-Frequency Problems (Reference)
 沒有新模板 — 每題都是一句話就講完的想法，但出現頻率極高。
 
 | 題目 | LC # | 一句話想法 | 難度 |
 |---------|------|---------------|------------|
-| Longest Common Prefix | 14 | 垂直掃描：比較所有單字的第 `i` 欄，第一次不合就停 | Easy |
+| Longest Common Prefix | 14 | 垂直掃描：比較所有單字的第 `i` 欄，第一次不合就停——或用**前綴縮減法（Prefix Shrinking）**：從 `strs[0]` 開始，不斷 `prefix = prefix[:-1]`，直到每個字都 `startswith` 它（[python_trick.md](./python_trick.md#dropping-the-last-character--s-1-shrinking-a-prefix)） | Easy |
 | Isomorphic Strings | 205 | 兩張映射表（`s→t` **和** `t→s`）— 只用一張會誤判 `"ab" → "aa"` 合法 | Easy |
 | Find and Replace Pattern | 890 | 就是 LC 205 的雙向映射，對清單裡每個單字各跑一次 | Medium |
 | Ransom Note | 383 | 統計雜誌的字元次數，照勒索信逐字扣，扣成負的就失敗 | Easy |

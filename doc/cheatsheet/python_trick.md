@@ -312,9 +312,9 @@ string **from the right**, one character at a time — which is exactly how a ca
 ''
 ```
 
-**Classic LC use — LC 14 Longest Common Prefix**: start with the first word as the
-prefix, and for every other word chop the prefix from the right until the word starts
-with it.
+**Classic LC use — LC 14 Longest Common Prefix**, solved by **Prefix Shrinking**: start
+with the first word as the prefix, and for every other word chop the prefix from the right
+until the word starts with it.
 
 ```python
 # LC 14 - Longest Common Prefix

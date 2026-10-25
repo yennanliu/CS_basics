@@ -1391,7 +1391,7 @@ No new template — each is a one-line idea, but they show up constantly.
 
 | Problem | LC # | One-line idea | Difficulty |
 |---------|------|---------------|------------|
-| Longest Common Prefix | 14 | Vertical scan: compare column `i` across all words, stop at first mismatch | Easy |
+| Longest Common Prefix | 14 | Vertical scan: compare column `i` across all words, stop at first mismatch — or **Prefix Shrinking**: start from `strs[0]` and chop `prefix = prefix[:-1]` until each word `startswith` it ([python_trick.md](./python_trick.md#dropping-the-last-character--s-1-shrinking-a-prefix)) | Easy |
 | Isomorphic Strings | 205 | Two maps (`s→t` **and** `t→s`) — a single map wrongly accepts `"ab" → "aa"` | Easy |
 | Find and Replace Pattern | 890 | The same two-map bijection as LC 205, run against every word in the list | Medium |
 | Ransom Note | 383 | Char-count of magazine, decrement per note char, fail on negative | Easy |
