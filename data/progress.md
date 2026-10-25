@@ -72,7 +72,7 @@
 
 - DFS — 實戰題解
 	- https://yennj12.js.org/CS_basics/cheatsheets/dfs_examples.zh.html
-		- `2-1) Validate Binary Search Tree — LC 98`
+		- `2-24) Pacific Atlantic Water Flow — LC 417`
 
 
 
