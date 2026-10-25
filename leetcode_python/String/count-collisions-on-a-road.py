@@ -54,6 +54,65 @@ class Solution(object):
         """
         pass
 
+
+# V0-1
+# IDEA: 2 continous var (l, r) and problem undetstanding (gpt)
+class Solution(object):
+    def countCollisions(self, directions):
+        """
+        :type directions: str
+        :rtype: int
+        """
+        n = len(directions)
+
+        # Remove cars that escape without collision
+        left = 0
+        right = n - 1
+
+        while left < n and directions[left] == "L":
+            left += 1
+
+        while right >= left and directions[right] == "R":
+            right -= 1
+
+        # All moving cars in the remaining range will collide
+        cnt = 0
+        for i in range(left, right + 1):
+            if directions[i] != "S":
+                cnt += 1
+
+        return cnt
+
+
+# V0-2
+# IDEA: PROBLEM UNDETSTANDING (gemini)
+"""
+
+這題有一個非常巧妙的物理規律，完全不需要複雜的堆疊：
+
+    1.  左側開頭連續的 'L'：它們會一直向左開出道路，永遠不會發生碰撞，貢獻碰撞數為 0。
+
+    2. 右側結尾連續的 'R'：它們會一直向右開出道路，永遠不會發生碰撞，貢獻碰撞數為 0。
+
+    3. 去除這兩部分之後的中間區段：在剩下的車輛中，任何不是 'S' 的車（即 'R' 或 'L'）
+       最終都一定會因為碰撞而停下來。因此，中間區段裡所有非 'S' 的車輛數量，就是總碰撞次數！
+
+"""
+class Solution(object):
+
+  def countCollisions(self, directions):
+    """:type directions: str
+
+    :rtype: int
+    """
+    # 1. 移除左側所有向左開走的 'L'
+    # 2. 移除右側所有向右開走的 'R'
+    trimmed = directions.lstrip("L").rstrip("R")
+
+    # 3. 剩下的字串中，任何不是 'S' 的車（即 'R' 或 'L'）最終都一定會碰撞
+    return sum(1 for c in trimmed if c != "S")
+
+
 # V0-3
 # IDEA : ONLY THE CARS THAT ESCAPE NEVER COLLIDE — STRIP THEM AND COUNT (claude)
 #
