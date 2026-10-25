@@ -1345,6 +1345,18 @@ returns to `helper(A)`'s loop, which then explores `C` normally. Nothing is cut 
 > One child returning `False` just advances the `for` loop; the whole DFS reports `False`
 > only when *all* branches are exhausted without reaching the target.
 
+**Mental model — recursion is a stack of function calls**
+
+Each recursive call is one more level of function call:
+
+- `return False` ends the current level and goes back to the level above.
+- `return True` on its own also ends only the current level — but every level is written as `if helper(...): return True`, so a success is passed up level by level until it reaches the outermost call.
+
+**Analogy — offices stacked floor by floor**
+
+- **`return False` is "hit a wall, go back and try another way".** Picture the call stack as offices, one floor below another. Reaching a dead end, or a node already visited, returning `False` only means "this office has no answer — back to the manager one floor up". The manager (the `for nei in graph[node]:` loop one level up) is not affected at all by that `False`, and immediately goes to knock on the next neighbor's door.
+- **`return True` is "good news relayed floor by floor".** Why does `True` make it all the way out to the outermost call? Because every caller is written as `if helper(...): return True`. It is a chain of messengers: the moment someone below shouts "found it!", their manager immediately reports "found it!" upward too, and the whole recursion chain is reeled in at once.
+
 ### 2-20) Serialize and Deserialize Binary Tree — LC 297
 ```python
 # LC 297. Serialize and Deserialize Binary Tree
