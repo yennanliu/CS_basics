@@ -23,7 +23,22 @@ Note:
 """
 
 # V0
-# IDEA : ONE PASS, KEEP THE BEST "LEFT HALF" SEEN SO FAR
+class Solution(object):
+    def maxScoreSightseeingPair(self, values):
+        """
+        :type values: List[int]
+        :rtype: int
+        """
+        pass
+
+
+# V0-1
+
+
+# V0-2
+
+# V0-3
+# IDEA : ONE PASS, KEEP THE BEST "LEFT HALF" SEEN SO FAR (CLAUDE)
 #
 #   score(i, j) = (values[i] + i) + (values[j] - j)     for i < j
 #
@@ -55,7 +70,7 @@ class Solution(object):
 
 
 # V1
-# IDEA : DP — PRECOMPUTE THE BEST "RIGHT HALF" FOR EVERY i
+# IDEA : DP — PRECOMPUTE THE BEST "RIGHT HALF" FOR EVERY i (CLAUDE)
 #
 #   best_right[i] = max of (values[j] - j) over j > i
 #   answer        = max over i of  values[i] + i + best_right[i]
