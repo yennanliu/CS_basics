@@ -72,7 +72,7 @@
 
 - DFS — 實戰題解
 	- https://yennj12.js.org/CS_basics/cheatsheets/dfs_examples.zh.html
-		- `0-5) 取得子樹的總和`
+		- `2-1) Validate Binary Search Tree — LC 98`
 
 
 
