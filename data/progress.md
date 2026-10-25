@@ -76,7 +76,11 @@
 
 
 
-	
+- Dijkstra — 實戰題解
+	- https://yennj12.js.org/CS_basics/cheatsheets/Dijkstra_examples.zh.html
+		 - `5) Path With Minimum Effort — LC 1631 — 網格上的極小化極大 `
+
+
 
 - Bit Manipulation — 實戰題解
 	- https://yennj12.js.org/CS_basics/cheatsheets/bit_manipulation_examples.zh.html
@@ -622,6 +626,9 @@
 		- Dijkstra
 			- Dijkstra 演算法：用最小堆求最短路徑
 				- 742
+
+			- 743
+			- 1514 (!!! not min PQ, use max PQ instead)
 
 
 		- Tree LCA
