@@ -103,7 +103,7 @@ class Solution(object):
 
 
 
-# V0-3
+# V0-2
 # IDEA: DFS (TLE: should use < O(N) time complexity)
 class Solution(object):
 
@@ -134,6 +134,91 @@ class Solution(object):
         self.helper(root.left)
         self.helper(root.right)
 
+
+# V0-3
+# IDEA: DFS (TLE) (GPT)
+class Solution(object):
+    def countNodes(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: int
+        """
+        if not root:
+            return 0
+
+        left = self.countNodes(root.left)
+        right = self.countNodes(root.right)
+
+        return 1 + left + right
+
+
+# V0-4
+# IDEA: binary tree property + tree height (GPT)
+class Solution(object):
+    def countNodes(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: int
+        """
+        if not root:
+            return 0
+
+        left_height = 0
+        right_height = 0
+
+        left = root
+        right = root
+
+        while left:
+            left_height += 1
+            left = left.left
+
+        while right:
+            right_height += 1
+            right = right.right
+
+        # If heights are equal, this subtree is perfect.
+        if left_height == right_height:
+            return (1 << left_height) - 1
+
+        return (
+            1
+            + self.countNodes(root.left)
+            + self.countNodes(root.right)
+        )
+
+
+# V0-5
+# IDEA: binary tree property + tree height (GEMINI)
+class Solution(object):
+
+  def countNodes(self, root):
+    """:type root: Optional[TreeNode]
+
+    :rtype: int
+    """
+    if not root:
+      return 0
+
+    left_height = self.get_left_height(root.left)
+    right_height = self.get_left_height(root.right)
+
+    # 如果左右子樹的最左高度相同，代表左子樹是高度為 left_height 的完美二元樹
+    if left_height == right_height:
+      # 節點數 = 根節點 (1) + 左子樹節點 (2^left_height - 1) + 右子樹遞迴計算
+      return (1 << left_height) + self.countNodes(root.right)
+    else:
+      # 如果高度不同，代表右子樹是高度為 right_height 的完美二元樹
+      # 節點數 = 根節點 (1) + 右子樹節點 (2^right_height - 1) + 左子樹遞迴計算
+      return (1 << right_height) + self.countNodes(root.left)
+
+  def get_left_height(self, node):
+    """計算從當發節點一直往左走的深度（高度）"""
+    h = 0
+    while node:
+      h += 1
+      node = node.left
+    return h
 
 
 # V1 
