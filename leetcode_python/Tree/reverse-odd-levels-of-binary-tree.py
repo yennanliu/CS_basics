@@ -92,10 +92,32 @@ class Solution(object):
 
         return root
 
+
+    # NOTE !!!
+    # the helper func return nothing !!! (return type is `null`)
     def helper(self, left, right, level):
         if not left or not right:
             return
 
+        """
+        NOTE !!!
+
+
+        ONLY reverse child node `value` when odd layer.
+
+        -> (這題只需要交換兩個節點的 val)
+
+        -> DON'T reverse all of the child nodes
+
+        -> e.g. below is WRONG !!!
+
+            ```
+            # WRONG !!!
+
+            root.left = self.helper(root.right, layer + 1)
+            root.right = self.helper(root.left, layer + 1)
+            ```
+        """
         # Reverse values at odd levels
         if level % 2 == 1:
             left.val, right.val = right.val, left.val
@@ -137,9 +159,14 @@ class Solution(object):
         if node.right:
           queue.append(node.right)
 
-      # 如果當前層是奇數層，反轉這一層所有節點的數值
+      # 如果當前層是`奇數層`，`反轉`這一層所有節點的數值
       if level % 2 == 1:
+
         left, right = 0, len(current_level_nodes) - 1
+
+        # NOTE !!!
+        # the trick that `reverse left, right node value`
+        # (2 pointers)
         while left < right:
           # 交換左右對稱節點的值
           current_level_nodes[left].val, current_level_nodes[right].val = (
