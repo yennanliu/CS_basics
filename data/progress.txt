@@ -1,3 +1,7 @@
+20261026: top 100 like: 42 | DP: wildcard: 97(todo) | others:  357(dp, todo), 2D LIS (354), 710(todo), 1696(todo, dp + mono deque), matrix_various_op, 647(DP again, to note: when need to reverse loop),82(todo), get_prime(math),4040(todo),670(todo: hashmap, 3 pointers),329(todo),221(todo),907(todo),901(todo),suffix_from_right,1047(todo),1209(todo),1249(todo),suffix_from_right(todo),3026(todo),525(todo),`2. 取得深度（前序 DFS）`(todo),1229(todo),358(todo),447(again!),721(todo),286(todo),742(todo),543(todo),112(todo, easy),737(todo)
+
+
+
 20261025: top 100 like: 42 | DP: wildcard: 97(todo) | others:  357(dp, todo), 2D LIS (354), 710(todo), 1696(todo, dp + mono deque), matrix_various_op, 647(DP again, to note: when need to reverse loop),82(todo), get_prime(math),4040(todo),670(todo: hashmap, 3 pointers),329(todo),221(todo),907(todo),901(todo),suffix_from_right,1047(todo),1209(todo),1249(todo),suffix_from_right(todo),2415(again!!),222(again!!)、963(again)、2211(again)、1014(again)、3026(todo),525(todo),`2. 取得深度（前序 DFS）`(todo),4084(again),4085(again!!),1229(todo),358(todo),447(again!),721(todo),14(ok***),286(todo),742(todo),543(todo),112(todo, easy),737(todo)
 
 
