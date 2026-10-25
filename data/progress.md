@@ -160,6 +160,26 @@
 			- Serialize and Deserialize BST
 				- 449
 
+			- Delete Node in a BST
+				— LC 450 (!!!)
+
+			- Delete Node in tree
+				- 1325
+
+			- Find Duplicate Subtrees
+				— LC 652
+				- 694
+				- 572
+				- 508
+
+			- Trim a BST
+				 — LC 669
+
+			- Maximum Width of Binary Tree 
+				— LC 662
+
+
+
 
 
 		- BFS
