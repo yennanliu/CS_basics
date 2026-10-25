@@ -2,71 +2,125 @@
 
 447. Number of Boomerangs
 Medium
-
-You are given n points in the plane that are all distinct, where points[i] = [x_i, y_i]. A boomerang is a tuple of points (i, j, k) such that the distance between i and j equals the distance between i and k (the order of the tuple matters).
+Topics
+premium lock icon
+Companies
+You are given n points in the plane that are all distinct, where points[i] = [xi, yi]. A boomerang is a tuple of points (i, j, k) such that the distance between i and j equals the distance between i and k (the order of the tuple matters).
 
 Return the number of boomerangs.
+
+ 
 
 Example 1:
 
 Input: points = [[0,0],[1,0],[2,0]]
 Output: 2
 Explanation: The two boomerangs are [[1,0],[0,0],[2,0]] and [[1,0],[2,0],[0,0]].
-
 Example 2:
 
 Input: points = [[1,1],[2,2],[3,3]]
 Output: 2
-
 Example 3:
 
 Input: points = [[1,1]]
 Output: 0
+ 
 
 Constraints:
 
 n == points.length
 1 <= n <= 500
 points[i].length == 2
--10^4 <= x_i, y_i <= 10^4
+-104 <= xi, yi <= 104
 All the points are unique.
+
 
 """
 
-# time = O(n^2)
-# space = O(n)
-# Given n points in the plane that are all pairwise distinct,
-# a "boomerang" is a tuple of points (i, j, k) such that the distance
-# between i and j equals the distance between i and k (the order of the tuple matters).
-#
-# Find the number of boomerangs. You may assume that n will be at most 500
-# and coordinates of points are all in the range [-10000, 10000] (inclusive).
-#
-# Example:
-# Input:
-# [[0,0],[1,0],[2,0]]
-#
-# Output:
-# 2
-#
-# Explanation:
-# The two boomerangs are [[1,0],[0,0],[2,0]] and [[1,0],[2,0],[0,0]]
-
-# Given n points in the plane that are all pairwise distinct, a "boomerang" is a tuple of points (i, j, k) 
-# such that the distance between i and j equals the distance between i and k 
-# (the order of the tuple matters).
-# e.g. : 
-# Input:
-# [[0,0],[1,0],[2,0]]
-
-# Output:
-# 2
-
-# Explanation:
-# The two boomerangs are [[1,0],[0,0],[2,0]] and [[1,0],[2,0],[0,0]]
+# V0
+class Solution(object):
+    def numberOfBoomerangs(self, points):
+        """
+        :type points: List[List[int]]
+        :rtype: int
+        """
+        pass
 
 
-# V0 
+# V0-1
+# IDEA: HASHAMP + BRUTE FORCE (GPT)
+class Solution(object):
+    def numberOfBoomerangs(self, points):
+        """
+        :type points: List[List[int]]
+        :rtype: int
+        """
+        res = 0
+        n = len(points)
+
+        # Treat each point as the center
+        for i in range(n):
+            dist_map = {}
+
+            x1, y1 = points[i]
+
+            # Count distances from center i to every other point
+            for j in range(n):
+                if i == j:
+                    continue
+
+                x2, y2 = points[j]
+
+                # Squared Euclidean distance
+                dist = (x1 - x2) ** 2 + (y1 - y2) ** 2
+
+                dist_map[dist] = dist_map.get(dist, 0) + 1
+
+            # Count ordered pairs of points with equal distances
+            for count in dist_map.values():
+                res += count * (count - 1)
+
+        return res
+
+
+
+# V0-2
+# IDEA: HASHAMP + BRUTE FORCE (GEMINI)
+from collections import defaultdict
+
+
+class Solution(object):
+
+  def numberOfBoomerangs(self, points):
+    """:type points: List[List[int]]
+
+    :rtype: int
+    """
+    total_boomerangs = 0
+
+    # 依次固定每一個點作為中心點 i
+    for i in range(len(points)):
+      dist_map = defaultdict(int)
+      x1, y1 = points[i]
+
+      for j in range(len(points)):
+        if i == j:
+          continue
+        x2, y2 = points[j]
+
+        # 計算平方距離，避免浮點數精確度問題
+        d_sq = (x1 - x2) ** 2 + (y1 - y2) ** 2
+        dist_map[d_sq] += 1
+
+      # 對於每一個距離計數 count，可以形成的有序對數量為 count * (count - 1)
+      for count in dist_map.values():
+        if count >= 2:
+          total_boomerangs += count * (count - 1)
+
+    return total_boomerangs
+
+
+# V0-3
 # time = O(n^2)
 # space = O(n)
 import collections
