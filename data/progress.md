@@ -72,6 +72,7 @@
 
 - DFS — 實戰題解
 	- https://yennj12.js.org/CS_basics/cheatsheets/dfs_examples.zh.html
+		- `0-5) 取得子樹的總和`
 
 
 
@@ -146,6 +147,19 @@
 
 		- LC discussions - G
 			- https://github.com/yennanliu/CS_basics/pull/200
+
+
+		- DFS
+			- 取得樹中每個節點的 累加總和
+				- 663
+				- 508
+
+			- Serialize and Deserialize Binary Tree
+				- 297
+
+			- Serialize and Deserialize BST
+				- 449
+
 
 
 		- BFS

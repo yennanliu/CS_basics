@@ -29,6 +29,61 @@ The input tree is guaranteed to be a binary search tree.
 """
 
 # V0
+# IDEA: LC 297
+# IDEA : reuse LC 297 (Serialize and Deserialize Binary Tree) as-is : DFS preorder + '#' null marker
+#   -> a BST is a binary tree, so 297's codec is already correct here
+#   -> serialize : preorder, write '#' for every empty child
+#   -> deserialize : read tokens in the same preorder; '#' means "this subtree is empty"
+#   -> trade-off vs V0-2 : the '#' markers cost ~n+1 extra tokens; V0-2 drops them
+#      by using the BST bounds (lo < val < hi) to know where a subtree ends
+# time = O(n)
+# space = O(n)
+from collections import deque
+
+class Codec:
+
+    def serialize(self, root):
+        """Encodes a tree to a single string."""
+        vals = []
+        self._preorder(root, vals)
+        # use ',' as separator (not '-'), so a value like -1 never breaks split()
+        return ",".join(vals)
+
+    def _preorder(self, node, vals):
+        # an empty child is written as '#', so decoding knows where each subtree ends
+        if not node:
+            vals.append("#")
+            return
+        vals.append(str(node.val))
+        self._preorder(node.left, vals)
+        self._preorder(node.right, vals)
+
+    def deserialize(self, data):
+        """Decodes your encoded data to tree."""
+        # deque, so taking the next token from the left is O(1)
+        nodes = deque(data.split(","))
+        return self._build(nodes)
+
+    def _build(self, nodes):
+        if not nodes:
+            return None
+
+        val = nodes.popleft()
+
+        # '#' marks an empty subtree
+        if val == "#":
+            return None
+
+        root = TreeNode(int(val))
+
+        # tokens were written root -> left -> right, so rebuild in that same order
+        root.left = self._build(nodes)
+        root.right = self._build(nodes)
+
+        return root
+
+
+# V0-0-1
 # IDEA : BFS + queue op
 # time = O(n^2)  # q.pop(0)/nodes.pop(0) cost O(n) each, done n times
 # space = O(n)
