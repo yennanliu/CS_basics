@@ -33,9 +33,108 @@ class Solution(object):
 
 
 # V0-1
+# IDEA: MATH (gpt)
+class Solution(object):
+    def maxScoreSightseeingPair(self, values):
+        """
+        :type values: List[int]
+        :rtype: int
+        """
+        # Best values[i] + i among indices before current j
+        max_left = values[0] + 0
+        max_score = float("-inf")
+
+        for j in range(1, len(values)):
+            # Pair current j with the best previous i
+            score = max_left + values[j] - j
+            max_score = max(max_score, score)
+
+            # Update best left candidate for future indices
+            max_left = max(max_left, values[j] + j)
+
+        return max_score
 
 
 # V0-2
+# IDEA: MATH + 數學公式拆解與動態維護 (GEMINI)
+"""
+
+CORE IDEA:
+
+原公式：values[i] + values[j] + i - j
+
+-> 重新分組：(values[i] + i) + (values[j] - j)
+
+
+
+當我們從左到右掃描，將每一個點當作右側的景點 $j$ 時：
+
+
+
+    1. values[j] - j 是固定的。
+
+
+    2. 我們只需要在 $j$ 的左側，找出一個歷史上最大的 values[i] + i
+      （我們稱它為 max_prev）來跟當前的 values[j] - j 相加，
+       就能得到以 $j$ 結尾的最大分數！
+
+
+    3. 在迴圈中不斷更新全域的 max_score，同時把當前的 values[j] + j 
+       納入左側的 max_prev 候選中。
+
+
+"""
+class Solution(object):
+
+  def maxScoreSightseeingPair(self, values):
+    """:type values: List[int]
+
+    :rtype: int
+    """
+    max_score = 0
+    # max_prev 用來記錄在當前點之前，所見過的最大 (values[i] + i)
+    max_prev = values[0] + 0
+
+    for j in range(1, len(values)):
+      # 當前右側點 j 能夠成的最大分數 = 左側最佳 (values[i] + i) + 當前 (values[j] - j)
+      current_score = max_prev + values[j] - j
+      max_score = max(max_score, current_score)
+
+      # 更新左側的最佳 (values[i] + i)，供後續更右邊的點使用
+      max_prev = max(max_prev, values[j] + j)
+
+    return max_score
+
+
+# V0-3
+# IDEA: 左側最佳候選值 (gpt)
+class Solution(object):
+    def maxScoreSightseeingPair(self, values):
+        """
+        :type values: List[int]
+        :rtype: int
+        """
+        if not values or len(values) < 2:
+            return 0
+
+        max_score = float("-inf")
+
+        # Best values[i] + i for previous indices
+        max_1 = values[0] + 0
+
+        for j in range(1, len(values)):
+            val = values[j]
+
+            # Score = values[i] + i + values[j] - j
+            score = max_1 + val - j
+            max_score = max(max_score, score)
+
+            # Update the best candidate for future pairs
+            max_1 = max(max_1, val + j)
+
+        return max_score
+
+
 
 # V0-3
 # IDEA : ONE PASS, KEEP THE BEST "LEFT HALF" SEEN SO FAR (CLAUDE)
