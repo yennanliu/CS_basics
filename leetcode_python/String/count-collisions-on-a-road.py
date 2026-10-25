@@ -45,6 +45,17 @@ directions[i] is either 'L', 'R', or 'S'.
 """
 
 
+"""
+NOTE !!!
+
+
+    use `stack` for this LC may make things complex,
+    -> many cases to consider, code branches to handle,
+    -> hard to handle cases like `continuous Collisions`
+    
+"""
+
+
 # V0
 class Solution(object):
     def countCollisions(self, directions):
@@ -85,7 +96,7 @@ class Solution(object):
 
 
 # V0-2
-# IDEA: PROBLEM UNDETSTANDING (gemini)
+# IDEA: LEFT CONT CNT, RIGHT CONT CNT (gemini)
 """
 
 這題有一個非常巧妙的物理規律，完全不需要複雜的堆疊：
@@ -111,6 +122,38 @@ class Solution(object):
 
     # 3. 剩下的字串中，任何不是 'S' 的車（即 'R' 或 'L'）最終都一定會碰撞
     return sum(1 for c in trimmed if c != "S")
+
+
+# V0-2-1
+# IDEA: LEFT CONT CNT, RIGHT CONT CNT (gemini)
+class Solution(object):
+
+  def countCollisions(self, directions):
+    """:type directions: str
+
+    :rtype: int
+    """
+    if not directions or len(directions) <= 1:
+      return 0
+
+    n = len(directions)
+    left = 0
+    right = n - 1
+
+    # 1. 找到左側第一個不是 'L' 的位置
+    while left < n and directions[left] == "L":
+      left += 1
+
+    # 2. 找到右側第一個不是 'R' 的位置
+    while right >= 0 and directions[right] == "R":
+      right -= 1
+
+    # 如果整條路全都是向左開或向右開，代表完全不會碰撞
+    if left > right:
+      return 0
+
+    # 3. 在中間有效區間內，所有不是 'S' 的車都會碰撞
+    return sum(1 for i in range(left, right + 1) if directions[i] != "S")
 
 
 # V0-3
