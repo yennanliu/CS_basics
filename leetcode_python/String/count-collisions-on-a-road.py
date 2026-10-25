@@ -44,8 +44,18 @@ directions[i] is either 'L', 'R', or 'S'.
 
 """
 
+
 # V0
-# IDEA : ONLY THE CARS THAT ESCAPE NEVER COLLIDE — STRIP THEM AND COUNT
+class Solution(object):
+    def countCollisions(self, directions):
+        """
+        :type directions: str
+        :rtype: int
+        """
+        pass
+
+# V0-3
+# IDEA : ONLY THE CARS THAT ESCAPE NEVER COLLIDE — STRIP THEM AND COUNT (claude)
 #
 #   a car drives away forever only if it is a leading 'L' (nothing to its
 #   left can ever reach it) or a trailing 'R' (nothing to its right).
@@ -84,7 +94,7 @@ class Solution(object):
 
 
 # V1
-# IDEA : STACK SIMULATION, LEFT TO RIGHT
+# IDEA : STACK SIMULATION, LEFT TO RIGHT (claude)
 #
 #   keep the cars that are still "unresolved" on a stack. only a run of
 #   'R' cars can be waiting for something to hit; an 'L' either escapes
