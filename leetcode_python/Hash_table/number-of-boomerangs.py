@@ -48,6 +48,73 @@ class Solution(object):
 
 
 # V0-1
+# IDEA: HASHAMP + BRUTE FORCE (GEMINI)
+"""
+CORE IDEA:
+
+
+
+迴旋鏢（Boomerang）由三個點 $(i, j, k)$ 組成，
+其中 $i$ 是中心點，到 $j$ 和 $k$ 的距離相等，
+且順序很重要（$(i, j, k)$ 與 $(i, k, j)$ 不同）。
+
+
+->
+
+
+    1. 以每個點為中心：我們固定每一個點 $i$ 作為迴旋鏢的中心點。
+
+    2. 計算平方距離：計算其餘所有點到中心點 $i$ 的平方歐幾里得距離
+      （不開根號以避免浮點數誤差）。
+
+    3. 排列組合計數：利用雜湊表統計每個距離出現的次數。
+       如果在距離 $d$ 處有 $c$ 個點，
+       那麼從這 $c$ 個點中選出 2 個不同的點分別作為 $j$ 和 $k$ 的
+       排列數為 $c \times (c - 1)$。
+
+    4. 累加總和：將所有中心點、所有距離的組合數加總即為答案。
+
+
+"""
+from collections import defaultdict
+
+
+class Solution(object):
+
+  def numberOfBoomerangs(self, points):
+    """:type points: List[List[int]]
+
+    :rtype: int
+    """
+    total_boomerangs = 0
+
+    # NOTE !!
+    # double loop
+
+    # 依次固定每一個點作為中心點 i
+    for i in range(len(points)):
+      dist_map = defaultdict(int)
+      x1, y1 = points[i]
+
+      for j in range(len(points)):
+        if i == j:
+          continue
+        x2, y2 = points[j]
+
+        # 計算平方距離，避免浮點數精確度問題
+        d_sq = (x1 - x2) ** 2 + (y1 - y2) ** 2
+        dist_map[d_sq] += 1
+
+      # 對於每一個距離計數 count，可以形成的有序對數量為 count * (count - 1)
+      for count in dist_map.values():
+        if count >= 2:
+          # NOTE !!!
+          total_boomerangs += count * (count - 1)
+
+    return total_boomerangs
+
+
+# V0-2
 # IDEA: HASHAMP + BRUTE FORCE (GPT)
 class Solution(object):
     def numberOfBoomerangs(self, points):
@@ -81,43 +148,6 @@ class Solution(object):
                 res += count * (count - 1)
 
         return res
-
-
-
-# V0-2
-# IDEA: HASHAMP + BRUTE FORCE (GEMINI)
-from collections import defaultdict
-
-
-class Solution(object):
-
-  def numberOfBoomerangs(self, points):
-    """:type points: List[List[int]]
-
-    :rtype: int
-    """
-    total_boomerangs = 0
-
-    # 依次固定每一個點作為中心點 i
-    for i in range(len(points)):
-      dist_map = defaultdict(int)
-      x1, y1 = points[i]
-
-      for j in range(len(points)):
-        if i == j:
-          continue
-        x2, y2 = points[j]
-
-        # 計算平方距離，避免浮點數精確度問題
-        d_sq = (x1 - x2) ** 2 + (y1 - y2) ** 2
-        dist_map[d_sq] += 1
-
-      # 對於每一個距離計數 count，可以形成的有序對數量為 count * (count - 1)
-      for count in dist_map.values():
-        if count >= 2:
-          total_boomerangs += count * (count - 1)
-
-    return total_boomerangs
 
 
 # V0-3
