@@ -162,6 +162,23 @@
 		- LC discussions - G
 			- https://github.com/yennanliu/CS_basics/pull/200
 
+		- final_week_review.md
+			- https://github.com/yennanliu/CS_basics/pull/208
+
+
+		- Graph
+			- Bus Routes 
+				— LC 815
+
+			- Course Schedule (series)
+				— LC 207
+				- 210
+				- 1462
+				- 630
+
+			- Longest Increasing Path in a Matrix 
+				— LC 329
+
 
 
 		- Union find
@@ -236,6 +253,9 @@
 
 			- Print Binary Tree 
 				— LC 655
+
+			- Evaluate Division 
+				— LC 399
 
 
 
