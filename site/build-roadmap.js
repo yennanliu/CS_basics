@@ -93,8 +93,10 @@ function parseReadmeProblems(markdown) {
     const solutions = parseSolutionLinks(cells[3] || '');
     const { tags, status } = trailingCells(line);
     const google = GOOGLE_TAG.test(tags);
-    const must = isMustRow(tags, status);
     const imported = h2 !== null && IMPORTED_HEADING.test(h2);
+    // The imported set's notes are generated caps prose ("EVERY ROW MUST EQUAL
+    // ROW 0 ..."), so a MUST token there is never the owner's marker.
+    const must = !imported && isMustRow(tags, status);
     const misfiled = imported !== (status === IMPORTED_STATUS);
 
     const existing = problems.get(id);

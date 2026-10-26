@@ -152,8 +152,10 @@ def parse_readme(path):
             # `MUST` is read the way script/extract_must_lc.py reads it: any
             # casing in the status cell, but only a standalone ALL-CAPS token in
             # the note cell, so prose ("the window must be non-decreasing")
-            # is not mistaken for the marker.
-            must = bool(MUST_ANY_CASE.search(status) or MUST_TAG_TOKEN.search(note))
+            # is not mistaken for the marker. An `imported` row is never one:
+            # its notes are generated caps prose ("EVERY ROW MUST EQUAL ...").
+            must = status != "imported" and bool(
+                MUST_ANY_CASE.search(status) or MUST_TAG_TOKEN.search(note))
             sm = STATUS_WORD.search(status)
             tags = set(re.findall(r"`([^`]+)`", note))
 

@@ -15,7 +15,8 @@ Usage:
 
 Notes:
 - A "category" is any `## <Name>` header that appears at/after the first LC
-  table section (default: the `## Array` section).
+  table section (default: the `## Array` section), up to the imported
+  `## Newly Added (kamyu104 gap)` index, which is never read.
 - The `MUST` marker is looked for in two places:
     * the trailing status/AGAIN column -> matched case-insensitively
       (`MUST`, `must`, `Must`, `(MUST!)`, `DP MUST`, ...)
@@ -36,6 +37,10 @@ MUST_TAG_TOKEN = re.compile(r"(?<![A-Za-z])MUST(?![A-Za-z])")
 # Category sections only start once the LC tables begin. Everything above
 # (## Cmd, ## Resource, ## Database, ...) is intro/non-LC content.
 FIRST_LC_SECTION = "Array"
+# Everything from here on is the imported kamyu104 index: every row's status is
+# `imported`, and its tags are generated prose in caps ("EVERY ROW MUST EQUAL
+# ROW 0 ..."), so a MUST token there is never the owner's marker.
+IMPORTED_SECTION = re.compile(r"^Newly Added")
 
 
 def parse(readme_path):
@@ -53,6 +58,8 @@ def parse(readme_path):
         m = re.match(r"^##\s+(.*)", line)
         if m:
             cat = m.group(1).strip()
+            if IMPORTED_SECTION.match(cat):
+                break
             if cat == FIRST_LC_SECTION:
                 seen_first_section = True
             if seen_first_section:
