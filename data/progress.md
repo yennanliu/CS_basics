@@ -1,7 +1,7 @@
 # Progress
 
 
-# 2026-10-26
+# 2026-10-27
 
 - TODO:
 	- `must_lc_list.md` -> ing
