@@ -199,6 +199,61 @@ class Solution(object):
 
 
 # V0-0-2
+# IDEA: prefix, suffix prod array
+# Time: O(N)
+# Space: O(1)
+"""
+DEMO:
+
+
+nums =   [x1, x2, x3, x4]
+
+
+prefix = [1, x1,  x1*x2, x1*x2*x3 ]
+
+suffix = [  x2*x3*x4    ,x3*x4    ,  x4  , 1 ]
+
+"""
+class Solution(object):
+    def productExceptSelf(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[int]
+        """
+        # edge
+        if not nums or len(nums) == 0:
+            return None
+        if len(nums) == 0:
+            return None
+
+        n = len(nums)
+
+        prefix = [1] * (n)
+        suffix = [1] * (n)
+
+        """
+        NOTE !!!
+
+        how we build prefix, suffix prod array !!!
+
+        """
+        for i in range(1, n):
+            prefix[i] = prefix[i-1] * nums[i-1]
+
+        for i in range(n-2, -1, -1):
+            suffix[i] = suffix[i+1] * nums[i+1]
+
+
+        res = [1] * n
+
+        for i in range(n):
+            res[i] = prefix[i] * suffix[i]
+
+
+        return res
+
+
+# V0-0-3
 # IDEA: prefix,  suffix (gemini)
 # Time: O(N)
 # Space: O(1)
