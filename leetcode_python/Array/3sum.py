@@ -158,6 +158,17 @@ class Solution(object):
             if i > 0 and nums[i] == nums[i - 1]:
                 continue
 
+            """
+              NOTE !!!
+
+              since the array already sorted in ascending order (small -> big),
+              so if `nums[i] > 0` the right element can ONLY be BIGGER
+
+                -> there is no way to form a `nums[i] + nums[j] + nums[k] == 0`
+                    (i != j != k)
+
+            """
+            # 優化：如果當前固定的數字大與 0，後面全部都大於 0，三數相加不可能等於 0
             # Since the array is sorted, no valid triplet can start here
             if nums[i] > 0:
                 break
@@ -187,6 +198,70 @@ class Solution(object):
                     right -= 1
 
         return res
+
+
+# V0-0-3
+# IDEA: SORT + 2 POINTERS (gpt)
+class Solution(object):
+
+  def threeSum(self, nums):
+    """:type nums: List[int]
+
+    :rtype: List[List[int]]
+    """
+    # 1. 邊界條件：長度小於 3 直接回傳空陣列
+    if not nums or len(nums) < 3:
+      return []
+
+    nums.sort()
+    res = []
+    n = len(nums)
+
+    for i in range(n - 2):
+
+      """
+      NOTE !!!
+
+      since the array already sorted in ascending order (small -> big),
+      so if `nums[i] > 0` the right element can ONLY be BIGGER
+
+        -> there is no way to form a `nums[i] + nums[j] + nums[k] == 0`
+            (i != j != k)
+
+      """
+      # 優化：如果當前固定的數字大與 0，後面全部都大於 0，三數相加不可能等於 0
+      if nums[i] > 0:
+        break
+
+      # 2. 跳過重複的第一個數字，避免產生重複的三元組
+      if i > 0 and nums[i] == nums[i - 1]:
+        continue
+
+      left = i + 1
+      right = n - 1
+
+      while left < right:
+        current_sum = nums[i] + nums[left] + nums[right]
+
+        if current_sum == 0:
+          res.append([nums[i], nums[left], nums[right]])
+
+          # 3. 跳過左側重複的數字
+          while left < right and nums[left] == nums[left + 1]:
+            left += 1
+          # 4. 跳過右側重複的數字
+          while left < right and nums[right] == nums[right - 1]:
+            right -= 1
+
+          left += 1
+          right -= 1
+
+        elif current_sum < 0:
+          left += 1
+        else:
+          right -= 1
+
+    return res
 
 
 # V0-1
