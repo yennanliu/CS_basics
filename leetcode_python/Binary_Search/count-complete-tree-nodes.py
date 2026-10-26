@@ -37,6 +37,37 @@ The tree is guaranteed to be complete.
 # NOTE !!!
 # Design an algorithm that runs in less than O(n) time complexity.
 
+
+
+"""
+NOTE !!! below is WRONG !!!
+
+
+    ->
+
+    ```
+        def get_left_height(self, root):
+        if not root:
+            return 0
+
+        # NO NEED TO have this logic !!! (if root.right)
+        # -> WRONG !!!!!
+        if root.left:
+            return self.get_left_height(root.left) + 1
+
+    ```
+
+
+    -> reason:
+
+        因為你原本的 get_left_height() 和 get_right_height()，
+
+        當目前節點存在，`但沒有下一個要走的子節點時，函式會回傳 None，而不是高度 1。`
+
+"""
+
+    
+
 # V0 
 # Definition for a binary tree node.
 # class TreeNode(object):
@@ -156,6 +187,13 @@ class Solution(object):
             return self.get_left_height(root.left) + 1
 
     ```
+
+
+    -> reason:
+
+        因為你原本的 get_left_height() 和 get_right_height()，
+
+        當目前節點存在，`但沒有下一個要走的子節點時，函式會回傳 None，而不是高度 1。`
 
     """
 
