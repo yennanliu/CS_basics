@@ -956,8 +956,11 @@ print(c)            # Counter({'b': 3, 'a': 2, 'c': 1})
 print(c['b'])       # 3
 print(c['z'])       # 0  (no KeyError, returns 0)
 
-# most_common(k) : top k frequent elements
+# most_common(k) : top k frequent elements, as (element, count) pairs, most frequent first
 print(c.most_common(2))   # [('b', 3), ('a', 2)]
+print(c.most_common())    # [('b', 3), ('a', 2), ('c', 1)]  no k -> every pair, by frequency
+# ties keep first-seen order: Counter("abab").most_common(1) -> [('a', 2)]
+# cost (u = distinct keys): with k -> heapq.nlargest, O(u log k); no k -> sorted, O(u log u)
 
 # Counter arithmetic
 c1 = Counter("aab")

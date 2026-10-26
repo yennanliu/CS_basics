@@ -23,6 +23,7 @@ things by what they do.
 | divide, round, take a remainder, or avoid overflow surprises | [Numbers & Math](#numbers--math) |
 | loop over two things at once, or build a list in one line | [Iteration, Comprehensions & Functional Tools](#iteration-comprehensions--functional-tools) |
 | count things, or use a default instead of a `KeyError` | [Dicts & Sets](#dicts--sets), or `Counter` / `defaultdict` in [python_trick_stdlib.md](./python_trick_stdlib.md) |
+| take the k most frequent elements without writing the sort key, as in LC 347 | [`most_common(k)`](#most_commonk--the-top-k-without-writing-the-sort-key-lc-347) |
 | keep a dict in an order I control, or evict its oldest entry (LRU) | [Dict ordering, and when you need `OrderedDict`](#dict-ordering-and-when-you-need-ordereddict) |
 | write to a variable from inside a nested function | [Structure, Scope & Return Values](#structure-scope--return-values) |
 | use a heap, a binary search, an ordered map, or `itertools` | [python_trick_stdlib.md](./python_trick_stdlib.md) |
@@ -1196,6 +1197,42 @@ class Solution(object):
 x= [1, 2, 3, 1, 2, 1, 2, 1]
 s = Solution()
 r = s.frequencySort(x)
+```
+
+#### **`most_common(k)` — the top k without writing the sort key (LC 347)**
+
+`Counter.most_common(k)` returns the `k` most frequent `(element, count)` pairs, most frequent
+first. It replaces the `sorted(d, key=lambda k: -d[k])[:k]` above, so there is no sort key to get
+wrong. Call it with no argument to get every pair in frequency order. Ties, cost and the rest of
+`Counter` are covered in [`Counter`](./python_trick_stdlib.md#counter-) in python_trick_stdlib.md.
+
+```python
+# LC 347 - Top K Frequent Elements
+# IDEA: count with Counter, then most_common(k) hands back the k (num, freq) pairs
+#       with the highest freq; keep only the num of each pair
+# time = O(n + u log k), u = number of distinct values; space = O(u)
+from collections import Counter
+
+class Solution(object):
+    def topKFrequent(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: List[int]
+        """
+        if not nums:
+            return []
+
+        cnt = Counter(nums)
+
+        return [num for num, freq in cnt.most_common(k)]
+```
+
+```text
+nums = [1,1,1,2,2,3], k = 2
+Counter(nums)          -> Counter({1: 3, 2: 2, 3: 1})
+cnt.most_common(2)     -> [(1, 3), (2, 2)]
+[num for num, freq ..] -> [1, 2]
 ```
 
 ### `min()` / `max()` with `key`

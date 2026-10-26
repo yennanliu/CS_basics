@@ -9,7 +9,7 @@
 
 - [Python](https://leetcode.com/problemset/all/?languageTags=python3)
 
-<!-- f36c58e45588 -->
+<!-- d222b48dfb2e -->
 ## 總覽
 
 這份速查表以前是 3,672 行、全部塞在單一個 `## 1) Examples` 標題底下，68 個條目以
@@ -26,6 +26,7 @@
 | 做除法、取整、取餘數，或避開溢位的意外 | [數字與數學](#numbers--math) |
 | 同時走訪兩個東西，或用一行建出一個 list | [走訪、生成式與函數式工具](#iteration-comprehensions--functional-tools) |
 | 計數，或用預設值取代 `KeyError` | [Dict 與 Set](#dicts--sets)，或 [python_trick_stdlib.md](./python_trick_stdlib.md) 裡的 `Counter` / `defaultdict` |
+| 不寫排序 key 就取出出現次數最多的 k 個元素，如 LC 347 | [`most_common(k)`](#most_commonk--the-top-k-without-writing-the-sort-key-lc-347) |
 | 讓 dict 保持在我控制的順序，或淘汰它最舊的一筆（LRU） | [Dict 排序，以及何時需要 `OrderedDict`](#dict-ordering-and-when-you-need-ordereddict) |
 | 在巢狀函式裡面寫入外層變數 | [結構、作用域與回傳值](#structure-scope--return-values) |
 | 用堆積(heap)、二分搜尋、有序 map 或 `itertools` | [python_trick_stdlib.md](./python_trick_stdlib.md) |
@@ -388,6 +389,18 @@ tuple 依然是逐元素（由左到右）比較，所以第一個欄位就是�
 
 <!-- cbf75432ec6c -->
 ### 依出現次數排序一個 dict
+
+<!--CODE-->
+
+<!-- 6a7126c6a90a -->
+#### **`most_common(k)` — 不寫排序 key 就取出前 k 名 (LC 347)**
+
+`Counter.most_common(k)` 會回傳出現次數最多的 `k` 組 `(element, count)`，次數最多的排在最前面。
+它取代了上面的 `sorted(d, key=lambda k: -d[k])[:k]`，所以沒有排序 key 可以寫錯。不帶參數呼叫，
+就會依頻率回傳全部的組合。同次數時的順序、成本，以及 `Counter` 的其他用法，見
+python_trick_stdlib.md 的 [`Counter`](./python_trick_stdlib.md#counter-)。
+
+<!--CODE-->
 
 <!--CODE-->
 
