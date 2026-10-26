@@ -4,7 +4,10 @@
 # 2026-10-26
 
 - TODO:
-	- `must_lc_list.md` -> done
+	- `must_lc_list.md` -> ing
+		- https://github.com/yennanliu/CS_basics/pull/207
+
+
 
 	- LC Top 100 like -> done
 		- https://leetcode.com/studyplan/top-100-liked/
