@@ -1,8 +1,8 @@
-<!-- 21475c6a6e89 -->
+<!-- 23b5540606be -->
 # 面試用的 Python 標準函式庫
 
-> **範圍** — 逐個函式庫的參考手冊：`heapq`、`sortedcontainers`、`bisect`、`collections`、`itertools`、`functools` 與 `datetime`——每個呼叫、它們的複雜度，以及各自是為了取代哪一種手寫寫法而存在。
-> **另見** — [python_trick.md](./python_trick.md) — 這些函式庫所建立在其上的語言慣用寫法；[python_trick_indexing.md](./python_trick_indexing.md) — 插入與切片的索引運算，包括 `bisect.insort` 的定位；[heap.md](./heap.md)、[binary_search.md](./binary_search.md)、[hash_map.md](./hash_map.md) — 這些資料結構與演算法本身（而非它們的 Python API）；[java_trick_collections.md](./java_trick_collections.md) — 對應的 Java 版本。
+> **範圍** — 逐個函式庫的參考手冊：`heapq`、`sortedcontainers`、內建排序（`sorted` / `list.sort`）、`bisect`、`collections`、`itertools`、`functools` 與 `datetime`——每個呼叫、它們的複雜度，以及各自是為了取代哪一種手寫寫法而存在。
+> **另見** — [python_trick.md](./python_trick.md) — 這些函式庫所建立在其上的語言慣用寫法；[python_trick_indexing.md](./python_trick_indexing.md) — 插入與切片的索引運算，包括 `bisect.insort` 的定位；[python_complexity.md](./python_complexity.md) — 每個內建操作的成本，排序也在內；[heap.md](./heap.md)、[binary_search.md](./binary_search.md)、[hash_map.md](./hash_map.md) — 這些資料結構與演算法本身（而非它們的 Python API）；[java_trick_collections.md](./java_trick_collections.md) — 對應的 Java 版本。
 
 <!-- 54efa70cbe8a -->
 ## LeetCode 題目清單
@@ -230,6 +230,63 @@ Java 原版：
 > Java `TreeMap` 的並列對照，請見
 > [hash_map.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/hash_map.md)
 > 中的 **TreeMap Pattern (Template 7)**。
+
+<!-- 561660392e03 -->
+## `sorted()` / `list.sort()` — Timsort
+
+<!-- 98a1dc62d1d5 -->
+### 呼叫 `sorted(t)` 時實際跑的是什麼 ⭐⭐⭐⭐
+
+**Key Idea**：CPython 只有一種排序——**Timsort**，一種穩定的混合演算法，由 **merge sort** 與
+**binary insertion sort** 組成。`sorted(x)` 與 `x.sort()` 跑的是同一段程式碼，唯一的差別是
+`sorted()` 會先把輸入複製成一個新的 list。
+
+| | 時間 | 額外空間 |
+|---|---|---|
+| 最差 / 平均 | **O(n log n)** | **O(n)**（merge 用的暫存區，最多 n/2 格） |
+| 最佳：已排序，或只有少數幾段長 run | **O(n)** | O(1) |
+| `sorted(x)` 再加上 | + O(n) 複製 | **一定是 O(n)**：新建的 list |
+
+這些都是**比較次數**。如果一次比較不是 O(1)，就要乘上去：排序 n 個長度為 k 的字串是
+O(k · n log n)。
+
+**步驟**，以 `t` 是 `str` 的 `sorted(t)` 為例：
+
+1. **複製。** `sorted()` 把 `t` 逐一迭代成一個由單字元字串組成的新 list（`"cat"` → `['c', 'a', 't']`）。
+   `t` 本身不會被修改，而且字串本來就無法原地排序。
+2. **找 run。** 由左往右掃，找出本來就有序的連續片段。嚴格遞減的片段會被原地反轉。
+   之所以要「嚴格」，是為了保持排序的穩定性。
+3. **補齊短 run。** 比 `minrun`（32–64，依 n 決定）短的 run，會用 **binary insertion sort**
+   補到 `minrun` 的長度：先二分搜尋插入位置，再平移元素。**少於 64 個元素的 list 完全不會
+   merge**；整個排序就是一次 binary insertion sort。
+4. **合併。** run 依序放進一個堆疊，兩兩合併，就像 merge sort。合併的順序讓每次合併保持平衡，
+   這正是總成本能維持在 O(n log n) 的原因。從 **Python 3.11** 起，這個順序改用 **Powersort**
+   的規則；run、galloping、穩定性與兩個複雜度上界都沒有改變。
+5. **Galloping。** 合併時若某一邊連續贏了大約 7 次，就切換成指數搜尋，一次把整段勝出的區塊
+   複製過去。這就是為什麼部分有序的資料排序起來比隨機資料快得多。
+
+<!--CODE-->
+
+**使用範例 — LC 242 Valid Anagram**
+
+<!--CODE-->
+
+排序是一行就寫完的解法；計數則是「能不能做得更好？」的答案。至於題目的 Unicode 延伸問題，
+計數版只要把 26 格的 list 換成 `Counter` 就依然成立。
+
+**Timsort 帶來的幾個結果**
+
+- **穩定。** 鍵相同的元素保持輸入時的順序。所以多鍵排序可以分兩趟做，先排次要鍵：
+  先 `a.sort(key=by_name)` 再 `a.sort(key=by_age)`，結果依年齡排序，同年齡內再依名字排序。
+- **`key=` 對每個元素只呼叫一次**，而不是每次比較都呼叫。代價高的 key 只花 O(n) 次呼叫，
+  而不是 O(n log n) 次。
+- **`reverse=True` 依然穩定。** 它和「先排序再呼叫 `reversed()`」不同，後者會把相同鍵的
+  順序也一起翻轉。
+- **接近有序的輸入很便宜。** 在已排序的 list 後面加幾個元素再重排，成本接近 O(n)。
+  若是一次只加一個元素，下面的 `bisect.insort` 才是直接的工具。
+
+> **面試這樣說**：「Python 的排序是 Timsort，一種穩定的 merge/insertion 混合演算法：
+> 最差 O(n log n)，對已排序的輸入是 O(n)，額外空間 O(n)。」
 
 <!-- 9f67bbcc8008 -->
 ## `bisect` — 在有序 list 上做二分搜尋
