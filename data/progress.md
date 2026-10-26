@@ -68,13 +68,7 @@
 				- 2. 取得深度（前序 DFS）
 				- 4. 和節點間距離的關係
 				- 節點間距離 = 搭配 LCA，用 getDepth() 算兩次
-
-
-
-- Dijkstra — 實戰題解
-	- https://yennj12.js.org/CS_basics/cheatsheets/Dijkstra_examples.zh.html
-		 - `5) Path With Minimum Effort — LC 1631 — 網格上的極小化極大 `
-
+				
 
 
 - Bit Manipulation — 實戰題解
@@ -140,6 +134,7 @@
 	- LeetCode Patterns Guide
 	- BFS —— LeetCode 解題實作
 	- DFS — 實戰題解
+	- Dijkstra — 實戰題解
 
 
 - Others
@@ -640,7 +635,20 @@
 				- 742
 
 			- 743
-			- 1514 (!!! not min PQ, use max PQ instead)
+			- Max PQ
+				- 1514 (!!! not min PQ, use max PQ instead)
+
+			- Swim in Rising Water — LC 778 — 網格上的極小化極大
+				- 1631
+				- 778
+
+			- 隱式圖上的最佳優先搜尋 
+				— LC 373
+
+			- Kth Smallest Element in a Sorted Matrix
+				- LC 378
+
+
 
 
 		- Tree LCA
