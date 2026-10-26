@@ -93,7 +93,7 @@
 
 - 拓撲排序 — 實戰題解
 	- https://yennj12.js.org/CS_basics/cheatsheets/topology_sorting_examples.zh.html
-
+		- `Parallel Courses — LC 1136`
 
 
 - 併查集（Union Find） — 實戰題解
@@ -178,6 +178,16 @@
 
 		- LC discussions - G
 			- https://github.com/yennanliu/CS_basics/pull/200
+
+		- Topo sort
+			- 210 
+			- Alien Dictionary — LC 269  (!!!)
+			- Sequence Reconstruction — LC 444
+			- Parallel Courses — LC 1136
+
+
+
+
 
 		- Graph
 			- Bus Routes 
