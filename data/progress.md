@@ -7,6 +7,17 @@
 	- `must_lc_list.md` -> ing
 		- https://github.com/yennanliu/CS_basics/pull/207
 
+	- final_week_review.md
+			- https://github.com/yennanliu/CS_basics/pull/208
+
+	- blind 75 -> ing
+		- https://neetcode.io/practice/practice/blind75
+
+
+
+
+
+
 
 
 	- LC Top 100 like -> done
@@ -160,10 +171,6 @@
 
 		- LC discussions - G
 			- https://github.com/yennanliu/CS_basics/pull/200
-
-		- final_week_review.md
-			- https://github.com/yennanliu/CS_basics/pull/208
-
 
 		- Graph
 			- Bus Routes 
