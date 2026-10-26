@@ -216,6 +216,12 @@
 				— LC 737 (!!!)
 				- 734
 
+			- Minesweeper 
+				— LC 529
+
+			- K-th Largest Perfect Subtree Size in Binary Tree 
+				— LC 3319 (!!)
+
 
 
 
