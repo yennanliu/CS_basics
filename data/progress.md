@@ -14,8 +14,8 @@
 		- https://neetcode.io/practice/practice/blind75
 
 		 	- array & hashing - done
-		 	- 2 pointers - ing
-		 		- Container With Most Water
+		 	- 2 pointers - done
+		 	- slide window - ing
 		 	
 
 
