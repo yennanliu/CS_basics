@@ -329,7 +329,122 @@ class Solution:
         # If we work through all words we make it here, and we know they are similar.
         return True
 
-# V0-6
+
+# V0-6-1
+# IDEA: UNION FIND (gpt)
+class MyUF(object):
+
+    def __init__(self, similarPairs):
+        # Each word initially belongs to its own set.
+        self.parents = {}
+
+        for x, y in similarPairs:
+            if x not in self.parents:
+                self.parents[x] = x
+            if y not in self.parents:
+                self.parents[y] = y
+
+        # Merge all similar word pairs.
+        for x, y in similarPairs:
+            self.union(x, y)
+
+    def get_parent(self, x):
+        # A word not appearing in similarPairs is its own parent.
+        if x not in self.parents:
+            self.parents[x] = x
+
+        # Path compression
+        if self.parents[x] != x:
+            self.parents[x] = self.get_parent(self.parents[x])
+
+        return self.parents[x]
+
+    def union(self, x, y):
+        parent_x = self.get_parent(x)
+        parent_y = self.get_parent(y)
+
+        if parent_x != parent_y:
+            self.parents[parent_x] = parent_y
+
+    def is_same_parent(self, x, y):
+        return self.get_parent(x) == self.get_parent(y)
+
+
+class Solution(object):
+    def areSentencesSimilarTwo(self, sentence1, sentence2, similarPairs):
+        if len(sentence1) != len(sentence2):
+            return False
+
+        uf = MyUF(similarPairs)
+
+        for w1, w2 in zip(sentence1, sentence2):
+            if not uf.is_same_parent(w1, w2):
+                return False
+
+        return True
+
+
+# V0-6-2
+# IDEA: UNION FIND (gemini)
+class UnionFind(object):
+
+  def __init__(self):
+    # 使用字典將「單字」對應到其「父單字」
+    self.parent = {}
+
+  def find(self, x):
+    # 1. 動態初始化：如果單字不在並查集中，它自己的父節點就是它自己
+    if x not in self.parent:
+      self.parent[x] = x
+
+    # 2. 路徑壓縮（Path Compression）
+    if self.parent[x] != x:
+      self.parent[x] = self.find(self.parent[x])
+
+    return self.parent[x]
+
+  def union(self, x, y):
+    root_x = self.find(x)
+    root_y = self.find(y)
+
+    if root_x != root_y:
+      self.parent[root_x] = root_y
+
+
+class Solution(object):
+
+  def areSentencesSimilarTwo(self, sentence1, sentence2, similarPairs):
+    """:type sentence1: List[str]
+
+    :type sentence2: List[str]
+    :type similarPairs: List[List[str]]
+    :rtype: bool
+    """
+    # 1. 邊界條件：長度不同直接不相似
+    if not sentence1 or not sentence2:
+      return False
+
+    if len(sentence1) != len(sentence2):
+      return False
+
+    # 2. 建立並查集
+    uf = UnionFind()
+    for w1, w2 in similarPairs:
+      uf.union(w1, w2)
+
+    # 3. 逐一比對兩個句子的對應單字是否屬於同一個集合
+    for i in range(len(sentence1)):
+      w1 = sentence1[i]
+      w2 = sentence2[i]
+
+      # 如果字串相同，或者它們的根節點相同，則視為相似
+      if w1 != w2 and uf.find(w1) != uf.find(w2):
+        return False
+
+    return True
+
+
+# V0-6-3
 # IDEA : UNION FIND
 # time = O((n + p) * α(p))  # n = len(words1), p = len(pairs); α = inverse Ackermann
 # space = O(p)
