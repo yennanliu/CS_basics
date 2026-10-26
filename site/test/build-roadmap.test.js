@@ -225,6 +225,14 @@ test('the tags column marks MUST only as a standalone all-caps token', () => {
   assert.equal(lib.parseReadmeProblems(ROW('**array**, MUSTARD', '')).get('42').must, false);
 });
 
+// LC 2128's imported note reads "EVERY ROW MUST EQUAL ROW 0 OR ITS EXACT
+// COMPLEMENT" — a standalone caps MUST that is prose, not the owner's marker.
+test('an imported row is never MUST, whatever its generated note says', () => {
+  const md = ['## Newly Added (kamyu104 gap)', '### Array',
+    ROW('**array**, EVERY ROW MUST EQUAL ROW 0, new', 'imported')].join('\n');
+  assert.equal(lib.parseReadmeProblems(md).get('42').must, false);
+});
+
 /**
  * 155 README rows leave the trailing status cell blank. Taking "the last
  * non-empty cell" as the status walked back onto the tags cell, where the
