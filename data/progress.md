@@ -70,11 +70,6 @@
 				- 節點間距離 = 搭配 LCA，用 getDepth() 算兩次
 
 
-- DFS — 實戰題解
-	- https://yennj12.js.org/CS_basics/cheatsheets/dfs_examples.zh.html
-		- `2-24) Pacific Atlantic Water Flow — LC 417`
-
-
 
 - Dijkstra — 實戰題解
 	- https://yennj12.js.org/CS_basics/cheatsheets/Dijkstra_examples.zh.html
@@ -144,6 +139,7 @@
 	- Stack — 實戰題解
 	- LeetCode Patterns Guide
 	- BFS —— LeetCode 解題實作
+	- DFS — 實戰題解
 
 
 - Others
@@ -225,6 +221,9 @@
 			-  Satisfiability of Equality Equations 
 				— LC 990
 
+			- Print Binary Tree 
+				— LC 655
+
 
 
 
@@ -258,7 +257,11 @@
 				- 102
 
 			-  層序 BFS 停在 depth - 1 再重接指標
-				- Add One Row to Tree - LC 623
+				- Add One Row to Tree 
+					- LC 623
+				- 617
+				- 971
+
 
 
 
