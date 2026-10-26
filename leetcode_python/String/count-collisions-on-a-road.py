@@ -88,6 +88,17 @@ class Solution(object):
 
         # All moving cars in the remaining range will collide
         cnt = 0
+
+        """
+        NOTE !!!
+
+
+        the `start`, and `end` idx
+
+            -> left
+
+            -> right + 1
+        """
         for i in range(left, right + 1):
             if directions[i] != "S":
                 cnt += 1
