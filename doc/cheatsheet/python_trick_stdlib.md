@@ -1,7 +1,7 @@
 # Python Standard Library for Interviews
 
-> **Scope** — The library-by-library reference: `heapq`, `sortedcontainers`, `bisect`, `collections`, `itertools`, `functools` and `datetime` — the calls, their complexity, and the idiom each one exists to replace.
-> **See also**: [python_trick.md](./python_trick.md) — the language idioms these sit on top of; [python_trick_indexing.md](./python_trick_indexing.md) — insertion and slicing arithmetic, including where `bisect.insort` fits; [heap.md](./heap.md), [binary_search.md](./binary_search.md), [hash_map.md](./hash_map.md) — the structures and algorithms rather than their Python APIs; [java_trick_collections.md](./java_trick_collections.md) — the Java equivalents.
+> **Scope** — The library-by-library reference: `heapq`, `sortedcontainers`, the built-in sort (`sorted` / `list.sort`), `bisect`, `collections`, `itertools`, `functools` and `datetime` — the calls, their complexity, and the idiom each one exists to replace.
+> **See also**: [python_trick.md](./python_trick.md) — the language idioms these sit on top of; [python_trick_indexing.md](./python_trick_indexing.md) — insertion and slicing arithmetic, including where `bisect.insort` fits; [python_complexity.md](./python_complexity.md) — the cost of every built-in, sort included; [heap.md](./heap.md), [binary_search.md](./binary_search.md), [hash_map.md](./hash_map.md) — the structures and algorithms rather than their Python APIs; [java_trick_collections.md](./java_trick_collections.md) — the Java equivalents.
 
 ## LeetCode Problem Lists
 
@@ -710,6 +710,94 @@ def containsNearbyAlmostDuplicate(nums, indexDiff, valueDiff):
 > See the **TreeMap Pattern (Template 7)** in
 > [hash_map.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/hash_map.md)
 > for the Java `TreeMap` side-by-side comparison.
+
+## `sorted()` / `list.sort()` — Timsort
+
+### What runs when you call `sorted(t)` ⭐⭐⭐⭐
+
+**Key Idea**: CPython has one sort, **Timsort**, a stable hybrid of **merge sort** and
+**binary insertion sort**. `sorted(x)` and `x.sort()` run the same code. The only difference
+is that `sorted()` first copies its input into a new list.
+
+| | Time | Extra space |
+|---|---|---|
+| Worst / average | **O(n log n)** | **O(n)** (merge buffer, up to n/2 slots) |
+| Best: already sorted, or a few long runs | **O(n)** | O(1) |
+| `sorted(x)` on top of that | + O(n) copy | **always O(n)**: the new list |
+
+These counts are **comparisons**. If one comparison is not O(1), multiply: sorting n
+strings of length k is O(k · n log n).
+
+**The steps**, for `sorted(t)` where `t` is a `str`:
+
+1. **Copy.** `sorted()` iterates `t` into a new list of 1-char strings (`"cat"` → `['c', 'a', 't']`).
+   `t` is never modified, and a string cannot be sorted in place anyway.
+2. **Find runs.** Scan left to right for stretches that are already ordered. A strictly
+   descending stretch is reversed in place. "Strictly" keeps the sort stable.
+3. **Pad short runs.** A run shorter than `minrun` (32–64, chosen from n) is extended to
+   `minrun` with **binary insertion sort**: binary-search the slot, then shift. A list with
+   **fewer than 64 elements never merges**; the whole sort is one binary insertion sort.
+4. **Merge.** Runs go on a stack and are merged pairwise, like merge sort. The merge order
+   keeps the merges balanced, which is what bounds the total at O(n log n). Since **Python 3.11**
+   that order is **Powersort**'s rule. The runs, galloping, stability and both bounds are unchanged.
+5. **Gallop.** When one side wins about 7 times in a row, the merge switches to an exponential
+   search and copies the whole winning block at once. That is why partly sorted data sorts
+   far faster than random data.
+
+```text
+input  : 1 2 3 4 | 9 8 7 | 5 6 0 ...
+step 2 : [1 2 3 4] [7 8 9] [5 6] ...   descending run 9 8 7 reversed in place
+step 3 : each run padded to minrun with binary insertion sort
+step 4 : merge neighbouring runs, smallest first:  [1 2 3 4 7 8 9] ...
+step 5 : inside a merge, one side keeps winning -> gallop, copy the block in one go
+```
+
+**Use example — LC 242 Valid Anagram**
+
+```python
+# python
+# LC 242 - Valid Anagram
+# IDEA: two strings are anagrams iff their sorted characters are equal
+# time = O(n log n), space = O(n)
+def is_anagram_sort(s, t):
+    return sorted(s) == sorted(t)   # two Timsorts + an O(n) list compare
+
+# IDEA: count instead of sort; only 26 lowercase letters -> the counter is O(1) space
+# time = O(n), space = O(1)
+def is_anagram_count(s, t):
+    if len(s) != len(t):
+        return False
+    count = [0] * 26
+    for ch in s:
+        count[ord(ch) - ord('a')] += 1
+    for ch in t:
+        count[ord(ch) - ord('a')] -= 1
+        if count[ord(ch) - ord('a')] < 0:   # t has more of ch than s
+            return False
+    return True
+
+assert is_anagram_sort("anagram", "nagaram") and is_anagram_count("anagram", "nagaram")
+assert not is_anagram_sort("rat", "car") and not is_anagram_count("rat", "car")
+```
+
+Sorting is the one-liner. Counting is the answer to "can you do better?". For the problem's
+Unicode follow-up, the counting version keeps working with a `Counter` instead of the
+26-slot list.
+
+**What follows from Timsort**
+
+- **Stable.** Equal keys keep their input order. So a multi-key sort can be two passes,
+  secondary key first: `a.sort(key=by_name)` then `a.sort(key=by_age)` gives age order with
+  name order inside each age.
+- **`key=` is called once per element**, not once per comparison. An expensive key costs
+  O(n) calls, not O(n log n).
+- **`reverse=True` stays stable.** It is not the same as sorting, then calling `reversed()`,
+  which flips the order of equal keys.
+- **Nearly sorted input is cheap.** Appending a few items to a sorted list and re-sorting is
+  close to O(n). With one item at a time, `bisect.insort` (below) is the direct tool.
+
+> **Interview line**: "Python's sort is Timsort, a stable merge/insertion hybrid: O(n log n)
+> worst case, O(n) on already-sorted input, O(n) extra space."
 
 ## `bisect` — Binary Search on a Sorted List
 
