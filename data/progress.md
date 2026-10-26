@@ -222,6 +222,9 @@
 			- K-th Largest Perfect Subtree Size in Binary Tree 
 				— LC 3319 (!!)
 
+			-  Satisfiability of Equality Equations 
+				— LC 990
+
 
 
 
