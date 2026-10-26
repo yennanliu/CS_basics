@@ -13,7 +13,8 @@
 	- blind 75 -> ing
 		- https://neetcode.io/practice/practice/blind75
 
-		 	- array & hashing - ing
+		 	- array & hashing - done
+		 	- 2 pointers - ing
 		 	
 
 

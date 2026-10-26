@@ -81,6 +81,67 @@ class Solution(object):
 
 
 # V0-0-1
+# IDEA: SET + ONLY loop nums and check existed (GPT)
+"""
+NOTE !!!
+
+for this LC,
+
+    -> 1. 不需要計算最大、最小值：可以直接遍歷 set，不必先掃描找出範圍。
+
+
+    -> simply loop over set(nums), use while loop, and get the max consecutive len
+
+
+    -> code structure
+
+    ```
+    for x in set(nums):
+
+        if x - 1 not in set(nums):
+
+            cur = x
+            _len = 1
+
+
+            while cur + 1 in set(nums):
+                    cur += 1
+                    _len += 1
+
+
+            max_len = max(max_len, _len)
+
+    ```
+"""
+class Solution(object):
+    def longestConsecutive(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        if not nums:
+            return 0
+
+        n_set = set(nums)
+        max_len = 0
+
+        for x in n_set:
+            # Only start counting from the beginning of a sequence
+            if x - 1 not in n_set:
+                curr = x
+                curr_len = 1
+
+                while curr + 1 in n_set:
+                    curr += 1
+                    curr_len += 1
+
+                max_len = max(max_len, curr_len)
+
+        return max_len
+
+
+
+# V0-0-2
 # IDEA: SET + ONLY loop nums and check existed (GEMINI)
 class Solution(object):
 
