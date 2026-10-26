@@ -71,6 +71,42 @@ class Solution(object):
         )
 
 
+# V0-0-1
+# IDEA: DFS (pre-order)(gpt)
+class Solution(object):
+    def hasPathSum(self, root, targetSum):
+        """
+        :type root: Optional[TreeNode]
+        :type targetSum: int
+        :rtype: bool
+        """
+        if not root:
+            return False
+
+        self.found = False
+        self.helper(root, targetSum)
+
+        return self.found
+
+    def helper(self, root, targetSum):
+        if not root:
+            return
+
+        # NOTE !!!
+        # -> subtrack first !!!
+        
+        # Subtract the current node's value
+        targetSum -= root.val
+
+        # A valid path must end at a leaf node
+        if not root.left and not root.right:
+            if targetSum == 0:
+                self.found = True
+            return
+
+        self.helper(root.left, targetSum)
+        self.helper(root.right, targetSum)
+
 
 
 # V0-1
