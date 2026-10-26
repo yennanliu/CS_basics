@@ -257,6 +257,60 @@ class Solution(object):
         return False
 
 # V1
+# IDEA: UNION FIND
+#   1. every "a==b" merges a and b into the same group
+#   2. every "a!=b" then fails if a and b ended up in the same group
+#   -> "==" must be processed BEFORE "!=", since a later "==" can
+#      connect two variables that an earlier "!=" separated
+# time = O(n * α(26))  # n = len(equations); at most 26 variables, path compression
+# space = O(1)  # parent array is fixed at 26 letters
+class Solution(object):
+    def equationsPossible(self, equations):
+        """
+        :type equations: List[str]
+        :rtype: bool
+        """
+        # parent[i] is the parent of letter chr(ord('a') + i);
+        # every letter starts as its own group
+        parent = list(range(26))
+
+        # step 1: union every "==" pair
+        for eq in equations:
+            if eq[1] == '=':
+                x = ord(eq[0]) - ord('a')
+                y = ord(eq[3]) - ord('a')
+                self.union(parent, x, y)
+
+        # step 2: a "!=" pair in the same group is a contradiction
+        # (this also covers "a!=a", since a letter is always in its own group)
+        for eq in equations:
+            if eq[1] == '!':
+                x = ord(eq[0]) - ord('a')
+                y = ord(eq[3]) - ord('a')
+                if self.find(parent, x) == self.find(parent, y):
+                    return False
+
+        return True
+
+    def find(self, parent, x):
+        # walk up to the root
+        root = x
+        while parent[root] != root:
+            root = parent[root]
+
+        # path compression: point every node on the path straight at the root
+        while parent[x] != root:
+            next_node = parent[x]
+            parent[x] = root
+            x = next_node
+
+        return root
+
+    def union(self, parent, x, y):
+        root_x = self.find(parent, x)
+        root_y = self.find(parent, y)
+        if root_x != root_y:
+            parent[root_x] = root_y
 
 
 # V2
