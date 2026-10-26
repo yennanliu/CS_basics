@@ -69,6 +69,13 @@ There exists some node in the given binary tree for which node.val == k.
 
 
 # V0
+class Solution(object):
+    def findClosestLeaf(self, root, k):
+        pass
+
+
+
+# V0-0-1
 # IDEA: DFS + BFS (GEMINI)
 # TODO: validate
 from collections import defaultdict, deque
@@ -102,12 +109,25 @@ class Solution(object):
         """
         # 2. BFS starting directly from our target node object
         queue = deque([self.target_node])
+
+        # NOTE !!
+        # use `visited` to avoid duplicated visiting
+        # since now the bfs processing direction could be top-down or bottom-up
         visited = set([self.target_node])
         
         while queue:
             curr = queue.popleft()
             
             if curr:
+
+                """
+                NOTE !!!
+
+                 we check if is leaf within BFS call
+
+                 (DON'T above in DFS call)
+
+                """
                 # Leaf definition: Has no left and no right child paths
                 if not curr.left and not curr.right:
                     return curr.val
@@ -120,6 +140,17 @@ class Solution(object):
                         
         return -1
 
+    """
+    The `build_graph` (dfs) ONLY does below 2 thins:
+
+        1. build the graph ( { node: [parent_or_child_1, parent_or_child_2, ..] } )
+    
+        
+        2. get `target`
+
+            - self.target_node = node
+
+    """
     # Moved to be an official sibling method so 'self' works perfectly
     def build_graph(self, node, parent, graph, k):
         if not node:
@@ -593,6 +624,66 @@ class Solution(object):
                 dist = ndist
                 ans = leaf
         return ans.val
+
+
+# V0-7
+# IDEA: DFS + BFS (gemini)
+from collections import defaultdict, deque
+
+
+class Solution(object):
+
+  def findClosestLeaf(self, root, k):
+    """:type root: Optional[TreeNode]
+
+    :type k: int
+    :rtype: int
+    """
+    if not root:
+      return None
+
+    self.k = k
+    self.target = None
+    self.graph = defaultdict(list)
+
+    # 1. 透過 DFS 將二元樹轉為無向圖，並找出目標節點
+    self.dfs(root, None)
+
+    # 2. 從目標節點開始跑 BFS 尋找最近的葉子節點
+    q = deque([self.target])
+    visited = {self.target}
+
+    while q:
+      _node = q.popleft()
+
+      # 當彈出的節點是葉子節點時，立即回傳其數值
+      if not _node.left and not _node.right:
+        return _node.val
+
+      for neighbor in self.graph[_node]:
+        if neighbor not in visited:
+          visited.add(neighbor)
+          q.append(neighbor)
+
+    return None
+
+  def dfs(self, node, parent):
+    if not node:
+      return
+
+    if node.val == self.k:
+      self.target = node
+
+    # 建立雙向邊（父子互連）
+    if parent:
+      self.graph[node].append(parent)
+      self.graph[parent].append(node)
+
+    if node.left:
+      self.dfs(node.left, node)
+    if node.right:
+      self.dfs(node.right, node)
+
 
 ### Test case : dev 
 
