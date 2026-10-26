@@ -39,6 +39,54 @@ class Solution(object):
         # https://stackoverflow.com/questions/613183/how-do-i-sort-a-dictionary-by-value
         return [ x[0] for  x in sorted(list(freq_dict.items()), key=lambda x: x[1],reverse=True) ][:k]
 
+
+# V0-0-1
+# IDEA: Counter +  most_common(k) (gpt)
+from collections import Counter
+
+class Solution(object):
+    def topKFrequent(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: List[int]
+        """
+        if not nums:
+            return []
+
+        cnt = Counter(nums)
+
+        return [num for num, freq in cnt.most_common(k)]
+
+
+# V0-0-2
+# IDEA: HASHMAP + PQ (gemini)
+from collections import Counter
+import heapq
+
+class Solution(object):
+
+  def topKFrequent(self, nums, k):
+    """:type nums: List[int]
+
+    :type k: int
+    :rtype: List[int]
+    """
+    # 1. 邊界條件
+    if not nums:
+      return []
+
+    # 2. 統計每個數字出現的頻率
+    cnt = Counter(nums)
+
+    if len(cnt) <= k:
+      return list(cnt.keys())
+
+    # 3. 利用 heapq.nlargest 取出頻率最高的 k 個元素
+    # key=cnt.get 表示根據字典的值（頻率）來進行大小比較
+    return heapq.nlargest(k, cnt.keys(), key=cnt.get)
+
+
 # V1
 # time = O(n log n)
 # space = O(n)
