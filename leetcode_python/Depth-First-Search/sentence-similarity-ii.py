@@ -131,6 +131,50 @@ class Solution(object):
         return False
 
 
+# V0-0-1
+# IDEA: DFS + HASHMAP (GPT)
+from collections import defaultdict
+
+class Solution(object):
+    def areSentencesSimilarTwo(self, sentence1, sentence2, similarPairs):
+        # The two sentences must have the same length
+        if len(sentence1) != len(sentence2):
+            return False
+
+        # Build an undirected graph
+        self.graph = defaultdict(list)
+        for x, y in similarPairs:
+            self.graph[x].append(y)
+            self.graph[y].append(x)
+
+        # Check each pair of words at the same position
+        for x, y in zip(sentence1, sentence2):
+            if x == y:
+                continue
+
+            if not self.dfs(x, y, set()):
+                return False
+
+        return True
+
+    def dfs(self, x, y, visited):
+        if x == y:
+            return True
+
+        # NOTE !!!
+        # add x to visited (set)
+        visited.add(x)
+
+        for neighbor in self.graph[x]:
+            # NOTE !!!
+            # ONLY process dfs if node is NOT visited yet
+            if neighbor not in visited:
+                if self.dfs(neighbor, y, visited):
+                    return True
+
+        return False
+
+
 # V0-2
 # IDEA: DFS + HASHMAP (GPT)
 # TODO: VALIDATE
