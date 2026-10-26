@@ -102,6 +102,65 @@ class Solution(object):
     return h
 
 
+# V0-0-1
+# IDEA: GET LEFT, RIGHT HEIGHT (gpt)
+class Solution(object):
+    def countNodes(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: int
+        """
+        # Edge case
+        if not root:
+            return 0
+
+        l_h = self.get_left_height(root)
+        r_h = self.get_right_height(root)
+
+        # Perfect binary tree
+        if l_h == r_h:
+            return 2 ** l_h - 1
+
+        return (
+            self.countNodes(root.left)
+            + self.countNodes(root.right)
+            + 1
+        )
+
+    def get_left_height(self, root):
+        if not root:
+            return 0
+
+        return self.get_left_height(root.left) + 1
+
+    def get_right_height(self, root):
+        if not root:
+            return 0
+
+        return self.get_right_height(root.right) + 1
+
+    """
+    NOTE !!! below is WRONG !!!
+
+
+    ->
+
+    ```
+        def get_left_height(self, root):
+        if not root:
+            return 0
+    
+        # NO NEED TO have this logic !!! (if root.right)
+        # -> WRONG !!!!!
+        if root.left:
+            return self.get_left_height(root.left) + 1
+
+    ```
+
+    """
+
+
+
 
 # V0-2
 # IDEA: DFS (TLE: should use < O(N) time complexity)
