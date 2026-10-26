@@ -517,6 +517,58 @@ LC 2017 是最乾淨的例子。格子是 `2 x n`，合法路徑是沿著 row 0 
   （[2_pointers_examples.md](./2_pointers_examples.md#longest-mountain-in-array--lc-845)
   裡的找山頂再往外擴）就能把兩個陣列都省掉；兩個陣列的寫法是該先推出來的那一版，因為每個陣列都有一行就說得完的定義。
 
+<!-- 6caf7daa0571 -->
+#### 依運算分類的前綴 + 後綴 —— sum、count、prod、max、min、OR、gcd
+
+LC 238 不是什麼乘積專屬的技巧；它就是**同樣的兩趟掃描，只是代入了 `*`**。換掉運算和它的單位元，
+這副骨架就能解下面整個家族。唯一會改變程式碼的問題是表格的第一欄：**這個運算能不能被抵銷？**
+
+- **能**（`+`、`^`、計數）—— 後綴就是 `total - prefix`，所以一趟正向掃描、帶兩個累計值就夠了
+  （上面 LC 2017 的掃法）。
+- **不能**（有 0 或禁用除法的 `*`、`max`、`min`、`|`、`&`、`gcd`、`lcm`、相異計數、會歸零的連續段）——
+  知道整體和左邊，對右邊一無所知，所以後綴要**自己跑一趟由右往左的掃描**（LC 238 的形狀）。
+
+<!--CODE-->
+
+<!--CODE-->
+
+**包含還是不包含 `i`，是另一個旋鈕。** 骨架讓 `i` 兩邊都不屬於（LC 238、2909、2874、2680、3334）。
+LC 42 要 `i` 兩邊**都**包含（一根柱子能裝的水最多只到它自己的高度），而切一刀的題目（915、768、1525）
+是切在 `i` 和 `i + 1` *之間*，所以拿包含 `i` 的 `left` 去比包含 `i + 1` 的 `right`。
+在宣告每一側的那一行，寫清楚它是哪一種。
+
+| 運算 | 可抵銷？ | 題目 | LC # | 每一側存的是 | 合併方式 —— 以及值得記住的註解 |
+|---|---|---|---|---|---|
+| sum | ✅ | Find Pivot Index | 724 | `i` 左邊的和／右邊的和 | 第一個滿足 `left == total - left - nums[i]` 的 `i`；不需要右側陣列 |
+| sum | ✅ | Find the Middle Index in Array | 1991 | 同上 | **和 724 是同一題** |
+| sum | ✅ | Number of Ways to Split Array | 2270 | `[0..i]` 的和／`[i+1..n-1]` 的和 | 對 `i < n - 1` 數 `left >= right`；Java 要用 `long` |
+| sum | ✅ | Minimum Average Difference | 2256 | `[0..i]` 的平均／`[i+1..n-1]` 的平均 | 在 `i = n - 1` 時右側是**空的**：平均算 `0`，不是除以零 |
+| sum | ✅ | Grid Game | 2017 | row 0 的後綴／row 1 的前綴 | `min over i of max(top, bottom)` —— minimax，就是上面的模板 |
+| count | ✅ | Maximum Score After Splitting a String | 1422 | `[0..i]` 的 0 個數／`[i+1..n-1]` 的 1 個數 | 取和的最大值；兩段都不能空，所以 `i` 停在 `n - 2` |
+| count | ✅ | Minimum Penalty for a Shop | 2483 | 第 `j` 小時之前的 `N`／從 `j` 起的 `Y` | 取和的最小值；`j` 跑 `0..n` —— 在 `n` 關門是合法的 |
+| count | ✅ | Flip String to Monotone Increasing | 926 | 切點左邊的 1／右邊的 0 | 取和的最小值 |
+| prod | ❌ | Product of Array Except Self | 238 | `i` 左邊的乘積／右邊的乘積 | `left * right`；除法被禁用，**而且** `0` 沒有反元素 —— [乘積變形](#product-variant--no-inverse-so-build-both-sides-lc-238-) |
+| prod mod | ❌ | Construct Product Matrix | 2906 | 同上，在攤平的格子上 | `12345` 不是質數，所以也沒有模反元素 |
+| max | ❌ | Trapping Rain Water | 42 | `[0..i]` 的最大值／`[i..n-1]` 的最大值 —— **包含 `i`** | `min(left, right) - h[i]`；因為包含 `i`，這項永遠不會是負的 |
+| max / min | ❌ | Partition Array into Disjoint Intervals | 915 | `[0..i]` 的最大值／`[i+1..n-1]` 的最小值 | **第一個**滿足 `left <= right` 的 `i`；答案是 `i + 1`（一個長度） |
+| max / min | ❌ | Max Chunks To Make Sorted II | 768 | `[0..i]` 的最大值／`[i+1..n-1]` 的最小值 | `1 +` 滿足 `left <= right` 的切點數（允許重複值，所以用 `<=`） |
+| max / min | ❌ | Sum of Beauty in the Array | 2012 | `i` 左邊的最大值／右邊的最小值 | `left < nums[i] < right` 得 `2`，否則只有兩個鄰居成立時得 `1` |
+| min | ❌ | Minimum Sum of Mountain Triplets II | 2909 | `j` 左邊的最小值／右邊的最小值 | 兩者**都**比 `nums[j]` 小時取 `left + nums[j] + right`，否則 `-1` |
+| max | ❌ | Maximum Value of an Ordered Triplet II | 2874 | `j` 左邊的最大值／右邊的最大值 | `(left - nums[j]) * right`，下限 `0`；`j` 是中間的索引 |
+| OR | ❌ | Maximum OR | 2680 | `i` 左邊的 OR／右邊的 OR | `left \| (nums[i] << k) \| right`；把 `k` 次加倍**全部**用在同一個元素上；被兩個元素同時設起的位元無法「反 OR」 |
+| gcd · lcm | ❌ | Find the Maximum Factor Score of Array | 3334 | `i` 左／右的 gcd 與 lcm | 每個被移除的 `i` 算 `gcd(L, R) * lcm(L, R)`，也要算不移除的分數；單位元 `gcd = 0`、`lcm = 1` |
+| distinct | ❌ | Number of Good Ways to Split a String | 1525 | `[0..i]` 的相異字母數／`[i+1..n-1]` 的 | 數 `left == right`；字母重複後 set 就沒辦法「移除」—— 每一趟各用一個 set |
+| best-so-far | ❌ | Best Time to Buy and Sell Stock III | 123 | `[0..i]` 內最好的一筆交易／`[i..n-1]` 內的 | `max(left + right)`；共用第 `i` 天沒關係 —— 同一天賣了再買等於沒動 |
+| best-so-far | ❌ | Maximum Subarray Sum with One Deletion | 1186 | 結束在 `i`／從 `i` 開始的 Kadane | `left[i-1] + right[i+1]` —— 被刪的那格兩邊都不屬於 |
+| best-so-far | ❌ | Maximum Sum of Two Non-Overlapping Subarrays | 1031 | 前綴裡最好的 `L` 窗／後綴裡最好的 `M` 窗 | 兩種順序都試（`L` 在前、`M` 在前） |
+| heap sum | ❌ | Minimum Difference in Sums After Removal of Elements | 2163 | 前綴裡最小的 `n` 個和（max-heap）／後綴裡最大的 `n` 個和（min-heap） | 在中間三分之一上取 `min(left[i] - right[i+1])` |
+| run length | ❌ | Longest Mountain · Good Days to Rob · Good Indices · Candy | 845 · 2100 · 2420 · 135 | 碰到 `i` 的單調連續段，兩個方向各一 | 見[連續段長度變形](#run-length-variant--the-side-resets-so-build-both-arrays-lc-845-) |
+
+> **在面試現場認出它。** 題目說 *except itself*、*remove one*、*split into two*、*`i` 的左邊和右邊*，
+> 或固定 `j` 的 *三元組 `i < j < k`*。這時暴力解是 O(n²)，因為每個索引都重算一次兩側，而解法永遠一樣：
+> 每一側一趟、帶著答案走，再對每個索引做一次 O(1) 的合併。挑好運算和它的單位元，決定 `i` 是兩邊都屬於、
+> 都不屬於、還是一刀切 —— 並在寫第二個陣列之前，先確認這個運算能不能被抵銷，免得多寫一個用不到的陣列。
+
 <!-- 5cb0c82bf17b -->
 #### 相似題目 — 左段／右段家族
 
@@ -664,7 +716,7 @@ LC 2017 是最乾淨的例子。格子是 `2 x n`，合法路徑是沿著 row 0 
 | Find the Longest Turbulent Subarray | 978 | 邊走邊追蹤狀態 | Medium | 模板 8 改寫 |
 | Sum of Beauty in the Array | 2012 | PrefixMax + SuffixMin，逐元素判斷 | Medium | 模板 8 變形 |
 
-<!-- 49b6377e2e45 -->
+<!-- f64ccfef1abe -->
 #### **模式 9：前綴 + 後綴拆分**
 | 題目 | LC # | 關鍵技巧 | 難度 | 模板 |
 |---------|------|---------------|------------|----------|
@@ -682,6 +734,16 @@ LC 2017 是最乾淨的例子。格子是 `2 x n`，合法路徑是沿著 row 0 
 | Find All Good Indices | 2420 | 在 `i-1` 和 `i+1` 讀段長 —— 索引本身兩邊都不屬於 | Medium | 模板 15（連續段長度變形） |
 | Candy | 135 | 兩側各自的評分遞增段，取較大者 | Hard | 模板 15（連續段長度變形） |
 | Maximum Trailing Zeros in a Cornfield Path | 2245 | 在格子裡轉一次，對 2 與 5 做前綴計數 | Medium | 模板 15（格子版） |
+| Find the Middle Index in Array | 1991 | 和 724 是同一題 | Easy | 模板 15（和） |
+| Number of Ways to Split Array | 2270 | 數「左和 `>=` 右和」的切點 | Medium | 模板 15（和） |
+| Minimum Average Difference | 2256 | 前綴／後綴平均；右側為空時平均算 0 | Medium | 模板 15（和） |
+| Partition Array into Disjoint Intervals | 915 | 第一個「前綴最大值 `<=` 後綴最小值」的切點 | Medium | 模板 15（max / min） |
+| Minimum Sum of Mountain Triplets II | 2909 | 前綴最小值 + `nums[j]` + 後綴最小值 | Medium | 模板 15（min） |
+| Maximum Value of an Ordered Triplet II | 2874 | `(prefMax - nums[j]) * sufMax` | Medium | 模板 15（max） |
+| Maximum OR | 2680 | 前綴 OR \| `nums[i] << k` \| 後綴 OR | Medium | 模板 15（OR，無反運算） |
+| Find the Maximum Factor Score of Array | 3334 | 前綴／後綴的 gcd 與 lcm，移除一個 | Medium | 模板 15（gcd / lcm） |
+| Number of Good Ways to Split a String | 1525 | 兩個方向各算相異字母數，在切點比較 | Medium | 模板 15（相異計數） |
+| Best Time to Buy and Sell Stock III | 123 | 前綴內最好的一筆交易 + 後綴內最好的一筆 | Hard | 模板 15（至今最佳） |
 
 <!-- e40dcddaf5fb -->
 #### **進階／混合模式**
@@ -811,7 +873,7 @@ LC 2017 是最乾淨的例子。格子是 `2 x n`，合法路徑是沿著 row 0 
 - 關鍵洞見：`maxSoFar == i` 代表前綴 `[0..i]` 已經是一組完整、自成一體、可以直接排序的集合
 - 等價的檢查：`arr[0..i]` 的前綴和等於排序後陣列 `[0..i]` 的前綴和
 
-<!-- f4ee3ae376b4 -->
+<!-- 958e2ff11cfa -->
 #### **認出該用模板 15：**
 - 題目提到：「split the array」、「pivot」、「turning point」、「close the shop at hour i」、
   「both robots play optimally」
@@ -823,6 +885,8 @@ LC 2017 是最乾淨的例子。格子是 `2 x n`，合法路徑是沿著 row 0 
   改用第二趟、由右往左的掃描把它建出來（LC 238）
 - 如果每一側是**會歸零的連續段** ——「到 `i` 為止嚴格遞增，之後嚴格遞減」—— 每個方向建一個段長陣列，
   再逐個索引合併（LC 845、2100、2420、135）
+- 這招適用的每一種運算 —— 和、計數、乘積、max、min、OR、gcd、相異計數、至今最佳 —— 連同合併式都列在
+  [依運算分類的前綴 + 後綴](#prefix--suffix-by-operator--sum-count-prod-max-min-or-gcd-)
 - 如果目標函數是 `min(max(...))` 或 `max(min(...))`，那就是 minimax —— 貪婪地「拿對我最好的」
   是錯的目標函數，不只是弱一點而已
 

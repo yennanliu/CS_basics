@@ -1287,6 +1287,102 @@ class Solution(object):
   both arrays; the two-array form is the one to derive first, because each array has a one-line
   definition.
 
+#### Prefix + Suffix by Operator — sum, count, prod, max, min, OR, gcd ⭐⭐⭐⭐⭐
+
+LC 238 is not a product trick; it is the **same two passes with `*` plugged in**. Swap the
+operator and its identity, and the skeleton solves the whole family below. The only question
+that changes the code is the first column of the table: **can the operator be undone?**
+
+- **Yes** (`+`, `^`, a count) — the suffix is `total - prefix`, so one forward pass with two
+  running values is enough (the LC 2017 scan above).
+- **No** (`*` with zeros or division banned, `max`, `min`, `|`, `&`, `gcd`, `lcm`, a distinct
+  count, a run that resets) — knowing the whole and the left tells you nothing about the right,
+  so the suffix gets **its own right-to-left pass** (the LC 238 shape).
+
+```python
+# python
+# IDEA: exclusive prefix / suffix under any associative op -- index i is on NEITHER side
+#       op / identity: + 0, * 1, max -inf, min inf, | 0, & -1, gcd 0, lcm 1
+# time = O(n), space = O(n)
+def except_self(nums, op, identity):
+    n = len(nums)
+
+    # left[i] = op over nums[0 .. i-1]; left[0] is empty, so it holds the identity
+    left = [identity] * n
+    for i in range(1, n):
+        left[i] = op(left[i - 1], nums[i - 1])
+
+    # right[i] = op over nums[i+1 .. n-1]; right[n-1] is empty, so it holds the identity
+    right = [identity] * n
+    for i in range(n - 2, -1, -1):            # stop is -1, so index 0 is filled
+        right[i] = op(right[i + 1], nums[i + 1])
+
+    return left, right
+
+# LC 238:  left, right = except_self(nums, lambda a, b: a * b, 1)
+#          ans[i] = left[i] * right[i]
+```
+
+```java
+// java
+// IDEA: exclusive prefix / suffix under any associative op -- index i is on NEITHER side
+// time = O(n), space = O(n)
+public long[][] exceptSelf(int[] nums, LongBinaryOperator op, long identity) {
+    int n = nums.length;
+    long[] left = new long[n];                 // left[i]  = op over nums[0 .. i-1]
+    long[] right = new long[n];                // right[i] = op over nums[i+1 .. n-1]
+    left[0] = identity;
+    for (int i = 1; i < n; i++) {
+        left[i] = op.applyAsLong(left[i - 1], nums[i - 1]);
+    }
+    right[n - 1] = identity;
+    for (int i = n - 2; i >= 0; i--) {
+        right[i] = op.applyAsLong(right[i + 1], nums[i + 1]);
+    }
+    return new long[][] {left, right};
+}
+```
+
+**Inclusive or exclusive is the other knob.** The skeleton leaves `i` out of both sides (LC 238,
+2909, 2874, 2680, 3334). LC 42 wants `i` **in** both (a bar can hold water only up to its own
+height), and a cut problem (915, 768, 1525) splits *between* `i` and `i + 1`, so it reads
+`left` inclusive at `i` against `right` inclusive at `i + 1`. Write which one each side is on
+the line that declares it.
+
+| Op | Undo? | Problem | LC # | Each side holds | Combine — and the comment worth remembering |
+|---|---|---|---|---|---|
+| sum | ✅ | Find Pivot Index | 724 | sum left of `i` / sum right of `i` | first `i` with `left == total - left - nums[i]`; no right array needed |
+| sum | ✅ | Find the Middle Index in Array | 1991 | same | **the same problem as 724** |
+| sum | ✅ | Number of Ways to Split Array | 2270 | sum of `[0..i]` / sum of `[i+1..n-1]` | count `left >= right` for `i < n - 1`; Java needs `long` |
+| sum | ✅ | Minimum Average Difference | 2256 | avg of `[0..i]` / avg of `[i+1..n-1]` | the right side is **empty** at `i = n - 1`: its average is `0`, not a divide by zero |
+| sum | ✅ | Grid Game | 2017 | suffix of row 0 / prefix of row 1 | `min over i of max(top, bottom)` — minimax, the template above |
+| count | ✅ | Maximum Score After Splitting a String | 1422 | zeros in `[0..i]` / ones in `[i+1..n-1]` | max of the sum; both parts non-empty, so `i` stops at `n - 2` |
+| count | ✅ | Minimum Penalty for a Shop | 2483 | `N`s before hour `j` / `Y`s from `j` on | min of the sum; `j` runs `0..n` — closing at `n` is legal |
+| count | ✅ | Flip String to Monotone Increasing | 926 | ones left of the cut / zeros right of it | min of the sum |
+| prod | ❌ | Product of Array Except Self | 238 | product left of `i` / right of `i` | `left * right`; division is banned **and** a `0` has no inverse — [the product variant](#product-variant--no-inverse-so-build-both-sides-lc-238-) |
+| prod mod | ❌ | Construct Product Matrix | 2906 | same, on the flattened grid | mod `12345` is not prime, so no modular inverse either |
+| max | ❌ | Trapping Rain Water | 42 | max of `[0..i]` / max of `[i..n-1]` — **inclusive** | `min(left, right) - h[i]`; inclusive, so the term is never negative |
+| max / min | ❌ | Partition Array into Disjoint Intervals | 915 | max of `[0..i]` / min of `[i+1..n-1]` | the **first** `i` with `left <= right`; answer is `i + 1` (a length) |
+| max / min | ❌ | Max Chunks To Make Sorted II | 768 | max of `[0..i]` / min of `[i+1..n-1]` | `1 +` the number of cuts with `left <= right` (duplicates allowed, so `<=`) |
+| max / min | ❌ | Sum of Beauty in the Array | 2012 | max left of `i` / min right of `i` | `2` if `left < nums[i] < right`, else `1` if only the two neighbours agree |
+| min | ❌ | Minimum Sum of Mountain Triplets II | 2909 | min left of `j` / min right of `j` | `left + nums[j] + right` when **both** are smaller than `nums[j]`, else `-1` |
+| max | ❌ | Maximum Value of an Ordered Triplet II | 2874 | max left of `j` / max right of `j` | `(left - nums[j]) * right`, floored at `0`; `j` is the middle index |
+| OR | ❌ | Maximum OR | 2680 | OR left of `i` / OR right of `i` | `left \| (nums[i] << k) \| right`; spend **all** `k` doublings on one element; a bit set by two elements cannot be "un-OR'd" |
+| gcd · lcm | ❌ | Find the Maximum Factor Score of Array | 3334 | gcd and lcm left / right of `i` | `gcd(L, R) * lcm(L, R)` per removed `i`, and also the no-removal score; identities `gcd = 0`, `lcm = 1` |
+| distinct | ❌ | Number of Good Ways to Split a String | 1525 | distinct letters in `[0..i]` / in `[i+1..n-1]` | count `left == right`; a set has no "remove" once a letter repeats — one set per pass |
+| best-so-far | ❌ | Best Time to Buy and Sell Stock III | 123 | best one trade in `[0..i]` / in `[i..n-1]` | `max(left + right)`; sharing day `i` is fine — selling and buying on it is a no-op |
+| best-so-far | ❌ | Maximum Subarray Sum with One Deletion | 1186 | Kadane ending at `i` / starting at `i` | `left[i-1] + right[i+1]` — the deleted cell is on neither side |
+| best-so-far | ❌ | Maximum Sum of Two Non-Overlapping Subarrays | 1031 | best `L`-window in the prefix / best `M`-window in the suffix | try both orders (`L` first, `M` first) |
+| heap sum | ❌ | Minimum Difference in Sums After Removal of Elements | 2163 | smallest `n`-sum in the prefix (max-heap) / largest `n`-sum in the suffix (min-heap) | `min(left[i] - right[i+1])` over the middle third |
+| run length | ❌ | Longest Mountain · Good Days to Rob · Good Indices · Candy | 845 · 2100 · 2420 · 135 | the monotone run touching `i`, each way | see [the run-length variant](#run-length-variant--the-side-resets-so-build-both-arrays-lc-845-) |
+
+> **Recognising it in the room.** The statement says *except itself*, *remove one*, *split into
+> two*, *left of `i` and right of `i`*, or *a triplet `i < j < k`* with `j` fixed. Then the brute
+> force is O(n²) because it recomputes each side per index, and the fix is always the same: one
+> pass per side that carries the answer, then one O(1) combine per index. Pick the operator and
+> its identity, decide whether `i` is on both sides, neither, or a cut — and check whether the
+> operator can be undone before writing a second array you do not need.
+
 #### Similar Problems — the left-run / right-run family
 
 Same question at every index — *how far does it reach on the left, and on the right?* — answered
@@ -1445,6 +1541,16 @@ structure:
 | Find All Good Indices | 2420 | Runs read at `i-1` and `i+1` — the index is on neither side | Medium | Template 15 (run-length variant) |
 | Candy | 135 | Rating run from each side, keep the larger | Hard | Template 15 (run-length variant) |
 | Maximum Trailing Zeros in a Cornfield Path | 2245 | One turn in a grid, prefix counts of 2s and 5s | Medium | Template 15 (grid) |
+| Find the Middle Index in Array | 1991 | The same problem as 724 | Easy | Template 15 (sum) |
+| Number of Ways to Split Array | 2270 | Count cuts with sum-left `>=` sum-right | Medium | Template 15 (sum) |
+| Minimum Average Difference | 2256 | Prefix / suffix averages; empty right side averages to 0 | Medium | Template 15 (sum) |
+| Partition Array into Disjoint Intervals | 915 | First cut with prefix max `<=` suffix min | Medium | Template 15 (max / min) |
+| Minimum Sum of Mountain Triplets II | 2909 | Prefix min + `nums[j]` + suffix min | Medium | Template 15 (min) |
+| Maximum Value of an Ordered Triplet II | 2874 | `(prefMax - nums[j]) * sufMax` | Medium | Template 15 (max) |
+| Maximum OR | 2680 | Prefix OR \| `nums[i] << k` \| suffix OR | Medium | Template 15 (OR, no inverse) |
+| Find the Maximum Factor Score of Array | 3334 | Prefix / suffix gcd and lcm, remove one | Medium | Template 15 (gcd / lcm) |
+| Number of Good Ways to Split a String | 1525 | Distinct count each way, compare at the cut | Medium | Template 15 (distinct) |
+| Best Time to Buy and Sell Stock III | 123 | Best one trade in the prefix + in the suffix | Hard | Template 15 (best-so-far) |
 
 #### **Advanced/Mixed Pattern Problems**
 | Problem | LC # | Key Technique | Difficulty | Template |
@@ -1611,6 +1717,9 @@ Problem Analysis Flowchart:
   modulus), the suffix cannot be `total - prefix` — build it in a second, right-to-left pass (LC 238)
 - If each side is a **run that resets** — "strictly increasing up to `i`, strictly decreasing after" —
   build one run-length array per direction and combine per index (LC 845, 2100, 2420, 135)
+- Every operator this works for — sum, count, product, max, min, OR, gcd, a distinct count, a
+  best-so-far — is listed with its combine line in
+  [Prefix + Suffix by Operator](#prefix--suffix-by-operator--sum-count-prod-max-min-or-gcd-)
 - If the objective is `min(max(...))` or `max(min(...))`, it is minimax — a greedy "take the best
   for me" pass is the wrong objective, not just a weaker one
 
