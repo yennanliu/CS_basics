@@ -207,6 +207,77 @@ class Solution(object):
 
 
 # V0-3
+# IDEA: LCA (GPT)
+
+class Solution(object):
+    def getDirections(self, root, startValue, destValue):
+        """
+        :type root: Optional[TreeNode]
+        :type startValue: int
+        :type destValue: int
+        :rtype: str
+        """
+        # Edge case
+        if not root or startValue == destValue:
+            return ""
+
+        # Step 1: Find the LCA
+        lca = self.get_lca(root, startValue, destValue)
+
+        # Step 2: Find paths from LCA to start and destination
+        path_s = []
+        path_d = []
+
+        self.get_path(lca, startValue, path_s)
+        self.get_path(lca, destValue, path_d)
+
+        # Step 3: Convert start path to upward directions
+        path_s_rev = "U" * len(path_s)
+
+        # Step 4: Combine both paths
+        return path_s_rev + "".join(path_d)
+
+    def get_lca(self, node, startValue, destValue):
+        if not node:
+            return None
+
+        if node.val == startValue or node.val == destValue:
+            return node
+
+        left = self.get_lca(node.left, startValue, destValue)
+        right = self.get_lca(node.right, startValue, destValue)
+
+        if left and right:
+            return node
+
+        return left if left else right
+
+    def get_path(self, node, target, path):
+        """
+        Find the path from node to target.
+        Append L/R directions to path.
+        """
+        if not node:
+            return False
+
+        if node.val == target:
+            return True
+
+        # Try left subtree
+        path.append("L")
+        if self.get_path(node.left, target, path):
+            return True
+        path.pop()
+
+        # Try right subtree
+        path.append("R")
+        if self.get_path(node.right, target, path):
+            return True
+        path.pop()
+
+        return False
+
+# V0-4
 # IDEA : ROOT-TO-NODE PATHS + STRIP THE COMMON PREFIX (the LCA)
 #
 #   find the 'L'/'R' path from the root down to s and down to t. their common
