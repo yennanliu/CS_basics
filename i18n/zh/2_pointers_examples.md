@@ -16,16 +16,16 @@
 
 一題一節。每題只出現一次，歸檔在它所套用的 [2_pointers.md](./2_pointers.md) 模板底下 — 先讀模板，再看範例。
 
-<!-- fdb8dcdde7b0 -->
+<!-- 9d1cf0f9312c -->
 ### 題目索引
 
 | 分組 | 題目 |
 |---|---|
 | [原地改寫（快慢指標）](#in-place-rewriting-fastslow) | LC 80、LC 283 |
-| [向內收斂的雙向指標](#converging-bidirectional-pointers) | LC 15、LC 16、LC 31、LC 42、LC 128、LC 344、LC 942 |
+| [向內收斂的雙向指標](#converging-bidirectional-pointers) | LC 15、LC 16、LC 31、LC 42、LC 344、LC 942 |
 | [從中心往外擴](#expand-from-centre) | LC 5、LC 214、LC 647、LC 680、LC 845 |
 | [子序列與雙字串比對](#subsequence--two-string-matching) | LC 161、LC 165、LC 271、LC 524、LC 809、LC 953、LC 1023 |
-| [在區間、矩陣與分割上的指標](#pointers-over-intervals-matrices-and-partitions) | LC 57、LC 240、LC 763、LC 986、LC 2104 |
+| [在區間、矩陣與分割上的指標](#pointers-over-intervals-matrices-and-partitions) | LC 57、LC 240、LC 763、LC 986 |
 
 <!-- cd30ad9d96fe -->
 ## 原地改寫（快慢指標）
@@ -265,10 +265,6 @@
 
 <!-- ee7e6e0d3921 -->
 ### Trapping Rain Water — LC 42
-<!--CODE-->
-
-<!-- 33de534dadf8 -->
-### Longest Consecutive Sequence — LC 128
 <!--CODE-->
 
 <!-- 46f67e533184 -->
@@ -877,7 +873,7 @@
 | 左上（最小值） | — | — | ❌ 兩個方向都遞增 |
 | 右下（最大值） | — | — | ❌ 兩個方向都遞減 |
 
-<!-- 5f5d614133ed -->
+<!-- 9682a9a9c5f8 -->
 #### 相似題目
 
 | 題目 | LC# | 關鍵差異 |
@@ -888,7 +884,3 @@
 | Two Sum II | 167 | 一維版本：在已排序陣列上 `l++`／`r--` |
 
 ---
-
-<!-- bd05e9f024df -->
-### Sum of Subarray Ranges — LC 2104
-<!--CODE-->

@@ -1,7 +1,7 @@
 # Set — Worked Examples
 
-> **Scope** — The worked-solution archive behind [set.md](./set.md): fourteen problems grouped by what the set is being used for — a memory of what has been seen, set algebra, an O(1) index that replaces a scan, or a component inside a larger algorithm.
-> **See also**: [set.md](./set.md) — the parent sheet: the types, the basic operations, the decision framework and the Python-vs-Java notes; [hash_map.md](./hash_map.md) — when you need the value as well as the key; [hashing.md](./hashing.md) — designing the key itself, which is what LC 694 and LC 939 turn on; [bfs.md](./bfs.md) — the frontier sets in LC 127; [design.md](./design.md) — LC 380 from the design side.
+> **Scope** — The worked-solution archive behind [set.md](./set.md): twelve problems grouped by what the set is being used for — a memory of what has been seen, set algebra, an O(1) index that replaces a scan, or a component inside a larger algorithm.
+> **See also**: [set.md](./set.md) — the parent sheet: the types, the basic operations, the decision framework and the Python-vs-Java notes; [hash_map.md](./hash_map.md) — when you need the value as well as the key; [hashing.md](./hashing.md) — designing the key itself, which is what LC 694 and LC 939 turn on; [bfs.md](./bfs.md) — the frontier sets in LC 127.
 
 ## LeetCode Problem Lists
 
@@ -281,41 +281,9 @@ public int[] intersection(int[] nums1, int[] nums2) {
 }
 ```
 
-### 6) Word Pattern — LC 290 — a bijection needs two directions
-
-```python
-# LC 290. Word Pattern
-# V0
-# IDEA: Use 2 sets to track bijection
-class Solution:
-    def wordPattern(self, pattern, s):
-        words = s.split()
-
-        if len(pattern) != len(words):
-            return False
-
-        char_to_word = {}
-        word_to_char = {}
-
-        for c, word in zip(pattern, words):
-            if c in char_to_word:
-                if char_to_word[c] != word:
-                    return False
-            else:
-                char_to_word[c] = word
-
-            if word in word_to_char:
-                if word_to_char[word] != c:
-                    return False
-            else:
-                word_to_char[word] = c
-
-        return True
-```
-
 ## The Set as an Index
 
-### 7) Longest Consecutive Sequence — LC 128 — only start from a run's head ⭐⭐⭐⭐⭐
+### 6) Longest Consecutive Sequence — LC 128 — only start from a run's head ⭐⭐⭐⭐⭐
 
 
 #### Core Idea
@@ -417,7 +385,7 @@ The inner `while` loop looks like it could be O(n) per outer iteration, but the 
 | Longest Arithmetic Subsequence | 1027 | Any common diff, not just 1 | DP + hashmap |
 | Contains Duplicate | 217 | Just detect any duplicate | Set size check |
 
-### 8) Valid Sudoku — LC 36 — nine row, column and box sets
+### 7) Valid Sudoku — LC 36 — nine row, column and box sets
 
 ```python
 # LC 36. Valid Sudoku
@@ -533,7 +501,7 @@ private boolean dfs(char[][] board, int k) {
 }
 ```
 
-### 9) Minimum Area Rectangle — LC 939 — a set of encoded points
+### 8) Minimum Area Rectangle — LC 939 — a set of encoded points
 
 
 #### Core Idea
@@ -604,7 +572,7 @@ public int minAreaRect(int[][] points) {
 
 > **Hashability cheat sheet** — Python: `tuple`/`frozenset` are hashable, `list`/`set`/`dict` are not. Java: `int[]` hashes by **identity** (`new HashSet<int[]>` never finds anything) — encode to `Integer`/`Long`/`String`, or use `List<Integer>`, which does hash by value.
 
-### 10) Number of Distinct Islands — LC 694 — a set of canonical shapes
+### 9) Number of Distinct Islands — LC 694 — a set of canonical shapes
 
 ```python
 # LC 694. Number of Distinct Islands
@@ -640,102 +608,7 @@ class Solution:
 
 ## Sets Inside Other Algorithms
 
-### 11) Insert Delete GetRandom O(1) — LC 380 — set semantics, array storage ⭐⭐⭐⭐
-
-
-#### Core Idea
-
-**Set + dense array — the "randomized set"**
-
-A `HashSet` gives O(1) `insert` / `remove` / `contains`, but it **cannot do `getRandom()` in O(1)** — there is no positional indexing, so picking a uniformly random member costs O(n).
-
-An array can index in O(1) but can't test membership in O(1). **Use both**, and keep them in sync:
-
-```text
-arr  : dense array of members        -> getRandom = arr[rand(size)]     O(1)
-idx  : member -> its position in arr -> contains / locate for delete    O(1)
-```
-
-The only hard part is **delete**: removing from the middle of an array is O(n). Fix it by **swapping the last element into the hole**, then popping the tail — order in `arr` is irrelevant because we only ever sample it randomly.
-
-```text
-remove(2) from arr=[1,2,3,4], idx={1:0,2:1,3:2,4:3}
-
-  step 1: overwrite hole with last     arr=[1,4,3,4]  idx[4]=1
-  step 2: pop the tail                 arr=[1,4,3]
-  step 3: drop the key                 idx={1:0,4:1,3:2}
-```
-
-```python
-# python
-# LC 380 - Insert Delete GetRandom O(1)
-# IDEA: hash index (val -> position) + dense array; delete = swap-with-last
-# time = O(1) per op, space = O(n)
-import random
-
-class RandomizedSet(object):
-    def __init__(self):
-        self.arr = []      # dense array of members
-        self.idx = {}      # val -> position in arr
-
-    def insert(self, val):
-        if val in self.idx:
-            return False
-        self.idx[val] = len(self.arr)
-        self.arr.append(val)
-        return True
-
-    def remove(self, val):
-        if val not in self.idx:
-            return False
-        i = self.idx[val]
-        last = self.arr[-1]
-        self.arr[i] = last       # move last member into the hole
-        self.idx[last] = i
-        self.arr.pop()
-        del self.idx[val]        # delete AFTER the overwrite (val may BE the last element)
-        return True
-
-    def getRandom(self):
-        return random.choice(self.arr)
-```
-
-```java
-// java
-// LC 380 - Insert Delete GetRandom O(1)
-// time = O(1) per op, space = O(n)
-class RandomizedSet {
-    private final List<Integer> arr = new ArrayList<>();        // dense array of members
-    private final Map<Integer, Integer> idx = new HashMap<>();  // val -> position in arr
-    private final Random rand = new Random();
-
-    public boolean insert(int val) {
-        if (idx.containsKey(val)) return false;
-        idx.put(val, arr.size());
-        arr.add(val);
-        return true;
-    }
-
-    public boolean remove(int val) {
-        Integer i = idx.get(val);
-        if (i == null) return false;
-        int last = arr.get(arr.size() - 1);
-        arr.set(i, last);                 // move last member into the hole
-        idx.put(last, i);
-        arr.remove(arr.size() - 1);       // remove(int) = remove BY INDEX -> O(1) at the tail
-        idx.remove(val);                  // remove AFTER the overwrite (val may BE last)
-        return true;
-    }
-
-    public int getRandom() {
-        return arr.get(rand.nextInt(arr.size()));
-    }
-}
-```
-
-> **Two traps**: (1) do `idx.remove(val)` **after** `idx.put(last, i)` — when `val` *is* the last element the reversed order deletes the key you just wrote; (2) in Java, `arr.remove(arr.size()-1)` picks the `remove(int index)` overload — passing an `Integer` would call `remove(Object)` and delete by value.
-
-### 12) Word Ladder — LC 127 — bidirectional BFS with two frontier sets ⭐⭐⭐⭐
+### 10) Word Ladder — LC 127 — bidirectional BFS with two frontier sets ⭐⭐⭐⭐
 
 
 #### Core Idea
@@ -853,7 +726,7 @@ steps=4  begin={dot,lot}  end={dog,log,cog}
 
 > **Why check `cand in end` BEFORE `cand in words`**: frontier words were already deleted from `words` when they were generated, so the membership test would miss them. The meet test must come first.
 
-### 13) Odd Even Jump — LC 975 — an ORDERED set, for floor/ceiling
+### 11) Odd Even Jump — LC 975 — an ORDERED set, for floor/ceiling
 
 
 #### Core Idea
@@ -944,7 +817,7 @@ class Solution(object):
 
 > **Python has no built-in ordered set.** Options: `sortedcontainers.SortedList` (true O(log n), but not on LeetCode's default runtime for every language build), `bisect` over a list you keep sorted (query O(log n), **insert O(n)**), or sidestep it entirely — LC 975 also falls to sorting indices by value plus a monotonic stack in O(n log n).
 
-### 14) Lowest Common Ancestor of a Binary Tree III — LC 1650 — a set of ancestors
+### 12) Lowest Common Ancestor of a Binary Tree III — LC 1650 — a set of ancestors
 
 ```python
 # LC 1650. Lowest Common Ancestor of a Binary Tree III

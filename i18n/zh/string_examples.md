@@ -15,20 +15,20 @@
 一題一節，編號連續不跳號。每題只出現一次。
 先去 [string.md](./string.md) 讀它對應的模板，再回來看範例。
 
-<!-- d9b3e8520555 -->
+<!-- 50c1c161ae19 -->
 ### 題目索引
 
 | 分組 | 題目 |
 |---|---|
-| **解析與比較** | [2-1)](#2-1-compare-version-number--lc-165-), [2-2)](#2-2-add-two-numbers-ii--decode-string), [2-4)](#2-4-monotone-increasing-digits--lc-738), [2-5)](#2-5-validate-ip-address--lc-468), [2-8)](#2-8-roman-to-integer--lc-13-), [2-13)](#2-13-verifying-an-alien-dictionary--lc-953-) |
-| **分組與遊程編碼** | [2-3)](#2-3-count-and-say--lc-38), [2-18)](#2-18-expressive-words--lc-809) |
-| **建構與格式化** | [2-6)](#2-6-license-key-formatting--lc-482), [2-16)](#2-16-ambiguous-coordinates--lc-816), [2-19)](#2-19-integer-to-english-words--lc-273-) |
-| **搜尋與比對** | [2-7)](#2-7-repeated-string-match--lc-686), [2-10)](#2-10-palindromic-substrings--lc-647-), [2-11)](#2-11-repeated-substring-pattern--lc-459), [2-20)](#2-20-rotate-string--lc-796) |
-| **計數與貢獻法** | [2-9)](#2-9-count-unique-characters-of-all-substrings-of-a-given-string--lc-828), [2-15)](#2-15-count-pairs-of-equal-substrings-with-minimum-difference--lc-1794) |
-| **雙指標與原地操作** | [2-12)](#2-12-reverse-only-letters--lc-917), [2-14)](#2-14-longest-word-in-dictionary-through-deleting--lc-524) |
-| **前綴驗證** | [2-17)](#2-17-longest-word-in-dictionary--lc-720) |
-| **雙序列 DP** | [2-21)](#2-21-space-optimised-two-sequence-dp--lc-72-lc-1143-) |
-| **參考** | [2-22)](#2-22-additional-high-frequency-problems-reference) |
+| **解析與比較** | [2-1)](#2-1-compare-version-number--lc-165-), [2-3)](#2-3-monotone-increasing-digits--lc-738), [2-4)](#2-4-validate-ip-address--lc-468), [2-7)](#2-7-roman-to-integer--lc-13-), [2-12)](#2-12-verifying-an-alien-dictionary--lc-953-) |
+| **分組與遊程編碼** | [2-2)](#2-2-count-and-say--lc-38), [2-17)](#2-17-expressive-words--lc-809) |
+| **建構與格式化** | [2-5)](#2-5-license-key-formatting--lc-482), [2-15)](#2-15-ambiguous-coordinates--lc-816), [2-18)](#2-18-integer-to-english-words--lc-273-) |
+| **搜尋與比對** | [2-6)](#2-6-repeated-string-match--lc-686), [2-9)](#2-9-palindromic-substrings--lc-647-), [2-10)](#2-10-repeated-substring-pattern--lc-459), [2-19)](#2-19-rotate-string--lc-796) |
+| **計數與貢獻法** | [2-8)](#2-8-count-unique-characters-of-all-substrings-of-a-given-string--lc-828), [2-14)](#2-14-count-pairs-of-equal-substrings-with-minimum-difference--lc-1794) |
+| **雙指標與原地操作** | [2-11)](#2-11-reverse-only-letters--lc-917), [2-13)](#2-13-longest-word-in-dictionary-through-deleting--lc-524) |
+| **前綴驗證** | [2-16)](#2-16-longest-word-in-dictionary--lc-720) |
+| **雙序列 DP** | [2-20)](#2-20-space-optimised-two-sequence-dp--lc-72-lc-1143-) |
+| **參考** | [2-21)](#2-21-additional-high-frequency-problems-reference) |
 
 <!-- 598a9bfd2a3c -->
 ## LC 範例
@@ -40,61 +40,54 @@
 - 同時走訪兩個字串，逐段比較數字
 <!--CODE-->
 
-<!-- 5ebbe5eb6f49 -->
-### 2-2) Add Two Numbers II,  Decode String
-> **因重複而刪除**：`str_2_int_v2` — 一樣是逐位累加，只是寫成 `(res + int(i) % 10) * 10` 再除回來。
-
-- String -> Int
+<!-- 7aa3e8b81895 -->
+### 2-2) Count and say — LC 38
 <!--CODE-->
 
-<!-- f6ba2e488182 -->
-### 2-3) Count and say — LC 38
+<!-- aed4dacdc87a -->
+### 2-3) Monotone Increasing Digits — LC 738
 <!--CODE-->
 
-<!-- ed4f209c144d -->
-### 2-4) Monotone Increasing Digits — LC 738
+<!-- 7fa5343dbeca -->
+### 2-4) Validate IP Address — LC 468
 <!--CODE-->
 
-<!-- 214ad94a8081 -->
-### 2-5) Validate IP Address — LC 468
-<!--CODE-->
-
-<!-- e34b7ccf2ede -->
-### 2-6) License Key Formatting — LC 482
+<!-- 8dd8b6be3b5e -->
+### 2-5) License Key Formatting — LC 482
 > **因重複而刪除**：一份 30 行的「字串操作 + 暴力」版本，先去除分隔符、重新分組再接回去；留下來的反向掃描是同一個想法，九行就寫完。
 
 <!--CODE-->
 
-<!-- 0eb0b82b9736 -->
-### 2-7) Repeated String Match — LC 686
+<!-- 041e36315294 -->
+### 2-6) Repeated String Match — LC 686
 > **因重複而刪除**：另一份 Python 版本，用同樣的 `(res-1)*sa <= 2*max(sa,sb)` 上界，只是多加了一堆邊界情況分支。
 
 <!--CODE-->
 
-<!-- a37329593715 -->
-### 2-8) Roman to Integer — LC 13 ⭐⭐⭐⭐
+<!-- 38db13fee722 -->
+### 2-7) Roman to Integer — LC 13 ⭐⭐⭐⭐
 <!--CODE-->
 
-<!-- 041f74879b22 -->
-### 2-9) Count Unique Characters of All Substrings of a Given String — LC 828
+<!-- 7922f33a0076 -->
+### 2-8) Count Unique Characters of All Substrings of a Given String — LC 828
 > **因重複而刪除**：V1 那份跟這份逐字元完全相同，差別只在用 `string.ascii_uppercase` 取代字面字母表 — 而那段程式碼從沒寫出必要的 `import string`。它的說明保留下來，放在留存的程式碼上方。
 
 <!--CODE-->
 
-<!-- fd46fa145524 -->
-### 2-10) Palindromic Substrings — LC 647 ⭐⭐⭐⭐
+<!-- 9e7bbec09f56 -->
+### 2-9) Palindromic Substrings — LC 647 ⭐⭐⭐⭐
 > 這題的 O(n) 中心擴展法與 Manacher 解法在 [palindrome.md](./palindrome.md)；這裡留的是 O(n³) 暴力解，用來對照。
 
 <!--CODE-->
 
-<!-- 92a18f94d8f2 -->
-### 2-11) Repeated Substring Pattern — LC 459
+<!-- 64a8822c0cdf -->
+### 2-10) Repeated Substring Pattern — LC 459
 > KMP／Z-array 的解法在 [string_matching_kmp_rolling_hash.md](./string_matching_kmp_rolling_hash.md) 和 [advanced_string_algorithms.md](./advanced_string_algorithms.md)。
 
 <!--CODE-->
 
-<!-- 2831427b65bd -->
-### 2-12) Reverse Only Letters — LC 917
+<!-- 0cc67cc80103 -->
+### 2-11) Reverse Only Letters — LC 917
 
 **模式：選擇性反轉字元**
 - 只反轉英文字母
@@ -127,8 +120,8 @@
 - LC 541 Reverse String II（選擇性區間）
 - LC 151 Reverse Words in a String（以單字為單位反轉）
 
-<!-- 67d9dd7d0ab7 -->
-### 2-13) Verifying an Alien Dictionary — LC 953 ⭐⭐⭐⭐
+<!-- ae47a9a5a62e -->
+### 2-12) Verifying an Alien Dictionary — LC 953 ⭐⭐⭐⭐
 
 **模式：自訂字典序比較**
 - 把每個字元對應到它在外星字母序中的排名
@@ -147,8 +140,8 @@
 - LC 269 Alien Dictionary（拓撲排序，更難）
 - LC 242 Valid Anagram（字元次數映射）
 
-<!-- 7db0c0fc999c -->
-### 2-14) Longest Word in Dictionary through Deleting — LC 524
+<!-- ea7f2984f48b -->
+### 2-13) Longest Word in Dictionary through Deleting — LC 524
 
 **模式：子序列檢查 + 追蹤最佳候選**
 - 檢查字典中的單字能不能由 `s` 刪除若干字元得到（也就是是不是 `s` 的子序列）
@@ -172,8 +165,8 @@
 - LC 720 Longest Word in Dictionary（前綴導向，不同模式）
 - LC 1055 Shortest Way to Form String（子序列，要掃很多趟）
 
-<!-- 35da5df77834 -->
-### 2-15) Count Pairs of Equal Substrings With Minimum Difference — LC 1794
+<!-- 6e60df447738 -->
+### 2-14) Count Pairs of Equal Substrings With Minimum Difference — LC 1794
 
 **模式：首／末出現位置 + 最小差值計數**
 - LC 1794. Count Pairs of Equal Substrings With Minimum Difference (Medium)
@@ -203,8 +196,8 @@
 - LC 242 Valid Anagram（字元次數陣列）
 - LC 567 Permutation in String（字元位置映射 + 滑動視窗）
 
-<!-- 36b0c8e33d1f -->
-### 2-16) Ambiguous Coordinates — LC 816
+<!-- 8fb1c30a962e -->
+### 2-15) Ambiguous Coordinates — LC 816
 
 **模式：枚舉切點 + 產生合法的數字格式**
 - LC 816. Ambiguous Coordinates (Medium)
@@ -237,8 +230,8 @@
 - LC 468 Validate IP Address（每段的前導零／範圍規則）
 - LC 282 Expression Add Operators（在數字之間插入運算子）
 
-<!-- 571bec01c372 -->
-### 2-17) Longest Word in Dictionary — LC 720
+<!-- 7ed0376e44ad -->
+### 2-16) Longest Word in Dictionary — LC 720
 **模式：逐步前綴驗證** — 先把單字排序，維護一個「已經可以被建出來」的集合，然後只檢查**直接前綴**。從母文件的模板目錄搬過來：這是單一題目，不是一個家族。
 
 > **因重複而刪除**：`longestWord_v2`，唯一的差別是寫 `word[:len(word)-1]` 而不是 `word[:-1]`。
@@ -268,8 +261,8 @@
    - LC 745 Prefix and Suffix Search（Trie 變形）
    - LC 648 Replace Words（Trie + 前綴比對）
 
-<!-- 8340556360d2 -->
-### 2-18) Expressive Words — LC 809
+<!-- 76eecf869ba9 -->
+### 2-17) Expressive Words — LC 809
 > 實作 [string.md](./string.md#template-3-run-length-grouping-consecutive-character-groups--lc-696-) 的 **模板 3：遊程分組** — 先讀那邊。
 
 *變化點*：不是掃一個字串的分組，而是替**兩個**字串都建出 `(char, count)` 分組再對齊。兩個字串相符的條件是：分組*序列*要一一對上，而且每個來源分組要嘛大小相同，要嘛「可以被拉長」（`>= 3`）。
@@ -281,8 +274,8 @@
 - ⚠️ 擴展只能**變長**：`"aaa"` 無法對上 `"aaaa"`（需要 `n1 > n2`）。
 - ⚠️ 大小為 2 的分組永遠拉不出來（從 `"a"` 變成 `"aa"` 不合法）— 這就是 `>= 3` 規則。
 
-<!-- 790fd633bc9f -->
-### 2-19) Integer to English Words — LC 273 ⭐⭐⭐⭐
+<!-- 4d3b269ce1e8 -->
+### 2-18) Integer to English Words — LC 273 ⭐⭐⭐⭐
 > 實作 [string.md](./string.md#template-5-greedy-line-packing--space-distribution-text-wrapping--lc-68-) 的 **模板 5：貪婪排版 + 空白分配** — 同樣是「把片段收進 list，最後一次 join」的紀律，只是切法從按寬度換成按 3 位數一組。
 
 *變化點*：同樣是「把片段收進 list，最後一次 join」的紀律，但切分規則變成**每 3 位數一組**，而不是「能塞幾個字就塞幾個」。用 `List<String>` 再 join，比 `StringBuilder` + `trim()` 好，因為這樣根本不可能出現連續兩個空白的 bug。
@@ -294,20 +287,20 @@
 - ⚠️ 只有 `num == 0` 才輸出 "Zero"；中間出現的整組零必須**什麼都不輸出**。
 - ⚠️ 10..19 是不規則的英文字 — 要在進到十位數分支**之前**先處理 `n < 20`。
 
-<!-- 592515474ab8 -->
-### 2-20) Rotate String — LC 796
+<!-- 721ad9ded8d9 -->
+### 2-19) Rotate String — LC 796
 > 暴力解，O(n²)。O(n) 的寫法是 `goal in (s + s)` 這個小技巧加上 KMP — 見 [string_matching_kmp_rolling_hash.md](./string_matching_kmp_rolling_hash.md)。
 
 <!--CODE-->
 
-<!-- c118741c452a -->
-### 2-21) Space-Optimised Two-Sequence DP — LC 72, LC 1143 ⭐⭐⭐⭐⭐
+<!-- a679be1b77d6 -->
+### 2-20) Space-Optimised Two-Sequence DP — LC 72, LC 1143 ⭐⭐⭐⭐⭐
 > 這個**家族**歸 [dp_string.md](./dp_string.md) 管，二維模板歸 [dp.md](./dp.md) 管；這裡留下的是 O(min(m, n)) 空間的 **Python** 滾動列寫法，那兩份文件只有 Java 版。
 
 <!--CODE-->
 
-<!-- 6c61e741a785 -->
-### 2-22) Additional High-Frequency Problems (Reference)
+<!-- 19a00ea04d7d -->
+### 2-21) Additional High-Frequency Problems (Reference)
 沒有新模板 — 每題都是一句話就講完的想法，但出現頻率極高。
 
 | 題目 | LC # | 一句話想法 | 難度 |

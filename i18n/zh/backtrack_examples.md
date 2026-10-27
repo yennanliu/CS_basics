@@ -1,7 +1,7 @@
-<!-- 359f530a086b -->
+<!-- c5a98dc28b2b -->
 # 回溯 — 實戰題解
 
-> **範圍** — 回溯題解的長尾（LC 17、39、79、78、90、77、46、22、93、139、140、207），附遞迴軌跡與差一點就一樣的變形，每題每種語言只留一份正典解 — 它本身不教任何模板，每一節都指回它所實例化的那一個。
+> **範圍** — 回溯題解的長尾（LC 17、39、79、78、90、77、46、22、93、140、207），附遞迴軌跡與差一點就一樣的變形，每題每種語言只留一份正典解 — 它本身不教任何模板，每一節都指回它所實例化的那一個。
 > **另見**：[backtrack.md](./backtrack.md) — 這裡每個範例所實例化的模板，以及挑模板用的決策表；[backtrack_advanced.md](./backtrack_advanced.md) — Hard 等級的模板（LC 212、282、301）；[tree_backtrack.md](./tree_backtrack.md) — 樹上 root→leaf 的路徑題。
 
 <!-- 2de3e520ab98 -->
@@ -23,7 +23,7 @@
 - **核心想法**：每題每種語言只放一份正典解；只有當上方註解說明第二種寫法教到了第一種沒教的東西時，才會出現第二個版本
 - **什麼時候用**：當你已經知道該套哪個模板，想看它從頭到尾跑一遍的時候
 
-<!-- dd15e10f194e -->
+<!-- bcb1cd6ad2af -->
 ## 題型分類
 
 | § | 題目 | 實例化的模板 |
@@ -37,9 +37,8 @@
 | 7 | LC 46 Permutations（＋ LC 526、996、784） | [Template 5](./backtrack.md#template-5-permutations--lc-46-) |
 | 8 | LC 22 Generate Parentheses | 用計數器當限制條件 |
 | 9 | LC 93 Restore IP Addresses | [Template 8](./backtrack.md#template-8-palindrome-partitioning--lc-131-)，換成數值判斷式 |
-| 10 | LC 139 Word Break | 子字串之間的可達性（BFS，不是回溯） |
-| 11 | LC 140 Word Break II | [Template 8](./backtrack.md#template-8-palindrome-partitioning--lc-131-)，換成字典判斷式 |
-| 12 | LC 207 Course Schedule | DFS 搭配*在 visiting 集合上做 undo* — 環偵測 |
+| 10 | LC 140 Word Break II | [Template 8](./backtrack.md#template-8-palindrome-partitioning--lc-131-)，換成字典判斷式 |
+| 11 | LC 207 Course Schedule | DFS 搭配*在 visiting 集合上做 undo* — 環偵測 |
 
 <!-- 598a9bfd2a3c -->
 ## LC 範例
@@ -224,21 +223,8 @@ LC 79 回傳 **boolean** 而且會短路（`if dfs(...): return True`）。下�
 
 <!--CODE-->
 
-<!-- 3ab1b20880eb -->
-### 10) Word Break — LC 139
-
-> 放在這裡是因為它是下面 LC 140 的*判定版*雙胞胎 — 但注意它的解法是
-> **對起始索引做 BFS**，不是回溯：沒有東西需要 undo。
->
-> DP 的寫法在 [dp.md Template 1b](./dp.md#template-1b-prefix-partition-dp---lc-139)，而那裡最容易
-> 寫錯的就是巢狀順序 —— `for i: for word:` 正確，`for word: for i:` 會在 `"applepenapple"` 上
-> 安靜地回傳 `False`：
-> [dp_loop_order.md](./dp_loop_order.md#2-lc-139-word-break--one-recurrence-five-orders-)。
-
-<!--CODE-->
-
-<!-- 54c57cc0ab11 -->
-### 11) Word Break II — LC 140
+<!-- 3bc65ecbf257 -->
+### 10) Word Break II — LC 140
 
 > **V0** 是列舉*字典*（把每個單字接上去，再測試接出來的前綴）；**V1** 是列舉*字串*
 > （切出每一個前綴，再測試它在不在字典裡）— 該寫的是第二種，它遇到第一個不是單字的前綴就會剪枝。
@@ -246,8 +232,8 @@ LC 79 回傳 **boolean** 而且會短路（`if dfs(...): return True`）。下�
 
 <!--CODE-->
 
-<!-- 557c2bf25c6b -->
-### 12) Course Schedule — LC 207
+<!-- 0e6570887108 -->
+### 11) Course Schedule — LC 207
 
 > 從回溯的角度看：`visiting.remove(crs)` **就是**取消選擇那一步 — 這個集合裝的是目前的 DFS 路徑，
 > 所以在裡面重複出現就代表有環。Kahn／入度的做法見

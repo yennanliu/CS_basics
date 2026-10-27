@@ -420,44 +420,16 @@ day is what makes it greedy + heap rather than a concurrency count.
 | LC # | Problem | Shared pattern | Key difference |
 |------|---------|---------------|----------------|
 | 1751 | Max Number of Events That Can Be Attended II | Same events input | Events occupy the **whole** interval + values → DP + binary search, **not** heap |
-| 621 | Task Scheduler | Time sweep + heap, one slot per tick | Max heap on frequency + cooling queue (see [§ 17](#17-task-scheduler--lc-621-)) |
+| 621 | Task Scheduler | Time sweep + heap, one slot per tick | Max heap on frequency + cooling queue (see [§ 16](#16-task-scheduler--lc-621-)) |
 | 253 | Meeting Rooms II | Sort by start, min heap of end times | Counts *concurrent* intervals, doesn't pick a subset — its sweep **over-counts** here (see the trap above) |
-| 2406 | Divide Intervals Into Min Number of Groups | Sort by start, min heap of end times | Same as 253, interval-partition framing (see [§ 15](#15-divide-intervals-into-minimum-number-of-groups--lc-2406)) |
+| 2406 | Divide Intervals Into Min Number of Groups | Sort by start, min heap of end times | Same as 253, interval-partition framing (see [§ 14](#14-divide-intervals-into-minimum-number-of-groups--lc-2406)) |
 | 630 | Course Schedule III | Greedy by deadline + heap | Max heap **replace**: drop the longest course when overrunning |
 | 502 | IPO | Sort by one key, heap by another | Two-heap greedy (capital → max heap of profit) |
-| 871 | Min Number of Refueling Stops | Push reachable options, greedily pop best | Max heap of fuel, pop only when stuck (see [§ 13](#13-minimum-number-of-refueling-stops--lc-871)) |
+| 871 | Min Number of Refueling Stops | Push reachable options, greedily pop best | Max heap of fuel, pop only when stuck (see [§ 12](#12-minimum-number-of-refueling-stops--lc-871)) |
 | 1834 | Single-Threaded CPU | Advance time, push arrived tasks, pop best | Min heap on (processing time, index); time jumps to next arrival |
 | 767 | Reorganize String | One slot per position, greedy heap pick | Max heap on remaining count + last-used guard |
 
-### 8) Maximum Frequency Stack — LC 895
-```python
-# LC 895. Maximum Frequency Stack
-# IDEA : STACK
-# https://leetcode.com/problems/maximum-frequency-stack/solution/
-class FreqStack(object):
-
-    def __init__(self):
-        self.freq = collections.Counter()
-        self.group = collections.defaultdict(list)
-        self.maxfreq = 0
-
-    def push(self, x):
-        f = self.freq[x] + 1
-        self.freq[x] = f
-        if f > self.maxfreq:
-            self.maxfreq = f
-        self.group[f].append(x)
-
-    def pop(self):
-        x = self.group[self.maxfreq].pop()
-        self.freq[x] -= 1
-        if not self.group[self.maxfreq]:
-            self.maxfreq -= 1
-
-        return x
-```
-
-### 9) Find K Pairs with Smallest Sums — LC 373
+### 8) Find K Pairs with Smallest Sums — LC 373
 
 ```java
 // java
@@ -554,7 +526,7 @@ public List<List<Integer>> kSmallestPairs_0_1(int[] nums1, int[] nums2, int k) {
 }
 ```
 
-### 10) Kth Smallest Element in a Sorted Matrix — LC 378 ⭐⭐⭐⭐
+### 9) Kth Smallest Element in a Sorted Matrix — LC 378 ⭐⭐⭐⭐
 
 ```java
 // java
@@ -615,7 +587,7 @@ public int kthSmallest_0_1(int[][] matrix, int k) {
 }
 ```
 
-### 11) Minimum Deletions to Make Character Frequencies Unique — LC 1647
+### 10) Minimum Deletions to Make Character Frequencies Unique — LC 1647
 
 ```java
 // java
@@ -753,7 +725,7 @@ public int minDeletions_hashset(String s) {
  */
 ```
 
-### 12) Maximum Performance of a Team — LC 1383
+### 11) Maximum Performance of a Team — LC 1383
 
 ```java
 // java
@@ -900,7 +872,7 @@ public int maxPerformance(int n, int[] speed, int[] efficiency, int k) {
  */
 ```
 
-### 13) Minimum Number of Refueling Stops — LC 871
+### 12) Minimum Number of Refueling Stops — LC 871
 
 ```java
 // java
@@ -1049,7 +1021,7 @@ public int minRefuelStops_dp(int target, int startFuel, int[][] stations) {
  */
 ```
 
-### 14) Minimum Number of Visited Cells in a Grid — LC 2617
+### 13) Minimum Number of Visited Cells in a Grid — LC 2617
 
 ```java
 // java
@@ -1201,7 +1173,7 @@ public int minimumVisitedCells(int[][] grid) {
  */
 ```
 
-### 15) Divide Intervals Into Minimum Number of Groups — LC 2406
+### 14) Divide Intervals Into Minimum Number of Groups — LC 2406
 
 ```java
 // java
@@ -1303,7 +1275,7 @@ public int minGroups_v2(int[][] intervals) {
  */
 ```
 
-### 16) Minimize Deviation in Array — LC 1675
+### 15) Minimize Deviation in Array — LC 1675
 
 ```java
 // java
@@ -1402,7 +1374,7 @@ public int minimumDeviation(int[] nums) {
  */
 ```
 
-### 17) Task Scheduler — LC 621 ⭐⭐⭐⭐⭐
+### 16) Task Scheduler — LC 621 ⭐⭐⭐⭐⭐
 
 ```python
 # python
@@ -1512,7 +1484,7 @@ Tasks are stored as **negative** counts to fake a max-heap.
 | 1675 | Minimize Deviation in Array | Max heap + greedy shrink |
 | 295 | Find Median from Data Stream | Two-heap system |
 
-### 18) Most Frequent IDs — LC 3092
+### 17) Most Frequent IDs — LC 3092
 
 > Pattern: **Lazy Deletion** — see [heap_advanced.md § Lazy Deletion](./heap_advanced.md#1-lazy-deletion--heap--hashmap-of-truth-) for the general form.
 > Reference: `leetcode_python/Heap/most-frequent-ids.py`
@@ -1661,7 +1633,7 @@ class Solution {
 > The five examples below came from the old `priority_queue.md` and are **Java-first** — their
 > Python counterparts live in the templates in [heap.md](./heap.md).
 
-### 19) K Closest Points to Origin — LC 973 ⭐⭐⭐⭐⭐
+### 18) K Closest Points to Origin — LC 973 ⭐⭐⭐⭐⭐
 ```java
 // Java
 // LC 973 - Find K closest points to origin (0,0)
@@ -1710,7 +1682,7 @@ public int[][] kClosest_MinHeap(int[][] points, int k) {
 ```
 
 
-### 20) Reorganize String — LC 767 ⭐⭐⭐⭐
+### 19) Reorganize String — LC 767 ⭐⭐⭐⭐
 ```java
 // Java
 // LC 767 - Rearrange string so no adjacent characters are same
@@ -1768,7 +1740,7 @@ public String reorganizeString(String s) {
 ```
 
 
-### 21) Sliding Window Median — LC 480
+### 20) Sliding Window Median — LC 480
 ```java
 // Java
 // LC 480 - Return median of each sliding window of size k
@@ -1848,7 +1820,7 @@ private void remove(TreeMap<Integer, Integer> map, int val) {
 ```
 
 
-### 22) Sort Characters By Frequency — LC 451
+### 21) Sort Characters By Frequency — LC 451
 ```java
 // Java
 // LC 451 - Sort characters in string by frequency (descending)
@@ -1913,7 +1885,7 @@ public String frequencySort_Bucket(String s) {
 ```
 
 
-### 23) Last Stone Weight — LC 1046
+### 22) Last Stone Weight — LC 1046
 ```java
 // Java
 // LC 1046 - Smash two heaviest stones, return remaining weight
@@ -1956,19 +1928,18 @@ public int lastStoneWeight(int[] stones) {
 | 5 | The kth Factor of n | 1492 | Python | Max-heap capped at k |
 | 6 | Least Number of Unique Integers after K Removals | 1481 | Python | Counter + min-heap of counts |
 | 7 | Maximum Number of Events That Can Be Attended | 1353 | Python | Time sweep + deadline heap |
-| 8 | Maximum Frequency Stack | 895 | Python | Frequency-bucketed stacks (no heap needed) |
-| 9 | Find K Pairs with Smallest Sums | 373 | Java | K-way merge over a virtual grid |
-| 10 | Kth Smallest Element in a Sorted Matrix | 378 | Java | Max-heap of size k |
-| 11 | Minimum Deletions to Make Character Frequencies Unique | 1647 | Java | Frequency uniqueness — [heap_advanced.md](./heap_advanced.md) |
-| 12 | Maximum Performance of a Team | 1383 | Java | Sort + fixed-size heap — [heap_advanced.md](./heap_advanced.md) |
-| 13 | Minimum Number of Refueling Stops | 871 | Java | Greedy with regret — [heap_advanced.md](./heap_advanced.md) |
-| 14 | Minimum Number of Visited Cells in a Grid | 2617 | Java | Per-row/col PQ + lazy deletion — [heap_advanced.md](./heap_advanced.md) |
-| 15 | Divide Intervals Into Minimum Number of Groups | 2406 | Java | Interval scheduling — [heap.md](./heap.md#template-4-interval-scheduling-pattern--lc-253) |
-| 16 | Minimize Deviation in Array | 1675 | Java | Max-heap + greedy shrink |
-| 17 | Task Scheduler | 621 | Python | Max heap + cooling queue |
-| 18 | Most Frequent IDs | 3092 | Python + Java | Lazy deletion — [heap_advanced.md](./heap_advanced.md) |
-| 19 | K Closest Points to Origin | 973 | Java | Max-heap of size k |
-| 20 | Reorganize String | 767 | Java | Greedy string building |
-| 21 | Sliding Window Median | 480 | Java | Two ordered multisets (`TreeMap`) |
-| 22 | Sort Characters By Frequency | 451 | Java | Counter + max heap (bucket sort alt.) |
-| 23 | Last Stone Weight | 1046 | Java | Max-heap simulation |
+| 8 | Find K Pairs with Smallest Sums | 373 | Java | K-way merge over a virtual grid |
+| 9 | Kth Smallest Element in a Sorted Matrix | 378 | Java | Max-heap of size k |
+| 10 | Minimum Deletions to Make Character Frequencies Unique | 1647 | Java | Frequency uniqueness — [heap_advanced.md](./heap_advanced.md) |
+| 11 | Maximum Performance of a Team | 1383 | Java | Sort + fixed-size heap — [heap_advanced.md](./heap_advanced.md) |
+| 12 | Minimum Number of Refueling Stops | 871 | Java | Greedy with regret — [heap_advanced.md](./heap_advanced.md) |
+| 13 | Minimum Number of Visited Cells in a Grid | 2617 | Java | Per-row/col PQ + lazy deletion — [heap_advanced.md](./heap_advanced.md) |
+| 14 | Divide Intervals Into Minimum Number of Groups | 2406 | Java | Interval scheduling — [heap.md](./heap.md#template-4-interval-scheduling-pattern--lc-253) |
+| 15 | Minimize Deviation in Array | 1675 | Java | Max-heap + greedy shrink |
+| 16 | Task Scheduler | 621 | Python | Max heap + cooling queue |
+| 17 | Most Frequent IDs | 3092 | Python + Java | Lazy deletion — [heap_advanced.md](./heap_advanced.md) |
+| 18 | K Closest Points to Origin | 973 | Java | Max-heap of size k |
+| 19 | Reorganize String | 767 | Java | Greedy string building |
+| 20 | Sliding Window Median | 480 | Java | Two ordered multisets (`TreeMap`) |
+| 21 | Sort Characters By Frequency | 451 | Java | Counter + max heap (bucket sort alt.) |
+| 22 | Last Stone Weight | 1046 | Java | Max-heap simulation |

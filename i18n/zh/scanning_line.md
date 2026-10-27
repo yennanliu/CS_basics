@@ -1,8 +1,8 @@
-<!-- 5cb9c00ef4fb -->
+<!-- 54ce2d34bf01 -->
 # 掃描線（Line Sweep）演算法
 
 > **範圍** — 掃描線：把每個區間轉成 `+1` / `-1` 事件，依座標排序，掃過一次。
-> **另見** — [scanning_line_examples.md](./scanning_line_examples.md)：這些模板背後的六道詳解題；[intervals.md](./intervals.md)：不用事件的排序後合併；[difference_array.md](./difference_array.md)：同一招的陣列索引版本；[heap.md](./heap.md)：需要在存活區間上取最大值的掃描。
+> **另見** — [scanning_line_examples.md](./scanning_line_examples.md)：這些模板背後的五道詳解題；[intervals.md](./intervals.md)：不用事件的排序後合併；[difference_array.md](./difference_array.md)：同一招的陣列索引版本；[heap.md](./heap.md)：需要在存活區間上取最大值的掃描。
 
 <!-- c236dbddbe0e -->
 ## LeetCode 題目清單
@@ -521,15 +521,15 @@
 - **資料串流**：依序處理事件
 - **差分陣列**：高效的區間更新
 
-<!-- 6d4146d86387 -->
+<!-- cd97e7ffd163 -->
 ## 詳解範例
 
-六道題目收錄在 **[scanning_line_examples.md](./scanning_line_examples.md)**，
+五道題目收錄在 **[scanning_line_examples.md](./scanning_line_examples.md)**，
 依「掃描在數什麼」分組：
 
 | 分組 | 題目 |
 |---|---|
-| [計算重疊](./scanning_line_examples.md#counting-overlap) | LC 253, 2406, 731 |
+| [計算重疊](./scanning_line_examples.md#counting-overlap) | LC 253, 2406 |
 | [加權掃描](./scanning_line_examples.md#weighted-sweeps) | LC 2021 |
 | [掃描加堆積](./scanning_line_examples.md#sweep-plus-a-heap) | LC 1353 |
 | [雙指標求交集](./scanning_line_examples.md#two-pointer-intersection) | LC 986 |

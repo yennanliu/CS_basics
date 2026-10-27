@@ -921,7 +921,7 @@ count += right - left + 1  # All subarrays ending at 'right'
 
 | Looking for | Sheet |
 |---|---|
-| A worked solution to LC 567, 438, 1004, 424, 1838, 713, 413, 1151, 763 | [sliding_window_examples.md](./sliding_window_examples.md) |
+| A worked solution to LC 567, 438, 1004, 424, 1838, 713, 413, 1151 | [sliding_window_examples.md](./sliding_window_examples.md) |
 | Deque extrema, at-most-K-distinct family, exactly-K deep dive, complement / word-level / bucketed windows | [sliding_window_advanced.md](./sliding_window_advanced.md) |
 | The full monotonic-deque family (LC 239, 862, 1438, 1499) | [monotonic_queue.md](./monotonic_queue.md) |
 | Windows that may contain negatives → prefix sum + HashMap | [prefix_sum.md](./prefix_sum.md) |

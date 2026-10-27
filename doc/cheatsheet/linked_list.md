@@ -315,7 +315,7 @@ family is worked where it belongs, not re-pasted here:
 
 | LC | Problem | Worked in |
 |---|---|---|
-| 19 | Remove Nth Node From End | the visual walkthrough above, and [linked_list_examples.md](./linked_list_examples.md#9-remove-nth-node-from-end-of-list--lc-19) for both Java forms |
+| 19 | Remove Nth Node From End | the visual walkthrough above, and [linked_list_examples.md](./linked_list_examples.md#8-remove-nth-node-from-end-of-list--lc-19) for both Java forms |
 | 21 | Merge Two Sorted Lists | [linked_list_examples.md](./linked_list_examples.md#4-merge-two-sorted-lists--lc-21) |
 | 2 | Add Two Numbers | [1-1-7) below](#1-1-7-add-2-linked-list--lc-2) |
 | 203 | Remove Linked List Elements | [Remove Elements by Value Pattern](#remove-elements-by-value-pattern) below |
@@ -1744,12 +1744,12 @@ are holding it. Pick by what the answer needs, not by the problem's title.
 | reverse the **whole** list | **the 3-step loop**: cache next → flip → advance | O(1) space; the recursive form costs a frame per node for the same answer | [1-1-1)](#1-1-1-reverse-linked-list-iteration--lc-206) |
 | reverse a **segment** — `[left, right]`, every `k`, or pairs | **the reverse-k helper, returning 3 handles** | LC 92 / 25 / 24 differ only in *where the segment is*, never in how it reverses | [Reverse K Nodes Helper Pattern](#reverse-k-nodes-helper-pattern-) |
 | find the middle, detect a cycle, or reach the n-th **from the end** | **fast/slow pointers** | one pass, O(1) space, and no length to precompute | [1-1-8)](#1-1-8-find-linked-list-middle-point--lc-876), [2_pointers_linkedlist.md](./2_pointers_linkedlist.md) |
-| **reorder** — interleave, split, rotate, palindrome-check | **split with fast/slow → reverse the back half → merge** | every reorder problem is those three primitives in sequence; none of them is new | [examples 2)](./linked_list_examples.md#2-reorder-list--lc-143), [7)](./linked_list_examples.md#7-palindrome-linked-list--lc-234) |
+| **reorder** — interleave, split, palindrome-check | **split with fast/slow → reverse the back half → merge** | every reorder problem is those three primitives in sequence; none of them is new | [examples 2)](./linked_list_examples.md#2-reorder-list--lc-143), [palindrome](./2_pointers_linkedlist.md#1-1-6--palindrome-linked-list-find-mid---reverse-2nd-half---compare) |
 | merge **two** sorted lists | **dummy + a merge walk**, splicing nodes rather than copying values | the tail pointer is the whole trick: `cur.next = l1 or l2` finishes it | [examples 4)](./linked_list_examples.md#4-merge-two-sorted-lists--lc-21) |
-| merge **k** sorted lists, or sort one list | **divide and conquer** — pairwise merge, or merge sort via the middle | O(n log k) / O(n log n); a heap trades the recursion for O(k) space | [examples 5)](./linked_list_examples.md#5-merge-k-sorted-lists--lc-23), [14)](./linked_list_examples.md#14-sort-list-merge-sort-on-a-linked-list--lc-148-), [heap.md](./heap.md) |
+| merge **k** sorted lists, or sort one list | **divide and conquer** — pairwise merge, or merge sort via the middle | O(n log k) / O(n log n); a heap trades the recursion for O(k) space | [examples 5)](./linked_list_examples.md#5-merge-k-sorted-lists--lc-23), [13)](./linked_list_examples.md#13-sort-list-merge-sort-on-a-linked-list--lc-148-), [heap.md](./heap.md) |
 | do **arbitrary-position** reads *and* O(1) eviction — by recency, or by frequency | **doubly linked list + hash map** — one list, or one per frequency | the map gives you the node, the doubly-linked node gives you its neighbours — neither alone is enough | [Doubly Linked List + HashMap](#doubly-linked-list--hashmap-lru-cache-pattern-), [LFU Variant](#lfu-variant--one-list-per-frequency-plus-a-min_freq-pointer-lc-460-), [design.md](./design.md) |
-| do **arithmetic** on digits stored as a list | **carry loop over a dummy**, reversing first if the list is most-significant-first | the carry outlives both inputs, so the loop condition is `l1 or l2 or carry` | [1-1-7)](#1-1-7-add-2-linked-list--lc-2), [examples 13)](./linked_list_examples.md#13-plus-one-linked-list--lc-369) |
-| answer a question that needs **random access or a window** | **dump to an array first, then use the array technique** | prefix sums and monotonic stacks need indices; a list has none, and O(n) extra space is usually allowed | [examples 15)](./linked_list_examples.md#15-prefix-sum--hashmap-on-a-linked-list--lc-1171-), [16)](./linked_list_examples.md#16-monotonic-stack-over-a-linked-list--lc-1019-) |
+| do **arithmetic** on digits stored as a list | **carry loop over a dummy**, reversing first if the list is most-significant-first | the carry outlives both inputs, so the loop condition is `l1 or l2 or carry` | [1-1-7)](#1-1-7-add-2-linked-list--lc-2), [examples 12)](./linked_list_examples.md#12-plus-one-linked-list--lc-369) |
+| answer a question that needs **random access or a window** | **dump to an array first, then use the array technique** | prefix sums and monotonic stacks need indices; a list has none, and O(n) extra space is usually allowed | [examples 14)](./linked_list_examples.md#14-prefix-sum--hashmap-on-a-linked-list--lc-1171-), [15)](./linked_list_examples.md#15-monotonic-stack-over-a-linked-list--lc-1019-) |
 
 ### The four traps
 
@@ -1765,14 +1765,14 @@ are holding it. Pick by what the answer needs, not by the problem's title.
 ## 3) Worked Examples
 
 The full solutions moved to **[linked_list_examples.md](./linked_list_examples.md)** so the
-templates above are not buried under them. Seventeen problems, grouped by the technique each
+templates above are not buried under them. Sixteen problems, grouped by the technique each
 one exercises:
 
 | Group | Problems |
 |---|---|
 | [Reversal & reordering](./linked_list_examples.md#reversal--reordering) | LC 92, 143, 24 |
 | [Merging & splitting](./linked_list_examples.md#merging--splitting) | LC 21, 23, 725 |
-| [Fast/slow pointers & structure](./linked_list_examples.md#fastslow-pointers--structure) | LC 234, 160, 19 |
+| [Fast/slow pointers & structure](./linked_list_examples.md#fastslow-pointers--structure) | LC 160, 19 |
 | [Copying, flattening & components](./linked_list_examples.md#copying-flattening--components) | LC 138, 817, 430 |
 | [Arithmetic & sorting](./linked_list_examples.md#arithmetic--sorting-on-a-list) | LC 369, 148, 147 |
 | [Array techniques borrowed onto a list](./linked_list_examples.md#array-techniques-borrowed-onto-a-list) | LC 1171, 1019 |

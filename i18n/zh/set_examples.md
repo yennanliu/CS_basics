@@ -1,8 +1,8 @@
-<!-- a34eb8d2c24b -->
+<!-- e7be48129e8d -->
 # Set — 實戰題解
 
-> **範圍** — [set.md](./set.md) 背後的解法檔案庫：十四題，依「這個集合到底被拿來做什麼」分組 — 記住看過什麼、集合運算、用 O(1) 索引取代掃描，或是當成更大演算法裡的一個零件。
-> **另見**：[set.md](./set.md) — 母表：型別、基本操作、決策框架，以及 Python 對 Java 的差異筆記；[hash_map.md](./hash_map.md) — 當你除了 key 還需要 value；[hashing.md](./hashing.md) — 怎麼設計 key 本身，LC 694 和 LC 939 就靠這個；[bfs.md](./bfs.md) — LC 127 裡的前沿集合；[design.md](./design.md) — 從設計題角度看 LC 380。
+> **範圍** — [set.md](./set.md) 背後的解法檔案庫：十二題，依「這個集合到底被拿來做什麼」分組 — 記住看過什麼、集合運算、用 O(1) 索引取代掃描，或是當成更大演算法裡的一個零件。
+> **另見**：[set.md](./set.md) — 母表：型別、基本操作、決策框架，以及 Python 對 Java 的差異筆記；[hash_map.md](./hash_map.md) — 當你除了 key 還需要 value；[hashing.md](./hashing.md) — 怎麼設計 key 本身，LC 694 和 LC 939 就靠這個；[bfs.md](./bfs.md) — LC 127 裡的前沿集合。
 
 <!-- d19c3a8130bb -->
 ## LeetCode 題目清單
@@ -83,16 +83,11 @@
 
 <!--CODE-->
 
-<!-- 68b15b4ca934 -->
-### 6) Word Pattern — LC 290 — 一對一映射要雙向都檢查
-
-<!--CODE-->
-
 <!-- e80f3ffea011 -->
 ## 把集合當索引
 
-<!-- 1bbf4f1929ae -->
-### 7) Longest Consecutive Sequence — LC 128 — 只從一段連續的開頭起算 ⭐⭐⭐⭐⭐
+<!-- f77a0fc58ae1 -->
+### 6) Longest Consecutive Sequence — LC 128 — 只從一段連續的開頭起算 ⭐⭐⭐⭐⭐
 
 <!-- df92e872443e -->
 #### 核心想法
@@ -131,8 +126,8 @@
 | Longest Arithmetic Subsequence | 1027 | 任意公差，不只 1 | DP + hashmap |
 | Contains Duplicate | 217 | 只要偵測有沒有重複 | 比對集合大小 |
 
-<!-- 2f1fb11faa53 -->
-### 8) Valid Sudoku — LC 36 — 九個列、行、宮格的集合
+<!-- aec2ba2f8984 -->
+### 7) Valid Sudoku — LC 36 — 九個列、行、宮格的集合
 
 <!--CODE-->
 
@@ -145,8 +140,8 @@
 
 <!--CODE-->
 
-<!-- 0255694e62ec -->
-### 9) Minimum Area Rectangle — LC 939 — 一個裝編碼過的點的集合
+<!-- aba8ef4fcd06 -->
+### 8) Minimum Area Rectangle — LC 939 — 一個裝編碼過的點的集合
 
 <!-- b2468666fd1e -->
 #### 核心想法
@@ -167,40 +162,16 @@
 
 > **可雜湊性小抄** — Python：`tuple`/`frozenset` 可雜湊，`list`/`set`/`dict` 不行。Java：`int[]` 是以**identity** 做雜湊（`new HashSet<int[]>` 永遠什麼都查不到）— 請編碼成 `Integer`/`Long`/`String`，或用 `List<Integer>`，它是以值做雜湊的。
 
-<!-- 83e3c785989c -->
-### 10) Number of Distinct Islands — LC 694 — 一個裝正規化形狀的集合
+<!-- 6fe2ee9eafbe -->
+### 9) Number of Distinct Islands — LC 694 — 一個裝正規化形狀的集合
 
 <!--CODE-->
 
 <!-- 227c88d41a0d -->
 ## 集合在其他演算法裡
 
-<!-- e0b881782d99 -->
-### 11) Insert Delete GetRandom O(1) — LC 380 — 集合語意，陣列儲存 ⭐⭐⭐⭐
-
-<!-- cd75da1ed452 -->
-#### 核心想法
-
-**集合 + 密集陣列 — 所謂的「randomized set」**
-
-`HashSet` 提供 O(1) 的 `insert` / `remove` / `contains`，但它**沒辦法在 O(1) 內做 `getRandom()`** — 它沒有位置索引，要均勻隨機挑一個成員得花 O(n)。
-
-陣列可以 O(1) 索引，但沒辦法 O(1) 判斷成員。**兩個都用**，並保持同步：
-
-<!--CODE-->
-
-唯一麻煩的是**刪除**：從陣列中間移除是 O(n)。解法是**把最後一個元素換到那個洞裡**，再把尾巴 pop 掉 — `arr` 裡的順序無所謂，反正我們只會隨機取樣。
-
-<!--CODE-->
-
-<!--CODE-->
-
-<!--CODE-->
-
-> **兩個陷阱**：(1) `idx.remove(val)` 要放在 `idx.put(last, i)` **之後** — 當 `val` *就是*最後一個元素時，順序反過來會把你剛寫進去的 key 刪掉；(2) 在 Java 裡，`arr.remove(arr.size()-1)` 選到的是 `remove(int index)` 這個多載，傳 `Integer` 進去會呼叫到 `remove(Object)` 變成按值刪除。
-
-<!-- 31bb15c9ada3 -->
-### 12) Word Ladder — LC 127 — 用兩個前沿集合做雙向 BFS ⭐⭐⭐⭐
+<!-- bec42f1ca64a -->
+### 10) Word Ladder — LC 127 — 用兩個前沿集合做雙向 BFS ⭐⭐⭐⭐
 
 <!-- a6fc8d4850ab -->
 #### 核心想法
@@ -228,8 +199,8 @@
 
 > **為什麼 `cand in end` 要檢查在 `cand in words` 之前**：前沿裡的單字在被產生的當下就已經從 `words` 刪掉了，所以用 `words` 做成員判斷會漏掉它們。相遇判斷必須排在前面。
 
-<!-- 1a999a122976 -->
-### 13) Odd Even Jump — LC 975 — 需要的是「有序」集合，用來查 floor/ceiling
+<!-- 64c48570d6d5 -->
+### 11) Odd Even Jump — LC 975 — 需要的是「有序」集合，用來查 floor/ceiling
 
 <!-- 4ae838efc4b6 -->
 #### 核心想法
@@ -257,7 +228,7 @@ DP 是每個索引兩個布林值 — 「從這裡出發、以奇數／偶數次
 
 > **Python 沒有內建的有序集合。** 選項有：`sortedcontainers.SortedList`（真正的 O(log n)，但不是每個語言版本的 LeetCode 預設環境都有）、在你自己維持排序的 list 上用 `bisect`（查詢 O(log n)，但**插入 O(n)**），或乾脆繞過它 — LC 975 也可以用「照值排索引 + 單調堆疊」在 O(n log n) 解掉。
 
-<!-- de8c2f5d7dc2 -->
-### 14) Lowest Common Ancestor of a Binary Tree III — LC 1650 — 一個裝祖先的集合
+<!-- 96e068a70074 -->
+### 12) Lowest Common Ancestor of a Binary Tree III — LC 1650 — 一個裝祖先的集合
 
 <!--CODE-->

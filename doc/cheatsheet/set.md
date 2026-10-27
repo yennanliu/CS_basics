@@ -1,7 +1,7 @@
 # Set
 
 > **Scope** — Membership, dedup and set algebra — problems where you only need *presence*, not an associated value.
-> **See also**: [set_examples.md](./set_examples.md) — the fourteen worked problems; [hash_map.md](./hash_map.md) — when you need a value per key; [hashing.md](./hashing.md) — hashing internals; [Collection.md](./Collection.md) — picking a container.
+> **See also**: [set_examples.md](./set_examples.md) — the twelve worked problems; [hash_map.md](./hash_map.md) — when you need a value per key; [hashing.md](./hashing.md) — hashing internals; [Collection.md](./Collection.md) — picking a container.
 
 ## LeetCode Problem Lists
 
@@ -474,12 +474,12 @@ Problem Analysis:
 
 ## Worked Examples
 
-Fourteen problems live in **[set_examples.md](./set_examples.md)**, grouped by what the set is
+Twelve problems live in **[set_examples.md](./set_examples.md)**, grouped by what the set is
 actually being used *for* — which is rarely "storing things":
 
 | Group | What the set does | Problems |
 |---|---|---|
 | ["Have I seen this?"](./set_examples.md#have-i-seen-this-before) | membership as a memory of the past | LC 217, 136, 202, 141 |
-| [Set algebra](./set_examples.md#set-algebra) | intersection, difference, bijection | LC 349, 290 |
+| [Set algebra](./set_examples.md#set-algebra) | intersection, difference | LC 349 |
 | [The set as an index](./set_examples.md#the-set-as-an-index) | O(1) lookup that replaces a scan | LC 128, 36, 939, 694 |
-| [Inside other algorithms](./set_examples.md#sets-inside-other-algorithms) | a frontier, an ordered structure, or the visible half of a design | LC 380, 127, 975, 1650 |
+| [Inside other algorithms](./set_examples.md#sets-inside-other-algorithms) | a frontier, an ordered structure, or the visible half of a design | LC 127, 975, 1650 |

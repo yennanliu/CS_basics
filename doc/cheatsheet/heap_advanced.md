@@ -881,7 +881,7 @@ def mincostToHireWorkers(quality, wage, k):
 ```
 
 **Variation: Maximum Performance of a Team (LC 1383)** — same shape, opposite directions: sort by **efficiency descending** (the current efficiency is the team minimum), keep a **min-heap of speeds** of size `k` so the sum is maximised.
-Code for LC 1383: [heap_examples.md § Maximum Performance of a Team](./heap_examples.md#12-maximum-performance-of-a-team--lc-1383).
+Code for LC 1383: [heap_examples.md § Maximum Performance of a Team](./heap_examples.md#11-maximum-performance-of-a-team--lc-1383).
 
 **Key Observations:**
 - **Sort fixes the multiplicative factor, the heap optimises the additive factor.** Recognising which attribute to sort by is the entire problem.
@@ -1174,7 +1174,7 @@ def make_frequencies_unique(s):
 ```
 
 Java version of the max-heap approach, plus the sorting and `HashSet` alternatives:
-[heap_examples.md § Minimum Deletions to Make Character Frequencies Unique](./heap_examples.md#11-minimum-deletions-to-make-character-frequencies-unique--lc-1647).
+[heap_examples.md § Minimum Deletions to Make Character Frequencies Unique](./heap_examples.md#10-minimum-deletions-to-make-character-frequencies-unique--lc-1647).
 
 ### 10) Heap with Deduplication
 ```python
@@ -1200,7 +1200,7 @@ def solve_with_unique_heap(nums):
 |----|---------|--------------------------|
 | 632 | Smallest Range Covering Elements from K Lists | Also track the **max** of the k heap elements; every pop gives a window `[heap_min, running_max]` that covers all lists — stop when any list is exhausted |
 | 355 | Design Twitter | The "k sorted lists" are the followees' tweet lists (newest first); push each followee's head into a max-heap by timestamp, pop 10 times |
-| 373 / 378 | K Pairs with Smallest Sums / Kth Smallest in Sorted Matrix | Lists are **virtual** rows of a sorted grid — see [heap_examples.md § LC 373](./heap_examples.md#9-find-k-pairs-with-smallest-sums--lc-373) / [§ LC 378](./heap_examples.md#10-kth-smallest-element-in-a-sorted-matrix--lc-378-) |
+| 373 / 378 | K Pairs with Smallest Sums / Kth Smallest in Sorted Matrix | Lists are **virtual** rows of a sorted grid — see [heap_examples.md § LC 373](./heap_examples.md#8-find-k-pairs-with-smallest-sums--lc-373) / [§ LC 378](./heap_examples.md#9-kth-smallest-element-in-a-sorted-matrix--lc-378-) |
 
 ```python
 # python
@@ -1236,7 +1236,7 @@ When you can\'t remove arbitrary elements from a heap, mark them as invalid and 
 
 > This is the **"removed counter"** flavour. For the **"hashmap of truth"** flavour (value changed
 > rather than element removed), see [1) Lazy Deletion](#1-lazy-deletion--heap--hashmap-of-truth-)
-> and [heap_examples.md § Most Frequent IDs](./heap_examples.md#18-most-frequent-ids--lc-3092).
+> and [heap_examples.md § Most Frequent IDs](./heap_examples.md#17-most-frequent-ids--lc-3092).
 
 ```python
 import heapq

@@ -1,8 +1,8 @@
-<!-- aed7cf15e42a -->
+<!-- d98d5bdbb107 -->
 # Set（集合）
 
 > **範圍** — 成員判斷、去重與集合運算 — 只需要知道元素「在不在」、不需要對應值的題目。
-> **另見**：[set_examples.md](./set_examples.md) — 十四題實作範例；[hash_map.md](./hash_map.md) — 每個 key 需要帶一個值時看這裡；[hashing.md](./hashing.md) — 雜湊的內部原理；[Collection.md](./Collection.md) — 怎麼挑容器。
+> **另見**：[set_examples.md](./set_examples.md) — 十二題實作範例；[hash_map.md](./hash_map.md) — 每個 key 需要帶一個值時看這裡；[hashing.md](./hashing.md) — 雜湊的內部原理；[Collection.md](./Collection.md) — 怎麼挑容器。
 
 <!-- 500346ef99b4 -->
 ## LeetCode 題目清單
@@ -281,15 +281,15 @@
 - 「如果需要有序元素呢？」→ TreeSet 或有序 list
 - 「如果重複的元素還帶著不同資料呢？」→ 改用 HashMap
 
-<!-- 0258d2fcc520 -->
+<!-- 5eafd2b481c5 -->
 ## 實作範例
 
-十四題實作放在 **[set_examples.md](./set_examples.md)**，按照集合在題目裡「實際被拿來做什麼」分組 —
+十二題實作放在 **[set_examples.md](./set_examples.md)**，按照集合在題目裡「實際被拿來做什麼」分組 —
 而那通常都不是「拿來存東西」：
 
 | 分組 | 集合的角色 | 題目 |
 |---|---|---|
 | [「我看過這個嗎？」](./set_examples.md#have-i-seen-this-before) | 成員判斷就是對過去的記憶 | LC 217, 136, 202, 141 |
-| [集合代數](./set_examples.md#set-algebra) | 交集、差集、一對一映射 | LC 349, 290 |
+| [集合代數](./set_examples.md#set-algebra) | 交集、差集 | LC 349 |
 | [集合當索引用](./set_examples.md#the-set-as-an-index) | 用 O(1) 查詢取代一次掃描 | LC 128, 36, 939, 694 |
-| [藏在其他演算法裡](./set_examples.md#sets-inside-other-algorithms) | 當 frontier、當有序結構，或是某個設計題對外的那一半 | LC 380, 127, 975, 1650 |
+| [藏在其他演算法裡](./set_examples.md#sets-inside-other-algorithms) | 當 frontier、當有序結構，或是某個設計題對外的那一半 | LC 127, 975, 1650 |

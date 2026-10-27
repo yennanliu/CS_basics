@@ -12,12 +12,12 @@
 - [Hash Table](https://leetcode.com/problem-list/hash-table/)
 - [String](https://leetcode.com/problem-list/string/)
 
-<!-- 16122133931b -->
+<!-- 9e9040af78c1 -->
 ## 總覽
 
-這裡每一題的解法，都是 [sliding_window.md](./sliding_window.md) 六個模板的其中一個，把三個空格填好而已。標題已經標明用的是哪一個模板，所以先讀模板，這份文件就會變成一組模板的實例，而不是九道各自為政的題目。
+這裡每一題的解法，都是 [sliding_window.md](./sliding_window.md) 六個模板的其中一個，把三個空格填好而已。標題已經標明用的是哪一個模板，所以先讀模板，這份文件就會變成一組模板的實例，而不是八道各自為政的題目。
 
-<!-- bf98e13a6f4e -->
+<!-- 4144772df125 -->
 ### 題目索引
 
 | # | 題目 | LC# | 模板 | 語言 |
@@ -30,7 +30,6 @@
 | 6 | Frequency of the Most Frequent Element | 1838 | 3 — 最長視窗（先排序） | Java |
 | 7 | Subarray Product Less Than K | 713 | 6 — 計數槽 | Java, Python |
 | 8 | Arithmetic Slices | 413 | 自訂 — 回看連續段計數 | Python |
-| 9 | Partition Labels | 763 | 自訂 — 貪婪的最後出現位置視窗 | Java |
 
 > LC 3、LC 76、LC 209 **不在**這裡：它們是 [sliding_window.md](./sliding_window.md) 中模板 3、5、4 的實作本體，不重複陳述。
 
@@ -123,13 +122,6 @@
 ### 8) Arithmetic Slices — LC 413
 
 *這不是雙指標視窗，而是一個回看的連續段計數器。每個延續等差連續段的索引，會為它後面每一段仍然成立的延伸各貢獻一個切片。之所以放在這裡，是因為 LeetCode 把它歸類在滑動視窗，而且「一路往回看到條件斷掉為止」的迴圈用的是同一種直覺。*
-
-<!--CODE-->
-
-<!-- 8ff4f50b8237 -->
-### 9) Partition Labels — LC 763 ⭐⭐⭐⭐
-
-*貪婪視窗，沒有收縮階段：先預先算出每個字元最後出現的索引，掃描時一路把 `end` 往外拉，`i == end` 時就切一刀。這個視窗只會變大，然後重新開始。*
 
 <!--CODE-->
 

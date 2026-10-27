@@ -16,15 +16,15 @@ Read the template it instantiates in [string.md](./string.md) first, then the ex
 
 | Group | Problems |
 |---|---|
-| **Parsing & Comparison** | [2-1)](#2-1-compare-version-number--lc-165-), [2-2)](#2-2-add-two-numbers-ii--decode-string), [2-4)](#2-4-monotone-increasing-digits--lc-738), [2-5)](#2-5-validate-ip-address--lc-468), [2-8)](#2-8-roman-to-integer--lc-13-), [2-13)](#2-13-verifying-an-alien-dictionary--lc-953-) |
-| **Grouping & Run-Length** | [2-3)](#2-3-count-and-say--lc-38), [2-18)](#2-18-expressive-words--lc-809) |
-| **Building & Formatting** | [2-6)](#2-6-license-key-formatting--lc-482), [2-16)](#2-16-ambiguous-coordinates--lc-816), [2-19)](#2-19-integer-to-english-words--lc-273-) |
-| **Search & Matching** | [2-7)](#2-7-repeated-string-match--lc-686), [2-10)](#2-10-palindromic-substrings--lc-647-), [2-11)](#2-11-repeated-substring-pattern--lc-459), [2-20)](#2-20-rotate-string--lc-796) |
-| **Counting & Contribution** | [2-9)](#2-9-count-unique-characters-of-all-substrings-of-a-given-string--lc-828), [2-15)](#2-15-count-pairs-of-equal-substrings-with-minimum-difference--lc-1794) |
-| **Two-Pointer & In-Place** | [2-12)](#2-12-reverse-only-letters--lc-917), [2-14)](#2-14-longest-word-in-dictionary-through-deleting--lc-524) |
-| **Prefix Validation** | [2-17)](#2-17-longest-word-in-dictionary--lc-720) |
-| **Two-Sequence DP** | [2-21)](#2-21-space-optimised-two-sequence-dp--lc-72-lc-1143-) |
-| **Reference** | [2-22)](#2-22-additional-high-frequency-problems-reference) |
+| **Parsing & Comparison** | [2-1)](#2-1-compare-version-number--lc-165-), [2-3)](#2-3-monotone-increasing-digits--lc-738), [2-4)](#2-4-validate-ip-address--lc-468), [2-7)](#2-7-roman-to-integer--lc-13-), [2-12)](#2-12-verifying-an-alien-dictionary--lc-953-) |
+| **Grouping & Run-Length** | [2-2)](#2-2-count-and-say--lc-38), [2-17)](#2-17-expressive-words--lc-809) |
+| **Building & Formatting** | [2-5)](#2-5-license-key-formatting--lc-482), [2-15)](#2-15-ambiguous-coordinates--lc-816), [2-18)](#2-18-integer-to-english-words--lc-273-) |
+| **Search & Matching** | [2-6)](#2-6-repeated-string-match--lc-686), [2-9)](#2-9-palindromic-substrings--lc-647-), [2-10)](#2-10-repeated-substring-pattern--lc-459), [2-19)](#2-19-rotate-string--lc-796) |
+| **Counting & Contribution** | [2-8)](#2-8-count-unique-characters-of-all-substrings-of-a-given-string--lc-828), [2-14)](#2-14-count-pairs-of-equal-substrings-with-minimum-difference--lc-1794) |
+| **Two-Pointer & In-Place** | [2-11)](#2-11-reverse-only-letters--lc-917), [2-13)](#2-13-longest-word-in-dictionary-through-deleting--lc-524) |
+| **Prefix Validation** | [2-16)](#2-16-longest-word-in-dictionary--lc-720) |
+| **Two-Sequence DP** | [2-20)](#2-20-space-optimised-two-sequence-dp--lc-72-lc-1143-) |
+| **Reference** | [2-21)](#2-21-additional-high-frequency-problems-reference) |
 
 ## LC Examples
 
@@ -54,44 +54,7 @@ class Solution(object):
         return 0
 ```
 
-### 2-2) Add Two Numbers II,  Decode String
-> **Dropped as a duplicate**: `str_2_int_v2` — the same digit accumulation written as `(res + int(i) % 10) * 10` then divided back down.
-
-- String -> Int
-```text
-# 445 Add Two Numbers II
-# 394 Decode String
-def str_2_int(x):
-    r=0
-    for i in x:
-        r = int(r)*10 + int(i)
-        print (i, r)
-    return r
-
-# example 1
-x="131"
-r=str_2_int(x)
-print (r)
-# 1 1
-# 3 13
-# 1 131
-# 131
-
-# examle 2
-In [62]: z
-Out[62]: '5634'
-
-In [63]: ans = 0
-
-In [64]: for i in z:
-    ...:     ans = 10 * ans + int(i)
-    ...:
-
-In [65]: ans
-Out[65]: 5634
-```
-
-### 2-3) Count and say — LC 38
+### 2-2) Count and say — LC 38
 ```python
 # LC 038 Count and say
 # IDEA : ITERATION
@@ -115,7 +78,7 @@ class Solution:
         return res
 ```
 
-### 2-4) Monotone Increasing Digits — LC 738
+### 2-3) Monotone Increasing Digits — LC 738
 ```python
 # LC 738 Monotone Increasing Digits
 class Solution:
@@ -136,7 +99,7 @@ class Solution:
         return int(s) 
 ```
 
-### 2-5) Validate IP Address — LC 468
+### 2-4) Validate IP Address — LC 468
 ```python
 # LC 468. Validate IP Address
 # IDEA : Divide and Conquer
@@ -175,7 +138,7 @@ class Solution:
             return "Neither"
 ```
 
-### 2-6) License Key Formatting — LC 482
+### 2-5) License Key Formatting — LC 482
 > **Dropped as a duplicate**: a 30-line "string op + brute force" variant that stripped, regrouped and re-joined; the surviving reverse scan is the same idea in nine lines.
 
 ```python
@@ -194,7 +157,7 @@ class Solution(object):
         return "".join(reversed(result))
 ```
 
-### 2-7) Repeated String Match — LC 686
+### 2-6) Repeated String Match — LC 686
 > **Dropped as a duplicate**: a second Python variant with the same `(res-1)*sa <= 2*max(sa,sb)` bound plus extra edge-case branches.
 
 ```python
@@ -222,7 +185,7 @@ class Solution(object):
         return -1
 ```
 
-### 2-8) Roman to Integer — LC 13 ⭐⭐⭐⭐
+### 2-7) Roman to Integer — LC 13 ⭐⭐⭐⭐
 ```python
 # LC 13. Roman to Integer
 class Solution(object):
@@ -247,7 +210,7 @@ class Solution(object):
         return res
 ```
 
-### 2-9) Count Unique Characters of All Substrings of a Given String — LC 828
+### 2-8) Count Unique Characters of All Substrings of a Given String — LC 828
 > **Dropped as a duplicate**: the V1 copy was character-for-character identical to this one except for `string.ascii_uppercase` in place of the literal alphabet — which needs an `import string` the block never showed. Its explanation is kept, above the surviving code.
 
 ```python
@@ -281,7 +244,7 @@ class Solution(object):
             return res % (10**9 + 7)
 ```
 
-### 2-10) Palindromic Substrings — LC 647 ⭐⭐⭐⭐
+### 2-9) Palindromic Substrings — LC 647 ⭐⭐⭐⭐
 > The O(n) centre-expansion and Manacher treatments of this problem live in [palindrome.md](./palindrome.md); this is the O(n³) brute force kept for contrast.
 
 ```python
@@ -299,7 +262,7 @@ class Solution(object):
         return count
 ```
 
-### 2-11) Repeated Substring Pattern — LC 459
+### 2-10) Repeated Substring Pattern — LC 459
 > The KMP / Z-array treatments live in [string_matching_kmp_rolling_hash.md](./string_matching_kmp_rolling_hash.md) and [advanced_string_algorithms.md](./advanced_string_algorithms.md).
 
 ```python
@@ -324,7 +287,7 @@ class Solution(object):
         return False
 ```
 
-### 2-12) Reverse Only Letters — LC 917
+### 2-11) Reverse Only Letters — LC 917
 
 **Pattern: Selective Character Reversal**
 - Reverse only alphabetic characters
@@ -513,7 +476,7 @@ Final: "Qedo1ct-eeLg=ntse-T!"
 - LC 541 Reverse String II (selective ranges)
 - LC 151 Reverse Words in a String (word-level reversal)
 
-### 2-13) Verifying an Alien Dictionary — LC 953 ⭐⭐⭐⭐
+### 2-12) Verifying an Alien Dictionary — LC 953 ⭐⭐⭐⭐
 
 **Pattern: Custom Lexicographic Order Comparison**
 - Map each character to its rank in the alien order
@@ -614,7 +577,7 @@ Why return len1 <= len2 at the end?
 - LC 269 Alien Dictionary (topological sort, harder)
 - LC 242 Valid Anagram (character frequency mapping)
 
-### 2-14) Longest Word in Dictionary through Deleting — LC 524
+### 2-13) Longest Word in Dictionary through Deleting — LC 524
 
 **Pattern: Subsequence Check + Best Candidate Tracking**
 - Check if a dictionary word can be formed by deleting characters from `s` (i.e., is a subsequence of `s`)
@@ -751,7 +714,7 @@ Sorting approach trade-off:
 - LC 720 Longest Word in Dictionary (prefix-based, different pattern)
 - LC 1055 Shortest Way to Form String (subsequence with multiple passes)
 
-### 2-15) Count Pairs of Equal Substrings With Minimum Difference — LC 1794
+### 2-14) Count Pairs of Equal Substrings With Minimum Difference — LC 1794
 
 **Pattern: First/Last Character Occurrence + Minimum Difference Counting**
 - LC 1794. Count Pairs of Equal Substrings With Minimum Difference (Medium)
@@ -882,7 +845,7 @@ Why FIRST in firstString + LAST in secondString:
 - LC 242 Valid Anagram (character frequency array)
 - LC 567 Permutation in String (character position mapping + sliding window)
 
-### 2-16) Ambiguous Coordinates — LC 816
+### 2-15) Ambiguous Coordinates — LC 816
 
 **Pattern: Enumerate Splits + Generate Valid Number Formats**
 - LC 816. Ambiguous Coordinates (Medium)
@@ -1013,7 +976,7 @@ Final: 6 coordinates
 - LC 468 Validate IP Address (per-segment leading-zero / range rules)
 - LC 282 Expression Add Operators (insert operators between digits)
 
-### 2-17) Longest Word in Dictionary — LC 720
+### 2-16) Longest Word in Dictionary — LC 720
 **Pattern: Incremental Prefix Validation** — sort the words, keep a set of the ones already buildable, and check only the **immediate** prefix. Moved here from the parent sheet's template catalogue: one problem, not a family.
 
 > **Dropped as a duplicate**: `longestWord_v2`, which differed only in writing `word[:len(word)-1]` instead of `word[:-1]`.
@@ -1184,7 +1147,7 @@ public String longestWord(String[] words) {
    - LC 745 Prefix and Suffix Search (Trie variation)
    - LC 648 Replace Words (Trie + prefix matching)
 
-### 2-18) Expressive Words — LC 809
+### 2-17) Expressive Words — LC 809
 > Instantiates **Template 3: Run-Length Grouping** in [string.md](./string.md#template-3-run-length-grouping-consecutive-character-groups--lc-696-) — read that first.
 
 *Twist*: instead of scanning one string's groups, build `(char, count)` groups for **both**
@@ -1260,7 +1223,7 @@ private List<int[]> groups(String x) {
 - ⚠️ Extension only **grows** groups: `"aaa"` cannot match `"aaaa"` (need `n1 > n2`).
 - ⚠️ A group of size 2 can never be stretched (`"aa"` from `"a"` is invalid) — the `>= 3` rule.
 
-### 2-19) Integer to English Words — LC 273 ⭐⭐⭐⭐
+### 2-18) Integer to English Words — LC 273 ⭐⭐⭐⭐
 > Instantiates **Template 5: Greedy Line Packing + Space Distribution** in [string.md](./string.md#template-5-greedy-line-packing--space-distribution-text-wrapping--lc-68-) — same "collect pieces into a list, join once" discipline, chunked by 3 digits instead of by width.
 
 *Twist*: same "build pieces into a list, join once at the end" discipline, but the chunking rule
@@ -1344,7 +1307,7 @@ def numberToWords(num):
 - ⚠️ `num == 0` is the only "Zero"; an inner zero chunk must emit **nothing**.
 - ⚠️ 10..19 are irregular words — handle `n < 20` **before** the tens branch.
 
-### 2-20) Rotate String — LC 796
+### 2-19) Rotate String — LC 796
 > Brute force, O(n²). The O(n) form is the `goal in (s + s)` trick plus KMP — see [string_matching_kmp_rolling_hash.md](./string_matching_kmp_rolling_hash.md).
 
 ```python
@@ -1357,7 +1320,7 @@ class Solution(object):
         return False
 ```
 
-### 2-21) Space-Optimised Two-Sequence DP — LC 72, LC 1143 ⭐⭐⭐⭐⭐
+### 2-20) Space-Optimised Two-Sequence DP — LC 72, LC 1143 ⭐⭐⭐⭐⭐
 > The **family** is owned by [dp_string.md](./dp_string.md) and the 2D templates by [dp.md](./dp.md); what is kept here is the O(min(m, n))-space **Python** rolling-row form, which those sheets carry only in Java.
 
 ```python
@@ -1386,7 +1349,7 @@ def longestCommonSubsequence(text1, text2):
     return dp[n]
 ```
 
-### 2-22) Additional High-Frequency Problems (Reference)
+### 2-21) Additional High-Frequency Problems (Reference)
 No new template — each is a one-line idea, but they show up constantly.
 
 | Problem | LC # | One-line idea | Difficulty |

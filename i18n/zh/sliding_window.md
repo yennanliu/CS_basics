@@ -459,12 +459,12 @@
 | 「字串中的排列／字母重排」 | 固定視窗 + Counter 比對 |
 | 「最長的子陣列，其中沒有任兩個／任三個元素使得 …」 | 先確認規則是遺傳的，再只檢查新進元素（模板 7） |
 
-<!-- 484fb2d56b0d -->
+<!-- 2daa21e3abb2 -->
 ### 其他內容在哪
 
 | 想找什麼 | 去哪份文件 |
 |---|---|
-| LC 567、438、1004、424、1838、713、413、1151、763 的實作解法 | [sliding_window_examples.md](./sliding_window_examples.md) |
+| LC 567、438、1004、424、1838、713、413、1151 的實作解法 | [sliding_window_examples.md](./sliding_window_examples.md) |
 | 雙端佇列求極值、至多 K 個相異的家族、恰好 K 的深入探討、補集／單字層級／分桶視窗 | [sliding_window_advanced.md](./sliding_window_advanced.md) |
 | 完整的單調雙端佇列家族（LC 239、862、1438、1499） | [monotonic_queue.md](./monotonic_queue.md) |
 | 可能含負值的視窗 → 前綴和 + HashMap | [prefix_sum.md](./prefix_sum.md) |

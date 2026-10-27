@@ -600,31 +600,6 @@ def nextGreaterElement(nums1: list, nums2: list) -> list:
         stack.append(num)
 
     return [next_greater.get(n, -1) for n in nums1]
-
-# LC 503 Next Greater Element II (circular array)
-def nextGreaterElements(nums: list) -> list:
-    n = len(nums)
-    result = [-1] * n
-    stack = []  # stores indices
-
-    for i in range(2 * n):   # traverse twice for circular
-        while stack and nums[stack[-1]] < nums[i % n]:
-            result[stack.pop()] = nums[i % n]
-        if i < n:
-            stack.append(i)
-    return result
-
-# LC 739 Daily Temperatures — index-based answer map
-def dailyTemperatures(temps: list) -> list:
-    result = [0] * len(temps)
-    stack = []  # monotonic decreasing stack of indices
-
-    for i, t in enumerate(temps):
-        while stack and temps[stack[-1]] < t:
-            j = stack.pop()
-            result[j] = i - j
-        stack.append(i)
-    return result
 ```
 
 **Recognition cues**: "next greater/smaller", "how many days until warmer", "span of prices", "largest rectangle".
@@ -638,18 +613,6 @@ def dailyTemperatures(temps: list) -> list:
 **Idea**: Hash each window using polynomial rolling hash. Slide the window by removing the leftmost character and adding the new rightmost one in O(1).
 
 ```python
-# LC 187 Repeated DNA Sequences — find all length-10 substrings appearing ≥ 2 times
-def findRepeatedDnaSequences(s: str) -> list:
-    if len(s) <= 10:
-        return []
-    seen, repeated = set(), set()
-    for i in range(len(s) - 9):
-        sub = s[i:i+10]
-        if sub in seen:
-            repeated.add(sub)
-        seen.add(sub)
-    return list(repeated)
-
 # General Rabin-Karp rolling hash template
 def rabin_karp(s: str, pattern: str) -> list:
     """Return all start indices where pattern occurs in s."""
@@ -1502,113 +1465,7 @@ class Solution(object):
         return res
 ```
 
-### 2-4) Count Primes — LC 204
-```python
-# LC 204 Count Primes
-# IDEA : dict
-# https://leetcode.com/problems/count-primes/discuss/1343795/python%3A-sieve-of-eretosthenes
-# prime(x) : check if x is a prime
-# prime(0) = 0
-# prime(1) = 0
-# prime(2) = 0
-# prime(3) = 1
-# prime(4) = 2
-# prime(5) = 3
-# python 3
-class Solution:
-    def countPrimes(self, n):
-        # using sieve of eretosthenes algorithm
-        if n < 2: return 0
-        nonprimes = set()
-        for i in range(2, round(n**(1/2))+1):
-            if i not in nonprimes:
-                for j in range(i*i, n, i):
-                    nonprimes.add(j)
-        return n - len(nonprimes) - 2  # remove prime(1), prime(2)
-```
-
-### 2-5) Valid Sudoku — LC 36
-```python
-# python
-# LC 036 Valid Sudoku
-class Solution(object):
-    def isValidSudoku(self, board):
-        """
-        :type board: List[List[str]]
-        :rtype: bool
-        """
-        n = len(board)
-        return self.isValidRow(board) and self.isValidCol(board) and self.isValidNineCell(board)
-        
-    def isValidRow(self, board):
-        n = len(board)
-        for r in range(n):
-            row = [x for x in board[r] if x != '.']
-            if len(set(row)) != len(row): # if not repetition 
-                return False
-        return True
-
-    def isValidCol(self, board):
-        n = len(board)
-        for c in range(n):
-            col = [board[r][c] for r in range(n) if board[r][c] != '.']
-            if len(set(col)) != len(col): # if not repetition 
-                return False
-        return True
-
-    def isValidNineCell(self, board):
-        n = len(board)
-        for r in range(0, n, 3):
-            for c in range(0, n, 3):
-                cell = []
-                for i in range(3):
-                    for j in range(3):
-                        num = board[r + i][c + j]
-                        if num != '.':
-                            cell.append(num)
-                if len(set(cell)) != len(cell): # if not repetition 
-                    return False
-        return True
-```
-> **Note**: LC 36 asks only whether the board *as given* is valid — it does not ask you to
-> solve it. A backtracking solver answers a different question (that is LC 37) and can call an
-> invalid board valid, because it never checks the pre-filled cells against each other.
-
-```java
-// java
-// LC 36 Valid Sudoku
-// IDEA: one pass, three sets per index -- row, column and 3x3 box.
-//       The box index is (r/3)*3 + c/3, which is the whole trick.
-// time = O(81) = O(1), space = O(81) = O(1)
-public boolean isValidSudoku(char[][] board) {
-    Set<Character>[] rows = new HashSet[9];
-    Set<Character>[] cols = new HashSet[9];
-    Set<Character>[] boxes = new HashSet[9];
-    for (int i = 0; i < 9; i++) {
-        rows[i] = new HashSet<>();
-        cols[i] = new HashSet<>();
-        boxes[i] = new HashSet<>();
-    }
-
-    for (int r = 0; r < 9; r++) {
-        for (int c = 0; c < 9; c++) {
-            char v = board[r][c];
-            if (v == '.') continue;
-
-            /** NOTE !!! the box a cell belongs to */
-            int b = (r / 3) * 3 + c / 3;
-
-            // Set.add returns false when the value was already there -> duplicate
-            if (!rows[r].add(v) || !cols[c].add(v) || !boxes[b].add(v)) {
-                return false;
-            }
-        }
-    }
-    return true;
-}
-```
-
-### 2-6) Pairs of Songs With Total Durations Divisible by 60 — LC 1010
+### 2-4) Pairs of Songs With Total Durations Divisible by 60 — LC 1010
 ```python
 # LC 1010. Pairs of Songs With Total Durations Divisible by 60
 # IDEA : dict
@@ -1634,7 +1491,7 @@ class Solution(object):
         return pairs
 ```
 
-### 2-7) Subarray Sum Equals K — LC 560
+### 2-5) Subarray Sum Equals K — LC 560
 ```python
 # LC 560 : Subarray Sum Equals K
 
@@ -1712,7 +1569,7 @@ int subarraySum(int[] nums, int k){
 }
 ```
 
-### 2-8) K-diff Pairs in an Array — LC 532
+### 2-6) K-diff Pairs in an Array — LC 532
 ```python
 # LC 532 K-diff Pairs in an Array
 # V0
@@ -1767,7 +1624,7 @@ class Solution(object):
         return res
 ```
 
-### 2-9) Sentence Similarity — LC 734
+### 2-7) Sentence Similarity — LC 734
 ```python
 # LC 734. Sentence Similarity
 # V0'
@@ -1815,7 +1672,7 @@ class Solution(object):
         return True
 ```
 
-### 2-10) LRU Cache — LC 146
+### 2-8) LRU Cache — LC 146
 ```python
 # LC 146 LRU Cache
 # note : there is also array/queue approach
@@ -1858,7 +1715,7 @@ class LRUCache(OrderedDict):
             self.popitem(last = False)
 ```
 
-### 2-11) Find All Anagrams in a String — LC 438
+### 2-9) Find All Anagrams in a String — LC 438
 ```python
 # LC 438. Find All Anagrams in a String
 # IDEA : SLIDING WINDOW + collections.Counter()
@@ -1880,7 +1737,7 @@ class Solution(object):
         return ans
 ```
 
-### 2-12) Brick Wall — LC 554
+### 2-10) Brick Wall — LC 554
 ```python
 # LC 554. Brick Wall
 # IDEA : HASH TABLE + COUNTER UPDATE (looping every element in the list and cumsum and 
@@ -1901,7 +1758,7 @@ class Solution(object):
         return len(wall) - count
 ```
 
-### 2-13) Maximum Size Subarray Sum Equals k — LC 325
+### 2-11) Maximum Size Subarray Sum Equals k — LC 325
 
 ```java
 // LC 325 — prefix sum + hashmap, store FIRST occurrence (max length variant)
@@ -1922,7 +1779,7 @@ public int maxSubArrayLen(int[] nums, int k) {
 }
 ```
 
-### 2-14) Smallest Common Region — LC 1257
+### 2-12) Smallest Common Region — LC 1257
 
 ```java
 // java
@@ -1975,7 +1832,7 @@ public String findSmallestRegion_0_1(List<List<String>> regions, String region1,
 
 ---
 
-### 2-15) Tuple with Same Product (LC 1726)
+### 2-13) Tuple with Same Product (LC 1726)
 
 **Core Idea: Pair Product Frequency → Combination Counting**
 
@@ -2061,7 +1918,7 @@ Both forms are correct. The `4 * count * (count - 1)` form avoids integer divisi
 
 ---
 
-### 2-16) Minimum Operations to Sort Binary Tree by Level (LC 2471)
+### 2-14) Minimum Operations to Sort Binary Tree by Level (LC 2471)
 
 **Core Pattern: BFS per level + Minimum Swaps to Sort via `{value: index}` HashMap**
 
@@ -2257,7 +2114,7 @@ each level costs O(n log n) (sorting) instead of O(n²).
 
 ---
 
-### 2-17) Maximum Swap (LC 670)
+### 2-15) Maximum Swap (LC 670)
 
 **Core Pattern: `{digit: last index}` HashMap + greedy left-to-right scan**
 
@@ -2407,7 +2264,7 @@ def maximumSwap(num):
 
 ---
 
-### 2-18) Longest Repeating Character Replacement (LC 424)
+### 2-16) Longest Repeating Character Replacement (LC 424)
 
 **Core Pattern: Sliding Window + HashMap (frequency count) + `max_freq` tracking**
 
@@ -2523,7 +2380,7 @@ Total work = O(n + n) = O(n).
 
 ---
 
-### 2-19) Partition Labels — LC 763
+### 2-17) Partition Labels — LC 763
 
 **Idea**: a `{char: last index}` map turns "where does this letter last appear?" into an O(1) lookup; then a greedy left-to-right scan extends the current partition to the furthest last-index seen so far and cuts the moment the scan index reaches it.
 
@@ -2635,7 +2492,7 @@ class Solution(object):
 | Longest Substring with At Most Two Distinct Characters | 159 | Medium | Sliding Window | Track character count |
 | Longest Substring with At Most K Distinct Characters | 340 | Medium | Sliding Window | Generalize distinct limit |
 | Fruit Into Baskets | 904 | Medium | Sliding Window | At most 2 types |
-| Longest Repeating Character Replacement | 424 | Medium | Sliding Window | Track max frequency — [detailed pattern](#2-18-longest-repeating-character-replacement-lc-424) |
+| Longest Repeating Character Replacement | 424 | Medium | Sliding Window | Track max frequency — [detailed pattern](#2-16-longest-repeating-character-replacement-lc-424) |
 | Get Equal Substrings Within Budget | 1208 | Medium | Sliding Window | Cost constraint |
 | Max Consecutive Ones III | 1004 | Medium | Sliding Window | Flip at most K zeros |
 | Substring with Concatenation of All Words | 30 | Hard | Sliding Window | Multiple word matching |

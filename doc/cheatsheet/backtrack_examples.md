@@ -1,6 +1,6 @@
 # Backtracking — Worked LC Examples
 
-> **Scope** — The long tail of worked backtracking solutions (LC 17, 39, 79, 78, 90, 77, 46, 22, 93, 139, 140, 207) with their recursion traces and near-miss variations, one canonical solution per problem per language — it teaches no templates of its own, every section points back to the one it instantiates.
+> **Scope** — The long tail of worked backtracking solutions (LC 17, 39, 79, 78, 90, 77, 46, 22, 93, 140, 207) with their recursion traces and near-miss variations, one canonical solution per problem per language — it teaches no templates of its own, every section points back to the one it instantiates.
 > **See also**: [backtrack.md](./backtrack.md) — the templates every example here instantiates, and the decision table for picking one; [backtrack_advanced.md](./backtrack_advanced.md) — the hard-tier templates (LC 212, 282, 301); [tree_backtrack.md](./tree_backtrack.md) — root→leaf path problems on a tree.
 
 ## LeetCode Problem Lists
@@ -33,9 +33,8 @@ recursion trace, and the neighbouring problems that reuse the same loop with one
 | 7 | LC 46 Permutations (+ LC 526, 996, 784) | [Template 5](./backtrack.md#template-5-permutations--lc-46-) |
 | 8 | LC 22 Generate Parentheses | counters as constraints |
 | 9 | LC 93 Restore IP Addresses | [Template 8](./backtrack.md#template-8-palindrome-partitioning--lc-131-) with a numeric predicate |
-| 10 | LC 139 Word Break | reachability over substrings (BFS, not backtracking) |
-| 11 | LC 140 Word Break II | [Template 8](./backtrack.md#template-8-palindrome-partitioning--lc-131-) with a dictionary predicate |
-| 12 | LC 207 Course Schedule | DFS with an *undo on the visiting set* — cycle detection |
+| 10 | LC 140 Word Break II | [Template 8](./backtrack.md#template-8-palindrome-partitioning--lc-131-) with a dictionary predicate |
+| 11 | LC 207 Course Schedule | DFS with an *undo on the visiting set* — cycle detection |
 
 ## LC Examples
 
@@ -1147,39 +1146,7 @@ class Solution(object):
                 self.dfs(s[i:], path + [s[:i]], res)
 ```
 
-### 10) Word Break — LC 139
-
-> Listed here because it is the *decision* twin of LC 140 below — but note the solution is a
-> **BFS over start indices**, not a backtrack: there is nothing to undo.
->
-> The DP spelling is [dp.md Template 1b](./dp.md#template-1b-prefix-partition-dp---lc-139), and the
-> one thing it is easy to get wrong there is the loop nest — `for i: for word:` is correct,
-> `for word: for i:` silently returns `False` on `"applepenapple"`:
-> [dp_loop_order.md](./dp_loop_order.md#2-lc-139-word-break--one-recurrence-five-orders-).
-
-```python
-# python
-# LC 139 Word Break
-# IDEA : BFS
-class Solution:
-    def wordBreak(self, s, wordDict):
-        if not s or not wordDict:
-            return
-        q = collections.deque()
-        q.append(0)
-        visited = [None]*len(s)
-        while q:
-            i = q.popleft()
-            if not visited[i]:
-                for j in range(i+1,len(s)+1):                 
-                    if s[i:j] in wordDict:                    
-                        if j == len(s):
-                            return True  
-                        q.append(j)
-                visited[i]=True
-```
-
-### 11) Word Break II — LC 140
+### 10) Word Break II — LC 140
 
 > **V0** enumerates the *dictionary* (append each word, test the joined prefix); **V1**
 > enumerates the *string* (slice every prefix, test membership) — the second is the one to
@@ -1263,7 +1230,7 @@ class Solution:
         return res
 ```
 
-### 12) Course Schedule — LC 207
+### 11) Course Schedule — LC 207
 
 > The backtracking angle: `visiting.remove(crs)` **is** the un-choose step — the set holds the
 > current DFS path, so a repeat inside it means a cycle. See

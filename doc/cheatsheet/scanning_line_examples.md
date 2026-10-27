@@ -1,6 +1,6 @@
 # Sweep Line — Worked Examples
 
-> **Scope** — The worked-solution archive behind [scanning_line.md](./scanning_line.md): six problems grouped by what the sweep is actually counting — overlap depth, a weighted sum, a heap of live jobs, or the intersection of two sorted lists.
+> **Scope** — The worked-solution archive behind [scanning_line.md](./scanning_line.md): five problems grouped by what the sweep is actually counting — overlap depth, a weighted sum, a heap of live jobs, or the intersection of two sorted lists.
 > **See also**: [scanning_line.md](./scanning_line.md) — the parent sheet: eleven templates, the event-ordering and tie-break rules, and the pattern-selection strategy; [intervals.md](./intervals.md) — interval problems that do not need a sweep; [heap.md](./heap.md) — the structure behind the scheduling group; [difference_array.md](./difference_array.md) — the array counterpart to an event sweep; [greedy.md](./greedy.md) — why the deadline-heap schedule is optimal.
 
 ## LeetCode Problem Lists
@@ -147,31 +147,9 @@ public int minGroups_diff(int[][] intervals) {
 }
 ```
 
-### 3) My Calendar II — LC 731 — tracking double bookings
-
-> New booking is invalid only if it overlaps a double-booked segment; otherwise record overlap.
-
-```java
-// LC 731 - My Calendar II
-// IDEA: Track booked and overlaps lists; reject if new booking intersects any overlap
-// time = O(N^2), space = O(N)
-class MyCalendarTwo {
-    List<int[]> booked = new ArrayList<>(), overlaps = new ArrayList<>();
-    public boolean book(int start, int end) {
-        for (int[] ov : overlaps)
-            if (start < ov[1] && end > ov[0]) return false; // triple overlap
-        for (int[] bk : booked)
-            if (start < bk[1] && end > bk[0])
-                overlaps.add(new int[]{Math.max(start, bk[0]), Math.min(end, bk[1])});
-        booked.add(new int[]{start, end});
-        return true;
-    }
-}
-```
-
 ## Weighted Sweeps
 
-### 4) Brightest Position on Street — LC 2021
+### 3) Brightest Position on Street — LC 2021
 
 > Emit +1 at p−r and −1 at p+r+1; track position with maximum accumulated brightness.
 
@@ -293,7 +271,7 @@ class Solution:
 
 ## Sweep Plus a Heap
 
-### 5) Maximum Number of Events That Can Be Attended — LC 1353 ⭐⭐⭐⭐
+### 4) Maximum Number of Events That Can Be Attended — LC 1353 ⭐⭐⭐⭐
 
 
 > Reference: `leetcode_python/Heap/maximum-number-of-events-that-can-be-attended.py`
@@ -447,7 +425,7 @@ public int maxEvents(int[][] events) {
 
 ## Two-Pointer Intersection
 
-### 6) Interval List Intersections — LC 986
+### 5) Interval List Intersections — LC 986
 
 
 > Reference: `leetcode_python/Two_Pointers/interval-list-intersections.py` (V1-3 / V1-4)

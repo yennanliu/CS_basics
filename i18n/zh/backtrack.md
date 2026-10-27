@@ -299,13 +299,13 @@ LC 40 還額外需要同一層的重複跳過。
 
 <!--CODE-->
 
-<!-- 4c3f3253305f -->
+<!-- d408238af86f -->
 #### 類似題 — 切分題家族
 
 | LC | 題目 | 跟 LC 131 差在哪 |
 |----|------|------------------|
 | 93 | Restore IP Addresses | 關卡 = `0..255` 且無前導零；切分長度上限 3；結束條件還要求剛好 4 段（[實作解](./backtrack_examples.md#9-restore-ip-addresses--lc-93)） |
-| 140 | Word Break II | 關卡 = `piece in wordDict`；要對 `start` 做記憶化，否則 `"aaaa…aaab"` 會爆掉（[實作解](./backtrack_examples.md#11-word-break-ii--lc-140)） |
+| 140 | Word Break II | 關卡 = `piece in wordDict`；要對 `start` 做記憶化，否則 `"aaaa…aaab"` 會爆掉（[實作解](./backtrack_examples.md#10-word-break-ii--lc-140)） |
 | 139 | Word Break | 同一套搜尋，但它只問*能不能* —— 把路徑拿掉就塌縮成對 `start` 的 DP／BFS |
 | 132 | Palindrome Partitioning II | 問的是**最少切幾刀**，不是所有切法 —— 什麼都不用列舉，直接對 `start` 做 DP |
 | 842 | Split Array into Fibonacci Sequence | 關卡 = 「這一段等於前兩段相加」，所以遞迴要帶著前兩個值當狀態 |

@@ -110,51 +110,46 @@
 
 <!--CODE-->
 
-<!-- d2daa9beef8f -->
-### 7) Find K Closest Elements (LC 658)
-**做法**：用雙指標把陣列縮到剩 k 個元素
-<!--CODE-->
-
-<!-- cdb4e7bdbe78 -->
-### 8) Find Smallest Letter Greater Than Target (LC 744)
+<!-- 4c513f63070e -->
+### 7) Find Smallest Letter Greater Than Target (LC 744)
 **模式**：`while (l < r)` — 找插入位置
 <!--CODE-->
 
-<!-- 721e695bca82 -->
-### 9) Arranging Coins (LC 441)
+<!-- f463a731cf2a -->
+### 8) Arranging Coins (LC 441)
 **模式**：`while (l <= r)` — 用數學性質找精確值
 <!--CODE-->
 
-<!-- b37dd5dacf79 -->
-### 10) Find Minimum in Rotated Sorted Array II (LC 154)
+<!-- 128ffb363795 -->
+### 9) Find Minimum in Rotated Sorted Array II (LC 154)
 **模式**：`while (l < r)` — 處理旋轉陣列中的重複值
 <!--CODE-->
 
-<!-- e3c502cecdb2 -->
-### 11) Missing Element in Sorted Array (LC 1060)
+<!-- 1071d7138290 -->
+### 10) Missing Element in Sorted Array (LC 1060)
 **模式**：`while (l < r - 1)` — 用差距計算找出缺失元素
 <!--CODE-->
 
-<!-- 16caa2f86511 -->
-### 12) Median of Two Sorted Arrays (LC 4)
+<!-- 25911d6dec49 -->
+### 11) Median of Two Sorted Arrays (LC 4)
 > 對較短陣列的切分點做二分搜尋，用 O(log(min(M,N))) 找中位數。
 
 <!--CODE-->
 
-<!-- 535ab4bd1370 -->
-### 13) Time Based Key-Value Store (LC 981)
+<!-- a0e9ae29dedd -->
+### 12) Time Based Key-Value Store (LC 981)
 > 對每個 key，在排序好的時間戳上二分搜尋，找出最大且 <= 給定時間的那個。
 
 <!--CODE-->
 
-<!-- a5f0810749b5 -->
-### 14) Single Element in a Sorted Array (LC 540)
+<!-- d0c1465b29f9 -->
+### 13) Single Element in a Sorted Array (LC 540)
 > 成對的規律在單獨元素之後就被打破了；對偶數索引做二分搜尋。
 
 <!--CODE-->
 
-<!-- 7ff27886ddda -->
-### 15) Check If a Number Is Majority Element in a Sorted Array (LC 1150)
+<!-- c6b59e0d7601 -->
+### 14) Check If a Number Is Majority Element in a Sorted Array (LC 1150)
 
 <!-- 89360c4b7a61 -->
 #### 核心想法
@@ -238,8 +233,8 @@
 
 ---
 
-<!-- 20a3402eeac8 -->
-### 16) Find Right Interval (LC 436) ⭐⭐⭐⭐
+<!-- 1163a8ece0eb -->
+### 15) Find Right Interval (LC 436) ⭐⭐⭐⭐
 
 **做法**：把起點排序 + 做 **lower-bound** 二分搜尋，再把排序後的位置對回**原始索引**。
 
@@ -296,8 +291,8 @@
 
 ---
 
-<!-- 09a4326748a5 -->
-### 17) Find in Mountain Array (LC 1095) ⭐⭐⭐⭐⭐
+<!-- 2ab8b13a6b78 -->
+### 16) Find in Mountain Array (LC 1095) ⭐⭐⭐⭐⭐
 
 > **山形陣列**先嚴格遞增到峰值，再嚴格遞減。找出值等於 `target` 的**最小索引**（沒有就回 `-1`），只能用 `arr.get(i)` / `arr.length()` — 而且 `get()` 呼叫次數要越少越好。
 
@@ -332,8 +327,8 @@
 
 ---
 
-<!-- 283951b87730 -->
-### 18) Longest Increasing Subsequence — `tails` 陣列 (LC 300) ⭐⭐⭐⭐⭐
+<!-- fe4943a01cbb -->
+### 17) Longest Increasing Subsequence — `tails` 陣列 (LC 300) ⭐⭐⭐⭐⭐
 
 > 用 `O(n log n)` 求最長遞增子序列。`O(n²)` 的 DP 是預期中的第一個答案；二分搜尋版才是 FAANG 面試官接著要的追問。
 >
@@ -382,12 +377,12 @@
 
 ---
 
-<!-- 68565844b1ba -->
-### 19) Random Pick with Weight (LC 528) ⭐⭐⭐⭐
+<!-- 984b8709c90a -->
+### 18) Random Pick with Weight (LC 528) ⭐⭐⭐⭐
 
 > `pickIndex()` 回傳索引 `i` 的機率必須是 `w[i] / sum(w)`。
 
-<!-- bb04c18c2409 -->
+<!-- 554e120e106e -->
 #### 核心想法 — 把權重變成連續區段，再二分搜尋
 
 先算前綴和，在 `[1, total]` 之間抽一個均勻整數 `target`，回傳**第一個 `>= target` 的前綴和**（也就是 `lower_bound`）。每個索引 `i` 剛好佔掉 `total` 個位置中的 `w[i]` 個 → 機率正好是 `w[i] / total`。

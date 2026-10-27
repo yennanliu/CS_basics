@@ -319,7 +319,7 @@
 | 1801 | Number of Orders in the Backlog | 兩個**方向相反**、會互相吃掉對方的堆積：`buy` 是依價格的最大堆積，`sell` 是依價格的最小堆積。每筆新訂單在價格交叉時就跟另一個堆積撮合，剩下的再 push 進去。 |
 | 2102 | Sequentially Ordinal Rank Tracker | 兩個堆積以查詢指標為界把串流切開：最大堆積放「已回傳／更好的」，最小堆積放其餘；每次 `get()` 把一個元素跨過邊界搬過去。 |
 
-<!-- 421055e9c647 -->
+<!-- 6798eab60f88 -->
 ### 6) 依一個標準排序 + 對另一個標準用固定大小堆積
 > **什麼時候用**：目標式是兩個屬性的乘積／組合，例如 `cost = (選中的 k 個的 A 總和) * (選中的 k 個的 B 最大值)`。**依 B 排序**，這樣走訪時就固定住「B 的最大值」這個因子，再用一個大小為 `k` 的堆積在 A 上求最小／最大總和。這是 [Kth Element 模板](./heap.md#1-kth-element-template)的雙屬性版本。
 
@@ -328,7 +328,7 @@
 <!--CODE-->
 
 **變形：Maximum Performance of a Team（LC 1383）** — 形狀相同、方向相反：依**效率遞減**排序（當前效率就是團隊最小值），維護一個大小 `k`、放速度的**最小堆積**，讓總和最大化。
-LC 1383 的程式碼：[heap_examples.md § Maximum Performance of a Team](./heap_examples.md#12-maximum-performance-of-a-team--lc-1383)。
+LC 1383 的程式碼：[heap_examples.md § Maximum Performance of a Team](./heap_examples.md#11-maximum-performance-of-a-team--lc-1383)。
 
 **重點觀察：**
 - **排序固定住乘法因子，堆積最佳化加法因子。** 認出該依哪個屬性排序，就是整題的關鍵。
@@ -362,18 +362,18 @@ LC 1383 的程式碼：[heap_examples.md § Maximum Performance of a Team](./hea
 
 <!--CODE-->
 
-<!-- 227239dedf54 -->
+<!-- 0a9a693452c2 -->
 ### 9) 頻率唯一化 — 貪婪 + 堆積／HashSet
 <!--CODE-->
 
 最大堆積做法的 Java 版本，以及排序與 `HashSet` 兩種替代解：
-[heap_examples.md § Minimum Deletions to Make Character Frequencies Unique](./heap_examples.md#11-minimum-deletions-to-make-character-frequencies-unique--lc-1647)。
+[heap_examples.md § Minimum Deletions to Make Character Frequencies Unique](./heap_examples.md#10-minimum-deletions-to-make-character-frequencies-unique--lc-1647)。
 
 <!-- ad466219fc80 -->
 ### 10) 帶去重的堆積
 <!--CODE-->
 
-<!-- 78d6e555106e -->
+<!-- fd97bdfb4bda -->
 ### 11) k 路合併的各種變形
 
 **模板 2 的變形（骨架相同，只是簿記方式不同）：**
@@ -382,18 +382,18 @@ LC 1383 的程式碼：[heap_examples.md § Maximum Performance of a Team](./hea
 |----|---------|--------------------------|
 | 632 | Smallest Range Covering Elements from K Lists | 額外追蹤 k 個堆積元素的**最大值**；每次 pop 都給出一個涵蓋所有清單的視窗 `[heap_min, running_max]` — 任一清單耗盡就停 |
 | 355 | Design Twitter | 這裡的「k 個有序清單」是被追蹤者的推文清單（新的在前）；把每位被追蹤者的第一則推進以時間戳為鍵的最大堆積，pop 10 次 |
-| 373 / 378 | K Pairs with Smallest Sums／Kth Smallest in Sorted Matrix | 清單是有序格子中的**虛擬**列 — 見 [heap_examples.md § LC 373](./heap_examples.md#9-find-k-pairs-with-smallest-sums--lc-373)／[§ LC 378](./heap_examples.md#10-kth-smallest-element-in-a-sorted-matrix--lc-378-) |
+| 373 / 378 | K Pairs with Smallest Sums／Kth Smallest in Sorted Matrix | 清單是有序格子中的**虛擬**列 — 見 [heap_examples.md § LC 373](./heap_examples.md#8-find-k-pairs-with-smallest-sums--lc-373)／[§ LC 378](./heap_examples.md#9-kth-smallest-element-in-a-sorted-matrix--lc-378-) |
 
 <!--CODE-->
 
 **變形 — LC 1439 Find the Kth Smallest Sum of a Matrix With Sorted Rows**：不要去合併*各列*，而是**一列一列**地合併。維護一份由前 `r` 列組成的、最小的 k 個和的清單，再用跟 LC 373 相同的「k 個最小配對」技巧把它和第 `r+1` 列合併（最小堆積以 `(prev[0] + row[0], i=0, j=0)` 播種，展開 `(i+1, j)`／`(i, j+1)`，pop k 次後停）。這把指數級的搜尋降到 `O(m * k log k)`。
 
-<!-- b15c30b8eaca -->
+<!-- 18f42ab6ad72 -->
 ### 12) 延遲刪除 — 「刪除計數器」口味
 
 當你沒辦法從堆積裡移除任意元素時，就把它標記成無效，pop 的時候跳過。
 
-> 這是**「刪除計數器」**口味。至於**「雜湊表存真值」**口味（值被改掉而非元素被移除），見 [1) 延遲刪除](#1-lazy-deletion--heap--hashmap-of-truth-) 以及 [heap_examples.md § Most Frequent IDs](./heap_examples.md#18-most-frequent-ids--lc-3092)。
+> 這是**「刪除計數器」**口味。至於**「雜湊表存真值」**口味（值被改掉而非元素被移除），見 [1) 延遲刪除](#1-lazy-deletion--heap--hashmap-of-truth-) 以及 [heap_examples.md § Most Frequent IDs](./heap_examples.md#17-most-frequent-ids--lc-3092)。
 
 <!--CODE-->
 

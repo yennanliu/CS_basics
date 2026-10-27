@@ -333,29 +333,7 @@ public int firstBadVersion(int n) {
 }
 ```
 
-### 7) Find K Closest Elements (LC 658)
-**Approach**: Two pointers approach to shrink array to k elements
-```python
-# LC 658. Find K Closest Elements
-# V1'
-# https://blog.csdn.net/fuxuemingzhu/article/details/82968136
-# IDEA : TWO POINTERS 
-class Solution(object):
-    def findClosestElements(self, arr, k, x):
-        # since the array already sorted, arr[-1] must be the biggest one,
-        # while arr[0] is the smallest one
-        # so if the distance within arr[-1],  x >  arr[0],  x
-        # then remove the arr[-1] since we want to keep k elements with smaller distance,
-        # and vice versa (remove arr[0]) 
-        while len(arr) > k:
-            if x - arr[0] <= arr[-1] - x:
-                arr.pop()
-            else:
-                arr.pop(0)
-        return arr
-```
-
-### 8) Find Smallest Letter Greater Than Target (LC 744)
+### 7) Find Smallest Letter Greater Than Target (LC 744)
 **Pattern**: `while (l < r)` - Finding insertion position
 ```python
 # LC 744 Find Smallest Letter Greater Than Target
@@ -375,7 +353,7 @@ class Solution(object):
         return letters[l % len(letters)]
 ```
 
-### 9) Arranging Coins (LC 441)
+### 8) Arranging Coins (LC 441)
 **Pattern**: `while (l <= r)` - Finding exact value with mathematical property
 ```java
 // LC 441 Arranging Coins
@@ -399,7 +377,7 @@ public int arrangeCoins(int n) {
 }
 ```
 
-### 10) Find Minimum in Rotated Sorted Array II (LC 154)
+### 9) Find Minimum in Rotated Sorted Array II (LC 154)
 **Pattern**: `while (l < r)` - Handling duplicates in rotated array
 ```java
 // LC 154 Find Minimum in Rotated Sorted Array II (with duplicates)
@@ -426,7 +404,7 @@ public int findMin(int[] nums) {
 }
 ```
 
-### 11) Missing Element in Sorted Array (LC 1060)
+### 10) Missing Element in Sorted Array (LC 1060)
 **Pattern**: `while (l < r - 1)` - Finding missing elements with gap calculation
 ```python
 # LC 1060 Missing Element in Sorted Array
@@ -456,7 +434,7 @@ class Solution(object):
         return nums[l] + k - missing_count(l)
 ```
 
-### 12) Median of Two Sorted Arrays (LC 4)
+### 11) Median of Two Sorted Arrays (LC 4)
 > Binary search on partition of smaller array to find median in O(log(min(M,N))).
 
 ```java
@@ -486,7 +464,7 @@ public double findMedianSortedArrays(int[] nums1, int[] nums2) {
 }
 ```
 
-### 13) Time Based Key-Value Store (LC 981)
+### 12) Time Based Key-Value Store (LC 981)
 > For each key, binary search on sorted timestamps to find the largest <= given time.
 
 ```java
@@ -514,7 +492,7 @@ class TimeMap {
 }
 ```
 
-### 14) Single Element in a Sorted Array (LC 540)
+### 13) Single Element in a Sorted Array (LC 540)
 > Pair pattern breaks after the single element; binary search on even indices.
 
 ```java
@@ -533,7 +511,7 @@ public int singleNonDuplicate(int[] nums) {
 }
 ```
 
-### 15) Check If a Number Is Majority Element in a Sorted Array (LC 1150)
+### 14) Check If a Number Is Majority Element in a Sorted Array (LC 1150)
 
 #### Core Idea
 
@@ -691,7 +669,7 @@ value:  2  4 [5] 5  5  5 [5] 6  6
 
 ---
 
-### 16) Find Right Interval (LC 436) ⭐⭐⭐⭐
+### 15) Find Right Interval (LC 436) ⭐⭐⭐⭐
 
 **Approach**: Sort starts + **lower-bound** binary search, mapping sorted position back to the **original index**.
 
@@ -800,7 +778,7 @@ the original index. Same trick appears in LC 315 / LC 493.
 
 ---
 
-### 17) Find in Mountain Array (LC 1095) ⭐⭐⭐⭐⭐
+### 16) Find in Mountain Array (LC 1095) ⭐⭐⭐⭐⭐
 
 > A **mountain array** strictly increases to a peak, then strictly decreases. Find the **smallest index** whose value equals `target` (`-1` if absent), using only `arr.get(i)` / `arr.length()` — and as few `get()` calls as possible.
 
@@ -909,7 +887,7 @@ class Solution:
 
 ---
 
-### 18) Longest Increasing Subsequence — the `tails` Array (LC 300) ⭐⭐⭐⭐⭐
+### 17) Longest Increasing Subsequence — the `tails` Array (LC 300) ⭐⭐⭐⭐⭐
 
 > Longest Increasing Subsequence in `O(n log n)`. The `O(n²)` DP is the expected first answer; the binary-search version is the follow-up FAANG interviewers ask for.
 >
@@ -1038,7 +1016,7 @@ public int maxEnvelopes(int[][] envelopes) {
 
 ---
 
-### 19) Random Pick with Weight (LC 528) ⭐⭐⭐⭐
+### 18) Random Pick with Weight (LC 528) ⭐⭐⭐⭐
 
 > `pickIndex()` must return index `i` with probability `w[i] / sum(w)`.
 
@@ -1116,7 +1094,7 @@ class Solution:
 | 911 | Online Election | times array + leader-at-time array | upper bound − 1 (floor on time) |
 | 1146 | Snapshot Array | per-index list of `(snap_id, val)` | upper bound − 1 (latest value `<= snap_id`) |
 | 1348 | Tweet Counts Per Frequency | sorted tweet times per name | two bounds → count in `[start, end]` |
-| 981 | Time Based Key-Value Store | per-key sorted timestamps | upper bound − 1 (§13 above) |
+| 981 | Time Based Key-Value Store | per-key sorted timestamps | upper bound − 1 (§12 above) |
 
 > All six are the same template: **keep a sorted array, answer each query with `lower_bound` / `upper_bound − 1`.** Only the payload changes.
 

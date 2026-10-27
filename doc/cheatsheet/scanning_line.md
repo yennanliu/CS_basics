@@ -1,7 +1,7 @@
 # Scanning Line (Line Sweep) Algorithm
 
 > **Scope** — Line sweep — turn each interval into `+1` / `-1` events, sort by coordinate, sweep once.
-> **See also**: [scanning_line_examples.md](./scanning_line_examples.md) — the six worked problems behind these templates; [intervals.md](./intervals.md) — sort-and-merge without events; [difference_array.md](./difference_array.md) — the array-indexed version of the same trick; [heap.md](./heap.md) — sweeps that need a max over live intervals.
+> **See also**: [scanning_line_examples.md](./scanning_line_examples.md) — the five worked problems behind these templates; [intervals.md](./intervals.md) — sort-and-merge without events; [difference_array.md](./difference_array.md) — the array-indexed version of the same trick; [heap.md](./heap.md) — sweeps that need a max over live intervals.
 
 ## LeetCode Problem Lists
 
@@ -1175,12 +1175,12 @@ coord_map = {v: i for i, v in enumerate(sorted(coords))}
 
 ## Worked Examples
 
-Six problems live in **[scanning_line_examples.md](./scanning_line_examples.md)**, grouped by
+Five problems live in **[scanning_line_examples.md](./scanning_line_examples.md)**, grouped by
 what the sweep is counting:
 
 | Group | Problems |
 |---|---|
-| [Counting overlap](./scanning_line_examples.md#counting-overlap) | LC 253, 2406, 731 |
+| [Counting overlap](./scanning_line_examples.md#counting-overlap) | LC 253, 2406 |
 | [Weighted sweeps](./scanning_line_examples.md#weighted-sweeps) | LC 2021 |
 | [Sweep plus a heap](./scanning_line_examples.md#sweep-plus-a-heap) | LC 1353 |
 | [Two-pointer intersection](./scanning_line_examples.md#two-pointer-intersection) | LC 986 |

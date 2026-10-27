@@ -18,10 +18,10 @@ One section per problem. Each problem appears exactly once, filed under the temp
 | Group | Problems |
 |---|---|
 | [In-Place Rewriting (Fast/Slow)](#in-place-rewriting-fastslow) | LC 80, LC 283 |
-| [Converging Bidirectional Pointers](#converging-bidirectional-pointers) | LC 15, LC 16, LC 31, LC 42, LC 128, LC 344, LC 942 |
+| [Converging Bidirectional Pointers](#converging-bidirectional-pointers) | LC 15, LC 16, LC 31, LC 42, LC 344, LC 942 |
 | [Expand from Centre](#expand-from-centre) | LC 5, LC 214, LC 647, LC 680, LC 845 |
 | [Subsequence & Two-String Matching](#subsequence--two-string-matching) | LC 161, LC 165, LC 271, LC 524, LC 809, LC 953, LC 1023 |
-| [Pointers over Intervals, Matrices and Partitions](#pointers-over-intervals-matrices-and-partitions) | LC 57, LC 240, LC 763, LC 986, LC 2104 |
+| [Pointers over Intervals, Matrices and Partitions](#pointers-over-intervals-matrices-and-partitions) | LC 57, LC 240, LC 763, LC 986 |
 
 ## In-Place Rewriting (Fast/Slow)
 
@@ -847,81 +847,6 @@ class Solution:
                     right_max = height[right]
                 right -= 1  # move right pointer 
         return res
-```
-
-
-### Longest Consecutive Sequence — LC 128
-```python
-# LC 128 Longest Consecutive Sequence
-
-# V0
-# IDEA : sliding window
-class Solution(object):
-    def longestConsecutive(self, nums):
-        # edge case
-        if not nums:
-            return 0
-        nums = list(set(nums))
-        # if len(nums) == 1: # not necessary
-        #     return 1
-        # sort first
-        nums.sort()
-        res = 0
-        l = 0
-        r = 1
-        """
-        NOTE !!!
-
-        Sliding window here :
-            condition :  l, r are still in list (r < len(nums) and l < len(nums))
-
-            2 cases
-
-                case 1) nums[r] != nums[r-1] + 1
-                    -> means not continous, 
-                        -> so we need to move r to right (1 idx)
-                        -> and MOVE l to r - 1, since it's NOT possible to have any continous subarray within [l, r] anymore
-                case 2) nums[r] == nums[r-1] + 1
-                        -> means there is continous subarray currently, so we keep moving r to right (r+=1) and get current max sub array length (res = max(res, r-l+1))
-        """
-        while r < len(nums) and l < len(nums):
-            # case 1)
-            if nums[r] != nums[r-1] + 1:
-                r += 1
-                l = (r-1)
-            # case 2)
-            else:
-                res = max(res, r-l+1)
-                r += 1
-        # edge case : if res == 0, means no continous array (with len > 1), so we return 1 (a single alphabet can be recognized as a "continous assay", and its len = 1)
-        return res if res > 1 else 1
-
-# V0'
-# IDEA : SORTING + 2 POINTERS
-class Solution(object):
-    def longestConsecutive(self, nums):
-        # edge case
-        if not nums:
-            return 0
-
-        nums.sort()
-        cur_len = 1
-        max_len = 1
-        #print ("nums = " + str(nums))
-
-        # NOTE : start from idx = 1
-        for i in range(1, len(nums)):
-            ### NOTE : start from nums[i] != nums[i-1] case
-            if nums[i] != nums[i-1]:
-                ### NOTE : if nums[i] == nums[i-1]+1 : cur_len += 1
-                if nums[i] == nums[i-1]+1:
-                    cur_len += 1
-                ### NOTE : if nums[i] != nums[i-1]+1 : get max len, and reset cur_lent as 1
-                else:
-                    max_len = max(max_len, cur_len)
-                    cur_len = 1
-        # check max len again
-        return max(max_len, cur_len)
 ```
 
 
@@ -2905,50 +2830,3 @@ class Solution(object):
 | Sort Colors | 75 | Pointers shrink a range instead of a grid |
 | Container With Most Water | 11 | Same "drop the provably useless side" greedy |
 | Two Sum II | 167 | 1D version: `l++` / `r--` on a sorted array |
-
----
-
-
-### Sum of Subarray Ranges — LC 2104
-```python
-# LC 2104. Sum of Subarray Ranges
-# V0
-# IDEA : BRUTE FORCE
-class Solution:
-    def subArrayRanges(self, nums):
-        res = 0
-        for i in range(len(nums)):
-            curMin = float("inf")
-            curMax = -float("inf")
-            for j in range(i, len(nums)):
-                curMin = min(curMin, nums[j])
-                curMax = max(curMax, nums[j])
-                res += curMax - curMin
-        return res
-
-# V0'
-# IDEA : INCREASING STACK
-class Solution:
-    def subArrayRanges(self, A0):
-        res = 0
-        inf = float('inf')
-        A = [-inf] + A0 + [-inf]
-        s = []
-        for i, x in enumerate(A):
-            while s and A[s[-1]] > x:
-                j = s.pop()
-                k = s[-1]
-                res -= A[j] * (i - j) * (j - k)
-            s.append(i)
-            
-        A = [inf] + A0 + [inf]
-        s = []
-        for i, x in enumerate(A):
-            while s and A[s[-1]] < x:
-                j = s.pop()
-                k = s[-1]
-                res += A[j] * (i - j) * (j - k)
-            s.append(i)
-        return res
-```
-
