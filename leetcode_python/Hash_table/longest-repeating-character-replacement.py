@@ -101,6 +101,94 @@ class Solution(object):
 
 
 
+# V0-0-1
+# IDEA: SLIDE WINDOW + HELP FUNC (GPT)
+
+from collections import defaultdict
+
+class Solution(object):
+    def characterReplacement(self, s, k):
+        """
+        :type s: str
+        :type k: int
+        :rtype: int
+        """
+        if not s:
+            return 0
+
+        char_count = defaultdict(int)
+        n = len(s)
+        max_len = 0
+        l = 0
+
+        for r in range(n):
+            val_r = s[r]
+            char_count[val_r] += 1
+
+            while not self.is_valid(char_count, k, l, r):
+                val_l = s[l]
+                char_count[val_l] -= 1
+
+                if char_count[val_l] == 0:
+                    del char_count[val_l]
+
+                l += 1
+
+            max_len = max(max_len, r - l + 1)
+
+        return max_len
+
+    def is_valid(self, char_count, k, l, r):
+        max_occur = max(char_count.values())
+        window_len = r - l + 1
+
+        return window_len - max_occur <= k
+
+
+# V0-0-2
+# IDEA: SLIDE WINDOW + HELP FUNC + MAX CNT optimization (GPT)
+"""
+
+MAX CNT optimization
+
+->
+
+    在標準解法中，我們可以維護一個歷史最高頻率 max_freq，
+    不用每次都重新計算 max(char_count.values())。
+
+"""
+class Solution(object):
+    def characterReplacement(self, s, k):
+        """
+        :type s: str
+        :type k: int
+        :rtype: int
+        """
+        char_count = {}
+        l = 0
+        max_freq = 0
+        max_len = 0
+
+        for r in range(len(s)):
+            char = s[r]
+            char_count[char] = char_count.get(char, 0) + 1
+
+            """
+            NOTE !!! below
+            """
+            max_freq = max(max_freq, char_count[char])
+
+            while (r - l + 1) - max_freq > k:
+                left_char = s[l]
+                char_count[left_char] -= 1
+                l += 1
+
+            max_len = max(max_len, r - l + 1)
+
+        return max_len
+
+
+
 # V0-1
 # IDEA : SLIDING WINDOW + MAP + `op = (r-l+1) - max(cnt_map.values())`
 class Solution(object):
