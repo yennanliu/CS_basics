@@ -313,6 +313,14 @@
 
 			- Flatten Binary Tree to Linked List 
 				— LC 114 (!!!)
+				- 426
+				- 897
+
+			- (由下而上的多狀態貪婪）
+				- Binary Tree Cameras — LC 968
+				- 337
+				- 979
+				- 1373
 
 
 
