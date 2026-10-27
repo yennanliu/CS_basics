@@ -74,6 +74,17 @@ class Solution(object):
             # Try to shrink the window
             while self.is_valid(cnt_s, cnt_t):
 
+
+               """
+                NOTE !!!
+
+
+                we update result (res) within the while loop !!!
+
+                (since this is a `valid` condition)
+
+                
+                """
                 # Update answer BEFORE removing s[l]
                 if not ans or r - l + 1 < len(ans):
                     ans = s[l:r + 1]
@@ -88,6 +99,69 @@ class Solution(object):
     def is_valid(self, cnt_s, cnt_t):
         for k in cnt_t:
             if cnt_s[k] < cnt_t[k]:
+                return False
+
+        return True
+
+
+
+# V0-0-1
+# IDEA: SLIDE WINDOW + COUNTER (hashmap) (GPT)
+from collections import defaultdict, Counter
+
+class Solution(object):
+    def minWindow(self, s, t):
+        """
+        :type s: str
+        :type t: str
+        :rtype: str
+        """
+        # Edge cases
+        if not s or not t or len(t) > len(s):
+            return ""
+
+        cnt_c = Counter(t)
+        cnt_s_cur = defaultdict(int)
+
+        n = len(s)
+        l = 0
+        res = ""
+
+        for r in range(n):
+            val_r = s[r]
+            cnt_s_cur[val_r] += 1
+
+            # Shrink the window while it contains all required characters
+            while self.valid(cnt_s_cur, cnt_c, l, r):
+
+                """
+                NOTE !!!
+
+
+                we update result (res) within the while loop !!!
+
+                (since this is a `valid` condition)
+
+
+                """
+                # Update the shortest valid window
+                if not res or r - l + 1 < len(res):
+                    res = s[l:r + 1]
+
+                # Remove the leftmost character
+                val_l = s[l]
+                cnt_s_cur[val_l] -= 1
+
+                if cnt_s_cur[val_l] == 0:
+                    del cnt_s_cur[val_l]
+
+                l += 1
+
+        return res
+
+    def valid(self, cnt_s_cur, cnt_c, l, r):
+        for k in cnt_c:
+            if cnt_s_cur.get(k, 0) < cnt_c[k]:
                 return False
 
         return True
