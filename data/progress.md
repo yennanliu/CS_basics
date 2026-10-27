@@ -305,6 +305,16 @@
 			- Evaluate Division
 				— LC 399
 
+			- 修改與多狀態範例
+				- LC 1110
+				- 1325
+				- 669
+				- 1676
+
+			- Flatten Binary Tree to Linked List 
+				— LC 114 (!!!)
+
+
 
 
 
