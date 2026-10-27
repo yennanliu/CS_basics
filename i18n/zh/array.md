@@ -117,7 +117,7 @@
 
 <!--CODE-->
 
-<!-- f3642799e390 -->
+<!-- f497808f284c -->
 ##### **模式：二維陣列上的惰性迭代器 - LC 251** ⭐⭐⭐⭐
 
 **核心想法**：不要建出攤平的副本。在**原本的**二維陣列上維持兩個游標 `(row, col)`，
@@ -132,7 +132,7 @@
 | 適用於巨大或會變動的來源 | 否：它是一份快照 | 是：沒有任何東西被預先讀取 |
 
 `N` = 元素總數，`R` = 列數。積極版本在
-[array_examples.md §13](./array_examples.md#13-flatten-2d-vector--lc-251)。惰性版本才是
+[array_examples.md §8](./array_examples.md#8-flatten-2d-vector--lc-251)。惰性版本才是
 面試官說「設計一個迭代器」時要的答案，它也是 iterator.md 中
 [`hasNext()` / `next()` 契約](./iterator.md#1-2-the-hasnext--next-contract-) 的二維情形：
 深度固定為二，所以兩個索引就能取代堆疊。
@@ -644,13 +644,13 @@
 3. **索引當雜湊的前提是那些值本身要是合法索引。** 在拿值當偏移量*之前*，先把 `1..n` 之外的東西夾住或跳過，
    不然這招會變成陣列越界。
 
-<!-- 32f1c1cfcf14 -->
+<!-- a81ab9decee5 -->
 ## 3) 題目詳解
 
-十三道題目放在 **[array_examples.md](./array_examples.md)**：
+八道題目放在 **[array_examples.md](./array_examples.md)**：
 
 | 分組 | 題目 |
 |---|---|
 | [In-place rewriting & index tricks](./array_examples.md#in-place-rewriting--index-tricks) | LC 41, 287, 189, 238, 670 |
-| [Scanning & running state](./array_examples.md#scanning--running-state) | LC 121, 1567, 334, 849 |
-| [Counting, bookings & simulation](./array_examples.md#counting-bookings--simulation) | LC 1109, 1375, 1041, 406, 251 |
+| [Scanning & running state](./array_examples.md#scanning--running-state) | LC 334, 849 |
+| [Counting, bookings & simulation](./array_examples.md#counting-bookings--simulation) | LC 1375, 251 |

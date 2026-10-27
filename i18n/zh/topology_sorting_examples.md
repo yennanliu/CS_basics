@@ -1,8 +1,8 @@
-<!-- 4ba421a43d78 -->
+<!-- 66e81b4192e6 -->
 # 拓撲排序 — 實戰題解
 
-> **範圍** — [topology_sorting.md](./topology_sorting.md) 背後的解題檔案庫：八題、兩種語言，依照題目編碼出來的「相依關係形狀」分組，而不是依題號排。
-> **另見**：[topology_sorting.md](./topology_sorting.md) — 母頁：十個模板、題型分類，以及這些解法所套用的決策框架；[graph.md](./graph.md) — 圖的表示法與走訪通論；[bfs.md](./bfs.md) 與 [dfs.md](./dfs.md) — Kahn 與三色模板所依賴的兩種走訪；[union_find.md](./union_find.md) — LC 547 背後的併查集結構。
+> **範圍** — [topology_sorting.md](./topology_sorting.md) 背後的解題檔案庫：七題、兩種語言，依照題目編碼出來的「相依關係形狀」分組，而不是依題號排。
+> **另見**：[topology_sorting.md](./topology_sorting.md) — 母頁：十個模板、題型分類，以及這些解法所套用的決策框架；[graph.md](./graph.md) — 圖的表示法與走訪通論；[bfs.md](./bfs.md) 與 [dfs.md](./dfs.md) — Kahn 與三色模板所依賴的兩種走訪。
 
 <!-- ce782da61195 -->
 ## LeetCode 題目清單
@@ -137,11 +137,3 @@
 | 2603 | 收集樹中金幣 | 用剝葉子移除不必要的節點 |
 | 1377 | T 秒後青蛙的位置 | 從根開始在樹上跑 BFS |
 | 863 | 二元樹中所有距離為 K 的節點 | 從樹中某個節點跑 BFS |
-
-<!-- d7731e1e1c48 -->
-### 8) Number of Provinces — LC 547
-
-
-<!--CODE-->
-
-<!--CODE-->

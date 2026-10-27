@@ -1,7 +1,7 @@
-<!-- f9ccdb161352 -->
+<!-- d31fb216c86a -->
 # 掃描線 — 實戰題解
 
-> **範圍** — [scanning_line.md](./scanning_line.md) 背後的完整解題檔案：六道題目，依「掃描究竟在數什麼」分組 — 重疊深度、加權總和、存活工作的堆積，或兩個有序清單的交集。
+> **範圍** — [scanning_line.md](./scanning_line.md) 背後的完整解題檔案：五道題目，依「掃描究竟在數什麼」分組 — 重疊深度、加權總和、存活工作的堆積，或兩個有序清單的交集。
 > **另見**：[scanning_line.md](./scanning_line.md) — 母文件：十一個模板、事件排序與平手決勝規則，以及模式選擇策略；[intervals.md](./intervals.md) — 不需要掃描線的區間題；[heap.md](./heap.md) — 排程那一組背後的資料結構；[difference_array.md](./difference_array.md) — 事件掃描在陣列上的對應版本；[greedy.md](./greedy.md) — 為什麼截止期限堆積的排程是最佳解。
 
 <!-- af417ec2ca72 -->
@@ -45,18 +45,11 @@
 
 <!--CODE-->
 
-<!-- e68f8233642a -->
-### 3) My Calendar II — LC 731 — 追蹤重複預訂
-
-> 只有當新預訂和一段已被重複預訂（double-booked）的區段重疊時才算不合法；否則就把這次重疊記錄下來。
-
-<!--CODE-->
-
 <!-- 67ef62156cb3 -->
 ## 加權掃描
 
-<!-- 1773bc4e11f0 -->
-### 4) Brightest Position on Street — LC 2021
+<!-- f7627ec6d52b -->
+### 3) Brightest Position on Street — LC 2021
 
 > 在 p−r 發出 +1、在 p+r+1 發出 −1；追蹤累積亮度最大的位置。
 
@@ -67,8 +60,8 @@
 <!-- 43b9f2c39479 -->
 ## 掃描線加上堆積
 
-<!-- be4f388ad1de -->
-### 5) Maximum Number of Events That Can Be Attended — LC 1353 ⭐⭐⭐⭐
+<!-- e1a2192a071e -->
+### 4) Maximum Number of Events That Can Be Attended — LC 1353 ⭐⭐⭐⭐
 
 
 > 參考程式：`leetcode_python/Heap/maximum-number-of-events-that-can-be-attended.py`
@@ -152,8 +145,8 @@
 <!-- 99196e6a0b9b -->
 ## 雙指標求交集
 
-<!-- 00c87a21d453 -->
-### 6) Interval List Intersections — LC 986
+<!-- a5c9a2528949 -->
+### 5) Interval List Intersections — LC 986
 
 
 > 參考程式：`leetcode_python/Two_Pointers/interval-list-intersections.py`（V1-3 / V1-4）

@@ -1,6 +1,6 @@
 # Array — Worked Examples
 
-> **Scope** — The worked-solution archive behind [array.md](./array.md): thirteen problems that are genuinely about rewriting an array in place or using its indices as storage, grouped by the trick each one turns on.
+> **Scope** — The worked-solution archive behind [array.md](./array.md): eight problems that are genuinely about rewriting an array in place or using its indices as storage, grouped by the trick each one turns on.
 > **See also**: [array.md](./array.md) — the parent sheet: the basic operations, the special algorithms and the chooser table that says which sheet a problem actually belongs to; [2_pointers.md](./2_pointers.md), [sliding_window.md](./sliding_window.md), [prefix_sum.md](./prefix_sum.md), [difference_array.md](./difference_array.md) — the four pattern families that own most array-tagged problems; [sort.md](./sort.md), [matrix.md](./matrix.md), [kadane_algorithm.md](./kadane_algorithm.md), [stock_trading.md](./stock_trading.md) — the other owners the chooser routes to.
 
 ## LeetCode Problem Lists
@@ -19,11 +19,8 @@ algorithms and the chooser table; this file keeps the problems that *apply* them
 
 ### A Note on Overlap
 
-Five of these problems are also worked in the sheet that owns their *technique* — LC 121 in
-[stock_trading.md](./stock_trading.md) and [kadane_algorithm.md](./kadane_algorithm.md),
-LC 1109 in [difference_array.md](./difference_array.md), LC 1567 in
-[kadane_algorithm.md](./kadane_algorithm.md), LC 251 in [design.md](./design.md), and LC 406 in
-[sort.md](./sort.md). The copies are deliberate for now: reconciling them is the cross-file
+One of these problems is also worked in the sheet that owns its *technique* — LC 251 in
+[design.md](./design.md). The copy is deliberate for now: reconciling it is the cross-file
 consolidation pass, not a per-sheet job.
 
 
@@ -362,120 +359,7 @@ class Solution(object):
 
 ## Scanning & Running State
 
-### 5) Best Time to Buy and Sell Stock — LC 121 ⭐⭐⭐⭐
-
-```python
-# LC 121 Best Time to Buy and Sell Stock
-# V0
-# IDEA : array op + problem understanding
-class Solution(object):
-    def maxProfit(self, prices):
-        if len(prices) == 0:
-            return 0
-        ### NOTE : we define 1st minPrice as prices[0]
-        minPrice = prices[0]
-        maxProfit = 0
-        ### NOTE : we only loop prices ONCE
-        for p in prices:
-            # only if p < minPrice, we get minPrice
-            if p < minPrice:
-                minPrice = p
-            ### NOTE : only if p - minPrice > maxProfit, we get maxProfit
-            elif p - minPrice > maxProfit:
-                maxProfit = p - minPrice
-        return maxProfit
-```
-
-**Variation — LC 122 Best Time to Buy and Sell Stock II (unlimited transactions):** the twist is that with unlimited buys/sells you no longer need to track `minPrice` at all — just **sum every positive day-to-day delta** (every upward step can be captured independently).
-
-```python
-# python
-# LC 122 - Best Time to Buy and Sell Stock II
-# IDEA: unlimited transactions -> greedily collect EVERY upward move
-class Solution(object):
-    def maxProfit(self, prices):
-        # time = O(n), space = O(1)
-        profit = 0
-        for i in range(1, len(prices)):
-            # buy at i-1, sell at i, whenever it goes up
-            if prices[i] > prices[i - 1]:
-                profit += prices[i] - prices[i - 1]
-        return profit
-```
-
-```java
-// java
-// LC 122 - Best Time to Buy and Sell Stock II
-// IDEA: unlimited transactions -> greedily collect EVERY upward move
-public int maxProfit(int[] prices) {
-    // time = O(n), space = O(1)
-    int profit = 0;
-    for (int i = 1; i < prices.length; i++) {
-        if (prices[i] > prices[i - 1]) {
-            profit += prices[i] - prices[i - 1];
-        }
-    }
-    return profit;
-}
-```
-
-> **Why the greedy is correct:** any profitable interval `[i, j]` telescopes into the sum of its daily deltas (`p[j] - p[i] = Σ (p[k+1] - p[k])`), and dropping the negative deltas can only increase the total. So "sum of positive deltas" is an upper bound that is also achievable.
->
-> **Contrast:** LC 121 = **1** transaction → track running min. LC 122 = **∞** transactions → sum positive deltas.
-
-### 6) Maximum Length of Subarray With Positive Product — LC 1567
-
-```python
-# LC 1567 Maximum Length of Subarray With Positive Product
-
-# V0
-class Solution:
-    def getMaxLen(self, nums):
-        first_neg, zero = None, -1
-        mx = neg = 0
-        for i,v in enumerate(nums):
-            if v == 0:
-                first_neg, zero, neg = None, i, 0
-                continue
-            if v < 0:
-                neg += 1
-                if first_neg == None:
-                    first_neg = i
-            j = zero if not neg % 2 else first_neg if first_neg != None else 10**9
-            mx = max(mx, i-j)
-        return mx
-
-# V0'
-# IDEA : 2 POINTERS
-class Solution:
-    def getMaxLen(self, nums):
-        res = 0
-        k = -1 # most recent 0
-        j = -1 # first negative after most recent 0
-        cnt = 0 # count of negatives after most recent 0
-        for i, n in enumerate(nums):
-            if n == 0:
-                k = i
-                j = i
-                cnt = 0
-            elif n < 0:
-                cnt += 1
-                if cnt % 2 == 0:
-                    res = max(res, i - k)
-                else:
-                    if cnt == 1:
-                        j = i
-                    else:
-                        res = max(res, i - j)        
-            else:
-                if cnt % 2 == 0:
-                    res = max(res, i - k)
-                else:
-                    res = max(res, i - j)
-        return res
-```
-
-### 7) Increasing Triplet Subsequence — LC 334
+### 5) Increasing Triplet Subsequence — LC 334
 
 ```python
 # LC 334 Increasing Triplet Subsequence
@@ -501,7 +385,7 @@ class Solution(object):
         return False
 ```
 
-### 8) Maximize Distance to Closest Person — LC 849
+### 6) Maximize Distance to Closest Person — LC 849
 
 
 ```java
@@ -604,55 +488,7 @@ public int maxDistToClosest_0_1(int[] seats) {
 ```
 ## Counting, Bookings & Simulation
 
-### 9) Corporate Flight Bookings — LC 1109
-
-```python
-# LC 1109. Corporate Flight Bookings
-# V1
-# IDEA : ARRAY + prefix sum
-# https://leetcode.com/problems/corporate-flight-bookings/discuss/328856/JavaC%2B%2BPython-Sweep-Line
-# IDEA :
-# Set the change of seats for each day.
-# If booking = [i, j, k],
-# it needs k more seat on ith day,
-# and we don't need these seats on j+1th day.
-# We accumulate these changes then we have the result that we want.
-# Complexity
-# Time O(booking + N) for one pass on bookings
-# Space O(N) for the result
-class Solution:
-    def corpFlightBookings(self, bookings, n):
-        res = [0] * (n + 1)
-        for i, j, k in bookings:
-            res[i - 1] += k
-            res[j] -= k
-        for i in range(1, n):
-            res[i] += res[i - 1]
-        return res[:-1]
-
-# V1''
-# IDEA : ARRAY
-# https://leetcode.com/problems/corporate-flight-bookings/discuss/328893/Short-python-solution
-# IDEA : Simply use two arrays to keep track of how many bookings are added for every flight.
-class Solution:
-    def corpFlightBookings(self, bookings: List[List[int]], n: int) -> List[int]:        
-        opens = [0]*n
-        closes = [0]*n
-        
-        for e in bookings:
-            opens[e[0]-1] += e[2]
-            closes[e[1]-1] += e[2]
-            
-        ret, tmp = [0]*n, 0
-        for i in range(n):
-            tmp += opens[i]
-            ret[i] = tmp
-            tmp -= closes[i]
-            
-        return ret
-```
-
-### 10) Bulb Switcher III — LC 1375
+### 7) Bulb Switcher III — LC 1375
 
 ```python
 # LC 1375. Bulb Switcher III
@@ -672,57 +508,7 @@ class Solution:
         return count
 ```
 
-### 11) Robot Bounded In Circle — LC 1041
-
-```python
-# LC 1041. Robot Bounded In Circle
-# V0
-# IDEA : math + array
-class Solution:
-    def isRobotBounded(self, instructions):
-        """
-        NOTE !!! we make direction as below
-
-         c == 'L':  move LEFT : [0,-1]
-         c == 'R':  move RIGHT : [0,1]
-        """
-        dirs = [[0,1], [1,0], [0,-1], [-1,0]]
-        x = 0;
-        y = 0;
-        idx = 0;
-        for c in instructions:
-            print ("c = " + str(c) + " idx = " + str(idx))
-            """
-            NOTE !!! since we need to verify if robot back to start point
-                -> we use (idx + k)  % 4 for detecting cyclic cases
-            """
-            if c == 'L':
-                idx = (idx + 3) % 4
-            elif c == 'R':
-                idx = (idx + 1) % 4
-            elif c == 'G':
-                x = x + dirs[idx][0]
-                y = y + dirs[idx][1]
-        return (x == 0 and y ==0) or idx !=0
-```
-
-### 12) Queue Reconstruction by Height — LC 406
-
-```python
-# LC 406 Queue Reconstruction by Height
-class Solution(object):
-    def reconstructQueue(self, people):
-        people.sort(key = lambda x : (-x[0], x[1]))
-        res = []
-        # py insert syntax:
-        # https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/python_trick_indexing.md#insert-into-a-list-in-place-
-        # arr.insert(<index>, <value>)
-        for p in people:
-            res.insert(p[1], p)
-        return res
-```
-
-### 13) Flatten 2D Vector — LC 251
+### 8) Flatten 2D Vector — LC 251
 
 The canonical answer is the **lazy two-cursor iterator** in
 [array.md §1-1-6](./array.md#1-1-6-flatten-array), which uses O(1) extra

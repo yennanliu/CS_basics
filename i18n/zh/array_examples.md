@@ -1,7 +1,7 @@
-<!-- c4244549ab07 -->
+<!-- e3a1d53673e9 -->
 # 陣列 — 實戰題解
 
-> **範圍** — [array.md](./array.md) 背後的題解倉庫：十三題真正在考「原地改寫陣列」或「拿索引當儲存空間」的題目，依各自用到的技巧分組。
+> **範圍** — [array.md](./array.md) 背後的題解倉庫：八題真正在考「原地改寫陣列」或「拿索引當儲存空間」的題目，依各自用到的技巧分組。
 > **另見**：[array.md](./array.md) — 母表：基本操作、特殊演算法，以及告訴你一題到底該歸哪張表的選擇表；[2_pointers.md](./2_pointers.md)、[sliding_window.md](./sliding_window.md)、[prefix_sum.md](./prefix_sum.md)、[difference_array.md](./difference_array.md) — 吃掉大部分 array 標籤題目的四個模式家族；[sort.md](./sort.md)、[matrix.md](./matrix.md)、[kadane_algorithm.md](./kadane_algorithm.md)、[stock_trading.md](./stock_trading.md) — 選擇表會把題目導向的其他主表。
 
 <!-- 252a821e92ee -->
@@ -20,14 +20,10 @@
 - **核心想法**：陣列不只是輸入，它同時也是草稿紙 — 用正負號、用位置，或用一個由後往前寫的指標
 - **什麼時候用**：當[選擇表](./array.md#2-pattern-selection)已經判定這題其實不是視窗、指標或前綴和的問題之後
 
-<!-- 3b5601eec3eb -->
+<!-- 78bf4582539b -->
 ### 關於重複收錄
 
-其中五題也出現在擁有該*技巧*的表裡 — LC 121 在
-[stock_trading.md](./stock_trading.md) 和 [kadane_algorithm.md](./kadane_algorithm.md)、
-LC 1109 在 [difference_array.md](./difference_array.md)、LC 1567 在
-[kadane_algorithm.md](./kadane_algorithm.md)、LC 251 在 [design.md](./design.md)、LC 406 在
-[sort.md](./sort.md)。現階段這些重複是刻意留著的：把它們合併是跨檔整併那一輪的工作，不是單張表自己該處理的事。
+其中一題也出現在擁有該*技巧*的表裡 — LC 251 在 [design.md](./design.md)。現階段這份重複是刻意留著的：把它合併是跨檔整併那一輪的工作，不是單張表自己該處理的事。
 
 <!-- d9f7568c72e5 -->
 ## 原地改寫與索引技巧
@@ -90,33 +86,13 @@ LC 1109 在 [difference_array.md](./difference_array.md)、LC 1567 在
 <!-- 0a4a154402dd -->
 ## 掃描與滾動狀態
 
-<!-- f9680ce5031a -->
-### 5) Best Time to Buy and Sell Stock — LC 121 ⭐⭐⭐⭐
+<!-- 794d73a846df -->
+### 5) Increasing Triplet Subsequence — LC 334
 
 <!--CODE-->
 
-**變形 — LC 122 Best Time to Buy and Sell Stock II（交易次數不限）：** 轉折在於買賣次數不限之後，你根本不用再追蹤 `minPrice` — 只要**把每天之間的正價差全部加起來**（每一段上漲都能獨立賺到）。
-
-<!--CODE-->
-
-<!--CODE-->
-
-> **貪婪為什麼是對的：** 任何有利可圖的區間 `[i, j]` 都能拆成每日價差的總和（`p[j] - p[i] = Σ (p[k+1] - p[k])`），而把負的價差丟掉只會讓總和變大。所以「正價差總和」既是上界，也真的做得到。
->
-> **對照：** LC 121 = **1** 次交易 → 追蹤滾動最小值。LC 122 = **∞** 次交易 → 加總正價差。
-
-<!-- d4fbb95a32d9 -->
-### 6) Maximum Length of Subarray With Positive Product — LC 1567
-
-<!--CODE-->
-
-<!-- 4d54e868afd4 -->
-### 7) Increasing Triplet Subsequence — LC 334
-
-<!--CODE-->
-
-<!-- ee804d488895 -->
-### 8) Maximize Distance to Closest Person — LC 849
+<!-- d1f276135ec0 -->
+### 6) Maximize Distance to Closest Person — LC 849
 
 
 <!--CODE-->
@@ -124,28 +100,13 @@ LC 1109 在 [difference_array.md](./difference_array.md)、LC 1567 在
 <!-- 1ec71b3a8c85 -->
 ## 計數、訂位與模擬
 
-<!-- b104e77b20ff -->
-### 9) Corporate Flight Bookings — LC 1109
+<!-- 09171d0b180c -->
+### 7) Bulb Switcher III — LC 1375
 
 <!--CODE-->
 
-<!-- 63324ba4ddec -->
-### 10) Bulb Switcher III — LC 1375
-
-<!--CODE-->
-
-<!-- dea958158ce7 -->
-### 11) Robot Bounded In Circle — LC 1041
-
-<!--CODE-->
-
-<!-- 66c18511bb3b -->
-### 12) Queue Reconstruction by Height — LC 406
-
-<!--CODE-->
-
-<!-- 5d2d925c097d -->
-### 13) Flatten 2D Vector — LC 251
+<!-- a98176d3deb5 -->
+### 8) Flatten 2D Vector — LC 251
 
 標準解是 [array.md §1-1-6](./array.md#1-1-6-flatten-array) 裡的
 **惰性雙游標迭代器（lazy iterator）**，額外空間 O(1)。這裡保留的積極（eager）版本，是用來

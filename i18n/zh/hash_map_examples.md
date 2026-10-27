@@ -557,62 +557,49 @@ Python 的 `bisect_*` 給你的是**索引**，而且可能是 `-1` 或 `len(d)`
 ### 2-3') Longest Substring Without Repeating Characters — LC 3
 <!--CODE-->
 
-<!-- d620adfff695 -->
-### 2-4) Count Primes — LC 204
+<!-- 19c7035bc71a -->
+### 2-4) Pairs of Songs With Total Durations Divisible by 60 — LC 1010
 <!--CODE-->
 
-<!-- 5750f591273c -->
-### 2-5) Valid Sudoku — LC 36
-<!--CODE-->
-> **注意**：LC 36 只問**目前這個盤面**合不合法 — 它沒有要你把數獨解出來。
-> 回溯法的解題器回答的是另一個問題（那是 LC 37），而且它可能把不合法的盤面判成合法，
-> 因為它從來不去檢查那些已填好的格子彼此之間有沒有衝突。
-
-<!--CODE-->
-
-<!-- 3a122ae82656 -->
-### 2-6) Pairs of Songs With Total Durations Divisible by 60 — LC 1010
-<!--CODE-->
-
-<!-- 67f52712ac68 -->
-### 2-7) Subarray Sum Equals K — LC 560
+<!-- 028a5bf426a1 -->
+### 2-5) Subarray Sum Equals K — LC 560
 <!--CODE-->
 <!--CODE-->
 
-<!-- 6306dcd4af15 -->
-### 2-8) K-diff Pairs in an Array — LC 532
+<!-- 0967bcc0d937 -->
+### 2-6) K-diff Pairs in an Array — LC 532
 <!--CODE-->
 
-<!-- 83fee33bbc5e -->
-### 2-9) Sentence Similarity — LC 734
+<!-- fec24f665f89 -->
+### 2-7) Sentence Similarity — LC 734
 <!--CODE-->
 
-<!-- 0fa361081a54 -->
-### 2-10) LRU Cache — LC 146
+<!-- 83240826dfe7 -->
+### 2-8) LRU Cache — LC 146
 <!--CODE-->
 
-<!-- 06284fec5512 -->
-### 2-11) Find All Anagrams in a String — LC 438
+<!-- c27fcb099c0d -->
+### 2-9) Find All Anagrams in a String — LC 438
 <!--CODE-->
 
-<!-- 39ace14ebba9 -->
-### 2-12) Brick Wall — LC 554
+<!-- 088086449e23 -->
+### 2-10) Brick Wall — LC 554
 <!--CODE-->
 
-<!-- 350f83619603 -->
-### 2-13) Maximum Size Subarray Sum Equals k — LC 325
+<!-- fef348a1446c -->
+### 2-11) Maximum Size Subarray Sum Equals k — LC 325
 
 <!--CODE-->
 
-<!-- deb4682d7137 -->
-### 2-14) Smallest Common Region — LC 1257
+<!-- 5ecc668a0280 -->
+### 2-12) Smallest Common Region — LC 1257
 
 <!--CODE-->
 
 ---
 
-<!-- bd95c3aa8bad -->
-### 2-15) Tuple with Same Product（LC 1726）
+<!-- 402937e39c61 -->
+### 2-13) Tuple with Same Product（LC 1726）
 
 **核心想法：配對乘積的頻率 → 組合計數**
 
@@ -665,8 +652,8 @@ Python 的 `bisect_*` 給你的是**索引**，而且可能是 `-1` 或 `len(d)`
 
 ---
 
-<!-- c119731d18a3 -->
-### 2-16) Minimum Operations to Sort Binary Tree by Level（LC 2471）
+<!-- 0e916e6f17d7 -->
+### 2-14) Minimum Operations to Sort Binary Tree by Level（LC 2471）
 
 **核心模式：逐層 BFS + 用 `{value: index}` 雜湊表求最少交換次數**
 
@@ -735,8 +722,8 @@ Python 的 `bisect_*` 給你的是**索引**，而且可能是 `-1` 或 `len(d)`
 
 ---
 
-<!-- 4910d45ca510 -->
-### 2-17) Maximum Swap（LC 670）
+<!-- 562365d24b1f -->
+### 2-15) Maximum Swap（LC 670）
 
 **核心模式：`{digit: last index}` 雜湊表 + 由左往右的貪婪掃描**
 
@@ -807,8 +794,8 @@ Python 的 `bisect_*` 給你的是**索引**，而且可能是 `-1` 或 `len(d)`
 
 ---
 
-<!-- dd10beff657c -->
-### 2-18) Longest Repeating Character Replacement（LC 424）
+<!-- b985d3dd17f5 -->
+### 2-16) Longest Repeating Character Replacement（LC 424）
 
 **核心模式：滑動視窗 + HashMap（頻率計數）+ 追蹤 `max_freq`**
 
@@ -868,8 +855,8 @@ Python 的 `bisect_*` 給你的是**索引**，而且可能是 `-1` 或 `len(d)`
 
 ---
 
-<!-- cc73acacac5a -->
-### 2-19) Partition Labels — LC 763
+<!-- 48737a98067b -->
+### 2-17) Partition Labels — LC 763
 
 **想法**：一個 `{char: last index}` 的 map，把「這個字母最後出現在哪？」變成 O(1) 查表；接著由左往右貪婪掃描，把目前這段一路延伸到看過的最遠 last index，等掃描索引走到它的那一刻就切一刀。
 
@@ -955,7 +942,7 @@ Python 的 `bisect_*` 給你的是**索引**，而且可能是 `-1` 或 `len(d)`
 | Maximum Average Subarray I | 643 | Easy | 滑動視窗 | 固定視窗大小 |
 | Find Pivot Index | 724 | Easy | 前綴和 | 左邊的和 = 右邊的和 |
 
-<!-- f6c7619b2bd4 -->
+<!-- 88e0d7cc4cf9 -->
 ### 分類 4：滑動視窗配雜湊表（12 題）
 
 | 題目 | LC# | 難度 | 模板 | 關鍵洞見 |
@@ -967,7 +954,7 @@ Python 的 `bisect_*` 給你的是**索引**，而且可能是 `-1` 或 `len(d)`
 | Longest Substring with At Most Two Distinct Characters | 159 | Medium | 滑動視窗 | 追蹤字元計數 |
 | Longest Substring with At Most K Distinct Characters | 340 | Medium | 滑動視窗 | 把相異字元上限一般化 |
 | Fruit Into Baskets | 904 | Medium | 滑動視窗 | 最多 2 種 |
-| Longest Repeating Character Replacement | 424 | Medium | 滑動視窗 | 追蹤最大頻率 — [詳細模式](#2-18-longest-repeating-character-replacement-lc-424) |
+| Longest Repeating Character Replacement | 424 | Medium | 滑動視窗 | 追蹤最大頻率 — [詳細模式](#2-16-longest-repeating-character-replacement-lc-424) |
 | Get Equal Substrings Within Budget | 1208 | Medium | 滑動視窗 | 成本限制 |
 | Max Consecutive Ones III | 1004 | Medium | 滑動視窗 | 最多翻轉 K 個 0 |
 | Substring with Concatenation of All Words | 30 | Hard | 滑動視窗 | 多個單字同時比對 |

@@ -133,7 +133,7 @@
 ### 模板 1：頻率計數
 <!--CODE-->
 
-<!-- cd33e5f600b0 -->
+<!-- 75d78991354b -->
 #### 變形：索引跨度表 —— `span == count` 證明連續 ⭐⭐⭐
 
 **模式**：有時候題目問的不是某個值出現*幾次*，而是它出現在*哪裡*。改成記錄位置而不是次數，一條算術恆等式就能回答「這個值的所有出現位置是不是同一個連續區塊？」：
@@ -160,7 +160,7 @@
 |---------|-----|---------------------------------|
 | Partition Labels | 763 | `{char: last index}`；由左往右掃，把區塊的結尾延伸到目前看過最遠的 `last` —— 恰好在 `i == end` 的地方切一刀 |
 | Contains Duplicate II | 219 | `{value: last index}`；命中的條件是 `i - last <= k`，所以只有最近一次的位置有意義 |
-| Count Pairs of Equal Substrings With Minimum Difference | 1794 | 兩個字串各一張 map：一邊存 `{char: first index}`，另一邊存 `{char: last index}`；把 `first - last` 壓到最小，再數有幾個字元達到這個最小值 —— [完整解法在 string_examples.md](./string_examples.md#2-15-count-pairs-of-equal-substrings-with-minimum-difference--lc-1794) |
+| Count Pairs of Equal Substrings With Minimum Difference | 1794 | 兩個字串各一張 map：一邊存 `{char: first index}`，另一邊存 `{char: last index}`；把 `first - last` 壓到最小，再數有幾個字元達到這個最小值 —— [完整解法在 string_examples.md](./string_examples.md#2-14-count-pairs-of-equal-substrings-with-minimum-difference--lc-1794) |
 | Longest Consecutive Sequence | 128 | 對照組：跨度是在**值**上而不是索引上 —— 一個 set，加上「只從 `v-1` 不存在的地方開始」 |
 
 <!-- 3268cef7a70d -->

@@ -396,7 +396,7 @@ sit on a real element. `next()` only reads that element and steps `col`.
 | Works on a huge or changing source | no: it is a snapshot | yes: nothing is pre-read |
 
 `N` = total number of elements, `R` = number of rows. The eager version is in
-[array_examples.md §13](./array_examples.md#13-flatten-2d-vector--lc-251). The lazy one is
+[array_examples.md §8](./array_examples.md#8-flatten-2d-vector--lc-251). The lazy one is
 what an interviewer means by "design an iterator", and it is the 2D case of the
 [`hasNext()` / `next()` contract](./iterator.md#1-2-the-hasnext--next-contract-) in
 iterator.md: the depth is fixed at two, so two indices do the job of a stack.
@@ -1685,10 +1685,10 @@ array itself: **rewriting it in place, and using its indices as storage.**
 
 ## 3) Worked Examples
 
-Thirteen problems live in **[array_examples.md](./array_examples.md)**:
+Eight problems live in **[array_examples.md](./array_examples.md)**:
 
 | Group | Problems |
 |---|---|
 | [In-place rewriting & index tricks](./array_examples.md#in-place-rewriting--index-tricks) | LC 41, 287, 189, 238, 670 |
-| [Scanning & running state](./array_examples.md#scanning--running-state) | LC 121, 1567, 334, 849 |
-| [Counting, bookings & simulation](./array_examples.md#counting-bookings--simulation) | LC 1109, 1375, 1041, 406, 251 |
+| [Scanning & running state](./array_examples.md#scanning--running-state) | LC 334, 849 |
+| [Counting, bookings & simulation](./array_examples.md#counting-bookings--simulation) | LC 1375, 251 |

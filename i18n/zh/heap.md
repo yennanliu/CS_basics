@@ -105,7 +105,7 @@
 - **關鍵洞察**：一般 BFS 每個格子要 O(N²)；用優先佇列可降到每格 O(log N)
 - **相似題**：LC 778（Swim in Rising Water）、LC 1631（Path With Minimum Effort）
 
-<!-- 47a523b8fcb8 -->
+<!-- b0ac79da46f0 -->
 #### **模式 8：延遲刪除（堆積中的過期資料）** ⭐⭐⭐⭐⭐
 - **描述**：堆積裡的值後來會被**更新／失效**，但二元堆積沒有
   「decrease-key」／「移除任意元素」的操作 — 所以我們直接 push 新值，把舊的留在裡面
@@ -114,7 +114,7 @@
   只在*讀取時*清理堆頂，而且只清*到堆頂有效為止*
 - **關鍵洞察**：你從來不去堆積裡搜尋過期資料。你只檢查 `heap[0]`，
   而每筆過期資料整段執行下來最多被 pop 一次 → 攤還 O(log n)
-- **另見**：[heap_advanced.md § 延遲刪除](./heap_advanced.md#1-lazy-deletion--heap--hashmap-of-truth-) · [heap_examples.md § LC 3092](./heap_examples.md#18-most-frequent-ids--lc-3092)
+- **另見**：[heap_advanced.md § 延遲刪除](./heap_advanced.md#1-lazy-deletion--heap--hashmap-of-truth-) · [heap_examples.md § LC 3092](./heap_examples.md#17-most-frequent-ids--lc-3092)
 - **同時要兩個極值**（LC 2034）：把堆積做成鏡像 — 一份真值對照表，加上存同樣 `(price, ts)` 的
   最大堆積與最小堆積，兩邊用同一個判定清理 →
   [heap_advanced.md § LC 2034 變形](./heap_advanced.md#variant--two-mirrored-lazy-heaps-over-one-map-lc-2034-)

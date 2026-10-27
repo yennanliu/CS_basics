@@ -147,14 +147,14 @@
 
 ---
 
-<!-- 3612381aa362 -->
+<!-- d1e5e2e33631 -->
 #### **虛擬頭節點 — 其他應用**
 
 再看一題「虛擬節點把特例消掉」的例子。這個家族其餘的題目寫在它們該待的地方，不在這裡重貼：
 
 | LC | 題目 | 寫在哪 |
 |---|---|---|
-| 19 | Remove Nth Node From End | 上面那段圖解，以及 [linked_list_examples.md](./linked_list_examples.md#9-remove-nth-node-from-end-of-list--lc-19) 的兩種 Java 寫法 |
+| 19 | Remove Nth Node From End | 上面那段圖解，以及 [linked_list_examples.md](./linked_list_examples.md#8-remove-nth-node-from-end-of-list--lc-19) 的兩種 Java 寫法 |
 | 21 | Merge Two Sorted Lists | [linked_list_examples.md](./linked_list_examples.md#4-merge-two-sorted-lists--lc-21) |
 | 2 | Add Two Numbers | [下面的 1-1-7)](#1-1-7-add-2-linked-list--lc-2) |
 | 203 | Remove Linked List Elements | 下面的 [依值移除節點的模式](#remove-elements-by-value-pattern) |
@@ -504,7 +504,7 @@ LFU 依*使用頻率*淘汰，最近使用度只拿來打破平手 — 所以那
 
 <!--CODE-->
 
-<!-- f711d5645c70 -->
+<!-- 67663dc8a38e -->
 ## 2) 模式選擇
 
 鏈結串列題其實很少真的在考串列。它們考的是：動手術的當下，**你手上必須握著哪個把手** — 這份文件上的每個技巧，存在的理由都是確保你握著它。挑法要看答案需要什麼，不是看題目叫什麼名字。
@@ -517,12 +517,12 @@ LFU 依*使用頻率*淘汰，最近使用度只拿來打破平手 — 所以那
 | 反轉**整條**串列 | **三步迴圈**：先存下 next → 翻指標 → 前進 | O(1) 空間；遞迴版答案一樣，卻要每個節點吃掉一個 stack frame | [1-1-1)](#1-1-1-reverse-linked-list-iteration--lc-206) |
 | 反轉**一段** — `[left, right]`、每 `k` 個，或成對 | **反轉 k 個的輔助函式，回傳三個把手** | LC 92 / 25 / 24 的差別只在*那一段在哪*，反轉的方式完全一樣 | [反轉 K 個節點的輔助函式模式](#reverse-k-nodes-helper-pattern-) |
 | 找中點、偵測環，或走到**倒數**第 n 個 | **快慢指標** | 一趟掃完、O(1) 空間，也不用先算長度 | [1-1-8)](#1-1-8-find-linked-list-middle-point--lc-876)、[2_pointers_linkedlist.md](./2_pointers_linkedlist.md) |
-| **重排** — 交錯、切分、旋轉、回文判斷 | **快慢指標切一半 → 反轉後半 → 合併** | 每一題重排都是這三個基本操作依序組合；沒有一個是新東西 | [examples 2)](./linked_list_examples.md#2-reorder-list--lc-143)、[7)](./linked_list_examples.md#7-palindrome-linked-list--lc-234) |
+| **重排** — 交錯、切分、旋轉、回文判斷 | **快慢指標切一半 → 反轉後半 → 合併** | 每一題重排都是這三個基本操作依序組合；沒有一個是新東西 | [examples 2)](./linked_list_examples.md#2-reorder-list--lc-143)、[回文](./2_pointers_linkedlist.md#1-1-6--palindrome-linked-list-find-mid---reverse-2nd-half---compare) |
 | 合併**兩條**已排序串列 | **虛擬節點 + 一趟合併走訪**，接節點而不是複製值 | 尾端指標就是全部的訣竅：`cur.next = l1 or l2` 收尾 | [examples 4)](./linked_list_examples.md#4-merge-two-sorted-lists--lc-21) |
-| 合併 **k** 條已排序串列，或把一條串列排序 | **分治法** — 兩兩合併，或用中點做合併排序 | O(n log k) / O(n log n)；用堆積則是拿 O(k) 空間換掉遞迴 | [examples 5)](./linked_list_examples.md#5-merge-k-sorted-lists--lc-23)、[14)](./linked_list_examples.md#14-sort-list-merge-sort-on-a-linked-list--lc-148-)、[heap.md](./heap.md) |
+| 合併 **k** 條已排序串列，或把一條串列排序 | **分治法** — 兩兩合併，或用中點做合併排序 | O(n log k) / O(n log n)；用堆積則是拿 O(k) 空間換掉遞迴 | [examples 5)](./linked_list_examples.md#5-merge-k-sorted-lists--lc-23)、[13)](./linked_list_examples.md#13-sort-list-merge-sort-on-a-linked-list--lc-148-)、[heap.md](./heap.md) |
 | 同時要**任意位置**讀取*和* O(1) 淘汰 — 依最近使用度，或依使用頻率 | **雙向鏈結串列 + 雜湊表** — 一條串列，或每個頻率一條 | 表給你節點，雙向節點給你它的鄰居 — 少了任一個都不夠 | [雙向鏈結串列 + HashMap](#doubly-linked-list--hashmap-lru-cache-pattern-)、[LFU 變體](#lfu-variant--one-list-per-frequency-plus-a-min_freq-pointer-lc-460-)、[design.md](./design.md) |
-| 對存成串列的位數做**算術** | **在虛擬節點上跑進位迴圈**，若最高位在前就先反轉 | 進位會活得比兩個輸入都久，所以迴圈條件是 `l1 or l2 or carry` | [1-1-7)](#1-1-7-add-2-linked-list--lc-2)、[examples 13)](./linked_list_examples.md#13-plus-one-linked-list--lc-369) |
-| 回答需要**隨機存取或視窗**的問題 | **先倒進陣列，再用陣列的技巧** | 前綴和與單調堆疊都需要索引，串列沒有；而且通常允許 O(n) 額外空間 | [examples 15)](./linked_list_examples.md#15-prefix-sum--hashmap-on-a-linked-list--lc-1171-)、[16)](./linked_list_examples.md#16-monotonic-stack-over-a-linked-list--lc-1019-) |
+| 對存成串列的位數做**算術** | **在虛擬節點上跑進位迴圈**，若最高位在前就先反轉 | 進位會活得比兩個輸入都久，所以迴圈條件是 `l1 or l2 or carry` | [1-1-7)](#1-1-7-add-2-linked-list--lc-2)、[examples 12)](./linked_list_examples.md#12-plus-one-linked-list--lc-369) |
+| 回答需要**隨機存取或視窗**的問題 | **先倒進陣列，再用陣列的技巧** | 前綴和與單調堆疊都需要索引，串列沒有；而且通常允許 O(n) 額外空間 | [examples 14)](./linked_list_examples.md#14-prefix-sum--hashmap-on-a-linked-list--lc-1171-)、[15)](./linked_list_examples.md#15-monotonic-stack-over-a-linked-list--lc-1019-) |
 
 <!-- 6ef117bacd71 -->
 ### 四個陷阱
@@ -532,16 +532,16 @@ LFU 依*使用頻率*淘汰，最近使用度只拿來打破平手 — 所以那
 3. **留下一個環。** 遞迴反轉裡只寫 `head.next.next = head`，卻漏掉後面的 `head.next = null`，最後兩個節點就會互指。
 4. **走過頭。** 兩步跳要寫成 `while (fast != null && fast.next != null)`。兩個條件順序寫反，在偶數長度的串列上就會對 null 解參考。
 
-<!-- 98a511f05456 -->
+<!-- 08d8429a8e2e -->
 ## 3) 實戰題解
 
-完整解法搬到 **[linked_list_examples.md](./linked_list_examples.md)** 了，免得上面的模板被它們埋掉。十七題，依各自演練的技巧分組：
+完整解法搬到 **[linked_list_examples.md](./linked_list_examples.md)** 了，免得上面的模板被它們埋掉。十六題，依各自演練的技巧分組：
 
 | 分組 | 題目 |
 |---|---|
 | [反轉與重排](./linked_list_examples.md#reversal--reordering) | LC 92, 143, 24 |
 | [合併與切分](./linked_list_examples.md#merging--splitting) | LC 21, 23, 725 |
-| [快慢指標與結構](./linked_list_examples.md#fastslow-pointers--structure) | LC 234, 160, 19 |
+| [快慢指標與結構](./linked_list_examples.md#fastslow-pointers--structure) | LC 160, 19 |
 | [複製、攤平與連通分量](./linked_list_examples.md#copying-flattening--components) | LC 138, 817, 430 |
 | [算術與排序](./linked_list_examples.md#arithmetic--sorting-on-a-list) | LC 369, 148, 147 |
 | [把陣列技巧借到串列上](./linked_list_examples.md#array-techniques-borrowed-onto-a-list) | LC 1171, 1019 |

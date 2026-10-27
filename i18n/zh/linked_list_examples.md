@@ -187,18 +187,13 @@
 <!-- 86a2bbc78507 -->
 ## 快慢指標與結構
 
-<!-- ccd55ebd47a0 -->
-### 7) Palindrome Linked List — LC 234
+<!-- 9d002dd7abf2 -->
+### 7) Intersection of Two Linked Lists — LC 160
 
 <!--CODE-->
 
-<!-- 0ec1b075c981 -->
-### 8) Intersection of Two Linked Lists — LC 160
-
-<!--CODE-->
-
-<!-- dfffc5972b7c -->
-### 9) Remove Nth Node From End of List — LC 19
+<!-- 46a851973b98 -->
+### 8) Remove Nth Node From End of List — LC 19
 
 > Python 解法與完整的「為什麼要虛擬節點」說明住在
 > [linked_list.md](./linked_list.md#why-dummy-node-visual-comparison-lc-19)。下面是兩種
@@ -211,21 +206,21 @@
 <!-- c9ae5992ae69 -->
 ## 複製、攤平與連通元件
 
-<!-- 108dd35e1fd3 -->
-### 10) Copy List with Random Pointer — LC 138
+<!-- 6b0b15ad4601 -->
+### 9) Copy List with Random Pointer — LC 138
 
 <!--CODE-->
 
 <!--CODE-->
 
-<!-- a9ef3b526c52 -->
-### 11) Linked List Components — LC 817
+<!-- f18308695980 -->
+### 10) Linked List Components — LC 817
 
 
 <!--CODE-->
 
-<!-- 9582e13c742b -->
-### 12) Flatten a Multilevel Doubly Linked List — LC 430 ⭐⭐⭐⭐
+<!-- 10093d5f7a34 -->
+### 11) Flatten a Multilevel Doubly Linked List — LC 430 ⭐⭐⭐⭐
 
 
 **模式**：**就地接合（in-place splice）**。只要某個節點有 `child`，就把整條子鏈接到 `cur` 和 `cur.next` 之間，把兩個接縫上的 `prev` 指標補好，然後繼續往前走 — 接進來的子鏈自然會被走到，所以不用遞迴或堆疊就能處理巢狀。
@@ -250,13 +245,13 @@
 <!-- e52f2acb6a4a -->
 ## 串列上的算術與排序
 
-<!-- 7760a403628b -->
-### 13) Plus One Linked List — LC 369
+<!-- 530e41b0b554 -->
+### 12) Plus One Linked List — LC 369
 
 <!--CODE-->
 
-<!-- 0cbdea7dc968 -->
-### 14) Sort List（在鏈結串列上做合併排序） — LC 148 ⭐⭐⭐⭐⭐
+<!-- a8d7f084baa8 -->
+### 13) Sort List（在鏈結串列上做合併排序） — LC 148 ⭐⭐⭐⭐⭐
 
 
 **模式**：唯一能在鏈結串列上以 `O(1)` 額外資料空間跑出 `O(n log n)` 的排序。三個動作：**從中間切開 → 遞迴排序兩半 → 合併兩條已排序的串列**（重用 [4) LC 21](#4-merge-two-sorted-lists--lc-21)）。
@@ -287,8 +282,8 @@
 <!-- 181e088cc367 -->
 ## 借用到串列上的陣列技巧
 
-<!-- 259ae7351509 -->
-### 15) 鏈結串列上的前綴和 + 雜湊表 — LC 1171 ⭐⭐⭐⭐
+<!-- 941979a96111 -->
+### 14) 鏈結串列上的前綴和 + 雜湊表 — LC 1171 ⭐⭐⭐⭐
 
 
 **模式**：把經典的陣列技巧「**前綴和相等 ⇒ 兩者之間那一段總和為 0**」移植到鏈結串列上。差別在於不是去數子陣列，而是**把 `next` 重接、直接跳過**那段總和為零的區段。
@@ -308,8 +303,8 @@
 
 ---
 
-<!-- 262bd5576c72 -->
-### 16) 鏈結串列上的單調堆疊 — LC 1019 ⭐⭐⭐
+<!-- 598587f59f8c -->
+### 15) 鏈結串列上的單調堆疊 — LC 1019 ⭐⭐⭐
 
 
 **模式**：「下一個更大元素」需要**往回看**，而單向鏈結串列做不到。先把值實體化成陣列，再跑標準的**索引遞減單調堆疊** — 見 [monotonic_stack.md](./monotonic_stack.md)。
@@ -327,7 +322,7 @@
 
 ---
 
-<!-- 51fe32fe030d -->
+<!-- 2ff04c0d5960 -->
 ## 相關題目 — 速查
 
 
@@ -336,7 +331,7 @@
 | # | 題目 | 一句話想法 |
 |---|---------|----------------|
 | 142 | Linked List Cycle II | Floyd 環偵測，接著把其中一個指標拉回 `head` 重新走，找出入環節點 — 見 [2_pointers_linkedlist.md](./2_pointers_linkedlist.md) |
-| 2130 | Maximum Twin Sum of a Linked List | 從中間切開 + 反轉後半（LC 234 那套回文機制），再兩兩配對 — 見 [7)](#7-palindrome-linked-list--lc-234) |
+| 2130 | Maximum Twin Sum of a Linked List | 從中間切開 + 反轉後半（LC 234 那套回文機制），再兩兩配對 — 見 [2_pointers_linkedlist.md](./2_pointers_linkedlist.md#1-1-6--palindrome-linked-list-find-mid---reverse-2nd-half---compare) |
 | 109 | Convert Sorted List to BST | LC 148 的「從中間切開」；中間節點成為 BST 的根，再對兩半遞迴 |
 | 382 | Linked List Random Node | **蓄水池抽樣**：一趟走完，以 `1/i` 的機率保留第 `i` 個節點 — O(1) 空間，也不需要先知道長度 |
 | 707 | Design Linked List | 虛擬頭 + 一個 `size` 計數器；每個操作都是「走到索引 `i-1`，然後接合」（見 [Dummy Head Technique](./linked_list.md#dummy-head-technique)） |

@@ -1,8 +1,8 @@
-<!-- 374739fee693 -->
+<!-- b0831038a6d9 -->
 # 拓撲排序 - 完整指南
 
 > **範圍** — 為 DAG 排序 — Kahn 的 BFS 解法、DFS 後序、環的偵測，以及建構在它們之上的排程類題目。
-> **另見** — [topology_sorting_examples.md](./topology_sorting_examples.md) — 這些模板背後的八道完整解題；[diff_toposort_quickunion.md](./diff_toposort_quickunion.md) — 拓撲排序 vs 併查集 — 什麼題該用哪個工具；[union_find.md](./union_find.md) — 無向圖的連通性；[graph.md](./graph.md) — 一般的圖論素材。
+> **另見** — [topology_sorting_examples.md](./topology_sorting_examples.md) — 這些模板背後的七道完整解題；[diff_toposort_quickunion.md](./diff_toposort_quickunion.md) — 拓撲排序 vs 併查集 — 什麼題該用哪個工具；[union_find.md](./union_find.md) — 無向圖的連通性；[graph.md](./graph.md) — 一般的圖論素材。
 
 <!-- 8c715f0c3021 -->
 ## LeetCode 題目清單
@@ -468,19 +468,18 @@ DFS 檢查，那是 O(n²)，n = 10⁵ 時會超時。**全域掃描**改成對�
 | 863 All Nodes Distance K in Binary Tree | Medium | 先補上父節點連結，再從某個節點**往外** BFS，方向剛好相反 |
 | 1443 Minimum Time to Collect All Apples in a Tree | Medium | 剪的依據是*內容*（子樹裡沒有蘋果），不是度數 |
 
-<!-- 8f6ae47f1610 -->
+<!-- 8456df0eda06 -->
 ## 決策框架
 
 <!--CODE-->
 
-> 上面的 `UnionFind` 類別就是模板；LC 547 用三種方式套用它——
-> 併查集、DFS 與 BFS——見
-> [topology_sorting_examples.md](./topology_sorting_examples.md#8-number-of-provinces--lc-547)。
+> 上面的 `UnionFind` 類別就是模板；LC 547 套用它的方式見
+> [union_find_examples.md](./union_find_examples.md#4-number-of-provinces--lc-547)。
 
-<!-- d6dcff876e4a -->
+<!-- b04b85575020 -->
 ## 完整解題範例
 
-八道題目，依它們所編碼的相依關係形狀分組，收錄在
+七道題目，依它們所編碼的相依關係形狀分組，收錄在
 **[topology_sorting_examples.md](./topology_sorting_examples.md)**：
 
 | 分組 | 題目 | 練到的模板 |
@@ -488,7 +487,7 @@ DFS 檢查，那是 O(n²)，n = 10⁵ 時會超時。**全域掃描**改成對�
 | [課程排程與排序](./topology_sorting_examples.md#course-scheduling--ordering) | LC 210、207、269、444 | Kahn（T1）、三色 DFS（T2）、字典序（T4） |
 | [分層與平行排程](./topology_sorting_examples.md#layering--parallel-scheduling) | LC 1136 | 平行任務排程（T6） |
 | [環的偵測與安全狀態](./topology_sorting_examples.md#cycle-detection--safe-states) | LC 802 | 三色 DFS（T2） |
-| [無向圖 — 連通分量與重心](./topology_sorting_examples.md#undirected-graphs--components--centroids) | LC 310、547 | 葉節點剝除（T7）、併查集（T8） |
+| [無向圖 — 連通分量與重心](./topology_sorting_examples.md#undirected-graphs--components--centroids) | LC 310 | 葉節點剝除（T7） |
 
 <!-- 5d1b8e4b8f13 -->
 ## 總結與面試提示

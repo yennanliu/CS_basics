@@ -99,7 +99,7 @@
   clean the top only *at read time*, only *until the top is valid*
 - **Key Insight**: You never search the heap for the stale entry. You only ever check `heap[0]`,
   and a stale entry costs at most one pop over the whole run → amortized O(log n)
-- **See**: [heap_advanced.md § Lazy Deletion](./heap_advanced.md#1-lazy-deletion--heap--hashmap-of-truth-) · [heap_examples.md § LC 3092](./heap_examples.md#18-most-frequent-ids--lc-3092)
+- **See**: [heap_advanced.md § Lazy Deletion](./heap_advanced.md#1-lazy-deletion--heap--hashmap-of-truth-) · [heap_examples.md § LC 3092](./heap_examples.md#17-most-frequent-ids--lc-3092)
 - **Two extremes at once** (LC 2034): mirror the heap — one truth map, a max-heap and a min-heap of
   the same `(price, ts)` pairs, cleaned with the same test →
   [heap_advanced.md § the LC 2034 variant](./heap_advanced.md#variant--two-mirrored-lazy-heaps-over-one-map-lc-2034-)

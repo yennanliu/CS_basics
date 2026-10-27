@@ -50,7 +50,7 @@
 ### 6) Least Number of Unique Integers after K Removals — LC 1481
 <!--CODE-->
 
-<!-- af5751955937 -->
+<!-- 8e9ae30e5a64 -->
 ### 7) Maximum Number of Events That Can Be Attended — LC 1353
 
 <!--CODE-->
@@ -95,62 +95,58 @@
 
 | LC # | 題目 | 共通模式 | 關鍵差異 |
 |------|---------|---------------|----------------|
-| 1751 | Max Number of Events That Can Be Attended II | 輸入的活動資料相同 | 活動佔用**整段**區間並帶有價值 → DP + 二分搜尋，**不是**堆積 |
-| 621 | Task Scheduler | 時間掃描 + 堆積，每個時刻一個時段 | 依頻率的最大堆積 + 冷卻佇列（見 [§ 17](#17-task-scheduler--lc-621-)） |
-| 253 | Meeting Rooms II | 依開始排序，結束時間的最小堆積 | 數的是*同時進行*的區間數，不是挑出一個子集合 — 它的掃描在這裡會**高估**（見上面的陷阱） |
-| 2406 | Divide Intervals Into Min Number of Groups | 依開始排序，結束時間的最小堆積 | 與 253 相同，只是換成區間分組的說法（見 [§ 15](#15-divide-intervals-into-minimum-number-of-groups--lc-2406)） |
-| 630 | Course Schedule III | 依截止日貪婪 + 堆積 | 最大堆積做**替換**：超時就丟掉耗時最長的課 |
-| 502 | IPO | 依一個鍵排序，依另一個鍵建堆積 | 雙堆積貪婪（資本 → 利潤的最大堆積） |
-| 871 | Min Number of Refueling Stops | 把可達的選項推進去，卡住時再貪婪地取最好的 | 油量的最大堆積，只有卡住時才 pop（見 [§ 13](#13-minimum-number-of-refueling-stops--lc-871)） |
-| 1834 | Single-Threaded CPU | 推進時間、推入已抵達的任務、取出最好的 | 以 (處理時間, 索引) 建最小堆積；時間直接跳到下一個抵達時刻 |
-| 767 | Reorganize String | 每個位置一個時段，用堆積貪婪挑選 | 依剩餘數量的最大堆積 + 上次使用過的字元擋著 |
+| 1750 | Max Number of Events That Can Be Attended II | 輸入的活動資料相同 | 活動佔用**整段**區間並帶有價值 → DP + 二分搜尋，**不是**堆積 |
+| 620 | Task Scheduler | 時間掃描 + 堆積，每個時刻一個時段 | 依頻率的最大堆積 + 冷卻佇列（見 [§ 16](#16-task-scheduler--lc-621-)） |
+| 252 | Meeting Rooms II | 依開始排序，結束時間的最小堆積 | 數的是*同時進行*的區間數，不是挑出一個子集合 — 它的掃描在這裡會**高估**（見上面的陷阱） |
+| 2405 | Divide Intervals Into Min Number of Groups | 依開始排序，結束時間的最小堆積 | 與 253 相同，只是換成區間分組的說法（見 [§ 14](#14-divide-intervals-into-minimum-number-of-groups--lc-2406)） |
+| 629 | Course Schedule III | 依截止日貪婪 + 堆積 | 最大堆積做**替換**：超時就丟掉耗時最長的課 |
+| 501 | IPO | 依一個鍵排序，依另一個鍵建堆積 | 雙堆積貪婪（資本 → 利潤的最大堆積） |
+| 870 | Min Number of Refueling Stops | 把可達的選項推進去，卡住時再貪婪地取最好的 | 油量的最大堆積，只有卡住時才 pop（見 [§ 12](#12-minimum-number-of-refueling-stops--lc-871)） |
+| 1833 | Single-Threaded CPU | 推進時間、推入已抵達的任務、取出最好的 | 以 (處理時間, 索引) 建最小堆積；時間直接跳到下一個抵達時刻 |
+| 766 | Reorganize String | 每個位置一個時段，用堆積貪婪挑選 | 依剩餘數量的最大堆積 + 上次使用過的字元擋著 |
 
-<!-- 5b7ffea08146 -->
-### 8) Maximum Frequency Stack — LC 895
-<!--CODE-->
-
-<!-- fd30120311c5 -->
-### 9) Find K Pairs with Smallest Sums — LC 373
+<!-- 3e1413b8977d -->
+### 8) Find K Pairs with Smallest Sums — LC 373
 
 <!--CODE-->
 
-<!-- da5a4a8cbfea -->
-### 10) Kth Smallest Element in a Sorted Matrix — LC 378 ⭐⭐⭐⭐
+<!-- ecd5e87ca648 -->
+### 9) Kth Smallest Element in a Sorted Matrix — LC 378 ⭐⭐⭐⭐
 
 <!--CODE-->
 
-<!-- c77b36b703a2 -->
-### 11) Minimum Deletions to Make Character Frequencies Unique — LC 1647
+<!-- d2e247fe7dce -->
+### 10) Minimum Deletions to Make Character Frequencies Unique — LC 1647
 
 <!--CODE-->
 
-<!-- 130b4e60be66 -->
-### 12) Maximum Performance of a Team — LC 1383
+<!-- a38f19aa0168 -->
+### 11) Maximum Performance of a Team — LC 1383
 
 <!--CODE-->
 
-<!-- f7639dfa4604 -->
-### 13) Minimum Number of Refueling Stops — LC 871
+<!-- 49697b302d55 -->
+### 12) Minimum Number of Refueling Stops — LC 871
 
 <!--CODE-->
 
-<!-- af84cdd698e2 -->
-### 14) Minimum Number of Visited Cells in a Grid — LC 2617
+<!-- 83236b78d7a0 -->
+### 13) Minimum Number of Visited Cells in a Grid — LC 2617
 
 <!--CODE-->
 
-<!-- b7b9a33c0fa2 -->
-### 15) Divide Intervals Into Minimum Number of Groups — LC 2406
+<!-- 6166658fb7e3 -->
+### 14) Divide Intervals Into Minimum Number of Groups — LC 2406
 
 <!--CODE-->
 
-<!-- 8c05ed75b270 -->
-### 16) Minimize Deviation in Array — LC 1675
+<!-- fdcb3b4ec739 -->
+### 15) Minimize Deviation in Array — LC 1675
 
 <!--CODE-->
 
-<!-- d21fadd24550 -->
-### 17) Task Scheduler — LC 621 ⭐⭐⭐⭐⭐
+<!-- 2ce58d48b161 -->
+### 16) Task Scheduler — LC 621 ⭐⭐⭐⭐⭐
 
 <!--CODE-->
 
@@ -172,14 +168,14 @@
 
 | LC # | 題目 | 共通模式 |
 |------|---------|---------------|
-| 767 | Reorganize String | 最大堆積，依頻率交錯排列 |
-| 1353 | Maximum Number of Events That Can Be Attended | 貪婪 + 依截止日的堆積 |
-| 502 | IPO | 雙堆積貪婪（利潤 + 資本） |
-| 1675 | Minimize Deviation in Array | 最大堆積 + 貪婪縮小 |
-| 295 | Find Median from Data Stream | 雙堆積系統 |
+| 766 | Reorganize String | 最大堆積，依頻率交錯排列 |
+| 1352 | Maximum Number of Events That Can Be Attended | 貪婪 + 依截止日的堆積 |
+| 501 | IPO | 雙堆積貪婪（利潤 + 資本） |
+| 1674 | Minimize Deviation in Array | 最大堆積 + 貪婪縮小 |
+| 294 | Find Median from Data Stream | 雙堆積系統 |
 
-<!-- 11e1afe91a6b -->
-### 18) Most Frequent IDs — LC 3092
+<!-- 905df80287fa -->
+### 17) Most Frequent IDs — LC 3092
 
 > 模式：**延遲刪除(Lazy Deletion)** — 通用形式見 [heap_advanced.md § Lazy Deletion](./heap_advanced.md#1-lazy-deletion--heap--hashmap-of-truth-)。
 > 參考：`leetcode_python/Heap/most-frequent-ids.py`
@@ -237,27 +233,27 @@
 > 下面五個例子來自舊的 `priority_queue.md`，而且以 **Java 為主** — 它們對應的
 > Python 版本在 [heap.md](./heap.md) 的模板裡。
 
-<!-- 229af6d3483e -->
-### 19) K Closest Points to Origin — LC 973 ⭐⭐⭐⭐⭐
+<!-- 093acf1bd286 -->
+### 18) K Closest Points to Origin — LC 973 ⭐⭐⭐⭐⭐
 <!--CODE-->
 
-<!-- d63e6cef0fc5 -->
-### 20) Reorganize String — LC 767 ⭐⭐⭐⭐
+<!-- 283df92e5f5d -->
+### 19) Reorganize String — LC 767 ⭐⭐⭐⭐
 <!--CODE-->
 
-<!-- 67d54a38d266 -->
-### 21) Sliding Window Median — LC 480
+<!-- 405c3488a6e8 -->
+### 20) Sliding Window Median — LC 480
 <!--CODE-->
 
-<!-- 806aa4c484ee -->
-### 22) Sort Characters By Frequency — LC 451
+<!-- 1160b7a36348 -->
+### 21) Sort Characters By Frequency — LC 451
 <!--CODE-->
 
-<!-- 5b070afa0524 -->
-### 23) Last Stone Weight — LC 1046
+<!-- 57934c48d9e3 -->
+### 22) Last Stone Weight — LC 1046
 <!--CODE-->
 
-<!-- 2b6001fbce74 -->
+<!-- e1cb4d02d98a -->
 ## 總結與速查
 
 | # | 題目 | LC | 呈現語言 | 模式（模板所在位置） |
@@ -269,19 +265,18 @@
 | 5 | The kth Factor of n | 1492 | Python | 大小上限為 k 的最大堆積 |
 | 6 | Least Number of Unique Integers after K Removals | 1481 | Python | Counter + 次數的最小堆積 |
 | 7 | Maximum Number of Events That Can Be Attended | 1353 | Python | 時間掃描 + 截止日堆積 |
-| 8 | Maximum Frequency Stack | 895 | Python | 依頻率分桶的堆疊（不需要堆積） |
-| 9 | Find K Pairs with Smallest Sums | 373 | Java | 對虛擬網格做 K 路合併 |
-| 10 | Kth Smallest Element in a Sorted Matrix | 378 | Java | 大小為 k 的最大堆積 |
-| 11 | Minimum Deletions to Make Character Frequencies Unique | 1647 | Java | 頻率唯一性 — [heap_advanced.md](./heap_advanced.md) |
-| 12 | Maximum Performance of a Team | 1383 | Java | 排序 + 固定大小堆積 — [heap_advanced.md](./heap_advanced.md) |
-| 13 | Minimum Number of Refueling Stops | 871 | Java | 反悔貪婪 — [heap_advanced.md](./heap_advanced.md) |
-| 14 | Minimum Number of Visited Cells in a Grid | 2617 | Java | 每列 / 每行 PQ + 延遲刪除 — [heap_advanced.md](./heap_advanced.md) |
-| 15 | Divide Intervals Into Minimum Number of Groups | 2406 | Java | 區間排程 — [heap.md](./heap.md#template-4-interval-scheduling-pattern--lc-253) |
-| 16 | Minimize Deviation in Array | 1675 | Java | 最大堆積 + 貪婪縮小 |
-| 17 | Task Scheduler | 621 | Python | 最大堆積 + 冷卻佇列 |
-| 18 | Most Frequent IDs | 3092 | Python + Java | 延遲刪除 — [heap_advanced.md](./heap_advanced.md) |
-| 19 | K Closest Points to Origin | 973 | Java | 大小為 k 的最大堆積 |
-| 20 | Reorganize String | 767 | Java | 貪婪組字串 |
-| 21 | Sliding Window Median | 480 | Java | 兩個有序 multiset（`TreeMap`） |
-| 22 | Sort Characters By Frequency | 451 | Java | Counter + 最大堆積（也可用桶排序） |
-| 23 | Last Stone Weight | 1046 | Java | 最大堆積模擬 |
+| 8 | Find K Pairs with Smallest Sums | 373 | Java | 對虛擬網格做 K 路合併 |
+| 9 | Kth Smallest Element in a Sorted Matrix | 378 | Java | 大小為 k 的最大堆積 |
+| 10 | Minimum Deletions to Make Character Frequencies Unique | 1647 | Java | 頻率唯一性 — [heap_advanced.md](./heap_advanced.md) |
+| 11 | Maximum Performance of a Team | 1383 | Java | 排序 + 固定大小堆積 — [heap_advanced.md](./heap_advanced.md) |
+| 12 | Minimum Number of Refueling Stops | 871 | Java | 反悔貪婪 — [heap_advanced.md](./heap_advanced.md) |
+| 13 | Minimum Number of Visited Cells in a Grid | 2617 | Java | 每列 / 每行 PQ + 延遲刪除 — [heap_advanced.md](./heap_advanced.md) |
+| 14 | Divide Intervals Into Minimum Number of Groups | 2406 | Java | 區間排程 — [heap.md](./heap.md#template-4-interval-scheduling-pattern--lc-253) |
+| 15 | Minimize Deviation in Array | 1675 | Java | 最大堆積 + 貪婪縮小 |
+| 16 | Task Scheduler | 621 | Python | 最大堆積 + 冷卻佇列 |
+| 17 | Most Frequent IDs | 3092 | Python + Java | 延遲刪除 — [heap_advanced.md](./heap_advanced.md) |
+| 18 | K Closest Points to Origin | 973 | Java | 大小為 k 的最大堆積 |
+| 19 | Reorganize String | 767 | Java | 貪婪組字串 |
+| 20 | Sliding Window Median | 480 | Java | 兩個有序 multiset（`TreeMap`） |
+| 21 | Sort Characters By Frequency | 451 | Java | Counter + 最大堆積（也可用桶排序） |
+| 22 | Last Stone Weight | 1046 | Java | 最大堆積模擬 |

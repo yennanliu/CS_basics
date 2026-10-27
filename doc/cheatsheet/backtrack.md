@@ -771,7 +771,7 @@ def partition(s):
 | LC | Problem | What changes vs LC 131 |
 |----|---------|------------------------|
 | 93 | Restore IP Addresses | gate = `0..255` with no leading zero; cut length capped at 3; the end condition also demands exactly 4 pieces ([worked](./backtrack_examples.md#9-restore-ip-addresses--lc-93)) |
-| 140 | Word Break II | gate = `piece in wordDict`; needs memoisation on `start`, or `"aaaa…aaab"` explodes ([worked](./backtrack_examples.md#11-word-break-ii--lc-140)) |
+| 140 | Word Break II | gate = `piece in wordDict`; needs memoisation on `start`, or `"aaaa…aaab"` explodes ([worked](./backtrack_examples.md#10-word-break-ii--lc-140)) |
 | 139 | Word Break | same search, but it only asks *whether* — so drop the path and it collapses to DP/BFS over `start` |
 | 132 | Palindrome Partitioning II | asks for the **minimum number of cuts**, not every partition — enumerate nothing, DP over `start` |
 | 842 | Split Array into Fibonacci Sequence | gate = "this piece equals the previous two summed", so the recursion carries the last two values as state |

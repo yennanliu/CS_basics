@@ -613,32 +613,7 @@ class Solution(object):
 
 ## Fast/Slow Pointers & Structure
 
-### 7) Palindrome Linked List — LC 234
-
-```python
-# LC 234 : palindrome-linked-list
-# V0
-# IDEA : LINKED LIST -> LIST
-# EXAMPLE INPUT :
-# [1,2,2,1]
-# WHILE GO THROUGH :
-# head = ListNode{val: 2, next: ListNode{val: 2, next: ListNode{val: 1, next: None}}}
-# head = ListNode{val: 2, next: ListNode{val: 1, next: None}}
-# head = ListNode{val: 1, next: None}
-class Solution(object):
-    def isPalindrome(self, head):
-        ### NOTE : THE CONDITION
-        if not head or not head.next:
-            return True
-        r = []
-        ### NOTE : THE CONDITION
-        while head:
-            r.append(head.val)
-            head = head.next
-        return r == r[::-1]
-```
-
-### 8) Intersection of Two Linked Lists — LC 160
+### 7) Intersection of Two Linked Lists — LC 160
 
 ```python
 # LC 160 Intersection of Two Linked Lists
@@ -666,7 +641,7 @@ class Solution(object):
         return p
 ```
 
-### 9) Remove Nth Node From End of List — LC 19
+### 8) Remove Nth Node From End of List — LC 19
 
 > The Python solution and the full "why a dummy node" walkthrough live in
 > [linked_list.md](./linked_list.md#why-dummy-node-visual-comparison-lc-19). Below are the two
@@ -808,7 +783,7 @@ class Solution(object):
 
 ## Copying, Flattening & Components
 
-### 10) Copy List with Random Pointer — LC 138
+### 9) Copy List with Random Pointer — LC 138
 
 ```python
 # LC 138. Copy List with Random Pointer
@@ -891,7 +866,7 @@ public Node copyRandomList_3(Node head) {
 }
 ```
 
-### 11) Linked List Components — LC 817
+### 10) Linked List Components — LC 817
 
 
 ```java
@@ -928,7 +903,7 @@ public Node copyRandomList_3(Node head) {
     }
 ```
 
-### 12) Flatten a Multilevel Doubly Linked List — LC 430 ⭐⭐⭐⭐
+### 11) Flatten a Multilevel Doubly Linked List — LC 430 ⭐⭐⭐⭐
 
 
 **Pattern**: **In-place splice**. Whenever a node has a `child`, cut the child chain in between `cur` and `cur.next`, fix `prev` pointers on both seams, then keep walking — the spliced-in child will be visited naturally, so nesting is handled without recursion or a stack.
@@ -1018,7 +993,7 @@ at node 8:  1 <-> 2 <-> 3 <-> 7 <-> 8 <-> 11 <-> 12 <-> 9 <-> 4
 
 ## Arithmetic & Sorting on a List
 
-### 13) Plus One Linked List — LC 369
+### 12) Plus One Linked List — LC 369
 
 ```java
 // java
@@ -1071,7 +1046,7 @@ return prev;
 }
 ```
 
-### 14) Sort List (merge sort on a linked list) — LC 148 ⭐⭐⭐⭐⭐
+### 13) Sort List (merge sort on a linked list) — LC 148 ⭐⭐⭐⭐⭐
 
 
 **Pattern**: The only `O(n log n)` sort that runs in `O(1)` extra data space on a linked list. Three moves: **split at the middle → sort each half recursively → merge two sorted lists** (reuse [4) LC 21](#4-merge-two-sorted-lists--lc-21)).
@@ -1207,7 +1182,7 @@ def insertionSortList(self, head):
 
 ## Array Techniques Borrowed onto a List
 
-### 15) Prefix Sum + HashMap on a Linked List — LC 1171 ⭐⭐⭐⭐
+### 14) Prefix Sum + HashMap on a Linked List — LC 1171 ⭐⭐⭐⭐
 
 
 **Pattern**: The classic array trick "**equal prefix sums ⇒ the segment between them sums to 0**" ported to a linked list. Instead of counting subarrays, you **rewire `next` to jump over** the zero-sum stretch.
@@ -1281,7 +1256,7 @@ result  : 3 -> 1
 
 ---
 
-### 16) Monotonic Stack over a Linked List — LC 1019 ⭐⭐⭐
+### 15) Monotonic Stack over a Linked List — LC 1019 ⭐⭐⭐
 
 
 **Pattern**: "Next greater element" needs to look **backwards**, which a singly linked list cannot do. Materialize the values into an array first, then run the standard **monotonic decreasing stack of indices** — see [monotonic_stack.md](./monotonic_stack.md).
@@ -1352,7 +1327,7 @@ leftover 1,4 -> res = [7, 0, 5, 5, 0]
 | # | Problem | One-line idea |
 |---|---------|----------------|
 | 142 | Linked List Cycle II | Floyd's cycle detection, then restart one pointer at `head` to find the entry node — see [2_pointers_linkedlist.md](./2_pointers_linkedlist.md) |
-| 2130 | Maximum Twin Sum of a Linked List | Split at the middle + reverse the second half (LC 234 palindrome machinery), then pair up — see [7)](#7-palindrome-linked-list--lc-234) |
+| 2130 | Maximum Twin Sum of a Linked List | Split at the middle + reverse the second half (LC 234 palindrome machinery), then pair up — see [2_pointers_linkedlist.md](./2_pointers_linkedlist.md#1-1-6--palindrome-linked-list-find-mid---reverse-2nd-half---compare) |
 | 109 | Convert Sorted List to BST | LC 148's "cut at the middle" split; the mid node becomes the BST root, recurse on both halves |
 | 382 | Linked List Random Node | **Reservoir sampling**: keep the `i`-th node with probability `1/i` in one pass — O(1) space, no length needed |
 | 707 | Design Linked List | Dummy head + a `size` counter; every op is "walk to index `i-1`, then splice" (see the [Dummy Head Technique](./linked_list.md#dummy-head-technique)) |

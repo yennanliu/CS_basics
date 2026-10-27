@@ -294,7 +294,7 @@ def countSpecialIntegers(nums: list) -> int:
 |---------|-----|---------------------------------|
 | Partition Labels | 763 | `{char: last index}`; sweep left→right extending the block's end to the furthest `last` seen — a cut happens exactly where `i == end` |
 | Contains Duplicate II | 219 | `{value: last index}`; a hit needs `i - last <= k`, so only the most recent position matters |
-| Count Pairs of Equal Substrings With Minimum Difference | 1794 | Two maps over two strings: `{char: first index}` in one, `{char: last index}` in the other; minimise `first - last` and count the chars that reach it — [worked in string_examples.md](./string_examples.md#2-15-count-pairs-of-equal-substrings-with-minimum-difference--lc-1794) |
+| Count Pairs of Equal Substrings With Minimum Difference | 1794 | Two maps over two strings: `{char: first index}` in one, `{char: last index}` in the other; minimise `first - last` and count the chars that reach it — [worked in string_examples.md](./string_examples.md#2-14-count-pairs-of-equal-substrings-with-minimum-difference--lc-1794) |
 | Longest Consecutive Sequence | 128 | The contrast case: spans over **values**, not indices — a set plus "start only where `v-1` is absent" |
 
 ### Template 2: Seen-Before Index Map (Two-Sum Shape)

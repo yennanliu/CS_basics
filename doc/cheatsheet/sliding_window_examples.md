@@ -28,7 +28,6 @@ sheet becomes a set of instantiations rather than nine separate problems.
 | 6 | Frequency of the Most Frequent Element | 1838 | 3 — Longest Window (sort first) | Java |
 | 7 | Subarray Product Less Than K | 713 | 6 — Counting slot | Java, Python |
 | 8 | Arithmetic Slices | 413 | custom — look-back run counting | Python |
-| 9 | Partition Labels | 763 | custom — greedy last-index window | Java |
 
 > LC 3, LC 76 and LC 209 are **not** here: they are the worked bodies of Templates 3, 5 and 4
 > in [sliding_window.md](./sliding_window.md) and are not restated.
@@ -406,48 +405,6 @@ class Solution(object):
                 else:
                     break
         return res 
-```
-
-### 9) Partition Labels — LC 763 ⭐⭐⭐⭐
-
-*Greedy window with no shrink phase: precompute each character's last index, then stretch `end`
-while scanning and cut when `i == end`. The window only ever grows and then restarts.*
-
-```java
-// java
-// LC 763 Partition Labels
-
-// IDEA: GREEDY + hashMap record last idx + sliding window (fixed by gpt)
-public List<Integer> partitionLabels_0_2(String s) {
-    List<Integer> res = new ArrayList<>();
-
-    if (s == null || s.length() == 0) {
-        return res;
-    }
-
-    // Map each character to its last index
-    Map<Character, Integer> lastIndexMap = new HashMap<>();
-    for (int i = 0; i < s.length(); i++) {
-        lastIndexMap.put(s.charAt(i), i);
-    }
-
-    int l = 0;
-    while (l < s.length()) {
-        int end = lastIndexMap.get(s.charAt(l));
-        int r = l;
-
-        // Expand the window to include all characters in the current segment
-        while (r < end) {
-            end = Math.max(end, lastIndexMap.get(s.charAt(r)));
-            r++;
-        }
-
-        res.add(end - l + 1);
-        l = end + 1;
-    }
-
-    return res;
-}
 ```
 
 ## Summary & Quick Reference

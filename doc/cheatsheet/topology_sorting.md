@@ -1,7 +1,7 @@
 # Topological Sorting - Complete Guide
 
 > **Scope** — Ordering a DAG — Kahn's BFS, DFS post-order, cycle detection, and the scheduling problems built on them.
-> **See also**: [topology_sorting_examples.md](./topology_sorting_examples.md) — the eight worked problems behind these templates; [diff_toposort_quickunion.md](./diff_toposort_quickunion.md) — toposort vs union-find — which tool for which problem; [union_find.md](./union_find.md) — undirected connectivity; [graph.md](./graph.md) — general graph material.
+> **See also**: [topology_sorting_examples.md](./topology_sorting_examples.md) — the seven worked problems behind these templates; [diff_toposort_quickunion.md](./diff_toposort_quickunion.md) — toposort vs union-find — which tool for which problem; [union_find.md](./union_find.md) — undirected connectivity; [graph.md](./graph.md) — general graph material.
 
 ## LeetCode Problem Lists
 
@@ -1410,14 +1410,13 @@ START: Topological Sort Problem
 └── DEFAULT → Use Template 1 (BFS Kahn's Algorithm)
 ```
 
-> The `UnionFind` class above is the template; LC 547 applies it three ways —
-> union-find, DFS and BFS — in
-> [topology_sorting_examples.md](./topology_sorting_examples.md#8-number-of-provinces--lc-547).
+> The `UnionFind` class above is the template; LC 547 applies it in
+> [union_find_examples.md](./union_find_examples.md#4-number-of-provinces--lc-547).
 
 
 ## Worked Examples
 
-Eight problems, grouped by the shape of the dependency they encode, live in
+Seven problems, grouped by the shape of the dependency they encode, live in
 **[topology_sorting_examples.md](./topology_sorting_examples.md)**:
 
 | Group | Problems | The template they exercise |
@@ -1425,7 +1424,7 @@ Eight problems, grouped by the shape of the dependency they encode, live in
 | [Course scheduling & ordering](./topology_sorting_examples.md#course-scheduling--ordering) | LC 210, 207, 269, 444 | Kahn's (T1), three-colour DFS (T2), lexicographical (T4) |
 | [Layering & parallel scheduling](./topology_sorting_examples.md#layering--parallel-scheduling) | LC 1136 | parallel task scheduling (T6) |
 | [Cycle detection & safe states](./topology_sorting_examples.md#cycle-detection--safe-states) | LC 802 | three-colour DFS (T2) |
-| [Undirected graphs — components & centroids](./topology_sorting_examples.md#undirected-graphs--components--centroids) | LC 310, 547 | leaf trimming (T7), union find (T8) |
+| [Undirected graphs — components & centroids](./topology_sorting_examples.md#undirected-graphs--components--centroids) | LC 310 | leaf trimming (T7) |
 
 
 ## Summary & Interview Tips
