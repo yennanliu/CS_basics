@@ -58,8 +58,8 @@
 		- `scan` (ONLY idea, no implement)
 			- 第 258 场周赛(2021-09-12 10:30, 90 分钟) 参赛人数 4519
 			
-			- weekly 264 (ing)
-				- https://leetcode.com/contest/weekly-contest-264
+			- weekly 270 (ing)
+				- https://leetcode.com/contest/weekly-contest-270
 
 						- 2048 (ing) -> note, again!!
 
