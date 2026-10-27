@@ -1,8 +1,8 @@
-<!-- 448c904be364 -->
+<!-- 185bb52bba52 -->
 # Union Find（併查集）
 
 > **範圍** — 併查集（disjoint set union）——**無向圖**的連通性、連通元件計數、環偵測，搭配路徑壓縮與按秩合併。
-> **另見**：[union_find_examples.md](./union_find_examples.md) — 支撐這些模式的十九道實戰題；[diff_toposort_quickunion.md](./diff_toposort_quickunion.md) — 併查集 vs 拓撲排序，什麼題該用哪個工具；[topology_sorting.md](./topology_sorting.md) — 有向圖的排序；[graph.md](./graph.md) — 一般的圖論素材。
+> **另見**：[union_find_examples.md](./union_find_examples.md) — 支撐這些模式的十七道實戰題；[diff_toposort_quickunion.md](./diff_toposort_quickunion.md) — 併查集 vs 拓撲排序，什麼題該用哪個工具；[topology_sorting.md](./topology_sorting.md) — 有向圖的排序；[graph.md](./graph.md) — 一般的圖論素材。
 
 - 在動態變化的圖上，有效率地判斷節點之間是否連通
 - 什麼時候用：動態連通性查詢、環偵測、MST 演算法、把元素分群
@@ -170,8 +170,8 @@
 - 本來就已經連通的節點
 - 不合法的索引
 
-<!-- 5a73ed3fce32 -->
-### 0-4) 併查集的六大模式 ⭐⭐⭐⭐
+<!-- 1a53266406b4 -->
+### 0-4) 併查集的五大模式 ⭐⭐⭐⭐
 
 底下每一題都是同一個模板，差別只在對這個問題的答案不同：*「什麼算一個節點，什麼時候把兩個節點合併？」* 難的全在這個問題上；DSU 本身從頭到尾都沒變。
 
@@ -180,14 +180,13 @@
 | 1 | **環偵測** | 一個頂點 | 每條邊都做——`union` 回傳 `false` 的那一刻，*就是*環 | [1) LC 684](./union_find_examples.md#1-redundant-connection--lc-684)、[5) LC 261](./union_find_examples.md#5-graph-valid-tree--lc-261) |
 | 2 | **元件計數** | 一個頂點 | 每條邊都做；union 成功就把計數器減一 | [6) LC 323](./union_find_examples.md#6-number-of-connected-components-in-an-undirected-graph--lc-323)、[4) LC 547](./union_find_examples.md#4-number-of-provinces--lc-547) |
 | 3 | **多餘的邊** | 一個頂點 | 同上，但要*回傳*第一條 union 失敗的邊 | [1) LC 684](./union_find_examples.md#1-redundant-connection--lc-684)、[2) LC 685](./union_find_examples.md#2-redundant-connection-ii--lc-685--dsu-on-a-directed-graph-) |
-| 4 | **二維格子連通性** | 一個格子，壓平成 `row * cols + col` | 只跟右邊與下面的鄰居合併，這樣每一對只會被考慮一次 | [10) LC 200](./union_find_examples.md#10-number-of-islands--lc-200--grid--1d-via-row--cols--col)、[11) LC 130](./union_find_examples.md#11-surrounded-regions--lc-130--a-virtual-border-node) |
-| 5 | **加權併查集** | 一個變數 | 邊上帶著到父節點的*比值*，路徑壓縮時一路相乘 | [13) LC 399](./union_find_examples.md#13-evaluate-division--lc-399--weighted-union-find-with-ratios-) |
-| 6 | **BFS + 併查集往上爬** | 一個樹節點 | 反覆跟自己的父節點合併，直到所有目標收斂到同一個根 | [19) LC 865](./union_find_examples.md#19-smallest-subtree-with-all-the-deepest-nodes--lc-865--bfs--union-find-climb) — 跟 LC 1123 相同；可對照 LC 236、LC 1644 與 LC 1650，那是同一件事的遞迴 LCA 版本 |
+| 4 | **二維格子連通性** | 一個格子，壓平成 `row * cols + col` | 只跟右邊與下面的鄰居合併，這樣每一對只會被考慮一次 | [9) LC 200](./union_find_examples.md#9-number-of-islands--lc-200--grid--1d-via-row--cols--col)、[10) LC 130](./union_find_examples.md#10-surrounded-regions--lc-130--a-virtual-border-node) |
+| 5 | **加權併查集** | 一個變數 | 邊上帶著到父節點的*比值*，路徑壓縮時一路相乘 | [12) LC 399](./union_find_examples.md#12-evaluate-division--lc-399--weighted-union-find-with-ratios-) |
 
 另外兩種結構性變形，改的是*什麼時候跑*演算法，而不是合併什麼：
 
-- **排序邊（Kruskal 風格）** — 由便宜到貴依序處理邊，一旦你在意的那兩個端點連上就停。[14) LC 1631](./union_find_examples.md#14-path-with-minimum-effort--lc-1631--sorted-edge-kruskal-style)。
-- **離線倒放** — 併查集不能*拆開*，所以當題目在移除東西時，就把過程倒過來重播、改成一個個加回去。[15) LC 803](./union_find_examples.md#15-bricks-falling-when-hit--lc-803--offline-reverse-union-find-)。
+- **排序邊（Kruskal 風格）** — 由便宜到貴依序處理邊，一旦你在意的那兩個端點連上就停。[13) LC 1631](./union_find_examples.md#13-path-with-minimum-effort--lc-1631--sorted-edge-kruskal-style)。
+- **離線倒放** — 併查集不能*拆開*，所以當題目在移除東西時，就把過程倒過來重播、改成一個個加回去。[14) LC 803](./union_find_examples.md#14-bricks-falling-when-hit--lc-803--offline-reverse-union-find-)。
 
 <!-- 9d7579d7fac6 -->
 ## 1) 範例題目與程式碼索引
@@ -218,12 +217,11 @@
   - Java：`leetcode_java/src/main/java/LeetCodeJava/DFS/EvaluateDivision.java:421`
   - 模式：存比值，路徑壓縮時把比值一路相乘
 
-<!-- 44308d45e381 -->
+<!-- e8f9a91289c6 -->
 ### 進階應用
 - **LC 130** – Surrounded Regions：用一個虛擬節點串起所有邊界區域
 - **LC 547** – Friend Circles：在朋友關係矩陣裡找分群
 - **LC 721** – Accounts Merge：依共用的 email 把帳號分群
-- **LC 865** – Smallest Subtree with all Deepest Nodes：BFS + 往上爬父節點，找最深節點們的 LCA
 - **LC 886** – Possible Bipartition：偵測二分圖的衝突
 - **LC 1135** – Connecting Cities：用 Kruskal 演算法求 MST
 - **LC 1319** – Network Connections：把所有節點連起來所需的最少操作數
@@ -305,15 +303,15 @@
 - 有向圖的強連通元件（改用 Tarjan）
 - 圖很小，直接查鄰接關係就夠了
 
-<!-- 52dff7087fe1 -->
+<!-- 3f7ed95e50fd -->
 ## 實戰題解
 
-十九道題收在 **[union_find_examples.md](./union_find_examples.md)**，是依「節點代表什麼」分組，而不是依題號：
+十七道題收在 **[union_find_examples.md](./union_find_examples.md)**，是依「節點代表什麼」分組，而不是依題號：
 
 | 分組 | 題目 |
 |---|---|
 | [環偵測與多餘邊](./union_find_examples.md#cycle-detection--redundancy) | LC 684, 685, 990 |
-| [元件計數與連通性](./union_find_examples.md#component-counting--connectivity) | LC 547, 261, 323, 1319, 2316, 128 |
+| [元件計數與連通性](./union_find_examples.md#component-counting--connectivity) | LC 547, 261, 323, 1319, 2316 |
 | [格子題](./union_find_examples.md#grids) | LC 200, 130, 827 |
 | [加權、排序邊與離線變形](./union_find_examples.md#weighted-sorted-edge--offline-variants) | LC 399, 1631, 803 |
-| [併查集用在其他結構上](./union_find_examples.md#union-find-on-other-structures) | LC 721, 1202, 947, 865 |
+| [併查集用在其他結構上](./union_find_examples.md#union-find-on-other-structures) | LC 721, 1202, 947 |
