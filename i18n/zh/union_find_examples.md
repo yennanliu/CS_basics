@@ -1,8 +1,8 @@
-<!-- 9390d47fd058 -->
+<!-- c14b917e9fd8 -->
 # 併查集（Union Find） — 實戰題解
 
-> **範圍** — [union_find.md](./union_find.md) 背後的解題檔案庫：十九道題，依「一個節點代表什麼」分組——頂點、格子、帶比值的變數，或樹節點——因為題目之間變的就只有這件事。
-> **另見** — [union_find.md](./union_find.md)：母文件，收錄 DSU 模板、六大模式、最佳化與陷阱；[graph.md](./graph.md)：圖的表示法通論；[topology_sorting.md](./topology_sorting.md)：有向圖的對應做法；[diff_toposort_quickunion.md](./diff_toposort_quickunion.md)：判斷題目要的是兩者中的哪一個；[tree_lca_distance.md](./tree_lca_distance.md)：LC 236 以及第 19 個範例的遞迴 LCA 觀點。
+> **範圍** — [union_find.md](./union_find.md) 背後的解題檔案庫：十八道題，依「一個節點代表什麼」分組——頂點、格子、帶比值的變數，或樹節點——因為題目之間變的就只有這件事。
+> **另見** — [union_find.md](./union_find.md)：母文件，收錄 DSU 模板、六大模式、最佳化與陷阱；[graph.md](./graph.md)：圖的表示法通論；[topology_sorting.md](./topology_sorting.md)：有向圖的對應做法；[diff_toposort_quickunion.md](./diff_toposort_quickunion.md)：判斷題目要的是兩者中的哪一個；[tree_lca_distance.md](./tree_lca_distance.md)：LC 236 以及第 18 個範例的遞迴 LCA 觀點。
 
 <!-- bb69b2231e40 -->
 ## LeetCode 題目清單
@@ -161,25 +161,17 @@ Python 參考：`leetcode_python/Depth-First-Search/count-unreachable-pairs-of-n
 - **注意溢位（Java）。** 當 `n` 高達 `10^5` 時，跨配對數會接近 `~5·10^9` > `Integer.MAX_VALUE`；請用 `long`。
 - **同一招的通用版：** 給定分組大小 `[s_1..s_k]` 要數跨組配對數，永遠都是 `Σ_{i<j} s_i·s_j`，而且都能用這個方法在一趟 O(k) 內算完——用途遠不只在併查集。
 
-<!-- 763baa6976eb -->
-### 9) Longest Consecutive Sequence — LC 128 — HashSet O(N)
-
-> 對每個數字，只有在 (num-1) 不存在時才開始往上數——那代表序列的起點。
-
-<!--CODE-->
-<!--CODE-->
-
 <!-- d4919f9d7698 -->
 ## 格子
 
-<!-- 65615a542e40 -->
-### 10) Number of Islands — LC 200 — 用 `row * cols + col` 把格子攤成一維
+<!-- 965e2bdc0a95 -->
+### 9) Number of Islands — LC 200 — 用 `row * cols + col` 把格子攤成一維
 
 <!--CODE-->
 <!--CODE-->
 
-<!-- 524402cc4d47 -->
-### 11) Surrounded Regions — LC 130 — 一個虛擬邊界節點
+<!-- 2e7629e13887 -->
+### 10) Surrounded Regions — LC 130 — 一個虛擬邊界節點
 
 > 把所有邊界上的 'O' 都 union 到一個虛擬節點；任何沒連到它的 'O' 都翻成 'X'。
 
@@ -191,8 +183,8 @@ Python 參考：`leetcode_python/Depth-First-Search/count-unreachable-pairs-of-n
 
 > **變化題 — LC 1559 Detect Cycles in 2D Grid**：只在字母相同時，把每個格子與它的**右**鄰和**下**鄰 union；若 union 之前就 `find(a) == find(b)`，代表有環（格子上的環長度自動 ≥ 4）。和 LC 684 一樣是「union 失敗 ⇒ 有環」的判斷，只是搬到格子上。
 
-<!-- 506df31abe33 -->
-### 12) Making A Large Island — LC 827 — 帶大小的 DSU + 候選翻轉 ⭐⭐⭐
+<!-- e1fcb8d8283f -->
+### 11) Making A Large Island — LC 827 — 帶大小的 DSU + 候選翻轉 ⭐⭐⭐
 
 
 > **模式：**「先把元件連好一次，之後每個候選合併都能 O(1) 評估」。
@@ -211,14 +203,14 @@ Python 參考：`leetcode_python/Depth-First-Search/count-unreachable-pairs-of-n
 <!-- 2b9d9c695201 -->
 ## 加權、排序邊與離線變形
 
-<!-- bb328667dd4d -->
-### 13) Evaluate Division — LC 399 — 帶比值的加權併查集 ⭐⭐⭐⭐
+<!-- 38277d5d46ea -->
+### 12) Evaluate Division — LC 399 — 帶比值的加權併查集 ⭐⭐⭐⭐
 
 <!--CODE-->
 <!--CODE-->
 
-<!-- 0738d96b701b -->
-### 14) Path With Minimum Effort — LC 1631 — 排序邊（Kruskal 風格）
+<!-- 14c01f314a74 -->
+### 13) Path With Minimum Effort — LC 1631 — 排序邊（Kruskal 風格）
 
 
 > **模式：**「最小化路徑上的**最大**邊」／「連通 A 與 B 的最小門檻值」。
@@ -242,8 +234,8 @@ Python 參考：`leetcode_python/Depth-First-Search/count-unreachable-pairs-of-n
 
 > **LC 1697 Checking Existence of Edge Length Limited Paths** — 同一套掃描的**離線查詢**版本：把邊依權重排序，同時把查詢依 `limit` 排序，接著用一個指標同時走兩邊，在回答 `find(p) == find(q)` 之前先把所有 `weight < limit` 的邊 union 進去。記得回傳答案時要還原成原本的查詢順序。
 
-<!-- 74713cda931b -->
-### 15) Bricks Falling When Hit — LC 803 — 離線**逆向**併查集 ⭐⭐⭐
+<!-- 5ece0973ab3d -->
+### 14) Bricks Falling When Hit — LC 803 — 離線**逆向**併查集 ⭐⭐⭐
 
 
 > **模式：** 題目在*刪除*東西，但 DSU 只能*合併*。解法：讓時間倒著走——先全部刪掉，再**一次加回一個刪除**。
@@ -267,8 +259,8 @@ Python 參考：`leetcode_python/Depth-First-Search/count-unreachable-pairs-of-n
 <!-- bf2cf14ba80c -->
 ## 其他結構上的併查集
 
-<!-- 725f0572a6d2 -->
-### 16) Accounts Merge — LC 721 — 在 email 上做併查集
+<!-- 1c222d0958af -->
+### 15) Accounts Merge — LC 721 — 在 email 上做併查集
 
 > 把屬於同一個人的 email union 起來；依根分組；排序並整理輸出格式。
 
@@ -277,24 +269,24 @@ Python 參考：`leetcode_python/Depth-First-Search/count-unreachable-pairs-of-n
 
 > **變化題 — LC 839 Similar String Groups**：一樣是「先 union 再依根分組」的形狀，但邊*沒有直接給你*。所有字串互為 anagram，所以就跑 O(N² · L) 的兩兩檢查——`union(i, j)` 當且僅當 `s[i] == s[j]` 或它們**恰好**有 2 個位置不同——答案就是元件數。
 
-<!-- 4c5e2e0cbbf3 -->
-### 17) Smallest String with Swaps — LC 1202 — 併查集 + 排序
+<!-- fc7c4984539a -->
+### 16) Smallest String with Swaps — LC 1202 — 併查集 + 排序
 
 > union 所有可交換的配對；把每個元件內的字元排序；再把排好的字元放回去。
 
 <!--CODE-->
 <!--CODE-->
 
-<!-- a3f9a2989de6 -->
-### 18) Most Stones Removed with Same Row or Column — LC 947
+<!-- 0ab0f636f982 -->
+### 17) Most Stones Removed with Same Row or Column — LC 947
 
 > 把同列或同欄的石頭 union 起來；答案 = 石頭數 − 元件數。
 
 <!--CODE-->
 <!--CODE-->
 
-<!-- 8a1f1c9a12b2 -->
-### 18-1) Couples Holding Hands — LC 765 — 元件數 → 交換次數
+<!-- 05b557821995 -->
+### 17-1) Couples Holding Hands — LC 765 — 元件數 → 交換次數
 
 > **union 的對象是「情侶」，不是「人」。** 把情侶編號為 `0 .. n-1`，於是人 `p` 屬於情侶 `p / 2`。
 > 每組座位配對 `(2i, 2i+1)` 代表「這兩對情侶糾纏在一起」— 把它們 union 起來。由 `k` 對情侶構成的
@@ -318,8 +310,8 @@ LC 839 Similar String Groups 建出的是*相同的*元件，但回傳的是元�
 union-find，只有最後一行不同。要帶走的模式是「*大小為 k 的元件需要 k-1 次操作*」，而無論哪種情況，
 你數的都是根，而不是 union 的次數。
 
-<!-- 36c3188fc807 -->
-### 19) Smallest Subtree with all the Deepest Nodes — LC 865 — BFS + 併查集式上爬
+<!-- 9482f28e67fd -->
+### 18) Smallest Subtree with all the Deepest Nodes — LC 865 — BFS + 併查集式上爬
 
 > 用 BFS 找出最深的節點與父節點對照表；接著讓所有最深節點沿著父節點「往上爬」，直到匯聚到 LCA。這與 LC 1123 是同一題。
 

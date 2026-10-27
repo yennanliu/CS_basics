@@ -1,7 +1,7 @@
 # Union Find — Worked Examples
 
-> **Scope** — The worked-solution archive behind [union_find.md](./union_find.md): nineteen problems grouped by what a node represents — a vertex, a grid cell, a variable carrying a ratio, or a tree node — since that is the only thing that changes between them.
-> **See also**: [union_find.md](./union_find.md) — the parent sheet: the DSU template, the six patterns, the optimisations and the traps; [graph.md](./graph.md) — graph representation in general; [topology_sorting.md](./topology_sorting.md) — the directed counterpart; [diff_toposort_quickunion.md](./diff_toposort_quickunion.md) — which of the two a problem wants; [tree_lca_distance.md](./tree_lca_distance.md) — LC 236 and the recursive-LCA framing of example 19).
+> **Scope** — The worked-solution archive behind [union_find.md](./union_find.md): eighteen problems grouped by what a node represents — a vertex, a grid cell, a variable carrying a ratio, or a tree node — since that is the only thing that changes between them.
+> **See also**: [union_find.md](./union_find.md) — the parent sheet: the DSU template, the six patterns, the optimisations and the traps; [graph.md](./graph.md) — graph representation in general; [topology_sorting.md](./topology_sorting.md) — the directed counterpart; [diff_toposort_quickunion.md](./diff_toposort_quickunion.md) — which of the two a problem wants; [tree_lca_distance.md](./tree_lca_distance.md) — LC 236 and the recursive-LCA framing of example 18).
 
 ## LeetCode Problem Lists
 
@@ -600,52 +600,9 @@ private void union(int[] p, int[] sz, int x, int y) {
 - **Watch overflow (Java).** With `n` up to `10^5`, cross-pairs approach `~5·10^9` > `Integer.MAX_VALUE`; use `long`.
 - **Same trick, general use:** counting cross-group pairs given group sizes `[s_1..s_k]` is always `Σ_{i<j} s_i·s_j`, computable in one O(k) pass this way — handy far beyond Union-Find.
 
-### 9) Longest Consecutive Sequence — LC 128 — HashSet O(N)
-
-> For each number, only start counting if (num-1) is absent — marks sequence start.
-
-```java
-// LC 128 - Longest Consecutive Sequence
-// IDEA: HashSet — only extend sequences from their start element
-// time = O(N), space = O(N)
-public int longestConsecutive(int[] nums) {
-    Set<Integer> set = new HashSet<>();
-    for (int n : nums) set.add(n);
-    int longest = 0;
-    for (int n : set) {
-        if (!set.contains(n - 1)) {   // sequence start
-            int len = 1;
-            while (set.contains(n + len)) len++;
-            longest = Math.max(longest, len);
-        }
-    }
-    return longest;
-}
-```
-```python
-# python
-# LC 128 - Longest Consecutive Sequence
-# IDEA: a set, and only ever extend a run from its START element -- so across the whole
-#       scan the inner while-loop touches each element at most once
-# time = O(N), space = O(N)
-class Solution(object):
-    def longestConsecutive(self, nums):
-        pool = set(nums)
-        longest = 0
-        for n in pool:
-            ### NOTE !!! without this guard the inner loop reruns per element -> O(N^2)
-            if n - 1 in pool:
-                continue                      # not a run start
-            length = 1
-            while n + length in pool:
-                length += 1
-            longest = max(longest, length)
-        return longest
-```
-
 ## Grids
 
-### 10) Number of Islands — LC 200 — grid → 1D via `row * cols + col`
+### 9) Number of Islands — LC 200 — grid → 1D via `row * cols + col`
 
 ```java
 public int numIslands(char[][] grid) {
@@ -717,7 +674,7 @@ class Solution(object):
         return islands
 ```
 
-### 11) Surrounded Regions — LC 130 — a virtual border node
+### 10) Surrounded Regions — LC 130 — a virtual border node
 
 > Union all border 'O' cells to a virtual node; any 'O' not connected gets flipped to 'X'.
 
@@ -791,7 +748,7 @@ class Solution(object):
 
 > **Variation — LC 1559 Detect Cycles in 2D Grid**: only union each cell with its **right** and **down** neighbor when the letters match; if `find(a) == find(b)` before the union, a cycle exists (a grid cycle is automatically length ≥ 4). Same "union fails ⇒ cycle" test as LC 684, applied on a grid.
 
-### 12) Making A Large Island — LC 827 — size-aware DSU + candidate flip ⭐⭐⭐
+### 11) Making A Large Island — LC 827 — size-aware DSU + candidate flip ⭐⭐⭐
 
 
 > **Pattern:** "connect components once, then evaluate every candidate merge in O(1)".
@@ -906,7 +863,7 @@ class Solution(object):
 
 ## Weighted, Sorted-Edge & Offline Variants
 
-### 13) Evaluate Division — LC 399 — weighted union-find with ratios ⭐⭐⭐⭐
+### 12) Evaluate Division — LC 399 — weighted union-find with ratios ⭐⭐⭐⭐
 
 ```java
 class WeightedUnionFind {
@@ -1015,7 +972,7 @@ class Solution(object):
         return [uf.query(c, d) for c, d in queries]
 ```
 
-### 14) Path With Minimum Effort — LC 1631 — sorted-edge (Kruskal-style)
+### 13) Path With Minimum Effort — LC 1631 — sorted-edge (Kruskal-style)
 
 
 > **Pattern:** "minimize the **maximum** edge on a path" / "smallest threshold that connects A and B".
@@ -1169,7 +1126,7 @@ class Solution(object):
 
 > **LC 1697 Checking Existence of Edge Length Limited Paths** — the **offline query** form of the same sweep: sort edges by weight AND sort the queries by `limit`, then walk both with one pointer, unioning every edge with `weight < limit` before answering `find(p) == find(q)`. Remember to restore the original query order when returning the answers.
 
-### 15) Bricks Falling When Hit — LC 803 — offline **reverse** union-find ⭐⭐⭐
+### 14) Bricks Falling When Hit — LC 803 — offline **reverse** union-find ⭐⭐⭐
 
 
 > **Pattern:** the problem *deletes* things, but DSU can only *merge*. Fix: run time backwards — delete everything first, then **add the deletions back one at a time**.
@@ -1319,7 +1276,7 @@ class Solution(object):
 
 ## Union-Find on Other Structures
 
-### 16) Accounts Merge — LC 721 — union-find over emails
+### 15) Accounts Merge — LC 721 — union-find over emails
 
 > Union emails belonging to the same person; group by root; sort and format.
 
@@ -1400,7 +1357,7 @@ class Solution(object):
 
 > **Variation — LC 839 Similar String Groups**: same "union then group by root" shape, but the edges are *not given*. All strings are anagrams, so run the O(N² · L) pairwise check — `union(i, j)` iff `s[i] == s[j]` or they differ at **exactly 2** positions — then the answer is the component count.
 
-### 17) Smallest String with Swaps — LC 1202 — union-find + sorting
+### 16) Smallest String with Swaps — LC 1202 — union-find + sorting
 
 > Union swap pairs; sort characters within each component; place sorted chars back.
 
@@ -1462,7 +1419,7 @@ class Solution(object):
         return ''.join(res)
 ```
 
-### 18) Most Stones Removed with Same Row or Column — LC 947
+### 17) Most Stones Removed with Same Row or Column — LC 947
 
 > Union stones in the same row or column; answer = stones − number of components.
 
@@ -1511,7 +1468,7 @@ class Solution(object):
         return n - len({find(i) for i in range(n)})
 ```
 
-### 18-1) Couples Holding Hands — LC 765 — components → swaps
+### 17-1) Couples Holding Hands — LC 765 — components → swaps
 
 > **The union is on the COUPLE, not the person.** Number the couples `0 .. n-1`, so person `p`
 > belongs to couple `p / 2`. Each seat pair `(2i, 2i+1)` says "these two couples are entangled" —
@@ -1600,7 +1557,7 @@ carry away is *"a component of size k costs k-1 operations"*, and either way you
 unions.
 
 
-### 19) Smallest Subtree with all the Deepest Nodes — LC 865 — BFS + union-find climb
+### 18) Smallest Subtree with all the Deepest Nodes — LC 865 — BFS + union-find climb
 
 > BFS finds deepest nodes and parent map; then all deepest nodes "climb" upward via parents until they converge to the LCA. This is the same as LC 1123.
 

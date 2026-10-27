@@ -1,7 +1,7 @@
 # Union Find
 
 > **Scope** — Disjoint set union — connectivity, component counting, cycle detection in **undirected** graphs, with path compression and union by rank.
-> **See also**: [union_find_examples.md](./union_find_examples.md) — the nineteen worked problems behind these patterns; [diff_toposort_quickunion.md](./diff_toposort_quickunion.md) — union-find vs toposort — which tool for which problem; [topology_sorting.md](./topology_sorting.md) — directed ordering; [graph.md](./graph.md) — general graph material.
+> **See also**: [union_find_examples.md](./union_find_examples.md) — the eighteen worked problems behind these patterns; [diff_toposort_quickunion.md](./diff_toposort_quickunion.md) — union-find vs toposort — which tool for which problem; [topology_sorting.md](./topology_sorting.md) — directed ordering; [graph.md](./graph.md) — general graph material.
 
 - Efficiently determines connectivity between nodes in dynamic graphs
 - When to use it: Dynamic connectivity queries, cycle detection, MST algorithms, grouping elements
@@ -378,16 +378,16 @@ do two of them merge?"* That question is the whole difficulty; the DSU itself ne
 | 1 | **Cycle detection** | a vertex | on every edge — a `union` that returns `false` *is* the cycle | [1) LC 684](./union_find_examples.md#1-redundant-connection--lc-684), [5) LC 261](./union_find_examples.md#5-graph-valid-tree--lc-261) |
 | 2 | **Component counting** | a vertex | on every edge; decrement a counter when the union succeeds | [6) LC 323](./union_find_examples.md#6-number-of-connected-components-in-an-undirected-graph--lc-323), [4) LC 547](./union_find_examples.md#4-number-of-provinces--lc-547) |
 | 3 | **Redundant edge** | a vertex | as above, but *return* the first edge whose union fails | [1) LC 684](./union_find_examples.md#1-redundant-connection--lc-684), [2) LC 685](./union_find_examples.md#2-redundant-connection-ii--lc-685--dsu-on-a-directed-graph-) |
-| 4 | **2D grid connectivity** | a cell, flattened to `row * cols + col` | with the right/down neighbour, so each pair is considered once | [10) LC 200](./union_find_examples.md#10-number-of-islands--lc-200--grid--1d-via-row--cols--col), [11) LC 130](./union_find_examples.md#11-surrounded-regions--lc-130--a-virtual-border-node) |
-| 5 | **Weighted union-find** | a variable | carrying a *ratio* to the parent, multiplied through on path compression | [13) LC 399](./union_find_examples.md#13-evaluate-division--lc-399--weighted-union-find-with-ratios-) |
-| 6 | **BFS + union-find climb** | a tree node | with its parent, repeatedly, until every target converges on one root | [19) LC 865](./union_find_examples.md#19-smallest-subtree-with-all-the-deepest-nodes--lc-865--bfs--union-find-climb) — same as LC 1123; compare LC 236, LC 1644 and LC 1650, which are the recursive-LCA framing of it |
+| 4 | **2D grid connectivity** | a cell, flattened to `row * cols + col` | with the right/down neighbour, so each pair is considered once | [9) LC 200](./union_find_examples.md#9-number-of-islands--lc-200--grid--1d-via-row--cols--col), [10) LC 130](./union_find_examples.md#10-surrounded-regions--lc-130--a-virtual-border-node) |
+| 5 | **Weighted union-find** | a variable | carrying a *ratio* to the parent, multiplied through on path compression | [12) LC 399](./union_find_examples.md#12-evaluate-division--lc-399--weighted-union-find-with-ratios-) |
+| 6 | **BFS + union-find climb** | a tree node | with its parent, repeatedly, until every target converges on one root | [18) LC 865](./union_find_examples.md#18-smallest-subtree-with-all-the-deepest-nodes--lc-865--bfs--union-find-climb) — same as LC 1123; compare LC 236, LC 1644 and LC 1650, which are the recursive-LCA framing of it |
 
 Two structural variants change *when* you run the algorithm rather than what it merges:
 
 - **Sorted-edge (Kruskal-style)** — process edges cheapest-first and stop as soon as the two
-  endpoints you care about connect. [14) LC 1631](./union_find_examples.md#14-path-with-minimum-effort--lc-1631--sorted-edge-kruskal-style).
+  endpoints you care about connect. [13) LC 1631](./union_find_examples.md#13-path-with-minimum-effort--lc-1631--sorted-edge-kruskal-style).
 - **Offline reverse** — union-find cannot *split*, so when the problem removes things, replay
-  it backwards and add them instead. [15) LC 803](./union_find_examples.md#15-bricks-falling-when-hit--lc-803--offline-reverse-union-find-).
+  it backwards and add them instead. [14) LC 803](./union_find_examples.md#14-bricks-falling-when-hit--lc-803--offline-reverse-union-find-).
 
 
 ## 1) Example Problems with Code References
@@ -603,13 +603,13 @@ After:   A → E
 
 ## Worked Examples
 
-Nineteen problems live in **[union_find_examples.md](./union_find_examples.md)**, grouped by
+Eighteen problems live in **[union_find_examples.md](./union_find_examples.md)**, grouped by
 what a node represents rather than by problem number:
 
 | Group | Problems |
 |---|---|
 | [Cycle detection & redundancy](./union_find_examples.md#cycle-detection--redundancy) | LC 684, 685, 990 |
-| [Component counting & connectivity](./union_find_examples.md#component-counting--connectivity) | LC 547, 261, 323, 1319, 2316, 128 |
+| [Component counting & connectivity](./union_find_examples.md#component-counting--connectivity) | LC 547, 261, 323, 1319, 2316 |
 | [Grids](./union_find_examples.md#grids) | LC 200, 130, 827 |
 | [Weighted, sorted-edge & offline variants](./union_find_examples.md#weighted-sorted-edge--offline-variants) | LC 399, 1631, 803 |
 | [Union-find on other structures](./union_find_examples.md#union-find-on-other-structures) | LC 721, 1202, 947, 865 |
