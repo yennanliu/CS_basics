@@ -76,8 +76,8 @@ class QuickFind {
 ```
 
 **Quick Union (with optimizations):**
-- **Find**: O(α(n)) ≈ O(1) with path compression
-- **Union**: O(α(n)) ≈ O(1) with union by rank/size
+- **Find**: O(α(n)) ≈ O(1) amortized with path compression **and** union by rank/size
+- **Union**: O(α(n)) ≈ O(1) amortized, same condition — either optimization alone only reaches O(log n) (see [the table in 0-1](#complexity-by-which-optimizations-you-use-))
 - **Use Case**: General purpose, balanced find/union operations
 - **Implementation**: Store parent pointers, build tree structure
 
@@ -116,7 +116,53 @@ Union Find achieves nearly O(1) performance through two critical optimizations:
 - Prevents degenerate linear chains
 - Can track either tree height (rank) or size (count)
 
-Without these optimizations, operations degrade to O(n). With both, time complexity becomes O(α(n)) where α is the inverse Ackermann function (effectively constant).
+Without these optimizations, operations degrade to O(n). Either one alone gives O(log n); only **both together** give O(α(n)), where α is the inverse Ackermann function (≤ 4 for any input that fits in memory, so effectively constant).
+
+#### Complexity by Which Optimizations You Use ⭐⭐⭐⭐
+
+`N` = number of elements, `M` = number of `find` / `union` calls. Space is O(N) in every row (`parent`, plus `rank` or `size` when used).
+
+| Optimizations | Single op, worst case | Per op, amortized | `M` ops total (incl. init) |
+|---|---|---|---|
+| none | O(N) | O(N) | O(N + M·N) |
+| union by rank/size only | O(log N) | O(log N) | O(N + M log N) |
+| path compression only | O(N) | O(log N) | O(N + M log N) |
+| **both** | O(log N) | **O(α(N))** | **O(N + M·α(N))** |
+
+Two things this table says that "nearly O(1)" hides:
+
+- **Amortized is not per call.** Even with both optimizations, one `find` can walk O(log N) edges; α(N) is the average over a sequence.
+- **Path compression alone leaves a single call at O(N).** The first `find` on a chain of length N walks all of it — and the *recursive* `find` recurses N deep, which is a `RecursionError` in Python past ~1000 nodes. Union by rank/size caps the height at log N, so the recursion stays shallow.
+
+The half-optimized version people write first — path compression, but `union` hangs one root under the other blindly:
+
+```python
+# python
+# IDEA: path compression only; union ignores tree size/height
+# time = O(log N) amortized per op (single op O(N) worst), space = O(N)
+class UnionFind(object):
+    def __init__(self, n):
+        self.parent = list(range(n))
+
+    def find(self, x):
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])   # path compression
+        return self.parent[x]
+
+    def union(self, a, b):
+        root_a = self.find(a)
+        root_b = self.find(b)
+        if root_a == root_b:
+            return False
+        self.parent[root_a] = root_b    # blind attach: no rank/size comparison
+        return True
+```
+
+It passes almost every LeetCode problem — O(log N) amortized is fast enough — but the interview answer for it is O(log N), not O(α(N)). To earn α(N), add the `rank` (or `size`) array from the [Python templates in 0-3](#0-3-algorithm-pattern--template-).
+
+**Saying it in an interview:**
+
+> With path compression and union by rank (or size), each operation is O(α(N)) amortized — inverse Ackermann, effectively constant. Init is O(N), space is O(N). With path compression alone it is O(log N) amortized, and a single call can still be O(N).
 
 ### 0-2) Types
 - **Basic Connectivity**: Check if nodes are connected, count components
