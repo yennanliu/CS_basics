@@ -56,9 +56,38 @@ class Solution(object):
         # edge
         if not root:
             return root
+
         _left = self.invertTree(root.left)
         _right = self.invertTree(root.right)
 
+        """
+        NOTE !!!
+
+        真正執行「交換 (Swap)」節點動作的是以下兩行
+
+        
+        ->
+            - 將根節點的左指標 (root.left) 覆寫為右子樹的結果 (_right)。
+
+            - 將根節點的右指標 (root.right) 覆寫為左子樹的結果 (_left)。
+
+
+
+        NOTE !!!
+
+        -> we still return `root` at the final step of the func,
+           and this is also the return value from recursively call.
+
+            -> e.g. 
+
+                _left = self.invertTree(root.left)
+
+                _right = self.invertTree(root.right)
+
+
+                (_left is the left sub tree)
+
+        """
         root.left = _right
         root.right = _left
 
