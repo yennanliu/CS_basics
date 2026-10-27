@@ -1685,7 +1685,7 @@ array itself: **rewriting it in place, and using its indices as storage.**
 
 ## 3) Worked Examples
 
-Eight problems live in **[array_examples.md](./array_examples.md)**:
+Eight sections live in **[array_examples.md](./array_examples.md)**:
 
 | Group | Problems |
 |---|---|

@@ -50,7 +50,7 @@
 ### 6) Least Number of Unique Integers after K Removals — LC 1481
 <!--CODE-->
 
-<!-- 8e9ae30e5a64 -->
+<!-- 31731bcd5545 -->
 ### 7) Maximum Number of Events That Can Be Attended — LC 1353
 
 <!--CODE-->
@@ -95,15 +95,15 @@
 
 | LC # | 題目 | 共通模式 | 關鍵差異 |
 |------|---------|---------------|----------------|
-| 1750 | Max Number of Events That Can Be Attended II | 輸入的活動資料相同 | 活動佔用**整段**區間並帶有價值 → DP + 二分搜尋，**不是**堆積 |
-| 620 | Task Scheduler | 時間掃描 + 堆積，每個時刻一個時段 | 依頻率的最大堆積 + 冷卻佇列（見 [§ 16](#16-task-scheduler--lc-621-)） |
-| 252 | Meeting Rooms II | 依開始排序，結束時間的最小堆積 | 數的是*同時進行*的區間數，不是挑出一個子集合 — 它的掃描在這裡會**高估**（見上面的陷阱） |
-| 2405 | Divide Intervals Into Min Number of Groups | 依開始排序，結束時間的最小堆積 | 與 253 相同，只是換成區間分組的說法（見 [§ 14](#14-divide-intervals-into-minimum-number-of-groups--lc-2406)） |
-| 629 | Course Schedule III | 依截止日貪婪 + 堆積 | 最大堆積做**替換**：超時就丟掉耗時最長的課 |
-| 501 | IPO | 依一個鍵排序，依另一個鍵建堆積 | 雙堆積貪婪（資本 → 利潤的最大堆積） |
-| 870 | Min Number of Refueling Stops | 把可達的選項推進去，卡住時再貪婪地取最好的 | 油量的最大堆積，只有卡住時才 pop（見 [§ 12](#12-minimum-number-of-refueling-stops--lc-871)） |
-| 1833 | Single-Threaded CPU | 推進時間、推入已抵達的任務、取出最好的 | 以 (處理時間, 索引) 建最小堆積；時間直接跳到下一個抵達時刻 |
-| 766 | Reorganize String | 每個位置一個時段，用堆積貪婪挑選 | 依剩餘數量的最大堆積 + 上次使用過的字元擋著 |
+| 1751 | Max Number of Events That Can Be Attended II | 輸入的活動資料相同 | 活動佔用**整段**區間並帶有價值 → DP + 二分搜尋，**不是**堆積 |
+| 621 | Task Scheduler | 時間掃描 + 堆積，每個時刻一個時段 | 依頻率的最大堆積 + 冷卻佇列（見 [§ 16](#16-task-scheduler--lc-621-)） |
+| 253 | Meeting Rooms II | 依開始排序，結束時間的最小堆積 | 數的是*同時進行*的區間數，不是挑出一個子集合 — 它的掃描在這裡會**高估**（見上面的陷阱） |
+| 2406 | Divide Intervals Into Min Number of Groups | 依開始排序，結束時間的最小堆積 | 與 253 相同，只是換成區間分組的說法（見 [§ 14](#14-divide-intervals-into-minimum-number-of-groups--lc-2406)） |
+| 630 | Course Schedule III | 依截止日貪婪 + 堆積 | 最大堆積做**替換**：超時就丟掉耗時最長的課 |
+| 502 | IPO | 依一個鍵排序，依另一個鍵建堆積 | 雙堆積貪婪（資本 → 利潤的最大堆積） |
+| 871 | Min Number of Refueling Stops | 把可達的選項推進去，卡住時再貪婪地取最好的 | 油量的最大堆積，只有卡住時才 pop（見 [§ 12](#12-minimum-number-of-refueling-stops--lc-871)） |
+| 1834 | Single-Threaded CPU | 推進時間、推入已抵達的任務、取出最好的 | 以 (處理時間, 索引) 建最小堆積；時間直接跳到下一個抵達時刻 |
+| 767 | Reorganize String | 每個位置一個時段，用堆積貪婪挑選 | 依剩餘數量的最大堆積 + 上次使用過的字元擋著 |
 
 <!-- 3e1413b8977d -->
 ### 8) Find K Pairs with Smallest Sums — LC 373
@@ -145,7 +145,7 @@
 
 <!--CODE-->
 
-<!-- 2ce58d48b161 -->
+<!-- 1b936c8aa142 -->
 ### 16) Task Scheduler — LC 621 ⭐⭐⭐⭐⭐
 
 <!--CODE-->
@@ -168,11 +168,11 @@
 
 | LC # | 題目 | 共通模式 |
 |------|---------|---------------|
-| 766 | Reorganize String | 最大堆積，依頻率交錯排列 |
-| 1352 | Maximum Number of Events That Can Be Attended | 貪婪 + 依截止日的堆積 |
-| 501 | IPO | 雙堆積貪婪（利潤 + 資本） |
-| 1674 | Minimize Deviation in Array | 最大堆積 + 貪婪縮小 |
-| 294 | Find Median from Data Stream | 雙堆積系統 |
+| 767 | Reorganize String | 最大堆積，依頻率交錯排列 |
+| 1353 | Maximum Number of Events That Can Be Attended | 貪婪 + 依截止日的堆積 |
+| 502 | IPO | 雙堆積貪婪（利潤 + 資本） |
+| 1675 | Minimize Deviation in Array | 最大堆積 + 貪婪縮小 |
+| 295 | Find Median from Data Stream | 雙堆積系統 |
 
 <!-- 905df80287fa -->
 ### 17) Most Frequent IDs — LC 3092

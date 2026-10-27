@@ -504,7 +504,7 @@ LFU 依*使用頻率*淘汰，最近使用度只拿來打破平手 — 所以那
 
 <!--CODE-->
 
-<!-- 67663dc8a38e -->
+<!-- c83efc382641 -->
 ## 2) 模式選擇
 
 鏈結串列題其實很少真的在考串列。它們考的是：動手術的當下，**你手上必須握著哪個把手** — 這份文件上的每個技巧，存在的理由都是確保你握著它。挑法要看答案需要什麼，不是看題目叫什麼名字。
@@ -517,7 +517,7 @@ LFU 依*使用頻率*淘汰，最近使用度只拿來打破平手 — 所以那
 | 反轉**整條**串列 | **三步迴圈**：先存下 next → 翻指標 → 前進 | O(1) 空間；遞迴版答案一樣，卻要每個節點吃掉一個 stack frame | [1-1-1)](#1-1-1-reverse-linked-list-iteration--lc-206) |
 | 反轉**一段** — `[left, right]`、每 `k` 個，或成對 | **反轉 k 個的輔助函式，回傳三個把手** | LC 92 / 25 / 24 的差別只在*那一段在哪*，反轉的方式完全一樣 | [反轉 K 個節點的輔助函式模式](#reverse-k-nodes-helper-pattern-) |
 | 找中點、偵測環，或走到**倒數**第 n 個 | **快慢指標** | 一趟掃完、O(1) 空間，也不用先算長度 | [1-1-8)](#1-1-8-find-linked-list-middle-point--lc-876)、[2_pointers_linkedlist.md](./2_pointers_linkedlist.md) |
-| **重排** — 交錯、切分、旋轉、回文判斷 | **快慢指標切一半 → 反轉後半 → 合併** | 每一題重排都是這三個基本操作依序組合；沒有一個是新東西 | [examples 2)](./linked_list_examples.md#2-reorder-list--lc-143)、[回文](./2_pointers_linkedlist.md#1-1-6--palindrome-linked-list-find-mid---reverse-2nd-half---compare) |
+| **重排** — 交錯、切分、回文判斷 | **快慢指標切一半 → 反轉後半 → 合併** | 每一題重排都是這三個基本操作依序組合；沒有一個是新東西 | [examples 2)](./linked_list_examples.md#2-reorder-list--lc-143)、[回文](./2_pointers_linkedlist.md#1-1-6--palindrome-linked-list-find-mid---reverse-2nd-half---compare) |
 | 合併**兩條**已排序串列 | **虛擬節點 + 一趟合併走訪**，接節點而不是複製值 | 尾端指標就是全部的訣竅：`cur.next = l1 or l2` 收尾 | [examples 4)](./linked_list_examples.md#4-merge-two-sorted-lists--lc-21) |
 | 合併 **k** 條已排序串列，或把一條串列排序 | **分治法** — 兩兩合併，或用中點做合併排序 | O(n log k) / O(n log n)；用堆積則是拿 O(k) 空間換掉遞迴 | [examples 5)](./linked_list_examples.md#5-merge-k-sorted-lists--lc-23)、[13)](./linked_list_examples.md#13-sort-list-merge-sort-on-a-linked-list--lc-148-)、[heap.md](./heap.md) |
 | 同時要**任意位置**讀取*和* O(1) 淘汰 — 依最近使用度，或依使用頻率 | **雙向鏈結串列 + 雜湊表** — 一條串列，或每個頻率一條 | 表給你節點，雙向節點給你它的鄰居 — 少了任一個都不夠 | [雙向鏈結串列 + HashMap](#doubly-linked-list--hashmap-lru-cache-pattern-)、[LFU 變體](#lfu-variant--one-list-per-frequency-plus-a-min_freq-pointer-lc-460-)、[design.md](./design.md) |

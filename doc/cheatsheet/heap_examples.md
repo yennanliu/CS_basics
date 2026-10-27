@@ -419,15 +419,15 @@ day is what makes it greedy + heap rather than a concurrency count.
 
 | LC # | Problem | Shared pattern | Key difference |
 |------|---------|---------------|----------------|
-| 1750 | Max Number of Events That Can Be Attended II | Same events input | Events occupy the **whole** interval + values → DP + binary search, **not** heap |
-| 620 | Task Scheduler | Time sweep + heap, one slot per tick | Max heap on frequency + cooling queue (see [§ 16](#16-task-scheduler--lc-621-)) |
-| 252 | Meeting Rooms II | Sort by start, min heap of end times | Counts *concurrent* intervals, doesn't pick a subset — its sweep **over-counts** here (see the trap above) |
-| 2405 | Divide Intervals Into Min Number of Groups | Sort by start, min heap of end times | Same as 253, interval-partition framing (see [§ 14](#14-divide-intervals-into-minimum-number-of-groups--lc-2406)) |
-| 629 | Course Schedule III | Greedy by deadline + heap | Max heap **replace**: drop the longest course when overrunning |
-| 501 | IPO | Sort by one key, heap by another | Two-heap greedy (capital → max heap of profit) |
-| 870 | Min Number of Refueling Stops | Push reachable options, greedily pop best | Max heap of fuel, pop only when stuck (see [§ 12](#12-minimum-number-of-refueling-stops--lc-871)) |
-| 1833 | Single-Threaded CPU | Advance time, push arrived tasks, pop best | Min heap on (processing time, index); time jumps to next arrival |
-| 766 | Reorganize String | One slot per position, greedy heap pick | Max heap on remaining count + last-used guard |
+| 1751 | Max Number of Events That Can Be Attended II | Same events input | Events occupy the **whole** interval + values → DP + binary search, **not** heap |
+| 621 | Task Scheduler | Time sweep + heap, one slot per tick | Max heap on frequency + cooling queue (see [§ 16](#16-task-scheduler--lc-621-)) |
+| 253 | Meeting Rooms II | Sort by start, min heap of end times | Counts *concurrent* intervals, doesn't pick a subset — its sweep **over-counts** here (see the trap above) |
+| 2406 | Divide Intervals Into Min Number of Groups | Sort by start, min heap of end times | Same as 253, interval-partition framing (see [§ 14](#14-divide-intervals-into-minimum-number-of-groups--lc-2406)) |
+| 630 | Course Schedule III | Greedy by deadline + heap | Max heap **replace**: drop the longest course when overrunning |
+| 502 | IPO | Sort by one key, heap by another | Two-heap greedy (capital → max heap of profit) |
+| 871 | Min Number of Refueling Stops | Push reachable options, greedily pop best | Max heap of fuel, pop only when stuck (see [§ 12](#12-minimum-number-of-refueling-stops--lc-871)) |
+| 1834 | Single-Threaded CPU | Advance time, push arrived tasks, pop best | Min heap on (processing time, index); time jumps to next arrival |
+| 767 | Reorganize String | One slot per position, greedy heap pick | Max heap on remaining count + last-used guard |
 
 ### 8) Find K Pairs with Smallest Sums — LC 373
 
@@ -1478,11 +1478,11 @@ Tasks are stored as **negative** counts to fake a max-heap.
 
 | LC # | Problem | Shared pattern |
 |------|---------|---------------|
-| 766 | Reorganize String | Max heap, interleave by frequency |
-| 1352 | Maximum Number of Events That Can Be Attended | Greedy + heap by deadline |
-| 501 | IPO | Two-heap greedy (profit + capital) |
-| 1674 | Minimize Deviation in Array | Max heap + greedy shrink |
-| 294 | Find Median from Data Stream | Two-heap system |
+| 767 | Reorganize String | Max heap, interleave by frequency |
+| 1353 | Maximum Number of Events That Can Be Attended | Greedy + heap by deadline |
+| 502 | IPO | Two-heap greedy (profit + capital) |
+| 1675 | Minimize Deviation in Array | Max heap + greedy shrink |
+| 295 | Find Median from Data Stream | Two-heap system |
 
 ### 17) Most Frequent IDs — LC 3092
 

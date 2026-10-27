@@ -12,10 +12,10 @@
 - [Hash Table](https://leetcode.com/problem-list/hash-table/)
 - [String](https://leetcode.com/problem-list/string/)
 
-<!-- 16122133931b -->
+<!-- 9e9040af78c1 -->
 ## 總覽
 
-這裡每一題的解法，都是 [sliding_window.md](./sliding_window.md) 六個模板的其中一個，把三個空格填好而已。標題已經標明用的是哪一個模板，所以先讀模板，這份文件就會變成一組模板的實例，而不是九道各自為政的題目。
+這裡每一題的解法，都是 [sliding_window.md](./sliding_window.md) 六個模板的其中一個，把三個空格填好而已。標題已經標明用的是哪一個模板，所以先讀模板，這份文件就會變成一組模板的實例，而不是八道各自為政的題目。
 
 <!-- 4144772df125 -->
 ### 題目索引

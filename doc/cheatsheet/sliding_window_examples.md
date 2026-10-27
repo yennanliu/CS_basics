@@ -14,7 +14,7 @@
 
 Every solution here is one of the six templates in [sliding_window.md](./sliding_window.md) with
 its three slots filled in. The heading says which template, so read the template first and this
-sheet becomes a set of instantiations rather than nine separate problems.
+sheet becomes a set of instantiations rather than eight separate problems.
 
 ### Problem Index
 
