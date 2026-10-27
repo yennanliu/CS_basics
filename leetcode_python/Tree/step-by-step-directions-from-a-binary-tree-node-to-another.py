@@ -38,7 +38,175 @@ startValue != destValue
 
 """
 
+
 # V0
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution(object):
+    def getDirections(self, root, startValue, destValue):
+        """
+        :type root: Optional[TreeNode]
+        :type startValue: int
+        :type destValue: int
+        :rtype: str
+        """
+        pass
+
+# V0-1
+# IDEA: DFS (build graph) + BFS (shortest path) (gpt)
+from collections import defaultdict, deque
+
+
+class Solution(object):
+    def getDirections(self, root, startValue, destValue):
+        """
+        :type root: Optional[TreeNode]
+        :type startValue: int
+        :type destValue: int
+        :rtype: str
+        """
+        # Edge cases
+        if not root:
+            return ""
+
+        if startValue == destValue:
+            return ""
+
+        # Step 1: Build graph using DFS
+        # graph[node] = [[neighbor, direction], ...]
+        self.graph = defaultdict(list)
+        self.start_node = None
+        self.end_node = None
+
+        self.dfs(root, None, startValue, destValue)
+
+        if self.start_node is None or self.end_node is None:
+            return ""
+
+        # Step 2: BFS to find the path
+        # Queue: (node, path)
+        q = deque([(self.start_node, "")])
+        visited = {self.start_node}
+
+        while q:
+            node, path = q.popleft()
+
+            if node == self.end_node:
+                return path
+
+            for next_node, direction in self.graph[node]:
+                if next_node not in visited:
+                    visited.add(next_node)
+
+                    # Append the direction to the current path
+                    q.append((next_node, path + direction))
+
+        return ""
+
+    def dfs(self, node, parent, startValue, destValue):
+        # Base case
+        if not node:
+            return
+
+        # Add edge to parent: moving upward means "U"
+        if parent:
+            self.graph[node].append([parent, "U"])
+
+        # Add edges to children
+        if node.left:
+            self.graph[node].append([node.left, "L"])
+
+        if node.right:
+            self.graph[node].append([node.right, "R"])
+
+        # Record start and destination nodes
+        if node.val == startValue:
+            self.start_node = node
+
+        if node.val == destValue:
+            self.end_node = node
+
+        self.dfs(node.left, node, startValue, destValue)
+        self.dfs(node.right, node, startValue, destValue)
+
+
+# V0-2
+# IDEA: DFS (build graph) + BFS (shortest path) (gemini)
+from collections import defaultdict, deque
+import sys
+
+# 提高遞迴深度限制以防測資為極端單側樹 (N 高達 10^5)
+sys.setrecursionlimit(200000)
+
+
+class Solution(object):
+
+  def getDirections(self, root, startValue, destValue):
+    """:type root: Optional[TreeNode]
+
+    :type startValue: int
+    :type destValue: int
+    :rtype: str
+    """
+    if startValue == destValue:
+      return ""
+    if not root:
+      return ""
+
+    # Step 1: 建立圖結構 {node: [[neighbor_node, direction], ...]}
+    self.graph = defaultdict(list)
+    self.start_node = None
+    self.end_node = None
+
+    self.dfs(root, None, startValue, destValue)
+
+    # Step 2: 利用 BFS 尋找從 start_node 到 end_node 的最短路徑
+    q = deque([[self.start_node, ""]])
+    visited = set()
+
+    while q:
+      node, path = q.popleft()
+
+      if node == self.end_node:
+        return path
+
+      if node in visited:
+        continue
+      visited.add(node)
+
+      for next_node, direction in self.graph[node]:
+        if next_node not in visited:
+          # 修正：必須將前一步的累積 path 加上當前方向
+          q.append([next_node, path + direction])
+
+    return ""
+
+  def dfs(self, node, parent, startValue, destValue):
+    if not node:
+      return
+
+    # 建立雙向邊與對應的方向
+    if parent:
+      self.graph[node].append([parent, "U"])
+    if node.left:
+      self.graph[node].append([node.left, "L"])
+    if node.right:
+      self.graph[node].append([node.right, "R"])
+
+    if node.val == startValue:
+      self.start_node = node
+    if node.val == destValue:
+      self.end_node = node
+
+    self.dfs(node.left, node, startValue, destValue)
+    self.dfs(node.right, node, startValue, destValue)
+
+
+# V0-3
 # IDEA : ROOT-TO-NODE PATHS + STRIP THE COMMON PREFIX (the LCA)
 #
 #   find the 'L'/'R' path from the root down to s and down to t. their common
