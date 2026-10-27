@@ -16,7 +16,9 @@
 		 	- array & hashing - done
 		 	- 2 pointers - done
 		 	- slide window - done
-		 	- binary search - ing
+		 	- binary search - done
+		 	- linked list - pass
+		 	- stack - ing
 		 	
 
 
