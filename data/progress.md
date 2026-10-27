@@ -83,14 +83,6 @@
 
 
 
-- 樹 — LeetCode 實戰題解
-	- https://yennj12.js.org/CS_basics/cheatsheets/tree_examples.zh.html
-		- `修改與多狀態範例`
-			- again
-				- 2. 取得深度（前序 DFS）
-				- 4. 和節點間距離的關係
-				- 節點間距離 = 搭配 LCA，用 getDepth() 算兩次
-
 
 - 併查集（Union Find） — 實戰題解
 	- https://yennj12.js.org/CS_basics/cheatsheets/union_find_examples.zh.html
@@ -167,6 +159,11 @@
 	- Dijkstra — 實戰題解
 	- 圖論 — 實戰題解
 	- 拓撲排序 — 實戰題解
+	- 樹 — LeetCode 實戰題解
+				- again
+					- 2. 取得深度（前序 DFS）
+					- 4. 和節點間距離的關係
+					- 節點間距離 = 搭配 LCA，用 getDepth() 算兩次
 
 
 - Others
