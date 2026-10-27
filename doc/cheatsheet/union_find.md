@@ -1,7 +1,7 @@
 # Union Find
 
 > **Scope** — Disjoint set union — connectivity, component counting, cycle detection in **undirected** graphs, with path compression and union by rank.
-> **See also**: [union_find_examples.md](./union_find_examples.md) — the eighteen worked problems behind these patterns; [diff_toposort_quickunion.md](./diff_toposort_quickunion.md) — union-find vs toposort — which tool for which problem; [topology_sorting.md](./topology_sorting.md) — directed ordering; [graph.md](./graph.md) — general graph material.
+> **See also**: [union_find_examples.md](./union_find_examples.md) — the seventeen worked problems behind these patterns; [diff_toposort_quickunion.md](./diff_toposort_quickunion.md) — union-find vs toposort — which tool for which problem; [topology_sorting.md](./topology_sorting.md) — directed ordering; [graph.md](./graph.md) — general graph material.
 
 - Efficiently determines connectivity between nodes in dynamic graphs
 - When to use it: Dynamic connectivity queries, cycle detection, MST algorithms, grouping elements
@@ -368,7 +368,7 @@ class UnionFind:
 - Already connected nodes
 - Invalid indices
 
-### 0-4) The Six Union-Find Patterns ⭐⭐⭐⭐
+### 0-4) The Five Union-Find Patterns ⭐⭐⭐⭐
 
 Every problem below is the same template with a different answer to *"what is a node, and when
 do two of them merge?"* That question is the whole difficulty; the DSU itself never changes.
@@ -380,7 +380,6 @@ do two of them merge?"* That question is the whole difficulty; the DSU itself ne
 | 3 | **Redundant edge** | a vertex | as above, but *return* the first edge whose union fails | [1) LC 684](./union_find_examples.md#1-redundant-connection--lc-684), [2) LC 685](./union_find_examples.md#2-redundant-connection-ii--lc-685--dsu-on-a-directed-graph-) |
 | 4 | **2D grid connectivity** | a cell, flattened to `row * cols + col` | with the right/down neighbour, so each pair is considered once | [9) LC 200](./union_find_examples.md#9-number-of-islands--lc-200--grid--1d-via-row--cols--col), [10) LC 130](./union_find_examples.md#10-surrounded-regions--lc-130--a-virtual-border-node) |
 | 5 | **Weighted union-find** | a variable | carrying a *ratio* to the parent, multiplied through on path compression | [12) LC 399](./union_find_examples.md#12-evaluate-division--lc-399--weighted-union-find-with-ratios-) |
-| 6 | **BFS + union-find climb** | a tree node | with its parent, repeatedly, until every target converges on one root | [18) LC 865](./union_find_examples.md#18-smallest-subtree-with-all-the-deepest-nodes--lc-865--bfs--union-find-climb) — same as LC 1123; compare LC 236, LC 1644 and LC 1650, which are the recursive-LCA framing of it |
 
 Two structural variants change *when* you run the algorithm rather than what it merges:
 
@@ -419,7 +418,6 @@ Two structural variants change *when* you run the algorithm rather than what it 
 - **LC 130** – Surrounded Regions: Use dummy node for boundary connected regions
 - **LC 547** – Friend Circles: Find groups in friendship matrix
 - **LC 721** – Accounts Merge: Group accounts by shared emails
-- **LC 865** – Smallest Subtree with all Deepest Nodes: BFS + parent-climb to find LCA of deepest nodes
 - **LC 886** – Possible Bipartition: Detect bipartite graph conflicts
 - **LC 1135** – Connecting Cities: MST with Kruskal's algorithm
 - **LC 1319** – Network Connections: Minimum operations to connect all nodes
@@ -603,7 +601,7 @@ After:   A → E
 
 ## Worked Examples
 
-Eighteen problems live in **[union_find_examples.md](./union_find_examples.md)**, grouped by
+Seventeen problems live in **[union_find_examples.md](./union_find_examples.md)**, grouped by
 what a node represents rather than by problem number:
 
 | Group | Problems |
@@ -612,4 +610,4 @@ what a node represents rather than by problem number:
 | [Component counting & connectivity](./union_find_examples.md#component-counting--connectivity) | LC 547, 261, 323, 1319, 2316 |
 | [Grids](./union_find_examples.md#grids) | LC 200, 130, 827 |
 | [Weighted, sorted-edge & offline variants](./union_find_examples.md#weighted-sorted-edge--offline-variants) | LC 399, 1631, 803 |
-| [Union-find on other structures](./union_find_examples.md#union-find-on-other-structures) | LC 721, 1202, 947, 865 |
+| [Union-find on other structures](./union_find_examples.md#union-find-on-other-structures) | LC 721, 1202, 947 |

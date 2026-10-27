@@ -43,7 +43,7 @@ half-translated document renders with English gaps rather than failing.
   is what makes a problem findable on LeetCode itself.
 
 
-## Status — 5386 / 5386 sections (100%)
+## Status — 5385 / 5385 sections (100%)
 
 | Cheatsheet | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -180,4 +180,4 @@ half-translated document renders with English gaps rather than failing.
 | [trie](./cheatsheet/trie.md) | 28 | [✅](../i18n/zh/trie.md) |
 | [trie_examples](./cheatsheet/trie_examples.md) | 11 | [✅](../i18n/zh/trie_examples.md) |
 | [union_find](./cheatsheet/union_find.md) | 24 | [✅](../i18n/zh/union_find.md) |
-| [union_find_examples](./cheatsheet/union_find_examples.md) | 30 | [✅](../i18n/zh/union_find_examples.md) |
+| [union_find_examples](./cheatsheet/union_find_examples.md) | 29 | [✅](../i18n/zh/union_find_examples.md) |

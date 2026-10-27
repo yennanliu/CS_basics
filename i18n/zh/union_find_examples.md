@@ -1,8 +1,8 @@
-<!-- c14b917e9fd8 -->
+<!-- 4054c8f77618 -->
 # 併查集（Union Find） — 實戰題解
 
-> **範圍** — [union_find.md](./union_find.md) 背後的解題檔案庫：十八道題，依「一個節點代表什麼」分組——頂點、格子、帶比值的變數，或樹節點——因為題目之間變的就只有這件事。
-> **另見** — [union_find.md](./union_find.md)：母文件，收錄 DSU 模板、六大模式、最佳化與陷阱；[graph.md](./graph.md)：圖的表示法通論；[topology_sorting.md](./topology_sorting.md)：有向圖的對應做法；[diff_toposort_quickunion.md](./diff_toposort_quickunion.md)：判斷題目要的是兩者中的哪一個；[tree_lca_distance.md](./tree_lca_distance.md)：LC 236 以及第 18 個範例的遞迴 LCA 觀點。
+> **範圍** — [union_find.md](./union_find.md) 背後的解題檔案庫：十七道題，依「一個節點代表什麼」分組——頂點、格子，或帶比值的變數——因為題目之間變的就只有這件事。
+> **另見** — [union_find.md](./union_find.md)：母文件，收錄 DSU 模板、五大模式、最佳化與陷阱；[graph.md](./graph.md)：圖的表示法通論；[topology_sorting.md](./topology_sorting.md)：有向圖的對應做法；[diff_toposort_quickunion.md](./diff_toposort_quickunion.md)：判斷題目要的是兩者中的哪一個。
 
 <!-- bb69b2231e40 -->
 ## LeetCode 題目清單
@@ -10,17 +10,17 @@
 - [Union Find](https://leetcode.com/problem-list/union-find/)
 - [Graph](https://leetcode.com/problem-list/graph/)
 
-<!-- bd45c1fb5574 -->
+<!-- 75bcd2f93afc -->
 ## 總覽
 
-這是 [union_find.md](./union_find.md) 的長尾。母文件收模板、六大模式與陷阱；
+這是 [union_find.md](./union_find.md) 的長尾。母文件收模板、五大模式與陷阱；
 本文件收*套用*它們的題目。
 
-<!-- da1c77988340 -->
+<!-- 168c2e76d288 -->
 ### 關鍵性質
 - **複雜度**：以下每個解法在路徑壓縮 + 按秩合併之下，每次操作都接近 O(α(n))——實務上就是 O(1)；若某個解法的複雜度是由別的東西主導（排序、BFS），它自己的註解會說明
 - **核心想法**：DSU 本身從來不變。變的是節點*是什麼*，以及兩個節點何時該合併——這也是這些題目依此分組、而非依難度分組的原因
-- **何時使用**：當母文件的模式表已經告訴你這題屬於六種形狀中的哪一種之後
+- **何時使用**：當母文件的模式表已經告訴你這題屬於五種形狀中的哪一種之後
 
 <!-- f46275d72ab8 -->
 ## 環偵測與冗餘邊
@@ -309,11 +309,3 @@ Python 參考：`leetcode_python/Depth-First-Search/count-unreachable-pairs-of-n
 LC 839 Similar String Groups 建出的是*相同的*元件，但回傳的是元件**數量**本身 — 所以是同一套
 union-find，只有最後一行不同。要帶走的模式是「*大小為 k 的元件需要 k-1 次操作*」，而無論哪種情況，
 你數的都是根，而不是 union 的次數。
-
-<!-- 9482f28e67fd -->
-### 18) Smallest Subtree with all the Deepest Nodes — LC 865 — BFS + 併查集式上爬
-
-> 用 BFS 找出最深的節點與父節點對照表；接著讓所有最深節點沿著父節點「往上爬」，直到匯聚到 LCA。這與 LC 1123 是同一題。
-
-<!--CODE-->
-<!--CODE-->

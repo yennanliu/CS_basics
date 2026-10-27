@@ -1,7 +1,7 @@
 # Union Find — Worked Examples
 
-> **Scope** — The worked-solution archive behind [union_find.md](./union_find.md): eighteen problems grouped by what a node represents — a vertex, a grid cell, a variable carrying a ratio, or a tree node — since that is the only thing that changes between them.
-> **See also**: [union_find.md](./union_find.md) — the parent sheet: the DSU template, the six patterns, the optimisations and the traps; [graph.md](./graph.md) — graph representation in general; [topology_sorting.md](./topology_sorting.md) — the directed counterpart; [diff_toposort_quickunion.md](./diff_toposort_quickunion.md) — which of the two a problem wants; [tree_lca_distance.md](./tree_lca_distance.md) — LC 236 and the recursive-LCA framing of example 18).
+> **Scope** — The worked-solution archive behind [union_find.md](./union_find.md): seventeen problems grouped by what a node represents — a vertex, a grid cell, or a variable carrying a ratio — since that is the only thing that changes between them.
+> **See also**: [union_find.md](./union_find.md) — the parent sheet: the DSU template, the five patterns, the optimisations and the traps; [graph.md](./graph.md) — graph representation in general; [topology_sorting.md](./topology_sorting.md) — the directed counterpart; [diff_toposort_quickunion.md](./diff_toposort_quickunion.md) — which of the two a problem wants.
 
 ## LeetCode Problem Lists
 
@@ -11,12 +11,12 @@
 ## Overview
 
 This is the long tail of [union_find.md](./union_find.md). The parent keeps the template, the
-six patterns and the traps; this file keeps the problems that *apply* them.
+five patterns and the traps; this file keeps the problems that *apply* them.
 
 ### Key Properties
 - **Complexity**: every solution below is near-O(α(n)) per operation with path compression and union by rank — effectively O(1); where a solution is dominated by something else (a sort, a BFS) its own comment says so
 - **Core Idea**: the DSU never changes. What changes is what a node *is*, and when two of them merge — which is why these are grouped by that rather than by difficulty
-- **When to Use**: after the parent's pattern table has told you which of the six shapes the problem is
+- **When to Use**: after the parent's pattern table has told you which of the five shapes the problem is
 
 
 ## Cycle Detection & Redundancy
@@ -1555,76 +1555,3 @@ def minSwapsCouples(row):
 component **count** itself — so it is the same union-find and a different final line. The pattern to
 carry away is *"a component of size k costs k-1 operations"*, and either way you count roots, never
 unions.
-
-
-### 18) Smallest Subtree with all the Deepest Nodes — LC 865 — BFS + union-find climb
-
-> BFS finds deepest nodes and parent map; then all deepest nodes "climb" upward via parents until they converge to the LCA. This is the same as LC 1123.
-
-```java
-// LC 865 - Smallest Subtree with all the Deepest Nodes
-// IDEA: BFS to find deepest level + build parent map, then climb upward until convergence
-// time = O(N), space = O(N)
-public TreeNode subtreeWithAllDeepest(TreeNode root) {
-    Map<TreeNode, TreeNode> parent = new HashMap<>();
-    Queue<TreeNode> q = new LinkedList<>();
-    q.offer(root);
-    parent.put(root, null);
-    List<TreeNode> level = new ArrayList<>();
-
-    // BFS: build parent map, track each level (last level = deepest)
-    while (!q.isEmpty()) {
-        int size = q.size();
-        level = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            TreeNode cur = q.poll();
-            level.add(cur);
-            if (cur.left != null) { parent.put(cur.left, cur); q.offer(cur.left); }
-            if (cur.right != null) { parent.put(cur.right, cur); q.offer(cur.right); }
-        }
-    }
-
-    // Climb: replace each node with its parent until all converge
-    Set<TreeNode> set = new HashSet<>(level);
-    while (set.size() > 1) {
-        Set<TreeNode> next = new HashSet<>();
-        for (TreeNode node : set) next.add(parent.get(node));
-        set = next;
-    }
-    return set.iterator().next();
-}
-```
-```python
-# python
-# LC 865 - Smallest Subtree with all the Deepest Nodes  (same problem as LC 1123)
-# IDEA: BFS to the deepest level while recording each node's parent, then walk every
-#       deepest node upward in lockstep until the set collapses to one node -- the LCA
-# time = O(N), space = O(N)
-from collections import deque
-
-class Solution(object):
-    def subtreeWithAllDeepest(self, root):
-        if not root:
-            return None
-        parent = {root: None}
-        q = deque([root])
-        level = [root]
-
-        while q:
-            level = []
-            for _ in range(len(q)):
-                cur = q.popleft()
-                level.append(cur)
-                for child in (cur.left, cur.right):
-                    if child:
-                        parent[child] = cur
-                        q.append(child)
-        # `level` now holds the LAST level visited = the deepest nodes
-
-        ### NOTE !!! climbing in LOCKSTEP is what makes this correct -- all nodes are at the
-        ###          same depth, so they reach their common ancestor on the same step
-        nodes = set(level)
-        while len(nodes) > 1:
-            nodes = {parent[n] for n in nodes}
-        return nodes.pop()
-```
