@@ -91,11 +91,6 @@
 				- 節點間距離 = 搭配 LCA，用 getDepth() 算兩次
 
 
-- 拓撲排序 — 實戰題解
-	- https://yennj12.js.org/CS_basics/cheatsheets/topology_sorting_examples.zh.html
-		- `Parallel Courses — LC 1136`
-
-
 - 併查集（Union Find） — 實戰題解
 	- https://yennj12.js.org/CS_basics/cheatsheets/union_find_examples.zh.html
 
@@ -170,6 +165,7 @@
 	- DFS — 實戰題解
 	- Dijkstra — 實戰題解
 	- 圖論 — 實戰題解
+	- 拓撲排序 — 實戰題解
 
 
 - Others
