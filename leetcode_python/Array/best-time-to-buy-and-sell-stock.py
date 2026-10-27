@@ -74,6 +74,34 @@ class Solution(object):
         return global_max
 
 
+# V0-0-1
+# IDEA: 2 VAR MAINTAIN + ARR OP (gpt)
+class Solution(object):
+    def maxProfit(self, prices):
+        """
+        :type prices: List[int]
+        :rtype: int
+        """
+        # Edge case
+        if not prices or len(prices) <= 1:
+            return 0
+
+        n = len(prices)
+        _min = prices[0]
+        max_profit = 0
+
+        for i in range(1, n):
+            val = prices[i]
+
+            if val < _min:
+                _min = val
+            else:
+                max_profit = max(max_profit, val - _min)
+
+        return max_profit
+
+
+
 # V0-1
 # IDEA : array op + problem understanding
 # time = O(n)
