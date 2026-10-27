@@ -89,7 +89,16 @@
 		- `14) Path With Minimum Effort — LC 1631 — 排序邊（Kruskal 風格）`
 
 
+- DP — 實戰題解
+	- https://yennj12.js.org/CS_basics/cheatsheets/dp_examples.zh.html
 
+
+- 掃描線 — 實戰題解
+	- https://yennj12.js.org/CS_basics/cheatsheets/scanning_line_examples.zh.html
+
+
+- Design — 實戰題解
+	- https://yennj12.js.org/CS_basics/cheatsheets/design_examples.zh.html
 
 
 
