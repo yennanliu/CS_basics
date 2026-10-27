@@ -93,7 +93,7 @@
 
 - 併查集（Union Find） — 實戰題解
 	- https://yennj12.js.org/CS_basics/cheatsheets/union_find_examples.zh.html
-
+		- `14) Path With Minimum Effort — LC 1631 — 排序邊（Kruskal 風格）`
 
 
 
@@ -300,6 +300,9 @@
 
 			- 2 pass DFS
 				- LC 130. Surrounded Regions
+
+			- Evaluate Division
+				— LC 399
 
 
 
