@@ -18,7 +18,8 @@
 		 	- slide window - done
 		 	- binary search - done
 		 	- linked list - pass
-		 	- stack - ing
+		 	- stack - done
+		 	- Trees - ing
 		 	
 
 
