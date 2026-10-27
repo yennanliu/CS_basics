@@ -185,13 +185,22 @@
 		- LC discussions - G
 			- https://github.com/yennanliu/CS_basics/pull/200
 
+
+		- Scan line
+			- 253
+			- 2406 (!!!) (PQ, scan line)
+			- 2021 (!!!)
+			- 1353
+			- 621
+
+
+
+
 		- Topo sort
 			- 210 
 			- Alien Dictionary — LC 269  (!!!)
 			- Sequence Reconstruction — LC 444
 			- Parallel Courses — LC 1136
-
-
 
 
 
@@ -650,6 +659,9 @@
 
 			- CPU 排程：行程排程演算法
 				- 1834
+
+			- Task Scheduler
+				- 621
 
 
 
