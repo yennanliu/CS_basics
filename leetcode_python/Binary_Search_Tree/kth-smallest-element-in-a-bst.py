@@ -55,6 +55,48 @@ class Solution(object):
         self.inorder_traversal(node.right)
 
 
+# V0-0-1
+# IDEA 1) IN - ORDER DFS (EARLY QUIT) (gemini)
+# time = O(n)
+# space = O(n)
+class Solution(object):
+
+  def kthSmallest(self, root, k):
+    """:type root: Optional[TreeNode]
+
+    :type k: int
+    :rtype: int
+    """
+    self.cache = []
+    self.helper(root, k)
+    return self.cache[-1]  # 此時最後一個元素就是第 k 小
+
+  def helper(self, root, k):
+    """
+    NOTE !!! below
+
+    -> early quit
+    """
+    # 如果節點為空，或者 cache 已經收集滿 k 個元素，直接返回
+    if not root or len(self.cache) >= k:
+      return
+
+    self.helper(root.left, k)
+
+    """
+    NOTE !!! below
+
+    -> early quit
+    """
+    # 從左子樹返回後，再次檢查是否已經滿 k 個（避免多餘的 append）
+    if len(self.cache) >= k:
+      return
+
+    self.cache.append(root.val)
+
+    self.helper(root.right, k)
+
+
 # V0-1
 # IDEA 1) IN - ORDER DFS
 # time = O(k)  # stops early once kth element found
