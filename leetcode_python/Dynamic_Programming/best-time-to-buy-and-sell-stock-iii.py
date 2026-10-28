@@ -37,11 +37,9 @@ Constraints:
 
 """
 
-# V0
 
-# V1
-# https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/solution/
-# IDEA : Bidirectional Dynamic Programming
+# V0
+# IDEA: 1D DP (4 rolling states)
 """
 
 DP def
@@ -63,13 +61,55 @@ DP eq
 
      ans = sell2
 
+"""
+# time = O(n)
+# space = O(1)
+class Solution(object):
+    def maxProfit(self, prices):
+        """
+        :type prices: List[int]
+        :rtype: int
+        """
+        if not prices:
+            return 0
 
-    -> e.g. equivalent "split point" form:
+        # nothing bought yet -> holding states start at -inf
+        buy1 = float('-inf')
+        sell1 = 0
+        buy2 = float('-inf')
+        sell2 = 0
 
-         left[i]  = best 1-transaction profit within prices[0..i]
-         right[i] = best 1-transaction profit within prices[i..n-1]
+        for p in prices:
+            # open the 1st transaction (start from 0 profit)
+            buy1 = max(buy1, -p)
+            # close the 1st transaction
+            sell1 = max(sell1, buy1 + p)
+            # NOTE !!! open the 2nd transaction with the 1st one's profit
+            buy2 = max(buy2, sell1 - p)
+            # close the 2nd transaction
+            sell2 = max(sell2, buy2 + p)
 
-         ans = max( left[i] + right[i+1] )
+        # sell2 >= sell1 (2nd transaction can be a no-op), so it is the answer
+        return sell2
+
+
+# V1
+# https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/solution/
+# IDEA: Bidirectional Dynamic Programming
+"""
+
+DP def
+    split the array at i: 1st transaction in prices[0..i], 2nd in prices[i+1..n-1]
+
+    left[i]  = best 1-transaction profit within prices[0..i]
+    right[i] = best 1-transaction profit within prices[i..n-1]
+
+DP eq
+
+     left[i]  = max(left[i-1],  prices[i] - min(prices[0..i-1]))
+     right[i] = max(right[i+1], max(prices[i+1..n-1]) - prices[i])
+
+     ans = max( left[i] + right[i+1] )
 
 """
 # time = O(n)
@@ -106,37 +146,19 @@ class Solution(object):
 
         return max_profit
 
-# V1'
+
+# V2
 # https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/solution/
-# IDEA : One-pass Simulation
+# IDEA: One-pass Simulation
 """
 
-DP def
-    at most 2 transactions -> 4 rolling states
+    t1_cost  : lowest price paid for the 1st transaction so far
+    t1_profit: best profit of the 1st transaction so far
+    t2_cost  : lowest NET cost of the 2nd buy (price - t1_profit)
+    t2_profit: best total profit of both transactions so far
 
-    buy1 : best profit after OPENING  the 1st transaction (holding stock)
-    sell1: best profit after CLOSING  the 1st transaction (no stock)
-    buy2 : best profit after OPENING  the 2nd transaction (holding stock)
-    sell2: best profit after CLOSING  the 2nd transaction (no stock)
-
-DP eq
-
-     for each price p:
-
-        buy1  = max(buy1,  0     - p)
-        sell1 = max(sell1, buy1  + p)
-        buy2  = max(buy2,  sell1 - p)
-        sell2 = max(sell2, buy2  + p)
-
-     ans = sell2
-
-
-    -> e.g. equivalent "split point" form:
-
-         left[i]  = best 1-transaction profit within prices[0..i]
-         right[i] = best 1-transaction profit within prices[i..n-1]
-
-         ans = max( left[i] + right[i+1] )
+    -> same idea as V0, written as costs instead of buy states
+       (t1_cost = -buy1, t2_cost = -buy2)
 
 """
 # time = O(n)
@@ -159,5 +181,3 @@ class Solution(object):
             t2_profit = max(t2_profit, price - t2_cost)
 
         return t2_profit
-
-# V2
