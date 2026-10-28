@@ -96,9 +96,6 @@
 		- `14) Path With Minimum Effort — LC 1631 — 排序邊（Kruskal 風格）`
 
 
-- DP — 實戰題解
-	- https://yennj12.js.org/CS_basics/cheatsheets/dp_examples.zh.html
-		- `2-7) Perfect Squares (LC 279) — 完全背包（最少個數）`
 
 
 - Design — 實戰題解
@@ -188,6 +185,7 @@
 					- 節點間距離 = 搭配 LCA，用 getDepth() 算兩次
 
 	- 掃描線 — 實戰題解
+	- DP — 實戰題解
 
 
 - Others
@@ -719,6 +717,17 @@
 		  	- 91
 		  	- 639
 		  	- 1137
+
+		  - 完全背包（最少個數）
+		  	- 279
+
+		  - 線性 DP（拆 vs 不拆）
+		  	- 343 (!!!)
+
+		  - 雙狀態 DP（同色／異色）
+		  	- 276
+
+
 
 
 		- stack
