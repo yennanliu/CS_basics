@@ -37,9 +37,12 @@ Constraints:
 
 DP def:
 
+        (NOTE !!!)
+            -> holding（或註解裡的 hold）的意思就是「手頭上正持有（擁有）一張股票」
+
 
         dp[i][0] = max profit at day i, 
-                   `holding` a stock
+                   `holding` (own a stock) a stock
 
         dp[i][1] = max profit at day i, 
                    just `sold` a stock today
@@ -55,10 +58,11 @@ DP def:
 
 DP eq:
 
-      (split by state)
+    
+     (split by state)
 
 
-      dp[i][0] = max(
+     dp[i][0] = max(
                 dp[i - 1][0],              # keep holding
                 dp[i - 1][2] - prices[i]   # buy today
             )
