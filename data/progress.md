@@ -94,11 +94,20 @@
 
 - DP — 實戰題解
 	- https://yennj12.js.org/CS_basics/cheatsheets/dp_examples.zh.html
-
+		- `2-7) Perfect Squares (LC 279) — 完全背包（最少個數）`
 
 
 - Design — 實戰題解
 	- https://yennj12.js.org/CS_basics/cheatsheets/design_examples.zh.html
+
+
+- 動態規劃（DP） (review)
+	- https://yennj12.js.org/CS_basics/cheatsheets/dp.zh.html
+
+
+
+
+
 
 
 
@@ -695,6 +704,17 @@
 
 		  — 三狀態 DP
 		  	- (LC 309)
+		  	
+		  	- other similar
+		  		- 122
+		  		- 714
+		  		- 123
+		  		- 188
+
+		  - 線性 DP，檢查一位／兩位數
+		  	- 91
+		  	- 639
+		  	- 1137
 
 
 		- stack
