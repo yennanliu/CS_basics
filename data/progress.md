@@ -23,8 +23,11 @@
 		 		- Binary Tree Maximum Path Sum - todo
 		 		- Serialize And Deserialize Binary Tree - todo
 		 	- Tries - pass
-		 	- backtrack - ing
+		 	- backtrack - done
 		 		- Combination Sum (pass)
+		 	- PQ - done
+		 	- graph - ing
+
 		 	
 
 
