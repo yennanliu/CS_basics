@@ -308,6 +308,76 @@ class Solution(object):
         board[y][x] = board[y][x].swapcase() # if already visited all possible route within the route collection, then roll back the maked route (.swapcase(), e.g. a->A), and run the other visit again 
         return isExit
 
+
+# V0-5
+# IDEA: DFS + BACKTRACK (gpt)
+class Solution(object):
+    def exist(self, board, word):
+        """
+        :type board: List[List[str]]
+        :type word: str
+        :rtype: bool
+        """
+        # Edge cases
+        if not board or not board[0]:
+            return False
+
+        if not word:
+            return True
+
+        rows = len(board)
+        cols = len(board[0])
+
+        for y in range(rows):
+            for x in range(cols):
+                if board[y][x] == word[0]:
+                    if self.dfs(board, word, x, y, 0, set()):
+                        return True
+
+        return False
+
+    def dfs(self, board, word, x, y, idx, visited):
+        rows = len(board)
+        cols = len(board[0])
+
+        # 1. Out of bounds
+        if x < 0 or x >= cols or y < 0 or y >= rows:
+            return False
+
+        # 2. Character does not match
+        if board[y][x] != word[idx]:
+            return False
+
+        # 3. Cannot reuse the same cell in one path
+        if (x, y) in visited:
+            return False
+
+        # 4. Found the last character
+        if idx == len(word) - 1:
+            return True
+
+        # 5. Choose current cell
+        visited.add((x, y))
+
+        # 6. Explore four directions
+        found = (
+            self.dfs(board, word, x + 1, y, idx + 1, visited)
+            or self.dfs(board, word, x - 1, y, idx + 1, visited)
+            or self.dfs(board, word, x, y + 1, idx + 1, visited)
+            or self.dfs(board, word, x, y - 1, idx + 1, visited)
+        )
+
+        """
+        NOTE !!!
+
+        -> need to backtrack (undo) the set (visited)
+        """
+        # 7. Backtrack
+        visited.remove((x, y))
+
+        return found
+
+
 # V1
 # IDEA : BACKTEACKING
 # https://leetcode.com/problems/word-search/solution/
