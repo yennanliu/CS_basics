@@ -54,6 +54,25 @@ n == heights[r].length
 # IDEA: REVERSE + 2 DFS + OVERLAPPING
 # time = O(m * n)
 # space = O(m * n)
+"""
+CORE IDEA:
+
+
+1. need `reversed DFS`
+
+    -> 與其從每個格子往海洋找，不如從`海洋`邊界 `反向`搜尋。
+        水只能從高處流向低處，因此反向搜尋時，下一格的高度必須大於或等於目前格子。
+
+
+    -> e.g.
+
+    標準最佳解法：採用「逆向思維（Reverse DFS / BFS）」。
+    我們從太平洋和大西洋的邊界出發，往內部逆流而上
+    （找高度大於或等於當前格子的鄰居），分別找出兩大洋能觸及的所有格子，
+    最後取兩者的交集（Intersection）即可。時間複雜度能大幅優化至
+    O(M * N)
+
+"""
 class Solution(object):
     def pacificAtlantic(self, heights):
         if not heights:
@@ -224,6 +243,65 @@ class Solution:
         self.dfs(x + 1, y, matrix, visit, matrix[x][y])
         self.dfs(x, y - 1, matrix, visit, matrix[x][y])
         self.dfs(x, y + 1, matrix, visit, matrix[x][y])
+
+# V0-4
+# IDEA: DFS + REVERSE + SET (gpt)
+class Solution(object):
+    def pacificAtlantic(self, heights):
+        """
+        :type heights: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        if not heights or not heights[0]:
+            return []
+
+        rows = len(heights)
+        cols = len(heights[0])
+
+        p_set = set()
+        a_set = set()
+
+        # 1. 從 Pacific 的邊界反向 DFS
+        for y in range(rows):
+            self.dfs_flow(heights, 0, y, p_set)
+            self.dfs_flow(heights, cols - 1, y, a_set)  # Atlantic 右側
+
+        for x in range(cols):
+            self.dfs_flow(heights, x, 0, p_set)         # Pacific 上側
+            self.dfs_flow(heights, x, rows - 1, a_set)  # Atlantic 下側
+
+        # 2. 同時可以到達兩個海洋的格子
+        res = []
+        for x, y in p_set:
+            if (x, y) in a_set:
+                res.append([y, x])
+
+        return res
+
+    def dfs_flow(self, heights, x, y, visited):
+        rows = len(heights)
+        cols = len(heights[0])
+
+        if (x, y) in visited:
+            return
+
+        visited.add((x, y))
+
+        # 上、下、左、右
+        moves = [(0, -1), (0, 1), (-1, 0), (1, 0)]
+
+        for dx, dy in moves:
+            nx = x + dx
+            ny = y + dy
+
+            # 確認新座標在矩陣範圍內
+            if nx < 0 or nx >= cols or ny < 0 or ny >= rows:
+                continue
+
+            # 反向搜尋：只能走到高度大於或等於目前格子的地方
+            if heights[ny][nx] >= heights[y][x]:
+                self.dfs_flow(heights, nx, ny, visited)
+
 
 # V1
 # https://www.jiuzhang.com/solution/pacific-atlantic-water-flow/#tag-highlight-lang-python
