@@ -39,16 +39,44 @@ The number of nodes in both trees is in the range [0, 100].
 # space = O(H)
 class Solution(object):
     def isSameTree(self, p, q):
+        """
+        :type p: Optional[TreeNode]
+        :type q: Optional[TreeNode]
+        :rtype: bool
+        """
+        """
+        NOTE !!!  below is WRONG (solely check p, q val)
+        """
+        # WRONG !!!!
+        # if p.val == q.val:
+        #     return True
+
+        # Base case 1: both nodes are empty
         if not p and not q:
             return True
+
+        # Base case 2: only one node is empty
         if not p or not q:
             return False
-        # ??
-        if p.val != q.val:
-            return False
-        return self.isSameTree(p.left, q.left) and \
-        self.isSameTree(p.right, q.right)
-        
+
+        """
+        NOTE !!!
+
+        need to put `p.val == q.val` in below.
+
+        e.g.
+
+        should check p.val == q.val with recursion call,
+            -> these checks need to be ALL of True,
+               then we can say p, q are the same tree
+
+        """
+        # Compare node values and recursively compare subtrees
+        return (
+            p.val == q.val
+            and self.isSameTree(p.left, q.left)
+            and self.isSameTree(p.right, q.right)
+        )
 
 # V0-1
 # IDEA: DFS
