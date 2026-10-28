@@ -42,6 +42,38 @@ class Solution(object):
         if not root:
             return []
 
+        q = deque([root])
+        res = []
+
+        while q:
+            level = []
+
+            for _ in range(len(q)):
+                node = q.popleft()
+                level.append(node.val)
+
+                if node.left:
+                    q.append(node.left)
+
+                if node.right:
+                    q.append(node.right)
+
+            res.append(level)
+
+        return res
+
+
+# V0-0-1
+# IDEA: BFS
+from collections import deque
+
+# time = O(n)
+# space = O(n)
+class Solution(object):
+    def levelOrder(self, root):
+        if not root:
+            return []
+
         if not root.left and not root.right:
             return [[root.val]]
 
