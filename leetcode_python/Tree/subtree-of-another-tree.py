@@ -43,6 +43,13 @@ class Solution(object):
         :rtype: bool
         """
 
+        """
+        NOTE !!!
+
+
+        the edge condition
+        """
+
         # subRoot is empty -> always a subtree
         if not subRoot:
             return True
