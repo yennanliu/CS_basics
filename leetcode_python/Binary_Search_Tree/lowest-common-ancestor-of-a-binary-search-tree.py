@@ -61,7 +61,7 @@ class Solution(object):
 
 
 # V0-1
-# IDEA 1) DFS
+# IDEA: DFS
 # time = O(n)
 # space = O(h)  # h = tree height (recursion stack)
 class Solution(object):
@@ -89,6 +89,44 @@ class Solution(object):
 
         else:
             return _right
+
+
+# V0-0-1
+# IDEA: DFS (GPT)
+# time = O(n)
+# space = O(h)  # h = tree height (recursion stack)
+class Solution(object):
+    def lowestCommonAncestor(self, root, p, q):
+        """
+        :type root: TreeNode
+        :type p: TreeNode
+        :type q: TreeNode
+        :rtype: TreeNode
+        """
+        # edge
+        if not root:
+            return None
+
+        # NOTE !!! below
+        if root == p or root == q:
+            return root
+
+        _left = self.lowestCommonAncestor(root.left, p, q)
+        _right = self.lowestCommonAncestor(root.right, p, q)
+
+        if _left and _right:
+            return root
+
+        if _left:
+            return _left
+        
+        # NOTE !!! below
+        if _right:
+            return _right
+
+        # NOTE !!! below
+        return None
+
 
 
 # V0-2
