@@ -107,6 +107,18 @@ class UnionFind(object):
         # recursively find the root.
         if self.parent[x] != x:
 
+            """
+            NOTE !!! 
+
+            
+            self.parent[`x`] = self.find(`self.parent[x]`)
+
+            -> so we update the original node's (x) parent
+               via recursively passing its current parent  (self.parent[x]) 
+               to the dfs func
+
+            """
+
             # Path Compression
             #
             # Example:
