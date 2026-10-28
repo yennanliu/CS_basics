@@ -114,6 +114,8 @@
 
 - DP 模式總表
 	- https://yennj12.js.org/CS_basics/cheatsheets/dp_pattern.zh.html
+		- `3. 矩陣連乘（MCM）／區間 DP`
+
 
 
 - 字串 DP（雙序列網格模式）
@@ -710,6 +712,9 @@
 
 		- DP:
 			- 5
+
+			- 最長遞增子序列（LIS)
+				- 300
 
 			- 二維網格題目
 				- Maximal Square 
