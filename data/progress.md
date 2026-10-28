@@ -90,6 +90,18 @@
 
 
 
+- 堆積（Heap） — 實戰題解
+	- https://yennj12.js.org/CS_basics/cheatsheets/heap_examples.zh.html
+
+
+- 二分搜尋 — 實戰題解
+	- https://yennj12.js.org/CS_basics/cheatsheets/binary_search_examples.zh.html
+
+
+- 回溯 — 實戰題解
+	- https://yennj12.js.org/CS_basics/cheatsheets/backtrack_examples.zh.html
+
+
 
 
 - Design — 實戰題解
@@ -100,9 +112,17 @@
 	- https://yennj12.js.org/CS_basics/cheatsheets/dp.zh.html
 
 
+- DP 模式總表
+	- https://yennj12.js.org/CS_basics/cheatsheets/dp_pattern.zh.html
 
 
+- 字串 DP（雙序列網格模式）
 
+
+- 位元遮罩 DP（狀態壓縮）
+
+
+- 數位 DP（在限制下數數字）
 
 
 
