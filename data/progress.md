@@ -20,6 +20,10 @@
 		 	- linked list - pass
 		 	- stack - done
 		 	- Trees - ing
+		 		- Binary Tree Maximum Path Sum - todo
+		 		- Serialize And Deserialize Binary Tree - todo
+		 	- Tries - pass
+		 	- backtrack - ing
 		 	
 
 
