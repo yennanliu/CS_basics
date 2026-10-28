@@ -91,12 +91,6 @@
 
 
 
-- 併查集（Union Find） — 實戰題解
-	- https://yennj12.js.org/CS_basics/cheatsheets/union_find_examples.zh.html
-		- `14) Path With Minimum Effort — LC 1631 — 排序邊（Kruskal 風格）`
-
-
-
 
 - Design — 實戰題解
 	- https://yennj12.js.org/CS_basics/cheatsheets/design_examples.zh.html
@@ -186,6 +180,10 @@
 
 	- 掃描線 — 實戰題解
 	- DP — 實戰題解
+	- 併查集（Union Find） — 實戰題解
+
+
+
 
 
 - Others
@@ -253,6 +251,20 @@
 
 			- 用剩餘量累計
 				- Count Unreachable Pairs of Nodes — LC 2316
+
+			- 排序邊（Kruskal 風格）
+				- LC 1631
+
+			- 在 email 上做併查集
+				- 721
+
+			- 併查集 + 排序
+				- LC 1202
+
+			- 把同列或同欄的石頭 union 起來；答案 = 石頭數 − 元件數
+				— LC 947 (UF, dfs)
+
+
 
 
 
