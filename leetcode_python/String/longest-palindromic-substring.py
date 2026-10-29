@@ -204,7 +204,8 @@ class Solution(object):
                  表示字串從索引 i 到 j（即 `s[i:j+1]`）是否為回文子字串（型態為 `bool`）
 
         """
-        # 由短到長枚舉子字串`長度 l`
+        # Check substrings of length 2, 3, ..., n
+        #   -> e.g. 由短到長枚舉子字串`長度 l`
         for l in range(2, n + 1):
 
             # loop over i (left pointer)
@@ -213,8 +214,13 @@ class Solution(object):
                 # init j (right pointer)
                 j = i + l - 1
                 if s[i] == s[j]:
+
+                    # Length 2: both characters match
+                    # Length > 2: inner substring must also be a palindrome
                     if l == 2 or dp[i + 1][j - 1]:
+                        
                         dp[i][j] = True
+                        
                         if l > max_len:
                             max_len = l
                             start = i
