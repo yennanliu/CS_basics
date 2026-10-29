@@ -35,6 +35,40 @@ Follow up: Can you come up with an algorithm that runs in O(n log(n)) time compl
 """
 
 
+"""
+NOTE !!!
+
+
+Difference between below DP VS pure brute force ?
+
+->
+
+
+    最大的差別是：Brute Force 會重複計算許多相同的子問題，
+    而 DP 會把已經計算出的結果存起來，讓後續計算可以重複使用。
+
+    不過要注意：兩層迴圈不一定就是 Brute Force。 
+    你上一題的 DP 本身也是兩層迴圈，只是它利用 dp 陣列保存中間結果。
+    
+    - 方法 A：DP（下面的解法）
+
+        - dp[i] 儲存「以 nums[i] 結尾的 LIS 長度」。
+        - 計算 dp[i] 時，可以直接使用之前已經算好的 dp[j]。
+        - 每個位置的最佳結果只需要計算一次。
+
+    - 方法 B：純 Brute Force
+        不使用 DP 陣列，而是列舉所有可能的子序列，檢查每一個子序列是否嚴格遞增。
+        - 每個元素都可以選擇加入或不加入子序列。
+        - 最多有 `2 ^ n` 個子序列。
+        - 不同子序列可能重複包含相同的部分，但每次仍要重新檢查。
+
+
+
+    -> DP 不需要重新列舉所有以 1、3 或 2 結尾的子序列，只需要查詢先前的 dp 值。
+
+
+"""
+
 # V0
 # IDEA: 1D DP + double loop
 # time = O(n^2)
@@ -529,6 +563,40 @@ class Solution:
                 sub[i] = num
 
         return len(sub)
+
+
+# V1
+# IDEA: BRUTE FORCE + DFS (TLE, only for ref)
+class Solution(object):
+    def lengthOfLIS(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        if not nums:
+            return 0
+
+        n = len(nums)
+        max_len = 0
+
+        def dfs(i, prev, length):
+            nonlocal max_len
+
+            # Base case: all elements have been considered
+            if i == n:
+                max_len = max(max_len, length)
+                return
+
+            # Option 1: skip nums[i]
+            dfs(i + 1, prev, length)
+
+            # Option 2: take nums[i] if strictly increasing
+            if prev is None or nums[i] > prev:
+                dfs(i + 1, nums[i], length + 1)
+
+        dfs(0, None, 0)
+        return max_len
+
 
 # V1
 # IDEA : DP
