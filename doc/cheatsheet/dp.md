@@ -313,6 +313,8 @@ Many DP problems need a base case representing "nothing" (target sum = 0, empty 
 **Examples**:
 - **Knapsack/Coin Change**: Need `dp[target + 1]` because `dp[0]` represents sum = 0
 - **Longest Common Subsequence**: Use `(n+1) x (m+1)` matrix where first row/column = empty string
+  — but a 2-D table indexed by **real positions** (LC 647's `dp[i][j]` = `s[i..j]`) is `n × n`; see
+  [Sizing the table](#sizing-the-table--n--n-or-n1--n1-lc-647)
 
 ```python
 # LC 322: Coin Change
@@ -662,6 +664,49 @@ What do i and j MEAN in dp[i][j]?
        → Template 2 above — m × n, answer at dp[m-1][n-1]
          LC 62, 64, 221
 ```
+
+#### Sizing the table — `n × n` or `(n+1) × (n+1)`? (LC 647)
+
+This is [Template 1a](#template-1a-1-d-array-sizing-and-loop-bounds-n-vs-n1)'s rule applied to two
+axes. The size comes from **what an index means**, not from how many dimensions the table has:
+
+| `dp[i][j]` uses… | `i` is a… | Size | Base case lives in | Reads a character as |
+|---|---|---|---|---|
+| **real string indexes** — the sub-range `s[i..j]` | position | `n × n` | the diagonal `dp[i][i]` | `s[i]`, `s[j]` |
+| **prefix lengths** — the first `i` / first `j` characters | count | `(m+1) × (n+1)` | row 0 / column 0 = the empty prefix | `s1[i-1]`, `s2[j-1]` |
+
+**Memory trick**: real index → `n × n`; "first `i` characters" → `n + 1`. The extra slot exists only
+to hold *the empty prefix*. A sub-range `s[i..j]` with `i <= j` is never empty, so Shape A has
+nothing to put there.
+
+```python
+# python
+# LC 647 - Palindromic Substrings
+# IDEA: dp[i][j] = s[i..j] is a palindrome. i and j are REAL indexes, so n x n, not n+1.
+# time = O(n^2), space = O(n^2)
+def countSubstrings(s):
+    n = len(s)
+    dp = [[False] * n for _ in range(n)]   # n slots: every index is a character of s
+    count = 0
+
+    for length in range(1, n + 1):         # short ranges first: dp[i+1][j-1] is shorter
+        for i in range(n - length + 1):
+            j = i + length - 1             # j is a position too, so it stays <= n-1
+            if s[i] == s[j] and (length <= 2 or dp[i + 1][j - 1]):
+                dp[i][j] = True
+                count += 1
+
+    return count
+```
+
+Compare LC 1143 (Shape B): `dp[i][j]` is "first `i` of `s1`, first `j` of `s2`", so `i` runs to `m`
+— one past the last index — and the table needs `m + 1` rows to have somewhere to put it.
+
+**The tell is consistency, as in 1-D.** Index view: `[[...] * n for _ in range(n)]`, loops stay
+`<= n-1`, compare `s[i]`, return `dp[0][n-1]`. Length view: `(m+1) × (n+1)`, loops run `1 → m`,
+compare `s1[i-1]`, return `dp[m][n]`. Size LC 647 at `n + 1` while still comparing `s[i]` and the
+code may still pass — but row `n` is dead weight, and the next edit that loops to `n` reads `s[n]`
+off the end.
 
 ---
 
