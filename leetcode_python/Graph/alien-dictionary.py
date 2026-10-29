@@ -40,6 +40,162 @@ words[i] consists of only lowercase English letters.
 """
 
 # V0
+class Solution(object):
+    def alienOrder(self, words):
+        pass
+
+
+# V0-0-1
+# IDEA: TOPOLOGICAL SORT (GEMINI)
+from collections import defaultdict, deque
+
+
+class Solution(object):
+
+  def alienOrder(self, words):
+    """:type words: List[str]
+
+    :rtype: str
+    """
+    # 1. 初始化圖與入度表 (In-degree / orders)
+    # 確保所有出現過的獨立字元都被納入圖中（即使沒有邊）
+    graph = defaultdict(set)
+    orders = {c: 0 for word in words for c in word}
+
+    # 2. 建立邊與依賴關係（比較相鄰的兩個單字）
+    for i in range(len(words) - 1):
+      w1, w2 = words[i], words[i + 1]
+      min_len = min(len(w1), len(w2))
+      found_diff = False
+
+      # 檢查無效的前綴情況（例如 ["abc", "ab"] 是非法的）
+      if len(w1) > len(w2) and w1[:min_len] == w2[:min_len]:
+        return ""
+
+      # 找出第一組不同的字元，建立順序
+      for j in range(min_len):
+        if w1[j] != w2[j]:
+          parent, child = w1[j], w2[j]
+          # 避免重複邊計入入度
+          if child not in graph[parent]:
+            graph[parent].add(child)
+            orders[child] += 1
+          found_diff = True
+          break
+
+    # 3. 尋找所有入度為 0 的節點，放入 Queue
+    q = deque([c for c in orders if orders[c] == 0])
+    res = []
+
+    # 4. 進行 Kahn's Algorithm 拓撲排序 (BFS)
+    while q:
+      node = q.popleft()
+      res.append(node)
+
+      for neighbor in graph[node]:
+        orders[neighbor] -= 1
+        if orders[neighbor] == 0:
+          q.append(neighbor)
+
+    # 5. 如果結果長度等於總字元數，代表成功排序；否則代表有環（Cycle）
+    if len(res) == len(orders):
+      return "".join(res)
+
+    return ""
+
+
+
+# V0-0-2
+# IDEA: TOPOLOGICAL SORT (gpt)
+from collections import defaultdict, deque
+
+class Solution(object):
+    def alienOrder(self, words):
+        """
+        :type words: List[str]
+        :rtype: str
+        """
+
+        # graph: {char: set of chars that must come AFTER char}
+        # Example: a -> b means a must appear before b.
+        # Use set to avoid duplicate edges.
+        graph = defaultdict(set)
+
+        # indegree[char] = number of incoming edges for this character.
+        # A character with indegree 0 has no known predecessor.
+        indegree = defaultdict(int)
+
+        # Step 1: Initialize every unique character.
+        # Important: include characters that have no edges.
+        for word in words:
+            for char in word:
+                graph[char]
+                indegree[char] = 0
+
+        # Step 2: Build the directed graph.
+        # Only compare adjacent words because their order tells us
+        # the relative order of characters.
+        for i in range(len(words) - 1):
+            word1 = words[i]
+            word2 = words[i + 1]
+
+            # Invalid case:
+            # A longer word cannot come before its own prefix.
+            # Example: ["abc", "ab"] is invalid.
+            if len(word1) > len(word2) and word1.startswith(word2):
+                return ""
+
+            # Find the first position where the characters differ.
+            # This first difference determines their relative order.
+            for c1, c2 in zip(word1, word2):
+                if c1 != c2:
+                    # c1 must appear before c2, so add edge c1 -> c2.
+                    # Only increase indegree if this edge is new.
+                    if c2 not in graph[c1]:
+                        graph[c1].add(c2)
+                        indegree[c2] += 1
+
+                    # Later characters do not determine the order
+                    # for this pair of words.
+                    break
+
+        # Step 3: Initialize the BFS queue with all characters
+        # whose indegree is 0.
+        # These characters can appear first in a valid ordering.
+        q = deque([
+            char for char in indegree
+            if indegree[char] == 0
+        ])
+
+        res = []
+
+        # Step 4: Perform Kahn's algorithm (BFS topological sort).
+        while q:
+            char = q.popleft()
+            res.append(char)
+
+            # Removing char from the graph effectively removes
+            # all outgoing edges from char.
+            for nxt in graph[char]:
+                indegree[nxt] -= 1
+
+                # Once all predecessors of nxt have been processed,
+                # nxt is ready to enter the queue.
+                if indegree[nxt] == 0:
+                    q.append(nxt)
+
+        # Step 5: Detect a cycle.
+        # If some characters were never processed, their indegrees
+        # could not reach 0, so no valid ordering exists.
+        if len(res) != len(indegree):
+            return ""
+
+        # Step 6: Return the character ordering as a string.
+        return "".join(res)
+
+
+
+# V0-0-3
 # IDEA: TOPOLOGICAL SORT (gpt)
 from collections import deque
 
@@ -72,6 +228,9 @@ class Solution(object):
                         in_degree[cur] += 1
 
                     found_diff = True
+
+                    # NOTE !!!
+                    # Only the FIRST different character matters
                     break
 
             # Invalid case:
