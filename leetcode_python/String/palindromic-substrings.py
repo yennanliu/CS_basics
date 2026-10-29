@@ -138,6 +138,29 @@ class Solution(object):
 
         n = len(s)
 
+        """
+        NOTE !!!
+
+        dp size is `n` (but NOT `n+1`)
+
+        -> 原因是：
+
+            -> 我們的 DP 狀態是用字串的實際 index i、j 來表示子字串，
+               而不是用前幾個字元的數量來表示。
+
+
+        ---- 
+
+        in summary:
+
+
+    
+        面試記憶技巧：
+        
+            - 如果 dp[i][j] 使用的是字串的實際 index，通常考慮 n × n。
+            - 如果 dp[i][j] 使用的是前 i 個、前 j 個字元，通常考慮 n + 1。
+
+        """
         # dp[i][j] = True if s[i:j+1] is a palindrome
         dp = [[False] * n for _ in range(n)]
 
