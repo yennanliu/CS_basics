@@ -55,6 +55,85 @@ class Solution:
 
         return len(cnt.keys()) - removed
 
+
+# V0-0-1
+# IDEA: SMALL PQ + COUNTER (gpt)
+from collections import Counter
+import heapq
+
+class Solution(object):
+    def findLeastNumOfUniqueInts(self, arr, k):
+        """
+        :type arr: List[int]
+        :type k: int
+        :rtype: int
+        """
+        # Edge case
+        if not arr:
+            return 0
+
+        cnt = Counter(arr)
+
+        # Min Heap: frequency of each integer
+        pq = list(cnt.values())
+        heapq.heapify(pq)
+
+        # Number of unique integers
+        unique_cnt = len(cnt)
+
+        while pq and k > 0:
+            freq = heapq.heappop(pq)
+
+            if freq <= k:
+                # Remove all occurrences of this integer
+                k -= freq
+                unique_cnt -= 1
+            else:
+                # NOTE !!!
+                #  -> NOT remove any char if CAN NOT remove all of them (same val) at once
+                #
+                # Cannot remove all occurrences of this integer
+                break
+
+        return unique_cnt
+
+
+# V0-0-2
+# IDEA: SMALL PQ + COUNTER (GEMINI)
+from collections import Counter
+import heapq
+
+class Solution(object):
+
+  def findLeastNumOfUniqueInts(self, arr, k):
+    """:type arr: List[int]
+
+    :type k: int
+    :rtype: int
+    """
+    # 統計每個數字出現的頻率
+    cnt = Counter(arr)
+
+    # 建立 Min-Heap 儲存所有頻率（Python 的 heapq 預設就是最小堆積）
+    pq = []
+    for val, freq in cnt.items():
+      heapq.heappush(pq, freq)
+
+    # 貪婪策略：優先消除頻率最低的元素
+    while pq and k > 0:
+      freq = heapq.heappop(pq)
+
+      if k >= freq:
+        k -= freq  #足夠完全消除這個數字
+      else:
+        # 如果 k 不足以完全消除這個數字，代表 k 耗盡，
+        # 且這個數字無法被完全刪除。此時剩下的獨特元素 = 剛才沒刪完的那一個 + Heap 裡面剩下的所有元素
+        return len(pq) + 1
+
+    # 如果 while 結束代表 k 還有剩，且 pq 裡的元素被完全刪光了
+    return len(pq)
+
+
 # V0-1
 # IDEA : Counter
 # time = O(n log n), n = len(arr)
