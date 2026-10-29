@@ -119,13 +119,17 @@
 
 
 
-- 字串 DP（雙序列網格模式）
-
-
-- 位元遮罩 DP（狀態壓縮）
+- 字串 DP（雙序列網格模式） (!!!)
+	- https://yennj12.js.org/CS_basics/cheatsheets/dp_string.zh.html
 
 
 - 數位 DP（在限制下數數字）
+	- https://yennj12.js.org/CS_basics/cheatsheets/dp_digit.zh.html
+
+
+
+- 位元遮罩 DP（狀態壓縮）
+	- https://yennj12.js.org/CS_basics/cheatsheets/dp_bitmask.zh.html
 
 
 
