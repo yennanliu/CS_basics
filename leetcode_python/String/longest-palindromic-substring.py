@@ -131,6 +131,31 @@ dp[i][j] = (s[i] == s[j]) and dp[i+1][j-1]
 
 
 """
+
+"""
+NOTE !!!
+
+
+DP def
+
+    dp[i][j] 表示字串從 `索引` `i 到 j` （即 `s[i:j+1]`）
+    `是否`為回文子字串（型態為 `bool`）
+
+
+DP eq
+
+     (當長度 l >= 3  時，
+        - 若首尾字元相同（s[i] == s[j]）
+        - 且內部子字串為回文（dp[i+1][j-1] == True），
+      
+        -> 則當前區間亦為回文
+      )
+
+
+     dp[i][j] = (s[i] == s[j]) and dp[i+1][j-1]
+
+
+"""
 class Solution(object):
 
     def longestPalindrome(self, s):
@@ -145,9 +170,15 @@ class Solution(object):
         dp = [[False] * n for _ in range(n)]
         start, max_len = 0, 1
 
+        """
+        NOTE !!!
+
+        -> update val in diagonal in dp table
+        """
         # 長度為 1 的子字串必定是回文
         for i in range(n):
             dp[i][i] = True
+
 
         """
         NOTE !!!
@@ -156,7 +187,7 @@ class Solution(object):
 
         2. first loop:
             
-                -> loop on `sub str len` (2, n+1)
+                -> loop on sub str `len` (!!!) (2, n+1)
 
 
         3. second loop:
@@ -173,9 +204,13 @@ class Solution(object):
                  表示字串從索引 i 到 j（即 `s[i:j+1]`）是否為回文子字串（型態為 `bool`）
 
         """
-        # 由短到長枚舉子字串長度 l
+        # 由短到長枚舉子字串`長度 l`
         for l in range(2, n + 1):
+
+            # loop over i (left pointer)
             for i in range(n - l + 1):
+
+                # init j (right pointer)
                 j = i + l - 1
                 if s[i] == s[j]:
                     if l == 2 or dp[i + 1][j - 1]:
