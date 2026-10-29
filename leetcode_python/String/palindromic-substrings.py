@@ -149,14 +149,15 @@ class Solution(object):
             count += 1
 
         """
-        NOTE !!!
+        NOTE:
 
-        1st loop: loop over sub str `length`
+        1st loop: loop over substring lengths (from 2 to n).
 
-        2nd loop: loop over left pointer (i)
-                    
-                  -> j = i + len - 1
+        2nd loop: loop over the left pointer (i).
 
+                   -> j = i + length - 1
+
+                      Calculates the `right` pointer (inclusive).
         """
         # Check substrings of length 2 or more
         for length in range(2, n + 1):
@@ -164,8 +165,8 @@ class Solution(object):
                 j = i + length - 1
 
                 if s[i] == s[j]:
-                    # Length 2 needs no inner check.
-                    # Longer substrings require the inner substring to be a palindrome.
+                    # Length 2: matching endpoints are sufficient.
+                    # Length > 2: the inner substring must also be a palindrome.
                     if length == 2 or dp[i + 1][j - 1]:
                         dp[i][j] = True
                         count += 1
