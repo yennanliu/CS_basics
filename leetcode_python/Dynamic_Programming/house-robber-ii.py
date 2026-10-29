@@ -35,7 +35,7 @@ Constraints:
 
 
 # V0
-# IDEA 1) 1D DP (2 DP)
+# IDEA 1) 1D DP (2 DP) (GEMINI)
 """
 
 DP def
@@ -62,6 +62,108 @@ DP eq
 """
 # time = O(n)  # n = len(nums)
 # space = O(n)  # dp1, dp2 arrays
+class Solution(object):
+
+  def rob(self, nums):
+    """:type nums: List[int]
+
+    :rtype: int
+    """
+    if not nums:
+      return 0
+
+    n = len(nums)
+
+    if n == 1:
+      return nums[0]
+    if n == 2:
+      return max(nums[0], nums[1])
+
+    # dp_1 處理範圍：0 到 n-2（排除最後一間）
+    # dp_2 處理範圍：1 到 n-1（排除第一間）
+    dp_1 = [0] * n
+    dp_2 = [0] * n
+
+    dp_1[0] = nums[0]
+    dp_1[1] = max(nums[0], nums[1])
+
+    dp_2[0] = 0
+    dp_2[1] = nums[1]
+
+    # 情況一：不搶最後一間房（迴圈到 n-2）
+    for i in range(2, n - 1):
+      dp_1[i] = max(
+          nums[i] + dp_1[i - 2],  # 搶當前房子
+          dp_1[i - 1],  # 不搶當前房子
+      )
+
+    # 情況二：不搶第一間房（迴圈到 n-1）
+    for i in range(2, n):
+      dp_2[i] = max(
+          nums[i] + dp_2[i - 2],  # 搶當前房子
+          dp_2[i - 1],  # 不搶當前房子
+      )
+
+    # 回傳兩種線性情況的最大值
+    return max(dp_1[n - 2], dp_2[n - 1])
+
+
+# V0-0-1 
+# IDEA: 1D DP (GPT)
+class Solution(object):
+    def rob(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        # Handle edge cases
+        if not nums:
+            return 0
+
+        n = len(nums)
+
+        if n == 1:
+            return nums[0]
+
+        if n == 2:
+            return max(nums)
+
+        # dp_1: Maximum money when the last house is excluded.
+        # dp_2: Maximum money when the first house is excluded.
+        dp_1 = [0] * n
+        dp_2 = [0] * n
+
+        # Initialize DP for case 1: exclude the last house.
+        dp_1[0] = nums[0]
+        dp_1[1] = max(nums[0], nums[1])
+
+        # Initialize DP for case 2: exclude the first house.
+        dp_2[0] = 0
+        dp_2[1] = nums[1]
+
+        # Case 1: Consider houses from index 0 to n - 2.
+        for i in range(2, n - 1):
+            # Either rob the current house or skip it.
+            dp_1[i] = max(
+                nums[i] + dp_1[i - 2],  # Rob current house
+                dp_1[i - 1]             # Skip current house
+            )
+
+        # Case 2: Consider houses from index 1 to n - 1.
+        for i in range(2, n):
+            # Either rob the current house or skip it.
+            dp_2[i] = max(
+                nums[i] + dp_2[i - 2],  # Rob current house
+                dp_2[i - 1]             # Skip current house
+            )
+
+        # Return the better result from the two cases.
+        return max(dp_1[n - 2], dp_2[n - 1])
+
+
+
+# V0-0-2
+# IDEA: 1D DP
 class Solution(object):
     def rob(self, nums):
         """
