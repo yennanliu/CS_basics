@@ -100,6 +100,13 @@
 	- https://yennj12.js.org/CS_basics/cheatsheets/heap_examples.zh.html
 
 
+- 進階堆積技巧 (!!!)
+	- https://yennj12.js.org/CS_basics/cheatsheets/heap_advanced.zh.html
+
+
+
+
+
 - 二分搜尋 — 實戰題解
 	- https://yennj12.js.org/CS_basics/cheatsheets/binary_search_examples.zh.html
 
@@ -693,6 +700,9 @@
 				— LC 380
 		
 		- PQ:
+			- 1481 (!!!)
+
+
 			- 模板 3：Shortest Subarray with Sum ≥ K
 				- 862
 			- 模板 4：滑動視窗中位數 — 有序多重集合／兩個堆積（LC 480）
