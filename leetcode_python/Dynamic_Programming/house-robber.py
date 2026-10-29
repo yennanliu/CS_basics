@@ -87,6 +87,15 @@ class Solution(object):
         if n == 1:
             return nums[0]
 
+        """
+        NOTE !!!
+
+
+        DP def:  dp[i] = max can rob at `idx = i`
+
+
+            -> dp = [0] * `n`  (size = n)
+        """
         # NOTE !!! dp is `size = n`
         dp = [0] * n
 

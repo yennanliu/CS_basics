@@ -27,7 +27,8 @@
 		 		- Combination Sum (pass)
 		 	- PQ - done
 		 	- graph - done
-		 	- advanced graph - ing
+		 	- advanced graph - done
+		 	- 1D dp
 
 		 	
 
