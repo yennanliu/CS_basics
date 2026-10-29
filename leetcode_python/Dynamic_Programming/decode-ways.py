@@ -128,6 +128,8 @@ class Solution(object):
             # s[i-1] must NOT be '0'
             one_digit = int(s[i-1:i])
             if 1 <= one_digit <= 9:
+
+                # NOTE !!! dp[i] get val from prev state (dp[i-1]) !!!
                 dp[i] += dp[i-1]
 
             # Option 2: Two digit decoding (s[i-2:i])
@@ -136,6 +138,8 @@ class Solution(object):
             # Must be between 10 and 26
             two_digits = int(s[i-2:i])
             if 10 <= two_digits <= 26:
+
+                 # NOTE !!! dp[i] get val from prev state (dp[i-2]) !!!
                 dp[i] += dp[i-2]
 
 
