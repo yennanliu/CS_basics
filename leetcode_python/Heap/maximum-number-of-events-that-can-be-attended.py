@@ -301,6 +301,55 @@ class Solution(object):
         return cnt
 
 
+# V0-1-1
+# IDEA:  PQ + GREEEDY (GEMINI)
+import heapq
+
+class Solution(object):
+
+  def maxEvents(self, events):
+    """:type events: List[List[int]]
+
+    :rtype: int
+    """
+    if not events:
+      return 0
+
+    # 1. 依照會議「開始時間」由小到大排序
+    events.sort(key=lambda x: x[0])
+    n = len(events)
+
+    # Min-Heap：用來儲存目前「可以參加」的所有會議之「結束時間」
+    pq = []
+
+    time = 0
+    i = 0
+    cnt = 0
+
+    # 當還有會議還沒被加入 Heap，或者 Heap 裡還有會議可以參加時，持續迴圈
+    while i < n or pq:
+      # 如果 Heap 為空，直接把時間快轉到下一個會議的開始時間
+      if not pq:
+        time = events[i][0]
+
+      # 2. 把所有在當前時間（或之前）開始的會議，其「結束時間」推入 Min-Heap
+      while i < n and events[i][0] <= time:
+        heapq.heappush(pq, events[i][1])
+        i += 1
+
+      # 3. 移除已經過期（結束時間小於當前時間）的會議
+      while pq and pq[0] < time:
+        heapq.heappop(pq)
+
+      # 4. 如果 Heap 中還有會議，貪婪地選擇「最快結束」的那場去參加
+      if pq:
+        heapq.heappop(pq)
+        cnt += 1
+        time += 1  # 參加完會議，時間推進一天
+
+    return cnt
+
+
 # V0-2
 # IDEA:  PQ + GREEEDY (GEMINI)
 import heapq
