@@ -111,6 +111,8 @@
 
 - 二分搜尋 — 實戰題解
 	- https://yennj12.js.org/CS_basics/cheatsheets/binary_search_examples.zh.html
+		- `3) Valid Perfect Square (LC 367)`
+
 
 
 - 回溯 — 實戰題解
@@ -130,10 +132,6 @@
 
 - 字串 DP（雙序列網格模式） (!!!)
 	- https://yennj12.js.org/CS_basics/cheatsheets/dp_string.zh.html
-
-
-- 數位 DP（在限制下數數字）
-	- https://yennj12.js.org/CS_basics/cheatsheets/dp_digit.zh.html
 
 
 
@@ -218,6 +216,7 @@
 	- DP — 實戰題解
 	- 併查集（Union Find） — 實戰題解
 	- DP 模式總表
+	- 數位 DP（在限制下數數字）
 
 
 
