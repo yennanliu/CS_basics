@@ -118,11 +118,6 @@
 	- https://yennj12.js.org/CS_basics/cheatsheets/dp.zh.html
 
 
-- DP 模式總表
-	- https://yennj12.js.org/CS_basics/cheatsheets/dp_pattern.zh.html
-		- `12. 萬用字元／正規表達式比對 DP`
-
-
 
 - 字串 DP（雙序列網格模式）
 
@@ -209,6 +204,7 @@
 	- 掃描線 — 實戰題解
 	- DP — 實戰題解
 	- 併查集（Union Find） — 實戰題解
+	- DP 模式總表
 
 
 
@@ -771,6 +767,16 @@
 
 		  - 雙狀態 DP（同色／異色）
 		  	- 276
+
+		  - 萬用字元／正規表達式比對 DP
+		  	- 44
+		  	- 10
+
+		  - 隱式 DAG 上的記憶化 DFS
+		  	- 329
+
+		  - 記憶化 vs 表格化：什麼時候用哪個
+		  	- https://yennj12.js.org/CS_basics/cheatsheets/dp_pattern.zh.html#%E8%A8%98%E6%86%B6%E5%8C%96-vs-%E8%A1%A8%E6%A0%BC%E5%8C%96%E4%BB%80%E9%BA%BC%E6%99%82%E5%80%99%E7%94%A8%E5%93%AA%E5%80%8Bs
 
 
 

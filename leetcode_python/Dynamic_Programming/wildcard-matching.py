@@ -96,7 +96,6 @@ class Solution(object):
                         - dp[i-1][j]
                         - (* 不能被消耗掉)
 
-
                 ->
 
                             pattern
@@ -120,6 +119,35 @@ class Solution(object):
                               0 chars        1+ chars
 
                     """
+
+                    """
+
+                    why `dp[i - 1][j]` means ` 1+ chars` ?
+
+
+                    ->
+
+                    Example:
+
+                    ```
+                    s = "abc"
+                    p = "a*"
+                    ```
+
+                    ->
+                        假設正在處理的字元是 s[i-1] = 'c'，而 p[j-1] = '*'。
+
+                        如果 * 要多吃一個字元 'c'，那麼：
+
+                            - 原本要匹配的字串是 "abc"。
+
+                            - 讓 * 吃掉最後一個字元 'c' 後，剩下 "ab"。
+
+                            - Pattern 仍然是 "a*"，因為 * 可以繼續匹配更多字元。
+
+                                -> so now we compare "ab" VS "a*"
+
+                     """
                     dp[i][j] = dp[i][j - 1] or dp[i - 1][j]
                 
 
