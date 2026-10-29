@@ -31,6 +31,148 @@ s consists of lowercase English letters.
 """
 
 
+# V0
+class Solution(object):
+    def countSubstrings(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        pass
+
+
+# V0-0-1
+# IDEA: 2 POINTERS + EXPAND FROM MID (gemini)
+class Solution(object):
+
+  def countSubstrings(self, s):
+    """:type s: str
+
+    :rtype: int
+    """
+    if not s:
+      return 0
+
+    n = len(s)
+    total_count = 0
+
+    # 輔助函式：從給定的左右中心點向外擴散，每多擴散成功一次，迴文子字串數量就 +1
+    def count_around_center(left, right):
+      count = 0
+      while left >= 0 and right < n and s[left] == s[right]:
+        count += 1
+        left -= 1
+        right += 1
+      return count
+
+    for i in range(n):
+      # 1. 奇數長度迴文（以 i 為單一中心，例如 "aba"）
+      total_count += count_around_center(i, i)
+
+      # 2. 偶數長度迴文（以 i 與 i+1 為雙中心，例如 "abba"）
+      total_count += count_around_center(i, i + 1)
+
+    return total_count
+
+
+# V0-0-2
+# IDEA: 2D DP + LC 5 (gpt)
+"""
+CORE IDEA:
+
+DP def
+
+    
+     dp[i][j]: boolean, 表示「子字串 s[i:j+1] 是否為回文」
+
+DP eq
+            
+        Case 1：單一字元
+
+        當 (i = j) 時，單一字元必定是回文。
+
+        [
+        dp[i][j] = True
+        ]
+
+
+
+        Case 2：兩個字元
+
+        當 (j = i + 1) 時，左右字元相同就是回文。
+
+        [
+        dp[i][j] = (s[i] = s[j])
+        ]
+
+
+
+        Case 3：三個或更多字元
+
+        當 (j > i + 1) 時，必須同時滿足：
+        1. 左右兩端字元相同。
+        2. 中間的子字串也是回文。
+        [
+        dp[i][j] = (s[i] = s[j]) land dp[i+1][j-1]
+        ]
+
+
+
+        Case 4：左右字元不同
+
+        [
+        dp[i][j] = False
+        ]
+
+
+"""
+class Solution(object):
+    def countSubstrings(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        # Edge case
+        if not s:
+            return 0
+
+        n = len(s)
+
+        # dp[i][j] = True if s[i:j+1] is a palindrome
+        dp = [[False] * n for _ in range(n)]
+
+        count = 0
+
+        # Every single character is a palindrome
+        for i in range(n):
+            dp[i][i] = True
+            count += 1
+
+        """
+        NOTE !!!
+
+        1st loop: loop over sub str `length`
+
+        2nd loop: loop over left pointer (i)
+                    
+                  -> j = i + len - 1
+
+        """
+        # Check substrings of length 2 or more
+        for length in range(2, n + 1):
+            for i in range(n - length + 1):
+                j = i + length - 1
+
+                if s[i] == s[j]:
+                    # Length 2 needs no inner check.
+                    # Longer substrings require the inner substring to be a palindrome.
+                    if length == 2 or dp[i + 1][j - 1]:
+                        dp[i][j] = True
+                        count += 1
+
+        return count
+
+
 # V0-1
 # IDEA: 2D DP (GPT)
 """

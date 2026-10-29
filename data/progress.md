@@ -28,7 +28,7 @@
 		 	- PQ - done
 		 	- graph - done
 		 	- advanced graph - done
-		 	- 1D dp
+		 	- 1D dp - ing
 
 		 	
 
