@@ -76,6 +76,46 @@ class Solution(object):
         return res
 
 
+# V0-0-1
+# IDEA: INTERVAL OP + SORTING (GPT)
+# time = O(n)
+# space = O(n)
+class Solution(object):
+    def insert(self, intervals, newInterval):
+        """
+        :type intervals: List[List[int]]
+        :type newInterval: List[int]
+        :rtype: List[List[int]]
+        """
+        # Add new interval
+        intervals.append(newInterval)
+
+        # Sort by start time, then end time
+        intervals.sort(key=lambda x: (x[0], x[1]))
+
+        res = []
+
+        for s, e in intervals:
+            if not res:
+                res.append([s, e])
+
+            else:
+                # No overlap
+                if res[-1][1] < s:
+                    res.append([s, e])
+
+                # Overlap: merge intervals
+                else:
+                    prev_s, prev_e = res.pop()
+                    res.append([
+                        min(prev_s, s),
+                        max(prev_e, e)
+                    ])
+
+        return res
+
+
+
 # V0-1
 # IDEA: INTERVAL OP + SORTING
 # time = O(n)
