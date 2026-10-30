@@ -95,6 +95,7 @@ LC 4045 VS LC 853
 # space = O(n)
 class Solution(object):
     def carFleet(self, target, position, speed):
+
         pos_speed = []
 
         for i in range(len(position)):
@@ -107,6 +108,15 @@ class Solution(object):
         # V2
         #pos_speed.sort(key=lambda x: -x[0])
 
+
+        """
+        NOTE !!!
+
+        st = [t1, t2, ...] 
+
+
+        -> ONLY need to save time in stack
+        """
         st = []
 
         for p, s, t in pos_speed:
@@ -114,6 +124,57 @@ class Solution(object):
                 st.append(t)
 
         return len(st)
+
+
+# V0-0-1
+# IDEA: STACK (gemini)
+class Solution(object):
+
+  def carFleet(self, target, position, speed):
+    """:type target: int
+
+    :type position: List[int]
+    :type speed: List[int]
+    :rtype: int
+    """
+    if not position:
+      return 0
+
+    # 1. 將 position 與 speed 綁定，並依照起始位置由小到大排序
+    cars = sorted(zip(position, speed))
+    
+    """
+    NOTE !!!
+
+    st = [t1, t2, ...] 
+
+
+    -> ONLY need to save time in stack
+    """   
+    st = []
+
+    """
+    NOTE !!!
+
+
+    need to sort on position (small -> big)
+
+    -> 並依照起始位置由小到大排序
+    """
+
+    # 2. 從右到左（從距離終點最近的車子開始）走訪
+    for p, s in reversed(cars):
+      # 修正：必須使用浮點數除法 `/` 來計算精確的時間
+      t = float(target - p) / s
+
+      # 如果堆疊為空，或者當前車子的時間大於堆疊頂部（前面車隊）的時間，
+      # 代表它無法追上前車，會自成一個新車隊
+      if not st or t > st[-1]:
+        st.append(t)
+      # 否則，當前車子會追上前車並合併成同一個車隊，因此不需要壓入堆疊
+
+    # 堆疊中剩下的元素個數就是總車隊數
+    return len(st)
 
 
 # V1
