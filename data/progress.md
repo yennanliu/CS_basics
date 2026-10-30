@@ -20,6 +20,11 @@
 				- Minimum Window Substring (pass)
 				- Sliding Window Maximum (pass)
 			- binary search - ing
+				- Median of Two Sorted Arrays (pass)
+			- linked list - pass
+			- stack - ing
+
+			
 
 
 	- blind 75 -> done
