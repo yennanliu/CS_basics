@@ -14,6 +14,12 @@
 		- https://neetcode.io/practice/practice/neetcode150
 			- Array & hash - ing
 				- Valid Sudoku (pass)
+			- 2 pointers - ing
+				- Trapping Rain Water (pass)
+			- slide window - ing
+				- Minimum Window Substring (pass)
+				- Sliding Window Maximum (pass)
+			- binary search - ing
 
 
 	- blind 75 -> done
