@@ -1520,6 +1520,48 @@ def is_power_of_two(n):
 # LC 089
 ```
 
+### Parsing a signed integer string — `int("-2")`
+
+`int()` reads the sign itself — a leading `-` or `+` (and surrounding whitespace) is fine, so a
+token like `"-11"` needs no special-casing. That is what lets LC 150 tell numbers from
+operators with a plain membership test: `"-"` is an operator, `"-11"` is a number.
+
+```python
+# python
+int("-2")      # -2
+int("+7")      # 7
+int(" 13 ")    # 13   (whitespace is stripped)
+int("-0")      # 0
+# int("3.5")   # ❌ ValueError — use int(float("3.5")) -> 3
+
+# LC 150 - Evaluate Reverse Polish Notation
+# IDEA: a token that is not one of "+-*/" is a number, signed or not -> int(t) parses it
+# time = O(n), space = O(n)
+class Solution(object):
+    def evalRPN(self, tokens):
+        st = []
+        for t in tokens:
+            if t not in {"+", "-", "*", "/"}:
+                # int() handles both "13" and "-11"; no sign check needed
+                st.append(int(t))
+            else:
+                right = st.pop()   # popped first = right operand
+                left = st.pop()
+                if t == "+":
+                    st.append(left + right)
+                elif t == "-":
+                    st.append(left - right)
+                elif t == "*":
+                    st.append(left * right)
+                else:
+                    # truncate toward 0, NOT floor: see "Integer division" above
+                    st.append(int(float(left) / right))
+        return st[0]
+```
+
+**Pitfall** — test the token against the operator *set*, never `t[0] in "+-*/"` or
+`t.isdigit()`: the first misreads `"-11"` as an operator, the second returns `False` for it.
+
 ### Infinity and boundary values
 
 ```python
