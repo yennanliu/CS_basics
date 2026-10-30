@@ -61,6 +61,17 @@ class MinStack(object):
 
         """
         NOTE !!!
+
+        CAN NOT use `while` loop for below
+
+        ->
+
+        1. ONLY need to do `pop` op once
+
+
+        2. may cause logic error
+            -> e.g. pop too many values from stack at once.
+
         """
         if not self.min_st or value <= self.min_st[-1]:
             self.min_st.append(value)
