@@ -89,6 +89,60 @@ class Solution(object):
         return st[0]
 
 
+# V0-0-1
+# IDEA: STACK (gemini)
+class Solution(object):
+
+  def evalRPN(self, tokens):
+    """:type tokens: List[str]
+
+    :rtype: int
+    """
+    if not tokens:
+      return 0
+
+    st = []
+
+    for t in tokens:
+      # 如果不是運算子，就代表它是數字
+      if t not in "+-*/":
+        """
+        NOTE !!!
+
+            -> Python 的 int() 可以直接處理正數與負數字串
+
+            e.g.
+
+            ```
+            >>> x = "-2"
+            >>> x
+            '-2'
+            >>> int(x)
+            -2
+            ```
+        """
+        # Python 的 int() 可以直接處理正數與負數字串
+        st.append(int(t))
+      else:
+        # 注意順序：先彈出的是右運算元 (val_1)，後彈出的是左運算元 (val_2)
+        val_1 = st.pop()
+        val_2 = st.pop()
+
+        if t == "+":
+          st.append(val_2 + val_1)
+        elif t == "-":
+          st.append(val_2 - val_1)
+        elif t == "*":
+          st.append(val_2 * val_1)
+        elif t == "/":
+          # 關鍵：LeetCode 要求除法向零取整
+          # 使用 int(float(a) / b) 可以讓正負數都正確向 0 截斷小數
+          st.append(int(float(val_2) / val_1))
+
+    # 最終堆疊中剩下的唯一元素就是運算結果
+    return st[0]
+
+
 # V0-1
 # IDEA : STACK + eval
 # https://blog.csdn.net/fuxuemingzhu/article/details/79559703
