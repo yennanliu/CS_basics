@@ -109,14 +109,6 @@
 
 
 
-- 二分搜尋 — 實戰題解
-	- https://yennj12.js.org/CS_basics/cheatsheets/binary_search_examples.zh.html
-		- `8) Find Smallest Letter Greater Than Target (LC 744)`
-
-
-
-
-
 - Design — 實戰題解
 	- https://yennj12.js.org/CS_basics/cheatsheets/design_examples.zh.html
 
@@ -215,6 +207,7 @@
 	- 數位 DP（在限制下數數字）
 	- 堆積（Heap） — 實戰題解
 	- 回溯 — 實戰題解
+	- 二分搜尋 — 實戰題解
 
 
 
@@ -885,8 +878,25 @@
 				- LC 853
 
 		- binary search
+			- 1150
+
+			- lower_bound 是主力
+				-  LC 278、744、436、1150、528、300
+
+			- 把權重變成連續區段，再二分搜尋
+				- 528
+				- 497
+
+			- Find Right Interval 
+				- (LC 436)  (!!!)
+				- 35
+				- 34
+
 			- 2.4) 雙調 / 山脈陣列 — 遞減順序的翻轉
-				- 1095			
+				- 1095	
+				- 852		
+				- 162
+			
 			- Split Array Largest Sum 
 				— LC 41
 
@@ -897,6 +907,8 @@
 				- LC 2616
 			- 最大化最小值 (again!)
 				- 1552
+			- Time Based Key-Value Store 
+				- (LC 981)
 
 
 		- Dijkstra
