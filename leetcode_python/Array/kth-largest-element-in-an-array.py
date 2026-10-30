@@ -30,13 +30,74 @@ Constraints:
 # time = O(n log n)
 # space = O(1)
 class Solution:
-    def findKthLargest(self, nums):
+    def findKthLargest(self, nums, k):
         # edge case
         if not nums:
             return
         nums.sort(key=lambda x : -x)
-        print ("nums = " + str(nums))
         return nums[k-1]
+
+# V0-0-1
+# IDEA : MIN HEAP OF SIZE K
+#
+#   keep the k largest elements seen so far in a min-heap;
+#   its root is the smallest of those k, i.e. the kth largest overall.
+#   every time the heap grows past k, pop the root: it is smaller than
+#   k other elements, so it can never be the answer.
+#
+#   e.g. nums = [3,2,1,5,6,4], k = 2
+#        heap ends as [5,6] -> root 5 = 2nd largest
+#
+# time = O(n log k), space = O(k)
+import heapq
+
+class Solution(object):
+    def findKthLargest(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: int
+        """
+        min_heap = []
+        for num in nums:
+            heapq.heappush(min_heap, num)
+            # NOTE !!! pop the SMALLEST once size > k,
+            #          so the heap always holds the k largest so far
+            if len(min_heap) > k:
+                heapq.heappop(min_heap)
+
+        # root of the min-heap = smallest of the k largest = kth largest
+        return min_heap[0]
+
+# V0-0-2
+# IDEA : MAX HEAP (NEGATE A COPY, THEN HEAPIFY)
+#
+#   python's heapq is a min-heap only; storing -num turns it into a max-heap.
+#   heapify the whole list in O(n), then pop the max k-1 times:
+#   the root left after that is the kth largest.
+#
+# time = O(n + k log n), space = O(n)
+import heapq
+
+class Solution(object):
+    def findKthLargest(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: int
+        """
+        # negate into a NEW list, so the input is not mutated
+        max_heap = []
+        for num in nums:
+            max_heap.append(-num)
+        heapq.heapify(max_heap)
+
+        # drop the k-1 largest elements
+        for _ in range(k - 1):
+            heapq.heappop(max_heap)
+
+        # negate back to get the original value
+        return -max_heap[0]
 
 # V0-1
 # IDEA : SORTED 
