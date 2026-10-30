@@ -24,12 +24,16 @@
 		 		- Serialize And Deserialize Binary Tree - todo
 		 	- Tries - pass
 		 	- backtrack - done
-		 		- Combination Sum (pass)
+		 		- Combination Sum - (pass)
 		 	- PQ - done
 		 	- graph - done
 		 	- advanced graph - done
 		 	- 1D dp - done
-		 	- 2D DP - ing
+		 	- 2D DP - done
+		 	- greedy  - (pass)
+		 	- intervals - ing
+		 	- big op - (pass)
+		 	- math - (pass)
 
 		 	
 
