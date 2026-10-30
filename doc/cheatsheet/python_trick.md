@@ -28,6 +28,7 @@ things by what they do.
 | write to a variable from inside a nested function | [Structure, Scope & Return Values](#structure-scope--return-values) |
 | use a heap, a binary search, an ordered map, or `itertools` | [python_trick_stdlib.md](./python_trick_stdlib.md) |
 | peek a heap's top — it is `pq[0]` (`-small_pq[0]` for a negated max-heap, `big_pq[0]` for a min-heap, as in LC 295) | [`heapq` basics](./python_trick_stdlib.md#heapq-basics-min-heap-by-default-) |
+| build a max-heap ("big PQ") from a list I already have — `pq = [-x for x in nums]; heapq.heapify(pq)`, O(n), `-pq[0]` is the max | [Max-heap via negation](./python_trick_stdlib.md#max-heap-via-negation-) |
 | insert into a list, slice a subarray, or get an off-by-one right | [python_trick_indexing.md](./python_trick_indexing.md) |
 
 

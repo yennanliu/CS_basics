@@ -9,7 +9,7 @@
 
 - [Python](https://leetcode.com/problemset/all/?languageTags=python3)
 
-<!-- d222b48dfb2e -->
+<!-- 81978c05ce1d -->
 ## 總覽
 
 這份速查表以前是 3,672 行、全部塞在單一個 `## 1) Examples` 標題底下，68 個條目以
@@ -31,6 +31,7 @@
 | 在巢狀函式裡面寫入外層變數 | [結構、作用域與回傳值](#structure-scope--return-values) |
 | 用堆積(heap)、二分搜尋、有序 map 或 `itertools` | [python_trick_stdlib.md](./python_trick_stdlib.md) |
 | 查看 heap 的頂端元素 — 就是 `pq[0]`（取負存放的 max-heap 用 `-small_pq[0]`，min-heap 用 `big_pq[0]`，見 LC 295） | [`heapq` 基礎](./python_trick_stdlib.md#heapq-basics-min-heap-by-default-) |
+| 從手上已有的 list 建出最大堆積（「big PQ」）— `pq = [-x for x in nums]; heapq.heapify(pq)`，O(n)，`-pq[0]` 就是最大值 | [用取負號模擬最大堆積](./python_trick_stdlib.md#max-heap-via-negation-) |
 | 插入 list、切出子陣列，或把差一算對 | [python_trick_indexing.md](./python_trick_indexing.md) |
 
 <!-- 111d3bcbf551 -->

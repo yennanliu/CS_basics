@@ -419,6 +419,23 @@ print(heappop(pq))  # (-10, 'A')
 print(heappop(pq))  # (-5,  'B')
 ```
 
+**Build a max-heap from a list you already have — negate a copy, then `heapify`:**
+```python
+import heapq
+
+nums = [4, 5, 8, 2, 10, 3]
+
+pq = [-x for x in nums]   # NEW list of negated values -> nums itself is untouched
+heapq.heapify(pq)         # O(n) bottom-up build, NOT n x heappush (O(n log n))
+
+print(-pq[0])             # 10  -> peek the max: negate back
+print(-heapq.heappop(pq)) # 10  -> pop the max: negate back
+print(-heapq.heappop(pq)) # 8
+```
+
+> Negate **before** `heapify`, never after: `heapify(nums)` then negating the elements breaks the
+> heap invariant. And `heapify` returns `None` — `pq = heapq.heapify(...)` throws the heap away.
+
 **Push pattern:**
 ```python
 import heapq
