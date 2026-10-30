@@ -111,7 +111,8 @@
 
 - 二分搜尋 — 實戰題解
 	- https://yennj12.js.org/CS_basics/cheatsheets/binary_search_examples.zh.html
-		- `3) Valid Perfect Square (LC 367)`
+		- `8) Find Smallest Letter Greater Than Target (LC 744)`
+
 
 
 
