@@ -13,6 +13,7 @@
 	- needcode 150 -> ing
 		- https://neetcode.io/practice/practice/neetcode150
 			- Array & hash - ing
+				- Valid Sudoku (pass)
 
 
 	- blind 75 -> done
