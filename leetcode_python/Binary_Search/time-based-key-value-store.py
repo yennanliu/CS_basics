@@ -42,8 +42,68 @@ At most 2 * 105 calls will be made to set and get.
 
 """
 
+
 # V0
-# IDEA : Hashmap + Linear Search
+# IDEA: HASHMAP + BINARY SEARCH
+from collections import defaultdict
+
+class TimeMap(object):
+
+    def __init__(self):
+        # {key: [[value_1, timestamp_1], ...]}
+        self.map = defaultdict(list)
+
+    def set(self, key, value, timestamp):
+        """
+        :type key: str
+        :type value: str
+        :type timestamp: int
+        :rtype: None
+        """
+
+        # NOTE !! below
+        self.map[key].append([value, timestamp])
+
+    def get(self, key, timestamp):
+        """
+        :type key: str
+        :type timestamp: int
+        :rtype: str
+        """
+        if key not in self.map:
+            return ""
+
+        # NOTE !! below
+        values = self.map[key]
+
+        # Binary Search: find the rightmost timestamp <= target
+        l = 0
+        r = len(values) - 1
+
+        res = ""
+
+        # NOTE !! below
+        while l <= r:
+            mid = l + (r - l) // 2
+
+            time = values[mid][1]
+
+            if time <= timestamp:
+                res = values[mid][0]
+
+                # NOTE !! below
+                # Try to find a more recent valid timestamp
+                l = mid + 1
+
+            else:
+                r = mid - 1
+
+        return res
+
+
+
+# V0
+# IDEA: HASHMAP + BINARY SEARCH
 # map: [k : [v1, t1], [v2, t2], .... ]
 # time = O(1) for set, O(log n) for get (n = # values stored for key)
 # space = O(n) total stored entries
