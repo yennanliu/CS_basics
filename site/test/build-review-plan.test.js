@@ -123,7 +123,7 @@ test('the real log yields the same attempts whether or not a chunk carried a lab
 });
 
 test('named drills are skipped — they have no LeetCode number to schedule', () => {
-  const { days } = parseProgress('20260613: 53,weekly_331,topo_sort,55');
+  const { days } = parseProgress('20260613: 53,weekly_331,topo_sort,0/1 Knapsack(again!!!),55');
   assert.deepEqual(days[0].items.map(i => i.id), [53, 55]);
 });
 

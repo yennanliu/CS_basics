@@ -160,7 +160,7 @@ PROGRESS = """20260909: 4(todo), 34(again!!) | DP: 44(todo)
 ok*),139(again* 1d dp)
 
 20260907: top 100 (backtrack): 51(todo) | (LC must) 438(again), 2289(todo: mono stack + dp)
-20260906: 39(again*).79(again*), topo_sort, weekly_331
+20260906: 39(again*).79(again*), topo_sort, weekly_331, 0/1 Knapsack(again!!!)
 ,53(again)
 
 ------ review
@@ -217,6 +217,7 @@ class ParseProgress(TempFileCase):
         # LeetCode numbers, so they cannot join a per-problem schedule.
         self.assertNotIn(331, self.dates)
         self.assertNotIn(3, self.dates)
+        self.assertNotIn(0, self.dates)      # 0/1 Knapsack
 
     def test_a_separator_line_ends_the_day(self):
         self.assertIn(1740, self.dates)

@@ -142,9 +142,10 @@ function parseProgress(raw) {
       if (!entry) continue;
       // Greedy to the last ")", so a nested one survives: "70(ok*, o(1) space!!)"
       // is one annotation, not a note that stops at the first close paren.
-      const m = stripLabel(entry).match(/^(\d+)\s*(?:\((.*)\))?/);
-      // Named drills — topo_sort, weekly_331, lazy_bst_in_order — are practice
-      // but not LeetCode numbers, so they cannot join a per-problem schedule.
+      // Digits followed by "/" are a drill's name, not an LC number: `0/1 Knapsack`.
+      const m = stripLabel(entry).match(/^(\d+)(?!\d|\s*\/)\s*(?:\((.*)\))?/);
+      // Named drills — topo_sort, weekly_331, lazy_bst_in_order, 0/1 Knapsack — are
+      // practice but not LeetCode numbers, so they cannot join a per-problem schedule.
       if (!m) continue;
       const { status, emphasis } = classify(m[2] || '');
       current.items.push({

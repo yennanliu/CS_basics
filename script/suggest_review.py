@@ -389,7 +389,8 @@ def parse_progress(path):
             entry = chunk.strip()
             if not entry:
                 continue
-            m = re.match(r"^(\d+)\s*(?:\((.*)\))?", _strip_label(entry))
+            # digits followed by "/" name a drill (`0/1 Knapsack`), not an LC number
+            m = re.match(r"^(\d+)(?!\d|\s*/)\s*(?:\((.*)\))?", _strip_label(entry))
             if not m:      # named drills — topo_sort, weekly_331 — not LC rows
                 continue
             lc = int(m.group(1))
