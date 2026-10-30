@@ -32,7 +32,7 @@
 		 	- 2D DP - done
 		 	- greedy  - (pass)
 		 	- intervals - ing
-		 	
+
 		 	- big op - (pass)
 		 	- math - (pass)
 
@@ -100,11 +100,6 @@
 		- `2) LC Example`
 		- `多重 key 的 tuple 排序：key=lambda x: (x[0], x[1])`
 
-
-
-- 堆積（Heap） — 實戰題解
-	- https://yennj12.js.org/CS_basics/cheatsheets/heap_examples.zh.html
-		- `18) Most Frequent IDs — LC 3092`
 
 
 - 進階堆積技巧 (!!!)
@@ -224,6 +219,7 @@
 	- 併查集（Union Find） — 實戰題解
 	- DP 模式總表
 	- 數位 DP（在限制下數數字）
+	- 堆積（Heap） — 實戰題解
 
 
 
@@ -710,6 +706,14 @@
 		- PQ:
 			- 1481 (!!!)
 			- 373 (!!!)
+			- 767
+
+			- lazy deletion
+				- Most Frequent IDs — LC 3092
+				- 2349
+				- 2034
+				- 1845
+				- 2073
 
 			- Divide Intervals Into Minimum Number of Groups 
 				— LC 2406 (!!!)
