@@ -10,29 +10,21 @@
 	- final_week_review.md
 			- https://github.com/yennanliu/CS_basics/pull/208
 
-	- blind 75 -> ing
-		- https://neetcode.io/practice/practice/blind75
+	- needcode 150 -> ing
+		- https://neetcode.io/practice/practice/neetcode150
+			- Array & hash - ing
 
-		 	- array & hashing - done
-		 	- 2 pointers - done
-		 	- slide window - done
-		 	- binary search - done
+
+	- blind 75 -> done
+		- https://neetcode.io/practice/practice/blind75
 		 	- linked list - pass
-		 	- stack - done
 		 	- Trees - ing
 		 		- Binary Tree Maximum Path Sum - todo
 		 		- Serialize And Deserialize Binary Tree - todo
 		 	- Tries - pass
 		 	- backtrack - done
 		 		- Combination Sum - (pass)
-		 	- PQ - done
-		 	- graph - done
-		 	- advanced graph - done
-		 	- 1D dp - done
-		 	- 2D DP - done
 		 	- greedy  - (pass)
-		 	- intervals - ing
-
 		 	- big op - (pass)
 		 	- math - (pass)
 
