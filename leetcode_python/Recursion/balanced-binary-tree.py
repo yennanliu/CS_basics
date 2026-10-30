@@ -79,6 +79,79 @@ class Solution(object):
         return max(_left, _right) + 1
 
 
+
+# V0-0-1
+# IDEA: POST ORDER DFS + FLAG
+class Solution(object):
+    def isBalanced(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: bool
+        """
+        # edge
+        if not root:
+            return True
+        
+        if not root.left and not root.right:
+            return True
+
+        self.is_valid = True
+        self.helper(root)
+
+
+        return self.is_valid
+
+
+    # return: depth
+    def helper(self, root):
+        if not root:
+            return 0
+
+        _left = self.helper(root.left)
+        _right = self.helper(root.right)
+
+        if abs(_left - _right) > 1:
+            self.is_valid = False
+
+        return max(_left, _right) + 1
+
+
+
+# V0-1
+# IDEA: POST ORDER DFS (gemini)
+class Solution(object):
+
+  def isBalanced(self, root):
+    """:type root: Optional[TreeNode]
+
+    :rtype: bool
+    """
+    # 只要 helper 沒有回傳 -1，就代表整棵樹是平衡的
+    return self.helper(root) != -1
+
+  def helper(self, root):
+    """遞歸計算高度，若發現不平衡則回傳 -1 作為錯誤訊號"""
+    if not root:
+      return 0
+
+    # 1. 檢查左子樹是否平衡
+    left_height = self.helper(root.left)
+    if left_height == -1:
+      return -1  # 左子樹已經不平衡，直接往上回傳 -1
+
+    # 2. 檢查右子樹是否平衡
+    right_height = self.helper(root.right)
+    if right_height == -1:
+      return -1  # 右子樹已經不平衡，直接往上回傳 -1
+
+    # 3. 檢查當前根節點左右子樹的高度差是否超過 1
+    if abs(left_height - right_height) > 1:
+      return -1  # 高度差大於 1，回傳 -1 代表不平衡
+
+    # 4. 如果平衡，回傳以當前節點為根的高度
+    return max(left_height, right_height) + 1
+
+
 # V0-1
 # IDEA: DFS (post order) (WITHOUT global var) + helper func (gemini)
 class Solution(object):
