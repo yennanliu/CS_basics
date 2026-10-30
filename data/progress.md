@@ -24,7 +24,10 @@
 			- linked list - pass
 			- stack - ing
 				- Largest Rectangle In Histogram (pass)
-			- tree - ing
+			- tree - done
+			- trie - done
+			- backtrack - (pass)
+			- heap / PQ - ing
 
 
 
