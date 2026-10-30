@@ -43,6 +43,58 @@ At most 3 * 104 calls will be made to push, pop, top, and getMin.
 """
 
 
+
+# V0
+# IDEA: 2 STACK (min stack + stack save all values) (gpt)
+class MinStack(object):
+
+    def __init__(self):
+        self.min_st = []
+        self.st = []
+
+    def push(self, value):
+        """
+        :type value: int
+        :rtype: None
+        """
+        self.st.append(value)
+
+        """
+        NOTE !!!
+        """
+        if not self.min_st or value <= self.min_st[-1]:
+            self.min_st.append(value)
+
+    def pop(self):
+        """
+        :rtype: None
+        """
+        if not self.st:
+            return
+
+        val = self.st.pop()
+
+        """
+        NOTE !!!
+        """
+        # Remove from min_st if it is the current minimum
+        if self.min_st and val == self.min_st[-1]:
+            self.min_st.pop()
+
+    def top(self):
+        """
+        :rtype: int
+        """
+        return self.st[-1]
+
+    def getMin(self):
+        """
+        :rtype: int
+        """
+        return self.min_st[-1]
+
+
+
 # V0
 # IDEA: 2 ARRAY (or deque) + `min val in layer track` (gpt)
 """
