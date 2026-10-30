@@ -64,6 +64,40 @@ class Solution(object):
         return res
 
 
+# V0-0-1
+# IDEA: BIG PQ
+import heapq
+
+class Solution(object):
+    def kClosest(self, points, k):
+        """
+        :type points: List[List[int]]
+        :type k: int
+        :rtype: List[List[int]]
+        """
+        # Edge cases
+        if not points or k <= 0:
+            return []
+
+        if k >= len(points):
+            return points
+
+        # Max Heap: use negative distance
+        pq = []
+
+        for x, y in points:
+            dist = x * x + y * y
+
+            # Store negative distance to simulate Max Heap
+            heapq.heappush(pq, (-dist, x, y))
+
+            # Keep only K closest points
+            if len(pq) > k:
+                heapq.heappop(pq)
+
+        return [[x, y] for dist, x, y in pq]
+
+
 # V0-1
 # IDEA: PQ
 # time = O(n log n), n = len(points)
