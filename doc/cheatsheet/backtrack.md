@@ -852,6 +852,107 @@ class Solution(object):
 
 ```
 
+#### How long a mark lasts — every call below it, nothing beside it (LC 1219) ⭐⭐⭐⭐
+
+After `grid[y][x] = -1`, **who sees the `-1`, and until when?** Getting this exactly right is
+what makes mark-and-restore correct, and the answer is about *frames*, not about single calls:
+
+> **Rule** — a cell marked in frame A stays marked for **every** recursive call A makes — all
+> four directions, and every call those make in turn — and is restored only after the **last**
+> of them returns. Nothing outside A's subtree ever sees the mark: not A's caller's other
+> branches, and not the next start cell.
+
+```python
+# python
+# time = O(g * 3^g), space = O(g)   g = gold cells (<= 25); after the first step a path has <= 3 unvisited directions
+# LC 1219 - Path with Maximum Gold
+# IDEA : DFS + backtrack from every gold cell; -1 marks "on the CURRENT path"
+# https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/path-with-maximum-gold.py
+class Solution(object):
+    def getMaximumGold(self, grid):
+        self.max_gold = 0
+        for y in range(len(grid)):
+            for x in range(len(grid[0])):
+                if grid[y][x] > 0:
+                    self.dfs_helper(grid, x, y, 0)
+        return self.max_gold
+
+    def dfs_helper(self, grid, x, y, cur_gold):
+        if x < 0 or x >= len(grid[0]) or y < 0 or y >= len(grid):
+            return
+        if grid[y][x] <= 0:           # 0 = no gold, -1 = already on THIS path
+            return
+
+        cur_gold += grid[y][x]        # int: this frame's own copy, never undone
+        self.max_gold = max(self.max_gold, cur_gold)
+
+        cache = grid[y][x]
+        grid[y][x] = -1               # ---- mark: from here ...
+        self.dfs_helper(grid, x + 1, y, cur_gold)   # every one of these four calls,
+        self.dfs_helper(grid, x - 1, y, cur_gold)   # and every call THEY make,
+        self.dfs_helper(grid, x, y + 1, cur_gold)   # sees (y, x) as -1
+        self.dfs_helper(grid, x, y - 1, cur_gold)
+        grid[y][x] = cache            # ---- ... to here: undo after the LAST branch returns
+```
+
+**The trace** — `grid = [[1, 2], [3, 4]]`, one launch from `(0, 0)`, cells written as
+`(row, col)`, indentation = recursion depth. This is the real output of the code above with a
+print after each mark and each undo; calls that hit a wall or a `-1` return silently and are
+not shown.
+
+```text
+ 1 enter (0,0) mark  -> [-1,  2] [ 3,  4]  cur=1
+ 2   enter (0,1) mark  -> [-1, -1] [ 3,  4]  cur=3        (0,0) still -1
+ 3     enter (1,1) mark  -> [-1, -1] [ 3, -1]  cur=7
+ 4       enter (1,0) mark  -> [-1, -1] [-1, -1]  cur=10   whole path 1->2->4->3 marked
+ 5       leave (1,0) undo  -> [-1, -1] [ 3, -1]
+ 6     leave (1,1) undo  -> [-1, -1] [ 3,  4]
+ 7   leave (0,1) undo  -> [-1,  2] [ 3,  4]               (0,1) free again, (0,0) is NOT
+ 8   enter (1,0) mark  -> [-1,  2] [-1,  4]  cur=4        (0,0)'s next direction: down
+ 9     enter (1,1) mark  -> [-1,  2] [-1, -1]  cur=8
+10       enter (0,1) mark  -> [-1, -1] [-1, -1]  cur=10   (0,1) collected AGAIN, on a new path
+11       leave (0,1) undo  -> [-1,  2] [-1, -1]
+12     leave (1,1) undo  -> [-1,  2] [-1,  4]
+13   leave (1,0) undo  -> [-1,  2] [ 3,  4]
+14 leave (0,0) undo  -> [ 1,  2] [ 3,  4]               grid exactly as it started
+```
+
+Read it for three things:
+
+1. **`(0,0)` is `-1` from step 1 to step 14** — across *both* of its branches (right at 2–7,
+   down at 8–13). The mark belongs to the frame, so all four of its calls share it; that is what
+   stops a path from stepping back onto a cell it already holds.
+2. **`(0,1)` is restored at step 7, before `(0,0)` tries its next direction** — so at step 10
+   the down-first path walks onto `(0,1)` and collects its `2` again. Sibling branches are
+   *different paths*, and a cell used by one must be free for the other. This is the whole
+   reason for the undo.
+3. **Undos run in reverse order of marks** (5, 6, 7 · 11, 12, 13 · 14). Each frame restores
+   only the cell it marked itself, so the stack unwinds the grid one cell at a time.
+
+| Code running | Sees `(0,0)` as `-1`? | Why |
+|---|---|---|
+| `(0,0)`'s four calls, and every call below them | ✅ yes | they run between the mark and the undo |
+| the launch loop's next start, e.g. `dfs(0, 1)` | ❌ no | `(0,0)` undid itself before returning |
+| a sibling branch, e.g. step 8's `(1,0)` looking at `(0,1)` | — | `(0,1)` is free: its own frame undid it at step 7 |
+
+**Why the child sees the parent's mark at all.** There is one `grid` list, and every frame is
+handed a reference to that same object — so a write in any frame is visible to every other
+until someone writes it back. `cur_gold` is an `int`: `+=` rebinds a local name, every frame
+holds its own, and there is nothing to undo. Same rule as LC 113's `cur_sum` vs `cache` in
+[Template 14](#template-14-when-to-undo--mutable-vs-immutable-state-).
+
+**Two ways to get the window wrong** — both run against the problem's own examples:
+
+| Mistake | What happens |
+|---|---|
+| no undo at all | the first launch erases gold for every later launch — Example 1 returns `23`, not `24` |
+| undo **between** the four calls (`mark; dfs(right); undo; dfs(left) ...`) | after the first branch returns, a later branch can walk back onto this cell, which can walk back onto it again — `RecursionError` on Example 1 |
+
+> Mark **once**, before the first recursive call; undo **once**, after the last. Anything that
+> returns in between — the `return (dfs(...) or dfs(...))` above — skips the undo just as
+> surely. The full three-style comparison of this problem (where to guard, where to accumulate)
+> is [dfs.md Template 9](./dfs.md#template-9-grid-dfs--backtracking--3-styles-compared-lc-1219-path-with-maximum-gold).
+
 ### Template 10: N-Queens — LC 51
 
 Classic backtracking with O(n!) search space, pruned by column/diagonal tracking.
