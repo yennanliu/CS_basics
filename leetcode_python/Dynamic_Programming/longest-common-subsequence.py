@@ -86,6 +86,15 @@ class Solution(object):
         # LCS length of text1[:i] and text2[:j]
         dp = [[0] * (n2 + 1) for _ in range(n1 + 1)]
 
+        """
+        NOTE !!!
+
+
+        (for this LC)
+        
+            -> no needed to pre-fill, init extra values in dp table
+        """
+
 
         """
         NOTE !!!
