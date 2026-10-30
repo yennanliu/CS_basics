@@ -150,7 +150,7 @@ def latest_verdicts(path=PROGRESS):
             entry = chunk.strip()
             if not entry:
                 continue
-            m = re.match(r"^(\d+)\s*(?:\((.*)\))?", sr._strip_label(entry))
+            m = re.match(r"^(\d+)(?!\d|\s*/)\s*(?:\((.*)\))?", sr._strip_label(entry))  # `0/1 Knapsack` is a drill
             if not m:
                 continue
             lc = int(m.group(1))
