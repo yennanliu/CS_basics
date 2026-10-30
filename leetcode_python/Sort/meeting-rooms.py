@@ -52,6 +52,39 @@ class Solution:
                 return False
         return True
 
+
+# V0-0-1
+# IDEA: SCAN LINE + LC 253
+class Solution:
+    def canAttendMeetings(self, intervals):
+        # Edge case
+        if not intervals:
+            return True
+
+        events = []
+
+        for s, e in intervals:
+            events.append([s, 1])   # Meeting starts
+            events.append([e, -1])  # Meeting ends
+
+        # Sort by time, then state
+        # -1 (end) comes before 1 (start) at the same time
+        events.sort(key=lambda x: (x[0], x[1]))
+
+        active_cnt = 0
+
+        for time, state in events:
+            if state == 1:
+                active_cnt += 1
+            else:
+                active_cnt -= 1
+
+            if active_cnt > 1:
+                return False
+
+        return True
+
+
 # V0-1
 # IDEA : SORT
 # time = O(n log n)
