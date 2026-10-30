@@ -120,7 +120,10 @@
 
 - Design — 實戰題解
 	- https://yennj12.js.org/CS_basics/cheatsheets/design_examples.zh.html
+		- `Insert Delete GetRandom O(1)`
 
+
+		
 
 - 動態規劃（DP） (review)
 	- https://yennj12.js.org/CS_basics/cheatsheets/dp.zh.html
