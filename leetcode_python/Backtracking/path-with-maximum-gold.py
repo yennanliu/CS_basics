@@ -82,6 +82,52 @@ class Solution(object):
 
         # mark visited
         cache = grid[y][x]
+
+        """
+        NOTE !!!
+
+
+        grid[y][x] = -1 會持續影響目前`這一層 DFS 及其所有子遞迴呼叫`，
+        直到這個 DFS 節點的四個方向都執行完畢，
+        才會執行 backtrack，將原本的值還原。
+
+
+        ->
+
+        子 DFS 可以看到父 DFS 修改過的 grid。
+        父 DFS 也會看到子 DFS 修改過的 grid。
+        每一層 DFS 必須負責還原自己修改的狀態。
+
+
+        ->
+
+        DFS 往下探索時，修改的狀態會持續保留給所有子遞迴呼叫；
+        只有當目前節點的所有遞迴分支都完成後，
+        才會執行 backtracking，還原該節點自己的狀態。
+
+
+
+        -> backtrack code structure
+
+
+        ```
+        # 1. Save original state
+        cache = grid[y][x]
+
+        # 2. Modify state
+        grid[y][x] = -1
+
+        # 3. Explore all recursive branches
+        dfs(...)
+        dfs(...)
+        dfs(...)
+        dfs(...)
+
+        # 4. Restore original state
+        grid[y][x] = cache
+        ```
+
+        """
         grid[y][x] = -1
 
         self.dfs_helper(grid, x + 1, y, cur_gold)
