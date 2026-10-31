@@ -134,6 +134,9 @@
 
 - 字串 DP（雙序列網格模式） (!!!)
 	- https://yennj12.js.org/CS_basics/cheatsheets/dp_string.zh.html
+		- `計算「相異」子序列 — 上次出現位置的扣除（LC 940） 🔢`
+			- again
+				- 合法括號字串模式（LC 678)
 
 
 
@@ -767,6 +770,9 @@
 
 		- DP:
 			- 5
+
+			- 合法括號字串模式 
+				-（LC 678) !!!!
 
 			- 最長遞增子序列（LIS)
 				- 300
