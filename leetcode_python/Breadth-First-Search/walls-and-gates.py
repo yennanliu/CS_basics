@@ -79,6 +79,122 @@ class Solution:
                         rooms[y_][x_] = moves + 1
                         q.append((x_, y_, moves + 1))
 
+# V0-0-1
+# IDEA: MULTI SOURCE BFS (gemini)
+from collections import deque
+
+class Solution:
+
+  def wallsAndGates(self, rooms):
+    """:type rooms: List[List[int]]
+
+    :rtype: None Do not return anything, modify rooms in-place instead.
+    """
+    if not rooms or not rooms[0]:
+      return
+
+    l = len(rooms)
+    w = len(rooms[0])
+
+    # 必須使用 deque 才能支援高效的 popleft()
+    q = deque()
+
+    # 1. 將所有閘門（值為 0）加入佇列作為多源 BFS 的起點
+    for y in range(l):
+      for x in range(w):
+        if rooms[y][x] == 0:
+          q.append((x, y, 0))  # 儲存 (x, y, 當前距離)
+
+    # 四個移動方向：右、左、下、上
+    moves = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+
+    # 2. 執行 BFS
+    while q:
+      x, y, dist = q.popleft()
+
+      for dx, dy in moves:
+        x_ = x + dx
+        y_ = y + dy
+
+        """
+        NOTE !!!
+
+        -> we DON'T really need `visited` for this LC.
+
+        -> 
+
+            可以省略獨立的 visited 集合：
+
+            在多源 BFS 中，我們不需要額外維護 visited 集合。
+            因為空房間初始時的數值是無限大（通常為 2147483647 或 INF），
+            我們只要檢查該格子是否為未走訪過的空房間（
+            即 rooms[y_][x_] == 2147483647），
+            一旦走訪過就直接更新它的數值，
+            這樣就能自然防止重複訪問並保證最短路徑。
+
+        """
+        # 檢查是否在網格範圍內，且該格子是未造訪過的空房間（通常以 2147483647 代表無限大 INF）
+        if 0 <= x_ < w and 0 <= y_ < l and rooms[y_][x_] == 2147483647:
+          # 更新距離為到門的最短步數
+          rooms[y_][x_] = dist + 1
+          # 將新房間推入佇列繼續向外擴散
+          q.append((x_, y_, dist + 1))
+
+
+# V0-0-2
+# IDEA: MULTI SOURCE BFS (GPT)
+from collections import deque
+
+class Solution:
+    def wallsAndGates(self, rooms):
+        """
+        :type rooms: List[List[int]]
+        :rtype: None
+        """
+        # Edge case
+        if not rooms or not rooms[0]:
+            return
+
+        l = len(rooms)
+        w = len(rooms[0])
+
+        # Queue: [x, y, dist]
+        q = deque()
+
+        # Visited coordinates
+        visited = set()
+
+        # Put all gates into the queue
+        for y in range(l):
+            for x in range(w):
+                if rooms[y][x] == 0:
+                    q.append([x, y, 0])
+                    visited.add((x, y))
+
+        # Four directions
+        moves = [
+            [1, 0],
+            [-1, 0],
+            [0, 1],
+            [0, -1]
+        ]
+
+        # Multi-source BFS
+        while q:
+            x, y, dist = q.popleft()
+
+            for dx, dy in moves:
+                x_ = x + dx
+                y_ = y + dy
+
+                if 0 <= x_ < w and 0 <= y_ < l:
+                    # Only visit INF rooms
+                    if rooms[y_][x_] == 2147483647 and (x_, y_) not in visited:
+                        rooms[y_][x_] = dist + 1
+
+                        visited.add((x_, y_))
+                        q.append([x_, y_, dist + 1])
+
 
 
 # V0-1
