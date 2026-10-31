@@ -40,6 +40,11 @@ DP def:
         (NOTE !!!)
             -> holding（或註解裡的 hold）的意思就是「手頭上正持有（擁有）一張股票」
 
+            -> either `DO NOTHING` or `buy a stock`
+
+
+
+
 
         dp[i][0] = max profit at day i, 
                    `holding` (own a stock) a stock
@@ -97,13 +102,33 @@ class Solution(object):
         dp[0][2] = 0
 
         for i in range(1, n):
+
+            """
+            NOTE !!!
+
+
+            we update dp per state seperately !!!!.
+
+            -> 
+                state 0: update with its own logic
+
+                state 1: update with its own logic
+
+                state 2: update with its own logic
+
+            """
+
+            # dp[i][0] = hold
             dp[i][0] = max(
                 dp[i - 1][0],              # keep holding
                 dp[i - 1][2] - prices[i]   # buy today
             )
 
+            # dp[i][1] = sold
             dp[i][1] = dp[i - 1][0] + prices[i]  # sell today
 
+
+            # dp[i][2] = rest
             dp[i][2] = max(
                 dp[i - 1][2],  # keep resting
                 dp[i - 1][1]   # cooldown finished
