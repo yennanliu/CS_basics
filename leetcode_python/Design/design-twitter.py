@@ -44,6 +44,93 @@ At most 3 * 104 calls will be made to postTweet, getNewsFeed, follow, and unfoll
 
 
 # V0
+# IDEA: DEFAULT DICT + SMALL PQ (gemini)
+from collections import defaultdict
+import heapq
+
+
+class Twitter(object):
+
+  def __init__(self):
+    # 全域時間戳記，每發一則推文就遞增一次
+    self.time = 0
+    # 記錄每個使用者的推文列表：{userId: [[time, tweetId], ...]}
+    self.tweets = defaultdict(list)
+    # 記錄追蹤關係：{userId: {followeeId1, followeeId2, ...}}
+    self.following = defaultdict(set)
+
+  def postTweet(self, userId, tweetId):
+    """:type userId: int
+
+    :type tweetId: int
+    :rtype: None
+    """
+    # 將推文與當時的時間戳記綁定儲存
+    self.tweets[userId].append([self.time, tweetId])
+    self.time += 1
+
+  def getNewsFeed(self, userId):
+    """:type userId: int
+
+    :rtype: List[int]
+    """
+    res = []
+    min_heap = []
+
+    # 使用者預設必須能看到自己的貼文，因此將自己加入追蹤集合中（不影響 self.following 持久狀態）
+    # NOTE !!!
+    # |（聯集），才能確保「自己」與「追蹤對象」的貼文同時被納入檢索範圍。
+    # v1
+    #users_to_check = self.following[userId] | {userId}
+
+    # v2
+    users_to_check = self.following[userId].union({userId})
+
+    # 針對每一個被追蹤的人，取得他們最近的推文
+    for u in users_to_check:
+      if u in self.tweets and self.tweets[u]:
+        # 取得該使用者最後一則（最新的一則）推文的索引
+        index = len(self.tweets[u]) - 1
+        time, tweetId = self.tweets[u][index]
+
+        # 為了用 Min-Heap 模擬取得「最大（最近）」的時間戳記，我們將 time 取負數 (-time)
+        # 存入 heap 的格式：( -time, tweetId, userId, index )
+        heapq.heappush(min_heap, (-time, tweetId, u, index))
+
+    # 從 Heap 中依序萃取出最多 10 則最新的推文
+    while min_heap and len(res) < 10:
+      negative_time, tweetId, u, index = heapq.heappop(min_heap)
+      res.append(tweetId)
+
+      # 如果該使用者還有更早的歷史推文，將下一則較舊的推文推入 heap 中
+      if index > 0:
+        prev_time, prev_tweetId = self.tweets[u][index - 1]
+        heapq.heappush(min_heap, (-prev_time, prev_tweetId, u, index - 1))
+
+    return res
+
+  def follow(self, followerId, followeeId):
+    """:type followerId: int
+
+    :type followeeId: int
+    :rtype: None
+    """
+    # 使用 set 可以自動過濾重複追蹤
+    self.following[followerId].add(followeeId)
+
+  def unfollow(self, followerId, followeeId):
+    """:type followerId: int
+
+    :type followeeId: int
+    :rtype: None
+    """
+    # 不能取消追蹤自己（若有防禦需求可加檢查，這裡用 discard 安全移除）
+    if followerId != followeeId:
+      self.following[followerId].discard(followeeId)
+
+
+
+# V0
 # https://github.com/labuladong/fucking-algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E8%AE%BE%E8%AE%A1Twitter.md
 from collections import defaultdict
 from heapq import merge
