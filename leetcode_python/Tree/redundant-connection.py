@@ -37,6 +37,31 @@ The given graph is connected.
 # V0
 # IDEA: UNION FIND
 """
+CORE IDEA:
+
+
+->
+    
+    LC 684 的本質是：在一張原本是樹的圖中多加了一條邊，
+    導致出現了一個「環（Cycle）」。題目要求我們找出這條多餘的邊。
+
+
+->
+    最優雅、最標準的解法是使用 Union-Find (並查集):
+    
+        1. 我們把每個節點看作一個獨立的集合，初始時每個節點的「祖先（Parent）」就是自己
+
+        2. 我們依序走訪每一條邊 [u, v]：
+
+            - 透過 find 函式檢查 u 和 v 是否`已經在同一個連通分量`（擁有相同的祖先）。
+
+            - 如果`已經在同一個集合`，代表再把這條邊連上去一定會形成環！這條邊就是我們要找的冗餘連接，直接回傳。
+
+            - 如果不在同一個集合，就透過 union 把牠們合併。
+
+"""
+
+"""
 
 - high level idea:
 
@@ -121,6 +146,71 @@ class MyUF(object):
 
         return True
 
+
+# V0-0-1
+# IDEA: union find (gemini)
+"""
+CORE IDEA:
+
+
+->
+    
+    LC 684 的本質是：在一張原本是樹的圖中多加了一條邊，
+    導致出現了一個「環（Cycle）」。題目要求我們找出這條多餘的邊。
+
+
+->
+    最優雅、最標準的解法是使用 Union-Find (並查集):
+    
+        1. 我們把每個節點看作一個獨立的集合，初始時每個節點的「祖先（Parent）」就是自己
+
+        2. 我們依序走訪每一條邊 [u, v]：
+
+            - 透過 find 函式檢查 u 和 v 是否`已經在同一個連通分量`（擁有相同的祖先）。
+
+            - 如果`已經在同一個集合`，代表再把這條邊連上去一定會形成環！這條邊就是我們要找的冗餘連接，直接回傳。
+
+            - 如果不在同一個集合，就透過 union 把牠們合併。
+
+"""
+class Solution(object):
+
+  def findRedundantConnection(self, edges):
+    """:type edges: List[List[int]]
+
+    :rtype: List[int]
+    """
+    # 題目的節點數量大約等於邊的數量 (因為本來是樹 + 1條多餘邊)
+    n = len(edges)
+
+    # 初始化並查集：每個節點的 parent 剛開始指向自己
+    # 節點編號從 1 到 n，所以大小開到 n + 1
+    parent = list(range(n + 1))
+
+    # 尋找根節點的函數（包含路徑壓縮 Path Compression）
+    def find(i):
+      if parent[i] == i:
+        return i
+      parent[i] = find(parent[i])  # 路徑壓縮，直接將節點掛到根節點下
+      return parent[i]
+
+    # 合併兩個集合的函數
+    def union(i, j):
+      root_i = find(i)
+      root_j = find(j)
+
+      if root_i != root_j:
+        parent[root_i] = root_j  # 將其中一個根節點接給另一個
+        return True
+      return False  # 若根節點相同，代表兩者已經連通，會形成環
+
+    # 依序走訪每一條邊
+    for u, v in edges:
+      # 如果 union 回傳 False，代表加入這條邊會造成環，這就是答案
+      if not union(u, v):
+        return [u, v]
+
+    return []
 
 
 # V0-1
