@@ -44,6 +44,11 @@ grid[i][j] is 0, 1, or 2.
 # IDEA: MULTI-SOURCE BFS
 # time = O(m * n)
 # space = O(m * n)
+"""
+NOTE !!!
+
+  -> `visited` is NO needed for this LC
+"""
 from collections import deque
 class Solution(object):
     def orangesRotting(self, grid):
@@ -112,6 +117,80 @@ class Solution(object):
 
         return time if fresh == 0 else -1
 
+
+# V0-0-1
+# IDEA: MULTI SOURCE BFS (gemini)
+# time = O(m * n)
+# space = O(m * n)
+"""
+NOTE !!!
+
+  -> `visited` is NO needed for this LC
+"""
+from collections import deque
+
+
+class Solution(object):
+
+  def orangesRotting(self, grid):
+    """:type grid: List[List[int]]
+
+    :rtype: int
+    """
+    if not grid or not grid[0]:
+      return 0
+
+    l = len(grid)
+    w = len(grid[0])
+
+    # 必須使用 deque 才能支援高效的 popleft()
+    q = deque()
+    fresh_cnt = 0
+
+    # 1. 初始化：計算新鮮橘子總數，並將所有初始的爛橘子放入佇列
+    for y in range(l):
+      for x in range(w):
+        if grid[y][x] == 1:
+          fresh_cnt += 1
+        elif grid[y][x] == 2:
+          q.append((x, y))
+
+    # 邊界情況：一開始就沒有新鮮橘子，花費時間為 0
+    if fresh_cnt == 0:
+      return 0
+
+    # 四個移動方向：右、左、下、上
+    moves = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+    time = 0
+
+    # 2. 執行多源 BFS
+    while q:
+      size = len(q)
+      rotted_this_round = (
+          False  # 用來標記這一輪是否有成功讓新鮮橘子變爛
+      )
+
+      for _ in range(size):
+        x, y = q.popleft()
+
+        for dx, dy in moves:
+          x_ = x + dx
+          y_ = y + dy
+
+          # 檢查是否在網格範圍內，且該座標是「新鮮橘子」
+          if 0 <= x_ < w and 0 <= y_ < l and grid[y_][x_] == 1:
+            # 將其變成爛橘子
+            grid[y_][x_] = 2
+            fresh_cnt -= 1
+            q.append((x_, y_))
+            rotted_this_round = True
+
+      # 只有當這一輪確實有橘子腐爛時，時間才加 1
+      if rotted_this_round:
+        time += 1
+
+    # 3. 檢查是否還有未被感染的新鮮橘子。若有，代表無法全部腐爛，回傳 -1；否則回傳累積時間
+    return time if fresh_cnt == 0 else -1
 
 
 # V0-1
