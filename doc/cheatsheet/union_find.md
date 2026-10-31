@@ -407,7 +407,7 @@ Two structural variants change *when* you run the algorithm rather than what it 
 ### Cycle Detection & Redundancy
 - **LC 684** – Redundant Connection: Find edge that creates cycle in tree
   - Java: `leetcode_java/src/main/java/LeetCodeJava/Tree/RedundantConnection.java:50`
-  - Pattern: Return first edge where `union()` fails (cycle detected)
+  - Pattern: Return first edge where `union()` fails (cycle detected) — that edge is also the cycle edge that comes last in the input, which is the tie-break the problem asks for ([why](./union_find_examples.md#1-redundant-connection--lc-684))
 
 ### Weighted Union Find
 - **LC 399** – Evaluate Division: Weighted UF with ratios for equation solving

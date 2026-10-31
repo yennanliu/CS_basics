@@ -25,6 +25,30 @@ five patterns and the traps; this file keeps the problems that *apply* them.
 
 > Add edges one by one; if two nodes are already connected, this edge is redundant.
 
+**Core Idea**: the input is a tree plus **one** extra edge, so it holds exactly one cycle and
+the answer is an edge on it. Start with every node as its own set (its parent is itself), then
+walk the edges in order:
+
+- `find(u) == find(v)` — u and v are already in the same component, so this edge closes the
+  cycle. It is the redundant connection; return it.
+- otherwise — `union(u, v)` and move on.
+
+**Why the first failure is the "last in input" answer**: an edge's union fails only when its
+two endpoints are already joined, which happens only once every *other* edge of the cycle has
+been added. So the edge that fails is the cycle edge that comes **last** in `edges` — exactly
+the one the problem asks for when several removals would leave a tree. No second pass, no
+reverse scan.
+
+```text
+edges = [[1,2],[2,3],[3,4],[1,4],[1,5]]
+
+edge    find(u)  find(v)  action
+[1,2]   1        2        union  -> {1,2}
+[2,3]   2        3        union  -> {1,2,3}
+[3,4]   3        4        union  -> {1,2,3,4}
+[1,4]   same root          FAIL   -> return [1,4]   (cycle 1-2-3-4-1 closes here)
+```
+
 ```java
 // LC 684 - Redundant Connection
 // IDEA: Union-Find — detect cycle; redundant edge connects already-connected nodes

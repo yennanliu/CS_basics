@@ -205,11 +205,11 @@
   - Java：`leetcode_java/src/main/java/LeetCodeJava/Graph/NumberOfConnectedComponentsUndirectedGraph.java:49`
   - 模式：追蹤元件數，union 成功就減一
 
-<!-- 7c7a90ecd539 -->
+<!-- 9c81299992f9 -->
 ### 環偵測與多餘邊
 - **LC 684** – Redundant Connection：找出在樹上造成環的那條邊
   - Java：`leetcode_java/src/main/java/LeetCodeJava/Tree/RedundantConnection.java:50`
-  - 模式：回傳第一條讓 `union()` 失敗的邊（偵測到環）
+  - 模式：回傳第一條讓 `union()` 失敗的邊（偵測到環）— 這條邊同時也是環上在輸入中最後出現的邊，正是題目要求的平手規則（[原因](./union_find_examples.md#1-redundant-connection--lc-684)）
 
 <!-- e3ad86acfdb8 -->
 ### 加權併查集
