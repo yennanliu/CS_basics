@@ -118,6 +118,10 @@
 
 - 進階堆積技巧 (!!!)
 	- https://yennj12.js.org/CS_basics/cheatsheets/heap_advanced.zh.html
+		- 3) `有上限的「後悔」堆積 — 留下最好的 k 個，其餘照付`
+
+
+
 
 
 
@@ -716,6 +720,7 @@
 			- 1481 (!!!)
 			- 373 (!!!)
 			- 767
+			- 2034
 
 			- lazy deletion
 				- Most Frequent IDs — LC 3092
