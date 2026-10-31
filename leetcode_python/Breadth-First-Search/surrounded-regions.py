@@ -122,6 +122,74 @@ class Solution(object):
             )
 
 
+# V0-0-1
+# IDEA 1) 2 PASS DFS
+# time = O(m*n), m,n = board dims
+# space = O(m*n), recursion stack in worst case
+class Solution(object):
+    def solve(self, board):
+        """
+        :type board: List[List[str]]
+        :rtype: None
+        """
+        # Edge case
+        if not board or not board[0]:
+            return
+
+        l = len(board)
+        w = len(board[0])
+
+        # 1st DFS: Check left and right boundaries
+        for y in range(l):
+            if board[y][0] == "O":
+                self.dfs_color(board, 0, y, "O", "Z")
+
+            if board[y][w - 1] == "O":
+                self.dfs_color(board, w - 1, y, "O", "Z")
+
+        # 2nd DFS: Check top and bottom boundaries
+        for x in range(w):
+            if board[0][x] == "O":
+                self.dfs_color(board, x, 0, "O", "Z")
+
+            if board[l - 1][x] == "O":
+                self.dfs_color(board, x, l - 1, "O", "Z")
+
+        # 3rd DFS: Convert surrounded O to X
+        for y in range(l):
+            for x in range(w):
+                if board[y][x] == "O":
+                    self.dfs_color(board, x, y, "O", "X")
+
+        # 4th step: Restore safe cells from Z to O
+        for y in range(l):
+            for x in range(w):
+                if board[y][x] == "Z":
+                    board[y][x] = "O"
+
+    def dfs_color(self, board, x, y, old_color, new_color):
+        l = len(board)
+        w = len(board[0])
+
+        # Boundary check
+        if x < 0 or x >= w or y < 0 or y >= l:
+            return
+
+        # Stop if cell does not match old_color
+        if board[y][x] != old_color:
+            return
+
+        # Mark visited / change color
+        board[y][x] = new_color
+
+        # Explore four directions
+        self.dfs_color(board, x - 1, y, old_color, new_color)
+        self.dfs_color(board, x + 1, y, old_color, new_color)
+        self.dfs_color(board, x, y - 1, old_color, new_color)
+        self.dfs_color(board, x, y + 1, old_color, new_color)
+
+
+
 # V0-1
 # IDEA 1) 2 PASS DFS
 # time = O(m*n), m,n = board dims
