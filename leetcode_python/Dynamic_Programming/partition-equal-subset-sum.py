@@ -81,8 +81,42 @@ class Solution(object):
         return dp[target]
 
 
+# V0-0-1
+# IDEA: 1D DP  (0/1 knacpack) (gemini)
+class Solution(object):
 
-# VO-0-1
+  def canPartition(self, nums):
+    """:type nums: List[int]
+
+    :rtype: bool
+    """
+    if not nums:
+      return False
+
+    _sum = sum(nums)
+
+    # 1. 總和如果是奇數，絕對無法平分成兩個相等的子集
+    if _sum % 2 != 0:
+      return False
+
+    target = _sum // 2
+
+    # dp[j] 代表是否能選出一個子集，使其元素總和剛好等於 j
+    dp = [False] * (target + 1)
+
+    # 2. 基底狀態：總和為 0 永遠可以透過空集合達成
+    dp[0] = True
+
+    # 3. 0/1 背包核心邏輯
+    for val in nums:
+      # 必須從 target 倒數迴圈到 val，以確保每個數字只能被使用一次（0/1 背包特性）
+      for j in range(target, val - 1, -1):
+        dp[j] = dp[j] or dp[j - val]
+
+    return dp[target]
+
+
+# VO-0-2
 # IDEA: 1D DP  (0/1 knacpack)
 """
 

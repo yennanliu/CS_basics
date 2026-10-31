@@ -32,7 +32,8 @@
 			- graphs - ing
 				- Word Ladder (pass)
 			- advanced graphs (pass)
-			- 1D dp - ing
+			- 1D dp - done
+			- 2D dp - ing
 
 
 
