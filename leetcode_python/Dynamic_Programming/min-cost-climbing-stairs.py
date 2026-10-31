@@ -89,6 +89,11 @@ DP eq:
             dp[i-2] + cost[i-2])
     
 
+
+(NOTE !!!)
+
+    the target is to reach the top (`pass` the last stair)
+    -> e.g. `index cost.length`
 ----
 
 
@@ -113,6 +118,14 @@ class Solution(object):
 
         # NOTE !!!
         # dp size = `n+1`
+        """
+
+        (NOTE !!!)
+
+        the target is to reach the top (`pass` the last stair)
+        -> e.g. `index cost.length`
+
+        """
         dp = [0] * (n + 1)
 
         # We can start at step 0 or step 1 for free
