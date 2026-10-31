@@ -111,6 +111,8 @@ class Solution(object):
         """
         n = len(cost)
 
+        # NOTE !!!
+        # dp size = `n+1`
         dp = [0] * (n + 1)
 
         # We can start at step 0 or step 1 for free
@@ -124,6 +126,33 @@ class Solution(object):
             )
 
         return dp[n]
+
+
+# V0-0-1
+# IDEA: 1D DP (gpt)
+class Solution(object):
+    def minCostClimbingStairs(self, cost):
+        """
+        :type cost: List[int]
+        :rtype: int
+        """
+        n = len(cost)
+
+        # dp[i] = 到達第 i 階所需的最低成本
+        dp = [0] * n
+
+        dp[0] = cost[0]
+        #dp[1] = cost[1]
+        dp[1] = min(cost[0], cost[1])
+
+        for i in range(2, n):
+            dp[i] = min(
+                dp[i - 1],
+                dp[i - 2]
+            ) + cost[i]
+
+        # 可以從最後一階或倒數第二階直接到達頂端
+        return min(dp[n - 1], dp[n - 2])
 
 
 
