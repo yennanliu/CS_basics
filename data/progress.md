@@ -135,13 +135,6 @@
 
 
 
-- 字串 DP（雙序列網格模式） (!!!)
-	- https://yennj12.js.org/CS_basics/cheatsheets/dp_string.zh.html
-		- `計算「相異」子序列 — 上次出現位置的扣除（LC 940） 🔢`
-			- again
-				- 合法括號字串模式（LC 678)
-
-
 
 - 位元遮罩 DP（狀態壓縮）
 	- https://yennj12.js.org/CS_basics/cheatsheets/dp_bitmask.zh.html
@@ -228,6 +221,9 @@
 	- 堆積（Heap） — 實戰題解
 	- 回溯 — 實戰題解
 	- 二分搜尋 — 實戰題解
+	- 字串 DP（雙序列網格模式） (!!!)
+			- again
+				- 合法括號字串模式（LC 678)
 
 
 
