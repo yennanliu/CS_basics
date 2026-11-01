@@ -12,8 +12,7 @@
 
 	- needcode 150 -> ing
 		- https://neetcode.io/practice/practice/neetcode150
-			- Array & hash - ing
-				- Valid Sudoku (pass)
+			- Array & hash - done
 			- 2 pointers - ing
 				- Trapping Rain Water (pass)
 			- slide window - ing

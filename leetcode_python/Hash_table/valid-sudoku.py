@@ -12,7 +12,7 @@ Note:
 
 A Sudoku board (partially filled) could be valid but is not necessarily solvable.
 Only the filled cells need to be validated according to the mentioned rules.
- 
+
 
 Example 1:
 
@@ -180,6 +180,43 @@ class Solution(object):
                 boxes[box_id].add(val)
 
         return True
+
+# V0-3
+# IDEA : GREEDY  (GEMINI)
+# time = O(9^2)  # board is fixed at 9x9
+# space = O(9)
+class Solution(object):
+
+  def isValidSudoku(self, board):
+    """:type board: List[List[str]]
+
+    :rtype: bool
+    """
+    seen = set()
+
+    for r in range(9):
+      for c in range(9):
+        val = board[r][c]
+
+        # 略過未填寫的空白格
+        if val == '.':
+          continue
+
+        # 定義三個唯一的識別碼，分別對應行、列、3x3 小宮格
+        row_key = (r, val)
+        col_key = (val, c)
+        box_key = (r // 3, c // 3, val)
+
+        # 如果已經存在於集合中，代表發生重複，數獨無效
+        if row_key in seen or col_key in seen or box_key in seen:
+          return False
+
+        # 將當前數字的行列宮格狀態加入集合
+        seen.add(row_key)
+        seen.add(col_key)
+        seen.add(box_key)
+
+    return True
 
 
 # V1
