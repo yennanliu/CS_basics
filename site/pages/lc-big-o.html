@@ -780,7 +780,16 @@
   //    them move. Only identical canonical forms (n vs 2n) are certain to be
   //    the same class; a flat numerical ratio is reported as "as far as can be
   //    measured".
+  //
+  // The first set is far out on purpose: an additive constant as large as
+  // 10^15 (n vs n + 10^15) still moves the ratio at 2^16..2^48, and only
+  // probes well past it see the two flatten into one class. It is used only
+  // when every value there stays exact (|L| ≤ 2^36, where a double still
+  // resolves 10⁻⁵ of a bit); n·2^n vs 2^n is not, and falls through to the
+  // smaller sets that can see its extra factor of n.
+  var EXACT_L = Math.pow(2, 36);
   var PROBE_SETS = [
+    [Math.pow(2, 64), Math.pow(2, 128), Math.pow(2, 256)],
     [Math.pow(2, 16), Math.pow(2, 32), Math.pow(2, 48)],
     [Math.pow(2, 8), Math.pow(2, 12), Math.pow(2, 16)],
     [16, 32, 64],
@@ -788,17 +797,50 @@
   ];
   var CROSS_LIMIT = 1e18;
 
+  // Additive constants never change the class (O(n + 10^15) = O(n)), but one
+  // big enough can outlast every probe: log n only reaches 256 at n = 2^256,
+  // nowhere near 10^15. So they are removed structurally before measuring.
+  // Only through +, *, log and sqrt, where that is sound — every remaining
+  // term grows without bound, so a constant beside it is a lower-order term.
+  // Not inside a power or a factorial: (n+10)! is n^10 times n!.
+  function hasVar(node) {
+    if (node.t === 'var') return true;
+    if (node.t === 'num') return false;
+    var kids = node.xs || [node.x, node.b, node.e].filter(Boolean);
+    return kids.some(hasVar);
+  }
+  function dropConstants(node) {
+    switch (node.t) {
+      case 'add': {
+        var kept = node.xs.filter(hasVar).map(dropConstants);
+        if (!kept.length) return node;                  // all constant: leave it
+        return kept.length === 1 ? kept[0] : { t: 'add', xs: kept };
+      }
+      case 'mul': return { t: 'mul', xs: node.xs.map(dropConstants) };
+      case 'log': case 'sqrt': return { t: node.t, x: dropConstants(node.x) };
+      default: return node;
+    }
+  }
+
   function asymptotic(A, B) {
+    A = { ast: dropConstants(A.ast) };
+    B = { ast: dropConstants(B.ast) };
     for (var s = 0; s < PROBE_SETS.length; s++) {
       var probes = PROBE_SETS[s];
       var la = probes.map(function (n) { return L(A, n); });
       var lb = probes.map(function (n) { return L(B, n); });
       var finite = la.concat(lb).every(function (v) { return isFinite(v); });
       if (!finite) continue;   // too steep for these n: try smaller ones
+      var exact = la.concat(lb).every(function (v) { return Math.abs(v) <= EXACT_L; });
+      if (s === 0 && !exact) continue;   // the far set only decides when it is exact
       var d = la.map(function (v, i) { return v - lb[i]; });
       // Rounding error of a difference of two doubles of this size, in bits.
       var tol = probes.map(function (n, i) { return (Math.abs(la[i]) + Math.abs(lb[i])) * Math.pow(2, -50); });
-      var flat = Math.abs(d[2] - d[1]) < 0.25 + tol[2] + tol[1] && Math.abs(d[1] - d[0]) < 0.25 + tol[1] + tol[0];
+      // Out at 2^64..2^256 a same-class pair has flattened to hundredths of a
+      // bit, while log log n still moves 0.2 a step — so the far set needs a
+      // much tighter bar than the near ones, or n log log n would pass as n.
+      var bar = s === 0 ? 0.02 : 0.25;
+      var flat = Math.abs(d[2] - d[1]) < bar + tol[2] + tol[1] && Math.abs(d[1] - d[0]) < bar + tol[1] + tol[0];
       if (flat) return { kind: 'same', ratio: Math.pow(2, d[2]), upTo: probes[2] };
       // The *trend* of d decides, not its sign at one n: n² vs 10¹⁵·n is
       // still negative at 2^48 but rising, and n² is the one that wins.
