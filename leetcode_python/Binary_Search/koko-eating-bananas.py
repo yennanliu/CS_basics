@@ -40,6 +40,34 @@ piles.length <= h <= 109
 # IDEA : BINARY SEARCH
 # time = O(n log m), n = len(piles), m = max(piles)
 # space = O(1)
+"""
+NOTE !!!
+
+
+why time complexity is ` O(n log m)` ?
+
+(n = len(piles), m = max(piles))
+
+->
+
+    Binary Search 執行 O(log m) 次,
+    而每次 Binary Search 都會執行一次 finish_time()，需要 O(N) 時間。
+
+
+
+
+-> 
+
+    1. r = max(piles), so binary search will run `O(log m)` times
+
+    2. finish_time func has time complexity O(N)
+
+
+
+-> O(log m) * O(n) = O(n * log m)
+
+
+"""
 class Solution(object):
     def minEatingSpeed(self, piles, h):
         """
