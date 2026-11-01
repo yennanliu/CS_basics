@@ -31,7 +31,9 @@
 				- Find Median From Data Stream (pass)
 			- graphs - ing
 				- Word Ladder (pass)
-			- advanced graphs (pass)
+			- advanced graphs (ing)
+				- Reconstruct Itinerary (pass)
+				
 			- 1D dp - done
 			- 2D dp - ing
 				- Longest Increasing Path in Matrix (pass)
