@@ -321,11 +321,11 @@ Tarjan 演算法是一套以 DFS 為基礎、用來找出圖中關鍵結構的�
 | 「最大吞吐量」、「最便宜的切斷方案」 | Edmonds-Karp |
 | 「k 個標籤，每個頂點的鄰居少於 k 個」 | 貪婪 k-著色 |
 
-<!-- 7299c749cc50 -->
+<!-- 32787553722b -->
 ### 相關主題
 - **[graph.md](./graph.md)**：圖的表示法、走訪與環偵測 — 先讀那份
 - **[union_find.md](./union_find.md)**：模板 3 和 4 預設你已經會的併查集原語
 - **[dfs_advanced.md](./dfs_advanced.md)**：DFS 那份文件自己的 Hierholzer 與 Tarjan 找橋模板
 - **[topology_sorting.md](./topology_sorting.md)**：把 SCC 縮點之後會得到一張可以排序的 DAG
-- **最小生成樹**：Kruskal 就是 [union_find.md](./union_find.md) 加上一份排序好的邊清單；
-  Prim 則是 [heap.md](./heap.md) 加上一個 visited 集合。LC 1135、LC 1584。
+- **[minimum_spanning_tree.md](./minimum_spanning_tree.md)**：Kruskal（排序好的邊 + 併查集）
+  與 Prim（heap 或稠密陣列）。LC 1135、LC 1584。

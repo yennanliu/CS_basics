@@ -55,7 +55,7 @@
 ### **Category 6: Minimum Spanning Tree**
 - **Description**: Connect all nodes with minimum cost
 - **Examples**: LC 1135 (Connecting Cities), LC 1584 (Min Cost Connect Points)
-- **Pattern**: Kruskal's or Prim's algorithm
+- **Pattern**: Kruskal's or Prim's algorithm — see [minimum_spanning_tree.md](./minimum_spanning_tree.md)
 
 ## Templates & Algorithms
 
@@ -693,7 +693,7 @@ Graph Algorithm Selection Flowchart:
 | Find Eventual Safe States | 802 | Cycle detection | Medium |
 | Reconstruct Itinerary | 332 | Hierholzer's algorithm | Hard |
 | Cracking the Safe | 753 | de Bruijn graph + Euler circuit — [graph_advanced.md](./graph_advanced.md#template-2-euler-path--circuit-hierholzer--lc-753-) | Hard |
-| Minimum Spanning Tree | 1135 | Kruskal ([union_find.md](./union_find.md)) / Prim ([heap.md](./heap.md)) | Medium |
+| Minimum Spanning Tree | 1135 | Kruskal / Prim — [minimum_spanning_tree.md](./minimum_spanning_tree.md) | Medium |
 
 ### Problem-Solving Steps
 1. **Identify graph type**: Directed/undirected, weighted/unweighted
