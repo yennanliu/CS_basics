@@ -119,6 +119,112 @@ class Solution(object):
         return -1
 
 
+# V0-0-1 (gemini)
+# IDEA : Dijkstra (PQ + BFS)
+# time = O((V + E) log V)
+# space = O(V + E)
+from collections import defaultdict
+import heapq
+
+
+class Solution(object):
+
+  def networkDelayTime(self, times, n, k):
+    """:type times: List[List[int]]
+
+    :type n: int
+    :type k: int
+    :rtype: int
+    """
+    # 1. 建立鄰接表 (Adjacency List)：graph[u] = [(weight, v), ...]
+    graph = defaultdict(list)
+    for u, v, w in times:
+      graph[u].append((w, v))
+
+    # 2. 初始化優先佇列 (Min-Heap)，存放 (累積距離, 當前節點)
+    # 起點 k 到自己的距離為 0
+    pq = [(0, k)]
+
+    # 記錄每個節點的最短到達時間（兼具 visited 集合的功能）
+    dist = {}
+
+    # 3. 執行 Dijkstra 演算法
+    while pq:
+      d, u = heapq.heappop(pq)
+
+      # 如果該節點已經被記錄過最短路徑，則直接跳過
+      if u in dist:
+        continue
+
+      # 記錄當前節點的最短到達時間
+      dist[u] = d
+
+      # 走訪當前節點的所有相鄰節點
+      for w, v in graph[u]:
+        if v not in dist:
+          heapq.heappush(pq, (d + w, v))
+
+    # 4. 檢查是否所有 n 個節點都收到了訊號
+    if len(dist) != n:
+      return -1  # 有節點無法抵達
+
+    # 回傳所有節點中收到訊號的最大時間（即最後一個節點收到的時間）
+    return max(dist.values())
+
+
+# V0-0-2 (gpt)
+# IDEA : Dijkstra (PQ + BFS)
+# time = O((V + E) log V)
+# space = O(V + E)
+
+import heapq
+from collections import defaultdict
+
+class Solution(object):
+    def networkDelayTime(self, times, n, k):
+        """
+        :type times: List[List[int]]
+        :type n: int
+        :type k: int
+        :rtype: int
+        """
+        # 建立鄰接表：node -> [(next_node, cost)]
+        graph = defaultdict(list)
+
+        for s, e, cost in times:
+            graph[s].append((e, cost))
+
+        # Min Heap: (累積距離, 節點)
+        pq = [(0, k)]
+
+        # 記錄從起點 k 到各節點的最短距離
+        dist = {}
+
+        while pq:
+            cur_cost, node = heapq.heappop(pq)
+
+            # 如果節點已經處理過，就跳過
+            if node in dist:
+                continue
+
+            # 確認此節點的最短距離
+            dist[node] = cur_cost
+
+            # 探索所有相鄰節點
+            for next_node, cost in graph[node]:
+                if next_node not in dist:
+                    heapq.heappush(
+                        pq,
+                        (cur_cost + cost, next_node)
+                    )
+
+        # 如果不是所有節點都能抵達，回傳 -1
+        if len(dist) != n:
+            return -1
+
+        # 網路延遲時間 = 所有最短距離中的最大值
+        return max(dist.values())
+
 
 # V0-1
 # IDEA : Dijkstra (PQ + BFS)
