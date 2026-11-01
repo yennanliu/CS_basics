@@ -75,6 +75,7 @@
     { id: 'faqs',               label: 'faqs',       href: 'faqs.html' },
     { id: 'lc-random-picker',   label: 'random',     href: 'lc-random-picker.html' },
     { id: 'lc-complexity-quiz', label: 'complexity', href: 'lc-complexity-quiz.html' },
+    { id: 'lc-big-o',           label: 'big-o',      href: 'lc-big-o.html' },
     { id: 'suggest-review',     label: 'suggest',    href: 'suggest-review.html' },
     { id: 'agent-skills',       label: 'agent skills', children: [
       { id: 'skills-hub',       label: 'all skills', href: 'agent-skills.html' },

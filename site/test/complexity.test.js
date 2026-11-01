@@ -131,3 +131,54 @@ test('grade tolerates a question with no accept block', () => {
   assert.deepEqual(grade({ time: 'O(n)', space: 'O(1)' }, { time: 'O(n)', space: 'O(1)' }),
     { time: true, space: true });
 });
+
+// ── Evaluation (the Big-O chart) ──────────────────────────────────────────
+//
+// lc-big-o.html plots and ranks typed expressions with compile() + log2Eval(),
+// so the numbers it prints are only as right as these.
+
+function ops(expr, n) {
+  const c = CSComplexity.compile(expr);
+  assert.ok(c, `${expr} did not compile`);
+  return Math.pow(2, CSComplexity.log2Eval(c.ast, n));
+}
+
+function near(actual, expected, rel = 1e-9) {
+  assert.ok(Math.abs(actual - expected) <= rel * Math.max(1, Math.abs(expected)),
+    `${actual} is not ${expected}`);
+}
+
+test('log2Eval gives the textbook values for the nine classes', () => {
+  near(ops('O(1)', 1e6), 1);
+  near(ops('O(log n)', 1024), 10);
+  near(ops('O(√n)', 1e6), 1000);
+  near(ops('O(n)', 1e6), 1e6);
+  near(ops('O(n log n)', 1024), 10240);
+  near(ops('O(n²)', 1000), 1e6);
+  near(ops('O(n^3)', 100), 1e6);
+  near(ops('O(2^n)', 20), 1048576);
+  near(ops('O(n!)', 10), 3628800, 1e-12);
+});
+
+test('log2Eval stays finite where the value itself would overflow', () => {
+  const fact = CSComplexity.compile('n!');
+  const exp = CSComplexity.compile('2^n');
+  // 2^5000 and 5000! are far past Number.MAX_VALUE; their logs are not.
+  near(CSComplexity.log2Eval(exp.ast, 5000), 5000);
+  const lf = CSComplexity.log2Eval(fact.ast, 5000);
+  assert.ok(Number.isFinite(lf) && lf > 5000, 'n! must outgrow 2^n');
+});
+
+test('log2Eval handles sums, products, nested logs and zeros', () => {
+  near(ops('n + n^2', 10), 110);
+  near(ops('n * 2^n', 10), 10240);
+  near(ops('n log^2 n', 16), 256);
+  near(ops('m + n', 10), 20);                         // every variable is n
+  assert.equal(CSComplexity.log2Eval(CSComplexity.compile('log n').ast, 1), -Infinity);
+  assert.equal(CSComplexity.log2Eval(CSComplexity.compile('n log n').ast, 1), -Infinity);
+});
+
+test('compile keys equal spellings of one curve the same way', () => {
+  assert.equal(CSComplexity.compile('O(N·logN)').key, CSComplexity.compile('n log n').key);
+  assert.equal(CSComplexity.compile('dunno'), null);
+});
