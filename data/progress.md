@@ -112,7 +112,7 @@
 
 	- 複雜度速查表 — 經典演算法與資料結構
 		- https://yennj12.js.org/CS_basics/cheatsheets/complexity_cheatsheet.zh.html
-
+			- `2-9) 動態規劃 — 經典模式 `
 
 
 
