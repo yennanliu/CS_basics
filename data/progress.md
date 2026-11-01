@@ -36,6 +36,12 @@
 			- 2D dp - ing
 				- Longest Increasing Path in Matrix (pass)
 				- Distinct Subsequences (pass)
+				- Burst Balloons (pass)
+				- Regular Expression Matching (pass)
+
+			- greedy - pass
+			- intervals - ing
+				 -  Minimum Interval to Include Each Query (pass)
 
 
 
