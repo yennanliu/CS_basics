@@ -120,6 +120,8 @@ class Solution(object):
         for i in range(n1 + 1):
             dp[i][0] = i
 
+        # NOTE !!! below
+
         # base case 2:
         # convert empty string -> word2 prefix = insert all chars
         for j in range(n2 + 1):
@@ -163,6 +165,70 @@ class Solution(object):
 
         return dp[n1][n2]
 
+
+# V0-0-1
+# IDEA: 2D DP
+"""
+DP def
+
+    dp[i][j] 定義為「word1 前 i 個字元（即 word1[0:i]）
+    轉換成 word2 前 j 個字元（即 word2[0:j]）
+    `所需的最小操作數`，
+    這與 Python 陣列索引（i 和 j 代表長度）完美契合。
+
+
+DP eq
+
+    
+     - dp[i-1][j-1]: 取代（Replace）：兩邊同時消耗一個字元。
+
+     - dp[i-1][j]: 刪除（Delete）：word1 減少一個字元，j 維持不變。
+
+     - dp[i][j-1]: 插入（Insert）：word2 減少一個字元（
+                                 等同於在 word1 補上該字元），
+                                 i 維持不變。
+
+"""
+class Solution(object):
+
+  def minDistance(self, word1, word2):
+    """:type word1: str
+
+    :type word2: str
+    :rtype: int
+    """
+    n1 = len(word1)
+    n2 = len(word2)
+
+    # 建立 DP 表格，維度為 (n1 + 1) x (n2 + 1)
+    dp = [[0] * (n2 + 1) for _ in range(n1 + 1)]
+
+    # 1. 初始化邊界條件：
+    # 當 word2 為空字串時，word1 需要刪除 i 次才能變成空字串
+    for i in range(n1 + 1):
+      dp[i][0] = i
+
+    # NOTE !!! below
+    # 當 word1 為空字串時，word1 需要插入 j 次才能變成 word2
+    for j in range(n2 + 1):
+      dp[0][j] = j
+
+    # 2. 填滿 DP 表格
+    for i in range(1, n1 + 1):
+      for j in range(1, n2 + 1):
+        # 注意：word1 的第 i 個字元對應 index 是 i-1
+        if word1[i - 1] == word2[j - 1]:
+          # 兩字元相同，不需要額外操作，直接繼承左上方的狀態
+          dp[i][j] = dp[i - 1][j - 1]
+        else:
+          # 兩字元不同，取「刪除」、「插入」、「取代」三種操作的最小值 + 1
+          op_delete = dp[i - 1][j]  # 刪除 word1[i-1] -> 對應 dp[i-1][j]
+          op_insert = dp[i][j - 1]  # 插入字元配合 word2[j-1] -> 對應 dp[i][j-1]
+          op_replace = dp[i - 1][j - 1]  # 取代 word1[i-1] 為 word2[j-1] -> 對應 dp[i-1][j-1]
+
+          dp[i][j] = min(op_delete, op_insert, op_replace) + 1
+
+    return dp[n1][n2]
 
 
 # V0-1

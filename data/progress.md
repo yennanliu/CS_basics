@@ -34,6 +34,8 @@
 			- advanced graphs (pass)
 			- 1D dp - done
 			- 2D dp - ing
+				- Longest Increasing Path in Matrix (pass)
+				- Distinct Subsequences (pass)
 
 
 
