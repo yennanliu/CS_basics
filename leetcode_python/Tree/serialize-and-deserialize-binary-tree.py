@@ -80,6 +80,62 @@ class Codec:
         return root
 
 
+# V0-0-1
+# IDEA: DFS (post order) + helper func (gemini)
+from collections import deque
+
+
+class Codec:
+
+  def serialize(self, root):
+    """Encodes a tree to a single string.
+
+    :type root: TreeNode
+    :rtype: str
+    """
+    res = []
+
+    # 使用前序走訪（Root -> Left -> Right）將樹轉為串列
+    def dfs(node):
+      if not node:
+        res.append('#')
+        return
+      res.append(str(node.val))
+      dfs(node.left)
+      dfs(node.right)
+
+    dfs(root)
+    # 用逗號 ',' 串接，安全支援負數與多位數
+    return ','.join(res)
+
+  def deserialize(self, data):
+    """Decodes your encoded data to tree.
+
+    :type data: str
+    :rtype: TreeNode
+    """
+    q = deque(data.split(','))
+
+    def helper():
+      if not q:
+        return None
+
+      val = q.popleft()
+      # 如果遇到 '#' 代表是空節點，回傳 None
+      if val == '#':
+        return None
+
+      # 建立當前節點（記得將字串轉為整數 int）
+      node = TreeNode(int(val))
+      # 依序還原左子樹與右子樹
+      node.left = helper()
+      node.right = helper()
+
+      return node
+
+    return helper()
+
+
 
 # V0-1
 # IDRA : DFS

@@ -51,8 +51,7 @@
 	- blind 75 -> done
 		- https://neetcode.io/practice/practice/blind75
 		 	- linked list - pass
-		 	- Trees - ing
-		 		- Serialize And Deserialize Binary Tree - todo
+		 	- Trees - done
 		 	- Tries - pass
 		 	- backtrack - done
 		 		- Combination Sum - (pass)
