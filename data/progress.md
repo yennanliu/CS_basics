@@ -156,6 +156,17 @@
 	- https://yennj12.js.org/CS_basics/cheatsheets/dp.zh.html
 
 
+- DP 模式總表 (review)
+	- https://yennj12.js.org/CS_basics/cheatsheets/dp_pattern.zh.html
+		- again: LIS - binary search approach
+
+
+- DP 迴圈順序與相依性
+	- https://yennj12.js.org/CS_basics/cheatsheets/dp_loop_order.zh.html
+
+
+
+
 
 
 - 位元遮罩 DP（狀態壓縮）
