@@ -1,0 +1,162 @@
+package LeetCodeJava.String;
+
+// https://leetcode.com/problems/count-collisions-on-a-road/description/
+
+/**
+ * 2211. Count Collisions on a Road
+ * Medium
+ *
+ * There are n cars on an infinitely long road. The cars are numbered from 0 to n - 1 from left
+ * to right and each car is present at a unique point.
+ *
+ * You are given a 0-indexed string directions of length n. directions[i] can be either 'L',
+ * 'R', or 'S' denoting whether the ith car is moving towards the left, towards the right, or
+ * staying at its current point respectively. Each moving car has the same speed.
+ *
+ * The number of collisions can be calculated as follows:
+ *
+ * When two cars moving in opposite directions collide with each other, the number of
+ * collisions increases by 2.
+ * When a moving car collides with a stationary car, the number of collisions increases by 1.
+ *
+ * After a collision, the cars involved can no longer move and will stay at the point where
+ * they collided. Other than that, cars cannot change their state or direction.
+ *
+ * Return the total number of collisions that will happen on the road.
+ *
+ *
+ * Example 1:
+ *
+ * Input: directions = "RLRSLL"
+ * Output: 5
+ * Explanation:
+ * The collisions that will happen on the road are:
+ * - Cars 0 and 1 will collide with each other. Since they are moving in opposite directions,
+ *   the number of collisions becomes 0 + 2 = 2.
+ * - Cars 2 and 3 will collide with each other. Since car 3 is stationary, the number of
+ *   collisions becomes 2 + 1 = 3.
+ * - Cars 3 and 4 will collide with each other. Since car 3 is stationary, the number of
+ *   collisions becomes 3 + 1 = 4.
+ * - Cars 4 and 5 will collide with each other. After car 4 collides with car 3, it will stay
+ *   at the point of collision and get hit by car 5. The number of collisions becomes 4 + 1 = 5.
+ * Thus, the total number of collisions that will happen on the road is 5.
+ *
+ * Example 2:
+ *
+ * Input: directions = "LLRR"
+ * Output: 0
+ * Explanation:
+ * No cars will collide with each other. Thus, the total number of collisions that will happen
+ * on the road is 0.
+ *
+ *
+ * Constraints:
+ *
+ * 1 <= directions.length <= 10^5
+ * directions[i] is either 'L', 'R', or 'S'.
+ *
+ */
+public class CountCollisionsOnARoad {
+
+    // V0
+    // IDEA: ONLY THE CARS THAT ESCAPE NEVER COLLIDE -- STRIP THEM AND COUNT
+    //
+    //   a car drives away forever only if it is a leading 'L' (nothing to its left
+    //   can ever reach it) or a trailing 'R' (nothing to its right). every OTHER
+    //   moving car is eventually stopped by something, and each stop adds exactly
+    //   1 to the total -- a head-on "R L" is two moving cars stopping, which is
+    //   exactly the +2 the problem charges.
+    //
+    //   e.g. "RLRSLL" -> nothing to strip -> moving cars R,L,R,L,L -> 5
+    //
+    //   (a stack simulation also works but has many branches; see V1)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
+    public int countCollisions(String directions) {
+        // edge case: no cars
+        if (directions == null || directions.isEmpty()) {
+            return 0;
+        }
+
+        int n = directions.length();
+
+        // skip the leading 'L' cars: they drive off to the left forever
+        int left = 0;
+        while (left < n && directions.charAt(left) == 'L') {
+            left++;
+        }
+
+        // skip the trailing 'R' cars: they drive off to the right forever
+        int right = n - 1;
+        while (right >= 0 && directions.charAt(right) == 'R') {
+            right--;
+        }
+
+        // NOTE !!! every moving car left in [left, right] stops exactly once
+        //          (if left > right, the loop does not run and the answer is 0)
+        int collisions = 0;
+        for (int i = left; i <= right; i++) {
+            if (directions.charAt(i) != 'S') {
+                collisions++;
+            }
+        }
+
+        return collisions;
+    }
+
+    // V1
+    // IDEA: SIMULATION, LEFT TO RIGHT (count of pending 'R' cars + "is there a wreck on the left")
+    //
+    //   only a run of 'R' cars can be waiting to hit something; an 'L' either
+    //   escapes (nothing stopped to its left) or crashes into whatever is there.
+    //   `stopped` turns true once any car to the left has become stationary --
+    //   after that, every incoming 'L' hits a wall and adds 1.
+    //
+    //   longer than V0, but it is the version you reach by simulating, and it shows
+    //   WHY V0's counting rule holds.
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
+    public int countCollisions_1(String directions) {
+        // edge case: no cars
+        if (directions == null || directions.isEmpty()) {
+            return 0;
+        }
+
+        int collisions = 0;
+        int pendingRight = 0;    // 'R' cars still moving, waiting to hit something
+        boolean stopped = false; // is there a stationary car / wreck to the left?
+
+        for (int i = 0; i < directions.length(); i++) {
+            char car = directions.charAt(i);
+
+            if (car == 'R') {
+                pendingRight++;
+            } else if (car == 'S') {
+                // every waiting 'R' crashes into this stationary car (+1 each)
+                collisions += pendingRight;
+                pendingRight = 0;
+                stopped = true;
+            } else {
+                // car == 'L'
+                if (pendingRight > 0) {
+                    // head-on with the nearest 'R' (+2), then the other waiting
+                    // 'R' cars pile into the wreck (+1 each)
+                    collisions += 2 + (pendingRight - 1);
+                    pendingRight = 0;
+                    stopped = true;
+                } else if (stopped) {
+                    // runs into the wreck on its left
+                    collisions += 1;
+                }
+                // otherwise nothing is to its left: it escapes
+            }
+        }
+
+        // any 'R' still pending escapes to the right
+        return collisions;
+    }
+}
