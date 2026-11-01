@@ -12,8 +12,8 @@ Snapshot: **2026-11-01**. Re-measure with `python3 script/find_missing_java.py` 
 | | Problems | PRs |
 |---|---:|---:|
 | Starting gap (`find_missing_java.py` on master) | 1556 | — |
-| **Done** — ported, compiled, tested, PR open | **1404** | **65** |
-| **Doing** — agent running | ~145 | 5 |
+| **Done** — ported, compiled, tested, PR open | **1433** | **66** |
+| **Doing** — agent running | ~116 | 4 |
 | **Todo** — not started | 0 batches | — |
 | Won't port (pandas-only, no Java on LC) | 5 | — |
 | Not a real gap (matcher false positive) | 1 | — |
@@ -66,7 +66,7 @@ against a brute force on random inputs.
 | Greedy | #254 `-01` 1005–1526 (29) · #255 `-02` 1536–1758 (29) · #256 `-03` 1759–1936 (29) · #257 `-04` 1946–2285 (29) · #258 `-05` 2294–2522 (29) · #259 `-06` 2541–2789 (29) · #260 `-07` 2790–3221 (29) · #266 `-08` 3228–3681 (29) |
 | Hash_table | #268 `-01` 1001–2085 (32) · #267 `-02` 2120–2404 (32) · #269 `-03` 2423–3039 (32) · #270 `-04` 3043–3682 (32) |
 | Math | #273 `-01` 1006–1330 (31) · #271 `-02` 1344–1823 (31) · #272 `-03` 1828–2176 (31) · #274 `-04` 2177–2521 (31) · #278 `-05` 2523–3032 (31) · #282 `-06` 3044–3416 (31) · #276 `-07` 3426–3677 (25) |
-| String | #275 `-01` 1016–1545 (32) · #277 `-02` 1554–1957 (32) · #281 `-04` 2288–3104 (32) |
+| String | #275 `-01` 1016–1545 (32) · #277 `-02` 1554–1957 (32) · #281 `-04` 2288–3104 (32) · #283 `-05` 3110–3675 (29) |
 | Binary_Search | #238 `-01` 1044–2476 (30) · #239 `-02` 2513–3639 (29) |
 | Breadth-First-Search | #235 `-01` 1034–2050 (28) · #236 `-02` 2059–3666 (28) |
 | Graph | #251 `-01` 1042–2127 (28) · #252 `-02` 2172–3656 (28) |
@@ -82,7 +82,6 @@ Agents running at the time of writing. Each pushes `java-port/<batch>` and opens
 | Batch | Branch | LC range | Problems |
 |---|---|---|---:|
 | String_03 | `java-port/string-03` | 1961–2278 | 32 |
-| String_05 | `java-port/string-05` | 3110–3675 | 29 |
 | Two_Pointers_01 | `java-port/two_pointers-01` | 1033–2024 | 28 |
 | Two_Pointers_02 | `java-port/two_pointers-02` | 2040–2570 | 28 |
 | Two_Pointers_03 | `java-port/two_pointers-03` | 2609–3679 | 28 |
