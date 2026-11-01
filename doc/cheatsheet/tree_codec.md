@@ -755,6 +755,45 @@ class Codec:
 The Python `iter()` + `next()` trick is exactly the `idx` cursor from LC 536 — the iterator *is* the
 index, so you don't have to thread it through the return value.
 
+##### Dry run — `root = [1,2,3]`
+
+```text
+tree:
+
+    1
+   / \
+  2   3
+```
+
+**Serialize** — pre-order, every null written as `#`:
+
+```text
+dfs(1) = "1," + dfs(2)            + "," + dfs(3)
+       = "1," + "2,#,#"           + "," + "3,#,#"
+
+dfs(2) = "2," + dfs(None) + "," + dfs(None) = "2,#,#"
+dfs(3) = "3," + dfs(None) + "," + dfs(None) = "3,#,#"
+
+serialized: 1,2,#,#,3,#,#
+```
+
+**Deserialize** — `next(it)` hands out one token per call, in the same pre-order:
+
+```text
+Step  Token  Action
+1     1      create root = 1, recurse left
+2     2      create 1.left = 2, recurse left
+3     #      2.left  = None
+4     #      2.right = None   -> node 2 done, back to 1
+5     3      create 1.right = 3, recurse left
+6     #      3.left  = None
+7     #      3.right = None   -> node 3 done, tree rebuilt
+```
+
+Every `#` closes exactly one child slot, so the token count is `2N + 1` (here 3 nodes, 4 nulls,
+7 tokens) and the stream is consumed exactly when the last slot closes. Use `,` rather than `-`
+as the delimiter: `-` collides with the sign of a negative value (`1--2` is ambiguous).
+
 #### **4) LC 1028 — depth as the delimiter**
 
 ```python

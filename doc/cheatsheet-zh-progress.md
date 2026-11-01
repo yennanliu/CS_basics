@@ -43,7 +43,7 @@ half-translated document renders with English gaps rather than failing.
   is what makes a problem findable on LeetCode itself.
 
 
-## Status — 5388 / 5388 sections (100%)
+## Status — 5389 / 5389 sections (100%)
 
 | Cheatsheet | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -173,7 +173,7 @@ half-translated document renders with English gaps rather than failing.
 | [tree](./cheatsheet/tree.md) | 55 | [✅](../i18n/zh/tree.md) |
 | [tree2](./cheatsheet/tree2.md) | 101 | [✅](../i18n/zh/tree2.md) |
 | [tree_backtrack](./cheatsheet/tree_backtrack.md) | 17 | [✅](../i18n/zh/tree_backtrack.md) |
-| [tree_codec](./cheatsheet/tree_codec.md) | 26 | [✅](../i18n/zh/tree_codec.md) |
+| [tree_codec](./cheatsheet/tree_codec.md) | 27 | [✅](../i18n/zh/tree_codec.md) |
 | [tree_construction](./cheatsheet/tree_construction.md) | 16 | [✅](../i18n/zh/tree_construction.md) |
 | [tree_examples](./cheatsheet/tree_examples.md) | 49 | [✅](../i18n/zh/tree_examples.md) |
 | [tree_lca_distance](./cheatsheet/tree_lca_distance.md) | 43 | [✅](../i18n/zh/tree_lca_distance.md) |
