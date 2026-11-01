@@ -3,12 +3,6 @@
 78. Subsets
 Medium
 
-6854
-
-121
-
-Add to List
-
 Share
 Given an integer array nums of unique elements, return all possible subsets (the power set).
 
@@ -39,6 +33,58 @@ All the numbers of nums are unique.
 # IDEA : BACKTRACK
 # time = O(n * 2^n)
 # space = O(n)
+"""
+
+Q: why `time = O(n * 2^n)` ??
+
+
+-> 
+
+這段程式碼用回溯法（Backtracking）來求解 **LC 78 (Subsets，子集)**。
+
+以下為你詳細拆解為什麼時間複雜度是 **$\mathcal{O}(n \cdot 2^n)$**，而空間複雜度是 **$\mathcal{O}(n)$**：
+
+---
+
+### ⏱️ 一、時間複雜度分析：$\mathcal{O}(n \cdot 2^n)$
+
+這可以拆解成兩個核心部分來看：「**總共有多少個子集（節點）**」乘以「**每個子集複製需要多少時間**」。
+
+1. **總共會產生 $2^n$ 個子集（樹的節點數）**：
+* 對於一個長度為 $n$ 的陣列 `nums`，每一個元素都有「選」或「不選」兩種選擇。
+* 因此，所有可能的子集總數剛好是 **$2^n$** 個。回溯法的遞歸樹會走訪並生成這 $2^n$ 個狀態。
+
+
+2. **每次將 `path` 複製並放入結果中需要 $\mathcal{O}(n)$ 的時間**：
+* 在程式碼中，每一層遞歸一開始都會執行 `result.append(path[:])`。
+* `path[:]` 是將當前的 `path` 複製一份新的放入 `result` 陣列中。因為一個子集的長度最長可達 $n$（例如包含所有元素），複製一個長度為 $k$ 的陣列需要 $\mathcal{O}(k)$ 的時間。
+
+
+3. **總結算**：
+* 數學上，所有子集長度的總和為 $\sum_{k=0}^{n} \binom{n}{k} \cdot k = n \cdot 2^{n-1}$。
+* 忽略係數後，總時間複雜度即為 **$\mathcal{O}(n \cdot 2^n)$**。
+
+
+
+---
+
+### 📦 二、空間複雜度分析：$\mathcal{O}(n)$
+
+這裡的空間複雜度通常指的是**輔助空間（Auxiliary Space）**（不包含儲存最終答案所需的空間）：
+
+1. **遞歸呼叫堆疊（Recursion Call Stack）深度**：
+* 遞歸的最深層數（樹的最大高度）就是陣列的長度 $n$。因此，系統在儲存函數呼叫堆疊時，最多會佔用 **$\mathcal{O}(n)$** 的空間。
+
+
+2. **暫存變數 `path**`：
+* 在回溯過程中，共用同一個 `path` 陣列，它在最深時也只會儲存 $n$ 個元素，佔用 **$\mathcal{O}(n)$** 的空間。
+
+
+3. **總結算**：
+* 扣除掉題目要求的最終輸出結果（`result` 總共會儲存 $2^n$ 個元素、共佔 $\mathcal{O}(n \cdot 2^n)$），演算法運作過程中的最大輔助空間為 **$\mathcal{O}(n)$**。
+
+
+"""
 class Solution:
     def subsets(self, nums):
         result = []
