@@ -182,3 +182,10 @@ test('compile keys equal spellings of one curve the same way', () => {
   assert.equal(CSComplexity.compile('O(N·logN)').key, CSComplexity.compile('n log n').key);
   assert.equal(CSComplexity.compile('dunno'), null);
 });
+
+test('nested symbolic powers keep their grouping', () => {
+  // Both used to render as n^2^n and compare equal.
+  differ('O((n^2)^n)', 'O(n^(2^n))');
+  differ('O((n+1)^n)', 'O(n+1^n)');
+  same('O(2^n)', ['O(2^(n))', 'O((2)^n)']);
+});

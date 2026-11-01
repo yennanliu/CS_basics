@@ -296,7 +296,22 @@
       for (var i = 0; i < constant; i++) acc = multiply(acc, base);
       return acc;
     }
-    return single(canonical(node.b) + '^' + canonical(node.e));
+    return single(group(canonical(node.b)) + '^' + group(canonical(node.e)));
+  }
+
+  // A composite operand of a symbolic power keeps its parentheses, or
+  // (n^2)^n and n^(2^n) — wildly different growth — would both render as
+  // n^2^n and compare equal. Simple operands (n, 2, log(n), n!) stay bare,
+  // so the everyday keys (2^n, 4^l, k^n) are unchanged.
+  function group(text) {
+    var depth = 0;
+    for (var i = 0; i < text.length; i++) {
+      var ch = text.charAt(i);
+      if (ch === '(') depth++;
+      else if (ch === ')') depth--;
+      else if (depth === 0 && (ch === '+' || ch === '*' || ch === '^')) return '(' + text + ')';
+    }
+    return text;
   }
 
   function render(terms, keepCoef) {

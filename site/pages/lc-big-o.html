@@ -862,7 +862,11 @@
     // The scan also stops once L passes 2^45: beyond that a double cannot
     // resolve a few bits of difference (2^n vs n·2^n), and a rounding tie
     // would read as "still behind".
-    var cross = 0, lastN = 1, n;
+    // `cross` is the last n where the faster one costs no more (a tie counts:
+    // n² and 100·n meet at n = 100, so n² is ahead only past 100). `cheaper`
+    // records whether it was ever strictly cheaper — a tie alone (both 1 op
+    // at n = 1) is not a range where the "worse" class wins.
+    var cross = 0, cheaper = false, lastN = 1, n;
     for (n = 1; n <= CROSS_LIMIT; n = n < 1000 ? n + 1 : n * 1.01) {
       var lBig = L(Big, n), lSmall = L(Small, n);
       // -Infinity is a cost of 0 (log 1), exact and fine; only +Infinity or
@@ -870,18 +874,19 @@
       if (lBig === Infinity || lSmall === Infinity
           || Math.max(isFinite(lBig) ? lBig : 0, isFinite(lSmall) ? lSmall : 0) > Math.pow(2, 45)) break;
       lastN = n;
-      if (lBig < lSmall) cross = n;   // strictly cheaper: a tie (both 1 op at n = 1) is not a win
+      if (lBig <= lSmall) cross = n;
+      if (lBig < lSmall) cheaper = true;
     }
-    var stillBehind = cross === lastN && lastN > 1;
+    var stillBehind = cheaper && cross === lastN && lastN > 1;
     var crossLine;
     if (stillBehind) {
       crossLine = '<p>But only eventually — ' + esc(big) + ' is still the cheaper of the two at n = ' + fmtN(lastN)
         + ', so the crossover is <b>beyond ' + fmtN(lastN) + '</b>. For any real input the "worse" class wins here: '
         + 'constants matter.</p>';
-    } else if (cross >= 1) {
+    } else if (cheaper) {
       crossLine = '<p>But not from the start — ' + esc(big) + ' only stays ahead once n passes <b>'
         + (cross >= 1000 ? 'about ' : '') + fmtN(cross) + '</b>. '
-        + 'Up to there the "worse" class is cheaper, which is why constants still matter for small inputs.</p>';
+        + 'Before that the "worse" class is cheaper, which is why constants still matter for small inputs.</p>';
     } else {
       crossLine = '<p>' + esc(big) + ' costs at least as much at every n ≥ 1 — there is no input size where it is cheaper.</p>';
     }
