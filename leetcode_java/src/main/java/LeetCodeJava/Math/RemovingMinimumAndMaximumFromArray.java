@@ -1,0 +1,101 @@
+package LeetCodeJava.Math;
+
+// https://leetcode.com/problems/removing-minimum-and-maximum-from-array/description/
+
+/**
+ * 2091. Removing Minimum and Maximum From Array
+ * Medium
+ *
+ * You are given a 0-indexed array of distinct integers nums.
+ *
+ * There is an element in nums that has the lowest value and an element that has the highest value.
+ * We call them the minimum and maximum respectively. Your goal is to remove both these elements
+ * from the array.
+ *
+ * A deletion is defined as removing an element from the front of the array or removing an element
+ * from the back of the array.
+ *
+ * Return the minimum number of deletions it would take to remove both the minimum and maximum
+ * element.
+ *
+ *
+ * Example 1:
+ *
+ * Input: nums = [2,10,7,5,4,1,8,6]
+ * Output: 5
+ * Explanation:
+ * The minimum element in the array is nums[5], which is 1.
+ * The maximum element in the array is nums[1], which is 10.
+ * We can remove both the minimum and maximum by removing 2 elements from the front and 3 elements
+ * from the back.
+ * This results in 2 + 3 = 5 deletions, which is the minimum number possible.
+ *
+ * Example 2:
+ *
+ * Input: nums = [0,-4,19,1,8,-2,-3,5]
+ * Output: 3
+ * Explanation:
+ * The minimum element in the array is nums[1], which is -4.
+ * The maximum element in the array is nums[2], which is 19.
+ * We can remove both the minimum and maximum by removing 3 elements from the front.
+ * This results in only 3 deletions, which is the minimum number possible.
+ *
+ * Example 3:
+ *
+ * Input: nums = [101]
+ * Output: 1
+ * Explanation:
+ * There is only one element in the array, which makes it both the minimum and maximum element.
+ * We can remove it with 1 deletion.
+ *
+ *
+ * Constraints:
+ *
+ * 1 <= nums.length <= 10^5
+ * -10^5 <= nums[i] <= 10^5
+ * The integers in nums are distinct.
+ *
+ */
+public class RemovingMinimumAndMaximumFromArray {
+
+    // V0
+    // IDEA: GREEDY -- ONLY THREE STRATEGIES EXIST, TRY ALL THREE
+    //       removing index k costs k + 1 from the front or n - k from the back. with
+    //       left <= right the positions of the min and the max:
+    //         1. both from the FRONT  -> right + 1
+    //         2. both from the BACK   -> n - left
+    //         3. left one from the front, right one from the back -> (left + 1) + (n - right)
+    //       any other mix deletes a superset of one of these, so the answer is their min.
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
+    public int minimumDeletions(int[] nums) {
+        int n = nums.length;
+
+        // one pass for the index of the min and the index of the max
+        int minIdx = 0;
+        int maxIdx = 0;
+        for (int i = 1; i < n; i++) {
+            if (nums[i] < nums[minIdx]) {
+                minIdx = i;
+            }
+            if (nums[i] > nums[maxIdx]) {
+                maxIdx = i;
+            }
+        }
+
+        // order them, so the three cases do not depend on which one is the min
+        int left = Math.min(minIdx, maxIdx);
+        int right = Math.max(minIdx, maxIdx);
+
+        // case 1: delete from the front until the further one is gone
+        int fromFront = right + 1;
+        // case 2: delete from the back until the nearer one is gone
+        int fromBack = n - left;
+        // case 3: the LEFT one from the front, the RIGHT one from the back
+        int fromBothEnds = (left + 1) + (n - right);
+
+        return Math.min(fromFront, Math.min(fromBack, fromBothEnds));
+    }
+}
