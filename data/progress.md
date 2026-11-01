@@ -118,9 +118,10 @@
 
 - 時間與空間複雜度 — 經典 LC 程式碼逐題解析 (!!!)
 	- https://yennj12.js.org/CS_basics/cheatsheets/time_space_complexity.zh.html
-
-		- 1) 雜湊表 — 用空間換 O(1) 查詢
-
+		- `5) 排序 + 掃描 — 先付一次 O(n log n)，之後都是 O(n)`
+		
+		- Again
+			- 7) 樹 — 時間看節點數，空間看樹高（最經典的坑） 
 
 
 
