@@ -32,9 +32,11 @@ edge weights add up to the least.
 - **Cut property**: split the nodes into any two groups. The cheapest edge crossing that split
   belongs to *some* MST. Prim is this property applied over and over (the split is "in the tree"
   vs "not yet").
-- **Cycle property**: the most expensive edge on any cycle is never needed. Kruskal is this
-  property applied over and over (an edge whose ends are already connected would close a cycle,
-  and it is the most expensive one on that cycle, because every earlier edge was cheaper).
+- **Cycle property**: an edge that is the *unique* most expensive one on some cycle belongs to no
+  MST. Kruskal is this property applied over and over: an edge whose ends are already connected
+  closes a cycle whose other edges are all **no heavier** than it, so skipping it still leaves an
+  MST. (With equal weights the skipped edge may belong to a *different* MST — that is why
+  LC 1489's "pseudo-critical" edges exist.)
 
 **Important Insight:**
 - An MST minimises the **sum** of the tree's edges. It does **not** minimise the distance
@@ -58,9 +60,9 @@ edge weights add up to the least.
 |---|---|---|
 | An edge list, `E` close to `V` (sparse) | **Kruskal** | Edges already exist; sort them once, `O(E log E)` |
 | An adjacency list, or "start anywhere and grow" | **Prim + heap** | Same scaffolding as Dijkstra, `O(E log V)` |
-| Points on a plane — **every pair** is an edge (dense, `E ≈ V²/2`) | **Prim + array** | `O(V²)`, no edge list, `O(V)` memory — the optimum, since every pair must be looked at |
+| Points on a plane — **every pair** is an edge (dense, `E ≈ V²/2`) | **Prim + array** | `O(V²)`, no edge list, `O(V)` memory — optimal for a general dense graph, where every edge must be looked at |
 | You need to exclude / force a specific edge | **Kruskal** | Easy to skip or pre-union one edge, then rerun |
-| Edges arrive online, or you stop as soon as two nodes connect | **Kruskal** | Its DSU answers "connected yet?" after every edge |
+| Edges arrive in **weight order**, or you stop as soon as two nodes connect | **Kruskal** | Its DSU answers "connected yet?" after every edge. An *unsorted* stream does not give an MST this way — a cheap edge arriving late cannot replace a heavier one already taken |
 
 In an interview, Kruskal is usually the faster one to write correctly; Prim is the one to name
 when the graph is dense, and the dense-array Prim is the one that actually beats the others there.
@@ -197,9 +199,10 @@ sorted (or the weights are small integers you can bucket), it is near-linear.
 |---|---|---|
 | **Maximum** spanning tree / maximise total | sort **descending** (or negate the weights) | 1102 (as a bottleneck) |
 | The graph may be disconnected; cost per component | do not return `-1`; the result is a **minimum spanning forest** with `n - edges_used` trees | — |
-| "Minimise the largest edge on a path from `s` to `t`" | stop the sweep the moment `find(s) == find(t)`; the current weight is the answer | 1631, 1102 |
+| "Minimise the largest edge on a path from `s` to `t`" | sort ascending; stop the sweep the moment `find(s) == find(t)`; the current weight is the answer | 1631 |
+| "Maximise the smallest edge on a path from `s` to `t`" | sort **descending**; same early stop | 1102 |
 | Many "connected using edges `< limit`?" queries | sort the **queries** by limit too, and sweep both together (offline) | 1697 — [union_find_examples.md §13](./union_find_examples.md#13-path-with-minimum-effort--lc-1631--sorted-edge-kruskal-style) |
-| Some edges are mandatory | union them (and add their cost) **before** the sweep | 1489, 3600 |
+| Some edges are mandatory | union them (and add their cost) **before** the sweep; if a mandatory edge joins two nodes already joined by other mandatory edges, they form a cycle and **no valid spanning tree exists** — return `-1` | 1489, 3600 |
 | "Build here **or** connect" | add a virtual node `0` with one edge per node | 1168 — [2-3](#2-3-optimize-water-distribution-in-a-village--lc-1168-) |
 | Return the tree, not only its cost | collect each taken edge | below |
 
@@ -484,7 +487,12 @@ public int minCostConnectPoints(int[][] points) {
 **Reason for a second solution: a better bound.** The graph is complete, so a heap only adds a
 `log n` and `O(n²)` memory. Keep `min_dist[i]` = the cheapest edge from the tree to point `i`,
 and scan for the smallest each round: `n` rounds × `O(n)` scan = `O(n²)` time, `O(n)` space —
-optimal, since every pair has to be looked at once. Name it after the heap version.
+the best of the approaches here, and optimal for a general dense graph, since every edge has
+to be looked at once. Name it after the heap version.
+
+(Manhattan distance has extra geometry: an `O(n log n)` algorithm keeps only `O(n)` candidate
+edges — each point's nearest neighbour in each of 8 octants — and runs Kruskal on those. It is
+far beyond what an interview expects, but do not claim `O(n²)` is a lower bound for LC 1584.)
 
 ```python
 # python
@@ -518,6 +526,45 @@ class Solution:
                         min_dist[i] = distance
 
         return total_cost
+```
+
+```java
+// java
+// LC 1584 - Min Cost to Connect All Points
+// IDEA: Prim with a minDist array instead of a heap (dense graph)
+// time = O(n^2), space = O(n)
+public int minCostConnectPointsDense(int[][] points) {
+    int n = points.length;
+    int[] minDist = new int[n];                  // cheapest edge from the tree to each point
+    boolean[] inTree = new boolean[n];
+    Arrays.fill(minDist, Integer.MAX_VALUE);
+    minDist[0] = 0;
+    int totalCost = 0;
+
+    for (int round = 0; round < n; round++) {
+        // the outside point closest to the tree
+        int closest = -1;
+        for (int i = 0; i < n; i++) {
+            if (!inTree[i] && (closest == -1 || minDist[i] < minDist[closest])) {
+                closest = i;
+            }
+        }
+        inTree[closest] = true;
+        totalCost += minDist[closest];
+
+        // the new tree point may offer a cheaper edge to the points still outside
+        for (int i = 0; i < n; i++) {
+            if (!inTree[i]) {
+                int distance = Math.abs(points[closest][0] - points[i][0])
+                             + Math.abs(points[closest][1] - points[i][1]);
+                if (distance < minDist[i]) {
+                    minDist[i] = distance;
+                }
+            }
+        }
+    }
+    return totalCost;
+}
 ```
 
 Kruskal also passes — generate all `n(n-1)/2` pairs and feed them to
@@ -589,7 +636,7 @@ each edge `e`:
 - otherwise **force** `e` first (union it, count its weight) and rebuild: if the weight still
   equals `best`, `e` is **pseudo-critical**.
 
-`E + 1` Kruskal runs over edges sorted once: `O(E² · α(V))`, fine for `E ≤ 200`.
+Up to `2E + 1` Kruskal runs over edges sorted once — one for `best`, one exclusion per edge, and one forced run per non-critical edge: `O(E² · α(V))`, fine for `E ≤ 200`.
 
 ```python
 # python
@@ -603,6 +650,7 @@ class Solution:
 
         def mst_weight(skip, force):
             parent = list(range(n))
+            size = [1] * n
 
             def find(x):
                 while parent[x] != x:
@@ -610,20 +658,28 @@ class Solution:
                     x = parent[x]
                 return x
 
+            def union(a, b):
+                root_a, root_b = find(a), find(b)
+                if root_a == root_b:
+                    return False
+                if size[root_a] < size[root_b]:
+                    root_a, root_b = root_b, root_a
+                parent[root_b] = root_a     # union by size keeps the α(V) bound
+                size[root_a] += size[root_b]
+                return True
+
             weight = 0
             used = 0
             if force != -1:
                 a, b, w = edges[force]
-                parent[find(a)] = find(b)
+                union(a, b)
                 weight += w
                 used += 1
             for i in order:
                 if i == skip:
                     continue
                 a, b, w = edges[i]
-                root_a, root_b = find(a), find(b)
-                if root_a != root_b:
-                    parent[root_a] = root_b
+                if union(a, b):
                     weight += w
                     used += 1
             return weight if used == n - 1 else float("inf")
@@ -636,6 +692,74 @@ class Solution:
             elif mst_weight(-1, i) == best:
                 pseudo.append(i)
         return [critical, pseudo]
+```
+
+```java
+// java
+// LC 1489 - Find Critical and Pseudo-Critical Edges in Minimum Spanning Tree
+// IDEA: Kruskal with one edge excluded / forced, compared with the true MST weight
+// time = O(E^2 * α(V)), space = O(V + E)
+public List<List<Integer>> findCriticalAndPseudoCriticalEdges(int n, int[][] edges) {
+    // sort edge INDICES by weight: the answer is reported by original index
+    Integer[] order = new Integer[edges.length];
+    for (int i = 0; i < edges.length; i++) {
+        order[i] = i;
+    }
+    Arrays.sort(order, (x, y) -> Integer.compare(edges[x][2], edges[y][2]));
+
+    int best = mstWeight(n, edges, order, -1, -1);
+    List<Integer> critical = new ArrayList<>();
+    List<Integer> pseudo = new ArrayList<>();
+    for (int i = 0; i < edges.length; i++) {
+        if (mstWeight(n, edges, order, i, -1) > best) {
+            critical.add(i);
+        } else if (mstWeight(n, edges, order, -1, i) == best) {
+            pseudo.add(i);
+        }
+    }
+    return Arrays.asList(critical, pseudo);
+}
+
+// MST weight with edge `skip` left out and edge `force` taken first; MAX_VALUE if disconnected
+private int mstWeight(int n, int[][] edges, Integer[] order, int skip, int force) {
+    int[] parent = new int[n];
+    int[] size = new int[n];
+    for (int i = 0; i < n; i++) {
+        parent[i] = i;
+        size[i] = 1;
+    }
+    int weight = 0;
+    int used = 0;
+    if (force != -1) {
+        union(parent, size, edges[force][0], edges[force][1]);
+        weight += edges[force][2];
+        used++;
+    }
+    for (int i : order) {
+        if (i == skip) {
+            continue;
+        }
+        if (union(parent, size, edges[i][0], edges[i][1])) {
+            weight += edges[i][2];
+            used++;
+        }
+    }
+    return used == n - 1 ? weight : Integer.MAX_VALUE;
+}
+
+private boolean union(int[] parent, int[] size, int a, int b) {
+    int rootA = find(parent, a);                 // find() from template 1-1
+    int rootB = find(parent, b);
+    if (rootA == rootB) {
+        return false;
+    }
+    if (size[rootA] < size[rootB]) {
+        int tmp = rootA; rootA = rootB; rootB = tmp;
+    }
+    parent[rootB] = rootA;                       // union by size keeps the α(V) bound
+    size[rootA] += size[rootB];
+    return true;
+}
 ```
 
 ### 2-5) Similar Problems
