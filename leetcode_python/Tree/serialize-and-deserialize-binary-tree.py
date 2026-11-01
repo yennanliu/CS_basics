@@ -40,6 +40,44 @@ The number of nodes in the tree is in the range [0, 104].
 
 # V0
 # IDRA : serialize: DFS, deserialize: DFS (gemini)
+"""
+DRY RUN:
+
+
+->
+
+tree =
+
+```
+    1
+   / \
+  2   3
+```
+
+
+-> Serialize
+
+    ```
+    Serialized:
+    1-2-#-#-3-#-#
+    ```
+
+
+-> Deserialize
+
+
+    ```
+    Step    Token   Action
+    1   1   建立 Root = 1
+    2   2   建立 Left = 2
+    3   #   Node 2 的 Left = None
+    4   #   Node 2 的 Right = None
+    5   3   建立 Right = 3
+    6   #   Node 3 的 Left = None
+    7   #   Node 3 的 Right = None
+    ```
+
+"""
 from collections import deque
 
 class Codec:
@@ -124,6 +162,14 @@ class Codec:
       # 如果遇到 '#' 代表是空節點，回傳 None
       if val == '#':
         return None
+
+     """
+     按照 Preorder 的順序：
+
+        1. 建立目前節點。
+        2. 遞迴還原左子樹。
+        3. 遞迴還原右子樹。
+     """
 
       # 建立當前節點（記得將字串轉為整數 int）
       node = TreeNode(int(val))
