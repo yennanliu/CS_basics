@@ -171,6 +171,41 @@ class Solution(object):
         return -1
 
 
+
+# V0-0-2
+# IDEA :  Dijkstra (gemini)
+class Solution(object):
+
+  def findCheapestPrice(self, n, flights, src, dst, k):
+    """:type n: int
+
+    :type flights: List[List[int]]
+    :type src: int
+    :type dst: int
+    :type k: int
+    :rtype: int
+    """
+    # prices[i] 代表從 src 到達 i 節點的當前最低花費
+    prices = [float('inf')] * n
+    prices[src] = 0
+
+    # 最多允許 k 次中轉，因此總共可以進行 k + 1 次航班鬆弛 (Relaxation)
+    for _ in range(k + 1):
+      # 複製上一輪的價格狀態，避免在同一輪中多次更新
+      tmp_prices = list(prices)
+
+      for s, e, cost in flights:
+        # 如果出發點 s 已經可以到達，則嘗試更新終點 e 的價格
+        if prices[s] != float('inf'):
+          if prices[s] + cost < tmp_prices[e]:
+            tmp_prices[e] = prices[s] + cost
+
+      prices = tmp_prices
+
+    # 如果到達 dst 的價格仍為無限大，代表無法在 k 次中轉內到達
+    return prices[dst] if prices[dst] != float('inf') else -1
+
+
 # V0-1
 # IDEA :  Dijkstra
 import heapq
