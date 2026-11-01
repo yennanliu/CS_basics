@@ -43,7 +43,7 @@ half-translated document renders with English gaps rather than failing.
   is what makes a problem findable on LeetCode itself.
 
 
-## Status — 5389 / 5389 sections (100%)
+## Status — 5390 / 5390 sections (100%)
 
 | Cheatsheet | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -53,7 +53,7 @@ half-translated document renders with English gaps rather than failing.
 | [2_pointers_quickselect](./cheatsheet/2_pointers_quickselect.md) | 17 | [✅](../i18n/zh/2_pointers_quickselect.md) |
 | [Bellman-Ford](./cheatsheet/Bellman-Ford.md) | 56 | [✅](../i18n/zh/Bellman-Ford.md) |
 | [Collection](./cheatsheet/Collection.md) | 20 | [✅](../i18n/zh/Collection.md) |
-| [Dijkstra](./cheatsheet/Dijkstra.md) | 60 | [✅](../i18n/zh/Dijkstra.md) |
+| [Dijkstra](./cheatsheet/Dijkstra.md) | 61 | [✅](../i18n/zh/Dijkstra.md) |
 | [Dijkstra_examples](./cheatsheet/Dijkstra_examples.md) | 33 | [✅](../i18n/zh/Dijkstra_examples.md) |
 | [Floyd-Warshall](./cheatsheet/Floyd-Warshall.md) | 49 | [✅](../i18n/zh/Floyd-Warshall.md) |
 | [add_x_sum](./cheatsheet/add_x_sum.md) | 17 | [✅](../i18n/zh/add_x_sum.md) |

@@ -56,6 +56,20 @@ public int networkDelayTime(int[][] times, int n, int k) {
 # LC 743 - Network Delay Time
 # IDEA: Dijkstra (min-heap PQ + BFS)
 # time = O((V+E) log V), space = O(V+E)
+"""
+CORE STEPS:
+
+執行流程：
+
+    1. 從起點 k 出發，初始距離為 0。
+    2. 把起點放進 Min Heap。
+    3. 從 Min Heap 取出目前累積距離最小的節點。
+    4. 探索這個節點的所有 neighbors。
+    5. 計算到每個 neighbor 的新距離：cur_dist + edge_cost。
+    6. 將尚未確定最短距離的 neighbor 放入 Min Heap。
+    7. 持續執行，直到 Min Heap 為空。
+
+"""
 import heapq
 from collections import defaultdict
 

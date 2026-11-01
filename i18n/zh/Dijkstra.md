@@ -220,6 +220,25 @@ Dijkstra 在看候選邊 `cur_node -> nxt_node` 時，可以做兩種完全不�
 ### 通用 Dijkstra 模板 ⭐⭐⭐⭐⭐
 <!--CODE-->
 
+<!-- 2b3e7090b107 -->
+#### 核心步驟 — 七步走完整個迴圈（LC 743）
+
+同一個迴圈，以 [LC 743 Network Delay Time](./Dijkstra_examples.md#1-network-delay-time--lc-743) 來讀，起點是題目給的節點 `k`。執行流程：
+
+1. 從起點 `k` 出發，初始距離為 `0`。
+2. 把起點 `(0, k)` 放進 Min Heap。
+3. 從 Min Heap 取出目前**累積**距離最小的節點。
+4. 探索這個節點的所有 neighbors。
+5. 計算到每個 neighbor 的新距離：`cur_dist + edge_cost`。
+6. 將**尚未確定**最短距離的 neighbor 放入 Min Heap。
+7. 持續執行，直到 Min Heap 為空。
+
+**為什麼第一次 pop 就是最終答案**：每個 heap entry 都帶著從 `k` 出發的完整路徑成本，而 heap 永遠先吐出最小的那個 — 沒有負權邊時，之後 pop 出來的不可能更小。所以一個節點第一次被 pop 時就確定了最短距離，之後再 pop 到同一個節點都是過期的 entry，直接跳過。
+
+**陷阱**：這不是逐層 BFS。每一輪只 pop **一個**節點；用 `for _ in range(len(q))` 的逐層迴圈會依跳數而非成本處理節點，破壞上面的保證。
+
+<!--CODE-->
+
 <!-- f84488115a40 -->
 ### 模板 1：基本 Dijkstra
 <!--CODE-->

@@ -311,6 +311,50 @@ def dijkstra(n, edges, src, dst):
     return dist[dst] if dist[dst] != float('inf') else -1
 ```
 
+#### Core Steps — the loop in seven moves (LC 743)
+
+The same loop, read off [LC 743 Network Delay Time](./Dijkstra_examples.md#1-network-delay-time--lc-743), where the source is the given node `k`:
+
+1. Start from the source `k` with distance `0`.
+2. Push `(0, k)` into the min-heap.
+3. Pop the node whose **accumulated** distance is smallest.
+4. Explore every neighbor of that node.
+5. Compute each neighbor's new distance: `cur_dist + edge_cost`.
+6. Push every neighbor whose shortest distance is **not yet finalized**.
+7. Repeat until the min-heap is empty.
+
+**Why the first pop is final**: every heap entry carries the full path cost from `k`, and the heap always yields the smallest one next — with no negative edges, nothing popped later can undercut it. So the first pop of a node finalizes it, and any later pop of the same node is a stale entry to skip.
+
+**Pitfall**: this is not level-order BFS. Pop **one** node per iteration; a `for _ in range(len(q))` level loop processes nodes in hop order, not cost order, and breaks the guarantee above.
+
+```python
+# LC 743 - Network Delay Time
+# IDEA: Dijkstra (min-heap PQ + BFS); stop as soon as all n nodes are finalized
+# time = O((V + E) log V), space = O(V + E)
+import heapq
+from collections import defaultdict
+
+def network_delay_time(times, n, k):
+    graph = defaultdict(list)
+    for u, v, w in times:
+        graph[u].append((v, w))          # u -> (neighbor, travel time)
+
+    min_heap = [(0, k)]                  # steps 1-2: (accumulated time, node)
+    visited = set()                      # nodes whose shortest time is finalized
+
+    while min_heap:                      # step 7
+        time, node = heapq.heappop(min_heap)   # step 3
+        if node in visited:              # stale entry: already finalized cheaper
+            continue
+        visited.add(node)
+        if len(visited) == n:            # last node reached = network delay
+            return time
+        for neighbor, weight in graph[node]:   # step 4
+            if neighbor not in visited:  # step 6
+                heapq.heappush(min_heap, (time + weight, neighbor))  # step 5
+    return -1                            # heap emptied, some node unreachable
+```
+
 ### Template 1: Basic Dijkstra
 ```python
 def dijkstra_basic(n, edges, src):
