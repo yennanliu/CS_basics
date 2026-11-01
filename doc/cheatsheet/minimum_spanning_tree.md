@@ -1,6 +1,6 @@
 # Minimum Spanning Tree (MST)
 
-> **Scope** — Minimum spanning trees on undirected weighted graphs: the cut property, Kruskal (sorted edges + Union-Find), Prim (heap or dense array), and the problem shapes built on them — complete geometric graphs, a virtual source node, critical edges and bottleneck trees.
+> **Scope** — Minimum spanning trees on undirected weighted graphs: the cut property, Kruskal (sorted edges + Union-Find) and Prim (heap or dense array), each traced step by step with its variants, and the problem shapes built on them — complete geometric graphs, a virtual source node, critical edges and bottleneck trees.
 > **See also**: [union_find.md](./union_find.md) — the DSU that Kruskal runs on; [heap.md](./heap.md) — the priority queue under Prim; [shortest_path_comparison.md](./shortest_path_comparison.md#c-prim-vs-dijkstra--one-term-apart--lc-1584) — Prim vs Dijkstra, one term apart; [graph.md](./graph.md) — representation, traversal and the graph-problem catalogue that routes here.
 
 - **Core idea**: connect **all** `n` nodes with exactly `n - 1` edges and the smallest total weight — greedily take the cheapest edge that does not close a cycle
@@ -161,6 +161,80 @@ private int find(int[] parent, int x) {
 }
 ```
 
+#### Kruskal step by step — one graph, every edge in order
+
+The same graph is traced through Prim in [1-2](#1-2-prim--grow-one-tree-with-a-min-heap-), so the
+two orders can be compared — both end at the same tree.
+
+```text
+graph G, 5 nodes:  0-1 (2)  1-2 (3)  2-4 (4)  1-4 (5)  0-3 (6)  1-3 (8)  3-4 (9)
+
+    0 ---2--- 1 ---3--- 2
+    |       /   \      /
+    6     8       5   4
+    |   /           \/
+    3 -------9------ 4
+
+sorted edge   find(a) == find(b)?   action      components after               total
+0-1 (2)       no                    take        {0,1} {2} {3} {4}                2
+1-2 (3)       no                    take        {0,1,2} {3} {4}                  5
+2-4 (4)       no                    take        {0,1,2,4} {3}                    9
+1-4 (5)       YES — 1 and 4 joined  skip        (would close cycle 1-2-4)
+0-3 (6)       no                    take        {0,1,2,3,4}                     15
+              4 edges = n - 1  ->  stop; 1-3 (8) and 3-4 (9) are never looked at
+
+MST = {0-1, 1-2, 2-4, 0-3}, cost 15
+```
+
+**Where the time goes:** the sort is `O(E log E)`, which is the same as `O(E log V)` because
+`E ≤ V²`. The `E` find/union calls cost `O(E · α(V))` with path compression and union by rank —
+effectively linear. So Kruskal is *a sort plus a linear scan*; if the edges arrive already
+sorted (or the weights are small integers you can bucket), it is near-linear.
+
+#### Kruskal variants — what changes in the template
+
+| Problem says | Change to [1-1](#1-1-kruskal--sorted-edges--union-find-) | LC |
+|---|---|---|
+| **Maximum** spanning tree / maximise total | sort **descending** (or negate the weights) | 1102 (as a bottleneck) |
+| The graph may be disconnected; cost per component | do not return `-1`; the result is a **minimum spanning forest** with `n - edges_used` trees | — |
+| "Minimise the largest edge on a path from `s` to `t`" | stop the sweep the moment `find(s) == find(t)`; the current weight is the answer | 1631, 1102 |
+| Many "connected using edges `< limit`?" queries | sort the **queries** by limit too, and sweep both together (offline) | 1697 — [union_find_examples.md §13](./union_find_examples.md#13-path-with-minimum-effort--lc-1631--sorted-edge-kruskal-style) |
+| Some edges are mandatory | union them (and add their cost) **before** the sweep | 1489, 3600 |
+| "Build here **or** connect" | add a virtual node `0` with one edge per node | 1168 — [2-3](#2-3-optimize-water-distribution-in-a-village--lc-1168-) |
+| Return the tree, not only its cost | collect each taken edge | below |
+
+**Reason for a second snippet: it returns the tree's edges and covers the maximum variant**, which
+the cost-only template cannot.
+
+```python
+# python
+# IDEA: Kruskal that returns the chosen edges; maximum=True builds a MAXIMUM spanning tree
+# time = O(E log E), space = O(V + E)
+def kruskal_tree(n, edges, maximum=False):
+    """edges = [(weight, a, b), ...]; return (total, tree_edges).
+    len(tree_edges) < n - 1 means the graph is disconnected (the result is a forest)."""
+    parent = list(range(n))
+
+    def find(x):
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+
+    total = 0
+    tree_edges = []
+    for weight, a, b in sorted(edges, reverse=maximum):
+        root_a, root_b = find(a), find(b)
+        if root_a == root_b:
+            continue                    # closes a cycle
+        parent[root_a] = root_b
+        total += weight
+        tree_edges.append((a, b, weight))
+        if len(tree_edges) == n - 1:
+            break
+    return total, tree_edges
+```
+
 ### 1-2) Prim — grow one tree with a min-heap ⭐⭐⭐⭐⭐
 
 **Steps:**
@@ -225,6 +299,68 @@ public int prim(int n, List<List<int[]>> adj) {  // adj.get(u) = [{weight, v}, .
     }
     return nodesJoined == n ? totalCost : -1;
 }
+```
+
+#### Prim step by step — the same graph G
+
+The graph from [Kruskal step by step](#kruskal-step-by-step--one-graph-every-edge-in-order),
+grown from node `0`. Prim never looks at the global edge order — only at the cheapest edge
+**leaving the current tree**:
+
+```text
+pop        in tree?   action                 push                         heap after              total
+(0, 0)     no         join 0                 (2,1) (6,3)                  (2,1) (6,3)                 0
+(2, 1)     no         join 1 via 0-1         (3,2) (5,4) (8,3)            (3,2) (5,4) (6,3) (8,3)     2
+(3, 2)     no         join 2 via 1-2         (4,4)                        (4,4) (5,4) (6,3) (8,3)     5
+(4, 4)     no         join 4 via 2-4         (9,3)                        (5,4) (6,3) (8,3) (9,3)     9
+(5, 4)     YES        stale — skip                                        (6,3) (8,3) (9,3)
+(6, 3)     no         join 3 via 0-3                                                                 15
+all 5 nodes joined -> stop
+
+MST = {0-1, 1-2, 2-4, 0-3}, cost 15   — the same tree Kruskal built, found in a different order
+```
+
+The stale `(5, 4)` is the lazy version's cost: a node is pushed once per neighbour that offers
+it, and only the first pop counts.
+
+#### Lazy, eager and dense Prim — and recovering the tree
+
+| Version | Heap holds | Time | Use when |
+|---|---|---|---|
+| **Lazy** (the template above) | every offered edge; stale ones skipped on pop | `O(E log E)` = `O(E log V)` | the default — Python's `heapq` has no decrease-key |
+| **Eager** (indexed heap) | one entry per outside node, its key lowered in place | `O(E log V)`, heap size `≤ V` | Java / C++ with an indexed priority queue; rarely worth it in an interview |
+| **Dense** (array, no heap) | nothing — `min_dist[]` scanned each round | `O(V²)` | complete or near-complete graphs — [2-1](#2-1-min-cost-to-connect-all-points--lc-1584-) |
+
+To return the tree rather than its cost, carry the node an edge came **from** in the heap entry
+— that is Prim's `parent[]`. **Reason for a second snippet: it returns the edges**, which the
+template's `(cost, node)` entries cannot.
+
+```python
+# python
+# IDEA: Prim that records which tree node each node was joined from
+# time = O(E log V), space = O(V + E)
+import heapq
+
+def prim_tree(n, adj, start=0):
+    """adj[u] = [(weight, v), ...]; return (total, tree_edges), or None if disconnected."""
+    in_tree = [False] * n
+    min_heap = [(0, start, -1)]         # (edge weight, node, the tree node it joins from)
+    total = 0
+    tree_edges = []
+
+    while min_heap:
+        weight, node, came_from = heapq.heappop(min_heap)
+        if in_tree[node]:
+            continue
+        in_tree[node] = True
+        total += weight
+        if came_from != -1:
+            tree_edges.append((came_from, node, weight))
+        for next_weight, neighbour in adj[node]:
+            if not in_tree[neighbour]:
+                heapq.heappush(min_heap, (next_weight, neighbour, node))
+
+    return (total, tree_edges) if len(tree_edges) == n - 1 else None
 ```
 
 ### 1-3) Prim vs Dijkstra — one term apart
@@ -511,6 +647,8 @@ class Solution:
 | 1168 | Optimize Water Distribution in a Village | virtual source node | well = edge from node `0` — [2-3](#2-3-optimize-water-distribution-in-a-village--lc-1168-) |
 | 1489 | Find Critical and Pseudo-Critical Edges in MST | edge classification | exclude / force one edge — [2-4](#2-4-find-critical-and-pseudo-critical-edges-in-mst--lc-1489) |
 | 3600 | Maximize Spanning Tree Stability with Upgrades | bottleneck tree | binary search the stability, DSU checks a spanning tree exists with every edge `≥` it |
+| 1102 | Path With Maximum Minimum Value | bottleneck path, **maximum** | Kruskal sorted descending, stop when the corners join — [Kruskal variants](#kruskal-variants--what-changes-in-the-template) |
+| 1697 | Checking Existence of Edge Length Limited Paths | offline queries | sort queries and edges, sweep together — [union_find_examples.md §13](./union_find_examples.md#13-path-with-minimum-effort--lc-1631--sorted-edge-kruskal-style) |
 | 1631 | Path With Minimum Effort | bottleneck path | a Kruskal sweep stopped when source and target join — [union_find_examples.md](./union_find_examples.md#13-path-with-minimum-effort--lc-1631--sorted-edge-kruskal-style) |
 | 1167 | Minimum Cost to Connect Sticks | **not** MST | merging cost re-counts merged lengths — Huffman, a heap greedy ([heap.md](./heap.md)) |
 

@@ -1,7 +1,7 @@
-<!-- b6587628afc8 -->
+<!-- feebf9b1f662 -->
 # Minimum Spanning Tree（最小生成樹，MST）
 
-> **範圍** — 無向加權圖上的最小生成樹：切割性質、Kruskal（排序好的邊 + 併查集）、Prim（heap 或稠密陣列），以及建立在它們之上的題型 — 完全幾何圖、虛擬源點、關鍵邊與瓶頸樹。
+> **範圍** — 無向加權圖上的最小生成樹：切割性質、Kruskal 演算法（排序好的邊 + 併查集）與 Prim 演算法（heap 或稠密陣列），各自附逐步追蹤與變形，以及建立在它們之上的題型 — 完全幾何圖、虛擬源點、關鍵邊與瓶頸樹。
 > **另見**：[union_find.md](./union_find.md) — Kruskal 底下跑的併查集；[heap.md](./heap.md) — Prim 底下的優先佇列；[shortest_path_comparison.md](./shortest_path_comparison.md#c-prim-vs-dijkstra--one-term-apart--lc-1584) — Prim 和 Dijkstra 只差一項；[graph.md](./graph.md) — 圖的表示法、走訪，以及把題目分流到這裡的圖論題目目錄。
 
 - **核心想法**：用剛好 `n - 1` 條邊、最小的總權重，把**全部** `n` 個節點連起來 — 貪心地拿「不會形成環的最便宜那條邊」
@@ -85,6 +85,35 @@
 
 <!--CODE-->
 
+<!-- 9d68e42d3894 -->
+#### Kruskal 演算法逐步追蹤 — 同一張圖，依序處理每條邊
+
+同一張圖在 [1-2](#1-2-prim--grow-one-tree-with-a-min-heap-) 也會用 Prim 追蹤一次，方便比較兩種
+處理順序 — 兩者最後得到同一棵樹。
+
+<!--CODE-->
+
+**時間花在哪裡：** 排序是 `O(E log E)`，因為 `E ≤ V²`，這和 `O(E log V)` 是同一個量級。
+`E` 次 find／union 在路徑壓縮 + 依秩合併之下是 `O(E · α(V))` — 實際上就是線性。所以 Kruskal
+就是*一次排序加一趟線性掃描*；如果邊本來就排好序（或權重是可以分桶的小整數），它幾乎是線性的。
+
+<!-- 504f51726c7f -->
+#### Kruskal 變形 — 模板要改哪裡
+
+| 題目這樣說 | 對 [1-1](#1-1-kruskal--sorted-edges--union-find-) 的改動 | LC |
+|---|---|---|
+| **最大**生成樹／最大化總和 | 改成**遞減**排序（或把權重取負） | 1102（瓶頸版） |
+| 圖可能不連通；每個連通分量各自算成本 | 不要回傳 `-1`；結果是一座**最小生成森林**，共有 `n - edges_used` 棵樹 | — |
+| 「最小化從 `s` 到 `t` 路徑上最大的那條邊」 | 一旦 `find(s) == find(t)` 就停止掃描；當下的權重就是答案 | 1631、1102 |
+| 很多個「只用 `< limit` 的邊能不能連通？」查詢 | 把**查詢**也依 limit 排序，兩者一起掃（離線） | 1697 — [union_find_examples.md §13](./union_find_examples.md#13-path-with-minimum-effort--lc-1631--sorted-edge-kruskal-style) |
+| 有些邊是必選的 | 掃描**之前**先把它們合併（並算進成本） | 1489、3600 |
+| 「在這裡蓋，**或**接過去」 | 加一個虛擬節點 `0`，每個節點各一條邊 | 1168 — [2-3](#2-3-optimize-water-distribution-in-a-village--lc-1168-) |
+| 要回傳樹本身，而不只是成本 | 把每條選中的邊收集起來 | 見下方 |
+
+**需要第二段程式碼的理由：它會回傳樹的邊，也涵蓋最大生成樹的變形**，這是只算成本的模板做不到的。
+
+<!--CODE-->
+
 <!-- 535cb286c6b3 -->
 ### 1-2) Prim — 用 min-heap 長出一棵樹 ⭐⭐⭐⭐⭐
 
@@ -95,6 +124,30 @@
 4. 全部 `n` 個節點都進來就停。在那之前 heap 就空了 → 圖不連通。
 
 <!--CODE-->
+
+<!--CODE-->
+
+<!-- 7fcfe41c7abb -->
+#### Prim 演算法逐步追蹤 — 同一張圖 G
+
+沿用 [Kruskal 逐步追蹤](#kruskal-step-by-step--one-graph-every-edge-in-order) 的那張圖，
+從節點 `0` 開始長。Prim 從不看全域的邊順序 — 只看**離開目前這棵樹**最便宜的那條邊：
+
+<!--CODE-->
+
+過期的 `(5, 4)` 就是 lazy 版的代價：每有一個鄰居提出報價，節點就會被推入一次，只有第一次彈出才算數。
+
+<!-- 49d7921e4e42 -->
+#### Lazy、eager 與稠密 Prim — 以及如何還原出整棵樹
+
+| 版本 | heap 裡放什麼 | 時間 | 什麼時候用 |
+|---|---|---|---|
+| **Lazy**（上面的模板） | 每條被提出的邊；過期的在彈出時跳過 | `O(E log E)` = `O(E log V)` | 預設 — Python 的 `heapq` 沒有 decrease-key |
+| **Eager**（索引式 heap） | 每個樹外節點一筆，直接就地降低它的 key | `O(E log V)`，heap 大小 `≤ V` | Java／C++ 有索引式優先佇列時；面試中很少值得 |
+| **稠密**（陣列，不用 heap） | 什麼都不放 — 每一輪掃描 `min_dist[]` | `O(V²)` | 完全圖或接近完全圖 — [2-1](#2-1-min-cost-to-connect-all-points--lc-1584-) |
+
+想回傳整棵樹而不只是成本，就在 heap 的每一筆裡帶上這條邊是**從哪個節點**來的 — 那就是 Prim 的
+`parent[]`。**需要第二段程式碼的理由：它會回傳邊**，這是模板的 `(cost, node)` 做不到的。
 
 <!--CODE-->
 
@@ -201,7 +254,7 @@ Kruskal 也會過 — 產生全部 `n(n-1)/2` 對，再丟給
 
 <!--CODE-->
 
-<!-- 7be698a9e921 -->
+<!-- 8f84b38d3ca5 -->
 ### 2-5) 相似題目
 
 | LC | 題目 | 題型 | 備註 |
@@ -211,6 +264,8 @@ Kruskal 也會過 — 產生全部 `n(n-1)/2` 對，再丟給
 | 1168 | Optimize Water Distribution in a Village | 虛擬源點 | 井 = 從節點 `0` 出發的邊 — [2-3](#2-3-optimize-water-distribution-in-a-village--lc-1168-) |
 | 1489 | Find Critical and Pseudo-Critical Edges in MST | 邊的分類 | 排除／強制選一條邊 — [2-4](#2-4-find-critical-and-pseudo-critical-edges-in-mst--lc-1489) |
 | 3600 | Maximize Spanning Tree Stability with Upgrades | 瓶頸樹 | 二分搜尋穩定度，用併查集檢查「只用 `≥` 它的邊」是否還能組成生成樹 |
+| 1102 | Path With Maximum Minimum Value | 瓶頸路徑，**最大化** | Kruskal 依權重遞減排序，左上與右下角一連通就停 — [Kruskal 變形](#kruskal-variants--what-changes-in-the-template) |
+| 1697 | Checking Existence of Edge Length Limited Paths | 離線查詢 | 查詢和邊都排序，一起掃 — [union_find_examples.md §13](./union_find_examples.md#13-path-with-minimum-effort--lc-1631--sorted-edge-kruskal-style) |
 | 1631 | Path With Minimum Effort | 瓶頸路徑 | 起點與終點一連通就停下的 Kruskal 掃描 — [union_find_examples.md](./union_find_examples.md#13-path-with-minimum-effort--lc-1631--sorted-edge-kruskal-style) |
 | 1167 | Minimum Cost to Connect Sticks | **不是** MST | 合併成本會重複計入已合併的長度 — 是 Huffman，一種 heap 貪心（[heap.md](./heap.md)） |
 

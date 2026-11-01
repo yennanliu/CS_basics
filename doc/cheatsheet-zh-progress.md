@@ -43,7 +43,7 @@ half-translated document renders with English gaps rather than failing.
   is what makes a problem findable on LeetCode itself.
 
 
-## Status — 5408 / 5408 sections (100%)
+## Status — 5412 / 5412 sections (100%)
 
 | Cheatsheet | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -130,7 +130,7 @@ half-translated document renders with English gaps rather than failing.
 | [matrix](./cheatsheet/matrix.md) | 68 | [✅](../i18n/zh/matrix.md) |
 | [matrix_examples](./cheatsheet/matrix_examples.md) | 27 | [✅](../i18n/zh/matrix_examples.md) |
 | [memory_constrained_algorithms](./cheatsheet/memory_constrained_algorithms.md) | 14 | [✅](../i18n/zh/memory_constrained_algorithms.md) |
-| [minimum_spanning_tree](./cheatsheet/minimum_spanning_tree.md) | 18 | [✅](../i18n/zh/minimum_spanning_tree.md) |
+| [minimum_spanning_tree](./cheatsheet/minimum_spanning_tree.md) | 22 | [✅](../i18n/zh/minimum_spanning_tree.md) |
 | [monotonic_queue](./cheatsheet/monotonic_queue.md) | 24 | [✅](../i18n/zh/monotonic_queue.md) |
 | [monotonic_stack](./cheatsheet/monotonic_stack.md) | 101 | [✅](../i18n/zh/monotonic_stack.md) |
 | [n_sum](./cheatsheet/n_sum.md) | 16 | [✅](../i18n/zh/n_sum.md) |
