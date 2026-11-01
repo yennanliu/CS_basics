@@ -163,13 +163,10 @@ class Codec:
       if val == '#':
         return None
 
-     """
-     按照 Preorder 的順序：
-
-        1. 建立目前節點。
-        2. 遞迴還原左子樹。
-        3. 遞迴還原右子樹。
-     """
+      # 按照 Preorder 的順序：
+      #   1. 建立目前節點。
+      #   2. 遞迴還原左子樹。
+      #   3. 遞迴還原右子樹。
 
       # 建立當前節點（記得將字串轉為整數 int）
       node = TreeNode(int(val))
