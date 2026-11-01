@@ -948,7 +948,9 @@ const ENTRY_GROUPS = [
     ['patterns.html', 'Pattern recognition',
      'Read a problem statement, name the technique. The keyword-to-pattern table.'],
     ['algo_demo/index.html', 'Visualizers',
-     `Step through Dijkstra, KMP, knapsack and ${visualizerCount - 3} more, one frame at a time.`]
+     `Step through Dijkstra, KMP, knapsack and ${visualizerCount - 3} more, one frame at a time.`],
+    ['lc-big-o.html', 'Big-O comparison',
+     'Plot O(1) through O(n!) or any expression you type, and see the largest n each one fits in a second.']
   ]],
   ['Practise it', 'Pick something to solve, then keep what you solved from going stale.', [
     ['lc-explorer.html', 'Problem explorer',

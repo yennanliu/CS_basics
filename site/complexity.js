@@ -296,7 +296,22 @@
       for (var i = 0; i < constant; i++) acc = multiply(acc, base);
       return acc;
     }
-    return single(canonical(node.b) + '^' + canonical(node.e));
+    return single(group(canonical(node.b)) + '^' + group(canonical(node.e)));
+  }
+
+  // A composite operand of a symbolic power keeps its parentheses, or
+  // (n^2)^n and n^(2^n) — wildly different growth — would both render as
+  // n^2^n and compare equal. Simple operands (n, 2, log(n), n!) stay bare,
+  // so the everyday keys (2^n, 4^l, k^n) are unchanged.
+  function group(text) {
+    var depth = 0;
+    for (var i = 0; i < text.length; i++) {
+      var ch = text.charAt(i);
+      if (ch === '(') depth++;
+      else if (ch === ')') depth--;
+      else if (depth === 0 && (ch === '+' || ch === '*' || ch === '^')) return '(' + text + ')';
+    }
+    return text;
   }
 
   function render(terms, keepCoef) {
@@ -360,6 +375,97 @@
     };
   }
 
+  // ── Evaluation ────────────────────────────────────────────────────────────
+  //
+  // The Big-O chart (lc-big-o.html) plots the same expressions the quiz
+  // grades, so it evaluates the same tree rather than a second parser.
+  //
+  // Everything is computed as log2 of the value. n! at n = 10^6 is a number
+  // with 5.5 million digits, and 2^n leaves double range at n = 1024; in log
+  // space both are ordinary floats, and "how many operations" comparisons are
+  // still exact in order. A value of 0 (log 1, a literal 0) is -Infinity.
+  //
+  // Every variable takes the same value: on a chart whose x-axis is n,
+  // O(m + n) is drawn as O(n). Logarithms are base 2, which is the base the
+  // interview arithmetic uses (log2 10^6 ≈ 20); Big-O does not care.
+
+  var LN2 = Math.LN2;
+
+  // Lanczos approximation of ln Γ(z), good to ~15 digits for z > 0.
+  var LANCZOS = [0.99999999999980993, 676.5203681218851, -1259.1392167224028,
+    771.32342877765313, -176.61502916214059, 12.507343278686905,
+    -0.13857109526572012, 9.9843695780195716e-6, 1.5056327351493116e-7];
+  function lnGamma(z) {
+    if (z < 0.5) return Math.log(Math.PI / Math.sin(Math.PI * z)) - lnGamma(1 - z);
+    z -= 1;
+    var x = LANCZOS[0];
+    for (var i = 1; i < 9; i++) x += LANCZOS[i] / (z + i);
+    var t = z + 7.5;
+    return 0.5 * Math.log(2 * Math.PI) + (z + 0.5) * Math.log(t) - t + Math.log(x);
+  }
+
+  // log2(2^a + 2^b) without leaving log space.
+  function log2Add(a, b) {
+    if (a === -Infinity) return b;
+    if (b === -Infinity) return a;
+    var hi = Math.max(a, b);
+    var lo = Math.min(a, b);
+    if (hi === Infinity) return Infinity;
+    return hi + Math.log2(1 + Math.pow(2, lo - hi));
+  }
+
+  /** log2 of the expression's value with every variable set to `x` (> 0). */
+  function log2Eval(node, x) {
+    switch (node.t) {
+      case 'num': return node.v > 0 ? Math.log2(node.v) : -Infinity;
+      case 'var': return Math.log2(x);
+      case 'add': return node.xs.reduce(function (acc, k) { return log2Add(acc, log2Eval(k, x)); }, -Infinity);
+      case 'mul': {
+        var sum = 0;
+        for (var i = 0; i < node.xs.length; i++) {
+          var part = log2Eval(node.xs[i], x);
+          if (part === -Infinity) return -Infinity;   // anything times 0 is 0
+          sum += part;
+        }
+        return sum;
+      }
+      case 'pow': {
+        var base = log2Eval(node.b, x);
+        var exponent = Math.pow(2, log2Eval(node.e, x));
+        if (exponent === 0) return 0;                  // b^0 = 1
+        if (base === -Infinity) return -Infinity;      // 0^e = 0
+        return exponent * base;
+      }
+      case 'sqrt': return log2Eval(node.x, x) / 2;
+      case 'log': {
+        // log2(v) is the inner exponent itself; a log at or below 0 is 0 work.
+        var inner = log2Eval(node.x, x);
+        return inner > 0 ? Math.log2(inner) : -Infinity;
+      }
+      case 'fact': {
+        var v = Math.pow(2, log2Eval(node.x, x));
+        if (v === Infinity) return Infinity;
+        return lnGamma(v + 1) / LN2;
+      }
+      default: return NaN;
+    }
+  }
+
+  /**
+   * Parses a typed complexity for plotting: `{ ast, key }`, or null when it is
+   * not an expression. `key` is the canonical form, so "n log n" and
+   * "O(N·logN)" are recognised as the same curve.
+   */
+  function compile(raw) {
+    var text = preprocess(raw);
+    if (!text) return null;
+    var tokens = tokenize(text);
+    if (!tokens || !tokens.length) return null;
+    var ast = parse(tokens);
+    if (!ast) return null;
+    return { ast: ast, key: render(expand(ast), false) };
+  }
+
   return {
     MAX_INPUT: MAX_INPUT,
     preprocess: preprocess,
@@ -368,6 +474,8 @@
     normalize: normalize,
     equivalent: equivalent,
     matches: matches,
-    grade: grade
+    grade: grade,
+    compile: compile,
+    log2Eval: log2Eval
   };
 });

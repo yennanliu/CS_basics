@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <title>Big-O Comparison - CS Basics</title>
+  <meta name="description" content="Plot and compare Big-O growth rates — O(1), O(log n), O(n), O(n log n), O(n²), O(2^n), O(n!) or any expression you type — and read off how large n can get before a solution times out.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📈</text></svg>">
+  <link rel="stylesheet" href="nav.css">
+  <link rel="stylesheet" href="lc-page.css">
+  <!-- Blocking on purpose: nav.js restores the stored theme before first paint. -->
+  <script src="nav.js"></script>
+  <!-- The quiz's parser. This page plots the same expressions the quiz grades,
+       so "n log n", "O(N·logN)" and "nlogn" are one curve here too. -->
+  <script src="complexity.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    /* Palette and footer come from lc-page.css; these are this page's own.
+       --s1..--s8 are the chart's categorical slots, validated (dataviz
+       validate_palette.js) for CVD and normal-vision separation in adjacent
+       order on both surfaces. Adjacent classes on the ladder take adjacent
+       slots, which is exactly the pairing that was validated. */
+    :root {
+      --sunken: #ebebeb; --grid: #e2e2e2;
+      --s0: #8a8a8a;
+      --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100;
+      --s5: #e87ba4; --s6: #008300; --s7: #6250d6; --s8: #e34948;
+      --fit: rgba(30, 126, 52, 0.14); --tight: rgba(217, 119, 6, 0.18); --slow: rgba(185, 28, 28, 0.16);
+    }
+    [data-theme="dark"] {
+      --sunken: #141414; --grid: #222222;
+      --s0: #8a8a8a;
+      --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500;
+      --s5: #d55181; --s6: #008300; --s7: #9085e9; --s8: #e66767;
+      --fit: rgba(74, 222, 128, 0.12); --tight: rgba(251, 191, 36, 0.16); --slow: rgba(248, 113, 113, 0.16);
+    }
+    html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; }
+    body {
+      margin: 0;
+      font-family: 'SF Mono','JetBrains Mono','IBM Plex Mono',ui-monospace,'Menlo',monospace;
+      background: var(--bg); color: var(--text);
+      font-size: 15px; line-height: 1.55;
+      transition: background 0.2s, color 0.2s;
+    }
+    a { color: inherit; }
+    a, button { touch-action: manipulation; }
+
+    .container { max-width: 960px; margin: 2.5rem auto 4rem; padding: 0 1.5rem; }
+
+    .page-header { text-align: center; margin-bottom: 1.6rem; }
+    .page-header h1 { margin: 0 0 0.4rem; font-size: 1.9rem; }
+    .page-header p { color: var(--text-light); margin: 0 auto; font-size: 0.92rem; max-width: 640px; }
+
+    h2 { font-size: 1.15rem; margin: 2.4rem 0 0.4rem; }
+    .section-note { color: var(--text-light); font-size: 0.86rem; margin: 0 0 1rem; }
+
+    .panel {
+      background: var(--surface); border: 1px solid var(--border);
+      padding: 1.25rem 1.4rem; margin-bottom: 1.25rem;
+    }
+    .label {
+      display: block; font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--text-light); margin-bottom: 0.5rem;
+    }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .chip {
+      padding: 0.35rem 0.8rem; border: 1px solid var(--border); background: var(--bg);
+      color: var(--text-light); font: inherit; font-size: 0.82rem; cursor: pointer;
+      transition: color 0.15s, background 0.15s, border-color 0.15s;
+    }
+    .chip:hover { border-color: var(--text); color: var(--text); }
+    .chip.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+
+    .btn {
+      padding: 0.5rem 1.2rem; border: 1px solid var(--text);
+      background: var(--text); color: var(--bg);
+      font: inherit; font-weight: 700; cursor: pointer;
+    }
+    .btn:hover { opacity: 0.82; }
+    input[type="text"], select {
+      background: var(--bg); color: var(--text); border: 1px solid var(--border);
+      font: inherit; padding: 0.5rem 0.7rem;
+    }
+    input:focus, select:focus { outline: none; border-color: var(--text); }
+
+    /* ── The ladder: legend and visibility toggle in one ─────────────────── */
+    .ladder { display: flex; flex-wrap: wrap; align-items: center; gap: 0.3rem; }
+    .ladder .lt { color: var(--text-light); font-size: 0.8rem; }
+    .curve-chip {
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      padding: 0.35rem 0.7rem; border: 1px solid var(--border); background: var(--bg);
+      color: var(--text); font: inherit; font-size: 0.85rem; cursor: pointer;
+    }
+    .curve-chip:hover { border-color: var(--text); }
+    .curve-chip.off { color: var(--text-light); opacity: 0.55; }
+    .curve-chip.off .swatch { opacity: 0.35; }
+    .swatch { width: 16px; height: 0; border-top: 3px solid; flex: none; }
+    .swatch.dash1 { border-top-style: dashed; }
+    .swatch.dash2 { border-top-style: dotted; }
+    .chip-pair { display: inline-flex; }
+    .chip-remove {
+      border: 1px solid var(--border); border-left: none; background: var(--bg);
+      color: var(--text-light); font: inherit; font-size: 0.9rem; padding: 0 0.6rem; cursor: pointer;
+    }
+    .chip-remove:hover, .chip-remove:focus-visible { color: var(--text); border-color: var(--text); }
+    .ladder-hint { font-size: 0.78rem; color: var(--text-light); margin-top: 0.6rem; }
+
+    .add-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem; }
+    .add-row input { flex: 1; min-width: 200px; }
+    .examples { margin-top: 0.6rem; font-size: 0.8rem; color: var(--text-light); }
+    .examples button {
+      background: none; border: none; border-bottom: 1px dotted var(--text-light);
+      color: var(--text); font: inherit; cursor: pointer; padding: 0; margin: 0 0.35rem;
+    }
+    .msg { font-size: 0.82rem; margin-top: 0.5rem; min-height: 1.2em; color: var(--text-light); }
+    .msg.err { color: #d14343; }
+
+    /* ── Chart ───────────────────────────────────────────────────────────── */
+    .controls { display: flex; flex-wrap: wrap; gap: 1.2rem; margin-bottom: 0.9rem; }
+    .chart-wrap { position: relative; }
+    #chart { display: block; width: 100%; background: var(--bg); border: 1px solid var(--border); }
+    #chart text { font-family: inherit; }
+    .axis-text { fill: var(--text-light); font-size: 11px; }
+    .axis-title { fill: var(--text-light); font-size: 11px; font-weight: 700; }
+    .curve-label { fill: var(--text); font-size: 11px; font-weight: 700; }
+    .gridline { stroke: var(--grid); stroke-width: 1; }
+    .axisline { stroke: var(--border); stroke-width: 1; }
+    .tip {
+      position: absolute; pointer-events: none; z-index: 2;
+      background: var(--bg); border: 1px solid var(--text); padding: 0.5rem 0.7rem;
+      font-size: 0.78rem; line-height: 1.45; min-width: 190px;
+    }
+    .tip .tn { font-weight: 700; margin-bottom: 0.25rem; }
+    .tip .row { display: flex; align-items: center; gap: 0.5rem; }
+    .tip .row .nm { flex: 1; }
+    .tip .row .v { color: var(--text-light); }
+    .caption { font-size: 0.8rem; color: var(--text-light); margin: 0.6rem 0 0; }
+
+    /* ── Tables ──────────────────────────────────────────────────────────── */
+    .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    table.grid { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+    table.grid th {
+      text-align: left; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em;
+      color: var(--text-light); font-weight: 700; padding: 0.4rem 0.55rem;
+      border-bottom: 1px solid var(--border); white-space: nowrap;
+    }
+    table.grid td { padding: 0.45rem 0.55rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    table.grid td.num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+    table.grid td.fit { background: var(--fit); }
+    table.grid td.tight { background: var(--tight); }
+    table.grid td.slow { background: var(--slow); color: var(--text-light); }
+    table.grid td.maxn { font-weight: 700; }
+    table.grid .cls { white-space: nowrap; font-weight: 700; }
+    table.grid .cls .swatch { display: inline-block; vertical-align: middle; margin-right: 0.45rem; }
+    .key { display: flex; flex-wrap: wrap; gap: 1rem; font-size: 0.78rem; color: var(--text-light); margin-top: 0.7rem; }
+    .key span::before {
+      content: ''; display: inline-block; width: 12px; height: 12px; margin-right: 0.35rem;
+      vertical-align: -1px; border: 1px solid var(--border);
+    }
+    .key .k-fit::before { background: var(--fit); }
+    .key .k-tight::before { background: var(--tight); }
+    .key .k-slow::before { background: var(--slow); }
+
+    /* ── Compare ─────────────────────────────────────────────────────────── */
+    .cmp-row { display: grid; grid-template-columns: 1fr auto 1fr auto; gap: 0.6rem; align-items: center; }
+    .cmp-row .vs { color: var(--text-light); font-weight: 700; }
+    .verdict { margin-top: 1rem; font-size: 0.9rem; }
+    .verdict .big { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.35rem; }
+    .verdict p { margin: 0.3rem 0; color: var(--text-light); }
+    .verdict p b { color: var(--text); }
+
+    /* ── Reference prose ─────────────────────────────────────────────────── */
+    .rules { margin: 0; padding-left: 1.2rem; font-size: 0.88rem; }
+    .rules li { margin-bottom: 0.65rem; }
+    .rules li b { font-weight: 700; }
+    code { background: var(--sunken); padding: 0 0.25rem; }
+    details.ref summary { cursor: pointer; font-size: 0.88rem; font-weight: 700; }
+    details.ref img { display: block; max-width: 100%; height: auto; margin: 1rem auto 0; background: #fff; }
+    .next-links { font-size: 0.88rem; }
+
+    @media (max-width: 640px) {
+      .container { padding: 0 16px; margin-top: 1.5rem; }
+      .panel { padding: 1rem; }
+      .cmp-row { grid-template-columns: 1fr; }
+      .cmp-row .vs { text-align: center; }
+      .chip, .curve-chip, .chip-remove, .btn { min-height: 40px; }
+      input, select { font-size: 16px; min-height: 44px; }
+    }
+    @supports (padding: env(safe-area-inset-left)) {
+      .container {
+        padding-left: max(16px, env(safe-area-inset-left));
+        padding-right: max(16px, env(safe-area-inset-right));
+      }
+    }
+  </style>
+</head>
+<body>
+<div id="site-nav" data-page="lc-big-o"></div>
+<script>CSNav.mount();</script>
+
+<div class="container">
+  <div class="page-header">
+    <h1>Big-O Comparison</h1>
+    <p>See how fast each complexity class grows, plot any expression you type, and read off the
+      largest input a solution can handle before it times out.</p>
+  </div>
+
+  <!-- ── Curves ─────────────────────────────────────────────────────────── -->
+  <div class="panel">
+    <span class="label">The ladder — click a class to show or hide it</span>
+    <div class="ladder" id="ladder"></div>
+    <div class="ladder-hint" id="customList"></div>
+
+    <form class="add-row" id="addForm" autocomplete="off">
+      <input type="text" id="addInput" maxlength="80" aria-label="Complexity to plot"
+             placeholder="Add your own: n log^2 n, n·2^n, n^2 log n, sqrt(n) log n …">
+      <button class="btn" type="submit">Plot</button>
+    </form>
+    <div class="examples">try:
+      <button type="button" data-ex="n log^2 n">n log² n</button>
+      <button type="button" data-ex="n * 2^n">n·2ⁿ</button>
+      <button type="button" data-ex="n^2 log n">n² log n</button>
+      <button type="button" data-ex="3^n">3ⁿ</button>
+      <button type="button" data-ex="n sqrt n">n√n</button>
+      <button type="button" data-ex="log log n">log log n</button>
+    </div>
+    <div class="msg" id="addMsg" role="status"></div>
+  </div>
+
+  <!-- ── Chart ──────────────────────────────────────────────────────────── -->
+  <div class="panel">
+    <div class="controls">
+      <div>
+        <span class="label">Input size n, up to</span>
+        <div class="chips" id="rangeChips"></div>
+      </div>
+      <div>
+        <span class="label">Operations axis</span>
+        <div class="chips" id="scaleChips"></div>
+      </div>
+    </div>
+    <div class="chart-wrap" id="chartWrap">
+      <svg id="chart" role="img" aria-labelledby="chartDesc"></svg>
+      <div class="tip" id="tip" hidden></div>
+    </div>
+    <p class="caption" id="chartDesc"></p>
+  </div>
+
+  <!-- ── Ops table ──────────────────────────────────────────────────────── -->
+  <h2>How many operations is that?</h2>
+  <p class="section-note">
+    A judge runs roughly <b id="budgetText">10⁸</b> simple operations a second. That single number
+    turns a constraint like <code>n ≤ 10⁵</code> into the complexity the interviewer expects —
+    read the last column backwards.
+    Budget:
+    <select id="budgetSelect" aria-label="Operations per second">
+      <option value="7">10⁷ ops / s (Python, heavy constant)</option>
+      <option value="8" selected>10⁸ ops / s (typical judge)</option>
+      <option value="9">10⁹ ops / s (tight C++ loop)</option>
+    </select>
+  </p>
+  <div class="panel">
+    <div class="table-scroll"><table class="grid" id="opsTable"></table></div>
+    <div class="key">
+      <span class="k-fit">fits in ~1 s</span>
+      <span class="k-tight">within 10× — tight, constant factor decides</span>
+      <span class="k-slow">over 10× — times out</span>
+    </div>
+  </div>
+
+  <!-- ── Compare ────────────────────────────────────────────────────────── -->
+  <h2>Compare two</h2>
+  <p class="section-note">Which grows faster, are they the same class, and from what n does the
+    difference actually show? Every variable is treated as n.</p>
+  <div class="panel">
+    <form class="cmp-row" id="cmpForm" autocomplete="off">
+      <input type="text" id="cmpA" maxlength="80" value="n log n" aria-label="First complexity">
+      <span class="vs">vs</span>
+      <input type="text" id="cmpB" maxlength="80" value="n^2" aria-label="Second complexity">
+      <button class="btn" type="submit">Compare</button>
+    </form>
+    <div class="verdict" id="cmpOut" role="status"></div>
+  </div>
+
+  <!-- ── Constraints → target ───────────────────────────────────────────── -->
+  <h2>Read the constraint, guess the algorithm</h2>
+  <p class="section-note">The fastest way to the intended solution is the bound on n. At ~10⁸
+    operations a second, this is what each size allows.</p>
+  <div class="panel">
+    <div class="table-scroll">
+      <table class="grid">
+        <thead><tr><th>If n is up to</th><th>Aim for</th><th>Usually means</th></tr></thead>
+        <tbody>
+          <tr><td class="num">10 – 11</td><td class="cls">O(n!)</td><td>Every permutation: backtracking, brute-force ordering.</td></tr>
+          <tr><td class="num">20 – 25</td><td class="cls">O(2ⁿ), O(n·2ⁿ)</td><td>Every subset: include / exclude recursion, bitmask DP.</td></tr>
+          <tr><td class="num">≈ 500</td><td class="cls">O(n³)</td><td>Interval DP, Floyd–Warshall, three nested loops.</td></tr>
+          <tr><td class="num">≈ 5,000</td><td class="cls">O(n²)</td><td>2-D DP over two indices (LCS, edit distance), all pairs.</td></tr>
+          <tr><td class="num">10⁵ – 10⁶</td><td class="cls">O(n log n)</td><td>Sort first, a heap, binary search inside a loop. The most common interview bound.</td></tr>
+          <tr><td class="num">10⁷ – 10⁸</td><td class="cls">O(n)</td><td>One pass: hash map, two pointers, sliding window, prefix sums, BFS / DFS.</td></tr>
+          <tr><td class="num">beyond 10⁸</td><td class="cls">O(log n), O(1)</td><td>Binary search on the answer, math, a formula.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── The classes ────────────────────────────────────────────────────── -->
+  <h2>Where each class comes from</h2>
+  <p class="section-note">Recognise the code shape and you know the bound before you count anything.</p>
+  <div class="panel">
+    <div class="table-scroll"><table class="grid" id="classTable"></table></div>
+  </div>
+
+  <!-- ── Rules ──────────────────────────────────────────────────────────── -->
+  <h2>Rules for stating it in an interview</h2>
+  <div class="panel">
+    <ol class="rules">
+      <li><b>Drop constants and lower-order terms.</b> <code>3n² + 10n + 7</code> is
+        <code>O(n²)</code>. Two passes over the array is still <code>O(n)</code>.</li>
+      <li><b>Sequential steps add, nested steps multiply.</b> A loop then another loop is
+        <code>O(a + b)</code>; a loop inside a loop is <code>O(a · b)</code>.</li>
+      <li><b>Different inputs get different letters.</b> Comparing two strings is
+        <code>O(m · n)</code>, not <code>O(n²)</code>; a graph is <code>O(V + E)</code>. Collapsing
+        them to n is the most common way to state a wrong bound.</li>
+      <li><b>Halving gives a log.</b> Whenever each step cuts the remaining work in half —
+        binary search, a balanced tree, a heap — the step count is <code>log n</code>. The base
+        never matters: <code>log₂ n</code> and <code>log₁₀ n</code> differ by a constant.</li>
+      <li><b>Recursion is branches<sup>depth</sup>.</b> Naive Fibonacci makes 2 calls, n deep:
+        <code>O(2ⁿ)</code>. Memoise it and each state is computed once:
+        <code>O(states × work per state)</code> = <code>O(n)</code>.</li>
+      <li><b>Divide and conquer:</b> split in half, do linear work to merge — <code>O(n log n)</code>
+        (merge sort). Split in half and keep one side — <code>O(log n)</code> (binary search).</li>
+      <li><b>Amortised counts the whole run.</b> A dynamic array's occasional resize, or a monotonic
+        stack where each item is pushed and popped once, is <code>O(1)</code> per operation over
+        the run — say "amortised" out loud.</li>
+      <li><b>Space includes the recursion stack.</b> A DFS on a skewed tree is <code>O(n)</code>
+        space even with no data structure in sight; on a balanced one it is <code>O(log n)</code>.</li>
+      <li><b>Name the line that sets it.</b> "The sort is <code>O(n log n)</code> and everything after
+        it is linear, so the total is <code>O(n log n)</code>" is the sentence an interviewer is
+        listening for.</li>
+    </ol>
+  </div>
+
+  <details class="ref panel">
+    <summary>The classic Big-O chart (reference image)</summary>
+    <img src="doc/pic/bigO_complexity_chart.png" loading="lazy"
+         alt="Big-O complexity chart: operations against elements, from O(1) and O(log n) in the excellent band to O(2^n) and O(n!) in the horrible band">
+  </details>
+
+  <p class="next-links">
+    Practise it: the <a href="lc-complexity-quiz.html">complexity quiz</a> shows a snippet and asks
+    for its time and space · the <a href="cheatsheets.html">cheat sheets</a> state the bound of every template.
+  </p>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  // ── The nine classes, slowest to fastest growing ───────────────────────
+  //
+  // `slot` is the colour token. O(1) takes the neutral --s0: it is the
+  // baseline, not a contender, and the eight categorical slots are then
+  // enough for the rest without a ninth generated hue.
+  var PRESETS = [
+    { id: 'c1',     expr: '1',       label: 'O(1)',       name: 'constant',     slot: 0,
+      shape: 'Index into an array, a hash-map get/put, push / pop a stack.',
+      lc: 'LC 155 Min Stack · LC 380 Insert Delete GetRandom O(1)' },
+    { id: 'logn',   expr: 'log n',   label: 'O(log n)',   name: 'logarithmic',  slot: 1,
+      shape: 'Halve the search space each step: binary search, balanced BST, heap push / pop.',
+      lc: 'LC 704 Binary Search · LC 33 Search in Rotated Sorted Array · LC 153' },
+    { id: 'sqrtn',  expr: 'sqrt n',  label: 'O(√n)',      name: 'square root',  slot: 2,
+      shape: 'Loop while i·i ≤ n: trial-division primality, enumerating divisors.',
+      lc: 'Divisor / prime checks · LC 279 Perfect Squares runs O(n√n)' },
+    { id: 'n',      expr: 'n',       label: 'O(n)',       name: 'linear',       slot: 3,
+      shape: 'One pass: hash map, two pointers, sliding window, prefix sums, BFS / DFS (V + E).',
+      lc: 'LC 1 Two Sum · LC 3 Longest Substring · LC 121 · LC 200 Number of Islands' },
+    { id: 'nlogn',  expr: 'n log n', label: 'O(n log n)', name: 'linearithmic', slot: 4,
+      shape: 'Sort, then scan. A heap fed n items. Merge sort. n binary searches.',
+      lc: 'LC 56 Merge Intervals · LC 215 Kth Largest · LC 300 LIS (patience)' },
+    { id: 'n2',     expr: 'n^2',     label: 'O(n²)',      name: 'quadratic',    slot: 5,
+      shape: 'Two nested loops over the input; a DP table indexed by two positions.',
+      lc: 'LC 15 3Sum · LC 5 Longest Palindromic Substring · LC 1143 LCS' },
+    { id: 'n3',     expr: 'n^3',     label: 'O(n³)',      name: 'cubic',        slot: 6,
+      shape: 'Three nested loops: interval DP with a split point, Floyd–Warshall.',
+      lc: 'LC 312 Burst Balloons · LC 1039 · Floyd–Warshall' },
+    { id: 'exp',    expr: '2^n',     label: 'O(2ⁿ)',      name: 'exponential',  slot: 7,
+      shape: 'Every subset: include / exclude recursion, naive two-branch recursion.',
+      lc: 'LC 78 Subsets · LC 90 Subsets II · naive LC 509 Fibonacci' },
+    { id: 'fact',   expr: 'n!',      label: 'O(n!)',      name: 'factorial',    slot: 8,
+      shape: 'Every ordering: permutations, brute-force travelling salesman.',
+      lc: 'LC 46 Permutations · LC 51 N-Queens (bounded by n!)' }
+  ];
+
+  var MAX_CUSTOM = 3;
+  var DASHES = ['7 4', '2 3', '10 3 2 3'];
+  var RANGES = [10, 20, 50, 100, 1000, 1e6];
+  var TABLE_NS = [10, 100, 1e3, 1e4, 1e5, 1e6];
+  var STORE_KEY = 'big-o-chart';
+
+  var state = { hidden: {}, custom: [], nMax: 20, scale: 'linear', budgetExp: 8 };
+
+  function el(id) { return document.getElementById(id); }
+  function esc(v) {
+    return String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  // ── Persistence (a convenience only; the page works without it) ────────
+  function load() {
+    try {
+      var saved = JSON.parse(localStorage.getItem(STORE_KEY) || 'null');
+      if (!saved) return;
+      if (saved.hidden) state.hidden = saved.hidden;
+      if (RANGES.indexOf(saved.nMax) >= 0) state.nMax = saved.nMax;
+      if (saved.scale === 'log' || saved.scale === 'linear') state.scale = saved.scale;
+      if ([7, 8, 9].indexOf(saved.budgetExp) >= 0) state.budgetExp = saved.budgetExp;
+      (saved.custom || []).slice(0, MAX_CUSTOM).forEach(function (raw) { addCustom(raw, true); });
+    } catch (e) { /* storage blocked or corrupt: start fresh */ }
+  }
+  function save() {
+    try {
+      localStorage.setItem(STORE_KEY, JSON.stringify({
+        hidden: state.hidden, nMax: state.nMax, scale: state.scale, budgetExp: state.budgetExp,
+        custom: state.custom.map(function (c) { return c.raw; })
+      }));
+    } catch (e) { /* ignore */ }
+  }
+
+  // ── Curves ─────────────────────────────────────────────────────────────
+
+  PRESETS.forEach(function (p) {
+    p.ast = CSComplexity.compile(p.expr).ast;
+    p.key = CSComplexity.compile(p.expr).key;
+    p.stroke = 'var(--s' + p.slot + ')';
+  });
+
+  function allCurves() { return PRESETS.concat(state.custom); }
+  function visibleCurves() {
+    return allCurves().filter(function (c) { return !state.hidden[c.id]; });
+  }
+
+  // log2 of the operation count; see CSComplexity.log2Eval.
+  function L(curve, n) { return CSComplexity.log2Eval(curve.ast, n); }
+
+  // A typed expression, checked. Returns an error string or null.
+  function addCustom(raw, quiet) {
+    var text = String(raw || '').trim();
+    if (!text) return 'Type an expression first.';
+    // The shared preprocessor treats "." as a separator (so "O(n). " grades),
+    // which would read n^1.5 as n^15. Say so instead of plotting a wrong curve.
+    if (/\d\.\d/.test(text)) return 'Decimals are not supported — write n^1.5 as n sqrt n.';
+    var compiled = CSComplexity.compile(text);
+    if (!compiled) return 'Could not read "' + text + '". Use n, log, sqrt, ^, ! and * — e.g. n log^2 n.';
+    var dupe = allCurves().filter(function (c) { return c.key === compiled.key; })[0];
+    if (dupe) {
+      delete state.hidden[dupe.id];
+      return quiet ? null : 'That is ' + dupe.label + ', already on the chart.';
+    }
+    if (state.custom.length >= MAX_CUSTOM) return 'Up to ' + MAX_CUSTOM + ' custom curves — remove one first.';
+    var used = state.custom.map(function (c) { return c.dash; });
+    var dash = DASHES.filter(function (d) { return used.indexOf(d) === -1; })[0];
+    var label = /^\s*[oOθΘ]\s*\(/.test(text) ? text : 'O(' + text + ')';
+    state.custom.push({
+      // Keyed by the canonical form, so the id — and with it the saved
+      // hidden/shown state — survives a reload.
+      id: 'u:' + compiled.key, raw: text, label: label,
+      name: 'yours', ast: compiled.ast, key: compiled.key, stroke: 'var(--text)', dash: dash, custom: true
+    });
+    return null;
+  }
+
+  // ── Number formatting ──────────────────────────────────────────────────
+  var SUP = { '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴', '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹', '-': '⁻', ',': ',' };
+  function sup(s) { return String(s).split('').map(function (ch) { return SUP[ch] || ch; }).join(''); }
+
+  // An operation count, given as log2. Small numbers in full, large ones as
+  // a × 10^k, and the truly enormous (n! at n = 10^6) as 10^k alone.
+  function fmtOps(l2) {
+    if (l2 === -Infinity) return '0';
+    if (!isFinite(l2)) return '∞';
+    var log10 = l2 * Math.LOG10E / Math.LOG2E;
+    if (log10 < 6) {
+      var v = Math.pow(2, l2);
+      return v < 10 ? String(Math.round(v * 10) / 10) : Math.round(v).toLocaleString('en-US');
+    }
+    var k = Math.floor(log10);
+    if (k > 99999) return '10' + sup(Math.round(log10).toLocaleString('en-US'));
+    var mant = Number(Math.pow(10, log10 - k).toFixed(1));
+    if (mant >= 10) { mant = 1; k += 1; }          // 9.96 rounds to 1.0×10^(k+1), not 10.0×10^k
+    return mant.toFixed(1) + '×10' + sup(k);
+  }
+  function fmtN(n) {
+    // Bisection lands a hair under an exact answer (n² ≤ 10⁸ gives 9999.9999…),
+    // so nudge before flooring.
+    n = Math.floor(n * (1 + 1e-9));
+    if (n < 1e5) return n.toLocaleString('en-US');
+    var k = Math.floor(Math.log10(n));
+    var mant = Number((n / Math.pow(10, k)).toFixed(1));
+    if (mant >= 10) { mant = 1; k += 1; }
+    return (mant < 1.05 ? '' : mant.toFixed(1) + '×') + '10' + sup(k);
+  }
+
+  // Largest n whose operation count stays within 2^budgetL, by bisection on
+  // log2 n (every curve here is non-decreasing for n ≥ 1).
+  // Infinity means "still fits at n = 2^62", the edge of the search — not
+  // "no limit"; the table prints it as a lower bound unless the curve is flat.
+  var MAX_LOG_N = 62;
+  function maxN(curve, budgetL) {
+    if (L(curve, Math.pow(2, MAX_LOG_N)) <= budgetL) return Infinity;
+    if (L(curve, 1) > budgetL) return 0;
+    var lo = 0, hi = MAX_LOG_N;
+    for (var i = 0; i < 80; i++) {
+      var mid = (lo + hi) / 2;
+      if (L(curve, Math.pow(2, mid)) <= budgetL) lo = mid; else hi = mid;
+    }
+    return Math.pow(2, lo);
+  }
+
+  // ── Chart ──────────────────────────────────────────────────────────────
+
+  var SVGNS = 'http://www.w3.org/2000/svg';
+  var geom = null;   // the last layout, for the hover layer
+
+  function niceStep(span, target) {
+    var raw = span / target;
+    var mag = Math.pow(10, Math.floor(Math.log10(raw)));
+    var norm = raw / mag;
+    return (norm < 1.5 ? 1 : norm < 3.5 ? 2 : norm < 7.5 ? 5 : 10) * mag;
+  }
+  function axisNum(v) {
+    if (v >= 1e5) return fmtN(v);
+    return (Math.round(v * 100) / 100).toLocaleString('en-US');
+  }
+
+  function draw() {
+    var svg = el('chart');
+    var W = Math.max(300, el('chartWrap').clientWidth);
+    var H = Math.round(Math.min(460, Math.max(300, W * 0.58)));
+    var narrow = W < 520;
+    var m = { l: narrow ? 46 : 60, r: narrow ? 74 : 92, t: 30, b: 40 };
+    var pw = W - m.l - m.r, ph = H - m.t - m.b;
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    svg.setAttribute('width', W);
+    svg.setAttribute('height', H);
+
+    var nMax = state.nMax;
+    var curves = visibleCurves();
+    var isLog = state.scale === 'log';
+
+    // y range. Linear: tall enough that n log n reaches the top at n = nMax —
+    // the classic picture, where everything steeper visibly leaves the chart.
+    // Log: from 1 operation up to the biggest visible curve, capped at 10^30 so
+    // n! at n = 10^6 does not flatten every polynomial into the floor.
+    var yTop;
+    if (isLog) {
+      var maxL = 4;
+      curves.forEach(function (c) { var v = L(c, nMax); if (v > maxL) maxL = v; });
+      yTop = Math.min(maxL, 100) * 1.04;
+    } else {
+      yTop = nMax * Math.log2(nMax) * 1.15;
+    }
+    function xPix(n) { return m.l + (n - 1) / (nMax - 1) * pw; }
+    function yPix(l2) {
+      if (isLog) return m.t + ph - (Math.max(0, l2) / yTop) * ph;
+      var v = l2 === -Infinity ? 0 : Math.pow(2, l2);
+      return m.t + ph - (v / yTop) * ph;
+    }
+
+    var out = [];
+    out.push('<defs><clipPath id="plotClip"><rect x="' + m.l + '" y="' + m.t + '" width="' + pw + '" height="' + ph + '"/></clipPath></defs>');
+
+    // Grid + axes
+    var xs = niceStep(nMax - 1, narrow ? 4 : 7);
+    for (var xv = Math.ceil(1 / xs) * xs; xv <= nMax + 1e-9; xv += xs) {
+      if (xv < 1) continue;
+      var px = xPix(xv);
+      out.push('<line class="gridline" x1="' + px + '" x2="' + px + '" y1="' + m.t + '" y2="' + (m.t + ph) + '"/>');
+      out.push('<text class="axis-text" x="' + px + '" y="' + (m.t + ph + 16) + '" text-anchor="middle">' + esc(axisNum(xv)) + '</text>');
+    }
+    if (isLog) {
+      var top10 = yTop * Math.LOG10E / Math.LOG2E;
+      var step10 = Math.max(1, Math.ceil(top10 / 6));
+      for (var k = 0; k <= top10; k += step10) {
+        var py = yPix(k / Math.log10(2));
+        out.push('<line class="gridline" x1="' + m.l + '" x2="' + (m.l + pw) + '" y1="' + py + '" y2="' + py + '"/>');
+        out.push('<text class="axis-text" x="' + (m.l - 6) + '" y="' + (py + 4) + '" text-anchor="end">' + (k === 0 ? '1' : '10' + sup(k)) + '</text>');
+      }
+    } else {
+      var ys = niceStep(yTop, 6);
+      for (var yv = 0; yv <= yTop; yv += ys) {
+        var py2 = yPix(Math.log2(yv || 0));
+        if (yv === 0) py2 = m.t + ph;
+        out.push('<line class="gridline" x1="' + m.l + '" x2="' + (m.l + pw) + '" y1="' + py2 + '" y2="' + py2 + '"/>');
+        out.push('<text class="axis-text" x="' + (m.l - 6) + '" y="' + (py2 + 4) + '" text-anchor="end">' + esc(axisNum(yv)) + '</text>');
+      }
+    }
+    out.push('<line class="axisline" x1="' + m.l + '" x2="' + (m.l + pw) + '" y1="' + (m.t + ph) + '" y2="' + (m.t + ph) + '"/>');
+    out.push('<line class="axisline" x1="' + m.l + '" x2="' + m.l + '" y1="' + m.t + '" y2="' + (m.t + ph) + '"/>');
+    out.push('<text class="axis-title" x="' + (m.l + pw / 2) + '" y="' + (H - 6) + '" text-anchor="middle">n (input size)</text>');
+    out.push('<text class="axis-title" x="' + m.l + '" y="' + (m.t - 12) + '" text-anchor="start">operations' + (isLog ? ' (log scale)' : '') + '</text>');
+
+    // Curves
+    var SAMPLES = Math.min(600, Math.max(200, pw));
+    var rightLabels = [];
+    var topLabels = [];
+    curves.forEach(function (c) {
+      var d = '';
+      var exitN = null;
+      for (var i = 0; i <= SAMPLES; i++) {
+        var n = 1 + (nMax - 1) * i / SAMPLES;
+        var l2 = L(c, n);
+        var y = yPix(l2);
+        if (!isFinite(y) || y < m.t - ph) y = m.t - ph;   // far above: clipped anyway
+        if (exitN === null && y < m.t) exitN = n;
+        d += (i ? 'L' : 'M') + xPix(n).toFixed(1) + ' ' + y.toFixed(1);
+      }
+      out.push('<path d="' + d + '" fill="none" clip-path="url(#plotClip)" style="stroke:' + c.stroke + '" stroke-width="2"'
+        + (c.dash ? ' stroke-dasharray="' + c.dash + '"' : '') + ' stroke-linejoin="round"/>');
+      if (exitN !== null) topLabels.push({ x: xPix(exitN), text: c.label });
+      else rightLabels.push({ y: yPix(L(c, nMax)), text: c.label });
+    });
+
+    // Direct labels: right edge for curves that finish inside the plot,
+    // along the top for those that leave it. Nudged apart so they never stack.
+    rightLabels.sort(function (a, b) { return b.y - a.y; });
+    var floorY = m.t + ph + 4;
+    rightLabels.forEach(function (lb) {
+      lb.y = Math.min(lb.y + 4, floorY);
+      floorY = lb.y - 13;
+    });
+    rightLabels.forEach(function (lb) {
+      out.push('<text class="curve-label" x="' + (m.l + pw + 6) + '" y="' + lb.y.toFixed(1) + '">' + esc(lb.text) + '</text>');
+    });
+    topLabels.sort(function (a, b) { return a.x - b.x; });
+    var rows = [];   // last right edge used on each row
+    topLabels.forEach(function (lb) {
+      var w = lb.text.length * 6.8;
+      var x = Math.max(m.l, Math.min(lb.x - w / 2, m.l + pw + m.r - w - 2));
+      var r = 0;
+      while (rows[r] !== undefined && rows[r] > x - 6) r++;
+      rows[r] = x + w;
+      var y = m.t + 12 + r * 13;
+      out.push('<text class="curve-label" x="' + x.toFixed(1) + '" y="' + y + '" style="paint-order:stroke;stroke:var(--bg);stroke-width:3px">' + esc(lb.text) + '</text>');
+    });
+
+    // Hover layer
+    out.push('<line id="hoverLine" class="axisline" y1="' + m.t + '" y2="' + (m.t + ph) + '" x1="-10" x2="-10" stroke-dasharray="3 3" style="stroke:var(--text-light)"/>');
+    out.push('<g id="hoverDots"></g>');
+    out.push('<rect id="hitArea" x="' + m.l + '" y="' + m.t + '" width="' + pw + '" height="' + ph + '" fill="transparent"/>');
+
+    svg.innerHTML = out.join('');
+    geom = { m: m, pw: pw, ph: ph, W: W, nMax: nMax, xPix: xPix, yPix: yPix, curves: curves };
+
+    el('chartDesc').textContent = curves.length
+      ? 'Operations against n from 1 to ' + fmtN(nMax) + ', '
+        + (isLog ? 'on a log scale, where each gridline is 10× the one below — the only view that keeps 2ⁿ and n! on the page. '
+                 : 'on a linear scale sized so O(n log n) just reaches the top; anything steeper leaves the chart. ')
+        + 'Hover for the exact counts at any n. Logs are base 2.'
+      : 'Every curve is hidden — click a class above to show it.';
+  }
+
+  function hover(evt) {
+    if (!geom || !geom.curves.length) return;
+    var rect = el('chart').getBoundingClientRect();
+    var scale = geom.W / rect.width;
+    var px = (evt.clientX - rect.left) * scale;
+    var frac = Math.min(1, Math.max(0, (px - geom.m.l) / geom.pw));
+    var n = 1 + frac * (geom.nMax - 1);
+    if (geom.nMax <= 100) n = Math.max(1, Math.round(n));
+    var x = geom.xPix(n);
+    var line = el('hoverLine');
+    line.setAttribute('x1', x); line.setAttribute('x2', x);
+
+    var rows = geom.curves.map(function (c) { return { c: c, l: L(c, n) }; });
+    rows.sort(function (a, b) { return b.l - a.l; });
+    var dots = '';
+    rows.forEach(function (r) {
+      var y = geom.yPix(r.l);
+      if (y >= geom.m.t && y <= geom.m.t + geom.ph) {
+        dots += '<circle cx="' + x + '" cy="' + y + '" r="4" style="fill:' + r.c.stroke + ';stroke:var(--bg)" stroke-width="2"/>';
+      }
+    });
+    el('hoverDots').innerHTML = dots;
+
+    var tip = el('tip');
+    tip.innerHTML = '<div class="tn">n = ' + fmtN(n) + '</div>' + rows.map(function (r) {
+      return '<div class="row"><span class="swatch' + swatchClass(r.c) + '" style="border-color:' + r.c.stroke + '"></span>'
+        + '<span class="nm">' + esc(r.c.label) + '</span><span class="v">' + fmtOps(r.l) + '</span></div>';
+    }).join('');
+    tip.hidden = false;
+    var left = x / scale + 14;
+    var tipW = tip.offsetWidth;
+    if (left + tipW > rect.width) left = x / scale - tipW - 14;
+    tip.style.left = Math.max(0, left) + 'px';
+    tip.style.top = (geom.m.t / scale + 4) + 'px';
+  }
+  function unhover() {
+    el('tip').hidden = true;
+    var line = el('hoverLine');
+    if (line) { line.setAttribute('x1', -10); line.setAttribute('x2', -10); }
+    var dots = el('hoverDots');
+    if (dots) dots.innerHTML = '';
+  }
+
+  function swatchClass(c) {
+    if (!c.dash) return '';
+    return c.dash === DASHES[1] ? ' dash2' : ' dash1';
+  }
+
+  // ── Ladder (legend + toggles) ──────────────────────────────────────────
+  function renderLadder() {
+    var html = [];
+    PRESETS.forEach(function (p, i) {
+      if (i) html.push('<span class="lt">&lt;</span>');
+      html.push(chipHTML(p));
+    });
+    el('ladder').innerHTML = html.join('');
+    el('customList').innerHTML = state.custom.length
+      ? '<span class="label" style="margin-top:0.9rem">Yours</span><div class="ladder">'
+        + state.custom.map(chipHTML).join('') + '</div>'
+      : '';
+  }
+  function chipHTML(c) {
+    var toggle = '<button type="button" class="curve-chip' + (state.hidden[c.id] ? ' off' : '') + '" data-id="' + esc(c.id) + '"'
+      + ' aria-pressed="' + (!state.hidden[c.id]) + '" title="' + esc(c.name) + '">'
+      + '<span class="swatch' + swatchClass(c) + '" style="border-color:' + c.stroke + '"></span>' + esc(c.label)
+      + '</button>';
+    if (!c.custom) return toggle;
+    // Removal is its own button, so it is reachable by keyboard and Enter on
+    // the chip still means "toggle".
+    return '<span class="chip-pair">' + toggle
+      + '<button type="button" class="chip-remove" data-remove="' + esc(c.id) + '" aria-label="Remove ' + esc(c.label) + '">×</button></span>';
+  }
+
+  // ── Ops table ──────────────────────────────────────────────────────────
+  function renderOps() {
+    var budgetL = state.budgetExp / Math.log10(2);
+    var curves = visibleCurves().slice().sort(function (a, b) { return L(a, 1e6) - L(b, 1e6); });
+    el('budgetText').textContent = '10' + sup(state.budgetExp);
+    var head = '<thead><tr><th>Class</th>' + TABLE_NS.map(function (n) {
+      return '<th style="text-align:right">n = ' + fmtN(n) + '</th>';
+    }).join('') + '<th style="text-align:right">largest n in ~1 s</th></tr></thead>';
+    var body = curves.map(function (c) {
+      var cells = TABLE_NS.map(function (n) {
+        var l2 = L(c, n);
+        var cls = l2 <= budgetL ? 'fit' : l2 <= budgetL + Math.log2(10) ? 'tight' : 'slow';
+        return '<td class="num ' + cls + '">' + fmtOps(l2) + '</td>';
+      }).join('');
+      var mx = maxN(c, budgetL);
+      var mxText = mx === Infinity
+        ? (L(c, Math.pow(2, MAX_LOG_N)) === L(c, 1) ? 'any' : '&gt; ' + fmtN(Math.pow(2, MAX_LOG_N)))
+        : mx < 1 ? '—' : fmtN(mx);
+      return '<tr><td class="cls"><span class="swatch' + swatchClass(c) + '" style="border-color:' + c.stroke + '"></span>'
+        + esc(c.label) + '</td>' + cells + '<td class="num maxn">' + mxText + '</td></tr>';
+    }).join('');
+    el('opsTable').innerHTML = head + '<tbody>' + (body || '<tr><td colspan="8">Show a class above to fill the table.</td></tr>') + '</tbody>';
+  }
+
+  function renderClasses() {
+    el('classTable').innerHTML = '<thead><tr><th>Class</th><th>Name</th><th>Code shape</th><th>Typical problems</th></tr></thead><tbody>'
+      + PRESETS.map(function (p) {
+        return '<tr><td class="cls"><span class="swatch" style="border-color:' + p.stroke + '"></span>' + esc(p.label) + '</td>'
+          + '<td>' + esc(p.name) + '</td><td>' + esc(p.shape) + '</td><td>' + esc(p.lc) + '</td></tr>';
+      }).join('') + '</tbody>';
+  }
+
+  // ── Compare ────────────────────────────────────────────────────────────
+  //
+  // Asymptotic order is read off the log2-ratio d(n) = L(a) - L(b) at three
+  // far-apart n. If d has stopped moving, the ratio tends to a constant: same
+  // class. If it keeps moving, its sign says which one wins.
+  //
+  // Two things make this numerical, and the page says so rather than guess:
+  //  - Precision. L is a double, so at n = 2^512, 2^n's L is 2^512 and the
+  //    extra log2 n of n·2^n is lost in rounding. Probes are kept small enough
+  //    that L stays exact to well under one bit, and a difference smaller than
+  //    the rounding error is reported as undecided, never as a winner.
+  //  - Factors like sqrt(log log n) grow so slowly that no feasible probe sees
+  //    them move. Only identical canonical forms (n vs 2n) are certain to be
+  //    the same class; a flat numerical ratio is reported as "as far as can be
+  //    measured".
+  //
+  // The first set is far out on purpose: an additive constant as large as
+  // 10^15 (n vs n + 10^15) still moves the ratio at 2^16..2^48, and only
+  // probes well past it see the two flatten into one class. It is used only
+  // when every value there stays exact (|L| ≤ 2^36, where a double still
+  // resolves 10⁻⁵ of a bit); n·2^n vs 2^n is not, and falls through to the
+  // smaller sets that can see its extra factor of n.
+  var EXACT_L = Math.pow(2, 36);
+  var PROBE_SETS = [
+    [Math.pow(2, 64), Math.pow(2, 128), Math.pow(2, 256)],
+    [Math.pow(2, 16), Math.pow(2, 32), Math.pow(2, 48)],
+    [Math.pow(2, 8), Math.pow(2, 12), Math.pow(2, 16)],
+    [16, 32, 64],
+    [4, 6, 8]
+  ];
+  var CROSS_LIMIT = 1e18;
+
+  // Additive constants never change the class (O(n + 10^15) = O(n)), but one
+  // big enough can outlast every probe: log n only reaches 256 at n = 2^256,
+  // nowhere near 10^15. So they are removed structurally before measuring.
+  // Only through +, *, log and sqrt, where that is sound — every remaining
+  // term grows without bound, so a constant beside it is a lower-order term.
+  // Not inside a power or a factorial: (n+10)! is n^10 times n!.
+  function hasVar(node) {
+    if (node.t === 'var') return true;
+    if (node.t === 'num') return false;
+    var kids = node.xs || [node.x, node.b, node.e].filter(Boolean);
+    return kids.some(hasVar);
+  }
+  function dropConstants(node) {
+    switch (node.t) {
+      case 'add': {
+        var kept = node.xs.filter(hasVar).map(dropConstants);
+        if (!kept.length) return node;                  // all constant: leave it
+        return kept.length === 1 ? kept[0] : { t: 'add', xs: kept };
+      }
+      case 'mul': return { t: 'mul', xs: node.xs.map(dropConstants) };
+      case 'log': case 'sqrt': return { t: node.t, x: dropConstants(node.x) };
+      default: return node;
+    }
+  }
+
+  function asymptotic(A, B) {
+    A = { ast: dropConstants(A.ast) };
+    B = { ast: dropConstants(B.ast) };
+    for (var s = 0; s < PROBE_SETS.length; s++) {
+      var probes = PROBE_SETS[s];
+      var la = probes.map(function (n) { return L(A, n); });
+      var lb = probes.map(function (n) { return L(B, n); });
+      var finite = la.concat(lb).every(function (v) { return isFinite(v); });
+      if (!finite) continue;   // too steep for these n: try smaller ones
+      var exact = la.concat(lb).every(function (v) { return Math.abs(v) <= EXACT_L; });
+      if (s === 0 && !exact) continue;   // the far set only decides when it is exact
+      var d = la.map(function (v, i) { return v - lb[i]; });
+      // Rounding error of a difference of two doubles of this size, in bits.
+      var tol = probes.map(function (n, i) { return (Math.abs(la[i]) + Math.abs(lb[i])) * Math.pow(2, -50); });
+      // Out at 2^64..2^256 a same-class pair has flattened to hundredths of a
+      // bit, while log log n still moves 0.2 a step — so the far set needs a
+      // much tighter bar than the near ones, or n log log n would pass as n.
+      var bar = s === 0 ? 0.02 : 0.25;
+      var flat = Math.abs(d[2] - d[1]) < bar + tol[2] + tol[1] && Math.abs(d[1] - d[0]) < bar + tol[1] + tol[0];
+      if (flat) return { kind: 'same', ratio: Math.pow(2, d[2]), upTo: probes[2] };
+      // The *trend* of d decides, not its sign at one n: n² vs 10¹⁵·n is
+      // still negative at 2^48 but rising, and n² is the one that wins.
+      var trend = d[2] - d[1];
+      if (Math.abs(trend) <= 4 * (tol[2] + tol[1])) return { kind: 'unknown' };
+      return { kind: 'order', faster: trend > 0 ? 'a' : 'b' };
+    }
+    return { kind: 'unknown' };
+  }
+
+  function compare() {
+    var a = el('cmpA').value.trim(), b = el('cmpB').value.trim();
+    var ca = CSComplexity.compile(a), cb = CSComplexity.compile(b);
+    var out = el('cmpOut');
+    var badA = !ca || /\d\.\d/.test(a);
+    var badB = !cb || /\d\.\d/.test(b);
+    if (badA || badB) {
+      // Name the field that actually failed (a decimal compiles, so !ca alone
+      // is not enough), and show "(empty)" for either blank field.
+      out.innerHTML = '<p class="msg err">Could not read ' + esc((badA ? a : b) || '(empty)')
+        + '. Use n, log, sqrt, ^, ! and * — e.g. <code>n log n</code>, <code>2^n</code>.</p>';
+      return;
+    }
+    var A = { ast: ca.ast }, B = { ast: cb.ast };
+    var la = 'O(' + a.replace(/^\s*[oOθΘ]\s*\((.*)\)\s*$/, '$1') + ')';
+    var lb = 'O(' + b.replace(/^\s*[oOθΘ]\s*\((.*)\)\s*$/, '$1') + ')';
+    var at6 = L(A, 1e6) - L(B, 1e6);
+    var atLine = isFinite(at6)
+      ? '<p>At n = 10⁶: ' + esc(la) + ' ≈ <b>' + fmtOps(L(A, 1e6)) + '</b> ops, ' + esc(lb) + ' ≈ <b>' + fmtOps(L(B, 1e6))
+        + '</b> ops — a factor of <b>' + fmtOps(Math.abs(at6)) + '</b>.</p>'
+      : '';
+
+    // Identical canonical forms differ only by constant factors: certain.
+    if (ca.key === cb.key) {
+      out.innerHTML = '<div class="big">Same class: ' + esc(la) + ' = ' + esc(lb) + '</div>'
+        + '<p>They differ only by a constant factor, which Big-O drops. Pick whichever is clearer to say out loud.</p>';
+      return;
+    }
+
+    var result = asymptotic(A, B);
+    if (result.kind === 'same') {
+      out.innerHTML = '<div class="big">Same class, as far as can be measured: ' + esc(la) + ' ≈ ' + esc(lb) + '</div>'
+        + '<p>Their ratio settles at about <b>' + (Math.round(result.ratio * 100) / 100) + '</b> by n = ' + fmtN(result.upTo)
+        + ' — a constant factor, which Big-O drops (e.g. <code>log n</code> vs <code>log(n²)</code>).</p>'
+        + '<p>This is a numerical check: a factor that grows as slowly as <code>log log n</code> or slower can hide from it, '
+        + 'so argue it algebraically before relying on it.</p>' + atLine;
+      return;
+    }
+    if (result.kind === 'unknown') {
+      out.innerHTML = '<div class="big">Cannot tell these apart numerically</div>'
+        + '<p>Their difference is below what double-precision arithmetic can resolve at the input sizes it can evaluate. '
+        + 'Compare them by structure instead: cancel the common factors and see what is left.</p>' + atLine;
+      return;
+    }
+
+    var big = result.faster === 'a' ? la : lb, small = result.faster === 'a' ? lb : la;
+    var Big = result.faster === 'a' ? A : B, Small = result.faster === 'a' ? B : A;
+    // The last n (on a fine grid up to CROSS_LIMIT) where the faster one is
+    // not yet ahead. If it is still behind at the limit, the crossover is
+    // somewhere past it — say so rather than present the limit as the answer.
+    // The scan also stops once L passes 2^45: beyond that a double cannot
+    // resolve a few bits of difference (2^n vs n·2^n), and a rounding tie
+    // would read as "still behind".
+    // `cross` is the last n where the faster one costs no more (a tie counts:
+    // n² and 100·n meet at n = 100, so n² is ahead only past 100). `cheaper`
+    // records whether it was ever strictly cheaper — a tie alone (both 1 op
+    // at n = 1) is not a range where the "worse" class wins.
+    var cross = 0, cheaper = false, lastN = 1, n;
+    for (n = 1; n <= CROSS_LIMIT; n = n < 1000 ? n + 1 : n * 1.01) {
+      var lBig = L(Big, n), lSmall = L(Small, n);
+      // -Infinity is a cost of 0 (log 1), exact and fine; only +Infinity or
+      // a huge finite L ends the scan.
+      if (lBig === Infinity || lSmall === Infinity
+          || Math.max(isFinite(lBig) ? lBig : 0, isFinite(lSmall) ? lSmall : 0) > Math.pow(2, 45)) break;
+      lastN = n;
+      if (lBig <= lSmall) cross = n;
+      if (lBig < lSmall) cheaper = true;
+    }
+    var stillBehind = cheaper && cross === lastN && lastN > 1;
+    var crossLine;
+    if (stillBehind) {
+      crossLine = '<p>But only eventually — ' + esc(big) + ' is still the cheaper of the two at n = ' + fmtN(lastN)
+        + ', so the crossover is <b>beyond ' + fmtN(lastN) + '</b>. For any real input the "worse" class wins here: '
+        + 'constants matter.</p>';
+    } else if (cheaper) {
+      crossLine = '<p>But not from the start — ' + esc(big) + ' only stays ahead once n passes <b>'
+        + (cross >= 1000 ? 'about ' : '') + fmtN(cross) + '</b>. '
+        + 'Before that the "worse" class is cheaper, which is why constants still matter for small inputs.</p>';
+    } else {
+      crossLine = '<p>' + esc(big) + ' costs at least as much at every n ≥ 1 — there is no input size where it is cheaper.</p>';
+    }
+    out.innerHTML = '<div class="big">' + esc(small) + ' grows slower than ' + esc(big) + '</div>'
+      + '<p>So <b>' + esc(small) + '</b> is the better bound: ' + esc(small) + ' ⊂ ' + esc(big) + '.</p>'
+      + crossLine + atLine;
+  }
+
+  // ── Wiring ─────────────────────────────────────────────────────────────
+  function renderControls() {
+    el('rangeChips').innerHTML = RANGES.map(function (r) {
+      return '<button type="button" class="chip' + (r === state.nMax ? ' active' : '') + '" data-range="' + r + '">' + fmtN(r) + '</button>';
+    }).join('');
+    el('scaleChips').innerHTML = ['linear', 'log'].map(function (s) {
+      return '<button type="button" class="chip' + (s === state.scale ? ' active' : '') + '" data-scale="' + s + '">' + s + '</button>';
+    }).join('');
+    el('budgetSelect').value = String(state.budgetExp);
+  }
+
+  function renderAll() {
+    renderLadder();
+    renderControls();
+    draw();
+    renderOps();
+    save();
+  }
+
+  function onLadderClick(evt) {
+    var rm = evt.target.closest('[data-remove]');
+    if (rm) {
+      var id = rm.getAttribute('data-remove');
+      state.custom = state.custom.filter(function (c) { return c.id !== id; });
+      delete state.hidden[id];
+      renderAll();
+      return;
+    }
+    var chip = evt.target.closest('[data-id]');
+    if (!chip) return;
+    var cid = chip.getAttribute('data-id');
+    if (state.hidden[cid]) delete state.hidden[cid]; else state.hidden[cid] = true;
+    renderAll();
+  }
+
+  function submitCustom(raw) {
+    var err = addCustom(raw, false);
+    var msg = el('addMsg');
+    msg.className = 'msg' + (err && !/already on the chart/.test(err) ? ' err' : '');
+    msg.textContent = err || 'Plotted ' + state.custom[state.custom.length - 1].label + ' — dashed, so it stands apart from the nine classes.';
+    if (!err) el('addInput').value = '';
+    renderAll();
+  }
+
+  el('ladder').addEventListener('click', onLadderClick);
+  el('customList').addEventListener('click', onLadderClick);
+  el('addForm').addEventListener('submit', function (evt) { evt.preventDefault(); submitCustom(el('addInput').value); });
+  document.querySelector('.examples').addEventListener('click', function (evt) {
+    var b = evt.target.closest('[data-ex]');
+    if (b) submitCustom(b.getAttribute('data-ex'));
+  });
+  el('rangeChips').addEventListener('click', function (evt) {
+    var b = evt.target.closest('[data-range]');
+    if (!b) return;
+    state.nMax = Number(b.getAttribute('data-range'));
+    renderAll();
+  });
+  el('scaleChips').addEventListener('click', function (evt) {
+    var b = evt.target.closest('[data-scale]');
+    if (!b) return;
+    state.scale = b.getAttribute('data-scale');
+    renderAll();
+  });
+  el('budgetSelect').addEventListener('change', function () {
+    state.budgetExp = Number(el('budgetSelect').value);
+    renderOps();
+    save();
+  });
+  el('cmpForm').addEventListener('submit', function (evt) { evt.preventDefault(); compare(); });
+
+  var chart = el('chart');
+  chart.addEventListener('mousemove', hover);
+  chart.addEventListener('mouseleave', unhover);
+  chart.addEventListener('touchstart', function (evt) { hover(evt.touches[0]); }, { passive: true });
+  chart.addEventListener('touchmove', function (evt) { hover(evt.touches[0]); }, { passive: true });
+
+  var resizeTimer = null;
+  window.addEventListener('resize', function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(draw, 80);
+  });
+
+  load();
+  renderClasses();
+  renderAll();
+  compare();
+})();
+</script>
+
+<footer>
+  <div class="container">
+    <p>CS_basics — computer science fundamentals &amp; interview preparation</p>
+    <p>
+      <a href="https://github.com/yennanliu/CS_basics">github</a> |
+      <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+      <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
