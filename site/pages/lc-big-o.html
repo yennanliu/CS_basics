@@ -99,7 +99,12 @@
     .swatch { width: 16px; height: 0; border-top: 3px solid; flex: none; }
     .swatch.dash1 { border-top-style: dashed; }
     .swatch.dash2 { border-top-style: dotted; }
-    .curve-chip .x { color: var(--text-light); margin-left: 0.1rem; }
+    .chip-pair { display: inline-flex; }
+    .chip-remove {
+      border: 1px solid var(--border); border-left: none; background: var(--bg);
+      color: var(--text-light); font: inherit; font-size: 0.9rem; padding: 0 0.6rem; cursor: pointer;
+    }
+    .chip-remove:hover, .chip-remove:focus-visible { color: var(--text); border-color: var(--text); }
     .ladder-hint { font-size: 0.78rem; color: var(--text-light); margin-top: 0.6rem; }
 
     .add-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem; }
@@ -180,7 +185,7 @@
       .panel { padding: 1rem; }
       .cmp-row { grid-template-columns: 1fr; }
       .cmp-row .vs { text-align: center; }
-      .chip, .curve-chip, .btn { min-height: 40px; }
+      .chip, .curve-chip, .chip-remove, .btn { min-height: 40px; }
       input, select { font-size: 16px; min-height: 44px; }
     }
     @supports (padding: env(safe-area-inset-left)) {
@@ -457,7 +462,9 @@
     var dash = DASHES.filter(function (d) { return used.indexOf(d) === -1; })[0];
     var label = /^\s*[oOθΘ]\s*\(/.test(text) ? text : 'O(' + text + ')';
     state.custom.push({
-      id: 'u' + Date.now().toString(36) + state.custom.length, raw: text, label: label,
+      // Keyed by the canonical form, so the id — and with it the saved
+      // hidden/shown state — survives a reload.
+      id: 'u:' + compiled.key, raw: text, label: label,
       name: 'yours', ast: compiled.ast, key: compiled.key, stroke: 'var(--text)', dash: dash, custom: true
     });
     return null;
@@ -496,6 +503,8 @@
 
   // Largest n whose operation count stays within 2^budgetL, by bisection on
   // log2 n (every curve here is non-decreasing for n ≥ 1).
+  // Infinity means "still fits at n = 2^62", the edge of the search — not
+  // "no limit"; the table prints it as a lower bound unless the curve is flat.
   var MAX_LOG_N = 62;
   function maxN(curve, budgetL) {
     if (L(curve, Math.pow(2, MAX_LOG_N)) <= budgetL) return Infinity;
@@ -713,11 +722,15 @@
       : '';
   }
   function chipHTML(c) {
-    return '<button type="button" class="curve-chip' + (state.hidden[c.id] ? ' off' : '') + '" data-id="' + c.id + '"'
+    var toggle = '<button type="button" class="curve-chip' + (state.hidden[c.id] ? ' off' : '') + '" data-id="' + esc(c.id) + '"'
       + ' aria-pressed="' + (!state.hidden[c.id]) + '" title="' + esc(c.name) + '">'
       + '<span class="swatch' + swatchClass(c) + '" style="border-color:' + c.stroke + '"></span>' + esc(c.label)
-      + (c.custom ? '<span class="x" data-remove="' + c.id + '" aria-label="remove">×</span>' : '')
       + '</button>';
+    if (!c.custom) return toggle;
+    // Removal is its own button, so it is reachable by keyboard and Enter on
+    // the chip still means "toggle".
+    return '<span class="chip-pair">' + toggle
+      + '<button type="button" class="chip-remove" data-remove="' + esc(c.id) + '" aria-label="Remove ' + esc(c.label) + '">×</button></span>';
   }
 
   // ── Ops table ──────────────────────────────────────────────────────────
@@ -735,7 +748,9 @@
         return '<td class="num ' + cls + '">' + fmtOps(l2) + '</td>';
       }).join('');
       var mx = maxN(c, budgetL);
-      var mxText = mx === Infinity ? 'any' : mx < 1 ? '—' : fmtN(mx);
+      var mxText = mx === Infinity
+        ? (L(c, Math.pow(2, MAX_LOG_N)) === L(c, 1) ? 'any' : '&gt; ' + fmtN(Math.pow(2, MAX_LOG_N)))
+        : mx < 1 ? '—' : fmtN(mx);
       return '<tr><td class="cls"><span class="swatch' + swatchClass(c) + '" style="border-color:' + c.stroke + '"></span>'
         + esc(c.label) + '</td>' + cells + '<td class="num maxn">' + mxText + '</td></tr>';
     }).join('');
@@ -752,60 +767,127 @@
 
   // ── Compare ────────────────────────────────────────────────────────────
   //
-  // Asymptotic order is read off the log-ratio at three far-apart n. If it
-  // has stopped moving, the ratio tends to a constant: same class (Θ). If it
-  // keeps growing, the sign says which one wins.
+  // Asymptotic order is read off the log2-ratio d(n) = L(a) - L(b) at three
+  // far-apart n. If d has stopped moving, the ratio tends to a constant: same
+  // class. If it keeps moving, its sign says which one wins.
+  //
+  // Two things make this numerical, and the page says so rather than guess:
+  //  - Precision. L is a double, so at n = 2^512, 2^n's L is 2^512 and the
+  //    extra log2 n of n·2^n is lost in rounding. Probes are kept small enough
+  //    that L stays exact to well under one bit, and a difference smaller than
+  //    the rounding error is reported as undecided, never as a winner.
+  //  - Factors like sqrt(log log n) grow so slowly that no feasible probe sees
+  //    them move. Only identical canonical forms (n vs 2n) are certain to be
+  //    the same class; a flat numerical ratio is reported as "as far as can be
+  //    measured".
+  var PROBE_SETS = [
+    [Math.pow(2, 16), Math.pow(2, 32), Math.pow(2, 48)],
+    [Math.pow(2, 8), Math.pow(2, 12), Math.pow(2, 16)],
+    [16, 32, 64],
+    [4, 6, 8]
+  ];
+  var CROSS_LIMIT = 1e18;
+
+  function asymptotic(A, B) {
+    for (var s = 0; s < PROBE_SETS.length; s++) {
+      var probes = PROBE_SETS[s];
+      var la = probes.map(function (n) { return L(A, n); });
+      var lb = probes.map(function (n) { return L(B, n); });
+      var finite = la.concat(lb).every(function (v) { return isFinite(v); });
+      if (!finite) continue;   // too steep for these n: try smaller ones
+      var d = la.map(function (v, i) { return v - lb[i]; });
+      // Rounding error of a difference of two doubles of this size, in bits.
+      var tol = probes.map(function (n, i) { return (Math.abs(la[i]) + Math.abs(lb[i])) * Math.pow(2, -50); });
+      var flat = Math.abs(d[2] - d[1]) < 0.25 + tol[2] + tol[1] && Math.abs(d[1] - d[0]) < 0.25 + tol[1] + tol[0];
+      if (flat) return { kind: 'same', ratio: Math.pow(2, d[2]), upTo: probes[2] };
+      // The *trend* of d decides, not its sign at one n: n² vs 10¹⁵·n is
+      // still negative at 2^48 but rising, and n² is the one that wins.
+      var trend = d[2] - d[1];
+      if (Math.abs(trend) <= 4 * (tol[2] + tol[1])) return { kind: 'unknown' };
+      return { kind: 'order', faster: trend > 0 ? 'a' : 'b' };
+    }
+    return { kind: 'unknown' };
+  }
+
   function compare() {
     var a = el('cmpA').value.trim(), b = el('cmpB').value.trim();
     var ca = CSComplexity.compile(a), cb = CSComplexity.compile(b);
     var out = el('cmpOut');
-    if (!ca || !cb || /\d\.\d/.test(a + b)) {
-      out.innerHTML = '<p class="msg err">Could not read ' + esc(!ca ? a : b || '(empty)')
+    var badA = !ca || /\d\.\d/.test(a);
+    var badB = !cb || /\d\.\d/.test(b);
+    if (badA || badB) {
+      // Name the field that actually failed (a decimal compiles, so !ca alone
+      // is not enough), and show "(empty)" for either blank field.
+      out.innerHTML = '<p class="msg err">Could not read ' + esc((badA ? a : b) || '(empty)')
         + '. Use n, log, sqrt, ^, ! and * — e.g. <code>n log n</code>, <code>2^n</code>.</p>';
       return;
     }
     var A = { ast: ca.ast }, B = { ast: cb.ast };
     var la = 'O(' + a.replace(/^\s*[oOθΘ]\s*\((.*)\)\s*$/, '$1') + ')';
     var lb = 'O(' + b.replace(/^\s*[oOθΘ]\s*\((.*)\)\s*$/, '$1') + ')';
-    var probes = [Math.pow(2, 32), Math.pow(2, 128), Math.pow(2, 512)];
-    var diffs = probes.map(function (n) { return L(A, n) - L(B, n); });
     var at6 = L(A, 1e6) - L(B, 1e6);
+    var atLine = isFinite(at6)
+      ? '<p>At n = 10⁶: ' + esc(la) + ' ≈ <b>' + fmtOps(L(A, 1e6)) + '</b> ops, ' + esc(lb) + ' ≈ <b>' + fmtOps(L(B, 1e6))
+        + '</b> ops — a factor of <b>' + fmtOps(Math.abs(at6)) + '</b>.</p>'
+      : '';
 
-    var verdict, faster = null;
-    if (diffs.some(function (d) { return !isFinite(d) || isNaN(d); })) {
-      // One of them overflows even log space at huge n: decide at the last
-      // probe both survive, which is still far past any real input.
-      var la5 = L(A, 1e15), lb5 = L(B, 1e15);
-      if (la5 === lb5) verdict = 'Both are beyond astronomically large for big n — the chart cannot separate them.';
-      else faster = la5 > lb5 ? 'a' : 'b';
-    } else if (Math.abs(diffs[2] - diffs[1]) < 0.25 && Math.abs(diffs[1] - diffs[0]) < 0.25) {
-      var ratio = Math.pow(2, diffs[2]);
-      verdict = '<div class="big">Same class: ' + esc(la) + ' = ' + esc(lb) + '</div>'
-        + '<p>Their ratio settles at about <b>' + (Math.round(ratio * 100) / 100) + '</b> — a constant factor, which Big-O drops. '
-        + 'Pick whichever is clearer to say out loud.</p>';
+    // Identical canonical forms differ only by constant factors: certain.
+    if (ca.key === cb.key) {
+      out.innerHTML = '<div class="big">Same class: ' + esc(la) + ' = ' + esc(lb) + '</div>'
+        + '<p>They differ only by a constant factor, which Big-O drops. Pick whichever is clearer to say out loud.</p>';
+      return;
+    }
+
+    var result = asymptotic(A, B);
+    if (result.kind === 'same') {
+      out.innerHTML = '<div class="big">Same class, as far as can be measured: ' + esc(la) + ' ≈ ' + esc(lb) + '</div>'
+        + '<p>Their ratio settles at about <b>' + (Math.round(result.ratio * 100) / 100) + '</b> by n = ' + fmtN(result.upTo)
+        + ' — a constant factor, which Big-O drops (e.g. <code>log n</code> vs <code>log(n²)</code>).</p>'
+        + '<p>This is a numerical check: a factor that grows as slowly as <code>log log n</code> or slower can hide from it, '
+        + 'so argue it algebraically before relying on it.</p>' + atLine;
+      return;
+    }
+    if (result.kind === 'unknown') {
+      out.innerHTML = '<div class="big">Cannot tell these apart numerically</div>'
+        + '<p>Their difference is below what double-precision arithmetic can resolve at the input sizes it can evaluate. '
+        + 'Compare them by structure instead: cancel the common factors and see what is left.</p>' + atLine;
+      return;
+    }
+
+    var big = result.faster === 'a' ? la : lb, small = result.faster === 'a' ? lb : la;
+    var Big = result.faster === 'a' ? A : B, Small = result.faster === 'a' ? B : A;
+    // The last n (on a fine grid up to CROSS_LIMIT) where the faster one is
+    // not yet ahead. If it is still behind at the limit, the crossover is
+    // somewhere past it — say so rather than present the limit as the answer.
+    // The scan also stops once L passes 2^45: beyond that a double cannot
+    // resolve a few bits of difference (2^n vs n·2^n), and a rounding tie
+    // would read as "still behind".
+    var cross = 0, lastN = 1, n;
+    for (n = 1; n <= CROSS_LIMIT; n = n < 1000 ? n + 1 : n * 1.01) {
+      var lBig = L(Big, n), lSmall = L(Small, n);
+      // -Infinity is a cost of 0 (log 1), exact and fine; only +Infinity or
+      // a huge finite L ends the scan.
+      if (lBig === Infinity || lSmall === Infinity
+          || Math.max(isFinite(lBig) ? lBig : 0, isFinite(lSmall) ? lSmall : 0) > Math.pow(2, 45)) break;
+      lastN = n;
+      if (lBig < lSmall) cross = n;   // strictly cheaper: a tie (both 1 op at n = 1) is not a win
+    }
+    var stillBehind = cross === lastN && lastN > 1;
+    var crossLine;
+    if (stillBehind) {
+      crossLine = '<p>But only eventually — ' + esc(big) + ' is still the cheaper of the two at n = ' + fmtN(lastN)
+        + ', so the crossover is <b>beyond ' + fmtN(lastN) + '</b>. For any real input the "worse" class wins here: '
+        + 'constants matter.</p>';
+    } else if (cross >= 1) {
+      crossLine = '<p>But not from the start — ' + esc(big) + ' only stays ahead once n passes <b>'
+        + (cross >= 1000 ? 'about ' : '') + fmtN(cross) + '</b>. '
+        + 'Up to there the "worse" class is cheaper, which is why constants still matter for small inputs.</p>';
     } else {
-      faster = diffs[2] > 0 ? 'a' : 'b';
+      crossLine = '<p>' + esc(big) + ' costs at least as much at every n ≥ 1 — there is no input size where it is cheaper.</p>';
     }
-
-    if (faster) {
-      var big = faster === 'a' ? la : lb, small = faster === 'a' ? lb : la;
-      var Big = faster === 'a' ? A : B, Small = faster === 'a' ? B : A;
-      // The last n (on a fine grid up to 10^12) where the faster one is not
-      // yet ahead: past it, the ordering never flips back.
-      var cross = 0;
-      for (var n = 1; n <= 1e12; n = n < 1000 ? n + 1 : n * 1.01) {
-        if (L(Big, n) <= L(Small, n)) cross = n;
-      }
-      verdict = '<div class="big">' + esc(small) + ' grows slower than ' + esc(big) + '</div>'
-        + '<p>So <b>' + esc(small) + '</b> is the better bound: ' + esc(small) + ' ⊂ ' + esc(big) + '.</p>'
-        + (cross >= 1
-          ? '<p>But not from the start — ' + esc(big) + ' only stays ahead once n passes <b>' + fmtN(cross) + '</b>. '
-            + 'Below that the "worse" class is cheaper, which is why constants still matter for small inputs.</p>'
-          : '<p>' + esc(big) + ' costs at least as much at every n ≥ 1 — there is no small-input range where it wins.</p>')
-        + '<p>At n = 10⁶: ' + esc(la) + ' ≈ <b>' + fmtOps(L(A, 1e6)) + '</b> ops, ' + esc(lb) + ' ≈ <b>' + fmtOps(L(B, 1e6))
-        + '</b> ops — a factor of <b>' + fmtOps(Math.abs(at6)) + '</b>.</p>';
-    }
-    out.innerHTML = verdict;
+    out.innerHTML = '<div class="big">' + esc(small) + ' grows slower than ' + esc(big) + '</div>'
+      + '<p>So <b>' + esc(small) + '</b> is the better bound: ' + esc(small) + ' ⊂ ' + esc(big) + '.</p>'
+      + crossLine + atLine;
   }
 
   // ── Wiring ─────────────────────────────────────────────────────────────
