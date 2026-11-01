@@ -102,6 +102,75 @@ class Solution(object):
         return -1
 
 
+# V0-0-1
+# IDEA :  Dijkstra (GPT)
+import heapq
+from collections import defaultdict
+
+class Solution(object):
+    def findCheapestPrice(self, n, flights, src, dst, k):
+        """
+        :type n: int
+        :type flights: List[List[int]]
+        :type src: int
+        :type dst: int
+        :type k: int
+        :rtype: int
+        """
+        if src == dst:
+            return 0
+
+        graph = defaultdict(list)
+
+        for s, e, cost in flights:
+            graph[s].append((e, cost))
+
+        # At most k stops means at most k + 1 flights
+        max_flights = k + 1
+
+        # best[flights_used][node] = minimum cost
+        INF = float('inf')
+        best = [[INF] * n for _ in range(max_flights + 1)]
+
+        # Start at src with 0 flights and 0 cost
+        best[0][src] = 0
+
+        # Min Heap: (total_cost, flights_used, node)
+        pq = [(0, 0, src)]
+
+        while pq:
+            cost, flights_used, node = heapq.heappop(pq)
+
+            # Skip outdated states
+            if cost > best[flights_used][node]:
+                continue
+
+            # Since this is a min heap, this is the cheapest
+            # valid way to reach dst.
+            if node == dst:
+                return cost
+
+            # Cannot take more than k + 1 flights
+            if flights_used == max_flights:
+                continue
+
+            # Explore neighbors
+            for next_node, next_cost in graph[node]:
+                new_cost = cost + next_cost
+                new_flights = flights_used + 1
+
+                # Only push if this state improves the best cost
+                if new_cost < best[new_flights][next_node]:
+                    best[new_flights][next_node] = new_cost
+
+                    heapq.heappush(
+                        pq,
+                        (new_cost, new_flights, next_node)
+                    )
+
+        return -1
+
+
 # V0-1
 # IDEA :  Dijkstra
 import heapq
