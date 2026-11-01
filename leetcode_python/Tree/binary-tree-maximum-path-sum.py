@@ -95,6 +95,46 @@ class Solution(object):
         return root.val + max(left, right)
 
 
+# V0-0-1
+# IDEA: post order DFS
+class Solution(object):
+    def maxPathSum(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: int
+        """
+        # edge
+        if not root:
+            return 0
+            
+        if not root.left and not root.right:
+            return root.val
+
+        self.max_path_sum = root.val
+
+        self.helper(root)
+
+        return self.max_path_sum
+
+
+    def helper(self, root):
+        if not root:
+            return 0
+
+        _left = self.helper(root.left)
+        _right = self.helper(root.right)
+
+        if _left < 0:
+            _left = 0
+
+        if _right < 0:
+            _right = 0
+
+        self.max_path_sum = max(self.max_path_sum, root.val + _left + _right)
+
+        return root.val + max(_left, _right)
+
+
 # V0-1
 # IDEA: post order DFS (GPT)
 class Solution(object):

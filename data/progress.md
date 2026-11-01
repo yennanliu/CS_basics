@@ -42,6 +42,8 @@
 			- greedy - pass
 			- intervals - ing
 				 -  Minimum Interval to Include Each Query (pass)
+			- bit OP - pass
+			- math - pass
 
 
 
@@ -50,7 +52,6 @@
 		- https://neetcode.io/practice/practice/blind75
 		 	- linked list - pass
 		 	- Trees - ing
-		 		- Binary Tree Maximum Path Sum - todo
 		 		- Serialize And Deserialize Binary Tree - todo
 		 	- Tries - pass
 		 	- backtrack - done
