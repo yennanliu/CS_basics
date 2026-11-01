@@ -125,14 +125,6 @@
 
 
 
-- 進階堆積技巧 (!!!)
-	- https://yennj12.js.org/CS_basics/cheatsheets/heap_advanced.zh.html
-		- 3) `有上限的「後悔」堆積 — 留下最好的 k 個，其餘照付`
-
-
-
-
-
 
 
 
@@ -237,6 +229,7 @@
 	- 字串 DP（雙序列網格模式） (!!!)
 			- again
 				- 合法括號字串模式（LC 678)
+	- 進階堆積技巧 (!!!)
 
 
 
