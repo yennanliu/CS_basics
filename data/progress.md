@@ -158,7 +158,8 @@
 
 - DP 模式總表 (review)
 	- https://yennj12.js.org/CS_basics/cheatsheets/dp_pattern.zh.html
-		- again: LIS - binary search approach
+		- 13. 加權區間排程 DP（排序 + 二分搜尋）
+			- again: LIS - binary search approach
 
 
 - DP 迴圈順序與相依性
