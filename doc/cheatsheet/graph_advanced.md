@@ -1042,5 +1042,5 @@ def max_flow(graph, source, sink, n):
 - **[union_find.md](./union_find.md)**: the DSU primitives Templates 3 and 4 assume
 - **[dfs_advanced.md](./dfs_advanced.md)**: the DFS sheet's own Hierholzer and Tarjan-bridge templates
 - **[topology_sorting.md](./topology_sorting.md)**: condensing SCCs yields a DAG to sort
-- **Minimum spanning tree**: Kruskal is [union_find.md](./union_find.md) plus a sorted edge
-  list; Prim is [heap.md](./heap.md) plus a visited set. LC 1135, LC 1584.
+- **[minimum_spanning_tree.md](./minimum_spanning_tree.md)**: Kruskal (sorted edges + Union-Find)
+  and Prim (heap or dense array). LC 1135, LC 1584.

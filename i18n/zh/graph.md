@@ -63,11 +63,11 @@
 - **例題**：LC 785（Is Graph Bipartite）、LC 886（Possible Bipartition）
 - **模式**：BFS/DFS 搭配著色
 
-<!-- 20691c8d414a -->
+<!-- 82db5858e3a7 -->
 ### **類型 6：最小生成樹**
 - **說明**：用最小成本連通所有節點
 - **例題**：LC 1135（Connecting Cities）、LC 1584（Min Cost Connect Points）
-- **模式**：Kruskal 或 Prim 演算法
+- **模式**：Kruskal 或 Prim 演算法 — 見 [minimum_spanning_tree.md](./minimum_spanning_tree.md)
 
 <!-- ddc7f484e4af -->
 ## 模板與演算法
@@ -389,7 +389,7 @@ Bellman-Ford 就把它掃 `V-1` 次。
 | Possible Bipartition | 886 | DFS 著色 | Medium |
 | Flower Planting With No Adjacent | 1042 | 貪婪 k-著色（分支度 < k） | Medium |
 
-<!-- a5967b81f606 -->
+<!-- 1eb3b94c1c3b -->
 #### **進階圖論題目**
 | 題目 | LC # | 關鍵技巧 | 難度 |
 |---------|------|---------------|------------|
@@ -397,7 +397,7 @@ Bellman-Ford 就把它掃 `V-1` 次。
 | Find Eventual Safe States | 802 | 偵測環 | Medium |
 | Reconstruct Itinerary | 332 | Hierholzer 演算法 | Hard |
 | Cracking the Safe | 753 | de Bruijn 圖 + 尤拉迴路 — [graph_advanced.md](./graph_advanced.md#template-2-euler-path--circuit-hierholzer--lc-753-) | Hard |
-| Minimum Spanning Tree | 1135 | Kruskal（[union_find.md](./union_find.md)）／ Prim（[heap.md](./heap.md)） | Medium |
+| Minimum Spanning Tree | 1135 | Kruskal ／ Prim — [minimum_spanning_tree.md](./minimum_spanning_tree.md) | Medium |
 
 <!-- f6b226141d1f -->
 ### 解題步驟
