@@ -658,7 +658,7 @@ python3 script/fix_readme_tags.py            # rewrite the Note column
 | 2641 | [Cousins in Binary Tree II](https://leetcode.com/problems/cousins-in-binary-tree-ii) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Tree/CousinsInBinaryTree2.java) | _O(n)_ | _O(n)_ | Medium | **tree**, LC weekly, LC 993 | AGAIN (1) |
 | 2707 | [Extra Characters in a String](https://leetcode.com/problems/extra-characters-in-a-string/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Trie/ExtraCharactersInAString.java) | _O(n^2)_ | _O(n + t)_ | Medium | **tree**, dp, Trie, `neetcode250` | AGAIN (not start) |
 | 3093 | [Longest Common Suffix Queries](https://leetcode.com/problems/longest-common-suffix-queries) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Trie/LongestCommonSuffixQueries.java) | _O(t + q * l)_ | _O(t)_ | Hard | **tree**, Trie | AGAIN (not start) |
-| 4085 | [Find Root of a Colored Tree](https://leetcode.com/problems/find-root-of-a-colored-tree/description/) | [Python](./leetcode_python/Tree/find-root-of-a-colored-tree.py) | _O(n)_ | _O(n)_ | Medium | **tree**, color step R->B->W forces each edge's direction, root = the only node with no parent, in-degree <= 1 + out-degree <= 2, equal colors on an edge -> -1, good trick, LC weekly | AGAIN(1) |
+| 4085 | [Find Root of a Colored Tree](https://leetcode.com/problems/find-root-of-a-colored-tree/description/) | [Python](./leetcode_python/Tree/find-root-of-a-colored-tree.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Tree/FindRootOfAColoredTree.java) | _O(n)_ | _O(n)_ | Medium | **tree**, color step R->B->W forces each edge's direction, root = the only node with no parent, in-degree <= 1 + out-degree <= 2, equal colors on an edge -> -1, good trick, LC weekly | AGAIN(1) |
 
 
 
