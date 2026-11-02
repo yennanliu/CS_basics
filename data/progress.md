@@ -21,6 +21,12 @@
 		- slide window - done
 			- Find K Closest Elements - todo
 		- binary search - ing
+			- Search Insert Position - todo
+			-  Search in Rotated Sorted Array II - todo
+			-  Split Array Largest Sum - todo
+			- Find in Mountain Array - todo
+		- linked list - pass
+		- stack - ing
 
 
 
