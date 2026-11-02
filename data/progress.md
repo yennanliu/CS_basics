@@ -15,8 +15,7 @@
 			- Array & hash - done
 			- 2 pointers - ing
 				- Trapping Rain Water (pass)
-			- slide window - ing
-				- Sliding Window Maximum (pass)
+			- slide window - done
 			- binary search - ing
 				- Median of Two Sorted Arrays (pass)
 			- linked list - pass
@@ -25,8 +24,7 @@
 			- tree - done
 			- trie - done
 			- backtrack - (pass)
-			- heap / PQ - ing
-				- Find Median From Data Stream (pass)
+			- heap / PQ - done
 			- graphs - done
 			- advanced graphs (ing)
 				- Reconstruct Itinerary (pass)

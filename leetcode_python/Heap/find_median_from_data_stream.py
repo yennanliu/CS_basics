@@ -206,6 +206,51 @@ class MedianFinder(object):
         return (-self.small_half[0] + self.large_half[0]) / 2.0
 
 
+# V0-0-1
+# IDEA: 2 PQ + REBALANCE (gpt)
+
+import heapq
+
+class MedianFinder(object):
+
+    def __init__(self):
+        # Max Heap: smaller half (store negative values)
+        self.small_half = []
+
+        # Min Heap: larger half
+        self.big_half = []
+
+    def addNum(self, num):
+        # Step 1: Insert into smaller half
+        heapq.heappush(self.small_half, -num)
+
+        # Step 2: Ensure ordering:
+        # max(small_half) <= min(big_half)
+        if self.big_half and -self.small_half[0] > self.big_half[0]:
+            val = -heapq.heappop(self.small_half)
+            heapq.heappush(self.big_half, val)
+
+        # Step 3: Rebalance heap sizes
+        # small_half should have the same size as big_half,
+        # or one extra element.
+        if len(self.small_half) > len(self.big_half) + 1:
+            val = -heapq.heappop(self.small_half)
+            heapq.heappush(self.big_half, val)
+
+        elif len(self.small_half) < len(self.big_half):
+            val = heapq.heappop(self.big_half)
+            heapq.heappush(self.small_half, -val)
+
+    def findMedian(self):
+        # Even number of elements
+        if len(self.small_half) == len(self.big_half):
+            return (-self.small_half[0] + self.big_half[0]) / 2.0
+
+        # Odd number of elements
+        return -self.small_half[0]
+
+
+
 # V0-2
 # IDEA: 2 PQ (small, big) + SIZE BALANCE, ELEMENTS MOVES (GPT)
 import heapq
