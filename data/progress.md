@@ -28,7 +28,6 @@
 			- graphs - done
 			- advanced graphs (ing)
 				- Reconstruct Itinerary (pass)
-				- Swim In Rising Water (pass)
 
 			- 1D dp - done
 			- 2D dp - ing
