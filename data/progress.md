@@ -10,6 +10,18 @@
 	- final_week_review.md
 			- https://github.com/yennanliu/CS_basics/pull/208
 
+	- needcode 250 -> ing
+		- Array & hash - done
+			- Subarray Sum Equals K - TODO
+			- First Missing Positive - TODO
+		- 2 pointers - ing
+
+
+
+
+
+
+
 	- needcode 150 -> ing
 		- https://neetcode.io/practice/practice/neetcode150
 			- Array & hash - done
