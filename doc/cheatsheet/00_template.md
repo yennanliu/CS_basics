@@ -1,14 +1,24 @@
 # Cheatsheet Template
 
+A cheatsheet exists to make one thing faster in a coding interview: **recognise the pattern, recall the template, avoid the trap.** Every rule below serves one of those three. Why each rule exists is in [`cheatsheet-review-2026-11.md`](../cheatsheet-review-2026-11.md).
+
+**Contents** — [Pick a skeleton](#pick-a-skeleton) · [The header](#every-cheatsheet-starts-with-this-header) · [Register the file](#then-register-the-file) · [The pattern card](#the-pattern-card--every-template-section) · [The problem card](#the-problem-card--every-worked-example) · [Recognition table](#the-recognition-table) · [Drill path](#the-drill-path) · [Skeleton A](#skeleton-a--short-doc) · [Skeleton B](#skeleton-b--reference-doc) · [Stars](#mark-the-interview-critical-sections) · [Formatting](#formatting-rules) · [Code](#code-conventions) · [Do not](#do-not)
+
+---
+
+## Pick a skeleton
+
 Two skeletons are in use. **Pick by size, not by topic.**
 
 | | **Skeleton A — short doc** | **Skeleton B — reference doc** |
 |---|---|---|
 | Use when | < ~800 lines; one technique, few patterns | > ~800 lines; a data structure or a whole pattern family |
-| Examples | `kadane_algorithm.md`, `n_sum.md`, `iterator.md`, `stock_trading.md` | `heap.md`, `dp.md`, `bfs.md`, `graph.md`, `binary_search.md` |
-| Shape | `0) Concept` → `1) General form` → `2) LC Example` | `Overview` → `Problem Categories` → `Templates & Algorithms` → `LC Examples` → `Problems by Pattern` → `Pattern Selection Strategy` → `Summary` |
+| Examples | `patience_sorting.md`, `kadane_algorithm.md`, `n_sum.md`, `iterator.md` | `heap.md`, `dp.md`, `bfs.md`, `graph.md`, `minimum_spanning_tree.md` |
+| Shape | `0) Concept` → `1) General form` → `2) LC Example` | `Overview` → `Recognition` → `Templates` → `LC Examples` → `Pattern Selection` → `Drill Path` → `Summary` |
 
-Do **not** mix the two in one file. If a Skeleton A doc grows past ~800 lines, convert it to B rather than bolting B's sections onto the end.
+Do **not** mix the two in one file. If a Skeleton A doc grows past ~800 lines, convert it to B rather than bolting B's sections onto the end. Past ~1,500 lines, split the long tail into `X_examples.md` and rare techniques into `X_advanced.md` (see [`cheatsheet-split-plan-2026-08.md`](../cheatsheet-split-plan-2026-08.md)).
+
+Whichever skeleton you pick, **what goes inside a template section is the same**: a [pattern card](#the-pattern-card--every-template-section). A worked example is a [problem card](#the-problem-card--every-worked-example).
 
 ---
 
@@ -28,11 +38,11 @@ Do **not** mix the two in one file. If a Skeleton A doc grows past ~800 lines, c
 - [Topic Name](https://leetcode.com/problem-list/topic-slug/)
 ```
 
-Both lines are **mandatory on every file** — `node site/build-site.js` fails without them:
+Both lines are **mandatory on every file**. `node site/build-site.js` fails without them:
 
 - The **H1** is the page title on the site and the card title on `cheatsheets.html`. Write a name a reader would recognise ("Dynamic Programming (DP)"), not a filename echo ("Dp").
 - The **Scope** line keeps two files from silently growing into the same doc, *and* is lifted verbatim into the sheet's card description on the index. One sentence of plain prose, no lead-in.
-- The **See also** line is what stops a reader landing on the wrong file of an overlapping family (`tree` vs `tree2` vs `binary_tree` vs `bst`).
+- The **See also** line is what stops a reader landing on the wrong file of an overlapping family (`tree` vs `tree2` vs `binary_tree` vs `bst`). A parent names every satellite; each satellite points back.
 
 ---
 
@@ -55,18 +65,146 @@ Add it to `startHere` only if it belongs in the beginner reading ladder.
 
 ---
 
-## Mark the interview-critical sections
+## The pattern card — every template section
 
-A trailing `⭐` run on a heading says how interview-critical that section is. The site strips the run out of the heading text, renders it as a star badge, weights the heading's left rule by it, and pulls 4★/5★ `h4`s into the page's table of contents.
+Six slots, **always in this order**. A reader who knows the order can find "what's the trap?" in any sheet without reading the rest of it. Slots marked *optional* can be left out when they would be empty; the order of what remains does not change.
 
-```markdown
-### Template 4: 0/1 Knapsack — LC 416 ⭐⭐⭐⭐⭐
-### Template 7: Pairwise D&C Merge (k-way) — LC 23 ⭐⭐⭐⭐
+````markdown
+### Template 2: Variable-Size Window — LC 3 ⭐⭐⭐⭐⭐
+
+**Recognise** — "longest / shortest **contiguous** subarray or substring such that …", all
+values non-negative or the condition is monotone in window size. n ≤ 10⁵ → O(n) expected.
+**Not this if** — negatives can make a sum shrink as the window grows → prefix sum + hash map
+([prefix_sum § Template 2](./prefix_sum.md#template-2-subarray-sum-equals-k)).
+
+**Invariant** — `s[left..right]` is always valid; `right` only grows, `left` only grows,
+so each index enters and leaves once.
+
+```python
+# python
+# IDEA: grow right; while the window is invalid, shrink left; record after it is valid again
+# time = O(n), space = O(k)   k = distinct items in the window
+def longest_valid(s):
+    count = {}
+    left = 0
+    best = 0
+    for right, ch in enumerate(s):
+        count[ch] = count.get(ch, 0) + 1
+        while count[ch] > 1:              # invalid -> shrink until valid
+            count[s[left]] -= 1
+            left += 1
+        best = max(best, right - left + 1)  # valid here, so measure here
+    return best
 ```
 
-- Put the run **on the heading**, not in the prose beneath it — only headings are picked up.
-- `⭐⭐⭐⭐⭐` = write it from memory; `⭐⭐⭐⭐` = expect it; `⭐⭐⭐` = a known variant.
-- A tier-4 or tier-5 sheet should mark roughly **3–8 sections**. Leave background and reference sections unmarked — if everything is starred, nothing is.
+```java
+// java
+// LC 3 - Longest Substring Without Repeating Characters
+// time = O(n), space = O(k)
+...
+```
+
+**Trace** *(optional — required when one step is non-obvious)*
+
+```text
+s = "abba"
+right=0 'a'  window "a"    best=1
+right=1 'b'  window "ab"   best=2
+right=2 'b'  dup -> drop 'a','b' -> "b"   best=2
+right=3 'a'  window "ba"   best=2
+```
+
+**Traps**
+- Recording `best` *before* the shrink loop measures an invalid window. LC 3 `"abba"` returns 3.
+- `while`, not `if`: one new char can require several shrinks.
+
+**Drill** — LC 3 ⭐ · LC 424 · LC 340 · LC 992 *(exactly-k = atMost(k) − atMost(k−1))*
+````
+
+| Slot | Rule |
+|---|---|
+| **Recognise** | The *wording* in a problem statement that should make you reach for this, plus a **constraint cue** where one exists (n ≤ 20 → bitmask, n ≤ 10⁵ → n log n). Never restate the title. "Maximum path sum problems" under *Maximum Path Sum* teaches nothing. |
+| **Not this if** *(optional)* | The look-alike, and the tell that separates them. This is the highest-value line on the card. The model is [`difference_array.md`](./difference_array.md)'s "looks like a diff array, but is not". |
+| **Invariant** | One or two lines, **before** the code: what is true at every iteration, and where it is restored. For DP, the five lines *state / recurrence / base / order / answer* replace it. |
+| **Template** | One canonical solution, **Python first, then Java**. Runnable, with real names, no `pass`, no `...` where the logic should be. `time =` / `space =` is the first comment. |
+| **Trace** | A ` ```text ` state table on the smallest input that shows the non-obvious step. Required when a reader could not dry-run the template in their head. |
+| **Traps** | Each trap names **the input that springs it** and what goes wrong. "Forgetting to handle edge cases" is not a trap; "`[]` returns `None` instead of `0`" is. |
+| **Drill** | 3–6 LC numbers, easy → hard, must-know ones starred. Say in a few words what changes from the template. |
+
+Exemplars to copy: [`minimum_spanning_tree.md`](./minimum_spanning_tree.md) (why greedy is safe before the code, the same graph traced through both algorithms), [`dp.md`](./dp.md) Template 1b (the DP table before the code, "three traps"), [`prefix_sum_advanced.md`](./prefix_sum_advanced.md) Template 14 (the smallest failing case, "when not to use it").
+
+---
+
+## The problem card — every worked example
+
+A worked example is a lesson about **one** step that is not in the template. Raw solution files already live in `leetcode_python/` and `leetcode_java/`; the sheet links to them rather than pasting a second copy.
+
+````markdown
+### Longest Repeating Character Replacement — LC 424
+
+> **Key insight** — the window is valid while `len − maxFreq ≤ k`; `maxFreq` never needs to
+> decrease, because only a *larger* `maxFreq` can produce a longer answer.
+
+**Reduces to**: [Template 2](#template-2-variable-size-window--lc-3-) — the validity test is the only change.
+
+```python
+# python
+# time = O(n), space = O(26)
+...
+```
+
+**Traps** — recomputing `max(count.values())` each step is correct but O(26·n); say why the
+stale `maxFreq` is safe if you keep it.
+
+**Similar** — LC 1004 (k flips of 0s) · LC 2024 (two letters)
+````
+
+Rules:
+
+- The **first thing under the heading is prose**, the `> **Key insight** —` line, never a code fence.
+- **`Reduces to`** links the card this is a case of. If no card fits, the sheet is missing a template. Add one rather than an orphan example.
+- **V0 is the canonical answer**, the one to write in the interview, not the first one written. A second solution stays only with its reason beside it: different complexity, a distinct trick, or a language idiom.
+- Java is welcome as the second block. A Java-only example in a Python-first sheet is a gap to fill, not a style.
+- **One home per problem.** Before adding a worked example, `grep -rn "LC <n>\b" doc/cheatsheet/`. If another sheet already works the problem, add a one-row pointer here instead of a second solution.
+
+---
+
+## The recognition table
+
+Every tier ≥ 4 main sheet has one, right after the Overview. It is how a reader holding a problem statement finds the card:
+
+```markdown
+## Recognition
+
+| Signal in the statement | Constraint cue | Reach for | Not this if |
+|---|---|---|---|
+| "next greater / previous smaller element" | n ≤ 10⁵ | [Template 1](#…) monotonic stack | window max over a sliding range → [monotonic_queue](./monotonic_queue.md) |
+| "sum of min over all subarrays" | | [Template 3](#…) contribution counting | |
+```
+
+- The **Signal** column quotes statement wording, not technique names.
+- The **Constraint cue** column comes from the constraint ruler in [`complexity_cheatsheet.md`](./complexity_cheatsheet.md). Link to it; do not copy the ruler.
+- **Reach for** links to a pattern card in this sheet, or to another sheet's card when the signal routes out. Routing out is a correct answer.
+
+---
+
+## The drill path
+
+Every main sheet ends its teaching content with an ordered practice list, just before `Summary`:
+
+```markdown
+## Drill Path
+
+| Stage | Problems (easy → hard) | What it adds |
+|---|---|---|
+| **Core** ⭐ | LC 739 · LC 496 · LC 84 | the three templates, once each |
+| **Practice** | LC 503 · LC 901 · LC 907 | circular array, online stream, contribution counting |
+| **Stretch** | LC 2104 · LC 1944 | two stacks at once; visibility counting |
+```
+
+- **Core** = the problems from [`data/l3_core.json`](../../data/l3_core.json) that this sheet owns, plus at most a few others the sheet cannot be learned without. Star them.
+- Order is easy → hard **within** a stage.
+- No hand-typed totals ("Seventeen problems"). They go stale the first week.
 
 ---
 
@@ -75,18 +213,20 @@ A trailing `⭐` run on a heading says how interview-critical that section is. T
 ```markdown
 ## 0) Concept
 
-### 0-1) Types
-
-### 0-2) Pattern
+<one paragraph> + **Recognise** / **Invariant** lines for the whole technique
 
 ## 1) General form
 
-### 1-1) Basic OP
+### 1-1) <Template name>          <!-- a pattern card -->
 
 ## 2) LC Example
 
-### 2-1) <Problem Name> — LC <number>
+### <Problem Name> — LC <number>  <!-- a problem card -->
+
+## 3) Drill Path
 ```
+
+The model short sheet is [`patience_sorting.md`](./patience_sorting.md): three rules → trace → two-line proof → "when it applies" → a one-line discriminator.
 
 ---
 
@@ -115,12 +255,7 @@ A trailing `⭐` run on a heading says how interview-critical that section is. T
 ### References
 - [Name](url)
 
-## Problem Categories
-
-#### **Pattern 1: <Name>** — LC <number>
-- **Description**: ...
-- **Examples**: LC ..., LC ...
-- **Pattern**: ...
+## Recognition                <!-- the recognition table -->
 
 ## Templates & Algorithms
 
@@ -129,52 +264,91 @@ A trailing `⭐` run on a heading says how interview-critical that section is. T
 | Template | Use Case | Complexity | When to Use |
 |---|---|---|---|
 
-### Template 1: <Name> — LC <number>
+### Template 1: <Name> — LC <number>     <!-- a pattern card each -->
 
-## LC Examples
+## LC Examples                <!-- problem cards, grouped by the template they reduce to -->
 
-### 2-1) <Problem Name> — LC <number>
+## Pattern Selection Strategy  <!-- ONE decision section per sheet -->
 
-## Problems by Pattern
+## Drill Path
 
-## Pattern Selection Strategy
-
-## Summary & Quick Reference
+## Summary & Quick Reference   <!-- ONE summary per sheet; nothing after it except See also -->
 ```
 
 ### Section rules for Skeleton B
 
-- **`LC Examples` is not an append-log.** Before adding a problem there, check whether a template above already solves it *in the same language*. If it does, extend the template instead — do not restate the problem.
+- **The canonical template is in the first ~300 lines.** A reader skimming top-down should hit runnable code before the end of the first screenful of Templates. The best section goes first, not last.
+- **`LC Examples` is not an append-log.** Before adding a problem there, check whether a template above already solves it *in the same language*. If it does, extend the template's Drill line instead.
+- **`LC Examples`, `Problems by Pattern` and any other example section come before `Summary`**, never after it.
+- **One** decision section and **one** summary section per sheet. A second flowchart restating the first decision table is deleted, not kept.
 - **No `Missing Google Patterns`-style catch-all sections.** New material goes under the pattern it belongs to. If it fits nowhere, it needs its own named `##` section.
 - Every `##` heading is unique within the file, and every `###` under a shared parent is unique too. If you need "Summary" twice, qualify both.
 
 ---
 
+## Mark the interview-critical sections
+
+A trailing `⭐` run on a heading says how interview-critical that section is. The site strips the run out of the heading text, renders it as a star badge, weights the heading's left rule by it, and pulls 4★/5★ `h4`s into the page's table of contents.
+
+```markdown
+### Template 4: 0/1 Knapsack — LC 416 ⭐⭐⭐⭐⭐
+### Template 7: Pairwise D&C Merge (k-way) — LC 23 ⭐⭐⭐⭐
+```
+
+- Put the run **on the heading**, not in the prose beneath it. Only headings are picked up.
+- `⭐⭐⭐⭐⭐` = write it from memory; `⭐⭐⭐⭐` = expect it; `⭐⭐⭐` = a known variant.
+- A tier-4 or tier-5 sheet should mark roughly **3–8 sections**. Leave background and reference sections unmarked. If everything is starred, nothing is.
+- A star run moves the heading's anchor (a trailing `-`). Move every link with it.
+
+---
+
 ## Formatting rules
 
-- **Bold** key terms: `**Pattern**`, `**Key Idea**`, `**Recurrence**`
+- **Bold** key terms and the card slot labels: `**Recognise**`, `**Invariant**`, `**Traps**`, `**Key insight**`.
 - Category headers: `#### **Category Name**`
-- Code blocks: **always** tag the language — `java`, `python`, or `text` for ASCII traces, diagrams and program output. Never leave a bare ` ``` `.
-- Complexity: inside code as the first comment — `// time = O(...), space = O(...)`
+- Code blocks: **always** tag the language: `python`, `java`, or `text` for ASCII traces, diagrams and program output. Never leave a bare ` ``` `.
+- Complexity: inside code as the first comment, `# time = O(...), space = O(...)`.
 - Images: `<p align="center"><img src="../pic/filename.png"></p>`
-- Priority markers: `⭐⭐⭐⭐⭐` for critical/frequently-tested patterns
-- Heading levels never skip: an `h2` is followed by `h3`, not `h4`
-- State each LC number **once** per heading — `### 2-1) Top K Frequent Elements — LC 347`, not `### 2-1) Top K Frequent Elements (LC 347) — LC 347`
+- Heading levels never skip: an `h2` is followed by `h3`, not `h4`.
+- State each LC number **once** per heading: `### Top K Frequent Elements — LC 347`, not `### Top K Frequent Elements (LC 347) — LC 347`.
+- Number templates `Template 1 … N` **without gaps**. Worked examples need no number; the heading is `<Problem Name> — LC <n>`. Do not start new `1-1-3)`-style numbering; it cannot be said aloud and breaks when a section moves.
+- **No emoji in headings** other than the trailing `⭐` run the site renders. ✅ / ❌ are fine as table cell values.
+- English only in an English sheet. A translation goes in the `i18n/zh/` overlay (see CLAUDE.md § Traditional Chinese docs), never inline, where the 100% zh gate cannot see it.
 
 ## Code conventions
 
-- Open with `// IDEA: brief description` (Java) or `# IDEA: ...` (Python)
-- Provide both Java and Python implementations when applicable
-- Label each block: `// java` / `# python`
-- Include `// LC <number> - Problem Name` above the class/function
-- **One canonical solution per problem.** A second variant needs a reason stated in a comment (different complexity, different language idiom, teaches a distinct trick) — not just a different spelling of the same loop.
+- Open with `# IDEA: brief description` (Python) or `// IDEA: ...` (Java).
+- **Python first, then Java**, for every pair. Provide both for a template; for a worked example, Java is the optional second block.
+- Label each block: `# python` / `// java`.
+- Include `// LC <number> - Problem Name` above the class/function.
+- **One canonical solution per problem.** A second variant needs a reason stated beside it (different complexity, different language idiom, teaches a distinct trick), not just a different spelling of the same loop.
+- **Readable over clever**, the same rule as `/lc-python` and `/lc-java`: explicit loops, names that say what they hold, a comment on each non-obvious step.
+- **Every snippet runs.** Smoke-test it against the problem's own examples before committing. A template that is wrong gets memorised.
+- Java comparators use `Integer.compare(a, b)`, never `a - b` (overflow). Python index arithmetic uses `//`, never `/`.
 
 ## Common section patterns
 
 | Pattern | Use |
 |---------|-----|
-| Quick Decision Table | At section start — maps goal → template → examples |
+| Recognition Table | After the Overview: signal → constraint cue → card → not-this-if |
 | Template Comparison Table | Side-by-side comparison of loop conditions / update rules |
-| Similar Problems Table | Group related LC numbers with key differences |
+| Family Table | One row per variant: what changed vs the baseline → which template → complexity. Model: [`tree_lca_distance.md`](./tree_lca_distance.md)'s LCA family |
+| Failure Table | What broke → symptom → canonical case. Model: [`dp_loop_order.md`](./dp_loop_order.md) |
+| Trap → Fix Table | At the end of a card or sheet. Model: [`stack_expression_parsing.md`](./stack_expression_parsing.md) |
 | Visual Trace | ASCII walkthrough of algorithm steps on a concrete example (tag it ` ```text `) |
 | Decision Matrix | `Minimize vs Maximize`, `Memoization vs Tabulation`, etc. |
+
+---
+
+## Do not
+
+Each of these is in the corpus today. The [Nov 2026 review](../cheatsheet-review-2026-11.md) counts them.
+
+- ❌ `NOTE !!!` comment walls inside code. Write the point as a **Traps** bullet.
+- ❌ IPython `In [n]:` transcripts as a template. Use a ` ```python ` block with the output as a `# -> …` comment.
+- ❌ A "Universal Template" of pseudocode with undefined names, or a proof whose code is `pass`.
+- ❌ Generic filler sections ("Common Mistakes: forgetting edge cases", "Best Practices", "Related Topics") with no concrete input in them.
+- ❌ Invented numbers: benchmarks, "usage frequency", hand-typed problem counts.
+- ❌ Pasted chat ("Great — here is…"), "fixed by gpt", blog URLs inside code.
+- ❌ A worked example that is only a heading over code.
+- ❌ The same problem worked in a second sheet. Point to its home instead.

@@ -672,10 +672,36 @@ Two skeletons are in use. **Pick by size, not by topic**, and never mix them in 
 | | **Skeleton A — short doc** | **Skeleton B — reference doc** |
 |---|---|---|
 | Use when | < ~800 lines; one technique | > ~800 lines; a data structure or pattern family |
-| Shape | `0) Concept` → `1) General form` → `2) LC Example` | `Overview` → `Problem Categories` → `Templates & Algorithms` → `LC Examples` → `Problems by Pattern` → `Pattern Selection Strategy` → `Summary` |
-| Examples | `kadane_algorithm.md`, `n_sum.md`, `iterator.md` | `heap.md`, `dp.md`, `bfs.md`, `graph.md` |
+| Shape | `0) Concept` → `1) General form` → `2) LC Example` → `3) Drill Path` | `Overview` → `Recognition` → `Templates & Algorithms` → `LC Examples` → `Pattern Selection Strategy` → `Drill Path` → `Summary` |
+| Examples | `patience_sorting.md`, `kadane_algorithm.md`, `n_sum.md` | `heap.md`, `dp.md`, `bfs.md`, `minimum_spanning_tree.md` |
 
 If a Skeleton A doc grows past ~800 lines, convert it to B rather than appending B's sections to the end.
+
+### What goes inside a section — the two cards
+
+The skeleton decides where sections sit; **what goes inside one is the same in both**. Since
+the [Nov 2026 review](doc/cheatsheet-review-2026-11.md), which measured how well each sheet
+works as interview material, there are two shapes. Full rules and a worked sample of each are
+in `00_template.md`:
+
+- **Pattern card** (every template section): **Recognise** (the statement wording, plus a
+  constraint cue like n ≤ 10⁵) → *Not this if* (the look-alike and its tell) → **Invariant**
+  (one line, before the code) → **Template** (Python, then Java, `time =` first) → *Trace*
+  (a ` ```text ` table on the smallest input) → **Traps** (each names the input that springs
+  it) → **Drill** (3–6 LC numbers, easy → hard). The slots are always in this order.
+- **Problem card** (every worked example): a `> **Key insight** —` line **before any code**,
+  `**Reduces to**:` a link to the card it is a case of, then one canonical solution. V0 is
+  the answer to give in the interview, not the first one written.
+
+On top of the cards, every tier ≥ 4 main sheet has a `## Recognition` table (signal →
+constraint cue → card → not-this-if) after the Overview, and a `## Drill Path` (Core ⭐ from
+[`data/l3_core.json`](data/l3_core.json) → Practice → Stretch) before `Summary`. The canonical
+template sits in the first ~300 lines; the best section goes first, not last.
+
+**One home per problem.** A worked LC problem lives in exactly one sheet; every other mention
+is a one-row pointer. Scope lines say who owns a *topic*. This rule says who owns a *problem*,
+and in Nov 2026 LC 200 was being worked out in six sheets. Check with `grep -rn "LC <n>\b"
+doc/cheatsheet/` before adding a worked example.
 
 ### Mandatory header
 
@@ -792,10 +818,12 @@ The build fails on a taxonomy key that is missing, points at an unknown topic, o
 ### Code Conventions
 
 - Open with `// IDEA: brief description` (Java) or `# IDEA: ...` (Python)
-- Provide both Java and Python implementations when applicable
+- **Python first, then Java**, in every pair. A template has both; for a worked example Java is the optional second block. (Nov 2026: `dp_string` was 1 Python block against 12 Java; `n_sum`'s general form was C++.)
 - Label each block: `// java` / `# python`
 - Include `// LC <number> - Problem Name` above the class/function
 - **One canonical solution per problem.** A second variant needs a stated reason (different complexity, different language idiom, distinct trick) — not just a different spelling of the same loop.
+- **Every snippet runs**, and is smoke-tested against the problem's own examples. The Nov 2026 review found nine verified bugs in templates readers memorise, including `dp.md`'s first one.
+- Java comparators use `Integer.compare`, never `a - b`; Python index arithmetic uses `//`, never `/`.
 
 ### Anti-patterns (these caused the Aug 2026 cleanup — see [`doc/cheatsheet-review-2026-08.md`](doc/cheatsheet-review-2026-08.md))
 
@@ -804,12 +832,25 @@ The build fails on a taxonomy key that is missing, points at an unknown topic, o
 - ❌ Duplicate heading text under the same parent (`Summary`, `Core Idea`) — qualify them
 - ❌ Splitting one topic across two files without a Scope line saying which owns what
 
+### Anti-patterns found in Nov 2026 (counted in [`doc/cheatsheet-review-2026-11.md`](doc/cheatsheet-review-2026-11.md))
+
+- ❌ A worked example that is a heading over code: no key insight, no link to its template (30% of 1,329 went straight to code)
+- ❌ `NOTE !!!` comment walls inside code (582 lines in 69 files); write a **Traps** bullet instead
+- ❌ IPython `In [n]:` transcripts as a template; "Universal Template" pseudocode with undefined names; proofs whose code is `pass`
+- ❌ Emoji in headings, other than the trailing `⭐` run the site renders; new `1-1-3)`-style numbering
+- ❌ Generic filler ("Common Mistakes: forgetting edge cases"), invented numbers (benchmarks, hand-typed problem counts), pasted chat, "fixed by gpt", blog URLs inside code
+- ❌ Inline 中文 prose in an English sheet. It belongs in the `i18n/zh/` overlay, where the zh gate can see it
+- ❌ `LC Examples` after `Summary`, or the canonical template a thousand lines down
+
 ### Common Section Patterns
 
 | Pattern | Use |
 |---------|-----|
 | Quick Decision Table | At section start — maps goal → template → examples |
+| Recognition Table | After the Overview — signal in the statement → constraint cue → card → not-this-if |
 | Template Comparison Table | Side-by-side comparison of loop conditions / update rules |
+| Family Table | One row per variant — what changed vs the baseline → template → complexity (`tree_lca_distance.md`'s LCA family) |
+| Trap → Fix Table | Each trap with the input that springs it (`stack_expression_parsing.md`) |
 | Similar Problems Table | Group related LC numbers with key differences |
 | Visual Trace | ASCII walkthrough of algorithm steps (tag it ` ```text `) |
 | Decision Matrix | `Minimize vs Maximize`, `Memoization vs Tabulation`, etc. |

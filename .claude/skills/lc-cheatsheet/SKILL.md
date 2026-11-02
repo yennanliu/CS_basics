@@ -132,6 +132,14 @@ House rules that are not negotiable:
 - **One canonical solution per problem.** A second variant needs a stated reason — different
   complexity, a distinct trick, a different language idiom — not a different spelling of the
   same loop.
+- **A `pattern` is a pattern card; an `example` or `variation` is a problem card**
+  (`doc/cheatsheet/00_template.md` has both in full). A pattern card runs **Recognise** (the
+  statement wording, plus a constraint cue) → **Invariant** → template (Python, then Java) →
+  trace → **Traps** (each names the input that springs it) → **Drill**. A problem card opens
+  with a `> **Key insight** —` line and a `**Reduces to**:` link **before any code**, so it
+  never starts with a fence.
+- **Python first, then Java.** No emoji in headings other than the `⭐` run, and no `NOTE !!!`
+  walls inside code. A trap is written as a **Traps** bullet.
 
 Then make it **reachable**, which is the half that gets forgotten:
 
