@@ -106,6 +106,9 @@
 
 - 複雜度分析練習題
 	- https://yennj12.js.org/CS_basics/cheatsheets/complexity_drills.zh.html
+		`練習 17：在迴圈中串接字串`
+
+
 
 
 - Complexity Quiz
