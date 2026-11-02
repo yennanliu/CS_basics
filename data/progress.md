@@ -11,10 +11,14 @@
 			- https://github.com/yennanliu/CS_basics/pull/208
 
 	- needcode 250 -> ing
+
 		- Array & hash - done
 			- Subarray Sum Equals K - TODO
 			- First Missing Positive - TODO
-		- 2 pointers - ing
+		- 2 pointers - done
+			- Valid Palindrome II - todo
+			- Merge Sorted Array - todo
+		- slide window - ing
 
 
 
