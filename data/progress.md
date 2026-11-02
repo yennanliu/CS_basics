@@ -28,8 +28,7 @@
 			- backtrack - (pass)
 			- heap / PQ - ing
 				- Find Median From Data Stream (pass)
-			- graphs - ing
-				- Word Ladder (pass)
+			- graphs - done
 			- advanced graphs (ing)
 				- Reconstruct Itinerary (pass)
 				- Swim In Rising Water (pass)
