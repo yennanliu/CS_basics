@@ -44,6 +44,48 @@ class Solution(object):
 # V0-0-1
 # IDEA: 2 POINTERS + EXPAND FROM MID (gemini)
 class Solution(object):
+    def countSubstrings(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        if not s:
+            return 0
+
+        cnt = 0
+        n = len(s)
+
+        for i in range(n):
+
+            # Odd-length palindrome: center is one character
+            l, r = i, i
+
+            while l >= 0 and r < n:
+                if s[l] != s[r]:
+                    break
+
+                cnt += 1
+                l -= 1
+                r += 1
+
+            # Even-length palindrome: center is between two characters
+            l, r = i, i + 1
+
+            while l >= 0 and r < n:
+                if s[l] != s[r]:
+                    break
+
+                cnt += 1
+                l -= 1
+                r += 1
+
+        return cnt
+
+
+
+# V0-0-2
+# IDEA: 2 POINTERS + EXPAND FROM MID (gemini)
+class Solution(object):
 
   def countSubstrings(self, s):
     """:type s: str
@@ -75,7 +117,7 @@ class Solution(object):
     return total_count
 
 
-# V0-0-2
+# V0-0-3
 # IDEA: 2D DP + LC 5 (gpt)
 """
 CORE IDEA:
