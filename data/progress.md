@@ -107,12 +107,6 @@
 - ★★★★★
 
 
-	- 複雜度速查表 — 經典演算法與資料結構
-		- https://yennj12.js.org/CS_basics/cheatsheets/complexity_cheatsheet.zh.html
-			- `2-9) 動態規劃 — 經典模式 `
-
-
-
 
 - 複雜度分析練習題
 	- https://yennj12.js.org/CS_basics/cheatsheets/complexity_drills.zh.html
@@ -259,6 +253,7 @@
 	- 時間與空間複雜度 — 經典 LC 程式碼逐題解析 (!!!)
 			- Again
 				- 7) 樹 — 時間看節點數，空間看樹高（最經典的坑） 
+	- 複雜度速查表 — 經典演算法與資料結構
 
 
 
