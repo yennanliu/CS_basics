@@ -18,7 +18,9 @@
 		- 2 pointers - done
 			- Valid Palindrome II - todo
 			- Merge Sorted Array - todo
-		- slide window - ing
+		- slide window - done
+			- Find K Closest Elements - todo
+		- binary search - ing
 
 
 
