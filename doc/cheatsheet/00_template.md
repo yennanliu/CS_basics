@@ -75,7 +75,7 @@ Six slots, **always in this order**. A reader who knows the order can find "what
 **Recognise** — "longest / shortest **contiguous** subarray or substring such that …", all
 values non-negative or the condition is monotone in window size. n ≤ 10⁵ → O(n) expected.
 **Not this if** — negatives can make a sum shrink as the window grows → prefix sum + hash map
-([prefix_sum § Template 2](./prefix_sum.md#template-2-subarray-sum-equals-k)).
+([prefix_sum § Template 2](./prefix_sum.md#template-2-hashmap--prefix-sum-subarray-target-sum--lc-560)).
 
 **Invariant** — `s[left..right]` is always valid; `right` only grows, `left` only grows,
 so each index enters and leaves once.
@@ -91,7 +91,10 @@ def longest_valid(s):
     for right, ch in enumerate(s):
         count[ch] = count.get(ch, 0) + 1
         while count[ch] > 1:              # invalid -> shrink until valid
-            count[s[left]] -= 1
+            out = s[left]
+            count[out] -= 1
+            if count[out] == 0:
+                del count[out]            # so count holds only the window's chars: space is O(k)
             left += 1
         best = max(best, right - left + 1)  # valid here, so measure here
     return best

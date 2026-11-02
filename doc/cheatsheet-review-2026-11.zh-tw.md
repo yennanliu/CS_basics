@@ -107,7 +107,7 @@
 | LC 309 含冷凍期的股票 | `dp`、`dp_pattern`、`dp_advanced`、`dp_examples`、`stock_trading` | 5 |
 | 最短路徑比較表 | `Dijkstra`、`Bellman-Ford`、`Floyd-Warshall`、`shortest_path_comparison`，而且各份已經不一致 | 4 |
 | LC 300 LIS | `binary_search`、`binary_search_examples`、`patience_sorting`、`sort` | 4 |
-| LC 113 / 437 / 1110 樹路徑 | `tree2`、`tree_backtrack`、`binary_tree`、`bst_examples`（約 600 行和 BST 無關的路徑題） | 4 |
+| LC 113 / 437 樹路徑 | `tree2`、`tree_backtrack`、`binary_tree`、`bst_examples`（約 600 行和 BST 無關的路徑題） | 4 |
 | LC 743 | `Dijkstra.md` 3 次、`Dijkstra_examples` 1 次 | 4 |
 | LC 215 quickselect | `2_pointers_quickselect`、`advanced_divide_and_conquer`、`sort`、`heap` | 4 |
 | `monotonic_stack` ↔ `stack_examples` | 標題共用 10 個 LC 題號（32、84、402、496、503、735、739、901、907、2104） | 2 |
@@ -254,7 +254,7 @@ repo 其實已經有答案：[`data/l3_core.json`](../data/l3_core.json) 是 99 
 
 1. 最短路徑比較 → 由 `shortest_path_comparison.md` 擁有，其他三份演算法 cheatsheet 只留指標。
 2. 0/1 背包 → 由 `knapsack.md` 擁有；`knapsack_01_zh.md` 改成它的 i18n overlay（見 P6），`dp_advanced` 的副本刪除。
-3. 樹路徑 → LC 112/113/124/437/1110 由 `tree_lca_distance §4` 擁有；`bst_examples` 的 Template 7 移出（那不是 BST 內容）。
+3. 樹路徑 → LC 112/113/124/437 由 `tree_lca_distance §4`（root-to-leaf 路徑模板）擁有；`bst_examples` 的 Template 7 移出（那不是 BST 內容）。LC 1110 也出現在 4 個檔案，但它是刪除節點、回傳森林，屬於修改樹的題目而不是路徑題，所以它的家要和修改樹的內容一起決定，不放這裡。
 4. 單調題由 `monotonic_stack` 擁有，`stack_examples` 留其餘的。
 5. KMP / rolling hash → 只留一個擁有者。
 6. Quickselect → 由 `2_pointers_quickselect` 擁有（改名為 `quickselect.md`，舊檔留 stub），並把三路切分版設為 ⭐5 模板。

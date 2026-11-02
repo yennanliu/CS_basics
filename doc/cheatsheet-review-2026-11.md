@@ -107,7 +107,7 @@ The split plan fixed size *within* a sheet. Ownership *across* sheets is still o
 | LC 309 stock cooldown | `dp`, `dp_pattern`, `dp_advanced`, `dp_examples`, `stock_trading` | 5 |
 | Shortest-path comparison table | `Dijkstra`, `Bellman-Ford`, `Floyd-Warshall`, `shortest_path_comparison`, and the copies already disagree | 4 |
 | LC 300 LIS | `binary_search`, `binary_search_examples`, `patience_sorting`, `sort` | 4 |
-| LC 113 / 437 / 1110 tree paths | `tree2`, `tree_backtrack`, `binary_tree`, `bst_examples` (≈600 lines of non-BST paths) | 4 |
+| LC 113 / 437 tree paths | `tree2`, `tree_backtrack`, `binary_tree`, `bst_examples` (≈600 lines of non-BST paths) | 4 |
 | LC 743 | 3× in `Dijkstra.md`, 1× in `Dijkstra_examples` | 4 |
 | LC 215 quickselect | `2_pointers_quickselect`, `advanced_divide_and_conquer`, `sort`, `heap` | 4 |
 | `monotonic_stack` ↔ `stack_examples` | 10 shared LC headings (32, 84, 402, 496, 503, 735, 739, 901, 907, 2104) | 2 |
@@ -249,7 +249,7 @@ Work the hot-spot table in [§4](#4-one-problem-many-homes), cluster by cluster 
 
 1. Shortest-path comparison → `shortest_path_comparison.md` owns it; the three algorithm sheets keep a pointer.
 2. 0/1 knapsack → `knapsack.md` owns it. `knapsack_01_zh.md` becomes its i18n overlay (see P6), and `dp_advanced`'s copy goes.
-3. Tree paths → `tree_lca_distance §4` owns LC 112/113/124/437/1110. `bst_examples` Template 7 moves out, since it is not BST material.
+3. Tree paths → `tree_lca_distance §4` (root-to-leaf path templates) owns LC 112/113/124/437. `bst_examples` Template 7 moves out, since it is not BST material. LC 1110 is also in 4 files, but it deletes nodes and returns a forest: it is tree modification, not a path problem, so its home is chosen with the tree-modification material, not here.
 4. `monotonic_stack` owns the monotonic problems; `stack_examples` keeps the rest.
 5. KMP / rolling hash → one owner.
 6. Quickselect → `2_pointers_quickselect` owns it (rename to `quickselect.md`, leaving a stub). Make the 3-way-partition version the ⭐5 template.
