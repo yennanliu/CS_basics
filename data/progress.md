@@ -119,7 +119,9 @@
 
 
 
-
+- Linked List（鏈結串列）
+	- https://yennj12.js.org/CS_basics/cheatsheets/linked_list.zh.html
+		- `反轉 K 個節點的輔助函式模式 `
 
 
 
