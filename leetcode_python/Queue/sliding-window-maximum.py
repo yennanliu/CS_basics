@@ -86,6 +86,83 @@ NOTE !!!
 
 import heapq
 
+class Solution(object):
+    def maxSlidingWindow(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: List[int]
+        """
+        # Edge cases
+        if not nums or k <= 0:
+            return []
+
+        if k == 1:
+            return nums
+
+        # Min heap: (-value, index)
+        # Negative value simulates a max heap
+        pq = []
+        res = []
+
+        n = len(nums)
+
+        for r in range(n):
+            val_r = nums[r]
+
+            # Push current element
+            heapq.heappush(pq, (-val_r, r))
+
+            # Remove expired elements
+            while pq and pq[0][1] <= r - k:
+                heapq.heappop(pq)
+
+            # Window is fully formed
+            if r >= k - 1:
+                res.append(-pq[0][0])
+
+        return res
+
+
+
+# V0-X
+# IDEA: MAX PQ + SLIDE WINDOW (gpt)
+
+"""
+NOTE !!!
+
+
+1. need to save below in PQ:
+
+    -> (Heap 裡存 (value, index))
+
+        -> 這樣我們才能知道 heap 裡的元素是不是已經過期。
+
+
+2.  Steps:
+
+
+    - step 1) move right pointer
+
+    - step 2) shrink left pointer (slide window)
+
+    - step 3) remove `stale` elements (!!!) (lazy update)
+
+                -> remove the element NOT existed anymore
+                    (# Their index is outside current window.)
+
+
+    - step 4) update max val in window (when size == k)
+
+
+
+3. NO need to mantain a `tmp` array
+    
+    -> a big PQ + slide window can solve this LC
+"""
+
+import heapq
+
 
 class Solution(object):
     def maxSlidingWindow(self, nums, k):
@@ -285,6 +362,40 @@ class Solution:
                 ans.append(nums[q[0]])
 
         return ans
+
+
+# V0-0-2
+# IDEA: PQ + SLIDE WINDOW (gemini)
+import heapq
+
+class Solution(object):
+
+  def maxSlidingWindow(self, nums, k):
+    """:type nums: List[int]
+
+    :type k: int
+    :rtype: List[int]
+    """
+    if not nums or k == 0:
+      return []
+
+    pq = []
+    res = []
+
+    for r in range(len(nums)):
+      # 1. 將當前元素與索引推入 Heap（用負數模擬大頂堆）
+      heapq.heappush(pq, (-nums[r], r))
+
+      # 2. 當視窗大小達到 k 時（即索引 r >= k - 1）
+      if r >= k - 1:
+        # 清理已經滑出視窗左邊界的元素（即索引 <= r - k）
+        while pq[0][1] <= r - k:
+          heapq.heappop(pq)
+
+        # 堆頂就是當前視窗的最大值
+        res.append(-pq[0][0])
+
+    return res
 
 
 # V0-1
