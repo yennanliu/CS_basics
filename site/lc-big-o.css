@@ -1,0 +1,179 @@
+* { box-sizing: border-box; }
+/* Palette and footer come from lc-page.css; these are this page's own.
+   --s1..--s8 are the chart's categorical slots, validated (dataviz
+   validate_palette.js) for CVD and normal-vision separation in adjacent
+   order on both surfaces. Adjacent classes on the ladder take adjacent
+   slots, which is exactly the pairing that was validated. */
+:root {
+  --sunken: #ebebeb; --grid: #e2e2e2;
+  --s0: #8a8a8a;
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100;
+  --s5: #e87ba4; --s6: #008300; --s7: #6250d6; --s8: #e34948;
+  --fit: rgba(30, 126, 52, 0.14); --tight: rgba(217, 119, 6, 0.18); --slow: rgba(185, 28, 28, 0.16);
+}
+[data-theme="dark"] {
+  --sunken: #141414; --grid: #222222;
+  --s0: #8a8a8a;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500;
+  --s5: #d55181; --s6: #008300; --s7: #9085e9; --s8: #e66767;
+  --fit: rgba(74, 222, 128, 0.12); --tight: rgba(251, 191, 36, 0.16); --slow: rgba(248, 113, 113, 0.16);
+}
+html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; }
+body {
+  margin: 0;
+  font-family: 'SF Mono','JetBrains Mono','IBM Plex Mono',ui-monospace,'Menlo',monospace;
+  background: var(--bg); color: var(--text);
+  font-size: 15px; line-height: 1.55;
+  transition: background 0.2s, color 0.2s;
+}
+a { color: inherit; }
+a, button { touch-action: manipulation; }
+
+.container { max-width: 960px; margin: 2.5rem auto 4rem; padding: 0 1.5rem; }
+
+.page-header { text-align: center; margin-bottom: 1.6rem; }
+.page-header h1 { margin: 0 0 0.4rem; font-size: 1.9rem; }
+.page-header p { color: var(--text-light); margin: 0 auto; font-size: 0.92rem; max-width: 640px; }
+
+h2 { font-size: 1.15rem; margin: 2.4rem 0 0.4rem; }
+.section-note { color: var(--text-light); font-size: 0.86rem; margin: 0 0 1rem; }
+
+.panel {
+  background: var(--surface); border: 1px solid var(--border);
+  padding: 1.25rem 1.4rem; margin-bottom: 1.25rem;
+}
+.label {
+  display: block; font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--text-light); margin-bottom: 0.5rem;
+}
+
+.chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.chip {
+  padding: 0.35rem 0.8rem; border: 1px solid var(--border); background: var(--bg);
+  color: var(--text-light); font: inherit; font-size: 0.82rem; cursor: pointer;
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
+}
+.chip:hover { border-color: var(--text); color: var(--text); }
+.chip.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+
+.btn {
+  padding: 0.5rem 1.2rem; border: 1px solid var(--text);
+  background: var(--text); color: var(--bg);
+  font: inherit; font-weight: 700; cursor: pointer;
+}
+.btn:hover { opacity: 0.82; }
+input[type="text"], select {
+  background: var(--bg); color: var(--text); border: 1px solid var(--border);
+  font: inherit; padding: 0.5rem 0.7rem;
+}
+input:focus, select:focus { outline: none; border-color: var(--text); }
+
+/* ── The ladder: legend and visibility toggle in one ─────────────────── */
+.ladder { display: flex; flex-wrap: wrap; align-items: center; gap: 0.3rem; }
+.ladder .lt { color: var(--text-light); font-size: 0.8rem; }
+.curve-chip {
+  display: inline-flex; align-items: center; gap: 0.45rem;
+  padding: 0.35rem 0.7rem; border: 1px solid var(--border); background: var(--bg);
+  color: var(--text); font: inherit; font-size: 0.85rem; cursor: pointer;
+}
+.curve-chip:hover { border-color: var(--text); }
+.curve-chip.off { color: var(--text-light); opacity: 0.55; }
+.curve-chip.off .swatch { opacity: 0.35; }
+.swatch { width: 16px; height: 0; border-top: 3px solid; flex: none; }
+.swatch.dash1 { border-top-style: dashed; }
+.swatch.dash2 { border-top-style: dotted; }
+.chip-pair { display: inline-flex; }
+.chip-remove {
+  border: 1px solid var(--border); border-left: none; background: var(--bg);
+  color: var(--text-light); font: inherit; font-size: 0.9rem; padding: 0 0.6rem; cursor: pointer;
+}
+.chip-remove:hover, .chip-remove:focus-visible { color: var(--text); border-color: var(--text); }
+.ladder-hint { font-size: 0.78rem; color: var(--text-light); margin-top: 0.6rem; }
+
+.add-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem; }
+.add-row input { flex: 1; min-width: 200px; }
+.examples { margin-top: 0.6rem; font-size: 0.8rem; color: var(--text-light); }
+.examples button {
+  background: none; border: none; border-bottom: 1px dotted var(--text-light);
+  color: var(--text); font: inherit; cursor: pointer; padding: 0; margin: 0 0.35rem;
+}
+.msg { font-size: 0.82rem; margin-top: 0.5rem; min-height: 1.2em; color: var(--text-light); }
+.msg.err { color: #d14343; }
+
+/* ── Chart ───────────────────────────────────────────────────────────── */
+.controls { display: flex; flex-wrap: wrap; gap: 1.2rem; margin-bottom: 0.9rem; }
+.chart-wrap { position: relative; }
+#chart { display: block; width: 100%; background: var(--bg); border: 1px solid var(--border); }
+#chart text { font-family: inherit; }
+.axis-text { fill: var(--text-light); font-size: 11px; }
+.axis-title { fill: var(--text-light); font-size: 11px; font-weight: 700; }
+.curve-label { fill: var(--text); font-size: 11px; font-weight: 700; }
+.gridline { stroke: var(--grid); stroke-width: 1; }
+.axisline { stroke: var(--border); stroke-width: 1; }
+.tip {
+  position: absolute; pointer-events: none; z-index: 2;
+  background: var(--bg); border: 1px solid var(--text); padding: 0.5rem 0.7rem;
+  font-size: 0.78rem; line-height: 1.45; min-width: 190px;
+}
+.tip .tn { font-weight: 700; margin-bottom: 0.25rem; }
+.tip .row { display: flex; align-items: center; gap: 0.5rem; }
+.tip .row .nm { flex: 1; }
+.tip .row .v { color: var(--text-light); }
+.caption { font-size: 0.8rem; color: var(--text-light); margin: 0.6rem 0 0; }
+
+/* ── Tables ──────────────────────────────────────────────────────────── */
+.table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+table.grid { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+table.grid th {
+  text-align: left; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--text-light); font-weight: 700; padding: 0.4rem 0.55rem;
+  border-bottom: 1px solid var(--border); white-space: nowrap;
+}
+table.grid td { padding: 0.45rem 0.55rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+table.grid td.num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+table.grid td.fit { background: var(--fit); }
+table.grid td.tight { background: var(--tight); }
+table.grid td.slow { background: var(--slow); color: var(--text-light); }
+table.grid td.maxn { font-weight: 700; }
+table.grid .cls { white-space: nowrap; font-weight: 700; }
+table.grid .cls .swatch { display: inline-block; vertical-align: middle; margin-right: 0.45rem; }
+.key { display: flex; flex-wrap: wrap; gap: 1rem; font-size: 0.78rem; color: var(--text-light); margin-top: 0.7rem; }
+.key span::before {
+  content: ''; display: inline-block; width: 12px; height: 12px; margin-right: 0.35rem;
+  vertical-align: -1px; border: 1px solid var(--border);
+}
+.key .k-fit::before { background: var(--fit); }
+.key .k-tight::before { background: var(--tight); }
+.key .k-slow::before { background: var(--slow); }
+
+/* ── Compare ─────────────────────────────────────────────────────────── */
+.cmp-row { display: grid; grid-template-columns: 1fr auto 1fr auto; gap: 0.6rem; align-items: center; }
+.cmp-row .vs { color: var(--text-light); font-weight: 700; }
+.verdict { margin-top: 1rem; font-size: 0.9rem; }
+.verdict .big { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.35rem; }
+.verdict p { margin: 0.3rem 0; color: var(--text-light); }
+.verdict p b { color: var(--text); }
+
+/* ── Reference prose ─────────────────────────────────────────────────── */
+.rules { margin: 0; padding-left: 1.2rem; font-size: 0.88rem; }
+.rules li { margin-bottom: 0.65rem; }
+.rules li b { font-weight: 700; }
+code { background: var(--sunken); padding: 0 0.25rem; }
+details.ref summary { cursor: pointer; font-size: 0.88rem; font-weight: 700; }
+details.ref img { display: block; max-width: 100%; height: auto; margin: 1rem auto 0; background: #fff; }
+.next-links { font-size: 0.88rem; }
+
+@media (max-width: 640px) {
+  .container { padding: 0 16px; margin-top: 1.5rem; }
+  .panel { padding: 1rem; }
+  .cmp-row { grid-template-columns: 1fr; }
+  .cmp-row .vs { text-align: center; }
+  .chip, .curve-chip, .chip-remove, .btn { min-height: 40px; }
+  input, select { font-size: 16px; min-height: 44px; }
+}
+@supports (padding: env(safe-area-inset-left)) {
+  .container {
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+}

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <title>Big-O 比較 - CS Basics</title>
+  <meta name="description" content="繪製並比較 Big-O 成長速度 —— O(1)、O(log n)、O(n)、O(n log n)、O(n²)、O(2^n)、O(n!) 或任何你輸入的式子 —— 並看出一個解法在逾時前 n 最多能多大。">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📈</text></svg>">
+  <link rel="stylesheet" href="nav.css">
+  <link rel="stylesheet" href="lc-page.css">
+  <link rel="stylesheet" href="lc-big-o.css">
+  <link rel="alternate" hreflang="zh-Hant" href="https://yennanliu.github.io/CS_basics/lc-big-o.zh.html">
+  <link rel="alternate" hreflang="en" href="https://yennanliu.github.io/CS_basics/lc-big-o.html">
+  <link rel="alternate" hreflang="x-default" href="https://yennanliu.github.io/CS_basics/lc-big-o.html">
+  <!-- Blocking on purpose: nav.js restores the stored theme before first paint. -->
+  <script src="nav.js"></script>
+  <!-- The quiz's parser — the same one the English page uses. -->
+  <script src="complexity.js"></script>
+</head>
+<body>
+<!-- The 繁體中文 counterpart of lc-big-o.html. Only the static prose lives here;
+     the tool itself is lc-big-o.js, shared with the English page, which picks
+     its strings by <html lang>. Keep the element ids identical to the English
+     shell — site/test/big-o-page.test.js boots both. -->
+<div id="site-nav" data-page="lc-big-o" data-lang="zh" data-lang-alt="lc-big-o.html"></div>
+<script>CSNav.mount();</script>
+
+<div class="container">
+  <div class="page-header">
+    <h1>Big-O 比較</h1>
+    <p>看每個複雜度類別成長得多快、畫出任何你輸入的式子，並讀出一個解法在逾時前能處理的最大輸入。</p>
+  </div>
+
+  <!-- ── Curves ─────────────────────────────────────────────────────────── -->
+  <div class="panel">
+    <span class="label">複雜度階梯 —— 點一個類別來顯示或隱藏</span>
+    <div class="ladder" id="ladder"></div>
+    <div class="ladder-hint" id="customList"></div>
+
+    <form class="add-row" id="addForm" autocomplete="off">
+      <input type="text" id="addInput" maxlength="80" aria-label="要繪製的複雜度"
+             placeholder="自己加一條：n log^2 n、n·2^n、n^2 log n、sqrt(n) log n …">
+      <button class="btn" type="submit">繪製</button>
+    </form>
+    <div class="examples">試試：
+      <button type="button" data-ex="n log^2 n">n log² n</button>
+      <button type="button" data-ex="n * 2^n">n·2ⁿ</button>
+      <button type="button" data-ex="n^2 log n">n² log n</button>
+      <button type="button" data-ex="3^n">3ⁿ</button>
+      <button type="button" data-ex="n sqrt n">n√n</button>
+      <button type="button" data-ex="log log n">log log n</button>
+    </div>
+    <div class="msg" id="addMsg" role="status"></div>
+  </div>
+
+  <!-- ── Chart ──────────────────────────────────────────────────────────── -->
+  <div class="panel">
+    <div class="controls">
+      <div>
+        <span class="label">輸入大小 n，最大到</span>
+        <div class="chips" id="rangeChips"></div>
+      </div>
+      <div>
+        <span class="label">運算次數軸</span>
+        <div class="chips" id="scaleChips"></div>
+      </div>
+    </div>
+    <div class="chart-wrap" id="chartWrap">
+      <svg id="chart" role="img" aria-labelledby="chartDesc"></svg>
+      <div class="tip" id="tip" hidden></div>
+    </div>
+    <p class="caption" id="chartDesc"></p>
+  </div>
+
+  <!-- ── Ops table ──────────────────────────────────────────────────────── -->
+  <h2>那是多少次運算？</h2>
+  <p class="section-note">
+    評測系統每秒大約跑 <b id="budgetText">10⁸</b> 次簡單運算。這一個數字就能把
+    <code>n ≤ 10⁵</code> 這種限制換算成面試官預期的複雜度 —— 從最後一欄反著讀。
+    預算：
+    <select id="budgetSelect" aria-label="每秒運算次數">
+      <option value="7">10⁷ 次 / 秒（Python、常數大）</option>
+      <option value="8" selected>10⁸ 次 / 秒（一般評測系統）</option>
+      <option value="9">10⁹ 次 / 秒（精簡的 C++ 迴圈）</option>
+    </select>
+  </p>
+  <div class="panel">
+    <div class="table-scroll"><table class="grid" id="opsTable"></table></div>
+    <div class="key">
+      <span class="k-fit">~1 秒內跑得完</span>
+      <span class="k-tight">在 10 倍以內 —— 很緊，由常數決定</span>
+      <span class="k-slow">超過 10 倍 —— 逾時</span>
+    </div>
+  </div>
+
+  <!-- ── Compare ────────────────────────────────────────────────────────── -->
+  <h2>比較兩個</h2>
+  <p class="section-note">哪個成長得比較快？是不是同一類別？差距從哪個 n 開始真正顯現？所有變數都視為 n。</p>
+  <div class="panel">
+    <form class="cmp-row" id="cmpForm" autocomplete="off">
+      <input type="text" id="cmpA" maxlength="80" value="n log n" aria-label="第一個複雜度">
+      <span class="vs">vs</span>
+      <input type="text" id="cmpB" maxlength="80" value="n^2" aria-label="第二個複雜度">
+      <button class="btn" type="submit">比較</button>
+    </form>
+    <div class="verdict" id="cmpOut" role="status"></div>
+  </div>
+
+  <!-- ── Constraints → target ───────────────────────────────────────────── -->
+  <h2>看限制，猜演算法</h2>
+  <p class="section-note">找到預期解法最快的方法，就是看 n 的上限。以每秒 ~10⁸ 次運算計算，各個大小允許的複雜度如下。</p>
+  <div class="panel">
+    <div class="table-scroll">
+      <table class="grid">
+        <thead><tr><th>若 n 最大到</th><th>目標</th><th>通常代表</th></tr></thead>
+        <tbody>
+          <tr><td class="num">10 – 11</td><td class="cls">O(n!)</td><td>列舉每種排列：backtracking、暴力排序。</td></tr>
+          <tr><td class="num">20 – 25</td><td class="cls">O(2ⁿ), O(n·2ⁿ)</td><td>列舉每個子集：選 / 不選的遞迴、bitmask DP。</td></tr>
+          <tr><td class="num">≈ 500</td><td class="cls">O(n³)</td><td>區間 DP、Floyd–Warshall、三層巢狀迴圈。</td></tr>
+          <tr><td class="num">≈ 5,000</td><td class="cls">O(n²)</td><td>以兩個索引為狀態的 2-D DP（LCS、edit distance）、所有配對。</td></tr>
+          <tr><td class="num">10⁵ – 10⁶</td><td class="cls">O(n log n)</td><td>先排序、heap、迴圈裡做 binary search。最常見的面試上界。</td></tr>
+          <tr><td class="num">10⁷ – 10⁸</td><td class="cls">O(n)</td><td>掃一遍：hash map、two pointers、sliding window、prefix sum、BFS / DFS。</td></tr>
+          <tr><td class="num">超過 10⁸</td><td class="cls">O(log n), O(1)</td><td>對答案做 binary search、數學、公式。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── The classes ────────────────────────────────────────────────────── -->
+  <h2>每個類別從哪裡來</h2>
+  <p class="section-note">認得程式碼的樣子，還沒開始數就知道上界。</p>
+  <div class="panel">
+    <div class="table-scroll"><table class="grid" id="classTable"></table></div>
+  </div>
+
+  <!-- ── Rules ──────────────────────────────────────────────────────────── -->
+  <h2>面試時怎麼講複雜度</h2>
+  <div class="panel">
+    <ol class="rules">
+      <li><b>丟掉常數和低次項。</b> <code>3n² + 10n + 7</code> 是
+        <code>O(n²)</code>。把陣列掃兩遍仍然是 <code>O(n)</code>。</li>
+      <li><b>依序執行用加的，巢狀執行用乘的。</b> 一個迴圈接著另一個迴圈是
+        <code>O(a + b)</code>；迴圈裡面再一個迴圈是 <code>O(a · b)</code>。</li>
+      <li><b>不同的輸入用不同的字母。</b> 比較兩個字串是
+        <code>O(m · n)</code>，不是 <code>O(n²)</code>；圖是 <code>O(V + E)</code>。把它們都併成 n
+        是講錯上界最常見的方式。</li>
+      <li><b>砍半就會出現 log。</b> 只要每一步把剩下的工作砍半 ——
+        binary search、平衡樹、heap —— 步數就是 <code>log n</code>。底數永遠不重要：
+        <code>log₂ n</code> 和 <code>log₁₀ n</code> 只差一個常數。</li>
+      <li><b>遞迴是 分支數<sup>深度</sup>。</b> 暴力 Fibonacci 每層呼叫 2 次、深度 n：
+        <code>O(2ⁿ)</code>。加上 memoization 後每個狀態只算一次：
+        <code>O(狀態數 × 每個狀態的工作量)</code> = <code>O(n)</code>。</li>
+      <li><b>Divide and conquer：</b> 切半、用線性時間合併 —— <code>O(n log n)</code>
+        （merge sort）。切半、只留一邊 —— <code>O(log n)</code>（binary search）。</li>
+      <li><b>攤銷（amortised）看的是整段執行。</b> 動態陣列偶爾的擴容，或每個元素只 push、pop 一次的
+        monotonic stack，在整段執行中每次操作是 <code>O(1)</code> —— 要把「amortised」說出口。</li>
+      <li><b>空間要算遞迴堆疊。</b> 在歪斜的樹上做 DFS，即使看不到任何資料結構，空間也是
+        <code>O(n)</code>；在平衡的樹上則是 <code>O(log n)</code>。</li>
+      <li><b>點出決定複雜度的那一行。</b>「排序是 <code>O(n log n)</code>，之後都是線性，
+        所以總共是 <code>O(n log n)</code>」就是面試官在等的那句話。</li>
+    </ol>
+  </div>
+
+  <details class="ref panel">
+    <summary>經典的 Big-O 圖（參考圖片）</summary>
+    <img src="doc/pic/bigO_complexity_chart.png" loading="lazy"
+         alt="Big-O 複雜度圖：運算次數對元素數量，從 excellent 區的 O(1)、O(log n) 到 horrible 區的 O(2^n)、O(n!)">
+  </details>
+
+  <p class="next-links">
+    練習一下：<a href="lc-complexity-quiz.html">複雜度測驗</a>給你一段程式碼，問它的時間和空間複雜度 ·
+    <a href="cheatsheets.zh.html">cheat sheets</a> 列出了每個模板的複雜度。
+  </p>
+</div>
+
+<!-- The whole tool, shared with lc-big-o.html. -->
+<script src="lc-big-o.js"></script>
+
+<footer>
+  <div class="container">
+    <p>CS_basics — computer science fundamentals &amp; interview preparation</p>
+    <p>
+      <a href="https://github.com/yennanliu/CS_basics">github</a> |
+      <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+      <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

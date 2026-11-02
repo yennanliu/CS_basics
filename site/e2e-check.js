@@ -54,6 +54,7 @@ const REQUIRED = [
   'lc-zh-translate.html', 'lc-algo-demo.html', 'lc-site-data.html', 'lc-faq-add.html',
   'l3-core.html', '404.html',
   'style.css', 'nav.css', 'nav.js', 'lc-page.css', 'site.js', 'roadmap.js', 'complexity.js',
+  'lc-big-o.html', 'lc-big-o.zh.html', 'lc-big-o.js', 'lc-big-o.css',
   'vendor/d3.min.js', 'vendor/highlight/atom-one-dark.min.css',
   'data/roadmap.json', 'data/complexity-quiz.json', 'data/lc-problems.json',
   'data/search-index.json', 'data/progress.json'
