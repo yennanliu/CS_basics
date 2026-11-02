@@ -16,7 +16,6 @@
 			- 2 pointers - ing
 				- Trapping Rain Water (pass)
 			- slide window - ing
-				- Minimum Window Substring (pass)
 				- Sliding Window Maximum (pass)
 			- binary search - ing
 				- Median of Two Sorted Arrays (pass)
