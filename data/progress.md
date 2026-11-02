@@ -134,7 +134,7 @@
 
 - Design — 實戰題解
 	- https://yennj12.js.org/CS_basics/cheatsheets/design_examples.zh.html
-		- `Insert Delete GetRandom O(1)`
+		- `模板 B - 掃描線差分計數（最大重疊）`
 
 
 		
