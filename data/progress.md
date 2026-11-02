@@ -29,7 +29,6 @@
 			- advanced graphs (ing)
 				- Reconstruct Itinerary (pass)
 				- Swim In Rising Water (pass)
-				- Alien Dictionary (pass)
 
 			- 1D dp - done
 			- 2D dp - ing

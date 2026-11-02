@@ -62,6 +62,23 @@ class Solution(object):
     graph = defaultdict(set)
     orders = {c: 0 for word in words for c in word}
 
+    """
+    NOTE !!!
+
+    -> how we build the graph (key of this LC)
+
+
+    -> Alien Dictionary 不是比較同一個 word 裡面的字母順序，
+       而是比較 words 中「相鄰兩個單字」，
+       找出第一個不同的字母，建立字母之間的順序關係。
+
+
+    -> NOTE:
+
+        -> 我們只需要比較相鄰的兩個 word。
+
+
+    """
     # 2. 建立邊與依賴關係（比較相鄰的兩個單字）
     for i in range(len(words) - 1):
       w1, w2 = words[i], words[i + 1]
