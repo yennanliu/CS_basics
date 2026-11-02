@@ -201,7 +201,7 @@ These sections are the model. The new template is derived from them rather than 
 
 Five ideas, each a change in *how a sheet is written* rather than a one-off fix.
 
-1. **Every template is a *pattern card*.** Each card has the same six slots in a fixed order: **Recognise → Invariant → Template → Trace → Traps → Drill**. A reader who knows the order can find "what's the trap?" in any sheet without reading it. Every exemplar above already has this shape.
+1. **Every template is a *pattern card*.** Each card has the same slots in a fixed order: **Recognise → *Not this if* → Invariant → Template → *Trace* → Traps → Drill**. *Not this if* is written whenever a look-alike exists, and *Trace* whenever a step is non-obvious; an optional slot is left out only when it would be empty, and the rest keep their order. A reader who knows the order can find "what's the trap?" in any sheet without reading it. Every exemplar above already has this shape.
 2. **Every worked example is a *problem card*.** It has a key-insight blockquote and a "Reduces to" link to its card, then one solution with `time =`, plus a trace and traps where needed. Raw code with `NOTE !!!` is a solution file, and those already live in `leetcode_python/` and `leetcode_java/`. The cheatsheet should link to them, not paste them.
 3. **One home per problem.** A worked LC problem lives in exactly one sheet. Every other mention is a one-row pointer. The rule already exists for topics (Scope lines); it needs to exist for problems.
 4. **A front door.** Rebuild `lc_pattern.md` as *signal → pattern → sheet → card*, with the constraint ruler and an anti-recognition column. Every row links to a card.

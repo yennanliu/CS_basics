@@ -206,7 +206,7 @@ repo 其實已經有答案：[`data/l3_core.json`](../data/l3_core.json) 是 99 
 
 五個構想，每一個都是在改變 *cheatsheet 的寫法*，而不是一次性的修補。
 
-1. **每個模板都是一張 *pattern card*。** 固定六個欄位、固定順序：**辨識（Recognise）→ 不變量（Invariant）→ 模板（Template）→ 追蹤（Trace）→ 陷阱（Traps）→ 練習（Drill）**。讀者記住順序之後，在任何一份 cheatsheet 都能直接找到「陷阱是什麼？」，不必從頭讀。上面每個範本其實都已經是這個形狀。
+1. **每個模板都是一張 *pattern card*。** 欄位順序固定：**辨識（Recognise）→ *不是這個（Not this if）* → 不變量（Invariant）→ 模板（Template）→ *追蹤（Trace）* → 陷阱（Traps）→ 練習（Drill）**。有相似題時一定要寫 *Not this if*，有不直觀的步驟時一定要寫 *Trace*；選填欄位只有在內容為空時才能省略，其餘欄位的順序不變。讀者記住順序之後，在任何一份 cheatsheet 都能直接找到「陷阱是什麼？」，不必從頭讀。上面每個範本其實都已經是這個形狀。
 2. **每個例題都是一張 *problem card*。** 開頭是一行 key insight 引言，加上一個「Reduces to」連到它所屬的 card；接著是一份附 `time =` 的解法；需要時再加 trace 和陷阱。帶著 `NOTE !!!` 的原始程式碼是解題檔，而解題檔已經放在 `leetcode_python/` 和 `leetcode_java/`。cheatsheet 應該連過去，而不是再貼一份。
 3. **一題一個家。** 一道完整解過的 LC 題只放在一份 cheatsheet，其他地方的提及都只是一列指標。主題已經有這條規則（Scope 行），題目也需要。
 4. **一個入口。** 把 `lc_pattern.md` 重寫成「訊號 → pattern → cheatsheet → card」，附約束尺規和一欄反辨識，每一列都連到一張 card。

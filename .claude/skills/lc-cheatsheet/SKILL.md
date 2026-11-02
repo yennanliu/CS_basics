@@ -114,8 +114,10 @@ pitfall list. Match it. `doc/cheatsheet/00_template.md` is the authority when th
 drifted or when the mode is `sheet`.
 
 For mode `sheet`, pick the skeleton by **size, not topic** (CLAUDE.md § Which skeleton):
-Skeleton A (`0) Concept` → `1) General form` → `2) LC Example`) under ~800 lines, Skeleton B
-(`Overview` → `Problem Categories` → `Templates & Algorithms` → …) above it. Never mix them.
+Skeleton A (`0) Concept` → `1) General form` → `2) LC Example` → `3) Drill Path`) under ~800
+lines, Skeleton B (`Overview` → `Recognition` → `Templates & Algorithms` → `LC Examples` →
+`Pattern Selection Strategy` → `Drill Path` → `Summary`) above it. Never mix them. A tier ≥ 4
+sheet also needs the Recognition table and the Drill Path (`00_template.md` has both).
 
 ### 4. Write the section
 
@@ -123,7 +125,7 @@ House rules that are not negotiable:
 
 - **Every fence is tagged** — ` ```python `, ` ```java `, ` ```text ` for traces, diagrams and
   program output. Never a bare ` ``` `.
-- **`# IDEA: <one line>`** opens a snippet; complexity is the first comment,
+- **`# IDEA: <one line>`** opens a snippet; complexity goes on the next line,
   `# time = O(...), space = O(...)`, and `// LC <n> - <Problem Name>` sits above the class.
 - **State each LC number once** per heading — not `... (LC 1650) — LC 1650`.
 - **Heading levels never skip** (`h3` → `h4`, never `h3` → `h5`).
@@ -134,8 +136,10 @@ House rules that are not negotiable:
   same loop.
 - **A `pattern` is a pattern card; an `example` or `variation` is a problem card**
   (`doc/cheatsheet/00_template.md` has both in full). A pattern card runs **Recognise** (the
-  statement wording, plus a constraint cue) → **Invariant** → template (Python, then Java) →
-  trace → **Traps** (each names the input that springs it) → **Drill**. A problem card opens
+  statement wording, plus a constraint cue where one exists) → *Not this if* (when a look-alike
+  exists) → **Invariant** → template (Python, then Java) → *trace* (when a step is
+  non-obvious) → **Traps** (each names the input that springs it and what goes wrong) →
+  **Drill**. Optional slots are left out only when empty; the rest keep their order. A problem card opens
   with a `> **Key insight** —` line and a `**Reduces to**:` link **before any code**, so it
   never starts with a fence.
 - **Python first, then Java.** No emoji in headings other than the `⭐` run, and no `NOTE !!!`

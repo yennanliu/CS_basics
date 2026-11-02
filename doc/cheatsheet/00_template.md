@@ -67,7 +67,7 @@ Add it to `startHere` only if it belongs in the beginner reading ladder.
 
 ## The pattern card — every template section
 
-Six slots, **always in this order**. A reader who knows the order can find "what's the trap?" in any sheet without reading the rest of it. Slots marked *optional* can be left out when they would be empty; the order of what remains does not change.
+Seven slots, **always in this order**. A reader who knows the order can find "what's the trap?" in any sheet without reading the rest of it. Two are *optional*: **Not this if** is written whenever a look-alike exists, and **Trace** whenever a step is non-obvious. An optional slot is left out only when it would be empty, and the order of what remains does not change.
 
 ````markdown
 ### Template 2: Variable-Size Window — LC 3 ⭐⭐⭐⭐⭐
@@ -103,8 +103,27 @@ def longest_valid(s):
 ```java
 // java
 // LC 3 - Longest Substring Without Repeating Characters
+// IDEA: grow right; while the window has a duplicate, shrink left; record after it is valid
 // time = O(n), space = O(k)
-...
+public int lengthOfLongestSubstring(String s) {
+    Map<Character, Integer> count = new HashMap<>();
+    int left = 0;
+    int best = 0;
+    for (int right = 0; right < s.length(); right++) {
+        char ch = s.charAt(right);
+        count.put(ch, count.getOrDefault(ch, 0) + 1);
+        while (count.get(ch) > 1) {           // invalid -> shrink until valid
+            char out = s.charAt(left);
+            count.put(out, count.get(out) - 1);
+            if (count.get(out) == 0) {
+                count.remove(out);             // only the window's chars stay: O(k)
+            }
+            left++;
+        }
+        best = Math.max(best, right - left + 1);  // valid here, so measure here
+    }
+    return best;
+}
 ```
 
 **Trace** *(optional — required when one step is non-obvious)*
@@ -129,7 +148,7 @@ right=3 'a'  window "ba"   best=2
 | **Recognise** | The *wording* in a problem statement that should make you reach for this, plus a **constraint cue** where one exists (n ≤ 20 → bitmask, n ≤ 10⁵ → n log n). Never restate the title. "Maximum path sum problems" under *Maximum Path Sum* teaches nothing. |
 | **Not this if** *(optional)* | The look-alike, and the tell that separates them. This is the highest-value line on the card. The model is [`difference_array.md`](./difference_array.md)'s "looks like a diff array, but is not". |
 | **Invariant** | One or two lines, **before** the code: what is true at every iteration, and where it is restored. For DP, the five lines *state / recurrence / base / order / answer* replace it. |
-| **Template** | One canonical solution, **Python first, then Java**. Runnable, with real names, no `pass`, no `...` where the logic should be. `time =` / `space =` is the first comment. |
+| **Template** | One canonical solution, **Python first, then Java**. Runnable, with real names, no `pass`, no `...` where the logic should be. Comments open with `# IDEA:`, then `# time = … , space = …` on the next line. |
 | **Trace** | A ` ```text ` state table on the smallest input that shows the non-obvious step. Required when a reader could not dry-run the template in their head. |
 | **Traps** | Each trap names **the input that springs it** and what goes wrong. "Forgetting to handle edge cases" is not a trap; "`[]` returns `None` instead of `0`" is. |
 | **Drill** | 3–6 LC numbers, easy → hard, must-know ones starred. Say in a few words what changes from the template. |
@@ -152,8 +171,21 @@ A worked example is a lesson about **one** step that is not in the template. Raw
 
 ```python
 # python
+# IDEA: the window is valid while (length - most frequent count) <= k
 # time = O(n), space = O(26)
-...
+def characterReplacement(s, k):
+    count = {}
+    left = 0
+    max_freq = 0          # highest count of one letter in any window so far
+    best = 0
+    for right, ch in enumerate(s):
+        count[ch] = count.get(ch, 0) + 1
+        max_freq = max(max_freq, count[ch])
+        while (right - left + 1) - max_freq > k:   # too many letters to replace
+            count[s[left]] -= 1
+            left += 1
+        best = max(best, right - left + 1)
+    return best
 ```
 
 **Traps** — recomputing `max(count.values())` each step is correct but O(26·n); say why the
@@ -174,7 +206,7 @@ Rules:
 
 ## The recognition table
 
-Every tier ≥ 4 main sheet has one, right after the Overview. It is how a reader holding a problem statement finds the card:
+Every tier ≥ 4 main sheet has one: right after the Overview in Skeleton B, at the end of `0) Concept` in Skeleton A. It is how a reader holding a problem statement finds the card:
 
 ```markdown
 ## Recognition
@@ -193,7 +225,7 @@ Every tier ≥ 4 main sheet has one, right after the Overview. It is how a reade
 
 ## The drill path
 
-Every main sheet ends its teaching content with an ordered practice list, just before `Summary`:
+Every main sheet ends its teaching content with an ordered practice list: just before `Summary` in Skeleton B, as `3) Drill Path` in Skeleton A:
 
 ```markdown
 ## Drill Path
@@ -218,9 +250,11 @@ Every main sheet ends its teaching content with an ordered practice list, just b
 
 <one paragraph> + **Recognise** / **Invariant** lines for the whole technique
 
+### Recognition                   <!-- the recognition table, at the end of 0) Concept -->
+
 ## 1) General form
 
-### 1-1) <Template name>          <!-- a pattern card -->
+### Template 1: <Template name>   <!-- a pattern card; Template 1 … N, no gaps -->
 
 ## 2) LC Example
 
@@ -310,7 +344,7 @@ A trailing `⭐` run on a heading says how interview-critical that section is. T
 - **Bold** key terms and the card slot labels: `**Recognise**`, `**Invariant**`, `**Traps**`, `**Key insight**`.
 - Category headers: `#### **Category Name**`
 - Code blocks: **always** tag the language: `python`, `java`, or `text` for ASCII traces, diagrams and program output. Never leave a bare ` ``` `.
-- Complexity: inside code as the first comment, `# time = O(...), space = O(...)`.
+- Complexity: inside code, on the line right after `# IDEA:`, as `# time = O(...), space = O(...)`. The order is always the language label, then `IDEA`, then `time`.
 - Images: `<p align="center"><img src="../pic/filename.png"></p>`
 - Heading levels never skip: an `h2` is followed by `h3`, not `h4`.
 - State each LC number **once** per heading: `### Top K Frequent Elements — LC 347`, not `### Top K Frequent Elements (LC 347) — LC 347`.
