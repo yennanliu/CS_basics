@@ -164,19 +164,21 @@ A worked example is a lesson about **one** step that is not in the template. Raw
 ````markdown
 ### Longest Repeating Character Replacement — LC 424
 
-> **Key insight** — the window is valid while `len − maxFreq ≤ k`; `maxFreq` never needs to
-> decrease, because only a *larger* `maxFreq` can produce a longer answer.
+> **Key insight** — a window is valid when `len − maxFreq ≤ k`. Keep `maxFreq` as the highest
+> count *ever* seen and never lower it: the window may then sit on an invalid stretch, but its
+> length never exceeds `best`, and it only grows past `best` once a higher `maxFreq` makes a
+> longer valid window possible. So the **length** is always right, even when the window is not.
 
-**Reduces to**: [Template 2](#template-2-variable-size-window--lc-3-) — the validity test is the only change.
+**Reduces to**: [Template 2](#template-2-variable-size-window--lc-3-) — with a different validity test, and a window that is allowed to be stale.
 
 ```python
 # python
-# IDEA: the window is valid while (length - most frequent count) <= k
+# IDEA: shrink while (length - max_freq) > k; max_freq is never lowered, so only the length is trusted
 # time = O(n), space = O(26)
 def characterReplacement(s, k):
     count = {}
     left = 0
-    max_freq = 0          # highest count of one letter in any window so far
+    max_freq = 0          # highest count ever seen: may be stale for the current window
     best = 0
     for right, ch in enumerate(s):
         count[ch] = count.get(ch, 0) + 1
@@ -188,8 +190,11 @@ def characterReplacement(s, k):
     return best
 ```
 
-**Traps** — recomputing `max(count.values())` each step is correct but O(26·n); say why the
-stale `maxFreq` is safe if you keep it.
+**Traps**
+- With a stale `max_freq` the window itself can be invalid: `"AABB"`, k = 0, leaves `"AB"` after
+  the third character. Return the length, never the window. If the interviewer wants the
+  substring, recompute `max(count.values())`. That is correct but costs O(26·n).
+- Explaining why the stale value is safe is the interview question; have the sentence ready.
 
 **Similar** — LC 1004 (k flips of 0s) · LC 2024 (two letters)
 ````
