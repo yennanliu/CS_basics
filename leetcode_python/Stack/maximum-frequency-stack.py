@@ -73,10 +73,13 @@ from collections import defaultdict
 class FreqStack(object):
 
     def __init__(self):
+
+        # {val: cnt}
         # 記錄每個數字目前出現的頻率
         # freq[num] = num 的出現次數
         self.freq = defaultdict(int)
 
+        # {cnt: [val_1, val_2, ...]}
         # 按照頻率分組的 Stack
         # group[f] = 所有曾經達到頻率 f 的元素（依照加入順序）
         self.group = defaultdict(list)
@@ -93,6 +96,8 @@ class FreqStack(object):
         self.freq[val] += 1
         f = self.freq[val]
 
+        # NOTE !!
+        # group:  {cnt: [val_1, val_2, ...]}
         # 將 val 放入對應頻率的 Stack
         self.group[f].append(val)
 
@@ -103,12 +108,16 @@ class FreqStack(object):
         """
         :rtype: int
         """
+
+        # NOTE !!
+        # group:  {cnt: [val_1, val_2, ...]}
         # 從最高頻率的 Stack 中取出最近加入的元素
         val = self.group[self.max_freq].pop()
 
         # 更新該元素的頻率
         self.freq[val] -= 1
 
+   
         # 如果最高頻率的 Stack 已經空了，
         # 代表目前最高頻率需要下降一級
         if not self.group[self.max_freq]:
