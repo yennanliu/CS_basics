@@ -57,6 +57,114 @@ u_i != v_i
 """
 
 # V0
+class Solution(object):
+    def checkIfPrerequisite(self, numCourses, prerequisites, queries):
+        """
+        :type numCourses: int
+        :type prerequisites: List[List[int]]
+        :type queries: List[List[int]]
+        :rtype: List[bool]
+        """
+        pass
+
+
+# V0-1
+# IDEA: TOPO SORT (gpt)
+from collections import defaultdict, deque
+
+class Solution(object):
+    def checkIfPrerequisite(self, numCourses, prerequisites, queries):
+        """
+        :type numCourses: int
+        :type prerequisites: List[List[int]]
+        :type queries: List[List[int]]
+        :rtype: List[bool]
+        """
+
+        # 建立 Graph 和每個節點的入度
+        graph = defaultdict(list)
+        indegree = [0] * numCourses
+
+        for u, v in prerequisites:
+            graph[u].append(v)
+            indegree[v] += 1
+
+        # reachable[v]：所有可以到達課程 v 的先修課程
+        reachable = [set() for _ in range(numCourses)]
+
+        # 將所有入度為 0 的課程加入 Queue
+        q = deque()
+
+        for i in range(numCourses):
+            if indegree[i] == 0:
+                q.append(i)
+
+        # Topological Sort
+        while q:
+            u = q.popleft()
+
+            # 處理 u 的所有後續課程 v
+            for v in graph[u]:
+
+                # u 本身是 v 的先修課程
+                reachable[v].add(u)
+
+                # u 的所有先修課程，也是 v 的先修課程
+                reachable[v].update(reachable[u])
+
+                # 更新 v 的入度
+                indegree[v] -= 1
+
+                # 所有先修課程都處理完畢後，才處理 v
+                if indegree[v] == 0:
+                    q.append(v)
+
+        # 根據預先計算好的 reachable Set 回答 queries
+        res = []
+
+        for u, v in queries:
+            res.append(u in reachable[v])
+
+        return res
+
+
+# V0-2
+# IDEA: TOPO SORT (gemini)
+class Solution(object):
+
+  def checkIfPrerequisite(self, numCourses, prerequisites, queries):
+    """:type numCourses: int
+
+    :type prerequisites: List[List[int]]
+    :type queries: List[List[int]]
+    :rtype: List[bool]
+    """
+    # 1. 初始化一個二維布林矩陣 reachable，大小為 numCourses * numCourses
+    # reachable[i][j] 代表課程 i 是否為課程 j 的先修課 (直接或間接)
+    reachable = [[False] * numCourses for _ in range(numCourses)]
+
+    # 2. 填入題目直接給定的先修關係 (直接邊)
+    for u, v in prerequisites:
+      reachable[u][v] = True
+
+    # 3. 使用 Floyd-Warshall 演算法計算所有點對之間的遞移閉包 (Transitive Closure)
+    # 注意：最外層必須是中繼點 k，才能確保狀態傳遞正確
+    for k in range(numCourses):
+      for i in range(numCourses):
+        for j in range(numCourses):
+          # 如果 i 可以到 k，且 k 可以到 j，則 i 也可以到 j
+          if reachable[i][k] and reachable[k][j]:
+            reachable[i][j] = True
+
+    # 4. 根據預先計算好的 reachable 矩陣，以 O(1) 時間回答所有查詢
+    ans = []
+    for u, v in queries:
+      ans.append(reachable[u][v])
+
+    return ans
+
+
+# V0-3
 # IDEA : TOPOLOGICAL SORT (KAHN'S BFS) + PROPAGATE PREREQUISITE SETS
 #
 #   node = a course, edge a -> b = "a must be taken before b".
