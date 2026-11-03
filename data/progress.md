@@ -141,17 +141,12 @@
 
 
 
-
-
-- Linked List（鏈結串列）
-	- https://yennj12.js.org/CS_basics/cheatsheets/linked_list.zh.html
-		- `2) 模式選擇`
+- Hash Map Cheatsheet（雜湊表速查） (review)
+	- https://yennj12.js.org/CS_basics/cheatsheets/hash_map.zh.html
 
 
 
-
-
-
+	
 
 - python_trick.md
 	- https://yennj12.js.org/CS_basics/cheatsheets/python_trick.zh.html
@@ -281,6 +276,7 @@
 			- Again
 				- 7) 樹 — 時間看節點數，空間看樹高（最經典的坑） 
 	- 複雜度速查表 — 經典演算法與資料結構
+	- Linked List（鏈結串列）
 
 
 
