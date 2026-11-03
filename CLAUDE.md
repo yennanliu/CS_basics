@@ -779,6 +779,14 @@ Titles, difficulty and the link to this repo's solution come from `README.md` at
 - a `cost.time` / `cost.space` is missing, or one of its `lines` (1-based into `code`) is outside the snippet or blank. The page highlights those lines once the answer is checked, so point at the loop header, call or allocation the bound comes from — not the whole function. `[]` is right for space only when nothing notable allocates;
 - the question has no entry in `data/complexity_quiz.zh.json`, or that entry translates a field the English lacks (or skips one it has).
 
+The bank holds two **question sets**, picked on the page by a *Question set* dropdown (or a
+`?set=essentials` / `?set=all` link, which wins for that visit without being saved). A
+question with no `pack` is in `classic`, the default; `"pack": "essentials"` files it in
+the opt-in *Interview essentials* set — frequently asked problems whose bound is easy to
+misjudge. `build-quiz.js` fails on a pack not in its `PACKS`, and
+`site/test/quiz-page.test.js` fails if an essentials question re-asks an LC number the
+classic set already has, since *Both sets* would then ask it twice.
+
 `accept` is for answers that are genuinely defensible (`O(h)` vs `O(n)` for a tree's recursion stack), not for spelling variants — `O(n log n)`, `nlogn` and `N·logN` already grade the same, and so does `O(n log n + n)`: the grader drops a term another one **provably** dominates (per variable, so `O(m + n^2)` keeps both). It also reads `max(m, n)`, `min(m, n)`, division and fractional powers (`n^1.5` = `n sqrt n`), and refuses to grade — rather than marks wrong — an answer it cannot read.
 
 `data/problem_lists.json` is **vendored, not built** — Blind 75 / NeetCode 150 / 250 / All are extracted from the neetcode.io app bundle, and Top 100 Liked from LeetCode's GraphQL. Refresh it by hand; the site build never touches the network:

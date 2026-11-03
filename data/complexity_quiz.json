@@ -9,6 +9,9 @@
     "  title      required only when lc is null — otherwise README.md supplies it",
     "  difficulty required only when lc is null — otherwise README.md supplies it",
     "  topic      the bucket shown in the score breakdown and the topic filter",
+    "  pack       optional: \"essentials\" puts it in the opt-in Interview essentials",
+    "             set (the page's Question set dropdown, or ?set=essentials); omitted",
+    "             means \"classic\", the default set. A problem lives in one set only.",
     "  vars       what each symbol in the answer means; shown above the inputs",
     "  note       the ground rule for this question (what counts as space, etc.)",
     "  code       the snippet, one array element per line",
@@ -7345,6 +7348,1847 @@
       },
       "why": "The trie makes each extension step `O(1)` instead of hashing a fresh substring.",
       "trap": "Writing `s[i:j] in dictionary` slices and hashes up to n characters per pair, making the same DP `O(n^3)`."
+    },
+    {
+      "id": "combinations-pruned",
+      "lc": 77,
+      "topic": "Backtracking",
+      "pack": "essentials",
+      "vars": "n = the pool 1..n, k = numbers per combination, c = C(n, k), the number of combinations",
+      "note": "Space is auxiliary: the returned list does not count.",
+      "code": [
+        "def combine(n, k):",
+        "    out, path = [], []",
+        "    def backtrack(start):",
+        "        if len(path) == k:",
+        "            out.append(path[:])",
+        "            return",
+        "        for x in range(start, n - (k - len(path)) + 2):",
+        "            path.append(x)",
+        "            backtrack(x + 1)",
+        "            path.pop()",
+        "    backtrack(1)",
+        "    return out"
+      ],
+      "time": "O(k * c)",
+      "space": "O(k)",
+      "cost": {
+        "time": {
+          "lines": [5, 7],
+          "why": "There are c leaves and `path[:]` copies k numbers at each; with the bound on line 7 every node leads to a leaf, so the tree has at most `(k + 1) · c` nodes."
+        },
+        "space": {
+          "lines": [3, 8],
+          "why": "Recursion goes k deep and `path` holds at most k numbers."
+        }
+      },
+      "why": "Output-sensitive bounds are normal for backtracking: the cost is the number of answers times the cost to write one.",
+      "trap": "Drop the upper bound on line 7 (`range(start, n + 1)`) and the tree explores branches that can never reach k numbers — for k close to n that is up to `2^n` nodes for a handful of answers."
+    },
+    {
+      "id": "permutations-ii-dedup",
+      "lc": 47,
+      "topic": "Backtracking",
+      "pack": "essentials",
+      "vars": "n = len(nums)",
+      "note": "Space is auxiliary: the returned list does not count.",
+      "code": [
+        "def permuteUnique(nums):",
+        "    nums.sort()",
+        "    out, path = [], []",
+        "    used = [False] * len(nums)",
+        "    def backtrack():",
+        "        if len(path) == len(nums):",
+        "            out.append(path[:])",
+        "            return",
+        "        for i in range(len(nums)):",
+        "            if used[i] or (i > 0 and nums[i] == nums[i - 1] and not used[i - 1]):",
+        "                continue",
+        "            used[i] = True",
+        "            path.append(nums[i])",
+        "            backtrack()",
+        "            path.pop()",
+        "            used[i] = False",
+        "    backtrack()",
+        "    return out"
+      ],
+      "time": "O(n * n!)",
+      "space": "O(n)",
+      "cost": {
+        "time": {
+          "lines": [7, 9],
+          "why": "With all values distinct there are n! leaves, each copying n values at `path[:]`, and every node scans all n indices."
+        },
+        "space": {
+          "lines": [4, 13],
+          "why": "`used`, `path` and the recursion depth are each at most n."
+        }
+      },
+      "why": "The `not used[i - 1]` skip only lets equal values be placed in their sorted order, so each distinct permutation is built exactly once.",
+      "trap": "Duplicates only lower the count; the bound is set by the all-distinct case. Generating every permutation and de-duplicating with a set is the same `O(n · n!)` time but also stores every duplicate."
+    },
+    {
+      "id": "restore-ip-addresses",
+      "lc": 93,
+      "topic": "Backtracking",
+      "pack": "essentials",
+      "vars": "n = len(s)",
+      "note": "Space is auxiliary: the returned list does not count.",
+      "code": [
+        "def restoreIpAddresses(s):",
+        "    out = []",
+        "    def backtrack(start, parts):",
+        "        if len(parts) == 4:",
+        "            if start == len(s):",
+        "                out.append(\".\".join(parts))",
+        "            return",
+        "        for size in range(1, 4):",
+        "            piece = s[start:start + size]",
+        "            if len(piece) < size:",
+        "                break",
+        "            if (piece[0] == \"0\" and size > 1) or int(piece) > 255:",
+        "                continue",
+        "            backtrack(start + size, parts + [piece])",
+        "    backtrack(0, [])",
+        "    return out"
+      ],
+      "time": "O(1)",
+      "space": "O(1)",
+      "cost": {
+        "time": {
+          "lines": [8, 14],
+          "why": "Four levels with at most 3 branches each → at most `3^4` = 81 leaves, and every slice is at most 3 characters. Nothing depends on n."
+        },
+        "space": {
+          "lines": [3, 14],
+          "why": "The recursion is at most 4 deep and each `parts` list holds at most 4 pieces of up to 3 characters."
+        }
+      },
+      "trap": "It reads like an exponential backtracking search over s, but an IP address has exactly four parts of at most three digits — the depth and the fan-out are fixed, so the whole search is a constant. Any s longer than 12 simply finds nothing."
+    },
+    {
+      "id": "all-paths-dag",
+      "lc": 797,
+      "topic": "Backtracking",
+      "pack": "essentials",
+      "vars": "n = len(graph), the number of nodes (V = n); E = number of edges",
+      "note": "Space is auxiliary: the returned list does not count.",
+      "code": [
+        "def allPathsSourceTarget(graph):",
+        "    target = len(graph) - 1",
+        "    out, path = [], [0]",
+        "    def dfs(u):",
+        "        if u == target:",
+        "            out.append(path[:])",
+        "            return",
+        "        for v in graph[u]:",
+        "            path.append(v)",
+        "            dfs(v)",
+        "            path.pop()",
+        "    dfs(0)",
+        "    return out"
+      ],
+      "time": "O(n * 2^n)",
+      "space": "O(n)",
+      "cost": {
+        "time": {
+          "lines": [6, 8],
+          "why": "A DAG on n nodes can have `2^(n-2)` source-to-target paths, and each one is copied at `path[:]` for up to n values."
+        },
+        "space": {
+          "lines": [3, 4],
+          "why": "The recursion depth and `path` are both bounded by the longest path, at most n nodes."
+        }
+      },
+      "trap": "Answering `O(V + E)` because it is 'just a DFS'. There is no `visited` set — and there must not be, since every path is wanted — so a node is re-explored once for every path that reaches it."
+    },
+    {
+      "id": "path-sum-ii-copies",
+      "lc": 113,
+      "topic": "Trees",
+      "pack": "essentials",
+      "vars": "n = number of nodes, h = height of the tree",
+      "note": "Space is auxiliary: the returned list does not count.",
+      "code": [
+        "def pathSum(root, targetSum):",
+        "    out, path = [], []",
+        "    def dfs(node, remaining):",
+        "        if not node:",
+        "            return",
+        "        path.append(node.val)",
+        "        remaining -= node.val",
+        "        if not node.left and not node.right and remaining == 0:",
+        "            out.append(path[:])",
+        "        dfs(node.left, remaining)",
+        "        dfs(node.right, remaining)",
+        "        path.pop()",
+        "    dfs(root, targetSum)",
+        "    return out"
+      ],
+      "time": "O(n * h)",
+      "space": "O(h)",
+      "accept": {
+        "time": [
+          "O(n^2)"
+        ]
+      },
+      "cost": {
+        "time": {
+          "lines": [9],
+          "why": "Each node is visited once, but every matching leaf copies its whole root-to-leaf path at `path[:]` — up to h values, for up to n leaves."
+        },
+        "space": {
+          "lines": [3, 6],
+          "why": "The recursion depth and `path` both reach h."
+        }
+      },
+      "trap": "`O(n)` counts the visits and forgets the copies. With every value 0 and a target of 0 every leaf is an answer, and a long spine with a leaf hanging off each node makes those copies sum to `O(n^2)`."
+    },
+    {
+      "id": "max-width-binary-tree",
+      "lc": 662,
+      "topic": "Trees",
+      "pack": "essentials",
+      "vars": "n = number of nodes",
+      "code": [
+        "def widthOfBinaryTree(root):",
+        "    best = 0",
+        "    level = [(root, 0)]",
+        "    while level:",
+        "        first = level[0][1]",
+        "        best = max(best, level[-1][1] - first + 1)",
+        "        nxt = []",
+        "        for node, idx in level:",
+        "            idx -= first",
+        "            if node.left:",
+        "                nxt.append((node.left, 2 * idx))",
+        "            if node.right:",
+        "                nxt.append((node.right, 2 * idx + 1))",
+        "        level = nxt",
+        "    return best"
+      ],
+      "time": "O(n)",
+      "space": "O(n)",
+      "cost": {
+        "time": {
+          "lines": [4, 8],
+          "why": "Every node appears in exactly one level list and is handled once."
+        },
+        "space": {
+          "lines": [7, 11, 13],
+          "why": "The widest level of a full tree holds about n/2 nodes."
+        }
+      },
+      "trap": "The width counts the gaps, so it can be about `2^h` — but the work is per *node*, not per position, so it stays `O(n)`. Re-basing each level at `first` keeps the indices small; without it they grow to h-bit numbers, which costs real time in Python and overflows in Java."
+    },
+    {
+      "id": "delete-node-bst",
+      "lc": 450,
+      "topic": "Trees",
+      "pack": "essentials",
+      "vars": "n = number of nodes, h = height of the tree",
+      "code": [
+        "def deleteNode(root, key):",
+        "    if not root:",
+        "        return None",
+        "    if key < root.val:",
+        "        root.left = deleteNode(root.left, key)",
+        "    elif key > root.val:",
+        "        root.right = deleteNode(root.right, key)",
+        "    else:",
+        "        if not root.left:",
+        "            return root.right",
+        "        if not root.right:",
+        "            return root.left",
+        "        succ = root.right",
+        "        while succ.left:",
+        "            succ = succ.left",
+        "        root.val = succ.val",
+        "        root.right = deleteNode(root.right, succ.val)",
+        "    return root"
+      ],
+      "time": "O(h)",
+      "space": "O(h)",
+      "cost": {
+        "time": {
+          "lines": [5, 7, 14, 17],
+          "why": "The search walks one root-to-node path, the successor hunt continues down the right subtree, and the second delete retraces that same path once — a constant number of passes of length at most h."
+        },
+        "space": {
+          "lines": [5, 7, 17],
+          "why": "Each recursive call goes one level deeper, so the call stack is at most h frames."
+        }
+      },
+      "trap": "The recursive delete of the successor looks like it restarts the work, but it only walks the left spine just traversed — still `O(h)`. And 'O(log n)' assumes a balance this tree never promised: on a skewed tree h = n."
+    },
+    {
+      "id": "nodes-distance-k",
+      "lc": 863,
+      "topic": "Trees",
+      "pack": "essentials",
+      "vars": "n = number of nodes, k = distance from the target",
+      "code": [
+        "def distanceK(root, target, k):",
+        "    parent = {}",
+        "    stack = [root]",
+        "    while stack:",
+        "        node = stack.pop()",
+        "        for child in (node.left, node.right):",
+        "            if child:",
+        "                parent[child] = node",
+        "                stack.append(child)",
+        "    seen = {target}",
+        "    frontier = [target]",
+        "    for _ in range(k):",
+        "        if not frontier:",
+        "            break",
+        "        nxt = []",
+        "        for node in frontier:",
+        "            for nb in (node.left, node.right, parent.get(node)):",
+        "                if nb and nb not in seen:",
+        "                    seen.add(nb)",
+        "                    nxt.append(nb)",
+        "        frontier = nxt",
+        "    return [node.val for node in frontier]"
+      ],
+      "time": "O(n)",
+      "space": "O(n)",
+      "cost": {
+        "time": {
+          "lines": [4, 13, 16],
+          "why": "The parent pass visits every node once; in the BFS each node enters `seen` at most once and checks three neighbours, and the `break` ends the rounds once no node is left → `O(n)` overall."
+        },
+        "space": {
+          "lines": [8, 19],
+          "why": "`parent` and `seen` each hold up to n nodes."
+        }
+      },
+      "trap": "The `for _ in range(k)` loop looks like it multiplies the cost by k, but `seen` means no node joins a frontier twice — and once the tree is used up the frontier is empty and the `break` ends the loop. Without that `break`, a huge k on a small tree would spin through empty rounds and the bound would be `O(n + k)`."
+    },
+    {
+      "id": "next-right-pointers-o1",
+      "lc": 116,
+      "topic": "Trees",
+      "pack": "essentials",
+      "vars": "n = number of nodes (a perfect binary tree)",
+      "code": [
+        "def connect(root):",
+        "    leftmost = root",
+        "    while leftmost and leftmost.left:",
+        "        node = leftmost",
+        "        while node:",
+        "            node.left.next = node.right",
+        "            if node.next:",
+        "                node.right.next = node.next.left",
+        "            node = node.next",
+        "        leftmost = leftmost.left",
+        "    return root"
+      ],
+      "time": "O(n)",
+      "space": "O(1)",
+      "cost": {
+        "time": {
+          "lines": [3, 5],
+          "why": "The outer loop steps down one level; the inner loop walks that level along the `next` links already set — each node is visited once."
+        },
+        "space": {
+          "lines": [2, 4],
+          "why": "Only two pointers; the level above is traversed through its own `next` links instead of a queue."
+        }
+      },
+      "trap": "Level-order BFS with a queue is the usual answer, and it costs `O(n)` space because the last level holds about n/2 nodes. The follow-up asks for constant space, which is what walking the finished level above gives you."
+    },
+    {
+      "id": "bst-iterator-amortised",
+      "lc": 173,
+      "topic": "Design",
+      "pack": "essentials",
+      "vars": "n = number of nodes, h = height of the tree",
+      "note": "Time is for one `next` call, amortised over a full traversal.",
+      "code": [
+        "class BSTIterator:",
+        "    def __init__(self, root):",
+        "        self.stack = []",
+        "        self._push_left(root)",
+        "",
+        "    def _push_left(self, node):",
+        "        while node:",
+        "            self.stack.append(node)",
+        "            node = node.left",
+        "",
+        "    def next(self):",
+        "        node = self.stack.pop()",
+        "        self._push_left(node.right)",
+        "        return node.val",
+        "",
+        "    def hasNext(self):",
+        "        return len(self.stack) > 0"
+      ],
+      "time": "O(1)",
+      "space": "O(h)",
+      "cost": {
+        "time": {
+          "lines": [8, 12],
+          "why": "Over n calls every node is pushed once and popped once, so n calls do `O(n)` work → `O(1)` each, amortised."
+        },
+        "space": {
+          "lines": [3, 8],
+          "why": "The stack holds one left spine at a time → at most h nodes."
+        }
+      },
+      "trap": "A single `next` can push a whole left spine, so its worst case is `O(h)` — but each node pays for that push only once. Flattening the tree into a list up front gives a true `O(1)` but costs `O(n)` space, which the follow-up rules out."
+    },
+    {
+      "id": "randomized-set",
+      "lc": 380,
+      "topic": "Design",
+      "pack": "essentials",
+      "vars": "n = values currently stored",
+      "note": "Time is for one call to any method (average case).",
+      "code": [
+        "class RandomizedSet:",
+        "    def __init__(self):",
+        "        self.pos = {}",
+        "        self.vals = []",
+        "",
+        "    def insert(self, val):",
+        "        if val in self.pos:",
+        "            return False",
+        "        self.pos[val] = len(self.vals)",
+        "        self.vals.append(val)",
+        "        return True",
+        "",
+        "    def remove(self, val):",
+        "        if val not in self.pos:",
+        "            return False",
+        "        i, last = self.pos[val], self.vals[-1]",
+        "        self.vals[i] = last",
+        "        self.pos[last] = i",
+        "        self.vals.pop()",
+        "        del self.pos[val]",
+        "        return True",
+        "",
+        "    def getRandom(self):",
+        "        return random.choice(self.vals)"
+      ],
+      "time": "O(1)",
+      "space": "O(n)",
+      "cost": {
+        "time": {
+          "lines": [16, 17, 19, 24],
+          "why": "`remove` moves the last value into the hole and pops the end, so nothing shifts; `random.choice` is one index into the list."
+        },
+        "space": {
+          "lines": [3, 4],
+          "why": "`pos` and `vals` each hold one entry per stored value."
+        }
+      },
+      "trap": "`self.vals.remove(val)` is the obvious delete — and it is `O(n)`: a scan plus a shift. Swapping the victim with the last element is the whole trick; a set alone cannot do `getRandom` in `O(1)`."
+    },
+    {
+      "id": "linked-list-cycle-entry",
+      "lc": 142,
+      "topic": "Linked List",
+      "pack": "essentials",
+      "vars": "n = number of nodes",
+      "code": [
+        "def detectCycle(head):",
+        "    slow = fast = head",
+        "    while fast and fast.next:",
+        "        slow = slow.next",
+        "        fast = fast.next.next",
+        "        if slow is fast:",
+        "            slow = head",
+        "            while slow is not fast:",
+        "                slow = slow.next",
+        "                fast = fast.next",
+        "            return slow",
+        "    return None"
+      ],
+      "time": "O(n)",
+      "space": "O(1)",
+      "cost": {
+        "time": {
+          "lines": [3, 8],
+          "why": "Fast catches slow before slow finishes one lap of the cycle — fewer than n steps — and the second walk from head is fewer than n more."
+        },
+        "space": {
+          "lines": [2],
+          "why": "Two pointers, nothing else."
+        }
+      },
+      "why": "The meeting point is as far from the cycle's entry as head is (modulo the cycle length), so the second walk lands on it.",
+      "trap": "The inner `while` is not a nested loop in cost: it starts once, after the meeting, and returns. A `seen` set also finds the entry in one pass, but at `O(n)` space."
+    },
+    {
+      "id": "reverse-linked-list-ii",
+      "lc": 92,
+      "topic": "Linked List",
+      "pack": "essentials",
+      "vars": "n = number of nodes",
+      "code": [
+        "def reverseBetween(head, left, right):",
+        "    dummy = ListNode(0, head)",
+        "    before = dummy",
+        "    for _ in range(left - 1):",
+        "        before = before.next",
+        "    curr = before.next",
+        "    for _ in range(right - left):",
+        "        moved = curr.next",
+        "        curr.next = moved.next",
+        "        moved.next = before.next",
+        "        before.next = moved",
+        "    return dummy.next"
+      ],
+      "time": "O(n)",
+      "space": "O(1)",
+      "cost": {
+        "time": {
+          "lines": [4, 7],
+          "why": "One walk to position `left`, then `right - left` head-insertions of a constant number of pointer swaps each → at most n steps."
+        },
+        "space": {
+          "lines": [2],
+          "why": "One dummy node and a few pointers."
+        }
+      },
+      "trap": "Copying the values into a list, reversing the slice and writing them back is also `O(n)` time — but `O(n)` space, which is exactly what this question is checking."
+    },
+    {
+      "id": "find-peak-element",
+      "lc": 162,
+      "topic": "Binary Search",
+      "pack": "essentials",
+      "vars": "n = len(nums)",
+      "code": [
+        "def findPeakElement(nums):",
+        "    lo, hi = 0, len(nums) - 1",
+        "    while lo < hi:",
+        "        mid = (lo + hi) // 2",
+        "        if nums[mid] < nums[mid + 1]:",
+        "            lo = mid + 1",
+        "        else:",
+        "            hi = mid",
+        "    return lo"
+      ],
+      "time": "O(log n)",
+      "space": "O(1)",
+      "cost": {
+        "time": {
+          "lines": [3, 4],
+          "why": "Each round halves `[lo, hi]`, so there are `log n` rounds."
+        },
+        "space": {
+          "lines": [2],
+          "why": "Two indices."
+        }
+      },
+      "trap": "The array is not sorted, so binary search feels illegal and people answer `O(n)`. Stepping toward the larger neighbour always keeps a peak inside `[lo, hi]` — binary search never needed sortedness, only a rule that safely discards half."
+    },
+    {
+      "id": "ship-within-days",
+      "lc": 1011,
+      "topic": "Binary Search",
+      "pack": "essentials",
+      "vars": "n = len(weights), s = sum(weights)",
+      "code": [
+        "def shipWithinDays(weights, days):",
+        "    def fits(cap):",
+        "        need, load = 1, 0",
+        "        for w in weights:",
+        "            if load + w > cap:",
+        "                need += 1",
+        "                load = 0",
+        "            load += w",
+        "        return need <= days",
+        "    lo, hi = max(weights), sum(weights)",
+        "    while lo < hi:",
+        "        mid = (lo + hi) // 2",
+        "        if fits(mid):",
+        "            hi = mid",
+        "        else:",
+        "            lo = mid + 1",
+        "    return lo"
+      ],
+      "time": "O(n log s)",
+      "space": "O(1)",
+      "cost": {
+        "time": {
+          "lines": [4, 11, 13],
+          "why": "The search over capacities `[max, s]` takes `O(log s)` rounds, and each `fits` scans all n weights."
+        },
+        "space": {
+          "lines": [3, 10],
+          "why": "A few counters; nothing grows with n."
+        }
+      },
+      "trap": "The `log` is over the answer range — the total weight — not over n. Answering `O(n log n)` confuses binary searching an index with binary searching a value."
+    },
+    {
+      "id": "random-pick-weight",
+      "lc": 528,
+      "topic": "Binary Search",
+      "pack": "essentials",
+      "vars": "n = len(w), W = sum(w)",
+      "note": "Time is for one `pickIndex` call; space is the whole object.",
+      "code": [
+        "class Solution:",
+        "    def __init__(self, w):",
+        "        self.prefix = []",
+        "        total = 0",
+        "        for x in w:",
+        "            total += x",
+        "            self.prefix.append(total)",
+        "",
+        "    def pickIndex(self):",
+        "        target = random.random() * self.prefix[-1]",
+        "        return bisect.bisect_right(self.prefix, target)"
+      ],
+      "time": "O(log n)",
+      "space": "O(n)",
+      "cost": {
+        "time": {
+          "lines": [11],
+          "why": "`bisect_right` binary-searches the n prefix sums."
+        },
+        "space": {
+          "lines": [7],
+          "why": "`self.prefix` stores one running total per weight."
+        }
+      },
+      "trap": "Expanding each index into `w[i]` copies makes a pick `O(1)` but space `O(W)`, which n does not bound. Scanning the prefix sums linearly works too, at `O(n)` per pick."
+    },
+    {
+      "id": "single-element-sorted",
+      "lc": 540,
+      "topic": "Binary Search",
+      "pack": "essentials",
+      "vars": "n = len(nums)",
+      "code": [
+        "def singleNonDuplicate(nums):",
+        "    lo, hi = 0, len(nums) - 1",
+        "    while lo < hi:",
+        "        mid = (lo + hi) // 2",
+        "        if mid % 2 == 1:",
+        "            mid -= 1",
+        "        if nums[mid] == nums[mid + 1]:",
+        "            lo = mid + 2",
+        "        else:",
+        "            hi = mid",
+        "    return nums[lo]"
+      ],
+      "time": "O(log n)",
+      "space": "O(1)",
+      "cost": {
+        "time": {
+          "lines": [3, 4],
+          "why": "Each round halves `[lo, hi]`."
+        },
+        "space": {
+          "lines": [2],
+          "why": "Two indices."
+        }
+      },
+      "trap": "XOR of everything finds the single value in `O(n)` — the LC 136 answer — and is what most people reach for. Sortedness plus the even-index pairing is what allows `O(log n)`, and that is the bound the problem asks for."
+    },
+    {
+      "id": "kth-missing-positive",
+      "lc": 1539,
+      "topic": "Binary Search",
+      "pack": "essentials",
+      "vars": "n = len(arr), k = which missing number to find",
+      "code": [
+        "def findKthPositive(arr, k):",
+        "    lo, hi = 0, len(arr)",
+        "    while lo < hi:",
+        "        mid = (lo + hi) // 2",
+        "        if arr[mid] - (mid + 1) < k:",
+        "            lo = mid + 1",
+        "        else:",
+        "            hi = mid",
+        "    return lo + k"
+      ],
+      "time": "O(log n)",
+      "space": "O(1)",
+      "cost": {
+        "time": {
+          "lines": [3, 5],
+          "why": "`arr[mid] - (mid + 1)` counts the positives missing before index mid, and it never decreases — so `[lo, hi]` halves each round."
+        },
+        "space": {
+          "lines": [2],
+          "why": "Two indices."
+        }
+      },
+      "trap": "Walking 1, 2, 3, … and counting the gaps is `O(n + k)` — k can be far larger than n. Turning 'how many are missing so far' into a monotone function of the index is what makes it searchable."
+    },
+    {
+      "id": "top-k-frequent-words",
+      "lc": 692,
+      "topic": "Heap",
+      "pack": "essentials",
+      "vars": "n = len(words), u = distinct words, k = words to return",
+      "code": [
+        "def topKFrequent(words, k):",
+        "    count = Counter(words)",
+        "    heap = [(-freq, word) for word, freq in count.items()]",
+        "    heapq.heapify(heap)",
+        "    return [heapq.heappop(heap)[1] for _ in range(k)]"
+      ],
+      "time": "O(n + k log u)",
+      "space": "O(u)",
+      "accept": {
+        "time": [
+          "O(n + k log n)"
+        ],
+        "space": [
+          "O(n)"
+        ]
+      },
+      "cost": {
+        "time": {
+          "lines": [2, 4, 5],
+          "why": "Counting is one pass over n words, `heapify` is linear in u, and the k pops cost `log u` each."
+        },
+        "space": {
+          "lines": [2, 3],
+          "why": "The counter and the heap hold one entry per distinct word."
+        }
+      },
+      "trap": "`heapify` builds the heap in `O(u)`, not `O(u log u)` — pushing one at a time is what costs `u log u`. Sorting every distinct word is `O(u log u)`, which loses whenever k ≪ u."
+    },
+    {
+      "id": "k-pairs-smallest-sums",
+      "lc": 373,
+      "topic": "Heap",
+      "pack": "essentials",
+      "vars": "k = pairs to return (assume k ≤ len(nums1) · len(nums2))",
+      "code": [
+        "def kSmallestPairs(nums1, nums2, k):",
+        "    heap = [(nums1[i] + nums2[0], i, 0) for i in range(min(k, len(nums1)))]",
+        "    heapq.heapify(heap)",
+        "    out = []",
+        "    while heap and len(out) < k:",
+        "        _, i, j = heapq.heappop(heap)",
+        "        out.append([nums1[i], nums2[j]])",
+        "        if j + 1 < len(nums2):",
+        "            heapq.heappush(heap, (nums1[i] + nums2[j + 1], i, j + 1))",
+        "    return out"
+      ],
+      "time": "O(k log k)",
+      "space": "O(k)",
+      "cost": {
+        "time": {
+          "lines": [5, 6, 9],
+          "why": "k rounds, each one pop and at most one push on a heap that never exceeds k entries."
+        },
+        "space": {
+          "lines": [2, 9],
+          "why": "The heap starts with at most k entries and each round pops one before pushing one."
+        }
+      },
+      "trap": "Generating all `len(nums1) · len(nums2)` pairs and sorting them is far worse. Seeding one candidate per row and advancing a row only when its pair is popped keeps the heap at k entries, however long the inputs are."
+    },
+    {
+      "id": "remove-k-digits",
+      "lc": 402,
+      "topic": "Stack",
+      "pack": "essentials",
+      "vars": "n = len(num), k = digits to remove",
+      "code": [
+        "def removeKdigits(num, k):",
+        "    stack = []",
+        "    for d in num:",
+        "        while k and stack and stack[-1] > d:",
+        "            stack.pop()",
+        "            k -= 1",
+        "        stack.append(d)",
+        "    stack = stack[:len(stack) - k]",
+        "    return \"\".join(stack).lstrip(\"0\") or \"0\""
+      ],
+      "time": "O(n)",
+      "space": "O(n)",
+      "cost": {
+        "time": {
+          "lines": [3, 4, 5],
+          "why": "Each digit is pushed once and popped at most once, so the inner `while` totals at most n pops over the whole loop."
+        },
+        "space": {
+          "lines": [2, 7],
+          "why": "The stack can hold all n digits."
+        }
+      },
+      "trap": "A `while` nested in a `for` reads as `O(n·k)`. Amortise it: every pop is paid for by an earlier push, and there are only n pushes. The greedy that rescans from the start after each removal really is `O(n·k)`."
+    },
+    {
+      "id": "asteroid-collision",
+      "lc": 735,
+      "topic": "Stack",
+      "pack": "essentials",
+      "vars": "n = len(asteroids)",
+      "note": "The stack is working space here, so it counts.",
+      "code": [
+        "def asteroidCollision(asteroids):",
+        "    stack = []",
+        "    for a in asteroids:",
+        "        alive = True",
+        "        while alive and a < 0 and stack and stack[-1] > 0:",
+        "            if stack[-1] < -a:",
+        "                stack.pop()",
+        "            elif stack[-1] == -a:",
+        "                stack.pop()",
+        "                alive = False",
+        "            else:",
+        "                alive = False",
+        "        if alive:",
+        "            stack.append(a)",
+        "    return stack"
+      ],
+      "time": "O(n)",
+      "space": "O(n)",
+      "cost": {
+        "time": {
+          "lines": [5, 7, 9],
+          "why": "Every asteroid is pushed at most once and popped at most once, so the `while` loop's pops total at most n over the whole run."
+        },
+        "space": {
+          "lines": [14],
+          "why": "With no collisions every asteroid stays on the stack."
+        }
+      },
+      "trap": "One big left-mover can destroy many right-movers inside a single `while`, which looks like `O(n^2)`. But a destroyed asteroid is gone for good — the total pops can never exceed the pushes."
+    },
+    {
+      "id": "sum-subarray-minimums",
+      "lc": 907,
+      "topic": "Stack",
+      "pack": "essentials",
+      "vars": "n = len(arr)",
+      "code": [
+        "def sumSubarrayMins(arr):",
+        "    MOD = 10**9 + 7",
+        "    n = len(arr)",
+        "    left, right = [0] * n, [0] * n",
+        "    stack = []",
+        "    for i in range(n):",
+        "        while stack and arr[stack[-1]] > arr[i]:",
+        "            stack.pop()",
+        "        left[i] = i - stack[-1] if stack else i + 1",
+        "        stack.append(i)",
+        "    stack = []",
+        "    for i in range(n - 1, -1, -1):",
+        "        while stack and arr[stack[-1]] >= arr[i]:",
+        "            stack.pop()",
+        "        right[i] = stack[-1] - i if stack else n - i",
+        "        stack.append(i)",
+        "    total = 0",
+        "    for i in range(n):",
+        "        total += arr[i] * left[i] * right[i]",
+        "    return total % MOD"
+      ],
+      "time": "O(n)",
+      "space": "O(n)",
+      "cost": {
+        "time": {
+          "lines": [6, 7, 12, 13],
+          "why": "Two monotonic-stack passes, each pushing and popping every index at most once, then one linear sum."
+        },
+        "space": {
+          "lines": [4, 5],
+          "why": "`left`, `right` and the stack each hold up to n entries."
+        }
+      },
+      "why": "Each element is charged once as the minimum of `left[i] · right[i]` subarrays instead of the subarrays being enumerated.",
+      "trap": "Enumerating every subarray with a running minimum is `O(n^2)`. The `>` on one side and `>=` on the other only stops equal values being counted twice — it does not change the complexity."
+    },
+    {
+      "id": "next-greater-circular",
+      "lc": 503,
+      "topic": "Stack",
+      "pack": "essentials",
+      "vars": "n = len(nums)",
+      "note": "Space is auxiliary: `out` is the answer.",
+      "code": [
+        "def nextGreaterElements(nums):",
+        "    n = len(nums)",
+        "    out = [-1] * n",
+        "    stack = []",
+        "    for i in range(2 * n):",
+        "        x = nums[i % n]",
+        "        while stack and nums[stack[-1]] < x:",
+        "            out[stack.pop()] = x",
+        "        if i < n:",
+        "            stack.append(i)",
+        "    return out"
+      ],
+      "time": "O(n)",
+      "space": "O(n)",
+      "cost": {
+        "time": {
+          "lines": [5, 7, 8],
+          "why": "The loop runs 2n times, but indices are pushed only in the first n, so the pops total at most n."
+        },
+        "space": {
+          "lines": [4, 10],
+          "why": "On a decreasing array every index stays on the stack."
+        }
+      },
+      "trap": "Going round the array twice doubles the scan, not the stack work — still `O(n)`. The brute force that walks forward around the circle from every index is `O(n^2)`."
+    },
+    {
+      "id": "min-remove-valid-parens",
+      "lc": 1249,
+      "topic": "Stack",
+      "pack": "essentials",
+      "vars": "n = len(s)",
+      "code": [
+        "def minRemoveToMakeValid(s):",
+        "    chars = list(s)",
+        "    open_idx = []",
+        "    for i, c in enumerate(chars):",
+        "        if c == \"(\":",
+        "            open_idx.append(i)",
+        "        elif c == \")\":",
+        "            if open_idx:",
+        "                open_idx.pop()",
+        "            else:",
+        "                chars[i] = \"\"",
+        "    for i in open_idx:",
+        "        chars[i] = \"\"",
+        "    return \"\".join(chars)"
+      ],
+      "time": "O(n)",
+      "space": "O(n)",
+      "cost": {
+        "time": {
+          "lines": [4, 12, 14],
+          "why": "One pass to match, one pass over the leftover `(`, and one `join` — each linear."
+        },
+        "space": {
+          "lines": [2, 3],
+          "why": "`chars` is a mutable copy of s, and the stack can hold up to n indices."
+        }
+      },
+      "trap": "Building the answer with `result += c` inside the loop can copy the growing string every time — `O(n^2)` in the worst case. Blanking characters in a list and joining once at the end keeps it linear."
+    },
+    {
+      "id": "basic-calculator-ii",
+      "lc": 227,
+      "topic": "Stack",
+      "pack": "essentials",
+      "vars": "n = len(s)",
+      "code": [
+        "def calculate(s):",
+        "    stack = []",
+        "    num, op = 0, \"+\"",
+        "    for i, c in enumerate(s):",
+        "        if c.isdigit():",
+        "            num = num * 10 + int(c)",
+        "        if c in \"+-*/\" or i == len(s) - 1:",
+        "            if op == \"+\":",
+        "                stack.append(num)",
+        "            elif op == \"-\":",
+        "                stack.append(-num)",
+        "            elif op == \"*\":",
+        "                stack.append(stack.pop() * num)",
+        "            else:",
+        "                stack.append(int(stack.pop() / num))",
+        "            num, op = 0, c",
+        "    return sum(stack)"
+      ],
+      "time": "O(n)",
+      "space": "O(n)",
+      "cost": {
+        "time": {
+          "lines": [4, 17],
+          "why": "One pass; each operator does `O(1)` stack work, and `sum` is one more pass over at most n numbers."
+        },
+        "space": {
+          "lines": [9, 11],
+          "why": "`1+1+1+…` leaves one term per number on the stack — up to about n/2."
+        }
+      },
+      "trap": "The stack is only there because `*` and `/` bind tighter: they fold into the top at once, so the stack holds only terms waiting to be added. Keeping just the running total and the last term brings space down to `O(1)` at the same time."
+    },
+    {
+      "id": "maximal-rectangle",
+      "lc": 85,
+      "topic": "Stack",
+      "pack": "essentials",
+      "vars": "m = rows, n = columns",
+      "code": [
+        "def maximalRectangle(matrix):",
+        "    if not matrix:",
+        "        return 0",
+        "    n = len(matrix[0])",
+        "    heights = [0] * n",
+        "    best = 0",
+        "    for row in matrix:",
+        "        for c in range(n):",
+        "            heights[c] = heights[c] + 1 if row[c] == \"1\" else 0",
+        "        stack = []",
+        "        for i, h in enumerate(heights + [0]):",
+        "            while stack and heights[stack[-1]] >= h:",
+        "                top = stack.pop()",
+        "                left = stack[-1] + 1 if stack else 0",
+        "                best = max(best, heights[top] * (i - left))",
+        "            stack.append(i)",
+        "    return best"
+      ],
+      "time": "O(m * n)",
+      "space": "O(n)",
+      "cost": {
+        "time": {
+          "lines": [7, 11, 12],
+          "why": "For each of m rows the histogram update is `O(n)`, and the stack pass pushes and pops each column once → `O(n)` per row."
+        },
+        "space": {
+          "lines": [5, 10, 11],
+          "why": "`heights`, the stack and the `heights + [0]` copy are each `n + 1` at most."
+        }
+      },
+      "trap": "The `while` inside two loops reads as `O(m·n^2)`. Per row it is the amortised largest-rectangle-in-histogram (LC 84), so each row costs only `O(n)`."
+    },
+    {
+      "id": "find-all-anagrams",
+      "lc": 438,
+      "topic": "Two Pointers & Sliding Window",
+      "pack": "essentials",
+      "vars": "n = len(s), m = len(p); lowercase letters only",
+      "note": "Space is auxiliary: `out` is the answer.",
+      "code": [
+        "def findAnagrams(s, p):",
+        "    need = Counter(p)",
+        "    window = Counter()",
+        "    out = []",
+        "    for i, c in enumerate(s):",
+        "        window[c] += 1",
+        "        if i >= len(p):",
+        "            left = s[i - len(p)]",
+        "            window[left] -= 1",
+        "            if window[left] == 0:",
+        "                del window[left]",
+        "        if window == need:",
+        "            out.append(i - len(p) + 1)",
+        "    return out"
+      ],
+      "time": "O(m + n)",
+      "space": "O(1)",
+      "cost": {
+        "time": {
+          "lines": [2, 5, 12],
+          "why": "Counting p is `O(m)`; then each of n steps updates two counts and compares two maps of at most 26 keys — a constant."
+        },
+        "space": {
+          "lines": [2, 3],
+          "why": "Both counters are keyed by lowercase letters, so neither holds more than 26 entries."
+        }
+      },
+      "trap": "`window == need` looks like an `O(m)` comparison, making the loop `O(n·m)` — but the maps are bounded by the alphabet, not by p. Sorting each window instead really is `O(n · m log m)`."
+    },
+    {
+      "id": "at-most-k-distinct",
+      "lc": 340,
+      "topic": "Two Pointers & Sliding Window",
+      "pack": "essentials",
+      "vars": "n = len(s), k = distinct characters allowed",
+      "code": [
+        "def lengthOfLongestSubstringKDistinct(s, k):",
+        "    count = {}",
+        "    best = left = 0",
+        "    for right, c in enumerate(s):",
+        "        count[c] = count.get(c, 0) + 1",
+        "        while len(count) > k:",
+        "            d = s[left]",
+        "            count[d] -= 1",
+        "            if count[d] == 0:",
+        "                del count[d]",
+        "            left += 1",
+        "        best = max(best, right - left + 1)",
+        "    return best"
+      ],
+      "time": "O(n)",
+      "space": "O(k)",
+      "cost": {
+        "time": {
+          "lines": [4, 6, 11],
+          "why": "`right` moves n times and `left` only moves forward, at most n times in total."
+        },
+        "space": {
+          "lines": [5, 6],
+          "why": "`count` is trimmed back to k keys as soon as it reaches `k + 1`."
+        }
+      },
+      "trap": "Calling the inner `while` `O(n·k)`: left never moves back, so it is amortised. And space is `O(k)`, not `O(n)` — the map is capped by the very loop that shrinks it."
+    },
+    {
+      "id": "longest-subarray-limit",
+      "lc": 1438,
+      "topic": "Two Pointers & Sliding Window",
+      "pack": "essentials",
+      "vars": "n = len(nums)",
+      "code": [
+        "def longestSubarray(nums, limit):",
+        "    maxq, minq = deque(), deque()",
+        "    best = left = 0",
+        "    for right, x in enumerate(nums):",
+        "        while maxq and maxq[-1] < x:",
+        "            maxq.pop()",
+        "        maxq.append(x)",
+        "        while minq and minq[-1] > x:",
+        "            minq.pop()",
+        "        minq.append(x)",
+        "        while maxq[0] - minq[0] > limit:",
+        "            if maxq[0] == nums[left]:",
+        "                maxq.popleft()",
+        "            if minq[0] == nums[left]:",
+        "                minq.popleft()",
+        "            left += 1",
+        "        best = max(best, right - left + 1)",
+        "    return best"
+      ],
+      "time": "O(n)",
+      "space": "O(n)",
+      "cost": {
+        "time": {
+          "lines": [5, 8, 11],
+          "why": "Every value enters each deque once and leaves at most once, and `left` only advances — the three inner loops total `O(n)`."
+        },
+        "space": {
+          "lines": [2],
+          "why": "On a sorted input one of the deques keeps every value."
+        }
+      },
+      "trap": "`max(nums[left:right + 1])` inside the loop is the `O(n^2)` version; a lazy-deletion heap or a balanced tree (`sortedcontainers.SortedList`) of the window is `O(n log n)` — a plain list kept sorted with `bisect` is `O(n^2)` again, because every insert and delete shifts elements. Monotonic deques keep the max and the min at their fronts in amortised `O(1)`."
+    },
+    {
+      "id": "squares-sorted-array",
+      "lc": 977,
+      "topic": "Two Pointers & Sliding Window",
+      "pack": "essentials",
+      "vars": "n = len(nums)",
+      "note": "Space is auxiliary: `out` is the answer.",
+      "code": [
+        "def sortedSquares(nums):",
+        "    n = len(nums)",
+        "    out = [0] * n",
+        "    lo, hi = 0, n - 1",
+        "    for pos in range(n - 1, -1, -1):",
+        "        if abs(nums[lo]) > abs(nums[hi]):",
+        "            out[pos] = nums[lo] ** 2",
+        "            lo += 1",
+        "        else:",
+        "            out[pos] = nums[hi] ** 2",
+        "            hi -= 1",
+        "    return out"
+      ],
+      "time": "O(n)",
+      "space": "O(1)",
+      "cost": {
+        "time": {
+          "lines": [5],
+          "why": "One pass fills `out` from the back, one slot per step."
+        },
+        "space": {
+          "lines": [4],
+          "why": "Two indices besides the answer."
+        }
+      },
+      "trap": "Squaring and sorting is the one-liner, at `O(n log n)`. The largest remaining square is always at one of the two ends, so filling `out` from the back is linear."
+    },
+    {
+      "id": "contiguous-array",
+      "lc": 525,
+      "topic": "Arrays & Hashing",
+      "pack": "essentials",
+      "vars": "n = len(nums)",
+      "code": [
+        "def findMaxLength(nums):",
+        "    first = {0: -1}",
+        "    balance = best = 0",
+        "    for i, x in enumerate(nums):",
+        "        balance += 1 if x == 1 else -1",
+        "        if balance in first:",
+        "            best = max(best, i - first[balance])",
+        "        else:",
+        "            first[balance] = i",
+        "    return best"
+      ],
+      "time": "O(n)",
+      "space": "O(n)",
+      "cost": {
+        "time": {
+          "lines": [4, 6],
+          "why": "One pass with an `O(1)` hash lookup per element."
+        },
+        "space": {
+          "lines": [9],
+          "why": "The balance ranges over `-n..n`, and `first` keeps one index per balance seen."
+        }
+      },
+      "trap": "Counting 0s and 1s for every subarray is `O(n^2)`. Mapping 0 → -1 turns 'equal counts' into 'this prefix sum has been seen before', which a hash map answers in `O(1)`."
+    },
+    {
+      "id": "subarray-sums-div-k",
+      "lc": 974,
+      "topic": "Arrays & Hashing",
+      "pack": "essentials",
+      "vars": "n = len(nums), k = the divisor",
+      "code": [
+        "def subarraysDivByK(nums, k):",
+        "    seen = {0: 1}",
+        "    prefix = count = 0",
+        "    for x in nums:",
+        "        prefix = (prefix + x) % k",
+        "        count += seen.get(prefix, 0)",
+        "        seen[prefix] = seen.get(prefix, 0) + 1",
+        "    return count"
+      ],
+      "time": "O(n)",
+      "space": "O(min(n, k))",
+      "accept": {
+        "space": [
+          "O(k)",
+          "O(n)"
+        ]
+      },
+      "cost": {
+        "time": {
+          "lines": [4, 6],
+          "why": "One pass with an `O(1)` hash lookup per element."
+        },
+        "space": {
+          "lines": [7],
+          "why": "The keys are remainders `0..k-1`, and each element adds at most one new key → `O(min(n, k))`."
+        }
+      },
+      "trap": "`O(n)` space is the habit from 'prefix sums in a hash map', and it is a safe bound — but here the keys are remainders, so the map never holds more than k entries. (Python's `%` is already non-negative for a positive k, so negatives need no fix-up.)"
+    },
+    {
+      "id": "game-of-life-in-place",
+      "lc": 289,
+      "topic": "Arrays & Hashing",
+      "pack": "essentials",
+      "vars": "m = rows, n = columns",
+      "code": [
+        "def gameOfLife(board):",
+        "    m, n = len(board), len(board[0])",
+        "    for r in range(m):",
+        "        for c in range(n):",
+        "            live = 0",
+        "            for dr in (-1, 0, 1):",
+        "                for dc in (-1, 0, 1):",
+        "                    rr, cc = r + dr, c + dc",
+        "                    if (dr or dc) and 0 <= rr < m and 0 <= cc < n:",
+        "                        live += board[rr][cc] & 1",
+        "            if board[r][c] & 1 and live in (2, 3):",
+        "                board[r][c] |= 2",
+        "            elif not board[r][c] & 1 and live == 3:",
+        "                board[r][c] |= 2",
+        "    for r in range(m):",
+        "        for c in range(n):",
+        "            board[r][c] >>= 1"
+      ],
+      "time": "O(m * n)",
+      "space": "O(1)",
+      "cost": {
+        "time": {
+          "lines": [3, 4, 6, 7],
+          "why": "Each of the `m·n` cells reads a fixed 3×3 neighbourhood — 9 reads, a constant — then one more pass shifts every cell."
+        },
+        "space": {
+          "lines": [12, 14],
+          "why": "The next state goes into bit 1 of the same cell, while bit 0 keeps the current state for neighbours still to be read."
+        }
+      },
+      "trap": "Copying the board is the easy correct answer, at `O(mn)` space; the follow-up wants both generations packed into one integer. The two `(-1, 0, 1)` loops are constant work, not extra factors of m or n."
+    },
+    {
+      "id": "find-all-duplicates",
+      "lc": 442,
+      "topic": "Arrays & Hashing",
+      "pack": "essentials",
+      "vars": "n = len(nums); every value is in 1..n",
+      "note": "Space is auxiliary: `out` is the answer.",
+      "code": [
+        "def findDuplicates(nums):",
+        "    out = []",
+        "    for x in nums:",
+        "        i = abs(x) - 1",
+        "        if nums[i] < 0:",
+        "            out.append(abs(x))",
+        "        else:",
+        "            nums[i] = -nums[i]",
+        "    return out"
+      ],
+      "time": "O(n)",
+      "space": "O(1)",
+      "cost": {
+        "time": {
+          "lines": [3],
+          "why": "One pass, constant work per element."
+        },
+        "space": {
+          "lines": [8],
+          "why": "The 'seen' mark is the sign of `nums[i]` — the input array doubles as the hash set."
+        }
+      },
+      "trap": "A `set` gives `O(n)` time at `O(n)` space; sorting saves the set but costs `O(n log n)`. Values in `1..n` are what let every value point at a slot of its own."
+    },
+    {
+      "id": "zero-one-matrix",
+      "lc": 542,
+      "topic": "Graphs",
+      "pack": "essentials",
+      "vars": "m = rows, n = columns",
+      "note": "Space counts the queue; `dist` is the answer.",
+      "code": [
+        "def updateMatrix(mat):",
+        "    m, n = len(mat), len(mat[0])",
+        "    dist = [[-1] * n for _ in range(m)]",
+        "    q = deque()",
+        "    for r in range(m):",
+        "        for c in range(n):",
+        "            if mat[r][c] == 0:",
+        "                dist[r][c] = 0",
+        "                q.append((r, c))",
+        "    while q:",
+        "        r, c = q.popleft()",
+        "        for rr, cc in ((r + 1, c), (r - 1, c), (r, c + 1), (r, c - 1)):",
+        "            if 0 <= rr < m and 0 <= cc < n and dist[rr][cc] == -1:",
+        "                dist[rr][cc] = dist[r][c] + 1",
+        "                q.append((rr, cc))",
+        "    return dist"
+      ],
+      "time": "O(m * n)",
+      "space": "O(m * n)",
+      "cost": {
+        "time": {
+          "lines": [10, 13],
+          "why": "Each cell is enqueued exactly once — when its `dist` is first set — and checks 4 neighbours."
+        },
+        "space": {
+          "lines": [4, 9],
+          "why": "The queue starts with every 0 cell, which can be nearly all `m·n` of them."
+        }
+      },
+      "trap": "Running a BFS from every 1 to its nearest 0 is `O((mn)^2)`. Seeding a single BFS with all the zeros at once reaches every cell at its shortest distance in one sweep."
+    },
+    {
+      "id": "is-graph-bipartite",
+      "lc": 785,
+      "topic": "Graphs",
+      "pack": "essentials",
+      "vars": "V = len(graph), E = number of edges",
+      "code": [
+        "def isBipartite(graph):",
+        "    color = {}",
+        "    for start in range(len(graph)):",
+        "        if start in color:",
+        "            continue",
+        "        color[start] = 0",
+        "        q = deque([start])",
+        "        while q:",
+        "            u = q.popleft()",
+        "            for v in graph[u]:",
+        "                if v not in color:",
+        "                    color[v] = 1 - color[u]",
+        "                    q.append(v)",
+        "                elif color[v] == color[u]:",
+        "                    return False",
+        "    return True"
+      ],
+      "time": "O(V + E)",
+      "space": "O(V)",
+      "cost": {
+        "time": {
+          "lines": [3, 10],
+          "why": "Every node is coloured and dequeued once, and every adjacency list is scanned once."
+        },
+        "space": {
+          "lines": [2, 7],
+          "why": "`color` and the queue each hold at most V nodes."
+        }
+      },
+      "trap": "A BFS inside `for start` looks like `O(V·(V + E))`, but `color` makes every later start skip nodes already reached — the outer loop is there for disconnected graphs, not for extra work."
+    },
+    {
+      "id": "snakes-and-ladders",
+      "lc": 909,
+      "topic": "Graphs",
+      "pack": "essentials",
+      "vars": "n = len(board), the side length (the board has n² squares)",
+      "code": [
+        "def snakesAndLadders(board):",
+        "    n = len(board)",
+        "    def cell(k):",
+        "        r, c = divmod(k - 1, n)",
+        "        row = n - 1 - r",
+        "        col = c if r % 2 == 0 else n - 1 - c",
+        "        return board[row][col]",
+        "    dist = {1: 0}",
+        "    q = deque([1])",
+        "    while q:",
+        "        k = q.popleft()",
+        "        for nxt in range(k + 1, min(k + 6, n * n) + 1):",
+        "            dest = cell(nxt)",
+        "            if dest != -1:",
+        "                nxt = dest",
+        "            if nxt not in dist:",
+        "                dist[nxt] = dist[k] + 1",
+        "                q.append(nxt)",
+        "    return dist.get(n * n, -1)"
+      ],
+      "time": "O(n^2)",
+      "space": "O(n^2)",
+      "cost": {
+        "time": {
+          "lines": [10, 12],
+          "why": "BFS over `n^2` squares, each trying at most 6 dice rolls."
+        },
+        "space": {
+          "lines": [8, 9],
+          "why": "`dist` and the queue can hold every one of the `n^2` squares."
+        }
+      },
+      "trap": "Answering `O(n)` because the input is called n — the graph has `n^2` vertices. The 6-way fan-out is a constant, not a factor."
+    },
+    {
+      "id": "path-min-effort",
+      "lc": 1631,
+      "topic": "Advanced Graphs",
+      "pack": "essentials",
+      "vars": "m = rows, n = columns, H = max height − min height",
+      "code": [
+        "def minimumEffortPath(heights):",
+        "    m, n = len(heights), len(heights[0])",
+        "    best = [[float(\"inf\")] * n for _ in range(m)]",
+        "    best[0][0] = 0",
+        "    heap = [(0, 0, 0)]",
+        "    while heap:",
+        "        effort, r, c = heapq.heappop(heap)",
+        "        if (r, c) == (m - 1, n - 1):",
+        "            return effort",
+        "        if effort > best[r][c]:",
+        "            continue",
+        "        for rr, cc in ((r + 1, c), (r - 1, c), (r, c + 1), (r, c - 1)):",
+        "            if 0 <= rr < m and 0 <= cc < n:",
+        "                e = max(effort, abs(heights[rr][cc] - heights[r][c]))",
+        "                if e < best[rr][cc]:",
+        "                    best[rr][cc] = e",
+        "                    heapq.heappush(heap, (e, rr, cc))",
+        "    return 0"
+      ],
+      "time": "O(m * n * log(m * n))",
+      "space": "O(m * n)",
+      "cost": {
+        "time": {
+          "lines": [7, 17],
+          "why": "Dijkstra over `m·n` cells with at most 4 edges each: up to `4mn` pushes and pops at `log(mn)` apiece."
+        },
+        "space": {
+          "lines": [3, 17],
+          "why": "`best` has `m·n` entries and the lazy heap holds up to `4mn`."
+        }
+      },
+      "trap": "A plain BFS with `visited` is wrong here — a cell first reached by a bad path has to be revisited. Binary searching the answer with a BFS per guess is the other accepted approach, at `O(mn log H)` for a height range H."
+    },
+    {
+      "id": "grid-obstacle-elimination",
+      "lc": 1293,
+      "topic": "Advanced Graphs",
+      "pack": "essentials",
+      "vars": "m = rows, n = columns, k = obstacles you may remove",
+      "code": [
+        "def shortestPath(grid, k):",
+        "    m, n = len(grid), len(grid[0])",
+        "    seen = {(0, 0, k)}",
+        "    q = deque([(0, 0, k, 0)])",
+        "    while q:",
+        "        r, c, left, steps = q.popleft()",
+        "        if (r, c) == (m - 1, n - 1):",
+        "            return steps",
+        "        for rr, cc in ((r + 1, c), (r - 1, c), (r, c + 1), (r, c - 1)):",
+        "            if 0 <= rr < m and 0 <= cc < n:",
+        "                rest = left - grid[rr][cc]",
+        "                if rest >= 0 and (rr, cc, rest) not in seen:",
+        "                    seen.add((rr, cc, rest))",
+        "                    q.append((rr, cc, rest, steps + 1))",
+        "    return -1"
+      ],
+      "time": "O(m * n * k)",
+      "space": "O(m * n * k)",
+      "cost": {
+        "time": {
+          "lines": [5, 9],
+          "why": "The state is (row, col, removals left): `m·n·(k + 1)` states, each dequeued once with 4 moves."
+        },
+        "space": {
+          "lines": [3, 13],
+          "why": "`seen` and the queue can hold every one of those states."
+        }
+      },
+      "trap": "`O(mn)` forgets that one cell is a different state for every remaining k. Once `k ≥ m + n - 2` the answer is simply `m + n - 2`, a shortcut that caps how large a useful k can be."
+    },
+    {
+      "id": "coin-change-ii",
+      "lc": 518,
+      "topic": "Dynamic Programming",
+      "pack": "essentials",
+      "vars": "n = len(coins), a = amount",
+      "code": [
+        "def change(amount, coins):",
+        "    dp = [0] * (amount + 1)",
+        "    dp[0] = 1",
+        "    for coin in coins:",
+        "        for a in range(coin, amount + 1):",
+        "            dp[a] += dp[a - coin]",
+        "    return dp[amount]"
+      ],
+      "time": "O(n * a)",
+      "space": "O(a)",
+      "cost": {
+        "time": {
+          "lines": [4, 5],
+          "why": "For each of the n coins, one pass over the amounts up to a."
+        },
+        "space": {
+          "lines": [2],
+          "why": "One row of `a + 1` counts."
+        }
+      },
+      "why": "`O(n · a)` is pseudo-polynomial: it grows with the *value* of amount, not with the size of the input.",
+      "trap": "Swap the two loops (amounts outside, coins inside) and the complexity does not change — but the answer starts counting orderings, `1+2` and `2+1` separately, which is LC 377 rather than this problem."
+    },
+    {
+      "id": "longest-palindromic-subseq",
+      "lc": 516,
+      "topic": "Dynamic Programming",
+      "pack": "essentials",
+      "vars": "n = len(s)",
+      "code": [
+        "def longestPalindromeSubseq(s):",
+        "    n = len(s)",
+        "    dp = [[0] * n for _ in range(n)]",
+        "    for i in range(n - 1, -1, -1):",
+        "        dp[i][i] = 1",
+        "        for j in range(i + 1, n):",
+        "            if s[i] == s[j]:",
+        "                dp[i][j] = dp[i + 1][j - 1] + 2",
+        "            else:",
+        "                dp[i][j] = max(dp[i + 1][j], dp[i][j - 1])",
+        "    return dp[0][n - 1] if n else 0"
+      ],
+      "time": "O(n^2)",
+      "space": "O(n^2)",
+      "cost": {
+        "time": {
+          "lines": [4, 6],
+          "why": "Every pair `i < j` is filled once in `O(1)`."
+        },
+        "space": {
+          "lines": [3],
+          "why": "The full `n × n` table."
+        }
+      },
+      "trap": "Enumerating subsequences is `O(2^n)`. Only rows i and `i + 1` are ever read, so two 1-D rows bring space down to `O(n)` — the time stays `O(n^2)`."
+    },
+    {
+      "id": "maximal-square-rolling",
+      "lc": 221,
+      "topic": "Dynamic Programming",
+      "pack": "essentials",
+      "vars": "m = rows, n = columns",
+      "code": [
+        "def maximalSquare(matrix):",
+        "    m, n = len(matrix), len(matrix[0])",
+        "    prev = [0] * (n + 1)",
+        "    best = 0",
+        "    for r in range(m):",
+        "        cur = [0] * (n + 1)",
+        "        for c in range(1, n + 1):",
+        "            if matrix[r][c - 1] == \"1\":",
+        "                cur[c] = 1 + min(prev[c], cur[c - 1], prev[c - 1])",
+        "                best = max(best, cur[c])",
+        "        prev = cur",
+        "    return best * best"
+      ],
+      "time": "O(m * n)",
+      "space": "O(n)",
+      "cost": {
+        "time": {
+          "lines": [5, 7],
+          "why": "Every cell is computed once from three neighbours."
+        },
+        "space": {
+          "lines": [3, 6],
+          "why": "Only the previous row and the current one are alive at once — two arrays of `n + 1`."
+        }
+      },
+      "trap": "Growing a square from every top-left corner is `O(mn · min(m, n)^2)`. And the textbook 2-D table is `O(mn)` space; each cell reads only the row above, so one row is enough."
+    },
+    {
+      "id": "job-scheduling",
+      "lc": 1235,
+      "topic": "Dynamic Programming",
+      "pack": "essentials",
+      "vars": "n = number of jobs",
+      "code": [
+        "def jobScheduling(startTime, endTime, profit):",
+        "    jobs = sorted(zip(endTime, startTime, profit))",
+        "    ends = [e for e, _, _ in jobs]",
+        "    dp = [0] * (len(jobs) + 1)",
+        "    for i, (e, s, p) in enumerate(jobs):",
+        "        j = bisect.bisect_right(ends, s, 0, i)",
+        "        dp[i + 1] = max(dp[i], dp[j] + p)",
+        "    return dp[-1]"
+      ],
+      "time": "O(n log n)",
+      "space": "O(n)",
+      "cost": {
+        "time": {
+          "lines": [2, 6],
+          "why": "Sorting is `O(n log n)`, and each of the n jobs binary-searches the end times for its last compatible job."
+        },
+        "space": {
+          "lines": [2, 3, 4],
+          "why": "`jobs`, `ends` and `dp` each hold n entries."
+        }
+      },
+      "trap": "Scanning backwards for the last job that ends by `s` is `O(n)` per job → `O(n^2)`. Sorting by end time is what makes `ends` searchable."
+    },
+    {
+      "id": "unique-bsts-catalan",
+      "lc": 96,
+      "topic": "Dynamic Programming",
+      "pack": "essentials",
+      "vars": "n = number of nodes",
+      "code": [
+        "def numTrees(n):",
+        "    dp = [0] * (n + 1)",
+        "    dp[0] = 1",
+        "    for nodes in range(1, n + 1):",
+        "        for root in range(1, nodes + 1):",
+        "            dp[nodes] += dp[root - 1] * dp[nodes - root]",
+        "    return dp[n]"
+      ],
+      "time": "O(n^2)",
+      "space": "O(n)",
+      "cost": {
+        "time": {
+          "lines": [4, 5],
+          "why": "For each size up to n, every choice of root → `1 + 2 + … + n` products."
+        },
+        "space": {
+          "lines": [2],
+          "why": "One count per size."
+        }
+      },
+      "trap": "Plain recursion over every root without memoisation is exponential — it recomputes the same Catalan numbers again and again. The closed form `C(2n, n) / (n + 1)` is `O(n)`, but the DP is the version you can derive in the room."
+    },
+    {
+      "id": "wildcard-matching",
+      "lc": 44,
+      "topic": "Dynamic Programming",
+      "pack": "essentials",
+      "vars": "m = len(s), n = len(p)",
+      "code": [
+        "def isMatch(s, p):",
+        "    m, n = len(s), len(p)",
+        "    dp = [[False] * (n + 1) for _ in range(m + 1)]",
+        "    dp[0][0] = True",
+        "    for j in range(1, n + 1):",
+        "        if p[j - 1] == \"*\":",
+        "            dp[0][j] = dp[0][j - 1]",
+        "    for i in range(1, m + 1):",
+        "        for j in range(1, n + 1):",
+        "            if p[j - 1] == \"*\":",
+        "                dp[i][j] = dp[i][j - 1] or dp[i - 1][j]",
+        "            elif p[j - 1] == \"?\" or p[j - 1] == s[i - 1]:",
+        "                dp[i][j] = dp[i - 1][j - 1]",
+        "    return dp[m][n]"
+      ],
+      "time": "O(m * n)",
+      "space": "O(m * n)",
+      "cost": {
+        "time": {
+          "lines": [8, 9],
+          "why": "Every `(i, j)` cell is filled once in `O(1)`."
+        },
+        "space": {
+          "lines": [3],
+          "why": "The full `(m + 1) × (n + 1)` table."
+        }
+      },
+      "trap": "The `*` case looks as if it must loop over every length the star could absorb, making it `O(m^2 n)`. `dp[i - 1][j]` — the star eats one more character and stays put — folds that loop into a single cell."
+    },
+    {
+      "id": "count-smaller-fenwick",
+      "lc": 315,
+      "topic": "Sorting",
+      "pack": "essentials",
+      "vars": "n = len(nums)",
+      "note": "Space is auxiliary: `out` is the answer.",
+      "code": [
+        "def countSmaller(nums):",
+        "    rank = {v: i + 1 for i, v in enumerate(sorted(set(nums)))}",
+        "    tree = [0] * (len(rank) + 1)",
+        "    out = [0] * len(nums)",
+        "    for i in range(len(nums) - 1, -1, -1):",
+        "        r = rank[nums[i]] - 1",
+        "        total = 0",
+        "        while r > 0:",
+        "            total += tree[r]",
+        "            r -= r & -r",
+        "        out[i] = total",
+        "        r = rank[nums[i]]",
+        "        while r < len(tree):",
+        "            tree[r] += 1",
+        "            r += r & -r",
+        "    return out"
+      ],
+      "time": "O(n log n)",
+      "space": "O(n)",
+      "cost": {
+        "time": {
+          "lines": [2, 8, 13],
+          "why": "Rank compression sorts once; then each of n values makes two Fenwick walks of `O(log n)` steps."
+        },
+        "space": {
+          "lines": [2, 3],
+          "why": "`rank` and `tree` hold one entry per distinct value."
+        }
+      },
+      "trap": "The two `while` loops look unbounded, but each step strips (or carries past) the lowest set bit of r, so they run at most `log n` times. The direct double loop is `O(n^2)`; a merge sort that counts as it merges is the other `O(n log n)` answer."
+    },
+    {
+      "id": "largest-number-compare",
+      "lc": 179,
+      "topic": "Sorting",
+      "pack": "essentials",
+      "vars": "n = len(nums), k = digits in the longest number",
+      "code": [
+        "def largestNumber(nums):",
+        "    def compare(a, b):",
+        "        if a + b > b + a:",
+        "            return -1",
+        "        if a + b < b + a:",
+        "            return 1",
+        "        return 0",
+        "    strs = [str(x) for x in nums]",
+        "    strs.sort(key=cmp_to_key(compare))",
+        "    out = \"\".join(strs)",
+        "    return \"0\" if out[0] == \"0\" else out"
+      ],
+      "time": "O(k * n log n)",
+      "space": "O(n * k)",
+      "cost": {
+        "time": {
+          "lines": [3, 9],
+          "why": "The sort makes `O(n log n)` comparisons, and each builds and compares strings of up to 2k characters."
+        },
+        "space": {
+          "lines": [8],
+          "why": "`strs` holds n strings of up to k characters."
+        }
+      },
+      "trap": "Calling it `O(n log n)` treats each comparison as `O(1)`. Here a comparison concatenates two strings, so each of the `n log n` comparisons costs `O(k)`."
+    },
+    {
+      "id": "queue-reconstruction",
+      "lc": 406,
+      "topic": "Greedy",
+      "pack": "essentials",
+      "vars": "n = len(people)",
+      "code": [
+        "def reconstructQueue(people):",
+        "    people.sort(key=lambda p: (-p[0], p[1]))",
+        "    queue = []",
+        "    for person in people:",
+        "        queue.insert(person[1], person)",
+        "    return queue"
+      ],
+      "time": "O(n^2)",
+      "space": "O(n)",
+      "cost": {
+        "time": {
+          "lines": [4, 5],
+          "why": "`list.insert` at position k shifts everything after it — up to n moves for each of n people."
+        },
+        "space": {
+          "lines": [2, 3],
+          "why": "`queue` grows to n people, and the sort may use `O(n)` scratch."
+        }
+      },
+      "trap": "The sort makes it look like `O(n log n)`, but `insert` into a Python list is `O(n)`. Getting `O(n log n)` takes a Fenwick or segment tree to find the k-th free slot."
+    },
+    {
+      "id": "increasing-triplet",
+      "lc": 334,
+      "topic": "Greedy",
+      "pack": "essentials",
+      "vars": "n = len(nums)",
+      "code": [
+        "def increasingTriplet(nums):",
+        "    first = second = float(\"inf\")",
+        "    for x in nums:",
+        "        if x <= first:",
+        "            first = x",
+        "        elif x <= second:",
+        "            second = x",
+        "        else:",
+        "            return True",
+        "    return False"
+      ],
+      "time": "O(n)",
+      "space": "O(1)",
+      "cost": {
+        "time": {
+          "lines": [3],
+          "why": "One pass, constant work per element."
+        },
+        "space": {
+          "lines": [2],
+          "why": "Two running minimums."
+        }
+      },
+      "trap": "It looks like LIS of length 3 and invites the `O(n^2)` DP or the `O(n log n)` patience sort. Two running minimums are the length-3 case of patience sorting — `first` may move past `second` without breaking the invariant."
+    },
+    {
+      "id": "interval-list-intersections",
+      "lc": 986,
+      "topic": "Intervals",
+      "pack": "essentials",
+      "vars": "m = len(first), n = len(second)",
+      "note": "Space is auxiliary: `out` is the answer.",
+      "code": [
+        "def intervalIntersection(first, second):",
+        "    i = j = 0",
+        "    out = []",
+        "    while i < len(first) and j < len(second):",
+        "        lo = max(first[i][0], second[j][0])",
+        "        hi = min(first[i][1], second[j][1])",
+        "        if lo <= hi:",
+        "            out.append([lo, hi])",
+        "        if first[i][1] < second[j][1]:",
+        "            i += 1",
+        "        else:",
+        "            j += 1",
+        "    return out"
+      ],
+      "time": "O(m + n)",
+      "space": "O(1)",
+      "cost": {
+        "time": {
+          "lines": [4, 10, 12],
+          "why": "Every round advances i or j by one, so there are at most `m + n` rounds."
+        },
+        "space": {
+          "lines": [2],
+          "why": "Two indices besides the answer."
+        }
+      },
+      "trap": "Comparing every interval in one list with every interval in the other is `O(mn)`. Both lists are sorted and disjoint, so whichever interval ends first can never meet anything later in the other list."
     }
   ]
 }
