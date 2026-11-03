@@ -218,6 +218,29 @@ test('distance-k stops once the frontier is empty, so a huge k costs nothing', (
   assert.equal(q.time, 'O(n)');
 });
 
+// The page's knownSymbols(): a symbol is defined by an answer or by `x =` in
+// vars. A trap that names `O(n + k)` on a question that never declares k
+// gets "k is not defined by this question" instead of a real diagnosis.
+// Held for the essentials set; some classic entries predate the rule.
+test('every O(...) the essentials prose names uses only symbols the question declares', () => {
+  const CS = require('../complexity.js');
+  const zh = BANKS['./data/complexity-quiz.zh.json'];
+  const bad = [];
+  for (const bank of [BUILT, zh]) {
+    for (const q of bank.questions.filter((x) => x.pack === 'essentials')) {
+      const known = new Set();
+      [q.time, q.space, ...q.accept.time, ...q.accept.space].forEach((a) => (CS.variables(a) || []).forEach((v) => known.add(v)));
+      for (const m of (q.vars || '').matchAll(/(?:^|[^a-zA-Z_])([a-zA-Z])\s*=/g)) known.add(m[1].toLowerCase());
+      const prose = [q.trap, q.why, q.note, q.cost.time.why, q.cost.space.why].join(' ');
+      for (const m of prose.matchAll(/`(O\([^`]*\))`/g)) {
+        const missing = (CS.variables(m[1]) || []).filter((v) => !known.has(v));
+        if (missing.length) bad.push(`${q.id}: ${m[1]} uses ${missing.join(', ')}`);
+      }
+    }
+  }
+  assert.deepEqual(bad, []);
+});
+
 test('zh: the page writes Chinese prose and topic names, but grades the same answers', async () => {
   const dom = await boot('zh', 'two-sum-hash');
   assert.match(text($(dom, '#topicSelect')), /陣列與雜湊/);

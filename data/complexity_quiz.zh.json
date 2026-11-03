@@ -1874,7 +1874,7 @@
       }
     },
     "combinations-pruned": {
-      "vars": "n、k 如題；c = C(n, k)，即組合的數量",
+      "vars": "n = 數字池 1..n，k = 每個組合的數字數，c = C(n, k)，即組合的數量",
       "note": "空間只算輔助空間：回傳的串列不計入。",
       "why": "回溯的界通常與輸出量有關：成本是答案的數量乘以寫出一個答案的成本。",
       "trap": "拿掉第 7 行的上界（寫成 `range(start, n + 1)`），樹就會走進永遠湊不滿 k 個數的分支 —— 當 k 接近 n 時，為了寥寥幾個答案要走多達 `2^n` 個節點。",
@@ -1903,7 +1903,7 @@
       }
     },
     "all-paths-dag": {
-      "vars": "n = len(graph)，即節點數",
+      "vars": "n = len(graph)，即節點數（V = n）；E = 邊數",
       "note": "空間只算輔助空間：回傳的串列不計入。",
       "trap": "因為「只是 DFS」就答 `O(V + E)`。這裡沒有 `visited` 集合 —— 也不能有，因為每條路徑都要 —— 所以每條走到某節點的路徑都會讓它再被探索一次。",
       "cost": {
@@ -1937,7 +1937,7 @@
       }
     },
     "nodes-distance-k": {
-      "vars": "n = 節點數，k 如題",
+      "vars": "n = 節點數，k = 與 target 的距離",
       "trap": "`for _ in range(k)` 看起來會把成本乘上 k，但有 `seen`，任何節點都不會進入兩次 frontier —— 樹走完之後 frontier 就是空的，由 `break` 結束迴圈。少了這個 `break`，在小樹上給很大的 k 會空轉許多回合，界就變成 `O(n + k)`。",
       "cost": {
         "time": "建 parent 的那一遍每個節點走一次；BFS 中每個節點最多進 `seen` 一次、檢查三個鄰居，沒有節點可走時由 `break` 結束回合 → 總共 `O(n)`。",
@@ -2004,9 +2004,9 @@
       }
     },
     "random-pick-weight": {
-      "vars": "n = len(w)",
+      "vars": "n = len(w)，W = sum(w)",
       "note": "時間指單次 `pickIndex` 呼叫；空間指整個物件。",
-      "trap": "把每個索引展開成 `w[i]` 份，抽一次是 `O(1)`，但空間是 `O(sum(w))`，不受 n 限制。線性掃前綴和也行，但每次抽是 `O(n)`。",
+      "trap": "把每個索引展開成 `w[i]` 份，抽一次是 `O(1)`，但空間是 `O(W)`，不受 n 限制。線性掃前綴和也行，但每次抽是 `O(n)`。",
       "cost": {
         "time": "`bisect_right` 在 n 個前綴和上二分搜尋。",
         "space": "`self.prefix` 為每個權重存一個累計和。"
@@ -2021,7 +2021,7 @@
       }
     },
     "kth-missing-positive": {
-      "vars": "n = len(arr)，k 如題",
+      "vars": "n = len(arr)，k = 要找第幾個缺少的數",
       "trap": "從 1、2、3… 一路走並數缺口是 `O(n + k)` —— 而 k 可能遠大於 n。把「到目前為止缺了幾個」變成索引的單調函數，才讓它能被二分搜尋。",
       "cost": {
         "time": "`arr[mid] - (mid + 1)` 是索引 mid 之前缺少的正整數個數，而且只增不減 —— 所以每回合 `[lo, hi]` 砍半。",
@@ -2029,7 +2029,7 @@
       }
     },
     "top-k-frequent-words": {
-      "vars": "n = len(words)，u = 不同單字數，k 如題",
+      "vars": "n = len(words)，u = 不同單字數，k = 要回傳的單字數",
       "trap": "`heapify` 建堆是 `O(u)`，不是 `O(u log u)` —— 一個一個 push 才是 `u log u`。把所有不同單字排序是 `O(u log u)`，只要 k ≪ u 就比較慢。",
       "cost": {
         "time": "計數是走過 n 個單字一遍，`heapify` 對 u 是線性，k 次 pop 每次 `log u`。",
@@ -2037,7 +2037,7 @@
       }
     },
     "k-pairs-smallest-sums": {
-      "vars": "k 如題（假設 k ≤ len(nums1) · len(nums2)）",
+      "vars": "k = 要回傳的數對數（假設 k ≤ len(nums1) · len(nums2)）",
       "trap": "產生全部 `len(nums1) · len(nums2)` 個數對再排序要慢得多。每列只放一個候選、某列的數對被 pop 時才往前推進，堆積就維持在 k 筆，不論輸入多長。",
       "cost": {
         "time": "k 回合，每回合在不超過 k 筆的堆積上 pop 一次、最多 push 一次。",
@@ -2045,7 +2045,7 @@
       }
     },
     "remove-k-digits": {
-      "vars": "n = len(num)，k 如題",
+      "vars": "n = len(num)，k = 要移除的位數",
       "trap": "`for` 裡套 `while` 看起來是 `O(n·k)`。用攤銷來算：每次 pop 都由先前的一次 push 支付，而 push 只有 n 次。每刪一個就從頭重掃的貪婪法才真的是 `O(n·k)`。",
       "cost": {
         "time": "每個數字 push 一次、最多 pop 一次，所以整個迴圈中內層 `while` 總共最多 pop n 次。",
@@ -2113,7 +2113,7 @@
       }
     },
     "at-most-k-distinct": {
-      "vars": "n = len(s)，k 如題",
+      "vars": "n = len(s)，k = 允許的不同字元數",
       "trap": "把內層 `while` 算成 `O(n·k)`：left 從不後退，所以是攤銷的。空間是 `O(k)` 而不是 `O(n)` —— map 的大小正被那個縮小視窗的迴圈封頂。",
       "cost": {
         "time": "`right` 移動 n 次，`left` 只往前移，總共最多 n 次。",
@@ -2146,7 +2146,7 @@
       }
     },
     "subarray-sums-div-k": {
-      "vars": "n = len(nums)，k 如題",
+      "vars": "n = len(nums)，k = 除數",
       "trap": "「前綴和放進雜湊表」的習慣讓人答 `O(n)` 空間，這是安全的上界 —— 但這裡的鍵是餘數，所以 map 永遠不超過 k 筆。（k 為正時，Python 的 `%` 結果已經非負，負數不需要額外修正。）",
       "cost": {
         "time": "一遍掃描，每個元素一次 `O(1)` 的雜湊查詢。",
@@ -2196,7 +2196,7 @@
       }
     },
     "path-min-effort": {
-      "vars": "m = 列數，n = 行數",
+      "vars": "m = 列數，n = 行數，H = 最大高度 − 最小高度",
       "trap": "用一般 BFS 加 `visited` 在這裡是錯的 —— 一格若先被差的路徑抵達，之後必須再被更新。對答案二分、每次猜測做一次 BFS 是另一種可行做法，高度範圍為 H 時是 `O(mn log H)`。",
       "cost": {
         "time": "在 `m·n` 格、每格最多 4 條邊的圖上跑 Dijkstra：最多 `4mn` 次 push 與 pop，每次 `log(mn)`。",
@@ -2245,7 +2245,7 @@
       }
     },
     "unique-bsts-catalan": {
-      "vars": "n 如題",
+      "vars": "n = 節點數",
       "trap": "沒有記憶化、對每個根直接遞迴是指數級的 —— 它一再重算相同的卡特蘭數。封閉公式 `C(2n, n) / (n + 1)` 是 `O(n)`，但 DP 才是你能在面試現場推出來的版本。",
       "cost": {
         "time": "對每個到 n 為止的大小，嘗試每一種根 → 共 `1 + 2 + … + n` 次乘法。",

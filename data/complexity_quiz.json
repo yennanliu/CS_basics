@@ -7354,7 +7354,7 @@
       "lc": 77,
       "topic": "Backtracking",
       "pack": "essentials",
-      "vars": "n, k as given; c = C(n, k), the number of combinations",
+      "vars": "n = the pool 1..n, k = numbers per combination, c = C(n, k), the number of combinations",
       "note": "Space is auxiliary: the returned list does not count.",
       "code": [
         "def combine(n, k):",
@@ -7471,7 +7471,7 @@
       "lc": 797,
       "topic": "Backtracking",
       "pack": "essentials",
-      "vars": "n = len(graph), the number of nodes",
+      "vars": "n = len(graph), the number of nodes (V = n); E = number of edges",
       "note": "Space is auxiliary: the returned list does not count.",
       "code": [
         "def allPathsSourceTarget(graph):",
@@ -7626,7 +7626,7 @@
       "lc": 863,
       "topic": "Trees",
       "pack": "essentials",
-      "vars": "n = number of nodes, k as given",
+      "vars": "n = number of nodes, k = distance from the target",
       "code": [
         "def distanceK(root, target, k):",
         "    parent = {}",
@@ -7929,7 +7929,7 @@
       "lc": 528,
       "topic": "Binary Search",
       "pack": "essentials",
-      "vars": "n = len(w)",
+      "vars": "n = len(w), W = sum(w)",
       "note": "Time is for one `pickIndex` call; space is the whole object.",
       "code": [
         "class Solution:",
@@ -7956,7 +7956,7 @@
           "why": "`self.prefix` stores one running total per weight."
         }
       },
-      "trap": "Expanding each index into `w[i]` copies makes a pick `O(1)` but space `O(sum(w))`, which n does not bound. Scanning the prefix sums linearly works too, at `O(n)` per pick."
+      "trap": "Expanding each index into `w[i]` copies makes a pick `O(1)` but space `O(W)`, which n does not bound. Scanning the prefix sums linearly works too, at `O(n)` per pick."
     },
     {
       "id": "single-element-sorted",
@@ -7996,7 +7996,7 @@
       "lc": 1539,
       "topic": "Binary Search",
       "pack": "essentials",
-      "vars": "n = len(arr), k as given",
+      "vars": "n = len(arr), k = which missing number to find",
       "code": [
         "def findKthPositive(arr, k):",
         "    lo, hi = 0, len(arr)",
@@ -8027,7 +8027,7 @@
       "lc": 692,
       "topic": "Heap",
       "pack": "essentials",
-      "vars": "n = len(words), u = distinct words, k as given",
+      "vars": "n = len(words), u = distinct words, k = words to return",
       "code": [
         "def topKFrequent(words, k):",
         "    count = Counter(words)",
@@ -8062,7 +8062,7 @@
       "lc": 373,
       "topic": "Heap",
       "pack": "essentials",
-      "vars": "k as given (assume k ≤ len(nums1) · len(nums2))",
+      "vars": "k = pairs to return (assume k ≤ len(nums1) · len(nums2))",
       "code": [
         "def kSmallestPairs(nums1, nums2, k):",
         "    heap = [(nums1[i] + nums2[0], i, 0) for i in range(min(k, len(nums1)))]",
@@ -8094,7 +8094,7 @@
       "lc": 402,
       "topic": "Stack",
       "pack": "essentials",
-      "vars": "n = len(num), k as given",
+      "vars": "n = len(num), k = digits to remove",
       "code": [
         "def removeKdigits(num, k):",
         "    stack = []",
@@ -8391,7 +8391,7 @@
       "lc": 340,
       "topic": "Two Pointers & Sliding Window",
       "pack": "essentials",
-      "vars": "n = len(s), k as given",
+      "vars": "n = len(s), k = distinct characters allowed",
       "code": [
         "def lengthOfLongestSubstringKDistinct(s, k):",
         "    count = {}",
@@ -8533,7 +8533,7 @@
       "lc": 974,
       "topic": "Arrays & Hashing",
       "pack": "essentials",
-      "vars": "n = len(nums), k as given",
+      "vars": "n = len(nums), k = the divisor",
       "code": [
         "def subarraysDivByK(nums, k):",
         "    seen = {0: 1}",
@@ -8758,7 +8758,7 @@
       "lc": 1631,
       "topic": "Advanced Graphs",
       "pack": "essentials",
-      "vars": "m = rows, n = columns",
+      "vars": "m = rows, n = columns, H = max height − min height",
       "code": [
         "def minimumEffortPath(heights):",
         "    m, n = len(heights), len(heights[0])",
@@ -8962,7 +8962,7 @@
       "lc": 96,
       "topic": "Dynamic Programming",
       "pack": "essentials",
-      "vars": "n as given",
+      "vars": "n = number of nodes",
       "code": [
         "def numTrees(n):",
         "    dp = [0] * (n + 1)",
