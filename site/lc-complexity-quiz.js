@@ -281,13 +281,15 @@
   }
 
   // The Focus dropdown lists only topics the chosen set has questions in, so
-  // no choice can lead to an empty pool. A topic the new set lacks falls back
-  // to everything.
+  // no choice can lead to an empty pool. The Focus shown is always the saved
+  // one whenever the set has it, and Everything only while it does not — so a
+  // set without the saved topic never erases it, and a set that has it again
+  // brings it back rather than leaving a stored Focus the page is not showing.
   function renderTopics() {
     var counts = {};
     packPool().forEach(function (q) { counts[q.topic] = (counts[q.topic] || 0) + 1; });
     var topics = Object.keys(counts).sort();
-    if (prefs.topic !== 'all' && !counts[prefs.topic]) prefs.topic = 'all';
+    prefs.topic = savedTopic === 'all' || counts[savedTopic] ? savedTopic : 'all';
     el('topicSelect').innerHTML = '<option value="all">' + esc(S.all) + '</option>'
       + topics.map(function (t) {
         return '<option value="' + esc(t) + '">' + esc(topicLabel(t)) + '</option>';

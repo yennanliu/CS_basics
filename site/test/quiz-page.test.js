@@ -212,6 +212,19 @@ test('a Focus the linked set lacks is not erased from what is saved', async () =
   assert.equal(saved.pack, 'classic');
 });
 
+test('switching sets brings the saved Focus back as soon as the set has it', async () => {
+  const dom = await boot('en');
+  change(dom, '#topicSelect', 'Python Pitfalls');       // classic only
+  change(dom, '#packSelect', 'essentials');
+  assert.equal($(dom, '#topicSelect').value, 'all', 'a set without it shows everything');
+  change(dom, '#packSelect', 'all');
+  assert.equal($(dom, '#topicSelect').value, 'Python Pitfalls', 'what is shown matches what is saved');
+  const saved = JSON.parse(dom.window.localStorage.getItem('complexity-quiz-prefs'));
+  assert.equal(saved.topic, 'Python Pitfalls');
+  assert.equal(saved.pack, 'all');
+  assert.ok(text($(dom, '#poolText')).startsWith(inPack('all').filter((q) => q.topic === 'Python Pitfalls').length + ' questions'));
+});
+
 test('distance-k stops once the frontier is empty, so a huge k costs nothing', () => {
   const q = BUILT.questions.find((x) => x.id === 'nodes-distance-k');
   assert.match(q.code, /if not frontier:\n\s+break/);
