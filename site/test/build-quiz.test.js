@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 
-const { answerStrings, resolveQuestion, buildQuiz, buildZh } = require('../build-quiz.js');
+const { PACKS, answerStrings, resolveQuestion, buildQuiz, buildZh } = require('../build-quiz.js');
 const { parseReadmeProblems } = require('../build-roadmap.js');
 const CSComplexity = require('../complexity.js');
 
@@ -204,6 +204,18 @@ test('buildQuiz lists the distinct topics, sorted', () => {
   ] }, README);
   assert.deepEqual(built.topics, ['Arrays & Hashing', 'Heap']);
   assert.equal(built.questions.length, 3);
+});
+
+test('a question with no pack is classic, and an unknown pack is rejected', () => {
+  assert.equal(resolveQuestion(question(), README).pack, 'classic');
+  assert.equal(resolveQuestion(question({ pack: 'essentials' }), README).pack, 'essentials');
+  assert.throws(() => resolveQuestion(question({ pack: 'essential' }), README), /pack "essential"/);
+});
+
+test('buildQuiz lists only the packs that have questions, in PACKS order', () => {
+  assert.deepEqual(buildQuiz({ questions: [question()] }, README).packs, ['classic']);
+  const both = buildQuiz({ questions: [question({ id: 'b', pack: 'essentials' }), question({ id: 'a' })] }, README);
+  assert.deepEqual(both.packs, PACKS);
 });
 
 test('buildQuiz rejects a duplicate id', () => {

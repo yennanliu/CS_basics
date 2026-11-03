@@ -29,6 +29,13 @@ const CSComplexity = require('./complexity.js');
 const ROOT = path.join(__dirname, '..');
 const LC_URL = 'https://leetcode.com/problems/';
 
+// The question sets the page's "Question set" dropdown offers. A question with
+// no `pack` is `classic` — the original bank, and what the page shows by
+// default. `essentials` is the opt-in set of interview staples whose bound is
+// easy to get wrong (amortised stacks, output-sensitive backtracking, a log over
+// the answer range rather than n). The order here is the dropdown's order.
+const PACKS = ['classic', 'essentials'];
+
 // ── Validation ───────────────────────────────────────────────────────────────
 
 /**
@@ -90,6 +97,12 @@ function resolveQuestion(question, readme) {
     }
   }
 
+  const pack = question.pack === undefined ? 'classic' : question.pack;
+  if (!PACKS.includes(pack)) {
+    // A typo'd pack would put the question in a set the page never offers.
+    throw new Error(`${where} has pack "${pack}", which is not one of ${PACKS.join(', ')}`);
+  }
+
   for (const answer of answerStrings(question)) {
     if (CSComplexity.normalize(answer) === null) {
       // Either a typo or a shape the grader has never seen. Both mean nobody
@@ -102,6 +115,7 @@ function resolveQuestion(question, readme) {
     id: question.id,
     lc: question.lc == null ? null : question.lc,
     topic: question.topic,
+    pack: pack,
     vars: question.vars || '',
     note: question.note || '',
     code: question.code.join('\n'),
@@ -213,7 +227,7 @@ function buildZh(built, overlay) {
     });
   });
 
-  return { topics: built.topics, topicLabels: topics, questions: questions };
+  return { topics: built.topics, packs: built.packs, topicLabels: topics, questions: questions };
 }
 
 /** Resolves the whole bank, rejecting duplicate ids. */
@@ -233,7 +247,10 @@ function buildQuiz(bank, readme) {
   });
 
   const topics = [...new Set(resolved.map(q => q.topic))].sort();
-  return { topics: topics, questions: resolved };
+  // Only the packs that actually have questions, in PACKS order — the page
+  // offers no dropdown entry that would draw from an empty pool.
+  const packs = PACKS.filter(p => resolved.some(q => q.pack === p));
+  return { topics: topics, packs: packs, questions: resolved };
 }
 
 // ── Entry point ──────────────────────────────────────────────────────────────
@@ -260,6 +277,8 @@ function main() {
   const summary = [...counts.entries()].sort((a, b) => b[1] - a[1])
     .map(([topic, n]) => `${topic} ${n}`).join(', ');
   console.log(`    ${summary}`);
+  const byPack = built.packs.map(p => `${p} ${built.questions.filter(q => q.pack === p).length}`).join(', ');
+  console.log(`    packs: ${byPack}`);
 }
 
 if (require.main === module) {
@@ -271,4 +290,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { answerStrings, resolveQuestion, buildQuiz, buildZh };
+module.exports = { PACKS, answerStrings, resolveQuestion, buildQuiz, buildZh };

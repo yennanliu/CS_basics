@@ -21,6 +21,10 @@
       loadFailed: 'Could not load the question bank.',
       all: 'Everything',
       allN: function (n) { return 'all ' + n; },
+      // The "Question set" dropdown, keyed by the pack names build-quiz.js
+      // emits, plus `all` for both at once.
+      packs: { classic: 'Classic set', essentials: 'Interview essentials', all: 'Both sets' },
+      packOption: function (label, n) { return label + ' (' + n + ')'; },
       pool: function (available, asked) {
         return available + ' question' + (available === 1 ? '' : 's') + ' in this pool · '
           + asked + ' will be drawn · ' + (asked * 2) + ' marks';
@@ -76,6 +80,8 @@
       loadFailed: '無法載入題庫。',
       all: '全部',
       allN: function (n) { return '全部 ' + n; },
+      packs: { classic: '經典題組', essentials: '面試必備', all: '兩組都要' },
+      packOption: function (label, n) { return label + '（' + n + '）'; },
       pool: function (available, asked) {
         return '此範圍共 ' + available + ' 題 · 抽出 ' + asked + ' 題 · 共 ' + (asked * 2) + ' 分';
       },
@@ -135,7 +141,9 @@
 
   var bank = [];                                    // every question, as built
   var topicLabels = {};                             // English topic -> shown label
-  var prefs = { count: 10, topic: 'all' };
+  var packs = [];                                   // the sets the bank carries, in order
+  var prefs = { count: 10, topic: 'all', pack: 'classic' };
+  var savedPack = 'classic';                        // the set to store: only the dropdown moves it
   var run = null;                                   // the quiz in progress
 
   var el = function (id) { return document.getElementById(id); };
@@ -234,20 +242,65 @@
         if (saved && typeof saved === 'object') {
           if (saved.count) prefs.count = saved.count;
           if (saved.topic) prefs.topic = saved.topic;
+          if (saved.pack) prefs.pack = saved.pack;
         }
       }
     } catch (e) { /* defaults are fine */ }
   }
 
   function savePrefs() {
-    try { localStorage.setItem(STORE_KEY, JSON.stringify(prefs)); } catch (e) { /* ignore */ }
+    var stored = { count: prefs.count, topic: prefs.topic, pack: savedPack };
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(stored)); } catch (e) { /* ignore */ }
   }
 
   // ── Setup screen ───────────────────────────────────────────────────────
 
+  // `?set=essentials` (or classic / all) picks the question set from a link —
+  // the flag form of the dropdown. It wins over the stored preference for
+  // this visit but is not saved, so a shared link does not rewrite anyone's
+  // default.
+  function packFromUrl() {
+    try {
+      var value = new URLSearchParams(window.location.search).get('set');
+      return value && (value === 'all' || packs.indexOf(value) !== -1) ? value : null;
+    } catch (e) { return null; }
+  }
+
+  function packPool() {
+    if (prefs.pack === 'all') return bank;
+    return bank.filter(function (q) { return q.pack === prefs.pack; });
+  }
+
   function pool() {
-    if (prefs.topic === 'all') return bank;
-    return bank.filter(function (q) { return q.topic === prefs.topic; });
+    var questions = packPool();
+    if (prefs.topic === 'all') return questions;
+    return questions.filter(function (q) { return q.topic === prefs.topic; });
+  }
+
+  // The Focus dropdown lists only topics the chosen set has questions in, so
+  // no choice can lead to an empty pool. A topic the new set lacks falls back
+  // to everything.
+  function renderTopics() {
+    var counts = {};
+    packPool().forEach(function (q) { counts[q.topic] = (counts[q.topic] || 0) + 1; });
+    var topics = Object.keys(counts).sort();
+    if (prefs.topic !== 'all' && !counts[prefs.topic]) prefs.topic = 'all';
+    el('topicSelect').innerHTML = '<option value="all">' + esc(S.all) + '</option>'
+      + topics.map(function (t) {
+        return '<option value="' + esc(t) + '">' + esc(topicLabel(t)) + '</option>';
+      }).join('');
+    el('topicSelect').value = prefs.topic;
+  }
+
+  function renderPacks() {
+    var choices = packs.concat(packs.length > 1 ? ['all'] : []);
+    el('packSelect').innerHTML = choices.map(function (p) {
+      var n = p === 'all' ? bank.length : bank.filter(function (q) { return q.pack === p; }).length;
+      return '<option value="' + esc(p) + '">' + esc(S.packOption(S.packs[p] || p, n)) + '</option>';
+    }).join('');
+    el('packSelect').value = prefs.pack;
+    // A bank with a single set has nothing to choose between.
+    el('packRow').hidden = packs.length < 2;
   }
 
   function askedCount() {
@@ -526,6 +579,13 @@
       renderSetup();
     });
 
+    el('packSelect').addEventListener('change', function () {
+      prefs.pack = savedPack = el('packSelect').value;
+      savePrefs();
+      renderTopics();
+      renderSetup();
+    });
+
     el('topicSelect').addEventListener('change', function () {
       prefs.topic = el('topicSelect').value;
       savePrefs();
@@ -587,15 +647,16 @@
   function boot(data) {
     bank = data.questions || [];
     topicLabels = data.topicLabels || {};
+    // A bank built before packs existed carries none: treat it all as classic.
+    bank.forEach(function (q) { if (!q.pack) q.pack = 'classic'; });
+    packs = data.packs && data.packs.length ? data.packs : ['classic'];
     loadPrefs();
+    if (prefs.pack !== 'all' && packs.indexOf(prefs.pack) === -1) prefs.pack = packs[0];
+    savedPack = prefs.pack;
+    prefs.pack = packFromUrl() || prefs.pack;
 
-    var topics = data.topics || [];
-    if (topics.indexOf(prefs.topic) === -1) prefs.topic = 'all';
-    el('topicSelect').innerHTML = '<option value="all">' + esc(S.all) + '</option>'
-      + topics.map(function (t) {
-        return '<option value="' + esc(t) + '">' + esc(topicLabel(t)) + '</option>';
-      }).join('');
-    el('topicSelect').value = prefs.topic;
+    renderPacks();
+    renderTopics();
 
     show('loading', false);
     show('setup', true);

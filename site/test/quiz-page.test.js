@@ -29,7 +29,7 @@ const BANKS = {
   './data/complexity-quiz.zh.json': buildZh(BUILT, readJson('data/complexity_quiz.zh.json')),
 };
 
-async function boot(lang, only) {
+async function boot(lang, only, url) {
   const inline = (file) => '<script>' + fs.readFileSync(path.join(SITE, file), 'utf8') + '</script>';
   const html = fs.readFileSync(PAGES[lang], 'utf8')
     .replace('<script src="nav.js"></script>', '')
@@ -40,7 +40,7 @@ async function boot(lang, only) {
   const dom = new JSDOM(html, {
     runScripts: 'dangerously',
     pretendToBeVisual: true,
-    url: 'https://example.test/',
+    url: url || 'https://example.test/',
     beforeParse(window) {
       window.fetch = (url) => {
         fetched.push(url);
@@ -74,8 +74,11 @@ for (const lang of ['en', 'zh']) {
     const dom = await boot(lang);
     assert.deepEqual(dom.fetched, [lang === 'zh' ? './data/complexity-quiz.zh.json' : './data/complexity-quiz.json']);
     assert.ok(!$(dom, '#setup').hidden);
-    assert.equal($$(dom, '#topicSelect option').length, BUILT.topics.length + 1);
-    assert.ok(text($(dom, '#poolText')).includes(String(BUILT.questions.length)));
+    // The classic set is the default; Focus lists only its topics.
+    const classic = BUILT.questions.filter((q) => q.pack === 'classic');
+    assert.equal($(dom, '#packSelect').value, 'classic');
+    assert.equal($$(dom, '#topicSelect option').length, new Set(classic.map((q) => q.topic)).size + 1);
+    assert.ok(text($(dom, '#poolText')).includes(String(classic.length)));
     assert.doesNotMatch($(dom, '.container').innerHTML, /undefined/);
   });
 
@@ -130,6 +133,72 @@ for (const lang of ['en', 'zh']) {
     assert.match(text($(dom, '.dim.t .diag')), /n/);
   });
 }
+
+// ── Question sets ────────────────────────────────────────────────────────
+
+const inPack = (pack) => BUILT.questions.filter((q) => pack === 'all' || q.pack === pack);
+const change = (dom, sel, value) => {
+  $(dom, sel).value = value;
+  $(dom, sel).dispatchEvent(new dom.window.Event('change', { bubbles: true }));
+};
+
+test('the bank carries both sets, and the essentials never repeat a classic problem', () => {
+  assert.deepEqual(BUILT.packs, ['classic', 'essentials']);
+  assert.ok(inPack('essentials').length >= 40, 'the essentials set is a real set, not a token');
+  // A problem in both sets would be asked twice under "Both sets".
+  const classicLc = new Set(inPack('classic').map((q) => q.lc).filter(Boolean));
+  const repeats = inPack('essentials').filter((q) => classicLc.has(q.lc)).map((q) => q.lc);
+  assert.deepEqual(repeats, []);
+});
+
+for (const lang of ['en', 'zh']) {
+  test(`${lang}: the Question set dropdown offers each set and both, with counts`, async () => {
+    const dom = await boot(lang);
+    const options = $$(dom, '#packSelect option');
+    assert.deepEqual(options.map((o) => o.value), ['classic', 'essentials', 'all']);
+    options.forEach((o) => assert.ok(text(o).includes(String(inPack(o.value).length)), text(o)));
+    assert.ok(!$(dom, '#packRow').hidden);
+  });
+}
+
+test('switching to essentials narrows the pool and the Focus list', async () => {
+  const dom = await boot('en');
+  change(dom, '#topicSelect', 'Python Pitfalls');       // a topic essentials does not have
+  change(dom, '#packSelect', 'essentials');
+  const essentials = inPack('essentials');
+  assert.equal($(dom, '#topicSelect').value, 'all', 'a topic the set lacks falls back to everything');
+  assert.equal($$(dom, '#topicSelect option').length, new Set(essentials.map((q) => q.topic)).size + 1);
+  assert.ok(text($(dom, '#poolText')).startsWith(essentials.length + ' questions'));
+
+  change(dom, '#topicSelect', 'Stack');
+  const stack = essentials.filter((q) => q.topic === 'Stack').length;
+  assert.ok(text($(dom, '#poolText')).startsWith(stack + ' questions'));
+
+  click(dom, '[data-count="all"]');
+  click(dom, '#startBtn');
+  assert.ok(text($(dom, '#qCounter')).includes(String(stack)), text($(dom, '#qCounter')));
+  assert.equal(text($(dom, '#qTopic')), 'Stack');
+});
+
+test('the chosen set is remembered, and ?set= overrides it without saving', async () => {
+  let dom = await boot('en');
+  change(dom, '#packSelect', 'essentials');
+  assert.equal(JSON.parse(dom.window.localStorage.getItem('complexity-quiz-prefs')).pack, 'essentials');
+
+  dom = await boot('en', null, 'https://example.test/lc-complexity-quiz.html?set=essentials');
+  assert.equal($(dom, '#packSelect').value, 'essentials');
+  assert.ok(text($(dom, '#poolText')).startsWith(inPack('essentials').length + ' questions'));
+  assert.equal(dom.window.localStorage.getItem('complexity-quiz-prefs'), null, 'a link does not rewrite the default');
+  click(dom, '[data-count="5"]');
+  assert.equal(JSON.parse(dom.window.localStorage.getItem('complexity-quiz-prefs')).pack, 'classic',
+    'saving another preference keeps the stored set, not the linked one');
+
+  dom = await boot('en', null, 'https://example.test/lc-complexity-quiz.html?set=all');
+  assert.equal($(dom, '#packSelect').value, 'all');
+
+  dom = await boot('en', null, 'https://example.test/lc-complexity-quiz.html?set=nonsense');
+  assert.equal($(dom, '#packSelect').value, 'classic', 'an unknown ?set= is ignored');
+});
 
 test('zh: the page writes Chinese prose and topic names, but grades the same answers', async () => {
   const dom = await boot('zh', 'two-sum-hash');

@@ -124,6 +124,7 @@ for `lc-complexity-quiz.zh.html` and fails on a missing, stray or partial transl
 | every answer parses as a complexity expression | `time`, `space`, and each `accept` |
 | `cost.time` and `cost.space` exist, each `{ lines, why }` | `lines` are 1-based into `code`, inside the snippet and not blank |
 | the `id` has an entry in `data/complexity_quiz.zh.json` | with `note` / `why` / `trap` exactly when the English has them |
+| `pack`, if set, is one of `build-quiz.js`'s `PACKS` | omit it for the default `classic` set; `"essentials"` is the opt-in set |
 
 **`site/complexity.js`'s identifiers are single letters.** Write `O(n * a)` with a `vars`
 line saying what `a` is — never `O(n * amount)`. This is the single most common failure.
