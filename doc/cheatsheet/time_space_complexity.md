@@ -420,6 +420,175 @@ class Solution:
 
 > **Similar:** LC 133 Clone Graph, LC 210 Course Schedule II, LC 743 Network Delay (Dijkstra O((V+E)log V)), LC 684 Redundant Connection (Union-Find ~O(α)). See [`graph.md`](./graph.md) / [`topology_sorting.md`](./topology_sorting.md).
 
+### O(V + E) vs O(V × E) — add, or multiply? ⭐⭐⭐⭐
+
+**The rule:** **add** when every vertex and every edge is handled once *in total*; **multiply** when the
+whole edge set (or the whole graph) is handled again *for each* vertex or round. It is the same rule for
+time and for space. For time, count the steps. For space, count what is held in memory at the same time.
+
+| You see | Time | Space | Example |
+|---|---|---|---|
+| One BFS / DFS over an adjacency list | **O(V + E)** | O(V + E) | LC 207, LC 399 |
+| `V − 1` rounds, each relaxing all E edges | **O(V × E)** | O(V) | Bellman-Ford, LC 743 |
+| A full traversal started from every vertex | **O(V × (V + E))** | depends what you keep | LC 1462, LC 2192 |
+| Every vertex scans the raw edge list for its neighbours | **O(V × E)** | O(V) | a bug, not an algorithm |
+
+#### Time — why one traversal is V + E, not V × E
+
+```python
+# python — BFS over an adjacency list
+# time = O(V + E) : each vertex is dequeued once; each adjacency list is scanned once
+# space = O(V + E): the graph itself, plus seen + queue (O(V))
+from collections import defaultdict, deque
+
+def bfs(edges, src):
+    graph = defaultdict(list)
+    for u, v in edges:                 # O(E) to build
+        graph[u].append(v)
+        graph[v].append(u)
+
+    seen = {src}
+    queue = deque([src])
+    while queue:                       # runs once per vertex   → V
+        node = queue.popleft()
+        for nb in graph[node]:         # runs deg(node) times   → Σ deg = 2E in total
+            if nb not in seen:
+                seen.add(nb)
+                queue.append(nb)
+    return seen
+```
+
+**The trap:** "the outer loop runs V times and the inner loop can run up to E times, so V × E." The
+inner loop's bound is right for *one* vertex and wrong for all of them together. Each vertex's list is
+scanned exactly once, and the lengths of all the lists add up to the number of edges (the handshake sum):
+
+```text
+deg(v1) + deg(v2) + … + deg(vV) = 2E      (undirected; = E for a directed graph)
+
+star graph: centre 0 joined to 1…9         V = 10, E = 9
+  graph[0] has 9 neighbours, graph[1…9] have 1 each
+  inner-loop steps, counted:   9 + 9·1 = 18 = 2E     ✓ O(V + E)
+  the V × E estimate:          10 · 9  = 90          ✗ 5× too many
+```
+
+When one vertex has many neighbours, the others have few. The total is fixed at E.
+
+#### Time — where V × E really comes from
+
+**1. The edge set is scanned once per round — Bellman-Ford.**
+
+```python
+# python — LC 743 Network Delay Time (Bellman-Ford)
+# time = O(V × E) : up to V − 1 rounds, each relaxing every edge
+# space = O(V)    : one dist array, overwritten every round
+def networkDelayTime(times, n, k):
+    dist = [float('inf')] * (n + 1)
+    dist[k] = 0
+    for _ in range(n - 1):                 # V − 1 rounds
+        updated = False
+        for u, v, w in times:              # all E edges, every round
+            if dist[u] + w < dist[v]:
+                dist[v] = dist[u] + w
+                updated = True
+        if not updated:                    # nothing changed: later rounds would not either
+            break
+    best = max(dist[1:])
+    return -1 if best == float('inf') else best
+```
+
+The loops multiply. The memory does not: every round writes into the **same** `dist` array, so space
+stays O(V). Dijkstra solves LC 743 in O((V + E) log V); Bellman-Ford is the tool when weights can be
+negative or the number of edges is bounded (LC 787). See [Bellman-Ford.md](./Bellman-Ford.md).
+
+**2. A whole traversal is repeated from every vertex.**
+
+```python
+# python — LC 1462 Course Schedule IV (BFS from each course)
+# time = O(V × (V + E)) : V separate BFS runs, each O(V + E)
+# space = O(V²)         : one reachable set per course, kept for the queries
+from collections import defaultdict, deque
+
+def checkIfPrerequisite(numCourses, prerequisites, queries):
+    graph = defaultdict(list)
+    for pre, nxt in prerequisites:
+        graph[pre].append(nxt)
+
+    reach = []                             # reach[s] = every course reachable from s
+    for start in range(numCourses):        # V starts
+        seen = {start}
+        queue = deque([start])
+        while queue:                       # one full BFS = O(V + E)
+            node = queue.popleft()
+            for nb in graph[node]:
+                if nb not in seen:
+                    seen.add(nb)
+                    queue.append(nb)
+        reach.append(seen)
+    return [v in reach[u] for u, v in queries]
+```
+
+This is `V × (V + E) = O(V² + V × E)`, which is not the same as V × E. Say both terms unless the graph is
+known to be connected (then E ≥ V − 1 and it simplifies to O(V × E)).
+
+**3. The neighbours are found by scanning the edge list.** If the code never builds an adjacency list
+and instead runs `for u, v in edges` for every vertex it pops, each of the V vertices scans all E edges:
+**O(V × E)**. On the star graph above that is 90 steps instead of 18. The fix is to build the
+adjacency list once, in O(E), which brings the traversal back to O(V + E).
+
+#### Space — count the entries, not the levels of nesting
+
+A hashmap's space is **the total number of entries stored under every key**, not "one per key" and not
+"the map is nested, so multiply".
+
+```text
+A --- B          graph = {
+|     |            "A": ["B", "C"],
+C --- D            "B": ["A", "D"],
+                   "C": ["A", "D"],
+                   "D": ["B", "C"],
+                 }
+```
+
+| Stored | Count | Why |
+|---|---|---|
+| keys | V = 4 | one per vertex |
+| entries in all the lists | 2E = 8 | each undirected edge is stored twice (A→B and B→A) |
+| **total** | **O(V + E)** | the constant 2 drops |
+
+A nested map does not change the count. LC 399 Evaluate Division stores `graph[a][b] = value` and
+`graph[b][a] = 1 / value`: the inner dicts hold each vertex's *own* neighbours, so all of them together
+hold 2E entries. That is still **O(V + E)**.
+
+Space becomes **O(V × E)** only when each of the V keys holds its **own copy** of all E edges:
+
+```python
+# every vertex keeps a full copy of the edge list
+# space = O(V × E): V lists, each of length E
+copies = {vertex: list(edges) for vertex in graph}
+```
+
+On the square above that is 4 × 4 = 16 entries against the adjacency list's 8. This is rarely what a
+problem needs. If you find yourself writing it, store the edges once and share them.
+
+Two products that are easy to mislabel as V × E:
+
+- **An adjacency matrix** is `V × V` cells whatever E is: **O(V²)**.
+- **A per-source result kept for later**, as in LC 1462 above, is V sets of up to V vertices: **O(V²)**.
+
+#### How to say it in an interview
+
+```text
+1. How many keys?                    one per vertex        → O(V)
+2. How many entries under ALL keys?  each edge once/twice  → + O(E)    ⇒ O(V + E)
+                                     a copy of E per key   → V × E     ⇒ O(V × E)
+3. Does a loop repeat over all edges?  once in total → + E;  once per vertex/round → × E
+```
+
+> "The space is the total number of entries in the map, not the number of keys. An adjacency list stores
+> V vertices and E edges, so it is O(V + E). It would be O(V × E) only if each of the V vertices kept its
+> own copy of all E edges. For time it is the same idea: one BFS touches each edge once, so O(V + E);
+> Bellman-Ford relaxes every edge in each of V − 1 rounds, so O(V × E)."
+
 ---
 
 ## 9) Dynamic Programming — define state, count states × work
@@ -598,6 +767,7 @@ RECURSION                    → (#calls) × (work per call); space = max depth
 BACKTRACKING                 → (#solutions) × (cost each); space = recursion depth
 HEAP of size k, n ops        → O(n log k)
 GRAPH traversal              → O(V + E)
+GRAPH, all edges per round   → O(V × E)   (Bellman-Ford; V traversals = O(V × (V + E)))
 GRID traversal               → O(rows · cols)
 DP                           → (#states) × (transition cost)
 AMORTIZED (each item ≤1 push/pop) → O(n) even with an inner while-loop
