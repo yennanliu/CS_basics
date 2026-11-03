@@ -402,6 +402,50 @@ class Solution(object):
             dp[x] = max(3 * dp[x - 3], 2 * dp[x - 2])
         return dp[n]
 
+
+# V0-8
+# IDEA : UNBOUNDED KNAPSACK (1D DP, CAPACITY LOOP FORWARD)
+#
+#   Reframe as a knapsack:
+#     - capacity  = n
+#     - items     = the piece sizes 1, 2, ..., n-1   (n itself is excluded,
+#                   which is what forces k >= 2 pieces)
+#     - "value"   = the PRODUCT of the chosen pieces (combine with *, not +)
+#
+#   dp[c] = max product of pieces (each size in 1..n-1) that sum to EXACTLY c
+#   base  : dp[0] = 1  (empty product)
+#   eq    : dp[c] = max(dp[c], dp[c - piece] * piece)
+#
+#   NOTE !!! why UNBOUNDED and not 0/1:
+#     the same piece size can be used many times (10 = 3 + 3 + 4 uses 3 twice).
+#     0/1 knapsack loops capacity BACKWARD so each item is taken at most once;
+#     doing that here forbids 3 + 3 + 4 and returns 30 (= 2 * 3 * 5) for n = 10.
+#     Unbounded loops capacity FORWARD, so dp[c - piece] may already contain
+#     `piece` -> reuse is allowed -> 36.
+#
+#   e.g. n = 4 -> pieces {1,2,3} -> dp = [1,1,2,3,4] -> 2 * 2 = 4
+#
+# time = O(n^2), space = O(n)
+class Solution(object):
+    def integerBreak(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        # dp[c] = max product of pieces summing to exactly c
+        dp = [0] * (n + 1)
+        dp[0] = 1  # empty product: lets the first piece start a product
+
+        # outer loop: items (piece sizes); n itself is NOT an item -> k >= 2
+        for piece in range(1, n):
+            # inner loop: capacity FORWARD -> a piece can be reused (unbounded)
+            for capacity in range(piece, n + 1):
+                candidate = dp[capacity - piece] * piece
+                if candidate > dp[capacity]:
+                    dp[capacity] = candidate
+
+        return dp[n]
+
 # V1
 # http://bookshadow.com/weblog/2016/04/19/leetcode-integer-break/
 # time = O(n)
