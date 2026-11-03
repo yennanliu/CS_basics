@@ -43,7 +43,132 @@ It is guaranteed that there will be at least one element in the stack before cal
 
 """
 
+
 # V0
+class FreqStack(object):
+
+    def __init__(self):
+        pass
+        
+
+    def push(self, val):
+        """
+        :type val: int
+        :rtype: None
+        """
+        pass
+        
+
+    def pop(self):
+        """
+        :rtype: int
+        """
+        pass
+
+
+# V0-1
+# IDEA: HASHMAP + STACK (gpt)
+from collections import defaultdict
+
+class FreqStack(object):
+
+    def __init__(self):
+        # 記錄每個數字目前出現的頻率
+        # freq[num] = num 的出現次數
+        self.freq = defaultdict(int)
+
+        # 按照頻率分組的 Stack
+        # group[f] = 所有曾經達到頻率 f 的元素（依照加入順序）
+        self.group = defaultdict(list)
+
+        # 目前所有元素中的最高頻率
+        self.max_freq = 0
+
+    def push(self, val):
+        """
+        :type val: int
+        :rtype: None
+        """
+        # 更新 val 的出現頻率
+        self.freq[val] += 1
+        f = self.freq[val]
+
+        # 將 val 放入對應頻率的 Stack
+        self.group[f].append(val)
+
+        # 更新目前的最高頻率
+        self.max_freq = max(self.max_freq, f)
+
+    def pop(self):
+        """
+        :rtype: int
+        """
+        # 從最高頻率的 Stack 中取出最近加入的元素
+        val = self.group[self.max_freq].pop()
+
+        # 更新該元素的頻率
+        self.freq[val] -= 1
+
+        # 如果最高頻率的 Stack 已經空了，
+        # 代表目前最高頻率需要下降一級
+        if not self.group[self.max_freq]:
+            self.max_freq -= 1
+
+        return val
+
+
+
+# V0-2
+# IDEA: HASHMAP + STACK (gemini)
+from collections import Counter, defaultdict
+
+
+class FreqStack(object):
+
+  def __init__(self):
+    # 1. 記錄每個元素的出現頻率 { 元素: 頻率 }
+    self.freq = Counter()
+
+    # 2. 記錄不同頻率對應的元素堆疊 { 頻率: [元素列表] }
+    self.group = defaultdict(list)
+
+    # 3. 追蹤當前堆疊中的最大頻率
+    self.max_freq = 0
+
+  def push(self, val):
+    """:type val: int
+
+    :rtype: None
+    """
+    # 增加該元素的出現頻率
+    self.freq[val] += 1
+    f = self.freq[val]
+
+    # 如果當前頻率超過了歷史最大頻率，更新 max_freq
+    if f > self.max_freq:
+      self.max_freq = f
+
+    # 將元素放入對應頻率的群組堆疊中
+    self.group[f].append(val)
+
+  def pop(self):
+    """:rtype: int
+
+    """
+    # 從當前最大頻率的群組堆疊中彈出最後一個元素（LIFO 原則：離棧頂最近的高頻元素）
+    val = self.group[self.max_freq].pop()
+
+    # 該元素的頻率減 1
+    self.freq[val] -= 1
+
+    # 如果最高頻率的群組已經空了，代表該頻率層級已無元素，max_freq 遞減 1
+    if not self.group[self.max_freq]:
+      self.max_freq -= 1
+
+    return val
+
+
+# V0-3
 # IDEA : HASHMAP (val -> freq) + HASHMAP OF STACKS (freq -> stack of vals)
 #
 #   push(x) the k-th time -> x goes on stack group[k].
