@@ -34,6 +34,10 @@
 			- IPO - todo
 		- graphs - done
 		- advanced graphs - ing
+			- Find Critical and Pseudo Critical Edges in Minimum Spanning Tree - todo
+			- Build a Matrix With Conditions - todo
+			- Greatest Common Divisor Traversal - todo
+		- 1D DP - ing
 
 
 
