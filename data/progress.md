@@ -32,7 +32,8 @@
 		- backtrack - pass
 		- PQ - ing
 			- IPO - todo
-		- graphs - ing
+		- graphs - done
+		- advanced graphs - ing
 
 
 
@@ -151,8 +152,9 @@
 
 - python_trick.md
 	- https://yennj12.js.org/CS_basics/cheatsheets/python_trick.zh.html
-		- `2) LC Example`
-		- `多重 key 的 tuple 排序：key=lambda x: (x[0], x[1])`
+		- `相關 LeetCode 題目：`
+
+
 
 
 
@@ -318,6 +320,10 @@
 
 
 		- Graph
+			- Minimum Height Trees
+				- 310 (!!!)
+
+
 			- Open the Lock
 				- 752 (!!!)
 
