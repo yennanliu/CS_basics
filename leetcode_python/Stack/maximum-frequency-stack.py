@@ -44,6 +44,112 @@ It is guaranteed that there will be at least one element in the stack before cal
 """
 
 # V0
+# IDEA : HASHMAP (val -> freq) + HASHMAP OF STACKS (freq -> stack of vals)
+#
+#   push(x) the k-th time -> x goes on stack group[k].
+#   So an x pushed 3 times sits in group[1], group[2] AND group[3].
+#
+#   pop() -> take the top of group[max_freq]:
+#     - it is the most frequent value (it has reached max_freq), and
+#     - among the ties, the top of that stack is the most recently pushed one.
+#   Popping x from group[k] only drops x's freq k -> k-1; its copy in group[k-1]
+#   is still there, so nothing else needs fixing.
+#
+#   NOTE !!! max_freq only ever falls by 1: if group[max_freq] empties, the value
+#            just popped still sits in group[max_freq - 1], so that stack is non-empty.
+#
+#   e.g. push 5,7,5,7,4,5
+#        group[1] = [5,7,4], group[2] = [5,7], group[3] = [5], max_freq = 3
+#        pop -> 5 (group[3] empties, max_freq = 2)
+#        pop -> 7, pop -> 5 (max_freq = 1), pop -> 4
+#
+# time = O(1) per push / pop, space = O(n), n = number of pushes
+import collections
+import heapq
+
+
+class FreqStack(object):
+
+    def __init__(self):
+        # val -> how many copies of val are currently in the stack
+        self.freq = collections.defaultdict(int)
+        # freq k -> stack of vals that have reached freq k, in push order
+        self.group = collections.defaultdict(list)
+        # highest freq any val currently has
+        self.max_freq = 0
+
+    def push(self, val):
+        """
+        :type val: int
+        :rtype: None
+        """
+        self.freq[val] += 1
+        cur_freq = self.freq[val]
+
+        if cur_freq > self.max_freq:
+            self.max_freq = cur_freq
+
+        # val's cur_freq-th copy lives on stack group[cur_freq]
+        self.group[cur_freq].append(val)
+
+    def pop(self):
+        """
+        :rtype: int
+        """
+        # top of the max-freq stack = most frequent, and the most recent among ties
+        top_stack = self.group[self.max_freq]
+        val = top_stack.pop()
+        self.freq[val] -= 1
+
+        # no val has max_freq copies any more -> the next level down is the max
+        if not top_stack:
+            self.max_freq -= 1
+
+        return val
+
+
+# V0-1
+# IDEA : MAX HEAP ON (freq, push order)
+#
+#   On every push, record (freq after this push, push index, val).
+#   The heap's top is the highest freq, and among equal freqs the latest push,
+#   which is exactly what pop() must return.
+#   Python's heapq is a min heap, so both keys are stored negated.
+#
+#   An entry never goes stale: x's entry with freq k is pushed while x has k copies,
+#   and the entries for freq k+1, k+2, ... (pushed later) always pop first.
+#
+#   NOTE : O(log n) per op, worse than V0's O(1). It is the approach most people
+#          reach first in an interview; V0 is the follow-up.
+#
+# time = O(log n) per push / pop, space = O(n)
+class FreqStack2(object):
+
+    def __init__(self):
+        # val -> how many copies of val are currently in the stack
+        self.freq = collections.defaultdict(int)
+        # entries are (-freq, -push_index, val)
+        self.heap = []
+        # increases on every push, so a larger index = more recent
+        self.push_index = 0
+
+    def push(self, val):
+        """
+        :type val: int
+        :rtype: None
+        """
+        self.freq[val] += 1
+        self.push_index += 1
+        heapq.heappush(self.heap, (-self.freq[val], -self.push_index, val))
+
+    def pop(self):
+        """
+        :rtype: int
+        """
+        neg_freq, neg_index, val = heapq.heappop(self.heap)
+        self.freq[val] -= 1
+        return val
+
 
 # V1
 # IDEA : STACK
