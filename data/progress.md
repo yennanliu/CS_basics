@@ -11,7 +11,7 @@
 			- https://github.com/yennanliu/CS_basics/pull/208
 
 	- needcode 250 -> ing
-
+		- https://neetcode.io/practice/practice/neetcode250
 		- Array & hash - done
 			- Subarray Sum Equals K - TODO
 			- First Missing Positive - TODO
@@ -891,6 +891,8 @@
 
 
 		- stack
+
+			- 394 (!!!)
 
 			- 模式：帶字元計數配對的堆疊 !!!
 				- 1209
