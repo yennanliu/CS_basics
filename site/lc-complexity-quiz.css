@@ -1,0 +1,237 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   CS_basics — Complexity Quiz styles
+
+   Shared by lc-complexity-quiz.html and lc-complexity-quiz.zh.html. The
+   palette and footer come from lc-page.css; everything here is this page's own.
+   ───────────────────────────────────────────────────────────────────────── */
+* { box-sizing: border-box; }
+/* Palette and footer come from lc-page.css; these are this page's own. */
+:root { --sunken: #ebebeb; --ok: #1e7e34; --bad: #b91c1c; --code-c: #6b7280; --code-s: #0a7d55; --code-k: #b02a5b; --code-b: #1d4ed8; --code-n: #7c3aed; }
+[data-theme="dark"] { --sunken: #141414; --ok: #4ade80; --bad: #f87171; --code-c: #6a737d; --code-s: #a5d6a7; --code-k: #ff7b72; --code-b: #79c0ff; --code-n: #d2a8ff; }
+html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; }
+body {
+  margin: 0;
+  font-family: 'SF Mono','JetBrains Mono','IBM Plex Mono',ui-monospace,'Menlo',monospace;
+  background: var(--bg); color: var(--text);
+  font-size: 15px; line-height: 1.55;
+  transition: background 0.2s, color 0.2s;
+}
+a { color: inherit; }
+a, button { touch-action: manipulation; }
+
+.container { max-width: 860px; margin: 2.5rem auto 4rem; padding: 0 1.5rem; }
+
+.page-header { text-align: center; margin-bottom: 2rem; }
+.page-header h1 { margin: 0 0 0.4rem; font-size: 1.9rem; }
+.page-header p { color: var(--text-light); margin: 0; font-size: 0.92rem; }
+
+/* ── Shared bits ─────────────────────────────────────────────────────── */
+.panel {
+  background: var(--surface); border: 1px solid var(--border);
+  padding: 1.5rem; margin-bottom: 1.25rem;
+}
+.label {
+  display: block; font-size: 0.74rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--text-light); margin-bottom: 0.55rem;
+}
+.chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.chip {
+  padding: 0.4rem 0.9rem; border: 1px solid var(--border); background: var(--bg);
+  color: var(--text-light); font: inherit; font-size: 0.85rem; cursor: pointer;
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
+}
+.chip:hover { border-color: var(--text); color: var(--text); }
+.chip.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+
+.btn {
+  padding: 0.65rem 1.6rem; border: 1px solid var(--text);
+  background: var(--text); color: var(--bg);
+  font: inherit; font-weight: 700; cursor: pointer; transition: opacity 0.15s;
+}
+.btn:hover { opacity: 0.82; }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-quiet {
+  background: none; color: var(--text); border-color: var(--border); font-weight: 600;
+}
+.btn-quiet:hover { border-color: var(--text); opacity: 1; }
+
+select, input[type="text"], input[type="number"] {
+  background: var(--bg); color: var(--text); border: 1px solid var(--border);
+  font: inherit; padding: 0.5rem 0.7rem;
+}
+select:focus, input:focus { outline: none; border-color: var(--text); }
+
+/* ── Setup ───────────────────────────────────────────────────────────── */
+.setup-row { margin-bottom: 1.4rem; }
+.setup-row:last-of-type { margin-bottom: 0; }
+#countCustom { width: 5.5rem; }
+.pool {
+  margin-top: 1.4rem; padding-top: 1.1rem; border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem; flex-wrap: wrap;
+}
+.pool-text { font-size: 0.85rem; color: var(--text-light); }
+.rules {
+  font-size: 0.85rem; color: var(--text-light);
+  border-left: 2px solid var(--border); padding-left: 1rem; margin: 0 0 1.25rem;
+}
+.rules code { color: var(--text); }
+.rules p { margin: 0 0 0.6rem; }
+.rules p:last-child { margin-bottom: 0; }
+
+/* ── Question ────────────────────────────────────────────────────────── */
+.progress { height: 2px; background: var(--border); margin-bottom: 1.1rem; }
+.progress span { display: block; height: 100%; background: var(--text); transition: width 0.25s; }
+
+.q-top {
+  display: flex; align-items: baseline; gap: 0.6rem;
+  flex-wrap: wrap; margin-bottom: 0.9rem;
+}
+.q-counter { font-size: 0.8rem; color: var(--text-light); font-weight: 700; }
+.q-title { font-weight: 700; }
+.q-title a { text-decoration: none; }
+.q-title a:hover { text-decoration: underline; }
+.badge {
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+  padding: 0.12rem 0.5rem; border: 1px solid var(--border); color: var(--text-light);
+}
+.badge.Easy { color: var(--ok); border-color: var(--ok); }
+.badge.Medium { color: #d97706; border-color: #d97706; }
+.badge.Hard { color: var(--bad); border-color: var(--bad); }
+
+pre.code {
+  background: var(--sunken); border: 1px solid var(--border);
+  padding: 1rem 1.1rem; margin: 0 0 0.9rem;
+  overflow-x: auto; font-size: 0.85rem; line-height: 1.5; tab-size: 4;
+}
+pre.code .c { color: var(--code-c); font-style: italic; }
+pre.code .s { color: var(--code-s); }
+pre.code .k { color: var(--code-k); }
+pre.code .b { color: var(--code-b); }
+pre.code .n { color: var(--code-n); }
+
+.hint { font-size: 0.82rem; color: var(--text-light); margin: 0 0 0.35rem; }
+.hint b { color: var(--text); font-weight: 700; }
+
+.answers { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.2rem 0 1rem; }
+.answers input { width: 100%; font-size: 1rem; }
+.answers input.right { border-color: var(--ok); }
+.answers input.wrong { border-color: var(--bad); }
+
+.actions { display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; }
+.actions .spacer { flex: 1; }
+.keyhint { font-size: 0.76rem; color: var(--text-light); }
+kbd {
+  border: 1px solid var(--border); padding: 0 0.32rem; font-size: 0.72rem;
+  font-family: inherit; color: var(--text-light);
+}
+
+/* ── Verdict ─────────────────────────────────────────────────────────── */
+.verdict {
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  margin: 0 0 1.2rem; padding: 1.1rem 0;
+}
+.missed-detail code, .hint code { background: var(--sunken); padding: 0 0.25rem; }
+.missed-detail em { font-style: normal; color: var(--text); font-weight: 700; }
+.refs { margin-top: 0.9rem; display: flex; gap: 0.9rem; font-size: 0.8rem; color: var(--text-light); }
+
+/* ── Report ──────────────────────────────────────────────────────────── */
+.score { text-align: center; padding: 0.5rem 0 1.2rem; }
+.score .big { font-size: 3.2rem; font-weight: 700; line-height: 1; }
+.score .sub { color: var(--text-light); font-size: 0.9rem; margin-top: 0.5rem; }
+.score .verdict-word { margin-top: 0.7rem; font-weight: 700; letter-spacing: 0.04em; }
+
+table.breakdown { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+table.breakdown th {
+  text-align: left; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.07em;
+  color: var(--text-light); font-weight: 700; padding: 0 0.5rem 0.5rem 0;
+  border-bottom: 1px solid var(--border);
+}
+table.breakdown td { padding: 0.45rem 0.5rem 0.45rem 0; border-bottom: 1px solid var(--border); }
+table.breakdown td.num { text-align: right; white-space: nowrap; color: var(--text-light); }
+.bar { display: block; height: 6px; background: var(--border); min-width: 60px; }
+.bar span { display: block; height: 100%; background: var(--text); }
+
+.missed-item { border-bottom: 1px solid var(--border); padding: 0.8rem 0; font-size: 0.87rem; }
+.missed-item:last-child { border-bottom: none; }
+.missed-head { display: flex; gap: 0.5rem; align-items: baseline; flex-wrap: wrap; }
+.missed-head .name { font-weight: 700; }
+.missed-detail { color: var(--text-light); margin-top: 0.25rem; }
+
+.loading, .empty { text-align: center; color: var(--text-light); padding: 3rem 1rem; }
+
+@media (max-width: 640px) {
+  .container { padding: 0 14px; margin-top: 1.5rem; }
+  .panel { padding: 1.1rem; }
+  .answers { grid-template-columns: 1fr; gap: 0.8rem; }
+  .btn, .chip { min-height: 44px; }
+  input, select { font-size: 16px; min-height: 44px; }
+  pre.code { font-size: 0.78rem; }
+  .keyhint { display: none; }
+}
+@supports (padding: env(safe-area-inset-left)) {
+  .container {
+    padding-left: max(14px, env(safe-area-inset-left));
+    padding-right: max(14px, env(safe-area-inset-right));
+  }
+}
+  
+
+/* ── Code with a line gutter, and the lines that set the cost ───────────── */
+:root { --hot-t: rgba(217, 119, 6, 0.16); --hot-t-edge: #d97706; --hot-s: rgba(37, 99, 235, 0.14); --hot-s-edge: #2563eb; }
+[data-theme="dark"] { --hot-t: rgba(251, 191, 36, 0.14); --hot-t-edge: #fbbf24; --hot-s: rgba(96, 165, 250, 0.16); --hot-s-edge: #60a5fa; }
+
+pre.code { padding: 0.75rem 0; }
+pre.code .ln {
+  display: block; position: relative; padding: 0 1.1rem 0 3.4rem;
+  border-left: 3px solid transparent; min-height: 1.5em;
+}
+pre.code .ln::before {
+  content: attr(data-n); position: absolute; left: 0; width: 2.2rem; text-align: right;
+  color: var(--code-c); opacity: 0.7; user-select: none;
+}
+pre.code.graded .ln.hot-t { background: var(--hot-t); border-left-color: var(--hot-t-edge); }
+pre.code.graded .ln.hot-s { background: var(--hot-s); border-left-color: var(--hot-s-edge); }
+pre.code.graded .ln.hot-t.hot-s {
+  background: linear-gradient(90deg, var(--hot-t), var(--hot-s));
+  border-left-color: var(--hot-t-edge);
+}
+/* Hovering one dimension's reason dims every line it does not point at. */
+pre.code.focus-t .ln:not(.hot-t), pre.code.focus-s .ln:not(.hot-s) { opacity: 0.35; }
+pre.code .ln { transition: opacity 0.15s; }
+
+/* ── Verdict, one block per dimension ────────────────────────────────────── */
+.dim { padding: 0.7rem 0.9rem; border-left: 3px solid var(--border); margin-bottom: 0.6rem; background: var(--bg); }
+.dim.t { border-left-color: var(--hot-t-edge); }
+.dim.s { border-left-color: var(--hot-s-edge); }
+.dim-head { display: flex; flex-wrap: wrap; gap: 0.3rem 0.6rem; align-items: baseline; }
+.dim-head .sign { font-weight: 700; width: 1rem; flex: none; }
+.dim.right .sign { color: var(--ok); }
+.dim.wrong .sign { color: var(--bad); }
+.dim-head .field { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-light); }
+.dim-head .answer { font-weight: 700; }
+.dim-head .alts { color: var(--text-light); font-size: 0.82rem; }
+.dim .yours { font-size: 0.82rem; color: var(--text-light); margin-top: 0.25rem; }
+.dim .yours s { opacity: 0.75; }
+.dim .diag { color: var(--text); }
+.dim .reason { font-size: 0.88rem; margin-top: 0.4rem; display: flex; gap: 0.5rem; align-items: baseline; }
+.dim .lines {
+  flex: none; font-size: 0.7rem; font-weight: 700; padding: 0.05rem 0.4rem;
+  border: 1px solid currentColor; white-space: nowrap;
+}
+.dim.t .lines { color: var(--hot-t-edge); }
+.dim.s .lines { color: var(--hot-s-edge); }
+.dim code, .takeaway code { background: var(--sunken); padding: 0 0.25rem; }
+.dim em, .takeaway em { font-style: normal; color: var(--text); font-weight: 700; }
+.takeaway { font-size: 0.88rem; margin: 0.8rem 0 0; }
+.takeaway.trap { color: var(--text-light); }
+.takeaway b { text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.08em; color: var(--text-light); margin-right: 0.35rem; }
+.legend { font-size: 0.74rem; color: var(--text-light); margin: -0.5rem 0 0.9rem; display: flex; gap: 1rem; }
+.legend i { display: inline-block; width: 0.7rem; height: 0.7rem; margin-right: 0.3rem; vertical-align: -0.05rem; }
+.legend .t i { background: var(--hot-t-edge); }
+.legend .s i { background: var(--hot-s-edge); }
+
+/* An answer that does not parse is not graded — it is sent back. */
+.input-msg { font-size: 0.78rem; color: var(--bad); margin-top: 0.35rem; min-height: 0; }
+.input-msg:empty { display: none; }
+.input-msg code { background: var(--sunken); padding: 0 0.25rem; color: var(--text); }

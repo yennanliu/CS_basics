@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 
-const { answerStrings, resolveQuestion, buildQuiz } = require('../build-quiz.js');
+const { answerStrings, resolveQuestion, buildQuiz, buildZh } = require('../build-quiz.js');
 const { parseReadmeProblems } = require('../build-roadmap.js');
 const CSComplexity = require('../complexity.js');
 
@@ -25,6 +25,10 @@ function question(overrides) {
     code: ['def f(nums):', '    return len(nums)'],
     time: 'O(n)',
     space: 'O(1)',
+    cost: {
+      time: { lines: [2], why: '`len` is O(1) on a list.' },
+      space: { lines: [], why: 'Nothing is allocated.' },
+    },
     why: 'One pass.',
   }, overrides);
 }
@@ -112,7 +116,7 @@ test('an lc number README does not know is rejected', () => {
 });
 
 test('a missing required field is rejected, and named', () => {
-  for (const field of ['id', 'topic', 'code', 'time', 'space', 'why']) {
+  for (const field of ['id', 'topic', 'code', 'time', 'space', 'cost']) {
     assert.throws(
       () => resolveQuestion(question({ [field]: undefined }), README),
       new RegExp(`missing a ${field}`),
@@ -130,6 +134,64 @@ test('an unparseable answer is rejected wherever it appears', () => {
     () => resolveQuestion(question({ accept: { time: ['O(n)', 'no idea'] } }), README),
     /cannot parse/
   );
+});
+
+test('why is optional once cost carries the reasons', () => {
+  assert.equal(resolveQuestion(question({ why: undefined }), README).why, '');
+});
+
+test('a cost line must point inside the snippet, at a real line', () => {
+  const at = (lines) => question({ cost: { time: { lines, why: 'x' }, space: { lines: [], why: 'y' } } });
+  assert.throws(() => resolveQuestion(at([3]), README), /outside its 2-line snippet/);
+  assert.throws(() => resolveQuestion(at([0]), README), /outside/);
+  assert.throws(() => resolveQuestion(at([1.5]), README), /outside/);
+  assert.throws(
+    () => resolveQuestion(question({ code: ['def f():', '', '    return 1'],
+      cost: { time: { lines: [2], why: 'x' }, space: { lines: [], why: 'y' } } }), README),
+    /blank/
+  );
+  assert.throws(
+    () => resolveQuestion(question({ cost: { time: { lines: [1], why: '' }, space: { lines: [], why: 'y' } } }), README),
+    /cost\.time/
+  );
+  assert.deepEqual(resolveQuestion(question(), README).cost.time.lines, [2]);
+});
+
+// ── buildZh ───────────────────────────────────────────────────────────────
+
+function zhOverlay(entry) {
+  return {
+    topics: { 'Arrays & Hashing': '陣列與雜湊' },
+    questions: { sample: Object.assign({ vars: '', why: '一遍。', cost: { time: '時間', space: '空間' } }, entry) },
+  };
+}
+
+test('buildZh swaps the prose and keeps everything that is graded', () => {
+  const built = buildQuiz({ questions: [question({ vars: 'n = len(nums)' })] }, README);
+  const zh = buildZh(built, zhOverlay({ vars: 'n = len(nums)' }));
+  const q = zh.questions[0];
+  assert.equal(q.why, '一遍。');
+  assert.equal(q.cost.time.why, '時間');
+  assert.deepEqual(q.cost.time.lines, [2]);
+  assert.equal(q.time, 'O(n)');
+  assert.equal(q.title, 'Two Sum', 'an LC title stays in English');
+  assert.equal(zh.topicLabels['Arrays & Hashing'], '陣列與雜湊');
+  assert.deepEqual(zh.topics, built.topics, 'the filter keys stay English, so prefs carry across');
+});
+
+test('buildZh fails on a missing, stray or partial translation', () => {
+  const built = buildQuiz({ questions: [question({ vars: 'n = len(nums)', trap: 'Slip.' })] }, README);
+  const full = { vars: 'n', trap: '錯。' };
+  assert.doesNotThrow(() => buildZh(built, zhOverlay(full)));
+  assert.throws(() => buildZh(built, { topics: zhOverlay().topics, questions: {} }), /is missing/);
+  const stray = zhOverlay(full);
+  stray.questions.gone = stray.questions.sample;
+  assert.throws(() => buildZh(built, stray), /"gone", which is not in the bank/);
+  assert.throws(() => buildZh(built, zhOverlay({ vars: 'n' })), /has no trap/);
+  assert.throws(() => buildZh(built, zhOverlay(Object.assign({ note: '附註' }, full))), /note the English question does not have/);
+  assert.throws(() => buildZh(built, zhOverlay(Object.assign({}, full, { cost: { time: 't' } }))), /no cost\.space/);
+  assert.throws(() => buildZh(built, zhOverlay(Object.assign({}, full, { why: '`n 未閉合' }))), /unbalanced/);
+  assert.throws(() => buildZh(built, Object.assign(zhOverlay(full), { topics: {} })), /no name for the topic/);
 });
 
 // ── buildQuiz ─────────────────────────────────────────────────────────────
@@ -166,6 +228,32 @@ test('data/complexity_quiz.json builds against the real README', () => {
   for (const q of built.questions) {
     assert.ok(q.title, `${q.id} has no title`);
     assert.ok(q.code.includes('\n'), `${q.id} has a one-line snippet`);
+    assert.ok(q.cost.time.lines.length > 0, `${q.id} highlights no line for its time bound`);
+  }
+});
+
+test('data/complexity_quiz.zh.json translates every question in the bank', () => {
+  const bank = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/complexity_quiz.json'), 'utf8'));
+  const overlay = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/complexity_quiz.zh.json'), 'utf8'));
+  const readme = parseReadmeProblems(fs.readFileSync(path.join(ROOT, 'README.md'), 'utf8'));
+  const zh = buildZh(buildQuiz(bank, readme), overlay);
+  // Every code span the English quotes should survive translation — a dropped
+  // `seen[x] = i` is the reason no longer pointing at the code, and a
+  // translated `max(左子樹)` is code nobody could type.
+  const spans = (text) => (text.match(/`[^`]+`/g) || []).sort();
+  for (const q of zh.questions) {
+    const en = bank.questions.find((e) => e.id === q.id);
+    assert.match(q.cost.time.why + q.cost.space.why, /[一-鿿]/, `${q.id} reads as untranslated`);
+    const pairs = [
+      ['cost.time', en.cost.time.why, q.cost.time.why],
+      ['cost.space', en.cost.space.why, q.cost.space.why],
+      ['vars', en.vars, q.vars], ['note', en.note, q.note],
+      ['why', en.why, q.why], ['trap', en.trap, q.trap],
+    ];
+    for (const [field, english, chinese] of pairs) {
+      const missing = spans(english || '').filter((s) => !(chinese || '').includes(s));
+      assert.deepEqual(missing, [], `${q.id} ${field} lost code spans in translation`);
+    }
   }
 });
 
