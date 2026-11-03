@@ -52,7 +52,120 @@ At most 2 * 10^4 calls will be made to pick.
 import random
 import bisect
 
+
 # V0
+class Solution(object):
+
+    def __init__(self, n, blacklist):
+        """
+        :type n: int
+        :type blacklist: List[int]
+        """
+        pass
+        
+
+    def pick(self):
+        """
+        :rtype: int
+        """
+        pass
+
+# V0-1
+# IDEA : HASHMAP REMAP - BLACKLISTED LOW NUMBERS -> WHITELISTED HIGH NUMBERS (gemini)
+import random
+
+
+class Solution(object):
+
+  def __init__(self, n, blacklist):
+    """:type n: int
+
+    :type blacklist: List[int]
+    """
+    self.n = n
+    self.blacklist_set = set(blacklist)
+
+    # 有效的白名單數量 W (範圍從 0 到 n - len(blacklist) - 1)
+    self.w = n - len(blacklist)
+    self.mapping = {}
+
+    # 收集所有大於等於 w 且不在黑名單中的數字，作為「替補用」的白名單
+    available = set(range(self.w, n)) - self.blacklist_set
+    available_iter = iter(available)
+
+    # 走訪黑名單
+    for b in blacklist:
+      # 如果黑名單的數字落在有效區間 [0, w-1] 內，需要為它找一個大於等於 w 的替代數字
+      if b < self.w:
+        self.mapping[b] = next(available_iter)
+
+  def pick(self):
+    """:rtype: int
+
+    """
+    # 在有效區間 [0, w-1] 內隨機選取一個數字
+    r = random.randint(0, self.w - 1)
+
+    # 如果這個隨機數剛好在 mapping 字典中，代表它是黑名單內被對應過去的數，返回其替代值
+    if r in self.mapping:
+      return self.mapping[r]
+
+    # 否則直接返回該隨機數
+    return r
+
+
+# V0-2
+# IDEA : HASHMAP REMAP - BLACKLISTED LOW NUMBERS -> WHITELISTED HIGH NUMBERS (gpt)
+
+import random
+
+class Solution(object):
+
+    def __init__(self, n, blacklist):
+        """
+        :type n: int
+        :type blacklist: List[int]
+        """
+        # 合法數字的總數
+        self.size = n - len(blacklist)
+
+        # 將黑名單轉成 set，方便 O(1) 查詢
+        blacklist_set = set(blacklist)
+
+        # 將小於 size 的黑名單數字映射到合法的大數字
+        self.mapping = {}
+
+        # 從合法區間的尾端開始尋找替代數字
+        last = n - 1
+
+        for b in blacklist:
+
+            # 只有 [0, size - 1] 範圍內的黑名單需要映射
+            if b < self.size:
+
+                # 往左跳過尾端的黑名單數字
+                while last in blacklist_set:
+                    last -= 1
+
+                # 將黑名單數字映射到合法數字
+                self.mapping[b] = last
+
+                # 下一次從更小的數字開始找
+                last -= 1
+
+    def pick(self):
+        """
+        :rtype: int
+        """
+        # 只從 [0, size - 1] 均勻隨機取值
+        num = random.randrange(self.size)
+
+        # 如果抽到黑名單數字，就回傳對應的合法數字
+        # 否則直接回傳原本的數字
+        return self.mapping.get(num, num)
+
+
+# V0-3
 # IDEA : HASHMAP REMAP - BLACKLISTED LOW NUMBERS -> WHITELISTED HIGH NUMBERS
 #
 #   There are valid_count = n - len(blacklist) allowed numbers, so draw ONE
