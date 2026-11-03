@@ -636,8 +636,10 @@ recurses into two halves of about N/2 nodes each:
 N^(log_b a) = N^(log₂ 2) = N¹, f(N) grows at the same rate as N^(log_b a). That is case 2, which gives
 **Θ(N^(log_b a) · log N) = Θ(N log N)**. Each of the log N levels costs the same Θ(N).
 
-**4. Counting per node instead of per level.** The `height()` call of every ancestor of a node w
-visits w, and so does w's own call. So the total is `Σ (depth(w) + 1)`, which is N × (average depth + 1):
+**4. Counting per node instead of per level.** `height()` starts at a node's *children*, so during
+w's own `isBalanced(w)` call it never visits w. Only the call at each of w's ancestors does, which makes
+`depth(w)` visits by `height()`. Add 1 for w's own `isBalanced` call and the total is
+`Σ (depth(w) + 1)`, which is N × (average depth + 1):
 
 ```text
   balanced:  most nodes sit near depth log N    →  ≈ N · log N
@@ -648,7 +650,8 @@ This one formula covers both shapes. The cost is N times how deep a node sits on
 balanced shape keeps that depth at log N.
 
 **Checked against the code.** For H = 1 … 15, the nodes visited by `height()` equal
-`H(N+1) − 2N` exactly (step 2's sum minus the N calls themselves). Counting null children too, the
+`Σ depth(w) = H(N+1) − 2N` exactly. That is step 2's sum minus the N `isBalanced` calls themselves,
+which is the `+1` in step 4. Counting null children too, the
 count is `2 · (H·2^H − (2^H − 1))`. At H = 14 that is 2 · 212,993 = **425,986**, the measured figure above.
 
 ### 9) Boundary of Binary Tree — LC 545
