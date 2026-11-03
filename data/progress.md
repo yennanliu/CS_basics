@@ -141,12 +141,7 @@
 
 
 
-- Hash Map Cheatsheet（雜湊表速查） (review)
-	- https://yennj12.js.org/CS_basics/cheatsheets/hash_map.zh.html
 
-
-
-	
 
 - python_trick.md
 	- https://yennj12.js.org/CS_basics/cheatsheets/python_trick.zh.html
@@ -209,6 +204,8 @@
 - OK:
 	- Array.md
 	- Hash Map Cheatsheet（雜湊表速查)
+		- again
+			- 題目 → 模式決策表
 	- 雙指標
 	- 滑動視窗
 	- Binary Search
