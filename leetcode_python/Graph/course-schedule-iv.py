@@ -109,6 +109,33 @@ class Solution(object):
                 # u 本身是 v 的先修課程
                 reachable[v].add(u)
 
+                """
+                NOTE !!!
+
+                `update` in py ?
+
+                -> 
+
+                    使用的是 Python set.update()，意思是：
+
+                       -> 將 reachable[u] 裡面的所有元素加入 reachable[v]。
+
+                    它相當於把兩個 Set 做 Union（聯集）。
+
+
+                -> example:
+
+                ```
+                reachable_u = {0, 1}
+                reachable_v = {2, 3}
+
+                reachable_v.update(reachable_u)
+
+                print(reachable_v)
+                # {0, 1, 2, 3}
+                ```
+
+                """
                 # u 的所有先修課程，也是 v 的先修課程
                 reachable[v].update(reachable[u])
 
@@ -129,7 +156,7 @@ class Solution(object):
 
 
 # V0-2
-# IDEA: TOPO SORT (gemini)
+# IDEA: Floyd-Warshall (gemini)
 class Solution(object):
 
   def checkIfPrerequisite(self, numCourses, prerequisites, queries):
