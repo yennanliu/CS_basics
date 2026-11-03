@@ -42,6 +42,8 @@
 		- 2D DP - done
 			- Longest Increasing Path In a Matrix - todo
 			- Distinct Subsequences - todo
+		- intervals - done
+			- Minimum Interval to Include Each Query - todo
 
 
 
