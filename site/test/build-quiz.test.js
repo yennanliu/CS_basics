@@ -237,15 +237,22 @@ test('data/complexity_quiz.zh.json translates every question in the bank', () =>
   const overlay = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/complexity_quiz.zh.json'), 'utf8'));
   const readme = parseReadmeProblems(fs.readFileSync(path.join(ROOT, 'README.md'), 'utf8'));
   const zh = buildZh(buildQuiz(bank, readme), overlay);
-  // Every code span the English reason quotes should survive translation —
-  // a dropped `seen[x] = i` is the reason no longer pointing at the code.
+  // Every code span the English quotes should survive translation — a dropped
+  // `seen[x] = i` is the reason no longer pointing at the code, and a
+  // translated `max(左子樹)` is code nobody could type.
   const spans = (text) => (text.match(/`[^`]+`/g) || []).sort();
   for (const q of zh.questions) {
     const en = bank.questions.find((e) => e.id === q.id);
     assert.match(q.cost.time.why + q.cost.space.why, /[一-鿿]/, `${q.id} reads as untranslated`);
-    for (const field of ['time', 'space']) {
-      const missing = spans(en.cost[field].why).filter((s) => !q.cost[field].why.includes(s));
-      assert.deepEqual(missing, [], `${q.id} cost.${field} lost code spans in translation`);
+    const pairs = [
+      ['cost.time', en.cost.time.why, q.cost.time.why],
+      ['cost.space', en.cost.space.why, q.cost.space.why],
+      ['vars', en.vars, q.vars], ['note', en.note, q.note],
+      ['why', en.why, q.why], ['trap', en.trap, q.trap],
+    ];
+    for (const [field, english, chinese] of pairs) {
+      const missing = spans(english || '').filter((s) => !(chinese || '').includes(s));
+      assert.deepEqual(missing, [], `${q.id} ${field} lost code spans in translation`);
     }
   }
 });

@@ -256,3 +256,10 @@ test('fractional exponents and square roots are one notation', () => {
   differ('O(4^n / sqrt(n))', 'O(4^n)');
   same('O(n^2)', ['O(n^2 + n^1.5)']);
 });
+
+test('review regressions: quotients in a log, constants beside a reciprocal, zero powers', () => {
+  differ('O(log(n/k))', 'O(log(n*k))');
+  differ('O(1 + n/k)', 'O(n/k)');
+  same('O(1)', ['O(n^0)', 'O((m*n)^0)']);
+  same('O(n)', ['O(n + 1)']);
+});

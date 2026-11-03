@@ -365,6 +365,11 @@
     if (inner.length !== 1) return single('log(' + canonical(node.x) + ')');
     var keys = Object.keys(inner[0].f);
     if (!keys.length) return [unitTerm()];                // log of a constant
+    // log(n/k) = log n - log k, and a sum-of-products has no minus sign, so a
+    // quotient stays one symbolic factor rather than becoming log n + log k.
+    if (keys.some(function (key) { return inner[0].f[key] < 0; })) {
+      return single('log(' + canonical(node.x) + ')');
+    }
     var out = [];
     keys.forEach(function (key) {
       var e = inner[0].f[key];
@@ -389,6 +394,7 @@
   // makes sqrt(n), n^0.5 and n^(1/2) one answer, and n*sqrt(n) equal n^1.5.
   function monomialPow(terms, c) {
     if (terms.length !== 1) return null;
+    if (c === 0) return [unitTerm()];                     // n^0 is 1
     var f = {};
     for (var key in terms[0].f) f[key] = terms[0].f[key] * c;
     return [{ coef: Math.pow(terms[0].coef, c), f: f }];
@@ -511,8 +517,12 @@
       if (!seen[text]) { seen[text] = true; out.push(text); }
     });
     out.sort();
-    // O(n + 1) is O(n): a constant term never survives beside another one.
-    if (out.length > 1) out = out.filter(function (text) { return text !== '1'; });
+    // O(n + 1) is O(n): a constant never survives beside a term that grows —
+    // but n/k can shrink below 1, so beside a reciprocal factor it stays.
+    var shrinks = terms.some(function (term) {
+      return Object.keys(term.f).some(function (key) { return term.f[key] < 0; });
+    });
+    if (out.length > 1 && !shrinks) out = out.filter(function (text) { return text !== '1'; });
     return out.join('+');
   }
 
