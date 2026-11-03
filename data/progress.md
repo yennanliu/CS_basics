@@ -37,7 +37,11 @@
 			- Find Critical and Pseudo Critical Edges in Minimum Spanning Tree - todo
 			- Build a Matrix With Conditions - todo
 			- Greatest Common Divisor Traversal - todo
-		- 1D DP - ing
+		- 1D DP - done
+			- Stone Game III - todo
+		- 2D DP - done
+			- Longest Increasing Path In a Matrix - todo
+			- Distinct Subsequences - todo
 
 
 
@@ -576,7 +580,7 @@
 		- 0/1 knapsack
 			- 二維容量
 				- LC 474 Ones and Zeroes
-			- LC 1049 - Last Stone Weight II
+			- LC 1049 - Last Stone Weight II (!!!)
 				- 494
 				- 416
 			- 深入：分組 0/1 背包 (分組背包)
