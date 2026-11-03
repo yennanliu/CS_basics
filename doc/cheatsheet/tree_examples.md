@@ -587,6 +587,70 @@ chain,        N = 4000    height() at every node, no early exit
 from the **same** post-order pass, so each node is visited once. That is `checkBalance` under
 [§10, Common Variations](#5-common-variations).
 
+#### The balanced case, worked out — where O(N log N) comes from
+
+Take a **perfect** binary tree with H levels (depth `d = 0 … H−1`), so N = 2^H − 1 and H = log₂(N + 1).
+Count the cost of `isBalanced(v)` as the size of v's subtree: the two `height()` calls visit every node
+below v, plus v itself.
+
+**1. Work on one level.** Each level doubles the node count and halves the subtree size, and the two cancel:
+
+```text
+level d:  2^d nodes, each with a subtree of 2^(H−d) − 1 nodes
+
+  Work(d) = 2^d · (2^(H−d) − 1)
+          = 2^H − 2^d
+          = (N + 1) − 2^d          ≤ N        ← every level costs about N, never less than (N+1)/2
+
+  N = 7 (H = 3):   d=0: 1·7 = 7    d=1: 2·3 = 6    d=2: 4·1 = 4
+```
+
+This is the step that keeps the balanced case from being an arithmetic series. The subtrees shrink as
+you go down, but there are more of them, so each level still covers nearly all N nodes.
+
+**2. Add up the levels.**
+
+```text
+  T = Σ_{d=0}^{H−1} (2^H − 2^d)
+    = H · 2^H − (2^H − 1)                 (geometric series: 1 + 2 + … + 2^(H−1) = 2^H − 1)
+    = (N + 1) · log₂(N + 1) − N
+    = Θ(N log N)
+
+  N = 7:   3 · 8 − 7 = 17  =  7 + 6 + 4  ✓
+```
+
+**3. The same answer from the recurrence.** One call on N nodes does O(N) of `height()` work, then
+recurses into two halves of about N/2 nodes each:
+
+```text
+  T(N) = 2T(N/2) + cN
+       = 4T(N/4) + cN + cN
+       = 8T(N/8) + 3cN
+       …
+       = 2^k · T(N/2^k) + k · cN        stop when N/2^k = 1, i.e. k = log₂ N
+       = N · T(1) + cN · log₂ N
+       = Θ(N log N)
+```
+
+**Master Theorem**, for T(N) = a·T(N/b) + f(N): here a = 2, b = 2, f(N) = Θ(N). Since
+N^(log_b a) = N^(log₂ 2) = N¹, f(N) grows at the same rate as N^(log_b a). That is case 2, which gives
+**Θ(N^(log_b a) · log N) = Θ(N log N)**. Each of the log N levels costs the same Θ(N).
+
+**4. Counting per node instead of per level.** The `height()` call of every ancestor of a node w
+visits w, and so does w's own call. So the total is `Σ (depth(w) + 1)`, which is N × (average depth + 1):
+
+```text
+  balanced:  most nodes sit near depth log N    →  ≈ N · log N
+  chain:     depths are 0, 1, …, N−1            →  N(N+1)/2 = O(N²)
+```
+
+This one formula covers both shapes. The cost is N times how deep a node sits on average, and only the
+balanced shape keeps that depth at log N.
+
+**Checked against the code.** For H = 1 … 15, the nodes visited by `height()` equal
+`H(N+1) − 2N` exactly (step 2's sum minus the N calls themselves). Counting null children too, the
+count is `2 · (H·2^H − (2^H − 1))`. At H = 14 that is 2 · 212,993 = **425,986**, the measured figure above.
+
 ### 9) Boundary of Binary Tree — LC 545
 ```python
 # LC 545. Boundary of Binary Tree
