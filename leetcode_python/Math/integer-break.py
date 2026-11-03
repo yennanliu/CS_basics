@@ -28,7 +28,76 @@ Constraints:
 
 """
 
+
 # V0
+class Solution(object):
+    def integerBreak(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        pass
+
+
+# V0-1
+# IDEA: 1D DP (gpt)
+# (Unbounded Knapsack（完全背包） variation)
+class Solution(object):
+    def integerBreak(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+
+        # dp[i]：將 i 拆成至少兩個正整數後，可以得到的最大乘積
+        dp = [0] * (n + 1)
+
+        # 從 2 開始計算
+        for i in range(2, n + 1):
+
+            # 嘗試第一個拆分出來的數字 j
+            for j in range(1, i):
+
+                # Case 1：剩餘部分 i-j 不再拆分
+                # Case 2：剩餘部分繼續拆分，使用 dp[i-j]
+                dp[i] = max(
+                    dp[i],
+                    j * max(i - j, dp[i - j])
+                )
+
+        return dp[n]
+
+
+# V0-2
+# IDEA: 1D DP (GEMINI)
+# (Unbounded Knapsack（完全背包） variation)
+class Solution(object):
+
+  def integerBreak(self, n):
+    """:type n: int
+
+    :rtype: int
+    """
+    # dp[i] 代表數字 i 拆分後能得到的最大乘積
+    dp = [0] * (n + 1)
+
+    # 基礎狀態設定
+    dp[1] = 1
+
+    # 外層迴urence：背包容量從 2 走到 n (對應完全背包的容量)
+    for i in range(2, n + 1):
+      # 內層迴圈：枚舉可以拆分出來的物品大小 j (從 1 到 i-1)
+      for j in range(1, i):
+        # 狀態轉移：
+        # 1. 保持 dp[i] 原有的最大值
+        # 2. 將 i 拆成 j 與 (i - j) 兩部分相乘
+        # 3. 將 i 拆成 j 與 「(i - j) 進一步拆分後的最大乘積 (dp[i - j])」相乘
+        dp[i] = max(dp[i], j * (i - j), j * dp[i - j])
+
+    return dp[n]
+
+
+# V0-3
 # IDEA: MATH (gpt)
 class Solution(object):
     def integerBreak(self, n):
