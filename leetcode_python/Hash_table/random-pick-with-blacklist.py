@@ -162,7 +162,19 @@ class Solution(object):
 
         # 如果抽到黑名單數字，就回傳對應的合法數字
         # 否則直接回傳原本的數字
-        return self.mapping.get(num, num)
+
+        #------------------
+        # V1
+        #------------------
+        #return self.mapping.get(num, num)
+
+        #------------------
+        # V2
+        #------------------
+        if num in self.mapping:
+            return self.mapping[num]
+
+        return num
 
 
 # V0-3
