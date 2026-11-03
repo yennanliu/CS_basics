@@ -26,7 +26,13 @@
 			-  Split Array Largest Sum - todo
 			- Find in Mountain Array - todo
 		- linked list - pass
-		- stack - ing
+		- stack - done
+		- trees - done
+		- trie - done
+		- backtrack - pass
+		- PQ - ing
+			- IPO - todo
+		- graphs - ing
 
 
 
