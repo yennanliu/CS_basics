@@ -143,7 +143,10 @@
   var topicLabels = {};                             // English topic -> shown label
   var packs = [];                                   // the sets the bank carries, in order
   var prefs = { count: 10, topic: 'all', pack: 'classic' };
-  var savedPack = 'classic';                        // the set to store: only the dropdown moves it
+  // What gets stored. Only the dropdowns move these: a ?set= link, or a Focus
+  // the current set lacks falling back to everything, is for this visit only.
+  var savedPack = 'classic';
+  var savedTopic = 'all';
   var run = null;                                   // the quiz in progress
 
   var el = function (id) { return document.getElementById(id); };
@@ -249,7 +252,7 @@
   }
 
   function savePrefs() {
-    var stored = { count: prefs.count, topic: prefs.topic, pack: savedPack };
+    var stored = { count: prefs.count, topic: savedTopic, pack: savedPack };
     try { localStorage.setItem(STORE_KEY, JSON.stringify(stored)); } catch (e) { /* ignore */ }
   }
 
@@ -587,7 +590,7 @@
     });
 
     el('topicSelect').addEventListener('change', function () {
-      prefs.topic = el('topicSelect').value;
+      prefs.topic = savedTopic = el('topicSelect').value;
       savePrefs();
       renderSetup();
     });
@@ -653,6 +656,7 @@
     loadPrefs();
     if (prefs.pack !== 'all' && packs.indexOf(prefs.pack) === -1) prefs.pack = packs[0];
     savedPack = prefs.pack;
+    savedTopic = prefs.topic;
     prefs.pack = packFromUrl() || prefs.pack;
 
     renderPacks();

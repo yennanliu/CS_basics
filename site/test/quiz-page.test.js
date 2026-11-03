@@ -29,7 +29,8 @@ const BANKS = {
   './data/complexity-quiz.zh.json': buildZh(BUILT, readJson('data/complexity_quiz.zh.json')),
 };
 
-async function boot(lang, only, url) {
+// `stored` seeds localStorage, which jsdom gives each instance fresh.
+async function boot(lang, only, url, stored) {
   const inline = (file) => '<script>' + fs.readFileSync(path.join(SITE, file), 'utf8') + '</script>';
   const html = fs.readFileSync(PAGES[lang], 'utf8')
     .replace('<script src="nav.js"></script>', '')
@@ -42,6 +43,7 @@ async function boot(lang, only, url) {
     pretendToBeVisual: true,
     url: url || 'https://example.test/',
     beforeParse(window) {
+      if (stored) window.localStorage.setItem('complexity-quiz-prefs', JSON.stringify(stored));
       window.fetch = (url) => {
         fetched.push(url);
         const bank = BANKS[url];
@@ -185,10 +187,10 @@ test('the chosen set is remembered, and ?set= overrides it without saving', asyn
   change(dom, '#packSelect', 'essentials');
   assert.equal(JSON.parse(dom.window.localStorage.getItem('complexity-quiz-prefs')).pack, 'essentials');
 
-  dom = await boot('en', null, 'https://example.test/lc-complexity-quiz.html?set=essentials');
+  dom = await boot('en', null, 'https://example.test/lc-complexity-quiz.html?set=essentials',
+    { count: 10, topic: 'all', pack: 'classic' });
   assert.equal($(dom, '#packSelect').value, 'essentials');
   assert.ok(text($(dom, '#poolText')).startsWith(inPack('essentials').length + ' questions'));
-  assert.equal(dom.window.localStorage.getItem('complexity-quiz-prefs'), null, 'a link does not rewrite the default');
   click(dom, '[data-count="5"]');
   assert.equal(JSON.parse(dom.window.localStorage.getItem('complexity-quiz-prefs')).pack, 'classic',
     'saving another preference keeps the stored set, not the linked one');
@@ -198,6 +200,22 @@ test('the chosen set is remembered, and ?set= overrides it without saving', asyn
 
   dom = await boot('en', null, 'https://example.test/lc-complexity-quiz.html?set=nonsense');
   assert.equal($(dom, '#packSelect').value, 'classic', 'an unknown ?set= is ignored');
+});
+
+test('a Focus the linked set lacks is not erased from what is saved', async () => {
+  const dom = await boot('en', null, 'https://example.test/lc-complexity-quiz.html?set=essentials',
+    { count: 10, topic: 'Python Pitfalls', pack: 'classic' });   // a classic-only topic
+  assert.equal($(dom, '#topicSelect').value, 'all', 'the visit falls back to everything');
+  click(dom, '[data-count="5"]');
+  const saved = JSON.parse(dom.window.localStorage.getItem('complexity-quiz-prefs'));
+  assert.equal(saved.topic, 'Python Pitfalls');
+  assert.equal(saved.pack, 'classic');
+});
+
+test('distance-k stops once the frontier is empty, so a huge k costs nothing', () => {
+  const q = BUILT.questions.find((x) => x.id === 'nodes-distance-k');
+  assert.match(q.code, /if not frontier:\n\s+break/);
+  assert.equal(q.time, 'O(n)');
 });
 
 test('zh: the page writes Chinese prose and topic names, but grades the same answers', async () => {

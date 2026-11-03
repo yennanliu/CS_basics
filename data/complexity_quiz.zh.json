@@ -1938,9 +1938,9 @@
     },
     "nodes-distance-k": {
       "vars": "n = 節點數，k 如題",
-      "trap": "`for _ in range(k)` 看起來會把成本乘上 k，但有 `seen`，任何節點都不會進入兩次 frontier —— 樹走完之後 frontier 都是空的，剩下的回合什麼也不做。",
+      "trap": "`for _ in range(k)` 看起來會把成本乘上 k，但有 `seen`，任何節點都不會進入兩次 frontier —— 樹走完之後 frontier 就是空的，由 `break` 結束迴圈。少了這個 `break`，在小樹上給很大的 k 會空轉許多回合，界就變成 `O(n + k)`。",
       "cost": {
-        "time": "建 parent 的那一遍每個節點走一次；BFS 中每個節點最多進 `seen` 一次、檢查三個鄰居 → 總共 `O(n)`。",
+        "time": "建 parent 的那一遍每個節點走一次；BFS 中每個節點最多進 `seen` 一次、檢查三個鄰居，沒有節點可走時由 `break` 結束回合 → 總共 `O(n)`。",
         "space": "`parent` 和 `seen` 各自最多存 n 個節點。"
       }
     },
@@ -2122,7 +2122,7 @@
     },
     "longest-subarray-limit": {
       "vars": "n = len(nums)",
-      "trap": "在迴圈裡寫 `max(nums[left:right + 1])` 是 `O(n^2)` 的版本；用堆積或有序串列維護視窗是 `O(n log n)`。單調雙端佇列把最大值和最小值放在最前端，攤銷 `O(1)`。",
+      "trap": "在迴圈裡寫 `max(nums[left:right + 1])` 是 `O(n^2)` 的版本；用惰性刪除的堆積或平衡樹（`sortedcontainers.SortedList`）維護視窗是 `O(n log n)` —— 用 `bisect` 維持排序的普通串列又會回到 `O(n^2)`，因為每次插入和刪除都要位移元素。單調雙端佇列把最大值和最小值放在最前端，攤銷 `O(1)`。",
       "cost": {
         "time": "每個值進每個 deque 一次、最多出一次，`left` 只前進 —— 三個內層迴圈加總 `O(n)`。",
         "space": "輸入已排序時，其中一個 deque 會存下所有值。"

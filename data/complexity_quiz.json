@@ -7374,11 +7374,11 @@
       "space": "O(k)",
       "cost": {
         "time": {
-          "lines": [5,  7],
+          "lines": [5, 7],
           "why": "There are c leaves and `path[:]` copies k numbers at each; with the bound on line 7 every node leads to a leaf, so the tree has at most `(k + 1) · c` nodes."
         },
         "space": {
-          "lines": [3,  8],
+          "lines": [3, 8],
           "why": "Recursion goes k deep and `path` holds at most k numbers."
         }
       },
@@ -7416,11 +7416,11 @@
       "space": "O(n)",
       "cost": {
         "time": {
-          "lines": [7,  9],
+          "lines": [7, 9],
           "why": "With all values distinct there are n! leaves, each copying n values at `path[:]`, and every node scans all n indices."
         },
         "space": {
-          "lines": [4,  13],
+          "lines": [4, 13],
           "why": "`used`, `path` and the recursion depth are each at most n."
         }
       },
@@ -7456,11 +7456,11 @@
       "space": "O(1)",
       "cost": {
         "time": {
-          "lines": [8,  14],
+          "lines": [8, 14],
           "why": "Four levels with at most 3 branches each → at most `3^4` = 81 leaves, and every slice is at most 3 characters. Nothing depends on n."
         },
         "space": {
-          "lines": [3,  14],
+          "lines": [3, 14],
           "why": "The recursion is at most 4 deep and each `parts` list holds at most 4 pieces of up to 3 characters."
         }
       },
@@ -7492,11 +7492,11 @@
       "space": "O(n)",
       "cost": {
         "time": {
-          "lines": [6,  8],
+          "lines": [6, 8],
           "why": "A DAG on n nodes can have `2^(n-2)` source-to-target paths, and each one is copied at `path[:]` for up to n values."
         },
         "space": {
-          "lines": [3,  4],
+          "lines": [3, 4],
           "why": "The recursion depth and `path` are both bounded by the longest path, at most n nodes."
         }
       },
@@ -7538,7 +7538,7 @@
           "why": "Each node is visited once, but every matching leaf copies its whole root-to-leaf path at `path[:]` — up to h values, for up to n leaves."
         },
         "space": {
-          "lines": [3,  6],
+          "lines": [3, 6],
           "why": "The recursion depth and `path` both reach h."
         }
       },
@@ -7571,11 +7571,11 @@
       "space": "O(n)",
       "cost": {
         "time": {
-          "lines": [4,  8],
+          "lines": [4, 8],
           "why": "Every node appears in exactly one level list and is handled once."
         },
         "space": {
-          "lines": [7,  11,  13],
+          "lines": [7, 11, 13],
           "why": "The widest level of a full tree holds about n/2 nodes."
         }
       },
@@ -7611,11 +7611,11 @@
       "space": "O(h)",
       "cost": {
         "time": {
-          "lines": [5,  7,  14,  17],
+          "lines": [5, 7, 14, 17],
           "why": "The search walks one root-to-node path, the successor hunt continues down the right subtree, and the second delete retraces that same path once — a constant number of passes of length at most h."
         },
         "space": {
-          "lines": [5,  7,  17],
+          "lines": [5, 7, 17],
           "why": "Each recursive call goes one level deeper, so the call stack is at most h frames."
         }
       },
@@ -7640,6 +7640,8 @@
         "    seen = {target}",
         "    frontier = [target]",
         "    for _ in range(k):",
+        "        if not frontier:",
+        "            break",
         "        nxt = []",
         "        for node in frontier:",
         "            for nb in (node.left, node.right, parent.get(node)):",
@@ -7653,15 +7655,15 @@
       "space": "O(n)",
       "cost": {
         "time": {
-          "lines": [4,  14],
-          "why": "The parent pass visits every node once; in the BFS each node enters `seen` at most once and checks three neighbours → `O(n)` overall."
+          "lines": [4, 13, 16],
+          "why": "The parent pass visits every node once; in the BFS each node enters `seen` at most once and checks three neighbours, and the `break` ends the rounds once no node is left → `O(n)` overall."
         },
         "space": {
-          "lines": [8,  17],
+          "lines": [8, 19],
           "why": "`parent` and `seen` each hold up to n nodes."
         }
       },
-      "trap": "The `for _ in range(k)` loop looks like it multiplies the cost by k, but `seen` means no node joins a frontier twice — once the tree is used up the frontiers are empty and the remaining rounds do nothing."
+      "trap": "The `for _ in range(k)` loop looks like it multiplies the cost by k, but `seen` means no node joins a frontier twice — and once the tree is used up the frontier is empty and the `break` ends the loop. Without that `break`, a huge k on a small tree would spin through empty rounds and the bound would be `O(n + k)`."
     },
     {
       "id": "next-right-pointers-o1",
@@ -7686,11 +7688,11 @@
       "space": "O(1)",
       "cost": {
         "time": {
-          "lines": [3,  5],
+          "lines": [3, 5],
           "why": "The outer loop steps down one level; the inner loop walks that level along the `next` links already set — each node is visited once."
         },
         "space": {
-          "lines": [2,  4],
+          "lines": [2, 4],
           "why": "Only two pointers; the level above is traversed through its own `next` links instead of a queue."
         }
       },
@@ -7726,11 +7728,11 @@
       "space": "O(h)",
       "cost": {
         "time": {
-          "lines": [8,  12],
+          "lines": [8, 12],
           "why": "Over n calls every node is pushed once and popped once, so n calls do `O(n)` work → `O(1)` each, amortised."
         },
         "space": {
-          "lines": [3,  8],
+          "lines": [3, 8],
           "why": "The stack holds one left spine at a time → at most h nodes."
         }
       },
@@ -7773,11 +7775,11 @@
       "space": "O(n)",
       "cost": {
         "time": {
-          "lines": [16,  17,  19,  24],
+          "lines": [16, 17, 19, 24],
           "why": "`remove` moves the last value into the hole and pops the end, so nothing shifts; `random.choice` is one index into the list."
         },
         "space": {
-          "lines": [3,  4],
+          "lines": [3, 4],
           "why": "`pos` and `vals` each hold one entry per stored value."
         }
       },
@@ -7807,7 +7809,7 @@
       "space": "O(1)",
       "cost": {
         "time": {
-          "lines": [3,  8],
+          "lines": [3, 8],
           "why": "Fast catches slow before slow finishes one lap of the cycle — fewer than n steps — and the second walk from head is fewer than n more."
         },
         "space": {
@@ -7842,7 +7844,7 @@
       "space": "O(1)",
       "cost": {
         "time": {
-          "lines": [4,  7],
+          "lines": [4, 7],
           "why": "One walk to position `left`, then `right - left` head-insertions of a constant number of pointer swaps each → at most n steps."
         },
         "space": {
@@ -7873,7 +7875,7 @@
       "space": "O(1)",
       "cost": {
         "time": {
-          "lines": [3,  4],
+          "lines": [3, 4],
           "why": "Each round halves `[lo, hi]`, so there are `log n` rounds."
         },
         "space": {
@@ -7912,11 +7914,11 @@
       "space": "O(1)",
       "cost": {
         "time": {
-          "lines": [4,  11,  13],
+          "lines": [4, 11, 13],
           "why": "The search over capacities `[max, s]` takes `O(log s)` rounds, and each `fits` scans all n weights."
         },
         "space": {
-          "lines": [3,  10],
+          "lines": [3, 10],
           "why": "A few counters; nothing grows with n."
         }
       },
@@ -7979,7 +7981,7 @@
       "space": "O(1)",
       "cost": {
         "time": {
-          "lines": [3,  4],
+          "lines": [3, 4],
           "why": "Each round halves `[lo, hi]`."
         },
         "space": {
@@ -8010,7 +8012,7 @@
       "space": "O(1)",
       "cost": {
         "time": {
-          "lines": [3,  5],
+          "lines": [3, 5],
           "why": "`arr[mid] - (mid + 1)` counts the positives missing before index mid, and it never decreases — so `[lo, hi]` halves each round."
         },
         "space": {
@@ -8045,11 +8047,11 @@
       },
       "cost": {
         "time": {
-          "lines": [2,  4,  5],
+          "lines": [2, 4, 5],
           "why": "Counting is one pass over n words, `heapify` is linear in u, and the k pops cost `log u` each."
         },
         "space": {
-          "lines": [2,  3],
+          "lines": [2, 3],
           "why": "The counter and the heap hold one entry per distinct word."
         }
       },
@@ -8077,11 +8079,11 @@
       "space": "O(k)",
       "cost": {
         "time": {
-          "lines": [5,  6,  9],
+          "lines": [5, 6, 9],
           "why": "k rounds, each one pop and at most one push on a heap that never exceeds k entries."
         },
         "space": {
-          "lines": [2,  9],
+          "lines": [2, 9],
           "why": "The heap starts with at most k entries and each round pops one before pushing one."
         }
       },
@@ -8108,11 +8110,11 @@
       "space": "O(n)",
       "cost": {
         "time": {
-          "lines": [3,  4,  5],
+          "lines": [3, 4, 5],
           "why": "Each digit is pushed once and popped at most once, so the inner `while` totals at most n pops over the whole loop."
         },
         "space": {
-          "lines": [2,  7],
+          "lines": [2, 7],
           "why": "The stack can hold all n digits."
         }
       },
@@ -8146,7 +8148,7 @@
       "space": "O(n)",
       "cost": {
         "time": {
-          "lines": [5,  7,  9],
+          "lines": [5, 7, 9],
           "why": "Every asteroid is pushed at most once and popped at most once, so the `while` loop's pops total at most n over the whole run."
         },
         "space": {
@@ -8188,11 +8190,11 @@
       "space": "O(n)",
       "cost": {
         "time": {
-          "lines": [6,  7,  12,  13],
+          "lines": [6, 7, 12, 13],
           "why": "Two monotonic-stack passes, each pushing and popping every index at most once, then one linear sum."
         },
         "space": {
-          "lines": [4,  5],
+          "lines": [4, 5],
           "why": "`left`, `right` and the stack each hold up to n entries."
         }
       },
@@ -8223,11 +8225,11 @@
       "space": "O(n)",
       "cost": {
         "time": {
-          "lines": [5,  7,  8],
+          "lines": [5, 7, 8],
           "why": "The loop runs 2n times, but indices are pushed only in the first n, so the pops total at most n."
         },
         "space": {
-          "lines": [4,  10],
+          "lines": [4, 10],
           "why": "On a decreasing array every index stays on the stack."
         }
       },
@@ -8259,11 +8261,11 @@
       "space": "O(n)",
       "cost": {
         "time": {
-          "lines": [4,  12,  14],
+          "lines": [4, 12, 14],
           "why": "One pass to match, one pass over the leftover `(`, and one `join` — each linear."
         },
         "space": {
-          "lines": [2,  3],
+          "lines": [2, 3],
           "why": "`chars` is a mutable copy of s, and the stack can hold up to n indices."
         }
       },
@@ -8298,11 +8300,11 @@
       "space": "O(n)",
       "cost": {
         "time": {
-          "lines": [4,  17],
+          "lines": [4, 17],
           "why": "One pass; each operator does `O(1)` stack work, and `sum` is one more pass over at most n numbers."
         },
         "space": {
-          "lines": [9,  11],
+          "lines": [9, 11],
           "why": "`1+1+1+…` leaves one term per number on the stack — up to about n/2."
         }
       },
@@ -8337,11 +8339,11 @@
       "space": "O(n)",
       "cost": {
         "time": {
-          "lines": [7,  11,  12],
+          "lines": [7, 11, 12],
           "why": "For each of m rows the histogram update is `O(n)`, and the stack pass pushes and pops each column once → `O(n)` per row."
         },
         "space": {
-          "lines": [5,  10,  11],
+          "lines": [5, 10, 11],
           "why": "`heights`, the stack and the `heights + [0]` copy are each `n + 1` at most."
         }
       },
@@ -8374,11 +8376,11 @@
       "space": "O(1)",
       "cost": {
         "time": {
-          "lines": [2,  5,  12],
+          "lines": [2, 5, 12],
           "why": "Counting p is `O(m)`; then each of n steps updates two counts and compares two maps of at most 26 keys — a constant."
         },
         "space": {
-          "lines": [2,  3],
+          "lines": [2, 3],
           "why": "Both counters are keyed by lowercase letters, so neither holds more than 26 entries."
         }
       },
@@ -8409,11 +8411,11 @@
       "space": "O(k)",
       "cost": {
         "time": {
-          "lines": [4,  6,  11],
+          "lines": [4, 6, 11],
           "why": "`right` moves n times and `left` only moves forward, at most n times in total."
         },
         "space": {
-          "lines": [5,  6],
+          "lines": [5, 6],
           "why": "`count` is trimmed back to k keys as soon as it reaches `k + 1`."
         }
       },
@@ -8449,7 +8451,7 @@
       "space": "O(n)",
       "cost": {
         "time": {
-          "lines": [5,  8,  11],
+          "lines": [5, 8, 11],
           "why": "Every value enters each deque once and leaves at most once, and `left` only advances — the three inner loops total `O(n)`."
         },
         "space": {
@@ -8457,7 +8459,7 @@
           "why": "On a sorted input one of the deques keeps every value."
         }
       },
-      "trap": "`max(nums[left:right + 1])` inside the loop is the `O(n^2)` version; a heap or sorted list of the window is `O(n log n)`. Monotonic deques keep the max and the min at their fronts in amortised `O(1)`."
+      "trap": "`max(nums[left:right + 1])` inside the loop is the `O(n^2)` version; a lazy-deletion heap or a balanced tree (`sortedcontainers.SortedList`) of the window is `O(n log n)` — a plain list kept sorted with `bisect` is `O(n^2)` again, because every insert and delete shifts elements. Monotonic deques keep the max and the min at their fronts in amortised `O(1)`."
     },
     {
       "id": "squares-sorted-array",
@@ -8516,7 +8518,7 @@
       "space": "O(n)",
       "cost": {
         "time": {
-          "lines": [4,  6],
+          "lines": [4, 6],
           "why": "One pass with an `O(1)` hash lookup per element."
         },
         "space": {
@@ -8552,7 +8554,7 @@
       },
       "cost": {
         "time": {
-          "lines": [4,  6],
+          "lines": [4, 6],
           "why": "One pass with an `O(1)` hash lookup per element."
         },
         "space": {
@@ -8591,11 +8593,11 @@
       "space": "O(1)",
       "cost": {
         "time": {
-          "lines": [3,  4,  6,  7],
+          "lines": [3, 4, 6, 7],
           "why": "Each of the `m·n` cells reads a fixed 3×3 neighbourhood — 9 reads, a constant — then one more pass shifts every cell."
         },
         "space": {
-          "lines": [12,  14],
+          "lines": [12, 14],
           "why": "The next state goes into bit 1 of the same cell, while bit 0 keeps the current state for neighbours still to be read."
         }
       },
@@ -8662,11 +8664,11 @@
       "space": "O(m * n)",
       "cost": {
         "time": {
-          "lines": [10,  13],
+          "lines": [10, 13],
           "why": "Each cell is enqueued exactly once — when its `dist` is first set — and checks 4 neighbours."
         },
         "space": {
-          "lines": [4,  9],
+          "lines": [4, 9],
           "why": "The queue starts with every 0 cell, which can be nearly all `m·n` of them."
         }
       },
@@ -8700,11 +8702,11 @@
       "space": "O(V)",
       "cost": {
         "time": {
-          "lines": [3,  10],
+          "lines": [3, 10],
           "why": "Every node is coloured and dequeued once, and every adjacency list is scanned once."
         },
         "space": {
-          "lines": [2,  7],
+          "lines": [2, 7],
           "why": "`color` and the queue each hold at most V nodes."
         }
       },
@@ -8741,11 +8743,11 @@
       "space": "O(n^2)",
       "cost": {
         "time": {
-          "lines": [10,  12],
+          "lines": [10, 12],
           "why": "BFS over `n^2` squares, each trying at most 6 dice rolls."
         },
         "space": {
-          "lines": [8,  9],
+          "lines": [8, 9],
           "why": "`dist` and the queue can hold every one of the `n^2` squares."
         }
       },
@@ -8781,11 +8783,11 @@
       "space": "O(m * n)",
       "cost": {
         "time": {
-          "lines": [7,  17],
+          "lines": [7, 17],
           "why": "Dijkstra over `m·n` cells with at most 4 edges each: up to `4mn` pushes and pops at `log(mn)` apiece."
         },
         "space": {
-          "lines": [3,  17],
+          "lines": [3, 17],
           "why": "`best` has `m·n` entries and the lazy heap holds up to `4mn`."
         }
       },
@@ -8818,11 +8820,11 @@
       "space": "O(m * n * k)",
       "cost": {
         "time": {
-          "lines": [5,  9],
+          "lines": [5, 9],
           "why": "The state is (row, col, removals left): `m·n·(k + 1)` states, each dequeued once with 4 moves."
         },
         "space": {
-          "lines": [3,  13],
+          "lines": [3, 13],
           "why": "`seen` and the queue can hold every one of those states."
         }
       },
@@ -8847,7 +8849,7 @@
       "space": "O(a)",
       "cost": {
         "time": {
-          "lines": [4,  5],
+          "lines": [4, 5],
           "why": "For each of the n coins, one pass over the amounts up to a."
         },
         "space": {
@@ -8881,7 +8883,7 @@
       "space": "O(n^2)",
       "cost": {
         "time": {
-          "lines": [4,  6],
+          "lines": [4, 6],
           "why": "Every pair `i < j` is filled once in `O(1)`."
         },
         "space": {
@@ -8915,11 +8917,11 @@
       "space": "O(n)",
       "cost": {
         "time": {
-          "lines": [5,  7],
+          "lines": [5, 7],
           "why": "Every cell is computed once from three neighbours."
         },
         "space": {
-          "lines": [3,  6],
+          "lines": [3, 6],
           "why": "Only the previous row and the current one are alive at once — two arrays of `n + 1`."
         }
       },
@@ -8945,11 +8947,11 @@
       "space": "O(n)",
       "cost": {
         "time": {
-          "lines": [2,  6],
+          "lines": [2, 6],
           "why": "Sorting is `O(n log n)`, and each of the n jobs binary-searches the end times for its last compatible job."
         },
         "space": {
-          "lines": [2,  3,  4],
+          "lines": [2, 3, 4],
           "why": "`jobs`, `ends` and `dp` each hold n entries."
         }
       },
@@ -8974,7 +8976,7 @@
       "space": "O(n)",
       "cost": {
         "time": {
-          "lines": [4,  5],
+          "lines": [4, 5],
           "why": "For each size up to n, every choice of root → `1 + 2 + … + n` products."
         },
         "space": {
@@ -9010,7 +9012,7 @@
       "space": "O(m * n)",
       "cost": {
         "time": {
-          "lines": [8,  9],
+          "lines": [8, 9],
           "why": "Every `(i, j)` cell is filled once in `O(1)`."
         },
         "space": {
@@ -9049,11 +9051,11 @@
       "space": "O(n)",
       "cost": {
         "time": {
-          "lines": [2,  8,  13],
+          "lines": [2, 8, 13],
           "why": "Rank compression sorts once; then each of n values makes two Fenwick walks of `O(log n)` steps."
         },
         "space": {
-          "lines": [2,  3],
+          "lines": [2, 3],
           "why": "`rank` and `tree` hold one entry per distinct value."
         }
       },
@@ -9082,7 +9084,7 @@
       "space": "O(n * k)",
       "cost": {
         "time": {
-          "lines": [3,  9],
+          "lines": [3, 9],
           "why": "The sort makes `O(n log n)` comparisons, and each builds and compares strings of up to 2k characters."
         },
         "space": {
@@ -9110,11 +9112,11 @@
       "space": "O(n)",
       "cost": {
         "time": {
-          "lines": [4,  5],
+          "lines": [4, 5],
           "why": "`list.insert` at position k shifts everything after it — up to n moves for each of n people."
         },
         "space": {
-          "lines": [2,  3],
+          "lines": [2, 3],
           "why": "`queue` grows to n people, and the sort may use `O(n)` scratch."
         }
       },
@@ -9178,7 +9180,7 @@
       "space": "O(1)",
       "cost": {
         "time": {
-          "lines": [4,  10,  12],
+          "lines": [4, 10, 12],
           "why": "Every round advances i or j by one, so there are at most `m + n` rounds."
         },
         "space": {
