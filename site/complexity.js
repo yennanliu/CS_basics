@@ -18,10 +18,19 @@
      "O((n+m)log n)" -> "log(n)*m+log(n)*n"
      "O(n^2)"        -> "n^2"          "O(n*n)"      -> "n^2"
 
-   Constant factors are dropped (Big-O), and a lone `+1` term is dropped
-   (`O(n+1)` is `O(n)`), but *dominated* terms are kept: `O(n + n^2)` does not
-   collapse, because once there are two variables (`O(m + n^2)`) dominance is
-   not decidable and a grader that guesses is worse than one that says no.
+   Constant factors are dropped (Big-O), and so is any term that is
+   *provably* dominated by another: `O(n + n log n)` is `O(n log n)`,
+   `O(m*n + n)` is `O(m*n)`, `O(2^n + n^3)` is `O(2^n)`. "Provably" is the
+   point — the test is per variable, so `O(m + n^2)` keeps both terms (neither
+   bounds the other for every m and n), and a factor the grader cannot rank
+   (`log(m+n)`, `min(m,n)`) only cancels against an identical one. A grader
+   that guesses is worse than one that says no. See `dominated()`.
+
+   It also reads `max(m, n)` (as `m + n`, the same bound), `min(m, n)`, and
+   division (`n^2 / 2`, `n / k`), simplifies a log of a product or power
+   (`log(n^2)` is `log n`, `log(n!)` is `n log n`), and closes the parens a
+   typist forgot (`O(n log n`).
+
    Genuinely debatable answers are handled per question by an `accept` list in
    data/complexity_quiz.json, not by loosening the algebra here.
 
@@ -105,8 +114,15 @@
     s = s.replace(/\b(?:big[-\s]*o|bigo|o|theta|omega)\s*\(/g, '(');
     // Θ and Ω are not word characters, so `\b` never matches beside them.
     s = s.replace(/[θω]\s*\(/g, '(');
-    s = s.replace(/[.,;:=]/g, ' ');
-    return s.replace(/\s+/g, '');
+    // Commas are kept for max(a, b) / min(a, b); tokenize() drops the rest.
+    // A decimal point survives (n^1.5); any other full stop is punctuation.
+    s = s.replace(/(\d)\.(\d)/g, '$1\u0000$2');
+    s = s.replace(/[.;:=]/g, ' ').replace(/\u0000/g, '.');
+    s = s.replace(/\s+/g, '');
+    // A forgotten closing paren is a typo, not a different answer.
+    var open = (s.match(/\(/g) || []).length - (s.match(/\)/g) || []).length;
+    for (var k = 0; k < open; k++) s += ')';
+    return s;
   }
 
   // Identifiers are single letters (so "mn" reads as m*n), which on its own
@@ -120,6 +136,10 @@
     var tokens = [];
     var letterRun = 0;
     var i = 0;
+    // One flag per open paren: does it belong to max( / min(? A comma is an
+    // argument separator only there; anywhere else it is punctuation
+    // ("O(n), amortized") and is dropped.
+    var parens = [];
     while (i < s.length) {
       var ch = s.charAt(i);
       if (ch >= '0' && ch <= '9') {
@@ -132,6 +152,22 @@
       }
       if (s.substr(i, 4) === 'sqrt') { tokens.push({ t: 'sqrt' }); letterRun = 0; i += 4; continue; }
       if (s.substr(i, 3) === 'log') { tokens.push({ t: 'log' }); letterRun = 0; i += 3; continue; }
+      if ((s.substr(i, 4) === 'max(' || s.substr(i, 4) === 'min(')) {
+        tokens.push({ t: s.substr(i, 3) });
+        tokens.push({ t: '(' });
+        parens.push(true);
+        letterRun = 0;
+        i += 4;
+        continue;
+      }
+      if (ch === ',') {
+        if (parens.length && parens[parens.length - 1]) tokens.push({ t: ',' });
+        letterRun = 0;
+        i++;
+        continue;
+      }
+      if (ch === '(') parens.push(false);
+      else if (ch === ')') parens.pop();
       // "nlogn" is n*log(n) — the spelling people type when they skip the
       // operators — but "noidea" is not a six-variable product.
       if (/[a-zα-ω]/.test(ch)) {
@@ -140,7 +176,7 @@
         i++;
         continue;
       }
-      if ('+*^()!'.indexOf(ch) >= 0) { tokens.push({ t: ch }); letterRun = 0; i++; continue; }
+      if ('+*/^()!'.indexOf(ch) >= 0) { tokens.push({ t: ch }); letterRun = 0; i++; continue; }
       return null;
     }
     return tokens;
@@ -149,10 +185,11 @@
   // ── Parsing ───────────────────────────────────────────────────────────────
   //
   //   expr    := term ('+' term)*
-  //   term    := power (('*' | ε) power)*      -- ε is implicit multiplication
+  //   term    := power (('*' | '/' | ε) power)* -- ε is implicit multiplication
   //   power   := postfix ('^' power)?          -- right associative
   //   postfix := atom '!'*
   //   atom    := number | var | '(' expr ')' | ('log'|'sqrt') ('^' power)? postfix
+  //            | ('max'|'min') '(' expr (',' expr)* ')'
 
   function parse(tokens) {
     var pos = 0;
@@ -165,7 +202,8 @@
     function startsFactor() {
       var tk = peek();
       if (!tk) return false;
-      return tk.t === 'num' || tk.t === 'var' || tk.t === 'log' || tk.t === 'sqrt' || tk.t === '(';
+      return tk.t === 'num' || tk.t === 'var' || tk.t === 'log' || tk.t === 'sqrt'
+        || tk.t === 'max' || tk.t === 'min' || tk.t === '(';
     }
 
     function expr() {
@@ -185,11 +223,12 @@
       if (!first) return null;
       var xs = [first];
       for (;;) {
-        var explicit = eat('*');
+        var divide = eat('/');
+        var explicit = divide || eat('*');
         if (!explicit && !startsFactor()) break;
         var next = power();
         if (!next) return null;
-        xs.push(next);
+        xs.push(divide ? { t: 'inv', x: next } : next);
       }
       return xs.length === 1 ? xs[0] : { t: 'mul', xs: xs };
     }
@@ -220,6 +259,18 @@
         var inner = expr();
         if (!inner || !eat(')')) return null;
         return inner;
+      }
+      if (tk.t === 'max' || tk.t === 'min') {
+        pos++;
+        if (!eat('(')) return null;
+        var args = [];
+        do {
+          var a = expr();
+          if (!a) return null;
+          args.push(a);
+        } while (eat(','));
+        if (!eat(')')) return null;
+        return args.length === 1 ? args[0] : { t: tk.t, xs: args };
       }
       if (tk.t === 'log' || tk.t === 'sqrt') {
         pos++;
@@ -256,7 +307,10 @@
         var f = {};
         var key;
         for (key in a[i].f) f[key] = a[i].f[key];
-        for (key in b[j].f) f[key] = (f[key] || 0) + b[j].f[key];
+        for (key in b[j].f) {
+          f[key] = (f[key] || 0) + b[j].f[key];
+          if (f[key] === 0) delete f[key];       // n / n is 1, not n^0
+        }
         out.push({ coef: a[i].coef * b[j].coef, f: f });
       }
     }
@@ -280,16 +334,73 @@
       case 'add': return node.xs.reduce(function (acc, x) { return acc.concat(expand(x)); }, []);
       case 'mul': return node.xs.reduce(function (acc, x) { return multiply(acc, expand(x)); }, [unitTerm()]);
       case 'fact': return single(canonical(node.x) + '!');
-      case 'log': return single('log(' + canonical(node.x) + ')');
-      case 'sqrt': return single('sqrt(' + canonical(node.x) + ')');
+      case 'log': return expandLog(node);
+      // max(a, b) and a + b are the same bound, up to a factor of two.
+      case 'max': return node.xs.reduce(function (acc, x) { return acc.concat(expand(x)); }, []);
+      case 'min': return single('min(' + node.xs.map(canonical).sort().join(',') + ')');
+      case 'inv': return invert(expand(node.x));
+      case 'sqrt': return monomialPow(expand(node.x), 0.5) || single('sqrt(' + canonical(node.x) + ')');
       case 'pow': return expandPow(node);
       default: return [unitTerm()];
     }
   }
 
+  // Division by a monomial (`n / 2`, `n^2 / k`) is multiplication by its
+  // reciprocal. Dividing by a sum has no sum-of-products form, so the answer is
+  // rejected rather than mangled.
+  function Unreadable() {}
+
+  function invert(terms) {
+    if (terms.length !== 1 || terms[0].coef === 0) throw new Unreadable();
+    var f = {};
+    for (var key in terms[0].f) f[key] = -terms[0].f[key];
+    return [{ coef: 1 / terms[0].coef, f: f }];
+  }
+
+  // log of a product is a sum of logs, and a power comes down as a constant:
+  // log(n^2) = 2 log n, log(m*n) = log m + log n, log(2^n) = n, log(n!) ~ n log n.
+  // Anything else (log of a sum, log log n) stays a symbolic factor.
+  function expandLog(node) {
+    var inner = expand(node.x);
+    if (inner.length !== 1) return single('log(' + canonical(node.x) + ')');
+    var keys = Object.keys(inner[0].f);
+    if (!keys.length) return [unitTerm()];                // log of a constant
+    var out = [];
+    keys.forEach(function (key) {
+      var e = inner[0].f[key];
+      var m;
+      if (/^[a-zα-ω]$/.test(key)) out = out.concat(scale(single('log(' + key + ')'), e));
+      else if ((m = /^\d+(?:\.\d+)?\^([a-zα-ω])$/.exec(key))) out = out.concat(scale(single(m[1]), e));
+      else if ((m = /^([a-zα-ω])!$/.exec(key))) {
+        var nlogn = {};
+        nlogn[m[1]] = 1;
+        nlogn['log(' + m[1] + ')'] = 1;
+        out.push({ coef: e, f: nlogn });
+      } else out = out.concat(scale(single('log(' + key + ')'), e));
+    });
+    return out;
+  }
+
+  function scale(terms, c) {
+    return terms.map(function (t) { return { coef: t.coef * c, f: t.f }; });
+  }
+
+  // A single term to a constant power: (n^2 k)^1.5 = n^3 k^1.5. That is what
+  // makes sqrt(n), n^0.5 and n^(1/2) one answer, and n*sqrt(n) equal n^1.5.
+  function monomialPow(terms, c) {
+    if (terms.length !== 1) return null;
+    var f = {};
+    for (var key in terms[0].f) f[key] = terms[0].f[key] * c;
+    return [{ coef: Math.pow(terms[0].coef, c), f: f }];
+  }
+
   function expandPow(node) {
     var e = expand(node.e);
     var constant = e.length === 1 && Object.keys(e[0].f).length === 0 ? e[0].coef : null;
+    if (constant !== null) {
+      var raised = monomialPow(expand(node.b), constant);
+      if (raised) return raised;
+    }
     if (constant !== null && constant >= 0 && constant <= MAX_EXPAND && constant === Math.floor(constant)) {
       var acc = [unitTerm()];
       var base = expand(node.b);
@@ -314,7 +425,80 @@
     return text;
   }
 
+  // ── Dominance ───────────────────────────────────────────────────────────
+  //
+  // Term A is dominated by term B when A <= c·B for *every* assignment of the
+  // variables, so dropping A cannot change the bound. That is decided per
+  // variable: each term is read as, for each variable v, a growth profile
+  //
+  //     v!  >  c^v (larger c first)  >  poly power of v  >  power of log v
+  //
+  // and A <= B when every variable's profile in A is at most its profile in B.
+  // A factor that cannot be ranked this way — log(m+n), min(m,n), k^n with a
+  // variable base — has to appear in B at least as often as in A. Anything
+  // with a negative exponent (from division) is left alone entirely.
+
+  var VAR = /^[a-zα-ω]$/;
+
+  function profile(term) {
+    var vars = Object.create(null);
+    var other = Object.create(null);
+    function v(name) {
+      // fact: the power of v!; exp: log2 of the c in c^v; p, q: as above.
+      return vars[name] || (vars[name] = { fact: 0, exp: 0, p: 0, q: 0 });
+    }
+    for (var key in term.f) {
+      var e = term.f[key];
+      if (e < 0) return null;
+      var m;
+      if (VAR.test(key)) v(key).p += e;
+      else if ((m = /^log\(([a-zα-ω])\)$/.exec(key))) v(m[1]).q += e;
+      else if ((m = /^sqrt\(([a-zα-ω])\)$/.exec(key))) v(m[1]).p += e / 2;
+      else if ((m = /^([a-zα-ω])!$/.exec(key))) v(m[1]).fact += e;
+      else if ((m = /^(\d+(?:\.\d+)?)\^([a-zα-ω])$/.exec(key)) && parseFloat(m[1]) > 1) {
+        v(m[2]).exp += e * Math.log2(parseFloat(m[1]));
+      } else other[key] = e;
+    }
+    return { vars: vars, other: other };
+  }
+
+  var NONE = { fact: 0, exp: 0, p: 0, q: 0 };
+
+  // Is variable profile a <= b? Lexicographic: the faster-growing part decides.
+  function varLeq(a, b) {
+    var order = ['fact', 'exp', 'p', 'q'];
+    for (var i = 0; i < order.length; i++) {
+      var k = order[i];
+      if (Math.abs(a[k] - b[k]) > 1e-9) return a[k] < b[k];
+    }
+    return true;
+  }
+
+  function leq(a, b) {
+    for (var key in a.other) if (!(b.other[key] >= a.other[key])) return false;
+    var names = Object.keys(a.vars).concat(Object.keys(b.vars));
+    for (var i = 0; i < names.length; i++) {
+      if (!varLeq(a.vars[names[i]] || NONE, b.vars[names[i]] || NONE)) return false;
+    }
+    return true;
+  }
+
+  /** The terms of `terms` that no other term bounds. Order is preserved. */
+  function dominated(terms) {
+    var profiles = terms.map(profile);
+    if (profiles.some(function (p) { return p === null; })) return terms;
+    return terms.filter(function (term, i) {
+      for (var j = 0; j < terms.length; j++) {
+        if (j === i || !leq(profiles[i], profiles[j])) continue;
+        // Two terms that bound each other are the same growth; keep the first.
+        if (!leq(profiles[j], profiles[i]) || j < i) return false;
+      }
+      return true;
+    });
+  }
+
   function render(terms, keepCoef) {
+    if (!keepCoef) terms = dominated(terms);
     var seen = Object.create(null);
     var out = [];
     terms.forEach(function (term) {
@@ -339,14 +523,64 @@
    * expression at all ("dunno", "n squared-ish"). Null is a *rejected*
    * answer — never one that quietly passes.
    */
-  function normalize(raw) {
+  function read(raw) {
     var text = preprocess(raw);
     if (!text) return null;
     var tokens = tokenize(text);
     if (!tokens || !tokens.length) return null;
     var ast = parse(tokens);
     if (!ast) return null;
-    return render(expand(ast), false);
+    try {
+      var terms = expand(ast);
+      return { ast: ast, terms: terms, key: render(terms, false) };
+    } catch (err) {
+      if (err instanceof Unreadable) return null;
+      throw err;
+    }
+  }
+
+  function normalize(raw) {
+    var r = read(raw);
+    return r ? r.key : null;
+  }
+
+  /**
+   * How a wrong answer relates to the right one, so the feedback can say more
+   * than "no": 'equal', 'over' (a true upper bound, but not tight), 'under'
+   * (too optimistic), 'different' (neither bounds the other — usually the
+   * wrong variable), or null when either side does not parse.
+   */
+  function compare(said, expected) {
+    var a = read(said);
+    var b = read(expected);
+    if (!a || !b) return null;
+    if (a.key === b.key) return 'equal';
+    var aTerms = dominated(a.terms).map(profile);
+    var bTerms = dominated(b.terms).map(profile);
+    if (aTerms.concat(bTerms).some(function (p) { return p === null; })) return 'different';
+    function covered(xs, ys) {
+      return xs.every(function (x) { return ys.some(function (y) { return leq(x, y); }); });
+    }
+    var under = covered(aTerms, bTerms);
+    var over = covered(bTerms, aTerms);
+    if (under && over) return 'equal';
+    if (under) return 'under';
+    if (over) return 'over';
+    return 'different';
+  }
+
+  /** The single-letter variables an answer uses, sorted. */
+  function variables(raw) {
+    var r = read(raw);
+    if (!r) return null;
+    var found = Object.create(null);
+    (function walk(node) {
+      if (!node) return;
+      if (node.t === 'var') found[node.v] = true;
+      [node.x, node.b, node.e].forEach(walk);
+      (node.xs || []).forEach(walk);
+    })(r.ast);
+    return Object.keys(found).sort();
   }
 
   function equivalent(a, b) {
@@ -437,6 +671,9 @@
         return exponent * base;
       }
       case 'sqrt': return log2Eval(node.x, x) / 2;
+      case 'inv': return -log2Eval(node.x, x);
+      case 'max': return node.xs.reduce(function (acc, k) { return Math.max(acc, log2Eval(k, x)); }, -Infinity);
+      case 'min': return node.xs.reduce(function (acc, k) { return Math.min(acc, log2Eval(k, x)); }, Infinity);
       case 'log': {
         // log2(v) is the inner exponent itself; a log at or below 0 is 0 work.
         var inner = log2Eval(node.x, x);
@@ -457,13 +694,8 @@
    * "O(N·logN)" are recognised as the same curve.
    */
   function compile(raw) {
-    var text = preprocess(raw);
-    if (!text) return null;
-    var tokens = tokenize(text);
-    if (!tokens || !tokens.length) return null;
-    var ast = parse(tokens);
-    if (!ast) return null;
-    return { ast: ast, key: render(expand(ast), false) };
+    var r = read(raw);
+    return r ? { ast: r.ast, key: r.key } : null;
   }
 
   return {
@@ -474,6 +706,8 @@
     normalize: normalize,
     equivalent: equivalent,
     matches: matches,
+    compare: compare,
+    variables: variables,
     grade: grade,
     compile: compile,
     log2Eval: log2Eval

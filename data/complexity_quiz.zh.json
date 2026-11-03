@@ -1,0 +1,1877 @@
+{
+  "_comment": [
+    "繁體中文 overlay for data/complexity_quiz.json — the Complexity Quiz's zh page",
+    "(lc-complexity-quiz.zh.html). Keyed by question id; only prose is stored.",
+    "Code, answers, accept lists and cost line numbers come from the English bank,",
+    "so the two can never disagree about what is being graded.",
+    "",
+    "Per question: vars, note (only if the English has one), why / trap (likewise),",
+    "cost.time / cost.space (the per-dimension reasons). `title` is optional and",
+    "only for a question with no lc number. Keep every `code` span and Big-O",
+    "expression in English. site/build-quiz.js fails on an unknown id, a missing",
+    "translation, or a field the English question does not have."
+  ],
+
+  "topics": {
+    "Advanced Graphs": "進階圖論",
+    "Arrays & Hashing": "陣列與雜湊",
+    "Backtracking": "回溯",
+    "Binary Search": "二分搜尋",
+    "Bit Manipulation": "位元運算",
+    "Complexity Drills": "複雜度練習",
+    "Design": "設計",
+    "Dynamic Programming": "動態規劃",
+    "Graphs": "圖",
+    "Greedy": "貪婪",
+    "Heap": "堆積",
+    "Intervals": "區間",
+    "Linked List": "鏈結串列",
+    "Math & Geometry": "數學與幾何",
+    "Python Pitfalls": "Python 陷阱",
+    "Sorting": "排序",
+    "Stack": "堆疊",
+    "Trees": "樹",
+    "Tries": "字典樹",
+    "Two Pointers & Sliding Window": "雙指標與滑動視窗"
+  },
+  "questions": {
+    "two-sum-hash": {
+      "vars": "n = len(nums)",
+      "trap": "`target - x in seen` 是雜湊查詢而不是掃描，所以迴圈仍是線性。用雙層迴圈暴力解才會是 `O(n^2)`。",
+      "cost": {
+        "time": "`for i, x` 只走一遍；每次 `in seen` 都是平均 `O(1)` 的雜湊查詢。",
+        "space": "`seen[x] = i` 在找到答案前可能存下全部 n 個值。"
+      }
+    },
+    "best-time-stock": {
+      "vars": "n = len(prices)",
+      "cost": {
+        "time": "`for p in prices` 只走一遍，每個價格做 `O(1)` 的工作。",
+        "space": "只保留 `cheapest` 與 `profit` 兩個純量，不隨 n 增長。"
+      }
+    },
+    "binary-search-iterative": {
+      "title": "迭代版二分搜尋",
+      "vars": "n = len(nums)",
+      "cost": {
+        "time": "每輪 `while lo <= hi` 都把搜尋範圍砍半，因此大約執行 `log n` 次。",
+        "space": "狀態只有 `lo`、`hi`、`mid` 三個整數。"
+      }
+    },
+    "binary-search-slicing": {
+      "title": "遞迴版二分搜尋 —— 用切片",
+      "vars": "n = len(nums)",
+      "why": "改傳 `lo`/`hi` 索引而非切片，才能得到真正的 `O(log n)` 時間與 `O(1)` 空間。",
+      "trap": "它看起來像教科書的 `O(log n)` / `O(1)` 二分搜尋。但在 Python 中*切片會複製*，這是正確演算法最常失去其複雜度的方式。",
+      "cost": {
+        "time": "每次切片都複製保留的那一半：n/2 + n/4 + … 加總為 `O(n)`，遠超過 `log n` 次比較。",
+        "space": "遞迴路徑上仍存活的切片加總為 n/2 + n/4 + … = `O(n)`。"
+      }
+    },
+    "three-sum": {
+      "vars": "n = len(nums)",
+      "note": "不計入結果串列所佔的空間。",
+      "trap": "`else` 裡的內層 `while` 看似第三層巢狀，但 `lo` 與 `hi` 只會互相靠近，所以每個 `i` 仍只是一次線性掃描。",
+      "cost": {
+        "time": "`for i` 執行 n 次，每次 `while lo < hi` 掃描為 `O(n)`，合計 `O(n^2)`，蓋過排序成本。",
+        "space": "`nums.sort()` 是 Timsort，最多需要約 n/2 的額外空間；指標本身是 `O(1)`。"
+      }
+    },
+    "valid-parentheses": {
+      "vars": "n = len(s)",
+      "cost": {
+        "time": "`for ch in s` 每個字元只看一次；每次 push 或 pop 都是 `O(1)`。",
+        "space": "`stack.append(ch)` 可能存下所有字元，例如全為左括號的 `\"((((\"`。"
+      }
+    },
+    "reverse-linked-list": {
+      "vars": "n = 節點數量",
+      "trap": "同樣常見的遞迴版本空間是 `O(n)`：每個節點佔一個堆疊框架。",
+      "cost": {
+        "time": "`while head` 每個節點只走一次，每步改接一個指標。",
+        "space": "原地改接指標，只用三個參考，與串列長度無關。"
+      }
+    },
+    "linked-list-cycle": {
+      "vars": "n = 節點數量",
+      "trap": "用 `seen = set()` 的解法時間同為 `O(n)`，但空間是 `O(n)`。Floyd 龜兔賽跑法才換得常數空間。",
+      "cost": {
+        "time": "兩者都進入環後，`fast` 每步追近一個節點，因此 `O(n)` 步內必會相遇。",
+        "space": "狀態只有 `slow` 與 `fast` 兩個指標。"
+      }
+    },
+    "merge-two-lists": {
+      "vars": "n, m = 兩個串列的長度",
+      "cost": {
+        "time": "`while l1 and l2` 每步取一個節點，第 9 行以 `O(1)` 接上剩餘部分：最多 n + m 步。",
+        "space": "原地拼接既有節點，只配置了 `dummy` 頭節點。"
+      }
+    },
+    "kadane": {
+      "vars": "n = len(nums)",
+      "why": "Kadane 演算法是一維 DP，整張表被壓縮成一個滾動值。",
+      "trap": "若把迴圈寫成 `for x in nums[1:]`，切片會複製陣列，悄悄變成 `O(n)` 空間。",
+      "cost": {
+        "time": "`for i in range(1, len(nums))` 只走一遍，每個元素 `O(1)`。",
+        "space": "只保留 `best` 與 `cur`；`range` 是惰性的，不會複製任何東西。"
+      }
+    },
+    "longest-substring-no-repeat": {
+      "vars": "n = len(s)，k = 字元集大小",
+      "trap": "視窗從不重新掃描：`left` 直接跳過重複字元。一次縮一格仍是攤銷 `O(n)`；只有每次重新開始掃描才是 `O(n^2)`。",
+      "cost": {
+        "time": "`right` 每個字元前進一次，`left` 只往前跳，所以只走一遍。",
+        "space": "`seen[ch] = right` 每個不同字元存一筆：最多 k 筆，也不超過 n。"
+      }
+    },
+    "num-islands-dfs": {
+      "vars": "m, n = 網格的維度",
+      "trap": "因為原地修改網格就回答 `O(1)` 空間，忽略了呼叫堆疊。常見追問「若網格有 10^6 格？」就是在要求迭代式 BFS。",
+      "cost": {
+        "time": "雙層迴圈走過全部 m·n 格，而 `grid[i][j] = \"0\"` 確保每格最多被淹沒一次。",
+        "space": "遞迴的 `sink` 每個陸地格可能疊一層；蛇形島嶼會讓堆疊深度達 `O(m * n)`。"
+      }
+    },
+    "rotting-oranges": {
+      "vars": "m, n = 網格的維度",
+      "trap": "`for _ in range(len(q))` 迴圈只是分層標記，不是額外工作：它把同樣 `O(m * n)` 次出佇列切成一分鐘一分鐘。",
+      "cost": {
+        "time": "初始化時掃過每一格，之後每格最多入佇列、出佇列一次，各檢查 4 個鄰居。",
+        "space": "`deque` 可能裝下大半個網格，例如幾乎所有橘子一開始就腐爛時。"
+      }
+    },
+    "course-schedule": {
+      "vars": "V = numCourses，E = len(prerequisites)",
+      "trap": "巢狀的 `for nxt in graph[c]` 不是再乘一個 V。對所有課程加總後每條邊恰好走一次，也就是 E 那一項。",
+      "cost": {
+        "time": "每條先修關係建圖時讀一次；Kahn 迴圈每門課出佇列一次、每條邊走一次。",
+        "space": "鄰接串列有 V 個串列共 E 筆；`indeg` 與佇列再加 `O(V)`。"
+      }
+    },
+    "max-depth-tree": {
+      "vars": "n = 節點數量，h = 樹高",
+      "why": "平衡樹的 h 是 `O(log n)`，歪斜樹則是 `O(n)`。",
+      "trap": "`O(log n)` 空間只在樹平衡時成立，而題目從未保證。先答 `O(h)`，再說明最壞情況下 h 是多少。",
+      "cost": {
+        "time": "每個節點恰好發出一次兩個遞迴呼叫，共 n 次、每次 `O(1)`。",
+        "space": "遞迴在目前路徑上每層保留一個框架：共 h 個。"
+      }
+    },
+    "level-order-traversal": {
+      "vars": "n = 節點數量",
+      "cost": {
+        "time": "每個節點恰好放進一個 `level` 串列並讀取一次，共 `O(n)`。",
+        "space": "前緣 `level` 可能裝下最寬的一層，完全二元樹約有 n/2 個節點。"
+      }
+    },
+    "top-k-frequent": {
+      "vars": "n = len(nums)，k = 要求的 k",
+      "why": "計數是 `O(n)`，被堆積迴圈蓋過。",
+      "trap": "把堆積上限設為 k 才是重點，如 `heapq.nlargest(k, freq, key=freq.get)`。先全部推入再取 k 個是 `O(n log n)`。",
+      "cost": {
+        "time": "最多 n 個不同值，每個對上限為 k 的堆積做 `heappush`/`heappop`，各 `log k`。",
+        "space": "`Counter(nums)` 可能存 n 個不同值，比大小為 k 的堆積更大。"
+      }
+    },
+    "merge-k-lists": {
+      "vars": "n = 所有串列的節點總數，k = len(lists)",
+      "trap": "把串列一條條併入不斷變長的結果是 `O(n * k)`。堆積正是把 k 這個因子變成 `log k` 的關鍵。",
+      "cost": {
+        "time": "每個節點被彈出一次、推入一次，堆積最多 k 筆，所以每次操作 `log k`。",
+        "space": "堆積中每個串列最多一個節點：共 k 筆。"
+      }
+    },
+    "kth-largest-heap": {
+      "vars": "n = len(nums)，k = 要求的 k",
+      "trap": "Quickselect 能以平均 `O(n)` 時間、`O(1)` 額外空間完成同一件事。這正是此題想引出的追問。",
+      "cost": {
+        "time": "`for x in nums` 對大小不超過 k + 1 的堆積做 n 次 push（與 pop），各 `log k`。",
+        "space": "`heappush` 讓最小堆積長到 k 個元素，pop 把它維持在 k。"
+      }
+    },
+    "permutations": {
+      "vars": "n = len(nums)",
+      "note": "只計算遞迴與暫存狀態，`res` 串列是輸出。",
+      "trap": "`O(n!)` 時間算少了：產生一個排列不是免費的，`nums[:]` 複製要 `O(n)`。",
+      "cost": {
+        "time": "`backtrack` 抵達 n! 個葉節點，每個葉節點用 `nums[:]` 複製 n 個元素。",
+        "space": "遞迴深度為 n 層；交換是原地修改 `nums`，不額外儲存其他東西。"
+      }
+    },
+    "subsets": {
+      "vars": "n = len(nums)",
+      "note": "此題輸出要計入：`res` 是唯一會增長的東西。",
+      "trap": "`O(2^n)` 只算了子集數量，沒算內容。凡是輸出長度不一的列舉問題，都需要乘上長度因子。",
+      "cost": {
+        "time": "`res` 在 n 輪中每輪翻倍至 2^n 個子集，`cur + [x]` 複製每一個，平均 n/2 個元素。",
+        "space": "`cur + [x]` 建出的 2^n 個子集平均各約 n/2 個元素，總計 `O(n * 2^n)`。"
+      }
+    },
+    "coin-change-dp": {
+      "vars": "n = len(coins)，a = amount",
+      "trap": "這是偽多項式：`a` 是輸入的*數值*而非長度，所以 `amount` 多一位數，工作量就乘以 10。",
+      "cost": {
+        "time": "`for a` 填 `a` 格，每格以 `for c in coins` 嘗試全部 n 枚硬幣，共 `n * a`。",
+        "space": "`dp` 為 0 到 `a` 的每個金額各存一格。"
+      }
+    },
+    "climbing-stairs": {
+      "vars": "n = 階梯數",
+      "trap": "把大整數加法視為 `O(1)` 是標準簡化，也是面試官要的答案，雖然數字確實會長到約 n 位元。",
+      "cost": {
+        "time": "`for _ in range(n - 1)` 執行 n - 1 次，每次一個 `O(1)` 加法。",
+        "space": "只保留 `a` 與 `b`：遞迴式真正需要的兩個值。"
+      }
+    },
+    "fib-naive": {
+      "vars": "n = fib 的輸入",
+      "trap": "`O(2^n)` 空間是把遞迴樹的大小和堆疊的深度搞混了。這些呼叫從不同時存在。",
+      "cost": {
+        "time": "每次呼叫分支成 `fib(n - 1)` 與 `fib(n - 2)`，約 2^n 次呼叫（精確為 φ^n）。",
+        "space": "呼叫以深度優先進行，同時只有一條根到葉的路徑存活：n 個框架。"
+      }
+    },
+    "house-robber": {
+      "vars": "n = len(nums)",
+      "cost": {
+        "time": "`for x in nums` 只走一遍，每間房子 `O(1)`。",
+        "space": "遞迴式只回看兩格，所以 `prev` 與 `cur` 取代了整張表。"
+      }
+    },
+    "lcs-dp": {
+      "vars": "m, n = 兩個字串的長度",
+      "trap": "只保留上一列可把空間降到 `O(n)`，因為每格只讀上一列與左邊一格。這點值得主動說出來。",
+      "cost": {
+        "time": "`for i` × `for j` 把 m·n 格各填一次，每格 `O(1)`。",
+        "space": "`dp` 是 (m+1) × (n+1) 的表格。"
+      }
+    },
+    "lis-dp": {
+      "vars": "n = len(nums)",
+      "trap": "i 小時內層迴圈很短，並不會省下一個量級：三角形總和仍是平方。",
+      "cost": {
+        "time": "`for j in range(i)` 總共執行 0 + 1 + … + (n-1) = n(n-1)/2 次。",
+        "space": "`dp` 每個索引存一個值。"
+      }
+    },
+    "lis-patience": {
+      "vars": "n = len(nums)",
+      "trap": "`tails` 不是遞增子序列本身，只有它的長度有意義。",
+      "cost": {
+        "time": "`for x in nums` 每個元素在最多 n 個尾端值上做一次 `bisect_left`，各 `log n`。",
+        "space": "遞增輸入時 `tails.append(x)` 會讓串列長到 n 筆。"
+      }
+    },
+    "unique-paths-rolling": {
+      "vars": "m, n = 網格的維度",
+      "why": "每格需要上方的值（舊的 `row[j]`）與左方的值（新的 `row[j-1]`），所以一列就夠。",
+      "trap": "`O(m * n)` 空間對二維表格才正確，對這個滾動陣列不對。看出表格能壓成一列，正是追問的重點。",
+      "cost": {
+        "time": "`for _` × `for j` 仍是每格一單位工作：m·n。",
+        "space": "只儲存一列 n 個值並原地更新。"
+      }
+    },
+    "trapping-rain-water": {
+      "vars": "n = len(height)",
+      "trap": "前綴/後綴最大值陣列的版本時間同為 `O(n)`，但空間是 `O(n)`。雙指標技巧正是用來省掉那些陣列。",
+      "cost": {
+        "time": "每一步讓 `lo` 或 `hi` 往內移，所以 `while lo < hi` 最多執行 n 次。",
+        "space": "只保留幾個純量：`lmax`、`rmax`、`total` 與兩個指標。"
+      }
+    },
+    "daily-temperatures": {
+      "vars": "n = len(temperatures)",
+      "trap": "迴圈裡有迴圈不代表一定是 `O(n^2)`。要數總共的推入與彈出次數，而不是看巢狀的形狀。",
+      "cost": {
+        "time": "每個索引推入一次、最多彈出一次，所以內層 `while` 總共最多彈出 n 次。",
+        "space": "`stack.append(i)` 可能存下所有索引，例如溫度嚴格遞減時。"
+      }
+    },
+    "min-stack": {
+      "vars": "n = 目前在堆疊中的元素數",
+      "note": "時間指單次 push / pop / getMin 呼叫。",
+      "why": "每筆記錄都快取了它下方所有元素的最小值，代價是每個元素多存一個值。",
+      "trap": "這裡的 `min(...)` 比較的是兩個值，不是整個堆疊。把它看成掃描就會答成 `O(n)`。",
+      "cost": {
+        "time": "`min(...)` 只比較兩個值，`self.stack[-1][1]` 只是查看頂端，所以每次呼叫都是 `O(1)`。",
+        "space": "`self.stack.append((val, cur_min))` 每個元素存一對值。"
+      }
+    },
+    "lru-cache": {
+      "vars": "c = 容量",
+      "note": "時間指單次 get / put 呼叫。",
+      "why": "OrderedDict 是架在雙向鏈結串列上的雜湊表。",
+      "trap": "`move_to_end` 聽起來像在搬移元素，其實只改接一個節點。這正是「雜湊表＋鏈結串列」設計成為標準答案的原因。",
+      "cost": {
+        "time": "`move_to_end` 與 `popitem(last=False)` 只是在鏈結串列中改接一個節點，加上 `O(1)` 的雜湊查詢。",
+        "space": "`self.cache[key] = value` 新增項目，而淘汰機制讓映射最多保有 c 筆。"
+      }
+    },
+    "trie-insert": {
+      "vars": "L = len(word)",
+      "note": "時間指單次 insert / search 呼叫。",
+      "why": "與字數無關正是建立 Trie 的全部理由。",
+      "trap": "兩個界都與已存字數無關，所以兩個答案裡都不該出現 `n`。",
+      "cost": {
+        "time": "`for ch in word` 每個字元做一次 dict 跳轉，與已存的字數無關。",
+        "space": "`node.setdefault(ch, {})` 每個字元最多新建一個節點：至多 L 個。"
+      }
+    },
+    "number-of-provinces": {
+      "vars": "n = 節點數量（矩陣為 n x n）",
+      "trap": "這就是 `O(V + E)` 的 DFS 界換了個樣子：鄰接*矩陣*不論邊是否存在，掃描成本都是 n^2。",
+      "cost": {
+        "time": "每個節點只造訪一次，而 `for j in range(n)` 會掃過它整列：n 列 × n 格。",
+        "space": "`seen` 最多存 n 個節點，遞迴的 `dfs(j)` 最深可達 n 層。"
+      }
+    },
+    "dijkstra-network-delay": {
+      "vars": "V = n 個節點，E = len(times)",
+      "why": "簡單圖中 E ≤ V^2，所以 `log E` ≤ `2 log V`。",
+      "trap": "`if u in dist: continue` 讓此做法不需 decrease-key 也正確：過期的堆積項目可以進來，出堆時跳過即可。",
+      "cost": {
+        "time": "`heappush` 每條邊最多執行一次，所以最多 E 次推入與彈出，每次 `log E` = `O(log V)`。",
+        "space": "`graph` 存 E 條邊、`dist` 存 V 個節點，惰性堆積最多 E 筆。"
+      }
+    },
+    "search-rotated": {
+      "vars": "n = len(nums)",
+      "why": "多出來的分支只是決定要保留*哪一半*。",
+      "trap": "若允許重複元素（LC 81），`nums[lo] <= nums[mid]` 就無法區分兩半，最壞情況退化為 `O(n)`。",
+      "cost": {
+        "time": "每輪 `while lo <= hi` 保留一半、丟掉另一半，因此約 `log n` 輪。",
+        "space": "狀態只有 `lo`、`hi` 與 `mid`。"
+      }
+    },
+    "koko-bananas": {
+      "vars": "n = len(piles)，m = max(piles)",
+      "why": "這是對*答案*做二分搜尋，而不是對陣列。",
+      "trap": "log 因子是對數值範圍 m 取的，不是陣列長度 n。兩者毫無關係，混淆它們是這類題目的經典失誤。",
+      "cost": {
+        "time": "`while lo < hi` 嘗試 `log m` 個速度，每次 `hours(mid)` 都要加總全部 n 堆。",
+        "space": "`sum` 裡的產生器不會建出串列，只保留幾個整數。"
+      }
+    },
+    "group-anagrams": {
+      "vars": "n = len(strs)，k = 最長單字的長度",
+      "trap": "k 這個因子很容易漏掉。用 26 個計數組成的 tuple 取代 `sorted(s)` 當鍵，時間可降為 `O(n * k)`。",
+      "cost": {
+        "time": "`sorted(s)` 每個單字花 `k log k`，對 n 個單字各做一次。",
+        "space": "`groups` 存下每個單字與長度 k 的 tuple 鍵：共 `O(n * k)` 個字元。"
+      }
+    },
+    "valid-anagram-sort": {
+      "vars": "n = len(s)",
+      "trap": "一行程式不代表就是 `O(n)`：`sorted` 作用在字串上會回傳串列，排序與該串列都有成本。`Counter(s) == Counter(t)` 是 `O(n)` 的替代做法。",
+      "cost": {
+        "time": "兩次 `sorted` 各花 `n log n`，蓋過線性的 `==` 比較。",
+        "space": "`sorted` 會為每個字串各建一個 n 個字元的新串列。"
+      }
+    },
+    "product-except-self": {
+      "vars": "n = len(nums)",
+      "note": "回傳的串列是輸出，不計入輔助空間。",
+      "trap": "兩個先後執行的迴圈是相加而非相乘：`O(n) + O(n)` 就是 `O(n)`。",
+      "cost": {
+        "time": "前綴迴圈與後綴迴圈各執行 n 次，一前一後：`O(n) + O(n)`。",
+        "space": "前綴乘積暫存在輸出 `res` 裡，後綴乘積只用一個變數 `right`。"
+      }
+    },
+    "merge-sorted-array": {
+      "vars": "m, n = 兩個陣列已填入的長度",
+      "why": "從後面往前填，就永遠不需要搬移元素。",
+      "trap": "往前合併需要複製（`O(m + n)` 空間）或每次插入都搬移（`O(m * n)` 時間）。從後往前寫兩者都避開了。",
+      "cost": {
+        "time": "`while j >= 0` 每步寫入一格，m + n 個值每個最多寫入一次。",
+        "space": "從尾端原地寫入 `nums1`，只保留三個索引。"
+      }
+    },
+    "single-number-xor": {
+      "vars": "n = len(nums)",
+      "why": "XOR 滿足結合律且自己與自己相消，成對的數全部抵銷，只剩落單的那個。",
+      "trap": "用 set 的解法是 O(n) 空間。這題要考的正是你能否想到 O(1) 空間的 XOR 解。",
+      "cost": {
+        "time": "`for x in nums` 每個元素只走一次，`out ^= x` 是 O(1)。",
+        "space": "不管 `nums` 多大，只用一個整數累加器。"
+      }
+    },
+    "hamming-weight": {
+      "vars": "n = 該整數，b = 它的位元寬度（此處為 32）",
+      "why": "固定寬度的整數下這是常數；若以位元寬度表示就是 `O(b)`，而 `b = log n`。",
+      "trap": "答 O(n) 是把整數的*數值*當成輸入大小。32 位元整數上任何位元技巧都是 O(1)，一般化的答案是 O(b)。",
+      "cost": {
+        "time": "`n &= n - 1` 每次清掉一個 1 位元，所以 `while` 最多跑 popcount ≤ `b` = 32 次。",
+        "space": "只有 `count` 和不斷變小的 `n`。"
+      }
+    },
+    "longest-palindrome-expand": {
+      "vars": "n = len(s)",
+      "trap": "兩個元素的 tuple 迴圈（奇數與偶數中心）只是常數倍 2，不是第三個 `n`。",
+      "cost": {
+        "time": "`for i` 有 `n` 個中心，每個 `while` 最多向外擴展 `n` 個字元 → `n²`。",
+        "space": "`best = s[lo + 1:hi]` 會複製最多 `n` 個字元；改存兩個索引就降為 `O(1)`。"
+      }
+    },
+    "k-closest-points": {
+      "vars": "n = len(points)，k = 要取的 k 個",
+      "why": "有上限的最大堆積只保留目前最好的 `k` 個，所以 log 是對 `k` 而不是 `n`。",
+      "trap": "把所有點排序是 O(n log n)，只要 k ≪ n 就比較差——而這正是本題要考的情境。",
+      "cost": {
+        "time": "`n` 個點，每次在大小上限為 `k` 的堆積上 `heappush` / `heappop`，各 `log k`。",
+        "space": "堆積最多只放 `k + 1` 筆。"
+      }
+    },
+    "merge-intervals": {
+      "vars": "n = len(intervals)",
+      "trap": "幾乎所有區間題都是 O(n log n)，原因就在這：決定上界的是排序，不是掃描。",
+      "cost": {
+        "time": "`intervals.sort()` 是 `n log n`；之後的合併迴圈只是一次線性掃描。",
+        "space": "Timsort 需要最多 `n/2` 格的暫存空間；`out` 是回傳的答案。"
+      }
+    },
+    "meeting-rooms-ii": {
+      "vars": "n = len(intervals)",
+      "trap": "`rooms[0]` 只是偷看堆積頂端（最早結束的會議），是 O(1)，不是掃描。",
+      "cost": {
+        "time": "`sort()` 是 `n log n`，接著 `n` 次 `log n` 的堆積操作——同一個量級。",
+        "space": "`heappush` 為每間同時使用中的會議室放一個結束時間，最多 `n` 筆。"
+      }
+    },
+    "merge-sort": {
+      "vars": "n = len(nums)",
+      "trap": "切片每層多花 O(n)，而合併本來就要 O(n)——所以不像切片版二分搜尋，這裡不改變上界。",
+      "cost": {
+        "time": "兩個遞迴子問題加一次線性合併：`T(n) = 2T(n/2) + O(n)` → `log n` 層 × 每層 `n`。",
+        "space": "切片 `nums[:mid]` / `nums[mid:]` 與合併後的 `out` 同時佔 `O(n)`；遞迴堆疊只有 `log n` 深。"
+      }
+    },
+    "word-search": {
+      "vars": "m, n = 棋盤尺寸，L = len(word)",
+      "why": "指數是*單字*長度，而不是棋盤大小。",
+      "trap": "3^L 是更緊的上界（不會立刻走回剛離開的格子），也算對；4^L 是一般預期的答案。",
+      "cost": {
+        "time": "`m * n` 個起點，每個 `dfs` 往四個方向分支、最多 `L` 層 → 每個起點 `4^L`。",
+        "space": "遞迴最多 `L` 層深；棋盤用 `#` 原地標記後再還原。"
+      }
+    },
+    "median-data-stream": {
+      "vars": "n = 目前已加入的數字個數",
+      "note": "時間是指單次 addNum 呼叫。",
+      "trap": "五次堆積操作只是常數倍，不是乘數。而 `findMedian` 是 O(1)，只偷看兩個堆頂。",
+      "cost": {
+        "time": "每次 `addNum` 最多做五次堆積 push/pop，每次 `log n`。",
+        "space": "加入過的每個數都留在兩個堆積之一。"
+      }
+    },
+    "largest-rectangle-histogram": {
+      "vars": "n = len(heights)",
+      "why": "單調堆疊的攤銷論證：計算整個過程的 pop 總數，而不是每次外層迴圈的。",
+      "trap": "Hard 題不代表就是超線性。暴力法 O(n^2)；堆疊消掉了第二個因子。",
+      "cost": {
+        "time": "每個索引只 push 一次、最多 pop 一次，所以內層 `while` 整個過程合計只有 `n` 次 pop。",
+        "space": "柱子嚴格遞增時，堆疊會存下每一個索引。"
+      }
+    },
+    "longest-consecutive": {
+      "vars": "n = len(nums)",
+      "trap": "巢狀 `while` 看起來是 O(n^2)，拿掉那個判斷也真的是：長連續段裡的每個元素都會重走一遍。",
+      "cost": {
+        "time": "`x - 1 not in s` 這個判斷讓 `while` 只從連續段的開頭開始走，所以每個值總共只被走一次。",
+        "space": "`set(nums)` 存最多 `n` 個不同的值。"
+      }
+    },
+    "subarray-sum-k": {
+      "vars": "n = len(nums)",
+      "trap": "dict 要記每個前綴和*出現幾次*，而不只是有沒有出現——但這不改變任何一個上界。",
+      "cost": {
+        "time": "對 `nums` 走一次，每個元素做一次平均 O(1) 的 dict 查詢。",
+        "space": "`counts` 每個不同的前綴和佔一筆，最多 `n` 筆。"
+      }
+    },
+    "min-window-substring": {
+      "vars": "n = len(s)，m = len(t)",
+      "why": "`best` 是回傳的答案，不計入；若字母表固定，計數器就是 O(1)。",
+      "trap": "`while need[s[left]] < 0` 從不讓 `left` 倒退，所以整個過程攤銷 O(n)，不是每步 O(n)。",
+      "cost": {
+        "time": "`Counter(t)` 是 `m`；`right` 與 `left` 各走過 `s` 一次，所以內層 `while` 攤銷為 `n`。",
+        "space": "`need[...] -= 1` 也會為 `s` 的每個不同字元新增鍵，所以計數器最多 `n + m` 個鍵。"
+      }
+    },
+    "string-concat-loop": {
+      "title": "用 += 組字串",
+      "vars": "n = len(chars)",
+      "why": "字串不可變；`\"\".join(chars)` 才是 O(n) 的寫法。",
+      "trap": "CPython 的原地擴充可能讓它看起來是線性的，但那是不保證的實作細節。面試時答 O(n^2)，再提出 `join`。",
+      "cost": {
+        "time": "每次 `out += ch` 都會複製目前整個字串：`1 + 2 + … + n` → `n²` 次字元複製。",
+        "space": "建立新字串時，舊字串旁邊同時存在一份 `O(n)` 的副本。"
+      }
+    },
+    "list-membership-loop": {
+      "title": "迴圈裡對 list 用 `in`",
+      "vars": "n = len(a)，m = len(b)",
+      "trap": "對 set 做 `in` 是 O(1)。迴圈前先 `b = set(b)`，就變成 O(n + m) 時間、O(m) 空間——Python 面試中最划算的一行修正。",
+      "cost": {
+        "time": "`for x in a` 跑 `n` 次，而對 list 做 `x in b` 暗藏一次 `m` 步的線性掃描。",
+        "space": "只有 `total` 計數器。"
+      }
+    },
+    "pop-front-loop": {
+      "title": "用 pop(0) 清空 list",
+      "vars": "n = len(items)",
+      "why": "`out` 的 `O(n)` 屬於輸出；把它算進去也算對。",
+      "trap": "BFS 用 `collections.deque` 就是這個原因：`popleft()` 是 O(1)，而 `list.pop(0)` 會讓走訪悄悄變成平方。從尾端 `list.pop()` 則是 O(1)。",
+      "cost": {
+        "time": "`items.pop(0)` 會把剩下的元素全部往前移一格——每次 `O(n)`，`n` 次 → `n²`。",
+        "space": "`out` 是回傳的 list，且 `items` 隨之縮小，所以額外記憶體是 `O(1)`。"
+      }
+    },
+    "heapify-then-pop": {
+      "title": "先 heapify，再 pop k 次",
+      "vars": "n = len(nums)，k = 要取出的個數",
+      "trap": "把 heapify 算成 O(n log n) 是經典的高估：大多數節點靠近葉子、幾乎不用下沉，加總只有 O(n)。",
+      "cost": {
+        "time": "`heapify` 是由下而上的 `O(n)`，接著 `k` 次 `heappop`，每次 `log n`。",
+        "space": "`heapify` 在 `nums` 上原地整理；`k` 個元素的 list 是回傳的輸出。"
+      }
+    },
+    "triangular-nested-loop": {
+      "title": "從 i + 1 開始的雙層迴圈",
+      "vars": "n = len(nums)",
+      "trap": "「它只做了一半的工作」沒錯但無關緊要：減半是常數倍，Big-O 會把它拿掉。",
+      "cost": {
+        "time": "`for j in range(i + 1, …)` 依序跑 `n-1, n-2, …, 1` 次 → `n(n-1)/2` → `n²`。",
+        "space": "兩個迴圈索引加一個計數器。"
+      }
+    },
+    "halving-work-loop": {
+      "title": "每輪工作量減半的迴圈",
+      "vars": "n = 輸入大小",
+      "trap": "直覺會答 O(n log n)——log n 輪乘上一個迴圈。但迴圈越來越小：只有第一輪花 n，其餘加起來不到另一個 n。",
+      "cost": {
+        "time": "內層 `for` 跑 `size` 次，而 `size //= 2` 每輪減半：`n + n/2 + n/4 + … < 2n`。",
+        "space": "只有 `total` 和 `size`。"
+      }
+    },
+    "doubling-loop": {
+      "title": "計數器倍增的迴圈",
+      "vars": "n = 上限",
+      "trap": "迴圈變數是*乘上*而不是累加的，都是對數時間——正是二分搜尋減半的鏡像。",
+      "cost": {
+        "time": "`i *= 2` 每次讓 `i` 加倍，所以 `log₂ n` 次之後就超過 `n`。",
+        "space": "兩個純量。"
+      }
+    },
+    "sort-inside-loop": {
+      "title": "在迴圈裡排序",
+      "vars": "n = len(nums)",
+      "trap": "迴圈裡的 `sorted()` 從來都不便宜。雙堆積的 MedianFinder 每個元素只要 O(log n) 就能做同樣的事。",
+      "cost": {
+        "time": "`n` 次迭代，第 `i` 次切片後再對 `i` 個元素 `sorted()` → `Σ i log i` = `n² log n`。",
+        "space": "同一時間只有一個切片並排序過的 `window`，最多 `n` 個元素。"
+      }
+    },
+    "contains-duplicate": {
+      "vars": "n = len(nums)",
+      "trap": "O(1) 空間是另一種解法——先排序再比鄰居——代價是 O(n log n) 時間。這個版本是用記憶體換掉 log 因子。",
+      "cost": {
+        "time": "走一次，`x in seen` 是平均 O(1) 的雜湊查詢。",
+        "space": "`seen.add(x)` 最後可能存下所有值。"
+      }
+    },
+    "majority-element-boyer-moore": {
+      "vars": "n = len(nums)",
+      "why": "每個非候選者抵銷一個候選者；嚴格過半的元素就是抵銷後留下來的那個。",
+      "trap": "`Counter(nums).most_common(1)` 是 O(n) 時間但 O(n) 空間；排序是 O(n log n)。只有 Boyer-Moore 同時是線性時間*且*常數空間。",
+      "cost": {
+        "time": "`for x in nums` 走一次，每個元素 O(1)。",
+        "space": "只有 `count` 和 `candidate`。"
+      }
+    },
+    "first-missing-positive": {
+      "vars": "n = len(nums)",
+      "note": "輸入陣列可以被改寫；只計算額外空間。",
+      "trap": "`for` 裡套 `while` 看起來是 O(n^2)。要數交換次數而非迴圈：內層總迭代次數不超過 n，所以循環排序是線性的。",
+      "cost": {
+        "time": "`while` 裡每次交換都讓一個值永久歸位，所以整個 `for` 最多 `n` 次交換。",
+        "space": "交換在原地進行；陣列本身就扮演雜湊集合。"
+      }
+    },
+    "pascals-triangle": {
+      "vars": "n = numRows",
+      "note": "這裡要計入回傳的三角形——它也是迴圈回頭讀取的表格。",
+      "trap": "直覺會答 O(n)——每列一次外層迭代。但每列長度不固定：光最後一列就有 n 寬。",
+      "cost": {
+        "time": "第 `i` 列填 `i + 1` 格，`1 + 2 + … + n` = `n(n+1)/2` → `n²`。",
+        "space": "每個 `row` 都留在 `res` 裡，所以全部 `n(n+1)/2` 格都持續存在。"
+      }
+    },
+    "valid-sudoku": {
+      "vars": "棋盤固定為 9 x 9",
+      "why": "複雜度描述的是成長；永遠 9 × 9 的棋盤沒有成長可言。",
+      "trap": "對巢狀迴圈答 O(n^2) 是訓練出來的反射，但這裡根本沒有 n。若是一般的 n × n 棋盤，才是 O(n^2) 時間與空間。",
+      "cost": {
+        "time": "`range(9)` × `range(9)` 固定是 81 格、每格三個鍵——沒有任何輸入維度會成長。",
+        "space": "`seen` 最多 81 × 3 個鍵，是常數。"
+      }
+    },
+    "container-with-most-water": {
+      "vars": "n = len(height)",
+      "why": "移動*較矮*那面牆是安全的：保留它又縮小寬度，面積不可能超過剛剛記下的值。",
+      "trap": "試遍每一對線是 O(n^2) 的版本；「移動矮牆」的規則才讓一次掃描就足夠。",
+      "cost": {
+        "time": "`lo` 只增、`hi` 只減，所以 `while` 最多跑 `n` 次。",
+        "space": "整個狀態就是三個純量。"
+      }
+    },
+    "valid-palindrome-two-pointer": {
+      "vars": "n = len(s)",
+      "why": "巢狀 `while` 不一定是平方；單調移動的指標就是線索。",
+      "trap": "`\"\".join(...)` 加 `t == t[::-1]` 的一行寫法同樣 O(n) 時間，但因為建了兩個新字串，所以是 O(n) 空間。",
+      "cost": {
+        "time": "三個 `while`，但 `lo` 只增、`hi` 只減——指標總共只走 `n` 步。",
+        "space": "沒有複製字串，只有兩個索引。"
+      }
+    },
+    "longest-repeating-replacement": {
+      "vars": "n = len(s)；s 只含大寫 A-Z",
+      "trap": "`count` 看起來會隨 n 成長，但字母表限制了它。過期的 `most` 也無害：視窗從不縮小，最多只是停止變大。",
+      "cost": {
+        "time": "`right` 每個字元前進一次，`left` 最多跟著前進一次 → 線性滑動。",
+        "space": "`count` 每個不同字母一個鍵——最多 26 個，是常數。"
+      }
+    },
+    "permutation-in-string": {
+      "vars": "m = len(s1)，n = len(s2)",
+      "trap": "迴圈裡的 `need == win` 若 list 會成長才昂貴。但它們不會——26 次比較是常數——所以是 O(m + n)，不是 O(m * n)。",
+      "cost": {
+        "time": "建立計數是 `m`；視窗滑過 `s2` 一次，每步做一次固定 26 格的 `need == win`。",
+        "space": "兩個固定 26 格的 list，與字串長度無關。"
+      }
+    },
+    "min-size-subarray-sum": {
+      "vars": "n = len(nums)",
+      "why": "攤銷思考：算內層*總共*最多能跑幾次，而不是每次外層各跑幾次。",
+      "trap": "巢狀 `while` 容易讓人答 O(n^2)。用前綴和加二分搜尋也能解，但是 O(n log n)，嚴格較差。",
+      "cost": {
+        "time": "`right` 每個索引加入一次，`left` 最多移除一次——指標總共移動 `2n` 次。",
+        "space": "一個累計 `total`，加上 `left` 與 `best`。"
+      }
+    },
+    "move-zeroes": {
+      "vars": "n = len(nums)",
+      "trap": "誘人的 `while 0 in nums: nums.remove(0); nums.append(0)` 是 O(n^2)：每次 `remove` 都要移動尾段，`in` 又從頭重掃。",
+      "cost": {
+        "time": "`for fast` 走一次，每個元素最多一次 O(1) 交換。",
+        "space": "原地交換；只有兩個索引。"
+      }
+    },
+    "sliding-window-maximum": {
+      "vars": "n = len(nums)，k = 視窗大小",
+      "note": "忽略回傳的最大值 list。",
+      "why": "單調 deque 保持索引對應的值遞減，所以視窗最大值永遠在 `dq[0]`。",
+      "trap": "O(n * k) 是程式看起來的樣子，也是每個視窗 `max(nums[i:i + k])` 的真實成本。堆積可做到 O(n log k)；只有 deque 能做到線性。",
+      "cost": {
+        "time": "每個索引只 append 一次、最多 pop 一次，所以內層 `while` 全程合計 `O(n)`。",
+        "space": "`dq` 只存目前視窗內的索引——最多 `k` 個。"
+      }
+    },
+    "invert-binary-tree": {
+      "vars": "n = 節點數，h = 樹高",
+      "trap": "tuple 指派會先算完兩邊再重新綁定，所以不會複製或遺失子樹。拆成兩行又不用暫存變數，才會弄丟一棵子樹。",
+      "cost": {
+        "time": "兩個遞迴呼叫讓每個節點各被拜訪一次，每次做 O(1) 的交換。",
+        "space": "每層一個堆疊框架：`O(h)`——平衡時 `log n`，鏈狀時 `n`。"
+      }
+    },
+    "validate-bst": {
+      "vars": "n = 節點數，h = 樹高",
+      "why": "把上下界*往下*傳，才讓一次走訪就足夠。",
+      "trap": "對每個節點求 `max(左子樹)` 與 `min(右子樹)`，會從每個祖先重走子樹，是 O(n^2)。",
+      "cost": {
+        "time": "每個節點只用一個傳下來成本 O(1) 的 `(lo, hi)` 範圍檢查一次。",
+        "space": "遞迴深度等於樹高。"
+      }
+    },
+    "diameter-binary-tree": {
+      "vars": "n = 節點數，h = 樹高",
+      "why": "每個節點往上回傳深度的同時，記下經過自己的最佳路徑。",
+      "trap": "在走訪每個節點時另外呼叫 `depth()`，會讓每棵子樹在每個祖先處重算一次——鏈狀時是 O(n^2)。",
+      "cost": {
+        "time": "一次後序走訪：`depth(node.left)` 與 `depth(node.right)` 讓每個節點只碰一次。",
+        "space": "遞迴深度 `h` 層。"
+      }
+    },
+    "build-tree-preorder-inorder": {
+      "vars": "n = 節點數",
+      "trap": "教科書寫法 `inorder.index(...)` 加上 `preorder[1:mid + 1]` 切片是 O(n^2)：掃描與複製在每個節點都是線性的。",
+      "cost": {
+        "time": "`pos` 只建一次，`O(n)`；之後每個節點只要一次 `next(it)` 和一次 dict 查詢。",
+        "space": "`pos` 映射有 `n` 筆，超過 `O(h)` 的堆疊。"
+      }
+    },
+    "lca-binary-tree": {
+      "vars": "n = 節點數，h = 樹高",
+      "trap": "找到兩個目標後它並不會提早停，因為另一側的節點仍可能是其中之一。在 BST（LC 235）上可依值導引，降到 O(h)。",
+      "cost": {
+        "time": "兩個遞迴呼叫在返回前可能走遍所有節點——沒有順序可以剪枝。",
+        "space": "樹的每一層一個堆疊框架。"
+      }
+    },
+    "kth-smallest-bst": {
+      "vars": "n = 節點數，h = 樹高，k = 要求的名次",
+      "trap": "把整個中序走訪存成 list 再回傳 `res[k - 1]` 是 O(n) 時間與空間。在第 k 個就提早 `return`，就是全部的差別。",
+      "cost": {
+        "time": "內層 `while` 往下走 `h` 個節點，之後 `k` 次 pop 每次攤銷 O(1)，接著就提早 `return`。",
+        "space": "`stack.append(node)` 最多存一條根到葉的路徑，`h` 個節點。"
+      }
+    },
+    "right-side-view": {
+      "vars": "n = 節點數，w = 最寬的一層",
+      "why": "改用 DFS 空間會變成 O(h)；走訪方式改變的是記憶體特性，從不改變 O(n) 時間。",
+      "trap": "`while` 裡的 `for` 看起來是平方，但兩層迴圈合起來每個節點只拜訪一次。",
+      "cost": {
+        "time": "`len(q)` 鎖定每層的大小，所以 `while` × `for` 仍讓每個節點只出列一次。",
+        "space": "佇列一次只放一層——最多是最寬那層，完全二元樹約 `n/2`。"
+      }
+    },
+    "balanced-binary-tree-naive": {
+      "vars": "n = 節點數，h = 樹高",
+      "note": "以最壞情況作答。",
+      "why": "要走到深處的節點，每個祖先都得先通過檢查，所以成本被壓在鏈狀樹看似的 n² 之下。",
+      "trap": "同一函式裡兩個遞迴是警訊。同時回傳高度與代表「不平衡」的 -1 哨兵值，就不會重複量測子樹，是 O(n)。",
+      "cost": {
+        "time": "`isBalanced` 走到的每個節點都對兩個子節點呼叫 `height`，每個被走到的祖先都重走一次整棵子樹。",
+        "space": "`height` 的遞迴深度等於樹高。"
+      }
+    },
+    "word-break-dp": {
+      "vars": "n = len(s)，m = wordDict 的總字元數",
+      "note": "把一次「切片加查詢」算作一個單位工作。",
+      "trap": "沒有這條附註的話其實是隱藏的 O(n^3)：`s[j:i]` 要複製並雜湊最多 n 個字元。所以 trie、或用最長單字限制 `j`，才值得做。",
+      "cost": {
+        "time": "`for i` × `for j` 每個 `(j, i)` 組合考慮一次——`n²` 次「切片加查詢」單位。",
+        "space": "`dp` 有 `n + 1` 個布林值，`set(wordDict)` 每個單字一筆，上限為 `m`。"
+      }
+    },
+    "max-product-subarray": {
+      "vars": "n = len(nums)",
+      "why": "同時記錄目前的*最小值*，才能處理負數讓正負號翻轉的情況。",
+      "trap": "寫成 `for x in nums[1:]` 會悄悄變成 `O(n)` 空間，因為切片會複製陣列。從索引 1 開始走則不花額外空間。",
+      "cost": {
+        "time": "`for i` 對 `nums` 走一趟，每步只做幾次乘法 → `O(n)`。",
+        "space": "只保留 `best`、`cur_max`、`cur_min` 三個數，沒有表格 → `O(1)`。"
+      }
+    },
+    "decode-ways": {
+      "vars": "n = len(s)",
+      "why": "這是費氏數列形狀的遞推：位置 `i` 只會讀 `i-1` 和 `i-2`。",
+      "trap": "單純遞迴在每個索引分兩支，跟天真的 fib 一樣是 `O(2^n)`。加上記憶化能修好時間，但仍是 `O(n)` 空間；改用兩個滾動變數才連空間也省掉。",
+      "cost": {
+        "time": "`for i` 走過 `s` 一次；第 7 行的兩字元切片與 `int` 都是常數工作 → `O(n)`。",
+        "space": "用 `prev`、`cur` 兩個滾動變數取代整張 DP 表 → `O(1)`。"
+      }
+    },
+    "house-robber-circular": {
+      "vars": "n = len(nums)",
+      "why": "把環狀的房子拆成兩條直線——去掉第一間或去掉最後一間——每條都用 LC 198 的掃描解決。",
+      "trap": "呼叫兩次輔助函式是相加，不是平方。但空間不是 `O(1)`：切片會複製陣列，改傳索引範圍才能省下。",
+      "cost": {
+        "time": "`line` 被呼叫兩次，每次 `for x in vals` 都是一趟線性掃描 → `2n` = `O(n)`。",
+        "space": "`nums[1:]` 與 `nums[:-1]` 各自複製幾乎整個陣列 → `O(n)`。"
+      }
+    },
+    "partition-equal-subset-sum": {
+      "vars": "n = len(nums), s = sum(nums) // 2",
+      "why": "這是只保留一列的 0/1 背包；讓 `t` *由大往小*走，才能避免同一個物品被用兩次。",
+      "trap": "這是偽多項式，不是多項式：`s` 是數值而不是輸入大小。數字大小加倍，時間就加倍，輸入長度卻幾乎沒變。",
+      "cost": {
+        "time": "`for x` 走 n 個物品 × `for t` 走最多 s 個總和，每次更新 `O(1)` → `O(n * s)`。",
+        "space": "`dp` 只是一列 `s + 1` 個布林值 → `O(s)`。"
+      }
+    },
+    "edit-distance": {
+      "vars": "m = len(word1), n = len(word2)",
+      "why": "每一格只需要上方、左方與左上對角三格，所以保留一列就夠了。",
+      "trap": "`O(m * n)` 空間是二維表格的成本，不是這題的必要成本。滾動成一列（取較短的字串當列）就能降到較短的長度。",
+      "cost": {
+        "time": "`for i` 走 m 列 × `for j` 走 n 欄，每格 `O(1)` → `O(m * n)`。",
+        "space": "`dp` 只是一列 `n + 1` 格，加上保存的左上角 `prev` → `O(n)`。"
+      }
+    },
+    "palindromic-substrings": {
+      "vars": "n = len(s)",
+      "trap": "逐一檢查每個子字串是 `O(n^3)`：共 n² 個子字串，每個檢查要線性時間。DP 表格時間相同但要 `O(n^2)` 空間；Manacher 演算法可做到 `O(n)`。",
+      "cost": {
+        "time": "`for center` 產生 `2n - 1` 個中心，每個 `while` 最多擴展 n/2 步 → `O(n^2)`。",
+        "space": "只保留計數器與兩個索引 → `O(1)`。"
+      }
+    },
+    "minimum-path-sum": {
+      "vars": "m, n = 網格的維度",
+      "note": "網格會被原地改寫，只計算額外空間。",
+      "why": "某格的最佳路徑只取決於兩個鄰格的最終值，而不是它們是怎麼走到的。",
+      "trap": "列舉所有路徑共有 `C(m + n - 2, n - 1)` 條——是指數級。DP 靠重複使用鄰格已算好的值避開這點。",
+      "cost": {
+        "time": "`for i` × `for j` 每格各走一次，每次 `O(1)` → `O(m * n)`。",
+        "space": "結果直接覆寫在 `grid` 上，沒有配置新記憶體 → `O(1)`。"
+      }
+    },
+    "clone-graph": {
+      "vars": "V = 節點數, E = 邊數",
+      "note": "不計複製出來的圖本身，只計算記錄用的資料結構。",
+      "why": "在遞迴*之前*就登記複本，才能避免環造成無窮迴圈。",
+      "trap": "若把 `clones[cur] = copy` 放到鄰居迴圈之後，任何環都會無限遞迴。雜湊表以節點為鍵，所以是 `O(V)`；邊存在複本裡，那屬於輸出。",
+      "cost": {
+        "time": "每個節點只複製一次，`for nb in cur.neighbors` 每條邊只走一次 → `O(V + E)`。",
+        "space": "`clones` 每個節點一筆，遞迴的 `dfs` 最深可達 V 層 → `O(V)`。"
+      }
+    },
+    "pacific-atlantic": {
+      "vars": "m, n = 網格的維度",
+      "why": "把水流反過來：讓水從各海洋的邊界往內陸*爬升*，而不是從每一格往外流。",
+      "trap": "從每一格出發搜尋能否到達兩個海洋是 `O((m * n)^2)`。改從邊界出發，就變成兩次掃描。",
+      "cost": {
+        "time": "每次 `climb` 每格最多彈出一次並檢查 4 個鄰格，共兩次掃描 → `O(m * n)`。",
+        "space": "`seen` 與 `stack` 各自最多容納所有格子 → `O(m * n)`。"
+      }
+    },
+    "course-schedule-ii": {
+      "vars": "V = numCourses, E = len(prerequisites)",
+      "why": "`len(order) == numCourses` 就是環的檢查：在環上的課程入度永遠不會降到零。",
+      "trap": "`while` 裡的 `for` 不是再乘一個因子：在整個執行過程中，每條邊只會被處理一次。",
+      "cost": {
+        "time": "`while q` 每門課只出列一次，內層 `for nxt` 總共只處理每條邊一次 → `O(V + E)`。",
+        "space": "`graph` 存 E 筆鄰接資料；`indeg`、佇列與 `order` 各存 V 筆 → `O(V + E)`。"
+      }
+    },
+    "max-area-of-island": {
+      "vars": "m, n = 網格的維度",
+      "trap": "雙層迴圈包著淹沒填充，看起來像 `O((m * n)^2)`，沒有標記的話確實會是。空間也不是 `O(1)`：呼叫堆疊可能同時放進所有格子。",
+      "cost": {
+        "time": "`grid[i][j] = 0` 一進入就標記，所以掃描加上所有 `sink` 呼叫每格只碰一次 → `O(m * n)`。",
+        "space": "遞迴的 `sink` 在一座蜿蜒的島上可疊到 m·n 層 → `O(m * n)`。"
+      }
+    },
+    "word-ladder": {
+      "vars": "n = len(wordList), l = len(beginWord)",
+      "why": "26 是常數；藏起來的那個因子是字串的建構。",
+      "trap": "常見的猜測是 `O(n * l)`，因為忘了字串建構的成本。`word[:i] + c + word[i+1:]` 會配置並雜湊一個新的 l 字元字串——那就是第二個 l。",
+      "cost": {
+        "time": "n 個單字各出列一次，嘗試 `26 * l` 個候選，每次切片組字串加雜湊花 l → `O(n * l^2)`。",
+        "space": "`words` 存 n 個長度 l 的字串，佇列也可能存這麼多 → `O(n * l)`。"
+      }
+    },
+    "connected-components-union-find": {
+      "vars": "n = 節點數, e = len(edges)",
+      "note": "把一次 find/union 視為近乎常數（反阿克曼函數）。",
+      "trap": "少了路徑減半那一行，合併可能疊出深度 n 的鏈，每次 find 變成 `O(n)`，總成本退化成 `O(n * e)`。",
+      "cost": {
+        "time": "建立 `parent` 花 `O(n)`，接著 e 條邊各做兩次近乎常數的 find → `O(n + e)`。",
+        "space": "只存 n 筆的 `parent` 陣列，沒有建鄰接串列 → `O(n)`。"
+      }
+    },
+    "cheapest-flights-k-stops": {
+      "vars": "n = 城市數, e = len(flights), k = 允許的轉機次數",
+      "why": "在 `k + 1` 輪後停下的 Bellman-Ford：第 r 輪記錄最多搭 r 段航班的最便宜路線。",
+      "trap": "直接用 Dijkstra 在這裡是*錯的*：k 次轉機內的最便宜路線，常常不是整體最便宜路線的前綴。每輪複製 `dist` 也很重要——原地鬆弛會讓同一輪走兩段。",
+      "cost": {
+        "time": "`k + 1` 輪，每輪複製 `dist`（n）並鬆弛每條航班（e）→ `O(k * (n + e))`。",
+        "space": "`dist` 與每輪的複本 `nxt` 各長 n → `O(n)`。"
+      }
+    },
+    "find-min-rotated": {
+      "vars": "n = len(nums)",
+      "why": "比較 `nums[mid]` 與 `nums[hi]`，就能知道 `mid` 落在旋轉點的哪一側。",
+      "trap": "要寫 `hi = mid` 而不是 `mid - 1`：最小值可能*就是* `mid`。允許重複值時（LC 154）最壞情況會退化成 `O(n)`。",
+      "cost": {
+        "time": "`while lo < hi` 每步用 `mid` 把範圍砍半 → `O(log n)`。",
+        "space": "只保留 `lo`、`hi`、`mid` → `O(1)`。"
+      }
+    },
+    "search-2d-matrix": {
+      "vars": "m, n = 矩陣的維度",
+      "why": "每一列的開頭都大於上一列的結尾，所以整個矩陣就是一段長度 `m * n` 的已排序序列。",
+      "trap": "先二分找列、再二分找欄，界限相同，因為 `log(m * n) = log m + log n`。若先線性掃描找列則是 `O(m + log n)`——矩陣很高時會比較差。",
+      "cost": {
+        "time": "對全部 `m * n` 個位置做一次二分搜尋；`mid // n`、`mid % n` 換算回格子 → `O(log (m * n))`。",
+        "space": "只保留幾個索引 → `O(1)`。"
+      }
+    },
+    "search-range": {
+      "vars": "n = len(nums)",
+      "why": "搜尋的是*邊界*（第一個 `>= t` 的索引）而不是值本身，所以兩端都維持對數時間。",
+      "trap": "先找到一個目標再往兩邊擴展是 `O(n)`：整個陣列都是同一個值時，就得走完全部。",
+      "cost": {
+        "time": "`first_at_least` 是一個每步砍半的 `while` 迴圈，呼叫兩次 → `2 log n` = `O(log n)`。",
+        "space": "每次呼叫只有 `lo`、`hi`、`mid` → `O(1)`。"
+      }
+    },
+    "median-two-sorted-arrays": {
+      "vars": "m = 較短陣列的長度, n = 較長陣列的長度",
+      "why": "二分搜尋的是*切分點*——從較短陣列取幾個元素——而不是某個值。",
+      "trap": "合併後取中間是 `O(m + n)`，正是這題要排除的做法。少了第 2 行的交換，就會悄悄變成對較長陣列取 log。",
+      "cost": {
+        "time": "`while lo <= hi` 在較短陣列（大小 m）上二分搜尋切分點，每次檢查 `O(1)` → `O(log m)`。",
+        "space": "只保留切分索引與四個邊界值 → `O(1)`。"
+      }
+    },
+    "split-array-largest-sum": {
+      "vars": "n = len(nums), s = sum(nums)",
+      "why": "這是對*答案*做二分搜尋，所以 log 取的是總和的範圍，而不是 n。",
+      "trap": "這裡的 log 不是 `log n`。DP 解法是 `O(n^2 * k)`；只要數值有上限，log s 次線性檢查就比它快。",
+      "cost": {
+        "time": "`while lo < hi` 在答案範圍 `[max, sum]` 上砍半（log s 步），每步呼叫線性的 `pieces` → `O(n log s)`。",
+        "space": "`pieces` 只用兩個計數器，沒有東西隨 n 成長 → `O(1)`。"
+      }
+    },
+    "task-scheduler": {
+      "vars": "t = len(tasks)；冷卻時間是參數 n",
+      "why": "排程長度只由出現最多次的任務決定，所以完全不需要模擬。",
+      "trap": "`O(t * n)` 來自想像逐格模擬的過程。用堆積的貪婪解是 `O(t log 26)`，仍是線性，但公式解連它都不需要。",
+      "cost": {
+        "time": "`Counter(tasks)` 對 t 個任務走一趟，其餘只是對最多 26 個計數做算術 → `O(t)`。",
+        "space": "`counts` 每個不同字母一筆——最多 26 筆 → `O(1)`。"
+      }
+    },
+    "last-stone-weight": {
+      "vars": "n = len(stones)",
+      "why": "`heapify` 只要 `O(n)`；成本在最多 n 輪的彈出與推入。",
+      "trap": "取負數的複本才讓空間變成 `O(n)`；直接對 `stones` 原地 heapify 額外空間是 `O(1)`，但會改到呼叫者的串列。每輪重新排序則是 `O(n^2 log n)`。",
+      "cost": {
+        "time": "每輪 `while` 至少移除一顆石頭（少於 n 輪），每次堆積操作 `O(log n)` → `O(n log n)`。",
+        "space": "`heap` 是全部 n 顆石頭取負的複本 → `O(n)`。"
+      }
+    },
+    "kth-largest-stream": {
+      "vars": "k = 要追蹤的名次, n = 目前看過的值數量",
+      "note": "時間是單次 `add` 呼叫的成本；建構子另計。",
+      "why": "把堆積上限設為 k，成本就與資料流長度無關，而且根節點永遠是第 k 大。",
+      "trap": "保留所有值並在每次 `add` 時排序，每次呼叫是 `O(n log n)`。就算是大小 k 的*已排序串列*，每次插入也要 `O(k)` 來位移。",
+      "cost": {
+        "time": "在上限 k 的堆積上做 `heappush` 再 `heappop` → 每次 `add` 為 `O(log k)`。",
+        "space": "`self.heap` 被修剪到 k 筆，永遠不超過 `k + 1` → `O(k)`。"
+      }
+    },
+    "eval-rpn": {
+      "vars": "n = len(tokens)",
+      "trap": "`b, a = stack.pop(), stack.pop()` 很重要：第二個運算元會先被彈出，順序弄反只會在 `-` 和 `/` 出錯。不論如何界限都一樣。",
+      "cost": {
+        "time": "`for tok` 走一趟；每個 token 是一次推入，或兩次彈出加一次推入 → `O(n)`。",
+        "space": "一連串運算元而沒有運算子時，`stack` 上會留下約 n/2 個值 → `O(n)`。"
+      }
+    },
+    "simplify-path": {
+      "vars": "n = len(path)",
+      "why": "需要堆疊，是因為 `..` 要撤銷先前*任意一個*目錄。",
+      "trap": "一直用 `replace(\"//\", \"/\")` 改寫字串直到不再變化是 `O(n^2)`，而且單次由左到右的改寫也處理不了 `..`。",
+      "cost": {
+        "time": "`path.split(\"/\")` 是線性的，每段最多推入或彈出一次；最後的 `join` 也是線性 → `O(n)`。",
+        "space": "`split` 產生的片段總長最多 n 個字元，`stack` 可能全部保留 → `O(n)`。"
+      }
+    },
+    "longest-valid-parentheses": {
+      "vars": "n = len(s)",
+      "why": "哨兵 `-1` 標記目前有效區段之前的索引，所以區段長度就是 `i - stack[-1]`。",
+      "trap": "檢查每個子字串是 `O(n^3)`。另外也有 `O(1)` 空間的解法：由左到右、再由右到左各數一次括號。",
+      "cost": {
+        "time": "`for i, ch` 走一趟；每個索引最多推入一次、彈出一次 → `O(n)`。",
+        "space": "`stack` 存放未配對 `(` 的索引——最多 n 個 → `O(n)`。"
+      }
+    },
+    "car-fleet": {
+      "vars": "n = 車輛數",
+      "why": "比前車更早抵達的車，只會併入前面的車隊並沿用它的抵達時間。",
+      "trap": "模擬車輛互相追上是 `O(n^2)`。依位置排序，再把每輛車的抵達時間和前方最慢者比較，就能取代模擬。",
+      "cost": {
+        "time": "對 n 輛車的 `sorted(...)` 主導成本；之後的掃描是線性 → `O(n log n)`。",
+        "space": "`zip` 產生的 n 個配對存進排序後的串列，Timsort 還需要 `O(n)` 暫存 → `O(n)`。"
+      }
+    },
+    "online-stock-span": {
+      "vars": "n = 目前為止呼叫 next() 的次數",
+      "note": "時間是單次 `next` 呼叫的攤銷成本。",
+      "trap": "`O(n)` 是單次呼叫真正的*最壞情況*；題目問的是攤銷成本，而這正是值得寫單調堆疊的原因。",
+      "cost": {
+        "time": "`while` 可能一次彈出很多筆，但每個價格在所有呼叫中只推入一次、最多彈出一次 → 攤銷 `O(1)`。",
+        "space": "`self.stack` 每次呼叫加一筆；嚴格遞減的序列永遠不會彈出 → `O(n)`。"
+      }
+    },
+    "remove-nth-from-end": {
+      "vars": "L = 串列的節點數（參數 n 是距離尾端的位移）",
+      "why": "固定 n 的間距讓 `slow` 停在目標的前一個節點；虛擬節點讓刪除頭節點不需要特別處理。",
+      "trap": "先數長度再走一次同樣是 `O(L)`。真正的錯誤是把節點複製到串列裡從後面索引——白白花 `O(L)` 空間。",
+      "cost": {
+        "time": "`for` 讓 `fast` 先走 n 步，再由 `while fast.next` 走完剩下的——總共一趟 → `O(L)`。",
+        "space": "只有兩個指標與一個 `dummy` 節點 → `O(1)`。"
+      }
+    },
+    "reorder-list": {
+      "vars": "n = 節點數",
+      "trap": "依序執行的迴圈是相加，不是相乘。把節點倒進串列再用索引重接，時間相同但要 `O(n)` 空間——正是題目希望你避免的。",
+      "cost": {
+        "time": "三個依序的 `while` 迴圈——找中點、反轉、交錯——各最多 n 步 → `O(n)`。",
+        "space": "每一步都只重接既有節點，沒有配置新記憶體 → `O(1)`。"
+      }
+    },
+    "copy-list-random-pointer": {
+      "vars": "n = 節點數",
+      "note": "不計複製出來的串列本身，只計算記錄用的資料結構。",
+      "why": "必須先建好對照表，因為 `cur.random` 可能指向尚未複製的節點；`{None: None}` 省去所有空值檢查。",
+      "trap": "只走一趟不夠，因為 `random` 可能指向後面。`O(1)` 空間的解法是把每個複本插在原節點後面，最後再拆開。",
+      "cost": {
+        "time": "兩趟 `while cur`——先建立複本，再透過字典查詢接上 `next` 與 `random` → `O(n)`。",
+        "space": "`clones` 把每個原節點對應到它的複本 → `O(n)`。"
+      }
+    },
+    "sort-list": {
+      "vars": "n = 節點數",
+      "trap": "「串列的合併排序是 `O(1)` 空間」只對*由下而上*的版本成立；這個由上而下的版本會疊出 log n 層呼叫。",
+      "cost": {
+        "time": "第 8 行的遞迴切出 log n 層，每層的合併 `while` 共處理 n 個節點 → `O(n log n)`。",
+        "space": "合併是原地重接；唯一的記憶體是遞迴堆疊，每層一個 frame → `O(log n)`。"
+      }
+    },
+    "palindrome-linked-list": {
+      "vars": "n = 節點數",
+      "trap": "`vals == vals[::-1]` 要 `O(n)` 空間，而進階題要求做得更好。第 7 行的多重賦值會先算完右側；拆成分開的敘述就會弄丟串列。",
+      "cost": {
+        "time": "三個依序的 `while` 迴圈——找中點、反轉、比較——各最多 n 步 → `O(n)`。",
+        "space": "後半段原地反轉，只保留幾個指標 → `O(1)`。"
+      }
+    },
+    "find-duplicate-floyd": {
+      "vars": "n = len(nums)",
+      "why": "把 `i -> nums[i]` 看成鏈結串列：重複的值有兩個入口，所以它就是環的入口。",
+      "trap": "兩個迴圈是依序執行，不是巢狀。簡單的解法都被限制條件排除了：集合要 `O(n)` 空間，排序會改動輸入。",
+      "cost": {
+        "time": "兩個依序的 `while` 迴圈（在環中相遇，再找入口），各最多 n 步 → `O(n)`。",
+        "space": "只保留 `slow` 與 `fast` → `O(1)`。"
+      }
+    },
+    "letter-combinations": {
+      "vars": "n = len(digits)",
+      "note": "這題要計入輸出——`res` 是唯一會成長的東西。",
+      "trap": "`O(4^n)` 只算了組合的數量，沒算每個組合的長度。多數數字只有 3 個字母，但最壞情況的底數是 4。",
+      "cost": {
+        "time": "`for ch` 每個數字最多分 4 支 → `4^n` 個葉節點，每個葉節點的 `join` 花 n → `O(n * 4^n)`。",
+        "space": "`res` 收集最多 `4^n` 個長度 n 的字串；遞迴只有 n 層 → `O(n * 4^n)`。"
+      }
+    },
+    "n-queens": {
+      "vars": "n = 棋盤大小",
+      "note": "不計收集在 `res` 中的棋盤。",
+      "why": "三個集合讓衝突檢查只要 `O(1)`，而且同一時間只存在一組部分擺放。",
+      "trap": "`O(n^n)` 是沒有剪枝時的界限：n 列每列試 n 欄。欄位檢查才把它壓成階乘。",
+      "cost": {
+        "time": "第 r 列最多只剩 `n - r` 個可用欄位，所以 `place` 遞迴最多有 `n!` 個葉節點 → `O(n!)`。",
+        "space": "三個集合、`placed` 與遞迴各自每列一筆 → `O(n)`。"
+      }
+    },
+    "palindrome-partitioning": {
+      "vars": "n = len(s)",
+      "note": "不計收集在 `res` 中的分割結果。",
+      "trap": "回文檢查不是免費的：`piece[::-1]` 會建立反轉的複本。先花 `O(n^2)` 建好回文表，就能把這份成本移出指數級的搜尋。",
+      "cost": {
+        "time": "`walk` 在 n - 1 個間隙各選切或不切（`2^n` 種分割），切片加反轉檢查花 n → `O(n * 2^n)`。",
+        "space": "`cur` 與遞迴堆疊各最多 n 層 → `O(n)`。"
+      }
+    },
+    "subsets-ii": {
+      "vars": "n = len(nums)",
+      "note": "這題要計入輸出。",
+      "why": "`O(n log n)` 的排序被指數項吞掉了。",
+      "trap": "去重那一行不會改變界限：最壞情況沒有重複值，所以什麼都不會被剪掉。",
+      "cost": {
+        "time": "`walk` 記錄最多 `2^n` 個子集，`cur[:]` 複製每個子集的成本是其長度 → `O(n * 2^n)`。",
+        "space": "`res` 存放最多 `2^n` 個、每個最多 n 個元素的複本 → `O(n * 2^n)`。"
+      }
+    },
+    "combination-sum-ii": {
+      "vars": "n = len(candidates)",
+      "note": "不計收集在 `res` 中的組合。",
+      "trap": "`break` 在實務上剪枝很有效，但它取決於數值而不是 n，所以最壞情況不受影響。",
+      "cost": {
+        "time": "每個候選數只有選或不選，`walk` 最多走 `2^n` 條路徑，每找到一組要 `O(n)` 複製 → `O(n * 2^n)`。",
+        "space": "`cur` 與遞迴堆疊各最多 n 層 → `O(n)`。"
+      }
+    },
+    "counting-bits": {
+      "vars": "n = 輸入的數字",
+      "note": "要計入回傳的串列——它也是迴圈回頭讀取的表格。",
+      "why": "`i >> 1` 去掉最後一個位元，落在已經算好的子問題上——這是 DP，不是位元技巧。",
+      "trap": "每個數字都用 `bin(i).count(\"1\")` 是 `O(n log n)`：每個數字最多 log n 個位元，而且 `bin` 每次都會建立字串。",
+      "cost": {
+        "time": "`for i` 跑 n 次，`dp[i >> 1]` 只是查一個已算好的項目 → `O(n)`。",
+        "space": "`dp` 有 `n + 1` 筆，同時是表格也是結果 → `O(n)`。"
+      }
+    },
+    "missing-number-xor": {
+      "vars": "n = len(nums)",
+      "why": "除了缺少的那個，每個索引與值在 xor 中都出現兩次，而 `a ^ a == 0`。",
+      "trap": "高斯公式 `n * (n + 1) // 2 - sum(nums)` 同樣是 `O(n)` / `O(1)`，但在固定寬度的語言可能溢位。用 `set` 則白白花 `O(n)` 空間。",
+      "cost": {
+        "time": "`for i, x` 對 `nums` 走一趟，每步一次 xor → `O(n)`。",
+        "space": "只保留累計的 `out` → `O(1)`。"
+      }
+    },
+    "reverse-bits": {
+      "vars": "n = 整數本身, b = 位元寬度（此處為 32）",
+      "trap": "`O(log n)` 是「一直位移到 0」的直覺反應，但這個迴圈不會提早結束，而且寬度固定。若用一般的字組寬度來說，誠實的答案是 `O(b)`。",
+      "cost": {
+        "time": "`for _ in range(32)` 不論輸入都恰好跑 32 次 → `O(1)`。",
+        "space": "只保留 `out` 與 `n` → `O(1)`。"
+      }
+    },
+    "time-based-kv-store": {
+      "vars": "n = 被讀取的鍵底下存放的值數量, t = set 呼叫的總次數",
+      "note": "時間是單次 `get` 呼叫的成本。",
+      "why": "因為時間戳嚴格遞增地到來，串列天生就是排序好的，這才讓二分搜尋成立。",
+      "trap": "`set` 能是 `O(1)` 全靠這個保證；若時間戳亂序抵達，每次寫入都要 `O(n)` 的插入。從尾端往回掃描則是每次 get 都 `O(n)` 的初版寫法。",
+      "cost": {
+        "time": "`while lo < hi` 在該鍵的 n 筆串列上二分搜尋最後一個 `<= timestamp` 的時間戳 → `O(log n)`。",
+        "space": "`self.store` 每次 `set` 存一組 `(timestamp, value)`，涵蓋所有鍵 → `O(t)`。"
+      }
+    },
+    "queue-using-stacks": {
+      "vars": "n = 目前存放的元素數",
+      "note": "時間指單次 push / pop / peek 的攤銷成本。",
+      "trap": "O(n) 是*單次* pop 的最壞情況，不是題目要求的攤銷成本。若在 `outbox` 非空時就補貨，順序和複雜度都會被破壞。",
+      "cost": {
+        "time": "這個 `while` 可能一次搬 n 個元素，但每個元素*一生只會*從 `inbox` 搬到 `outbox` 一次 → 攤銷 `O(1)`。",
+        "space": "`inbox` 與 `outbox` 合起來剛好各存一份 n 個元素。"
+      }
+    },
+    "range-sum-2d-immutable": {
+      "vars": "m, n = 矩陣的維度",
+      "note": "時間指單次 `sumRegion` 呼叫；建構子另計。",
+      "why": "多出來的一列與一行 0，正是讓查詢省去所有邊界判斷的關鍵。",
+      "trap": "建構子的 `O(m * n)` 只付一次，之後每次查詢都只是四次查表。若每次查詢才去加總矩形，*每次*都要 `O(m * n)`。",
+      "cost": {
+        "time": "每次查詢只在前綴和表上取四個角做排容 → `O(1)`。",
+        "space": "`pre` 是 `(m + 1) × (n + 1)` 的表 → `O(m * n)`。"
+      }
+    },
+    "word-dictionary-wildcard": {
+      "vars": "L = len(word)，t = 字典樹中的節點數",
+      "note": "時間指單次 `search` 呼叫。",
+      "trap": "沒有 `.` 時就只是 `O(L)`，和 LC 208 一樣——指數成本完全來自萬用字元。`addWord` 無論如何都是 `O(L)`。",
+      "cost": {
+        "time": "每個 `.` 會分岔到所有子節點，全是點的字每層最多分 26 路 → `26^L`，但上限是實際存在的 t 個節點。",
+        "space": "`word` 每個字元一層遞迴 → 深度 `L`。"
+      }
+    },
+    "word-search-ii-trie": {
+      "vars": "m, n = 棋盤的維度，L = 最長單字的長度，k = 所有單字的字元總數",
+      "why": "指數是*最長單字的長度*，不是棋盤大小；字典樹讓一次棋盤搜尋同時服務所有單字。",
+      "trap": "對每個字各跑一次 LC 79 是 `O(w * m * n * 4^L)`——字典樹共用了共同前綴。`nxt.pop(\"#\")` 避免同一個字被回報兩次，也邊搜邊剪枝。",
+      "cost": {
+        "time": "`m * n` 個格子都會啟動 `dfs`，每個字元最多分 4 路、深度最多 L → `m * n * 4^L`。",
+        "space": "字典樹每個不同前綴一個節點——最多 k 個；遞迴堆疊（≤ L）更小。"
+      }
+    },
+    "jump-game": {
+      "vars": "n = len(nums)",
+      "why": "可達性是前綴性質——`reach` 以內全都可達——所以一個整數就能取代整張表。",
+      "trap": "「i 能否到 j」的 DP 是 `O(n^2)`，回溯更是指數級。一旦看出可達性是前綴，兩者都不需要。",
+      "cost": {
+        "time": "對 `nums` 掃一遍，每步只做 O(1) 的 `max` 更新 → `O(n)`。",
+        "space": "只保留整數 `reach` → `O(1)`。"
+      }
+    },
+    "jump-game-ii": {
+      "vars": "n = len(nums)",
+      "why": "這其實是按層的 BFS：`end` 是目前這層的結尾，`farthest` 是下一層的結尾。",
+      "trap": "直接用佇列做 BFS 或用 DP，若重複造訪索引就是 `O(n^2)`。迴圈停在 `len(nums) - 1`，才不會多算一次跳躍。",
+      "cost": {
+        "time": "掃一遍，每個索引只造訪一次、做 O(1) 的事 → `O(n)`。",
+        "space": "只有三個整數——`jumps`、`end`、`farthest`——沒有佇列。"
+      }
+    },
+    "gas-station": {
+      "vars": "n = 加油站數量",
+      "why": "當 `tank` 在 i 變負，從 `start` 到 i 的站都不可能是起點，因此一次全部跳過。",
+      "trap": "從每個站各模擬一圈是 `O(n^2)`。開頭的總油量檢查先確定有解，所以最後剩下的唯一候選必定正確。",
+      "cost": {
+        "time": "兩次 `sum` 加一次掃描，各為線性 → `O(n)`。",
+        "space": "只保留 `start` 和 `tank` → `O(1)`。"
+      }
+    },
+    "partition-labels": {
+      "vars": "n = len(s)；s 只含小寫 a-z",
+      "note": "忽略回傳的長度串列。",
+      "why": "掃描一到達目前看過的最遠「最後出現位置」，就切出一段。",
+      "trap": "`last` 看起來會隨字串變大，但它受 26 個字母限制，所以是 `O(1)`，不是 `O(n)`。",
+      "cost": {
+        "time": "一遍建 `last`，一遍掃描切段 → `O(n)`。",
+        "space": "`last` 每個*不同*字母一個鍵——最多 26 個 → `O(1)`。"
+      }
+    },
+    "hand-of-straights": {
+      "vars": "n = len(hand)，g = groupSize",
+      "why": "每次內層迴圈至少消耗 `need * g ≥ g` 張牌，所以最多跑 n/g 次、每次 g 步。",
+      "trap": "巢狀迴圈看起來是 `O(n * g)`，但計數論證排除了它。貪心之所以成立，是因為剩下最小的牌*必須*開啟一組。",
+      "cost": {
+        "time": "`sorted(count)` 排序最多 n 種牌 → `O(n log n)`；內層迴圈總計 `O(n)`。",
+        "space": "`Counter` 與排序後的鍵串列各最多 n 項。"
+      }
+    },
+    "insert-interval": {
+      "vars": "n = len(intervals)",
+      "note": "忽略回傳的串列。",
+      "trap": "先附加再套 LC 56 的合併，會把已排序的串列再排一次 → `O(n log n)`。二分搜尋能加速找重疊，但複製仍是線性。",
+      "cost": {
+        "time": "三個 `while` 共用只會前進的索引 `i` → 一次 `O(n)` 的掃描。",
+        "space": "除了回傳的 `res` 只有幾個整數 → `O(1)`。"
+      }
+    },
+    "non-overlapping-intervals": {
+      "vars": "n = len(intervals)",
+      "trap": "依*結束點*排序才讓貪心正確——保留最早結束的區間。無論如何，決定複雜度的是排序，不是掃描。",
+      "cost": {
+        "time": "`intervals.sort` 的 `O(n log n)` 主導；之後的掃描是線性。",
+        "space": "Timsort 最多需要 n/2 的暫存空間 → `O(n)`；原地排序則是 `O(log n)`。"
+      }
+    },
+    "meeting-rooms": {
+      "vars": "n = len(intervals)",
+      "why": "依開始時間排序後，只有相鄰的會議可能衝突。",
+      "trap": "兩兩比較是 `O(n^2)`。排序把「是否有任一對重疊」化簡成「是否有相鄰的一對重疊」。",
+      "cost": {
+        "time": "`intervals.sort()` 的 `O(n log n)` 主導；相鄰檢查是線性。",
+        "space": "Timsort 的合併暫存最多 n/2 → `O(n)`。"
+      }
+    },
+    "sort-colors": {
+      "vars": "n = len(nums)",
+      "trap": "和 `hi` 交換後 `i` *不*前進，因為換進來的值還沒檢查——但這些步驟 `hi` 都會前移，所以上界不變。",
+      "cost": {
+        "time": "每次迭代不是 `i` 前進就是 `hi` 後退，兩者相距 n → 最多 n 次。",
+        "space": "三個指標，原地交換 → `O(1)`。"
+      }
+    },
+    "quickselect-kth-largest": {
+      "vars": "n = len(nums)",
+      "note": "以期望情況作答（隨機樞紐）。",
+      "why": "只遞迴進*其中一邊*，這正是去掉快速排序那個 log 因子的原因。",
+      "trap": "`O(n log n)` 是排序的成本，這裡做的事嚴格更少。極端樞紐時最壞是 `O(n^2)`；隨機化讓線性成為*期望*上界。",
+      "cost": {
+        "time": "每次分割是線性，隨機樞紐平均砍半：`n + n/2 + n/4 + … = 2n`。",
+        "space": "每層一次遞迴，期望約 `log n` 層——Python 會保留每個堆疊框。"
+      }
+    },
+    "rotate-image": {
+      "vars": "n = 矩陣邊長",
+      "why": "`n^2` 其實是輸入大小的線性——矩陣有 n² 個數，每個都得移動。",
+      "trap": "`matrix[:] = zip(*matrix[::-1])` 時間相同，但空間是 `O(n^2)`。`j` 從 `i + 1` 開始，轉置才不會把每對交換兩次又換回去。",
+      "cost": {
+        "time": "`for i` × `for j` 轉置對角線以上約 n²/2 格，再逐列反轉 → `O(n^2)`。",
+        "space": "交換和 `row.reverse()` 都是原地操作 → `O(1)`。"
+      }
+    },
+    "spiral-matrix": {
+      "vars": "m, n = 矩陣的維度",
+      "note": "忽略回傳的串列。",
+      "trap": "迴圈裡的迴圈不一定要相乘——這裡它們是在分工，而不是重複。兩個 `if` 防止最後剩下的一列或一行被輸出兩次。",
+      "cost": {
+        "time": "四個內層迴圈瓜分整個矩陣：每格剛好附加一次 → `O(m * n)`。",
+        "space": "除了回傳的 `res` 只有四個邊界 → `O(1)`。"
+      }
+    },
+    "set-matrix-zeroes": {
+      "vars": "m, n = 矩陣的維度",
+      "trap": "用兩個索引集合需要 `O(m + n)` 空間，而進階題要求更好。重用第 0 列與第 0 行需要 `first_col` 區分共用的角落，且第二次掃描必須*倒著*走。",
+      "cost": {
+        "time": "兩次完整的 `m × n` 巢狀迴圈 → `O(m * n)`。",
+        "space": "第 0 列與第 0 行存放標記，外加一個旗標 → `O(1)`。"
+      }
+    },
+    "pow-fast-exponentiation": {
+      "vars": "n = 指數",
+      "why": "`half` 只算一次再平方；若呼叫 `power` 兩次，就會變成 `O(n)`。",
+      "trap": "把 x 自乘 n 次是 `O(n)`。空間也不是 `O(1)`——迭代版的「平方並右移」才是。",
+      "cost": {
+        "time": "`power(base, exp // 2)` 每次把指數砍半 → `log n` 次、每次 O(1)。",
+        "space": "這個遞迴呼叫會疊 `log n` 個堆疊框。"
+      }
+    },
+    "happy-number": {
+      "vars": "n = 輸入的數字",
+      "why": "任何小於 10^k 的數最多映射到 81k，所以一步就落入很小的固定範圍。",
+      "trap": "這個 `while` 看似無上限，但上界來自數學：各位數平方和會立刻把大數縮小。用 Floyd 快慢指標取代集合，空間可降到 `O(1)`。",
+      "cost": {
+        "time": "第一次各位數平方和要處理 `log n` 個位數；之後值很小，迴圈只再跑常數次。",
+        "space": "`seen` 存放走過的值——第一步之後都很小。"
+      }
+    },
+    "search-2d-matrix-ii": {
+      "vars": "m, n = 矩陣的維度",
+      "why": "右上角是該列最大、該行最小，所以一次比較就能排除一整條。",
+      "trap": "對每列二分搜尋是 `O(m log n)`。列與列之間不像 LC 74 能串成一條有序序列，所以對 `m * n` 做一次二分搜尋是錯的。",
+      "cost": {
+        "time": "每一步排除整列或整行，最多走 `m + n` 步。",
+        "space": "兩個索引 → `O(1)`。"
+      }
+    },
+    "next-permutation": {
+      "vars": "n = len(nums)",
+      "why": "樞紐之後的後綴必定遞減，所以「把尾端排序」只需要反轉。",
+      "trap": "按順序產生排列是階乘級。把尾端排序要 `O(n log n)`——正因為遞減不變量，反轉就夠了。",
+      "cost": {
+        "time": "三次掃描——找樞紐、找比它大的最小值、反轉尾端——各最多 n 步 → `O(n)`。",
+        "space": "所有交換都是原地 → `O(1)`。"
+      }
+    },
+    "valid-parenthesis-string": {
+      "vars": "n = len(s)",
+      "why": "可能的左括號數永遠是一段連續區間，所以 `[low, high]` 能取代整個狀態集合。",
+      "trap": "每個 `*` 都嘗試三種意義是 `O(3^n)`，加記憶化是 `O(n^2)` 的 DP。改追蹤一個區間就把它壓縮了。",
+      "cost": {
+        "time": "對 `s` 掃一遍，每個字元兩次 O(1) 更新 → `O(n)`。",
+        "space": "只有 `low` 和 `high` 兩個整數。"
+      }
+    },
+    "candy": {
+      "vars": "n = len(ratings)",
+      "why": "把雙向限制拆成兩次單向掃描；`max` 保住第一次掃描的結果。",
+      "trap": "反覆掃到不再變動，在長遞減序列上是 `O(n^2)`。`O(1)` 空間的坡度計數版本存在，但更容易寫錯。",
+      "cost": {
+        "time": "一次由左到右、一次由右到左的掃描，加上 `sum` → `O(n)`。",
+        "space": "`give` 每個小孩存一個數 → `O(n)`。"
+      }
+    },
+    "design-twitter": {
+      "vars": "f = 使用者追蹤的帳號數",
+      "note": "時間指單次 `getNewsFeed` 呼叫。",
+      "why": "只有每位作者最新的 10 則推文可能進入 10 則的動態，所以成本跟追蹤數有關，與推文總數無關。",
+      "trap": "整條時間軸合併是對所有推文 `O(n log n)`。兩個上限——每位作者 10 則、堆積 10 個——正是設計重點，而非事後優化。",
+      "cost": {
+        "time": "`for uid` 跑 `f + 1` 次；`[-10:]` 與容量 10 的堆積讓每次迭代都是 O(1) → `O(f)`。",
+        "space": "`self.following[userId] | {userId}` 在迴圈前建立一個含 `f + 1` 個 id 的*新集合*。"
+      }
+    },
+    "ipo-two-heaps": {
+      "vars": "n = len(profits)，k = 可做的專案數",
+      "why": "`w` 只增不減，所以一旦負擔得起的專案就永遠負擔得起，指標 `i` 從不後退。",
+      "trap": "每輪重新掃描最佳可負擔專案是 `O(k * n)`。單向指標加堆積避免了這點。",
+      "cost": {
+        "time": "排序 `O(n log n)`；每個專案最多推入、彈出各一次 → 再一個 `O(n log n)`。",
+        "space": "`projects` 與堆積各最多 n 項。"
+      }
+    },
+    "reorganize-string": {
+      "vars": "n = len(s)；s 只含小寫 a-z",
+      "why": "把剛用過的字母暫存在 `prev`，不需第二次掃描就能保證不相鄰。",
+      "trap": "迴圈裡有堆積就反射說 `O(n log n)`，但 log 是對*堆積大小*取的，而它受 26 個字母限制。",
+      "cost": {
+        "time": "`while` 每輸出一個字元跑一次，每次 `heappop`/`heappush` 都在 ≤ 26 項上 → `O(n)`。",
+        "space": "堆積每個不同字母一項——最多 26 個 → `O(1)`。"
+      }
+    },
+    "decode-string": {
+      "vars": "n = len(s)，d = 解碼後字串的長度",
+      "why": "像 `1[1[1[...]]]` 這種巢狀會在每一層重新複製同一段，正是它逼出乘積。",
+      "trap": "`O(n)` 是錯的：`3[3[3[3[a]]]]` 輸入 13 個字元、輸出 81 個。這題任何誠實的上界都與輸出大小有關。",
+      "cost": {
+        "time": "每個 `]` 把展開後的片段（≤ d）複製到上一層，且 `]` 少於 n 個 → `O(n * d)`。",
+        "space": "巢狀片段合計最多 d 個字元，而 `stack` 可疊到約 n/2 層。"
+      }
+    },
+    "stack-using-queues": {
+      "vars": "n = 目前存放的元素數",
+      "note": "時間指單次 `push`；`pop` 與 `top` 為 O(1)。",
+      "trap": "LC 232 能攤銷 `O(1)`，但這個方向不行：*每次* push 都付 n，n 次 push 無論怎麼算都是 `O(n^2)`。",
+      "cost": {
+        "time": "每次 `push` 都把其餘 `n - 1` 個元素轉到新元素後面 → `O(n)`。",
+        "space": "deque 存放全部 n 個元素。"
+      }
+    },
+    "max-freq-stack": {
+      "vars": "n = 已 push 的值的數量",
+      "note": "時間指單次 push 或 pop。",
+      "why": "`top` 所在的群組永遠存著頻率最高的值、依 push 順序排列，所以平手自然就處理正確。",
+      "trap": "以（頻率，時間戳）為鍵的最大堆積每次 `O(log n)`。能做到 O(1) 是因為頻率每次只變 1，所以 `top` 只會往下退一格。",
+      "cost": {
+        "time": "每次 push/pop 只是幾次字典更新加一次串列 `append`/`pop` → `O(1)`。",
+        "space": "push k 次的值會出現在群組 1..k，所以 `groups` 每次 push 剛好一項 → `O(n)`。"
+      }
+    },
+    "multiply-strings": {
+      "vars": "m, n = 兩個數字的位數",
+      "why": "上界是以*位數*計：這些數放不進機器字組，所以一次 `*` 不是 O(1)。",
+      "trap": "誤以為大數乘法是常數時間。Karatsuba 大約能做到 `O(n^1.585)`。",
+      "cost": {
+        "time": "`for i` × `for j`：一個數的每一位都和另一個數的每一位相乘 → `O(m * n)`。",
+        "space": "`digits` 有 `m + n` 格——乘積最多需要這麼多位。"
+      }
+    },
+    "longest-common-prefix": {
+      "vars": "n = 字串數量，s = 所有字串的字元總數",
+      "trap": "`O(n)` 算的是字串數量，用錯了變數。它也不是 n × 最長長度：掃描會停在最短的字串，所以上界是總和，不是乘積。",
+      "cost": {
+        "time": "逐欄掃過所有字串，遇到第一個不符就停——最多讀完 s 個字元。",
+        "space": "除了回傳的切片只有迴圈索引 → `O(1)`。"
+      }
+    },
+    "best-time-stock-ii": {
+      "vars": "n = len(prices)",
+      "why": "一段獲利的區間可以拆成每天漲幅的總和，所以把每次上漲加起來就等於每個谷底買、每個山頂賣。",
+      "trap": "山谷山頂法、貪心、持有/空手 DP 時間都是 `O(n)`。失分在空間：為一張根本不需要的 DP 表報 `O(n)`。",
+      "cost": {
+        "time": "掃一遍，把每天正的漲幅加總 → `O(n)`。",
+        "space": "只有一個累計的 `total` → `O(1)`。"
+      }
+    },
+    "majority-element-ii": {
+      "vars": "n = len(nums)",
+      "why": "超過 n/3 的值最多只有兩個，所以兩個位置就夠了。",
+      "trap": "驗證那一遍不能省——第一遍只找出*候選*。`nums.count` 是 O(n)，但只跑兩次，不是每個元素跑一次。",
+      "cost": {
+        "time": "一遍投票，再對最多兩個候選做 `nums.count(v)` → `O(n)`。",
+        "space": "兩個候選加兩個計數器 → `O(1)`。"
+      }
+    },
+    "encode-decode-strings": {
+      "vars": "c = 所有字串的字元總數",
+      "note": "時間指單次 encode 或 decode 呼叫。",
+      "why": "長度前綴讓 decode 能直接*跳過*內容，而不用逐字找結束符號。",
+      "trap": "單純用分隔符不只是慢，而是錯——內容可能含有分隔符，必須跳脫，decode 也就得掃過每個字元。",
+      "cost": {
+        "time": "encode 每段 `len#s` 只建一次；decode 的 `while` 直接跳過內容 → 每個字元只處理 O(1) 次。",
+        "space": "`\"\".join` 會先把產生器轉成含所有片段的串列再合併 → 額外 `O(c)`。"
+      }
+    },
+    "design-hashmap": {
+      "vars": "n = 已存的鍵數（桶數固定為 1000）",
+      "note": "時間指單次 get / put / remove。",
+      "trap": "「雜湊表就是 O(1)」的前提是表會*擴容*。這個表從不擴容；真正的雜湊表在負載因子超標時把桶數加倍，是這個攤銷加倍換來 O(1)。",
+      "cost": {
+        "time": "每次操作掃描一個桶；桶數固定 1000，每條鏈約 n/1000 個鍵 → `O(n)`。",
+        "space": "1000 個桶串列，加上每個鍵一個 tuple → `O(n)`。"
+      }
+    },
+    "detect-squares": {
+      "vars": "n = 目前已加入的點數",
+      "note": "時間指單次 `count` 呼叫；`add` 為 O(1)。",
+      "why": "把每個存下的點當成*對角*頂點，整個正方形就確定了，不必再搜尋。",
+      "trap": "嘗試每一對點，每次查詢 `O(n^2)`。若選相鄰頂點，正方形方向仍不確定，又得回去搜尋。",
+      "cost": {
+        "time": "掃一遍已存的點；另外兩個角是 O(1) 的 `Counter` 查詢 → `O(n)`。",
+        "space": "`points` 每個不同的點一項。"
+      }
+    },
+    "reverse-integer": {
+      "vars": "x = 輸入值，d = 其位數",
+      "trap": "`O(n)` 把*數值*當成輸入大小。迴圈每個位數跑一次；溢位檢查才是重點，且在漸進上不增加成本。",
+      "cost": {
+        "time": "每個位數一次迭代，x 約有 `log x` 位——32 位元輸入最多 10 次。",
+        "space": "只有 `sign` 和 `out` → `O(1)`。"
+      }
+    },
+    "bitwise-and-range": {
+      "vars": "n = 上界，b = 其位元寬度",
+      "why": "答案就是兩個端點的共同二進位前綴：兩者不同的位元在區間中一定會被清成 0。",
+      "trap": "從 `left` 到 `right` 逐一做 `&` 是 `O(right - left)`——與*數值*成正比，32 位元範圍就是數十億步。",
+      "cost": {
+        "time": "兩端每步右移一位直到相等 → 最多是位元寬度 `log n`。",
+        "space": "一個 `shift` 計數器 → `O(1)`。"
+      }
+    },
+    "reverse-k-group": {
+      "vars": "n = 節點數，k = 每組大小",
+      "trap": "巢狀迴圈看似 `O(n * k)`，但外層只跑 n/k 次、每次 O(k)。遞迴版會疊 n/k 個堆疊框，達不到 O(1) 空間的進階要求。",
+      "cost": {
+        "time": "每個節點走兩次——一次被 `for` 檢查、一次被反轉的 `while` → `2n`。",
+        "space": "指標原地重接 → `O(1)`。"
+      }
+    },
+    "intersection-two-lists": {
+      "vars": "m, n = 兩條串列的長度",
+      "trap": "這個迴圈看似可能無限，但交換後兩指標離結尾等距，所以會一起到達共用節點或一起到 None。用集合時間相同，但空間是 `O(m)`。",
+      "cost": {
+        "time": "每個指標先走自己的串列再走另一條，迴圈在 `m + n` 步內結束。",
+        "space": "兩個指標，不存任何東西 → `O(1)`。"
+      }
+    },
+    "lfu-cache": {
+      "vars": "c = 容量",
+      "note": "時間指單次 get / put。",
+      "why": "每個使用次數一個保留插入順序的字典，「最少使用、最舊優先」就只是在 `least` 做一次 `popitem`。",
+      "trap": "以（次數，時間戳）為鍵的堆積是 `O(log c)`。O(1) 靠的是次數每次只變 1，所以新的最小值必定是 `least + 1`（插入後則是 1）。",
+      "cost": {
+        "time": "每一步都是字典刪除/插入或 `OrderedDict.popitem`——沒有掃描 → `O(1)`。",
+        "space": "`vals`、`uses`、`buckets` 每個快取鍵各一項 → `O(c)`。"
+      }
+    },
+    "add-two-numbers": {
+      "vars": "m, n = 兩條串列的長度",
+      "note": "忽略回傳的串列。",
+      "why": "迴圈條件中的 `or carry` 處理最後的進位，不需特例。",
+      "trap": "把兩條串列轉成整數相加再重建，在固定寬度整數的語言會失敗：100 位數放不進任何機器整數。",
+      "cost": {
+        "time": "掃一遍，以較長的串列為界（外加可能的最後進位）→ `O(m + n)`。",
+        "space": "只有 `carry`、`total` 與指標；新節點屬於回傳的輸出。"
+      }
+    },
+    "rotate-array": {
+      "vars": "n = len(nums)，k = 位移量",
+      "why": "先整段反轉，再把兩段各自反轉回來——不需複製就完成旋轉。",
+      "trap": "一次轉一格、轉 k 次是 `O(n * k)`，會超時。`nums[:] = nums[-k:] + nums[:-k]` 時間是 `O(n)`，但會產生 `O(n)` 的複本。",
+      "cost": {
+        "time": "三次 `flip` 呼叫，每次都是最多跑 n 個元素的 `while lo < hi` 交換迴圈 → `O(n)`。",
+        "space": "直接在 `nums` 上原地交換，只用到幾個索引變數。"
+      }
+    },
+    "two-sum-sorted": {
+      "vars": "n = len(numbers)",
+      "why": "輸入已排序，所以和太小只能把 `lo` 往右移、太大只能把 `hi` 往左移，不會漏掉任何一組。",
+      "trap": "排序換來的是 *常數空間*，不是 log：LC 1 的雜湊表同樣 `O(n)` 時間，但要 `O(n)` 空間。對每個補數做二分搜尋反而更慢，是 `O(n log n)`。",
+      "cost": {
+        "time": "`lo` 只增、`hi` 只減，所以 `while lo < hi` 最多執行 n 次 → `O(n)`。",
+        "space": "只有兩個索引和一個 `total`，沒有配置任何記憶體。"
+      }
+    },
+    "four-sum": {
+      "vars": "n = len(nums)",
+      "note": "忽略結果串列。",
+      "why": "k-sum 每多一個數就多一層 *迴圈*，所以搭配雙指標的 k-sum 是 `O(n^(k-1))`。",
+      "trap": "常見錯答是數四個數就說 `O(n^4)`，但雙指標掃描是一次找出最後兩個數。用雜湊表存所有兩數和可降到 `O(n^2)` 時間，代價是 `O(n^2)` 空間。",
+      "cost": {
+        "time": "`for i` × `for j` 固定兩個值，再加上線性的 `while lo < hi` 掃描 → `O(n^3)`；排序的 `O(n log n)` 被蓋過。",
+        "space": "`nums.sort()` 是 Timsort，可能用到 `O(n)` 暫存空間；其餘只是幾個索引。"
+      }
+    },
+    "valid-palindrome-ii": {
+      "vars": "n = len(s)",
+      "trap": "`is_pal(...) or is_pal(...)` 看起來像每遇到不符就分岔（`O(2^n)`），但它在 `return` 裡，只會觸發一次。允許刪 *兩個* 字元的版本才真的會分岔。",
+      "cost": {
+        "time": "外層 `while` 是一次線性掃描；第一次不符時第 13 行做兩次線性的 `is_pal` 檢查後就 *回傳* → `O(n)`。",
+        "space": "只傳遞索引，從不建立子字串。"
+      }
+    },
+    "k-closest-elements": {
+      "vars": "n = len(arr)，k = 要回傳的個數",
+      "note": "忽略回傳的切片。",
+      "why": "二分搜尋的對象是視窗的 *起始位置*：比較即將離開視窗與即將進入視窗的元素。",
+      "trap": "從兩端往內縮到剩 k 個是 `O(n - k)`，依距離排序是 `O(n log n)`。對視窗位置做二分搜尋才換來 log。",
+      "cost": {
+        "time": "`while lo < hi` 二分搜尋在 `n - k` 個起點上折半 → `O(log n)`；切出答案再加 `O(k)`。",
+        "space": "搜尋只保留 `lo`、`hi`、`mid`；回傳的切片依題目說明不計。"
+      }
+    },
+    "contains-duplicate-ii": {
+      "vars": "n = len(nums)，k = 允許的索引距離",
+      "trap": "用 dict 記「值 → 最後出現索引」同樣是 `O(n)` 時間，但空間是 `O(n)`。滑動固定大小的視窗才把記憶體壓到 `O(k)`。",
+      "cost": {
+        "time": "對 n 個值做一次 `for`；集合的查找、`add`、`remove` 平均都是 `O(1)` → `O(n)`。",
+        "space": "`i > k` 後第 5 行會移除最舊的值，所以 `window` 最多只有 `k + 1` 個值（若 k ≥ n 則為 n 個）。"
+      }
+    },
+    "perfect-squares": {
+      "vars": "n = 輸入的數字",
+      "trap": "看到雙層迴圈就反射性答 `O(n^2)`，但內層只跑到 `sqrt(i)`，不是 i。（用 Lagrange 四平方和定理可在 `O(sqrt(n))` 解出；DP 是通用解法。）",
+      "cost": {
+        "time": "`for i` 跑 n 次，`while j * j <= i` 跑 `sqrt(i)` 次 → `O(n * sqrt(n))`。",
+        "space": "`dp` 對 0..n 每個值存一格 → `O(n)`。"
+      }
+    },
+    "regex-matching": {
+      "vars": "m = len(s)，n = len(p)",
+      "trap": "單純遞迴會經由不同的 `*` 展開重複走到同一個 `(i, j)`，是指數級，大約 `O(2^(m + n))`。DP 表保證每個狀態只算一次。",
+      "cost": {
+        "time": "`for i` × `for j` 每個 `(m + 1)(n + 1)` 格子各走一次，每格最多讀兩個鄰格 → `O(m * n)`。",
+        "space": "保留完整的 `(m + 1) × (n + 1)` 布林表 → `O(m * n)`。"
+      }
+    },
+    "interleaving-string": {
+      "vars": "m = len(s1)，n = len(s2)",
+      "why": "`dp[j]` 在被覆寫前讀取（代表上一列），`dp[j - 1]` 則在覆寫後讀取（代表本列），所以只要一列就夠。",
+      "trap": "用雙指標看哪個字串符合就取哪個，遇到兩邊都符合時會出錯；不加記憶化的分支是 `O(2^(m + n))`。",
+      "cost": {
+        "time": "`for i` × `for j` 對每一對前綴長度以 `O(1)` 填一格 → `O(m * n)`。",
+        "space": "每個 i 都重複使用同一列長度 `n + 1` 的 `dp` → `O(n)`。"
+      }
+    },
+    "stock-with-cooldown": {
+      "vars": "n = len(prices)",
+      "why": "冷卻期是靠 `rest` 讀取前一天的 `sold` 來表達，因此不需要多一個維度。",
+      "trap": "直覺會想開一張以天數（再加冷卻、交易次數）為索引的表。但每個狀態只依賴前一天的三個狀態，整張表可以縮成三個變數。",
+      "cost": {
+        "time": "`for p in prices` 只走一次，第 4 行以 `O(1)` 更新三個狀態 → `O(n)`。",
+        "space": "只保留 `hold`、`sold`、`rest` 三個純量。"
+      }
+    },
+    "burst-balloons": {
+      "vars": "n = len(nums)",
+      "why": "k 是區間中 *最後* 戳破的氣球，這樣左右兩邊仍是連續區間，可以拿來當表格索引。",
+      "trap": "若選擇 *先* 戳哪顆，剩下的氣球不再連續，沒有表可以索引，搜尋會變成 `O(n!)`。",
+      "cost": {
+        "time": "`for length` × `for lo` 列舉 `O(n^2)` 個區間，`for k` 在每個區間內嘗試所有切點 → `O(n^3)`。",
+        "space": "`dp` 是 `(n + 2) × (n + 2)` 的表，每個區間一格 → `O(n^2)`。"
+      }
+    },
+    "longest-increasing-path-matrix": {
+      "vars": "m, n = 矩陣的列數與行數",
+      "why": "嚴格的 `>` 讓路徑不可能回到同一格，所以整個網格是 DAG，單純的記憶化就成立——不需要 visited 集合。",
+      "trap": "不加記憶化、從每格各做一次 DFS，會重複探索相同路徑，是指數級。",
+      "cost": {
+        "time": "第 15 行從每一格呼叫 `walk`，但有記憶化，每格本體只執行一次、看 4 個鄰格 → `O(m * n)`。",
+        "space": "`memo` 每格一個值，遞迴的 `walk` 最深可疊 `m * n` 層 → `O(m * n)`。"
+      }
+    },
+    "target-sum": {
+      "vars": "n = len(nums)，s = sum(nums)",
+      "why": "許多不同的正負號組合會得到同一個總和；用 dict 把它們合併就是全部的省時之處。",
+      "trap": "`O(2^n)` 是每個數都分正負兩支的暴力解。和 LC 416 一樣這是偽多項式：s 是數值，不是輸入大小。",
+      "cost": {
+        "time": "`for x` 跑 n 次，`for total` 最多走 `2s + 1` 個可達總和 → `O(n * s)`。",
+        "space": "每層 `nxt` 存 `-s..s` 範圍內的總和，同時只有兩層存在 → `O(s)`。"
+      }
+    },
+    "circular-subarray-sum": {
+      "vars": "n = len(nums)",
+      "why": "環狀跨尾的子陣列是某個不跨尾子陣列的補集，所以最佳跨尾和就是 `total - best_min`。",
+      "trap": "嘗試每種旋轉是 `O(n^2)`。最常漏掉的是 `best_max < 0` 的判斷：全部為負數時，補集會變成不允許的空子陣列。",
+      "cost": {
+        "time": "一次 `for` 同時跑最大與最小 Kadane，每個元素 `O(1)` → `O(n)`。",
+        "space": "只保留累計和與最佳值。"
+      }
+    },
+    "combination-sum": {
+      "vars": "n = len(candidates)，t = target（每個候選數至少為 1）",
+      "note": "忽略 `res` 中收集的組合。",
+      "why": "設 m 為最小的候選數，實際深度是 `t/m`，更緊的上界是 `O(n^(t/m))`。",
+      "trap": "指數是 *target*，不是陣列長度——和 LC 416 一樣是偽多項式。用 `walk(j, ...)`（而非 `j + 1`）允許重複選同一個數，這正是深度取決於 t 的原因。",
+      "cost": {
+        "time": "每次 `walk` 走最多 n 個候選數並遞迴；每選一個至少減 1，所以樹最深 t 層 → `O(n^t)`。",
+        "space": "遞迴與 `cur` 每選一個數加深一層，最多 t 層 → `O(t)`。"
+      }
+    },
+    "generate-parentheses": {
+      "vars": "n = 括號對數",
+      "note": "這題輸出要計入。",
+      "why": "合法字串的數量是第 n 個 Catalan 數 `C(n)`，成長速度約為 `4^n / n^1.5`。",
+      "trap": "產生全部 `2^(2n)` 個字串再過濾，成本是 `O(n * 4^n)`。這裡的剪枝省下的是多項式因子，不是指數。",
+      "cost": {
+        "time": "第 10、14 行只延伸合法前綴，所以工作量跟著輸出走：`C(n)` 個字串 × `2n` 字元 ≈ `4^n / sqrt(n)`。",
+        "space": "`res` 存下全部 `C(n) ≈ 4^n / n^1.5` 個長度 `2n` 的字串 → `O(4^n / sqrt(n))`。"
+      }
+    },
+    "word-break-ii": {
+      "vars": "n = len(s)",
+      "note": "這題輸出要計入——一個字串可能有指數多種切法。",
+      "why": "記憶化省掉的是重複的 *搜尋*；它無法省掉寫出指數級答案的成本。",
+      "trap": "記憶化讓 LC 139 變成多項式，所以大家以為這題也一樣。但 `\"aaaa...\"` 配 `{\"a\", \"aa\"}` 約有 `2^n` 個句子，任何演算法都無法在多項式時間內輸出它們。",
+      "cost": {
+        "time": "`for rest in build(j)` 複製後綴的每個句子，第 14 行以 `O(n)` 寫出每一句 → 最多 `2^n` 句 × n。",
+        "space": "`memo` 存下每個後綴的所有句子；光是這些串列加總就有 `O(n * 2^n)` 個字元。"
+      }
+    },
+    "partition-k-subsets": {
+      "vars": "n = len(nums)，k = 要分成的子集數",
+      "why": "遞減排序、跳過總和相同的桶子，能大幅縮小實際搜尋量，但最壞情況的上界不變。",
+      "trap": "位元遮罩 DP 是 `O(k * 2^n)`——仍是指數級，但當 k > 2 時 `2^n` 就勝過 `k^n`。",
+      "cost": {
+        "time": "每次 `place(i)` 嘗試 k 個桶子並遞迴到 `i + 1`，深 n 層 → 葉節點有 `k^n` 個。",
+        "space": "`place` 遞迴 n 層，*每一層* 都有自己最多 k 個值的 `seen` 集合 → `O(n * k)`。"
+      }
+    },
+    "alien-dictionary": {
+      "vars": "c = 所有單字的字元總數，w = len(words)",
+      "why": "頂點是 *字母*，所以 V ≤ 26、E ≤ 26 * 25；拓撲排序是常數，真正的成本在掃描輸入。",
+      "trap": "`O(V + E)` 回答了錯的問題：V 和 E 都被字母表限制住。上界應該用輸入大小 c 來表示。",
+      "cost": {
+        "time": "第 2 行讀過每個字元一次，相鄰單字的 `zip(a, b)` 掃描也被 c 限制 → `O(c)`。",
+        "space": "`words[1:]` 複製了 w 個單字參照 → `O(w)`；圖和 `indeg` 最多 26 個字母，是 `O(1)`。"
+      }
+    },
+    "reconstruct-itinerary": {
+      "vars": "e = len(tickets)",
+      "why": "死路只可能是路線的 *終點*，所以回溯時加入、最後反轉，就能一次得到答案，不需重試。",
+      "trap": "回溯嘗試各種機票順序直到用完全部，最壞是階乘級。歐拉路徑的論證完全省去了搜尋。",
+      "cost": {
+        "time": "`sorted(tickets, reverse=True)` 是 `O(e log e)`；之後的 Hierholzer 走訪每張機票只 push、pop 一次，`O(e)`。",
+        "space": "排序後的複本、`graph` 的鄰接串列、`stack`/`route` 各最多 e 項 → `O(e)`。"
+      }
+    },
+    "swim-in-rising-water": {
+      "vars": "n = 網格邊長",
+      "why": "這就是把路徑成本的 `+` 換成 `max` 的 Dijkstra。",
+      "trap": "`log(n^2)` 等於 `2 log n`，不是 `(log n)^2`，所以答案是 `n^2 log n`。若以格子數 V = `n^2` 表示，就是熟悉的 `O(V log V)`。",
+      "cost": {
+        "time": "`n^2` 個格子各 push、pop 一次，每次堆積操作 `log(n^2)` → `O(n^2 log n)`。",
+        "space": "`seen` 和 `heap` 都可能存下全部 `n^2` 個格子 → `O(n^2)`。"
+      }
+    },
+    "min-cost-connect-points": {
+      "vars": "n = len(points)",
+      "why": "這是完全圖（E = `n^2`），所以用陣列實作的 Prim 勝過任何鄰接串列或堆積的做法。",
+      "trap": "`O(E log V)` 是堆積版本的上界，在這裡等於 `O(n^2 log n)`——反而 *更差*。在稠密圖上，單純掃描陣列才是贏家。",
+      "cost": {
+        "time": "`for _` 跑 n 輪；每輪做一次 `O(n)` 的 `min` 掃描與一次 `O(n)` 的 `for v` 鬆弛 → `O(n^2)`。",
+        "space": "只有長度 n 的 `best` 與 `used` 陣列，沒有建邊表 → `O(n)`。"
+      }
+    },
+    "graph-valid-tree": {
+      "vars": "n = 節點數，e = len(edges)",
+      "note": "把一次 find/union 視為近乎常數。",
+      "why": "邊數被固定為 `n - 1` 之後，「連通」與「無環」就成了同一個條件，所以只要檢查有沒有環。",
+      "trap": "大家把第 2 行當成邊界情況的保護，但它其實在做真正的工作：少了它，就得做一次走訪再加上數連通分量。",
+      "cost": {
+        "time": "建立 `parent` 是 `O(n)`，`for a, b in edges` 每條邊做兩次近乎常數的 find → `O(n + e)`。",
+        "space": "只有長度 n 的 `parent` 陣列，沒有建鄰接串列 → `O(n)`。"
+      }
+    },
+    "minimum-height-trees": {
+      "vars": "n = 節點數",
+      "why": "一棵樹只有一個或兩個中心，所以剝到 `remaining <= 2` 就停止。",
+      "trap": "以每個節點為根各量一次高度是 `O(n^2)`。從葉子往內剝，能直接走到中心。",
+      "cost": {
+        "time": "建 `graph` 讀過 `n - 1` 條邊一次，`for leaf` 剝葉子時每個節點正好移除一次 → `O(n)`。",
+        "space": "`graph` 把 `n - 1` 條邊各存兩次 → `O(n)`。"
+      }
+    },
+    "evaluate-division": {
+      "vars": "V = 變數數量，E = len(equations)，q = len(queries)",
+      "trap": "上界一定要包含 q：查詢之間沒有共用任何結果。用帶權重的 union-find，或先跑一次 Floyd-Warshall，之後每個查詢都接近 `O(1)`。",
+      "cost": {
+        "time": "第 20 行每個查詢都重跑一次 DFS，每次 DFS 可能碰到所有頂點和邊 → `O(q * (V + E))`。",
+        "space": "`graph` 雙向存下每個等式；每次 DFS 再加上最多 V 的 `seen` 集合與堆疊 → `O(V + E)`。"
+      }
+    },
+    "accounts-merge": {
+      "vars": "s = 所有帳號的 email 總數",
+      "trap": "沒讀到最後一行就會答 `O(s)`。這題 union-find 是便宜的部分，真正昂貴的是題目要求的排序輸出。",
+      "cost": {
+        "time": "`sorted(mails)` 佔主導：各組大小總和為 s，合計 `O(s log s)`；union-find 的部分接近線性。",
+        "space": "`parent`、`owner`、`groups` 每個 email 各存一筆 → `O(s)`。"
+      }
+    },
+    "search-rotated-duplicates": {
+      "vars": "n = len(nums)",
+      "note": "以最壞情況作答。",
+      "why": "二分搜尋只有在每一步都能丟掉固定 *比例* 時才是對數級；只丟掉兩個元素不算比例。",
+      "trap": "沒有重複值的 LC 33 是 `O(log n)`，程式幾乎一樣；三者相等這個情況破壞了折半保證。",
+      "cost": {
+        "time": "當 `nums[lo] == nums[mid] == nums[hi]`，第 8–9 行每邊只縮一格；全部相等的陣列每一步都會走到這裡 → `O(n)`。",
+        "space": "只保留 `lo`、`hi`、`mid`。"
+      }
+    },
+    "sqrt-binary-search": {
+      "vars": "x = 輸入值，b = 其位元長度",
+      "trap": "`log x` 聽起來是次線性，以 *數值* 而言確實如此。但以輸入大小而言是線性：x 有 b = `log x` 個位元，所以每個位元一步。",
+      "cost": {
+        "time": "`while lo <= hi` 每一步把 `0..x` 的範圍折半 → 約 `log x` 次。",
+        "space": "只保留 `lo`、`hi`、`mid`。"
+      }
+    },
+    "minimum-interval-query": {
+      "vars": "n = len(intervals)，q = len(queries)",
+      "why": "關鍵在於把 *查詢* 也排序：以不同順序回答，最後再還原原本順序——也就是離線處理。",
+      "trap": "每個查詢都掃一遍所有區間是 `O(n * q)`。這種一次掃描的做法之所以可行，是因為所有查詢事先都已知。",
+      "cost": {
+        "time": "兩個輸入各排序一次，`O(n log n + q log q)`；每個區間整體最多 push、pop 一次，`O(n log n)`。",
+        "space": "`heap` 可能放下全部 n 個區間，`out` 和排序後的複本存 q 筆 → `O(n + q)`。"
+      }
+    },
+    "car-pooling": {
+      "vars": "n = len(trips)",
+      "why": "差分陣列：在每個端點記錄變化量，再依序掃過端點。",
+      "trap": "逐公里模擬是 `O(n * d)`，取決於道路長度。由於 LC 1094 的站點上限是 1000，用固定 1001 格的陣列甚至能做到 `O(n)` 時間。",
+      "cost": {
+        "time": "`sorted(delta)` 排序最多 `2n` 個端點 → `O(n log n)`；記錄與掃描都是線性。",
+        "space": "`delta` 每趟最多加兩個鍵 → `O(n)`。"
+      }
+    },
+    "max-path-sum": {
+      "vars": "n = 節點數，h = 樹高",
+      "why": "每個節點記錄 *穿過* 自己的路徑（`left + right`），但往上只回傳較好的那一條分支。",
+      "trap": "回傳值不是答案——`best` 才是。若在每個節點另外走一次來計算穿過它的路徑，會變成 `O(n^2)`。",
+      "cost": {
+        "time": "`gain(node.left)` 與 `gain(node.right)` 構成一次後序走訪，每節點 `O(1)` → `O(n)`。",
+        "space": "遞迴深度等於樹高 → `O(h)`，退化成鏈時是 `O(n)`。"
+      }
+    },
+    "lca-bst": {
+      "vars": "n = 節點數，h = 樹高",
+      "why": "p 和 q 分往不同方向的那個分岔點 *就是* 答案，所以回程不必記錄任何東西。",
+      "trap": "一般二元樹上的 LC 236 是 `O(n)` 時間、`O(h)` 空間。BST 的排序性質告訴你該往哪邊走。",
+      "cost": {
+        "time": "迴圈每一步讓 `node` 沿單一路徑往下一層 → 最多 h 步，`O(h)`。",
+        "space": "迭代寫法，沒有遞迴堆疊——只有 `node`。"
+      }
+    },
+    "serialize-deserialize-tree": {
+      "vars": "n = 節點數",
+      "note": "時間指單次 serialize 或單次 deserialize 呼叫。",
+      "why": "`#` 空節點標記讓 *單一* 前序走訪就能確定樹的形狀。",
+      "trap": "若用 `tokens.pop(0)` 取代迭代器，反序列化會悄悄變成 `O(n^2)`，因為從串列前端 pop 會讓後面所有元素位移。",
+      "cost": {
+        "time": "`walk` 每個節點輸出一個 token，`build` 每個 token 消耗一次 `next(it)` → 兩個方向都是 `O(n)`。",
+        "space": "`out` 與 `data.split(\",\")` 各存 `2n + 1` 個 token，加上最深 h ≤ n 的遞迴 → `O(n)`。"
+      }
+    },
+    "subtree-of-another-tree": {
+      "vars": "m = root 的節點數，n = subRoot 的節點數",
+      "trap": "`O(m + n)` 時間是做得到的——用空節點標記把兩棵樹序列化後做子字串搜尋——但這段程式靠走訪比對結構，做不到。",
+      "cost": {
+        "time": "第 12 行走過 `root` 的全部 m 個節點，第 10 行從每個節點啟動最多 n 步的 `same` → `O(m * n)`。",
+        "space": "`isSubtree` 沿著 `root` 遞迴，`same` 疊在其上，兩個堆疊相加 → `O(m + n)`。"
+      }
+    },
+    "house-robber-tree": {
+      "vars": "n = 節點數，h = 樹高",
+      "why": "每個節點同時回傳（搶、不搶）*兩個* 答案，消除了遞迴到孫節點會產生的重疊。",
+      "trap": "不回傳成對結果的寫法——「搶這個節點就遞迴到孫節點，否則遞迴到子節點」——會讓每個節點被每個祖先重複走訪，是指數級。",
+      "cost": {
+        "time": "`walk(node.left)` 與 `walk(node.right)` 每節點走一次，以 `O(1)` 合併兩組結果 → `O(n)`。",
+        "space": "遞迴深度等於樹高 → `O(h)`，退化成鏈時是 `O(n)`。"
+      }
+    },
+    "sorted-array-to-bst": {
+      "vars": "n = len(nums)",
+      "note": "忽略回傳的樹。",
+      "trap": "改傳 `nums[:mid]` 和 `nums[mid + 1:]` 會在每一層都複製整層資料，成本變成 `O(n log n)`。傳索引範圍則不需任何成本。",
+      "cost": {
+        "time": "`build` 對兩半各遞迴一次，每個元素正好成為一個節點 → `O(n)`。",
+        "space": "每次從 `mid` 切開讓樹保持平衡，所以遞迴深度只有 `log n` 層。"
+      }
+    },
+    "flatten-tree-morris": {
+      "vars": "n = 節點數",
+      "why": "每條右邊在被重新接走之前，最多只會被一次內層搜尋走過，這就是 Morris 方法背後的攤銷論證。",
+      "trap": "`while` 裡再一個 `while` 看起來像 `O(n^2)`，但內層的走訪加總後攤銷為線性。",
+      "cost": {
+        "time": "外層 `while node` 每個節點走一次；內層 `while rightmost.right` 整體上每條右邊最多走一次 → `O(n)`。",
+        "space": "原地重接指標——沒有堆疊，也沒有遞迴。"
+      }
+    },
+    "path-sum-iii": {
+      "vars": "n = 節點數，h = 樹高",
+      "why": "這就是把 LC 560 的前綴和雜湊表，套用在每條從根到節點的路徑上。",
+      "trap": "從每個節點重新往下數一次是 `O(n^2)`。回程時的 `seen[running] -= 1` 能防止兄弟分支的前綴和混進來。",
+      "cost": {
+        "time": "第 11 行遞迴到兩個子節點，每個節點只走一次、dict 操作 `O(1)` → `O(n)`。",
+        "space": "`-= 1` 會留下計數為 0 的鍵，第 9 行讀取 `defaultdict` 還會插入新鍵，所以 `seen` 會長到 `O(n)` 個鍵。"
+      }
+    },
+    "same-tree": {
+      "vars": "n = 較小那棵樹的節點數，h = 其高度",
+      "why": "`and` 會短路，一遇到不符就提早結束走訪。",
+      "trap": "短路並不會改善 *上界*——兩棵相同的樹仍會走遍所有節點。這個函式是 LC 572 的內層迴圈，在那裡它的成本就不再是線性了。",
+      "cost": {
+        "time": "兩個遞迴呼叫只往兩棵樹都有節點的地方走，最多走訪較小那棵的 n 個節點 → `O(n)`。",
+        "space": "遞迴深度最多是較小那棵樹的高度 → `O(h)`，退化成鏈時是 `O(n)`。"
+      }
+    },
+    "extra-characters-trie": {
+      "vars": "n = len(s)，k = 字典中的字元總數",
+      "why": "Trie 讓每次延伸一個字元都是 `O(1)`，不必每次重新對子字串做雜湊。",
+      "trap": "寫成 `s[i:j] in dictionary` 會對每一對 (i, j) 切片並雜湊最多 n 個字元，讓同樣的 DP 變成 `O(n^3)`。",
+      "cost": {
+        "time": "建 Trie 走過 k 個字元；接著 `for i` × `for j` 每步一次 dict 跳轉 → `O(n^2 + k)`。",
+        "space": "Trie 最多 k 個節點，`dp` 有 `n + 1` 格 → `O(n + k)`。"
+      }
+    }
+  }
+}

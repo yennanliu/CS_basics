@@ -4,8 +4,10 @@
  * Build the complexity-quiz question bank.
  *
  *   data/complexity_quiz.json  (hand-authored snippets and answers)
+ * + data/complexity_quiz.zh.json (the 繁體中文 prose, keyed by question id)
  * + README.md                  (the repo's master problem index)
- * → _site/data/complexity-quiz.json
+ * → _site/data/complexity-quiz.json      (English page)
+ * → _site/data/complexity-quiz.zh.json   (繁體中文 page — same questions, zh prose)
  *
  * As with the roadmap, a question carries only the LeetCode number; its title,
  * difficulty and links to this repo's solutions are resolved from README at
@@ -48,10 +50,13 @@ function answerStrings(question) {
 function resolveQuestion(question, readme) {
   const where = `question "${question.id || '(missing id)'}"`;
 
-  for (const field of ['id', 'topic', 'code', 'time', 'space', 'why']) {
+  for (const field of ['id', 'topic', 'code', 'time', 'space']) {
     if (!question[field] || !question[field].length) {
       throw new Error(`${where} is missing a ${field}`);
     }
+  }
+  if (!question.cost || typeof question.cost !== 'object') {
+    throw new Error(`${where} is missing a cost`);
   }
   if (!Array.isArray(question.code)) {
     throw new Error(`${where} has a code field that is not an array of lines`);
@@ -64,6 +69,24 @@ function resolveQuestion(question, readme) {
     const alternatives = question.accept && question.accept[field];
     if (alternatives !== undefined && !Array.isArray(alternatives)) {
       throw new Error(`${where} has an accept.${field} that is not an array`);
+    }
+  }
+
+  // `cost` is what the page highlights: for each bound, the lines that set it
+  // and one sentence on why. A line number past the snippet would highlight
+  // nothing and leave the reason pointing at air.
+  for (const field of ['time', 'space']) {
+    const cost = question.cost[field];
+    if (!cost || !Array.isArray(cost.lines) || typeof cost.why !== 'string' || !cost.why.trim()) {
+      throw new Error(`${where} needs cost.${field} as { lines: [...], why: "..." }`);
+    }
+    for (const line of cost.lines) {
+      if (!Number.isInteger(line) || line < 1 || line > question.code.length) {
+        throw new Error(`${where} has cost.${field} line ${line}, outside its ${question.code.length}-line snippet`);
+      }
+      if (!question.code[line - 1].trim()) {
+        throw new Error(`${where} has cost.${field} line ${line}, which is blank`);
+      }
     }
   }
 
@@ -88,7 +111,11 @@ function resolveQuestion(question, readme) {
       time: (question.accept && question.accept.time) || [],
       space: (question.accept && question.accept.space) || []
     },
-    why: question.why,
+    cost: {
+      time: { lines: question.cost.time.lines.slice(), why: question.cost.time.why },
+      space: { lines: question.cost.space.lines.slice(), why: question.cost.space.why }
+    },
+    why: question.why || '',
     trap: question.trap || '',
     links: {}
   };
@@ -128,6 +155,67 @@ function resolveQuestion(question, readme) {
   return resolved;
 }
 
+// ── 繁體中文 ─────────────────────────────────────────────────────────────────
+
+// The prose fields a translation carries. Everything else — code, answers,
+// accept lists, cost line numbers — is read from the English question, so the
+// two pages always grade the same thing.
+const ZH_FIELDS = ['title', 'vars', 'note', 'why', 'trap'];
+
+/**
+ * Composes the zh bank from the built English one and the overlay. Fails on a
+ * translation for an id the bank does not have (a renamed question), a
+ * question with no translation, a field the English question does not carry
+ * (a translated note for a question that lost its note), or one it carries
+ * that the translation skipped — the same coverage rule the cheatsheets are
+ * gated on, because a half-English explanation is what this exists to stop.
+ */
+function buildZh(built, overlay) {
+  const entries = (overlay && overlay.questions) || {};
+  const topics = (overlay && overlay.topics) || {};
+  const ids = new Set(built.questions.map(q => q.id));
+  for (const id of Object.keys(entries)) {
+    if (!ids.has(id)) throw new Error(`complexity_quiz.zh.json translates "${id}", which is not in the bank`);
+  }
+  for (const topic of built.topics) {
+    if (!topics[topic]) throw new Error(`complexity_quiz.zh.json has no name for the topic "${topic}"`);
+  }
+
+  const questions = built.questions.map(q => {
+    const where = `complexity_quiz.zh.json "${q.id}"`;
+    const zh = entries[q.id];
+    if (!zh) throw new Error(`${where} is missing — every question needs a translation`);
+    for (const field of ZH_FIELDS) {
+      // title is only ever authored for a question with no lc number.
+      const english = field === 'title' ? (q.lc == null ? q.title : '') : q[field];
+      if (english && !zh[field]) throw new Error(`${where} has no ${field}`);
+      if (!english && zh[field]) throw new Error(`${where} translates a ${field} the English question does not have`);
+    }
+    const cost = zh.cost || {};
+    for (const field of ['time', 'space']) {
+      if (!cost[field]) throw new Error(`${where} has no cost.${field}`);
+    }
+    for (const text of [zh.vars, zh.note, zh.why, zh.trap, cost.time, cost.space]) {
+      if (text && (text.match(/`/g) || []).length % 2) {
+        throw new Error(`${where} has an unbalanced \` in "${text}"`);
+      }
+    }
+    return Object.assign({}, q, {
+      title: zh.title || q.title,
+      vars: zh.vars,
+      note: zh.note || '',
+      why: zh.why || '',
+      trap: zh.trap || '',
+      cost: {
+        time: { lines: q.cost.time.lines, why: cost.time },
+        space: { lines: q.cost.space.lines, why: cost.space }
+      }
+    });
+  });
+
+  return { topics: built.topics, topicLabels: topics, questions: questions };
+}
+
 /** Resolves the whole bank, rejecting duplicate ids. */
 function buildQuiz(bank, readme) {
   const questions = (bank && bank.questions) || [];
@@ -154,13 +242,16 @@ function main() {
   const bank = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/complexity_quiz.json'), 'utf8'));
   const readme = parseReadmeProblems(fs.readFileSync(path.join(ROOT, 'README.md'), 'utf8'));
   const built = buildQuiz(bank, readme);
+  const overlay = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/complexity_quiz.zh.json'), 'utf8'));
+  const zh = buildZh(built, overlay);
 
   const outDir = path.join(ROOT, '_site/data');
   fs.mkdirSync(outDir, { recursive: true });
   fs.writeFileSync(path.join(outDir, 'complexity-quiz.json'), JSON.stringify(built));
+  fs.writeFileSync(path.join(outDir, 'complexity-quiz.zh.json'), JSON.stringify(zh));
 
   console.log(`✓ Created _site/data/complexity-quiz.json (${built.questions.length} questions,`
-    + ` ${built.topics.length} topics)`);
+    + ` ${built.topics.length} topics) and complexity-quiz.zh.json`);
 
   // A topic with one question cannot fill a topic-filtered quiz, and that only
   // shows up here.
@@ -180,4 +271,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { answerStrings, resolveQuestion, buildQuiz };
+module.exports = { answerStrings, resolveQuestion, buildQuiz, buildZh };

@@ -189,3 +189,70 @@ test('nested symbolic powers keep their grouping', () => {
   differ('O((n+1)^n)', 'O(n+1^n)');
   same('O(2^n)', ['O(2^(n))', 'O((2)^n)']);
 });
+
+// ── Dominated terms, max/min, division, log rules ─────────────────────────
+
+test('a provably dominated term drops out', () => {
+  same('O(n log n)', ['O(n log n + n)', 'O(n + n log n)', 'O(n log n) + O(n)', 'O(nlogn + log n)']);
+  same('O(n^2)', ['O(n^2 + n)', 'O(n + n^2 + 1)', 'O(n^2 + n log n)']);
+  same('O(m * n)', ['O(m*n + m + n)', 'O(mn + n)']);
+  same('O(2^n)', ['O(2^n + n^3)']);
+  same('O(n * 2^n)', ['O(n * 2^n + 2^n)']);
+  same('O(n!)', ['O(n! + 2^n)']);
+});
+
+test('dominance is per variable, so incomparable terms survive', () => {
+  differ('O(m + n^2)', 'O(n^2)', 'O(m)');
+  differ('O(n + k log n)', 'O(n)', 'O(k log n)');
+  differ('O(V + E)', 'O(E)', 'O(V)');
+  differ('O(E log V)', 'O(E log V + V)');
+  // A factor the grader cannot rank only cancels against itself.
+  differ('O(log(m + n))', 'O(log m)');
+});
+
+test('max, min and division read the way people write them', () => {
+  same('O(m + n)', ['O(max(m, n))', 'O(max(n,m))']);
+  same('O(min(m, n))', ['O(min(n, m))']);
+  differ('O(min(m, n))', 'O(m + n)', 'O(m * n)');
+  same('O(n^2)', ['O(n^2 / 2)', 'O(n(n+1)/2)']);
+  same('O(n)', ['O(n / k * k)']);
+  assert.equal(normalize('O(n / (m + k))'), null, 'division by a sum is rejected, not mangled');
+});
+
+test('a log of a product or power simplifies', () => {
+  same('O(log n)', ['O(log(n^2))', 'O(log(2n))']);
+  same('O(log m + log n)', ['O(log(m*n))', 'O(log(mn))']);
+  same('O(n)', ['O(log(2^n))']);
+  same('O(n log n)', ['O(log(n!))']);
+  differ('O(log log n)', 'O(log n)');
+});
+
+test('a forgotten closing paren is forgiven', () => {
+  same('O(n log n)', ['O(n log n', 'O(n * log(n']);
+  same('O(n)', ['O(n), amortized']);
+});
+
+test('compare says how a wrong answer misses', () => {
+  const { compare } = CSComplexity;
+  assert.equal(compare('O(n^2)', 'O(n log n)'), 'over');
+  assert.equal(compare('O(n)', 'O(n log n)'), 'under');
+  assert.equal(compare('O(k)', 'O(n)'), 'different');
+  assert.equal(compare('O(n + n log n)', 'O(n log n)'), 'equal');
+  assert.equal(compare('O(m * n)', 'O(m + n)'), 'over');
+  assert.equal(compare('dunno', 'O(n)'), null);
+});
+
+test('variables lists the symbols an answer uses', () => {
+  assert.deepEqual(CSComplexity.variables('O(E log V)'), ['e', 'v']);
+  assert.deepEqual(CSComplexity.variables('O(1)'), []);
+  assert.equal(CSComplexity.variables('???'), null);
+});
+
+test('fractional exponents and square roots are one notation', () => {
+  same('O(n^1.5)', ['O(n * sqrt(n))', 'O(n sqrt n)', 'O(n^(3/2))', 'O(n√n)']);
+  same('O(sqrt(n))', ['O(n^0.5)', 'O(n^(1/2))', 'O(√n)']);
+  differ('O(n^1.5)', 'O(n^15)', 'O(n^2)', 'O(n)');
+  same('O(4^n / sqrt(n))', ['O(4^n / n^0.5)', 'O(4^n / √n)']);
+  differ('O(4^n / sqrt(n))', 'O(4^n)');
+  same('O(n^2)', ['O(n^2 + n^1.5)']);
+});
