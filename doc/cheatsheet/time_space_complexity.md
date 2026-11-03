@@ -426,7 +426,7 @@ class Solution:
 whole edge set (or the whole graph) is handled again *for each* vertex or round. It is the same rule for
 time and for space. For time, count the steps. For space, count what is held in memory at the same time.
 
-| You see | Time | Space | Example |
+| You see | Time | Extra space (input not counted) | Example |
 |---|---|---|---|
 | One BFS / DFS over an adjacency list | **O(V + E)** | O(V + E) | LC 207, LC 399 |
 | `V − 1` rounds, each relaxing all E edges | **O(V × E)** | O(V) | Bellman-Ford, LC 743 |
@@ -436,9 +436,10 @@ time and for space. For time, count the steps. For space, count what is held in 
 #### Time — why one traversal is V + E, not V × E
 
 ```python
-# python — BFS over an adjacency list
+# python
+# IDEA: build an adjacency list once, then BFS — every vertex is queued once, every list scanned once
 # time = O(V + E) : each vertex is dequeued once; each adjacency list is scanned once
-# space = O(V + E): the graph itself, plus seen + queue (O(V))
+# space = O(V + E): the adjacency list this code builds, plus seen + queue (O(V))
 from collections import defaultdict, deque
 
 def bfs(edges, src):
@@ -471,16 +472,19 @@ star graph: centre 0 joined to 1…9         V = 10, E = 9
   the V × E estimate:          10 · 9  = 90          ✗ 5× too many
 ```
 
-When one vertex has many neighbours, the others have few. The total is fixed at E.
+When one vertex has many neighbours, the others have few. The total is fixed: 2E for an undirected
+graph, or E for the outgoing lists of a directed one.
 
 #### Time — where V × E really comes from
 
 **1. The edge set is scanned once per round — Bellman-Ford.**
 
 ```python
-# python — LC 743 Network Delay Time (Bellman-Ford)
+# python
+# LC 743 - Network Delay Time
+# IDEA: Bellman-Ford — relax every edge, up to V − 1 rounds, stop early once a round changes nothing
 # time = O(V × E) : up to V − 1 rounds, each relaxing every edge
-# space = O(V)    : one dist array, overwritten every round
+# space = O(V)    : one dist array, overwritten every round (`times` is the input)
 def networkDelayTime(times, n, k):
     dist = [float('inf')] * (n + 1)
     dist[k] = 0
@@ -503,7 +507,9 @@ negative or the number of edges is bounded (LC 787). See [Bellman-Ford.md](./Bel
 **2. A whole traversal is repeated from every vertex.**
 
 ```python
-# python — LC 1462 Course Schedule IV (BFS from each course)
+# python
+# LC 1462 - Course Schedule IV
+# IDEA: BFS from every course and keep each reachable set; a query is then one set lookup
 # time = O(V × (V + E)) : V separate BFS runs, each O(V + E)
 # space = O(V²)         : one reachable set per course, kept for the queries
 from collections import defaultdict, deque
@@ -562,7 +568,8 @@ hold 2E entries. That is still **O(V + E)**.
 Space becomes **O(V × E)** only when each of the V keys holds its **own copy** of all E edges:
 
 ```python
-# every vertex keeps a full copy of the edge list
+# python
+# IDEA: every vertex keeps its own full copy of the edge list (shown to count it, not to copy it)
 # space = O(V × E): V lists, each of length E
 copies = {vertex: list(edges) for vertex in graph}
 ```
