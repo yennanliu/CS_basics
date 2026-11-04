@@ -42,6 +42,94 @@ The recursive approach is fine. You may assume implicit stack space does not cou
 
 """
 
+
+# V0
+# IDEA: BFS by layer + prev node (GEMINI)
+"""
+
+
+Q: why we do the op with prev but still return root as final result?
+does the effect applied on root ? 
+
+
+->
+
+
+
+
+這是一個非常經典且重要的指標（Reference / Pointer）觀念問題！讓我們分兩部分來徹底釐清：
+
+---
+
+### Q1：為什麼我們操作的是 `prev` 和 `cur`，最後卻回傳 `root`？
+
+**答案：因為我們使用的是「原地修改（In-place Modification）」，而 `root` 是整棵樹的「唯一入口」。**
+
+1. **Python 的物件參照（Reference）機制**：
+在 Python 中，變數（像是 `root`、`cur`、`prev`）並不直接儲存整棵樹的資料，而是儲存**記憶體位置的參照（指標）**。
+2. **原地修改內部屬性**：
+當你在程式碼中執行 `prev.next = cur` 時，你並不是在建立一棵新樹，而是**直接去修改原本那棵樹中，某個節點內部的 `.next` 屬性**。
+3. **透過入口掌控全貌**：
+既然整棵樹的節點（包含垂直的 `left`/`right` 以及我們剛才串好的水平 `next`）都被串在了一起，我們只需要回傳最頂層的根節點 `root`，主程式或測資（Test Case）就能從這個「火車頭」出發，順藤摸瓜訪問到整棵樹的所有節點。
+
+---
+
+### Q2：這個修改的效果真的有套用到 `root` 身上嗎？
+
+**答案：有的，效果確實存在於以 `root` 為根節點的整張樹狀圖中。**
+
+* **關於 `root` 本身**：
+`root` 是整棵樹的最頂層（第 0 層），這一層只有它自己一個節點，沒有其他兄弟節點可以連接。因此它的 `.next` 自然會維持預設的 `None`。
+* **關於 `root` 的子孫節點**：
+雖然 `root` 本身的 `.next` 是 `None`，但藉由它延伸出去的**第二層、第三層及所有子節點**，它們的 `.next` 指標都在 `while` 迴圈的運作中被確實修改了。
+
+> 🚂 **一個生動的比喻：**
+> 把整棵二元樹想像成一列**多層次的火車**：
+> * `root` 就是**第一層的火車頭**。
+> * 透過 `.left` 和 `.right`，火車頭連接了下面各車廂；而我們寫的程式碼，就像是幫每一層的車廂之間加上了**橫向的連接鉤（`.next`）**。
+> * 當我們把整列火車的所有內部連接都搞定後，我們只要把**火車頭（`root`）**交還給別人（`return root`），別人就能順著火車頭，把整列火車（包含所有的橫向連結）完好無缺地帶走。
+> 
+>
+
+
+"""
+from collections import deque
+
+class Solution(object):
+    def connect(self, root):
+        if not root:
+            return None
+
+        # 將根節點放入佇列中作為 BFS 的起點
+        q = deque([root])
+
+        while q:
+            # 取得當前層的節點總數
+            size = len(q)
+            prev = None # 每進入新的一層，將 prev 重設為 None
+
+            for i in range(size):
+                cur = q.popleft() # 取出當前層的最左側節點
+
+                # 如果 prev 不是 None，代表這不是該層的第一個節點
+                # 我們將前一個節點的 next 指向當前的 cur
+                if prev:
+                    prev.next = cur
+                prev = cur # 將 prev 移動到當前節點，準備連接下一個
+
+                # 將下一層的左右子節點依序推進佇列
+                if cur.left:
+                    q.append(cur.left)
+                if cur.right:
+                    q.append(cur.right)
+
+            # 該層最後一個節點的 next 會維持預設的 None
+            # (雖然 Python 中樹節點初始化時 next 本身就是 None，這裡寫出是為了邏輯完整)
+            prev.next = None
+
+        return root
+
+
 # V0
 # IDEA: BFS by layer + prev node (gpt)
 from collections import deque
