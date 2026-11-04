@@ -224,8 +224,8 @@
 	- Hash Map Cheatsheet（雜湊表速查) (2)
 		- again
 			- 題目 → 模式決策表
-	- 雙指標
-	- 滑動視窗
+	- 雙指標 (2) 
+	- 滑動視窗 (2)
 	- Binary Search
 	- 二元樹
 	- BFS（廣度優先搜尋)
