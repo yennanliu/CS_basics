@@ -219,6 +219,116 @@ Verified on 4000 random trees: Styles A, B and C agree with brute force on every
       4
 ```
 
+### 0-5) Depth vs Height — the two numbers a tree DFS computes ⭐⭐⭐⭐
+
+The same rule from §0-1, applied to the two quantities nearly every tree problem asks for. The question is whether the parent knows the value **before** it calls its children:
+
+| Quantity | Measured | Who knows it first | Flows | Shape | Classic LC |
+|----------|----------|--------------------|-------|-------|------------|
+| **Depth** | edges from the **root** down to the node | the parent | **down**, as an **argument**: `dfs(child, depth + 1)` | A / B | 102, 111, 199, 1302 |
+| **Height** | **nodes** on the longest path from the node down to a leaf (leaf = 1, empty = 0) | the children | **up**, as the **return value**: `return 1 + max(l, r)` | C | 104, 110, 543, 366 |
+| **Distance** | edges between two nodes | neither alone | both: depth from the LCA, or a parent map | — | 1740, 863 → [tree_lca_distance.md](./tree_lca_distance.md#3-distance-between-nodes--lc-1740) |
+
+> **Mind the units: depth here counts edges (the root is 0), height counts nodes (a leaf is 1).** That is what the code below returns, and it makes LC 543's `left_height + right_height` come out directly in edges.
+>
+> **LC 104 is the one problem that reads both ways.** Its answer counts nodes, so it equals the root's height, or the deepest leaf's depth + 1. So it can be solved top-down, by carrying `depth` to every leaf, or bottom-up, by returning heights. That is why §0-3 lists depth under both branches.
+
+#### Depth — passed down
+
+```python
+# python
+# LC 102 - Binary Tree Level Order Traversal (the DFS version)
+# IDEA: carry depth as an argument; the first visit to a depth opens its list
+# time = O(n), space = O(h)
+def nodes_by_depth(root):
+    levels = []
+
+    def dfs(node, depth):
+        if node is None:
+            return
+        if depth == len(levels):          # first node seen at this depth
+            levels.append([])
+        levels[depth].append(node.val)
+        dfs(node.left, depth + 1)         # the child's depth is decided HERE, by the parent
+        dfs(node.right, depth + 1)
+
+    dfs(root, 0)
+    return levels
+
+
+# python
+# Depth of one target node (edges from the root), -1 if it is not in the tree
+# IDEA: pre-order DFS carrying depth; the -1 sentinel means "not below me"
+# time = O(n), space = O(h)
+def depth_of(root, target):
+    def dfs(node, depth):
+        if node is None:
+            return -1
+        if node is target:
+            return depth
+        left = dfs(node.left, depth + 1)
+        if left != -1:                    # found on the left: stop, skip the right
+            return left
+        return dfs(node.right, depth + 1)
+
+    return dfs(root, 0)
+```
+
+The pre / in / post-order position of the `append` is the only difference between the three traversals. For those, see [Template 1](#template-1-tree-traversal-recursive) and [Template 2](#template-2-tree-traversal-iterative).
+
+#### Height — returned up
+
+```python
+# python
+# LC 543 - Diameter of Binary Tree
+# IDEA: return my height to my parent; record the path that bends at me in a global
+# time = O(n), space = O(h)
+def diameter_of_binary_tree(root):
+    best = 0
+
+    def height(node):
+        nonlocal best
+        if node is None:
+            return 0                                   # empty subtree has height 0
+        left_height = height(node.left)                # children FIRST: post-order
+        right_height = height(node.right)
+        best = max(best, left_height + right_height)   # the answer: both arms
+        return 1 + max(left_height, right_height)      # the return: one arm
+
+    height(root)
+    return best
+
+
+# python
+# LC 110 - Balanced Binary Tree
+# IDEA: return the height, or -1 as an "already unbalanced" signal that short-circuits upward
+# time = O(n), space = O(h)
+def is_balanced(root):
+    def height(node):
+        if node is None:
+            return 0
+        left_height = height(node.left)
+        if left_height == -1:
+            return -1
+        right_height = height(node.right)
+        if right_height == -1:
+            return -1
+        if abs(left_height - right_height) > 1:
+            return -1
+        return 1 + max(left_height, right_height)
+
+    return height(root) != -1
+```
+
+**The global is not the return value.** LC 543 returns one arm (`1 + max`) and records two (`left + right`). Returning `left + right` is the usual bug: the parent would extend a path that already bends. LC 124 and LC 687 follow the same rule (see [Template 9](#template-9-tree-dp--return-multiple-states-bottom-up-)).
+
+#### Distance — both at once
+
+Distance needs facts from above **and** below, so it lives in [tree_lca_distance.md](./tree_lca_distance.md):
+
+- **Between two nodes p and q** (LC 1740): `d(p, q) = depth(p) + depth(q) − 2·depth(lca)`. Find the LCA, then run that section's `get_dist` from it twice. LC 1740 hands you **values**, so `get_dist` compares `root.val == target`. `depth_of` above compares node identity and would return `-1`. See [§3 Distance Between Nodes](./tree_lca_distance.md#3-distance-between-nodes--lc-1740).
+- **Every node k away from a target** (LC 863): record each node's parent in one DFS. The tree is then an undirected graph, so walk outward with a `visited` set. See [§2 Move Parent Pattern](./tree_lca_distance.md#2-move-parent-pattern---bidirectional-tree-traversal).
+
 ---
 
 ## Problem Categories
