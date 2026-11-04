@@ -54,8 +54,10 @@ const REQUIRED = [
   'lc-zh-translate.html', 'lc-algo-demo.html', 'lc-site-data.html', 'lc-faq-add.html',
   'l3-core.html', '404.html',
   'style.css', 'nav.css', 'nav.js', 'lc-page.css', 'site.js', 'roadmap.js', 'complexity.js',
+  'lc-big-o.html', 'lc-big-o.zh.html', 'lc-big-o.js', 'lc-big-o.css',
+  'lc-complexity-quiz.html', 'lc-complexity-quiz.zh.html', 'lc-complexity-quiz.js', 'lc-complexity-quiz.css',
   'vendor/d3.min.js', 'vendor/highlight/atom-one-dark.min.css',
-  'data/roadmap.json', 'data/complexity-quiz.json', 'data/lc-problems.json',
+  'data/roadmap.json', 'data/complexity-quiz.json', 'data/complexity-quiz.zh.json', 'data/lc-problems.json',
   'data/search-index.json', 'data/progress.json'
 ];
 const missingFiles = REQUIRED.filter(f => {
@@ -260,6 +262,21 @@ const withSolutions = lc.problems.filter(p => p.solutions);
 ok('solution cross-links present', withSolutions.length > 500, `${withSolutions.length} link to repo source`);
 ok('solution urls are absolute github', withSolutions.every(p =>
   Object.values(p.solutions).every(u => u.startsWith('https://github.com/yennanliu/CS_basics/blob/master/'))));
+
+// ── 5b. Complexity quiz: both languages grade the same questions ─────────────
+// The zh bank is composed from the English one, so anything that differs
+// beyond the prose means one page is grading a question the other is not.
+console.log('\n== complexity quiz ==');
+const quizEn = json(`${SITE}/data/complexity-quiz.json`);
+const quizZh = json(`${SITE}/data/complexity-quiz.zh.json`);
+const graded = (q) => JSON.stringify([q.id, q.code, q.time, q.space, q.accept, q.cost.time.lines, q.cost.space.lines]);
+ok('quiz banks match across languages',
+   quizEn.questions.length > 0 && quizEn.questions.map(graded).join() === quizZh.questions.map(graded).join(),
+   `${quizEn.questions.length} en / ${quizZh.questions.length} zh`);
+ok('every quiz question points at the lines that set its time',
+   quizEn.questions.every(q => q.cost.time.lines.length > 0 && q.cost.time.why && q.cost.space.why));
+ok('zh quiz prose is translated',
+   quizZh.questions.every(q => /[一-鿿]/.test(q.cost.time.why + q.cost.space.why)));
 
 // ── 6. Review plan is built from the log, not pasted into the page ───────────
 console.log('\n== review plan ==');
@@ -467,7 +484,8 @@ ok('nav.css honours prefers-reduced-motion',
 // One shared palette for the hand-written tool pages, rather than five copies
 // that had already drifted apart.
 console.log('\n== tool pages ==');
-const TOOL_PAGES = ['lc-explorer', 'lc-similar', 'lc-review-plan', 'lc-random-picker', 'lc-complexity-quiz',
+const TOOL_PAGES = ['lc-explorer', 'lc-similar', 'lc-review-plan', 'lc-random-picker',
+                    'lc-complexity-quiz', 'lc-complexity-quiz.zh',
                     'skills', 'suggest-review', 'lc-python', 'lc-java', 'lc-cheatsheet',
                     'lc-log', 'lc-again', 'lc-zh-translate', 'lc-algo-demo',
                     'lc-site-data', 'lc-faq-add', 'l3-core'];

@@ -43,7 +43,7 @@ half-translated document renders with English gaps rather than failing.
   is what makes a problem findable on LeetCode itself.
 
 
-## Status — 5412 / 5412 sections (100%)
+## Status — 5424 / 5424 sections (100%)
 
 | Cheatsheet | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -73,7 +73,7 @@ half-translated document renders with English gaps rather than failing.
 | [binary_search](./cheatsheet/binary_search.md) | 71 | [✅](../i18n/zh/binary_search.md) |
 | [binary_search_examples](./cheatsheet/binary_search_examples.md) | 43 | [✅](../i18n/zh/binary_search_examples.md) |
 | [binary_search_on_answer](./cheatsheet/binary_search_on_answer.md) | 42 | [✅](../i18n/zh/binary_search_on_answer.md) |
-| [binary_tree](./cheatsheet/binary_tree.md) | 74 | [✅](../i18n/zh/binary_tree.md) |
+| [binary_tree](./cheatsheet/binary_tree.md) | 78 | [✅](../i18n/zh/binary_tree.md) |
 | [bit_manipulation](./cheatsheet/bit_manipulation.md) | 41 | [✅](../i18n/zh/bit_manipulation.md) |
 | [bit_manipulation_examples](./cheatsheet/bit_manipulation_examples.md) | 28 | [✅](../i18n/zh/bit_manipulation_examples.md) |
 | [bst](./cheatsheet/bst.md) | 61 | [✅](../i18n/zh/bst.md) |
@@ -143,7 +143,7 @@ half-translated document renders with English gaps rather than failing.
 | [priority_queue](./cheatsheet/priority_queue.md) | 3 | [✅](../i18n/zh/priority_queue.md) |
 | [python_complexity](./cheatsheet/python_complexity.md) | 9 | [✅](../i18n/zh/python_complexity.md) |
 | [python_gotchas](./cheatsheet/python_gotchas.md) | 44 | [✅](../i18n/zh/python_gotchas.md) |
-| [python_trick](./cheatsheet/python_trick.md) | 74 | [✅](../i18n/zh/python_trick.md) |
+| [python_trick](./cheatsheet/python_trick.md) | 75 | [✅](../i18n/zh/python_trick.md) |
 | [python_trick_indexing](./cheatsheet/python_trick_indexing.md) | 28 | [✅](../i18n/zh/python_trick_indexing.md) |
 | [python_trick_stdlib](./cheatsheet/python_trick_stdlib.md) | 28 | [✅](../i18n/zh/python_trick_stdlib.md) |
 | [queue](./cheatsheet/queue.md) | 58 | [✅](../i18n/zh/queue.md) |
@@ -168,7 +168,7 @@ half-translated document renders with English gaps rather than failing.
 | [string_examples](./cheatsheet/string_examples.md) | 39 | [✅](../i18n/zh/string_examples.md) |
 | [string_matching_kmp_rolling_hash](./cheatsheet/string_matching_kmp_rolling_hash.md) | 44 | [✅](../i18n/zh/string_matching_kmp_rolling_hash.md) |
 | [string_operations](./cheatsheet/string_operations.md) | 11 | [✅](../i18n/zh/string_operations.md) |
-| [time_space_complexity](./cheatsheet/time_space_complexity.md) | 39 | [✅](../i18n/zh/time_space_complexity.md) |
+| [time_space_complexity](./cheatsheet/time_space_complexity.md) | 44 | [✅](../i18n/zh/time_space_complexity.md) |
 | [topology_sorting](./cheatsheet/topology_sorting.md) | 48 | [✅](../i18n/zh/topology_sorting.md) |
 | [topology_sorting_examples](./cheatsheet/topology_sorting_examples.md) | 16 | [✅](../i18n/zh/topology_sorting_examples.md) |
 | [tree](./cheatsheet/tree.md) | 55 | [✅](../i18n/zh/tree.md) |
@@ -176,7 +176,7 @@ half-translated document renders with English gaps rather than failing.
 | [tree_backtrack](./cheatsheet/tree_backtrack.md) | 17 | [✅](../i18n/zh/tree_backtrack.md) |
 | [tree_codec](./cheatsheet/tree_codec.md) | 27 | [✅](../i18n/zh/tree_codec.md) |
 | [tree_construction](./cheatsheet/tree_construction.md) | 16 | [✅](../i18n/zh/tree_construction.md) |
-| [tree_examples](./cheatsheet/tree_examples.md) | 49 | [✅](../i18n/zh/tree_examples.md) |
+| [tree_examples](./cheatsheet/tree_examples.md) | 51 | [✅](../i18n/zh/tree_examples.md) |
 | [tree_lca_distance](./cheatsheet/tree_lca_distance.md) | 43 | [✅](../i18n/zh/tree_lca_distance.md) |
 | [trie](./cheatsheet/trie.md) | 28 | [✅](../i18n/zh/trie.md) |
 | [trie_examples](./cheatsheet/trie_examples.md) | 11 | [✅](../i18n/zh/trie_examples.md) |

@@ -2008,6 +2008,88 @@ squares = {x**2 for x in range(5)}   # {0, 1, 4, 9, 16}
 fs = frozenset([1, 2, 3])
 ```
 
+#### **In-place union — `set.update()` (LC 1462)**
+
+`a.update(b)` adds every element of `b` into `a`. It is the same union as `a | b`, but it
+**changes `a` in place** instead of building a new set, and it returns `None`. `a |= b` is the
+operator spelling of the same call. `update` takes any iterable, and several at once:
+`a.update(b, c)`.
+
+```python
+reachable_u = {0, 1}
+reachable_v = {2, 3}
+
+reachable_v.update(reachable_u)
+print(reachable_v)          # {0, 1, 2, 3}
+print(reachable_u)          # {0, 1}  -- the argument is untouched
+
+# same result, three spellings
+x = {2, 3}; x.update({0, 1})       # in place, returns None
+y = {2, 3}; y |= {0, 1}            # in place, operator form
+z = {2, 3} | {0, 1}                # NEW set; the operands are untouched
+
+# GOTCHA: update returns None, so never assign its result
+# s = s.update(t)                  # ❌ s is now None
+```
+
+In LC 1462 it is the line that passes a course's prerequisites on to the courses after it: when
+`u` is popped in topological order, its set is final, so everything that must come before `u`
+must also come before `v`.
+
+```python
+# LC 1462 - Course Schedule IV
+# IDEA: Kahn's topological sort; reachable[v] = every course that must come before v.
+#       For each edge u -> v: add u itself, then union in everything u needs.
+# time = O(n * e + q), space = O(n^2)
+from collections import defaultdict, deque
+
+class Solution(object):
+    def checkIfPrerequisite(self, numCourses, prerequisites, queries):
+        graph = defaultdict(list)
+        indegree = [0] * numCourses
+        for u, v in prerequisites:
+            graph[u].append(v)
+            indegree[v] += 1
+
+        # reachable[v]: every course that is a prerequisite of v, direct or indirect
+        reachable = [set() for _ in range(numCourses)]
+
+        q = deque()
+        for i in range(numCourses):
+            if indegree[i] == 0:
+                q.append(i)
+
+        while q:
+            u = q.popleft()
+            for v in graph[u]:
+                # u itself is a prerequisite of v
+                reachable[v].add(u)
+                # NOTE !!! every prerequisite of u is also a prerequisite of v
+                reachable[v].update(reachable[u])
+
+                indegree[v] -= 1
+                if indegree[v] == 0:
+                    q.append(v)
+
+        res = []
+        for u, v in queries:
+            res.append(u in reachable[v])
+        return res
+```
+
+```text
+numCourses = 3, prerequisites = [[1,2],[1,0],[2,0]]
+pop 1: edge 1->2  reachable[2] = {1}
+       edge 1->0  reachable[0] = {1}
+pop 2: edge 2->0  reachable[0].add(2)            -> {1, 2}
+                  reachable[0].update({1})       -> {1, 2}
+pop 0: no edges
+queries [[1,0],[1,2]] -> [1 in {1,2}, 1 in {1}] -> [True, True]
+```
+
+Do not write `reachable[v] = reachable[u]` instead: that makes the two names share **one** set
+(see [Copying & References](#copying--references)), so a later `add` on `v` also changes `u`.
+
 ### Testing "either element exists" with `or`
 
 ```text

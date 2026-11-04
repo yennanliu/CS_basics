@@ -925,7 +925,7 @@ LC 42 要 `i` 兩邊**都**包含（一根柱子能裝的水最多只到它自�
 | 前綴 + 後綴拆分的掃描 | O(n) | O(1) | 兩個累加值，不留陣列 |
 | 前綴 × 後綴乘積（LC 238） | O(n) | O(1) 額外 | 前綴存在輸出陣列裡，後綴用一個變數 |
 
-<!-- 301881d65375 -->
+<!-- 890993fb9aab -->
 ### 模板速查
 
 | 模板 | 模式 | 關鍵程式片段 |
@@ -934,7 +934,7 @@ LC 42 要 `i` 兩邊**都**包含（一根柱子能裝的水最多只到它自�
 | **模板 2** | HashMap + 目標值 | `if prefix_sum - k in map: count += map[prefix_sum - k]` |
 | **模板 3** | 取模／整除 | `remainder = prefix_sum % k; if remainder in map...` |
 | **模板 4** | 區間更新 | `diff[start] += val; diff[end+1] -= val` |
-| **模板 5** | 二維矩陣 | `prefix[i][j] = val + left + top - topleft` |
+| **模板 5** | 二維矩陣 | `prefix[i+1][j+1] = matrix[i][j] + prefix[i][j+1] + prefix[i+1][j] - prefix[i][j]` |
 | **模板 6** | 轉換後計數 | `先轉換陣列，再套前綴和` |
 | **模板 7** | 距離總和 | `left = idx*countLeft - sumLeft; right = sumRight - idx*countRight` —— 或寫成一行，`total - 2*prefix[k] + idx*(2*k - m)`（`k` ＝ 組內序號，`m` ＝ 組大小） |
 | **模板 8** | 前綴最大值 | `maxSoFar = max(maxSoFar, arr[i]); if (maxSoFar == i) chunks++` |

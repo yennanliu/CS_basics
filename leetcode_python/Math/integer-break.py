@@ -28,7 +28,76 @@ Constraints:
 
 """
 
+
 # V0
+class Solution(object):
+    def integerBreak(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        pass
+
+
+# V0-1
+# IDEA: 1D DP (gpt)
+# (Unbounded Knapsack（完全背包） variation)
+class Solution(object):
+    def integerBreak(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+
+        # dp[i]：將 i 拆成至少兩個正整數後，可以得到的最大乘積
+        dp = [0] * (n + 1)
+
+        # 從 2 開始計算
+        for i in range(2, n + 1):
+
+            # 嘗試第一個拆分出來的數字 j
+            for j in range(1, i):
+
+                # Case 1：剩餘部分 i-j 不再拆分
+                # Case 2：剩餘部分繼續拆分，使用 dp[i-j]
+                dp[i] = max(
+                    dp[i],
+                    j * max(i - j, dp[i - j])
+                )
+
+        return dp[n]
+
+
+# V0-2
+# IDEA: 1D DP (GEMINI)
+# (Unbounded Knapsack（完全背包） variation)
+class Solution(object):
+
+  def integerBreak(self, n):
+    """:type n: int
+
+    :rtype: int
+    """
+    # dp[i] 代表數字 i 拆分後能得到的最大乘積
+    dp = [0] * (n + 1)
+
+    # 基礎狀態設定
+    dp[1] = 1
+
+    # 外層迴urence：背包容量從 2 走到 n (對應完全背包的容量)
+    for i in range(2, n + 1):
+      # 內層迴圈：枚舉可以拆分出來的物品大小 j (從 1 到 i-1)
+      for j in range(1, i):
+        # 狀態轉移：
+        # 1. 保持 dp[i] 原有的最大值
+        # 2. 將 i 拆成 j 與 (i - j) 兩部分相乘
+        # 3. 將 i 拆成 j 與 「(i - j) 進一步拆分後的最大乘積 (dp[i - j])」相乘
+        dp[i] = max(dp[i], j * (i - j), j * dp[i - j])
+
+    return dp[n]
+
+
+# V0-3
 # IDEA: MATH (gpt)
 class Solution(object):
     def integerBreak(self, n):
@@ -400,6 +469,50 @@ class Solution(object):
         dp[2], dp[3] = 2, 3
         for x in range(4, n + 1):
             dp[x] = max(3 * dp[x - 3], 2 * dp[x - 2])
+        return dp[n]
+
+
+# V0-8
+# IDEA : UNBOUNDED KNAPSACK (1D DP, CAPACITY LOOP FORWARD)
+#
+#   Reframe as a knapsack:
+#     - capacity  = n
+#     - items     = the piece sizes 1, 2, ..., n-1   (n itself is excluded,
+#                   which is what forces k >= 2 pieces)
+#     - "value"   = the PRODUCT of the chosen pieces (combine with *, not +)
+#
+#   dp[c] = max product of pieces (each size in 1..n-1) that sum to EXACTLY c
+#   base  : dp[0] = 1  (empty product)
+#   eq    : dp[c] = max(dp[c], dp[c - piece] * piece)
+#
+#   NOTE !!! why UNBOUNDED and not 0/1:
+#     the same piece size can be used many times (10 = 3 + 3 + 4 uses 3 twice).
+#     0/1 knapsack loops capacity BACKWARD so each item is taken at most once;
+#     doing that here forbids 3 + 3 + 4 and returns 30 (= 2 * 3 * 5) for n = 10.
+#     Unbounded loops capacity FORWARD, so dp[c - piece] may already contain
+#     `piece` -> reuse is allowed -> 36.
+#
+#   e.g. n = 4 -> pieces {1,2,3} -> dp = [1,1,2,3,4] -> 2 * 2 = 4
+#
+# time = O(n^2), space = O(n)
+class Solution(object):
+    def integerBreak(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        # dp[c] = max product of pieces summing to exactly c
+        dp = [0] * (n + 1)
+        dp[0] = 1  # empty product: lets the first piece start a product
+
+        # outer loop: items (piece sizes); n itself is NOT an item -> k >= 2
+        for piece in range(1, n):
+            # inner loop: capacity FORWARD -> a piece can be reused (unbounded)
+            for capacity in range(piece, n + 1):
+                candidate = dp[capacity - piece] * piece
+                if candidate > dp[capacity]:
+                    dp[capacity] = candidate
+
         return dp[n]
 
 # V1

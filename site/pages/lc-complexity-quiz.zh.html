@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <title>複雜度測驗 - CS Basics</title>
+  <meta name="description" content="讀一段 Python，寫出它的時間與空間複雜度並立即評分 —— 決定每個上界的程式行會在程式碼中標示出來。">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⏱</text></svg>">
+  <link rel="stylesheet" href="nav.css">
+  <link rel="stylesheet" href="lc-page.css">
+  <link rel="stylesheet" href="lc-complexity-quiz.css">
+  <link rel="alternate" hreflang="en" href="https://yennanliu.github.io/CS_basics/lc-complexity-quiz.html">
+  <link rel="alternate" hreflang="zh-Hant" href="https://yennanliu.github.io/CS_basics/lc-complexity-quiz.zh.html">
+  <link rel="alternate" hreflang="x-default" href="https://yennanliu.github.io/CS_basics/lc-complexity-quiz.html">
+  <!-- Blocking on purpose: nav.js restores the stored theme before first paint. -->
+  <script src="nav.js"></script>
+  <!-- The grader. Shared with site/build-quiz.js, which validates the bank
+       against this same normaliser at build time. -->
+  <script src="complexity.js"></script>
+</head>
+<body>
+<!-- The 繁體中文 counterpart of lc-complexity-quiz.html. Only the static prose
+     lives here; the quiz itself is lc-complexity-quiz.js, shared with the English
+     page, which picks its strings and its question bank by <html lang>. Keep the
+     element ids identical to the English shell — site/test/quiz-page.test.js
+     boots both. -->
+<div id="site-nav" data-page="lc-complexity-quiz" data-lang="zh" data-lang-alt="lc-complexity-quiz.html"></div>
+<script>CSNav.mount();</script>
+
+<div class="container">
+  <div class="page-header">
+    <h1>複雜度測驗</h1>
+    <p>讀 Python 程式碼，說出它的時間與空間複雜度，接受評分。</p>
+  </div>
+
+  <div class="loading" id="loading"></div>
+
+  <!-- ── Setup ──────────────────────────────────────────────────────────── -->
+  <div id="setup" hidden>
+    <div class="rules">
+      <p>
+        答案自由輸入 —— <code>O(n log n)</code>、<code>nlogn</code>、<code>N·logN</code>
+        都算對，<code>O(n log n + n)</code> 也算：能被另一項證明支配的項會被丟掉。
+        時間與空間分開計分，對一半就拿一半分。除非題目另有說明，問的空間是
+        <b>額外空間</b>：回傳的答案本身不算。按下檢查後，決定每個上界的程式行會在程式碼中亮起來。
+      </p>
+      <p>
+        題目都是經典題 —— Blind 75、NeetCode 150 / 250 與 LeetCode Top 100 Liked ——
+        再加上幾題純練習，迴圈的形狀本身就是考點。
+      </p>
+      <p>
+        把<b>題組</b>切換到<b>面試必備</b>，就是另一組常考、而且上界容易估錯的題目 ——
+        攤銷的堆疊與滑動視窗、與輸出量有關的回溯、對答案範圍而不是對 n 取的 log。
+        也可以用 <code>?set=essentials</code> 直接連過來。
+      </p>
+    </div>
+
+    <div class="panel">
+      <div class="setup-row" id="packRow">
+        <label class="label" for="packSelect">題組</label>
+        <select id="packSelect"></select>
+      </div>
+
+      <div class="setup-row">
+        <span class="label">題數</span>
+        <div class="chips" id="countChips"></div>
+      </div>
+
+      <div class="setup-row">
+        <span class="label">主題</span>
+        <select id="topicSelect"></select>
+      </div>
+
+      <div class="pool">
+        <span class="pool-text" id="poolText"></span>
+        <button class="btn" id="startBtn">開始 →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Quiz ───────────────────────────────────────────────────────────── -->
+  <div id="quiz" hidden>
+    <div class="progress"><span id="progressBar" style="width:0%"></span></div>
+    <div class="panel">
+      <div class="q-top">
+        <span class="q-counter" id="qCounter"></span>
+        <span class="q-title" id="qTitle"></span>
+        <span class="badge" id="qDifficulty"></span>
+        <span class="badge" id="qTopic"></span>
+      </div>
+
+      <pre class="code" id="qCode"></pre>
+      <div class="legend" id="legend" hidden><span class="t"><i></i>決定時間</span><span class="s"><i></i>決定空間</span></div>
+      <p class="hint" id="qVars"></p>
+      <p class="hint" id="qNote"></p>
+
+      <div class="answers">
+        <div>
+          <label class="label" for="timeInput">時間複雜度</label>
+          <input type="text" id="timeInput" placeholder="O(…)" autocomplete="off"
+                 autocorrect="off" autocapitalize="off" spellcheck="false">
+          <div class="input-msg" id="timeMsg" role="status"></div>
+        </div>
+        <div>
+          <label class="label" for="spaceInput">空間複雜度</label>
+          <input type="text" id="spaceInput" placeholder="O(…)" autocomplete="off"
+                 autocorrect="off" autocapitalize="off" spellcheck="false">
+          <div class="input-msg" id="spaceMsg" role="status"></div>
+        </div>
+      </div>
+
+      <div class="verdict" id="verdict" hidden></div>
+
+      <div class="actions">
+        <button class="btn" id="checkBtn">檢查</button>
+        <button class="btn" id="nextBtn" hidden>下一題 →</button>
+        <span class="spacer"></span>
+        <span class="keyhint">按 <kbd>enter</kbd> 檢查，再按一次繼續</span>
+        <button class="btn btn-quiet" id="quitBtn">結束測驗</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Report ─────────────────────────────────────────────────────────── -->
+  <div id="report" hidden>
+    <div class="panel">
+      <div class="score">
+        <div class="big" id="scoreBig"></div>
+        <div class="sub" id="scoreSub"></div>
+        <div class="verdict-word" id="scoreWord"></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <span class="label">各主題得分</span>
+      <table class="breakdown"><thead>
+        <tr><th>主題</th><th>時間</th><th>空間</th><th style="width:35%"></th></tr>
+      </thead><tbody id="breakdownBody"></tbody></table>
+    </div>
+
+    <div class="panel" id="missedPanel">
+      <span class="label">值得再看一次</span>
+      <div id="missedList"></div>
+    </div>
+
+    <div class="actions">
+      <button class="btn" id="retryBtn">重做答錯的題目</button>
+      <button class="btn btn-quiet" id="restartBtn">新的測驗</button>
+    </div>
+  </div>
+</div>
+
+<script src="lc-complexity-quiz.js"></script>
+
+<footer>
+  <div class="container">
+    <p>CS_basics — computer science fundamentals &amp; interview preparation</p>
+    <p>
+      <a href="https://github.com/yennanliu/CS_basics">github</a> |
+      <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+      <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -96,10 +96,21 @@ python3 script/fetch_problem_lists.py --check   # exit 1 if it is stale
   "code": ["def twoSum(nums, target):", "    ..."],
   "time": "O(n)",
   "space": "O(n)",
-  "why": "One sentence on where each bound comes from.",
+  "cost": {
+    "time":  { "lines": [3, 4], "why": "`for i, x` makes one pass; each `in seen` is an O(1) hash lookup." },
+    "space": { "lines": [6],    "why": "`seen[x] = i` can store all n values before a match." }
+  },
+  "why": "Optional: the one takeaway the two cost reasons do not already say.",
   "trap": "The wrong answer people actually give, and why it is wrong."
 }
 ```
+
+Every question also needs its 繁體中文 entry in
+[`data/complexity_quiz.zh.json`](data/complexity_quiz.zh.json), keyed by `id` — `vars`,
+`note` / `why` / `trap` exactly when the English has them, and `cost.time` / `cost.space`
+as plain strings (the line numbers come from the English). Keep every `` `code` `` span and
+Big-O expression in English. `build-quiz.js` composes `_site/data/complexity-quiz.zh.json`
+for `lc-complexity-quiz.zh.html` and fails on a missing, stray or partial translation.
 
 ### What fails the build
 
@@ -111,16 +122,23 @@ python3 script/fetch_problem_lists.py --check   # exit 1 if it is stale
 | an entry **without** an `lc` sets **both** | a pure algorithm or Python drill |
 | `accept` is an **array**, never a bare string | a bare string survives validation and then breaks the page's feedback |
 | every answer parses as a complexity expression | `time`, `space`, and each `accept` |
+| `cost.time` and `cost.space` exist, each `{ lines, why }` | `lines` are 1-based into `code`, inside the snippet and not blank |
+| the `id` has an entry in `data/complexity_quiz.zh.json` | with `note` / `why` / `trap` exactly when the English has them |
+| `pack`, if set, is one of `build-quiz.js`'s `PACKS` | omit it for the default `classic` set; `"essentials"` is the opt-in set |
 
 **`site/complexity.js`'s identifiers are single letters.** Write `O(n * a)` with a `vars`
 line saying what `a` is — never `O(n * amount)`. This is the single most common failure.
 
 `accept` is for answers that are **genuinely defensible** — `O(h)` versus `O(n)` for a
 tree's recursion stack — not for spelling variants. `O(n log n)`, `nlogn` and `N·logN`
-already grade the same.
+already grade the same, and so does `O(n log n + n)`: a term another one provably dominates
+is dropped (per variable, so `O(m + n^2)` keeps both).
 
-`why` says where each bound comes from. `trap` is **the wrong answer people actually give**,
-and why it is wrong — not a restatement of the right one.
+`cost` says where each bound comes from: `lines` points at the loop header, call or
+allocation that sets it (the page highlights them after a check), and `why` is one plain
+sentence starting from those lines. Top-level `why` is optional — only a takeaway the two
+reasons do not already say. `trap` is **the wrong answer people actually give**, and why it
+is wrong — not a restatement of the right one.
 
 ## The steps
 

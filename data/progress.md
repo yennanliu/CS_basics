@@ -1,7 +1,7 @@
 # Progress
 
 
-# 2026-11-02
+# 2026-11-04
 
 - TODO:
 	- `must_lc_list.md` -> ing
@@ -9,6 +9,47 @@
 
 	- final_week_review.md
 			- https://github.com/yennanliu/CS_basics/pull/208
+
+	- needcode 250 -> ing
+		- https://neetcode.io/practice/practice/neetcode250
+		- Array & hash - done
+			- Subarray Sum Equals K - TODO
+			- First Missing Positive - TODO
+		- 2 pointers - done
+			- Valid Palindrome II - todo
+			- Merge Sorted Array - todo
+		- slide window - done
+			- Find K Closest Elements - todo
+		- binary search - ing
+			- Search Insert Position - todo
+			-  Search in Rotated Sorted Array II - todo
+			-  Split Array Largest Sum - todo
+			- Find in Mountain Array - todo
+		- linked list - pass
+		- stack - done
+		- trees - done
+		- trie - done
+		- backtrack - pass
+		- PQ - ing
+			- IPO - todo
+		- graphs - done
+		- advanced graphs - ing
+			- Find Critical and Pseudo Critical Edges in Minimum Spanning Tree - todo
+			- Build a Matrix With Conditions - todo
+			- Greatest Common Divisor Traversal - todo
+		- 1D DP - done
+			- Stone Game III - todo
+		- 2D DP - done
+			- Longest Increasing Path In a Matrix - todo
+			- Distinct Subsequences - todo
+		- intervals - done
+			- Minimum Interval to Include Each Query - todo
+
+
+
+
+
+
 
 	- needcode 150 -> ing
 		- https://neetcode.io/practice/practice/neetcode150
@@ -28,7 +69,6 @@
 			- graphs - done
 			- advanced graphs (ing)
 				- Reconstruct Itinerary (pass)
-				- Swim In Rising Water (pass)
 
 			- 1D dp - done
 			- 2D dp - ing
@@ -107,6 +147,9 @@
 
 - 複雜度分析練習題
 	- https://yennj12.js.org/CS_basics/cheatsheets/complexity_drills.zh.html
+		`練習 17：在迴圈中串接字串`
+
+
 
 
 - Complexity Quiz
@@ -117,16 +160,11 @@
 
 
 
-
-
-
-
-
-
 - python_trick.md
 	- https://yennj12.js.org/CS_basics/cheatsheets/python_trick.zh.html
-		- `2) LC Example`
-		- `多重 key 的 tuple 排序：key=lambda x: (x[0], x[1])`
+		- `相關 LeetCode 題目：`
+
+
 
 
 
@@ -135,7 +173,7 @@
 
 - Design — 實戰題解
 	- https://yennj12.js.org/CS_basics/cheatsheets/design_examples.zh.html
-		- `Insert Delete GetRandom O(1)`
+		- `模板 B - 掃描線差分計數（最大重疊）`
 
 
 		
@@ -182,10 +220,12 @@
 
 
 - OK:
-	- Array.md
-	- Hash Map Cheatsheet（雜湊表速查)
-	- 雙指標
-	- 滑動視窗
+	- Array.md (2)
+	- Hash Map Cheatsheet（雜湊表速查) (2)
+		- again
+			- 題目 → 模式決策表
+	- 雙指標 (2) 
+	- 滑動視窗 (2)
 	- Binary Search
 	- 二元樹
 	- BFS（廣度優先搜尋)
@@ -251,6 +291,7 @@
 			- Again
 				- 7) 樹 — 時間看節點數，空間看樹高（最經典的坑） 
 	- 複雜度速查表 — 經典演算法與資料結構
+	- Linked List（鏈結串列）
 
 
 
@@ -289,6 +330,20 @@
 
 
 		- Graph
+			- Minimum Height Trees
+				- 310 (!!!)
+
+
+			- Open the Lock
+				- 752 (!!!)
+
+			- Course Schedule IV
+				- 1462 (!!!)
+
+			- Account merge
+				- 721 (!!!)
+
+
 			- Bus Routes 
 				— LC 815
 
@@ -527,7 +582,7 @@
 		- 0/1 knapsack
 			- 二維容量
 				- LC 474 Ones and Zeroes
-			- LC 1049 - Last Stone Weight II
+			- LC 1049 - Last Stone Weight II (!!!)
 				- 494
 				- 416
 			- 深入：分組 0/1 背包 (分組背包)
@@ -869,6 +924,8 @@
 
 		- stack
 
+			- 394 (!!!)
+
 			- 模式：帶字元計數配對的堆疊 !!!
 				- 1209
 				- 32 (dp, stack, "(, )" cnt) 
@@ -993,13 +1050,13 @@
 	  - Tree
 			 - 2 sum on tree
 			 	- LC 437 Path Sum III
+			 		- 用前綴和數路徑
 			 	- LC 113 Path Sum II
-			 	- LC 127 Path Sum
-			 - 用前綴和數路徑
-			 	- LC 437
+			 	- LC 122 Path Sum
+
 			 - Path
 			 	-  LC 687 Longest Univalue Path
-			 - 高度驗證模板 — LC 110
+			 - 高度驗證模板
 			 	- LC 110
 			 - 最小深度 — 遞迴寫法與它的獨子陷阱
 			 	- LC 111
@@ -1030,8 +1087,6 @@
 			 - 完全樹節點計數模板	
 			  	— LC 222 
 
-			 - 組出路徑的數值
-			  	- LC 129
 			 - 序列化／反序列化
 			 		- LC 105, 106
 			 		- 297
@@ -1042,7 +1097,6 @@
 			 	- string <--> tree
 			 			- 606 (do !!!)
 			 			- 536
-			 			- 297
 			 			- 449
 			 			- 652/572
 			 			- 331

@@ -40,6 +40,43 @@ class Solution(object):
         return [ x[0] for  x in sorted(list(freq_dict.items()), key=lambda x: x[1],reverse=True) ][:k]
 
 
+# V0-0-0-1
+# IDEA: Counter +  SORTING (gpt)
+from collections import Counter
+
+class Solution(object):
+    def topKFrequent(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: List[int]
+        """
+        # 1. Edge case
+        if not nums:
+            return []
+
+        # 2. Count frequency
+        cnt = Counter(nums)
+
+        # 3. If unique numbers <= k, return all numbers
+        if len(cnt) <= k:
+            return list(cnt.keys())
+
+        """
+        NOTE !!!
+
+        below
+        """
+        # 4. Sort by frequency (descending)
+        sorted_items = sorted(
+            cnt.items(),
+            key=lambda x: -1 * x[1]
+        )
+
+        # 5. Return the top k numbers
+        return [num for num, freq in sorted_items[:k]]
+
+
 # V0-0-1
 # IDEA: Counter +  most_common(k) (gpt)
 from collections import Counter

@@ -3,13 +3,14 @@
 219. Contains Duplicate II
 Easy
 
-Given an array of integers and an integer k, find out whether there are two distinct indices i and j in the array such that nums[i] = nums[j] and the absolute difference between i and j is at most k.
+Given an integer array nums and an integer k, return true if there are two
+distinct indices i and j in the array such that nums[i] == nums[j] and
+abs(i - j) <= k.
 
 Example 1:
 
 Input: nums = [1,2,3,1], k = 3
 Output: true
-
 
 Example 2:
 
@@ -21,23 +22,29 @@ Example 3:
 Input: nums = [1,2,3,1,2,3], k = 2
 Output: false
 
+Constraints:
+
+1 <= nums.length <= 10^5
+-10^9 <= nums[i] <= 10^9
+0 <= k <= 10^5
+
 """
 
-# time = O(n)
-# space = O(n)
+# V0
+# IDEA : HASH MAP  value -> LAST INDEX IT WAS SEEN AT
 #
-# Given an array of integers and an integer k, return true if
-# and only if there are two distinct indices i and j in the array
-# such that nums[i] = nums[j] and the difference between i and j is at most k.
+#   scanning left to right, the closest earlier copy of nums[i] is always the
+#   LAST one seen, so it is the only one worth comparing against : if even the
+#   nearest copy is more than k away, every older copy is further still.
+#   so keep one index per value, and overwrite it on every sighting.
 #
-
-# V0 
-
-# V1 
-# https://blog.csdn.net/coder_orz/article/details/51674266
-# IDEA : HASH TABLE
-# time = O(n)
-# space = O(n)
+#   e.g. nums = [1,0,1,1], k = 1
+#        i=2 : last[1] = 0 -> 2 - 0 = 2 > 1 -> no, last[1] = 2
+#        i=3 : last[1] = 2 -> 3 - 2 = 1 <= 1 -> True
+#
+#   (brute force : compare every pair within distance k -> O(n * k), too slow)
+#
+# time = O(n), space = O(n)
 class Solution(object):
     def containsNearbyDuplicate(self, nums, k):
         """
@@ -45,83 +52,49 @@ class Solution(object):
         :type k: int
         :rtype: bool
         """
-        num_map = {}
+        # value -> the most recent index it appeared at
+        last_index = {}
+
         for i in range(len(nums)):
-            if nums[i] in num_map and i - num_map[nums[i]] <= k:
+            value = nums[i]
+            if value in last_index and i - last_index[value] <= k:
                 return True
-            else:
-                num_map[nums[i]] = i
+            # NOTE !!! overwrite even when the old copy was too far : the new
+            #          index is closer to every later position
+            last_index[value] = i
+
         return False
 
-# V1' 
-# https://blog.csdn.net/coder_orz/article/details/51674266
-# IDEA : SET 
-# IDEA : SET OPERATION
-# In [12]: window = set([1,3,4,])
-#     ...: 
-# In [13]: window
-# Out[13]: {1, 3, 4}
-# In [14]: window.discard(1)
-# In [15]: window
-# Out[15]: {3, 4}
-# In [16]: window.discard(3)
-# In [17]: window
-# Out[17]: {4}
-# time = O(n)
-# space = O(min(n, k))
-class Solution(object):
+
+# V1
+# IDEA : SLIDING WINDOW SET OF THE LAST k VALUES
+#
+#   a duplicate within distance k exists exactly when nums[i] already appears
+#   among the k elements before it, nums[i-k .. i-1]. keep those k values in a
+#   set; before looking at index i, evict nums[i-k-1], the one that just fell
+#   out of range. any duplicate inside the window answers True immediately, so
+#   the set never needs to hold two copies of a value.
+#
+#   use this when memory matters : the set holds at most k values, not n.
+#
+# time = O(n), space = O(min(n, k))
+class Solution2(object):
     def containsNearbyDuplicate(self, nums, k):
         """
         :type nums: List[int]
         :type k: int
         :rtype: bool
         """
-        window = set([])
+        # the values at indices i-k .. i-1
+        window = set()
+
         for i in range(len(nums)):
+            # nums[i-k-1] is now more than k away from i : drop it
             if i > k:
-                window.discard(nums[i-k-1])
+                window.remove(nums[i - k - 1])
+
             if nums[i] in window:
                 return True
-            else:
-                window.add(nums[i])
-        return False
+            window.add(nums[i])
 
-# V1''
-# https://www.jiuzhang.com/solution/contains-duplicate-ii/#tag-highlight-lang-python
-# time = O(n)
-# space = O(n)
-class Solution:
-    """
-    @param nums: the given array
-    @param k: the given number
-    @return:  whether there are two distinct indices i and j in the array such that nums[i] = nums[j] and the absolute difference between i and j is at most k
-    """
-    def containsNearbyDuplicate(self, nums, k):
-        # Write your code here
-
-        dic = {}
-        for index, value in enumerate(nums):
-            if value in dic and index - dic[value] <= k:
-                return True
-            dic[value] = index
-        return False
-
-# V2
-# time = O(n)
-# space = O(n)
-class Solution:
-    # @param {integer[]} nums
-    # @param {integer} k
-    # @return {boolean}
-    def containsNearbyDuplicate(self, nums, k):
-        lookup = {}
-        for i, num in enumerate(nums):
-            if num not in lookup:
-                lookup[num] = i
-            else:
-                # It the value occurs before, check the difference.
-                if i - lookup[num] <= k:
-                    return True
-                # Update the index of the value.
-                lookup[num] = i
         return False

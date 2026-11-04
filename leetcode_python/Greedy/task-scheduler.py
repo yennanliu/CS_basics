@@ -69,9 +69,21 @@ in this LC, we DON'T need to `pop 1st` and `pop 1st, 2nd` like algorithm,
 # IDEA: BIG PQ + QUEUE + counter (map)
 # time = O(n)   # n = len(tasks); heap/queue bounded by 26-letter alphabet
 # space = O(1)
+"""
+STEPS:
+
+
+    Step 1. pop all of the `ready to be proccessed` items from cool down queue
+
+
+    Step 2. process (Execute the task with the highest frequency)
+
+
+    Step 3. insert processed tasks to `cool down queue`
+
+"""
 from collections import Counter, deque
 import heapq
-
 
 class Solution(object):
     def leastInterval(self, tasks, n):

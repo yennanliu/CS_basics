@@ -122,6 +122,81 @@ class Solution(object):
         return -1
 
 
+# V0-0-1
+# IDEA : DIJKSTRA (MIN-HEAP), PATH COST = MAX ELEVATION ON THE PATH
+"""
+NOTE !!!
+
+    DIJKSTRA
+
+        -> small PQ + BFS
+"""
+import heapq
+
+class Solution(object):
+
+  def swimInWater(self, grid):
+    """:type grid: List[List[int]]
+
+    :rtype: int
+    """
+    # 邊界條件：若網格為空，直接回傳 0
+    if not grid:
+      return 0
+
+    n = len(grid)
+
+    # 特判：若網格只有 1x1，起點即終點，直接回傳該格的高度
+    if n == 1:
+      return grid[0][0]
+
+    # cost_matrix[y][x] 記錄到達座標 (x, y) 所需承受的「路徑最大高度」的最小值
+    # 初始值全部設為無窮大 (float('inf'))
+    cost_matrix = [[float('inf')] * n for _ in range(n)]
+
+    # Min-Heap (最小堆積)：儲存格式為 (當前路徑最大高度, x 座標, y 座標)
+    pq = []
+
+    # 起始點設定：左上角 (0, 0)
+    start_cost = grid[0][0]
+    heapq.heappush(pq, (start_cost, 0, 0))
+    cost_matrix[0][0] = start_cost
+
+    # 四個移動方向：下、上、右、左
+    moves = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+
+    while pq:
+      cost, x, y = heapq.heappop(pq)
+
+      # 懶惰刪除優化 (Lazy Deletion)：
+      # 若當前彈出的代價大於 cost_matrix 中已記錄的最優解，代表這是過期/較差的路徑，直接跳過
+      if cost > cost_matrix[y][x]:
+        continue
+
+      # 如果已經成功抵達右下角終點 (n-1, n-1)，當前的 cost 即為解答
+      if x == n - 1 and y == n - 1:
+        return cost
+
+      # 探索上下左右四個相鄰方向
+      for dx, dy in moves:
+        x_ = x + dx
+        y_ = y + dy
+
+        # 確保新座標落在合法範圍內
+        if 0 <= x_ < n and 0 <= y_ < n:
+          # 核心邏輯：路徑代價是「目前累積的最大高度」與「新格子高度」的取大值（而非累加）
+          new_cost = max(cost, grid[y_][x_])
+
+          # 若這條新路徑能降低到達 (x_, y_) 所需的最大高度代價
+          if new_cost < cost_matrix[y_][x_]:
+            cost_matrix[y_][x_] = new_cost
+            # 將更新後的狀態推入 Min-Heap
+            heapq.heappush(pq, (new_cost, x_, y_))
+
+    return -1
+
+
+
 # V1
 # IDEA : BINARY SEARCH ON THE ANSWER + BFS
 #

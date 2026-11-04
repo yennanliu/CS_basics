@@ -39,22 +39,150 @@ Constraints:
 
 """
 
+
 # V0
-# IDEA : COUNT THE RUN LENGTH ENDING AT EACH DAY
+class Solution(object):
+    def getDescentPeriods(self, prices):
+        """
+        :type prices: List[int]
+        :rtype: int
+        """
+        pass
+
+
+# V0-1
+# IDEA: PERIOD COLLECT + MATH (sum of 1 ~ x) (gpt)
+class Solution(object):
+    def getDescentPeriods(self, prices):
+        """
+        :type prices: List[int]
+        :rtype: int
+        """
+        if not prices:
+            return 0
+
+        n = len(prices)
+        period = []
+        l = 0
+
+        for r in range(1, n):
+            # 如果不符合連續遞減 1，代表前一段區間結束
+            if prices[r] != prices[r - 1] - 1:
+                period.append(r - l)
+                l = r
+
+        # IMPORTANT: 別忘記加入最後一段區間
+        period.append(n - l)
+
+        cnt = 0
+
+        for x in period:
+            # 長度為 x 的連續區間，subarrays 數量為 x * (x + 1) // 2
+            cnt += x * (x + 1) // 2
+
+        return cnt
+
+
+# V0-2
+# idea: DP (gemini)
+class Solution(object):
+
+  def getDescentPeriods(self, prices):
+    """:type prices: List[int]
+
+    :rtype: int
+    """
+    if not prices:
+      return 0
+
+    total_periods = 1  # 至少包含第一個元素本身所形成的 1 個平滑遞減區間
+    current_streak = 1  # 記錄以當前元素結尾的連續遞減長度
+
+    for i in range(1, len(prices)):
+      # 如果當前元素比前一個元素剛好小 1（符合平滑遞減）
+      if prices[i] == prices[i - 1] - 1:
+        current_streak += 1
+      else:
+        # 不符合遞減，連續中斷，重置為 1
+        current_streak = 1
+
+      # 以當前元素結尾的有效子陣列數量，剛好等於當前的連續長度
+      total_periods += current_streak
+
+    return total_periods
+
+
+# V0-3
+# IDEA : COUNT THE RUN LENGTH ENDING AT EACH DAY (1D DP, ROLLED TO ONE VARIABLE)
 #
-#   let `run` be the length of the longest smooth descent ending at day i.
-#       run = run + 1  if prices[i] == prices[i-1] - 1  else  1
-#   every day contributes exactly `run` periods (the ones ending on it), so
-#   the total is the running sum of `run`.
+#   run = length of the longest smooth descent that ENDS on day i.
+#       run = run + 1   if prices[i] == prices[i-1] - 1
+#       run = 1         otherwise (day i starts a new period on its own)
+#   every period ending on day i is a suffix of that run, so day i
+#   contributes exactly `run` new periods -> answer = sum of run over all days.
 #
-#   equivalently : a maximal run of length L contributes L * (L + 1) / 2.
+#   e.g. prices = [3,2,1,4] -> run = 1,2,3,1 -> 1+2+3+1 = 7
+#
+#   (brute force : check every subarray, O(n^2) -> TLE at n = 10^5)
 #
 # time = O(n), space = O(1)
 class Solution(object):
     def getDescentPeriods(self, prices):
-        res = 1
+        """
+        :type prices: List[int]
+        :rtype: int
+        """
+        if not prices:
+            return 0
+
+        # day 0 alone is one period
+        total = 1
         run = 1
+
         for i in range(1, len(prices)):
-            run = run + 1 if prices[i] == prices[i - 1] - 1 else 1
-            res += run
-        return res
+            # NOTE !!! "smooth" means a drop of EXACTLY 1, not any drop
+            if prices[i] == prices[i - 1] - 1:
+                run += 1
+            else:
+                run = 1
+            # all periods ending on day i
+            total += run
+
+        return total
+
+
+# V1
+# IDEA : SPLIT INTO MAXIMAL RUNS, EACH RUN OF LENGTH L GIVES L * (L + 1) / 2
+#
+#   a maximal smooth descent of length L contains every one of its
+#   contiguous sub-periods, and there are 1 + 2 + ... + L = L * (L + 1) / 2
+#   of them. Periods never cross a break, so the runs add up independently.
+#
+#   e.g. prices = [3,2,1,4] -> runs [3,2,1], [4] -> 6 + 1 = 7
+#
+#   same answer as V0 — V0 just adds the triangle number one term at a time.
+#
+# time = O(n), space = O(1)
+class Solution2(object):
+    def getDescentPeriods(self, prices):
+        """
+        :type prices: List[int]
+        :rtype: int
+        """
+        if not prices:
+            return 0
+
+        total = 0
+        run_length = 1
+
+        for i in range(1, len(prices)):
+            if prices[i] == prices[i - 1] - 1:
+                run_length += 1
+            else:
+                # the run ended at day i-1 : count all its sub-periods
+                total += run_length * (run_length + 1) // 2
+                run_length = 1
+
+        # the last run is still open when the loop ends
+        total += run_length * (run_length + 1) // 2
+        return total
