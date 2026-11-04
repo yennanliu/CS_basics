@@ -1050,13 +1050,13 @@
 	  - Tree
 			 - 2 sum on tree
 			 	- LC 437 Path Sum III
+			 		- 用前綴和數路徑
 			 	- LC 113 Path Sum II
-			 	- LC 127 Path Sum
-			 - 用前綴和數路徑
-			 	- LC 437
+			 	- LC 122 Path Sum
+
 			 - Path
 			 	-  LC 687 Longest Univalue Path
-			 - 高度驗證模板 — LC 110
+			 - 高度驗證模板
 			 	- LC 110
 			 - 最小深度 — 遞迴寫法與它的獨子陷阱
 			 	- LC 111
