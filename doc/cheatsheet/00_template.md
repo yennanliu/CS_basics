@@ -363,7 +363,7 @@ A trailing `⭐` run on a heading says how interview-critical that section is. T
 - Images: `<p align="center"><img src="../pic/filename.png"></p>`
 - Heading levels never skip: an `h2` is followed by `h3`, not `h4`.
 - State each LC number **once** per heading: `### Top K Frequent Elements — LC 347`, not `### Top K Frequent Elements (LC 347) — LC 347`.
-- Number templates `Template 1 … N` **without gaps**. Worked examples need no number; the heading is `<Problem Name> — LC <n>`. Do not start new `1-1-3)`-style numbering; it cannot be said aloud and breaks when a section moves.
+- Number templates `Template 1 … N` **without gaps**. Worked examples need no number; the heading is `<Problem Name> — LC <n>`. A new sheet does not use `1-1-3)`-style numbering; it cannot be said aloud and breaks when a section moves. A sheet that already uses it keeps it, so one file never mixes two styles: renumbering moves every anchor.
 - **No emoji in headings** other than the trailing `⭐` run the site renders. ✅ / ❌ are fine as table cell values.
 - English only in an English sheet. A translation goes in the `i18n/zh/` overlay (see CLAUDE.md § Traditional Chinese docs), never inline, where the 100% zh gate cannot see it.
 

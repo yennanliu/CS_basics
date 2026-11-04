@@ -863,9 +863,9 @@ The build fails on a taxonomy key that is missing, points at an unknown topic, o
 - ❌ A worked example that is a heading over code: no key point, no link to its template (30% of 1,330 went straight to code)
 - ❌ `NOTE !!!` comment walls inside code (583 lines in 69 files); write a **Traps** bullet instead
 - ❌ IPython `In [n]:` transcripts as a template; "Universal Template" pseudocode with undefined names; proofs whose code is `pass`
-- ❌ Emoji in headings, other than the trailing `⭐` run the site renders; new `1-1-3)`-style numbering
+- ❌ Emoji in headings, other than the trailing `⭐` run the site renders; `1-1-3)`-style numbering in a **new** sheet (an existing sheet keeps its style: renumbering moves every anchor)
 - ❌ Generic filler ("Common Mistakes: forgetting edge cases"), invented numbers (benchmarks, hand-typed problem counts), pasted chat, "fixed by gpt", blog URLs inside code
-- ❌ Inline 中文 prose in an English sheet. It belongs in the `i18n/zh/` overlay, where the zh gate can see it
+- ❌ Inline 中文 prose in an English sheet. Write it as an English section and put the Chinese in the `i18n/zh/` overlay, where the zh gate can see it. A standalone Chinese sheet with its own Scope line (`knapsack_01_zh.md`) is a different thing and is fine
 - ❌ `LC Examples` after `Summary`, or the canonical template a thousand lines down
 
 ### Common Section Patterns

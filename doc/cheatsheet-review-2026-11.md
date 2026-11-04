@@ -135,7 +135,7 @@ Python leads overall (1,824 vs 1,425 fences). The sheets that teach a template o
 - **REPL transcripts as templates**: `array.md:53-112` opens a tier-5 sheet with `In [28]: p.insert(1, [6,1])`.
 - **Generic filler**: "Common Mistakes: forgetting to handle window state correctly", proofs whose code is `pass` (`greedy:493-554`), "Universal Template" pseudocode with undefined names (`binary_tree:453`, `tree:417`, `heap:192`), invented statistics ("Template Usage Frequency: 15 problems", a ms benchmark in `Dijkstra.md:775`), and a 45-line flowchart ending in "Design custom solution" (`palindrome:508`).
 - **Pasted chat**: `tree_backtrack.md`'s H1 is "Template (gpt)", and its line 6 opens "Great — many…".
-- **Inline 中文 in English sheets.** `knapsack_01_zh.md` is a Chinese-only parallel sheet outside the i18n overlay. `dp_advanced:882-940` nearly copies it, and `dp_loop_order` repeats its English content in Chinese. The 100% zh gate cannot see any of this.
+- **Inline 中文 in English sheets**, in 18 files, most of them a line or two; four hold most of it: `dp_advanced` 34 lines, `difference_array` 22, `dp_loop_order` 16, `backtrack` 10. `dp_advanced:882-940` is a 中文速記 that nearly copies `knapsack_01_zh.md`, and `dp_loop_order` §6 repeats its own English content in Chinese. The 100% zh gate cannot see any of this. (`knapsack_01_zh.md` itself is not the problem: it is a standalone Chinese walkthrough of 0/1 knapsack with its own Scope line, not a copy of `knapsack.md`.)
 
 ### 7. Teaching order is upside down in places
 
@@ -237,7 +237,7 @@ Rewrite [`lc_pattern.md`](cheatsheet/lc_pattern.md) as the router:
 
 ### P2 — retrofit the pattern card onto the 24 tier-5 sheets
 
-The first batch is the 14 sheets an L3 loop leans on hardest: `binary_search`, `sliding_window`, `2_pointers`, `hash_map`, `tree`, `binary_tree`, `bfs`, `dfs`, `graph`, `heap`, `dp`, `backtrack`, `stack`, `linked_list`. The other 10 follow in a second batch; two of them are handled elsewhere (`lc_pattern` is rewritten by P1, and `knapsack_01_zh` becomes an overlay in P6). Per sheet:
+The first batch is the 14 sheets an L3 loop leans on hardest: `binary_search`, `sliding_window`, `2_pointers`, `hash_map`, `tree`, `binary_tree`, `bfs`, `dfs`, `graph`, `heap`, `dp`, `backtrack`, `stack`, `linked_list`. The other 10 follow in a second batch; two of them are handled elsewhere (`lc_pattern` is rewritten by P1, and `knapsack_01_zh` is the 0/1 knapsack home in P3). Per sheet:
 
 - turn every template into a full pattern card: a heading that names its pattern and anchor problem, then the slots in order, **Recognise → Key point → Template → Complexity → Dry run → Traps → Not this if → Drill**. Add the missing ones, and rewrite `NOTE !!!` comments as **Traps** bullets;
 - move the canonical template up into the first ~300 lines (`binary_search`);
@@ -252,7 +252,7 @@ The first batch is the 14 sheets an L3 loop leans on hardest: `binary_search`, `
 Work the hot-spot table in [§4](#4-one-problem-many-homes), cluster by cluster as the split plan did:
 
 1. Shortest-path comparison → `shortest_path_comparison.md` owns it; the three algorithm sheets keep a pointer.
-2. 0/1 knapsack → `knapsack.md` owns it. `knapsack_01_zh.md` becomes its i18n overlay (see P6), and `dp_advanced`'s copy goes.
+2. 0/1 knapsack → `knapsack.md` owns it in English. `knapsack_01_zh.md` stays as the standalone Chinese walkthrough: it is not a translation of `knapsack.md`, which already has its own overlay, so it cannot become one. `dp_advanced`'s 中文速記, which nearly copies it, becomes a one-line pointer to it.
 3. Tree paths → `tree_lca_distance §4` (root-to-leaf path templates) owns LC 112/113/124/437. `bst_examples` Template 7 moves out, since it is not BST material. LC 1110 is also in 4 files, but it deletes nodes and returns a forest: it is tree modification, not a path problem, so its home is chosen with the tree-modification material, not here.
 4. `monotonic_stack` owns the monotonic problems; `stack_examples` keeps the rest.
 5. KMP / rolling hash → one owner.
@@ -279,12 +279,12 @@ Phase 2 (an idea, not this PR): have `build-site.js` render the verdict from `pr
 
 ### P6 — noise and language
 
-- Emoji out of headings (keep `⭐` runs, which the site renders). Keep ✅ / ❌ only as table cell values.
-- Retire `n-n)` numbering in new or rewritten sections. Number templates `Template 1…N` without gaps; examples need no number.
-- Python first in every block pair. Add the missing Python to the Java-only template sheets (`dp_monotonic_stack`, `dp_string`, `knapsack`, `binary_search_on_answer`) and the missing Java to `Bellman-Ford` / `Floyd-Warshall`. Replace `n_sum`'s C++.
-- Move inline 中文 out of English sheets into `i18n/zh/`. Turn `knapsack_01_zh.md` into the overlay for `knapsack.md` (it is a parallel tree that can drift).
+- Python first in every block pair. Add the missing Python to the Java-only template sheets (`dp_monotonic_stack`, `dp_string`, `knapsack`, `binary_search_on_answer`) and replace `n_sum`'s C++. (The missing Java in `Bellman-Ford` / `Floyd-Warshall` comes last: Java is the second language.)
 - IPython transcripts become plain ` ```python ` with the output as a `# -> …` comment.
 - Rewrite `tree_backtrack.md`'s chat-shaped header; fix `array_overlap_explaination`'s filename (leave a stub).
+- Emoji come out of a sheet's headings when P2 rewrites that sheet, not in a sweep of their own. Removing one moves the heading's anchor (`🔥 Template 1` slugs to `-template-1-…`), so the same commit fixes every link to it and re-keys the 中文 overlay. Keep ✅ / ❌ only as table cell values.
+- Inline 中文 in an English sheet: where the English already says the same thing (`dp_loop_order` §6), delete the Chinese, since the zh page already shows that section's translation. Where it says something the English does not, write it as an English section first and put the Chinese in the `i18n/zh/` overlay. Overlay entries can only translate sections the English has, so the Chinese cannot simply be moved.
+- **Not done:** renumbering `n-n)` headings. It moves anchors (15 cross-sheet links point at a `#1-1-…` id, more within sheets) and, done only for new sections, leaves two styles in one sheet. A sheet keeps the style it has; a new sheet uses `Template 1…N`. Also not done: turning `knapsack_01_zh.md` into an overlay (see P3).
 
 ### P7 — a lint that ratchets
 

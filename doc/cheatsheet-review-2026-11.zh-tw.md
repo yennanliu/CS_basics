@@ -140,7 +140,7 @@ Scope 行規定了誰擁有哪個*主題*，卻沒有規定誰擁有哪*一題*�
   - 編造的統計（「Template Usage Frequency: 15 problems」、`Dijkstra.md:775` 的毫秒 benchmark）；
   - 一張 45 行、結尾是「Design custom solution」的流程圖（`palindrome:508`）。
 - **貼上的對話紀錄**：`tree_backtrack.md` 的 H1 是「Template (gpt)」，第 6 行以「Great — many…」開頭。
-- **英文 cheatsheet 裡夾中文**：`knapsack_01_zh.md` 是 i18n overlay 之外的一份純中文平行文件；`dp_advanced:882-940` 幾乎照抄它；`dp_loop_order` 把英文內容用中文再講一遍。100% 的中文翻譯檢查完全看不到這些。
+- **英文 cheatsheet 裡夾中文**：共 18 個檔案，大多只有一兩行，主要集中在四個檔案：`dp_advanced` 34 行、`difference_array` 22 行、`dp_loop_order` 16 行、`backtrack` 10 行。`dp_advanced:882-940` 的「中文速記」幾乎照抄 `knapsack_01_zh.md`；`dp_loop_order` §6 把自己的英文內容用中文再講一遍。100% 的中文翻譯檢查完全看不到這些。（`knapsack_01_zh.md` 本身沒有問題：它是一份有自己 Scope line 的 0/1 背包中文詳解，不是 `knapsack.md` 的副本。）
 
 ### 7. 有些地方的教學順序是反的
 
@@ -242,7 +242,7 @@ repo 其實已經有答案：[`data/l3_core.json`](../data/l3_core.json) 是 L3 
 
 ### P2 — 為 24 份 tier 5 cheatsheet 套上 pattern card
 
-第一批是 L3 面試最倚重的 14 份：`binary_search`、`sliding_window`、`2_pointers`、`hash_map`、`tree`、`binary_tree`、`bfs`、`dfs`、`graph`、`heap`、`dp`、`backtrack`、`stack`、`linked_list`。其餘 10 份放在第二批；其中兩份由別的項目處理（`lc_pattern` 由 P1 重寫，`knapsack_01_zh` 在 P6 改成 overlay）。每一份要做的事：
+第一批是 L3 面試最倚重的 14 份：`binary_search`、`sliding_window`、`2_pointers`、`hash_map`、`tree`、`binary_tree`、`bfs`、`dfs`、`graph`、`heap`、`dp`、`backtrack`、`stack`、`linked_list`。其餘 10 份放在第二批；其中兩份由別的項目處理（`lc_pattern` 由 P1 重寫，`knapsack_01_zh` 在 P3 當 0/1 背包的中文本家）。每一份要做的事：
 
 - 把每個模板改成完整的 pattern card：標題寫出模式名稱和代表題，欄位照**辨識 → 關鍵 → 模板 → 複雜度 → Dry run → 陷阱 → 不是這個 → 練習**的順序排。缺的補上；`NOTE !!!` 改寫成**陷阱**條目；
 - 把標準模板移到前約 300 行內（`binary_search`）；
@@ -257,7 +257,7 @@ repo 其實已經有答案：[`data/l3_core.json`](../data/l3_core.json) 是 L3 
 依 [§4](#4-一題多處) 的熱點表，像拆檔計畫一樣一個家族一個家族處理：
 
 1. 最短路徑比較 → 由 `shortest_path_comparison.md` 擁有，其他三份演算法 cheatsheet 只留指標。
-2. 0/1 背包 → 由 `knapsack.md` 擁有；`knapsack_01_zh.md` 改成它的 i18n overlay（見 P6），`dp_advanced` 的副本刪除。
+2. 0/1 背包 → 英文由 `knapsack.md` 擁有。`knapsack_01_zh.md` 保留為獨立的中文詳解：它不是 `knapsack.md` 的翻譯，而 `knapsack.md` 已經有自己的 overlay，所以它不能改成 overlay。`dp_advanced` 裡幾乎照抄它的「中文速記」改成一行連結。
 3. 樹路徑 → LC 112/113/124/437 由 `tree_lca_distance §4`（root-to-leaf 路徑模板）擁有；`bst_examples` 的 Template 7 移出（那不是 BST 內容）。LC 1110 也出現在 4 個檔案，但它是刪除節點、回傳森林，屬於修改樹的題目而不是路徑題，所以它的家要和修改樹的內容一起決定，不放這裡。
 4. 單調題由 `monotonic_stack` 擁有，`stack_examples` 留其餘的。
 5. KMP / rolling hash → 只留一個擁有者。
@@ -284,12 +284,12 @@ repo 其實已經有答案：[`data/l3_core.json`](../data/l3_core.json) 是 L3 
 
 ### P6 — 雜訊與語言
 
-- 標題中的 emoji 拿掉（保留網站會渲染的 `⭐`），✅ / ❌ 只在表格儲存格中使用。
-- 新寫或改寫的段落不再用 `n-n)` 編號：模板編成 `Template 1…N`、不跳號；例題不需要編號。
-- 每一組程式碼都先 Python 後 Java。替只有 Java 的模板檔（`dp_monotonic_stack`、`dp_string`、`knapsack`、`binary_search_on_answer`）補 Python，替 `Bellman-Ford` / `Floyd-Warshall` 補 Java，並換掉 `n_sum` 的 C++。
-- 把英文 cheatsheet 裡的中文移到 `i18n/zh/`。`knapsack_01_zh.md` 改成 `knapsack.md` 的 overlay（它是一份會漸漸走樣的平行文件）。
+- 每一組程式碼都先 Python 後 Java。替只有 Java 的模板檔（`dp_monotonic_stack`、`dp_string`、`knapsack`、`binary_search_on_answer`）補 Python，並換掉 `n_sum` 的 C++。（`Bellman-Ford` / `Floyd-Warshall` 補 Java 放到最後：Java 是輔助語言。）
 - IPython 互動紀錄改成一般的 ` ```python `，輸出寫成 `# -> …` 註解。
 - 重寫 `tree_backtrack.md` 像對話紀錄的開頭；修正 `array_overlap_explaination` 的檔名拼字（舊名留 stub）。
+- 標題的 emoji 在 P2 改寫該份檔案時一起拿掉，不另外做全面清理。拿掉 emoji 會改掉錨點（`🔥 Template 1` 的 id 是 `-template-1-…`），所以同一個 commit 要修好所有連到它的連結，並重新對應中文 overlay。✅ / ❌ 只在表格儲存格中使用。
+- 英文檔裡的中文：英文已經講過同樣內容的（如 `dp_loop_order` §6），刪掉中文段落，因為中文頁本來就會顯示該段的翻譯；英文沒有的內容，先寫成英文段落，中文放進 `i18n/zh/` overlay。overlay 只能翻譯英文檔已有的段落，所以中文不能直接搬過去。
+- **不做：** 改掉 `n-n)` 編號。它會改錨點（cheatsheet 之間有 15 個連結指向 `#1-1-…`，檔案內更多），而且只改新段落的話，同一份檔案會混用兩種風格。已有的檔案維持原本的風格，新檔案用 `Template 1…N`。也不把 `knapsack_01_zh.md` 改成 overlay（見 P3）。
 
 ### P7 — 只能變好、不能變差的 lint
 
