@@ -237,15 +237,15 @@ Rewrite [`lc_pattern.md`](cheatsheet/lc_pattern.md) as the router:
 
 ### P2 — retrofit the pattern card onto the 24 tier-5 sheets
 
-Start with the sheets an L3 loop leans on hardest: `binary_search`, `sliding_window`, `2_pointers`, `hash_map`, `tree`/`binary_tree`, `bfs`, `dfs`, `graph`, `heap`, `dp`, `backtrack`, `stack`, `linked_list`. Per sheet:
+The first batch is the 14 sheets an L3 loop leans on hardest: `binary_search`, `sliding_window`, `2_pointers`, `hash_map`, `tree`, `binary_tree`, `bfs`, `dfs`, `graph`, `heap`, `dp`, `backtrack`, `stack`, `linked_list`. The other 10 follow in a second batch; two of them are handled elsewhere (`lc_pattern` is rewritten by P1, and `knapsack_01_zh` becomes an overlay in P6). Per sheet:
 
-- give each template a heading that names its pattern and anchor problem, and add the **Recognise**, **Key point** and **Complexity** slots where they are missing;
+- turn every template into a full pattern card: a heading that names its pattern and anchor problem, then the slots in order, **Recognise → Key point → Template → Complexity → Dry run → Traps → Not this if → Drill**. Add the missing ones, and rewrite `NOTE !!!` comments as **Traps** bullets;
 - move the canonical template up into the first ~300 lines (`binary_search`);
 - move a best-last section up (`stock_trading` §7, `monotonic_stack` §2-2+);
 - add a `## Drill Path` (§ P5);
 - delete "Universal Template" placeholders and `pass`-stub proofs. Each one either becomes runnable code or goes.
 
-*Measure: recognition headings 37 → all tier ≥ 4 main sheets.*
+*Measure: recognition headings 37 → all tier ≥ 4 main sheets; in these 24 sheets, every template has a **Key point** and a **Complexity** slot.*
 
 ### P3 — one home per problem
 

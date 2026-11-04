@@ -242,15 +242,15 @@ repo 其實已經有答案：[`data/l3_core.json`](../data/l3_core.json) 是 L3 
 
 ### P2 — 為 24 份 tier 5 cheatsheet 套上 pattern card
 
-從 L3 面試最倚重的開始：`binary_search`、`sliding_window`、`2_pointers`、`hash_map`、`tree`/`binary_tree`、`bfs`、`dfs`、`graph`、`heap`、`dp`、`backtrack`、`stack`、`linked_list`。每一份要做的事：
+第一批是 L3 面試最倚重的 14 份：`binary_search`、`sliding_window`、`2_pointers`、`hash_map`、`tree`、`binary_tree`、`bfs`、`dfs`、`graph`、`heap`、`dp`、`backtrack`、`stack`、`linked_list`。其餘 10 份放在第二批；其中兩份由別的項目處理（`lc_pattern` 由 P1 重寫，`knapsack_01_zh` 在 P6 改成 overlay）。每一份要做的事：
 
-- 每個模板的標題都寫出模式名稱和代表題；缺**辨識**、**關鍵**或**複雜度**欄位的，補上；
+- 把每個模板改成完整的 pattern card：標題寫出模式名稱和代表題，欄位照**辨識 → 關鍵 → 模板 → 複雜度 → Dry run → 陷阱 → 不是這個 → 練習**的順序排。缺的補上；`NOTE !!!` 改寫成**陷阱**條目；
 - 把標準模板移到前約 300 行內（`binary_search`）；
 - 把放在最後的精華移到前面（`stock_trading` §7、`monotonic_stack` §2-2 以後）；
 - 加上 `## Drill Path`（見 P5）；
 - 刪掉「萬用模板」佔位和 `pass` 證明：要嘛改成能跑的程式碼，要嘛拿掉。
 
-*指標：有辨識標題的檔案從 37 份增加到涵蓋所有 tier ≥ 4 主檔。*
+*指標：有辨識標題的檔案從 37 份增加到涵蓋所有 tier ≥ 4 主檔；這 24 份裡，每個模板都有**關鍵**和**複雜度**。*
 
 ### P3 — 一題一個家
 
