@@ -40,6 +40,36 @@ The tree is guaranteed to be complete.
 
 
 """
+NOTE !!!
+
+
+->
+
+這裏的關鍵在於 LeetCode 222 的題目前提：
+    輸入的樹保證是一棵「完全二元樹（Complete Binary Tree）」。
+
+e.g.
+    ->
+
+    真正關鍵是 LC 222 保證了這棵樹是 Complete Binary Tree：
+
+        - 除了最後一層以外，每一層都是滿的。
+        - 最後一層的節點必須從左到右連續排列，不能中間有空缺。
+
+        -
+        ```
+        According to Wikipedia, 
+        every level, except possibly the last, 
+        is completely filled in a complete binary tree, 
+        and all nodes in the last level are as far left as possible. 
+        It can have between 1 and 2h nodes inclusive at the last level h.
+        ```
+
+"""
+
+
+
+"""
 NOTE !!! below is WRONG !!!
 
 
