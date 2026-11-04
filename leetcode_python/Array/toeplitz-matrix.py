@@ -46,6 +46,49 @@ class Solution(object):
                     return False
         return True
 
+
+# V0-1
+# IDEA: matrix OP (gpt)
+class Solution(object):
+    def isToeplitzMatrix(self, matrix):
+        """
+        :type matrix: List[List[int]]
+        :rtype: bool
+        """
+        if not matrix or not matrix[0]:
+            return True
+
+        m, n = len(matrix), len(matrix[0])
+
+        # 從第一列的每個位置開始檢查
+        for col in range(n):
+            values = set()
+            r, c = 0, col
+
+            while r < m and c < n:
+                values.add(matrix[r][c])
+                r += 1
+                c += 1
+
+            if len(values) > 1:
+                return False
+
+        # 從第一欄（跳過左上角）開始檢查
+        for row in range(1, m):
+            values = set()
+            r, c = row, 0
+
+            while r < m and c < n:
+                values.add(matrix[r][c])
+                r += 1
+                c += 1
+
+            if len(values) > 1:
+                return False
+
+        return True
+
+
 # V1 
 # https://blog.csdn.net/mario_mmh/article/details/79940837
 # time = O(m*n)
