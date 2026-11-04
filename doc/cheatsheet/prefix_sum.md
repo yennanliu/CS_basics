@@ -408,28 +408,41 @@ def range_addition(length, updates):
 ### Template 5: 2D Prefix Sum — LC 304
 
 ```python
+# IDEA: same "size n+1" trick as the 1D template, in both dimensions.
+#   prefix[i+1][j+1] = sum of the rectangle matrix[0..i][0..j]
+#   row 0 and column 0 stay 0, so no boundary checks are needed.
+# time = O(m*n) build, O(1) per query; space = O(m*n)
 class NumMatrix:
     def __init__(self, matrix):
-        """Build 2D prefix sum matrix"""
         if not matrix or not matrix[0]:
+            self.prefix = [[0]]
             return
-        
+
         m, n = len(matrix), len(matrix[0])
-        self.prefix = [[0] * (n + 1) for _ in range(m + 1)]
-        
-        for i in range(1, m + 1):
-            for j in range(1, n + 1):
-                self.prefix[i][j] = (matrix[i-1][j-1] + 
-                                   self.prefix[i-1][j] + 
-                                   self.prefix[i][j-1] - 
-                                   self.prefix[i-1][j-1])
-    
+        prefix = [[0] * (n + 1) for _ in range(m + 1)]
+
+        for i in range(m):
+            for j in range(n):
+
+                prefix[i+1][j+1] = (
+                    matrix[i][j]
+                    + prefix[i][j+1]    # rectangle above
+                    + prefix[i+1][j]    # rectangle to the left
+                    - prefix[i][j]      # top-left, counted twice
+                )
+
+        self.prefix = prefix
+
     def sumRegion(self, row1, col1, row2, col2):
-        """Calculate sum of rectangle from (row1,col1) to (row2,col2)"""
-        return (self.prefix[row2+1][col2+1] - 
-                self.prefix[row1][col2+1] - 
-                self.prefix[row2+1][col1] + 
-                self.prefix[row1][col1])
+        prefix = self.prefix
+
+        # sum(row1, col1, row2, col2)
+        return (
+            prefix[row2+1][col2+1]
+            - prefix[row1][col2+1]      # remove rows above row1
+            - prefix[row2+1][col1]      # remove columns left of col1
+            + prefix[row1][col1]        # add back the top-left, removed twice
+        )
 ```
 
 ### Template 6: Transform and Count — LC 1248
@@ -1767,7 +1780,7 @@ is grafted into the templates as notes.
 | **Template 2** | HashMap + Target | `if prefix_sum - k in map: count += map[prefix_sum - k]` |
 | **Template 3** | Modulo/Divisibility | `remainder = prefix_sum % k; if remainder in map...` |
 | **Template 4** | Range Updates | `diff[start] += val; diff[end+1] -= val` |
-| **Template 5** | 2D Matrix | `prefix[i][j] = val + left + top - topleft` |
+| **Template 5** | 2D Matrix | `prefix[i+1][j+1] = matrix[i][j] + prefix[i][j+1] + prefix[i+1][j] - prefix[i][j]` |
 | **Template 6** | Transform Count | `transform array first, then apply prefix sum` |
 | **Template 7** | Sum of Distances | `left = idx*countLeft - sumLeft; right = sumRight - idx*countRight` — or in one line, `total - 2*prefix[k] + idx*(2*k - m)` (`k` = rank in the group, `m` = group size) |
 | **Template 8** | Prefix Maximum | `maxSoFar = max(maxSoFar, arr[i]); if (maxSoFar == i) chunks++` |
