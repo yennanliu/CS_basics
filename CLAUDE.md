@@ -685,12 +685,15 @@ the [Nov 2026 review](doc/cheatsheet-review-2026-11.md), which measured how well
 works as interview material, there are two shapes. Full rules and a worked sample of each are
 in `00_template.md`:
 
-- **Pattern card** (every template section): **Recognise** (the statement wording, plus a
-  constraint cue like n ≤ 10⁵) → *Not this if* (the look-alike and its tell) → **Invariant**
-  (one line, before the code) → **Template** (Python, then Java, `time =` first) → *Trace*
-  (a ` ```text ` table on the smallest input) → **Traps** (each names the input that springs
-  it) → **Drill** (3–6 LC numbers, easy → hard). The slots are always in this order.
-- **Problem card** (every worked example): a `> **Key insight** —` line **before any code**,
+- **Pattern card** (every template section): a heading that names the **pattern** and its
+  **anchor problem** (`### Template 2: Variable-Size Window — LC 3`; a pattern, not a topic) →
+  **Recognise** (the statement wording, plus a constraint cue like n ≤ 10⁵) → **Key point** (one
+  line, before the code: why it works, as a fact the code keeps true) → **Template** (Python,
+  then Java, `time =` in the code) → **Complexity** (time and space, each naming the line that
+  sets it) → *Dry run* (a ` ```text ` table on the smallest input) → **Traps** (each names the
+  input that springs it) → *Not this if* (the look-alike and its tell) → **Drill** (3–6 LC
+  numbers, easy → hard). The slots are always in this order; the two in italics are optional.
+- **Problem card** (every worked example): a `> **Key point** —` line **before any code**,
   `**Reduces to**:` a link to the card it is a case of, then one canonical solution. V0 is
   the answer to give in the interview, not the first one written.
 
@@ -857,7 +860,7 @@ The build fails on a taxonomy key that is missing, points at an unknown topic, o
 
 ### Anti-patterns found in Nov 2026 (counted in [`doc/cheatsheet-review-2026-11.md`](doc/cheatsheet-review-2026-11.md))
 
-- ❌ A worked example that is a heading over code: no key insight, no link to its template (30% of 1,330 went straight to code)
+- ❌ A worked example that is a heading over code: no key point, no link to its template (30% of 1,330 went straight to code)
 - ❌ `NOTE !!!` comment walls inside code (583 lines in 69 files); write a **Traps** bullet instead
 - ❌ IPython `In [n]:` transcripts as a template; "Universal Template" pseudocode with undefined names; proofs whose code is `pass`
 - ❌ Emoji in headings, other than the trailing `⭐` run the site renders; new `1-1-3)`-style numbering

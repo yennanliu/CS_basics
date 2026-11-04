@@ -67,18 +67,18 @@ Add it to `startHere` only if it belongs in the beginner reading ladder.
 
 ## The pattern card — every template section
 
-Seven slots, **always in this order**. A reader who knows the order can find "what's the trap?" in any sheet without reading the rest of it. Two are *optional*: **Not this if** is written whenever a look-alike exists, and **Trace** whenever a step is non-obvious. An optional slot is left out only when it would be empty, and the order of what remains does not change.
+A **heading** and eight slots, **always in this order**. A reader who knows the order can find "what's the trap?" in any sheet without reading the rest of it. Two slots are *optional*: **Dry run** is written whenever a step is non-obvious, and **Not this if** whenever a look-alike exists. An optional slot is left out only when it would be empty, and the order of what remains does not change.
+
+The heading names the **pattern** and its **anchor problem**: `### Template N: <Pattern name> — LC <n>`. The pattern name is narrower than the sheet's topic. `hash_map.md` is the topic, and *Complement Lookup — LC 1* is one card in it. It is the name you would say out loud once you recognise the problem. The anchor problem is the one the template solves as written; **Drill** lists what to practise after it.
 
 ````markdown
 ### Template 2: Variable-Size Window — LC 3 ⭐⭐⭐⭐⭐
 
 **Recognise** — "longest / shortest **contiguous** subarray or substring such that …", all
 values non-negative or the condition is monotone in window size. n ≤ 10⁵ → O(n) expected.
-**Not this if** — negatives can make a sum shrink as the window grows → prefix sum + hash map
-([prefix_sum § Template 2](./prefix_sum.md#template-2-hashmap--prefix-sum-subarray-target-sum--lc-560)).
 
-**Invariant** — `s[left..right]` is always valid; `right` only grows, `left` only grows,
-so each index enters and leaves once.
+**Key point** — `s[left..right]` is always valid; `right` only grows, `left` only grows,
+so each index enters and leaves the window once.
 
 ```python
 # python
@@ -126,7 +126,12 @@ public int lengthOfLongestSubstring(String s) {
 }
 ```
 
-**Trace** *(optional — required when one step is non-obvious)*
+**Complexity**
+- **Time O(n)**: the inner `while` looks nested, but `left` only moves forward, so across the
+  whole run it advances at most n times. Each index is added once and removed once.
+- **Space O(k)**: `del count[out]` keeps only the window's distinct characters in `count`.
+
+**Dry run** *(optional — required when one step is non-obvious)*
 
 ```text
 s = "abba"
@@ -140,18 +145,23 @@ right=3 'a'  window "ba"   best=2
 - Recording `best` *before* the shrink loop measures an invalid window. LC 3 `"abba"` returns 3.
 - `while`, not `if`: one new char can require several shrinks.
 
+**Not this if** — negatives can make a sum shrink as the window grows → prefix sum + hash map
+([prefix_sum § Template 2](./prefix_sum.md#template-2-hashmap--prefix-sum-subarray-target-sum--lc-560)).
+
 **Drill** — LC 3 ⭐ · LC 424 · LC 340 · LC 992 *(exactly-k = atMost(k) − atMost(k−1))*
 ````
 
 | Slot | Rule |
 |---|---|
+| **Heading** | `### Template N: <Pattern name> — LC <n>`, plus a `⭐` run when it is interview-critical. A pattern, not a topic ("Complement Lookup", not "Hash Table"), and the problem the template solves as written. |
 | **Recognise** | The *wording* in a problem statement that should make you reach for this, plus a **constraint cue** where one exists (n ≤ 20 → bitmask, n ≤ 10⁵ → n log n). Never restate the title. "Maximum path sum problems" under *Maximum Path Sum* teaches nothing. |
-| **Not this if** *(optional)* | The look-alike, and the tell that separates them. This is the highest-value line on the card. The model is [`difference_array.md`](./difference_array.md)'s "looks like a diff array, but is not". |
-| **Invariant** | One or two lines, **before** the code: what is true at every iteration, and where it is restored. For DP, the five lines *state / recurrence / base / order / answer* replace it. |
+| **Key point** | One or two lines, **before** the code: the reason this works, as a fact the code keeps true at every step (an invariant). "Use a hash map" is not a key point; "`seen` holds every number before index i, so one lookup answers *has `target − x` appeared?*" is. For DP, the five lines *state / recurrence / base / order / answer* replace it. |
 | **Template** | One canonical solution, **Python first, then Java**. Runnable, with real names, no `pass`, no `...` where the logic should be. Comments open with `# IDEA:`, then `# time = … , space = …` on the next line. |
-| **Trace** | A ` ```text ` state table on the smallest input that shows the non-obvious step. Required when a reader could not dry-run the template in their head. |
+| **Complexity** | One bullet for time and one for space, each naming **the line or loop that sets it**. The code comment states the bound; this slot says why, which is what you say out loud in the interview. Amortised bounds (a nested loop that is still O(n)) are where it matters most. |
+| **Dry run** *(optional)* | A ` ```text ` state table on the smallest input that shows the non-obvious step. Required when a reader could not dry-run the template in their head. |
 | **Traps** | Each trap names **the input that springs it** and what goes wrong. "Forgetting to handle edge cases" is not a trap; "`[]` returns `None` instead of `0`" is. |
-| **Drill** | 3–6 LC numbers, easy → hard, must-know ones starred. Say in a few words what changes from the template. |
+| **Not this if** *(optional)* | The look-alike, and the tell that separates them. It comes after Traps because it is for a reader who already knows the pattern. The model is [`difference_array.md`](./difference_array.md)'s "looks like a diff array, but is not". |
+| **Drill** | 3–6 LC numbers, easy → hard, must-know ones starred. Say in a few words what changes from the template. The anchor problem from the heading comes first. |
 
 Exemplars to copy: [`minimum_spanning_tree.md`](./minimum_spanning_tree.md) (why greedy is safe before the code, the same graph traced through both algorithms), [`dp.md`](./dp.md) Template 1b (the DP table before the code, "three traps"), [`prefix_sum_advanced.md`](./prefix_sum_advanced.md) Template 14 (the smallest failing case, "when not to use it").
 
@@ -164,7 +174,7 @@ A worked example is a lesson about **one** step that is not in the template. Raw
 ````markdown
 ### Longest Repeating Character Replacement — LC 424
 
-> **Key insight** — a window is valid when `len − maxFreq ≤ k`. Keep `maxFreq` as the highest
+> **Key point** — a window is valid when `len − maxFreq ≤ k`. Keep `maxFreq` as the highest
 > count *ever* seen and never lower it: the window may then sit on an invalid stretch, but its
 > length never exceeds `best`, and it only grows past `best` once a higher `maxFreq` makes a
 > longer valid window possible. So the **length** is always right, even when the window is not.
@@ -201,7 +211,7 @@ def characterReplacement(s, k):
 
 Rules:
 
-- The **first thing under the heading is prose**, the `> **Key insight** —` line, never a code fence.
+- The **first thing under the heading is prose**, the `> **Key point** —` line, never a code fence. It is the same slot as the pattern card's **Key point**: one name for one idea on both cards.
 - **`Reduces to`** links the card this is a case of. If no card fits, the sheet is missing a template. Add one rather than an orphan example.
 - **V0 is the canonical answer**, the one to write in the interview, not the first one written. A second solution stays only with its reason beside it: different complexity, a distinct trick, or a language idiom.
 - Java is welcome as the second block. A Java-only example in a Python-first sheet is a gap to fill, not a style.
@@ -253,7 +263,7 @@ Every main sheet ends its teaching content with an ordered practice list: just b
 ```markdown
 ## 0) Concept
 
-<one paragraph> + **Recognise** / **Invariant** lines for the whole technique
+<one paragraph> + **Recognise** / **Key point** lines for the whole technique
 
 ### Recognition                   <!-- the recognition table, at the end of 0) Concept -->
 
@@ -346,7 +356,7 @@ A trailing `⭐` run on a heading says how interview-critical that section is. T
 
 ## Formatting rules
 
-- **Bold** key terms and the card slot labels: `**Recognise**`, `**Invariant**`, `**Traps**`, `**Key insight**`.
+- **Bold** key terms and the card slot labels: `**Recognise**`, `**Key point**`, `**Complexity**`, `**Traps**`.
 - Category headers: `#### **Category Name**`
 - Code blocks: **always** tag the language: `python`, `java`, or `text` for ASCII traces, diagrams and program output. Never leave a bare ` ``` `.
 - Complexity: inside code, on the line right after `# IDEA:`, as `# time = O(...), space = O(...)`. The order is always the language label, then `IDEA`, then `time`.

@@ -135,13 +135,15 @@ House rules that are not negotiable:
   complexity, a distinct trick, a different language idiom — not a different spelling of the
   same loop.
 - **A `pattern` is a pattern card; an `example` or `variation` is a problem card**
-  (`doc/cheatsheet/00_template.md` has both in full). A pattern card runs **Recognise** (the
-  statement wording, plus a constraint cue where one exists) → *Not this if* (when a look-alike
-  exists) → **Invariant** → template (Python, then Java) → *trace* (when a step is
-  non-obvious) → **Traps** (each names the input that springs it and what goes wrong) →
-  **Drill**. Optional slots are left out only when empty; the rest keep their order. A problem card opens
-  with a `> **Key insight** —` line and a `**Reduces to**:` link **before any code**, so it
-  never starts with a fence.
+  (`doc/cheatsheet/00_template.md` has both in full). A pattern card's heading names the
+  pattern and its anchor problem (`### Template N: <Pattern name> — LC <n>`), then runs
+  **Recognise** (the statement wording, plus a constraint cue where one exists) → **Key point**
+  (why it works, before the code) → template (Python, then Java) → **Complexity** (time and
+  space, each naming the line that sets it) → *Dry run* (when a step is non-obvious) →
+  **Traps** (each names the input that springs it and what goes wrong) → *Not this if* (when
+  a look-alike exists) → **Drill**. Optional slots are left out only when empty; the rest keep
+  their order. A problem card opens with a `> **Key point** —` line and a `**Reduces to**:`
+  link **before any code**, so it never starts with a fence.
 - **Python first, then Java.** No emoji in headings other than the `⭐` run, and no `NOTE !!!`
   walls inside code. A trap is written as a **Traps** bullet.
 

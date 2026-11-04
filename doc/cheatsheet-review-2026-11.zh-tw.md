@@ -21,9 +21,9 @@
 寫得最好的段落，比大部分公開的面試教材都好；寫得最差的，則是某人的解題資料夾直接貼在一個標題底下。**兩者的差別在形狀，不在知識。** 好的段落都用同樣的順序做同樣五件事，差的段落則跳過它們：
 
 1. 說明**怎麼從題目敘述認出它**；
-2. 在程式碼**之前**，用一行寫出**不變量（invariant）**；
+2. 在程式碼**之前**，用一行寫出**關鍵（key point）**：這題為什麼能這樣解，也就是程式碼每一步都維持成立的那件事（不變量）；
 3. 給**一份**標準模板，先 Python 後 Java，附 `time = O(...)`；
-4. 用最小的輸入**追蹤（trace）**不直觀的那一步；
+4. 用最小的輸入 **dry run** 不直觀的那一步；
 5. 點名**陷阱**，以及會觸發它的輸入。
 
 整個 cheatsheet 沒有一個入口。手上拿著題目的讀者，找不到一頁能回答「我該打開哪一份？」。自稱負責這件事的 [`lc_pattern.md`](cheatsheet/lc_pattern.md)，內文連到的 cheatsheet 數量是 **零**。
@@ -210,7 +210,7 @@ repo 其實已經有答案：[`data/l3_core.json`](../data/l3_core.json) 是 L3 
 
 五個構想，每一個都是在改變 *cheatsheet 的寫法*，而不是一次性的修補。
 
-1. **每個模板都是一張 *pattern card*。** 欄位順序固定：**辨識（Recognise）→ *不是這個（Not this if）* → 不變量（Invariant）→ 模板（Template）→ *追蹤（Trace）* → 陷阱（Traps）→ 練習（Drill）**。有相似題時一定要寫 *Not this if*，有不直觀的步驟時一定要寫 *Trace*；選填欄位只有在內容為空時才能省略，其餘欄位的順序不變。讀者記住順序之後，在任何一份 cheatsheet 都能直接找到「陷阱是什麼？」，不必從頭讀。上面每個範本其實都已經是這個形狀。
+1. **每個模板都是一張 *pattern card*。** 標題寫出**模式名稱**和**代表題**：`### Template 2: Variable-Size Window — LC 3`。模式比整份 cheatsheet 的主題小一層，所以 `hash_map.md` 裡的卡片叫 *Complement Lookup — LC 1*（找補數），不會叫「Hash Table」。標題之後的欄位順序固定：**辨識（Recognise）→ 關鍵（Key point）→ 模板（Template）→ 複雜度（Complexity）→ *Dry run* → 陷阱（Traps）→ *不是這個（Not this if）* → 練習（Drill）**。**關鍵**寫在程式碼之前，說明這題為什麼能這樣解，也就是程式碼每一步都維持成立的那件事。**複雜度**指出是哪一行決定了 time 和 space，這正是面試時要講出口的話。有不直觀的步驟時一定要寫 *Dry run*。有相似題時一定要寫*不是這個*，它放在陷阱後面，因為是給已經會這個模式的讀者看的。選填欄位只有在內容為空時才能省略，其餘欄位的順序不變。讀者記住順序之後，在任何一份 cheatsheet 都能直接找到「陷阱是什麼？」，不必從頭讀。上面每個範本其實都已經具備大部分的形狀。
 2. **每個例題都是一張 *problem card*。** 開頭是一行 key insight 引言，加上一個「Reduces to」連到它所屬的 card；接著是一份附 `time =` 的解法；需要時再加 trace 和陷阱。帶著 `NOTE !!!` 的原始程式碼是解題檔，而解題檔已經放在 `leetcode_python/` 和 `leetcode_java/`。cheatsheet 應該連過去，而不是再貼一份。
 3. **一題一個家。** 一道完整解過的 LC 題只放在一份 cheatsheet，其他地方的提及都只是一列指標。主題已經有這條規則（Scope 行），題目也需要。
 4. **一個入口。** 把 `lc_pattern.md` 重寫成「訊號 → pattern → cheatsheet → card」，附約束尺規和一欄反辨識，每一列都連到一張 card。
@@ -244,7 +244,7 @@ repo 其實已經有答案：[`data/l3_core.json`](../data/l3_core.json) 是 L3 
 
 從 L3 面試最倚重的開始：`binary_search`、`sliding_window`、`2_pointers`、`hash_map`、`tree`/`binary_tree`、`bfs`、`dfs`、`graph`、`heap`、`dp`、`backtrack`、`stack`、`linked_list`。每一份要做的事：
 
-- 缺**辨識**行（訊號 + 約束提示）或一行**不變量**的模板，補上；
+- 每個模板的標題都寫出模式名稱和代表題；缺**辨識**、**關鍵**或**複雜度**欄位的，補上；
 - 把標準模板移到前約 300 行內（`binary_search`）；
 - 把放在最後的精華移到前面（`stock_trading` §7、`monotonic_stack` §2-2 以後）；
 - 加上 `## Drill Path`（見 P5）；
@@ -269,7 +269,7 @@ repo 其實已經有答案：[`data/l3_core.json`](../data/l3_core.json) 是 L3 
 
 處理 13 份評分 ≤ 3 的 `_examples` 檔。每個例題：
 
-- 補上 `> **Key insight** —` 那一行，以及 `**Reduces to**: [Template N](#…)`；
+- 補上 `> **Key point** —` 那一行，以及 `**Reduces to**: [Template N](#…)`；
 - **V0 必須是標準解**，而不是最早寫的那份。暴力解的 V0 要降級或刪除；第二種解法要寫明理由才能留；
 - 把 `NOTE !!!` 註解牆濃縮成一兩條文字；刪掉「gpt」、部落格網址、註解掉的 `print`；
 - 改為連到 `leetcode_python/` 裡的完整解題檔，不再貼第二份。

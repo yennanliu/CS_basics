@@ -21,9 +21,9 @@ The figures were re-measured on 2026-11-05 against `master` at `6ad1564dd`, afte
 The best sections are better than most published interview material. The worst are someone's solution folder pasted under a heading. **The difference between them is shape, not knowledge.** The good sections all do the same five things in the same order, and the weak ones skip them:
 
 1. say **how you would spot it** from the problem statement;
-2. state the **invariant** in one line, before the code;
+2. state the **key point** in one line, before the code: why it works, as a fact the code keeps true (an invariant);
 3. give **one** canonical template, Python then Java, with `time = O(...)`;
-4. **trace** the non-obvious step on a tiny input;
+4. **dry-run** the non-obvious step on a tiny input;
 5. name the **trap** with the input that springs it.
 
 The corpus has no single front door. A reader holding a problem statement has no page that answers "which sheet do I open?", and [`lc_pattern.md`](cheatsheet/lc_pattern.md), which claims that job, links to **zero** sheets.
@@ -205,7 +205,7 @@ These sections are the model. The new template is derived from them rather than 
 
 Five ideas, each a change in *how a sheet is written* rather than a one-off fix.
 
-1. **Every template is a *pattern card*.** Each card has the same slots in a fixed order: **Recognise → *Not this if* → Invariant → Template → *Trace* → Traps → Drill**. *Not this if* is written whenever a look-alike exists, and *Trace* whenever a step is non-obvious; an optional slot is left out only when it would be empty, and the rest keep their order. A reader who knows the order can find "what's the trap?" in any sheet without reading it. Every exemplar above already has this shape.
+1. **Every template is a *pattern card*.** Its heading names the **pattern** and its **anchor problem**: `### Template 2: Variable-Size Window — LC 3`. The pattern is narrower than the sheet's topic, so `hash_map.md` holds *Complement Lookup — LC 1* rather than a card called "Hash Table". Then come the same slots in a fixed order: **Recognise → Key point → Template → Complexity → *Dry run* → Traps → *Not this if* → Drill**. **Key point** is why it works, as a fact the code keeps true, written before the code. **Complexity** names the line that sets each bound, which is what you say out loud. *Dry run* is written whenever a step is non-obvious. *Not this if* is written whenever a look-alike exists, and it sits after Traps because it is for a reader who already knows the pattern. An optional slot is left out only when it would be empty, and the rest keep their order. A reader who knows the order can find "what's the trap?" in any sheet without reading it. Every exemplar above already has most of this shape.
 2. **Every worked example is a *problem card*.** It has a key-insight blockquote and a "Reduces to" link to its card, then one solution with `time =`, plus a trace and traps where needed. Raw code with `NOTE !!!` is a solution file, and those already live in `leetcode_python/` and `leetcode_java/`. The cheatsheet should link to them, not paste them.
 3. **One home per problem.** A worked LC problem lives in exactly one sheet. Every other mention is a one-row pointer. The rule already exists for topics (Scope lines); it needs to exist for problems.
 4. **A front door.** Rebuild `lc_pattern.md` as *signal → pattern → sheet → card*, with the constraint ruler and an anti-recognition column. Every row links to a card.
@@ -239,7 +239,7 @@ Rewrite [`lc_pattern.md`](cheatsheet/lc_pattern.md) as the router:
 
 Start with the sheets an L3 loop leans on hardest: `binary_search`, `sliding_window`, `2_pointers`, `hash_map`, `tree`/`binary_tree`, `bfs`, `dfs`, `graph`, `heap`, `dp`, `backtrack`, `stack`, `linked_list`. Per sheet:
 
-- add a **Recognise** line (signal + constraint cue) and a one-line **Invariant** to each template that lacks one;
+- give each template a heading that names its pattern and anchor problem, and add the **Recognise**, **Key point** and **Complexity** slots where they are missing;
 - move the canonical template up into the first ~300 lines (`binary_search`);
 - move a best-last section up (`stock_trading` §7, `monotonic_stack` §2-2+);
 - add a `## Drill Path` (§ P5);
@@ -264,7 +264,7 @@ Never delete a block whose duplicate is only *similar*: same problem, same langu
 
 The 13 `_examples` sheets that score ≤ 3. For each worked example:
 
-- add the `> **Key insight** —` line, and `**Reduces to**: [Template N](#…)`;
+- add the `> **Key point** —` line, and `**Reduces to**: [Template N](#…)`;
 - **V0 is the canonical answer**, not the first one written. Demote or delete brute-force V0s. A second solution stays only with its reason written beside it;
 - strip `NOTE !!!` walls into one or two prose bullets; drop "gpt", blog URLs and commented-out `print`;
 - link to the full solution file in `leetcode_python/` rather than pasting a second copy.
