@@ -857,8 +857,8 @@ The build fails on a taxonomy key that is missing, points at an unknown topic, o
 
 ### Anti-patterns found in Nov 2026 (counted in [`doc/cheatsheet-review-2026-11.md`](doc/cheatsheet-review-2026-11.md))
 
-- ❌ A worked example that is a heading over code: no key insight, no link to its template (30% of 1,329 went straight to code)
-- ❌ `NOTE !!!` comment walls inside code (582 lines in 69 files); write a **Traps** bullet instead
+- ❌ A worked example that is a heading over code: no key insight, no link to its template (30% of 1,330 went straight to code)
+- ❌ `NOTE !!!` comment walls inside code (583 lines in 69 files); write a **Traps** bullet instead
 - ❌ IPython `In [n]:` transcripts as a template; "Universal Template" pseudocode with undefined names; proofs whose code is `pass`
 - ❌ Emoji in headings, other than the trailing `⭐` run the site renders; new `1-1-3)`-style numbering
 - ❌ Generic filler ("Common Mistakes: forgetting edge cases"), invented numbers (benchmarks, hand-typed problem counts), pasted chat, "fixed by gpt", blog URLs inside code

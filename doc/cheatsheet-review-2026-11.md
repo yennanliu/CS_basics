@@ -1,6 +1,6 @@
 # Cheatsheet Review — November 2026: Are They Interview Material?
 
-A review of all 135 markdown files in [`doc/cheatsheet/`](cheatsheet/) (149,769 lines), asking a question neither earlier pass asked: **does a sheet make you faster in a FAANG coding interview** — Google L3, Python first, Java second?
+A review of all 135 markdown files in [`doc/cheatsheet/`](cheatsheet/) (150,285 lines), asking a question neither earlier pass asked: **does a sheet make you faster in a FAANG coding interview** — Google L3, Python first, Java second?
 
 > 繁體中文版： [`cheatsheet-review-2026-11.zh-tw.md`](cheatsheet-review-2026-11.zh-tw.md)
 
@@ -11,6 +11,8 @@ A review of all 135 markdown files in [`doc/cheatsheet/`](cheatsheet/) (149,769 
 | **This one** | Can a reader **recognise the pattern, recall the template, and avoid the trap** under time pressure? | The rules land in [`00_template.md`](cheatsheet/00_template.md) and [`CLAUDE.md`](../CLAUDE.md#cheatsheet-style-guide) in this PR. Sheet edits are proposed below, not made |
 
 The review was done in six parallel reads, one per category, against one rubric. A metrics script ran over every file. Every bug in [§ Correctness](#9-correctness--bugs-in-the-templates-people-memorise) marked **verified** was re-read by hand.
+
+The figures were re-measured on 2026-11-05 against `master` at `6ad1564dd`, after 84 commits landed on top of the first draft. Those commits added about 500 lines to six sheets. They moved each finding's count by at most one, and none of the nine verified bugs was fixed. The new sections (`binary_tree.md` §0-5, `time_space_complexity.md`'s V + E vs V × E, `prefix_sum.md` Template 5) are Python first, each block carrying `IDEA` and then `time`. Two of them are listed under [What good already looks like](#what-good-already-looks-like).
 
 ---
 
@@ -34,21 +36,21 @@ Nine template bugs were confirmed. They sit in exactly the code a reader memoris
 
 | Check | Now | Note |
 |---|---:|---|
-| Files / lines | 135 / 149,769 | 3 redirect stubs |
+| Files / lines | 135 / 150,285 | 3 redirect stubs |
 | Skeleton B / A / mixed / neither | 92 / 20 / 8 / 15 | "mixed" is what the template forbids |
 | Files with a **recognition** heading (signal / when to use / how to identify) | **37 / 135** | 55 tier ≥ 4 sheets have none |
 | Files with a **pitfalls / traps** heading | 70 / 135 | |
 | Files with a **decision / selection** section | 61 / 135 | |
-| Java/Python blocks ≥ 4 lines carrying `time = O(...)` | 1,613 / 3,175 = **51%** | Up from 35% (Aug) and 47% (split plan) |
-| Python vs Java fences | 1,815 vs 1,425 | Python leads overall, but *examples* sheets often lead Java (§5) |
-| `### … LC n` worked-example headings | 1,329 | |
+| Java/Python blocks ≥ 4 lines carrying `time = O(...)` | 1,621 / 3,184 = **51%** | Up from 35% (Aug) and 47% (split plan) |
+| Python vs Java fences | 1,824 vs 1,425 | Python leads overall, but *examples* sheets often lead Java (§5) |
+| `### … LC n` worked-example headings | 1,330 | |
 | …followed **directly by code**, no prose | **401 (30%)** | Worst: `dfs_examples` 25, `heap_examples` 22, `design_examples` 14 |
 | …with no insight / idea / trick line in the next 14 lines | **570 (43%)** | |
-| `NOTE !!!` comment walls | **582 lines in 69 files** | |
+| `NOTE !!!` comment walls | **583 lines in 69 files** | |
 | `V0'`-style unexplained variants | 68 in 23 files | |
 | IPython `In [n]:` transcripts | 224 lines in 10 files | `python_trick` 119, `array` 13 sections |
 | Emoji in headings | 195 headings in 24 files | 1,272 emoji overall |
-| Cryptic `1-1)` / `1-1-3)` numbering | 664 headings | |
+| Cryptic `1-1)` / `1-1-3)` numbering | 665 headings | |
 | `gpt` mentions ("fixed by gpt", "comments created by gpt") | 25 lines in 17 files | |
 | Blog links (csdn / cnblogs / bilibili / itdaan) | 30 lines in 19 files | some inside code blocks |
 | Java subtraction comparators `(a, b) -> a - b` | 26 in 13 files | `java_trick_strings_sorting` warns against them |
@@ -118,7 +120,7 @@ The Scope lines say who owns which *topic*. Nothing says who owns which *problem
 
 ### 5. Python-first is not followed where it matters
 
-Python leads overall (1,815 vs 1,425 fences). The sheets that teach a template or an advanced topic often lead with Java:
+Python leads overall (1,824 vs 1,425 fences). The sheets that teach a template or an advanced topic often lead with Java:
 
 - `dp_monotonic_stack` 0 Python vs 7 Java; `dp_string` 1 vs 12; `knapsack` 3 vs 13; `dp_bitmask` 3 vs 10.
 - `binary_search_on_answer`: 11 Python vs 17 Java, and every example leads with Java.
@@ -129,9 +131,9 @@ Python leads overall (1,815 vs 1,425 fences). The sheets that teach a template o
 ### 6. Noise reduces how much a reader can take in per page
 
 - **Emoji** in 195 headings (`dp_advanced` 32, `knapsack` 21, `Dijkstra` 52 overall, `java_trick` 61). `lc_pattern` puts 🔹 before every H2. The site already turns `⭐` runs into badges, so other emoji only compete with them.
-- **Numbering** like `1-1-2-1)` (664 headings). It cannot be referred to in speech and breaks whenever a section moves. Examples: `bst_advanced` runs its templates 5b, 8, 9, 6b, 3c, 4b; `bfs.md` has to explain its own gaps (`:138`).
+- **Numbering** like `1-1-2-1)` (665 headings). It cannot be referred to in speech and breaks whenever a section moves. Examples: `bst_advanced` runs its templates 5b, 8, 9, 6b, 3c, 4b; `bfs.md` has to explain its own gaps (`:138`).
 - **REPL transcripts as templates**: `array.md:53-112` opens a tier-5 sheet with `In [28]: p.insert(1, [6,1])`.
-- **Generic filler**: "Common Mistakes: forgetting to handle window state correctly", proofs whose code is `pass` (`greedy:493-554`), "Universal Template" pseudocode with undefined names (`binary_tree:343`, `tree:417`, `heap:192`), invented statistics ("Template Usage Frequency: 15 problems", a ms benchmark in `Dijkstra.md:775`), and a 45-line flowchart ending in "Design custom solution" (`palindrome:508`).
+- **Generic filler**: "Common Mistakes: forgetting to handle window state correctly", proofs whose code is `pass` (`greedy:493-554`), "Universal Template" pseudocode with undefined names (`binary_tree:453`, `tree:417`, `heap:192`), invented statistics ("Template Usage Frequency: 15 problems", a ms benchmark in `Dijkstra.md:775`), and a 45-line flowchart ending in "Design custom solution" (`palindrome:508`).
 - **Pasted chat**: `tree_backtrack.md`'s H1 is "Template (gpt)", and its line 6 opens "Great — many…".
 - **Inline 中文 in English sheets.** `knapsack_01_zh.md` is a Chinese-only parallel sheet outside the i18n overlay. `dp_advanced:882-940` nearly copies it, and `dp_loop_order` repeats its English content in Chinese. The 100% zh gate cannot see any of this.
 
@@ -147,7 +149,7 @@ Python leads overall (1,815 vs 1,425 fences). The sheets that teach a template o
 
 No sheet orders its problems easy → hard **and** marks which ones are must-know. "Problems by Pattern" tables list difficulty in no particular order. Stars mark sections, not problems.
 
-The repo already knows the answer. [`data/l3_core.json`](../data/l3_core.json) holds the 99-problem core set and [`data/progress.txt`](../data/progress.txt) the verdicts. The sheets just never show either.
+The repo already knows the answer. [`data/l3_core.json`](../data/l3_core.json) holds the L3 core set and [`data/progress.txt`](../data/progress.txt) the verdicts. The sheets just never show either.
 
 ### 9. Correctness — bugs in the templates people memorise
 
@@ -189,6 +191,8 @@ These sections are the model. The new template is derived from them rather than 
 | [`dp_loop_order.md`](cheatsheet/dp_loop_order.md) `:16-190` | Teaches a *judgement*: one rule, a failure table (what broke → symptom → canonical case), a 3-step decision procedure, and a 10-second shuffle test. |
 | [`prefix_sum_advanced.md`](cheatsheet/prefix_sum_advanced.md) `:489-690` | Maps the new pattern onto a known one, gives "when to reach for it" as three conditions, then the **smallest failing case** that shows why the undo step exists. Ends with "when *not* to use it". |
 | [`tree_lca_distance.md`](cheatsheet/tree_lca_distance.md) `:95-110` | A family table: one row per variant, *what changed vs the baseline*, the template that fits, then "the one question that picks the template". |
+| [`binary_tree.md`](cheatsheet/binary_tree.md) `:221-235` (§0-5, depth vs height) | The same family-table shape, one level down: depth, height and distance, each with *who knows it first* and *which way it flows*, so the argument-vs-return-value choice is made once. The units (edges vs nodes) are stated before the code. |
+| [`time_space_complexity.md`](cheatsheet/time_space_complexity.md) `:423` (V + E vs V × E) | States one rule, then a *you see → time → space → example* table. The last row is "a bug, not an algorithm", which is the anti-recognition that §2 says is missing almost everywhere. |
 | [`stack_expression_parsing.md`](cheatsheet/stack_expression_parsing.md) `:12-60`, `:618-628` | Breaks the family into 3 sub-problems, traces `"3+2*2"` one row per character, and ends on a Trap → Fix table. |
 | [`patience_sorting.md`](cheatsheet/patience_sorting.md) `:25-100` | The model short sheet: three rules → trace → two-line proof → "when it applies" → a one-line discriminator. |
 | [`difference_array.md`](cheatsheet/difference_array.md) `:972-979` | The only **anti-recognition** table: "looks like a diff array, but is not — the tell". |
@@ -265,7 +269,7 @@ The 13 `_examples` sheets that score ≤ 3. For each worked example:
 - strip `NOTE !!!` walls into one or two prose bullets; drop "gpt", blog URLs and commented-out `print`;
 - link to the full solution file in `leetcode_python/` rather than pasting a second copy.
 
-*Measure: code-first example headings 401 → 0; no-insight 570 → < 100; `NOTE !!!` 582 → < 50.*
+*Measure: code-first example headings 401 → 0; no-insight 570 → < 100; `NOTE !!!` 583 → < 50.*
 
 ### P5 — drill path from the data
 

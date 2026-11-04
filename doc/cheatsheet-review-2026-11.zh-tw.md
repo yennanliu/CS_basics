@@ -1,6 +1,6 @@
 # Cheatsheet 審查 — 2026 年 11 月：它們是面試教材嗎？
 
-這份審查讀過 [`doc/cheatsheet/`](cheatsheet/) 底下全部 135 份 markdown（共 149,769 行），問一個前兩次審查都沒問過的問題：**這份 cheatsheet 能不能讓你在 FAANG coding 面試中更快？** 目標是 Google L3，Python 為主、Java 為輔。
+這份審查讀過 [`doc/cheatsheet/`](cheatsheet/) 底下全部 135 份 markdown（共 150,285 行），問一個前兩次審查都沒問過的問題：**這份 cheatsheet 能不能讓你在 FAANG coding 面試中更快？** 目標是 Google L3，Python 為主、Java 為輔。
 
 > English version: [`cheatsheet-review-2026-11.md`](cheatsheet-review-2026-11.md)
 
@@ -11,6 +11,8 @@
 | **本次** | 讀者能否在時間壓力下**認出 pattern、想起模板、避開陷阱**？ | 規則寫進本 PR 的 [`00_template.md`](cheatsheet/00_template.md) 與 [`CLAUDE.md`](../CLAUDE.md#cheatsheet-style-guide)；各 cheatsheet 的修改列在下方，這次先不動 |
 
 審查方式：依分類分六路平行閱讀，同一套評分標準；另用一支統計腳本掃過每個檔案。[§ 正確性](#9-正確性--大家在背的模板裡有-bug) 中標為 **已驗證** 的 bug，都已親自重讀確認。
+
+所有數字已於 2026-11-05 對 `master`（`6ad1564dd`）重新量過。初稿之後 master 又進了 84 個 commit，在六份 cheatsheet 裡加了約 500 行。各項發現的數字最多只變動 1，九個已驗證的 bug 也一個都還沒修。新加的段落（`binary_tree.md` §0-5、`time_space_complexity.md` 的 V + E vs V × E、`prefix_sum.md` Template 5）都是 Python 在前，每個區塊都先寫 `IDEA` 再寫 `time`。其中兩段已列進[現有的好範例](#好的樣子已經存在)。
 
 ---
 
@@ -34,21 +36,21 @@
 
 | 檢查項目 | 現在 | 說明 |
 |---|---:|---|
-| 檔案數 / 行數 | 135 / 149,769 | 其中 3 份是轉址 stub |
+| 檔案數 / 行數 | 135 / 150,285 | 其中 3 份是轉址 stub |
 | Skeleton B / A / 混用 / 都不是 | 92 / 20 / 8 / 15 | 「混用」是模板明文禁止的 |
 | 有**辨識**標題（signal / when to use / how to identify）的檔案 | **37 / 135** | 55 份 tier ≥ 4 的 cheatsheet 完全沒有 |
 | 有 **pitfalls / traps** 標題的檔案 | 70 / 135 | |
 | 有**決策 / 選擇**段落的檔案 | 61 / 135 | |
-| ≥ 4 行的 Java/Python 區塊帶有 `time = O(...)` | 1,613 / 3,175 = **51%** | 8 月 35%、拆檔計畫時 47% |
-| Python vs Java code fence | 1,815 vs 1,425 | 整體 Python 較多，但 *examples* 類檔案常是 Java 打頭（§5） |
-| `### … LC n` 例題標題 | 1,329 | |
+| ≥ 4 行的 Java/Python 區塊帶有 `time = O(...)` | 1,621 / 3,184 = **51%** | 8 月 35%、拆檔計畫時 47% |
+| Python vs Java code fence | 1,824 vs 1,425 | 整體 Python 較多，但 *examples* 類檔案常是 Java 打頭（§5） |
+| `### … LC n` 例題標題 | 1,330 | |
 | 標題下**直接接程式碼**、沒有任何文字 | **401（30%）** | 最多的：`dfs_examples` 25、`heap_examples` 22、`design_examples` 14 |
 | 標題後 14 行內沒有 insight / idea / trick 的 | **570（43%）** | |
-| `NOTE !!!` 註解牆 | **69 個檔案共 582 行** | |
+| `NOTE !!!` 註解牆 | **69 個檔案共 583 行** | |
 | `V0'` 這類沒說明理由的變體 | 23 個檔案共 68 處 | |
 | IPython `In [n]:` 互動紀錄 | 10 個檔案共 224 行 | `python_trick` 119 行、`array` 13 個段落 |
 | 標題中的 emoji | 24 個檔案共 195 個標題 | 全部 emoji 共 1,272 個 |
-| `1-1)` / `1-1-3)` 這類難懂的編號 | 664 個標題 | |
+| `1-1)` / `1-1-3)` 這類難懂的編號 | 665 個標題 | |
 | 提到 `gpt`（「fixed by gpt」、「comments created by gpt」） | 17 個檔案共 25 行 | |
 | 部落格連結（csdn / cnblogs / bilibili / itdaan） | 19 個檔案共 30 行 | 有些在程式碼區塊裡 |
 | Java 減法 comparator `(a, b) -> a - b` | 13 個檔案共 26 處 | `java_trick_strings_sorting` 自己就警告不要這樣寫 |
@@ -118,7 +120,7 @@ Scope 行規定了誰擁有哪個*主題*，卻沒有規定誰擁有哪*一題*�
 
 ### 5. 在最關鍵的地方沒做到 Python 優先
 
-整體 Python 較多（1,815 vs 1,425 個 fence），但講模板和進階主題的檔案常常 Java 打頭：
+整體 Python 較多（1,824 vs 1,425 個 fence），但講模板和進階主題的檔案常常 Java 打頭：
 
 - `dp_monotonic_stack` Python 0 vs Java 7；`dp_string` 1 vs 12；`knapsack` 3 vs 13；`dp_bitmask` 3 vs 10。
 - `binary_search_on_answer` Python 11 vs Java 17，每個例題都 Java 在前。
@@ -129,12 +131,12 @@ Scope 行規定了誰擁有哪個*主題*，卻沒有規定誰擁有哪*一題*�
 ### 6. 雜訊降低每頁能吸收的內容
 
 - **Emoji**：195 個標題有 emoji（`dp_advanced` 32、`knapsack` 21；`Dijkstra` 全檔 52、`java_trick` 61）。`lc_pattern` 每個 H2 前面都有 🔹。網站已經把 `⭐` 渲染成徽章，其他 emoji 只會跟它搶注意力。
-- **`1-1-2-1)` 這類編號**（664 個標題）：講話時沒辦法唸，段落一搬就壞。例如 `bst_advanced` 的模板順序是 5b、8、9、6b、3c、4b；`bfs.md` 還得在 `:138` 自己解釋編號為什麼跳號。
+- **`1-1-2-1)` 這類編號**（665 個標題）：講話時沒辦法唸，段落一搬就壞。例如 `bst_advanced` 的模板順序是 5b、8、9、6b、3c、4b；`bfs.md` 還得在 `:138` 自己解釋編號為什麼跳號。
 - **把 REPL 紀錄當模板**：tier 5 的 `array.md` 在 `:53-112` 用 `In [28]: p.insert(1, [6,1])` 開場。
 - **空泛的填充內容**：
   - 「Common Mistakes：忘記正確處理視窗狀態」這類通用提醒；
   - 程式碼只有 `pass` 的證明（`greedy:493-554`）；
-  - 用未定義名稱寫成的「萬用模板」虛擬碼（`binary_tree:343`、`tree:417`、`heap:192`）；
+  - 用未定義名稱寫成的「萬用模板」虛擬碼（`binary_tree:453`、`tree:417`、`heap:192`）；
   - 編造的統計（「Template Usage Frequency: 15 problems」、`Dijkstra.md:775` 的毫秒 benchmark）；
   - 一張 45 行、結尾是「Design custom solution」的流程圖（`palindrome:508`）。
 - **貼上的對話紀錄**：`tree_backtrack.md` 的 H1 是「Template (gpt)」，第 6 行以「Great — many…」開頭。
@@ -152,7 +154,7 @@ Scope 行規定了誰擁有哪個*主題*，卻沒有規定誰擁有哪*一題*�
 
 沒有一份 cheatsheet 同時做到「題目由易到難排序」**和**「標出必會題」。「Problems by Pattern」表雖然有難度，但沒有排序；星號標的是段落，不是題目。
 
-repo 其實已經有答案：[`data/l3_core.json`](../data/l3_core.json) 是 99 題的核心題組，[`data/progress.txt`](../data/progress.txt) 記著每題的結果。只是 cheatsheet 從來沒有顯示它們。
+repo 其實已經有答案：[`data/l3_core.json`](../data/l3_core.json) 是 L3 核心題組，[`data/progress.txt`](../data/progress.txt) 記著每題的結果。只是 cheatsheet 從來沒有顯示它們。
 
 ### 9. 正確性 — 大家在背的模板裡有 bug
 
@@ -194,6 +196,8 @@ repo 其實已經有答案：[`data/l3_core.json`](../data/l3_core.json) 是 99 
 | [`dp_loop_order.md`](cheatsheet/dp_loop_order.md) `:16-190` | 教的是*判斷力*：一條規則、一張失敗表（什麼壞了 → 症狀 → 代表題）、三步驟決策流程、十秒鐘的 shuffle 測試。 |
 | [`prefix_sum_advanced.md`](cheatsheet/prefix_sum_advanced.md) `:489-690` | 把新 pattern 對應到已知的 pattern，用三個條件說明「何時使用」，再給出說明 undo 步驟為何存在的**最小失敗案例**，最後寫「何時*不要*用」。 |
 | [`tree_lca_distance.md`](cheatsheet/tree_lca_distance.md) `:95-110` | 家族表：每個變體一列，寫出*和基準相比改了什麼*、適用的模板，最後是「決定用哪個模板的那一個問題」。 |
+| [`binary_tree.md`](cheatsheet/binary_tree.md) `:221-235`（§0-5，depth vs height） | 同樣的家族表，往下一層：depth、height、distance 各一列，寫出*誰先知道*、*往哪個方向流*，讓「用參數還是用回傳值」只需要決定一次。單位（邊數 vs 節點數）在程式碼之前就講清楚。 |
+| [`time_space_complexity.md`](cheatsheet/time_space_complexity.md) `:423`（V + E vs V × E） | 先講一條規則，再給 *看到什麼 → 時間 → 空間 → 例題* 的表。最後一列是「這是 bug，不是演算法」，正是 §2 說幾乎各處都缺的反辨識。 |
 | [`stack_expression_parsing.md`](cheatsheet/stack_expression_parsing.md) `:12-60`、`:618-628` | 把整個題型拆成 3 個子問題，逐字元追蹤 `"3+2*2"`，最後是 Trap → Fix 表。 |
 | [`patience_sorting.md`](cheatsheet/patience_sorting.md) `:25-100` | 短篇 cheatsheet 的範本：三條規則 → trace → 兩行證明 → 「何時適用」→ 一行判別。 |
 | [`difference_array.md`](cheatsheet/difference_array.md) `:972-979` | 唯一的**反辨識**表：「看起來像差分陣列，其實不是 — 判別點」。 |
@@ -270,7 +274,7 @@ repo 其實已經有答案：[`data/l3_core.json`](../data/l3_core.json) 是 99 
 - 把 `NOTE !!!` 註解牆濃縮成一兩條文字；刪掉「gpt」、部落格網址、註解掉的 `print`；
 - 改為連到 `leetcode_python/` 裡的完整解題檔，不再貼第二份。
 
-*指標：直接接程式碼的例題 401 → 0；沒有 insight 的 570 → < 100；`NOTE !!!` 582 → < 50。*
+*指標：直接接程式碼的例題 401 → 0；沒有 insight 的 570 → < 100；`NOTE !!!` 583 → < 50。*
 
 ### P5 — 從資料產生練習路線
 
