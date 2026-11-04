@@ -226,10 +226,12 @@ The same rule from §0-1, applied to the two quantities nearly every tree proble
 | Quantity | Measured | Who knows it first | Flows | Shape | Classic LC |
 |----------|----------|--------------------|-------|-------|------------|
 | **Depth** | edges from the **root** down to the node | the parent | **down**, as an **argument**: `dfs(child, depth + 1)` | A / B | 102, 111, 199, 1302 |
-| **Height** | edges from the node down to its **deepest leaf** | the children | **up**, as the **return value**: `return 1 + max(l, r)` | C | 104, 110, 543, 366 |
+| **Height** | **nodes** on the longest path from the node down to a leaf (leaf = 1, empty = 0) | the children | **up**, as the **return value**: `return 1 + max(l, r)` | C | 104, 110, 543, 366 |
 | **Distance** | edges between two nodes | neither alone | both: depth from the LCA, or a parent map | — | 1740, 863 → [tree_lca_distance.md](./tree_lca_distance.md#3-distance-between-nodes--lc-1740) |
 
-> **LC 104 is the one problem that reads both ways.** The max depth of the tree equals the root's height. So it can be solved top-down, by carrying `depth` to every leaf, or bottom-up, by returning heights. That is why §0-3 lists depth under both branches.
+> **Mind the units: depth here counts edges (the root is 0), height counts nodes (a leaf is 1).** That is what the code below returns, and it makes LC 543's `left_height + right_height` come out directly in edges.
+>
+> **LC 104 is the one problem that reads both ways.** Its answer counts nodes, so it equals the root's height, or the deepest leaf's depth + 1. So it can be solved top-down, by carrying `depth` to every leaf, or bottom-up, by returning heights. That is why §0-3 lists depth under both branches.
 
 #### Depth — passed down
 
@@ -324,7 +326,7 @@ def is_balanced(root):
 
 Distance needs facts from above **and** below, so it lives in [tree_lca_distance.md](./tree_lca_distance.md):
 
-- **Between two nodes p and q** (LC 1740): `d(p, q) = depth(p) + depth(q) − 2·depth(lca)`. Find the LCA, then run `depth_of` from it twice. See [§3 Distance Between Nodes](./tree_lca_distance.md#3-distance-between-nodes--lc-1740).
+- **Between two nodes p and q** (LC 1740): `d(p, q) = depth(p) + depth(q) − 2·depth(lca)`. Find the LCA, then run that section's `get_dist` from it twice. LC 1740 hands you **values**, so `get_dist` compares `root.val == target`. `depth_of` above compares node identity and would return `-1`. See [§3 Distance Between Nodes](./tree_lca_distance.md#3-distance-between-nodes--lc-1740).
 - **Every node k away from a target** (LC 863): record each node's parent in one DFS. The tree is then an undirected graph, so walk outward with a `visited` set. See [§2 Move Parent Pattern](./tree_lca_distance.md#2-move-parent-pattern---bidirectional-tree-traversal).
 
 ---
