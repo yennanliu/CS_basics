@@ -1,7 +1,7 @@
 # Tree LCA, Distance & Path Problems
 
 > **Scope** — Lowest common ancestor, node-to-node distance, parent-map (bidirectional) traversal and the root-to-leaf path templates — every tree problem whose answer is a path or a meeting point rather than a shape.
-> **See also**: [tree.md](./tree.md) — the pattern catalogue and traversal templates these build on; [tree_examples.md](./tree_examples.md) — the rest of the worked tree problems; [tree_backtrack.md](./tree_backtrack.md) — root→leaf paths that undo state on the way back up; [bst.md](./bst.md) — LCA on an ordered tree (LC 235).
+> **See also**: [tree.md](./tree.md) — the pattern catalogue and traversal templates these build on; [tree_examples.md](./tree_examples.md) — the rest of the worked tree problems; [tree_backtrack.md](./tree_backtrack.md) — root→leaf paths that undo state on the way back up; [bst.md](./bst.md) — LCA on an ordered tree (LC 235); [binary_tree.md](./binary_tree.md#0-5-depth-vs-height--the-two-numbers-a-tree-dfs-computes-) — depth (passed down) vs height (returned up), the two quantities every distance template here combines.
 
 ## LeetCode Problem Lists
 

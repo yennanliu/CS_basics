@@ -1,8 +1,8 @@
-<!-- 893bce0909cf -->
+<!-- bce89f338e31 -->
 # 樹的 LCA、距離與路徑問題
 
 > **範圍** — 最近共同祖先、節點間距離、父節點表（雙向）走訪，以及根到葉的路徑模板——所有答案是一條路徑或一個交會點、而不是某種形狀的樹問題。
-> **另見**：[tree.md](./tree.md) — 這些東西所依賴的模式目錄與走訪模板；[tree_examples.md](./tree_examples.md) — 其餘的樹題詳解；[tree_backtrack.md](./tree_backtrack.md) — 回程要復原狀態的根→葉路徑；[bst.md](./bst.md) — 有序樹上的 LCA（LC 235）。
+> **另見**：[tree.md](./tree.md) — 這些東西所依賴的模式目錄與走訪模板；[tree_examples.md](./tree_examples.md) — 其餘的樹題詳解；[tree_backtrack.md](./tree_backtrack.md) — 回程要復原狀態的根→葉路徑；[bst.md](./bst.md) — 有序樹上的 LCA（LC 235）；[binary_tree.md](./binary_tree.md#0-5-depth-vs-height--the-two-numbers-a-tree-dfs-computes-) — 深度（往下傳）vs 高度（往上回傳），這裡每個距離模板組合的就是這兩個量。
 
 <!-- 189f22eff331 -->
 ## LeetCode 題目清單
