@@ -457,7 +457,7 @@ def pattern_template(arr):
 **For CS_basics repository:**
 
 - **Cheatsheets** live in `doc/cheatsheet/` and follow the Cheatsheet Style Guide in
-  `CLAUDE.md` (Skeleton A/B, the mandatory Scope line, a `data/cheatsheet_meta.json`
+  `CLAUDE.md` (core / examples / advanced sheets on Skeletons A–D, the mandatory Scope line, a `data/cheatsheet_meta.json`
   entry). Use `/lc-cheatsheet` for them; this skill is for everything else.
 - **FAQs** live in `doc/faq/` and have a zh overlay; use `/lc-faq-add`.
 - **System design** docs follow `system_design/00_template.md`.

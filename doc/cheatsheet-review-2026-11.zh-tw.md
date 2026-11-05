@@ -208,13 +208,14 @@ repo 其實已經有答案：[`data/l3_core.json`](../data/l3_core.json) 是 L3 
 
 ## 構想
 
-五個構想，每一個都是在改變 *cheatsheet 的寫法*，而不是一次性的修補。
+六個構想，每一個都是在改變 *cheatsheet 的寫法*，而不是一次性的修補。
 
 1. **每個模板都是一張 *pattern card*。** 標題寫出**模式名稱**和**代表題**：`### Template 2: Variable-Size Window — LC 3`。模式比整份 cheatsheet 的主題小一層，所以 `hash_map.md` 裡的卡片叫 *Complement Lookup — LC 1*（找補數），不會叫「Hash Table」。標題之後的欄位順序固定：**辨識（Recognise）→ 關鍵（Key point）→ 模板（Template）→ 複雜度（Complexity）→ *Dry run* → 陷阱（Traps）→ *不是這個（Not this if）* → 練習（Drill）**。**關鍵**寫在程式碼之前，說明這題為什麼能這樣解，也就是程式碼每一步都維持成立的那件事。**複雜度**指出是哪一行決定了 time 和 space，這正是面試時要講出口的話。有不直觀的步驟時一定要寫 *Dry run*。有相似題時一定要寫*不是這個*，它放在陷阱後面，因為是給已經會這個模式的讀者看的。選填欄位只有在內容為空時才能省略，其餘欄位的順序不變。讀者記住順序之後，在任何一份 cheatsheet 都能直接找到「陷阱是什麼？」，不必從頭讀。上面每個範本其實都已經具備大部分的形狀。
-2. **每個例題都是一張 *problem card*。** 開頭是一行 key insight 引言，加上一個「Reduces to」連到它所屬的 card；接著是一份附 `time =` 的解法；需要時再加 trace 和陷阱。帶著 `NOTE !!!` 的原始程式碼是解題檔，而解題檔已經放在 `leetcode_python/` 和 `leetcode_java/`。cheatsheet 應該連過去，而不是再貼一份。
+2. **每個例題都是一張 *problem card*。** 開頭是一行 `Key point`（關鍵）引言，加上一個「Reduces to」連到它所屬的 card；接著是一份附 `time =` 的解法；需要時再加 dry run 和陷阱。帶著 `NOTE !!!` 的原始程式碼是解題檔，而解題檔已經放在 `leetcode_python/` 和 `leetcode_java/`。cheatsheet 應該連過去，而不是再貼一份。
 3. **一題一個家。** 一道完整解過的 LC 題只放在一份 cheatsheet，其他地方的提及都只是一列指標。主題已經有這條規則（Scope 行），題目也需要。
 4. **一個入口。** 把 `lc_pattern.md` 重寫成「訊號 → pattern → cheatsheet → card」，附約束尺規和一欄反辨識，每一列都連到一張 card。
 5. **把資料裡已有的練習路線秀出來。** L3 核心題組和練習紀錄的結果都已經存在。cheatsheet 的練習清單應該從它們產生，排好序並標出必會題，而不是手打、然後慢慢過時。
+6. **三種檔案角色，各有一種骨架。** 一個主題的**核心**檔（`X.md`）負責概念和所有模板；**例題集**（`X_examples.md`）放經典題，按核心檔的模板分組、順序相同；**進階**檔（`X_advanced.md`）放核心模板做不到的技巧，並說明什麼時候不必用。拆檔計畫產生了 27 份例題集和 9 份進階檔，卻從沒規定它們長什麼樣子，所以 §3 提到的存檔大多是 `_examples` 檔。`00_template.md` 的 Skeleton C 和 D 就是給它們的骨架；A 和 B 仍用於核心檔。
 
 ---
 
@@ -265,16 +266,23 @@ repo 其實已經有答案：[`data/l3_core.json`](../data/l3_core.json) 是 L3 
 
 只是*相似*的區塊絕對不刪：要先確認是同一題、同一語言、同一解法（沿用拆檔計畫的規則）。
 
-### P4 — 整理 `_examples` 存檔
+### P4 — 用 Skeleton C 和 D 重建附屬檔
 
-處理 13 份評分 ≤ 3 的 `_examples` 檔。每個例題：
+先處理 13 份評分 ≤ 3 的 `_examples` 檔，再處理其他的；每份都和它核心檔的 P2 那一組放在同一個 PR。每份例題集（Skeleton C）：
+
+- `##` 段落改成跟核心檔的模板一一對應、順序相同，最上面加 `## Index` 總表；
+- 例題集裡的模板移回核心檔（`bst_examples` 有一個）；找不到對應模板的題目，先在核心檔補一張 pattern card。不設 `## Other Examples`；
+
+每個例題：
 
 - 補上 `> **Key point** —` 那一行，以及 `**Reduces to**: [Template N](#…)`；
 - **V0 必須是標準解**，而不是最早寫的那份。暴力解的 V0 要降級或刪除；第二種解法要寫明理由才能留；
 - 把 `NOTE !!!` 註解牆濃縮成一兩條文字；刪掉「gpt」、部落格網址、註解掉的 `print`；
 - 改為連到 `leetcode_python/` 裡的完整解題檔，不再貼第二份。
 
-*指標：直接接程式碼的例題 401 → 0；沒有 insight 的 570 → < 100；`NOTE !!!` 583 → < 50。*
+每份進階檔（Skeleton D）：加上連到核心卡片的 `### Prerequisites`，以及 `## When Not to Use` 段落。9 份裡沒有一份有前者，只有 `prefix_sum_advanced` 有後者。
+
+*指標：直接接程式碼的例題 401 → 0；沒有 insight 的 570 → < 100；`NOTE !!!` 583 → < 50；每份 `_examples` 都有 `## Index`，每份 `_advanced` 都有 `## When Not to Use`。*
 
 ### P5 — 從資料產生練習路線
 
@@ -304,6 +312,7 @@ repo 其實已經有答案：[`data/l3_core.json`](../data/l3_core.json) 是 L3 
 | 不得把 Python `(l + r) / 2` 當索引使用 | §9 |
 | `## LC Examples` 不得在 `## Summary` 之後 | §7 |
 | tier ≥ 4 的主檔要有辨識段落和 `## Drill Path` | §2、§8 |
+| `_examples` 要有 `## Index`、不得有 `Template N` 標題；`_advanced` 要有 `## When Not to Use` | §3、Skeleton C / D |
 
 需要判斷的規則（一題一個家、V0 是標準解）留在 code review，不做成 lint。
 
@@ -323,7 +332,7 @@ repo 其實已經有答案：[`data/l3_core.json`](../data/l3_core.json) 是 L3 
 
 ## 不提議的事
 
-- **不新增第三種 skeleton。** A 和 B 維持不變；pattern card 是放在兩者模板段落*裡面*的東西。
+- **核心檔不新增骨架。** 核心檔仍用 A 和 B。C 和 D 只用於拆檔計畫已經產生的 `_examples` 和 `_advanced` 附屬檔；pattern card 則是放在任何一種骨架的模板段落*裡面*。
 - **不在一個 PR 裡重寫整份 cheatsheet。** 每次修改 cheatsheet 都要重新對應中文 overlay，而那套系統就是為段落大小的 diff 設計的。
 - **只是相似的變體不刪**（沿用拆檔計畫的規則）。
 - **cheatsheet 裡不手打數量**（`linked_list.md:1767` 的「Seventeen problems」早就錯了）。要嘛從資料算，要嘛不寫。

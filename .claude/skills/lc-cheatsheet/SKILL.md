@@ -22,10 +22,10 @@ add LC 1650 to the LCA part of binary_tree.md   # the plain-English form works t
 
 | `as <mode>` | Use when | Lands as |
 |---|---|---|
-| `example` *(default)* | the sheet has the template; this problem is another instance of it | a worked LC example **under that template's section** |
+| `example` *(default)* | the sheet has the template; this problem is another instance of it | a problem card **under that template's section**: in the topic's `X_examples.md` when it has one (Skeleton C), else in the core sheet |
 | `variation` | the sheet's template does not quite solve it — one precondition differs | a `#### <X> Variant — <what changed> (LC n)` under the template it varies |
 | `pattern` | the sheet has no template for this technique at all | a new pattern/template section, plus its row in the sheet's category table |
-| `sheet` | no sheet owns the topic | a new `doc/cheatsheet/<slug>.md` **and** its `data/cheatsheet_meta.json` entry |
+| `sheet` | no sheet owns the topic, or a core sheet needs its `_examples` / `_advanced` satellite | a new `doc/cheatsheet/<slug>.md` **and** its `data/cheatsheet_meta.json` entry |
 
 Missing arguments are inferred, not asked about: the sheet from the technique the solution
 uses and from `README.md`'s topic heading for that LC number, the mode from what the sheet
@@ -86,6 +86,11 @@ Read out of that:
   the code lives only in `tree_lca_distance.md`.
 - **Whether the problem is already there.** If it is, the job is `variation` or a correction,
   never a second copy — one canonical solution per problem.
+- **Whether the topic has satellites.** `ls doc/cheatsheet/<topic>_examples.md
+  doc/cheatsheet/<topic>_advanced.md`. The core sheet owns the templates; a worked `example`
+  goes to `_examples` under the `##` section of the template it reduces to, and a problem that
+  needs an advanced technique goes to `_advanced`. The core sheet then gets at most a Drill
+  line entry, never the code.
 - **Whether a mention is wrong.** A sheet claiming LC 1650 is solved by the LC 236 post-order
   template is a bug in the sheet: 1650 has no `root` to pass it. Fix what you find.
 
@@ -113,11 +118,18 @@ The sibling section **is** the template: its heading depth, whether it labels fe
 pitfall list. Match it. `doc/cheatsheet/00_template.md` is the authority when the sheet has
 drifted or when the mode is `sheet`.
 
-For mode `sheet`, pick the skeleton by **size, not topic** (CLAUDE.md § Which skeleton):
-Skeleton A (`0) Concept` → `1) General form` → `2) LC Example` → `3) Drill Path`) under ~800
-lines, Skeleton B (`Overview` → `Recognition` → `Templates & Algorithms` → `LC Examples` →
-`Pattern Selection Strategy` → `Drill Path` → `Summary`) above it. Never mix them. A tier ≥ 4
-sheet also needs the Recognition table and the Drill Path (`00_template.md` has both).
+For mode `sheet`, pick the **role** first, then the skeleton (CLAUDE.md § Which skeleton):
+
+| Role | Skeleton | Shape |
+|---|---|---|
+| core `X.md`, under ~800 lines | A | `0) Concept` → `1) General form` → `2) LC Example` → `3) Drill Path` |
+| core `X.md`, larger | B | `Overview` → `Recognition` → `Templates & Algorithms` → `LC Examples` → `Pattern Selection Strategy` → `Drill Path` → `Summary` |
+| examples `X_examples.md` | C | `Overview` → `Index` → one `## <Pattern> Examples` per core template, in the core sheet's order |
+| advanced `X_advanced.md` | D | `Overview` (+ `Prerequisites`) → `Recognition` → one `##` per technique family → `When Not to Use` → `Summary` |
+
+Never mix them. A tier ≥ 4 core sheet also needs the Recognition table and the Drill Path
+(`00_template.md` has both). An examples sheet holds no templates: a problem that fits none
+means the core sheet needs a `pattern` first.
 
 ### 4. Write the section
 

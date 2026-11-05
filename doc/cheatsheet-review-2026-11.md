@@ -203,13 +203,14 @@ These sections are the model. The new template is derived from them rather than 
 
 ## Ideas
 
-Five ideas, each a change in *how a sheet is written* rather than a one-off fix.
+Six ideas, each a change in *how a sheet is written* rather than a one-off fix.
 
 1. **Every template is a *pattern card*.** Its heading names the **pattern** and its **anchor problem**: `### Template 2: Variable-Size Window — LC 3`. The pattern is narrower than the sheet's topic, so `hash_map.md` holds *Complement Lookup — LC 1* rather than a card called "Hash Table". Then come the same slots in a fixed order: **Recognise → Key point → Template → Complexity → *Dry run* → Traps → *Not this if* → Drill**. **Key point** is why it works, as a fact the code keeps true, written before the code. **Complexity** names the line that sets each bound, which is what you say out loud. *Dry run* is written whenever a step is non-obvious. *Not this if* is written whenever a look-alike exists, and it sits after Traps because it is for a reader who already knows the pattern. An optional slot is left out only when it would be empty, and the rest keep their order. A reader who knows the order can find "what's the trap?" in any sheet without reading it. Every exemplar above already has most of this shape.
-2. **Every worked example is a *problem card*.** It has a key-insight blockquote and a "Reduces to" link to its card, then one solution with `time =`, plus a trace and traps where needed. Raw code with `NOTE !!!` is a solution file, and those already live in `leetcode_python/` and `leetcode_java/`. The cheatsheet should link to them, not paste them.
+2. **Every worked example is a *problem card*.** It has a `Key point` blockquote and a "Reduces to" link to its card, then one solution with `time =`, plus a dry run and traps where needed. Raw code with `NOTE !!!` is a solution file, and those already live in `leetcode_python/` and `leetcode_java/`. The cheatsheet should link to them, not paste them.
 3. **One home per problem.** A worked LC problem lives in exactly one sheet. Every other mention is a one-row pointer. The rule already exists for topics (Scope lines); it needs to exist for problems.
 4. **A front door.** Rebuild `lc_pattern.md` as *signal → pattern → sheet → card*, with the constraint ruler and an anti-recognition column. Every row links to a card.
 5. **Show the drill path that is already in the data.** The L3 core set and the practice-log verdicts already exist. A sheet's drill list should come from them, ordered and flagged, not typed by hand and left to go stale.
+6. **Three sheet roles, one skeleton each.** A topic's **core** sheet (`X.md`) owns the concept and every template. Its **examples** sheet (`X_examples.md`) holds the classic problems, grouped by those templates in the same order. Its **advanced** sheet (`X_advanced.md`) holds what the templates cannot do, and says when not to bother. The split plan created 27 examples sheets and 9 advanced ones but never said what shape they take, which is why §3's archives are mostly `_examples` files. Skeletons C and D in `00_template.md` give them one; A and B stay for core sheets.
 
 ---
 
@@ -260,16 +261,23 @@ Work the hot-spot table in [§4](#4-one-problem-many-homes), cluster by cluster 
 
 Never delete a block whose duplicate is only *similar*: same problem, same language and same approach first (the split plan's rule).
 
-### P4 — curate the `_examples` archives
+### P4 — rebuild the satellites on Skeletons C and D
 
-The 13 `_examples` sheets that score ≤ 3. For each worked example:
+The 13 `_examples` sheets that score ≤ 3 first, then the rest, each in the same PR as its core sheet's P2 cluster. Per examples sheet (Skeleton C):
+
+- make its `##` sections mirror the core sheet's templates, in the same order, and add the `## Index` table at the top;
+- move any template out to the core sheet (`bst_examples` has one), and give every problem that reduces to no template a pattern card in the core sheet first. No `## Other Examples`;
+
+For each worked example:
 
 - add the `> **Key point** —` line, and `**Reduces to**: [Template N](#…)`;
 - **V0 is the canonical answer**, not the first one written. Demote or delete brute-force V0s. A second solution stays only with its reason written beside it;
 - strip `NOTE !!!` walls into one or two prose bullets; drop "gpt", blog URLs and commented-out `print`;
 - link to the full solution file in `leetcode_python/` rather than pasting a second copy.
 
-*Measure: code-first example headings 401 → 0; no-insight 570 → < 100; `NOTE !!!` 583 → < 50.*
+Per advanced sheet (Skeleton D): add `### Prerequisites` linking to the core cards, and a `## When Not to Use` section. None of the 9 has the first, and only `prefix_sum_advanced` has the second.
+
+*Measure: code-first example headings 401 → 0; no-insight 570 → < 100; `NOTE !!!` 583 → < 50; every `_examples` sheet has an `## Index`, every `_advanced` sheet a `## When Not to Use`.*
 
 ### P5 — drill path from the data
 
@@ -299,6 +307,7 @@ Add `script/check_cheatsheets.py`, a sibling of `check_readme.py` with the same 
 | no Python `(l + r) / 2` used as an index | §9 |
 | no `## LC Examples` after `## Summary` | §7 |
 | a tier ≥ 4 main sheet has a recognition section and a `## Drill Path` | §2, §8 |
+| an `_examples` sheet has an `## Index` and no `Template N` heading; an `_advanced` sheet has a `## When Not to Use` | §3, Skeletons C / D |
 
 Rules that need judgement (one home per problem, V0 is canonical) stay review items, not lint.
 
@@ -318,7 +327,7 @@ Rules that need judgement (one home per problem, V0 is canonical) stay review it
 
 ## Not proposed
 
-- **No third skeleton.** A and B stay. The pattern card is what goes *inside* a template section of either.
+- **No new skeleton for a core sheet.** A and B stay for core sheets. C and D exist only for the `_examples` and `_advanced` satellites the split plan already created, and the pattern card is what goes *inside* a template section of any of them.
 - **No rewrite of a whole sheet in one PR.** Every sheet change has to re-key its 中文 overlay, and section-sized diffs are what that system is built for.
 - **No deleting a variant that is only similar** (split-plan rule, kept).
 - **No hand-typed counts in a sheet** ("Seventeen problems", `linked_list.md:1767`, was already wrong). Count from the data or do not count.

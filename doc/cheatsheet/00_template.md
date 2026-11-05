@@ -2,21 +2,37 @@
 
 A cheatsheet exists to make one thing faster in a coding interview: **recognise the pattern, recall the template, avoid the trap.** Every rule below serves one of those three. Why each rule exists is in [`cheatsheet-review-2026-11.md`](../cheatsheet-review-2026-11.md).
 
-**Contents** — [Pick a skeleton](#pick-a-skeleton) · [The header](#every-cheatsheet-starts-with-this-header) · [Register the file](#then-register-the-file) · [The pattern card](#the-pattern-card--every-template-section) · [The problem card](#the-problem-card--every-worked-example) · [Recognition table](#the-recognition-table) · [Drill path](#the-drill-path) · [Skeleton A](#skeleton-a--short-doc) · [Skeleton B](#skeleton-b--reference-doc) · [Stars](#mark-the-interview-critical-sections) · [Formatting](#formatting-rules) · [Code](#code-conventions) · [Do not](#do-not)
+**Contents** — [Pick a skeleton](#pick-a-skeleton) · [The header](#every-cheatsheet-starts-with-this-header) · [Register the file](#then-register-the-file) · [The pattern card](#the-pattern-card--every-template-section) · [The problem card](#the-problem-card--every-worked-example) · [Recognition table](#the-recognition-table) · [Drill path](#the-drill-path) · [Skeleton A](#skeleton-a--short-core-sheet) · [Skeleton B](#skeleton-b--reference-core-sheet) · [Skeleton C](#skeleton-c--examples-sheet) · [Skeleton D](#skeleton-d--advanced-sheet) · [Stars](#mark-the-interview-critical-sections) · [Formatting](#formatting-rules) · [Code](#code-conventions) · [Do not](#do-not)
 
 ---
 
 ## Pick a skeleton
 
-Two skeletons are in use. **Pick by size, not by topic.**
+**First pick the sheet's role, then its skeleton.** A topic has up to three sheets, and each has one job:
 
-| | **Skeleton A — short doc** | **Skeleton B — reference doc** |
-|---|---|---|
-| Use when | < ~800 lines; one technique, few patterns | > ~800 lines; a data structure or a whole pattern family |
-| Examples | `patience_sorting.md`, `kadane_algorithm.md`, `n_sum.md`, `iterator.md` | `heap.md`, `dp.md`, `bfs.md`, `graph.md`, `minimum_spanning_tree.md` |
-| Shape | `0) Concept` → `1) General form` → `2) LC Example` | `Overview` → `Recognition` → `Templates` → `LC Examples` → `Pattern Selection` → `Drill Path` → `Summary` |
+| Role | File | Owns | Skeleton |
+|---|---|---|---|
+| **Core** | `X.md` (`hash_map.md`, `binary_search.md`, `array.md`) | the concept, **every template** (as pattern cards), the Recognition table and the Drill Path | **A** if short (< ~800 lines, one technique), **B** if not |
+| **Examples** | `X_examples.md` (`hash_map_examples.md`, `tree_examples.md`) | the classic LC problems of the topic, **grouped by the core sheet's templates**, as problem cards. No templates of its own | **C** |
+| **Advanced** | `X_advanced.md` (`dp_advanced.md`, `graph_advanced.md`) | techniques the core templates cannot do, each as a pattern card, plus when not to bother | **D** |
 
-Do **not** mix the two in one file. If a Skeleton A doc grows past ~800 lines, convert it to B rather than bolting B's sections onto the end. Past ~1,500 lines, split the long tail into `X_examples.md` and rare techniques into `X_advanced.md` (see [`cheatsheet-split-plan-2026-08.md`](../cheatsheet-split-plan-2026-08.md)).
+```text
+                 X.md  (core: concept + templates)
+               ↑ Reduces to            ↑ Prerequisites
+   X_examples.md (examples)      X_advanced.md (advanced)
+```
+
+- A topic always has a core sheet. It gets an examples sheet when its worked examples outgrow it (past ~1,500 lines, the [split plan](../cheatsheet-split-plan-2026-08.md)'s threshold), and an advanced sheet when it has techniques an L3 loop rarely asks for.
+- A standalone technique with no family (`patience_sorting.md`, `iterator.md`, `kadane_algorithm.md`) is a core sheet on Skeleton A.
+- **One home per problem.** A template's anchor problem lives in the core sheet, inside its card. Every other worked problem lives in the examples sheet, or in the advanced sheet when it needs an advanced technique. Every other mention is a one-row pointer.
+
+| | **A — short core** | **B — reference core** | **C — examples** | **D — advanced** |
+|---|---|---|---|---|
+| Use when | core, < ~800 lines | core, > ~800 lines | `X_examples.md` | `X_advanced.md` |
+| Examples | `patience_sorting.md`, `kadane_algorithm.md`, `n_sum.md` | `heap.md`, `dp.md`, `bfs.md`, `minimum_spanning_tree.md` | `tree_examples.md` (closest today) | `prefix_sum_advanced.md` (closest today) |
+| Shape | `0) Concept` → `1) General form` → `2) LC Example` → `3) Drill Path` | `Overview` → `Recognition` → `Templates` → `LC Examples` → `Pattern Selection` → `Drill Path` → `Summary` | `Overview` → `Index` → one `## <Pattern> Examples` per core template | `Overview` → `Prerequisites` → `Recognition` → one `##` per technique family → `When Not to Use` → `Summary` |
+
+Do **not** mix skeletons in one file. If a Skeleton A doc grows past ~800 lines, convert it to B rather than bolting B's sections onto the end.
 
 Whichever skeleton you pick, **what goes inside a template section is the same**: a [pattern card](#the-pattern-card--every-template-section). A worked example is a [problem card](#the-problem-card--every-worked-example).
 
@@ -258,7 +274,7 @@ Every main sheet ends its teaching content with an ordered practice list: just b
 
 ---
 
-## Skeleton A — short doc
+## Skeleton A — short core sheet
 
 ```markdown
 ## 0) Concept
@@ -282,7 +298,7 @@ The model short sheet is [`patience_sorting.md`](./patience_sorting.md): three r
 
 ---
 
-## Skeleton B — reference doc
+## Skeleton B — reference core sheet
 
 ```markdown
 ## Time Complexity          <!-- data-structure docs only; omit for algorithm docs -->
@@ -330,11 +346,85 @@ The model short sheet is [`patience_sorting.md`](./patience_sorting.md): three r
 ### Section rules for Skeleton B
 
 - **The canonical template is in the first ~300 lines.** A reader skimming top-down should hit runnable code before the end of the first screenful of Templates. The best section goes first, not last.
+- **`LC Examples` is short, or absent.** When the topic has an `X_examples.md`, the core sheet has no `LC Examples` section: each template's anchor problem is in its card, and everything else is in the examples sheet. The Drill Path links into it.
 - **`LC Examples` is not an append-log.** Before adding a problem there, check whether a template above already solves it *in the same language*. If it does, extend the template's Drill line instead.
 - **`LC Examples`, `Problems by Pattern` and any other example section come before `Summary`**, never after it.
 - **One** decision section and **one** summary section per sheet. A second flowchart restating the first decision table is deleted, not kept.
 - **No `Missing Google Patterns`-style catch-all sections.** New material goes under the pattern it belongs to. If it fits nowhere, it needs its own named `##` section.
 - Every `##` heading is unique within the file, and every `###` under a shared parent is unique too. If you need "Summary" twice, qualify both.
+
+---
+
+## Skeleton C — examples sheet
+
+`X_examples.md` is the topic's problem set. It teaches **which template a problem reduces to, and the one step it adds**. It never re-teaches a template.
+
+```markdown
+## Overview
+
+<one paragraph: what this set covers> + a link to the core sheet: [hash_map.md](./hash_map.md)
+holds the templates; this sheet is the problems.
+
+## Index                                       <!-- the whole set on one screen -->
+
+| Pattern | Problems (easy → hard) | Core ⭐ |
+|---|---|---|
+| [Complement Lookup](./hash_map.md#template-1-complement-lookup--lc-1) | LC 167 · LC 454 · LC 15 | LC 15 |
+| [Frequency Count](./hash_map.md#template-2-frequency-count--lc-242) | LC 383 · LC 49 · LC 347 | LC 49 · LC 347 |
+
+## Complement Lookup Examples                  <!-- one ## per core template, in the core sheet's order -->
+
+### Two Sum II - Input Array Is Sorted — LC 167   <!-- a problem card -->
+
+## Frequency Count Examples
+
+### Group Anagrams — LC 49
+```
+
+### Section rules for Skeleton C
+
+- **The `##` sections follow the core sheet's templates, in the same order.** A reader who has just read Template 2 knows where its problems are.
+- **Every problem is a problem card**, and its **Reduces to** links across to the core sheet: `**Reduces to**: [hash_map § Template 1](./hash_map.md#…)`.
+- **No templates, no concept, no catch-all section.** A problem that fits no template means the core sheet is missing one. Add the pattern card there first, then the problem here. There is no `## Other Examples`.
+- **The Index is the summary.** No `## Summary`, no `Problems by Pattern` table repeating it.
+- Within a section, problems are ordered easy → hard, the same order as the Index row.
+
+---
+
+## Skeleton D — advanced sheet
+
+`X_advanced.md` holds what the core templates cannot do. Its first job is to say **when you need it**, because most of it is not asked at L3.
+
+```markdown
+## Overview
+
+<one paragraph: what is here, and how often an interview reaches for it>
+
+### Prerequisites
+- [dp.md § Template 1b](./dp.md#…): prefix-partition DP. Interval DP below extends it.
+
+## Recognition                                 <!-- when the core template is not enough -->
+
+| Signal in the statement | Constraint cue | Reach for | Not this if |
+|---|---|---|---|
+
+## Interval DP                                 <!-- one ## per technique family -->
+
+### Template 1: Interval DP by Length — LC 516  <!-- a pattern card -->
+
+### Burst Balloons — LC 312                     <!-- a problem card -->
+
+## When Not to Use                             <!-- the simpler core template that usually suffices -->
+
+## Summary
+```
+
+### Section rules for Skeleton D
+
+- **Prerequisites link to core cards** rather than restating them. If the reader needs the basic template, it is one click away.
+- **Techniques are pattern cards; problems are problem cards.** A problem lives here only when it needs a technique from this sheet; otherwise it belongs in `X_examples.md`.
+- **`When Not to Use` is required.** For each technique, the simpler core template that solves most problems that look like they need it. This is what keeps an advanced sheet from being memorised for no reason.
+- Templates are numbered `Template 1 … N` within this sheet, independently of the core sheet.
 
 ---
 

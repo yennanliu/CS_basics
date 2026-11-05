@@ -571,10 +571,10 @@ add LC 1650 to the LCA part of binary_tree.md   # the plain-English form works t
 
 | `as <mode>` | Lands as |
 |---|---|
-| `example` *(default)* | a worked LC example under the template that already solves it |
+| `example` *(default)* | a problem card under the template that already solves it — in the topic's `X_examples.md`, under that template's `##` section, when the topic has one |
 | `variation` | a variant section under the template it varies — name **which** precondition differs |
 | `pattern` | a new pattern section, plus its row in the sheet's category and selection tables |
-| `sheet` | a new `doc/cheatsheet/<slug>.md` **and** its [`data/cheatsheet_meta.json`](data/cheatsheet_meta.json) entry |
+| `sheet` | a new `doc/cheatsheet/<slug>.md` (core, `_examples` or `_advanced`, each with its own skeleton) **and** its [`data/cheatsheet_meta.json`](data/cheatsheet_meta.json) entry |
 
 **The steps live in `SKILL.md`, not here** — the [style guide below](#cheatsheet-style-guide)
 is what it applies, so the rules have one home. What the skill adds on top of them is the
@@ -668,15 +668,30 @@ Cheatsheets live in `doc/cheatsheet/`. [`doc/cheatsheet/00_template.md`](doc/che
 
 ### Which skeleton
 
-Two skeletons are in use. **Pick by size, not by topic**, and never mix them in one file:
+**Pick the sheet's role first, then its skeleton.** A topic has up to three sheets, each with
+one job, and never mix two skeletons in one file:
 
-| | **Skeleton A — short doc** | **Skeleton B — reference doc** |
-|---|---|---|
-| Use when | < ~800 lines; one technique | > ~800 lines; a data structure or pattern family |
-| Shape | `0) Concept` → `1) General form` → `2) LC Example` → `3) Drill Path` | `Overview` → `Recognition` → `Templates & Algorithms` → `LC Examples` → `Pattern Selection Strategy` → `Drill Path` → `Summary` |
-| Examples | `patience_sorting.md`, `kadane_algorithm.md`, `n_sum.md` | `heap.md`, `dp.md`, `bfs.md`, `minimum_spanning_tree.md` |
+| Role | File | Owns | Skeleton |
+|---|---|---|---|
+| **Core** | `X.md` (`hash_map.md`, `binary_search.md`, `array.md`) | the concept, every template, the Recognition table and the Drill Path | **A** (< ~800 lines, one technique) or **B** (larger) |
+| **Examples** | `X_examples.md` (27 today) | the topic's classic LC problems, grouped by the core sheet's templates, as problem cards. No templates of its own | **C** |
+| **Advanced** | `X_advanced.md` (9 today) | techniques the core templates cannot do, with *when not to use* each | **D** |
 
-If a Skeleton A doc grows past ~800 lines, convert it to B rather than appending B's sections to the end.
+| | **A — short core** | **B — reference core** | **C — examples** | **D — advanced** |
+|---|---|---|---|---|
+| Shape | `0) Concept` → `1) General form` → `2) LC Example` → `3) Drill Path` | `Overview` → `Recognition` → `Templates & Algorithms` → `LC Examples` → `Pattern Selection Strategy` → `Drill Path` → `Summary` | `Overview` → `Index` → one `## <Pattern> Examples` per core template, in the core sheet's order | `Overview` (+ `Prerequisites`) → `Recognition` → one `##` per technique family → `When Not to Use` → `Summary` |
+| Examples | `patience_sorting.md`, `kadane_algorithm.md`, `n_sum.md` | `heap.md`, `dp.md`, `bfs.md`, `minimum_spanning_tree.md` | `tree_examples.md` (closest today) | `prefix_sum_advanced.md` (closest today) |
+
+A standalone technique with no family (`patience_sorting`, `iterator`) is a core sheet on
+Skeleton A. If a Skeleton A doc grows past ~800 lines, convert it to B rather than appending B's
+sections to the end; past ~1,500, move its worked examples out into an `X_examples.md`. A core
+sheet that has an examples sheet keeps no `LC Examples` section of its own.
+
+The examples sheet is the one that needs the rule most: in Nov 2026 the `_examples` files were
+most of the lowest-scoring sheets, because nothing said what shape they should have and they
+grew as append-logs. Skeleton C's `##` sections mirror the core sheet's templates, every problem
+**reduces to** a core card, and a problem that fits none means the core sheet is missing a
+template, so there is no `## Other Examples`.
 
 ### What goes inside a section — the two cards
 
@@ -703,8 +718,9 @@ and a Drill Path (Core ⭐ from [`data/l3_core.json`](data/l3_core.json) → Pra
 before `Summary` (Skeleton A: `3) Drill Path`). The canonical
 template sits in the first ~300 lines; the best section goes first, not last.
 
-**One home per problem.** A worked LC problem lives in exactly one sheet; every other mention
-is a one-row pointer. Scope lines say who owns a *topic*. This rule says who owns a *problem*,
+**One home per problem.** A worked LC problem lives in exactly one sheet: a template's anchor
+problem in the core sheet's card, any other in the examples sheet (or the advanced sheet, when
+it needs an advanced technique). Every other mention is a one-row pointer. Scope lines say who owns a *topic*. This rule says who owns a *problem*,
 and in Nov 2026 LC 200 was being worked out in six sheets. Check with `grep -rn "LC <n>\b"
 doc/cheatsheet/` before adding a worked example.
 
