@@ -45,7 +45,7 @@ half-translated document renders with English gaps rather than failing.
   usually the text already there.
 
 
-## Status — 931 / 931 sections (100%)
+## Status — 1419 / 1419 sections (100%)
 
 | FAQ | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -65,8 +65,18 @@ half-translated document renders with English gaps rather than failing.
 | [db/faq_DB_DW](./faq/db/faq_DB_DW.md) | 19 | [✅](../i18n/zh/faq/db/faq_DB_DW.md) |
 | [db/faq_redshift](./faq/db/faq_redshift.md) | 1 | [✅](../i18n/zh/faq/db/faq_redshift.md) |
 | [db/postgre](./faq/db/postgre.md) | 15 | [✅](../i18n/zh/faq/db/postgre.md) |
+| [de/batch_pipeline](./faq/de/batch_pipeline.md) | 50 | [✅](../i18n/zh/faq/de/batch_pipeline.md) |
+| [de/data_modeling](./faq/de/data_modeling.md) | 49 | [✅](../i18n/zh/faq/de/data_modeling.md) |
+| [de/hadoop](./faq/de/hadoop.md) | 45 | [✅](../i18n/zh/faq/de/hadoop.md) |
+| [de/kafka](./faq/de/kafka.md) | 58 | [✅](../i18n/zh/faq/de/kafka.md) |
+| [de/schema_design](./faq/de/schema_design.md) | 42 | [✅](../i18n/zh/faq/de/schema_design.md) |
+| [de/spark](./faq/de/spark.md) | 66 | [✅](../i18n/zh/faq/de/spark.md) |
+| [de/sql_for_data](./faq/de/sql_for_data.md) | 59 | [✅](../i18n/zh/faq/de/sql_for_data.md) |
+| [de/sql_vs_nosql](./faq/de/sql_vs_nosql.md) | 52 | [✅](../i18n/zh/faq/de/sql_vs_nosql.md) |
+| [de/stream_pipeline](./faq/de/stream_pipeline.md) | 54 | [✅](../i18n/zh/faq/de/stream_pipeline.md) |
 | [faq_Airflow](./faq/faq_Airflow.md) | 1 | [✅](../i18n/zh/faq/faq_Airflow.md) |
 | [faq_DE](./faq/faq_DE.md) | 4 | [✅](../i18n/zh/faq/faq_DE.md) |
+| [faq_DE_interview](./faq/faq_DE_interview.md) | 13 | [✅](../i18n/zh/faq/faq_DE_interview.md) |
 | [faq_ML](./faq/faq_ML.md) | 2 | [✅](../i18n/zh/faq/faq_ML.md) |
 | [faq_data_model](./faq/faq_data_model.md) | 15 | [✅](../i18n/zh/faq/faq_data_model.md) |
 | [faq_dev_interview](./faq/faq_dev_interview.md) | 30 | [✅](../i18n/zh/faq/faq_dev_interview.md) |

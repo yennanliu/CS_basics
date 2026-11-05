@@ -1,5 +1,7 @@
-<!-- dc67f6779e2c -->
+<!-- 0dca0d9ef239 -->
 # 資料工程 FAQ
+
+> **另見**：[`faq_DE_interview.md`](./faq_DE_interview.md) — 資料工程面試總覽：Spark、Kafka、Hadoop、資料建模、SQL、批次與串流管線、schema 設計、SQL vs NoSQL。
 
 <!-- 5b54ed64e8e0 -->
 #### 0. 用 Python 準備資料工程師面試
