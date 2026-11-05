@@ -736,7 +736,7 @@ grid          dp
 being true → Dijkstra (LC 1631, table below). Two strings instead of one grid → the table is
 invented, not handed to you → [Template 2a](#template-2a-2-d-table-shape-and-fill-order--lc-516-).
 
-**Drill** — LC 62 ⭐ *(count instead of min)* · LC 64 · LC 63 *(obstacles in the seed row)* ·
+**Drill** — LC 64 · LC 62 ⭐ *(count instead of min)* · LC 63 *(obstacles in the seed row)* ·
 LC 120 *(triangle, bottom-up)* · LC 221 *(`1 + min` of three neighbours)* · LC 174 *(fill from the
 bottom-right)*
 
@@ -1675,7 +1675,7 @@ day 4  p=2  hold= 1  sold=3   rest=2     answer max(3, 2) = 3
 day-to-day difference. "At most k transactions" → `2k` states, in
 [stock_trading.md](./stock_trading.md).
 
-**Drill** — LC 121 ⭐ *(two states, buy from 0)* · LC 122 *(two states)* · LC 309 ⭐ · LC 714 *(fee
+**Drill** — LC 309 ⭐ · LC 121 ⭐ *(two states, buy from 0)* · LC 122 *(two states)* · LC 714 *(fee
 on sell)* · LC 123 *(four states)* · LC 188 *(2k states)*
 
 ### Template 6: Memoization → Tabulation → Rolling Variables — LC 198 ⭐⭐⭐⭐⭐
@@ -1779,7 +1779,7 @@ n = 2, nums = [2, 7]
 table (Template 7, Template 1b). A 2-D table rolls to one row only when row `i` reads just row `i-1`
 (Shape B in [Template 2a](#template-2a-2-d-table-shape-and-fill-order--lc-516-)).
 
-**Drill** — LC 70 ⭐ · LC 746 · LC 198 ⭐ · LC 213 ⭐ *(circle: run it twice, skipping each end)* ·
+**Drill** — LC 198 ⭐ · LC 70 ⭐ · LC 746 · LC 213 ⭐ *(circle: run it twice, skipping each end)* ·
 LC 1137 *(three variables)* · LC 740 *(reduce to House Robber over values)*
 
 #### Step 1 — top-down memoization
@@ -2372,8 +2372,9 @@ longest True range = dp[1][2]  ->  "bb"
 **Traps**
 - **Checking `dp[i+1][j-1]` without the `j - i <= 2` guard.** When `j - i == 1`, `dp[i+1][j-1]` is
   `dp[i+1][i]`, below the diagonal and still `False`: `"bb"` would not be found.
-- **`i` ascending.** `for i in range(n)` reads row `i+1` before it is filled; `"aba"` loses its
-  answer.
+- **`i` ascending.** `for i in range(n)` reads row `i+1` before it is filled; `"abba"` returns
+  `"bb"`, because its length-4 check reads the inner `"bb"` before that cell is set (`"aba"`
+  survives only thanks to the `j - i <= 2` guard).
 - **Expand-around-center with only odd centres.** Always call `expand(i, i)` **and**
   `expand(i, i + 1)`; `"abba"` has no odd centre.
 
