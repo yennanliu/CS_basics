@@ -1949,9 +1949,9 @@ public int lastStoneWeight(int[] stones) {
 
 | # | Problem | LC | Language shown | Pattern (template lives in) |
 |---|---------|----|----------------|------------------------------|
-| 1 | Kth Largest Element in a Stream | 703 | Python | Kth Element — [heap.md](./heap.md#specific-pattern-templates) |
+| 1 | Kth Largest Element in a Stream | 703 | Python | Kth Element — [heap.md](./heap.md#templates--algorithms) |
 | 2 | Ugly Number II | 264 | Python | Heap generation + dedup set |
-| 3 | Find Median from Data Stream | 295 | Python | Two Heaps — [heap.md](./heap.md#specific-pattern-templates) |
+| 3 | Find Median from Data Stream | 295 | Python | Two Heaps — [heap.md](./heap.md#templates--algorithms) |
 | 4 | Minimum Cost to Connect Sticks | 1167 | Python | Repeated "take the two smallest" |
 | 5 | The kth Factor of n | 1492 | Python | Max-heap capped at k |
 | 6 | Least Number of Unique Integers after K Removals | 1481 | Python | Counter + min-heap of counts |
@@ -1963,7 +1963,7 @@ public int lastStoneWeight(int[] stones) {
 | 12 | Maximum Performance of a Team | 1383 | Java | Sort + fixed-size heap — [heap_advanced.md](./heap_advanced.md) |
 | 13 | Minimum Number of Refueling Stops | 871 | Java | Greedy with regret — [heap_advanced.md](./heap_advanced.md) |
 | 14 | Minimum Number of Visited Cells in a Grid | 2617 | Java | Per-row/col PQ + lazy deletion — [heap_advanced.md](./heap_advanced.md) |
-| 15 | Divide Intervals Into Minimum Number of Groups | 2406 | Java | Interval scheduling — [heap.md](./heap.md#template-4-interval-scheduling-pattern--lc-253) |
+| 15 | Divide Intervals Into Minimum Number of Groups | 2406 | Java | Interval scheduling — [heap.md](./heap.md#template-6-min-heap-of-end-times--lc-253-) |
 | 16 | Minimize Deviation in Array | 1675 | Java | Max-heap + greedy shrink |
 | 17 | Task Scheduler | 621 | Python | Max heap + cooling queue |
 | 18 | Most Frequent IDs | 3092 | Python + Java | Lazy deletion — [heap_advanced.md](./heap_advanced.md) |

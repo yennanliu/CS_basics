@@ -31,8 +31,8 @@ One row per pattern. The **Card** column links to the template that solves the a
 | "remove / deduplicate in place", "move zeros" | O(1) extra space | read/write two pointers | [2_pointers § Template 1](./2_pointers.md#template-1-fastslow-read-write-compaction--lc-26-) | order does not matter → swap with the last element |
 | "sort 0s, 1s and 2s in one pass" | O(1) space | three-way partition | [2_pointers § Template 6](./2_pointers.md#template-6-three-way-partition-dutch-national-flag--lc-75-) | more than three keys → counting sort |
 | "longest palindromic substring", "count palindromic substrings" | n ≤ 1,000 | expand from centre | [2_pointers § Template 3](./2_pointers.md#template-3-expand-from-centre--lc-5-) | palindromic **subsequence** → interval DP (LC 516) |
-| "two sum" on an unsorted array, "seen before?" | n ≤ 10⁵ | complement lookup | [hash_map § Template 2](./hash_map.md#template-2-seen-before-index-map-two-sum-shape) | sorted input and O(1) space wanted → two pointers (LC 167) |
-| "group anagrams", "count frequencies", "first unique" | n ≤ 10⁴ | grouping / counting by a computed key | [hash_map § Template 3](./hash_map.md#template-3-grouping-by-a-computed-key), [Template 1](./hash_map.md#template-1-frequency-counter) | top-k by frequency → heap or bucket sort (LC 347) |
+| "two sum" on an unsorted array, "seen before?" | n ≤ 10⁵ | complement lookup | [hash_map § Template 1](./hash_map.md#template-1-complement-lookup--lc-1) | sorted input and O(1) space wanted → two pointers (LC 167) |
+| "group anagrams", "count frequencies", "first unique" | n ≤ 10⁴ | grouping / counting by a computed key | [hash_map § Template 3](./hash_map.md#template-3-grouping-by-a-computed-key--lc-49), [Template 2](./hash_map.md#template-2-frequency-count--lc-242) | top-k by frequency → heap or bucket sort (LC 347) |
 | "maximum subarray sum / product" | n ≤ 10⁵ | Kadane: best run ending here | [kadane_algorithm § 0-2](./kadane_algorithm.md#0-2-algorithm-pattern--template) | a subarray of length ≥ k, or a sum = k → prefix sums |
 | "merge / insert intervals", "minimum rooms", "remove fewest to stop overlap" | n ≤ 10⁴ | sort by start (merge) or by end (schedule) | [intervals § Pattern 1](./intervals.md#pattern-1-interval-merging--lc-56-), [Pattern 2](./intervals.md#pattern-2-interval-scheduling-greedy--lc-435-) | many overlapping events at a time → sweep line (LC 253, [scanning_line](./scanning_line.md#template-1-basic-interval-overlap--lc-253)) |
 | "kth largest / smallest", "k closest" | n ≤ 10⁵, one shot | quickselect | [2_pointers_quickselect § Template 1](./2_pointers_quickselect.md#template-1-kth-largest-element--lc-215-) | a stream, or you need all k in order → size-k heap |
@@ -49,9 +49,9 @@ One row per pattern. The **Card** column links to the template that solves the a
 
 | Signal in the statement | Constraint cue | Pattern | Card | Looks like it, but is not |
 |---|---|---|---|---|
-| "reverse the list / a sublist / k-group", "reorder" | O(1) space | pointer reversal, dummy head | [linked_list § 0-2](./linked_list.md#0-2-pattern) | you may use O(n) space → push to a list, rebuild |
+| "reverse the list / a sublist / k-group", "reorder" | O(1) space | pointer reversal, dummy head | [linked_list § Template 1](./linked_list.md#template-1-iterative-reversal--lc-206-) | you may use O(n) space → push to a list, rebuild |
 | "cycle", "start of the cycle", "middle node", "kth from the end" | O(1) space | fast / slow pointers | [2_pointers § Template 7](./2_pointers.md#template-7-fastslow-cycle-detection--lc-141-) | duplicates in an array of 1..n → the same trick on indices (LC 287) |
-| "merge k sorted lists" | k ≤ 10⁴ | k-way merge with a heap | [heap § Template 2](./heap.md#template-2-k-way-merge-pattern--lc-23) | only two lists → a plain merge with a dummy head (LC 21) |
+| "merge k sorted lists" | k ≤ 10⁴ | k-way merge with a heap | [heap § Template 3](./heap.md#template-3-k-way-merge--lc-23-) | only two lists → a plain merge with a dummy head (LC 21) |
 
 ### Trees
 
@@ -106,8 +106,8 @@ One row per pattern. The **Card** column links to the template that solves the a
 
 | Signal in the statement | Constraint cue | Pattern | Card | Looks like it, but is not |
 |---|---|---|---|---|
-| "top k frequent", "k closest", "kth largest in a stream" | n ≤ 10⁵ | size-k heap | [heap § Template 1](./heap.md#template-1-top-k-elements-pattern--lc-215) | one shot over a fixed array → quickselect, O(n) average |
-| "median of a data stream" | 5 · 10⁴ calls | two heaps | [heap § Template 3](./heap.md#template-3-two-heaps-pattern-median-finding--lc-295) | a sliding window median → also delete from the window ([monotonic_queue § Template 4](./monotonic_queue.md#template-4-sliding-window-median--ordered-multiset--two-heaps-lc-480-)) |
+| "top k frequent", "k closest", "kth largest in a stream" | n ≤ 10⁵ | size-k heap | [heap § Template 1](./heap.md#template-1-size-k-min-heap-for-the-kth-largest--lc-215-) | one shot over a fixed array → quickselect, O(n) average |
+| "median of a data stream" | 5 · 10⁴ calls | two heaps | [heap § Template 4](./heap.md#template-4-two-heaps-for-a-running-median--lc-295-) | a sliding window median → also delete from the window ([monotonic_queue § Template 4](./monotonic_queue.md#template-4-sliding-window-median--ordered-multiset--two-heaps-lc-480-)) |
 | "task scheduler with cooldown", "reorganize the string so no two are adjacent" | n ≤ 10⁴, 26 kinds | greedy on the most frequent | [greedy § Template 2](./greedy.md#template-2-activity-selection-with-heap--lc-621-), [Template 5](./greedy.md#template-5-string-reorganization--lc-767-) | the order of the input must be kept → a queue simulation |
 | "can you reach the end", "minimum jumps" | n ≤ 10⁴ | greedy farthest reach | [greedy § Template 4](./greedy.md#template-4-jump-game-pattern--lc-55-) | each jump has a cost → DP or Dijkstra |
 

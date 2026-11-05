@@ -189,47 +189,164 @@ In [6]:
 	- https://blog.techbridge.cc/2017/01/21/simple-hash-table-intro/
 	- https://www.freecodecamp.org/news/hash-tables/
 
+## Recognition
+
+| Signal in the statement | Constraint cue | Reach for | Not this if |
+|---|---|---|---|
+| "return the indices of the two numbers that add up to `target`" | unsorted, n ≤ 10⁴–10⁵ → O(n) | [Template 1](#template-1-complement-lookup--lc-1) complement lookup | input already sorted → two pointers, O(1) space ([2_pointers.md](./2_pointers.md)) |
+| "anagram", "most / least frequent", "first unique", "can `a` be built from `b`'s letters" | 26 lowercase letters → an `int[26]` is the map | [Template 2](#template-2-frequency-count--lc-242) frequency count | membership only, no multiplicity → [set.md](./set.md) |
+| "group the strings / points that are the same up to …" | n words of length k → O(n·k log k) | [Template 3](#template-3-grouping-by-a-computed-key--lc-49) grouping by a computed key | the relation is not transitive ("differ by one letter") → graph / BFS |
+| "number of subarrays whose sum equals / is divisible by k", values may be negative | n ≤ 2·10⁴–10⁵ → O(n), not all pairs | [Template 4](#template-4-prefix-sum-count-map--lc-560-) prefix-sum count map | all values positive and "longest / shortest" → [sliding_window.md](./sliding_window.md) |
+| "all start indices of `p`'s anagrams in `s`", "a permutation of `s1` inside `s2`" | window length fixed at `len(p)` | [Template 5](#template-5-fixed-window-character-counts--lc-438) fixed-window counts | the window length varies ("longest with at most k distinct") → [sliding_window.md](./sliding_window.md) |
+| "sorted in this alien language", "according to the order given in …" | alphabet ≤ 26 → O(1) rank lookups | [Template 6](#template-6-rank-map--value-to-position--lc-953-) rank map | |
+| "isomorphic", "follows the same pattern", "no two characters map to the same one" | equal lengths, O(n) | [Template 7](#template-7-bijection-with-two-maps--lc-205) bijection | |
+| "O(1) `get` and `put`", "evict the least recently used key" | up to 2·10⁵ calls → every op O(1) | [Template 8](#template-8-ordered-map-as-an-lru-cache--lc-146) ordered map as LRU | evict the least *frequently* used → LC 460, one list per frequency |
+| "return a deep copy", "clone the graph / list" | V, E ≤ 10⁴ → O(V + E) | [Template 9](#template-9-old-to-new-node-map--lc-133) old-to-new node map | only reachability is asked → a visited set ([graph.md](./graph.md)) |
+| "pick uniformly from `[0, n)` but never a blacklisted value" | n ≤ 10⁹, blacklist ≤ 10⁵ → cannot list the valid values | [Template 10](#template-10-virtual-map-remapping--lc-710) virtual remap | |
+| "the k most frequent, ties broken alphabetically" | k ≪ n → a heap beats a full sort | [Template 11](#template-11-map-plus-heap--lc-692) map plus heap | no tie rule (LC 347) → bucket sort in O(n) |
+
+> Constraint cues follow the ruler in [complexity_cheatsheet.md](./complexity_cheatsheet.md).
+
 ## Templates & Algorithms
 
 ### Template Comparison Table
 
 | # | Template | Map shape | Recognise it by | Typical LC |
 |---|----------|-----------|-----------------|------------|
-| 1 | Frequency counter | `{item: count}`, or `{item: (first, last, count)}` | "count", "frequency", "anagram", "top-K", "all occurrences in one contiguous block" | 242, 49, 347, 451, 4038 |
-| 2 | Seen-before index map | `{value: index}` | "find a pair", "target sum", complement | 1, 15, 532, 1010 |
+| 1 | Complement lookup | `{value: index}` | "find a pair", "target sum", complement | 1, 15, 532, 1010 |
+| 2 | Frequency count | `{item: count}`, or `{item: (first, last, count)}` | "count", "frequency", "anagram", "top-K", "all occurrences in one contiguous block" | 242, 49, 347, 451, 4038 |
 | 3 | Grouping by a computed key | `{canonical_key: [items]}`, or `{(min, max): count}` | "group", "same line", "same signature", "`(x, y)` same as `(y, x)`" | 49, 149, 609, 987, 4066 |
-| 4 | Prefix sum → count map | `{prefixSum: count}` / `{prefixSum: firstIndex}` / `{startValue: minPrefix}` | "subarray sum equals / divisible by K", "max sum where the ends satisfy ..." | 560, 974, 525, 325, 3026 |
-| 5 | Sliding window + char counts | `{char: count in window}` | "longest / shortest substring such that ..." | 3, 76, 424, 438, 567 |
+| 4 | Prefix-sum count map | `{prefixSum: count}` / `{prefixSum: firstIndex}` / `{startValue: minPrefix}` | "subarray sum equals / divisible by K", "max sum where the ends satisfy ..." | 560, 974, 525, 325, 3026 |
+| 5 | Fixed-window character counts | `{char: count in window}` | "anagram of `p` inside `s`", "permutation in string" | 438, 567, 30 |
 | 6 | Rank map | `{value: rank}` | "according to the order given in ..." | 953, 791, 105 |
 | 7 | Bijection (two maps) | `{x: y}` **and** `{y: x}` | "one-to-one", "isomorphic", "follows the pattern" | 205, 290 |
-| 8 | Caching / memoization | `{state: result}` | "O(1) get and put", "memoize the recursion" | 146, 460, 139, 322 |
-| 9 | Graph / tree node map | `{node: neighbours}`, `{child: parent}` | "clone", "parent pointer", "serialize a subtree" | 133, 138, 652, 1257 |
+| 8 | Ordered map as an LRU cache | insertion-ordered `{key: value}` | "O(1) get and put", "evict the least recently used" | 146, 460, 432 |
+| 9 | Old-to-new node map | `{original node: clone}`, `{child: parent}` | "clone", "deep copy", "parent pointer" | 133, 138, 652 |
 | 10 | Virtual map (remapping) | `{badIndex: goodIndex}` | "pick at random, excluding ..." | 710 |
-| 11 | Map + another structure | map + heap / stack / second map | "top-K with a heap", "next greater" | 347, 496, 739 |
+| 11 | Map plus heap | `{item: count}` + a heap ordered by count | "top-K", "ties broken by ..." | 692, 347, 451 |
 
 > Patterns that are really a deep dive on one or two problems — bucket sort for O(n) top-K, rolling hash, split-and-probe pair lookup, max-frequency arithmetic, and the ordered map (`TreeMap` / `SortedDict`) — live in [hash_map_examples.md](./hash_map_examples.md#templates--algorithms).
 
-### Template 1: Frequency Counter
-```python
-# Universal Counting Template
-def counting_pattern(arr):
-    count = {}  # or collections.defaultdict(int)
-    result = []
-    
-    # Count frequency
-    for item in arr:
-        count[item] = count.get(item, 0) + 1
-        # or count[item] += 1 with defaultdict
-    
-    # Process based on frequency
-    for key, freq in count.items():
-        if meets_condition(freq):
-            result.append(key)
-    
-    return result
+### Template 1: Complement Lookup — LC 1
 
-# Examples: LC 49, LC 242, LC 451, LC 347, LC 692
+**Recognise** — "return the indices of the two numbers that add up to `target`", "a pair whose sum / difference / sum mod k is …", the input is **unsorted** and the indices must survive. n ≤ 10⁴–10⁵ → the O(n²) pair loop is the brute force to beat.
+
+**Key point** — before index `i` is recorded, `seen` holds every value at an index `< i`, so the one lookup `target - x in seen` answers "does a partner exist to my left?" Every pair is found exactly once, by its right-hand element.
+
+```python
+# python
+# LC 1 - Two Sum
+# IDEA: one pass; look up the complement among the values already seen, THEN record this value
+# time = O(n), space = O(n)
+def twoSum(nums, target):
+    seen = {}                          # {value: index}, only indices < i
+    for i, x in enumerate(nums):
+        need = target - x
+        if need in seen:               # the partner sits strictly to the left
+            return [seen[need], i]
+        seen[x] = i                    # record after the lookup: x never pairs with itself
+    return []
 ```
+
+```java
+// java
+// LC 1 - Two Sum
+// IDEA: one pass; look up the complement among the values already seen, then record this value
+// time = O(n), space = O(n)
+public int[] twoSum(int[] nums, int target) {
+    Map<Integer, Integer> seen = new HashMap<>();   // {value: index}, only indices < i
+    for (int i = 0; i < nums.length; i++) {
+        int need = target - nums[i];
+        if (seen.containsKey(need)) {
+            return new int[]{seen.get(need), i};
+        }
+        seen.put(nums[i], i);
+    }
+    return new int[0];
+}
+```
+
+**Complexity**
+- **Time O(n)**: the `for` loop visits each index once, and `need in seen` / `seen[x] = i` are O(1) average hash operations.
+- **Space O(n)**: `seen` holds every value when the matching pair is the last two elements.
+
+**Dry run**
+
+```text
+nums = [3,2,4], target = 6
+i=0  x=3  need=3  not in {}            seen={3:0}
+i=1  x=2  need=4  not in seen          seen={3:0, 2:1}
+i=2  x=4  need=2  seen[2]=1            -> [1, 2]
+```
+
+**Traps**
+- Recording `x` before the lookup lets an element pair with itself: `[3,2,4]`, target 6 returns `[0, 0]`.
+- Duplicates: `[3,3]`, target 6 — overwriting `seen[3]` is harmless only because the lookup runs first; the answer is `[0, 1]`.
+- Returning `[i, seen[need]]` puts the later index first; the earlier index is `seen[need]`.
+
+**Not this if** — the input is already **sorted** (LC 167) → two pointers in O(1) space ([2_pointers.md](./2_pointers.md)); the question **counts** pairs over distinct values (LC 532) → probe each distinct key once, so a pair is not counted from both ends.
+
+**Drill** — LC 1 ⭐ · LC 1010 *(key = remainder mod 60, add counts instead of returning)* · LC 532 *(distinct values, probe only `x + k`; k = 0 needs counts)* · LC 15 ⭐ *(fix one value, two-sum the rest — [n_sum.md](./n_sum.md))*
+
+### Template 2: Frequency Count — LC 242
+
+**Recognise** — "anagram", "the same letters with the same multiplicities", "most / least frequent", "first unique character", "can `ransomNote` be built from `magazine`". Lowercase English letters only → a fixed `int[26]` is the map and space is O(1).
+
+**Key point** — two strings are anagrams iff their count maps are equal. Counting `s` up and `t` down in **one** map keeps every entry at zero exactly when the multisets match, so the check is one pass plus one scan of the counts.
+
+```python
+# python
+# LC 242 - Valid Anagram
+# IDEA: count s up and t down in one map; every count back at 0 <=> same multiset
+# time = O(n), space = O(k)   k = distinct characters (26 for lowercase)
+def isAnagram(s, t):
+    if len(s) != len(t):
+        return False
+    count = {}
+    for a, b in zip(s, t):
+        count[a] = count.get(a, 0) + 1
+        count[b] = count.get(b, 0) - 1
+    for c in count.values():
+        if c != 0:
+            return False
+    return True
+```
+
+```java
+// java
+// LC 242 - Valid Anagram
+// IDEA: lowercase only -> an int[26] is the count map; s counts up, t counts down
+// time = O(n), space = O(1)   26 counters
+public boolean isAnagram(String s, String t) {
+    if (s.length() != t.length()) {
+        return false;
+    }
+    int[] count = new int[26];
+    for (int i = 0; i < s.length(); i++) {
+        count[s.charAt(i) - 'a']++;
+        count[t.charAt(i) - 'a']--;
+    }
+    for (int c : count) {
+        if (c != 0) {
+            return false;
+        }
+    }
+    return true;
+}
+```
+
+**Complexity**
+- **Time O(n)**: the `zip` loop touches each of the n character pairs once; the final scan is over at most k distinct keys.
+- **Space O(k)**: `count` has one entry per distinct character, which is O(1) for the fixed 26-letter alphabet.
+
+**Traps**
+- Skipping the length check: `"a"` vs `"ab"` — `zip` stops at the shorter string, every count is 0, and it returns `True`.
+- Java `count[c - 'a']` throws on uppercase or Unicode input (`"Ä"`). The follow-up "what about Unicode?" wants a `HashMap<Character, Integer>`.
+- `Counter` subtraction drops non-positive counts: `Counter("a") - Counter("ab")` is empty, so "the difference is empty" says `"a"` and `"ab"` match. Compare `Counter(s) == Counter(t)` instead.
+
+**Not this if** — only membership matters, not multiplicity (LC 217) → a set ([set.md](./set.md)); *where* a value occurs matters rather than how often → the index-span variation below.
+
+**Drill** — LC 242 ⭐ · LC 383 *(count the magazine, spend it on the note)* · LC 387 *(second pass in string order, first count of 1)* · LC 451 *(order keys by count)* · LC 347 ⭐ *(top k by count — [bucket sort](./hash_map_examples.md#bucket-sort-via-hash-map-top-k-frequency-on))*
 
 #### Variation: index-span map — `span == count` proves contiguity ⭐⭐⭐
 
@@ -256,7 +373,7 @@ def countSpecialIntegers(nums: list) -> int:
     cnt = 0
     for k in my_map:
         idxs = my_map[k]
-        # NOTE !!! span == count  <=>  indices are consecutive
+        # span == count  <=>  indices are consecutive
         if idxs[-1] - idxs[0] + 1 == len(idxs):
             cnt += 1
     return cnt
@@ -270,6 +387,7 @@ def countSpecialIntegers(nums: list) -> int:
 ```python
 # python
 # LC 4038 - keep only (first_idx, last_idx, count) per value
+# IDEA: the span check reads only the first index, the last index and the count
 # time = O(n), space = O(k), k = number of distinct values
 def countSpecialIntegers(nums: list) -> int:
     info = {}                                  # {val: [first, last, cnt]}
@@ -297,52 +415,93 @@ def countSpecialIntegers(nums: list) -> int:
 | Count Pairs of Equal Substrings With Minimum Difference | 1794 | Two maps over two strings: `{char: first index}` in one, `{char: last index}` in the other; minimise `first - last` and count the chars that reach it — [worked in string_examples.md](./string_examples.md#2-15-count-pairs-of-equal-substrings-with-minimum-difference--lc-1794) |
 | Longest Consecutive Sequence | 128 | The contrast case: spans over **values**, not indices — a set plus "start only where `v-1` is absent" |
 
-### Template 2: Seen-Before Index Map (Two-Sum Shape)
-```python
-# Two Sum Pattern Template
-def two_sum_pattern(nums, target):
-    seen = {}  # {value: index}
-    
-    for i, num in enumerate(nums):
-        complement = target - num
-        
-        if complement in seen:
-            return [seen[complement], i]
-        
-        seen[num] = i
-    
-    return []
+### Template 3: Grouping by a Computed Key — LC 49
 
-# Variations:
-# - Multiple pairs: collect all instead of returning first
-# - K-diff pairs (LC 532): over the DISTINCT values, probe only num+k
-#   (fix the smaller end -> each pair counted once; k == 0 needs counts)
-# - Examples: LC 1, LC 167, LC 15, LC 532, LC 1010
-```
+**Recognise** — "group the strings / points / items that are the same up to …" (rearrangement, shift, rotation, slope), "return the groups in any order". n ≤ 10⁴ words of length k ≤ 100 → O(n·k log k) with a sorted key, O(n·k) with a count key.
 
-### Template 3: Grouping by a Computed Key
-
-**Pattern**: hash the *canonical form* of an item, not the item itself — everything that shares that form lands in the same bucket. The simplest canonical form is a sorted string (LC 49); the general case is any normalized invariant of a relationship (LC 149).
+**Key point** — hash the item's **canonical form**, not the item: the key function is equal exactly on one equivalence class (sorted letters for anagrams), so one pass of `groups[key(x)].append(x)` forms every group, and two items share a bucket iff they belong together.
 
 ```python
-# LC 049 Group Anagrams
-# IDEA : HASH TABLE
-class Solution:
-    def groupAnagrams(self, strs):
-        res = {}
-        for item in strs:
-            k = ''.join(sorted(item))  # sort the string 
-            if k not in res:  #  check if exists in res 
-                res[k] = []
-            res[k].append(item)  # if same, put all the same string into dict k 
-        return [res[x] for x in res]  # output the result 
+# python
+# LC 49 - Group Anagrams
+# IDEA: canonical key = the word's letters sorted; anagrams share it, nothing else does
+# time = O(n * k log k), space = O(n * k)   n words of length <= k
+def groupAnagrams(strs):
+    groups = {}                          # {sorted letters: [words]}
+    for word in strs:
+        key = "".join(sorted(word))
+        if key not in groups:
+            groups[key] = []
+        groups[key].append(word)
+    return list(groups.values())
 ```
+
+```java
+// java
+// LC 49 - Group Anagrams
+// IDEA: canonical key = the word's letters sorted; anagrams share it, nothing else does
+// time = O(n * k log k), space = O(n * k)
+public List<List<String>> groupAnagrams(String[] strs) {
+    Map<String, List<String>> groups = new HashMap<>();
+    for (String word : strs) {
+        char[] letters = word.toCharArray();
+        Arrays.sort(letters);
+        String key = new String(letters);     // a String, not the char[]: arrays hash by identity
+        if (!groups.containsKey(key)) {
+            groups.put(key, new ArrayList<>());
+        }
+        groups.get(key).add(word);
+    }
+    return new ArrayList<>(groups.values());
+}
+```
+
+**Complexity**
+- **Time O(n·k log k)**: `sorted(word)` runs once per word and dominates; a 26-count tuple as the key makes it O(n·k).
+- **Space O(n·k)**: every word is stored once in its group, plus one key per group.
+
+**Traps**
+- A list as a dict key: `groups[sorted(word)]` raises `TypeError: unhashable type: 'list'`. Join it to a string or make it a tuple.
+- A Java `char[]` as the key: arrays hash by identity, so `"eat"` and `"tea"` land in different buckets. Build a `String`.
+- A count key joined without a delimiter: counts `[1, 11]` and `[11, 1]` both print `"111"`. Join with `#` (the [delimiter trap](./hashing.md#template-6-canonical-composite-key-lc-36)).
+
+**Not this if** — the relation is not an equivalence, e.g. "differ by one letter" (LC 127): it is not transitive, so there is no canonical key → graph / BFS.
+
+**Drill** — LC 49 ⭐ · LC 249 *(key = gaps between letters mod 26)* · LC 609 *(key = file content)* · LC 149 *(key = reduced slope, below)* · LC 4066 *(key = unordered pair, below)*
 
 #### Generalized: the key is a normalized invariant ⭐⭐⭐⭐
 
 **Pattern**: The map key is not a raw value — it is a **canonical form of a relationship** between values. Two items collide in the map exactly when they share the property you care about.
 
 **Key Idea (geometry)**: "Same line through anchor P" ⇔ "same direction vector `(dx, dy)`". Raw `(dx, dy)` is not a valid key (`(1,2)` and `(2,4)` are the same line), and `dy/dx` as a float loses precision / divides by zero. **Normalize**: divide by `gcd`, then force a canonical sign.
+
+```python
+# python
+# LC 149 - Max Points on a Line
+# IDEA: anchor at each point, group the others by a gcd-normalized slope key
+# time = O(n^2), space = O(n)
+from collections import defaultdict
+from math import gcd
+
+def maxPoints(points: list) -> int:
+    n = len(points)
+    if n <= 2:
+        return n
+    best = 1
+    for i in range(n):
+        slope_count = defaultdict(int)
+        x1, y1 = points[i]
+        for j in range(i + 1, n):
+            dx, dy = points[j][0] - x1, points[j][1] - y1
+            g = gcd(abs(dx), abs(dy))
+            if g:
+                dx, dy = dx // g, dy // g
+            if dx < 0 or (dx == 0 and dy < 0):     # canonical sign
+                dx, dy = -dx, -dy
+            slope_count[(dx, dy)] += 1
+            best = max(best, slope_count[(dx, dy)] + 1)   # +1 = anchor point
+    return best
+```
 
 ```java
 // java
@@ -371,34 +530,6 @@ public int maxPoints(int[][] points) {
 }
 
 private int gcd(int a, int b) { return b == 0 ? a : gcd(b, a % b); }
-```
-
-```python
-# python
-# LC 149 - Max Points on a Line
-# IDEA: anchor at each point, group the others by a gcd-normalized slope key
-# time = O(n^2), space = O(n)
-from collections import defaultdict
-from math import gcd
-
-def maxPoints(points: list) -> int:
-    n = len(points)
-    if n <= 2:
-        return n
-    best = 1
-    for i in range(n):
-        slope_count = defaultdict(int)
-        x1, y1 = points[i]
-        for j in range(i + 1, n):
-            dx, dy = points[j][0] - x1, points[j][1] - y1
-            g = gcd(abs(dx), abs(dy))
-            if g:
-                dx, dy = dx // g, dy // g
-            if dx < 0 or (dx == 0 and dy < 0):     # canonical sign
-                dx, dy = -dx, -dy
-            slope_count[(dx, dy)] += 1
-            best = max(best, slope_count[(dx, dy)] + 1)   # +1 = anchor point
-    return best
 ```
 
 **Three traps** (all are the usual interview follow-ups):
@@ -457,7 +588,7 @@ def maxEqualAdjacentPairs(nums: list) -> int:
         if x == y:
             already_equal += 1
         else:
-            # NOTE !!! (2, 5) and (5, 2) are fixed by the same replacement -> one key
+            # (2, 5) and (5, 2) are fixed by the same replacement -> one key
             pair = (min(x, y), max(x, y))
             unequal_pair_cnt[pair] += 1
             max_newly_equal = max(max_newly_equal, unequal_pair_cnt[pair])
@@ -521,144 +652,74 @@ nums = [1,1,1]    -> already_equal = 2, map empty -> 2 + 0 = 2   (no operation)
 | Maximal Network Rank | 1615 | Undirected edges as a set of `(min, max)` keys, so "are `u` and `v` connected?" is one O(1) lookup regardless of order |
 ---
 
-### Template 4: Prefix Sum → Count Map ⭐⭐⭐⭐⭐
+### Template 4: Prefix-Sum Count Map — LC 560 ⭐⭐⭐⭐⭐
 
-**The prefix-sum array first** — `nums[i..j] sum = preSum[j+1] - preSum[i]`:
+**Recognise** — "the number of (contiguous) subarrays whose sum equals k / is divisible by k / has as many 0s as 1s", and the values **may be negative**, so a sliding window cannot shrink safely. n ≤ 2·10⁴–10⁵ → O(n), not the O(n²) scan over all `(i, j)`.
 
-```python
-# (algorithm book (labu) p.350)
-my_array = [1,2,3,4,5]
-my_array_pre = [0] * (len(my_array)+1)
-cur = 0
-for i in range(len(my_array)):
-    cur += my_array[i]
-    my_array_pre[i+1] += cur
-
-# In [17]: print ("my_array = " + str(my_array))
-#     ...: print ("my_array_pre = " + str(my_array_pre))
-# my_array = [1, 2, 3, 4, 5]
-# my_array_pre = [0, 1, 3, 6, 10, 15]
-
-#-----------------------------------------------
-# Get sub array sum !!!!!!!
-#    -> nums[i..j] sum = preSum[j+1] - preSum[i]
-#-----------------------------------------------
-
-# example 1 : sum of [1,2]
-my_array_pre[1+1] - my_array_pre[0]  # 1's index is 0, and 2's index is 1. (my_array = [1, 2, 3, 4, 5])
-
-# example 2 : sum of [2,3,4]
-my_array_pre[3+1] - my_array_pre[1] # 2's index is 1, and 4's index is 3. (my_array = [1, 2, 3, 4, 5])
-```
+**Key point** — `sum(nums[i..j]) = pre[j+1] - pre[i]`, so the subarrays ending at `j` with sum k are exactly the earlier prefixes equal to `pre[j+1] - k`. The map counts how often each earlier prefix occurred, seeded with `{0: 1}` for the empty prefix, so one lookup adds every valid start at once.
 
 ```python
-# Prefix Sum Pattern Template
-def prefix_sum_pattern(nums, target):
-    prefix_sum = 0
-    sum_count = {0: 1}  # {sum: count/index}
-    result = 0
-
-    for num in nums:
-        prefix_sum += num
-
-        # Check if (prefix_sum - target) exists
-        if prefix_sum - target in sum_count:
-            result += sum_count[prefix_sum - target]
-
-        # Update current prefix sum count
-        sum_count[prefix_sum] = sum_count.get(prefix_sum, 0) + 1
-
-    return result
-
-# For max length problems, store index instead of count:
-# sum_index = {0: -1}, then calculate i - sum_index[prefix_sum - target]
-# Examples: LC 560, LC 325, LC 525, LC 523
+# python
+# LC 560 - Subarray Sum Equals K
+# IDEA: count the earlier prefix sums equal to (prefix - k); look up BEFORE recording the current prefix
+# time = O(n), space = O(n)
+def subarraySum(nums, k):
+    count_of_prefix = {0: 1}             # the empty prefix: subarrays that start at index 0
+    prefix = 0
+    total = 0
+    for x in nums:
+        prefix += x
+        total += count_of_prefix.get(prefix - k, 0)   # every earlier start that closes here
+        count_of_prefix[prefix] = count_of_prefix.get(prefix, 0) + 1
+    return total
 ```
 
-**Key Differences by Problem Type**:
-- **Count problems** (LC 560, 930, 974): Store `{sum: count}`, check then update
-  - **LC 974 variant**: Use modulo `{remainder: count}`, **MUST handle negative remainders!**
-- **Max length problems** (LC 325, 525): Store `{sum: first_index}`, only update if new
-  - **LC 525 variant**: Transform problem (0→-1, 1→+1), initialize with `{0: -1}`, store first occurrence only
-- **Existence problems** (LC 523): Store `{sum: any_index}`, just need to find one
+```java
+// java
+// LC 560 - Subarray Sum Equals K
+// IDEA: count the earlier prefix sums equal to (prefix - k); look up before recording the current prefix
+// time = O(n), space = O(n)
+public int subarraySum(int[] nums, int k) {
+    Map<Integer, Integer> countOfPrefix = new HashMap<>();
+    countOfPrefix.put(0, 1);             // the empty prefix
+    int prefix = 0;
+    int total = 0;
+    for (int x : nums) {
+        prefix += x;
+        total += countOfPrefix.getOrDefault(prefix - k, 0);
+        countOfPrefix.put(prefix, countOfPrefix.getOrDefault(prefix, 0) + 1);
+    }
+    return total;
+}
+```
 
-#### Core Pattern: Count ALL Subarrays Summing to k — LC 560
+**Complexity**
+- **Time O(n)**: one pass over `nums`; each step is one `get` and one update on the map.
+- **Space O(n)**: `count_of_prefix` holds up to n + 1 distinct prefix sums.
 
-**Core Concept**: Use hashmap to count ALL subarray combinations that sum to target in O(N) time with single loop.
+**Dry run**
 
-**Key Insight**:
 ```text
-If we want subarray[i,j] to sum to k:
-  presum[j] - presum[i-1] = k
-  → presum[i-1] = presum[j] - k
-
-So at index j, check if (presum[j] - k) exists in map!
+nums = [1,1,1], k = 2
+x  prefix  look up prefix-k   total  map after
+1  1       -1 -> 0            0      {0:1, 1:1}
+1  2        0 -> 1            1      {0:1, 1:1, 2:1}
+1  3        1 -> 1            2      {0:1, 1:1, 2:1, 3:1}
+-> 2
 ```
 
-**Critical Implementation Details**:
+**Traps**
+- No `{0: 1}` seed misses every subarray that starts at index 0: `[1,1,1]`, k = 2 returns 1 instead of 2.
+- Recording the prefix before the lookup counts the empty subarray when k = 0: `[1]`, k = 0 returns 1 instead of 0.
+- `{prefix: index}` instead of a count loses repeated prefixes: `[1,-1,1,-1]`, k = 0 has 4 subarrays, but one index per prefix finds at most one start each.
+- Modulo keys (LC 974) with negative values: Java `-7 % 5 == -2`; normalise with `((p % k) + k) % k`. Python's `%` is already non-negative.
 
-1. **Use Count, NOT Index**:
-   ```java
-   Map<Integer, Integer> map = new HashMap<>();  // {prefixSum: count}
-   ```
-   - Same prefix sum can occur MULTIPLE times
-   - We need to count ALL valid subarrays, not just find one
-   - Example: `[1, -1, 1, -1]` with k=0 has multiple solutions
+**Not this if** — every value is positive and the question is the longest / shortest window with sum ≤ or ≥ k → a sliding window in O(1) space ([sliding_window.md](./sliding_window.md)); the **longest** subarray with sum k → keep the **first index** per prefix, seeded `{0: -1}` (LC 325, LC 525).
 
-2. **Initialize with `map.put(0, 1)`**:
-   ```java
-   map.put(0, 1);  // Handle subarrays starting from index 0
-   ```
-   - When `presum[j] == k`, then `presum[j] - k = 0`
-   - Need to count these subarrays starting from beginning
+**Drill** — LC 560 · LC 930 *(binary values, same code)* · LC 974 *(key = prefix mod k)* · LC 525 *(0 → −1, first index per prefix)* · LC 325 *(longest: first index)* · LC 3026 *(below: key by the start's value, keep the min prefix)*
 
-3. **Check BEFORE Update** (Critical Order):
-   ```java
-   for (int num : nums) {
-       presum += num;
+**What the map stores, by question**:
 
-       // 1. CHECK first: count how many previous prefix sums = (presum - k)
-       if (map.containsKey(presum - k)) {
-           count += map.get(presum - k);  // Add ALL occurrences
-       }
-
-       // 2. UPDATE after: add current prefix sum for future iterations
-       map.put(presum, map.getOrDefault(presum, 0) + 1);
-   }
-   ```
-   - **Why this order?** Prevents counting current subarray with itself
-   - Current prefix sum should only be available for FUTURE iterations
-
-**Why This Pattern Gets ALL Combinations**:
-- Map stores ALL previously seen prefix sums with their counts
-- When we check `presum - k`, we get count of ALL previous occurrences
-- Each previous occurrence represents a valid starting point
-- `count += map.get(presum - k)` adds ALL valid subarrays ending at current index
-
-**Example Walkthrough** (`nums = [1,1,1], k = 2`):
-```text
-i=0: num=1, presum=1
-  - Check: (1-2)=-1 not in map → count=0
-  - Update: map={0:1, 1:1}
-
-i=1: num=1, presum=2
-  - Check: (2-2)=0 in map, count += map[0] = 1 → count=1
-  - Update: map={0:1, 1:1, 2:1}
-
-i=2: num=1, presum=3
-  - Check: (3-2)=1 in map, count += map[1] = 1 → count=2
-  - Update: map={0:1, 1:1, 2:1, 3:1}
-
-Result: count=2 (subarrays [1,1] and [1,1])
-```
-
-**Related LC Problems (Same Pattern)**:
-- LC 560: Subarray Sum Equals K (exact pattern)
-- LC 325: Maximum Size Subarray Sum Equals k (store index instead of count)
-- LC 930: Binary Subarrays with Sum
-- **LC 974: Subarray Sums Divisible by K** (use modulo `{remainder: count}`, **handle negatives!**)
-
-**When to Use Count vs Index**:
 | Problem Type | Map Value | Example | Special Notes |
 |-------------|-----------|---------|---------------|
 | Count ALL subarrays | `count` | LC 560, 930, 974 | Check before update |
@@ -668,14 +729,11 @@ Result: count=2 (subarrays [1,1] and [1,1])
 | Find if EXISTS | `boolean/index` | LC 523 | Any occurrence works |
 | Find MAX SUM, condition on the endpoints | `min prefix`, keyed by the **start value** | **LC 3026** | **Key is `nums[i]`, not the prefix sum** — see [the variation below](#variation-key-by-the-starts-value-keep-the-min-prefix--lc-3026-) |
 
-**Common Mistakes**:
-1. ❌ Using `{prefixSum: index}` for counting problems
-2. ❌ Updating map before checking (causes self-counting)
-3. ❌ Forgetting `map.put(0, 1)` initialization
-4. ❌ Not handling the case where prefix sum itself equals k
-5. ❌ **[LC 974] Forgetting to handle negative remainders** (Java/Python `-7 % 5 = -2`, need to add k to get 3)
-
 #### Variation: key by the start's value, keep the min prefix — LC 3026 ⭐⭐⭐
+
+> **Key point** — this is Kadane's "subtract the smallest prefix so far" (LC 53), split into one bucket per start value. A count map answers "how many"; a min-prefix map answers "how much".
+
+**Reduces to**: [Template 4](#template-4-prefix-sum-count-map--lc-560-) — the same one pass over prefix sums, with the start's value as the key and the minimum prefix as the value.
 
 **Pattern**: the condition is on the subarray's **endpoints**, not on its sum, and the question asks for the **max sum**. So the key changes and so does the value:
 
@@ -687,8 +745,6 @@ sum(nums[i..j]) = pre[j+1] - pre[i]
 fixed j  ->  maximise  = minimise pre[i]   over every i with nums[i] in {nums[j]-k, nums[j]+k}
 best[v]  = min pre[i] over every i seen so far with nums[i] == v
 ```
-
-**Key Idea**: this is Kadane's "subtract the smallest prefix so far" (LC 53), split into one bucket per start value. A count map answers "how many"; a min-prefix map answers "how much".
 
 ```python
 # python
@@ -703,7 +759,7 @@ def maximumSubarraySum(nums: list, k: int) -> int:
         for v in (x - k, x + k):    # the two start values that make [i..j] good
             if v in best:
                 res = max(res, pre + x - best[v])
-        # NOTE !!! record x as a future START with the prefix BEFORE it
+        # record x as a future START with the prefix BEFORE it
         if x not in best or pre < best[x]:
             best[x] = pre
         pre += x
@@ -758,73 +814,118 @@ x    pre(before x)  look up x-k, x+k          candidate          best after
 
 ---
 
-### Template 5: Sliding Window with Hash Map
+### Template 5: Fixed-Window Character Counts — LC 438
+
+**Recognise** — "find all the start indices of `p`'s anagrams in `s`", "does `s2` contain a permutation of `s1`": a window whose length is **fixed** at `len(p)`, compared by letter counts. n ≤ 3·10⁴ lowercase letters → O(26·n).
+
+**Key point** — after step `right` the window is exactly `s[right-m+1..right]`: each step adds one character on the right and removes the one that fell off the left, so `window` is always the count map of the current m-length window, and `window == need` is the anagram test.
+
 ```python
-# Sliding Window with HashMap Template
-def sliding_window_hashmap(s, pattern):
-    if len(pattern) > len(s):
+# python
+# LC 438 - Find All Anagrams in a String
+# IDEA: fixed window of len(p); add the right char, drop the one that fell off the left, compare count maps
+# time = O(26 * n), space = O(26)
+def findAnagrams(s, p):
+    m = len(p)
+    if m > len(s):
         return []
-    
-    pattern_count = {}
-    window_count = {}
-    
-    # Count pattern frequency
-    for char in pattern:
-        pattern_count[char] = pattern_count.get(char, 0) + 1
-    
-    left = 0
-    result = []
-    
+    need = {}
+    for ch in p:
+        need[ch] = need.get(ch, 0) + 1
+    window = {}
+    starts = []
     for right in range(len(s)):
-        # Expand window
-        char = s[right]
-        window_count[char] = window_count.get(char, 0) + 1
-        
-        # Contract window if needed
-        while window_size_condition_met():
-            # Check if current window is valid
-            if window_count == pattern_count:
-                result.append(left)
-            
-            # Remove leftmost character
-            left_char = s[left]
-            window_count[left_char] -= 1
-            if window_count[left_char] == 0:
-                del window_count[left_char]
-            left += 1
-    
-    return result
-
-# Examples: LC 3, LC 76, LC 438, LC 567
+        ch = s[right]
+        window[ch] = window.get(ch, 0) + 1
+        if right >= m:                       # one too long: drop s[right - m]
+            out = s[right - m]
+            window[out] -= 1
+            if window[out] == 0:
+                del window[out]              # a zero entry would make window != need
+        if right >= m - 1 and window == need:
+            starts.append(right - m + 1)
+    return starts
 ```
-
-**The map-equality shortcut** (LC 567 Permutation in String): for a *fixed-size* window you do not need a "matched" counter — compare the two frequency maps directly.
 
 ```java
-// LC 567
-// ...
-     /** NOTE !!!
-     *
-     *  we use below trick to
-     *
-     *  -> 1) check if `new reached s2 val` is in s1 map
-     *  -> 2) check if 2 map are equal
-     *
-     *  -> so we have more simple code, and clean logic
-     */
-    if (map2.equals(map1)) {
-        return true;
+// java
+// LC 438 - Find All Anagrams in a String
+// IDEA: two int[26] count arrays; slide by one, compare with Arrays.equals
+// time = O(26 * n), space = O(1)
+public List<Integer> findAnagrams(String s, String p) {
+    List<Integer> starts = new ArrayList<>();
+    int m = p.length();
+    if (m > s.length()) {
+        return starts;
     }
-// ...
+    int[] need = new int[26];
+    int[] window = new int[26];
+    for (int i = 0; i < m; i++) {
+        need[p.charAt(i) - 'a']++;
+    }
+    for (int right = 0; right < s.length(); right++) {
+        window[s.charAt(right) - 'a']++;
+        if (right >= m) {
+            window[s.charAt(right - m) - 'a']--;    // drop the char that left the window
+        }
+        if (right >= m - 1 && Arrays.equals(window, need)) {
+            starts.add(right - m + 1);
+        }
+    }
+    return starts;
+}
 ```
+
+**Complexity**
+- **Time O(26·n)**: one pass over `s`; each `window == need` compares at most 26 keys.
+- **Space O(26)**: both maps hold lowercase letters only.
+
+**Traps**
+- Leaving zero counts in the dict: `{'a': 0, 'b': 1} != {'b': 1}`, so `s = "ab", p = "b"` misses index 1. Delete the key when it reaches 0 (Java's `int[26]` has no such issue).
+- Testing from `right >= m` instead of `right >= m - 1` skips the first full window: `s = "ab", p = "ab"` returns `[]`.
+- No "matched" counter is needed for a fixed window: comparing the two maps is the whole check. LC 567 returns `True` on the first equality.
+
+**Not this if** — the window length varies ("longest substring with at most k distinct", LC 3, LC 76) → grow-then-shrink in [sliding_window.md](./sliding_window.md); the count map is the same, the window rule is not.
+
+**Drill** — LC 438 · LC 567 ⭐ *(return on the first match)* · LC 30 *(the "characters" are whole words)* · LC 76 ⭐ *(variable window plus a `matched` counter, in sliding_window)*
 
 ---
 
-### Template 6: Rank Map — Value to Position ⭐⭐⭐⭐⭐
+### Template 6: Rank Map — Value to Position — LC 953 ⭐⭐⭐⭐⭐
 
-**Pattern**: When the problem defines its **own ordering** ("this alien alphabet", "this permutation"), precompute `value -> rank` once, then every comparison becomes an O(1) integer compare instead of an O(m) scan.
+**Recognise** — "sorted lexicographically **in this alien language**", "sort `s` according to the order given in `order`", "build the tree from preorder and inorder": the problem defines its own ordering. An order string of ≤ 26 letters → each rank lookup is O(1).
 
-**Recognize it**: the phrase "according to the order given in ..." — that's a rank map.
+**Key point** — precompute `rank[c]` = `c`'s position in the given order once; comparing ranks then compares letters in the alien order, and every comparison is an O(1) integer compare instead of an O(m) `order.index(c)` scan.
+
+```python
+# python
+# LC 953 - Verifying an Alien Dictionary
+# IDEA: char -> rank map, then compare adjacent words rank by rank
+# time = O(total chars), space = O(1)   26 keys
+def isAlienSorted(words, order):
+    rank = {}
+    for i, c in enumerate(order):
+        rank[c] = i
+
+    def in_order(a, b):
+        for ca, cb in zip(a, b):
+            if rank[ca] != rank[cb]:
+                return rank[ca] < rank[cb]   # the first differing letter decides
+        return len(a) <= len(b)              # common prefix: the shorter word must come first
+
+    for i in range(len(words) - 1):
+        if not in_order(words[i], words[i + 1]):
+            return False
+    return True
+
+# python
+# LC 791 - Custom Sort String
+# IDEA: rank map as a sort key; unranked chars get rank len(order) (stable sort keeps them last)
+# time = O(n log n + m), space = O(n)
+def customSortString(order: str, s: str) -> str:
+    rank = {c: i for i, c in enumerate(order)}
+    return "".join(sorted(s, key=lambda c: rank.get(c, len(order))))
+```
 
 ```java
 // java
@@ -865,27 +966,16 @@ public String customSortString(String order, String s) {
 }
 ```
 
-```python
-# python
-# LC 953 - Verifying an Alien Dictionary
-# IDEA: map every word to a list of ranks, then plain list comparison does the lexicographic work
-# time = O(total chars), space = O(total chars)
-def isAlienSorted(words: list, order: str) -> bool:
-    rank = {c: i for i, c in enumerate(order)}
-    keys = [[rank[c] for c in w] for w in words]
-    # python list compare == lexicographic compare, and [1,2] < [1,2,3] handles the prefix rule
-    return all(keys[i] <= keys[i + 1] for i in range(len(keys) - 1))
+**Complexity**
+- **Time O(total chars)**: building `rank` is O(26); each adjacent pair is compared up to the shorter length, so every character is read at most twice.
+- **Space O(1)**: `rank` holds at most 26 entries.
 
-# python
-# LC 791 - Custom Sort String
-# IDEA: rank map as a sort key; unranked chars get rank len(order) (stable sort keeps them last)
-# time = O(n log n + m), space = O(n)
-def customSortString(order: str, s: str) -> str:
-    rank = {c: i for i, c in enumerate(order)}
-    return "".join(sorted(s, key=lambda c: rank.get(c, len(order))))
-```
+**Traps**
+- The prefix rule: `["apple", "app"]` is **not** sorted. After the common prefix the shorter word must come first; returning `True` when the letter loop ends misses it.
+- `order.index(c)` inside the comparison is correct but O(26) per character; precompute the rank once.
+- LC 791: a character missing from `order` raises `KeyError` on `rank[c]`; give it a rank past the end, `rank.get(c, len(order))`.
 
-**The prefix rule is the bug everyone hits**: after the common prefix matches, the *shorter* word must come first. `["apple", "app"]` is **not** sorted.
+**Drill** — LC 953 · LC 791 *(rank as a sort key, or counting sort)* · LC 1122 *(relative sort array)* · LC 105 ⭐ *(rank = position in inorder, below)* · LC 106
 
 **Variation — value → index map to split an array (LC 105 / LC 106)**: same map, but the "rank" is *position in inorder*, which turns the O(n²) "scan inorder for the root" into O(1) and the whole build into O(n).
 
@@ -913,15 +1003,20 @@ def buildTree(preorder: list, inorder: list):
 
 ---
 
-### Template 7: Bijection (Two-Way Mapping)
+### Template 7: Bijection with Two Maps — LC 205
 
-**Pattern**: Maintain two maps (`x→y` and `y→x`) and check consistency in **both directions**. Required any time the mapping must be one-to-one (LC 205 Isomorphic Strings, LC 290 Word Pattern).
+**Recognise** — "isomorphic strings", "follows the same pattern", "no two characters may map to the same character". The two sequences have equal length, n ≤ 5·10⁴ → O(n).
 
-**Why two maps?** One map catches `a→b` conflicts; the second catches `b→a` conflicts (two different `x` values mapping to the same `y`).
+**Key point** — a mapping is a bijection iff it is consistent in **both** directions: `s2t` rejects one `a` going to two different `b`s, `t2s` rejects two different `a`s going to one `b`. Checking both before recording keeps both maps a partial bijection at every step.
 
 ```python
-# LC 205 Isomorphic Strings
+# python
+# LC 205 - Isomorphic Strings
+# IDEA: two maps, s->t and t->s; any disagreement in either direction breaks the bijection
+# time = O(n), space = O(k)   k = distinct characters
 def isIsomorphic(s: str, t: str) -> bool:
+    if len(s) != len(t):
+        return False
     s2t, t2s = {}, {}
     for a, b in zip(s, t):
         if s2t.get(a, b) != b or t2s.get(b, a) != a:
@@ -930,7 +1025,10 @@ def isIsomorphic(s: str, t: str) -> bool:
         t2s[b] = a
     return True
 
-# LC 290 Word Pattern
+# python
+# LC 290 - Word Pattern
+# IDEA: the same two maps, letter <-> word; check the lengths first
+# time = O(n), space = O(n)
 def wordPattern(pattern: str, s: str) -> bool:
     words = s.split()
     if len(pattern) != len(words):
@@ -944,102 +1042,266 @@ def wordPattern(pattern: str, s: str) -> bool:
     return True
 ```
 
-**Common mistake**: Using only one map — fails when two keys map to the same value (`"aa"` vs `"ab"`).
+```java
+// java
+// LC 205 - Isomorphic Strings
+// IDEA: two maps, s->t and t->s; any disagreement in either direction breaks the bijection
+// time = O(n), space = O(k)
+public boolean isIsomorphic(String s, String t) {
+    if (s.length() != t.length()) {
+        return false;
+    }
+    Map<Character, Character> s2t = new HashMap<>();
+    Map<Character, Character> t2s = new HashMap<>();
+    for (int i = 0; i < s.length(); i++) {
+        char a = s.charAt(i);
+        char b = t.charAt(i);
+        if (s2t.containsKey(a) && s2t.get(a) != b) {
+            return false;
+        }
+        if (t2s.containsKey(b) && t2s.get(b) != a) {
+            return false;
+        }
+        s2t.put(a, b);
+        t2s.put(b, a);
+    }
+    return true;
+}
+```
+
+**Complexity**
+- **Time O(n)**: one pass over the pairs; each check and record is O(1).
+- **Space O(k)**: each map holds one entry per distinct character (or word, in LC 290).
+
+**Traps**
+- One map only: `s = "badc", t = "baba"` passes every `s → t` check (`b→b, a→a, d→b, c→a`) and returns `True`; the `t → s` map catches `b` coming from both `b` and `d`.
+- No length check in LC 290: `pattern = "aaa", s = "dog dog dog dog"` — `zip` stops after three words and returns `True`.
+- Java `s2t.get(a) != b` compares a boxed `Character` with a `char`, which unboxes and is safe; comparing two boxed `Character`s with `!=` is not.
+
+**Drill** — LC 205 · LC 290 *(letter ↔ word)* · LC 890 *(run the check against every word)* · LC 291 *(pattern ↔ substrings: backtracking over the same two maps)*
 
 ---
 
-### Template 8: Hash Map for Caching / Memoization
-```python
-# Caching/Memoization Template
-class CacheTemplate:
-    def __init__(self, capacity):
-        self.capacity = capacity
-        self.cache = {}  # key -> value
-        self.usage = {}  # key -> usage_info
-    
-    def get(self, key):
-        if key in self.cache:
-            self.update_usage(key)
-            return self.cache[key]
-        return -1
-    
-    def put(self, key, value):
-        if len(self.cache) >= self.capacity:
-            self.evict()
-        
-        self.cache[key] = value
-        self.update_usage(key)
-    
-    def update_usage(self, key):
-        # Update usage tracking
-        pass
-    
-    def evict(self):
-        # Remove least recently/frequently used
-        pass
+### Template 8: Ordered Map as an LRU Cache — LC 146
 
-# Examples: LC 146 (LRU), LC 460 (LFU)
+**Recognise** — "design a cache with O(1) `get` and `put`", "when the capacity is exceeded, evict the **least recently used** key". Up to 2·10⁵ calls → every operation must be O(1).
+
+**Key point** — an insertion-ordered map stays in recency order if every access moves its key to the end; the least recently used key is then always the first one, so eviction is "remove the first entry", and both lookup and reordering are O(1).
+
+```python
+# python
+# LC 146 - LRU Cache
+# IDEA: OrderedDict keeps recency order: move_to_end on every use, popitem(last=False) evicts the oldest
+# time = O(1) per get/put, space = O(capacity)
+from collections import OrderedDict
+
+class LRUCache:
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.cache = OrderedDict()           # oldest key first, most recent last
+
+    def get(self, key: int) -> int:
+        if key not in self.cache:
+            return -1
+        self.cache.move_to_end(key)          # a read is a use
+        return self.cache[key]
+
+    def put(self, key: int, value: int) -> None:
+        if key in self.cache:
+            self.cache.move_to_end(key)      # an update is a use too
+        self.cache[key] = value
+        if len(self.cache) > self.capacity:
+            self.cache.popitem(last=False)   # evict the least recently used
 ```
+
+```java
+// java
+// LC 146 - LRU Cache
+// IDEA: LinkedHashMap with accessOrder = true reorders on every get/put; removeEldestEntry evicts
+// time = O(1) per get/put, space = O(capacity)
+class LRUCache extends LinkedHashMap<Integer, Integer> {
+    private final int capacity;
+
+    public LRUCache(int capacity) {
+        super(capacity, 0.75f, true);        // true = iterate in access order, not insertion order
+        this.capacity = capacity;
+    }
+
+    public int get(int key) {
+        return super.getOrDefault(key, -1);
+    }
+
+    public void put(int key, int value) {
+        super.put(key, value);
+    }
+
+    @Override
+    protected boolean removeEldestEntry(Map.Entry<Integer, Integer> eldest) {
+        return size() > capacity;            // called after every put
+    }
+}
+```
+
+**Complexity**
+- **Time O(1) per call**: `move_to_end` and `popitem(last=False)` relink nodes of the doubly linked list inside `OrderedDict`; `LinkedHashMap` does the same.
+- **Space O(capacity)**: the `if len(self.cache) > self.capacity` eviction keeps at most `capacity` entries.
+
+**Traps**
+- A `get` that does not `move_to_end`: capacity 2, `put(1)`, `put(2)`, `get(1)`, `put(3)` must evict 2; without the move it evicts 1.
+- A `put` on an existing key that only overwrites the value: the key stays where it was and can be evicted next, although it was just used.
+- Evicting *before* inserting: capacity 1, `put(1,1)`, `put(1,2)` evicts key 1 and leaves the cache empty after the insert of a key that was already there. Insert first, then trim.
+- A plain `dict` plus a list of keys: `keys.remove(key)` is O(n) per call, which is the bug the review found in [design_examples.md](./design_examples.md).
+
+**Not this if** — the interviewer rules out `OrderedDict` / `LinkedHashMap` → hand-roll the map + doubly linked list ([linked_list.md](./linked_list.md)); evict the least **frequently** used (LC 460) → one list per frequency plus a `min_freq` pointer.
+
+**Drill** — LC 146 ⭐ · LC 460 *(LFU: frequency lists)* · LC 432 *(all O(1): count buckets in a list)*
 
 > Top-down DP with a dict keyed on the subproblem state (LC 139, 1048, 322) is the same template — worked out in [hash_map_examples.md → Hash Map + Memoization / DP](./hash_map_examples.md#hash-map--memoization--dp).
 
 ---
 
-### Template 9: Graph Problems with Hash Map
-```python
-# Graph with HashMap Template
-def graph_hashmap_pattern(graph_input):
-    # Build adjacency list/map
-    graph = {}  # node -> [neighbors] or node -> {neighbor: weight}
-    
-    for edge in graph_input:
-        node1, node2 = edge[0], edge[1]
-        if node1 not in graph:
-            graph[node1] = []
-        if node2 not in graph:
-            graph[node2] = []
-        
-        graph[node1].append(node2)
-        graph[node2].append(node1)  # for undirected
-    
-    # Process using DFS/BFS with visited tracking
-    visited = set()
-    result = []
-    
-    def dfs(node):
-        if node in visited:
-            return
-        
-        visited.add(node)
-        result.append(node)
-        
-        for neighbor in graph.get(node, []):
-            dfs(neighbor)
-    
-    return result
+### Template 9: Old-to-New Node Map — LC 133
 
-# Examples: LC 133, LC 200, LC 694, LC 1257
+**Recognise** — "return a **deep copy** of the graph / the list", "clone", a node type with pointers that can form cycles or point anywhere (random pointers). V, E ≤ 10⁴ → O(V + E).
+
+**Key point** — `copies[node]` is created the first time `node` is reached and **before** its neighbours are visited, so a cycle that comes back to `node` finds its clone in the map instead of recursing again. The map is both the visited set and the old → new translation.
+
+```python
+# python
+# LC 133 - Clone Graph
+# IDEA: copies = {original node: its clone}; register the clone BEFORE visiting neighbours, so cycles hit the map
+# time = O(V + E), space = O(V)
+class Node:
+    def __init__(self, val=0, neighbors=None):
+        self.val = val
+        self.neighbors = neighbors if neighbors is not None else []
+
+def cloneGraph(node):
+    if node is None:
+        return None
+    copies = {}
+
+    def clone(original):
+        if original in copies:
+            return copies[original]
+        copy = Node(original.val)
+        copies[original] = copy                  # register first: a cycle back here stops
+        for neighbor in original.neighbors:
+            copy.neighbors.append(clone(neighbor))
+        return copy
+
+    return clone(node)
 ```
+
+```java
+// java
+// LC 133 - Clone Graph
+// IDEA: copies = {original node: its clone}; register the clone before visiting neighbours
+// time = O(V + E), space = O(V)
+private Map<Node, Node> copies = new HashMap<>();
+
+public Node cloneGraph(Node node) {
+    if (node == null) {
+        return null;
+    }
+    if (copies.containsKey(node)) {
+        return copies.get(node);
+    }
+    Node copy = new Node(node.val, new ArrayList<>());
+    copies.put(node, copy);                       // before the neighbours: cycles stop here
+    for (Node neighbor : node.neighbors) {
+        copy.neighbors.add(cloneGraph(neighbor));
+    }
+    return copy;
+}
+```
+
+**Complexity**
+- **Time O(V + E)**: `clone` runs its body once per node (the `if original in copies` return stops repeats) and walks each adjacency list once.
+- **Space O(V)**: `copies` holds one entry per node, and the recursion stack can reach depth V on a path graph.
+
+**Traps**
+- Registering the copy after the neighbour loop: the two-node graph `1 — 2` recurses `1 → 2 → 1 → …` until the stack overflows.
+- Keying by `val` works on LC 133 (values are unique) but breaks LC 138, where values repeat. Key by the node itself.
+- `cloneGraph(None)` must return `None`, not a node with value 0 — the empty graph is one of LC 133's examples.
+
+**Not this if** — only reachability or a count is asked (LC 200) → a visited set, no clone map ([graph.md](./graph.md)).
+
+**Drill** — LC 133 ⭐ · LC 138 *(random pointers: the same map, two passes or interleaved)* · LC 1490 *(N-ary tree, no cycles)* · LC 652 *(the map is subtree signature → count)*
 
 ---
 
-### Template 10: Virtual Map (Remapping)
+### Template 10: Virtual Map (Remapping) — LC 710
 
-#### Core Idea
+**Recognise** — "pick a random integer in `[0, n)` that is **not** in `blacklist`", "minimise calls to the random function". n ≤ 10⁹ with a blacklist ≤ 10⁵ → the valid values cannot be listed, and `pick()` must be O(1).
 
-When you need to **randomly sample from a range with holes** (blacklisted values), instead of rejection-sampling (which wastes calls to `random`), **remap** the bad slots to valid replacements in O(1) pick time.
+**Key point** — exactly `bound = n - B` values are valid, so draw only from `[0, bound)`. Each blacklisted slot inside that range is mapped to a distinct valid value from the tail `[bound, n)` — the tail has exactly as many valid values as there are bad slots in front — so the map is a bijection onto the valid set and every valid value is equally likely.
 
-**Key insight**: If there are `M` blacklisted numbers in `[0, N)`, there are exactly `N - M` valid numbers. So only ever pick a random index in `[0, N-M)` — call this `bound`. Any blacklisted index that falls inside that range gets **redirected** to a valid index pulled from the tail `[bound, N)`.
+```python
+# python
+# LC 710 - Random Pick with Blacklist
+# IDEA: draw from [0, bound); remap each blacklisted slot below bound to a valid tail value
+# time = O(B) to build, O(1) per pick, space = O(B)
+import random
 
-#### Pattern Steps
+class Solution:
+    def __init__(self, n: int, blacklist: list):
+        self.bound = n - len(blacklist)
+        black_set = set(blacklist)
+        self.mapping = {}
 
-1. **Compute `bound = N - blacklist.length`** — this is the safe random range.
-2. **Build `blackSet`** for O(1) membership tests.
-3. **Walk `last` pointer from `N-1` downward**, skipping blacklisted values, to collect valid replacement targets.
-4. **For every blacklisted `b < bound`**, map `b → last` (the next valid tail index).
-5. **On `pick()`**: draw `idx = random.nextInt(bound)`; return `mapping.getOrDefault(idx, idx)`.
+        last = n - 1
+        for b in blacklist:
+            if b < self.bound:
+                while last in black_set:         # skip tail values that are blacklisted too
+                    last -= 1
+                self.mapping[b] = last
+                last -= 1
 
-#### Visualization
+    def pick(self) -> int:
+        idx = random.randrange(self.bound)
+        return self.mapping.get(idx, idx)
+```
+
+```java
+// java
+// LC 710 - Random Pick with Blacklist
+// IDEA: draw from [0, bound); remap each blacklisted slot below bound to a valid tail value
+// time = O(B) to build, O(1) per pick, space = O(B)
+class Solution {
+    private Map<Integer, Integer> mapping = new HashMap<>();
+    private Random random = new Random();
+    private int bound;
+
+    public Solution(int n, int[] blacklist) {
+        bound = n - blacklist.length;
+
+        Set<Integer> blackSet = new HashSet<>();
+        for (int b : blacklist) blackSet.add(b);
+
+        int last = n - 1;
+        for (int b : blacklist) {
+            if (b < bound) {
+                // Skip tail values that are also blacklisted
+                while (blackSet.contains(last)) last--;
+                mapping.put(b, last);
+                last--;
+            }
+        }
+    }
+
+    public int pick() {
+        int idx = random.nextInt(bound);
+        return mapping.getOrDefault(idx, idx);  // remap if blacklisted, else return directly
+    }
+}
+```
+
+**Complexity**
+- **Time O(B) to build, O(1) per pick**: the constructor's loop visits each blacklisted value once, and `last` only moves down across the B tail slots; `pick` is one draw and one map lookup.
+- **Space O(B)**: `black_set` and `mapping` each hold at most B entries.
+
+**Dry run**
 
 ```text
 n=10, blacklist=[2,3,5,8]   →   bound = 10 - 4 = 6
@@ -1073,145 +1335,107 @@ pick() result for each index in [0,5]:
 Valid numbers returned: {0,1,4,6,7,9} ✓ uniformly distributed
 ```
 
-#### Java Template
+**Traps**
+- Drawing from `[0, n)` and re-rolling on a blacklisted hit: the expected number of draws is n / (n − B), unbounded as the blacklist approaches n.
+- Mapping to `last` without skipping blacklisted tail values: `n = 3, blacklist = [0, 2]` maps 0 → 2, a blacklisted value.
+- Remapping a blacklisted `b ≥ bound`: it is never drawn, and spending a tail value on it can run `last` below `bound`.
 
-```java
-// LC 710 - Random Pick with Blacklist
-class Solution {
-    private Map<Integer, Integer> mapping = new HashMap<>();
-    private Random random = new Random();
-    private int bound;
-
-    public Solution(int n, int[] blacklist) {
-        bound = n - blacklist.length;
-
-        Set<Integer> blackSet = new HashSet<>();
-        for (int b : blacklist) blackSet.add(b);
-
-        int last = n - 1;
-        for (int b : blacklist) {
-            if (b < bound) {
-                // Skip tail values that are also blacklisted
-                while (blackSet.contains(last)) last--;
-                mapping.put(b, last);
-                last--;
-            }
-        }
-    }
-
-    public int pick() {
-        int idx = random.nextInt(bound);
-        return mapping.getOrDefault(idx, idx);  // remap if blacklisted, else return directly
-    }
-}
-```
-
-#### Python Template
-
-```python
-import random
-
-class Solution:
-    def __init__(self, n: int, blacklist: list[int]):
-        self.bound = n - len(blacklist)
-        black_set = set(blacklist)
-        self.mapping = {}
-
-        last = n - 1
-        for b in blacklist:
-            if b < self.bound:
-                while last in black_set:
-                    last -= 1
-                self.mapping[b] = last
-                last -= 1
-
-    def pick(self) -> int:
-        idx = random.randrange(self.bound)
-        return self.mapping.get(idx, idx)
-```
-
-#### Complexity
-
-| Operation | Time | Space |
-|-----------|------|-------|
-| Constructor | O(B) where B = blacklist size | O(B) |
-| `pick()` | O(1) | O(1) |
-
-#### Why This Works
-
-- `bound = N - B` equals the count of valid numbers, so `random.nextInt(bound)` always hits a valid slot count.
-- Blacklisted indices inside `[0, bound)` are rare "bad slots" — exactly B of them need remapping.
-- The tail `[bound, N)` also has exactly B slots total, and the non-blacklisted ones among them are the replacements. The two-pointer walk guarantees a 1-to-1 pairing.
-- Non-blacklisted indices in `[0, bound)` fall through `getOrDefault` unchanged → no extra cost.
-
-#### Similar / Related LC Problems
-
-| Problem | LC# | Difficulty | Key Idea |
-|---------|-----|------------|----------|
-| Random Pick with Blacklist | 710 | Hard | Virtual remap (this pattern) |
-| Random Pick Index | 398 | Medium | Reservoir sampling |
-| Random Pick with Weight | 528 | Medium | Prefix sum + binary search |
-| Shuffle an Array | 384 | Medium | Fisher-Yates (in-place swap map) |
+**Drill** — LC 710 · LC 398 *(reservoir sampling)* · LC 528 *(prefix sum + binary search)* · LC 384 *(Fisher–Yates shuffle)*
 
 ---
 
-### Template 11: Combining Hash Maps with Other Structures
+### Template 11: Map Plus Heap — LC 692
 
-#### 1. Multiple Hash Maps
-```python
-# Track multiple relationships simultaneously
-def complex_problem(arr):
-    index_map = {}      # value -> index
-    freq_map = {}       # value -> frequency
-    reverse_map = {}    # index -> value
-    
-    for i, val in enumerate(arr):
-        index_map[val] = i
-        freq_map[val] = freq_map.get(val, 0) + 1
-        reverse_map[i] = val
-```
+**Recognise** — "return the k most frequent words, sorted by frequency, ties broken alphabetically", "top k by count": the map counts, and a second structure orders what the map counted. k ≪ n → a heap beats sorting every key.
 
-#### 2. Hash Map + Other Data Structures
+**Key point** — the map turns the input into `(item, count)` pairs in one pass; a heap ordered by `(-count, word)` then pops items in exactly the required order — highest count first, and the alphabetically smaller word first on a tie — so the first k pops are the answer.
+
 ```python
-# Hash Map + Priority Queue (Heap)
+# python
+# LC 692 - Top K Frequent Words
+# IDEA: count with a map, heapify (-count, word) so ties pop alphabetically, pop k times
+# time = O(n + k log n), space = O(n)
 import heapq
-from collections import defaultdict
 
-def top_k_frequent(nums, k):
-    count = defaultdict(int)
-    for num in nums:
-        count[num] += 1
-    
-    # Use heap with frequency
+def topKFrequent(words, k):
+    count = {}
+    for word in words:
+        count[word] = count.get(word, 0) + 1
     heap = []
-    for num, freq in count.items():
-        heapq.heappush(heap, (-freq, num))  # Max heap using negative values
-    
+    for word, freq in count.items():
+        heap.append((-freq, word))           # negate: heapq is a min-heap
+    heapq.heapify(heap)                      # O(n), cheaper than n pushes
     result = []
     for _ in range(k):
         result.append(heapq.heappop(heap)[1])
     return result
 ```
 
+```java
+// java
+// LC 692 - Top K Frequent Words
+// IDEA: count with a map; a heap ordered by count desc, then word asc; poll k times
+// time = O(n log n), space = O(n)
+public List<String> topKFrequent(String[] words, int k) {
+    Map<String, Integer> count = new HashMap<>();
+    for (String word : words) {
+        count.put(word, count.getOrDefault(word, 0) + 1);
+    }
+    PriorityQueue<String> heap = new PriorityQueue<>((a, b) -> {
+        int byCount = Integer.compare(count.get(b), count.get(a));   // higher count first
+        if (byCount != 0) {
+            return byCount;
+        }
+        return a.compareTo(b);                                      // tie: alphabetical
+    });
+    heap.addAll(count.keySet());
+    List<String> result = new ArrayList<>();
+    for (int i = 0; i < k; i++) {
+        result.add(heap.poll());
+    }
+    return result;
+}
+```
+
+**Complexity**
+- **Time O(n + k log n)** in Python: counting is one pass, `heapify` is O(n), and each of the k `heappop`s is O(log n). Java's `addAll` inserts one at a time, so it is O(n log n).
+- **Space O(n)**: `count` and the heap each hold one entry per distinct word.
+
+**Traps**
+- A heap of `(freq, word)` without the minus sign pops the **least** frequent word first.
+- A size-k min-heap (the O(n log k) follow-up) needs the **reverse** tie order, so the alphabetically larger word sits at the root and is evicted first; reusing the `(-count, word)` order evicts the wrong word.
+- A Java comparator written `count.get(b) - count.get(a)` is the subtraction comparator; use `Integer.compare`.
+
+**Not this if** — no tie rule and only the k most frequent values (LC 347) → bucket sort by frequency in O(n) ([hash_map_examples](./hash_map_examples.md#bucket-sort-via-hash-map-top-k-frequency-on)); the kth largest **value**, not count → [heap.md](./heap.md).
+
+**Drill** — LC 692 · LC 347 ⭐ *(no ties: a heap, or buckets in O(n))* · LC 451 *(every key, ordered by count)* · LC 1636 *(count ascending, ties by value descending)*
+
 > For the O(n) heap-free answer to top-K, see [Bucket Sort via Hash Map](./hash_map_examples.md#bucket-sort-via-hash-map-top-k-frequency-on); for `next greater` answers keyed by a monotonic stack, see [Monotonic Stack + Hash Map](./hash_map_examples.md#monotonic-stack--hash-map).
 
+## Drill Path
+
+| Stage | Problems (easy → hard) | What it adds |
+|---|---|---|
+| **Core** ⭐ | LC 1 · LC 242 · LC 49 · LC 347 · LC 146 | complement lookup, counting, grouping by a key, top-K by count, the ordered map as a cache |
+| **Practice** | LC 205 · LC 290 · LC 383 · LC 953 · LC 438 · LC 560 · LC 133 | bijection, counting as a budget, rank map, fixed-window counts, prefix-sum counts, the clone map |
+| **Stretch** | LC 692 · LC 3026 · LC 149 · LC 710 | tie-broken top-K, a min-prefix per key, a normalised slope key, a virtual remap |
 ## Summary & Quick Reference
 
 ### Problem → Pattern Decision Table
 
 | Recognise it by | Pattern | Template | Time / Space | Problems |
 |-----------------|---------|----------|--------------|----------|
-| Frequency of elements, characters or patterns; "most frequent", "anagram", duplicates, or *where* a value occurs ("one contiguous block") | Counting / frequency map, incl. the [index-span variation](#variation-index-span-map--span--count-proves-contiguity-) | [T1](#template-1-frequency-counter) | O(n) / O(n) | 242, 49, 451, 347, 692, 387, 819, 811, 1207, 383, 299, 349, 350, 4038, 763, 219, 1794 |
-| A pair, triplet or complement that hits a target; "two sum", "k-diff", "divisible by 60" | Seen-before index map | [T2](#template-2-seen-before-index-map-two-sum-shape) | O(n) / O(n) | 1, 15, 16, 18, 167, 532, 653, 1010, 1679, 1711, 2006 |
-| Items that belong together under some *derived* form; "group", "same line", "same row or column"; a **symmetric** pair where `(x, y)` counts as `(y, x)` | Grouping by a computed key, incl. the [unordered-pair key](#pattern-unordered-pair-key--min-max-counts-x-y-in-either-order-) | [T3](#template-3-grouping-by-a-computed-key) | O(n·k) / O(n) | 49, 149, 609, 939, 947, 987, 4066, 1128, 1615 |
-| A subarray property: sum equals k, sum divisible by k, equal 0s and 1s, exactly k odds; or the max sum of a subarray whose **ends** satisfy a condition | Prefix sum → count map, incl. the [min-prefix-per-start variation](#variation-key-by-the-starts-value-keep-the-min-prefix--lc-3026-) | [T4](#template-4-prefix-sum--count-map-) | O(n) / O(n) | 560, 325, 523, 525, 930, 974, 1248, 724, 3026 |
-| A window that grows and shrinks on a condition over characters | Sliding window + char counts | [T5](#template-5-sliding-window-with-hash-map) | O(n) / O(k) | 3, 76, 424, 438, 567, 159, 340, 904, 1004, 1208, 1234 |
-| "According to the order given in ...", a custom alphabet, a permutation, an index split | Rank map | [T6](#template-6-rank-map--value-to-position-) | O(n) / O(n) | 953, 791, 105, 106 |
-| A mapping that must be one-to-one in **both** directions | Bijection (two maps) | [T7](#template-7-bijection-two-way-mapping) | O(n) / O(n) | 205, 290 |
-| "Design a cache", O(1) get + put, eviction, or a recursion worth memoizing | Caching / memoization | [T8](#template-8-hash-map-for-caching--memoization) | O(1) amortised / O(n) | 146, 460, 705, 706, 380, 381, 432, 355, 981, 1244, 139, 322, 1048 |
-| Node relationships: clone, parent pointers, subtree signatures, equations as edges | Graph / tree node map | [T9](#template-9-graph-problems-with-hash-map) | O(n) / O(n) | 133, 138, 652, 721, 734, 399, 947, 1257 |
-| "Pick uniformly at random, but never these values" | Virtual map (remapping) | [T10](#template-10-virtual-map-remapping) | O(1) per pick / O(B) | 710, 398, 528, 384 |
-| The map alone is not enough — you also need order, a heap, or a stack | Map + another structure | [T11](#template-11-combining-hash-maps-with-other-structures) | varies | 347, 496, 503, 739, 853, 729, 846, 352 |
+| A pair, triplet or complement that hits a target; "two sum", "k-diff", "divisible by 60" | Complement lookup | [T1](#template-1-complement-lookup--lc-1) | O(n) / O(n) | 1, 15, 16, 18, 167, 532, 653, 1010, 1679, 1711, 2006 |
+| Frequency of elements, characters or patterns; "most frequent", "anagram", duplicates, or *where* a value occurs ("one contiguous block") | Counting / frequency map, incl. the [index-span variation](#variation-index-span-map--span--count-proves-contiguity-) | [T2](#template-2-frequency-count--lc-242) | O(n) / O(n) | 242, 49, 451, 347, 692, 387, 819, 811, 1207, 383, 299, 349, 350, 4038, 763, 219, 1794 |
+| Items that belong together under some *derived* form; "group", "same line", "same row or column"; a **symmetric** pair where `(x, y)` counts as `(y, x)` | Grouping by a computed key, incl. the [unordered-pair key](#pattern-unordered-pair-key--min-max-counts-x-y-in-either-order-) | [T3](#template-3-grouping-by-a-computed-key--lc-49) | O(n·k) / O(n) | 49, 149, 609, 939, 947, 987, 4066, 1128, 1615 |
+| A subarray property: sum equals k, sum divisible by k, equal 0s and 1s, exactly k odds; or the max sum of a subarray whose **ends** satisfy a condition | Prefix sum → count map, incl. the [min-prefix-per-start variation](#variation-key-by-the-starts-value-keep-the-min-prefix--lc-3026-) | [T4](#template-4-prefix-sum-count-map--lc-560-) | O(n) / O(n) | 560, 325, 523, 525, 930, 974, 1248, 724, 3026 |
+| A window over characters compared by letter counts (fixed length here; grow-and-shrink lives in [sliding_window.md](./sliding_window.md)) | Window + char counts | [T5](#template-5-fixed-window-character-counts--lc-438) | O(n) / O(k) | 3, 76, 424, 438, 567, 159, 340, 904, 1004, 1208, 1234 |
+| "According to the order given in ...", a custom alphabet, a permutation, an index split | Rank map | [T6](#template-6-rank-map--value-to-position--lc-953-) | O(n) / O(n) | 953, 791, 105, 106 |
+| A mapping that must be one-to-one in **both** directions | Bijection (two maps) | [T7](#template-7-bijection-with-two-maps--lc-205) | O(n) / O(n) | 205, 290 |
+| "Design a cache", O(1) get + put, eviction, or a recursion worth memoizing | Caching / memoization | [T8](#template-8-ordered-map-as-an-lru-cache--lc-146) | O(1) amortised / O(n) | 146, 460, 705, 706, 380, 381, 432, 355, 981, 1244, 139, 322, 1048 |
+| Node relationships: clone, parent pointers, subtree signatures, equations as edges | Graph / tree node map | [T9](#template-9-old-to-new-node-map--lc-133) | O(n) / O(n) | 133, 138, 652, 721, 734, 399, 947, 1257 |
+| "Pick uniformly at random, but never these values" | Virtual map (remapping) | [T10](#template-10-virtual-map-remapping--lc-710) | O(1) per pick / O(B) | 710, 398, 528, 384 |
+| The map alone is not enough — you also need order, a heap, or a stack | Map + another structure | [T11](#template-11-map-plus-heap--lc-692) | varies | 347, 496, 503, 739, 853, 729, 846, 352 |
 
 > Worst case for every row above is **O(n) per operation** if all keys collide. Per-problem tables (difficulty and a one-line insight for each of ~90 problems) are in [hash_map_examples.md → Problems by Pattern](./hash_map_examples.md#problems-by-pattern).
 
@@ -1320,7 +1544,7 @@ map.putIfAbsent(key, index);  // Only puts if key doesn't exist
 
 ### Interview Preparation Checklist
 
-- [ ] Master all 6 templates and when to use each
+- [ ] Master every template above and when to use each
 - [ ] Practice 3-5 problems from each category
 - [ ] Understand time/space complexity for each pattern
 - [ ] Know common edge cases and how to handle them

@@ -38,6 +38,19 @@
 - Video
     - [Stack Fundamentals](https://www.bilibili.com/list/525438321?sort_field=pubtime&spm_id_from=333.999.0.0&oid=779764003&bvid=BV1my4y1Z7jj)
 
+## Recognition
+
+| Signal in the statement | Constraint cue | Reach for | Not this if |
+|---|---|---|---|
+| "remove adjacent duplicates", "backspace", "undo the last" | n ≤ 10⁵ → one O(n) pass | [Template 1](#template-1-cancel-against-the-top--lc-1047) cancel against the top | a run must reach length k first → `[char, count]` pairs ([stack_examples.md](./stack_examples.md)) |
+| "valid / balanced parentheses" with several bracket types | n ≤ 10⁴ → O(n) | [Template 2](#template-2-bracket-matching--lc-20-) bracket matching | one bracket type only → a balance counter, O(1) space |
+| "minimum removals / longest valid" parentheses | n ≤ 10⁵ | [Template 2 § LC 1249](#bracket-repair-variant--push-the-index-not-the-char-lc-1249-) index stack | |
+| "next greater / warmer / taller", "days until", "nearest smaller" | n ≤ 10⁵ → O(n²) scan times out | [Template 3](#template-3-monotonic-stack--next-greater--smaller--lc-739-) monotonic stack | max of every window of width k → [monotonic_queue.md](./monotonic_queue.md) |
+| "retrieve the minimum in constant time" alongside push / pop | every op O(1) | [Template 4](#template-4-min-stack--o1-getmin--lc-155-) per-layer aggregate | deletions from anywhere, not LIFO → [heap.md](./heap.md) with lazy deletion |
+| "iteratively", "without recursion" over a tree | skewed depth up to 10⁵ overflows recursion | [Template 5](#template-5-explicit-stack--iterative-traversal--lc-144-lc-145-) explicit stack | "level by level" → a queue ([bfs.md](./bfs.md)) |
+| tab-indented paths, `start` / `end` logs, "who is running now" | n ≤ 10⁴ → O(n) | [Template 6](#template-6-scope--context-ledger--lc-388-lc-636-) scope ledger | the nesting must be *evaluated* → [stack_expression_parsing.md](./stack_expression_parsing.md) |
+| "basic calculator", "decode string", "reverse Polish notation" | | [stack_expression_parsing.md](./stack_expression_parsing.md) | |
+
 ## Problem Categories
 
 Ten shapes cover almost every stack question. The **Where** column says which template
@@ -76,89 +89,128 @@ below owns the code, or which sheet the worked solutions moved to.
 
 | Template | Stack element | Loop shape | Complexity | When to Use |
 |---|---|---|---|---|
-| 1 — Basic operations | anything | — | O(1) per op | push / pop / peek idioms |
+| 1 — Cancel against the top | the unmatched prefix | one pass, pop on a match | O(n) / O(n) | adjacent cancellation, undo, backspace |
 | 2 — Bracket matching | opener chars | one pass, pop on closer | O(n) / O(n) | validate nesting, >1 bracket type |
-| 3 — Monotonic stack | `(value, index)` | `while` inside `for` | O(n) / O(n) | next greater / smaller / span |
+| 3 — Monotonic stack | indices | `while` inside `for` | O(n) / O(n) | next greater / smaller / span |
 | 4 — Min stack | value + one aggregate *state* per layer | — | O(1) per op | O(1) `getMin()` / `getMax()`; prefix aggregates, path state |
 | 5 — Explicit stack | pending nodes | `while stack` | O(n) / O(h) | iterative traversal, order reversal |
 | 6 — Scope ledger | enclosing context per depth | one pass, trim to depth | O(n) / O(depth) | indented input, start/end events |
 
-### Template 1: Basic Stack Operations
+### Template 1: Cancel Against the Top — LC 1047
 
-**Stack push (insert):**
-```java
-// Java
-Stack<Integer> stack = new Stack<>();
-stack.push(element);  // O(1)
-```
+**Recognise** — "remove adjacent duplicates", "backspace", "undo", "two neighbours annihilate":
+each new item either cancels the most recent survivor or joins the survivors. n ≤ 10⁵ → one
+O(n) pass is expected; re-scanning the string after every removal is O(n²).
 
-```python
-# Python
-stack = []
-stack.append(element)  # O(1)
-```
-
-**Stack pop (remove top):**
-```java
-// Java
-int top = stack.pop();  // O(1), throws if empty
-```
+**Key point** — the stack *is* the answer so far: it holds the prefix with every cancellation
+already applied, so the only item a new one can interact with is `stack[-1]`.
 
 ```python
-# Python
-top = stack.pop()  # O(1), raises if empty
+# python
+# LC 1047 - Remove All Adjacent Duplicates In String
+# IDEA: the stack holds the reduced prefix; a char equal to the top cancels it, otherwise it joins
+# time = O(n), space = O(n)
+def removeDuplicates(s):
+    stack = []                       # the reduced prefix, top = last surviving char
+    for ch in s:
+        if stack and stack[-1] == ch:
+            stack.pop()              # ch cancels its neighbour; the char below becomes adjacent
+        else:
+            stack.append(ch)
+    return ''.join(stack)            # bottom -> top is left -> right order
 ```
 
-**Stack peek (view top):**
 ```java
-// Java
-int top = stack.peek();  // O(1), throws if empty
-if (!stack.isEmpty()) {
-    top = stack.peek();
+// java
+// LC 1047 - Remove All Adjacent Duplicates In String
+// IDEA: the stack holds the reduced prefix; a char equal to the top cancels it, otherwise it joins
+// time = O(n), space = O(n)
+public String removeDuplicates(String s) {
+    Deque<Character> stack = new ArrayDeque<>();   // top = last surviving char
+    for (char ch : s.toCharArray()) {
+        if (!stack.isEmpty() && stack.peek() == ch) {
+            stack.pop();                           // cancel, and expose the char below
+        } else {
+            stack.push(ch);
+        }
+    }
+    StringBuilder sb = new StringBuilder();
+    while (!stack.isEmpty()) {
+        sb.append(stack.pollLast());               // the bottom is the leftmost survivor
+    }
+    return sb.toString();
 }
 ```
 
-```python
-# Python
-top = stack[-1]  # O(1), raises if empty
-if stack:
-    top = stack[-1]
+The three operations every template below is built from:
+
+| Operation | Python (`list`) | Java (`Deque<T>` via `ArrayDeque`) | Cost |
+|---|---|---|---|
+| push | `stack.append(x)` | `stack.push(x)` | O(1) amortised |
+| pop | `stack.pop()` — raises on empty | `stack.pop()` — throws on empty | O(1) |
+| peek | `stack[-1]` — guard with `if stack` | `stack.peek()` — returns `null` on empty | O(1) |
+
+**Complexity**
+- **Time O(n)**: the `for ch in s` loop runs once per character, and each character is pushed at
+  most once and popped at most once.
+- **Space O(n)**: `stack.append(ch)` keeps every survivor; `"abcd"` cancels nothing.
+
+**Dry run**
+
+```text
+s = "abbaca"
+ch   action          stack
+a    push            a
+b    push            a b
+b    cancels top     a
+a    cancels top     (empty)    <- the cancel exposed 'a', which the next 'a' then cancels
+c    push            c
+a    push            c a        -> "ca"
 ```
+
+**Traps**
+- Re-scanning after each removal (`while "aa" in s: s = s.replace(...)`) is O(n²) on
+  `"abcddcba"`-style inputs, where each removal exposes a new pair.
+- In Java, `Stack<Character>` iterates bottom → top but `ArrayDeque` iterates top → bottom;
+  building the answer by iterating an `ArrayDeque` reverses it. Drain from the bottom with `pollLast()`.
+- Java's `stack.peek() == ch` is safe only because `ch` is a primitive `char`; two boxed
+  `Character`s compared with `==` compare references.
+
+**Not this if** — the run must reach length k before it disappears (LC 1209) → push
+`[char, count]` pairs instead of single chars ([stack_examples.md](./stack_examples.md)).
+
+**Drill** — LC 1047 · LC 844 *(backspace: `#` pops instead of a match)* · LC 1544 *(cancel
+on same letter, opposite case)* · LC 232 *(two stacks make a queue)* · LC 1209 *(`[char, count]` pairs)*
 
 ---
 
 ### Template 2: Bracket Matching — LC 20 ⭐⭐⭐⭐⭐
 
-> The single most-asked stack pattern. **Push openers, and on a closer check that the top is its partner.** A stack is required (not a counter) as soon as there is **more than one bracket type**, because order matters: `([)]` is invalid.
+**Recognise** — "valid parentheses", "well-formed", "balanced", "properly nested", with **more
+than one** bracket or tag type. n ≤ 10⁴ → one O(n) pass.
 
-```text
-Core Idea:
-  - Opener  -> push it (we owe a matching closer)
-  - Closer  -> stack must be non-empty AND top must be the matching opener
-               (else fail fast)
-  - End     -> stack must be EMPTY (no unmatched openers left)
+**Key point** — the stack holds exactly the openers still owed a closer, innermost on top; a
+closer is legal only if it matches the top, because the innermost open scope must close first.
 
-When to Use:
-  - Validate / repair / measure balanced sequences
-  - Any "nesting must be well-formed" check (brackets, tags, expressions)
-
-Counter vs Stack (interview discriminator):
-  - ONE bracket type only  -> a running balance counter is enough, O(1) space
-                              (LC 921, LC 1541, LC 1614)
-  - MULTIPLE bracket types -> MUST use a stack (LC 20)
-  - Need the POSITION of the offending bracket -> stack of INDICES
-                              (LC 1249, LC 32)
-
-Similar LC:
-  - LC 20    Valid Parentheses                        (base template)
-  - LC 1249  Minimum Remove to Make Valid Parentheses (stack of indices -> delete;
-                                                    also two counter scans, no stack)
-  - LC 921   Minimum Add to Make Parentheses Valid    (balance counter)
-  - LC 32    Longest Valid Parentheses                (index stack + `-1` base;
-                                                    also 1D DP, or two counter scans for O(1) space)
-  - LC 856   Score of Parentheses                     (stack of partial scores)
-  - LC 1541  Minimum Insertions to Balance a Parentheses String  ( `(` needs `))` )
-  - LC 1614  Maximum Nesting Depth of the Parentheses (max depth = max balance)
+```python
+# python
+# LC 20 - Valid Parentheses
+# IDEA: STACK — push openers, pop-and-verify on closers, stack must end empty
+# time = O(n), space = O(n)
+class Solution(object):
+    def isValid(self, s):
+        pairs = {')': '(', ']': '[', '}': '{'}
+        stack = []
+        for c in s:
+            # closer: needs a non-empty stack AND the matching partner on top
+            if c in pairs:
+                if not stack or stack.pop() != pairs[c]:
+                    return False
+            # opener
+            else:
+                stack.append(c)
+        # leftover openers were never closed
+        return not stack
 ```
 
 ```java
@@ -178,52 +230,39 @@ public boolean isValid(String s) {
 
     for (char c : s.toCharArray()) {
         if (pairs.containsKey(c)) {
-            /**
-             *  NOTE !!!  a closer needs BOTH checks:
-             *   1) stack NOT empty  (e.g. ")" alone)
-             *   2) top is the matching opener (e.g. "(]" must fail)
-             *
-             *  NOTE !!! unbox to `char` before comparing —
-             *  comparing two Character objects with `!=` compares REFERENCES.
-             */
             if (st.isEmpty()) {
-                return false;
+                return false;            // a closer with nothing open
             }
-            char top = st.pop();
+            char top = st.pop();         // unbox to char before comparing
             if (top != pairs.get(c)) {
-                return false;
+                return false;            // wrong partner
             }
         } else {
             st.push(c);
         }
     }
 
-    /** NOTE !!! leftover openers => invalid (e.g. "(((") */
-    return st.isEmpty();
+    return st.isEmpty();                 // leftover openers -> invalid
 }
 ```
 
-```python
-# python
-# LC 20 - Valid Parentheses
-# IDEA: STACK — push openers, pop-and-verify on closers, stack must end empty
-# time = O(n), space = O(n)
-class Solution(object):
-    def isValid(self, s):
-        pairs = {')': '(', ']': '[', '}': '{'}
-        stack = []
-        for c in s:
-            # closer
-            if c in pairs:
-                # NOTE !!! empty stack OR wrong partner -> invalid
-                if not stack or stack.pop() != pairs[c]:
-                    return False
-            # opener
-            else:
-                stack.append(c)
-        # NOTE !!! leftover openers -> invalid
-        return not stack
-```
+**Complexity**
+- **Time O(n)**: the single `for c in s` loop; each character is pushed or popped once.
+- **Space O(n)**: `stack.append(c)` can hold every character, e.g. `"(((((("`.
+
+**Traps**
+- `")"` alone: popping before checking `not stack` raises / throws. Check empty first.
+- `"(]"`: a closer needs **both** checks — non-empty *and* the matching partner on top.
+- `"((("`: the loop never fails, so returning `True` after it is wrong. The stack must end empty.
+- Java: `st.pop() != pairs.get(c)` with both sides boxed `Character` compares references.
+  Unbox one side into a `char` first.
+
+**Not this if** — only **one** bracket type (LC 921, LC 1541, LC 1614) → a running balance
+counter is enough, O(1) space. The *position* of the offender is needed (LC 1249, LC 32) →
+push **indices**, below.
+
+**Drill** — LC 20 ⭐ · LC 1614 *(max depth = max balance)* · LC 921 *(counter only)* ·
+LC 1249 *(index stack, below)* · LC 856 *(stack of partial scores)* · LC 32 *(index stack with a `-1` base)*
 
 **The bracket family — four twists on the same template** (worked solutions in [stack_examples.md](./stack_examples.md)):
 
@@ -236,10 +275,12 @@ class Solution(object):
 
 #### Bracket Repair Variant — push the **index**, not the char (LC 1249) ⭐⭐⭐⭐
 
-> **What changed from LC 20**: LC 20 only answers *yes / no*, so the stack can hold the opener
+> **Key point** — LC 20 only answers *yes / no*, so the stack can hold the opener
 > characters and forget where they were. LC 1249 must **erase** the offenders, so it needs their
 > *positions* — push the **index** of each `(`. There is only one bracket type, so nothing has
 > to be compared on a pop: any open `(` matches any `)`.
+
+**Reduces to**: [Template 2](#template-2-bracket-matching--lc-20-) — the stack holds indices instead of characters.
 
 | | LC 20 — validate | LC 1249 — repair |
 |---|---|---|
@@ -270,10 +311,10 @@ class Solution(object):
                 if open_idx:
                     open_idx.pop()     # matched -> keep both
                 else:
-                    chars[i] = ''      # NOTE !!! no '(' open before it -> can never match
+                    chars[i] = ''      # no '(' open before it -> can never match
             # letters never affect the balance
 
-        # NOTE !!! the second flush: what is left on the stack are unmatched '('
+        # the second flush: what is left on the stack are unmatched '('
         for i in open_idx:
             chars[i] = ''
 
@@ -318,17 +359,17 @@ the same mark-then-rebuild idea framed as a string technique is
 
 ### Template 3: Monotonic Stack — Next Greater / Smaller — LC 739 ⭐⭐⭐⭐
 
-> **Key Idea**: the stack holds the elements that are **still waiting for an answer**, kept in
-> monotonic order. Flip the comparison to flip the direction — `top < cur` pops for *next
-> greater*, `top > cur` pops for *next smaller*. Every element is pushed once and popped at
-> most once, so a `while` nested in a `for` is still **O(n)**.
->
-> This sheet keeps **one** short form. The full family (previous-smaller, spans, histogram,
-> subarray min/max sums, and the greedy-removal variants) is
-> [monotonic_stack.md](./monotonic_stack.md)'s subject; the worked solutions are in
-> [stack_examples.md](./stack_examples.md).
+**Recognise** — "next greater / warmer / taller to the right", "how many days until", "nearest
+smaller on each side". n ≤ 10⁵ → the O(n²) scan-right-for-each-element times out; O(n) expected.
 
-- Store `(value, index)` — the index is what turns "found it" into a *distance* or a *width*.
+**Key point** — the stack holds the indices **still waiting for an answer**, their values strictly
+decreasing bottom → top; the first value that beats the top is, by that order, the answer for
+every index it pops.
+
+This sheet keeps **one** short form. The full family (previous-smaller, spans, histogram,
+subarray min/max sums, and the greedy-removal variants) is
+[monotonic_stack.md](./monotonic_stack.md)'s subject; the worked solutions are in
+[stack_examples.md](./stack_examples.md).
 
 ```python
 # python
@@ -369,6 +410,8 @@ public int[] dailyTemperatures(int[] temperatures) {
 }
 ```
 
+Flip the comparison to flip the direction:
+
 | Want | Pop while | Read the answer | LC |
 |---|---|---|---|
 | next **greater** element / warmer day | `top < cur` | when `cur` pops `top` | 496, 503, 739 |
@@ -376,76 +419,60 @@ public int[] dailyTemperatures(int[] temperatures) {
 | **span** back to the last bigger value | `top <= cur`, accumulating the popped spans | the accumulated count | 901 |
 | **circular** array | same, over `nums * 2` with `idx % n` | same | 503 |
 
+**Complexity**
+- **Time O(n)**: the inner `while` looks nested, but every index is pushed once by
+  `stack.append(i)` and popped at most once, so the pops total at most n across the whole run.
+- **Space O(n)**: a strictly decreasing input (`[5, 4, 3, 2, 1]`) never pops, so the stack holds all n.
+
+**Dry run**
+
+```text
+temperatures = [73, 74, 75, 71, 69, 72, 76, 73]
+i  val   pops (j -> res[j])          stack (indices)
+0  73    -                           [0]
+1  74    0 -> 1                      [1]
+2  75    1 -> 1                      [2]
+3  71    -                           [2, 3]
+4  69    -                           [2, 3, 4]
+5  72    4 -> 1, 3 -> 2              [2, 5]
+6  76    5 -> 1, 2 -> 4              [6]
+7  73    -                           [6, 7]      -> [1, 1, 4, 2, 1, 1, 0, 0]
+```
+
+**Traps**
+- Pushing values instead of indices: `[73, 74]` can then say *that* a warmer day exists but
+  not *how far*. Push the index; read the value through it.
+- `<` vs `<=`: with `<=`, equal temperatures `[70, 70, 71]` pop the first 70 on the second
+  and report 1 day, though 70 is not warmer. "Strictly greater" means pop on strictly less.
+- Indices left on the stack at the end have no answer; they keep the default `0` (or `-1`
+  for LC 496 / 503), so initialise `res` with it.
+
+**Not this if** — the answer is a max or min over a **sliding window** of fixed width (LC 239)
+→ a monotonic *deque*, which also expires from the front ([monotonic_queue.md](./monotonic_queue.md)).
+
+**Drill** — LC 496 · LC 739 ⭐ · LC 503 *(circular: walk `2n`)* · LC 901 *(online spans)* ·
+LC 907 *(contribution counting)* · LC 84 *(next smaller on both sides)*
+
 ---
 
 ### Template 4: Min Stack — O(1) getMin — LC 155 ⭐⭐⭐⭐
 
-**Pattern: one aggregate per layer** — `min_values[i] == min(stack[0..i])`
+**Recognise** — "design a stack that supports `push`, `pop`, `top` and retrieving the minimum
+element **in constant time**". Every operation O(1), up to 3·10⁴ calls.
 
-The stack you are asked for is the ordinary one. The trick is a **second array that
-mirrors it layer for layer**, holding not the elements but *the answer to the query
-for everything at or below that layer*. For LC 155 the query is "minimum", so
-`min_values = 每一層 stack 對應的 minimum`. This is the design-problem face of a
-[prefix aggregate](./prefix_sum.md), and the same idea shows up far outside stacks —
-see [the classics table](#the-same-idea-beyond-stacks--the-classics-) at the end of
-this template.
+**Key point** — `min_values[i] == min(stack[0..i])`: a second array mirrors the stack layer for
+layer and holds the answer for everything at or below that layer, so popping a layer pops its
+answer and the layer below already knows its own.
 
-#### The general form — one aggregate per layer
-
-```text
-Invariant:  min_values[i] = min(stack[0], stack[1], ..., stack[i])
-            -> min_values is NOT the elements sorted; it is a STATE per layer
-
-push(v):    min_values.append(min(v, min_values[-1]))   # new layer, new state
-pop():      min_values.pop()                             # the popped layer's state goes with it
-getMin():   min_values[-1]                               # the top layer's state IS the answer
-
-push -2, 0, -3        then pop()
-  stack      = [-2,  0, -3]      stack      = [-2,  0]
-  min_values = [-2, -2, -3]      min_values = [-2, -2]   <- getMin() = -2, nothing recomputed
-                  ^    ^    ^
-                  |    |    min of all three
-                  |    min of the first two (0 did not beat -2)
-                  min of the first one
-```
-
-Three consequences fall straight out of the invariant:
-
-- **The two arrays are always the same length** — every `push` appends to both, every
-  `pop` removes from both. No `if` in `pop()`, no comparing the popped value against the
-  min: `min_values[-1]` is a *state* that belongs to the layer, not a copy of an element,
-  so popping the layer is the whole job. That is why V0 below does not need the
-  `stack.pop() == mins[-1]` check that the space-saving variant needs.
-- **Duplicates are free.** `push(0); push(0); pop()` leaves `min_values = [0]`, because
-  each `0` got its own layer. The variant that stores only *new* minima has to write `<=`
-  to get this right — the classic LC 155 bug (see
-  [monotonic_stack.md § 2-16](./monotonic_stack.md#2-16-min-stack-lc-155--auxiliary-non-increasing-stack-)).
-- **Any aggregate that is a function of the prefix works the same way** — `max`, a running
-  sum, a running GCD, a pending delta (LC 1381), a frequency count (LC 895). Replace
-  `min(...)` in `push` and nothing else changes.
-
-#### Why O(1) — the state was computed at push time
-
-`getMin()` reads one array cell. There is no scan, because the work was moved to `push`,
-and `push` only has to combine **two** numbers: the new value and the answer for the layer
-below. That is the whole argument — each operation touches the top of two arrays and
-nothing else.
-
-The point of *keeping every layer's state* instead of one `self.min` variable is `pop()`.
-A single variable can be lowered when a smaller value arrives, but cannot be **raised**
-back when that value leaves — the earlier minimum was overwritten. The array remembers it,
-because it was never overwritten; it was one layer down the whole time.
-
-| Approach | `push` | `pop` | `getMin` | Why it falls short |
-|---|---|---|---|---|
-| one `self.min` variable | O(1) | **O(n)** | O(1) | after popping the min, the previous min has to be rescanned |
-| heap (`heapq`) | O(log n) | O(log n) with lazy deletion | O(1) | pays a log for an ordering the stack never uses |
-| `{value: count}` map | O(1) | O(1) | **O(n)** | `min(counts)` is a scan (this is `min-stack.py`'s V0-1) |
-| **per-layer `min_values`** | O(1) | O(1) | O(1) | the answer for the current top was fixed when the top was pushed |
+The trick is a **second array that mirrors the stack layer for layer**, holding not the
+elements but *the answer to the query for everything at or below that layer*. For LC 155 the
+query is "minimum", so `min_values` holds each layer's minimum. This is the design-problem
+face of a [prefix aggregate](./prefix_sum.md), and the same idea shows up far outside stacks —
+see [the classics table](#the-same-idea-beyond-stacks--the-classics-) at the end of this template.
 
 ```python
-# LC 155. Min Stack
-# V0
+# python
+# LC 155 - Min Stack
 # IDEA: 2 ARRAYS — stack holds the elements, min_values holds each layer's minimum
 # time = O(1) per operation, space = O(n)
 class MinStack(object):
@@ -475,8 +502,113 @@ class MinStack(object):
         return self.min_values[-1]
 ```
 
+```java
+// java
+// LC 155 - Min Stack
+// IDEA: 2 STACKS — stack holds the elements, minValues holds each layer's minimum
+// time = O(1) per operation, space = O(n)
+class MinStack {
+    private final Deque<Integer> stack = new ArrayDeque<>();
+    private final Deque<Integer> minValues = new ArrayDeque<>();   // one entry per layer
+
+    public void push(int val) {
+        stack.push(val);
+        if (minValues.isEmpty()) {
+            minValues.push(val);
+        } else {
+            minValues.push(Math.min(val, minValues.peek()));
+        }
+    }
+
+    public void pop() {
+        stack.pop();
+        minValues.pop();          // the layer's state leaves with it
+    }
+
+    public int top() {
+        return stack.peek();
+    }
+
+    public int getMin() {
+        return minValues.peek();  // the top layer's state is the answer
+    }
+}
+```
+
+**Complexity**
+- **Time O(1) per operation**: `push` combines two numbers in `min(val, self.min_values[-1])`;
+  `getMin` reads one cell, `self.min_values[-1]`. No operation scans.
+- **Space O(n)**: `self.min_values.append(...)` adds one entry per pushed element.
+
+**Dry run**
+
+```text
+push -2, 0, -3        then pop()
+  stack      = [-2,  0, -3]      stack      = [-2,  0]
+  min_values = [-2, -2, -3]      min_values = [-2, -2]   <- getMin() = -2, nothing recomputed
+                  ^    ^    ^
+                  |    |    min of all three
+                  |    min of the first two (0 did not beat -2)
+                  min of the first one
+```
+
+**Traps**
+- One `self.min` variable instead of an array: after `push 1, push 0, pop`, the min must go
+  back to 1, and a single variable has already overwritten it. Restoring it is an O(n) rescan.
+- The space-saving variant that pushes only *new* minima must compare with `<=`:
+  `push 0, push 0, pop` with `<` leaves the min-stack empty while the stack still holds a 0
+  (see [monotonic_stack.md § 2-16](./monotonic_stack.md#2-16-min-stack-lc-155--auxiliary-non-increasing-stack-)).
+  The per-layer array above needs no comparison in `pop` at all.
+- Java, space-saving variant: `stack.peek() == minStack.peek()` on boxed `Integer`s compares
+  references, so a pushed `128` never matches itself. Compare with `.equals`, or unbox first.
+
+**Not this if** — the minimum must survive deletions from the **middle** or arbitrary order
+(not LIFO) → a heap with lazy deletion ([heap.md](./heap.md)); the window slides from the front
+(LC 239) → two such stacks as a queue, or a monotonic deque (classics table below).
+
+**Drill** — LC 155 ⭐ · LC 1381 *(lazy increment per layer)* · LC 1026 *(the recursion stack as
+the stack)* · LC 716 *(max stack, `popMax`)* · LC 895 *(one stack per frequency)*
+
+| Approach | `push` | `pop` | `getMin` | Why it falls short |
+|---|---|---|---|---|
+| one `self.min` variable | O(1) | **O(n)** | O(1) | after popping the min, the previous min has to be rescanned |
+| heap (`heapq`) | O(log n) | O(log n) with lazy deletion | O(1) | pays a log for an ordering the stack never uses |
+| `{value: count}` map | O(1) | O(1) | **O(n)** | `min(counts)` is a scan (this is `min-stack.py`'s V0-1) |
+| **per-layer `min_values`** | O(1) | O(1) | O(1) | the answer for the current top was fixed when the top was pushed |
+
+#### The general form — one aggregate per layer
+
+```text
+Invariant:  min_values[i] = min(stack[0], stack[1], ..., stack[i])
+            -> min_values is NOT the elements sorted; it is a STATE per layer
+
+push(v):    min_values.append(min(v, min_values[-1]))   # new layer, new state
+pop():      min_values.pop()                             # the popped layer's state goes with it
+getMin():   min_values[-1]                               # the top layer's state IS the answer
+```
+
+Three consequences fall straight out of the invariant:
+
+- **The two arrays are always the same length** — every `push` appends to both, every
+  `pop` removes from both. No `if` in `pop()`, no comparing the popped value against the
+  min: `min_values[-1]` is a *state* that belongs to the layer, not a copy of an element,
+  so popping the layer is the whole job. That is why the template above does not need the
+  `stack.pop() == mins[-1]` check that the space-saving variant needs.
+- **Duplicates are free.** `push(0); push(0); pop()` leaves `min_values = [0]`, because
+  each `0` got its own layer. The variant that stores only *new* minima has to write `<=`
+  to get this right — the classic LC 155 bug (see
+  [monotonic_stack.md § 2-16](./monotonic_stack.md#2-16-min-stack-lc-155--auxiliary-non-increasing-stack-)).
+- **Any aggregate that is a function of the prefix works the same way** — `max`, a running
+  sum, a running GCD, a pending delta (LC 1381), a frequency count (LC 895). Replace
+  `min(...)` in `push` and nothing else changes.
+
+The same invariant fits in one stack of `(value, min_so_far)` tuples — one structure instead
+of two, same bounds:
+
 ```python
-# V1: the same invariant in one stack of (value, min_so_far) tuples
+# python
+# LC 155 - Min Stack, one stack of (value, min_so_far) tuples
+# IDEA: each layer carries its own minimum next to its value
 # time = O(1) per operation, space = O(n)
 class MinStack(object):
 
@@ -498,6 +630,18 @@ class MinStack(object):
     def getMin(self):
         return self.stack[-1][1]
 ```
+
+#### Why O(1) — the state was computed at push time
+
+`getMin()` reads one array cell. There is no scan, because the work was moved to `push`,
+and `push` only has to combine **two** numbers: the new value and the answer for the layer
+below. That is the whole argument — each operation touches the top of two arrays and
+nothing else.
+
+The point of *keeping every layer's state* instead of one `self.min` variable is `pop()`.
+A single variable can be lowered when a smaller value arrives, but cannot be **raised**
+back when that value leaves — the earlier minimum was overwritten. The array remembers it,
+because it was never overwritten; it was one layer down the whole time.
 
 #### The same idea beyond stacks — the classics ⭐⭐⭐⭐
 
@@ -580,14 +724,17 @@ prefix arrays in [prefix_sum.md](./prefix_sum.md), LC 121 in
 
 ### Template 5: Explicit Stack — Iterative Traversal — LC 144, LC 145 ⭐⭐⭐⭐
 
-> **Key Idea**: recursion's call stack, made **explicit**. Push the work not yet done, pop it to
-> do it. **Preorder** pushes `right` *before* `left`, because a stack flips whatever you feed it.
-> **Postorder** is the cheapest trick in trees: run preorder as `root → right → left`, then
-> **reverse the output**.
->
-> The *paused* form of the same stack — an iterator that must stop between elements — is
-> LC 173 / LC 341 in [stack_examples.md](./stack_examples.md), and the wider family is
-> [iterator.md](./iterator.md).
+**Recognise** — "iteratively", "without recursion", "follow-up: recursive solution is trivial,
+could you do it iteratively?", or a tree / list deep enough (n up to 10⁵ on a skewed tree) to
+overflow the call stack.
+
+**Key point** — the stack holds the work not yet done, and a stack hands work back in reverse
+order of arrival: push `right` before `left` and `left` is processed first. Postorder is
+preorder run as `root → right → left`, reversed.
+
+The *paused* form of the same stack — an iterator that must stop between elements — is
+LC 173 / LC 341 in [stack_examples.md](./stack_examples.md), and the wider family is
+[iterator.md](./iterator.md).
 
 ```python
 # python
@@ -602,7 +749,7 @@ class Solution(object):
         while stack:
             node = stack.pop()
             res.append(node.val)
-            # NOTE !!! right first -> left ends up on TOP
+            # right first -> left ends up on TOP
             if node.right:
                 stack.append(node.right)
             if node.left:
@@ -621,7 +768,7 @@ class Solution(object):
         while stack:
             node = stack.pop()
             res.append(node.val)
-            # NOTE !!! mirrored order compared with preorder
+            # mirrored push order compared with preorder
             if node.left:
                 stack.append(node.left)
             if node.right:
@@ -644,7 +791,7 @@ public List<Integer> preorderTraversal(TreeNode root) {
     while (!st.isEmpty()) {
         TreeNode node = st.pop();
         res.add(node.val);
-        /** NOTE !!! right pushed FIRST, so left is popped FIRST */
+        // right pushed FIRST, so left is popped FIRST
         if (node.right != null) {
             st.push(node.right);
         }
@@ -667,8 +814,7 @@ public List<Integer> postorderTraversal(TreeNode root) {
     st.push(root);
     while (!st.isEmpty()) {
         TreeNode node = st.pop();
-        /** NOTE !!! addFirst == "append then reverse", done incrementally */
-        res.addFirst(node.val);
+        res.addFirst(node.val);   // addFirst == "append, then reverse", done incrementally
         if (node.left != null) {
             st.push(node.left);
         }
@@ -680,31 +826,67 @@ public List<Integer> postorderTraversal(TreeNode root) {
 }
 ```
 
+**Complexity**
+- **Time O(n)**: `while stack` pops each node exactly once, and each pop pushes at most two children.
+- **Space O(h)** on the stack: it holds at most the pending siblings along one root-to-leaf
+  path — O(log n) when balanced, O(n) on a skewed tree. The `res[::-1]` copy for postorder is
+  output, O(n), not working space.
+
+**Traps**
+- Pushing `left` before `right` in preorder gives `root → right → left`; on `[1, 2, 3]`
+  (2 left, 3 right) it returns `[1, 3, 2]`.
+- `root = None` pushed onto the stack crashes on `node.val`; return `[]` first.
+- Postorder's reversal trick yields the *values*; it cannot be used when each node must be
+  *processed* after its children with side effects in that order (e.g. freeing them) — use a
+  `(node, visited)` flag instead.
+
+**Not this if** — the problem wants nodes level by level ("level order", "right side view",
+"minimum depth") → a FIFO queue, not a stack ([bfs.md](./bfs.md)).
+
+**Drill** — LC 144 · LC 145 · LC 94 *(inorder: walk left, pop, go right)* · LC 173 *(paused
+inorder as an iterator)* · LC 341 *(paused traversal of nested lists)*
+
 ---
 
 ### Template 6: Scope / Context Ledger — LC 388, LC 636 ⭐⭐⭐⭐⭐
 
-> **Key Idea**: the stack does not hold *characters* — it holds **the enclosing context** (a path prefix, a running function, an open tag). Entering a scope **pushes** context, leaving it **pops**, and the answer is computed against `stack[-1]` / `stack[depth]` — the context you are currently inside.
->
-> This is the pattern behind the highest-frequency Google stack questions, and it is *not* bracket matching: the "brackets" are implicit (indentation depth, start/end log events).
+**Recognise** — tab-indented or nested input ("file system as a string", "tags"), or
+`start` / `end` event logs ("exclusive time", "call stack"); any "who is my parent right now?"
+question answered in one left-to-right scan. Input length ≤ 10⁴ → O(n).
 
-```text
-Core Idea:
-  - Stack index == NESTING DEPTH. stack[d] = accumulated context at depth d.
-  - On entering depth d : trim the stack down to d, then push the new context
-  - On leaving  a scope : pop, and hand the accumulated value back to the parent
-  - The parent is ALWAYS stack[-1] — that is what makes it a stack problem
+**Key point** — stack index == nesting depth: `stack[d]` holds the context accumulated at depth
+`d` (a path prefix, a running function), so the parent of whatever is being read is always
+`stack[depth]` / `stack[-1]`.
 
-When to Use:
-  - Indented / tab-delimited input   -> depth = number of leading tabs (LC 388)
-  - start/end (or open/close) events -> the "running" item is the stack top (LC 636)
-  - Any "who is my parent?" question during a single left-to-right scan
+This is the pattern behind the highest-frequency Google stack questions, and it is *not*
+bracket matching: the "brackets" are implicit (indentation depth, start/end log events).
 
-Similar LC:
-  - LC 388  Longest Absolute File Path       (depth-indexed prefix lengths)
-  - LC 636  Exclusive Time of Functions      (running function = stack top)
-  - LC 591  Tag Validator                    (open-tag stack + scope rules)
-  - LC 71   Simplify Path                    (stack_examples.md; ".." pops the parent dir)
+```python
+# python
+# LC 388 - Longest Absolute File Path
+# IDEA: SCOPE STACK indexed by DEPTH — stack[d] = length of the path prefix at depth d
+# time = O(n), space = O(depth)
+class Solution(object):
+    def lengthLongestPath(self, input):
+        res = 0
+        stack = [0]   # stack[d] = prefix length at depth d (trailing '/' included)
+
+        for line in input.split('\n'):
+            name = line.lstrip('\t')
+            depth = len(line) - len(name)   # number of leading tabs
+
+            # we left deeper scopes -> trim the stack back to this depth
+            while len(stack) > depth + 1:
+                stack.pop()
+
+            if '.' in name:
+                # file: measure, never push (a file has no children)
+                res = max(res, stack[depth] + len(name))
+            else:
+                # dir: becomes the prefix for depth+1, +1 for the '/'
+                stack.append(stack[depth] + len(name) + 1)
+
+        return res
 ```
 
 ```java
@@ -716,12 +898,8 @@ public int lengthLongestPath(String input) {
 
     int res = 0;
 
-    /**
-     *  NOTE !!!
-     *   stack.get(d) = length of "dir1/dir2/.../" for the current branch at depth d
-     *   (already includes the trailing '/')
-     *   -> index in the list IS the nesting depth
-     */
+    // stack.get(d) = length of "dir1/dir2/.../" for the current branch at depth d,
+    // trailing '/' included -> the index in the list IS the nesting depth
     List<Integer> stack = new ArrayList<>();
     stack.add(0); // depth 0 has an empty prefix
 
@@ -734,7 +912,7 @@ public int lengthLongestPath(String input) {
         }
         String name = line.substring(depth);
 
-        /** NOTE !!! we LEFT the previous deeper scopes -> pop back to `depth` */
+        // we LEFT the previous deeper scopes -> pop back to `depth`
         while (stack.size() > depth + 1) {
             stack.remove(stack.size() - 1);
         }
@@ -752,65 +930,41 @@ public int lengthLongestPath(String input) {
 }
 ```
 
-```python
-# python
-# LC 388 - Longest Absolute File Path
-# IDEA: SCOPE STACK indexed by DEPTH — stack[d] = length of the path prefix at depth d
-# time = O(n), space = O(depth)
-class Solution(object):
-    def lengthLongestPath(self, input):
-        res = 0
-        stack = [0]   # stack[d] = prefix length at depth d (trailing '/' included)
+**Complexity**
+- **Time O(n)**: `for line in input.split('\n')` touches each character a constant number of
+  times; the trim `while` pops each pushed directory at most once.
+- **Space O(depth)**: `stack.append(...)` grows only while the input nests deeper, one entry per open directory.
 
-        for line in input.split('\n'):
-            name = line.lstrip('\t')
-            depth = len(line) - len(name)   # number of leading tabs
+**Dry run**
 
-            # NOTE !!! we left deeper scopes -> trim the stack back to this depth
-            while len(stack) > depth + 1:
-                stack.pop()
-
-            if '.' in name:
-                # file: measure, never push (a file has no children)
-                res = max(res, stack[depth] + len(name))
-            else:
-                # dir: becomes the prefix for depth+1, +1 for the '/'
-                stack.append(stack[depth] + len(name) + 1)
-
-        return res
-
-# Trace: "dir\n\tsubdir2\n\t\tfile.ext"
-#   "dir"        d=0 -> stack = [0, 4]           ("dir/")
-#   "subdir2"    d=1 -> stack = [0, 4, 12]       ("dir/subdir2/")
-#   "file.ext"   d=2 -> res = 12 + 8 = 20
+```text
+"dir\n\tsubdir2\n\t\tfile.ext"
+line         depth   stack after            res
+"dir"        0       [0, 4]      ("dir/")
+"subdir2"    1       [0, 4, 12]  ("dir/subdir2/")
+"file.ext"   2       [0, 4, 12]             12 + 8 = 20
 ```
 
-> **Variant — overwrite instead of pop** (the form README files LC 388 under Hash_table). The trim loop is optional. The input is a pre-order listing, so a line at depth `d` reads only `path_len[d]`, and the last write to that slot was made by its own parent — no line at depth `≤ d-1` sits between the two. Deeper stale slots are never read before they are rewritten, so a map (or array) indexed by depth replaces the stack. Same `O(n)`; what it teaches is that the ledger is really *the last write per depth*.
+**Traps**
+- Forgetting the trim: `"a\n\tb\nc\n\td.txt"` would measure `d.txt` under `a/b/` instead of `c/`.
+- Pushing a file: a file never has children, so a later sibling would read the wrong prefix.
+- Forgetting the `+ 1` for `/`: `"dir\n\tfile.ext"` returns 11 instead of 12.
+- No file at all (`"a"`): the answer is `0`, not the longest directory path.
 
-```java
-// java
-// LC 388 - Longest Absolute File Path
-// IDEA: HASH MAP by DEPTH — pathLen[d] = prefix length for children at depth d; overwrite, never pop
-// time = O(n), space = O(depth)
-public int lengthLongestPath(String input) {
-    int res = 0;
-    Map<Integer, Integer> pathLen = new HashMap<>();
-    pathLen.put(0, 0); // depth-0 entries have an empty prefix
+**Not this if** — the nesting is written with explicit brackets and must be *validated* →
+[Template 2](#template-2-bracket-matching--lc-20-); it must be *evaluated* (calculators,
+decode string) → [stack_expression_parsing.md](./stack_expression_parsing.md).
 
-    for (String line : input.split("\n")) {
-        int depth = line.lastIndexOf('\t') + 1;   // tabs are leading and contiguous
-        String name = line.substring(depth);
+**Drill** — LC 71 *(`..` pops the parent dir)* · LC 388 · LC 636 · LC 591 *(open-tag stack plus CDATA rules)*
 
-        if (name.contains(".")) {
-            res = Math.max(res, pathLen.get(depth) + name.length());
-        } else {
-            // NOTE !!! overwrite the slot for depth+1 — any stale deeper slot is rewritten before it is read
-            pathLen.put(depth + 1, pathLen.get(depth) + name.length() + 1);
-        }
-    }
-    return res;
-}
-```
+#### Variant: overwrite the depth slot instead of popping — LC 388
+
+> **Key point** — the input is a pre-order listing, so a line at depth `d` reads only
+> `path_len[d]`, and the last write to that slot was made by its own parent. Deeper stale slots
+> are never read before they are rewritten, so the ledger is really *the last write per depth*.
+
+**Reduces to**: [Template 6](#template-6-scope--context-ledger--lc-388-lc-636-) — with the trim
+loop dropped. This is the form README files LC 388 under Hash_table. Same `O(n)`.
 
 ```python
 # python
@@ -829,7 +983,7 @@ class Solution(object):
             if '.' in name:
                 res = max(res, path_len[depth] + len(name))
             else:
-                # NOTE !!! overwrite the slot for depth+1 — any stale deeper slot is rewritten before it is read
+                # overwrite the slot for depth+1 — a stale deeper slot is rewritten before it is read
                 path_len[depth + 1] = path_len[depth] + len(name) + 1
 
         return res
@@ -837,45 +991,37 @@ class Solution(object):
 
 ```java
 // java
-// LC 636 - Exclusive Time of Functions
-// IDEA: SCOPE STACK of function ids — the RUNNING function is always the stack top
-// time = O(n), space = O(n)
-public int[] exclusiveTime(int n, List<String> logs) {
+// LC 388 - Longest Absolute File Path
+// IDEA: HASH MAP by DEPTH — pathLen[d] = prefix length for children at depth d; overwrite, never pop
+// time = O(n), space = O(depth)
+public int lengthLongestPath(String input) {
+    int res = 0;
+    Map<Integer, Integer> pathLen = new HashMap<>();
+    pathLen.put(0, 0); // depth-0 entries have an empty prefix
 
-    int[] res = new int[n];
-    Deque<Integer> stack = new ArrayDeque<>(); // ids of functions currently RUNNING
-    int prev = 0;  // timestamp where the current "run slice" started
+    for (String line : input.split("\n")) {
+        int depth = line.lastIndexOf('\t') + 1;   // tabs are leading and contiguous
+        String name = line.substring(depth);
 
-    for (String log : logs) {
-        String[] p = log.split(":");       // {id, "start"|"end", timestamp}
-        int id = Integer.parseInt(p[0]);
-        int t = Integer.parseInt(p[2]);
-
-        if (p[1].equals("start")) {
-            /**
-             *  NOTE !!!
-             *   the caller (stack top) ran during [prev, t) -> credit it,
-             *   then it gets PREEMPTED by the new callee
-             */
-            if (!stack.isEmpty()) {
-                res[stack.peek()] += t - prev;
-            }
-            stack.push(id);
-            prev = t;
+        if (name.contains(".")) {
+            res = Math.max(res, pathLen.get(depth) + name.length());
         } else {
-            /**
-             *  NOTE !!!
-             *   "end at t" is INCLUSIVE -> the slice is [prev, t], hence `+ 1`
-             *   and the caller resumes at t + 1
-             */
-            res[stack.pop()] += t - prev + 1;
-            prev = t + 1;
+            // overwrite the slot for depth+1 — a stale deeper slot is rewritten before it is read
+            pathLen.put(depth + 1, pathLen.get(depth) + name.length() + 1);
         }
     }
-
     return res;
 }
 ```
+
+#### Exclusive Time of Functions — LC 636
+
+> **Key point** — the stack is the call stack the problem describes, so its top is the function
+> on the CPU *right now*; `prev` is the first time unit nobody has been credited for yet. Every
+> log line closes the slice `[prev, …]`, credits it to the old top, then moves the cursor.
+
+**Reduces to**: [Template 6](#template-6-scope--context-ledger--lc-388-lc-636-) — the context is
+"which function is running", and an `end` event pops it.
 
 ```python
 # python
@@ -906,10 +1052,39 @@ class Solution(object):
         return res
 ```
 
-**LC 636 — what the stack and `prev` each hold.** The stack is the call stack the problem
-describes: its top is the function on the CPU *right now*. `prev` is a single cursor over the
-timeline — the first time unit nobody has been credited for yet. Every log line closes the
-slice `[prev, …]` and credits it to whoever was on top, then moves the cursor.
+```java
+// java
+// LC 636 - Exclusive Time of Functions
+// IDEA: SCOPE STACK of function ids — the RUNNING function is always the stack top
+// time = O(n), space = O(n)
+public int[] exclusiveTime(int n, List<String> logs) {
+
+    int[] res = new int[n];
+    Deque<Integer> stack = new ArrayDeque<>(); // ids of functions currently RUNNING
+    int prev = 0;  // timestamp where the current "run slice" started
+
+    for (String log : logs) {
+        String[] p = log.split(":");       // {id, "start"|"end", timestamp}
+        int id = Integer.parseInt(p[0]);
+        int t = Integer.parseInt(p[2]);
+
+        if (p[1].equals("start")) {
+            // the caller (stack top) ran during [prev, t) -> credit it, then it is PREEMPTED
+            if (!stack.isEmpty()) {
+                res[stack.peek()] += t - prev;
+            }
+            stack.push(id);
+            prev = t;
+        } else {
+            // "end at t" is INCLUSIVE -> the slice is [prev, t], hence `+ 1`; the caller resumes at t + 1
+            res[stack.pop()] += t - prev + 1;
+            prev = t + 1;
+        }
+    }
+
+    return res;
+}
+```
 
 ```text
 n = 2, logs = ["0:start:0","0:start:2","0:end:5","1:start:6","1:end:6","0:end:7"]
@@ -966,6 +1141,14 @@ Pitfalls specific to LC 636:
 - **A zero-length slice is fine.** `1:start:6` right after `prev = 6` credits `0`; no special case.
 
 ---
+
+## Drill Path
+
+| Stage | Problems (easy → hard) | What it adds |
+|---|---|---|
+| **Core** ⭐ | LC 20 · LC 155 · LC 739 | bracket matching, a per-layer aggregate, the monotonic stack — one each |
+| **Practice** | LC 1047 · LC 144 · LC 232 · LC 1249 · LC 636 · LC 388 | cancel against the top, explicit traversal, two stacks as a queue, an index stack, the scope ledger twice |
+| **Stretch** | LC 895 · LC 32 · LC 591 | one stack per frequency; the `-1` base sentinel; a full tag grammar |
 
 ## Summary & Quick Reference
 

@@ -135,7 +135,7 @@
 - **Key Trick**: Two-case loop
   1. **Case 1 — constraint violated**: poll `second`, append it, decrement, re-add if > 0; then re-add `first` (it was NOT consumed)
   2. **Case 2 — safe**: append `first`, decrement, re-add if > 0
-- **See**: [Java Template 7](#template-7-greedy-string-building-with-consecutive-constraint--lc-1405) — the run-length cap (1 vs 2) is what makes LC 767 and LC 1405 differ
+- **See**: [Template 7](#template-7-greedy-build-with-a-run-length-cap--lc-1405) — the run-length cap (1 vs 2) is what makes LC 767 and LC 1405 differ
 
 #### **Pattern 13: PQ + Cooldown Queue (k-Distance Scheduling)** ⭐⭐⭐⭐
 - **Description**: Greedily pick the most frequent element from a max-heap, then lock it in a cooldown queue for k steps before it can be reused. This is the canonical pattern for "same element must be at least k distance apart" problems.
@@ -159,25 +159,42 @@
 - [Priority Queue Implementation Notes](https://docs.python.org/3/library/heapq.html#priority-queue-implementation-notes)
 
 
+## Recognition
+
+Constraint cues come from the ruler in [complexity_cheatsheet.md](./complexity_cheatsheet.md). A heap is the answer when you need the current extreme **repeatedly** while the set changes; a one-off answer over static data usually has something cheaper.
+
+| Signal in the statement | Constraint cue | Reach for | Not this if |
+|---|---|---|---|
+| "kth largest / kth smallest", "k closest" | n ≤ 10⁵, k ≪ n → O(n log k) | [Template 1](#template-1-size-k-min-heap-for-the-kth-largest--lc-215-) size-k heap | one query over a static array → quickselect, O(n) average ([2_pointers_quickselect.md](./2_pointers_quickselect.md)) |
+| "top k most frequent", "k most common words" | distinct values ≤ n | [Template 2](#template-2-count-then-a-size-k-heap-on-the-count--lc-347-) count, then size-k heap | counts bounded by n and k close to n → bucket sort, O(n) |
+| "merge k sorted lists / arrays", "kth smallest in a sorted matrix" | k lists, N total → O(N log k) | [Template 3](#template-3-k-way-merge--lc-23-) k-way merge | only two sources → a plain two-pointer merge |
+| "median of a data stream", "balance two halves" | many `add` + `query` calls | [Template 4](#template-4-two-heaps-for-a-running-median--lc-295-) two heaps | the window also *removes* values → lazy deletion ([heap_advanced.md](./heap_advanced.md#1-lazy-deletion--heap--hashmap-of-truth-)) |
+| "longest subarray where max − min ≤ limit", variable window needing max **and** min | n ≤ 10⁵ | [Template 5](#template-5-two-heaps-with-index-expiry--lc-1438-) two heaps + index expiry | fixed-size window, one extreme → monotonic deque, O(n) ([monotonic_queue.md](./monotonic_queue.md)) |
+| "minimum number of meeting rooms / groups", "max overlapping intervals" | n ≤ 10⁴–10⁵ intervals | [Template 6](#template-6-min-heap-of-end-times--lc-253-) min-heap of end times | each interval costs **one day** of its span (LC 1353) → day sweep, see Template 6's variation |
+| "no three identical letters in a row", "no two adjacent equal" | alphabet ≤ 26 | [Template 7](#template-7-greedy-build-with-a-run-length-cap--lc-1405) greedy + run-length cap | the gap is a general k → Template 8 |
+| "same task / letter at least k apart", "cooldown n" | alphabet ≤ 26 | [Template 8](#template-8-max-heap--cooldown-queue--lc-358) heap + cooldown queue | only the **length** is asked (LC 621) → the counting formula is O(n) |
+| weighted shortest path, non-negative edges | V, E ≤ 10⁵ | [Dijkstra.md](./Dijkstra.md) — the PQ algorithm lives there | unit weights → BFS ([bfs.md](./bfs.md)) |
+| a pushed value later changes or expires | | [heap_advanced.md § Lazy Deletion](./heap_advanced.md#1-lazy-deletion--heap--hashmap-of-truth-) | |
+
 ## Templates & Algorithms
 
 ### Template Comparison Table
 
-The canonical templates live here in **both languages**. The tier-4 specialisations were split out
-into [heap_advanced.md](./heap_advanced.md) — the right-hand column says where each one went.
+The canonical templates live here, each as a card in **both languages**, Python first. The tier-4
+specialisations were split out into [heap_advanced.md](./heap_advanced.md) — the right-hand column
+says where each one went.
 
 | Template | Use case | Complexity | Where |
 |---|---|---|---|
-| **Universal Heap** | general min/max access | O(log N) push/pop | below |
-| **Kth Element** | kth largest / smallest | O(N log k) | below |
-| **Top K Frequency** | most / least frequent | O(N log k) | below |
-| **Merge K Sources** | merge sorted arrays / lists | O(N log k) | below |
-| **Two Heap System** | median of a stream | O(log N) per op | below |
-| **Window Extrema (2 heaps)** | variable window needing max **and** min | O(N log N) | below |
-| **Interval Scheduling** | meeting rooms, one event per day | O(N log N) | below |
-| **Greedy + Constraint** | build a string with no k-in-a-row | O(N log Σ) | below |
-| **PQ + Cooldown Queue** | k-distance / task scheduling | O(N log Σ) | below |
-| **Graph Shortest Path** | Dijkstra with a PQ | O(E log V) | [Dijkstra.md](./Dijkstra.md) |
+| **Size-k heap** | kth largest / smallest | O(N log k) | [Template 1](#template-1-size-k-min-heap-for-the-kth-largest--lc-215-) |
+| **Count + size-k heap** | most / least frequent, k closest | O(N log k) | [Template 2](#template-2-count-then-a-size-k-heap-on-the-count--lc-347-) |
+| **K-way merge** | merge sorted lists / arrays | O(N log k) | [Template 3](#template-3-k-way-merge--lc-23-) |
+| **Two heaps (median)** | median of a stream | O(log N) per add | [Template 4](#template-4-two-heaps-for-a-running-median--lc-295-) |
+| **Two heaps + index expiry** | variable window needing max **and** min | O(N log N) | [Template 5](#template-5-two-heaps-with-index-expiry--lc-1438-) |
+| **Min-heap of end times** | meeting rooms, overlap count | O(N log N) | [Template 6](#template-6-min-heap-of-end-times--lc-253-) |
+| **Greedy + run-length cap** | build a string with no k-in-a-row | O(N log Σ) | [Template 7](#template-7-greedy-build-with-a-run-length-cap--lc-1405) |
+| **Heap + cooldown queue** | k-distance / task scheduling | O(N log Σ) | [Template 8](#template-8-max-heap--cooldown-queue--lc-358) |
+| **Graph shortest path** | Dijkstra with a PQ | O(E log V) | [Dijkstra.md](./Dijkstra.md) |
 | **Lazy Deletion** | pushed values change or expire | O(log N) amortised | [heap_advanced.md](./heap_advanced.md#1-lazy-deletion--heap--hashmap-of-truth-) |
 | **Sweep + Alive Heap** | max/min over intervals covering x | O(N log N) | [heap_advanced.md](./heap_advanced.md#2-sweep-line--max-heap-of-alive-intervals-) |
 | **Bounded Regret Heap** | k free passes + a budget | O(N log k) | [heap_advanced.md](./heap_advanced.md#3-bounded-regret-heap--keep-the-k-best-pay-for-the-rest-) |
@@ -189,251 +206,335 @@ into [heap_advanced.md](./heap_advanced.md) — the right-hand column says where
 | **Frequency Uniqueness** | make all frequencies distinct | O(N + K log K) | [heap_advanced.md](./heap_advanced.md#9-frequency-uniqueness--greedy--heap--hashset) |
 | **Heap + Dedup Set** | uniqueness constraint | O(log N) | [heap_advanced.md](./heap_advanced.md#10-heap-with-deduplication) |
 
-### Universal Heap Template
-```python
-def solve_with_heap(nums, k=None):
-    import heapq
-    
-    # Create heap (min heap by default in Python)
-    heap = []
-    
-    # Build heap approach 1: Insert elements one by one
-    for num in nums:
-        heapq.heappush(heap, num)
-    
-    # Build heap approach 2: Heapify existing array
-    # heapq.heapify(nums)  # O(N) time
-    
-    # Access min element (don't remove): heap[0]
-    # Remove min element: heapq.heappop(heap)
-    # Insert element: heapq.heappush(heap, value)
-    
-    # For max heap, use negative values
-    # max_heap = [-x for x in nums]
-    # heapq.heapify(max_heap)
-    # max_val = -max_heap[0]  # Get max without removing
-    # max_val = -heapq.heappop(max_heap)  # Remove and get max
-    
-    return heap
-```
+The basic `heapq` / `PriorityQueue` calls every card uses (min-heap, max-heap by negation or
+`reverseOrder()`, `heapify`, peek) are in [Language APIs](#language-apis) below.
 
-```java
-// Java Universal Template
-public class HeapSolution {
-    public void solveWithHeap(int[] nums, int k) {
-        // Min Heap
-        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
-        
-        // Max Heap
-        PriorityQueue<Integer> maxHeap = new PriorityQueue<>((a, b) -> Integer.compare(b, a));
-        
-        // Add elements
-        for (int num : nums) {
-            minHeap.offer(num);
-        }
-        
-        // Access min: minHeap.peek()
-        // Remove min: minHeap.poll()
-        // Add element: minHeap.offer(value)
-    }
-}
-```
+### Template 1: Size-k Min-Heap for the Kth Largest — LC 215 ⭐⭐⭐⭐⭐
 
+**Recognise** — "kth largest", "kth smallest", "k closest", "the k strongest". n ≤ 10⁵ with
+k much smaller than n → O(n log k) is the expected bound.
 
-### Specific Pattern Templates
-
-#### **1. Kth Element Template**
-
-**💡 Key Insight:**
-- **`kth smallest element` = biggest element from a Max PQ of size k**
-  - Use **max heap** of size k to find kth smallest
-  - The root (peek) of the max heap is the kth smallest element
-  - Why? Keep only the k smallest elements; the largest among them is the kth smallest overall
-
-- **`kth largest element` = smallest element from a Min PQ of size k**
-  - Use **min heap** of size k to find kth largest
-  - The root (peek) of the min heap is the kth largest element
-  - Why? Keep only the k largest elements; the smallest among them is the kth largest overall
-
-```python
-def find_kth_largest(nums, k):
-    import heapq
-
-    # Method 1: Min heap of size k
-    heap = []
-    for num in nums:
-        if len(heap) < k:
-            heapq.heappush(heap, num)
-        elif num > heap[0]:
-            heapq.heapreplace(heap, num)
-
-    return heap[0]  # kth largest
-
-def find_kth_smallest(nums, k):
-    import heapq
-
-    # Method 1: Max heap of size k (use negative values)
-    heap = []
-    for num in nums:
-        if len(heap) < k:
-            heapq.heappush(heap, -num)
-        elif num < -heap[0]:
-            heapq.heapreplace(heap, -num)
-
-    return -heap[0]  # kth smallest
-```
-
-**Variations of this template** (same size-k invariant, only the *comparator* changes):
-
-| LC | Problem | The twist |
-|----|---------|-----------|
-| 1985 | Find the Kth Largest Integer in the Array | Elements are **numeric strings** → default lexicographic order is wrong. Compare by `(len, string)`: longer string = bigger number, equal length falls back to lexicographic. Min-heap of size k, answer = `heap[0]`. |
-| 1337 | The K Weakest Rows in a Matrix | Push the tuple `(soldierCount, rowIndex)` so ties break by row index; keep a max-heap of size k, then read out. |
+**Key point** — the heap holds the k largest values seen so far, so its **top (the smallest of
+those k) is the kth largest**. Mirror it for the kth smallest: a size-k **max**-heap of the k
+smallest, whose top is the answer.
 
 ```python
 # python
-# LC 1985 - Find the Kth Largest Integer in the Array
-# time = O(N log k), space = O(k)
-# IDEA: kth largest -> min-heap of size k; key = (len, s) makes string order == numeric order
+# LC 215 - Kth Largest Element in an Array
+# IDEA: keep a min-heap of the k largest seen so far; its root is the kth largest
+# time = O(n log k), space = O(k)
 import heapq
 
-def kthLargestNumber(nums, k):
-    heap = []
-    for s in nums:
-        heapq.heappush(heap, (len(s), s))
-        if len(heap) > k:
-            heapq.heappop(heap)
-    return heap[0][1]
+def findKthLargest(nums, k):
+    min_heap = []
+    for num in nums:
+        heapq.heappush(min_heap, num)
+        if len(min_heap) > k:
+            heapq.heappop(min_heap)   # drop the smallest; the k largest stay
+    return min_heap[0]                # the smallest of the k largest = the kth largest
 ```
 
 ```java
 // java
-// LC 1985 - Find the Kth Largest Integer in the Array
-// time = O(N log k), space = O(k)
-// IDEA: min-heap of size k; comparator = length first, then lexicographic
-public String kthLargestNumber(String[] nums, int k) {
-    PriorityQueue<String> minHeap = new PriorityQueue<>(
-        (a, b) -> a.length() != b.length() ? Integer.compare(a.length(), b.length()) : a.compareTo(b));
-
-    for (String s : nums) {
-        minHeap.offer(s);
-        if (minHeap.size() > k) minHeap.poll();
+// LC 215 - Kth Largest Element in an Array
+// IDEA: keep a min-heap of the k largest seen so far; its root is the kth largest
+// time = O(n log k), space = O(k)
+public int findKthLargest(int[] nums, int k) {
+    PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+    for (int num : nums) {
+        minHeap.add(num);
+        if (minHeap.size() > k) {
+            minHeap.poll();           // drop the smallest; the k largest stay
+        }
     }
     return minHeap.peek();
 }
 ```
 
-#### **2. Top K Frequency Template**
+**Complexity**
+- **Time O(n log k)**: the loop runs n times, and each `heappush` / `heappop` works on a heap
+  that never holds more than k + 1 items.
+- **Space O(k)**: the `len(min_heap) > k` pop caps the heap at k.
+
+**Traps**
+- Wrong direction: a **max**-heap for "kth largest" keeps the k *smallest*. `[3,2,1,5,6,4]`,
+  k = 2 then returns 2 instead of 5. Say the invariant out loud before coding.
+- Duplicates count: LC 215 `[3,2,3,1,2,4,5,5,6]`, k = 4 is **4** — do not dedupe.
+- Numeric strings (LC 1985) compare lexicographically: `"10" < "6"`. Key the heap by
+  `(len(s), s)` in Python, and compare length first, then `compareTo`, in Java.
+- Letting the heap grow to n and popping k times at the end is O(n log n) — the cap is the point.
+
+**Not this if** — a single query over a static array: quickselect is O(n) average
+([2_pointers_quickselect.md](./2_pointers_quickselect.md)). The heap wins when values arrive as a
+stream (LC 703) or the kth element is asked repeatedly.
+
+**Drill** — LC 215 ⭐ · LC 703 *(the same heap, kept across calls)* · LC 1985 *(key = `(len, s)`)* ·
+LC 1337 *(key = `(soldiers, row)`)* · LC 378 *(kth smallest in a sorted matrix — or Template 3)*
+
+### Template 2: Count, Then a Size-k Heap on the Count — LC 347 ⭐⭐⭐⭐
+
+**Recognise** — "the k most frequent", "top k words", "k closest points": the ranking key is
+**derived** (a count, a distance), not the value itself. Distinct values ≤ n.
+
+**Key point** — a hash map turns the input into `(key, item)` pairs once; from there it is
+Template 1 on the **key**. The size-k min-heap holds the k best pairs, and its top is the weakest
+one still in.
+
 ```python
-def top_k_frequent(nums, k):
-    from collections import Counter
-    import heapq
-    
-    # Count frequencies
-    count = Counter(nums)
-    
-    # Method 1: Min heap approach
-    heap = []
+# python
+# LC 347 - Top K Frequent Elements
+# IDEA: count with a hash map, then keep a min-heap of the k highest (freq, num) pairs
+# time = O(n log k), space = O(n)
+import heapq
+from collections import Counter
+
+def topKFrequent(nums, k):
+    count = Counter(nums)                   # num -> frequency
+    heap = []                               # (freq, num), at most k of them
     for num, freq in count.items():
         heapq.heappush(heap, (freq, num))
         if len(heap) > k:
-            heapq.heappop(heap)
-    
-    return [item[1] for item in heap]
-    
-    # Method 2: Max heap approach
-    # heap = [(-freq, num) for num, freq in count.items()]
-    # heapq.heapify(heap)
-    # return [heapq.heappop(heap)[1] for _ in range(k)]
+            heapq.heappop(heap)             # evict the least frequent
+    return [num for freq, num in heap]
 ```
 
-**Variations of this template** (count first, then let a heap order the counts):
+```java
+// java
+// LC 347 - Top K Frequent Elements
+// IDEA: count with a hash map, then a min-heap of keys ordered by count, capped at k
+// time = O(n log k), space = O(n)
+public int[] topKFrequent(int[] nums, int k) {
+    Map<Integer, Integer> count = new HashMap<>();
+    for (int n : nums) {
+        count.put(n, count.getOrDefault(n, 0) + 1);
+    }
+    PriorityQueue<Integer> minHeap = new PriorityQueue<>(
+        (a, b) -> Integer.compare(count.get(a), count.get(b)));   // least frequent on top
+    for (int key : count.keySet()) {
+        minHeap.offer(key);
+        if (minHeap.size() > k) {
+            minHeap.poll();
+        }
+    }
+    int[] result = new int[k];
+    for (int i = k - 1; i >= 0; i--) {
+        result[i] = minHeap.poll();          // most frequent ends up first
+    }
+    return result;
+}
+```
 
-| LC | Problem | The twist |
-|----|---------|-----------|
-| 451 | Sort Characters By Frequency | Same `Counter` + **max heap**, but you *emit* `char * freq` instead of just the key. Bucket sort is the O(N) alternative. |
-| 1338 | Reduce Array Size to The Half | Max heap of counts; keep popping and accumulating until `removed >= n/2`; answer = number of pops. Greedy = always delete the most frequent value. |
-| 1405 | Longest Happy String | Max heap on **remaining count** + a "last used letter" guard — same shape as LC 767 Reorganize String, but the guard allows the same letter **twice** in a row (`aab` is legal, `aaa` is not). |
-| 1054 | Distant Barcodes | LC 767 with distance 2: max heap on remaining count, fill even indices first then odd indices. |
+**Complexity**
+- **Time O(n log k)**: counting is one O(n) pass; the heap loop runs once per distinct value
+  (≤ n) on a heap capped at k.
+- **Space O(n)**: the `count` map holds every distinct value; the heap adds O(k).
 
-#### **3. Merge K Sources Template**
+**Traps**
+- **Ties need an order the heap can compare.** Python compares the next tuple field when keys tie,
+  so `(freq, obj)` with an unorderable payload raises `TypeError` — push `(freq, counter, obj)`
+  (see [Tie-Breaking](#tie-breaking)). Java needs the tie-break written into the comparator.
+- LC 692 wants ties broken **alphabetically** while the heap evicts the *least* frequent — so the
+  eviction comparator is `(freq asc, word desc)`, the reverse of the output order.
+- A custom-object heap: Python needs `__lt__` on the class (or a tuple key); Java needs a
+  comparator built from `Integer.compare`, never `a - b`.
+
+**Not this if** — k is close to n and counts are bounded by n: bucket sort by frequency is O(n)
+(the LC 347 follow-up). A static "sort everything by key" with no k is just `sorted`.
+
+**Drill** — LC 347 ⭐ · LC 973 *(key = squared distance)* · LC 692 *(reverse tie-break)* ·
+LC 451 *(emit `char * freq`)* · LC 1338 *(pop the most frequent until half is gone)*
+
+### Template 3: K-Way Merge — LC 23 ⭐⭐⭐⭐⭐
+
+**Recognise** — "merge k sorted lists / arrays", "smallest range covering k lists", "kth smallest
+pair / in a sorted matrix". k sources, N items in total → O(N log k).
+
+**Key point** — the heap holds **exactly one candidate per non-empty source**, its current head.
+The global minimum is always one of those heads, so popping it and pushing that source's next
+item keeps the invariant.
+
 ```python
-def merge_k_sorted_arrays(arrays):
-    import heapq
-    
+# python
+# LC 23 - Merge k Sorted Lists
+# IDEA: min-heap of (head value, list index, node); pop the smallest, push its successor
+# time = O(N log k), space = O(k)
+import heapq
+
+def mergeKLists(lists):
     heap = []
-    result = []
-    
-    # Initialize heap with first element from each array
-    for i, arr in enumerate(arrays):
-        if arr:  # Check if array is not empty
-            heapq.heappush(heap, (arr[0], i, 0))
-    
+    for i, node in enumerate(lists):
+        if node:
+            heapq.heappush(heap, (node.val, i, node))   # i breaks ties before node is compared
+    dummy = ListNode()
+    tail = dummy
     while heap:
-        val, array_idx, element_idx = heapq.heappop(heap)
-        result.append(val)
-        
-        # Add next element from same array
-        if element_idx + 1 < len(arrays[array_idx]):
-            next_val = arrays[array_idx][element_idx + 1]
-            heapq.heappush(heap, (next_val, array_idx, element_idx + 1))
-    
-    return result
+        val, i, node = heapq.heappop(heap)
+        tail.next = node
+        tail = node
+        if node.next:
+            heapq.heappush(heap, (node.next.val, i, node.next))
+    return dummy.next
 ```
 
-**Variants** — merging *nested* sources (LC 1439) or a *virtual* grid (LC 373 / 378), plus the
-LC 632 "smallest covering range" twist: [heap_advanced.md § K-Way Merge Variants](./heap_advanced.md#11-k-way-merge-variants).
+```java
+// java
+// LC 23 - Merge k Sorted Lists
+// IDEA: min-heap of current list heads ordered by value; pop the smallest, offer its next
+// time = O(N log k), space = O(k)
+public ListNode mergeKLists(ListNode[] lists) {
+    PriorityQueue<ListNode> minHeap = new PriorityQueue<>((a, b) -> Integer.compare(a.val, b.val));
+    for (ListNode head : lists) {
+        if (head != null) {
+            minHeap.offer(head);
+        }
+    }
+    ListNode dummy = new ListNode(0);
+    ListNode tail = dummy;
+    while (!minHeap.isEmpty()) {
+        ListNode node = minHeap.poll();
+        tail.next = node;
+        tail = node;
+        if (node.next != null) {
+            minHeap.offer(node.next);
+        }
+    }
+    return dummy.next;
+}
+```
 
-#### **4. Two Heap System Template (Median)**
+**Complexity**
+- **Time O(N log k)**: every one of the N nodes is pushed once and popped once, on a heap that
+  never holds more than k entries (one per source).
+- **Space O(k)**: the heap; the output reuses the input nodes.
+
+**Traps**
+- `(node.val, node)` without the index: two equal values make Python compare `ListNode`s →
+  `TypeError` on LC 23 `[[1,4,5],[1,3,4],[2,6]]`. The source index is unique among the heap's
+  entries, so it always settles the tie.
+- `[]` and `[None]` are both valid LC 23 inputs: skip empty sources when seeding, and return
+  `dummy.next` (which is `None`).
+- For arrays, push `(value, source, index)` and advance `index + 1` — the same shape with an index
+  where the `next` pointer was.
+
+**Not this if** — only two sources: a plain two-pointer merge is O(N) with no heap. When the
+answer is a single kth element and the sources are rows of a matrix, binary search on the value
+range can beat the heap (LC 378).
+
+**Drill** — LC 23 ⭐ · LC 373 *(a virtual grid of pairs)* · LC 378 *(rows as sources)* ·
+LC 632 *(track the max of the k heads too)* · LC 1439 *(merge row by row)* — variants in
+[heap_advanced.md § K-Way Merge Variants](./heap_advanced.md#11-k-way-merge-variants)
+
+### Template 4: Two Heaps for a Running Median — LC 295 ⭐⭐⭐⭐⭐
+
+**Recognise** — "median of a data stream", "after each insertion, report the middle", "balance
+two halves". Many interleaved `add` / `query` calls, so re-sorting each time (O(n log n)) is out.
+
+**Key point** — `small` (a max-heap) holds the lower half and `large` (a min-heap) the upper half;
+**every value in `small` ≤ every value in `large`**, and the sizes differ by at most one. The
+median is then read off the two tops in O(1).
+
 ```python
+# python
+# LC 295 - Find Median from Data Stream
+# IDEA: max-heap `small` (negated) for the lower half, min-heap `large` for the upper half;
+#       route every number through the other heap so the halves stay ordered and balanced
+# time = O(log n) per addNum, O(1) per findMedian, space = O(n)
+import heapq
+
 class MedianFinder:
     def __init__(self):
-        import heapq
-        self.small = []  # max heap (use negative values)
-        self.large = []  # min heap
-    
+        self.small = []   # max-heap via negation: the lower half
+        self.large = []   # min-heap: the upper half; len(large) == len(small) or one more
+
     def addNum(self, num):
-        import heapq
-        
-        # Add to appropriate heap
         if len(self.small) == len(self.large):
+            # pass num through small so only the lower half's max moves up
             heapq.heappush(self.large, -heapq.heappushpop(self.small, -num))
         else:
             heapq.heappush(self.small, -heapq.heappushpop(self.large, num))
-    
+
     def findMedian(self):
         if len(self.small) == len(self.large):
             return (self.large[0] - self.small[0]) / 2.0
-        else:
-            return float(self.large[0])
+        return float(self.large[0])
 ```
 
-#### **5. Sliding Window Extrema — Two Heaps + Index Expiry** ⭐⭐⭐⭐
+```java
+// java
+// LC 295 - Find Median from Data Stream
+// IDEA: max-heap `small` for the lower half, min-heap `large` for the upper half;
+//       push through small, move its max to large, then rebalance so small is never shorter
+// time = O(log n) per addNum, O(1) per findMedian, space = O(n)
+class MedianFinder {
+    private PriorityQueue<Integer> small = new PriorityQueue<>(Collections.reverseOrder());
+    private PriorityQueue<Integer> large = new PriorityQueue<>();
 
-**Core Idea**
+    public void addNum(int num) {
+        small.offer(num);
+        large.offer(small.poll());          // the lower half's max crosses over: halves stay ordered
+        if (large.size() > small.size()) {
+            small.offer(large.poll());      // sizes: small == large or small == large + 1
+        }
+    }
 
-A deque gives O(1) sliding-window max, but it only tracks **one** extreme and only for a
-**fixed-size** window. When the window is **variable-size** or you need **max and min at the same
-time**, use two heaps and expire entries by **index**:
+    public double findMedian() {
+        if (small.size() > large.size()) {
+            return small.peek();
+        }
+        return (small.peek() + (double) large.peek()) / 2.0;   // widen before adding
+    }
+}
+```
+
+**Complexity**
+- **Time O(log n) per `addNum`**: a constant number of heap pushes and pops (`heappushpop` is one
+  sift). `findMedian` reads two tops, O(1).
+- **Space O(n)**: every number ever added sits in one of the two heaps.
+
+**Dry run**
+
+```text
+add  sizes equal?  routed through        small (lower)  large (upper)  median
+1    yes           small -> out 1 -> large   []             [1]            1.0
+2    no            large -> out 1 -> small   [1]            [2]            (1+2)/2 = 1.5
+3    yes           small -> out 3 -> large   [1]            [2,3]          large[0] = 2.0
+```
+
+**Traps**
+- Pushing straight into one heap and only fixing the **sizes** breaks the ordering: add 5 then 1
+  to `large` directly and `small`'s top can exceed `large`'s. Route every number through the other
+  heap (or compare with a top) first.
+- Integer overflow in Java: `(small.peek() + large.peek()) / 2.0` adds two `int`s before widening;
+  two values near `Integer.MAX_VALUE` wrap. Cast one side to `double` first.
+- Python's `small` stores **negatives**: read `-small[0]`, push `-num`.
+
+**Not this if** — the window also *removes* old values (LC 480 sliding-window median): the two
+heaps need lazy deletion ([heap_advanced.md](./heap_advanced.md#1-lazy-deletion--heap--hashmap-of-truth-)),
+or use a sorted container.
+
+**Drill** — LC 295 ⭐ · LC 703 *(one heap is enough for one rank)* · LC 480 *(+ lazy deletion)* ·
+LC 502 *(two heaps as available / locked pools)* · LC 1825 *(three-way split)*
+
+### Template 5: Two Heaps with Index Expiry — LC 1438 ⭐⭐⭐⭐
+
+**Recognise** — a **variable-size** window that needs the max **and** the min at the same time:
+"longest subarray where max − min ≤ limit". n ≤ 10⁵ → O(n log n) is fine.
+
+**Key point** — every entry is `(value, index)`, and an entry is **stale iff `index < left`**.
+Nothing is removed when `left` advances; a stale entry is popped only when it reaches the top, so
+both tops are always inside the window when they are compared. To fix an invalid window, jump
+`left` past the **older** of the two offending extremes — the only move that breaks the pair.
 
 ```text
 maxHeap = (-value, index)     minHeap = (value, index)
 stale  <=>  index < left      (the element has fallen out of the window)
 ```
 
-Nothing is ever removed when `left` advances — entries are dropped only when they reach the top.
-
-**Worked example — LC 1438 Longest Continuous Subarray With Absolute Diff ≤ Limit**
-
-The window is valid iff `max(window) - min(window) <= limit`. Keep both heaps; when the window is
-invalid, jump `left` **past the older of the two offending extremes** (that is the only way to
-destroy the violating pair), then lazy-purge both heaps.
-
 ```python
 # python
 # LC 1438 - Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit
-# time = O(N log N), space = O(N)
 # IDEA: two heaps hold window max/min; shrink past the older extreme; purge stale indices lazily
+# time = O(N log N), space = O(N)
 import heapq
 
 class Solution(object):
@@ -449,7 +550,7 @@ class Solution(object):
 
             # window invalid -> must drop at least one of the two extremes
             while -max_h[0][0] - min_h[0][0] > limit:
-                # NOTE !!! move left PAST the earlier of the two extreme indices
+                # move left PAST the earlier of the two extreme indices
                 left = min(max_h[0][1], min_h[0][1]) + 1
                 # lazy delete: anything left of the window is stale
                 while max_h[0][1] < left:
@@ -465,8 +566,8 @@ class Solution(object):
 ```java
 // java
 // LC 1438 - Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit
-// time = O(N log N), space = O(N)
 // IDEA: max-heap + min-heap of {val, idx}; shrink past older extreme; lazy-purge stale indices
+// time = O(N log N), space = O(N)
 public int longestSubarray(int[] nums, int limit) {
     PriorityQueue<int[]> maxH = new PriorityQueue<>((a, b) -> Integer.compare(b[0], a[0]));  // {val, idx}
     PriorityQueue<int[]> minH = new PriorityQueue<>((a, b) -> Integer.compare(a[0], b[0]));
@@ -495,7 +596,8 @@ most N times in total — it just loops more.
 
 ```python
 # python
-# LC 1438 - shrink form: left += 1 per step, purge stale tops after each step
+# LC 1438 - shrink form, the inner loop only
+# IDEA: left += 1 per step, purge stale tops after each step
 # time = O(N log N), space = O(N)
             while -max_h[0][0] - min_h[0][0] > limit:
                 left += 1
@@ -505,7 +607,12 @@ most N times in total — it just loops more.
                     heapq.heappop(min_h)
 ```
 
-**Trace** — shrink form on `nums = [8, 2, 4, 7]`, `limit = 4`. The `.1` rows are the lazy
+**Complexity**
+- **Time O(N log N)**: each index is pushed once into each heap and popped at most once, and the
+  purge `while`s pop — never scan — so all their iterations together are bounded by the pushes.
+- **Space O(N)**: stale entries stay in the heaps until they surface, so a heap can hold all N.
+
+**Dry run** — shrink form on `nums = [8, 2, 4, 7]`, `limit = 4`. The `.1` rows are the lazy
 deletions: an entry is popped only once it is **on top** *and* its index is `< left`.
 
 ```text
@@ -518,298 +625,91 @@ step  r  v  left  window     min_h[0]  max_h[0]  max-min  action                
 4.1   3  -  2     [4,7]      (4,2)     (-7,3)    3        pop (2,1) from min_h: 1 < 2     2
 ```
 
-**Pitfalls**
-
+**Traps**
 - **The top is `h[0]`, never `h[-1]`.** A `heapq` list is only partially ordered, so `h[-1]` is
   an arbitrary leaf, not the max (Common Mistake #7 below). Every read here is `max_h[0]` /
   `min_h[0]`.
-- **The tops are always fresh when you compare.** Every exit from the shrink loop has purged
-  both tops, and a newly pushed entry is never stale, so a second purge *before* the `while`
-  (right after the two pushes) does nothing. It is harmless, not needed.
-- **The purge loops need no `heap and` guard.** The entry just pushed has index `right >= left`,
-  so neither heap can empty while purging.
-- **Purge both heaps, not only the one whose top moved.** After the jump, the *other* heap's
-  top can also sit left of the new `left`.
+- **Purge both heaps, not only the one whose top moved.** After the jump on `[8,2,4,7]`, the
+  *other* heap's top can also sit left of the new `left`; comparing it gives a wrong `max − min`.
+- **The purge loops need no `heap and` guard.** The entry just pushed has index `i >= left`,
+  so neither heap can empty while purging. A second purge right after the two pushes does nothing.
 
-> **Heap vs monotonic deque**: LC 1438 also has an O(N) two-deque solution —
-> [monotonic_queue.md → Template 7](./monotonic_queue.md#template-7-two-deques--window-max-and-min-under-a-limit-lc-1438-).
-> Use the heap version when the eviction rule is **not** "oldest first" (e.g. you evict by value
-> or by an arbitrary predicate) — a monotonic deque cannot express that.
+**Not this if** — the window is **fixed-size**, or eviction is always "oldest first": two monotonic
+deques solve LC 1438 in O(N) —
+[monotonic_queue.md → Template 7](./monotonic_queue.md#template-7-two-deques--window-max-and-min-under-a-limit-lc-1438-).
+Use the heaps when the eviction rule is by value or an arbitrary predicate, which a deque cannot
+express.
 
-**Variations of this template** (same "max-heap + expire by index/coordinate" shape):
+**Drill** — LC 1438 ⭐ · LC 1696 *(the heap holds `dp[j]`; pop while `j < i − k`)* ·
+LC 1499 *(key `y − x`; expire by **coordinate** `x_j − x_top > k`)* · LC 480 *(median, two heaps + lazy deletion)*
 
-| LC | Problem | The twist |
-|----|---------|-----------|
-| 1696 | Jump Game VI | `dp[i] = nums[i] + max(dp[j])` for `i-k <= j < i`. Max-heap of `(dp[j], j)`; before reading, pop while `j < i-k`. The heap holds **DP values**, not raw input. |
-| 1499 | Max Value of Equation | Rewrite `y_i + y_j + |x_i - x_j|` (with `x_j - x_i <= k`, `i < j`) as `(y_i - x_i) + (y_j + x_j)`. Max-heap of `(y_i - x_i, x_i)`; pop while `x_j - x_top > k`; expiry is by **coordinate**, not index. |
+### Template 6: Min-Heap of End Times — LC 253 ⭐⭐⭐⭐
 
-### Java Template Library (`PriorityQueue`)
+**Recognise** — "minimum number of meeting rooms / platforms / groups", "maximum number of
+intervals overlapping at once". n ≤ 10⁴–10⁵ intervals → sort + heap, O(n log n).
 
-> The 5 templates above are Python-first. The 8 below are the same problem space written
-> against Java's `PriorityQueue`. They were previously a separate `priority_queue.md`; the
-> table pairs each Java template with its Python counterpart so you can read either side.
+**Key point** — after sorting by start, the heap holds the **end times of the rooms in use**; its
+top is the room that frees up first. A meeting that starts at or after that end reuses the room
+(pop then push); otherwise it opens a new one. The heap's size is the number of rooms ever needed.
 
-| Java template (below) | Python counterpart (above) | Anchor problem |
-|---|---|---|
-| Template 1: Top K Elements | 1. Kth Element Template | LC 215 |
-| Template 2: K-Way Merge | 3. Merge K Sources Template | LC 23 |
-| Template 3: Two Heaps (Median) | 4. Two Heap System Template | LC 295 |
-| Template 4: Interval Scheduling | *(no Python counterpart here — see the LC 1353 pointer below)* | LC 253 |
-| Template 5: Graph Shortest Path | — see [Dijkstra.md](./Dijkstra.md) | LC 743 |
-| Template 6: Custom Priority | 2. Top K Frequency Template | LC 347 |
-| Template 7: Greedy String Building | *(no Python counterpart)* | LC 1405 |
-| Template 8: PQ + Cooldown Queue | *(no Python counterpart)* | LC 358 |
-
-#### Java Template Comparison Table
-| Template Type | Use Case | Heap Type | Complexity | When to Use |
-|---------------|----------|-----------|------------|-------------|
-| **Top K Elements** | Find K largest/smallest | Min/Max heap | O(n log k) | Fixed K selection |
-| **K-Way Merge** | Merge sorted lists | Min heap | O(n log k) | Multiple sorted sources |
-| **Two Heaps** | Find median | Min + Max heap | O(log n) | Stream median/percentile |
-| **Interval Scheduling** | Process intervals | Min heap | O(n log n) | Meeting rooms, events |
-| **Graph Shortest Path** | Dijkstra's | Min heap | O(E log V) | Weighted graphs |
-| **Custom Priority** | Complex ordering | Custom comparator | O(log n) | Multi-criteria sorting |
-| **Greedy + Constraint** | Build string avoiding consecutive repeats | Max heap | O(n log k) | Reorganize/happy string |
-| **PQ + Cooldown Queue** | k-distance apart scheduling | Max heap + Queue | O(n log k) | Rearrange k-dist, task scheduler |
-
-### Template 1: Top K Elements Pattern — LC 215
 ```python
 # python
-# LC 215 - Kth Largest Element in an Array
-# IDEA: keep a min-heap of the k largest seen so far; its root is the kth largest
-# time = O(n log k), space = O(k)
-def findKthLargest(nums, k):
-    import heapq
+# LC 253 - Meeting Rooms II
+# IDEA: sort by start; min-heap of end times = rooms in use; reuse the earliest-ending room
+# time = O(n log n), space = O(n)
+import heapq
 
-    # Min heap of size k for k largest
-    min_heap = []
-
-    for num in nums:
-        heapq.heappush(min_heap, num)
-        if len(min_heap) > k:
-            heapq.heappop(min_heap)   # drop the smallest; the k largest stay
-
-    return min_heap[0]  # the smallest of the k largest = the kth largest
-
-# Same heap, keyed by frequency - LC 347 Top K Frequent Elements
-def topKFrequent(nums, k):
-    from collections import Counter
-    import heapq
-    
-    count = Counter(nums)
-    # Use negative count for max heap effect
-    return heapq.nlargest(k, count.keys(), key=count.get)
-```
-
-```java
-// java
-// LC 215 - Kth Largest Element in an Array
-// IDEA: keep a min-heap of the k largest seen so far; its root is the kth largest
-// time = O(n log k), space = O(k)
-public int findKthLargest(int[] nums, int k) {
-    PriorityQueue<Integer> minHeap = new PriorityQueue<>();
-    for (int num : nums) {
-        minHeap.add(num);
-        if (minHeap.size() > k) {
-            minHeap.poll();           // drop the smallest; the k largest stay
-        }
-    }
-    return minHeap.peek();
-}
-
-// Same heap, keyed by frequency - LC 347 Top K Frequent Elements
-public int[] topKFrequent(int[] nums, int k) {
-    Map<Integer, Integer> map = new HashMap<>();
-    for (int n : nums) {
-        map.put(n, map.getOrDefault(n, 0) + 1);
-    }
-    
-    // Min heap based on frequency
-    PriorityQueue<Integer> pq = new PriorityQueue<>(
-        (a, b) -> Integer.compare(map.get(a), map.get(b))
-    );
-    
-    for (int key : map.keySet()) {
-        pq.add(key);
-        if (pq.size() > k) {
-            pq.poll();
-        }
-    }
-    
-    int[] result = new int[k];
-    for (int i = k - 1; i >= 0; i--) {
-        result[i] = pq.poll();
-    }
-    return result;
-}
-```
-
-### Template 2: K-Way Merge Pattern — LC 23
-```python
-# Python - Merge K sorted lists
-def mergeKSortedLists(lists):
-    import heapq
-    
-    min_heap = []
-    
-    # Initialize with first element from each list
-    for i, lst in enumerate(lists):
-        if lst:
-            heapq.heappush(min_heap, (lst[0], i, 0))
-    
-    result = []
-    while min_heap:
-        val, list_idx, elem_idx = heapq.heappop(min_heap)
-        result.append(val)
-        
-        # Add next element from same list
-        if elem_idx + 1 < len(lists[list_idx]):
-            next_val = lists[list_idx][elem_idx + 1]
-            heapq.heappush(min_heap, (next_val, list_idx, elem_idx + 1))
-    
-    return result
-```
-
-```java
-// Java - Merge K sorted arrays
-public int[] mergeKSortedArrays(int[][] arrays) {
-    PriorityQueue<int[]> pq = new PriorityQueue<>(
-        (a, b) -> Integer.compare(a[0], b[0])  // Compare values
-    );
-    
-    int totalSize = 0;
-    // Initialize PQ with first element from each array
-    for (int i = 0; i < arrays.length; i++) {
-        if (arrays[i].length > 0) {
-            pq.offer(new int[]{arrays[i][0], i, 0});
-            totalSize += arrays[i].length;
-        }
-    }
-    
-    int[] result = new int[totalSize];
-    int idx = 0;
-    
-    while (!pq.isEmpty()) {
-        int[] curr = pq.poll();
-        result[idx++] = curr[0];
-        
-        int arrIdx = curr[1];
-        int elemIdx = curr[2];
-        
-        if (elemIdx + 1 < arrays[arrIdx].length) {
-            pq.offer(new int[]{
-                arrays[arrIdx][elemIdx + 1], 
-                arrIdx, 
-                elemIdx + 1
-            });
-        }
-    }
-    
-    return result;
-}
-```
-
-**Variants of this skeleton** (LC 632, 355, 373, 378, 1439):
-[heap_advanced.md § K-Way Merge Variants](./heap_advanced.md#11-k-way-merge-variants).
-
-### Template 3: Two Heaps Pattern (Median Finding) — LC 295
-
-> Python side: [4. Two Heap System Template](#4-two-heap-system-template-median) above — the same
-> two-heap invariant, written with `heappushpop` instead of an explicit rebalance.
-
-```java
-// Java - Two heaps for median
-class MedianFinder {
-    private PriorityQueue<Integer> small;  // Max heap
-    private PriorityQueue<Integer> large;  // Min heap
-    
-    public MedianFinder() {
-        small = new PriorityQueue<>(Collections.reverseOrder());
-        large = new PriorityQueue<>();
-    }
-    
-    public void addNum(int num) {
-        small.offer(num);
-        
-        // Balance property
-        if (!small.isEmpty() && !large.isEmpty() && 
-            small.peek() > large.peek()) {
-            large.offer(small.poll());
-        }
-        
-        // Size property
-        if (small.size() > large.size() + 1) {
-            large.offer(small.poll());
-        }
-        if (large.size() > small.size() + 1) {
-            small.offer(large.poll());
-        }
-    }
-    
-    public double findMedian() {
-        if (small.size() > large.size()) {
-            return small.peek();
-        }
-        if (large.size() > small.size()) {
-            return large.peek();
-        }
-        return (small.peek() + large.peek()) / 2.0;
-    }
-}
-```
-
-### Template 4: Interval Scheduling Pattern — LC 253
-```python
-# Python - Meeting rooms (minimum rooms needed)
 def minMeetingRooms(intervals):
-    import heapq
-    
     if not intervals:
         return 0
-    
-    # Sort by start time
     intervals.sort(key=lambda x: x[0])
-    
-    # Min heap to track end times
-    heap = []
-    heapq.heappush(heap, intervals[0][1])
-    
-    for i in range(1, len(intervals)):
-        # If current meeting starts after earliest end
-        if intervals[i][0] >= heap[0]:
+    heap = [intervals[0][1]]               # end time of each room in use
+    for start, end in intervals[1:]:
+        if start >= heap[0]:               # the earliest-ending room is free by now
             heapq.heappop(heap)
-        
-        # Add current meeting end time
-        heapq.heappush(heap, intervals[i][1])
-    
+        heapq.heappush(heap, end)
     return len(heap)
 ```
 
 ```java
-// Java - Interval scheduling
+// java
+// LC 253 - Meeting Rooms II
+// IDEA: sort by start; min-heap of end times = rooms in use; reuse the earliest-ending room
+// time = O(n log n), space = O(n)
 public int minMeetingRooms(int[][] intervals) {
     if (intervals.length == 0) return 0;
-    
-    // Sort by start time
+
     Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
-    
-    // Min heap for end times
-    PriorityQueue<Integer> pq = new PriorityQueue<>();
+
+    PriorityQueue<Integer> pq = new PriorityQueue<>();   // end times of rooms in use
     pq.offer(intervals[0][1]);
-    
+
     for (int i = 1; i < intervals.length; i++) {
-        // Room becomes free
-        if (intervals[i][0] >= pq.peek()) {
+        if (intervals[i][0] >= pq.peek()) {   // room frees up in time
             pq.poll();
         }
         pq.offer(intervals[i][1]);
     }
-    
+
     return pq.size();
 }
 ```
 
-**Variation: Maximum Number of Events That Can Be Attended (LC 1353)** — twist: the heap holds **end days of currently-open events** and you sweep *day by day* (not interval by interval), attending the event that **ends soonest** each day. LC 253 counts concurrent intervals; LC 1353 *picks one per day* greedily. The two are not variants of one sweep: LC 253's interval **occupies** its whole span, LC 1353's costs a **single day** anywhere inside it, so counting overlaps here over-counts.
+**Complexity**
+- **Time O(n log n)**: the sort, plus one push and at most one pop per interval.
+- **Space O(n)**: in the worst case (all meetings overlap) every end time is in the heap.
+
+**Traps**
+- `>=` vs `>`: `[[1,5],[5,10]]` needs **one** room because a meeting ending at 5 frees the room for
+  one starting at 5. Writing `>` returns 2.
+- Sorting by **end** instead of start breaks the sweep: the heap must see meetings in the order
+  they begin.
+- Java comparators: `Integer.compare(a[0], b[0])`, never `a[0] - b[0]` (overflow on large times).
+
+**Not this if** — each interval costs **one unit of time chosen from its span** rather than
+occupying all of it (LC 1353 Maximum Number of Events That Can Be Attended). Counting overlaps
+over-counts there (`[[1,1],[1,1],[1,1]]` → 3, answer 1). Sweep **day by day**, heap the **end days
+of open events**, and attend the one that ends soonest:
 
 ```java
 // java
@@ -838,86 +738,56 @@ public int maxEvents(int[][] events) {
 Python side of LC 1353, with the day-jumping vs scan-every-day trade-off written out:
 [heap_examples.md § LC 1353](./heap_examples.md#7-maximum-number-of-events-that-can-be-attended--lc-1353).
 
-### Template 5: Graph Shortest Path (Dijkstra) — LC 743
+**Drill** — LC 252 *(one room: any overlap at all?)* · LC 253 ⭐ · LC 1094 *(capacity, not
+rooms)* · LC 2406 *(groups = rooms)* · LC 1353 *(one day per event)* · LC 1834 *(single-threaded
+CPU: two orderings)*
 
-Owned by [Dijkstra.md](./Dijkstra.md). The PQ is just `(distance, node)` guarded by a
-lazy-deletion `if d > dist[u]: continue`; nothing heap-specific is added by repeating it here.
+### Template 7: Greedy Build with a Run-Length Cap — LC 1405
 
-### Template 6: Custom Priority Pattern
+**Recognise** — "build the longest string with no three identical letters in a row", "rearrange so
+no two adjacent are equal". A tiny alphabet (≤ 26, often 3) with large counts.
+
+**Key point** — always place the letter with the **most remaining**, because it is the one that
+runs out of room last; when placing it would break the run-length cap, place the **second** most
+and put the first back **unconsumed**. The heap only ever answers "most remaining", so it holds
+at most the alphabet.
+
 ```python
-# Python - Custom priority with multiple criteria
-class Task:
-    def __init__(self, name, priority, deadline):
-        self.name = name
-        self.priority = priority
-        self.deadline = deadline
-    
-    def __lt__(self, other):
-        # Higher priority first, then earlier deadline
-        if self.priority != other.priority:
-            return self.priority > other.priority
-        return self.deadline < other.deadline
+# python
+# LC 1405 - Longest Happy String
+# IDEA: max-heap by remaining count; if the top would make 3 in a row, use the 2nd and
+#       push the top back untouched; stop when only the blocked letter is left
+# time = O(n log 3) = O(n), space = O(1)   n = a + b + c
+import heapq
 
-def processTasks(tasks):
-    import heapq
-    
-    heap = []
-    for task in tasks:
-        heapq.heappush(heap, task)
-    
-    result = []
+def longestDiverseString(a, b, c):
+    heap = [(-cnt, ch) for cnt, ch in ((a, 'a'), (b, 'b'), (c, 'c')) if cnt > 0]
+    heapq.heapify(heap)                    # negated counts: most remaining on top
+    res = []
     while heap:
-        task = heapq.heappop(heap)
-        result.append(task.name)
-    
-    return result
+        cnt1, ch1 = heapq.heappop(heap)
+        if len(res) >= 2 and res[-1] == ch1 and res[-2] == ch1:
+            if not heap:                   # only the blocked letter is left
+                break
+            cnt2, ch2 = heapq.heappop(heap)
+            res.append(ch2)
+            if cnt2 + 1 < 0:               # counts are negative: + 1 uses one up
+                heapq.heappush(heap, (cnt2 + 1, ch2))
+            heapq.heappush(heap, (cnt1, ch1))   # first was NOT used
+        else:
+            res.append(ch1)
+            if cnt1 + 1 < 0:
+                heapq.heappush(heap, (cnt1 + 1, ch1))
+    return "".join(res)
 ```
 
 ```java
-// Java - Custom comparator for complex ordering
-class Task {
-    String name;
-    int priority;
-    int deadline;
-    
-    Task(String name, int priority, int deadline) {
-        this.name = name;
-        this.priority = priority;
-        this.deadline = deadline;
-    }
-}
-
-public List<String> processTasks(List<Task> tasks) {
-    PriorityQueue<Task> pq = new PriorityQueue<>((a, b) -> {
-        // Higher priority first
-        if (a.priority != b.priority) {
-            return Integer.compare(b.priority, a.priority);
-        }
-        // Earlier deadline first
-        return Integer.compare(a.deadline, b.deadline);
-    });
-    
-    for (Task task : tasks) {
-        pq.offer(task);
-    }
-    
-    List<String> result = new ArrayList<>();
-    while (!pq.isEmpty()) {
-        result.add(pq.poll().name);
-    }
-    
-    return result;
-}
-```
-
-### Template 7: Greedy String Building with Consecutive Constraint — LC 1405
-```java
-// Java - Longest Happy String (LC 1405) / Reorganize String (LC 767)
-// IDEA: Max-heap by count; two-case loop:
-//   Case 1: top char would create 3 consecutive → use 2nd, put 1st back
-//   Case 2: safe → use top char directly
-// time = O((a+b+c) * log(3)) = O(n), space = O(1) heap size bounded by alphabet
-
+// java
+// LC 1405 - Longest Happy String
+// IDEA: max-heap by count; two-case loop:
+//   Case 1: top char would create 3 consecutive -> use 2nd, put 1st back
+//   Case 2: safe -> use top char directly
+// time = O((a+b+c) * log 3) = O(n), space = O(1) heap size bounded by alphabet
 class ValCnt {
     char val;
     int cnt;
@@ -936,12 +806,12 @@ public String longestDiverseString(int a, int b, int c) {
         ValCnt first = pq.poll();
         int len = sb.length();
 
-        // Case 1: adding `first` would create 3 consecutive → use second instead
+        // Case 1: adding `first` would create 3 consecutive -> use second instead
         if (len >= 2
                 && sb.charAt(len - 1) == first.val
                 && sb.charAt(len - 2) == first.val) {
 
-            if (pq.isEmpty()) break;          // no alternative → stop
+            if (pq.isEmpty()) break;          // no alternative -> stop
 
             ValCnt second = pq.poll();        // use 2nd most frequent
             sb.append(second.val);
@@ -962,29 +832,66 @@ public String longestDiverseString(int a, int b, int c) {
 }
 ```
 
-**Key Observations:**
-- Always greedily pick the most frequent (max-heap ensures this).
-- When the constraint is about to be violated, **temporarily skip** the top element and use the next — then **put the top back unchanged**.
-- `first` is only consumed in Case 2; in Case 1 it is re-inserted untouched.
-- Works for any "at most K consecutive" constraint by changing the look-back window check.
+**Complexity**
+- **Time O(n)**: one letter is appended per loop iteration (n = a + b + c iterations at most), and
+  each heap operation is on at most 3 entries, so O(log 3) = O(1).
+- **Space O(1)**: the heap holds at most the alphabet; the output itself is O(n).
 
-**Variant: Reorganize String (LC 767) — at most 1 consecutive**
-```java
-// Only Case 1 check changes: len >= 1 && sb.charAt(len-1) == first.val
-// Everything else is identical to the template above.
+**Traps**
+- Consuming `first` in Case 1: `(a, b, c) = (7, 1, 0)` must give a length-5 string (`"aabaa"`).
+  Decrementing `first` when it was skipped loses an `a` and returns a shorter string.
+- Breaking out of the loop **only** when the blocked letter is the last one left — `continue` there
+  spins forever.
+- The cap is the look-back check: `res[-1] == res[-2] == ch` allows two in a row (LC 1405); LC 767
+  allows one, so the check is just `res[-1] == ch`.
+
+**Not this if** — the gap between equal letters is a general **k**: the look-back check grows with
+k, and Template 8's cooldown queue is cleaner.
+
+**Drill** — LC 1405 · LC 767 *(cap of 1)* · LC 1054 *(LC 767 on numbers)* · LC 984 *(two letters,
+no heap needed)*
+
+### Template 8: Max-Heap + Cooldown Queue — LC 358
+
+**Recognise** — "the same letter / task must be at least k apart", "cooldown of n between equal
+tasks". Alphabet ≤ 26, so the heap is O(1)-sized.
+
+**Key point** — a used letter goes into a FIFO **cooldown queue**, not back into the heap. When the
+queue reaches length k, its front has waited exactly k − 1 positions, so it may be placed at the
+next one: move it back to the heap. The heap therefore only ever offers letters that are legal
+**right now**.
+
+```python
+# python
+# LC 358 - Rearrange String k Distance Apart
+# IDEA: max-heap picks the most frequent available letter; a k-long FIFO delays its return
+# time = O(n log 26) = O(n), space = O(26) = O(1)
+import heapq
+from collections import Counter, deque
+
+def rearrangeString(s, k):
+    if k <= 1:
+        return s
+    heap = [(-cnt, ch) for ch, cnt in Counter(s).items()]   # negated: most remaining on top
+    heapq.heapify(heap)
+    cooldown = deque()                                      # (negated remaining, letter)
+    res = []
+    while heap:
+        cnt, ch = heapq.heappop(heap)
+        res.append(ch)
+        cooldown.append((cnt + 1, ch))                      # one used up
+        if len(cooldown) == k:                              # front has cooled for k steps
+            ready_cnt, ready_ch = cooldown.popleft()
+            if ready_cnt < 0:                               # still has copies left
+                heapq.heappush(heap, (ready_cnt, ready_ch))
+    return "".join(res) if len(res) == len(s) else ""
 ```
 
-### Template 8: PQ + Cooldown Queue (k-Distance Scheduling) — LC 358
 ```java
-// Java - Rearrange String k Distance Apart (LC 358)
-// IDEA: Max-heap picks most frequent available char;
-//       cooldown queue locks used chars for k steps.
-//
-// Flow: PQ → poll → append → cooldown.offer([char, releaseTime])
-//       when time == releaseTime → move back to PQ
-//
+// java
+// LC 358 - Rearrange String k Distance Apart
+// IDEA: max-heap picks most frequent available char; cooldown queue locks used chars for k steps
 // time = O(n log 26) = O(n), space = O(26) = O(1)
-
 public String rearrangeString(String s, int k) {
     if (k <= 1) return s;
 
@@ -1000,7 +907,6 @@ public String rearrangeString(String s, int k) {
     }
 
     // Cooldown queue: [charIndex, remainingCount]
-    // Size reaches k → front element has cooled for k steps → re-enable
     Queue<int[]> cooldown = new LinkedList<>();
     StringBuilder res = new StringBuilder();
 
@@ -1009,14 +915,12 @@ public String rearrangeString(String s, int k) {
         res.append((char) ('a' + idx));
         freq[idx]--;
 
-        // Enter cooldown with current remaining count
-        cooldown.offer(new int[]{idx, freq[idx]});
+        cooldown.offer(new int[]{idx, freq[idx]});   // enter cooldown with its remaining count
 
-        // Release from cooldown after k steps
-        if (cooldown.size() == k) {
+        if (cooldown.size() == k) {                  // front has cooled for k steps
             int[] ready = cooldown.poll();
             if (ready[1] > 0) {
-                pq.offer(ready[0]);  // re-add to heap
+                pq.offer(ready[0]);
             }
         }
     }
@@ -1025,19 +929,28 @@ public String rearrangeString(String s, int k) {
 }
 ```
 
-**Key Observations:**
-- The cooldown queue acts as a **fixed-size delay line of length k**. When its size reaches k, the oldest entry has waited exactly k steps and is ready.
-- If `pq` is empty but `cooldown` still has entries → impossible to place anything → return `""`.
-- **Alternative cooldown approach**: store `[char, releaseTime]` and check `cooldown.peek()[1] == time` instead of checking queue size. Both are equivalent.
-- This pattern generalizes: LC 621 (Task Scheduler) uses the same idea but counts idle slots; LC 767 is k=2 special case.
+**Complexity**
+- **Time O(n)**: one letter is placed per iteration, and every heap operation is on at most 26
+  entries.
+- **Space O(1)**: the heap and the cooldown queue each hold at most 26 letters; the output is O(n).
 
-**Comparison: Cooldown Queue vs Skip-and-Swap (Template 7)**
-| Aspect | Cooldown Queue (Template 8) | Skip-and-Swap (Template 7) |
-|--------|----------------------------|---------------------------|
-| Best for | Variable k, large k | Small k (k=2 or k=3) |
-| Mechanism | Explicit queue delays re-entry | Look-back window + swap |
-| Impossible detection | `pq.isEmpty()` while cooldown non-empty | N/A (stops when no option) |
-| Cleaner for | LC 358, LC 621 | LC 1405, LC 767 |
+**Traps**
+- Pushing the used letter straight back into the heap: `"aabbcc"`, k = 3 can produce `"abab…"`.
+  The cooldown queue is what enforces the gap.
+- Impossible inputs end with the heap empty while letters still wait in the queue: `"aaabc"`, k = 3
+  must return `""` — check `len(res) == len(s)`, not just "the loop ended".
+- k = 0 or 1 means no constraint: return `s` before building anything (a k = 0 queue never
+  releases).
+- In the Java version the comparator reads `freq[]`, so update `freq[idx]` **after** the letter
+  leaves the heap, never while it is inside it.
+
+**Not this if** — only the **length** of the schedule is asked (LC 621 Task Scheduler): the
+answer is `max(n_tasks, (maxCount − 1) × (cooldown + 1) + numberOfTasksWithMaxCount)`, O(n) with no
+heap. Simulate with this template only when the order itself is needed.
+
+**Drill** — LC 767 *(k = 2)* · LC 621 ⭐ *(count idle slots; or the formula)* · LC 358 ·
+LC 1953 *(only "can it be done?")*
+
 ## Language APIs
 
 Full reference — every `heapq` call with its output, the peek rules, the partial-order traps:
@@ -1088,6 +1001,14 @@ def k_smallest(nums, k):                # max-heap = negate on the way in and ou
             heapq.heappop(h)
     return [-x for x in h]              # -h[0] == the kth smallest
 ```
+
+## Drill Path
+
+| Stage | Problems (easy → hard) | What it adds |
+|---|---|---|
+| **Core** ⭐ | LC 215 · LC 347 · LC 253 · LC 621 · LC 23 · LC 295 | Templates 1, 2, 6, 8, 3 and 4, once each |
+| **Practice** | LC 703 · LC 1046 · LC 973 · LC 692 · LC 767 · LC 1438 · LC 378 | a heap kept across calls, simulation, a derived key, a reverse tie-break, the run-length cap, index expiry, a matrix as k sources |
+| **Stretch** | LC 1353 · LC 502 · LC 480 · LC 632 · LC 358 | one day per event, two pools, a median that also deletes, k heads plus their max, the cooldown queue |
 
 ## Summary & Quick Reference
 

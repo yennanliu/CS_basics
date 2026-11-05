@@ -10,18 +10,18 @@
 > 拆成兩份檔案的結果，就是同一批題目（LC 215、23、253、295、347、378、621、703、373）
 > 被解了兩次，一種語言一次。現在 `heap.md` 兩邊都收。
 
-<!-- d6cfdcc2cc46 -->
+<!-- a57a9dc895bc -->
 ## 東西搬去哪了
 
 | 你原本在找的 | 現在在 |
 |---|---|
 | PQ 題型模式 1–8 | [heap.md → Problem Categories](./heap.md#problem-categories) |
-| Java `PriorityQueue` 模板 1–12 | [heap.md → Java Template Library](./heap.md#java-template-library-priorityqueue) — 與 Python 模板並列 |
-| Python `heapq` 模板 | [heap.md → Specific Pattern Templates](./heap.md#specific-pattern-templates) |
+| Java `PriorityQueue` 模板 1–12 | [heap.md → Templates & Algorithms](./heap.md#templates--algorithms) — 與 Python 模板並列 |
+| Python `heapq` 模板 | [heap.md → 各模式卡](./heap.md#templates--algorithms) |
 | `PriorityQueue` API／不彈出就取頂 | [heap_language_apis.md](./heap_language_apis.md#java-priorityqueue) — 完整 API 參考；[heap.md → Language APIs](./heap.md#language-apis) 保留一頁式表格 |
 | 附 Java 解法的經典 LC 題 | [heap_examples.md → LC Examples](./heap_examples.md#lc-examples) |
 | PQ 模式 → 題目對照 | [heap.md → Decision Table](./heap.md#decision-table--which-heap-pattern) |
-| 視窗內同時要最大**與**最小值且受 limit 限制（LC 1438） | [heap.md → Sliding Window Extrema](./heap.md#5-sliding-window-extrema--two-heaps--index-expiry-) — 兩個堆積 + 延遲刪除，兩種收縮寫法都有；O(N) 的雙 deque 版本在 [monotonic_queue.md → Template 7](./monotonic_queue.md#template-7-two-deques--window-max-and-min-under-a-limit-lc-1438-) |
+| 視窗內同時要最大**與**最小值且受 limit 限制（LC 1438） | [heap.md → 模板 5：帶索引過期的雙堆積](./heap.md#template-5-two-heaps-with-index-expiry--lc-1438-) — 兩個堆積 + 延遲刪除，兩種收縮寫法都有；O(N) 的雙 deque 版本在 [monotonic_queue.md → Template 7](./monotonic_queue.md#template-7-two-deques--window-max-and-min-under-a-limit-lc-1438-) |
 | 貪婪 + PQ 排程（LC 1353 Max Events，以及為什麼 LC 253 的掃描線套不過來） | [heap_examples.md → LC 1353](./heap_examples.md#7-maximum-number-of-events-that-can-be-attended--lc-1353) — 核心想法、模式表、類似 LC；一行式特徵見 [heap.md → Pattern 5](./heap.md#problem-categories) |
 
 <!-- e203170927ee -->

@@ -1462,7 +1462,7 @@ class Solution(object):
 
 **Idea**: sort each string to build a canonical hash key; group strings sharing the key.
 
-> The canonical solution lives with the grouping template in [hash_map.md → Template 3: Grouping by a Computed Key](./hash_map.md#template-3-grouping-by-a-computed-key).
+> The canonical solution lives with the grouping template in [hash_map.md → Template 3: Grouping by a Computed Key](./hash_map.md#template-3-grouping-by-a-computed-key--lc-49).
 
 ### 2-3') Longest Substring Without Repeating Characters — LC 3
 ```python

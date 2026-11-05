@@ -27,9 +27,9 @@ and the code is a by-product of it:
 
 | LC | Problem | Why it lives in the parent |
 |---|---|---|
-| 206 | Reverse Linked List | it *is* the basic operation — [1-1-1) / 1-1-2)](./linked_list.md#1-1-1-reverse-linked-list-iteration--lc-206) |
+| 206 | Reverse Linked List | it *is* the basic operation — [Template 1](./linked_list.md#template-1-iterative-reversal--lc-206-) |
 | 19 | Remove Nth Node From End | the dummy-node case analysis is the point — [Why Dummy Node?](./linked_list.md#why-dummy-node-visual-comparison-lc-19). Only the two Java forms are below |
-| 92 | Reverse Linked List II | the Python form is the reverse-k helper applied once — [Reverse K Nodes Helper Pattern](./linked_list.md#reverse-k-nodes-helper-pattern-). Only the inline Java is below |
+| 92 | Reverse Linked List II | the Python form is the reverse-k helper applied once — [Template 4: Reverse a Segment](./linked_list.md#template-4-reverse-a-segment-reconnect-both-ends--lc-92-). Only the inline Java is below |
 
 
 ## Reversal & Reordering
@@ -38,7 +38,7 @@ and the code is a by-product of it:
 
 > **Core idea**: *locate* the node before position `left`, *reverse* `right - left + 1`
 > nodes, then *reconnect* both boundaries. The Python form is the
-> [Reverse K Nodes Helper Pattern](./linked_list.md#reverse-k-nodes-helper-pattern-) in the
+> [Template 4: Reverse a Segment](./linked_list.md#template-4-reverse-a-segment-reconnect-both-ends--lc-92-) in the
 > parent sheet; the Java below is the same walk written inline, without the helper.
 
 ```java
@@ -270,7 +270,7 @@ After the swap the pair is flipped and `prev` points to the new front:
 prev -> second -> first -> (rest...)
 ```
 
-The reason we need `prev` (hence the **dummy head**, see the [Dummy Head Technique](./linked_list.md#dummy-head-technique)) is that **the node in front of the pair must be re-pointed too** — otherwise the previous pair stays glued to the old front (`first`) instead of the new front (`second`).
+The reason we need `prev` (hence the **dummy head**, see the [Template 2: Dummy Head Deletion](./linked_list.md#template-2-dummy-head-deletion--lc-203-)) is that **the node in front of the pair must be re-pointed too** — otherwise the previous pair stays glued to the old front (`first`) instead of the new front (`second`).
 
 #### **2. Pattern — how we `reconnect` the nodes**
 
@@ -462,8 +462,8 @@ The recursion returns the **new front** of each swapped segment, which the calle
 
 | # | Problem | Relationship to LC 24 |
 |---|---------|------------------------|
-| 206 | Reverse Linked List | Swap-in-pairs is a **k=2, segment-wise reversal**; 206 reverses the whole list. See [1-1-1](./linked_list.md#1-1-1-reverse-linked-list-iteration--lc-206) |
-| 25  | Reverse Nodes in k-Group | **Generalization**: LC 24 is exactly the `k=2` case. Same "reconnect front + internal reverse". See [1-1-4](./linked_list.md#1-1-4-reverse-nodes-in-k-group--linked-list-iteration--lc-25) |
+| 206 | Reverse Linked List | Swap-in-pairs is a **k=2, segment-wise reversal**; 206 reverses the whole list. See [Template 1](./linked_list.md#template-1-iterative-reversal--lc-206-) |
+| 25  | Reverse Nodes in k-Group | **Generalization**: LC 24 is exactly the `k=2` case. Same "reconnect front + internal reverse". See [LC 25](./linked_list.md#reverse-nodes-in-k-group--lc-25) |
 | 92  | Reverse Linked List II | Reverse a **sub-range** `[m, n]`; reuses "hook `prev` to the new front, tail to the rest". See [1)](#1-reverse-linked-list-ii--lc-92) |
 | 143 | Reorder List | Interleaves two halves — another "re-wire `next` pointers pairwise" merge. See [2)](#2-reorder-list--lc-143) |
 | 1721 | Swapping Nodes in a Linked List | Simpler — usually swap **values**; but node-swap needs the same 3-anchor care |
@@ -1355,7 +1355,7 @@ leftover 1,4 -> res = [7, 0, 5, 5, 0]
 | 2130 | Maximum Twin Sum of a Linked List | Split at the middle + reverse the second half (LC 234 palindrome machinery), then pair up — see [7)](#7-palindrome-linked-list--lc-234) |
 | 109 | Convert Sorted List to BST | LC 148's "cut at the middle" split; the mid node becomes the BST root, recurse on both halves |
 | 382 | Linked List Random Node | **Reservoir sampling**: keep the `i`-th node with probability `1/i` in one pass — O(1) space, no length needed |
-| 707 | Design Linked List | Dummy head + a `size` counter; every op is "walk to index `i-1`, then splice" (see the [Dummy Head Technique](./linked_list.md#dummy-head-technique)) |
+| 707 | Design Linked List | Dummy head + a `size` counter; every op is "walk to index `i-1`, then splice" (see the [Template 2: Dummy Head Deletion](./linked_list.md#template-2-dummy-head-deletion--lc-203-)) |
 | 705 / 706 | Design HashSet / HashMap | **Separate chaining** — an array of buckets, each bucket a linked list scanned linearly |
 | 622 | Design Circular Queue | Fixed-size ring; a linked-list version just wraps the tail back to the head |
 | 1669 | Merge In Between Linked Lists | Pure splice: walk to node `a-1` and node `b+1`, hook `list2`'s head and tail in between |

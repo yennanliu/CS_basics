@@ -20,7 +20,7 @@
 
 一個模式一列。**Card** 欄連到解錨定題的那個模板；題目本身放在該 cheatsheet 的 examples 裡。
 
-<!-- bae5ac629eb5 -->
+<!-- 91f687d28c23 -->
 ### 陣列與字串
 
 | 敘述裡的訊號 | 限制提示 | 模式 | Card | 長得像，其實不是 |
@@ -35,8 +35,8 @@
 | 「原地移除／去重」、「把 0 移到後面」 | O(1) 額外空間 | 讀寫雙指標 | [2_pointers § Template 1](./2_pointers.md#template-1-fastslow-read-write-compaction--lc-26-) | 順序不重要 → 和最後一個元素交換 |
 | 「一趟把 0、1、2 排好」 | O(1) 空間 | 三路切分 | [2_pointers § Template 6](./2_pointers.md#template-6-three-way-partition-dutch-national-flag--lc-75-) | 超過三種 key → 計數排序 |
 | 「最長回文子字串」、「回文子字串有幾個」 | n ≤ 1,000 | 從中心擴張 | [2_pointers § Template 3](./2_pointers.md#template-3-expand-from-centre--lc-5-) | 回文**子序列** → 區間 DP（LC 516） |
-| 未排序陣列上的「two sum」、「之前看過嗎？」 | n ≤ 10⁵ | 查補數 | [hash_map § Template 2](./hash_map.md#template-2-seen-before-index-map-two-sum-shape) | 輸入已排序、要求 O(1) 空間 → 雙指標（LC 167） |
-| 「anagram 分組」、「數頻率」、「第一個不重複的」 | n ≤ 10⁴ | 依計算出的 key 分組／計數 | [hash_map § Template 3](./hash_map.md#template-3-grouping-by-a-computed-key)、[Template 1](./hash_map.md#template-1-frequency-counter) | 依頻率取前 k → 堆積或桶排序（LC 347） |
+| 未排序陣列上的「two sum」、「之前看過嗎？」 | n ≤ 10⁵ | 查補數 | [hash_map § Template 1](./hash_map.md#template-1-complement-lookup--lc-1) | 輸入已排序、要求 O(1) 空間 → 雙指標（LC 167） |
+| 「anagram 分組」、「數頻率」、「第一個不重複的」 | n ≤ 10⁴ | 依計算出的 key 分組／計數 | [hash_map § Template 3](./hash_map.md#template-3-grouping-by-a-computed-key--lc-49)、[Template 2](./hash_map.md#template-2-frequency-count--lc-242) | 依頻率取前 k → 堆積或桶排序（LC 347） |
 | 「子陣列的最大和／最大乘積」 | n ≤ 10⁵ | Kadane：以這裡結尾的最佳一段 | [kadane_algorithm § 0-2](./kadane_algorithm.md#0-2-algorithm-pattern--template) | 長度 ≥ k 的子陣列，或總和 = k → 前綴和 |
 | 「合併／插入區間」、「最少要幾間會議室」、「最少移除幾個才不重疊」 | n ≤ 10⁴ | 依起點排序（合併）或依終點排序（排程） | [intervals § Pattern 1](./intervals.md#pattern-1-interval-merging--lc-56-)、[Pattern 2](./intervals.md#pattern-2-interval-scheduling-greedy--lc-435-) | 同一時間有很多事件重疊 → 掃描線（LC 253、[scanning_line](./scanning_line.md#template-1-basic-interval-overlap--lc-253)） |
 | 「第 k 大／第 k 小」、「最近的 k 個」 | n ≤ 10⁵，只問一次 | quickselect | [2_pointers_quickselect § Template 1](./2_pointers_quickselect.md#template-1-kth-largest-element--lc-215-) | 資料是串流，或要依序拿到全部 k 個 → 大小為 k 的堆積 |
@@ -50,14 +50,14 @@
 | 「能在 k 份內裝下的最小容量／速度／最大和」、「最大化最小距離」 | 數值到 10⁹ | 對答案做二分搜尋 | [binary_search_on_answer § The Unified Template](./binary_search_on_answer.md#template-1-smallest-feasible-value--lc-875-) | 可行性檢查不單調（答案變大反而可能不行） → DP 或貪婪 |
 | 「旋轉過的已排序陣列」 | n ≤ 5,000，要求 O(log n) | 二分搜尋，永遠有一半是排好的 | [binary_search](./binary_search.md) | 允許重複 → 最差變成 O(n)（LC 81） |
 
-<!-- aa28ce28d3cd -->
+<!-- f2b8230df542 -->
 ### 鏈結串列
 
 | 敘述裡的訊號 | 限制提示 | 模式 | Card | 長得像，其實不是 |
 |---|---|---|---|---|
-| 「反轉整條／一段／每 k 個一組」、「重新排列」 | O(1) 空間 | 指標反轉、dummy head | [linked_list § 0-2](./linked_list.md#0-2-pattern) | 可以用 O(n) 空間 → 先放進 list 再重建 |
+| 「反轉整條／一段／每 k 個一組」、「重新排列」 | O(1) 空間 | 指標反轉、dummy head | [linked_list § Template 1](./linked_list.md#template-1-iterative-reversal--lc-206-) | 可以用 O(n) 空間 → 先放進 list 再重建 |
 | 「環」、「環的起點」、「中間節點」、「倒數第 k 個」 | O(1) 空間 | 快慢指標 | [2_pointers § Template 7](./2_pointers.md#template-7-fastslow-cycle-detection--lc-141-) | 1..n 陣列裡找重複 → 把同一招用在索引上（LC 287） |
-| 「合併 k 條已排序串列」 | k ≤ 10⁴ | 用堆積做 k 路合併 | [heap § Template 2](./heap.md#template-2-k-way-merge-pattern--lc-23) | 只有兩條 → 用 dummy head 直接合併（LC 21） |
+| 「合併 k 條已排序串列」 | k ≤ 10⁴ | 用堆積做 k 路合併 | [heap § Template 3](./heap.md#template-3-k-way-merge--lc-23-) | 只有兩條 → 用 dummy head 直接合併（LC 21） |
 
 <!-- 27aa78ff63c6 -->
 ### 樹
@@ -112,13 +112,13 @@
 | 「網格裡找單字」、「N 皇后」、「數獨」 | 棋盤 ≤ 9 × 9 或 m·n ≤ 36 | 棋盤上的回溯 | [backtrack § Template 9](./backtrack.md#template-9-grid--word-search--lc-79-)、[Template 10](./backtrack.md#template-10-n-queens--lc-51) | 同一個網格裡找很多個字 → trie + 回溯（LC 212） |
 | 「把字串切成回文」 | n ≤ 16 | 在切點上回溯 | [backtrack § Template 8](./backtrack.md#template-8-palindrome-partitioning--lc-131-) | 問**最少**切幾刀 → DP（LC 132） |
 
-<!-- 53434e1cffff -->
+<!-- 773101af399a -->
 ### 堆積與貪婪
 
 | 敘述裡的訊號 | 限制提示 | 模式 | Card | 長得像，其實不是 |
 |---|---|---|---|---|
-| 「出現最頻繁的前 k 個」、「最近的 k 個」、「串流中的第 k 大」 | n ≤ 10⁵ | 大小為 k 的堆積 | [heap § Template 1](./heap.md#template-1-top-k-elements-pattern--lc-215) | 固定陣列、只問一次 → quickselect，平均 O(n) |
-| 「資料流的中位數」 | 5 · 10⁴ 次呼叫 | 雙堆積 | [heap § Template 3](./heap.md#template-3-two-heaps-pattern-median-finding--lc-295) | 滑動視窗的中位數 → 還要能從視窗刪除（[monotonic_queue § Template 4](./monotonic_queue.md#template-4-sliding-window-median--ordered-multiset--two-heaps-lc-480-)） |
+| 「出現最頻繁的前 k 個」、「最近的 k 個」、「串流中的第 k 大」 | n ≤ 10⁵ | 大小為 k 的堆積 | [heap § Template 1](./heap.md#template-1-size-k-min-heap-for-the-kth-largest--lc-215-) | 固定陣列、只問一次 → quickselect，平均 O(n) |
+| 「資料流的中位數」 | 5 · 10⁴ 次呼叫 | 雙堆積 | [heap § Template 4](./heap.md#template-4-two-heaps-for-a-running-median--lc-295-) | 滑動視窗的中位數 → 還要能從視窗刪除（[monotonic_queue § Template 4](./monotonic_queue.md#template-4-sliding-window-median--ordered-multiset--two-heaps-lc-480-)） |
 | 「帶冷卻的任務排程」、「重排字串讓相同字元不相鄰」 | n ≤ 10⁴，26 種 | 對最頻繁的那個做貪婪 | [greedy § Template 2](./greedy.md#template-2-activity-selection-with-heap--lc-621-)、[Template 5](./greedy.md#template-5-string-reorganization--lc-767-) | 必須保持輸入順序 → 用佇列模擬 |
 | 「能不能跳到終點」、「最少跳幾次」 | n ≤ 10⁴ | 貪婪：最遠可達 | [greedy § Template 4](./greedy.md#template-4-jump-game-pattern--lc-55-) | 每一跳有成本 → DP 或 Dijkstra |
 
