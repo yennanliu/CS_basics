@@ -674,8 +674,8 @@ exactly 2  = 12 - 5 = 7
 monotone; use prefix sum + hash map ([prefix_sum.md](./prefix_sum.md)). For a binary array the
 same count also falls out of prefix-sum counting (LC 930, LC 1248).
 
-**Drill** — LC 992 · LC 713 *(counting slot alone, product < k)* · LC 930 · LC 1248 *(odd → 1, even → 0)*
-· LC 992 · LC 2062 *(a consonant resets the window)*
+**Drill** — LC 992 · LC 713 *(counting slot alone, product < k)* · LC 930 · LC 1248 *(odd → 1,
+even → 0)* · LC 2062 *(a consonant resets the window)*
 
 | Problem | LC# | Difficulty | Transformation | Key Insight |
 |---------|-----|------------|----------------|-------------|
