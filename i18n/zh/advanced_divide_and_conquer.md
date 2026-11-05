@@ -250,11 +250,9 @@
 <!-- 598a9bfd2a3c -->
 ## LC 範例
 
-<!-- a724a67000cc -->
+<!-- 9fa4ef72e74e -->
 ### 2-1) Count of Smaller Numbers After Self (LC 315) —— 合併排序 + 追蹤索引
 > 合併過程中，數一數有多少右半元素越過了每個左半元素。
-
-<!--CODE-->
 
 <!--CODE-->
 
