@@ -41,10 +41,15 @@
 
 Sort first, then one function covers every k: `k = 2` is the two-pointer base case, and each larger k fixes one element and recurses. `n_sum_target(nums, 3, 0, 0)` is LC 15; `k = 4` is LC 18.
 
+**Recognise** — "all unique pairs / triplets / quadruplets that sum to a target"; n ≤ 3,000 for 3 Sum, n ≤ 200 for 4 Sum, and duplicates must not repeat in the answer.
+
+**Key point** — on a sorted array, fixing the smallest element leaves a (k − 1) Sum on the suffix with target − that element, and two pointers solve the k = 2 case in one pass; skipping equal neighbours at every level is what makes each combination appear once.
+
 ```python
 # python
 # IDEA: n Sum on a SORTED array = fix nums[i], solve (n-1) Sum on the suffix; n == 2 is the 2-pointer base case
-# time = O(n^(k-1)) for k Sum, space = O(k) recursion depth (excluding output)
+# time = O(n^(k-1)) for k Sum, space = O(k) recursion depth + the intermediate result lists each level builds before copying
+#        them up, which can hold as many tuples as the answer (excluding the final output)
 def n_sum_target(nums, k, start, target):
     res = []
     if k < 2 or len(nums) - start < k:       # need at least 2 Sum and k numbers left
@@ -83,7 +88,8 @@ n_sum_target(nums, 4, 0, 0)   # -> [[-2, -1, 1, 2], [-2, 0, 0, 2], [-1, 0, 0, 1]
 ```java
 // java
 // IDEA: n Sum on a SORTED array = fix nums[i], solve (n-1) Sum on the suffix; n == 2 is the 2-pointer base case
-// time = O(n^(k-1)) for k Sum, space = O(k) recursion depth (excluding output)
+// time = O(n^(k-1)) for k Sum, space = O(k) recursion depth + the intermediate result lists each level builds before copying
+//        them up, which can hold as many tuples as the answer (excluding the final output)
 public List<List<Integer>> nSumTarget(int[] nums, int k, int start, long target) {
     List<List<Integer>> res = new ArrayList<>();
     if (k < 2 || nums.length - start < k) return res;   // need at least 2 Sum and k numbers left
@@ -116,6 +122,17 @@ public List<List<Integer>> nSumTarget(int[] nums, int k, int start, long target)
     return res;
 }
 ```
+
+**Complexity**
+- **Time O(n^(k-1))**: k − 2 nested fixed elements, each an O(n) loop, around the O(n) two-pointer scan; the O(n log n) sort is dominated for k ≥ 2.
+- **Space**: O(k) recursion depth, plus the result lists each level builds before handing them up.
+
+**Traps**
+- Skipping duplicates only in the base case: `[-1, -1, 0, 1]` with k = 3, target 0 returns `[-1, 0, 1]` twice. Skip equal `nums[i]` at every level (`i > start and nums[i] == nums[i - 1]`).
+- Summing in `int` in Java: LC 18 allows values up to 10⁹, so four of them overflow. The Java takes a `long` target.
+- Forgetting to sort first: the two pointers then move the wrong way and miss pairs.
+
+**Drill** — LC 15 · LC 1 *(k = 2, unsorted → hash map instead)* · LC 167 · LC 18 · LC 16 *(closest, not equal)*
 
 ### 1-1) Quick Decision Table ⭐⭐⭐⭐
 

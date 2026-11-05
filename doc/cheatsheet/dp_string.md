@@ -87,9 +87,10 @@ This is **THE MOST IMPORTANT** pattern in Two-String DP:
 # python
 # IDEA: the shared skeleton of every two-sequence grid DP; the four functions are what a problem fills in
 # time = O(m * n), space = O(m * n)
-def string_dp(s1, s2, empty_s1, empty_s2, on_match, on_mismatch):
+def string_dp(s1, s2, empty_s1, empty_s2, on_match, on_mismatch, empty_empty=0):
     m, n = len(s1), len(s2)
     dp = [[0] * (n + 1) for _ in range(m + 1)]
+    dp[0][0] = empty_empty             # counting problems (LC 115) need 1 here: one way to match "" to ""
 
     for j in range(1, n + 1):          # row 0: s1 is empty
         dp[0][j] = empty_s1(j)
