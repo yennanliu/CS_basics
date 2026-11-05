@@ -9,22 +9,22 @@
 | 步驟 | 項目 | 範圍 | PR | 狀態 |
 |---|---|---|---|---|
 | 1 | 模板、風格指南、審查本身 | `00_template.md`、`CLAUDE.md`、`/lc-cheatsheet`、card gate | [#290](https://github.com/yennanliu/CS_basics/pull/290) | ✅ |
-| — | 這份進度文件 | `doc/cheatsheet-review-2026-11-progress.md` | [#301](https://github.com/yennanliu/CS_basics/pull/301) | 🔄 |
-| 2 | **P0** 修 bug | §9 的 9 個 verified + 11 個 reported、Java 減法 comparator | [#302](https://github.com/yennanliu/CS_basics/pull/302) | 🔄 |
-| 3 | **P7** lint + baseline | `script/check_cheatsheets.py` + baseline + workflow | [#303](https://github.com/yennanliu/CS_basics/pull/303) | 🔄 |
-| 4 | **P1** 入口 | `lc_pattern.md` 改成 router；`startHere` 第一階 | [#305](https://github.com/yennanliu/CS_basics/pull/305) | 🔄 |
-| 5a | **P2** tree 家族 | `tree`、`binary_tree`、`bst`、`tree_lca_distance` | [#306](https://github.com/yennanliu/CS_basics/pull/306) | 🔄 |
-| 5b | **P2** graph 家族 | `bfs`、`dfs`、`graph` | [#307](https://github.com/yennanliu/CS_basics/pull/307) | 🔄 |
-| 5c | **P2** arrays / strings 家族 | `array`、`string`、`2_pointers`、`sliding_window`、`binary_search`、`binary_search_on_answer` | [#308](https://github.com/yennanliu/CS_basics/pull/308) | 🔄 |
-| 5d | **P2** dp 家族 | `dp`、`backtrack`、`knapsack` | [#309](https://github.com/yennanliu/CS_basics/pull/309) | 🔄 |
-| 5e | **P2** hashing / stacks 家族 | `hash_map`、`stack`、`linked_list`、`heap` | [#310](https://github.com/yennanliu/CS_basics/pull/310) | 🔄 |
-| 6a | **P3 + P4** tree 家族 | tree path 去重；`tree_examples`、`bst_examples` 改 Skeleton C，`bst_advanced` 改 D | [#311](https://github.com/yennanliu/CS_basics/pull/311) | 🔄 |
-| 6b | **P3 + P4** graph 家族 | 最短路徑比較去重；`bfs_examples`、`dfs_examples`、`graph_examples`、`topology_sorting_examples` 改 C，`bfs_advanced`、`dfs_advanced`、`graph_advanced` 改 D | [#312](https://github.com/yennanliu/CS_basics/pull/312) | 🔄 |
-| 6c | **P3 + P4** arrays / strings 家族 | quickselect、KMP / rolling hash 去重；`array_examples`、`string_examples`、`2_pointers_examples`、`sliding_window_examples`、`binary_search_examples` 改 C，`sliding_window_advanced` 改 D | [#313](https://github.com/yennanliu/CS_basics/pull/313) | 🔄 |
-| 6d | **P3 + P4** dp 家族 | 0/1 knapsack 去重；`dp_examples`、`backtrack_examples` 改 C，`dp_advanced`、`backtrack_advanced` 改 D | [#314](https://github.com/yennanliu/CS_basics/pull/314) | 🔄 |
-| 6e | **P3 + P4** hashing / stacks 家族 | `monotonic_stack` vs `stack_examples`；`hash_map_examples`、`stack_examples`、`linked_list_examples`、`heap_examples`、`design_examples` 改 C，`heap_advanced` 改 D | [#315](https://github.com/yennanliu/CS_basics/pull/315) | 🔄 |
-| 7a | **P5** 第二階段 | `build-site.js` 在 Drill Path 旁標出 `progress.txt` 的 verdict | [#316](https://github.com/yennanliu/CS_basics/pull/316) | 🔄 |
-| 7b | **P6** 雜訊與語言 | Python 優先、IPython transcript、行內中文、檔名修正 | [#317](https://github.com/yennanliu/CS_basics/pull/317) | 🔄 |
+| — | 這份進度文件 | `doc/cheatsheet-review-2026-11-progress.md` | [#301](https://github.com/yennanliu/CS_basics/pull/301) | ✅ |
+| 2 | **P0** 修 bug | §9 的 9 個 verified + 11 個 reported、Java 減法 comparator | [#302](https://github.com/yennanliu/CS_basics/pull/302) | ✅ |
+| 3 | **P7** lint + baseline | `script/check_cheatsheets.py` + baseline + workflow | [#303](https://github.com/yennanliu/CS_basics/pull/303) | ✅ |
+| 4 | **P1** 入口 | `lc_pattern.md` 改成 router；`startHere` 第一階 | [#305](https://github.com/yennanliu/CS_basics/pull/305) | ✅ |
+| 5a | **P2** tree 家族 | `tree`、`binary_tree`、`bst`、`tree_lca_distance` | [#306](https://github.com/yennanliu/CS_basics/pull/306) | ✅ |
+| 5b | **P2** graph 家族 | `bfs`、`dfs`、`graph` | [#307](https://github.com/yennanliu/CS_basics/pull/307) | ✅ |
+| 5c | **P2** arrays / strings 家族 | `array`、`string`、`2_pointers`、`sliding_window`、`binary_search`、`binary_search_on_answer` | [#308](https://github.com/yennanliu/CS_basics/pull/308) | ✅ |
+| 5d | **P2** dp 家族 | `dp`、`backtrack`、`knapsack` | [#309](https://github.com/yennanliu/CS_basics/pull/309) | ✅ |
+| 5e | **P2** hashing / stacks 家族 | `hash_map`、`stack`、`linked_list`、`heap` | [#310](https://github.com/yennanliu/CS_basics/pull/310) | ✅ |
+| 6a | **P3 + P4** tree 家族 | tree path 去重；`tree_examples`、`bst_examples` 改 Skeleton C，`bst_advanced` 改 D | [#311](https://github.com/yennanliu/CS_basics/pull/311) | ✅ |
+| 6b | **P3 + P4** graph 家族 | 最短路徑比較去重；`bfs_examples`、`dfs_examples`、`graph_examples`、`topology_sorting_examples` 改 C，`bfs_advanced`、`dfs_advanced`、`graph_advanced` 改 D | [#312](https://github.com/yennanliu/CS_basics/pull/312) | ✅ |
+| 6c | **P3 + P4** arrays / strings 家族 | quickselect、KMP / rolling hash 去重；`array_examples`、`string_examples`、`2_pointers_examples`、`sliding_window_examples`、`binary_search_examples` 改 C，`sliding_window_advanced` 改 D | [#313](https://github.com/yennanliu/CS_basics/pull/313) | ✅ |
+| 6d | **P3 + P4** dp 家族 | 0/1 knapsack 去重；`dp_examples`、`backtrack_examples` 改 C，`dp_advanced`、`backtrack_advanced` 改 D | [#314](https://github.com/yennanliu/CS_basics/pull/314) | ✅ |
+| 6e | **P3 + P4** hashing / stacks 家族 | `monotonic_stack` vs `stack_examples`；`hash_map_examples`、`stack_examples`、`linked_list_examples`、`heap_examples`、`design_examples` 改 C，`heap_advanced` 改 D | [#315](https://github.com/yennanliu/CS_basics/pull/315) | ✅ |
+| 7a | **P5** 第二階段 | `build-site.js` 在 Drill Path 旁標出 `progress.txt` 的 verdict | [#316](https://github.com/yennanliu/CS_basics/pull/316) | ✅ |
+| 7b | **P6** 雜訊與語言 | Python 優先、IPython transcript、行內中文、檔名修正 | [#317](https://github.com/yennanliu/CS_basics/pull/317) | ✅ |
 
 P2 的 24 份 tier 5 cheatsheet 裡有 4 份不在 5a–5e：`lc_pattern` 由 P1 改寫，`knapsack_01_zh` 是 P3 #2 的 0/1 knapsack 中文 home，`python_complexity` 與 `complexity_cheatsheet` 是查表型的參考文件（沒有 pattern card 可補），在 P1 合併 constraint ruler 時一起處理。
 
@@ -38,14 +38,14 @@ P2 的 24 份 tier 5 cheatsheet 裡有 4 份不在 5a–5e：`lc_pattern` 由 P1
 |---|---:|---|---:|
 | §9 verified bug | 9 | 0 | 0 |
 | Java 減法 comparator `(a, b) -> a - b` | 26 | 0 | 0（實際掃到 75 處：61 個 lambda + 14 個 `return a - b`；`java_trick_strings_sorting` 示範反例的 3 行保留） |
-| 有 recognition 標題的檔案 | 37 / 135 | 所有 tier ≥ 4 主檔 | 缺的 tier ≥ 4 主檔：37（lint `no-recognition`） |
-| 沒有 `## Drill Path` 的 tier ≥ 4 主檔 | — | 0 | 59（lint `no-drill-path`） |
-| 沒有 `## Index` 的 `_examples` | 27 | 0 | 27 |
-| 沒有 `## When Not to Use` 的 `_advanced` | 9 | 0 | 9 |
-| `### … LC n` 標題後直接接 code | 401 | 0 | 401（lint `code-first-example`） |
-| 沒有 insight 行的範例 | 570 | < 100 | 570 |
-| `NOTE !!!` | 583 行 / 69 檔 | < 50 | 567（lint `note-wall`，只算 `NOTE !!!` 本身） |
-| IPython `In [n]:` | 224 行 / 10 檔 | 0 | 347（lint `ipython`，`Out[n]:` 也算） |
+| 有 recognition 標題的檔案 | 37 / 135 | 所有 tier ≥ 4 主檔 | 缺的 tier ≥ 4 主檔：26（lint `no-recognition`） |
+| 沒有 `## Drill Path` 的 tier ≥ 4 主檔 | — | 0 | 36（lint `no-drill-path`） |
+| 沒有 `## Index` 的 `_examples` | 27 | 0 | 9（剩下的都是 5a–6e 以外的家族） |
+| 沒有 `## When Not to Use` 的 `_advanced` | 9 | 0 | 1（`prefix_sum_advanced` 以外都補了） |
+| `### … LC n` 標題後直接接 code | 401 | 0 | 190（lint `code-first-example`） |
+| 沒有 insight 行的範例 | 570 | < 100 | 未重新量測（lint 不算這項；`code-first-example` 是最接近的指標） |
+| `NOTE !!!` | 583 行 / 69 檔 | < 50 | 0（lint `note-wall`） |
+| IPython `In [n]:` | 224 行 / 10 檔 | 0 | 0（lint `ipython`，`Out[n]:` 也算） |
 
 ## 每個 PR 的檢查清單
 
@@ -106,3 +106,4 @@ P2 的 24 份 tier 5 cheatsheet 裡有 4 份不在 5a–5e：`lc_pattern` 由 P1
 | 2026-11-05 | 6e | P3+P4 hashing / stacks：LC 146 / 460 歸 `linked_list` T7；LC 560 歸 `hash_map` T4；單調堆疊題歸 `monotonic_stack`；五份 `_examples` 改 C、`heap_advanced` 改 D；`design.md` 新增 Pattern 6–10；修 LC 1963、`heap_advanced` §9、LC 588、LC 24 / 25 / 1171 的 trap 敘述；疊合時修 12 條跨家族連結 |
 | 2026-11-05 | 7a | P5 第二階段：`stampDrillVerdicts` 在每份 Drill Path 的 LC 編號旁標出 `progress.txt` 的最新 verdict（ok / again / 未練），英文與中文頁都有；e2e 逐題比對 `progress.json`（709 個 badge） |
 | 2026-11-05 | 7b | P6：IPython 319→0、`NOTE !!!` 183→0、blog 連結 14→0、gpt 6→0；`dp_monotonic_stack`、`dp_string`、`n_sum` 改 Python 先（`n_sum` 的 C++ 換掉）；`array_overlap_explaination` → `array_overlap_explanation`（留 stub）；英文 sheet 的行內中文移到 overlay；中文 card 標籤統一；card gate 改成把改名視為改名而不是新檔 |
+| 2026-11-05 | — | #301–#317 全部合併。#312 合併後才推上的 `bfs_advanced` pattern card（review 意見）由後續 PR 補上；lint 總數 1,672 → 378 |
