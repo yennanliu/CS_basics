@@ -942,44 +942,48 @@ size upward, aggregate the score (and how many nodes reach the best one) on the 
 
 ```python
 # python
-# LC 2049 - Count Nodes With the Highest Score
-# IDEA: post-order returns each subtree's size; removing x leaves its child subtrees + (n - size(x)) above
+# IDEA: sizes come children-first (reverse BFS order); removing x leaves its child subtrees + n - size(x)
 # time = O(n), space = O(n)
+# Iterative on purpose: n is up to 10^5 and a chain would overflow Python's recursion limit.
+# LC 2049 - Count Nodes With the Highest Score
+from collections import deque
+
 def countHighestScoreNodes(parents):
     n = len(parents)
     children = [[] for _ in range(n)]
     for node in range(1, n):                 # parents[0] == -1: node 0 is the root
         children[parents[node]].append(node)
 
+    order = []                               # BFS order from the root
+    queue = deque([0])
+    while queue:
+        node = queue.popleft()
+        order.append(node)
+        queue.extend(children[node])
+
+    size = [1] * n
     best_score = 0
     best_count = 0
-
-    def subtree_size(node):
-        nonlocal best_score, best_count
-        size = 1
+    for node in reversed(order):             # every child is finished before its parent
         score = 1
         for child in children[node]:
-            child_size = subtree_size(child)
-            score *= child_size               # each child's subtree is one component
-            size += child_size
-        above = n - size                      # everything outside this subtree
-        if above > 0:                         # the root has nothing above it
+            score *= size[child]             # each child's subtree is one component
+            size[node] += size[child]
+        above = n - size[node]               # everything outside this subtree
+        if above > 0:                        # the root has nothing above it
             score *= above
         if score > best_score:
             best_score, best_count = score, 1
         elif score == best_score:
             best_count += 1
-        return size
-
-    subtree_size(0)
     return best_count
 ```
 
 **Traps**
 - The root has no component above it: `n - size(root) == 0` would zero every root score. Skip the
   factor when it is 0.
-- n ≤ 10⁵ and the tree can be a chain, so Python recursion overflows its default limit. Raise it
-  with `sys.setrecursionlimit`, or compute sizes iteratively in reverse BFS order.
+- n ≤ 10⁵ and the tree can be a chain, so a recursive post-order overflows Python's default
+  limit; the reverse-BFS loop above gets the same children-first order without recursion.
 - The product of three components of ~3·10⁴ nodes is ~2.7·10¹³: in Java it needs `long`.
 
 **Similar** — LC 1519 *(subtree aggregation by label)* · LC 508 *(subtree sum + frequency)* ·
