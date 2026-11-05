@@ -19,7 +19,7 @@
 | 5d | **P2** dp 家族 | `dp`、`backtrack`、`knapsack` | [#309](https://github.com/yennanliu/CS_basics/pull/309) | 🔄 |
 | 5e | **P2** hashing / stacks 家族 | `hash_map`、`stack`、`linked_list`、`heap` | [#310](https://github.com/yennanliu/CS_basics/pull/310) | 🔄 |
 | 6a | **P3 + P4** tree 家族 | tree path 去重；`tree_examples`、`bst_examples` 改 Skeleton C，`bst_advanced` 改 D | [#311](https://github.com/yennanliu/CS_basics/pull/311) | 🔄 |
-| 6b | **P3 + P4** graph 家族 | 最短路徑比較去重；`bfs_examples`、`dfs_examples`、`graph_examples`、`topology_sorting_examples` 改 C，`bfs_advanced`、`dfs_advanced`、`graph_advanced` 改 D | PR_K | 🔄 |
+| 6b | **P3 + P4** graph 家族 | 最短路徑比較去重；`bfs_examples`、`dfs_examples`、`graph_examples`、`topology_sorting_examples` 改 C，`bfs_advanced`、`dfs_advanced`、`graph_advanced` 改 D | [#312](https://github.com/yennanliu/CS_basics/pull/312) | 🔄 |
 | 6c | **P3 + P4** arrays / strings 家族 | quickselect、KMP / rolling hash 去重；`array_examples`、`string_examples`、`2_pointers_examples`、`sliding_window_examples`、`binary_search_examples` 改 C，`sliding_window_advanced` 改 D | | ⬜ |
 | 6d | **P3 + P4** dp 家族 | 0/1 knapsack 去重；`dp_examples`、`backtrack_examples` 改 C，`dp_advanced`、`backtrack_advanced` 改 D | | ⬜ |
 | 6e | **P3 + P4** hashing / stacks 家族 | `monotonic_stack` vs `stack_examples`；`hash_map_examples`、`stack_examples`、`linked_list_examples`、`heap_examples`、`design_examples` 改 C，`heap_advanced` 改 D | | ⬜ |
