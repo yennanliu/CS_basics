@@ -1,11 +1,3 @@
-<!-- 5995a12ca0fe -->
-# Prefix Sum (前綴和)
-
-> **範圍** — 前綴和／累積和 — 子陣列和、二維前綴和、前綴和搭配雜湊表做計數。
-> **另見**：[prefix_sum_advanced.md](./prefix_sum_advanced.md) — 模板 9–14，也就是那些要借用其他資料結構的；[prefix_sum_examples.md](./prefix_sum_examples.md) — 模板沒有直接解掉的實作題；[difference_array.md](./difference_array.md) — 區間*更新*而非區間查詢；[binary_indexed_tree.md](./binary_indexed_tree.md) — 陣列本身也會變動時；[kadane_algorithm.md](./kadane_algorithm.md) — 不靠前綴和求最大子陣列；[tree_backtrack.md](./tree_backtrack.md) — 模板 14 所一般化的那個 root→leaf 路徑 DFS。
-
-<p align="center"><img src="../pic/prefix_sum.png"></p>
-
 <!-- 1d1496862506 -->
 ## LeetCode 題目清單
 
@@ -106,28 +98,6 @@
 
 <!-- 442b0cdc3b57 -->
 ## 0) 概念
-
-<!-- 55c2b60e2258 -->
-### 前綴和陣列怎麼建（核心）
-
-整套技巧都建立在**一行核心程式**上。把它背下來，其他都是推論：
-
-<!--CODE-->
-
-**一步一步來：**
-
-<!--CODE-->
-
-**追蹤（為什麼索引是 `i + 1` 而不是 `i`）：**
-
-<!--CODE-->
-
-> **重點：** `prefix` 比 `cnt` 多一個元素。`prefix[i+1]` 回答的是
-> 「前 `i+1` 個元素的和」= `cnt[0] + ... + cnt[i]`。
-
-**一行版寫法**（`itertools.accumulate` 前面補一個 0）：
-
-<!--CODE-->
 
 <!-- b294157c3ced -->
 ### 為什麼 `sum(l, r) = prefix[r+1] - prefix[l]`
@@ -1068,3 +1038,34 @@ LC 42 要 `i` 兩邊**都**包含（一根柱子能裝的水最多只到它自�
 - **環狀陣列**：改寫模板來處理繞回頭的情況
 
 這份 cheatsheet 涵蓋了所有主要的前綴和模式，並提供一套有系統的方法，讓你能高效率地解掉 40 多題 LeetCode。
+
+<!-- c27214bb9208 -->
+# Prefix Sum (前綴和)
+
+> **範圍** — 前綴和／累積和 — 子陣列和、二維前綴和、前綴和搭配雜湊表做計數。
+> **另見**：[prefix_sum_advanced.md](./prefix_sum_advanced.md) — 模板 9–14，也就是那些要借用其他資料結構的；[prefix_sum_examples.md](./prefix_sum_examples.md) — 模板沒有直接解掉的實作題；[difference_array.md](./difference_array.md) — 區間*更新*而非區間查詢；[binary_indexed_tree.md](./binary_indexed_tree.md) — 陣列本身也會變動時；[kadane_algorithm.md](./kadane_algorithm.md) — 不靠前綴和求最大子陣列；[tree_backtrack.md](./tree_backtrack.md) — 模板 14 所一般化的那個 root→leaf 路徑 DFS。
+
+<p align="center"><img src="../pic/prefix_sum.png"></p>
+
+<!-- 67d92c4ec76b -->
+### 前綴和陣列怎麼建
+
+整套技巧都建立在**一行核心程式**上。把它背下來，其他都是推論：
+
+<!--CODE-->
+
+**一步一步來：**
+
+<!--CODE-->
+
+**追蹤（為什麼索引是 `i + 1` 而不是 `i`）：**
+
+<!--CODE-->
+
+> **重點：** `prefix` 比 `cnt` 多一個元素。`prefix[i+1]` 回答的是
+> 「前 `i+1` 個元素的和」= `cnt[0] + ... + cnt[i]`。
+
+**一行版寫法**（`itertools.accumulate` 前面補一個 0）：
+
+<!--CODE-->
+

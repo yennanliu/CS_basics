@@ -648,7 +648,7 @@ class Solution(object):
                 if grid[r][c] != '1':
                     continue
                 islands += 1
-                ### NOTE !!! right and down only -- each neighbouring pair is then seen once
+                ### right and down only -- each neighbouring pair is then seen once
                 for dr, dc in ((0, 1), (1, 0)):
                     nr, nc = r + dr, c + dc
                     if nr < rows and nc < cols and grid[nr][nc] == '1':
@@ -720,7 +720,7 @@ class Solution(object):
                         if board[i + di][j + dj] == 'O':
                             union(idx, (i + di) * n + (j + dj))
 
-        ### NOTE !!! LC 130 mutates in place and returns nothing
+        ### LC 130 mutates in place and returns nothing
         for i in range(m):
             for j in range(n):
                 if board[i][j] == 'O' and find(i * n + j) != find(virtual):
@@ -929,7 +929,7 @@ class WeightedUnionFind(object):
         if self.parent[x] != x:
             original = self.parent[x]
             self.parent[x] = self.find(original)
-            ### NOTE !!! multiply on the way back up -- this is what makes ratio[x] = x / root
+            ### multiply on the way back up -- this is what makes ratio[x] = x / root
             self.ratio[x] *= self.ratio[original]
         return self.parent[x]
 
@@ -1134,7 +1134,7 @@ public int[] hitBricks(int[][] grid, int[][] hits) {
     int[][] g = new int[m][];
     for (int i = 0; i < m; i++) g[i] = grid[i].clone();
 
-    /** NOTE !!! record whether each hit actually removed a brick.
+    /** record whether each hit actually removed a brick.
      *  Two hits on the same cell both see grid[r][c] == 1, so testing the ORIGINAL grid in
      *  the reverse pass credits the fall to the wrong hit. Only the first hit on a cell is
      *  effective; every later one lands on an already-empty cell and must score 0.
@@ -1196,7 +1196,7 @@ class Solution(object):
         m, n = len(grid), len(grid[0])
         roof = m * n
         g = [row[:] for row in grid]
-        ### NOTE !!! only the FIRST hit on a cell removes a brick; later hits on the same
+        ### only the FIRST hit on a cell removes a brick; later hits on the same
         ###          cell land on an empty slot and must score 0, so record which is which.
         effective = [False] * len(hits)
         for i, (r, c) in enumerate(hits):        # apply ALL hits first
@@ -1327,7 +1327,7 @@ class Solution(object):
             for e in emails:
                 parent.setdefault(e, e)
                 email_to_name[e] = name
-                ### NOTE !!! union to the FIRST email, which links the whole account in one pass
+                ### union to the FIRST email, which links the whole account in one pass
                 union(emails[0], e)
 
         groups = {}
@@ -1394,7 +1394,7 @@ class Solution(object):
 
         res = list(s)
         for idxs in groups.values():
-            ### NOTE !!! idxs is already ascending; sorting the CHARS and zipping them back
+            ### idxs is already ascending; sorting the CHARS and zipping them back
             ###          in that order is what yields the lexicographically smallest result
             chars = sorted(res[i] for i in idxs)
             for i, ch in zip(idxs, chars):

@@ -503,7 +503,7 @@ class Solution(object):
             stop = True
             for v, c in cnt.most_common():
                 """
-                NOTE !!! trick here
+                trick here
 
                 1) we only compare last element in ans and current key (v), if they are different, then append
                 2) we break at the end of each for loop -> MAKE SURE two adjacent characters are not the same.
@@ -516,7 +516,7 @@ class Solution(object):
                     if not cnt[v]:
                         del cnt[v]
                     """
-                    NOTE !!!
+                    Note:
                      -> we BREAK right after each op, since we want to get next NEW most common element from "updated" cnt.most_common()
                     """
                     break

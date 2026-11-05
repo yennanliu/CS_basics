@@ -34,16 +34,6 @@
 
 <p align="center"><img src="../pic/stack_101.png"></p>
 
-<!-- c1da75d31c24 -->
-### 參考資料
-
-- 文章
-    - [fuck-Algorithm - single stack](https://github.com/labuladong/fucking-Algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E5%8D%95%E8%B0%83%E6%A0%88.md)
-    - [fuck-Algorithm - implement array via stack / stack via array ](https://github.com/labuladong/fucking-Algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E9%98%9F%E5%88%97%E5%AE%9E%E7%8E%B0%E6%A0%88%E6%A0%88%E5%AE%9E%E7%8E%B0%E9%98%9F%E5%88%97.md)
-    - [Java Stack](https://blog.csdn.net/oChangWen/article/details/72859556) — 底層實作：陣列
-- 影片
-    - [Stack Fundamentals](https://www.bilibili.com/list/525438321?sort_field=pubtime&spm_id_from=333.999.0.0&oid=779764003&bvid=BV1my4y1Z7jj)
-
 <!-- 80cb793d3b92 -->
 ## 辨識
 
@@ -129,7 +119,7 @@
 - **時間 O(n)**：`for ch in s` 迴圈每個字元跑一次，每個字元最多 push 一次、pop 一次。
 - **空間 O(n)**：`stack.append(ch)` 會留下每個倖存者；`"abcd"` 什麼都不會被消掉。
 
-**手動推演**
+**試跑**
 
 <!--CODE-->
 
@@ -138,7 +128,7 @@
 - Java 的 `Stack<Character>` 由底往頂迭代，`ArrayDeque` 卻由頂往底迭代；直接迭代 `ArrayDeque` 來組答案會把結果反過來。用 `pollLast()` 從底部取出。
 - Java 的 `stack.peek() == ch` 之所以安全，只因為 `ch` 是基本型別 `char`；兩個裝箱的 `Character` 用 `==` 比較的是參考。
 
-**不是這個的情況** —— 同一字元要連成 k 個才會消失（LC 1209）→ 改 push `[char, count]` 配對，而不是單一字元（[stack_examples.md](./stack_examples.md)）。
+**不適用時** —— 同一字元要連成 k 個才會消失（LC 1209）→ 改 push `[char, count]` 配對，而不是單一字元（[stack_examples.md](./stack_examples.md)）。
 
 **練習** —— LC 1047 · LC 844 *（退格：遇到 `#` 就 pop，不用比對）* · LC 1544 *（同字母、大小寫相反才相消）* · LC 232 *（兩個堆疊組成佇列）* · LC 1209 *（`[char, count]` 配對）*
 
@@ -165,7 +155,7 @@
 - `"((("`：迴圈從來不會失敗，所以迴圈後直接回傳 `True` 是錯的。堆疊最後必須是空的。
 - Java：`st.pop() != pairs.get(c)` 兩邊都是裝箱的 `Character` 時比較的是參考。先把其中一邊拆成 `char`。
 
-**不是這個的情況** —— 只有**一種**括號（LC 921、LC 1541、LC 1614）→ 一個平衡計數器就夠，O(1) 空間。需要出問題括號的*位置*（LC 1249、LC 32）→ push **索引**，見下方。
+**不適用時** —— 只有**一種**括號（LC 921、LC 1541、LC 1614）→ 一個平衡計數器就夠，O(1) 空間。需要出問題括號的*位置*（LC 1249、LC 32）→ push **索引**，見下方。
 
 **練習** —— LC 20 ⭐ · LC 1614 *（最大深度 = 最大平衡值）* · LC 921 *（只用計數器）* · LC 1249 *（索引堆疊，見下方）* · LC 856 *（存部分分數的堆疊）* · LC 32 *（以 `-1` 為基準的索引堆疊）*
 
@@ -183,7 +173,7 @@
 
 > **關鍵** —— LC 20 只回答*是／否*，所以堆疊可以只放左括號字元、不必記得它們在哪。LC 1249 必須**刪掉**出問題的括號，所以需要它們的*位置* —— push 每個 `(` 的**索引**。這題只有一種括號，pop 時不用比對：任何一個還開著的 `(` 都能配任何一個 `)`。
 
-**化約為**：[模板 2](#template-2-bracket-matching--lc-20-) —— 堆疊放的是索引而不是字元。
+**歸約到**：[模板 2](#template-2-bracket-matching--lc-20-) —— 堆疊放的是索引而不是字元。
 
 | | LC 20 —— 驗證 | LC 1249 —— 修復 |
 |---|---|---|
@@ -228,7 +218,7 @@
 - **時間 O(n)**：內層 `while` 看起來是巢狀的，但每個索引只被 `stack.append(i)` push 一次、最多 pop 一次，所以整趟下來 pop 的總數最多 n 次。
 - **空間 O(n)**：嚴格遞減的輸入（`[5, 4, 3, 2, 1]`）從不 pop，堆疊會存下全部 n 個。
 
-**手動推演**
+**試跑**
 
 <!--CODE-->
 
@@ -237,7 +227,7 @@
 - `<` 與 `<=`：用 `<=` 時，相同溫度 `[70, 70, 71]` 中第二個 70 會把第一個 pop 掉並回報 1 天，但 70 並沒有更暖。「嚴格大於」就表示在嚴格小於時 pop。
 - 最後還留在堆疊上的索引沒有答案；它們保留預設值 `0`（LC 496／503 是 `-1`），所以 `res` 要用它初始化。
 
-**不是這個的情況** —— 答案是固定寬度**滑動視窗**裡的最大或最小值（LC 239）→ 單調*雙端佇列*，它還會從前端過期淘汰（[monotonic_queue.md](./monotonic_queue.md)）。
+**不適用時** —— 答案是固定寬度**滑動視窗**裡的最大或最小值（LC 239）→ 單調*雙端佇列*，它還會從前端過期淘汰（[monotonic_queue.md](./monotonic_queue.md)）。
 
 **練習** —— LC 739 ⭐ · LC 496 · LC 503 *（環狀：走 `2n`）* · LC 901 *（線上 span）* · LC 907 *（貢獻計數）* · LC 84 *（兩側的 next smaller）*
 
@@ -260,7 +250,7 @@
 - **每個操作時間 O(1)**：`push` 在 `min(val, self.min_values[-1])` 裡只合併兩個數字；`getMin` 只讀一格 `self.min_values[-1]`。沒有任何操作需要掃描。
 - **空間 O(n)**：每 push 一個元素，`self.min_values.append(...)` 就多一筆。
 
-**手動推演**
+**試跑**
 
 <!--CODE-->
 
@@ -269,7 +259,7 @@
 - 只 push *新*最小值的省空間變形必須用 `<=` 比較：用 `<` 時，`push 0, push 0, pop` 會讓 min-stack 變空，而堆疊裡還有一個 0（見下方的[省空間變形](#space-saving-variant--a-second-stack-of-minima-only)）。上面的逐層陣列在 `pop` 裡完全不需要比較。
 - Java，省空間變形：對裝箱的 `Integer` 寫 `stack.peek() == minStack.peek()` 比較的是參考，所以 push 進去的 `128` 跟自己也配不上。用 `.equals` 比較，或先拆箱。
 
-**不是這個的情況** —— 最小值必須在從**中間**或任意順序刪除後依然正確（不是 LIFO）→ 搭配 lazy deletion 的 heap（[heap.md](./heap.md)）；視窗從前端滑走（LC 239）→ 用兩個這種堆疊組成佇列，或單調雙端佇列（見下方經典題表）。
+**不適用時** —— 最小值必須在從**中間**或任意順序刪除後依然正確（不是 LIFO）→ 搭配 lazy deletion 的 heap（[heap.md](./heap.md)）；視窗從前端滑走（LC 239）→ 用兩個這種堆疊組成佇列，或單調雙端佇列（見下方經典題表）。
 
 **練習** —— LC 155 ⭐ · LC 1381 *（每層一個延遲加值）* · LC 1026 *（遞迴堆疊就是那個堆疊）* · LC 716 *（max stack，`popMax`）* · LC 895 *（每個頻率一個堆疊）*
 
@@ -384,7 +374,7 @@ LC 239 的 deque 寫法在
 - 把 `root = None` push 進堆疊，會在 `node.val` 上崩潰；先回傳 `[]`。
 - 後序的反轉技巧得到的是*值*的順序；如果每個節點必須在子節點之後才帶著副作用被*處理*（例如釋放它們），就不能用 —— 改用 `(node, visited)` 旗標。
 
-**不是這個的情況** —— 題目要一層一層的節點（「層序」、「右視圖」、「最小深度」）→ 用 FIFO 佇列，不是堆疊（[bfs.md](./bfs.md)）。
+**不適用時** —— 題目要一層一層的節點（「層序」、「右視圖」、「最小深度」）→ 用 FIFO 佇列，不是堆疊（[bfs.md](./bfs.md)）。
 
 **練習** —— LC 144 · LC 145 · LC 94 *（中序：一路往左、pop、再往右）* · LC 173 *（暫停式中序迭代器）* · LC 341 *（巢狀串列的暫停式走訪）*
 
@@ -407,7 +397,7 @@ LC 239 的 deque 寫法在
 - **時間 O(n)**：`for line in input.split('\n')` 每個字元只碰常數次；修剪用的 `while` 每個被 push 的目錄最多 pop 一次。
 - **空間 O(depth)**：`stack.append(...)` 只在輸入越來越深時成長，每個開著的目錄一筆。
 
-**手動推演**
+**試跑**
 
 <!--CODE-->
 
@@ -417,7 +407,7 @@ LC 239 的 deque 寫法在
 - 忘了 `/` 的 `+ 1`：`"dir\n\tfile.ext"` 會回傳 11 而不是 12。
 - 完全沒有檔案（`"a"`）：答案是 `0`，不是最長的目錄路徑。
 
-**不是這個的情況** —— 巢狀是用明確的括號寫的，而且要*驗證* → [模板 2](#template-2-bracket-matching--lc-20-)；要*求值*（計算機、decode string）→ [stack_expression_parsing.md](./stack_expression_parsing.md)。
+**不適用時** —— 巢狀是用明確的括號寫的，而且要*驗證* → [模板 2](#template-2-bracket-matching--lc-20-)；要*求值*（計算機、decode string）→ [stack_expression_parsing.md](./stack_expression_parsing.md)。
 
 **練習** —— LC 388 · LC 71 *（`..` pop 掉父目錄）* · LC 636 · LC 591 *（開標籤堆疊加上 CDATA 規則）*
 
@@ -426,7 +416,7 @@ LC 239 的 deque 寫法在
 
 > **關鍵** —— 輸入是前序（pre-order）列出的，所以深度 `d` 的一行只會讀 `path_len[d]`，而那個位置最後一次寫入正是它自己的父目錄。更深層的過期位置在被讀到之前一定會先被覆寫，所以這本帳其實就是*每個深度最後一次的寫入*。
 
-**化約為**：[模板 6](#template-6-scope--context-ledger--lc-388-lc-636-) —— 拿掉修剪迴圈。README 把 LC 388 歸在 Hash_table 底下，就是這個寫法。複雜度一樣是 `O(n)`。
+**歸約到**：[模板 6](#template-6-scope--context-ledger--lc-388-lc-636-) —— 拿掉修剪迴圈。README 把 LC 388 歸在 Hash_table 底下，就是這個寫法。複雜度一樣是 `O(n)`。
 
 <!--CODE-->
 
@@ -437,7 +427,7 @@ LC 239 的 deque 寫法在
 
 > **關鍵** —— 堆疊就是題目描述的那個呼叫堆疊，所以頂端是*此刻*在 CPU 上執行的函式；`prev` 是還沒有被算給任何人的第一個時間單位。每一行 log 都會把 `[prev, …]` 這一段收尾、算給原本的頂端，然後移動游標。
 
-**化約為**：[模板 6](#template-6-scope--context-ledger--lc-388-lc-636-) —— 上下文是「哪個函式正在執行」，`end` 事件會把它 pop 掉。
+**歸約到**：[模板 6](#template-6-scope--context-ledger--lc-388-lc-636-) —— 上下文是「哪個函式正在執行」，`end` 事件會把它 pop 掉。
 
 <!--CODE-->
 
@@ -508,17 +498,6 @@ LC 636 特有的陷阱：
 | 作用域帳本 | O(n) | O(depth) | 每個未關閉的作用域一筆 |
 | 運算式剖析 | O(n) | O(n) | 堆疊深度 = 巢狀深度 |
 
-<!-- 91bffd502e64 -->
-### 常見陷阱
-
-- **單調堆疊**：處理「next greater／smaller」問題的關鍵模式 —— 先確認題目要的是遞增還是遞減
-- **配對堆疊**：移除相鄰重複或巢狀計數的題目，堆疊裡存 `[element, count]` 配對
-- **貪婪移除**：有些題目適合在維持某個不變量的前提下，貪婪地把元素丟掉
-- **先檢查堆疊是否為空**：每個由右括號觸發的 `pop()`／`peek()` 前面都要有 `!stack.isEmpty()`。
-- **Java 的 `Character` vs `char`**：對兩個裝箱的 `Character` 用 `!=` 比的是參考 —— 比較前先拆箱。
-- 這類題目的**整數除法是往零截斷**；Python 的 `//` 是*往下取整*，所以要寫 `int(a / b)`。
-- 當堆疊必須吐出由左到右的順序時，**子節點要反著 push**。
-
 <!-- 0193ddf226d3 -->
 ### 其他內容在哪裡
 
@@ -529,3 +508,22 @@ LC 636 特有的陷阱：
 | next greater／previous smaller／直方圖的理論 | [monotonic_stack.md](./monotonic_stack.md) |
 | 迭代器設計（LC 173, 341, 284） | [iterator.md](./iterator.md) |
 | FIFO、雙端佇列、單調佇列 | [queue.md](./queue.md)、[monotonic_queue.md](./monotonic_queue.md) |
+
+<!-- 9a1f33199c6a -->
+### 參考資料
+
+- 文章
+    - [fuck-Algorithm - single stack](https://github.com/labuladong/fucking-Algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E5%8D%95%E8%B0%83%E6%A0%88.md)
+    - [fuck-Algorithm - implement array via stack / stack via array ](https://github.com/labuladong/fucking-Algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E9%98%9F%E5%88%97%E5%AE%9E%E7%8E%B0%E6%A0%88%E6%A0%88%E5%AE%9E%E7%8E%B0%E9%98%9F%E5%88%97.md)
+
+<!-- 8769208dbbf2 -->
+### 常見陷阱
+
+- **題目要嚴格大於，卻在 `<=` 時就 pop**（LC 496 / 739）：輸入 `[2, 2, 3]` 時，第二個 2 會把第一個 pop 掉，交給它的答案是 2 而不是 3。只在堆頂嚴格較小時才 pop。
+- **連續段的計數放在堆疊外面**（LC 1209）：`s = "deeedbbcccbdaa", k = 3` 刪掉 `eee` 之後兩個 `d` 變成相鄰；計數必須以 `[char, count]` 的形式放在堆疊上，pop 之後才還在。
+- **貪婪移除掃完之後還剩 `k`**（LC 402）：`num = "12345", k = 2` 一次都不會 pop，所以迴圈結束後要砍掉最後 `k` 位；`num = "10200", k = 1` 會留下開頭的 0 要去掉（`"200"`）。
+- **先檢查堆疊是否為空**：`s = "]"`（LC 20）會對空堆疊 pop；每個由右括號觸發的 `pop()`／`peek()` 前面都要有 `!stack.isEmpty()`。
+- **Java 的 `Character` vs `char`**：對兩個裝箱的 `Character` 用 `!=` 比的是參考。ASCII 剛好沒事（0–127 有快取），遇到第一個非 ASCII 字元就壞掉 —— 先拆箱，或用 `.equals`。
+- **整數除法是往零截斷**（LC 150）：`-3 / 2` 必須是 `-1`，但 Python 的 `//` 會往下取整成 `-2`；要寫 `int(a / b)`。
+- 當堆疊必須吐出由左到右的順序時，**子節點要反著 push**：先 push 左再 push 右，`[1, 2, 3]` 的前序就會變成 `1, 3, 2`。
+

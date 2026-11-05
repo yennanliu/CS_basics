@@ -87,7 +87,7 @@ class Solution(object):
 // java
 // LC 415
 // V0
-// IDEA: string op (fixed by gpt)
+// IDEA: string op
 public String addStrings(String num1, String num2) {
     if (num1 == null || num2 == null) {
         if (num1 == null) {
@@ -105,7 +105,7 @@ public String addStrings(String num1, String num2) {
     int idx_1 = num1.length() - 1;
     int idx_2 = num2.length() - 1;
 
-    /** NOTE !!!
+    /**
      *
      *  1. while loop
      *  2. idx_1 >= 0 or idx_2 >= 0
@@ -117,7 +117,7 @@ public String addStrings(String num1, String num2) {
 
         int new_val = 0;
 
-        /** NOTE !!!
+        /**
          *
          *  if idx_1 >= 0, then get val from it
          */
@@ -126,7 +126,7 @@ public String addStrings(String num1, String num2) {
             idx_1 -= 1;
         }
 
-        /** NOTE !!!
+        /**
          *
          *  if idx_1 >= 0, then get val from it
          */
@@ -137,7 +137,7 @@ public String addStrings(String num1, String num2) {
 
         new_val = (new_val + v1 + v2 + plus);
 
-        /** NOTE !!!
+        /**
          *
          *  if new_vla > 9,
          *  we should `subtract 10` (instead of 9)
@@ -152,7 +152,7 @@ public String addStrings(String num1, String num2) {
         sb.append(new_val);
     }
 
-    /** NOTE !!!
+    /**
      *
      *  need to add the `remaining plus` to res
      *  if there is it
@@ -195,7 +195,7 @@ class Solution(object):
                 carry = 1
             else:
                 carry = 0
-            # NOTE !!! we get "remain" by 10 via below code
+            # we get "remain" by 10 via below code
             result.append(str(digit % 10))
         return ''.join(result[::-1]) 
 ```
@@ -406,7 +406,7 @@ class Solution:
         a &= MASK
         b &= MASK
         while b:
-            # NOTE !!! mask on EVERY step, otherwise the carry grows forever
+            # mask on EVERY step, otherwise the carry grows forever
             a, b = (a ^ b) & MASK, ((a & b) << 1) & MASK
         # if a is over MAX_INT it is a negative number in 2's complement
         return a if a <= MAX_INT else ~(a ^ MASK)
@@ -447,7 +447,7 @@ public String multiply(String num1, String num2) {
         for (int j = n - 1; j >= 0; j--) {
             int mul = (num1.charAt(i) - '0') * (num2.charAt(j) - '0');
             int p1 = i + j, p2 = i + j + 1;
-            /** NOTE !!! add the CURRENT value at p2 first, then split */
+            /** add the CURRENT value at p2 first, then split */
             int sum = mul + pos[p2];
             pos[p2] = sum % 10;
             pos[p1] += sum / 10; // carry (accumulates, normalized on a later visit)
@@ -456,7 +456,7 @@ public String multiply(String num1, String num2) {
 
     StringBuilder sb = new StringBuilder();
     for (int v : pos) {
-        // NOTE !!! skip leading zeros only
+        // skip leading zeros only
         if (!(sb.length() == 0 && v == 0)) {
             sb.append(v);
         }
@@ -500,7 +500,7 @@ public String addInBase(String a, String b, int base) {
     // time = O(max(m, n)), space = O(max(m, n))
     StringBuilder sb = new StringBuilder();
     int i = a.length() - 1, j = b.length() - 1, carry = 0;
-    /** NOTE !!! the `|| carry != 0` term handles the final rollover (e.g. "99" + "1") */
+    /** the `|| carry != 0` term handles the final rollover (e.g. "99" + "1") */
     while (i >= 0 || j >= 0 || carry != 0) {
         int sum = carry;
         if (i >= 0) sum += DIGITS.indexOf(a.charAt(i--));
@@ -578,7 +578,7 @@ public int reverse(int x) {
     while (x != 0) {
         int digit = x % 10; // keeps the sign in java
         x /= 10;
-        /** NOTE !!! check overflow BEFORE res = res * 10 + digit */
+        /** check overflow BEFORE res = res * 10 + digit */
         if (res > Integer.MAX_VALUE / 10 || (res == Integer.MAX_VALUE / 10 && digit > 7)) return 0;
         if (res < Integer.MIN_VALUE / 10 || (res == Integer.MIN_VALUE / 10 && digit < -8)) return 0;
         res = res * 10 + digit;

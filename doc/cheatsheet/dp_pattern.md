@@ -260,7 +260,7 @@ public int minOperations(int[] target, int[] arr) {
     for (int a : arr) {
         Integer p = pos.get(a);
         if (p == null) continue;                  // not in target -> can never be matched
-        // NOTE !!! strictly increasing -> lower_bound. Collections.binarySearch is not
+        // strictly increasing -> lower_bound. Collections.binarySearch is not
         // usable directly here because it says nothing useful about a missing key's neighbours.
         int lo = 0, hi = tails.size();
         while (lo < hi) {

@@ -84,8 +84,10 @@
 | **路徑重建** | 追出實際路徑 | 前驅矩陣 | 需要真正的路徑 |
 | **負環** | 偵測環 | 檢查 dist[i][i] < 0 | 套利、環偵測 |
 
-<!-- a8983bbf313e -->
+<!-- f36e58150acb -->
 ### 模板 1：基本 Floyd-Warshall
+<!--CODE-->
+
 <!--CODE-->
 
 <!-- f572f2dc600d -->
@@ -145,7 +147,7 @@
 
 <!-- a2a47769bdda -->
 ### 2-4) Graph Connectivity With Threshold (LC 1627) — 用 Union-Find，不是 Floyd-Warshall
-> **重點** — 看起來像可達性矩陣，但 n ≤ 10⁴ 讓 Floyd-Warshall 的 O(n³) 變成約 10¹² 步。連通性只需要知道連通分量：把每個 g > threshold 和它的所有倍數 union 起來，每個詢問就是比較兩個根（兩次 `find`）。
+> **關鍵** — 看起來像可達性矩陣，但 n ≤ 10⁴ 讓 Floyd-Warshall 的 O(n³) 變成約 10¹² 步。連通性只需要知道連通分量：把每個 g > threshold 和它的所有倍數 union 起來，每個詢問就是比較兩個根（兩次 `find`）。
 
 **歸約到**：[union_find.md](./union_find.md) — 下方的 Sizing Check 一節說明 n 超過幾百時就不該用 Floyd-Warshall。
 

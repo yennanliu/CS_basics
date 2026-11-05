@@ -104,7 +104,7 @@ DOC_TAGS = {
     "advanced_simulation.md": ["simulation", "design"],
     "advanced_string_algorithms.md": ["string", "string-matching", "rolling-hash", "suffix-array"],
     "array.md": ["array"],
-    "array_overlap_explaination.md": ["design", "ordered-set", "segment-tree"],
+    "array_overlap_explanation.md": ["design", "ordered-set", "segment-tree"],
     "backtrack.md": ["backtracking", "recursion"],
     "Bellman-Ford.md": ["shortest-path", "graph", "dynamic-programming"],
     "bfs.md": ["breadth-first-search", "graph"],

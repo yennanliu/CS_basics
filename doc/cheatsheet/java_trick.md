@@ -268,7 +268,7 @@ List<Integer> list2 = new ArrayList<>();
 getLeafSeq(root1, list1);
 getLeafSeq(root2, list2);
 
-/** NOTE !!!
+/**
  *
  *  Use `equals()` to compare two lists by content.
  *  `==` would check if they are the SAME object (always false here).
@@ -382,7 +382,7 @@ private void getPathHelper(TreeNode root, Integer curSum) {
         pathSumMap.put(newSum, newSum);
     }
 
-    /** NOTE !!!
+    /**
      *
      *  No backtrack on curSum / newSum needed!
      *
@@ -485,28 +485,28 @@ private void dfs(TreeNode node, StringBuilder sb) {
     if (node == null)
         return;
 
-    /** NOTE !!!
+    /**
      *
      *  PRE-ORDER DFS: process current node first
      */
     // 1. Add current character (0 -> 'a', 1 -> 'b', etc.)
     sb.append((char) ('a' + node.val));
 
-    /** NOTE !!!
+    /**
      *
      *  ONLY treat as result when reach `leaf`
      */
     // 2. Leaf check: If we reach a leaf, we have a candidate path
     if (node.left == null && node.right == null) {
 
-        /** NOTE !!!
+        /**
          *
          *  We reverse current StringBuilder to fit the requirement
          *  (string from leaf to root)
          */
         String currentStr = new StringBuilder(sb).reverse().toString();
 
-        /** NOTE !!!
+        /**
          *
          *  How we get the `lexicographically smaller` one:
          *  currentStr.compareTo(smallest) < 0
@@ -520,7 +520,7 @@ private void dfs(TreeNode node, StringBuilder sb) {
     dfs(node.left, sb);
     dfs(node.right, sb);
 
-    /** NOTE !!!
+    /**
      *
      *  For StringBuilder (NOT a primitive type),
      *  we MUST do BACKTRACK (undo)
@@ -652,7 +652,7 @@ for (int r = 0; r < rows; r++) {
             StringBuilder pathSignature = new StringBuilder();
 
             // Step 2: Pass to DFS — it will modify pathSignature in place
-            /** NOTE !!!
+            /**
              *  We pass `pathSignature` as a reference.
              *  DFS will call pathSignature.append(...)
              *  These changes PERSIST after DFS returns
@@ -880,7 +880,7 @@ result.add(new ArrayList<>(currentList));  // Each entry is independent
 // LC 695
 
 /**
- *  NOTE !!!!
+ *  Note:
  *
  *   DON'T pass `area` as parameter to the DFS func (getBiggestArea)
  *
@@ -1023,7 +1023,7 @@ Use `v.cnt -= 1` when you only care about the side-effect, not the return value.
 
             ListNode _prev = null;
             /**
-             *  NOTE !!!
+             *  Note:
              *
              *   we CAN'T just assign `_prev` init val to `res`
              *   and return `res` as result
@@ -1078,7 +1078,7 @@ public Node connect_0_1(Node root) {
     while (!q.isEmpty()) {
         int size = q.size();
         /**
-         *  NOTE !!!!
+         *  Note:
          *
          *   via `prev` node,
          *   we can easily re-connect left - right node in each layer
@@ -1088,11 +1088,11 @@ public Node connect_0_1(Node root) {
          *     Node prev = null;
          *     for(int i = 0; i < size; i++){
          *         TreeNode cur = q.poll();
-         *         // NOTE !!!! this
+         *         // this
          *         if(prev == null){
          *             prev.next = cur;
          *         }
-         *         // NOTE !!!! this
+         *         // this
          *         prev = cur;
          *
          *         // ....
@@ -1296,7 +1296,7 @@ private boolean check(int[] nums, int threshold, int d) {
 // ...
 
 /**
-*  NOTE !!!
+*  Note:
 *
 *  Use long to handle edge cases for Integer.MIN_VALUE and Integer.MAX_VALUE
 *  -> use long to handle overflow issue (NOT use int type)
@@ -1336,9 +1336,6 @@ min = Math.min(Math.min(temp * nums[i], min * nums[i]), nums[i]);
 *      Integer.bitCount(1) = 1
 *      Integer.bitCount(2) = 1
 *      Integer.bitCount(3) = 2
-*
-*  Ref
-*      - https://blog.csdn.net/weixin_42092787/article/details/106607426
 */
 
 // LC 338

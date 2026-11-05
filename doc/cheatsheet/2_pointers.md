@@ -1084,25 +1084,19 @@ LC 986 *(intervals: advance the one that ends first — [intervals.md](./interva
 
 ### Pattern Selection Table
 
+Templates 1–9 are routed by the [Recognition](#recognition) table and drilled in the order of the [Drill Path](#drill-path). The patterns below are two-pointer problems that live in another sheet:
+
 | Pattern | When to Use | Example Problems |
 |---------|-------------|------------------|
-| **Opposite Direction** | Sorted array, palindrome check | LC 167, LC 344, LC 125 |
-| **Same Direction (Fast-Slow)** | Remove duplicates, cycle detection | LC 26, LC 27, LC 142 |
-| **Sliding Window** | Subarray/substring problems | LC 3, LC 76, LC 209 |
-| **Merge Two Lists** | Merge sorted arrays/lists | LC 88, LC 21 |
-| **Partition** | Rearrange elements | LC 75, LC 86 |
-| **Palindrome with Deletion** | Allow k changes | LC 680, LC 1216 |
-| **Fixed + Two Pointers (exact)** | Sum == target; collect all | LC 15, LC 18 |
-| **Fixed + Two Pointers (closest)** | Sum nearest to target | LC 16, LC 259 |
-| **Subsequence Matching** | Check if one string is subsequence of another | LC 392, LC 524, LC 792 |
-| **Pattern Match with Constraints** | Subsequence + character type validation | LC 1023 |
-| **Longest Palindromic Prefix** | Find longest palindromic prefix, prepend reversed suffix | LC 214, LC 336 |
-| **Length-Prefixed (Encode/Decode)** | Parse `len#word` blocks; `i` jumps by declared length | LC 271, LC 297 |
-| **Converging Low/High (build permutation)** | Greedy: consume smallest/largest available per signal | LC 942 |
-| **Last-Occurrence + Expanding End** | Greedy partition; cut when `i == end` | LC 763 |
-| **Staircase (sorted 2D matrix)** | Search grid sorted by row AND column | LC 240 |
-| **Two Strings in Lockstep** | Compare/parse two sequences chunk by chunk | LC 165, LC 953, LC 14 |
-| **3-Phase Interval Scan** | Insert/merge one interval into a sorted list | LC 57, LC 56 |
+| **Sliding Window** | Subarray/substring problems | LC 3, LC 76, LC 209 — [sliding_window.md](./sliding_window.md) |
+| **Fixed + Two Pointers (exact / closest)** | Sum == target, or nearest to it | LC 15, LC 18, LC 16, LC 259 — [n_sum.md](./n_sum.md) |
+| **Palindrome with Deletion** | Allow k changes | LC 680, LC 1216 — [palindrome.md](./palindrome.md) |
+| **Longest Palindromic Prefix** | Find longest palindromic prefix, prepend reversed suffix | LC 214, LC 336 — [palindrome.md](./palindrome.md) |
+| **Last-Occurrence + Expanding End** | Greedy partition; cut when `i == end` | LC 763 — [string.md](./string.md) |
+| **Length-Prefixed (Encode/Decode)** | Parse `len#word` blocks; `i` jumps by declared length | LC 271, LC 297 — [2_pointers_examples.md](./2_pointers_examples.md) |
+| **Converging Low/High (build permutation)** | Greedy: consume smallest/largest available per signal | LC 942 — [2_pointers_examples.md](./2_pointers_examples.md) |
+| **Staircase (sorted 2D matrix)** | Search grid sorted by row AND column | LC 240 — [2_pointers_examples.md](./2_pointers_examples.md) |
+| **3-Phase Interval Scan** | Insert/merge one interval into a sorted list | LC 57, LC 56 — [intervals.md](./intervals.md) |
 
 ### Classic Problems by Difficulty
 

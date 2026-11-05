@@ -821,7 +821,7 @@ Unicode follow-up, the counting version keeps working with a `Counter` instead o
 ### `bisect_left` and `bisect_right` ⭐⭐⭐⭐⭐
 
 - algorithm for `NOT sorting an array eveytime` whenever there is a new inserted element 
-```text
+```python
 # https://docs.python.org/zh-tw/3/library/bisect.html
 # src code : https://github.com/python/cpython/blob/3.10/Lib/bisect.py
 # https://myapollo.com.tw/zh-tw/python-bisect/
@@ -829,7 +829,7 @@ Unicode follow-up, the counting version keeps working with a `Counter` instead o
 
 
 """
-NOTE !!! before using bisect, we need SORT the array
+before using bisect, we need SORT the array
 """
 
 #-------------------------------
@@ -838,44 +838,42 @@ NOTE !!! before using bisect, we need SORT the array
 # will return an idx for inserting new element a, and keep the new array sorted, if element a already existed in array, will insert to "original" a's left idx
 
 # example 1
-In [3]: import bisect
-   ...: a = [2,4,6]
-   ...: idx = bisect.bisect_left(a, 3)
-   ...: print (idx)
-   ...:
-   ...: a.insert(idx, 3)
-   ...: print (a)
-   ...:
-1
-[2, 3, 4, 6]
+import bisect
+a = [2,4,6]
+idx = bisect.bisect_left(a, 3)
+print (idx)
+
+a.insert(idx, 3)
+print (a)
+# -> 1
+#    [2, 3, 4, 6]
 
 
 # example 2
-In [4]: import bisect
-   ...: a = [2, 4, 6]
-   ...: idx = bisect.bisect_left(a, 4)
-   ...: print (idx)
-   ...:
-   ...: a.insert(idx, 4)
-   ...: print (a)
-1
-[2, 4, 4, 6]
+import bisect
+a = [2, 4, 6]
+idx = bisect.bisect_left(a, 4)
+print (idx)
+
+a.insert(idx, 4)
+print (a)
+# -> 1
+#    [2, 4, 4, 6]
 
 #-------------------------------
 # bisect_right
 #-------------------------------
 # will return an idx for inserting new element a, and keep the new array sorted, if element a already existed in array, will insert to "original" a's right idx
 
-In [5]:
-   ...: import bisect
-   ...: a = a = [2, 2, 4, 4, 6, 6, 8, 8]
-   ...: idx = bisect.bisect_right(a, 4)
-   ...: print (idx)
-   ...:
-   ...: a.insert(idx, 4)
-   ...: print (a)
-4
-[2, 2, 4, 4, 4, 6, 6, 8, 8]
+import bisect
+a = a = [2, 2, 4, 4, 6, 6, 8, 8]
+idx = bisect.bisect_right(a, 4)
+print (idx)
+
+a.insert(idx, 4)
+print (a)
+# -> 4
+#    [2, 2, 4, 4, 4, 6, 6, 8, 8]
 
 #-------------------------------
 # bisect
@@ -883,18 +881,15 @@ In [5]:
 # bisect.bisect : 
 #   -> similar as bisect.bisect_right
 #   -> similar as bisect.bisect_left, but will insert to element RIGHT instead
-# https://docs.python.org/zh-tw/3/library/bisect.html
-# https://blog.csdn.net/qq_34914551/article/details/100062973
+# https://docs.python.org/3/library/bisect.html
 
 # example 1
-# In [3]: import bisect
-#    ...: a = [2, 4, 6, 8]
-#    ...: idx = bisect.bisect(a, 7)
-#    ...: print (idx)
-#    ...: a.insert(idx, 7)
-#    ...: print (a)
-# 3
-# [2, 4, 6, 7, 8]
+import bisect
+a = [2, 4, 6, 8]
+idx = bisect.bisect(a, 7)
+print(idx)  # -> 3
+a.insert(idx, 7)
+print(a)  # -> [2, 4, 6, 7, 8]
 
 #-------------------------------
 # insort, insort_right, insort_left
@@ -902,19 +897,16 @@ In [5]:
 # insort, insort_right, insort_left : will get idx and insert to array  (with idx) directly
 
 # example 1
-In [8]: import bisect
-   ...: a = [2, 4, 6, 8]
-   ...: bisect.insort_left(a, 4)
-   ...: print (a)
-   ...:
-[2, 4, 4, 6, 8]
+import bisect
+a = [2, 4, 6, 8]
+bisect.insort_left(a, 4)
+print (a)  # -> [2, 4, 4, 6, 8]
 
 # exmaple 2
-In [7]: import bisect
-   ...: a = [2, 4, 6, 8]
-   ...: bisect.insort_right(a, 4)
-   ...: print (a)
-[2, 4, 4, 6, 8]
+import bisect
+a = [2, 4, 6, 8]
+bisect.insort_right(a, 4)
+print (a)  # -> [2, 4, 4, 6, 8]
 ```
 
 ## `collections`
@@ -1200,7 +1192,7 @@ need an LRU-style reorder (LC 146), FIFO eviction, or order-sensitive equality.
 
 ### `itertools` — product, permutations, combinations, accumulate
 
-```text
+```python
 # https://docs.python.org/zh-cn/3/library/itertools.html
 # https://docs.python.org/zh-tw/3/library/itertools.html
 
@@ -1209,70 +1201,61 @@ need an LRU-style reorder (LC 146), FIFO eviction, or order-sensitive equality.
 #-----------------------------------------------------------------------------------------------------
 # example 1 : itertools.accumulate : Aggregated sum
 #-----------------------------------------------------------------------------------------------------
-In [10]: import itertools
-    ...: x = itertools.accumulate(range(10))
-    ...: print (list(x))
-[0, 1, 3, 6, 10, 15, 21, 28, 36, 45]
+import itertools
+x = itertools.accumulate(range(10))
+print (list(x))  # -> [0, 1, 3, 6, 10, 15, 21, 28, 36, 45]
 
 #-----------------------------------------------------------------------------------------------------
 # example 2 : itertools.combinations : get NON-duplicated elements from collections (with given len)
 #-----------------------------------------------------------------------------------------------------
-In [15]:  x = itertools.combinations(range(4), 3)
+x = itertools.combinations(range(4), 3)
 
-In [16]: print (list(x))
-[(0, 1, 2), (0, 1, 3), (0, 2, 3), (1, 2, 3)]
+print (list(x))  # -> [(0, 1, 2), (0, 1, 3), (0, 2, 3), (1, 2, 3)]
 
-In [17]: x = itertools.combinations(range(4), 4)
+x = itertools.combinations(range(4), 4)
 
-In [18]: print (list(x))
-[(0, 1, 2, 3)]
+print (list(x))  # -> [(0, 1, 2, 3)]
 
 #-----------------------------------------------------------------------------------------------------
 # example 3 : itertools.combinations_with_replacement : get duplicated or non-duplicated elements from collections (with given len)
 #-----------------------------------------------------------------------------------------------------
-In [19]: x = itertools.combinations_with_replacement('ABC', 2)
+x = itertools.combinations_with_replacement('ABC', 2)
 
-In [20]: print(list(x))
-[('A', 'A'), ('A', 'B'), ('A', 'C'), ('B', 'B'), ('B', 'C'), ('C', 'C')]
+print(list(x))  # -> [('A', 'A'), ('A', 'B'), ('A', 'C'), ('B', 'B'), ('B', 'C'), ('C', 'C')]
 
-In [21]: x = itertools.combinations_with_replacement('ABC', 1)
+x = itertools.combinations_with_replacement('ABC', 1)
 
-In [22]: print(list(x))
-[('A',), ('B',), ('C',)]
+print(list(x))  # -> [('A',), ('B',), ('C',)]
 
-In [24]: x = itertools.combinations_with_replacement([1,2,2,1], 2)
+x = itertools.combinations_with_replacement([1,2,2,1], 2)
 
-In [25]: print (list(x))
-[(1, 1), (1, 2), (1, 2), (1, 1), (2, 2), (2, 2), (2, 1), (2, 2), (2, 1), (1, 1)]
+print (list(x))  # -> [(1, 1), (1, 2), (1, 2), (1, 1), (2, 2), (2, 2), (2, 1), (2, 2), (2, 1), (1, 1)]
 
 #-----------------------------------------------------------------------------------------------------
 # example 4 : itertools.compress : filter elements by True/False
 #-----------------------------------------------------------------------------------------------------
-In [26]: x = itertools.compress(range(5), (True, False, True, True, False))
+x = itertools.compress(range(5), (True, False, True, True, False))
 
-In [27]: print (list(x))
-[0, 2, 3]
+print (list(x))  # -> [0, 2, 3]
 
 #-----------------------------------------------------------------------------------------------------
 # example 5 : itertools.count : a counter, can define start point and path len
 #-----------------------------------------------------------------------------------------------------
 # NOTE THIS !!!!
-In [2]: x = itertools.count(start=20, step=-1)
+x = itertools.count(start=20, step=-1)
 
-In [3]: print(list(itertools.islice(x, 0, 10, 1)))
-[20, 19, 18, 17, 16, 15, 14, 13, 12, 11]
+print(list(itertools.islice(x, 0, 10, 1)))  # -> [20, 19, 18, 17, 16, 15, 14, 13, 12, 11]
 
 #-----------------------------------------------------------------------------------------------------
 # example 6 : itertools.groupby : group by lists by value
 #-----------------------------------------------------------------------------------------------------
-In [4]: x = itertools.groupby(range(10), lambda x: x < 5 or x > 8)
+x = itertools.groupby(range(10), lambda x: x < 5 or x > 8)
 
-In [5]: for condition, numbers in x:
-   ...:     print(condition, list(numbers))
-   ...:
-True [0, 1, 2, 3, 4]
-False [5, 6, 7, 8]
-True [9]
+for condition, numbers in x:
+    print(condition, list(numbers))
+# -> True [0, 1, 2, 3, 4]
+#    False [5, 6, 7, 8]
+#    True [9]
 
 #-----------------------------------------------------------------------------------------------------
 # example 7 : itertools.islice : slice on iterator
@@ -1280,28 +1263,27 @@ True [9]
 # https://docs.python.org/3/library/itertools.html#itertools.islice
 # syntax : itertools.islice(seq, [start,] stop [, step])
 
-In [6]:  x = itertools.islice(range(10), 0, 9, 2)
+x = itertools.islice(range(10), 0, 9, 2)
 
-In [7]: print (list(x))
-[0, 2, 4, 6, 8]
+print (list(x))  # -> [0, 2, 4, 6, 8]
 
 #-----------------------------------------------------------------------------------------------------
 # example 8 : itertools.permutations : generate all combinations (ordering mattered)
 #-----------------------------------------------------------------------------------------------------
 
-In [9]: x = itertools.permutations(range(4), 3)
+x = itertools.permutations(range(4), 3)
 
-In [10]: print(list(x))
-[(0, 1, 2), (0, 1, 3), (0, 2, 1), (0, 2, 3), (0, 3, 1), (0, 3, 2), (1, 0, 2), (1, 0, 3), (1, 2, 0), (1, 2, 3), (1, 3, 0), (1, 3, 2), (2, 0, 1), (2, 0, 3), (2, 1, 0), (2, 1, 3), (2, 3, 0), (2, 3, 1), (3, 0, 1), (3, 0, 2), (3, 1, 0), (3, 1, 2), (3, 2, 0), (3, 2, 1)]
+print(list(x))
+# -> [(0, 1, 2), (0, 1, 3), (0, 2, 1), (0, 2, 3), (0, 3, 1), (0, 3, 2), (1, 0, 2), (1, 0, 3), (1, 2, 0), (1, 2, 3), (1, 3, 0), (1, 3, 2), (2, 0, 1), (2, 0, 3), (2, 1, 0), (2, 1, 3), (2, 3, 0), (2, 3, 1), (3, 0, 1), (3, 0, 2), (3, 1, 0), (3, 1, 2), (3, 2, 0), (3, 2, 1)]
 
 #-----------------------------------------------------------------------------------------------------
 # example 9 : itertools.product : generate multiple lists, and iterators's product
 #-----------------------------------------------------------------------------------------------------
 
-In [11]:  x = itertools.product('ABC', range(3))
+x = itertools.product('ABC', range(3))
 
-In [12]: print(list(x))
-[('A', 0), ('A', 1), ('A', 2), ('B', 0), ('B', 1), ('B', 2), ('C', 0), ('C', 1), ('C', 2)]
+print(list(x))
+# -> [('A', 0), ('A', 1), ('A', 2), ('B', 0), ('B', 1), ('B', 2), ('C', 0), ('C', 1), ('C', 2)]
 ```
 
 ## `functools`

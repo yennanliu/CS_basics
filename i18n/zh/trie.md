@@ -22,16 +22,6 @@
 
 > **L = 鍵值（單字）的長度** — 複雜度跟存了幾個鍵值無關。最小／最大 = 字典序最小／最大的鍵值。
 
-<!-- 1cc29736889e -->
-## 0) 概念
-- https://blog.csdn.net/fuxuemingzhu/article/details/79388432
-- 樹 + dict
-    - 把 `Node` 放進 dict（例如 defaultdict(Node)）
-
-<p align="center"><img src="../pic/trie_1.png"></p>
-
-<p align="center"><img src="../pic/trie_2.png"></p>
-
 <!-- 0d35b1f39c31 -->
 ### 0-1) 分類
 
@@ -298,3 +288,13 @@ trie 裡只有*嚴格更短*的單字，所以任何切得成功的結果自動�
 
 LC 79 放在那裡而且刻意不用 trie：它是讓 LC 212 變得好懂的基準線 —
 同樣的格子 DFS，每個單字各跑一次，直到 trie 把所有單字塌縮成同一趟走訪為止。
+
+<!-- afc817167535 -->
+## 0) 概念
+- 樹 + dict
+    - 把 `Node` 放進 dict（例如 defaultdict(Node)）
+
+<p align="center"><img src="../pic/trie_1.png"></p>
+
+<p align="center"><img src="../pic/trie_2.png"></p>
+

@@ -928,23 +928,11 @@ recalling without opening it.
 
 ### Problem → Template Decision Table ⭐⭐⭐⭐⭐
 
-Read the **Signal** column; it is the phrase in the problem statement that fixes the approach.
+The signal → template routing is the [Recognition](#recognition) table, and the order to drill it in is the [Drill Path](#drill-path). The routes below are the ones that table does not list:
 
 | Signal in the problem | Approach | Where | Problems |
 |---|---|---|---|
-| Compare or swap from **both ends**; reverse in place | two pointers, `while left < right` | Template 1 | 125, 344, 345, 541, 917, 925, 151 |
-| "**anagram**", "permutation of", "group by same letters" | char-frequency signature | Template 2 | 242, 438, 49, 567, 451 |
-| Answer depends on **runs** of identical characters | group-length array (or streaming `prev`/`cur`) | Template 3 | 696, 38, 443, 485, 487, 830, 1004, 1446, 1768, 809 |
-| Convert **between formats** — digits, Roman, zigzag | parse with explicit rules, rebuild | Template 4 | 6, 8, 12, 13, 273, 482, 468 |
-| **Fixed line width**, padding, column layout | greedy pack, then distribute leftovers left-heavy | Template 5 | 68, 273 |
-| Input is a **serialized structure** — path, log, indented tree | split on delimiter + depth map or token stack | Template 6 | 388, 71, 937, 1071 |
-| "**remove** the minimum characters so that …" | `char[]` + index stack, mark then rebuild | Template 7 | 1249, 20, 32, 921 |
-| "**maximum number of parts**" such that a property stays local | last-occurrence sweep, cut when `i == end` | Template 8 | 763, 56 |
-| Build words **character by character** from a dictionary | sort + set, check only the immediate prefix | [string_examples.md](./string_examples.md) | 720, 648, 745 |
-| "find this pattern in that text **efficiently**" | KMP, rolling hash or Z-array | [string_matching_kmp_rolling_hash.md](./string_matching_kmp_rolling_hash.md) | 28, 459, 686, 796, 1044, 1392 |
-| "**longest / shortest substring** such that …" | sliding window | [sliding_window.md](./sliding_window.md) | 3, 76, 159, 340, 424, 1004 |
-| Anything **palindromic** | centre expansion, interval DP, Manacher, KMP prefix | [palindrome.md](./palindrome.md) | 5, 9, 125, 131, 132, 214, 409, 516, 647, 680, 1216, 1312 |
-| Comparing / aligning **two** strings | two-sequence grid DP | [dp_string.md](./dp_string.md) | 10, 44, 72, 97, 115, 583, 712, 1143 |
+| Anything **palindromic** beyond a plain check | centre expansion, interval DP, Manacher, KMP prefix | [palindrome.md](./palindrome.md) | 5, 131, 214, 516, 647, 680 |
 | **Many words** sharing prefixes | trie | [trie.md](./trie.md) | 208, 211, 212, 648, 745 |
 | "is one a **rotation** of the other" | `goal in (s + s)` after a length check | [string_matching_kmp_rolling_hash.md](./string_matching_kmp_rolling_hash.md) | 796 |
 | Custom alphabet / **comparator** ordering | rank map `int[26]`, compare adjacent pairs | [hash_map.md § Template 6](./hash_map.md#template-6-rank-map--value-to-position--lc-953-) | 953, 269, 937 |

@@ -82,7 +82,36 @@ This is **THE MOST IMPORTANT** pattern in Two-String DP:
 - Without this, transitions like `dp[i-1][j]` would crash on the first character
 - `dp[i][j]` represents using the first `i` characters of string 1 and first `j` characters of string 2
 
-**Universal Template:**
+**Universal Template** — the four functions are the only part a problem changes:
+```python
+# python
+# IDEA: the shared skeleton of every two-sequence grid DP; the four functions are what a problem fills in
+# time = O(m * n), space = O(m * n)
+def string_dp(s1, s2, empty_s1, empty_s2, on_match, on_mismatch, empty_empty=0):
+    m, n = len(s1), len(s2)
+    dp = [[0] * (n + 1) for _ in range(m + 1)]
+    dp[0][0] = empty_empty             # counting problems (LC 115) need 1 here: one way to match "" to ""
+
+    for j in range(1, n + 1):          # row 0: s1 is empty
+        dp[0][j] = empty_s1(j)
+    for i in range(1, m + 1):          # column 0: s2 is empty
+        dp[i][0] = empty_s2(i)
+
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if s1[i - 1] == s2[j - 1]:     # prefix lengths i, j -> last characters at i-1, j-1
+                dp[i][j] = on_match(dp, i, j)
+            else:
+                dp[i][j] = on_mismatch(dp, i, j)
+    return dp[m][n]
+
+# LC 72 Edit Distance is one instance: empty prefix costs its length, a match is free
+print(string_dp("horse", "ros",
+                lambda j: j, lambda i: i,
+                lambda dp, i, j: dp[i - 1][j - 1],
+                lambda dp, i, j: 1 + min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1])))   # -> 3
+```
+
 ```java
 // java
 // IDEA: the shared skeleton of every two-sequence grid DP
@@ -135,11 +164,30 @@ This means you can **always reduce space from O(m×n) to O(n)** by using:
 3. Rolling updates as you process each row
 
 **Example Space-Optimized LCS:**
+```python
+# python
+# LC 1143 - Longest Common Subsequence
+# IDEA: keep only the previous row; the diagonal is prev[j - 1]
+# time = O(m * n), space = O(n)
+def longestCommonSubsequence(s1, s2):
+    m, n = len(s1), len(s2)
+    prev = [0] * (n + 1)
+    for i in range(1, m + 1):
+        curr = [0] * (n + 1)
+        for j in range(1, n + 1):
+            if s1[i - 1] == s2[j - 1]:
+                curr[j] = prev[j - 1] + 1               # diagonal
+            else:
+                curr[j] = max(prev[j], curr[j - 1])     # top or left
+        prev = curr                                     # roll forward
+    return prev[n]
+```
+
 ```java
 // java
 // LC 1143 - Longest Common Subsequence
 // IDEA: diagonal + 1 on a match, else the better of dropping one character
-// time = O(m * n), space = O(m * n)
+// time = O(m * n), space = O(n)
 public int longestCommonSubsequence(String s1, String s2) {
     int m = s1.length(), n = s2.length();
     int[] prev = new int[n + 1];
@@ -253,6 +301,24 @@ Key moments:
   - dp[2][1]: Compare 'b' with 'a' → no match → max(dp[1][1], dp[2][0]) = 1
   - dp[3][2]: Compare 'c' with 'c' → match! → dp[2][1] + 1 = 2
   - dp[5][3]: Compare 'e' with 'e' → match! → dp[4][2] + 1 = 3
+```
+
+**Python** — the canonical 1-indexed table:
+```python
+# python
+# LC 1143 - Longest Common Subsequence
+# IDEA: dp[i][j] = LCS of the first i chars of text1 and the first j of text2; row/col 0 = empty prefix
+# time = O(m * n), space = O(m * n)
+def longestCommonSubsequence(text1, text2):
+    m, n = len(text1), len(text2)
+    dp = [[0] * (n + 1) for _ in range(m + 1)]   # dp[0][*] = dp[*][0] = 0
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if text1[i - 1] == text2[j - 1]:
+                dp[i][j] = 1 + dp[i - 1][j - 1]           # both characters used
+            else:
+                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])  # skip one of them
+    return dp[m][n]
 ```
 
 #### **Java Implementation Pattern**
@@ -415,6 +481,31 @@ This problem demonstrates **multiple DP paradigms** and is excellent for underst
 **Time**: O(n) | **Space**: O(1)
 
 **Key Insight**: Track the **range** of possible unmatched open parentheses at each position.
+
+```python
+# python
+# LC 678 - Valid Parenthesis String
+# IDEA: greedy — carry the range [low, high] of possible unmatched '(' instead of a DP table
+# time = O(n), space = O(1)
+def checkValidString(s):
+    low = 0     # fewest unmatched '(' possible (every '*' read as ')')
+    high = 0    # most unmatched '(' possible (every '*' read as '(')
+    for c in s:
+        if c == '(':
+            low += 1
+            high += 1
+        elif c == ')':
+            low -= 1
+            high -= 1
+        else:                  # '*'
+            low -= 1
+            high += 1
+        if high < 0:           # too many ')' even if every '*' is '('
+            return False
+        if low < 0:            # a '*' read as ')' can be read as empty instead
+            low = 0
+    return low == 0
+```
 
 ```java
 // java
@@ -798,27 +889,6 @@ produce overlapping sets exactly on the subsequences that existed before the **e
 that count is the earlier occurrence's `add`. Storing `total` instead is off by whatever was added
 between the two occurrences, which is the single most common bug here.
 
-```java
-// java
-// LC 940 - Distinct Subsequences II
-// IDEA: running count of distinct subsequences incl. the empty one; each character adds
-//       `total` new ones and re-creates `last[ch]` old ones, so subtract those.
-// time = O(n), space = O(1)  (26 counters)
-public int distinctSubseqII(String s) {
-    final int MOD = 1_000_000_007;
-    long[] last = new long[26];      // last[c] = the `add` produced by c's previous occurrence
-    long total = 1;                  // the empty subsequence
-
-    for (char ch : s.toCharArray()) {
-        long add = total;
-        // NOTE !!! + MOD before the second % — `total + add - last[c]` can go negative
-        total = (total + add - last[ch - 'a'] + MOD) % MOD;
-        last[ch - 'a'] = add;
-    }
-    return (int) ((total - 1 + MOD) % MOD);   // drop the empty subsequence
-}
-```
-
 ```python
 # python
 # LC 940 - Distinct Subsequences II
@@ -835,6 +905,27 @@ def distinctSubseqII(s):
         last[ch] = add
 
     return (total - 1) % MOD         # exclude the empty subsequence
+```
+
+```java
+// java
+// LC 940 - Distinct Subsequences II
+// IDEA: running count of distinct subsequences incl. the empty one; each character adds
+//       `total` new ones and re-creates `last[ch]` old ones, so subtract those.
+// time = O(n), space = O(1)  (26 counters)
+public int distinctSubseqII(String s) {
+    final int MOD = 1_000_000_007;
+    long[] last = new long[26];      // last[c] = the `add` produced by c's previous occurrence
+    long total = 1;                  // the empty subsequence
+
+    for (char ch : s.toCharArray()) {
+        long add = total;
+        // + MOD before the % — `total + add - last[c]` can go negative
+        total = (total + add - last[ch - 'a'] + MOD) % MOD;
+        last[ch - 'a'] = add;
+    }
+    return (int) ((total - 1 + MOD) % MOD);   // drop the empty subsequence
+}
 ```
 
 #### **Related Problems — counting variants**

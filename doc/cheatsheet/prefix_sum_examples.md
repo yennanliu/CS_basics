@@ -43,7 +43,7 @@ class Solution(object):
     def maxSubArrayLen(self, nums, k):
 
         result, acc = 0, 0
-        # NOTE !!! we init dic as {0:-1} ({sum:idx})
+        # we init dic as {0:-1} ({sum:idx})
         dic = {0: -1}
 
         for i in range(len(nums)):
@@ -74,7 +74,7 @@ public boolean checkSubarraySum_1(int[] nums, int k) {
 
     for (int i = 0; i < nums.length; i++) {
         /**
-         * NOTE !!! we get `mod of prefixSum`, instead of get prefixSum
+         * we get `mod of prefixSum`, instead of get prefixSum
          */
         prefixMod = (prefixMod + nums[i]) % k;
 
@@ -439,7 +439,7 @@ for (int[] t : trips) {
     int end = t[2];
 
     /**
-     *  NOTE !!!!
+     *  Note:
      *
      *   via trick below, we can `efficiently` setup prefix sum
      *   per start, end index

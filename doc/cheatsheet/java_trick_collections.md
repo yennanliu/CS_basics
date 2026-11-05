@@ -196,7 +196,7 @@ for(int i = k - 1; i >= 0; --i) {
 // java
 // LC 300
 
-/** NOTE !!! ONLY work for 1 D (since array is 1 dimension) */
+/** ONLY work for 1 D (since array is 1 dimension) */
 int[] dp = new int[10];
 
 // fill op
@@ -223,7 +223,7 @@ int[] tmp = Arrays.copyOfRange(nums, i, i+3);
 // LC 997
 
 /** 
- *  NOTE !!!
+ *  Note:
  * 
  *   via `Arrays.toString()`,
  *   we can print arrays value
@@ -280,7 +280,7 @@ public static void main(String[] args) {
 
 
 /** 
- *  NOTE !!!
+ *  Note:
  *   
  *  if `boolean[][]`, the default val is `false`
  *  if `Boolean[][]`, the default val is `null`
@@ -320,9 +320,9 @@ int w = board[0].length;
 
 for(int i = 0; i < l; i++){
     for(int j = 0; j < w; j++){
-        // NOTE !!! below
+        // below
         /**
-         *  NOTE !!!
+         *  Note:
          *
          *  board[y][x],
          *
@@ -406,7 +406,7 @@ list.add(3);
 
 
 /** 
- *  NOTE !!!
+ *  Note:
  * 
  *  for reverse loop,
  * 
@@ -434,7 +434,7 @@ public List<List<Integer>> levelOrder(TreeNode root) {
         // ...
         for(int i = 0; i < level_length; ++i) {
             // fulfill the current level
-            // NOTE !!! this trick
+            // this trick
             levels.get(level).add(node.val);
             // ...
         }
@@ -450,7 +450,7 @@ public List<List<Integer>> levelOrder(TreeNode root) {
 
 
 /**
-*  NOTE !!!
+*  Note:
 *
 *   via below, we can retrieve List val by idx,
 *   append new val to the existing array (with same idx)
@@ -468,7 +468,7 @@ List<List<Integer>> res = new ArrayList<>();
 
 
 // insert curRoot.val to current val in list at `depth` index
-// NOTE !!! below
+// below
 res.get(depth).add(curRoot.val);
 
 
@@ -518,7 +518,7 @@ System.out.println("list2 = " + list2); // list2 = [1, 2, 3]
 
 /** Reverse List 
 *
-*   // NOTE !!! reverse in place, e.g. NO return val
+*   // reverse in place, e.g. NO return val
 */
 Collections.reverse(list2);
 System.out.println("list2 = " + list2); // list2 = [3, 2, 1]
@@ -630,7 +630,7 @@ for (Map.Entry<TreeNode, List<TreeNode>> entry : g.entrySet()) {
 
 List<Integer> modes = new ArrayList<>();
 /**
- *  NOTE !!! we use `Entry`
+ *  we use `Entry`
  *           to access both map's key and value
  */
 for (Map.Entry<Integer, Integer> entry : node_cnt.entrySet()) {
@@ -659,7 +659,7 @@ for (char c : S.toCharArray()) {
 
 // Step 2: Use a priority queue (max heap) to keep characters sorted by
 // frequency
-/** NOTE !!!
+/**
  *
  *  we use PQ to track the characters count sorted in order
  */
@@ -674,10 +674,8 @@ maxHeap.addAll(charCountMap.entrySet());
 
 - java.util.TreeMap.floorKey()
 - will return max val in its key set, if empty, return null
-- 還有一種Map，它在內部對Key進行排序，Map就是SortedMap。
-- SortedMap保證遍歷時以Key的順序來進行排序。預設按字母排序：
-- 使用TreeMap時，輸入的Key必須實作Comparable介面。
-- https://www.yxjc123.com/post/v0i7dl
+- `TreeMap` implements `SortedMap`: it keeps its keys sorted internally, so iteration visits them in key order (natural order by default, e.g. alphabetical for strings)
+- its keys must implement `Comparable`, or the map must be built with a `Comparator`
 - https://liaoxuefeng.com/books/java/collection/tree-map/index.html
 
 
@@ -715,7 +713,6 @@ Arrays.sort(tmp, (x, y) -> Integer.compare(-x[1], -y[1]));
 ```
 
 - `floorEntry` method in `TreeMap`
-- https://blog.csdn.net/a1510841693/article/details/124323418
 - floorEntry() : It returns a key-value mapping associated with the greatest key less than or equal to the given key, or null if there is no such key.
 
 ```java
@@ -815,7 +812,7 @@ public int getHits(int timestamp) {
 ```java
 // LC 2013 - Detect Squares
 
-/** NOTE !!!
+/**
  *
  *  CAN'T use `Integer[]{x, y}` as HashMap key
  *
@@ -962,7 +959,7 @@ for (int num : nums) {
 countMap.put(num, countMap.getOrDefault(num, 0) + 1);
 }
 
-/** NOTE !!! how to init PQ below */
+/** how to init PQ below */
 // Step 2. Use a Min-Heap (Priority Queue) to keep track of top K elements
 PriorityQueue<Map.Entry<Integer, Integer>> heap = new PriorityQueue<>(
     (a, b) -> Integer.compare(a.getValue(), b.getValue())
@@ -1098,7 +1095,7 @@ st.push("a");
 st.push("b");
 st.push("c");
 
-// NOTE !!! loop over elements in stack
+// loop over elements in stack
 for(String x: st){
     System.out.println(x);
 }
@@ -1119,8 +1116,6 @@ for(String x: st){
 // LC 355
 // https://leetcode.com/problems/design-twitter/solutions/2720611/java-simple-hashmap-stack/
 
-// https://blog.csdn.net/neweastsun/article/details/80294811
-// https://blog.51cto.com/u_5650011/5386895
 
 /** 
 * 

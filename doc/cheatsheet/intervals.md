@@ -1,7 +1,7 @@
 # Intervals
 
 > **Scope** — Sort-then-merge interval problems — merge, insert, count overlaps, minimum removals.
-> **See also**: [scanning_line.md](./scanning_line.md) — event-based sweeps when you need a running count; [difference_array.md](./difference_array.md) — many range *updates*, one final read; [array_overlap_explaination.md](./array_overlap_explaination.md) — the overlap predicate itself; [heap.md](./heap.md) — interval scheduling with a priority queue.
+> **See also**: [scanning_line.md](./scanning_line.md) — event-based sweeps when you need a running count; [difference_array.md](./difference_array.md) — many range *updates*, one final read; [array_overlap_explanation.md](./array_overlap_explanation.md) — the overlap predicate itself; [heap.md](./heap.md) — interval scheduling with a priority queue.
 
 ## LeetCode Problem Lists
 
@@ -34,7 +34,7 @@
 ### References
 - [labuladong: Interval Merge](https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E5%8C%BA%E9%97%B4%E8%B0%83%E5%BA%A6%E9%97%AE%E9%A2%98%E4%B9%8B%E5%8C%BA%E9%97%B4%E5%90%88%E5%B9%B6.md)
 - [labuladong: Interval Overlap](https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E5%8C%BA%E9%97%B4%E4%BA%A4%E9%9B%86%E9%97%AE%E9%A2%98.md)
-- [Visualization Explanation](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/array_overlap_explaination.md)
+- [Visualization Explanation](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/array_overlap_explanation.md)
 
 ## 1) Problem Categories
 

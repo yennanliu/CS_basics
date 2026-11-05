@@ -1,4 +1,4 @@
-# Prefix Sum (前缀和)
+# Prefix Sum
 
 > **Scope** — Prefix / running sums — subarray sums, 2D prefix sums, prefix + hashmap counting.
 > **See also**: [prefix_sum_advanced.md](./prefix_sum_advanced.md) — templates 9–14, the ones that borrow another structure; [prefix_sum_examples.md](./prefix_sum_examples.md) — the worked problems no template already solves; [difference_array.md](./difference_array.md) — range *updates* instead of range queries; [binary_indexed_tree.md](./binary_indexed_tree.md) — when the array also changes; [kadane_algorithm.md](./kadane_algorithm.md) — max subarray without prefix sums; [tree_backtrack.md](./tree_backtrack.md) — the root→leaf path DFS that template 14 generalises.
@@ -91,7 +91,7 @@
 
 ## 0) Concept
 
-### How to Build the Prefix Sum Array (核心)
+### How to Build the Prefix Sum Array
 
 The whole technique rests on **one core line**. Memorize this and the rest follows:
 

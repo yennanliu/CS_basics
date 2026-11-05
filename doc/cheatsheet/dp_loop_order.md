@@ -1,7 +1,7 @@
 # DP Loop Order & Dependency
 
 > **Scope** — Why a bottom-up DP's loop *nesting* and *direction* are forced by its own transition, the four ways a wrong order fails, and LC 139 Word Break worked in five orders — including the one that looks right, passes `"leetcode"`, and silently fails the problem's own Example 2.
-> **See also**: [dp.md](./dp.md) — [Template 1b](./dp.md#template-1b-prefix-partition-dp--lc-139-) is the Word Break template itself, [Template 2a](./dp.md#template-2a-2-d-table-shape-and-fill-order--lc-516-) is the same rule for a 2-D table; [knapsack.md](./knapsack.md) — [the four knapsack loop orders](./knapsack.md#loop-order-combinations-vs-permutations) side by side; [dp_advanced.md](./dp_advanced.md) — the LC 518 vs LC 377 counting traces; [knapsack_01_zh.md](./knapsack_01_zh.md) — 0/1 背包倒序的中文詳解; [recursion_to_dp.md](./recursion_to_dp.md) — top-down memoisation, the formulation with no loop order to get wrong.
+> **See also**: [dp.md](./dp.md) — [Template 1b](./dp.md#template-1b-prefix-partition-dp--lc-139-) is the Word Break template itself, [Template 2a](./dp.md#template-2a-2-d-table-shape-and-fill-order--lc-516-) is the same rule for a 2-D table; [knapsack.md](./knapsack.md) — [the four knapsack loop orders](./knapsack.md#loop-order-combinations-vs-permutations) side by side; [dp_advanced.md](./dp_advanced.md) — the LC 518 vs LC 377 counting traces; [knapsack_01_zh.md](./knapsack_01_zh.md) — the 0/1 backward loop, explained in Chinese; [recursion_to_dp.md](./recursion_to_dp.md) — top-down memoisation, the formulation with no loop order to get wrong.
 
 - **Core idea**: a bottom-up DP is a topological sweep of its own dependency graph. Write the transition down, and the legal loop orders are exactly the ones that finish every arrow's tail before its head.
 - **When to use it**: whenever you turn a recurrence into a table and must decide what loops outside what — or when a tabulated solution returns a wrong answer that the memoised version of the *same* recurrence gets right.
@@ -18,9 +18,6 @@
 ### 0-1) The rule, in one line ⭐⭐⭐⭐⭐
 
 > **When `dp[X]` is computed, every state its transition reads must already hold its final value.**
-
-> 在動態規劃（DP）中，迴圈的巢狀順序取決於一個核心原則：
-> **在計算當前狀態 `dp[i]` 時，它所依賴的更小狀態必須已經被計算完畢。**
 
 There is nothing else on this page. Every table, trace and counterexample below is that sentence
 applied to one more problem.
@@ -224,7 +221,7 @@ class Solution(object):
         dp = [False] * (n + 1)
         dp[0] = True
 
-        # NOTE !!! index OUTSIDE, dictionary INSIDE
+        # index OUTSIDE, dictionary INSIDE
         #   -> dp[i - w] is a strictly smaller index, so it is already final
         for i in range(1, n + 1):
             for word in d_set:
@@ -565,25 +562,6 @@ staring at the transition again.
   a different wrong one.
 - ❌ **Reaching for a loop order at all when the dependency graph has a cycle.** No topological order
   exists; that problem wants BFS/Dijkstra/Bellman–Ford.
-
-## 6) 中文速記
-
-> **核心原則**：計算 `dp[i]` 時，它所依賴的更小狀態必須已經被計算完畢。
-
-| 要問的問題 | 決定什麼 |
-|---|---|
-| 轉移式右邊讀了哪些 `dp[...]`？ | 迴圈**方向**（正序 / 倒序） |
-| 同一個 item 可不可以在這一輪被重複使用？ | 內層方向：不可以 → **倒序**（0/1）；可以 → **正序**（完全背包） |
-| 解答中的 items 可不可以**任意重排**？ | item 迴圈可不可以放外層 |
-
-- **可以重排**（硬幣、平方數：它們是「相加」）→ item 放外層合法。LC 322 / 279 兩種寫法答案相同；
-  LC 518 更是**必須**把 coin 放外層，才會把 `{1,2}` 和 `{2,1}` 算成同一種。
-- **不可以重排**（LC 139 的單字：它們是「接起來」，而且位置早就被 `s` 決定了）→ item **只能放內層**。
-  把 word 放外層會得到「單字必須照字典順序出現」的錯誤答案：`"applepenapple"` 會回傳 `False`，
-  因為 `"apple"` 在 `"pen"` 的前後都要用到，但一輪只能用一次。
-
-> 一句話：**`for i: for word:` 正確，`for word: for i:` 錯誤** —— 不是風格問題，是 `s` 已經把單字的
-> 先後順序決定了，item 迴圈沒有權利再決定一次。
 
 ## 7) Summary
 

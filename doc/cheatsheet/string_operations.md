@@ -167,14 +167,13 @@ for i in range(len(x)):
 a = 1234
 a_array = list(str(a))
 
-In [12]: a_array
-Out[12]: ['1', '2', '3', '4']
+a_array  # -> ['1', '2', '3', '4']
 ```
 
 ```java
 // java
 // split string (java)
-/** NOTE !!! split string via .split("") */
+/** split string via .split("") */
 
  for (String x : s.split("")){
     System.out.println(x);

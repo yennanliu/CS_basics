@@ -255,7 +255,7 @@ k 遠小於 n → 預期的複雜度是 O(n log k)。
   Java 則先比長度、再用 `compareTo`。
 - 讓堆積長到 n、最後再 pop k 次是 O(n log n) — 設上限才是重點。
 
-**不是這個，如果** — 對靜態陣列只查一次：quickselect 平均 O(n)
+**不適用時** — 對靜態陣列只查一次：quickselect 平均 O(n)
 （[quickselect.md](./quickselect.md)）。當值以串流方式到來（LC 703），
 或要反覆查詢第 k 個元素時，堆積才勝出。
 
@@ -295,7 +295,7 @@ LC 1337 *（key = `(soldiers, row)`）* · LC 378 *（有序矩陣中第 k 小 �
 
 <!--CODE-->
 
-**不是這個，如果** — k 接近 n 且計數上限為 n：依頻率做桶排序是 O(n)
+**不適用時** — k 接近 n 且計數上限為 n：依頻率做桶排序是 O(n)
 （即上面的第二種解法）。沒有 k、只是「全部依 key 排序」的靜態題，直接用 `sorted` 就好。
 
 **練習** — LC 347 ⭐ · LC 973 *（key = 距離平方）* · LC 692 *（反向決勝）* ·
@@ -336,7 +336,7 @@ k 個來源、總共 N 個元素 → O(N log k)。
 
 <!--CODE-->
 
-**不是這個，如果** — 只有兩個來源：一般的雙指標合併就是 O(N)，不需要堆積。若答案只是
+**不適用時** — 只有兩個來源：一般的雙指標合併就是 O(N)，不需要堆積。若答案只是
 單一的第 k 個元素、而來源是矩陣的各列，對值域做二分搜尋可能勝過堆積（LC 378）。
 
 **練習** — LC 23 ⭐ · LC 373 *（配對組成的虛擬格子）* · LC 378 *（把各列當來源）* ·
@@ -362,7 +362,7 @@ LC 632 *（同時追蹤 k 個頭的最大值）* · LC 1439 *（一列一列合�
   `findMedian` 讀兩個堆頂，O(1)。
 - **空間 O(n)**：每個加入過的數字都在兩個堆積之一裡。
 
-**演練**
+**試跑**
 
 <!--CODE-->
 
@@ -373,7 +373,7 @@ LC 632 *（同時追蹤 k 個頭的最大值）* · LC 1439 *（一列一列合�
   兩個接近 `Integer.MAX_VALUE` 的值會溢位。先把其中一邊轉成 `double`。
 - Python 的 `small` 存的是**負數**：讀 `-small[0]`，push `-num`。
 
-**不是這個，如果** — 視窗也會*移除*舊值（LC 480 滑動視窗中位數）：雙堆積需要延遲刪除
+**不適用時** — 視窗也會*移除*舊值（LC 480 滑動視窗中位數）：雙堆積需要延遲刪除
 （[heap_advanced.md](./heap_advanced.md#1-lazy-deletion--heap--hashmap-of-truth-)），
 或改用有序容器。
 
@@ -407,7 +407,7 @@ LC 502 *（雙堆積當可用／鎖定池）* · LC 1825 *（三段切分）*
   `while` 只會 pop、從不掃描 — 所以它們所有的迭代加起來不會超過 push 的次數。
 - **空間 O(N)**：過期資料要等浮上來才會離開，所以一個堆積可能存下全部 N 筆。
 
-**演練** — 以縮一步的形式跑 `nums = [8, 2, 4, 7]`、`limit = 4`。`.1` 那幾列就是延遲刪除：
+**試跑** — 以縮一步的形式跑 `nums = [8, 2, 4, 7]`、`limit = 4`。`.1` 那幾列就是延遲刪除：
 元素只有在**位於堆頂***而且*索引 `< left` 時才會被 pop。
 
 <!--CODE-->
@@ -421,7 +421,7 @@ LC 502 *（雙堆積當可用／鎖定池）* · LC 1825 *（三段切分）*
 - **清理迴圈不需要 `heap and` 的防護。** 剛推入的元素索引是 `i >= left`，
   所以清理時任何一個堆積都不可能被清空。兩次 push 之後再清理一次什麼也不會做。
 
-**不是這個，如果** — 視窗是**固定大小**，或驅逐永遠是「最舊的先出」：兩個單調雙端佇列能以
+**不適用時** — 視窗是**固定大小**，或驅逐永遠是「最舊的先出」：兩個單調雙端佇列能以
 O(N) 解 LC 1438 —
 [monotonic_queue.md → Template 7](./monotonic_queue.md#template-7-two-deques--window-max-and-min-under-a-limit-lc-1438-)。
 當驅逐規則是依值或某個任意條件時才用堆積，那是雙端佇列表達不了的。
@@ -453,7 +453,7 @@ n ≤ 10⁴–10⁵ 個區間 → 排序 + 堆積，O(n log n)。
 - 依**結束**時間而不是開始時間排序會讓掃描失效：堆積必須依會議開始的順序看到它們。
 - Java 比較器：`Integer.compare(a[0], b[0])`，絕不用 `a[0] - b[0]`（時間很大時會溢位）。
 
-**不是這個，如果** — 每個區間只花掉**其範圍中任選的一個時間單位**，而不是佔用整段
+**不適用時** — 每個區間只花掉**其範圍中任選的一個時間單位**，而不是佔用整段
 （LC 1353 Maximum Number of Events That Can Be Attended）。在那裡數重疊會
 高估（`[[1,1],[1,1],[1,1]]` → 3，答案是 1）。要**一天一天**掃描，堆積存**開放中事件的
 結束日**，每天參加最早結束的那一個：
@@ -493,7 +493,7 @@ CPU：兩種排序）*
 - 上限就是回看檢查：`res[-1] == res[-2] == ch` 允許連續兩個（LC 1405）；LC 767
   只允許一個，所以檢查只要 `res[-1] == ch`。
 
-**不是這個，如果** — 相同字母之間的間隔是一般的 **k**：回看檢查會隨 k 變大，
+**不適用時** — 相同字母之間的間隔是一般的 **k**：回看檢查會隨 k 變大，
 用模板 8 的冷卻佇列更乾淨。
 
 **練習** — LC 1405 · LC 767 *（上限為 1）* · LC 1054 *（數字版的 LC 767）* · LC 984 *（兩種字母，
@@ -526,7 +526,7 @@ CPU：兩種排序）*
 - Java 版的比較器會讀 `freq[]`，所以要在字母離開堆積**之後**才更新 `freq[idx]`，
   絕不能在它還在堆積裡時改。
 
-**不是這個，如果** — 只問排程的**長度**（LC 621 Task Scheduler）：答案是
+**不適用時** — 只問排程的**長度**（LC 621 Task Scheduler）：答案是
 `max(n_tasks, (maxCount − 1) × (cooldown + 1) + numberOfTasksWithMaxCount)`，O(n)、不需要
 堆積（[heap_examples.md § LC 621](./heap_examples.md#task-scheduler--lc-621-)）。只有需要實際順序時才用這個模板模擬。
 
@@ -575,34 +575,6 @@ LC 1953 *（只問「做不做得到？」）* · LC 767 *（k = 2）* · LC 621
 
 <!-- ea4fa3974f42 -->
 ## 總結與快速參考
-
-<!-- f9008d705012 -->
-### 決策表 — 該用哪一種堆積模式？
-
-由上往下讀；第一個吻合的列就是該用的模式。
-
-| 如果題目說… | 就用 | 堆積的形狀 | 經典 LC |
-|---|---|---|---|
-| 「第 k 大」／「第 k 小」 | 第 k 個元素 | 第 k 大用大小為 k 的 **min**-heap；第 k 小用大小為 k 的 **max**-heap | 215、703、378、1492、1985、1337 |
-| 「出現最多的前 k 個」／「最近的 k 個」 | Top K 頻率 | `Counter` → 依計數／距離排序、大小為 k 的堆積 | 347、692、973、658、451、1338、1054 |
-| 「合併 k 個有序…」或一個有序的格子 | 合併 K 個來源 | 存 `(value, sourceIdx, elemIdx)` 的 min-heap | 23、373、378、632、786、1439 |
-| 串流的「中位數」／「兩半平衡」 | 雙堆積系統 | 小的那一半用 max-heap + 大的那一半用 min-heap，兩者大小差不超過 1 | 295、480、1825 |
-| 可變大小視窗且同時需要**最大與最小** | 視窗極值（2 個堆積） | 兩個存 `(value, index)` 的堆積，`index < left` 即為過期 | 1438、1696、1499 |
-| 「最少幾間會議室／幾組」— 數重疊 | 區間排程 | 依起點排序，結束時間放 min-heap，堆積大小就是答案 | 253、2406、1094 |
-| 「每單位時間一件事」+ 截止期限 | 區間排程（逐日掃描） | 依起點排序，**結束**日放 min-heap，參加最早截止的 | 1353、1834、1705 |
-| 「不能連續 k 個相同」／「相隔 k」 | 貪婪 + 限制，或優先佇列 + 冷卻佇列 | 依剩餘次數排序的 max-heap（+ 一條 k 格的延遲線） | 1405、767、621、358、1054 |
-| 圖上的加權最短路徑 | Dijkstra — [Dijkstra.md](./Dijkstra.md) | 存 `(distance, node)` 的 min-heap | 743、787、1514、1631 |
-| push 進去的值後來**變動或過期** | 延遲刪除 — [heap_advanced.md](./heap_advanced.md#1-lazy-deletion--heap--hashmap-of-truth-) | 候選堆積 + 真值雜湊表；在讀取時清理**堆頂** | 3092、2349、2034、480、1825、239 |
-| 「在每個 x，求所有覆蓋 x 的區間之最大值」 | 掃描 + 存活堆積 — [heap_advanced.md](./heap_advanced.md#2-sweep-line--max-heap-of-alive-intervals-) | 存 `(value, end)` 的 max-heap，`end <= x` 就驅逐 | 218、1851 |
-| 「k 把梯子／k 次免費升級」+ 預算 | 有上限的後悔堆積 — [heap_advanced.md](./heap_advanced.md#3-bounded-regret-heap--keep-the-k-best-pay-for-the-rest-) | 上限為 k 的 min-heap；被擠掉的最小者改用預算支付 | 1642、1792 |
-| 你要**到後來**才發現自己拿太多了 | 帶後悔的貪婪 — [heap_advanced.md](./heap_advanced.md#4-greedy-with-regret--undo-the-worst-past-decision-) | 先全拿，再 `poll()` 掉最差的決定 | 871、630、502 |
-| 「編號最小的空椅／伺服器／座位」 | 資源池 — [heap_advanced.md](./heap_advanced.md#5-two-heaps-as-resource-pools-free-pool--busy-pool-) | 依編號的空閒堆積 + 依釋放時間的忙碌堆積 | 1942、1606、1801、2073、2102 |
-| 目標式是 `sum(A) × max/min(B)` | 排序 + 固定大小堆積 — [heap_advanced.md](./heap_advanced.md#6-sort-by-one-criterion--fixed-size-heap-on-the-other) | 依 B 排序，A 用大小為 k 的堆積 | 857、1383 |
-| 格子圖上代價是 minimax 或累積型 | 格子圖最佳優先 — [heap_advanced.md](./heap_advanced.md#7-min-heap-best-first-search-on-a-grid) | 從邊界初始化的 min-heap，每次展開最便宜的 | 407、778、1631、1368、675 |
-| 每個格子跳到一個**範圍**的格子 | 格子圖範圍跳躍 — [heap_advanced.md](./heap_advanced.md#8-grid-shortest-path-with-range-jumps) | 每列一個、每行一個優先佇列，延遲 pop | 2617 |
-| 「讓所有頻率互不相同」 | 頻率唯一化 — [heap_advanced.md](./heap_advanced.md#9-frequency-uniqueness--greedy--heap--hashset) | max-heap 逐次遞減，或用已使用頻率的集合 | 1647、1481 |
-| **固定**大小視窗，而且只要最大值 | *不要用堆積* — [monotonic_queue.md](./monotonic_queue.md) | 單調雙端佇列，攤還 O(1) | 239、1425 |
-| 只問一次第 k 個元素，之後沒有更新 | *不要用堆積* — quickselect，平均 O(N) | — | 215 |
 
 <!-- 7900334ee0be -->
 ### 複雜度速查
@@ -695,3 +667,32 @@ LC 1953 *（只問「做不做得到？」）* · LC 767 *（k = 2）* · LC 621
   或用 `Integer.compare` 建的比較器；`offer`、`poll`、`peek`、`size`。
 - **C++ `priority_queue`** — 預設是 **max**-heap；要 min-heap 請用
   `priority_queue<int, vector<int>, greater<int>>`。
+
+<!-- 1a51b06987b9 -->
+### 決策表 — 該用哪一種堆積模式？
+
+由上往下讀；第一個吻合的列就是該用的模式。`T1`–`T8` 連到上面的 card；其餘的列導向該列寫明的文件。
+
+| 如果題目說… | 就用 | 堆積的形狀 | 經典 LC |
+|---|---|---|---|
+| 「第 k 大」／「第 k 小」 | [T1](#template-1-size-k-min-heap-for-the-kth-largest--lc-215-) 第 k 個元素 | 第 k 大用大小為 k 的 **min**-heap；第 k 小用大小為 k 的 **max**-heap | 215、703、378、1492、1985、1337 |
+| 「出現最多的前 k 個」／「最近的 k 個」 | [T2](#template-2-count-then-a-size-k-heap-on-the-count--lc-347-) Top K 頻率 | `Counter` → 依計數／距離排序、大小為 k 的堆積 | 347、692、973、658、451、1338、1054 |
+| 「合併 k 個有序…」或一個有序的格子 | [T3](#template-3-k-way-merge--lc-23-) 合併 K 個來源 | 存 `(value, sourceIdx, elemIdx)` 的 min-heap | 23、373、378、632、786、1439 |
+| 串流的「中位數」／「兩半平衡」 | [T4](#template-4-two-heaps-for-a-running-median--lc-295-) 雙堆積系統 | 小的那一半用 max-heap + 大的那一半用 min-heap，兩者大小差不超過 1 | 295、480、1825 |
+| 可變大小視窗且同時需要**最大與最小** | [T5](#template-5-two-heaps-with-index-expiry--lc-1438-) 視窗極值（2 個堆積） | 兩個存 `(value, index)` 的堆積，`index < left` 即為過期 | 1438、1696、1499 |
+| 「最少幾間會議室／幾組」— 數重疊 | [T6](#template-6-min-heap-of-end-times--lc-253-) 區間排程 | 依起點排序，結束時間放 min-heap，堆積大小就是答案 | 253、2406、1094 |
+| 「每單位時間一件事」+ 截止期限 | [T6](#template-6-min-heap-of-end-times--lc-253-) 區間排程（逐日掃描） | 依起點排序，**結束**日放 min-heap，參加最早截止的 | 1353、1834、1705 |
+| 「不能連續 k 個相同」／「相隔 k」 | [T7](#template-7-greedy-build-with-a-run-length-cap--lc-1405) 貪婪 + 限制，或 [T8](#template-8-max-heap--cooldown-queue--lc-358) 優先佇列 + 冷卻佇列 | 依剩餘次數排序的 max-heap（+ 一條 k 格的延遲線） | 1405、767、621、358、1054 |
+| 圖上的加權最短路徑 | Dijkstra — [Dijkstra.md](./Dijkstra.md) | 存 `(distance, node)` 的 min-heap | 743、787、1514、1631 |
+| push 進去的值後來**變動或過期** | 延遲刪除 — [heap_advanced.md](./heap_advanced.md#1-lazy-deletion--heap--hashmap-of-truth-) | 候選堆積 + 真值雜湊表；在讀取時清理**堆頂** | 3092、2349、2034、480、1825、239 |
+| 「在每個 x，求所有覆蓋 x 的區間之最大值」 | 掃描 + 存活堆積 — [heap_advanced.md](./heap_advanced.md#2-sweep-line--max-heap-of-alive-intervals-) | 存 `(value, end)` 的 max-heap，`end <= x` 就驅逐 | 218、1851 |
+| 「k 把梯子／k 次免費升級」+ 預算 | 有上限的後悔堆積 — [heap_advanced.md](./heap_advanced.md#3-bounded-regret-heap--keep-the-k-best-pay-for-the-rest-) | 上限為 k 的 min-heap；被擠掉的最小者改用預算支付 | 1642、1792 |
+| 你要**到後來**才發現自己拿太多了 | 帶後悔的貪婪 — [heap_advanced.md](./heap_advanced.md#4-greedy-with-regret--undo-the-worst-past-decision-) | 先全拿，再 `poll()` 掉最差的決定 | 871、630、502 |
+| 「編號最小的空椅／伺服器／座位」 | 資源池 — [heap_advanced.md](./heap_advanced.md#5-two-heaps-as-resource-pools-free-pool--busy-pool-) | 依編號的空閒堆積 + 依釋放時間的忙碌堆積 | 1942、1606、1801、2073、2102 |
+| 目標式是 `sum(A) × max/min(B)` | 排序 + 固定大小堆積 — [heap_advanced.md](./heap_advanced.md#6-sort-by-one-criterion--fixed-size-heap-on-the-other) | 依 B 排序，A 用大小為 k 的堆積 | 857、1383 |
+| 格子圖上代價是 minimax 或累積型 | 格子圖最佳優先 — [heap_advanced.md](./heap_advanced.md#7-min-heap-best-first-search-on-a-grid) | 從邊界初始化的 min-heap，每次展開最便宜的 | 407、778、1631、1368、675 |
+| 每個格子跳到一個**範圍**的格子 | 格子圖範圍跳躍 — [heap_advanced.md](./heap_advanced.md#8-grid-shortest-path-with-range-jumps) | 每列一個、每行一個優先佇列，延遲 pop | 2617 |
+| 「讓所有頻率互不相同」 | 頻率唯一化 — [heap_advanced.md](./heap_advanced.md#9-frequency-uniqueness--greedy--heap--hashset) | max-heap 逐次遞減，或用已使用頻率的集合 | 1647、1481 |
+| **固定**大小視窗，而且只要最大值 | *不要用堆積* — [monotonic_queue.md](./monotonic_queue.md) | 單調雙端佇列，攤還 O(1) | 239、1425 |
+| 只問一次第 k 個元素，之後沒有更新 | *不要用堆積* — quickselect，平均 O(N) | — | 215 |
+

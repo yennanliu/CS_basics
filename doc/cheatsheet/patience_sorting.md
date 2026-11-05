@@ -117,7 +117,7 @@ def lis_length(nums):
         while l <= r:
             mid = l + (r - l) // 2
             if tails[mid] < num:
-                l = mid + 1      # NOTE !!! strict < -> an equal tail FAILS this test,
+                l = mid + 1      # strict < -> an equal tail FAILS this test,
                                  #          so it takes the else and pushes r left
             else:
                 r = mid - 1
@@ -127,7 +127,7 @@ def lis_length(nums):
         else:
             tails[l] = num       # same length, cheaper tail -> overwrite
 
-    return len(tails)            # NOTE !!! the LENGTH is the answer, not the contents
+    return len(tails)            # the LENGTH is the answer, not the contents
 ```
 
 ```python
@@ -352,7 +352,7 @@ class Solution:
                 tails.append(h)
             else:
                 tails[i] = h
-            ans.append(i + 1)                   # NOTE !!! per-index answer, no extra pass
+            ans.append(i + 1)                   # per-index answer, no extra pass
         return ans
 ```
 
@@ -440,7 +440,7 @@ class Solution:
         left = lis_ending_at_each(nums)
         right = lis_ending_at_each(nums[::-1])[::-1]
 
-        # NOTE !!! a peak cannot be an endpoint -> both sides must exceed 1
+        # a peak cannot be an endpoint -> both sides must exceed 1
         best = max(l + r - 1
                    for l, r in zip(left, right)
                    if l > 1 and r > 1)

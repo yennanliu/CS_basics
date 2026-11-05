@@ -60,7 +60,7 @@ interview are API bugs rather than algorithm bugs.
     - https://cloud.tencent.com/developer/article/1794191#:~:text=heapq%20%E5%BA%93%E6%98%AFPython%E6%A0%87%E5%87%86,%E7%AD%89%E4%BA%8E)%E5%AE%83%E7%9A%84%E5%AD%90%E8%8A%82%E7%82%B9%E3%80%82
     - https://python.plainenglish.io/python-for-interviewing-an-overview-of-the-core-data-structures-666abdf8b698
 
-```text
+```python
 #------------------------
 # PY API examples
 #------------------------
@@ -68,21 +68,21 @@ interview are API bugs rather than algorithm bugs.
 #----------------------
 # 1) build heapq
 #----------------------
-In [43]: import heapq
-    ...:
-    ...:
-    ...: array = [10, 17, 50, 7, 30, 24, 27, 45, 15, 5, 36, 21]
-    ...: heap = []
-    ...: for num in array:
-    ...:     heapq.heappush(heap, num)
-    ...: print("array:", array)
-    ...: print("heap: ", heap)
-    ...:
-    ...: heapq.heapify(array)
-    ...: print("array:", array)
-array: [10, 17, 50, 7, 30, 24, 27, 45, 15, 5, 36, 21]
-heap:  [5, 7, 21, 15, 10, 24, 27, 45, 17, 30, 36, 50]
-array: [5, 7, 21, 10, 17, 24, 27, 45, 15, 30, 36, 50]
+import heapq
+
+
+array = [10, 17, 50, 7, 30, 24, 27, 45, 15, 5, 36, 21]
+heap = []
+for num in array:
+    heapq.heappush(heap, num)
+print("array:", array)
+print("heap: ", heap)
+
+heapq.heapify(array)
+print("array:", array)
+# -> array: [10, 17, 50, 7, 30, 24, 27, 45, 15, 5, 36, 21]
+#    heap:  [5, 7, 21, 15, 10, 24, 27, 45, 17, 30, 36, 50]
+#    array: [5, 7, 21, 10, 17, 24, 27, 45, 15, 30, 36, 50]
 
 # NOTE : there are 2 ways create heap (in py)
 #  1) heappush(heap, num)
@@ -170,87 +170,82 @@ minHeap[0]
 #----------------------
 # 2) sorting via heapq
 #----------------------
-In [44]: array = [10, 17, 50, 7, 30, 24, 27, 45, 15, 5, 36, 21]
-    ...: heap = []
-    ...: for num in array:
-    ...:     heapq.heappush(heap, num)
-    ...: print(heap[0])
-5
+array = [10, 17, 50, 7, 30, 24, 27, 45, 15, 5, 36, 21]
+heap = []
+for num in array:
+    heapq.heappush(heap, num)
+print(heap[0])  # -> 5
 
-In [45]: heap_sort = [heapq.heappop(heap) for _ in range(len(heap))]
-    ...: print("heap sort result: ", heap_sort)
-heap sort result:  [5, 7, 10, 15, 17, 21, 24, 27, 30, 36, 45, 50]
+heap_sort = [heapq.heappop(heap) for _ in range(len(heap))]
+print("heap sort result: ", heap_sort)
+# -> heap sort result:  [5, 7, 10, 15, 17, 21, 24, 27, 30, 36, 45, 50]
 
 #----------------------
 # 3) get Min or Max from heap
 #----------------------
 
-In [48]: array = [10, 17, 50, 7, 30, 24, 27, 45, 15, 5, 36, 21]
-    ...: heapq.heapify(array)
-    ...: print(heapq.nlargest(2, array))
-    ...: print(heapq.nsmallest(3, array))
-[50, 45]
-[5, 7, 10]
+array = [10, 17, 50, 7, 30, 24, 27, 45, 15, 5, 36, 21]
+heapq.heapify(array)
+print(heapq.nlargest(2, array))
+print(heapq.nsmallest(3, array))
+# -> [50, 45]
+#    [5, 7, 10]
 
 #----------------------
 # 4) merge 2 sorted list via heap
 #----------------------
-In [49]: array_a = [10, 7, 15, 8]
-    ...: array_b = [17, 3, 8, 20, 13]
-    ...: array_merge = heapq.merge(sorted(array_a), sorted(array_b))
-    ...: print("merge result:", list(array_merge))
-merge result: [3, 7, 8, 8, 10, 13, 15, 17, 20]
+array_a = [10, 7, 15, 8]
+array_b = [17, 3, 8, 20, 13]
+array_merge = heapq.merge(sorted(array_a), sorted(array_b))
+print("merge result:", list(array_merge))  # -> merge result: [3, 7, 8, 8, 10, 13, 15, 17, 20]
 
 
 #----------------------
 # 5) heap replace element
 #----------------------
 
-In [50]: array_c = [10, 7, 15, 8]
-    ...: heapq.heapify(array_c)
-    ...: print("before:", array_c)
-    ...: # heappushpop : push first, then pop
-    ...: item = heapq.heappushpop(array_c, 5)
-    ...: print("after: ", array_c)
-    ...: print(item)
-    ...:
-before: [7, 8, 15, 10]
-after:  [7, 8, 15, 10]
-5
+array_c = [10, 7, 15, 8]
+heapq.heapify(array_c)
+print("before:", array_c)
+# heappushpop : push first, then pop
+item = heapq.heappushpop(array_c, 5)
+print("after: ", array_c)
+print(item)
+# -> before: [7, 8, 15, 10]
+#    after:  [7, 8, 15, 10]
+#    5
 
 
-In [51]: array_d = [10, 7, 15, 8]
-    ...: heapq.heapify(array_d)
-    ...: print("before:", array_d)
-    ...: # pop first, then push
-    ...: item = heapq.heapreplace(array_d, 5)
-    ...: print("after: ", array_d)
-    ...: print(item)
-before: [7, 8, 15, 10]
-after:  [5, 8, 15, 10]
-7
+array_d = [10, 7, 15, 8]
+heapq.heapify(array_d)
+print("before:", array_d)
+# pop first, then push
+item = heapq.heapreplace(array_d, 5)
+print("after: ", array_d)
+print(item)
+# -> before: [7, 8, 15, 10]
+#    after:  [5, 8, 15, 10]
+#    7
 
 #----------------------
 # 5) make a MAX heapq
 #----------------------
-In [54]: numbers = [4,1,24,2,1]
-    ...:
-    ...: # invert numbers so that the largest values are now the smalles
-    ...:
-    ...: numbers = [-1 * n for n in numbers]
-    ...:
-    ...: # turn numbers into min heap
-    ...: heapq.heapify(numbers)
-    ...:
-    ...: # pop out 5 times
-    ...: klargest = []
-    ...: for i in range(len(numbers)):
-    ...:     # multiply by -1 to get our inital number back
-    ...:     klargest.append(-1 * heapq.heappop(numbers))
-    ...:
+numbers = [4,1,24,2,1]
 
-In [55]: klargest
-Out[55]: [24, 4, 2, 1, 1]
+# invert numbers so that the largest values are now the smalles
+
+numbers = [-1 * n for n in numbers]
+
+# turn numbers into min heap
+heapq.heapify(numbers)
+
+# pop out 5 times
+klargest = []
+for i in range(len(numbers)):
+    # multiply by -1 to get our inital number back
+    klargest.append(-1 * heapq.heappop(numbers))
+
+klargest  # -> [24, 4, 2, 1, 1]
 
 ```
 

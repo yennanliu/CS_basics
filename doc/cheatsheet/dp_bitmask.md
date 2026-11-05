@@ -113,7 +113,7 @@ for (int submask = mask; submask > 0; submask = (submask - 1) & mask) {
 public int shortestPathLength(int[][] graph) {
     int n = graph.length;
     int[][] dp = new int[1 << n][n];
-    // NOTE !!! every state must start at +inf, not 0 — otherwise
+    // every state must start at +inf, not 0 — otherwise
     // `dp[nextMask][next] > dist + 1` is false for unvisited states and the BFS never expands
     for (int[] row : dp) {
         Arrays.fill(row, Integer.MAX_VALUE);
@@ -192,7 +192,7 @@ public int minimumTimeRequired(int[] jobs, int k) {
 
     for (int w = 1; w <= k; w++) {
         for (int mask = 0; mask <= full; mask++) {
-            // NOTE !!! `sub` is worker w's share; `mask ^ sub` goes to workers 1..w-1
+            // `sub` is worker w's share; `mask ^ sub` goes to workers 1..w-1
             for (int sub = mask; ; sub = (sub - 1) & mask) {
                 int prev = dp[w - 1][mask ^ sub];
                 if (prev != Integer.MAX_VALUE) {
@@ -361,7 +361,7 @@ public int[] smallestSufficientTeam(String[] reqSkills, List<List<String>> peopl
         for (int cover = 0; cover <= full; cover++) {
             if (size[cover] == Integer.MAX_VALUE) continue;
             int next = cover | pm;
-            /** NOTE !!! `next >= cover` always, and when pm is already inside `cover` we get
+            /** `next >= cover` always, and when pm is already inside `cover` we get
              *  next == cover and the relaxation below is a no-op — so a person can never be
              *  added twice even though we write forward into the same array. */
             if (size[next] > size[cover] + 1) {
@@ -399,7 +399,7 @@ def smallestSufficientTeam(req_skills, people):
                 pm |= 1 << skill_id[s]
         if pm == 0:
             continue
-        # NOTE !!! iterate a SNAPSHOT -- otherwise person p can be re-used within one pass
+        # iterate a SNAPSHOT -- otherwise person p can be re-used within one pass
         for cover, crew in list(dp.items()):
             nxt = cover | pm
             if nxt == cover:

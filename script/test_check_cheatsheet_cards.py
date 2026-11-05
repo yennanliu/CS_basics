@@ -166,6 +166,65 @@ class LineAndHeadingRules(unittest.TestCase):
         self.assertTrue(run(text, new_sheet=True))
         self.assertEqual(run(text, new_sheet=False), [])
 
+    def test_rename_is_read_from_name_status(self):
+        out = ("R098\tdoc/cheatsheet/old_name.md\tdoc/cheatsheet/new_name.md\n"
+               "M\tdoc/cheatsheet/other.md\n"
+               "C100\tdoc/cheatsheet/stub.md\tdoc/cheatsheet/moved.md\n")
+        self.assertEqual(c.parse_renames(out),
+                         {"doc/cheatsheet/new_name.md": "doc/cheatsheet/old_name.md",
+                          "doc/cheatsheet/moved.md": "doc/cheatsheet/stub.md"})
+
+    def _repo(self, stub):
+        """A throwaway repo: a numbered sheet, then renamed (with or without a stub
+        left at the old name) and edited in one heading."""
+        import subprocess, tempfile
+        d = tempfile.mkdtemp()
+        g = lambda *a: subprocess.run(["git", *a], cwd=d, check=True, capture_output=True, text=True)
+        g("init", "-q"); g("config", "user.email", "t@t"); g("config", "user.name", "t")
+        os.makedirs(os.path.join(d, "doc/cheatsheet"))
+        old = "# Old\n\n## 0-1) Concept\n\nprose\n\n## 0-2) More\n\nprose\n"
+        with open(os.path.join(d, "doc/cheatsheet/old_name.md"), "w") as f:
+            f.write(old)
+        g("add", "-A"); g("commit", "-qm", "base")
+        base = g("rev-parse", "HEAD").stdout.strip()
+        g("mv", "doc/cheatsheet/old_name.md", "doc/cheatsheet/new_name.md")
+        with open(os.path.join(d, "doc/cheatsheet/new_name.md"), "a") as f:
+            f.write("\n### Template 1: Bad\n\ncode first\n")       # the one new section
+        if stub:
+            with open(os.path.join(d, "doc/cheatsheet/old_name.md"), "w") as f:
+                f.write("# Old\n\nMoved to [new_name.md](./new_name.md).\n")
+        g("add", "-A"); g("commit", "-qm", "rename")
+        return d, base
+
+    def _judge(self, d, base):
+        import io, contextlib
+        root = c.ROOT
+        c.ROOT = d
+        try:
+            out = io.StringIO()
+            with contextlib.redirect_stdout(out), contextlib.redirect_stderr(io.StringIO()):
+                c.main(["--base", base])
+            return out.getvalue()
+        finally:
+            c.ROOT = root
+
+    def test_rename_judges_only_what_changed(self):
+        for stub in (False, True):                     # a plain rename, and a copy + stub
+            with self.subTest(stub=stub):
+                d, base = self._repo(stub)
+                root = c.ROOT
+                c.ROOT = d
+                try:
+                    changed = c.changed_lines(base, "doc/cheatsheet/new_name.md", "doc/cheatsheet/old_name.md")
+                finally:
+                    c.ROOT = root
+                lines = open(os.path.join(d, "doc/cheatsheet/new_name.md")).read().split("\n")
+                self.assertTrue(changed)
+                self.assertFalse(any("0-1)" in lines[i] or "0-2)" in lines[i] for i in changed))
+                out = self._judge(d, base)
+                self.assertIn("Template 1: Bad", out)         # the new section is judged
+                self.assertNotIn("numbering", out)             # the old 0-1) headings are not
+
     def test_unchanged_old_section_is_not_judged(self):
         old = "### Template 1: Old\n\ncode first\n"
         self.assertEqual(run(old, changed={2}), [])      # only its body changed

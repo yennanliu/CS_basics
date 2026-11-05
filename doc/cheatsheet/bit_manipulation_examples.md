@@ -326,7 +326,6 @@ class Solution {
 ```python
 # 371. Sum of Two Integers
 # V0'
-# https://blog.csdn.net/fuxuemingzhu/article/details/79379939
 #########
 # XOR op:
 #########
@@ -368,7 +367,6 @@ class Solution(object):
         return a if a <= MAX else ~(a ^ mask)
 
 # V0''
-# https://blog.csdn.net/fuxuemingzhu/article/details/79379939
 class Solution():
     def getSum(self, a, b):
         MAX = 2**31-1  #0x7fffffff
@@ -409,19 +407,15 @@ class Solution:
             -> fill n-1 "0" to a string at beginning
 
             example :
-                In [10]: x = '1'
+                x = '1'
 
-                In [11]: x.zfill(2)
-                Out[11]: '01'
+                x.zfill(2)  # -> '01'
 
-                In [12]: x.zfill(3)
-                Out[12]: '001'
+                x.zfill(3)  # -> '001'
 
-                In [13]: x.zfill(4)
-                Out[13]: '0001'
+                x.zfill(4)  # -> '0001'
 
-                In [14]: x.zfill(10)
-                Out[14]: '0000000001'
+                x.zfill(10)  # -> '0000000001'
         """
         a, b = a.zfill(n), b.zfill(n)
         
@@ -611,7 +605,6 @@ class Solution {
 # LC 89 Gray Code
 # V0
 # IDEA : bit op
-# https://blog.csdn.net/qqxx6661/article/details/78371259
 # DEMO
 # i = 0 bin(i) = 0b0 bin(i >> 1) = 0b0 bin(i >> 1) ^ i  = 0b0
 # i = 1 bin(i) = 0b1 bin(i >> 1) = 0b0 bin(i >> 1) ^ i  = 0b1

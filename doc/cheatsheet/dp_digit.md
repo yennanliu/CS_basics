@@ -427,7 +427,7 @@ def count_no_consecutive(n):
     digits = [int(d) for d in str(n)]
     memo = {}
 
-    # NOTE !!! `started` is not optional here. Without it, 1 is built as 0,0,1 under a
+    # `started` is not optional here. Without it, 1 is built as 0,0,1 under a
     #          3-digit bound and the two padding zeros trip the "same as previous" rule.
     def dp(pos, tight, started, prev_digit):
         if pos == len(digits):

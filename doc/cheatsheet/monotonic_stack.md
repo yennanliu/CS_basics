@@ -1999,7 +1999,7 @@ def totalSteps(nums):
 
     for i in range(n):
         cur = 0
-        # NOTE !!! `>=` — an equal element is never deleted, so it is not a killer
+        # `>=` — an equal element is never deleted, so it is not a killer
         while stack and nums[i] >= nums[stack[-1]]:
             cur = max(cur, dp[stack.pop()])
         if stack:                       # a strictly greater element on the left = my killer

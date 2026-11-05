@@ -107,7 +107,7 @@ public List<String> findRepeatedDnaSequences(String s) {
 # time = O(n), space = O(n)
 class Solution(object):
     def findPairs(self, nums, k):
-        ### NOTE !!! k < 0 has NO valid pairs -- |i - j| = k is impossible for a negative k.
+        ### k < 0 has NO valid pairs -- |i - j| = k is impossible for a negative k.
         ###          Falling through to the k <= 0 branch would return the duplicate count.
         if k < 0:
             return 0
@@ -124,7 +124,7 @@ class Solution(object):
 // LC 532 - K-diff Pairs in an Array
 // time = O(n), space = O(n)
 public int findPairs(int[] nums, int k) {
-    /** NOTE !!! k < 0 has no valid pairs; without this guard it returns the duplicate count */
+    /** k < 0 has no valid pairs; without this guard it returns the duplicate count */
     if (k < 0) return 0;
     if (k > 0) {
         Set<Integer> pool = new HashSet<>();

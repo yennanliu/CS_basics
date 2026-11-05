@@ -1026,7 +1026,7 @@ public int[] closestRoom(int[][] rooms, int[][] queries) {
 
     Integer[] order = new Integer[q];
     for (int i = 0; i < q; i++) order[i] = i;
-    // NOTE !!! sort the INDICES, not the queries — ans must go back in the caller's order
+    // sort the INDICES, not the queries — ans must go back in the caller's order
     Arrays.sort(order, (a, b) -> Integer.compare(queries[b][1], queries[a][1]));
 
     TreeSet<Integer> ids = new TreeSet<>();
@@ -1444,19 +1444,17 @@ class Solution:
             # 
             """
             # array extend
-            In [10]: x = [1,2,3]
+            x = [1,2,3]
 
-            In [11]: x.extend([4])
+            x.extend([4])
 
-            In [12]: x
-            Out[12]: [1, 2, 3, 4]
+            x  # -> [1, 2, 3, 4]
 
-            In [13]: x = [1,2,3]
+            x = [1,2,3]
 
-            In [14]: x = x + [4]
+            x = x + [4]
 
-            In [15]: x
-            Out[15]: [1, 2, 3, 4]
+            x  # -> [1, 2, 3, 4]
 
             """
             #res.extend([i + 1, x])
@@ -1557,7 +1555,7 @@ class Solution:
         def f(log):
             id_, rest = log.split(" ", 1)
             """
-            NOTE !!!
+            Note:
               2 cases:
                1) case 1: rest[0].isalpha() => sort by rest, id_
                2) case 2: rest[0] is digit =>  DO NOTHING (keep original order)
@@ -1584,7 +1582,7 @@ class Solution:
         def get_key(log):
             _id, rest = log.split(" ", maxsplit=1)
             """
-            NOTE !!!
+            Note:
               2 cases:
                1) case 1: rest[0].isalpha() => sort by rest, id_
                2) case 2: rest[0] is digit =>  DO NOTHING (keep original order)
@@ -1729,7 +1727,7 @@ public String sort(String s) {
 // LC 853. Car Fleet
 
     // V0
-    // IDEA: pair position and speed, sorting (gpt)
+    // IDEA: pair position and speed, sorting
     /**
      * IDEA :
      *
@@ -1769,7 +1767,7 @@ public String sort(String s) {
         }
 
         /**
-         * NOTE !!!
+         * Note:
          *
          *  Sort by position descending (simulate the "car arriving" process
          */
@@ -1856,7 +1854,7 @@ public List<String> topKFrequent_0_1(String[] words, int k) {
     List<String> res = new ArrayList(freq.keySet());
 
     /**
-     * NOTE !!!
+     * Note:
      *
      *  we directly sort over map's keySet
      *  (with the data val, key that read from map)

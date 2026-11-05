@@ -1349,8 +1349,7 @@ LC 1060 in [binary_search_examples.md](./binary_search_examples.md#search-on-the
 
 ## Summary
 
-- **Three preconditions** — a bounded answer range, a *monotone* feasibility predicate, and a validation you can run in `O(n)` / `O(n log n)`. If any one is missing, this is not the pattern.
-- **Two shapes only** — minimise the maximum (`if valid: right = mid`, return `left`) and maximise the minimum (`if valid: left = mid`, `mid = left + (right - left + 1) / 2`, return `left`). Everything else is the predicate.
+- **When and how** — the preconditions are [The Three Requirements](#the-three-requirements-for-binary-search-on-answer), and the two loop shapes are the [Decision Matrix](#decision-matrix-minimize-vs-maximize-); the [Recognition](#recognition) table says which template a statement wants.
 - **Boundary recipe** — "split / ship / distribute array elements into K groups and minimise the maximum" ⇒ `left = max(nums)`, `right = sum(nums)`. "Rate / divisor / days" ⇒ `left = 1`, `right = max(nums)`.
 - **Same skeleton, different predicate** — a greedy scan (LC 410, 1011, 875, 1482), a count over a value domain (LC 378, 287, 1539), or a graph walk (LC 1631, LC 778).
 - Say it out loud in the interview: *"the answer is monotone in feasibility, so I'll binary search the answer space and write `isValid` as the helper."*
