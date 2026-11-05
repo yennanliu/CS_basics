@@ -1192,7 +1192,7 @@ needed**.
 # python
 # LC 257 - Binary Tree Paths
 # IDEA: immutable string path -- the update happens in the call, so nothing to undo
-# time = O(N * H), space = O(H)
+# time = O(N * H), space = O(H^2): each live frame holds its own prefix string (output not counted)
 def binaryTreePaths(root):
     res = []
 
@@ -1214,7 +1214,7 @@ def binaryTreePaths(root):
 // java
 // LC 257 - Binary Tree Paths
 // IDEA: String path, updated inside the DFS call -> each frame keeps its own copy, no backtrack
-// time = O(N * H), space = O(H)
+// time = O(N * H), space = O(H^2): each live frame holds its own prefix string (output not counted)
 public List<String> binaryTreePaths(TreeNode root) {
     List<String> res = new ArrayList<>();
     if (root == null) {
