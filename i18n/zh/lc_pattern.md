@@ -112,7 +112,7 @@
 | 「網格裡找單字」、「N 皇后」、「數獨」 | 棋盤 ≤ 9 × 9 或 m·n ≤ 36 | 棋盤上的回溯 | [backtrack § Template 9](./backtrack.md#template-9-grid--word-search--lc-79-)、[Template 10](./backtrack.md#template-10-n-queens--lc-51) | 同一個網格裡找很多個字 → trie + 回溯（LC 212） |
 | 「把字串切成回文」 | n ≤ 16 | 在切點上回溯 | [backtrack § Template 8](./backtrack.md#template-8-palindrome-partitioning--lc-131-) | 問**最少**切幾刀 → DP（LC 132） |
 
-<!-- b557fc892ba9 -->
+<!-- 17ccb3e8c419 -->
 ### 堆積與貪婪
 
 | 敘述裡的訊號 | 限制提示 | 模式 | Card | 長得像，其實不是 |
