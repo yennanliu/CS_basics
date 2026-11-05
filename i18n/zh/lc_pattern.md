@@ -20,7 +20,7 @@
 
 一個模式一列。**Card** 欄連到解錨定題的那個模板；題目本身放在該 cheatsheet 的 examples 裡。
 
-<!-- 054e1bb03e0a -->
+<!-- 2199f06fb917 -->
 ### 陣列與字串
 
 | 敘述裡的訊號 | 限制提示 | 模式 | Card | 長得像，其實不是 |
@@ -35,8 +35,8 @@
 | 「原地移除／去重」、「把 0 移到後面」 | O(1) 額外空間 | 讀寫雙指標 | [2_pointers § Template 1](./2_pointers.md#template-1-fastslow-read-write-compaction--lc-26-) | 順序不重要 → 和最後一個元素交換 |
 | 「一趟把 0、1、2 排好」 | O(1) 空間 | 三路切分 | [2_pointers § Template 6](./2_pointers.md#template-6-three-way-partition-dutch-national-flag--lc-75-) | 超過三種 key → 計數排序 |
 | 「最長回文子字串」、「回文子字串有幾個」 | n ≤ 1,000 | 從中心擴張 | [2_pointers § Template 3](./2_pointers.md#template-3-expand-from-centre--lc-5-) | 回文**子序列** → 區間 DP（LC 516） |
-| 未排序陣列上的「two sum」、「之前看過嗎？」 | n ≤ 10⁵ | 查補數 | [hash_map § Template 2](./hash_map.md#template-2-frequency-count--lc-242) | 輸入已排序、要求 O(1) 空間 → 雙指標（LC 167） |
-| 「anagram 分組」、「數頻率」、「第一個不重複的」 | n ≤ 10⁴ | 依計算出的 key 分組／計數 | [hash_map § Template 3](./hash_map.md#template-3-grouping-by-a-computed-key--lc-49)、[Template 1](./hash_map.md#template-1-complement-lookup--lc-1) | 依頻率取前 k → 堆積或桶排序（LC 347） |
+| 未排序陣列上的「two sum」、「之前看過嗎？」 | n ≤ 10⁵ | 查補數 | [hash_map § Template 1](./hash_map.md#template-1-complement-lookup--lc-1) | 輸入已排序、要求 O(1) 空間 → 雙指標（LC 167） |
+| 「anagram 分組」、「數頻率」、「第一個不重複的」 | n ≤ 10⁴ | 依計算出的 key 分組／計數 | [hash_map § Template 3](./hash_map.md#template-3-grouping-by-a-computed-key--lc-49)、[Template 2](./hash_map.md#template-2-frequency-count--lc-242) | 依頻率取前 k → 堆積或桶排序（LC 347） |
 | 「子陣列的最大和／最大乘積」 | n ≤ 10⁵ | Kadane：以這裡結尾的最佳一段 | [kadane_algorithm § 0-2](./kadane_algorithm.md#0-2-algorithm-pattern--template)（和）、[§ 1-3](./kadane_algorithm.md#1-3-maximum-product-subarray-lc-152)（乘積：最小值也要一起維護） | 長度 ≥ k 的子陣列，或總和 = k → 前綴和 |
 | 「合併／插入區間」、「最少要幾間會議室」、「最少移除幾個才不重疊」 | n ≤ 10⁴ | 依起點排序（合併）或依終點排序（排程） | [intervals § Pattern 1](./intervals.md#pattern-1-interval-merging--lc-56-)、[Pattern 2](./intervals.md#pattern-2-interval-scheduling-greedy--lc-435-) | 同一時間有很多事件重疊 → 掃描線（LC 253、[scanning_line](./scanning_line.md#template-1-basic-interval-overlap--lc-253)） |
 | 「第 k 大／第 k 小」、「最近的 k 個」 | n ≤ 10⁵，只問一次 | quickselect | [quickselect § Template 1](./quickselect.md#template-1-three-way-partition-quickselect--lc-215-) | 資料是串流，或要依序拿到全部 k 個 → 大小為 k 的堆積 |
