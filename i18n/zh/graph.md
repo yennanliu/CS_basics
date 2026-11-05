@@ -326,7 +326,7 @@ DFS 版本時就給這個。
 
 <!--CODE-->
 
-<!-- 6f6cd7f980c9 -->
+<!-- bca99e257c92 -->
 ### Template 5：三態 DFS 環偵測 — LC 802 ⭐⭐⭐⭐
 
 **辨識** — 「這張有向圖有沒有環」、「死結」、「最終安全的節點」、
@@ -357,7 +357,7 @@ DFS 版本時就給這個。
 改用併查集（[Template 3](#template-3-union-find-with-path-compression--lc-684-)——回傳 False 的 `union`
 就是環），或把父節點往下傳。只想知道一組先修條件有沒有環 → Kahn（[Template 4](#template-4-topological-sort-kahns-bfs--lc-207-)）。
 
-**練習** — LC 207 ⭐ *（有環代表課修不完）* · LC 802 · LC 1059 *（每條路都停在
+**練習** — LC 802 · LC 207 ⭐ *（有環代表課修不完）* · LC 1059 *（每條路都停在
 目的地）* · LC 2360 *（出度 ≤ 1 時的最長環）*
 
 <!-- 8b2b70359c86 -->

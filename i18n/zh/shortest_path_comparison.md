@@ -10,7 +10,7 @@
 - [Shortest Path](https://leetcode.com/problem-list/shortest-path/)
 - [Graph Theory](https://leetcode.com/problem-list/graph/)
 
-<!-- 6f465a57b3e7 -->
+<!-- 860e8ea32a53 -->
 ## 快速決策表
 
 | 問題 | 答案 → 演算法 |
@@ -18,7 +18,7 @@
 | 權重非負、單一起點？ | **Dijkstra** O((V+E) log V) |
 | 允許負權重、單一起點？ | **Bellman-Ford** O(V·E) |
 | 需要偵測負環？ | **Bellman-Ford** O(V·E) |
-| 最多 K 條邊／K 次轉乘？ | **Bellman-Ford**（跑 K 輪） |
+| 最多 K 條邊／K 次轉乘？ | **Bellman-Ford**（限邊數跑 K 輪，限轉乘跑 K + 1 輪） |
 | 全點對最短路徑？ | **Floyd-Warshall** O(V³) |
 | 遞移閉包（可達性）？ | **Floyd-Warshall**（布林版） |
 | 無權重圖？ | **BFS** O(V+E) |
@@ -47,7 +47,7 @@
 | **實作難度** | 簡單 | 中等 | 簡單 | 簡單 |
 | **最適合** | 每條邊成本相同 | 大型稀疏圖、權重 ≥ 0 | 負權重、跳數限制或偵測環 | V ≤ ~400 且要所有點對 |
 
-<!-- daef6e6fbdcd -->
+<!-- e654d41e7cf3 -->
 ## 情境 → 演算法
 
 三份演算法 sheet 以前各自列的情境，集中在這裡。那幾張表彼此矛盾的地方，下面這一列就是釐清後的答案。
@@ -57,7 +57,8 @@
 | 道路網／導航，單一起點到單一目標 | **Dijkstra**（有啟發函數就用 A*） | 權重非負、圖稀疏、可以在目標停下 |
 | 網路延遲時間，單一起點到每個節點 | **Dijkstra** | 非負、單一起點（[LC 743](./Dijkstra.md)） |
 | 套利／「有沒有負環？」 | **Bellman-Ford** | 從虛擬起點多跑一輪，就能在 O(V·E) 內偵測到負環；Floyd-Warshall 也可以（看 `dist[i][i]` 是否為負），但只有在 n 很小、本來就要所有點對時才划算 |
-| 「最多 K 站／K 條邊」 | **跑 K 輪的 Bellman-Ford**，每輪先複製 `dist` | 跳數限制就是輪數限制（[LC 787](./Bellman-Ford.md)） |
+| 「最多 K 條邊」 | **跑 K 輪的 Bellman-Ford**，每輪先複製 `dist` | 跳數限制就是輪數限制 |
+| 「最多 K 站」 | **跑 K + 1 輪的 Bellman-Ford**，每輪先複製 `dist` | K 站就是 K + 1 條邊：K = 0 時直飛仍然算數（[LC 787](./Bellman-Ford.md)） |
 | 所有點對、n 很小（約 400 以內） | **Floyd-Warshall** | O(V³) 跑得完、三層迴圈、能處理負權重 |
 | 所有點對、大型稀疏圖 | **從每個節點跑 Dijkstra**（權重可能為負就用 Johnson's） | E ≪ V² 時 V · (V + E) log V 勝過 V³ |
 | 所有點對之間的可達性（先修鏈） | **布林版 Floyd-Warshall** | 遞移閉包就是同一組三層迴圈（[LC 1462](./Floyd-Warshall.md)） |
