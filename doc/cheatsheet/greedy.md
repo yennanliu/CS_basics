@@ -96,9 +96,8 @@ def least_interval(tasks, n):
     time = 0
     while heap:
         ran = []                                 # counts we ran this cycle
-        for _ in range(n + 1):                   # one cooldown window
-            if heap:
-                ran.append(heapq.heappop(heap) + 1)  # run it once (counts are negative)
+        for _ in range(min(n + 1, len(heap))):   # one cooldown window: run what is available,
+            ran.append(heapq.heappop(heap) + 1)  # never visit idle slots (counts are negative)
         for count in ran:
             if count < 0:                        # still has copies left
                 heapq.heappush(heap, count)
