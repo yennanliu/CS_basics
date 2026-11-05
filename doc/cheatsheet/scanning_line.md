@@ -226,7 +226,7 @@ public long countIntersectingIntervals(int[][] intervals) {
         events[2 * i + 1] = new int[]{intervals[i][1], -1};
     }
     // same pos: start (+1) before end (-1) -> touching closed intervals intersect
-    Arrays.sort(events, (a, b) -> a[0] != b[0] ? Integer.compare(a[0], b[0]) : b[1] - a[1]);
+    Arrays.sort(events, (a, b) -> a[0] != b[0] ? Integer.compare(a[0], b[0]) : Integer.compare(b[1], a[1]));
 
     long res = 0;                       // up to C(10^5, 2) ~ 5e9: overflows int
     int active = 0;
