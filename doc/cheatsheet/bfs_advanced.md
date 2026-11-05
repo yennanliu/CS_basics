@@ -58,6 +58,9 @@ do on its own: seed from a component that has to be found first, and keep the so
 > enqueuing every cell), then BFS outward over water; the level at which the BFS first touches a
 > `1` is the number of cells to flip.
 
+**Recognise** — "exactly two islands", "flip the fewest `0`s to connect them", or any shortest
+distance between two *components* rather than two cells. n ≤ 100, so one island can hold 10⁴ cells.
+
 **Reduces to**: [bfs § Template 4](./bfs.md#template-4-multi-source-bfs--lc-994-) — the sources are a whole component found by a flood fill first.
 
 ```python
@@ -152,6 +155,12 @@ void dfsMarkIsland(int[][] grid, int x, int y, Queue<int[]> queue) {
 }
 ```
 
+**Complexity**
+- **Time O(n²)**: the fill's `while stack` marks each island-A cell `2` before pushing it, and the
+  BFS marks each water cell `2` before enqueuing it, so every cell enters a container at most once
+  and looks at 4 neighbours.
+- **Space O(n²)**: `queue` starts with every cell of island A, which can be most of the grid.
+
 **Dry run**
 
 ```text
@@ -166,14 +175,23 @@ level 1 (flips = 1): (0,0) -> (1,0) is 1 -> return 1
 - The recursive fill on a 100 × 100 island is 10⁴ frames deep: past Python's default recursion
   limit, which is why the Python form fills with a stack.
 
-**Similar** — LC 1162 As Far from Land as Possible · LC 542 · LC 1020 Number of Enclaves
+**Not this if** — there is one source cell and one target, not two components: plain
+[bfs § Template 3](./bfs.md#template-3-grid-bfs-with-a-direction-array--lc-1091-).
+
+**Drill** — LC 934 ⭐ · LC 1020 Number of Enclaves *(the fill alone, seeded from the border)* ·
+LC 542 *(every `0` a source, no fill)* · LC 1162 As Far from Land as Possible *(every land cell a
+source; the answer is the last level)*
 
 ### Pattern 4.6: Multi-Source BFS vs Independent BFS Runs (Critical Distinction)
 
-**Key point** — one shared BFS seeded with every source answers "distance to the **nearest**
-source", because the first source to reach a cell wins and the cell is closed. A question about
-**every** source — the **sum** of distances, or "reachable from all of them" — needs each source's
-own distance to each cell, so it is one BFS per source with a **fresh** `visited` each time.
+> **Key point** — one shared BFS seeded with every source answers "distance to the **nearest**
+> source", because the first source to reach a cell wins and the cell is closed. A question about
+> **every** source — the **sum** of distances, or "reachable from all of them" — needs each source's
+> own distance to each cell, so it is one BFS per source with a **fresh** `visited` each time.
+
+**Recognise** — "the **total** travel distance to all buildings", "a cell every source can reach",
+any answer that aggregates over *all* sources rather than taking the nearest. m, n ≤ 50 with up to
+m·n buildings, so k BFS runs of m·n each still fit.
 
 | Aspect | Simultaneous multi-source | Independent BFS runs |
 |---|---|---|
@@ -276,6 +294,12 @@ private void bfsSingleSource(int[][] grid, int sr, int sc, boolean[][] visited,
 }
 ```
 
+**Complexity**
+- **Time O(k·m·n)**: the outer `for sr / for sc` starts one BFS per building, and each BFS enqueues
+  every empty cell at most once because its `seen` grid is fresh.
+- **Space O(m·n)**: `total`, `reach` and one `seen` grid at a time; each building's `seen` is
+  dropped before the next is built.
+
 **Traps**
 - Reusing one `visited` across buildings: the second building never sees the cells the first one
   closed, so its distances are never added and the answer is wrong, not just slow.
@@ -284,7 +308,12 @@ private void bfsSingleSource(int[][] grid, int sr, int sc, boolean[][] visited,
   whose value is `-i` and writes `-(i + 1)`, so later BFSs skip every cell an earlier building
   could not reach. Same answer, no `visited` arrays.
 
-**Similar** — LC 2045 · LC 296 Best Meeting Point (Manhattan distance, no BFS needed)
+**Not this if** — the question is about the **nearest** source: one
+[multi-source BFS](./bfs.md#template-4-multi-source-bfs--lc-994-) gives the same distances k times faster.
+
+**Drill** — LC 317 ⭐ · LC 542 *(nearest source: the one shared BFS, for contrast)* · LC 1162 *(the
+same contrast, maximised)* · LC 296 Best Meeting Point *(sum of distances with no obstacles:
+Manhattan medians, no BFS needed)*
 
 ## State-Space & Implicit-Graph BFS
 
@@ -300,6 +329,10 @@ a node *is*.
 > when they share a stop. Seed every route through `source`; BFS level = buses taken, and the first
 > route that contains `target` ends the search. A `visited` set on stops keeps a busy transfer stop
 > from re-expanding every route through it.
+
+**Recognise** — "the least number of **buses** you must take", "fewest transfers / lines", with
+each route given as a list of stops. routes ≤ 500 but the stops add up to 10⁵, so a graph with an
+edge between every two stops on a route is too big to build.
 
 **Reduces to**: [bfs § Template 2](./bfs.md#template-2-graph-bfs-mark-on-enqueue--lc-1971-) — on a graph whose nodes are routes, built from a stop → routes map.
 
@@ -378,6 +411,12 @@ public int numBusesToDestination(int[][] routes, int source, int target) {
 }
 ```
 
+**Complexity**
+- **Time O(S)**, S = the sum of route lengths: building `stop_to_routes` reads every stop once;
+  `used_routes` enqueues each route once, so `for stop in routes[route]` scans each route once; and
+  `seen_stops` lets each stop's `stop_to_routes` list be scanned once.
+- **Space O(S)**: `stop_to_routes` holds one entry per (stop, route) pair.
+
 **Dry run**
 
 ```text
@@ -394,7 +433,12 @@ buses 2: route 1 -> stop 3, stop 6 == target -> return 2
 - Without `seen_stops`, a hub stop on many routes re-scans its route list once per route that
   reaches it.
 
-**Similar** — LC 127 (words as nodes) · LC 841 Keys and Rooms · LC 1197 Minimum Knight Moves
+**Not this if** — the answer counts stops or edges, not routes: BFS over the stops,
+[bfs § Template 2](./bfs.md#template-2-graph-bfs-mark-on-enqueue--lc-1971-).
+
+**Drill** — LC 815 ⭐ · LC 841 Keys and Rooms *(a room's keys are its edges)* · LC 127 *(words as
+nodes)* · LC 1345 Jump Game IV *(value → indices map; clear a value's list once used, the same job
+as `seen_stops`)*
 
 ---
 
@@ -404,6 +448,10 @@ buses 2: route 1 -> stop 3, stop 6 == target -> return 2
 > previous level. Remove a whole level from the dictionary only after the level is finished, so a
 > word reached by two parents on the same level keeps both. Stop after the level that reaches the
 > end word; then DFS backwards through the predecessor lists, which hold only shortest paths.
+
+**Recognise** — "return **all** the shortest transformation sequences", "every shortest path from
+s to t" — a list of paths, not a length. word list ≤ 500 and words of length ≤ 5, but the number of
+shortest paths can still be exponential, so only shortest ones may ever be walked.
 
 **Reduces to**: [bfs § Template 5](./bfs.md#template-5-word-ladder-bfs-over-generated-neighbours--lc-127-) — with a predecessor DAG recorded instead of a single distance.
 
@@ -514,6 +562,13 @@ private void dfsEnumeratePaths(String current, String beginWord, Map<String, Lis
 }
 ```
 
+**Complexity**
+- **Time O(N·L·26 + paths·L)**: `words -= level` removes each word as its level closes, so each of
+  the N words is expanded once by the `for i / for ch` loops (26·L candidates, each a length-L
+  string, which the bound treats as constant for L ≤ 5); `walk` then spends O(L) per output path.
+- **Space O(N·L)**: `parents` holds each word's predecessors on the level above; the output is not
+  counted.
+
 **Dry run**
 
 ```text
@@ -532,7 +587,12 @@ DFS from cog: cog<-dog<-dot<-hot<-hit  and  cog<-log<-lot<-hot<-hit
   shortest and times out; walk the predecessor lists backwards.
 - Building the next level after `found` admits longer paths into `parents`.
 
-**Similar** — LC 127 (one shortest length) · LC 2115 Find All Possible Recipes
+**Not this if** — only the length, or any one shortest path, is asked: [bfs § Template 5](./bfs.md#template-5-word-ladder-bfs-over-generated-neighbours--lc-127-)
+plus a single parent per word.
+
+**Drill** — LC 126 ⭐ · LC 433 Minimum Genetic Mutation *(the length only)* · LC 127 *(the length
+only, on a larger list)* · LC 1976 Number of Ways to Arrive at Destination *(count the shortest
+paths instead of listing them; weighted, so Dijkstra)*
 
 ---
 
@@ -543,16 +603,11 @@ DFS from cog: cog<-dog<-dot<-hot<-hit  and  cog<-log<-lot<-hot<-hit
 > exactly the Cartesian product of groups `0 … i`. There is no graph and no `visited`; the level
 > structure is all that is borrowed from BFS.
 
-**Reduces to**: [bfs § Template 1](./bfs.md#template-1-level-order-bfs--lc-102-) — one level per group, where a node's children are its prefix extended by each option.
+**Recognise** — "return all words that can be formed", "`{a,b}c{d,e}`", "every combination" where
+each position picks one option from its own group and no choice limits another. The output caps
+the work: LC 1087 has s ≤ 50 characters, so the product stays small.
 
-```text
-s = "{a,b}c{d,e}f"   groups = [[a,b], [c], [d,e], [f]]
-level 0: [""]
-level 1: [a, b]
-level 2: [ac, bc]
-level 3: [acd, ace, bcd, bce]
-level 4: [acdf, acef, bcdf, bcef]   <- the answer, already sorted
-```
+**Reduces to**: [bfs § Template 1](./bfs.md#template-1-level-order-bfs--lc-102-) — one level per group, where a node's children are its prefix extended by each option.
 
 ```python
 # python
@@ -599,13 +654,36 @@ public String[] cartesianBFS(List<List<String>> groups) {
 }
 ```
 
+**Complexity**
+- **Time O(G·|result|·L)**: the `for group` loop runs G times, each level is no larger than the
+  final one, and every `prefix + option` copies up to L characters.
+- **Space O(|result|·L)**: `level` and `next_level` together hold at most two levels, the larger
+  being the output itself.
+
+**Dry run**
+
+```text
+s = "{a,b}c{d,e}f"   groups = [[a,b], [c], [d,e], [f]]
+level 0: [""]
+level 1: [a, b]
+level 2: [ac, bc]
+level 3: [acd, ace, bcd, bce]
+level 4: [acdf, acef, bcdf, bcef]   <- the answer, already sorted
+```
+
 **Traps**
 - Sort each group before expanding; sorting the output afterwards costs an extra
-  O(|result| log |result|).
+  O(|result| log |result|). `"{b,a}c"` expanded unsorted returns `["bc", "ac"]`.
 - The final level holds the whole output at once; when choices constrain each other (no repeated
   letter, a sum bound), switch to backtracking, which can prune and needs only O(depth) memory.
 
-**Similar** — LC 17 Letter Combinations of a Phone Number · LC 784 Letter Case Permutation · LC 320
+**Not this if** — the choices constrain each other: backtracking
+([dfs § Template 4](./dfs.md#template-4-backtracking--lc-46)), which prunes a dead prefix early.
+
+**Drill** — LC 1087 ⭐ · LC 784 Letter Case Permutation *(a group is a letter's two cases)* · LC 17
+Letter Combinations of a Phone Number *(a group per digit)* · LC 320 Generalized Abbreviation *(each
+letter: keep it or count it)* · LC 1096 Brace Expansion II *(nested braces: union and product,
+parsed with a stack)*
 
 ---
 
@@ -614,6 +692,10 @@ public String[] cartesianBFS(List<List<String>> groups) {
 > **Key point** — "remove the **minimum** number of characters" makes one deletion one BFS level:
 > level k holds every string reachable by exactly k deletions. The first level that contains a
 > valid string is the answer level — return all its valid strings and never build the next.
+
+**Recognise** — "remove the **minimum** number of invalid parentheses", "return **all** possible
+results". s ≤ 25 with at most 20 parentheses: only that bound makes a level set of up to 2ⁿ
+strings affordable.
 
 **Reduces to**: [bfs § Template 5](./bfs.md#template-5-word-ladder-bfs-over-generated-neighbours--lc-127-) — neighbours are the string with one parenthesis deleted.
 
@@ -690,12 +772,23 @@ private boolean isValid(String t) {
 }
 ```
 
+**Complexity**
+- **Time O(2ⁿ·n)**: a string is a subset of the original positions, so at most 2ⁿ distinct strings
+  ever enter a `level` set, and `valid(t)` scans each in O(n).
+- **Space O(2ⁿ)**: `level` and `nxt` — the widest level, about C(n, n/2) strings.
+
 **Traps**
 - Without dedup, `"(())"` is reached by many deletion orders and the levels blow up.
 - Stop **expanding** once a valid string is found, but finish scanning the level: there may be
-  several answers of the same length.
+  several answers of the same length. `"()())()"` has two, `"(())()"` and `"()()()"`.
 - `")("` has no valid non-empty answer; the loop reaches the empty string, which is valid, and
   returns `[""]`.
+
+**Not this if** — only the **number** of deletions, or any one valid string, is asked: a single
+left-to-right balance counter (LC 921) or a stack (LC 1249), both O(n).
+
+**Drill** — LC 301 ⭐ · LC 20 Valid Parentheses *(the validity check)* · LC 921 *(the count only)* ·
+LC 1249 Minimum Remove to Make Valid Parentheses *(one answer: a stack, O(n))*
 
 ---
 
@@ -705,6 +798,10 @@ private boolean isValid(String t) {
 > at a cell makes every future identical. The moment you carry something along the walk — keys
 > collected, eliminations left, fuel, a colour, a parity — two arrivals at the same cell are
 > **different positions in the search**, and the fix is always the same one line.
+
+**Recognise** — "collect **all keys**, a lock needs its key", "you may eliminate **at most k**
+obstacles", "at most k stops": something carried along the walk changes which moves are legal
+later. The state count m·n·|resource| has to fit — LC 864 is 30·30·2⁶, LC 1293 is 40·40·(k+1).
 
 **Reduces to**: [bfs § Template 3](./bfs.md#template-3-grid-bfs-with-a-direction-array--lc-1091-) — with the resource added to the `visited` key.
 
@@ -734,6 +831,9 @@ shortest path. The cost is the state count: `m * n * |resource|`.
 > **Key point** — lowercase `a..f` are keys and uppercase `A..F` are locks; `k ≤ 6`, so the key
 > ring fits in 6 bits and the state space is `m * n * 64`. A lock is passable only when its bit is
 > already in the mask; the answer is the first pop holding every key.
+
+**Recognise** — "the lowest number of moves to acquire all keys", with `a..f` keys and `A..F` locks
+on the grid. k ≤ 6 is the cue that the key ring is a bitmask.
 
 **Reduces to**: [bfs § Template 3](./bfs.md#template-3-grid-bfs-with-a-direction-array--lc-1091-) — with `visited` on `(r, c, mask)`.
 
@@ -832,11 +932,30 @@ public int shortestPathAllKeys(String[] grid) {
 }
 ```
 
+**Complexity**
+- **Time O(m·n·2^k)**: `seen` is keyed on `(nr, nc, n_mask)`, so each of the m·n·2^k states is
+  enqueued once and tries 4 moves; the scan for `all_keys` is only O(m·n).
+- **Space O(m·n·2^k)**: `seen` and the queue range over those states.
+
+**Traps**
+- Marking `seen` on the **cell**: LC 864 then reports `-1` whenever the path must cross its own
+  earlier route after picking a key up, which is most of the test set.
+- Counting a key you already hold as a new state — harmless but doubles the queue; `n_mask == mask`
+  is caught by the `seen` check anyway.
+
+**Drill** — LC 864 ⭐ · LC 1129 Shortest Path with Alternating Colors *(`(node, lastColour)`)* ·
+LC 847 Shortest Path Visiting All Nodes *(`(node, visitedMask)`, every node a source — see
+[dp_bitmask.md](./dp_bitmask.md))*
+
 #### LC 1293 — the resource is a countdown
 
 > **Key point** — the extra dimension is "obstacles I may still remove". An arrival is worth
 > keeping only when it has **strictly more** budget than any earlier arrival at that cell, so a
 > `best[r][c]` of the largest budget seen replaces a 3-D `visited`.
+
+**Recognise** — "you can eliminate **at most k** obstacles", "minimum steps from the upper-left to
+the lower-right corner". m, n ≤ 40 and k ≤ m·n, so k has to be capped before it multiplies the
+state count.
 
 **Reduces to**: [bfs § Template 3](./bfs.md#template-3-grid-bfs-with-a-direction-array--lc-1091-) — with the budget carried in the queue entry.
 
@@ -847,13 +966,14 @@ Two things are worth carrying into the interview:
   exit, though: past it every surviving input has `k < m + n - 2`, so the bound is
   `O(m*n*(m+n))` rather than growing with an unbounded `k`.
 - **`best[r][c]` instead of a 3-D `visited`.** Store the largest remaining budget ever seen at a
-  cell and skip any arrival that is not strictly better. Same answers, `O(m*n)` memory.
+  cell and skip any arrival that is not strictly better. Same answers, and the visited table is
+  `O(m*n)` instead of `O(m*n*k)`.
 
 ```python
 # python
 # LC 1293 - Shortest Path in a Grid with Obstacles Elimination
 # IDEA: BFS over (r, c, k remaining); prune with the best budget ever seen at a cell
-# time = O(m*n*k), space = O(m*n)
+# time = O(m*n*k), space = O(m*n*k)   the queue's worst case; best[][] itself is O(m*n)
 from collections import deque
 
 def shortestPath(grid, k):
@@ -885,7 +1005,7 @@ def shortestPath(grid, k):
 // LC 1293 - Shortest Path in a Grid with Obstacles Elimination
 // IDEA: BFS over (row, col, k left). best[r][c] = most budget ever seen here; an arrival
 //       with <= that budget can never do better, so drop it.
-// time = O(m*n*k), space = O(m*n)
+// time = O(m*n*k), space = O(m*n*k)   the queue's worst case; best[][] itself is O(m*n)
 public int shortestPath(int[][] grid, int k) {
     int m = grid.length, n = grid[0].length;
     if (k >= m + n - 2) return m + n - 2;        // enough budget to walk the diagonal
@@ -922,22 +1042,27 @@ public int shortestPath(int[][] grid, int k) {
 }
 ```
 
+**Complexity**
+- **Time O(m·n·k)**: `n_left <= best[nr][nc]` admits a cell only with strictly more budget than
+  before, so each cell is enqueued at most k + 1 times and tries 4 moves. Past the
+  `k >= m + n - 2` shortcut k < m + n, so this is also O(m·n·(m + n)).
+- **Space O(m·n·k)** in the worst case, for the queue, which can hold a cell once per larger
+  budget; `best` itself is O(m·n).
+
 **Traps**
+- Checking the budget on the cell you **enter** but spending it on the cell you **leave**. Either
+  convention alone is correct — both endpoints are `0`, so a path pays for the same obstacles — but
+  mixing them lets a run of adjacent obstacles through on a budget of one.
+- `<` instead of `<=` in the `best` check re-admits an equal budget arriving later: still correct,
+  but on an all-`0` grid with k just under `m + n - 2` the budget never drops, so cells already
+  settled are enqueued again from every neighbour.
 
-- Marking `seen` on the **cell** — LC 864 then reports `-1` whenever the path must cross its own
-  earlier route after picking a key up, which is most of the test set.
-- Counting a key you already hold as a new state — harmless but doubles the queue; `nMask == mask`
-  is caught by the `seen` check anyway.
-- In LC 1293, checking the budget on the cell you **enter** but spending it on the cell you **leave**.
-  Either convention alone is correct — both endpoints are `0`, so a path pays for the same
-  obstacles — but mixing them lets a run of adjacent obstacles through on a budget of one.
+**Not this if** — the extra dimension makes edges *weighted* (a cost or a time per move): the same
+state goes into a heap instead of a queue — [Dijkstra.md](./Dijkstra.md).
 
-**Similar problems**: LC 787 Cheapest Flights Within K Stops (`(node, stops)`; weighted, so
-Dijkstra or Bellman-Ford), LC 1928 Minimum Cost to Reach Destination in Time (`(node, time)`),
-LC 1129 Shortest Path with Alternating Colors (`(node, lastColour)`), LC 847 Shortest Path Visiting
-All Nodes (`(node, visitedMask)` — see [dp_bitmask.md](./dp_bitmask.md)). When the extra dimension
-makes edges *weighted*, the same state goes into a heap instead of a queue —
-[Dijkstra.md](./Dijkstra.md).
+**Drill** — LC 1293 ⭐ · LC 787 Cheapest Flights Within K Stops *(`(node, stops)`; weighted, so
+Dijkstra or Bellman-Ford)* · LC 1928 Minimum Cost to Reach Destination in Time *(`(node, time)`,
+weighted)*
 
 ---
 
@@ -955,6 +1080,10 @@ BFS that carries `(node, product)` gives the same answers.
 > goes to the front (same layer), a cost-1 edge to the back (next layer). The deque then holds at
 > most two distinct distances, in order, so the first pop of a node is final — Dijkstra's guarantee
 > at **O(V + E)** instead of `O(E log V)`.
+
+**Recognise** — "the minimum **cost** to make a valid path", "the minimum number of obstacles to
+**remove**": some moves are free and the rest cost exactly 1. m, n ≤ 100; Dijkstra would also pass,
+so 0-1 BFS is the clean answer rather than the only one.
 
 **Reduces to**: [bfs § Template 3](./bfs.md#template-3-grid-bfs-with-a-direction-array--lc-1091-) — with a deque, and `dist` relaxation instead of mark-on-enqueue.
 
@@ -1021,6 +1150,12 @@ public int minCost(int[][] grid) {
 }
 ```
 
+**Complexity**
+- **Time O(m·n)**: the deque holds at most two distances, d then d + 1, so a cell is pushed at most
+  twice — once by a cost-1 `dq.append` and once by a cheaper cost-0 `dq.appendleft` — and each pop
+  scans 4 moves.
+- **Space O(m·n)**: `dist`, and the deque's at most two entries per cell.
+
 **BFS vs 0-1 BFS vs Dijkstra**
 
 | Edge weights | Structure | Push rule | Time |
@@ -1032,11 +1167,15 @@ public int minCost(int[][] grid) {
 **Traps**
 - Relax with `dist[r][c] + cost < dist[nr][nc]` rather than a `visited` set: a node first reached by
   a cost-1 edge can later be reached for less through a cost-0 edge.
-- Pushing every edge to the back turns this into plain BFS, which counts moves, not sign changes.
+- Pushing every edge to the back turns this into plain BFS, which counts moves, not sign changes:
+  on `[[1,1,3],[3,2,2],[1,1,4]]` the answer is 0, but plain BFS returns 4, the fewest moves.
 
-**Similar 0-1 BFS problems**: LC 2290 Minimum Obstacle Removal to Reach Corner · LC 1263 Minimum
-Moves to Move a Box to Their Target Location (pushing the box costs 1, walking the player costs 0 —
-state is `(box, player)`).
+**Not this if** — every move costs the same (a plain queue), or costs other than 0 and 1 appear
+([Dijkstra.md](./Dijkstra.md)).
+
+**Drill** — LC 1368 ⭐ · LC 2290 Minimum Obstacle Removal to Reach Corner *(entering a wall costs
+1)* · LC 1263 Minimum Moves to Move a Box to Their Target Location *(pushing the box costs 1,
+walking the player costs 0 — state is `(box, player)`)*
 
 ### Bidirectional BFS
 
@@ -1044,6 +1183,10 @@ state is `(box, player)`).
 > With branching factor b and distance d, two searches of depth d/2 visit about `2·b^(d/2)` nodes
 > instead of `b^d`. Always expand the **smaller** frontier, and expand it one whole level at a time,
 > so the first meeting is at the shortest length.
+
+**Recognise** — "the number of words in the shortest transformation sequence from `beginWord` to
+`endWord`": **both** endpoints given, and a large branching factor (26·L generated neighbours per
+word). word list ≤ 5,000 — one-sided BFS passes too; this is the follow-up that cuts the search.
 
 **Reduces to**: [bfs § Template 5](./bfs.md#template-5-word-ladder-bfs-over-generated-neighbours--lc-127-) — run from both ends of LC 127 Word Ladder.
 
@@ -1077,12 +1220,25 @@ def ladderLength(beginWord, endWord, wordList):
     return 0
 ```
 
+**Complexity**
+- **Time O(N·L·26)** in the worst case: `words.discard(nxt)` marks a word once for both sides, so
+  each word is expanded at most once by the `for i / for ch` loops. The gain is in practice — two
+  frontiers of depth d/2 instead of one of depth d.
+- **Space O(N·L)**: `words` plus the two frontier sets.
+
 **Traps**
 - Checking for the meeting only when a word is *popped* (instead of when it is generated) can
   overshoot by one level.
 - Expanding node by node instead of level by level can meet on a longer path first.
 - When the end node is unknown (any leaf, any gate), there is nothing to search backwards from:
   use one-sided BFS.
+
+**Not this if** — the target is a set or a predicate rather than one node, or the graph is small:
+one-sided [bfs § Template 5](./bfs.md#template-5-word-ladder-bfs-over-generated-neighbours--lc-127-).
+
+**Drill** — LC 127 ⭐ · LC 433 Minimum Genetic Mutation *(the same search on 8-letter genes)* ·
+LC 752 Open the Lock *(both ends known: `"0000"` and the target)* · LC 1197 Minimum Knight Moves
+*(an unbounded board, where halving the search depth matters most)*
 
 ## Repeated & Sequential BFS
 
@@ -1091,6 +1247,10 @@ def ladderLength(beginWord, endWord, wordList):
 > **Key point** — the visiting order is forced (shortest tree first), so the total is the sum of
 > shortest paths between consecutive targets. Sort the targets, then run one ordinary grid BFS per
 > consecutive pair; any unreachable pair makes the whole answer -1.
+
+**Recognise** — "you must cut off the trees in order from shortest to tallest", "visit the targets
+in a given order" on a grid with obstacles. m, n ≤ 50, so even one BFS per tree is about
+2,500 × 2,500 cell visits.
 
 **Reduces to**: [bfs § Template 3](./bfs.md#template-3-grid-bfs-with-a-direction-array--lc-1091-) — called once per pair of consecutive targets.
 
@@ -1186,6 +1346,11 @@ private int bfs(List<List<Integer>> grid, int sr, int sc, int tr, int tc) {
 }
 ```
 
+**Complexity**
+- **Time O(t·m·n)**: `for _, tr, tc in trees` runs one `bfs` per tree, and each BFS visits a cell
+  at most once (fresh `seen`); the `sorted` is O(t log t) and is dominated.
+- **Space O(m·n)**: one `seen` set and queue at a time, plus the `trees` list.
+
 **Dry run**
 
 ```text
@@ -1201,7 +1366,11 @@ total = 6
 - Cut trees become `1` (walkable), never `0`; and every BFS needs a fresh `visited`.
 - A* with a Manhattan heuristic speeds up each search but does not change the bound.
 
-**Similar** — LC 317 (one BFS per source) · LC 1091
+**Not this if** — the targets may be visited in any order: that is a TSP-style search over a
+distance matrix, not a sum of consecutive BFSs.
+
+**Drill** — LC 675 ⭐ · LC 1091 *(the single grid BFS each step runs)* · LC 317 *(one BFS per
+source, summed per cell)*
 
 ## When Not to Use
 
