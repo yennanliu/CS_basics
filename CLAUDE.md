@@ -877,7 +877,7 @@ The build fails on a taxonomy key that is missing, points at an unknown topic, o
 - **Bold** key terms: `**Pattern**`, `**Key Idea**`, `**Recurrence**`
 - Category headers: `#### **Category Name**`
 - Code blocks: **always** tag the language — `java`, `python`, or `text` for ASCII traces, diagrams and program output. Never a bare ` ``` `.
-- Complexity: inside code, on the line right after `IDEA`: `// time = O(...), space = O(...)`. The order is always the language label, then `IDEA`, then `time`
+- Complexity: inside code, on the line right after `IDEA`: `# time = O(...), space = O(...)` in Python, `// time = O(...), space = O(...)` in Java. The order is always the language label, then `IDEA`, then `time`
 - Images: `<p align="center"><img src="../pic/filename.png"></p>`
 - Priority markers: a trailing `⭐`…`⭐⭐⭐⭐⭐` run on a heading marks how interview-critical that section is (5 = memorise it). The site strips the run out of the heading, renders it as a star badge, weights the heading's left rule by it, and surfaces 4★/5★ sections in the page's table of contents — so put the run **on the heading**, not in the prose under it. Leave ordinary background sections unmarked; if everything is starred, nothing is.
   **Adding or changing a run moves the heading's anchor** — the stars are stripped from the slug but the space before them is not, so the id gains a trailing `-`. Every link aimed at that heading has to move with it, in the same commit; `e2e-check.js`'s dangling-`#fragment` rule is what catches it if you forget. Sections are also the unit the 繁體中文 overlay is keyed on, so re-key the translation rather than letting `sync` park it (see [Traditional Chinese docs](#traditional-chinese-docs)).

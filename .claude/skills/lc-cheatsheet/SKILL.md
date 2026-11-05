@@ -151,8 +151,10 @@ House rules that are not negotiable:
 
 - **Every fence is tagged** — ` ```python `, ` ```java `, ` ```text ` for traces, diagrams and
   program output. Never a bare ` ``` `.
-- **`# IDEA: <one line>`** opens a snippet; complexity goes on the next line,
-  `# time = O(...), space = O(...)`, and `// LC <n> - <Problem Name>` sits above the class.
+- **`IDEA: <one line>`** opens a snippet; complexity goes on the next line, and the LC
+  line sits above the class or function, each in the language's own comment syntax:
+  `# IDEA:` / `# time = O(...), space = O(...)` / `# LC <n> - <Problem Name>` in Python,
+  `// IDEA:` / `// time = ...` / `// LC <n> - <Problem Name>` in Java.
 - **State each LC number once** per heading — not `... (LC 1650) — LC 1650`.
 - **Heading levels never skip** (`h3` → `h4`, never `h3` → `h5`).
 - **A `⭐`…`⭐⭐⭐⭐⭐` run goes on the heading**, not in the prose under it, and only where the

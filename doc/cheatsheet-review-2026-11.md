@@ -230,7 +230,7 @@ Rewrite [`lc_pattern.md`](cheatsheet/lc_pattern.md) as the router:
 
 | Signal in the statement | Constraint cue | Pattern | Card | Looks like it, but is not |
 |---|---|---|---|---|
-| "contiguous subarray", "at most k distinct" | n ≤ 10⁵ | variable sliding window | [sliding_window § Template 2](cheatsheet/sliding_window.md) | negatives in the array → prefix sum + hash map |
+| "longest / shortest contiguous subarray", "at most k distinct" | n ≤ 10⁵ | variable sliding window | [sliding_window § Template 2](cheatsheet/sliding_window.md#template-2-grow-then-shrink--the-while-invariant-) | an exact sum, `sum == k`, where values can be negative → prefix sum + hash map (LC 560) |
 
 - Pull the constraint ruler into it as a link. Merge the two copies into `complexity_cheatsheet.md` and leave `time_space_complexity.md` a pointer.
 - Fix the mis-filings and remove the duplicate sections.

@@ -172,7 +172,7 @@ right=3 'a'  window "ba"   best=2
 | **Heading** | `### Template N: <Pattern name> — LC <n>`, plus a `⭐` run when it is interview-critical. A pattern, not a topic ("Complement Lookup", not "Hash Table"), and the problem the template solves as written. |
 | **Recognise** | The *wording* in a problem statement that should make you reach for this, plus a **constraint cue** where one exists (n ≤ 20 → bitmask, n ≤ 10⁵ → n log n). Never restate the title. "Maximum path sum problems" under *Maximum Path Sum* teaches nothing. |
 | **Key point** | One or two lines, **before** the code: the reason this works, as a fact the code keeps true at every step (an invariant). "Use a hash map" is not a key point; "`seen` holds every number before index i, so one lookup answers *has `target − x` appeared?*" is. For DP, the five lines *state / recurrence / base / order / answer* replace it. |
-| **Template** | One canonical solution, **Python first, then Java**. Runnable, with real names, no `pass`, no `...` where the logic should be. Comments open with `# IDEA:`, then `# time = … , space = …` on the next line. |
+| **Template** | One canonical solution, **Python first, then Java**. Runnable, with real names, no `pass`, no `...` where the logic should be. Each block opens with `IDEA`, then `time = … , space = …` on the next line, in that language's comment syntax: `# IDEA:` / `# time =` in Python, `// IDEA:` / `// time =` in Java. |
 | **Complexity** | One bullet for time and one for space, each naming **the line or loop that sets it**. The code comment states the bound; this slot says why, which is what you say out loud in the interview. Amortised bounds (a nested loop that is still O(n)) are where it matters most. |
 | **Dry run** *(optional)* | A ` ```text ` state table on the smallest input that shows the non-obvious step. Required when a reader could not dry-run the template in their head. |
 | **Traps** | Each trap names **the input that springs it** and what goes wrong. "Forgetting to handle edge cases" is not a trap; "`[]` returns `None` instead of `0`" is. |
@@ -449,7 +449,7 @@ A trailing `⭐` run on a heading says how interview-critical that section is. T
 - **Bold** key terms and the card slot labels: `**Recognise**`, `**Key point**`, `**Complexity**`, `**Traps**`.
 - Category headers: `#### **Category Name**`
 - Code blocks: **always** tag the language: `python`, `java`, or `text` for ASCII traces, diagrams and program output. Never leave a bare ` ``` `.
-- Complexity: inside code, on the line right after `# IDEA:`, as `# time = O(...), space = O(...)`. The order is always the language label, then `IDEA`, then `time`.
+- Complexity: inside code, on the line right after `IDEA`, as `# time = O(...), space = O(...)` in Python and `// time = O(...), space = O(...)` in Java. The order is always the language label, then `IDEA`, then `time`.
 - Images: `<p align="center"><img src="../pic/filename.png"></p>`
 - Heading levels never skip: an `h2` is followed by `h3`, not `h4`.
 - State each LC number **once** per heading: `### Top K Frequent Elements — LC 347`, not `### Top K Frequent Elements (LC 347) — LC 347`.

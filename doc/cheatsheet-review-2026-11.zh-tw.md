@@ -235,7 +235,7 @@ repo 其實已經有答案：[`data/l3_core.json`](../data/l3_core.json) 是 L3 
 
 | 題目敘述中的訊號 | 約束提示 | Pattern | Card | 看起來像，其實不是 |
 |---|---|---|---|---|
-| 「contiguous subarray」、「at most k distinct」 | n ≤ 10⁵ | 可變長度滑動視窗 | [sliding_window § Template 2](cheatsheet/sliding_window.md) | 陣列有負數 → prefix sum + hash map |
+| 「最長 / 最短的 contiguous subarray」、「at most k distinct」 | n ≤ 10⁵ | 可變長度滑動視窗 | [sliding_window § Template 2](cheatsheet/sliding_window.md#template-2-grow-then-shrink--the-while-invariant-) | 條件是精確的總和 `sum == k`，且數值可能為負 → prefix sum + hash map（LC 560） |
 
 - 用連結把約束尺規接進來。兩份尺規合併到 `complexity_cheatsheet.md`，`time_space_complexity.md` 改成指標。
 - 修正歸錯類的題目，刪掉重複的段落。
