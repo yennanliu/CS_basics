@@ -326,7 +326,7 @@
 
 ---
 
-<!-- 5916e9eac1cd -->
+<!-- eb8ec6f94a87 -->
 ## 4) 距離與 LCA 模板
 
 這四份模板已經搬出這份表單。現在由 [tree_lca_distance.md](./tree_lca_distance.md)
@@ -334,10 +334,10 @@
 
 | 這一節原本放什麼 | 現在在哪裡 |
 |---|---|
-| 4.1) LCA 標準模板 — LC 236 | [LCA — LC 236](./tree_lca_distance.md#1-lowest-common-ancestor-lca--lc-236)，還多了 LC 865 / 1123 的最深節點變形 |
+| 4.1) LCA 標準模板 — LC 236 | [LCA — LC 236](./tree_lca_distance.md#template-1-lca-by-returned-presence--lc-236)，還多了 LC 865 / 1123 的最深節點變形 |
 | 4.2) 值比較模板 — LC 235 | 同一節 — LC 235 是同一份模板在 BST 上的捷徑 |
-| 4.3) 路徑距離模板 — LC 1740 | [Distance Between Nodes — LC 1740](./tree_lca_distance.md#3-distance-between-nodes--lc-1740) |
-| 4.4) 樹轉圖模板 — LC 863 | [Move Parent Pattern](./tree_lca_distance.md#2-move-parent-pattern---bidirectional-tree-traversal)，那是一般化的形式 — LC 863 和 LC 742 都是它的實例 |
+| 4.3) 路徑距離模板 — LC 1740 | [Distance Between Nodes — LC 1740](./tree_lca_distance.md#template-3-distance-between-nodes-via-lca--lc-1740) |
+| 4.4) 樹轉圖模板 — LC 863 | [Move Parent Pattern](./tree_lca_distance.md#template-2-parent-map--bfs--lc-863)，那是一般化的形式 — LC 863 和 LC 742 都是它的實例 |
 
 **從這裡該帶走的想法**：樹上每一個「距離」問題，骨子裡都是 LCA 問題，因為兩個節點之間
 唯一的路徑必定經過它們的最低共同祖先 — `dist(p, q) = depth(p) + depth(q) - 2·depth(lca)`。
@@ -490,7 +490,7 @@
 
 ---
 
-<!-- dc680b6201e4 -->
+<!-- e4a6087833c0 -->
 ## 總表：所有模板
 
 | 模板名稱 | 模式 | 時間 | 空間 | LeetCode 題目 |
@@ -513,10 +513,10 @@
 | **路徑狀態追蹤** | 追蹤路徑上的最大值 | O(n) | O(h) | LC 1448 |
 | **最長路徑** | 計算直徑 | O(n) | O(h) | LC 543 |
 | **同值路徑** | 同值路徑 | O(n) | O(h) | LC 687 |
-| **LCA 標準** → [tree_lca_distance.md](./tree_lca_distance.md#1-lowest-common-ancestor-lca--lc-236) | 找 LCA | O(n) | O(h) | LC 236 |
-| **值比較** → [tree_lca_distance.md](./tree_lca_distance.md#1-lowest-common-ancestor-lca--lc-236) | BST 上的 LCA | O(h) | O(1) | LC 235 |
-| **路徑距離** → [tree_lca_distance.md](./tree_lca_distance.md#3-distance-between-nodes--lc-1740) | 透過 LCA 算距離 | O(n) | O(h) | LC 1740 |
-| **樹轉圖** → [tree_lca_distance.md](./tree_lca_distance.md#2-move-parent-pattern---bidirectional-tree-traversal) | 為了查詢而轉換 | O(n) | O(n) | LC 863, 742 |
+| **LCA 標準** → [tree_lca_distance.md](./tree_lca_distance.md#template-1-lca-by-returned-presence--lc-236) | 找 LCA | O(n) | O(h) | LC 236 |
+| **值比較** → [tree_lca_distance.md](./tree_lca_distance.md#template-1-lca-by-returned-presence--lc-236) | BST 上的 LCA | O(h) | O(1) | LC 235 |
+| **路徑距離** → [tree_lca_distance.md](./tree_lca_distance.md#template-3-distance-between-nodes-via-lca--lc-1740) | 透過 LCA 算距離 | O(n) | O(h) | LC 1740 |
+| **樹轉圖** → [tree_lca_distance.md](./tree_lca_distance.md#template-2-parent-map--bfs--lc-863) | 為了查詢而轉換 | O(n) | O(n) | LC 863, 742 |
 | **最小深度（遞迴）** | 獨子守衛 | O(n) | O(h) | LC 111 |
 | **深度最深的最左值** | 左下角的值 | O(n) | O(w) | LC 513 |
 | **建樹** → [tree_construction.md](./tree_construction.md#2-construct-binary-tree-from-preorder-and-inorder-traversal--lc-105) | 從陣列建樹 | O(n) | O(n) | LC 105, 106 |

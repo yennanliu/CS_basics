@@ -1312,10 +1312,10 @@ owns them and teaches each one at several times the length this sheet had room f
 
 | What this section used to hold | Where it lives now |
 |---|---|
-| 4.1) LCA Standard Template — LC 236 | [LCA — LC 236](./tree_lca_distance.md#1-lowest-common-ancestor-lca--lc-236), plus the LC 865 / 1123 deepest-nodes variant |
+| 4.1) LCA Standard Template — LC 236 | [LCA — LC 236](./tree_lca_distance.md#template-1-lca-by-returned-presence--lc-236), plus the LC 865 / 1123 deepest-nodes variant |
 | 4.2) Value Comparison Template — LC 235 | the same section — LC 235 is the BST shortcut on the same template |
-| 4.3) Path Distance Template — LC 1740 | [Distance Between Nodes — LC 1740](./tree_lca_distance.md#3-distance-between-nodes--lc-1740) |
-| 4.4) Tree to Graph Template — LC 863 | [Move Parent Pattern](./tree_lca_distance.md#2-move-parent-pattern---bidirectional-tree-traversal), which is the general form — LC 863 and LC 742 are both instances |
+| 4.3) Path Distance Template — LC 1740 | [Distance Between Nodes — LC 1740](./tree_lca_distance.md#template-3-distance-between-nodes-via-lca--lc-1740) |
+| 4.4) Tree to Graph Template — LC 863 | [Move Parent Pattern](./tree_lca_distance.md#template-2-parent-map--bfs--lc-863), which is the general form — LC 863 and LC 742 are both instances |
 
 **The idea worth carrying away from here**: every "distance" question on a tree is an LCA
 question in disguise, because the only path between two nodes runs through their lowest common
@@ -1826,10 +1826,10 @@ def count_nodes(root):
 | **Path State Tracking** | Track max in path | O(n) | O(h) | LC 1448 |
 | **Longest Path** | Diameter calculation | O(n) | O(h) | LC 543 |
 | **Same Value Path** | Univalue path | O(n) | O(h) | LC 687 |
-| **LCA Standard** → [tree_lca_distance.md](./tree_lca_distance.md#1-lowest-common-ancestor-lca--lc-236) | Find LCA | O(n) | O(h) | LC 236 |
-| **Value Comparison** → [tree_lca_distance.md](./tree_lca_distance.md#1-lowest-common-ancestor-lca--lc-236) | BST LCA | O(h) | O(1) | LC 235 |
-| **Path Distance** → [tree_lca_distance.md](./tree_lca_distance.md#3-distance-between-nodes--lc-1740) | Distance via LCA | O(n) | O(h) | LC 1740 |
-| **Tree to Graph** → [tree_lca_distance.md](./tree_lca_distance.md#2-move-parent-pattern---bidirectional-tree-traversal) | Convert for queries | O(n) | O(n) | LC 863, 742 |
+| **LCA Standard** → [tree_lca_distance.md](./tree_lca_distance.md#template-1-lca-by-returned-presence--lc-236) | Find LCA | O(n) | O(h) | LC 236 |
+| **Value Comparison** → [tree_lca_distance.md](./tree_lca_distance.md#template-1-lca-by-returned-presence--lc-236) | BST LCA | O(h) | O(1) | LC 235 |
+| **Path Distance** → [tree_lca_distance.md](./tree_lca_distance.md#template-3-distance-between-nodes-via-lca--lc-1740) | Distance via LCA | O(n) | O(h) | LC 1740 |
+| **Tree to Graph** → [tree_lca_distance.md](./tree_lca_distance.md#template-2-parent-map--bfs--lc-863) | Convert for queries | O(n) | O(n) | LC 863, 742 |
 | **Min Depth (recursive)** | Single-child guard | O(n) | O(h) | LC 111 |
 | **Leftmost at Depth** | Bottom-left value | O(n) | O(w) | LC 513 |
 | **Tree Building** → [tree_construction.md](./tree_construction.md#2-construct-binary-tree-from-preorder-and-inorder-traversal--lc-105) | Build from arrays | O(n) | O(n) | LC 105, 106 |

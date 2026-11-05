@@ -55,6 +55,24 @@ Trees can be efficiently represented using arrays, especially for complete binar
 - [Array Representation Guide](https://www.prepbytes.com/blog/tree/array-representation-of-binary-tree/)
 - [GeeksforGeeks Implementation](https://www.geeksforgeeks.org/binary-tree-array-implementation/)
 
+## Recognition
+
+Most tree problems route **out** of this sheet: it owns the traversal *choice* and three
+techniques no per-pattern template covers. Constraint cues come from the
+[constraint ruler](./complexity_cheatsheet.md).
+
+| Signal in the statement | Constraint cue | Reach for | Not this if |
+|---|---|---|---|
+| "the answer for **every** node as the root", "sum of distances from each node" | n ≤ 3 · 10⁴ → O(n), not n DFS runs | [Template 3](#template-3-re-rooting-dp--lc-834) re-rooting DP | one best root ("minimum height trees", LC 310) → leaf trimming, [topology_sorting § Template 7](./topology_sorting.md#template-7-tree-centroid-finding-leaf-trimming-for-undirected-trees-) |
+| "k-th ancestor", many LCA queries on a tree that never changes | n, q ≤ 5 · 10⁴ → O(log n) per query | [Template 2](#template-2-binary-lifting--lc-1483-) binary lifting | a single LCA query → one O(n) DFS, [tree_lca_distance.md](./tree_lca_distance.md) |
+| "O(1) extra space", "without recursion or a stack", "flatten in place" | a follow-up, rarely the first ask | [Template 1](#template-1-morris-in-order-traversal--lc-94) Morris threading | the tree may not be modified even briefly (shared, read-only) → iterative stack, [tree2 1.2)](./tree2.md#12-inorder-template--lc-94-) |
+| a path, a depth or a running max the parent must hand down | nodes ≤ 10⁵ → one O(n) pass | [0-3) top-down](#0-3-top-down-vs-bottom-up-dfs--two-strategies-for-tree-problems-) | the node needs both children's answers → bottom-up |
+| "height", "balanced", "diameter" — needs both children first | nodes ≤ 10⁴ | [0-3) bottom-up](#0-3-top-down-vs-bottom-up-dfs--two-strategies-for-tree-problems-), then [binary_tree.md](./binary_tree.md) | the value comes from above (depth) → top-down |
+| "level by level", "right side view", "minimum depth" | nodes ≤ 10⁴ | BFS, [tree2 1.4)](./tree2.md#14-bfs-template-level-order--lc-102-) | |
+| "root-to-leaf path", "lowest common ancestor", "distance between nodes" | nodes ≤ 10⁵ | [tree_lca_distance.md](./tree_lca_distance.md) | the tree is a BST → walk by value, [bst.md](./bst.md) |
+| "valid BST", "k-th smallest" | nodes ≤ 10⁴ | in-order, [bst.md](./bst.md) | an unordered tree → no sorted order to lean on |
+| "serialize / deserialize", "duplicate subtrees" | nodes ≤ 10⁴ | [tree_codec.md](./tree_codec.md) | |
+
 ## 0) Core Concepts
 
 ### 0-1) Tree Types Classification
@@ -414,52 +432,6 @@ private void getLeafSeq(TreeNode root, List<Integer> list) {
 
 ## 1) Tree Templates & Algorithms
 
-### 1.1) Universal Tree Template ⭐⭐⭐⭐⭐
-
-**Core Principle**: Tree problems are naturally recursive - solve for current node using solutions from subtrees.
-
-```python
-# Universal Tree Template
-def solve_tree_problem(root, params):
-    # Base case
-    if not root:
-        return base_case_value
-    
-    # Process current node (preorder position)
-    process_current_node(root, params)
-    
-    # Recursively solve subtrees
-    left_result = solve_tree_problem(root.left, updated_params)
-    right_result = solve_tree_problem(root.right, updated_params)
-    
-    # Combine results (postorder position)
-    result = combine_results(root, left_result, right_result)
-    
-    return result
-```
-
-```java
-// Java Universal Tree Template
-public ResultType solveTreeProblem(TreeNode root, ParamType params) {
-    // Base case
-    if (root == null) {
-        return defaultValue;
-    }
-    
-    // Preorder: Process current node
-    processCurrentNode(root, params);
-    
-    // Recursive calls
-    ResultType leftResult = solveTreeProblem(root.left, updatedParams);
-    ResultType rightResult = solveTreeProblem(root.right, updatedParams);
-    
-    // Postorder: Combine results
-    ResultType result = combineResults(root.val, leftResult, rightResult);
-    
-    return result;
-}
-```
-
 ### 1.2) Template Selection Guide ⭐⭐⭐⭐
 
 | Pattern | Template | When to Use | Example Problems |
@@ -522,67 +494,80 @@ per-pattern templates, so they stay here rather than in the catalogue:
 - **Morris traversal** — below.
 
 
-#### **Template 5: Morris Traversal (O(1) Space Tree Traversal)**
-*In-order traversal with O(1) space using threaded binary tree*
+#### Template 1: Morris In-order Traversal — LC 94
 
-**Core Concept:** Morris Traversal uses each node's empty right pointer as a temporary thread back to its in-order successor, enabling O(n) time, O(1) space traversal without a recursion stack.
+**Recognise** — an in-order (or pre-order) traversal with the follow-up "can you do it in
+**O(1) extra space**?" or "without recursion **and** without a stack". The time bound stays
+O(n); only the O(h) stack goes. Nodes ≤ 10⁴, so this is about the follow-up, not about speed.
+
+**Key point** — a node with a left child is visited **twice**. The first time, the rightmost
+node of its left subtree (its in-order predecessor) has `right == None`, so point it back at
+the node and go left. The second time, that thread is how you got back, so cut it and emit
+the node. Every thread made is unmade, so the tree ends exactly as it started.
 
 ```python
-# In-order Morris Traversal — O(n) time, O(1) space
-def inorderMorris(root):
+# python
+# LC 94 - Binary Tree Inorder Traversal
+# IDEA: thread each node's in-order predecessor back to it; follow the thread up instead of popping a stack
+# time = O(n), space = O(1)   output list not counted
+def inorderTraversal(root):
     result = []
     curr = root
     while curr:
-        if not curr.left:
+        if curr.left is None:
+            result.append(curr.val)          # nothing on the left: emit, go right
+            curr = curr.right
+            continue
+        pred = curr.left                     # find the in-order predecessor
+        while pred.right is not None and pred.right is not curr:
+            pred = pred.right
+        if pred.right is None:               # first visit: make the thread, go left
+            pred.right = curr
+            curr = curr.left
+        else:                                # second visit: we came back up the thread
+            pred.right = None                # restore the tree
             result.append(curr.val)
             curr = curr.right
-        else:
-            # Find in-order predecessor
-            pred = curr.left
-            while pred.right and pred.right is not curr:
-                pred = pred.right
-            if not pred.right:          # Thread: set predecessor → curr
-                pred.right = curr
-                curr = curr.left
-            else:                        # Unthread: restore tree
-                pred.right = None
-                result.append(curr.val)
-                curr = curr.right
     return result
-# Pre/post-order variants follow the same thread-manipulation pattern.
 ```
 
 ```java
-// Java — Morris In-Order (LC 94)
-// time = O(N), space = O(1)
+// java
+// LC 94 - Binary Tree Inorder Traversal
+// IDEA: thread each node's in-order predecessor back to it; follow the thread up instead of popping a stack
+// time = O(n), space = O(1)   output list not counted
 public List<Integer> inorderTraversal(TreeNode root) {
     List<Integer> result = new ArrayList<>();
-    TreeNode current = root;
-    while (current != null) {
-        if (current.left == null) {
-            result.add(current.val);
-            current = current.right;
-        } else {
-            TreeNode pred = current.left;
-            while (pred.right != null && pred.right != current)
-                pred = pred.right;
-            if (pred.right == null) {   // first visit: create thread
-                pred.right = current;
-                current = current.left;
-            } else {                    // second visit: unthread + process
-                pred.right = null;
-                result.add(current.val);
-                current = current.right;
-            }
+    TreeNode curr = root;
+    while (curr != null) {
+        if (curr.left == null) {
+            result.add(curr.val);            // nothing on the left: emit, go right
+            curr = curr.right;
+            continue;
+        }
+        TreeNode pred = curr.left;           // find the in-order predecessor
+        while (pred.right != null && pred.right != curr) {
+            pred = pred.right;
+        }
+        if (pred.right == null) {            // first visit: make the thread, go left
+            pred.right = curr;
+            curr = curr.left;
+        } else {                             // second visit: we came back up the thread
+            pred.right = null;               // restore the tree
+            result.add(curr.val);
+            curr = curr.right;
         }
     }
     return result;
 }
 ```
 
-**Performance:** O(n) time, O(1) space. Use when interviewer asks for O(1) space traversal.
-**Pre-order variant:** process node on *first* visit (when creating thread) instead of second.
-**Post-order:** requires reversing right spines — complex, rarely asked; prefer iterative stack.
+**Complexity**
+- **Time O(n)**: the inner `while pred.right ...` looks nested, but it walks each left
+  subtree's right spine exactly twice (once to thread, once to unthread), and the spines of
+  different nodes do not share edges, so all the walks together cover each edge at most twice.
+- **Space O(1)**: `curr` and `pred` are the only state. The threads live in `right` pointers
+  that were `None` anyway, which is why there is no stack.
 
 | Traversal Method | Time | Space | Modifies Tree |
 |-----------------|------|-------|---------------|
@@ -590,9 +575,37 @@ public List<Integer> inorderTraversal(TreeNode root) {
 | Iterative Stack | O(n) | O(h) | No |
 | **Morris** | O(n) | **O(1)** | Temporarily (restored) |
 
+**Dry run**
+
+```text
+tree   2          curr  pred   action                       out
+      / \         2     1      1.right = 2, go left         []
+     1   3        1     -      no left: emit, go right (2)  [1]
+                  2     1      1.right is 2: cut, emit       [1, 2]
+                  3     -      no left: emit, go right       [1, 2, 3]
+```
+
+**Traps**
+- `while pred.right:` without `is not curr` follows the thread back into `curr` and loops for
+  ever on any node with a left child: `[2, 1, 3]` hangs.
+- Emitting on the **first** visit gives pre-order, not in-order: `[2, 1, 3]` returns
+  `[2, 1, 3]` instead of `[1, 2, 3]`. That is the whole pre-order variant (LC 144), so say
+  which one you are writing.
+- Returning early (say, at the k-th smallest) leaves threads in place. LC 230 with k = 1 on
+  `[2, 1, 3]` leaves `1.right == 2`, a cycle the caller can loop on. Finish the walk, or
+  unthread before returning.
+- Post-order needs the right spines reversed. It is rarely asked; use the iterative stack.
+
+**Not this if** — the tree is shared or read-only while you walk it (another thread reads it,
+or the interviewer says "do not modify the input"). Morris writes to the tree, even if only
+briefly. Use the iterative stack, [tree2 1.2)](./tree2.md#12-inorder-template--lc-94-).
+
+**Drill** — LC 94 · LC 144 *(emit on the first visit)* · LC 114 *(rewire, below)* ·
+LC 99 *(recover a BST in O(1) space: the two out-of-order nodes show up in the Morris order)*
+
 ##### Morris **threading family** — temporary thread vs. permanent rewire
 
-Both the Morris traversal above and the O(1) **flatten** (LC 114) share the **same core step**: from the current node, find the **rightmost node of its left subtree** (the in-order predecessor) and use its empty `right` pointer to "thread" somewhere. They differ only in what they do with that thread:
+Both the Morris traversal in Template 1 and the O(1) **flatten** (LC 114) share the **same core step**: from the current node, find the **rightmost node of its left subtree** (the in-order predecessor) and use its empty `right` pointer to "thread" somewhere. They differ only in what they do with that thread:
 
 | Variant | Thread points to | Restored? | Purpose | Example |
 |---------|------------------|-----------|---------|---------|
@@ -600,7 +613,9 @@ Both the Morris traversal above and the O(1) **flatten** (LC 114) share the **sa
 | **Morris rewire (flatten)** | original right subtree (`curr.right`) | ❌ no (permanent) | Restructure tree in-place | LC 114 |
 
 ```python
-# Morris REWIRE pattern — permanent threading (LC 114 Flatten Binary Tree to Linked List)
+# python
+# LC 114 - Flatten Binary Tree to Linked List
+# IDEA: Morris REWIRE - splice the right subtree onto the left subtree's rightmost node, permanently
 # time = O(n), space = O(1)
 def flatten(root):
     curr = root
@@ -781,6 +796,308 @@ Problem Analysis Decision Tree:
    └── No: Use any suitable approach
 ```
 
+## Advanced Tree Techniques — Binary Lifting and Re-rooting
+
+Two techniques that answer *many* questions about one fixed tree faster than one DFS per
+question. Both are rarely the first thing an L3 interviewer asks; both are the standard answer
+when the follow-up is "now do it for every node" or "now answer 10⁵ queries".
+
+### Template 2: Binary Lifting — LC 1483 ⭐⭐⭐
+
+**Recognise** — "the **k-th ancestor** of a node", or LCA / path questions asked **many times**
+on a tree that does not change. n, q ≤ 5 · 10⁴, so O(n) per query (walking up one parent at a
+time) is 2.5 · 10⁹ steps; O(log n) per query is what fits.
+
+**Key point** — `up[j][v]` is the 2^j-th ancestor of `v`, and `up[j][v] = up[j-1][up[j-1][v]]`
+because 2^j = 2^(j-1) + 2^(j-1). Any k is a sum of distinct powers of two, so jumping once
+per set bit of k lands exactly k levels up.
+
+```python
+# python
+# LC 1483 - Kth Ancestor of a Tree Node
+# IDEA: up[j][v] = the 2^j-th ancestor of v; any k is a sum of powers of two, so jump once per set bit
+# time = O(n log n) build, O(log n) per query; space = O(n log n)
+from collections import deque
+
+class TreeAncestor:
+    def __init__(self, n, parent):
+        self.LOG = max(1, n.bit_length())
+        self.up = [parent[:]]                    # up[0][v] = direct parent, -1 above the root
+        for j in range(1, self.LOG):
+            prev = self.up[j - 1]
+            row = [-1] * n
+            for v in range(n):
+                mid = prev[v]
+                if mid != -1:
+                    row[v] = prev[mid]           # 2^j = 2^(j-1) + 2^(j-1)
+            self.up.append(row)
+        # depth of every node, for lca(); parent[i] is not guaranteed < i, so BFS from the root
+        children = [[] for _ in range(n)]
+        root = 0
+        for v, p in enumerate(parent):
+            if p == -1:
+                root = v
+            else:
+                children[p].append(v)
+        self.depth = [0] * n
+        queue = deque([root])
+        while queue:
+            u = queue.popleft()
+            for c in children[u]:
+                self.depth[c] = self.depth[u] + 1
+                queue.append(c)
+
+    def getKthAncestor(self, node, k):
+        j = 0
+        while k and node != -1:
+            if k & 1:
+                node = self.up[j][node] if j < self.LOG else -1
+            k >>= 1
+            j += 1
+        return node
+
+    def lca(self, u, v):
+        if self.depth[u] < self.depth[v]:
+            u, v = v, u
+        u = self.getKthAncestor(u, self.depth[u] - self.depth[v])   # same depth first
+        if u == v:
+            return u
+        for j in range(self.LOG - 1, -1, -1):    # largest jumps first, never onto a common node
+            if self.up[j][u] != self.up[j][v]:
+                u = self.up[j][u]
+                v = self.up[j][v]
+        return self.up[0][u]
+```
+
+```java
+// java
+// LC 1483 - Kth Ancestor of a Tree Node
+// IDEA: up[j][v] = the 2^j-th ancestor of v; any k is a sum of powers of two, so jump once per set bit
+// time = O(n log n) build, O(log n) per query; space = O(n log n)
+class TreeAncestor {
+    private final int LOG;
+    private final int[][] up;
+
+    public TreeAncestor(int n, int[] parent) {
+        LOG = Math.max(1, 32 - Integer.numberOfLeadingZeros(n));   // bit length of n
+        up = new int[LOG][n];
+        up[0] = parent.clone();                  // up[0][v] = direct parent, -1 above the root
+        for (int j = 1; j < LOG; j++) {
+            for (int v = 0; v < n; v++) {
+                int mid = up[j - 1][v];
+                up[j][v] = (mid == -1) ? -1 : up[j - 1][mid];   // 2^j = 2^(j-1) + 2^(j-1)
+            }
+        }
+    }
+
+    public int getKthAncestor(int node, int k) {
+        for (int j = 0; k > 0 && node != -1; j++, k >>= 1) {
+            if ((k & 1) == 1) {
+                node = (j < LOG) ? up[j][node] : -1;
+            }
+        }
+        return node;
+    }
+}
+```
+
+**Complexity**
+- **Time O(n log n) to build, O(log n) per query**: the double loop `for j … for v …` fills
+  `LOG × n` cells, one O(1) lookup each. A query jumps once per bit of `k`, at most `LOG` times;
+  `lca` does one such jump to equalise depths and one top-down sweep over `j`.
+- **Space O(n log n)**: the `up` table itself, `LOG` rows of `n`.
+
+**Dry run**
+
+```text
+parent = [-1, 0, 0, 1, 1, 2, 2]          getKthAncestor(6, 3):  k = 3 = 0b11
+        0                                 bit 0 set: node = up[0][6] = 2
+       / \                                bit 1 set: node = up[1][2] = -1  (2's grandparent)
+      1   2          up[1] = [-1,-1,-1,0,0,0,0]
+     / \ / \                              -> -1: node 6 has only 2 ancestors
+    3  4 5  6
+```
+
+**Traps**
+- Sizing the table by `log2(n)` rounded down misses the top bit: with `n = 5`, `k = 4` on the
+  chain `[-1, 0, 1, 2, 3]` needs `up[2]`, which `int(log2(5)) = 2` rows do not have. Use the bit
+  length of `n`.
+- Not stopping at `-1`: indexing `up[j][-1]` in Python silently reads the **last** node's
+  ancestor and returns a wrong node instead of `-1`. Guard every jump.
+- In `lca`, sweeping `j` upward (small jumps first) can overshoot the meeting point and is
+  wrong; sweep from the largest jump down, and only jump when the two ancestors **differ**.
+- `parent[i] < i` is not promised, so depth cannot be filled in index order; BFS from the root.
+
+**Not this if** — there is only one query. A single O(n) DFS answers one LCA
+([tree_lca_distance.md](./tree_lca_distance.md)) and building the table costs more than it saves.
+
+**Drill** — LC 1483 · LC 236 *(the same LCA, asked q times)* · LC 2836 *(jump k steps along a
+functional graph)* · LC 2846 *(per-query path counts: lift a count table with the ancestors)*
+
+### Template 3: Re-rooting DP — LC 834
+
+**Recognise** — "return an array where `answer[i]` is … **when the tree is rooted at i**" or "the
+sum of distances from **each** node to all others". n ≤ 3 · 10⁴, so one DFS per root (O(n²),
+9 · 10⁸) is too slow; two passes in total is the target.
+
+**Key point** — rooting at 0 gives `size[v]` (nodes under `v`) and `ans[0]`. Moving the root across
+one edge `u → v` changes every distance by exactly ±1: the `size[v]` nodes on `v`'s side get 1
+closer, the other `n − size[v]` get 1 farther. So `ans[v] = ans[u] − size[v] + (n − size[v])`,
+an O(1) update per edge.
+
+```python
+# python
+# IDEA: two passes; the second moves the root across each edge and adjusts the answer by subtree size
+# time = O(n), space = O(n)
+# pass 1 (children first) roots the tree at 0: size[u] = nodes under u, ans[0] = sum of depths.
+# pass 2 (parents first) moves the root across edge u -> v: the size[v] nodes under v get 1 closer,
+# the other n - size[v] get 1 farther, so ans[v] = ans[u] - size[v] + (n - size[v]).
+# LC 834 - Sum of Distances in Tree
+def sumOfDistancesInTree(n, edges):
+    graph = [[] for _ in range(n)]
+    for u, v in edges:
+        graph[u].append(v)
+        graph[v].append(u)
+
+    # one iterative DFS from 0 records a parents-before-children order (no recursion limit)
+    order, parent = [], [-1] * n
+    seen = [False] * n
+    seen[0] = True
+    stack = [0]
+    while stack:
+        u = stack.pop()
+        order.append(u)
+        for v in graph[u]:
+            if not seen[v]:
+                seen[v] = True
+                parent[v] = u
+                stack.append(v)
+
+    size = [1] * n
+    ans = [0] * n
+    for u in reversed(order):                    # pass 1: children before parents
+        for v in graph[u]:
+            if v != parent[u]:
+                size[u] += size[v]
+                ans[u] += ans[v] + size[v]       # every node under v is 1 deeper from u
+
+    for u in order:                              # pass 2: parents before children
+        for v in graph[u]:
+            if v != parent[u]:
+                ans[v] = ans[u] - size[v] + (n - size[v])
+    return ans
+```
+
+```java
+// java
+// IDEA: two passes; the second re-roots across each edge and adjusts the answer by subtree size
+// time = O(n), space = O(n)
+// pass 1 roots the tree at 0 (size[], ans[0]); pass 2: ans[v] = ans[u] - size[v] + (n - size[v])
+// LC 834 - Sum of Distances in Tree
+public int[] sumOfDistancesInTree(int n, int[][] edges) {
+    List<List<Integer>> graph = new ArrayList<>();
+    for (int i = 0; i < n; i++) {
+        graph.add(new ArrayList<>());
+    }
+    for (int[] e : edges) {
+        graph.get(e[0]).add(e[1]);
+        graph.get(e[1]).add(e[0]);
+    }
+
+    // iterative DFS from 0: a parents-before-children order, no recursion depth limit
+    int[] order = new int[n];
+    int[] parent = new int[n];
+    Arrays.fill(parent, -1);
+    boolean[] seen = new boolean[n];
+    Deque<Integer> stack = new ArrayDeque<>();
+    stack.push(0);
+    seen[0] = true;
+    int idx = 0;
+    while (!stack.isEmpty()) {
+        int u = stack.pop();
+        order[idx++] = u;
+        for (int v : graph.get(u)) {
+            if (!seen[v]) {
+                seen[v] = true;
+                parent[v] = u;
+                stack.push(v);
+            }
+        }
+    }
+
+    int[] size = new int[n];
+    int[] ans = new int[n];
+    Arrays.fill(size, 1);
+    for (int i = n - 1; i >= 0; i--) {           // pass 1: children before parents
+        int u = order[i];
+        for (int v : graph.get(u)) {
+            if (v != parent[u]) {
+                size[u] += size[v];
+                ans[u] += ans[v] + size[v];      // every node under v is 1 deeper from u
+            }
+        }
+    }
+    for (int i = 0; i < n; i++) {                // pass 2: parents before children
+        int u = order[i];
+        for (int v : graph.get(u)) {
+            if (v != parent[u]) {
+                ans[v] = ans[u] - size[v] + (n - size[v]);
+            }
+        }
+    }
+    return ans;
+}
+```
+
+**Complexity**
+- **Time O(n)**: the DFS and both passes visit each node once and each edge twice (once from each
+  end, filtered by `v != parent[u]`). The re-root step is one O(1) formula per edge.
+- **Space O(n)**: `graph`, `order`, `parent`, `size` and `ans` are each O(n); the explicit `stack`
+  replaces the recursion stack, which on a 3 · 10⁴-node path would overflow Python's limit.
+
+**Dry run**
+
+```text
+edges 0-1, 0-2, 2-3, 2-4, 2-5        pass 1 (root 0): size = [6,1,4,1,1,1], ans[0] = 1+1+2+2+2 = 8
+      0                              pass 2:
+     / \                               ans[1] = 8 - 1 + (6 - 1) = 12
+    1   2                              ans[2] = 8 - 4 + (6 - 4) = 6
+      / | \                             ans[3] = 6 - 1 + (6 - 1) = 10   (same for 4, 5)
+     3  4  5                         -> [8, 12, 6, 10, 10, 10]
+```
+
+**Traps**
+- Running pass 2 in the same order as pass 1 (children first) reads `ans[u]` before it has been
+  re-rooted: `ans[3]` would be computed from the pass-1 `ans[2] = 3`, giving 7 instead of 10.
+  Pass 1 is children-first, pass 2 is parents-first.
+- Only `ans[0]` is a full answer after pass 1; every other `ans[u]` is a subtree sum. Reading
+  `ans[2]` there gives 3, not 6.
+- Recursive DFS on a path of 3 · 10⁴ nodes hits Python's recursion limit (1000 by default);
+  record the order iteratively, as above.
+- An undirected edge list has no parent/child direction, so every neighbour loop needs the
+  `v != parent[u]` filter, or the parent is counted as a child.
+
+**Not this if** — the question wants **one** best root, not a value for every root. "Minimum
+height trees" (LC 310) peels leaves layer by layer until one or two centres remain:
+[topology_sorting § Template 7](./topology_sorting.md#template-7-tree-centroid-finding-leaf-trimming-for-undirected-trees-).
+
+**Drill** — LC 834 · LC 2581 *(count the roots that satisfy ≥ k guesses: re-root a guess count)* ·
+LC 2858 *(edge reversals: re-root a count of edges pointing the wrong way)* ·
+LC 3241 *(time to mark all nodes: re-root the top two child depths)*
+
+### Tree Serialization / Deserialization
+
+LC 297 lives in [tree_codec.md](./tree_codec.md): the pre-order + null-marker codec (Python and
+Java), the parenthesis format (LC 606 / 536) and the depth-prefix format (LC 1028).
+
+## Drill Path
+
+| Stage | Problems (easy → hard) | What it adds |
+|---|---|---|
+| **Core** ⭐ | LC 104 ⭐ · LC 102 ⭐ · LC 297 ⭐ | the traversal choice once each: bottom-up and top-down, level-order, pre-order with null markers |
+| **Practice** | LC 872 · LC 94 · LC 114 · LC 1483 | pre-order leaf collection; Morris threading and rewiring; binary lifting |
+| **Stretch** | LC 99 · LC 834 · LC 2581 | Morris on a broken BST; re-rooting DP, then re-rooting a count |
+
 ## 3) Summary & Quick Reference
 
 ### 3.1) Tree Algorithm Complexity Summary
@@ -804,33 +1121,8 @@ Problem Analysis Decision Tree:
 
 ### 3.3) Problem-Solving Templates
 
-#### **Path Tracking Template**
-```python
-def solve_path_problem(root, target):
-    def dfs(node, current_path, current_sum):
-        if not node:
-            return
-        
-        # Add current node to path
-        current_path.append(node.val)
-        current_sum += node.val
-        
-        # Check if we found target
-        if not node.left and not node.right:  # Leaf node
-            if current_sum == target:
-                result.append(current_path[:])  # Add copy of path
-        
-        # Recurse to children
-        dfs(node.left, current_path, current_sum)
-        dfs(node.right, current_path, current_sum)
-        
-        # Backtrack
-        current_path.pop()
-    
-    result = []
-    dfs(root, [], 0)
-    return result
-```
+The root-to-leaf path template (pre-order, append, recurse, pop) is a pattern card in
+[tree_lca_distance.md](./tree_lca_distance.md), which owns every path problem in this family.
 
 ### 3.4) Common Patterns & Tricks
 
@@ -908,120 +1200,3 @@ class Solution:
 - **Tries**: Prefix trees for string operations  
 - **Segment Trees**: For range query problems
 - **Graph Algorithms**: Trees are special cases of graphs
-
----
-
-## Advanced Tree Techniques — Binary Lifting, Re-rooting, Morris Traversal
-
-### Binary Lifting — LCA in O(log n) per Query ⭐⭐⭐
-
-```python
-import math
-
-def build_binary_lifting(root, n):
-    """Preprocess tree for O(log n) LCA queries."""
-    LOG = max(1, int(math.log2(n)) + 1)
-    parent = [[-1] * n for _ in range(LOG)]
-    depth = [0] * n
-
-    # BFS to set parent[0] and depth
-    from collections import deque
-    queue = deque([root.val])
-    visited = {root.val}
-    # ... (wire up parent[0][v] = direct parent of v)
-
-    # Fill sparse table: parent[k][v] = 2^k-th ancestor of v
-    for k in range(1, LOG):
-        for v in range(n):
-            if parent[k-1][v] != -1:
-                parent[k][v] = parent[k-1][parent[k-1][v]]
-    return parent, depth
-
-def lca(u, v, parent, depth, LOG):
-    # Bring u and v to the same depth
-    if depth[u] < depth[v]: u, v = v, u
-    diff = depth[u] - depth[v]
-    for k in range(LOG):
-        if (diff >> k) & 1:
-            u = parent[k][u]
-    if u == v: return u
-    # Move both up until they meet
-    for k in range(LOG - 1, -1, -1):
-        if parent[k][u] != parent[k][v]:
-            u = parent[k][u]; v = parent[k][v]
-    return parent[0][u]
-```
-
-**Time**: O(n log n) preprocessing, O(log n) per LCA query.
-**Use for**: LC 236 (LCA) when query count is large, path sum between any two nodes.
-
-### Re-rooting DP — Answer for Every Root
-
-```python
-# python
-# IDEA: two DFS passes; the second moves the root across each edge and adjusts the answer by subtree size
-# time = O(n), space = O(n)
-# DFS 1 (post-order) roots the tree at 0: size[u] = nodes in u's subtree, ans[0] = sum of depths.
-# DFS 2 (pre-order) moves the root across edge u -> v: the size[v] nodes under v get 1 closer and
-# the other n - size[v] get 1 farther, so ans[v] = ans[u] - size[v] + (n - size[v]).
-# (LC 310 Minimum Height Trees looks similar but is leaf trimming, see topology_sorting.md:
-#  it never needs a per-root value.)
-# LC 834 - Sum of Distances in Tree
-def sumOfDistancesInTree(n, edges):
-    from collections import defaultdict
-    graph = defaultdict(list)
-    for u, v in edges:
-        graph[u].append(v)
-        graph[v].append(u)
-
-    size = [1] * n
-    ans = [0] * n
-
-    # iterative DFS order from root 0, with parents (avoids recursion limits)
-    order, parent = [], [-1] * n
-    stack, seen = [0], [False] * n
-    seen[0] = True
-    while stack:
-        u = stack.pop()
-        order.append(u)
-        for v in graph[u]:
-            if not seen[v]:
-                seen[v] = True
-                parent[v] = u
-                stack.append(v)
-
-    # DFS 1: children before parents
-    for u in reversed(order):
-        for v in graph[u]:
-            if v != parent[u]:
-                size[u] += size[v]
-                ans[u] += ans[v] + size[v]   # each node under v is 1 deeper from u
-
-    # DFS 2: parents before children - re-root from u to v
-    for u in order:
-        for v in graph[u]:
-            if v != parent[u]:
-                ans[v] = ans[u] - size[v] + (n - size[v])
-    return ans
-```
-
-### Tree Serialization / Deserialization — LC 297
-
-See [tree_codec.md](./tree_codec.md) for the pre-order + null-marker codec (Python and Java), the parenthesis format (LC 606 / 536) and the depth-prefix format (LC 1028).
-
-### Morris Traversal (O(1) Space) — Compact Reference
-
-See the full In-order Morris template (Python + Java) in [Template 5: Morris Traversal](#template-5-morris-traversal-o1-space-tree-traversal) above. Key idea: thread each node's empty `right` pointer to its in-order successor, then unthread on the second visit — O(n) time, O(1) space. Pre/post-order variants follow the same threading.
-
-### Interview tips — trees
-| Signal | Pattern |
-|--------|---------|
-| "diameter / longest path" | Post-order: return height, track max diameter |
-| "lowest common ancestor" | Recursive: if root is one of nodes, return root |
-| "LCA with many queries" | Binary lifting (sparse table) |
-| "answer for each node as root" | Re-rooting DP (2 DFS) |
-| "serialize/deserialize tree" | Pre-order DFS with null markers |
-| "validate BST" | In-order should be strictly increasing |
-| "balanced BST from sorted array" | Mid-point recursion |
-| "O(1) space traversal" | Morris threading |
-| "path sum between any two nodes" | Post-order: track max path through each node |

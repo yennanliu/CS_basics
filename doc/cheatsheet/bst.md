@@ -114,6 +114,24 @@ boolean isSameTree(TreeNode root1, TreeNode root2){
 
 > The Python treatment of LC 100 lives in [tree_examples.md](./tree_examples.md).
 
+## Recognition
+
+The constraint cues come from the ruler in [complexity_cheatsheet.md](./complexity_cheatsheet.md).
+Every row assumes the statement says **binary search tree**; without that word, none of these
+cards apply.
+
+| Signal in the statement | Constraint cue | Reach for | Not this if |
+|---|---|---|---|
+| "search / find / closest value in a BST" | O(h) expected | [Template 1](#template-1-descend-by-comparison--lc-700) descend by comparison | the tree is unordered → full DFS ([binary_tree.md](./binary_tree.md)) |
+| "insert a value and return the root" | | [Template 2](#template-2-insert-at-the-null-leaf--lc-701) insert at the null leaf | |
+| "delete the node with key k" | | [Template 3](#template-3-delete-with-successor-swap--lc-450) successor swap | a whole range goes → Template 3b |
+| "keep only values in `[low, high]`", "range sum of a BST" | | [Template 3b](#template-3b-trim-to-a-range--lc-669-) trim to a range | |
+| "is this a valid BST" | values reach `Integer.MIN_VALUE` / `MAX_VALUE` | [Template 4](#template-4-validate-with-bounds--lc-98) bounds carried down | the two swapped nodes are wanted (LC 99) → in-order + `prev` ([bst_advanced.md](./bst_advanced.md)) |
+| "kth smallest", "iterator", "minimum difference", "mode" | | [Template 5](#template-5-in-order-walk-is-sorted--lc-230) in-order is sorted | kth asked repeatedly under updates → size-augmented BST ([bst_advanced.md](./bst_advanced.md)) |
+| "sorted array → height-balanced BST", "balance this BST" | | [Template 6](#template-6-sorted-array-to-balanced-bst--lc-108) middle as root | the input is a linked list (LC 109) → [bst_advanced.md](./bst_advanced.md) |
+| "lowest common ancestor" in a BST | nodes ≤ 10⁵ | [Template 10](#template-10-lca-via-bst-ordering--lc-235-) walk down to the split | plain binary tree, or parent pointers only → [tree_lca_distance.md](./tree_lca_distance.md) |
+| "path sum", "root to leaf" | | not a BST problem → [bst_examples.md](./bst_examples.md) Template 7 | |
+
 ## Problem Categories
 
 ### **Pattern 1: BST Search & Validation**
@@ -173,219 +191,269 @@ boolean isSameTree(TreeNode root1, TreeNode root2){
 > - **Template 7** (root-to-leaf and node-to-node path problems — not BST-specific) plus the
 >   worked LC archive → [bst_examples.md](./bst_examples.md)
 
-### Template 1: BST Search
-```python
-def search_bst(root, val):
-    """
-    Search for a value in BST
-    Time: O(log n) average, O(n) worst
-    """
-    if not root or root.val == val:
-        return root
-    
-    if val < root.val:
-        return search_bst(root.left, val)
-    return search_bst(root.right, val)
+### Template 1: Descend by Comparison — LC 700
 
-# Iterative version
-def search_bst_iterative(root, val):
-    while root and root.val != val:
-        root = root.left if val < root.val else root.right
-    return root
+**Recognise** — "search / find / closest value in a **BST**", "does `target` exist", "floor /
+ceiling of x". Nodes ≤ 5,000 and the tree is a BST → O(h), not O(n), is expected.
+
+**Key point** — every node splits the remaining values in two: anything `< node.val` can only be
+on the left, anything `>` only on the right. So one comparison discards a whole subtree, and the
+walk is a single root-to-leaf path.
+
+```python
+# python
+# LC 700 - Search in a Binary Search Tree
+# IDEA: compare, then step to the ONE child that can still hold val
+# time = O(h), space = O(1)
+def searchBST(root, val):
+    node = root
+    while node and node.val != val:
+        node = node.left if val < node.val else node.right
+    return node            # the matching node, or None when the walk falls off
 ```
 
-**Java** — two alternatives shown under one name (they do not compile side by side; pick one).
-`V1` is the generic tree scan, kept deliberately: it returns the same answer in O(n), and the
-contrast with `V2`'s O(h) descent is the whole point of the BST property.
 ```java
 // java
-// V1 : general (for tree and BST)
-boolean isInBST(TreeNode root, int target){
-    if (root == null) return false;
-    if (root.val == target) return true;
-
-    return isInBST(root.left, target) || isInBST(root.right, target);
-}
-
-// V2 : optimization for BST
-boolean isInBST(TreeNode root, int target){
-    if (root == null) return false;
-    if (root.val == target) return true;
-
-    // optimize here
-    if (root.val < target){
-        return isInBST(root.right, target);
+// LC 700 - Search in a Binary Search Tree
+// IDEA: compare, then step to the ONE child that can still hold val
+// time = O(h), space = O(1)
+public TreeNode searchBST(TreeNode root, int val) {
+    TreeNode node = root;
+    while (node != null && node.val != val) {
+        node = (val < node.val) ? node.left : node.right;
     }
-    // root.val > target
-    return isInBST(root.left, target);
-}
-
-```
-
-### Template 2: BST Insertion
-```python
-def insert_bst(root, val):
-    """
-    Insert value into BST
-    Always inserts as a leaf node
-    """
-    if not root:
-        return TreeNode(val)
-    
-    if val < root.val:
-        root.left = insert_bst(root.left, val)
-    elif val > root.val:
-        root.right = insert_bst(root.right, val)
-    # If val == root.val, typically don't insert duplicates
-    
-    return root
-```
-
-**Java**:
-```java
-// java
-TreeNode insertIntoBST(TreeNode root, int val){
-    // if null root, then just find a space and insert new value
-    if (root == null) return new TreeNode(val);
-    // if already exist, no need to insert, return directly
-    if (root.val == val) return root;
-
-    if (root.val < val){
-        root.right = insertIntoBST(root.right, val);
-    }
-    if (root.val > val){
-        root.left = insertIntoBST(root.left, val);
-    }
-    return root;
-}
-```
-
-### Template 3: BST Deletion
-```python
-def delete_bst(root, key):
-    """
-    Delete a node from BST
-    Three cases: no child, one child, two children
-    """
-    if not root:
-        return None
-    
-    if key < root.val:
-        root.left = delete_bst(root.left, key)
-    elif key > root.val:
-        root.right = delete_bst(root.right, key)
-    else:
-        # Node found - handle 3 cases
-        if not root.left:  # No left child or leaf
-            return root.right
-        if not root.right:  # No right child
-            return root.left
-        
-        # Two children: find inorder successor
-        min_node = find_min(root.right)
-        root.val = min_node.val
-        root.right = delete_bst(root.right, min_node.val)
-    
-    return root
-
-def find_min(node):
-    """Find minimum value in BST (leftmost node)"""
-    while node.left:
-        node = node.left
-    return node
-```
-
-**Java — LC 450**. The first block below is a **pseudo-code skeleton** (outline only, the
-`// delete` branch is left empty on purpose) showing the recursion shape; the working
-implementation follows it, with the three delete cases and the alternative "max of the left
-subtree" swap spelled out in between.
-```java
-// java
-
-// pseudo java code
-TreeNode deleteNode(TreeNode root, int key){
-    if (root.val == key){
-        // delete
-    }
-    else if (root.val > key){
-        // to left sub tree
-        root.left = deleteNode(root.left, key);
-    }
-    else if (root.val < key){
-        // to right sub tree
-        root.right = deleteNode(root.right, key);
-    }
-    return root;
-}
-
-/** 
- *   NOTE : 3 cases (algorithm book (labu) p.246)
- * 
- *   1) the value (to-delete value) is at the bottom (no sub left/right tree) -> delete directly
- *   
- *   2) there is only one left/right tree -> replace value with the sub-tree, then delete sub-tree
- * 
- *   3) there is BOTH left/right tree
- *      -> approach 3-1)  find the MIN right sub-tree and replace with value, then delete MIN right sub-tree
- *      -> approach 3-2)  find the MAX left sub-tree and replace with value, then delete MAX left sub-tree
- */
-
-// java code
-TreeNode deleteNode(TreeNode root, int key){
-    if (root.val == key){
-        // case 1) & case 2)
-        if (root.left == null) return root.right;
-        if (root.right == null) return root.left;
-        
-        // case 3)
-        TreeNode minNode = getMin(root.right);
-        root.val = minNode.val;
-        root.right = deleteNode(root.right, minNode.val);
-    }
-    else if (root.val > key){
-        // to left sub tree
-        root.left = deleteNode(root.left, key);
-    }
-    else if (root.val < key){
-        // to right sub tree
-        root.right = deleteNode(root.right, key);
-    }
-    return root;
-}
-
-// help func
-TreeNode getMin(TreeNode node){
-    // min node is on the left of BST
-    while (node.left != null) node = node.left;
     return node;
 }
 ```
 
-### Template 3b: Trim BST (Range Pruning) ⭐
+**Complexity**
+- **Time O(h)**: the `while` takes one step down per iteration and never comes back up, so it
+  runs at most h times: O(log n) balanced, O(n) on a skewed (sorted-insert) tree.
+- **Space O(1)**: the loop keeps one pointer. The recursive spelling costs O(h) of call stack.
 
-#### **Core Idea**
+**Traps**
+- Searching **both** children (`search(left) or search(right)`) still returns the right answer on
+  `[4,2,7,1,3]`, but in O(n): it is the plain binary-tree scan and throws the BST away.
+- Promising O(log n) without saying "if balanced": a tree built by inserting `1, 2, 3, …, n` is a
+  linked list, and every template here is O(n) on it.
 
-```text
-Goal: keep ONLY nodes whose value lies in [low, high],
-      WITHOUT changing the relative structure of the survivors.
+**Not this if** — the tree is not ordered (a plain binary tree) → a full DFS is the only option
+([binary_tree.md](./binary_tree.md)).
 
-Key insight — exploit BST property (left < root < right):
-  - If root.val < low  → the ENTIRE left subtree is also < low.
-                         Discard root AND its left subtree.
-                         The answer must come from the RIGHT subtree.
-  - If root.val > high → the ENTIRE right subtree is also > high.
-                         Discard root AND its right subtree.
-                         The answer must come from the LEFT subtree.
-  - If low <= root.val <= high → keep root, recursively trim BOTH children.
+**Drill** — LC 700 · LC 270 *(closest: track the best on the way down)* · LC 285 *(successor:
+remember the last node you went left from)*
 
-Why return the recursive call (not None)?
-  When a node is out of range we don't just delete it — its valid
-  descendants must be "promoted" to take its place. Returning
-  trimBST(child, ...) reconnects the next valid node to the parent.
+### Template 2: Insert at the Null Leaf — LC 701
+
+**Recognise** — "insert into a BST", "add a value and return the root", "build a BST by inserting
+these values in order".
+
+**Key point** — the new value belongs exactly where Template 1's search for it falls off the tree.
+Returning the (possibly new) child and assigning it back — `root.left = insert(root.left, val)` —
+reconnects the path without ever holding a parent pointer.
+
+```python
+# python
+# LC 701 - Insert into a Binary Search Tree
+# IDEA: search for val; the null you fall off is where the new leaf goes
+# time = O(h), space = O(h)
+def insertIntoBST(root, val):
+    if not root:
+        return TreeNode(val)              # the empty spot: the new leaf
+    if val < root.val:
+        root.left = insertIntoBST(root.left, val)
+    else:
+        root.right = insertIntoBST(root.right, val)
+    return root                           # unchanged nodes return themselves
 ```
 
+```java
+// java
+// LC 701 - Insert into a Binary Search Tree
+// IDEA: search for val; the null you fall off is where the new leaf goes
+// time = O(h), space = O(h)
+public TreeNode insertIntoBST(TreeNode root, int val) {
+    if (root == null) {
+        return new TreeNode(val);
+    }
+    if (val < root.val) {
+        root.left = insertIntoBST(root.left, val);
+    } else {
+        root.right = insertIntoBST(root.right, val);
+    }
+    return root;
+}
+```
+
+**Complexity**
+- **Time O(h)**: one recursive call per level, on one side only.
+- **Space O(h)**: the call stack holds the root-to-leaf path. A `while` loop with a `parent`
+  pointer makes it O(1).
+
+**Traps**
+- Forgetting `return root` at the end: every ancestor returns `None` and the caller gets an empty
+  tree back. `[4,2,7,1,3]`, val = 5 returns `[]`.
+- Calling `insertIntoBST(root.left, val)` without assigning the result: the new leaf is created and
+  then dropped, and the tree is unchanged.
+
+**Drill** — LC 701 · LC 108 *(insert many, balanced)* · LC 1008 *(insert a preorder, or do it in
+O(n) with bounds)*
+
+### Template 3: Delete with Successor Swap — LC 450
+
+**Recognise** — "delete the node with key k and return the root", "remove a value from a BST".
+
+**Key point** — a node with **0 or 1** children is replaced by that child. A node with **2**
+children keeps its place in the tree but takes the value of its in-order successor (the minimum of
+its right subtree), and that successor, which has no left child, is then deleted from the right
+subtree, falling into the easy case.
+
+```python
+# python
+# LC 450 - Delete Node in a BST
+# IDEA: find key; 0/1 child -> return the other child; 2 children -> copy the
+#       right subtree's minimum in, then delete that minimum from the right subtree
+# time = O(h), space = O(h)
+def deleteNode(root, key):
+    if not root:
+        return None                       # key not in the tree
+    if key < root.val:
+        root.left = deleteNode(root.left, key)
+    elif key > root.val:
+        root.right = deleteNode(root.right, key)
+    else:
+        if not root.left:                 # 0 children, or only a right child
+            return root.right
+        if not root.right:                # only a left child
+            return root.left
+        succ = root.right                 # 2 children: in-order successor
+        while succ.left:
+            succ = succ.left
+        root.val = succ.val
+        root.right = deleteNode(root.right, succ.val)
+    return root
+```
+
+```java
+// java
+// LC 450 - Delete Node in a BST
+// IDEA: 0/1 child -> splice in the other child; 2 children -> successor swap
+// time = O(h), space = O(h)
+public TreeNode deleteNode(TreeNode root, int key) {
+    if (root == null) {
+        return null;
+    }
+    if (key < root.val) {
+        root.left = deleteNode(root.left, key);
+    } else if (key > root.val) {
+        root.right = deleteNode(root.right, key);
+    } else {
+        if (root.left == null) {
+            return root.right;
+        }
+        if (root.right == null) {
+            return root.left;
+        }
+        TreeNode succ = root.right;
+        while (succ.left != null) {
+            succ = succ.left;
+        }
+        root.val = succ.val;
+        root.right = deleteNode(root.right, succ.val);
+    }
+    return root;
+}
+```
+
+**Complexity**
+- **Time O(h)**: the search for `key` walks one path down; the successor search and the second
+  `deleteNode` continue down the same right subtree, so the total is still one path's length.
+- **Space O(h)**: the recursion stack along that path.
+
+**Dry run**
+
 ```text
-Visual (low=1, high=3):
+[5,3,6,2,4,null,7], key = 3
+at 5: 3 < 5  -> recurse left
+at 3: found, two children (2, 4)
+      successor = min of right subtree = 4
+      copy 4 into this node, delete 4 from its right subtree (a leaf -> None)
+result: [5,4,6,2,null,null,7]
+```
+
+**Traps**
+- `root.val` is overwritten, not the node: if the caller holds a reference to the node with the
+  successor's value, it now sees the moved value. When values must stay attached to nodes, splice
+  the successor node in instead.
+- A missing key must leave the tree unchanged: `key = 0` on `[5,3,6,2,4,null,7]` reaches the
+  `if not root` base case and every level returns itself.
+- Using the **predecessor** (max of the left subtree) is equally correct; mixing the two in one
+  solution is not.
+
+**Not this if** — the task removes a whole **range** of values → Template 3b trims in one pass,
+instead of one delete per value.
+
+**Drill** — LC 450 · LC 669 *(range delete)* · LC 776 *(split instead of delete)*
+
+### Template 3b: Trim to a Range — LC 669 ⭐
+
+**Recognise** — "keep only the values in `[low, high]`", "remove every node outside the range and
+return the new root", "sum the values in a range" (LC 938).
+
+**Key point** — if `root.val < low`, the root **and its entire left subtree** are below `low`, so
+the answer is the trimmed right subtree; symmetrically for `> high`. An in-range root is kept and
+both children are trimmed. Returning the trimmed subtree is what promotes the surviving
+descendants into the removed node's place.
+
+```python
+# python
+# LC 669 - Trim a Binary Search Tree
+# IDEA: out-of-range root -> return the trimmed side that can still hold valid values;
+#       in-range root -> keep it, trim and reattach both children
+# time = O(n), space = O(h)
+def trimBST(root, low, high):
+    if not root:
+        return None
+    if root.val < low:                    # root and its left subtree are all too small
+        return trimBST(root.right, low, high)
+    if root.val > high:                   # root and its right subtree are all too large
+        return trimBST(root.left, low, high)
+    root.left = trimBST(root.left, low, high)
+    root.right = trimBST(root.right, low, high)
+    return root
+```
+
+```java
+// java
+// LC 669 - Trim a Binary Search Tree
+// IDEA: out-of-range root -> promote the trimmed side; in-range -> trim both children
+// time = O(n), space = O(h)
+public TreeNode trimBST(TreeNode root, int low, int high) {
+    if (root == null) {
+        return null;
+    }
+    if (root.val < low) {
+        return trimBST(root.right, low, high);
+    }
+    if (root.val > high) {
+        return trimBST(root.left, low, high);
+    }
+    root.left = trimBST(root.left, low, high);
+    root.right = trimBST(root.right, low, high);
+    return root;
+}
+```
+
+**Complexity**
+- **Time O(n)**: each kept node is visited once and each discarded subtree is skipped in one step,
+  so no node is visited twice. It is O(n) rather than O(h) because every in-range node must be
+  walked to reattach its children.
+- **Space O(h)**: the recursion stack.
+
+**Dry run**
+
+```text
+low = 1, high = 3
 
         3                 3
        / \               /
@@ -395,83 +463,31 @@ Visual (low=1, high=3):
        /
       1
 
-  - root 3 in range → keep, trim children
-  - left child 0 < low(1) → drop 0 AND its (empty) left, recurse right → 2
-  - 2 in range → keep, trim children
-  - 1 in range → keep (leaf)
-  - right child 4 > high(3) → drop 4 AND its (empty) right → None
+  - 3 in range        -> keep, trim both children
+  - 0 < low           -> drop 0 and its (empty) left, return trim(right) = 2
+  - 2 in range        -> keep; 1 in range -> keep (leaf)
+  - 4 > high          -> drop 4 and its (empty) right, return trim(left) = None
 ```
 
-#### **Pattern**
+**Traps**
+- Returning `None` for an out-of-range node drops its in-range descendants too. On the tree above,
+  `if root.val < low: return None` at node `0` loses `2` and `1`. Return the trimmed side instead.
+- Trimming only the children of an in-range root and forgetting to **assign** the results
+  (`trimBST(root.left, …)` on its own) leaves the out-of-range nodes attached.
 
-```python
-# LC 669 - Trim a Binary Search Tree
-# IDEA: BST PROPERTY + DFS (post-order reconnect)
-# Time: O(n), Space: O(h)
-class Solution(object):
-    def trimBST(self, root, low, high):
-        # Base case: empty tree needs no trimming
-        if not root:
-            return None
+**Not this if** — the tree is not a BST: the "whole subtree is out of range" step is no longer
+true, and each node must be tested on its own (post-order delete, as in LC 1110).
 
-        # root too small → left subtree all < low too.
-        # Drop root + left, answer is in the trimmed right subtree.
-        if root.val < low:
-            return self.trimBST(root.right, low, high)
+**Drill** — LC 669 · LC 938 *(sum instead of rebuild)* · LC 450 · LC 776 *(split, keep every node)*
 
-        # root too large → right subtree all > high too.
-        # Drop root + right, answer is in the trimmed left subtree.
-        if root.val > high:
-            return self.trimBST(root.left, low, high)
+#### **Variation: Sum Instead of Restructure — LC 938**
 
-        # root in range → keep it, trim & reconnect both children.
-        root.left = self.trimBST(root.left, low, high)
-        root.right = self.trimBST(root.right, low, high)
-        return root
-```
+> **Key point** — the same three-way pruning as `trimBST`: an out-of-range root rules out a
+> whole side, so only the combine step changes, from reattaching children to adding values.
 
-```java
-// java - LC 669
-// Time: O(n), Space: O(h)
-public TreeNode trimBST(TreeNode root, int low, int high) {
-    if (root == null) return null;
+**Reduces to**: [Template 3b](#template-3b-trim-to-a-range--lc-669-) — sum instead of restructure.
 
-    // root too small → promote trimmed right subtree
-    if (root.val < low) return trimBST(root.right, low, high);
-
-    // root too large → promote trimmed left subtree
-    if (root.val > high) return trimBST(root.left, low, high);
-
-    // in range → keep node, trim both children
-    root.left = trimBST(root.left, low, high);
-    root.right = trimBST(root.right, low, high);
-    return root;
-}
-```
-
-**🚫 Common Mistake**: returning `None` for an out-of-range node deletes its
-**valid descendants** too. You must return the *trimmed surviving subtree* so
-the next valid node gets reconnected to the parent.
-
-```python
-# BAD: drops valid descendants of an out-of-range node
-if root.val < low or root.val > high:
-    return None   # loses the in-range nodes hanging below!
-
-# GOOD: promote the side that may still contain valid nodes
-if root.val < low:  return self.trimBST(root.right, low, high)
-if root.val > high: return self.trimBST(root.left,  low, high)
-```
-
-#### **Similar LeetCode Problems**
-| Problem | LC # | Difficulty | Relation to Trim |
-|---------|------|------------|------------------|
-| Trim a Binary Search Tree | 669 | Medium | Core problem — prune nodes outside `[low, high]` |
-| Delete Node in a BST | 450 | Medium | Same "recurse + reconnect via return value" pattern |
-| Range Sum of BST | 938 | Easy | Same BST pruning logic, but sum instead of restructure |
-| Split BST | 776 | Medium | Partition into two trees by value (mirror of trimming) |
-| Convert Sorted Array to BST | 108 | Easy | Recursive build returning subtree roots (same reconnect idiom) |
-| Insert into a BST | 701 | Medium | Recurse + return reconnected child pointer |
+Worked in [bst_examples.md § LC 938](./bst_examples.md#7-range-sum-of-bst--lc-938).
 
 #### Comparison: Trim vs Split vs Delete
 
@@ -481,181 +497,208 @@ if root.val > high: return self.trimBST(root.left,  low, high)
 | **Split** | 776 | No | `TreeNode[2]` | Partitions into 2 trees, keeps ALL nodes |
 | **Delete** | 450 | Yes (1 node) | Single `TreeNode` | Removes exactly 1 specific node |
 
-#### **Variation: Sum Instead of Restructure — LC 938**
+### Template 4: Validate with Bounds — LC 98
 
-Same three-way pruning as `trimBST`; only the combine step changes.
-```python
-def range_sum_bst(root, low, high):
-    """Prune branches that can't contain values in range"""
-    if not root:
-        return 0
-    
-    # Prune left subtree if root is already too small
-    if root.val < low:
-        return range_sum_bst(root.right, low, high)
-    
-    # Prune right subtree if root is already too large
-    if root.val > high:
-        return range_sum_bst(root.left, low, high)
-    
-    # Root is in range, include it and check both subtrees
-    return (root.val + 
-            range_sum_bst(root.left, low, high) +
-            range_sum_bst(root.right, low, high))
-```
+**Recognise** — "is this a valid BST", "largest subtree that is a BST" (LC 333), "is every value
+inside the interval its ancestors allow". Values may be `Integer.MIN_VALUE` / `MAX_VALUE` → the
+sentinels need care.
 
-### Template 4: BST Validation
+**Key point** — a node is not checked against its parent but against the **open interval** all its
+ancestors allow: going left tightens the upper bound to the parent's value, going right tightens
+the lower bound. The tree is valid exactly when every node lies inside its interval.
+
 ```python
-def validate_bst(root):
-    """
-    Validate if tree is a valid BST
-    Uses min/max bounds approach
-    """
-    def validate(node, min_val, max_val):
+# python
+# LC 98 - Validate Binary Search Tree
+# IDEA: carry the (low, high) interval down; None means "no bound on this side"
+# time = O(n), space = O(h)
+def isValidBST(root):
+    def valid(node, low, high):
         if not node:
             return True
-        
-        if node.val <= min_val or node.val >= max_val:
+        if (low is not None and node.val <= low) or (high is not None and node.val >= high):
             return False
-        
-        return (validate(node.left, min_val, node.val) and
-                validate(node.right, node.val, max_val))
-    
-    return validate(root, float('-inf'), float('inf'))
+        return valid(node.left, low, node.val) and valid(node.right, node.val, high)
+    return valid(root, None, None)
 ```
 
-**Java** — node pointers instead of `float('inf')` sentinels, so `Integer.MIN_VALUE` is still a legal node value:
 ```java
 // java
-boolean isValidBST(TreeNode root){
-    return isValidBST(root, null, null);
+// LC 98 - Validate Binary Search Tree
+// IDEA: carry the (low, high) interval down; null means "no bound", so MIN_VALUE stays legal
+// time = O(n), space = O(h)
+public boolean isValidBST(TreeNode root) {
+    return valid(root, null, null);
 }
 
-// help func
-boolean isValidBST(TreeNode root, TreeNode min, TreeNode max){
-    if (root == null){
+private boolean valid(TreeNode node, Integer low, Integer high) {
+    if (node == null) {
         return true;
     }
-    if (min != null && root.val <= min.val){
+    if ((low != null && node.val <= low) || (high != null && node.val >= high)) {
         return false;
     }
-    if (max != null && root.val >= max.val){
-        return false;
-    }
-    return isValidBST(root.left, min, root) && isValidBST(root.right, root, max);
+    return valid(node.left, low, node.val) && valid(node.right, node.val, high);
 }
 ```
 
-### Template 5: BST Inorder Operations
-```python
-def kth_smallest(root, k):
-    """
-    Find kth smallest element using inorder property
-    Inorder traversal of BST gives sorted order
-    """
-    def inorder(node):
-        if not node:
-            return []
-        return inorder(node.left) + [node.val] + inorder(node.right)
-    
-    return inorder(root)[k-1]
+**Complexity**
+- **Time O(n)**: each node is checked once against its interval; the `and` stops early on the
+  first violation.
+- **Space O(h)**: the recursion stack.
 
-# Optimized with early stopping
-def kth_smallest_optimized(root, k):
+**Traps**
+- Comparing a node only with its **parent** accepts `[5,4,6,null,null,3,7]`: `3 < 6` is fine
+  locally, but `3` sits in 5's right subtree. Carry the interval.
+- Using `Integer.MIN_VALUE` / `MAX_VALUE` as the Java sentinels rejects a tree whose single node
+  holds `Integer.MIN_VALUE`. Use `null` (or `long`) for "no bound".
+- `<=` and `>=`, not `<` and `>`: duplicates are invalid in LC 98, so `[2,2,2]` must return false.
+
+**Not this if** — the interviewer prefers in-order: walk the tree in order (Template 5) and check
+that each value is strictly greater than the previous one. Same O(n), and it generalises to LC 99
+(find the two swapped nodes).
+
+**Drill** — LC 98 ⭐ · LC 530 *(in-order + prev)* · LC 333 *(return bounds up instead)* · LC 99
+
+### Template 5: In-order Walk Is Sorted — LC 230
+
+**Recognise** — "kth smallest", "BST iterator", "minimum difference between any two values",
+"mode", "convert to a sorted list" — any question about the BST's values **in sorted order**.
+
+**Key point** — in-order (left, node, right) visits a BST's values in ascending order. The
+iterative form keeps the not-yet-visited left spine on a stack, so it can stop at the kth pop
+without walking the rest of the tree.
+
+```python
+# python
+# LC 230 - Kth Smallest Element in a BST
+# IDEA: iterative in-order; the kth node popped is the kth smallest
+# time = O(h + k), space = O(h)
+def kthSmallest(root, k):
     stack = []
-    while True:
-        while root:
-            stack.append(root)
-            root = root.left
-        root = stack.pop()
+    node = root
+    while node or stack:
+        while node:                       # push the whole left spine
+            stack.append(node)
+            node = node.left
+        node = stack.pop()                # the next value in sorted order
         k -= 1
         if k == 0:
-            return root.val
-        root = root.right
+            return node.val
+        node = node.right                 # then the right subtree, in order
+    return -1                             # k > number of nodes
 ```
+
+```java
+// java
+// LC 230 - Kth Smallest Element in a BST
+// IDEA: iterative in-order; stop at the kth pop
+// time = O(h + k), space = O(h)
+public int kthSmallest(TreeNode root, int k) {
+    Deque<TreeNode> stack = new ArrayDeque<>();
+    TreeNode node = root;
+    while (node != null || !stack.isEmpty()) {
+        while (node != null) {
+            stack.push(node);
+            node = node.left;
+        }
+        node = stack.pop();
+        k--;
+        if (k == 0) {
+            return node.val;
+        }
+        node = node.right;
+    }
+    return -1;
+}
+```
+
+**Complexity**
+- **Time O(h + k)**: the inner `while` first descends h nodes to the minimum; after that each pop
+  is one value in order, and the walk stops at the kth.
+- **Space O(h)**: the stack holds at most one root-to-leaf spine.
+
+**Traps**
+- Building the whole sorted list first (`inorder(left) + [val] + inorder(right)`) is O(n) time and
+  O(n) space for every query, and the list concatenation is O(n·h) on top of that.
+- Off by one: decrement **after** the pop and test `k == 0`. Testing before the decrement returns
+  the (k+1)th: `[3,1,4,null,2]`, k = 1 returns 2 instead of 1.
+
+**Not this if** — kth smallest is asked repeatedly while the tree changes (LC 230 follow-up) →
+store subtree sizes on each node, the order-statistic tree of Template 9 in
+[bst_advanced.md](./bst_advanced.md).
+
+**Drill** — LC 230 ⭐ · LC 530 · LC 501 · LC 173 *(the same stack, paused between calls)* · LC 538
 
 #### **Pattern: Reverse Inorder for Descending**
 
-Right → root → left visits values in descending order, so a running sum turns each node
-into the sum of everything greater than it (LC 538 / LC 1038). Sketch — `self.sum` assumes
-this sits inside a `Solution` class:
+Right → node → left visits values in descending order, so a running sum turns each node into the
+sum of every value greater than or equal to it (LC 538 / LC 1038).
+
+Worked in [bst_examples.md § LC 538](./bst_examples.md#5-convert-bst-to-greater-tree--lc-538).
+
+### Template 6: Sorted Array to Balanced BST — LC 108
+
+**Recognise** — "convert a sorted array / list to a **height-balanced** BST", "rebuild this BST so
+it is balanced" (LC 1382 = in-order + this).
+
+**Key point** — the middle element of a sorted range is the root that leaves the two sides at
+most one element apart in size. Recursing on `[left, mid − 1]` and `[mid + 1, right]` repeats that
+at every level, so the heights of sibling subtrees differ by at most 1.
 
 ```python
-def convert_to_greater_tree(root):
-    """Process nodes from largest to smallest"""
-    self.sum = 0
-    def reverse_inorder(node):
-        if not node:
-            return
-        reverse_inorder(node.right)
-        self.sum += node.val
-        node.val = self.sum
-        reverse_inorder(node.left)
-    reverse_inorder(root)
-    return root
-```
-
-### Template 6: BST Construction
-
-#### **Pattern Overview**
-- **Description**: Build BST from various inputs (arrays, lists, traversals)
-- **Recognition**: "Construct", "build", "generate", "serialize", "from preorder/inorder"
-- **Key Concept**: Use recursive divide-and-conquer with BST property
-- **Time Complexity**: O(n) for most constructions, O(n log n) for some
-- **Space Complexity**: O(n) for tree storage + O(h) for recursion stack
-
-#### **Core Construction Patterns**
-
-##### **Pattern 6.1: From Sorted Array** (LC 108)
-```python
-def sorted_array_to_bst(nums):
-    """
-    Convert sorted array to balanced BST
-    Uses binary search approach - pick middle as root
-    Time: O(n), Space: O(n)
-    """
-    if not nums:
-        return None
-
-    mid = len(nums) // 2
-    root = TreeNode(nums[mid])
-    root.left = sorted_array_to_bst(nums[:mid])
-    root.right = sorted_array_to_bst(nums[mid+1:])
-
-    return root
-
-# Optimized version with index (no array slicing)
-def sorted_array_to_bst_optimized(nums):
-    def build(left, right):
+# python
+# LC 108 - Convert Sorted Array to Binary Search Tree
+# IDEA: the middle of the index range is the root; recurse on the two halves (no slicing)
+# time = O(n), space = O(log n)
+def sortedArrayToBST(nums):
+    def build_range(left, right):
         if left > right:
             return None
-
         mid = (left + right) // 2
         root = TreeNode(nums[mid])
-        root.left = build(left, mid - 1)
-        root.right = build(mid + 1, right)
+        root.left = build_range(left, mid - 1)
+        root.right = build_range(mid + 1, right)
         return root
-
-    return build(0, len(nums) - 1)
+    return build_range(0, len(nums) - 1)
 ```
 
-#### **Java Implementation: From Sorted Array (LC 108)**
 ```java
-// Pattern 6.1: From Sorted Array (LC 108)
+// java
+// LC 108 - Convert Sorted Array to Binary Search Tree
+// IDEA: the middle of the index range is the root; recurse on the two halves
+// time = O(n), space = O(log n)
 public TreeNode sortedArrayToBST(int[] nums) {
-    return buildBST(nums, 0, nums.length - 1);
+    return build(nums, 0, nums.length - 1);
 }
 
-private TreeNode buildBST(int[] nums, int left, int right) {
-    if (left > right) return null;
-
+private TreeNode build(int[] nums, int left, int right) {
+    if (left > right) {
+        return null;
+    }
     int mid = left + (right - left) / 2;
     TreeNode root = new TreeNode(nums[mid]);
-    root.left = buildBST(nums, left, mid - 1);
-    root.right = buildBST(nums, mid + 1, right);
+    root.left = build(nums, left, mid - 1);
+    root.right = build(nums, mid + 1, right);
     return root;
 }
 ```
+
+**Complexity**
+- **Time O(n)**: each index becomes exactly one node, and `build` does O(1) work per call.
+- **Space O(log n)**: the recursion depth is the height of a balanced tree (the output's O(n) nodes
+  are not counted).
+
+**Traps**
+- Slicing (`nums[:mid]`, `nums[mid+1:]`) copies the array at every level: O(n log n) time instead of O(n), and O(n)
+  extra memory at peak (the live slices shrink by half each level). Pass indices.
+- `mid = (left + right) / 2` in Python 3 is a float and fails as an index; use `//`.
+
+**Not this if** — the input is a sorted **linked list** (LC 109): finding the middle costs O(n) per
+level, so either use slow/fast pointers, or simulate the in-order build — see Template 6b in
+[bst_advanced.md](./bst_advanced.md).
+
+**Drill** — LC 108 · LC 109 · LC 1382 *(in-order, then this)* · LC 1008
 
 #### **The Other Construction Inputs**
 
@@ -679,37 +722,73 @@ with an in-order walk (Template 5), then rebuild it with the mid-as-root recursi
 
 ### Template 10: LCA via BST Ordering — LC 235 ⭐⭐⭐⭐
 
-**Key Idea**: in a BST you never search both subtrees for a lowest common ancestor.
-Compare *both* targets against `root.val` and descend the single side that can still
-contain them. The first node that does **not** send both targets the same way is the
-**split point**, and the split point is the LCA.
+**Recognise** — "lowest common ancestor" **and** the tree is a BST. Nodes ≤ 10⁵, both targets
+guaranteed present.
+
+**Key point** — while `p` and `q` are both smaller than `node.val` they are both in the left
+subtree, and both larger means both in the right, so the LCA is on that side. The first node that
+does not send them the same way (one on each side, or the node *is* one of them) is the split
+point, and the split point is the LCA.
 
 ```python
 # python
-# LC 235 Lowest Common Ancestor of a Binary Search Tree
-# IDEA: BST PROPERTY — descend while p and q sit on the SAME side of root
-# time = O(h), space = O(h) recursion (O(1) if rewritten as a while-loop)
-class Solution(object):
-    def lowestCommonAncestor(self, root, p, q):
-        if not root:
-            return root
-
-        p_val = p.val
-        q_val = q.val
-
-        if root.val < p_val and root.val < q_val:
-            return self.lowestCommonAncestor(root.right, p, q)
-
-        elif root.val > p_val and root.val > q_val:
-            return self.lowestCommonAncestor(root.left, p, q)
-
+# LC 235 - Lowest Common Ancestor of a Binary Search Tree
+# IDEA: walk down while p and q sit on the SAME side; the first split point is the LCA
+# time = O(h), space = O(1)
+def lowestCommonAncestor(root, p, q):
+    node = root
+    while node:
+        if p.val < node.val and q.val < node.val:
+            node = node.left
+        elif p.val > node.val and q.val > node.val:
+            node = node.right
         else:
-            return root
+            return node                   # split here, or node is p or q
+    return None
 ```
 
-> Contrast with **LC 236** (LCA in a general binary tree): with no ordering to exploit you
-> must post-order *both* subtrees and combine the results — see
-> [tree_lca_distance.md](./tree_lca_distance.md).
+```java
+// java
+// LC 235 - Lowest Common Ancestor of a Binary Search Tree
+// IDEA: walk down while p and q sit on the SAME side; the first split point is the LCA
+// time = O(h), space = O(1)
+public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+    TreeNode node = root;
+    while (node != null) {
+        if (p.val < node.val && q.val < node.val) {
+            node = node.left;
+        } else if (p.val > node.val && q.val > node.val) {
+            node = node.right;
+        } else {
+            return node;
+        }
+    }
+    return null;
+}
+```
+
+**Complexity**
+- **Time O(h)**: one step down per iteration, along a single path.
+- **Space O(1)**: one pointer. The recursive spelling costs O(h) of stack.
+
+**Dry run**
+
+```text
+[6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 4
+node 6: 2 < 6 and 4 < 6   -> go left
+node 2: 2 is not < 2       -> split (node is p) -> LCA = 2
+```
+
+**Traps**
+- Strict `<` / `>`: when `node` **is** `p` (p = 2, q = 4 above), neither "both smaller" nor "both
+  larger" holds, which is exactly what returns it. `<=` walks past the answer.
+- Comparing nodes instead of values (`p < node`) does not order anything; compare `.val`.
+
+**Not this if** — the tree is not a BST → post-order search of both subtrees, O(n)
+([tree_lca_distance.md](./tree_lca_distance.md)); no root, only `parent` pointers (LC 1650) →
+walk up both parent chains.
+
+**Drill** — LC 235 ⭐ · LC 236 *(no ordering)* · LC 1650 *(parent pointers)* · LC 1644
 
 ## Problems by Pattern
 
@@ -825,6 +904,14 @@ class Solution(object):
 - LC 1373: Maximum Sum BST in Binary Tree - Complex validation
 - LC 124: Binary Tree Maximum Path Sum - Node-to-node max path
 
+## Drill Path
+
+| Stage | Problems (easy → hard) | What it adds |
+|---|---|---|
+| **Core** ⭐ | LC 235 ⭐ · LC 98 ⭐ · LC 230 ⭐ | the split point, the interval carried down, in-order as sorted order |
+| **Practice** | LC 700 · LC 108 · LC 701 · LC 450 · LC 669 · LC 173 | search, build, insert, delete, range trim, a paused in-order |
+| **Stretch** | LC 1382 · LC 776 · LC 99 | in-order then rebuild; split into two trees; find the two swapped nodes |
+
 ## Summary & Quick Reference
 
 **Complexity** — one table only, at the top of this sheet: see
@@ -888,7 +975,7 @@ BST Problem Analysis Flowchart:
 | "Is valid BST?" | Template 4 | Min/max bounds | 98, 333 |
 | "Kth smallest/largest" | Template 5 | Inorder traversal | 230, 173 |
 | "LCA of two nodes" | Template 10 | Descend the one side holding both | 235 |
-| "Convert sorted array" | Template 6.1 | Binary search middle | 108 |
+| "Convert sorted array" | Template 6 | Binary search middle | 108 |
 | "Balance BST" | Template 6.4 → [advanced](./bst_advanced.md) | Inorder + rebuild | 1382 |
 | "Path with target sum" | Template 7.1 → [examples](./bst_examples.md) | DFS + reduce sum | 112 |
 | "All paths with sum" | Template 7.2 → [examples](./bst_examples.md) | DFS + backtracking | 113 |

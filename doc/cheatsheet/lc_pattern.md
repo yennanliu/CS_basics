@@ -59,10 +59,10 @@ One row per pattern. The **Card** column links to the template that solves the a
 |---|---|---|---|---|
 | "level by level", "right side view", "zigzag", "minimum depth" | nodes ≤ 10⁴ | BFS with a level loop | [bfs § Pattern 2](./bfs.md#pattern-2-level-by-level-bfs--lc-102-) | a value aggregated up from the leaves → post-order DFS |
 | "diameter", "balanced?", "max path sum", anything a node computes from its children | recursion depth = height | post-order DFS returning a value | [dfs § Template 6](./dfs.md#template-6-bottom-up-post-order-dfs--lc-543-) | the answer depends on the path from the root → pass it down as an argument (LC 112) |
-| "root-to-leaf path with sum", "all paths" | nodes ≤ 5,000 | pre-order DFS carrying the path | [tree_lca_distance § 4](./tree_lca_distance.md#4-root-to-leaf-path-templates) | any downward path, not only from the root → prefix sum on the path (LC 437) |
-| "lowest common ancestor" | nodes ≤ 10⁵ | LCA by returned presence | [tree_lca_distance § 1](./tree_lca_distance.md#1-lowest-common-ancestor-lca--lc-236) | it is a **BST** → walk down by value, O(h) (LC 235) |
-| "valid BST", "kth smallest in a BST", "BST iterator" | nodes ≤ 10⁴ | in-order is sorted | [bst § Template 4](./bst.md#template-4-bst-validation), [Template 5](./bst.md#template-5-bst-inorder-operations) | a plain binary tree → no ordering to lean on |
-| "build the tree from preorder and inorder" | nodes ≤ 3,000 | divide and conquer with an index map | [binary_tree § Template 3](./binary_tree.md#template-3-tree-construction) | serialize / deserialize → pre-order with null markers ([tree_codec](./tree_codec.md)) |
+| "root-to-leaf path with sum", "all paths" | nodes ≤ 5,000 | pre-order DFS carrying the path | [tree_lca_distance § 4](./tree_lca_distance.md#template-4-root-to-leaf-path-with-backtracking--lc-113) | any downward path, not only from the root → prefix sum on the path (LC 437) |
+| "lowest common ancestor" | nodes ≤ 10⁵ | LCA by returned presence | [tree_lca_distance § 1](./tree_lca_distance.md#template-1-lca-by-returned-presence--lc-236) | it is a **BST** → walk down by value, O(h) (LC 235) |
+| "valid BST", "kth smallest in a BST", "BST iterator" | nodes ≤ 10⁴ | in-order is sorted | [bst § Template 4](./bst.md#template-4-validate-with-bounds--lc-98), [Template 5](./bst.md#template-5-in-order-walk-is-sorted--lc-230) | a plain binary tree → no ordering to lean on |
+| "build the tree from preorder and inorder" | nodes ≤ 3,000 | divide and conquer with an index map | [binary_tree § Template 3](./binary_tree.md#template-3-build-from-preorder--inorder--lc-105) | serialize / deserialize → pre-order with null markers ([tree_codec](./tree_codec.md)) |
 | "prefix search", "word dictionary with `.`", "many words in a grid" | words ≤ 3·10⁴ | trie | [trie](./trie.md#templates--algorithms) | one word at a time against a set → a hash set is enough |
 
 ### Graphs

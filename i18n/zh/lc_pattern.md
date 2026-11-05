@@ -59,17 +59,17 @@
 | 「環」、「環的起點」、「中間節點」、「倒數第 k 個」 | O(1) 空間 | 快慢指標 | [2_pointers § Template 7](./2_pointers.md#template-7-fastslow-cycle-detection--lc-141-lc-142-) | 1..n 陣列裡找重複 → 把同一招用在索引上（LC 287） |
 | 「合併 k 條已排序串列」 | k ≤ 10⁴ | 用堆積做 k 路合併 | [heap § Template 2](./heap.md#template-2-k-way-merge-pattern--lc-23) | 只有兩條 → 用 dummy head 直接合併（LC 21） |
 
-<!-- a84fe2dc72fb -->
+<!-- 8803782d20e1 -->
 ### 樹
 
 | 敘述裡的訊號 | 限制提示 | 模式 | Card | 長得像，其實不是 |
 |---|---|---|---|---|
 | 「一層一層」、「右側視角」、「之字形」、「最小深度」 | 節點 ≤ 10⁴ | 帶層迴圈的 BFS | [bfs § Pattern 2](./bfs.md#pattern-2-level-by-level-bfs--lc-102-) | 由葉子往上彙總的值 → 後序 DFS |
 | 「直徑」、「平衡嗎？」、「最大路徑和」，任何節點要從子節點算出來的東西 | 遞迴深度 = 樹高 | 回傳值的後序 DFS | [dfs § Template 6](./dfs.md#template-6-bottom-up-post-order-dfs--lc-543-) | 答案取決於從根下來的路徑 → 當參數往下傳（LC 112） |
-| 「從根到葉、總和為 x 的路徑」、「所有路徑」 | 節點 ≤ 5,000 | 帶著路徑的前序 DFS | [tree_lca_distance § 4](./tree_lca_distance.md#4-root-to-leaf-path-templates) | 任何往下的路徑、不只從根出發 → 路徑上的前綴和（LC 437） |
-| 「最低共同祖先」 | 節點 ≤ 10⁵ | 用回傳值表示「找到了沒」的 LCA | [tree_lca_distance § 1](./tree_lca_distance.md#1-lowest-common-ancestor-lca--lc-236) | 是 **BST** → 依值往下走，O(h)（LC 235） |
-| 「合法的 BST」、「BST 第 k 小」、「BST iterator」 | 節點 ≤ 10⁴ | 中序是排好的 | [bst § Template 4](./bst.md#template-4-bst-validation)、[Template 5](./bst.md#template-5-bst-inorder-operations) | 一般二元樹 → 沒有順序可以依靠 |
-| 「由前序與中序建樹」 | 節點 ≤ 3,000 | 分治 + 索引 map | [binary_tree § Template 3](./binary_tree.md#template-3-tree-construction) | 序列化／反序列化 → 帶 null 標記的前序（[tree_codec](./tree_codec.md)） |
+| 「從根到葉、總和為 x 的路徑」、「所有路徑」 | 節點 ≤ 5,000 | 帶著路徑的前序 DFS | [tree_lca_distance § 4](./tree_lca_distance.md#template-4-root-to-leaf-path-with-backtracking--lc-113) | 任何往下的路徑、不只從根出發 → 路徑上的前綴和（LC 437） |
+| 「最低共同祖先」 | 節點 ≤ 10⁵ | 用回傳值表示「找到了沒」的 LCA | [tree_lca_distance § 1](./tree_lca_distance.md#template-1-lca-by-returned-presence--lc-236) | 是 **BST** → 依值往下走，O(h)（LC 235） |
+| 「合法的 BST」、「BST 第 k 小」、「BST iterator」 | 節點 ≤ 10⁴ | 中序是排好的 | [bst § Template 4](./bst.md#template-4-validate-with-bounds--lc-98)、[Template 5](./bst.md#template-5-in-order-walk-is-sorted--lc-230) | 一般二元樹 → 沒有順序可以依靠 |
+| 「由前序與中序建樹」 | 節點 ≤ 3,000 | 分治 + 索引 map | [binary_tree § Template 3](./binary_tree.md#template-3-build-from-preorder--inorder--lc-105) | 序列化／反序列化 → 帶 null 標記的前序（[tree_codec](./tree_codec.md)） |
 | 「前綴搜尋」、「支援 `.` 的單字字典」、「網格裡找很多個字」 | 單字 ≤ 3·10⁴ | trie | [trie](./trie.md#templates--algorithms) | 一次只拿一個字比對一個集合 → hash set 就夠 |
 
 <!-- db5efcac28b9 -->
