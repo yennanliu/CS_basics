@@ -71,10 +71,10 @@ otherwise only one band can contain it. The `==` band is what keeps all-equal in
 
 ```python
 # python
-# LC 215 - Kth Largest Element in an Array
-# IDEA: random pivot + 3-way partition (< pivot | == pivot | > pivot); keep only the
-#       band that holds index n-k, and stop when that index lands in the == band
+# IDEA: random pivot + 3-way partition (< | == | >); keep only the band that holds index n-k
 # time = O(n) average, O(n^2) worst (vanishingly unlikely with a random pivot), space = O(1)
+# Stop when that index lands in the == band.
+# LC 215 - Kth Largest Element in an Array
 import random
 
 def findKthLargest(nums, k):
@@ -104,9 +104,9 @@ def findKthLargest(nums, k):
 
 ```java
 // java
-// LC 215 - Kth Largest Element in an Array
 // IDEA: random pivot + 3-way partition; keep only the band that holds index n-k
 // time = O(N) average, O(N^2) worst (vanishingly unlikely with a random pivot), space = O(1)
+// LC 215 - Kth Largest Element in an Array
 import java.util.*;
 
 class Solution {
@@ -363,10 +363,10 @@ def kth_smallest_hoare(nums, target):
 
 ```java
 // java
-// LC 215 - Kth Largest Element in an Array, Hoare partition
-// IDEA: hoare() only guarantees a[lo..j] <= pivot <= a[j+1..hi], so narrow with target <= j
-//       until lo == hi; never test p == target
+// IDEA: hoare() only guarantees a[lo..j] <= pivot <= a[j+1..hi]: narrow with target <= j until lo == hi
 // time = O(N) expected, space = O(1)
+// Never test p == target.
+// LC 215 - Kth Largest Element in an Array, Hoare partition
 import java.util.*;
 
 class Solution {
