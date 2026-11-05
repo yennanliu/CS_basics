@@ -90,7 +90,7 @@
 | 「分成**總和相等的 k 個子集**」、「拼成正方形」 | n ≤ 16 | [Template 13](#template-13-k-bucket-partitioning--lc-698--lc-473) k 個桶，由大到小 | |
 | 在樹或格子上同時往下帶著路徑**和**累計和 | | [Template 14](#template-14-when-to-undo--mutable-vs-immutable-state--lc-113-) 只復原可變的那部分 | |
 
-<!-- b9966b324afd -->
+<!-- 75b569b2ca86 -->
 ## 題型分類
 
 四種形狀幾乎涵蓋所有回溯題。下面這張分類表決定你**該拿哪份模板**；
@@ -106,7 +106,7 @@
 | 5 | 切分 | ✅ 在子字串／桶上用 `i + 1` | [Template 8](#template-8-palindrome-partitioning--lc-131-) / [Template 13](#template-13-k-bucket-partitioning--lc-698--lc-473) | 131, 698, 473 |
 | 6 | 格子／單字搜尋 | ❌ 標記格子再還原 | [Template 9](#template-9-grid--word-search--lc-79-) | 79, 980, 1219 |
 | 7 | 限制條件滿足 | ❌ 每層處理一列／一格 | [Template 10](#template-10-n-queens--lc-51) / [Template 11](#template-11-sudoku-solver--lc-37) | 51, 37 |
-| 8 | 括號／字串建構 | ❌ 用計數器當限制 | [backtrack_examples.md](./backtrack_examples.md#8-generate-parentheses--lc-22) | 20, 22, 93 |
+| 8 | 括號／字串建構 | ❌ 用計數器當限制 | [backtrack_examples.md](./backtrack_examples.md#generate-parentheses--lc-22) | 20, 22, 93 |
 
 <!-- 40a26099ee21 -->
 ### 各型態筆記
@@ -194,7 +194,7 @@
 
 **練習** — LC 216 ⭐ · LC 77 *（沒有總和，只看長度 `k`）* · LC 17 *（選擇清單是該數字對應的字母）* · LC 22 *（選擇清單是「左括號或右括號」，由計數把關）*
 
-<!-- 32176b16a8e4 -->
+<!-- 28fd33775fc5 -->
 ### Template 2: `start_idx` — `i` vs `i + 1` — LC 39 ⭐⭐⭐⭐⭐
 
 **辨識** — 「組合」、「子集」、「每個數字只能用**一次**」或「同一個數字可以被選**無限次**」，
@@ -218,6 +218,14 @@
   深度要等 `remain` 用完才結束 —— 最多選 `T/M` 次最小的候選。
 - **空間 O(T/M)**：遞迴深度與 `path` 長度都以 `T/M` 為上限。
 
+**試跑** — `candidates = [2, 3, 6, 7]`、`target = 7`；每個節點是 `backtrack(start, remain)`，
+`break` 會在第一個比 `remain` 大的候選處結束迴圈：
+
+<!--CODE-->
+
+`start` 只會往前走（0 → 1 → 2 → 3），所以不會再回頭用更前面的候選，也不會有組合出現兩次。
+把 `i` 改傳 `i + 1`，這就變成 LC 40。
+
 **陷阱**
 - 在 LC 39 傳 `i + 1`：`[2, 3, 6, 7], 7` 會漏掉 `[2, 2, 3]`，因為 2 不能再重複。
 - 傳 `0` 而不是 `start`：`[2, 3]` 和 `[3, 2]` 都會被建出來，LC 39 `[2, 3, 6, 7], 7`
@@ -230,7 +238,7 @@
 
 **練習** — LC 39 ⭐ · LC 40 *（`i + 1` 加上跳過重複）* · LC 216 *（固定長度 k）* · LC 518 *（只要個數：背包 DP）*
 
-<!-- 2a838572ed1c -->
+<!-- b46f005f073c -->
 ### Template 3: Subsets — LC 78 ⭐⭐⭐⭐⭐
 
 **辨識** — 「回傳所有可能的子集（冪集合）」、「解集合不能包含重複的子集」；元素互不相同。
@@ -240,6 +248,11 @@ n ≤ 10 → 2^n · n 大約 10⁴。
 （前序）。`i + 1` 讓每個元素最多用一次，索引順序讓每個子集剛好出現一次。
 
 <!--CODE-->
+
+<!--CODE-->
+
+第二種解法，留下來是因為它畫的是另一棵樹：每個元素做一次**二元**決定 —— 放或不放，答案只在葉節點。
+它用同樣的代價產生同樣的 2^n 個子集，而 LC 784 和每一題「拿／不拿」的 DP 都是從這個形狀出發。
 
 <!--CODE-->
 
@@ -305,7 +318,7 @@ n ≤ 10 → 2^n · n 大約 10⁴。
 在以 visited 為準的寫法裡，`not used[i-1]` 代表前一個複本在這一層試過、而且已經復原了，
 所以 `a[i]` 會重複它的子樹；`used[i-1]` 代表它在目前路徑上、高一層，`a[i]` 是它合法的下一個複本。
 
-<!-- 5aeb3a594c6e -->
+<!-- d5a983a9f9d3 -->
 ### Template 5: Permutations — LC 46 ⭐⭐⭐⭐⭐
 
 **辨識** — 「回傳所有可能的**排列**」、「每一種安排／順序」、「可以任意順序回傳」；
@@ -323,6 +336,11 @@ n ≤ 10 → 2^n · n 大約 10⁴。
 - **時間 O(n! · n)**：樹的第 `d` 層試 `n - d` 個沒用過的元素，所以有 n! 個葉節點，每個複製花 O(n)。
   `for i` 迴圈在每個節點都掃過全部 `n` 個索引。
 - **空間 O(n)**：`used`、`path` 與遞迴深度。
+
+**試跑** — `nums = [1, 2, 3]`；每一層都掃過**全部**的 `nums`、跳過已用的，所以分支數從 3 → 2 → 1
+縮小，答案只出現在葉節點：
+
+<!--CODE-->
 
 **陷阱**
 - 用 `path.contains(nums[i])` 取代 `used[i]`：每個選擇多一次 O(n) 檢查，而且值一重複就錯 ——
@@ -457,13 +475,13 @@ LC 40：「每個數字只能用**一次**」，而且輸入可能有重複。
 
 <!--CODE-->
 
-<!-- 4d924bd74945 -->
+<!-- d9f37761ecd3 -->
 #### 類似題 — 切分題家族
 
 | LC | 題目 | 跟 LC 131 差在哪 |
 |----|------|------------------|
-| 93 | Restore IP Addresses | 關卡 = `0..255` 且無前導零；切分長度上限 3；結束條件還要求剛好 4 段（[實作解](./backtrack_examples.md#9-restore-ip-addresses--lc-93)） |
-| 140 | Word Break II | 關卡 = `piece in wordDict`；要對 `start` 做記憶化，否則 `"aaaa…aaab"` 會爆掉（[實作解](./backtrack_examples.md#11-word-break-ii--lc-140)） |
+| 93 | Restore IP Addresses | 關卡 = `0..255` 且無前導零；切分長度上限 3；結束條件還要求剛好 4 段（[實作解](./backtrack_examples.md#restore-ip-addresses--lc-93)） |
+| 140 | Word Break II | 關卡 = `piece in wordDict`；要對 `start` 做記憶化，否則 `"aaaa…aaab"` 會爆掉（[實作解](./backtrack_examples.md#word-break-ii--lc-140)） |
 | 139 | Word Break | 同一套搜尋，但它只問*能不能* —— 把路徑拿掉就塌縮成對 `start` 的 DP／BFS |
 | 132 | Palindrome Partitioning II | 問的是**最少切幾刀**，不是所有切法 —— 什麼都不用列舉，直接對 `start` 做 DP |
 | 842 | Split Array into Fibonacci Sequence | 關卡 = 「這一段等於前兩段相加」，所以遞迴要帶著前兩個值當狀態 |
@@ -472,7 +490,7 @@ LC 40：「每個數字只能用**一次**」，而且輸入可能有重複。
 | 291 | Word Pattern II | 切分 + 一個 `char -> piece` 的雙射，回溯時**必須**復原 |
 | 698 | Partition to K Equal Sum Subsets | 切的是**多重集合分成 k 桶**，不是把序列切成連續片段 —— 是另一份模板（[Template 13](#template-13-k-bucket-partitioning--lc-698--lc-473)） |
 
-<!-- a5c421ef73f0 -->
+<!-- 369718d59f22 -->
 ### Template 9: Grid / Word Search — LC 79 ⭐⭐⭐⭐
 
 **辨識** — 「單字由**依序相鄰**格子裡的字母組成」、「同一格**不能用超過一次**」、「每格最多走一次的路徑」。
@@ -481,8 +499,9 @@ m, n ≤ 6 加上一個短單字：每個起點 4^L 沒問題。
 **關鍵點** — 一個格子在**目前**路徑上時被標記，路徑一離開它就還原。在第一個遞迴呼叫之前標記一次、
 在最後一個之後還原一次，所以底下每個呼叫都看得到標記，每條兄弟路徑都會發現這格又空出來了。
 
-用 `visited[][]` 矩陣的版本，以及計數／取最大值的變體（LC 980、LC 1219），放在
-[backtrack_examples.md §3](./backtrack_examples.md#3-word-search--lc-79-)。
+如果不能改動輸入，就另外開一個 `visited[][]` 矩陣，在下面程式寫入與還原 `'#'` 的地方改成設定／清除
+`visited[r][c]`：同一個演算法，多 O(m · n) 空間。計數的變體（LC 980）在
+[backtrack_examples.md](./backtrack_examples.md#unique-paths-iii--lc-980) 有完整解；取最大值的變體（LC 1219）在下方逐步追蹤。
 
 <!--CODE-->
 
@@ -507,10 +526,10 @@ m, n ≤ 6 加上一個短單字：每個起點 4^L 沒問題。
 
 **練習** — LC 79 ⭐ · LC 1219 *（在所有路徑中取最大）* · LC 980 *（數走遍每一格的路徑）* · LC 212 *（很多單字：Trie 剪枝）*
 
-<!-- 32cb5e2b74f6 -->
-#### 標記能維持多久 — 它底下的每一個呼叫都看得到，旁邊的都看不到（LC 1219） ⭐⭐⭐⭐
+<!-- 87073e3ecbe6 -->
+#### 標記能維持多久 — 它底下的每一個呼叫都看得到，旁邊的都看不到 ⭐⭐⭐⭐
 
-執行 `grid[y][x] = -1` 之後，**誰會看到這個 `-1`，又會看到什麼時候？** 把這件事搞清楚，
+以 LC 1219（Path with Maximum Gold）追蹤。執行 `grid[y][x] = -1` 之後，**誰會看到這個 `-1`，又會看到什麼時候？** 把這件事搞清楚，
 mark-and-restore 才會正確；而答案要以*呼叫框（frame）*來想，不是以單一次呼叫來想：
 
 > **規則** — 在 frame A 裡標記的格子，會對 A 發出的**每一個**遞迴呼叫都保持標記 —— 四個方向
@@ -814,10 +833,10 @@ mark-and-restore 才會正確；而答案要以*呼叫框（frame）*來想，�
 > 最壞情況的量級在上面的 [Time Complexity by Problem Type](#time-complexity-by-problem-type)
 > 表格裡；這張表講的是**靠什麼把它剪掉**。
 
-<!-- 8486fab09056 -->
+<!-- 853e571a8994 -->
 ### 相關主題
 
-- [backtrack_examples.md](./backtrack_examples.md) — 這裡每份模板對應的 LC 實作解
+- [backtrack_examples.md](./backtrack_examples.md) — 不是模板錨定題的那些題目的 problem card
 - [backtrack_advanced.md](./backtrack_advanced.md) — 用 Trie 剪枝的格子搜尋（LC 212）、運算式建構（LC 282）、刪除次數預算（LC 301）、記憶化／通用切分
 - [tree_backtrack.md](./tree_backtrack.md) — 在明確的樹上做根到葉的路徑回溯
 - [dfs.md](./dfs.md) — 沒有復原步驟的 DFS 走訪

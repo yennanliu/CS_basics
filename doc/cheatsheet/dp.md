@@ -1,7 +1,7 @@
 # Dynamic Programming (DP)
 
 > **Scope** — The main DP sheet — state design, the pattern catalogue, and one canonical template per must-know DP family; the worked-solution archive, the rare techniques, and the five heaviest sub-topics live in their own sheets and are linked from here.
-> **See also** — *split out of this file*: [dp_examples.md](./dp_examples.md) — the worked LC solution archive and the problems-by-pattern index; [dp_advanced.md](./dp_advanced.md) — game theory, tree DP, interval and string deep dives, probability DP; [knapsack.md](./knapsack.md) — 0/1 vs unbounded, subset sum, combinations vs permutations ([knapsack_01_zh.md](./knapsack_01_zh.md) — 0/1 背包的中文詳解版); [dp_string.md](./dp_string.md) — the two-sequence grid family; [dp_bitmask.md](./dp_bitmask.md) — state compression; [dp_digit.md](./dp_digit.md) — counting numbers by digit; [dp_monotonic_stack.md](./dp_monotonic_stack.md) — stack-carried DP values; [dp_loop_order.md](./dp_loop_order.md) — why a transition forces its loop nesting and direction, with LC 139 worked in five orders.
+> **See also** — *split out of this file*: [dp_examples.md](./dp_examples.md) — problem cards for the classic problems that are not a template's anchor, and an index of where each common DP problem is worked; [dp_advanced.md](./dp_advanced.md) — game theory, tree DP, interval and string deep dives, probability DP; [knapsack.md](./knapsack.md) — 0/1 vs unbounded, subset sum, combinations vs permutations ([knapsack_01_zh.md](./knapsack_01_zh.md) — 0/1 背包的中文詳解版); [dp_string.md](./dp_string.md) — the two-sequence grid family; [dp_bitmask.md](./dp_bitmask.md) — state compression; [dp_digit.md](./dp_digit.md) — counting numbers by digit; [dp_monotonic_stack.md](./dp_monotonic_stack.md) — stack-carried DP values; [dp_loop_order.md](./dp_loop_order.md) — why a transition forces its loop nesting and direction, with LC 139 worked in five orders.
 > *Neighbouring sheets*: [dp_pattern.md](./dp_pattern.md) — terse template index, one section per classic pattern; [recursion_to_dp.md](./recursion_to_dp.md) — converting a working recursion into DP step by step; [kadane_algorithm.md](./kadane_algorithm.md) — the maximum-subarray family in depth; [stock_trading.md](./stock_trading.md) — the LC 121/122/188/309/714 state machine.
 
 ## LeetCode Problem Lists
@@ -457,7 +457,7 @@ Many DP problems need a base case representing "nothing" (target sum = 0, empty 
 - **Knapsack/Coin Change**: Need `dp[target + 1]` because `dp[0]` represents sum = 0
 - **Longest Common Subsequence**: Use `(n+1) x (m+1)` matrix where first row/column = empty string
   — but a 2-D table indexed by **real positions** (LC 647's `dp[i][j]` = `s[i..j]`) is `n × n`; see
-  [Sizing the table](#sizing-the-table--n--n-or-n1--n1-lc-647)
+  [Sizing the table](#sizing-the-table--n--n-or-n1--n1)
 
 ```python
 # python
@@ -589,6 +589,35 @@ for i in range(1, n + 1):
         if dp[j] and s[j:i] in words:
             dp[i] = True
             break
+```
+
+A second solution, kept because it is a different algorithm: treat each boundary `i` as a graph
+node and each dictionary word `s[i:j]` as an edge `i → j`, then ask whether `n` is reachable. Same
+bound, but it only expands boundaries that are actually reachable, and it is the form to reach for
+when the interviewer frames the problem as a path search.
+
+```python
+# python
+# IDEA: BFS over boundaries — from boundary i, every dictionary word s[i:j] reaches boundary j
+# time = O(n * L) cuts * O(L) slice+hash = O(n * L^2), L = longest word; space = O(n)
+from collections import deque
+
+def wordBreak(s, wordDict):
+    words = set(wordDict)
+    longest = max(len(w) for w in words)
+    n = len(s)
+    seen = [False] * (n + 1)           # boundary already queued
+    seen[0] = True
+    queue = deque([0])
+    while queue:
+        i = queue.popleft()
+        if i == n:                     # the whole string is cut into words
+            return True
+        for j in range(i + 1, min(n, i + longest) + 1):   # no word is longer: never slice past it
+            if not seen[j] and s[i:j] in words:
+                seen[j] = True
+                queue.append(j)
+    return False
 ```
 
 **Dry run**
@@ -765,7 +794,7 @@ bottom-right)*
 > The Python transcription, the in-place variant, the O(m) rolling-row form, the top-down memoised
 > form, the four-approach comparison table, the similar-problem map and the
 > `[[1,3,1],[1,5,1],[4,2,1]]` trace are in [dp_advanced.md](./dp_advanced.md); the counting twin
-> LC 62 (Unique Paths) is worked in [dp_examples.md](./dp_examples.md).
+> LC 62 (Unique Paths) is worked in [dp_examples.md](./dp_examples.md#unique-paths--lc-62).
 
 ### Template 2a: 2-D Table Shape and Fill Order — LC 516 ⭐⭐⭐⭐⭐
 
@@ -903,9 +932,9 @@ What do i and j MEAN in dp[i][j]?
          LC 62, 64, 221
 ```
 
-#### Sizing the table — `n × n` or `(n+1) × (n+1)`? (LC 647)
+#### Sizing the table — `n × n` or `(n+1) × (n+1)`?
 
-This is [Template 1a](#template-1a-length-indexed-table-n--1-slots--lc-70)'s rule applied to two
+Worked on LC 647 (Palindromic Substrings). This is [Template 1a](#template-1a-length-indexed-table-n--1-slots--lc-70)'s rule applied to two
 axes. The size comes from **what an index means**, not from how many dimensions the table has:
 
 | `dp[i][j]` uses… | `i` is a… | Size | Base case lives in | Reads a character as |
@@ -1055,7 +1084,9 @@ needs a **split point `k`** strictly inside the range (`dp[i][k] + dp[k][j]`) �
 stones, matrix chain — because there "already filled" means *strictly shorter*, and only a
 length-driven loop guarantees that.
 
-##### Worked table — LC 516 on `s = "bbbab"`
+##### Worked table — longest palindromic subsequence on `s = "bbbab"`
+
+LC 516, filled with the code above:
 
 ```text
    s =       b    b    b    a    b
@@ -1188,7 +1219,9 @@ def minDistance(s1, s2):
 > LC 115 — the empty string is a subsequence of anything, exactly once. Derive it, never copy it:
 > put `i = 0` into your own state sentence and read the answer off in English.
 
-##### Worked table — LC 72 on `"horse"` → `"ros"`, with the path it chose
+##### Worked table — edit distance on `"horse"` → `"ros"`, with the path it chose
+
+LC 72, filled with the code above:
 
 ```text
               ""    r     o     s
@@ -1399,129 +1432,46 @@ sort the cuts, pad the ends)* · LC 664 *(strange printer)* · LC 1000 *(merge k
 
 ### Template 4: 0/1 Knapsack — LC 416 ⭐⭐⭐⭐⭐
 
+> The knapsack family — LC 416 itself, the subset-sum reduction, unbounded, bounded and group
+> knapsack, and the loop-order rule — is worked in [**knapsack.md**](./knapsack.md); a Traditional
+> Chinese walkthrough of the 0/1 case is [**knapsack_01_zh.md**](./knapsack_01_zh.md). What follows
+> is the shape worth memorising.
+
 **Recognise** — each element is used **at most once**, and you are choosing a subset against a
 budget or a target: "partition into two subsets with equal sum", "assign + or − to reach target",
 "minimise the difference between two groups", "choose items within a capacity". The target is small
 (sum ≤ 10⁴–2·10⁴) → an O(n · target) table is expected.
 
-**Key point** — with one 1-D array, iterate the capacity **backward**: when `dp[s]` is updated for
-item `num`, `dp[s - num]` has not been touched yet in this pass, so it still means "without `num`",
-and each item is counted at most once.
+**Key point** — with one 1-D array, iterate the capacity **backward**: when `dp[w]` is updated for
+an item, `dp[w - weight]` has not been touched yet in this pass, so it still means "without this
+item", and each item is counted at most once.
 
-- **State**: `dp[s]` = can some subset of the items seen so far sum to exactly `s`?
-- **Recurrence**: `dp[s] = dp[s] or dp[s - num]`
-- **Base**: `dp[0] = True` — the empty subset
-- **Order**: items outer; capacity inner, **backward** from `target` to `num`
-- **Answer**: `dp[target]`, with `target = total // 2` (an odd total is `False` at once)
-
-```python
-# python
-# LC 416 - Partition Equal Subset Sum
-# IDEA: 0/1 knapsack on sums — dp[s] = some subset reaches s; the backward loop uses each num once
-# time = O(n * target), space = O(target)
-def canPartition(nums):
-    total = sum(nums)
-    if total % 2:
-        return False
-    target = total // 2
-
-    dp = [False] * (target + 1)
-    dp[0] = True                              # empty subset sums to 0
-
-    for num in nums:
-        for s in range(target, num - 1, -1):  # backward: dp[s - num] is still "without num"
-            dp[s] = dp[s] or dp[s - num]
-
-    return dp[target]
-```
-
-```java
-// java
-// LC 416 - Partition Equal Subset Sum
-// IDEA: 0/1 knapsack on sums — dp[s] = some subset reaches s; the backward loop uses each num once
-// time = O(n * target), space = O(target)
-public boolean canPartition(int[] nums) {
-    int total = 0;
-    for (int num : nums) {
-        total += num;
-    }
-    if (total % 2 != 0) {
-        return false;
-    }
-    int target = total / 2;
-
-    boolean[] dp = new boolean[target + 1];
-    dp[0] = true;                             // empty subset sums to 0
-
-    for (int num : nums) {
-        for (int s = target; s >= num; s--) { // backward: dp[s - num] is still "without num"
-            dp[s] = dp[s] || dp[s - num];
-        }
-    }
-    return dp[target];
-}
-```
-
-**Complexity**
-- **Time O(n · target)**: the outer `for num` runs n times and the backward `for s` at most
-  `target` times inside it.
-- **Space O(target)**: one boolean row. The 2-D form `dp[i][s]` is O(n · target); the backward loop
-  is what lets row `i` overwrite row `i-1` in place.
-
-**Dry run** — why the inner loop must go backward, on `nums = [3]`, `target = 6` (the answer is
-`False`: one 3 cannot make 6):
-
-```text
-dp = [True, False, False, False, False, False, False]
-        0      1      2      3      4      5      6
-
-Forward (WRONG):   s=3: dp[3] = dp[0] = True
-                   s=6: dp[6] = dp[3] = True    <- dp[3] was just set by the same 3: 3 + 3 ❌
-Backward (RIGHT):  s=6: dp[6] = dp[3] = False   <- dp[3] still holds its old value
-                   s=3: dp[3] = dp[0] = True
-                   result dp[6] = False ✓
-```
-
-**Traps**
-- **Forward inner loop.** It turns 0/1 into unbounded knapsack: `nums = [3]`, target 6 above
-  returns `True`.
-- **Skipping the odd-total check.** `[1, 2]` has total 3; `total // 2 = 1` is reachable, so
-  without the check the answer is wrongly `True`.
-- **Inner loop running below `num`.** `range(target, -1, -1)` reads `dp[s - num]` at a negative
-  index, which in Python is the **end** of the array, not an error.
-
-**Not this if** — an item may be **reused** (coins, unlimited supply) → unbounded knapsack, inner
-loop forward, and the loop nesting depends on whether order matters → [knapsack.md](./knapsack.md).
-Values are huge but n ≤ 20 → enumerate subsets / meet in the middle instead of a sum table.
-
-**Drill** — LC 416 ⭐ · LC 494 *(count subsets: `(total + target) / 2`)* · LC 1049 *(largest
-reachable sum ≤ total / 2)* · LC 474 *(two capacities, both backward)* · LC 879 *(count, 2-D
-capacity)*
-
-#### The max-value form (weights and values)
-
-The same backward loop with `max` instead of `or` is the textbook 0/1 knapsack:
+- **State**: `dp[w]` = the best value of a subset of the items seen so far with total weight ≤ `w`
+- **Recurrence**: `dp[w] = max(dp[w], dp[w - weight] + value)` — skip the item, or take it
+- **Base**: `dp[*] = 0` — the empty subset
+- **Order**: items outer; capacity inner, **backward** from `capacity` to `weight`
+- **Answer**: `dp[capacity]`
 
 ```python
 # python
-# IDEA: 0/1 knapsack, max value — dp[w] = best value within capacity w
+# IDEA: 0/1 knapsack, max value — dp[w] = best value within capacity w; the backward loop uses each item once
 # time = O(n * W), space = O(W)
 def knapsack_01(weights, values, capacity):
-    dp = [0] * (capacity + 1)
+    dp = [0] * (capacity + 1)                 # dp[w] = best value with total weight <= w
     for i in range(len(weights)):
-        for w in range(capacity, weights[i] - 1, -1):   # backward
+        for w in range(capacity, weights[i] - 1, -1):   # backward: dp[w - weight] is still "without i"
             dp[w] = max(dp[w], dp[w - weights[i]] + values[i])
     return dp[capacity]
 ```
 
 ```java
 // java
-// IDEA: 0/1 knapsack, max value — dp[w] = best value within capacity w
+// IDEA: 0/1 knapsack, max value — dp[w] = best value within capacity w; the backward loop uses each item once
 // time = O(n * W), space = O(W)
 public int knapsack01(int[] weights, int[] values, int capacity) {
-    int[] dp = new int[capacity + 1];
+    int[] dp = new int[capacity + 1];             // dp[w] = best value with total weight <= w
     for (int i = 0; i < weights.length; i++) {
-        for (int w = capacity; w >= weights[i]; w--) {   // backward
+        for (int w = capacity; w >= weights[i]; w--) {   // backward: dp[w - weight] is still "without i"
             dp[w] = Math.max(dp[w], dp[w - weights[i]] + values[i]);
         }
     }
@@ -1529,61 +1479,42 @@ public int knapsack01(int[] weights, int[] values, int capacity) {
 }
 ```
 
-#### 0/1 Knapsack vs Unbounded Knapsack
+The same loop answers three questions; only the transition changes — `or` for "can some subset
+reach `w`" (LC 416), `+=` for "how many subsets" (LC 494), `max(…, + value)` for the best value.
 
-| | **0/1 Knapsack** | **Unbounded Knapsack** |
-|---|---|---|
-| **Reuse** | Each item at most once | Each item unlimited times |
-| **Inner loop direction** | **Backward** (`W → weight`) | Forward (`weight → W`) |
-| **Example** | LC 416, 494, 1049 | LC 322, 518 |
-| **Why direction differs** | Backward reads OLD dp[w-weight] | Forward reads NEW dp[w-weight] (allows reuse) |
+**Complexity**
+- **Time O(n · W)**: the outer loop runs n times and the backward inner loop at most `W` times.
+- **Space O(W)**: one row. The 2-D form `dp[i][w]` is O(n · W); the backward loop is what lets
+  row `i` overwrite row `i-1` in place.
 
----
+**Dry run** — why the inner loop must go backward, with one item of weight 3 and value 5,
+`capacity = 6` (the answer is 5: the item can be taken once):
 
-#### Similar LeetCode Problems
+```text
+dp = [0, 0, 0, 0, 0, 0, 0]
+      0  1  2  3  4  5  6
 
-| LC # | Problem | Variant | Key Transformation |
-|------|---------|---------|-------------------|
-| **416** | Partition Equal Subset Sum | Boolean | `dp[s]` = can we reach sum s? |
-| **494** | Target Sum | Count ways | `sum1 = (total + target) / 2`; count subsets |
-| **1049** | Last Stone Weight II | Integer | Maximize subset sum ≤ total/2 |
-| **474** | Ones and Zeroes | 2-D capacity | dp[i][j] = max strings using ≤ i zeros, ≤ j ones |
-| **879** | Profitable Schemes | 2-D capacity | dp[profit][members] counting |
-| **2915** | Length of Longest Subsequence | Boolean | Same backward pattern |
+Forward (WRONG):   w=3: dp[3] = dp[0] + 5 = 5
+                   w=6: dp[6] = dp[3] + 5 = 10   <- dp[3] already holds this item: taken twice ❌
+Backward (RIGHT):  w=6: dp[6] = dp[3] + 5 = 5    <- dp[3] is still 0, "without the item"
+                   w=3: dp[3] = dp[0] + 5 = 5
+                   result dp[6] = 5 ✓
+```
 
----
+**Traps**
+- **Forward inner loop.** It turns 0/1 into unbounded knapsack: the single item above is taken twice.
+- **Inner loop running below the weight.** `range(capacity, -1, -1)` reads `dp[w - weight]` at a
+  negative index, which in Python is the **end** of the array, not an error.
+- **The wrong transition for the question.** Using `or` on a count table loses the number of ways.
+  On a boolean table, `max` equals `or`, but `or` makes the intent clearer.
 
-#### Recurrence catalogue (knapsack)
+**Not this if** — an item may be **reused** (coins, unlimited supply) → unbounded knapsack, inner
+loop forward, and the loop nesting depends on whether order matters → [knapsack.md](./knapsack.md).
+Values are huge but n ≤ 20 → enumerate subsets / meet in the middle instead of a sum table.
 
-| Variant | State Definition | Transition | Example |
-|---------|------------------|------------|---------|
-| **0/1 Knapsack** | dp[i][w] = max value with i items, weight w | dp[i][w] = max(dp[i-1][w], dp[i-1][w-weight[i]] + value[i]) | LC 416 Partition |
-| **Unbounded** | dp[w] = max value with weight w | dp[w] = max(dp[w], dp[w-weight[i]] + value[i]) | LC 322 Coin Change |
-| **Bounded** | dp[i][w] with a per-item count cap | Binary-split each item into 0/1 copies, then 0/1 knapsack | LC 2585 Ways to Earn Points |
-
-#### Loop order cheat sheet → knapsack.md
-
-Everything in the knapsack family is decided by two choices: **which loop is outer**, and **which
-direction the inner loop runs**. Memorise this table; the reasoning behind every row is in
-[knapsack.md](./knapsack.md).
-
-| Goal | Outer loop | Inner loop | Recurrence | LC |
-|------|-----------|------------|------------|----|
-| **0/1** — each item at most once | items | capacity, **backward** | `dp[w] = max(dp[w], dp[w-wt] + val)` | 416, 494, 1049 |
-| **Unbounded, count combinations** — `{1,2}` == `{2,1}` | items | amount, forward | `dp[a] += dp[a-coin]` | 518 |
-| **Unbounded, count permutations** — `{1,2}` != `{2,1}` | amount | items | `dp[a] += dp[a-coin]` | 377 |
-| **Unbounded, min/max** — order irrelevant | either | either | `dp[a] = min(dp[a], dp[a-coin] + 1)` | 322, 279 |
-
-**Quick rule**: *cannot* reuse an item → 0/1, backward inner loop. *Can* reuse → unbounded, forward
-inner loop; then ask whether order matters to pick the loop nesting.
-
----
-
-> **Going deeper** — the subset-sum reduction (LC 416 / 494 / 1049), the unbounded and bounded
-> variants, and the combinations-vs-permutations loop-order rule all live in
-> [**knapsack.md**](./knapsack.md); a Traditional Chinese walkthrough of the 0/1 case is in
-> [**knapsack_01_zh.md**](./knapsack_01_zh.md). This template plus the recognition table above is the
-> part worth memorising; the rest is reference.
+**Drill** — LC 416 ⭐ · LC 494 *(count subsets: `(total + target) / 2`)* · LC 1049 *(largest
+reachable sum ≤ total / 2)* · LC 474 *(two capacities, both backward)* · LC 879 *(count, 2-D
+capacity)* — all in [knapsack.md](./knapsack.md).
 
 ### Template 5: State Machine DP — LC 309
 
@@ -2108,6 +2039,21 @@ def minDistance(word1, word2):
                 )
 
     return dp[m][n]
+
+# Same recurrence, rolling row: row i reads only row i-1 (prev) and the cell to its left
+# time = O(m * n), space = O(n)
+def minDistance_rolling(word1, word2):
+    m, n = len(word1), len(word2)
+    dp = list(range(n + 1))              # row 0: j inserts
+    for i in range(1, m + 1):
+        prev = dp[:]                     # row i-1
+        dp[0] = i                        # column 0: i deletes
+        for j in range(1, n + 1):
+            if word1[i - 1] == word2[j - 1]:
+                dp[j] = prev[j - 1]
+            else:
+                dp[j] = 1 + min(prev[j], dp[j - 1], prev[j - 1])
+    return dp[n]
 ```
 
 ```java
@@ -2166,7 +2112,9 @@ delete-only. One sequence and its two ends → Shape A.
 **Drill** — LC 72 ⭐ · LC 583 *(delete only)* · LC 712 *(delete with ASCII cost)* · LC 161 *(one
 edit away, O(n) without a table)* · LC 115 *(count, not cost)*
 
-#### **Comparison: LC 72 vs LC 1143 (LCS)**
+#### **Comparison: Edit Distance vs LCS**
+
+LC 72 against LC 1143, side by side:
 
 | Aspect | LC 72 (Edit Distance) | LC 1143 (LCS) |
 |--------|----------------------|-------------|
@@ -2209,6 +2157,20 @@ def longestCommonSubsequence(text1, text2):
                 dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
 
     return dp[m][n]
+
+# Same recurrence, rolling row: keep only the previous row
+# time = O(m * n), space = O(n)
+def longestCommonSubsequence_rolling(text1, text2):
+    n = len(text2)
+    dp = [0] * (n + 1)
+    for c in text1:
+        prev, dp = dp, [0] * (n + 1)     # prev = row i-1, dp = row i
+        for j in range(n):
+            if c == text2[j]:
+                dp[j + 1] = prev[j] + 1
+            else:
+                dp[j + 1] = max(prev[j + 1], dp[j])
+    return dp[n]
 ```
 
 ```java

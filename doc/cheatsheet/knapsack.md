@@ -183,6 +183,60 @@ an item comes in several forms → [Template 6](#template-6-group-knapsack--lc-4
 LC 494 *(count subsets: `+=`, after the algebra)* · LC 474 *(two capacities, a 2-D row)* ·
 LC 879 *(count, with a profit axis capped at `minProfit`)*
 
+#### Where the one row comes from — the recursion and the 2-D table
+
+The backward 1-D loop is the end of a derivation, and an interviewer may ask for any step of it.
+The recursion written first decides each item in turn — take it or skip it. Without the memo it
+is the include / exclude backtrack, O(2^n); keyed on `(i, remaining)` it is this template top-down:
+
+```python
+# python
+# LC 416 - Partition Equal Subset Sum (top-down)
+# IDEA: can(i, r) = can some subset of nums[i:] sum to r? take nums[i] or skip it; memoise on (i, r)
+# time = O(n * target), space = O(n * target)
+def canPartition(nums):
+    total = sum(nums)
+    if total % 2 == 1:
+        return False
+    target = total // 2
+    memo = {}
+
+    def can(i, remaining):
+        if remaining == 0:
+            return True
+        if i == len(nums) or remaining < 0:
+            return False
+        key = (i, remaining)
+        if key in memo:
+            return memo[key]
+        result = can(i + 1, remaining - nums[i]) or can(i + 1, remaining)   # take, or skip
+        memo[key] = result
+        return result
+
+    return can(0, target)
+```
+
+Bottom-up, the same states form a table with one row per item:
+
+```python
+# python
+# IDEA: dp[i][w] = best value using the first i items within capacity w
+# time = O(n * W), space = O(n * W)
+def knapsack_01_2d(weights, values, capacity):
+    n = len(weights)
+    dp = [[0] * (capacity + 1) for _ in range(n + 1)]
+    for i in range(1, n + 1):
+        weight, value = weights[i - 1], values[i - 1]
+        for w in range(capacity + 1):
+            dp[i][w] = dp[i - 1][w]                               # skip item i
+            if weight <= w:
+                dp[i][w] = max(dp[i][w], dp[i - 1][w - weight] + value)   # take item i
+    return dp[n][capacity]
+```
+
+Row `i` reads only row `i - 1`, at `w` and at `w - weight`. Keep one row and run `w` **backward**,
+so `dp[w - weight]` still holds row `i - 1`'s value when it is read: that is Template 1.
+
 ### Loop Order: Combinations vs Permutations
 
 In unbounded knapsack the **order of the two loops** decides whether you count **combinations**

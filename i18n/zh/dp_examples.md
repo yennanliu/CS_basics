@@ -1,8 +1,8 @@
-<!-- a38aa6042a66 -->
+<!-- ed5fa517f4f0 -->
 # DP — 實戰題解
 
-> **範圍** — [dp.md](./dp.md) 背後的題解檔案庫：每一題經典 DP 各一份標準 Java / Python 解法，加上依模式分類的題目索引，本身不放模板也不談理論。
-> **另見**：[dp.md](./dp.md) — 這些解法所實作的模板；[dp_advanced.md](./dp_advanced.md) — 冷門技巧與深入探討；[dp_pattern.md](./dp_pattern.md) — 更精簡的「一個模式一節」模板索引；[stock_trading.md](./stock_trading.md) — 所有股票狀態機的變形。
+> **範圍** — 不是模板錨定題的經典 DP 題（LC 343、91、62、279、276、1137），每一題都是一張 problem card，歸檔在它所歸約到的 [dp.md](./dp.md) 模板底下，再加上一份「其他常見 DP 題在哪裡有完整解」的索引；本身不放模板也不談理論。
+> **另見**：[dp.md](./dp.md) — 這些 card 歸約到的模板；[knapsack.md](./knapsack.md) — 完整的背包家族；[stock_trading.md](./stock_trading.md) — 所有股票狀態機的變形；[dp_advanced.md](./dp_advanced.md) — 冷門技巧與深入探討；[dp_pattern.md](./dp_pattern.md) — 更精簡的「一個模式一節」模板索引。
 
 <!-- fd7fec51d5fa -->
 ## LeetCode 題目清單
@@ -10,301 +10,184 @@
 - [Dynamic Programming](https://leetcode.com/problem-list/dynamic-programming/)
 - [Memoization](https://leetcode.com/problem-list/memoization/)
 
-<!-- ebb911331ad4 -->
+<!-- 0951d02dea02 -->
 ## 總覽
 
-只有解法。每個範例都會寫清楚狀態定義、轉移，以及每種語言各一份實作；推導出它的思路放在 [dp.md](./dp.md) 對應的模板裡。
+這是 [dp.md](./dp.md) 的題目集：模板在那邊，題目在這邊。每張 card 寫出這題在模板之外多加的那一件事（每一步多一個選項、一道合法性檢查、一個不同的狀態），並給一份標準解。各節依 dp.md 的模板順序排列；題目都已在自己 card 上、或在專門的表裡解完的模板，這裡就沒有那一節。
 
-<!-- 1ba3a033f724 -->
-### 關鍵性質
-- **複雜度**：逐解法標示，寫在每段程式碼的第一行註解
-- **核心想法**：先看模板、再看解法，順序別反過來
-- **什麼時候用**：複習，以及拿自己的解法對照標準解
+<!-- de8a776ca8fe -->
+## 索引
 
-<!-- c8b75ab397b3 -->
-## 依模式分類的題目
+| LC | 題目 | 歸約到 | 難度 |
+|---|---|---|---|
+| 343 | [Integer Break](#integer-break--lc-343) | [Template 1](./dp.md#template-1-1-d-linear-dp--lc-53-) 一維線性 DP，試遍最後一刀 | Medium |
+| 91 | [Decode Ways](#decode-ways--lc-91) | [Template 1a](./dp.md#template-1a-length-indexed-table-n--1-slots--lc-70) 以長度為索引的表 | Medium |
+| 62 | [Unique Paths](#unique-paths--lc-62) | [Template 2](./dp.md#template-2-2-d-grid-dp--lc-64-) 二維格子 DP，計數 | Medium |
+| 279 | [Perfect Squares](#perfect-squares--lc-279) | [knapsack.md § Template 4](./knapsack.md#template-4-unbounded-min-count--lc-322-) 完全背包，最少個數 | Medium |
+| 276 | [Paint Fence](#paint-fence--lc-276) | [Template 5](./dp.md#template-5-state-machine-dp--lc-309) 狀態機，兩個狀態 | Medium |
+| 1137 | [N-th Tribonacci Number](#n-th-tribonacci-number--lc-1137) | [Template 6](./dp.md#template-6-memoization--tabulation--rolling-variables--lc-198-) 滾動變數 | Easy |
 
-<!-- 49f58d65260c -->
-### **線性 DP 題目**
-| 題目 | LC # | 關鍵技巧 | 難度 |
-|---------|------|---------------|------------|
-| Climbing Stairs | 70 | dp[i] = dp[i-1] + dp[i-2] | Easy |
-| House Robber | 198 | 取最大值並跳過相鄰 | Medium |
-| Longest Increasing Subsequence | 300 | O(n²) 或 O(nlogn) | Medium |
-| Maximum Subarray | 53 | Kadane 演算法 | Easy |
-| Decode Ways | 91 | 字串 DP | Medium |
-| Word Break | 139 | 字典 DP | Medium |
-| Coin Change | 322 | 最少硬幣數 | Medium |
-| Integer Break | 343 | 最大乘積，拆 vs 不拆 | Medium |
+<!-- ba470cbb8218 -->
+### 在別處有完整解
 
-<!-- 6051066e9c1b -->
-### **二維網格題目**
-| 題目 | LC # | 關鍵技巧 | 難度 |
-|---------|------|---------------|------------|
-| Unique Paths | 62 | 路徑計數 | Medium |
-| Minimum Path Sum | 64 | 最小成本路徑 | Medium |
-| Maximal Square | 221 | 二維擴張 | Medium |
-| Dungeon Game | 174 | 反向 DP | Hard |
-| Cherry Pickup | 741 | 三維 DP | Hard |
-| Number of Paths with Max Score | 1301 | 多值 DP | Hard |
+每一題都只在擁有它的那張 card 或那份表裡解一次。
 
-<!-- 697d3f1a570e -->
-### **區間 DP 題目**
-| 題目 | LC # | 關鍵技巧 | 難度 |
-|---------|------|---------------|------------|
-| Longest Palindromic Substring | 5 | 中心擴張或 DP | Medium |
-| Palindrome Partitioning II | 132 | 最少切割數 | Hard |
-| Burst Balloons | 312 | 區間相乘 | Hard |
-| Minimum Cost to Merge Stones | 1000 | K 路合併 | Hard |
-| Strange Printer | 664 | 區間列印 | Hard |
-
-<!-- 26e10444aac5 -->
-### **賽局理論／Minimax DP 題目**
-| 題目 | LC # | 關鍵技巧 | 難度 |
-|---------|------|---------------|------------|
-| Predict the Winner | 486 | 相對分差 dp[i][j] | Medium |
-| Stone Game | 877 | 同 486（偶數長度時恆為 true） | Medium |
-| Stone Game II | 1140 | 可拿數量會變動的 minimax | Medium |
-| Stone Game III | 1406 | 後綴 minimax DP | Hard |
-| Optimal Division | 553 | 從賽局理論得到的貪婪洞見 | Medium |
-
-<!-- 280679f0ccdb -->
-### **背包題目**
-| 題目 | LC # | 關鍵技巧 | 難度 |
-|---------|------|---------------|------------|
-| Partition Equal Subset Sum | 416 | 0/1 背包 | Medium |
-| Target Sum | 494 | 湊到目標值 | Medium |
-| Last Stone Weight II | 1049 | 最小差值 | Medium |
-| Ones and Zeroes | 474 | 二維背包 | Medium |
-| **Perfect Squares** | **279** | **完全背包（把平方數當硬幣，求最少個數）** | **Medium** |
-| **Coin Change 2** | **518** | **完全背包（硬幣→金額 = 組合數）** | **Medium** |
-| **Combination Sum IV** | **377** | **完全背包（金額→硬幣 = 排列數）** | **Medium** |
-
-<!-- 09e2ece4e790 -->
-### **狀態機題目**
-| 題目 | LC # | 關鍵技巧 | 難度 | 狀態數 | 模式 |
-|---------|------|---------------|------------|--------|---------|
-| Best Time to Buy and Sell Stock II | 122 | 多次交易 | Easy | 2 個狀態 | hold/cash |
-| **Stock with Cooldown** | **309** | **三狀態轉移** | **Medium** | **3 個狀態** | **hold/sold/rest** |
-| Stock with Transaction Fee | 714 | 要考慮手續費 | Medium | 2 個狀態 | hold/cash |
-| Stock III | 123 | 最多 2 次交易 | Hard | 4 個狀態 | buy1/sell1/buy2/sell2 |
-| Stock IV | 188 | 最多 k 次交易 | Hard | 2k 個狀態 | 動態狀態 |
-
-**核心模式分析：股票題**
-
-| 題目 | 限制 | 需要的狀態 | 關鍵差異 |
-|---------|-----------|---------------|----------------|
-| **LC 122** | 交易次數不限 | 2（hold/cash） | 單純買賣 |
-| **LC 309** | 賣出後要冷卻 | 3（hold/sold/rest） | 需要 rest 狀態 |
-| **LC 714** | 有交易手續費 | 2（hold/cash） | 賣出時扣手續費 |
-| **LC 123** | 最多 2 次交易 | 4（2 組買賣） | 要追蹤交易次數 |
-| **LC 188** | 最多 k 次交易 | 2k 個狀態 | k 次交易的一般化 |
-
-**狀態機模式辨識：**
-<!--CODE-->
-
-<!-- e666d7d4d341 -->
-## 其他高頻 DP 題目
-
-> 這些是很有名的題目，遞迴式直接就是上面某個模板的實例 —— 列出來是為了讓對應關係一目了然。
-
-| 題目 | LC # | 化約到哪個模板 | 一句話想法 |
-|---------|------|------------------------|---------------|
-| Trapping Rain Water | 42 | 前綴／後綴陣列（一維 DP） | `water[i] = min(maxLeft[i], maxRight[i]) - h[i]`；改雙指標就不用那兩個陣列 |
-| Jump Game | 55 | 一維可達性 DP → 貪婪 | 追蹤能到達的最遠索引 |
-| Jump Game II | 45 | 一維 DP → BFS 式的貪婪分層 | `dp[i] = min(dp[j]+1)`，貪婪可以 O(n) 做完 |
-| Minimum Cost For Tickets | 983 | 在天數上的一維線性 DP | `dp[d] = min(dp[d-1]+c1, dp[d-7]+c7, dp[d-30]+c30)` |
-| 01 Matrix | 542 | 二維網格 DP（掃兩趟） | 第一趟左上→右下，第二趟反過來 |
-| Counting Bits | 338 | 一維 DP 加位元小技巧 | `dp[i] = dp[i >> 1] + (i & 1)` |
-| Is Subsequence | 392 | LCS 的退化情況 | 雙指標 O(n)；如果追問要處理大量查詢，就改用 LCS 表 |
-| Pascal's Triangle / II | 118 / 119 | 一維滾動列 | `row[j] += row[j-1]`，而且要**由後往前**走 |
-
-<!-- 9ab83cf281bd -->
-## 實戰題解
-
-<!-- a608e92a4163 -->
-### 2-1) Unique Paths (LC 62) — 網格 DP 路徑計數
-
-> dp[i][j] = dp[i-1][j] + dp[i][j-1]；在 m×n 網格上從左上走到右下的路徑數。
-
-<!--CODE-->
-
-
-<!--CODE-->
-
-<!-- 402a58b1e5f0 -->
-### 2-2) Maximum Product Subarray (LC 152) — 同時追蹤最小／最大乘積
-
-> 每一步都要同時追最大值和最小值（最小值乘上負數之後可能翻成最大值）。
-
-<!--CODE-->
-
-<!--CODE-->
-
-<!-- 786bb20c283d -->
-### 2-3) Best Time to Buy and Sell Stock with Transaction Fee (LC 714) — 雙狀態 DP
-
-> hold/free 兩個狀態；轉移：hold = max(hold, free-price)、free = max(free, hold+price-fee)。
-
-<!--CODE-->
-
-<!-- 8577109a3806 -->
-### 2-4) Best Time to Buy and Sell Stock with Cooldown (LC 309) — 三狀態 DP
-
-> 狀態：held/sold/rest；sold → rest → held 這個循環強制了一天的冷卻期。
-
-<!--CODE-->
-
-**範例走查：prices = [1,2,3,0,2]**
-
-<!--CODE-->
-
-**狀態轉移追蹤（第 4 天）：**
-<!--CODE-->
-
-**和一般股票題的關鍵差別：**
-
-| 面向 | 一般股票題 (LC 122) | 有冷卻期 (LC 309) |
-|--------|------------------------|------------------------------|
-| **狀態** | 2（hold、cash） | 3（hold、sold、rest） |
-| **限制** | 無 | 賣出後必須冷卻 |
-| **買入轉移** | `hold = max(hold, cash - price)` | `hold = max(hold, rest - price)` |
-| **為什麼不同？** | 隨時都能買 | 只有 rest 之後才能買（不能剛賣完就買） |
-| **空間** | O(1) - 2 個變數 | O(1) - 3 個變數 |
-| **複雜度** | O(n) 時間 | O(n) 時間 |
-
-**常見錯誤：**
-1. ❌ 只用 2 個狀態而不是 3 個（等於忽略了冷卻期）
-2. ❌ 寫成 `hold = max(hold, sold - prices[i])`（賣完不能馬上買！）
-3. ❌ 忘了在更新前先存下 `prevSold`（rest 就會算錯）
-4. ❌ 回傳 `max(hold, sold, rest)`（結束時不能還抱著股票）
-
-**這個模式為什麼成立：**
-- **SOLD 狀態**：像一道「閘門」—— 一旦進來，就一定要經過 REST
-- **REST 狀態**：把再次 BUY 的能力「解鎖」
-- **HOLD 狀態**：擋住你去 REST（得先賣掉）
-
-於是就形成一條被迫走的流程：`HOLD → SOLD → REST → HOLD`，冷卻期自然成立。
-
-**相似題目：**
-- LC 122: Best Time to Buy and Sell Stock II（沒有冷卻期，更單純）
-- LC 714: Best Time to Buy and Sell Stock with Transaction Fee（2 個狀態 + 手續費）
-- LC 123: Best Time to Buy and Sell Stock III（2 次交易，4 個狀態）
-- LC 188: Best Time to Buy and Sell Stock IV（k 次交易，2k 個狀態）
-
-<!-- 0c8c05ef49c4 -->
-### 2-5) N-th Tribonacci Number (LC 1137) — 滾動三個變數
-
-> T(n) = T(n-1) + T(n-2) + T(n-3)；維護三個滾動變數就好，不需要陣列。
-
-<!--CODE-->
-
-<!-- 7ed62aa8e2f6 -->
-### 2-6) Decode Ways (LC 91) — 線性 DP，檢查一位／兩位數
-
-> dp[i] = 解碼 s[0..i] 的方法數；單一位數合法就加 dp[i-1]，兩位數合法就加 dp[i-2]。
-
-<!--CODE-->
-
-**相似 LC：**
-- LC 91 Decode Ways
-- LC 639 Decode Ways II（有 `*` 萬用字元）
-- LC 70 Climbing Stairs（同樣是類 Fibonacci 的結構）
-- LC 509 Fibonacci Number
-- LC 1137 N-th Tribonacci Number
-
-<!-- 3365a4dbacc1 -->
-### 2-7) Perfect Squares (LC 279) — 完全背包（最少個數）
-
-> **核心想法**：把每個完全平方數（1、4、9、16……）當成一種「幣值」，求湊出金額 `n` 所需的最少硬幣數。這就是 **Coin Change**（LC 322）的模式，一模一樣。
-
-**模式**：完全背包 —— 每個平方數可以用無限次，目標是最小化個數。
-
-<!--CODE-->
-
-**為什麼跟 Coin Change 是同一回事**：
-| | Coin Change (LC 322) | Perfect Squares (LC 279) |
+| LC | 題目 | 所在 |
 |---|---|---|
-| **「硬幣」** | 題目給的幣值 | 完全平方數：1、4、9、16…… |
-| **「金額」** | 目標金額 | 目標值 `n` |
-| **目標** | 湊到金額的最少硬幣數 | 加總成 `n` 的最少平方數個數 |
-| **遞迴式** | `dp[i] = min(dp[i], dp[i - coin] + 1)` | `dp[i] = min(dp[i], dp[i - j*j] + 1)` |
-| **可以重複用？** | 可以（完全背包） | 可以（完全背包） |
+| 53 | Maximum Subarray | [dp.md § Template 1](./dp.md#template-1-1-d-linear-dp--lc-53-)（錨定題）；Kadane 家族在 [kadane_algorithm.md](./kadane_algorithm.md) |
+| 152 | Maximum Product Subarray | [kadane_algorithm.md](./kadane_algorithm.md)：同時追蹤目前的最大**與**最小乘積，因為負數會讓兩者對調 |
+| 70 | Climbing Stairs | [dp.md § Template 1a](./dp.md#template-1a-length-indexed-table-n--1-slots--lc-70)（錨定題） |
+| 139 | Word Break | [dp.md § Template 1b](./dp.md#template-1b-prefix-partition-dp--lc-139-)（錨定題） |
+| 64 | Minimum Path Sum | [dp.md § Template 2](./dp.md#template-2-2-d-grid-dp--lc-64-)（錨定題） |
+| 416 / 494 / 1049 | Partition Equal Subset Sum / Target Sum / Last Stone Weight II | [knapsack.md](./knapsack.md) — Template 1（錨定題）與它的 LC Examples |
+| 322 / 518 / 377 | Coin Change / II / Combination Sum IV | [knapsack.md](./knapsack.md) — Template 4、2、3（錨定題） |
+| 309 | Best Time to Buy and Sell Stock with Cooldown | [dp.md § Template 5](./dp.md#template-5-state-machine-dp--lc-309)（錨定題） |
+| 121 / 122 / 123 / 188 / 714 | 其他股票題 | [stock_trading.md](./stock_trading.md) |
+| 198 | House Robber | [dp.md § Template 6](./dp.md#template-6-memoization--tabulation--rolling-variables--lc-198-)（錨定題） |
 
-**注意**：平方數不需要排序 —— 求最少個數的 DP 不在意迴圈順序（排序是給貪婪／回溯用的，這裡沒用）。
+<!-- f1d464c819f4 -->
+### 這裡沒有完整解 — 一句話的歸約
 
-**相似 LeetCode 題目**：
-| 題目 | LC # | 相似之處 |
-|---------|------|-----------|
-| Coin Change | 322 | 完全相同的模式 —— 湊到金額的最少硬幣數 |
-| Coin Change 2 | 518 | 硬幣的想法一樣，但改成算組合數 |
-| Combination Sum IV | 377 | 硬幣的想法一樣，但改成算排列數 |
-| Climbing Stairs | 70 | 更簡單的版本 —— 每步只能走 1 或 2 |
+| 題目 | LC | 歸約到 | 一句話的想法 |
+|---|---|---|---|
+| Trapping Rain Water | 42 | 前綴／後綴陣列 | `water[i] = min(maxLeft[i], maxRight[i]) - h[i]`；雙指標可以省掉陣列 |
+| Jump Game | 55 | 一維可達性 → 貪心 | 追蹤能到達的最遠索引 |
+| Jump Game II | 45 | 一維 DP → 貪心分層 | `dp[i] = min(dp[j] + 1)`；像 BFS 那樣分層可以做到 O(n) |
+| Minimum Cost For Tickets | 983 | 以天為單位的 [Template 1](./dp.md#template-1-1-d-linear-dp--lc-53-) | `dp[d] = min(dp[d-1] + c1, dp[d-7] + c7, dp[d-30] + c30)` |
+| 01 Matrix | 542 | [Template 2](./dp.md#template-2-2-d-grid-dp--lc-64-)，掃兩趟 | 左上 → 右下，再反過來一趟 |
+| Counting Bits | 338 | [Template 1](./dp.md#template-1-1-d-linear-dp--lc-53-) | `dp[i] = dp[i >> 1] + (i & 1)` |
+| Is Subsequence | 392 | LCS 的退化情況 | 雙指標 O(n)；只有查詢很多次時才用 LCS 表 |
+| Pascal's Triangle / II | 118 / 119 | [Template 6](./dp.md#template-6-memoization--tabulation--rolling-variables--lc-198-)，一列滾動 | `row[j] += row[j-1]`，**倒著**跑 |
 
-<!-- ea2db60d4440 -->
-### 2-8) Integer Break (LC 343) — 線性 DP（拆 vs 不拆）
+<!-- 94fc0c898cc0 -->
+## 一維線性 DP 範例
 
-**模式**：線性 DP —— 對每個整數 `i`，試遍所有切點 `j`，再決定 `(i-j)` 要不要繼續往下拆。
+<!-- 3226eac882a5 -->
+### Integer Break — LC 343
 
-**核心 DP 想法**：
-<!--CODE-->
+> **關鍵** — `dp[i]` 是把 `i` 拆成**至少兩段**時的最大乘積。最後一刀 `j + (i - j)` 之後，剩下的
+> 部分可以保持完整（`j * (i - j)`），也可以再拆（`j * dp[i - j]`）。兩種都要：`dp[2] = 1`，但把 `2`
+> 留著不拆值 2。
 
-關鍵洞見是**拆 vs 不拆的選擇**：把 `i` 切成 `j + (i-j)` 時，剩下的 `(i-j)` 可以原封不動留著，也可以繼續拆（用 `dp[i-j]`）。兩種都要考慮，因為 `dp[i-j]` 預設至少拆成 2 份，但有時候直接用 `(i-j)` 反而比較好（例如 `dp[2]=1`，但 `2` 這個值本身更大）。
-
-**貪婪捷徑**：盡量拆成 3。如果餘數是 1，就把 `3+1` 換成 `2+2`（因為 `2×2 > 3×1`）。
-
-<!--CODE-->
-
-**n=10 的 DP 表**：
-<!--CODE-->
-
-**相似 LeetCode 題目**：
-| 題目 | LC # | 相似之處 |
-|---------|------|-----------|
-| Perfect Squares | 279 | 湊到 n 的最少個數（完全背包變形） |
-| Coin Change | 322 | 在所有分解 n 的方式上做最佳化 |
-| Unique Binary Search Trees | 96 | 試遍所有切點，再合併子問題的結果 |
-| Maximum Product Subarray | 152 | 用 DP 最大化乘積 |
-| Partition to K Equal Sum Subsets | 698 | 在限制下把整數切成若干份 |
-
-<!-- 18477726024f -->
-### 2-9) Paint Fence (LC 276) — 雙狀態 DP（同色／異色）
-
-> 用 `k` 種顏色漆 `n` 根柱子，且**相鄰同色的柱子不能超過 2 根**。把每根柱子拆成兩個狀態 —— 「和前一根同色」 vs 「和前一根不同色」 —— 然後往前滾動。
-
-<!-- 6be1d45f414f -->
-#### 1. 核心想法
-
-對最後一根柱子 `i` 追蹤兩個狀態：
-
-- `same[i]` = 柱子 `i` 和 `i-1` **同色**的方法數
-- `diff[i]` = 柱子 `i` 和 `i-1` **不同色**的方法數
-
-「相鄰同色不超過 2 根」這條規則意思是：**只有在前兩根不同色時，才可以漆成同色**（否則就變成連續 3 根）。這正是 `same[i]` 依賴 `diff[i-1]` 的原因。
-
-<!--CODE-->
-
-<!-- 6865e5a7f677 -->
-#### 2. 模式
-
-**用滾動變數的雙狀態線性 DP** —— 和股票狀態機那一家（LC 309/714）是同一類，只是這裡的狀態編碼的是*局部相鄰限制*，不是買賣。因為每個狀態只需要前一步，把陣列壓成兩個純量即可 → **O(n) 時間、O(1) 空間**。
+**歸約到**：[dp.md § Template 1](./dp.md#template-1-1-d-linear-dp--lc-53-) — `dp[i]` 讀之前的每一格，每一刀有兩個選項。
 
 <!--CODE-->
 
 <!--CODE-->
 
+**試跑** — `n = 10`：
+
 <!--CODE-->
 
-**邊界情況**：如果 `n > 2 && k == 1`，答案是 `0`（只有一種顏色，躲不掉連續 3 根）。
+**陷阱**
+- 只用 `j * dp[i - j]`：剩下的 2 或 3 一定會被再拆，價值就掉了 —— `n = 4` 得到 3 而不是 4，
+  `n = 6` 得到 6 而不是 9。
+- O(n) 的貪心（盡量拆成 3，`3 + 1` 改成 `2 + 2`）是追問，不是開場：它需要一個 DP 不需要的證明。
 
-<!-- a452f1a9a972 -->
-#### 3. 相似 LeetCode 題目
+<!-- 45eb93ca65d8 -->
+## 以長度為索引的表 範例
 
-| 題目 | LC # | 相似之處 |
-|---------|------|-----------|
-| Climbing Stairs | 70 | 類 Fibonacci 的滾動遞迴式，O(1) 空間 |
-| House Robber | 198 | 兩個隱含狀態（搶／跳過）往前滾 |
-| Best Time to Buy/Sell with Cooldown | 309 | 帶相鄰式限制的多狀態機 |
-| Best Time to Buy/Sell with Fee | 714 | 兩個滾動狀態（hold/cash） |
-| Delete and Earn | 740 | 在數值上做取／不取的狀態 DP |
-| Domino and Tromino Tiling | 790 | 用滾動狀態轉移數鋪法 |
+<!-- ecef2a337622 -->
+### Decode Ways — LC 91
+
+> **關鍵** — 有合法性檢查的 Climbing Stairs：`dp[i]`（前 `i` 個字元的解碼方式數）在最後一位是
+> `1`–`9` 時加上 `dp[i - 1]`，在最後兩位是 `10`–`26` 時加上 `dp[i - 2]`。`0` 只能當兩位數的第二位。
+
+**歸約到**：[dp.md § Template 1a](./dp.md#template-1a-length-indexed-table-n--1-slots--lc-70) — `n + 1` 的表，`dp[0] = 1` 代表空前綴。
+
+<!--CODE-->
+
+<!--CODE-->
+
+**陷阱**
+- `"06"` 是 `0`，不是 `1`：`06` 不是合法的兩位數代碼，所以檢查是 `10..26`，不是 `<= 26`。
+- 在 `n + 1` 的表裡，`s[i - 1]` 是**目前**的字元，不是前一個 —— 見 Template 1a 底下的
+  [`s[i-1]` 陷阱](./dp.md#the-si-1-trap--it-is-the-current-character-not-the-previous-one)。
+
+**類似** — LC 639 *（有 `*` 萬用字元）* · LC 70 · LC 1137
+
+<!-- 7cef5394ae4f -->
+## 二維格子 DP 範例
+
+<!-- e13257f14e19 -->
+### Unique Paths — LC 62
+
+> **關鍵** — 走進一格的路徑數，是走進上面那格的路徑數加上走進左邊那格的路徑數，因為最後一步
+> 只有這兩種。第一列和第一行都是 `1`：到每一格只有一條直線路徑。
+
+**歸約到**：[dp.md § Template 2](./dp.md#template-2-2-d-grid-dp--lc-64-) — 把 `min` 換成 `+`，格子沒有成本。
+
+<!--CODE-->
+
+<!--CODE-->
+
+**陷阱**
+- 每一列只需要上一列，所以只開一個長度 `n` 的陣列、做 `dp[col] += dp[col - 1]`，就是 O(n) 空間的追問。
+- 封閉解 `C(m + n - 2, m - 1)` 也對；用整數運算算它，見
+  [combinatorics_math_patterns.md](./combinatorics_math_patterns.md)。
+
+**類似** — LC 63 *（有障礙物：被擋住的格子是 0）* · LC 64 · LC 980 *（每格剛好走一次：回溯，不是 DP）*
+
+<!-- f30d7c4dffa5 -->
+## 背包範例
+
+<!-- 357fe9078f1f -->
+### Perfect Squares — LC 279
+
+> **關鍵** — 平方數 `1, 4, 9, …` 就是無限供應的硬幣，`n` 是金額：湊成 `n` 的最少平方數個數，
+> 就是 Coin Change。`dp[0] = 0`；其他每格都從 `n` 開始（`n` 個 1 永遠可行），所以沒有 `-1` 的情況。
+
+**歸約到**：[knapsack.md § Template 4](./knapsack.md#template-4-unbounded-min-count--lc-322-) — 完全背包求最少個數，硬幣是所有 ≤ 金額的平方數。
+
+<!--CODE-->
+
+<!--CODE-->
+
+**陷阱**
+- 「先拿最大的平方數」的貪心會錯：`12 = 9 + 1 + 1 + 1`（4 個），但 `4 + 4 + 4` 只要 3 個。
+- 求最少個數時迴圈順序不重要；數方法數時就重要了
+  （[knapsack.md § Loop Order](./knapsack.md#loop-order-combinations-vs-permutations)）。
+
+**類似** — LC 322 · LC 518 · LC 377 — 對餘數做 BFS、一層一層走，也能解同一題。
+
+<!-- b1978d3d140a -->
+## 狀態機 DP 範例
+
+<!-- bdcc3e2a9f53 -->
+### Paint Fence — LC 276
+
+> **關鍵** — 最後一根柱子有兩個狀態：`same`（跟前一根同色）與 `diff`（不同色）。「不能三根連續同色」
+> 代表 `same` 只能接在 `diff` 後面，所以 `same = diff_prev`，`diff = (same_prev + diff_prev) * (k - 1)`。
+
+**歸約到**：[dp.md § Template 5](./dp.md#template-5-state-machine-dp--lc-309) — 兩個只讀前一根柱子的狀態，滾動成兩個變數。
+
+<!--CODE-->
+
+<!--CODE-->
+
+**陷阱**
+- 用**新的** `same` 去更新 `diff`：先把舊值存起來，就像每一個狀態機一樣。
+- `k = 1`、`n ≥ 3` 是 `0`；遞迴式自己會算到（`diff` 一開始就是 0）。
+
+**類似** — LC 198 · LC 309 · LC 740 *（對值做拿／不拿）* · LC 790 *（把鋪磚當成狀態）*
+
+<!-- a29e3b087d90 -->
+## 滾動變數範例
+
+<!-- 7795e6c16b8b -->
+### N-th Tribonacci Number — LC 1137
+
+> **關鍵** — `T(n)` 剛好讀最後三個值，所以三個變數就能取代整張表。由最舊的開始往前移
+> （`a = b`、`b = c`、`c = next`），否則某個值會在被讀到之前就被覆蓋。
+
+**歸約到**：[dp.md § Template 6](./dp.md#template-6-memoization--tabulation--rolling-variables--lc-198-) — 最後一階，`k = 3` 個滾動變數。
+
+<!--CODE-->
+
+<!--CODE-->
+
+**陷阱**
+- `n = 0, 1, 2` 在迴圈前就回傳；起始值 `0, 1, 1` 必須滿足它們開頭的那個遞迴式。
+- 滾動變數的更新順序是經典 bug —— [dp_advanced.md](./dp_advanced.md) 在滾動變數的深入探討裡逐步追蹤了它。
+
+**類似** — LC 70 · LC 509 · LC 746

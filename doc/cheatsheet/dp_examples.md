@@ -1,7 +1,7 @@
 # DP Worked Examples
 
-> **Scope** — The worked-solution archive behind [dp.md](./dp.md): one canonical Java / Python solution per classic DP problem plus the problems-by-pattern index, with no templates or theory of its own.
-> **See also**: [dp.md](./dp.md) — the templates these solutions instantiate; [dp_advanced.md](./dp_advanced.md) — the rare techniques and deep dives; [dp_pattern.md](./dp_pattern.md) — a terser one-section-per-pattern template index; [stock_trading.md](./stock_trading.md) — every stock state-machine variant.
+> **Scope** — The classic DP problems that are not a template's anchor (LC 343, 91, 62, 279, 276, 1137), each as a problem card filed under the [dp.md](./dp.md) template it reduces to, plus an index of where every other common DP problem is worked; no templates or theory of its own.
+> **See also**: [dp.md](./dp.md) — the templates these cards reduce to; [knapsack.md](./knapsack.md) — the knapsack family in full; [stock_trading.md](./stock_trading.md) — every stock state-machine variant; [dp_advanced.md](./dp_advanced.md) — the rare techniques and deep dives; [dp_pattern.md](./dp_pattern.md) — a terser one-section-per-pattern template index.
 
 ## LeetCode Problem Lists
 
@@ -10,847 +10,385 @@
 
 ## Overview
 
-Solutions only. Each example states the state definition, the transition, and one implementation per
-language; the reasoning that produced it lives in the matching template in [dp.md](./dp.md).
-
-### Key Properties
-- **Complexity**: stated per solution, in the first comment of each code block
-- **Core Idea**: read the template first, then the solution — not the other way round
-- **When to Use**: revision, and checking your own solution against a canonical one
-
-## Problems by Pattern
-
-### **Linear DP Problems**
-| Problem | LC # | Key Technique | Difficulty |
-|---------|------|---------------|------------|
-| Climbing Stairs | 70 | dp[i] = dp[i-1] + dp[i-2] | Easy |
-| House Robber | 198 | Max with skip | Medium |
-| Longest Increasing Subsequence | 300 | O(n²) or O(nlogn) | Medium |
-| Maximum Subarray | 53 | Kadane's algorithm | Easy |
-| Decode Ways | 91 | String DP | Medium |
-| Word Break | 139 | Dictionary DP | Medium |
-| Coin Change | 322 | Min coins | Medium |
-| Integer Break | 343 | Max product, break vs no-break | Medium |
-
-### **2D Grid Problems**
-| Problem | LC # | Key Technique | Difficulty |
-|---------|------|---------------|------------|
-| Unique Paths | 62 | Path counting | Medium |
-| Minimum Path Sum | 64 | Min cost path | Medium |
-| Maximal Square | 221 | 2D expansion | Medium |
-| Dungeon Game | 174 | Backward DP | Hard |
-| Cherry Pickup | 741 | 3D DP | Hard |
-| Number of Paths with Max Score | 1301 | Multi-value DP | Hard |
-
-### **Interval DP Problems**
-| Problem | LC # | Key Technique | Difficulty |
-|---------|------|---------------|------------|
-| Longest Palindromic Substring | 5 | Expand or DP | Medium |
-| Palindrome Partitioning II | 132 | Min cuts | Hard |
-| Burst Balloons | 312 | Interval multiplication | Hard |
-| Minimum Cost to Merge Stones | 1000 | K-way merge | Hard |
-| Strange Printer | 664 | Interval printing | Hard |
-
-### **Game Theory / Minimax DP Problems**
-| Problem | LC # | Key Technique | Difficulty |
-|---------|------|---------------|------------|
-| Predict the Winner | 486 | Relative score diff dp[i][j] | Medium |
-| Stone Game | 877 | Same as 486 (always true for even length) | Medium |
-| Stone Game II | 1140 | Minimax with variable take count | Medium |
-| Stone Game III | 1406 | Suffix minimax DP | Hard |
-| Optimal Division | 553 | Greedy insight from game theory | Medium |
-
-### **Knapsack Problems**
-| Problem | LC # | Key Technique | Difficulty |
-|---------|------|---------------|------------|
-| Partition Equal Subset Sum | 416 | 0/1 Knapsack | Medium |
-| Target Sum | 494 | Sum to target | Medium |
-| Last Stone Weight II | 1049 | Min difference | Medium |
-| Ones and Zeroes | 474 | 2D Knapsack | Medium |
-| **Perfect Squares** | **279** | **Unbounded (squares as coins, min count)** | **Medium** |
-| **Coin Change 2** | **518** | **Unbounded (Coin→Amount = Combinations)** | **Medium** |
-| **Combination Sum IV** | **377** | **Unbounded (Amount→Coin = Permutations)** | **Medium** |
-
-### **State Machine Problems**
-| Problem | LC # | Key Technique | Difficulty | States | Pattern |
-|---------|------|---------------|------------|--------|---------|
-| Best Time to Buy and Sell Stock II | 122 | Multiple transactions | Easy | 2 states | hold/cash |
-| **Stock with Cooldown** | **309** | **3-state transitions** | **Medium** | **3 states** | **hold/sold/rest** |
-| Stock with Transaction Fee | 714 | Fee consideration | Medium | 2 states | hold/cash |
-| Stock III | 123 | At most 2 transactions | Hard | 4 states | buy1/sell1/buy2/sell2 |
-| Stock IV | 188 | At most k transactions | Hard | 2k states | Dynamic states |
-
-**Core Pattern Analysis: Stock Problems**
-
-| Problem | Constraint | States Needed | Key Difference |
-|---------|-----------|---------------|----------------|
-| **LC 122** | Unlimited transactions | 2 (hold/cash) | Simple buy/sell |
-| **LC 309** | Cooldown after sell | 3 (hold/sold/rest) | Need rest state |
-| **LC 714** | Transaction fee | 2 (hold/cash) | Deduct fee when sell |
-| **LC 123** | At most 2 transactions | 4 (2 buy/sell pairs) | Track transaction count |
-| **LC 188** | At most k transactions | 2k states | Generalized k transactions |
-
-**State Machine Pattern Recognition:**
-```text
-Question asks...                          → Use this pattern
-─────────────────────────────────────────────────────────────
-"Cooldown after action"                   → 3+ states (LC 309)
-"Transaction fee/cost"                    → 2 states with cost
-"Limited transactions (k times)"          → 2k states
-"Unlimited transactions"                  → 2 states (hold/cash)
-```
-
-## Other High-Frequency DP Problems
-
-> These are famous problems whose recurrence is a direct instance of a template already above — listed so the mapping is explicit.
-
-| Problem | LC # | Template it reduces to | One-line idea |
-|---------|------|------------------------|---------------|
-| Trapping Rain Water | 42 | Prefix/suffix arrays (1D DP) | `water[i] = min(maxLeft[i], maxRight[i]) - h[i]`; two-pointer removes the arrays |
-| Jump Game | 55 | 1D reachability DP → greedy | track furthest reachable index |
-| Jump Game II | 45 | 1D DP → BFS-style greedy levels | `dp[i] = min(dp[j]+1)`, greedy does it in O(n) |
-| Minimum Cost For Tickets | 983 | 1D linear DP over days | `dp[d] = min(dp[d-1]+c1, dp[d-7]+c7, dp[d-30]+c30)` |
-| 01 Matrix | 542 | 2D grid DP (two passes) | pass 1 top-left→bottom-right, pass 2 reverse |
-| Counting Bits | 338 | 1D DP with bit trick | `dp[i] = dp[i >> 1] + (i & 1)` |
-| Is Subsequence | 392 | LCS degenerate case | two pointers O(n); LCS table if follow-up asks many queries |
-| Pascal's Triangle / II | 118 / 119 | 1D rolling row | `row[j] += row[j-1]` iterating **backward** |
-
-## Worked Examples
-
-### 2-1) Unique Paths (LC 62) — Grid DP Count Paths
-
-> dp[i][j] = dp[i-1][j] + dp[i][j-1]; paths from top-left to bottom-right on m×n grid.
-
-```java
-// java
-
-// LC 62
-// V0
-// IDEA: 2D DP (fixed by gpt)
-public int uniquePaths(int m, int n) {
-    if (m == 0 || n == 0)
-        return 0;
-
-    int[][] dp = new int[m][n];
-
-    /**  NOTE !!! init val as below
-     *
-     *  -> First row and first column = 1 path
-     *    (only one way to go right/down)
-     */
-    for (int i = 0; i < m; i++) {
-        dp[i][0] = 1;
-    }
-    for (int j = 0; j < n; j++) {
-        dp[0][j] = 1;
-    }
-
-    // Fill the rest of the DP table
-    // NOTE !!! i, j both start from 1
-    // `(0, y), (x, 0)` already been initialized
-    for (int i = 1; i < m; i++) {
-        for (int j = 1; j < n; j++) {
-            /**  DP equation
-             *
-             *   dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
-             */
-            dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
-        }
-    }
-
-    return dp[m - 1][n - 1];
-}
-```
-
-
-```python
-# 62. Unique Paths
-# V0
-# IDEA : BFS + dp (memory)
-class Solution:
-    def uniquePaths(self, m, n):
-
-        # NOTE !!! we init paths as below
-        paths = [[1]*n for _ in range(m)]
-        
-        q = deque()
-        q.append((0,0))
-        
-        while q:
-            row, col = q.popleft()
-            
-            if row == m or col == n or paths[row][col] > 1:
-                continue 
-            
-            if row-1 >= 0 and col-1 >= 0:
-                paths[row][col] = paths[row-1][col] + paths[row][col-1]
-            
-            q.append((row+1, col))
-            q.append((row, col+1))
-        
-        return paths[-1][-1]
-
-# V0'
-# IDEA : DP
-class Solution:
-    def uniquePaths(self, m: int, n: int) -> int:
-        d = [[1] * n for _ in range(m)]
-
-        for col in range(1, m):
-            for row in range(1, n):
-                d[col][row] = d[col - 1][row] + d[col][row - 1]
-
-        return d[m - 1][n - 1]
-```
-
-
-### 2-2) Maximum Product Subarray (LC 152) — Track Min/Max Product
-
-> Track both max and min at each step (min can become max when multiplied by negative).
-
-```python
-# NOTE : there is also brute force approach
-# V0
-# IDEA : BRUTE FORCE (TLE) — the O(n^2) baseline
-# https://leetcode.com/problems/maximum-product-subarray/solution/
-class Solution:
-    def maxProduct(self, nums: List[int]) -> int:
-        if len(nums) == 0:
-            return 0
-
-        result = nums[0]
-
-        for i in range(len(nums)):
-            accu = 1
-            for j in range(i, len(nums)):
-                accu *= nums[j]
-                result = max(result, accu)
-
-        return result
-
-# V1
-# IDEA : DP (canonical — track running max AND min, a negative flips them)
-# https://leetcode.com/problems/maximum-product-subarray/solution/
-class Solution:
-    def maxProduct(self, nums: List[int]) -> int:
-        if len(nums) == 0:
-            return 0
-
-        max_so_far = nums[0]
-        min_so_far = nums[0]
-        result = max_so_far
-
-        for i in range(1, len(nums)):
-            curr = nums[i]
-            temp_max = max(curr, max_so_far * curr, min_so_far * curr)
-            min_so_far = min(curr, max_so_far * curr, min_so_far * curr)
-
-            max_so_far = temp_max
-
-            result = max(max_so_far, result)
-
-        return result
-```
-
-```java
-// java
-// LC 152
-
-// V0
-// IDEA : DP
-// https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/maximum-product-subarray.py#L69
-// IDEA : cur max = max (cur, cur * dp[k-1])
-//        But, also needs to consider "minus number"
-//        -> e.g.  (-1) * (-3) = 3
-//        -> so we NEED to track maxSoFar, and minSoFar
-public int maxProduct(int[] nums) {
-
-    // null check
-    if (nums.length == 0){
-        return 0;
-    }
-    // init
-    int maxSoFar = nums[0];
-    int minSoFar = nums[0];
-    int res = maxSoFar;
-
-    for (int i = 1; i < nums.length; i++){
-
-        int cur = nums[i];
-        /**
-         *  or, can use below trick to get max in 3 numbers
-         *
-         *   max = Math.max(Math.max(max * nums[i], min * nums[i]), nums[i]);
-         *   min = Math.min(Math.min(temp * nums[i], min * nums[i]), nums[i]);
-         *
-         */
-        int tmpMax = findMax(cur, maxSoFar * cur, minSoFar * cur);
-        minSoFar = findMin(cur, maxSoFar * cur, minSoFar * cur);
-        maxSoFar = tmpMax;
-
-        res = Math.max(maxSoFar, res);
-    }
-
-    return res;
-}
-
-private int findMax(int a, int b, int c){
-    if (a >= b && a >= c){
-        return a;
-    }
-    else if (b >= a && b >= c){
-        return b;
-    }else{
-        return c;
-    }
-}
-
-private int findMin(int a, int b, int c){
-    if (a <= b && a <= c){
-        return a;
-    }
-    else if (b <= a && b <= c){
-        return b;
-    }else{
-        return c;
-    }
-}
-```
-
-### 2-3) Best Time to Buy and Sell Stock with Transaction Fee (LC 714) — Two-State DP
-
-> hold/free states; transition: hold = max(hold, free-price), free = max(free, hold+price-fee).
-
-```java
-// java
-// LC 714
-
-  // V0-1
-  // IDEA: DP (gpt)
-  /**
-   * Solution Explanation:
-   *
-   *
-   *  -  Use two variables to represent the state:
-   *      1. hold: The maximum profit achievable
-   *               while holding a stock at day i.
-   *
-   *      2. cash: The maximum profit achievable
-   *               while not holding a stock at day i.
-   *
-   *  - Transition equations:
-   *    - If holding a stock:
-   *       hold = max(hold, cash - price[i])
-   *
-   *       NOTE: 2 cases we hold th stock: 1) already hold from previous day 2) buy a new stock today
-   *       (`hold`: You already held the stock from a previous day -> If you decided not to make any changes today, then the profit remains the same as the previous hold.)
-   *       (`cash - price[i]`: You buy the stock today -> To buy the stock today, you need to spend money, reducing your profit. The cost to buy the stock is prices[i]. However, the amount of money you can spend is the maximum profit you had when you were not holding a stock previously (cash).)
-   *
-   * (You either keep holding or buy a new stock.)
-   *    - If not holding a stock:
-   *       cash = max(cash, hold + price[i] - fee)
-   *
-   *
-   * (You either keep not holding or sell the stock and pay the fee.)
-   *    - Initialize:
-   *       - hold = -prices[0] (If you buy the stock on the first day).
-   *       -  cash = 0 (You haven’t made any transactions yet).
-   *
-   */
-  /**
-   *  Example Walkthrough:
-   *
-   * Input:
-   *    •   Prices: [1, 3, 2, 8, 4, 9]
-   *    •   Fee: 2
-   *
-   * Steps:
-   *    1.  Day 0:
-   *    •   hold = -1 (Buy the stock at price 1).
-   *    •   cash = 0.
-   *    2.  Day 1:
-   *    •   cash = max(0, -1 + 3 - 2) = 0 (No selling since profit is 0).
-   *    •   hold = max(-1, 0 - 3) = -1 (No buying since it’s already better to hold).
-   *    3.  Day 2:
-   *    •   cash = max(0, -1 + 2 - 2) = 0.
-   *    •   hold = max(-1, 0 - 2) = -1.
-   *    4.  Day 3:
-   *    •   cash = max(0, -1 + 8 - 2) = 5 (Sell at price 8).
-   *    •   hold = max(-1, 5 - 8) = -1.
-   *    5.  Day 4:
-   *    •   cash = max(5, -1 + 4 - 2) = 5.
-   *    •   hold = max(-1, 5 - 4) = 1.
-   *    6.  Day 5:
-   *    •   cash = max(5, 1 + 9 - 2) = 8 (Sell at price 9).
-   *    •   hold = max(1, 5 - 9) = 1.
-   *
-   * Output:
-   *    •   cash = 8 (Max profit).
-   *
-   */
-  public int maxProfit_0_1(int[] prices, int fee) {
-        // Edge case
-        if (prices == null || prices.length == 0) {
-            return 0;
-        }
-
-        // Initialize states
-        int hold = -prices[0]; // Maximum profit when holding a stock
-        int cash = 0; // Maximum profit when not holding a stock
-
-        // Iterate through prices
-        for (int i = 1; i < prices.length; i++) {
-            /**
-             *  NOTE !!! there are 2 dp equations (e.g. cash, hold)
-             */
-            // Update cash and hold states
-            cash = Math.max(cash, hold + prices[i] - fee); // Sell the stock
-            hold = Math.max(hold, cash - prices[i]); // Buy the stock
-        }
-
-        // The maximum profit at the end is when not holding any stock
-        return cash;
-    }
-```
-
-### 2-4) Best Time to Buy and Sell Stock with Cooldown (LC 309) — Three-State DP
-
-> States: held/sold/rest; sold → rest → held cycle enforces one-day cooldown.
-
-```java
-// java
-// LC 309. Best Time to Buy and Sell Stock with Cooldown
-
-/**
- * Problem: You can buy and sell stock multiple times, but after selling,
- * you must cooldown for 1 day before buying again.
- *
- * Key Insight: This requires 3 states instead of the typical 2 states
- * because we need to track the cooldown period.
- */
-
-// V0-1: 2D DP (n x 3 array) - Most Intuitive
-/**
- * State Definition:
- * dp[i][0] = Max profit on day i if we HOLD a stock
- * dp[i][1] = Max profit on day i if we just SOLD a stock
- * dp[i][2] = Max profit on day i if we are RESTING (cooldown/do nothing)
- *
- * State Transition Equations:
- * 1. HOLD:  dp[i][0] = max(dp[i-1][0], dp[i-1][2] - prices[i])
- *    - Either held from yesterday OR bought today (after rest)
- *
- * 2. SOLD:  dp[i][1] = dp[i-1][0] + prices[i]
- *    - Must have held stock yesterday, sell at today's price
- *
- * 3. REST:  dp[i][2] = max(dp[i-1][2], dp[i-1][1])
- *    - Either rested yesterday OR just finished cooldown from sale
- *
- * Why 3 States?
- * - HOLD: Represents actively holding stock
- * - SOLD: Triggers the cooldown (can't buy tomorrow)
- * - REST: Free to make any action (cooldown complete or never started)
- */
-public int maxProfit(int[] prices) {
-    if (prices == null || prices.length <= 1)
-        return 0;
-
-    int n = prices.length;
-    int[][] dp = new int[n][3];
-
-    // Base Case: Day 0
-    dp[0][0] = -prices[0]; // Bought on day 0
-    dp[0][1] = 0;          // Can't sell on day 0
-    dp[0][2] = 0;          // Doing nothing
-
-    for (int i = 1; i < n; i++) {
-        // HOLD: Either held yesterday OR bought today (after rest)
-        dp[i][0] = Math.max(dp[i-1][0], dp[i-1][2] - prices[i]);
-
-        // SOLD: Held yesterday and sell today
-        dp[i][1] = dp[i-1][0] + prices[i];
-
-        // REST: Either rested yesterday OR cooldown from yesterday's sale
-        dp[i][2] = Math.max(dp[i-1][2], dp[i-1][1]);
-    }
-
-    // Max profit when not holding stock on last day
-    return Math.max(dp[n-1][1], dp[n-1][2]);
-}
-
-// V0-2: Space Optimized (O(1) space) - Interview Favorite
-/**
- * Since we only need previous day's state, we can use 3 variables
- * instead of a 2D array.
- *
- * This is the preferred solution for interviews due to O(1) space.
- */
-public int maxProfit_optimized(int[] prices) {
-    if (prices == null || prices.length == 0)
-        return 0;
-
-    int hold = -prices[0]; // Holding a stock
-    int sold = 0;          // Just sold (in cooldown trigger)
-    int rest = 0;          // Resting (free to act)
-
-    for (int i = 1; i < prices.length; i++) {
-        // Save previous sold state (needed for rest calculation)
-        int prevSold = sold;
-
-        // State transitions
-        sold = hold + prices[i];                 // Sell today
-        hold = Math.max(hold, rest - prices[i]); // Hold or buy today
-        rest = Math.max(rest, prevSold);         // Rest or finish cooldown
-    }
-
-    // Max profit when not holding stock
-    return Math.max(sold, rest);
-}
-```
-
-**Example Walkthrough: prices = [1,2,3,0,2]**
-
-```text
-Day | Price | HOLD  | SOLD | REST | Action Taken
-----|-------|-------|------|------|-------------
- 0  |   1   |  -1   |  0   |  0   | Buy at 1
- 1  |   2   |  -1   |  1   |  0   | Sell at 2 (profit = 1)
- 2  |   3   |  -1   |  2   |  1   | Sell at 3 (profit = 2)
- 3  |   0   |   1   |  2   |  2   | Buy at 0 (after cooldown)
- 4  |   2   |   1   |  3   |  2   | Sell at 2 (profit = 3)
-
-Optimal path: Buy@1 → Sell@2 → Cooldown → Buy@0 → Sell@2
-Max Profit: 3
-```
-
-**State Transition Trace (Day 4):**
-```text
-Previous State (Day 3):
-  hold = 1, sold = 2, rest = 2
-
-Current Price: prices[4] = 2
-
-Calculate New States:
-  prevSold = sold = 2  (save before update)
-
-  sold = hold + prices[4] = 1 + 2 = 3  ✅ (sell the stock we bought at 0)
-  hold = max(hold, rest - prices[4])
-       = max(1, 2 - 2)
-       = max(1, 0) = 1  (keep holding, don't buy)
-  rest = max(rest, prevSold)
-       = max(2, 2) = 2  (stay in rest)
-
-Final Answer: max(sold, rest) = max(3, 2) = 3
-```
-
-**Key Differences from Regular Stock Problems:**
-
-| Aspect | Regular Stock (LC 122) | Stock with Cooldown (LC 309) |
-|--------|------------------------|------------------------------|
-| **States** | 2 (hold, cash) | 3 (hold, sold, rest) |
-| **Constraint** | None | Must cooldown after sell |
-| **Buy Transition** | `hold = max(hold, cash - price)` | `hold = max(hold, rest - price)` |
-| **Why Different?** | Can buy anytime | Can only buy after rest (not immediately after sold) |
-| **Space** | O(1) - 2 variables | O(1) - 3 variables |
-| **Complexity** | O(n) time | O(n) time |
-
-**Common Mistakes:**
-1. ❌ Using 2 states instead of 3 (ignores cooldown)
-2. ❌ `hold = max(hold, sold - prices[i])` (can't buy right after selling!)
-3. ❌ Forgetting to save `prevSold` before updating (wrong rest calculation)
-4. ❌ Returning `max(hold, sold, rest)` (can't end while holding)
-
-**Why This Pattern Works:**
-- **SOLD state**: Acts as a "gate" - after entering, you must go through REST
-- **REST state**: "Unlocks" the ability to BUY again
-- **HOLD state**: Blocks you from RESTING (must sell first)
-
-This creates a forced flow: `HOLD → SOLD → REST → HOLD`, ensuring cooldown compliance.
-
-**Similar Problems:**
-- LC 122: Best Time to Buy and Sell Stock II (no cooldown, simpler)
-- LC 714: Best Time to Buy and Sell Stock with Transaction Fee (2 states + fee)
-- LC 123: Best Time to Buy and Sell Stock III (4 states for 2 transactions)
-- LC 188: Best Time to Buy and Sell Stock IV (2k states for k transactions)
-
-### 2-5) N-th Tribonacci Number (LC 1137) — Rolling Three Variables
-
-> T(n) = T(n-1) + T(n-2) + T(n-3); maintain three rolling variables, no array needed.
-
-```java
-// java
-// LC 1137. N-th Tribonacci Number
-
-// V0
-// IDEA: DP (fixed by gpt)
-public int tribonacci(int n) {
-    if (n == 0)
-        return 0;
-    if (n == 1 || n == 2)
-        return 1;
-
-    // NOTE !!! below, array size is `n + 1`
-    int[] dp = new int[n + 1];
-    dp[0] = 0;
-    dp[1] = 1;
-    dp[2] = 1;
-
-    // NOTE !!! below, we loop from i = 3 to `i <= n`
-    for (int i = 3; i <= n; i++) {
-        dp[i] = dp[i - 1] + dp[i - 2] + dp[i - 3];
-    }
-
-    return dp[n];
-}
-```
-
-### 2-6) Decode Ways (LC 91) — Linear DP with One/Two Digit Check
-
-> dp[i] = ways to decode s[0..i]; add dp[i-1] if single digit valid, dp[i-2] if two digits valid.
-
-```java
-// java
-// LC 91. Decode Ways
-
-/**
- *  Core idea:
- *
- *  - Variation of Climbing Stairs with validity constraints
- *  - At each position i, we try to decode in 2 ways:
- *    1) Single digit (1-9): dp[i] += dp[i-1]
- *    2) Two digits (10-26): dp[i] += dp[i-2]
- *  - '0' cannot be decoded alone — it must pair with '1' or '2'
- *
- *  dp[i] = number of ways to decode the first i characters
- *
- *  Base cases:
- *    dp[0] = 1 (empty string = 1 way)
- *    dp[1] = 1 (if first char != '0')
- */
-
-// Pattern:
-public int numDecodings(String s) {
-    if (s == null || s.length() == 0 || s.charAt(0) == '0') {
-        return 0;
-    }
-
-    int n = s.length();
-    int[] dp = new int[n + 1];
-
-    // Base cases
-    dp[0] = 1;
-    dp[1] = 1;
-
-    for (int i = 2; i <= n; i++) {
-
-        /**  NOTE !!!
-         *
-         *  Check `one-digit` decoding
-         *
-         */
-        // Check one-digit decoding
-        int oneDigit = Integer.parseInt(s.substring(i - 1, i));
-        if (oneDigit >= 1 && oneDigit <= 9) {
-            dp[i] += dp[i - 1];
-        }
-
-        /**  NOTE !!!
-         *
-         *  Check `two-digit` decoding
-         *
-         */
-        // Check two-digit decoding
-        int twoDigits = Integer.parseInt(s.substring(i - 2, i));
-        if (twoDigits >= 10 && twoDigits <= 26) {
-            dp[i] += dp[i - 2];
-        }
-
-    }
-
-    return dp[n];
-}
-```
-
-**Similar LCs:**
-- LC 91 Decode Ways
-- LC 639 Decode Ways II (with `*` wildcard)
-- LC 70 Climbing Stairs (same Fibonacci-like structure)
-- LC 509 Fibonacci Number
-- LC 1137 N-th Tribonacci Number
-
-### 2-7) Perfect Squares (LC 279) — Unbounded Knapsack (Min Count)
-
-> **Core Idea**: Treat each perfect square (1, 4, 9, 16, ...) as a "coin denomination." Find the minimum number of coins to make amount `n`. This is exactly the **Coin Change** pattern (LC 322).
-
-**Pattern**: Unbounded Knapsack — each square can be used unlimited times, minimize count.
-
-```java
-// LC 279 - Perfect Squares (DP approach)
-// IDEA: same as Coin Change — squares are coins, n is the target amount
-// time = O(N * sqrt(N)), space = O(N)
-public int numSquares(int n) {
-    int[] dp = new int[n + 1];
-    Arrays.fill(dp, n + 1); // max possible is n (all 1s)
-    dp[0] = 0;
-
-    for (int i = 1; i <= n; i++) {
-        for (int j = 1; j * j <= i; j++) {
-            int square = j * j;
-            dp[i] = Math.min(dp[i], dp[i - square] + 1);
-        }
-    }
-
-    return dp[n];
-}
-```
-
-**Why this works like Coin Change**:
-| | Coin Change (LC 322) | Perfect Squares (LC 279) |
+This is the problem set for [dp.md](./dp.md): it holds the templates, this sheet holds the
+problems. Each card states the one thing the problem adds to its template (a second option per
+step, a validity test, a different state) and gives one canonical solution. The sections follow
+dp.md's template order; a template whose problems are all worked on its own card, or in a
+dedicated sheet, has no section here.
+
+## Index
+
+| LC | Problem | Reduces to | Difficulty |
+|---|---|---|---|
+| 343 | [Integer Break](#integer-break--lc-343) | [Template 1](./dp.md#template-1-1-d-linear-dp--lc-53-) 1-D linear DP, try every last split | Medium |
+| 91 | [Decode Ways](#decode-ways--lc-91) | [Template 1a](./dp.md#template-1a-length-indexed-table-n--1-slots--lc-70) length-indexed table | Medium |
+| 62 | [Unique Paths](#unique-paths--lc-62) | [Template 2](./dp.md#template-2-2-d-grid-dp--lc-64-) 2-D grid DP, count | Medium |
+| 279 | [Perfect Squares](#perfect-squares--lc-279) | [knapsack.md § Template 4](./knapsack.md#template-4-unbounded-min-count--lc-322-) unbounded min count | Medium |
+| 276 | [Paint Fence](#paint-fence--lc-276) | [Template 5](./dp.md#template-5-state-machine-dp--lc-309) state machine, two states | Medium |
+| 1137 | [N-th Tribonacci Number](#n-th-tribonacci-number--lc-1137) | [Template 6](./dp.md#template-6-memoization--tabulation--rolling-variables--lc-198-) rolling variables | Easy |
+
+### Worked elsewhere
+
+Each is worked once, on the card or in the sheet that owns it.
+
+| LC | Problem | Home |
 |---|---|---|
-| **"Coins"** | Given coin denominations | Perfect squares: 1, 4, 9, 16, ... |
-| **"Amount"** | Target amount | Target `n` |
-| **Goal** | Min coins to reach amount | Min squares to sum to `n` |
-| **Recurrence** | `dp[i] = min(dp[i], dp[i - coin] + 1)` | `dp[i] = min(dp[i], dp[i - j*j] + 1)` |
-| **Reuse allowed?** | Yes (unbounded) | Yes (unbounded) |
+| 53 | Maximum Subarray | [dp.md § Template 1](./dp.md#template-1-1-d-linear-dp--lc-53-) (anchor); the Kadane family is [kadane_algorithm.md](./kadane_algorithm.md) |
+| 152 | Maximum Product Subarray | [kadane_algorithm.md](./kadane_algorithm.md): track the running max **and** min, since a negative swaps them |
+| 70 | Climbing Stairs | [dp.md § Template 1a](./dp.md#template-1a-length-indexed-table-n--1-slots--lc-70) (anchor) |
+| 139 | Word Break | [dp.md § Template 1b](./dp.md#template-1b-prefix-partition-dp--lc-139-) (anchor) |
+| 64 | Minimum Path Sum | [dp.md § Template 2](./dp.md#template-2-2-d-grid-dp--lc-64-) (anchor) |
+| 416 / 494 / 1049 | Partition Equal Subset Sum / Target Sum / Last Stone Weight II | [knapsack.md](./knapsack.md) — Template 1 (anchor) and its LC Examples |
+| 322 / 518 / 377 | Coin Change / II / Combination Sum IV | [knapsack.md](./knapsack.md) — Templates 4, 2 and 3 (anchors) |
+| 309 | Best Time to Buy and Sell Stock with Cooldown | [dp.md § Template 5](./dp.md#template-5-state-machine-dp--lc-309) (anchor) |
+| 121 / 122 / 123 / 188 / 714 | the other stock problems | [stock_trading.md](./stock_trading.md) |
+| 198 | House Robber | [dp.md § Template 6](./dp.md#template-6-memoization--tabulation--rolling-variables--lc-198-) (anchor) |
 
-**Note**: No need to sort the squares — loop order doesn't matter for min-count DP (sorting helps greedy/backtracking, not here).
+### Not worked here — the one-line reduction
 
-**Similar LeetCode Problems**:
-| Problem | LC # | Similarity |
-|---------|------|-----------|
-| Coin Change | 322 | Identical pattern — min coins for amount |
-| Coin Change 2 | 518 | Same coins idea but counting combinations |
-| Combination Sum IV | 377 | Same coins idea but counting permutations |
-| Climbing Stairs | 70 | Simpler version — steps of 1 or 2 |
+| Problem | LC | Reduces to | One-line idea |
+|---|---|---|---|
+| Trapping Rain Water | 42 | prefix / suffix arrays | `water[i] = min(maxLeft[i], maxRight[i]) - h[i]`; two pointers remove the arrays |
+| Jump Game | 55 | 1-D reachability → greedy | track the furthest reachable index |
+| Jump Game II | 45 | 1-D DP → greedy levels | `dp[i] = min(dp[j] + 1)`; BFS-style levels do it in O(n) |
+| Minimum Cost For Tickets | 983 | [Template 1](./dp.md#template-1-1-d-linear-dp--lc-53-) over days | `dp[d] = min(dp[d-1] + c1, dp[d-7] + c7, dp[d-30] + c30)` |
+| 01 Matrix | 542 | [Template 2](./dp.md#template-2-2-d-grid-dp--lc-64-), two passes | top-left → bottom-right, then the reverse |
+| Counting Bits | 338 | [Template 1](./dp.md#template-1-1-d-linear-dp--lc-53-) | `dp[i] = dp[i >> 1] + (i & 1)` |
+| Is Subsequence | 392 | LCS, degenerate | two pointers O(n); the LCS table only for many queries |
+| Pascal's Triangle / II | 118 / 119 | [Template 6](./dp.md#template-6-memoization--tabulation--rolling-variables--lc-198-), one rolling row | `row[j] += row[j-1]`, iterating **backward** |
 
-### 2-8) Integer Break (LC 343) — Linear DP (Break vs No-Break)
+## 1-D Linear DP Examples
 
-**Pattern**: Linear DP — for each integer `i`, try all split points `j` and decide whether to break `(i-j)` further or not.
+### Integer Break — LC 343
 
-**Core DP Idea**:
-```text
-dp[i] = max product by breaking integer i into at least 2 positive integers
+> **Key point** — `dp[i]` is the best product from splitting `i` into **at least two** parts. For
+> the last split `j + (i - j)`, the remainder can stay whole (`j * (i - j)`) or be split further
+> (`j * dp[i - j]`). Both are needed: `dp[2] = 1`, yet keeping a `2` whole is worth 2.
 
-Transition:
-  dp[i] = max over all j in [1, i-1] of:
-    max(j * (i - j),      // don't break (i-j) further
-        j * dp[i - j])    // break (i-j) further using its best product
+**Reduces to**: [dp.md § Template 1](./dp.md#template-1-1-d-linear-dp--lc-53-) — `dp[i]` reads every earlier cell, with two options per split.
+
+```python
+# python
+# LC 343 - Integer Break
+# IDEA: dp[i] = best product of >= 2 parts summing to i; for each split, keep the rest whole or split it
+# time = O(n^2), space = O(n)
+def integerBreak(n):
+    dp = [0] * (n + 1)
+    dp[1] = 1
+    for i in range(2, n + 1):
+        for j in range(1, i):            # the first part is j
+            keep_rest = j * (i - j)      # stop: i - j stays one part
+            break_rest = j * dp[i - j]   # split i - j further
+            dp[i] = max(dp[i], keep_rest, break_rest)
+    return dp[n]
 ```
 
-The key insight is the **break vs no-break choice**: when splitting `i` into `j + (i-j)`, the remainder `(i-j)` can either be kept as-is or broken further (using `dp[i-j]`). We must consider both because `dp[i-j]` assumes at least 2 parts, but sometimes using `(i-j)` directly is better (e.g., `dp[2]=1` but the value `2` itself is larger).
-
-**Greedy shortcut**: Break into as many 3s as possible. If remainder is 1, replace `3+1` with `2+2` (since `2×2 > 3×1`).
-
 ```java
-// DP approach
+// java
+// LC 343 - Integer Break
+// IDEA: dp[i] = best product of >= 2 parts summing to i; for each split, keep the rest whole or split it
+// time = O(n^2), space = O(n)
 public int integerBreak(int n) {
     int[] dp = new int[n + 1];
     dp[1] = 1;
     for (int i = 2; i <= n; i++) {
         for (int j = 1; j < i; j++) {
-            dp[i] = Math.max(dp[i],
-                    Math.max(j * (i - j), j * dp[i - j]));
+            int keepRest = j * (i - j);          // stop splitting: i - j stays whole
+            int breakRest = j * dp[i - j];       // split i - j further
+            dp[i] = Math.max(dp[i], Math.max(keepRest, breakRest));
         }
     }
     return dp[n];
 }
 ```
 
-**DP Table for n=10**:
-```text
-i:      1  2  3  4  5  6  7  8  9  10
-dp[i]:  1  1  2  4  6  9 12 18 27 36
-```
-
-**Similar LeetCode Problems**:
-| Problem | LC # | Similarity |
-|---------|------|-----------|
-| Perfect Squares | 279 | Min count to sum to n (unbounded knapsack variant) |
-| Coin Change | 322 | Optimize over all ways to decompose n |
-| Unique Binary Search Trees | 96 | Try all split points, combine subproblem results |
-| Maximum Product Subarray | 152 | Maximize product with DP |
-| Partition to K Equal Sum Subsets | 698 | Partition integer into parts with constraint |
-
-### 2-9) Paint Fence (LC 276) — Two-State DP (same / different color)
-
-> Paint `n` posts with `k` colors such that **no more than 2 adjacent posts share a color**. Split each post into two states — "same as previous" vs "different from previous" — and roll them forward.
-
-#### 1. Core Idea
-
-Track two states for the last post `i`:
-
-- `same[i]` = # ways where post `i` has the **same** color as post `i-1`
-- `diff[i]` = # ways where post `i` has a **different** color from post `i-1`
-
-The "no more than 2 adjacent same" rule means: **you can only paint the same color if the previous two posts were different** (otherwise you'd create 3-in-a-row). This is exactly why `same[i]` depends on `diff[i-1]`.
+**Dry run** — `n = 10`:
 
 ```text
-same[i] = diff[i - 1]                        # only extend a "different" run, else 3 in a row
-diff[i] = (same[i-1] + diff[i-1]) * (k - 1)  # pick any of the other (k-1) colors
-
-Base: same[0] = 0, diff[0] = k   (first post: k choices, "different" by convention)
-Answer = same[n-1] + diff[n-1]
+i      1  2  3  4  5  6  7   8   9   10
+dp[i]  1  1  2  4  6  9  12  18  27  36
 ```
 
-#### 2. Pattern
+**Traps**
+- Only `j * dp[i - j]`: a remainder of 2 or 3 is always split further, which loses value —
+  `n = 4` gives 3 instead of 4, and `n = 6` gives 6 instead of 9.
+- The O(n) greedy (as many 3s as possible, `3 + 1` → `2 + 2`) is the follow-up, not the opener:
+  it needs a proof the DP does not.
 
-**Two-state linear DP with rolling variables** — same family as the stock state-machine problems (LC 309/714), but the states here encode a *local adjacency constraint* rather than buy/sell. Because each state only needs the previous step, collapse the array into two scalars → **O(n) time, O(1) space**.
+## Length-Indexed Table Examples
 
-```python
-# python — LC 276 Paint Fence
-# time = O(n), space = O(n) (array version, mirrors the state definition)
-class Solution:
-    def numWays(self, n: int, k: int) -> int:
-        if n == 0:
-            return 0
-        # dp[i][0] = same color as prev, dp[i][1] = different color
-        dp = [[0] * 2 for _ in range(n)]
-        dp[0][1] = k                       # first post: k ways, treated as "different"
-        for i in range(1, n):
-            dp[i][0] = dp[i - 1][1]                          # same -> prev must be different
-            dp[i][1] = (dp[i - 1][0] + dp[i - 1][1]) * (k - 1)  # different -> any other color
-        return sum(dp[-1])
-```
+### Decode Ways — LC 91
+
+> **Key point** — Climbing Stairs with a validity test on each step: `dp[i]` (ways to decode the
+> first `i` characters) takes `dp[i - 1]` when the last digit is `1`–`9`, and `dp[i - 2]` when the
+> last two digits are `10`–`26`. A `0` can only ever be the second digit of a pair.
+
+**Reduces to**: [dp.md § Template 1a](./dp.md#template-1a-length-indexed-table-n--1-slots--lc-70) — the `n + 1` table, where `dp[0] = 1` is the empty prefix.
 
 ```python
-# python — O(1) space (rolling two variables)
-class Solution:
-    def numWays(self, n: int, k: int) -> int:
-        if n == 0:
-            return 0
-        if n == 1:
-            return k
-        same, diff = k, k * (k - 1)        # base for first 2 posts
-        for _ in range(3, n + 1):
-            same, diff = diff, (same + diff) * (k - 1)
-        return same + diff
+# python
+# LC 91 - Decode Ways
+# IDEA: dp[i] = ways to decode s[:i]; one-digit step if s[i-1] != '0', two-digit step if 10..26
+# time = O(n), space = O(n)
+def numDecodings(s):
+    n = len(s)
+    dp = [0] * (n + 1)
+    dp[0] = 1                            # the empty prefix decodes one way
+    for i in range(1, n + 1):
+        if s[i - 1] != "0":              # s[i-1] alone is a letter
+            dp[i] += dp[i - 1]
+        if i >= 2 and 10 <= int(s[i - 2:i]) <= 26:   # s[i-2:i] together is a letter
+            dp[i] += dp[i - 2]
+    return dp[n]
 ```
 
 ```java
-// java — LC 276 Paint Fence
+// java
+// LC 91 - Decode Ways
+// IDEA: dp[i] = ways to decode s[:i]; one-digit step if s[i-1] != '0', two-digit step if 10..26
+// time = O(n), space = O(n)
+public int numDecodings(String s) {
+    int n = s.length();
+    int[] dp = new int[n + 1];
+    dp[0] = 1;                                   // the empty prefix: one way
+    for (int i = 1; i <= n; i++) {
+        if (s.charAt(i - 1) != '0') {            // s[i-1] decoded on its own
+            dp[i] += dp[i - 1];
+        }
+        if (i >= 2) {
+            int twoDigits = Integer.parseInt(s.substring(i - 2, i));
+            if (twoDigits >= 10 && twoDigits <= 26) {   // s[i-2..i-1] decoded as a pair
+                dp[i] += dp[i - 2];
+            }
+        }
+    }
+    return dp[n];
+}
+```
+
+**Traps**
+- `"06"` is `0`, not `1`: `06` is not a two-digit code, so the test is `10..26`, not `<= 26`.
+- `s[i - 1]` is the **current** character in an `n + 1` table, not the previous one — see the
+  [`s[i-1]` trap](./dp.md#the-si-1-trap--it-is-the-current-character-not-the-previous-one) under Template 1a.
+
+**Similar** — LC 639 *(a `*` wildcard)* · LC 70 · LC 1137
+
+## 2-D Grid DP Examples
+
+### Unique Paths — LC 62
+
+> **Key point** — the count of paths into a cell is the count into the cell above plus the count
+> into the cell to its left, because those are the only two last moves. The first row and the
+> first column are all `1`: there is one straight path to each.
+
+**Reduces to**: [dp.md § Template 2](./dp.md#template-2-2-d-grid-dp--lc-64-) — `+` instead of `min`, and no cell costs.
+
+```python
+# python
+# LC 62 - Unique Paths
+# IDEA: dp[r][c] = dp[r-1][c] + dp[r][c-1]; the first row and column are 1
+# time = O(m * n), space = O(m * n)
+def uniquePaths(m, n):
+    dp = [[1] * n for _ in range(m)]     # row 0 and column 0 stay 1
+    for row in range(1, m):
+        for col in range(1, n):
+            dp[row][col] = dp[row - 1][col] + dp[row][col - 1]
+    return dp[m - 1][n - 1]
+```
+
+```java
+// java
+// LC 62 - Unique Paths
+// IDEA: dp[r][c] = dp[r-1][c] + dp[r][c-1]; the first row and column are 1
+// time = O(m * n), space = O(m * n)
+public int uniquePaths(int m, int n) {
+    int[][] dp = new int[m][n];
+    for (int row = 0; row < m; row++) {
+        dp[row][0] = 1;                          // first column: only straight down
+    }
+    for (int col = 0; col < n; col++) {
+        dp[0][col] = 1;                          // first row: only straight right
+    }
+    for (int row = 1; row < m; row++) {
+        for (int col = 1; col < n; col++) {
+            dp[row][col] = dp[row - 1][col] + dp[row][col - 1];
+        }
+    }
+    return dp[m - 1][n - 1];
+}
+```
+
+**Traps**
+- The row needs only the row above, so one array of length `n` with `dp[col] += dp[col - 1]` is
+  the O(n)-space follow-up.
+- The closed form `C(m + n - 2, m - 1)` is also correct; compute it with integer arithmetic, and
+  see [combinatorics_math_patterns.md](./combinatorics_math_patterns.md).
+
+**Similar** — LC 63 *(obstacles: a blocked cell is 0)* · LC 64 · LC 980 *(every cell exactly once: backtracking, not DP)*
+
+## Knapsack Examples
+
+### Perfect Squares — LC 279
+
+> **Key point** — the squares `1, 4, 9, …` are coins with unlimited supply, and `n` is the amount:
+> the fewest squares summing to `n` is Coin Change. `dp[0] = 0`; every other cell starts at `n`
+> (`n` ones always works), so no `-1` case exists.
+
+**Reduces to**: [knapsack.md § Template 4](./knapsack.md#template-4-unbounded-min-count--lc-322-) — unbounded min count, with the coins generated as squares ≤ the amount.
+
+```python
+# python
+# LC 279 - Perfect Squares
+# IDEA: unbounded knapsack, min count: squares are the coins, n is the amount
+# time = O(n * sqrt(n)), space = O(n)
+def numSquares(n):
+    dp = [0] + [n] * n                   # dp[a] = fewest squares summing to a; n ones is the worst
+    for amount in range(1, n + 1):
+        root = 1
+        while root * root <= amount:     # every square that fits
+            dp[amount] = min(dp[amount], dp[amount - root * root] + 1)
+            root += 1
+    return dp[n]
+```
+
+```java
+// java
+// LC 279 - Perfect Squares
+// IDEA: unbounded knapsack, min count: squares are the coins, n is the amount
+// time = O(n * sqrt(n)), space = O(n)
+public int numSquares(int n) {
+    int[] dp = new int[n + 1];
+    Arrays.fill(dp, n);                          // n ones always works
+    dp[0] = 0;
+    for (int amount = 1; amount <= n; amount++) {
+        for (int root = 1; root * root <= amount; root++) {
+            dp[amount] = Math.min(dp[amount], dp[amount - root * root] + 1);
+        }
+    }
+    return dp[n];
+}
+```
+
+**Traps**
+- A greedy "largest square first" fails: `12 = 9 + 1 + 1 + 1` (4) but `4 + 4 + 4` (3).
+- The loop order does not matter for a min count; it does for counting ways
+  ([knapsack.md § Loop Order](./knapsack.md#loop-order-combinations-vs-permutations)).
+
+**Similar** — LC 322 · LC 518 · LC 377 — and a BFS over remainders solves the same problem level by level.
+
+## State Machine DP Examples
+
+### Paint Fence — LC 276
+
+> **Key point** — two states for the last post: `same` (it matches the post before) and `diff`
+> (it does not). "No three in a row" means a `same` post may only follow a `diff` one, so
+> `same = diff_prev`, and `diff = (same_prev + diff_prev) * (k - 1)`.
+
+**Reduces to**: [dp.md § Template 5](./dp.md#template-5-state-machine-dp--lc-309) — two states that read only the previous post, rolled into two variables.
+
+```python
+# python
+# LC 276 - Paint Fence
+# IDEA: same = ways the last post repeats its neighbour, diff = ways it does not; roll both forward
+# time = O(n), space = O(1)
+def numWays(n, k):
+    if n == 0:
+        return 0
+    if n == 1:
+        return k
+    same = k                             # posts 1-2 the same colour
+    diff = k * (k - 1)                   # posts 1-2 different
+    for _ in range(3, n + 1):
+        prev_same = same
+        same = diff                      # repeat a colour only right after a change
+        diff = (prev_same + diff) * (k - 1)   # any of the other k - 1 colours
+    return same + diff
+```
+
+```java
+// java
+// LC 276 - Paint Fence
+// IDEA: same = ways the last post repeats its neighbour, diff = ways it does not; roll both forward
 // time = O(n), space = O(1)
 public int numWays(int n, int k) {
-    if (n == 0) return 0;
-    if (n == 1) return k;
-    int same = k, diff = k * (k - 1);      // base for first 2 posts
+    if (n == 0) {
+        return 0;
+    }
+    if (n == 1) {
+        return k;
+    }
+    int same = k;                                // posts 1-2 the same colour
+    int diff = k * (k - 1);                      // posts 1-2 different
     for (int i = 3; i <= n; i++) {
-        int prevDiff = diff;
-        diff = (same + diff) * (k - 1);    // different from previous
-        same = prevDiff;                   // same requires previous two differ
+        int prevSame = same;
+        same = diff;                             // repeat a colour only after a change
+        diff = (prevSame + diff) * (k - 1);      // any of the other k - 1 colours
     }
     return same + diff;
 }
 ```
 
-**Edge case**: if `n > 2 && k == 1`, the answer is `0` (can't avoid 3-in-a-row with only one color).
+**Traps**
+- Updating `diff` from the **new** `same`: save the old value first, as in every state machine.
+- `k = 1`, `n ≥ 3` is `0`; the recurrence gets there on its own (`diff` is 0 from the start).
 
-#### 3. Similar LeetCode Problems
+**Similar** — LC 198 · LC 309 · LC 740 *(take / skip on values)* · LC 790 *(tilings as states)*
 
-| Problem | LC # | Similarity |
-|---------|------|-----------|
-| Climbing Stairs | 70 | Fibonacci-like rolling recurrence, O(1) space |
-| House Robber | 198 | Two implicit states (rob / skip) rolled forward |
-| Best Time to Buy/Sell with Cooldown | 309 | Multi-state machine with adjacency-style constraint |
-| Best Time to Buy/Sell with Fee | 714 | Two rolling states (hold/cash) |
-| Delete and Earn | 740 | Take/skip state DP on values |
-| Domino and Tromino Tiling | 790 | Count tilings via rolling state transitions |
+## Rolling Variables Examples
+
+### N-th Tribonacci Number — LC 1137
+
+> **Key point** — `T(n)` reads exactly the last three values, so three variables replace the
+> table. Shift them oldest-first (`a = b`, `b = c`, `c = next`), or a value is overwritten before
+> it is read.
+
+**Reduces to**: [dp.md § Template 6](./dp.md#template-6-memoization--tabulation--rolling-variables--lc-198-) — the last rung, `k = 3` rolling variables.
+
+```python
+# python
+# LC 1137 - N-th Tribonacci Number
+# IDEA: T(n) = T(n-1) + T(n-2) + T(n-3); keep only the last three values
+# time = O(n), space = O(1)
+def tribonacci(n):
+    if n == 0:
+        return 0
+    if n <= 2:
+        return 1
+    a, b, c = 0, 1, 1                    # T(i-3), T(i-2), T(i-1)
+    for _ in range(3, n + 1):
+        nxt = a + b + c
+        a = b                            # shift oldest first
+        b = c
+        c = nxt
+    return c
+```
+
+```java
+// java
+// LC 1137 - N-th Tribonacci Number
+// IDEA: T(n) = T(n-1) + T(n-2) + T(n-3); keep only the last three values
+// time = O(n), space = O(1)
+public int tribonacci(int n) {
+    if (n == 0) {
+        return 0;
+    }
+    if (n <= 2) {
+        return 1;
+    }
+    int a = 0, b = 1, c = 1;                     // T(i-3), T(i-2), T(i-1)
+    for (int i = 3; i <= n; i++) {
+        int next = a + b + c;
+        a = b;                                   // shift oldest first
+        b = c;
+        c = next;
+    }
+    return c;
+}
+```
+
+**Traps**
+- `n = 0, 1, 2` return before the loop; the seeds `0, 1, 1` must satisfy the recurrence they start.
+- The rolling-variable update order is the classic bug —
+  [dp_advanced.md](./dp_advanced.md) traces it in its Rolling-Variable Deep Dive.
+
+**Similar** — LC 70 · LC 509 · LC 746

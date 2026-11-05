@@ -98,7 +98,7 @@ and the fully worked solutions in [backtrack_examples.md](./backtrack_examples.m
 | 5 | Partitioning | ✅ `i + 1` on a substring / bucket | [Template 8](#template-8-palindrome-partitioning--lc-131-) / [Template 13](#template-13-k-bucket-partitioning--lc-698--lc-473) | 131, 698, 473 |
 | 6 | Grid / word search | ❌ mark-and-restore the cell | [Template 9](#template-9-grid--word-search--lc-79-) | 79, 980, 1219 |
 | 7 | Constraint satisfaction | ❌ one row / cell per depth | [Template 10](#template-10-n-queens--lc-51) / [Template 11](#template-11-sudoku-solver--lc-37) | 51, 37 |
-| 8 | Parentheses / string building | ❌ counters as constraints | [backtrack_examples.md](./backtrack_examples.md#8-generate-parentheses--lc-22) | 20, 22, 93 |
+| 8 | Parentheses / string building | ❌ counters as constraints | [backtrack_examples.md](./backtrack_examples.md#generate-parentheses--lc-22) | 20, 22, 93 |
 
 ### Type Notes
 
@@ -308,6 +308,28 @@ private void backtrack(int[] candidates, int start, int remain, List<Integer> pa
   the smallest candidate.
 - **Space O(T/M)**: the recursion depth and `path` length are both bounded by `T/M`.
 
+**Dry run** — `candidates = [2, 3, 6, 7]`, `target = 7`; each node is `backtrack(start, remain)`,
+and `break` ends a loop at the first candidate bigger than `remain`:
+
+```text
+backtrack(0, 7)
+├─ 2 → backtrack(0, 5)
+│  ├─ 2 → backtrack(0, 3)
+│  │  ├─ 2 → backtrack(0, 1)     2 > 1: break
+│  │  ├─ 3 → backtrack(1, 0)     ✅ [2, 2, 3]
+│  │  └─ 6 > 3: break
+│  ├─ 3 → backtrack(1, 2)        3 > 2: break
+│  └─ 6 > 5: break
+├─ 3 → backtrack(1, 4)
+│  ├─ 3 → backtrack(1, 1)        3 > 1: break
+│  └─ 6 > 4: break
+├─ 6 → backtrack(2, 1)           6 > 1: break
+└─ 7 → backtrack(3, 0)           ✅ [7]
+```
+
+`start` only moves forward (0 → 1 → 2 → 3), so no earlier candidate is revisited and no
+combination appears twice. Passing `i + 1` instead of `i` turns this into LC 40.
+
 **Traps**
 - Passing `i + 1` on LC 39: `[2, 3, 6, 7], 7` loses `[2, 2, 3]` because 2 can no longer repeat.
 - Passing `0` instead of `start`: `[2, 3]` and `[3, 2]` are both built, and LC 39 `[2, 3, 6, 7], 7`
@@ -369,6 +391,32 @@ private void backtrack(int[] nums, int start, List<Integer> path, List<List<Inte
         path.remove(path.size() - 1);
     }
 }
+```
+
+A second solution, kept because it draws a different tree: one **binary** decision per element,
+include it or not, with the answers only at the leaves. It produces the same 2^n subsets at the
+same cost, and it is the shape LC 784 and every take / skip DP start from.
+
+```python
+# python
+# LC 78 - Subsets (include / exclude)
+# IDEA: at depth i decide nums[i]: take it, recurse, undo, then recurse without it; record at the leaf
+# time = O(2^n * n), space = O(n)
+def subsets(nums):
+    res = []
+    path = []
+
+    def backtrack(i):
+        if i == len(nums):               # every element decided: one subset
+            res.append(path[:])
+            return
+        path.append(nums[i])             # include nums[i]
+        backtrack(i + 1)
+        path.pop()
+        backtrack(i + 1)                 # exclude nums[i]
+
+    backtrack(0)
+    return res
 ```
 
 **Complexity**
@@ -557,6 +605,22 @@ private void backtrack(int[] nums, boolean[] used, List<Integer> path, List<List
 - **Time O(n! · n)**: level `d` of the tree tries `n - d` unused elements, so there are n! leaves,
   and each costs O(n) to copy. The `for i` loop scans all `n` indexes at every node.
 - **Space O(n)**: `used`, `path` and the recursion depth.
+
+**Dry run** — `nums = [1, 2, 3]`; every level scans **all** of `nums` and skips what is used, so
+the branching shrinks 3 → 2 → 1 and answers appear only at the leaves:
+
+```text
+dfs([])                       used={}
+├─ 1 → dfs([1])               used={1}
+│  ├─ 2 → dfs([1,2]) → 3 → [1,2,3] ✅
+│  └─ 3 → dfs([1,3]) → 2 → [1,3,2] ✅
+├─ 2 → dfs([2])               used={2}
+│  ├─ 1 → [2,1] → 3 → [2,1,3] ✅
+│  └─ 3 → [2,3] → 1 → [2,3,1] ✅
+└─ 3 → dfs([3])               used={3}
+   ├─ 1 → [3,1] → 2 → [3,1,2] ✅
+   └─ 2 → [3,2] → 1 → [3,2,1] ✅
+```
 
 **Traps**
 - `path.contains(nums[i])` instead of `used[i]`: an O(n) check per choice, and wrong as soon as
@@ -924,8 +988,8 @@ def partition(s):
 
 | LC | Problem | What changes vs LC 131 |
 |----|---------|------------------------|
-| 93 | Restore IP Addresses | gate = `0..255` with no leading zero; cut length capped at 3; the end condition also demands exactly 4 pieces ([worked](./backtrack_examples.md#9-restore-ip-addresses--lc-93)) |
-| 140 | Word Break II | gate = `piece in wordDict`; needs memoisation on `start`, or `"aaaa…aaab"` explodes ([worked](./backtrack_examples.md#11-word-break-ii--lc-140)) |
+| 93 | Restore IP Addresses | gate = `0..255` with no leading zero; cut length capped at 3; the end condition also demands exactly 4 pieces ([worked](./backtrack_examples.md#restore-ip-addresses--lc-93)) |
+| 140 | Word Break II | gate = `piece in wordDict`; needs memoisation on `start`, or `"aaaa…aaab"` explodes ([worked](./backtrack_examples.md#word-break-ii--lc-140)) |
 | 139 | Word Break | same search, but it only asks *whether* — so drop the path and it collapses to DP/BFS over `start` |
 | 132 | Palindrome Partitioning II | asks for the **minimum number of cuts**, not every partition — enumerate nothing, DP over `start` |
 | 842 | Split Array into Fibonacci Sequence | gate = "this piece equals the previous two summed", so the recursion carries the last two values as state |
@@ -944,8 +1008,10 @@ m, n ≤ 6 and a short word: 4^L per start is fine.
 path leaves it. Mark once before the first recursive call, restore once after the last, so every
 call below sees the mark and every sibling path finds the cell free again.
 
-The `visited[][]` matrix variant and the count/max variants (LC 980, LC 1219) are in
-[backtrack_examples.md §3](./backtrack_examples.md#3-word-search--lc-79-).
+If the input may not be mutated, keep a `visited[][]` matrix and set / clear `visited[r][c]` where
+the code below writes and restores `'#'`: same algorithm, O(m · n) extra space. The count variant
+(LC 980) is worked in [backtrack_examples.md](./backtrack_examples.md#unique-paths-iii--lc-980); the
+max variant (LC 1219) is traced below.
 
 ```python
 # python
@@ -1037,9 +1103,9 @@ never has to be **released** (count islands, flood fill), it is plain DFS with a
 
 **Drill** — LC 79 ⭐ · LC 1219 *(maximise over every path)* · LC 980 *(count paths that cover every cell)* · LC 212 *(many words: Trie pruning)*
 
-#### How long a mark lasts — every call below it, nothing beside it (LC 1219) ⭐⭐⭐⭐
+#### How long a mark lasts — every call below it, nothing beside it ⭐⭐⭐⭐
 
-After `grid[y][x] = -1`, **who sees the `-1`, and until when?** Getting this exactly right is
+Traced on LC 1219 (Path with Maximum Gold). After `grid[y][x] = -1`, **who sees the `-1`, and until when?** Getting this exactly right is
 what makes mark-and-restore correct, and the answer is about *frames*, not about single calls:
 
 > **Rule** — a cell marked in frame A stays marked for **every** recursive call A makes — all
@@ -1757,7 +1823,7 @@ if index == len(input):             # exhausted input (string partition, IP addr
 
 ### Related Topics
 
-- [backtrack_examples.md](./backtrack_examples.md) — worked LC solutions for every template here
+- [backtrack_examples.md](./backtrack_examples.md) — problem cards for the problems that are not a template's anchor
 - [backtrack_advanced.md](./backtrack_advanced.md) — Trie-pruned grid search (LC 212), expression building (LC 282), deletion budgets (LC 301), memoised / generic partitioning
 - [tree_backtrack.md](./tree_backtrack.md) — root→leaf path backtracking on an explicit tree
 - [dfs.md](./dfs.md) — DFS traversal without the undo step

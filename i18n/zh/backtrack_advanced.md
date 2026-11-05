@@ -10,12 +10,22 @@
 - [Backtracking](https://leetcode.com/problem-list/backtracking/)
 - [Trie](https://leetcode.com/problem-list/trie/)
 
-<!-- ea90d44e2181 -->
+<!-- 098c95b1dfaf -->
 ## 總覽
 
 三個**無法**化約成「在索引上選／不選」的模板。每一個都在遞迴中多帶一份狀態 — 一個 **Trie 節點**、**前一個運算元**，或一份**刪除額度** — 而那份多出來的狀態就是整題的關鍵。
 
-這頁的所有內容都假設[選擇 → 探索 → 撤銷的骨架](./backtrack.md#template-1-choose--explore--un-choose--lc-216-)對你已經是反射動作。當基本形狀不夠用時再來看這裡：對每個輸入重跑一次簡單模板太慢、部分解需要被**評分**而不只是被收集，或搜尋要先傳播約束才跑得動的時候。
+這頁的所有內容都假設[選擇 → 探索 → 撤銷的骨架](./backtrack.md#template-1-choose--explore--un-choose--lc-216-)對你已經是反射動作。當基本形狀不夠用時再來看這裡：對每個輸入重跑一次簡單模板太慢、部分解需要被**評分**而不只是被收集，或搜尋要先傳播約束才跑得動的時候。先讀[何時不該用](#when-not-to-use)：大多數看起來需要這頁的題目，其實不需要。
+
+<!-- 1b3c1b49be38 -->
+### 先備知識
+
+- [backtrack.md § Template 1](./backtrack.md#template-1-choose--explore--un-choose--lc-216-)：選擇 → 探索 → 撤銷。這裡的每個模板都是這個迴圈再加一份狀態。
+- [backtrack.md § Template 8](./backtrack.md#template-8-palindrome-partitioning--lc-131-)：選在哪裡切。模板 2、3、5 用同樣的方式切字串。
+- [backtrack.md § Template 9](./backtrack.md#template-9-grid--word-search--lc-79-)：在格子上標記、遞迴、還原。模板 1 在它上面多帶一個 Trie 節點。
+- [backtrack.md § Template 11](./backtrack.md#template-11-sudoku-solver--lc-37)：約束集合。模板 4 把它們往前傳播。
+- [backtrack.md § Template 13](./backtrack.md#template-13-k-bucket-partitioning--lc-698--lc-473)：k 個桶。模板 5 和 8 把它一般化。
+- [trie.md](./trie.md)：模板 1 走訪的那棵 Trie。
 
 <!-- a8a188510919 -->
 ### 關鍵性質
@@ -133,12 +143,10 @@
 **2. 陣列切分模板**：
 <!--CODE-->
 
-<!-- 3555c82cdadf -->
+<!-- 4c69415f2118 -->
 ### 模板 6：等和子集切分 — LC 416
 
-純粹的選／不選遞迴，不需要收集路徑。這是 0/1 背包的回溯**祖先** — 同一棵呼叫樹，只是還沒記憶化。DP 形式見 [knapsack.md](./knapsack.md)。
-
-<!--CODE-->
+LC 416 的選／不選遞迴，正是 0/1 背包記憶化的那棵呼叫樹，所以它跟背包放在一起：[knapsack.md § Template 1](./knapsack.md#template-1-01-knapsack-subset-sum--lc-416-) 先以 `(i, remaining)` 為鍵寫成 top-down，再壓成一維表。沒有記憶化是 O(2^n)；有了就是 O(n · target)。分成兩個子集，是 [backtrack.md § Template 13](./backtrack.md#template-13-k-bucket-partitioning--lc-698--lc-473) 在 `k = 2` 時的特例。
 
 <!-- e8b33f9868ef -->
 ### 模板 7：記憶化回溯
@@ -163,6 +171,18 @@
 骨架的「先驗證再放置」寫法 — `is_valid` 放在 `place` 之前，而不是在遞迴呼叫的開頭檢查。只是骨架，不能直接跑。
 
 <!--CODE-->
+
+<!-- b9efab9b41fe -->
+## 何時不該用
+
+| 技巧 | 通常這樣就夠 | 只有在這種情況才需要這個技巧 |
+|---|---|---|
+| Trie + 格子回溯 | [backtrack.md § Template 9](./backtrack.md#template-9-grid--word-search--lc-79-)，每個字跑一次 | 同一塊盤面上有許多共用前綴的字（LC 212） |
+| 運算式建構 | 字串固定後用 stack 求值 | 要**插入**運算子，而且 `*` 比 `+` 優先 |
+| 刪除額度回溯 | 依刪除數做 BFS，在第一個合法層停下 | 要列出所有最少刪除的答案，而 BFS 那一層太寬 |
+| 約束傳播 | [backtrack.md § Template 11](./backtrack.md#template-11-sudoku-solver--lc-37) 的列／行／宮集合 | 單純的搜尋仍然逾時 |
+| 通用／分桶切分 | [backtrack.md § Template 13](./backtrack.md#template-13-k-bucket-partitioning--lc-698--lc-473)，只分兩組或只問個數時用 DP | 要依一個不是總和的條件分成 `k` 組 |
+| 記憶化回溯 | 直接寫 DP：[dp.md](./dp.md) 與 [recursion_to_dp.md](./recursion_to_dp.md) | 狀態容易當鍵，但由下而上的順序不好排 |
 
 <!-- ea4fa3974f42 -->
 ## 總結與速查

@@ -1,8 +1,8 @@
-<!-- 359f530a086b -->
+<!-- f47e8b90606c -->
 # 回溯 — 實戰題解
 
-> **範圍** — 回溯題解的長尾（LC 17、39、79、78、90、77、46、22、93、139、140、207），附遞迴軌跡與差一點就一樣的變形，每題每種語言只留一份正典解 — 它本身不教任何模板，每一節都指回它所實例化的那一個。
-> **另見**：[backtrack.md](./backtrack.md) — 這裡每個範例所實例化的模板，以及挑模板用的決策表；[backtrack_advanced.md](./backtrack_advanced.md) — Hard 等級的模板（LC 212、282、301）；[tree_backtrack.md](./tree_backtrack.md) — 樹上 root→leaf 的路徑題。
+> **範圍** — 不是模板錨定題的那些回溯題（LC 17、784、996、93、140、980、22），每一題都是一張 problem card，歸檔在它所歸約到的 [backtrack.md](./backtrack.md) 模板底下；錨定題本身在那邊自己的 card 上解，這份不教任何自己的模板。
+> **另見**：[backtrack.md](./backtrack.md) — 這裡每張 card 歸約到的模板，以及挑模板用的決策表；[backtrack_advanced.md](./backtrack_advanced.md) — Hard 等級的模板（LC 212、282、301）；[tree_backtrack.md](./tree_backtrack.md) — 樹上 root→leaf 的路徑題；[dfs.md](./dfs.md) — 不需要撤銷的走訪。
 
 <!-- 2de3e520ab98 -->
 ## LeetCode 題目清單
@@ -10,266 +10,181 @@
 - [Backtracking](https://leetcode.com/problem-list/backtracking/)
 - [Recursion](https://leetcode.com/problem-list/recursion/)
 
-<!-- bc03b4bb961e -->
+<!-- 70c7b8ee624a -->
 ## 總覽
 
-這是 [backtrack.md](./backtrack.md) 的範例倉庫。每一節都在實例化那張表裡的某個模板 — 先讀模板，
-再回來看完整解、遞迴軌跡，以及那些只改一行就沿用同一個迴圈的鄰居題。
+這是 [backtrack.md](./backtrack.md) 的題目集：模板在那邊，題目在這邊。每張 card 寫出它歸約到哪個模板、以及它多加的那一步。各節依核心表的模板順序排列；題目都已在自己 card 上解完的模板，這裡就沒有那一節。
 
-<!-- c190cecb21af -->
-### 關鍵性質
+如果某張 card 看起來陌生，回到核心表它依靠的那一段：
 
-- **複雜度**：見母表的 [Time Complexity by Problem Type](./backtrack.md#time-complexity-by-problem-type) 表格
-- **核心想法**：每題每種語言只放一份正典解；只有當上方註解說明第二種寫法教到了第一種沒教的東西時，才會出現第二個版本
-- **什麼時候用**：當你已經知道該套哪個模板，想看它從頭到尾跑一遍的時候
-
-<!-- a60bc3f729bf -->
-## 題型分類
-
-| § | 題目 | 實例化的模板 |
-|---|---------|--------------|
-| 1 | LC 17 Letter Combinations | [Template 1](./backtrack.md#template-1-choose--explore--un-choose--lc-216-) — 由索引驅動的選擇清單 |
-| 2 | LC 39 Combination Sum（＋ LC 216） | [Template 7](./backtrack.md#template-7-combination-sum--lc-39--lc-40-) |
-| 3 | LC 79 Word Search（＋ LC 980、1219） | [Template 9](./backtrack.md#template-9-grid--word-search--lc-79-) |
-| 4 | LC 78 Subsets | [Template 3](./backtrack.md#template-3-subsets--lc-78-) |
-| 5 | LC 90 Subsets II | [Template 4](./backtrack.md#template-4-subsets-ii-skip-same-level-duplicates--lc-90-) |
-| 6 | LC 77 Combinations | [Template 6](./backtrack.md#template-6-combinations--lc-77) |
-| 7 | LC 46 Permutations（＋ LC 526、996、784） | [Template 5](./backtrack.md#template-5-permutations--lc-46-) |
-| 8 | LC 22 Generate Parentheses | 用計數器當限制條件 |
-| 9 | LC 93 Restore IP Addresses | [Template 8](./backtrack.md#template-8-palindrome-partitioning--lc-131-)，換成數值判斷式 |
-| 10 | LC 139 Word Break | 子字串之間的可達性（BFS，不是回溯） |
-| 11 | LC 140 Word Break II | [Template 8](./backtrack.md#template-8-palindrome-partitioning--lc-131-)，換成字典判斷式 |
-| 12 | LC 207 Course Schedule | DFS 搭配*在 visiting 集合上做 undo* — 環偵測 |
-
-<!-- 598a9bfd2a3c -->
-## LC 範例
-
-<!-- 12fe06f119d7 -->
-### 1) Letter Combinations of a Phone Number — LC 17
-
-<!--CODE-->
-
-<!--CODE-->
-
-<!-- 281d96d0a663 -->
-### 2) Combination Sum — LC 39 ⭐⭐⭐⭐
-
-> 下面的 **V0** 是對的，但**很浪費**：沒有 `start_idx`，所以它會把每一種*排列順序*都跑一遍
-> （例如 `[2,3]` 和 `[3,2]`），最後再靠 `sort()` + `tmp not in res` 去重。
-> 請優先用 **V1**（有 start_idx，傳 `i` 讓元素可以重複使用）— 它根本不會產生重複解。
-
-<!--CODE-->
-
-**視覺化軌跡（遞迴樹）** — `candidates = [2, 3, 6, 7]`、`target = 7` → 答案 `[[2,2,3],[7]]`
-
-> 每個節點是一次 `dfs(start, path, total)` 呼叫。我們傳的是 **`i`**（不是 `i+1`），
-> 所以同一個候選值可以**重複使用**。只要 `total > target` 就剪掉這條分支（`✗`）；`total == target` 時記錄（`✅`）。
-
-<!--CODE-->
-
-> **怎麼看這棵樹**：深度 = `path` 裡有幾個數字；`start` 索引（0/1/2/3）往下走時會縮小選擇清單，
-> 所以我們永遠不會回頭去拿較早的候選值 → 不會有重複組合。把遞迴呼叫改成 `i + 1`（每個只能用一次）
-> 就變成 LC 40。
-
-<!-- 81ba7c760117 -->
-#### 2') 變形 — Combination Sum III — LC 216
-
-
-**轉折**：候選池是*隱含*的排序清單 `1..9`，而且現在有**兩個**停止條件 — `len(path) == k`
-**以及** `total == n`。因為候選池已排序，超過目標時用 `break`（不是 `continue`）可以把迴圈剩下的尾巴全部剪掉。
-
-<!--CODE-->
-
-<!-- 8f6a4c861ce8 -->
-### 3) Word Search — LC 79 ⭐⭐⭐⭐
-
-> 原地改成 `board[r][c] = '#'` 的版本是正典的
-> [Template 9](./backtrack.md#template-9-grid--word-search--lc-79-)。下面是
-> **`visited[][]` 矩陣**版 — 演算法完全一樣，但它不會改動輸入，而面試官有時候就是要你這樣寫。
-
-<!--CODE-->
-
-<!--CODE-->
-
-<!-- 0bc7f58056c7 -->
-#### 3') 變形 — 同一個格子模板，不同回傳值
-
-LC 79 回傳 **boolean** 而且會短路（`if dfs(...): return True`）。下面兩題沿用一模一樣的
-*標記 → 四方向遞迴 → 取消標記*骨架，但它們必須**把每條路走到底**，所以沒有提前退出 —
-它們累積的是一個計數或一個最大值。
-
-| LC | 回傳 | 標記技巧 | 為什麼不能提前退出 |
-|----|---------|-----------|----------------------|
-| 79 Word Search | `bool` | `visited[][]` 或 `board[r][c]='#'` | 第一個找到的就算贏 |
-| 980 Unique Paths III | `int` 計數 | 把格子設成 `-1`（障礙值） | 必須數出**所有**合法路徑 |
-| 1219 Path with Maximum Gold | `int` 最大值 | 把格子設成 `0`（空值） | 必須比較**所有**路徑 |
-
-**轉折（LC 980）** — 「走過所有格子」這個條件變成一個額外的 `remain` 計數器貫穿整個遞迴；
-只有 `remain == 0` 時走到終點格才算數。
-
-<!--CODE-->
-
-**轉折（LC 1219）** — 沒有固定起點，所以 DFS 要從**每一格**啟動；遞迴是*回傳*最佳子路徑的值，
-而不是寫進一個共用的 list。
-
-<!--CODE-->
-
-> 另見 [backtrack_advanced.md Template 1](./backtrack_advanced.md#template-1-trie--grid-backtracking--lc-212-word-search-ii-) — 這個格子模板的多字版本，
-> 用一個 **Trie 節點**取代指向單一字串的 `idx` 游標。
-
-<!-- 44a293ae2e2b -->
-### 4) Subsets — LC 78 ⭐⭐⭐⭐⭐
-
-> 在每個節點都記錄一次的正典解是
-> [Template 3](./backtrack.md#template-3-subsets--lc-78-)。這裡的兩個版本是
-> *不同的演算法*：Python 那個是**依大小**建子集（`k = 0..n`），而 Java 的
-> `helper` 是**選／不選的二元決策樹**。
-
-<!--CODE-->
-
-**視覺化軌跡（遞迴樹）** — `nums = [1, 2, 3]` → `2^3 = 8` 個子集
-
-> 節點 = 一次 `backtrack(start, path)` 呼叫。和組合／排列題不同，子集是在
-> **每一個節點都記錄 `path`**（前序），不是只在葉節點記錄。`start` 只會往前走（`i + 1`），
-> 所以每個元素最多用一次，也就不會出現重複子集。
-
-<!--CODE-->
-
-> **關鍵對照**：記錄前沒有 `end_condition` 這道關卡 — 子集在任何深度都是合法的。
-> 把它看成「選／不選」的二元視角（見下面的 Java `helper`），畫出來就是一棵高度 `n`、
-> 有 `2^n` 個葉節點的完滿二元樹。
-
-<!--CODE-->
-
-<!--CODE-->
-
-<!-- 9e55a16be5ce -->
-### 5) Subsets II — LC 90
-
-<!--CODE-->
-
-<!-- d808b5a6780f -->
-### 6) Combinations — LC 77
-
-> `len(path) == k` 那個版本是 [Template 6](./backtrack.md#template-6-combinations--lc-77)。
-> 下面是**選／跳的二元**寫法 — 完全沒有 `for` 迴圈，只有兩個遞迴呼叫。
-
-<!--CODE-->
-
-<!--CODE-->
-
-<!-- 6feae13604b0 -->
-### 7) Permutations — LC 46 ⭐⭐⭐⭐⭐
-
-> `visited[]` 那個版本是 [Template 5](./backtrack.md#template-5-permutations--lc-46-)。
-> 下面是 `if i not in cur` 的版本 — 形狀一樣，但成員檢查是 O(n) 而不是 O(1)，
-> 這正是面試時該寫 `visited[]` 的理由。
-
-<!--CODE-->
-
-**視覺化軌跡（遞迴樹）** — `nums = [1, 2, 3]` → `3! = 6` 種排列
-
-> 節點 = 一次帶著 `visited` 集合的 `dfs(path)` 呼叫。排列題**沒有 `start_idx`** —
-> 每一層都掃過**全部** `nums`，只跳過已經在 `visited` 裡的元素。只有在**葉節點**、
-> 也就是 `len(path) == len(nums)` 時才記錄 `path`（`✅`）。
-
-<!--CODE-->
-
-> **和子集的關鍵對照**：分支數每往下一層就**變少**（3 → 2 → 1），因為 `visited` 一直在長；
-> 而且結果**只出現在葉節點** — 所以是 `n!` 個葉節點，而不是 `2^n` 個節點。
-
-<!-- f68fb84eb6dc -->
-#### 7') 變形 — 排列迴圈只多加一個 `if`
-
-下面每一題都是 LC 46 的骨架（`對每個還沒用過的值 → 選 → 遞迴 → 取消選`）。
-唯一改變的是迴圈裡多加的那道**守門條件**：
-
-| LC | 迴圈裡多加的守門條件 | 換到了什麼 |
-|----|-----------------------------|--------------|
-| 46 Permutations | *（無）* | 全部 `n!` 種順序 |
-| 47 Permutations II | `i > 0 and a[i] == a[i-1] and not used[i-1]` | 跳過同一層的重複值 |
-| 526 Beautiful Arrangement | `v % pos == 0 or pos % v == 0` | n=15 時把樹剪到只剩幾千個節點 |
-| 996 Number of Squareful Arrays | 上面兩個都要，再加 `is_square(path[-1] + a[i])` | 去重**加上**相鄰限制 |
-
-**轉折（LC 526）** — 改成對**位置**遞迴（`pos = 1..n`）、對*值*做迴圈，這樣值一放下去就能
-馬上檢查整除條件。因為只需要**個數**，所以根本不用建 `path` 這個 list。
-
-<!--CODE-->
-
-**轉折（LC 996）** — 把 LC 47 的去重規則*疊在*相鄰限制*之上*。注意去重規則需要陣列先**排序**，
-而且讀的是 `not used[i-1]`（相等的前一個值不在目前路徑上 → 代表我們在同一層 → 跳過）。
-
-<!--CODE-->
-
-**轉折（LC 784, Letter Case Permutation）** — 它*根本不是*排列：順序是固定的，我們是**逐索引**分支，
-字母兩條路、數字一條路。它其實是 LC 78 子集的形狀（每個位置做二元選擇），只是頂著「permutation」這個名字。
-
-<!--CODE-->
-
-<!-- e9d34d0fc49e -->
-### 8) Generate Parentheses — LC 22
-
-> 三個版本、三種不同的演算法：**V0** 產生所有長度 `2n` 的字串再去*驗證*
-> （指數級的浪費 — 放在這裡是因為它是最直覺的第一個想法）；
-> **V0'** 帶著剩餘的 `(` / `)` 數量，所以只會蓋出合法的前綴；
-> **Java** 版就是 V0'，但改用 `StringBuilder` 和明確的 undo，而不是字串串接。
-
-<!--CODE-->
-<!--CODE-->
-
-<!--CODE-->
-
-<!-- 905e6ae7906c -->
-### 9) Restore IP Addresses — LC 93
-
-<!--CODE-->
-
-<!-- accaabe1a3a3 -->
-### 10) Word Break — LC 139
-
-> 放在這裡是因為它是下面 LC 140 的*判定版*雙胞胎 — 但注意它的解法是
-> **對起始索引做 BFS**，不是回溯：沒有東西需要 undo。
->
-> DP 的寫法在 [dp.md Template 1b](./dp.md#template-1b-prefix-partition-dp--lc-139-)，而那裡最容易
-> 寫錯的就是巢狀順序 —— `for i: for word:` 正確，`for word: for i:` 會在 `"applepenapple"` 上
-> 安靜地回傳 `False`：
-> [dp_loop_order.md](./dp_loop_order.md#2-lc-139-word-break--one-recurrence-five-orders-)。
-
-<!--CODE-->
-
-<!-- 54c57cc0ab11 -->
-### 11) Word Break II — LC 140
-
-> **V0** 是列舉*字典*（把每個單字接上去，再測試接出來的前綴）；**V1** 是列舉*字串*
-> （切出每一個前綴，再測試它在不在字典裡）— 該寫的是第二種，它遇到第一個不是單字的前綴就會剪枝。
-> **V1'** 兩者都不是：它用迭代方式建一張 parent-pointer DAG，再倒著走一遍，所以完全不遞迴。
-
-<!--CODE-->
-
-<!-- 557c2bf25c6b -->
-### 12) Course Schedule — LC 207
-
-> 從回溯的角度看：`visiting.remove(crs)` **就是**取消選擇那一步 — 這個集合裝的是目前的 DFS 路徑，
-> 所以在裡面重複出現就代表有環。Kahn／入度的做法見
-> [topology_sorting.md](./topology_sorting.md)。
-
-<!--CODE-->
-
-<!-- 2a49d469c622 -->
-## 總結與速查
-
-| 如果上面的範例讓你覺得陌生 | 回去看 |
+| 如果這個看起來陌生 | 回去看 |
 |---|---|
-| 為什麼要 `path.pop()` ／ 什麼時候不用 | [Template 14](./backtrack.md#template-14-when-to-undo--mutable-vs-immutable-state--lc-113-) |
-| 遞迴呼叫要傳 `i` 還是 `i + 1` | [Template 2](./backtrack.md#template-2-start_idx--i-vs-i--1--lc-39-) |
-| 怎麼跳過重複值 | [Duplicate skipping](./backtrack.md#duplicate-skipping--the-same-level-skip-rule-) |
-| 剪枝時該用 `break` 還是 `continue` | [Sort, dedup, prune — when](./backtrack.md#sort-dedup-prune--when) |
-| 怎麼從題目敘述挑出對的形狀 | [Decision Table](./backtrack.md#decision-table--which-backtrack-shape-) |
+| 為什麼要 `path.pop()`，什麼時候不需要 | [Template 14](./backtrack.md#template-14-when-to-undo--mutable-vs-immutable-state--lc-113-) |
+| 遞迴呼叫傳 `i` 還是 `i + 1` | [Template 2](./backtrack.md#template-2-start_idx--i-vs-i--1--lc-39-) |
+| 跳過重複的值 | [跳過重複](./backtrack.md#duplicate-skipping--the-same-level-skip-rule-) |
+| 剪枝時用 `break` 還是 `continue` | [排序、去重、剪枝 — 何時](./backtrack.md#sort-dedup-prune--when) |
+| 從題目敘述挑出正確的形狀 | [決策表](./backtrack.md#decision-table--which-backtrack-shape-) |
 
-<!-- 962b16149816 -->
-### 相關主題
+<!-- 849d2b110cd7 -->
+## 索引
 
-- [backtrack.md](./backtrack.md) — 模板本身
-- [backtrack_advanced.md](./backtrack_advanced.md) — LC 212 / 282 / 301
-- [tree_backtrack.md](./tree_backtrack.md) — root→leaf 路徑題（LC 113、257、129、437）
-- [dfs.md](./dfs.md) — 不需要 undo 的走訪
+| LC | 題目 | 歸約到 | 難度 |
+|---|---|---|---|
+| 17 | [Letter Combinations of a Phone Number](#letter-combinations-of-a-phone-number--lc-17) | [Template 1](./backtrack.md#template-1-choose--explore--un-choose--lc-216-) 選擇 → 探索 → 撤銷 | Medium |
+| 784 | [Letter Case Permutation](#letter-case-permutation--lc-784) | [Template 3](./backtrack.md#template-3-subsets--lc-78-) 子集，選／不選的寫法 | Medium |
+| 996 | [Number of Squareful Arrays](#number-of-squareful-arrays--lc-996) | [Template 5](./backtrack.md#template-5-permutations--lc-46-) 排列 + LC 47 的跳過規則 | Hard |
+| 93 | [Restore IP Addresses](#restore-ip-addresses--lc-93) | [Template 8](./backtrack.md#template-8-palindrome-partitioning--lc-131-) 選在哪裡切 | Medium |
+| 140 | [Word Break II](#word-break-ii--lc-140) | [Template 8](./backtrack.md#template-8-palindrome-partitioning--lc-131-) 選在哪裡切，加記憶化 | Hard |
+| 980 | [Unique Paths III](#unique-paths-iii--lc-980) | [Template 9](./backtrack.md#template-9-grid--word-search--lc-79-) 標記、遞迴、還原 | Hard |
+| 22 | [Generate Parentheses](#generate-parentheses--lc-22) | [Template 12](./backtrack.md#template-12-pruning-at-the-choice--lc-526-) 遞迴前先檢查 | Medium |
+
+<!-- 767d2c084e45 -->
+### 在別處有完整解
+
+這些題目只在擁有它們的那張 card 上解一次。列在這裡，是讓搜尋這個題號的人有地方可落腳。
+
+| LC | 題目 | 所在 |
+|---|---|---|
+| 216 | Combination Sum III | [backtrack.md § Template 1](./backtrack.md#template-1-choose--explore--un-choose--lc-216-)（錨定題） |
+| 39 / 40 | Combination Sum / II | [backtrack.md § Template 2](./backtrack.md#template-2-start_idx--i-vs-i--1--lc-39-) 與 [§ Template 7](./backtrack.md#template-7-combination-sum--lc-39--lc-40-)（錨定題） |
+| 78 | Subsets | [backtrack.md § Template 3](./backtrack.md#template-3-subsets--lc-78-)（錨定題） |
+| 90 | Subsets II | [backtrack.md § Template 4](./backtrack.md#template-4-subsets-ii-skip-same-level-duplicates--lc-90-)（錨定題） |
+| 46 / 47 | Permutations / II | [backtrack.md § Template 5](./backtrack.md#template-5-permutations--lc-46-)（錨定題，LC 47 在它底下） |
+| 77 | Combinations | [backtrack.md § Template 6](./backtrack.md#template-6-combinations--lc-77)（錨定題） |
+| 79 | Word Search | [backtrack.md § Template 9](./backtrack.md#template-9-grid--word-search--lc-79-)（錨定題） |
+| 526 | Beautiful Arrangement | [backtrack.md § Template 12](./backtrack.md#template-12-pruning-at-the-choice--lc-526-)（錨定題） |
+| 1219 | Path with Maximum Gold | [dfs.md § Template 9](./dfs.md#template-9-grid-dfs-with-restore-backtracking--lc-1219)（錨定題）；標記存續時間的逐步追蹤在 [backtrack.md § Template 9](./backtrack.md#template-9-grid--word-search--lc-79-) 底下 |
+| 139 | Word Break | [dp.md § Template 1b](./dp.md#template-1b-prefix-partition-dp--lc-139-)（錨定題）：只問切法*存不存在*，所以是 DP，不是回溯 |
+| 207 | Course Schedule | [topology_sorting_examples.md](./topology_sorting_examples.md)：`visiting` 集合是在偵測環，不是在搜尋答案 |
+
+<!-- da6948e0f564 -->
+## 選擇 → 探索 → 撤銷 範例
+
+<!-- 8415b14af5dc -->
+### Letter Combinations of a Phone Number — LC 17
+
+> **關鍵** — 深度就是 `digits` 的索引，而每一層有它**自己**的選項清單（`digits[i]` 對應的字母）。
+> 兩層之間不會從同一個池子取，所以不需要 `start_idx`，也不需要 `used[]`：每個數字都選了一個字母，
+> 路徑就完成了。
+
+**歸約到**：[backtrack.md § Template 1](./backtrack.md#template-1-choose--explore--un-choose--lc-216-) — 選項清單改由目前這一層決定，而不是 `start..n`。
+
+<!--CODE-->
+
+<!--CODE-->
+
+第二種解法，留下來是因為它是不同的演算法，而不只是換個寫法：**一層一層**建出答案，完全不遞迴。
+它同時保留所有部分組合，所以要 O(4^n) 記憶體，而回溯只保留一條路徑。
+
+<!--CODE-->
+
+**陷阱**
+- `digits = ""` 必須回傳 `[]`。只靠 base case 會回傳 `[""]`，也就是一個空組合。
+- 撤銷時移除的是**最後一個**字元。`deleteCharAt(0)` 在 `"2"` 會過，在 `"23"` 會錯。
+
+<!-- 407998de2c19 -->
+## 子集範例
+
+<!-- 5cfdf9edbe0b -->
+### Letter Case Permutation — LC 784
+
+> **關鍵** — 雖然名字叫排列，字元的順序其實是固定的：每個**字母**是二選一（小寫或大寫），
+> 每個數字只有一種選擇。這就是子集那棵樹的選／不選寫法，每個位置一次二元決定，所以 L 個字母
+> 有 2^L 個葉節點。
+
+**歸約到**：[backtrack.md § Template 3](./backtrack.md#template-3-subsets--lc-78-) — 選／不選的寫法，兩個分支換成「小寫／大寫」。
+
+<!--CODE-->
+
+**陷阱**
+- 把它當成 Template 5（排列）去重排字元：`"a1b2"` 有 4 個答案，不是 4! × 4。
+- 在數字上也分支，會讓每個答案重複一倍。
+
+<!-- 5f7cdf8f4d38 -->
+## 排列範例
+
+<!-- d80b5905aefc -->
+### Number of Squareful Arrays — LC 996
+
+> **關鍵** — 排列迴圈裡有兩道過濾，都在遞迴**之前**做：LC 47 的同層跳過規則（輸入排序後，
+> 相等的左鄰居不在路徑上時就跳過 `nums[i]`），讓相等的值不會被數兩次；以及對 `path[-1]` 的
+> 相鄰檢查，讓一對數不合格時那個分支當場結束。
+
+**歸約到**：[backtrack.md § Template 5](./backtrack.md#template-5-permutations--lc-46-) — 加上 [LC 47 的跳過規則](./backtrack.md#permutations-with-duplicates--lc-47) 與一道兩兩檢查。
+
+<!--CODE-->
+
+**陷阱**
+- 沒有先排序，跳過規則比較的是不相干的鄰居：`[2, 2, 2]` 必須得到 `1`。
+- `int(x ** 0.5)` 遇到很大的完全平方數可能會往下捨入；`math.isqrt` 不會。
+
+<!-- 59213869d152 -->
+## 回文切分範例
+
+<!-- 2433ba57bbc2 -->
+### Restore IP Addresses — LC 93
+
+> **關鍵** — 跟 LC 131 同一個「選在哪裡切」的迴圈，只是關卡不同：一段是 1–3 位數、不超過 255、
+> 而且沒有前導零。有兩種情況會結束一個分支：四段剛好用完**整個**字串（記錄下來），或四段之後
+> 還剩數字（丟掉）。
+
+**歸約到**：[backtrack.md § Template 8](./backtrack.md#template-8-palindrome-partitioning--lc-131-) — 關卡是「合法的一段」，深度上限是 4。
+
+<!--CODE-->
+
+**陷阱**
+- `"0000"` → `["0.0.0.0"]`：單獨一個 `0` 是合法的一段；只有**更長**的段不能以 `0` 開頭。
+- 湊滿四段就記錄、卻沒檢查 `start == len(s)`，會回傳漏掉數字的位址。
+
+<!-- 0f4f5e505d74 -->
+### Word Break II — LC 140
+
+> **關鍵** — 在前綴是字典單字的地方切開，再解剩下的後綴。從 `start` 開始的後綴，不論前綴怎麼切，
+> 拼出來的句子都一樣，所以用 `start` 當鍵把它們快取起來。沒有快取的話，`"aaaa…aaab"` 配
+> `["a", "aa", "aaa"]` 會以指數次數重解同樣的後綴，最後還是什麼都找不到。
+
+**歸約到**：[backtrack.md § Template 8](./backtrack.md#template-8-palindrome-partitioning--lc-131-) — 關卡是 `piece in words`，遞迴回傳後綴的句子，好讓它能被記憶化。
+
+<!--CODE-->
+
+**陷阱**
+- 迴圈跑字典、測試接起來的前綴（而不是切 `s`），會在拒絕之前先建出比 `s` 還長的句子。
+- 如果只問切法*存不存在*，那是 LC 139：布林 DP，
+  [dp.md § Template 1b](./dp.md#template-1b-prefix-partition-dp--lc-139-)。
+
+<!-- aa95ec802c2d -->
+## 格子範例
+
+<!-- 5c3c2d84db94 -->
+### Unique Paths III — LC 980
+
+> **關鍵** — LC 79 的標記 → 遞迴 → 還原骨架，但每條路徑都要走到底，所以不能提早回傳：改成計數。
+> 只有走過**每一個**可走格子之後抵達終點，那條路徑才算數，所以一個 `remaining` 計數器跟著遞迴往下傳。
+
+**歸約到**：[backtrack.md § Template 9](./backtrack.md#template-9-grid--word-search--lc-79-) — 回傳計數，終點多一個「走遍每一格」的條件。
+
+<!--CODE-->
+
+**陷阱**
+- 每次抵達終點都算一次：`[[1,0,0,0],[0,0,0,0],[0,0,2,-1]]` 會得到遠多於 `2` 的數。
+- 像 LC 79 那樣第一次成功就回傳，計數會停在 `1`。
+
+<!-- c690a07cf714 -->
+## 剪枝範例
+
+<!-- df75f7fc3bc9 -->
+### Generate Parentheses — LC 22
+
+> **關鍵** — 帶著兩個計數，在放括號**之前**檢查：已開的 `(` 少於 `n` 時可以放 `(`，已放的 `)`
+> 少於 `(` 時可以放 `)`。這樣建出來的每個前綴都是合法前綴，每個葉節點都是答案，沒有任何東西是
+> 建出來只為了被丟掉。
+
+**歸約到**：[backtrack.md § Template 12](./backtrack.md#template-12-pruning-at-the-choice--lc-526-) — 遞迴前的檢查就是括號是否平衡。
+
+<!--CODE-->
+
+<!--CODE-->
+
+**陷阱**
+- 產生全部 `2^(2n)` 個字串再在葉節點逐一驗證，是最直覺的第一個想法，也是指數級的浪費：兩個計數讓驗證變得多餘。
+- 是 `close < open`，不是 `close < n`：後者會允許 `")("`。
