@@ -585,7 +585,7 @@ after 6      {0: 6, 1: 6, 2: 7, 3: 6, ...}   -> dp[0] = 6, supports {6} and {1,2
 [Template 1](#template-1-01-knapsack-subset-sum--lc-416-) (LC 416, LC 1049); n ≤ 30 with values up
 to 10⁷ → meet in the middle (LC 2035), the difference table is too wide.
 
-**Drill** — LC 1049 *(the same idea, read with a total key)* · LC 956 · LC 2035 *(meet in the middle)*
+**Drill** — LC 956 · LC 1049 *(the same idea, read with a total key)* · LC 2035 *(meet in the middle)*
 
 ### Template 6: Group Knapsack — LC 4040 ⭐⭐⭐⭐
 
@@ -737,9 +737,9 @@ second gets there with `2 -> 1`. Each cell is the *cheapest* way to that sum.
 group knapsack — "up to `k` times" is the group `{(w, v), (2w, 2v), …, (kw, kv)}`; the binary split
 in the table at the top is the faster spelling.
 
-**Drill** — LC 1155 *(exactly one face: no skip, count with `+=`)* · LC 2585 *(type used
-`0..count` times)* · LC 2218 *(prefix-sum each pile, then `max`)* · LC 4040 *(the menu is derived,
-not given)*
+**Drill** — LC 4040 *(the menu is derived,
+not given)* · LC 1155 *(exactly one face: no skip, count with `+=`)* · LC 2585 *(type used
+`0..count` times)* · LC 2218 *(prefix-sum each pile, then `max`)*
 
 ## LC Examples
 

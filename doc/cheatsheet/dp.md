@@ -599,11 +599,12 @@ when the interviewer frames the problem as a path search.
 ```python
 # python
 # IDEA: BFS over boundaries — from boundary i, every dictionary word s[i:j] reaches boundary j
-# time = O(n^2) cuts * O(L) slice+hash, space = O(n)
+# time = O(n * L) cuts * O(L) slice+hash = O(n * L^2), L = longest word; space = O(n)
 from collections import deque
 
 def wordBreak(s, wordDict):
     words = set(wordDict)
+    longest = max(len(w) for w in words)
     n = len(s)
     seen = [False] * (n + 1)           # boundary already queued
     seen[0] = True
@@ -612,7 +613,7 @@ def wordBreak(s, wordDict):
         i = queue.popleft()
         if i == n:                     # the whole string is cut into words
             return True
-        for j in range(i + 1, n + 1):
+        for j in range(i + 1, min(n, i + longest) + 1):   # no word is longer: never slice past it
             if not seen[j] and s[i:j] in words:
                 seen[j] = True
                 queue.append(j)
@@ -764,7 +765,7 @@ grid          dp
 being true → Dijkstra (LC 1631, table below). Two strings instead of one grid → the table is
 invented, not handed to you → [Template 2a](#template-2a-2-d-table-shape-and-fill-order--lc-516-).
 
-**Drill** — LC 62 ⭐ *(count instead of min)* · LC 64 · LC 63 *(obstacles in the seed row)* ·
+**Drill** — LC 64 · LC 62 ⭐ *(count instead of min)* · LC 63 *(obstacles in the seed row)* ·
 LC 120 *(triangle, bottom-up)* · LC 221 *(`1 + min` of three neighbours)* · LC 174 *(fill from the
 bottom-right)*
 
@@ -1605,7 +1606,7 @@ day 4  p=2  hold= 1  sold=3   rest=2     answer max(3, 2) = 3
 day-to-day difference. "At most k transactions" → `2k` states, in
 [stock_trading.md](./stock_trading.md).
 
-**Drill** — LC 121 ⭐ *(two states, buy from 0)* · LC 122 *(two states)* · LC 309 ⭐ · LC 714 *(fee
+**Drill** — LC 309 ⭐ · LC 121 ⭐ *(two states, buy from 0)* · LC 122 *(two states)* · LC 714 *(fee
 on sell)* · LC 123 *(four states)* · LC 188 *(2k states)*
 
 ### Template 6: Memoization → Tabulation → Rolling Variables — LC 198 ⭐⭐⭐⭐⭐
@@ -1709,7 +1710,7 @@ n = 2, nums = [2, 7]
 table (Template 7, Template 1b). A 2-D table rolls to one row only when row `i` reads just row `i-1`
 (Shape B in [Template 2a](#template-2a-2-d-table-shape-and-fill-order--lc-516-)).
 
-**Drill** — LC 70 ⭐ · LC 746 · LC 198 ⭐ · LC 213 ⭐ *(circle: run it twice, skipping each end)* ·
+**Drill** — LC 198 ⭐ · LC 70 ⭐ · LC 746 · LC 213 ⭐ *(circle: run it twice, skipping each end)* ·
 LC 1137 *(three variables)* · LC 740 *(reduce to House Robber over values)*
 
 #### Step 1 — top-down memoization
