@@ -31,7 +31,7 @@
     "bit_manipulation_examples.md": 5,
     "combinatorics_math_patterns.md": 7,
     "concurrency_patterns.md": 2,
-    "difference_array.md": 4,
+    "difference_array.md": 3,
     "dp_advanced.md": 11,
     "dp_loop_order.md": 1,
     "greedy.md": 5,
@@ -73,6 +73,7 @@
   },
   "examples-after-summary": {
     "greedy.md": 1,
+    "intervals.md": 1,
     "kadane_algorithm.md": 1,
     "matrix.md": 1,
     "monotonic_stack.md": 1,
