@@ -130,11 +130,17 @@ class RealTree(unittest.TestCase):
         self.assertEqual(worse, [], "the tree regressed against data/cheatsheet_lint_baseline.json")
 
     def test_rules_still_match_something(self):
-        # The corpus had hundreds of each of these when the gate landed. A rule
-        # that drops to zero overnight more likely broke than got fixed.
+        # A rule that drops to zero overnight more likely broke than got fixed —
+        # unless the baseline agrees it is zero. So every rule the baseline still
+        # holds findings for must still find them, and at least one rule must.
         cur = c.survey()
-        for rule in ("note-wall", "code-first-example", "examples-no-index"):
+        base = c.load_baseline(c.BASELINE)
+        live = [r for r in c.RULES if sum(base[r].values())]
+        self.assertTrue(live, "the baseline holds no findings at all")
+        for rule in live:
             self.assertGreater(sum(cur[rule].values()), 0, rule)
+        # and the matcher itself still fires on a known-bad line
+        self.assertEqual(c.count_file("x.md", "# NOTE !!! x\n", 0).get("note-wall"), 1)
 
     def test_baseline_names_every_rule(self):
         with open(c.BASELINE, encoding="utf-8") as fh:
