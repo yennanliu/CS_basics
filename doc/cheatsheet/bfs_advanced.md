@@ -705,7 +705,7 @@ strings affordable.
 # python
 # LC 301 - Remove Invalid Parentheses
 # IDEA: level = number of deletions; return the first level that has valid strings
-# time = O(2^n * n), space = O(2^n)
+# time = O(2^n * n), space = O(n * 2^n)   up to 2^n strings of length n in one level
 def removeInvalidParentheses(s):
     def valid(t):
         cnt = 0
@@ -736,7 +736,7 @@ def removeInvalidParentheses(s):
 // java
 // LC 301 - Remove Invalid Parentheses
 // IDEA: 1 BFS level = 1 deletion. First level containing a valid string is the answer level.
-// time = O(2^n * n), space = O(2^n)
+// time = O(2^n * n), space = O(n * 2^n)   up to 2^n strings of length n in one level
 public List<String> removeInvalidParentheses(String s) {
     List<String> res = new ArrayList<>();
     Set<String> visited = new HashSet<>();
@@ -775,7 +775,8 @@ private boolean isValid(String t) {
 **Complexity**
 - **Time O(2ⁿ·n)**: a string is a subset of the original positions, so at most 2ⁿ distinct strings
   ever enter a `level` set, and `valid(t)` scans each in O(n).
-- **Space O(2ⁿ)**: `level` and `nxt` — the widest level, about C(n, n/2) strings.
+- **Space O(n·2ⁿ)**: `level` and `nxt` hold the widest level, about C(n, n/2) strings, each up to
+  n characters long.
 
 **Traps**
 - Without dedup, `"(())"` is reached by many deletion orders and the levels blow up.
@@ -940,8 +941,9 @@ public int shortestPathAllKeys(String[] grid) {
 **Traps**
 - Marking `seen` on the **cell**: LC 864 then reports `-1` whenever the path must cross its own
   earlier route after picking a key up, which is most of the test set.
-- Counting a key you already hold as a new state — harmless but doubles the queue; `n_mask == mask`
-  is caught by the `seen` check anyway.
+- Testing `seen` when a state is **popped** instead of when it is pushed: the same `(cell, mask)` is
+  enqueued once by every neighbour that reaches it, so the queue grows up to 4× before the
+  duplicates are thrown away. Mark on push.
 
 **Drill** — LC 864 ⭐ · LC 1129 Shortest Path with Alternating Colors *(`(node, lastColour)`)* ·
 LC 847 Shortest Path Visiting All Nodes *(`(node, visitedMask)`, every node a source — see
@@ -1053,9 +1055,10 @@ public int shortestPath(int[][] grid, int k) {
 - Checking the budget on the cell you **enter** but spending it on the cell you **leave**. Either
   convention alone is correct — both endpoints are `0`, so a path pays for the same obstacles — but
   mixing them lets a run of adjacent obstacles through on a budget of one.
-- `<` instead of `<=` in the `best` check re-admits an equal budget arriving later: still correct,
-  but on an all-`0` grid with k just under `m + n - 2` the budget never drops, so cells already
-  settled are enqueued again from every neighbour.
+- `<` instead of `<=` in the `best` check re-admits an equal budget arriving later, and nothing
+  removes those duplicates. When the target is unreachable the queue never empties (a free region
+  keeps re-enqueuing itself), so `return -1` is never reached; when it is reachable the answer is
+  right but the queue can grow exponentially on an all-`0` grid.
 
 **Not this if** — the extra dimension makes edges *weighted* (a cost or a time per move): the same
 state goes into a heap instead of a queue — [Dijkstra.md](./Dijkstra.md).
@@ -1194,7 +1197,7 @@ word). word list ≤ 5,000 — one-sided BFS passes too; this is the follow-up t
 # python
 # LC 127 - Word Ladder (bidirectional)
 # IDEA: two frontier sets; expand the smaller one level at a time; a neighbour in the other set ends it
-# time = O(N * L * 26) worst case, far less in practice, space = O(N * L)
+# time = O(N * L^2 * 26) worst case (each candidate is an O(L) string to build and hash), space = O(N * L)
 def ladderLength(beginWord, endWord, wordList):
     words = set(wordList)
     if endWord not in words:
@@ -1221,8 +1224,9 @@ def ladderLength(beginWord, endWord, wordList):
 ```
 
 **Complexity**
-- **Time O(N·L·26)** in the worst case: `words.discard(nxt)` marks a word once for both sides, so
-  each word is expanded at most once by the `for i / for ch` loops. The gain is in practice — two
+- **Time O(N·L²·26)** in the worst case: `words.discard(nxt)` marks a word once for both sides, so
+  each word is expanded at most once by the `for i / for ch` loops, and each of its 26·L candidates
+  is a new length-L string to build and hash (O(N·L·26) only if L is treated as a small constant). The gain is in practice — two
   frontiers of depth d/2 instead of one of depth d.
 - **Space O(N·L)**: `words` plus the two frontier sets.
 
