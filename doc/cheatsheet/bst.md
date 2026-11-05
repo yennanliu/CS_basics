@@ -698,8 +698,8 @@ private TreeNode build(int[] nums, int left, int right) {
   are not counted).
 
 **Traps**
-- Slicing (`nums[:mid]`, `nums[mid+1:]`) copies the array at every level: O(n log n) time and
-  memory instead of O(n). Pass indices.
+- Slicing (`nums[:mid]`, `nums[mid+1:]`) copies the array at every level: O(n log n) time instead of O(n), and O(n)
+  extra memory at peak (the live slices shrink by half each level). Pass indices.
 - `mid = (left + right) / 2` in Python 3 is a float and fails as an index; use `//`.
 
 **Not this if** — the input is a sorted **linked list** (LC 109): finding the middle costs O(n) per

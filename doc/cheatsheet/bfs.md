@@ -944,8 +944,10 @@ private void buildParents(TreeNode node, TreeNode parent, Map<TreeNode, TreeNode
 ```
 
 **Traps**
-- No `visited` set: from 6 the BFS goes up to 5 and back down to 6 for ever. Any tree with
-  `k ≥ 2` loops.
+- No `visited` set: the walk still stops (the `continue` at `dist == k` caps every path at `k`
+  edges), but it returns wrong nodes. With `k = 2` it goes 5 → 6 → 5, so `target` itself comes back
+  at distance 2, and a node can be collected more than once. `visited` is what makes `dist` the
+  shortest distance.
 - No `continue` at `dist == k`: the answer is still right, because only `dist == k` is collected,
   but the BFS walks the whole tree for every `k`.
 - LC 863 hands you `target` as a **node**; LC 2385 hands you `start` as a **value**. Find that

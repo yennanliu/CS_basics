@@ -604,8 +604,10 @@ public List<List<Integer>> levelOrder(TreeNode root) {
   on `.val`.
 - `list.pop(0)` instead of `deque.popleft()` makes each dequeue O(n) — O(n²) on a wide tree.
 
-**Not this if** — the answer needs each node's **column** or horizontal gap (LC 662, LC 987):
-carry an index with the node, [Template 11](#template-11-bfs-with-positional-index--lc-662-).
+**Not this if** — the answer needs the horizontal gap inside a level (LC 662): carry a heap index
+with the node, [Template 11](#template-11-bfs-with-positional-index--lc-662-). A **column** (LC 314,
+LC 987) is a different coordinate: carry `col`, with `col - 1` for the left child and `col + 1` for
+the right.
 
 **Drill** — LC 102 ⭐ · LC 199 *(last node of each level)* · LC 103 *(reverse every other row)* ·
 LC 173 *(the in-order stack as an iterator)* · LC 314
@@ -1397,8 +1399,7 @@ single key (LC 450): the ordering lets you discard a whole side at once, see [bs
 ### Template 11: BFS with Positional Index — LC 662 ⭐⭐⭐⭐
 
 **Recognise** — "the **width** of a level counts the null positions between the end nodes", "is the
-tree **complete**", "vertical order / column" — a horizontal position that a plain level-order count
-cannot express.
+tree **complete**" — a horizontal position that a plain level-order count cannot express.
 
 **Key point** — each node carries its index in the complete-tree array layout (`left = 2i`,
 `right = 2i + 1`), so the index encodes the position **including the gaps**; width of a level =
@@ -1568,10 +1569,12 @@ public boolean isCompleteTree(TreeNode root) {
 }
 ```
 
-**Not this if** — columns must also be **sorted within a cell** by row and value (LC 987): carry
-`(row, col)` and sort at the end, see [tree.md](./tree.md).
+**Not this if** — the question is about **columns** (LC 314, LC 987). A column is not the heap
+index: on `[1,2,3]` the root and its left child both sit at offset 0 of their level, but in columns
+0 and −1. Carry `col` (left `col - 1`, right `col + 1`); LC 987 also sorts each cell by
+`(row, value)`, see [tree.md](./tree.md).
 
-**Drill** — LC 662 · LC 958 · LC 314 · LC 987
+**Drill** — LC 662 · LC 958 · LC 919 *(complete-tree inserter)*
 
 ---
 

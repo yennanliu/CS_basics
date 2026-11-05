@@ -1348,7 +1348,7 @@ private boolean fill(int idx, char[][] board, List<int[]> empty,
 boards): place a digit and **propagate** it to its peers, failing as soon as a cell has zero
 candidates — [backtrack_advanced.md](./backtrack_advanced.md#template-4-constraint-propagation-early-termination).
 
-**Drill** — LC 36 *(the validity check alone)* · LC 37 ⭐ · LC 51 *(the same set-per-constraint idea)*
+**Drill** — LC 37 ⭐ · LC 36 *(the validity check alone)* · LC 51 *(the same set-per-constraint idea)*
 
 ### Template 12: Pruning at the Choice — LC 526 ⭐⭐⭐⭐
 
@@ -1663,7 +1663,7 @@ its own copy and no `pop()` is needed — the form [tree_backtrack.md](./tree_ba
 The trade-off is O(n) copying per call against one shared list with an undo. See also
 [python_trick.md §1-54](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/python_trick.md).
 
-**Drill** — LC 112 *(no path to keep: no undo at all)* · LC 113 ⭐ · LC 257 *(a string path: immutable, no undo)* · LC 1219 *(a mutable grid mark: undo required)*
+**Drill** — LC 113 ⭐ · LC 112 *(no path to keep: no undo at all)* · LC 257 *(a string path: immutable, no undo)* · LC 1219 *(a mutable grid mark: undo required)*
 
 ## Drill Path
 

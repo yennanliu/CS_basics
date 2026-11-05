@@ -715,7 +715,7 @@ private boolean isSubsequence(String s, String target) {
 public String findLongestWord_sort(String s, List<String> d) {
     // Sort: longer first, then lexicographic order for ties
     Collections.sort(d, (s1, s2) ->
-        s2.length() != s1.length() ? s2.length() - s1.length() : s1.compareTo(s2)
+        s2.length() != s1.length() ? Integer.compare(s2.length(), s1.length()) : s1.compareTo(s2)
     );
 
     for (String str : d) {
