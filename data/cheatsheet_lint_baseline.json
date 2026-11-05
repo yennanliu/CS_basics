@@ -4,15 +4,11 @@
     "2_pointers_linkedlist.md": 10,
     "Dijkstra_examples.md": 10,
     "add_x_sum.md": 11,
-    "backtrack_advanced.md": 14,
-    "backtrack_examples.md": 26,
     "binary_tree.md": 1,
     "design_examples.md": 1,
     "difference_array.md": 4,
-    "dp_advanced.md": 5,
     "dp_bitmask.md": 4,
     "dp_digit.md": 1,
-    "dp_examples.md": 8,
     "dp_loop_order.md": 1,
     "dp_pattern.md": 1,
     "dp_string.md": 1,
@@ -60,8 +56,6 @@
   "gpt": {
     "Dijkstra_examples.md": 2,
     "add_x_sum.md": 1,
-    "backtrack_examples.md": 2,
-    "dp_examples.md": 3,
     "hash_map_examples.md": 1,
     "java_trick_strings_sorting.md": 1,
     "linked_list_examples.md": 2,
@@ -70,7 +64,6 @@
     "stack_examples.md": 1
   },
   "blog-link": {
-    "backtrack_examples.md": 1,
     "bit_manipulation_examples.md": 3,
     "design_examples.md": 1,
     "hash_map.md": 2,
@@ -107,14 +100,12 @@
     "add_x_sum.md": 7,
     "advanced_divide_and_conquer.md": 4,
     "advanced_string_algorithms.md": 3,
-    "backtrack_examples.md": 3,
     "binary_indexed_tree.md": 1,
     "bit_manipulation_examples.md": 5,
     "combinatorics_math_patterns.md": 7,
     "concurrency_patterns.md": 2,
     "design_examples.md": 14,
     "difference_array.md": 4,
-    "dp.md": 2,
     "dp_advanced.md": 11,
     "dp_loop_order.md": 1,
     "greedy.md": 5,
@@ -239,10 +230,8 @@
   },
   "examples-no-index": {
     "Dijkstra_examples.md": 1,
-    "backtrack_examples.md": 1,
     "bit_manipulation_examples.md": 1,
     "design_examples.md": 1,
-    "dp_examples.md": 1,
     "greedy_examples.md": 1,
     "hash_map_examples.md": 1,
     "heap_examples.md": 1,
@@ -257,8 +246,6 @@
   },
   "examples-template": {},
   "advanced-no-when-not": {
-    "backtrack_advanced.md": 1,
-    "dp_advanced.md": 1,
     "heap_advanced.md": 1,
     "prefix_sum_advanced.md": 1
   }

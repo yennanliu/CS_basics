@@ -2038,6 +2038,21 @@ def minDistance(word1, word2):
                 )
 
     return dp[m][n]
+
+# Same recurrence, rolling row: row i reads only row i-1 (prev) and the cell to its left
+# time = O(m * n), space = O(n)
+def minDistance_rolling(word1, word2):
+    m, n = len(word1), len(word2)
+    dp = list(range(n + 1))              # row 0: j inserts
+    for i in range(1, m + 1):
+        prev = dp[:]                     # row i-1
+        dp[0] = i                        # column 0: i deletes
+        for j in range(1, n + 1):
+            if word1[i - 1] == word2[j - 1]:
+                dp[j] = prev[j - 1]
+            else:
+                dp[j] = 1 + min(prev[j], dp[j - 1], prev[j - 1])
+    return dp[n]
 ```
 
 ```java
@@ -2141,6 +2156,20 @@ def longestCommonSubsequence(text1, text2):
                 dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
 
     return dp[m][n]
+
+# Same recurrence, rolling row: keep only the previous row
+# time = O(m * n), space = O(n)
+def longestCommonSubsequence_rolling(text1, text2):
+    n = len(text2)
+    dp = [0] * (n + 1)
+    for c in text1:
+        prev, dp = dp, [0] * (n + 1)     # prev = row i-1, dp = row i
+        for j in range(n):
+            if c == text2[j]:
+                dp[j + 1] = prev[j] + 1
+            else:
+                dp[j + 1] = max(prev[j + 1], dp[j])
+    return dp[n]
 ```
 
 ```java
