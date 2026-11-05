@@ -14,7 +14,7 @@
 | 3 | **P7** lint + baseline | `script/check_cheatsheets.py` + baseline + workflow | [#303](https://github.com/yennanliu/CS_basics/pull/303) | 🔄 |
 | 4 | **P1** 入口 | `lc_pattern.md` 改成 router；`startHere` 第一階 | [#305](https://github.com/yennanliu/CS_basics/pull/305) | 🔄 |
 | 5a | **P2** tree 家族 | `tree`、`binary_tree`、`bst`、`tree_lca_distance` | [#306](https://github.com/yennanliu/CS_basics/pull/306) | 🔄 |
-| 5b | **P2** graph 家族 | `bfs`、`dfs`、`graph` | PR_F | 🔄 |
+| 5b | **P2** graph 家族 | `bfs`、`dfs`、`graph` | [#307](https://github.com/yennanliu/CS_basics/pull/307) | 🔄 |
 | 5c | **P2** arrays / strings 家族 | `array`、`string`、`2_pointers`、`sliding_window`、`binary_search`、`binary_search_on_answer` | | ⬜ |
 | 5d | **P2** dp 家族 | `dp`、`backtrack`、`knapsack` | | ⬜ |
 | 5e | **P2** hashing / stacks 家族 | `hash_map`、`stack`、`linked_list`、`heap` | | ⬜ |
