@@ -900,3 +900,24 @@ h4 > a.header-anchor:hover { text-decoration: underline; }
   .stat-cell { border-right: none; border-bottom: 1px solid var(--border); }
   .stat-cell:last-child { border-bottom: none; }
 }
+
+/* ── Drill Path verdicts ──────────────────────────────────────────
+   build-lib.js stampDrillVerdicts() puts the practice log's latest
+   verdict after each LC number in a cheatsheet's Drill Path. Ink only,
+   like the rest of the system: ok is filled, again is outlined, nothing
+   judged yet (never logged, or logged without a verdict) is dim.
+   ─────────────────────────────────────────────────────────────── */
+.lc-verdict {
+  display: inline-block;
+  margin-left: 0.25em;
+  padding: 0 0.4em;
+  border: 1px solid var(--border-strong);
+  border-radius: 3px;
+  font-size: 0.72em;
+  line-height: 1.5;
+  vertical-align: 0.1em;
+  white-space: nowrap;
+}
+.lc-verdict-ok    { background: var(--inverse-bg); color: var(--inverse-text); border-color: var(--inverse-bg); }
+.lc-verdict-again { font-weight: 700; color: var(--text); }
+.lc-verdict-none  { color: var(--text-dim); border-style: dashed; border-color: var(--border); }

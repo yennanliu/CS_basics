@@ -613,7 +613,68 @@
       : compact;
   }
 
+  // ── Drill Path verdicts ──────────────────────────────────────────────────────
+  // A sheet's `## Drill Path` (Skeleton A: `3) Drill Path`) lists LC numbers; the
+  // practice log already says which of them are solid. Stamp each `LC <n>` in
+  // that section with the log's latest verdict — the same reading the roadmap
+  // renders (build-roadmap.js readLogVerdicts) — so a sheet shows what is left
+  // to drill without anyone typing it. Only the Drill Path section is touched,
+  // and only text between tags, so links and attributes are never rewritten.
+  const VERDICT_TEXT = {
+    en: { ok: 'ok', again: 'again', none: 'no verdict',
+          title: (v, d) => `practice log: ${v}${d ? ' on ' + d : ''}` },
+    zh: { ok: 'ok', again: 'again', none: '未評定',
+          title: (v, d) => `練習紀錄：${v}${d ? '（' + d + '）' : ''}` }
+  };
+
+  function verdictBadge(id, verdicts, lang) {
+    const t = VERDICT_TEXT[lang] || VERDICT_TEXT.en;
+    const v = verdicts && verdicts.get(String(id));
+    const status = v ? v.status : 'none';
+    const label = t[status];
+    const title = v ? t.title(v.status, isoDate(v.date)) : t.title(t.none, '');
+    return `<span class="lc-verdict lc-verdict-${status}" data-lc="${id}" data-verdict="${status}" title="${title}">${label}</span>`;
+  }
+
+  // A Drill Path heading: its id on an English page, its text on a 中文 one,
+  // where ids are retargeted from the translated text.
+  const DRILL_HEADING = /(^|-)drill-path(-|$)/;
+  const DRILL_TEXT = /drill path|練習路徑|練習路線/i;
+
+  function stampDrillVerdicts(html, verdicts, lang = 'en') {
+    const open = /<h([1-6])\b[^>]*>/g;
+    let m;
+    while ((m = open.exec(html))) {
+      const level = Number(m[1]);
+      const close = html.indexOf(`</h${level}>`, m.index);
+      if (close < 0) break;
+      const id = (m[0].match(/\bid="([^"]*)"/) || [])[1] || '';
+      const text = html.slice(m.index + m[0].length, close).replace(/<[^>]*>/g, '');
+      if (!DRILL_HEADING.test(id) && !DRILL_TEXT.test(text)) continue;
+      const start = close + `</h${level}>`.length;
+      const next = new RegExp(`<h[1-${level}]\\b`, 'g');
+      next.lastIndex = start;
+      const n = next.exec(html);
+      const end = n ? n.index : html.length;
+      let inHeading = false;
+      const body = html.slice(start, end).split(/(<[^>]+>)/).map(part => {
+        if (part.startsWith('<')) {
+          if (/^<h[1-6]\b/.test(part)) inHeading = true;
+          else if (/^<\/h[1-6]>/.test(part)) inHeading = false;
+          return part;
+        }
+        return inHeading ? part
+          : part.replace(/\bLC\s?(\d{1,4})\b/g, (all, lc) => `${all} ${verdictBadge(lc, verdicts, lang)}`);
+      }).join('');
+      html = html.slice(0, start) + body + html.slice(end);
+      open.lastIndex = start + body.length;
+    }
+    return html;
+  }
+
   return {
+    stampDrillVerdicts,
+    verdictBadge,
     slugify,
     isoDate,
     TIER_LABELS,

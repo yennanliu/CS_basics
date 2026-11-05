@@ -327,6 +327,37 @@ ok('every roadmap verdict is what the log says', stamped.every(id => logVerdict.
 ok('no ok/again in the log is missing from the roadmap', roadmapIds.every(id =>
   !['ok', 'again'].includes(logVerdict.get(id)) || roadmapData.problems[id].verdict === logVerdict.get(id)));
 ok('every stamped verdict carries its date', stamped.every(id => /^\d{8}$/.test(roadmapData.problems[id].verdictDate)));
+// The cheatsheets' Drill Path badges (build-lib.js stampDrillVerdicts) are the
+// same reading on another page: each one must say what the log says, and a
+// "no verdict" badge must not hide an ok or an again.
+const sheetBadges = [];
+for (const f of fs.readdirSync(`${SITE}/cheatsheets`).filter(f => f.endsWith('.html'))) {
+  for (const b of read(`${SITE}/cheatsheets/${f}`).matchAll(/data-lc="(\d+)" data-verdict="(\w+)"/g)) {
+    sheetBadges.push({ f, id: b[1], verdict: b[2] });
+  }
+}
+const badgeWrong = sheetBadges.filter(({ id, verdict }) => {
+  const log = logVerdict.get(id);
+  return verdict === 'none' ? ['ok', 'again'].includes(log) : log !== verdict;
+});
+ok('cheatsheet Drill Paths carry verdict badges', sheetBadges.length > 100, `${sheetBadges.length} badges`);
+// Per page, not just in total: every English sheet whose Drill Path names an LC
+// number carries badges, and its 中文 page carries exactly the same ones — so a
+// heading the stamper does not recognise in one language cannot hide.
+const badgeIds = f => sheetBadges.filter(b => b.f === f).map(b => b.id).join(',');
+const drillPages = fs.readdirSync(`${SITE}/cheatsheets`)
+  .filter(f => f.endsWith('.html') && !f.endsWith('.zh.html'))
+  .filter(f => /<h[2-4][^>]*id="[^"]*drill-path[^"]*"[^>]*>[\s\S]*?LC\s?\d/.test(read(`${SITE}/cheatsheets/${f}`)));
+const unbadged = drillPages.filter(f => !badgeIds(f));
+ok('every Drill Path that names an LC number carries badges', unbadged.length === 0, unbadged.slice(0, 5).join(', '));
+const zhMismatch = drillPages
+  .map(f => [f, f.replace(/\.html$/, '.zh.html')])
+  .filter(([, zh]) => fs.existsSync(`${SITE}/cheatsheets/${zh}`))
+  .filter(([en, zh]) => badgeIds(en) !== badgeIds(zh));
+ok('each 中文 Drill Path carries the same badges as its English page', zhMismatch.length === 0,
+   zhMismatch.slice(0, 5).map(([en]) => en).join(', '));
+ok('every Drill Path badge is the log\'s latest verdict', badgeWrong.length === 0,
+   badgeWrong.slice(0, 3).map(b => `${b.f} LC ${b.id}: ${b.verdict} vs log ${logVerdict.get(b.id)}`).join('; '));
 // The shipped script, exercised rather than grepped: the log's verdict decides,
 // in both directions, and a browser tick only counts where the log is silent.
 const shippedRoadmap = require(path.resolve(SITE, 'roadmap.js'));

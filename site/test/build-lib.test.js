@@ -760,3 +760,48 @@ test('buildCheatsheetIndex leaves the English index untouched when a zh block ex
   const without = lib.buildCheatsheetIndex(SHEETS, META);
   assert.equal(withZh, without);
 });
+
+// ── Drill Path verdicts ───────────────────────────────────────────────────
+
+const VERDICTS = new Map([
+  ['1', { status: 'ok', date: '20261001' }],
+  ['20', { status: 'again', date: '20261002' }]
+]);
+
+test('stampDrillVerdicts badges every LC number in the Drill Path, and only there', () => {
+  const html = '<h2 id="recognition">Recognition</h2><p>LC 1</p>' +
+    '<h2 id="drill-path">Drill Path</h2><ul><li>LC 1 · LC 20 · LC 3</li></ul>' +
+    '<h2 id="summary">Summary</h2><p>LC 20</p>';
+  const doc = parse(lib.stampDrillVerdicts(html, VERDICTS));
+  const badges = [...doc.querySelectorAll('.lc-verdict')].map(b => [b.dataset.lc, b.dataset.verdict]);
+  assert.deepEqual(badges, [['1', 'ok'], ['20', 'again'], ['3', 'none']]);
+  assert.equal(doc.querySelector('#recognition + p').textContent, 'LC 1');
+  assert.equal(doc.querySelector('#summary + p').textContent, 'LC 20');
+});
+
+test('stampDrillVerdicts never rewrites a tag, an attribute, or a sub-heading', () => {
+  const html = '<h2 id="3-drill-path">3) Drill Path</h2>' +
+    '<p><a href="#lc-1" title="LC 1">LC 1</a></p><h3 id="core">Core LC 9</h3><p>LC 9</p>';
+  const out = lib.stampDrillVerdicts(html, VERDICTS);
+  assert.ok(out.includes('href="#lc-1" title="LC 1"'));
+  assert.ok(out.includes('<h3 id="core">Core LC 9</h3>'));
+  assert.equal(parse(out).querySelectorAll('.lc-verdict').length, 2);
+});
+
+test('stampDrillVerdicts finds the 中文 heading by its text and labels in Chinese', () => {
+  const html = '<h2 id="練習路徑">練習路徑</h2><p>LC 3 · LC 1</p>';
+  const doc = parse(lib.stampDrillVerdicts(html, VERDICTS, 'zh'));
+  const [none, ok] = doc.querySelectorAll('.lc-verdict');
+  assert.equal(none.textContent, '未評定');
+  assert.equal(ok.getAttribute('title'), '練習紀錄：ok（2026-10-01）');
+});
+
+test('stampDrillVerdicts also finds the 練習路線 spelling some overlays use', () => {
+  const html = '<h2 id="練習路線">練習路線</h2><p>LC 1</p>';
+  assert.equal(parse(lib.stampDrillVerdicts(html, VERDICTS, 'zh')).querySelectorAll('.lc-verdict').length, 1);
+});
+
+test('stampDrillVerdicts leaves a page with no Drill Path unchanged', () => {
+  const html = '<h2 id="overview">Overview</h2><p>LC 1</p>';
+  assert.equal(lib.stampDrillVerdicts(html, VERDICTS), html);
+});

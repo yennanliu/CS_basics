@@ -23,7 +23,7 @@
 | 6c | **P3 + P4** arrays / strings 家族 | quickselect、KMP / rolling hash 去重；`array_examples`、`string_examples`、`2_pointers_examples`、`sliding_window_examples`、`binary_search_examples` 改 C，`sliding_window_advanced` 改 D | [#313](https://github.com/yennanliu/CS_basics/pull/313) | 🔄 |
 | 6d | **P3 + P4** dp 家族 | 0/1 knapsack 去重；`dp_examples`、`backtrack_examples` 改 C，`dp_advanced`、`backtrack_advanced` 改 D | [#314](https://github.com/yennanliu/CS_basics/pull/314) | 🔄 |
 | 6e | **P3 + P4** hashing / stacks 家族 | `monotonic_stack` vs `stack_examples`；`hash_map_examples`、`stack_examples`、`linked_list_examples`、`heap_examples`、`design_examples` 改 C，`heap_advanced` 改 D | [#315](https://github.com/yennanliu/CS_basics/pull/315) | 🔄 |
-| 7a | **P5** 第二階段 | `build-site.js` 在 Drill Path 旁標出 `progress.txt` 的 verdict | | ⬜ |
+| 7a | **P5** 第二階段 | `build-site.js` 在 Drill Path 旁標出 `progress.txt` 的 verdict | [#316](https://github.com/yennanliu/CS_basics/pull/316) | 🔄 |
 | 7b | **P6** 雜訊與語言 | Python 優先、IPython transcript、行內中文、檔名修正 | | ⬜ |
 
 P2 的 24 份 tier 5 cheatsheet 裡有 4 份不在 5a–5e：`lc_pattern` 由 P1 改寫，`knapsack_01_zh` 是 P3 #2 的 0/1 knapsack 中文 home，`python_complexity` 與 `complexity_cheatsheet` 是查表型的參考文件（沒有 pattern card 可補），在 P1 合併 constraint ruler 時一起處理。
@@ -104,3 +104,4 @@ P2 的 24 份 tier 5 cheatsheet 裡有 4 份不在 5a–5e：`lc_pattern` 由 P1
 | 2026-11-05 | 6c | P3+P4 arrays / strings：新 `quickselect.md`（`2_pointers_quickselect` 變 stub）；KMP / rolling hash 歸 `string_matching_kmp_rolling_hash`；LC 88 / 251 / 1004 / 567 / 438 / 162 / 300 / 1095 / 209 等各一個家；5 份 `_examples` 改 C、`sliding_window_advanced` 改 D；修 LC 1044、LC 1838 Java、LC 658 O(n²)、LC 80、LC 1283 溢位 |
 | 2026-11-05 | 6d | P3+P4 dp：0/1 knapsack 歸 `knapsack.md`（2-D 推導與 top-down LC 416 移入 Template 1）；`dp_advanced` 中文速記改成指向 `knapsack_01_zh` 的一行；`backtrack_examples`、`dp_examples` 改 C，兩份 `_advanced` 改 D；LC 72 / 1143 rolling-row 補進 `dp` T8 / T9 |
 | 2026-11-05 | 6e | P3+P4 hashing / stacks：LC 146 / 460 歸 `linked_list` T7；LC 560 歸 `hash_map` T4；單調堆疊題歸 `monotonic_stack`；五份 `_examples` 改 C、`heap_advanced` 改 D；`design.md` 新增 Pattern 6–10；修 LC 1963、`heap_advanced` §9、LC 588、LC 24 / 25 / 1171 的 trap 敘述；疊合時修 12 條跨家族連結 |
+| 2026-11-05 | 7a | P5 第二階段：`stampDrillVerdicts` 在每份 Drill Path 的 LC 編號旁標出 `progress.txt` 的最新 verdict（ok / again / 未練），英文與中文頁都有；e2e 逐題比對 `progress.json`（709 個 badge） |
