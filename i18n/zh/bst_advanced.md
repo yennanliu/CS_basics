@@ -292,26 +292,14 @@ LC 99 · LC 426 *（把 `prev` 和 `node` 串成串列）*
 <!-- 95d7ce6aa3fa -->
 ## 帶著上下界去量測
 
-<!-- 1c641077e5d2 -->
+<!-- fc6070adf92a -->
 ### Maximum Difference Between Node and Ancestor — LC 1026
 
-> **關鍵** — 一條路徑上最大的 `|祖先 − 子孫|` 就是這條路徑的最大值減最小值，所以把這兩個數往下帶，
-> 路徑結束時讀出 `high − low` 即可。不用比較任何一對，也用不到 BST 的順序。
+> **關鍵** — 把路徑上的最小值與最大值往下帶，路徑結束時讀出 `high − low`；用不到 BST 的順序，
+> 也用不到這份表單的任何技巧。
 
-**歸約到**：[bst § Template 4](./bst.md#template-4-validate-with-bounds--lc-98) —— 同樣往下帶兩個值，
-只是拿來擴張而不是檢查。
-
-<!--CODE-->
-
-**陷阱**
-- 每個節點只跟父節點比：LC 1026 的範例 1，
-  `[8,3,10,1,6,null,14,null,null,4,7,13]`，會回傳 5（8 − 3）而不是 7（8 − 1，相隔兩條邊）。
-
-| | 驗證（LC 98） | 祖先最大差（LC 1026） |
-|---|---|---|
-| 往下帶的 | 合法區間 | 路徑上的最小值與最大值 |
-| 節點落在區間外時 | 回傳 false | 擴張區間 |
-| 子節點結果用什麼合併 | `and` | `max` |
+**歸約到**：[bst § Template 4](./bst.md#template-4-validate-with-bounds--lc-98) —— 同樣往下帶兩個值，只是拿來擴張而不是檢查。它的完整解、陷阱
+和與 LC 98 的對照，在 [tree_examples.md § LC 1026](./tree_examples.md#maximum-difference-between-node-and-ancestor--lc-1026)。
 
 <!-- 138524dc966c -->
 ## 不適用時

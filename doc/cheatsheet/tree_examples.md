@@ -27,6 +27,7 @@ instead of a second copy here.
 | 199 | [Binary Tree Right Side View](#binary-tree-right-side-view--lc-199) | [binary_tree § Template 2](./binary_tree.md#template-2-iterative-traversal--stack-in-order-and-queue-level-order--lc-102) | Medium |
 | 106 | [Construct Binary Tree from Inorder and Postorder Traversal](#construct-binary-tree-from-inorder-and-postorder-traversal--lc-106) | [binary_tree § Template 3](./binary_tree.md#template-3-build-from-preorder--inorder--lc-105) | Medium |
 | 1448 | [Count Good Nodes in Binary Tree](#count-good-nodes-in-binary-tree--lc-1448) | [tree_lca_distance § Template 4](./tree_lca_distance.md#template-4-root-to-leaf-path-with-backtracking--lc-113) | Medium |
+| 1026 | [Maximum Difference Between Node and Ancestor](#maximum-difference-between-node-and-ancestor--lc-1026) | [tree_lca_distance § Template 4](./tree_lca_distance.md#template-4-root-to-leaf-path-with-backtracking--lc-113) | Medium |
 | 104 | [Maximum Depth of Binary Tree](#maximum-depth-of-binary-tree--lc-104) | [binary_tree § Template 5](./binary_tree.md#template-5-height-up-answer-in-a-global--lc-543) | Easy |
 | 110 | [Balanced Binary Tree](#balanced-binary-tree--lc-110) | [binary_tree § Template 5](./binary_tree.md#template-5-height-up-answer-in-a-global--lc-543) | Easy |
 | 124 | Binary Tree Maximum Path Sum — worked in [tree_lca_distance.md](./tree_lca_distance.md#binary-tree-maximum-path-sum--lc-124) | [binary_tree § Template 5](./binary_tree.md#template-5-height-up-answer-in-a-global--lc-543) | Hard |
@@ -249,6 +250,42 @@ def goodNodes(root):
   is good, so the answer is 3, and `>` returns 2.
 - Seeding with 0 instead of `root.val` breaks on negative values; the root is always good, so seed
   with its own value (or `-inf`).
+
+### Maximum Difference Between Node and Ancestor — LC 1026
+
+> **Key point** — the largest `|ancestor − descendant|` on a path is the path's max minus its min,
+> so carry those two numbers down and read `high − low` when the path ends. No pair is ever
+> compared, and no BST order is used.
+
+**Reduces to**: [tree_lca_distance § Template 4](./tree_lca_distance.md#template-4-root-to-leaf-path-with-backtracking--lc-113) — state carried down a root-to-leaf path; the
+same two values as [bst § Template 4](./bst.md#template-4-validate-with-bounds--lc-98)'s bounds, widened instead of checked.
+
+```python
+# python
+# LC 1026 - Maximum Difference Between Node and Ancestor
+# IDEA: carry the path's min and max down; at the end of a path the answer is max - min
+# time = O(n), space = O(h)
+def maxAncestorDiff(root):
+    def dfs(node, low, high):
+        if not node:
+            return high - low                    # the path ended: its widest spread
+        low = min(low, node.val)
+        high = max(high, node.val)
+        return max(dfs(node.left, low, high), dfs(node.right, low, high))
+
+    return dfs(root, root.val, root.val)
+```
+
+**Traps**
+- Comparing each node only with its parent: LC 1026's example 1,
+  `[8,3,10,1,6,null,14,null,null,4,7,13]`, returns 5 (8 − 3) instead of 7 (8 − 1, two edges
+  apart).
+
+| | Validate (LC 98) | Max ancestor diff (LC 1026) |
+|---|---|---|
+| carried down | the legal interval | the path's min and max |
+| at a node outside it | return false | widen it |
+| children combine with | `and` | `max` |
 
 ## Height-Up Examples
 
