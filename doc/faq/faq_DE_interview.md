@@ -42,8 +42,9 @@ parallel, and a cluster manager hands out the machines.**
 
 - **Deploy modes**: `client` (driver on the submitting machine — good for notebooks) vs
   `cluster` (driver inside the cluster — what production jobs use).
-- Parallelism = number of partitions; throughput = cores × executors. A 200-partition stage
-  on 50 cores runs in 4 waves.
+- Parallelism = number of partitions; concurrent task slots = executors × cores per executor.
+  A 200-partition stage on 50 slots (say 10 executors × 5 cores) runs in 4 waves — actual
+  throughput still depends on the workload and I/O.
 
 ### 1-2) Lazy evaluation, the DAG, stages and shuffles
 
@@ -121,7 +122,7 @@ existing partitions without a shuffle, so it can only go down.**
 - **Rule of thumb**: aim for ~100–200 MB per partition, and 2–4 tasks per core.
 - **Small files** — writing 10,000 tiny files slows every later reader (one task per file,
   metadata overhead on HDFS / S3 listing). Fix with `coalesce` / `repartition` before the
-  write, `maxRecordsPerFile`, or a compaction job (Delta `OPTIMIZE`, Iceberg `rewrite_data_files`).
+  write, or a compaction job (Delta `OPTIMIZE`, Iceberg `rewrite_data_files`).
 - `partitionBy("dt")` on write is a **directory layout** for pruning, not the same thing as
   in-memory partitions — and partitioning by a high-cardinality column explodes file counts.
 
@@ -211,13 +212,13 @@ consumers, and batching + compression end to end.
 ### 2-2) Producers: keys, `acks`, idempotence
 
 **The key picks the partition, so the same key always lands in the same partition and stays
-in order; `acks=all` with `min.insync.replicas=2` is what makes a write durable.**
+in order; `acks=all` with `min.insync.replicas=2` is what lets a write survive a broker failure.**
 
 | `acks` | Wait for | Risk |
 |---|---|---|
 | `0` | nothing | lost on any failure |
 | `1` | leader only | lost if the leader dies before followers copy it |
-| `all` (`-1`) | every ISR member | none, given `min.insync.replicas ≥ 2` |
+| `all` (`-1`) | every current ISR member | lost only if every in-sync copy fails together — assumes replication factor ≥ 3, `min.insync.replicas = 2` and `unclean.leader.election.enable=false` (the default) |
 
 - Partition = `hash(key) % numPartitions`; no key → sticky partitioning across batches.
   **Adding partitions later remaps keys** and breaks per-key ordering.
@@ -430,13 +431,16 @@ to the version of the dimension that was true when it happened.**
 | 6 | 1 + 2 + 3 combined | full + current value on every row |
 
 ```sql
--- SCD2: close the changed rows, then insert the new versions
+-- SCD2 (PostgreSQL): close the changed rows, then insert the new versions.
+-- One transaction, so a failed insert cannot leave a customer with no current row.
+BEGIN;
+
 UPDATE dim_customer d
 SET    valid_to = CURRENT_DATE - 1, is_current = FALSE
 FROM   stg_customer s
 WHERE  d.customer_id = s.customer_id
   AND  d.is_current
-  AND  d.address <> s.address;
+  AND  d.address IS DISTINCT FROM s.address;   -- NULL-safe: NULL -> value is a change
 
 INSERT INTO dim_customer (customer_id, address, valid_from, valid_to, is_current)
 SELECT s.customer_id, s.address, CURRENT_DATE, DATE '9999-12-31', TRUE
@@ -444,6 +448,8 @@ FROM   stg_customer s
 LEFT JOIN dim_customer d
        ON d.customer_id = s.customer_id AND d.is_current
 WHERE  d.customer_id IS NULL;      -- new customers and the ones just closed
+
+COMMIT;
 ```
 
 The fact table stores the dimension's **surrogate key** (`customer_sk`), not `customer_id`,
@@ -704,24 +710,25 @@ A worked answer to "design the tables for a ride-sharing app's analytics":
 2. **Grain** — `fact_trip`: one row per completed trip.
 3. **Dimensions** — rider, driver (SCD2: rating, city change), date, location (zone).
 4. **Measures** — fare, distance, duration, surge multiplier.
-5. **Access** — "trips and revenue per city per day" → partition by `trip_date`, cluster by `city_id`.
+5. **Access** — "trips and revenue per city per day" → partition by `trip_date`, cluster by `pickup_zone_sk` (zones roll up to cities).
 
 ```sql
-CREATE TABLE fact_trip (
-  trip_id          BIGINT        NOT NULL,      -- degenerate dimension
-  trip_date        DATE          NOT NULL,      -- partition column
-  rider_sk         BIGINT        NOT NULL,
-  driver_sk        BIGINT        NOT NULL,
-  pickup_zone_sk   INT           NOT NULL,
-  dropoff_zone_sk  INT           NOT NULL,
-  requested_at     TIMESTAMP     NOT NULL,      -- store in UTC
+-- BigQuery DDL (Spark / Hive spell clustering differently: CLUSTERED BY ... INTO n BUCKETS is bucketing)
+CREATE TABLE analytics.fact_trip (
+  trip_id          INT64          NOT NULL,     -- degenerate dimension
+  trip_date        DATE           NOT NULL,     -- partition column
+  rider_sk         INT64          NOT NULL,
+  driver_sk        INT64          NOT NULL,
+  pickup_zone_sk   INT64          NOT NULL,
+  dropoff_zone_sk  INT64          NOT NULL,
+  requested_at     TIMESTAMP      NOT NULL,     -- BigQuery TIMESTAMP is UTC
   completed_at     TIMESTAMP,
-  distance_km      DECIMAL(8,2),
-  fare_amount      DECIMAL(12,2),               -- money: DECIMAL, never FLOAT
-  currency_code    CHAR(3)
+  distance_km      NUMERIC(8, 2),
+  fare_amount      NUMERIC(12, 2),              -- money: NUMERIC (decimal), never FLOAT64
+  currency_code    STRING(3)
 )
-PARTITIONED BY (trip_date)
-CLUSTERED BY (pickup_zone_sk);
+PARTITION BY trip_date
+CLUSTER BY pickup_zone_sk;
 ```
 
 ### 7-2) Keys: natural vs surrogate
@@ -766,7 +773,9 @@ someone downstream — so every change is checked against a compatibility rule.*
 
 - **Schema Registry** (Avro / Protobuf / JSON Schema) enforces `BACKWARD` (new readers read
   old data — the default), `FORWARD`, or `FULL` compatibility on each topic.
-- Iceberg / Delta track columns by id, so renames and reorders are metadata-only.
+- Iceberg tracks columns by id, so renames and reorders are metadata-only. Delta does the
+  same only once column mapping is enabled (`delta.columnMapping.mode = 'name'`, which
+  upgrades the table protocol).
 - Agree changes through a **data contract**, and version breaking ones (`orders_v2`).
 
 ### 7-5) Data types and conventions
@@ -842,7 +851,9 @@ counts = (events.withWatermark("event_time", "10 minutes")
                 .groupBy(F.window("event_time", "5 minutes"), "page_id")
                 .count())
 
-(counts.writeStream.outputMode("update")
+# append: each window is written once, after the watermark passes it.
+# The Delta sink does not take "update"; for updating rows use foreachBatch + MERGE.
+(counts.writeStream.outputMode("append")
        .option("checkpointLocation", "s3://bucket/chk/clicks")
        .format("delta").start("s3://bucket/tables/click_counts"))
 ```
@@ -921,7 +932,8 @@ cost of cross-region write latency.
 
 | Store | CAP lean | Note |
 |---|---|---|
-| Cassandra, DynamoDB | AP | tunable: `QUORUM` reads + writes (R + W > N) give strong reads |
+| Cassandra | AP | tunable per query: `QUORUM` reads + writes (R + W > N) give strong reads |
+| DynamoDB | AP | eventual reads by default; `ConsistentRead=true` gives a strong read on the table or an LSI, never on a GSI |
 | MongoDB, HBase | CP | single primary per shard / region |
 | Spanner | CP | TrueTime; externally consistent |
 

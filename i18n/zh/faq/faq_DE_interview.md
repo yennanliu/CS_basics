@@ -12,7 +12,7 @@
 <!-- 5aed11828baf -->
 ## 1) Apache Spark ⭐⭐⭐⭐⭐
 
-<!-- 62a570381129 -->
+<!-- 899a92993dd4 -->
 ### 1-1) 架構：driver、cluster manager、executor
 
 **Spark 是分散式運算引擎：一個 driver 負責規劃 job，許多 executor 平行執行，
@@ -29,8 +29,9 @@ cluster manager 負責分配機器。**
 
 - **部署模式**：`client`（driver 在提交的那台機器上 —— 適合 notebook）vs
   `cluster`（driver 在叢集內 —— 正式環境的 job 用這個）。
-- 平行度 = partition 數；吞吐量 = cores × executors。一個 200 個 partition 的 stage
-  跑在 50 個 core 上，要分 4 波（wave）執行。
+- 平行度 = partition 數；同時可執行的 task 槽位 = executors × 每個 executor 的 cores。
+  一個 200 個 partition 的 stage 跑在 50 個槽位上（例如 10 個 executor × 5 個 core），
+  要分 4 波（wave）執行 —— 實際吞吐量仍取決於工作負載與 I/O。
 
 <!-- c3deac918de4 -->
 ### 1-2) Lazy evaluation、DAG、stage 與 shuffle
@@ -77,7 +78,7 @@ RDD 是 Spark 看不進去的不透明函式。**
 
 <!--CODE-->
 
-<!-- a0b46e338527 -->
+<!-- dea76fe5e641 -->
 ### 1-4) 分區：`repartition` vs `coalesce`，以及小檔案問題
 
 **`repartition(n)` 會做完整 shuffle，可增可減；`coalesce(n)` 只合併既有的 partition、
@@ -94,8 +95,8 @@ RDD 是 Spark 看不進去的不透明函式。**
   **AQE**（`spark.sql.adaptive.enabled`，3.2 起預設開啟）會在執行期自動合併它們。
 - **經驗法則**：每個 partition 約 100–200 MB，每個 core 2–4 個 task。
 - **小檔案** —— 寫出 10,000 個小檔會拖慢之後每一個讀取者（每個檔案一個 task，加上
-  HDFS 中介資料 / S3 列目錄的開銷）。解法：寫入前 `coalesce` / `repartition`、
-  `maxRecordsPerFile`，或跑壓實（compaction）job（Delta `OPTIMIZE`、Iceberg `rewrite_data_files`）。
+  HDFS 中介資料 / S3 列目錄的開銷）。解法：寫入前 `coalesce` / `repartition`，
+  或跑壓實（compaction）job（Delta `OPTIMIZE`、Iceberg `rewrite_data_files`）。
 - 寫入時的 `partitionBy("dt")` 是給 pruning 用的**目錄結構**，和記憶體裡的 partition
   不是同一回事 —— 而用高基數欄位做 partitionBy 會讓檔案數爆炸。
 
@@ -166,17 +167,17 @@ consumer 用各自的 offset 讀取，而資料會保留到 retention 期限為�
 為什麼快：順序寫磁碟、OS page cache、用零拷貝 `sendfile` 送給 consumer，以及端到端的
 批次 + 壓縮。
 
-<!-- 1c604fc9d5ce -->
+<!-- c3a54f7f4027 -->
 ### 2-2) Producer：key、`acks`、冪等性
 
 **Key 決定 partition，所以相同的 key 永遠落在同一個 partition、保持順序；
-`acks=all` 搭配 `min.insync.replicas=2` 才讓一次寫入真正可靠。**
+`acks=all` 搭配 `min.insync.replicas=2` 才讓一次寫入撐得過 broker 故障。**
 
 | `acks` | 等待 | 風險 |
 |---|---|---|
 | `0` | 什麼都不等 | 任何故障都會遺失 |
 | `1` | 只等 leader | leader 在 follower 複製前掛掉就遺失 |
-| `all`（`-1`） | 所有 ISR 成員 | 無，前提是 `min.insync.replicas ≥ 2` |
+| `all`（`-1`） | 目前所有 ISR 成員 | 只有所有同步副本同時失效才會遺失 —— 前提是 replication factor ≥ 3、`min.insync.replicas = 2`，且 `unclean.leader.election.enable=false`（預設值） |
 
 - Partition = `hash(key) % numPartitions`；沒有 key → 跨批次的 sticky partitioning。
   **事後增加 partition 會重新對應 key**，打破每個 key 的順序。
@@ -580,7 +581,7 @@ Iceberg 或 Delta 這類表格格式在那些檔案之上加入 ACID 交易與 t
 <!-- 50f16a2d1c70 -->
 ## 7) Schema 設計 ⭐⭐⭐⭐
 
-<!-- c407acd944b9 -->
+<!-- 42d13b234949 -->
 ### 7-1) 從查詢與粒度出發
 
 **寫任何 DDL 之前，schema 設計要先回答三個問題：一列代表什麼、資料會怎麼被查、
@@ -592,7 +593,7 @@ Iceberg 或 Delta 這類表格格式在那些檔案之上加入 ACID 交易與 t
 2. **粒度** —— `fact_trip`：每一趟完成的行程一列。
 3. **維度** —— 乘客、司機（SCD2：評分、換城市）、日期、地點（區域）。
 4. **度量值** —— 車資、距離、時長、加成倍率。
-5. **存取模式** —— 「每城市每天的行程與營收」→ 依 `trip_date` 分區、依 `city_id` 做 cluster。
+5. **存取模式** —— 「每城市每天的行程與營收」→ 依 `trip_date` 分區、依 `pickup_zone_sk` 做 cluster（區域可以彙總成城市）。
 
 <!--CODE-->
 
@@ -623,7 +624,7 @@ Iceberg 或 Delta 這類表格格式在那些檔案之上加入 ACID 交易與 t
 陷阱：依 `user_id` 分區（數百萬個小分區）；UTC 資料卻用當地時間的日期分區；
 用一個沒有任何查詢會過濾的欄位分區。
 
-<!-- 8ef730d4114d -->
+<!-- 51b9e91f1fe4 -->
 ### 7-4) Schema 演進
 
 **增加式的變更是安全的；改名、縮小型別、移除必要欄位都會打壞下游某個人 —— 所以每次
@@ -639,7 +640,8 @@ Iceberg 或 Delta 這類表格格式在那些檔案之上加入 ACID 交易與 t
 
 - **Schema Registry**（Avro / Protobuf / JSON Schema）在每個 topic 上強制 `BACKWARD`
   （新的讀取者能讀舊資料 —— 預設）、`FORWARD` 或 `FULL` 相容性。
-- Iceberg / Delta 以 id 追蹤欄位，所以改名與調整順序只動中介資料。
+- Iceberg 以 id 追蹤欄位，所以改名與調整順序只動中介資料。Delta 要先開啟 column mapping
+  （`delta.columnMapping.mode = 'name'`，會升級表格的 protocol）才有同樣的行為。
 - 透過**資料契約**協議變更，破壞性的變更要做版本化（`orders_v2`）。
 
 <!-- 7a2786683140 -->
@@ -763,7 +765,7 @@ NoSQL 資料庫拿其中一部分去換水平擴展、彈性 schema，以及圍�
 **NewSQL**（Spanner、CockroachDB、TiDB）兼具 SQL、ACID 與水平擴展，
 代價是跨區域寫入的延遲。
 
-<!-- c59733896c8e -->
+<!-- 490bcce4a99f -->
 ### 9-2) ACID vs BASE、CAP 與 PACELC
 
 - **ACID** —— **A**tomicity 原子性（全有或全無）、**C**onsistency 一致性（約束成立）、
@@ -776,7 +778,8 @@ NoSQL 資料庫拿其中一部分去換水平擴展、彈性 schema，以及圍�
 
 | 儲存 | CAP 傾向 | 備註 |
 |---|---|---|
-| Cassandra、DynamoDB | AP | 可調：讀寫都用 `QUORUM`（R + W > N）就得到強一致讀 |
+| Cassandra | AP | 每個查詢可調：讀寫都用 `QUORUM`（R + W > N）就得到強一致讀 |
+| DynamoDB | AP | 預設是最終一致讀；`ConsistentRead=true` 可在主表或 LSI 上做強一致讀，GSI 永遠不行 |
 | MongoDB、HBase | CP | 每個分片 / 區域只有一個 primary |
 | Spanner | CP | TrueTime；外部一致性 |
 
