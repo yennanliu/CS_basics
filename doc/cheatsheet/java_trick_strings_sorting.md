@@ -478,7 +478,7 @@ Arrays.sort(people, (a, b) -> {
 Arrays.sort(people, new Comparator<int[]>() {
     @Override
     public int compare(int[] o1, int[] o2) {
-        return o1[0] == o2[0] ? o1[1] - o2[1] : o2[0] - o1[0];
+        return o1[0] == o2[0] ? Integer.compare(o1[1], o2[1]) : Integer.compare(o2[0], o1[0]);
     }
 });
 ```

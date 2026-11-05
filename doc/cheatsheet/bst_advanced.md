@@ -295,7 +295,7 @@ swap 6 and 2        -> [1, 2, 3, 4, 5, 6, 7]
 **Not this if** — the question is only whether the tree is valid: carry the bounds down,
 [bst § Template 4](./bst.md#template-4-validate-with-bounds--lc-98).
 
-**Drill** — LC 530 *(min gap between neighbours)* · LC 501 *(run length of equal neighbours)* ·
+**Drill** — LC 99 · LC 530 *(min gap between neighbours)* · LC 501 *(run length of equal neighbours)* ·
 LC 99 · LC 426 *(link `prev` and `node` into a list)*
 
 ## Order Statistics
@@ -432,8 +432,6 @@ at 4: size(right) = 2, k = 3 == 2 + 1  -> answer 4
 **Traps**
 - Incrementing `count` only on the new leaf: every ancestor's size goes stale, and the second
   `add` in LC 703's example returns the wrong rank.
-- Sending duplicates left on one insert and right on another: LC 703's `[7,7,7,7,8,3]` counts
-  the 7s inconsistently. Pick one side.
 - The skewed worst case is O(n) per call; say so, and name a balanced tree (`TreeMap`, a
   red-black tree) as the production fix.
 
@@ -711,7 +709,7 @@ private List<TreeNode> generate(int lo, int hi) {
 [bst § Template 6](./bst.md#template-6-sorted-array-to-balanced-bst--lc-108). Only the count is
 wanted: see LC 96 below; building the trees is pointless.
 
-**Drill** — LC 96 · LC 95 · LC 894 *(full binary trees: odd sizes only)* · LC 241 *(the same
+**Drill** — LC 95 · LC 96 · LC 894 *(full binary trees: odd sizes only)* · LC 241 *(the same
 split-and-pair recursion over an expression)*
 
 ### Unique Binary Search Trees — LC 96

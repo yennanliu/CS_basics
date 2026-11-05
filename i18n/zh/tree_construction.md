@@ -63,7 +63,7 @@
 | LC 108 Sorted Array → BST  | **中間**索引 | O(N) |
 | LC 105 Preorder + Inorder  | 前序的第一個，再依它在中序中的位置切開（用 HashMap 做 O(1) 查找） | O(N) |
 
-<!-- 754e864fa8ab -->
+<!-- b46da9621ec8 -->
 ### 2) Construct Binary Tree from Preorder and Inorder Traversal — LC 105
 <!--CODE-->
 
@@ -72,9 +72,8 @@
 
 <!--CODE-->
 
-**中序 + 後序 — LC 106。** 唯一改變的是根從哪裡來：改成後序的*最後*一個元素，而不是前序的第一個，所以兩個子切片的位置各偏移一格。
-
-<!--CODE-->
+**中序 + 後序 — LC 106。** 唯一改變的是根從哪裡來：改成後序的*最後*一個元素，而不是前序的第一個，所以兩個子切片的位置各偏移一格。它只在一個地方解，用索引 map 而不是切片：
+[tree_examples.md § LC 106](./tree_examples.md#construct-binary-tree-from-inorder-and-postorder-traversal--lc-106)。
 
 <!-- d9eb6dc61d8a -->
 ### 3) Construct Binary Tree from String — LC 536（遞迴下降剖析）⭐⭐⭐⭐

@@ -152,7 +152,7 @@
 
 詳寫：[LC 19 與其他 Template 2 題目](./linked_list_examples.md#dummy-head-deletion-examples)在 linked_list_examples；LC 82 在 [2_pointers_linkedlist § 2-2](./2_pointers_linkedlist.md#2-2-remove-duplicates-from-sorted-list-ii--lc-82-)。
 
-<!-- d15c6ff43f8b -->
+<!-- ed306fa6055a -->
 ### Template 3: Two Dummies, Split then Join — LC 86 ⭐⭐⭐⭐
 
 **辨識** — 每個節點都要分進兩組之一，而且每一組都得**保持原本的順序**：「所有小於 x 的節點排在大於等於 x 的節點之前 … 保持相對順序」（LC 86）、「把奇數位的節點放在一起，後面接偶數位」（LC 328）。
@@ -192,9 +192,9 @@
 | 2161 | Partition Array According to Given Pivot | 陣列版：三桶（`<`、`==`、`>`），依序串接 |
 | 21 | Merge Two Sorted Lists | 反方向的操作 — 一個虛擬節點、*兩條*輸入、輸出一條鏈 |
 
-**練習** — LC 21 ⭐ *（一個虛擬節點、兩條輸入）* · LC 86 · LC 328 *（依索引拆）* · LC 725 *（k 條鏈）*
+**練習** — LC 86 · LC 21 ⭐ *（一個虛擬節點、兩條輸入）* · LC 328 *（依索引拆）* · LC 725 *（k 條鏈）*
 
-<!-- fabfbdcc77a7 -->
+<!-- cdab16bdc4b6 -->
 ### Template 4: Reverse a Segment, Reconnect Both Ends — LC 92 ⭐⭐⭐⭐⭐
 
 **辨識** — 「反轉位置 left 到 right 的節點」（LC 92）、「每 k 個節點一組反轉」（LC 25）、「兩兩交換相鄰節點」（LC 24）。追問：一趟、O(1) 記憶體。
@@ -221,12 +221,12 @@
 
 **陷阱**
 - 從 `head` 而不是 `dummy` 開始走 `prev`：`left = 1` 時這一段前面沒有節點，所以 `[1,2,3]`、left=1、right=2 的前端接不回去。
-- 忘了 `new_tail.next = next_node`：原本的起點還指著第二個節點，於是尾巴的 `5` 弄丟了，串列結尾變成兩個節點互指。
+- 忘了 `new_tail.next = next_node` 會弄丟尾巴的 `5`：輔助函式已經把原本起點的 `next` 設成 `None`，所以結果是 `1 -> 4 -> 3 -> 2 -> None`，不會形成環。
 - 在 LC 25 裡，對最後一組不足 k 個的節點也呼叫輔助函式，會把它一起反轉；先數 k 個（`has_k`），不足的尾巴保持原狀。
 
 **不適用時** — 整條都要反轉 → [Template 1](#template-1-iterative-reversal--lc-206-)；串列是*旋轉*（LC 61）而不是反轉 → 用間隔找到新的尾巴再重新縫合，完全不用反轉。
 
-**練習** — LC 206 ⭐ *（k = 長度）* · LC 92 · LC 24 *（k = 2，展開）* · LC 25 *（迴圈呼叫輔助函式）* · LC 61
+**練習** — LC 92 · LC 206 ⭐ *（k = 長度）* · LC 24 *（k = 2，展開）* · LC 25 *（迴圈呼叫輔助函式）* · LC 61
 
 詳寫：[LC 24、LC 25 與 LC 430](./linked_list_examples.md#reverse-a-segment-examples) 在 linked_list_examples。
 
@@ -288,7 +288,7 @@
 
 **練習** — LC 2 · LC 369 *（加一）* · LC 445 *（最高位在前）*
 
-<!-- 8e6fe9279ab1 -->
+<!-- 1cf0ac408eb3 -->
 ### Template 7: Hash Map + Doubly Linked List (LRU) — LC 146 ⭐⭐⭐⭐⭐
 
 **辨識** — 「設計一個快取」、「`get` 和 `put` 都必須平均 O(1)」、「淘汰最久沒用的 key」。任何同時需要依 key 做 O(1) 查找、又要以 O(1) 維護順序的結構。
@@ -345,7 +345,7 @@
 | 641 | Design Circular Deque | 固定容量的雙向鏈結串列，兩端都能操作 |
 | 716 | Max Stack | 堆疊 + 雙向鏈結串列 + TreeMap，做到 O(log n) 的 popMax |
 
-**練習** — LC 1472 *（一個游標，往前截斷）* · LC 641 *（固定容量、兩端）* · LC 146 ⭐ · LC 460 *（每個頻率一條串列：見下）* · LC 432
+**練習** — LC 146 ⭐ · LC 1472 *（一個游標，往前截斷）* · LC 641 *（固定容量、兩端）* · LC 460 *（每個頻率一條串列：見下）* · LC 432
 
 <!-- ea152097323c -->
 #### **LFU 變體 — 每個頻率一條串列，再加一個 `min_freq` 指標（LC 460）** ⭐⭐⭐⭐

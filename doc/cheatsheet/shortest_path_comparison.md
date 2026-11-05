@@ -15,7 +15,7 @@
 | Non-negative weights, single source? | **Dijkstra** O((V+E) log V) |
 | Negative weights allowed, single source? | **Bellman-Ford** O(V·E) |
 | Need to detect negative cycles? | **Bellman-Ford** O(V·E) |
-| At most K edges/stops? | **Bellman-Ford** (K iterations) |
+| At most K edges / K stops? | **Bellman-Ford** (K passes for edges, K + 1 for stops) |
 | All-pairs shortest path? | **Floyd-Warshall** O(V³) |
 | Transitive closure (reachability)? | **Floyd-Warshall** (boolean) |
 | Unweighted graph? | **BFS** O(V+E) |
@@ -53,7 +53,8 @@ tables disagreed, the row below is the resolved answer.
 | Road network / GPS, one source to one target | **Dijkstra** (A* with a heuristic) | Non-negative weights, sparse, can stop at the target |
 | Network delay time, one source to every node | **Dijkstra** | Non-negative, single source ([LC 743](./Dijkstra.md)) |
 | Currency arbitrage / "is there a negative cycle?" | **Bellman-Ford** | One extra pass detects a cycle reachable from a virtual source in O(V·E); Floyd-Warshall also works (a negative `dist[i][i]`) but only pays off when n is small and all pairs are needed anyway |
-| "At most K stops / edges" | **Bellman-Ford with K passes**, copying `dist` each pass | A hop limit is a pass limit ([LC 787](./Bellman-Ford.md)) |
+| "At most K edges" | **Bellman-Ford with K passes**, copying `dist` each pass | A hop limit is a pass limit |
+| "At most K stops" | **Bellman-Ford with K + 1 passes**, copying `dist` each pass | K stops is K + 1 edges: with K = 0 a direct flight still counts ([LC 787](./Bellman-Ford.md)) |
 | Every pair, small n (≈ 400 or less) | **Floyd-Warshall** | O(V³) fits, three loops, handles negative weights |
 | Every pair, large sparse graph | **Dijkstra from every node** (Johnson's if weights can be negative) | V · (V + E) log V beats V³ when E ≪ V² |
 | Reachability between every pair (prerequisite chains) | **Floyd-Warshall, boolean** | Transitive closure is the same triple loop ([LC 1462](./Floyd-Warshall.md)) |

@@ -1421,7 +1421,7 @@ first.
 | Technique | Looks needed when | The simpler answer that usually suffices |
 |---|---|---|
 | § 1 Lazy deletion | a heap's values change | values only **grow** and a stale-but-larger entry is still a valid upper bound → no cleaning; or the window expires by index and needs one extreme → monotonic deque ([monotonic_queue.md](./monotonic_queue.md)) |
-| § 1 two mirrored lazy heaps | max and min of a changing set | the set never shrinks → two running variables; the language has an ordered map (`TreeMap`) and the interviewer accepts it |
+| § 1 two mirrored lazy heaps | max and min of a changing set | values are insert-only and never change once added → two running variables (not LC 2034: a later `update` overwrites an old price, and the running max would keep it); the language has an ordered map (`TreeMap`) and the interviewer accepts it |
 | § 2 Sweep + alive heap | intervals and "at every x" | only the **count** covering x → difference array, or [heap § Template 6](./heap.md#template-6-min-heap-of-end-times--lc-253-) for the peak |
 | § 3 Bounded regret heap | "k free passes" | no budget to pay from → the k largest is [heap § Template 1](./heap.md#template-1-size-k-min-heap-for-the-kth-largest--lc-215-) |
 | § 4 Greedy with regret | "minimum number of stops / maximum tasks" | items are independent and sorting by deadline alone decides them → plain sort + greedy ([greedy.md](./greedy.md)) |

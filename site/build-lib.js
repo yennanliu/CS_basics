@@ -639,7 +639,7 @@
   // A Drill Path heading: its id on an English page, its text on a 中文 one,
   // where ids are retargeted from the translated text.
   const DRILL_HEADING = /(^|-)drill-path(-|$)/;
-  const DRILL_TEXT = /drill path|練習路徑/i;
+  const DRILL_TEXT = /drill path|練習路徑|練習路線/i;
 
   function stampDrillVerdicts(html, verdicts, lang = 'en') {
     const open = /<h([1-6])\b[^>]*>/g;

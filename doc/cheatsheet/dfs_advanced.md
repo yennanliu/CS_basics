@@ -336,7 +336,7 @@ public long countPairs(int n, int[][] edges) {
 - Union-find gives the same sizes (count roots after all unions) and is the better fit when
   edges arrive one at a time.
 
-**Drill** — LC 323 *(just the component count)* · LC 2316 ⭐ · LC 2492 *(minimum edge inside the
+**Drill** — LC 2316 ⭐ · LC 323 *(just the component count)* · LC 2492 *(minimum edge inside the
 component of node 1)*
 
 ## Trie-Backed Search
@@ -445,7 +445,7 @@ class WordDictionary {
 **Not this if** — the query has no wildcard: that is a plain trie walk ([trie.md](./trie.md)),
 or just a hash set of words.
 
-**Drill** — LC 208 *(the plain trie)* · LC 211 ⭐ · LC 676 *(below)* · LC 212 *(trie driving a
+**Drill** — LC 211 ⭐ · LC 208 *(the plain trie)* · LC 676 *(below)* · LC 212 *(trie driving a
 grid DFS)*
 
 ### Implement Magic Dictionary — LC 676
@@ -537,6 +537,42 @@ def countPairs(root, distance):
     return pairs[0]
 ```
 
+```java
+// java
+// LC 1530 - Number of Good Leaf Nodes Pairs
+// IDEA: post-order; each node returns leaf counts by depth below it and pairs left x right at the LCA
+// time = O(N * distance^2), space = O(N + distance * height)
+class Solution {
+    private int pairs = 0;
+
+    public int countPairs(TreeNode root, int distance) {
+        leavesByDepth(root, distance);
+        return pairs;
+    }
+
+    // cnt[d] = number of leaves exactly d edges below node
+    private int[] leavesByDepth(TreeNode node, int distance) {
+        int[] cnt = new int[distance + 1];
+        if (node == null) return cnt;
+        if (node.left == null && node.right == null) {
+            cnt[0] = 1;                                   // a leaf is 0 edges from itself
+            return cnt;
+        }
+        int[] left = leavesByDepth(node.left, distance);
+        int[] right = leavesByDepth(node.right, distance);
+        for (int d1 = 0; d1 <= distance; d1++) {          // join a left leaf and a right leaf through node
+            for (int d2 = 0; d2 <= distance; d2++) {
+                if (d1 + d2 + 2 <= distance) pairs += left[d1] * right[d2];
+            }
+        }
+        for (int d = 0; d < distance; d++) {              // one edge farther for the parent
+            cnt[d + 1] = left[d] + right[d];
+        }
+        return cnt;
+    }
+}
+```
+
 **Complexity**
 - **Time O(N·distance²)**: the `d1` / `d2` double loop at each of the N nodes. A running prefix
   sum over `right` makes the join O(distance), for O(N·distance) in total.
@@ -549,10 +585,10 @@ def countPairs(root, distance):
   pair belongs to its LCA alone.
 
 **Not this if** — the bound on distance is large: per-node buckets become O(N) each. Converting
-the tree to a graph and running a bounded BFS from every leaf is the slower fallback (O(L·N));
-it is shown in [bfs_advanced.md](./bfs_advanced.md).
+the tree to a graph and running a bounded BFS from every leaf is the slower fallback (O(L·N)),
+and it is not worked anywhere in these sheets.
 
-**Drill** — LC 543 *(join depths at each node)* · LC 124 *(join best downward sums)* · LC 687 ·
+**Drill** — LC 1530 · LC 543 *(join depths at each node)* · LC 124 *(join best downward sums)* · LC 687 ·
 LC 1530 ⭐
 
 ### Template 6: N-ary Post-Order Rollup — LC 3965
@@ -655,8 +691,8 @@ public long finishTime(int n, int[][] edges, int[] baseTime) {
 [dfs.md § Template 6](./dfs.md#template-6-bottom-up-post-order-dfs--lc-543-), and recursion depth
 is the tree height.
 
-**Drill** — LC 559 *(1 + max child depth)* · LC 1376 *(max over children + own time)* · LC 3965 ⭐ ·
-LC 3967 *(the same rollup, answered for many queries)*
+**Drill** — LC 3965 ⭐ ·
+LC 3967 *(the same rollup, answered for many queries)* · LC 559 *(1 + max child depth)* · LC 1376 *(max over children + own time)*
 
 ## Trees Encoded in the Input
 
@@ -810,6 +846,43 @@ def weightedSum(parent, nums):
     return total
 ```
 
+```java
+// java
+// LC 4015 - Weighted Sum of a Tree
+// IDEA: memoized climb up parent[] with an explicit stack; height = max depth
+// time = O(n), space = O(n)
+class Solution {
+    public long weightedSum(int[] parent, int[] nums) {
+        int n = parent.length;
+        int[] depth = new int[n];                         // 0 = not computed yet; depths are 1-based
+        java.util.ArrayDeque<Integer> chain = new java.util.ArrayDeque<>();
+        for (int start = 0; start < n; start++) {
+            int x = start;
+            while (depth[x] == 0) {                       // climb until a computed node, or past the root
+                if (parent[x] == -1) {
+                    depth[x] = 1;
+                    break;
+                }
+                chain.push(x);
+                x = parent[x];
+            }
+            int d = depth[x];
+            while (!chain.isEmpty()) {                    // unwind: fill every node climbed through
+                d++;
+                depth[chain.pop()] = d;
+            }
+        }
+        int height = 0;
+        for (int dep : depth) height = Math.max(height, dep);
+        long total = 0;
+        for (int i = 0; i < n; i++) {
+            total += (long) nums[i] * (height - depth[i] + 1);
+        }
+        return total;
+    }
+}
+```
+
 **Complexity**
 - **Time O(n)**: a node is appended to `chain` only while `depth[x] == 0`, and it is filled when
   the chain unwinds, so every node is climbed through once over all starts.
@@ -838,7 +911,7 @@ height 3: 5*3 + 2*2 + 3*2 + 1*2 + 4*1 + 6*1 = 37
 `parent[]` into children lists and use [Template 6](#template-6-n-ary-post-order-rollup--lc-3965).
 The climb also looks like union-find's `find`, but there is no `union` here; a DSU adds nothing.
 
-**Drill** — LC 1376 *(accumulate time down the manager chain)* · LC 4015 ⭐ · LC 1483 *(the climb
+**Drill** — LC 4015 ⭐ · LC 1376 *(accumulate time down the manager chain)* · LC 1483 *(the climb
 precomputed at 2^k strides: binary lifting)* · LC 1650 *(climb both chains: two-list
 intersection)*
 

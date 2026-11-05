@@ -796,6 +796,11 @@ test('stampDrillVerdicts finds the 中文 heading by its text and labels in Chin
   assert.equal(ok.getAttribute('title'), '練習紀錄：ok（2026-10-01）');
 });
 
+test('stampDrillVerdicts also finds the 練習路線 spelling some overlays use', () => {
+  const html = '<h2 id="練習路線">練習路線</h2><p>LC 1</p>';
+  assert.equal(parse(lib.stampDrillVerdicts(html, VERDICTS, 'zh')).querySelectorAll('.lc-verdict').length, 1);
+});
+
 test('stampDrillVerdicts leaves a page with no Drill Path unchanged', () => {
   const html = '<h2 id="overview">Overview</h2><p>LC 1</p>';
   assert.equal(lib.stampDrillVerdicts(html, VERDICTS), html);
