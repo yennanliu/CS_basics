@@ -107,7 +107,6 @@ no pattern is written out twice in this family of sheets.
 
 > Patterns 2 and 3 are the two halves of every tree recursion, so they are spelled out below; the
 > other seven are one hop away in the sheet named in the table.
-> **Reference** (pattern 2): [Subtree Validation Video](https://www.bilibili.com/video/BV1ue4y1Y7Mf/)
 
 ### 0-3) Top-Down vs Bottom-Up DFS — Two Strategies for Tree Problems ⭐⭐⭐⭐⭐
 

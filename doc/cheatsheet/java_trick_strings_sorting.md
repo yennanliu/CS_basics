@@ -181,7 +181,7 @@ while (!q.isEmpty()) {
         for (int i = 0; i < 4; i++) {
             // ...
 
-            /**  NOTE !!!  
+            /**
              *  
              *  Instead of using stringBuilder,
              *  we use `substring` for update string per given idx
@@ -271,7 +271,7 @@ return true;
 private boolean canForm(String x, String s){
 
     /** 
-     * NOTE !!!
+     * Note:
      * 
      *  via below algorithm, we can check
      *  if "s" can be formed by the other str
@@ -281,7 +281,7 @@ private boolean canForm(String x, String s){
      *  
      *  check if "apple" can be formed by "applezz"
      *  
-     *  NOTE !!!
+     *  Note:
      *  
      *   "i" as idx for s
      *   "j" as idx for x  (str in dict)
@@ -297,7 +297,7 @@ private boolean canForm(String x, String s){
     int j = 0;
     // V1 (below 2 approaches are both OK)
     for (int i = 0; i < s.length() && j < x.length(); i++){
-        // NOTE !!! if element are the same, then we move x idx (j)
+        // if element are the same, then we move x idx (j)
         if (x.charAt(j) == s.charAt(i))
             j++;
     }
@@ -310,7 +310,7 @@ private boolean canForm(String x, String s){
 //            if (x.charAt(j) == y.charAt(i))
 //                j++;
 //        }
-    /** NOTE !!! 
+    /**
      * 
      *  if j == x.length() 
      *  -> means s idx can go through,
@@ -402,7 +402,7 @@ return builder.toString();
  StringBuilder sb = new StringBuilder("#");
 
 
-/** NOTE !!! below */
+/** below */
 if (currentChar != sb.charAt(sb.length() - 1)) {
     // ...
 }
@@ -420,11 +420,11 @@ if (currentChar != sb.charAt(sb.length() - 1)) {
 // modify val with idx 
 
 // ...
-/** NOTE !!! below */
+/** below */
 
 StringBuilder sb = new StringBuilder(word);
 
-/** NOTE !!! StringBuilder can update val per idx */
+/** StringBuilder can update val per idx */
 
 sb.setCharAt(idx, c);  // modify val to c per idx
 
@@ -609,7 +609,7 @@ List<Integer> sorted = largeList.stream().sorted().collect(Collectors.toList());
 ```java
 // java
 // LC 524
-/** NOTE !!!!
+/**
  *
  *  custom sorting list
  *  via Collections.sort and new Comparator<String>()
@@ -624,7 +624,7 @@ Collections.sort(collected, new Comparator<String>() {
         int lengthComparison = Integer.compare(o2.length(), o1.length());
         /**
          *  // If lengths are equal, compare lexicographically
-         *  // NOTE !!! if lengths are the same, we compare  lexicographically
+         *  // if lengths are the same, we compare  lexicographically
          */
         if (lengthComparison == 0) {
             return o1.compareTo(o2); // lexicographical order
@@ -729,7 +729,7 @@ for (int i = 0; i < words.length; i++) {
 List<String> res = new ArrayList(freq.keySet());
 
 /**
- * NOTE !!!
+ * Note:
  *
  *  we directly sort over map's keySet
  *  (with the data val, key that read from map)
@@ -756,7 +756,6 @@ Collections.sort(res, (x, y) -> {
 
 ```java
 // java
-// (GPT)
 
 // Create a HashMap
 HashMap<String, Integer> map = new HashMap<>();
@@ -783,12 +782,12 @@ LinkedHashMap<String, Integer> sortedMap = new LinkedHashMap<>();
 
 // V2 : via key
 
-// NOTE !!! below
+// below
 // Get the list of keys
 List<String> keys = new ArrayList<>(map.keySet());
 
 
-// NOTE !!! below
+// below
 // Sort the keys based on their corresponding values
 keys.sort((k1, k2) -> map.get(k1).compareTo(map.get(k2)));
 
@@ -813,7 +812,7 @@ System.out.println("Sorted map: " + sortedMap);
 // java
 // LC 49
 
-/** NOTE !!!
+/**
 *
 *  We sort String via below op
 *

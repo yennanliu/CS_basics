@@ -445,7 +445,7 @@ def longestSubarray(nums, limit):
 
     for right in range(len(nums)):
         x = nums[right]
-        # NOTE !!! strict < and > : equal values must stay (see pitfalls)
+        # strict < and > : equal values must stay (see pitfalls)
         while max_q and max_q[-1] < x:
             max_q.pop()
         max_q.append(x)

@@ -23,15 +23,14 @@ a list, and index distance vs element count — are about the same thing from op
 
 ### Insert into a list, in place ⭐⭐⭐⭐⭐
 
-```text
+```python
 
 # syntax : 
 # arr.insert(<index>,<value>)
-In [12]: x = [1,2,3]
-    ...: x.insert(2,77)
+x = [1,2,3]
+x.insert(2,77)
 
-In [13]: x
-Out[13]: [1, 2, 77, 3]
+x  # -> [1, 2, 77, 3]
 ```
 
 #### **Core Idea — Insert into a list, in place**
@@ -63,37 +62,31 @@ specific position* rather than just append.
 #----------------------------
 # 1) index == len(arr)  -> same as append
 #----------------------------
-In [1]: x = [1,2,3]; x.insert(3, 99); x
-Out[1]: [1, 2, 3, 99]
+x = [1,2,3]; x.insert(3, 99); x  # -> [1, 2, 3, 99]
 
 #----------------------------
 # 2) index > len(arr)   -> NO IndexError, clamped to the end (append)
 #----------------------------
-In [2]: x = [1,2,3]; x.insert(100, 99); x
-Out[2]: [1, 2, 3, 99]
+x = [1,2,3]; x.insert(100, 99); x  # -> [1, 2, 3, 99]
 
 #----------------------------
 # 3) index == 0         -> insert at FRONT (see 1-6')
 #----------------------------
-In [3]: x = [1,2,3]; x.insert(0, 0); x
-Out[3]: [0, 1, 2, 3]
+x = [1,2,3]; x.insert(0, 0); x  # -> [0, 1, 2, 3]
 
 #----------------------------
 # 4) NEGATIVE index     -> counts from the END, inserts BEFORE that element
 #----------------------------
-In [4]: x = [1,2,3]; x.insert(-1, 99); x
-Out[4]: [1, 2, 99, 3]        # before the LAST element, NOT at the end
+x = [1,2,3]; x.insert(-1, 99); x  # -> [1, 2, 99, 3]  (before the LAST element, NOT at the end)
 
-In [5]: x = [1,2,3]; x.insert(-100, 99); x
-Out[5]: [99, 1, 2, 3]        # clamped to the front
+x = [1,2,3]; x.insert(-100, 99); x  # -> [99, 1, 2, 3]  (clamped to the front)
 
 #----------------------------
 # 5) returns None (IN-PLACE!) -> classic bug
 #----------------------------
-In [6]: x = [1,2,3]
-In [7]: y = x.insert(1, 9)   # ❌ y is None
-In [8]: print(y, x)
-None [1, 9, 2, 3]
+x = [1,2,3]
+y = x.insert(1, 9)   # ❌ y is None
+print(y, x)  # -> None [1, 9, 2, 3]
 ```
 
 **❌ Common bugs**
@@ -125,10 +118,9 @@ for v in arr:
 
 ```python
 # bulk insert via slice assignment (insert MANY at once)
-In [9]: x = [1, 2, 5]
-In [10]: x[2:2] = [3, 4]      # insert [3,4] AT index 2, nothing removed
-In [11]: x
-Out[11]: [1, 2, 3, 4, 5]
+x = [1, 2, 5]
+x[2:2] = [3, 4]      # insert [3,4] AT index 2, nothing removed
+x  # -> [1, 2, 3, 4, 5]
 ```
 
 > **Performance note**: `insert` shifts every element after `idx`, so it is `O(n)`.
@@ -276,50 +268,41 @@ def insert(intervals, newInterval):
 ### Adding to the front of a list, in place
 
 ```python
-In [1]: x = [1,2,3]
+x = [1,2,3]
 
-In [2]: x
-Out[2]: [1, 2, 3]
+x  # -> [1, 2, 3]
 
-In [3]: x.insert(0,0)
+x.insert(0,0)
 
-In [4]: x
-Out[4]: [0, 1, 2, 3]
+x  # -> [0, 1, 2, 3]
 
-In [5]: x.insert(0,-1)
+x.insert(0,-1)
 
-In [6]: x
-Out[6]: [-1, 0, 1, 2, 3]
+x  # -> [-1, 0, 1, 2, 3]
 ```
 
 ### Moving an element to the rightmost / leftmost position
 
-```text
+```python
 # LC 146 LRU Cache
-In [18]: x
-Out[18]: [1, 3, 2]
-
-In [19]: x = [1,2,3]
+x = [1,2,3]
 
 # NOTE this !!!!
 # LC 146
-In [20]: x.remove(2)
+x.remove(2)
 #x
 #[1,2]
 
-In [21]: x.append(2)
+x.append(2)
 
-In [22]: x
-Out[22]: [1, 3, 2]
+x  # -> [1, 3, 2]
 
-In [23]:
 
-In [23]: x.remove(1)
+x.remove(1)
 
-In [24]: x.append(1)
+x.append(1)
 
-In [25]: x
-Out[25]: [3, 2, 1]
+x  # -> [3, 2, 1]
 ```
 
 ### List `extend`
@@ -327,19 +310,17 @@ Out[25]: [3, 2, 1]
 ```python
 # LC 969. Pancake Sorting
 
-In [10]: x = [1,2,3]
+x = [1,2,3]
 
-In [11]: x.extend([4])
+x.extend([4])
 
-In [12]: x
-Out[12]: [1, 2, 3, 4]
+x  # -> [1, 2, 3, 4]
 
-In [13]: x = [1,2,3]
+x = [1,2,3]
 
-In [14]: x = x + [4]
+x = x + [4]
 
-In [15]: x
-Out[15]: [1, 2, 3, 4]
+x  # -> [1, 2, 3, 4]
 ```
 
 

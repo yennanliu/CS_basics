@@ -39,67 +39,53 @@ things by what they do.
 - https://www.runoob.com/w3cnote/python-understanding-dict-copy-shallow-or-deep.html
 - https://iter01.com/578999.html
 - Type of copy : deep copy, shallow copy, reference copy
-```text
+```python
 # LC 138
 
 #-------------------------------------------------
 # CASE 1) assignment : point to the same instance
 #-------------------------------------------------
 
-In [112]: z = [1,2,3]
+z = [1,2,3]
 
-In [113]: x = y = z
+x = y = z
 
-In [114]: x
-Out[114]: [1, 2, 3]
+x  # -> [1, 2, 3]
 
-In [115]: y
-Out[115]: [1, 2, 3]
+y  # -> [1, 2, 3]
 
-In [116]: z
-Out[116]: [1, 2, 3]
+z  # -> [1, 2, 3]
 
-In [117]: z.append(4)
+z.append(4)
 
-In [118]: z
-Out[118]: [1, 2, 3, 4]
+z  # -> [1, 2, 3, 4]
 
-In [119]: x
-Out[119]: [1, 2, 3, 4]
+x  # -> [1, 2, 3, 4]
 
-In [120]: y
-Out[120]: [1, 2, 3, 4]
+y  # -> [1, 2, 3, 4]
 
-In [121]: z
-Out[121]: [1, 2, 3, 4]
+z  # -> [1, 2, 3, 4]
 
 
 #-------------------------------------------------
 # CASE 2) shallow copy : copy "parent" instance, but NOT sub instance
 #-------------------------------------------------
 
-# https://docs.python.org/zh-tw/3/tutorial/datastructures.html
-# form 1
-a.copy()
-
-# form 2
-a[:]
+# https://docs.python.org/3/tutorial/datastructures.html
+# two spellings of the same shallow copy: a.copy() and a[:]
 
 # demo
-In [90]: x = [1,2,3]
+x = [1,2,3]
 
-In [91]: y = x[:]
+y = x[:]
 
-In [92]: y
-Out[92]: [1, 2, 3]
+y  # -> [1, 2, 3]
 
-In [93]: x.append(4)
+x.append(4)
 
-In [94]: x
-Out[94]: [1, 2, 3, 4]
+x  # -> [1, 2, 3, 4]
 
-In [96]: y
-Out[96]: [1, 2, 3]
+y  # -> [1, 2, 3]
 
 
 # LC 77 Combinations
@@ -126,36 +112,26 @@ class Solution(object):
 
 import copy
 
-In [25]: import copy
-    ...:
-    ...: x = [1,2,3]
-    ...: z =  copy.deepcopy(x)
-    ...:
-    ...: x
-Out[25]: [1, 2, 3]
+x = [1,2,3]
+z = copy.deepcopy(x)
 
-In [26]:
+x  # -> [1, 2, 3]
 
-In [26]: z
-Out[26]: [1, 2, 3]
+z  # -> [1, 2, 3]
 
-In [27]: x.append(4)
+x.append(4)
 
-In [28]: x
-Out[28]: [1, 2, 3, 4]
+x  # -> [1, 2, 3, 4]
 
-In [29]: z
-Out[29]: [1, 2, 3]
+z  # -> [1, 2, 3]
 
-In [31]: z.append(5)
+z.append(5)
 
 # NOTE : x, z NOT affect on each other
 
-In [32]: z
-Out[32]: [1, 2, 3, 5]
+z  # -> [1, 2, 3, 5]
 
-In [33]: x
-Out[33]: [1, 2, 3, 4]
+x  # -> [1, 2, 3, 4]
 ```
 
 ### Which copy gives an INDEPENDENT object
@@ -166,7 +142,7 @@ affect the *copy* (and vice versa)?
 
 ```python
 # ── The idiom you'll see everywhere (shallow copy of a list) ──
-# NOTE !!! how we make copy in py
+# how we make copy in py
 intervals_cache = intervals[:]        # copy 1) slice
 intervals_cache = intervals.copy()    # copy 2) .copy()  (same effect)
 intervals_cache = list(intervals)     # copy 3) list()   (same effect)
@@ -258,14 +234,12 @@ new_s = s[:i] + ch + s[i+1:]
 
 ```python
 # demo
-In [1]: s = "AACCGGTT"
+s = "AACCGGTT"
 
-In [2]: s[:3] + "X" + s[3+1:]     # replace index 3 ('C') with 'X'
-Out[2]: 'AACXGGTT'
+s[:3] + "X" + s[3+1:]     # replace index 3 ('C') with 'X'  # -> 'AACXGGTT'
 
 # original is untouched (immutable) — a NEW string is returned
-In [3]: s
-Out[3]: 'AACCGGTT'
+s  # -> 'AACCGGTT'
 ```
 
 **Why the `i+1`?** `s[i+1:]` starts *after* `i`, so the old char `s[i]` is
@@ -492,19 +466,15 @@ content[0].isalpha()   # True  -> a letter-log (LC 937)
 #    -> fill n-1 "0" to a string at beginning
 
 #example :
-In [10]: x = '1'
+x = '1'
 
-In [11]: x.zfill(2)
-Out[11]: '01'
+x.zfill(2)  # -> '01'
 
-In [12]: x.zfill(3)
-Out[12]: '001'
+x.zfill(3)  # -> '001'
 
-In [13]: x.zfill(4)
-Out[13]: '0001'
+x.zfill(4)  # -> '0001'
 
-In [14]: x.zfill(10)
-Out[14]: '0000000001'
+x.zfill(10)  # -> '0000000001'
 ```
 
 ### `lstrip` / `rstrip` / `strip`
@@ -525,54 +495,43 @@ Out[14]: '0000000001'
 #----------------------------
 # example 1 : strip leading zeros (lstrip)
 #----------------------------
-In [1]: x = "0000123"
-In [2]: x.lstrip("0")
-Out[2]: '123'
+x = "0000123"
+x.lstrip("0")  # -> '123'
 
 # no leading zeros -> unchanged (safe, no error)
-In [3]: y = "123"
-In [4]: y.lstrip("0")
-Out[4]: '123'
+y = "123"
+y.lstrip("0")  # -> '123'
 
 # all chars match -> empty string (WATCH OUT!)
-In [5]: "0000".lstrip("0")
-Out[5]: ''
+"0000".lstrip("0")  # -> ''
 
 #----------------------------
 # example 2 : rstrip (trailing)
 #----------------------------
-In [6]: "12300".rstrip("0")
-Out[6]: '123'
+"12300".rstrip("0")  # -> '123'
 
-In [7]: "hello!!!".rstrip("!")
-Out[7]: 'hello'
+"hello!!!".rstrip("!")  # -> 'hello'
 
 # common: drop trailing newline / whitespace when reading input
-In [8]: "  line\n".rstrip()
-Out[8]: '  line'
+"  line\n".rstrip()  # -> '  line'
 
 #----------------------------
 # example 3 : strip (both ends) + whitespace default
 #----------------------------
-In [9]: "  hi  ".strip()
-Out[9]: 'hi'
+"  hi  ".strip()  # -> 'hi'
 
-In [10]: "xxhixx".strip("x")
-Out[10]: 'hi'
+"xxhixx".strip("x")  # -> 'hi'
 
 #----------------------------
 # example 4 : GOTCHA — `chars` is a char SET, not a prefix string
 #----------------------------
 # removes ANY leading char that is 'a','b', or 'c' (in any order),
 # NOT the literal prefix "abc"
-In [11]: "cabbage".lstrip("abc")
-Out[11]: 'ge'          # 'c','a','b','b','a' all stripped, stops at 'g'
+"cabbage".lstrip("abc")  # -> 'ge'  (a set of chars, not a prefix: c,a,b,b,a go, 'g' stops it)
 
 # to remove a real PREFIX/SUFFIX (py3.9+), use removeprefix / removesuffix:
-In [12]: "test.py".removesuffix(".py")
-Out[12]: 'test'
-In [13]: "img_001".removeprefix("img_")
-Out[13]: '001'
+"test.py".removesuffix(".py")  # -> 'test'
+"img_001".removeprefix("img_")  # -> '001'
 ```
 
 **Common LC use — strip leading zeros after building a number**
@@ -746,7 +705,7 @@ for i in range(len(x) - 1, 0, -1):   # compares x[i] vs x[i-1]; never i-1 = -1
 
 ### `sort` with a `lambda` key
 
-```text
+```python
 # example 1
 # LC 973. K Closest Points to Origin
 # IDEA : sort + lambda
@@ -757,13 +716,12 @@ class Solution(object):
 
 
 # example 2
-In [28]: def my_func(x):
-    ...:     return x**2
-    ...:
-    ...: x = [-4,-5,0,1,2,5]
-    ...: x.sort(key=lambda x: my_func(x))
-    ...: print (x)
-[0, 1, 2, -4, -5, 5]
+def my_func(x):
+    return x**2
+
+x = [-4,-5,0,1,2,5]
+x.sort(key=lambda x: my_func(x))
+print (x)  # -> [0, 1, 2, -4, -5, 5]
 ```
 
 ```text
@@ -886,7 +844,7 @@ sorted(arr, key = lambda x : (x[0], x[1]), reverse = True)
 sorted(arr, key = lambda x : (-x[0], x[1]))
 # [[2,'a'], [1,'a'], [1,'b']]   <-- x[0] DESC, x[1] ASC
 
-# NOTE !!! `-` only works on numbers
+# `-` only works on numbers
 sorted(arr, key = lambda x : (-x[0], -x[1]))   # ❌ TypeError : bad operand type for unary -: 'str'
 ```
 
@@ -1290,59 +1248,51 @@ abs(3+4j)  # 5.0  (complex magnitude)
 
 ### Quotient and remainder together — `divmod`
 
-```text
-In [1]: x,y = divmod(100, 3)
+```python
+x,y = divmod(100, 3)
 
-In [2]: x
-Out[2]: 33
+x  # -> 33
 
-In [3]: y
-Out[3]: 1
+y  # -> 1
 ```
 
 ### Remainder when divided by a number
 
-```text
+```python
 #-----------------
 # V1 : %=
 #-----------------
 
-In [7]: x = 100
+x = 100
 
-In [8]: x %= 60
+x %= 60
 
-In [9]: x
-Out[9]: 40
+x  # -> 40
 
-In [10]: y = 120
+y = 120
 
-In [11]: y %= 60
+y %= 60
 
-In [12]: y
-Out[12]: 0
+y  # -> 0
 
 #-----------------
 # V2 : divmod
 #-----------------
-In [13]: a = 100
+a = 100
 
-In [14]: q, r = divmod(a, 60)
+q, r = divmod(a, 60)
 
-In [15]: q
-Out[15]: 1
+q  # -> 1
 
-In [16]: r
-Out[16]: 40
+r  # -> 40
 
-In [17]: b = 120
+b = 120
 
-In [18]: q2, r2 = divmod(b, 60)
+q2, r2 = divmod(b, 60)
 
-In [19]: q2
-Out[19]: 2
+q2  # -> 2
 
-In [20]: r2
-Out[20]: 0
+r2  # -> 0
 ```
 
 ```python
@@ -1367,7 +1317,7 @@ class Solution(object):
 
 ### `math.ceil`
 
-```text
+```python
 # https://www.runoob.com/python/func-number-ceil.html
 # https://www.runoob.com/python/func-number-ceil.html
 
@@ -1375,16 +1325,15 @@ class Solution(object):
 The method ceil(x) in Python returns a ceiling value of x 
 -> i.e., the SMALLEST integer GREATER than or EQUAL to x.
 """
-In [9]:
-   ...: import math
-   ...:
-   ...: # prints the ceil using ceil() method
-   ...: print ("math.ceil(-23.11) : ", math.ceil(-23.11))
-   ...: print ("math.ceil(300.16) : ", math.ceil(300.16))
-   ...: print ("math.ceil(300.72) : ", math.ceil(300.72))
-math.ceil(-23.11) :  -23
-math.ceil(300.16) :  301
-math.ceil(300.72) :  301
+import math
+
+# prints the ceil using ceil() method
+print ("math.ceil(-23.11) : ", math.ceil(-23.11))
+print ("math.ceil(300.16) : ", math.ceil(300.16))
+print ("math.ceil(300.72) : ", math.ceil(300.72))
+# -> math.ceil(-23.11) :  -23
+#    math.ceil(300.16) :  301
+#    math.ceil(300.72) :  301
 
 
 # LC 875. Koko Eating Bananas
@@ -1404,7 +1353,7 @@ else:
 
 ### `math.floor`
 
-```text
+```python
 # https://www.geeksforgeeks.org/floor-ceil-function-python/
 
 """
@@ -1415,15 +1364,15 @@ floor() method in Python returns the floor of x
 # This will import math module
 import math   
   
-In [8]: import math
-   ...:
-   ...: # prints the ceil using floor() method
-   ...: print ("math.floor(-23.11) : ", math.floor(-23.11))
-   ...: print ("math.floor(300.16) : ", math.floor(300.16))
-   ...: print ("math.floor(300.72) : ", math.floor(300.72))
-math.floor(-23.11) :  -24
-math.floor(300.16) :  300
-math.floor(300.72) :  300
+import math
+
+# prints the ceil using floor() method
+print ("math.floor(-23.11) : ", math.floor(-23.11))
+print ("math.floor(300.16) : ", math.floor(300.16))
+print ("math.floor(300.72) : ", math.floor(300.72))
+# -> math.floor(-23.11) :  -24
+#    math.floor(300.16) :  300
+#    math.floor(300.72) :  300
 ```
 
 ### `pow(x, n, mod)` — fast modular exponentiation
@@ -1590,16 +1539,14 @@ dp = [[float('inf')] * n for _ in range(m)]
 - Will return Boolean (true or false) per condition for ALL elements in a list
 ```python
 # example 1
-In [36]: a = "000"
+a = "000"
 
-In [37]: all( i == "0" for i in a )
-Out[37]: True
+all( i == "0" for i in a )  # -> True
 
 # example 2
-In [38]: b = "abc123"
+b = "abc123"
 
-In [39]: all ( i == "a" for i in b )
-Out[39]: False
+all ( i == "a" for i in b )  # -> False
 
 # LC 763. Partition Labels
 class Solution(object):
@@ -1624,14 +1571,11 @@ class Solution(object):
 
 ```python
 # Returns True if ANY element in iterable is True (short-circuits)
-In [1]: any([False, False, True])
-Out[1]: True
+any([False, False, True])  # -> True
 
-In [2]: any([False, False, False])
-Out[2]: False
+any([False, False, False])  # -> False
 
-In [3]: any(x > 3 for x in [1, 2, 5])
-Out[3]: True
+any(x > 3 for x in [1, 2, 5])  # -> True
 
 # Complement to all():
 # all() -> every element must be True
@@ -1644,20 +1588,17 @@ Out[3]: True
 #----------------------------
 # can be either None, [], ""
 #----------------------------
-In [32]: x = None
+x = None
 
-In [34]: not x
-Out[34]: True
+not x  # -> True
 
-In [35]: y = []
+y = []
 
-In [36]: not y
-Out[36]: True
+not y  # -> True
 
-In [37]: z = ""
+z = ""
 
-In [38]: not z
-Out[38]: True
+not z  # -> True
 ```
 
 ### `enumerate()`
@@ -1685,31 +1626,28 @@ print(idx_map)  # {'a': 4, 'b': 3, 'c': 2}  (last occurrence)
 
 ### `zip()`
 
-```text
+```python
 # python
-In [1]: for x, y in zip([-1, 1, 0, 0], [0, 0, -1, 1]):
-   ...:     print (x, y)
-   ...:
--1 0
-1 0
-0 -1
-0 1
+for x, y in zip([-1, 1, 0, 0], [0, 0, -1, 1]):
+    print (x, y)
+# -> -1 0
+#    1 0
+#    0 -1
+#    0 1
 
-In [2]: for x, y, z in zip([-1, 1, 0, 0], [0, 0, -1, 1], [0,0,0,0]):
-   ...:     print (x,y,z)
-   ...:
--1 0 0
-1 0 0
-0 -1 0
-0 1 0
+for x, y, z in zip([-1, 1, 0, 0], [0, 0, -1, 1], [0,0,0,0]):
+    print (x,y,z)
+# -> -1 0 0
+#    1 0 0
+#    0 -1 0
+#    0 1 0
 
-In [3]: for x, y, z, u in zip([-1, 1, 0, 0], [0, 0, -1, 1], [0,0,0,0], [9,9,9,9]):
-   ...:     print (x,y,z,u)
-   ...:
--1 0 0 9
-1 0 0 9
-0 -1 0 9
-0 1 0 9
+for x, y, z, u in zip([-1, 1, 0, 0], [0, 0, -1, 1], [0,0,0,0], [9,9,9,9]):
+    print (x,y,z,u)
+# -> -1 0 0 9
+#    1 0 0 9
+#    0 -1 0 9
+#    0 1 0 9
 ```
 
 ### Looping a dict
@@ -1731,46 +1669,40 @@ for v in d.values():
 
 ### Starred (`*`) expressions
 
-```text
+```python
 # Extended Iterable Unpacking
 
 # https://www.python.org/dev/peps/pep-3132/
 # http://swaywang.blogspot.com/2012/01/pythonstarred-expression.html
 
 # example 1
-In [38]: a, *b, c = range(5)
+a, *b, c = range(5)
 
-In [39]: a
-Out[39]: 0
+a  # -> 0
 
-In [40]: b
-Out[40]: [1, 2, 3]
+b  # -> [1, 2, 3]
 
-In [41]: c
-Out[41]: 4
+c  # -> 4
 
 # example 2
-In [43]: for a, *b in [(1, 2, 3), (4, 5, 6, 7)]:
-    ...:     print ("a = " + str(a) + " b = " + str(b))
-    ...:
-a = 1 b = [2, 3]
-a = 4 b = [5, 6, 7]
+for a, *b in [(1, 2, 3), (4, 5, 6, 7)]:
+    print ("a = " + str(a) + " b = " + str(b))
+# -> a = 1 b = [2, 3]
+#    a = 4 b = [5, 6, 7]
 
 # example 3
-In [44]: first, *rest = [1, 2, 3, 4, 5]
+first, *rest = [1, 2, 3, 4, 5]
 
-In [45]: first
-Out[45]: 1
+first  # -> 1
 
-In [46]: rest
-Out[46]: [2, 3, 4, 5]
+rest  # -> [2, 3, 4, 5]
 
 # example 4
-In [47]: *directories, executable = "/usr/local/bin/vim".split("/")
-    ...: print (directories)
-    ...: print (executable)
-['', 'usr', 'local', 'bin']
-vim
+*directories, executable = "/usr/local/bin/vim".split("/")
+print (directories)
+print (executable)
+# -> ['', 'usr', 'local', 'bin']
+#    vim
 
 # example 5
 args = [1,3]
@@ -1779,7 +1711,7 @@ print (range(*args))
 
 ### `filter()`
 
-```text
+```python
 # https://www.runoob.com/python/python-func-filter.html
 
 #-----------------------------------------------
@@ -1791,60 +1723,45 @@ print (range(*args))
 #----------------------------
 # example 1
 #----------------------------
-In [13]: def is_odd(n):
-    ...:     return n % 2 == 1
-    ...:
-    ...: newlist = filter(is_odd, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-    ...: print(newlist)
-<filter object at 0x7fc71c3dced0>
+def is_odd(n):
+    return n % 2 == 1
 
-In [14]:
-
-In [14]: list(newlist)
-Out[14]: [1, 3, 5, 7, 9]
+newlist = filter(is_odd, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+print(newlist)  # -> <filter object at 0x...>  (lazy: nothing computed yet)
+list(newlist)  # -> [1, 3, 5, 7, 9]
 
 
 #----------------------------
 # example 2
 #----------------------------
-In [15]: import math
-    ...: def is_sqr(x):
-    ...:     return math.sqrt(x) % 1 == 0
-    ...:
-    ...: newlist = filter(is_sqr, range(1, 101))
-    ...: print(newlist)
-<filter object at 0x7fc71bb10450>
+import math
+def is_sqr(x):
+    return math.sqrt(x) % 1 == 0
 
-In [16]:
-
-In [16]: list(newlist)
-Out[16]: [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
+newlist = filter(is_sqr, range(1, 101))
+print(newlist)  # -> <filter object at 0x...>
+list(newlist)  # -> [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
 ```
 
 ### List comprehensions
 
-```text
+```python
 #----------------------------
 # example 1
 #----------------------------
 # https://stackoverflow.com/questions/4260280/if-else-in-a-list-comprehension
 
-In [8]: [ x for x in range(5) ]
-Out[8]: [0, 1, 2, 3, 4]
+[ x for x in range(5) ]  # -> [0, 1, 2, 3, 4]
 
 # NOTE this !!!!
-In [9]: [ x if x % 2 == 0 else -1 for x in range(5) ]
-   ...:
-   ...:
-Out[9]: [0, -1, 2, -1, 4]
+[ x if x % 2 == 0 else -1 for x in range(5) ]  # -> [0, -1, 2, -1, 4]
 
-In [10]: def my_func(x):
-    ...:     if x % 2 ==0:
-    ...:         return True
-    ...:     return False
-    ...:
-    ...: [ x if my_func(x) else 999  for x in range(5)]
-Out[10]: [0, 999, 2, 999, 4]
+def my_func(x):
+    if x % 2 ==0:
+        return True
+    return False
+
+[ x if my_func(x) else 999  for x in range(5)]  # -> [0, 999, 2, 999, 4]
 ```
 
 ### `map()` and generator expressions
@@ -2064,7 +1981,7 @@ class Solution(object):
             for v in graph[u]:
                 # u itself is a prerequisite of v
                 reachable[v].add(u)
-                # NOTE !!! every prerequisite of u is also a prerequisite of v
+                # every prerequisite of u is also a prerequisite of v
                 reachable[v].update(reachable[u])
 
                 indegree[v] -= 1
@@ -2092,18 +2009,18 @@ Do not write `reachable[v] = reachable[u]` instead: that makes the two names sha
 
 ### Testing "either element exists" with `or`
 
-```text
-In [8]: def test(l1, l2):
-   ...:     if l1 or l2:
-   ...:         return l1 or l2
-   ...:
-   ...: res = test("l1", None)
-   ...: print (res)
-   ...:
-   ...: res2 = test(None, "l2")
-   ...: print (res2)
-l1
-l2
+```python
+def test(l1, l2):
+    if l1 or l2:
+        return l1 or l2
+
+res = test("l1", None)
+print (res)
+
+res2 = test(None, "l2")
+print (res2)
+# -> l1
+#    l2
 ```
 
 ## Structure, Scope & Return Values
@@ -2189,7 +2106,7 @@ class Solution(object):
             for j in range(len(prev) - 1):
                 new_val.append(prev[j] + prev[j + 1])
 
-            # NOTE !!! how we add [1] at beginning and end
+            # how we add [1] at beginning and end
             # first and last are always 1
             dp[i] = [1] + new_val + [1]
 
@@ -2357,7 +2274,7 @@ h, s, p = info              # tuple unpacking also works
 > **Rule of thumb:** if you *mutate* a shared container (`append`/`add`), you must undo it (`pop`/`remove`). If you create a *new* object each call (string concat, `tmp + [x]`, tuple), the copy IS the backtrack — there's nothing to undo. See also [0-2) assignment vs shallow/deep copy](#assignment-vs-shallow-copy-vs-deep-copy).
 ### `eval()`
 
-```text
+```python
 # https://www.runoob.com/python/python-func-eval.html
 # https://www.programiz.com/python-programming/methods/built-in/eval
 # The eval() method parses the expression passed to this method and runs python expression (code) within the program.
@@ -2368,18 +2285,13 @@ h, s, p = info              # tuple unpacking also works
 # syntax : eval(expression[, globals[, locals]])
 
 # eample
-In [51]: x = 7
-    ...: eval('3 * x')
-    ...:
-Out[51]: 21
+x = 7
+eval('3 * x')  # -> 21
 
-In [52]: eval ('2 + 2')
-    ...:
-Out[52]: 4
+eval ('2 + 2')  # -> 4
 
-In [53]: n = 81
-    ...: eval('n + 4')
-Out[53]: 85
+n = 81
+eval('n + 4')  # -> 85
 ```
 
 ### Swapping for a longer array
@@ -2429,7 +2341,7 @@ class Solution(object):
         else:
             self.helper(root.left, path)
             self.helper(root.right, path)
-        # NOTE !!! backtrack at the final stage (undo the append)
+        # backtrack at the final stage (undo the append)
         path.pop()
 
 #-------------------------------------------------
@@ -2445,7 +2357,7 @@ class Solution(object):
             if not node.left and not node.right:
                 res.append(cur)
                 return
-            # NOTE !!! no path.pop() — each branch got its own string copy
+            # no path.pop() — each branch got its own string copy
             dfs(node.left, cur)
             dfs(node.right, cur)
         dfs(root, "")
@@ -2524,7 +2436,7 @@ class Solution(object):
 ### Worked pair — LC 445 Add Two Numbers II and LC 394 Decode String
 
 - String -> Int
-```text
+```python
 # 445 Add Two Numbers II
 # 394 Decode String
 def str_2_int(x):
@@ -2549,16 +2461,13 @@ print (r)
 # 1 131
 # 131
 
-# examle 2
-In [62]: z
-Out[62]: '5634'
+# example 2
+z = '5634'
 
-In [63]: ans = 0
+ans = 0
 
-In [64]: for i in z:
-    ...:     ans = 10 * ans + int(i)
-    ...:
+for i in z:
+    ans = 10 * ans + int(i)
 
-In [65]: ans
-Out[65]: 5634
+ans  # -> 5634
 ```

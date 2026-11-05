@@ -330,7 +330,7 @@ public boolean isSubtree(TreeNode root, TreeNode subRoot) {
     String rootPath = serialize(root);
     String subPath = serialize(subRoot);
 
-    // NOTE !!! serialize() already wraps every node in commas, so subPath arrives
+    // serialize() already wraps every node in commas, so subPath arrives
     //          delimited on both sides. Adding another pair searches for ",,...,,"
     //          and returns false even for root = [1], subRoot = [1].
     return rootPath.contains(subPath);
@@ -1086,7 +1086,7 @@ TreeNode deserlialize(String data){
 public class Codec{
     public String serialize(TreeNode root) {
 
-        /** NOTE !!!
+        /**
          *
          *     if root == null, return "#"
          */
@@ -1094,13 +1094,13 @@ public class Codec{
             return "#";
         }
 
-        /** NOTE !!! return result via pre-order, split with "," */
+        /** return result via pre-order, split with "," */
         return root.val + "," + serialize(root.left) + "," + serialize(root.right);
     }
 
     public TreeNode deserialize(String data) {
 
-        /** NOTE !!!
+        /**
          *
          *   1) init queue and append serialize output
          *   2) even use queue, but helper func still using DFS
@@ -1117,9 +1117,9 @@ public class Codec{
         if (s.equals("#")){
             return null;
         }
-        /** NOTE !!! init current node  */
+        /** init current node  */
         TreeNode root = new TreeNode(Integer.valueOf(s));
-        /** NOTE !!!
+        /**
          *
          *    since serialize is "pre-order",
          *    deserialize we use "pre-order" as well
@@ -1132,7 +1132,7 @@ public class Codec{
          */
         root.left = helper(queue);
         root.right = helper(queue);
-        /** NOTE !!! don't forget to return final deserialize result  */
+        /** don't forget to return final deserialize result  */
         return root;
     }
 }

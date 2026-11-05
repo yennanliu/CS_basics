@@ -59,15 +59,13 @@ public int networkDelayTime(int[][] times, int n, int k) {
 """
 CORE STEPS:
 
-執行流程：
-
-    1. 從起點 k 出發，初始距離為 0。
-    2. 把起點放進 Min Heap。
-    3. 從 Min Heap 取出目前累積距離最小的節點。
-    4. 探索這個節點的所有 neighbors。
-    5. 計算到每個 neighbor 的新距離：cur_dist + edge_cost。
-    6. 將尚未確定最短距離的 neighbor 放入 Min Heap。
-    7. 持續執行，直到 Min Heap 為空。
+    1. Start from node k with distance 0.
+    2. Push the start onto the min-heap.
+    3. Pop the node with the smallest distance so far.
+    4. Explore all of its neighbors.
+    5. Compute each neighbor's new distance: cur_dist + edge_cost.
+    6. Push every neighbor whose shortest distance is not settled yet.
+    7. Repeat until the min-heap is empty.
 
 """
 import heapq
@@ -522,7 +520,7 @@ With best[(node, stops)]:
 // LC 1631
 
 // V0-1
-// IDEA: Dijkstra's ALGO ( fixed by gpt) : min PQ + BFS
+// IDEA: Dijkstra's ALGO : min PQ + BFS
 public int minimumEffortPath_0_1(int[][] heights) {
     if (heights == null || heights.length == 0)
         return 0;
@@ -545,7 +543,7 @@ public int minimumEffortPath_0_1(int[][] heights) {
             return effort;
         }
 
-  /**  NOTE !!!  need `visited, to NOT revisited visited cells (`Dijkstra algo`)
+  /**  need `visited, to NOT revisited visited cells (`Dijkstra algo`)
    *
    *   Reason:
    *
@@ -909,11 +907,11 @@ class Solution(object):
 
         m, n = len(grid), len(grid[0])
 
-        # NOTE !!! heap compares the 1st element -> cost MUST come first
+        # heap compares the 1st element -> cost MUST come first
         # pq entry: [cost_so_far, row, col]
         pq = [[grid[0][0], 0, 0]]
 
-        # NOTE !!! cost_grid[r][c] = best cost found so far to reach (r,c)
+        # cost_grid[r][c] = best cost found so far to reach (r,c)
         # syntax: [[val] * n for _ in range(m)]  (NOT [[val] * n] * m -> shared refs!)
         cost_grid = [[float('inf')] * n for _ in range(m)]
         cost_grid[0][0] = grid[0][0]
@@ -927,7 +925,7 @@ class Solution(object):
             if r == m - 1 and c == n - 1:
                 return curr_cost
 
-            # NOTE !!! stale entry -> a better path to (r,c) was already found
+            # stale entry -> a better path to (r,c) was already found
             if curr_cost > cost_grid[r][c]:
                 continue
 
@@ -1050,9 +1048,9 @@ Grid path problem?
 // LC 2290
 
 // V0-1
-// IDEA: Dijkstra's Algorithm (fixed by gpt)
+// IDEA: Dijkstra's Algorithm
 /**
- *  NOTE !!!
+ *  Note:
  *
  * ✅ Summary:
  *  •   Single cost var won’t work → need dist[][] to track per-cell minimum cost.
@@ -1068,7 +1066,7 @@ public int minimumObstacles(int[][] grid) {
     int n = grid[0].length; // cols
 
     /**
-     *   NOTE !!!
+     *   Note:
      *
      *    we need a 2D array to save the cost when BFS loop over the grid
      *    (CAN'T just use a single var (cost))
@@ -1114,7 +1112,7 @@ public int minimumObstacles(int[][] grid) {
 
         // Skip if we already found better
         /**
-         *  NOTE !!!
+         *  Note:
          *
          *   why DON'T need to maintain a `visited` var
          *   to prevent repeating visit ?
@@ -1215,7 +1213,7 @@ public int minCost(int[][] grid) {
             int w = (grid[r][c] == sign) ? 0 : 1;   // free iff we follow this cell's arrow
             if (cost + w < dist[nr][nc]) {
                 dist[nr][nc] = cost + w;
-                // NOTE !!! weight-0 -> FRONT, weight-1 -> BACK. This is the whole trick.
+                // weight-0 -> FRONT, weight-1 -> BACK. This is the whole trick.
                 if (w == 0) dq.offerFirst(new int[] {cost + w, nr, nc});
                 else        dq.offerLast(new int[] {cost + w, nr, nc});
             }
@@ -1255,7 +1253,7 @@ def minCost(grid):
                 w = 0 if grid[r][c] == sign else 1
                 if cost + w < dist[nr][nc]:
                     dist[nr][nc] = cost + w
-                    # NOTE !!! weight-0 -> appendleft, weight-1 -> append
+                    # weight-0 -> appendleft, weight-1 -> append
                     if w == 0:
                         dq.appendleft((cost + w, nr, nc))
                     else:
@@ -1515,7 +1513,7 @@ public int nthUglyNumber(int n) {
     for (int i = 0; i < n; i++) {
         val = pq.poll();
         for (int f : factors) {
-            long nxt = val * f;          // NOTE !!! use long — v*5 can overflow int mid-search
+            long nxt = val * f;          // use long — v*5 can overflow int mid-search
             if (seen.add(nxt)) pq.offer(nxt);
         }
     }

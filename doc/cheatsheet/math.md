@@ -105,14 +105,11 @@ class Solution(object):
 def convertToBaseN(num, n):
     return int(str(num), n)
 
-In [34]: int("100",7)
-Out[34]: 49
+int("100",7)  # -> 49
 
-In [35]: int("14",7)
-Out[35]: 11
+int("14",7)  # -> 11
 
-In [36]: int("66",7)
-Out[36]: 48
+int("66",7)  # -> 48
 ```
 
 #### 1-1-1) check prime number
@@ -256,7 +253,7 @@ def get_primes(x):
     is_prime[1] = False
 
     p = 2
-    # NOTE !!! `<` not `<=` : the largest candidate is x - 1, so p only needs p * p <= x - 1
+    # `<` not `<=` : the largest candidate is x - 1, so p only needs p * p <= x - 1
     while p * p < x:
         if is_prime[p]:
             # smaller multiples p*2, p*3, ... were already crossed out by smaller primes
@@ -352,7 +349,7 @@ def get_primes_less_than_linear(x):
                 break
             # p is the smallest prime factor of p * i, since p <= every prime factor of i
             is_composite[p * i] = True
-            # NOTE !!! once p divides i, a bigger prime q would give q * i whose smallest
+            # once p divides i, a bigger prime q would give q * i whose smallest
             #          factor is p, not q -> that number is crossed out later, by p
             if i % p == 0:
                 break
@@ -852,7 +849,7 @@ class Solution(object):
         last_digit = int(s[-1])
         for k in range(len(s)):
             prev = 0 if k == 0 else int(s[k - 1])
-            # NOTE !!! only the edge prev -> s[k] changes; it becomes prev -> s[-1]
+            # only the edge prev -> s[k] changes; it becomes prev -> s[-1]
             candidate = total - self.dist(prev, int(s[k])) + self.dist(prev, last_digit)
             best = min(best, candidate)
         return best
@@ -1004,7 +1001,7 @@ Replace (a, b) with (a-1, b+1)  -> sum is unchanged
 **So the split is fully determined by `divmod`:**
 
 ```text
-q, r = divmod(n, k)          # q = n // k  (商數), r = n % k  (餘數)
+q, r = divmod(n, k)          # q = n // k  (quotient), r = n % k  (remainder)
 
   ->  r     parts have value (q + 1)      <-- the "leftover" r units are spread
   ->  (k-r) parts have value  q               one-by-one over r parts
@@ -1053,16 +1050,16 @@ def get_product(n, k):
     Split n into k parts as evenly as possible,
     return their (maximum) product.
     """
-    ### NOTE !!! get q (商數), r (餘數) via divmod
+    # q = quotient, r = remainder
     q = n // k
     r = n % k
 
-    ### NOTE !!!
+    ### Note:
     #   r      parts have value q + 1   (the remainder is spread 1 unit each)
     #   k - r  parts have value q
     product = 1
 
-    ### NOTE !!! build the product from q, r
+    ### build the product from q, r
     for _ in range(r):
         product *= (q + 1)
 
@@ -1088,8 +1085,8 @@ def split_evenly(n, k):
 // java
 // GENERAL PATTERN: split n into k parts as evenly as possible
 long getProduct(int n, int k) {
-    int q = n / k;          // 商數
-    int r = n % k;          // 餘數
+    int q = n / k;          // quotient
+    int r = n % k;          // remainder
 
     long product = 1;
     for (int i = 0; i < r; i++)     product *= (q + 1);   // r parts of q+1
@@ -1275,7 +1272,7 @@ step | bit | x (running square) | res
 // IDEA: FAST POWER (BINARY EXPONENTIATION) - square the base, halve the exponent
 // time = O(log n), space = O(1)
 public double myPow(double x, int n) {
-    /** NOTE !!! promote to long FIRST
+    /** promote to long FIRST
      *  -n overflows when n == Integer.MIN_VALUE (-2^31 has no positive int)
      */
     long N = n;
@@ -1310,7 +1307,7 @@ class Solution(object):
 
         res = 1.0
         while n:
-            ### NOTE !!! if current bit is 1, accumulate the current square
+            ### if current bit is 1, accumulate the current square
             if n & 1:
                 res *= x
             x *= x        # x -> x^2 -> x^4 -> x^8 ...
@@ -1404,11 +1401,11 @@ int gcd(int a, int b) {
 }                      // (caveat: Math.abs(Integer.MIN_VALUE) stays negative -> use long if that's reachable)
 
 long lcm(int a, int b) {
-    // NOTE !!! lcm with 0 is 0 -> guard first, else gcd(0, 0) == 0 divides by zero
+    // lcm with 0 is 0 -> guard first, else gcd(0, 0) == 0 divides by zero
     if (a == 0 || b == 0) {
         return 0;
     }
-    // NOTE !!! divide BEFORE multiplying, else a*b can overflow
+    // divide BEFORE multiplying, else a*b can overflow
     return (long) Math.abs(a) / gcd(a, b) * Math.abs(b);
 }
 ```
@@ -1424,7 +1421,7 @@ def my_gcd(a, b):
     return a
 
 def my_lcm(a, b):
-    ### NOTE !!! lcm with 0 is 0 -> guard first, else my_gcd(0, 0) == 0 divides by zero
+    ### lcm with 0 is 0 -> guard first, else my_gcd(0, 0) == 0 divides by zero
     if a == 0 or b == 0:
         return 0
     return abs(a) // my_gcd(a, b) * abs(b)
@@ -1456,14 +1453,14 @@ public int maxPoints(int[][] points) {
             int dx = points[j][0] - points[i][0];
             int dy = points[j][1] - points[i][1];
 
-            /** NOTE !!! reduce by gcd -> canonical direction vector */
+            /** reduce by gcd -> canonical direction vector */
             int g = gcd(dx, dy);
             if (g != 0) {
                 dx /= g;
                 dy /= g;
             }
 
-            /** NOTE !!! normalize sign, so (1,2) and (-1,-2) are the SAME line */
+            /** normalize sign, so (1,2) and (-1,-2) are the SAME line */
             if (dx < 0 || (dx == 0 && dy < 0)) {
                 dx = -dx;
                 dy = -dy;
@@ -1498,13 +1495,13 @@ class Solution(object):
                 dx = points[j][0] - x1
                 dy = points[j][1] - y1
 
-                ### NOTE !!! reduce by gcd -> canonical direction
+                ### reduce by gcd -> canonical direction
                 g = gcd(abs(dx), abs(dy))
                 if g:
                     dx //= g
                     dy //= g
 
-                ### NOTE !!! normalize sign
+                ### normalize sign
                 if dx < 0 or (dx == 0 and dy < 0):
                     dx, dy = -dx, -dy
 
@@ -1575,7 +1572,7 @@ public int mySqrt(int x) {
     int lo = 1, hi = x / 2, ans = 1; // NOTE: for x >= 2, isqrt(x) <= x/2
     while (lo <= hi) {
         int mid = lo + (hi - lo) / 2;
-        /** NOTE !!! cast to long -> mid * mid overflows int */
+        /** cast to long -> mid * mid overflows int */
         long sq = (long) mid * mid;
         if (sq == x) {
             return mid;
@@ -1754,7 +1751,7 @@ class Solution {
     public int[] shuffle() {
         int[] a = original.clone();
         for (int i = a.length - 1; i > 0; i--) {
-            /** NOTE !!! nextInt(i + 1) -> j in [0, i] INCLUSIVE
+            /** nextInt(i + 1) -> j in [0, i] INCLUSIVE
              *  using nextInt(n) here (a fixed bound) makes it NON-uniform
              */
             int j = rand.nextInt(i + 1);
@@ -1784,7 +1781,7 @@ class Solution(object):
     def shuffle(self):
         arr = self.original[:]
         for i in range(len(arr) - 1, 0, -1):
-            ### NOTE !!! randint is INCLUSIVE on both ends -> j in [0, i]
+            ### randint is INCLUSIVE on both ends -> j in [0, i]
             j = random.randint(0, i)
             arr[i], arr[j] = arr[j], arr[i]
         return arr
@@ -1824,7 +1821,7 @@ class Solution {
     }
 
     public int pickIndex() {
-        /** NOTE !!! target in [1, total] (nextInt is exclusive on the bound) */
+        /** target in [1, total] (nextInt is exclusive on the bound) */
         int target = rand.nextInt(total) + 1;
 
         int lo = 0, hi = prefix.length - 1;
@@ -1902,7 +1899,7 @@ class Solution {
                 continue;
             }
             count++;
-            /** NOTE !!! nextInt(count) == 0 happens with prob 1/count */
+            /** nextInt(count) == 0 happens with prob 1/count */
             if (rand.nextInt(count) == 0) {
                 res = i;
             }
@@ -1930,7 +1927,7 @@ class Solution(object):
             if v != target:
                 continue
             count += 1
-            ### NOTE !!! keep index i with probability 1 / count
+            ### keep index i with probability 1 / count
             if random.randint(1, count) == 1:
                 res = i
         return res
@@ -1975,7 +1972,7 @@ class RandomizedSet {
         if (i == null) {
             return false;
         }
-        /** NOTE !!! move the LAST element into the hole, then pop the tail */
+        /** move the LAST element into the hole, then pop the tail */
         int last = arr.get(arr.size() - 1);
         arr.set(i, last);
         idx.put(last, i);
@@ -2012,7 +2009,7 @@ class RandomizedSet(object):
     def remove(self, val):
         if val not in self.idx:
             return False
-        ### NOTE !!! overwrite the hole with the last element, then pop
+        ### overwrite the hole with the last element, then pop
         i = self.idx[val]
         last = self.arr[-1]
         self.arr[i] = last
@@ -2071,7 +2068,7 @@ Two consequences worth saying out loud in an interview:
 # GENERAL PATTERN: equalize with step x -> remainder check, then the median
 # time = O(n log n), space = O(n)     (the sort dominates)
 def min_ops_to_equalize(vals, x):
-    ### NOTE !!! feasibility FIRST - one bad remainder kills the whole input
+    ### feasibility FIRST - one bad remainder kills the whole input
     r = vals[0] % x
     if any(v % x != r for v in vals):
         return -1
@@ -2086,7 +2083,7 @@ def min_ops_to_equalize(vals, x):
 // GENERAL PATTERN: equalize with step x -> remainder check, then the median
 // time = O(n log n), space = O(1) extra (sorts in place)
 int minOpsToEqualize(int[] vals, int x) {
-    /** NOTE !!! java's % keeps the sign of the DIVIDEND -> normalize if vals can be negative */
+    /** java's % keeps the sign of the DIVIDEND -> normalize if vals can be negative */
     int r = ((vals[0] % x) + x) % x;
     for (int v : vals) {
         if (((v % x) + x) % x != r) {
@@ -2097,7 +2094,7 @@ int minOpsToEqualize(int[] vals, int x) {
     Arrays.sort(vals);
     int median = vals[vals.length / 2];
 
-    long ops = 0;                       // NOTE !!! the total can outgrow int
+    long ops = 0;                       // the total can outgrow int
     for (int v : vals) {
         ops += Math.abs(v - median) / x;
     }
@@ -2118,7 +2115,7 @@ class Solution(object):
     def minOperations(self, grid, x):
         vals = [v for row in grid for v in row]
 
-        ### NOTE !!! every cell must agree mod x, else no common target exists
+        ### every cell must agree mod x, else no common target exists
         r = vals[0] % x
         if any(v % x != r for v in vals):
             return -1
@@ -2351,7 +2348,7 @@ class Solution:
 public int titleToNumber(String columnTitle) {
     int res = 0;
     for (char ch : columnTitle.toCharArray()) {
-        /** NOTE !!! `+ 1` -> 'A' is 1 (NOT 0); that is why 168 needs the -1 fixup */
+        /** `+ 1` -> 'A' is 1 (NOT 0); that is why 168 needs the -1 fixup */
         res = res * 26 + (ch - 'A' + 1);
     }
     return res;
@@ -2367,7 +2364,7 @@ class Solution(object):
     def titleToNumber(self, columnTitle):
         res = 0
         for ch in columnTitle:
-            ### NOTE !!! 'A' maps to 1, not 0
+            ### 'A' maps to 1, not 0
             res = res * 26 + (ord(ch) - ord('A') + 1)
         return res
 
@@ -2412,7 +2409,7 @@ class Solution(object):
 // LC 13
 
 // V0-1
-// IDEA: MAP + STR OP (fixed by gpt)
+// IDEA: MAP + STR OP
 public int romanToInt_0_1(String s) {
     if (s == null || s.isEmpty()) {
         return 0;
@@ -2431,7 +2428,7 @@ public int romanToInt_0_1(String s) {
     int prev = 0;
 
     /**
-     * NOTE !!!
+     * Note:
      *
      * loop reversely (from  idx = s.len() - 1)
      */
@@ -2443,7 +2440,7 @@ public int romanToInt_0_1(String s) {
             total += curr;
         }
         /**
-         * NOTE !!!
+         * Note:
          *
          *  set `prev` as curr
          */
@@ -2464,7 +2461,7 @@ public int romanToInt_0_1(String s) {
 // IDEA: GREEDY over a DESCENDING value table that already contains 900/400/90/40/9/4
 // time = O(1) (num <= 3999), space = O(1)
 public String intToRoman(int num) {
-    /** NOTE !!! subtractive pairs are baked into the table -> no special cases */
+    /** subtractive pairs are baked into the table -> no special cases */
     int[] vals    = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
     String[] syms = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
 
@@ -2494,7 +2491,7 @@ class Solution(object):
         for v, s in zip(vals, syms):
             if num == 0:
                 break
-            ### NOTE !!! divmod gives "how many of this symbol" in one step
+            ### divmod gives "how many of this symbol" in one step
             cnt, num = divmod(num, v)
             res.append(s * cnt)
         return "".join(res)

@@ -300,7 +300,7 @@ public String decodeString(String s) {
     }
 
     /**
-     * NOTE !!!
+     * Note:
      * Stack stores alternating pattern:
      * - String (previous accumulated string)
      * - Integer (repeat count)
@@ -361,7 +361,7 @@ public String decodeString(String s) {
             String prevString = (String) stack.pop();
 
             /**
-             * NOTE !!!
+             * Note:
              * Repeat current string repeatCount times
              * Then prepend previous string
              */
@@ -496,7 +496,7 @@ public int evalRPN(String[] tokens) {
     for (String t : tokens) {
         if (t.equals("+") || t.equals("-") || t.equals("*") || t.equals("/")) {
             /**
-             *  NOTE !!!  the FIRST pop is the RIGHT operand
+             *  the FIRST pop is the RIGHT operand
              *  -> "a - b" and "a / b", NOT "b - a"
              */
             int b = st.pop();
@@ -511,7 +511,7 @@ public int evalRPN(String[] tokens) {
                 st.push(a / b); // java int division truncates toward zero
             }
         } else {
-            /** NOTE !!! handles negative literals like "-11" for free */
+            /** handles negative literals like "-11" for free */
             st.push(Integer.parseInt(t));
         }
     }
@@ -531,7 +531,7 @@ class Solution(object):
         stack = []
         for t in tokens:
             if t in ops:
-                # NOTE !!! first pop = RIGHT operand
+                # first pop = RIGHT operand
                 b = stack.pop()
                 a = stack.pop()
                 if t == '+':
@@ -541,7 +541,7 @@ class Solution(object):
                 elif t == '*':
                     stack.append(a * b)
                 else:
-                    # NOTE !!! truncate toward zero ( // would FLOOR )
+                    # truncate toward zero ( // would FLOOR )
                     stack.append(int(a / b))
             else:
                 stack.append(int(t))   # int() also parses "-11"

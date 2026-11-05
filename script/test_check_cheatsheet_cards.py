@@ -166,6 +166,14 @@ class LineAndHeadingRules(unittest.TestCase):
         self.assertTrue(run(text, new_sheet=True))
         self.assertEqual(run(text, new_sheet=False), [])
 
+    def test_rename_is_read_from_name_status(self):
+        out = ("R098\tdoc/cheatsheet/old_name.md\tdoc/cheatsheet/new_name.md\n"
+               "M\tdoc/cheatsheet/other.md\n"
+               "C100\tdoc/cheatsheet/stub.md\tdoc/cheatsheet/moved.md\n")
+        self.assertEqual(c.parse_renames(out),
+                         {"doc/cheatsheet/new_name.md": "doc/cheatsheet/old_name.md",
+                          "doc/cheatsheet/moved.md": "doc/cheatsheet/stub.md"})
+
     def test_unchanged_old_section_is_not_judged(self):
         old = "### Template 1: Old\n\ncode first\n"
         self.assertEqual(run(old, changed={2}), [])      # only its body changed

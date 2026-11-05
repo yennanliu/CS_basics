@@ -80,6 +80,29 @@ for i from n-1 down to 0:
 - The number of steps for `nums[i]` to be eaten equals 1 plus the maximum steps needed by any intermediate smaller element between `nums[i]` and its "killer".
 - The monotonic stack tracks exactly who the current "killer" is.
 
+**Python — left-to-right (forward scan)**:
+```python
+# python
+# LC 2289 - Steps to Make Array Non-decreasing
+# IDEA: forward scan; a popped chain hands its max survival time to the element that ate it
+# time = O(n), space = O(n)
+def totalSteps(nums):
+    n = len(nums)
+    dp = [0] * n          # dp[i] = round in which nums[i] is removed (0 = never)
+    stack = []            # indices, values decreasing
+    max_steps = 0
+    for i in range(n):
+        current_steps = 0
+        # nums[i] outlives everything it pops; it must wait for the longest of their chains
+        while stack and nums[i] >= nums[stack[-1]]:
+            current_steps = max(current_steps, dp[stack.pop()])
+        if stack:         # a larger element is still to the left: nums[i] is eaten
+            dp[i] = current_steps + 1
+            max_steps = max(max_steps, dp[i])
+        stack.append(i)
+    return max_steps
+```
+
 **Java — left-to-right (forward scan)**:
 ```java
 // java
@@ -193,6 +216,24 @@ Matrix:       dp values:     Contribution:
 1 1 1 1  →    1 1 2 2   →   1+1+2+2 = 6   (row 1)
 0 1 1 1       0 1 2 3        0+1+2+3 = 6   (row 2)
                                   Total = 15 ✓
+```
+
+**Python** — the `(m+1) × (n+1)` table, so the first row and column need no special case:
+```python
+# python
+# LC 1277 - Count Square Submatrices with All Ones
+# IDEA: dp[i][j] = side of the largest all-1 square ending at (i, j); it also counts the squares ending there
+# time = O(m * n), space = O(m * n)
+def countSquares(matrix):
+    rows, cols = len(matrix), len(matrix[0])
+    dp = [[0] * (cols + 1) for _ in range(rows + 1)]   # +1 border = no first-row/col case
+    total = 0
+    for i in range(rows):
+        for j in range(cols):
+            if matrix[i][j] == 1:
+                dp[i + 1][j + 1] = min(dp[i][j + 1], dp[i + 1][j], dp[i][j]) + 1
+                total += dp[i + 1][j + 1]
+    return total
 ```
 
 #### **Java Implementation (Bottom-Up 2D DP)**
@@ -351,6 +392,23 @@ When we see a `'0'` **after** some `'1'`s, there's a conflict. Two choices:
 Take the cheaper option: `flips = min(flips + 1, ones)`
 
 **Key insight**: `ones` is the "undo cost" — how expensive it would be to backtrack and flip everything seen so far to `0`.
+
+**Python**:
+```python
+# python
+# LC 926 - Flip String to Monotone Increasing
+# IDEA: one pass — on a '0', either flip it to '1' or flip every '1' seen so far to '0'
+# time = O(n), space = O(1)
+def minFlipsMonoIncr(s):
+    flips = 0      # min flips that make the prefix monotone
+    ones = 0       # '1's seen so far = the cost of turning the whole prefix into 0s
+    for c in s:
+        if c == '1':
+            ones += 1
+        else:
+            flips = min(flips + 1, ones)
+    return flips
+```
 
 #### **Core Code (Java)**
 

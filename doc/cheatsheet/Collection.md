@@ -98,113 +98,65 @@ print(count.items())
 ```python
 # LC # 554 rick Wall
 import collections
-In [87]: _counter = collections.Counter()
+_counter = collections.Counter()
 
-In [88]: _counter
-Out[88]: Counter()
+_counter  # -> Counter()
 
-In [89]: _counter.update([1])
+_counter.update([1])
 
-In [90]: _counter
-Out[90]: Counter({1: 1})
+_counter  # -> Counter({1: 1})
 
-In [91]: _counter.update([1])
+_counter.update([1])
 
-In [92]: _counter
-Out[92]: Counter({1: 2})
+_counter  # -> Counter({1: 2})
 
-In [93]: _counter.update([2])
+_counter.update([2])
 
-In [94]: _counter
-Out[94]: Counter({1: 2, 2: 1})
+_counter  # -> Counter({1: 2, 2: 1})
 ```
 
 #### 1-5) `OrderedDict` ( hashmap + linked list) — LC 146
-```text
+```python
 # LC 146 LRU Cache
-
-# There is a structure called ordered dictionary, it combines behind both hashmap and linked list. In Python this structure is called OrderedDict and in Java LinkedHashMap.
-
+# OrderedDict = hash map + doubly linked list (Java: LinkedHashMap)
 # https://docs.python.org/3/library/collections.html#collections.OrderedDict
-# https://codertw.com/%E7%A8%8B%E5%BC%8F%E8%AA%9E%E8%A8%80/367557/
-# https://www.w3help.cc/a/202107/420653.html
-
-"""
-
-# OrderedDict = hashmap + linked list
-# CAN make dict ordering (default dict is NOT ordering)
-# Return an instance of a dict subclass that has methods specialized for rearranging dictionary order
-
-* popitem(last=True)
-    The popitem() method for ordered dictionaries returns and removes a (key, value) pair. The pairs are returned in LIFO order if last is true or FIFO order if false.
-
-* move_to_end(key, last=True)
-    Move an existing key to either end of an ordered dictionary. The item is moved to the right end if last is true (the default) or to the beginning if last is false. Raises KeyError if the key does not exist:
-
-"""
+#
+# popitem(last=True)        pop the newest (last=True, LIFO) or oldest (last=False, FIFO) pair
+# move_to_end(key, last=True)  move key to the end (or the front with last=False); KeyError if absent
+#
+# A plain dict also keeps insertion order (Python 3.7+). OrderedDict is still the LRU tool:
+# move_to_end and popitem(last=False) are O(1), and a plain dict has neither.
 
 #----------------------------
 # example 0
 #----------------------------
+from collections import OrderedDict
+d = OrderedDict()
+for k in "abcde":
+    d[k] = k.upper()
 
-# default dict
-In [34]: d = {}
-    ...: d['a'] = 'A'
-    ...: d['b'] = 'B'
-    ...: d['c'] = 'C'
-    ...: d['d'] = 'D'
-    ...: d['e'] = 'E'
-    ...:
-    ...: for k, v in d.items():
-    ...:     print (k, v)
-    ...:
-# NON ordering
-a A
-b B
-c C
-d D
-e E
-
-# OrderedDict
-In [35]: from collections import OrderedDict
-    ...: d = OrderedDict()
-    ...: d['a'] = 'A'
-    ...: d['b'] = 'B'
-    ...: d['c'] = 'C'
-    ...: d['d'] = 'D'
-    ...: d['e'] = 'E'
-    ...:
-    ...: for k, v in d.items():
-    ...:     print (k, v)
-    ...:
-
-# ordering !!!
-a A
-b B
-c C
-d D
-e E
-
+for k, v in d.items():
+    print(k, v)
+# -> a A
+#    b B
+#    c C
+#    d D
+#    e E
 
 #----------------------------
 # example 1
 #----------------------------
-In [28]:  d = OrderedDict.fromkeys('abcde')
+d = OrderedDict.fromkeys('abcde')
 
-In [29]: d
-Out[29]: OrderedDict([('a', None), ('b', None), ('c', None), ('d', None), ('e', None)])
+d  # -> OrderedDict({'a': None, 'b': None, 'c': None, 'd': None, 'e': None})
 
-In [30]: d.move_to_end('b')
+d.move_to_end('b')
 
-In [31]: "".join(d)
-Out[31]: 'acdeb'
+"".join(d)  # -> 'acdeb'
 
-In [32]:
+d.move_to_end('b', last=False)
 
-In [32]: d.move_to_end('b', last=False)
-
-In [33]: "".join(d)
-Out[33]: 'bacde'
+"".join(d)  # -> 'bacde'
 
 #----------------------------
 # example 2
@@ -239,7 +191,7 @@ class TimeBoundedLRU:
         result = self.func(*args)
         self.cache[args] = time(), result
         if len(self.cache) > self.maxsize:
-            self.cache.popitem(0)
+            self.cache.popitem(last=False)   # evict the least recently used
         return result
 ```
 

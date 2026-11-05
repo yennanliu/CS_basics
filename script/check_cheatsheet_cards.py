@@ -242,14 +242,36 @@ def git(*args):
     return subprocess.run(["git", *args], cwd=ROOT, capture_output=True, text=True)
 
 
-def changed_lines(base, path):
-    """0-based indexes of lines added in the working tree vs base, from a -U0 diff."""
-    out = git("diff", "-U0", base, "--", path).stdout
+def changed_lines(base, path, old_path=None):
+    """0-based indexes of lines added in the working tree vs base, from a -U0 diff.
+
+    `old_path` is the name the sheet had at base when it was renamed, so only the
+    lines the rename actually changed count as added.
+    """
+    if old_path:
+        # diff the sheet against the file it was renamed or copied from
+        out = git("diff", "-U0", f"{base}:{old_path}", path).stdout
+    else:
+        out = git("diff", "-U0", base, "--", path).stdout
     changed = set()
     for m in re.finditer(r"^@@ -\d+(?:,\d+)? \+(\d+)(?:,(\d+))? @@", out, re.M):
         start, count = int(m.group(1)), int(m.group(2) or "1")
         changed.update(range(start - 1, start - 1 + count))
     return changed
+
+
+def parse_renames(name_status):
+    """{new path: old path} from `git diff --name-status -C` output (R/C<score> old new).
+
+    A copy counts too: a rename that leaves a redirect stub at the old name is, to
+    git, the old file modified and a copy of it added.
+    """
+    renames = {}
+    for line in name_status.splitlines():
+        parts = line.split("\t")
+        if len(parts) == 3 and parts[0][:1] in ("R", "C"):
+            renames[parts[2]] = parts[1]
+    return renames
 
 
 DEFAULT_BASES = ("origin/master", "master")
@@ -297,6 +319,10 @@ def main(argv=None):
             return 0
         names = git("diff", "--name-only", "--diff-filter=AMR", base, "--", SHEET_DIR).stdout.split()
         untracked = git("ls-files", "--others", "--exclude-standard", "--", SHEET_DIR).stdout.split()
+        # A renamed sheet is not a new one: judge it against the name it had at base,
+        # or a filename fix would hold every old section to the new-sheet rules.
+        renames = parse_renames(git("diff", "--name-status", "-C", "--diff-filter=RC", base,
+                                    "--", SHEET_DIR).stdout)
         for rel in sorted(set(names) | set(untracked)):
             if not rel.endswith(".md") or rel in SKIP or "/" in rel[len(SHEET_DIR):]:
                 continue
@@ -305,8 +331,10 @@ def main(argv=None):
                 continue
             with open(full, encoding="utf-8") as f:
                 lines = f.read().split("\n")
-            new_sheet = rel in untracked or git("cat-file", "-e", f"{base}:{rel}").returncode != 0
-            changed = set(range(len(lines))) if new_sheet else changed_lines(base, rel)
+            old_rel = renames.get(rel)
+            new_sheet = old_rel is None and (
+                rel in untracked or git("cat-file", "-e", f"{base}:{rel}").returncode != 0)
+            changed = set(range(len(lines))) if new_sheet else changed_lines(base, rel, old_rel)
             problems += check_file(rel, lines, changed, new_sheet)
 
     for p in problems:

@@ -383,7 +383,7 @@
       "title": "Intervals & Sweep Line",
       "row": 5,
       "prereqs": ["greedy"],
-      "sheets": ["intervals", "scanning_line", "array_overlap_explaination"],
+      "sheets": ["intervals", "scanning_line", "array_overlap_explanation"],
       "blurb": "Sort by start or end, then sweep. Get the overlap predicate right once and reuse it.",
       "problems": [57, 56, 435, 252, 253, 1851, 452]
     },

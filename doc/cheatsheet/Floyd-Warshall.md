@@ -90,7 +90,7 @@ def floyd_warshall(n, edges):
 
     # Add edges
     for u, v, w in edges:
-        dist[u][v] = w
+        dist[u][v] = min(dist[u][v], w)   # keep the cheaper parallel edge
         # For undirected graph, add reverse edge:
         # dist[v][u] = w
 
@@ -102,6 +102,35 @@ def floyd_warshall(n, edges):
                     dist[i][j] = dist[i][k] + dist[k][j]
 
     return dist
+```
+
+```java
+// java
+// IDEA: dist[i][j] through intermediates 0..k; k must be the OUTER loop
+// time = O(V^3), space = O(V^2)
+static long[][] floydWarshall(int n, int[][] edges) {
+    final long INF = Long.MAX_VALUE / 2;   // halved so INF + INF cannot overflow
+    long[][] dist = new long[n][n];
+    for (int i = 0; i < n; i++) {
+        Arrays.fill(dist[i], INF);
+        dist[i][i] = 0;
+    }
+    for (int[] e : edges) {
+        dist[e[0]][e[1]] = Math.min(dist[e[0]][e[1]], e[2]);   // keep the cheaper parallel edge
+    }
+
+    for (int k = 0; k < n; k++) {
+        for (int i = 0; i < n; i++) {
+            if (dist[i][k] == INF) continue;          // no path i -> k: nothing to improve
+            for (int j = 0; j < n; j++) {
+                if (dist[k][j] != INF && dist[i][k] + dist[k][j] < dist[i][j]) {
+                    dist[i][j] = dist[i][k] + dist[k][j];
+                }
+            }
+        }
+    }
+    return dist;
+}
 ```
 
 ### Template 2: Floyd-Warshall with Path Reconstruction

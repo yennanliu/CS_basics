@@ -27,7 +27,6 @@ nine templates and the variants; this file keeps the problems that *apply* them.
 # 208. Implement Trie (Prefix Tree)
 # V0
 # IDEA : trie concept :  dict + tree
-# https://blog.csdn.net/fuxuemingzhu/article/details/79388432
 ### NOTE : we need implement Node class
 from collections import defaultdict
 class Node(object):
@@ -195,7 +194,7 @@ class WordDictionary(object):
 
     def search(self, word):
         """
-        NOTE !!!
+        Note:
 
         we simply call the helper func
         """
@@ -335,7 +334,7 @@ class WordDictionary2 {
                 if (ch == '.') {
                     for (char x : node.children.keySet()) {
                         TrieNode child = node.children.get(x);
-                        /** NOTE !!!
+                        /**
                          *  -> if ".", we HAVE to go through all nodes in next levels
                          *  -> and check if any of them is valid
                          *  -> so we need to RECURSIVELY call searchInNode method with "i+1" sub string
@@ -502,7 +501,7 @@ class Solution(object):
         visited = [[False for j in range(len(board[0]))] for i in range(len(board))]
 
         """
-        NOTE !!!! : we visit every element in board and trigger the dfs
+        we visit every element in board and trigger the dfs
         """
         for i in range(len(board)):
             for j in range(len(board[0])):
@@ -552,7 +551,7 @@ public boolean exist(char[][] board, String word) {
 }
 
 private boolean dfs(char[][] board, String word, int cur, int i, int j) {
-    /** NOTE !!! the success test comes FIRST -- otherwise a word ending on the last
+    /** the success test comes FIRST -- otherwise a word ending on the last
      *  cell is rejected by the bounds check on the following call. */
     if (cur == word.length()) return true;
     if (i < 0 || i >= board.length || j < 0 || j >= board[0].length) return false;
@@ -654,7 +653,7 @@ private void dfs(char[][] board, int i, int j, TrieNode node, List<String> res) 
     node = node.next[c - 'a'];
     if (node.word != null) {
         res.add(node.word);
-        /** NOTE !!! null it out rather than de-duplicating later -- the same word can be
+        /** null it out rather than de-duplicating later -- the same word can be
          *  reached by several paths, and this also prunes the branch that just matched. */
         node.word = null;
     }

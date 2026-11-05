@@ -106,6 +106,35 @@ def bellman_ford(n, edges, src):
     return dist
 ```
 
+```java
+// java
+// IDEA: relax every edge n - 1 times; a relaxation that still succeeds on pass n means a negative cycle
+// time = O(V * E), space = O(V)
+static long[] bellmanFord(int n, int[][] edges, int src) {
+    final long INF = Long.MAX_VALUE;
+    long[] dist = new long[n];
+    Arrays.fill(dist, INF);
+    dist[src] = 0;
+
+    for (int pass = 0; pass < n - 1; pass++) {
+        boolean updated = false;
+        for (int[] e : edges) {
+            int u = e[0], v = e[1], w = e[2];
+            if (dist[u] != INF && dist[u] + w < dist[v]) {   // skip unreached u: INF + w overflows
+                dist[v] = dist[u] + w;
+                updated = true;
+            }
+        }
+        if (!updated) break;            // nothing moved: every shortest path is final
+    }
+
+    for (int[] e : edges) {             // pass n: any further improvement is a negative cycle
+        if (dist[e[0]] != INF && dist[e[0]] + e[2] < dist[e[1]]) return null;
+    }
+    return dist;
+}
+```
+
 ### Template 2: Bellman-Ford with Negative Cycle Detection
 ```python
 def bellman_ford_with_cycle_detection(n, edges, src):

@@ -1076,18 +1076,18 @@ def k_smallest(nums, k):                # max-heap = negate on the way in and ou
 
 ### Decision Table — Which Heap Pattern?
 
-Read top to bottom; the first row that matches is the pattern.
+Read top to bottom; the first row that matches is the pattern. `T1`–`T8` link to the cards above; the rest route out to the sheet named in the row.
 
 | If the problem says… | Reach for | Heap shape | Classic LC |
 |---|---|---|---|
-| "kth largest" / "kth smallest" | Kth Element | size-k **min**-heap for kth largest; size-k **max**-heap for kth smallest | 215, 703, 378, 1492, 1985, 1337 |
-| "top k frequent" / "k closest" | Top K Frequency | `Counter` → size-k heap on the count / distance | 347, 692, 973, 658, 451, 1338, 1054 |
-| "merge k sorted …" / a sorted grid | Merge K Sources | min-heap of `(value, sourceIdx, elemIdx)` | 23, 373, 378, 632, 786, 1439 |
-| "median" / "balanced halves" of a stream | Two Heap System | max-heap of the small half + min-heap of the large half, sizes within 1 | 295, 480, 1825 |
-| variable-size window needing **max and min** | Window Extrema (2 heaps) | two heaps of `(value, index)`, stale iff `index < left` | 1438, 1696, 1499 |
-| "minimum rooms / groups" — count overlaps | Interval Scheduling | sort by start, min-heap of end times, heap size = answer | 253, 2406, 1094 |
-| "one item per unit of time" + a deadline | Interval Scheduling (day sweep) | sort by start, min-heap of **end** days, attend the earliest deadline | 1353, 1834, 1705 |
-| "no k identical in a row" / "k apart" | Greedy + Constraint, or PQ + Cooldown Queue | max-heap on remaining count (+ a k-slot delay line) | 1405, 767, 621, 358, 1054 |
+| "kth largest" / "kth smallest" | [T1](#template-1-size-k-min-heap-for-the-kth-largest--lc-215-) Kth Element | size-k **min**-heap for kth largest; size-k **max**-heap for kth smallest | 215, 703, 378, 1492, 1985, 1337 |
+| "top k frequent" / "k closest" | [T2](#template-2-count-then-a-size-k-heap-on-the-count--lc-347-) Top K Frequency | `Counter` → size-k heap on the count / distance | 347, 692, 973, 658, 451, 1338, 1054 |
+| "merge k sorted …" / a sorted grid | [T3](#template-3-k-way-merge--lc-23-) Merge K Sources | min-heap of `(value, sourceIdx, elemIdx)` | 23, 373, 378, 632, 786, 1439 |
+| "median" / "balanced halves" of a stream | [T4](#template-4-two-heaps-for-a-running-median--lc-295-) Two Heap System | max-heap of the small half + min-heap of the large half, sizes within 1 | 295, 480, 1825 |
+| variable-size window needing **max and min** | [T5](#template-5-two-heaps-with-index-expiry--lc-1438-) Window Extrema (2 heaps) | two heaps of `(value, index)`, stale iff `index < left` | 1438, 1696, 1499 |
+| "minimum rooms / groups" — count overlaps | [T6](#template-6-min-heap-of-end-times--lc-253-) Interval Scheduling | sort by start, min-heap of end times, heap size = answer | 253, 2406, 1094 |
+| "one item per unit of time" + a deadline | [T6](#template-6-min-heap-of-end-times--lc-253-) Interval Scheduling (day sweep) | sort by start, min-heap of **end** days, attend the earliest deadline | 1353, 1834, 1705 |
+| "no k identical in a row" / "k apart" | [T7](#template-7-greedy-build-with-a-run-length-cap--lc-1405) Greedy + Constraint, or [T8](#template-8-max-heap--cooldown-queue--lc-358) PQ + Cooldown Queue | max-heap on remaining count (+ a k-slot delay line) | 1405, 767, 621, 358, 1054 |
 | weighted shortest path on a graph | Dijkstra — [Dijkstra.md](./Dijkstra.md) | min-heap of `(distance, node)` | 743, 787, 1514, 1631 |
 | a pushed value later **changes or expires** | Lazy Deletion — [heap_advanced.md](./heap_advanced.md#1-lazy-deletion--heap--hashmap-of-truth-) | heap of candidates + hashmap of truth; clean the **top** at read time | 3092, 2349, 2034, 480, 1825, 239 |
 | "at every x, the max over all intervals covering x" | Sweep + Alive Heap — [heap_advanced.md](./heap_advanced.md#2-sweep-line--max-heap-of-alive-intervals-) | max-heap of `(value, end)`, evict when `end <= x` | 218, 1851 |

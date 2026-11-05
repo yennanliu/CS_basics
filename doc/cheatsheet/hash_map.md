@@ -48,13 +48,11 @@ Hash Map (Hash Table/Dictionary) is a fundamental data structure that provides e
             - query
                 - get index based on key
                 - find bucket location based on index
-                    - NOTE !!! use bit op (`int pos = (n - 1) & hash`), so this op can be O(1) time complexity. (find bucket address directly, NO need to loop over all items)
+                    - Java computes it with a bit op, `int pos = (n - 1) & hash` (the table size n is a power of 2), so finding the bucket is O(1) — no scan over all items
                 - loop over all elements under that key (if there is one element, then do once)
                 - return value
         <p align="center"><img src="../pic/hash_map1.png"></p>
         <p align="center"><img src="../pic/hash_map2.jpeg"></p>
-        - [ref 1](https://blog.csdn.net/junqing_wu/article/details/104606619)
-        - [ref 2](https://blog.csdn.net/john1337/article/details/104727895)
 
 ### When to Use / When Not to Use
 
@@ -72,20 +70,16 @@ Hash Map (Hash Table/Dictionary) is a fundamental data structure that provides e
 ### Basic Operations
 
 - `get` : get value from dict with default value if key not existed
-```text
-In [10]: d = {'a': 1, 'b': 2}
-    ...: d['a']
-Out[10]: 1
+```python
+d = {'a': 1, 'b': 2}
+d['a']  # -> 1
 
-In [11]: d.get('a')
-Out[11]: 1
+d.get('a')  # -> 1
 
-In [12]: d.get('c', 0)
-Out[12]: 0
+d.get('c', 0)  # -> 0
 
-In [13]: d.get('z')
+d.get('z')
 
-In [14]:
 ```
 
 - `setdefault()`
@@ -128,8 +122,7 @@ print (car)
 # https://stackoverflow.com/questions/613183/how-do-i-sort-a-dictionary-by-value
 
 x = {1: 2, 3: 4, 4: 3, 2: 1, 0: 0}
-In [11]: x.items()
-Out[11]: dict_items([(1, 2), (3, 4), (4, 3), (2, 1), (0, 0)])
+x.items()  # -> dict_items([(1, 2), (3, 4), (4, 3), (2, 1), (0, 0)])
 
 #----------------------------------
 # Sort hashMap by key/value !!!
@@ -164,15 +157,13 @@ class Solution(object):
         return res
 ```
 
-```text
+```python
 # dict values -> array
-In [6]:
-   ...: mydict = {'a':['a1','a2','a3'], 'b':['b1','b2','b3']}
-   ...:
-   ...: res = [mydict[x] for x in mydict]
-   ...:
-   ...: print (res)
-[['a1', 'a2', 'a3'], ['b1', 'b2', 'b3']]
+mydict = {'a':['a1','a2','a3'], 'b':['b1','b2','b3']}
+
+res = [mydict[x] for x in mydict]
+
+print (res)  # -> [['a1', 'a2', 'a3'], ['b1', 'b2', 'b3']]
 ```
 
 ### References

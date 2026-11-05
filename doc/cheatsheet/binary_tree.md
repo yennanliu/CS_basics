@@ -1148,7 +1148,7 @@ private int[] helper(TreeNode node) {
     int[] r = helper(node.right);
 
     int inc = 1, dec = 1;   // the node alone is already a run of length 1
-    /** NOTE !!! null-check the child BEFORE reading child.val */
+    /** null-check the child BEFORE reading child.val */
     if (node.left != null) {
         if (node.left.val == node.val + 1) {
             inc = Math.max(inc, l[0] + 1);

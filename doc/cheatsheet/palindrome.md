@@ -1,4 +1,4 @@
-# Palindrome (回文)
+# Palindrome
 
 > **Scope** — The palindrome family — expand-from-center, two-pointer verification, palindromic DP, and Manacher — and how to tell which a problem needs.
 > **See also**: [2_pointers.md](./2_pointers.md) — the underlying convergence idea; [dp.md](./dp.md) — the interval-DP view; [string.md](./string.md) — general string handling; [advanced_string_algorithms.md](./advanced_string_algorithms.md) — Manacher in its wider context.

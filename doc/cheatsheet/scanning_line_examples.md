@@ -187,7 +187,7 @@ public int brightestPosition(int[][] lights) {
     }
     events.sort((a, b) -> Integer.compare(a[0], b[0]));
     int brightness = 0, maxBrightness = 0, ans = 0;
-    /** NOTE !!! apply EVERY delta at a coordinate before testing the max.
+    /** apply EVERY delta at a coordinate before testing the max.
      *  The comparator leaves same-coordinate events unordered, so a +1 that happens to sort
      *  ahead of a -1 at the same x produces a transient brightness no position actually has —
      *  and that phantom peak is what gets returned.
@@ -347,7 +347,7 @@ import heapq
 class Solution(object):
     def maxEvents(self, events):
         events.sort()          # by start day
-        pq = []                # NOTE !!! min heap of END days
+        pq = []                # min heap of END days
         i = day = ans = 0
         n = len(events)
 
@@ -531,7 +531,7 @@ ans = [[1,2],[5,5],[8,10]]
 # time = O((m+n) log(m+n)), space = O(m+n)
 class Solution(object):
     def intervalIntersection(self, firstList, secondList):
-        # NOTE !!! START = -1 so that a plain sort() puts START BEFORE END at ties
+        # START = -1 so that a plain sort() puts START BEFORE END at ties
         #          (closed intervals -> touching intervals DO intersect, e.g. [5,5])
         START, END = -1, 1
 

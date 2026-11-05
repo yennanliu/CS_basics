@@ -210,32 +210,6 @@
 
 <!--CODE-->
 
-<!-- aac6cc5183b6 -->
-### `TreeMap` 基礎
-
-- java.util.TreeMap.floorKey()
-- 會回傳 key 集合中的最大值；若為空則回傳 null
-- 還有一種 Map 會在內部對 key 進行排序，也就是 SortedMap。
-- SortedMap 保證走訪時依 key 的順序進行。預設按字母排序。
-- 使用 TreeMap 時，輸入的 key 必須實作 Comparable 介面。
-- https://www.yxjc123.com/post/v0i7dl
-- https://liaoxuefeng.com/books/java/collection/tree-map/index.html
-
-<!-- c5f5b05ceabf -->
-### 用 `TreeMap` 把 HashMap 依 key 排序
-
-<!--CODE-->
-
-<!--CODE-->
-
-<!--CODE-->
-
-- `TreeMap` 的 `floorEntry` 方法
-- https://blog.csdn.net/a1510841693/article/details/124323418
-- floorEntry()：回傳「小於或等於指定 key 的最大 key」所對應的 key-value entry；若沒有這種 key 就回傳 null。
-
-<!--CODE-->
-
 <!-- 6d26a48c06f9 -->
 ### `TreeMap` 的 key 順序 — 遞增 vs 遞減 ⭐
 
@@ -392,3 +366,27 @@
 - 或者，你也可以自己定義 pair 結構：
 
 <!--CODE-->
+
+<!-- aae8daeb593f -->
+### `TreeMap` 基礎
+
+- java.util.TreeMap.floorKey()
+- 會回傳 key 集合中的最大值；若為空則回傳 null
+- `TreeMap` 實作了 `SortedMap`：它在內部讓 key 保持有序，所以走訪時依 key 的順序進行（預設為自然順序，例如字串就是字母順序）
+- 它的 key 必須實作 `Comparable`，否則建構 map 時就要給一個 `Comparator`
+- https://liaoxuefeng.com/books/java/collection/tree-map/index.html
+
+<!-- df1fe5c91c5f -->
+### 用 `TreeMap` 把 HashMap 依 key 排序
+
+<!--CODE-->
+
+<!--CODE-->
+
+<!--CODE-->
+
+- `TreeMap` 的 `floorEntry` 方法
+- floorEntry()：回傳「小於或等於指定 key 的最大 key」所對應的 key-value entry；若沒有這種 key 就回傳 null。
+
+<!--CODE-->
+

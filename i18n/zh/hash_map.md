@@ -40,29 +40,6 @@
 
 - [NC - HashMap under the hood](https://www.linkedin.com/posts/neetcodeio_how-do-hashmaps-work-under-the-hood-activity-7298370869301526530-DsIi?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAAA6fzw4BpOSBO1YeSrJwPZ-dNBhjC3jXTDE)
 
-<!-- a0cffe7ae6d5 -->
-### 為什麼查找是 O(1)
-
-- FAQ
-    - 為什麼 hashmap 的搜尋時間複雜度 ~= O(1)？怎麼解釋？
-        - 一句話：O(1) 是平均與最好情況。最壞情況可能是 O(N)（雜湊碰撞）
-        - 雜湊函式很關鍵 -> 決定資料怎麼存、以及碰撞會不會發生
-        - 操作
-            - 插入
-                - 拿到 key，用雜湊函式算出 hash 值
-                - 依 hash 值在記憶體中找到對應 bucket
-                - 把 key 和 value 存進該 bucket
-            - 查詢
-                - 依 key 算出 index
-                - 依 index 找到 bucket 位置
-                    - 注意！！！這裡用位元運算（`int pos = (n - 1) & hash`），所以這步是 O(1)（直接算出 bucket 位址，不必掃過所有元素）
-                - 走訪該 key 底下的所有元素（只有一個的話就一次）
-                - 回傳 value
-        <p align="center"><img src="../pic/hash_map1.png"></p>
-        <p align="center"><img src="../pic/hash_map2.jpeg"></p>
-        - [ref 1](https://blog.csdn.net/junqing_wu/article/details/104606619)
-        - [ref 2](https://blog.csdn.net/john1337/article/details/104727895)
-
 <!-- 816df24e5e9d -->
 ### 什麼時候該用／不該用
 
@@ -162,7 +139,7 @@
 - **時間 O(n)**：`for` 迴圈每個索引只走一次，`need in seen`／`seen[x] = i` 平均都是 O(1) 的雜湊操作。
 - **空間 O(n)**：當答案是最後兩個元素時，`seen` 會裝下每一個值。
 
-**手動推演**
+**試跑**
 
 <!--CODE-->
 
@@ -171,7 +148,7 @@
 - 重複值：`[3,3]`、target 6 —— 覆寫 `seen[3]` 之所以無害，只是因為查詢先跑；答案是 `[0, 1]`。
 - 回傳 `[i, seen[need]]` 會把較晚的索引放前面；較早的索引是 `seen[need]`。
 
-**不是這個的情況** —— 輸入已經**排序**（LC 167）→ 雙指標，O(1) 空間（[2_pointers.md](./2_pointers.md)）；題目是在相異值上**數**配對（LC 532）→ 每個相異鍵只探一次，免得一組配對從兩端各數一次。
+**不適用時** —— 輸入已經**排序**（LC 167）→ 雙指標，O(1) 空間（[2_pointers.md](./2_pointers.md)）；題目是在相異值上**數**配對（LC 532）→ 每個相異鍵只探一次，免得一組配對從兩端各數一次。
 
 **練習** —— LC 1 ⭐ · LC 1010 *（鍵 = 除以 60 的餘數，改成累加次數而不是回傳）* · LC 532 *（相異值，只探 `x + k`；k = 0 需要次數）* · LC 15 ⭐ *（固定一個值，剩下的做 two-sum —— [n_sum.md](./n_sum.md)）*
 
@@ -195,7 +172,7 @@
 - Java 的 `count[c - 'a']` 遇到大寫或 Unicode 輸入（`"Ä"`）就會丟例外。追問「如果是 Unicode 呢？」要的是 `HashMap<Character, Integer>`。
 - `Counter` 相減會丟掉非正的次數：`Counter("a") - Counter("ab")` 是空的，所以「差是空的」會說 `"a"` 和 `"ab"` 相符。改用 `Counter(s) == Counter(t)`。
 
-**不是這個的情況** —— 只在乎存不存在、不在乎次數（LC 217）→ 用集合（[set.md](./set.md)）；在乎的是值出現在*哪裡*而不是幾次 → 見下面的索引跨度變形。
+**不適用時** —— 只在乎存不存在、不在乎次數（LC 217）→ 用集合（[set.md](./set.md)）；在乎的是值出現在*哪裡*而不是幾次 → 見下面的索引跨度變形。
 
 **練習** —— LC 242 ⭐ · LC 383 *（數 magazine，花在 note 上）* · LC 387 *（依字串順序再掃一次，第一個次數為 1 的）* · LC 451 *（依次數排序鍵）* · LC 347 ⭐ *（依次數取前 k —— [堆積或桶排序](./heap.md#template-2-count-then-a-size-k-heap-on-the-count--lc-347-)）*
 
@@ -249,7 +226,7 @@
 - 在 Java 拿 `char[]` 當鍵：陣列是依身分雜湊的，所以 `"eat"` 和 `"tea"` 會落到不同的 bucket。要建一個 `String`。
 - 計數鍵接起來時沒有分隔符：計數 `[1, 11]` 和 `[11, 1]` 印出來都是 `"111"`。用 `#` 接起來（[分隔符陷阱](./hashing.md#template-6-canonical-composite-key-lc-36)）。
 
-**不是這個的情況** —— 這個關係不是等價關係，例如「只差一個字母」（LC 127）：它不具遞移性，所以沒有正規鍵 → 圖／BFS。
+**不適用時** —— 這個關係不是等價關係，例如「只差一個字母」（LC 127）：它不具遞移性，所以沒有正規鍵 → 圖／BFS。
 
 **練習** —— LC 49 ⭐ · LC 249 *（鍵 = 字母間差距取 26 的餘數）* · LC 609 *（鍵 = 檔案內容）* · LC 149 *（鍵 = 約分後的斜率，見下方）* · LC 4066 *（鍵 = 無序配對，見下方）*
 
@@ -329,7 +306,7 @@
 - **時間 O(n)**：對 `nums` 掃一趟；每一步是一次 `get` 加一次 map 更新。
 - **空間 O(n)**：`count_of_prefix` 最多裝 n + 1 個相異的前綴和。
 
-**手動推演**
+**試跑**
 
 <!--CODE-->
 
@@ -339,7 +316,7 @@
 - 用 `{prefix: index}` 取代次數，會丟掉重複出現的前綴：`[1,-1,1,-1]`、k = 0 有 4 個子陣列，但每個前綴只記一個索引，每個前綴最多只找得到一個起點。
 - 取餘數當鍵（LC 974）又有負值：Java 的 `-7 % 5 == -2`；要用 `((p % k) + k) % k` 正規化。Python 的 `%` 本來就不會是負的。
 
-**不是這個的情況** —— 每個值都是正的，且問的是和 ≤ 或 ≥ k 的最長／最短視窗 → 滑動視窗，O(1) 空間（[sliding_window.md](./sliding_window.md)）；和為 k 的**最長**子陣列 → 每個前綴只記**第一次出現的索引**，以 `{0: -1}` 當種子（LC 325、LC 525）。
+**不適用時** —— 每個值都是正的，且問的是和 ≤ 或 ≥ k 的最長／最短視窗 → 滑動視窗，O(1) 空間（[sliding_window.md](./sliding_window.md)）；和為 k 的**最長**子陣列 → 每個前綴只記**第一次出現的索引**，以 `{0: -1}` 當種子（LC 325、LC 525）。
 
 **練習** —— LC 560 · LC 930 *（值只有 0／1，程式碼一樣）* · LC 974 *（鍵 = 前綴取 k 的餘數）* · LC 525 *（0 → −1，每個前綴記第一次的索引）* · LC 325 *（最長：記第一次的索引）* · LC 3026 *（見下方：以起點的值為鍵，存最小前綴）*
 
@@ -359,7 +336,7 @@
 
 > **關鍵** —— 這就是 Kadane 的「減掉目前最小的前綴」（LC 53），只是按起點的值拆成一個值一個桶。計數表回答「有幾個」；最小前綴表回答「最多多少」。
 
-**化約為**：[模板 4](#template-4-prefix-sum-count-map--lc-560-) —— 一樣是對前綴和掃一趟，只是鍵換成起點的值，值換成最小前綴。
+**歸約到**：[模板 4](#template-4-prefix-sum-count-map--lc-560-) —— 一樣是對前綴和掃一趟，只是鍵換成起點的值，值換成最小前綴。
 
 **模式**：條件落在子陣列的**兩端**，而不是它的和上，問的又是**最大和**。所以鍵換了，值也換了：
 
@@ -412,7 +389,7 @@
 - 從 `right >= m` 才開始比、而不是 `right >= m - 1`，會跳過第一個完整的視窗：`s = "ab", p = "ab"` 回傳 `[]`。
 - 固定視窗不需要「matched」計數器：比較兩個 map 就是全部的檢查。LC 567 在第一次相等時就回傳 `True`。
 
-**不是這個的情況** —— 視窗長度會變（「最多 k 種字元的最長子字串」，LC 3、LC 76）→ [sliding_window.md](./sliding_window.md) 的先擴張再收縮；計數表一樣，視窗規則不一樣。
+**不適用時** —— 視窗長度會變（「最多 k 種字元的最長子字串」，LC 3、LC 76）→ [sliding_window.md](./sliding_window.md) 的先擴張再收縮；計數表一樣，視窗規則不一樣。
 
 **練習** —— LC 438 · LC 567 ⭐ *（第一次相符就回傳）* · LC 30 *（「字元」換成整個單字）* · LC 76 ⭐ *（可變視窗加上 `matched` 計數器，在 sliding_window）*
 
@@ -488,7 +465,7 @@
 - 用 `val` 當鍵在 LC 133 行得通（值都不同），但在值會重複的 LC 138 就壞了。要用節點本身當鍵。
 - `cloneGraph(None)` 必須回傳 `None`，而不是一個值為 0 的節點 —— 空圖本身就是 LC 133 的範例之一。
 
-**不是這個的情況** —— 只問連不連得到或數量（LC 200）→ 一個 visited 集合，不需要 clone 表（[graph.md](./graph.md)）。
+**不適用時** —— 只問連不連得到或數量（LC 200）→ 一個 visited 集合，不需要 clone 表（[graph.md](./graph.md)）。
 
 **練習** —— LC 133 ⭐ · LC 138 *（random 指標：同一個 map，兩趟或交錯著做）* · LC 1490 *（N 元樹，沒有環）* · LC 652 *（map 存的是子樹特徵 → 次數）*
 
@@ -509,7 +486,7 @@
 - **建構 O(B)、每次挑選 O(1)**：建構子的迴圈每個黑名單值走一次，`last` 只會在 B 個尾端位置上往下移；`pick` 是一次抽籤加一次 map 查詢。
 - **空間 O(B)**：`black_set` 和 `mapping` 各最多 B 個項目。
 
-**手動推演**
+**試跑**
 
 <!--CODE-->
 
@@ -546,7 +523,7 @@
 - 大小為 k 的 min-heap（O(n log k) 的追問）需要**反過來**的同分順序，讓字母序較大的單字留在根部、最先被淘汰；沿用 `(-count, word)` 的順序會淘汰錯的單字。
 - Java 比較器寫成 `count.get(b) - count.get(a)` 就是減法比較器；要用 `Integer.compare`。
 
-**不是這個的情況** —— 沒有同分規則、只要出現最多的 k 個值（LC 347）→ 依頻率做桶排序，O(n)（[heap § Template 2](./heap.md#template-2-count-then-a-size-k-heap-on-the-count--lc-347-)）；要的是第 k 大的**值**而不是次數 → [heap.md](./heap.md)。
+**不適用時** —— 沒有同分規則、只要出現最多的 k 個值（LC 347）→ 依頻率做桶排序，O(n)（[heap § Template 2](./heap.md#template-2-count-then-a-size-k-heap-on-the-count--lc-347-)）；要的是第 k 大的**值**而不是次數 → [heap.md](./heap.md)。
 
 **練習** —— LC 692 · LC 347 ⭐ *（沒有同分規則：堆積，或 O(n) 的桶）* · LC 451 *（每個鍵，依次數排序）* · LC 1636 *（次數遞增，同分時值遞減）*
 
@@ -676,3 +653,25 @@
 - [ ] 能把雜湊碰撞的解法講清楚
 - [ ] Python dict 和 Java HashMap 的 API 都要用得順
 - [ ] 知道什麼時候**不該**用雜湊表（已排序的資料、範圍查詢等等）
+
+<!-- 96db9ba41a2b -->
+### 為什麼查找是 O(1)
+
+- FAQ
+    - 為什麼 hashmap 的搜尋時間複雜度 ~= O(1)？怎麼解釋？
+        - 一句話：O(1) 是平均與最好情況。最壞情況可能是 O(N)（雜湊碰撞）
+        - 雜湊函式很關鍵 -> 決定資料怎麼存、以及碰撞會不會發生
+        - 操作
+            - 插入
+                - 拿到 key，用雜湊函式算出 hash 值
+                - 依 hash 值在記憶體中找到對應 bucket
+                - 把 key 和 value 存進該 bucket
+            - 查詢
+                - 依 key 算出 index
+                - 依 index 找到 bucket 位置
+                    - Java 用位元運算 `int pos = (n - 1) & hash` 算出它（表的大小 n 是 2 的冪），所以找 bucket 是 O(1) —— 不必掃過所有元素
+                - 走訪該 key 底下的所有元素（只有一個的話就一次）
+                - 回傳 value
+        <p align="center"><img src="../pic/hash_map1.png"></p>
+        <p align="center"><img src="../pic/hash_map2.jpeg"></p>
+

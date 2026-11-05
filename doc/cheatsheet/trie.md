@@ -20,7 +20,6 @@
 > **L = length of the key (word)** — complexities are independent of the number of stored keys. Min/Max = lexicographically smallest / largest key.
 
 ## 0) Concept 
-- https://blog.csdn.net/fuxuemingzhu/article/details/79388432
 - tree + dict
     - `put Node into dict` (e.g. defaultdict(Node))
 
@@ -292,7 +291,7 @@ class MyNode(object):
         self.child = {}
 
         """
-        NOTE !!!
+        Note:
 
         we have a special attr:
 
@@ -301,7 +300,7 @@ class MyNode(object):
                 - record the top 3 product for the cur node
                   enrich this attr when build the trie
         """
-        # 每個節點直接儲存經過此處、字典序前 3 小的產品名稱
+        # each node stores the 3 lexicographically smallest products that pass through it
         self.suggestions = []
 
 
@@ -331,7 +330,7 @@ class Solution(object):
                 node = node.child[char]
                 res.append(node.suggestions)
             else:
-                # NOTE !!! once a prefix has no branch, every longer prefix is [] too
+                # once a prefix has no branch, every longer prefix is [] too
                 found = False
                 res.append([])
         return res
@@ -345,7 +344,7 @@ class Solution(object):
 class Solution {
     class MyNode {
         Map<Character, MyNode> child = new HashMap<>();
-        // NOTE !!! the custom attr: the 3 smallest products whose path passes this node
+        // the custom attr: the 3 smallest products whose path passes this node
         List<String> suggestions = new ArrayList<>();
     }
 
@@ -1221,7 +1220,7 @@ class StreamChecker:
 > The full implementation is [Template 6](#template-6-trie-with-delete-operation) above; this is the invariant it maintains, stated on its own.
 
 ```python
-# NOTE !!! two different booleans are in play, and conflating them is the classic bug:
+# two different booleans are in play, and conflating them is the classic bug:
 #   - `deleted`  -- was the WORD removed?          (what the caller asked)
 #   - `prune`    -- may the parent drop this node? (an internal signal)
 # Returning the prune signal as the result reports False for "delete('a')" when "ab"
@@ -1254,7 +1253,7 @@ For problems requiring both prefix and suffix matching, wrap each word as `suffi
 
 ```python
 # For word "apple", insert: "apple#apple", "pple#apple", ..., "e#apple", and "#apple"
-# NOTE !!! range(len(word) + 1) -- the last iteration inserts the EMPTY suffix, which is
+# range(len(word) + 1) -- the last iteration inserts the EMPTY suffix, which is
 #          what makes a query with suffix "" matchable. range(len(word)) silently drops it.
 def buildIndex(words):
     trie = {}

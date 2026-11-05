@@ -136,14 +136,14 @@ class Solution(object):
 // time = O(n), space = O(1)
 class Solution {
     public int findDuplicate(int[] nums) {
-        /** NOTE !!! use do-while, since slow == fast at the very beginning */
+        /** use do-while, since slow == fast at the very beginning */
         int slow = nums[0], fast = nums[0];
         do {
             slow = nums[slow];          // 1 step
             fast = nums[nums[fast]];    // 2 steps
         } while (slow != fast);
 
-        /** NOTE !!! phase 2 : re-init slow to start, both move 1 step */
+        /** phase 2 : re-init slow to start, both move 1 step */
         slow = nums[0];
         while (slow != fast) {
             slow = nums[slow];
@@ -217,12 +217,12 @@ class Solution {
     public ListNode rotateRight(ListNode head, int k) {
         if (head == null || head.next == null || k == 0) return head;
 
-        /** NOTE !!! get length AND the tail in one pass */
+        /** get length AND the tail in one pass */
         int n = 1;
         ListNode tail = head;
         while (tail.next != null) { tail = tail.next; n++; }
 
-        /** NOTE !!! k can be > n */
+        /** k can be > n */
         k %= n;
         if (k == 0) return head;
 
@@ -294,9 +294,9 @@ class Solution {
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
         if (headA == null || headB == null) return null;
         ListNode p1 = headA, p2 = headB;
-        /** NOTE !!! compare NODE identity (not val) */
+        /** compare NODE identity (not val) */
         while (p1 != p2) {
-            // NOTE !!! switch head when hitting null (NOT when hitting the last node)
+            // switch head when hitting null (NOT when hitting the last node)
             p1 = (p1 == null) ? headB : p1.next;
             p2 = (p2 == null) ? headA : p2.next;
         }
@@ -349,7 +349,7 @@ class Solution {
             slow = nxt;
         }
 
-        /** NOTE !!! loop on the REVERSED half (it is the shorter/equal one)
+        /** loop on the REVERSED half (it is the shorter/equal one)
          *  -> odd length simply compares the mid node with itself */
         ListNode l = head, r = prev;
         while (r != null) {
@@ -409,7 +409,7 @@ class Solution {
             // fast++
             fast = fast.next;
         }
-        // 断开与后面重复元素的连接
+        // cut the link to the duplicates that follow
         slow.next = null;
         return head;
     }
@@ -433,17 +433,17 @@ class Solution {
 // time = O(n), space = O(1)
 class Solution {
     public ListNode deleteDuplicates(ListNode head) {
-        /** NOTE !!! dummy, since head may be deleted */
+        /** dummy, since head may be deleted */
         ListNode dummy = new ListNode(0, head);
         ListNode prev = dummy, cur = head;
         while (cur != null) {
             if (cur.next != null && cur.val == cur.next.val) {
                 int dup = cur.val;
-                // NOTE !!! skip ALL nodes with the duplicated val
+                // skip ALL nodes with the duplicated val
                 while (cur != null && cur.val == dup) {
                     cur = cur.next;
                 }
-                /** NOTE !!! do NOT move prev here, just re-link */
+                /** do NOT move prev here, just re-link */
                 prev.next = cur;
             } else {
                 prev = cur;

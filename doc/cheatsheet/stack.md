@@ -34,9 +34,6 @@
 - Ref
     - [fuck-Algorithm - single stack](https://github.com/labuladong/fucking-Algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E5%8D%95%E8%B0%83%E6%A0%88.md)
     - [fuck-Algorithm - implement array via stack / stack via array ](https://github.com/labuladong/fucking-Algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E9%98%9F%E5%88%97%E5%AE%9E%E7%8E%B0%E6%A0%88%E6%A0%88%E5%AE%9E%E7%8E%B0%E9%98%9F%E5%88%97.md)
-    - [Java Stack](https://blog.csdn.net/oChangWen/article/details/72859556) — low level: array
-- Video
-    - [Stack Fundamentals](https://www.bilibili.com/list/525438321?sort_field=pubtime&spm_id_from=333.999.0.0&oid=779764003&bvid=BV1my4y1Z7jj)
 
 ## Recognition
 
@@ -1208,13 +1205,13 @@ Per-*pattern* cost. The per-*operation* cost of the structure itself is the
 
 ### Common Traps
 
-- **Monotonic Stack**: Critical pattern for problems involving "next greater/smaller" — check if the pattern requires increasing or decreasing order
-- **Stack with Pair**: For adjacent duplicate removal or nested counting problems, store `[element, count]` pairs
-- **Greedy Removal**: Some problems benefit from greedily removing elements while maintaining an invariant
-- **Empty-stack check first**: every `pop()` / `peek()` driven by a closer needs `!stack.isEmpty()` in front of it.
-- **`Character` vs `char` in Java**: `!=` on two boxed `Character`s compares references — unbox before comparing.
-- **Integer division truncates toward zero** in these problems; Python's `//` *floors*, so use `int(a / b)`.
-- **Push children in reverse** when a stack must yield left-to-right order.
+- **Popping on `<=` when the problem wants strictly greater** (LC 496 / 739): with `[2, 2, 3]`, the second 2 pops the first and hands it the answer 2 instead of 3. Pop only while the top is strictly smaller.
+- **A run count kept outside the stack** (LC 1209): with `s = "deeedbbcccbdaa", k = 3`, deleting `eee` makes the two `d`s adjacent; the count has to live on the stack as `[char, count]` so it survives the pop.
+- **Leftover `k` after a greedy-removal scan** (LC 402): `num = "12345", k = 2` never pops, so cut the last `k` digits after the loop; `num = "10200", k = 1` leaves a leading zero to strip (`"200"`).
+- **Empty-stack check first**: `s = "]"` (LC 20) pops an empty stack; every `pop()` / `peek()` driven by a closer needs `!stack.isEmpty()` in front of it.
+- **`Character` vs `char` in Java**: `!=` on two boxed `Character`s compares references. It happens to work for ASCII (values 0–127 are cached) and breaks on the first non-ASCII character — unbox, or use `.equals`.
+- **Integer division truncates toward zero** (LC 150): `-3 / 2` must be `-1`, but Python's `//` floors to `-2`; use `int(a / b)`.
+- **Push children in reverse** when a stack must yield left-to-right order: pushing left before right turns the preorder of `[1, 2, 3]` into `1, 3, 2`.
 
 ### Where the Rest Lives
 

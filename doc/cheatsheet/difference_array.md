@@ -357,7 +357,7 @@ class Solution {
         List<Integer> res = new ArrayList<>();
         int best = 0;
         for (int[] p : positions) {
-            // NOTE !!! square covers [l, l+size) -> closed leaf range [a, b]
+            // square covers [l, l+size) -> closed leaf range [a, b]
             int a = idx.get(p[0]);
             int b = idx.get(p[0] + p[1]) - 1;
             int cur = query(1, 0, m - 1, a, b);        // tallest thing already under it
@@ -488,24 +488,24 @@ class Solution(object):
 // java
 // https://labuladong.online/algo/data-structure/diff-array/
 
-// 差分数组工具类
+// difference-array helper class
 // V1
 class Difference {
-    // 差分数组
+    // the difference array
     private int[] diff;
     
-    // 输入一个初始数组，区间操作将在这个数组上进行
+    // takes the initial array the range updates apply to
     public Difference(int[] nums) {
         assert nums.length > 0;
         diff = new int[nums.length];
-        // 根据初始数组构造差分数组
+        // build the difference array from the initial array
         diff[0] = nums[0];
         for (int i = 1; i < nums.length; i++) {
             diff[i] = nums[i] - nums[i - 1];
         }
     }
 
-    // 给闭区间 [i, j] 增加 val（可以是负数）
+    // add val (may be negative) to the closed range [i, j]
     public void increment(int i, int j, int val) {
         diff[i] += val;
         if (j + 1 < diff.length) {
@@ -513,10 +513,10 @@ class Difference {
         }
     }
 
-    // 返回结果数组
+    // return the resulting array
     public int[] result() {
         int[] res = new int[diff.length];
-        // 根据差分数组构造结果数组
+        // rebuild the array from the difference array (prefix sum)
         res[0] = diff[0];
         for (int i = 1; i < diff.length; i++) {
             res[i] = res[i - 1] + diff[i];
@@ -536,7 +536,7 @@ public int[] getDifferenceArray(int[][] input, int n) {
 
 /** LC 1109. Corporate Flight Bookings input : [start, end, seats]
  *
- *  NOTE !!!
+ *  Note:
  *
  *   in java, index start from 0;
  *   but in LC 1109, index start from 1
@@ -664,11 +664,11 @@ for (int[] x : updates) {
 
   // subtract (remove the "adding affect" on "NEXT" element)
   /**
-   * NOTE !!!
+   * Note:
    *
    * <p>we remove the "adding affect" on NEXT element (e.g. end + 1)
    */
-  if (end + 1 < length) { // NOTE !!! use `end + 1`
+  if (end + 1 < length) { // use `end + 1`
     tmp[end + 1] -= amount;
   }
 }
@@ -684,9 +684,9 @@ return Arrays.copyOfRange(tmp, 0, length); // return the sub array between 0, le
 // V1
 class Solution {
     public int[] getModifiedArray(int length, int[][] updates) {
-        // nums 初始化为全 0
+        // nums starts as all zeros
         int[] nums = new int[length];
-        // 构造差分解法
+        // difference-array solution
         Difference df = new Difference(nums);
         
         for (int[] update : updates) {
@@ -728,20 +728,20 @@ def corpFlightBookings(bookings, n):
 // V1
 class Solution {
     public int[] corpFlightBookings(int[][] bookings, int n) {
-        // nums 初始化为全 0
+        // nums starts as all zeros
         int[] nums = new int[n];
-        // 构造差分解法
+        // difference-array solution
         Difference df = new Difference(nums);
 
         for (int[] booking : bookings) {
-            // 注意转成数组索引要减一哦
+            // bookings are 1-indexed: subtract 1 for the array index
             int i = booking[0] - 1;
             int j = booking[1] - 1;
             int val = booking[2];
-            // 对区间 nums[i..j] 增加 val
+            // add val to nums[i..j]
             df.increment(i, j, val);
         }
-        // 返回最终的结果数组
+        // return the final array
         return df.result();
     }
 }
@@ -756,30 +756,30 @@ class Solution {
 
 class Solution {
     public boolean carPooling(int[][] trips, int capacity) {
-        // 最多有 1001 个车站
+        // at most 1001 stops
         int[] nums = new int[1001];
 
-        // 构造差分解法
+        // difference-array solution
         Difference df = new Difference(nums);
 
         for (int[] trip : trips) {
-            // 乘客数量
+            // number of passengers
             int val = trip[0];
 
-            // 第 trip[1] 站乘客上车
+            // they board at stop trip[1]
             int i = trip[1];
 
-            // 第 trip[2] 站乘客已经下车，
-            // 即乘客在车上的区间是 [trip[1], trip[2] - 1]
+            // and have left by stop trip[2],
+            // so they are on board over [trip[1], trip[2] - 1]
             int j = trip[2] - 1;
 
-            // 进行区间操作
+            // apply the range update
             df.increment(i, j, val);
         }
 
         int[] res = df.result();
 
-        // 客车自始至终都不应该超载
+        // the car must never exceed capacity at any stop
         for (int i = 0; i < res.length; i++) {
             if (capacity < res[i]) {
                 return false;

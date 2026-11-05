@@ -1,9 +1,3 @@
-<!-- 758a7fb9b4e1 -->
-# Palindrome (回文)
-
-> **範圍** — 回文題型家族：中心擴散、雙指標驗證、回文 DP、Manacher，以及怎麼判斷一題該用哪一種。
-> **另見**：[2_pointers.md](./2_pointers.md) — 底層的收斂概念；[dp.md](./dp.md) — 區間 DP 的觀點；[string.md](./string.md) — 一般字串處理；[advanced_string_algorithms.md](./advanced_string_algorithms.md) — Manacher 放在更大的脈絡裡看。
-
 <!-- fbe3aa9a7c6d -->
 ## LeetCode 題目清單
 
@@ -579,3 +573,10 @@
 - 第二個分支上的 `j < len(w)` 條件，就是用來擋掉像 `["bat","tab"]` 產生兩次 `[0,1]` 這種重複。
 - `words` 裡的空字串會跟每個回文單字配成一對 — 靠 `j` 的範圍端點就處理掉了，不要特判把它拿掉。
 - 一定要檢查 `k != i`；否則回文單字會跟自己配成一對。
+
+<!-- 1058d2165a9e -->
+# Palindrome (回文)
+
+> **範圍** — 回文題型家族：中心擴散、雙指標驗證、回文 DP、Manacher，以及怎麼判斷一題該用哪一種。
+> **另見**：[2_pointers.md](./2_pointers.md) — 底層的收斂概念；[dp.md](./dp.md) — 區間 DP 的觀點；[string.md](./string.md) — 一般字串處理；[advanced_string_algorithms.md](./advanced_string_algorithms.md) — Manacher 放在更大的脈絡裡看。
+

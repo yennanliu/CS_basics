@@ -463,7 +463,7 @@ boolean API)* · LC 744 *(upper bound, then wrap with `% n`)* · LC 981 *(floor 
 #### Recognition — "the smallest value >= target" is a Lower Bound ⭐⭐⭐⭐⭐
 
 Before choosing a template, read the problem's own wording. A query phrased as
-*「最小的 value >= target」* — **the smallest value that is at least X** — is a
+**the smallest value that is at least X** is a
 lower bound, no matter how the problem dresses it up (intervals, timestamps, spell
 strengths, LIS tails).
 

@@ -1,9 +1,3 @@
-<!-- 1c17e40decaf -->
-# 區間（Intervals）
-
-> **範圍** — 先排序再合併的區間題型 — 合併、插入、數重疊、最少刪除數。
-> **另見**：[scanning_line.md](./scanning_line.md) — 需要維護一個即時計數時的事件掃描；[difference_array.md](./difference_array.md) — 大量區間*更新*、最後只讀一次；[array_overlap_explaination.md](./array_overlap_explaination.md) — 重疊條件本身；[heap.md](./heap.md) — 用優先佇列做區間排程。
-
 <!-- db6efc9c130c -->
 ## LeetCode 題目清單
 
@@ -36,12 +30,6 @@
 - **排程最佳化**：會議室、任務分派
 - **範圍查詢**：時間序列資料、基因序列
 - **資源管理**：頻寬配置、CPU 排程
-
-<!-- 9d23c6e095e7 -->
-### 參考資料
-- [labuladong: Interval Merge](https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E5%8C%BA%E9%97%B4%E8%B0%83%E5%BA%A6%E9%97%AE%E9%A2%98%E4%B9%8B%E5%8C%BA%E9%97%B4%E5%90%88%E5%B9%B6.md)
-- [labuladong: Interval Overlap](https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E5%8C%BA%E9%97%B4%E4%BA%A4%E9%9B%86%E9%97%AE%E9%A2%98.md)
-- [Visualization Explanation](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/array_overlap_explaination.md)
 
 <!-- e99e706c752b -->
 ## 1) 題型分類
@@ -498,3 +486,16 @@
 | LC 163 Missing Ranges | 已排序、不重複、全在 `[lower, upper]` 內 | 無 — 直接掃描，O(N) |
 | LC 228 Summary Ranges | 已排序、不重複 | 無 — 輸出的是*存在*的連續段，也就是這題的補集 |
 | LC 4031 Disappeared Numbers II | 以上皆無 | 截取範圍 + 去重 + 排序，O(N log N) |
+
+<!-- 161b2397e6d8 -->
+# 區間（Intervals）
+
+> **範圍** — 先排序再合併的區間題型 — 合併、插入、數重疊、最少刪除數。
+> **另見**：[scanning_line.md](./scanning_line.md) — 需要維護一個即時計數時的事件掃描；[difference_array.md](./difference_array.md) — 大量區間*更新*、最後只讀一次；[array_overlap_explanation.md](./array_overlap_explanation.md) — 重疊條件本身；[heap.md](./heap.md) — 用優先佇列做區間排程。
+
+<!-- 525f4227ee59 -->
+### 參考資料
+- [labuladong: Interval Merge](https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E5%8C%BA%E9%97%B4%E8%B0%83%E5%BA%A6%E9%97%AE%E9%A2%98%E4%B9%8B%E5%8C%BA%E9%97%B4%E5%90%88%E5%B9%B6.md)
+- [labuladong: Interval Overlap](https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E5%8C%BA%E9%97%B4%E4%BA%A4%E9%9B%86%E9%97%AE%E9%A2%98.md)
+- [Visualization Explanation](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/array_overlap_explanation.md)
+
