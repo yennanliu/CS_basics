@@ -55,11 +55,12 @@
 
 ### Template 1: Basic Inversion Counting — LC 315
 ```python
-# LC 315 - Count of Smaller Numbers After Self
-# IDEA: merge sort indices by value; when a LEFT element is placed, every right element
-#       already placed before it is smaller and was after it -> add that count to it.
-#       sum(counts) is the total inversion count, so this one template answers both.
+# python
+# IDEA: merge sort indices by value; placing a LEFT element, add the right elements already placed
 # time = O(n log n), space = O(n)
+# Those right elements are smaller and came after it. sum(counts) is the total inversion count,
+# so this one template answers both.
+# LC 315 - Count of Smaller Numbers After Self
 def count_smaller(nums):
     n = len(nums)
     counts = [0] * n
@@ -722,57 +723,6 @@ private void mergeSort(int[] nums, int[] idx, int[] counts, int l, int r) {
     while (j <= r) tmp[k++] = idx[j++];
     System.arraycopy(tmp, 0, idx, l, tmp.length);
 }
-```
-
-```python
-def countSmaller(nums):
-    """Count how many numbers after each element are smaller"""
-    def merge_and_count(indices, temp, left, mid, right):
-        # Count smaller elements to the right
-        i, j, k = left, mid + 1, left
-
-        while i <= mid and j <= right:
-            if nums[indices[i]] <= nums[indices[j]]:
-                temp[k] = indices[i]
-                # All elements from mid+1 to j-1 are smaller than nums[indices[i]]
-                counts[indices[i]] += (j - mid - 1)
-                i += 1
-            else:
-                temp[k] = indices[j]
-                j += 1
-            k += 1
-
-        # Process remaining elements
-        while i <= mid:
-            temp[k] = indices[i]
-            counts[indices[i]] += (j - mid - 1)
-            i += 1
-            k += 1
-        while j <= right:
-            temp[k] = indices[j]
-            j += 1
-            k += 1
-
-        # Copy back
-        for i in range(left, right + 1):
-            indices[i] = temp[i]
-
-    def merge_sort(indices, temp, left, right):
-        if left >= right:
-            return
-
-        mid = (left + right) // 2
-        merge_sort(indices, temp, left, mid)
-        merge_sort(indices, temp, mid + 1, right)
-        merge_and_count(indices, temp, left, mid, right)
-
-    n = len(nums)
-    counts = [0] * n
-    indices = list(range(n))
-    temp = [0] * n
-
-    merge_sort(indices, temp, 0, n - 1)
-    return counts
 ```
 
 ### 2-2) Reverse Pairs (LC 493) — Merge Sort Count Before Merge
