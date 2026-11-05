@@ -25,7 +25,7 @@ One section per problem. Each problem appears exactly once, filed under the temp
 
 ## In-Place Rewriting (Fast/Slow)
 
-> Template: [Template 1 — Fast/Slow Read-Write Compaction](./2_pointers.md#template-1-fastslow-read-write-compaction--lc-26-lc-27-).
+> Template: [Template 1 — Fast/Slow Read-Write Compaction](./2_pointers.md#template-1-fastslow-read-write-compaction--lc-26-).
 
 ### Remove Duplicates from Sorted Array II — LC 80
 
@@ -351,7 +351,7 @@ class Solution(object):
 
 ## Converging Bidirectional Pointers
 
-> Template: [Template 2 — Converging Bidirectional Pointers](./2_pointers.md#template-2-converging-bidirectional-pointers-).
+> Template: [Template 2 — Converging Bidirectional Pointers](./2_pointers.md#template-2-converging-pointers-from-both-ends--lc-11-).
 
 ### Next Permutation — LC 31
 
@@ -973,7 +973,7 @@ public void reverseString(char[] s) {
 
 ## Expand from Centre
 
-> Template: [Template 3 — Expand from Centre](./2_pointers.md#template-3-expand-from-centre--lc-5-lc-647-).
+> Template: [Template 3 — Expand from Centre](./2_pointers.md#template-3-expand-from-centre--lc-5-).
 
 ### Longest Palindromic Substring — LC 5
 ```python

@@ -1,9 +1,9 @@
-<!-- 24707204ccf2 -->
+<!-- b26e24b7cad6 -->
 # 二分搜尋
 
 > **範圍** — 對**單調**搜尋空間做折半 — `l <= r` 與 `l < r` 背後的迴圈不變式推理、邊界（lower / upper bound）模板、旋轉陣列，以及浮點數與二維搜尋。
 > **另見** — *從本文件拆出去的深入主題*：[binary_search_on_answer.md](./binary_search_on_answer.md) — 對*答案空間*做搜尋：`canFinish` / `isValid` 判定式、最小化最大值 vs 最大化最小值，以及值域計數；[binary_search_examples.md](./binary_search_examples.md) — 題解存放處，每題一份標準解。
-> *鄰近文件*：[patience_sorting.md](./patience_sorting.md) — 把 §1.5 的掃描講成紙牌遊戲，附上重建、牌堆 / Dilworth 證明，以及可化約成 LIS 的題目；[sort.md](./sort.md) — 先把陣列排好序；[advanced_divide_and_conquer.md](./advanced_divide_and_conquer.md) — 折半*外加*合併步驟；[bst.md](./bst.md) — 同一個不變式做成資料結構；[heap.md](./heap.md) — 不用整體排序就取第 k 大元素；[monotonic_stack.md](./monotonic_stack.md) — *位置性*的「下一個更大元素」，也就是最常和 lower bound 搞混的模式。
+> *鄰近文件*：[patience_sorting.md](./patience_sorting.md) — 把模板 5 的掃描講成紙牌遊戲，附上重建、牌堆 / Dilworth 證明，以及可化約成 LIS 的題目；[sort.md](./sort.md) — 先把陣列排好序；[advanced_divide_and_conquer.md](./advanced_divide_and_conquer.md) — 折半*外加*合併步驟；[bst.md](./bst.md) — 同一個不變式做成資料結構；[heap.md](./heap.md) — 不用整體排序就取第 k 大元素；[monotonic_stack.md](./monotonic_stack.md) — *位置性*的「下一個更大元素」，也就是最常和 lower bound 搞混的模式。
 
 <!-- d25f0f2274da -->
 ## LeetCode 題目清單
@@ -54,6 +54,25 @@
 
 <p align="center"><img src ="../pic/binary_search_pattern.png" ></p>
 
+<!-- 2ae34ccb87f8 -->
+## 辨識
+
+限制條件線索依照 [complexity_cheatsheet.md](./complexity_cheatsheet.md) 裡的尺規。
+
+| 題目敘述中的訊號 | 限制條件線索 | 該用 | 不適用時 |
+|---|---|---|---|
+| 「已排序陣列……回傳 `target` 的索引，找不到回傳 -1」 | 「必須在 O(log n) 內完成」 | [模板 1](#template-1-exact-match-on-a-closed-interval--lc-704-) 精確比對 | 有重複值又問「第一個 / 最後一個」→ 模板 2 |
+| 「第一個與最後一個位置」、「插入位置」、「最小的值 **>=** x」、「最大的值 **<=** x」 | n ≤ 10⁵，每個元素一次 O(log n) 查詢 | [模板 2](#template-2-lower-and-upper-bound--lc-34-) lower / upper bound | 「**右邊第一個**比它大的元素」是位置性的 → [monotonic_stack.md](./monotonic_stack.md) |
+| 「`value` 在 `arr[left..right]` 中出現幾次」，查詢很多次 | q ≤ 10⁵ 次查詢 | [模板 2](#template-2-lower-and-upper-bound--lc-34-)，以及 [LC 2080 變形](#variant--count-in-a-range-upper-bound--lower-bound-lc-2080-) | 陣列在查詢之間會被更新 → BIT / `SortedList` |
+| 「已排序陣列在未知樞紐點被旋轉……找出最小值」 | 要求 O(log n) | [模板 3](#template-3-rotated-array-minimum--lc-153-) | 有重複值（LC 154）會讓最壞情況變成 O(n) |
+| 「旋轉排序陣列……搜尋 `target`」 | 要求 O(log n) | [模板 4](#template-4-search-a-rotated-array--lc-33-) | |
+| 「最長遞增 / 鏈式子序列」，要把 O(n²) DP 加速 | n ≤ 10⁵ 排除 O(n²) | [模板 5](#template-5-lower-bound-on-a-maintained-tails-array--lc-300-) `tails` + lower bound | 問的是最長子序列的**個數**（LC 673）→ O(n²) DP |
+| 「m x n 矩陣，每列有序，且每列第一個數大於上一列最後一個數」 | O(log(m·n)) | [模板 6](#template-6-2d-matrix-as-one-sorted-array--lc-74) | 只有列與行各自有序（LC 240）→ 階梯搜尋，O(m + n) |
+| 「峰值元素」、「山脈陣列」、「`nums[i] != nums[i + 1]`」 | 要求 O(log n) | [模板 7](#template-7-peak-finding-by-slope--lc-162-) | |
+| 「大小未知的陣列」、沒有長度的 `reader`、分頁式 API | 目標索引為 p，O(log p) | [模板 8](#template-8-exponential-galloping-search--lc-702-) | |
+| 「最小化最大值」、「讓……成立的最小速度 / 容量 / 除數」 | 答案範圍可達 10⁹ | [binary_search_on_answer.md](./binary_search_on_answer.md) | |
+| 「回傳一個誤差在 10⁻⁵ 內的實數」 | | [§2.2](#22-floating-point-binary-search) 浮點數 | |
+
 <!-- 7f3af396dd96 -->
 ## 理解二分搜尋的指標行為
 
@@ -62,7 +81,7 @@
 
 這是讓二分搜尋成立的**根本概念**，也解釋了為什麼像 LC 35 這種求插入位置的題目回傳 `l` 是對的。
 
-<!-- 8d4261aef2e6 -->
+<!-- a0ff485bb302 -->
 #### 迴圈進行中：搜尋空間不變式
 
 在整個 `while (l <= r)` 迴圈期間：
@@ -73,7 +92,7 @@
 
 每次迭代砍掉一半搜尋空間，同時保持這個不變式。
 
-<!--CODE-->
+迴圈本身就是下方的[模板 1](#template-1-exact-match-on-a-closed-interval--lc-704-)。
 
 <!-- 18e50cb7d113 -->
 #### 迴圈結束時：指標的位置
@@ -108,8 +127,13 @@
 | **迴圈結束** | 第一個 >= target 的元素 | 最後一個 < target 的元素 | `l` 就是插入點 |
 | **圖示** | `... r \| l ...` | 兩者之間沒有空隙 | `l = r + 1` |
 
-<!-- 5af68368e1a5 -->
+<!-- 0dbb0d3fef65 -->
 ### 應用：Search Insert Position (LC 35)
+
+> **關鍵點** — 迴圈結束時，`nums[0..l-1] < target` 且 `nums[l..] > target`，所以
+> `l` 就是插入位置，不需要任何特判。
+
+**化約為**：[模板 1](#template-1-exact-match-on-a-closed-interval--lc-704-) — 回傳 `l` 而不是 -1。
 
 <!--CODE-->
 
@@ -133,27 +157,23 @@
 <!-- 44335a6bb19f -->
 ## 1) 二分搜尋的類型與模式
 
-<!-- f379f90bcb86 -->
+<!-- 9ebfab652ff7 -->
 ### 1.1) 類型速覽
 
-**基本二分搜尋 — LC 704**（標準模板見 §2.1）
+**基本二分搜尋 — LC 704**（[模板 1](#template-1-exact-match-on-a-closed-interval--lc-704-)）
 - **目的**：在已排序陣列中找出確切的目標值
 - **回傳**：target 的索引，找不到則回傳 -1
 - **複雜度**：O(log n)
 
-**遞迴版二分搜尋**
-- **使用時機**：遞迴寫法比較直觀時
-- **空間**：因呼叫堆疊而為 O(log n)
-
-**旋轉陣列搜尋**（§1.2）
+**旋轉陣列搜尋**（[模板 3](#template-3-rotated-array-minimum--lc-153-)、[模板 4](#template-4-search-a-rotated-array--lc-33-)）
 - **關鍵概念**：判斷哪一半是有序的，再決定往哪邊搜尋
 - **應用**：找 target、找最小元素
 
-**找邊界 — 左 / 右，即 lower / upper bound**（§1.3）
+**找邊界 — 左 / 右，即 lower / upper bound**（[模板 2](#template-2-lower-and-upper-bound--lc-34-)）
 - **目的**：找出第一個 / 最後一個滿足判定式的索引，而不是某個確切值
 - **回傳**：分界點 — 絕不 `return mid`
 
-**二維矩陣搜尋**（§2.3）
+**二維矩陣搜尋**（[模板 6](#template-6-2d-matrix-as-one-sorted-array--lc-74)）
 - **做法 1**：用 `row = idx / cols`、`col = idx % cols` 把矩陣攤平
 - **做法 2**：逐列做二分搜尋
 - **時間**：O(log(m×n))
@@ -162,89 +182,104 @@
 - **目的**：搜尋的是*候選答案的範圍*，而不是一個陣列
 - **回傳**：單調可行性判定式的分界點
 
-**對自己維護的陣列做二分搜尋 — `tails` 模式**（§1.5）
+**對自己維護的陣列做二分搜尋 — `tails` 模式**（[模板 5](#template-5-lower-bound-on-a-maintained-tails-array--lc-300-)）
 - **目的**：把「每個已達成長度的最佳值」這種 `O(n²)` DP 壓成一次 lower bound 查詢
 - **回傳**：所維護陣列的長度（是長度，不是那條鏈本身）
 
-<!-- 88c893e86307 -->
-### 1.2) 旋轉排序陣列 — 找出樞紐點
+**找峰值**（[模板 7](#template-7-peak-finding-by-slope--lc-162-)）
+- **目的**：順著 `mid` 處的斜率，找出任一個局部最大值
 
-- **關鍵概念**：判斷哪一半是有序的，再決定往哪邊搜尋
-- **應用**：找 target、找最小元素
+**沒有右端點 — 指數搜尋**（[模板 8](#template-8-exponential-galloping-search--lc-702-)）
+- **目的**：把索引加倍找出右端點，再在其中搜尋
 
-<!-- 66fa00c4469f -->
-#### Find Minimum in Rotated Sorted Array (LC 153) ⭐⭐⭐⭐⭐
+<!-- 326bca3bcb07 -->
+### 模板 1：閉區間上的精確比對 — LC 704 ⭐⭐⭐⭐⭐
 
-<!-- b538e90f0180 -->
-##### 模式：找出旋轉點
+**辨識** — 「給定一個**已排序**陣列與 `target`，回傳它的索引，找不到回傳 -1」，而且題目堅持
+要 O(log n)。n ≤ 10⁴–10⁵ 時線性掃描也會過，所以 O(log n) 那一行就是這題的重點。
 
-旋轉排序陣列一定長這個樣子：
+**關鍵點** — `left` 左邊的每個索引都 `< target`，`right` 右邊的每個索引都 `> target`，所以
+`target` 只可能在 `[left, right]` 之內。每一輪丟掉 `mid` 和其中一半；當 `left > right` 時
+視窗已空，而 `left` 正是 `target` 該被插入的位置。
 
-<!--CODE-->
-
-**最小值永遠在旋轉點上** — 也就是陣列中唯一那個「下墜」的位置。
-
-<!-- 8fae5d09ac1a -->
-##### 核心想法
-
-判斷 `mid` 落在哪一段平台上，然後往**沒有排序的那一側**移動（最小值就在那裡）：
-
-<!--CODE-->
-
-**判斷規則：**
-- `nums[mid] >= nums[l]` → mid 在**左平台**上 → 最小值在右邊 → `l = mid + 1`
-- `nums[mid] < nums[l]`  → mid 在**右平台**上 → 最小值就是 mid 或在其左邊 → `r = mid - 1`
-
-<!-- 9ff9298baa77 -->
-##### 推薦模板（閉區間邊界，追蹤 `ans`）
-
-<!--CODE-->
-
-<!-- 33db6972b020 -->
-##### 替代模板（開區間邊界 `r > l`，不用 `ans` 變數）
-
-<!--CODE-->
-
-<!-- b26340d8d6ba -->
-##### 視覺追蹤：`nums = [3,4,5,1,2]`
-
-<!--CODE-->
-
-<!-- 69e162b938fa -->
-##### 模板比較
-
-| 模板 | 迴圈條件 | 更新方式 | 回傳 | 適用時機 |
-|----------|---------------|--------|--------|-----------|
-| 閉區間 `l <= r` + `ans` | `l <= r` | `l=mid+1` / `r=mid-1` | `ans` | 需要記錄候選答案時 |
-| 開區間 `r > l` | `r > l` | `r=mid` / `l=mid+1` | `nums[l]` | 最乾淨，會收斂到索引 |
-
-<!-- b39a2e6f766e -->
-##### 相似題目
-
-| LC # | 題目 | 關鍵差異 |
-|------|---------|---------------|
-| **153** | Find Minimum in Rotated Sorted Array | 元素不重複，找最小值 |
-| **154** | Find Minimum in Rotated Sorted Array II | 有重複值 — `nums[mid]==nums[r]` 時用 `r--` |
-| **33** | Search in Rotated Sorted Array | 找 target（不是最小值）— 要檢查 target 是否落在有序的那一半 |
-| **81** | Search in Rotated Sorted Array II | 在有重複值的情況下找 target |
-| **189** | Rotate Array | 概念相關，但任務不同 |
-
-<!-- 826be5f2e70b -->
-#### Search in Rotated Sorted Array (LC 33, LC 81)
 <!--CODE-->
 
 <!--CODE-->
 
-**關鍵差異**：
-- **LC 153**（找最小值）：只需要判斷該往哪一側搜尋
-- **LC 33/81**（找 target）：還必須檢查 target 是否落在有序的那一半裡
+**複雜度**
+- **時間 O(log n)**：`while left <= right` 每一輪至少把 `right - left + 1` 砍半，所以
+  迴圈最多跑 ⌊log₂ n⌋ + 1 次。
+- **空間 O(1)**：只有 `left`、`right` 與 `mid`。遞迴版要花 O(log n) 的堆疊。
 
-<!-- ce752d0b93ba -->
-### 1.3) 找邊界 — Lower 與 Upper Bound (LC 34) ⭐⭐⭐⭐⭐
+**手動推演**
 
-**目的**：回答排序陣列上的 *bound* 查詢 — 第一個 `>= target` 的索引、最後一個
-`<= target` 的索引，以及所有能化約成它們的問題（第一次 / 最後一次出現、插入位置、
-floor / ceiling 查詢）
+<!--CODE-->
+
+**陷阱**
+- `while left < right` 搭配 `right = mid - 1` 永遠不會檢查最後一個候選：`nums = [5]`、
+  `target = 5` 會回傳 -1。
+- `left = mid` 少了 `+ 1`，視窗剩兩個元素時就會無限迴圈：
+  `nums = [1, 3]`、`target = 3` 會一直停在 `mid = 0`。
+- `mid = (left + right) / 2` 在 Java 中當 `left + right > 2³¹ − 1` 時會溢位，在 Python 3
+  則是浮點數（`nums[2.5]` 會丟出 `TypeError`）。要寫 `left + (right - left) // 2`。
+- 有重複值時它回傳的是*某一個*索引，不是第一個：`[2, 2, 2]`、`target = 2` 回傳 1。
+  第一次 / 最後一次出現要用模板 2。
+- 在迴圈裡處理「target 落在 `mid` 與 `mid + 1` 之間」是多餘的，還會讀到越界的
+  `nums[mid + 1]`；相信不變式，迴圈結束後用 `left` 即可。
+
+**不適用時** — 題目問的是 `target` *該放在哪裡*，或它那一串重複值從哪裡開始
+（LC 34、LC 35、LC 278）：沒有 `== target` 的出口，所以要用
+[模板 2](#template-2-lower-and-upper-bound--lc-34-)。
+
+**練習** — LC 704 ⭐ · LC 35 *（回傳 `left` 而不是 -1）* · LC 374 *（比較是一次 API
+呼叫）* · LC 69 *（以 `mid * mid <= n` 搜尋 `x`，保留最後一個通過的）*
+
+<!-- 4441a67e905e -->
+### 模板 2：Lower 與 Upper Bound — LC 34 ⭐⭐⭐⭐⭐
+
+**辨識** — 「找出**第一個與最後一個位置**」、「**插入**位置」、「**最小**的值 **>=** x」、
+「**最大**的值 **<=** x」、「時間 t 之前最近的時間戳」。答案是*分界點*，不是比對到的值，而且
+輸入可能有重複值。n ≤ 10⁵ 且每個元素一次查詢 → 先排序一次，之後每次查詢 O(log n)。
+
+**關鍵點** — 永遠不測相等：`findLeft` 把 `==` 推向左邊（`<`），`findRight` 推向右邊
+（`<=`）。結束時 `right == left - 1`，兩者跨在分界點兩側，所以 `findLeft` 回傳第一個
+`>= target` 的索引，`findRight` 回傳最後一個 `<= target` 的索引；target 存在若且唯若
+`first <= last`。
+
+<!--CODE-->
+
+<!--CODE-->
+
+**複雜度**
+- **時間 O(log n)**：兩個 `while left <= right` 迴圈，各自把視窗砍半；兩者都不會在比對成功時
+  提早結束，所以各跑滿 ⌈log₂ n⌉ 輪。
+- **空間 O(1)**：每次搜尋兩個指標。若輸入未排序，先排序會一次性多花 O(n log n) 時間，
+  不是每次查詢都花。
+
+**手動推演**
+
+<!--CODE-->
+
+**陷阱**
+- 在 `nums[mid] == target` 時 `return mid`，會停在一串重複值的任意位置：
+  `[8, 8, 8]` 兩端都回傳索引 1。
+- 從 `findLeft` 回傳 `right`（或從 `findRight` 回傳 `left`）會差一：**左搜尋回傳
+  `left`，右搜尋回傳 `right`**。
+- 混用邊界風格：`hi = len(nums)` 需要 `while lo < hi` 與 `hi = mid`；
+  `right = len(nums) - 1` 需要 `while left <= right` 與 `right = mid - 1`。兩邊各取一半，
+  不是無限迴圈就是漏掉最後一個索引。
+- 事先檢查 `if target not in nums` 是 O(n)，直接丟掉題目要的 O(log n)。`[]` 不需要
+  特判：`left = 0 > right = -1` 就會得到 `[-1, -1]`。
+- 當答案是未排序輸入的**原始索引**（LC 436）時，要排序 `(value, index)` 配對，
+  不能只排序值，否則索引就丟了。
+
+**不適用時** — 「**右邊第一個**比它大的元素」取決於陣列順序，所以是位置性的掃描 →
+[monotonic_stack.md](./monotonic_stack.md)。檢驗方式：若打亂輸入不會改變答案，就是 bound
+查詢；若會改變，就是堆疊（見下方的 *核心概念：Lower Bound vs 單調堆疊*）。
+
+**練習** — LC 34 ⭐ · LC 35 *（只用 `findLeft`，不做驗證）* · LC 278 *（對布林 API 做
+`findLeft`）* · LC 744 *（upper bound，再用 `% n` 繞回）* · LC 981 *（每個 key 一次 floor 查詢）*
+· LC 2080 *（個數 = upper − lower，見下方）*
 
 <!-- 42accecfeea7 -->
 #### 辨識 — 「最小的 value >= target」就是 Lower Bound ⭐⭐⭐⭐⭐
@@ -290,7 +325,7 @@ LC 436 (Find Right Interval) 是後者的乾淨範例：它要的是在*所有*�
 > LC 436 的完整題解 — 包括「連同索引一起排序」的做法 — 放在
 > [binary_search_examples.md](./binary_search_examples.md) §16。
 
-<!-- 0b796173d1d9 -->
+<!-- 2827149ef350 -->
 ##### 相似題目：有序集合上的 Bound 查詢
 
 | LC # | 題目 | 改寫成 bound 形式的查詢 |
@@ -301,7 +336,7 @@ LC 436 (Find Right Interval) 是後者的乾淨範例：它要的是在*所有*�
 | **744** | Find Smallest Letter Greater Than Target | 嚴格 `>` → upper bound，再用 `% n` 繞回開頭 |
 | **981** | Time Based Key-Value Store | 最大的 `timestamp <= query` → upper bound − 1，每個 key 各自查 |
 | **1146** | Snapshot Array | 同樣的 floor 查詢，作用在每個索引的版本清單上 |
-| **300** | Longest Increasing Subsequence (O(N log N)) | 最小的 tail `>= x`，然後覆寫它 — §1.5 |
+| **300** | Longest Increasing Subsequence (O(N log N)) | 最小的 tail `>= x`，然後覆寫它 — [模板 5](#template-5-lower-bound-on-a-maintained-tails-array--lc-300-) |
 | **2300** | Successful Pairs of Spells and Potions | 最小的 potion `>= ceil(success / spell)`，再計算後綴長度 |
 | **1170** | Compare Strings by Frequency of the Smallest Character | freq `>` 查詢值的單字數 → `n - upperBound` |
 
@@ -344,13 +379,6 @@ LC 436 (Find Right Interval) 是後者的乾淨範例：它要的是在*所有*�
 
 <!--CODE-->
 
-<!-- dffa53a9ad41 -->
-##### 推薦模板（兩個輔助函式，閉區間 `l <= r`）
-
-<!--CODE-->
-
-<!--CODE-->
-
 <!-- f179a4cb3956 -->
 ##### 替代解法 1：一個輔助函式，呼叫兩次（`target` 與 `target + 1`）⭐⭐⭐⭐⭐
 
@@ -371,15 +399,6 @@ LC 436 (Find Right Interval) 是後者的乾淨範例：它要的是在*所有*�
 
 <!--CODE-->
 
-<!-- acee3aed8398 -->
-##### 視覺追蹤：`nums = [5,7,7,8,8,10]`、`target = 8`
-
-<!--CODE-->
-
-target 不存在的情況，`nums = [5,7,7,8,8,10]`、`target = 6`：
-
-<!--CODE-->
-
 <!-- ef7c6937c226 -->
 ##### 模板比較
 
@@ -390,16 +409,7 @@ target 不存在的情況，`nums = [5,7,7,8,8,10]`、`target = 6`：
 | 相等時追蹤 `bound` | 閉區間 `[l, r]` | `l <= r` | 保留三向 `if/elif/else` | `bound` | 口頭講解時最好懂 |
 | `bisect_left` / `bisect_right` | — | — | — | — | 允許用函式庫的 Python 面試 |
 
-<!-- b7f0d8b95d20 -->
-##### 常見陷阱
-
-- ❌ `nums[mid] == target` 時就 `return mid` → 停在區塊中間，而不是邊緣
-- ❌ 從 `findLeft` 回傳 `r`（或從 `findRight` 回傳 `l`）→ 差一錯誤；**左搜尋回傳 `l`，右搜尋回傳 `r`**
-- ❌ 混用邊界風格：`hi = len(nums)` 必須搭配 `while lo < hi` 與 `hi = mid`（不減 1）；`r = len(nums)-1` 必須搭配 `while l <= r` 與 `r = mid - 1`
-- ❌ 忘了空陣列的情況 — 兩個閉區間輔助函式都會自然處理（`l=0, r=-1` → 跳過迴圈 → `l=0 > r=-1` → `[-1,-1]`）
-- ❌ 事先檢查 `if target not in nums` — 那是 O(N)，直接毀掉 O(log N) 的要求
-
-<!-- 3ce62f7715dd -->
+<!-- bed0b728dd76 -->
 ##### 相似題目
 
 | LC # | 題目 | 關鍵差異 |
@@ -412,14 +422,19 @@ target 不存在的情況，`nums = [5,7,7,8,8,10]`、`target = 6`：
 | **744** | Find Smallest Letter Greater Than Target | `bisect_right` + 取模繞回 |
 | **1146** | Snapshot Array | 對每個索引的版本清單做 `bisect` |
 | **658** | Find K Closest Elements | 用 `findLeft` 定位視窗起點，再往外擴 |
-| **300** | Longest Increasing Subsequence (O(N log N)) | 用 `bisect_left` 替換 tails — §1.5 |
+| **300** | Longest Increasing Subsequence (O(N log N)) | 用 `bisect_left` 替換 tails — [模板 5](#template-5-lower-bound-on-a-maintained-tails-array--lc-300-) |
 | **981** | Time Based Key-Value Store | `findRight`（最大且 `<=` 查詢值的時間戳） |
 | **436** | Find Right Interval | 對排序後的起點做 `findLeft` |
 | **1898** | Maximum Number of Removable Characters | 對答案做邊界搜尋 + 可行性檢查 |
 | **2080** | Range Frequency Queries | 每個值一份索引清單；個數 = upper bound − lower bound — 見下一節 |
 
-<!-- 78ab263e173c -->
+<!-- bd1ba7bf15af -->
 #### 變形 — 區間內計數：Upper Bound − Lower Bound (LC 2080) ⭐⭐⭐⭐
+
+> **關鍵點** — 同一個值的索引由左到右收集起來，本來就是有序的，所以
+> 「`[left, right]` 裡有幾個」就是在那份清單上算 `bisect_right(right) − bisect_left(left)`。
+
+**化約為**：[模板 2](#template-2-lower-and-upper-bound--lc-34-) — 兩個邊界都用，只是作用在每個值的索引清單上，而不是輸入本身。
 
 LC 34 找的是一段相等值的區塊**從哪裡**開始、到哪裡結束。把兩端相減，就得到區塊裡**有幾個**
 元素。同樣的減法可以算出一個排序清單落在任意閉區間 `[lo, hi]` 內的元素個數：
@@ -432,12 +447,12 @@ LC 34 找的是一段相等值的區塊**從哪裡**開始、到哪裡結束。�
 
 <!--CODE-->
 
-<!-- f11d172be69d -->
+<!-- eac3838d81ef -->
 ##### 核心概念
 
 <!--CODE-->
 
-這兩個邊界就是 LC 34 的 `findLeft` 與 `findRight + 1`，所以不用多背任何東西。它就是 §1.3 的
+這兩個邊界就是 LC 34 的 `findLeft` 與 `findRight + 1`，所以不用多背任何東西。它就是本卡的
 **Alternative 1**（`search(target)` 與 `search(target + 1)`），只是套用在一個區間而不是單一值上。
 
 <!--CODE-->
@@ -481,6 +496,103 @@ LC 34 找的是一段相等值的區塊**從哪裡**開始、到哪裡結束。�
 > **如果 `arr` 在查詢之間會變動**（`update(i, v)`），這些清單就不再便宜好維護：用一般陣列時，把一個
 > 索引從一個值的清單搬到另一個是 `O(n)`。改用每個值一個 `SortedList`，或以位置為 key 的 BIT / 線段樹。
 
+<!-- e4cefc6ca080 -->
+### 模板 3：旋轉陣列的最小值 — LC 153 ⭐⭐⭐⭐⭐
+
+**辨識** — 「一個由**不重複**值組成的排序陣列，在未知樞紐點被**旋轉**……找出最小值」
+（或旋轉次數、或樞紐索引），要求 O(log n)。這個陣列是兩段遞增序列，左段整段都高於右段。
+
+**關鍵點** — 拿 `nums[mid]` 和 `nums[right]` 比，永遠不和 `target` 比：若
+`nums[mid] < nums[right]`，`mid..right` 是同一段遞增序列，所以最小值在 `mid` 或它左邊
+（`right = mid`）；否則下墜點嚴格在 `mid` 右邊（`left = mid + 1`）。
+最小值永遠在 `[left, right]` 之內，迴圈在只剩一個索引時停下。
+
+<!--CODE-->
+
+<!--CODE-->
+
+**複雜度**
+- **時間 O(log n)**：`while left < right` 每輪把視窗砍半；`right = mid` 仍然會縮小視窗，
+  因為只要 `left < right` 就有 `mid < right`。
+- **空間 O(1)**：兩個指標。
+
+**手動推演**
+
+<!--CODE-->
+
+**陷阱**
+- 改拿 `nums[left]` 而不是 `nums[right]` 來比，在沒有旋轉的陣列上會出錯：
+  `[1, 2, 3]` 會把 `left` 推過最小值，因為「左段有序」不再代表「最小值在右邊」。
+- `right = mid - 1` 在最小值剛好是 `mid` 時會把它丟掉：`[3, 1, 2]` 回傳 3。
+- `while left <= right` 搭配 `right = mid`，一旦 `left == right` 就永遠不會結束。
+- 有重複值（LC 154）時 `nums[mid] == nums[right]` 不帶任何資訊；用 `right -= 1` 縮小，
+  最壞情況是 O(n)（`[1, 1, 1, 0, 1]`）。
+
+**不適用時** — 你要找的是某個給定的 `target`，而不是最小值 → 模板 4。
+
+**練習** — LC 153 ⭐ · LC 154 *（有重複值：相等時 `right -= 1`）* · LC 33 → 模板 4 ·
+LC 81 *（有重複值的搜尋）*
+
+<!-- d2e650b5d038 -->
+#### 旋轉陣列最小值 — 閉區間的替代寫法
+
+同一個搜尋，改寫成 `while l <= r` 並維護一個 `ans`。只有在你想到處都用閉區間時才保留它；
+它需要在視窗已經有序時提早結束。
+
+<!--CODE-->
+
+<!--CODE-->
+
+| 模板 | 迴圈條件 | 更新方式 | 回傳 | 適用時機 |
+|----------|---------------|--------|--------|-----------|
+| 閉區間、停在單一候選 | `left < right` | `right = mid` / `left = mid + 1` | `nums[left]` | 標準寫法：收斂到索引 |
+| 閉區間 `l <= r` + `ans` | `l <= r` | `l = mid + 1` / `r = mid - 1` | `ans` | 你想到處都用閉區間時 |
+
+| LC # | 題目 | 關鍵差異 |
+|------|---------|---------------|
+| **153** | Find Minimum in Rotated Sorted Array | 元素不重複，找最小值 |
+| **154** | Find Minimum in Rotated Sorted Array II | 有重複值 — `nums[mid] == nums[right]` 時 `right -= 1` |
+| **33** | Search in Rotated Sorted Array | 找 target（不是最小值）— 模板 4 |
+| **81** | Search in Rotated Sorted Array II | 在有重複值的情況下找 target |
+| **189** | Rotate Array | 概念相關，但任務不同 |
+
+<!-- 5ef8ada5347a -->
+### 模板 4：在旋轉陣列中搜尋 — LC 33 ⭐⭐⭐⭐⭐
+
+**辨識** — 「一個由不重複值組成、可能被**旋轉**過的排序陣列……回傳 `target` 的索引，
+找不到回傳 -1」，要求 O(log n)。輸入和模板 3 一樣，只是現在要找一個值。
+
+**關鍵點** — `nums[left..mid]` 與 `nums[mid..right]` 至少有一段是有序的，而有序段的兩端
+就能告訴你 `target` 在不在裡面。所以每一輪：找出有序的那一半，若 `target` 落在它的兩端
+之間就保留它，否則保留另一半。
+
+<!--CODE-->
+
+<!--CODE-->
+
+**複雜度**
+- **時間 O(log n)**：`while left <= right` 每一輪都丟掉一半，不論那一半有沒有序。
+- **空間 O(1)**：三個索引。
+
+**手動推演**
+
+<!--CODE-->
+
+**陷阱**
+- `nums[left] < nums[mid]`（嚴格）在 `left == mid` 時，會把只有一個元素的左半段誤判成
+  無序：`[3, 1]`、`target = 1` 會走進右半段的分支、把 `1` 排除，最後回傳 -1。要用 `<=`。
+- 範圍檢查在 `mid` 那一側是半開的（`target < nums[mid]`、`nums[mid] < target`），因為
+  `mid` 已經比過了；把它包含進去無害，但外側端點少了 `<=`（`nums[left] <= target`）就會
+  漏掉剛好在 `left` 的 target。
+- 有重複值（LC 81）時，`nums[left] == nums[mid] == nums[right]` 無法確定哪一半有序：
+  `[1, 0, 1, 1, 1]`。用 `left += 1; right -= 1` 縮小，並接受最壞 O(n)。
+
+**不適用時** — 你只需要最小值或旋轉點 → 模板 3；可以接受兩趟 → 先用模板 3 找出
+樞紐點，再在正確的那一段上跑模板 1。
+
+**練習** — LC 33 ⭐ · LC 81 *（有重複值：三者相等時兩端一起縮）* · LC 153 →
+模板 3 · LC 1095 *（山脈：先找峰值，再做兩次有序搜尋 — 模板 7）*
+
 <!-- ca04c67efae4 -->
 ### 1.4) 對答案空間做二分搜尋 ⭐⭐⭐⭐⭐
 
@@ -495,25 +607,52 @@ LC 34 找的是一段相等值的區塊**從哪裡**開始、到哪裡結束。�
 **辨識關鍵字**：「minimize the maximum」、「maximize the minimum」、「找出最小的
 capacity / speed / divisor」、「能不能切分 / 分配 / 派送」。
 
-<!-- b9097b803cd2 -->
-### 1.5) 對自己維護的陣列做二分搜尋 — `tails` 模式 (LC 300) ⭐⭐⭐⭐⭐
+<!-- aa336420110f -->
+### 模板 5：在自己維護的 `tails` 陣列上做 Lower Bound — LC 300 ⭐⭐⭐⭐⭐
 
-上面每個模板搜尋的都是**輸入陣列**。這一個搜尋的是掃描過程中**一邊走一邊建出來**的小陣列 —
-而那個陣列是刻意保持有序的，正是為了能對它做 lower bound。這就是 `O(n log n)` LIS 背後的模式，
-也是 LC 300 會被歸在二分搜尋底下的原因。
+**辨識** — 「最長遞增（或鏈式）子序列的**長度**」，直覺解法是 O(n²) 的 DP
+`dp[i] = max(dp[j]) + 1`，而追問要求 O(n log n)。n ≤ 2,500 時 O(n²) 會過；
+n ≤ 10⁵（LC 1964、LC 354）就不會。
 
-> 這個演算法自己的專屬 sheet — 它源自的紙牌遊戲、牌堆 / Dilworth 論證、如何還原出子序列本身，
-> 以及可以*歸約*成 LIS 的題目 — 在 [patience_sorting.md](./patience_sorting.md)。本節是二分搜尋
-> 的視角：跑的是哪一個模板，以及為什麼「每個元素只寫一次」就是完整的更新。
+**關鍵點** — `tails[k]` 是所有長度為 `k + 1` 的遞增序列中最小的結尾值，所以 `tails`
+嚴格遞增，可以做 lower bound。第一個 `>= num` 的格子，就是 `num` 唯一能改善的長度：
+覆寫它，若不存在就 append。`len(tails)` 就是答案。
 
-<!-- cda122cc98f5 -->
-#### 核心想法 — 每個可達成的長度一格，存最小的結尾值
+本 sheet 其他每個模板搜尋的都是**輸入**。這一個搜尋的是掃描過程中**一邊走一邊建出來**的
+小陣列，刻意保持有序，好讓模板 2 的 `findLeft` 能在上面跑。這個演算法自己的 sheet —
+它源自的紙牌遊戲、牌堆 / Dilworth 論證、如何還原子序列本身，以及可以化約成 LIS 的題目 —
+在 [patience_sorting.md](./patience_sorting.md)。
 
 <!--CODE-->
 
-> `bisect_left` 一行版、Java 版，以及 LC 354 的變化題都在
-> [binary_search_examples.md](./binary_search_examples.md) §18。這裡刻意把迴圈完整寫出來：
-> 它和 `findLeft`（§1.3）逐字相同，而這正是這題該放在本 sheet 的理由。
+<!--CODE-->
+
+**複雜度**
+- **時間 O(n log n)**：外層 `for num in nums` 跑 n 次，內層 `while left <= right` 是在
+  最多 n 長的 `tails` 上做二分搜尋。
+- **空間 O(n)**：`tails` 只在 append 時長一格，最多到 LIS 長度 ≤ n。
+
+**手動推演**
+
+<!--CODE-->
+
+**陷阱**
+- `tails` 不是一條子序列：`[3, 4, 5, 1]` 最後得到 `tails = [1, 4, 5]`，而 `1` 是最後才
+  出現的。只有它的長度有意義；要還原那條鏈需要 `prev` 指標。
+- 非遞減（允許重複，LC 1964）要找第一個 **`> num`** 的 tail（`bisect_right`）：用
+  `bisect_left` 的話，`[2, 2, 2]` 會得到 1 而不是 3。
+- LC 354 在做 LIS 前若只按寬度排序，兩個寬度相同的信封會被套在一起：要按
+  `(w 遞增, h 遞減)` 排序，讓每個寬度最多貢獻一個高度。
+
+**不適用時** — 題目要的是最長子序列的**個數**（LC 673），或「可串接」不是全序
+（LC 368 的整除關係），或狀態還帶有第二個鍵（LC 1027 的公差）：每個長度只存一個 tail
+裝不下這些，所以是 O(n²) DP。
+
+**練習** — LC 300 ⭐ · LC 1964 *（非遞減，逐一回報每個索引的位置）* · LC 354
+*（帶平手規則的排序，再做 LIS）* · LC 2111 *（k 個餘數類別，`len − LIS`）*
+
+> `bisect_left` 一行版與 LC 354 的變化題都在
+> [binary_search_examples.md](./binary_search_examples.md) §18。
 
 <!-- 8436e349ac50 -->
 #### 為什麼可行 — 三個論證
@@ -682,91 +821,147 @@ patience sorting 是同一個動作：把每張牌放到「牌頂 `>= num` 的�
 **模式 3：驗證函式類題目**（LC 410、875、1011、1060、1482）— 這些題二分搜尋的是
 *答案*，而不是索引；見 [binary_search_on_answer.md](./binary_search_on_answer.md)。
 
-<!-- 039e50264bd0 -->
-### 2.1) 標準二分搜尋模板 — LC 704
-
-**關鍵原則**：
-- **初始化**：`left = 0, right = nums.length - 1`（閉區間）
-- **迴圈條件**：`while (left <= right)`  
-- **指標更新**：`left = mid + 1`、`right = mid - 1`
-- **清晰度小訣竅**：所有條件都用 `else if`，把邏輯攤開講明白
-
-> **寫程式小訣竅**：避免使用 `else` — 把所有條件都寫成 `else if`，清楚列出每種情況，減少 bug。
-
-<!--CODE-->
-
-<!--CODE-->
-
 <!-- 23ba3dc1560d -->
 ### 2.2) 浮點數二分搜尋
 用於答案是實數的題目（開根號、最佳分配、幾何問題）：
 
 <!--CODE-->
 
-<!-- d6d990bc8646 -->
-### 2.3) 二維矩陣搜尋 — 兩種不同的題目 (LC 74 / LC 240)
+<!-- 18a9a31ae550 -->
+### 模板 6：把二維矩陣當成一個排序陣列 — LC 74
 
-**LC 74**（矩陣的列與行都排序，值由左到右、由上到下遞增）：
-<!--CODE-->
+**辨識** — 「一個 `m x n` 矩陣；每一列有序，且每列第一個整數大於上一列最後一個整數……
+`target` 在不在裡面？」逐列讀下來，這個矩陣就是一份含 `m·n` 個值的排序清單，預期 O(log(m·n))。
 
-**LC 240**（每列排序、每行也排序，但**整體並未排序** — 用階梯搜尋）：
-<!--CODE-->
-**關鍵洞見**：LC 240 的階梯搜尋每一步消掉一整列或一整行 → O(m+n)。**不要**把 LC 240 當成攤平後的二分搜尋 — 這個矩陣並非整體有序。
-
-**Java** — 同樣的攤平做法，完整寫出來：
-<!--CODE-->
-
-<!-- c6645b5b9a41 -->
-### 2.4) 雙調 / 山脈陣列 — 遞減順序的翻轉
-
-山脈（雙調）陣列本身沒有排序，但它**確實**是兩段有序序列的接合，
-所以需要三次二分搜尋：先用爬坡搜尋找到峰值，接著在左半段做一般的
-**遞增**搜尋，最後在右半段做**遞減**搜尋。
-
-**遞減順序的模板**就是把標準模板的比較方向翻過來：
-
-<!--CODE-->
-
-有個漂亮的寫法能把兩者合成一個函式：`if ((val < target) == ascending) l = mid + 1; else r = mid - 1;`
-
-題解範例 — LC 1095 Find in Mountain Array — 見 [binary_search_examples.md](./binary_search_examples.md)。
-
-<!-- 2273ae501095 -->
-### 2.5) 沒有右端點 — 指數（Galloping）搜尋 ⭐⭐⭐⭐
-
-二分搜尋需要一個右端點，而有時候輸入就是不給你：LC 702
-(Search in a Sorted Array of Unknown Size) 給你一個沒有長度的 `reader`，CtCI 10.4
-給你一個 `Listy`，它的 `elementAt()` 超出尾端時只會回傳 `-1`，而分頁式 API
-的行為也一樣。**先用加倍的方式找出右端點，再在其中做二分搜尋。**
-
-<!--CODE-->
-
-兩個階段各花 `O(log p)` 次探測，其中 `p` 是目標的索引 — 所以整個搜尋是
-`O(log p)`，與陣列（未知、可能極大）的總長度無關。
+**關鍵點** — 攤平後清單的索引 `i` 就是格子 `(i // n, i % n)`，而這個對應保持順序，所以
+模板 1 原封不動地在 `[0, m·n − 1]` 上跑，每次探測只多一次除法。
 
 <!--CODE-->
 
 <!--CODE-->
 
-- **陷阱在於越界哨兵值的方向。** `2^31-1` 排在所有真實值之上，所以一般的比較就能處理它。
-  `-1` 則排在它們*之下*，所以沒被檢查的 `-1` 會把搜尋推向右邊、衝出尾端，永遠停不下來。
+**複雜度**
+- **時間 O(log(m·n))**：`while` 在 `m·n` 個攤平索引的視窗上折半；每次探測的
+  `// n` 與 `% n` 都是 O(1)。
+- **空間 O(1)**：不建立攤平後的副本 — 複製一份要花 O(m·n)，就失去意義了。
+
+**陷阱**
+- 除以 `m` 而不是 `n`：在 3 x 4 矩陣上，攤平索引 5 是 `(1, 1)`，但 `5 // 3,
+  5 % 3` 讀到的是 `(1, 2)`。兩個方向的轉換都用欄數。
+- `m * n` 在 Java 中要超過約 46,000² 才會溢位 `int`，遠超出 LC 74 的限制；講出來即可，
+  不必為它寫程式。
+- 兩次二分搜尋（先挑列、再在列中搜尋）也是 O(log m + log n) = O(log(m·n))，但挑列是
+  「首元素 `<= target` 的最大那一列」這種 bound，很容易差一。
+
+**不適用時** — 列有序、行也有序，但某列第一個值可能小於上一列最後一個值（LC 240）：
+這個矩陣**不是**一份排序清單。改用從右上角出發的階梯搜尋，每一步丟掉一列或一行：
+
+<!--CODE-->
+
+**練習** — LC 74 ⭐ · LC 240 *（階梯搜尋，不是二分搜尋）* · LC 378 *（對值域做二分搜尋，
+[binary_search_on_answer.md](./binary_search_on_answer.md)）*
+
+<!-- 05104e96c9a4 -->
+### 模板 7：順著斜率找峰值 — LC 162 ⭐⭐⭐⭐
+
+**辨識** — 「找出**一個**峰值元素」、「山脈陣列」、「`nums[i] != nums[i + 1]`」、
+「`nums[-1] = nums[n] = -∞`」，要求 O(log n)。陣列和它的斜率都沒有排序
+（`[1, 2, 1, 3, 5, 6, 4]` 先升、再降、又升），但比較 `nums[mid]` 與 `nums[mid + 1]`
+就能指出一定含有峰值的那一半。
+
+**關鍵點** — 若 `nums[mid] < nums[mid + 1]`，斜率往上，從 `mid + 1` 一路往上爬，
+在碰到 `-∞` 邊界前一定會遇到峰值，所以 `[mid + 1, right]` 裡有峰值；
+否則 `[left, mid]` 裡有一個。視窗內永遠有峰值，迴圈在只剩一個索引時停下。
+
+<!--CODE-->
+
+<!--CODE-->
+
+**複雜度**
+- **時間 O(log n)**：在閉區間 `[left, right]` 上跑 `while left < right`，把視窗砍半，而 `right = mid`
+  仍會縮小視窗，因為 `mid < right`。
+- **空間 O(1)**：兩個指標。
+
+**手動推演**
+
+<!--CODE-->
+
+**陷阱**
+- `while left <= right` 在 `left == right == n − 1` 時會讀到越界的 `nums[mid + 1]`：
+  `[1, 2]` 會丟出索引錯誤。
+- 下坡時寫 `right = mid - 1`，在峰值就是 `mid` 時會把它丟掉：`[1, 3, 2]` 最後停在
+  索引 0。
+- 相鄰元素相等會破壞斜率論證；LC 162 禁止這種情況，若有平台（`[1, 2, 2, 1]`）
+  就需要退回線性做法。
+
+**不適用時** — 你要在山脈陣列裡找一個**目標值**（LC 1095）：這裡先找峰值，接著做兩次
+有序搜尋 — 在遞增的左段跑模板 1，在遞減的右段跑比較方向**翻轉**過的模板 1：
+
+<!--CODE-->
+
+一個函式就能兩者通用：`if ((val < target) == ascending) left = mid + 1; else right = mid - 1;`。
+LC 1095 的題解在 [binary_search_examples.md](./binary_search_examples.md)。
+
+**練習** — LC 162 ⭐ · LC 852 *（山脈保證只有一個峰值）* · LC 1901 *（二維：對列做二分
+搜尋，取每列的最大值）* · LC 1095 *（先找峰值，再做一次遞增、一次遞減搜尋）*
+
+<!-- 127eaf886ab9 -->
+### 模板 8：指數（Galloping）搜尋 — LC 702 ⭐⭐⭐⭐
+
+**辨識** — 「**大小未知**的排序陣列」、沒有 `length` 的 `reader` / `ArrayReader`、
+CtCI 10.4 沒有 `size()` 的 `Listy`、分頁式 API。二分搜尋需要右端點，而輸入就是不給你。
+成本應該取決於目標的索引 p，而不是一個你拿不到的長度。
+
+**關鍵點** — 加倍迴圈只會讓 `hi` 越過一個值已知 `< target` 的索引，所以它停下時，答案就在
+`[hi // 2, hi]` 之內。兩個階段都花 O(log p) 次探測：加倍在 ⌈log₂ p⌉ 步內越過 p，
+而交出去的視窗最多 p 寬。
+
+<!--CODE-->
+
+<!--CODE-->
+
+<!--CODE-->
+
+**複雜度**
+- **時間 O(log p)**：`while reader.get(hi) < target` 迴圈把 `hi` 加倍直到越過 p，
+  共 ⌈log₂ p⌉ + 1 次探測；第二個迴圈在最多 p 個索引的視窗中搜尋。
+- **空間 O(1)**：`lo`、`hi`、`mid`。
+
+**陷阱**
+- **越界哨兵值的方向。** LC 702 的 `2³¹ − 1` 排在所有真實值之上，所以一般的比較就能處理。
+  CtCI 的 `Listy` 回傳 `-1`，它排在真實值*之下*：沒被檢查的 `-1` 會把搜尋推向右邊、
+  衝出尾端，永遠停不下來。要明確檢查 —
+  `while (list.elementAt(hi) != -1 && list.elementAt(hi) < target)` 以及
+  `if (val == -1 || val > target) hi = mid - 1;`。
+- `hi` 必須從 `1` 開始，不能是 `0`：`0 << 1` 還是 `0`，目標在索引 0 之後時會無限迴圈。
+- 加倍之後用 `lo = 0` 依然正確，但丟掉了學到的資訊：視窗寬了一倍，多浪費一次折半。
+  要用 `lo = hi // 2`。
+
+**不適用時** — 題目有給 `len(nums)`：加倍毫無用處，用模板 1。
+
+**練習** — LC 702 ⭐ · CtCI 10.4 *（Listy，`-1` 哨兵值）* · LC 1095 *（同樣的「探測預算」
+思維，API 上限 100 次呼叫）*
+
 - **為什麼用加倍而不是固定步長。** 步長 `k` 需要 `p/k` 次探測；加倍只要
   `log2(p)` 次，而且超過答案的幅度永遠不會超過兩倍。
 - **面試之外的同一招。** 把一個小的有序清單和一個巨大的有序清單取交集時，會對每個元素做
   galloping 搜尋而不是逐一掃描；Timsort 的合併也用它來跳過某一側的長串。
 
-<!-- c043ad3c5c9b -->
+<!-- 5d116b3555c2 -->
 #### LC 702 變體 — 視窗從哪裡開始，以及約束捷徑
 
-LC 702 的每個版本都是同樣的兩個階段；差別只在於**加倍階段交給第二階段的是哪個左端點**，
-以及**視窗內跑的是哪個二分搜尋模板**。它們全都正確，因為加倍迴圈只會越過一個值已知
-`< target` 的索引：
+> **關鍵點** — 每個變體都是同樣的兩個階段；差別只在於加倍交出去的左端點，以及
+> 視窗內用哪個模板搜尋。
+
+**化約為**：[模板 8](#template-8-exponential-galloping-search--lc-702-) — 第二階段改用模板 2 的 lower bound。
+
+它們全都正確，因為加倍迴圈只會越過一個值已知 `< target` 的索引：
 
 | 變體 | 第一階段（擴大 `hi`） | 第二階段的視窗 | 第二階段模板 |
 |---|---|---|---|
-| 上面的模板 | `hi <<= 1` | `[hi // 2, hi]` — 最後一個 `< target` 的探測點 | 閉區間 `lo <= hi`，精確比對（§2.1） |
+| 上面的模板 | `hi <<= 1` | `[hi // 2, hi]` — 最後一個 `< target` 的探測點 | 閉區間 `lo <= hi`，精確比對 [模板 1](#template-1-exact-match-on-a-closed-interval--lc-704-) |
 | 加倍時同步追蹤 `lo` | `lo = hi + 1; hi *= 2` | `[前一個 hi + 1, hi]` — 少一格 | 閉區間 `lo <= hi`，精確比對 |
-| Lower bound | `hi <<= 1` | `[hi // 2, hi]` | 半開 `lo < hi` → 第一個 `get >= target` 的索引，再檢查是否相等（§1.3） |
+| Lower bound | `hi <<= 1` | `[hi // 2, hi]` | 半開 `lo < hi` → 第一個 `get >= target` 的索引，再檢查是否相等 [模板 2](#template-2-lower-and-upper-bound--lc-34-) |
 | 約束捷徑 | 無 — `hi = 2 * 10^4` | `[0, 20000]` | lower bound |
 
 lower-bound 寫法每次折半只呼叫**一次** `reader.get`，而不是精確比對寫法的三向分支，
@@ -783,7 +978,7 @@ judge 也會接受 — 但要明白說出來：它把一個約束寫死了，而
 - **迴圈結束後用 `lo = hi // 2` 而不是 `lo = 0`：** `0` 依然正確、依然是 `O(log p)`，
   但它丟掉了加倍階段學到的資訊 — 視窗寬了一倍，多浪費一次折半。
 
-<!-- 0541ba26d483 -->
+<!-- 7a07168a3b5d -->
 ### 2.6) 探測可能落在空洞上 — 稀疏搜尋 ⭐⭐⭐
 
 CtCI 10.5：一個排序好的字串陣列，隨機位置塞了 `""`。`mid` 可能落在空字串上，
@@ -794,25 +989,37 @@ CtCI 10.5：一個排序好的字串陣列，隨機位置塞了 `""`。`mid` 可
 
 - **往兩側外擴，而不是只往右。** 只往右掃可能會越過 `hi`，逼你丟掉仍然包含目標的那一半。
 - **保證沒了，而這正是答案。** 長度為 `n` 的一整串 `""` 會讓它變成
-  `O(n)`；只有在空洞稀疏時才能維持 `O(log n)`。要說出這一點 — 這和 LC 81（§1.2）
+  `O(n)`；只有在空洞稀疏時才能維持 `O(log n)`。要說出這一點 — 這和 LC 81（[模板 4](#template-4-search-a-rotated-array--lc-33-)）
   是同一個教訓：`nums[l] == nums[mid] == nums[r]` 讓探測失去資訊，
   退而求其次的 `l++ / r--` 會讓搜尋退化成 `O(n)`。
 
-<!-- 095a85c25eef -->
+<!-- 656f1635c0d2 -->
 ### 2.7) 速查 — 其他帶有二分搜尋味道的題目
 
 這些知名題目都是重用本文件已有的模板；列在這裡是為了讓你一眼認出來，不需要新技巧。
 
 | LC | 題目 | 用哪個模板 |
 |----|---------|----------------|
-| 275 | H-Index II | 對索引做邊界搜尋：第一個滿足 `citations[i] >= n - i` 的 `i`（§1.3） |
-| 1268 | Search Suggestions System | 排序 products，對逐步變長的前綴做 `lower_bound`（§1.3；binary_search_examples.md 的 LC 436）；Trie 是另一種做法 |
+| 275 | H-Index II | 對索引做邊界搜尋：第一個滿足 `citations[i] >= n - i` 的 `i`（[模板 2](#template-2-lower-and-upper-bound--lc-34-)） |
+| 1268 | Search Suggestions System | 排序 products，對逐步變長的前綴做 `lower_bound`（[模板 2](#template-2-lower-and-upper-bound--lc-34-)；binary_search_examples.md 的 LC 436）；Trie 是另一種做法 |
 | 349 / 350 | Intersection of Two Arrays I / II | 排序較大的陣列，對每個元素做二分搜尋（也可用雜湊集合 / 雙指標） |
 | 792 | Number of Matching Subsequences | 每個字元一份排序索引清單 + `upper_bound` 跳到下一次出現處（前綴和 + lower bound 家族 — binary_search_examples.md §19） |
 | 222 | Count Complete Tree Nodes | 對**最後一層的節點索引**做二分搜尋，沿著候選值的位元路徑往下走來驗證 — `O(log²n)` |
 | 1044 | Longest Duplicate Substring | 對**答案長度**做二分搜尋 + Rabin-Karp 滾動雜湊當判定式（binary_search_on_answer.md） |
 | 1385 | Find the Distance Value Between Two Arrays | 排序 `arr2`，對每個 `arr1[i]` 二分搜尋最接近的鄰居 |
 | 1346 | Check If N and Its Double Exist | 排序 + 二分搜尋 `2*x`（也可用雜湊集合） |
+
+<!-- 946d76409ba9 -->
+## 練習路徑
+
+| 階段 | 題目（由易到難） | 新增了什麼 |
+|---|---|---|
+| **核心** ⭐ | LC 704 · LC 34 · LC 153 ⭐ · LC 33 ⭐ · LC 300 ⭐ | 精確比對、兩個邊界、旋轉的那一對、`tails` — 模板 1–5 各一次 |
+| **練習** | LC 35 · LC 278 · LC 74 · LC 162 · LC 702 · LC 981 · LC 2080 | 插入位置、布林 API、二維攤平索引、斜率搜尋、沒有右端點、每個 key 的 floor、用兩個邊界計數 |
+| **延伸** | LC 81 · LC 154 · LC 1095 · LC 354 · LC 1964 | 退化成 O(n) 的重複值、一次遞增一次遞減搜尋的山脈、帶平手規則排序後的 LIS、非遞減的 `tails` |
+
+對答案做二分搜尋（LC 875 ⭐、LC 410、LC 1011）有自己的練習路徑，在
+[binary_search_on_answer.md](./binary_search_on_answer.md)。
 
 <!-- 6b58a0929f57 -->
 ## 3) 總結與速查
@@ -826,29 +1033,29 @@ CtCI 10.5：一個排序好的字串陣列，隨機位置塞了 `""`。`mid` 可
 - 要找邊界或插入位置
 - 具備二元性質的最佳化問題
 
-<!-- f0c9d01e3a2f -->
+<!-- 479ceeb86890 -->
 ### 3.2) 模板選擇指南
 
 整份文件用這一張表就夠了：看輸入的形狀，決定該拿哪個模板。
 
 | 題型 / 輸入形狀 | 模板 | 題解範例 |
 |---|---|---|
-| 在排序陣列中做**精確搜尋** | 標準閉區間 `while l <= r` — §2.1 | LC 704 |
-| **左邊界**（第一個 `>= target` 的索引） | Lower bound — §1.3 | LC 34、LC 35、LC 278 |
-| **右邊界**（最後一個 `<= target` 的索引） | Upper bound − 1 — §1.3 | LC 34、LC 981 |
-| **插入位置** | Lower bound，回傳 `l` 不做驗證 — §1.3 | LC 35 |
-| 值 `v` 在 `arr[l..r]` 中出現**幾次**，陣列未排序 | 每個值一份索引清單，`bisect_right(r) - bisect_left(l)` — §1.3 | LC 2080 |
-| **峰 / 谷**，沒有目標值 | 半開區間 `while l < r`、`r = mid` | LC 162、LC 852 |
-| **旋轉**排序陣列 | 找出有序的那一半 — §1.2 | LC 33、LC 81、LC 153、LC 154 |
-| 陣列**先升後降**（山脈 / 雙調） | 找峰值 + 兩次有序搜尋，其中一次**遞減** — §2.4 | LC 1095 |
-| 輸入**沒有長度**（reader / 串流 / 分頁式 API） | 把索引加倍找出右端點，再搜尋 — §2.5 | LC 702 |
+| 在排序陣列中做**精確搜尋** | 標準閉區間 `while l <= r` — [模板 1](#template-1-exact-match-on-a-closed-interval--lc-704-) | LC 704 |
+| **左邊界**（第一個 `>= target` 的索引） | Lower bound — [模板 2](#template-2-lower-and-upper-bound--lc-34-) | LC 34、LC 35、LC 278 |
+| **右邊界**（最後一個 `<= target` 的索引） | Upper bound − 1 — [模板 2](#template-2-lower-and-upper-bound--lc-34-) | LC 34、LC 981 |
+| **插入位置** | Lower bound，回傳 `l` 不做驗證 — [模板 2](#template-2-lower-and-upper-bound--lc-34-) | LC 35 |
+| 值 `v` 在 `arr[l..r]` 中出現**幾次**，陣列未排序 | 每個值一份索引清單，`bisect_right(r) - bisect_left(l)` — [模板 2](#template-2-lower-and-upper-bound--lc-34-) | LC 2080 |
+| **峰 / 谷**，沒有目標值 | 閉區間、停在單一候選：`while l < r`、`r = mid` — [模板 7](#template-7-peak-finding-by-slope--lc-162-) | LC 162、LC 852 |
+| **旋轉**排序陣列 | 找出有序的那一半 — [模板 3](#template-3-rotated-array-minimum--lc-153-)、[模板 4](#template-4-search-a-rotated-array--lc-33-) | LC 33、LC 81、LC 153、LC 154 |
+| 陣列**先升後降**（山脈 / 雙調） | 找峰值 + 兩次有序搜尋，其中一次**遞減** — [模板 7](#template-7-peak-finding-by-slope--lc-162-) | LC 1095 |
+| 輸入**沒有長度**（reader / 串流 / 分頁式 API） | 把索引加倍找出右端點，再搜尋 — [模板 8](#template-8-exponential-galloping-search--lc-702-) | LC 702 |
 | 探測可能落在**不帶資訊**的位置（`""`、重複值） | 往外走到最近的可用項目 — §2.6 | CtCI 10.5、LC 81 |
-| **二維矩陣** | 整體有序就攤平，只有列 + 行有序就走階梯 — §2.3 | LC 74 vs LC 240 |
+| **二維矩陣** | 整體有序就攤平，只有列 + 行有序就走階梯 — [模板 6](#template-6-2d-matrix-as-one-sorted-array--lc-74) | LC 74 vs LC 240 |
 | 答案是**實數**、要求精度 | 浮點數 / 固定迭代次數 — §2.2 | LC 69（浮點數版） |
 | 「**最小化最大值**」/「**最大化最小值**」 | 對答案做二分搜尋 — [binary_search_on_answer.md](./binary_search_on_answer.md) | LC 410、875、1011、1231、2616 |
 | 值域已知，但**陣列沒有排序** | 對值域做二分搜尋 + 計數 — [binary_search_on_answer.md](./binary_search_on_answer.md) | LC 287、LC 378 |
 | 可行性判斷需要**走訪圖** | 對答案做二分搜尋 + BFS/DFS 判定式 — [binary_search_on_answer.md](./binary_search_on_answer.md) | LC 1631、LC 778 |
-| `O(n log n)` LIS、加權抽樣、有序歷史紀錄 | 對你**維護**的有序陣列做 `lower_bound` — §1.5，題解在 [binary_search_examples.md](./binary_search_examples.md) | LC 300、LC 354、LC 528、LC 981 |
+| `O(n log n)` LIS、加權抽樣、有序歷史紀錄 | 對你**維護**的有序陣列做 `lower_bound` — [模板 5](#template-5-lower-bound-on-a-maintained-tails-array--lc-300-)，題解在 [binary_search_examples.md](./binary_search_examples.md) | LC 300、LC 354、LC 528、LC 981 |
 
 <!-- 2f2b58b17200 -->
 ### 3.3) 常見陷阱與訣竅
@@ -864,81 +1071,3 @@ CtCI 10.5：一個排序好的字串陣列，隨機位置塞了 `""`。`mid` 可
 - 邊界搜尋結束後要驗證結果  
 - 邊界型態要前後一致（閉區間 vs 半開區間）
 - 用邊界情況測試：空陣列、單一元素、重複值
-
-<!-- 66c7e8e6b79e -->
-### 3.4) 面試訊號 — 該用哪個模式？
-
-| 訊號 | 模式 |
-|--------|---------|
-| 「找出最小 / 最大的 X 使得……」 | 對答案做二分搜尋 |
-| 「已排序陣列，找第一次 / 最後一次出現」 | 左 / 右邊界二分搜尋 |
-| 「最小的值 **>=** X」/「最大的 **<=** X」，每個元素各問一次 | 排序一次 + lower / upper bound — §1.3 |
-| 「`value` 在 `arr[left..right]` 中的**出現次數**」，查詢很多次 | 每個值一份索引清單 + upper − lower bound — §1.3 |
-| 「左邊 / 右邊**第一個**比它大的元素」（位置性） | 單調堆疊，**不是**二分搜尋 — §1.3 |
-| 「陣列沒有 `size()`」/「API 是分頁式的」 | 用指數（galloping）搜尋找右端點 — §2.5 |
-| 「矩陣的列與行都排序」 | 階梯搜尋（**不是**攤平的二分搜尋） |
-| 「答案是實數，要求精度」 | 浮點數二分搜尋 |
-| 「最長遞增 / 鏈式子序列」，要把 `O(n²)` DP 改成 `O(n log n)` | `tails` + lower bound — §1.5 |
-| 「我們做得到 X 嗎？」具備單調性 | 對單調判定式做二分搜尋 |
-| 已有 O(n) 解法但題目要 O(log n) | 想一想：那個有序的搜尋空間是什麼？ |
-
-<!-- stale: 51e9781a0030 -->
-# 二分搜尋
-
-> **範圍** — 對**單調**搜尋空間做折半 — `l <= r` 與 `l < r` 背後的迴圈不變式推理、邊界（lower / upper bound）模板、旋轉陣列，以及浮點數與二維搜尋。
-> **另見** — *從本文件拆出去的深入主題*：[binary_search_on_answer.md](./binary_search_on_answer.md) — 對*答案空間*做搜尋：`canFinish` / `isValid` 判定式、最小化最大值 vs 最大化最小值，以及值域計數；[binary_search_examples.md](./binary_search_examples.md) — 題解存放處，每題一份標準解。
-> *鄰近文件*：[sort.md](./sort.md) — 先把陣列排好序；[advanced_divide_and_conquer.md](./advanced_divide_and_conquer.md) — 折半*外加*合併步驟；[bst.md](./bst.md) — 同一個不變式做成資料結構；[heap.md](./heap.md) — 不用整體排序就取第 k 大元素。
-
-<!-- stale: e9579f387d51 -->
-### 1.3) 找邊界 — Lower 與 Upper Bound (LC 34) ⭐⭐⭐⭐⭐
-
-**目的**：在有重複值的**非遞減**陣列中，找出 target 第一次與最後一次出現的位置
-
-<!-- stale: 68c1ad485db6 -->
-### 2.5) 速查 — 其他帶有二分搜尋味道的題目
-
-這些知名題目都是重用本文件已有的模板；列在這裡是為了讓你一眼認出來，不需要新技巧。
-
-| LC | 題目 | 用哪個模板 |
-|----|---------|----------------|
-| 275 | H-Index II | 對索引做邊界搜尋：第一個滿足 `citations[i] >= n - i` 的 `i`（§1.3） |
-| 1268 | Search Suggestions System | 排序 products，對逐步變長的前綴做 `lower_bound`（§1.3；binary_search_examples.md 的 LC 436）；Trie 是另一種做法 |
-| 349 / 350 | Intersection of Two Arrays I / II | 排序較大的陣列，對每個元素做二分搜尋（也可用雜湊集合 / 雙指標） |
-| 792 | Number of Matching Subsequences | 每個字元一份排序索引清單 + `upper_bound` 跳到下一次出現處（前綴和 + lower bound 家族 — binary_search_examples.md §19） |
-| 222 | Count Complete Tree Nodes | 對**最後一層的節點索引**做二分搜尋，沿著候選值的位元路徑往下走來驗證 — `O(log²n)` |
-| 1044 | Longest Duplicate Substring | 對**答案長度**做二分搜尋 + Rabin-Karp 滾動雜湊當判定式（binary_search_on_answer.md） |
-| 1385 | Find the Distance Value Between Two Arrays | 排序 `arr2`，對每個 `arr1[i]` 二分搜尋最接近的鄰居 |
-| 1346 | Check If N and Its Double Exist | 排序 + 二分搜尋 `2*x`（也可用雜湊集合） |
-
-<!-- stale: 616a3f557623 -->
-### 3.2) 模板選擇指南
-
-整份文件用這一張表就夠了：看輸入的形狀，決定該拿哪個模板。
-
-| 題型 / 輸入形狀 | 模板 | 題解範例 |
-|---|---|---|
-| 在排序陣列中做**精確搜尋** | 標準閉區間 `while l <= r` — §2.1 | LC 704 |
-| **左邊界**（第一個 `>= target` 的索引） | Lower bound — §1.3 | LC 34、LC 35、LC 278 |
-| **右邊界**（最後一個 `<= target` 的索引） | Upper bound − 1 — §1.3 | LC 34、LC 981 |
-| **插入位置** | Lower bound，回傳 `l` 不做驗證 — §1.3 | LC 35 |
-| **峰 / 谷**，沒有目標值 | 半開區間 `while l < r`、`r = mid` | LC 162、LC 852 |
-| **旋轉**排序陣列 | 找出有序的那一半 — §1.2 | LC 33、LC 81、LC 153、LC 154 |
-| 陣列**先升後降**（山脈 / 雙調） | 找峰值 + 兩次有序搜尋，其中一次**遞減** — §2.4 | LC 1095 |
-| **二維矩陣** | 整體有序就攤平，只有列 + 行有序就走階梯 — §2.3 | LC 74 vs LC 240 |
-| 答案是**實數**、要求精度 | 浮點數 / 固定迭代次數 — §2.2 | LC 69（浮點數版） |
-| 「**最小化最大值**」/「**最大化最小值**」 | 對答案做二分搜尋 — [binary_search_on_answer.md](./binary_search_on_answer.md) | LC 410、875、1011、1231、2616 |
-| 值域已知，但**陣列沒有排序** | 對值域做二分搜尋 + 計數 — [binary_search_on_answer.md](./binary_search_on_answer.md) | LC 287、LC 378 |
-| 可行性判斷需要**走訪圖** | 對答案做二分搜尋 + BFS/DFS 判定式 — [binary_search_on_answer.md](./binary_search_on_answer.md) | LC 1631、LC 778 |
-| `O(n log n)` LIS、加權抽樣、有序歷史紀錄 | 對維護中的有序陣列做 `lower_bound` — [binary_search_examples.md](./binary_search_examples.md) | LC 300、LC 354、LC 528、LC 981 |
-
-<!-- stale: 422dbae9bba7 -->
-### 3.4) 面試訊號 — 該用哪個模式？
-
-| 訊號 | 模式 |
-|--------|---------|
-| 「找出最小 / 最大的 X 使得……」 | 對答案做二分搜尋 |
-| 「已排序陣列，找第一次 / 最後一次出現」 | 左 / 右邊界二分搜尋 |
-| 「矩陣的列與行都排序」 | 階梯搜尋（**不是**攤平的二分搜尋） |
-| 「答案是實數，要求精度」 | 浮點數二分搜尋 |
-| 「我們做得到 X 嗎？」具備單調性 | 對單調判定式做二分搜尋 |
-| 已有 O(n) 解法但題目要 O(log n) | 想一想：那個有序的搜尋空間是什麼？ |

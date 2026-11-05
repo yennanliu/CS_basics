@@ -46,70 +46,71 @@
     - set
     - array
 
+### 0-2) Recognition
+
+Most "array" problems route out to a pattern sheet (see [2) Pattern Selection](#2-pattern-selection)).
+These are the signals that stay here. Constraint cues follow the ruler in
+[complexity_cheatsheet.md](./complexity_cheatsheet.md).
+
+| Signal in the statement | Constraint cue | Reach for | Not this if |
+|---|---|---|---|
+| "merge into `nums1` **in place**", "the last n slots are 0 and should be ignored" | O(1) extra space follow-up | [Template 6](#template-6-backward-write-pointer--lc-88) backward write pointer | the free space is at the front (remove duplicates) → forward slow/fast, [2_pointers.md](./2_pointers.md) |
+| "`insert` / `remove` / `getRandom` in **average O(1)**" | ~10⁵ calls | [Template 7](#template-7-swap-with-last-delete--lc-380) swap-with-last delete | duplicates allowed (LC 381) → value maps to a set of indices |
+| "appears **more than ⌊n/2⌋** times", "O(1) extra space" | n ≤ 5·10⁴, one pass | [Template 2](#template-2-majority-vote-one-candidate--lc-169) majority vote | "most frequent" / "top k" → counts, [hash_map.md](./hash_map.md) |
+| "all elements appearing **more than ⌊n/3⌋** times" | O(1) space | [Template 3](#template-3-majority-vote-k--1-candidates--lc-229) k − 1 candidates | |
+| "permutation of `1..n`", "for every prefix, how many …" | values ≤ n → an array is the hash map | [Template 4](#template-4-frequency-array--running-count--lc-2657) frequency array + running count | values up to 10⁹ → a hash map with the same crossing test |
+| "sum of X over **all substrings / subarrays**" | n ≤ 10⁵ → cannot list O(n²) subarrays | [Template 5](#template-5-index-contribution-counting--lc-2063) `(i + 1) * (n - i)` | X counts only when the element is the min / max (LC 907) → [monotonic_stack.md](./monotonic_stack.md) |
+| "make every element of a row equal, minimum operations, or −1" | each element has ~2 choices | [Template 8](#template-8-bounded-candidate-enumeration--lc-1007) candidates from index 0 | the target can be any value → sort / median, [sort.md](./sort.md) |
+| "design an iterator" over a 2D array, `next()` / `hasNext()` | O(1) amortized per call | [Template 1](#template-1-lazy-two-cursor-iterator--lc-251-) two cursors | unbounded nesting (LC 341) → a stack of iterators, [iterator.md](./iterator.md) |
+
 ## 1) General form
 
 ### 1-1) Basic OP
 
 #### 1-1-0) Split Array
-```text
-# https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/python_trick.md
+```python
+# python
+# itertools.islice(seq, [start,] stop [, step]) slices any iterator without building a list
+import itertools
 
-#-----------------------------------------------------------------------------------------------------
-# example 7 : itertools.islice : slice on iterator
-#-----------------------------------------------------------------------------------------------------
-# https://docs.python.org/3/library/itertools.html#itertools.islice
-# syntax : itertools.islice(seq, [start,] stop [, step])
+x = itertools.islice(range(10), 0, 9, 2)
+print(list(x))   # -> [0, 2, 4, 6, 8]
 
-In [6]:  x = itertools.islice(range(10), 0, 9, 2)
-
-In [7]: print (list(x))
-[0, 2, 4, 6, 8]
-
-
-In [18]: y = itertools.islice(range(10), 0, 10, 3)
-    ...: print (list(y))
-[0, 3, 6, 9]
+y = itertools.islice(range(10), 0, 10, 3)
+print(list(y))   # -> [0, 3, 6, 9]
 ```
 
 #### 1-1-1) Insert into Array
 ```python
-p=[[7, 0], [7, 1], [6, 1], [5, 0], [5, 2], [4, 4]]
-Out[27]: [[7, 0], [7, 1], [6, 1], [5, 0], [5, 2], [4, 4]]
-In [28]: p.insert(1, [6,1])
-In [29]: p
-Out[29]: [[7, 0], [6, 1], [7, 1], [6, 1], [5, 0], [5, 2], [4, 4]]
+# python
+p = [[7, 0], [7, 1], [6, 1], [5, 0], [5, 2], [4, 4]]
+p.insert(1, [6, 1])   # O(n): shifts everything after index 1
+print(p)   # -> [[7, 0], [6, 1], [7, 1], [6, 1], [5, 0], [5, 2], [4, 4]]
 ```
 
 #### 1-1-2) Delete from Array
 ```python
-p=[[7, 0], [7, 1], [6, 1], [5, 0], [5, 2], [4, 4]]
-
-In [4]: p
-Out[4]: [[7, 0], [7, 1], [6, 1], [5, 0], [5, 2], [4, 4]]
-
-In [5]: p.remove([7, 1])
-
-In [6]: p
-Out[6]: [[7, 0], [6, 1], [5, 0], [5, 2], [4, 4]]
+# python
+p = [[7, 0], [7, 1], [6, 1], [5, 0], [5, 2], [4, 4]]
+p.remove([7, 1])      # O(n): removes the FIRST equal element; ValueError if absent
+print(p)   # -> [[7, 0], [6, 1], [5, 0], [5, 2], [4, 4]]
 ```
+
 #### 1-1-3) check if element in Array
 ```python
-In [7]: p
-Out[7]: [[7, 0], [6, 1], [5, 0], [5, 2], [4, 4]]
-
-In [8]: [7,0] in p
-Out[8]: True
+# python
+p = [[7, 0], [6, 1], [5, 0], [5, 2], [4, 4]]
+print([7, 0] in p)    # -> True   (O(n) scan; use a set for repeated lookups)
 ```
+
 #### 1-1-4) append to array (head, tail)
 ```python
-# tail
-In [9]: p
-Out[9]: [[7, 0], [6, 1], [5, 0], [5, 2], [4, 4]]
-
-In [10]: p.append([0,0])
-
-In [11]: p
-Out[11]: [[7, 0], [6, 1], [5, 0], [5, 2], [4, 4], [0, 0]]
+# python
+p = [[7, 0], [6, 1], [5, 0], [5, 2], [4, 4]]
+p.append([0, 0])      # tail: O(1) amortized
+print(p)   # -> [[7, 0], [6, 1], [5, 0], [5, 2], [4, 4], [0, 0]]
+p.insert(0, [9, 9])   # head: O(n); use collections.deque.appendleft for O(1)
+print(p[0])   # -> [9, 9]
 ```
 
 #### 1-1-5) Sort Array*****
@@ -382,11 +383,15 @@ public class NestedIterator implements Iterator<Integer>{
 }
 ```
 
-##### **Pattern: Lazy Iterator over a 2D Array - LC 251** ⭐⭐⭐⭐
+##### Template 1: Lazy Two-Cursor Iterator — LC 251 ⭐⭐⭐⭐
 
-**Key Idea**: do not build the flat copy. Keep two cursors, `(row, col)`, into the
-**original** 2D array, and let `hasNext()` walk them past used-up and empty rows until they
-sit on a real element. `next()` only reads that element and steps `col`.
+**Recognise** — "design an iterator" / "implement `next()` and `hasNext()`" over a 2D or nested
+array, often with a follow-up of "the input is huge" or "use O(1) extra space". Calls ≤ 10⁵ →
+each call must be O(1) amortized.
+
+**Key point** — `(row, col)` always points into the **original** array, and after `hasNext()`
+returns it sits on a real element; only `next()` ever moves past one. So nothing is copied, and
+each row is skipped once over the whole pass.
 
 | | Eager (flatten in the constructor) | **Lazy (two cursors)** |
 |---|---|---|
@@ -471,6 +476,13 @@ class Vector2D {
 }
 ```
 
+**Complexity**
+- **Time O(1) amortized per call**: the `while` in `hasNext()` can skip several rows at once,
+  but `row` only moves forward, so over a full pass it advances R times in total: O(R + N).
+- **Space O(1) extra**: `self.vec = vec` keeps a reference, not a copy; the state is two ints.
+
+**Dry run**
+
 ```text
 vec = [[1, 2], [], [3]]          (row, col) after each call
 
@@ -482,16 +494,23 @@ next()     -> 3                  (2, 1)
 hasNext()  -> false              (3, 0)   row == len(vec)
 ```
 
-**Pitfalls**
+**Traps**
+- **A `next()` that trusts the cursor.** `self.col += 1; return vec[row][col - 1]` works only
+  if `hasNext()` ran first. On `[[], [3]]`, calling `next()` straight away reads the empty row 0
+  and crashes. Normalizing inside `next()` costs nothing and removes that dependency.
+- **A `hasNext()` that consumes.** It may move past rows that hold nothing. It must never step
+  past a real element; only `next()` does that.
+- **`if` where `while` is needed.** Two empty rows in a row (`[[1], [], [], [2]]`) need more
+  than one skip.
+- **Forgetting `col = 0`** when moving to the next row: on `[[1, 2], [3]]` the second row is
+  read from index 2 and skipped.
 
-1. **A `next()` that trusts the cursor.** `self.col += 1; return vec[row][col - 1]` works only
-   if `hasNext()` ran first. On `[[], [3]]`, calling `next()` straight away reads the empty row 0
-   and crashes. Normalizing inside `next()` costs nothing and removes that dependency.
-2. **A `hasNext()` that consumes.** It may move past rows that hold nothing. It must never step
-   past a real element; only `next()` does that.
-3. **`if` where `while` is needed.** Two empty rows in a row (`[[1], [], [], [2]]`) need more
-   than one skip.
-4. **Forgetting `col = 0`** when moving to the next row.
+**Not this if** — the nesting depth is not fixed (LC 341 Flatten Nested List Iterator): two
+cursors cannot track an unbounded depth, so keep a stack of iterators instead
+([iterator.md](./iterator.md#1-2-the-hasnext--next-contract-)).
+
+**Drill** — LC 251 ⭐ · LC 284 *(peek: cache one element ahead)* · LC 281 *(zigzag: a queue of
+cursors)* · LC 341 *(unbounded depth: a stack of cursors)*
 
 #### 1-1-7) go through 2 arrays (length could be different)
 ```python
@@ -520,8 +539,7 @@ class Solution:
         nums2 = version2.split('.')
         n1, n2 = len(nums1), len(nums2)
         
-        # NOTE here !!!
-        # compare versions
+        # compare column by column; a missing revision counts as 0
         for i in range(max(n1, n2)):
             i1 = int(nums1[i]) if i < n1 else 0
             i2 = int(nums2[i]) if i < n2 else 0
@@ -539,857 +557,446 @@ class Solution:
 
 #### 1-2-1) Boyer-Moore Majority Vote Algorithm
 
-**Concept:**
-- Find element(s) appearing more than ⌊n/k⌋ times in an array
-- **Key Idea**: Pair different elements and cancel them out
-- Majority element survives cancellation
-- **Two-phase**: (1) Find candidates, (2) Verify counts
-- **Space**: O(k) for k-1 candidates
+Find the element(s) that appear more than ⌊n/k⌋ times in O(1) extra space by pairing different
+elements and cancelling them out. [streaming_algorithms.md](./streaming_algorithms.md) explains
+why the same idea works on a stream.
 
-**When to Use:**
-- "Find majority element" → element appearing > n/2 times
-- "Find all elements appearing more than n/3 times"
-- "Heavy hitters" or "frequent elements" problems
-- Need O(1) space (better than HashMap O(n))
+##### Template 2: Majority Vote, One Candidate — LC 169
 
-**Related:** See [streaming_algorithms.md](./streaming_algorithms.md) for detailed explanation.
+**Recognise** — "the element that appears **more than ⌊n/2⌋ times**", "you may assume the
+majority element always exists", with a follow-up of "O(1) extra space". n ≤ 5·10⁴ → one O(n)
+pass.
 
----
-
-##### **Pattern 1: Standard Majority Element (> n/2) - LC 169**
-
-**Algorithm:**
-- Maintain one candidate and count
-- When count=0, select new candidate
-- Increment count for same element, decrement for different
-- Majority element survives
+**Key point** — every decrement cancels one copy of `candidate` against one *different* value.
+A value with more than n/2 copies cannot be cancelled out completely, so it is the candidate
+standing at the end.
 
 ```python
-# Python - LC 169
+# python
+# LC 169 - Majority Element
+# IDEA: Boyer-Moore vote - adopt a candidate when count is 0, +1 on a match, -1 otherwise
+# time = O(n), space = O(1)
 def majorityElement(nums):
-    """
-    Find element appearing > n/2 times
-    Time: O(n)
-    Space: O(1)
-    """
     candidate = None
     count = 0
-
-    # Phase 1: Find candidate
     for num in nums:
         if count == 0:
-            candidate = num
+            candidate = num       # everything before here cancelled out: start fresh
             count = 1
         elif num == candidate:
             count += 1
         else:
-            count -= 1  # Cancel out
-
-    # Phase 2: Verify (can skip if majority guaranteed)
-    # return candidate
-
-    # If not guaranteed, verify:
-    if nums.count(candidate) > len(nums) // 2:
-        return candidate
-    return None
+            count -= 1            # pair num with one copy of candidate and drop both
+    # LC 169 guarantees a majority exists; without that guarantee,
+    # verify: return candidate if nums.count(candidate) > len(nums) // 2 else None
+    return candidate
 ```
 
 ```java
-// Java - LC 169
-// V0
-// IDEA: Boyer-Moore Majority Vote
-/**
- * Key Insight:
- * - Pair different elements and cancel them out
- * - Majority element will survive cancellation
- * - Works because majority element appears > n/2 times
- *
- * Time: O(n)
- * Space: O(1)
- */
+// java
+// LC 169 - Majority Element
+// IDEA: Boyer-Moore vote - adopt a candidate when count is 0, +1 on a match, -1 otherwise
+// time = O(n), space = O(1)
 public int majorityElement(int[] nums) {
-    /**
-     * time = O(N)
-     * space = O(1)
-     */
     int candidate = nums[0];
-    int count = 1;
-
-    // Phase 1: Find candidate by cancellation
-    for (int i = 1; i < nums.length; i++) {
+    int count = 0;
+    for (int num : nums) {
         if (count == 0) {
-            // Start new candidate when count reaches 0
-            candidate = nums[i];
+            candidate = num;      // everything before here cancelled out: start fresh
             count = 1;
-        } else if (nums[i] == candidate) {
-            // Same element: increment count
+        } else if (num == candidate) {
             count++;
         } else {
-            // Different element: cancel out
-            count--;
+            count--;              // pair num with one copy of candidate and drop both
         }
     }
-
-    // Phase 2: Verify (optional if majority guaranteed)
-    // If problem guarantees majority exists, return candidate directly
-    return candidate;
-
-    // Otherwise, verify:
-    // int actualCount = 0;
-    // for (int num : nums) {
-    //     if (num == candidate) actualCount++;
-    // }
-    // return actualCount > nums.length / 2 ? candidate : -1;
+    return candidate;             // guaranteed to exist in LC 169; verify otherwise
 }
 ```
 
-**Example Trace:** `nums = [2,2,1,1,1,2,2]`
+**Complexity**
+- **Time O(n)**: the single `for num in nums` loop does O(1) work per element (plus one more
+  O(n) pass if you verify).
+- **Space O(1)**: the whole state is `candidate` and `count`.
+
+**Dry run**
 
 ```text
-Index | num | candidate | count | Action
---------------------------------------------
-  0   |  2  |     2     |   1   | Initialize
-  1   |  2  |     2     |   2   | Same, increment
-  2   |  1  |     2     |   1   | Different, decrement
-  3   |  1  |     2     |   0   | Different, decrement
-  4   |  1  |     1     |   1   | Count=0, new candidate
-  5   |  2  |     1     |   0   | Different, decrement
-  6   |  2  |     2     |   1   | Count=0, new candidate
-
-Result: 2 (appears 4 times > 7/2 = 3.5)
+nums = [2,2,1,1,1,2,2]
+num | candidate | count | action
+ 2  |     2     |   1   | count was 0 -> adopt
+ 2  |     2     |   2   | match
+ 1  |     2     |   1   | cancel
+ 1  |     2     |   0   | cancel
+ 1  |     1     |   1   | count was 0 -> adopt
+ 2  |     1     |   0   | cancel
+ 2  |     2     |   1   | count was 0 -> adopt   -> answer 2 (4 of 7)
 ```
 
----
+**Traps**
+- **Skipping the verify pass when no majority is guaranteed.** `[1,2,3]` ends with candidate 3,
+  which appears once. The vote only says *if* a majority exists, *this* is it.
+- **The candidate is not the most frequent element.** `[1,1,2,2,3]` (no majority) ends on 3,
+  not 1 or 2. Boyer-Moore answers "> n/2", never "mode".
 
-##### **Pattern 2: Elements Appearing > n/3 Times - LC 229**
+**Not this if** — the threshold is "most frequent" or "top k" rather than "more than n/k": counts
+are needed, so use a hash map and bucket or heap ([hash_map.md](./hash_map.md)).
 
-**Key Insight:** At most 2 elements can appear more than n/3 times.
+**Drill** — LC 169 ⭐ · LC 1150 *(sorted: binary search instead)* · LC 229 *(> n/3: Template 3)* ·
+LC 1157 *(majority in a range: random sampling or a segment tree of votes)*
 
-**Algorithm:**
-- Maintain two candidates and two counts
-- Cancellation requires decrementing both counts
-- Must verify both candidates in phase 2
+##### Template 3: Majority Vote, k − 1 Candidates — LC 229
+
+**Recognise** — "all elements that appear **more than ⌊n/3⌋ times**" (or ⌊n/k⌋), with "O(1)
+space" as the follow-up. At most k − 1 values can clear an n/k bar, so the answer is a list of at
+most k − 1.
+
+**Key point** — a value different from all k − 1 candidates cancels **one copy of each**, k
+values removed at once. A value with more than n/k copies takes part in at most its own count of
+cancellations, so it is never wiped out; but survivors are only *candidates*, so a second pass
+must count them.
 
 ```python
-# Python - LC 229
+# python
+# LC 229 - Majority Element II
+# IDEA: Boyer-Moore with two candidates; a value matching neither cancels one of each;
+#       then a second pass verifies both, because survivors are only candidates
+# time = O(n), space = O(1)
 def majorityElement(nums):
-    """
-    Find all elements appearing > n/3 times
-    Time: O(n)
-    Space: O(1)
-    """
-    # Phase 1: Find up to 2 candidates
-    candidate1, candidate2 = None, None
+    cand1, cand2 = None, None
     count1, count2 = 0, 0
-
     for num in nums:
-        if num == candidate1:
+        if num == cand1:              # check both matches BEFORE adopting
             count1 += 1
-        elif num == candidate2:
+        elif num == cand2:
             count2 += 1
         elif count1 == 0:
-            candidate1, count1 = num, 1
+            cand1, count1 = num, 1
         elif count2 == 0:
-            candidate2, count2 = num, 1
+            cand2, count2 = num, 1
         else:
-            # Different from both: cancel out
-            count1 -= 1
+            count1 -= 1               # num differs from both: cancel three values at once
             count2 -= 1
-
-    # Phase 2: Verify candidates
     result = []
-    for candidate in [candidate1, candidate2]:
-        if candidate is not None and nums.count(candidate) > len(nums) // 3:
-            result.append(candidate)
-
+    for cand in (cand1, cand2):       # verify: required here
+        if cand is not None and nums.count(cand) > len(nums) // 3:
+            result.append(cand)
     return result
 ```
 
 ```java
-// Java - LC 229
-// V0
-// IDEA: Boyer-Moore Majority Vote (Generalized)
-/**
- * Key Insight:
- * - At most 2 elements can appear > n/3 times
- * - Use 2 candidates and 2 counts
- * - Cancellation decrements both counts
- * - MUST verify both candidates
- *
- * Time: O(n)
- * Space: O(1)
- */
+// java
+// LC 229 - Majority Element II
+// IDEA: Boyer-Moore with two candidates, then count both again to verify
+// time = O(n), space = O(1)
 public List<Integer> majorityElement(int[] nums) {
-    /**
-     * time = O(N)
-     * space = O(1)
-     */
-    int candidate1 = 0, candidate2 = 0;
+    int cand1 = 0, cand2 = 0;         // safe: a num matching cand1 is never also adopted as cand2
     int count1 = 0, count2 = 0;
-
-    // Phase 1: Find up to 2 candidates
     for (int num : nums) {
-        if (num == candidate1) {
+        if (num == cand1) {
             count1++;
-        } else if (num == candidate2) {
+        } else if (num == cand2) {
             count2++;
         } else if (count1 == 0) {
-            candidate1 = num;
+            cand1 = num;
             count1 = 1;
         } else if (count2 == 0) {
-            candidate2 = num;
+            cand2 = num;
             count2 = 1;
         } else {
-            // Different from both: cancel out
             count1--;
             count2--;
         }
     }
-
-    // Phase 2: Verify candidates (REQUIRED!)
     count1 = 0;
     count2 = 0;
-    for (int num : nums) {
-        if (num == candidate1) count1++;
-        else if (num == candidate2) count2++;
+    for (int num : nums) {            // second pass: survivors are only candidates
+        if (num == cand1) {
+            count1++;
+        } else if (num == cand2) {
+            count2++;
+        }
     }
-
     List<Integer> result = new ArrayList<>();
-    if (count1 > nums.length / 3) result.add(candidate1);
-    if (count2 > nums.length / 3) result.add(candidate2);
-
+    if (count1 > nums.length / 3) {
+        result.add(cand1);
+    }
+    if (count2 > nums.length / 3) {
+        result.add(cand2);
+    }
     return result;
 }
 ```
 
-**Example Trace:** `nums = [3,2,3]`
+The same loop generalises to any k with a map of at most k − 1 candidates:
 
-```text
-Index | num | c1 | cnt1 | c2 | cnt2 | Action
--------------------------------------------------
-  0   |  3  | 3  |  1   | 0  |  0   | Set candidate1
-  1   |  2  | 3  |  1   | 2  |  1   | Set candidate2
-  2   |  3  | 3  |  2   | 2  |  1   | Match candidate1
-
-Verification:
-- candidate1=3: appears 2 times > 3/3 = 1 ✓
-- candidate2=2: appears 1 time ≤ 3/3 = 1 ✗
-
-Result: [3]
+```python
+# python
+# IDEA: generalised Boyer-Moore - at most k-1 candidates; a newcomer that finds the map
+#       full decrements every candidate (and drops the ones that reach 0)
+# time = O(n * k), space = O(k)
+def frequent_over_n_over_k(nums, k):
+    candidates = {}                   # value -> surviving count, at most k - 1 keys
+    for num in nums:
+        if num in candidates:
+            candidates[num] += 1
+        elif len(candidates) < k - 1:
+            candidates[num] = 1
+        else:
+            for key in list(candidates):
+                candidates[key] -= 1
+                if candidates[key] == 0:
+                    del candidates[key]
+    result = []
+    for cand in candidates:           # verify each survivor
+        if nums.count(cand) > len(nums) // k:
+            result.append(cand)
+    return result
 ```
 
----
+**Complexity**
+- **Time O(n)**: two linear passes, the voting `for` and the verify `nums.count` (O(n · k) for
+  the general version, because a full map is decremented key by key).
+- **Space O(1)**: two candidates and two counters (O(k) in general).
 
-##### **Pattern 3: Generalized k-Majority (> n/k times)**
+**Traps**
+- **Skipping verification.** `[1,2,3]` leaves 1 and 2 as candidates; neither appears more than
+  once. Unlike LC 169, LC 229 guarantees nothing, so the second pass is part of the answer.
+- **Adopting before checking both matches.** Put `count1 == 0` before `num == cand2` and
+  `[1,2,3,2]` ends with `cand1 == cand2 == 2`: the same value is tracked twice and reported as
+  `[2, 2]`.
 
-**Concept:** For elements appearing more than n/k times, at most k-1 candidates exist.
-
-```java
-// Generalized Boyer-Moore for n/k threshold
-import java.util.*;
-
-class BoyerMooreGeneralized {
-    /**
-     * Find all elements appearing > n/k times
-     * time = O(N × k)
-     * space = O(k)
-     */
-    public List<Integer> majorityElement(int[] nums, int k) {
-        // At most k-1 candidates for n/k threshold
-        Map<Integer, Integer> candidates = new HashMap<>();
-
-        // Phase 1: Find up to k-1 candidates
-        for (int num : nums) {
-            if (candidates.containsKey(num)) {
-                candidates.put(num, candidates.get(num) + 1);
-            } else if (candidates.size() < k - 1) {
-                candidates.put(num, 1);
-            } else {
-                // Decrement all counts (cancellation)
-                List<Integer> toRemove = new ArrayList<>();
-                for (Map.Entry<Integer, Integer> entry : candidates.entrySet()) {
-                    int count = entry.getValue() - 1;
-                    if (count == 0) {
-                        toRemove.add(entry.getKey());
-                    } else {
-                        candidates.put(entry.getKey(), count);
-                    }
-                }
-                for (int key : toRemove) {
-                    candidates.remove(key);
-                }
-            }
-        }
-
-        // Phase 2: Verify all candidates
-        Map<Integer, Integer> counts = new HashMap<>();
-        for (int num : nums) {
-            if (candidates.containsKey(num)) {
-                counts.put(num, counts.getOrDefault(num, 0) + 1);
-            }
-        }
-
-        List<Integer> result = new ArrayList<>();
-        for (Map.Entry<Integer, Integer> entry : counts.entrySet()) {
-            if (entry.getValue() > nums.length / k) {
-                result.add(entry.getKey());
-            }
-        }
-
-        return result;
-    }
-}
-```
-
----
-
-#### **Boyer-Moore — Common Mistakes & Tips**
-
-**🚫 Common Mistakes:**
-
-1. **Missing Verification Phase**
-   ```java
-   // ❌ WRONG: Assuming candidate is always majority
-   return candidate;
-
-   // ✅ CORRECT: Verify count (if not guaranteed)
-   int actualCount = 0;
-   for (int num : nums) {
-       if (num == candidate) actualCount++;
-   }
-   return actualCount > nums.length / 2 ? candidate : -1;
-   ```
-
-2. **Wrong Cancellation Logic for LC 229**
-   ```java
-   // ❌ WRONG: Only checking candidate1
-   if (num != candidate1) count1--;
-
-   // ✅ CORRECT: Check both, reset on count=0
-   if (num == candidate1) {
-       count1++;
-   } else if (num == candidate2) {
-       count2++;
-   } else if (count1 == 0) {
-       candidate1 = num; count1 = 1;
-   } else if (count2 == 0) {
-       candidate2 = num; count2 = 1;
-   } else {
-       count1--; count2--;
-   }
-   ```
-
-3. **Not Handling Duplicate Candidates (LC 229)**
-   ```java
-   // ❌ WRONG: candidate1 and candidate2 can be same initially
-
-   // ✅ CORRECT: Check candidate1 first, then candidate2
-   if (num == candidate1) count1++;
-   else if (num == candidate2) count2++;
-   // ... rest of logic
-   ```
-
-**💡 Interview Tips:**
-
-1. **When to Use:**
-   - "Find majority element" keywords
-   - Need O(1) space (vs HashMap O(n))
-   - Guaranteed majority exists
-
-2. **Talking Points:**
-   - "Pairing and cancellation eliminates non-majority elements"
-   - "At most k-1 elements can appear more than n/k times"
-   - "Two-phase: find candidates, then verify"
-
-3. **Complexity:**
-   - Time: O(n) single pass (+ O(n) for verification = O(n) total)
-   - Space: O(1) for standard, O(k) for generalized
-
----
-
-#### **Boyer-Moore — Related LeetCode Problems**
-
-| Problem | Difficulty | Threshold | Candidates | Verify? |
-|---------|------------|-----------|------------|---------|
-| LC 169 | Easy | > n/2 | 1 | Optional* |
-| LC 229 | Medium | > n/3 | 2 | Required |
-| General | - | > n/k | k-1 | Required |
-
-*Optional if problem guarantees majority element exists.
-
----
-
-**Summary:**
-- ✅ Boyer-Moore: O(n) time, O(1) space majority finding
-- ✅ Key insight: Cancellation eliminates non-majority elements
-- ✅ Two-phase: (1) Find candidates, (2) Verify counts
-- ✅ For > n/2: 1 candidate, for > n/3: 2 candidates, for > n/k: k-1 candidates
-- ✅ Alternative: HashMap O(n) space for exact counts
-
----
+**Drill** — LC 229 ⭐ · LC 169 *(k = 2)* · LC 2404 *(most frequent even: counts, not votes)*
 
 #### 1-2-2) Frequency Array + Running Count
 
-**Concept:**
-- Track element occurrences using a frequency array (when values are bounded, e.g., 1 to n)
-- Use array index as hash key for O(1) lookups
-- Maintain a running count that updates as conditions are met
-- **Key Insight**: When frequency reaches a threshold, trigger an action
+When values are bounded (a permutation of `1..n`, lowercase letters), an array indexed by value
+is the hash map, and a counter updated the moment a frequency crosses a threshold replaces any
+re-scan.
 
-**When to Use:**
-- Values are bounded/constrained (e.g., permutations with values 1 to n)
-- Need to track "seen in both" or "appeared k times" conditions
-- Prefix-based counting problems
-- Real-time/streaming count updates
+##### Template 4: Frequency Array + Running Count — LC 2657
 
-**Related:** Useful for permutation problems, prefix arrays, and intersection counting.
+**Recognise** — "permutation of `1..n`", "values in `[1, n]`", together with "for every prefix
+/ at every index, how many …". n ≤ 50 in LC 2657, but the shape is meant for n ≤ 10⁵ → O(n),
+so recounting each prefix (O(n²)) is the thing to avoid.
 
----
-
-##### **Pattern: Prefix Common Array (LC 2657)**
-
-**Problem:** Given two permutations A and B of length n, find C where C[i] = count of numbers present at or before index i in both A and B.
-
-**Algorithm:**
-- Use frequency array of size n+1 (since values are 1 to n)
-- For each index, process A[i] and B[i]
-- When any element's frequency reaches 2, it's common (seen in both arrays)
-- Increment running count and store in result
+**Key point** — `count[v]` is how many times `v` has been seen so far, and `common` changes only
+on the step where some `count[v]` **reaches** the threshold (here 2: once in A, once in B). Each
+value crosses it at most once, so `common` is exactly the number of values that have.
 
 ```python
-# Python - LC 2657
+# python
+# LC 2657 - Find the Prefix Common Array of Two Arrays
+# IDEA: frequency array indexed by value; bump `common` the moment a count reaches 2
+# time = O(n), space = O(n)
 def findThePrefixCommonArray(A, B):
-    """
-    Find prefix common array using frequency counting.
-
-    Key Insight:
-    - Each number appears at most twice total (once in A, once in B)
-    - When count[x] == 2, x has been seen in both arrays → common element
-
-    Time: O(n)
-    Space: O(n)
-    """
     n = len(A)
-    res = [0] * n
-    count = [0] * (n + 1)  # values are 1..n
+    count = [0] * (n + 1)        # values are 1..n, so index n must exist
     common = 0
-
+    res = [0] * n
     for i in range(n):
-        # Process element from A
-        count[A[i]] += 1
-        if count[A[i]] == 2:
+        count[A[i]] += 1         # increment first ...
+        if count[A[i]] == 2:     # ... then test, so the crossing step is the one counted
             common += 1
-
-        # Process element from B
         count[B[i]] += 1
         if count[B[i]] == 2:
             common += 1
-
         res[i] = common
-
     return res
 ```
 
 ```java
-// Java - LC 2657
-// V0
-// IDEA: Frequency Array + Running Count
-/**
- * Core Insight:
- * - Each number appears at most twice total (once in A, once in B)
- * - When frequency[x] == 2, x is present in both arrays → common element
- * - Running count tracks cumulative common elements
- *
- * Why This Works:
- * - Permutation guarantee: each value 1..n appears exactly once in each array
- * - Processing both arrays simultaneously at each index
- * - frequency[x] can only be 0, 1, or 2
- * - frequency[x] == 2 means: seen once in A AND once in B
- *
- * Time: O(n) - single pass through both arrays
- * Space: O(n) - frequency array of size n+1
- */
+// java
+// LC 2657 - Find the Prefix Common Array of Two Arrays
+// IDEA: frequency array indexed by value; bump commonCount the moment a count reaches 2
+// time = O(n), space = O(n)
 public int[] findThePrefixCommonArray(int[] A, int[] B) {
     int n = A.length;
-    int[] res = new int[n];
-
-    // Since values are 1 to n, use array as hash map
-    int[] frequency = new int[n + 1];
+    int[] frequency = new int[n + 1];   // values are 1..n
     int commonCount = 0;
-
+    int[] res = new int[n];
     for (int i = 0; i < n; i++) {
-        // Process element from A
         frequency[A[i]]++;
         if (frequency[A[i]] == 2) {
-            commonCount++;  // Now seen in both arrays
+            commonCount++;              // now seen in both arrays
         }
-
-        // Process element from B
         frequency[B[i]]++;
         if (frequency[B[i]] == 2) {
-            commonCount++;  // Now seen in both arrays
+            commonCount++;
         }
-
-        // Store current prefix common count
         res[i] = commonCount;
     }
-
     return res;
 }
 ```
 
-**Example Trace:** `A = [1,3,2,4], B = [3,1,2,4]`
+**Complexity**
+- **Time O(n)**: one `for i in range(n)` with two O(1) array updates per step, no re-scan of the
+  prefix.
+- **Space O(n)**: `count = [0] * (n + 1)`, sized by the value range (O(max value) in general).
+
+**Dry run**
 
 ```text
-Index | A[i] | B[i] | frequency (after)     | commonCount | Action
-----------------------------------------------------------------------
-  0   |  1   |  3   | [0,1,0,1,0]           |     0       | freq[1]=1, freq[3]=1
-  1   |  3   |  1   | [0,2,0,2,0]           |     2       | freq[3]=2 ✓, freq[1]=2 ✓
-  2   |  2   |  2   | [0,2,2,2,0]           |     3       | freq[2]=1, then freq[2]=2 ✓
-  3   |  4   |  4   | [0,2,2,2,2]           |     4       | freq[4]=1, then freq[4]=2 ✓
-
-Result: [0, 2, 3, 4]
+A = [1,3,2,4], B = [3,1,2,4]
+i | A[i] B[i] | counts that reached 2 | common
+0 |  1    3   | -                     | 0
+1 |  3    1   | 3, 1                  | 2
+2 |  2    2   | 2 (0 -> 1 -> 2 in one step) | 3
+3 |  4    4   | 4                     | 4      -> [0, 2, 3, 4]
 ```
 
----
+**Traps**
+- **`[0] * n` for values `1..n`.** `A = [1]` indexes `count[1]` in a list of length 1:
+  IndexError (or `ArrayIndexOutOfBoundsException`). Size it `n + 1`.
+- **Testing before incrementing.** `if count[x] == 2: common += 1` and then `count[x] += 1`
+  counts the step *after* the crossing, so `A = [1], B = [1]` returns `[0]` instead of `[1]`.
+- **`>= 2` instead of `== 2`** when the arrays are not permutations: a value seen three times
+  is counted twice. Test for the crossing, not the state.
 
-##### **Generalized Pattern: Frequency Threshold Detection**
+**Not this if** — values are unbounded or sparse (`-10⁹ ≤ v ≤ 10⁹`): an array that size cannot be
+allocated, so use a hash map ([hash_map.md](./hash_map.md)) with the same crossing test.
 
-Use this pattern when you need to detect when elements reach a specific count threshold:
-
-```java
-// Generalized frequency threshold pattern
-/**
- * Detect when elements reach threshold k
- * Useful for: intersection counting, duplicate detection, k-frequency problems
- */
-public void frequencyThresholdPattern(int[] arr1, int[] arr2, int maxVal, int threshold) {
-    int[] frequency = new int[maxVal + 1];
-    int count = 0;
-
-    for (int i = 0; i < arr1.length; i++) {
-        // Process from first source
-        frequency[arr1[i]]++;
-        if (frequency[arr1[i]] == threshold) {
-            count++;  // Element reached threshold
-        }
-
-        // Process from second source (if applicable)
-        frequency[arr2[i]]++;
-        if (frequency[arr2[i]] == threshold) {
-            count++;
-        }
-
-        // Use count as needed...
-    }
-}
-```
-
----
-
-#### **Frequency Array + Running Count — Common Mistakes & Tips**
-
-**🚫 Common Mistakes:**
-
-1. **Wrong Array Size**
-   ```java
-   // ❌ WRONG: Off-by-one for 1-indexed values
-   int[] frequency = new int[n];  // Can't access frequency[n]
-
-   // ✅ CORRECT: Size n+1 for values 1..n
-   int[] frequency = new int[n + 1];
-   ```
-
-2. **Checking Threshold Before Increment**
-   ```java
-   // ❌ WRONG: Check before increment misses the transition
-   if (frequency[x] == 2) count++;
-   frequency[x]++;
-
-   // ✅ CORRECT: Increment first, then check
-   frequency[x]++;
-   if (frequency[x] == 2) count++;
-   ```
-
-3. **Not Handling Same Element in Both Arrays at Same Index**
-   ```java
-   // For A[i] == B[i] case, frequency goes 0→1→2 in same iteration
-   // This is handled correctly by processing A[i] then B[i] separately
-   ```
-
-**💡 Interview Tips:**
-
-1. **When to Use:**
-   - "Permutation" or "values 1 to n" keywords
-   - "Prefix" or "running" count requirements
-   - "Common elements" or "intersection" problems
-   - Need O(1) lookup with bounded values
-
-2. **Talking Points:**
-   - "Array index as hash key gives O(1) lookup"
-   - "Frequency threshold detection for condition triggers"
-   - "Running count avoids recomputation"
-
-3. **Complexity:**
-   - Time: O(n) single pass
-   - Space: O(n) or O(max_value) for frequency array
-
----
-
-#### **Frequency Array + Running Count — Related LeetCode Problems**
-
-| Problem | Difficulty | Pattern Variant |
-|---------|------------|-----------------|
-| LC 2657 | Medium | Prefix common array (frequency == 2) |
-| LC 349 | Easy | Intersection of two arrays (frequency >= 1 in both) |
-| LC 350 | Easy | Intersection with duplicates |
-| LC 442 | Medium | Find duplicates (frequency == 2, in-place) |
-| LC 448 | Easy | Find missing numbers (frequency == 0) |
-| LC 645 | Easy | Set mismatch (frequency == 2 and == 0) |
-| LC 1 | Easy | Two Sum (complement frequency check) |
-| LC 217 | Easy | Contains duplicate (frequency >= 2) |
-
----
-
-**Summary:**
-- ✅ Frequency Array: Use array index as hash for bounded values (O(1) lookup)
-- ✅ Running Count: Maintain cumulative count, update on threshold
-- ✅ Key Insight: frequency[x] == k means x appeared k times across sources
-- ✅ Best for: Permutations, prefix problems, intersection counting
-- ✅ Alternative: HashMap for unbounded/sparse values
-
----
+**Drill** — LC 2657 ⭐ · LC 217 *(threshold 2, return early)* · LC 448 *(count 0: the missing
+values)* · LC 645 *(one value at 2, one at 0)* · LC 442 *(the same in place, with the sign trick)*
 
 #### 1-2-3) Index Contribution Counting (Count Each Element's Appearances Across All Subarrays)
 
-**Concept:**
-- Instead of enumerating every subarray (O(n²) or worse), ask:
-  > "For a single element at index `i`, **how many subarrays contain it?**"
-- Then sum that contribution over all relevant elements in **one pass — O(n)**.
-- **Key Formula** (for an array/string of length `n`, element at index `i`):
+Instead of enumerating every subarray, ask how many subarrays contain one index, and sum that
+contribution over the indices in one pass.
+
+##### Template 5: Index Contribution Counting — LC 2063
+
+**Recognise** — "sum of X **over all substrings / subarrays**", where each element adds to X on
+its own (a vowel counts 1, a value adds itself). n ≤ 10⁵ → there are ~5·10⁹ subarrays, so they
+cannot be listed; O(n) is expected.
+
+**Key point** — a subarray containing index `i` is a choice of left end in `0..i` and right end
+in `i..n-1`, so `i` lies in exactly `(i + 1) * (n - i)` subarrays. When an element's
+contribution does not depend on which subarray it is in, the total is the sum of
+`value(i) * (i + 1) * (n - i)`.
 
 ```text
 # subarrays containing index i
    = (choices for LEFT boundary) × (choices for RIGHT boundary)
    = (i + 1) × (n - i)
-
-   where:
      left  boundary ∈ {0, 1, ..., i}     → (i + 1) choices
      right boundary ∈ {i, i+1, ..., n-1} → (n - i) choices
 ```
 
-**Why This Works:**
-- A subarray is fully determined by its `(left, right)` pair with `left <= i <= right`.
-- The left end can start at any index from `0` to `i` → `i + 1` options.
-- The right end can finish at any index from `i` to `n - 1` → `n - i` options.
-- Every combination is a distinct subarray that contains index `i`, so the product counts them all.
-
-**When to Use:**
-- "Sum / count of X **over all substrings/subarrays**" where each element contributes independently
-- The per-element contribution does **not** depend on which subarray it sits in (e.g. counting vowels, summing values, counting matches)
-- You want to avoid generating all O(n²) subarrays explicitly
-
----
-
-##### **Pattern: LC 2063 - Vowels of All Substrings**
-
-**Problem:** Sum the number of vowels in **every** substring of `word`.
-
-**Insight:** Each vowel at index `i` is counted once per substring that contains it. That count is exactly `(i + 1) * (n - i)`. So just sum that product over all vowel positions.
-
 ```python
-# Python - LC 2063 Vowels of All Substrings
-# IDEA: each vowel at index i appears in (i+1)*(n-i) substrings
-class Solution(object):
-    def countVowels(self, word):
-        # time = O(n), space = O(1)
-        total_vowel_count = 0
-        vowels = set("aeiou")
-        n = len(word)
-
-        # single pass: accumulate each vowel's contribution
-        for i in range(n):
-            if word[i] in vowels:
-                starting_choices = i + 1      # left boundary: 0..i
-                ending_choices = n - i        # right boundary: i..n-1
-                total_vowel_count += starting_choices * ending_choices
-
-        return total_vowel_count
+# python
+# LC 2063 - Vowels of All Substrings
+# IDEA: each vowel at index i appears in (i+1)*(n-i) substrings; sum those products
+# time = O(n), space = O(1)
+def countVowels(word):
+    vowels = set("aeiou")
+    n = len(word)
+    total = 0
+    for i in range(n):
+        if word[i] in vowels:
+            starting_choices = i + 1      # left boundary: 0..i
+            ending_choices = n - i        # right boundary: i..n-1
+            total += starting_choices * ending_choices
+    return total
 ```
 
 ```java
-// Java - LC 2063 Vowels of All Substrings
-// IDEA: each vowel at index i appears in (i+1)*(n-i) substrings
-class Solution {
-    /**
-     * time = O(n), space = O(1)
-     *
-     * Each vowel at index i is contained in (i+1)*(n-i) substrings:
-     *   - left  boundary can be any of 0..i      → (i+1) choices
-     *   - right boundary can be any of i..n-1     → (n-i) choices
-     * Use `long` for the running total — it can exceed int range.
-     */
-    public long countVowels(String word) {
-        long total = 0;
-        int n = word.length();
-        String vowels = "aeiou";
-
-        for (int i = 0; i < n; i++) {
-            if (vowels.indexOf(word.charAt(i)) >= 0) {
-                long startingChoices = i + 1;   // left boundary: 0..i
-                long endingChoices = n - i;     // right boundary: i..n-1
-                total += startingChoices * endingChoices;
-            }
-        }
-
-        return total;
-    }
-}
-```
-
-**Example Trace:** `word = "aba"` (n = 3)
-
-```text
-Index | char | vowel? | (i+1) | (n-i) | contribution
----------------------------------------------------------
-  0   |  a   |  yes   |   1   |   3   |   1 * 3 = 3
-  1   |  b   |  no    |   -   |   -   |   0
-  2   |  a   |  yes   |   3   |   1   |   3 * 1 = 3
-
-Total = 3 + 0 + 3 = 6
-
-Verify by listing all substrings & their vowel counts:
-  "a"   → 1     "ab"  → 1     "aba" → 2
-  "b"   → 0     "ba"  → 1
-  "a"   → 1
-  sum = 1+1+2+0+1+1 = 6 ✓
-```
-
----
-
-##### **Generalized Pattern: Per-Element Contribution**
-
-```java
-// Generic "sum a per-element value over all subarrays" template
+// java
+// LC 2063 - Vowels of All Substrings
+// IDEA: each vowel at index i appears in (i+1)*(n-i) substrings; sum in a long
 // time = O(n), space = O(1)
-public long sumOverAllSubarrays(int[] arr) {
+public long countVowels(String word) {
     long total = 0;
-    int n = arr.length;
+    int n = word.length();
+    String vowels = "aeiou";
     for (int i = 0; i < n; i++) {
-        long subarraysContainingI = (long) (i + 1) * (n - i);
-        total += arr[i] * subarraysContainingI;   // arr[i]'s total contribution
+        if (vowels.indexOf(word.charAt(i)) >= 0) {
+            long startingChoices = i + 1;   // left boundary: 0..i
+            long endingChoices = n - i;     // right boundary: i..n-1
+            total += startingChoices * endingChoices;
+        }
     }
     return total;
 }
 ```
 
-> **Note:** This works whenever an element's contribution is **independent of the subarray boundaries** (counting, summing). When the contribution depends on the element being a min/max within the subarray, use the **Monotonic Stack "Sum of Subarray Minimums" (LC 907)** variant, which computes per-element span via `(left span) * (right span)` instead.
+**Complexity**
+- **Time O(n)**: one `for i in range(n)`; the product replaces an O(n²) enumeration of
+  `(left, right)` pairs.
+- **Space O(1)**: one running total.
 
----
+**Dry run**
 
-#### **Index Contribution Counting — Common Mistakes & Tips**
+```text
+word = "aba" (n = 3)
+i | char | vowel? | (i+1) × (n-i)
+0 |  a   |  yes   | 1 × 3 = 3
+1 |  b   |  no    | -
+2 |  a   |  yes   | 3 × 1 = 3        total = 6
+check: "a"=1 "ab"=1 "aba"=2 "b"=0 "ba"=1 "a"=1 -> 6
+```
 
-**🚫 Common Mistakes:**
+**Traps**
+- **Off by one on a boundary.** `i * (n - i)` drops the subarrays that start at `i`; for `"a"` it
+  returns 0 instead of 1. The left end has `i + 1` choices, the right end `n - i`.
+- **`int` overflow in Java.** At n = 10⁵ the middle index alone contributes ~2.5·10⁹, past
+  `Integer.MAX_VALUE`. Accumulate in a `long` and widen *before* multiplying.
+- **"Contains i" vs "starts / ends at i".** Subarrays starting at `i`: `n - i`; ending at `i`:
+  `i + 1`; containing `i`: the product. Mixing them is the usual wrong answer.
 
-1. **Off-by-one in the boundary counts**
-   ```text
-   ❌ left choices = i        (forgets index 0..i is i+1 values)
-   ✅ left choices = i + 1
-   ❌ right choices = n - i - 1
-   ✅ right choices = n - i
-   ```
+**Not this if** — the contribution depends on the subarray, e.g. the element counts only when it
+is the minimum (LC 907): its range is bounded by the nearest smaller elements, so the spans come
+from a [monotonic stack](./monotonic_stack.md), not from `i + 1` and `n - i`.
 
-2. **Integer overflow**
-   ```java
-   // ❌ WRONG: (i+1)*(n-i) can overflow int for large n
-   int total = 0; total += (i + 1) * (n - i);
-
-   // ✅ CORRECT: use long
-   long total = 0; total += (long) (i + 1) * (n - i);
-   ```
-
-3. **Confusing "contains index i" with "starts/ends at i"**
-   - Subarrays *containing* i: `(i+1) * (n-i)`
-   - Subarrays *starting* at i: `n - i`
-   - Subarrays *ending* at i: `i + 1`
-
-**💡 Interview Tips:**
-- Recognize the phrase **"over all substrings/subarrays"** + an independent per-element value → contribution counting.
-- State it as: "Rather than O(n²) subarrays, I count how many subarrays each element joins — `(i+1)*(n-i)` — and sum."
-- Mention `long` for overflow safety up front.
-
----
-
-#### **Index Contribution Counting — Related LeetCode Problems**
-
-| Problem | LC# | Difficulty | Contribution Idea |
-|---------|-----|------------|-------------------|
-| **Vowels of All Substrings** | **2063** | **Medium** | Each vowel adds `(i+1)*(n-i)` |
-| Sum of All Subarray Minimums | 907 | Medium | Monotonic-stack span: `left * right` |
-| Sum of Subarray Ranges | 2104 | Medium | Sum of (max contrib − min contrib) per element |
-| Sum of Total Strength of Wizards | 2281 | Hard | Contribution + prefix-of-prefix sums |
-| Number of Substrings Containing All Three Characters | 1358 | Medium | Count valid left boundaries per right |
-
----
-
-**Summary:**
-- ✅ Each index `i` is contained in `(i + 1) * (n - i)` subarrays
-- ✅ Turns an O(n²) "over all subarrays" sum into a single O(n) pass
-- ✅ Works when per-element contribution is independent of subarray bounds
-- ✅ Watch for `long` overflow on the product
-- ✅ For min/max-dependent contributions → monotonic stack span counting (LC 907)
-
----
+**Drill** — LC 2063 ⭐ · LC 1588 *(odd-length subarrays: count the odd (left, right) pairs)* ·
+LC 828 *(unique characters: spans to the previous and next same char)* · LC 907 *(minimum: monotonic
+stack spans)* · LC 2104 *(max contribution minus min contribution)*
 
 #### 1-2-4) Backward Write Pointer (In-Place Merge / In-Place Overwrite) ⭐⭐⭐⭐⭐
 
-**Key Idea:** when you must write results **into the same array you are still reading**, a forward write pointer can clobber unread data. If the destination has **free space at the tail**, walk **backwards** — the write pointer always sits at or ahead of both read pointers, so nothing is ever overwritten before it is consumed.
+When the output is written into the same array that is still being read, and the free space is
+at the tail, write from the back.
 
-**Pattern:**
+##### Template 6: Backward Write Pointer — LC 88
 
-```text
-read  ->  p1 (end of real data in dst), p2 (end of src)
-write ->  the LAST slot of dst
+**Recognise** — "merge **in place**", "`nums1` has length `m + n`, the last `n` slots are 0 and
+should be ignored", "do not return anything". m + n ≤ 200 in LC 88, but the follow-up asks for
+O(m + n) time and O(1) extra space, which rules out copying `nums1` first.
 
-while src not exhausted:
-    write the LARGER of dst[p1] / src[p2]  into dst[write]
-    move that read pointer back, move write back
+**Key point** — `write - p1` equals the number of unmerged items left in `nums2`, which is never
+negative, so `write >= p1` always holds: the slot being written was already read or is padding.
+Writing the **larger** tail each step fills `nums1` from the largest value down.
+
+```python
+# python
+# LC 88 - Merge Sorted Array
+# IDEA: fill nums1 from the BACK, always writing the larger of the two tails
+# time = O(m + n), space = O(1)
+def merge(nums1, m, nums2, n):
+    p1 = m - 1              # last real value in nums1
+    p2 = n - 1              # last value in nums2
+    write = m + n - 1       # last slot of nums1
+    while p2 >= 0:          # once nums2 is used up, nums1[0..p1] is already in place
+        if p1 >= 0 and nums1[p1] > nums2[p2]:
+            nums1[write] = nums1[p1]
+            p1 -= 1
+        else:
+            nums1[write] = nums2[p2]
+            p2 -= 1
+        write -= 1
 ```
-
-**Why backwards is safe:** `write >= p1` always holds, because `write - p1 = (#unmerged items in src) >= 0`. So the slot being written is either already-consumed space or the padding zone.
-
-**When to Use:**
-- Merge a sorted array into another sorted array that has trailing space (LC 88)
-- Any "produce output in place, output is never longer than input" rewrite (the forward version of the same idea is `slow`/`fast` in-place filtering, see [2_pointers.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/2_pointers.md))
-
----
-
-##### **Pattern: LC 88 - Merge Sorted Array**
-
-**Problem:** `nums1` has length `m + n` (first `m` are real, last `n` are padding zeros). Merge `nums2` into it, sorted, **in place**.
-
-**Insight:** merging forwards would overwrite `nums1`'s unread values. Merge from the **largest** element down.
 
 ```java
 // java
 // LC 88 - Merge Sorted Array
 // IDEA: fill nums1 from the BACK, always writing the larger of the two tails
+// time = O(m + n), space = O(1)
 public void merge(int[] nums1, int m, int[] nums2, int n) {
-    // time = O(m + n), space = O(1)
     int p1 = m - 1;         // last real value in nums1
     int p2 = n - 1;         // last value in nums2
-    int write = m + n - 1;  // write pointer: very end of nums1
-
-    /**
-     *  NOTE !!!
-     *
-     *   loop only while p2 >= 0.
-     *   If nums2 runs out, whatever is left in nums1[0..p1] is
-     *   ALREADY in the right place -> nothing more to do.
-     *   (If nums1 runs out first, the `p1 >= 0` guard sends us
-     *    down the nums2 branch and copies the rest over.)
-     */
-    while (p2 >= 0) {
+    int write = m + n - 1;  // last slot of nums1
+    while (p2 >= 0) {       // once nums2 is used up, nums1[0..p1] is already in place
         if (p1 >= 0 && nums1[p1] > nums2[p2]) {
             nums1[write--] = nums1[p1--];
         } else {
@@ -1399,124 +1006,73 @@ public void merge(int[] nums1, int m, int[] nums2, int n) {
 }
 ```
 
-```python
-# python
-# LC 88 - Merge Sorted Array
-# IDEA: fill nums1 from the BACK, always writing the larger of the two tails
-class Solution(object):
-    def merge(self, nums1, m, nums2, n):
-        # time = O(m + n), space = O(1)
-        p1, p2, write = m - 1, n - 1, m + n - 1
+**Complexity**
+- **Time O(m + n)**: every iteration of `while p2 >= 0` moves `write` back by one, and `write`
+  starts at `m + n - 1`.
+- **Space O(1)**: three indices; the merge happens inside `nums1`.
 
-        # NOTE : loop on p2 only -> leftovers in nums1 are already in place
-        while p2 >= 0:
-            if p1 >= 0 and nums1[p1] > nums2[p2]:
-                nums1[write] = nums1[p1]
-                p1 -= 1
-            else:
-                nums1[write] = nums2[p2]
-                p2 -= 1
-            write -= 1
-```
-
-**Visual Trace** — `nums1 = [1,2,3,0,0,0], m = 3`, `nums2 = [2,5,6], n = 3`
+**Dry run**
 
 ```text
-              p1        write
-[1, 2, 3, _, _, _]   p2=2 (6)   6 > 3  -> write 6
-[1, 2, 3, _, _, 6]   p2=1 (5)   5 > 3  -> write 5
-[1, 2, 3, _, 5, 6]   p2=0 (2)   3 > 2  -> write 3 (from nums1)
-[1, 2, _, 3, 5, 6]   p2=0 (2)   2 > 2? no -> write 2 (from nums2)
-[1, 2, 2, 3, 5, 6]   p2 = -1  -> DONE, [1,2] already in place
+nums1 = [1,2,3,0,0,0], m = 3, nums2 = [2,5,6], n = 3
+[1, 2, 3, _, _, _]   p2 -> 6   6 > 3     -> write 6
+[1, 2, 3, _, _, 6]   p2 -> 5   5 > 3     -> write 5
+[1, 2, 3, _, 5, 6]   p2 -> 2   3 > 2     -> write 3 (from nums1)
+[1, 2, _, 3, 5, 6]   p2 -> 2   2 > 2? no -> write 2 (from nums2)
+[1, 2, 2, 3, 5, 6]   p2 = -1   -> done, [1, 2] was already in place
 ```
 
-**Common Mistakes:**
-- ❌ Merging forwards (`write = 0`) — destroys `nums1` values you have not read yet
-- ❌ Looping `while (p1 >= 0 || p2 >= 0)` and forgetting the `p1 >= 0` null-guard inside
-- ❌ Copying the remaining `nums1` tail at the end — unnecessary, it is already correct
-- ❌ Using `>=` vs `>` inconsistently — either is fine here (stability is irrelevant for ints)
+**Traps**
+- **Merging forwards.** Writing at `write = 0` overwrites `nums1[0]` before it is read:
+  `[4,5,6,0,0,0]` with `[1,2,3]` loses 4 and 5.
+- **No `p1 >= 0` guard.** Once `nums1`'s real values run out, `nums1[p1]` is `nums1[-1]`: Java
+  throws, and Python reads the padding as data. `nums1 = [0]`, `m = 0`, `nums2 = [-1]` copies the
+  padding 0 forward and then raises IndexError.
+- **Looping on `p1` too, then copying the `nums1` tail.** Unneeded work: whatever is left of
+  `nums1` is already in its final slots, so loop on `p2` only.
 
----
+**Not this if** — the output is never longer than what has been read and the free space is at the
+front (remove duplicates, remove element): a **forward** slow/fast pointer is safe there
+([2_pointers.md](./2_pointers.md)).
+
+**Drill** — LC 88 ⭐ · LC 977 *(squares: fill the result from the back, largest first)* ·
+LC 1089 *(duplicate zeros: count first, then write backwards)* · LC 443
+*(string compression: forward write, read ahead)*
 
 #### 1-2-5) Array + Hash Index Map (O(1) Delete via Swap-With-Last) ⭐⭐⭐⭐⭐
 
-**Key Idea:** deleting from the middle of an array is O(n) *only because of the shifting*. If **order does not matter**, you can delete in O(1):
+Deleting from the middle of an array is O(n) only because of the shifting. If order does not
+matter, plug the hole with the last element and pop the tail.
+
+##### Template 7: Swap-With-Last Delete — LC 380
+
+**Recognise** — "implement `insert`, `remove` and `getRandom`, each in **average O(1)** time",
+"each element must have the same probability of being returned". Up to 2·10⁵ calls → every
+operation O(1).
+
+**Key point** — `vals` is always dense (no holes), so `vals[random index]` is a uniform pick, and
+`idx[v]` is always the position of `v` in `vals`. A delete keeps both true by moving the last
+value into the hole, re-pointing its index, and popping the tail, which is the only O(1) delete a
+list has.
 
 ```text
-1. look up the victim's index i   (HashMap: value -> index)
-2. move the LAST element into slot i   ("plug the hole")
-3. update the moved element's index in the map
-4. pop the last slot  (O(1))
-```
-
-The array gives **O(1) random access** (needed for `getRandom`), the hash map gives **O(1) lookup**. Together they beat both a plain `HashSet` (no indexable random pick) and a plain array (O(n) lookup/delete).
-
-**When to Use:**
-- Design questions needing `insert` / `remove` / `getRandom` all in O(1)
-- Any unordered collection where you delete arbitrary elements by value
-- Free-list / slot-reuse style bookkeeping
-
----
-
-##### **Pattern: LC 380 - Insert Delete GetRandom O(1)**
-
-```java
-// java
-// LC 380 - Insert Delete GetRandom O(1)
-// IDEA: ArrayList for O(1) random access + HashMap<value, index>;
-//       delete by swapping the victim with the LAST element
-class RandomizedSet {
-    // time = O(1) for insert / remove / getRandom, space = O(n)
-    private final List<Integer> vals = new ArrayList<>();
-    private final Map<Integer, Integer> idx = new HashMap<>(); // value -> index in vals
-    private final Random rand = new Random();
-
-    public boolean insert(int val) {
-        if (idx.containsKey(val)) return false;
-        idx.put(val, vals.size()); // new element goes to the tail
-        vals.add(val);
-        return true;
-    }
-
-    public boolean remove(int val) {
-        Integer i = idx.get(val);
-        if (i == null) return false;
-
-        /**
-         *  NOTE !!!  swap-with-last, then pop
-         *
-         *   - move the LAST value into the hole at index i
-         *   - re-point the moved value's index in the map
-         *   - remove the tail slot (O(1))
-         *
-         *   Order matters: `idx.remove(val)` MUST come after
-         *   `idx.put(lastVal, i)`, otherwise the self-delete case
-         *   (val IS the last element) leaves a stale entry behind.
-         */
-        int lastIdx = vals.size() - 1;
-        int lastVal = vals.get(lastIdx);
-        vals.set(i, lastVal);
-        idx.put(lastVal, i);
-        vals.remove(lastIdx); // remove by INDEX (int), not by object
-        idx.remove(val);
-        return true;
-    }
-
-    public int getRandom() {
-        return vals.get(rand.nextInt(vals.size()));
-    }
-}
+remove(val):
+1. i = idx[val]                  (hash map: value -> index)
+2. vals[i] = vals[-1]            (plug the hole with the last value)
+3. idx[vals[-1]] = i             (the moved value's index changed)
+4. vals.pop(); del idx[val]      (O(1) tail removal)
 ```
 
 ```python
 # python
 # LC 380 - Insert Delete GetRandom O(1)
 # IDEA: list for O(1) random access + dict {value: index};
-#       delete by swapping the victim with the LAST element
+#       delete by swapping the victim with the LAST element, then pop
+# time = O(1) per insert / remove / getRandom, space = O(n)
 import random
 
 class RandomizedSet(object):
-    # time = O(1) for insert / remove / getRandom, space = O(n)
+
     def __init__(self):
         self.vals = []   # dense array of values
         self.idx = {}    # value -> index in self.vals
@@ -1533,99 +1089,166 @@ class RandomizedSet(object):
             return False
         i = self.idx[val]
         last = self.vals[-1]
-        ### NOTE : plug the hole with the last element, then pop
-        self.vals[i] = last
+        self.vals[i] = last          # plug the hole with the last element
         self.idx[last] = i
         self.vals.pop()
-        ### NOTE : delete AFTER the re-index, so val == last still works
-        del self.idx[val]
+        del self.idx[val]            # after the re-index, so val == last still works
         return True
 
     def getRandom(self):
         return random.choice(self.vals)
 ```
 
-**Why the array must stay dense:** `getRandom` needs a uniform pick, which is only `arr[rand(0, size)]` if there are **no holes**. Tombstoning (marking slots dead) breaks uniformity — hence swap-with-last.
+```java
+// java
+// LC 380 - Insert Delete GetRandom O(1)
+// IDEA: ArrayList for O(1) random access + HashMap<value, index>;
+//       delete by swapping the victim with the LAST element, then pop
+// time = O(1) per insert / remove / getRandom, space = O(n)
+class RandomizedSet {
+    private final List<Integer> vals = new ArrayList<>();
+    private final Map<Integer, Integer> idx = new HashMap<>(); // value -> index in vals
+    private final Random rand = new Random();
 
-**Common Mistakes:**
-- ❌ `list.remove(value)` in Java on a `List<Integer>` — ambiguous overload; use `remove(int index)` or `remove(Integer.valueOf(v))`
-- ❌ Deleting the map entry **before** re-pointing the moved element (breaks when the victim *is* the last element)
-- ❌ Using `vals.remove(i)` (remove-at-middle) instead of pop-tail → back to O(n)
-- ❌ Trying `HashSet` + `iterator.next()` for `getRandom` → O(n) and not uniform
+    public boolean insert(int val) {
+        if (idx.containsKey(val)) {
+            return false;
+        }
+        idx.put(val, vals.size());   // the new value goes to the tail
+        vals.add(val);
+        return true;
+    }
 
----
+    public boolean remove(int val) {
+        Integer i = idx.get(val);
+        if (i == null) {
+            return false;
+        }
+        int lastIdx = vals.size() - 1;
+        int lastVal = vals.get(lastIdx);
+        vals.set(i, lastVal);        // plug the hole with the last element
+        idx.put(lastVal, i);
+        vals.remove(lastIdx);        // remove by INDEX (int), not by object
+        idx.remove(val);             // after the re-index, so val == lastVal still works
+        return true;
+    }
+
+    public int getRandom() {
+        return vals.get(rand.nextInt(vals.size()));
+    }
+}
+```
+
+**Complexity**
+- **Time O(1) average per call**: each method does a constant number of hash-map operations and
+  touches only the tail of `vals` (`append`, `pop`); nothing shifts.
+- **Space O(n)**: `vals` and `idx` each hold one entry per stored value.
+
+**Traps**
+- **Deleting the map entry before re-pointing.** When the victim *is* the last element
+  (`insert(5); remove(5)`), `del idx[val]` first and then `idx[last] = i` puts 5 back into the
+  map, so a later `insert(5)` returns False.
+- **Removing from the middle.** `vals.remove(val)` / `vals.remove(i)` shifts the rest: O(n) per
+  delete, the exact cost the swap avoids.
+- **Java's `remove` overload.** On a `List<Integer>`, `vals.remove(lastVal)` with an `int`
+  removes by **index**; pass the index deliberately, or `Integer.valueOf(v)` to remove by value.
+- **Tombstones instead of a swap.** Marking slots dead leaves holes, so `getRandom` either is
+  not uniform or has to retry without bound.
+
+**Not this if** — duplicates are allowed (LC 381): one value has several positions, so `idx` maps
+a value to a **set** of indices and the swap updates one member of the moved value's set.
+
+**Drill** — LC 380 ⭐ · LC 381 *(duplicates: value -> set of indices)* · LC 710 *(random pick with
+a blacklist: remap the blacklisted low indices to the tail)*
 
 #### 1-2-6) Bounded Candidate Enumeration (Only a Few Answers Are Possible)
 
-**Key Idea:** some "make everything equal / make everything valid" problems look like they need a search over all values, but the constraints pin the answer to a **tiny candidate set** — usually derived from index `0`. Enumerate those 1-2 candidates and verify each in O(n).
+Some "make everything equal" problems look like a search over every value, but the constraints
+pin the answer to one or two candidates. Enumerate those and verify each in O(n).
 
-**Recognition:** *"if a valid answer `x` exists, then position 0 must already contain `x`"* → candidates = `{tops[0], bottoms[0]}`, so total work is `2 * O(n)`.
+##### Template 8: Bounded Candidate Enumeration — LC 1007
 
----
+**Recognise** — "make **every** element of a row / all elements equal to the same value, minimum
+operations, or −1", where each element offers only a couple of choices. n ≤ 2·10⁴ → O(n) per
+candidate is fine, as long as the candidates are few.
 
-##### **Pattern: LC 1007 - Minimum Domino Rotations For Equal Row**
+**Key point** — if a value `x` fills the whole row, domino 0 must already show `x` on one face,
+so `x ∈ {tops[0], bottoms[0]}`. Two candidates, each verified in one pass, is the whole search.
 
-**Problem:** given `tops[]` / `bottoms[]` of dominoes, find the min rotations so that one whole row is the same value (or `-1`).
+```python
+# python
+# LC 1007 - Minimum Domino Rotations For Equal Row
+# IDEA: the answer must be tops[0] or bottoms[0] -> verify both candidates
+# time = O(n), space = O(1)
+def minDominoRotations(tops, bottoms):
+    n = len(tops)
 
-**Insight:** the target value must appear on domino `0` — otherwise domino 0 can never show it. So only `tops[0]` and `bottoms[0]` need checking.
+    def rotations_to_show(x):
+        # flips needed so one whole row shows x; -1 if some domino lacks x entirely
+        rot_top = 0      # flips to put x on top
+        rot_bottom = 0   # flips to put x on bottom
+        for i in range(n):
+            if tops[i] != x and bottoms[i] != x:
+                return -1
+            if tops[i] != x:
+                rot_top += 1
+            elif bottoms[i] != x:      # elif: x on both faces needs no flip at all
+                rot_bottom += 1
+        return min(rot_top, rot_bottom)
+
+    res = rotations_to_show(tops[0])
+    if res != -1 or tops[0] == bottoms[0]:   # one candidate only when the faces match
+        return res
+    return rotations_to_show(bottoms[0])
+```
 
 ```java
 // java
 // LC 1007 - Minimum Domino Rotations For Equal Row
-// IDEA: the answer must be tops[0] or bottoms[0] -> just verify both
+// IDEA: the answer must be tops[0] or bottoms[0] -> verify both candidates
+// time = O(n), space = O(1)
 public int minDominoRotations(int[] tops, int[] bottoms) {
-    // time = O(n), space = O(1)
-    int res = check(tops[0], tops, bottoms);
-    // if tops[0] works, or tops[0] == bottoms[0] (only 1 candidate), we are done
-    if (res != -1 || tops[0] == bottoms[0]) return res;
-    return check(bottoms[0], tops, bottoms);
+    int res = rotationsToShow(tops[0], tops, bottoms);
+    if (res != -1 || tops[0] == bottoms[0]) {
+        return res;
+    }
+    return rotationsToShow(bottoms[0], tops, bottoms);
 }
 
-// how many rotations to make EVERY domino show x (on one row) ? -1 if impossible
-private int check(int x, int[] tops, int[] bottoms) {
-    int rotTop = 0, rotBottom = 0;
+// flips needed so one whole row shows x; -1 if some domino lacks x entirely
+private int rotationsToShow(int x, int[] tops, int[] bottoms) {
+    int rotTop = 0;
+    int rotBottom = 0;
     for (int i = 0; i < tops.length; i++) {
-        // x missing on this domino entirely -> impossible
-        if (tops[i] != x && bottoms[i] != x) return -1;
-        if (tops[i] != x) rotTop++;          // need a flip to put x on TOP
-        else if (bottoms[i] != x) rotBottom++; // need a flip to put x on BOTTOM
+        if (tops[i] != x && bottoms[i] != x) {
+            return -1;
+        }
+        if (tops[i] != x) {
+            rotTop++;
+        } else if (bottoms[i] != x) {
+            rotBottom++;
+        }
     }
     return Math.min(rotTop, rotBottom);
 }
 ```
 
-```python
-# python
-# LC 1007 - Minimum Domino Rotations For Equal Row
-# IDEA: the answer must be tops[0] or bottoms[0] -> just verify both
-class Solution(object):
-    def minDominoRotations(self, tops, bottoms):
-        # time = O(n), space = O(1)
-        n = len(tops)
+**Complexity**
+- **Time O(n)**: at most two calls to `rotations_to_show`, each one `for i in range(n)` pass.
+- **Space O(1)**: two counters per candidate.
 
-        def check(x):
-            rot_top = rot_bottom = 0
-            for i in range(n):
-                if tops[i] != x and bottoms[i] != x:
-                    return -1
-                if tops[i] != x:
-                    rot_top += 1
-                elif bottoms[i] != x:
-                    rot_bottom += 1
-            return min(rot_top, rot_bottom)
+**Traps**
+- **`else` where `elif` is needed.** A domino showing `x` on both faces needs no flip. With
+  `else: rot_bottom += 1` it is counted as a bottom flip, so `tops = [2,1]`, `bottoms = [2,2]`
+  returns 1 instead of 0.
+- **Returning after the first candidate fails** without trying `bottoms[0]`:
+  `tops = [1,2,3]`, `bottoms = [2,2,2]` fails for 1 and needs 0 flips for 2.
+- **Looping over every value `1..6`.** It passes LC 1007, but the argument that matters ("the
+  answer must be on domino 0") is the transferable one, and it is what survives a value range of
+  10⁹.
 
-        res = check(tops[0])
-        if res != -1 or tops[0] == bottoms[0]:
-            return res
-        return check(bottoms[0])
-```
-
-**Common Mistakes:**
-- ❌ Looping all values `1..6` — works here but misses the transferable insight (and breaks when the value range is large)
-- ❌ Counting `rotTop` and `rotBottom` in the same `if` (must be `if / elif`: a domino with `x` on **both** faces needs no rotation at all)
-- ❌ Forgetting the `tops[0] == bottoms[0]` short-circuit → checking the same candidate twice
-
----
+**Drill** — LC 1007 ⭐ · LC 169 *(the vote leaves one candidate; verify it)* · LC 2128 *(row 0
+pins every other row: each must equal it or its complement)*
 
 #### 1-2-7) Other High-Frequency Array Problems (Quick Reference)
 
@@ -1685,10 +1308,18 @@ array itself: **rewriting it in place, and using its indices as storage.**
 
 ## 3) Worked Examples
 
-Thirteen problems live in **[array_examples.md](./array_examples.md)**:
+The worked problems live in **[array_examples.md](./array_examples.md)**:
 
 | Group | Problems |
 |---|---|
 | [In-place rewriting & index tricks](./array_examples.md#in-place-rewriting--index-tricks) | LC 41, 287, 189, 238, 670 |
 | [Scanning & running state](./array_examples.md#scanning--running-state) | LC 121, 1567, 334, 849 |
 | [Counting, bookings & simulation](./array_examples.md#counting-bookings--simulation) | LC 1109, 1375, 1041, 406, 251 |
+
+## 4) Drill Path
+
+| Stage | Problems (easy → hard) | What it adds |
+|---|---|---|
+| **Core** | LC 88 · LC 169 · LC 238 ⭐ · LC 380 | backward write; the vote; prefix × suffix products ([array_examples](./array_examples.md#3-product-of-array-except-self--lc-238-)); swap-with-last delete |
+| **Practice** | LC 189 · LC 229 · LC 251 · LC 1007 · LC 2063 · LC 2657 | rotate by three reversals; k − 1 candidates; lazy iterator; candidates from index 0; contribution counting; frequency array |
+| **Stretch** | LC 41 · LC 381 · LC 828 | cyclic sort / index as hash; swap-with-last with duplicates; contribution with per-character spans |

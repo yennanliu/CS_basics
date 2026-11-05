@@ -27,10 +27,10 @@
 | [子序列與雙字串比對](#subsequence--two-string-matching) | LC 161、LC 165、LC 271、LC 524、LC 809、LC 953、LC 1023 |
 | [在區間、矩陣與分割上的指標](#pointers-over-intervals-matrices-and-partitions) | LC 57、LC 240、LC 763、LC 986、LC 2104 |
 
-<!-- cd30ad9d96fe -->
+<!-- da670bb7a06d -->
 ## 原地改寫（快慢指標）
 
-> 模板：[模板 1 — 快慢指標的讀寫壓縮](./2_pointers.md#template-1-fastslow-read-write-compaction--lc-26-lc-27-)。
+> 模板：[模板 1 — 快慢指標的讀寫壓縮](./2_pointers.md#template-1-fastslow-read-write-compaction--lc-26-)。
 
 <!-- 6fc7e90d55f7 -->
 ### Remove Duplicates from Sorted Array II — LC 80
@@ -95,10 +95,10 @@
 
 <!--CODE-->
 
-<!-- acaedb249b42 -->
+<!-- 3119538b2d29 -->
 ## 向內收斂的雙向指標
 
-> 模板：[模板 2 — 向內收斂的雙向指標](./2_pointers.md#template-2-converging-bidirectional-pointers-)。
+> 模板：[模板 2 — 向內收斂的雙向指標](./2_pointers.md#template-2-converging-pointers-from-both-ends--lc-11-)。
 
 <!-- 00daccdb7500 -->
 ### Next Permutation — LC 31
@@ -285,10 +285,10 @@
 - LC 186 Reverse Words in a String II
 - LC 151 Reverse Words in a String
 
-<!-- e240f04cc9c5 -->
+<!-- 89a845cd6e4f -->
 ## 從中心往外擴
 
-> 模板：[模板 3 — 從中心往外擴](./2_pointers.md#template-3-expand-from-centre--lc-5-lc-647-)。
+> 模板：[模板 3 — 從中心往外擴](./2_pointers.md#template-3-expand-from-centre--lc-5-)。
 
 <!-- dd08718ac6e7 -->
 ### Longest Palindromic Substring — LC 5

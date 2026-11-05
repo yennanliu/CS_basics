@@ -15,7 +15,7 @@
 | 4 | **P1** 入口 | `lc_pattern.md` 改成 router；`startHere` 第一階 | [#305](https://github.com/yennanliu/CS_basics/pull/305) | 🔄 |
 | 5a | **P2** tree 家族 | `tree`、`binary_tree`、`bst`、`tree_lca_distance` | [#306](https://github.com/yennanliu/CS_basics/pull/306) | 🔄 |
 | 5b | **P2** graph 家族 | `bfs`、`dfs`、`graph` | [#307](https://github.com/yennanliu/CS_basics/pull/307) | 🔄 |
-| 5c | **P2** arrays / strings 家族 | `array`、`string`、`2_pointers`、`sliding_window`、`binary_search`、`binary_search_on_answer` | | ⬜ |
+| 5c | **P2** arrays / strings 家族 | `array`、`string`、`2_pointers`、`sliding_window`、`binary_search`、`binary_search_on_answer` | [#308](https://github.com/yennanliu/CS_basics/pull/308) | 🔄 |
 | 5d | **P2** dp 家族 | `dp`、`backtrack`、`knapsack` | | ⬜ |
 | 5e | **P2** hashing / stacks 家族 | `hash_map`、`stack`、`linked_list`、`heap` | | ⬜ |
 | 6a | **P3 + P4** tree 家族 | tree path 去重；`tree_examples`、`bst_examples` 改 Skeleton C，`bst_advanced` 改 D | | ⬜ |
@@ -67,6 +67,9 @@ P2 的 24 份 tier 5 cheatsheet 裡有 4 份不在 5a–5e：`lc_pattern` 由 P1
 - [ ] （6a，P4）`bst.md` 的「Problems by Pattern」把 LC 669、938 指到錯的模板；Basic Operations 仍是 Java 先、Summary 的 Common Mistakes 太空泛
 - [ ] （6b，P3）LC 785 二分圖同時是 `bfs` T7 與 `graph` T6 的 card；LC 1971 在兩份都有
 - [ ] （6b，P4）`bfs` / `dfs` 裡早於 card 的 variation（LC 101、111、419、797、124、979、2049、542）還不是 problem card
+- [ ] （6c，P3）LC 88 同時是 `array` T6 與 `2_pointers` T5 的錨定題；LC 251 仍在 `array_examples`；LC 1004 / 438 / 567 也在 `sliding_window_examples`；LC 162 / 1095 也在 `binary_search_examples`
+- [ ] （6c，P4）`binary_search_on_answer` 的 LC Examples 沒動（LC 1011 仍有 `NOTE !!!`）；`string` Common Tricks 的 LC 1544 仍 Java 先；`array` 1-1-5 / 1-1-7 與 LC 341 仍用未定義的名稱
+- [ ] （P6）`string`、`2_pointers`、`binary_search_on_answer` 的 Summary 決策表與新的 Recognition / Drill Path 部分重複
 - [ ] （跨 PR）中文 card 標籤：graph 家族用了 辨識 / 關鍵 / 複雜度 / 試跑 / 陷阱 / 不適用時 / 練習，其他家族不一定一致；P6 統一
 
 ## 紀錄
@@ -79,3 +82,4 @@ P2 的 24 份 tier 5 cheatsheet 裡有 4 份不在 5a–5e：`lc_pattern` 由 P1
 | 2026-11-05 | 4 | P1：`lc_pattern.md` 改寫成 router（10 個家族表、69 列，每列都連到實際存在的 card anchor）；constraint ruler 合併到 `complexity_cheatsheet` §6，`time_space_complexity` 留指標；中文 overlay 全部重寫 |
 | 2026-11-05 | 5a | P2 tree：27 張 pattern card（tree 3、binary_tree 11、bst 8、tree_lca_distance 5），四份都加 Recognition 與 Drill Path；smoke test 修掉 O(n²) 串接 / 切片、無法編譯的 Java、不能跑的 pseudocode |
 | 2026-11-05 | 5b | P2 graph：23 張 pattern card（graph 6、bfs 7、dfs 10）；修掉沒解到錨定題的模板（dfs T2–T6、graph T1、T5 未定義的名稱）；Recognition 與 Drill Path |
+| 2026-11-05 | 5c | P2 arrays / strings：43 張 pattern card（binary_search 8、binary_search_on_answer 4、sliding_window 7、2_pointers 8、array 8、string 8）；binary_search 的 LC 704 模板從 ~1194 行移到 245 行；`array` 的 21 行 IPython 改成一般 python；修 LC 875 Java int 溢位、LC 26 空陣列、LC 8 atoi |

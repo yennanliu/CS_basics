@@ -42,6 +42,21 @@
 
 ---
 
+<!-- 94344f19529d -->
+## 辨識
+
+| 題目敘述中的訊號 | 限制條件線索 | 該用 | 不適用的情況 |
+|---|---|---|---|
+| 「能在……內完成的最小速度／容量／除數／天數」 | 答案範圍可達 10⁹、n ≤ 10⁵ → O(n log range) | [模板 1](#template-1-smallest-feasible-value--lc-875-) 最小可行值 | 答案必須剛好達到某個數量，而不是「至多」→ 判定式不單調 |
+| 「最大化最小的距離／甜度／糖果數」 | 同上 | [模板 2](#template-2-largest-feasible-value--lc-1552-) 最大可行值，用偏上的 mid | 項目可以任意重排，排序一次再掃一遍就能解 → [greedy.md](./greedy.md) |
+| 「把陣列切分／裝運／分配成 k 個**連續**的組，最小化最大的組和」 | n ≤ 1000、值 ≤ 10⁶ | [模板 3](#template-3-split-into-at-most-k-contiguous-groups--lc-410-) `[max, sum]` 邊界 ＋ 貪婪填裝 | 分組不必連續（LC 1723）→ 回溯或位元遮罩 DP |
+| 排序矩陣、乘法表或數對距離中的「第 k 小」 | 記憶體要優於 O(n²)，所以不能攤平 | [模板 4](#template-4-count-at-most-over-a-value-range--lc-378-) 在值域上計數 ≤ mid | k 相對於 n 很小 → 用堆積（[heap.md](./heap.md)） |
+| 在排序陣列中「找目標值／第一個 ≥ x 的位置」 | | 不屬於本檔：索引空間的邊界 → [binary_search.md](./binary_search.md) | |
+
+線索欄背後的限制條件量尺在 [complexity_cheatsheet.md](./complexity_cheatsheet.md)。
+
+---
+
 <!-- 4f90ede2125a -->
 ## 題型分類
 
@@ -75,7 +90,7 @@
 <!-- ddc7f484e4af -->
 ## 模板與演算法
 
-<!-- 17abe055a106 -->
+<!-- d7bfa037cbbf -->
 ### 單調判定式 — 觀念基礎
 二分搜尋真正的威力：只要你能定義一個判定式 `P(x)`，使得所有滿足 `P` 的 `x` 形成一段連續區間，二分搜尋就能在 O(log n) 內找到那個邊界。
 
@@ -84,28 +99,14 @@
 單調判定式的例子：
 - `canFinish(speed)` — Koko 以 ≥ k 的速度能否在 H 小時內吃完所有香蕉？（LC 875）
 - `canShip(capacity)` — 用 ≥ c 的容量能否在 D 天內運完所有包裹？（LC 1011）
-- `isEnough(mid)` — 我們能否找到 k 組總和 ≤ mid 的數對？（LC 719）
+- `isEnough(mid)` — 距離 ≤ mid 的數對是否至少有 k 組？（LC 719）
 
-**「找出滿足 P 的最小 x」模板：**
-<!--CODE-->
+**兩種迴圈。**「找出滿足 P 的最小 x」就是 `False … True` 中的第一個 `True`：
+[模板 1](#template-1-smallest-feasible-value--lc-875-)，用偏下的 mid。「找出滿足 P 的最大 x」
+就是 `True … False` 中的最後一個 `True`：[模板 2](#template-2-largest-feasible-value--lc-1552-)，
+用偏上的 mid。下面的決策表把兩者並排比較。
 
-**「找出滿足 P 的最大 x」模板：**
-<!--CODE-->
-
-<!-- fe7da22d3cd2 -->
-### 統一模板
-
-**結構：**
-1. **定義搜尋空間**：[min_possible, max_possible]
-2. 在這個範圍上做**二分搜尋**
-3. **驗證函式**：檢查目前的值是否滿足限制
-4. 依據要最小化或最大化來**更新邊界**
-
-<!--CODE-->
-
----
-
-<!-- 85f5f8b448f0 -->
+<!-- 892aa446b680 -->
 ### 決策表：最小化 vs 最大化 ⭐⭐⭐⭐⭐
 
 | 目標 | 例題 | 可行條件 | 更新規則 | 最終答案 |
@@ -122,59 +123,194 @@
 <!--CODE-->
 
 > **為什麼「最大化」模板要 `+1`？**
-> `// +1 avoids infinite loop: when left+1==right, (left+right)/2 == left, so right never moves`
+> `// +1 avoids infinite loop: when left+1==right, (left+right)/2 == left, so left = mid never moves`
 > 少了 `+1`，當 `left` 與 `right` 相鄰（`left + 1 == right`）時，`mid` 會算成 `left`。
 > 若 `isValid(mid)` 為真，我們設 `left = mid = left` — 沒有前進，無窮迴圈。
 > 加上 `+1` 讓 `mid` 往上偏，使 `mid == right`，保證每一輪區間都會縮小。
 
 ---
 
-<!-- a7f9f713a5d8 -->
-### 搜尋邊界模式：`left = max(nums)`、`right = sum(nums)` ⭐⭐⭐⭐⭐
+<!-- 1dbf31423ad5 -->
+### 模板 1：最小可行值 — LC 875 ⭐⭐⭐⭐⭐
 
-這是「對答案做二分搜尋」類題目裡最**經典的搜尋空間設定**，
-適用於所有要你把陣列元素切分／分割／分配的題目。
+**辨識** — 「讓工作仍能完成的**最小**速度／容量／除數／天數」，而且檢查單一候選很容易、
+直接算出最佳值卻不容易。答案範圍可達 10⁹、n ≤ 10⁴–10⁵ → 預期 O(n log range)。
 
-<!-- d3040a575fb1 -->
-#### 為什麼是 `left = max(nums)`？
-
-任何合法答案（最大子陣列和、容量、速度等）都必須**至少**和最大的單一元素一樣大 —
-因為最壞情況下，那個元素得自己獨佔*某一*組。
-
-<!--CODE-->
-
-<!-- 7115c5a2c86d -->
-#### 為什麼是 `right = sum(nums)`？
-
-如果你把**所有**元素放進同一組，總和就是 `sum(nums)`。這一定可行 —
-它是明顯成立的上界，答案永遠不會超過它。
+**關鍵點** — `feasible(x)` 在 `[left, right]` 上呈現 `False … False True … True`，而答案永遠
+留在 `[left, right]` 之內：可行的 `mid` 保留自己（`right = mid`），不可行的直接捨棄
+（`left = mid + 1`）。偏下的 mid 讓 `right = mid` 每次都會縮小範圍，所以迴圈結束時
+`left == right == 第一個 True`。
 
 <!--CODE-->
 
-<!-- ac15f31d8bd6 -->
-#### 圖解：答案就落在 `[max, sum]` 之內
+<!--CODE-->
+
+**複雜度**
+- **時間 O(n log M)**：`while left < right` 迴圈每次把 `[1, M]` 砍半，共跑 O(log M) 輪，
+  每輪呼叫一次 `can_finish`，其中 `for pile in piles` 迴圈是 O(n)。
+- **空間 O(1)**：只有 `left`、`right`、`mid` 與累加中的 `hours`。
+
+**試跑**
 
 <!--CODE-->
 
-<!-- ce5436092f22 -->
-#### 程式碼模式（可跨題重複使用）
+**陷阱**
+- 在可行的 `mid` 上寫 `right = mid - 1`，可能跨過答案、回傳一個從沒被檢查過的值：
+  `piles = [30,11,23,4,20]`、`h = 6` 會回傳 22 而不是 23。要保持 `right = mid`。
+- `left = 0` 會在 `mid` 走到 0 時除以零：`piles = [1]`、`h = 1` 會試探速度 0。
+- Java 用 `int` 累計小時數會溢位：`piles = [10^9, 10^9, 10^9]`、`h = 3` 在速度 1 時總共 3·10⁹ 小時，
+  超過 `Integer.MAX_VALUE`（約 2.15·10⁹）。
+  要用 `long`。
+- 混用兩種寫法：`while left <= right` 配 `right = mid`，一旦 `left == right` 且可行就永遠停不下來。
+  要嘛 `left < right` ＋ `right = mid`，要嘛 `left <= right` ＋ `right = mid - 1` ＋ 一個 `ans` 變數 —
+  絕不各取一半。
+- `math.ceil(pile / speed)` 會經過浮點數；`(pile + speed - 1) // speed` 才是精確的。
+
+**不適用的情況** — 題目問的是仍然可行的**最大**值（最大化最小值）：`True` 區塊在左邊，
+所以要用 [模板 2](#template-2-largest-feasible-value--lc-1552-) 與它的偏上 mid。若 `x` 變大反而
+可能讓工作*再度失敗*（剛好等於某個數量），判定式就不單調，任何二分搜尋都不適用。
+
+**練習** — LC 875 ⭐ · LC 1283 *（向上取整除法的總和）* · LC 1011 *（貪婪計算天數；[模板 3](#template-3-split-into-at-most-k-contiguous-groups--lc-410-) 的邊界）* · LC 1482 *（判定式計算長度為 k 的連續段）* · LC 2616 *（先排序，再貪婪配對）*
+
+---
+
+<!-- cf6f78b44b9c -->
+### 模板 2：最大可行值 — LC 1552 ⭐⭐⭐⭐⭐
+
+**辨識** — 「**最大化最小的**距離／甜度／每個孩子的糖果數」，或「仍然可行的最大 x」。
+這次可行區塊在*左邊*：能維持 x 的間距，就一定能維持更小的間距。規模和模板 1 相同 → O(n log range)。
+
+**關鍵點** — `feasible(x)` 呈現 `True … True False … False`，而答案留在 `[left, right]` 之內：
+可行的 `mid` 保留自己（`left = mid`），不可行的直接捨棄（`right = mid - 1`）。只有**偏上**的 mid
+`left + (right - left + 1) // 2`，才能在 `left + 1 == right` 時讓 `left = mid` 前進。
 
 <!--CODE-->
 
-<!-- 8b1ffc75707e -->
-#### 使用同一套 `[max, sum]` 邊界的相似題目
+<!--CODE-->
 
-| LC # | 題目 | 最小化的對象 | `left` | `right` |
-|------|---------|-----------------|--------|---------|
+**複雜度**
+- **時間 O(n log n + n log R)**：排序一次 O(n log n)；之後 `while left < right` 迴圈跑 O(log R) 輪，
+  每次 `can_place` 都是一趟 O(n) 掃描。
+- **空間 O(n)**：Python 要存排序後的副本；Java 原地排序，額外空間 O(1)。
+
+**試跑**
+
+<!--CODE-->
+
+**陷阱**
+- 偏下的 mid 配 `left = mid`，範圍剩兩格時就會無窮迴圈：`position = [1,2,3]`、`m = 2` 走到
+  `left=1, right=2`，`mid=1` 可行，`left` 一直停在 1。
+- 忘了排序：`position = [5,4,3,2,1,1000000000]`、`m = 2` 會回傳 999999995 而不是 999999999，
+  因為貪婪把第一顆球放在 5。
+- 貪婪地**盡早**放球，`can_place` 才會精確：把球放得比必要的晚，只會壓縮後面剩下的空間。
+- 閉區間寫法（`while left <= right`，`ans = mid; left = mid + 1`）也正確，下面的 LC 1231 就是這麼寫。
+  它不需要偏上的 mid — 但就需要 `ans`。
+
+**不適用的情況** — 答案是仍然可行的**最小**值（最小化最大值）→
+[模板 1](#template-1-smallest-feasible-value--lc-875-)，用偏下的 mid。若最小間距是針對固定的擺放
+（沒有選擇球放哪裡的空間），那只是一趟掃描，不是搜尋。
+
+**練習** — LC 1552 ⭐ · LC 2226 *（糖果：`sum(c // x) >= k`）* · LC 2517 *（同一套間距貪婪，用在價格上）* · LC 1231 *（LC 410 的鏡像：累積到 x 就切）* · LC 1802 *（可行性是一個等差數列和）*
+
+---
+
+<!-- 3e4ac34d5d44 -->
+### 模板 3：切成至多 K 個連續組 — LC 410 ⭐⭐⭐⭐⭐
+
+**辨識** — 「把陣列切分／裝運／分配成 k 個**連續**的子陣列、天數或工人，並**最小化最大的**組和」。
+n ≤ 1000 且值 ≤ 10⁶（LC 410），或 n ≤ 5·10⁴（LC 1011）→ O(n log sum)。
+
+**關鍵點** — 答案落在 `[max(nums), sum(nums)]`：低於 `max(nums)` 時最大的元素放不進任何一組，
+而 `sum(nums)` 就是把所有東西放進同一組。對上限 `x`，每組一直填到下一個元素會溢出為止，
+用到的組數是任何切法中**最少**的，所以「能放進 ≤ k 組」對 `x` 是單調的，模板 1 的迴圈就能找到
+放得下的最小上限。
+
+<!--CODE-->
+
+<!--CODE-->
+
+**複雜度**
+- **時間 O(n log S)**：`while left < right` 迴圈把 `[max, sum]` 砍半，共 O(log S) 輪，
+  每次 `can_split` 是一趟 O(n) 掃描。
+- **空間 O(1)**：貪婪只記 `groups` 與 `current`。
+
+**各題的邊界** — 同一套迴圈，範圍由「一個候選值代表什麼」決定：
+
+| LC | 題目 | 最小化的對象 | `left` | `right` |
+|----|---------|-------------------|--------|---------|
 | **410** | Split Array Largest Sum | 最大子陣列和 | `max(nums)` | `sum(nums)` |
 | **1011** | Capacity To Ship Packages | 船的容量 | `max(weights)` | `sum(weights)` |
-| **1482** | Min Days to Make m Bouquets | 天數 | `1` | `max(bloomDay)` |
 | **875** | Koko Eating Bananas | 進食速度 | `1` | `max(piles)` |
 | **1283** | Find the Smallest Divisor | 除數 | `1` | `max(nums)` |
+| **1482** | Min Days to Make m Bouquets | 天數 | `min(bloomDay)` | `max(bloomDay)` |
 | **2064** | Minimized Maximum of Products Distributed | 每家店的上限 | `1` | `max(quantities)` |
 
-> **提示：** 只要題目說「把陣列元素切分／裝運／分配成 K 組，
-> 並最小化其中的最大值」，就直接用 `left = max(nums)`、`right = sum(nums)`。
+**試跑**
+
+<!--CODE-->
+
+**陷阱**
+- `left = min(nums)` 或 `1` 會讓 `can_split` 開出一個一開始就超過上限的組，於是少算組數：
+  `nums = [1,4,4]`、`k = 3` 會回傳 1 而不是 4。要從 `max(nums)` 開始。
+- 用 `current + num < cap` 而不是 `<=`，會拒絕剛好等於上限的組：`[7,2,5,10,8]`、
+  `k = 2` 會回傳 19 而不是 18。
+- `can_split` 回答的是「**至多** k 組」，不是「剛好 k 組」：只要 `k <= n`，任何較少組的切法都能
+  再切細而不提高最大值。
+- 值很大的變體中 `right` 可能超過 `int`：10⁵ 個 10⁹ 的總和。要用 `long`。
+
+**不適用的情況** — 分組**不必**連續（把工作分給 k 個工人，LC 1723）：貪婪填裝不再算出最少組數，
+所以要用回溯或位元遮罩 DP。若成本是各組成本的**總和**而不是最大的那組，就是切分型 DP（[dp.md](./dp.md)）。
+
+**練習** — LC 410 ⭐ · LC 1011 *（同一題，換成包裹與天數）* · LC 2064 *（每家店一組：`ceil(q / x)`）* · LC 1231 *（最大化最小值：[模板 2](#template-2-largest-feasible-value--lc-1552-)）*
+
+---
+
+<!-- 8e0b86497cdb -->
+### 模板 4：在值域上計數至多 mid — LC 378 ⭐⭐⭐⭐⭐
+
+**辨識** — 某個你負擔不起逐一列出的集合中的「**第 k 小**」：每列每行都排序的 `n × n` 矩陣、
+乘法表、所有數對距離。「記憶體要優於 O(n²)」，或值可達 10⁹、但有便宜的方法*數出*有多少 ≤ x。
+
+**關鍵點** — `count(x)` = 有多少值 `≤ x`，隨 `x` 增加永不遞減，而且只會在真實存在的值上跳升。
+所以使 `count(x) ≥ k` 的最小 `x` 就是第 k 小，**而且**一定是真實元素：搜尋值域而非索引，
+套用模板 1 的迴圈。
+
+<!--CODE-->
+
+<!--CODE-->
+
+**複雜度**
+- **時間 O(n log(max − min))**：`while left < right` 迴圈把值域砍半，每次 `count_at_most`
+  是一趟階梯走法，最多往上或往右走 2n 步。
+- **空間 O(1)**：走法只記 `row`、`col` 與 `count`，從不複製矩陣。
+
+**試跑**
+
+<!--CODE-->
+
+**陷阱**
+- 一看到 `count(mid) == k` 就回傳 `mid`：上面的試跑中 `mid=14` 的計數是 8，但 14 不在矩陣裡。
+  要繼續收斂到第一個這樣的值。
+- Java 的 `(left + right) / 2` 對負數會往零截斷：`[[-5,-4],[-4,-3]]`、`k = 2` 走到
+  `left=-5, right=-4` 時得到 `mid=-4`，設 `right=-4` 後就再也不動。要用 `left + (right - left) / 2`。
+- 從左上角開始走階梯：兩個鄰居都比較大，一步無法決定方向。要從左下角（或右上角）開始。
+
+**不適用的情況** — k 相對於 n² 很小：最小堆積 pop `k` 次，O(k log n)（[heap.md](./heap.md)）。
+若值沒有排序但有界，計數依然可用，只是檢查方式不同 — 下面的 LC 287 在 `[1, n]` 上二分，
+用鴿籠檢查 `count(mid) > mid`。
+
+**練習** — LC 378 ⭐ · LC 287 *（count > mid 代表重複的數 ≤ mid）* · LC 668 *（count = Σ min(x // i, n)）* · LC 719 *（排序 ＋ 雙指標數出距離 ≤ x 的數對）* · LC 786 *（分數：在實數範圍上搜尋）*
+
+**相似題目**
+
+| LC | 題目 | 關聯 |
+|----|---------|----------|
+| **668** | Kth Smallest Number in Multiplication Table | `count(x) = Σ min(x // i, n)` |
+| **719** | Find K-th Smallest Pair Distance | 用雙指標數出距離 ≤ x 的數對 |
+| **786** | K-th Smallest Prime Fraction | 對實數值二分 ＋ 計數 |
+| **373** | Find K Pairs with Smallest Sums | 同一個第 k 小問題的堆積版本 |
+| **240** | Search a 2D Matrix II | 同一套階梯走法，用來搜尋而非計數 |
+| **4**   | Median of Two Sorted Arrays | 用切分型二分搜尋找第 k 小 |
 
 ---
 
@@ -239,48 +375,15 @@
 - 線性：10⁹ × 10⁵ = 10¹⁴ 次運算 ❌ TLE
 - 二分：log(10⁹) × 10⁵ ≈ 30 × 10⁵ = 3×10⁶ 次運算 ✓
 
-<!-- ea424f0b99f9 -->
+<!-- 60b153f8f64e -->
 #### 對答案做二分搜尋的三項前提
 
-<!--CODE-->
-
-<!-- b81e72a1f38a -->
-#### 「最小化最大值」題目的常見結構
-
-<!--CODE-->
-
----
-
-<!-- 8f87b19ad7db -->
-### 模板變體
-
-**變體 1：閉區間 [left, right]**
-<!--CODE-->
-
-**變體 2：半開區間 [left, right)**
 <!--CODE-->
 
 ---
 
 <!-- 598a9bfd2a3c -->
 ## LC 範例
-
-<!-- 4ffb646cc10d -->
-### Split Array Largest Sum — LC 410 ⭐⭐⭐⭐⭐
-
-**題目：** 把陣列切成 m 個子陣列，最小化所有子陣列中最大的那個總和。
-
-**洞察：** 對可能的「最大總和」做二分搜尋。對每個 mid，檢查能不能把陣列切成 ≤ m 個、每段總和都 ≤ mid 的子陣列。
-
-<!--CODE-->
-
-<!--CODE-->
-
-**逐步追蹤：** `nums = [7,2,5,10,8], k = 2`
-
-<!--CODE-->
-
----
 
 <!-- d46bb793279e -->
 ### Capacity To Ship Packages Within D Days — LC 1011
@@ -290,18 +393,6 @@
 <!--CODE-->
 
 **做法**：對容量做二分搜尋 ＋ 貪婪驗證
-<!--CODE-->
-
----
-
-<!-- e470e3e84c7e -->
-### Koko Eating Bananas — LC 875
-**題目：** Koko 必須在 h 小時內吃完所有香蕉，求最小的進食速度。
-
-<!--CODE-->
-
-> 對進食速度做二分搜尋；檢查是否能在 H 小時內吃完所有香蕉。
-
 <!--CODE-->
 
 ---
@@ -390,10 +481,10 @@
 
 ---
 
-<!-- 458d565d733e -->
+<!-- d2ae2ab6594e -->
 ### Path With Minimum Effort — LC 1631，判定式是一張圖 ⭐⭐⭐⭐
 
-> 和上面統一模板一樣的「最小化最大值」骨架，只是可行性檢查換成了 **BFS/DFS 的可達性測試**，而不是 `O(n)` 掃描。
+> 和上面 [模板 1](#template-1-smallest-feasible-value--lc-875-) 一樣的「最小化最大值」骨架，只是可行性檢查換成了 **BFS/DFS 的可達性測試**，而不是 `O(n)` 掃描。
 
 `canReach(limit)` = 「我能不能只走成本 `<= limit` 的步伐，從左上走到右下？」— 對 `limit` 是單調的（限制放寬只會解鎖更多邊），這正是二分搜尋要的性質。
 
@@ -411,61 +502,6 @@
 > 兩題的替代解法：**用 min-max（瓶頸）鬆弛的 Dijkstra** `nd = max(d, cost)`，或**併查集**依排序順序逐格加入。時間壓力下二分搜尋 + BFS 最容易推導出來；面試時記得口頭補上 Dijkstra 版本，說明它是 `O(mn log mn)` 的改良。
 
 ---
-
-<!-- 5b9d839bf92a -->
-### Kth Smallest Element in a Sorted Matrix — LC 378 ⭐⭐⭐⭐⭐
-
-> 給定一個 `n x n` 矩陣，每一**列與每一行**都遞增排序，回傳第 `k` 小的元素。要求記憶體優於 `O(n²)`（所以不能直接攤平後排序）。
-
-<!-- b73c3c989f3b -->
-#### 1. 核心想法
-
-**對值域做二分搜尋，而不是對索引。**
-
-因為列／行都排序過，答案必定落在 `[matrix[0][0], matrix[n-1][n-1]]`。我們在這個**值空間**上做二分搜尋，對每個候選 `mid`，數出矩陣中有多少元素 `<= mid`。
-
-- 函式 `count(mid) = #elements <= mid` 對 `mid` 是**單調非遞減**的 → 這個單調性正是二分搜尋能成立的原因。
-- 我們要找的是使 `count(x) >= k` 的**最小值** `x`。這個 `x` 保證是矩陣中真實存在的元素（也就是第 k 小的那個）。
-
-<!--CODE-->
-
-用 `while left < right` 迴圈收斂到單一值，回傳 `left`。
-
-<!-- d24d6a029912 -->
-#### 2. 模式
-
-**「對答案做二分搜尋 ＋ 計數檢查」** — 和 Koko（LC 875）、Split Array（LC 410）同一家族。
-差別在於：**計數這一步**利用了排序矩陣的結構，用 `O(n)`（階梯走法）而非 `O(n²)` 完成。
-
-**在 O(n) 內數出 `<= target` 的元素 — 從左下角走階梯：**
-
-<!--CODE-->
-
-**完整解法：**
-
-<!--CODE-->
-
-**要記住的重點：**
-- 搜尋空間是**值**（`matrix[0][0] .. matrix[n-1][n-1]`），不是索引。
-- 用 `while left < right` ＋ `right = mid`（左邊界寫法），才能收斂到第一個 `count >= k` 的值。
-- `left` 最後一定會停在真實存在的矩陣元素上 — 不需要再校正回去。
-- 另一種計數方式：對每列做 `bisect_right`，得到 `O(n log n)`；階梯走法是 `O(n)`。
-- 整體的另一種做法：用 `(val, r, c)` 的**最小堆積**，pop `k` 次 → `O(k log n)` 時間、`O(n)` 空間（記憶體較差，但推理較簡單）。
-
-<!-- ae714ba87d4d -->
-#### 3. 相似的 LC 題目
-
-| LC | 題目 | 關聯 |
-|----|---------|----------|
-| **378** | Kth Smallest Element in a Sorted Matrix | 本題 — 對值二分 ＋ 計數 |
-| **668** | Kth Smallest Number in Multiplication Table | 對值二分；`count(x)=Σ min(x//i, n)` |
-| **719** | Find K-th Smallest Pair Distance | 對距離值二分 ＋ 雙指標計數 |
-| **786** | K-th Smallest Prime Fraction | 對分數值二分 ＋ 計數 |
-| **373** | Find K Pairs with Smallest Sums | 堆積版本（同樣是第 k 小的想法） |
-| **240** | Search a 2D Matrix II | 同一套階梯走法（是搜尋，不是計數） |
-| **875** | Koko Eating Bananas | 同一套「對答案二分 ＋ 計數／可行性」模板 |
-| **410** | Split Array Largest Sum | 同一套「對答案二分」模板 |
-| **4**   | Median of Two Sorted Arrays | 用二分搜尋切分找第 k 小 |
 
 <!-- f0d1c3574878 -->
 ### Find the Duplicate Number — LC 287，在值域上搜尋 ⭐⭐⭐⭐⭐
@@ -561,6 +597,15 @@
 - 「時間複雜度：O(n × log(range))，其中 n 是驗證的成本」
 
 ---
+
+<!-- 59caca1e057e -->
+## 練習路徑
+
+| 階段 | 題目（易 → 難） | 新增的內容 |
+|---|---|---|
+| **核心** ⭐ | LC 875 ⭐ · LC 1552 · LC 410 | 最小可行值、最大可行值（偏上的 mid），以及 `[max, sum]` 切分 |
+| **練習** | LC 1283 · LC 1011 · LC 1482 · LC 2226 · LC 287 · LC 378 | 其他貪婪判定式；接著是在值域上計數 |
+| **延伸** | LC 2616 · LC 1631 · LC 1231 · LC 668 · LC 719 | 先排序再配對、BFS 判定式、用切割來最大化最小值、不列舉也能計數 |
 
 <!-- 7a9e8b2d6e33 -->
 ## 總結

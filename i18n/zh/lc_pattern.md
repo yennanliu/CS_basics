@@ -20,7 +20,7 @@
 
 一個模式一列。**Card** 欄連到解錨定題的那個模板；題目本身放在該 cheatsheet 的 examples 裡。
 
-<!-- 36daa9591136 -->
+<!-- 1a877c4599c9 -->
 ### 陣列與字串
 
 | 敘述裡的訊號 | 限制提示 | 模式 | Card | 長得像，其實不是 |
@@ -31,32 +31,32 @@
 | 「總和為 k／可被 k 整除的子陣列有幾個」 | n ≤ 10⁵，允許負數 | 前綴和 + 計數 map | [prefix_sum § Template 2](./prefix_sum.md#template-2-hashmap--prefix-sum-subarray-target-sum--lc-560)（總和）、[Template 3](./prefix_sum.md#template-3-modulo-prefix-sum-divisibility-problems--lc-974)（整除：數相同的餘數） | 值全部是正的、要最長／最短 → 滑動視窗 |
 | 「大量的區間和查詢」 | q ≤ 10⁵ | 前綴和陣列 | [prefix_sum § Template 1](./prefix_sum.md#template-1-basic-prefix-sum-range-queries--lc-303) | 查詢之間陣列會變 → Fenwick／線段樹（LC 307） |
 | 「把 [l, r] 每個元素加上 v」，做很多次 | n、更新次數 ≤ 10⁵ | 差分陣列 | [difference_array § Template 1](./difference_array.md#template-1-basic-difference-array) | 每次更新後都要讀最大值 → 帶 lazy propagation 的線段樹 |
-| **已排序**陣列上「和為 target 的一對／三元組」、「盛水容器」、「回文檢查」 | n ≤ 10⁵ | 相向雙指標 | [2_pointers § Template 2](./2_pointers.md#template-2-converging-bidirectional-pointers-) | 沒排序、而且要回傳索引 → 雜湊表（LC 1） |
-| 「原地移除／去重」、「把 0 移到後面」 | O(1) 額外空間 | 讀寫雙指標 | [2_pointers § Template 1](./2_pointers.md#template-1-fastslow-read-write-compaction--lc-26-lc-27-) | 順序不重要 → 和最後一個元素交換 |
+| **已排序**陣列上「和為 target 的一對／三元組」、「盛水容器」、「回文檢查」 | n ≤ 10⁵ | 相向雙指標 | [2_pointers § Template 2](./2_pointers.md#template-2-converging-pointers-from-both-ends--lc-11-) | 沒排序、而且要回傳索引 → 雜湊表（LC 1） |
+| 「原地移除／去重」、「把 0 移到後面」 | O(1) 額外空間 | 讀寫雙指標 | [2_pointers § Template 1](./2_pointers.md#template-1-fastslow-read-write-compaction--lc-26-) | 順序不重要 → 和最後一個元素交換 |
 | 「一趟把 0、1、2 排好」 | O(1) 空間 | 三路切分 | [2_pointers § Template 6](./2_pointers.md#template-6-three-way-partition-dutch-national-flag--lc-75-) | 超過三種 key → 計數排序 |
-| 「最長回文子字串」、「回文子字串有幾個」 | n ≤ 1,000 | 從中心擴張 | [2_pointers § Template 3](./2_pointers.md#template-3-expand-from-centre--lc-5-lc-647-) | 回文**子序列** → 區間 DP（LC 516） |
+| 「最長回文子字串」、「回文子字串有幾個」 | n ≤ 1,000 | 從中心擴張 | [2_pointers § Template 3](./2_pointers.md#template-3-expand-from-centre--lc-5-) | 回文**子序列** → 區間 DP（LC 516） |
 | 未排序陣列上的「two sum」、「之前看過嗎？」 | n ≤ 10⁵ | 查補數 | [hash_map § Template 2](./hash_map.md#template-2-seen-before-index-map-two-sum-shape) | 輸入已排序、要求 O(1) 空間 → 雙指標（LC 167） |
 | 「anagram 分組」、「數頻率」、「第一個不重複的」 | n ≤ 10⁴ | 依計算出的 key 分組／計數 | [hash_map § Template 3](./hash_map.md#template-3-grouping-by-a-computed-key)、[Template 1](./hash_map.md#template-1-frequency-counter) | 依頻率取前 k → 堆積或桶排序（LC 347） |
 | 「子陣列的最大和／最大乘積」 | n ≤ 10⁵ | Kadane：以這裡結尾的最佳一段 | [kadane_algorithm § 0-2](./kadane_algorithm.md#0-2-algorithm-pattern--template)（和）、[§ 1-3](./kadane_algorithm.md#1-3-maximum-product-subarray-lc-152)（乘積：最小值也要一起維護） | 長度 ≥ k 的子陣列，或總和 = k → 前綴和 |
 | 「合併／插入區間」、「最少要幾間會議室」、「最少移除幾個才不重疊」 | n ≤ 10⁴ | 依起點排序（合併）或依終點排序（排程） | [intervals § Pattern 1](./intervals.md#pattern-1-interval-merging--lc-56-)、[Pattern 2](./intervals.md#pattern-2-interval-scheduling-greedy--lc-435-) | 同一時間有很多事件重疊 → 掃描線（LC 253、[scanning_line](./scanning_line.md#template-1-basic-interval-overlap--lc-253)） |
 | 「第 k 大／第 k 小」、「最近的 k 個」 | n ≤ 10⁵，只問一次 | quickselect | [2_pointers_quickselect § Template 1](./2_pointers_quickselect.md#template-1-kth-largest-element--lc-215-) | 資料是串流，或要依序拿到全部 k 個 → 大小為 k 的堆積 |
 
-<!-- fa5b8efec660 -->
+<!-- dabdd6adbeda -->
 ### 二分搜尋
 
 | 敘述裡的訊號 | 限制提示 | 模式 | Card | 長得像，其實不是 |
 |---|---|---|---|---|
-| 「已排序陣列」、「找 target／第一個位置／插入位置」 | n ≤ 10⁵，要求 O(log n) | 經典二分搜尋（找相等）、下界／上界（第一個位置、插入位置） | [binary_search § 2.1](./binary_search.md#21-standard-binary-search-template--lc-704)（相等）、[§ 1.3](./binary_search.md#13-find-boundaries--lower-and-upper-bound-lc-34-)（邊界） | 沒排序、但要的是計數 → 先排序，或用雜湊表 |
-| 「能在 k 份內裝下的最小容量／速度／最大和」、「最大化最小距離」 | 數值到 10⁹ | 對答案做二分搜尋 | [binary_search_on_answer § The Unified Template](./binary_search_on_answer.md#the-unified-template) | 答案變大時可行性翻轉不只一次（不是單一次 true → false 或 false → true） → DP 或貪婪 |
+| 「已排序陣列」、「找 target／第一個位置／插入位置」 | n ≤ 10⁵，要求 O(log n) | 經典二分搜尋（找相等）、下界／上界（第一個位置、插入位置） | [binary_search § Template 1](./binary_search.md#template-1-exact-match-on-a-closed-interval--lc-704-)（相等）、[§ Template 2](./binary_search.md#template-2-lower-and-upper-bound--lc-34-)（邊界） | 沒排序、但要的是計數 → 先排序，或用雜湊表 |
+| 「能在 k 份內裝下的最小容量／速度／最大和」、「最大化最小距離」 | 數值到 10⁹ | 對答案做二分搜尋 | [binary_search_on_answer § Template 1](./binary_search_on_answer.md#template-1-smallest-feasible-value--lc-875-) | 答案變大時可行性翻轉不只一次（不是單一次 true → false 或 false → true） → DP 或貪婪 |
 | 「旋轉過的已排序陣列」 | n ≤ 5,000，要求 O(log n) | 二分搜尋，永遠有一半是排好的 | [binary_search](./binary_search.md) | 允許重複 → 最差變成 O(n)（LC 81） |
 
-<!-- 33b687a710c0 -->
+<!-- aa28ce28d3cd -->
 ### 鏈結串列
 
 | 敘述裡的訊號 | 限制提示 | 模式 | Card | 長得像，其實不是 |
 |---|---|---|---|---|
 | 「反轉整條／一段／每 k 個一組」、「重新排列」 | O(1) 空間 | 指標反轉、dummy head | [linked_list § 0-2](./linked_list.md#0-2-pattern) | 可以用 O(n) 空間 → 先放進 list 再重建 |
-| 「環」、「環的起點」、「中間節點」、「倒數第 k 個」 | O(1) 空間 | 快慢指標 | [2_pointers § Template 7](./2_pointers.md#template-7-fastslow-cycle-detection--lc-141-lc-142-) | 1..n 陣列裡找重複 → 把同一招用在索引上（LC 287） |
+| 「環」、「環的起點」、「中間節點」、「倒數第 k 個」 | O(1) 空間 | 快慢指標 | [2_pointers § Template 7](./2_pointers.md#template-7-fastslow-cycle-detection--lc-141-) | 1..n 陣列裡找重複 → 把同一招用在索引上（LC 287） |
 | 「合併 k 條已排序串列」 | k ≤ 10⁴ | 用堆積做 k 路合併 | [heap § Template 2](./heap.md#template-2-k-way-merge-pattern--lc-23) | 只有兩條 → 用 dummy head 直接合併（LC 21） |
 
 <!-- 27aa78ff63c6 -->

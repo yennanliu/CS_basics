@@ -31,6 +31,21 @@
 - [labuladong Sliding Window Guide](https://labuladong.online/algo/essential-technique/sliding-window-framework/)
 - [Sliding Window Template Collection](https://leetcode.com/discuss/general-discussion/657507/sliding-window-for-beginners-problems-template-sample-solutions/)
 
+## Recognition
+
+| Signal in the statement | Constraint cue | Reach for | Not this if |
+|---|---|---|---|
+| "every subarray / substring **of length k**", "maximum average of k consecutive" | n ≤ 10⁵, k given | [Template 1](#template-1-fixed-size-window--lc-643-) fixed-size window | k is not given and the length is what you are asked for → Template 3 / 4 |
+| "longest subarray where at most k …", "you may flip / replace k" | n ≤ 10⁵ → O(n) | [Template 2](#template-2-grow-then-shrink-the-while-invariant--lc-1004-) grow-then-shrink | an exact sum `== k` with negatives → [prefix_sum.md](./prefix_sum.md) (LC 560) |
+| "longest substring **without repeating** / with at most k distinct" | n ≤ 5·10⁴ | [Template 3](#template-3-longest-window-satisfying-p--lc-3-) longest window | the window must contain something → Template 4 / 5 |
+| "**minimal length** subarray whose sum ≥ target", all values positive | n ≤ 10⁵ | [Template 4](#template-4-shortest-window-satisfying-p--lc-209-) shortest window | values can be negative → monotonic deque on prefix sums, LC 862 ([monotonic_queue.md](./monotonic_queue.md)) |
+| "minimum window **containing all** characters of t", "permutation / anagram of p in s" | \|s\|, \|t\| ≤ 10⁵ | [Template 5](#template-5-char-count-window-with-the-haveneed-counter--lc-76-) have/need counter | the order of t's characters matters → subsequence two pointers ([2_pointers.md](./2_pointers.md)) |
+| "**number of** subarrays with **exactly** k distinct / odd / sum k" | n ≤ 2·10⁴ | [Template 6](#template-6-exactly-k-via-at-most-subtraction--lc-992-) atMost(k) − atMost(k−1) | values can be negative (LC 560) → prefix sum + hash map |
+| "longest subarray with **no two / three elements** such that …" | values ≤ 500 | [Template 7](#template-7-hereditary-constraint--test-only-the-newcomer--lc-4067-) test only the newcomer | the rule is not hereditary (dropping an element can break it) → not a window |
+| "maximum / minimum of every window of size k" | n ≤ 10⁵ | monotonic deque → [monotonic_queue.md](./monotonic_queue.md) (LC 239) | |
+
+The constraint cues come from the ruler in [complexity_cheatsheet.md](./complexity_cheatsheet.md).
+
 ## Problem Categories
 
 ### Core Components
@@ -103,7 +118,7 @@ a different result update.
 | # | Template | Shape | Result update | Time / Space | Anchor problems |
 |---|----------|-------|---------------|--------------|-----------------|
 | 1 | Fixed-Size Window | `for i` + evict `i - k` | test when `i >= k - 1` | O(n) / O(k) | LC 643, 438, 567 |
-| 2 | Grow-Then-Shrink (the `while` invariant) | `for right` + `while invalid: shrink` | any valid window | O(n) / O(k) | the base of 3–7 |
+| 2 | Grow-Then-Shrink (the `while` invariant) | `for right` + `while invalid: shrink` | any valid window | O(n) / O(k) | LC 1004, 904 — the base of 3–7 |
 | 3 | Longest Window Satisfying P | shrink **while invalid** | `max(res, r - l + 1)` | O(n) / O(k) | LC 3, 424, 1004 |
 | 4 | Shortest Window Satisfying P | shrink **while valid** | `min(res, r - l + 1)` | O(n) / O(k) | LC 209, 76 |
 | 5 | Char-Count Window (`have`/`need`) | freq map + match counter | on `have == need` | O(n) / O(charset) | LC 76, 438, 567 |
@@ -113,77 +128,85 @@ a different result update.
 > Rows 3 and 4 differ by **one word**: longest shrinks while the window is *invalid*, shortest
 > shrinks while it is *valid*. Get that word wrong and the answer is silently off.
 
-### Template 1: Fixed-Size Window ⭐⭐⭐⭐⭐
+### Template 1: Fixed-Size Window — LC 643 ⭐⭐⭐⭐⭐
 
-**Worked instances**: LC 643, LC 438, LC 567, LC 1456, LC 219 — see [sliding_window_examples.md](./sliding_window_examples.md).
+**Recognise** — "every subarray / substring **of length k**", "maximum average of k
+consecutive elements", "an anagram of p" (the window is `len(p)` wide). k is given, n ≤ 10⁵ →
+O(n) expected, so recomputing each window from scratch (O(n·k)) is the answer being ruled out.
 
-> *Outline, not runnable* — `meets_condition` / `meetsCondition` is the problem-specific test
-> you fill in.
-
-**Use Cases**: Anagrams, permutations, k-length substrings
-**Pattern**: Maintain exact window size, slide one position at a time
+**Key point** — after index `i` is added and `i - k` is evicted, the state holds exactly
+`nums[i-k+1 .. i]`; each step changes the window by one element in and one out, so the state is
+updated in O(1) instead of rebuilt.
 
 ```python
-# Fixed Size Window Template
-def fixed_window(s, k):
-    window = {}
-    result = []
-    
-    for i in range(len(s)):
-        # Add current element to window
-        window[s[i]] = window.get(s[i], 0) + 1
-        
-        # Remove element that's outside window
+# python
+# LC 643 - Maximum Average Subarray I
+# IDEA: add nums[i], evict nums[i - k] once the window is over-full, measure once it is k wide
+# time = O(n), space = O(1)   (a counting map instead of a sum makes it O(k))
+def findMaxAverage(nums, k):
+    window_sum = 0
+    best = float("-inf")
+    for i in range(len(nums)):
+        window_sum += nums[i]                 # add the newcomer
         if i >= k:
-            left_char = s[i - k]
-            window[left_char] -= 1
-            if window[left_char] == 0:
-                del window[left_char]
-        
-        # Process window when it reaches target size
-        if i >= k - 1:
-            # Check condition and update result
-            if meets_condition(window):
-                result.append(i - k + 1)
-    
-    return result
+            window_sum -= nums[i - k]         # evict the element that fell out
+        if i >= k - 1:                        # window is exactly k wide from here on
+            best = max(best, window_sum)
+    return best / k
 ```
 
 ```java
-// Fixed Size Window Template - Java
-public List<Integer> fixedWindow(String s, int k) {
-    Map<Character, Integer> window = new HashMap<>();
-    List<Integer> result = new ArrayList<>();
-    
-    for (int i = 0; i < s.length(); i++) {
-        // Add current element
-        char cur = s.charAt(i);
-        window.put(cur, window.getOrDefault(cur, 0) + 1);
-        
-        // Remove element outside window
+// java
+// LC 643 - Maximum Average Subarray I
+// IDEA: add nums[i], evict nums[i - k] once the window is over-full, measure once it is k wide
+// time = O(n), space = O(1)
+public double findMaxAverage(int[] nums, int k) {
+    int windowSum = 0;
+    int best = Integer.MIN_VALUE;
+    for (int i = 0; i < nums.length; i++) {
+        windowSum += nums[i];                // add the newcomer
         if (i >= k) {
-            char leftChar = s.charAt(i - k);
-            window.put(leftChar, window.get(leftChar) - 1);
-            if (window.get(leftChar) == 0) {
-                window.remove(leftChar);
-            }
+            windowSum -= nums[i - k];        // evict the element that fell out
         }
-        
-        // Process when window is full
-        if (i >= k - 1 && meetsCondition(window)) {
-            result.add(i - k + 1);
+        if (i >= k - 1) {                    // exactly k wide from here on
+            best = Math.max(best, windowSum);
         }
     }
-    return result;
+    return (double) best / k;
 }
 ```
 
-### Template 2: Grow-Then-Shrink — the `while` Invariant ⭐⭐⭐⭐⭐
+**Complexity**
+- **Time O(n)**: the single `for i` loop; each step does one add and at most one evict.
+- **Space O(1)**: one running sum. When the state is a counting map (LC 438 / 567) it holds at
+  most k keys, so O(k), and O(1) again with a fixed `int[26]`.
+
+**Traps**
+- Measuring before the window is full: without `if i >= k - 1`, `[5, -10, 1]`, k = 2 compares
+  the one-element window `[5]` and returns 2.5 instead of −2.5.
+- Starting `best` at 0: an all-negative input such as `[-1]`, k = 1 returns 0 instead of −1.
+- A counting map must delete keys that fall to 0, or comparing plain dicts (`window == need`)
+  fails on `{'a': 0}` vs `{}` (LC 438).
+
+**Not this if** — k is not given and the length is what is asked for ("longest", "shortest")
+→ [Template 3](#template-3-longest-window-satisfying-p--lc-3-) /
+[Template 4](#template-4-shortest-window-satisfying-p--lc-209-).
+
+**Drill** — LC 643 · LC 219 *(window as a set)* · LC 1456 · LC 567 ⭐ *(counting map, compare
+to `need`)* · LC 438 *(record every start)*
+
+### Template 2: Grow-Then-Shrink, the `while` Invariant — LC 1004 ⭐⭐⭐⭐⭐
+
+**Recognise** — "longest subarray where at most k …", "you may flip / replace / remove at most
+k", any contiguous-range question whose validity only gets *worse* as the window grows. n ≤ 10⁵
+→ O(n) expected.
+
+**Key point** — at the bottom of every iteration `[left, right]` is valid, and `left` never
+moves backwards, so every element is added once and removed at most once: O(n) however the
+validity test is written.
 
 **The single most important idiom on this sheet.** One `for` advances `right` and adds an
-element; one `while` advances `left` until the window is valid again. Because `left` never moves
-backwards, every element is added once and removed at most once → O(n), however the validity
-test is written.
+element; one `while` advances `left` until the window is valid again:
 
 ```text
 for right in range(n):         # 1. expand: the window may now be invalid
@@ -194,197 +217,253 @@ for right in range(n):         # 1. expand: the window may now be invalid
 ```
 
 Those three slots are the whole design space: what `add`/`remove` maintain, what `valid` tests,
-and what `update_result` records. Templates 3–6 are this loop with the slots filled in.
-
-> *Outline, not runnable* — `is_valid`, `update_window_state` and `update_result` are the
-> problem-specific slots.
+and what `update_result` records. Templates 3–6 are this loop with the slots filled in. In LC 1004
+the state is one integer, the number of zeros in the window, and `valid` is `zeros <= k`:
 
 ```python
-# Python Universal Template
-def sliding_window(s, condition):
-    # Initialize window state
+# python
+# LC 1004 - Max Consecutive Ones III
+# IDEA: grow right; while the window holds more than k zeros, shrink left; measure when valid
+# time = O(n), space = O(1)
+def longestOnes(nums, k):
     left = 0
-    window_state = {}  # or Counter, set, etc.
-    result = initialize_result()
-    
-    # Expand window with right pointer
-    for right in range(len(s)):
-        # Add current element to window
-        update_window_state(s[right])
-        
-        # Contract window while invalid
-        while not is_valid(window_state):
-            # Remove leftmost element
-            remove_from_window(s[left])
+    zeros = 0                                 # window state: zeros inside [left, right]
+    best = 0
+    for right in range(len(nums)):
+        if nums[right] == 0:                  # 1. add
+            zeros += 1
+        while zeros > k:                      # 2. restore the invariant
+            if nums[left] == 0:
+                zeros -= 1
             left += 1
-        
-        # Update result with current valid window
-        result = update_result(result, left, right)
-    
-    return result
+        best = max(best, right - left + 1)    # 3. valid here, so measure here
+    return best
 ```
 
 ```java
-// Java Universal Template  
-public ResultType slidingWindow(String s) {
-    // Initialize window state
+// java
+// LC 1004 - Max Consecutive Ones III
+// IDEA: grow right; while the window holds more than k zeros, shrink left; measure when valid
+// time = O(n), space = O(1)
+public int longestOnes(int[] nums, int k) {
     int left = 0;
-    Map<Character, Integer> window = new HashMap<>();
-    ResultType result = initializeResult();
-    
-    // Expand window with right pointer
-    for (int right = 0; right < s.length(); right++) {
-        char rightChar = s.charAt(right);
-        window.put(rightChar, window.getOrDefault(rightChar, 0) + 1);
-        
-        // Contract window while invalid
-        while (!isValid(window)) {
-            char leftChar = s.charAt(left);
-            window.put(leftChar, window.get(leftChar) - 1);
-            if (window.get(leftChar) == 0) {
-                window.remove(leftChar);
+    int zeros = 0;                           // window state: zeros inside [left, right]
+    int best = 0;
+    for (int right = 0; right < nums.length; right++) {
+        if (nums[right] == 0) {
+            zeros++;                         // 1. add
+        }
+        while (zeros > k) {                  // 2. restore the invariant
+            if (nums[left] == 0) {
+                zeros--;
             }
             left++;
         }
-        
-        // Update result with current valid window
-        result = updateResult(result, left, right);
+        best = Math.max(best, right - left + 1);  // 3. valid here
     }
-    
-    return result;
+    return best;
 }
 ```
+
+**Complexity**
+- **Time O(n)**: the `while` is nested, but `left` only moves forward and never past `right`,
+  so across the whole run it advances at most n times.
+- **Space O(1)** here (one counter); O(k) in general, for whatever the window state holds.
+
+**Traps**
+- Updating the result *inside* the `while`, or before it, measures an invalid window:
+  `[0, 0]`, k = 0, returns 1 instead of 0.
+- `if` instead of `while`: one newcomer can need several shrinks once the state is a map
+  (`"abcb"` at at-most-2-distinct needs two). The one-integer state of LC 1004 hides this.
+- The loop is only sound when validity is **monotone**: shrinking a valid window keeps it valid.
+  A sum over negative values is not: longest subarray with `sum <= 0` on `[2, -2]` is 2, but the
+  window drops the `2` before `-2` arrives and returns 1.
+
+**Not this if** — values can be negative and the condition is on a sum → prefix sum + hash map
+([prefix_sum.md](./prefix_sum.md), LC 560).
+
+**Drill** — LC 1004 · LC 904 *(at most 2 distinct)* · LC 424 ⭐ *(validity = `len − maxFreq ≤ k`)*
+· LC 1838 *(sort first, then the window)*
 
 ### Template 3: Longest Window Satisfying P — LC 3 ⭐⭐⭐⭐⭐
 
-**Use Cases**: Longest substring problems, maximum valid window
-**Pattern**: Expand until invalid, record max, then contract
+**Recognise** — "**longest** substring / subarray such that …": without repeating characters,
+with at most k distinct, with at most k replacements. n ≤ 5·10⁴ → O(n) expected.
 
-**Invariant**: shrink **while the window is invalid**, so at the bottom of each iteration the
-window is the longest valid one ending at `right`. Record `r - l + 1` *after* the `while`, never
-inside it.
+**Key point** — shrink **while the window is invalid**, so at the bottom of each iteration the
+window is the longest valid one ending at `right`; record `right - left + 1` *after* the `while`,
+never inside it.
+
+```python
+# python
+# LC 3 - Longest Substring Without Repeating Characters
+# IDEA: a set holds the window's characters; shrink from the left until s[right] is not in it
+# time = O(n), space = O(min(n, charset))
+def lengthOfLongestSubstring(s):
+    in_window = set()
+    left = 0
+    best = 0
+    for right in range(len(s)):
+        while s[right] in in_window:          # invalid -> shrink until the duplicate is gone
+            in_window.remove(s[left])
+            left += 1
+        in_window.add(s[right])
+        best = max(best, right - left + 1)    # valid here, so measure here
+    return best
+```
+
+A second spelling, kept because it is a distinct trick: store each character's **last index**
+and jump `left` past the duplicate in one step instead of shrinking one by one.
+
+```python
+# python
+# LC 3 - jump variant
+# IDEA: last_seen[ch] = latest index of ch; on a repeat, jump left to last_seen[ch] + 1
+# time = O(n), space = O(min(n, charset))
+def lengthOfLongestSubstring_jump(s):
+    last_seen = {}
+    left = 0
+    best = 0
+    for right, ch in enumerate(s):
+        if ch in last_seen:
+            left = max(left, last_seen[ch] + 1)   # max: a stale index must never pull left back
+        last_seen[ch] = right
+        best = max(best, right - left + 1)
+    return best
+```
 
 ```java
+// java
 // LC 3 - Longest Substring Without Repeating Characters
-// IDEA: Sliding window with HashSet to track characters in window
-// time = O(N), space = O(min(N, charset))
+// IDEA: a set holds the window's characters; shrink from the left until s[right] is not in it
+// time = O(n), space = O(min(n, charset))
 public int lengthOfLongestSubstring(String s) {
-    Set<Character> set = new HashSet<>();
-    int l = 0, ans = 0;
-    for (int r = 0; r < s.length(); r++) {
-        while (set.contains(s.charAt(r))) {
-            set.remove(s.charAt(l++));
+    Set<Character> inWindow = new HashSet<>();
+    int left = 0;
+    int best = 0;
+    for (int right = 0; right < s.length(); right++) {
+        char ch = s.charAt(right);
+        while (inWindow.contains(ch)) {      // invalid -> shrink until ch is gone
+            inWindow.remove(s.charAt(left));
+            left++;
         }
-        set.add(s.charAt(r));
-        ans = Math.max(ans, r - l + 1);
+        inWindow.add(ch);
+        best = Math.max(best, right - left + 1);
     }
-    return ans;
+    return best;
 }
 ```
 
-```python
-# LC 003 Longest Substring Without Repeating Characters
-# IDEA : SLIDING WINDOW + DICT
-#       -> use a hash table (d) record visited "element" (e.g. : a,b,c,...)
-#          (but NOT sub-string)
-class Solution(object):
-    def lengthOfLongestSubstring(self, s):
-        d = {}
-        # left pointer
-        l = 0
-        res = 0
-        # right pointer
-        for r in range(len(s)):
-            """
-            ### NOTE : we deal with "s[r] in d" case first 
-            ### NOTE : if already visited, means "repeating"
-            #      -> then we need to update left pointer (l)
-            """
-            if s[r] in d:
-                """
-                NOTE !!! this
-                -> via max(l, d[s[r]] + 1) trick,
-                   we can get the "latest" idx of duplicated s[r], and start from that one
-                """
-                l = max(l, d[s[r]] + 1)
-            # if not visited yet, record the alphabet
-            # and re-calculate the max length
-            d[s[r]] = r
-            res = max(res, r -l + 1)
-        return res
+**Complexity**
+- **Time O(n)**: `left` only moves forward, so the inner `while` runs at most n times in total;
+  the jump variant has no inner loop at all.
+- **Space O(min(n, charset))**: `in_window` / `last_seen` hold at most one entry per distinct
+  character.
+
+**Dry run**
+
+```text
+s = "abba"            (jump variant)
+right=0 'a'  left=0  window "a"   best=1
+right=1 'b'  left=0  window "ab"  best=2
+right=2 'b'  seen at 1 -> left=2  window "b"   best=2
+right=3 'a'  seen at 0 -> left=max(2, 1)=2   window "ba"  best=2
 ```
 
-> The Java version shrinks one character at a time; the Python version **jumps** `left` straight
-> to `d[c] + 1` using the last-seen index. Same invariant, two spellings — the jump is why
-> `max(l, ...)` is needed, so a stale index can never pull `left` backwards.
+**Traps**
+- The jump without `max`: on `"abba"` the last `'a'` was seen at 0, so `left` would move back to
+  1 and the answer becomes 3 (`"bba"`).
+- Recording `best` before the shrink loop counts the duplicate: `"bb"` returns 2.
+- `""` must return 0; both versions do, because the loop never runs.
+
+**Not this if** — the window must *contain* something (all of t, a target sum) → that is a
+shortest-window problem, [Template 4](#template-4-shortest-window-satisfying-p--lc-209-) /
+[Template 5](#template-5-char-count-window-with-the-haveneed-counter--lc-76-).
+
+**Drill** — LC 3 ⭐ · LC 159 · LC 340 *(at most k distinct: a count map, shrink while
+`len(map) > k`)* · LC 424 ⭐
 
 ### Template 4: Shortest Window Satisfying P — LC 209 ⭐⭐⭐⭐⭐
 
-**Use Cases**: Minimum window substring, smallest valid window
-**Pattern**: Expand until valid, record min, then try to contract
+**Recognise** — "**minimal length** subarray whose sum ≥ target", "smallest window that
+covers …", with **non-negative** values so a bigger window is never worse. n ≤ 10⁵ → O(n).
 
-**Invariant**: shrink **while the window is valid**, recording the length *before* each shrink.
-This is Template 3 with the `while` condition negated — nothing else changes.
+**Key point** — shrink **while the window is valid**, recording the length *before* each
+shrink. This is [Template 3](#template-3-longest-window-satisfying-p--lc-3-) with the `while`
+condition negated and the result update moved inside; nothing else changes.
+
+```python
+# python
+# LC 209 - Minimum Size Subarray Sum
+# IDEA: grow right; while the sum still reaches target, record the length and shrink left
+# time = O(n), space = O(1)
+def minSubArrayLen(target, nums):
+    left = 0
+    window_sum = 0
+    best = len(nums) + 1                      # sentinel: longer than any real window
+    for right in range(len(nums)):
+        window_sum += nums[right]
+        while window_sum >= target:           # valid -> record, then try a shorter one
+            best = min(best, right - left + 1)
+            window_sum -= nums[left]
+            left += 1
+    return 0 if best == len(nums) + 1 else best
+```
 
 ```java
+// java
 // LC 209 - Minimum Size Subarray Sum
-// IDEA: Sliding window — shrink left when sum >= target, record min length
-// time = O(N), space = O(1)
+// IDEA: grow right; while the sum still reaches target, record the length and shrink left
+// time = O(n), space = O(1)
 public int minSubArrayLen(int target, int[] nums) {
-    int l = 0, sum = 0, minLen = Integer.MAX_VALUE;
-    for (int r = 0; r < nums.length; r++) {
-        sum += nums[r];
-        while (sum >= target) {
-            minLen = Math.min(minLen, r - l + 1);
-            sum -= nums[l++];
+    int left = 0;
+    int windowSum = 0;
+    int best = Integer.MAX_VALUE;
+    for (int right = 0; right < nums.length; right++) {
+        windowSum += nums[right];
+        while (windowSum >= target) {        // valid -> record, then try a shorter one
+            best = Math.min(best, right - left + 1);
+            windowSum -= nums[left];
+            left++;
         }
     }
-    return minLen == Integer.MAX_VALUE ? 0 : minLen;
+    return best == Integer.MAX_VALUE ? 0 : best;
 }
 ```
 
-```python
-# LC 209 Minimum Size Subarray Sum
-# IDEA : SLIDING WINDOW : start, end
-class Solution:
-    def minSubArrayLen(self, s, nums):
-        if nums is None or len(nums) == 0:
-            return 0
+**Complexity**
+- **Time O(n)**: as in Template 2, `left` advances at most n times over the whole run.
+- **Space O(1)**: one running sum.
 
-        n = len(nums)
-        minLength = n + 1
-        sum = 0
-        j = 0
-        for i in range(n):
-            ### NOTE the while loop condition (j < n and sum < s)
-            while j < n and sum < s:
-                sum += nums[j]
-                j += 1
-            # NOTE : we need to check if sum >= s here
-            if sum >= s:
-                minLength = min(minLength, j - i)
+**Traps**
+- No valid window: `target = 11, nums = [1,1,1,1,1,1,1,1]` must return 0, not the sentinel.
+- Recording *after* the shrink measures a window that is no longer valid:
+  `target = 4, nums = [1, 4, 4]` would report 0 instead of 1.
+- Negative values break it: `target = 3, nums = [1, -1, 3]` returns 3, because the shrink stops
+  as soon as the sum drops below target and never reaches `[3]` (length 1).
 
-            ### NOTE : we need to get min length of sub array
-            #          so once it meats the condition (sum >= s)
-            #          we should update the minLength (minLength = min(minLength, j - i))
-            #          and move to next i and roll back _sum (_sum -= nums[i])
-            sum -= nums[i]
-            
-        ### NOTE : if minLength == n + 1, means there is no such subarray, so return 0 instead
-        if minLength == n + 1:
-            return 0         
-        return minLength
-```
+**Not this if** — values can be negative → monotonic deque over prefix sums, LC 862
+([monotonic_queue.md](./monotonic_queue.md)).
+
+**Drill** — LC 209 · LC 1658 *(shortest removed = longest kept with sum `total − x`)* ·
+LC 76 ⭐ *(validity is coverage, [Template 5](#template-5-char-count-window-with-the-haveneed-counter--lc-76-))*
+· LC 862 *(negatives: deque)*
 
 ### Template 5: Char-Count Window with the have/need Counter — LC 76 ⭐⭐⭐⭐⭐
 
-**Pattern**: a frequency map of what the window *needs*, plus a single integer counting how much
-of it the window *has*. The counter is what makes validity O(1) instead of an O(charset) map
-comparison on every step — the detail interviewers push on.
+**Recognise** — "minimum window of s that **contains all** characters of t (with
+multiplicity)", "is a **permutation / anagram** of p a substring of s". |s|, |t| ≤ 10⁵ → O(n + m).
 
-Classic "shrink when valid" variable-size window:
+**Key point** — `need` holds what the window still owes for each character, and one integer
+(`missing`) counts the total still owed; the window covers t exactly when `missing == 0`, so
+validity is an O(1) check instead of an O(charset) map comparison on every step.
 
 ```python
+# python
+# LC 76 - Minimum Window Substring
+# IDEA: need[c] = copies of c still owed (negative = surplus); missing = total owed;
+#       when missing hits 0, drop surplus from the left, record, then break the window
+# time = O(n + m), space = O(charset)
 from collections import Counter
 
 def minWindow(s, t):
@@ -392,216 +471,185 @@ def minWindow(s, t):
     missing = len(t)
     best = ""
     left = 0
-
     for right, c in enumerate(s):
-        if need[c] > 0:
+        if need[c] > 0:                       # c was owed -> one less missing
             missing -= 1
         need[c] -= 1
-
-        if missing == 0:              # valid window found
-            # Shrink from left
-            while need[s[left]] < 0:
+        if missing == 0:                      # window covers t
+            while need[s[left]] < 0:          # drop surplus characters from the left
                 need[s[left]] += 1
                 left += 1
             if not best or right - left + 1 < len(best):
-                best = s[left:right+1]
-            # Break window to search for next
-            need[s[left]] += 1
+                best = s[left:right + 1]
+            need[s[left]] += 1                # give up s[left]: the window owes it again
             missing += 1
             left += 1
-
     return best
 ```
 
 ```java
+// java
 // LC 76 - Minimum Window Substring
-// IDEA: Sliding window with frequency maps; shrink when window is valid
-// time = O(N + M), space = O(N + M)
+// IDEA: count map of the window vs need; valid = distinct chars whose need is fully met;
+//       while valid == need.size(), record and shrink
+// time = O(n + m), space = O(charset)
 public String minWindow(String s, String t) {
-    Map<Character, Integer> need = new HashMap<>(), window = new HashMap<>();
-    for (char c : t.toCharArray()) need.merge(c, 1, Integer::sum);
-    int l = 0, valid = 0, start = 0, minLen = Integer.MAX_VALUE;
-    for (int r = 0; r < s.length(); r++) {
-        char c = s.charAt(r);
-        window.merge(c, 1, Integer::sum);
-        if (need.containsKey(c) && window.get(c).equals(need.get(c))) valid++;
-        while (valid == need.size()) {
-            if (r - l + 1 < minLen) { minLen = r - l + 1; start = l; }
-            char d = s.charAt(l++);
-            if (need.containsKey(d)) {
-                if (window.get(d).equals(need.get(d))) valid--;
-                window.merge(d, -1, Integer::sum);
+    Map<Character, Integer> need = new HashMap<>();
+    Map<Character, Integer> window = new HashMap<>();
+    for (char c : t.toCharArray()) {
+        need.put(c, need.getOrDefault(c, 0) + 1);
+    }
+    int left = 0;
+    int valid = 0;                           // distinct chars whose need is fully met
+    int start = 0;
+    int minLen = Integer.MAX_VALUE;
+    for (int right = 0; right < s.length(); right++) {
+        char c = s.charAt(right);
+        window.put(c, window.getOrDefault(c, 0) + 1);
+        if (need.containsKey(c) && window.get(c).equals(need.get(c))) {
+            valid++;
+        }
+        while (valid == need.size()) {       // valid -> record, then shrink
+            if (right - left + 1 < minLen) {
+                minLen = right - left + 1;
+                start = left;
             }
+            char out = s.charAt(left);
+            left++;
+            if (need.containsKey(out) && window.get(out).equals(need.get(out))) {
+                valid--;                     // about to drop below what t needs
+            }
+            window.put(out, window.get(out) - 1);
         }
     }
     return minLen == Integer.MAX_VALUE ? "" : s.substring(start, start + minLen);
 }
 ```
 
-> Two spellings of the same counter: Python tracks `missing` (characters still owed, counting
-> down to 0), Java tracks `valid` (characters fully satisfied, counting up to `need.size()`).
-> The map-equality shortcut — comparing two frequency maps directly — is only affordable for a
-> **fixed**-size window; see LC 438 / LC 567 in [sliding_window_examples.md](./sliding_window_examples.md).
+**Complexity**
+- **Time O(n + m)**: O(m) to build `need`, then each index of s enters and leaves the window once.
+- **Space O(charset)**: `need` and `window` hold at most one key per distinct character.
+
+**Traps**
+- Comparing `Integer` objects with `==` in Java: counts above 127 are not cached, so
+  `window.get(c) == need.get(c)` fails on long inputs. Use `.equals`, or an `int[128]`.
+- Multiplicity: `s = "a", t = "aa"` must return `""`; counting distinct characters instead of
+  copies returns `"a"`.
+- `valid` (Java) counts **distinct** characters satisfied and is compared to `need.size()`;
+  `missing` (Python) counts **copies** owed and is compared to 0. Mixing the two never reaches
+  the target.
+
+**Not this if** — the window size is fixed (`len(p)`, LC 438 / 567) → compare the two count
+maps directly in a [Template 1](#template-1-fixed-size-window--lc-643-) loop; the counter only
+pays off when the window can be any length. If t's order matters, it is a subsequence problem
+([2_pointers.md](./2_pointers.md)).
+
+**Drill** — LC 76 ⭐ · LC 567 ⭐ *(fixed size, same counts)* · LC 438 · LC 30 *(words instead
+of characters, [sliding_window_advanced.md](./sliding_window_advanced.md))*
 
 ### Template 6: Exactly K via At-Most Subtraction — LC 992 ⭐⭐⭐⭐⭐
 
-**Core Insight:**
-"Exactly K" problems are often difficult to solve directly, but can be transformed using the powerful formula:
+**Recognise** — "**number of** subarrays with **exactly** k distinct integers / k odd numbers /
+sum equal to k" on non-negative values. n ≤ 2·10⁴ → O(n); an O(n²) enumeration is what it rules out.
+
+**Key point** — once `[left, right]` is the longest valid window ending at `right`, every one of
+its suffixes is valid too, so `count += right - left + 1` counts the at-most-k subarrays ending
+at `right`; and exactly k = atMost(k) − atMost(k − 1), because the second set is contained in
+the first.
 
 ```text
 Exactly K = At Most K - At Most (K-1)
 ```
 
-**Why This Works:**
-```text
-At Most K: All subarrays with ≤ K distinct/count
-At Most (K-1): All subarrays with ≤ K-1 distinct/count
-
-Difference: Only subarrays with EXACTLY K distinct/count
-```
-
-**Proof by Example:**
-```text
-Array: [1, 2, 1, 2, 3]
-K = 2 (exactly 2 distinct integers)
-
-At Most 2 distinct:
-[1], [1,2], [1,2,1], [1,2,1,2], [2], [2,1], [2,1,2], [1], [1,2], [2], [2,3], [3]
-Count = 12
-
-At Most 1 distinct:
-[1], [2], [1], [2], [3]
-Count = 5
-
-Exactly 2 distinct = 12 - 5 = 7 ✓
-[1,2], [1,2,1], [1,2,1,2], [2,1], [2,1,2], [1,2], [2,3]
-```
-
-#### The counting slot: `count += right - left + 1`
-
-Once `[left, right]` is the *longest* valid window ending at `right`, every one of its suffixes
-is valid too — so exactly `right - left + 1` subarrays end at `right`. That one line is what
-turns Template 3 into a counter.
-
-**Use Cases**: Count subarrays meeting criteria
-**Pattern**: For each right position, count valid left positions
-
-> *Outline, not runnable* — `initialize_state`, `update_window_state`, `is_valid` and
-> `remove_from_window` are the problem-specific slots; the worked example below fills them in.
+"Exactly k" is not monotone (shrinking an exactly-2 window can make it exactly-1), so it cannot
+drive the `while` directly; "at most k" is, which is why the subtraction exists.
 
 ```python
-# Subarray Counting Template
-def count_subarrays(nums, condition):
-    left = 0
-    count = 0
-    window_state = initialize_state()
-    
-    for right in range(len(nums)):
-        # Add current element
-        update_window_state(nums[right])
-        
-        # Shrink window while invalid
-        while not is_valid(window_state):
-            remove_from_window(nums[left])
-            left += 1
-        
-        # Count valid subarrays ending at 'right'
-        count += right - left + 1
-
-    return count
-```
-
-#### Worked example — Subarrays with K Different Integers
-
-**Problem:** Count subarrays with exactly K distinct integers.
-
-```python
-# Python - LC 992 Subarrays with K Different Integers
+# python
+# LC 992 - Subarrays with K Different Integers
+# IDEA: at_most(k) counts subarrays with <= k distinct, adding right - left + 1 per right;
+#       exactly k = at_most(k) - at_most(k - 1)
+# time = O(n), space = O(k)
 def subarraysWithKDistinct(nums, k):
-    """
-    Count subarrays with exactly K distinct integers.
-
-    Time: O(n)
-    Space: O(k)
-
-    Key: Use Exactly K = At Most K - At Most (K-1) transformation
-    """
-    def at_most_k_distinct(k):
-        """Count subarrays with at most K distinct integers."""
+    def at_most(k):
+        if k == 0:
+            return 0
+        freq = {}
         left = 0
         count = 0
-        freq = {}
-
         for right in range(len(nums)):
-            # Add right element
             freq[nums[right]] = freq.get(nums[right], 0) + 1
-
-            # Shrink while > k distinct
-            while len(freq) > k:
+            while len(freq) > k:              # shrink while more than k distinct
                 freq[nums[left]] -= 1
                 if freq[nums[left]] == 0:
                     del freq[nums[left]]
                 left += 1
-
-            # Count subarrays ending at right
-            count += right - left + 1
-
+            count += right - left + 1         # every suffix of [left, right] is valid
         return count
 
-    # Edge case
-    if k == 0:
-        return 0
-
-    # Exactly K = At Most K - At Most (K-1)
-    return at_most_k_distinct(k) - at_most_k_distinct(k - 1)
-
-# Example:
-# nums = [1,2,1,2,3], k = 2
-# at_most_k(2) = 12
-# at_most_k(1) = 5
-# exactly_k(2) = 12 - 5 = 7 ✓
+    return at_most(k) - at_most(k - 1)
 ```
 
 ```java
-// Java - LC 992 Subarrays with K Different Integers
-/**
- * time = O(N)
- * space = O(K)
- */
+// java
+// LC 992 - Subarrays with K Different Integers
+// IDEA: atMostK counts subarrays with <= k distinct, adding right - left + 1 per right;
+//       exactly k = atMostK(k) - atMostK(k - 1)
+// time = O(n), space = O(k)
 public int subarraysWithKDistinct(int[] nums, int k) {
-    // Exactly K = At Most K - At Most (K-1)
     return atMostK(nums, k) - atMostK(nums, k - 1);
 }
 
 private int atMostK(int[] nums, int k) {
-    if (k == 0) return 0;
-
+    if (k == 0) {
+        return 0;
+    }
+    Map<Integer, Integer> freq = new HashMap<>();
     int left = 0;
     int count = 0;
-    Map<Integer, Integer> freq = new HashMap<>();
-
     for (int right = 0; right < nums.length; right++) {
-        // Add right element
         freq.put(nums[right], freq.getOrDefault(nums[right], 0) + 1);
-
-        // Shrink while > k distinct
-        while (freq.size() > k) {
+        while (freq.size() > k) {            // shrink while more than k distinct
             freq.put(nums[left], freq.get(nums[left]) - 1);
             if (freq.get(nums[left]) == 0) {
                 freq.remove(nums[left]);
             }
             left++;
         }
-
-        // Count subarrays ending at right
-        count += right - left + 1;
+        count += right - left + 1;           // every suffix of [left, right] is valid
     }
-
     return count;
 }
 ```
 
-#### Problems using this transformation
+**Complexity**
+- **Time O(n)**: two passes of the Template 2 loop, each O(n) because `left` only moves forward.
+- **Space O(k)**: `freq` is shrunk back to at most k keys before every count.
+
+**Dry run**
+
+```text
+nums = [1, 2, 1, 2, 3], k = 2
+at_most(2): ends at r=0..4 add 1, 2, 3, 4, 2   -> 12
+at_most(1): ends at r=0..4 add 1, 1, 1, 1, 1   -> 5
+exactly 2  = 12 - 5 = 7
+  [1,2] [1,2,1] [1,2,1,2] [2,1] [2,1,2] [1,2] [2,3]
+```
+
+**Traps**
+- Leaving a key in `freq` when its count reaches 0: `len(freq)` then counts stale keys, the
+  `while` never stops, and on `[1, 2, 1, 2, 3], k = 2` `left` runs past the end (IndexError).
+- Using `count += 1` instead of `right - left + 1` counts windows, not subarrays:
+  `[1, 2, 1, 2, 3], k = 2` returns far fewer than 7.
+- Driving the `while` with "exactly k" directly undercounts: the shrink throws away left
+  endpoints that a later `right` would have needed.
+
+**Not this if** — values can be negative (LC 560 "subarray sum equals k") → at-most is no longer
+monotone; use prefix sum + hash map ([prefix_sum.md](./prefix_sum.md)). For a binary array the
+same count also falls out of prefix-sum counting (LC 930, LC 1248).
+
+**Drill** — LC 992 · LC 713 *(counting slot alone, product < k)* · LC 930 · LC 1248 *(odd → 1,
+even → 0)* · LC 2062 *(a consonant resets the window)*
 
 | Problem | LC# | Difficulty | Transformation | Key Insight |
 |---------|-----|------------|----------------|-------------|
@@ -619,10 +667,13 @@ private int atMostK(int[] nums, int k) {
 
 ### Template 7: Hereditary Constraint — Test Only the Newcomer — LC 4067 ⭐⭐⭐
 
-**Use Cases**: "longest subarray with no two / no three elements such that …" — a validity rule
-stated over **every pair or triple** in the window, not over a count or a sum
-**Pattern**: Template 3's loop, but `valid()` asks one question about the element about to join,
-never a question about the whole window
+**Recognise** — "longest subarray with **no two / no three elements** such that …": a validity
+rule stated over **every pair or triple** in the window, not over a count or a sum. A small value
+range (values ≤ 500) next to n ≤ 1000 is the cue that the test may scan values, not the window.
+
+**Key point** — the window *before* `nums[right]` joins is valid (the loop invariant), so the only
+violation that can appear is one that uses `nums[right]`; `valid()` asks one question about the
+newcomer, never one about the whole window.
 
 Templates 3–6 lean on two facts they never have to state. Both must be checked before this loop
 is sound, and the second is what makes it fast:
@@ -650,6 +701,7 @@ pair is never one of the pair's own indices, and "three **distinct** indices" co
 (`3 + 3 = 6` from two different 3s still counts, and the two-copies check sees it).
 
 ```python
+# python
 # LC 4067 Longest Subarray With Restricted Pair Sums
 # IDEA : SLIDING WINDOW OVER VALUE COUNTS — test only the newcomer
 # time = O(n * V), space = O(V)   (V = max(nums) <= 500)
@@ -690,6 +742,7 @@ class Solution(object):
 ```
 
 ```java
+// java
 // LC 4067 - Longest Subarray With Restricted Pair Sums
 // IDEA: Sliding window over value counts; the window before nums[r] joins is valid,
 //       so only a triple that uses nums[r] can appear — test the newcomer, not the window
@@ -731,6 +784,14 @@ private boolean joinsTriple(int[] cnt, int v, int maxVal) {
 }
 ```
 
+**Complexity**
+- **Time O(n · V)**: each `right` calls `joins_triple` once per shrink step plus once more, and
+  `left` moves at most n times in total, so there are O(n) calls; each call is two scans of the
+  value range `1..V`.
+- **Space O(V)**: `cnt` has one slot per value.
+
+**Dry run**
+
 ```text
 nums = [2,3,5,3,2,1]
 
@@ -742,18 +803,14 @@ r=4  v=2  window {3,5,3}  addend: 3 and 3+2=5 -> drop 3, still  -> drop 5 -> [3,
 r=5  v=1  window {3,2}    addend: 2 and 2+1=3 -> drop 3         -> [2,1]      len 2
 ```
 
-> Note the order inside the loop: **test, shrink, then add**. Template 2 adds first and shrinks
-> after, which works when `valid()` reads a count or a sum. Here the question is "does `v` fit
-> with what is *already* there", so `v` must not be in `cnt` while it is asked — adding first
-> only happens to survive because values are ≥ 1 and `v` can never be its own partner.
-
-**Where it goes wrong**:
-- **Testing the whole window** instead of the newcomer — correct, O(n³), and over the limit at
-  n = 1000. The invariant is what you are being asked to notice.
+**Traps**
+- **Test, shrink, then add.** Template 2 adds first and shrinks after, which works when `valid()`
+  reads a count or a sum. Here the question is "does `v` fit with what is *already* there", so `v`
+  must not be in `cnt` while it is asked; adding first only happens to survive because values are
+  ≥ 1 and `v` can never be its own partner.
+- **Testing the whole window** instead of the newcomer is correct but O(n³), and over the limit
+  at n = 1000. The invariant is what you are being asked to notice.
 - **Forgetting that `a == b` needs two copies.** `[2, 2, 4]` is invalid; `[2, 4]` is not.
-- **Skipping the hereditary check.** If dropping an element could turn an invalid window valid
-  *and* a valid one invalid, `left` is not monotone and this loop is unsound — reach for
-  [prefix_sum.md](./prefix_sum.md) instead.
 - **The O(n²) first draft** keeps a `pair_sum -> count` map plus a `conflicts` counter and
   updates both for every element the newcomer pairs with, with mirror-image add/remove
   bookkeeping to get wrong. The version above is that solution after one observation — *only the
@@ -761,6 +818,23 @@ r=5  v=1  window {3,2}    addend: 2 and 2+1=3 -> drop 3         -> [2,1]      le
   its place only when the values are unbounded; the
   [solution file](../../leetcode_python/slide_window/longest-subarray-with-restricted-pair-sums.py)
   carries both.
+
+**Not this if** — the rule is not hereditary: if dropping an element could turn an invalid window
+valid *and* a valid one invalid, `left` is not monotone and this loop is unsound ("sum equals k"
+over negatives, LC 560) → [prefix_sum.md](./prefix_sum.md).
+
+**Drill** — LC 4067 · LC 3 *(the pair rule "no two equal", tested on the newcomer by a set)* · LC 1695
+*(same, scoring a sum)*
+
+## Drill Path
+
+| Stage | Problems (easy → hard) | What it adds |
+|---|---|---|
+| **Core** ⭐ | LC 567 ⭐ · LC 3 ⭐ · LC 424 ⭐ · LC 76 ⭐ | fixed window with counts; longest window; a stale-max validity test; the have/need counter |
+| **Practice** | LC 643 · LC 1004 · LC 209 · LC 438 · LC 904 · LC 1248 | one per shape: fixed, grow-then-shrink, shortest, every start, at-most-2, exactly-k |
+| **Stretch** | LC 4067 · LC 992 · LC 30 · LC 239 | the newcomer test; exactly-k by subtraction; word-level window; window max → [monotonic_queue.md](./monotonic_queue.md) |
+
+Worked solutions for the Practice row are in [sliding_window_examples.md](./sliding_window_examples.md).
 
 ## Summary & Quick Reference
 
