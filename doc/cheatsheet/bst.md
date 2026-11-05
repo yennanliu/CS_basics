@@ -487,22 +487,7 @@ true, and each node must be tested on its own (post-order delete, as in LC 1110)
 
 **Reduces to**: [Template 3b](#template-3b-trim-to-a-range--lc-669-) — sum instead of restructure.
 
-```python
-# python
-# LC 938 - Range Sum of BST
-# IDEA: Template 3b's pruning; add the in-range values instead of reattaching them
-# time = O(n), space = O(h)
-def rangeSumBST(root, low, high):
-    if not root:
-        return 0
-    if root.val < low:                    # nothing on the left can be in range
-        return rangeSumBST(root.right, low, high)
-    if root.val > high:                   # nothing on the right can be in range
-        return rangeSumBST(root.left, low, high)
-    return (root.val
-            + rangeSumBST(root.left, low, high)
-            + rangeSumBST(root.right, low, high))
-```
+Worked in [bst_examples.md § LC 938](./bst_examples.md#7-range-sum-of-bst--lc-938).
 
 #### Comparison: Trim vs Split vs Delete
 
@@ -650,26 +635,7 @@ store subtree sizes on each node, the order-statistic tree of Template 9 in
 Right → node → left visits values in descending order, so a running sum turns each node into the
 sum of every value greater than or equal to it (LC 538 / LC 1038).
 
-```python
-# python
-# LC 538 - Convert BST to Greater Tree
-# IDEA: reverse in-order (right, node, left) with a running sum of the values seen so far
-# time = O(n), space = O(h)
-class Solution(object):
-    def convertBST(self, root):
-        self.running = 0
-
-        def reverse_inorder(node):
-            if not node:
-                return
-            reverse_inorder(node.right)   # larger values first
-            self.running += node.val
-            node.val = self.running
-            reverse_inorder(node.left)
-
-        reverse_inorder(root)
-        return root
-```
+Worked in [bst_examples.md § LC 538](./bst_examples.md#5-convert-bst-to-greater-tree--lc-538).
 
 ### Template 6: Sorted Array to Balanced BST — LC 108
 
