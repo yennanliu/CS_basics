@@ -1,8 +1,8 @@
-<!-- 98a6094d5331 -->
+<!-- 74f33bb3bacd -->
 # BST — 實戰題解
 
-> **範圍** — `bst.md` 教的那些 BST 模板的解題檔案庫：每題每個語言一份標準解，外加雖然歸在 BST、卻完全用不到大小順序的「根到葉」與「節點到節點」路徑家族。
-> **另見**：[bst.md](./bst.md) — 這些範例所套用的標準 BST 模板；[bst_advanced.md](./bst_advanced.md) — 順序統計查詢、延遲式迭代器、修復壞掉的 BST，以及各種建樹變形；[tree_backtrack.md](./tree_backtrack.md) — 回程要復原狀態的根→葉路徑。
+> **範圍** — 在 `bst.md` 某個模板上多加一步的 BST 題，每題以一張題目卡寫一次，放在它歸約到的那張卡底下；模板或進階卡已經寫出的題目，這裡只列指標、不重解。
+> **另見**：[bst.md](./bst.md) — 這些題目歸約到的 BST 模板；[bst_advanced.md](./bst_advanced.md) — 延遲式迭代器、修復壞掉的 BST、rank 查詢與各種建構變形；[tree_lca_distance.md](./tree_lca_distance.md) — 根到葉與任意點到任意點的路徑題（LC 112、113、124、129、257、437），用不到大小順序；[binary_tree.md](./binary_tree.md) — LC 298 以及其他無序樹的 DFS 寫法。
 
 <!-- 58caebeae94c -->
 ## LeetCode 題目清單
@@ -11,322 +11,72 @@
 - [Binary Tree](https://leetcode.com/problem-list/binary-tree/)
 - [Depth-First Search](https://leetcode.com/problem-list/depth-first-search/)
 
-<!-- 31b669d2aee6 -->
+<!-- 7241af92bbd5 -->
 ## 總覽
 
-六題 BST 實作題，它們的解法沒有被 [bst.md](./bst.md) 裡的模板直接寫死；接著是七種模式的路徑家族（Template 7）。凡是模板*用同一個語言*已經解掉的東西，這裡不重述——請回去看模板。
+BST 題組，依各題歸約到的 [bst.md](./bst.md) 模板分組，順序與那份講義的模板順序相同。模板本身已經解掉的題目，
+在索引裡只是一列指向它的家，不會再抄一份。原本放在這裡的路徑和家族在任何二元樹上都成立，所以它們在
+[tree_lca_distance.md](./tree_lca_distance.md)。
 
-<!-- 47241c11db17 -->
-### 關鍵性質
-- **複雜度**：底下每個解法都是 O(n) 時間，只有 LC 776 是 O(h)；空間是遞迴堆疊的 O(h)，
-  除非程式碼註解另有說明
-- **核心想法**：每題每個語言一份標準解；只有在上方註記說明「第一份沒教到什麼」時，
-  才會出現第二個版本
-- **什麼時候用**：等你能默寫出對應的模板之後
+<!-- 72178203350c -->
+## 索引
 
-<!-- 598a9bfd2a3c -->
-## LC 範例
+| LC | 題目 | 歸約到 | 難度 |
+|---|---|---|---|
+| 776 | [Split BST](#split-bst--lc-776) | [bst § Template 3b](./bst.md#template-3b-trim-to-a-range--lc-669-) — 兩邊都留下，而不是丟掉一邊 | Medium |
+| 98 | Validate Binary Search Tree — 在 [bst § Template 4](./bst.md#template-4-validate-with-bounds--lc-98) 寫出，含迭代版 | [bst § Template 4](./bst.md#template-4-validate-with-bounds--lc-98) | Medium |
+| 449 | [Serialize and Deserialize BST](#serialize-and-deserialize-bst--lc-449) | [bst § Template 4](./bst.md#template-4-validate-with-bounds--lc-98) — 由上下界決定每個前序值放哪裡 | Medium |
+| 538 | Convert BST to Greater Tree — 在 [bst § Template 5](./bst.md#pattern-reverse-inorder-for-descending) 寫出 | [bst § Template 5](./bst.md#template-5-in-order-walk-is-sorted--lc-230)，反向 | Medium |
+| 1038 | Binary Search Tree to Greater Sum Tree — 與 LC 538 同一題、同一份程式碼 | [bst § Template 5](./bst.md#template-5-in-order-walk-is-sorted--lc-230)，反向 | Medium |
+| 173 | Binary Search Tree Iterator — 在 [bst_advanced § Template 1](./bst_advanced.md#template-1-lazy-in-order-iterator--lc-173-) 寫出 | [bst § Template 5](./bst.md#template-5-in-order-walk-is-sorted--lc-230)，在兩次呼叫之間暫停 | Medium |
 
-<!-- fe540a8b8598 -->
-### 1) Serialize and Deserialize BST — LC 449
+<!-- 26a8df74efc1 -->
+## 修剪到範圍的例題
 
-兩種真的不一樣的編碼器：`V0` 是層序加 `#` 佔位符（適用任何二元樹，LC 297 的風格），
-`V1` 是前序加上 `(min, max)` 界限，**完全不需要**佔位符——省下來的正是 BST 性質給你的紅利。
+<!-- f696ac145595 -->
+### Split BST — LC 776
 
-<!--CODE-->
+> **關鍵** — 修剪會丟掉根在範圍外的那一側；拆分則把它留下來當第二棵樹。每個節點回傳的兩棵樹裡，
+> 有一棵就是節點自己，另一棵只來自「可能跨過 `target` 的那個子節點」的拆分，所以只走一條路徑。
 
-<!-- ffb166909437 -->
-### 2) Split BST — LC 776
-
-<!-- d91ba6fa414f -->
-#### 模式：遞迴切分 BST
-依一個目標值把 BST 切成兩棵合法的 BST。這是**切分**題，不是刪除題——所有節點都保留，只是重新分配到兩棵樹裡。
-
-<!-- eb9a968b8d63 -->
-#### 原理：為什麼「切分」不等於「刪除」
-
-| 操作 | 目標 | 會掉節點嗎？ | 回傳值 |
-|-----------|------|-------------|--------------|
-| **Delete**（LC 450） | 移掉一個節點，保留一棵樹 | 會（1 個節點） | 單一 `TreeNode` |
-| **Split**（LC 776） | 分成兩棵樹 | 不會 | `TreeNode[2]` 陣列 |
-
-<!-- bc708994430b -->
-#### 核心想法
-
-<!--CODE-->
-
-**依 root.val 與 target 的關係分成兩種情況：**
-
-<!--CODE-->
-
-<!-- ee4e9c1c7a7d -->
-#### 逐步走一遍
-
-<!--CODE-->
-
-<!-- cdcf871f5d78 -->
-#### 關鍵洞見：重新接線
-
-<!--CODE-->
-
-<!-- edaf06f167ae -->
-#### Python 實作
-<!--CODE-->
-
-<!-- e359c046fbdb -->
-#### Java 實作
-<!--CODE-->
-
-<!-- 708b27d709d0 -->
-#### 相似題
-
-| 題目 | LC # | 相似處 | 關鍵差異 |
-|---------|------|-----------|----------------|
-| **Split BST** | 776 | 核心模式 | 依值切分成 2 棵樹 |
-| **Delete Node in BST** | 450 | 都會改動 BST 結構 | 刪除拿掉 1 個節點；切分全部保留 |
-| **Trim a BST** | 669 | 都會移除範圍外的節點 | 修剪會丟掉節點；切分把全部留在 2 棵樹裡 |
-| **Search in BST** | 700 | 同樣的左右分支邏輯 | 搜尋回傳 1 個節點；切分回傳 2 棵樹 |
-| **Insert into BST** | 701 | 同樣的遞迴 BST 走訪 | 插入是新增；切分是分割 |
-| **Merge Two BSTs** | - | 反向操作 | 切分 → 2 棵樹；合併 → 1 棵樹 |
-
-<!-- 209396d8d2af -->
-#### 複雜度
-- **時間**：O(H) — 只走過一條根到葉路徑上的節點
-- **空間**：O(H) — 遞迴堆疊深度 = 樹高
-
-<!-- baf7b850a45b -->
-### 3) Binary Search Tree Iterator — LC 173
-
-**提早（eager）**版本：在建構子裡把整棵樹攤平，之後從一個 list 供貨。
-留著它是因為它是延遲式 O(h) 堆疊版的比較基準——延遲版的寫法以及
-eager vs lazy 的對照表，看 [bst_advanced.md](./bst_advanced.md) 的 `Template 5b`。
-
-<!--CODE-->
-
-<!-- 3d449ddc5554 -->
-### 4) Validate Binary Search Tree — LC 98
-
-**BFS** 版本：把 `(node, min, max)` 帶在佇列裡，而不是帶在遞迴堆疊上。
-留著它是因為 [bst.md](./bst.md) 的 `Template 4` 是 DFS 版——這一版是拿來回答
-「可以用迭代／不用遞迴寫嗎？」的。
-
-<!--CODE-->
-
-<!-- cfd9923d762f -->
-### 5) Convert BST to Greater Tree — LC 538
-用**反向中序**（右 → 根 → 左）搭配一個累計和。實作看 `bst.md` 的
-[Reverse Inorder for Descending](./bst.md#pattern-reverse-inorder-for-descending) 模式。
-
-<!-- 65d00ed823ae -->
-### 6) Binary Search Tree to Greater Sum Tree — LC 1038
-和 LC 538 一模一樣——反向中序走訪累加一個累計和。
-看 `bst.md` 的 [Reverse Inorder for Descending](./bst.md#pattern-reverse-inorder-for-descending) 模式。
-
-<!-- a5612589bfab -->
-## 根到葉、節點到節點的路徑
-
-放在這裡而不是 [bst.md](./bst.md)，是因為**這些題目都沒有用到 BST 的大小順序**——
-它們在任何二元樹上都成立。把它們收成一個模板，是因為它們共用同一副 DFS 骨架，
-差別只在往下帶什麼狀態、往上回傳什麼。
-
-<!-- 23f554ec5ddc -->
-### Template 7: 路徑類問題
-
-<!-- c902fc19dbf0 -->
-#### **模式總覽**
-- **描述**：在二元樹中尋找或驗證路徑（根到葉、節點到節點）
-- **辨識訊號**：「Path sum」、「root to leaf」、「maximum path」、「consecutive」
-- **關鍵觀念**：用 DFS 搭配路徑追蹤、累加，或全域狀態
-- **時間複雜度**：走訪所有節點是 O(n)
-- **空間複雜度**：遞迴堆疊 + 路徑儲存為 O(h)
-
-**📚 相關模式**：這些路徑題都用 DFS 走訪。一般性的樹上找路徑模式與技巧，看 **dfs.md Template 3 (Path Finding)**。這裡的範例聚焦在 BST 與一般二元樹都適用的常見路徑題。
-
-<!-- 7ab3f2910642 -->
-#### **核心路徑模式**
-
-<!-- a65a33f4838a -->
-##### **模式 7.1：單純的路徑和**（LC 112）
-<!--CODE-->
-
-<!-- 261429cff30a -->
-##### **模式 7.2：Path Sum II — 列出所有路徑**（LC 113）
-<!--CODE-->
-
-<!-- 4de2264fd93c -->
-##### **模式 7.3：Binary Tree Paths**（LC 257）
-<!--CODE-->
-
-<!-- 7dfcae08868e -->
-##### **模式 7.4：Sum Root to Leaf Numbers**（LC 129）
-<!--CODE-->
-
-<!-- c25f4eaa6e90 -->
-##### **模式 7.5：Binary Tree Maximum Path Sum**（LC 124）
-<!--CODE-->
-
-<!-- 81573064ff2f -->
-##### **模式 7.6：Binary Tree Longest Consecutive Sequence**（LC 298） ⭐⭐⭐⭐
-
-<!-- 94ffa1b4fd96 -->
-###### **核心想法**
-
-- **題目**：找出最長的路徑，其上每一步的值都剛好 `+1`。
-- **方向是固定的**：路徑必須從**父 → 子**。`3-2-1` 不算，只有 `1-2-3` 算。
-- **路徑是一條「鏈」，不是「V 字」**：和 LC 124（Max Path Sum）不同，你**絕不能**在某個節點把左右兩支接起來。每個答案都是一條由上往下的單鏈。
-- **往下走時可以換邊**：`root.left` 接著 `.right` 再接 `.left` 完全沒問題——「連續」限制的是*值*，不是你走哪個子節點指標。
-
-<!--CODE-->
-
-- **核心想法**：某個節點的連續長度**只取決於它的父節點**，所以把 `(parent_val, current_len)` **往下**帶進遞迴（由上而下的 DFS）。每個節點要嘛**延續**父節點的連續段（`node.val == parent.val + 1`），要嘛**重新開一段**（`len = 1`）。
-- **答案藏在哪**：沒有任何單一節點的回傳值就是答案——用一個**全域最大值**追蹤，每個節點都更新。
-
-<!-- 9c9ee90f2b01 -->
-###### **模式**
-
-**模板 A — 由上而下（把連續長度往下帶） ⭐ 首選**
+**歸約到**：[bst § Template 3b](./bst.md#template-3b-trim-to-a-range--lc-669-) —— 同樣是「另一側整個落在切點的同一邊」，
+只是什麼都不丟。
 
 <!--CODE-->
 
 <!--CODE-->
 
-**模板 B — 由下而上（回傳「從這個節點開始」的連續長度）**
+<!--CODE-->
+
+**陷阱**
+- 接錯一半：`root.val <= target` 時，`root.right` 要接 `split[0]`（小的那半），不是 `split[1]`。
+  接反的話，上例中 3 會跑到 2 底下。
+- 兩個子節點都拆是 O(n)，結果仍然正確；但只有一個子節點可能跨過切點。
+
+| 操作 | LC | 移除的節點 | 回傳 |
+|---|---|---|---|
+| Delete | 450 | 一個 | 一個 root |
+| Trim | 669 | 所有在 `[low, high]` 之外的節點 | 一個 root |
+| Split | 776 | 沒有 | 兩個 root |
+
+<!-- 15eec8bab463 -->
+## 用上下界驗證的例題
+
+<!-- f0290e755f2d -->
+### Serialize and Deserialize BST — LC 449
+
+> **關鍵** — BST 光靠前序就能決定整棵樹：下一個值落在目前子樹的 `(low, high)` 區間內，
+> 它才屬於這棵子樹。所以編碼不需要 null 標記，這正是它比 LC 297 的編碼更精簡的原因。
+
+**歸約到**：[bst § Template 4](./bst.md#template-4-validate-with-bounds--lc-98) —— 同一個往下帶的區間，
+拿來決定值放哪裡，而不是拿來拒絕。
 
 <!--CODE-->
 
-**模板 C — 迭代式 DFS（堆疊存 `(node, len)`）**
+**陷阱**
+- `"".split(",")` 是 `[""]`，而 `int("")` 會丟例外：空樹要單獨擋掉。
+- 嚴格的 `<` 假設值都不同，BST 保證這點。若有重複值，光靠前序就無法決定形狀。
+- LC 297 那種帶 `#` 標記的層序編碼在這裡也會過，但它沒用到 BST，寫出的符號大約多一倍。
+  要能說出為什麼有了上下界就不需要標記。
 
-<!--CODE-->
-
-<!-- 56333461c05f -->
-###### **視覺化追蹤** — 模板 A 跑範例樹
-
-<!--CODE-->
-
-<!-- df4a42fb432f -->
-###### **🚫 為什麼 `path = "{}-{}-{}".format(root.val, _left, _right)` 這招行不通**
-
-一個很誘人的想法是：把**每棵子樹序列化成字串**（像 LC 297 / LC 652 那樣），把所有字串收進 map，再把每個字串解析回來量它的連續長度：
-
-<!--CODE-->
-
-**1. 序列化出來的是*一棵樹*，不是*一條路徑*（致命傷）**
-
-`"{val}-{left}-{right}"` 把**兩邊**子樹都塞進同一個扁平字串。但連續序列是**一條根→後代的單鏈**——它永遠只能包含兩個子節點的其中一個。攤平會把兩條*沒有*任何父子邊相連的兄弟分支併在一起，於是 `split("-")` 產生出來的相鄰元素，在樹上根本從來不相鄰。
-
-<!--CODE-->
-
-**2. 它同時也弄丟了方向與起點**
-
-就算你把 `#` 濾掉，前序 dump 也沒辦法告訴你「`x` 到底是 `y` 的*父節點*，還是它的叔叔？」。`+1` 檢查需要的是**父子邊**，而那正是字串丟掉的資訊。遞迴本來就免費握有那條邊（往 `node.left/right` 遞迴時手上就有 `node` 和 `node.val`）——序列化把它丟掉，然後再想辦法重建。
-
-**3. 目標與資料結構不匹配**
-
-子樹序列化存在的目的是回答**「兩棵子樹一樣嗎？」**（LC 652 Find Duplicate Subtrees、LC 297 Serialize/Deserialize）。LC 298 問的是**一條往下的鏈**，所以自然的狀態是一個純量（`cur_len`），不是字串。
-
-**4. 掩蓋真正問題的那些 bug**
-
-| 行 | Bug | 後果 |
-|------|-----|--------|
-| `self.p_map().keys()` | dict 不能被呼叫 | `TypeError` |
-| `len = 0` | 蓋掉內建的 `len()` | 下一次 `len(_list)` 就 `TypeError: 'int' object is not callable` |
-| `p_map[path] = 1` | 少了 `self.` | `NameError` |
-| `range(1, len(_list) - 1)` | 差一錯誤，漏掉最後一個元素 | 就算跑得起來，數字也是錯的 |
-| `return len(_list) - 1` | 無緣無故減一 | 數字錯 |
-
-**5. 代價**
-
-每個節點的字串長度是 O(它子樹大小)，所以全部建出來是**最壞 O(n²) 時間、O(n²) 空間**，而單純的 DFS 只要 **O(n) / O(h)**。
-
-> **重點**：當你要的量是**沿著一條根→節點的單鏈**定義出來的，就把它當成**參數往下帶進遞迴**。只有在需要拿*整棵子樹*互相比較時，才動用序列化。
-
-<!-- 53141c8d88d5 -->
-###### **相似的 LeetCode 題目**
-
-| LC # | 題目 | 與 LC 298 的關係 | 關鍵差異 |
-|------|---------|--------------------|----------------|
-| **549** | Binary Tree Longest Consecutive Sequence II | 直接的續集 ⭐ | 路徑可以走**子 → 父 → 子**（一個「V」），而且可以遞增**或**遞減 → 每個節點回傳 `inc + dec - 1`（[完整寫法](./binary_tree.md#worked-variation-two-runs-per-node--lc-549-binary-tree-longest-consecutive-sequence-ii-)） |
-| **124** | Binary Tree Maximum Path Sum | 同樣的「全域最大值 + 只回傳一邊」骨架 | 路徑可以在節點處轉彎；用的是總和而不是 `+1` 步進 |
-| **687** | Longest Univalue Path | 同一副骨架 | 要求值**相等**而不是 `+1`；數的是**邊**不是節點 |
-| **543** | Diameter of Binary Tree | 同一副骨架 | 對值完全沒有限制；純粹數邊 |
-| **1372** | Longest ZigZag Path in a Binary Tree | 由上而下帶狀態 | 狀態是 `(direction, length)` 而不是 `(parent_val, length)` |
-| **129** | Sum Root to Leaf Numbers | 由上而下帶狀態 | 往下帶一個累積出來的數字；必須走到葉節點 |
-| **112 / 113** | Path Sum I / II | 由上而下帶狀態 | 往下帶剩餘的和；只算根→**葉** |
-| **128** | Longest Consecutive Sequence（陣列版） | 同樣的「連續」概念 | 未排序陣列 + 雜湊集合，沒有樹，與順序無關 |
-| **652** | Find Duplicate Subtrees | 序列化*真正*該用的地方 | 比較的是整棵子樹 → `"{val}-{left}-{right}"` 在這裡是*正確的* |
-
-<!-- d9f7c1666ce4 -->
-###### **重點整理**
-
-1. **狀態往下帶，不要往上傳** — `cur_len` 只取決於父節點，所以它該待在參數列裡。
-2. **要寫 `else: cur_len = 1`，絕不是 `return`** — 連續段斷掉時是從當前節點重新開始，不是結束走訪。
-3. **只回傳一邊**（模板 B） — `left + right` 會造出一條轉彎的路徑，而 LC 298 不允許（那是 LC 549）。
-4. **用 `root.val - 1` 當種子**，這樣根節點自然算成長度 1 的連續段，不用寫特例。
-5. **不要序列化** — 攤平的子樹字串沒辦法表達一條往下的單一路徑（見上）。
-
-<!-- 21035a23e594 -->
-##### **模式 7.7：Path Sum III**（LC 437）
-<!--CODE-->
-
-<!-- b20ca56305c0 -->
-#### **Java 實作**
-<!--CODE-->
-
-<!-- 65342a2341d7 -->
-#### **路徑模式總表**
-| 題型 | 做法 | 關鍵技巧 | 時間 | 空間 | LC # |
-|--------------|----------|---------------|------|-------|------|
-| **單純路徑和** | DFS 遞迴 | 遞減目標和 | O(n) | O(h) | 112 |
-| **所有路徑** | DFS + 回溯 | 追蹤路徑 | O(n) | O(h) | 113 |
-| **路徑字串** | DFS + 字串 | 串接 | O(n) | O(h) | 257 |
-| **數字加總** | DFS + 累加 | 組出數字 | O(n) | O(h) | 129 |
-| **最大路徑和** | DFS + 全域 | 追蹤最大值 | O(n) | O(h) | 124 |
-| **連續序列** | DFS + 計數器 | 追蹤長度 | O(n) | O(h) | 298 |
-| **前綴和** | DFS + hashmap | 前綴和技巧 | O(n) | O(n) | 437 |
-
-<!-- 0117e0c19a9f -->
-#### **關鍵觀念與原則**
-
-1. **根到葉的路徑**
-   - 一定要檢查葉節點：`not node.left and not node.right`
-   - 每一層都把目標和扣掉
-   - 在葉節點回傳結果
-
-2. **回溯模式**
-   - 把當前節點加進路徑
-   - 對子節點遞迴
-   - 把當前節點從路徑移除（復原狀態）
-   - 要列出所有路徑時必備
-
-3. **全域狀態**
-   - 用 nonlocal／類別變數存最大值
-   - 走訪過程中更新
-   - 回傳的是「貢獻值」，不是最終答案
-
-4. **穿過節點的路徑**
-   - 求最大路徑時：left_max + node.val + right_max
-   - 回傳時：node.val + max(left_max, right_max)
-   - 用 max(0, ...) 把負的貢獻忽略掉
-
-5. **前綴和技巧**
-   - 追蹤從根累積下來的總和
-   - 用 hashmap：prefixSum[currentSum - target] = count
-   - 回溯時把計數減回去
-
-<!-- b13e01ef7f3b -->
-#### **常見錯誤與陷阱**
-
-**🚫 錯誤 1：沒有檢查葉節點**
-<!--CODE-->
-
-**🚫 錯誤 2：忘記回溯**
-<!--CODE-->
-
-**🚫 錯誤 3：結果裡放的是淺拷貝**
-<!--CODE-->
-
-**🚫 錯誤 4：最大路徑的邏輯寫錯**
-<!--CODE-->
-
-**🚫 錯誤 5：沒有處理負值**
-<!--CODE-->
+**相似題** — LC 1008（只做反序列化那一半，[bst_advanced § Template 4](./bst_advanced.md#template-4-preorder-build-with-bounds--lc-1008)） · LC 297（任意二元樹：一定要標記）

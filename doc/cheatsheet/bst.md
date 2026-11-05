@@ -2,7 +2,7 @@
 
 > **Scope** — Ordered trees only — what the `left < root < right` invariant buys you (O(log n) search, sorted inorder, range pruning, order statistics).
 
-> **See also**: [bst_examples.md](./bst_examples.md) — the worked LC solution archive for these templates, plus the tree path-sum family; [bst_advanced.md](./bst_advanced.md) — order-statistic (rank) queries, the lazy O(h) iterator, recovering a broken BST and the construction-variant catalogue; [binary_tree.md](./binary_tree.md) — unordered binary trees; [tree.md](./tree.md) — general tree concepts; [segment_tree.md](./segment_tree.md) — range queries over an array instead of a tree.
+> **See also**: [bst_examples.md](./bst_examples.md) — the BST problems that add one step to these templates; [bst_advanced.md](./bst_advanced.md) — the lazy O(h) iterator, recovering a broken BST, order-statistic (rank) queries and the construction variants; [tree_lca_distance.md](./tree_lca_distance.md) — path-sum problems, which need no ordering; [binary_tree.md](./binary_tree.md) — unordered binary trees; [tree.md](./tree.md) — general tree concepts; [segment_tree.md](./segment_tree.md) — range queries over an array instead of a tree.
 
 ## LeetCode Problem Lists
 
@@ -32,87 +32,40 @@
 - [fucking-algorithm - BST pt.2](https://labuladong.github.io/algo/2/21/44/)
 - [fucking-algorithm - BST pt.3](https://labuladong.github.io/algo/2/21/42/)
 
-```java
-// below will print BST elements in ascending ordering
-// java
-void traverse(TreeNode root) {
-    if (root == null) return;
-    traverse(root.left);
-    // in-order traversal
-    print(root.val);
-    traverse(root.right);
-}
-```
-
 ### Basic Operations on a Tree Node
 
 The plain recursion every BST template is built on. Neither of these uses the ordering
 property — this is the shape you fall back to when `left < root < right` does not help.
 
 #### **Mutate every node — plain pre-order recursion**
-```java
-// java
-void plusOne(TreeNode root){
-    if (root == null){
-        return;
-    }
-    root.val += 1;
-    plusOne(root.left);
-    plusOne(root.right);
-}
-```
-
 ```python
 # python
-class TreeNode(object):
-    def __init__(self, val=0, left=None, right=None):
-        self.val = val
-        self.left = left
-        self.right = right
-
-root = TreeNode(0)
-root.left = TreeNode(1)
-root.right =  TreeNode(2)
-
-print (root.val)
-print (root.left.val)
-print (root.right.val)
-
-print("==============")
-
+# IDEA: change the node, then recurse into both children; no ordering is used
+# time = O(n), space = O(h)
 def add_one(root):
     if not root:
         return
     root.val += 1
     add_one(root.left)
     add_one(root.right)
-
-add_one(root)
-print (root.val)
-print (root.left.val)
-print (root.right.val)
 ```
 
-#### **Compare two trees for identity — LC 100**
 ```java
 // java
-boolean isSameTree(TreeNode root1, TreeNode root2){
-    // if all null, then same
-    if (root1 == null && root2 == null){
-        return true;
+// IDEA: change the node, then recurse into both children
+// time = O(n), space = O(h)
+void addOne(TreeNode root) {
+    if (root == null) {
+        return;
     }
-    if (root1 == null || root2 == null){
-        return false;
-    }
-    if (root1.val != root2.val){
-        return false;
-    }
-
-    return isSameTree(root1.left, root2.left) && isSameTree(root1.right, root2.right);
+    root.val += 1;
+    addOne(root.left);
+    addOne(root.right);
 }
 ```
 
-> The Python treatment of LC 100 lives in [tree_examples.md](./tree_examples.md).
+Comparing two trees node by node (LC 100) is the same recursion over two trees at once; it is
+worked in [binary_tree.md § Template 12](./binary_tree.md#template-12-two-trees-in-lockstep--lc-100).
 
 ## Recognition
 
@@ -130,7 +83,7 @@ cards apply.
 | "kth smallest", "iterator", "minimum difference", "mode" | | [Template 5](#template-5-in-order-walk-is-sorted--lc-230) in-order is sorted | kth asked repeatedly under updates → size-augmented BST ([bst_advanced.md](./bst_advanced.md)) |
 | "sorted array → height-balanced BST", "balance this BST" | | [Template 6](#template-6-sorted-array-to-balanced-bst--lc-108) middle as root | the input is a linked list (LC 109) → [bst_advanced.md](./bst_advanced.md) |
 | "lowest common ancestor" in a BST | nodes ≤ 10⁵ | [Template 10](#template-10-lca-via-bst-ordering--lc-235-) walk down to the split | plain binary tree, or parent pointers only → [tree_lca_distance.md](./tree_lca_distance.md) |
-| "path sum", "root to leaf" | | not a BST problem → [bst_examples.md](./bst_examples.md) Template 7 | |
+| "path sum", "root to leaf" | | not a BST problem → [tree_lca_distance.md](./tree_lca_distance.md) | |
 
 ## Problem Categories
 
@@ -168,7 +121,7 @@ cards apply.
 - **Description**: Problems involving root-to-leaf or node-to-node paths
 - **Recognition**: "Path sum", "root to leaf", "maximum path", "consecutive sequence"
 - **Examples**: LC 112, LC 113, LC 257, LC 124, LC 129, LC 298, LC 437
-- **Template**: Use DFS with path tracking, backtracking, or global state
+- **Template**: none here — no ordering is used; see [tree_lca_distance.md](./tree_lca_distance.md)
 
 ## Templates & Algorithms
 
@@ -180,16 +133,11 @@ cards apply.
 | **Deletion Template** | Removing nodes | Find + restructure | O(log n) | O(h) | Removing values |
 | **Inorder Template** | Sorted operations | Left-root-right | O(n) | O(h) | Kth element, range |
 | **Construction Template** | Building BST | Divide & conquer | O(n) | O(n) | Creating from array |
-| **Path Template** | Root-to-leaf paths | DFS + tracking | O(n) | O(h) | Path sum, sequences |
 
-> **Where the other templates live.** Template numbering is preserved across the whole
-> BST family, so the gaps below are not typos:
->
-> - **Template 5b** (lazy BST iterator), **Template 8** (recover a broken BST), **Template 9**
->   (order-statistic / rank queries) and **Templates 3c / 4b / 6b** (detach, bounds-propagation
->   and construction variants) → [bst_advanced.md](./bst_advanced.md)
-> - **Template 7** (root-to-leaf and node-to-node path problems — not BST-specific) plus the
->   worked LC archive → [bst_examples.md](./bst_examples.md)
+> **Where the other templates live.** Templates 7–9 were moved out, so the numbering on this
+> page skips from 6 to 10. The lazy iterator, recovering a broken BST, rank queries and the
+> construction variants are [bst_advanced.md](./bst_advanced.md) Templates 1–5; the path
+> problems are in [tree_lca_distance.md](./tree_lca_distance.md).
 
 ### Template 1: Descend by Comparison — LC 700
 
@@ -389,6 +337,8 @@ result: [5,4,6,2,null,null,7]
   `if not root` base case and every level returns itself.
 - Using the **predecessor** (max of the left subtree) is equally correct; mixing the two in one
   solution is not.
+- Swapping `key` down into the successor's place and then recursing into **both** children (a
+  common first draft) is correct but O(n): it gives up the single path that makes this O(h).
 
 **Not this if** — the task removes a whole **range** of values → Template 3b trims in one pass,
 instead of one delete per value.
@@ -557,6 +507,30 @@ private boolean valid(TreeNode node, Integer low, Integer high) {
 }
 ```
 
+A second solution, kept because it answers "can you do it **without recursion**?": the same
+interval travels with each node in a queue, so a skewed tree of 10⁴ nodes cannot overflow the
+call stack.
+
+```python
+# python
+# LC 98 - Validate Binary Search Tree (iterative)
+# IDEA: BFS of (node, low, high); each child inherits the interval, tightened by its parent
+# time = O(n), space = O(w)   w = the widest level
+from collections import deque
+
+def isValidBST(root):
+    queue = deque([(root, None, None)])
+    while queue:
+        node, low, high = queue.popleft()
+        if not node:
+            continue
+        if (low is not None and node.val <= low) or (high is not None and node.val >= high):
+            return False
+        queue.append((node.left, low, node.val))      # left: values below node.val
+        queue.append((node.right, node.val, high))    # right: values above node.val
+    return True
+```
+
 **Complexity**
 - **Time O(n)**: each node is checked once against its interval; the `and` stops early on the
   first violation.
@@ -640,8 +614,8 @@ public int kthSmallest(TreeNode root, int k) {
   the (k+1)th: `[3,1,4,null,2]`, k = 1 returns 2 instead of 1.
 
 **Not this if** — kth smallest is asked repeatedly while the tree changes (LC 230 follow-up) →
-store subtree sizes on each node, the order-statistic tree of Template 9 in
-[bst_advanced.md](./bst_advanced.md).
+store subtree sizes on each node, the order-statistic tree of
+[bst_advanced.md § Template 3](./bst_advanced.md#template-3-size-augmented-order-statistic-bst--lc-703-).
 
 **Drill** — LC 230 ⭐ · LC 530 · LC 501 · LC 173 *(the same stack, paused between calls)* · LC 538
 
@@ -729,16 +703,16 @@ private TreeNode build(int[] nums, int left, int right) {
 - `mid = (left + right) / 2` in Python 3 is a float and fails as an index; use `//`.
 
 **Not this if** — the input is a sorted **linked list** (LC 109): finding the middle costs O(n) per
-level, so either use slow/fast pointers, or simulate the in-order build — see Template 6b in
-[bst_advanced.md](./bst_advanced.md).
+level, so either use slow/fast pointers, or simulate the in-order build — see
+[bst_advanced.md § LC 109](./bst_advanced.md#convert-sorted-list-to-binary-search-tree--lc-109).
 
 **Drill** — LC 108 · LC 109 · LC 1382 *(in-order, then this)* · LC 1008
 
 #### **The Other Construction Inputs**
 
-`Pattern 6.2` (sorted linked list, LC 109), `6.3` (preorder, LC 1008), `6.4` (balance an
-existing BST, LC 1382), `6.5` (generate all unique BSTs, LC 95) and `6.6` (count them,
-LC 96) are collected as **Template 6b** in [bst_advanced.md](./bst_advanced.md).
+A sorted linked list (LC 109), a preorder (LC 1008), an existing BST to rebalance (LC 1382),
+and every unique BST (LC 95, counted in LC 96) are worked in the construction section of
+[bst_advanced.md](./bst_advanced.md#construction-variants).
 
 The one line worth carrying in your head: **LC 1382 = LC 94 + LC 108** — flatten the BST
 with an in-order walk (Template 5), then rebuild it with the mid-as-root recursion above.
@@ -826,7 +800,7 @@ walk up both parent chains.
 
 ## Problems by Pattern
 
-> Index only — no code. The `Template` column keeps the family-wide numbering: Templates 1–6 and 10 are on this page, Templates 5b / 8 / 9 / 3c / 4b / 6b are in [bst_advanced.md](./bst_advanced.md), and Template 7 (path problems) is in [bst_examples.md](./bst_examples.md).
+> Index only — no code. `Template N` is a card on this page; `advanced T N` is [bst_advanced.md](./bst_advanced.md)'s Template N; `advanced` alone is a problem card there.
 
 ### Pattern-Based Problem Classification
 
@@ -845,29 +819,29 @@ walk up both parent chains.
 |---------|------|------------|---------------|----------|
 | Insert into a BST | 701 | Medium | Recursive insert | Template 2 |
 | Delete Node in a BST | 450 | Medium | Three cases | Template 3 |
-| Trim a Binary Search Tree | 669 | Medium | Recursive trim | Template 3 |
+| Trim a Binary Search Tree | 669 | Medium | Recursive trim | Template 3b |
 
 #### **Pattern 3: BST Traversal & Conversion Problems**
 | Problem | LC # | Difficulty | Key Technique | Template |
 |---------|------|------------|---------------|----------|
 | Kth Smallest Element in BST | 230 | Medium | Inorder traversal | Template 5 |
-| BST Iterator | 173 | Medium | Stack + Inorder | Template 5 |
+| BST Iterator | 173 | Medium | Stack + Inorder | advanced T1 |
 | Convert BST to Greater Tree | 538 | Medium | Reverse inorder | Template 5 |
 | Binary Search Tree to Greater Sum Tree | 1038 | Medium | Reverse inorder | Template 5 |
-| Convert Sorted List to BST | 109 | Medium | Two pointers | Template 6b |
+| Convert Sorted List to BST | 109 | Medium | Two pointers | advanced |
 | Flatten BST to Sorted List | 426 | Medium | Inorder + linking | Template 5 |
 | Increasing Order Search Tree | 897 | Easy | Inorder rebuild | Template 5 |
-| All Elements in Two BSTs | 1305 | Medium | Two lazy iterators + merge | Template 5b |
+| All Elements in Two BSTs | 1305 | Medium | Two lazy iterators + merge | advanced |
 
 #### **Pattern 4: BST Construction Problems**
 | Problem | LC # | Difficulty | Key Technique | Template |
 |---------|------|------------|---------------|----------|
 | Convert Sorted Array to BST | 108 | Easy | Binary search | Template 6 |
-| Unique Binary Search Trees | 96 | Medium | DP/Catalan | Special |
-| Unique Binary Search Trees II | 95 | Medium | Generate all | Template 6b |
-| Serialize and Deserialize BST | 449 | Medium | Preorder encoding | Special |
-| Construct BST from Preorder | 1008 | Medium | Stack/Recursion | Template 6b |
-| Balance a Binary Search Tree | 1382 | Medium | Inorder + rebuild | Template 6b |
+| Unique Binary Search Trees | 96 | Medium | DP/Catalan | advanced |
+| Unique Binary Search Trees II | 95 | Medium | Generate all | advanced T5 |
+| Serialize and Deserialize BST | 449 | Medium | Preorder encoding | Template 4 |
+| Construct BST from Preorder | 1008 | Medium | Bounds on a preorder | advanced T4 |
+| Balance a Binary Search Tree | 1382 | Medium | Inorder + rebuild | advanced |
 
 #### **Pattern 5: BST Properties & Range Problems**
 | Problem | LC # | Difficulty | Key Technique | Template |
@@ -875,23 +849,14 @@ walk up both parent chains.
 | Lowest Common Ancestor of BST | 235 | Easy | BST property | Template 10 |
 | Minimum Distance Between BST Nodes | 783 | Easy | Inorder diff | Template 5 |
 | Minimum Absolute Difference in BST | 530 | Easy | Inorder diff | Template 5 |
-| Range Sum of BST | 938 | Easy | DFS with pruning | Template 1 |
-| Split BST | 776 | Medium | Recursive split | Special |
+| Range Sum of BST | 938 | Easy | DFS with pruning | Template 3b |
+| Split BST | 776 | Medium | Recursive split | Template 3b |
 | Largest BST Subtree | 333 | Medium | Bottom-up validation | Template 4 |
-| Kth Largest Element in a Stream | 703 | Easy | Size-augmented BST (rank query) | Template 9 |
-| Maximum Difference Between Node and Ancestor | 1026 | Medium | Bounds propagation (min/max down) | Template 4b |
-| Delete Nodes And Return Forest | 1110 | Medium | Recurse + return `null` to detach | Template 3c |
+| Kth Largest Element in a Stream | 703 | Easy | Size-augmented BST (rank query) | advanced T3 |
+| Maximum Difference Between Node and Ancestor | 1026 | Medium | Bounds propagation (min/max down) | advanced |
 
 #### **Pattern 6: Path Problems**
-| Problem | LC # | Difficulty | Key Technique | Template |
-|---------|------|------------|---------------|----------|
-| Path Sum | 112 | Easy | DFS recursion | Template 7 |
-| Path Sum II | 113 | Medium | DFS + Backtrack | Template 7 |
-| Binary Tree Paths | 257 | Easy | DFS + Path Track | Template 7 |
-| Sum Root to Leaf Numbers | 129 | Medium | DFS + Accumulate | Template 7 |
-| Binary Tree Maximum Path Sum | 124 | Hard | DFS + Global Max | Template 7 |
-| Binary Tree Longest Consecutive Sequence | 298 | Medium | DFS + Counter | Template 7 |
-| Path Sum III | 437 | Medium | Prefix Sum + DFS | Template 7 |
+Not BST problems: LC 112, 113, 124, 129, 257, 437 are in [tree_lca_distance.md](./tree_lca_distance.md), LC 298 in [binary_tree.md](./binary_tree.md).
 
 ### Complete Problem List by Difficulty
 
@@ -906,8 +871,6 @@ walk up both parent chains.
 - LC 897: Increasing Order Search Tree - Inorder rebuilding
 - LC 938: Range Sum of BST - DFS with pruning
 - LC 501: Find Mode in Binary Search Tree - Inorder + counting
-- LC 112: Path Sum - Basic DFS path sum
-- LC 257: Binary Tree Paths - DFS path tracking
 
 #### Medium Problems (Core)
 - LC 98: Validate Binary Search Tree - Classic validation
@@ -928,15 +891,10 @@ walk up both parent chains.
 - LC 1038: Binary Search Tree to Greater Sum Tree - Accumulation
 - LC 1382: Balance a Binary Search Tree - Inorder + rebuild balanced BST
 - LC 426: Convert BST to Sorted Doubly Linked List - In-place conversion
-- LC 113: Path Sum II - All root-to-leaf paths with target sum
-- LC 129: Sum Root to Leaf Numbers - DFS accumulation
-- LC 298: Binary Tree Longest Consecutive Sequence - Track sequence length
-- LC 437: Path Sum III - Any path with target sum (prefix sum)
 
 #### Hard Problems (Advanced)
-- LC 99: Recover Binary Search Tree - Fix swapped nodes (see Template 8 in [bst_advanced.md](./bst_advanced.md))
+- LC 99: Recover Binary Search Tree - Fix swapped nodes (see [bst_advanced.md § Template 2](./bst_advanced.md#template-2-in-order-drop-detection--lc-99-))
 - LC 1373: Maximum Sum BST in Binary Tree - Complex validation
-- LC 124: Binary Tree Maximum Path Sum - Node-to-node max path
 
 ## Drill Path
 
@@ -990,11 +948,7 @@ BST Problem Analysis Flowchart:
    └── NO → Continue to 6
 
 6. Does the problem involve paths in the tree?
-   ├── YES → Use Path Template (7)
-   │   ├── Root-to-leaf sum? → DFS with target reduction
-   │   ├── All paths? → DFS with backtracking
-   │   ├── Max path sum? → DFS with global variable
-   │   └── Any path with sum? → Prefix sum technique
+   ├── YES → Not a BST problem: tree_lca_distance.md (path templates)
    └── NO → Fall back to the plain BST descent (Template 1) or reconsider
 
 ```
@@ -1010,13 +964,10 @@ BST Problem Analysis Flowchart:
 | "Kth smallest/largest" | Template 5 | Inorder traversal | 230, 173 |
 | "LCA of two nodes" | Template 10 | Descend the one side holding both | 235 |
 | "Convert sorted array" | Template 6 | Binary search middle | 108 |
-| "Balance BST" | Template 6.4 → [advanced](./bst_advanced.md) | Inorder + rebuild | 1382 |
-| "Path with target sum" | Template 7.1 → [examples](./bst_examples.md) | DFS + reduce sum | 112 |
-| "All paths with sum" | Template 7.2 → [examples](./bst_examples.md) | DFS + backtracking | 113 |
-| "Max path sum" | Template 7.5 → [examples](./bst_examples.md) | DFS + global max | 124 |
-| "Any path with sum" | Template 7.7 → [examples](./bst_examples.md) | Prefix sum | 437 |
-| "Recover / fix a broken BST" | Template 8 → [advanced](./bst_advanced.md) | In-order + `prev` drop detection | 99, 501, 530 |
-| "Kth largest in a stream / rank query" | Template 9 → [advanced](./bst_advanced.md) | Size-augmented BST | 703 |
+| "Balance BST" | [advanced § LC 1382](./bst_advanced.md#balance-a-binary-search-tree--lc-1382-) | Inorder + rebuild | 1382 |
+| "Path sum", "max path sum" | [tree_lca_distance.md](./tree_lca_distance.md) | not a BST technique | 112, 113, 124, 437 |
+| "Recover / fix a broken BST" | [advanced § Template 2](./bst_advanced.md#template-2-in-order-drop-detection--lc-99-) | In-order + `prev` drop detection | 99, 501, 530 |
+| "Kth largest in a stream / rank query" | [advanced § Template 3](./bst_advanced.md#template-3-size-augmented-order-statistic-bst--lc-703-) | Size-augmented BST | 703 |
 
 ### Recognition Patterns
 
@@ -1028,9 +979,9 @@ BST Problem Analysis Flowchart:
 - **"Kth", "sorted", "inorder", "iterator"** → Template 5 (Inorder)
 - **"Lowest common ancestor", "split point"** → Template 10 (LCA via ordering)
 - **"Construct", "build", "convert", "balance", "generate"** → Template 6 (Construction)
-- **"Path", "sum", "maximum path", "consecutive"** → Template 7 (Path Problems)
-- **"Recover", "swapped", "fix", "adjacent values", "successor", "mode"** → Template 8 (In-order + `prev`)
-- **"Stream", "after each insert", "rank", "how many are less than"** → Template 9 (Order-Statistic BST)
+- **"Path", "sum", "maximum path", "consecutive"** → not BST: [tree_lca_distance.md](./tree_lca_distance.md)
+- **"Recover", "swapped", "fix", "adjacent values", "successor", "mode"** → [bst_advanced.md](./bst_advanced.md) Template 2 (In-order + `prev`)
+- **"Stream", "after each insert", "rank", "how many are less than"** → [bst_advanced.md](./bst_advanced.md) Template 3 (Order-Statistic BST)
 
 ### Problem-Solving Steps
 1. **Identify BST property usage**: Can you use left < root < right?
@@ -1041,19 +992,18 @@ BST Problem Analysis Flowchart:
 
 ### Common Mistakes & Tips
 
-**🚫 Common Mistakes:**
-- **Not using BST property**: Treating BST like regular binary tree
-- **Forgetting inorder = sorted**: Missing optimization opportunity
-- **Wrong deletion handling**: Not covering all three cases
-- **Incorrect validation**: Only checking parent-child, not entire subtree
-- **Modifying while traversing**: Can break BST property
+Each card's **Traps** names the input that springs it; these are the five that cost the most.
 
-**✅ Best Practices:**
-- **Always leverage BST property**: Prune search space when possible
-- **Use inorder for sorted needs**: Don't sort separately
-- **Handle duplicates explicitly**: Decide if allowed in your BST
-- **Consider tree balance**: Mention O(n) worst case in interviews
-- **Test with edge cases**: Empty, single node, all left/right
+- **Parent-only validation** — `[5,4,6,null,null,3,7]` passes a parent/child check but `3` sits
+  right of `5`. Carry the interval ([Template 4](#template-4-validate-with-bounds--lc-98)).
+- **Dropping the returned child** — `insertIntoBST(root.left, val)` without `root.left = …`
+  creates the leaf and loses it ([Template 2](#template-2-insert-at-the-null-leaf--lc-701)).
+- **Returning `None` for an out-of-range node** — in LC 669 it discards the in-range nodes below
+  it ([Template 3b](#template-3b-trim-to-a-range--lc-669-)).
+- **`<=` while walking to the LCA** — with `p = 2, q = 4` on `[6,2,8,0,4,…]` it steps past `2`,
+  which is the answer ([Template 10](#template-10-lca-via-bst-ordering--lc-235-)).
+- **Claiming O(log n)** — inserting `1, 2, …, n` builds a chain; every template here is O(n) on
+  it. Say "O(h), O(log n) if balanced".
 
 ### Interview Tips
 1. **Clarify BST properties**: Can there be duplicates? Is it balanced?
@@ -1112,12 +1062,12 @@ def inorder_generator(root):
 ### Pro Tips for Template Selection
 
 1. **Leverage BST Property**: If problem can use `left < root < right`, use Templates 1-6
-2. **Path Problems**: Most work on any binary tree, not just BST (Template 7)
+2. **Path Problems**: they work on any binary tree, so they are in [tree_lca_distance.md](./tree_lca_distance.md)
 3. **Construction**: Check input type (array/list/traversal) → different template variant
 4. **Modification**: Always return root after modification (Templates 2, 3, 6)
 5. **When in Doubt**: Check if inorder traversal helps (Template 5)
 
 ---
-**Must-Know Problems for Interviews**: LC 98, 108, 112, 113, 124, 173, 230, 235, 450, 700, 701, 1382
-**Advanced Problems**: LC 99, 124, 298, 333, 437, 776, 1373
+**Must-Know Problems for Interviews**: LC 98, 108, 173, 230, 235, 450, 700, 701, 1382
+**Advanced Problems**: LC 99, 333, 776, 1373
 **Keywords**: BST, binary search tree, inorder, sorted, validation, search tree, path sum, DFS, backtracking, balance, construction

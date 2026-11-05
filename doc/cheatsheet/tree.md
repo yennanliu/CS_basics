@@ -65,10 +65,10 @@ techniques no per-pattern template covers. Constraint cues come from the
 |---|---|---|---|
 | "the answer for **every** node as the root", "sum of distances from each node" | n ≤ 3 · 10⁴ → O(n), not n DFS runs | [Template 3](#template-3-re-rooting-dp--lc-834) re-rooting DP | one best root ("minimum height trees", LC 310) → leaf trimming, [topology_sorting § Template 7](./topology_sorting.md#template-7-tree-centroid-finding-leaf-trimming-for-undirected-trees-) |
 | "k-th ancestor", many LCA queries on a tree that never changes | n, q ≤ 5 · 10⁴ → O(log n) per query | [Template 2](#template-2-binary-lifting--lc-1483-) binary lifting | a single LCA query → one O(n) DFS, [tree_lca_distance.md](./tree_lca_distance.md) |
-| "O(1) extra space", "without recursion or a stack", "flatten in place" | a follow-up, rarely the first ask | [Template 1](#template-1-morris-in-order-traversal--lc-94) Morris threading | the tree may not be modified even briefly (shared, read-only) → iterative stack, [tree2 1.2)](./tree2.md#12-inorder-template--lc-94-) |
+| "O(1) extra space", "without recursion or a stack", "flatten in place" | a follow-up, rarely the first ask | [Template 1](#template-1-morris-in-order-traversal--lc-94) Morris threading | the tree may not be modified even briefly (shared, read-only) → iterative stack, [binary_tree § Template 2](./binary_tree.md#template-2-iterative-traversal--stack-in-order-and-queue-level-order--lc-102) |
 | a path, a depth or a running max the parent must hand down | nodes ≤ 10⁵ → one O(n) pass | [0-3) top-down](#0-3-top-down-vs-bottom-up-dfs--two-strategies-for-tree-problems-) | the node needs both children's answers → bottom-up |
 | "height", "balanced", "diameter" — needs both children first | nodes ≤ 10⁴ | [0-3) bottom-up](#0-3-top-down-vs-bottom-up-dfs--two-strategies-for-tree-problems-), then [binary_tree.md](./binary_tree.md) | the value comes from above (depth) → top-down |
-| "level by level", "right side view", "minimum depth" | nodes ≤ 10⁴ | BFS, [tree2 1.4)](./tree2.md#14-bfs-template-level-order--lc-102-) | |
+| "level by level", "right side view", "minimum depth" | nodes ≤ 10⁴ | BFS, [binary_tree § Template 2](./binary_tree.md#template-2-iterative-traversal--stack-in-order-and-queue-level-order--lc-102) | |
 | "root-to-leaf path", "lowest common ancestor", "distance between nodes" | nodes ≤ 10⁵ | [tree_lca_distance.md](./tree_lca_distance.md) | the tree is a BST → walk by value, [bst.md](./bst.md) |
 | "valid BST", "k-th smallest" | nodes ≤ 10⁴ | in-order, [bst.md](./bst.md) | an unordered tree → no sorted order to lean on |
 | "serialize / deserialize", "duplicate subtrees" | nodes ≤ 10⁴ | [tree_codec.md](./tree_codec.md) | |
@@ -469,9 +469,9 @@ one per pattern. What belongs here is the question that comes first: which one.
 | The answer depends on… | Traversal | Because | Template |
 |---|---|---|---|
 | the **parent**, before the children are known | **Pre-order** — root → left → right | state flows *down*: a path, a depth, a running prefix | [tree2 1.1) — LC 144](./tree2.md#11-preorder-template--lc-144) |
-| the tree being a **BST**, and you want sorted order | **In-order** — left → root → right | in-order on a BST *is* the sorted sequence, which is why LC 98 and LC 230 are one line each | [tree2 1.2) — LC 94](./tree2.md#12-inorder-template--lc-94-) |
+| the tree being a **BST**, and you want sorted order | **In-order** — left → root → right | in-order on a BST *is* the sorted sequence, which is why LC 98 and LC 230 are one line each | [binary_tree § Template 1 — LC 94](./binary_tree.md#template-1-recursive-pre--in--post-order-traversal--lc-94) |
 | **both children**, before the node can answer | **Post-order** — left → right → root | state flows *up*: a height, a sum, a "is this subtree valid" verdict | [tree2 1.3) — LC 145](./tree2.md#13-postorder-template--lc-145) |
-| **distance from the root**, or a per-level answer | **Level-order (BFS)** | the first time you meet a node is via a shortest path, and a level is a queue-length snapshot | [tree2 1.4) — LC 102](./tree2.md#14-bfs-template-level-order--lc-102-) |
+| **distance from the root**, or a per-level answer | **Level-order (BFS)** | the first time you meet a node is via a shortest path, and a level is a queue-length snapshot | [binary_tree § Template 2 — LC 102](./binary_tree.md#template-2-iterative-traversal--stack-in-order-and-queue-level-order--lc-102) |
 | the level, but **alternating direction** | **BFS + direction flag** | reverse the row, do not reverse the traversal | [tree2 1.5) — LC 103](./tree2.md#15-bfs--direction-template--lc-103) |
 
 **The one-line test**: ask *"can this node answer without hearing from its children?"* Yes →
@@ -486,7 +486,7 @@ per-pattern templates, so they stay here rather than in the catalogue:
 
 - **O(1)-space level linking** — when the node already has a `next` pointer, the level itself
   can act as the queue. Written out at
-  [tree2 8.1) — LC 116 / LC 117](./tree2.md#81-o1-space-level-linking-template--lc-117-).
+  [binary_tree § Template 8 — LC 116 / LC 117](./binary_tree.md#template-8-level-linking-with-o1-space--lc-117-).
 - **Coordinate-annotated traversal** — carry `(row, col)` through any traversal and sort at the
   end; the traversal order stops mattering, which is what makes DFS and BFS interchangeable for
   vertical order, top/bottom view, and LC 662-style width indexing.
@@ -598,7 +598,7 @@ tree   2          curr  pred   action                       out
 
 **Not this if** — the tree is shared or read-only while you walk it (another thread reads it,
 or the interviewer says "do not modify the input"). Morris writes to the tree, even if only
-briefly. Use the iterative stack, [tree2 1.2)](./tree2.md#12-inorder-template--lc-94-).
+briefly. Use the iterative stack, [binary_tree § Template 2](./binary_tree.md#template-2-iterative-traversal--stack-in-order-and-queue-level-order--lc-102).
 
 **Drill** — LC 94 · LC 144 *(emit on the first visit)* · LC 114 *(rewire, below)* ·
 LC 99 *(recover a BST in O(1) space: the two out-of-order nodes show up in the Morris order)*
@@ -646,7 +646,7 @@ def flatten(root):
                                R         (L_rightmost.right = R)
 ```
 
-> The recursive counterpart — post-order where each call **returns the tail** of the subtree it flattened, so the parent knows where to splice — is worked through in [tree_examples 16)](./tree_examples.md#16-flatten-binary-tree-to-linked-list--lc-114), including why the tail is checked right → left → node.
+> The recursive counterpart — post-order where each call **returns the tail** of the subtree it flattened, so the parent knows where to splice — is worked through in [tree_examples 16)](./tree_examples.md#flatten-binary-tree-to-linked-list--lc-114), including why the tail is checked right → left → node.
 
 > **When to reach for this:** any "in-place, O(1) space, restructure a tree along its right spine" problem. The `while rightmost.right` predecessor-finding step is the signature. Recognize it as the **same machinery** as Morris traversal — only the thread's destination and whether you restore it change.
 

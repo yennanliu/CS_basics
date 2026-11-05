@@ -36,7 +36,7 @@ The constraint cues come from the ruler in [complexity_cheatsheet.md](./complexi
 | "number of edges between the nodes with values `p` and `q`" | nodes ≤ 10⁴ | [Template 3](#template-3-distance-between-nodes-via-lca--lc-1740) LCA + `get_dist` twice | every node `k` away → [Template 2](#template-2-parent-map--bfs--lc-863) |
 | "all root-to-leaf paths whose sum is `targetSum`", "return every path" | nodes ≤ 5,000 | [Template 4](#template-4-root-to-leaf-path-with-backtracking--lc-113) pre-order + backtracking | the path may start below the root → [Template 5](#template-5-downward-path-count-with-a-prefix-sum-map--lc-437) |
 | "number of paths that sum to `targetSum`", path "need not start at the root or end at a leaf" | nodes ≤ 1,000, negative values | [Template 5](#template-5-downward-path-count-with-a-prefix-sum-map--lc-437) prefix-sum map | the same question on an **array** → [prefix_sum_advanced.md](./prefix_sum_advanced.md#template-14-prefix-sum-on-a-tree-dfs--hashmap--backtrack---lc-437) |
-| "longest path between any two nodes", "maximum path sum" | nodes ≤ 3 · 10⁴ | post-order height + global max ([5-1)](#5-1-find-paths-with-specific-properties), [binary_tree.md](./binary_tree.md)) | the path must run root → leaf → [Template 4](#template-4-root-to-leaf-path-with-backtracking--lc-113) |
+| "longest path between any two nodes", "maximum path sum" | nodes ≤ 3 · 10⁴ | post-order height + global max ([LC 124 card](#binary-tree-maximum-path-sum--lc-124), [binary_tree.md](./binary_tree.md)) | the path must run root → leaf → [Template 4](#template-4-root-to-leaf-path-with-backtracking--lc-113) |
 
 ## Problem Categories
 
@@ -182,7 +182,7 @@ So the two useful shapes are LC 160's two shapes: **a set of one path**, or **tw
 # time = O(h), space = O(h)
 class Solution(object):
     def lowestCommonAncestor(self, p, q):
-        # NOTE !!! walk UP via `parent`, there is no root to walk down from
+        # walk UP via `parent`, there is no root to walk down from
         ancestors = set()
         node = p
         while node:
@@ -225,7 +225,7 @@ class Solution(object):
 
         a, b = p, q
         while a != b:
-            # NOTE !!! `if a else q`, NOT `a.parent or q`
+            # `if a else q`, NOT `a.parent or q`
             a = a.parent if a else q
             b = b.parent if b else p
         return a
@@ -244,7 +244,7 @@ public Node lowestCommonAncestor(Node p, Node q) {
 
     Node a = p, b = q;
     while (a != b) {
-        // NOTE !!! consume the null step itself, so both pointers walk the same distance
+        // consume the null step itself, so both pointers walk the same distance
         a = (a == null) ? q : a.parent;
         b = (b == null) ? p : b.parent;
     }
@@ -289,7 +289,7 @@ class Solution(object):
         def dfs(node):
             if not node:
                 return None
-            # NOTE !!! recurse FIRST, even if node is p or q (no early return)
+            # recurse FIRST, even if node is p or q (no early return)
             left = dfs(node.left)
             right = dfs(node.right)
             if node == p or node == q:
@@ -496,7 +496,7 @@ class Solution(object):
         if not node:
             return (0, None)
 
-        # NOTE !!! post-order — children resolved BEFORE the decision
+        # post-order — children resolved BEFORE the decision
         left_depth, left_node = self.helper(node.left)
         right_depth, right_node = self.helper(node.right)
 
@@ -1172,7 +1172,7 @@ answer [[5, 4, 11, 2], [5, 8, 4, 5]]
 
 **Not this if** — the path may start and end **anywhere** on a downward line → [Template 5](#template-5-downward-path-count-with-a-prefix-sum-map--lc-437).
 The path may **bend** through a node (LC 124, LC 543) → post-order height plus a global max, see
-[5-1)](#5-1-find-paths-with-specific-properties). Only a yes / no is asked (LC 112) → no list at all,
+[LC 124 card](#binary-tree-maximum-path-sum--lc-124). Only a yes / no is asked (LC 112) → no list at all,
 return `left or right`.
 
 **Drill** — LC 113 · LC 112 *(yes / no, no path list)* · LC 257 *(the path as a string)* · LC 129
@@ -1360,200 +1360,242 @@ in a linked list: the same prefix map)*
 
 ## LC Examples
 
-### 5-1) Find Paths with Specific Properties
+Problem cards for the path problems that are not a template's anchor. LC 543 (the diameter) is
+[binary_tree.md § Template 5](./binary_tree.md#template-5-height-up-answer-in-a-global--lc-543)'s
+anchor and is worked there; LC 124 and LC 687 below are that template with a different arm.
 
-#### Path Sum Problems
+### Path Sum — LC 112
+
+> **Key point** — the question is yes / no, so nothing has to be remembered on the way down except
+> the sum still owed: pass `targetSum - node.val` to the children, and only a **leaf** may settle it.
+
+**Reduces to**: [Template 4](#template-4-root-to-leaf-path-with-backtracking--lc-113) — with no
+path list to copy or undo, and `left or right` instead of collecting results.
+
 ```python
-# LC 112 Path Sum - Has Path with Target Sum
-def hasPathSum(self, root, targetSum):
+# python
+# LC 112 - Path Sum
+# IDEA: pre-order DFS carrying the remaining sum; a leaf answers, an inner node ORs its children
+# time = O(N), space = O(H)
+def hasPathSum(root, targetSum):
     if not root:
         return False
-    if not root.left and not root.right:
+    if not root.left and not root.right:          # only a leaf can end the path
         return root.val == targetSum
-    return (self.hasPathSum(root.left, targetSum - root.val) or
-            self.hasPathSum(root.right, targetSum - root.val))
-
-# LC 113 Path Sum II - All Paths with Target Sum
-def pathSum(self, root, targetSum):
-    result = []
-
-    def dfs(node, remaining, path):
-        if not node:
-            return
-
-        path.append(node.val)
-
-        if not node.left and not node.right and remaining == node.val:
-            result.append(path[:])
-
-        dfs(node.left, remaining - node.val, path)
-        dfs(node.right, remaining - node.val, path)
-
-        path.pop()  # backtrack
-
-    dfs(root, targetSum, [])
-    return result
-
-# LC 437 Path Sum III - Number of Paths with Target Sum (any start/end)
-def pathSum(self, root, targetSum):
-    def dfs(node, current_sum):
-        if not node:
-            return 0
-
-        current_sum += node.val
-        result = prefix_sum.get(current_sum - targetSum, 0)
-
-        prefix_sum[current_sum] = prefix_sum.get(current_sum, 0) + 1
-
-        result += dfs(node.left, current_sum)
-        result += dfs(node.right, current_sum)
-
-        prefix_sum[current_sum] -= 1
-        return result
-
-    prefix_sum = {0: 1}
-    return dfs(root, 0)
-```
-
-#### Path Length Problems
-```python
-# LC 543 Diameter of Binary Tree - Longest Path Between Any Two Nodes
-def diameterOfBinaryTree(self, root):
-    self.diameter = 0
-
-    def dfs(node):
-        if not node:
-            return 0
-
-        left_depth = dfs(node.left)
-        right_depth = dfs(node.right)
-
-        # Update diameter through current node
-        self.diameter = max(self.diameter, left_depth + right_depth)
-
-        return 1 + max(left_depth, right_depth)
-
-    dfs(root)
-    return self.diameter
-
-# LC 687 Longest Univalue Path - Longest Path with Same Values
-def longestUnivaluePath(self, root):
-    self.longest = 0
-
-    def dfs(node):
-        if not node:
-            return 0
-
-        left_length = dfs(node.left)
-        right_length = dfs(node.right)
-
-        left_path = left_length + 1 if node.left and node.left.val == node.val else 0
-        right_path = right_length + 1 if node.right and node.right.val == node.val else 0
-
-        self.longest = max(self.longest, left_path + right_path)
-
-        return max(left_path, right_path)
-
-    dfs(root)
-    return self.longest
+    remaining = targetSum - root.val
+    return hasPathSum(root.left, remaining) or hasPathSum(root.right, remaining)
 ```
 
 ```java
 // java
-// LC 112 Path Sum
+// LC 112 - Path Sum
+// IDEA: carry the remaining sum down; a leaf compares, an inner node ORs its children
+// time = O(N), space = O(H)
 public boolean hasPathSum(TreeNode root, int targetSum) {
     if (root == null) {
         return false;
     }
-
     if (root.left == null && root.right == null) {
         return root.val == targetSum;
     }
-
-    return hasPathSum(root.left, targetSum - root.val) ||
-           hasPathSum(root.right, targetSum - root.val);
-}
-
-// LC 113 Path Sum II
-public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
-    List<List<Integer>> result = new ArrayList<>();
-    List<Integer> path = new ArrayList<>();
-    dfs(root, targetSum, path, result);
-    return result;
-}
-
-private void dfs(TreeNode node, int remaining, List<Integer> path,
-                List<List<Integer>> result) {
-    if (node == null) return;
-
-    path.add(node.val);
-
-    if (node.left == null && node.right == null && remaining == node.val) {
-        result.add(new ArrayList<>(path));
-    }
-
-    dfs(node.left, remaining - node.val, path, result);
-    dfs(node.right, remaining - node.val, path, result);
-
-    path.remove(path.size() - 1); // backtrack
+    int remaining = targetSum - root.val;
+    return hasPathSum(root.left, remaining) || hasPathSum(root.right, remaining);
 }
 ```
 
-### 5-2) Closest Leaf in a Binary Tree (Move Parent Pattern) — LC 742
+**Traps**
+- Answering at `None` instead of at a leaf: `root = [1,2]`, `targetSum = 1` returns `true`, but
+  node 1 has a child, so it is not a leaf.
+- An empty tree with `targetSum = 0` is `false`: there is no path at all.
+
+### Sum Root to Leaf Numbers — LC 129
+
+> **Key point** — the number spelled by the path so far is the state carried down:
+> `number * 10 + node.val`. It is an `int`, so each call gets its own copy and there is nothing to
+> undo; a leaf returns its number and every inner node returns the sum of its children's.
+
+**Reduces to**: [Template 4](#template-4-root-to-leaf-path-with-backtracking--lc-113) — carrying a
+number instead of a list, which is the immutable-state case of the path update strategies above.
+
 ```python
-# LeetCode 742. Closest Leaf in a Binary Tree
-# V0
-# IDEA : DFS build GRAPH + BFS find ans (MOVE PARENT PATTERN)
-# See Template 2 (Parent Map + BFS) for the pattern
-### NOTE :  closest to a leaf means the least number of edges travelled on the binary tree to reach any leaf of the tree. Also, a node is called a leaf if it has no children.
-#         -> We only consider the min distance between left (no sub tree) and k
-### NOTE : we need DFS create the graph
-# https://www.youtube.com/watch?v=x1wXkRrpavw
-# https://blog.csdn.net/qq_17550379/article/details/87778889
-import collections
-class Solution:
-    # build graph via DFS
-    # node : current node
-    # parent : parent of current node
-    def buildGraph(self, node, parent, k):
+# python
+# LC 129 - Sum Root to Leaf Numbers
+# IDEA: pre-order DFS carrying the number built so far; a leaf returns it, a parent adds both sides
+# time = O(N), space = O(H)
+def sumNumbers(root):
+    def dfs(node, number):
         if not node:
-            return
-        # if node.val == k, THEN GET THE start point FROM current "node",
-        # then build graph based on above
-        if node.val == k:
-            self.start = node
-        if parent:
-            self.graph[node].append(parent)
-            self.graph[parent].append(node)
-        self.buildGraph(node.left, node, k)
-        self.buildGraph(node.right, node, k)
+            return 0
+        number = number * 10 + node.val           # append this digit
+        if not node.left and not node.right:
+            return number
+        return dfs(node.left, number) + dfs(node.right, number)
 
-    # search via DFS
-    def findClosestLeaf(self, root, k):
-
-
-        self.start = None
-        ### NOTE : we need DFS create the graph
-        self.buildGraph(root, None, k)
-        q, visited = [root], set()
-        #q, visited = [self.start], set() # need to validate this
-        self.graph = collections.defaultdict(list)
-        while q:
-            for i in range(len(q)):
-                cur = q.pop(0)
-                # add cur to visited, NOT to visit this node again
-                visited.add(cur)
-                ### NOTICE HERE 
-                # if not cur.left and not cur.right: means this is the leaf (HAS NO ANY left/right node) of the tree
-                # so the first value of this is what we want, just return cur.val as answer directly
-                if not cur.left and not cur.right:
-                    # return the answer
-                    return cur.val
-                # if not find the leaf, then go through all neighbors of current node, and search again
-                for node in self.graph:
-                    if node not in visited: # need to check if "if node not in visited" or "if node in visited"
-                        q.append(node)
+    return dfs(root, 0)
 ```
+
+**Traps**
+- Returning `number` at `None` counts every half-leaf twice: `[1,2,3]` stays 25 only if the number
+  is returned at a leaf and `None` returns 0.
+
+### Binary Tree Maximum Path Sum — LC 124
+
+> **Key point** — the same return-one-arm, record-the-bend shape as the diameter, with sums instead
+> of heights. Values can be negative, so an arm that would lower the sum is clamped to `0` (left
+> out), and the global starts at `-inf` because the best path may be a single negative node.
+
+**Reduces to**: [binary_tree § Template 5](./binary_tree.md#template-5-height-up-answer-in-a-global--lc-543) —
+with `max(0, arm)` on each side and `node.val` added at every node.
+
+```python
+# python
+# LC 124 - Binary Tree Maximum Path Sum
+# IDEA: return the best downward arm starting at me; record the path that bends at me in a global
+# time = O(N), space = O(H)
+def maxPathSum(root):
+    best = float("-inf")
+
+    def gain(node):
+        nonlocal best
+        if not node:
+            return 0
+        left = max(0, gain(node.left))            # a negative arm is dropped, not taken
+        right = max(0, gain(node.right))
+        best = max(best, node.val + left + right) # the path that bends at node
+        return node.val + max(left, right)        # only one arm continues upward
+
+    gain(root)
+    return best
+```
+
+```java
+// java
+// LC 124 - Binary Tree Maximum Path Sum
+// IDEA: return the best arm, clamped at 0; record node + left + right in a field
+// time = O(N), space = O(H)
+private int best;
+
+public int maxPathSum(TreeNode root) {
+    best = Integer.MIN_VALUE;
+    gain(root);
+    return best;
+}
+
+private int gain(TreeNode node) {
+    if (node == null) {
+        return 0;
+    }
+    int left = Math.max(0, gain(node.left));
+    int right = Math.max(0, gain(node.right));
+    best = Math.max(best, node.val + left + right);
+    return node.val + Math.max(left, right);
+}
+```
+
+**Dry run** — `root = [-10,9,20,null,null,15,7]`
+
+```text
+gain(9)    = 9                    best 9
+gain(15)   = 15                   best 15
+gain(7)    = 7                    best 15
+gain(20)   = 20 + max(15, 7) = 35 best max(15, 20 + 15 + 7) = 42
+gain(-10)  = -10 + 35 = 25        best max(42, -10 + 9 + 35) = 42   answer 42
+```
+
+**Traps**
+- Starting `best` at `0`: `root = [-3]` returns 0, but the path must contain at least one node,
+  so the answer is -3.
+- Returning `node.val + left + right`: the parent would extend a path that already bends.
+- Clamping the **global** instead of the arms: `max(0, …)` belongs on each arm only.
+
+### Longest Univalue Path — LC 687
+
+> **Key point** — an arm only continues through an edge whose two ends hold the same value. So
+> each child's arm is extended by one when `child.val == node.val` and reset to `0` otherwise,
+> before the bend `left + right` is recorded. The answer counts **edges**.
+
+**Reduces to**: [binary_tree § Template 5](./binary_tree.md#template-5-height-up-answer-in-a-global--lc-543) —
+with an arm that is zeroed across an edge whose values differ.
+
+```python
+# python
+# LC 687 - Longest Univalue Path
+# IDEA: return the longest same-value arm going down from me (in edges); record left + right
+# time = O(N), space = O(H)
+def longestUnivaluePath(root):
+    best = 0
+
+    def arm(node):
+        nonlocal best
+        if not node:
+            return 0
+        left = arm(node.left)
+        right = arm(node.right)
+        left = left + 1 if node.left and node.left.val == node.val else 0
+        right = right + 1 if node.right and node.right.val == node.val else 0
+        best = max(best, left + right)
+        return max(left, right)
+
+    arm(root)
+    return best
+```
+
+**Traps**
+- Skipping the recursion into a child whose value differs: that child's subtree can still hold the
+  answer. `[1,4,5,4,4,null,5]` is 2 from the `4-4-4` under the root, whose value is 1.
+- Counting nodes instead of edges: a single node is 0, not 1.
+
+### Closest Leaf in a Binary Tree — LC 742
+
+> **Key point** — the nearest leaf can be **above** node `k` (through a parent and down another
+> branch), so the tree is turned into an undirected graph first. Then a BFS from `k` reaches nodes
+> in order of distance, and the first leaf it pops is the answer.
+
+**Reduces to**: [Template 2](#template-2-parent-map--bfs--lc-863) — the same parent edges and BFS,
+stopping at the first node with no children instead of after `k` rounds.
+
+```python
+# python
+# LC 742 - Closest Leaf in a Binary Tree
+# IDEA: one DFS adds every child <-> parent edge and finds node k; BFS from k; first leaf popped wins
+# time = O(N), space = O(N)
+from collections import defaultdict, deque
+
+def findClosestLeaf(root, k):
+    graph = defaultdict(list)
+    start = None
+    stack = [(root, None)]
+    while stack:                                  # build the undirected graph
+        node, parent = stack.pop()
+        if node.val == k:
+            start = node
+        if parent:
+            graph[node].append(parent)
+            graph[parent].append(node)
+        for child in (node.left, node.right):
+            if child:
+                stack.append((child, node))
+
+    queue = deque([start])                        # BFS from k, not from the root
+    seen = {start}
+    while queue:
+        node = queue.popleft()
+        if not node.left and not node.right:      # a leaf in the ORIGINAL tree
+            return node.val
+        for neighbour in graph[node]:
+            if neighbour not in seen:
+                seen.add(neighbour)
+                queue.append(neighbour)
+```
+
+**Traps**
+- Starting the BFS at `root`: it finds the leaf closest to the root. `[1,2,3,4,null,null,null,5,null,6]`,
+  `k = 2` must return 3 (two edges up and over), not the leaf under 2's chain.
+- Testing "leaf" by graph degree: the root of a one-child tree has degree 1 but is not a leaf.
+  Use the original `left` / `right`.
+- Rebuilding `graph` after the DFS has filled it leaves every node with no neighbours.
+
+**Similar** — LC 863 (every node at distance `k`) · LC 2385 (minutes to infect the tree: BFS rounds from a start node)
 
 ## Pattern Selection Strategy
 
@@ -1602,7 +1644,7 @@ BST / sorted property?
 | edges between two arbitrary nodes | LCA + `get_dist` twice | [Template 3](#template-3-distance-between-nodes-via-lca--lc-1740) |
 | all root-to-leaf paths matching a rule | pre-order DFS + backtracking | [Template 4](#template-4-root-to-leaf-path-with-backtracking--lc-113) |
 | the count of any-to-any downward paths | pre-order DFS + prefix-sum HashMap | [Template 5](#template-5-downward-path-count-with-a-prefix-sum-map--lc-437) |
-| the longest path through any node | post-order height + global max | [5-1)](#5-1-find-paths-with-specific-properties) |
+| the longest path through any node | post-order height + global max | [LC 124 card](#binary-tree-maximum-path-sum--lc-124) |
 
 **The three mistakes that cost the most here:**
 - returning `0` instead of `-1` for "not found" — `0` is a valid distance
