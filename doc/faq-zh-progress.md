@@ -45,7 +45,7 @@ half-translated document renders with English gaps rather than failing.
   usually the text already there.
 
 
-## Status — 931 / 931 sections (100%)
+## Status — 989 / 989 sections (100%)
 
 | FAQ | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -67,6 +67,7 @@ half-translated document renders with English gaps rather than failing.
 | [db/postgre](./faq/db/postgre.md) | 15 | [✅](../i18n/zh/faq/db/postgre.md) |
 | [faq_Airflow](./faq/faq_Airflow.md) | 1 | [✅](../i18n/zh/faq/faq_Airflow.md) |
 | [faq_DE](./faq/faq_DE.md) | 4 | [✅](../i18n/zh/faq/faq_DE.md) |
+| [faq_DE_interview](./faq/faq_DE_interview.md) | 58 | [✅](../i18n/zh/faq/faq_DE_interview.md) |
 | [faq_ML](./faq/faq_ML.md) | 2 | [✅](../i18n/zh/faq/faq_ML.md) |
 | [faq_data_model](./faq/faq_data_model.md) | 15 | [✅](../i18n/zh/faq/faq_data_model.md) |
 | [faq_dev_interview](./faq/faq_dev_interview.md) | 30 | [✅](../i18n/zh/faq/faq_dev_interview.md) |
