@@ -107,7 +107,7 @@ One row per pattern. The **Card** column links to the template that solves the a
 | Signal in the statement | Constraint cue | Pattern | Card | Looks like it, but is not |
 |---|---|---|---|---|
 | "top k frequent", "k closest", "kth largest in a stream" | n ≤ 10⁵ | size-k heap | [heap § Template 1](./heap.md#template-1-size-k-min-heap-for-the-kth-largest--lc-215-) | one shot over a fixed array → quickselect, O(n) average |
-| "median of a data stream" | 5 · 10⁴ calls | two heaps | [heap § Template 3](./heap.md#template-3-two-heaps-pattern-median-finding--lc-295) | a sliding window median → also delete from the window ([monotonic_queue § Template 4](./monotonic_queue.md#template-4-sliding-window-median--ordered-multiset--two-heaps-lc-480-)) |
+| "median of a data stream" | 5 · 10⁴ calls | two heaps | [heap § Template 4](./heap.md#template-4-two-heaps-for-a-running-median--lc-295-) | a sliding window median → also delete from the window ([monotonic_queue § Template 4](./monotonic_queue.md#template-4-sliding-window-median--ordered-multiset--two-heaps-lc-480-)) |
 | "task scheduler with cooldown", "reorganize the string so no two are adjacent" | n ≤ 10⁴, 26 kinds | greedy on the most frequent | [greedy § Template 2](./greedy.md#template-2-cooldown-windows-with-a-max-heap--lc-621-), [Template 5](./greedy.md#template-5-string-reorganization--lc-767-) | the order of the input must be kept → a queue simulation |
 | "can you reach the end", "minimum jumps" | n ≤ 10⁴ | greedy farthest reach | [greedy § Template 4](./greedy.md#template-4-jump-game-pattern--lc-55-) | each jump has a cost → DP or Dijkstra |
 
