@@ -1,7 +1,7 @@
 # Heap & Priority Queue
 
 > **Scope** — Both the heap (the structure) and the priority queue (the ADT it implements), in Python and Java. Formerly split across `heap.md` + `priority_queue.md`, which solved the same problems twice.
-> **See also** — *deep dives split out of this file*: [heap_advanced.md](./heap_advanced.md) — lazy deletion, sweep-line "alive" heaps, regret greedy, resource-pool allocators, grid best-first search; [heap_examples.md](./heap_examples.md) — the worked LC solution archive, one canonical solution per problem per language; [heap_language_apis.md](./heap_language_apis.md) — the full `heapq` / `PriorityQueue` API reference and the peek-without-popping rules.
+> **See also** — *deep dives split out of this file*: [heap_advanced.md](./heap_advanced.md) — lazy deletion, sweep-line "alive" heaps, regret greedy, resource-pool allocators, grid best-first search; [heap_examples.md](./heap_examples.md) — the problem set, each problem filed under the template below it reduces to; [heap_language_apis.md](./heap_language_apis.md) — the full `heapq` / `PriorityQueue` API reference and the peek-without-popping rules.
 > *Neighbouring sheets*: [priority_queue.md](./priority_queue.md) — redirect stub; [monotonic_queue.md](./monotonic_queue.md) — when a deque beats a heap for sliding-window extrema; [Dijkstra.md](./Dijkstra.md) — the canonical PQ algorithm; [streaming_algorithms.md](./streaming_algorithms.md) — top-k over a stream; [sort.md](./sort.md) — heap sort in context.
 
 ## LeetCode Problem Lists
@@ -76,8 +76,8 @@
 - **Examples**: LC 1353, 502, 630, 621, 1834 - Max Events, IPO, Course Schedule III, Task Scheduler, Single-Threaded CPU
 - **Pattern**: Use heap to maintain events by start/end time or priority
 - **Key Insight (time sweep + deadline heap)**: sort by window **start** so items enter the heap in time order; heap by window **end** so each time slot serves the **most urgent (earliest deadline)** item; lazy-delete expired tops
-- **Signature**: *"one item per unit of time"* + *"each item has a validity window / deadline"* → see [heap_examples.md § LC 1353](./heap_examples.md#7-maximum-number-of-events-that-can-be-attended--lc-1353)
-- **Trap**: do **not** reuse the LC 253 counting sweep. There `[1,3]` *occupies* days 1–3; here it costs **one** day chosen from `{1,2,3}`, capped at one event per day — so max-overlap over-counts (`[[1,1],[1,1],[1,1]]` → sweep 3, answer 1). See [heap_examples.md § LC 1353](./heap_examples.md#7-maximum-number-of-events-that-can-be-attended--lc-1353)
+- **Signature**: *"one item per unit of time"* + *"each item has a validity window / deadline"* → see [scanning_line_examples.md § LC 1353](./scanning_line_examples.md#5-maximum-number-of-events-that-can-be-attended--lc-1353-)
+- **Trap**: do **not** reuse the LC 253 counting sweep. There `[1,3]` *occupies* days 1–3; here it costs **one** day chosen from `{1,2,3}`, capped at one event per day — so max-overlap over-counts (`[[1,1],[1,1],[1,1]]` → sweep 3, answer 1). See [scanning_line_examples.md § LC 1353](./scanning_line_examples.md#5-maximum-number-of-events-that-can-be-attended--lc-1353-)
 
 #### **Pattern 6: Data Stream Problems**
 - **Description**: Handle continuous data stream with min/max queries
@@ -99,7 +99,7 @@
   clean the top only *at read time*, only *until the top is valid*
 - **Key Insight**: You never search the heap for the stale entry. You only ever check `heap[0]`,
   and a stale entry costs at most one pop over the whole run → amortized O(log n)
-- **See**: [heap_advanced.md § Lazy Deletion](./heap_advanced.md#1-lazy-deletion--heap--hashmap-of-truth-) · [heap_examples.md § LC 3092](./heap_examples.md#18-most-frequent-ids--lc-3092)
+- **See**: [heap_advanced.md § Lazy Deletion](./heap_advanced.md#1-lazy-deletion--heap--hashmap-of-truth-), with LC 3092 worked through
 - **Two extremes at once** (LC 2034): mirror the heap — one truth map, a max-heap and a min-heap of
   the same `(price, ts)` pairs, cleaned with the same test →
   [heap_advanced.md § the LC 2034 variant](./heap_advanced.md#variant--two-mirrored-lazy-heaps-over-one-map-lc-2034-)
@@ -338,8 +338,34 @@ public int[] topKFrequent(int[] nums, int k) {
 - A custom-object heap: Python needs `__lt__` on the class (or a tuple key); Java needs a
   comparator built from `Integer.compare`, never `a - b`.
 
+**Second solution — bucket sort by count, O(n).** A count is at most n, so index buckets by
+count and read them from the top down: no comparison sort, no heap. This is the answer to LC 347's
+follow-up ("better than O(n log n)"); the heap stays V0 because it also works when the key is not
+a small integer (LC 973's distances) and when the input streams.
+
+```python
+# python
+# LC 347 - Top K Frequent Elements (bucket sort)
+# IDEA: buckets[f] holds the values seen exactly f times; scan f from n down until k are taken
+# time = O(n), space = O(n)
+from collections import Counter
+
+def topKFrequent_bucket(nums, k):
+    count = Counter(nums)
+    buckets = [[] for _ in range(len(nums) + 1)]   # buckets[f] = values seen exactly f times
+    for num, freq in count.items():
+        buckets[freq].append(num)
+    res = []
+    for freq in range(len(nums), 0, -1):           # highest count first
+        for num in buckets[freq]:
+            res.append(num)
+            if len(res) == k:
+                return res
+    return res
+```
+
 **Not this if** — k is close to n and counts are bounded by n: bucket sort by frequency is O(n)
-(the LC 347 follow-up). A static "sort everything by key" with no k is just `sorted`.
+(the second solution above). A static "sort everything by key" with no k is just `sorted`.
 
 **Drill** — LC 347 ⭐ · LC 973 *(key = squared distance)* · LC 692 *(reverse tie-break)* ·
 LC 451 *(emit `char * freq`)* · LC 1338 *(pop the most frequent until half is gone)*
@@ -415,6 +441,42 @@ public ListNode mergeKLists(ListNode[] lists) {
   `dummy.next` (which is `None`).
 - For arrays, push `(value, source, index)` and advance `index + 1` — the same shape with an index
   where the `next` pointer was.
+
+**Second solution — pairwise divide-and-conquer merge, no heap.** Merge the lists in pairs, then
+the results in pairs, like the bottom-up levels of merge sort. There are log k rounds and each
+round touches all N nodes, so it is also O(N log k), with O(1) extra space instead of the heap's
+O(k). Merging the lists one after another into a running result is the trap version: the first
+list is re-walked k times, O(kN).
+
+```python
+# python
+# LC 23 - Merge k Sorted Lists (pairwise divide and conquer)
+# IDEA: merge lists i and i + step for step = 1, 2, 4, ...; each round halves the number of lists
+# time = O(N log k), space = O(1) extra
+def mergeTwo(a, b):
+    dummy = ListNode()
+    tail = dummy
+    while a and b:
+        if a.val <= b.val:
+            tail.next = a
+            a = a.next
+        else:
+            tail.next = b
+            b = b.next
+        tail = tail.next
+    tail.next = a if a else b                # one list is exhausted; append the rest
+    return dummy.next
+
+def mergeKLists_dc(lists):
+    if not lists:
+        return None
+    step = 1
+    while step < len(lists):                 # log k rounds
+        for i in range(0, len(lists) - step, step * 2):
+            lists[i] = mergeTwo(lists[i], lists[i + step])
+        step *= 2
+    return lists[0]
+```
 
 **Not this if** — only two sources: a plain two-pointer merge is O(N) with no heap. When the
 answer is a single kth element and the sources are rows of a matrix, binary search on the value
@@ -736,7 +798,7 @@ public int maxEvents(int[][] events) {
 ```
 
 Python side of LC 1353, with the day-jumping vs scan-every-day trade-off written out:
-[heap_examples.md § LC 1353](./heap_examples.md#7-maximum-number-of-events-that-can-be-attended--lc-1353).
+[scanning_line_examples.md § LC 1353](./scanning_line_examples.md#5-maximum-number-of-events-that-can-be-attended--lc-1353-).
 
 **Drill** — LC 252 *(one room: any overlap at all?)* · LC 253 ⭐ · LC 1094 *(capacity, not
 rooms)* · LC 2406 *(groups = rooms)* · LC 1353 *(one day per event)* · LC 1834 *(single-threaded
@@ -946,7 +1008,7 @@ public String rearrangeString(String s, int k) {
 
 **Not this if** — only the **length** of the schedule is asked (LC 621 Task Scheduler): the
 answer is `max(n_tasks, (maxCount − 1) × (cooldown + 1) + numberOfTasksWithMaxCount)`, O(n) with no
-heap. Simulate with this template only when the order itself is needed.
+heap ([heap_examples.md § LC 621](./heap_examples.md#task-scheduler--lc-621-)). Simulate with this template only when the order itself is needed.
 
 **Drill** — LC 767 *(k = 2)* · LC 621 ⭐ *(count idle slots; or the formula)* · LC 358 ·
 LC 1953 *(only "can it be done?")*

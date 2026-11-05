@@ -292,51 +292,14 @@ class PrefixSum {
 
 ### Template 2: HashMap + Prefix Sum (Subarray Target Sum) — LC 560
 
-```python
-def subarray_sum_equals_k(nums, k):
-    """Count subarrays with sum equal to k"""
-    count = 0
-    prefix_sum = 0
-    prefix_map = {0: 1}  # Important: initialize with {0: 1}
-    
-    for num in nums:
-        prefix_sum += num
-        
-        # Check if (prefix_sum - k) exists
-        if prefix_sum - k in prefix_map:
-            count += prefix_map[prefix_sum - k]
-        
-        # Update map
-        prefix_map[prefix_sum] = prefix_map.get(prefix_sum, 0) + 1
-    
-    return count
-```
+> **Key point** — `sum(nums[i..j]) = pre[j+1] - pre[i]`, so the subarrays ending at `j` with sum k
+> are the earlier prefixes equal to `pre[j+1] - k`. A map from prefix sum to **how many times it
+> has been seen**, seeded with `{0: 1}`, counts them all in one lookup.
 
-```java
-// Java implementation
-public int subarraySum(int[] nums, int k) {
-    int count = 0, prefixSum = 0;
-    Map<Integer, Integer> map = new HashMap<>();
-    map.put(0, 1);  // Handle subarrays starting from index 0
-    
-    for (int num : nums) {
-        prefixSum += num;
-        
-        if (map.containsKey(prefixSum - k)) {
-            count += map.get(prefixSum - k);
-        }
-        
-        map.put(prefixSum, map.getOrDefault(prefixSum, 0) + 1);
-    }
-    
-    return count;
-}
-```
-
-> **Why the map stores a count, not an index** — the same prefix sum can be reached at
-> many positions, and every one of them starts a valid subarray ending here. Storing the
-> latest index would count one of them; storing how many times the sum has been seen counts
-> all of them, which is why the update is `map[sum] += 1` and the read is `count += map[sum - k]`.
+The full card (Python and Java, a dry run, the traps, and what the map stores for count /
+longest / exists questions) is [hash_map § Template 4](./hash_map.md#template-4-prefix-sum-count-map--lc-560-).
+LC 560 is worked there, and only there. Templates 3 and 6 below change the key (`prefix % k`,
+a transformed value) and keep that card's loop.
 
 ### Template 3: Modulo Prefix Sum (Divisibility Problems) — LC 974
 

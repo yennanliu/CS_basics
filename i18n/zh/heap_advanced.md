@@ -37,10 +37,39 @@
 | **頻率唯一化** | 用最少刪除次數讓所有頻率互不相同 | LC 1647、1481 |
 | **k 路合併的變形** | 合併*虛擬*或*巢狀*的有序來源 | LC 632、1439 |
 
+<!-- a8ca3a5c27b3 -->
+### 先備知識
+
+下面每個技巧都是延伸 [heap.md](./heap.md) 裡的某張卡片；請先把那張卡片練熟。
+
+- [heap § 模板 1](./heap.md#template-1-size-k-min-heap-for-the-kth-largest--lc-215-)：大小為 k 的堆積。有上限的後悔堆積（§ 3）和排序 + 固定大小堆積（§ 6）就是把這個堆積放進貪婪裡跑。
+- [heap § 模板 2](./heap.md#template-2-count-then-a-size-k-heap-on-the-count--lc-347-)：先計數，再對計數用堆積。計數在 push 之後還會變時，它就變成延遲刪除（§ 1）；頻率唯一化（§ 9）是它的一個實例。
+- [heap § 模板 3](./heap.md#template-3-k-way-merge--lc-23-)：k 路合併。§ 11 的變形只改動前緣周圍的簿記。
+- [heap § 模板 5](./heap.md#template-5-two-heaps-with-index-expiry--lc-1438-)：依索引過期、只在到達堆頂時才 pop 的資料。延遲刪除（§ 1、§ 12）、存活堆積（§ 2）和範圍跳躍格子（§ 8）都是把這個過期判定推廣。
+- [heap § 模板 6](./heap.md#template-6-min-heap-of-end-times--lc-253-)：結束時間的 min-heap。資源池（§ 5）再加一個存空閒 id 的堆積；存活堆積（§ 2）依值排序、依結束點過期。
+- [Dijkstra.md](./Dijkstra.md)：格子最佳優先搜尋（§ 7）在隱式格子上跑的優先佇列最短路徑。
+
+<!-- e45cdfee7ce0 -->
+## 辨識
+
+只有在核心模板的迴圈本身不夠時才用這份文件：push 進去的值會變、某個決定必須修改，或堆積需要第二個 key。
+
+| 題目敘述中的訊號 | 限制條件線索 | 該用 | 不適用時 |
+|---|---|---|---|
+| 已經在堆積裡的值後來會**改變**或被**移除** | 10⁵ 次混合的更新與查詢 | [§ 1 延遲刪除](#1-lazy-deletion--heap--hashmap-of-truth-) | 值只會**變大**、而且最後只讀一次最大值 → 單純計數 |
+| 對一份值會被覆寫的對照表同時求「最大**與**最小」 | 10⁵ 次呼叫，讀寫交錯 | [§ 1 兩個鏡像的延遲堆積](#variant--two-mirrored-lazy-heaps-over-one-map-lc-2034-) | 可以用且被要求用 `sortedcontainers`／`TreeMap` → 有序多重集合 |
+| 「在每個 x，涵蓋 x 的區間中最高／最低的」 | N ≤ 10⁴–10⁵ 個區間 | [§ 2 掃描線 + 存活堆積](#2-sweep-line--max-heap-of-alive-intervals-) | 只問涵蓋 x 的**數量** → 差分陣列／[heap § 模板 6](./heap.md#template-6-min-heap-of-end-times--lc-253-) |
+| 「k 把梯子／k 次免費」，其餘從預算支付 | N ≤ 10⁵ | [§ 3 有上限的後悔堆積](#3-bounded-regret-heap--keep-the-k-best-pay-for-the-rest-) | 沒有預算，只要最大的 k 個 → [heap § 模板 1](./heap.md#template-1-size-k-min-heap-for-the-kth-largest--lc-215-) |
+| 「最少停靠次數」、「最多修幾門課」，要**事後**才知道自己拿太多 | N ≤ 10⁴–10⁵ | [§ 4 帶後悔的貪婪](#4-greedy-with-regret--undo-the-worst-past-decision-) | 每個項目各自放得進自己的區間 → 排序 + 一般貪婪 |
+| 「最小的空椅子／伺服器」，資源在已知時間釋放 | N ≤ 10⁵ 個事件 | [§ 5 資源池](#5-two-heaps-as-resource-pools-free-pool--busy-pool-) | 只問需要**幾個**資源 → [heap § 模板 6](./heap.md#template-6-min-heap-of-end-times--lc-253-) |
+| 目標式 `sum(選中 k 個的 A) × max/min(B)` | n ≤ 10⁵，k ≤ n | [§ 6 排序 + 固定大小堆積](#6-sort-by-one-criterion--fixed-size-heap-on-the-other) | 目標式只有一個屬性 → [heap § 模板 1](./heap.md#template-1-size-k-min-heap-for-the-kth-largest--lc-215-) |
+| 格子，下一個要展開的是**最低／最便宜**的，而不是最近的 | m·n ≤ 10⁴–10⁵ | [§ 7 格子最佳優先](#7-min-heap-best-first-search-on-a-grid) | 每步代價相同 → BFS |
+| 每個格子可跳到同列／同欄的**一段範圍** | m·n ≤ 10⁵ | [§ 8 範圍跳躍格子](#8-grid-shortest-path-with-range-jumps) | 只能跳到單一鄰居 → BFS |
+
 <!-- ddc7f484e4af -->
 ## 模板與演算法
 
-<!-- 168e5702df50 -->
+<!-- 9feb872367b4 -->
 ### 1) 延遲刪除 — 堆積 + 記錄真值的雜湊表 ⭐⭐⭐⭐⭐
 
 **核心想法**
@@ -55,9 +84,8 @@
 
 <!--CODE-->
 
-> **注意！！** 我們**只**刪到**遇到第一筆計數正確的資料為止**。
-> **堆積裡其他所有過期資料都原封不動** — 它們可能永遠不會被 pop 出來。
-> 清理是*延遲*的：只為真正擋住答案的那些資料付出代價。
+> **只 pop 到堆頂有效為止，然後停。** 其他所有過期資料都原封不動地留在堆積裡 —
+> 它們可能永遠不會被 pop 出來。清理是*延遲*的：只為真正擋住答案的那些資料付出代價。
 >
 > ```text
 > pq (max-heap by count):  [5:A]  [4:B]  [3:A]  [2:C]  [1:B]  ...
@@ -100,7 +128,41 @@
 - ⚠️ **不要試圖去刪掉舊的那筆。** 那是 O(n) 搜尋，整個做法的意義就沒了。
 - ⚠️ 就算相異的鍵只有幾個，堆積仍可能長到 O(n) 筆 — 這就是你用空間換速度付出的代價。
 
-<!-- 4d463fa21502 -->
+**實例 — LC 3092 Most Frequent IDs**
+
+`nums[i]` 是一個 ID，`freq[i]` 加入（若為負則移除）那麼多個它的複本；每一步之後回報最頻繁 ID
+的計數，集合為空時回報 0。普通堆積行不通，因為 ID 的計數在 push 之後還會變：當 `2` 的計數從 3
+掉到 0，`(-3, 2)` 這筆資料埋在堆積裡，無法用 O(log n) 找到。上面的模板就是完整答案：
+
+<!--CODE-->
+
+第 2 步**恰好只 pop 一筆**，也就是擋住答案的那一筆，其他所有過期資料都留在原地。
+
+<!--CODE-->
+
+<!--CODE-->
+
+**陷阱**
+- 集合可能變空（`nums=[5,5,3], freq=[2,-2,1]` → `[2,0,1]`）：`5` 歸零時 push 進去的 `(0, 5)`
+  是**有效的**（`0 == c_map[5]`），答案正確地是 0。push 計數為零的資料無害，還能讓判定保持一致。
+- 計數可達 `n · max(freq)` = 10¹⁰：Java 要用 `long`，否則 `int` 會溢位。
+
+**相似題 — 同樣的三個步驟**
+
+| 題目 | LC # | 什麼會過期 | 過期判定 |
+|---------|------|-----------------|-----------|
+| Design a Number Container System | 2349 | 某個索引被指定了新數字 | 該索引目前的數字 != 這個數字 |
+| Stock Price Fluctuation | 2034 | 某個時間戳的價格被修正，而且是在**兩個**堆積裡 | `price != price_map[ts]` |
+| Sliding Window Median | 480 | 某個元素滑出了視窗 | `val in removed` 計數器（[§ 12](#12-lazy-deletion--the-removed-counter-flavour)） |
+| Finding MK Average | 1825 | 某個元素離開了最後 m 個的串流 | 刪除集合／多重集合 |
+| Maximum Number of Events | 1353 | 某個事件的截止日已過 | `pq[0] < day` |
+| Minimum Number of Visited Cells in a Grid | 2617 | 某個格子已經到不了掃描位置 | 每列／每欄一個 PQ（[§ 8](#8-grid-shortest-path-with-range-jumps)） |
+| Dijkstra（743、1631、778） | — | 之後找到了更短的路徑 | `d > dist[node]: continue` |
+
+Dijkstra 的 `if d > dist[u]: continue` 這一行**就是**延遲刪除：它丟掉一筆過期的距離資料，
+而不是對堆積做 decrease-key。
+
+<!-- 4fba5c4507bb -->
 #### **變形 — 兩個鏡像的延遲堆積共用一份對照表（LC 2034）** ⭐⭐⭐⭐⭐
 
 **差別在哪。** 上面那個模板追蹤的是「值會累加」的對照表的**單一**極值。LC 2034 Stock Price Fluctuation 一次打破它的兩個前提：
@@ -150,7 +212,7 @@
 - ⚠️ **兩個堆積，就要清兩次。** 一次修正會同時讓*兩邊*鏡像裡的資料失效；只清你正要讀的那一邊，另一邊下次被呼叫時就是錯的。
 - ⚠️ 價格沒變也照樣 push，會多出一筆重複資料。這無害（兩份都是有效的），但這也是為什麼堆積大小是 O(更新次數) 而不是 O(時間戳個數)。
 
-**另一條路** — 用**有序多重集合**（`TreeMap<price, count>`／`SortedList`）可以當場把舊價格刪掉，於是沒有任何一筆資料會過期，`maximum()` 就只是 `lastKey()`。代價是每次更新都要付一次真正的 `O(log n)` 刪除，而且需要一個 `heapq` 沒有的結構；見 [design_examples.md § Ordered Map](./design_examples.md#7-ordered-map-treemap-for-booking--interval-design--lc-715--729--731--732--2034-)。**面試時先講兩個延遲堆積** — 那才是不靠 `sortedcontainers` 就能用 Python 寫出來的版本。
+**另一條路** — 用**有序多重集合**（`TreeMap<price, count>`／`SortedList`）可以當場把舊價格刪掉，於是沒有任何一筆資料會過期，`maximum()` 就只是 `lastKey()`。代價是每次更新都要付一次真正的 `O(log n)` 刪除，而且需要一個 `heapq` 沒有的結構；見 [design_examples.md § Ordered Map](./design_examples.md#sorted-map--time-index-examples)。**面試時先講兩個延遲堆積** — 那才是不靠 `sortedcontainers` 就能用 Python 寫出來的版本。
 
 **相似題 — 鏡像／覆寫這一味**
 
@@ -259,7 +321,7 @@
 
 **變形 — LC 1792 Maximum Average Pass Ratio**：堆積的鍵是**邊際增益**，不是原始值。把每個班級的 `(pass+1)/(total+1) - pass/total` 推進最大堆積；每個額外學生都分配給增益最大的班級，然後該班級用更新後的增益重新 push 回去。關鍵洞見：每個班級的增益單調遞減，所以貪婪地取堆頂就是最佳解。
 
-<!-- 72ad3b198c76 -->
+<!-- b9c5d8982d25 -->
 ### 4) 帶後悔的貪婪 — 撤銷過去最糟的決定 ⭐⭐⭐⭐
 
 > **什麼時候用**：你必須一路往前掃並取走項目，而且要*到後來*才發現自己拿太多／拿太重。先樂觀地全部拿走，把拿過的東西放進堆積，等到超出預算時就**撤銷目前為止最糟的那個決定**（`poll()`）。形式上這是一個交換論證 — 換成最好的那個被延後的項目，永遠不會變差。
@@ -267,6 +329,17 @@
 <!--CODE-->
 
 <!--CODE-->
+
+**LC 871 的第二種解法 — 對停靠次數做 DP，O(n²)。** `reach[t]` 是恰好停 `t` 次能到達的最遠位置；
+第 `i` 站可以延伸每一個已經涵蓋到它的 `t`。它不需要交換論證，這正是它的用處：如果你無法證明
+貪婪是對的，就給這個答案。堆積是 V0，因為它是 O(n log n)，而且後悔論證很短。
+
+<!--CODE-->
+
+**陷阱（LC 871）**
+- 在經過的**最近**一站加油，而不是油最多的那站：交換論證只對最大的油量成立。
+- 加油站已經依位置排序；再排一次無害，依油量排序就錯了。
+- `startFuel >= target` 時就算沒有任何加油站也是零次：pop 之前先檢查 `fuel < target`。
 
 **變形：Course Schedule III（LC 630）** — 轉折：依**截止時間**排序，每門課都先修，一旦 `time > deadline` 就**丟掉目前為止修過最長的那門課**。丟掉最長的那門，永遠不會破壞先前那些截止時間的可行性。
 
@@ -319,7 +392,7 @@
 | 1801 | Number of Orders in the Backlog | 兩個**方向相反**、會互相吃掉對方的堆積：`buy` 是依價格的最大堆積，`sell` 是依價格的最小堆積。每筆新訂單在價格交叉時就跟另一個堆積撮合，剩下的再 push 進去。 |
 | 2102 | Sequentially Ordinal Rank Tracker | 兩個堆積以查詢指標為界把串流切開：最大堆積放「已回傳／更好的」，最小堆積放其餘；每次 `get()` 把一個元素跨過邊界搬過去。 |
 
-<!-- 3692e3b12ec3 -->
+<!-- 52926f42633b -->
 ### 6) 依一個標準排序 + 對另一個標準用固定大小堆積
 > **什麼時候用**：目標式是兩個屬性的乘積／組合，例如 `cost = (選中的 k 個的 A 總和) * (選中的 k 個的 B 最大值)`。**依 B 排序**，這樣走訪時就固定住「B 的最大值」這個因子，再用一個大小為 `k` 的堆積在 A 上求最小／最大總和。這是 [模板 1：大小為 k 的最小堆積](./heap.md#template-1-size-k-min-heap-for-the-kth-largest--lc-215-)的雙屬性版本。
 
@@ -327,8 +400,13 @@
 
 <!--CODE-->
 
-**變形：Maximum Performance of a Team（LC 1383）** — 形狀相同、方向相反：依**效率遞減**排序（當前效率就是團隊最小值），維護一個大小 `k`、放速度的**最小堆積**，讓總和最大化。
-LC 1383 的程式碼：[heap_examples.md § Maximum Performance of a Team](./heap_examples.md#12-maximum-performance-of-a-team--lc-1383)。
+**變形：Maximum Performance of a Team（LC 1383）** — 形狀相同、方向相反：依**效率遞減**排序（當前效率就是團隊最小值），維護一個大小 `k`、放速度的**最小堆積**，讓總和最大化。團隊**最多** k 人，所以每個前綴都是候選，不只是滿員的團隊。
+
+<!--CODE-->
+
+<!--CODE-->
+
+<!--CODE-->
 
 **重點觀察：**
 - **排序固定住乘法因子，堆積最佳化加法因子。** 認出該依哪個屬性排序，就是整題的關鍵。
@@ -356,24 +434,55 @@ LC 1383 的程式碼：[heap_examples.md § Maximum Performance of a Team](./hea
 | 1368 | Minimum Cost to Make at Least One Valid Path in a Grid | `cost + (0 if arrow points at neighbour else 1)` — 0/1 權重（用雙端佇列也可以） |
 | 675 | Cut Off Trees for Golf Event | 樹必須**由矮到高**砍：把目標依高度排序或放堆積，再在相鄰目標之間跑 BFS |
 
-<!-- 9ef03c3c8b17 -->
+<!-- 04c1a2043967 -->
 ### 8) 帶範圍跳躍的格子圖最短路徑
-<!--CODE-->
+
+> **什麼時候用**：從格子 `(i, j)` 可以跳到同一列往右最多 `grid[i][j]` 格、或同一欄往下的任何格子，
+> 問最少要經過幾個格子（LC 2617）。逐一列舉每個跳躍目標的 BFS 是 O(m·n·(m + n))。改成依列優先
+> 順序掃描：每個能到達 `(i, j)` 的格子，一定在同一列或同一欄的前面，所以對已經確定的格子，
+> **每列一個、每欄一個 min-heap**，存 `(經過格數, 索引)`。
+
+**關鍵** — 一筆資料若它的可達範圍 `index + grid[...]` 到不了目前的欄（或列），掃描後面的任何格子
+它也到不了，所以直接永久 pop 掉。第一筆**到得了**的資料，就是所有到得了的資料中最小的，因為
+堆積依距離排序。這就是以「依座標過期」為過期判定的延遲刪除。
+
+**實例 — LC 2617 Minimum Number of Visited Cells in a Grid**
 
 <!--CODE-->
 
-<!-- 227239dedf54 -->
+<!--CODE-->
+
+**陷阱**
+- 起點算一個經過的格子：`dist[0][0] = 1`，1×1 的格子答案是 1。
+- `grid[i][j] == 0` 的格子到得了但跳不出去；push 它們無害，略過能讓堆積小一點。
+- 遇到第一筆到得了的資料就 `break`：它下面的資料距離更大，再往下看只是浪費時間。
+- Java：泛型 `PriorityQueue` 的陣列需要 unchecked cast；用它們的 `List` 就能避開。
+
+<!-- 53de92215546 -->
 ### 9) 頻率唯一化 — 貪婪 + 堆積／HashSet
-<!--CODE-->
 
-最大堆積做法的 Java 版本，以及排序與 `HashSet` 兩種替代解：
-[heap_examples.md § Minimum Deletions to Make Character Frequencies Unique](./heap_examples.md#11-minimum-deletions-to-make-character-frequencies-unique--lc-1647)。
+「用最少的刪除讓每個頻率都不同」（LC 1647）就是
+[heap § 模板 2](./heap.md#template-2-count-then-a-size-k-heap-on-the-count--lc-347-) 再多一步：
+用 max-heap 從最大的計數往下處理，堆頂和下一個計數平手時就削掉一個再 push 回去。它用不到這份文件的
+任何東西，所以以題目卡片的形式詳解在
+[heap_examples.md § LC 1647](./heap_examples.md#minimum-deletions-to-make-character-frequencies-unique--lc-1647)，
+用 `set` 記錄用過計數的替代解法也在那裡提到。
 
-<!-- ad466219fc80 -->
+**陷阱**
+- 用排序的版本若一遇到被削成 0 的計數就 `break`，會停得太早：4,4,1,1,1
+  （`"aebacabbbad"`）在跳出後還有兩個 1，回傳 2 而不是 3。
+- LC 1481（移除 k 個後最少的相異值）看起來相關，但是相反的貪婪：
+  把**最小**的計數整個移除 — [heap_examples.md § LC 1481](./heap_examples.md#least-number-of-unique-integers-after-k-removals--lc-1481)。
+
+<!-- 43a4d7f22f60 -->
 ### 10) 帶去重的堆積
+
 <!--CODE-->
 
-<!-- 78d6e555106e -->
+實際用例：LC 264 Ugly Number II，`2·3` 和 `3·2` 都會 push 6 —
+[Dijkstra_examples § Variation B](./Dijkstra_examples.md#variation-b--lc-264-ugly-number-ii)。
+
+<!-- 0512c5f8df6f -->
 ### 11) k 路合併的各種變形
 
 **模板 2 的變形（骨架相同，只是簿記方式不同）：**
@@ -382,18 +491,18 @@ LC 1383 的程式碼：[heap_examples.md § Maximum Performance of a Team](./hea
 |----|---------|--------------------------|
 | 632 | Smallest Range Covering Elements from K Lists | 額外追蹤 k 個堆積元素的**最大值**；每次 pop 都給出一個涵蓋所有清單的視窗 `[heap_min, running_max]` — 任一清單耗盡就停 |
 | 355 | Design Twitter | 這裡的「k 個有序清單」是被追蹤者的推文清單（新的在前）；把每位被追蹤者的第一則推進以時間戳為鍵的最大堆積，pop 10 次 |
-| 373 / 378 | K Pairs with Smallest Sums／Kth Smallest in Sorted Matrix | 清單是有序格子中的**虛擬**列 — 見 [heap_examples.md § LC 373](./heap_examples.md#9-find-k-pairs-with-smallest-sums--lc-373)／[§ LC 378](./heap_examples.md#10-kth-smallest-element-in-a-sorted-matrix--lc-378-) |
+| 373 / 378 | K Pairs with Smallest Sums／Kth Smallest in Sorted Matrix | 清單是有序格子中的**虛擬**列 — 見 [heap_examples.md § LC 373](./heap_examples.md#find-k-pairs-with-smallest-sums--lc-373)／[§ LC 378](./heap_examples.md#kth-smallest-element-in-a-sorted-matrix--lc-378-) |
 
 <!--CODE-->
 
 **變形 — LC 1439 Find the Kth Smallest Sum of a Matrix With Sorted Rows**：不要去合併*各列*，而是**一列一列**地合併。維護一份由前 `r` 列組成的、最小的 k 個和的清單，再用跟 LC 373 相同的「k 個最小配對」技巧把它和第 `r+1` 列合併（最小堆積以 `(prev[0] + row[0], i=0, j=0)` 播種，展開 `(i+1, j)`／`(i, j+1)`，pop k 次後停）。這把指數級的搜尋降到 `O(m * k log k)`。
 
-<!-- b15c30b8eaca -->
+<!-- 910e69da7609 -->
 ### 12) 延遲刪除 — 「刪除計數器」口味
 
 當你沒辦法從堆積裡移除任意元素時，就把它標記成無效，pop 的時候跳過。
 
-> 這是**「刪除計數器」**口味。至於**「雜湊表存真值」**口味（值被改掉而非元素被移除），見 [1) 延遲刪除](#1-lazy-deletion--heap--hashmap-of-truth-) 以及 [heap_examples.md § Most Frequent IDs](./heap_examples.md#18-most-frequent-ids--lc-3092)。
+> 這是**「刪除計數器」**口味。至於**「雜湊表存真值」**口味（值被改掉而非元素被移除），見 [1) 延遲刪除](#1-lazy-deletion--heap--hashmap-of-truth-)，以及同一節裡的實例 LC 3092 Most Frequent IDs。
 
 <!--CODE-->
 
@@ -417,6 +526,27 @@ LC 1383 的程式碼：[heap_examples.md § Maximum Performance of a Team](./hea
 - d 元堆積：快取效能較好
 - 二項式堆積：合併操作較好
 - 配對堆積：實作簡單，實務效能不錯
+
+<!-- 52799f482171 -->
+## 不適用時
+
+大多數看起來需要這裡技巧的題目，其實用一張核心卡片就能解。先檢查這些。
+
+| 技巧 | 看起來需要它的時候 | 通常就夠用的較簡單答案 |
+|---|---|---|
+| § 1 延遲刪除 | 堆積裡的值會變 | 值只會**變大**、過期但較大的資料仍是合法上界 → 不用清；或視窗依索引過期、只要一個極值 → 單調 deque（[monotonic_queue.md](./monotonic_queue.md)） |
+| § 1 兩個鏡像的延遲堆積 | 一個會變的集合的最大與最小值 | 集合從不縮小 → 兩個一路更新的變數；語言有有序對照表（`TreeMap`）且面試官接受 |
+| § 2 掃描線 + 存活堆積 | 區間加上「在每個 x」 | 只問涵蓋 x 的**數量** → 差分陣列，或用 [heap § 模板 6](./heap.md#template-6-min-heap-of-end-times--lc-253-) 求峰值 |
+| § 3 有上限的後悔堆積 | 「k 次免費」 | 沒有可支付的預算 → 最大的 k 個就是 [heap § 模板 1](./heap.md#template-1-size-k-min-heap-for-the-kth-largest--lc-215-) |
+| § 4 帶後悔的貪婪 | 「最少停靠次數／最多任務數」 | 項目彼此獨立、光依截止時間排序就能決定 → 單純排序 + 貪婪（[greedy.md](./greedy.md)） |
+| § 5 資源池 | 「分配會議室／伺服器」 | 只要數量、不管是哪個 id → [heap § 模板 6](./heap.md#template-6-min-heap-of-end-times--lc-253-) |
+| § 6 排序 + 固定大小堆積 | 兩個屬性、挑 k 個 | 目標式只用一個屬性 → [heap § 模板 1](./heap.md#template-1-size-k-min-heap-for-the-kth-largest--lc-215-) |
+| § 7 格子最佳優先 | 有權重的格子 | 每步代價都是 1 → BFS（[bfs.md](./bfs.md)）；明確的圖 → [Dijkstra.md](./Dijkstra.md) |
+| § 8 範圍跳躍格子 | 每個格子跳得很遠 | 跳躍距離受小常數限制 → 對鄰居做 BFS |
+| § 9 頻率唯一化 | 「讓計數各不相同」 | 它**就是**核心卡片：[heap § 模板 2](./heap.md#template-2-count-then-a-size-k-heap-on-the-count--lc-347-)，或用 `set` 記錄用過的計數 |
+| § 10 帶去重的堆積 | 會 push 重複值 | 重複值不影響答案 → pop 時略過和上一個 pop 出來相同的值 |
+| § 11 k 路合併的各種變形 | 好幾個有序來源 | 來源是真的串列 → 照寫 [heap § 模板 3](./heap.md#template-3-k-way-merge--lc-23-) |
+| § 12 刪除計數器式延遲刪除 | 值會離開雙堆積視窗 | 允許用 `sortedcontainers.SortedList`／`TreeMap` → 有序多重集合直接刪除 |
 
 <!-- 8866353b1fa7 -->
 ## 總結與速查

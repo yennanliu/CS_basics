@@ -1,8 +1,8 @@
-<!-- f6695f0bc2ec -->
+<!-- d64d7aa460bd -->
 # 鏈結串列 — 實戰題解
 
-> **範圍** — [linked_list.md](./linked_list.md) 背後的題解存放處：反轉、合併、切分、複製、攤平與串列排序類題目，每題每語言各一份標準解，並依各自演練的技巧分組。
-> **另見**：[linked_list.md](./linked_list.md) — 母文件，擁有虛擬頭節點技巧、reverse-k 基本操作、基本操作與這些解法所演練的選擇表；[2_pointers_linkedlist.md](./2_pointers_linkedlist.md) — 環偵測與快慢指標家族本身；[design.md](./design.md) — LRU 以及其他「串列 + 雜湊表」的設計題；[heap.md](./heap.md) — LC 23 走堆積(heap)的那條路；[monotonic_stack.md](./monotonic_stack.md) — LC 1019 背後的理論；[prefix_sum.md](./prefix_sum.md) — LC 1171 背後的理論。
+> **範圍** — [linked_list.md](./linked_list.md) 背後的題目集：每題歸檔在它歸約到的核心模板之下，寫成一張題目卡，點出它多加的那一步；模板本身與各模板的錨點題都放在核心文件。
+> **另見**：[linked_list.md](./linked_list.md) — 這些題目歸約到的七個模板；[2_pointers_linkedlist.md](./2_pointers_linkedlist.md) — 環偵測、相交與回文判斷，在那裡詳寫；[heap.md](./heap.md) — LC 23 的 k 路合併；[hash_map.md](./hash_map.md) — LC 1171 背後的前綴和表，以及 LC 138 背後的節點對照表；[monotonic_stack.md](./monotonic_stack.md) — LC 1019 背後的堆疊。
 
 <!-- 1d43e2ef29a3 -->
 ## LeetCode 題目清單
@@ -10,336 +10,363 @@
 - [Linked List](https://leetcode.com/problem-list/linked-list/)
 - [Doubly-Linked List](https://leetcode.com/problem-list/doubly-linked-list/)
 
-<!-- 5a0855959bfc -->
+<!-- 801f906d4b2a -->
 ## 總覽
 
-這裡是 [linked_list.md](./linked_list.md) 的長尾。母文件保留技巧本身 —
-虛擬頭節點、reverse-k 輔助函式、快慢指標、基本操作 — 而這份檔案收容那些*應用*它們的題目，
-免得技巧被上千行的解法給埋沒。
+[linked_list.md](./linked_list.md) 收著模板 — 迭代反轉、虛擬頭節點、兩個虛擬節點、反轉一段、快慢指標、進位迴圈，以及雜湊表加雙向鏈結串列 — 每個都在它的錨點題上詳寫。這份文件是套用它們的題目，每個模板一節，順序相同。每張卡說明它歸約到哪個模板、多加了哪一步；在別的文件詳寫過的題目只放一列指標，不放第二份。
 
-<!-- ccfdf7f452d9 -->
-### 關鍵性質
-- **複雜度**：見母文件的 [Time Complexity](./linked_list.md#time-complexity) 表格；除非解法自己的註解另有說明，下面每一份解法都是 O(n) 時間、O(1) 空間
-- **核心想法**：每一節都是對某個母文件技巧的一次演練 — 技巧才是要背下來的東西，這些只是反覆練習
-- **什麼時候用**：當你已經知道這題要用哪個技巧，想看它從頭到尾完整寫一遍時
+<!-- 453e24d1929f -->
+## 索引
 
-<!-- ddcec02fbea2 -->
-### 哪些解法刻意*不*放在這裡
+| LC | 題目 | 歸約到 | 難度 | 位置 |
+|---|---|---|---|---|
+| 143 | Reorder List | [linked_list § Template 1](./linked_list.md#template-1-iterative-reversal--lc-206-) | Medium | [題目卡](#reorder-list--lc-143) |
+| 1019 | Next Greater Node In Linked List | [monotonic_stack § Template 1](./monotonic_stack.md#template-1-next-greater-element-decreasing-stack--lc-496) | Medium | [題目卡](#next-greater-node-in-linked-list--lc-1019) |
+| 19 | Remove Nth Node From End of List | [linked_list § Template 2](./linked_list.md#template-2-dummy-head-deletion--lc-203-) | Medium | [題目卡](#remove-nth-node-from-end-of-list--lc-19) |
+| 82 | Remove Duplicates from Sorted List II | [linked_list § Template 2](./linked_list.md#template-2-dummy-head-deletion--lc-203-) | Medium | 詳寫於 [2_pointers_linkedlist § 2-2](./2_pointers_linkedlist.md#2-2-remove-duplicates-from-sorted-list-ii--lc-82-) |
+| 147 | Insertion Sort List | [linked_list § Template 2](./linked_list.md#template-2-dummy-head-deletion--lc-203-) | Medium | [題目卡](#insertion-sort-list--lc-147) |
+| 1171 | Remove Zero Sum Consecutive Nodes from Linked List | [linked_list § Template 2](./linked_list.md#template-2-dummy-head-deletion--lc-203-) + [hash_map § Template 4](./hash_map.md#template-4-prefix-sum-count-map--lc-560-) | Medium | [題目卡](#remove-zero-sum-consecutive-nodes-from-linked-list--lc-1171) |
+| 21 | Merge Two Sorted Lists | [linked_list § Template 3](./linked_list.md#template-3-two-dummies-split-then-join--lc-86-) | Easy | [題目卡](#merge-two-sorted-lists--lc-21) |
+| 725 | Split Linked List in Parts | [linked_list § Template 3](./linked_list.md#template-3-two-dummies-split-then-join--lc-86-) | Medium | [題目卡](#split-linked-list-in-parts--lc-725) |
+| 817 | Linked List Components | [linked_list § Template 3](./linked_list.md#template-3-two-dummies-split-then-join--lc-86-) | Medium | [題目卡](#linked-list-components--lc-817) |
+| 23 | Merge k Sorted Lists | [heap § Template 3](./heap.md#template-3-k-way-merge--lc-23-) | Hard | 詳寫於 heap.md |
+| 92 | Reverse Linked List II | [linked_list § Template 4](./linked_list.md#template-4-reverse-a-segment-reconnect-both-ends--lc-92-) | Medium | 錨點題，詳寫於 linked_list.md |
+| 24 | Swap Nodes in Pairs | [linked_list § Template 4](./linked_list.md#template-4-reverse-a-segment-reconnect-both-ends--lc-92-) | Medium | [題目卡](#swap-nodes-in-pairs--lc-24) |
+| 430 | Flatten a Multilevel Doubly Linked List | [linked_list § Template 4](./linked_list.md#template-4-reverse-a-segment-reconnect-both-ends--lc-92-) | Medium | [題目卡](#flatten-a-multilevel-doubly-linked-list--lc-430-) |
+| 25 | Reverse Nodes in k-Group | [linked_list § Template 4](./linked_list.md#template-4-reverse-a-segment-reconnect-both-ends--lc-92-) | Hard | [題目卡](#reverse-nodes-in-k-group--lc-25) |
+| 160 | Intersection of Two Linked Lists | [2_pointers_linkedlist § 1-1-5](./2_pointers_linkedlist.md#1-1-5--intersection-merge-point-of-2-linked-lists) | Easy | 詳寫於 2_pointers_linkedlist.md |
+| 234 | Palindrome Linked List | [linked_list § Template 5](./linked_list.md#template-5-fastslow-middle--lc-876-) | Easy | 詳寫於 [2_pointers_linkedlist § 1-1-6](./2_pointers_linkedlist.md#1-1-6--palindrome-linked-list-find-mid---reverse-2nd-half---compare) |
+| 142 | Linked List Cycle II | [2_pointers_linkedlist § 1-1-2](./2_pointers_linkedlist.md#1-1-2--return-the-ring-start-point-of-circular-linked-list) | Medium | 詳寫於 2_pointers_linkedlist.md |
+| 148 | Sort List | [linked_list § Template 5](./linked_list.md#template-5-fastslow-middle--lc-876-) | Medium | 詳寫於 [advanced_divide_and_conquer § LC 148](./advanced_divide_and_conquer.md#variation-lc-148--sort-list) |
+| 369 | Plus One Linked List | [linked_list § Template 6](./linked_list.md#template-6-carry-loop-over-a-dummy--lc-2-) | Medium | [題目卡](#plus-one-linked-list--lc-369) |
+| 146 | LRU Cache | [linked_list § Template 7](./linked_list.md#template-7-hash-map--doubly-linked-list-lru--lc-146-) | Medium | 錨點題，詳寫於 linked_list.md |
+| 138 | Copy List with Random Pointer | [hash_map § Template 8](./hash_map.md#template-8-old-to-new-node-map--lc-133) | Medium | [題目卡](#copy-list-with-random-pointer--lc-138) |
+| 460 | LFU Cache | [linked_list § Template 7，LFU 變體](./linked_list.md#lfu-variant--one-list-per-frequency-plus-a-min_freq-pointer-lc-460-) | Hard | 詳寫於 linked_list.md |
 
-有三題改放在母文件裡，因為它們的解說本身*就是*重點，程式碼只是附帶的產物：
+<!-- 10a7ffbaa211 -->
+## 迭代反轉題目
 
-| LC | 題目 | 為什麼放在母文件 |
+<!-- ba6fc12cb7a6 -->
+### Reorder List — LC 143
+
+> **關鍵** — 答案是前半段與*反轉後*的後半段交錯。在**第一個**中點之後切開，
+> 兩半就不共用任何節點；反轉後半段，再輪流各取一個節點。後半段永遠不會比較長，
+> 所以迴圈跑到後半段用完為止。
+
+**歸約到**：[linked_list § Template 1](./linked_list.md#template-1-iterative-reversal--lc-206-)
+— 只對後半段跑，後半段用 [Template 5](./linked_list.md#template-5-fastslow-middle--lc-876-) 的第一個中點迴圈找出，最後再一趟交錯走訪。
+
+<!--CODE-->
+
+<!--CODE-->
+
+**試跑**（`[1,2,3,4,5]`）
+
+<!--CODE-->
+
+**陷阱**
+- 漏掉切斷 `slow.next = None`：在 `[1,2,3,4]` 上，節點 2 仍指著 3，反轉後的後半段也以 3 結尾，交錯之後形成環 `3 -> 3`。
+- 在 `first.next = second` *之後*才讀 `first.next`：一步之後前半段就弄丟了。
+
+**相似題** — LC 234 *（中點 + 反轉，再比較而不是交錯）* · LC 2130 *（中點 + 反轉，再兩兩求和）*
+
+<!-- 97830db01755 -->
+### Next Greater Node In Linked List — LC 1019
+
+> **關鍵** — 堆疊裡放的是還在等更大值的索引，值由底到頂遞減。新值會彈出每個比它小的索引，
+> 並成為它們的答案；最後留在堆疊裡的沒有答案，維持 `0`。串列只會被*讀*，
+> 所以先複製成陣列：堆疊需要索引。
+
+**歸約到**：[monotonic_stack § Template 1](./monotonic_stack.md#template-1-next-greater-element-decreasing-stack--lc-496)
+— 唯一的改變是用一趟 [Template 1](./linked_list.md#template-1-iterative-reversal--lc-206-) 式的走訪，把串列轉成陣列。
+
+<!--CODE-->
+
+<!--CODE-->
+
+**試跑**（`[2,7,4,3,5]`）
+
+<!--CODE-->
+
+**陷阱**
+- 用 `<=` 而不是 `<` 來彈出：相等的值不算*更大*，所以 `[1,1,2]` 會得到 `[1,2,0]`，而不是 `[2,2,0]`。
+- 推入值而不是索引：你就沒辦法知道一次彈出是*誰*的答案。
+
+<!-- c25f19aad8f7 -->
+## 虛擬頭節點刪除題目
+
+<!-- 16f9aeda3ea0 -->
+### Remove Nth Node From End of List — LC 19
+
+> **關鍵** — `fast` 和 `slow` 都從虛擬節點出發，先讓 `fast` 走 n + 1 步；當 `fast`
+> 走出尾端時，`slow` 正站在目標的**前一個**節點。從虛擬節點出發，
+> 才能讓目標就是 head 時也成立。
+
+**歸約到**：[linked_list § Template 2](./linked_list.md#template-2-dummy-head-deletion--lc-203-)
+— 虛擬節點，再加上兩個指標之間的固定間隔，取代值的比對。
+
+<!--CODE-->
+
+<!--CODE-->
+
+**試跑** — 刪掉 head（`[1,2,3,4,5]`、`n = 5`），也就是虛擬節點存在的理由：
+
+<!--CODE-->
+
+**陷阱**
+- 兩個都從 `head` 出發、間隔 n：`[1,2,3,4,5]`、n = 2 時正確，但 `n = 5` 需要一個 `if fast is None: return head.next` 分支，正是虛擬節點省掉的那個。
+- 回傳 `head` 而不是 `dummy.next`：`[1]`、n = 1，會回傳已刪掉的節點，而不是 `[]`。
+
+**相似題** — LC 82 *（下方，一列指標）* · LC 61 *（同樣的間隔找出旋轉後的新尾巴）*
+
+<!-- cd6808de1544 -->
+### Insertion Sort List — LC 147
+
+> **關鍵** — 虛擬節點是*已排序*前綴的頭，所以把節點插到目前最小值之前，
+> 跟插到任何其他位置是同一個接線動作。每拆下一個節點，就讓 `p` 從虛擬節點走到
+> 最後一個比它小的節點，再把它接在 `p` 之後。
+
+**歸約到**：[linked_list § Template 2](./linked_list.md#template-2-dummy-head-deletion--lc-203-)
+— 虛擬節點站在一條*正在建立*的串列的 head 之前，而對 `p.next` 的前瞻找的是插入點，不是命中。
+
+<!--CODE-->
+
+<!--CODE-->
+
+**陷阱**
+- 接線前忘了 `nxt = cur.next`：`cur.next = p.next` 會改掉它，`[4,2,1,3]` 未排序的剩餘部分在第一次插入後就弄丟了。
+- 先設 `dummy.next = head`：已排序部分必須從空的開始，否則第一個節點會跟自己比較，串列形成環。
+
+**不適用時** — 追問要求 O(n log n)：那是串列上的合併排序，[LC 148](#index)，用 Template 5 的第一個中點來切。
+
+<!-- 3eacbc00d89f -->
+### Remove Zero Sum Consecutive Nodes from Linked List — LC 1171
+
+> **關鍵** — 兩個相同的前綴和，代表中間的節點加總為 0。記下每個前綴和**最後**
+> 一次出現的節點，再走一趟，從每個節點直接跳到那個最後出現節點的下一個：
+> 中間每一段零和區段一次跳過。
+
+**歸約到**：[linked_list § Template 2](./linked_list.md#template-2-dummy-head-deletion--lc-203-)
+— 虛擬節點（前綴 0）讓從 head 開始的零和區段也能被移除 — 再結合
+[hash_map § Template 4](./hash_map.md#template-4-prefix-sum-count-map--lc-560-) 的前綴和表，只是這裡存的是節點而不是次數。
+
+<!--CODE-->
+
+<!--CODE-->
+
+**試跑**（`[1,2,-3,3,1]`）
+
+<!--CODE-->
+
+**陷阱**
+- 前綴和從 `head` 開始，而不是從值為 0 的虛擬節點開始：`[1,-1]` 應該回傳 `[]`，但 head 之前沒有記錄前綴 0，結果回傳 `[-1]`。
+- 每個前綴只記**第一個**節點而不是最後一個：在第二次出現時，跳躍會指回區段的開頭，於是 `[1,-1]` 變成環，第二趟永遠不會結束。
+
+<!-- 71a2a5912d4e -->
+## 兩個虛擬節點，先拆再接題目
+
+<!-- 1d7d609be242 -->
+### Merge Two Sorted Lists — LC 21
+
+> **關鍵** — 一個虛擬節點、一個尾指標、兩個輸入：把較小的 head 接到尾巴上，
+> 並讓那個輸入前進。一個輸入用完時，另一個本來就已排序，
+> 所以 `tail.next = l1 or l2` 以 O(1) 收尾。
+
+**歸約到**：[linked_list § Template 3](./linked_list.md#template-3-two-dummies-split-then-join--lc-86-)
+— 反過來跑：兩條鏈進、一條鏈出，由比較決定下一個節點由哪個輸入提供。
+
+<!--CODE-->
+
+**陷阱**
+- 寫成 `tail = l1`，而不是 `tail.next = l1` 再 `tail = tail.next`：什麼都沒接上，`[1,2,4]` + `[1,3,4]` 回傳 `[]`。
+- 把值複製成新節點也行，但多花了題目不需要的 O(m + n) 空間。
+
+**不適用時** — 面試官要遞迴寫法：見
+[recursion.md § 4-3](./recursion.md#4-3-merge-two-sorted-lists-lc-21)，O(m + n) 呼叫堆疊。k 條串列見 [LC 23](#index)。
+
+<!-- ab12cbd98993 -->
+### Split Linked List in Parts — LC 725
+
+> **關鍵** — n 個節點時，第 i 段有 `n // k` 個節點，`i < n % k` 時再多一個，
+> 所以較長的段在前面。從目前的 head 走那麼多個節點，在最後一個之後切開；
+> 大小為 0 的段是 `None`。
+
+**歸約到**：[linked_list § Template 3](./linked_list.md#template-3-two-dummies-split-then-join--lc-86-)
+— k 條鏈而不是兩條，依數量而不是依條件切，每條都用 `.next = None` 收尾，就像第二條鏈的尾巴一樣。
+
+<!--CODE-->
+
+**陷阱**
+- 把多出來的節點分給*最後*幾段：`[1..10]`、k = 3，必須是 `[1,2,3,4]`、`[5,6,7]`、`[8,9,10]`；前面的段比較長。
+- 漏掉切斷：每一段都一路連到原串列的結尾。
+
+<!-- ebbbd47b7d4c -->
+### Linked List Components — LC 817
+
+> **關鍵** — 一個連通分量是值都在 `nums` 裡的一段最長連續節點。數這些段的**結尾**：
+> 一個在集合裡、而下一個節點不存在或不在集合裡的節點，
+> 正好結束一個分量。
+
+**歸約到**：[linked_list § Template 3](./linked_list.md#template-3-two-dummies-split-then-join--lc-86-)
+— 集合成員判斷把節點切成一段段，就像 Template 3 的條件把節點切成兩條鏈，只是這些段只被計數，從不被建立。
+
+<!--CODE-->
+
+<!--CODE-->
+
+**陷阱**
+- 把集合裡的每個節點都算進去：`[0,1,2,3]`、nums = `[0,1,3]`，有 3 個這樣的節點，但只有 2 個分量。
+- 用串列而不是集合做成員判斷，每次判斷就變成 O(len(nums))。
+
+| LC | 題目 | 歸約到 | 難度 | 位置 |
+|---|---|---|---|---|
+| 23 | Merge k Sorted Lists | [heap § Template 3](./heap.md#template-3-k-way-merge--lc-23-) | Hard | 詳寫於 heap.md |
+
+<!-- 49e34d0aa69f -->
+## 反轉一段題目
+
+<!-- 5456e2b0ca77 -->
+### Swap Nodes in Pairs — LC 24
+
+> **關鍵** — 在 k = 2 時，反轉一段的輔助函式的三個把手變成區域變數：`second` 是
+> 新的前端、`first` 是新的尾巴、`second.next` 是之後的節點。`prev` 是唯一的
+> 游標：下一對的兩個節點都能從它走到。
+
+**歸約到**：[linked_list § Template 4](./linked_list.md#template-4-reverse-a-segment-reconnect-both-ends--lc-92-)
+— k = 2 的情況，展開來寫，因為反轉兩個節點只是兩行賦值。
+
+| 輔助函式回傳 | 在 `k = 2` 時就是 | 實際寫成 |
 |---|---|---|
-| 206 | Reverse Linked List | 它*就是*那個基本操作 — [模板 1](./linked_list.md#template-1-iterative-reversal--lc-206-) |
-| 19 | Remove Nth Node From End | 重點在虛擬節點的分情況討論 — [Why Dummy Node?](./linked_list.md#why-dummy-node-visual-comparison-lc-19)。下面只放兩種 Java 寫法 |
-| 92 | Reverse Linked List II | Python 版就是 reverse-k 輔助函式套用一次 — [模板 4：反轉一段](./linked_list.md#template-4-reverse-a-segment-reconnect-both-ends--lc-92-)。下面只放行內展開的 Java 版 |
-
-<!-- afd61950e8fc -->
-## 反轉與重排
-
-<!-- 29c9cc201026 -->
-### 1) Reverse Linked List II — LC 92
-
-> **核心想法**：*定位*到位置 `left` 前面的那個節點，*反轉* `right - left + 1` 個節點，
-> 再把兩端*接回去*。Python 版就是母文件裡的
-> [模板 4：反轉一段](./linked_list.md#template-4-reverse-a-segment-reconnect-both-ends--lc-92-)；
-> 下面的 Java 則是同一趟走訪，只是不用輔助函式、直接行內展開。
+| `new_head` | `second` | `prev.next = second` |
+| `new_tail` | `first` | `prev = first` — 下一輪的 `prev` |
+| `next_node` | `second.next` | 直接折進 `first.next = second.next` |
 
 <!--CODE-->
 
-<!-- c0b97737fe69 -->
-### 2) Reorder List — LC 143
-
+**試跑**（`[1,2,3,4]`）
 
 <!--CODE-->
 
-<!--CODE-->
+**陷阱**
+- 把 `(B)` 放在 `(A)` 之前會先蓋掉 `second.next`，於是 `(A)` 讓 `first` 指向自己：`[1,2,3,4]` 留下 `1 -> 1`，迴圈永遠不會結束。
+- 讓 `prev` 移到 `second` 而不是 `first`：交換後 `second` 是這一對的*前端*，所以下一「對」橫跨了兩對，`[1,2,3,4]` 回傳 `[2,3,4,1]`。
+- `[]`、`[1]` 或奇數長度的尾巴都不需要防呆：`[1,2,3]` 交換一次，留下 `3`。
 
-<!-- 336fd585c9a9 -->
-### 3) Swap Nodes in Pairs — LC 24
+**不適用時** — 面試官要遞迴寫法（O(n) 堆疊）：詳寫於
+[recursion.md § 5-1](./recursion.md#5-1-recursive-linked-list-rewiring--lc-206--24--25-)。
 
+<!-- ae8870587286 -->
+### Flatten a Multilevel Doubly Linked List — LC 430 ⭐⭐⭐⭐
 
-> **兩兩交換相鄰節點**，但不能動到值 — 只能重接 `next` 指標。
-> `1 -> 2 -> 3 -> 4`  變成  `2 -> 1 -> 4 -> 3`
+> **關鍵** — 把子鏈接進來就是一次「接回一段」：兩個接縫，`cur <-> child`
+> 和 `tail <-> next`，兩個方向都要設。之後繼續往前走：接進來的鏈會是下一個被走訪的，
+> 所以更深的層級不用遞迴也不用堆疊就會被攤平。
 
-<!-- b8a3a0e41e5b -->
-#### **1. 核心想法**
-
-每次交換其實牽涉到 **3 個錨點**，而不是 2 個：
-
-<!--CODE-->
-
-- `prev`   — 這一對**前面**的那個節點（第一輪時是 `dummy`）。它掌握著進來的那條連結。
-- `first`  — 這一對的**第 1 個**節點（交換後會變成第 2 個）。
-- `second` — 這一對的**第 2 個**節點（交換後會變成第 1 個，也就是新的頭）。
-
-交換後這一對翻轉過來，`prev` 指向新的頭：
-
-<!--CODE-->
-
-我們之所以需要 `prev`（因此需要**虛擬頭節點**，見 [模板 2：虛擬頭節點刪除](./linked_list.md#template-2-dummy-head-deletion--lc-203-)），是因為**這一對前面的節點也必須重新指向** — 否則前一對會一直黏在舊的頭（`first`）上，而不是新的頭（`second`）。
-
-<!-- f546b5d628eb -->
-#### **2. 模式 — 我們怎麼把節點`接回去`**
-
-有 **3 條連結要重接**，而且**順序很重要**。可以想成*「先從右邊拆開，再往左邊接回去」*：
-
-<!--CODE-->
-
-**為什麼一定是這個順序？** 每條連結都會蓋掉某個我們還需要的指標，所以要在覆寫*之前*先存起來：
-
-| 步驟 | 寫入的連結 | 為什麼必須排在這裡 |
-|------|--------------|------------------------|
-| **(A)** `first.next = second.next` | 在步驟 (B) 摧毀 `second.next` **之前**先抓到 `rest` 的把手。`first`（未來的尾巴）現在正確地指向這一對之後的節點。 |
-| **(B)** `second.next = first` | 現在可以安全翻轉了：`second` 指回 `first`。這一對內部完成反轉。 |
-| **(C)** `prev.next = second` | 最後把前端勾上：這一對前面的節點現在指向新的頭 `second`。 |
-
-> ⚠️ 如果你在 **(A)** *之前*就做 **(C)** 或 **(B)**，就會覆寫掉 `second.next`，因而**失去對 `rest` 的參照** — 串列的尾巴就整段掉了。
-
-<!-- a9c253fa73ca -->
-#### **圖解**（`dummy -> 1 -> 2 -> 3 -> 4`，第一輪）
-
-<!--CODE-->
-
-第二輪用同樣方式交換 `(3,4)`，得到 `dummy -> 2 -> 1 -> 4 -> 3`；回傳 `dummy.next = 2`。
-
-<!-- 4e07ec39a48e -->
-#### **完整逐步演練**（`[1, 2, 3, 4]`，迴圈的每一輪）
-
-我們照著下面這個迴圈逐字追蹤，追 4 個指標（`prev`、`first`、`second`、`head`），以及每做完 3 次重接 `(A)(B)(C)` 之後的串列狀態：
-
-<!--CODE-->
-
-**初始狀態**（在 `dummy.next = head`、`prev = dummy` 之後）：
-<!--CODE-->
-
----
-
-**第 1 輪** — `head=1`、`head.next=2` → 進入迴圈
-
-<!--CODE-->
-第 1 輪後的狀態：
-<!--CODE-->
-
----
-
-**第 2 輪** — `head=3`、`head.next=4` → 進入迴圈
-
-<!--CODE-->
-第 2 輪後的狀態：
-<!--CODE-->
-
----
-
-**第 3 輪** — `head = None` → 迴圈條件 `head and head.next` 為 `False` → **結束**
-
-<!--CODE-->
-
-**指標總結表：**
-
-| 輪次 | `first` | `second` | (A) 後 `first.next=` | (B) 後 `second.next=` | (C) 後 `prev.next=` | 新的 `prev` | 新的 `head` |
-|------|---------|----------|--------------------------|---------------------------|-------------------------|------------|------------|
-| 1 | `1` | `2` | `3` | `1` | `2`（dummy→2） | `1` | `3` |
-| 2 | `3` | `4` | `None` | `3` | `4`（1→4） | `3` | `None` |
-| — | 停止：`head=None` | | | | | | 回傳 `dummy.next=2` |
-
-> **奇數長度備註** — 以 `[1, 2, 3]` 為例，迴圈只跑一輪（交換 `1,2` → `2 -> 1 -> 3`），接著 `head=3` 但 `head.next=None`，條件不成立，落單的尾巴 `3` 就原封不動留著：結果是 `2 -> 1 -> 3`。
-
-> **等價的指標走訪變體**（讓 `head` 自己停在 dummy 上走，用 `head.next` / `head.next.next` 當作那一對）。同樣是 3 次重接，只是全部改成相對於 `head` 來表達：
-<!--CODE-->
-
-<!-- 2c18d954cb57 -->
-#### **遞迴視角**（同樣的重接，由上而下）
-
-<!--CODE-->
-遞迴回傳的是每一段交換後的**新頭**，再由呼叫端接上去 — 這正是迭代版裡 `prev.next = second` 在做的事。
-
-<!-- 1dd1bf0809db -->
-#### **3. 相似 LC**
-
-| # | 題目 | 與 LC 24 的關係 |
-|---|---------|------------------------|
-| 206 | Reverse Linked List | 兩兩交換就是 **k=2 的分段反轉**；206 則是反轉整條串列。見 [模板 1](./linked_list.md#template-1-iterative-reversal--lc-206-) |
-| 25  | Reverse Nodes in k-Group | **一般化**：LC 24 恰好是 `k=2` 的情形。同樣是「接好前端 + 內部反轉」。見 [LC 25](./linked_list.md#reverse-nodes-in-k-group--lc-25) |
-| 92  | Reverse Linked List II | 反轉一個**子區間** `[m, n]`；同樣重複使用「把 `prev` 勾到新頭、尾巴接回其餘部分」。見 [1)](#1-reverse-linked-list-ii--lc-92) |
-| 143 | Reorder List | 把兩半交錯合併 — 另一種「成對重接 `next` 指標」的合併。見 [2)](#2-reorder-list--lc-143) |
-| 1721 | Swapping Nodes in a Linked List | 更簡單 — 通常直接交換**值**；但若要交換節點，就需要同樣的三錨點功夫 |
-| 61  | Rotate List | 重接一個切點；同樣需要那套指標記帳的紀律 |
-
-<!-- 2f0028ed88d7 -->
-## 合併與切分
-
-<!-- e32a4f32844a -->
-### 4) Merge Two Sorted Lists — LC 21
-
-<!--CODE-->
-
-<!-- 993aa1c066e4 -->
-### 5) Merge K Sorted Lists — LC 23
-
-<!--CODE-->
-
-<!-- fc6dacd00507 -->
-### 6) Split Linked List in Parts — LC 725
-
-<!--CODE-->
-
-<!-- 86a2bbc78507 -->
-## 快慢指標與結構
-
-<!-- ccd55ebd47a0 -->
-### 7) Palindrome Linked List — LC 234
-
-<!--CODE-->
-
-<!-- 0ec1b075c981 -->
-### 8) Intersection of Two Linked Lists — LC 160
-
-<!--CODE-->
-
-<!-- dfffc5972b7c -->
-### 9) Remove Nth Node From End of List — LC 19
-
-> Python 解法與完整的「為什麼要虛擬節點」說明住在
-> [linked_list.md](./linked_list.md#why-dummy-node-visual-comparison-lc-19)。下面是兩種
-> **Java** 寫法：用快慢指標一趟走完，以及先算長度的兩趟做法。
+**歸約到**：[linked_list § Template 4](./linked_list.md#template-4-reverse-a-segment-reconnect-both-ends--lc-92-)
+— 接入而不是反轉：那一段（子鏈）整段放進去，只剩兩次接線，而且是在雙向鏈結串列上。
 
 <!--CODE-->
 
 <!--CODE-->
 
-<!-- c9ae5992ae69 -->
-## 複製、攤平與連通元件
+**試跑**
 
-<!-- 108dd35e1fd3 -->
-### 10) Copy List with Random Pointer — LC 138
+<!--CODE-->
+
+**陷阱**
+- 沒把 `cur.child` 清掉：攤平後仍留有 child 指標的串列會被判錯。
+- 接縫只設了 `next` 那一側：從 `4` 往回走就會跳過子鏈。
+- 最後一個節點有 child：`nxt` 是 `None`，所以 `nxt.prev = tail` 必須先檢查。
+
+**相似題** — LC 114 *（同樣的接入，用在樹上：把左子樹掛在 root 和 right 之間）*
+
+<!-- ff43c9f80f7c -->
+### Reverse Nodes in k-Group — LC 25
+
+> **關鍵** — 每一組做完後，這組的舊 head 就是它的新 tail，而那正是下一組的入邊
+> 必須掛上去的節點：`prev = new_tail`。反轉之前先數 k 個節點，
+> 不足 k 個的最後一組就保持原狀。
+
+**歸約到**：[linked_list § Template 4](./linked_list.md#template-4-reverse-a-segment-reconnect-both-ends--lc-92-)
+— 同一個三把手輔助函式，每個滿 k 個的組呼叫一次，而不是只呼叫一次。
+
+<!--CODE-->
+
+**試跑**（`[1,2,3,4,5]`、`k = 2`）
+
+<!--CODE-->
+
+**陷阱**
+- 不用 `has_k` 就反轉：輔助函式也會把不足 k 個的最後一組反轉，所以 `[1,2,3,4,5]`、k = 3，回傳 `[3,2,1,5,4]`，而不是 `[3,2,1,4,5]`。
+- 設成 `prev = new_head`：下一組被掛在這一組的前端而不是尾巴，`[1,2,3,4,5]`、k = 2，回傳 `[2,3,4,5,1]`。
+
+**不適用時** — 面試官要遞迴寫法（O(n / k) 堆疊）：詳寫於
+[recursion.md § 5-1](./recursion.md#5-1-recursive-linked-list-rewiring--lc-206--24--25-)。
+
+| LC | 題目 | 歸約到 | 難度 | 位置 |
+|---|---|---|---|---|
+| 92 | Reverse Linked List II | [linked_list § Template 4](./linked_list.md#template-4-reverse-a-segment-reconnect-both-ends--lc-92-) | Medium | 錨點題，詳寫於 linked_list.md |
+
+<!-- 3b9393debc9e -->
+## 快慢指標找中點題目
+
+這個模板的題目都在別的文件詳寫；列在這裡，是因為讀完 Template 5 的人會到這一節找它們。
+
+| LC | 題目 | 歸約到 | 難度 | 位置 |
+|---|---|---|---|---|
+| 160 | Intersection of Two Linked Lists | [2_pointers_linkedlist § 1-1-5](./2_pointers_linkedlist.md#1-1-5--intersection-merge-point-of-2-linked-lists) | Easy | 詳寫於 2_pointers_linkedlist.md |
+| 234 | Palindrome Linked List | [linked_list § Template 5](./linked_list.md#template-5-fastslow-middle--lc-876-) + Template 1 | Easy | 詳寫於 [2_pointers_linkedlist § 1-1-6](./2_pointers_linkedlist.md#1-1-6--palindrome-linked-list-find-mid---reverse-2nd-half---compare) |
+| 142 | Linked List Cycle II | [2_pointers_linkedlist § 1-1-2](./2_pointers_linkedlist.md#1-1-2--return-the-ring-start-point-of-circular-linked-list) | Medium | 詳寫於 2_pointers_linkedlist.md |
+| 148 | Sort List | [linked_list § Template 5](./linked_list.md#template-5-fastslow-middle--lc-876-) + LC 21 的合併 | Medium | 詳寫於 [advanced_divide_and_conquer § LC 148](./advanced_divide_and_conquer.md#variation-lc-148--sort-list) |
+
+<!-- 5c4b7659f140 -->
+## 進位迴圈題目
+
+<!-- 40b8ee2fb034 -->
+### Plus One Linked List — LC 369
+
+> **關鍵** — 進位從最低位開始，而最低位是串列的**尾巴**。
+> 先反轉串列，讓進位迴圈能往前走；進位一變成 0 就停，進位撐過最後一位就補一個節點，
+> 最後再反轉回來。
+
+**歸約到**：[linked_list § Template 6](./linked_list.md#template-6-carry-loop-over-a-dummy--lc-2-)
+— 一個輸入、起始進位為 1，外面包兩次 [Template 1](./linked_list.md#template-1-iterative-reversal--lc-206-)
+反轉，因為位數是最高位在前。
 
 <!--CODE-->
 
 <!--CODE-->
 
-<!-- a9ef3b526c52 -->
-### 11) Linked List Components — LC 817
+**陷阱**
+- 漏掉最後的進位：`[9,9]` 必須變成 `[1,0,0]`；沒有補上的節點就是 `[0,0]`。
+- 把串列轉成整數在 Python 可行，但在 Java 上長串列會讓 `long` 溢位。
 
+**相似題** — LC 2 *（錨點題：兩個輸入，位數已經是最低位在前）* · LC 445 *（最高位在前，兩個輸入）*
 
-<!--CODE-->
+<!-- 9286b665a295 -->
+## 雜湊表 + 雙向鏈結串列題目
 
-<!-- 9582e13c742b -->
-### 12) Flatten a Multilevel Doubly Linked List — LC 430 ⭐⭐⭐⭐
+<!-- 29d38ccc24c5 -->
+### Copy List with Random Pointer — LC 138
 
+> **關鍵** — `random` 指標可能指向還沒被複製的節點，所以分兩趟複製：
+> 先把每個舊節點對應到一個新副本，再透過對照表接好每個副本的 `next` 和
+> `random`。`map.get(None)` 回傳 `None`，所以串列尾端不需要分支。
 
-**模式**：**就地接合（in-place splice）**。只要某個節點有 `child`，就把整條子鏈接到 `cur` 和 `cur.next` 之間，把兩個接縫上的 `prev` 指標補好，然後繼續往前走 — 接進來的子鏈自然會被走到，所以不用遞迴或堆疊就能處理巢狀。
-
-**關鍵想法**：不要遞迴。每次接合需要三個指標：`next`（存起來的後繼）、`child`（新的後繼）、`tail`（子鏈的最後一個節點）。務必把 `cur.child` 設成 null — 題目要求最後不能有任何 `child` 指標殘留。
-
-<!--CODE-->
-
-<!--CODE-->
-
-**視覺追蹤**：
-<!--CODE-->
-
-**相似的 LC 題目**：
-| # | 題目 | 關鍵差異 |
-|---|---------|----------------|
-| 114 | Flatten Binary Tree to Linked List | 同樣的接合，只是在樹上：把 `left` 子樹掛到 `root` 和 `right` 之間 |
-| 116 / 117 | Populating Next Right Pointers in Each Node (I / II) | 反向操作 — 用 O(1) 空間為樹的每一層*建出*一條鏈結串列（`next` 鏈） |
-
----
-
-<!-- e52f2acb6a4a -->
-## 串列上的算術與排序
-
-<!-- 7760a403628b -->
-### 13) Plus One Linked List — LC 369
-
-<!--CODE-->
-
-<!-- 0cbdea7dc968 -->
-### 14) Sort List（在鏈結串列上做合併排序） — LC 148 ⭐⭐⭐⭐⭐
-
-
-**模式**：唯一能在鏈結串列上以 `O(1)` 額外資料空間跑出 `O(n log n)` 的排序。三個動作：**從中間切開 → 遞迴排序兩半 → 合併兩條已排序的串列**（重用 [4) LC 21](#4-merge-two-sorted-lists--lc-21)）。
-
-**關鍵想法**：`slow` 必須停在中點**前面**那個節點，我們才能用 `slow.next = null` 把串列實體切開。把 `fast` 從 `head.next`（而非 `head`）開始，可保證兩節點的情形 `[2,1]` 會切成 `[2]` + `[1]`，而不是 `[2,1]` + `[]`（那會無窮遞迴）。
+**歸約到**：[hash_map § Template 8](./hash_map.md#template-8-old-to-new-node-map--lc-133)
+— 舊到新的節點對照表，用在一條因多出一個指標而變成圖的串列上。
 
 <!--CODE-->
 
 <!--CODE-->
 
-**視覺追蹤**（`4 -> 2 -> 1 -> 3`）：
-<!--CODE-->
+**陷阱**
+- 在第一趟就接 `random`：`random` 可能指向*前方*、還沒有副本的節點。
+- 把副本的 `random` 指向舊節點（`cur.random`）而不是它的副本：印出來看起來沒錯，但跟輸入共用節點，會被判錯。
 
-**變體 — LC 147 Insertion Sort List**（巧思：`O(n^2)`，但穩定且適合單趟處理；沿著帶虛擬頭的已排序前綴走，找出每個節點該插入的位置）：
-<!--CODE-->
-<!--CODE-->
+**不適用時** — 追問要求 O(1) 額外空間：把每個副本接在原節點之後（`A -> A' -> B -> B'`），設 `A'.random = A.random.next`，再拆開。
 
-**相似的 LC 題目**：
-| # | 題目 | 關鍵差異 |
-|---|---------|----------------|
-| 21 | Merge Two Sorted Lists | 只有 `merge` 那一步。見 [4)](#4-merge-two-sorted-lists--lc-21) |
-| 23 | Merge k Sorted Lists | 同樣的分治，只是對 `k` 條串列做。見 [5)](#5-merge-k-sorted-lists--lc-23) |
-| 147 | Insertion Sort List | 上面那個 `O(n^2)` 的變體 |
-| 109 | Convert Sorted List to BST | 重用同一套「從中間切開」的切分，然後建出一棵樹 |
-
----
-
-<!-- 181e088cc367 -->
-## 借用到串列上的陣列技巧
-
-<!-- 259ae7351509 -->
-### 15) 鏈結串列上的前綴和 + 雜湊表 — LC 1171 ⭐⭐⭐⭐
-
-
-**模式**：把經典的陣列技巧「**前綴和相等 ⇒ 兩者之間那一段總和為 0**」移植到鏈結串列上。差別在於不是去數子陣列，而是**把 `next` 重接、直接跳過**那段總和為零的區段。
-
-**關鍵想法**：在帶虛擬頭的串列上走兩趟。
-1. 建立 `prefixSum -> 到達該前綴和的最後一個節點` 的對照表。
-2. 再走一趟；在每個節點設 `cur.next = lastSeen[prefix].next`，這會刪掉該前綴和第一次與最後一次出現之間的所有東西。
-
-從 `dummy`（值為 `0`）開始，正是讓「從 `head` 起算就總和為零」的前綴也能被刪掉的原因。
-
-<!--CODE-->
-
-<!--CODE-->
-
-**視覺追蹤**（`1 -> 2 -> -3 -> 3 -> 1`）：
-<!--CODE-->
-
----
-
-<!-- 262bd5576c72 -->
-### 16) 鏈結串列上的單調堆疊 — LC 1019 ⭐⭐⭐
-
-
-**模式**：「下一個更大元素」需要**往回看**，而單向鏈結串列做不到。先把值實體化成陣列，再跑標準的**索引遞減單調堆疊** — 見 [monotonic_stack.md](./monotonic_stack.md)。
-
-**關鍵想法**：堆疊裡放索引，不是值。當進來的值大過 `vals[stack.top]` 時，那個索引的答案就找到了 — pop 出來並記錄。最後仍留在堆疊上的，代表沒有更大的節點 ⇒ `0`。
-
-<!--CODE-->
-
-<!--CODE-->
-
-**視覺追蹤**（`2 -> 7 -> 4 -> 3 -> 5`）：
-<!--CODE-->
-
-> 相關：**LC 2487 Remove Nodes From Linked List**（已列在 *Remove Elements* 模式底下）用的是同一套單調堆疊想法，只是拿來*刪除*節點，而不是回報節點。
-
----
-
-<!-- 82caa4577f26 -->
-## 相關題目 — 速查
-
-
-> 快慢指標類技巧（環偵測、用間距找倒數第 n 個、切半 + 反轉判回文、換頭求交點、用 k 間距做旋轉）住在姊妹文件 [2_pointers_linkedlist.md](./2_pointers_linkedlist.md) — 這裡不重複。
-
-| # | 題目 | 一句話想法 |
-|---|---------|----------------|
-| 142 | Linked List Cycle II | Floyd 環偵測，接著把其中一個指標拉回 `head` 重新走，找出入環節點 — 見 [2_pointers_linkedlist.md](./2_pointers_linkedlist.md) |
-| 2130 | Maximum Twin Sum of a Linked List | 從中間切開 + 反轉後半（LC 234 那套回文機制），再兩兩配對 — 見 [7)](#7-palindrome-linked-list--lc-234) |
-| 109 | Convert Sorted List to BST | LC 148 的「從中間切開」；中間節點成為 BST 的根，再對兩半遞迴 |
-| 382 | Linked List Random Node | **蓄水池抽樣**：一趟走完，以 `1/i` 的機率保留第 `i` 個節點 — O(1) 空間，也不需要先知道長度 |
-| 707 | Design Linked List | 虛擬頭 + 一個 `size` 計數器；每個操作都是「走到索引 `i-1`，然後接合」（見 [模板 2：虛擬頭節點刪除](./linked_list.md#template-2-dummy-head-deletion--lc-203-)） |
-| 705 / 706 | Design HashSet / HashMap | **鏈結法（separate chaining）** — 一個桶陣列，每個桶是一條線性掃描的鏈結串列 |
-| 622 | Design Circular Queue | 固定大小的環；鏈結串列版本就是把尾巴接回頭 |
-| 1669 | Merge In Between Linked Lists | 純粹的接合：走到節點 `a-1` 與節點 `b+1`，把 `list2` 的頭尾勾在中間 |
+| LC | 題目 | 歸約到 | 難度 | 位置 |
+|---|---|---|---|---|
+| 146 | LRU Cache | [linked_list § Template 7](./linked_list.md#template-7-hash-map--doubly-linked-list-lru--lc-146-) | Medium | 錨點題，詳寫於 linked_list.md |
+| 460 | LFU Cache | [linked_list § Template 7，LFU 變體](./linked_list.md#lfu-variant--one-list-per-frequency-plus-a-min_freq-pointer-lc-460-) | Hard | 詳寫於 linked_list.md |

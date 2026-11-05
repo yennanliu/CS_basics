@@ -1,7 +1,7 @@
 # Design
 
 > **Scope** — LC "design a X" problems — reading the required operations off the problem and picking the structure combination that makes every one of them O(1) or O(log n); the worked designs themselves live in the examples sheet.
-> **See also**: [design_examples.md](./design_examples.md) — the twenty designs written out in full; [design_patterns.md](./design_patterns.md) — consistent hashing, rate limiters and load balancing, asked in the same rounds but not LC problems; [ood_design.md](./ood_design.md) — class modelling, SOLID and design patterns for the LLD round; [iterator.md](./iterator.md) — the iterator contract in isolation; [hash_map.md](./hash_map.md) and [heap.md](./heap.md) — the structures most designs combine.
+> **See also**: [design_examples.md](./design_examples.md) — the designs, one problem card each; [design_patterns.md](./design_patterns.md) — consistent hashing, rate limiters and load balancing, asked in the same rounds but not LC problems; [ood_design.md](./ood_design.md) — class modelling, SOLID and design patterns for the LLD round; [iterator.md](./iterator.md) — the iterator contract in isolation; [hash_map.md](./hash_map.md) and [heap.md](./heap.md) — the structures most designs combine.
 
 ## LeetCode Problem Lists
 
@@ -23,12 +23,12 @@
 
 #### Pattern 1: HashMap + LinkedList
 - **Use Case**: Order-sensitive operations (LRU, LFU, insertion order)
-- **Examples**: LRU Cache, LFU Cache, Insert Delete GetRandom O(1)
+- **Examples**: LRU Cache, LFU Cache, All O(1) Data Structure
 - **Key Point**: HashMap provides O(1) lookup, LinkedList provides O(1) ordering operations
 
 #### Pattern 2: HashMap + Heap
 - **Use Case**: Priority-based operations, top-k problems
-- **Examples**: Design Twitter, Top K Frequent Elements in stream
+- **Examples**: Design Twitter, Find Median from Data Stream, Kth Largest Element in a Stream
 - **Key Point**: HashMap tracks data, Heap maintains priority order
 
 #### Pattern 3: Trie (Prefix Tree)
@@ -43,8 +43,33 @@
 
 #### Pattern 5: Stream/Queue Based
 - **Use Case**: Real-time data processing, moving window operations
-- **Examples**: Moving Average, Hit Counter, Rate Limiter
+- **Examples**: Moving Average, Hit Counter, Snake Game, Rate Limiter
 - **Key Point**: Deque or Queue for time-window based operations
+
+#### Pattern 6: HashMap + Array (Swap-to-End Delete)
+- **Use Case**: O(1) insert and delete **plus** a uniformly random element
+- **Examples**: Insert Delete GetRandom O(1), the same with duplicates (LC 381)
+- **Key Point**: the array gives random access by index; the map gives the index of a value; delete swaps the victim with the last element so the array stays contiguous
+
+#### Pattern 7: Stack + Auxiliary State
+- **Use Case**: a stack that must also answer an aggregate (min, pending increment, max frequency) in O(1)
+- **Examples**: Min Stack, Design a Stack With Increment Operation, Maximum Frequency Stack
+- **Key Point**: store the aggregate per layer, so it is pushed and popped with the element it describes ([stack.md § Template 4](./stack.md#template-4-min-stack--o1-getmin--lc-155-))
+
+#### Pattern 8: Sorted Map / Time Index
+- **Use Case**: queries that need order: the neighbour before or after x, overlaps, ranges, "the value as of time t"
+- **Examples**: My Calendar I / II / III, Range Module, Time Based Key-Value Store, Stock Price Fluctuation
+- **Key Point**: a sorted map (`TreeMap`, `SortedList`, or a sorted list + `bisect`) answers floor / ceiling in O(log n); a hash map has no order, so the same query degrades to O(n)
+
+#### Pattern 9: Path Hierarchy
+- **Use Case**: a hierarchy addressed by a path or a fixed-width key (files, directories, timestamps)
+- **Examples**: Design File System, Design In-Memory File System, Design Log Storage System
+- **Key Point**: a map keyed by the full path when only exact paths are queried; a trie of path components when a prefix must be listed (`ls`)
+
+#### Pattern 10: Aggregate Counters Updated on Write
+- **Use Case**: the read is a summary (who won, an average) that a scan would make slow
+- **Examples**: Design Tic-Tac-Toe, Design Underground System
+- **Key Point**: keep the summary's ingredients (line sums, a total and a count) and update them on every write, so every read is O(1)
 
 ## 1) General form
 
@@ -218,17 +243,17 @@ statement first, then pick the pair.
 
 | Every operation must be… | The pair | Why neither half is enough alone | Worked at |
 |---|---|---|---|
-| O(1) get *and* O(1) eviction by recency | **hash map + doubly linked list** | the map finds the node; only a doubly linked node can unlink itself in O(1) | [1) LRU](./design_examples.md#1-lru-cache--lc-146-) |
-| O(1) get *and* O(1) eviction by frequency | **hash map + map of frequency → linked list** | frequency turns eviction into "the head of the smallest non-empty bucket" | [2) LFU](./design_examples.md#2-lfu-cache--lc-460-) (`OrderedDict` buckets; the hand-built lists and the `min_freq` rule are in [linked_list.md](./linked_list.md#lfu-variant--one-list-per-frequency-plus-a-min_freq-pointer-lc-460-)), [3) All O(1)](./design_examples.md#3-all-o1-data-structure--lc-432-) |
-| O(1) insert, delete *and* **uniform random** | **hash map + array, with swap-to-end deletion** | random needs contiguous indices; delete needs a lookup — the swap keeps both | [4) Insert Delete GetRandom](./design_examples.md#4-insert-delete-getrandom-o1--lc-380-) |
-| O(1) push/pop *plus* O(1) min, max or count | **stack + a parallel stack of the aggregate** | the aggregate is only valid for a prefix of the stack, so it must be pushed and popped with it | [6) Min Stack](./design_examples.md#6-stack--auxiliary-state--o1-min-and-lazy-increment-lc-155--lc-1381-) |
-| ordered queries — floor, ceiling, ranges | **balanced BST / TreeMap** (`SortedDict`, `TreeMap`) | a hash map has no order, so overlap and neighbour queries degrade to O(n) | [7) Ordered Map](./design_examples.md#7-ordered-map-treemap-for-booking--interval-design--lc-715--729--731--732--2034-) |
-| running median, or "k-th largest so far" | **two heaps** (max-heap of the low half, min-heap of the high half) | keeping the halves balanced puts the answer at the two roots | [8) Two Heaps](./design_examples.md#8-two-heaps--running-median-lc-295-) |
-| lookup "as of time T" | **hash map → sorted list + binary search** | values are appended in time order, so the search is over an already-sorted list | [9) Time Based KV](./design_examples.md#9-time-based-key-value-store--lc-981) |
-| counting over a sliding time window | **deque or a circular buffer of buckets** | expired entries leave from the front while new ones arrive at the back | [10) Hit Counter](./design_examples.md#10-design-hit-counter--lc-362) |
-| prefix / wildcard matching on strings | **trie**, optionally with a heap or cached top-k per node | O(L) in the query length instead of O(n·L) over all words | [11) Autocomplete](./design_examples.md#11-design-search-autocomplete-system--lc-642), [12) Add and Search Words](./design_examples.md#12-design-add-and-search-words-data-structure--lc-211) |
-| a feed merged from k followed sources | **hash map + heap over per-source cursors** | merge k sorted lists, but lazily — you only need the first `n` | [16) Design Twitter](./design_examples.md#16-design-twitter--lc-355) |
-| a hierarchy addressed by path | **trie of path components**, or a map keyed by the full path | the choice is exactly whether `ls` on a prefix must be supported | [13)](./design_examples.md#13-design-file-system--lc-1166), [14)](./design_examples.md#14-design-in-memory-file-system--lc-588) |
+| O(1) get *and* O(1) eviction by recency | **hash map + doubly linked list** | the map finds the node; only a doubly linked node can unlink itself in O(1) | [linked_list § Template 7](./linked_list.md#template-7-hash-map--doubly-linked-list-lru--lc-146-) |
+| O(1) get *and* O(1) eviction by frequency | **hash map + map of frequency → linked list** | frequency turns eviction into "the head of the smallest non-empty bucket" | [LFU](./linked_list.md#lfu-variant--one-list-per-frequency-plus-a-min_freq-pointer-lc-460-) (hand-built lists and the `OrderedDict` form), [All O(1)](./design_examples.md#all-o1-data-structure--lc-432-) |
+| O(1) insert, delete *and* **uniform random** | **hash map + array, with swap-to-end deletion** | random needs contiguous indices; delete needs a lookup — the swap keeps both | [Insert Delete GetRandom](./set_examples.md#11-insert-delete-getrandom-o1--lc-380--set-semantics-array-storage-) |
+| O(1) push/pop *plus* O(1) min, max or count | **stack + a parallel stack of the aggregate** | the aggregate is only valid for a prefix of the stack, so it must be pushed and popped with it | [Min Stack](./stack.md#template-4-min-stack--o1-getmin--lc-155-), [increment](./design_examples.md#design-a-stack-with-increment-operation--lc-1381) |
+| ordered queries — floor, ceiling, ranges | **balanced BST / TreeMap** (`SortedDict`, `TreeMap`) | a hash map has no order, so overlap and neighbour queries degrade to O(n) | [My Calendar](./design_examples.md#my-calendar-i--lc-729), [Range Module](./design_examples.md#range-module--lc-715) |
+| running median, or "k-th largest so far" | **two heaps** (max-heap of the low half, min-heap of the high half) | keeping the halves balanced puts the answer at the two roots | [heap § Template 4](./heap.md#template-4-two-heaps-for-a-running-median--lc-295-) |
+| lookup "as of time T" | **hash map → sorted list + binary search** | values are appended in time order, so the search is over an already-sorted list | [Time Based KV](./design_examples.md#time-based-key-value-store--lc-981) |
+| counting over a sliding time window | **deque or a circular buffer of buckets** | expired entries leave from the front while new ones arrive at the back | [Hit Counter](./design_examples.md#design-hit-counter--lc-362) |
+| prefix / wildcard matching on strings | **trie**, optionally with a heap or cached top-k per node | O(L) in the query length instead of O(n·L) over all words | [Autocomplete](./design_examples.md#design-search-autocomplete-system--lc-642), [Add and Search Words](./trie.md#template-3-trie-with-wildcard-support--lc-211) |
+| a feed merged from k followed sources | **hash map + heap over per-source cursors** | merge k sorted lists, but lazily — you only need the first `n` | [Design Twitter](./design_examples.md#design-twitter--lc-355) |
+| a hierarchy addressed by path | **trie of path components**, or a map keyed by the full path | the choice is exactly whether `ls` on a prefix must be supported | [File System](./design_examples.md#design-file-system--lc-1166), [In-Memory File System](./design_examples.md#design-in-memory-file-system--lc-588) |
 
 ### The four questions to ask before writing a line
 
@@ -245,17 +270,20 @@ statement first, then pick the pair.
 
 ## 3) Worked Examples
 
-Twenty designs, grouped by the structure pair each one forces, live in
-**[design_examples.md](./design_examples.md)**:
+The designs are problem cards in **[design_examples.md](./design_examples.md)**, one section per
+pattern above; its [Index](./design_examples.md#index) lists every problem with the card it
+reduces to.
 
-| Group | Problems |
+| Pattern | Problems |
 |---|---|
-| [Caches & eviction policies](./design_examples.md#caches--eviction-policies) | LC 146, 460, 432, 380 |
-| [Stacks with auxiliary state](./design_examples.md#stacks-with-auxiliary-state) | LC 895, 155, 1381 |
-| [Ordered maps, heaps & time windows](./design_examples.md#ordered-maps-heaps--time-windows) | LC 715, 729, 731, 732, 2034, 295, 981, 362 |
-| [Tries & prefix search](./design_examples.md#tries--prefix-search) | LC 642, 211 |
-| [File systems & paths](./design_examples.md#file-systems--paths) | LC 1166, 588, 635 |
-| [Feeds, games & simulation](./design_examples.md#feeds-games--simulation) | LC 355, 348, 353, 1396 |
+| [HashMap + linked list](./design_examples.md#hashmap--linked-list-examples) | LC 432 (LC 146, 460 worked in [linked_list.md](./linked_list.md#template-7-hash-map--doubly-linked-list-lru--lc-146-)) |
+| [HashMap + heap](./design_examples.md#hashmap--heap-examples) | LC 355 (LC 295 worked in [heap.md](./heap.md#template-4-two-heaps-for-a-running-median--lc-295-)) |
+| [Trie](./design_examples.md#trie-examples) | LC 642 (LC 211 worked in [trie.md](./trie.md#template-3-trie-with-wildcard-support--lc-211)) |
+| [Stream / queue](./design_examples.md#stream--queue-examples) | LC 362, 353 |
+| [Stack + auxiliary state](./design_examples.md#stack--auxiliary-state-examples) | LC 1381, 895 (LC 155 worked in [stack.md](./stack.md#template-4-min-stack--o1-getmin--lc-155-)) |
+| [Sorted map / time index](./design_examples.md#sorted-map--time-index-examples) | LC 981, 729, 731, 732, 715 |
+| [Path hierarchy](./design_examples.md#path-hierarchy-examples) | LC 1166, 635, 588 |
+| [Aggregate counters](./design_examples.md#aggregate-counter-examples) | LC 348, 1396 |
 
 ## 4) System Design Coding Patterns
 

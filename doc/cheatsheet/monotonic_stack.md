@@ -686,26 +686,7 @@ def largest_rectangle_area(heights):
 ## LC Examples
 
 ### 2-1) Daily Temperatures (LC 739) — Monotonic Decreasing Stack
-> Stack stores indices; pop when a warmer day is found.
-
-```java
-// LC 739 - Daily Temperatures
-// IDEA: Monotonic decreasing stack — pop when current > stack top
-// time = O(N), space = O(N)
-public int[] dailyTemperatures(int[] temperatures) {
-    int n = temperatures.length;
-    int[] ans = new int[n];
-    Deque<Integer> stack = new ArrayDeque<>(); // stores indices
-    for (int i = 0; i < n; i++) {
-        while (!stack.isEmpty() && temperatures[i] > temperatures[stack.peek()]) {
-            int idx = stack.pop();
-            ans[idx] = i - idx;
-        }
-        stack.push(i);
-    }
-    return ans;
-}
-```
+> Worked in [stack.md § Template 3](./stack.md#template-3-monotonic-stack--next-greater--smaller--lc-739-), whose anchor it is: Python and Java, a dry run and the `<` vs `<=` trap.
 
 ### 2-2) Largest Rectangle in Histogram (LC 84) — Monotonic Increasing Stack
 > Pop a bar when a shorter bar arrives; compute area using width from stack.
@@ -888,6 +869,54 @@ public int[] nextGreaterElements(int[] nums) {
 }
 ```
 
+```python
+# python
+# LC 503 - Next Greater Element II (circular array)
+# IDEA: walk 2n indices with i % n; only the first lap pushes, the second lap only answers
+# time = O(n), space = O(n)
+def nextGreaterElements(nums):
+    n = len(nums)
+    res = [-1] * n                    # -1 = no greater element anywhere around the circle
+    stack = []                        # indices still waiting, values strictly decreasing
+    for i in range(2 * n):            # the second lap lets an element find an answer that wraps
+        val = nums[i % n]
+        while stack and nums[stack[-1]] < val:
+            res[stack.pop()] = val
+        if i < n:
+            stack.append(i)           # only the first lap pushes; the second only answers
+    return res
+```
+
+**Variant — right to left, read the answer off the top.** Walk the doubled array backwards and
+keep a stack of *candidate values* to the right; pop everything `<=` the current value (it is
+now blocked for everything further left), and whatever survives on top is the answer. Same O(n);
+it is the form to reach for when the answer is needed at the moment the element is visited.
+
+```python
+# python
+# LC 503 - Next Greater Element II, right to left
+# IDEA: stack of candidate values to the right, strictly decreasing; the surviving top is the answer
+# time = O(n), space = O(n)
+def nextGreaterElements(nums):
+    n = len(nums)
+    res = [-1] * n
+    stack = []                        # candidate values to the right, strictly decreasing
+    for i in range(2 * n - 1, -1, -1):
+        val = nums[i % n]
+        while stack and stack[-1] <= val:
+            stack.pop()               # not greater than val, and val now blocks it for everything left
+        if stack:
+            res[i % n] = stack[-1]    # the survivor on top is the next greater value
+        stack.append(val)
+    return res
+```
+
+**Pitfalls**
+- Pushing on the second lap too: an index `i ≥ n` popped later writes `res[i]` out of range.
+  Either guard the push with `i < n` or push `i % n`.
+- Equal values are not "greater": `[5, 5, 5]` is `[-1, -1, -1]`, so pop on strict `<` (or keep
+  `<=` in the right-to-left form).
+
 ### 2-6) Online Stock Span (LC 901) — Monotonic Decreasing Stack
 > Pop all previous prices <= current; span = days since last greater price.
 
@@ -907,6 +936,42 @@ class StockSpanner {
     }
 }
 ```
+
+```python
+# python
+# LC 901 - Online Stock Span
+# IDEA: decreasing stack of [price, span]; a pop absorbs the popped entry's whole span
+# time = O(1) amortized per call, space = O(n)
+class StockSpanner(object):
+    def __init__(self):
+        self.stack = []               # [price, span], prices strictly decreasing bottom -> top
+
+    def next(self, price):
+        span = 1                      # today counts
+        while self.stack and self.stack[-1][0] <= price:
+            span += self.stack.pop()[1]   # absorb a whole block of days at once
+        self.stack.append([price, span])
+        return span
+```
+
+**Dry run** — each entry carries the span it already absorbed, so one pop adds a whole block of days:
+
+```text
+price   pops (span absorbed)       stack after (top last)          span
+100     -                          [100,1]                         1
+80      -                          [100,1] [80,1]                  1
+60      -                          [100,1] [80,1] [60,1]           1
+70      60 (+1)                    [100,1] [80,1] [70,2]           2
+60      -                          [100,1] [80,1] [70,2] [60,1]    1
+75      60 (+1), 70 (+2)           [100,1] [80,1] [75,4]           4
+85      75 (+4), 80 (+1)           [100,1] [85,6]                  6
+```
+
+**Pitfalls**
+- Popping on strict `<`: equal prices count toward the span ("less than **or equal to**"), so
+  `[7, 7]` must give `[1, 2]`.
+- Storing only prices: the popped days then have to be recounted, which is the O(n²) scan the
+  stack exists to avoid. Carry the span on the entry.
 
 ### 2-7) Sum of Subarray Minimums (LC 907) — Monotonic Stack
 > For each element, find left/right boundaries where it is the minimum; use monotonic stack.
@@ -1024,8 +1089,69 @@ right = [1, 3, 2, 1]   (symmetric backward pass with strict >)
 contribution = 3*1*1 + 1*2*3 + 2*1*2 + 4*1*1 = 3 + 6 + 4 + 4 = 17  ✓
 ```
 
+**Variant — carry the count on the stack (the LC 901 move).** Instead of storing indices and
+subtracting boundaries, each entry carries how many positions it already covers; a pop adds the
+popped entry's count to the newcomer's. No index arithmetic and no empty-stack branch, and it is
+the same accumulation as [§2-6](#2-6-online-stock-span-lc-901--monotonic-decreasing-stack)'s
+spans. The asymmetry moves too: strict on the left here, non-strict on the right.
+
+```python
+# python
+# LC 907 - Sum of Subarray Minimums, count-carrying stacks
+# IDEA: left[i] / right[i] accumulate the counts of the entries arr[i] pops, like stock spans
+# time = O(n), space = O(n)
+def sumSubarrayMins(arr):
+    MOD = 10**9 + 7
+    n = len(arr)
+    left, right = [0] * n, [0] * n
+    stack = []                        # [value, count of positions it covers]
+    for i in range(n):
+        count = 1
+        while stack and stack[-1][0] > arr[i]:      # strict: an equal value to the left stops it
+            count += stack.pop()[1]
+        left[i] = count
+        stack.append([arr[i], count])
+    stack = []
+    for i in range(n - 1, -1, -1):
+        count = 1
+        while stack and stack[-1][0] >= arr[i]:     # non-strict on the other side
+            count += stack.pop()[1]
+        right[i] = count
+        stack.append([arr[i], count])
+    total = 0
+    for i in range(n):
+        total += arr[i] * left[i] * right[i]
+    return total % MOD
+```
+
 ### 2-8) Remove K Digits (LC 402) — Monotonic Increasing Stack
 > Maintain increasing stack; remove digits when a smaller digit arrives.
+
+A high-place digit outweighs every digit after it, so a bigger digit sitting **before** a
+smaller one is the costliest thing in the number: drop it while removals remain. Three phases:
+**scan and pop** (pop a larger top while `k > 0`, then push), **cut the tail** (if `k` is left
+over the kept digits are non-decreasing, so the largest are at the end), and **clean up** (strip
+leading zeros; empty means `"0"`).
+
+```python
+# python
+# LC 402 - Remove K Digits
+# IDEA: non-decreasing stack; pop a larger digit before a smaller one while removals remain
+# time = O(n), space = O(n)
+def removeKdigits(num, k):
+    stack = []                        # digits kept so far, non-decreasing bottom -> top
+    for digit in num:
+        # a bigger digit before a smaller one costs more than any later digit: drop it
+        while k > 0 and stack and stack[-1] > digit:
+            stack.pop()
+            k -= 1
+        stack.append(digit)
+    while k > 0:                      # removals left over: the tail holds the biggest digits
+        stack.pop()
+        k -= 1
+    res = "".join(stack).lstrip("0")  # strip leading zeros
+    return res if res else "0"
+```
 
 ```java
 // LC 402 - Remove K Digits
@@ -1053,6 +1179,111 @@ public String removeKdigits(String num, int k) {
     return sb.length() == 0 ? "0" : sb.toString();
 }
 ```
+
+```text
+num = "1432219", k = 3
+digit  pops (k after)        stack
+1      -                     1
+4      -                     1 4
+3      4 (k=2)               1 3
+2      3 (k=1)               1 2
+2      -                     1 2 2
+1      2 (k=0)               1 2 1
+9      -  (k spent)          1 2 1 9      -> "1219"
+```
+
+**Pitfalls**
+- Leftover removals come off the **tail**: `"12345"`, k = 2 is `"123"`; nothing ever popped.
+- Leading zeros: `"10200"`, k = 1 leaves `"0200"`, which must print as `"200"`.
+- Removing every digit (`"10"`, k = 2) leaves an empty string; the answer is `"0"`.
+
+### 2-8-1) Remove Duplicate Letters — LC 316
+
+> **Key point** — LC 402's greedy pop with the removal budget replaced by a guard: a bigger letter
+> on top may be popped only if it **appears again later** (`last[top] > i`), because popping its
+> last copy would lose it for good. A letter already on the stack is skipped, since it already sits
+> as early as the rules allow. LC 1081 is the same problem.
+
+**Reduces to**: [Template 2](#template-2-next-smaller-element-increasing-stack--lc-84) — an
+increasing stack, popped by a smaller arrival, as in [§2-8](#2-8-remove-k-digits-lc-402--monotonic-increasing-stack).
+
+```python
+# python
+# LC 316 - Remove Duplicate Letters
+# IDEA: increasing stack; pop a bigger top only while a later copy of it still exists
+# time = O(n), space = O(1)  (26 letters)
+def removeDuplicateLetters(s):
+    last = {}
+    for i, ch in enumerate(s):
+        last[ch] = i                  # the last index where each letter appears
+    stack = []                        # the answer so far, kept as small as the rules allow
+    in_stack = set()
+    for i, ch in enumerate(s):
+        if ch in in_stack:
+            continue                  # already placed, and placed as early as it can be
+        # a bigger letter on top can wait for a later copy of itself
+        while stack and stack[-1] > ch and last[stack[-1]] > i:
+            in_stack.remove(stack.pop())
+        stack.append(ch)
+        in_stack.add(ch)
+    return "".join(stack)
+```
+
+```java
+// java
+// LC 316 - Remove Duplicate Letters
+// IDEA: increasing stack; pop a bigger top only while a later copy of it still exists
+// time = O(n), space = O(1)  (26 letters)
+public String removeDuplicateLetters(String s) {
+    int[] last = new int[26];
+    for (int i = 0; i < s.length(); i++) {
+        last[s.charAt(i) - 'a'] = i;              // the last index of each letter
+    }
+    boolean[] inStack = new boolean[26];
+    Deque<Character> stack = new ArrayDeque<>();
+    for (int i = 0; i < s.length(); i++) {
+        char c = s.charAt(i);
+        if (inStack[c - 'a']) {
+            continue;                             // already placed
+        }
+        while (!stack.isEmpty() && stack.peek() > c && last[stack.peek() - 'a'] > i) {
+            inStack[stack.pop() - 'a'] = false;   // a later copy will put it back
+        }
+        stack.push(c);
+        inStack[c - 'a'] = true;
+    }
+    StringBuilder sb = new StringBuilder();
+    while (!stack.isEmpty()) {
+        sb.append(stack.pollLast());              // bottom -> top is left -> right
+    }
+    return sb.toString();
+}
+```
+
+**Dry run**
+
+```text
+s = "cbacdcbc"   last: a=2 b=6 c=7 d=4
+i  ch   action                                    stack
+0  c    push                                      c
+1  b    c > b and c again at 7 -> pop c; push b   b
+2  a    b > a and b again at 6 -> pop b; push a   a
+3  c    push                                      a c
+4  d    push                                      a c d
+5  c    already on the stack -> skip              a c d
+6  b    d > b but d's last copy was 4 -> stop     a c d b
+7  c    already on the stack -> skip              a c d b      -> "acdb"
+```
+
+**Traps**
+- Popping without the `last[top] > i` guard: `"cbacdcbc"` would pop `d` at `i = 6` and return
+  `"acb"`, which has lost the only `d`.
+- No skip for a letter already on the stack: `"bcabc"` would push the second `b` and `c` again.
+- A heap instead of a stack picks the smallest letter regardless of position and breaks the
+  relative order the answer must keep.
+
+**Similar** — LC 1081 (identical) · LC 402 (budget `k` instead of the last-occurrence guard) ·
+LC 1673 (keep exactly `k`, smallest result)
 
 ### 2-9) Maximal Rectangle (LC 85) — Histogram + Monotonic Stack
 > For each row, compute histogram heights; apply LC 84 largest rectangle logic per row.
@@ -1275,28 +1506,7 @@ def getCollisionTimes(cars):
 So the honest one-liner for an interviewer: *"853 and 4045 are the same right-to-left greedy — the usual stack solution for 853 never pops, so I will keep the running maximum instead. 1776 is where the stack earns its place, because an already-computed answer can be invalidated."*
 
 ### 2-11) Asteroid Collision (LC 735) — Stack Simulation
-> Right-moving asteroids stay on stack; left-moving collide with top until stable.
-
-```java
-// LC 735 - Asteroid Collision
-// IDEA: Stack — simulate collisions between right (+) and left (-) asteroids
-// time = O(N), space = O(N)
-public int[] asteroidCollision(int[] asteroids) {
-    Deque<Integer> stack = new ArrayDeque<>();
-    for (int a : asteroids) {
-        boolean alive = true;
-        while (alive && a < 0 && !stack.isEmpty() && stack.peek() > 0) {
-            if (stack.peek() < -a) { stack.pop(); }      // stack top destroyed
-            else if (stack.peek() == -a) { stack.pop(); alive = false; } // both destroyed
-            else alive = false;                             // incoming destroyed
-        }
-        if (alive) stack.push(a);
-    }
-    int[] res = new int[stack.size()];
-    for (int i = res.length - 1; i >= 0; i--) res[i] = stack.pop();
-    return res;
-}
-```
+> Not a monotonic stack — a plain stack of survivors. Worked in [stack_examples.md § Asteroid Collision](./stack_examples.md#asteroid-collision--lc-735).
 
 ### 2-12) Sum of Subarray Ranges (LC 2104) — Dual Monotonic Stack (Contribution Method)
 
@@ -1504,144 +1714,10 @@ The same `(i − L) × (R − i)` count also works **without a stack**, where th
 | Sum of Subsequence Widths | 891 | Subsequences, not subarrays: sort, then `nums[i]` is the max of `2^i` and the min of `2^(n−1−i)` |
 
 ### 2-13) Longest Absolute File Path (LC 388) — Stack Indexed by Nesting Depth ⭐⭐⭐⭐⭐
-
-> **Template 7: depth stack.** The stack is not monotonic by *value* — it is monotonic by **depth**: `stack[d]` always holds the accumulated path length at depth `d`. Before handling a line at depth `d`, pop until `stack.size() == d`, which discards every sibling branch that just ended.
-
-**Key idea**
-```text
-"dir\n\tsub1\n\t\tfile.ext\n\tsub2"
-
-line          depth   pop until size==depth   stack (path lengths, '/' included)
-dir             0     []                      [4]            "dir/"
-  sub1          1     [4]                     [4, 9]         "dir/sub1/"
-    file.ext    2     [4, 9]                  (file → no push, len = 9 + 8 = 17)
-  sub2          1     pop 9 → [4]             [4, 9]
-```
-- `depth` = number of leading `\t`; the name is the rest of the line.
-- A **directory** pushes `parentLen + name.length() + 1` (the `+1` is the `/` separator).
-- A **file** (name contains `.`) never pushes — it only updates the answer with `parentLen + name.length()`.
-
-```java
-// java
-// LC 388 - Longest Absolute File Path
-// IDEA: Stack indexed by nesting depth — stack.peek() = length of the current
-//       directory prefix (with trailing '/'); pop until size == depth to leave sibling branches
-// time = O(N), space = O(D)  // N = input length, D = max depth
-public int lengthLongestPath(String input) {
-    Deque<Integer> stack = new ArrayDeque<>(); // prefix length per depth
-    int maxLen = 0;
-    for (String line : input.split("\n")) {
-        int depth = line.lastIndexOf('\t') + 1;  // tabs are leading & contiguous
-        String name = line.substring(depth);
-        while (stack.size() > depth) stack.pop();          // leave finished branches
-        int parentLen = stack.isEmpty() ? 0 : stack.peek();
-        int curLen = parentLen + name.length();
-        if (name.indexOf('.') >= 0) {
-            maxLen = Math.max(maxLen, curLen);             // file → candidate answer
-        } else {
-            stack.push(curLen + 1);                        // dir → +1 for '/'
-        }
-    }
-    return maxLen;
-}
-```
-
-```python
-# python
-# LC 388 - Longest Absolute File Path
-# IDEA: stack[d] = length of the directory prefix at depth d (trailing '/' counted);
-#       pop until len(stack) == depth so sibling branches are discarded
-# time = O(N), space = O(D)
-def lengthLongestPath(input: str) -> int:
-    stack = []          # prefix length per depth
-    best = 0
-    for line in input.split('\n'):
-        depth = len(line) - len(line.lstrip('\t'))
-        name = line[depth:]
-        while len(stack) > depth:
-            stack.pop()
-        parent = stack[-1] if stack else 0
-        cur = parent + len(name)
-        if '.' in name:
-            best = max(best, cur)      # file
-        else:
-            stack.append(cur + 1)      # dir, +1 for '/'
-    return best
-```
-
-**Pitfalls**
-- The answer is the longest **path to a file**, so never update the max on a directory.
-- Do not compute depth with `line.count('\t')` after slicing — depth must come from the *leading* tabs only.
-- Empty input / no file → return `0`.
+> Not monotonic by value — a stack indexed by nesting depth. Worked in [stack.md § Template 6](./stack.md#template-6-scope--context-ledger--lc-388-lc-636-), whose anchor it is: the trim-to-depth stack in Python and Java, a dry run, and the overwrite-the-depth-slot variant.
 
 ### 2-14) Longest Valid Parentheses (LC 32) — Index Stack with a Base Sentinel ⭐⭐⭐⭐⭐
-
-> **Template 8: stack of indices + sentinel base.** Instead of storing characters, store **indices**, and seed the stack with `-1` as "the index just before the current valid block". After popping on `)`, the new stack top is the last unmatched index, so `i - stack.peek()` is the length of the valid run ending at `i` — no extra length bookkeeping needed.
-
-**Two cases on `)`**
-```text
-pop, then:
-  stack empty  → this ')' is unmatched → push i as the NEW base
-  stack !empty → length = i - stack.top()
-```
-
-**Visual trace on `s = ")()())"`**
-```text
-i=0 ')'  pop -1 → empty → push 0        stack=[0]        best=0
-i=1 '('  push 1                          stack=[0,1]
-i=2 ')'  pop 1 → top=0 → 2-0 = 2         stack=[0]        best=2
-i=3 '('  push 3                          stack=[0,3]
-i=4 ')'  pop 3 → top=0 → 4-0 = 4         stack=[0]        best=4
-i=5 ')'  pop 0 → empty → push 5          stack=[5]        best=4  ✓
-```
-
-```java
-// java
-// LC 32 - Longest Valid Parentheses
-// IDEA: Stack of indices seeded with -1 (base). On ')' pop; if empty this ')' becomes
-//       the new base, else answer candidate = i - stack.peek()
-// time = O(N), space = O(N)
-public int longestValidParentheses(String s) {
-    Deque<Integer> stack = new ArrayDeque<>();
-    stack.push(-1);                 // base = index before the current valid block
-    int best = 0;
-    for (int i = 0; i < s.length(); i++) {
-        if (s.charAt(i) == '(') {
-            stack.push(i);
-        } else {
-            stack.pop();
-            if (stack.isEmpty()) stack.push(i);                 // unmatched ')' → new base
-            else best = Math.max(best, i - stack.peek());
-        }
-    }
-    return best;
-}
-```
-
-```python
-# python
-# LC 32 - Longest Valid Parentheses
-# IDEA: index stack with -1 sentinel; i - stack[-1] = length of valid run ending at i
-# time = O(N), space = O(N)
-def longestValidParentheses(s: str) -> int:
-    stack = [-1]          # base index
-    best = 0
-    for i, c in enumerate(s):
-        if c == '(':
-            stack.append(i)
-        else:
-            stack.pop()
-            if not stack:
-                stack.append(i)               # new base
-            else:
-                best = max(best, i - stack[-1])
-    return best
-```
-
-**Pitfalls**
-- Forgetting the `-1` seed breaks every run that starts at index `0`.
-- The stack holds **indices**, never characters — the whole trick is the index arithmetic.
-- O(1)-space alternative: two passes (left→right, then right→left) with `open`/`close` counters, resetting when `close > open` (resp. `open > close`). That and the 1D DP (`dp[i]` = longest valid run ending at `i`) are written out, tested, in [stack_examples.md §15](./stack_examples.md#15-longest-valid-parentheses--lc-32-).
+> Not monotonic — an index stack with a `-1` base sentinel. Worked in [stack_examples.md § Longest Valid Parentheses](./stack_examples.md#longest-valid-parentheses--lc-32-), with the 1D DP and the O(1)-space counter scans beside it.
 
 ### 2-15) Maximum Binary Tree (LC 654) — Monotonic Decreasing Stack Builds a Cartesian Tree ⭐⭐⭐⭐
 
@@ -1702,60 +1778,7 @@ def constructMaximumBinaryTree(nums):
 **Related:** LC 1008 (Construct BST from Preorder Traversal) uses the mirror idea — a decreasing stack where a larger value becomes the right child of the last popped node.
 
 ### 2-16) Min Stack (LC 155) — Auxiliary Non-Increasing Stack ⭐⭐⭐⭐
-
-> **Template 10: parallel "min stack".** Keep a second stack whose values are **non-increasing**; its top is always the minimum of the live elements. This is the design-problem face of the monotonic stack.
-
-```java
-// java
-// LC 155 - Min Stack
-// IDEA: second stack keeps a non-increasing sequence of minima; push a new min when
-//       val <= current min (the '=' is REQUIRED so duplicates survive matching pops)
-// time = O(1) per op, space = O(N)
-class MinStack {
-    private final Deque<Integer> stack = new ArrayDeque<>();
-    private final Deque<Integer> mins  = new ArrayDeque<>(); // non-increasing
-
-    public void push(int val) {
-        stack.push(val);
-        if (mins.isEmpty() || val <= mins.peek()) mins.push(val);
-    }
-    public void pop() {
-        int v = stack.pop();
-        if (v == mins.peek()) mins.pop();
-    }
-    public int top()    { return stack.peek(); }
-    public int getMin() { return mins.peek(); }
-}
-```
-
-```python
-# python
-# LC 155 - Min Stack
-# IDEA: auxiliary non-increasing stack of minima; '<=' on push keeps duplicate minima
-# time = O(1) per op, space = O(N)
-class MinStack:
-    def __init__(self):
-        self.stack = []
-        self.mins  = []          # non-increasing
-
-    def push(self, val: int) -> None:
-        self.stack.append(val)
-        if not self.mins or val <= self.mins[-1]:
-            self.mins.append(val)
-
-    def pop(self) -> None:
-        if self.stack.pop() == self.mins[-1]:
-            self.mins.pop()
-
-    def top(self) -> int:
-        return self.stack[-1]
-
-    def getMin(self) -> int:
-        return self.mins[-1]
-```
-
-**The classic bug:** pushing the new min only when `val < mins.peek()` (strict). With `push(0); push(0); pop();` the single stored `0` is removed and `getMin()` returns the wrong value. Use `<=`.
-**Space-saving variant:** store `(val, minSoFar)` pairs in one stack — same O(1) ops, simpler to state under interview pressure.
+> Worked in [stack.md § Template 4](./stack.md#template-4-min-stack--o1-getmin--lc-155-), whose anchor it is. The auxiliary non-increasing stack of minima, with its `<=` trap, is the [space-saving variant](./stack.md#space-saving-variant--a-second-stack-of-minima-only) there.
 
 ### 2-17) Variations of Existing Templates
 

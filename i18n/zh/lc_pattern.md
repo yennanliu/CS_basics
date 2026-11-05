@@ -20,7 +20,7 @@
 
 一個模式一列。**Card** 欄連到解錨定題的那個模板；題目本身放在該 cheatsheet 的 examples 裡。
 
-<!-- 0db1db5cfa59 -->
+<!-- 0891bbc6b68e -->
 ### 陣列與字串
 
 | 敘述裡的訊號 | 限制提示 | 模式 | Card | 長得像，其實不是 |
@@ -28,7 +28,7 @@
 | 「最長／最短的連續子陣列或子字串」、「最多 k 種相異元素」 | n ≤ 10⁵ | 可變長度滑動視窗 | [sliding_window § Template 3](./sliding_window.md#template-3-longest-window-satisfying-p--lc-3-)（最長）、[Template 4](./sliding_window.md#template-4-shortest-window-satisfying-p--lc-209-)（最短） | 要剛好的總和 `sum == k`、而且值可能是負的 → 前綴和 + 雜湊表（LC 560） |
 | 「包含 t 所有字元的最短子字串」、在 s 裡找 t 的 anagram／排列 | n ≤ 10⁵，字母表 26–128 | 字元計數視窗 | [sliding_window § Template 5](./sliding_window.md#template-5-char-count-window-with-the-haveneed-counter--lc-76-) | 要的是子序列、不是子字串 → 雙指標（LC 392） |
 | 「剛好 k 個 … 的子陣列有幾個」 | n ≤ 10⁵ | 剛好 k = 最多 k − 最多 (k−1) | [sliding_window § Template 6](./sliding_window.md#template-6-exactly-k-via-at-most-subtraction--lc-992-) | 值可能是負的 → 前綴和 + 雜湊表 |
-| 「總和為 k／可被 k 整除的子陣列有幾個」 | n ≤ 10⁵，允許負數 | 前綴和 + 計數 map | [prefix_sum § Template 2](./prefix_sum.md#template-2-hashmap--prefix-sum-subarray-target-sum--lc-560) | 值全部是正的、要最長／最短 → 滑動視窗 |
+| 「總和為 k／可被 k 整除的子陣列有幾個」 | n ≤ 10⁵，允許負數 | 前綴和 + 計數 map | [hash_map § Template 4](./hash_map.md#template-4-prefix-sum-count-map--lc-560-) | 值全部是正的、要最長／最短 → 滑動視窗 |
 | 「大量的區間和查詢」 | q ≤ 10⁵ | 前綴和陣列 | [prefix_sum § Template 1](./prefix_sum.md#template-1-basic-prefix-sum-range-queries--lc-303) | 查詢之間陣列會變 → Fenwick／線段樹（LC 307） |
 | 「把 [l, r] 每個元素加上 v」，做很多次 | n、更新次數 ≤ 10⁵ | 差分陣列 | [difference_array § Template 1](./difference_array.md#template-1-basic-difference-array) | 每次更新後都要讀最大值 → 帶 lazy propagation 的線段樹 |
 | **已排序**陣列上「和為 target 的一對／三元組」、「盛水容器」、「回文檢查」 | n ≤ 10⁵ | 相向雙指標 | [2_pointers § Template 2](./2_pointers.md#template-2-converging-pointers-from-both-ends--lc-11-) | 沒排序、而且要回傳索引 → 雜湊表（LC 1） |

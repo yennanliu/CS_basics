@@ -1,8 +1,8 @@
-<!-- afb8deac2112 -->
+<!-- cf8e6e95503b -->
 # 堆積與優先佇列
 
 > **範圍** — 堆積（heap，這個資料結構）以及它所實作的優先佇列（priority queue，這個抽象資料型別），Python 與 Java 兩種語言。本檔案原本拆成 `heap.md` + `priority_queue.md`，兩邊把同樣的題目各解了一遍。
-> **另見** — *從本檔案拆出去的深入主題*：[heap_advanced.md](./heap_advanced.md) — 延遲刪除、掃描線的「存活」堆積、後悔貪婪、資源池配置器、格子圖最佳優先搜尋；[heap_examples.md](./heap_examples.md) — 完整解過的 LC 題庫，每題每語言一份標準解；[heap_language_apis.md](./heap_language_apis.md) — 完整的 `heapq` / `PriorityQueue` API 參考，以及「不 pop 就 peek」的規則。
+> **另見** — *從本檔案拆出去的深入主題*：[heap_advanced.md](./heap_advanced.md) — 延遲刪除、掃描線的「存活」堆積、後悔貪婪、資源池配置器、格子圖最佳優先搜尋；[heap_examples.md](./heap_examples.md) — 題目集，每題都歸到下面它所化約成的模板之下；[heap_language_apis.md](./heap_language_apis.md) — 完整的 `heapq` / `PriorityQueue` API 參考，以及「不 pop 就 peek」的規則。
 > *鄰近文件*：[priority_queue.md](./priority_queue.md) — 轉址用的 stub；[monotonic_queue.md](./monotonic_queue.md) — 什麼時候滑動視窗極值用雙端佇列比堆積好；[Dijkstra.md](./Dijkstra.md) — 最經典的優先佇列演算法；[streaming_algorithms.md](./streaming_algorithms.md) — 串流上的 top-k；[sort.md](./sort.md) — 放在排序脈絡下的堆積排序。
 
 <!-- b869f594d6e2 -->
@@ -82,14 +82,14 @@
 - **範例**：LC 239、480、1438 - Sliding Window Maximum、Sliding Median、Longest Subarray
 - **模式**：用堆積搭配延遲刪除，或用雙端佇列追蹤極值
 
-<!-- 76559c5df81f -->
+<!-- cd2f57c3ea0c -->
 #### **模式 5：排程問題**
 - **描述**：依優先權／時間安排任務或事件
 - **範例**：LC 1353、502、630、621、1834 - Max Events、IPO、Course Schedule III、Task Scheduler、Single-Threaded CPU
 - **模式**：用堆積依開始／結束時間或優先權維護事件
 - **關鍵洞察（時間掃描 + 截止期限堆積）**：依視窗**起點**排序，讓元素按時間順序進堆積；堆積依視窗**終點**排序，這樣每個時間格都服務**最急迫（最早截止）**的元素；過期的堆頂用延遲刪除清掉
-- **特徵**：*「每單位時間只能處理一件事」* + *「每件事有有效區間／截止期限」* → 見 [heap_examples.md § LC 1353](./heap_examples.md#7-maximum-number-of-events-that-can-be-attended--lc-1353)
-- **陷阱**：**不要**套用 LC 253 的計數掃描。在那題裡 `[1,3]` 是*佔用*第 1～3 天；在這裡它只花掉 `{1,2,3}` 中的**一天**，而且每天最多一個事件 — 所以用最大重疊數會高估（`[[1,1],[1,1],[1,1]]` → 掃描得 3，答案是 1）。見 [heap_examples.md § LC 1353](./heap_examples.md#7-maximum-number-of-events-that-can-be-attended--lc-1353)
+- **特徵**：*「每單位時間只能處理一件事」* + *「每件事有有效區間／截止期限」* → 見 [scanning_line_examples.md § LC 1353](./scanning_line_examples.md#5-maximum-number-of-events-that-can-be-attended--lc-1353-)
+- **陷阱**：**不要**套用 LC 253 的計數掃描。在那題裡 `[1,3]` 是*佔用*第 1～3 天；在這裡它只花掉 `{1,2,3}` 中的**一天**，而且每天最多一個事件 — 所以用最大重疊數會高估（`[[1,1],[1,1],[1,1]]` → 掃描得 3，答案是 1）。見 [scanning_line_examples.md § LC 1353](./scanning_line_examples.md#5-maximum-number-of-events-that-can-be-attended--lc-1353-)
 
 <!-- 1692ad150603 -->
 #### **模式 6：資料串流問題**
@@ -105,7 +105,7 @@
 - **關鍵洞察**：一般 BFS 每個格子要 O(N²)；用優先佇列可降到每格 O(log N)
 - **相似題**：LC 778（Swim in Rising Water）、LC 1631（Path With Minimum Effort）
 
-<!-- 47a523b8fcb8 -->
+<!-- c1eda9cfb897 -->
 #### **模式 8：延遲刪除（堆積中的過期資料）** ⭐⭐⭐⭐⭐
 - **描述**：堆積裡的值後來會被**更新／失效**，但二元堆積沒有
   「decrease-key」／「移除任意元素」的操作 — 所以我們直接 push 新值，把舊的留在裡面
@@ -114,7 +114,7 @@
   只在*讀取時*清理堆頂，而且只清*到堆頂有效為止*
 - **關鍵洞察**：你從來不去堆積裡搜尋過期資料。你只檢查 `heap[0]`，
   而每筆過期資料整段執行下來最多被 pop 一次 → 攤還 O(log n)
-- **另見**：[heap_advanced.md § 延遲刪除](./heap_advanced.md#1-lazy-deletion--heap--hashmap-of-truth-) · [heap_examples.md § LC 3092](./heap_examples.md#18-most-frequent-ids--lc-3092)
+- **另見**：[heap_advanced.md § 延遲刪除](./heap_advanced.md#1-lazy-deletion--heap--hashmap-of-truth-)，其中完整走過 LC 3092
 - **同時要兩個極值**（LC 2034）：把堆積做成鏡像 — 一份真值對照表，加上存同樣 `(price, ts)` 的
   最大堆積與最小堆積，兩邊用同一個判定清理 →
   [heap_advanced.md § LC 2034 變形](./heap_advanced.md#variant--two-mirrored-lazy-heaps-over-one-map-lc-2034-)
@@ -262,7 +262,7 @@ k 遠小於 n → 預期的複雜度是 O(n log k)。
 **練習** — LC 215 ⭐ · LC 703 *（同一個堆積，跨多次呼叫保留）* · LC 1985 *（key = `(len, s)`）* ·
 LC 1337 *（key = `(soldiers, row)`）* · LC 378 *（有序矩陣中第 k 小 — 或用模板 3）*
 
-<!-- eb720d8bca97 -->
+<!-- d068954649e3 -->
 ### 模板 2：先計數，再對計數用大小為 k 的堆積 — LC 347 ⭐⭐⭐⭐
 
 **辨識** — 「出現最頻繁的 k 個」、「前 k 個單字」、「最接近的 k 個點」：排名用的 key 是
@@ -289,13 +289,19 @@ LC 1337 *（key = `(soldiers, row)`）* · LC 378 *（有序矩陣中第 k 小 �
 - 自訂物件的堆積：Python 需要在類別上定義 `__lt__`（或用 tuple key）；Java 需要用
   `Integer.compare` 建的比較器，絕不能用 `a - b`。
 
+**第二種解法 — 依計數做桶排序，O(n)。** 計數最多是 n，所以用計數當桶的索引，
+由高往低讀：不需要比較排序，也不需要堆積。這是 LC 347 追問（「比 O(n log n) 更好」）的答案；
+堆積仍是 V0，因為當 key 不是小整數（LC 973 的距離）或輸入是串流時，它照樣能用。
+
+<!--CODE-->
+
 **不是這個，如果** — k 接近 n 且計數上限為 n：依頻率做桶排序是 O(n)
-（LC 347 的追問）。沒有 k、只是「全部依 key 排序」的靜態題，直接用 `sorted` 就好。
+（即上面的第二種解法）。沒有 k、只是「全部依 key 排序」的靜態題，直接用 `sorted` 就好。
 
 **練習** — LC 347 ⭐ · LC 973 *（key = 距離平方）* · LC 692 *（反向決勝）* ·
 LC 451 *（輸出 `char * freq`）* · LC 1338 *（一直 pop 最頻繁的，直到刪掉一半）*
 
-<!-- a3c883389bad -->
+<!-- a837b76ac6fa -->
 ### 模板 3：K 路合併 — LC 23 ⭐⭐⭐⭐⭐
 
 **辨識** — 「合併 k 個有序串列／陣列」、「涵蓋 k 個串列的最小範圍」、「第 k 小的配對／有序矩陣中第 k 小」。
@@ -322,6 +328,13 @@ k 個來源、總共 N 個元素 → O(N log k)。
   `dummy.next`（也就是 `None`）。
 - 若是陣列，就 push `(value, source, index)` 並前進到 `index + 1` — 形狀相同，
   只是原本的 `next` 指標換成了索引。
+
+**第二種解法 — 兩兩分治合併，不用堆積。** 先把串列兩兩合併，再把結果兩兩合併，
+就像合併排序由下往上的各層。總共 log k 輪、每輪碰到全部 N 個節點，所以同樣是 O(N log k)，
+額外空間是 O(1) 而不是堆積的 O(k)。把串列一個接一個併進同一個結果是陷阱寫法：
+第一個串列會被重走 k 次，O(kN)。
+
+<!--CODE-->
 
 **不是這個，如果** — 只有兩個來源：一般的雙指標合併就是 O(N)，不需要堆積。若答案只是
 單一的第 k 個元素、而來源是矩陣的各列，對值域做二分搜尋可能勝過堆積（LC 378）。
@@ -416,7 +429,7 @@ O(N) 解 LC 1438 —
 **練習** — LC 1438 ⭐ · LC 1696 *（堆積存 `dp[j]`；當 `j < i − k` 時 pop）* ·
 LC 1499 *（key 為 `y − x`；依**座標** `x_j − x_top > k` 過期）* · LC 480 *（中位數，雙堆積 + 延遲刪除）*
 
-<!-- 8c4a591c9228 -->
+<!-- 0b76891b2458 -->
 ### 模板 6：結束時間的 Min-Heap — LC 253 ⭐⭐⭐⭐
 
 **辨識** — 「最少需要幾間會議室／月台／組」、「同一時間最多有幾個區間重疊」。
@@ -448,7 +461,7 @@ n ≤ 10⁴–10⁵ 個區間 → 排序 + 堆積，O(n log n)。
 <!--CODE-->
 
 LC 1353 的 Python 版本，以及「跳日 vs 逐日掃描」的取捨分析：
-[heap_examples.md § LC 1353](./heap_examples.md#7-maximum-number-of-events-that-can-be-attended--lc-1353)。
+[scanning_line_examples.md § LC 1353](./scanning_line_examples.md#5-maximum-number-of-events-that-can-be-attended--lc-1353-)。
 
 **練習** — LC 252 *（一間：到底有沒有任何重疊？）* · LC 253 ⭐ · LC 1094 *（容量，不是
 會議室）* · LC 2406 *（組數 = 會議室數）* · LC 1353 *（每個事件一天）* · LC 1834 *（單執行緒
@@ -486,7 +499,7 @@ CPU：兩種排序）*
 **練習** — LC 1405 · LC 767 *（上限為 1）* · LC 1054 *（數字版的 LC 767）* · LC 984 *（兩種字母，
 不需要堆積）*
 
-<!-- df198a2bd97e -->
+<!-- 2ca3e07b556c -->
 ### 模板 8：Max-Heap + 冷卻佇列 — LC 358
 
 **辨識** — 「相同字母／任務至少相隔 k」、「相同任務之間冷卻 n」。
@@ -515,7 +528,7 @@ CPU：兩種排序）*
 
 **不是這個，如果** — 只問排程的**長度**（LC 621 Task Scheduler）：答案是
 `max(n_tasks, (maxCount − 1) × (cooldown + 1) + numberOfTasksWithMaxCount)`，O(n)、不需要
-堆積。只有需要實際順序時才用這個模板模擬。
+堆積（[heap_examples.md § LC 621](./heap_examples.md#task-scheduler--lc-621-)）。只有需要實際順序時才用這個模板模擬。
 
 **練習** — LC 767 *（k = 2）* · LC 621 ⭐ *（數閒置格；或用公式）* · LC 358 ·
 LC 1953 *（只問「做不做得到？」）*

@@ -17,10 +17,10 @@
 | Java `PriorityQueue` templates 1–12 | [heap.md → Templates & Algorithms](./heap.md#templates--algorithms) — paired with the Python templates |
 | Python `heapq` templates | [heap.md → the pattern cards](./heap.md#templates--algorithms) |
 | `PriorityQueue` API / peek without popping | [heap_language_apis.md](./heap_language_apis.md#java-priorityqueue) — the full API reference; [heap.md → Language APIs](./heap.md#language-apis) keeps the one-screen table |
-| Classic LC problems with Java solutions | [heap_examples.md → LC Examples](./heap_examples.md#lc-examples) |
+| Classic LC problems, filed by template | [heap_examples.md → Index](./heap_examples.md#index) |
 | PQ pattern → problem mapping | [heap.md → Decision Table](./heap.md#decision-table--which-heap-pattern) |
 | Window max **and** min under a limit (LC 1438) | [heap.md → Template 5: Two Heaps with Index Expiry](./heap.md#template-5-two-heaps-with-index-expiry--lc-1438-) — two heaps + lazy deletion, both shrink forms; the O(N) two-deque version is [monotonic_queue.md → Template 7](./monotonic_queue.md#template-7-two-deques--window-max-and-min-under-a-limit-lc-1438-) |
-| Greedy + PQ scheduling (LC 1353 Max Events, and why the LC 253 sweep does not transfer) | [heap_examples.md → LC 1353](./heap_examples.md#7-maximum-number-of-events-that-can-be-attended--lc-1353) — core idea, pattern table, similar LC; [heap.md → Pattern 5](./heap.md#problem-categories) for the one-line signature |
+| Greedy + PQ scheduling (LC 1353 Max Events, and why the LC 253 sweep does not transfer) | [scanning_line_examples.md → LC 1353](./scanning_line_examples.md#5-maximum-number-of-events-that-can-be-attended--lc-1353-) — core idea, pattern table, similar LC; [heap.md → Pattern 5](./heap.md#problem-categories) for the one-line signature |
 
 ## See also
 
