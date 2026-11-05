@@ -57,7 +57,7 @@
 
 ---
 
-<!-- befd1d4a1e0a -->
+<!-- 4f90ede2125a -->
 ## 題型分類
 
 **模式 1：最小化最大值**
@@ -69,7 +69,7 @@
 
 **模式 2：最大化最小值**
 - 目標：找出讓某個最小值 ≥ X 的最大 X
-- 更新：`if valid: left = mid`（試更大的），並用偏上的 mid `mid = (l + r + 1) // 2`（Java：`(l + r + 1) / 2`），迴圈才一定會前進
+- 更新：`if valid: left = mid`（試更大的），並用偏上的 mid `mid = (l + r + 1) // 2`（Java：`(int) (((long) l + r + 1) / 2)`，加總才不會溢位），迴圈才一定會前進
 - 例題：**LC 1231**（Divide Chocolate）、LC 1552、LC 2064、LC 2226
 - 關鍵：貪婪驗證 — 我們能不能切出足夠多、每份都 ≥ target 的片段／群組？
 - **為什麼二分搜尋成立**：單調性 — X 越小越容易滿足
@@ -560,7 +560,7 @@ LC 367、LC 441 與 LC 1060 則在 [binary_search_examples.md](./binary_search_e
 
 ---
 
-<!-- 3874fd6006d3 -->
+<!-- d290cf520d7f -->
 ## 模式選擇策略
 
 **如何辨識：**
@@ -578,7 +578,7 @@ LC 367、LC 441 與 LC 1060 則在 [binary_search_examples.md](./binary_search_e
 
 3. **邊界更新寫錯**
    - 最小化：`right = mid`（不是 `mid - 1`）
-   - 最大化：`left = mid`，搭配偏上的 mid `(l + r + 1) // 2`（Java：`/ 2`）
+   - 最大化：`left = mid`，搭配偏上的 mid `(l + r + 1) // 2`（Java：`(int) (((long) l + r + 1) / 2)`）
 
 4. **驗證函式效率不佳**
    - 在驗證函式裡加上提早結束
