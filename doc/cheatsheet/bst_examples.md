@@ -21,9 +21,10 @@ on any binary tree, so it lives in [tree_lca_distance.md](./tree_lca_distance.md
 | LC | Problem | Reduces to | Difficulty |
 |---|---|---|---|
 | 776 | [Split BST](#split-bst--lc-776) | [bst § Template 3b](./bst.md#template-3b-trim-to-a-range--lc-669-) — keep both sides instead of discarding one | Medium |
+| 938 | [Range Sum of BST](#range-sum-of-bst--lc-938) | [bst § Template 3b](./bst.md#template-3b-trim-to-a-range--lc-669-) — sum the in-range values instead of reattaching them | Easy |
 | 98 | Validate Binary Search Tree — worked in [bst § Template 4](./bst.md#template-4-validate-with-bounds--lc-98), with the iterative form | [bst § Template 4](./bst.md#template-4-validate-with-bounds--lc-98) | Medium |
 | 449 | [Serialize and Deserialize BST](#serialize-and-deserialize-bst--lc-449) | [bst § Template 4](./bst.md#template-4-validate-with-bounds--lc-98) — the bounds decide where each preorder value goes | Medium |
-| 538 | Convert BST to Greater Tree — worked in [bst § Template 5](./bst.md#pattern-reverse-inorder-for-descending) | [bst § Template 5](./bst.md#template-5-in-order-walk-is-sorted--lc-230), reversed | Medium |
+| 538 | [Convert BST to Greater Tree](#convert-bst-to-greater-tree--lc-538) | [bst § Template 5](./bst.md#template-5-in-order-walk-is-sorted--lc-230), reversed | Medium |
 | 1038 | Binary Search Tree to Greater Sum Tree — the same problem as LC 538, the same code | [bst § Template 5](./bst.md#template-5-in-order-walk-is-sorted--lc-230), reversed | Medium |
 | 173 | Binary Search Tree Iterator — worked in [bst_advanced § Template 1](./bst_advanced.md#template-1-lazy-in-order-iterator--lc-173-) | [bst § Template 5](./bst.md#template-5-in-order-walk-is-sorted--lc-230), paused between calls | Medium |
 
@@ -97,6 +98,30 @@ small tree [2,1]          big tree [4,3,6,null,null,5,7]
 | Trim | 669 | every node outside `[low, high]` | one root |
 | Split | 776 | none | two roots |
 
+### Range Sum of BST — LC 938
+
+> **Key point** — the same three-way pruning as `trimBST`: an out-of-range root rules out a whole
+> side, so only the combine step changes, from reattaching children to adding values.
+
+**Reduces to**: [bst § Template 3b](./bst.md#template-3b-trim-to-a-range--lc-669-) — sum instead of restructure.
+
+```python
+# python
+# IDEA: Template 3b's pruning; add the in-range values instead of reattaching them
+# time = O(n), space = O(h)
+# LC 938 - Range Sum of BST
+def rangeSumBST(root, low, high):
+    if not root:
+        return 0
+    if root.val < low:                    # nothing on the left can be in range
+        return rangeSumBST(root.right, low, high)
+    if root.val > high:                   # nothing on the right can be in range
+        return rangeSumBST(root.left, low, high)
+    return (root.val
+            + rangeSumBST(root.left, low, high)
+            + rangeSumBST(root.right, low, high))
+```
+
 ## Validate with Bounds Examples
 
 ### Serialize and Deserialize BST — LC 449
@@ -152,3 +177,33 @@ class Codec:
   writes roughly twice as many tokens. Say why the bounds make the markers unnecessary.
 
 **Similar** — LC 1008 (the deserialize half on its own, [bst_advanced § Template 4](./bst_advanced.md#template-4-preorder-build-with-bounds--lc-1008)) · LC 297 (any binary tree: markers are needed)
+
+## In-order Walk Examples
+
+### Convert BST to Greater Tree — LC 538
+
+> **Key point** — right → node → left visits values in descending order, so a running sum turns
+> each node into the sum of every value greater than or equal to it. LC 1038 is the same problem.
+
+**Reduces to**: [bst § Template 5](./bst.md#template-5-in-order-walk-is-sorted--lc-230), reversed ([Reverse Inorder for Descending](./bst.md#pattern-reverse-inorder-for-descending)).
+
+```python
+# python
+# IDEA: reverse in-order (right, node, left) with a running sum of the values seen so far
+# time = O(n), space = O(h)
+# LC 538 - Convert BST to Greater Tree
+class Solution(object):
+    def convertBST(self, root):
+        self.running = 0
+
+        def reverse_inorder(node):
+            if not node:
+                return
+            reverse_inorder(node.right)   # larger values first
+            self.running += node.val
+            node.val = self.running
+            reverse_inorder(node.left)
+
+        reverse_inorder(root)
+        return root
+```
