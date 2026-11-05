@@ -41,7 +41,7 @@
   },
 
   "startHere": [
-    { "file": "lc_pattern",             "why": "Triage: given a problem, which pattern does it want?" },
+    { "file": "lc_pattern",             "why": "The front door: signal in the statement → pattern → the card that solves it." },
     { "file": "complexity_cheatsheet",  "why": "You will be asked to state complexity in every round." },
     { "file": "array",                  "why": "In-place rewriting and the index-as-hash trick." },
     { "file": "hash_map",               "why": "The single most-used structure in interviews." },
@@ -98,7 +98,7 @@
     },
 
     "startHere": {
-      "lc_pattern":            "分診：拿到一題，它想要的是哪個模式？",
+      "lc_pattern":            "入口：題目裡的訊號 → 模式 → 解它的那張 card。",
       "complexity_cheatsheet": "每一輪面試都會被要求說出複雜度。",
       "array":                 "原地改寫，以及「用索引當雜湊」的技巧。",
       "hash_map":              "面試中使用率最高的單一資料結構。",

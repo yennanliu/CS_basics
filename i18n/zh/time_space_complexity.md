@@ -23,11 +23,10 @@
 
 <!--CODE-->
 
-<!-- 0c74d3cd73b5 -->
+<!-- ebd69b71a57d -->
 ### 「n 對應到多少複雜度才合理」的量尺 ⭐⭐⭐⭐⭐
 
-<!--CODE-->
-> 規則：一台機器每秒約做 10^8 次簡單運算。如果 `n × (每次運算的工作量) > 10^8`，就準備 TLE。
+量尺只放在一個地方：[complexity_cheatsheet.md § 6](./complexity_cheatsheet.md#6-interview-decision-guide) — `n ≤ 20` 對應 O(2^n)，`n ≤ 10^5` 對應 O(n log n)，每秒約 10^8 次簡單運算是預算。
 
 <!-- 39768c1fe295 -->
 ### 面試官最愛的兩個複雜度陷阱 ⭐⭐⭐⭐⭐

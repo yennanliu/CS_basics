@@ -29,16 +29,7 @@
 
 ### The "n vs reasonable complexity" ruler ⭐⭐⭐⭐⭐
 
-```text
-n ≤ 10        → O(n!) / O(2^n)     backtracking, permutations
-n ≤ 20        → O(2^n)             bitmask DP, subsets
-n ≤ 100       → O(n³)              Floyd-Warshall, 3-nested DP
-n ≤ 1,000     → O(n²)              nested loops, naive DP
-n ≤ 100,000   → O(n log n)         sort, heap, balanced BST
-n ≤ 1,000,000 → O(n)               single/two pass, sliding window, hashmap
-n ≥ 10^9      → O(log n) / O(√n)   binary search, math
-```
-> Rule: a machine does ~10^8 simple ops/sec. If `n × (per-op work) > 10^8`, expect TLE.
+The ruler lives in one place: [complexity_cheatsheet.md § 6](./complexity_cheatsheet.md#6-interview-decision-guide) — `n ≤ 20` invites O(2^n), `n ≤ 10^5` invites O(n log n), and ~10^8 simple ops per second is the budget.
 
 ### Two complexity traps interviewers love ⭐⭐⭐⭐⭐
 

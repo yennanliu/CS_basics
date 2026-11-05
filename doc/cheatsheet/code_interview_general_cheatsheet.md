@@ -6,5 +6,5 @@
 ## Where it went
 
 A 33-line checklist on its own page is a page nobody opens. It now leads
-[**lc_pattern.md**](./lc_pattern.md#-0-before-you-pick-a-pattern--the-six-step-loop), where choosing
+[**lc_pattern.md**](./lc_pattern.md#before-you-pick-a-pattern--the-six-step-loop), where choosing
 the pattern is step 3 of the six — which is the point the checklist was making.
