@@ -307,7 +307,9 @@ def restoreIpAddresses(s):
 # python
 # LC 140 - Word Break II
 # IDEA: cut at every dictionary prefix; memoise the sentences of each suffix by its start index
-# time = O(n^2 + output), space = O(n + output)   output can be exponential in n
+# time = O(n^3) for the n x n slices of up to n chars, plus building every cached sentence
+#        (exponential in n in the worst case); space = O(n^2) chars in memo even for one answer
+#        ("a" * n with ["a"]: memo[i] holds a sentence of length ~2(n - i)), plus the output
 def wordBreak(s, wordDict):
     words = set(wordDict)                # O(1) membership
     memo = {}                            # start -> every sentence that spells s[start:]

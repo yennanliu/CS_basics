@@ -786,6 +786,10 @@ def repeatedSubstringPattern(s):
 
 ### 2-3) Longest Duplicate Substring (LC 1044)
 
+> **Key point** — a duplicate of length L implies one of length L − 1, so the length is monotone and can be binary searched; each probe hashes every length-L window once and confirms a hash hit by comparing the text.
+
+**Reduces to**: [Rolling Hash Template](#rolling-hash-template) inside a binary search on the length, as in [§ 1-6](#1-6-binary-search-on-length--rolling-hash-over-arrays--lc-718-) (LC 718).
+
 ```python
 # python
 # LC 1044 - Longest Duplicate Substring

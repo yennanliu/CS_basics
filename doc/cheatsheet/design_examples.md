@@ -551,7 +551,7 @@ class FreqStack {
 > **Key point** — `set` is called with strictly increasing timestamps, so each key's list is
 > **already sorted by time**; `get` is a binary search for the last entry with time ≤ t.
 
-**Reduces to**: [design § Pattern 8](./design.md#pattern-8-sorted-map--time-index) — a hash map to a time-sorted list; the "floor" query is `bisect_right - 1`. The Java binary-search form is in [binary_search_examples.md](./binary_search_examples.md).
+**Reduces to**: [design § Pattern 8](./design.md#pattern-8-sorted-map--time-index) — a hash map to a time-sorted list; the "floor" query is `bisect_right - 1`.
 
 ```python
 # python
@@ -573,6 +573,38 @@ class TimeMap:
     def get(self, key, timestamp):
         i = bisect.bisect_right(self.times[key], timestamp) - 1   # last time <= timestamp
         return self.values[key][i] if i >= 0 else ""
+```
+
+```java
+// java
+// LC 981 - Time Based Key-Value Store
+// IDEA: key -> list of (time, value) appended in time order; get = binary search for the last time <= t
+// time = O(1) set, O(log n) get; space = O(n)
+class TimeMap {
+    private final Map<String, List<Integer>> times = new HashMap<>();
+    private final Map<String, List<String>> values = new HashMap<>();
+
+    public void set(String key, String value, int timestamp) {
+        times.computeIfAbsent(key, k -> new ArrayList<>()).add(timestamp);
+        values.computeIfAbsent(key, k -> new ArrayList<>()).add(value);
+    }
+
+    public String get(String key, int timestamp) {
+        List<Integer> ts = times.get(key);
+        if (ts == null) return "";
+        int lo = 0, hi = ts.size() - 1, found = -1;
+        while (lo <= hi) {                      // last index with ts[i] <= timestamp
+            int mid = lo + (hi - lo) / 2;
+            if (ts.get(mid) <= timestamp) {
+                found = mid;
+                lo = mid + 1;
+            } else {
+                hi = mid - 1;
+            }
+        }
+        return found == -1 ? "" : values.get(key).get(found);
+    }
+}
 ```
 
 **Traps**

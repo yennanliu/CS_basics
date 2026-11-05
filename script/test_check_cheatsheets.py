@@ -65,6 +65,27 @@ class CodeRules(unittest.TestCase):
         # only inside java fences
         self.assertNotIn("java-sub-comparator", counts("x.md", "(a, b) -> a - b\n"))
 
+    def test_java_sub_comparator_every_shape(self):
+        bad = {
+            "no spaces": "Arrays.sort(x, (a, b) -> a[0]-b[0]);",
+            "typed params": "Arrays.sort(x, (int[] p, int[] q) -> p[1]-q[1]);",
+            "block lambda, one line": "list.sort((a, b) -> { return b - a; });",
+            "block lambda, several lines": "pq = new PriorityQueue<>((a, b) -> {\n    if (a[0] != b[0]) return a[0] - b[0];\n    return 0;\n});",
+            "expression on the next line": "pq = new PriorityQueue<>((a, b) ->\n    b[1] - a[1]);",
+            "anonymous Comparator": "new Comparator<Integer>() {\n  public int compare(Integer o1, Integer o2) {\n    return o1 - o2;\n  }\n}",
+        }
+        for name, code in bad.items():
+            with self.subTest(name):
+                self.assertEqual(counts("x.md", F + "java\n" + code + "\n" + F + "\n").get("java-sub-comparator"), 1)
+        good = [
+            "list.sort((a, b) -> {\n  int d = a - 1;\n  return Integer.compare(a, b);\n});",
+            "IntStream.range(0, n).map(i -> n - i);",
+            "map.merge(k, 1, (o, n) -> o + n);",
+        ]
+        for code in good:
+            with self.subTest(code):
+                self.assertNotIn("java-sub-comparator", counts("x.md", F + "java\n" + code + "\n" + F + "\n"))
+
     def test_py_float_mid(self):
         bad = F + "python\nmid = (left + right) / 2\n" + F
         good = F + "python\nmid = (left + right) // 2\n# mid = (l + r) / 2 is wrong\n" + F
@@ -130,11 +151,17 @@ class RealTree(unittest.TestCase):
         self.assertEqual(worse, [], "the tree regressed against data/cheatsheet_lint_baseline.json")
 
     def test_rules_still_match_something(self):
-        # The corpus had hundreds of each of these when the gate landed. A rule
-        # that drops to zero overnight more likely broke than got fixed.
+        # A rule that drops to zero overnight more likely broke than got fixed —
+        # unless the baseline agrees it is zero. So every rule the baseline still
+        # holds findings for must still find them, and at least one rule must.
         cur = c.survey()
-        for rule in ("note-wall", "code-first-example", "examples-no-index"):
+        base = c.load_baseline(c.BASELINE)
+        live = [r for r in c.RULES if sum(base[r].values())]
+        self.assertTrue(live, "the baseline holds no findings at all")
+        for rule in live:
             self.assertGreater(sum(cur[rule].values()), 0, rule)
+        # and the matcher itself still fires on a known-bad line
+        self.assertEqual(c.count_file("x.md", "# NOTE !!! x\n", 0).get("note-wall"), 1)
 
     def test_baseline_names_every_rule(self):
         with open(c.BASELINE, encoding="utf-8") as fh:

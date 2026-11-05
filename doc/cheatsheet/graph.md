@@ -797,7 +797,7 @@ Use union-find ([Template 3](#template-3-union-find-with-path-compression--lc-68
 that returns False is the cycle) or pass the parent down. Only "is there a cycle" for a set of
 prerequisites → Kahn ([Template 4](#template-4-topological-sort-kahns-bfs--lc-207-)).
 
-**Drill** — LC 207 ⭐ *(a cycle means the courses cannot be finished)* · LC 802 · LC 1059 *(every
+**Drill** — LC 802 · LC 207 ⭐ *(a cycle means the courses cannot be finished)* · LC 1059 *(every
 path ends at the destination)* · LC 2360 *(longest cycle when out-degree ≤ 1)*
 
 #### Second solution: Kahn's on the reversed graph

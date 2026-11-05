@@ -462,6 +462,40 @@ def possibleBipartition(n, dislikes):
     return True
 ```
 
+```java
+// java
+// LC 886 - Possible Bipartition
+// IDEA: parity DSU; union a with twin(b) and b with twin(a); a and b already joined -> odd cycle
+// time = O((n + m) * α(n)), space = O(n)
+class Solution {
+    private int[] parent;
+
+    public boolean possibleBipartition(int n, int[][] dislikes) {
+        parent = new int[2 * (n + 1)];                    // people 1..n, twins n+1..2n+1
+        for (int i = 0; i < parent.length; i++) parent[i] = i;
+        for (int[] d : dislikes) {
+            int a = d[0], b = d[1];
+            if (find(a) == find(b)) return false;         // forced into the same group already
+            union(a, b + n + 1);                          // a joins b's opposite
+            union(b, a + n + 1);                          // b joins a's opposite
+        }
+        return true;
+    }
+
+    private int find(int x) {
+        while (parent[x] != x) {
+            parent[x] = parent[parent[x]];                // path halving
+            x = parent[x];
+        }
+        return x;
+    }
+
+    private void union(int x, int y) {
+        parent[find(x)] = find(y);
+    }
+}
+```
+
 **Complexity**
 - **Time O((n + m)·α(n))**: each of the m pairs does two `find`s and two `union`s; path halving
   keeps each near constant.
@@ -477,7 +511,7 @@ def possibleBipartition(n, dislikes):
 answer an interviewer expects, and it can also return the two groups. The full BFS solution of
 LC 886 is in [graph_examples.md](./graph_examples.md).
 
-**Drill** — LC 785 · LC 886 ⭐ · LC 990 *(equalities first, then inequalities: plain DSU, no
+**Drill** — LC 886 ⭐ · LC 785 · LC 990 *(equalities first, then inequalities: plain DSU, no
 twins)*
 
 ### Template 4: Bipartite Matching by Augmenting Paths (Kuhn) — LC 1820

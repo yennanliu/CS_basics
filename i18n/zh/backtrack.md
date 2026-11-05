@@ -605,7 +605,7 @@ mark-and-restore 才會正確；而答案要以*呼叫框（frame）*來想，�
 
 **練習** — LC 51 ⭐ · LC 52 *（只計數：不用棋盤）* · LC 1001 *（同樣的對角線鍵，改成查詢）*
 
-<!-- 45f5693dda3b -->
+<!-- f804f6df2960 -->
 ### Template 11: Sudoku Solver — LC 37
 
 **辨識** — 「填滿空格，使每一列、每一行與每個 3×3 宮格都剛好包含 1–9」、「輸入**剛好只有一個**解」。盤面固定 9×9。
@@ -628,7 +628,7 @@ mark-and-restore 才會正確；而答案要以*呼叫框（frame）*來想，�
 **不適用的情況** — 單純回溯在盤面上太慢（更難的變體、或很多盤面）：放下一個數字就把它**傳播**到同伴格，
 某格候選歸零就立刻失敗 —— [backtrack_advanced.md](./backtrack_advanced.md#template-4-constraint-propagation-early-termination)。
 
-**練習** — LC 36 *（只做合法性檢查）* · LC 37 ⭐ · LC 51 *（同樣每條限制一個集合的想法）*
+**練習** — LC 37 ⭐ · LC 36 *（只做合法性檢查）* · LC 51 *（同樣每條限制一個集合的想法）*
 
 <!-- f159a62e66f1 -->
 ### Template 12: Pruning at the Choice — LC 526 ⭐⭐⭐⭐
@@ -703,7 +703,7 @@ mark-and-restore 才會正確；而答案要以*呼叫框（frame）*來想，�
 > `max(nums) > target` 就直接失敗、先由**大到小**排序，以及復原之後
 > `if buckets[i] == 0: break`（再去試第二個*空*桶只是把同一種分法換個標籤）。
 
-<!-- ea36ca2144bc -->
+<!-- 5ca083fa7b9d -->
 ### Template 14: When to Undo — Mutable vs Immutable State — LC 113 ⭐⭐⭐⭐
 
 **辨識** — 任何沿著遞迴往下帶著**兩種**狀態的回溯：一個累計的數字（總和、長度、深度），和一個集合
@@ -751,7 +751,7 @@ mark-and-restore 才會正確；而答案要以*呼叫框（frame）*來想，�
 —— [tree_backtrack.md](./tree_backtrack.md) 用的就是這種形式。代價是每次呼叫 O(n) 的複製，換掉的是「共用一個 list 加回溯」。
 另見 [python_trick.md §1-54](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/python_trick.md)。
 
-**練習** — LC 112 *（不用保留路徑：完全不需要復原）* · LC 113 ⭐ · LC 257 *（字串路徑：不可變，不用復原）* · LC 1219 *（可變的格子標記：必須復原）*
+**練習** — LC 113 ⭐ · LC 112 *（不用保留路徑：完全不需要復原）* · LC 257 *（字串路徑：不可變，不用復原）* · LC 1219 *（可變的格子標記：必須復原）*
 
 <!-- 4848549f9b2b -->
 ## 練習路徑
