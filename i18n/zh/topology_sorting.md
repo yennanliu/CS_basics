@@ -293,7 +293,7 @@ O(m·n)。當格子大到遞迴可能爆堆疊，或面試官明確要求用拓�
 
 <!--CODE-->
 
-<!-- 8769ebf9334d -->
+<!-- 6c6fcc50a1e6 -->
 #### 變化 C — 先替每條邊定向，再讀度數（全域掃描）：LC 4085 Find Root of a Colored Tree
 
 **轉折**：邊是**無向**給的，所以還沒有入度可以數。題目要找一個根，直覺做法是把每個節點都當成根、各跑一次
@@ -340,7 +340,7 @@ DFS 檢查，那是 O(n²)，n = 10⁵ 時會超時。**全域掃描**改成對�
 | 685 Redundant Connection II | Hard | 有向邊；`in == 2` 的節點指出兩條候選刪除邊，再用 union-find 挑一條 |
 | 1791 Find Center of Star Graph | Easy | 無向；中心就是任兩條邊共用的節點，是不用定向的度數指紋 |
 | 310 Minimum Height Trees | Medium | 「每個根都試」的題目，但**沒有**局部規則；改用剝葉子（模板 7） |
-| 834 Sum of Distances in Tree | Hard | 需要**每個**根的答案時，用換根 DP（[tree.md](./tree.md#re-rooting-dp--answer-for-every-root)） |
+| 834 Sum of Distances in Tree | Hard | 需要**每個**根的答案時，用換根 DP（[tree.md](./tree.md#template-3-re-rooting-dp--lc-834)） |
 
 <!-- 4fb16e93a633 -->
 ## 題目分類

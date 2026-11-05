@@ -23,6 +23,21 @@ return value, and whether you are allowed to walk **upward** to a parent.
 - **When to Use**: the answer is a path, a distance, or a meeting point rather than a subtree property
 - **Sentinel rule**: a distance helper must return `-1` (not `0`) for "not found", because `0` is a valid distance
 
+## Recognition
+
+The constraint cues come from the ruler in [complexity_cheatsheet.md](./complexity_cheatsheet.md); every one here asks for a single O(N) pass.
+
+| Signal in the statement | Constraint cue | Reach for | Not this if |
+|---|---|---|---|
+| "lowest common ancestor of `p` and `q`", a root is given | nodes ≤ 10⁵ | [Template 1](#template-1-lca-by-returned-presence--lc-236) post-order LCA | the tree is a **BST** → walk down by value in O(h) ([bst.md](./bst.md)) |
+| "LCA", but the signature has **no root** and nodes carry `parent` | nodes ≤ 10⁵ | [LC 1650 variant](#lca-variant--parent-pointers-no-root-lc-1650-) — two pointers up the parent chains | a root is given → [Template 1](#template-1-lca-by-returned-presence--lc-236) |
+| "smallest subtree containing all the deepest nodes" | nodes ≤ 500 | [LC 865 variant](#lca-variant--smallest-subtree-with-all-deepest-nodes-lc-865--lc-1123-) — return `(depth, node)` | the targets are named → [Template 1](#template-1-lca-by-returned-presence--lc-236) |
+| "all nodes at distance `k` from `target`", "closest leaf to node `k`" | nodes ≤ 500 | [Template 2](#template-2-parent-map--bfs--lc-863) parent map + BFS | distance only **downward** from a known ancestor → [Template 3](#template-3-distance-between-nodes-via-lca--lc-1740) |
+| "number of edges between the nodes with values `p` and `q`" | nodes ≤ 10⁴ | [Template 3](#template-3-distance-between-nodes-via-lca--lc-1740) LCA + `get_dist` twice | every node `k` away → [Template 2](#template-2-parent-map--bfs--lc-863) |
+| "all root-to-leaf paths whose sum is `targetSum`", "return every path" | nodes ≤ 5,000 | [Template 4](#template-4-root-to-leaf-path-with-backtracking--lc-113) pre-order + backtracking | the path may start below the root → [Template 5](#template-5-downward-path-count-with-a-prefix-sum-map--lc-437) |
+| "number of paths that sum to `targetSum`", path "need not start at the root or end at a leaf" | nodes ≤ 1,000, negative values | [Template 5](#template-5-downward-path-count-with-a-prefix-sum-map--lc-437) prefix-sum map | the same question on an **array** → [prefix_sum_advanced.md](./prefix_sum_advanced.md#template-14-prefix-sum-on-a-tree-dfs--hashmap--backtrack---lc-437) |
+| "longest path between any two nodes", "maximum path sum" | nodes ≤ 3 · 10⁴ | post-order height + global max ([5-1)](#5-1-find-paths-with-specific-properties), [binary_tree.md](./binary_tree.md)) | the path must run root → leaf → [Template 4](#template-4-root-to-leaf-path-with-backtracking--lc-113) |
+
 ## Problem Categories
 
 | Category | Question it answers | Template | Examples |
@@ -38,59 +53,88 @@ return value, and whether you are allowed to walk **upward** to a parent.
 
 ## Templates & Algorithms
 
-### 1) Lowest Common Ancestor (LCA) — LC 236
+### Template 1: LCA by Returned Presence — LC 236
+
+**Recognise** — "the lowest common ancestor of two nodes `p` and `q`", "the deepest node that has
+both as descendants (a node may be a descendant of itself)", a root is given and both targets are
+guaranteed to exist. Nodes ≤ 10⁵ → one O(N) pass.
+
+**Key point** — `dfs(node)` returns `p` or `q` if one of them is in `node`'s subtree (or their LCA
+once both are), and `None` otherwise. The first node where **both** calls return non-null is the
+split point, so it is the LCA. When one target is an ancestor of the other, the early `return root`
+on meeting it is already the answer: the other target is somewhere below it.
 
 ```python
-# LC 236 Lowest Common Ancestor of a Binary Tree
-# LC 235 Lowest Common Ancestor of a Binary Search Tree
-# (for LC 1650 -- parent pointers, no root -- see the variant below)
-# V0
-# IDEA : RECURSION + POST ORDER TRANSVERSAL
-### NOTE : we need POST ORDER TRANSVERSAL for this problem
-#          -> left -> right -> root
-#          -> we can make sure that if p == q, then the root must be p and q's "common ancestor"
+# python
+# LC 236 - Lowest Common Ancestor of a Binary Tree
+# IDEA: post-order; each call reports "a target (or their LCA) is below me";
+#       the first node that hears it from both sides is the LCA
+# time = O(N), space = O(H)
 class Solution(object):
     def lowestCommonAncestor(self, root, p, q):
-        ### NOTE here
-        # if not root or find p in tree or find q in tree
-        # -> then we quit the recursion and return root
-        if not root or p == root or q == root:
-            return root
-        ### NOTE here
-        #  -> not root.left, root.right, BUT left, right
+        if not root or root == p or root == q:
+            return root                      # a target, or fell off the tree
         left = self.lowestCommonAncestor(root.left, p, q)
         right = self.lowestCommonAncestor(root.right, p, q)
-        ### NOTE here
-        # find q and p on the same time -> LCA is the current node (root)
-        # if left and right -> p, q MUST in left, right sub tree respectively
-        if left and right:
+        if left and right:                   # p and q split here -> this node is the LCA
             return root
-        ### NOTE here
-        # if p, q both in left sub tree or both in right sub tree
-        return left if left else right
+        return left if left else right       # both on one side: pass that side's answer up
 ```
 
 ```java
 // java
-// algorithm book p. 271
-TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q){
-    // base case
-    if (root == null) return null;
-    if (root == p || root == q) return root;
-    TreeNode left = lowestCommonAncestor(root.left, p, q);
-    TreeNode right = lowestCommonAncestor(root.right, p, q);
-    // case 1
-    if (left != null && right != null){
+// LC 236 - Lowest Common Ancestor of a Binary Tree
+// IDEA: post-order; return the target (or the LCA) found below me, else null
+// time = O(N), space = O(H)
+public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+    if (root == null || root == p || root == q) {
         return root;
     }
-    // case 2
-    if (left == null && right == null){
-        return null;
+    TreeNode left = lowestCommonAncestor(root.left, p, q);
+    TreeNode right = lowestCommonAncestor(root.right, p, q);
+    if (left != null && right != null) {
+        return root;                          // the split point
     }
-    // case 3
-    return left == null ? right: left;
+    return left != null ? left : right;
 }
 ```
+
+**Complexity**
+- **Time O(N)**: the two recursive calls visit each node at most once; the early `return root`
+  only cuts the walk short.
+- **Space O(H)**: the recursion stack, one frame per level — H = N on a skewed tree.
+
+**Dry run** — `root = [3,5,1,6,2,0,8,null,null,7,4]`
+
+```text
+p = 5, q = 1
+dfs(3)   not a target
+  dfs(5) -> 5 is p, return 5        (5's subtree is never searched)
+  dfs(1) -> 1 is q, return 1
+  left = 5, right = 1  -> both non-null -> LCA = 3
+
+p = 5, q = 4
+dfs(3)
+  dfs(5) -> return 5 at once        (4 is below it, unseen)
+  dfs(1) -> None
+  left = 5, right = None -> pass 5 up -> LCA = 5
+```
+
+**Traps**
+- Returning `root` whenever **either** side is non-null: `p = 6, q = 4` makes `dfs(3)` return `3`
+  instead of passing up the `5` it got from the left.
+- The early return assumes both targets exist. With `q` absent (LC 1644), `p = 5, q = 99` still
+  returns `5`; count the hits instead — the LC 1644 code below.
+- Comparing `root.val == p.val` instead of the nodes: fine while values are unique, wrong the moment
+  they repeat. Compare node identity.
+
+**Not this if** — the tree is a **BST**: walk down by value in O(h), never into both subtrees
+([bst.md](./bst.md), and the LC 235 code below). There is **no root** and every node has a
+`parent`: walk up instead ([LC 1650 variant](#lca-variant--parent-pointers-no-root-lc-1650-)).
+
+**Drill** — LC 236 · LC 235 *(BST: walk down)* · LC 1650 *(no root: two pointers up)* · LC 1644
+*(targets may be absent: count hits)* · LC 1676 *(a set of targets)* · LC 865 *(the deepest nodes
+are the implicit targets)*
 
 #### The LCA family — pick the template by **what you are handed** ⭐⭐⭐⭐⭐
 
@@ -394,6 +438,7 @@ def dfs(node):
 ```java
 // java
 // LC 865 / LC 1123 — Smallest Subtree with All the Deepest Nodes
+// IDEA: post-order DFS returning (lca candidate, depth below); equal depths -> this node
 // Same as: LCA of the deepest leaves
 
 // Helper class carries both the LCA candidate and its max depth below
@@ -528,189 +573,123 @@ class Solution(object):
 "deepest / leftmost / level info"    -> BFS level-order              [LC 513, 199]
 ```
 
-### 2) Move Parent Pattern - Bidirectional Tree Traversal
+### Template 2: Parent Map + BFS — LC 863
 
-**Core Concept**: Convert tree to graph by building parent map, then use BFS for multi-directional exploration.
+**Recognise** — "all nodes at distance `k` from `target`", "the leaf closest to node `k`", "minutes
+until the infection reaches every node" — any answer that has to walk **up** to a parent as well as
+down. Nodes ≤ 500 (LC 863), ≤ 10⁵ (LC 2385) → O(N).
 
-#### **Pattern Overview**
-```text
-Standard Tree (Unidirectional)        →    Tree with Parent Map (Bidirectional)
+**Key point** — once every node knows its parent it has at most three neighbours (left, right,
+parent), so the tree is an undirected graph. BFS from `target` reaches nodes in order of edge
+distance, so after `k` rounds the queue holds exactly the nodes `k` edges away; `visited` is what
+stops a walk from going back the way it came.
 
-      1                                          1
-     / \              Build Parent Map          / \
-    2   3             ===============>         2 ← 3
-   / \                                        / \
-  4   5                                      4 ← 5
+```python
+# python
+# LC 863 - All Nodes Distance K in Binary Tree
+# IDEA: record every node's parent, then BFS outward from target over left / right / parent;
+#       the queue after k rounds is the answer
+# time = O(N), space = O(N)
+from collections import deque
 
-Can only go down (left/right)          Can go down (left/right) AND up (parent)
+class Solution(object):
+    def distanceK(self, root, target, k):
+        parent = {root: None}                # node -> parent, keyed by node, not by value
+        stack = [root]
+        while stack:
+            node = stack.pop()
+            for child in (node.left, node.right):
+                if child:
+                    parent[child] = node
+                    stack.append(child)
+
+        visited = {target}
+        queue = deque([target])
+        dist = 0
+        while queue and dist < k:            # one ring per round
+            for _ in range(len(queue)):
+                node = queue.popleft()
+                for nxt in (node.left, node.right, parent[node]):
+                    if nxt and nxt not in visited:
+                        visited.add(nxt)
+                        queue.append(nxt)
+            dist += 1
+        return [node.val for node in queue]  # empty if the tree ran out before k
 ```
-
-#### **LC 863: All Nodes Distance K in Binary Tree**
 
 ```java
 // java
-// IDEA: DFS + Parent Map + BFS
-/**
- * Why this works?
- *
- * Tree → Graph → BFS (visiting)
- *
- * • From target you need to explore all directions reachable in k steps:
- *   left, right, and up (to parent).
- *   Converting the tree to an undirected graph (children + parent edges)
- *   and then running BFS from target to depth k returns the desired nodes.
- *
- * • visited ensures we don't revisit nodes (which would otherwise make the BFS
- *   incorrect/infinite once parent edges are present).
- */
-
+// LC 863 - All Nodes Distance K in Binary Tree
+// IDEA: DFS builds node -> parent; BFS from target over left / right / parent, k rounds
+// time = O(N), space = O(N)
 public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
-    List<Integer> res = new ArrayList<>();
-    // parentMap stores parent pointers for every node (node -> parent)
-    Map<TreeNode, TreeNode> parentMap = new HashMap<>();
+    Map<TreeNode, TreeNode> parent = new HashMap<>();
+    buildParentMap(root, null, parent);
 
-    if (root == null) return res;
-
-    // Step 1: Build parent map for all nodes
-    buildParentMap(root, null, parentMap);
-
-    // Step 2: BFS starting from target, stop at distance k
-    Queue<TreeNode> queue = new LinkedList<>();
     Set<TreeNode> visited = new HashSet<>();
-    queue.offer(target);
+    Deque<TreeNode> queue = new ArrayDeque<>();
     visited.add(target);
+    queue.offer(target);
     int dist = 0;
-
-    /**
-     * • Each loop iteration processes one BFS "level"
-     *   (all nodes at the same distance from target).
-     *
-     * • If current distance dist equals k, the nodes currently
-     *   in queue are exactly the nodes at distance k.
-     */
-    while (!queue.isEmpty()) {
+    while (!queue.isEmpty() && dist < k) {
         int size = queue.size();
-
-        if (dist == k) {
-            // Collect all nodes currently in the queue
-            for (TreeNode node : queue) {
-                res.add(node.val);
-            }
-            break;
-        }
-
-        /**
-         * NOTE!!!
-         * For each node, we visit cur.left, cur.right, and its parent via BFS
-         *
-         * • Process the size nodes of the current level:
-         *   - For each cur, try to move to cur.left, cur.right, and its parent
-         *   - visited.add(node) returns true only if node was not already present
-         *     That both checks and marks in one call
-         *
-         * • After processing the whole level, increment dist and continue
-         */
         for (int i = 0; i < size; i++) {
-            TreeNode cur = queue.poll();
-
-            // Explore neighbors: left, right, parent
-            if (cur.left != null && visited.add(cur.left)) {
-                queue.offer(cur.left);
-            }
-            if (cur.right != null && visited.add(cur.right)) {
-                queue.offer(cur.right);
-            }
-            TreeNode parent = parentMap.get(cur);
-            if (parent != null && visited.add(parent)) {
-                queue.offer(parent);
+            TreeNode node = queue.poll();
+            TreeNode[] neighbours = {node.left, node.right, parent.get(node)};
+            for (TreeNode next : neighbours) {
+                if (next != null && visited.add(next)) {   // add() is false if already seen
+                    queue.offer(next);
+                }
             }
         }
         dist++;
     }
-
+    List<Integer> res = new ArrayList<>();
+    for (TreeNode node : queue) {
+        res.add(node.val);
+    }
     return res;
 }
 
-/**
- * NOTE!!! Helper function to build parent map
- *
- * • We need to be able to move upwards from any node (to parent).
- *   A binary tree node only knows left/right children, so we precompute
- *   parents by a DFS.
- *
- * • Simple DFS that records parent of each node (parentMap.put(node, parent))
- * • For root we pass parent = null
- * • After this every node maps to its parent (or null for root)
- */
-private void buildParentMap(TreeNode node, TreeNode parent,
-                            Map<TreeNode, TreeNode> parentMap) {
-    if (node == null) return;
-
-    parentMap.put(node, parent);
-    buildParentMap(node.left, node, parentMap);
-    buildParentMap(node.right, node, parentMap);
+private void buildParentMap(TreeNode node, TreeNode par, Map<TreeNode, TreeNode> parent) {
+    if (node == null) {
+        return;
+    }
+    parent.put(node, par);                    // the root maps to null
+    buildParentMap(node.left, node, parent);
+    buildParentMap(node.right, node, parent);
 }
 ```
 
-```python
-# python
-# LC 863. All Nodes Distance K in Binary Tree
-from collections import defaultdict, deque
+**Complexity**
+- **Time O(N)**: the parent-map pass visits each node once, and `visited` lets the BFS enqueue each
+  node at most once.
+- **Space O(N)**: the parent map and `visited` each hold every node; the queue holds one ring.
 
-def distanceK(root, target, k):
-    """
-    IDEA: Build bidirectional graph + BFS
+**Dry run** — `root = [3,5,1,6,2,0,8,null,null,7,4]`, `target = 5`, `k = 2`
 
-    Step 1: DFS to build parent-child bidirectional edges
-    Step 2: BFS from target to find all nodes at distance k
-    """
-
-    # Build undirected graph
-    graph = defaultdict(list)
-
-    def build_graph(parent, child):
-        """DFS to build bidirectional edges"""
-        if parent and child:
-            graph[parent.val].append(child.val)
-            graph[child.val].append(parent.val)
-        if child.left:
-            build_graph(child, child.left)
-        if child.right:
-            build_graph(child, child.right)
-
-    # Build graph from root
-    build_graph(None, root)
-
-    # BFS from target
-    queue = deque([(target.val, 0)])
-    visited = {target.val}
-    result = []
-
-    while queue:
-        node_val, dist = queue.popleft()
-
-        if dist == k:
-            result.append(node_val)
-            continue
-
-        # Explore all neighbors (left, right, parent)
-        for neighbor in graph[node_val]:
-            if neighbor not in visited:
-                visited.add(neighbor)
-                queue.append((neighbor, dist + 1))
-
-    return result
+```text
+round 0   queue [5]
+round 1   queue [6, 2, 3]     5's left, right and parent
+round 2   queue [7, 4, 1]     6 adds nothing; 2 adds 7, 4; 3 adds 1 (5 is visited)
+dist == k -> [7, 4, 1]
 ```
 
-#### **Key Points**
-1. **Parent Map Construction**: O(N) time, O(N) space
-2. **BFS Exploration**: O(N) time in worst case
-3. **Visited Set**: Critical to prevent infinite loops
-4. **Applications**:
-   - Distance-based problems
-   - Finding paths between arbitrary nodes
-   - Closest node with property
-   - Problems requiring upward traversal
+**Traps**
+- No `visited` set: from `5` the BFS climbs to `3` and comes straight back down to `5`, so `5`
+  is reported at distance 2 and the rings never stop growing.
+- Keying the map by `node.val`: correct only while values are unique; key it by the node.
+- The root's parent is `None`: without the `if nxt` guard a `None` is enqueued and the next pop
+  fails on `None.left`.
+- `k = 0` must return `[target.val]`, so the loop condition is `dist < k`, checked before a round.
+
+**Not this if** — the distance is only **downward** from a node you already have (the root, or an
+LCA): no map is needed, use [Template 3](#template-3-distance-between-nodes-via-lca--lc-1740)'s
+`get_dist`. Edges carry weights → it is a graph shortest-path problem, not this.
+
+**Drill** — LC 863 · LC 742 *(stop at the first leaf popped)* · LC 2385 *(count the rounds until
+the queue empties)* · LC 1740 *(a distance, but [Template 3](#template-3-distance-between-nodes-via-lca--lc-1740)
+needs no map)*
 
 #### **Pattern Comparison: Standard Tree vs Move Parent**
 
@@ -724,186 +703,122 @@ def distanceK(root, target, k):
 | **Use Cases** | Standard tree problems | Distance, path, multi-directional |
 | **Graph Conversion** | Tree remains tree | Tree → Undirected graph |
 
-#### **Common Mistakes to Avoid**
-1. ❌ Forgetting visited set → infinite loops
-2. ❌ Not handling null parent for root → NPE
-3. ❌ Using DFS instead of BFS for distance → incorrect results
-4. ❌ Building graph with values instead of node references → fails with duplicate values
+### Template 3: Distance Between Nodes via LCA — LC 1740
 
-#### **Move Parent Recipe**
+**Recognise** — "the number of edges on the path between the nodes with values `p` and `q`", a root
+is given, values are unique. Nodes ≤ 10⁴ → O(N).
 
-**Template Structure:**
-```text
-1. Build parent map (DFS preprocessing)
-2. Convert tree to undirected graph (children + parent edges)
-3. BFS from target node, exploring all neighbors (left, right, parent)
-4. Track visited nodes to avoid cycles
-5. Stop at desired distance/condition
-```
-
-### 3) Distance Between Nodes — LC 1740
-
-
-```java
-// java
-// LC 1740 Find Distance in a Binary Tree
-
-// V1
-/**
- *  IDEA of `getPathLen` help func:
- *
- *  🧠 Summary of Logic Flow
- *  1.  Stop when null (return -1) or when target is found (return distance).
- *  2.  Search left first. If found, return immediately.
- *  3.  Otherwise, search right.
- *  4.  If neither side contains the target, the function will bubble up -1.
- */
-private int getPathLen(TreeNode root, int target, int dist) {
-    /** NOTE !!!
-     *
-     *   base case:
-     *
-     *  •   Base case #1:
-     *        if we hit a null node,
-     *        -> the target DOES NOT exist in this branch.
-     *
-     *  •   Returning -1 is a sentinel value
-     *      meaning “not found in this subtree”
-     */
-    if (root == null) {
-        return -1;  // not found
-    }
-    /**
-     *  NOTE !!!
-     *
-     *  •   Base case #2: if the current node matches the target, return dist, which is the current number of edges from the starting node (typically the LCA) to this node.
-     *  •   This is the successful termination of the recursion.
-     */
-    if (root.val == target) {
-        return dist;
-    }
-
-    /**
-     *  NOTE !!!
-     *
-     *  •   Recurse into the left subtree.
-     *  •   Increment dist by 1 because we moved down one level.
-     *  •   Store the result in left.
-     *        - If target is in this subtree,
-     *          left will contain the distance.
-     *       - Otherwise, left will be -1.
-     */
-    int left = getPathLen(root.left, target, dist + 1);
-    /**
-     *  •   If we found the target in the left subtree,
-     *      return that distance immediately.
-     *  •   This avoids unnecessary searching in the right subtree.
-     */
-    if (left != -1) {
-        return left;
-    }
-
-    /**
-     *  NOTE !!!
-     *
-     *  •   If not found on the left, search the right subtree with dist + 1.
-     *  •   Return the result directly:
-     *       - Either a valid distance if found,
-     *       - Or -1 if not found in right subtree either.
-     *
-     */
-    int right = getPathLen(root.right, target, dist + 1);
-    return right;
-}
-    
-
-// V2
-public int findDistance(TreeNode root, int p, int q) {
-    TreeNode lca = findLCA(root, p, q);
-    return getDistance(lca, p) + getDistance(lca, q);
-}
-
-private TreeNode findLCA(TreeNode node, int p, int q) {
-    if (node == null || node.val == p || node.val == q) {
-        return node;
-    }
-    TreeNode left = findLCA(node.left, p, q);
-    TreeNode right = findLCA(node.right, p, q);
-
-    if (left != null && right != null) return node;
-    return left != null ? left : right;
-}
-
-private int getDistance(TreeNode node, int target) {
-    if (node == null) return -1;
-    if (node.val == target) return 0;
-
-    /** NOTE !!! check left BEFORE recursing right -- this is the short-circuit the
-     *  walkthrough below describes. Evaluating both first still returns the right
-     *  answer, but it visits the whole right subtree after the target was found. */
-    int leftDist = getDistance(node.left, target);
-    if (leftDist != -1) return leftDist + 1;
-
-    int rightDist = getDistance(node.right, target);
-    if (rightDist != -1) return rightDist + 1;
-    return -1;
-}
-```
-
-#### **Python — `get_dist` helper (the key part)** ⭐⭐⭐⭐⭐
-
-**Idea:** `findDistance` = `get_lca` (find split point) + `get_dist` twice (measure each branch from the LCA). The whole trick lives in `get_dist`:
+**Key point** — every `p … q` path passes through their LCA, so
+`dist(p, q) = dist(lca, p) + dist(lca, q)`. `get_dist` carries `depth` **down** as an argument and
+returns it unchanged on a hit; `-1`, never `0`, means "not in this subtree", because `0` is a real
+distance (the target is the start node).
 
 ```python
 # python
-# LC 1740 Find Distance in a Binary Tree
-class Solution:
+# LC 1740 - Find Distance in a Binary Tree
+# IDEA: find the split point (LCA), then measure each target's depth below it;
+#       get_dist is pre-order, carrying depth down, -1 = "not in this branch"
+# time = O(N), space = O(H)
+class Solution(object):
     def findDistance(self, root, p, q):
-        if p == q or not root:
+        if p == q:
             return 0
-        # Step 1: find the split point (Lowest Common Ancestor)
         lca = self.get_lca(root, p, q)
-        # Step 2: measure edge distance from LCA down to each target
-        dist_p = self.get_dist(lca, p, 0)
-        dist_q = self.get_dist(lca, q, 0)
-        # dist is ALWAYS the sum — see the 2 structural cases below
-        return dist_p + dist_q
+        return self.get_dist(lca, p, 0) + self.get_dist(lca, q, 0)
 
-    def get_lca(self, root, p, q):
-        if not root:
-            return None
-        if root.val == p or root.val == q:  # match by VALUE (p, q are ints)
-            return root
-        left = self.get_lca(root.left, p, q)
-        right = self.get_lca(root.right, p, q)
-        if left and right:      # p, q split here -> this node is the LCA
-            return root
+    def get_lca(self, node, p, q):
+        if not node or node.val == p or node.val == q:   # p, q are VALUES here
+            return node
+        left = self.get_lca(node.left, p, q)
+        right = self.get_lca(node.right, p, q)
+        if left and right:
+            return node
         return left if left else right
 
-    # NOTE !!! below helper func -- pre-order DFS
-    def get_dist(self, root, target, dist):
-        """
-        NOTE !!!
-        If not root, we return `-1` (sentinel = "not found in this branch"),
-        but NOT `0`, since 0 is also a VALID answer (target found at current node).
-        """
-        if not root:
-            return -1          # <-- sentinel: dead end, target not on this path
-
-        if root.val == target:
-            return dist        # <-- found: dist = # edges from LCA to here
-
-        # NOTE !!! the right recursion is INSIDE the else path -- that is what makes
-        #          the short-circuit real. Calling both first and then testing `left`
-        #          walks the right subtree even when the target was already found.
-        left = self.get_dist(root.left, target, dist + 1)
+    def get_dist(self, node, target, depth):
+        if not node:
+            return -1                        # dead end: the target is not on this path
+        if node.val == target:
+            return depth                     # edges from the start node to here
+        left = self.get_dist(node.left, target, depth + 1)
         if left != -1:
-            # left subtree found the target -- pass that valid distance up, skip right
-            return left
-
-        # Otherwise return whatever the right subtree finds (a valid dist, or -1)
-        return self.get_dist(root.right, target, dist + 1)
+            return left                      # found on the left: skip the right subtree
+        return self.get_dist(node.right, target, depth + 1)
 ```
+
+```java
+// java
+// LC 1740 - Find Distance in a Binary Tree
+// IDEA: LCA by value, then depth of p and of q below it; -1 means "not in this subtree"
+// time = O(N), space = O(H)
+public int findDistance(TreeNode root, int p, int q) {
+    if (p == q) {
+        return 0;
+    }
+    TreeNode lca = getLca(root, p, q);
+    return getDist(lca, p, 0) + getDist(lca, q, 0);
+}
+
+private TreeNode getLca(TreeNode node, int p, int q) {
+    if (node == null || node.val == p || node.val == q) {
+        return node;
+    }
+    TreeNode left = getLca(node.left, p, q);
+    TreeNode right = getLca(node.right, p, q);
+    if (left != null && right != null) {
+        return node;
+    }
+    return left != null ? left : right;
+}
+
+private int getDist(TreeNode node, int target, int depth) {
+    if (node == null) {
+        return -1;
+    }
+    if (node.val == target) {
+        return depth;
+    }
+    int left = getDist(node.left, target, depth + 1);
+    if (left != -1) {
+        return left;                          // short-circuit: the right side is never walked
+    }
+    return getDist(node.right, target, depth + 1);
+}
+```
+
+**Complexity**
+- **Time O(N)**: `get_lca` is one pass over the tree, and each `get_dist` walks at most the LCA's
+  subtree once.
+- **Space O(H)**: recursion depth only; nothing is materialised.
+
+**Dry run** — `root = [3,5,1,6,2,0,8,null,null,7,4]`, `p = 5`, `q = 0` (traced call by call in the
+visualization below)
+
+```text
+get_lca          -> 3     5 is on the left, 0 on the right
+get_dist(3, 5)   -> 1     3 -> 5
+get_dist(3, 0)   -> 2     the left subtree returns -1; then 3 -> 1 -> 0
+answer           1 + 2 = 3
+```
+
+**Traps**
+- Returning `0` for `None`: "not found" and "found at the start node" look the same, and a dead-end
+  left subtree reports a distance. `p = 5, q = 0` no longer returns 3.
+- Measuring from the root instead of the LCA: `p = 6, q = 4` gives `2 + 3 = 5`; the real path
+  `6 - 5 - 2 - 4` is 3 edges, measured from LCA `5`.
+- Adding `+ 1` on the way back up in the depth-carrying version counts every edge twice; the depth
+  was already incremented going down.
+- `p == q`: the answer is `0`. Return it before searching rather than relying on the early
+  return inside `get_lca` to make both distances `0`.
+
+**Not this if** — you need every node `k` away, in any direction → [Template 2](#template-2-parent-map--bfs--lc-863).
+You hold the two nodes and they have `parent` pointers → no search at all, walk up
+([LC 1650 variant](#lca-variant--parent-pointers-no-root-lc-1650-)).
+
+**Drill** — LC 1740 · LC 236 *(the LCA half on its own)* · LC 2096 *(the path as `U`/`L`/`R` steps:
+LCA, then two root paths)* · LC 863 *(distance in every direction)*
+
+#### **`get_dist` — why `-1`, and why the sum is always right**
 
 **Why `-1` and not `0` for "not found"?**
 
@@ -936,7 +851,8 @@ case 1: p and q are in different subtrees      case 2: one target IS the LCA
 
 In both cases `get_dist(lca, p) + get_dist(lca, q)` gives the exact edge count on the path `p … q`.
 
-#### **Visualization — how `get_dist` actually walks the tree** 🎨
+
+#### **Visualization — how `get_dist` actually walks the tree**
 
 Tree from the LC 1740 example: `root = [3,5,1,6,2,0,8,null,null,7,4]`, `p = 5`, `q = 0` → answer `3`.
 
@@ -1025,12 +941,12 @@ Because the target value is **unique**, at most one branch can return a non-`-1`
 #### **Variants of `get_dist` — where the counter lives** ⭐⭐⭐⭐⭐
 
 All of these return the **same edge count** (and `-1` when the target isn't in the subtree). They
-differ only in *where the counter lives*. The canonical top-down version is the one above; only the
+differ only in *where the counter lives*. The canonical top-down version is Template 3's `get_dist`; only the
 two variants that are not merely a re-spelling of it are written out below.
 
 | # | Variant | Signature | Counter lives | Short-circuits? | Notes |
 |---|---------|-----------|---------------|-----------------|-------|
-| **V1** | Top-down + explicit guard | `(node, target, depth)` | passed **down** as arg | ✅ yes (`if left != -1`) | the canonical version shown above — most explicit |
+| **V1** | Top-down + explicit guard | `(node, target, depth)` | passed **down** as arg | ✅ yes (`if left != -1`) | Template 3's version — most explicit |
 | **V2** | Top-down + `max()` trick | `(node, target, depth)` | passed **down** as arg | ❌ no | V1 with `return max(left, right)` in place of the `!= -1` guard: the target is unique, so at most one side returns `>= 0` and `max` bubbles it up (and yields `-1` when both fail). Shortest code, but it always scans **both** subtrees — strictly more work than V1, so prefer V1 |
 | **V3** | Bottom-up (`+1` on return) | `(node, target)` | built **up** on the way back | ✅ yes | no `depth` param needed — written out below |
 | **V4** | Iterative BFS | `(root, target)` | stored **in the queue** | ✅ yes (early return) | no recursion → no stack-overflow risk — written out below |
@@ -1041,6 +957,7 @@ two variants that are not merely a re-spelling of it are written out below.
 
 ```python
 # python
+# IDEA: bottom-up -- return 0 at the target, add 1 per edge on the way back up
 # time = O(N), space = O(H)
 def get_dist(self, node, target):
     if not node:
@@ -1085,6 +1002,7 @@ def get_dist(self, node, target):
 
 ```python
 # python
+# IDEA: BFS carrying (node, dist); the level a node is popped on is its distance
 # time = O(N), space = O(W)  -- W = max tree width
 from collections import deque
 
@@ -1133,7 +1051,7 @@ def get_dist(self, root, target):
 
 - **Interview / clarity** → **V1** (explicit sentinel handling is the thing interviewers want to see you reason about)
 - **Code golf / clean one-liner** → **V2** (state the lost short-circuit out loud)
-- **Fewer params, want the "returns 0 at target" convention** → **V3** (matches the `getDistance` Java version above)
+- **Fewer params, want the "returns 0 at target" convention** → **V3** (the convention a bottom-up `getDistance` uses)
 - **Very deep / skewed tree, recursion depth is a real risk** → **V4**
 
 All are `O(N)` time. Space: `O(H)` for V1–V3 (recursion stack, `H = N` worst case for a skewed tree), `O(W)` for V4 (queue width).
@@ -1149,7 +1067,7 @@ All are `O(N)` time. Space: `O(H)` for V1–V3 (recursion stack, `H = N` worst c
 | Problem | LC # | How `get_dist` is used |
 |---------|------|------------------------|
 | Find Distance in a Binary Tree | 1740 | base pattern — `get_lca` + `get_dist` × 2 |
-| All Nodes Distance K | 863 | distance downward from target; upward handled by parent map (section 2) |
+| All Nodes Distance K | 863 | distance downward from target; upward handled by the parent map ([Template 2](#template-2-parent-map--bfs--lc-863)) |
 | Maximum Depth | 104 | same DFS shape, but bottom-up `1 + max(...)` instead of a sentinel |
 | Path Sum | 112 | identical top-down accumulation, carrying `remaining_sum` instead of `depth` |
 | Smallest Subtree w/ Deepest Nodes | 865/1123 | LCA + depth combined into one `(depth, node)` return |
@@ -1162,77 +1080,159 @@ All are `O(N)` time. Space: `O(H)` for V1–V3 (recursion stack, `H = N` worst c
 - ✅ Need an **edge count**, not a node count (a node at depth 0 is 0 edges away)
 - ✅ The target is **unique** in the tree (values are distinct)
 - ✅ Distance is measured **downward** from a known start node (root or LCA)
-- ❌ If both nodes may be in unrelated subtrees → find LCA first (see section 1)
-- ❌ If you need distance in **all** directions (including upward) → use the Move Parent pattern in section 2
+- ❌ If both nodes may be in unrelated subtrees → find the LCA first ([Template 1](#template-1-lca-by-returned-presence--lc-236))
+- ❌ If you need distance in **all** directions (including upward) → use [Template 2](#template-2-parent-map--bfs--lc-863), the parent map
 
-### 4) Root-to-Leaf Path Templates
+### Template 4: Root-to-Leaf Path with Backtracking — LC 113
 
-#### Pre-order DFS + Backtracking Template (Java)
+**Recognise** — "all **root-to-leaf** paths where the sum of the values equals `targetSum`",
+"return every path", "a leaf is a node with no children". Nodes ≤ 5,000 → one O(N) walk, plus the
+cost of copying the paths you keep.
+
+**Key point** — `path` always holds exactly the nodes from the root to the current node: a node is
+appended on entry and popped on exit, so the leaf check sees the whole root-to-leaf path and a
+sibling subtree never sees the other's nodes.
+
+```python
+# python
+# LC 113 - Path Sum II
+# IDEA: pre-order DFS; push the node, record a COPY at a matching leaf, pop on the way back
+# time = O(N * H), space = O(H)   (output not counted; each kept path costs an O(H) copy)
+class Solution(object):
+    def pathSum(self, root, targetSum):
+        result = []
+        path = []
+
+        def dfs(node, remaining):
+            if not node:
+                return
+            path.append(node.val)
+            remaining -= node.val
+            if not node.left and not node.right and remaining == 0:
+                result.append(list(path))    # a copy: `path` keeps changing
+            else:
+                dfs(node.left, remaining)
+                dfs(node.right, remaining)
+            path.pop()                       # backtrack: the parent's path again
+
+        dfs(root, targetSum)
+        return result
+```
 
 ```java
-// Template for root-to-leaf path collection (LC 112 / 113 / 257)
-void dfs(TreeNode node, int remaining, List<Integer> path, List<List<Integer>> result) {
-    if (node == null) return;
+// java
+// LC 113 - Path Sum II
+// IDEA: pre-order DFS with one shared list; add on entry, copy at a matching leaf, remove on exit
+// time = O(N * H), space = O(H)
+public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
+    List<List<Integer>> result = new ArrayList<>();
+    dfs(root, targetSum, new ArrayList<>(), result);
+    return result;
+}
 
-    // 1. Pre-order: add current node FIRST
+private void dfs(TreeNode node, int remaining, List<Integer> path, List<List<Integer>> result) {
+    if (node == null) {
+        return;
+    }
     path.add(node.val);
     remaining -= node.val;
-
-    // 2. Check leaf condition
     if (node.left == null && node.right == null && remaining == 0) {
-        result.add(new ArrayList<>(path));  // save a COPY
+        result.add(new ArrayList<>(path));    // save a COPY
     } else {
-        // 3. Recurse
         dfs(node.left, remaining, path, result);
         dfs(node.right, remaining, path, result);
     }
-
-    // 4. Backtrack: remove current node
-    path.remove(path.size() - 1);
+    path.remove(path.size() - 1);             // backtrack
 }
 ```
+
+**Complexity**
+- **Time O(N · H)**: the DFS visits each node once (O(N)); each matching leaf copies a path of at
+  most H values. On a balanced tree that is O(N log N); a skewed one has a single leaf.
+- **Space O(H)**: the recursion stack and `path` both grow to the depth; the output is not counted.
+
+**Dry run** — `root = [5,4,8,11,null,13,4,7,2,null,null,5,1]`, `targetSum = 22`
+
+```text
+path [5, 4, 11, 7]    remaining -5 at leaf 7     no
+pop 7, push 2         [5, 4, 11, 2]  remaining 0 at a leaf  -> record
+pop 2, 11, 4          [5]
+...                   [5, 8, 4, 5]   remaining 0 at a leaf  -> record
+answer [[5, 4, 11, 2], [5, 8, 4, 5]]
+```
+
+**Traps**
+- `result.append(path)` without a copy: every entry is the same list, empty once the walk ends —
+  the example returns `[[], []]`.
+- Testing the sum at `None` instead of at a leaf: a node with one child counts as a path end, so
+  LC 112's `root = [1,2]`, `targetSum = 1` returns `true`; `1` is not a leaf.
+- Dropping the `pop`: the right subtree inherits the left's nodes — `[1,2,3]`, `targetSum = 4`
+  records `[1, 2, 3]`.
+- Stopping early when `remaining < 0`: values may be negative, so a later node can bring it back.
+
+**Not this if** — the path may start and end **anywhere** on a downward line → [Template 5](#template-5-downward-path-count-with-a-prefix-sum-map--lc-437).
+The path may **bend** through a node (LC 124, LC 543) → post-order height plus a global max, see
+[5-1)](#5-1-find-paths-with-specific-properties). Only a yes / no is asked (LC 112) → no list at all,
+return `left or right`.
+
+**Drill** — LC 113 · LC 112 *(yes / no, no path list)* · LC 257 *(the path as a string)* · LC 129
+*(carry a number down instead of a list)* · LC 988 *(compare the reversed paths)*
 
 #### Path Update Strategies: Immutable String vs. Mutable List + Backtrack
 
 > Two ways to track path state during DFS. Choosing the right one simplifies code significantly.
 
-**Strategy 1: Immutable String — pass updated path in the DFS call (no backtrack needed)**
+**Strategy 1: Immutable String — pass the updated path in the DFS call (no backtrack needed)**
 
-The key insight: when you pass `path + "->" + node.val` directly as an argument, each recursive call gets its **own copy** of the string. The parent's `path` is never modified, so **no explicit backtracking is needed**.
+When you pass `path + "->" + node.val` directly as an argument, each recursive call gets its **own
+copy** of the string. The parent's `path` is never modified, so **no explicit backtracking is
+needed**.
+
+```python
+# python
+# LC 257 - Binary Tree Paths
+# IDEA: immutable string path -- the update happens in the call, so nothing to undo
+# time = O(N * H), space = O(H)
+def binaryTreePaths(root):
+    res = []
+
+    def dfs(node, path):
+        if not node.left and not node.right:
+            res.append(path)
+            return
+        if node.left:
+            dfs(node.left, path + "->" + str(node.left.val))    # a new string
+        if node.right:
+            dfs(node.right, path + "->" + str(node.right.val))
+
+    if root:
+        dfs(root, str(root.val))
+    return res
+```
 
 ```java
-// LC 257 — Binary Tree Paths (String path, no backtrack)
-// Reference: ref_code/interviews-master/leetcode/tree/BinaryTreePaths.java
+// java
+// LC 257 - Binary Tree Paths
+// IDEA: String path, updated inside the DFS call -> each frame keeps its own copy, no backtrack
+// time = O(N * H), space = O(H)
 public List<String> binaryTreePaths(TreeNode root) {
     List<String> res = new ArrayList<>();
-    if (root == null) return res;
+    if (root == null) {
+        return res;
+    }
     dfs(root, String.valueOf(root.val), res);
     return res;
 }
 
 private void dfs(TreeNode node, String path, List<String> res) {
-    // 1. Leaf check: path is complete
     if (node.left == null && node.right == null) {
-        res.add(path);
+        res.add(path);                        // the path is complete
         return;
     }
-
-    // 2. Traverse Left: path update happens INSIDE the DFS call
     if (node.left != null) {
-        /** NOTE !!!
-         *  We do `path update` within DFS call itself.
-         *  path + "->" + node.left.val creates a NEW string,
-         *  so `path` in the current frame is unchanged — no backtrack needed.
-         */
-        dfs(node.left, path + "->" + node.left.val, res);
+        dfs(node.left, path + "->" + node.left.val, res);    // `path` here is unchanged
     }
-
-    // 3. Traverse Right: same pattern
     if (node.right != null) {
-        /** NOTE !!!
-         *  Same idea: path is NOT mutated here.
-         *  Each branch gets its own copy of the string.
-         */
         dfs(node.right, path + "->" + node.right.val, res);
     }
 }
@@ -1240,26 +1240,9 @@ private void dfs(TreeNode node, String path, List<String> res) {
 
 **Strategy 2: Mutable List — modify in place, then backtrack**
 
-When using a mutable data structure (e.g., `List<Integer>`), the **same object** is shared across all recursive calls. You **must** undo changes after recursion returns.
-
-```java
-// LC 113 — Path Sum II (List path, explicit backtrack)
-void dfs(TreeNode node, int remaining, List<Integer> path, List<List<Integer>> result) {
-    if (node == null) return;
-
-    path.add(node.val);           // ← mutate shared list
-    remaining -= node.val;
-
-    if (node.left == null && node.right == null && remaining == 0) {
-        result.add(new ArrayList<>(path));  // save a COPY
-    } else {
-        dfs(node.left, remaining, path, result);
-        dfs(node.right, remaining, path, result);
-    }
-
-    path.remove(path.size() - 1); // ← BACKTRACK: undo mutation
-}
-```
+When the path is a mutable structure (a `list`, a `List<Integer>`, a `StringBuilder`), the **same
+object** is shared by every call, so each change must be undone when the call returns. That is
+Template 4's code above: `path.append` / `path.add` before the recursion, `pop` / `remove` after.
 
 **Comparison:**
 
@@ -1275,71 +1258,98 @@ void dfs(TreeNode node, int remaining, List<Integer> path, List<List<Integer>> r
 - **Immutable (String, int)** → pass updated value in the call → no backtrack
 - **Mutable (List, StringBuilder)** → modify before call → backtrack after call
 
+### Template 5: Downward Path Count with a Prefix-Sum Map — LC 437
+
+**Recognise** — "the **number** of paths whose values sum to `targetSum`; the path does not need to
+start at the root or end at a leaf, but it must go downward". Nodes ≤ 1,000 and values may be
+negative, so a shrinking window cannot work → O(N) with a map.
+
+**Key point** — `prefix` counts the root-to-node sums of the nodes on the **current root path**
+only. A downward path ending at this node sums to `target` exactly when `cur - target` is one of
+those sums — LC 560 on a tree — and the count is undone on the way back up, so a sibling branch
+never pairs with this one.
+
 ```python
-# Python equivalent — immutable string path (LC 257)
-def binaryTreePaths(root):
-    res = []
-    def dfs(node, path):
-        if not node.left and not node.right:
-            res.append(path)
-            return
-        if node.left:
-            dfs(node.left, path + "->" + str(node.left.val))  # new string, no backtrack
-        if node.right:
-            dfs(node.right, path + "->" + str(node.right.val))
-    if root:
-        dfs(root, str(root.val))
-    return res
+# python
+# LC 437 - Path Sum III
+# IDEA: pre-order DFS carrying the root-to-node sum; count earlier prefixes equal to cur - target,
+#       add cur for the children, remove it on the way back
+# time = O(N), space = O(N)
+from collections import defaultdict
+
+class Solution(object):
+    def pathSum(self, root, targetSum):
+        prefix = defaultdict(int)
+        prefix[0] = 1                        # the empty prefix: paths that start at the root
+
+        def dfs(node, cur):
+            if not node:
+                return 0
+            cur += node.val
+            count = prefix[cur - targetSum]  # downward paths that end here
+            prefix[cur] += 1                 # visible to my descendants only
+            count += dfs(node.left, cur) + dfs(node.right, cur)
+            prefix[cur] -= 1                 # leave this branch
+            return count
+
+        return dfs(root, 0)
 ```
-
-#### Pre-order DFS + Prefix Sum HashMap Template (Java)
-
-> Used when path can start/end at **any node** (not just root-to-leaf).
-> Inspired by LC 437 Path Sum III.
-
-**Core Idea — "2-Sum on Tree":**
-```text
-curSum - targetSum = ancestorSum
-→ if ancestorSum exists in map, a valid sub-path ends at current node
-```
-
-**Why Pre-order?**
-- Prefix sums must be calculated **top-down** (pre-order)
-- Post-order would calculate subtree sums, not root-to-node prefix sums
 
 ```java
-// Template: Pre-order DFS + Prefix Sum HashMap (LC 437)
-int count = 0;
-Map<Long, Integer> prefixMap = new HashMap<>();
+// java
+// LC 437 - Path Sum III
+// IDEA: 2-sum on the root path: curSum - targetSum seen before -> a sub-path ends here
+// time = O(N), space = O(N)
+private final Map<Long, Integer> prefix = new HashMap<>();
 
-int pathSum(TreeNode root, int targetSum) {
-    prefixMap.put(0L, 1);  // base case: empty path has sum 0
-    dfs(root, 0L, targetSum);
+public int pathSum(TreeNode root, int targetSum) {
+    prefix.put(0L, 1);                        // the empty path has sum 0
+    return dfs(root, 0L, targetSum);
+}
+
+private int dfs(TreeNode node, long cur, int targetSum) {
+    if (node == null) {
+        return 0;
+    }
+    cur += node.val;                          // long: the sums overflow int
+    int count = prefix.getOrDefault(cur - targetSum, 0);
+    prefix.merge(cur, 1, Integer::sum);
+    count += dfs(node.left, cur, targetSum) + dfs(node.right, cur, targetSum);
+    prefix.merge(cur, -1, Integer::sum);      // backtrack
     return count;
 }
-
-void dfs(TreeNode node, long curSum, int targetSum) {
-    if (node == null) return;
-
-    // 1. Pre-order: update prefix sum with current node
-    curSum += node.val;
-
-    // 2. Check: curSum - targetSum = a previous prefix sum?
-    //    → means a valid sub-path ends here
-    //    (2-sum trick: curSum - ancestorSum = targetSum)
-    count += prefixMap.getOrDefault(curSum - targetSum, 0);
-
-    // 3. Record current prefix sum BEFORE recursing into children
-    prefixMap.put(curSum, prefixMap.getOrDefault(curSum, 0) + 1);
-
-    // 4. Recurse (pre-order: process node before children)
-    dfs(node.left, curSum, targetSum);
-    dfs(node.right, curSum, targetSum);
-
-    // 5. BACKTRACK: remove curSum so sibling branches are not affected
-    prefixMap.put(curSum, prefixMap.get(curSum) - 1);
-}
 ```
+
+**Complexity**
+- **Time O(N)**: each node is visited once and does O(1) expected map work.
+- **Space O(N)**: the map keeps a key per distinct prefix seen (only the current path's counts are
+  non-zero), plus O(H) recursion.
+
+**Dry run** — the chain `1 → 2 → 3`, `targetSum = 3`
+
+```text
+node 1   cur 1   look up -2 -> 0              prefix {0:1, 1:1}
+node 2   cur 3   look up  0 -> 1  (1 -> 2)    prefix {0:1, 1:1, 3:1}
+node 3   cur 6   look up  3 -> 1  (3 alone)   answer 2
+```
+
+**Traps**
+- Missing `prefix[0] = 1`: paths that start at the root are never counted — the chain above
+  returns 1.
+- Not decrementing on the way back: a prefix from the left subtree pairs with a node on the right,
+  counting a path that turns at the parent. `root = [0,1,3]`, `targetSum = 2` returns 1, not 0.
+- Inserting `cur` before the lookup: with `targetSum = 0` every node then counts itself as an
+  empty path.
+- Java `int` sums: LC 437 values reach ±10⁹, so the running sum overflows; key the map by `long`.
+
+**Not this if** — the path must start at the root and end at a leaf → [Template 4](#template-4-root-to-leaf-path-with-backtracking--lc-113),
+no map needed. The input is an array, not a tree → LC 560's prefix sum, with nothing to undo. The
+longer write-up of this tree version, with both spellings of the base case, is
+[prefix_sum_advanced.md Template 14](./prefix_sum_advanced.md#template-14-prefix-sum-on-a-tree-dfs--hashmap--backtrack---lc-437).
+
+**Drill** — LC 437 · LC 112 *(root-to-leaf only: no map)* · LC 560 *(the same trick on an array)* ·
+LC 1171 *(zero-sum runs
+in a linked list: the same prefix map)*
 
 **Key differences vs. root-to-leaf backtracking:**
 
@@ -1494,7 +1504,7 @@ private void dfs(TreeNode node, int remaining, List<Integer> path,
 # LeetCode 742. Closest Leaf in a Binary Tree
 # V0
 # IDEA : DFS build GRAPH + BFS find ans (MOVE PARENT PATTERN)
-# See section 2 (Move Parent Pattern) for detailed explanation of this pattern
+# See Template 2 (Parent Map + BFS) for the pattern
 ### NOTE :  closest to a leaf means the least number of edges travelled on the binary tree to reach any leaf of the tree. Also, a node is called a leaf if it has no children.
 #         -> We only consider the min distance between left (no sub tree) and k
 ### NOTE : we need DFS create the graph
@@ -1574,17 +1584,25 @@ BST / sorted property?
   → Pattern: recurse left → process node → recurse right
 ```
 
+## Drill Path
+
+| Stage | Problems (easy → hard) | What it adds |
+|---|---|---|
+| **Core** ⭐ | LC 543 ⭐ · LC 235 ⭐ · LC 236 · LC 124 ⭐ | the longest bent path, LCA on a BST and on a plain tree, the bent path with a value sum |
+| **Practice** | LC 112 · LC 113 · LC 1650 · LC 863 · LC 1740 · LC 437 | Templates 4, 1 (no root), 2, 3 and 5, once each |
+| **Stretch** | LC 1644 · LC 865 · LC 2096 · LC 2385 | absent targets, implicit targets, the path spelled as moves, BFS rounds over a parent map |
+
 ## Summary
 
 | You are asked for... | Reach for | Section |
 |---|---|---|
-| the meeting point of two nodes | post-order LCA | 1) |
-| the deepest-nodes subtree | post-order returning `(depth, node)` | 1) |
-| nodes `k` steps away in **any** direction | parent map + BFS | 2) |
-| edges between two arbitrary nodes | LCA + `get_dist` twice | 3) |
-| all root-to-leaf paths matching a rule | pre-order DFS + backtracking | 4) |
-| the count of any-to-any downward paths | pre-order DFS + prefix-sum HashMap | 4) |
-| the longest path through any node | post-order height + global max | 5-1) |
+| the meeting point of two nodes | post-order LCA | [Template 1](#template-1-lca-by-returned-presence--lc-236) |
+| the deepest-nodes subtree | post-order returning `(depth, node)` | [LC 865 variant](#lca-variant--smallest-subtree-with-all-deepest-nodes-lc-865--lc-1123-) |
+| nodes `k` steps away in **any** direction | parent map + BFS | [Template 2](#template-2-parent-map--bfs--lc-863) |
+| edges between two arbitrary nodes | LCA + `get_dist` twice | [Template 3](#template-3-distance-between-nodes-via-lca--lc-1740) |
+| all root-to-leaf paths matching a rule | pre-order DFS + backtracking | [Template 4](#template-4-root-to-leaf-path-with-backtracking--lc-113) |
+| the count of any-to-any downward paths | pre-order DFS + prefix-sum HashMap | [Template 5](#template-5-downward-path-count-with-a-prefix-sum-map--lc-437) |
+| the longest path through any node | post-order height + global max | [5-1)](#5-1-find-paths-with-specific-properties) |
 
 **The three mistakes that cost the most here:**
 - returning `0` instead of `-1` for "not found" — `0` is a valid distance

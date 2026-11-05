@@ -1240,7 +1240,7 @@ public class Solution {
 | 685 Redundant Connection II | Hard | directed edges; the node with `in == 2` names the two candidate edges to delete, then union-find picks one |
 | 1791 Find Center of Star Graph | Easy | undirected; the center is the node shared by any two edges, a degree fingerprint with no orientation |
 | 310 Minimum Height Trees | Medium | the "try every root" problem with **no** local rule; leaf trimming (Template 7) replaces it |
-| 834 Sum of Distances in Tree | Hard | when an answer is needed for **every** root, use re-rooting DP ([tree.md](./tree.md#re-rooting-dp--answer-for-every-root)) |
+| 834 Sum of Distances in Tree | Hard | when an answer is needed for **every** root, use re-rooting DP ([tree.md](./tree.md#template-3-re-rooting-dp--lc-834)) |
 
 ## Problem Classification
 

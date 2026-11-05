@@ -29,6 +29,24 @@
 - [Wikipedia - Binary Tree](https://en.wikipedia.org/wiki/Binary_tree)
 - [Binary Tree - 演算法筆記](https://web.ntnu.edu.tw/~algo/BinaryTree.html)
 
+## Recognition
+
+Constraint cues come from the ruler in [complexity_cheatsheet.md](./complexity_cheatsheet.md).
+
+| Signal in the statement | Constraint cue | Reach for | Not this if |
+|---|---|---|---|
+| "return the inorder / preorder / postorder traversal" | n ≤ 100 | [Template 1](#template-1-recursive-pre--in--post-order-traversal--lc-94) recursion, append position picks the order | "without recursion", deep tree → [Template 2](#template-2-iterative-traversal--stack-in-order-and-queue-level-order--lc-102) stack |
+| "level by level", "right side view", "each depth" | n ≤ 2000 | [Template 2](#template-2-iterative-traversal--stack-in-order-and-queue-level-order--lc-102) queue snapshot | the gaps between nodes count → [Template 11](#template-11-bfs-with-positional-index--lc-662-) |
+| "construct the tree from preorder and inorder" | n ≤ 3000, values unique | [Template 3](#template-3-build-from-preorder--inorder--lc-105) index map | one string with null markers → [tree_codec.md](./tree_codec.md) |
+| "all root-to-leaf paths with sum = target" | n ≤ 5000 | [Template 4](#template-4-root-to-leaf-path-with-backtracking--lc-113) append / pop | the path may start anywhere → prefix sum on the tree, [tree_lca_distance.md](./tree_lca_distance.md) |
+| "diameter", "longest path between any two nodes", "balanced" | n ≤ 10⁴ | [Template 5](#template-5-height-up-answer-in-a-global--lc-543) height up, bent path in a global | the value comes from above (depth, max so far) → pass it down, [§0-5](#0-5-depth-vs-height--the-two-numbers-a-tree-dfs-computes-) |
+| "lowest common ancestor", root given, both nodes exist | n ≤ 10⁵ | [Template 6](#template-6-lca-by-returned-presence--lc-236) returned presence | a BST → walk down by value ([bst.md](./bst.md)); no root, `parent` pointers → [tree_lca_distance.md](./tree_lca_distance.md) |
+| "count the nodes of a **complete** tree in less than O(n)" | n ≤ 5 · 10⁴ | [Template 7](#template-7-count-nodes-of-a-complete-tree--lc-222) compare left spines | not complete → O(n) traversal |
+| "populate each `next` pointer", "constant extra space" | n ≤ 6000 | [Template 8](#template-8-level-linking-with-o1-space--lc-117-) dummy + tail | O(n) space allowed → [Template 2](#template-2-iterative-traversal--stack-in-order-and-queue-level-order--lc-102) |
+| "cannot choose a parent and its child", "cover every node" | n ≤ 10⁴ | [Template 9](#template-9-tree-dp--return-multiple-states--lc-337-) a tuple of states | one number per subtree is enough → [Template 5](#template-5-height-up-answer-in-a-global--lc-543) |
+| "delete the nodes and return the forest", "prune" | n ≤ 1000 | [Template 10](#template-10-post-order-structural-modification--lc-1110-) return the new subtree | an ordered tree trimmed by range → [bst.md](./bst.md) |
+| "width of a level counting the nulls", "is it complete" | n ≤ 3000 | [Template 11](#template-11-bfs-with-positional-index--lc-662-) heap index | column order with ties sorted → [tree.md](./tree.md) |
+
 ## 0) Concept: Which Direction Does DFS State Flow? ⭐⭐⭐⭐⭐
 
 > Before picking a template, answer one question: **where does the information a node needs come from — above it, or below it?** That single answer splits nearly every tree DFS problem into three shapes.
@@ -228,7 +246,7 @@ The same rule from §0-1, applied to the two quantities nearly every tree proble
 |----------|----------|--------------------|-------|-------|------------|
 | **Depth** | edges from the **root** down to the node | the parent | **down**, as an **argument**: `dfs(child, depth + 1)` | A / B | 102, 111, 199, 1302 |
 | **Height** | **nodes** on the longest path from the node down to a leaf (leaf = 1, empty = 0) | the children | **up**, as the **return value**: `return 1 + max(l, r)` | C | 104, 110, 543, 366 |
-| **Distance** | edges between two nodes | neither alone | both: depth from the LCA, or a parent map | — | 1740, 863 → [tree_lca_distance.md](./tree_lca_distance.md#3-distance-between-nodes--lc-1740) |
+| **Distance** | edges between two nodes | neither alone | both: depth from the LCA, or a parent map | — | 1740, 863 → [tree_lca_distance.md](./tree_lca_distance.md#template-3-distance-between-nodes-via-lca--lc-1740) |
 
 > **Mind the units: depth here counts edges (the root is 0), height counts nodes (a leaf is 1).** That is what the code below returns, and it makes LC 543's `left_height + right_height` come out directly in edges.
 >
@@ -275,7 +293,7 @@ def depth_of(root, target):
     return dfs(root, 0)
 ```
 
-The pre / in / post-order position of the `append` is the only difference between the three traversals. For those, see [Template 1](#template-1-tree-traversal-recursive) and [Template 2](#template-2-tree-traversal-iterative).
+The pre / in / post-order position of the `append` is the only difference between the three traversals. For those, see [Template 1](#template-1-recursive-pre--in--post-order-traversal--lc-94) and [Template 2](#template-2-iterative-traversal--stack-in-order-and-queue-level-order--lc-102).
 
 #### Height — returned up
 
@@ -321,14 +339,14 @@ def is_balanced(root):
     return height(root) != -1
 ```
 
-**The global is not the return value.** LC 543 returns one arm (`1 + max`) and records two (`left + right`). Returning `left + right` is the usual bug: the parent would extend a path that already bends. LC 124 and LC 687 follow the same rule (see [Template 9](#template-9-tree-dp--return-multiple-states-bottom-up-)).
+**The global is not the return value.** LC 543 returns one arm (`1 + max`) and records two (`left + right`). Returning `left + right` is the usual bug: the parent would extend a path that already bends. LC 124 and LC 687 follow the same rule (see [Template 9](#template-9-tree-dp--return-multiple-states--lc-337-)).
 
 #### Distance — both at once
 
 Distance needs facts from above **and** below, so it lives in [tree_lca_distance.md](./tree_lca_distance.md):
 
-- **Between two nodes p and q** (LC 1740): `d(p, q) = depth(p) + depth(q) − 2·depth(lca)`. Find the LCA, then run that section's `get_dist` from it twice. LC 1740 hands you **values**, so `get_dist` compares `root.val == target`. `depth_of` above compares node identity and would return `-1`. See [§3 Distance Between Nodes](./tree_lca_distance.md#3-distance-between-nodes--lc-1740).
-- **Every node k away from a target** (LC 863): record each node's parent in one DFS. The tree is then an undirected graph, so walk outward with a `visited` set. See [§2 Move Parent Pattern](./tree_lca_distance.md#2-move-parent-pattern---bidirectional-tree-traversal).
+- **Between two nodes p and q** (LC 1740): `d(p, q) = depth(p) + depth(q) − 2·depth(lca)`. Find the LCA, then run that section's `get_dist` from it twice. LC 1740 hands you **values**, so `get_dist` compares `root.val == target`. `depth_of` above compares node identity and would return `-1`. See [Template 3: Distance Between Nodes](./tree_lca_distance.md#template-3-distance-between-nodes-via-lca--lc-1740).
+- **Every node k away from a target** (LC 863): record each node's parent in one DFS. The tree is then an undirected graph, so walk outward with a `visited` set. See [Template 2: Parent Map + BFS](./tree_lca_distance.md#template-2-parent-map--bfs--lc-863).
 
 ---
 
@@ -451,241 +469,485 @@ Relationships:
 | **Level Order** | BFS problems | Queue | O(n) | O(w) | Level-by-level processing |
 | **Binary Search on Trees** | Complete/Balanced tree | Binary Search | O(log²n) | O(log n) | Optimize with tree structure |
 
-### Universal Tree Template
+### Template 1: Recursive Pre / In / Post-order Traversal — LC 94
+
+**Recognise** — "return the preorder / inorder / postorder traversal", "visit every node", or any
+problem whose answer is a list of node values in one of those orders. n ≤ 100 here, but the same
+code is the O(n) skeleton every larger tree problem starts from.
+
+**Key point** — the recursion visits every node exactly once; the **position of the one
+`append` line** (before, between or after the two recursive calls) is the only thing that decides
+the order.
+
 ```python
-def tree_problem(root):
-    """
-    Universal template for most binary tree problems
-    Can be adapted for traversal, calculation, or modification
-    """
-    # Base case
-    if not root:
-        return None  # or 0, [], depending on problem
-    
-    # Pre-order processing (before recursion)
-    # process_current_node()
-    
-    # Recursive calls
-    left_result = tree_problem(root.left)
-    right_result = tree_problem(root.right)
-    
-    # Post-order processing (after recursion)
-    # combine_results()
-    
-    return result
-```
-
-### Template 1: Tree Traversal (Recursive)
-```python
-# Preorder Traversal
-def preorder(root):
-    if not root:
-        return []
-    return [root.val] + preorder(root.left) + preorder(root.right)
-
-# Inorder Traversal  
-def inorder(root):
-    if not root:
-        return []
-    return inorder(root.left) + [root.val] + inorder(root.right)
-
-# Postorder Traversal
-def postorder(root):
-    if not root:
-        return []
-    return postorder(root.left) + postorder(root.right) + [root.val]
-```
-
-### Template 2: Tree Traversal (Iterative)
-```python
-# Iterative Inorder with Stack
-def inorder_iterative(root):
-    result, stack = [], []
-    current = root
-    
-    while current or stack:
-        # Go to leftmost node
-        while current:
-            stack.append(current)
-            current = current.left
-        
-        # Current must be None, so pop from stack
-        current = stack.pop()
-        result.append(current.val)
-        
-        # Visit right subtree
-        current = current.right
-    
-    return result
-
-# Level Order with Queue
-def level_order(root):
-    if not root:
-        return []
-    
+# python
+# LC 94 - Binary Tree Inorder Traversal
+# IDEA: recurse left, record the node, recurse right; move the append to get pre- or post-order
+# time = O(n), space = O(h)   h = height of the tree (recursion stack)
+def inorderTraversal(root):
     result = []
-    queue = collections.deque([root])
-    
+
+    def dfs(node):
+        if not node:
+            return
+        # result.append(node.val)   <- here: PRE-order  (root, left, right)
+        dfs(node.left)
+        result.append(node.val)     # here: IN-order   (left, root, right)
+        dfs(node.right)
+        # result.append(node.val)   <- here: POST-order (left, right, root)
+
+    dfs(root)
+    return result
+```
+
+```java
+// java
+// LC 94 - Binary Tree Inorder Traversal
+// IDEA: recurse left, record the node, recurse right; move the add() for pre- or post-order
+// time = O(n), space = O(h)
+public List<Integer> inorderTraversal(TreeNode root) {
+    List<Integer> result = new ArrayList<>();
+    dfs(root, result);
+    return result;
+}
+
+private void dfs(TreeNode node, List<Integer> result) {
+    if (node == null) {
+        return;
+    }
+    dfs(node.left, result);
+    result.add(node.val);           // in-order position
+    dfs(node.right, result);
+}
+```
+
+**Complexity**
+- **Time O(n)**: `dfs` is called once per node plus once per null child, and each call does O(1)
+  work besides the two recursive calls.
+- **Space O(h)**: the recursion stack holds one frame per level of the current root-to-node path;
+  `h = n` for a skewed tree, `log n` for a balanced one. The output list is not counted.
+
+**Traps**
+- `return [root.val] + preorder(root.left) + preorder(root.right)` reads nicely but copies a list
+  at every level: a skewed tree of n nodes (LC 94 `[1,null,2,null,3,…]`) costs O(n²). Append into
+  one shared list.
+- A skewed tree of 10⁵ nodes overflows Python's default recursion limit (1000) — switch to
+  [Template 2](#template-2-iterative-traversal--stack-in-order-and-queue-level-order--lc-102)'s
+  explicit stack.
+
+**Not this if** — the tree is a BST and you want "the k-th smallest" or "is it valid": the
+traversal is the same, but stopping early and the ordering invariant live in [bst.md](./bst.md).
+
+**Drill** — LC 94 · LC 144 · LC 145 · LC 589 *(n-ary: loop over `children`)*
+
+### Template 2: Iterative Traversal — Stack In-order and Queue Level-order — LC 102
+
+**Recognise** — "level by level", "each depth", "right side view", "zigzag", "average of each
+level" → the queue. "Without recursion", "the tree can be 10⁵ deep", or an iterator that yields one
+node at a time (LC 173) → the stack.
+
+**Key point** — the queue holds exactly one level at the moment `level_size = len(queue)` is read,
+so the inner `for` loop drains that level and nothing else. (For the stack: it holds the left spine
+still owed a visit, so the top is always the next node in sorted order.)
+
+```python
+# python
+# LC 102 - Binary Tree Level Order Traversal
+# IDEA: snapshot the queue length = the size of the current level, drain exactly that many
+# time = O(n), space = O(w)   w = maximum width of a level
+from collections import deque
+
+def levelOrder(root):
+    if not root:
+        return []
+    result = []
+    queue = deque([root])
     while queue:
-        level_size = len(queue)
-        current_level = []
-        
+        level_size = len(queue)          # every node now in the queue is on this level
+        level = []
         for _ in range(level_size):
             node = queue.popleft()
-            current_level.append(node.val)
-            
+            level.append(node.val)
             if node.left:
                 queue.append(node.left)
             if node.right:
                 queue.append(node.right)
-        
-        result.append(current_level)
-    
+        result.append(level)
+    return result
+
+
+# LC 94 - Binary Tree Inorder Traversal (iterative)
+# IDEA: push the whole left spine, pop = visit, then move to the right child
+# time = O(n), space = O(h)
+def inorder_iterative(root):
+    result = []
+    stack = []
+    current = root
+    while current or stack:
+        while current:                   # go as far left as possible
+            stack.append(current)
+            current = current.left
+        current = stack.pop()            # leftmost unvisited node
+        result.append(current.val)
+        current = current.right          # its right subtree comes next
     return result
 ```
 
-### Template 3: Tree Construction
-```python
-def build_tree_from_traversals(preorder, inorder):
-    """
-    Construct tree from preorder and inorder traversals
-    Key insight: First element in preorder is always root
-    """
-    if not preorder or not inorder:
-        return None
-    
-    # Root is first element in preorder
-    root = TreeNode(preorder[0])
-    
-    # Find root position in inorder to split left/right
-    root_idx = inorder.index(root.val)
-    
-    # Recursively build subtrees
-    # Left subtree: elements before root in inorder
-    root.left = build_tree_from_traversals(
-        preorder[1:root_idx+1],  # Skip root, take left elements
-        inorder[:root_idx]       # Everything before root
-    )
-    
-    # Right subtree: elements after root in inorder
-    root.right = build_tree_from_traversals(
-        preorder[root_idx+1:],   # Everything after left subtree
-        inorder[root_idx+1:]     # Everything after root
-    )
-    
-    return root
+```java
+// java
+// LC 102 - Binary Tree Level Order Traversal
+// IDEA: snapshot the queue size = the current level, drain exactly that many
+// time = O(n), space = O(w)
+public List<List<Integer>> levelOrder(TreeNode root) {
+    List<List<Integer>> result = new ArrayList<>();
+    if (root == null) {
+        return result;
+    }
+    Deque<TreeNode> queue = new ArrayDeque<>();
+    queue.offer(root);
+    while (!queue.isEmpty()) {
+        int levelSize = queue.size();     // read ONCE, before the loop adds children
+        List<Integer> level = new ArrayList<>();
+        for (int i = 0; i < levelSize; i++) {
+            TreeNode node = queue.poll();
+            level.add(node.val);
+            if (node.left != null) {
+                queue.offer(node.left);
+            }
+            if (node.right != null) {
+                queue.offer(node.right);
+            }
+        }
+        result.add(level);
+    }
+    return result;
+}
 ```
 
-### Template 4: Path Problems
+**Complexity**
+- **Time O(n)**: every node is offered once and polled once; the inner `for` loop's iterations sum
+  to n across all levels.
+- **Space O(w)**: the queue never holds more than two adjacent levels; the widest level of a
+  complete tree is about n / 2. The in-order stack holds one root-to-node spine, O(h).
+
+**Traps**
+- Java's `for (int i = 0; i < queue.size(); i++)` re-reads the size while the loop polls and offers,
+  so levels are cut short or merged: LC 102 `[3,9,20,null,null,15,7]` no longer returns
+  `[[3],[9,20],[15,7]]`. Read the size once, before the loop.
+- `if not root: return []` first: an empty tree would otherwise put `None` in the queue and crash
+  on `.val`.
+- `list.pop(0)` instead of `deque.popleft()` makes each dequeue O(n) — O(n²) on a wide tree.
+
+**Not this if** — the answer needs each node's **column** or horizontal gap (LC 662, LC 987):
+carry an index with the node, [Template 11](#template-11-bfs-with-positional-index--lc-662-).
+
+**Drill** — LC 102 ⭐ · LC 199 *(last node of each level)* · LC 103 *(reverse every other row)* ·
+LC 173 *(the in-order stack as an iterator)* · LC 314
+
+### Template 3: Build from Preorder + Inorder — LC 105
+
+**Recognise** — "construct the binary tree from its preorder and inorder (or inorder and
+postorder) traversal", values are **unique**. n ≤ 3000 → the O(n²) `index()` version passes, but
+the expected answer is O(n).
+
+**Key point** — `preorder[pre_index]` is always the root of the subtree being built, and its
+position in `inorder` splits the remaining range into exactly the left subtree's values and the
+right subtree's values. Build left before right, so `pre_index` walks preorder in order.
+
 ```python
-def path_sum_template(root, target):
-    """
-    Template for path sum problems
-    Can track paths, sums, or other properties
-    """
-    def dfs(node, current_sum, path):
+# python
+# LC 105 - Construct Binary Tree from Preorder and Inorder Traversal
+# IDEA: next preorder value is the root; its inorder index splits [lo, hi] into left / right
+# time = O(n), space = O(n)   the index map, plus O(h) recursion
+def buildTree(preorder, inorder):
+    index_of = {}
+    for i, val in enumerate(inorder):
+        index_of[val] = i                 # O(1) lookup instead of inorder.index()
+    pre_index = 0                         # next root to take from preorder
+
+    def build(lo, hi):                    # build the subtree whose values are inorder[lo..hi]
+        nonlocal pre_index
+        if lo > hi:
+            return None
+        root_val = preorder[pre_index]
+        pre_index += 1
+        root = TreeNode(root_val)
+        mid = index_of[root_val]
+        root.left = build(lo, mid - 1)    # left FIRST: preorder lists the left subtree next
+        root.right = build(mid + 1, hi)
+        return root
+
+    return build(0, len(inorder) - 1)
+```
+
+```java
+// java
+// LC 105 - Construct Binary Tree from Preorder and Inorder Traversal
+// IDEA: next preorder value is the root; its inorder index splits the range
+// time = O(n), space = O(n)
+private Map<Integer, Integer> indexOf = new HashMap<>();
+private int preIndex = 0;
+
+public TreeNode buildTree(int[] preorder, int[] inorder) {
+    for (int i = 0; i < inorder.length; i++) {
+        indexOf.put(inorder[i], i);
+    }
+    preIndex = 0;
+    return build(preorder, 0, inorder.length - 1);
+}
+
+private TreeNode build(int[] preorder, int lo, int hi) {
+    if (lo > hi) {
+        return null;
+    }
+    int rootVal = preorder[preIndex];
+    preIndex++;
+    TreeNode root = new TreeNode(rootVal);
+    int mid = indexOf.get(rootVal);
+    root.left = build(preorder, lo, mid - 1);    // left before right
+    root.right = build(preorder, mid + 1, hi);
+    return root;
+}
+```
+
+**Complexity**
+- **Time O(n)**: each call consumes one preorder value and creates one node; `index_of[root_val]`
+  is an O(1) map lookup, where `inorder.index()` would make the whole build O(n²).
+- **Space O(n)**: the `index_of` map holds n entries; the recursion adds O(h).
+
+**Dry run**
+
+```text
+preorder = [3,9,20,15,7]   inorder = [9,3,15,20,7]
+build(0,4)  root 3  mid 1  -> left = build(0,0), right = build(2,4)
+build(0,0)  root 9  mid 0  -> both children build(lo > hi) = None
+build(2,4)  root 20 mid 3  -> left = build(2,2) root 15, right = build(4,4) root 7
+result      [3,9,20,null,null,15,7]
+```
+
+**Traps**
+- Building `root.right` before `root.left` consumes preorder in the wrong order: LC 105 example 1
+  comes back as `[3,20,9,…]`-shaped garbage. (For **postorder + inorder**, LC 106, take roots from
+  the **end** and build **right first**.)
+- Slicing `preorder[1:mid+1]` at every call is O(n) per call → O(n²) on a skewed tree.
+- Duplicate values break `index_of`; the problem guarantees uniqueness, so say that assumption out
+  loud.
+
+**Not this if** — you are given **one** sequence with null markers (`"1,2,#,#,3"`): that is a
+serialization codec, a pre-order parser, in [tree_codec.md](./tree_codec.md).
+
+**Drill** — LC 105 ⭐ · LC 106 *(postorder: roots from the end, right first)* · LC 889 *(pre +
+post, the left root is `preorder[1]`)* · LC 1008 *(BST from preorder alone: bounds instead of a
+map)*
+
+### Template 4: Root-to-Leaf Path with Backtracking — LC 113
+
+**Recognise** — "all **root-to-leaf** paths", "paths whose sum equals target", "return every path
+as a list". n ≤ 5000 → O(n · h) with the path copies is fine.
+
+**Key point** — `path` always equals the values on the way from the root to the current node: it
+grows by one on entry and the `path.pop()` at the end of the call shrinks it by one on exit, so a
+sibling never sees the other sibling's nodes.
+
+```python
+# python
+# LC 113 - Path Sum II
+# IDEA: pre-order DFS carrying the remaining sum; append on entry, pop on exit (backtrack)
+# time = O(n * h), space = O(h)   each found path is copied in O(h)
+def pathSum(root, targetSum):
+    result = []
+    path = []
+
+    def dfs(node, remaining):
         if not node:
             return
-        
-        # Update current state
-        current_sum += node.val
-        path.append(node.val)
-        
-        # Check if leaf node and condition met
-        if not node.left and not node.right:
-            if current_sum == target:
-                result.append(path[:])  # Copy current path
-        
-        # Explore subtrees
-        dfs(node.left, current_sum, path)
-        dfs(node.right, current_sum, path)
-        
-        # Backtrack
-        """
-        NOTE !!! why do we need backtrack here ? (gemini)
-        In simple terms, **backtracking** is the "undo" button for your recursion.
+        path.append(node.val)                     # enter: the path now ends at node
+        remaining -= node.val
+        if not node.left and not node.right:      # a leaf: the path is complete
+            if remaining == 0:
+                result.append(list(path))         # copy, the list keeps changing
+        else:
+            dfs(node.left, remaining)
+            dfs(node.right, remaining)
+        path.pop()                                # exit: undo the append
 
-
-        ### 3. A Visual Example
-
-        Imagine this tree:
-
-        ```text
-            1
-           / \
-           2   3
-
-        ```text
-
-        **Without `path.pop()`:**
-
-        1. Go to `1`: `path = [1]`
-        2. Go to `2`: `path = [1, 2]`
-        3. Finish `2`, go back to `1`.
-        4. Go to `3`: `path = [1, 2, 3]`  <-- **ERROR!** (2 shouldn't be here)
-
-        **With `path.pop()`:**
-
-        1. Go to `1`: `path = [1]`
-        2. Go to `2`: `path = [1, 2]`
-        3. Finish `2`, **`pop()`**: `path = [1]`
-        4. Go to `3`: `path = [1, 3]` <-- **CORRECT!**
-        """
-        path.pop()
-    
-    result = []
-    dfs(root, 0, [])
+    dfs(root, targetSum)
     return result
 ```
 
-### Template 5: Tree Properties
+```java
+// java
+// LC 113 - Path Sum II
+// IDEA: pre-order DFS with the remaining sum; add on entry, remove on exit
+// time = O(n * h), space = O(h)
+public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
+    List<List<Integer>> result = new ArrayList<>();
+    dfs(root, targetSum, new ArrayList<>(), result);
+    return result;
+}
+
+private void dfs(TreeNode node, int remaining, List<Integer> path, List<List<Integer>> result) {
+    if (node == null) {
+        return;
+    }
+    path.add(node.val);
+    remaining -= node.val;
+    if (node.left == null && node.right == null) {
+        if (remaining == 0) {
+            result.add(new ArrayList<>(path));    // copy
+        }
+    } else {
+        dfs(node.left, remaining, path, result);
+        dfs(node.right, remaining, path, result);
+    }
+    path.remove(path.size() - 1);                  // backtrack
+}
+```
+
+**Complexity**
+- **Time O(n · h)**: the DFS itself is O(n); `list(path)` copies up to h values for each of the at
+  most n/2 leaves that match.
+- **Space O(h)**: `path` and the recursion stack both hold one root-to-node path. The output is not
+  counted.
+
+**Traps**
+- Dropping `path.pop()`: on the tree `1 → (2, 3)` the path to 3 comes out as `[1, 2, 3]`, because 2
+  was never removed when its call returned.
+- `result.append(path)` without a copy stores the same list n times; after the DFS it is empty, so
+  LC 113 example 1 returns `[[], []]`.
+- Testing `remaining == 0` at a **null** child instead of at a leaf counts a node with one child as
+  the end of a path: `[1,2]`, target 1 wrongly returns `[[1]]`.
+- Negative values (allowed in LC 113) mean you cannot prune when `remaining < 0`.
+
+**Not this if** — the path may start and end **anywhere** going down (LC 437) → a prefix-sum map
+on the tree; the whole path family (LC 112 / 113 / 257 / 437) is owned by
+[tree_lca_distance.md](./tree_lca_distance.md).
+
+**Drill** — LC 112 · LC 257 *(strings are immutable: no pop needed)* · LC 113 · LC 129 · LC 437
+
+### Template 5: Height Up, Answer in a Global — LC 543
+
+**Recognise** — "diameter", "longest path between **any** two nodes", "maximum path sum", "is it
+balanced", "tilt" — the answer at a node needs both children's results, and the best answer may bend
+through a node that is not the root.
+
+**Key point** — the function **returns** one arm (the height, which the parent can extend) and
+**records** the bent path `left + right` into a global; the global is never the return value, because
+a parent cannot extend a path that already bends.
+
 ```python
-def tree_property_template(root):
-    """
-    Calculate tree properties (height, diameter, balance)
-    """
-    def helper(node):
+# python
+# LC 543 - Diameter of Binary Tree
+# IDEA: return my height (in nodes) to my parent; record the path that bends at me
+# time = O(n), space = O(h)
+def diameterOfBinaryTree(root):
+    best = 0                               # longest path seen so far, in edges
+
+    def height(node):
+        nonlocal best
         if not node:
-            return 0  # or (0, True) for multiple values
-        
-        # Get info from subtrees
-        left_info = helper(node.left)
-        right_info = helper(node.right)
-        
-        # Calculate current node's property
-        current_property = calculate(left_info, right_info)
-        
-        # Update global result if needed
-        self.result = max(self.result, current_property)
-        
-        return current_property
-    
-    self.result = 0
-    helper(root)
-    return self.result
+            return 0
+        left = height(node.left)
+        right = height(node.right)
+        best = max(best, left + right)     # the path that bends at node
+        return 1 + max(left, right)        # only ONE arm continues upward
+
+    height(root)
+    return best
 ```
 
-### Template 6: LCA (Lowest Common Ancestor)
+```java
+// java
+// LC 543 - Diameter of Binary Tree
+// IDEA: return the height, record left + right in a field
+// time = O(n), space = O(h)
+private int best = 0;
+
+public int diameterOfBinaryTree(TreeNode root) {
+    best = 0;
+    height(root);
+    return best;
+}
+
+private int height(TreeNode node) {
+    if (node == null) {
+        return 0;
+    }
+    int left = height(node.left);
+    int right = height(node.right);
+    best = Math.max(best, left + right);
+    return 1 + Math.max(left, right);
+}
+```
+
+**Complexity**
+- **Time O(n)**: `height` runs once per node, post-order, with O(1) work after its two calls.
+- **Space O(h)**: the recursion stack; the global is O(1).
+
+**Traps**
+- Returning `left + right` instead of `1 + max(left, right)`: the parent extends a bent path.
+  `[1,2,3,4,5]` would score 4 at the root instead of 3.
+- Units: `height(None) = 0` counts **nodes**, so `left + right` is already the **edge** count of the
+  bent path. Adding 1 gives LC 543 example 2 (`[1,2]`) the answer 2 instead of 1.
+- LC 124 (max path sum) has negative values: clamp each arm with `max(0, arm)` and start the global
+  at `-inf`, or `[-3]` returns 0.
+- Calling `height` again inside the loop (LC 110 written top-down) is O(n²) on a skewed tree;
+  compute the height once and return `-1` as an "already unbalanced" flag.
+
+**Not this if** — the value a node needs comes from **above** it (depth, the max so far on the path,
+LC 1448): pass it down as an argument instead — see
+[§0-5](#0-5-depth-vs-height--the-two-numbers-a-tree-dfs-computes-).
+
+**Drill** — LC 104 ⭐ · LC 110 ⭐ · LC 543 ⭐ · LC 687 · LC 124 ⭐
+
+### Template 6: LCA by Returned Presence — LC 236
+
+**Recognise** — "lowest common ancestor of two nodes", both nodes **guaranteed to exist**, a root
+is given, the tree is **not** a BST. n ≤ 10⁵ → one O(n) pass.
+
+**Key point** — `dfs(node)` returns `p` or `q` if one of them is in `node`'s subtree (or the LCA if
+both are), else `None`. The first node at which **both** children return non-null is the split
+point, and nothing below it can contain both.
+
 ```python
-def find_lca(root, p, q):
-    """
-    Find lowest common ancestor of nodes p and q
-    """
-    if not root or root == p or root == q:
+# python
+# LC 236 - Lowest Common Ancestor of a Binary Tree
+# IDEA: return the target I found (or None); the node where both sides found one is the LCA
+# time = O(n), space = O(h)
+def lowestCommonAncestor(root, p, q):
+    if not root or root is p or root is q:
+        return root                        # a target is its own answer for this subtree
+    left = lowestCommonAncestor(root.left, p, q)
+    right = lowestCommonAncestor(root.right, p, q)
+    if left and right:                     # p on one side, q on the other
         return root
-
-    left = find_lca(root.left, p, q)
-    right = find_lca(root.right, p, q)
-
-    # Both found in different subtrees -> current is LCA
-    if left and right:
-        return root
-
-    # One or both found in same subtree
-    return left if left else right
+    return left if left else right         # pass up whichever side found something
 ```
 
-**Variations** — the template above assumes *a root to search from* and *both targets present*. Each variant breaks one of those, and that decides the shape:
+```java
+// java
+// LC 236 - Lowest Common Ancestor of a Binary Tree
+// IDEA: return the found target or null; both sides non-null -> this node is the LCA
+// time = O(n), space = O(h)
+public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+    if (root == null || root == p || root == q) {
+        return root;
+    }
+    TreeNode left = lowestCommonAncestor(root.left, p, q);
+    TreeNode right = lowestCommonAncestor(root.right, p, q);
+    if (left != null && right != null) {
+        return root;
+    }
+    return left != null ? left : right;
+}
+```
+
+**Complexity**
+- **Time O(n)**: each node is visited at most once; a returned target stops the descent below it.
+- **Space O(h)**: the recursion stack.
+
+**Variations** — the template assumes *a root to search from* and *both targets present*. Each
+variant breaks one of those, and that decides the shape:
 
 | LC | What changes | Shape | Complexity |
 |----|--------------|-------|------------|
@@ -695,87 +957,139 @@ def find_lca(root, p, q):
 | 1650 | **no root**, every node has `parent` | walk **up** both parent chains → LC 160, intersection of two linked lists | O(H) / O(1) |
 | 1676 | **N targets** instead of 2 | same post-order against a `set` of targets | O(N) / O(H) |
 
-- **LC 1650 (parent pointers)** — twist: the signature is `lowestCommonAncestor(p, q)` with **no `root`**, so there is no tree to recurse into. `p.parent.parent…` is a linked list ending at the root, so two nodes give two lists that merge at the LCA. Walk both up and swap tails on `null`:
+**Traps**
+- The early `return root` when `root is p` means a `q` that does **not** exist is never noticed:
+  LC 1644 with `q` absent returns `p` instead of `None`. That variant must recurse first and count.
+- LC 1650's two-pointer walk must step **onto** `None` before switching: writing
+  `a = a.parent or q` skips that step, so the two walks differ by one and can loop forever.
+- Compare nodes by identity (`is`, `==` on references), not `.val`: values are not guaranteed to be
+  unique in the follow-ups.
+
+**Not this if** — the tree is a BST (LC 235): walk down by value in O(h) ([bst.md](./bst.md)); or
+there is no root, only `parent` pointers (LC 1650). The whole LCA family, with 1650 traced step by
+step and code for 1644 / 1676 / 235, lives in [tree_lca_distance.md](./tree_lca_distance.md).
+
+**Drill** — LC 235 ⭐ · LC 236 · LC 1644 · LC 1650 · LC 1676 · LC 865
+
+### Template 7: Count Nodes of a Complete Tree — LC 222
+
+**Recognise** — "**complete** binary tree", "design an algorithm that runs in less than O(n)". n up
+to 5 · 10⁴ — O(n) passes, so the follow-up is the question.
+
+**Key point** — in a complete tree, if the left subtree's leftmost depth equals the right
+subtree's, the **left** subtree is perfect (`2^h − 1` nodes); otherwise the **right** one is perfect,
+one level shorter. Either way one half is counted by a formula and only the other is recursed into.
 
 ```python
 # python
-# LC 1650 - Lowest Common Ancestor of a Binary Tree III
-# IDEA: 2 pointers on the parent chain; on hitting null, restart at the OTHER node
-#       -> each pointer walks len(path(p)) + len(path(q)) steps, so they meet at the LCA
-# time = O(h), space = O(1)
-class Solution(object):
-    def lowestCommonAncestor(self, p, q):
-        # edge
-        if not p or not q:
-            return None
-
-        a, b = p, q
-        while a != b:
-            # NOTE !!! `if a else q`, NOT `a.parent or q` -- the None step itself
-            #          must be consumed, or the two walks differ by one and never meet
-            a = a.parent if a else q
-            b = b.parent if b else p
-        return a
-```
-
-> The O(h)-space answer to say first is simpler: put every ancestor of `p` in a **set**, then walk up from `q` and return the first hit — first hit going up *is* the lowest. Hash the **nodes**, not `node.val`.
-
-Full worked variants (1650 traced step by step, plus 1644 / 1676 / 235 code) live in [tree_lca_distance.md](./tree_lca_distance.md#the-lca-family--pick-the-template-by-what-you-are-handed-).
-
-### Template 7: Binary Search on Trees
-```python
-def count_complete_tree_nodes(root):
-    """
-    Count nodes in complete binary tree in O(log²n) time
-    Key: Use binary search on tree structure
-    """
+# LC 222 - Count Complete Tree Nodes
+# IDEA: compare the left spines of the two subtrees; the perfect half is counted by 2^h,
+#       recurse only into the other half
+# time = O(log^2 n), space = O(log n)
+def countNodes(root):
     if not root:
         return 0
 
-    def get_height(node):
-        """Get height by going left"""
-        height = 0
+    def left_depth(node):                  # nodes on the leftmost path
+        depth = 0
         while node:
-            height += 1
+            depth += 1
             node = node.left
-        return height
+        return depth
 
-    left_height = get_height(root.left)
-    right_height = get_height(root.right)
-
-    if left_height == right_height:
-        # Left subtree is perfect binary tree
-        # Nodes in left = 2^left_height - 1
-        # Plus root = 2^left_height
-        return (1 << left_height) + count_complete_tree_nodes(root.right)
-    else:
-        # Right subtree is perfect binary tree
-        # Height = right_height, nodes = 2^right_height - 1
-        # Plus root = 2^right_height
-        return (1 << right_height) + count_complete_tree_nodes(root.left)
+    left_h = left_depth(root.left)
+    right_h = left_depth(root.right)
+    if left_h == right_h:
+        # left subtree is perfect: 2^left_h - 1 nodes, plus the root = 2^left_h
+        return (1 << left_h) + countNodes(root.right)
+    # right subtree is perfect, one level shorter: 2^right_h - 1 nodes, plus the root
+    return (1 << right_h) + countNodes(root.left)
 ```
 
-### Template 8: Level Linking with O(1) Space (`next` pointer) ⭐⭐⭐⭐⭐
+```java
+// java
+// LC 222 - Count Complete Tree Nodes
+// IDEA: equal left spines -> left half perfect, else right half perfect; recurse into the other
+// time = O(log^2 n), space = O(log n)
+public int countNodes(TreeNode root) {
+    if (root == null) {
+        return 0;
+    }
+    int leftH = leftDepth(root.left);
+    int rightH = leftDepth(root.right);
+    if (leftH == rightH) {
+        return (1 << leftH) + countNodes(root.right);
+    }
+    return (1 << rightH) + countNodes(root.left);
+}
 
-> **Pattern**: You are already standing on a fully-linked level, so you can walk it with `next` instead of a queue — and while walking it, you stitch together the level below with a **dummy head + moving tail**.
-> **Key Idea**: The `next` chain of level `k` *is* the queue for level `k`. That removes the O(w) queue and gives **O(1) extra space**.
-> Use when the tree is **not perfect** (missing children), which is exactly what makes the naive `root.left.next = root.right` trick fail.
+private int leftDepth(TreeNode node) {
+    int depth = 0;
+    while (node != null) {
+        depth++;
+        node = node.left;
+    }
+    return depth;
+}
+```
+
+**Complexity**
+- **Time O(log² n)**: the recursion goes down one level per call (h = log n calls), and each call
+  walks two left spines of length ≤ log n in `left_depth`.
+- **Space O(log n)**: one stack frame per level.
+
+**Traps**
+- `1 << h` counts the subtree **plus** the current root; writing `(1 << h) - 1` and then adding 1
+  for the root is the same, but forgetting the root returns 5 for LC 222 example 1 (`[1,2,3,4,5,6]`).
+- Measuring the right subtree's **right** spine instead of its left spine breaks the test: the last
+  level fills from the left, so only the left spine tells you its true depth.
+
+**Not this if** — the tree is not guaranteed complete: only the O(n) traversal is correct.
+
+**Drill** — LC 222 · LC 958 *(is it complete? BFS, [Template 11](#template-11-bfs-with-positional-index--lc-662-))* ·
+LC 1261 · LC 1104 *(heap-index arithmetic on a zigzag-labelled tree)*
+
+### Template 8: Level Linking with O(1) Space — LC 117 ⭐⭐⭐⭐⭐
+
+**Recognise** — "populate each `next` pointer to its next right node", "you may only use constant
+extra space", and the tree is **not** perfect (LC 117; LC 116 is the perfect case).
+
+**Key point** — level `k`'s `next` chain is already built when you stand on it, so it **is** the
+queue for level `k`; while walking it, a **dummy head + moving tail** stitches level `k + 1` together.
+
+```python
+# python
+# LC 117 - Populating Next Right Pointers in Each Node II
+# IDEA: walk level k through its own `next` chain; build level k+1's chain with dummy + tail
+# time = O(n), space = O(1)   output pointers not counted
+def connect(root):
+    cur = root                       # head of the level being walked
+    while cur:
+        dummy = Node(0)              # dummy.next will be the head of the NEXT level
+        tail = dummy
+        while cur:                   # walk the current level through `next`
+            if cur.left:
+                tail.next = cur.left
+                tail = tail.next
+            if cur.right:
+                tail.next = cur.right
+                tail = tail.next
+            cur = cur.next
+        cur = dummy.next             # drop down one level
+    return root
+```
 
 ```java
 // java
 // LC 117 - Populating Next Right Pointers in Each Node II
-// IDEA: traverse level k via its own `next` chain; build level k+1's chain
-//       using a dummy node + tail pointer. No queue needed.
-/**
- * time = O(N), space = O(1)   // output pointers not counted
- */
+// IDEA: traverse level k via its own `next` chain; build level k+1's chain with dummy + tail
+// time = O(n), space = O(1)
 public Node connect(Node root) {
-    Node cur = root;                 // head of the level being traversed
+    Node cur = root;
     while (cur != null) {
-        Node dummy = new Node(0);    // sentinel: dummy.next = head of NEXT level
-        Node tail = dummy;           // grows the next level's chain
-
-        while (cur != null) {        // walk current level via `next`
+        Node dummy = new Node(0);
+        Node tail = dummy;
+        while (cur != null) {
             if (cur.left != null) {
                 tail.next = cur.left;
                 tail = tail.next;
@@ -786,94 +1100,101 @@ public Node connect(Node root) {
             }
             cur = cur.next;
         }
-        cur = dummy.next;            // drop down one level
+        cur = dummy.next;
     }
     return root;
 }
 ```
 
-```python
-# python
-# LC 117 - Populating Next Right Pointers in Each Node II
-# IDEA: same as java - dummy head + tail builds the next level's `next` chain
-class Solution:
-    def connect(self, root):
-        # time = O(N), space = O(1)
-        cur = root
-        while cur:
-            dummy = Node(0)      # sentinel for the NEXT level
-            tail = dummy
-            while cur:           # walk current level through `next`
-                if cur.left:
-                    tail.next = cur.left
-                    tail = tail.next
-                if cur.right:
-                    tail.next = cur.right
-                    tail = tail.next
-                cur = cur.next
-            cur = dummy.next     # move down
-        return root
-```
+**Complexity**
+- **Time O(n)**: each node is reached once through `cur = cur.next` and linked once through
+  `tail.next`.
+- **Space O(1)**: only `cur`, `dummy` and `tail`; the BFS queue of Template 2 is gone.
 
-**Variations**
-- **LC 116 (Perfect tree)** — twist: every node has 0 or 2 children, so the dummy/tail bookkeeping collapses to `cur.left.next = cur.right; cur.right.next = cur.next.left`. The Template 8 code above still solves 116 unchanged — memorise 117, get 116 for free.
+**Traps**
+- The perfect-tree shortcut `cur.left.next = cur.right; cur.right.next = cur.next.left` crashes on
+  LC 117 example 1 (`[1,2,3,4,5,null,7]`): node 3 has no left child, so `cur.next.left` is `None`
+  and 5 is never linked to 7.
+- A fresh `dummy` per level is required; reusing one leaves `dummy.next` pointing at the old level
+  when the next level is empty, and the outer loop never ends.
+
+**Not this if** — the problem allows O(n) space or wants a list per level: plain
+[Template 2](#template-2-iterative-traversal--stack-in-order-and-queue-level-order--lc-102).
+
+**Drill** — LC 116 *(perfect tree: the same code works unchanged)* · LC 117 · LC 199
 
 ---
 
-### Template 9: Tree DP — Return Multiple States Bottom-Up ⭐⭐⭐⭐⭐
+### Template 9: Tree DP — Return Multiple States — LC 337 ⭐⭐⭐⭐⭐
 
-> **Pattern**: Template 5 returns *one* number per subtree. When the parent's choice depends on what the child **chose to do**, return a **tuple of states** instead.
-> **Recurrence** (LC 337): `take(n) = n.val + skip(L) + skip(R)`, `skip(n) = max(take(L), skip(L)) + max(take(R), skip(R))`.
-> **Recognition**: "cannot pick two adjacent nodes", "cover every node", "each node has k modes" — any constraint that couples parent and child decisions.
+**Recognise** — "cannot pick two **adjacent** (parent–child) nodes", "cover every node", "each node
+is in one of k modes" — any constraint that couples a parent's choice to what its child **chose**.
+
+**Key point** — each call returns one best value **per state** of its own root (here
+`(take, skip)`), so the parent can pick the child state its own choice allows. Recurrence (LC 337):
+`take(n) = n.val + skip(L) + skip(R)`, `skip(n) = max(take(L), skip(L)) + max(take(R), skip(R))`.
+
+```python
+# python
+# LC 337 - House Robber III
+# IDEA: post-order DP returning (take, skip) per subtree
+# time = O(n), space = O(h)
+def rob(root):
+    def helper(node):
+        if not node:
+            return (0, 0)                     # (take, skip)
+        left = helper(node.left)
+        right = helper(node.right)
+        take = node.val + left[1] + right[1]  # robbing me forces both children to be skipped
+        skip = max(left) + max(right)         # skipping me leaves each child free
+        return (take, skip)
+
+    return max(helper(root))
+```
 
 ```java
 // java
 // LC 337 - House Robber III
-// IDEA: post-order DP. Each call returns {maxIfWeRobThisNode, maxIfWeSkipThisNode}.
-//       Robbing a node forbids robbing its children -> must use children's "skip".
-/**
- * time = O(N), space = O(H)   // H = tree height (recursion stack)
- */
+// IDEA: post-order DP; each call returns {take, skip}
+// time = O(n), space = O(h)
 public int rob(TreeNode root) {
     int[] res = robHelper(root);
     return Math.max(res[0], res[1]);
 }
 
-// returns int[]{ take, skip }
 private int[] robHelper(TreeNode node) {
     if (node == null) {
         return new int[]{0, 0};
     }
     int[] l = robHelper(node.left);
     int[] r = robHelper(node.right);
-
-    // rob current -> children MUST be skipped
     int take = node.val + l[1] + r[1];
-    // skip current -> children are free to do whatever is best
     int skip = Math.max(l[0], l[1]) + Math.max(r[0], r[1]);
-
     return new int[]{take, skip};
 }
 ```
 
-```python
-# python
-# LC 337 - House Robber III
-# IDEA: post-order DP returning (take, skip) per subtree
-class Solution:
-    def rob(self, root):
-        # time = O(N), space = O(H)
-        def helper(node):
-            if not node:
-                return (0, 0)             # (take, skip)
-            l = helper(node.left)
-            r = helper(node.right)
-            take = node.val + l[1] + r[1]  # children must be skipped
-            skip = max(l) + max(r)         # children free to choose
-            return (take, skip)
+**Complexity**
+- **Time O(n)**: one post-order call per node, O(1) work combining two pairs.
+- **Space O(h)**: the recursion stack; each frame holds two small tuples.
 
-        return max(helper(root))
+**Dry run**
+
+```text
+LC 337 example 1: [3,2,3,null,3,null,1]
+leaf 3 -> (3, 0)     leaf 1 -> (1, 0)
+node 2 (right child 3) -> take = 2 + 0 + 0 = 2,  skip = 0 + max(3,0) = 3   -> (2, 3)
+node 3 (right child 1) -> take = 3 + 0 + 0 = 3,  skip = 0 + max(1,0) = 1   -> (3, 1)
+root 3 -> take = 3 + 3 + 1 = 7,  skip = max(2,3) + max(3,1) = 6            -> answer 7
 ```
+
+**Traps**
+- Returning one number "best of this subtree" loses the information the parent needs: greedy
+  "rob every other level" gives 6 on `[2,1,3,null,4]`, whose answer is 7 (rob 3 and 4).
+- Skipping a node does **not** force its children to be taken: `skip = take(L) + take(R)` returns 6
+  on the chain `[4,1,null,2,null,3]`, whose answer is 7 (rob 4 and 3). Each child picks its own max.
+- The grandchildren recursion `max(val + rob(grandchildren), rob(children))` without a memo calls
+  each subtree again from two ancestors — exponential on a deep tree. The tuple return is the memo.
 
 **Variations** — same post-order "return info about my subtree" skeleton, different payload:
 
@@ -887,15 +1208,36 @@ class Solution:
 | 687 | Longest Univalue Path | longest same-value arm going down; global max = left arm + right arm |
 | 549 | Binary Tree Longest Consecutive Sequence II | `(inc, dec)` — longest ascending / descending run going **down** from me; global max = `inc + dec - 1` (worked below) |
 
+```python
+# python
+# LC 652 - Find Duplicate Subtrees
+# IDEA: canonical subtree id string + Counter; two subtrees are equal iff their ids are equal
+# time = O(n^2) worst case (string building), space = O(n^2)
+from collections import Counter
+
+def findDuplicateSubtrees(root):
+    count = Counter()
+    result = []
+
+    def subtree_id(node):
+        if not node:
+            return "#"                     # null marker keeps ids unambiguous
+        key = "%s,%s,%s" % (node.val, subtree_id(node.left), subtree_id(node.right))
+        count[key] += 1
+        if count[key] == 2:                # report each duplicate exactly once
+            result.append(node)
+        return key
+
+    subtree_id(root)
+    return result
+```
+
 ```java
 // java
 // LC 652 - Find Duplicate Subtrees
 // IDEA: serialize every subtree into a canonical id string, count ids in a map.
-//       Two subtrees are identical iff their ids are equal.
-//       NOTE: use a null marker ("#") - without it "1,2" is ambiguous.
-/**
- * time = O(N^2) worst case (string building), space = O(N^2)
- */
+//       Use a null marker ("#") - without it "1,2" is ambiguous.
+// time = O(n^2) worst case (string building), space = O(n^2)
 public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
     Map<String, Integer> cnt = new HashMap<>();
     List<TreeNode> res = new ArrayList<>();
@@ -910,7 +1252,6 @@ private String subtreeId(TreeNode node, Map<String, Integer> cnt, List<TreeNode>
     String key = node.val + ","
             + subtreeId(node.left, cnt, res) + ","
             + subtreeId(node.right, cnt, res);
-
     int c = cnt.merge(key, 1, Integer::sum);
     if (c == 2) {   // == 2 (not >= 2) so each duplicate is reported once
         res.add(node);
@@ -919,28 +1260,7 @@ private String subtreeId(TreeNode node, Map<String, Integer> cnt, List<TreeNode>
 }
 ```
 
-```python
-# python
-# LC 652 - Find Duplicate Subtrees
-# IDEA: canonical subtree id string + Counter
-class Solution:
-    def findDuplicateSubtrees(self, root):
-        # time = O(N^2) worst case, space = O(N^2)
-        cnt = collections.Counter()
-        res = []
-
-        def sid(node):
-            if not node:
-                return "#"                 # null marker keeps ids unambiguous
-            key = "%s,%s,%s" % (node.val, sid(node.left), sid(node.right))
-            cnt[key] += 1
-            if cnt[key] == 2:              # report each duplicate exactly once
-                res.append(node)
-            return key
-
-        sid(root)
-        return res
-```
+**Drill** — LC 337 · LC 563 · LC 652 · LC 549 *(worked below)* · LC 968
 
 #### Worked variation: two runs per node — LC 549 Binary Tree Longest Consecutive Sequence II ⭐⭐⭐⭐
 
@@ -1076,21 +1396,45 @@ class Solution:
 
 ---
 
-### Template 10: Post-Order Structural Modification (return the new subtree) ⭐⭐⭐⭐
+### Template 10: Post-order Structural Modification — LC 1110 ⭐⭐⭐⭐
 
-> **Pattern**: The recursion returns a **node** (possibly `null`), and the parent **reassigns** it: `node.left = helper(node.left)`. That single line is how you delete/prune a node without ever touching a parent pointer.
-> **Key Idea**: Fix children first (post-order), then decide the fate of the current node. A node whose parent got deleted becomes a **new forest root**, so pass that fact down.
-> **Recognition**: "delete nodes and return...", "prune", "remove subtrees that...".
+**Recognise** — "delete the nodes … and return the forest", "prune every subtree that …", "remove
+the leaves with value x" — the tree's **shape** changes, and the result is a node (or list of
+nodes), not a number.
+
+**Key point** — the recursion **returns the new subtree** (possibly `None`) and the parent
+**reassigns** it: `node.left = walk(node.left, …)`. That one line detaches a deleted child without a
+parent pointer. A surviving node whose parent was deleted is a new forest root, so that fact is passed
+down as `is_root`.
+
+```python
+# python
+# LC 1110 - Delete Nodes And Return Forest
+# IDEA: return None to detach a deleted node; pass `is_root` (my parent was deleted) down
+# time = O(n), space = O(n)   the set of values to delete, plus O(h) recursion
+def delNodes(root, to_delete):
+    to_del = set(to_delete)
+    forest = []
+
+    def walk(node, is_root):
+        if not node:
+            return None
+        deleted = node.val in to_del
+        if is_root and not deleted:
+            forest.append(node)                    # I survive and nobody points at me
+        node.left = walk(node.left, deleted)       # my children are roots iff I am deleted
+        node.right = walk(node.right, deleted)
+        return None if deleted else node           # None detaches me from my parent
+
+    walk(root, True)
+    return forest
+```
 
 ```java
 // java
 // LC 1110 - Delete Nodes And Return Forest
-// IDEA: DFS carrying `isRoot` (= my parent was deleted / I am the original root).
-//       A surviving node that is a root gets collected. A deleted node returns null,
-//       which detaches it from its parent, and marks its children as new roots.
-/**
- * time = O(N), space = O(N)
- */
+// IDEA: DFS carrying `isRoot`; a deleted node returns null, which detaches it from its parent
+// time = O(n), space = O(n)
 public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
     Set<Integer> toDel = new HashSet<>();
     for (int v : to_delete) {
@@ -1106,63 +1450,56 @@ private TreeNode walk(TreeNode node, boolean isRoot, Set<Integer> toDel, List<Tr
         return null;
     }
     boolean deleted = toDel.contains(node.val);
-
-    // I survive AND nobody points at me -> I head a tree in the forest
     if (isRoot && !deleted) {
         forest.add(node);
     }
-
-    // children are "roots" exactly when I am deleted
     node.left = walk(node.left, deleted, toDel, forest);
     node.right = walk(node.right, deleted, toDel, forest);
-
-    return deleted ? null : node;   // returning null detaches me from my parent
+    return deleted ? null : node;
 }
 ```
 
-```python
-# python
-# LC 1110 - Delete Nodes And Return Forest
-# IDEA: same - return None to detach, pass `is_root` down
-class Solution:
-    def delNodes(self, root, to_delete):
-        # time = O(N), space = O(N)
-        to_del = set(to_delete)
-        forest = []
+**Complexity**
+- **Time O(n)**: `walk` visits each node once; `node.val in to_del` is an O(1) set lookup.
+- **Space O(n)**: `to_del` holds up to n values; the recursion stack adds O(h).
 
-        def walk(node, is_root):
-            if not node:
-                return None
-            deleted = node.val in to_del
-            if is_root and not deleted:
-                forest.append(node)
-            # my children become roots iff I am deleted
-            node.left = walk(node.left, deleted)
-            node.right = walk(node.right, deleted)
-            return None if deleted else node
-
-        walk(root, True)
-        return forest
-```
+**Traps**
+- Calling `walk(node.left, …)` without assigning the result back leaves deleted nodes attached:
+  LC 1110 example 1 (`[1,2,3,4,5,6,7]`, delete `[3,5]`) returns a tree that still holds 3 and 5.
+- A deleted node's children are roots even when they are themselves deleted — the `is_root and not
+  deleted` test is what keeps a deleted root out of the forest (`[1,2]`, delete `[1,2]` → `[]`).
+- Membership in a **list** `to_delete` instead of a set makes each test O(k): O(n · k) overall.
 
 **Variations**
-- **LC 814 (Binary Tree Pruning)** — twist: no forest, single tree, and the delete test depends on the *already-pruned* children, so the check must come **after** both recursive calls.
+- **LC 814 (Binary Tree Pruning)** — no forest, one tree, and the delete test depends on the
+  *already-pruned* children, so the check must come **after** both recursive calls.
+
+```python
+# python
+# LC 814 - Binary Tree Pruning
+# IDEA: prune both children first, THEN test whether I became a zero-valued leaf
+# time = O(n), space = O(h)
+def pruneTree(root):
+    if not root:
+        return None
+    root.left = pruneTree(root.left)
+    root.right = pruneTree(root.right)
+    if root.val == 0 and not root.left and not root.right:
+        return None
+    return root
+```
 
 ```java
 // java
 // LC 814 - Binary Tree Pruning
 // IDEA: prune children first, THEN test if I became a valueless leaf
-/**
- * time = O(N), space = O(H)
- */
+// time = O(n), space = O(h)
 public TreeNode pruneTree(TreeNode root) {
     if (root == null) {
         return null;
     }
     root.left = pruneTree(root.left);
     root.right = pruneTree(root.right);
-
-    // only decidable after children are pruned
     if (root.val == 0 && root.left == null && root.right == null) {
         return null;
     }
@@ -1170,129 +1507,151 @@ public TreeNode pruneTree(TreeNode root) {
 }
 ```
 
-```python
-# python
-# LC 814 - Binary Tree Pruning
-class Solution:
-    def pruneTree(self, root):
-        # time = O(N), space = O(H)
-        if not root:
-            return None
-        root.left = self.pruneTree(root.left)
-        root.right = self.pruneTree(root.right)
-        if root.val == 0 and not root.left and not root.right:
-            return None
-        return root
-```
+**Not this if** — the tree is a BST and nodes are removed by a **value range** (LC 669) or a
+single key (LC 450): the ordering lets you discard a whole side at once, see [bst.md](./bst.md).
+
+**Drill** — LC 226 ⭐ *(return the swapped subtree)* · LC 814 · LC 1325 · LC 1110 · LC 114
 
 ---
 
-### Template 11: BFS with Positional Index (heap indexing on a general tree) ⭐⭐⭐⭐
+### Template 11: BFS with Positional Index — LC 662 ⭐⭐⭐⭐
 
-> **Pattern**: Carry a **virtual array index** alongside each node in the BFS queue — `left = 2*i`, `right = 2*i + 1` — i.e. treat any binary tree as if it were embedded in the complete-tree array layout described above.
-> **Key Idea**: The index encodes *horizontal position including the gaps*, which a plain level-order count cannot. Width of a level = `lastIndex - firstIndex + 1`.
-> **Gotcha**: indices double every level and **overflow** on a 3000-deep skewed tree — normalise by subtracting the level's first index each round.
+**Recognise** — "the **width** of a level counts the null positions between the end nodes", "is the
+tree **complete**", "vertical order / column" — a horizontal position that a plain level-order count
+cannot express.
 
-```java
-// java
-// LC 662 - Maximum Width of Binary Tree
-// IDEA: BFS carrying the heap-style index of each node. Width of a level is
-//       (index of last node) - (index of first node) + 1, so null gaps count.
-/**
- * time = O(N), space = O(W)   // W = max level width
- */
-public int widthOfBinaryTree(TreeNode root) {
-    if (root == null) {
-        return 0;
-    }
-    int res = 0;
-    Queue<TreeNode> nodes = new LinkedList<>();
-    Queue<Integer> idx = new LinkedList<>();
-    nodes.add(root);
-    idx.add(0);
-
-    while (!nodes.isEmpty()) {
-        int size = nodes.size();
-        int first = 0, last = 0;
-
-        for (int i = 0; i < size; i++) {
-            TreeNode n = nodes.poll();
-            int j = idx.poll();
-
-            if (i == 0) {
-                first = j;          // anchor of this level
-            }
-            j -= first;             // NOTE: re-base to 0 -> prevents overflow
-            last = j;
-
-            if (n.left != null) {
-                nodes.add(n.left);
-                idx.add(2 * j);
-            }
-            if (n.right != null) {
-                nodes.add(n.right);
-                idx.add(2 * j + 1);
-            }
-        }
-        res = Math.max(res, last + 1);   // last - 0 + 1
-    }
-    return res;
-}
-```
+**Key point** — each node carries its index in the complete-tree array layout (`left = 2i`,
+`right = 2i + 1`), so the index encodes the position **including the gaps**; width of a level =
+`last − first + 1`.
 
 ```python
 # python
 # LC 662 - Maximum Width of Binary Tree
-# IDEA: BFS with (node, heap_index); width = last_idx - first_idx + 1
-class Solution:
-    def widthOfBinaryTree(self, root):
-        # time = O(N), space = O(W)
-        if not root:
-            return 0
-        res = 0
-        q = collections.deque([(root, 0)])
+# IDEA: BFS with (node, heap_index); re-base each level to 0; width = last - first + 1
+# time = O(n), space = O(w)   w = maximum width of a level
+from collections import deque
 
-        while q:
-            size = len(q)
-            first = last = 0
-            for i in range(size):
-                node, j = q.popleft()
-                if i == 0:
-                    first = j          # anchor of this level
-                j -= first             # re-base to 0 (keeps ints small)
-                last = j
-                if node.left:
-                    q.append((node.left, 2 * j))
-                if node.right:
-                    q.append((node.right, 2 * j + 1))
-            res = max(res, last + 1)
-        return res
+def widthOfBinaryTree(root):
+    if not root:
+        return 0
+    best = 0
+    queue = deque([(root, 0)])
+    while queue:
+        level_size = len(queue)
+        first = queue[0][1]                   # index of the leftmost node on this level
+        last = 0
+        for _ in range(level_size):
+            node, index = queue.popleft()
+            index -= first                    # re-base to 0 so indices stay small
+            last = index
+            if node.left:
+                queue.append((node.left, 2 * index))
+            if node.right:
+                queue.append((node.right, 2 * index + 1))
+        best = max(best, last + 1)
+    return best
 ```
 
+```java
+// java
+// LC 662 - Maximum Width of Binary Tree
+// IDEA: BFS carrying the heap-style index; re-base each level so the int never overflows
+// time = O(n), space = O(w)
+public int widthOfBinaryTree(TreeNode root) {
+    if (root == null) {
+        return 0;
+    }
+    int best = 0;
+    Deque<TreeNode> nodes = new ArrayDeque<>();
+    Deque<Integer> idx = new ArrayDeque<>();
+    nodes.offer(root);
+    idx.offer(0);
+    while (!nodes.isEmpty()) {
+        int size = nodes.size();
+        int first = idx.peek();
+        int last = 0;
+        for (int i = 0; i < size; i++) {
+            TreeNode n = nodes.poll();
+            int j = idx.poll() - first;       // re-based index
+            last = j;
+            if (n.left != null) {
+                nodes.offer(n.left);
+                idx.offer(2 * j);
+            }
+            if (n.right != null) {
+                nodes.offer(n.right);
+                idx.offer(2 * j + 1);
+            }
+        }
+        best = Math.max(best, last + 1);
+    }
+    return best;
+}
+```
+
+**Complexity**
+- **Time O(n)**: every node is enqueued and dequeued once, as in Template 2.
+- **Space O(w)**: the queue holds at most one level (plus the children being added).
+
+**Dry run**
+
+```text
+LC 662 example 1: [1,3,2,5,3,null,9]
+level 0: (1,0)                     first 0  last 0   width 1
+level 1: (3,0) (2,1)               first 0  last 1   width 2
+level 2: (5,0) (3,1) (9,3)         first 0  last 3   width 4   <- the null at index 2 counts
+```
+
+**Traps**
+- Without re-basing, indices double per level: a skewed tree 3000 deep needs `2^3000`, which
+  overflows a Java `int` (and makes Python's big ints slow). Subtract the level's first index.
+- `first` must be read before the loop pops anything; reading it inside the loop on `i == 0` works,
+  reading `queue[0]` after the first pop takes the second node.
+
 **Variations**
-- **LC 958 (Check Completeness of a Binary Tree)** — twist: the same "gaps matter" idea, but simpler to push `null` children into the queue and assert that **once a `null` is popped, no non-null may follow**.
+- **LC 958 (Check Completeness of a Binary Tree)** — the same "gaps matter" idea, but simpler to
+  push `null` children too and require that **once a `null` is popped, no real node follows**.
+
+```python
+# python
+# LC 958 - Check Completeness of a Binary Tree
+# IDEA: BFS that enqueues null children too; in a complete tree every real node comes first
+# time = O(n), space = O(w)
+from collections import deque
+
+def isCompleteTree(root):
+    queue = deque([root])
+    seen_null = False
+    while queue:
+        node = queue.popleft()
+        if not node:
+            seen_null = True
+        else:
+            if seen_null:
+                return False          # a real node after a hole -> not complete
+            queue.append(node.left)   # push nulls on purpose
+            queue.append(node.right)
+    return True
+```
 
 ```java
 // java
 // LC 958 - Check Completeness of a Binary Tree
 // IDEA: BFS enqueuing nulls too. In a complete tree all real nodes come first.
-/**
- * time = O(N), space = O(W)
- */
+// time = O(n), space = O(w)
 public boolean isCompleteTree(TreeNode root) {
-    Queue<TreeNode> q = new LinkedList<>();
+    Queue<TreeNode> q = new LinkedList<>();   // LinkedList, because ArrayDeque rejects null
     q.add(root);
     boolean seenNull = false;
-
     while (!q.isEmpty()) {
         TreeNode n = q.poll();
         if (n == null) {
-            seenNull = true;          // a hole appeared
+            seenNull = true;
         } else {
             if (seenNull) {
-                return false;         // real node AFTER a hole -> not complete
+                return false;
             }
-            q.add(n.left);            // push nulls on purpose
+            q.add(n.left);
             q.add(n.right);
         }
     }
@@ -1300,25 +1659,10 @@ public boolean isCompleteTree(TreeNode root) {
 }
 ```
 
-```python
-# python
-# LC 958 - Check Completeness of a Binary Tree
-class Solution:
-    def isCompleteTree(self, root):
-        # time = O(N), space = O(W)
-        q = collections.deque([root])
-        seen_null = False
-        while q:
-            node = q.popleft()
-            if not node:
-                seen_null = True
-            else:
-                if seen_null:
-                    return False      # non-null after a null -> not complete
-                q.append(node.left)   # push nulls on purpose
-                q.append(node.right)
-        return True
-```
+**Not this if** — columns must also be **sorted within a cell** by row and value (LC 987): carry
+`(row, col)` and sort at the end, see [tree.md](./tree.md).
+
+**Drill** — LC 958 · LC 662 · LC 314 · LC 987
 
 ---
 
@@ -1836,7 +2180,7 @@ Problem Analysis Flowchart:
    │   ├── Complete binary tree? → Template 7 with height optimization
    │   ├── BST with kth element? → Template 7 with inorder traversal
    │   └── Need log time complexity? → Template 7 with binary search
-   └── NO → Use Universal Template or reconsider problem type
+   └── NO → Use Template 1 (plain recursion) or reconsider problem type
 ```
 
 ### Decision Framework
@@ -1844,6 +2188,14 @@ Problem Analysis Flowchart:
 2. **Choose template**: Match problem requirements to template capabilities
 3. **Adapt solution**: Modify template for specific constraints
 4. **Optimize**: Consider iterative vs recursive, space vs time tradeoffs
+
+## Drill Path
+
+| Stage | Problems (easy → hard) | What it adds |
+|---|---|---|
+| **Core** ⭐ | LC 226 ⭐ · LC 104 ⭐ · LC 100 ⭐ · LC 572 ⭐ · LC 543 ⭐ · LC 110 ⭐ · LC 102 ⭐ · LC 1448 ⭐ · LC 105 ⭐ | swap and return, height up, two-tree recursion, the bent path, BFS levels, state passed down, building from traversals |
+| **Practice** | LC 94 · LC 113 · LC 199 · LC 222 · LC 117 · LC 337 · LC 1110 | the stack, backtracking, complete-tree counting, O(1) level links, tuple DP, structural edits |
+| **Stretch** | LC 662 · LC 652 · LC 549 · LC 968 | positional index, subtree ids, two runs per node, three-state greedy |
 
 ## Summary & Quick Reference
 
@@ -1862,7 +2214,6 @@ Problem Analysis Flowchart:
 ### Template Quick Reference
 | Template | Best For | Avoid When | Key Code Pattern |
 |----------|----------|------------|------------------|
-| Universal | General recursion | Need iterative | `if not root: return` |
 | Traversal Recursive | Clean code | Stack overflow risk | Order determines position |
 | Traversal Iterative | Large trees | Simple recursion works | Stack/Queue manipulation |
 | Construction | Building trees | Modifying existing | Index mapping crucial |
