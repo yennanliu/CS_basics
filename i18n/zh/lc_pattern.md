@@ -72,14 +72,14 @@
 | 「由前序與中序建樹」 | 節點 ≤ 3,000 | 分治 + 索引 map | [binary_tree § Template 3](./binary_tree.md#template-3-build-from-preorder--inorder--lc-105) | 序列化／反序列化 → 帶 null 標記的前序（[tree_codec](./tree_codec.md)） |
 | 「前綴搜尋」、「支援 `.` 的單字字典」、「網格裡找很多個字」 | 單字 ≤ 3·10⁴ | trie | [trie](./trie.md#templates--algorithms) | 一次只拿一個字比對一個集合 → hash set 就夠 |
 
-<!-- db5efcac28b9 -->
+<!-- bf377faa31c6 -->
 ### 圖
 
 | 敘述裡的訊號 | 限制提示 | 模式 | Card | 長得像，其實不是 |
 |---|---|---|---|---|
 | 「島嶼數量」、「連通區域」、「flood fill」 | 網格 ≤ 300 × 300 | 網格 DFS／BFS，標記已走過 | [dfs § Template 2](./dfs.md#template-2-graph--grid-dfs-flood-fill--lc-200-) | 邊一條一條進來、要問連通性 → 併查集 |
-| 「最短路徑／最少步數」，每一步成本都是 1 | V + E ≤ 10⁵ | BFS（入隊時就標記） | [bfs § Pattern 3](./bfs.md#pattern-3-graph-bfs-with-visited-set--lc-200) | 每一步成本不同 → Dijkstra；成本只有 0 或 1 → [0-1 BFS](./shortest_path_comparison.md#variant-0-1-bfs) |
-| 「橘子腐爛」、「到最近的 0／門的距離」 | 網格 ≤ 10⁵ 格 | 多源 BFS | [bfs § Pattern 4](./bfs.md#pattern-4-multi-source-bfs-distance-calculation--lc-542--lc-994-) | 只要從一個源點出發的距離 → 一般 BFS |
+| 「最短路徑／最少步數」，每一步成本都是 1 | V + E ≤ 10⁵ | BFS（入隊時就標記） | [bfs § Template 2](./bfs.md#template-2-graph-bfs-mark-on-enqueue--lc-1971-) | 每一步成本不同 → Dijkstra；成本只有 0 或 1 → [0-1 BFS](./shortest_path_comparison.md#variant-0-1-bfs) |
+| 「橘子腐爛」、「到最近的 0／門的距離」 | 網格 ≤ 10⁵ 格 | 多源 BFS | [bfs § Template 4](./bfs.md#template-4-multi-source-bfs--lc-994-) | 只要從一個源點出發的距離 → 一般 BFS |
 | 「帶權最短路徑」、「網路延遲」、「最小體力路徑」 | E ≤ 10⁵，權重 ≥ 0 | Dijkstra | [Dijkstra § Template 1](./Dijkstra.md#template-1-basic-dijkstra)（成本相加）、[§ LC 1631](./Dijkstra.md#1-is-the-cost-additive-and-can-you-order-the-cells--lc-64-vs-lc-1631-)（體力：取路徑上最大的邊，不是相加） | 有負權重或「最多 k 站」 → [Bellman-Ford](./Bellman-Ford.md)（LC 787）；全點對且 n ≤ 400 → [Floyd-Warshall](./Floyd-Warshall.md) |
 | 「課程表」、「有先修條件的任務順序」、「外星字典」 | V + E ≤ 10⁵ | 拓撲排序（Kahn 的 BFS） | [topology_sorting § Template 1](./topology_sorting.md#template-1-bfs-kahns-algorithm-) | 無向圖 → 根本沒有順序；用併查集檢查環 |
 | 「多餘的連線」、「省份數量」、「合併帳號」 | n ≤ 10⁵ | 併查集 | [union_find § 0-3](./union_find.md#0-3-algorithm-pattern--template-) | 還需要路徑長度 → BFS／DFS |
