@@ -11,7 +11,7 @@
 | 1 | 模板、風格指南、審查本身 | `00_template.md`、`CLAUDE.md`、`/lc-cheatsheet`、card gate | [#290](https://github.com/yennanliu/CS_basics/pull/290) | ✅ |
 | — | 這份進度文件 | `doc/cheatsheet-review-2026-11-progress.md` | [#301](https://github.com/yennanliu/CS_basics/pull/301) | 🔄 |
 | 2 | **P0** 修 bug | §9 的 9 個 verified + 11 個 reported、Java 減法 comparator | [#302](https://github.com/yennanliu/CS_basics/pull/302) | 🔄 |
-| 3 | **P7** lint + baseline | `script/check_cheatsheets.py` + baseline + workflow | | ⬜ |
+| 3 | **P7** lint + baseline | `script/check_cheatsheets.py` + baseline + workflow | PR_P7 | 🔄 |
 | 4 | **P1** 入口 | `lc_pattern.md` 改成 router；`startHere` 第一階 | | ⬜ |
 | 5a | **P2** tree 家族 | `tree`、`binary_tree`、`bst`、`tree_lca_distance` | | ⬜ |
 | 5b | **P2** graph 家族 | `bfs`、`dfs`、`graph` | | ⬜ |
@@ -32,23 +32,27 @@ P2 的 24 份 tier 5 cheatsheet 裡有 4 份不在 5a–5e：`lc_pattern` 由 P1
 
 ## 指標
 
-每個 PR 合併時更新「現在」一欄。數字來自審查〈What was measured〉的同一支量測；P7 之後改讀 `script/check_cheatsheets.py` 的 baseline。
+每個 PR 合併時更新「現在」一欄。P7 之後讀 `python3 script/check_cheatsheets.py --report`；它的算法和審查的量測略有不同（見括號），以 lint 為準。
 
 | 指標 | 審查時（`6ad1564dd`） | 目標 | 現在 |
 |---|---:|---|---:|
 | §9 verified bug | 9 | 0 | 0 |
 | Java 減法 comparator `(a, b) -> a - b` | 26 | 0 | 0（實際掃到 75 處：61 個 lambda + 14 個 `return a - b`；`java_trick_strings_sorting` 示範反例的 3 行保留） |
-| 有 recognition 標題的檔案 | 37 / 135 | 所有 tier ≥ 4 主檔 | 37 |
-| `### … LC n` 標題後直接接 code | 401 | 0 | 401 |
+| 有 recognition 標題的檔案 | 37 / 135 | 所有 tier ≥ 4 主檔 | 缺的 tier ≥ 4 主檔：37（lint `no-recognition`） |
+| 沒有 `## Drill Path` 的 tier ≥ 4 主檔 | — | 0 | 59（lint `no-drill-path`） |
+| 沒有 `## Index` 的 `_examples` | 27 | 0 | 27 |
+| 沒有 `## When Not to Use` 的 `_advanced` | 9 | 0 | 9 |
+| `### … LC n` 標題後直接接 code | 401 | 0 | 401（lint `code-first-example`） |
 | 沒有 insight 行的範例 | 570 | < 100 | 570 |
-| `NOTE !!!` | 583 行 / 69 檔 | < 50 | 583 |
-| IPython `In [n]:` | 224 行 / 10 檔 | 0 | 224 |
+| `NOTE !!!` | 583 行 / 69 檔 | < 50 | 567（lint `note-wall`，只算 `NOTE !!!` 本身） |
+| IPython `In [n]:` | 224 行 / 10 檔 | 0 | 347（lint `ipython`，`Out[n]:` 也算） |
 
 ## 每個 PR 的檢查清單
 
 - [ ] 只做總表裡那一列的範圍；順手發現的問題記到下方〈待辦〉，不夾帶
 - [ ] 每段改過的 snippet 都拿題目自己的 example 跑過
 - [ ] `python3 script/check_cheatsheet_cards.py`（新寫或改寫的段落是 card）
+- [ ] `python3 script/check_cheatsheets.py`（沒有數字變多；變少的話 `--update-baseline`）
 - [ ] `node script/zh.js check cheatsheet`（改到 prose 的段落，中文 overlay 同步）
 - [ ] `bash site/build.sh && node site/e2e-check.js _site && npm test --prefix site`
 - [ ] 這份文件：總表那一列、〈指標〉的「現在」、〈紀錄〉加一行
@@ -65,3 +69,4 @@ P2 的 24 份 tier 5 cheatsheet 裡有 4 份不在 5a–5e：`lc_pattern` 由 P1
 |---|---|---|
 | 2026-11-05 | 1 | #290 合併：pattern card / problem card、Skeleton A–D、card gate 與 Claude Code hook |
 | 2026-11-05 | 2 | P0：9 個 verified + 10 個 reported 修好並用題目 example 跑過（`lc_pattern` 移到 P1）；comparator 改成 `Integer.compare`；改到 prose 的 8 個段落中文 overlay 同步 |
+| 2026-11-05 | 3 | P7：`check_cheatsheets.py` 14 條規則、每檔每規則計數的 baseline（1,672 筆）、CI job；第一次跑就抓到 P0 漏掉的一個 comparator（已補進 #302） |
