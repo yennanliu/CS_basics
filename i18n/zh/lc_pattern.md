@@ -112,14 +112,14 @@
 | 「網格裡找單字」、「N 皇后」、「數獨」 | 棋盤 ≤ 9 × 9 或 m·n ≤ 36 | 棋盤上的回溯 | [backtrack § Template 9](./backtrack.md#template-9-grid--word-search--lc-79-)、[Template 10](./backtrack.md#template-10-n-queens--lc-51) | 同一個網格裡找很多個字 → trie + 回溯（LC 212） |
 | 「把字串切成回文」 | n ≤ 16 | 在切點上回溯 | [backtrack § Template 8](./backtrack.md#template-8-palindrome-partitioning--lc-131-) | 問**最少**切幾刀 → DP（LC 132） |
 
-<!-- 773101af399a -->
+<!-- b557fc892ba9 -->
 ### 堆積與貪婪
 
 | 敘述裡的訊號 | 限制提示 | 模式 | Card | 長得像，其實不是 |
 |---|---|---|---|---|
 | 「出現最頻繁的前 k 個」、「最近的 k 個」、「串流中的第 k 大」 | n ≤ 10⁵ | 大小為 k 的堆積 | [heap § Template 1](./heap.md#template-1-size-k-min-heap-for-the-kth-largest--lc-215-) | 固定陣列、只問一次 → quickselect，平均 O(n) |
-| 「資料流的中位數」 | 5 · 10⁴ 次呼叫 | 雙堆積 | [heap § Template 4](./heap.md#template-4-two-heaps-for-a-running-median--lc-295-) | 滑動視窗的中位數 → 還要能從視窗刪除（[monotonic_queue § Template 4](./monotonic_queue.md#template-4-sliding-window-median--ordered-multiset--two-heaps-lc-480-)） |
-| 「帶冷卻的任務排程」、「重排字串讓相同字元不相鄰」 | n ≤ 10⁴，26 種 | 對最頻繁的那個做貪婪 | [greedy § Template 2](./greedy.md#template-2-activity-selection-with-heap--lc-621-)、[Template 5](./greedy.md#template-5-string-reorganization--lc-767-) | 必須保持輸入順序 → 用佇列模擬 |
+| 「資料流的中位數」 | 5 · 10⁴ 次呼叫 | 雙堆積 | [heap § Template 3](./heap.md#template-3-two-heaps-pattern-median-finding--lc-295) | 滑動視窗的中位數 → 還要能從視窗刪除（[monotonic_queue § Template 4](./monotonic_queue.md#template-4-sliding-window-median--ordered-multiset--two-heaps-lc-480-)） |
+| 「帶冷卻的任務排程」、「重排字串讓相同字元不相鄰」 | n ≤ 10⁴，26 種 | 對最頻繁的那個做貪婪 | [greedy § Template 2](./greedy.md#template-2-cooldown-windows-with-a-max-heap--lc-621-)、[Template 5](./greedy.md#template-5-string-reorganization--lc-767-) | 必須保持輸入順序 → 用佇列模擬 |
 | 「能不能跳到終點」、「最少跳幾次」 | n ≤ 10⁴ | 貪婪：最遠可達 | [greedy § Template 4](./greedy.md#template-4-jump-game-pattern--lc-55-) | 每一跳有成本 → DP 或 Dijkstra |
 
 <!-- 059777f22c86 -->
