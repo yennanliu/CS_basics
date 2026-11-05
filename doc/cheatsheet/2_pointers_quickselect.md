@@ -85,6 +85,8 @@ def findKthLargest(nums, k):
 
 ```java
 // java
+import java.util.Random;
+
 // LC 215 - Kth Largest Element in an Array
 // IDEA: random pivot + 3-way partition; keep only the band that holds index n-k
 // time = O(N) average, O(N^2) worst (vanishingly unlikely with a random pivot), space = O(1)

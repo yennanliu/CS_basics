@@ -575,9 +575,9 @@ step  r  v  left  window     min_h[0]  max_h[0]  max-min  action                
 ### Template 1: Top K Elements Pattern — LC 215
 ```python
 # python
-# LC 215 - Kth Largest Element in an Array
 # IDEA: keep a min-heap of the k largest seen so far; its root is the kth largest
 # time = O(n log k), space = O(k)
+# LC 215 - Kth Largest Element in an Array
 def findKthLargest(nums, k):
     import heapq
 
@@ -604,9 +604,9 @@ def topKFrequent(nums, k):
 
 ```java
 // java
-// LC 215 - Kth Largest Element in an Array
 // IDEA: keep a min-heap of the k largest seen so far; its root is the kth largest
 // time = O(n log k), space = O(k)
+// LC 215 - Kth Largest Element in an Array
 public int findKthLargest(int[] nums, int k) {
     PriorityQueue<Integer> minHeap = new PriorityQueue<>();
     for (int num : nums) {
