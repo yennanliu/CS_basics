@@ -38,9 +38,9 @@ Constraint cues come from the ruler in [complexity_cheatsheet.md](./complexity_c
 | "return the inorder / preorder / postorder traversal" | n ≤ 100 | [Template 1](#template-1-recursive-pre--in--post-order-traversal--lc-94) recursion, append position picks the order | "without recursion", deep tree → [Template 2](#template-2-iterative-traversal--stack-in-order-and-queue-level-order--lc-102) stack |
 | "level by level", "right side view", "each depth" | n ≤ 2000 | [Template 2](#template-2-iterative-traversal--stack-in-order-and-queue-level-order--lc-102) queue snapshot | the gaps between nodes count → [Template 11](#template-11-bfs-with-positional-index--lc-662-) |
 | "construct the tree from preorder and inorder" | n ≤ 3000, values unique | [Template 3](#template-3-build-from-preorder--inorder--lc-105) index map | one string with null markers → [tree_codec.md](./tree_codec.md) |
-| "all root-to-leaf paths with sum = target" | n ≤ 5000 | [Template 4](#template-4-root-to-leaf-path-with-backtracking--lc-113) append / pop | the path may start anywhere → prefix sum on the tree, [tree_lca_distance.md](./tree_lca_distance.md) |
+| "all root-to-leaf paths with sum = target" | n ≤ 5000 | [Template 4](./tree_lca_distance.md#template-4-root-to-leaf-path-with-backtracking--lc-113) append / pop | the path may start anywhere → prefix sum on the tree, [tree_lca_distance.md](./tree_lca_distance.md) |
 | "diameter", "longest path between any two nodes", "balanced" | n ≤ 10⁴ | [Template 5](#template-5-height-up-answer-in-a-global--lc-543) height up, bent path in a global | the value comes from above (depth, max so far) → pass it down, [§0-5](#0-5-depth-vs-height--the-two-numbers-a-tree-dfs-computes-) |
-| "lowest common ancestor", root given, both nodes exist | n ≤ 10⁵ | [Template 6](#template-6-lca-by-returned-presence--lc-236) returned presence | a BST → walk down by value ([bst.md](./bst.md)); no root, `parent` pointers → [tree_lca_distance.md](./tree_lca_distance.md) |
+| "lowest common ancestor", root given, both nodes exist | n ≤ 10⁵ | [Template 6](./tree_lca_distance.md#template-1-lca-by-returned-presence--lc-236) returned presence | a BST → walk down by value ([bst.md](./bst.md)); no root, `parent` pointers → [tree_lca_distance.md](./tree_lca_distance.md) |
 | "count the nodes of a **complete** tree in less than O(n)" | n ≤ 5 · 10⁴ | [Template 7](#template-7-count-nodes-of-a-complete-tree--lc-222) compare left spines | not complete → O(n) traversal |
 | "populate each `next` pointer", "constant extra space" | n ≤ 6000 | [Template 8](#template-8-level-linking-with-o1-space--lc-117-) dummy + tail | O(n) space allowed → [Template 2](#template-2-iterative-traversal--stack-in-order-and-queue-level-order--lc-102) |
 | "cannot choose a parent and its child", "cover every node" | n ≤ 10⁴ | [Template 9](#template-9-tree-dp--return-multiple-states--lc-337-) a tuple of states | one number per subtree is enough → [Template 5](#template-5-height-up-answer-in-a-global--lc-543) |
@@ -708,12 +708,14 @@ serialization codec, a pre-order parser, in [tree_codec.md](./tree_codec.md).
 post, the left root is `preorder[1]`)* · LC 1008 *(BST from preorder alone: bounds instead of a
 map)*
 
-### Template 4: Root-to-Leaf Path with Backtracking — LC 113
+### Path Sum II, Root-to-Leaf Paths — LC 113
 
-This card's home is [tree_lca_distance.md § Template 4](./tree_lca_distance.md#template-4-root-to-leaf-path-with-backtracking--lc-113),
-which owns the root-to-leaf path family (LC 112 / 113 / 129 / 257 / 437): the same pre-order
-append / pop code in Python and Java, with its dry run and traps. The number stays here so the
-templates below keep theirs.
+> **Key point** — pre-order DFS: append the node on entry and pop it on exit, so `path` is always the
+> root-to-node path and a sibling never sees the other sibling's nodes.
+
+**Reduces to**: [tree_lca_distance.md § Template 4](./tree_lca_distance.md#template-4-root-to-leaf-path-with-backtracking--lc-113), which owns the whole root-to-leaf path
+family (LC 112 / 113 / 129 / 257 / 437) with its Python and Java, dry run and traps. This sheet keeps
+no copy, and the template numbers below stay as they were.
 
 ### Template 5: Height Up, Answer in a Global — LC 543
 
@@ -790,13 +792,14 @@ LC 1448): pass it down as an argument instead — see
 
 **Drill** — LC 543 ⭐ · LC 104 ⭐ · LC 110 ⭐ · LC 687 · LC 124 ⭐
 
-### Template 6: LCA by Returned Presence — LC 236
+### Lowest Common Ancestor of a Binary Tree — LC 236
 
-This card's home is [tree_lca_distance.md § Template 1](./tree_lca_distance.md#template-1-lca-by-returned-presence--lc-236),
-which owns the whole LCA family: the post-order "return what I found" code in Python and Java, a dry
-run, and the variants that change one precondition each (LC 235 on a BST, LC 1644 with absent
-targets, LC 1650 with parent pointers, LC 1676 with a set of targets). The number stays here so the
-templates below keep theirs.
+> **Key point** — post-order: each call returns the target it found (or the LCA, or nothing); the
+> first node where both children return something is the split point, and so the LCA.
+
+**Reduces to**: [tree_lca_distance.md § Template 1](./tree_lca_distance.md#template-1-lca-by-returned-presence--lc-236), which owns the whole LCA family: the
+code in Python and Java, a dry run, and the variants that change one precondition each (LC 235 on a
+BST, LC 1644 with absent targets, LC 1650 with parent pointers, LC 1676 with a set of targets).
 
 ### Template 7: Count Nodes of a Complete Tree — LC 222
 
