@@ -20,14 +20,14 @@
 
 一個模式一列。**Card** 欄連到解錨定題的那個模板；題目本身放在該 cheatsheet 的 examples 裡。
 
-<!-- 4244f66361f0 -->
+<!-- 45ea3f707411 -->
 ### 陣列與字串
 
 | 敘述裡的訊號 | 限制提示 | 模式 | Card | 長得像，其實不是 |
 |---|---|---|---|---|
 | 「最長／最短的連續子陣列或子字串」、「最多 k 種相異元素」 | n ≤ 10⁵ | 可變長度滑動視窗 | [sliding_window § Template 3](./sliding_window.md#template-3-longest-window-satisfying-p--lc-3-)（最長）、[Template 4](./sliding_window.md#template-4-shortest-window-satisfying-p--lc-209-)（最短） | 要剛好的總和 `sum == k`、而且值可能是負的 → 前綴和 + 雜湊表（LC 560） |
 | 「包含 t 所有字元的最短子字串」、在 s 裡找 t 的 anagram／排列 | n ≤ 10⁵，字母表 26–128 | 字元計數視窗 | [sliding_window § Template 5](./sliding_window.md#template-5-char-count-window-with-the-haveneed-counter--lc-76-) | 要的是子序列、不是子字串 → 雙指標（LC 392） |
-| 「剛好 k 個 … 的子陣列有幾個」 | n ≤ 10⁵ | 剛好 k = 最多 k − 最多 (k−1) | [sliding_window § Template 6](./sliding_window.md#template-6-exactly-k-via-at-most-subtraction--lc-992-) | 值可能是負的 → 前綴和 + 雜湊表 |
+| 「剛好 k 個 … 的子陣列有幾個」 | n ≤ 10⁵ | 剛好 k = 最多 k − 最多 (k−1) | [sliding_window § Template 6](./sliding_window.md#template-6-exactly-k-via-at-most-subtraction--lc-992-) | 「剛好 k」是**總和**（`sum == k`）而且值可能是負的 → 前綴和 + 雜湊表；*相異*值的剛好個數仍用這裡，計數器不在乎正負 |
 | 「總和為 k／可被 k 整除的子陣列有幾個」 | n ≤ 10⁵，允許負數 | 前綴和 + 計數 map | [prefix_sum § Template 2](./prefix_sum.md#template-2-hashmap--prefix-sum-subarray-target-sum--lc-560) | 值全部是正的、要最長／最短 → 滑動視窗 |
 | 「大量的區間和查詢」 | q ≤ 10⁵ | 前綴和陣列 | [prefix_sum § Template 1](./prefix_sum.md#template-1-basic-prefix-sum-range-queries--lc-303) | 查詢之間陣列會變 → Fenwick／線段樹（LC 307） |
 | 「把 [l, r] 每個元素加上 v」，做很多次 | n、更新次數 ≤ 10⁵ | 差分陣列 | [difference_array § Template 1](./difference_array.md#template-1-basic-difference-array) | 每次更新後都要讀最大值 → 帶 lazy propagation 的線段樹 |
@@ -37,17 +37,17 @@
 | 「最長回文子字串」、「回文子字串有幾個」 | n ≤ 1,000 | 從中心擴張 | [2_pointers § Template 3](./2_pointers.md#template-3-expand-from-centre--lc-5-lc-647-) | 回文**子序列** → 區間 DP（LC 516） |
 | 未排序陣列上的「two sum」、「之前看過嗎？」 | n ≤ 10⁵ | 查補數 | [hash_map § Template 2](./hash_map.md#template-2-seen-before-index-map-two-sum-shape) | 輸入已排序、要求 O(1) 空間 → 雙指標（LC 167） |
 | 「anagram 分組」、「數頻率」、「第一個不重複的」 | n ≤ 10⁴ | 依計算出的 key 分組／計數 | [hash_map § Template 3](./hash_map.md#template-3-grouping-by-a-computed-key)、[Template 1](./hash_map.md#template-1-frequency-counter) | 依頻率取前 k → 堆積或桶排序（LC 347） |
-| 「子陣列的最大和／最大乘積」 | n ≤ 10⁵ | Kadane：以這裡結尾的最佳一段 | [kadane_algorithm § 0-2](./kadane_algorithm.md#0-2-algorithm-pattern--template) | 長度 ≥ k 的子陣列，或總和 = k → 前綴和 |
+| 「子陣列的最大和／最大乘積」 | n ≤ 10⁵ | Kadane：以這裡結尾的最佳一段 | [kadane_algorithm § 0-2](./kadane_algorithm.md#0-2-algorithm-pattern--template)（和）、[§ 1-3](./kadane_algorithm.md#1-3-maximum-product-subarray-lc-152)（乘積：最小值也要一起維護） | 長度 ≥ k 的子陣列，或總和 = k → 前綴和 |
 | 「合併／插入區間」、「最少要幾間會議室」、「最少移除幾個才不重疊」 | n ≤ 10⁴ | 依起點排序（合併）或依終點排序（排程） | [intervals § Pattern 1](./intervals.md#pattern-1-interval-merging--lc-56-)、[Pattern 2](./intervals.md#pattern-2-interval-scheduling-greedy--lc-435-) | 同一時間有很多事件重疊 → 掃描線（LC 253、[scanning_line](./scanning_line.md#template-1-basic-interval-overlap--lc-253)） |
 | 「第 k 大／第 k 小」、「最近的 k 個」 | n ≤ 10⁵，只問一次 | quickselect | [2_pointers_quickselect § Template 1](./2_pointers_quickselect.md#template-1-kth-largest-element--lc-215-) | 資料是串流，或要依序拿到全部 k 個 → 大小為 k 的堆積 |
 
-<!-- 271a4041b721 -->
+<!-- fa5b8efec660 -->
 ### 二分搜尋
 
 | 敘述裡的訊號 | 限制提示 | 模式 | Card | 長得像，其實不是 |
 |---|---|---|---|---|
-| 「已排序陣列」、「找 target／第一個位置／插入位置」 | n ≤ 10⁵，要求 O(log n) | 經典二分搜尋 | [binary_search § 2.1](./binary_search.md#21-standard-binary-search-template--lc-704) | 沒排序、但要的是計數 → 先排序，或用雜湊表 |
-| 「能在 k 份內裝下的最小容量／速度／最大和」、「最大化最小距離」 | 數值到 10⁹ | 對答案做二分搜尋 | [binary_search_on_answer § The Unified Template](./binary_search_on_answer.md#the-unified-template) | 可行性檢查不單調（答案變大反而可能不行） → DP 或貪婪 |
+| 「已排序陣列」、「找 target／第一個位置／插入位置」 | n ≤ 10⁵，要求 O(log n) | 經典二分搜尋（找相等）、下界／上界（第一個位置、插入位置） | [binary_search § 2.1](./binary_search.md#21-standard-binary-search-template--lc-704)（相等）、[§ 1.3](./binary_search.md#13-find-boundaries--lower-and-upper-bound-lc-34-)（邊界） | 沒排序、但要的是計數 → 先排序，或用雜湊表 |
+| 「能在 k 份內裝下的最小容量／速度／最大和」、「最大化最小距離」 | 數值到 10⁹ | 對答案做二分搜尋 | [binary_search_on_answer § The Unified Template](./binary_search_on_answer.md#the-unified-template) | 答案變大時可行性翻轉不只一次（不是單一次 true → false 或 false → true） → DP 或貪婪 |
 | 「旋轉過的已排序陣列」 | n ≤ 5,000，要求 O(log n) | 二分搜尋，永遠有一半是排好的 | [binary_search](./binary_search.md) | 允許重複 → 最差變成 O(n)（LC 81） |
 
 <!-- 33b687a710c0 -->
@@ -72,7 +72,7 @@
 | 「由前序與中序建樹」 | 節點 ≤ 3,000 | 分治 + 索引 map | [binary_tree § Template 3](./binary_tree.md#template-3-build-from-preorder--inorder--lc-105) | 序列化／反序列化 → 帶 null 標記的前序（[tree_codec](./tree_codec.md)） |
 | 「前綴搜尋」、「支援 `.` 的單字字典」、「網格裡找很多個字」 | 單字 ≤ 3·10⁴ | trie | [trie](./trie.md#templates--algorithms) | 一次只拿一個字比對一個集合 → hash set 就夠 |
 
-<!-- 7204a7418ffd -->
+<!-- 4c97412b277d -->
 ### 圖
 
 | 敘述裡的訊號 | 限制提示 | 模式 | Card | 長得像，其實不是 |
@@ -84,9 +84,9 @@
 | 「課程表」、「有先修條件的任務順序」、「外星字典」 | V + E ≤ 10⁵ | 拓撲排序（Kahn 的 BFS） | [topology_sorting § Template 1](./topology_sorting.md#template-1-bfs-kahns-algorithm-) | 無向圖 → 根本沒有順序；用併查集檢查環 |
 | 「多餘的連線」、「省份數量」、「合併帳號」 | n ≤ 10⁵ | 併查集 | [union_find § 0-3](./union_find.md#0-3-algorithm-pattern--template-) | 還需要路徑長度 → BFS／DFS |
 | 「能不能分成兩組」、「是不是二分圖」 | n ≤ 100 | BFS 二著色 | [graph § Template 6](./graph.md#template-6-bipartite-check-2-coloring--lc-785-) | 三組以上 → 用回溯著色 |
-| 「複製這張圖」、「除法求值」 | V ≤ 100 | 帶節點 map／帶權邊的 DFS | [dfs § Template 10](./dfs.md#template-10-weighted-graph-dfs-divisionratio-queries--lc-399) | 固定的圖上有很多查詢 → 帶權併查集 |
+| 「除法求值」、比值查詢 | V ≤ 100 | 沿帶權邊做 DFS，沿路相乘 | [dfs § Template 10](./dfs.md#template-10-weighted-graph-dfs-divisionratio-queries--lc-399) | 固定的圖上有很多查詢 → 帶權併查集 |
 
-<!-- 5f94f2bbfdfe -->
+<!-- e29afeb463a5 -->
 ### 動態規劃
 
 | 敘述裡的訊號 | 限制提示 | 模式 | Card | 長得像，其實不是 |
@@ -95,11 +95,11 @@
 | 「字串能不能切成字典裡的單字」 | n ≤ 300 | 前綴切分 DP | [dp § Template 1b](./dp.md#template-1b-prefix-partition-dp---lc-139) | 要列出每一種切法 → 帶 memo 的回溯（LC 140） |
 | 網格裡的「不同路徑數」、「最小路徑和」 | m、n ≤ 200 | 二維網格 DP | [dp § Template 2](./dp.md#template-2-2-d-grid-dp---lc-64) | 路徑可以往任何方向走 → 最短路徑（Dijkstra／BFS） |
 | 「和為 target 的子集」、「切成兩個和相等的部分」、「目標和」 | n ≤ 200，總和 ≤ 10⁴ | 0/1 背包 | [dp § Template 4](./dp.md#template-4-01-knapsack---lc-416) | 物品可以重複用（找零，LC 322／518） → 完全背包，迴圈順序要反過來（[dp_loop_order](./dp_loop_order.md)） |
-| 「最長遞增子序列」、「俄羅斯套娃」 | n ≤ 10⁵ | LIS，用 tails 做到 O(n log n) | [dp § Template 7](./dp.md#template-7-longest-increasing-subsequence---lc-300) | 要連續的 → 滑動視窗或 Kadane |
+| 「最長遞增子序列」、「俄羅斯套娃」 | n ≤ 10⁵ | LIS：O(n²) DP，或用 tails 做到 O(n log n)（n ≤ 10⁵ 需要後者） | [dp § Template 7](./dp.md#template-7-longest-increasing-subsequence---lc-300)（O(n²)）、[patience_sorting § 1-1](./patience_sorting.md#1-1-basic-op--the-tails-scan-)（O(n log n)） | 要連續的 → 滑動視窗或 Kadane |
 | 「最長公共子序列」、「編輯距離」、「交錯字串」 | m、n ≤ 1,000 | 以前綴為狀態的二維字串 DP | [dp_string § LCS deep dive](./dp_string.md#deep-dive-the-prefix-based-indexing-pattern-lcs--variants--) | 公共**子字串** → 不相等時歸零 |
 | 「帶冷卻期／手續費／最多 k 次交易的股票買賣」 | n ≤ 10⁵ | 狀態機 DP | [dp § Template 5](./dp.md#template-5-state-machine-dp--lc-121--lc-309) | 只交易一次 → 追蹤目前最低價（LC 121） |
 | 「戳氣球」、「合併石頭的最小成本」 | n ≤ 300 | 區間 DP | [dp § Template 3](./dp.md#template-3-interval-dp--lc-312) | 操作的順序無關緊要 → 貪婪 |
-| 「走訪所有節點」、「把 n ≤ 16 個東西分配出去」 | n ≤ 16–20 | 位元遮罩 DP | [bit_manipulation § 2-3](./bit_manipulation.md#2-3-fill-buckets-one-at-a-time-bitmask-dp--lc-698-) | n 有好幾千 → 不是位元遮罩；找貪婪或以數值為狀態的 DP |
+| 「把 n ≤ 16 個東西分配到 k 組」、「走訪所有節點」 | n ≤ 16–20 | 對已用集合做位元遮罩 DP；有「目前節點」時，對 (node, mask) 做 BFS | [bit_manipulation § 2-3](./bit_manipulation.md#2-3-fill-buckets-one-at-a-time-bitmask-dp--lc-698-)（分配）、[shortest_path_comparison § LC 847](./shortest_path_comparison.md#variant-1--bfs-over-node-bitmask--lc-847)（走訪全部） | n 有好幾千 → 不是位元遮罩；找貪婪或以數值為狀態的 DP |
 
 <!-- a024fc1f2258 -->
 ### 回溯
@@ -152,10 +152,10 @@
 
 ---
 
-<!-- d960f0f63e40 -->
+<!-- 7f57008db509 -->
 ## 練習路徑
 
-每個家族一題錨定題，讓第一輪就碰過上面的每一列。⭐ 標的是 [L3 core 集合](https://github.com/yennanliu/CS_basics/blob/master/data/l3_core.json)。每份清單都由易到難。
+每個家族一題錨定題，讓第一輪就碰過上面的每一個家族。⭐ 標的是 [L3 core 集合](https://github.com/yennanliu/CS_basics/blob/master/data/l3_core.json)。每份清單都由易到難。
 
 - **Core ⭐**：LC 1 Two Sum · LC 20 Valid Parentheses · LC 206 Reverse Linked List · LC 121 Best Time to Buy and Sell Stock · LC 3 Longest Substring Without Repeating Characters · LC 102 Level Order Traversal · LC 200 Number of Islands · LC 322 Coin Change · LC 207 Course Schedule · LC 78 Subsets · LC 347 Top K Frequent Elements · LC 739 Daily Temperatures · LC 875 Koko Eating Bananas · LC 76 Minimum Window Substring
 - **Practice**：LC 167 Two Sum II · LC 560 Subarray Sum Equals K · LC 236 Lowest Common Ancestor · LC 994 Rotting Oranges · LC 743 Network Delay Time · LC 416 Partition Equal Subset Sum · LC 1143 Longest Common Subsequence · LC 295 Find Median from Data Stream
