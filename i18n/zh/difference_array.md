@@ -255,8 +255,13 @@
 
 <!--CODE-->
 
-<!-- 99d29f734e02 -->
+<!-- ec35d8971818 -->
 ### 2-2) Corporate Flight Bookings — LC 1109
+
+> **關鍵** — 每筆預訂都對一整段範圍加上同樣的座位數，所以只在兩端記錄，
+> 再用一次前綴和重建每個航班的總數。
+
+**歸約到**：[Template 1](./difference_array.md#template-1-basic-difference-array) — 基本的差分陣列，航班從 1 開始編號。
 
 <!--CODE-->
 

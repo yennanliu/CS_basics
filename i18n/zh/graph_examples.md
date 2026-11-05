@@ -108,15 +108,13 @@
 <!-- dbda0b995682 -->
 ## 二分圖檢查範例
 
-<!-- 8fb7c50b2c3e -->
+<!-- fbdbc1d50252 -->
 ### Possible Bipartition — LC 886
 
 > **關鍵** — 「分成兩組，讓互相討厭的人不在同一組」恰好就是「討厭關係圖是不是二分圖？」。
 > 先用配對建圖，再對每個分量二著色：一條邊兩端同色就是奇數環，不可能分組。
 
-**歸約到**：[graph § Template 6](./graph.md#template-6-bipartite-check-2-coloring--lc-785-) — 和 LC 785 一樣的 BFS 二著色，只是先從邊列表建圖，而且人是從 1 開始編號。
-
-<!--CODE-->
+**歸約到**：[graph § Template 6](./graph.md#template-6-bipartite-check-2-coloring--lc-785-) — 和 LC 785 一樣的 BFS 二著色，只是先從邊列表建圖，而且人是從 1 開始編號。程式碼就是 Template 6 的，跑在討厭關係圖上；奇偶併查集的寫法在 [graph_advanced § Template 3](./graph_advanced.md#template-3-parity-union-find-bipartite-check--lc-886)。
 
 **陷阱**
 - 討厭關係圖通常不連通：要從**每一個**還沒上色的人發射，否則第二個分量裡的衝突永遠看不到。

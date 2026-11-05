@@ -1240,7 +1240,7 @@ LC 1218 Longest Arithmetic Subsequence of Given Difference（`d` 固定，所以
 
 <!--CODE-->
 
-<!-- f02d789355b2 -->
+<!-- 1f2ebbff079c -->
 ## 何時不該用
 
 上面每一節都有一個更簡單的核心模板，能解大多數看起來需要它的題目。只有右欄成立時，才拿出進階技巧。
@@ -1252,7 +1252,7 @@ LC 1218 Longest Arithmetic Subsequence of Given Difference（`d` 固定，所以
 | 區間 DP 深入探討 | [dp.md § Template 2a](./dp.md#template-2a-2-d-table-shape-and-fill-order--lc-516-) 的 Order A，轉移只動兩端時 | 轉移需要一個嚴格落在區間內部的切點 `k` |
 | 格子 DP 的變形 | [dp.md § Template 2](./dp.md#template-2-2-d-grid-dp--lc-64-) 加上一列滾動 | 兩個走路的人要同步協調（LC 741） |
 | 狀態機延伸 | [dp.md § Template 5](./dp.md#template-5-state-machine-dp--lc-309) 與 [stock_trading.md](./stock_trading.md) | 狀態需要一個計數（k 次交易）或「上一步」的維度 |
-| 字串 DP 深入探討 | [dp.md § Template 8](./dp.md#template-8-edit-distance--lc-72-) / [§ Template 9](./dp.md#template-9-longest-common-subsequence--lc-1143) | 追問要 O(n) 空間且要還原路徑，或剛好一次編輯（LC 161：雙指標） |
+| 字串 DP 深入探討 | [dp.md § Template 8](./dp.md#template-8-edit-distance--lc-72-) / [§ Template 9](./dp.md#template-9-longest-common-subsequence--lc-1143) | 追問只要數值、要求 O(n) 空間，或剛好一次編輯（LC 161：雙指標） |
 | Manacher 演算法 | 中心擴展，O(n²)：[dp.md § Template 10](./dp.md#template-10-palindrome-substring-dp--lc-5-) | n ≥ 10⁵，而且明說 O(n²) 太慢 |
 | 位元遮罩 TSP | 無權的 LC 847 用 `(node, mask)` 做 BFS | 邊有權重，n ≤ 20 |
 | 鏈式 DP | 先排序，再用 [dp.md § Template 7a](./dp.md#template-7a-value-keyed-dp-dp--hash-map--lc-1218-) 以值為鍵的 DP | 鏈的順序不是某種排序順序，需要 DFS + 記憶化 |

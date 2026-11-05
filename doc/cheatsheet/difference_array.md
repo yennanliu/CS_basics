@@ -703,6 +703,11 @@ class Solution {
 
 ### 2-2) Corporate Flight Bookings — LC 1109
 
+> **Key point** — every booking adds the same seats to a whole range, so record it at its two ends
+> and let one prefix sum rebuild every flight's total.
+
+**Reduces to**: [Template 1](./difference_array.md#template-1-basic-difference-array) — the basic difference array, 1-indexed flights.
+
 ```python
 # python
 # LC 1109 - Corporate Flight Bookings
