@@ -379,7 +379,7 @@ subarray min/max sums, and the greedy-removal variants) is
 def daily_temperatures(temperatures):
     n = len(temperatures)
     res = [0] * n                 # 0 = no warmer day ahead
-    stack = []                    # indices, temperatures strictly decreasing bottom -> top
+    stack = []                    # indices, temperatures non-increasing bottom -> top (equal ones stay)
     for i, val in enumerate(temperatures):
         while stack and temperatures[stack[-1]] < val:
             j = stack.pop()
@@ -396,7 +396,7 @@ def daily_temperatures(temperatures):
 public int[] dailyTemperatures(int[] temperatures) {
     int n = temperatures.length;
     int[] res = new int[n];                    // 0 = no warmer day ahead
-    Deque<Integer> stack = new ArrayDeque<>(); // indices, temperatures strictly decreasing
+    Deque<Integer> stack = new ArrayDeque<>(); // indices, temperatures non-increasing (equal ones stay)
 
     // Traverse the array from left to right
     for (int i = 0; i < n; i++) {

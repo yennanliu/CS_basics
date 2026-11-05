@@ -23,7 +23,7 @@ One row per pattern. The **Card** column links to the template that solves the a
 |---|---|---|---|---|
 | "longest / shortest contiguous subarray or substring", "at most k distinct" | n ≤ 10⁵ | variable sliding window | [sliding_window § Template 3](./sliding_window.md#template-3-longest-window-satisfying-p--lc-3-) (longest), [Template 4](./sliding_window.md#template-4-shortest-window-satisfying-p--lc-209-) (shortest) | an exact sum, `sum == k`, where values can be negative → prefix sum + hash map (LC 560) |
 | "smallest substring containing all of t", anagram / permutation of t in s | n ≤ 10⁵, alphabet 26–128 | char-count window | [sliding_window § Template 5](./sliding_window.md#template-5-char-count-window-with-the-haveneed-counter--lc-76-) | a subsequence, not a substring → two pointers (LC 392) |
-| "number of subarrays with exactly k …" | n ≤ 10⁵ | exactly k = at most k − at most (k−1) | [sliding_window § Template 6](./sliding_window.md#template-6-exactly-k-via-at-most-subtraction--lc-992-) | values can be negative → prefix sum + hash map |
+| "number of subarrays with exactly k …" | n ≤ 10⁵ | exactly k = at most k − at most (k−1) | [sliding_window § Template 6](./sliding_window.md#template-6-exactly-k-via-at-most-subtraction--lc-992-) | the "exactly k" is a **sum** (`sum == k`) and values can be negative → prefix sum + hash map; an exact count of *distinct* values stays here, since signs do not matter to a counter |
 | "count subarrays whose sum is k / divisible by k" | n ≤ 10⁵, negatives allowed | prefix sum + count map | [prefix_sum § Template 2](./prefix_sum.md#template-2-hashmap--prefix-sum-subarray-target-sum--lc-560) | all values positive and you want the longest / shortest → sliding window |
 | "many range-sum queries" | q ≤ 10⁵ | prefix sum array | [prefix_sum § Template 1](./prefix_sum.md#template-1-basic-prefix-sum-range-queries--lc-303) | the array changes between queries → Fenwick / segment tree (LC 307) |
 | "add v to every element in [l, r]", many times | n, updates ≤ 10⁵ | difference array | [difference_array § Template 1](./difference_array.md#template-1-basic-difference-array) | you must read a max after each update → segment tree with lazy propagation |
@@ -31,9 +31,9 @@ One row per pattern. The **Card** column links to the template that solves the a
 | "remove / deduplicate in place", "move zeros" | O(1) extra space | read/write two pointers | [2_pointers § Template 1](./2_pointers.md#template-1-fastslow-read-write-compaction--lc-26-) | order does not matter → swap with the last element |
 | "sort 0s, 1s and 2s in one pass" | O(1) space | three-way partition | [2_pointers § Template 6](./2_pointers.md#template-6-three-way-partition-dutch-national-flag--lc-75-) | more than three keys → counting sort |
 | "longest palindromic substring", "count palindromic substrings" | n ≤ 1,000 | expand from centre | [2_pointers § Template 3](./2_pointers.md#template-3-expand-from-centre--lc-5-) | palindromic **subsequence** → interval DP (LC 516) |
-| "two sum" on an unsorted array, "seen before?" | n ≤ 10⁵ | complement lookup | [hash_map § Template 1](./hash_map.md#template-1-complement-lookup--lc-1) | sorted input and O(1) space wanted → two pointers (LC 167) |
-| "group anagrams", "count frequencies", "first unique" | n ≤ 10⁴ | grouping / counting by a computed key | [hash_map § Template 3](./hash_map.md#template-3-grouping-by-a-computed-key--lc-49), [Template 2](./hash_map.md#template-2-frequency-count--lc-242) | top-k by frequency → heap or bucket sort (LC 347) |
-| "maximum subarray sum / product" | n ≤ 10⁵ | Kadane: best run ending here | [kadane_algorithm § 0-2](./kadane_algorithm.md#0-2-algorithm-pattern--template) | a subarray of length ≥ k, or a sum = k → prefix sums |
+| "two sum" on an unsorted array, "seen before?" | n ≤ 10⁵ | complement lookup | [hash_map § Template 2](./hash_map.md#template-2-frequency-count--lc-242) | sorted input and O(1) space wanted → two pointers (LC 167) |
+| "group anagrams", "count frequencies", "first unique" | n ≤ 10⁴ | grouping / counting by a computed key | [hash_map § Template 3](./hash_map.md#template-3-grouping-by-a-computed-key--lc-49), [Template 1](./hash_map.md#template-1-complement-lookup--lc-1) | top-k by frequency → heap or bucket sort (LC 347) |
+| "maximum subarray sum / product" | n ≤ 10⁵ | Kadane: best run ending here | [kadane_algorithm § 0-2](./kadane_algorithm.md#0-2-algorithm-pattern--template) (sum), [§ 1-3](./kadane_algorithm.md#1-3-maximum-product-subarray-lc-152) (product: keep the min as well as the max) | a subarray of length ≥ k, or a sum = k → prefix sums |
 | "merge / insert intervals", "minimum rooms", "remove fewest to stop overlap" | n ≤ 10⁴ | sort by start (merge) or by end (schedule) | [intervals § Pattern 1](./intervals.md#pattern-1-interval-merging--lc-56-), [Pattern 2](./intervals.md#pattern-2-interval-scheduling-greedy--lc-435-) | many overlapping events at a time → sweep line (LC 253, [scanning_line](./scanning_line.md#template-1-basic-interval-overlap--lc-253)) |
 | "kth largest / smallest", "k closest" | n ≤ 10⁵, one shot | quickselect | [2_pointers_quickselect § Template 1](./2_pointers_quickselect.md#template-1-kth-largest-element--lc-215-) | a stream, or you need all k in order → size-k heap |
 
@@ -41,8 +41,8 @@ One row per pattern. The **Card** column links to the template that solves the a
 
 | Signal in the statement | Constraint cue | Pattern | Card | Looks like it, but is not |
 |---|---|---|---|---|
-| "sorted array", "find target / first position / insert position" | n ≤ 10⁵, O(log n) asked | classic binary search | [binary_search § 2.1](./binary_search.md#template-1-exact-match-on-a-closed-interval--lc-704-) | unsorted but you need a count → sort first, or a hash map |
-| "minimum capacity / speed / largest-sum so that it fits in k", "maximize the minimum distance" | values up to 10⁹ | binary search on the answer | [binary_search_on_answer § The Unified Template](./binary_search_on_answer.md#template-1-smallest-feasible-value--lc-875-) | the feasibility check is not monotonic (a bigger answer can fail) → DP or greedy |
+| "sorted array", "find target / first position / insert position" | n ≤ 10⁵, O(log n) asked | classic binary search (exact match), lower / upper bound (first position, insert position) | [binary_search § Template 1](./binary_search.md#template-1-exact-match-on-a-closed-interval--lc-704-) (exact), [§ Template 2](./binary_search.md#template-2-lower-and-upper-bound--lc-34-) (bounds) | unsorted but you need a count → sort first, or a hash map |
+| "minimum capacity / speed / largest-sum so that it fits in k", "maximize the minimum distance" | values up to 10⁹ | binary search on the answer | [binary_search_on_answer § Template 1](./binary_search_on_answer.md#template-1-smallest-feasible-value--lc-875-) | feasibility flips more than once as the answer grows (not a single true → false or false → true switch) → DP or greedy |
 | "rotated sorted array" | n ≤ 5,000, O(log n) asked | binary search, one half is always sorted | [binary_search](./binary_search.md) | duplicates allowed → worst case O(n) (LC 81) |
 
 ### Linked list
@@ -76,7 +76,7 @@ One row per pattern. The **Card** column links to the template that solves the a
 | "course schedule", "order of tasks with prerequisites", "alien dictionary" | V + E ≤ 10⁵ | topological sort (Kahn's BFS) | [topology_sorting § Template 1](./topology_sorting.md#template-1-bfs-kahns-algorithm-) | an undirected graph → there is no order; check for a cycle with union-find |
 | "redundant connection", "number of provinces", "accounts merge" | n ≤ 10⁵ | union-find | [union_find § 0-3](./union_find.md#0-3-algorithm-pattern--template-) | you also need path lengths → BFS / DFS |
 | "can it be split into two groups", "is it bipartite" | n ≤ 100 | BFS 2-colouring | [graph § Template 6](./graph.md#template-6-bipartite-check-2-coloring--lc-785-) | three or more groups → backtracking colouring |
-| "clone the graph", "evaluate division" | V ≤ 100 | DFS with a node map / weighted edges | [dfs § Template 10](./dfs.md#template-10-weighted-graph-dfs-divisionratio-queries--lc-399) | many queries on a fixed graph → union-find with weights |
+| "evaluate division", ratio queries | V ≤ 100 | DFS over weighted edges, multiplying along the path | [dfs § Template 10](./dfs.md#template-10-weighted-graph-dfs-divisionratio-queries--lc-399) | many queries on a fixed graph → union-find with weights |
 
 ### Dynamic programming
 
@@ -86,11 +86,11 @@ One row per pattern. The **Card** column links to the template that solves the a
 | "can the string be segmented into words" | n ≤ 300 | prefix partition DP | [dp § Template 1b](./dp.md#template-1b-prefix-partition-dp--lc-139-) | you must list every segmentation → backtracking with memo (LC 140) |
 | "unique paths", "minimum path sum" in a grid | m, n ≤ 200 | 2-D grid DP | [dp § Template 2](./dp.md#template-2-2-d-grid-dp--lc-64-) | the path can go in any direction → shortest path (Dijkstra / BFS) |
 | "subset with sum target", "partition into equal sums", "target sum" | n ≤ 200, sum ≤ 10⁴ | 0/1 knapsack | [dp § Template 4](./dp.md#template-4-01-knapsack--lc-416-) | items can be reused (coin change, LC 322 / 518) → unbounded knapsack, loop order flips ([dp_loop_order](./dp_loop_order.md)) |
-| "longest increasing subsequence", "Russian dolls" | n ≤ 10⁵ | LIS, O(n log n) with tails | [dp § Template 7](./dp.md#template-7-longest-increasing-subsequence--lc-300-) | contiguous → sliding window or Kadane |
+| "longest increasing subsequence", "Russian dolls" | n ≤ 10⁵ | LIS: O(n²) DP, or O(n log n) with tails (the one n ≤ 10⁵ needs) | [dp § Template 7](./dp.md#template-7-longest-increasing-subsequence--lc-300-) (O(n²)), [patience_sorting § 1-1](./patience_sorting.md#1-1-basic-op--the-tails-scan-) (O(n log n)) | contiguous → sliding window or Kadane |
 | "longest common subsequence", "edit distance", "interleaving" | m, n ≤ 1,000 | 2-D string DP over prefixes | [dp_string § LCS deep dive](./dp_string.md#deep-dive-the-prefix-based-indexing-pattern-lcs--variants--) | a common **substring** → reset to 0 on a mismatch |
 | "buy and sell stock with cooldown / fee / k transactions" | n ≤ 10⁵ | state machine DP | [dp § Template 5](./dp.md#template-5-state-machine-dp--lc-309) | one transaction → track the running minimum (LC 121) |
 | "burst balloons", "minimum cost to merge stones" | n ≤ 300 | interval DP | [dp § Template 3](./dp.md#template-3-interval-dp--lc-312) | the order of operations does not matter → greedy |
-| "visit all nodes", "assign n ≤ 16 items" | n ≤ 16–20 | bitmask DP | [bit_manipulation § 2-3](./bit_manipulation.md#2-3-fill-buckets-one-at-a-time-bitmask-dp--lc-698-) | n in the thousands → it is not bitmask; look for a greedy or a DP on values |
+| "assign n ≤ 16 items to k groups", "visit all nodes" | n ≤ 16–20 | bitmask DP over the used set; with a current node, BFS over (node, mask) | [bit_manipulation § 2-3](./bit_manipulation.md#2-3-fill-buckets-one-at-a-time-bitmask-dp--lc-698-) (assign), [shortest_path_comparison § LC 847](./shortest_path_comparison.md#variant-1--bfs-over-node-bitmask--lc-847) (visit all) | n in the thousands → it is not bitmask; look for a greedy or a DP on values |
 
 ### Backtracking
 
@@ -142,7 +142,7 @@ One row per pattern. The **Card** column links to the template that solves the a
 
 ## Drill Path
 
-One anchor problem per family, so a first pass touches every row above. ⭐ marks the [L3 core set](https://github.com/yennanliu/CS_basics/blob/master/data/l3_core.json). Each list runs easy → hard.
+One anchor problem per family, so a first pass touches every family above. ⭐ marks the [L3 core set](https://github.com/yennanliu/CS_basics/blob/master/data/l3_core.json). Each list runs easy → hard.
 
 - **Core ⭐**: LC 1 Two Sum · LC 20 Valid Parentheses · LC 206 Reverse Linked List · LC 121 Best Time to Buy and Sell Stock · LC 3 Longest Substring Without Repeating Characters · LC 102 Level Order Traversal · LC 200 Number of Islands · LC 322 Coin Change · LC 207 Course Schedule · LC 78 Subsets · LC 347 Top K Frequent Elements · LC 739 Daily Temperatures · LC 875 Koko Eating Bananas · LC 76 Minimum Window Substring
 - **Practice**: LC 167 Two Sum II · LC 560 Subarray Sum Equals K · LC 236 Lowest Common Ancestor · LC 994 Rotting Oranges · LC 743 Network Delay Time · LC 416 Partition Equal Subset Sum · LC 1143 Longest Common Subsequence · LC 295 Find Median from Data Stream
