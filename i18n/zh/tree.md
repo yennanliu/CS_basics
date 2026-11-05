@@ -1,7 +1,7 @@
-<!-- 84142230d72a -->
+<!-- a0c18820650d -->
 # 樹狀資料結構 — 概念與模式
 
-> **範圍** — 樹的概念、樹的種類，以及走訪順序的*策略* — 講的是**為什麼**與**選哪個**，再加上那些不屬於單一模式模板的進階技巧（Morris 穿線、倍增法、換根）。模板本身放在 [tree2.md](./tree2.md)。
+> **範圍** — 樹的概念、樹的種類，以及走訪順序的*策略* — 講的是**為什麼**與**選哪個**，再加上在這裡講解的進階技巧（Morris 穿線、倍增法，以及換根 DP，LC 834 的家）。各模式的二元樹模板放在 [tree2.md](./tree2.md)。
 > **另見** — *從這份文件拆出去的深入內容*：[tree_lca_distance.md](./tree_lca_distance.md) — LCA、節點距離、父節點對照表與根到葉路徑模板；[tree_codec.md](./tree_codec.md) — 子樹序列化與樹 ⟷ 字串的編解碼；[tree_construction.md](./tree_construction.md) — 從走訪結果、字串與索引範圍建樹；[tree_examples.md](./tree_examples.md) — 本頁教的模式所對應的 LC 實作檔案庫。
 > *相鄰主題*：[tree2.md](./tree2.md) — 每個模式一份編號好、可直接複製的模板；[binary_tree.md](./binary_tree.md) — 二元樹 DFS 的狀態流向與結構性模板；[bst.md](./bst.md) — 有序的樹；[tree_backtrack.md](./tree_backtrack.md) — 回程時要還原狀態的根→葉路徑題。
 

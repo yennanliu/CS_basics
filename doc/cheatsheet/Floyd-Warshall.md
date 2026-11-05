@@ -422,15 +422,15 @@ def networkDelayTime(times, n, k):
 ```
 
 ### 2-4) Graph Connectivity With Threshold (LC 1627) — Union-Find, not Floyd-Warshall
-> **Key point** — this looks like a reachability matrix, but n ≤ 10⁴ makes Floyd-Warshall's O(n³) about 10¹² steps. Connectivity only needs components: union every multiple of each g > threshold with g, then answer each query with one `find`.
+> **Key point** — this looks like a reachability matrix, but n ≤ 10⁴ makes Floyd-Warshall's O(n³) about 10¹² steps. Connectivity only needs components: union every multiple of each g > threshold with g, then answer each query by comparing the two roots (two `find` calls).
 
 **Reduces to**: [union_find.md](./union_find.md) — the Sizing Check section below rules Floyd-Warshall out for n beyond a few hundred.
 
 ```python
-# LC 1627 - Graph Connectivity With Threshold
-# IDEA: x and y share a divisor g > threshold iff both are multiples of g,
-#       so union g with 2g, 3g, ... for every g > threshold
+# python
+# IDEA: x and y share a divisor g > threshold iff both are multiples of g: union g with 2g, 3g, ...
 # time = O(n log n * α(n) + q * α(n)), space = O(n)
+# LC 1627 - Graph Connectivity With Threshold
 def areConnected(n, threshold, queries):
     parent = list(range(n + 1))
     size = [1] * (n + 1)
@@ -454,9 +454,10 @@ def areConnected(n, threshold, queries):
 ```
 
 ```java
-// LC 1627 - Graph Connectivity With Threshold
+// java
 // IDEA: union each g > threshold with its multiples; a query is two finds
 // time = O(n log n * α(n) + q * α(n)), space = O(n)
+// LC 1627 - Graph Connectivity With Threshold
 public List<Boolean> areConnected(int n, int threshold, int[][] queries) {
     int[] parent = new int[n + 1];
     int[] size = new int[n + 1];
