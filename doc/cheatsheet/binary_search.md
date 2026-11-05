@@ -883,7 +883,7 @@ The minimum is always inside `[left, right]`, and the loop stops when one index 
 ```python
 # python
 # LC 153 - Find Minimum in Rotated Sorted Array
-# IDEA: half-open squeeze on the drop; nums[right] tells which run mid is in
+# IDEA: closed squeeze [left, right] down to one candidate; nums[right] tells which run mid is in
 # time = O(log n), space = O(1)
 def findMin(nums):
     left, right = 0, len(nums) - 1
@@ -899,7 +899,7 @@ def findMin(nums):
 ```java
 // java
 // LC 153 - Find Minimum in Rotated Sorted Array
-// IDEA: half-open squeeze on the drop; nums[right] tells which run mid is in
+// IDEA: closed squeeze [left, right] down to one candidate; nums[right] tells which run mid is in
 // time = O(log n), space = O(1)
 public int findMin(int[] nums) {
     int left = 0, right = nums.length - 1;
@@ -975,7 +975,7 @@ public int findMin(int[] nums) {
 ```
 
 ```text
-Rotation examples (length 5) and where the half-open template moves:
+Rotation examples (length 5) and where the template moves:
 [1, 2, 3, 4, 5]  -> mid < right -> right = mid ... min at index 0
 [5, 1, 2, 3, 4]  -> mid < right -> right = mid
 [3, 4, 5, 1, 2]  -> mid > right -> left = mid + 1
@@ -984,7 +984,7 @@ Rotation examples (length 5) and where the half-open template moves:
 
 | Template | Loop condition | Update | Return | Best when |
 |----------|---------------|--------|--------|-----------|
-| Half-open `left < right` | `left < right` | `right = mid` / `left = mid + 1` | `nums[left]` | Canonical: converges on the index |
+| Closed, stop at one candidate | `left < right` | `right = mid` / `left = mid + 1` | `nums[left]` | Canonical: converges on the index |
 | Closed `l <= r` + `ans` | `l <= r` | `l = mid + 1` / `r = mid - 1` | `ans` | You want the closed window everywhere |
 
 | LC # | Problem | Key Difference |
@@ -1528,7 +1528,7 @@ one index.
 ```python
 # python
 # LC 162 - Find Peak Element
-# IDEA: half-open squeeze; move toward the higher neighbour of mid, which always holds a peak
+# IDEA: closed squeeze down to one candidate; move toward the higher neighbour of mid, which always holds a peak
 # time = O(log n), space = O(1)
 def findPeakElement(nums):
     left, right = 0, len(nums) - 1
@@ -1544,7 +1544,7 @@ def findPeakElement(nums):
 ```java
 // java
 // LC 162 - Find Peak Element
-// IDEA: half-open squeeze; move toward the higher neighbour of mid
+// IDEA: closed squeeze down to one candidate; move toward the higher neighbour of mid
 // time = O(log n), space = O(1)
 public int findPeakElement(int[] nums) {
     int left = 0, right = nums.length - 1;
@@ -1558,7 +1558,7 @@ public int findPeakElement(int[] nums) {
 ```
 
 **Complexity**
-- **Time O(log n)**: the half-open `while left < right` halves the window, and `right = mid`
+- **Time O(log n)**: `while left < right` over the closed window `[left, right]` halves it, and `right = mid`
   still shrinks it because `mid < right`.
 - **Space O(1)**: two pointers.
 
@@ -1838,7 +1838,7 @@ One table for the whole sheet: given the shape of the input, this is the templat
 | **Right boundary** (last index `<= target`) | Upper bound − 1 — [Template 2](#template-2-lower-and-upper-bound--lc-34-) | LC 34, LC 981 |
 | **Insert position** | Lower bound, return `l` unvalidated — [Template 2](#template-2-lower-and-upper-bound--lc-34-) | LC 35 |
 | **How many** of value `v` sit in `arr[l..r]`, array unsorted | Per-value index list, `bisect_right(r) - bisect_left(l)` — [Template 2](#template-2-lower-and-upper-bound--lc-34-) | LC 2080 |
-| **Peak / valley**, no target value | Half-open `while l < r`, `r = mid` — [Template 7](#template-7-peak-finding-by-slope--lc-162-) | LC 162, LC 852 |
+| **Peak / valley**, no target value | Closed, stop at one candidate: `while l < r`, `r = mid` — [Template 7](#template-7-peak-finding-by-slope--lc-162-) | LC 162, LC 852 |
 | **Rotated** sorted array | Identify the sorted half — [Template 3](#template-3-rotated-array-minimum--lc-153-), [Template 4](#template-4-search-a-rotated-array--lc-33-) | LC 33, LC 81, LC 153, LC 154 |
 | Array goes **up then down** (mountain / bitonic) | Peak + two ordered searches, one **descending** — [Template 7](#template-7-peak-finding-by-slope--lc-162-) | LC 1095 |
 | Input has **no length** (reader / stream / paginated API) | Double the index to find a right end, then search — [Template 8](#template-8-exponential-galloping-search--lc-702-) | LC 702 |
