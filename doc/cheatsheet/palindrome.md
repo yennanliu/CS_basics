@@ -963,7 +963,32 @@ public boolean isPalindrome(int x) {
 ```
 
 ### 2-5) Valid Palindrome II (LC 680) — Two Pointers with One Skip
-> Two pointers; when mismatch, try skipping left or right character and check rest.
+> **Key point** — before the first mismatch the ends agree, so only one decision exists: skip the
+> left character or the right one, and check the rest in place.
+
+**Reduces to**: [2_pointers § Template 2](./2_pointers.md#template-2-converging-pointers-from-both-ends--lc-11-) — converging pointers, with one branch at the mismatch.
+
+```python
+# python
+# LC 680 - Valid Palindrome II
+# IDEA: converge; at the first mismatch try skipping either side, checking the rest in place
+# time = O(n), space = O(1)
+def validPalindrome(s):
+    def is_pal(left, right):
+        while left < right:
+            if s[left] != s[right]:
+                return False
+            left += 1
+            right -= 1
+        return True
+    left, right = 0, len(s) - 1
+    while left < right:
+        if s[left] != s[right]:
+            return is_pal(left + 1, right) or is_pal(left, right - 1)
+        left += 1
+        right -= 1
+    return True
+```
 
 ```java
 // LC 680 - Valid Palindrome II

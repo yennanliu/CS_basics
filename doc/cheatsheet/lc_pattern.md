@@ -35,7 +35,7 @@ One row per pattern. The **Card** column links to the template that solves the a
 | "group anagrams", "count frequencies", "first unique" | n ≤ 10⁴ | grouping / counting by a computed key | [hash_map § Template 3](./hash_map.md#template-3-grouping-by-a-computed-key--lc-49), [Template 2](./hash_map.md#template-2-frequency-count--lc-242) | top-k by frequency → heap or bucket sort (LC 347) |
 | "maximum subarray sum / product" | n ≤ 10⁵ | Kadane: best run ending here | [kadane_algorithm § 0-2](./kadane_algorithm.md#0-2-algorithm-pattern--template) (sum), [§ 1-3](./kadane_algorithm.md#1-3-maximum-product-subarray-lc-152) (product: keep the min as well as the max) | a subarray of length ≥ k, or a sum = k → prefix sums |
 | "merge / insert intervals", "minimum rooms", "remove fewest to stop overlap" | n ≤ 10⁴ | sort by start (merge) or by end (schedule) | [intervals § Pattern 1](./intervals.md#pattern-1-interval-merging--lc-56-), [Pattern 2](./intervals.md#pattern-2-interval-scheduling-greedy--lc-435-) | many overlapping events at a time → sweep line (LC 253, [scanning_line](./scanning_line.md#template-1-basic-interval-overlap--lc-253)) |
-| "kth largest / smallest", "k closest" | n ≤ 10⁵, one shot | quickselect | [2_pointers_quickselect § Template 1](./2_pointers_quickselect.md#template-1-kth-largest-element--lc-215-) | a stream, or you need all k in order → size-k heap |
+| "kth largest / smallest", "k closest" | n ≤ 10⁵, one shot | quickselect | [quickselect § Template 1](./quickselect.md#template-1-three-way-partition-quickselect--lc-215-) | a stream, or you need all k in order → size-k heap |
 
 ### Binary search
 

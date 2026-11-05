@@ -54,14 +54,17 @@ These are the signals that stay here. Constraint cues follow the ruler in
 
 | Signal in the statement | Constraint cue | Reach for | Not this if |
 |---|---|---|---|
-| "merge into `nums1` **in place**", "the last n slots are 0 and should be ignored" | O(1) extra space follow-up | [Template 6](#template-6-backward-write-pointer--lc-88) backward write pointer | the free space is at the front (remove duplicates) → forward slow/fast, [2_pointers.md](./2_pointers.md) |
-| "`insert` / `remove` / `getRandom` in **average O(1)**" | ~10⁵ calls | [Template 7](#template-7-swap-with-last-delete--lc-380) swap-with-last delete | duplicates allowed (LC 381) → value maps to a set of indices |
-| "appears **more than ⌊n/2⌋** times", "O(1) extra space" | n ≤ 5·10⁴, one pass | [Template 2](#template-2-majority-vote-one-candidate--lc-169) majority vote | "most frequent" / "top k" → counts, [hash_map.md](./hash_map.md) |
-| "all elements appearing **more than ⌊n/3⌋** times" | O(1) space | [Template 3](#template-3-majority-vote-k--1-candidates--lc-229) k − 1 candidates | |
-| "permutation of `1..n`", "for every prefix, how many …" | values ≤ n → an array is the hash map | [Template 4](#template-4-frequency-array--running-count--lc-2657) frequency array + running count | values up to 10⁹ → a hash map with the same crossing test |
-| "sum of X over **all substrings / subarrays**" | n ≤ 10⁵ → cannot list O(n²) subarrays | [Template 5](#template-5-index-contribution-counting--lc-2063) `(i + 1) * (n - i)` | X counts only when the element is the min / max (LC 907) → [monotonic_stack.md](./monotonic_stack.md) |
-| "make every element of a row equal, minimum operations, or −1" | each element has ~2 choices | [Template 8](#template-8-bounded-candidate-enumeration--lc-1007) candidates from index 0 | the target can be any value → sort / median, [sort.md](./sort.md) |
-| "design an iterator" over a 2D array, `next()` / `hasNext()` | O(1) amortized per call | [Template 1](#template-1-lazy-two-cursor-iterator--lc-251-) two cursors | unbounded nesting (LC 341) → a stack of iterators, [iterator.md](./iterator.md) |
+| "merge into `nums1` **in place**", "the last n slots are 0 and should be ignored" | O(1) extra space follow-up | [2_pointers § Template 5](./2_pointers.md#template-5-merge-two-sorted-arrays-fill-from-the-back--lc-88-) backward write pointer | the free space is at the front (remove duplicates) → forward slow/fast, [2_pointers.md](./2_pointers.md) |
+| "`insert` / `remove` / `getRandom` in **average O(1)**" | ~10⁵ calls | [Template 7](#1-2-5-array--hash-index-map-o1-delete-via-swap-with-last-) swap-with-last delete | duplicates allowed (LC 381) → value maps to a set of indices |
+| "appears **more than ⌊n/2⌋** times", "O(1) extra space" | n ≤ 5·10⁴, one pass | [Template 2](#1-2-1-boyer-moore-majority-vote-algorithm) majority vote | "most frequent" / "top k" → counts, [hash_map.md](./hash_map.md) |
+| "all elements appearing **more than ⌊n/3⌋** times" | O(1) space | [Template 3](#1-2-1-boyer-moore-majority-vote-algorithm) k − 1 candidates | |
+| "permutation of `1..n`", "for every prefix, how many …" | values ≤ n → an array is the hash map | [Template 4](#1-2-2-frequency-array--running-count) frequency array + running count | values up to 10⁹ → a hash map with the same crossing test |
+| "sum of X over **all substrings / subarrays**" | n ≤ 10⁵ → cannot list O(n²) subarrays | [Template 5](#1-2-3-index-contribution-counting-count-each-elements-appearances-across-all-subarrays) `(i + 1) * (n - i)` | X counts only when the element is the min / max (LC 907) → [monotonic_stack.md](./monotonic_stack.md) |
+| "make every element of a row equal, minimum operations, or −1" | each element has ~2 choices | [Template 8](#1-2-6-bounded-candidate-enumeration-only-a-few-answers-are-possible) candidates from index 0 | the target can be any value → sort / median, [sort.md](./sort.md) |
+| "design an iterator" over a 2D array, `next()` / `hasNext()` | O(1) amortized per call | [Template 1](#1-1-6-flatten-array) two cursors | unbounded nesting (LC 341) → a stack of iterators, [iterator.md](./iterator.md) |
+| "values in `[1, n]`", "missing / duplicate / first missing positive", "O(1) extra space" | n ≤ 10⁵, one or two passes | [Template 9](#1-2-8-index-as-hash-cyclic-sort-and-sign-marking-) cyclic sort or sign marking | the input must not be modified (LC 287) → binary search on the value range, [binary_search_on_answer.md](./binary_search_on_answer.md) |
+| "rotate by `k` steps **in place**", two blocks trade places | k may exceed n | [Template 10](#1-2-9-rotate-in-place-by-three-reversals-) three reversals | a linked list (LC 61) → re-link the new tail |
+| "maximum distance to the closest …", "how many prefixes …", answer from a summary of the prefix | one pass, O(1) space | [Template 11](#1-2-10-one-pass-running-state-) running state | the summary must be dropped when beaten → [monotonic_stack.md](./monotonic_stack.md) |
 
 ## 1) General form
 
@@ -115,11 +118,11 @@ print(p[0])   # -> [9, 9]
 
 #### 1-1-5) Sort Array*****
 
-**`list.sort()` (V1) sorts IN PLACE. `sorted()` (V2) returns a NEW list.**
+**`list.sort()` sorts IN PLACE and returns `None`. `sorted()` returns a NEW list.**
 
-| | `_array.sort(...)` (V1) | `sorted(_array, ...)` (V2) |
+| | `nums.sort(...)` | `sorted(nums, ...)` |
 |---|---|---|
-| **In-place?** | ✅ yes — `_array` is mutated | ❌ no — original untouched |
+| **In-place?** | ✅ yes — `nums` is mutated | ❌ no — original untouched |
 | **Return value** | `None` | new sorted `list` |
 | **Works on** | `list` only | **any iterable** (str, tuple, set, dict, generator) |
 | **Space** | O(1) extra* | O(n) |
@@ -127,49 +130,53 @@ print(p[0])   # -> [9, 9]
 
 > \* CPython's Timsort may need an O(n) temp buffer in the worst case, but **no new list object is allocated**.
 
-```text
-# Pattern :
-# V1 : IN PLACE, returns None
-_array.sort(key = lambda x : <your_sorting_func>)
+```python
+# python
+# IDEA: list.sort(key=...) reorders the list itself; sorted(iterable, key=...) builds a new list
+# time = O(n log n), space = O(n) for sorted(), no new list for .sort()
+strs = ["eat", "tea", "tan", "ate", "nat", "bat"]
 
-# V2 : returns a NEW list, `_array` unchanged
-new_array = sorted(_array, key = lambda x : <your_sorting_func>)
+# in place: sort by each word's letters (the LC 49 grouping key); stable, so ties keep input order
+strs.sort(key=lambda word: "".join(sorted(word)))
+print(strs)        # -> ['bat', 'eat', 'tea', 'ate', 'tan', 'nat']
 
-# 049  Group Anagrams
-strs = ["eat","tea","tan","ate","nat","bat"]
-strs.sort(key = lambda x : ''.join(sorted(x)) )
-print (strs)
-# ['bat', 'eat', 'tea', 'ate', 'tan', 'nat']
-
-### NOTE can use this as well
-sorted(strs, key = lambda x : ''.join(sorted(x)))
+# a new list: the original keeps its order
+nums = [3, 1, 2]
+ascending = sorted(nums)
+descending = sorted(nums, reverse=True)
+print(nums, ascending, descending)   # -> [3, 1, 2] [1, 2, 3] [3, 2, 1]
 ```
 
-**🚫 Common Mistakes:**
+**Common mistakes**
 
 ```python
-# 1) Assigning the result of an in-place sort
-arr = arr.sort()          # ❌ arr becomes None !!!
-arr.sort(); use(arr)      # ✅
+# python
+# 1) assigning the result of an in-place sort: .sort() returns None
+arr = [3, 1, 2]
+result = arr.sort()
+print(result, arr)        # -> None [1, 2, 3]   (so arr = arr.sort() loses the list)
 
-# 2) Calling .sort() on a non-list
+# 2) .sort() exists only on lists
 s = "cba"
-s.sort()                  # ❌ AttributeError : 'str' has no attribute 'sort'
-sorted(s)                 # ✅ ['a','b','c']
+try:
+    s.sort()
+except AttributeError as err:
+    print(err)            # -> 'str' object has no attribute 'sort'
+print("".join(sorted(s)))  # -> abc
 
-# 3) Sorting a dict / set (only `sorted` works)
-sorted({'b':2, 'a':1})    # ✅ ['a','b']  <-- iterates over KEYS
-sorted({3,1,2})           # ✅ [1,2,3]
+# 3) a dict or a set: only sorted() works, and a dict sorts its KEYS
+print(sorted({"b": 2, "a": 1}))   # -> ['a', 'b']
+print(sorted({3, 1, 2}))          # -> [1, 2, 3]
 
-# 4) Mutating the input when the caller still needs it
-def f(nums):
-    nums.sort()           # ❌ caller's list is modified (side effect)
-    return nums
-def f(nums):
-    return sorted(nums)   # ✅ no side effect
+# 4) sorting the caller's list inside a helper is a side effect
+def smallest_two(nums):
+    return sorted(nums)[:2]       # sorts a copy: the caller's list keeps its order
+
+original = [5, 1, 4, 2]
+print(smallest_two(original), original)   # -> [1, 2] [5, 1, 4, 2]
 ```
 
-**💡 When to Use Which:**
+**When to use which**
 
 - **`.sort()`** → you own the list and want O(1) space (e.g. LC 406, LC 56 Merge Intervals, LC 253)
 - **`sorted()`** → input is a string / dict / set / tuple, or the original order must be preserved
@@ -178,210 +185,74 @@ def f(nums):
 
 ```java
 // java
-// in place (like py .sort())
-Arrays.sort(arr);                                  // primitive array, in place
-Collections.sort(list);                            // List, in place
-list.sort((a, b) -> Integer.compare(a[0], b[0]));                  // List, in place
+// in place (like Python's list.sort())
+int[] arr = {3, 1, 2};
+Arrays.sort(arr);                                    // primitive array -> [1, 2, 3]
+List<Integer> list = new ArrayList<>(Arrays.asList(3, 1, 2));
+Collections.sort(list);                              // List, in place -> [1, 2, 3]
+List<int[]> pairs = new ArrayList<>();
+pairs.add(new int[]{2, 0});
+pairs.add(new int[]{1, 5});
+pairs.sort((a, b) -> Integer.compare(a[0], b[0]));   // List + comparator, in place
 
-// returns NEW collection (like py sorted())
-List<Integer> sortedList = list.stream()
-        .sorted()
-        .collect(Collectors.toList());             // new list, original untouched
+// a NEW collection (like Python's sorted())
+List<Integer> source = Arrays.asList(3, 1, 2);
+List<Integer> sortedCopy = source.stream().sorted().collect(Collectors.toList());  // source untouched
 ```
 
 #### 1-1-6) Flatten Array
+
+Flattening a nested list is a depth-first walk: an integer is a leaf and is emitted, a list is a
+node whose children are walked in order. Python has no built-in for arbitrary depth.
+
 ```python
-# LC 341
-# V0
-class NestedIterator(object):
+# python
+# IDEA: depth-first walk - emit an int, recurse into a list, keep the left-to-right order
+# time = O(N + L), space = O(D)   N = ints, L = lists, D = nesting depth (the recursion stack)
+def flatten(nested):
+    out = []
 
-    def __init__(self, nestedList):
-
-        self.queue = []
-        
-        def getAll(nests):
-            for nest in nests:
-                if nest.isInteger():
-                    self.queue.append(nest.getInteger())
-                else:
-                    getAll(nest.getList())
-        getAll(nestedList)
-
-    def next(self):
-
-        return self.queue.pop(0)
-
-    def hasNext(self):
-
-        return len(self.queue)
-
-# default py
-# V1
-def flatten_array(_array):
-    r = []
-    def helper(_array):
-        for i in _array:
-            if type(i) == int:
-                print (i)
-                r.append(i)
+    def walk(items):
+        for item in items:
+            if isinstance(item, list):
+                walk(item)            # a list: descend
             else:
-                helper(i)
+                out.append(item)      # a leaf: emit
 
-    helper(_array)
-    return r
-    
-_input = [1,0, [1,2,[4,[5,[6,[7]]]]]]#[1,[4,[6]]] #[[1,1],2,[1,1]]
+    walk(nested)
+    return out
 
-res = flatten_array(_input)
-print ("res = " + str(res))
 
-# V2
-# https://stackoverflow.com/questions/2158395/flatten-an-irregular-list-of-lists
-def flatten(L):
-    for item in L:
-        try:
-            yield from flatten(item)
-        except TypeError:
+print(flatten([1, 0, [1, 2, [4, [5, [6, [7]]]]]]))   # -> [1, 0, 1, 2, 4, 5, 6, 7]
+print(flatten([[1, 1], 2, [1, 1]]))                  # -> [1, 1, 2, 1, 1]
+```
+
+Kept second for a reason: the same walk as a **generator** is lazy. Nothing is built up front,
+and a caller that stops early never visits the rest, which is the eager-versus-lazy choice that
+Template 1 below makes for an iterator class.
+
+```python
+# python
+# IDEA: the same walk as a generator - values are produced on demand
+# time = O(N + L) over a full iteration, space = O(D)
+def iter_flat(nested):
+    for item in nested:
+        if isinstance(item, list):
+            yield from iter_flat(item)
+        else:
             yield item
 
-r2 = flatten(_input)
-r2_ = [x for x in r2]
-print (r2_)
 
-# V3
-def flatten2(L):
-    for item in L:
-        try:
-            yield from flatten2(item)
-        except:
-            yield item
-
-r3 = flatten2(_input)
-r3_ = [x for x in r3]
-print (r3_)
+print(list(iter_flat([1, [4, [6]]])))   # -> [1, 4, 6]
 ```
 
-```java
-// java
-// algorithm book (labu) p.355
-//------------------------------------------
-// implement NestedInteger data structure
-//------------------------------------------
-public class NestedInteger {
-    private Integer val;
-    private List<NestedInteger> list;
+Two LeetCode designs turn this walk into an iterator class:
 
-    public NestedInteger(Integer val){
-        this.val = val;
-        this.list = null;
-    }
-
-    public NestedInteger(List<NestedInteger> list){
-        this.list = list;
-        this.val = null;
-    }
-
-    // if saved value is integer, return true, else false
-    public boolean isIntger(){
-        return val != null;
-    }
-
-    // if saved value is integer, return it, else return null
-    public Integer getInteger(){
-        return this.val;
-    }
-
-    // if saved value is array, return it, else return null
-    public List<NestedInteger> getList(){
-        return this.list;
-    }
-
-}
-```
-
-```java
-// java
-// LC 341
-// algorithm book (labu) p.357
-//-----------------------------------------------------------
-// NestedInteger solution V1 :  via tree algorithm
-//-----------------------------------------------------------
-class NestedIterator implements Iterator<Integer>{
-
-    private Iterator<Integer> it;
-
-    public NestedIterator(List<NestedInteger> nestedList){
-        // save flatten result
-        List<Integer> result = new LinkedList<>();
-
-        for (NestedInteger node: nestedList){
-            // start from each node and proceed
-            traverse(node, result);
-        }
-
-        // get result's iterator
-        this.it = result.iterator();
-    }
-
-    public Integer next(){
-        return it.next();
-    }
-
-    public boolean hasNext(){
-        return it.hasNext();
-    }
-
-    // traverse tree with root as root, and add nodes to result array
-    private void traverse(NestedInteger root, List<Integer> result){
-        if (root.isIntger()){
-            // arrive root node
-            result.add(root.getInteger());
-            return;
-        }
-
-        // traverse framework
-        for (NestedInteger child: root.getList()){
-            traverse(child, result);
-        }
-    }
-}
-```
-
-```java
-// java
-// LC 341
-// algorithm book (labu) p.358
-//-----------------------------------------------------------
-// NestedInteger solution V2 :  via lazy calling
-//-----------------------------------------------------------
-public class NestedIterator implements Iterator<Integer>{
-
-    private LinkedList<NestedInteger> list;
-
-    public NestedIterator(List<NestedInteger> nestedList){
-        // use LinkedList, for good performance in below op
-        list = new LinkedList<>(nestedList);
-    }
-
-    public Integer next(){
-        // hasNext method make sure 1st element must be Integer type
-        return list.remove(0).getInteger();
-    }
-
-    public boolean hasNext(){
-        // for loop split elements in array until 1st element is Integer type
-        while (!list.isEmpty() && !list.get(0).isIntger()){
-            // when 1st element is array type, go into the loop
-            List<NestedInteger> first = list.remove(0).getList();
-            // flatten 1st array, and add to "start" in ordering
-            for (int i = first.size() - 1; i >= 0; i--){
-                list.addFirst(first.get(i));
-            }  
-        }
-        return !list.isEmpty();
-    }
-}
-```
+- **depth fixed at two** (LC 251 Flatten 2D Vector): two cursors replace the recursion, which is
+  Template 1 below;
+- **unbounded depth** (LC 341 Flatten Nested List Iterator): a stack of pending items replaces
+  it, unwrapped lazily in `hasNext()`. It is worked in
+  [iterator.md § 2-2](./iterator.md#2-2-flatten-nested-list-iterator--lc-341).
 
 ##### Template 1: Lazy Two-Cursor Iterator — LC 251 ⭐⭐⭐⭐
 
@@ -400,8 +271,8 @@ each row is skipped once over the whole pass.
 | `next()` / `hasNext()` | O(1) | O(1) amortized: each row is skipped once over the whole pass, O(R + N) total |
 | Works on a huge or changing source | no: it is a snapshot | yes: nothing is pre-read |
 
-`N` = total number of elements, `R` = number of rows. The eager version is in
-[array_examples.md §13](./array_examples.md#13-flatten-2d-vector--lc-251). The lazy one is
+`N` = total number of elements, `R` = number of rows. The eager version is `flatten` above,
+run in the constructor, with `next()` reading the stored list. The lazy one is
 what an interviewer means by "design an iterator", and it is the 2D case of the
 [`hasNext()` / `next()` contract](./iterator.md#1-2-the-hasnext--next-contract-) in
 iterator.md: the depth is fixed at two, so two indices do the job of a stack.
@@ -513,43 +384,35 @@ cursors cannot track an unbounded depth, so keep a stack of iterators instead
 cursors)* · LC 341 *(unbounded depth: a stack of cursors)*
 
 #### 1-1-7) go through 2 arrays (length could be different)
+
+Walk to the **longer** length and read a missing slot as a default value, so neither array has to
+be padded, copied or swapped first. LC 165 Compare Version Numbers is this walk over two lists of
+revisions, where a missing revision counts as 0.
+
 ```python
-#--------------------
-# example 1
-#--------------------
+# python
+# IDEA: loop to max(len); an index past the end of one array reads as the default (0 here)
+# time = O(max(m, n)), space = O(1)
+from itertools import zip_longest
 
-# 2 array : s,t
-# len(s) = 10, len(t) = 7
-# or
-# len(s) = 10, len(t) = 11
-if len(s) > len(t):
-    s,t  = t,s
+s = [1, 2, 3, 4]
+t = [1, 2]
 
-for i in range(len(s)):
-    print (s[i], t[i])
+for i in range(max(len(s), len(t))):
+    a = s[i] if i < len(s) else 0
+    b = t[i] if i < len(t) else 0
+    print(i, a, b)
+# -> 0 1 1
+#    1 2 2
+#    2 3 0
+#    3 4 0
 
+# the same walk with the standard library
+print(list(zip_longest(s, t, fillvalue=0)))   # -> [(1, 1), (2, 2), (3, 0), (4, 0)]
 
-#--------------------
-# example 2
-#--------------------
-# LC 165
-class Solution:
-    def compareVersion(self, version1: str, version2: str) -> int:
-        nums1 = version1.split('.')
-        nums2 = version2.split('.')
-        n1, n2 = len(nums1), len(nums2)
-        
-        # compare column by column; a missing revision counts as 0
-        for i in range(max(n1, n2)):
-            i1 = int(nums1[i]) if i < n1 else 0
-            i2 = int(nums2[i]) if i < n2 else 0
-            if i1 != i2:
-                return 1 if i1 > i2 else -1
-        
-        # the versions are equal
-        return 0
+# only the common prefix: zip stops at the shorter one
+print(list(zip(s, t)))                        # -> [(1, 1), (2, 2)]
 ```
-
 
 ---
 
@@ -958,86 +821,20 @@ stack spans)* · LC 2104 *(max contribution minus min contribution)*
 When the output is written into the same array that is still being read, and the free space is
 at the tail, write from the back.
 
-##### Template 6: Backward Write Pointer — LC 88
+The card is [2_pointers.md § Template 5](./2_pointers.md#template-5-merge-two-sorted-arrays-fill-from-the-back--lc-88-):
+LC 88 Merge Sorted Array, the invariant that keeps it safe (`write >= p1`, so the slot being
+written was already read or is padding), Python and Java, a trace and the traps. Two read
+pointers and a write pointer make it a pointer pattern, so that sheet owns it; this one keeps the
+rule above, because it is a fact about overwriting an array.
 
-**Recognise** — "merge **in place**", "`nums1` has length `m + n`, the last `n` slots are 0 and
-should be ignored", "do not return anything". m + n ≤ 200 in LC 88, but the follow-up asks for
-O(m + n) time and O(1) extra space, which rules out copying `nums1` first.
+The same rule outside a merge:
 
-**Key point** — `write - p1` equals the number of unmerged items left in `nums2`, which is never
-negative, so `write >= p1` always holds: the slot being written was already read or is padding.
-Writing the **larger** tail each step fills `nums1` from the largest value down.
-
-```python
-# python
-# LC 88 - Merge Sorted Array
-# IDEA: fill nums1 from the BACK, always writing the larger of the two tails
-# time = O(m + n), space = O(1)
-def merge(nums1, m, nums2, n):
-    p1 = m - 1              # last real value in nums1
-    p2 = n - 1              # last value in nums2
-    write = m + n - 1       # last slot of nums1
-    while p2 >= 0:          # once nums2 is used up, nums1[0..p1] is already in place
-        if p1 >= 0 and nums1[p1] > nums2[p2]:
-            nums1[write] = nums1[p1]
-            p1 -= 1
-        else:
-            nums1[write] = nums2[p2]
-            p2 -= 1
-        write -= 1
-```
-
-```java
-// java
-// LC 88 - Merge Sorted Array
-// IDEA: fill nums1 from the BACK, always writing the larger of the two tails
-// time = O(m + n), space = O(1)
-public void merge(int[] nums1, int m, int[] nums2, int n) {
-    int p1 = m - 1;         // last real value in nums1
-    int p2 = n - 1;         // last value in nums2
-    int write = m + n - 1;  // last slot of nums1
-    while (p2 >= 0) {       // once nums2 is used up, nums1[0..p1] is already in place
-        if (p1 >= 0 && nums1[p1] > nums2[p2]) {
-            nums1[write--] = nums1[p1--];
-        } else {
-            nums1[write--] = nums2[p2--];
-        }
-    }
-}
-```
-
-**Complexity**
-- **Time O(m + n)**: every iteration of `while p2 >= 0` moves `write` back by one, and `write`
-  starts at `m + n - 1`.
-- **Space O(1)**: three indices; the merge happens inside `nums1`.
-
-**Dry run**
-
-```text
-nums1 = [1,2,3,0,0,0], m = 3, nums2 = [2,5,6], n = 3
-[1, 2, 3, _, _, _]   p2 -> 6   6 > 3     -> write 6
-[1, 2, 3, _, _, 6]   p2 -> 5   5 > 3     -> write 5
-[1, 2, 3, _, 5, 6]   p2 -> 2   3 > 2     -> write 3 (from nums1)
-[1, 2, _, 3, 5, 6]   p2 -> 2   2 > 2? no -> write 2 (from nums2)
-[1, 2, 2, 3, 5, 6]   p2 = -1   -> done, [1, 2] was already in place
-```
-
-**Traps**
-- **Merging forwards.** Writing at `write = 0` overwrites `nums1[0]` before it is read:
-  `[4,5,6,0,0,0]` with `[1,2,3]` loses 4 and 5.
-- **No `p1 >= 0` guard.** Once `nums1`'s real values run out, `nums1[p1]` is `nums1[-1]`: Java
-  throws, and Python reads the padding as data. `nums1 = [0]`, `m = 0`, `nums2 = [-1]` copies the
-  padding 0 forward and then raises IndexError.
-- **Looping on `p1` too, then copying the `nums1` tail.** Unneeded work: whatever is left of
-  `nums1` is already in its final slots, so loop on `p2` only.
-
-**Not this if** — the output is never longer than what has been read and the free space is at the
-front (remove duplicates, remove element): a **forward** slow/fast pointer is safe there
-([2_pointers.md](./2_pointers.md)).
-
-**Drill** — LC 88 ⭐ · LC 977 *(squares: fill the result from the back, largest first)* ·
-LC 1089 *(duplicate zeros: count first, then write backwards)* · LC 443
-*(string compression: forward write, read ahead)*
+- **LC 1089 Duplicate Zeros**: count the zeros first, so you know where the last kept value
+  lands, then copy from the back, writing each zero twice.
+- **LC 977 Squares of a Sorted Array**: the largest square is at one of the two ends, so fill
+  the result from the back.
+- **LC 443 String Compression** is the opposite case: the output is never longer than what has
+  been read, so a *forward* write pointer is safe.
 
 #### 1-2-5) Array + Hash Index Map (O(1) Delete via Swap-With-Last) ⭐⭐⭐⭐⭐
 
@@ -1259,6 +1056,278 @@ pins every other row: each must equal it or its complement)*
 | Longest Common Prefix | 14 | Easy | Vertical scan: fix column `j`, compare that char across all strings; stop at first mismatch |
 | Minimum Moves to Equal Array Elements | 453 | Medium | "+1 to n-1 elements" ≡ "-1 to one element" ⇒ answer = `sum(nums) - n * min(nums)` |
 
+#### 1-2-8) Index as Hash (Cyclic Sort and Sign Marking) ⭐⭐⭐⭐⭐
+
+When the values are `1..n`, or only those values matter, the array's own indices are a hash table
+with `n` buckets: value `v` belongs at index `v - 1`. There are two ways to use it, both O(1)
+extra space. **Move** each value to its slot (cyclic sort, the template below), or **mark** slot
+`v - 1` by making it negative (sign marking, worked in
+[array_examples.md](./array_examples.md#index-as-hash-examples) on LC 448 and LC 442).
+
+##### Template 9: Cyclic Sort, Index as Hash — LC 41 ⭐⭐⭐⭐⭐
+
+**Recognise** — "values in the range `[1, n]`", "find the missing / duplicate / first missing
+positive", with "O(n) time and **O(1) extra space**", which rules out a set. n ≤ 10⁵.
+
+**Key point** — after the swap loop, every value `v` in `1..n` that occurs sits at index `v - 1`.
+Each swap puts one value in its home slot for good, and a value at home is never moved again, so
+the first index `i` with `nums[i] != i + 1` names the first missing positive.
+
+```python
+# python
+# LC 41 - First Missing Positive
+# IDEA: cyclic sort - swap each value v in 1..n to index v - 1; the first index that
+#       holds the wrong value names the first missing positive
+# time = O(n), space = O(1)
+def firstMissingPositive(nums):
+    n = len(nums)
+    for i in range(n):
+        # keep swapping until nums[i] is out of range or its home already holds it
+        while 1 <= nums[i] <= n and nums[nums[i] - 1] != nums[i]:
+            home = nums[i] - 1          # computed first: the swap below changes nums[i]
+            nums[i], nums[home] = nums[home], nums[i]
+    for i in range(n):
+        if nums[i] != i + 1:
+            return i + 1
+    return n + 1                        # 1..n are all present
+```
+
+```java
+// java
+// LC 41 - First Missing Positive
+// IDEA: cyclic sort - swap each value v in 1..n to index v - 1, then scan for the first gap
+// time = O(n), space = O(1)
+public int firstMissingPositive(int[] nums) {
+    int n = nums.length;
+    for (int i = 0; i < n; i++) {
+        // keep swapping until nums[i] is out of range or its home already holds it
+        while (nums[i] >= 1 && nums[i] <= n && nums[nums[i] - 1] != nums[i]) {
+            int home = nums[i] - 1;
+            int tmp = nums[home];
+            nums[home] = nums[i];
+            nums[i] = tmp;
+        }
+    }
+    for (int i = 0; i < n; i++) {
+        if (nums[i] != i + 1) {
+            return i + 1;
+        }
+    }
+    return n + 1;          // 1..n are all present
+}
+```
+
+**Complexity**
+- **Time O(n)**: the `while` looks nested, but every swap sends one value to its home slot for
+  good, so all the `while` loops together swap at most n times. The final scan is one pass.
+- **Space O(1)**: the swaps happen inside `nums`; `home` is the only extra variable.
+
+**Dry run**
+
+```text
+nums = [3, 4, -1, 1], n = 4
+i=0  3 -> home 2   [-1, 4, 3, 1]   -1 is out of range: stop
+i=1  4 -> home 3   [-1, 1, 3, 4]
+     1 -> home 0   [1, -1, 3, 4]   -1 is out of range: stop
+i=2  3 is home
+i=3  4 is home
+scan: nums[1] = -1 != 2   -> answer 2
+```
+
+**Traps**
+- **No duplicate test.** Without `nums[nums[i] - 1] != nums[i]`, `[1, 1]` swaps a 1 with the 1
+  already at home for ever. Compare the *values*, not `home != i`.
+- **The one-line Python swap.** `nums[i], nums[nums[i] - 1] = nums[nums[i] - 1], nums[i]`
+  assigns `nums[i]` first, so the second target is computed from the *new* value. On
+  `[3, 4, -1, 1]` it corrupts the array and never terminates. Compute `home` first.
+- **Out-of-range values** (`0`, negatives, `> n`) have no slot. Leave them; the final scan reports
+  their index as the gap.
+- **Returning `n`** when `1..n` are all present: `[1, 2]` must return 3.
+
+**Not this if** — the input must not be modified: LC 287 Find the Duplicate Number forbids it, so
+it is a binary search over the value range or Floyd's cycle detection
+([binary_search_on_answer.md](./binary_search_on_answer.md)).
+If O(n) extra space is allowed, a set is simpler and leaves the input alone.
+
+**Drill** — LC 41 ⭐ · LC 268 *(missing number: a sum or XOR is simpler, cyclic sort also works)* ·
+LC 448 *(every missing value: mark by sign)* · LC 442 *(every duplicate: a slot already negative)*
+· LC 645 *(set mismatch: one duplicate and one missing, from the same scan)*
+
+#### 1-2-9) Rotate In Place by Three Reversals ⭐⭐⭐⭐
+
+Rotating by `k` swaps two blocks of the array and keeps each block's inner order. Reversals do
+that in place.
+
+##### Template 10: Rotate by Three Reversals — LC 189 ⭐⭐⭐⭐
+
+**Recognise** — "rotate the array to the right by `k` steps", "**in place** with O(1) extra
+space"; more generally, two adjacent blocks must trade places and keep their inner order
+(reverse the words of a string in place). n ≤ 10⁵ and k up to 10⁵, so `k` can exceed n.
+
+**Key point** — with `A = nums[0 .. n-k-1]` and `B = nums[n-k .. n-1]`, rotating right turns
+`A B` into `B A`. Reversing the whole array gives `rev(B) rev(A)`: each block is in its final
+place but backwards, and reversing each block again restores its inner order.
+
+```python
+# python
+# LC 189 - Rotate Array
+# IDEA: reverse all, then reverse the first k and the last n - k: AB -> rev(B)rev(A) -> BA
+# time = O(n), space = O(1)
+def rotate(nums, k):
+    n = len(nums)
+    k %= n                       # k may exceed n
+
+    def reverse(lo, hi):
+        while lo < hi:
+            nums[lo], nums[hi] = nums[hi], nums[lo]
+            lo += 1
+            hi -= 1
+
+    reverse(0, n - 1)            # rev(B) rev(A)
+    reverse(0, k - 1)            # B rev(A)
+    reverse(k, n - 1)            # B A
+```
+
+```java
+// java
+// LC 189 - Rotate Array
+// IDEA: reverse all, then reverse the first k and the last n - k
+// time = O(n), space = O(1)
+public void rotate(int[] nums, int k) {
+    int n = nums.length;
+    k %= n;                        // k may exceed n
+    reverse(nums, 0, n - 1);       // rev(B) rev(A)
+    reverse(nums, 0, k - 1);       // B rev(A)
+    reverse(nums, k, n - 1);       // B A
+}
+
+private void reverse(int[] nums, int lo, int hi) {
+    while (lo < hi) {
+        int tmp = nums[lo];
+        nums[lo] = nums[hi];
+        nums[hi] = tmp;
+        lo++;
+        hi--;
+    }
+}
+```
+
+**Complexity**
+- **Time O(n)**: the three `reverse` calls cover the array twice, one swap per pair.
+- **Space O(1)**: `reverse` swaps inside `nums`.
+
+**Dry run**
+
+```text
+nums = [1, 2, 3, 4, 5, 6, 7], k = 3      A = [1,2,3,4], B = [5,6,7]
+reverse all          [7, 6, 5, 4, 3, 2, 1]
+reverse [0, k-1]     [5, 6, 7, 4, 3, 2, 1]
+reverse [k, n-1]     [5, 6, 7, 1, 2, 3, 4]
+```
+
+**Traps**
+- **No `k %= n`.** `[1, 2]` with `k = 5`: `reverse(0, 4)` reads past the end.
+- **The block reversals first.** Reversing `[0, k-1]` and `[k, n-1]` *before* the whole array
+  rotates **left**: `[1..7]`, `k = 3` gives `[4, 5, 6, 7, 1, 2, 3]`.
+- **`nums = nums[-k:] + nums[:-k]`** rebinds the local name, so the caller's list is unchanged.
+  `nums[:] = ...` fixes that, but builds an O(n) copy.
+- **`pop()` then `insert(0, …)`, k times**, is O(n·k): every insert at the head shifts the list.
+
+**Not this if** — the sequence is a linked list (LC 61 Rotate List): find the new tail and re-link
+it, no reversal. If a new array is allowed, `nums[i]` goes to `(i + k) % n` in one pass.
+
+**Drill** — LC 189 ⭐ · LC 151 *(reverse words: reverse the whole string, then each word)* ·
+LC 186 *(the in-place version of LC 151)* · LC 61 *(rotate a linked list: re-link instead)*
+
+#### 1-2-10) One-Pass Running State ⭐⭐⭐⭐
+
+Many array problems need no data structure at all: one pass, carrying the one or two values that
+decide the answer, such as the last index of something, the largest value so far, or a position
+and a heading. Naming those values is the whole problem.
+
+##### Template 11: Running State Scan, Last-Seen Index — LC 849 ⭐⭐⭐⭐
+
+**Recognise** — "maximum distance to the closest …", "how many times is the prefix …", "does it
+return to …": the answer at index `i` depends on one summary of everything before it (the last
+occupied seat, the largest value so far). One pass and O(1) extra space are expected; n ≤ 2·10⁴.
+
+**Key point** — `last` is the index of the most recent occupied seat. An empty run between
+occupied seats at `last` and `i` lets you sit at distance `(i - last) // 2`. The run before the
+first occupied seat and the run after the last one have a person on one side only, so they count
+in full.
+
+```python
+# python
+# LC 849 - Maximize Distance to Closest Person
+# IDEA: carry the last occupied index; an inner gap scores (i - last) // 2,
+#       the leading and the trailing gap score their full length
+# time = O(n), space = O(1)
+def maxDistToClosest(seats):
+    n = len(seats)
+    best = 0
+    last = -1                      # no occupied seat seen yet
+    for i in range(n):
+        if seats[i] == 1:
+            if last == -1:
+                best = i           # leading gap: sit in seat 0
+            else:
+                best = max(best, (i - last) // 2)   # inner gap: sit in the middle
+            last = i
+    return max(best, n - 1 - last) # trailing gap: sit in the last seat (0 if it is taken)
+```
+
+```java
+// java
+// LC 849 - Maximize Distance to Closest Person
+// IDEA: carry the last occupied index; inner gaps are halved, the two end gaps are not
+// time = O(n), space = O(1)
+public int maxDistToClosest(int[] seats) {
+    int n = seats.length;
+    int best = 0;
+    int last = -1;                 // no occupied seat seen yet
+    for (int i = 0; i < n; i++) {
+        if (seats[i] == 1) {
+            if (last == -1) {
+                best = i;          // leading gap: sit in seat 0
+            } else {
+                best = Math.max(best, (i - last) / 2);   // inner gap: sit in the middle
+            }
+            last = i;
+        }
+    }
+    return Math.max(best, n - 1 - last);   // trailing gap
+}
+```
+
+**Complexity**
+- **Time O(n)**: one `for` over the seats; each step does O(1) work.
+- **Space O(1)**: the whole state is `last` and `best`.
+
+**Dry run**
+
+```text
+seats = [0, 0, 1, 0, 1, 0, 0, 0]
+i=2  first 1        leading gap  -> best = 2      last = 2
+i=4  1              (4 - 2) // 2 = 1, best = 2    last = 4
+end                 trailing gap 7 - 4 = 3        best = 3
+```
+
+**Traps**
+- **Halving an end gap.** `[0, 0, 0, 1]` returns 1 instead of 3: sitting in seat 0 has a person
+  on one side only.
+- **No trailing gap.** `[1, 0, 0, 0]` returns 0 instead of 3, because no later `1` ever closes
+  the last run.
+- **`/` in Python.** `(i - last) / 2` on `[1, 0, 0, 1]` gives `1.5`; use `//`.
+
+**Not this if** — every index needs its distance to the nearest marker on *both* sides (LC 821
+Shortest Distance to a Character): two passes, one from each end. If the carried value must be
+dropped once something beats it (next greater element), the state is a stack:
+[monotonic_stack.md](./monotonic_stack.md).
+
+**Drill** — LC 849 ⭐ · LC 121 *(the minimum price so far: [stock_trading.md](./stock_trading.md))* ·
+LC 1375 *(the maximum so far equals the step count)* · LC 1041 *(position and heading after one
+pass)* · LC 670 *(scan from the right, carrying the index of the maximum)*
+
 ---
 
 
@@ -1288,13 +1357,14 @@ array itself: **rewriting it in place, and using its indices as storage.**
 | If you need to… | Technique | Written out at |
 |---|---|---|
 | overwrite in place without losing unread data | **backward write pointer** — fill from the end, where the free space is | [1-2-4)](#1-2-4-backward-write-pointer-in-place-merge--in-place-overwrite-) |
-| record "I have seen value `v`" with no extra space | **index as hash** — negate `nums[v]`, always dereference through `abs()` | [1-2-5)](#1-2-5-array--hash-index-map-o1-delete-via-swap-with-last-), [examples 1)](./array_examples.md#1-first-missing-positive--lc-41-) |
-| put every value at the index it belongs to | **cyclic sort** — swap until `nums[i] == i + 1`, then scan for the gap | [examples 1)](./array_examples.md#1-first-missing-positive--lc-41-) |
+| record "I have seen value `v`" with no extra space | **index as hash, sign marking** — negate `nums[v - 1]`, always dereference through `abs()` | [1-2-8)](#1-2-8-index-as-hash-cyclic-sort-and-sign-marking-), [examples](./array_examples.md#index-as-hash-examples) |
+| put every value at the index it belongs to | **cyclic sort** — swap until `nums[i] == i + 1`, then scan for the gap | [1-2-8)](#1-2-8-index-as-hash-cyclic-sort-and-sign-marking-) |
 | delete an arbitrary element in O(1) | **swap with last, then pop** — plus a value → index map | [1-2-5)](#1-2-5-array--hash-index-map-o1-delete-via-swap-with-last-) |
 | find the majority element in O(1) space | **Boyer-Moore vote** — a candidate and a counter, nothing else | [1-2-1)](#1-2-1-boyer-moore-majority-vote-algorithm) |
 | count occurrences when values are small and bounded | **frequency array**, not a hash map | [1-2-2)](#1-2-2-frequency-array--running-count) |
-| rotate by `k` in place | **reverse all, reverse the first `k`, reverse the rest** | [examples 2)](./array_examples.md#2-rotate-array--lc-189-) |
+| rotate by `k` in place | **reverse all, reverse the first `k`, reverse the rest** | [1-2-9)](#1-2-9-rotate-in-place-by-three-reversals-) |
 | answer when only a handful of results are possible | **bounded candidate enumeration** — try them all | [1-2-6)](#1-2-6-bounded-candidate-enumeration-only-a-few-answers-are-possible) |
+| answer from one summary of everything seen so far | **running state** — carry the last index, the max so far, a position | [1-2-10)](#1-2-10-one-pass-running-state-) |
 
 ### The three traps
 
@@ -1308,18 +1378,19 @@ array itself: **rewriting it in place, and using its indices as storage.**
 
 ## 3) Worked Examples
 
-The worked problems live in **[array_examples.md](./array_examples.md)**:
+The worked problems live in **[array_examples.md](./array_examples.md)**, filed under the
+template each one reduces to. Its [Index](./array_examples.md#index) also lists the
+array-tagged problems whose home is another sheet.
 
-| Group | Problems |
+| Template | Problems |
 |---|---|
-| [In-place rewriting & index tricks](./array_examples.md#in-place-rewriting--index-tricks) | LC 41, 287, 189, 238, 670 |
-| [Scanning & running state](./array_examples.md#scanning--running-state) | LC 121, 1567, 334, 849 |
-| [Counting, bookings & simulation](./array_examples.md#counting-bookings--simulation) | LC 1109, 1375, 1041, 406, 251 |
+| [Template 9: Cyclic Sort, Index as Hash](./array_examples.md#index-as-hash-examples) | LC 448, 442 |
+| [Template 11: Running State Scan](./array_examples.md#one-pass-running-state-examples) | LC 1375, 1041, 670 |
 
 ## 4) Drill Path
 
 | Stage | Problems (easy → hard) | What it adds |
 |---|---|---|
-| **Core** | LC 88 · LC 169 · LC 238 ⭐ · LC 380 | backward write; the vote; prefix × suffix products ([array_examples](./array_examples.md#3-product-of-array-except-self--lc-238-)); swap-with-last delete |
-| **Practice** | LC 189 · LC 229 · LC 251 · LC 1007 · LC 2063 · LC 2657 | rotate by three reversals; k − 1 candidates; lazy iterator; candidates from index 0; contribution counting; frequency array |
+| **Core** | LC 88 · LC 169 · LC 238 ⭐ · LC 380 | backward write ([2_pointers](./2_pointers.md#template-5-merge-two-sorted-arrays-fill-from-the-back--lc-88-)); the vote; prefix × suffix products ([prefix_sum](./prefix_sum.md#product-variant--no-inverse-so-build-both-sides-lc-238-)); swap-with-last delete |
+| **Practice** | LC 849 · LC 448 · LC 189 · LC 229 · LC 251 · LC 1007 · LC 2063 · LC 2657 | running state; sign marking; rotate by three reversals; k − 1 candidates; lazy iterator; candidates from index 0; contribution counting; frequency array |
 | **Stretch** | LC 41 · LC 381 · LC 828 | cyclic sort / index as hash; swap-with-last with duplicates; contribution with per-character spans |

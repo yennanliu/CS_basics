@@ -1,7 +1,7 @@
 # Sliding Window
 
 > **Scope** — Windows that grow and shrink on a condition — fixed-size, variable-size, at-most-k, and exactly-k by subtraction; owns the expand/contract loop and the seven canonical window templates.
-> **See also** — *split out of this file*: [sliding_window_examples.md](./sliding_window_examples.md) — the worked LC solution archive, one canonical solution per problem per language; [sliding_window_advanced.md](./sliding_window_advanced.md) — deque extrema, at-most-K generalisations, exactly-K beyond one instance, complement / word-level / bucketed windows.
+> **See also** — *split out of this file*: [sliding_window_examples.md](./sliding_window_examples.md) — the worked problems, one card each, filed under the template they reduce to; [sliding_window_advanced.md](./sliding_window_advanced.md) — at-most-K generalisations, exactly-K beyond one instance, several windows at once, word-level windows.
 > *Neighbouring sheets*: [2_pointers.md](./2_pointers.md) — pointers that converge instead of trailing; [hash_map.md](./hash_map.md) — the counting map most windows carry; [monotonic_queue.md](./monotonic_queue.md) — window extrema in O(n); [prefix_sum.md](./prefix_sum.md) — when the window can be negative-valued.
 
 ## LeetCode Problem Lists
@@ -435,6 +435,32 @@ public int minSubArrayLen(int target, int[] nums) {
 - **Time O(n)**: as in Template 2, `left` advances at most n times over the whole run.
 - **Space O(1)**: one running sum.
 
+**Follow-up — O(n log n).** LC 209 itself asks for an O(n log n) solution after the O(n) one.
+With positive values the prefix sums are strictly increasing, so for each start `left` the
+shortest end is one binary search away: the first `prefix[j] ≥ prefix[left] + target`. It is
+slower than the window, and it is the answer to give only because the follow-up asks for it.
+
+```python
+# python
+# LC 209 - Minimum Size Subarray Sum (follow-up)
+# IDEA: prefix sums are increasing; per start, binary-search the first end reaching target
+# time = O(n log n), space = O(n)
+from bisect import bisect_left
+
+def minSubArrayLen_log(target, nums):
+    n = len(nums)
+    prefix = [0] * (n + 1)                    # prefix[i] = sum(nums[:i]), increasing
+    for i in range(n):
+        prefix[i + 1] = prefix[i] + nums[i]
+    best = n + 1
+    for left in range(n):
+        # smallest right_end with prefix[right_end] - prefix[left] >= target
+        right_end = bisect_left(prefix, prefix[left] + target)
+        if right_end <= n:
+            best = min(best, right_end - left)
+    return 0 if best == n + 1 else best
+```
+
 **Traps**
 - No valid window: `target = 11, nums = [1,1,1,1,1,1,1,1]` must return 0, not the sentinel.
 - Recording *after* the shrink measures a window that is no longer valid:
@@ -834,7 +860,7 @@ over negatives, LC 560) → [prefix_sum.md](./prefix_sum.md).
 | **Practice** | LC 643 · LC 1004 · LC 209 · LC 438 · LC 904 · LC 1248 | one per shape: fixed, grow-then-shrink, shortest, every start, at-most-2, exactly-k |
 | **Stretch** | LC 4067 · LC 992 · LC 30 · LC 239 | the newcomer test; exactly-k by subtraction; word-level window; window max → [monotonic_queue.md](./monotonic_queue.md) |
 
-Worked solutions for the Practice row are in [sliding_window_examples.md](./sliding_window_examples.md).
+The Practice row's anchors are worked in the cards above; LC 438 is in [hash_map.md](./hash_map.md#template-5-fixed-window-character-counts--lc-438), and LC 904 and LC 1248 are in [sliding_window_advanced.md](./sliding_window_advanced.md). Every other worked problem is in [sliding_window_examples.md](./sliding_window_examples.md).
 
 ## Summary & Quick Reference
 
@@ -995,8 +1021,8 @@ count += right - left + 1  # All subarrays ending at 'right'
 
 | Looking for | Sheet |
 |---|---|
-| A worked solution to LC 567, 438, 1004, 424, 1838, 713, 413, 1151, 763 | [sliding_window_examples.md](./sliding_window_examples.md) |
-| Deque extrema, at-most-K-distinct family, exactly-K deep dive, complement / word-level / bucketed windows | [sliding_window_advanced.md](./sliding_window_advanced.md) |
+| A worked solution to LC 424, 1838, 713, 413, 1151 — and where LC 438, 567, 763 live | [sliding_window_examples.md](./sliding_window_examples.md) |
+| At-most-K-distinct family, exactly-K with a reset or in one pass, several windows at once, word-level windows | [sliding_window_advanced.md](./sliding_window_advanced.md) |
 | The full monotonic-deque family (LC 239, 862, 1438, 1499) | [monotonic_queue.md](./monotonic_queue.md) |
 | Windows that may contain negatives → prefix sum + HashMap | [prefix_sum.md](./prefix_sum.md) |
 | Converging (not trailing) pointers | [2_pointers.md](./2_pointers.md) |

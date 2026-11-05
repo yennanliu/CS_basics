@@ -1,8 +1,8 @@
-<!-- e36532ecbc92 -->
+<!-- dff4edd665cc -->
 # Patience Sorting — 以 O(N log N) 求 LIS
 
 > **範圍** — `O(N log N)` 最長遞增子序列背後的紙牌遊戲演算法：牌堆、牌堆收斂成的 `tails` 陣列、如何還原子序列本身，以及可以歸約到它的題目家族。
-> **另見**：[binary_search.md](./binary_search.md) §1.5 — 這個掃描所依賴的 lower-bound 模板，以及「每個元素寫入一次就是*完整*的 DP 更新」的證明；[binary_search_examples.md](./binary_search_examples.md) §18 — 完整解過的 LC 300 / LC 354；[dp_pattern.md](./dp_pattern.md) — 本法所取代的 `O(n²)` LIS DP，以及那些無法被取代的 LIS 形 DP；[sort.md](./sort.md) — 相鄰的排序演算法。
+> **另見**：[binary_search.md](./binary_search.md) §1.5 — 這個掃描所依賴的 lower-bound 模板，以及「每個元素寫入一次就是*完整*的 DP 更新」的證明；[binary_search.md § Template 5](./binary_search.md#template-5-lower-bound-on-a-maintained-tails-array--lc-300-) — 完整解過的 LC 300；[sort.md § Template 9](./sort.md#template-9-sort-by-a-derived-key-to-unlock-greedy--dp--lc-354-) — 完整解過的 LC 354；[dp_pattern.md](./dp_pattern.md) — 本法所取代的 `O(n²)` LIS DP，以及那些無法被取代的 LIS 形 DP；[sort.md](./sort.md) — 相鄰的排序演算法。
 
 - **核心概念**：把陣列當成一局接龍（patience）發牌 — 每張牌放到最左邊、頂牌 `>= card` 的牌堆上，沒有這種牌堆就開一個新牌堆 — 而**牌堆的數量就是 LIS 的長度**
 - **何時使用**：求最長的遞增／可串接序列，只需要它的**長度**，而 `O(n²)` DP 太慢
@@ -147,10 +147,10 @@
 <!-- 5fa13fe640ce -->
 ## 2) LC 範例
 
-<!-- 1f97ea620b55 -->
+<!-- 646c11e7b897 -->
 ### 2-1) Longest Increasing Subsequence — LC 300 ⭐⭐⭐⭐⭐
 
-就是 §1-1 的單純掃描，答案是 `len(tails)`。`O(n²)` DP 是預期的第一個答案，`O(n log n)` 掃描則是追問；兩者完整的解說與 dry-run 表格在 [binary_search_examples.md](./binary_search_examples.md) §18。
+就是 §1-1 的單純掃描，答案是 `len(tails)`。`O(n²)` DP 是預期的第一個答案，`O(n log n)` 掃描則是追問；兩者完整的解說與 dry-run 表格在 [binary_search.md § Template 5](./binary_search.md#template-5-lower-bound-on-a-maintained-tails-array--lc-300-)。
 
 <!-- 55da57735ecd -->
 ### 2-2) Increasing Triplet Subsequence — LC 334 ⭐⭐⭐⭐
@@ -161,12 +161,12 @@
 
 不需要二分搜尋：只有兩個格子時，線性掃描*就是* lower bound，這也是它看起來像另一個演算法、其實不是的原因。
 
-<!-- fadf8cf36be4 -->
+<!-- cf9e18497c83 -->
 ### 2-3) Russian Doll Envelopes — LC 354 ⭐⭐⭐⭐⭐
 
 二維的 LIS。寬度**遞增**排序，寬度相同時高度**遞減**，然後只對高度做掃描。平手規則就是整道題的關鍵：高度遞減時，兩個寬度相同的信封永遠不可能同時被選中，因為後面那個的高度較小，無法接在前面那個之後。
 
-程式碼 — 以及把同樣技巧用在 LC 1996 — 在 [binary_search_examples.md](./binary_search_examples.md) §18。
+程式碼在 [sort.md § Template 9](./sort.md#template-9-sort-by-a-derived-key-to-unlock-greedy--dp--lc-354-)；LC 1996（同樣的平手規則排序，不用二分搜尋）在 [binary_search.md § Template 5](./binary_search.md#template-5-lower-bound-on-a-maintained-tails-array--lc-300-) 的相似題表格裡。
 
 <!-- be95ebd3c982 -->
 ### 2-4) Longest Valid Obstacle Course at Each Position — LC 1964 ⭐⭐⭐⭐
@@ -198,7 +198,7 @@
 
 <!--CODE-->
 
-<!-- 21ee529d7293 -->
+<!-- 0a6ea772c8c6 -->
 ### 2-8) 經典題一覽
 
 **直接用掃描解決**（有時要先刻意排序）：
@@ -215,7 +215,7 @@
 | **1671** | Minimum Number of Removals to Make Mountain Array | 掃描正向、反向各跑一次 |
 | **1713** | Minimum Operations to Make a Subsequence | 一邊互異的 LCS → 對映射後索引做 LIS |
 
-**近親** — 同樣是「對你維護的結構做二分搜尋」，但存的值是 DP 結果而不是 tail：LC 1235（Maximum Profit in Job Scheduling）、LC 1751（Maximum Number of Events That Can Be Attended II）、LC 981、LC 528 — 都在 [binary_search_examples.md](./binary_search_examples.md)。
+**近親** — 同樣是「對你維護的結構做二分搜尋」，但存的值是 DP 結果而不是 tail：LC 1235（Maximum Profit in Job Scheduling）、LC 1751（Maximum Number of Events That Can Be Attended II）、列在 [binary_search.md § Template 5](./binary_search.md#template-5-lower-bound-on-a-maintained-tails-array--lc-300-)；LC 981 在 [design_examples.md](./design_examples.md#9-time-based-key-value-store--lc-981)；LC 528 在 [math.md](./math.md#1-1-11-randomized-sampling-templates-)。
 
 **陷阱** — 長得像 LIS，但不是這個演算法：
 

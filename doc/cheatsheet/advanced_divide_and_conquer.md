@@ -1,7 +1,7 @@
 # Advanced Divide and Conquer
 
 > **Scope** — Divide-and-conquer beyond merge sort — the recursion-with-merge shapes (count-while-sorting, closest pair, matrix D&C, D&C on expressions) and their recurrences.
-> **See also**: [2_pointers_quickselect.md](./2_pointers_quickselect.md) — quickselect in full, which this sheet defers to; [sort.md](./sort.md) — merge sort and quickselect as sorting algorithms; [binary_search.md](./binary_search.md) — halving without a merge step; [recursion.md](./recursion.md) — recursion mechanics; [segment_tree.md](./segment_tree.md) — D&C frozen into a data structure.
+> **See also**: [quickselect.md](./quickselect.md) — quickselect in full, which this sheet defers to; [sort.md](./sort.md) — merge sort and quickselect as sorting algorithms; [binary_search.md](./binary_search.md) — halving without a merge step; [recursion.md](./recursion.md) — recursion mechanics; [segment_tree.md](./segment_tree.md) — D&C frozen into a data structure.
 
 ## LeetCode Problem Lists
 
@@ -317,7 +317,7 @@ private void swap(int[] a, int i, int j) { int t = a[i]; a[i] = a[j]; a[j] = t; 
 
 > The Python form, the Hoare and 3-way partitions, the LC 973 variation and the
 > Median-of-Medians outline are all in
-> [2_pointers_quickselect.md](./2_pointers_quickselect.md), which owns this algorithm.
+> [quickselect.md](./quickselect.md), which owns this algorithm.
 > What belongs *here* is only its shape: it is the one divide-and-conquer template that
 > recurses into a **single** side, which is why its recurrence is `T(n) = T(n/2) + O(n)`
 > and its total is O(n) rather than the O(n log n) every other template on this sheet pays.

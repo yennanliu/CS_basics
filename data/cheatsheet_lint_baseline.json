@@ -1,15 +1,11 @@
 {
   "_comment": "Per-rule, per-file counts that script/check_cheatsheets.py tolerates. A count can only go down: a rise fails, a file not listed is held to 0. Lower it with `python3 script/check_cheatsheets.py --update-baseline` after a fix; see the script's docstring.",
   "note-wall": {
-    "2_pointers_examples.md": 26,
     "2_pointers_linkedlist.md": 10,
     "Dijkstra_examples.md": 10,
     "add_x_sum.md": 11,
-    "array_examples.md": 7,
     "backtrack_advanced.md": 14,
     "backtrack_examples.md": 26,
-    "binary_search_examples.md": 2,
-    "binary_search_on_answer.md": 1,
     "binary_tree.md": 1,
     "design_examples.md": 1,
     "difference_array.md": 4,
@@ -42,7 +38,6 @@
     "sort.md": 5,
     "stack_examples.md": 43,
     "stack_expression_parsing.md": 6,
-    "string_examples.md": 11,
     "string_operations.md": 1,
     "tree_codec.md": 7,
     "trie.md": 5,
@@ -60,26 +55,22 @@
     "python_trick_indexing.md": 49,
     "python_trick_stdlib.md": 28,
     "sort.md": 8,
-    "string_examples.md": 6,
     "string_operations.md": 2
   },
   "gpt": {
     "Dijkstra_examples.md": 2,
     "add_x_sum.md": 1,
-    "array_examples.md": 1,
     "backtrack_examples.md": 2,
     "dp_examples.md": 3,
     "hash_map_examples.md": 1,
     "java_trick_strings_sorting.md": 1,
     "linked_list_examples.md": 2,
     "math.md": 1,
-    "sliding_window_examples.md": 1,
     "sort.md": 1,
     "stack_examples.md": 1
   },
   "blog-link": {
     "backtrack_examples.md": 1,
-    "binary_search_examples.md": 1,
     "bit_manipulation_examples.md": 3,
     "design_examples.md": 1,
     "hash_map.md": 2,
@@ -109,23 +100,20 @@
     "tree_codec.md": 1
   },
   "code-first-example": {
-    "2_pointers_examples.md": 7,
     "2_pointers_linkedlist.md": 1,
-    "2_pointers_quickselect.md": 2,
     "Bellman-Ford.md": 1,
     "Collection.md": 2,
     "Dijkstra.md": 2,
     "add_x_sum.md": 7,
     "advanced_divide_and_conquer.md": 4,
-    "advanced_string_algorithms.md": 5,
-    "array_examples.md": 10,
+    "advanced_string_algorithms.md": 3,
     "backtrack_examples.md": 3,
     "binary_indexed_tree.md": 1,
     "bit_manipulation_examples.md": 5,
     "combinatorics_math_patterns.md": 7,
     "concurrency_patterns.md": 2,
     "design_examples.md": 14,
-    "difference_array.md": 4,
+    "difference_array.md": 3,
     "dp.md": 2,
     "dp_advanced.md": 11,
     "dp_loop_order.md": 1,
@@ -152,12 +140,11 @@
     "segment_tree.md": 5,
     "set_examples.md": 9,
     "shortest_path_comparison.md": 7,
-    "sort.md": 13,
+    "sort.md": 12,
     "stack_examples.md": 2,
     "stock_trading.md": 8,
     "streaming_algorithms.md": 2,
-    "string_examples.md": 4,
-    "string_matching_kmp_rolling_hash.md": 7,
+    "string_matching_kmp_rolling_hash.md": 6,
     "time_space_complexity.md": 17,
     "tree_codec.md": 3,
     "tree_construction.md": 2,
@@ -187,7 +174,6 @@
   },
   "no-recognition": {
     "2_pointers_linkedlist.md": 1,
-    "2_pointers_quickselect.md": 1,
     "design.md": 1,
     "dp_loop_order.md": 1,
     "greedy.md": 1,
@@ -216,7 +202,6 @@
   },
   "no-drill-path": {
     "2_pointers_linkedlist.md": 1,
-    "2_pointers_quickselect.md": 1,
     "Collection.md": 1,
     "Dijkstra.md": 1,
     "complexity_cheatsheet.md": 1,
@@ -254,11 +239,8 @@
     "union_find.md": 1
   },
   "examples-no-index": {
-    "2_pointers_examples.md": 1,
     "Dijkstra_examples.md": 1,
-    "array_examples.md": 1,
     "backtrack_examples.md": 1,
-    "binary_search_examples.md": 1,
     "bit_manipulation_examples.md": 1,
     "design_examples.md": 1,
     "dp_examples.md": 1,
@@ -270,9 +252,7 @@
     "prefix_sum_examples.md": 1,
     "scanning_line_examples.md": 1,
     "set_examples.md": 1,
-    "sliding_window_examples.md": 1,
     "stack_examples.md": 1,
-    "string_examples.md": 1,
     "trie_examples.md": 1,
     "union_find_examples.md": 1
   },
@@ -281,7 +261,6 @@
     "backtrack_advanced.md": 1,
     "dp_advanced.md": 1,
     "heap_advanced.md": 1,
-    "prefix_sum_advanced.md": 1,
-    "sliding_window_advanced.md": 1
+    "prefix_sum_advanced.md": 1
   }
 }

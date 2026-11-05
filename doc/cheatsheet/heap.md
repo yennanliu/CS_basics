@@ -165,7 +165,7 @@ Constraint cues come from the ruler in [complexity_cheatsheet.md](./complexity_c
 
 | Signal in the statement | Constraint cue | Reach for | Not this if |
 |---|---|---|---|
-| "kth largest / kth smallest", "k closest" | n ≤ 10⁵, k ≪ n → O(n log k) | [Template 1](#template-1-size-k-min-heap-for-the-kth-largest--lc-215-) size-k heap | one query over a static array → quickselect, O(n) average ([2_pointers_quickselect.md](./2_pointers_quickselect.md)) |
+| "kth largest / kth smallest", "k closest" | n ≤ 10⁵, k ≪ n → O(n log k) | [Template 1](#template-1-size-k-min-heap-for-the-kth-largest--lc-215-) size-k heap | one query over a static array → quickselect, O(n) average ([quickselect.md](./quickselect.md)) |
 | "top k most frequent", "k most common words" | distinct values ≤ n | [Template 2](#template-2-count-then-a-size-k-heap-on-the-count--lc-347-) count, then size-k heap | counts bounded by n and k close to n → bucket sort, O(n) |
 | "merge k sorted lists / arrays", "kth smallest in a sorted matrix" | k lists, N total → O(N log k) | [Template 3](#template-3-k-way-merge--lc-23-) k-way merge | only two sources → a plain two-pointer merge |
 | "median of a data stream", "balance two halves" | many `add` + `query` calls | [Template 4](#template-4-two-heaps-for-a-running-median--lc-295-) two heaps | the window also *removes* values → lazy deletion ([heap_advanced.md](./heap_advanced.md#1-lazy-deletion--heap--hashmap-of-truth-)) |
@@ -265,7 +265,7 @@ public int findKthLargest(int[] nums, int k) {
 - Letting the heap grow to n and popping k times at the end is O(n log n) — the cap is the point.
 
 **Not this if** — a single query over a static array: quickselect is O(n) average
-([2_pointers_quickselect.md](./2_pointers_quickselect.md)). The heap wins when values arrive as a
+([quickselect.md](./quickselect.md)). The heap wins when values arrive as a
 stream (LC 703) or the kth element is asked repeatedly.
 
 **Drill** — LC 215 ⭐ · LC 703 *(the same heap, kept across calls)* · LC 1985 *(key = `(len, s)`)* ·

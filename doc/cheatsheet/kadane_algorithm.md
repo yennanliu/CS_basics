@@ -1049,7 +1049,30 @@ public int canCompleteCircuit(int[] gas, int[] cost) {
 ```
 
 ### 6-8) Maximum Length of Subarray with Positive Product (LC 1567) — Track Pos/Neg Product Lengths
-> Track lengths with positive and negative product separately; swap on negative number.
+> **Key point** — the sign of a product is all that matters, so keep two run lengths ending here, one
+> positive and one negative; a negative number swaps them and a zero resets both.
+
+**Reduces to**: [0-2) Kadane](./kadane_algorithm.md#0-2-algorithm-pattern--template) — best run ending here, with two states instead of one.
+
+```python
+# python
+# LC 1567 - Maximum Length of Subarray with Positive Product
+# IDEA: pos / neg = length of the longest subarray ending here with a positive / negative product;
+#       a zero resets both, a negative swaps them
+# time = O(n), space = O(1)
+def getMaxLen(nums):
+    pos = neg = best = 0
+    for num in nums:
+        if num == 0:
+            pos = neg = 0
+        elif num > 0:
+            pos += 1
+            neg = neg + 1 if neg > 0 else 0          # a negative run stays negative
+        else:
+            pos, neg = (neg + 1 if neg > 0 else 0), pos + 1   # the sign flips both runs
+        best = max(best, pos)
+    return best
+```
 
 ```java
 // LC 1567 - Maximum Length of Subarray with Positive Product

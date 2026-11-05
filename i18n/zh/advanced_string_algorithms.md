@@ -62,19 +62,28 @@
 <!-- ddc7f484e4af -->
 ## 模板與演算法
 
-<!-- 5af14970af2f -->
+<!-- dac06baece8d -->
 ### 模板比較表
 | 演算法 | 用途 | 時間複雜度 | 空間複雜度 | 什麼時候用 |
 |-----------|----------|-----------------|------------------|-------------|
-| **KMP** | 模式比對 | O(n + m) | O(m) | 單一模式搜尋 |
+| **KMP** | 模式比對 | O(n + m) | O(m) | 單一模式搜尋 → [string_matching_kmp_rolling_hash.md](./string_matching_kmp_rolling_hash.md#1-2-templates) |
 | **Manacher** | 所有回文 | O(n) | O(n) | 回文類問題 |
 | **Z-Algorithm** | 字串比對 | O(n) | O(n) | 模式比對的各種變形 |
-| **Rolling Hash** | 子字串比較 | O(n) | O(1) | 多模式搜尋 |
+| **Rolling Hash** | 子字串比較 | O(n) | O(1) | 多模式搜尋 → [string_matching_kmp_rolling_hash.md](./string_matching_kmp_rolling_hash.md#1-2-templates) |
 | **DFA／狀態機** | 格式驗證／斷詞 | O(n) | O(1) | 規則亂成一團的 `if/else` 解析（LC 65） |
 
-<!-- 8fe923ed7642 -->
-### 模板 1：KMP（Knuth-Morris-Pratt）演算法 — LC 28
-<!--CODE-->
+<!-- 17dcf01c8e42 -->
+### KMP 與 Rolling Hash 的主場在字串比對那份
+
+子字串搜尋只有一個主場：[string_matching_kmp_rolling_hash.md](./string_matching_kmp_rolling_hash.md)。原本這裡的模板 1 與模板 4（KMP、rolling hash）跟它重複，所以已移除，其餘模板保留原本的編號。
+
+| 你需要的 | 去哪裡 |
+|---|---|
+| KMP 失敗函數、Rabin-Karp 搜尋 | [string_matching_kmp_rolling_hash.md § 1-2) Templates](./string_matching_kmp_rolling_hash.md#1-2-templates) |
+| 用雙重雜湊降低碰撞 | [§ 1-3) Double Hashing](./string_matching_kmp_rolling_hash.md#1-3-double-hashing-collision-reduction) |
+| 對長度二分搜尋 + rolling hash（LC 1044、LC 718） | [§ 2-3) LC 1044](./string_matching_kmp_rolling_hash.md#2-3-longest-duplicate-substring-lc-1044)、[§ 1-6) LC 718](./string_matching_kmp_rolling_hash.md#1-6-binary-search-on-length--rolling-hash-over-arrays--lc-718-) |
+
+留在這裡的是那份文件沒有涵蓋的工具：Manacher、Z-algorithm、後綴陣列與字串自動機。
 
 <!-- 284c70d99f7c -->
 ### 模板 2：Manacher 演算法 — LC 5
@@ -82,10 +91,6 @@
 
 <!-- 44455f5eab16 -->
 ### 模板 3：Z-Algorithm — LC 459
-<!--CODE-->
-
-<!-- 1a4e65d9748e -->
-### 模板 4：進階 Rolling Hash — LC 1044
 <!--CODE-->
 
 <!-- 2115aa308ed9 -->
@@ -148,66 +153,18 @@
 | Distinct Echo Substrings | 1316 | Rolling Hash | O(n²) | Hard |
 | Find All Anagrams | 438 | Rolling Hash | O(n) | Medium |
 
-<!-- 598a9bfd2a3c -->
+<!-- 253aae83e769 -->
 ## LC 範例
 
-<!-- a2a0af9fe4a7 -->
-### 2-1) Find Index of First Occurrence（LC 28） — KMP
-> 為模式建 LPS（failure）陣列；比對失敗時直接跳過那些不必要的比較。
+這份文件以前解過的題目，現在各有主場；上面的技巧章節只保留真正需要它們的題目（LC 459 用 Z-algorithm、LC 1044 用後綴陣列、LC 65 用 DFA）。
 
-<!--CODE-->
-
-<!--CODE-->
-
-<!-- 13dbe1e0a462 -->
-#### 變形：LC 686 Repeated String Match — *難的是界定 haystack 要多長，不是搜尋本身*
-
-> 搜尋部分跟 LC 28 的 KMP 一模一樣；唯一的新東西是證明 haystack 到底要接多長。
-> 如果 `b` 塞得進重複的 `a`，那它一定塞得進 `ceil(|b|/|a|)` 份（長度夠了）或
-> `ceil(|b|/|a|) + 1` 份（多一份是為了涵蓋從某一份中間開始的比對）。再多接就沒有新的對齊方式了 —
-> 所以**只有兩個候選，都不行就回 `-1`**。
->（`string.md` 給的是單純字串串接的解法；這裡是 O(N+M) 的比對版本。）
-
-<!--CODE-->
-
-<!--CODE-->
-
-**常見錯誤**：寫成 `while len(a*k) < len(b) + 2*len(a)` 這種用猜的迴圈，或一路重複到某個隨便訂的上限。把界限明確講出來 — 面試官考的是這段論證，不是搜尋。
-
-<!-- ada86780a06c -->
-### 2-2) Longest Palindromic Substring（LC 5） — 中心擴展
-> 試過每一個中心（奇數長度與偶數長度）；只要字元相同就往外擴。
-
-<!--CODE-->
-
-<!--CODE-->
-
-<!-- 45e89a255577 -->
-### 2-3) Longest Duplicate Substring（LC 1044） — 二分搜尋 + Rolling Hash
-> 對長度做二分搜尋；用 Rabin-Karp rolling hash 檢查該長度的重複子字串是否存在。
-
-<!--CODE-->
-
-<!--CODE-->
-
-<!-- 0efce9d07dd4 -->
-#### 變形：LC 718 Maximum Length of Repeated Subarray — *一樣是二分搜尋 + hash，但跨**兩個**序列，而且處理的是整數不是字元*
-
-> LC 1044 是在一個字串裡找重複；LC 718 是在兩個陣列之間找共同的區塊。
-> 單調的判定條件完全一樣（「若存在長度 `L` 的共同區塊，那長度 `L-1` 的也存在」），
-> 所以對 `L` 做二分搜尋，並把兩個陣列的每個視窗都 hash 起來：先把 `nums1` 的所有視窗雜湊值丟進集合，
-> 再掃 `nums2` 看有沒有命中。值本來就是整數，直接餵進 rolling hash 即可 — 不需要 `ord()`。
->
-> 這題面試上預期的答案是 O(N·M) 的 LCS 型 DP（見 `dp_pattern.md`）。當面試官追問能不能比 O(N·M) 更快時，
-> 再把這個當成 follow-up 端出來 — 它是 O((N+M)·log min(N,M))。
-
-<!--CODE-->
-
-<!--CODE-->
-
-**兩個陷阱**：(1) 要用**上中點** `(lo + hi + 1) // 2` 搭配 `lo = mid` / `hi = mid - 1` 的更新方式，
-否則搜尋不會終止；(2) 只用一個 32-bit 左右的模數很容易碰撞 —
-記得說出來你會在雜湊命中時比對實際視窗來驗證，或是改用下面的 `DoubleHash` 類別。
+| 題目 | 主場 |
+|---|---|
+| LC 28 Find the Index of the First Occurrence in a String（KMP） | [string_matching_kmp_rolling_hash.md § 2-1)](./string_matching_kmp_rolling_hash.md#2-1-find-the-index-of-the-first-occurrence-in-a-string-lc-28)，Python 與 Java |
+| LC 686 Repeated String Match（先界定 haystack 長度，再搜尋） | [string_matching_kmp_rolling_hash.md § 1-4)](./string_matching_kmp_rolling_hash.md#1-4-repeat-text-until-it-contains-the-pattern--lc-686-) |
+| LC 5 Longest Palindromic Substring（從中心擴展） | [2_pointers.md § Template 3](./2_pointers.md#template-3-expand-from-centre--lc-5-)；Manacher 是上面的模板 2 |
+| LC 1044 Longest Duplicate Substring（二分搜尋 + Rabin-Karp） | [string_matching_kmp_rolling_hash.md § 2-3)](./string_matching_kmp_rolling_hash.md#2-3-longest-duplicate-substring-lc-1044)，Python 與 Java |
+| LC 718 Maximum Length of Repeated Subarray（同一招，用在兩個整數陣列之間） | [string_matching_kmp_rolling_hash.md § 1-6)](./string_matching_kmp_rolling_hash.md#1-6-binary-search-on-length--rolling-hash-over-arrays--lc-718-) |
 
 <!-- 5ecab1c9ff42 -->
 ## 進階技巧
@@ -216,9 +173,10 @@
 ### 多模式比對
 <!--CODE-->
 
-<!-- 192aab4214f4 -->
+<!-- b2889679d42e -->
 ### 字串雜湊的最佳化
-<!--CODE-->
+
+雙重雜湊（兩個底數、兩個模數，比較這一對值）只寫在一個地方：[string_matching_kmp_rolling_hash.md § 1-3)](./string_matching_kmp_rolling_hash.md#1-3-double-hashing-collision-reduction)。
 
 <!-- fd4e4f0a995f -->
 ## 效能最佳化建議

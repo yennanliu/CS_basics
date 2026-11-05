@@ -162,8 +162,10 @@
 <!-- 5fa13fe640ce -->
 ## 2) LC 範例
 
-<!-- 3c72a9b5d92b -->
-### 2-1) Find the Index of the First Occurrence in a String (LC 28)
+<!-- 6c043392706e -->
+### 2-1) Find the Index of the First Occurrence in a String（LC 28）
+
+<!--CODE-->
 
 <!--CODE-->
 
@@ -172,8 +174,14 @@
 
 <!--CODE-->
 
-<!-- 633b45d19b67 -->
-### 2-3) Longest Duplicate Substring (LC 1044)
+<!-- 2c04b02ffbf8 -->
+### 2-3) Longest Duplicate Substring（LC 1044）
+
+> **關鍵** — 有長度 L 的重複就一定有長度 L − 1 的重複，所以長度具單調性、可以二分搜尋；每次試探把所有長度 L 的視窗各雜湊一次，雜湊相同時再比對原文確認。
+
+**歸約到**：二分搜尋長度，裡面套 [Rolling Hash Template](#rolling-hash-template)，和 [§ 1-6](#1-6-binary-search-on-length--rolling-hash-over-arrays--lc-718-)（LC 718）一樣。
+
+<!--CODE-->
 
 <!--CODE-->
 

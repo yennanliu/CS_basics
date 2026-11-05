@@ -696,498 +696,361 @@ For LC 2616: range = 10⁹, n = 10⁵
 
 ## LC Examples
 
-### Capacity To Ship Packages Within D Days — LC 1011
+Each card below reduces to one of the four templates above, grouped in template order.
 
-**Problem:** Ship packages within D days. Find minimum capacity needed.
+### Smallest Feasible Value Examples
+
+#### Find the Smallest Divisor Given a Threshold — LC 1283
+
+> **Key point** — a bigger divisor never raises `sum(ceil(num / d))`, so "the sum fits the
+> threshold" is `False … True` over `d`. Search `[1, max(nums)]`: at `max(nums)` every term is 1,
+> and the statement guarantees `threshold >= len(nums)`.
+
+**Reduces to**: [Template 1](#template-1-smallest-feasible-value--lc-875-) — the LC 875 loop with a divisor in place of a speed; the predicate is the same sum of ceiling divisions.
+
+```python
+# python
+# LC 1283 - Find the Smallest Divisor Given a Threshold
+# IDEA: first divisor in [1, max(nums)] whose sum of ceil(num / d) is <= threshold
+# time = O(n log M), space = O(1)   M = max(nums)
+def smallestDivisor(nums, threshold):
+    def fits(divisor):
+        total = 0
+        for num in nums:
+            total += (num + divisor - 1) // divisor   # ceil without floats
+        return total <= threshold
+
+    left, right = 1, max(nums)
+    while left < right:
+        mid = left + (right - left) // 2
+        if fits(mid):
+            right = mid
+        else:
+            left = mid + 1
+    return left
+```
 
 ```java
-// LC 1011 - Capacity To Ship Packages Within D Days
-class Solution {
-    /**
-     * time = O(N × log(sum))
-     * space = O(1)
-     */
-    public int shipWithinDays(int[] weights, int days) {
-        // Search space: [max_weight, sum_of_weights]
-        int left = 0, right = 0;
-
-        for (int weight : weights) {
-            left = Math.max(left, weight);  // Must hold largest package
-            right += weight;                // Upper bound
-        }
-
-        while (left < right) {
-            int mid = left + (right - left) / 2;
-
-            // Can we ship all packages within D days with capacity = mid?
-            if (canShip(weights, days, mid)) {
-                right = mid;  // Try smaller capacity (minimize)
-            } else {
-                left = mid + 1;
-            }
-        }
-
-        return left;
+// java
+// LC 1283 - Find the Smallest Divisor Given a Threshold
+// IDEA: first divisor whose sum of ceil(num / d) is <= threshold
+// time = O(n log M), space = O(1)   M = max(nums)
+public int smallestDivisor(int[] nums, int threshold) {
+    int left = 1, right = 0;
+    for (int num : nums) right = Math.max(right, num);
+    while (left < right) {
+        int mid = left + (right - left) / 2;
+        if (divisionSum(nums, mid) <= threshold) right = mid;
+        else left = mid + 1;
     }
+    return left;
+}
 
-    // Check if we can ship within D days with given capacity
-    private boolean canShip(int[] weights, int days, int capacity) {
-        int daysNeeded = 1;
-        int currentLoad = 0;
-
-        for (int weight : weights) {
-            if (currentLoad + weight <= capacity) {
-                currentLoad += weight;
-            } else {
-                daysNeeded++;
-                currentLoad = weight;
-
-                if (daysNeeded > days) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
+private long divisionSum(int[] nums, int divisor) {
+    long total = 0;
+    for (int num : nums) total += (num + divisor - 1) / divisor;
+    return total;
 }
 ```
 
-**Approach**: Binary search on capacity + greedy validation
+**Traps**
+- `left = 0` divides by zero on the first small probe: start at 1.
+- `num // divisor` (floor) undercounts: `nums = [1,2,5,9]`, `threshold = 6` returns 3 instead of 5.
+
+#### Minimum Number of Days to Make m Bouquets — LC 1482
+
+> **Key point** — by day `d` every flower with `bloomDay <= d` is open, and more days only open
+> more. So "m bouquets of k **adjacent** flowers can be cut by day d" is monotone; count bouquets
+> with one left-to-right run counter.
+
+**Reduces to**: [Template 1](#template-1-smallest-feasible-value--lc-875-) — over days `[min(bloomDay), max(bloomDay)]`, with an impossibility check first (`m * k > n`).
+
 ```python
-# LC 1011
-# V1
-# IDEA : BINARY SEARCH
-# https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/discuss/390359/Simple-Python-Binary-Search
-# V0
-# IDEA : BINARY SEARCH
-class Solution(object):
-     def shipWithinDays(self, weights, D):
-            """
-            NOTE !!!
-                -> for this help func,
-                -> we ONLY need to check weights can split by offered max_wgt
-                -> so the return val is boolean (True or False)
-            """
-            # help func
-            def cannot_split(weights, D, max_wgt):
-                s = 0
-                days = 1
-                for w in weights:
-                    s += w
-                    if s > max_wgt:
-                        s = w
-                        days += 1
-                return days > D
+# python
+# LC 1482 - Minimum Number of Days to Make m Bouquets
+# IDEA: first day d where runs of k open flowers make at least m bouquets
+# time = O(n log D), space = O(1)   D = max(bloomDay) - min(bloomDay)
+def minDays(bloomDay, m, k):
+    if m * k > len(bloomDay):
+        return -1                            # not enough flowers on any day
 
-            """
-            NOTE this !!!
-                -> for l, we use max(weights)
-                -> for r, we use sum(weights)
-            """
-            l = max(weights)
-            r = sum(weights)
-            while l <= r:
-                mid = l + (r - l) // 2
-                if cannot_split(weights, D, mid):
-                    l = mid + 1
-                else:
-                    r = mid - 1
-            return l
-```
-
----
-
-### Find the Smallest Divisor — LC 1283
-**Problem:** Find smallest divisor such that sum(ceil(num/divisor)) ≤ threshold.
-
-```java
-// LC 1283 - Find the Smallest Divisor
-class Solution {
-    /**
-     * time = O(N × log(max_num))
-     * space = O(1)
-     */
-    public int smallestDivisor(int[] nums, int threshold) {
-        int left = 1;
-        int right = 0;
-
-        for (int num : nums) {
-            right = Math.max(right, num);
-        }
-
-        while (left < right) {
-            int mid = left + (right - left) / 2;
-
-            if (getDivisionSum(nums, mid) <= threshold) {
-                right = mid;  // Valid, try smaller divisor (minimize)
-            } else {
-                left = mid + 1;  // Sum too large, need larger divisor
-            }
-        }
-
-        return left;
-    }
-
-    private int getDivisionSum(int[] nums, int divisor) {
-        int sum = 0;
-        for (int num : nums) {
-            sum += (num + divisor - 1) / divisor;  // Ceiling division
-        }
-        return sum;
-    }
-}
-```
----
-
-### Minimum Number of Days to Make m Bouquets — LC 1482
-**Pattern**: `while (l < r - 1)` - Complex validation with helper function
-```python
-# LC 1482 Minimum Number of Days to Make m Bouquets
-class Solution(object):
-    def minDays(self, bloomDay, m, k):
-        if m * k > len(bloomDay):
-            return -1
-        
-        def canMakeBouquets(days):
-            bouquets = consecutive = 0
-            for bloom in bloomDay:
-                if bloom <= days:
-                    consecutive += 1
-                    if consecutive == k:
-                        bouquets += 1
-                        consecutive = 0
-                else:
-                    consecutive = 0
-            return bouquets >= m
-        
-        l, r = min(bloomDay), max(bloomDay)
-        
-        while l < r:
-            mid = l + (r - l) // 2
-            if canMakeBouquets(mid):
-                r = mid
+    def can_make(day):
+        bouquets = 0
+        run = 0                              # adjacent open flowers so far
+        for bloom in bloomDay:
+            if bloom <= day:
+                run += 1
+                if run == k:
+                    bouquets += 1
+                    run = 0                  # these k flowers are used
             else:
-                l = mid + 1
-        
-        return l
+                run = 0                      # a closed flower breaks adjacency
+        return bouquets >= m
+
+    left, right = min(bloomDay), max(bloomDay)
+    while left < right:
+        mid = left + (right - left) // 2
+        if can_make(mid):
+            right = mid
+        else:
+            left = mid + 1
+    return left
 ```
 
-> Binary search on the number of days; check if m bouquets of k adjacent flowers can be made.
-
 ```java
+// java
 // LC 1482 - Minimum Number of Days to Make m Bouquets
-// IDEA: Binary search on days [min, max]; check feasibility
-// time = O(N log D), space = O(1)
+// IDEA: first day where runs of k open flowers make at least m bouquets
+// time = O(n log D), space = O(1)
 public int minDays(int[] bloomDay, int m, int k) {
-    if ((long) m * k > bloomDay.length) return -1;
-    int l = 1, r = 0;
-    for (int d : bloomDay) r = Math.max(r, d);
-    while (l < r) {
-        int mid = (l + r) / 2;
-        if (canMake(bloomDay, m, k, mid)) r = mid;
-        else l = mid + 1;
+    if ((long) m * k > bloomDay.length) return -1;   // m * k overflows int at 10^6 * 10^6
+    int left = Integer.MAX_VALUE, right = 0;
+    for (int day : bloomDay) {
+        left = Math.min(left, day);
+        right = Math.max(right, day);
     }
-    return l;
+    while (left < right) {
+        int mid = left + (right - left) / 2;
+        if (canMake(bloomDay, m, k, mid)) right = mid;
+        else left = mid + 1;
+    }
+    return left;
 }
+
 private boolean canMake(int[] bloomDay, int m, int k, int day) {
-    int bouquets = 0, consecutive = 0;
-    for (int d : bloomDay) {
-        if (d <= day) { if (++consecutive == k) { bouquets++; consecutive = 0; } }
-        else consecutive = 0;
+    int bouquets = 0, run = 0;
+    for (int bloom : bloomDay) {
+        if (bloom <= day) {
+            run++;
+            if (run == k) {
+                bouquets++;
+                run = 0;
+            }
+        } else {
+            run = 0;
+        }
     }
     return bouquets >= m;
 }
 ```
 
----
+**Traps**
+- Forgetting to reset `run` on a closed flower counts non-adjacent flowers:
+  `[7,7,7,7,12,7,7]`, `m = 2`, `k = 3` returns 7 instead of 12.
+- `m * k` overflows `int` in Java (both up to 10⁶): compare as `long`.
 
-### Divide Chocolate — LC 1231 (Maximize Minimum) ⭐⭐⭐⭐⭐
+#### Kth Missing Positive Number — LC 1539
 
-**Problem:** Divide chocolate bar into K+1 pieces (sharing with K friends). You eat the piece with minimum sweetness. Maximize that minimum sweetness.
+> **Key point** — in a strictly increasing array of positives, `arr[i] − (i + 1)` numbers are
+> missing before index `i`, and that count never decreases. The first index where it reaches `k`
+> has exactly `left` present numbers before the answer, so the answer is `left + k`.
 
-**Key Insight:** This is a **"Maximize Minimum"** problem - the counterpart to "Minimize Maximum":
-1. **Binary search** on the "minimum sweetness" you can get
-2. **Greedy validation**: Can we cut into ≥ K+1 pieces where each piece has sweetness ≥ mid?
-3. If valid → try larger minimum (go right)
-4. If invalid → need smaller target (go left)
+**Reduces to**: [Template 1](#template-1-smallest-feasible-value--lc-875-) — the first `True` of `missing(i) >= k`, searched over indices `[0, n]` rather than a value range.
 
-**Why Greedy Works:**
-- Greedily accumulate sweetness until reaching target, then cut
-- This maximizes the number of valid pieces for a given target
-- Monotonic property: if minSweetness X works, X-1 also works (easier to split)
+```python
+# python
+# LC 1539 - Kth Missing Positive Number
+# IDEA: first index i with arr[i] - (i + 1) >= k; the answer is i + k
+# time = O(log n), space = O(1)
+def findKthPositive(arr, k):
+    left, right = 0, len(arr)                # right = n: the answer can fall past the last element
+    while left < right:
+        mid = left + (right - left) // 2
+        if arr[mid] - (mid + 1) < k:
+            left = mid + 1                   # fewer than k missing before mid
+        else:
+            right = mid
+    return left + k                          # left numbers of arr are below the answer
+```
 
 ```java
-// LC 1231 - Divide Chocolate
-class Solution {
-    /**
-     * time = O(N × log(sum))
-     * space = O(1)
-     *
-     * Approach: Binary search on answer space [1, sum/totalPeople]
-     * Pattern: MAXIMIZE MINIMUM
-     */
-    public int maximizeSweetness(int[] sweetness, int k) {
-        int totalPeople = k + 1;  // K friends + yourself
-
-        // Step 1: Define search space
-        int left = 1;  // Minimum possible sweetness
-        int right = 0;
-        for (int s : sweetness) right += s;
-        right /= totalPeople;  // Upper bound: average sweetness
-
-        int ans = 0;
-
-        // Step 2: Binary search on "minimum sweetness you can get"
-        while (left <= right) {
-            int mid = left + (right - left) / 2;
-
-            // Step 3: Check if we can make at least totalPeople pieces
-            // where each piece has at least 'mid' sweetness
-            if (canSplit(sweetness, totalPeople, mid)) {
-                ans = mid;        // Valid! This could be our answer
-                left = mid + 1;   // Try larger minimum (MAXIMIZE)
-            } else {
-                right = mid - 1;  // Can't split, need smaller target
-            }
-        }
-
-        return ans;
+// java
+// LC 1539 - Kth Missing Positive Number
+// IDEA: first index with arr[i] - (i + 1) >= k; the answer is that index + k
+// time = O(log n), space = O(1)
+public int findKthPositive(int[] arr, int k) {
+    int left = 0, right = arr.length;
+    while (left < right) {
+        int mid = left + (right - left) / 2;
+        if (arr[mid] - (mid + 1) < k) left = mid + 1;
+        else right = mid;
     }
-
-    // Validation: Can we make at least 'totalPeople' pieces with each >= minTarget?
-    private boolean canSplit(int[] sweetness, int totalPeople, int minTarget) {
-        int currentSweetness = 0;
-        int pieces = 0;
-
-        for (int s : sweetness) {
-            currentSweetness += s;
-            // When current piece reaches target, cut it
-            if (currentSweetness >= minTarget) {
-                pieces++;
-                currentSweetness = 0;
-            }
-        }
-
-        return pieces >= totalPeople;  // Can we make enough pieces?
-    }
+    return left + k;
 }
 ```
 
-**Alternative Template (while l < r):**
+**Traps**
+- `right = n − 1` misses answers past the array: `arr = [1,2,3,4]`, `k = 2` must return 6.
+
+**Similar** — LC 1060 *(missing count measured from `nums[0]`: [binary_search_examples.md](./binary_search_examples.md#missing-element-in-sorted-array--lc-1060))*
+
+#### Minimize the Maximum Difference of Pairs — LC 2616 ⭐⭐⭐⭐⭐
+
+> **Key point** — after sorting, an optimal set of pairs uses adjacent elements only. For a cap
+> `x`, a left-to-right greedy that takes `(i, i + 1)` whenever the gap is `<= x` (and then skips
+> `i + 1`) forms the most pairs possible, so "p pairs fit under x" is monotone.
+
+**Reduces to**: [Template 1](#template-1-smallest-feasible-value--lc-875-) — sort first, search `[0, max − min]`, and the predicate is the greedy pair count.
+
+```python
+# python
+# LC 2616 - Minimize the Maximum Difference of Pairs
+# IDEA: sort; first cap x in [0, max - min] for which greedy adjacent pairing finds p pairs
+# time = O(n log n + n log R), space = O(1) besides the sort   R = max - min
+def minimizeMax(nums, p):
+    nums.sort()
+
+    def enough_pairs(cap):
+        count = 0
+        i = 0
+        while i < len(nums) - 1:
+            if nums[i + 1] - nums[i] <= cap:
+                count += 1
+                i += 2                       # both elements are used
+            else:
+                i += 1
+        return count >= p
+
+    left, right = 0, nums[-1] - nums[0]
+    while left < right:
+        mid = left + (right - left) // 2
+        if enough_pairs(mid):
+            right = mid
+        else:
+            left = mid + 1
+    return left
+```
 
 ```java
-public int maximizeSweetness(int[] sweetness, int k) {
-    int left = 1;
-    int right = 0;
-    for (int s : sweetness) right += s;
-
-    // Binary search with half-open interval
+// java
+// LC 2616 - Minimize the Maximum Difference of Pairs
+// IDEA: sort; first cap for which greedy adjacent pairing finds p pairs
+// time = O(n log n + n log R), space = O(1) besides the sort
+public int minimizeMax(int[] nums, int p) {
+    Arrays.sort(nums);
+    int left = 0, right = nums[nums.length - 1] - nums[0];
     while (left < right) {
-        // CRITICAL: Use (l + r + 1) / 2 for maximize problems to avoid infinite loop
-        int mid = left + (right - left + 1) / 2;
-
-        if (canSplit(sweetness, k + 1, mid)) {
-            left = mid;       // Valid → try larger (maximize)
-        } else {
-            right = mid - 1;  // Invalid → reduce target
-        }
+        int mid = left + (right - left) / 2;
+        if (enoughPairs(nums, p, mid)) right = mid;
+        else left = mid + 1;
     }
-
     return left;
 }
-```
 
-**Step-by-Step Trace:** `sweetness = [1,2,3,4,5,6,7,8,9], k = 5`
-
-```text
-Total people = 6, Sum = 45
-Search space: [1, 7]  (1 to 45/6)
-
-Iteration 1: mid = 4
-  Pieces with sweetness >= 4:
-  [1,2,3]=6 ✓, [4]=4 ✓, [5]=5 ✓, [6]=6 ✓, [7]=7 ✓, [8]=8 ✓, [9]=9 ✓
-  Actually: [1,2,3]=6, [4,5]=9... need to re-trace
-
-  Greedy: 1+2+3=6≥4 ✓, 4≥4 ✓, 5≥4 ✓, 6≥4 ✓, 7≥4 ✓, 8≥4 ✓
-  Pieces = 6 ≥ 6 ✓
-  Valid! Try larger: left = 5
-
-Iteration 2: mid = 6
-  Greedy: 1+2+3=6≥6 ✓, 4+5=9≥6 ✓, 6≥6 ✓, 7≥6 ✓, 8≥6 ✓, 9≥6 ✓
-  Pieces = 6 ≥ 6 ✓
-  Valid! Try larger: left = 7
-
-Iteration 3: mid = 7
-  Greedy: 1+2+3+4=10≥7 ✓, 5+6=11≥7 ✓, 7≥7 ✓, 8≥7 ✓, 9≥7 ✓
-  Pieces = 5 < 6 ✗
-  Invalid! Reduce: right = 6
-
-Final: left = 7 > right = 6, return ans = 6
-```
-
-**Similar Problems (Maximize Minimum Pattern):**
-
-| Problem | Description | Validation Logic |
-|---------|-------------|------------------|
-| **LC 1231** | Divide Chocolate | Can split into K+1 pieces with each ≥ target |
-| LC 1552 | Magnetic Force | Can place m balls with min distance ≥ target |
-| LC 2226 | Maximum Candies | Can give k children candies with each ≥ target |
-| LC 2064 | Minimized Maximum Products | Distribute products to stores |
-
----
-
-### Minimize the Maximum Difference of Pairs — LC 2616 ⭐⭐⭐⭐⭐
-
-**Problem:** Find p pairs of indices such that the maximum difference amongst all pairs is minimized. Each index can only be used once.
-
-**Key Insight:** This is a classic "Minimize the Maximum" problem:
-1. **Sort** the array so closest numbers are adjacent
-2. **Binary search** on the "maximum difference" value
-3. **Greedy check**: Can we find ≥ p pairs where each pair's diff ≤ mid?
-
-**Why Greedy Works (but PQ Doesn't):**
-- After sorting, adjacent pairs give minimum differences
-- Greedy pairing rule: `if (nums[i+1] - nums[i] <= maxDiff) → take pair, skip i+1`
-- This guarantees **maximum number of pairs** for that maxDiff
-- PQ approach fails because it's a **matching optimization problem** where local greedy selection doesn't guarantee optimality
-- Binary search has **monotonic property**: if maxDiff X works, any larger diff also works
-
-```java
-// LC 2616 - Minimize the Maximum Difference of Pairs
-class Solution {
-    /**
-     * time = O(N log N + N log(max-min))
-     * space = O(1)
-     *
-     * Approach:
-     * 1. Sort array → adjacent elements have minimum differences
-     * 2. Binary search on answer space [0, max_diff]
-     * 3. Greedy validation: count pairs with diff <= mid
-     */
-    public int minimizeMax(int[] nums, int p) {
-        if (p == 0) return 0;
-
-        // Step 1: Sort to make closest numbers adjacent
-        Arrays.sort(nums);
-
-        int n = nums.length;
-        // Search space: [0, max_difference]
-        int left = 0;
-        int right = nums[n - 1] - nums[0];
-
-        // Step 2: Binary search on possible "maximum difference"
-        while (left < right) {
-            int mid = left + (right - left) / 2;
-
-            // Step 3: Check if we can form at least p pairs with diff <= mid
-            if (canFormPairs(nums, p, mid)) {
-                right = mid;  // Valid! Try smaller max diff (minimize)
-            } else {
-                left = mid + 1;  // Can't form enough pairs, need larger diff
-            }
+private boolean enoughPairs(int[] nums, int p, int cap) {
+    int count = 0;
+    int i = 0;
+    while (i < nums.length - 1) {
+        if (nums[i + 1] - nums[i] <= cap) {
+            count++;
+            i += 2;                      // both elements are used
+        } else {
+            i += 1;
         }
-
-        return left;
     }
-
-    // Greedy validation: count maximum pairs with diff <= maxDiff
-    private boolean canFormPairs(int[] nums, int p, int maxDiff) {
-        int count = 0;
-
-        for (int i = 0; i < nums.length - 1; i++) {
-            // If adjacent pair fits constraint, take it!
-            if (nums[i + 1] - nums[i] <= maxDiff) {
-                count++;
-                i++;  // CRITICAL: Skip next index (element can only be in one pair)
-            }
-            if (count >= p) return true;  // Early termination
-        }
-
-        return count >= p;
-    }
+    return count >= p;
 }
 ```
 
-**Step-by-Step Trace:** `nums = [10,1,2,7,1,3], p = 2`
-
 ```text
-After sorting: [1, 1, 2, 3, 7, 10]
-Adjacent diffs: [0, 1, 1, 4, 3]
-
-Search space: [0, 9]  (min diff to max diff)
-
-Iteration 1: mid = 4
-  Pairs with diff ≤ 4: (1,1)=0 ✓, skip, (2,3)=1 ✓ → 2 pairs
-  Valid! Try smaller: right = 4
-
-Iteration 2: mid = 2
-  Pairs with diff ≤ 2: (1,1)=0 ✓, skip, (2,3)=1 ✓ → 2 pairs
-  Valid! Try smaller: right = 2
-
-Iteration 3: mid = 1
-  Pairs with diff ≤ 1: (1,1)=0 ✓, skip, (2,3)=1 ✓ → 2 pairs
-  Valid! Try smaller: right = 1
-
-Final: left = 1 (minimum maximum difference)
+nums = [10,1,2,7,1,3], p = 2  -> sorted [1,1,2,3,7,10]
+left=0  right=9  mid=4   pairs (1,1) (2,3)        2 >= 2 -> right=4
+left=0  right=4  mid=2   pairs (1,1) (2,3)        2 >= 2 -> right=2
+left=0  right=2  mid=1   pairs (1,1) (2,3)        2 >= 2 -> right=1
+left=0  right=1  mid=0   pairs (1,1)              1 <  2 -> left=1
+left=1  right=1  stop -> 1
 ```
 
-**Why PQ Approach Fails - Counterexample:**
+**Traps**
+- Not skipping `i + 1` after a pair reuses an element: `[1,2,3,10]`, `p = 2` counts `(1,2)` and
+  `(2,3)` under cap 1 and returns 1 instead of 7.
+- Picking the globally smallest gaps first (a heap) is a matching problem, not a greedy one; the
+  binary search is what makes a one-pass greedy enough.
+- `p = 0` needs no special case: `right` may be 0 and the loop never runs.
 
-```text
-nums = [1, 3, 4, 6, 7, 20], p = 2
-Sorted diffs: (3,4)=1, (6,7)=1, (1,3)=2, (4,6)=2, (7,20)=13
+#### Path With Minimum Effort — LC 1631 ⭐⭐⭐⭐
 
-PQ picks smallest first:
-  1. (3,4)=1 → use 3,4
-  2. (6,7)=1 → use 6,7
-  Result: max = 1 ✓ (happens to be correct here)
+> **Key point** — `can_reach(limit)` = "a path from top-left to bottom-right exists using only
+> steps whose height difference is `<= limit`". A bigger limit only unlocks more edges, so it is
+> monotone, and a BFS answers it in O(m·n).
 
-But in general, PQ may pick overlapping or suboptimal pairs.
-Binary search guarantees correctness via monotonic property.
+**Reduces to**: [Template 1](#template-1-smallest-feasible-value--lc-875-) — over `[0, max height − min height]`, with a BFS reachability test as the predicate instead of an O(n) scan.
+
+```python
+# python
+# LC 1631 - Path With Minimum Effort
+# IDEA: binary search the effort limit; feasibility = BFS that only takes steps with |diff| <= limit
+# time = O(m * n * log H), space = O(m * n)   H = max height - min height
+from collections import deque
+
+def minimumEffortPath(heights):
+    rows, cols = len(heights), len(heights[0])
+
+    def can_reach(limit):
+        seen = [[False] * cols for _ in range(rows)]
+        seen[0][0] = True
+        queue = deque([(0, 0)])
+        while queue:
+            r, c = queue.popleft()
+            if r == rows - 1 and c == cols - 1:
+                return True
+            for nr, nc in ((r + 1, c), (r - 1, c), (r, c + 1), (r, c - 1)):
+                if 0 <= nr < rows and 0 <= nc < cols and not seen[nr][nc]:
+                    if abs(heights[nr][nc] - heights[r][c]) <= limit:
+                        seen[nr][nc] = True
+                        queue.append((nr, nc))
+        return False
+
+    highest = max(max(row) for row in heights)
+    lowest = min(min(row) for row in heights)
+    left, right = 0, highest - lowest
+    while left < right:
+        mid = left + (right - left) // 2
+        if can_reach(mid):
+            right = mid
+        else:
+            left = mid + 1
+    return left
 ```
-
----
-
-### Path With Minimum Effort — LC 1631, a Graph Predicate ⭐⭐⭐⭐
-
-> Same "minimize the maximum" skeleton as [Template 1](#template-1-smallest-feasible-value--lc-875-) above, but the feasibility check is a **BFS/DFS reachability test** instead of an `O(n)` scan.
-
-`canReach(limit)` = "can I walk from top-left to bottom-right using only steps whose cost `<= limit`?" — monotone in `limit` (a bigger limit only unlocks more edges), which is exactly what binary search needs.
 
 ```java
 // java
 // LC 1631 - Path With Minimum Effort
-// IDEA: binary search the answer (max allowed |height diff|); feasibility = BFS reachability
-// time = O(m*n*log(maxH-minH)), space = O(m*n)
+// IDEA: binary search the effort limit; feasibility = BFS reachability under the limit
+// time = O(m * n * log H), space = O(m * n)
 public int minimumEffortPath(int[][] heights) {
-    int mx = Integer.MIN_VALUE, mn = Integer.MAX_VALUE;
-    for (int[] row : heights) for (int v : row) { mx = Math.max(mx, v); mn = Math.min(mn, v); }
-    int lo = 0, hi = mx - mn;                 // effort 0 is possible (flat grid)
-    while (lo < hi) {
-        int mid = lo + (hi - lo) / 2;
-        if (canReach(heights, mid)) hi = mid; // mid works -> try smaller
-        else lo = mid + 1;
+    int highest = Integer.MIN_VALUE, lowest = Integer.MAX_VALUE;
+    for (int[] row : heights) {
+        for (int h : row) {
+            highest = Math.max(highest, h);
+            lowest = Math.min(lowest, h);
+        }
     }
-    return lo;
+    int left = 0, right = highest - lowest;
+    while (left < right) {
+        int mid = left + (right - left) / 2;
+        if (canReach(heights, mid)) right = mid;
+        else left = mid + 1;
+    }
+    return left;
 }
 
-private boolean canReach(int[][] h, int limit) {
-    int m = h.length, n = h[0].length;
-    boolean[][] seen = new boolean[m][n];
-    int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
-    Deque<int[]> q = new ArrayDeque<>();
-    q.offer(new int[]{0, 0});
+private boolean canReach(int[][] heights, int limit) {
+    int rows = heights.length, cols = heights[0].length;
+    boolean[][] seen = new boolean[rows][cols];
+    int[][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+    Deque<int[]> queue = new ArrayDeque<>();
+    queue.offer(new int[]{0, 0});
     seen[0][0] = true;
-    while (!q.isEmpty()) {
-        int[] cur = q.poll();
-        if (cur[0] == m - 1 && cur[1] == n - 1) return true;
+    while (!queue.isEmpty()) {
+        int[] cur = queue.poll();
+        if (cur[0] == rows - 1 && cur[1] == cols - 1) return true;
         for (int[] d : dirs) {
             int nr = cur[0] + d[0], nc = cur[1] + d[1];
-            if (nr >= 0 && nr < m && nc >= 0 && nc < n && !seen[nr][nc]
-                    && Math.abs(h[nr][nc] - h[cur[0]][cur[1]]) <= limit) {
+            if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && !seen[nr][nc]
+                    && Math.abs(heights[nr][nc] - heights[cur[0]][cur[1]]) <= limit) {
                 seen[nr][nc] = true;
-                q.offer(new int[]{nr, nc});
+                queue.offer(new int[]{nr, nc});
             }
         }
     }
@@ -1195,175 +1058,245 @@ private boolean canReach(int[][] h, int limit) {
 }
 ```
 
+**Traps**
+- A 1×1 grid has effort 0: `right = 0`, and the loop must not run.
+- Marking a cell seen when it is popped rather than pushed lets it enter the queue many times;
+  still correct, but O((m·n)²) on a flat grid.
+
+**Not this if** — the interviewer asks for the faster bound: Dijkstra with the bottleneck
+relaxation `max(effort, step)` is O(m·n log(m·n)) ([Dijkstra.md](./Dijkstra.md)). LC 778 (Swim in
+Rising Water) is the same search with a cell-value limit instead of a step limit.
+
+### Largest Feasible Value Examples
+
+#### Divide Chocolate — LC 1231 ⭐⭐⭐⭐⭐
+
+> **Key point** — you eat the least sweet of `k + 1` contiguous pieces, so search the largest
+> `x` such that the bar cuts into at least `k + 1` pieces of sweetness `>= x`. Cutting as soon as
+> a piece reaches `x` makes the most pieces, and a smaller `x` only makes more.
+
+**Reduces to**: [Template 2](#template-2-largest-feasible-value--lc-1552-) — largest feasible value with the upper mid, over `[min(sweetness), sum // (k + 1)]`; the mirror of LC 410.
+
 ```python
 # python
-# LC 1631 - Path With Minimum Effort
-# IDEA: binary search on the answer + BFS feasibility check (monotone in `limit`)
-# time = O(m*n*log(maxH-minH)), space = O(m*n)
-from collections import deque
+# LC 1231 - Divide Chocolate
+# IDEA: last x for which greedy cutting makes >= k + 1 pieces of sweetness >= x; upper mid
+# time = O(n log S), space = O(1)   S = sum(sweetness)
+def maximizeSweetness(sweetness, k):
+    people = k + 1
 
-class Solution:
-    def minimumEffortPath(self, heights):
-        m, n = len(heights), len(heights[0])
+    def can_cut(target):
+        pieces = 0
+        current = 0
+        for s in sweetness:
+            current += s
+            if current >= target:            # this piece is sweet enough: cut it here
+                pieces += 1
+                current = 0
+        return pieces >= people              # leftover sweetness joins the last piece
 
-        def can_reach(limit):
-            seen = [[False] * n for _ in range(m)]
-            seen[0][0] = True
-            q = deque([(0, 0)])
-            while q:
-                r, c = q.popleft()
-                if r == m - 1 and c == n - 1:
-                    return True
-                for nr, nc in ((r + 1, c), (r - 1, c), (r, c + 1), (r, c - 1)):
-                    if 0 <= nr < m and 0 <= nc < n and not seen[nr][nc] \
-                            and abs(heights[nr][nc] - heights[r][c]) <= limit:
-                        seen[nr][nc] = True
-                        q.append((nr, nc))
-            return False
-
-        lo, hi = 0, max(map(max, heights)) - min(map(min, heights))
-        while lo < hi:
-            mid = (lo + hi) // 2
-            if can_reach(mid):
-                hi = mid
-            else:
-                lo = mid + 1
-        return lo
+    left, right = min(sweetness), sum(sweetness) // people
+    while left < right:
+        mid = left + (right - left + 1) // 2  # upper mid: left = mid must move
+        if can_cut(mid):
+            left = mid
+        else:
+            right = mid - 1
+    return left
 ```
-
-**Sibling problems (identical skeleton, different edge rule)**
-
-| LC | Problem | `canReach(limit)` means |
-|----|---------|-------------------------|
-| **1631** | Path With Minimum Effort | every step's absolute height difference is `<= limit` |
-| 778 | Swim in Rising Water | every visited **cell value** is `<= limit` (the time `t`) |
-
-> Alternative for both: **Dijkstra with a min-max ("bottleneck") relaxation** `nd = max(d, cost)`, or **union-find** processing cells in sorted order. Binary search + BFS is the easiest to derive under time pressure; say the Dijkstra variant out loud as the `O(mn log mn)` improvement.
-
----
-
-### Find the Duplicate Number — LC 287, Searching a Value Domain ⭐⭐⭐⭐⭐
-
-> `n + 1` integers, each in `[1, n]`. Exactly one number repeats. Find it **without modifying the array** and in `O(1)` extra space.
-
-#### Core Idea — the index space is useless, the value space is not
-
-The array is **not sorted**, so binary searching indices is meaningless. But the **values** live in a known range `[1, n]`, and the counting function
-
-```text
-count(v) = #{ x in nums : x <= v }
-```
-
-is **monotonically non-decreasing** in `v`. By pigeonhole:
-
-```text
-count(v) >  v   ->  a duplicate lives in [1, v]     -> hi = v
-count(v) <= v   ->  the duplicate is above v        -> lo = v + 1
-```
-
-Converge with the standard "first `True`" template → `lo` is the duplicate.
 
 ```java
 // java
-// LC 287 - Find the Duplicate Number
-// IDEA: binary search the VALUE range [1, n]; count(mid) > mid (pigeonhole) => duplicate is <= mid
-// time = O(n log n), space = O(1)
-public int findDuplicate(int[] nums) {
-    int lo = 1, hi = nums.length - 1;          // value range [1, n]
-    while (lo < hi) {
-        int mid = lo + (hi - lo) / 2;
-        int cnt = 0;
-        for (int x : nums) if (x <= mid) cnt++;
-        if (cnt > mid) hi = mid;               // too many small values -> dup in [lo, mid]
-        else lo = mid + 1;                     // dup is strictly above mid
+// LC 1231 - Divide Chocolate
+// IDEA: last x for which greedy cutting makes >= k + 1 pieces of sweetness >= x; upper mid
+// time = O(n log S), space = O(1)
+public int maximizeSweetness(int[] sweetness, int k) {
+    int people = k + 1;
+    int left = Integer.MAX_VALUE, sum = 0;
+    for (int s : sweetness) {
+        left = Math.min(left, s);
+        sum += s;
     }
-    return lo;
+    int right = sum / people;
+    while (left < right) {
+        int mid = left + (right - left + 1) / 2;
+        if (canCut(sweetness, people, mid)) left = mid;
+        else right = mid - 1;
+    }
+    return left;
+}
+
+private boolean canCut(int[] sweetness, int people, int target) {
+    int pieces = 0, current = 0;
+    for (int s : sweetness) {
+        current += s;
+        if (current >= target) {
+            pieces++;
+            current = 0;
+        }
+    }
+    return pieces >= people;
 }
 ```
+
+```text
+sweetness = [1,2,3,4,5,6,7,8,9], k = 5   -> 6 pieces, search [1, 45 // 6 = 7]
+left=1  right=7  mid=4   [1,2,3][4][5][6][7][8][9]   7 pieces >= 6 -> left=4
+left=4  right=7  mid=6   [1,2,3][4,5][6][7][8][9]    6 pieces >= 6 -> left=6
+left=6  right=7  mid=7   [1,2,3,4][5,6][7][8][9]     5 pieces <  6 -> right=6
+left=6  right=6  stop -> 6
+```
+
+**Traps**
+- The lower mid with `left = mid` never moves once `right = left + 1`: `[1,2]`, `k = 0` reaches
+  `left = 2, right = 3`, probes 2 again and loops forever.
+- Counting **exactly** `k + 1` pieces is wrong: extra pieces merge into the last one without
+  lowering its sweetness, so the test is `>=`.
+
+**Similar** — LC 1552 *(the anchor: gaps between balls)* · LC 2226 *(`sum(c // x) >= k`)* · LC 410 *(the minimize-the-maximum mirror)*
+
+### Split Into K Groups Examples
+
+#### Capacity To Ship Packages Within D Days — LC 1011
+
+> **Key point** — LC 410 with packages for numbers and days for groups: the capacity lies in
+> `[max(weights), sum(weights)]`, and loading each day until the next package would overflow uses
+> the fewest days any loading can.
+
+**Reduces to**: [Template 3](#template-3-split-into-at-most-k-contiguous-groups--lc-410-) — unchanged; only the names differ.
+
+```python
+# python
+# LC 1011 - Capacity To Ship Packages Within D Days
+# IDEA: first capacity in [max(weights), sum(weights)] whose greedy loading needs <= days days
+# time = O(n log S), space = O(1)   S = sum(weights)
+def shipWithinDays(weights, days):
+    def can_ship(capacity):
+        needed = 1
+        load = 0
+        for weight in weights:
+            if load + weight <= capacity:
+                load += weight
+            else:
+                needed += 1                  # this package starts a new day
+                load = weight
+                if needed > days:
+                    return False
+        return True
+
+    left, right = max(weights), sum(weights)
+    while left < right:
+        mid = left + (right - left) // 2
+        if can_ship(mid):
+            right = mid
+        else:
+            left = mid + 1
+    return left
+```
+
+```java
+// java
+// LC 1011 - Capacity To Ship Packages Within D Days
+// IDEA: first capacity in [max, sum] whose greedy loading needs <= days days
+// time = O(n log S), space = O(1)
+public int shipWithinDays(int[] weights, int days) {
+    int left = 0, right = 0;
+    for (int weight : weights) {
+        left = Math.max(left, weight);   // a day must carry the heaviest package
+        right += weight;                 // one day carries everything
+    }
+    while (left < right) {
+        int mid = left + (right - left) / 2;
+        if (canShip(weights, days, mid)) right = mid;
+        else left = mid + 1;
+    }
+    return left;
+}
+
+private boolean canShip(int[] weights, int days, int capacity) {
+    int needed = 1, load = 0;
+    for (int weight : weights) {
+        if (load + weight <= capacity) {
+            load += weight;
+        } else {
+            needed++;
+            load = weight;
+            if (needed > days) return false;
+        }
+    }
+    return true;
+}
+```
+
+**Traps**
+- `left = 1` lets a package heavier than the capacity ride alone, and the greedy calls it
+  feasible: `weights = [1, 10]`, `days = 2` returns 1 instead of 10. Start at `max(weights)`.
+
+### Count-at-Most Examples
+
+#### Find the Duplicate Number — LC 287 ⭐⭐⭐⭐⭐
+
+> **Key point** — the array is unsorted, so its indices are useless, but its values lie in
+> `[1, n]`. `count(v)` = how many values are `<= v` exceeds `v` exactly when the duplicate is
+> `<= v` (pigeonhole), so the duplicate is the first `v` with `count(v) > v`.
+
+**Reduces to**: [Template 4](#template-4-count-at-most-over-a-value-range--lc-378-) — count over the value range `[1, n]`, compared with `v` itself instead of with `k`.
 
 ```python
 # python
 # LC 287 - Find the Duplicate Number
-# IDEA: binary search on the value domain [1, n] + pigeonhole count
+# IDEA: first value v in [1, n] with count(<= v) > v (pigeonhole); the array is never modified
 # time = O(n log n), space = O(1)
-class Solution:
-    def findDuplicate(self, nums):
-        lo, hi = 1, len(nums) - 1
-        while lo < hi:
-            mid = (lo + hi) // 2
-            if sum(1 for x in nums if x <= mid) > mid:
-                hi = mid                # duplicate is in [lo, mid]
-            else:
-                lo = mid + 1            # duplicate is above mid
-        return lo
+def findDuplicate(nums):
+    left, right = 1, len(nums) - 1          # values are in [1, n], n = len(nums) - 1
+    while left < right:
+        mid = left + (right - left) // 2
+        count = 0
+        for x in nums:
+            if x <= mid:
+                count += 1
+        if count > mid:
+            right = mid                     # too many values <= mid: the duplicate is <= mid
+        else:
+            left = mid + 1                  # the duplicate is above mid
+    return left
 ```
-
-**Interview notes**
-- Mention the **`O(n)` Floyd cycle-detection** alternative (treat `i -> nums[i]` as a linked list, find the cycle entrance) — the binary search is the one interviewers accept when you can't recall Floyd, and it is easier to prove.
-- Same skeleton as the LC 378 section above (kth smallest in a sorted matrix) and LC 719 — only the `count()` implementation changes. See also `matrix.md` for the matrix-flavoured version.
-
-**Variation — derived monotone predicate (LC 1539 Kth Missing Positive Number)**
-The twist: instead of counting values, derive a monotone quantity **from the index**. In a strictly increasing positive array, the number of missing positives before index `i` is `arr[i] - (i + 1)` — non-decreasing in `i`. Find the first index where it reaches `k`:
 
 ```java
 // java
-// LC 1539 - Kth Missing Positive Number
-// IDEA: missing(i) = arr[i] - (i+1) is monotone -> lower bound on "missing(i) >= k"
-// time = O(log n), space = O(1)
-public int findKthPositive(int[] arr, int k) {
-    int lo = 0, hi = arr.length;               // note hi = n (answer may be past the end)
-    while (lo < hi) {
-        int mid = lo + (hi - lo) / 2;
-        if (arr[mid] - (mid + 1) < k) lo = mid + 1;
-        else hi = mid;
+// LC 287 - Find the Duplicate Number
+// IDEA: first value v with count(<= v) > v (pigeonhole)
+// time = O(n log n), space = O(1)
+public int findDuplicate(int[] nums) {
+    int left = 1, right = nums.length - 1;
+    while (left < right) {
+        int mid = left + (right - left) / 2;
+        int count = 0;
+        for (int x : nums) if (x <= mid) count++;
+        if (count > mid) right = mid;
+        else left = mid + 1;
     }
-    return lo + k;                             // lo numbers present before the answer
+    return left;
 }
 ```
 
-```python
-# python
-# LC 1539 - Kth Missing Positive Number
-# IDEA: binary search the first index whose "missing count so far" >= k
-# time = O(log n), space = O(1)
-class Solution:
-    def findKthPositive(self, arr, k):
-        lo, hi = 0, len(arr)          # hi = n, the answer can fall past the last element
-        while lo < hi:
-            mid = (lo + hi) // 2
-            if arr[mid] - (mid + 1) < k:
-                lo = mid + 1
-            else:
-                hi = mid
-        return lo + k
-```
+**Traps**
+- `count >= mid` is off by one: `[1,3,4,2,2]` has `count(1) = 1`, which would wrongly report 1.
+- The duplicate may appear more than twice (`[2,2,2,2,2]`); the pigeonhole test still holds.
+
+**Second approach** — Floyd's cycle detection on `i -> nums[i]` is O(n) time and O(1) space,
+and is the bound to name once this one is written
+([2_pointers_linkedlist.md](./2_pointers_linkedlist.md)). Sorting or a hash set breaks the
+"do not modify, O(1) space" rules.
 
 ---
 
 ## Problems by Pattern
 
-| Problem | Difficulty | Pattern | Key Insight |
-|---------|------------|---------|-------------|
-| LC 69 | Easy | Integer square root | Search on [0, x] |
-| LC 875 | Medium | Minimize speed | Eating bananas, greedy validation |
-| LC 1011 | Medium | Minimize capacity | Ship packages, similar to LC 410 |
-| **LC 1231** | **Hard** | **Maximize minimum** | **Divide chocolate, greedy cut when sum ≥ target** |
-| LC 1283 | Medium | Minimize divisor | Ceiling division, sum constraint |
-| LC 1482 | Medium | Minimize days | Make bouquets, range validation |
-| LC 1552 | Medium | Maximize minimum | Magnetic force, aggressive cows |
-| LC 2226 | Medium | Maximize candies | Per-child allocation |
-| **LC 2616** | **Medium** | **Minimize max diff** | **Sort + greedy pairing, skip used** |
-| LC 410 | Hard | Minimize maximum | Split array, subarray sum |
-| LC 2064 | Medium | Minimize max | Distribute products to stores |
-
-**Practice Progression:**
-1. Start with LC 875 (clearest example of minimize pattern)
-2. Then LC 1011 (similar to 410 but easier)
-3. Master LC 410 (classic minimize maximum, frequently asked)
-4. Try LC 1231 (maximize minimum - counterpart to LC 410)
-5. Try LC 2616 (minimize max with pairing constraint)
-6. Explore LC 1283, 1482 (variations)
-7. Challenge: LC 1552, 2064, 2226 (maximize minimum pattern)
+Every problem worked on this sheet is filed above under the template it reduces to; the order to
+drill them is the [Drill Path](#drill-path). LC 69 (Sqrt(x)) is worked in
+[math.md](./math.md#1-1-10-integer-square-root--binary-search--newton-), and LC 367, LC 441 and
+LC 1060 in [binary_search_examples.md](./binary_search_examples.md#search-on-the-answer-examples).
 
 ---
 

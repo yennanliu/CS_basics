@@ -51,7 +51,7 @@
     - set
     - array
 
-<!-- 2e4a12810aa0 -->
+<!-- f44c42d75b35 -->
 ### 0-2) 辨識
 
 多數「陣列」題其實會被導到某個模式文件（見 [2) 模式選擇](#2-pattern-selection)）。
@@ -60,14 +60,17 @@
 
 | 題目敘述裡的訊號 | 限制條件提示 | 該用 | 不是這個，如果 |
 |---|---|---|---|
-| 「把 `nums2` **原地**合併進 `nums1`」、「最後 n 格是 0，應該忽略」 | 追問 O(1) 額外空間 | [Template 6](#template-6-backward-write-pointer--lc-88) 反向寫入指標 | 空位在前面（移除重複）→ 正向快慢指標，[2_pointers.md](./2_pointers.md) |
-| 「`insert` / `remove` / `getRandom` 都要**平均 O(1)**」 | 約 10⁵ 次呼叫 | [Template 7](#template-7-swap-with-last-delete--lc-380) 和最後一個交換再刪除 | 允許重複（LC 381）→ 值對應到一組索引的集合 |
-| 「出現**超過 ⌊n/2⌋** 次」、「O(1) 額外空間」 | n ≤ 5·10⁴，一次掃描 | [Template 2](#template-2-majority-vote-one-candidate--lc-169) 多數投票 | 「最常出現」／「前 k 個」→ 需要計數，[hash_map.md](./hash_map.md) |
-| 「所有出現**超過 ⌊n/3⌋** 次的元素」 | O(1) 空間 | [Template 3](#template-3-majority-vote-k--1-candidates--lc-229) k − 1 個候選 | |
-| 「`1..n` 的排列」、「對每個前綴，有幾個 …」 | 值 ≤ n → 陣列本身就是雜湊表 | [Template 4](#template-4-frequency-array--running-count--lc-2657) 頻率陣列＋即時累計 | 值可到 10⁹ → 用雜湊表，做同樣的「跨過門檻」判斷 |
-| 「**所有子字串／子陣列**上 X 的總和」 | n ≤ 10⁵ → 無法列出 O(n²) 個子陣列 | [Template 5](#template-5-index-contribution-counting--lc-2063) `(i + 1) * (n - i)` | 元素只有在是最小／最大值時才算（LC 907）→ [monotonic_stack.md](./monotonic_stack.md) |
-| 「讓一整列的元素都相等，求最少操作數，否則 −1」 | 每個元素只有約 2 種選擇 | [Template 8](#template-8-bounded-candidate-enumeration--lc-1007) 從索引 0 取候選 | 目標可以是任何值 → 排序／中位數，[sort.md](./sort.md) |
-| 在二維陣列上「設計一個迭代器」，`next()` / `hasNext()` | 每次呼叫攤銷 O(1) | [Template 1](#template-1-lazy-two-cursor-iterator--lc-251-) 兩個游標 | 巢狀深度不固定（LC 341）→ 用迭代器的堆疊，[iterator.md](./iterator.md) |
+| 「把 `nums2` **原地**合併進 `nums1`」、「最後 n 格是 0，應該忽略」 | 追問 O(1) 額外空間 | [2_pointers § Template 5](./2_pointers.md#template-5-merge-two-sorted-arrays-fill-from-the-back--lc-88-) 反向寫入指標 | 空位在前面（移除重複）→ 正向快慢指標，[2_pointers.md](./2_pointers.md) |
+| 「`insert` / `remove` / `getRandom` 都要**平均 O(1)**」 | 約 10⁵ 次呼叫 | [Template 7](#1-2-5-array--hash-index-map-o1-delete-via-swap-with-last-) 和最後一個交換再刪除 | 允許重複（LC 381）→ 值對應到一組索引的集合 |
+| 「出現**超過 ⌊n/2⌋** 次」、「O(1) 額外空間」 | n ≤ 5·10⁴，一次掃描 | [Template 2](#1-2-1-boyer-moore-majority-vote-algorithm) 多數投票 | 「最常出現」／「前 k 個」→ 需要計數，[hash_map.md](./hash_map.md) |
+| 「所有出現**超過 ⌊n/3⌋** 次的元素」 | O(1) 空間 | [Template 3](#1-2-1-boyer-moore-majority-vote-algorithm) k − 1 個候選 | |
+| 「`1..n` 的排列」、「對每個前綴，有幾個 …」 | 值 ≤ n → 陣列本身就是雜湊表 | [Template 4](#1-2-2-frequency-array--running-count) 頻率陣列＋即時累計 | 值可到 10⁹ → 用雜湊表，做同樣的「跨過門檻」判斷 |
+| 「**所有子字串／子陣列**上 X 的總和」 | n ≤ 10⁵ → 無法列出 O(n²) 個子陣列 | [Template 5](#1-2-3-index-contribution-counting-count-each-elements-appearances-across-all-subarrays) `(i + 1) * (n - i)` | 元素只有在是最小／最大值時才算（LC 907）→ [monotonic_stack.md](./monotonic_stack.md) |
+| 「讓一整列的元素都相等，求最少操作數，否則 −1」 | 每個元素只有約 2 種選擇 | [Template 8](#1-2-6-bounded-candidate-enumeration-only-a-few-answers-are-possible) 從索引 0 取候選 | 目標可以是任何值 → 排序／中位數，[sort.md](./sort.md) |
+| 在二維陣列上「設計一個迭代器」，`next()` / `hasNext()` | 每次呼叫攤銷 O(1) | [Template 1](#1-1-6-flatten-array) 兩個游標 | 巢狀深度不固定（LC 341）→ 用迭代器的堆疊，[iterator.md](./iterator.md) |
+| 「值在 `[1, n]` 之間」、「缺少的／重複的／第一個缺少的正數」、「O(1) 額外空間」 | n ≤ 10⁵，一到兩次掃描 | [Template 9](#1-2-8-index-as-hash-cyclic-sort-and-sign-marking-) 循環排序或正負號標記 | 不准修改輸入（LC 287）→ 在值域上二分搜尋，[binary_search_on_answer.md](./binary_search_on_answer.md) |
+| 「**原地**往右旋轉 `k` 步」、兩個區塊互換位置 | k 可能大於 n | [Template 10](#1-2-9-rotate-in-place-by-three-reversals-) 三次反轉 | 是鏈結串列（LC 61）→ 重新接上新的尾巴 |
+| 「到最近的 … 的最大距離」、「有幾個前綴 …」、答案只取決於前綴的一個摘要 | 一次掃描，O(1) 空間 | [Template 11](#1-2-10-one-pass-running-state-) 即時狀態 | 摘要被打敗時要丟掉 → [monotonic_stack.md](./monotonic_stack.md) |
 
 <!-- 0de0d3d03b4b -->
 ## 1) 一般形式
@@ -95,14 +98,14 @@
 #### 1-1-4) 加到陣列（頭、尾）
 <!--CODE-->
 
-<!-- ff30db13d82d -->
+<!-- a57df133d62f -->
 #### 1-1-5) 排序陣列*****
 
-**`list.sort()`（V1）是原地排序。`sorted()`（V2）回傳一個新的 list。**
+**`list.sort()` 是原地排序，回傳 `None`。`sorted()` 回傳一個新的 list。**
 
-| | `_array.sort(...)` (V1) | `sorted(_array, ...)` (V2) |
+| | `nums.sort(...)` | `sorted(nums, ...)` |
 |---|---|---|
-| **原地？** | ✅ 是 — `_array` 會被改動 | ❌ 否 — 原本的不動 |
+| **原地？** | ✅ 是 — `nums` 會被改動 | ❌ 否 — 原本的不動 |
 | **回傳值** | `None` | 新的已排序 `list` |
 | **可用對象** | 只有 `list` | **任何 iterable**（str、tuple、set、dict、generator） |
 | **空間** | 額外 O(1)* | O(n) |
@@ -112,11 +115,11 @@
 
 <!--CODE-->
 
-**🚫 常見錯誤：**
+**常見錯誤**
 
 <!--CODE-->
 
-**💡 什麼時候用哪一個：**
+**什麼時候用哪一個**
 
 - **`.sort()`** → list 是你的、而且想省空間到 O(1)（例如 LC 406、LC 56 Merge Intervals、LC 253）
 - **`sorted()`** → 輸入是字串／dict／set／tuple，或原本的順序必須保留
@@ -125,23 +128,33 @@
 
 <!--CODE-->
 
-<!-- 9e574ddf6b9d -->
+<!-- 21f36f83d1c9 -->
 #### 1-1-6) 攤平陣列
-<!--CODE-->
+
+攤平巢狀 list 就是一次深度優先走訪：整數是葉子，直接輸出；list 是節點，依序走訪它的子元素。
+Python 沒有能處理任意深度的內建函式。
 
 <!--CODE-->
 
-<!--CODE-->
+第二個版本留著是有理由的：同樣的走訪寫成 **generator** 就是惰性的。事前什麼都不建，呼叫端提早停下時，
+剩下的部分也不會被走到。這正是下面 Template 1 替迭代器類別做的「急切或惰性」選擇。
 
 <!--CODE-->
 
-<!-- da9e565bc886 -->
+LeetCode 有兩種設計把這個走訪變成迭代器類別：
+
+- **深度固定為二**（LC 251 Flatten 2D Vector）：用兩個游標取代遞迴，就是下面的 Template 1；
+- **深度不固定**（LC 341 Flatten Nested List Iterator）：用一個待處理項目的堆疊取代遞迴，在
+  `hasNext()` 裡惰性地拆開。詳解在
+  [iterator.md § 2-2](./iterator.md#2-2-flatten-nested-list-iterator--lc-341)。
+
+<!-- b7870fae76d3 -->
 ##### Template 1: Lazy Two-Cursor Iterator — LC 251 ⭐⭐⭐⭐
 
 **辨識** — 在二維或巢狀陣列上「設計一個迭代器」／「實作 `next()` 和 `hasNext()`」，常會追問
 「輸入非常大」或「只用 O(1) 額外空間」。呼叫次數 ≤ 10⁵ → 每次呼叫必須攤銷 O(1)。
 
-**關鍵點** — `(row, col)` 永遠指向**原本的**陣列，而且 `hasNext()` 回傳之後它一定停在一個真正的
+**關鍵** — `(row, col)` 永遠指向**原本的**陣列，而且 `hasNext()` 回傳之後它一定停在一個真正的
 元素上；只有 `next()` 會越過元素。所以什麼都不用複製，而每一列在整趟走訪中只會被跳過一次。
 
 | | 急切式（在建構子裡攤平） | **惰性（兩個游標）** |
@@ -151,9 +164,8 @@
 | `next()` / `hasNext()` | O(1) | 攤銷 O(1)：整趟走訪中每一列只被跳過一次，總共 O(R + N) |
 | 來源很大或會變動時 | 不行：它是快照 | 可以：沒有預先讀取任何東西 |
 
-`N` = 元素總數，`R` = 列數。急切式版本在
-[array_examples.md §13](./array_examples.md#13-flatten-2d-vector--lc-251)。面試官說「設計一個
-迭代器」指的是惰性版本，它也是 iterator.md 裡
+`N` = 元素總數，`R` = 列數。急切式版本就是上面的 `flatten`：在建構子裡執行，`next()` 讀存好的 list。
+面試官說「設計一個迭代器」指的是惰性版本，它也是 iterator.md 裡
 [`hasNext()` / `next()` 約定](./iterator.md#1-2-the-hasnext--next-contract-) 的二維特例：
 深度固定為二，所以兩個索引就能取代堆疊。
 
@@ -166,7 +178,7 @@
   所以整趟走訪中它總共只前進 R 次：O(R + N)。
 - **空間：O(1) 額外**：`self.vec = vec` 存的是參考而不是複本；狀態只有兩個整數。
 
-**手動追蹤**
+**試跑**
 
 <!--CODE-->
 
@@ -179,17 +191,20 @@
 - **該用 `while` 卻用了 `if`。** 連續兩個空列（`[[1], [], [], [2]]`）需要跳不只一次。
 - **換列時忘了 `col = 0`**：在 `[[1, 2], [3]]` 上，第二列會從索引 2 開始讀而被整列跳過。
 
-**不是這個，如果** — 巢狀深度不固定（LC 341 Flatten Nested List Iterator）：兩個游標追蹤不了
+**不適用時** — 巢狀深度不固定（LC 341 Flatten Nested List Iterator）：兩個游標追蹤不了
 無上限的深度，改用迭代器的堆疊
 （[iterator.md](./iterator.md#1-2-the-hasnext--next-contract-)）。
 
 **練習** — LC 251 ⭐ · LC 284 *（peek：先快取下一個元素）* · LC 281 *（zigzag：游標的佇列）* ·
 LC 341 *（深度不固定：游標的堆疊）*
 
-<!-- feee22d705f3 -->
+<!-- 368ae77e3b35 -->
 #### 1-1-7) 同時走訪兩個陣列（長度可能不同）
-<!--CODE-->
 
+走到**較長**的那個長度，把超出範圍的位置當成預設值讀，這樣兩個陣列都不必先補齊、複製或交換。
+LC 165 Compare Version Numbers 就是在兩串版本號上做這種走訪，缺少的版本號算 0。
+
+<!--CODE-->
 
 ---
 
@@ -351,46 +366,22 @@ LC 645 *（一個值是 2、一個是 0）* · LC 442 *（同樣的事原地做�
 LC 828 *（唯一字元：到前一個與下一個相同字元的跨度）* · LC 907 *（最小值：單調堆疊跨度）* ·
 LC 2104 *（最大值貢獻減最小值貢獻）*
 
-<!-- e2ec52786af9 -->
+<!-- 6b6169a05717 -->
 #### 1-2-4) 反向寫入指標（原地合併／原地覆寫） ⭐⭐⭐⭐⭐
 
 當輸出要寫進同一個還在讀取的陣列，而空位在尾端時，就從後面往前寫。
 
-<!-- 245de492f6e2 -->
-##### Template 6: Backward Write Pointer — LC 88
+卡片在 [2_pointers.md § Template 5](./2_pointers.md#template-5-merge-two-sorted-arrays-fill-from-the-back--lc-88-)：
+LC 88 Merge Sorted Array、讓它安全的不變量（`write >= p1`，所以正要寫入的格子不是已經讀過就是填充區）、
+Python 和 Java、手動追蹤和陷阱。兩個讀取指標加一個寫入指標，讓它成為指標模式，所以由那份文件擁有；
+這份文件只保留上面那條規則，因為那是關於覆寫陣列的事實。
 
-**辨識** — 「**原地**合併」、「`nums1` 長度是 `m + n`，最後 `n` 格是 0，應該忽略」、「不要回傳
-任何東西」。LC 88 的 m + n ≤ 200，但追問要求 O(m + n) 時間和 O(1) 額外空間，這就排除了先複製 `nums1`。
+合併以外的同一條規則：
 
-**關鍵點** — `write - p1` 等於 `nums2` 裡還沒合併的個數，永遠不會是負的，所以 `write >= p1` 恆成立：
-正要寫入的格子不是已經讀過，就是填充區。每一步寫入**較大**的尾端，就會從最大值往下把 `nums1` 填滿。
-
-<!--CODE-->
-
-<!--CODE-->
-
-**複雜度**
-- **時間 O(m + n)**：`while p2 >= 0` 的每一輪都讓 `write` 往回一格，而 `write` 從 `m + n - 1` 開始。
-- **空間 O(1)**：三個索引；合併直接在 `nums1` 裡進行。
-
-**手動追蹤**
-
-<!--CODE-->
-
-**陷阱**
-- **正向合併。** 從 `write = 0` 開始寫，會在讀到 `nums1[0]` 之前就把它蓋掉：`[4,5,6,0,0,0]` 和
-  `[1,2,3]` 會弄丟 4 和 5。
-- **沒有 `p1 >= 0` 的防護。** `nums1` 的真實值用完之後，`nums1[p1]` 就是 `nums1[-1]`：Java 會丟例外，
-  Python 則把填充區當成資料讀。`nums1 = [0]`、`m = 0`、`nums2 = [-1]` 會把填充的 0 往前複製，接著
-  丟出 IndexError。
-- **也對 `p1` 迴圈，最後再複製 `nums1` 的尾巴。** 多做的工：`nums1` 剩下的部分已經在最終位置，
-  所以只對 `p2` 迴圈。
-
-**不是這個，如果** — 輸出永遠不比已讀的部分長，而且空位在前面（移除重複、移除元素）：那裡用**正向**
-的慢／快指標就安全（[2_pointers.md](./2_pointers.md)）。
-
-**練習** — LC 88 ⭐ · LC 977 *（平方：從後面填結果，最大的先放）* · LC 1089 *（複寫零：先計數，再從後往前寫）* ·
-LC 443 *（字串壓縮：正向寫入，往前讀）*
+- **LC 1089 Duplicate Zeros**：先數有幾個零，就知道最後一個留下的值落在哪裡，再從後往前複製，
+  每個零寫兩次。
+- **LC 977 Squares of a Sorted Array**：最大的平方在兩端之一，所以從後面往前填結果。
+- **LC 443 String Compression** 則是相反的情況：輸出永遠不比已讀的部分長，所以*正向*寫入指標是安全的。
 
 <!-- 439e056ccfcc -->
 #### 1-2-5) 陣列＋雜湊索引表（用「和最後一個交換」做 O(1) 刪除） ⭐⭐⭐⭐⭐
@@ -467,7 +458,7 @@ LC 443 *（字串壓縮：正向寫入，往前讀）*
 **練習** — LC 1007 ⭐ · LC 169 *（投票留下一個候選；驗證它）* · LC 2128 *（第 0 列釘住其他每一列：
 每列必須等於它或它的反相）*
 
-<!-- 3020c1782346 -->
+<!-- d6516c699bf0 -->
 #### 1-2-7) 其他高頻陣列題（速查）
 
 | 題目 | LC# | Diff | 一句話技巧 |
@@ -476,6 +467,135 @@ LC 443 *（字串壓縮：正向寫入，往前讀）*
 | Prison Cells After N Days | 957 | Medium | 模擬到狀態**重複**為止，然後 `N %= cycle_len` — 把 `N = 10^9` 變成 O(cycle) |
 | Longest Common Prefix | 14 | Easy | 垂直掃描：固定第 `j` 欄，比所有字串的那個字元；第一次不匹配就停 |
 | Minimum Moves to Equal Array Elements | 453 | Medium | 「對 n-1 個元素 +1」等價於「對一個元素 -1」⇒ 答案 = `sum(nums) - n * min(nums)` |
+
+<!-- 06fa3f821895 -->
+#### 1-2-8) 索引當雜湊（循環排序與正負號標記） ⭐⭐⭐⭐⭐
+
+當值是 `1..n`，或只有這些值重要時，陣列自己的索引就是一張有 `n` 個桶的雜湊表：值 `v` 屬於索引 `v - 1`。
+用法有兩種，都只要 O(1) 額外空間。把每個值**搬**到它的位置（循環排序，就是下面的模板），或是把
+`v - 1` 那格變成負數來**標記**（正負號標記，在
+[array_examples.md](./array_examples.md#index-as-hash-examples) 用 LC 448 和 LC 442 示範）。
+
+<!-- 16f26198b518 -->
+##### Template 9: Cyclic Sort, Index as Hash — LC 41 ⭐⭐⭐⭐⭐
+
+**辨識** — 「值在 `[1, n]` 範圍內」、「找出缺少的／重複的／第一個缺少的正數」，並要求「O(n) 時間、
+**O(1) 額外空間**」，這就排除了 set。n ≤ 10⁵。
+
+**關鍵** — 交換迴圈結束後，每個出現過的 `1..n` 值 `v` 都在索引 `v - 1`。每次交換都把一個值永久送回家，
+已經在家的值不會再被搬動，所以第一個 `nums[i] != i + 1` 的索引 `i`，就指出第一個缺少的正數。
+
+<!--CODE-->
+
+<!--CODE-->
+
+**複雜度**
+- **時間 O(n)**：`while` 看起來是巢狀，但每次交換都把一個值永久送回家，所以所有 `while` 加起來最多
+  交換 n 次。最後的掃描是一次走訪。
+- **空間 O(1)**：交換都在 `nums` 裡進行；`home` 是唯一的額外變數。
+
+**試跑**
+
+<!--CODE-->
+
+**陷阱**
+- **沒有判斷重複。** 少了 `nums[nums[i] - 1] != nums[i]`，`[1, 1]` 會把 1 和已經在家的 1 永遠交換下去。
+  要比的是*值*，不是 `home != i`。
+- **Python 一行交換。** `nums[i], nums[nums[i] - 1] = nums[nums[i] - 1], nums[i]` 會先賦值
+  `nums[i]`，於是第二個目標是用*新的*值算出來的。在 `[3, 4, -1, 1]` 上它會弄亂陣列而且永遠不停。
+  先把 `home` 算好。
+- **超出範圍的值**（`0`、負數、`> n`）沒有位置。放著不管；最後的掃描會把它們的索引當成缺口回報。
+- **回傳 `n`**：`1..n` 全部都在時，`[1, 2]` 必須回傳 3。
+
+**不適用時** — 不准修改輸入：LC 287 Find the Duplicate Number 禁止修改，所以它是在值域上二分搜尋，
+或用 Floyd 的環偵測
+（[binary_search_on_answer.md](./binary_search_on_answer.md)）。
+如果允許 O(n) 額外空間，用 set 更簡單，也不會動到輸入。
+
+**練習** — LC 41 ⭐ · LC 268 *（缺少的數字：總和或 XOR 更簡單，循環排序也行）* ·
+LC 448 *（每個缺少的值：用正負號標記）* · LC 442 *（每個重複的值：某格已經是負的）*
+· LC 645 *（集合不符：一個重複、一個缺少，同一次掃描找出）*
+
+<!-- 32cd2fc36bf9 -->
+#### 1-2-9) 用三次反轉原地旋轉 ⭐⭐⭐⭐
+
+旋轉 `k` 格就是讓陣列的兩個區塊互換位置，同時保持各自的內部順序。反轉可以原地做到這件事。
+
+<!-- 348c49a578d9 -->
+##### Template 10: Rotate by Three Reversals — LC 189 ⭐⭐⭐⭐
+
+**辨識** — 「把陣列往右旋轉 `k` 步」、「**原地**、O(1) 額外空間」；更一般地說，兩個相鄰的區塊要互換位置
+並保持各自的內部順序（原地反轉字串裡的單字）。n ≤ 10⁵、k 最多 10⁵，所以 `k` 可能大於 n。
+
+**關鍵** — 令 `A = nums[0 .. n-k-1]`、`B = nums[n-k .. n-1]`，往右旋轉就是把 `A B` 變成 `B A`。
+把整個陣列反轉得到 `rev(B) rev(A)`：每個區塊都已在最終位置，只是方向相反；再各自反轉一次就恢復內部順序。
+
+<!--CODE-->
+
+<!--CODE-->
+
+**複雜度**
+- **時間 O(n)**：三次 `reverse` 呼叫總共走過陣列兩遍，每一對做一次交換。
+- **空間 O(1)**：`reverse` 在 `nums` 裡面交換。
+
+**試跑**
+
+<!--CODE-->
+
+**陷阱**
+- **沒有 `k %= n`。** `[1, 2]` 配 `k = 5`：`reverse(0, 4)` 會讀出界。
+- **先做兩段區塊反轉。** 在整個陣列反轉*之前*先反轉 `[0, k-1]` 和 `[k, n-1]`，會變成往**左**旋轉：
+  `[1..7]`、`k = 3` 得到 `[4, 5, 6, 7, 1, 2, 3]`。
+- **`nums = nums[-k:] + nums[:-k]`** 只是重新綁定區域變數名稱，呼叫端的 list 沒變。
+  `nums[:] = ...` 可以修好，但會建一份 O(n) 的複本。
+- **`pop()` 再 `insert(0, …)`，做 k 次**是 O(n·k)：每次在開頭插入都要搬動整個 list。
+
+**不適用時** — 序列是鏈結串列（LC 61 Rotate List）：找到新的尾巴重新接上，不需要反轉。
+如果允許開新陣列，`nums[i]` 一次就能放到 `(i + k) % n`。
+
+**練習** — LC 189 ⭐ · LC 151 *（反轉單字：整個字串反轉，再反轉每個單字）* ·
+LC 186 *（LC 151 的原地版本）* · LC 61 *（旋轉鏈結串列：改成重新接線）*
+
+<!-- 0a2050303027 -->
+#### 1-2-10) 一次掃描的即時狀態 ⭐⭐⭐⭐
+
+很多陣列題根本不需要資料結構：掃一次，帶著決定答案的一兩個值走，例如某樣東西最後出現的索引、
+目前為止的最大值，或是位置加方向。把這些值說出來，就是整道題。
+
+<!-- f575401c4a94 -->
+##### Template 11: Running State Scan, Last-Seen Index — LC 849 ⭐⭐⭐⭐
+
+**辨識** — 「到最近的 … 的最大距離」、「前綴有幾次 …」、「會不會回到 …」：索引 `i` 的答案只取決於
+它之前所有東西的一個摘要（最後一個有人坐的位子、目前最大值）。預期一次掃描、O(1) 額外空間；n ≤ 2·10⁴。
+
+**關鍵** — `last` 是最近一個有人坐的位子的索引。坐在 `last` 和 `i` 兩個有人的位子之間的空段，
+可以得到距離 `(i - last) // 2`。第一個有人位子之前的那段、最後一個有人位子之後的那段，只有一邊有人，
+所以整段長度都算。
+
+<!--CODE-->
+
+<!--CODE-->
+
+**複雜度**
+- **時間 O(n)**：對座位做一次 `for`，每一步 O(1)。
+- **空間 O(1)**：整個狀態就是 `last` 和 `best`。
+
+**試跑**
+
+<!--CODE-->
+
+**陷阱**
+- **把兩端的空段減半。** `[0, 0, 0, 1]` 會回傳 1 而不是 3：坐在第 0 號位子只有一邊有人。
+- **漏了尾端空段。** `[1, 0, 0, 0]` 會回傳 0 而不是 3，因為之後沒有任何 `1` 來結束最後那段。
+- **Python 的 `/`。** `(i - last) / 2` 在 `[1, 0, 0, 1]` 上得到 `1.5`；要用 `//`。
+
+**不適用時** — 每個索引都要知道它到*兩側*最近標記的距離（LC 821 Shortest Distance to a Character）：
+兩次掃描，各從一端開始。如果帶著的值一旦被打敗就必須丟掉（下一個更大元素），狀態就是一個堆疊：
+[monotonic_stack.md](./monotonic_stack.md)。
+
+**練習** — LC 849 ⭐ · LC 121 *（目前為止的最低價：[stock_trading.md](./stock_trading.md)）* ·
+LC 1375 *（目前最大值等於步數）* · LC 1041 *（一次走完後的位置和方向）* ·
+LC 670 *（從右邊掃，帶著最大值的索引）*
 
 ---
 
@@ -500,19 +620,20 @@ LC 443 *（字串壓縮：正向寫入，往前讀）*
 | 以每個索引結尾的最佳和／最佳乘積 | [kadane_algorithm.md](./kadane_algorithm.md) | 那是一行就寫完的 DP 遞迴式 |
 | 帶限制的買進賣出 | [stock_trading.md](./stock_trading.md) | 重點在那個狀態機 |
 
-<!-- 01db8faa4122 -->
+<!-- cd352455abe6 -->
 ### 這份文件真正擁有的東西
 
 | 如果你需要… | 技巧 | 寫在哪 |
 |---|---|---|
 | 原地覆寫而不弄丟還沒讀的資料 | **反向寫入指標** — 從尾端（空位所在）開始填 | [1-2-4)](#1-2-4-backward-write-pointer-in-place-merge--in-place-overwrite-) |
-| 不用額外空間就記下「我看過值 `v`」 | **索引當雜湊** — 把 `nums[v]` 變負號，讀取一律透過 `abs()` | [1-2-5)](#1-2-5-array--hash-index-map-o1-delete-via-swap-with-last-)、[examples 1)](./array_examples.md#1-first-missing-positive--lc-41-) |
-| 把每個值放回它該在的索引 | **循環排序** — 一直交換直到 `nums[i] == i + 1`，再掃出缺口 | [examples 1)](./array_examples.md#1-first-missing-positive--lc-41-) |
+| 不用額外空間就記下「我看過值 `v`」 | **索引當雜湊，正負號標記** — 把 `nums[v - 1]` 變負號，讀取一律透過 `abs()` | [1-2-8)](#1-2-8-index-as-hash-cyclic-sort-and-sign-marking-)、[examples](./array_examples.md#index-as-hash-examples) |
+| 把每個值放回它該在的索引 | **循環排序** — 一直交換直到 `nums[i] == i + 1`，再掃出缺口 | [1-2-8)](#1-2-8-index-as-hash-cyclic-sort-and-sign-marking-) |
 | 以 O(1) 刪除任意元素 | **跟最後一個交換再彈掉** — 外加一張值 → 索引的表 | [1-2-5)](#1-2-5-array--hash-index-map-o1-delete-via-swap-with-last-) |
 | 用 O(1) 空間找多數元素 | **Boyer-Moore 投票** — 一個候選人加一個計數器，沒別的 | [1-2-1)](#1-2-1-boyer-moore-majority-vote-algorithm) |
 | 值域小又有界時統計出現次數 | **頻率陣列**，不要用雜湊表 | [1-2-2)](#1-2-2-frequency-array--running-count) |
-| 原地旋轉 `k` 格 | **整個反轉、前 `k` 個反轉、剩下的反轉** | [examples 2)](./array_examples.md#2-rotate-array--lc-189-) |
+| 原地旋轉 `k` 格 | **整個反轉、前 `k` 個反轉、剩下的反轉** | [1-2-9)](#1-2-9-rotate-in-place-by-three-reversals-) |
 | 可能的結果就那幾種時該怎麼答 | **有界候選列舉** — 全部試一遍 | [1-2-6)](#1-2-6-bounded-candidate-enumeration-only-a-few-answers-are-possible) |
+| 答案只取決於到目前為止的一個摘要 | **即時狀態** — 帶著最後的索引、目前最大值、位置 | [1-2-10)](#1-2-10-one-pass-running-state-) |
 
 <!-- aec314495953 -->
 ### 三個陷阱
@@ -524,22 +645,22 @@ LC 443 *（字串壓縮：正向寫入，往前讀）*
 3. **索引當雜湊的前提是那些值本身要是合法索引。** 在拿值當偏移量*之前*，先把 `1..n` 之外的東西夾住或跳過，
    不然這招會變成陣列越界。
 
-<!-- 3b8a06fc2cc7 -->
+<!-- fc8847492297 -->
 ## 3) 題目詳解
 
-題目詳解放在 **[array_examples.md](./array_examples.md)**：
+題目詳解放在 **[array_examples.md](./array_examples.md)**，依各題歸約到的模板分類。它的
+[索引](./array_examples.md#index) 也列出那些標成陣列、但歸屬在別份文件的題目。
 
-| 分組 | 題目 |
+| 模板 | 題目 |
 |---|---|
-| [In-place rewriting & index tricks](./array_examples.md#in-place-rewriting--index-tricks) | LC 41, 287, 189, 238, 670 |
-| [Scanning & running state](./array_examples.md#scanning--running-state) | LC 121, 1567, 334, 849 |
-| [Counting, bookings & simulation](./array_examples.md#counting-bookings--simulation) | LC 1109, 1375, 1041, 406, 251 |
+| [Template 9: Cyclic Sort, Index as Hash](./array_examples.md#index-as-hash-examples) | LC 448, 442 |
+| [Template 11: Running State Scan](./array_examples.md#one-pass-running-state-examples) | LC 1375, 1041, 670 |
 
-<!-- 700a43122e6c -->
+<!-- 6c85ffd56ee9 -->
 ## 4) 練習路徑
 
 | 階段 | 題目（易 → 難） | 增加了什麼 |
 |---|---|---|
-| **核心** | LC 88 · LC 169 · LC 238 ⭐ · LC 380 | 反向寫入；投票；前綴 × 後綴乘積（[array_examples](./array_examples.md#3-product-of-array-except-self--lc-238-)）；和最後一個交換再刪除 |
-| **練習** | LC 189 · LC 229 · LC 251 · LC 1007 · LC 2063 · LC 2657 | 用三次反轉做旋轉；k − 1 個候選；惰性迭代器；從索引 0 取候選；貢獻計數；頻率陣列 |
+| **核心** | LC 88 · LC 169 · LC 238 ⭐ · LC 380 | 反向寫入（[2_pointers](./2_pointers.md#template-5-merge-two-sorted-arrays-fill-from-the-back--lc-88-)）；投票；前綴 × 後綴乘積（[prefix_sum](./prefix_sum.md#product-variant--no-inverse-so-build-both-sides-lc-238-)）；和最後一個交換再刪除 |
+| **練習** | LC 849 · LC 448 · LC 189 · LC 229 · LC 251 · LC 1007 · LC 2063 · LC 2657 | 即時狀態；正負號標記；用三次反轉做旋轉；k − 1 個候選；惰性迭代器；從索引 0 取候選；貢獻計數；頻率陣列 |
 | **延伸** | LC 41 · LC 381 · LC 828 | 循環排序／索引當雜湊；有重複時的交換刪除；以每個字元跨度計算的貢獻 |

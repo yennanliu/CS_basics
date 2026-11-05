@@ -1,8 +1,8 @@
-<!-- 8f937fcc1ace -->
+<!-- 4c74b62bd9ff -->
 # 雙指標
 
 > **範圍** — 陣列與字串上的雙指標家族：兩端向內收斂、快慢指標、從中心擴張、讀寫分離的原地重寫，每一種各給一個標準模板；依條件伸縮的視窗題不在這裡。
-> **另見** — *從這份文件拆出去的深入內容*：[2_pointers_examples.md](./2_pointers_examples.md) — LC 題目實作集，每題一個標準解；[2_pointers_quickselect.md](./2_pointers_quickselect.md) — QuickSelect／以 partition 為主的第 K 個元素選取，它算是選取演算法，而不是雙指標掃描。
+> **另見** — *從這份文件拆出去的深入內容*：[2_pointers_examples.md](./2_pointers_examples.md) — LC 題目實作集，每題一個標準解；[quickselect.md](./quickselect.md) — QuickSelect／以 partition 為主的第 K 個元素選取，它算是選取演算法，而不是雙指標掃描。
 > *相鄰主題*：[sliding_window.md](./sliding_window.md) — 由條件驅動的變動大小視窗；[2_pointers_linkedlist.md](./2_pointers_linkedlist.md) — 同樣的想法，但作用在節點而非索引上；[n_sum.md](./n_sum.md) — 有序陣列上的 k-sum 特化；[palindrome.md](./palindrome.md) — 從中心擴張的完整討論。
 
 <!-- 612f0fad9473 -->
@@ -28,7 +28,7 @@
 ### 參考資料
 - [fucking-algorithm : 2 pointers](https://labuladong.online/algo/essential-technique/array-two-pointers-summary/#%E5%8E%9F%E5%9C%B0%E4%BF%AE%E6%94%B9)
 
-<!-- c1f431381731 -->
+<!-- 47b27e5df87c -->
 ## 辨識
 
 | 題目裡的訊號 | 限制條件提示 | 該用 | 不是這個，如果 |
@@ -41,7 +41,8 @@
 | 「一趟把只有 0、1、2 的陣列排好」、「依值分成三組」 | O(1) 空間、一趟 | [模板 6](#template-6-three-way-partition-dutch-national-flag--lc-75-) 荷蘭國旗 — LC 75, LC 905 | 必須保持相對順序 → 串列的**穩定**分割（LC 86）見 [linked_list.md 的兩個虛擬節點](./linked_list.md#template-3-two-dummies-split-then-join--lc-86-) |
 | 「鏈結串列有沒有環」、「環從哪裡開始」、「不修改陣列找出重複數字」 | O(1) 記憶體 | [模板 7](#template-7-fastslow-cycle-detection--lc-141-) Floyd 快慢指標 — LC 141, LC 142, LC 287 | 允許 O(n) 記憶體 → 用 visited 集合更簡單 |
 | 視窗依一個條件變大、依另一個條件縮小 | n ≤ 10⁵ | [模板 8](#template-8-grow-right-then-shrink-left--lc-567) 右邊長、左邊縮 — LC 567, LC 209 | 真正的視窗題 → [sliding_window.md](./sliding_window.md)，那裡才是這一族的主場 |
-| 第 k 大／最接近的 k 個（用選取，不要排序） | n ≤ 10⁵，平均 O(n) | [2_pointers_quickselect.md](./2_pointers_quickselect.md) — LC 215, LC 973 | k 很小或輸入是串流 → 堆積 |
+| 兩份輸入逐個 token 比較 — 「比較版本號」、「只差一次編輯」、「套用退格後是否相等」 | O(n + m) 時間、O(1) 空間 | [模板 9](#template-9-two-sequences-in-lockstep--lc-165-) 兩條序列同步前進 — LC 165, LC 161, LC 844, LC 986 | token 可以被跳過或重排 → 子序列（模板 4）或 DP |
+| 第 k 大／最接近的 k 個（用選取，不要排序） | n ≤ 10⁵，平均 O(n) | [quickselect.md](./quickselect.md) — LC 215, LC 973 | k 很小或輸入是串流 → 堆積 |
 
 限制條件提示取自 [complexity_cheatsheet.md](./complexity_cheatsheet.md) 的尺規。其餘的長尾題目實作，都放在 [2_pointers_examples.md](./2_pointers_examples.md)。
 
@@ -196,7 +197,7 @@
 
 <!--CODE-->
 
-<!-- f08f8c89f910 -->
+<!-- 24ba62a9fb0b -->
 ### 模板 2：兩端向內收斂的雙指標 — LC 11 ⭐⭐⭐⭐⭐
 
 **辨識** — **已排序**陣列加上「和為…的一組配對」、「哪兩條線能裝最多
@@ -229,17 +230,10 @@
 字元）* · LC 167 *（和太小 → `left++`）* · LC 15 *（固定一個，其餘收斂 — 見
 [n_sum.md](./n_sum.md)）* · LC 42 *（移動最大值較小的那一側）*
 
-<!-- 2381a1210eab -->
-#### Valid Palindrome — LC 125
-
-> **關鍵點** — 帶跳過的收斂指標：兩側都先跨過不算數的字元，再比較這一對。
-> 內層迴圈維持 `left < right`，所以 `" "` 算回文。
-
-**化約為**：[模板 2](#template-2-converging-pointers-from-both-ends--lc-11-) — 配對的判斷是字元比較。
-
-<!--CODE-->
-
-> 允許刪一個字元的版本（LC 680）是同一趟掃描，只是在第一次不匹配時分岔 — 見 [2_pointers_examples.md](./2_pointers_examples.md)。
+**Valid Palindrome — LC 125** 就是這張卡加上跳過：兩側都先跨過不算數的字元，再比較這一對。
+完整解法在 [string.md § 模板 1](./string.md#template-1-two-pointer-scan--in-place-reversal--lc-125-)；
+允許刪一個字元的版本（LC 680）是同一趟掃描，在第一次不匹配時分兩支檢查，見
+[palindrome.md](./palindrome.md)。
 
 <!-- c083ab117691 -->
 #### Remove Element 的雙向版本 — LC 27
@@ -392,7 +386,7 @@ n ≤ 10⁵ 需要 Manacher 的 O(n)。回文題型的完整討論在 [palindrom
 LC 350 *（兩個有序指標，保留共同的值）* · LC 986 *（推進先結束的那個區間）* ·
 LC 4 *（只在概念上合併 — 改成二分搜尋切分點）*
 
-<!-- 841048b36018 -->
+<!-- bd9765f0f9ec -->
 ### 模板 6：三向分割（荷蘭國旗）— LC 75 ⭐⭐⭐⭐
 
 **辨識** — 「**一趟**、常數空間排好只有 0、1、2 的陣列」、「依樞紐分成小於／等於／
@@ -426,7 +420,7 @@ LC 4 *（只在概念上合併 — 改成二分搜尋切分點）*
 
 **練習** — LC 75 ⭐ · LC 905 *（兩組：一個交換指標就夠）* · LC 2161 *（穩定 — 需要
 第二趟或額外陣列）* · LC 215 *（quickselect 裡就是同一種三向分割，見
-[2_pointers_quickselect.md](./2_pointers_quickselect.md)）*
+[quickselect.md](./quickselect.md)）*
 
 <!-- 91b71ce50ff2 -->
 ### 模板 7：快慢指標偵測環 — LC 141 ⭐⭐⭐⭐
@@ -494,6 +488,47 @@ LC 4 *（只在概念上合併 — 改成二分搜尋切分點）*
 
 **練習** — LC 567 ⭐ · LC 438 *（收集每個起點而不是直接回傳）* · LC 209 *（和仍
 ≥ target 時就縮小）* · LC 76 *（have/need 計數器 — sliding_window 的卡片）*
+
+<!-- 533bd2807ee7 -->
+### 模板 9：兩條序列同步前進 — LC 165 ⭐⭐⭐⭐
+
+**辨識** — 「比較 version1 和 version2」、「這兩個字串是否只差一次編輯」、「套用退格後再比較」、
+「求兩串已排序區間的交集」。兩份輸入，各自由**自己的指標**讀過一次，每一輪讀一個 token：
+一個修訂號、一個有效字元、一個區間。要求 O(n + m) 時間、O(1) 空間。
+
+**關鍵** — 每一輪從**兩邊**各取一個 token 來比較；第一組不相等的 token 就決定答案，所以
+它之前的內容永遠不會再看第二次。只要**任一邊**還有輸入就繼續跑，並讓讀完的一邊產生中性 token
+（`0`、空字串），長度不同就不再是特例。
+
+<!--CODE-->
+
+<!--CODE-->
+
+**複雜度**
+- **時間 O(n1 + n2)**：兩個內層 `while` 只會讓 `i`、`j` 往前走，外層迴圈在兩者都
+  走過自己的字串時結束。
+- **空間 O(1)**：兩個指標和兩個解析出來的整數；不用 `split`。
+
+**試跑** — `version1 = "1.01"`、`version2 = "1.001.1"`
+
+<!--CODE-->
+
+**陷阱**
+- `while i < n1 and j < n2`（AND）會停在較短的字串：`"1.0.1"` 對 `"1"` 回傳 0
+  而不是 1。
+- 把修訂號當字串比：`"1.10"` 對 `"1.2"` — 以文字來看 `"10" < "2"`。要解析成整數，
+  這樣 `"01"` 也會等於 `"001"`。
+- Python 裡用 `split(".")` 再補零比較短，可以提一下，但它要 O(n) 額外空間；指標寫法才是
+  O(1) 的答案。
+
+**不適用時** — 兩條序列可能不按順序配對、或可任意跳過 → 子序列檢查
+（[模板 4](#template-4-subsequence-matching-one-pointer-always-moves--lc-392-)）
+或 LCS DP；兩份輸入都已排序、目標是合併成一份輸出 → [模板 5](#template-5-merge-two-sorted-arrays-fill-from-the-back--lc-88-)。
+
+**練習** — LC 165 ⭐ · LC 844 *（token 是退格後留下的下一個字元 —
+兩個字串都從後面往前走）* · LC 161 *（停在第一個不匹配處，比較後綴）* ·
+LC 953 *（相鄰單字、排名表 — [hash_map.md](./hash_map.md#template-6-rank-map--value-to-position--lc-953-)）* ·
+LC 986 *（區間：先結束的那個前進 — [intervals.md](./intervals.md)）*
 
 <!-- 7ed430207608 -->
 ## 練習路徑
@@ -601,11 +636,11 @@ LC 4 *（只在概念上合併 — 改成二分搜尋切分點）*
 | 「回文檢查」 | 從兩端往內走的指標 |
 | 「最大面積／容器」 | 縮掉比較矮的那一側 |
 
-<!-- 999c9d630693 -->
+<!-- 0bac60c6fe1a -->
 ### 相關文件
 
 - [binary_search.md](./binary_search.md) — 左右指標，但每次把範圍砍半而不是掃過去
 - [sliding_window.md](./sliding_window.md) — 由條件驅動的視窗
 - [n_sum.md](./n_sum.md) — 固定一個元素 + 收斂指標（LC 15、LC 16、LC 18）
 - [2_pointers_examples.md](./2_pointers_examples.md) — LC 題目實作集
-- [2_pointers_quickselect.md](./2_pointers_quickselect.md) — 用 partition 找第 K 個元素
+- [quickselect.md](./quickselect.md) — 用 partition 找第 K 個元素

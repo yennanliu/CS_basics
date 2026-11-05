@@ -197,7 +197,8 @@
     "binary_search_on_answer":          { "category": "Search & Sort", "tier": 5 },
     "sort":                             { "category": "Search & Sort", "tier": 4, "title": "Sorting Algorithms" },
     "binary_search_examples":           { "category": "Search & Sort", "tier": 4 },
-    "2_pointers_quickselect":           { "category": "Search & Sort", "tier": 4 },
+    "quickselect":                      { "category": "Search & Sort", "tier": 4 },
+    "2_pointers_quickselect":           { "category": "Search & Sort", "tier": 2, "kind": "stub", "title": "QuickSelect → see Quickselect" },
     "advanced_divide_and_conquer":      { "category": "Search & Sort", "tier": 3, "title": "Divide & Conquer (Advanced)" },
     "patience_sorting":                 { "category": "Search & Sort", "tier": 4, "title": "Patience Sorting (LIS)" },
 

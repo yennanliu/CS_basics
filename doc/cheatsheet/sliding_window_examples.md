@@ -1,7 +1,7 @@
 # Sliding Window — Worked Examples
 
-> **Scope** — The worked sliding-window LeetCode catalogue, one canonical solution per problem per language, each filed under the template it instantiates; the templates, the concepts and the decision tables stay in the main sliding-window sheet.
-> **See also**: [sliding_window.md](./sliding_window.md) — the six canonical templates each example instantiates, and the decision table that picks between them; [sliding_window_advanced.md](./sliding_window_advanced.md) — the rarer window shapes (deque extrema, complement, word-level, bucketed); [hash_map.md](./hash_map.md) — the frequency map most of these windows carry; [2_pointers_examples.md](./2_pointers_examples.md) — the converging-pointer catalogue.
+> **Scope** — The worked sliding-window LeetCode problems that are not a template's anchor, one problem card each, filed under the template in the main sheet it reduces to; the templates, the concepts and the decision tables stay in the main sliding-window sheet.
+> **See also**: [sliding_window.md](./sliding_window.md) — the seven canonical templates each example reduces to, and the decision table that picks between them; [sliding_window_advanced.md](./sliding_window_advanced.md) — the rarer window shapes (exactly-K with resets, word-level, several windows at once); [hash_map.md](./hash_map.md) — the frequency map most of these windows carry; [2_pointers_examples.md](./2_pointers_examples.md) — the converging-pointer catalogue.
 
 ## LeetCode Problem Lists
 
@@ -12,460 +12,299 @@
 
 ## Overview
 
-Every solution here is one of the six templates in [sliding_window.md](./sliding_window.md) with
-its three slots filled in. The heading says which template, so read the template first and this
-sheet becomes a set of instantiations rather than nine separate problems.
+Every problem here is one of the templates in [sliding_window.md](./sliding_window.md) with one
+slot filled differently: the window state, the validity test, or what is recorded. Each card
+names that template and the one step it adds, so read the template first. The templates' own
+anchor problems (LC 643, 1004, 3, 209, 76, 992, 4067) are worked in their cards there and are
+not restated here.
 
-### Problem Index
+## Index
 
-| # | Problem | LC# | Template | Language(s) |
-|---|---------|-----|----------|-------------|
-| 1 | Permutation in String | 567 | 1 — Fixed-Size | Java, Python |
-| 2 | Find All Anagrams in a String | 438 | 1 — Fixed-Size | Java, Python |
-| 3 | Minimum Swaps to Group All 1's Together | 1151 | 1 — Fixed-Size (`k = #ones`) | Python |
-| 4 | Max Consecutive Ones III | 1004 | 3 — Longest Window | Java |
-| 5 | Longest Repeating Character Replacement | 424 | 3 — Longest Window | Java, Python |
-| 6 | Frequency of the Most Frequent Element | 1838 | 3 — Longest Window (sort first) | Java |
-| 7 | Subarray Product Less Than K | 713 | 6 — Counting slot | Java, Python |
-| 8 | Arithmetic Slices | 413 | custom — look-back run counting | Python |
-| 9 | Partition Labels | 763 | custom — greedy last-index window | Java |
+| Pattern | Problems here (easy → hard) | Core ⭐ |
+|---|---|---|
+| [Template 1 — Fixed-Size Window](./sliding_window.md#template-1-fixed-size-window--lc-643-) | LC 1151 | — |
+| [Template 3 — Longest Window Satisfying P](./sliding_window.md#template-3-longest-window-satisfying-p--lc-3-) | LC 424 · LC 1838 | LC 424 |
+| [Template 6 — Exactly K via At-Most Subtraction](./sliding_window.md#template-6-exactly-k-via-at-most-subtraction--lc-992-) (its counting slot) | LC 413 · LC 713 | — |
 
-> LC 3, LC 76 and LC 209 are **not** here: they are the worked bodies of Templates 3, 5 and 4
-> in [sliding_window.md](./sliding_window.md) and are not restated.
+These sliding-window problems are worked in another sheet; each is solved there by the same
+approach, so it is not repeated here.
 
-## Fixed-Size Window
+| LC | Problem | Lives in |
+|---|---|---|
+| 438 | Find All Anagrams in a String | [hash_map § Template 5](./hash_map.md#template-5-fixed-window-character-counts--lc-438) — a fixed window compared by letter counts |
+| 567 | Permutation in String | [2_pointers § Template 8](./2_pointers.md#template-8-grow-right-then-shrink-left--lc-567) — the same window, returning on the first match |
+| 763 | Partition Labels | [string § Template 8](./string.md#template-8-greedy-partition-by-last-occurrence--lc-763-) — a greedy cut at the last occurrence, not a shrinking window |
+| 1004 | Max Consecutive Ones III | [sliding_window § Template 2](./sliding_window.md#template-2-grow-then-shrink-the-while-invariant--lc-1004-) — the template's anchor problem |
 
-### 1) Permutation in String — LC 567 ⭐⭐⭐⭐
+## Fixed-Size Window Examples
 
-*Template 1. Fixed window of `len(s1)`; because the size is fixed, comparing the two frequency
-maps directly is affordable — no `have`/`need` counter needed.*
+### Minimum Swaps to Group All 1's Together — LC 1151
 
-> Maintain character frequency of window size len(s1); check if it matches s1's freq.
+> **Key point** — the 1s end up in some block of exactly `ones = sum(data)` cells, and each 0 in
+> that block costs one swap. So the answer is `ones − (most 1s inside any window of width ones)`.
 
-```java
-// LC 567 - Permutation in String
-// IDEA: Fixed sliding window — track char frequencies, check match
-// time = O(N), space = O(1)
-public boolean checkInclusion(String s1, String s2) {
-    if (s1.length() > s2.length()) return false;
-    int[] need = new int[26], window = new int[26];
-    for (char c : s1.toCharArray()) need[c-'a']++;
-    int k = s1.length();
-    for (int i = 0; i < s2.length(); i++) {
-        window[s2.charAt(i)-'a']++;
-        if (i >= k) window[s2.charAt(i-k)-'a']--;
-        if (Arrays.equals(need, window)) return true;
-    }
-    return false;
-}
-```
+**Reduces to**: [sliding_window § Template 1](./sliding_window.md#template-1-fixed-size-window--lc-643-) — the window width is derived from the input (`ones`), and the score is a count of 1s rather than a sum.
 
 ```python
-# LC 567 Permutation in String
-import collections
-class Solution(object):
-    def checkInclusion(self, s1, s2):
-        l1, l2 = len(s1), len(s2)
-        c1 = collections.Counter(s1)
-        c2 = collections.Counter()
-        p = q = 0
-        while q < l2:
-            c2[s2[q]] += 1
-            if c1 == c2:
-                return True
-            q += 1
-            if q - p + 1 > l1:
-                c2[s2[p]] -= 1
-                if c2[s2[p]] == 0:
-                    del c2[s2[p]]
-                p += 1
-        return False
+# python
+# LC 1151 - Minimum Swaps to Group All 1's Together
+# IDEA: fixed window of width ones = sum(data); the window holding the most 1s needs the fewest swaps
+# time = O(n), space = O(1)
+def minSwaps(data):
+    ones = sum(data)
+    if ones == 0:
+        return 0
+    in_window = 0                         # 1s inside the current window
+    best = 0
+    for right in range(len(data)):
+        in_window += data[right]
+        if right >= ones:                 # window is one too wide: drop the cell that fell off
+            in_window -= data[right - ones]
+        if right >= ones - 1:             # window is exactly `ones` wide
+            best = max(best, in_window)
+    return ones - best
 ```
 
-### 2) Find All Anagrams in a String — LC 438 ⭐⭐⭐⭐
+**Traps**
+- All zeros (`[0, 0, 0]`): `ones = 0` gives a zero-width window, and `data[right - 0]` would
+  evict the cell just added; return 0 before the loop.
 
-*Template 1. Same window as LC 567, but collect every start index instead of returning on the
-first match.*
+**Similar** — LC 2134 *(the same on a circular array: run the window over `data + data`)*
 
-> Same as LC 567 but collect all starting indices where anagram window matches.
+## Longest Window Examples
 
-```java
-// LC 438 - Find All Anagrams in a String
-// IDEA: Fixed sliding window — collect all positions where window = anagram
-// time = O(N), space = O(1)
-public List<Integer> findAnagrams(String s, String p) {
-    List<Integer> result = new ArrayList<>();
-    if (s.length() < p.length()) return result;
-    int[] need = new int[26], window = new int[26];
-    for (char c : p.toCharArray()) need[c-'a']++;
-    int k = p.length();
-    for (int i = 0; i < s.length(); i++) {
-        window[s.charAt(i)-'a']++;
-        if (i >= k) window[s.charAt(i-k)-'a']--;
-        if (Arrays.equals(need, window)) result.add(i - k + 1);
-    }
-    return result;
-}
-```
+### Longest Repeating Character Replacement — LC 424 ⭐⭐⭐⭐⭐
+
+> **Key point** — a window can become one letter with at most `k` replacements exactly when
+> `len − maxFreq ≤ k`. `maxFreq` is never lowered on a shrink: a stale value can leave the window
+> sitting on an invalid stretch, but the window then only slides (never grows), so `best` is
+> only raised once a genuinely higher `maxFreq` makes a longer valid window possible.
+
+**Reduces to**: [sliding_window § Template 3](./sliding_window.md#template-3-longest-window-satisfying-p--lc-3-) — the validity test is `len − maxFreq ≤ k` instead of "no repeats".
 
 ```python
-# LC 438 Find All Anagrams in a String
-# IDEA : SLIDING WINDOW + collections.Counter()
-class Solution(object):
-    def findAnagrams(self, s, p):
-        """
-        :type s: str
-        :type p: str
-        :rtype: List[int]
-        """
-        ls, lp = len(s), len(p)
-        cp = collections.Counter(p)
-        cs = collections.Counter()
-        ans = []
-        for i in range(ls):
-            cs[s[i]] += 1
-            if i >= lp:
-                cs[s[i - lp]] -= 1
-                ### BE AWARE OF IT
-                if cs[s[i - lp]] == 0:
-                    del cs[s[i - lp]]
-            if cs == cp:
-                ans.append(i - lp + 1)
-        return ans
+# python
+# LC 424 - Longest Repeating Character Replacement
+# IDEA: grow right; while the window needs more than k replacements, shrink left; maxFreq only rises
+# time = O(n), space = O(1)   (26 uppercase letters)
+def characterReplacement(s, k):
+    count = {}
+    left = 0
+    max_freq = 0                          # highest count of one letter seen in any window so far
+    best = 0
+    for right in range(len(s)):
+        ch = s[right]
+        count[ch] = count.get(ch, 0) + 1
+        max_freq = max(max_freq, count[ch])
+        while (right - left + 1) - max_freq > k:   # more than k letters to replace
+            count[s[left]] -= 1
+            left += 1
+        best = max(best, right - left + 1)
+    return best
 ```
-
-### 3) Minimum Swaps to Group All 1's Together — LC 1151
-
-*Template 1 with a derived window size: the window is `k = sum(data)` wide, and the answer is
-`ones - max ones inside any such window` — the 0s left inside are exactly the swaps needed.*
-
-```python
-# LC 1151 Minimum Swaps to Group All 1's Together
-# IDEA : Sliding Window with Two Pointers
-# IDEA : core : Find which sub-array HAS MOST "1", since it means it needs MINIMUM SWAP for getting all "1" toogether
-# https://leetcode.com/problems/minimum-swaps-to-group-all-1s-together/solution/
-class Solution:
-    def minSwaps(self, data):
-        ones = sum(data)
-        cnt_one = max_one = 0
-        left = right = 0
-        while right < len(data):
-            # updating the number of 1's by adding the new element
-            cnt_one += data[right]
-            right += 1
-            # maintain the length of the window to ones
-            if right - left > ones:
-                # updating the number of 1's by removing the oldest element
-                cnt_one -= data[left]
-                left += 1
-            # record the maximum number of 1's in the window
-            max_one = max(max_one, cnt_one)
-        return ones - max_one
-```
-
-## Longest Window (Variable Max)
-
-### 4) Max Consecutive Ones III — LC 1004
-
-*Template 3 in its purest form: the window state is a single counter (`zeroCnt`), the validity
-test is `zeroCnt <= k`.*
-
-> Expand right, shrink left when zero count exceeds k.
-
-```java
-// LC 1004 - Max Consecutive Ones III
-// IDEA: Sliding window — track zero count, shrink when zeroCnt > k
-// time = O(N), space = O(1)
-public int longestOnes(int[] nums, int k) {
-    int l = 0, zeroCnt = 0, ans = 0;
-    for (int r = 0; r < nums.length; r++) {
-        if (nums[r] == 0) zeroCnt++;
-        while (zeroCnt > k) {
-            if (nums[l] == 0) zeroCnt--;
-            l++;
-        }
-        ans = Math.max(ans, r - l + 1);
-    }
-    return ans;
-}
-```
-
-### 5) Longest Repeating Character Replacement — LC 424 ⭐⭐⭐⭐⭐
-
-*Template 3 with the validity test `windowLen - maxFreq <= k`: whatever the most frequent
-character in the window is, everything else has to be replaced.*
-
-> Window is valid if (window size - max frequency) <= k; expand and track max freq.
-
-```java
-// LC 424 - Longest Repeating Character Replacement
-// IDEA: Sliding window — valid if windowSize - maxFreq <= k
-// time = O(N), space = O(1)
-public int characterReplacement(String s, int k) {
-    int[] freq = new int[26];
-    int l = 0, maxFreq = 0, ans = 0;
-    for (int r = 0; r < s.length(); r++) {
-        freq[s.charAt(r)-'A']++;
-        maxFreq = Math.max(maxFreq, freq[s.charAt(r)-'A']);
-        while ((r - l + 1) - maxFreq > k) freq[s.charAt(l++)-'A']--;
-        ans = Math.max(ans, r - l + 1);
-    }
-    return ans;
-}
-```
-
-```python
-# LC 424 Longest Repeating Character Replacement
-# IDEA : SLIDING WINDOW + DICT + 2 POINTERS
-# (the `while p2 < len(s)` spelling of this same loop was dropped as a duplicate —
-#  identical freq map and identical `windowLen - maxFreq > k` shrink, only the outer
-#  loop differed)
-from collections import defaultdict
-class Solution:
-    def characterReplacement(self, s, k):
-        cnt = defaultdict(int)
-        maxLen = 0
-        l = 0
-        # below can be either while or for loop
-        for r in range(len(s)):
-            cnt[s[r]] += 1
-            ### NOTE : this condition
-            while r - l + 1 - max(cnt.values()) > k:
-                cnt[s[l]] -= 1
-                l += 1
-            maxLen = max(maxLen, r - l + 1)     
-
-        return maxLen
-```
-
-**Second Java variant, kept for a reason** — a *different* algorithm, not a different spelling:
-run one independent window per distinct letter and ask "can this window become all-`letter`?".
-O(26·n) instead of O(n), but it needs no `maxFreq` bookkeeping, so it is much easier to argue
-correct under pressure.
 
 ```java
 // java
-// LC 424
-// IDEA : Sliding Window (Slow)
-// https://leetcode.com/problems/longest-repeating-character-replacement/editorial/
-public int characterReplacement_4(String s, int k) {
-    HashSet<Character> allLetters = new HashSet();
-
-    // collect all unique letters
-    for (int i = 0; i < s.length(); i++) {
-        allLetters.add(s.charAt(i));
-    }
-
-    int maxLength = 0;
-    for (Character letter : allLetters) {
-        int start = 0;
-        int count = 0;
-        // initialize a sliding window for each unique letter
-        for (int end = 0; end < s.length(); end += 1) {
-            if (s.charAt(end) == letter) {
-                // if the letter matches, increase the count
-                count += 1;
-            }
-            // bring start forward until the window is valid again
-            while (!isWindowValid(start, end, count, k)) {
-                if (s.charAt(start) == letter) {
-                    // if the letter matches, decrease the count
-                    count -= 1;
-                }
-                start += 1;
-            }
-            // at this point the window is valid, update maxLength
-            maxLength = Math.max(maxLength, end + 1 - start);
+// LC 424 - Longest Repeating Character Replacement
+// IDEA: grow right; while the window needs more than k replacements, shrink left; maxFreq only rises
+// time = O(n), space = O(1)
+public int characterReplacement(String s, int k) {
+    int[] count = new int[26];
+    int left = 0;
+    int maxFreq = 0;
+    int best = 0;
+    for (int right = 0; right < s.length(); right++) {
+        int ch = s.charAt(right) - 'A';
+        count[ch]++;
+        maxFreq = Math.max(maxFreq, count[ch]);
+        while ((right - left + 1) - maxFreq > k) {   // more than k replacements needed
+            count[s.charAt(left) - 'A']--;
+            left++;
         }
+        best = Math.max(best, right - left + 1);
     }
-    return maxLength;
-}
-
-private Boolean isWindowValid(int start, int end, int count, int k) {
-    // end + 1 - start - count is different element count
-    return end + 1 - start - count <= k;
+    return best;
 }
 ```
 
-### 6) Frequency of the Most Frequent Element — LC 1838
+**Second approach — one window per letter.** Run Template 3 once for each distinct letter,
+asking "can this window become all `letter`?". It is O(26·n) instead of O(n), but it has no
+stale `maxFreq` to justify, so it is the easier one to argue correct under pressure.
 
-*Template 3 after an O(n log n) sort. Sorting is what makes the window meaningful: the cheapest
-target for a window is always its rightmost value, so the cost to level the window is
-`nums[r] * windowSize - windowSum`.*
+```python
+# python
+# LC 424 - Longest Repeating Character Replacement (one window per letter)
+# IDEA: for each letter, the longest window whose non-letter count is <= k
+# time = O(26 * n), space = O(26)
+def characterReplacement_per_letter(s, k):
+    best = 0
+    for letter in set(s):
+        left = 0
+        matches = 0                       # copies of `letter` inside the window
+        for right in range(len(s)):
+            if s[right] == letter:
+                matches += 1
+            while (right - left + 1) - matches > k:
+                if s[left] == letter:
+                    matches -= 1
+                left += 1
+            best = max(best, right - left + 1)
+    return best
+```
 
-> Sort array; expand right, shrink left when cost to equalize window exceeds k.
+**Traps**
+- Recording `best` before the shrink measures an invalid window: `"ABAB", k = 0` returns 2
+  instead of 1.
+- Recomputing `max(count.values())` on every step is also correct, but it is O(26) per step;
+  lowering `max_freq` on a shrink buys nothing, because a stale value never inflates `best`.
+
+**Similar** — LC 1004 *(binary alphabet: count zeros instead of `len − maxFreq`)* · LC 2024
+
+### Frequency of the Most Frequent Element — LC 1838
+
+> **Key point** — after sorting, the cheapest target for a window is its rightmost value, and the
+> cost to raise the whole window to it is `nums[right] · len − windowSum`. That cost only grows
+> as the window grows on the right, so it is a Template 3 validity test.
+
+**Reduces to**: [sliding_window § Template 3](./sliding_window.md#template-3-longest-window-satisfying-p--lc-3-) — after an O(n log n) sort, with validity `nums[right] · len − windowSum ≤ k`.
+
+```python
+# python
+# LC 1838 - Frequency of the Most Frequent Element
+# IDEA: sort; the longest window whose cost to level up to nums[right] is <= k
+# time = O(n log n), space = O(n)   (the sorted copy; the window itself is O(1))
+def maxFrequency(nums, k):
+    nums = sorted(nums)
+    left = 0
+    window_sum = 0
+    best = 0
+    for right in range(len(nums)):
+        window_sum += nums[right]
+        # raising every value in [left, right] to nums[right] costs this many increments
+        while nums[right] * (right - left + 1) - window_sum > k:
+            window_sum -= nums[left]
+            left += 1
+        best = max(best, right - left + 1)
+    return best
+```
 
 ```java
+// java
 // LC 1838 - Frequency of the Most Frequent Element
-// IDEA: Sort + sliding window — equalize all elements in window to nums[r]
-// time = O(N log N), space = O(1)
+// IDEA: sort; the longest window whose cost to level up to nums[right] is <= k
+// time = O(n log n), space = O(1) extra
 public int maxFrequency(int[] nums, int k) {
     Arrays.sort(nums);
-    int l = 0, ans = 1;
+    int left = 0;
     long windowSum = 0;
-    for (int r = 1; r < nums.length; r++) {
-        windowSum += nums[r];
-        // cost to raise all window elements to nums[r]
-        while ((long) nums[r] * (r - l + 1) - windowSum > k) {
-            windowSum -= nums[l++];
+    int best = 0;
+    for (int right = 0; right < nums.length; right++) {
+        windowSum += nums[right];
+        // cost to raise every value in the window to nums[right]
+        while ((long) nums[right] * (right - left + 1) - windowSum > k) {
+            windowSum -= nums[left];
+            left++;
         }
-        ans = Math.max(ans, r - l + 1);
+        best = Math.max(best, right - left + 1);
     }
-    return ans;
+    return best;
 }
 ```
 
-## Counting Windows
+**Traps**
+- Starting `right` at 1 with `windowSum = 0` leaves `nums[0]` out of the sum, so every cost is
+  overstated: `[1, 2, 4], k = 5` returns 2 instead of 3. (The Java copy here did exactly that.)
+- `nums[right] * len` overflows `int` at `nums[i] = 10⁵, n = 10⁵`: multiply in `long`.
 
-### 7) Subarray Product Less Than K — LC 713
+## Exactly-K Counting Examples
 
-*Template 6's counting slot without the subtraction: the condition (`product < k`) is already
-"at most", so `count += r - l + 1` on every step is the whole answer.*
+### Arithmetic Slices — LC 413
 
-> Shrink left when product >= k; each valid right position contributes (r-l+1) subarrays.
+> **Key point** — an arithmetic run that ends at `i` and has `run + 2` elements contains exactly
+> `run` slices ending at `i` (lengths 3 … run + 2). So keep `run`, add it at every index that
+> extends the run, and reset it to 0 when the difference changes.
+
+**Reduces to**: [sliding_window § Template 6](./sliding_window.md#template-6-exactly-k-via-at-most-subtraction--lc-992-) (its counting slot) — the window is the current run, it is reset rather than shrunk when the difference changes, and each step adds `len − 2` instead of `len`, because a slice needs three elements.
+
+```python
+# python
+# LC 413 - Arithmetic Slices
+# IDEA: run = slices ending at i; it grows by 1 while the difference holds and resets when it breaks
+# time = O(n), space = O(1)
+def numberOfArithmeticSlices(nums):
+    total = 0
+    run = 0                               # arithmetic slices that end at index i
+    for i in range(2, len(nums)):
+        if nums[i] - nums[i - 1] == nums[i - 1] - nums[i - 2]:
+            run += 1                      # every slice ending at i-1, extended, plus the new length-3 one
+            total += run
+        else:
+            run = 0                       # the difference changed: no slice crosses i-1..i
+    return total
+```
+
+**Traps**
+- Fewer than three elements (`[1]`, `[1, 2]`): the loop never runs and the answer is 0.
+- Looking back from every `i` until the difference breaks is also correct, but it is O(n²) on
+  one long run (`[1, 2, …, n]`); `run` carries that count forward instead.
+
+**Similar** — LC 446 *(subsequences, not subarrays: DP over a map of differences, see [dp.md](./dp.md))*
+
+### Subarray Product Less Than K — LC 713
+
+> **Key point** — with positive values the product only grows as the window grows, so "product
+> < k" is already an at-most condition: after the shrink, every subarray ending at `right` that
+> starts in `[left, right]` is valid, which is `right − left + 1` of them.
+
+**Reduces to**: [sliding_window § Template 6](./sliding_window.md#template-6-exactly-k-via-at-most-subtraction--lc-992-) — only the `at_most` half; the condition is already "at most", so there is no subtraction.
+
+```python
+# python
+# LC 713 - Subarray Product Less Than K
+# IDEA: shrink while product >= k; every start in [left, right] gives one valid subarray ending at right
+# time = O(n), space = O(1)
+def numSubarrayProductLessThanK(nums, k):
+    if k <= 1:
+        return 0                          # products of positive integers are never < 1
+    left = 0
+    product = 1
+    count = 0
+    for right in range(len(nums)):
+        product *= nums[right]
+        while product >= k:
+            product //= nums[left]        # exact: nums[left] divides the product
+            left += 1
+        count += right - left + 1
+    return count
+```
 
 ```java
+// java
 // LC 713 - Subarray Product Less Than K
-// IDEA: Sliding window — count subarrays ending at r with product < k
-// time = O(N), space = O(1)
+// IDEA: shrink while product >= k; every start in [left, right] gives one valid subarray ending at right
+// time = O(n), space = O(1)
 public int numSubarrayProductLessThanK(int[] nums, int k) {
-    if (k <= 1) return 0;
-    int l = 0, product = 1, count = 0;
-    for (int r = 0; r < nums.length; r++) {
-        product *= nums[r];
-        while (product >= k) product /= nums[l++];
-        count += r - l + 1; // all subarrays ending at r with left in [l, r]
+    if (k <= 1) {
+        return 0;                       // no product of positive ints is < 1
+    }
+    int left = 0;
+    long product = 1;
+    int count = 0;
+    for (int right = 0; right < nums.length; right++) {
+        product *= nums[right];
+        while (product >= k) {
+            product /= nums[left];
+            left++;
+        }
+        count += right - left + 1;      // subarrays ending at right, starting in [left, right]
     }
     return count;
 }
 ```
 
-```python
-# LC 713 Subarray Product Less Than K
-# IDEA : SLIDING WINDOW 
-# MAINTAIN 2 INDEX : left, i, SO THE SLIDING WINDOW IS : [left, i]
-# CHECK IF THE PRODUCT OF ALL DIGITS IN THE WINDOW [left, i] < k
-# IF NOT, REMOVE CURRENT LEFT, AND DO LEFT ++
-# REPEAT ABOVE PROCESS AND GO THOROUGH ALL ARRAY  
-class Solution:
-    def numSubarrayProductLessThanK(self, nums, k):
-        # init values
-        product = 1
-        i = 0
-        result = 0
-        
-        for j, num in enumerate(nums):
-            ### NOTE : we get product first
-            product *= num
-            ### NOTE : the while loop condition : product >= k
-            #         -> if product >= k, we do the corresponding op
-            while i <= j and product >= k:
-                ### NOTE this trick
-                #    -> divided the number back, since this number already make the product > k 
-                product = product // nums[i]
-                ### NOTE : move i to 1 right index
-                i += 1
-            ### NOTE : , the number of intervals with subarray product less than k and with right-most coordinate right, is right - left + 1
-            #    -> https://leetcode.com/problems/subarray-product-less-than-k/solution/           
-            result += (j - i + 1)           
-        return result
-```
+**Traps**
+- `k ≤ 1`: no window is ever valid, so without the guard the `while` runs `left` past `right`
+  and reads past the array: `[1, 2, 3], k = 0` raises `IndexError` instead of returning 0.
+- Recording `max(len)` instead of adding `len` answers "longest", not "how many".
 
-## Custom Window Shapes
-
-### 8) Arithmetic Slices — LC 413
-
-*Not a two-pointer window: a look-back run counter. Every index that continues an arithmetic run
-adds one slice per extension still valid behind it. Included here because it is filed under
-sliding window on LeetCode and the "look back until the condition breaks" loop is the same
-instinct.*
-
-```python
-# LC 413 Arithmetic Slices
-# IDEA : SLIDING DINDOW + 2 pointers
-# STEPS:
-#   -> step 1) loop over nums from idx=2 (for i in range(2, len(A)))
-#   -> step 2) use the other pointer j, "look back to idx = 0" via while loop
-#       -> if there is any case fit condition, add to result
-#   -> step 3) return ans
-class Solution(object):
-    def numberOfArithmeticSlices(self, A):
-        # edge case
-        if not A or len(A) < 3:
-            return 0
-        res = 0
-        j = 2
-        for i in range(2, len(A)):
-            # use the other pointer j, "look back to idx = 0" via while loop
-            j = i
-            while j-2 >= 0:
-                # if there is any case fit condition, add to result
-                if A[j] - A[j-1] == A[j-1] - A[j-2]:
-                    res += 1
-                    j -= 1
-                else:
-                    break
-        return res 
-```
-
-### 9) Partition Labels — LC 763 ⭐⭐⭐⭐
-
-*Greedy window with no shrink phase: precompute each character's last index, then stretch `end`
-while scanning and cut when `i == end`. The window only ever grows and then restarts.*
-
-```java
-// java
-// LC 763 Partition Labels
-
-// IDEA: GREEDY + hashMap record last idx + sliding window (fixed by gpt)
-public List<Integer> partitionLabels_0_2(String s) {
-    List<Integer> res = new ArrayList<>();
-
-    if (s == null || s.length() == 0) {
-        return res;
-    }
-
-    // Map each character to its last index
-    Map<Character, Integer> lastIndexMap = new HashMap<>();
-    for (int i = 0; i < s.length(); i++) {
-        lastIndexMap.put(s.charAt(i), i);
-    }
-
-    int l = 0;
-    while (l < s.length()) {
-        int end = lastIndexMap.get(s.charAt(l));
-        int r = l;
-
-        // Expand the window to include all characters in the current segment
-        while (r < end) {
-            end = Math.max(end, lastIndexMap.get(s.charAt(r)));
-            r++;
-        }
-
-        res.add(end - l + 1);
-        l = end + 1;
-    }
-
-    return res;
-}
-```
-
-## Summary & Quick Reference
-
-| Filled-in slot | LC 567 / 438 | LC 1004 | LC 424 | LC 1838 | LC 713 |
-|---|---|---|---|---|---|
-| Window state | char freq map | `zeroCnt` | char freq + `maxFreq` | `windowSum` | running `product` |
-| Validity test | size `== len(p)` | `zeroCnt <= k` | `len - maxFreq <= k` | `nums[r]*len - sum <= k` | `product < k` |
-| Result update | `res.add(l)` on map match | `max(len)` | `max(len)` | `max(len)` | `count += r - l + 1` |
-| Template | 1 | 3 | 3 | 3 (after sort) | 6 (counting slot) |
-
-- **Delete zero-count keys.** Every map-based window here depends on `map.size()` /
-  `len(dict)` being the true distinct count. Decrementing without deleting inflates it and the
-  shrink loop misbehaves.
-- **Bounded alphabet → use an array.** `int[26]` with `Arrays.equals` is both faster and shorter
-  than a `HashMap` comparison for LC 567 / 438.
-- **Record the result in the right place.** Longest-window problems update *after* the shrink
-  loop; shortest-window problems update *inside* it.
-
-For the templates these instantiate see [sliding_window.md](./sliding_window.md); for the window
-shapes that are not in the six templates see [sliding_window_advanced.md](./sliding_window_advanced.md).
+**Similar** — LC 992 *(exactly K distinct: this count, twice)* · LC 2302

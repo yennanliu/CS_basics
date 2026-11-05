@@ -946,8 +946,8 @@ Read the **Signal** column; it is the phrase in the problem statement that fixes
 | Anything **palindromic** | centre expansion, interval DP, Manacher, KMP prefix | [palindrome.md](./palindrome.md) | 5, 9, 125, 131, 132, 214, 409, 516, 647, 680, 1216, 1312 |
 | Comparing / aligning **two** strings | two-sequence grid DP | [dp_string.md](./dp_string.md) | 10, 44, 72, 97, 115, 583, 712, 1143 |
 | **Many words** sharing prefixes | trie | [trie.md](./trie.md) | 208, 211, 212, 648, 745 |
-| "is one a **rotation** of the other" | `goal in (s + s)` after a length check | [string_examples.md](./string_examples.md) | 796 |
-| Custom alphabet / **comparator** ordering | rank map `int[26]`, compare adjacent pairs | [string_examples.md](./string_examples.md) | 953, 269, 937 |
+| "is one a **rotation** of the other" | `goal in (s + s)` after a length check | [string_matching_kmp_rolling_hash.md](./string_matching_kmp_rolling_hash.md) | 796 |
+| Custom alphabet / **comparator** ordering | rank map `int[26]`, compare adjacent pairs | [hash_map.md § Template 6](./hash_map.md#template-6-rank-map--value-to-position--lc-953-) | 953, 269, 937 |
 | Enumerate **split positions** and validate each piece | nested enumeration + per-piece validity rules | [string_examples.md](./string_examples.md) | 816, 93, 282, 468 |
 
 ### Complexity Quick Reference
@@ -978,49 +978,41 @@ Math.abs('a' - 'B') == 33   // false (different letters)
 **Classic Use Case: LC 1544 - Make The String Great (Stack)**
 > Remove adjacent pairs where same letter but different case until no such pair remains.
 
+```python
+# python
+# LC 1544 - Make The String Great
+# IDEA: stack; a char that is the top's other-case twin (|diff| == 32) cancels it, else push
+# time = O(n), space = O(n)
+def makeGood(s):
+    stack = []
+    for ch in s:
+        if stack and abs(ord(stack[-1]) - ord(ch)) == 32:   # same letter, other case
+            stack.pop()                                      # the pair cancels
+        else:
+            stack.append(ch)
+    return "".join(stack)
+```
+
 ```java
-// Java - Stack approach using |char1 - char2| == 32
+// java
+// LC 1544 - Make The String Great
+// IDEA: stack; a char that is the top's other-case twin (|diff| == 32) cancels it, else push
+// time = O(n), space = O(n)
 public String makeGood(String s) {
-    Stack<Character> stack = new Stack<>();
-
-    for (char curr : s.toCharArray()) {
-        if (!stack.isEmpty()) {
-            char prev = stack.peek();
-
-            /** NOTE !!
-             *  core idea:
-             *   The "Great" Condition: A pair is bad if |char1 - char2| == 32.
-             *   Math.abs('a' - 'A') == 32.
-             *   This checks if they are the same letter but different case.
-             */
-            if (Math.abs(curr - prev) == 32) {
-                stack.pop(); // They cancel out — remove the pair
-                continue;    // Move to next character
-            }
+    Deque<Character> stack = new ArrayDeque<>();
+    for (char ch : s.toCharArray()) {
+        if (!stack.isEmpty() && Math.abs(stack.peek() - ch) == 32) {
+            stack.pop();                     // same letter, other case: the pair cancels
+        } else {
+            stack.push(ch);
         }
-        stack.push(curr);
     }
-
     StringBuilder sb = new StringBuilder();
-    for (char c : stack) {
-        sb.append(c);
+    while (!stack.isEmpty()) {
+        sb.append(stack.pollLast());         // bottom of the stack is the front of the answer
     }
     return sb.toString();
 }
-```
-
-> The `StringBuilder`-only spelling of this same Java scan was dropped — same stack semantics, no new idea.
-
-```python
-# Python equivalent
-def makeGood(s: str) -> str:
-    stack = []
-    for c in s:
-        if stack and abs(ord(stack[-1]) - ord(c)) == 32:
-            stack.pop()  # Cancel the pair
-        else:
-            stack.append(c)
-    return ''.join(stack)
 ```
 
 **Key Insight:** This trick generalizes to any problem requiring adjacent pair cancellation where pairs are defined by ASCII distance. Combine with a Stack for O(N) time, O(N) space.

@@ -282,7 +282,7 @@
       "title": "Sorting & Selection",
       "row": 3,
       "prereqs": ["binary-search"],
-      "sheets": ["sort", "2_pointers_quickselect", "advanced_divide_and_conquer"],
+      "sheets": ["sort", "quickselect", "advanced_divide_and_conquer"],
       "blurb": "What sorting buys you, custom comparators, and quickselect for top-k without a heap.",
       "problems": [912, 75, 215, 148, 179, 274, 1057]
     },

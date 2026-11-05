@@ -702,7 +702,33 @@ public int eraseOverlapIntervals(int[][] intervals) {
 ```
 
 ### 2-3) Insert Interval (LC 57) — Linear Scan + Merge
-> Insert new interval and merge all overlapping intervals in one pass.
+> **Key point** — the list is already sorted and disjoint, so one pass has three phases: copy what
+> ends before the new interval, merge everything that overlaps it, copy the rest.
+
+**Reduces to**: [Template 1](./intervals.md#template-1-interval-merging-lc-56-57) — merging, without the sort.
+
+```python
+# python
+# LC 57 - Insert Interval
+# IDEA: one forward pointer, three phases: before / merge-overlap / after
+# time = O(n), space = O(n) for the output
+def insert(intervals, newInterval):
+    res = []
+    i, n = 0, len(intervals)
+    while i < n and intervals[i][1] < newInterval[0]:   # ends before the new one starts
+        res.append(intervals[i])
+        i += 1
+    start, end = newInterval
+    while i < n and intervals[i][0] <= end:             # overlaps (touching counts)
+        start = min(start, intervals[i][0])
+        end = max(end, intervals[i][1])
+        i += 1
+    res.append([start, end])
+    while i < n:
+        res.append(intervals[i])
+        i += 1
+    return res
+```
 
 ```java
 // LC 57 - Insert Interval

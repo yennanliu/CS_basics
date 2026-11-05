@@ -177,14 +177,14 @@
 - [Java PriorityQueue](https://docs.oracle.com/javase/8/docs/api/java/util/PriorityQueue.html)
 - [Priority Queue Implementation Notes](https://docs.python.org/3/library/heapq.html#priority-queue-implementation-notes)
 
-<!-- 7acee1cccd45 -->
+<!-- 6f7c0ef255bc -->
 ## 辨識
 
 限制條件的線索來自 [complexity_cheatsheet.md](./complexity_cheatsheet.md) 裡的尺規。當集合一直在變、而你需要**反覆**取得當前極值時，答案就是堆積；對靜態資料只問一次的題目，通常有更便宜的做法。
 
 | 題目敘述中的訊號 | 限制條件線索 | 該用 | 不是這個，如果 |
 |---|---|---|---|
-| 「第 k 大／第 k 小」、「最接近的 k 個」 | n ≤ 10⁵、k ≪ n → O(n log k) | [模板 1](#template-1-size-k-min-heap-for-the-kth-largest--lc-215-) 大小為 k 的堆積 | 對靜態陣列只問一次 → quickselect，平均 O(n)（[2_pointers_quickselect.md](./2_pointers_quickselect.md)） |
+| 「第 k 大／第 k 小」、「最接近的 k 個」 | n ≤ 10⁵、k ≪ n → O(n log k) | [模板 1](#template-1-size-k-min-heap-for-the-kth-largest--lc-215-) 大小為 k 的堆積 | 對靜態陣列只問一次 → quickselect，平均 O(n)（[quickselect.md](./quickselect.md)） |
 | 「出現最頻繁的前 k 個」、「最常見的 k 個單字」 | 相異值 ≤ n | [模板 2](#template-2-count-then-a-size-k-heap-on-the-count--lc-347-) 先計數，再用大小為 k 的堆積 | 計數上限為 n 且 k 接近 n → 桶排序，O(n) |
 | 「合併 k 個有序串列／陣列」、「有序矩陣中第 k 小」 | k 個串列、共 N 個 → O(N log k) | [模板 3](#template-3-k-way-merge--lc-23-) K 路合併 | 只有兩個來源 → 一般的雙指標合併 |
 | 「資料串流的中位數」、「平衡兩半」 | 大量 `add` + `query` 呼叫 | [模板 4](#template-4-two-heaps-for-a-running-median--lc-295-) 雙堆積 | 視窗也會*移除*值 → 延遲刪除（[heap_advanced.md](./heap_advanced.md#1-lazy-deletion--heap--hashmap-of-truth-)） |
@@ -229,7 +229,7 @@
 每張卡片都會用到的基本 `heapq` / `PriorityQueue` 呼叫（min-heap、用取負或
 `reverseOrder()` 做 max-heap、`heapify`、peek）都在下方的[語言 API](#language-apis)。
 
-<!-- 8c5814331a8d -->
+<!-- 7859df8005bb -->
 ### 模板 1：用大小為 k 的 Min-Heap 求第 k 大 — LC 215 ⭐⭐⭐⭐⭐
 
 **辨識** — 「第 k 大」、「第 k 小」、「最接近的 k 個」、「最強的 k 個」。n ≤ 10⁵ 且
@@ -256,7 +256,7 @@ k 遠小於 n → 預期的複雜度是 O(n log k)。
 - 讓堆積長到 n、最後再 pop k 次是 O(n log n) — 設上限才是重點。
 
 **不是這個，如果** — 對靜態陣列只查一次：quickselect 平均 O(n)
-（[2_pointers_quickselect.md](./2_pointers_quickselect.md)）。當值以串流方式到來（LC 703），
+（[quickselect.md](./quickselect.md)）。當值以串流方式到來（LC 703），
 或要反覆查詢第 k 個元素時，堆積才勝出。
 
 **練習** — LC 215 ⭐ · LC 703 *（同一個堆積，跨多次呼叫保留）* · LC 1985 *（key = `(len, s)`）* ·
