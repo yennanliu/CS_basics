@@ -362,8 +362,8 @@ the same mark-then-rebuild idea framed as a string technique is
 **Recognise** — "next greater / warmer / taller to the right", "how many days until", "nearest
 smaller on each side". n ≤ 10⁵ → the O(n²) scan-right-for-each-element times out; O(n) expected.
 
-**Key point** — the stack holds the indices **still waiting for an answer**, their values strictly
-decreasing bottom → top; the first value that beats the top is, by that order, the answer for
+**Key point** — the stack holds the indices **still waiting for an answer**, their values
+decreasing bottom → top with ties allowed; the first value that beats the top is the answer for
 every index it pops.
 
 This sheet keeps **one** short form. The full family (previous-smaller, spans, histogram,

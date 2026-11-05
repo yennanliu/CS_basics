@@ -739,7 +739,7 @@ Python side of LC 1353, with the day-jumping vs scan-every-day trade-off written
 [heap_examples.md § LC 1353](./heap_examples.md#7-maximum-number-of-events-that-can-be-attended--lc-1353).
 
 **Drill** — LC 253 ⭐ · LC 252 *(one room: any overlap at all?)* · LC 1094 *(capacity, not
-rooms)* · LC 2406 *(groups = rooms)* · LC 1353 *(one day per event)* · LC 1834 *(single-threaded
+rooms)* · LC 2406 *(closed intervals: pop only when `start > heap[0]`)* · LC 1353 *(one day per event)* · LC 1834 *(single-threaded
 CPU: two orderings)*
 
 ### Template 7: Greedy Build with a Run-Length Cap — LC 1405
