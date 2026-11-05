@@ -15,7 +15,7 @@
 | 4 | **P1** 入口 | `lc_pattern.md` 改成 router；`startHere` 第一階 | [#305](https://github.com/yennanliu/CS_basics/pull/305) | 🔄 |
 | 5a | **P2** tree 家族 | `tree`、`binary_tree`、`bst`、`tree_lca_distance` | [#306](https://github.com/yennanliu/CS_basics/pull/306) | 🔄 |
 | 5b | **P2** graph 家族 | `bfs`、`dfs`、`graph` | [#307](https://github.com/yennanliu/CS_basics/pull/307) | 🔄 |
-| 5c | **P2** arrays / strings 家族 | `array`、`string`、`2_pointers`、`sliding_window`、`binary_search`、`binary_search_on_answer` | PR_G | 🔄 |
+| 5c | **P2** arrays / strings 家族 | `array`、`string`、`2_pointers`、`sliding_window`、`binary_search`、`binary_search_on_answer` | [#308](https://github.com/yennanliu/CS_basics/pull/308) | 🔄 |
 | 5d | **P2** dp 家族 | `dp`、`backtrack`、`knapsack` | | ⬜ |
 | 5e | **P2** hashing / stacks 家族 | `hash_map`、`stack`、`linked_list`、`heap` | | ⬜ |
 | 6a | **P3 + P4** tree 家族 | tree path 去重；`tree_examples`、`bst_examples` 改 Skeleton C，`bst_advanced` 改 D | | ⬜ |
