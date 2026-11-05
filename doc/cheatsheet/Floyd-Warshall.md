@@ -475,61 +475,61 @@ def networkDelayTime(times, n, k):
     return max_dist if max_dist != float('inf') else -1
 ```
 
-### 2-4) Graph Connectivity With Threshold (LC 1627) — Floyd-Warshall Connectivity
-> Build edges for all GCD > threshold; use Floyd-Warshall transitive closure to answer queries.
+### 2-4) Graph Connectivity With Threshold (LC 1627) — Union-Find, not Floyd-Warshall
+> **Key point** — this looks like a reachability matrix, but n ≤ 10⁴ makes Floyd-Warshall's O(n³) about 10¹² steps. Connectivity only needs components: union every multiple of each g > threshold with g, then answer each query with one `find`.
 
-```java
-// LC 1627 - Graph Connectivity With Threshold
-// IDEA: Connect multiples of each gcd > threshold; Floyd-Warshall for connectivity queries
-// time = O(N^2 log N + N^3 + Q), space = O(N^2)
-public List<Boolean> areConnected(int n, int threshold, int[][] queries) {
-    boolean[][] conn = new boolean[n + 1][n + 1];
-    for (int i = 0; i <= n; i++) conn[i][i] = true;
-    for (int g = threshold + 1; g <= n; g++)
-        for (int mul = 2 * g; mul <= n; mul += g)
-            conn[g][mul] = conn[mul][g] = true;
-    for (int k = 1; k <= n; k++)
-        for (int i = 1; i <= n; i++)
-            for (int j = 1; j <= n; j++)
-                if (conn[i][k] && conn[k][j]) conn[i][j] = true;
-    List<Boolean> ans = new ArrayList<>();
-    for (int[] q : queries) ans.add(conn[q[0]][q[1]]);
-    return ans;
-}
-```
+**Reduces to**: [union_find.md](./union_find.md) — the Sizing Check section below rules Floyd-Warshall out for n beyond a few hundred.
 
 ```python
 # LC 1627 - Graph Connectivity With Threshold
-# Union-Find is better, but Floyd-Warshall works
-
+# IDEA: x and y share a divisor g > threshold iff both are multiples of g,
+#       so union g with 2g, 3g, ... for every g > threshold
+# time = O(n log n * α(n) + q * α(n)), space = O(n)
 def areConnected(n, threshold, queries):
-    """
-    Determine if cities are connected via intermediate cities > threshold
-    """
-    # Build graph: cities connected if gcd > threshold
-    edges = []
-    for gcd_val in range(threshold + 1, n + 1):
-        # All multiples of gcd_val are connected
-        multiples = list(range(gcd_val, n + 1, gcd_val))
-        for i in range(len(multiples) - 1):
-            edges.append((multiples[i], multiples[i + 1]))
+    parent = list(range(n + 1))
 
-    # Floyd-Warshall for connectivity
-    connected = [[False] * (n + 1) for _ in range(n + 1)]
+    def find(x):
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]   # path halving
+            x = parent[x]
+        return x
 
-    for i in range(n + 1):
-        connected[i][i] = True
+    for g in range(threshold + 1, n + 1):
+        for multiple in range(2 * g, n + 1, g):   # n/g multiples -> n log n in total
+            root_g, root_m = find(g), find(multiple)
+            if root_g != root_m:
+                parent[root_m] = root_g
 
-    for u, v in edges:
-        connected[u][v] = connected[v][u] = True
+    return [find(a) == find(b) for a, b in queries]
+```
 
-    for k in range(1, n + 1):
-        for i in range(1, n + 1):
-            for j in range(1, n + 1):
-                if connected[i][k] and connected[k][j]:
-                    connected[i][j] = True
+```java
+// LC 1627 - Graph Connectivity With Threshold
+// IDEA: union each g > threshold with its multiples; a query is two finds
+// time = O(n log n * α(n) + q * α(n)), space = O(n)
+public List<Boolean> areConnected(int n, int threshold, int[][] queries) {
+    int[] parent = new int[n + 1];
+    for (int i = 0; i <= n; i++) parent[i] = i;
 
-    return [connected[u][v] for u, v in queries]
+    for (int g = threshold + 1; g <= n; g++) {
+        for (int multiple = 2 * g; multiple <= n; multiple += g) {
+            int rootG = find(parent, g), rootM = find(parent, multiple);
+            if (rootG != rootM) parent[rootM] = rootG;
+        }
+    }
+
+    List<Boolean> ans = new ArrayList<>();
+    for (int[] q : queries) ans.add(find(parent, q[0]) == find(parent, q[1]));
+    return ans;
+}
+
+private int find(int[] parent, int x) {
+    while (parent[x] != x) {
+        parent[x] = parent[parent[x]];   // path halving
+        x = parent[x];
+    }
+    return x;
+}
 ```
 
 ### 2-5) Shortest Path Visiting All Nodes (LC 847) — BFS + Bitmask (Floyd-Warshall Preprocessing)
@@ -717,7 +717,7 @@ Read the constraints before committing to Floyd-Warshall — the cube is unforgi
 | Problem | LC # | Key Technique | Difficulty |
 |---------|------|---------------|------------|
 | Course Schedule IV | 1462 | Boolean Floyd-Warshall | Medium |
-| Graph Connectivity | 1627 | Reachability matrix | Hard |
+| Graph Connectivity | 1627 | Union-find (n ≤ 10⁴ rules out O(n³)) | Hard |
 | Evaluate Division | 399 | Weighted transitive closure | Medium |
 
 ### **Minimax/Maximin Problems**

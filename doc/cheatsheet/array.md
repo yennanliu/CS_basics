@@ -180,7 +180,7 @@ def f(nums):
 // in place (like py .sort())
 Arrays.sort(arr);                                  // primitive array, in place
 Collections.sort(list);                            // List, in place
-list.sort((a, b) -> a[0] - b[0]);                  // List, in place
+list.sort((a, b) -> Integer.compare(a[0], b[0]));                  // List, in place
 
 // returns NEW collection (like py sorted())
 List<Integer> sortedList = list.stream()

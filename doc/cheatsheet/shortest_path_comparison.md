@@ -306,7 +306,7 @@ public int minCost(int maxTime, int[][] edges, int[] passingFees) {
     int[] bestTime = new int[n];
     Arrays.fill(bestTime, Integer.MAX_VALUE);
     // (cost, time, node) - ordered by cost
-    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[0], b[0]));
     pq.offer(new int[]{passingFees[0], 0, 0});
     while (!pq.isEmpty()) {
         int[] cur = pq.poll();

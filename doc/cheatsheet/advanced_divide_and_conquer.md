@@ -55,51 +55,41 @@
 
 ### Template 1: Basic Inversion Counting — LC 315
 ```python
-def count_inversions(arr):
-    """Count total number of inversions using merge sort"""
-    def merge_and_count(arr, temp, left, mid, right):
-        i, j, k = left, mid + 1, left
-        inv_count = 0
+# LC 315 - Count of Smaller Numbers After Self
+# IDEA: merge sort indices by value; when a LEFT element is placed, every right element
+#       already placed before it is smaller and was after it -> add that count to it.
+#       sum(counts) is the total inversion count, so this one template answers both.
+# time = O(n log n), space = O(n)
+def count_smaller(nums):
+    n = len(nums)
+    counts = [0] * n
+    idx = list(range(n))          # sort indices, so each count lands on its original slot
 
-        # Merge with inversion counting
-        while i <= mid and j <= right:
-            if arr[i] <= arr[j]:
-                temp[k] = arr[i]
+    def sort(lo, hi):             # sorts idx[lo:hi] by nums value
+        if hi - lo <= 1:
+            return
+        mid = (lo + hi) // 2
+        sort(lo, mid)
+        sort(mid, hi)
+        merged = []
+        i, j = lo, mid
+        while i < mid or j < hi:
+            # take from the left when the right is used up, or left <= right
+            if j == hi or (i < mid and nums[idx[i]] <= nums[idx[j]]):
+                counts[idx[i]] += j - mid   # right elements already taken are smaller
+                merged.append(idx[i])
                 i += 1
             else:
-                temp[k] = arr[j]
-                # Count inversions: all elements from i to mid are > arr[j]
-                inv_count += (mid - i + 1)
+                merged.append(idx[j])
                 j += 1
-            k += 1
+        idx[lo:hi] = merged
 
-        # Copy remaining elements
-        while i <= mid:
-            temp[k] = arr[i]
-            i += 1
-            k += 1
-        while j <= right:
-            temp[k] = arr[j]
-            j += 1
-            k += 1
+    sort(0, n)
+    return counts
 
-        # Copy back to original array
-        for i in range(left, right + 1):
-            arr[i] = temp[i]
-
-        return inv_count
-
-    def merge_sort_and_count(arr, temp, left, right):
-        inv_count = 0
-        if left < right:
-            mid = (left + right) // 2
-            inv_count += merge_sort_and_count(arr, temp, left, mid)
-            inv_count += merge_sort_and_count(arr, temp, mid + 1, right)
-            inv_count += merge_and_count(arr, temp, left, mid, right)
-        return inv_count
-
-    temp = [0] * len(arr)
-    return merge_sort_and_count(arr[:], temp, 0, len(arr) - 1)
+def count_inversions(arr):
+    """Total number of pairs i < j with arr[i] > arr[j]"""
+    return sum(count_smaller(arr))
 ```
 
 ### Template 2: Conditional Inversion Counting — LC 493

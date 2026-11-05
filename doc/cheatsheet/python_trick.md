@@ -993,9 +993,9 @@ int[][] people = {{7,0},{4,4},{7,1},{5,0},{6,1},{5,2}};
 // V1 : explicit comparator - x[0] DESC, tie-break x[1] ASC
 Arrays.sort(people, (a, b) -> {
     if (a[0] != b[0]) {
-        return b[0] - a[0];   // NOTE !!! b - a  => DESC
+        return Integer.compare(b[0], a[0]);   // (b, a) => DESC
     }
-    return a[1] - b[1];       //          a - b  => ASC
+    return Integer.compare(a[1], b[1]);       // (a, b) => ASC
 });
 
 // V2 : Comparator chaining (more readable, Java 8+)

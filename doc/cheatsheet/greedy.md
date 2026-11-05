@@ -81,34 +81,30 @@ def interval_scheduling(intervals):
 
 ### Template 2: Activity Selection with Heap — LC 621 ⭐⭐⭐⭐
 ```python
+# LC 621 - Task Scheduler
+# IDEA: each cycle of n+1 slots, run the n+1 most frequent remaining tasks (max-heap);
+#       slots left empty in a cycle are idle, except in the very last cycle
+# time = O(T log 26) = O(T), space = O(26)
 import heapq
 import collections
 
-def activity_selection_heap(tasks):
-    """Select activities using priority queue"""
-    # Count frequency or priority
+def least_interval(tasks, n):
     freq = collections.Counter(tasks)
-    
-    # Max heap (negate for min heap)
-    heap = [(-count, task) for task, count in freq.items()]
+    heap = [-count for count in freq.values()]   # max-heap of remaining counts
     heapq.heapify(heap)
-    
-    result = []
+
+    time = 0
     while heap:
-        count1, task1 = heapq.heappop(heap)
-        result.append(task1)
-        
-        if heap:
-            count2, task2 = heapq.heappop(heap)
-            result.append(task2)
-            
-            # Add back if still available
-            if count1 < -1:
-                heapq.heappush(heap, (count1 + 1, task1))
-            if count2 < -1:
-                heapq.heappush(heap, (count2 + 1, task2))
-    
-    return result
+        ran = []                                 # counts we ran this cycle
+        for _ in range(n + 1):                   # one cooldown window
+            if heap:
+                ran.append(heapq.heappop(heap) + 1)  # run it once (counts are negative)
+        for count in ran:
+            if count < 0:                        # still has copies left
+                heapq.heappush(heap, count)
+        # a full window costs n+1; the last window costs only what actually ran
+        time += (n + 1) if heap else len(ran)
+    return time
 ```
 
 ### Template 3: Greedy Accumulation — LC 122 ⭐⭐⭐⭐

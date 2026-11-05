@@ -177,12 +177,11 @@ def bellman_ford_k_edges(n, edges, src, dst, k):
             if dist[u] != float('inf') and dist[u] + w < temp_dist[v]:
                 temp_dist[v] = dist[u] + w
 
-        dist = temp_dist
-
-        # Early termination
-        if iteration > 0 and dist[dst] == prev_dist:
+        # Early termination: only when NO vertex improved this round.
+        # dist[dst] alone staying put proves nothing - it can still drop next round.
+        if temp_dist == dist:
             break
-        prev_dist = dist[dst]
+        dist = temp_dist
 
     return dist[dst] if dist[dst] != float('inf') else -1
 ```

@@ -667,7 +667,7 @@ def merge_intervals(intervals):
 // IDEA: Sort by start, merge when current.start <= last.end
 // time = O(N log N), space = O(N)
 public int[][] merge(int[][] intervals) {
-    Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+    Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
     List<int[]> merged = new ArrayList<>();
     for (int[] interval : intervals) {
         if (merged.isEmpty() || merged.get(merged.size()-1)[1] < interval[0]) {
@@ -688,7 +688,7 @@ public int[][] merge(int[][] intervals) {
 // IDEA: Greedy — sort by end, count overlapping intervals to remove
 // time = O(N log N), space = O(1)
 public int eraseOverlapIntervals(int[][] intervals) {
-    Arrays.sort(intervals, (a, b) -> a[1] - b[1]);
+    Arrays.sort(intervals, (a, b) -> Integer.compare(a[1], b[1]));
     int removals = 0, prevEnd = Integer.MIN_VALUE;
     for (int[] interval : intervals) {
         if (interval[0] < prevEnd) {
@@ -734,7 +734,7 @@ public int[][] insert(int[][] intervals, int[] newInterval) {
 // IDEA: Sort by start; min-heap of end times — reuse room if heap.peek() <= start
 // time = O(N log N), space = O(N)
 public int minMeetingRooms(int[][] intervals) {
-    Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+    Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
     PriorityQueue<Integer> heap = new PriorityQueue<>();
     for (int[] iv : intervals) {
         if (!heap.isEmpty() && heap.peek() <= iv[0]) heap.poll();
@@ -789,7 +789,7 @@ public int[][] intervalIntersection(int[][] A, int[][] B) {
 // IDEA: Sort start ASC, end DESC; count intervals not covered by running maxEnd
 // time = O(N log N), space = O(1)
 public int removeCoveredIntervals(int[][] intervals) {
-    Arrays.sort(intervals, (a, b) -> a[0] != b[0] ? a[0] - b[0] : b[1] - a[1]);
+    Arrays.sort(intervals, (a, b) -> a[0] != b[0] ? Integer.compare(a[0], b[0]) : Integer.compare(b[1], a[1]));
     int count = 0, maxEnd = 0;
     for (int[] iv : intervals)
         if (iv[1] > maxEnd) { count++; maxEnd = iv[1]; }
@@ -805,7 +805,7 @@ public int removeCoveredIntervals(int[][] intervals) {
 // IDEA: Greedy — at current end, pick clip reaching farthest next position
 // time = O(N log N), space = O(1)
 public int videoStitching(int[][] clips, int time) {
-    Arrays.sort(clips, (a, b) -> a[0] - b[0]);
+    Arrays.sort(clips, (a, b) -> Integer.compare(a[0], b[0]));
     int count = 0, curEnd = 0, farthest = 0, i = 0;
     while (i < clips.length && curEnd < time) {
         while (i < clips.length && clips[i][0] <= curEnd)
@@ -829,7 +829,7 @@ public int jobScheduling(int[] startTime, int[] endTime, int[] profit) {
     int n = startTime.length;
     int[][] jobs = new int[n][3];
     for (int i = 0; i < n; i++) jobs[i] = new int[]{endTime[i], startTime[i], profit[i]};
-    Arrays.sort(jobs, (a, b) -> a[0] - b[0]);
+    Arrays.sort(jobs, (a, b) -> Integer.compare(a[0], b[0]));
     int[] dp = new int[n + 1];
     for (int i = 0; i < n; i++) {
         int lo = 0, hi = i;
@@ -872,7 +872,7 @@ class MyCalendar {
 // IDEA: Sort by start; adjacent overlap check
 // time = O(N log N), space = O(1)
 public boolean canAttendMeetings(int[][] intervals) {
-    Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+    Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
     for (int i = 1; i < intervals.length; i++)
         if (intervals[i][0] < intervals[i-1][1]) return false;
     return true;

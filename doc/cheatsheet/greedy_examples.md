@@ -470,7 +470,7 @@ class Solution(object):
 public String reorganizeString(String s) {
     int[] freq = new int[26];
     for (char c : s.toCharArray()) freq[c - 'a']++;
-    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> b[1] - a[1]);
+    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(b[1], a[1]));
     for (int i = 0; i < 26; i++) if (freq[i] > 0) pq.offer(new int[]{i, freq[i]});
     StringBuilder sb = new StringBuilder();
     int[] prev = null;
@@ -673,7 +673,7 @@ class Solution(object):
 // IDEA: Sort by units descending; greedily load boxes until truck is full
 // time = O(N log N), space = O(1)
 public int maximumUnits(int[][] boxTypes, int truckSize) {
-    Arrays.sort(boxTypes, (a, b) -> b[1] - a[1]);
+    Arrays.sort(boxTypes, (a, b) -> Integer.compare(b[1], a[1]));
     int total = 0;
     for (int[] box : boxTypes) {
         int take = Math.min(box[0], truckSize);

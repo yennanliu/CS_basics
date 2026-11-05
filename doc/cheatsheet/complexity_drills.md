@@ -489,7 +489,7 @@ def serialize(root):
 ## Drill 20: Dijkstra with Priority Queue
 
 ```java
-PriorityQueue<int[]> pq = new PriorityQueue<>((a,b) -> a[1] - b[1]);
+PriorityQueue<int[]> pq = new PriorityQueue<>((a,b) -> Integer.compare(a[1], b[1]));
 pq.offer(new int[]{src, 0});
 int[] dist = new int[V];
 Arrays.fill(dist, Integer.MAX_VALUE);

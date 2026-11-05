@@ -554,7 +554,7 @@ Arrays.sort(numbers);
 Arrays.sort(numbers, Collections.reverseOrder());
 
 // Descending order - Method 2 (custom comparator)
-Arrays.sort(numbers, (a, b) -> b - a);
+Arrays.sort(numbers, (a, b) -> Integer.compare(b, a));
 ```
 
 #### List Sorting
@@ -567,7 +567,7 @@ Collections.sort(list, Collections.reverseOrder()); // Descending
 
 // Method 2: List.sort() - Java 8+ (preferred)
 list.sort(Integer::compareTo);                       // Ascending
-list.sort((a, b) -> b - a);                         // Descending
+list.sort((a, b) -> Integer.compare(b, a));                         // Descending
 
 // Method 3: Stream API - creates new list
 List<Integer> sortedList = list.stream()
@@ -586,9 +586,9 @@ statusList.add(new Integer[]{2, 3});
 
 statusList.sort((x, y) -> {
     if (!x[0].equals(y[0])) {
-        return x[0] - y[0];  // Primary: first element ascending
+        return Integer.compare(x[0], y[0]);  // Primary: first element ascending
     }
-    return x[1] - y[1];      // Secondary: second element ascending
+    return Integer.compare(x[1], y[1]);      // Secondary: second element ascending
 });
 ```
 
@@ -738,7 +738,7 @@ List<String> res = new ArrayList(freq.keySet());
  *  example:
  *
  *          Collections.sort(res,
- *                 (w1, w2) -> freq.get(w1).equals(freq.get(w2)) ? w1.compareTo(w2) : freq.get(w2) - freq.get(w1));
+ *                 (w1, w2) -> freq.get(w1).equals(freq.get(w2)) ? w1.compareTo(w2) : Integer.compare(freq.get(w2), freq.get(w1)));
  */
 Collections.sort(res, (x, y) -> {
     int valDiff = freq.get(y) - freq.get(x); // sort on `value` bigger number first (decreasing order)

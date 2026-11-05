@@ -437,11 +437,11 @@ class Robot:
 // time = O(N log K), space = O(K)  K = workers
 public int findCrossingTime(int n, int k, int[][] time) {
     // Max-heaps for waiting (by efficiency = leftTime + rightTime, higher = worse = higher priority)
-    PriorityQueue<int[]> waitL = new PriorityQueue<>((a,b) -> b[0]-a[0]); // [eff, id]
-    PriorityQueue<int[]> waitR = new PriorityQueue<>((a,b) -> b[0]-a[0]);
+    PriorityQueue<int[]> waitL = new PriorityQueue<>((a,b) -> Integer.compare(b[0], a[0])); // [eff, id]
+    PriorityQueue<int[]> waitR = new PriorityQueue<>((a,b) -> Integer.compare(b[0], a[0]));
     // Min-heaps for working (by finish time)
-    PriorityQueue<int[]> workL = new PriorityQueue<>((a,b) -> a[0]-b[0]); // [finishTime, id]
-    PriorityQueue<int[]> workR = new PriorityQueue<>((a,b) -> a[0]-b[0]);
+    PriorityQueue<int[]> workL = new PriorityQueue<>((a,b) -> Integer.compare(a[0], b[0])); // [finishTime, id]
+    PriorityQueue<int[]> workR = new PriorityQueue<>((a,b) -> Integer.compare(a[0], b[0]));
     for (int i = 0; i < k; i++) waitL.offer(new int[]{time[i][0]+time[i][2], i});
     int cur = 0;
     for (int boxes = 0; boxes < n; boxes++) {

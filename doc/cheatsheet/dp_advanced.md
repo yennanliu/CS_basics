@@ -2065,7 +2065,7 @@ Answer: 4
 ```java
 public int longestStrChain(String[] words) {
     // Step 1: Sort by word length (process predecessors before successors)
-    Arrays.sort(words, (a, b) -> a.length() - b.length());
+    Arrays.sort(words, (a, b) -> Integer.compare(a.length(), b.length()));
 
     // Step 2: dp[word] = longest chain ending at this word
     Map<String, Integer> dp = new HashMap<>();

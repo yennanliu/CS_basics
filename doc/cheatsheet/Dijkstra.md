@@ -129,7 +129,7 @@ public int minimumEffortPath(int[][] heights) {
     for (int[] row : dist)
         Arrays.fill(row, Integer.MAX_VALUE);
     
-    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[2] - b[2]);
+    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[2], b[2]));
     pq.offer(new int[]{0, 0, 0});
     dist[0][0] = 0;
     

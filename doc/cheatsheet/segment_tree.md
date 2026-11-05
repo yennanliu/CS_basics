@@ -942,7 +942,7 @@ class Solution {
             ev[p++] = new int[]{r[0], idx.get(r[1]), idx.get(r[3]),  1};   // left edge  -> open
             ev[p++] = new int[]{r[2], idx.get(r[1]), idx.get(r[3]), -1};   // right edge -> close
         }
-        Arrays.sort(ev, (a, b) -> a[0] - b[0]);
+        Arrays.sort(ev, (a, b) -> Integer.compare(a[0], b[0]));
 
         long area = 0;
         int prevX = ev[0][0];
@@ -1046,9 +1046,9 @@ public List<List<Integer>> getSkyline(int[][] buildings) {
         ev.add(new int[]{b[0], -b[2], b[1]});      // start: negative height => sorts before ends
         ev.add(new int[]{b[1], 0, 0});             // end marker (only wakes the sweep up)
     }
-    ev.sort((a, b) -> a[0] != b[0] ? a[0] - b[0] : a[1] - b[1]);
+    ev.sort((a, b) -> a[0] != b[0] ? Integer.compare(a[0], b[0]) : Integer.compare(a[1], b[1]));
 
-    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> b[0] - a[0]);   // {height, end}
+    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(b[0], a[0]));   // {height, end}
     pq.offer(new int[]{0, Integer.MAX_VALUE});     // ground sentinel, never popped
     List<List<Integer>> res = new ArrayList<>();
     for (int[] e : ev) {
@@ -1230,7 +1230,7 @@ class Solution {
         build(0, 0, n - 1);
         // ties on height MUST be k-descending: a shorter-k person placed first would occupy
         // a non-empty slot that still counts toward the larger-k person's k.
-        Arrays.sort(people, (a, b) -> a[0] != b[0] ? a[0] - b[0] : b[1] - a[1]);
+        Arrays.sort(people, (a, b) -> a[0] != b[0] ? Integer.compare(a[0], b[0]) : Integer.compare(b[1], a[1]));
         int[][] res = new int[n][];
         for (int[] p : people) res[kth(0, 0, n - 1, p[1] + 1)] = p;
         return res;

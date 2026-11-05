@@ -197,14 +197,15 @@ def dfs(node, parent, curr_len):
         return
     if parent and node.val == parent.val + 1:
         curr_len += 1
-    # ✅ correct - streak breaks, but keep exploring
+    # ✅ correct - streak breaks: restart at 1, but keep exploring
     else:
         curr_len = 1
-        dfs(node.left, node, curr_len)
+        # 🚫 wrong here: `return` - a longer streak may start deeper in this subtree
 
-    # 🚫 wrong - a longer streak may start deeper in this same subtree
-    # else:
-    #     return
+    self.max_len = max(self.max_len, curr_len)
+    # recurse on BOTH children whether the streak continued or reset
+    dfs(node.left, node, curr_len)
+    dfs(node.right, node, curr_len)
 ```
 
 Verified on 4000 random trees: Styles A, B and C agree with brute force on every case, including the zigzag tree below — the path `1→2→3→4` alternates left/right and is still valid, because **the only rule is parent → child**.

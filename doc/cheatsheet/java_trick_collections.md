@@ -664,7 +664,7 @@ for (char c : S.toCharArray()) {
  *  we use PQ to track the characters count sorted in order
  */
 PriorityQueue<Map.Entry<Character, Integer>> maxHeap = new PriorityQueue<>(
-        (a, b) -> b.getValue() - a.getValue());
+        (a, b) -> Integer.compare(b.getValue(), a.getValue()));
 maxHeap.addAll(charCountMap.entrySet());
 
 // ...
@@ -899,13 +899,13 @@ pointCount.get(new Point(1, 2));  // ✅ returns 1
 PriorityQueue<Integer> minHeap = new PriorityQueue<>();
 
 // Method 2: Min-heap with explicit comparator
-PriorityQueue<Integer> minHeap2 = new PriorityQueue<>((o1, o2) -> o1 - o2);
+PriorityQueue<Integer> minHeap2 = new PriorityQueue<>((o1, o2) -> Integer.compare(o1, o2));
 
 // Method 3: Traditional comparator (verbose)
 PriorityQueue<Integer> minHeap3 = new PriorityQueue<>(new Comparator<Integer>() {
     @Override
     public int compare(Integer o1, Integer o2) {
-        return o1 - o2;  // Ascending order
+        return Integer.compare(o1, o2);  // Ascending order
     }
 });
 ```
@@ -917,13 +917,13 @@ PriorityQueue<Integer> minHeap3 = new PriorityQueue<>(new Comparator<Integer>() 
 PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());
 
 // Method 2: Custom lambda comparator
-PriorityQueue<Integer> maxHeap2 = new PriorityQueue<>((o1, o2) -> o2 - o1);
+PriorityQueue<Integer> maxHeap2 = new PriorityQueue<>((o1, o2) -> Integer.compare(o2, o1));
 
 // Method 3: Traditional comparator
 PriorityQueue<Integer> maxHeap3 = new PriorityQueue<>(new Comparator<Integer>() {
     @Override
     public int compare(Integer o1, Integer o2) {
-        return o2 - o1;  // Descending order
+        return Integer.compare(o2, o1);  // Descending order
     }
 });
 ```
@@ -965,7 +965,7 @@ countMap.put(num, countMap.getOrDefault(num, 0) + 1);
 /** NOTE !!! how to init PQ below */
 // Step 2. Use a Min-Heap (Priority Queue) to keep track of top K elements
 PriorityQueue<Map.Entry<Integer, Integer>> heap = new PriorityQueue<>(
-    (a, b) -> a.getValue() - b.getValue()
+    (a, b) -> Integer.compare(a.getValue(), b.getValue())
 );
 
 // ...

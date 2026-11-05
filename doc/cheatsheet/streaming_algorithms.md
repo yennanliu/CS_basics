@@ -1559,7 +1559,7 @@ class MedianFinder {
     private PriorityQueue<Integer> minHeap; // Upper half
 
     public MedianFinder() {
-        maxHeap = new PriorityQueue<>((a, b) -> b - a);
+        maxHeap = new PriorityQueue<>((a, b) -> Integer.compare(b, a));
         minHeap = new PriorityQueue<>();
     }
 

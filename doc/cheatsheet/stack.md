@@ -332,41 +332,41 @@ the same mark-then-rebuild idea framed as a string technique is
 
 ```python
 # python
-# LC 739, LC 503 - Find next `big number`
-# ...
-stack = [] # [[idx, val]]
-for i, val in enumerate(tmp):
-    while stack and stack[-1][1] < val:
-        _idx, _val = stack.pop(-1)
-        res[tmp[_idx]] = i - _idx
-    stack.append([i, val]) 
-# ...
+# LC 739 - Daily Temperatures (next greater element, as a distance)
+# IDEA: the stack holds indices still waiting for a warmer day; a warmer `val` answers every one it pops
+# time = O(n), space = O(n)
+def daily_temperatures(temperatures):
+    n = len(temperatures)
+    res = [0] * n                 # 0 = no warmer day ahead
+    stack = []                    # indices, temperatures strictly decreasing bottom -> top
+    for i, val in enumerate(temperatures):
+        while stack and temperatures[stack[-1]] < val:
+            j = stack.pop()
+            res[j] = i - j        # i is the first warmer day after j
+        stack.append(i)
+    return res
 ```
 
 ```java
 // java
-// LC 239
-// LC 496
-// ...
+// LC 739 - Daily Temperatures (next greater element, as a distance)
+// IDEA: the stack holds indices still waiting for a warmer day; a warmer value answers every one it pops
+// time = O(n), space = O(n)
+public int[] dailyTemperatures(int[] temperatures) {
+    int n = temperatures.length;
+    int[] res = new int[n];                    // 0 = no warmer day ahead
+    Deque<Integer> stack = new ArrayDeque<>(); // indices, temperatures strictly decreasing
 
-// Traverse the array from right to left
-for (int i = 0; i < n; i++) {
-    // Maintain a decreasing monotonic stack
-    /** NOTE !!! below */
-    while (!stack.isEmpty() && nums[stack.peek()] <= nums[i]) {
-        stack.pop();  // Pop elements from the stack that are smaller or equal to the current element
+    // Traverse the array from left to right
+    for (int i = 0; i < n; i++) {
+        while (!stack.isEmpty() && temperatures[stack.peek()] < temperatures[i]) {
+            int j = stack.pop();
+            res[j] = i - j;                    // i is the first warmer day after j
+        }
+        stack.push(i);
     }
-    
-    // If stack is not empty, the next greater element is at the top of the stack
-    if (!stack.isEmpty()) {
-        result[i] = nums[stack.peek()];
-    }
-    
-    // Push the current element's index onto the stack
-    stack.push(i);
+    return res;
 }
-
-// ...
 ```
 
 | Want | Pop while | Read the answer | LC |

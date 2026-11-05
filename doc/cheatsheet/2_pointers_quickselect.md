@@ -46,57 +46,37 @@ QuickSelect: Only finds the Kth element position → O(n) average
 ### Template 1: Kth Largest Element — LC 215 ⭐⭐⭐⭐⭐
 
 ```python
-# Python - QuickSelect for Kth Largest
+# python
+# LC 215 - Kth Largest Element in an Array
+# IDEA: random pivot + 3-way partition (< pivot | == pivot | > pivot); recurse into the one
+#       band that holds index n-k. The == band is what keeps all-equal input O(n): a 2-way
+#       partition puts every equal value on one side and degrades to O(n^2).
+# time = O(n) average, O(n^2) worst (vanishingly unlikely with a random pivot), space = O(1)
+import random
+
 def findKthLargest(nums, k):
-    """
-    Find Kth largest element using QuickSelect.
-
-    Time: O(n) average, O(n^2) worst (if bad pivots)
-    Space: O(1) iterative, O(log n) recursive
-
-    Key: Kth largest means (n - k)th smallest in 0-indexed array
-    """
-    def partition(left, right):
-        """
-        Partition using last element as pivot.
-        Returns pivot's final position.
-        """
-        pivot = nums[right]
-        i = left  # Position where elements < pivot should go
-
-        # Move all elements < pivot to the left
-        for j in range(left, right):
-            if nums[j] < pivot:
-                nums[i], nums[j] = nums[j], nums[i]
+    target = len(nums) - k            # kth largest = index n-k in ascending order
+    left, right = 0, len(nums) - 1
+    while True:
+        pivot = nums[random.randint(left, right)]
+        # Dutch national flag: [left, lt) < pivot, [lt, i) == pivot, (gt, right] > pivot
+        lt, i, gt = left, left, right
+        while i <= gt:
+            if nums[i] < pivot:
+                nums[lt], nums[i] = nums[i], nums[lt]
+                lt += 1
                 i += 1
-
-        # Place pivot in correct position
-        nums[i], nums[right] = nums[right], nums[i]
-        return i
-
-    def quickselect(left, right, k_smallest):
-        """
-        QuickSelect to find k_smallest element (0-indexed).
-        """
-        if left == right:  # Only one element
-            return nums[left]
-
-        # Partition and get pivot position
-        pivot_idx = partition(left, right)
-
-        # Check if we found the answer
-        if pivot_idx == k_smallest:
-            return nums[pivot_idx]
-        elif pivot_idx < k_smallest:
-            # Search right partition
-            return quickselect(pivot_idx + 1, right, k_smallest)
+            elif nums[i] > pivot:
+                nums[i], nums[gt] = nums[gt], nums[i]
+                gt -= 1                   # do not advance i: the swapped-in value is unchecked
+            else:
+                i += 1
+        if target < lt:
+            right = lt - 1                # answer is in the < band
+        elif target > gt:
+            left = gt + 1                 # answer is in the > band
         else:
-            # Search left partition
-            return quickselect(left, pivot_idx - 1, k_smallest)
-
-    # Kth largest = (n - k)th smallest (0-indexed)
-    n = len(nums)
-    return quickselect(0, n - 1, n - k)
+            return pivot                  # target index is inside the == band
 
 # Example usage:
 # nums = [3, 2, 1, 5, 6, 4], k = 2
@@ -104,62 +84,43 @@ def findKthLargest(nums, k):
 ```
 
 ```java
-// Java - QuickSelect for Kth Largest
-/**
- * LC 215 - Kth Largest Element in an Array
- *
- * time = O(N) average, O(N^2) worst
- * space = O(1) iterative, O(log N) recursive
- */
+// java
+// LC 215 - Kth Largest Element in an Array
+// IDEA: random pivot + 3-way partition; keep only the band that holds index n-k
+// time = O(N) average, O(N^2) worst (vanishingly unlikely with a random pivot), space = O(1)
 class Solution {
+    private final Random rand = new Random();
+
     public int findKthLargest(int[] nums, int k) {
-        int n = nums.length;
-        // Kth largest = (n - k)th smallest (0-indexed)
-        return quickSelect(nums, 0, n - 1, n - k);
-    }
-
-    private int quickSelect(int[] nums, int left, int right, int kSmallest) {
-        if (left == right) {
-            return nums[left];
-        }
-
-        // Partition and get pivot position
-        int pivotIdx = partition(nums, left, right);
-
-        // Check if we found the answer
-        if (pivotIdx == kSmallest) {
-            return nums[pivotIdx];
-        } else if (pivotIdx < kSmallest) {
-            // Search right partition
-            return quickSelect(nums, pivotIdx + 1, right, kSmallest);
-        } else {
-            // Search left partition
-            return quickSelect(nums, left, pivotIdx - 1, kSmallest);
-        }
-    }
-
-    private int partition(int[] nums, int left, int right) {
-        // Use last element as pivot
-        int pivot = nums[right];
-        int i = left;  // Position for elements < pivot
-
-        // Move all elements < pivot to the left
-        for (int j = left; j < right; j++) {
-            if (nums[j] < pivot) {
-                swap(nums, i, j);
-                i++;
+        int target = nums.length - k;   // kth largest = index n-k in ascending order
+        int left = 0, right = nums.length - 1;
+        while (true) {
+            int pivot = nums[left + rand.nextInt(right - left + 1)];
+            // [left, lt) < pivot, [lt, i) == pivot, (gt, right] > pivot
+            int lt = left, i = left, gt = right;
+            while (i <= gt) {
+                if (nums[i] < pivot) {
+                    swap(nums, lt++, i++);
+                } else if (nums[i] > pivot) {
+                    swap(nums, i, gt--);    // do not advance i
+                } else {
+                    i++;
+                }
+            }
+            if (target < lt) {
+                right = lt - 1;
+            } else if (target > gt) {
+                left = gt + 1;
+            } else {
+                return pivot;
             }
         }
-
-        // Place pivot in correct position
-        swap(nums, i, right);
-        return i;
     }
 
     private void swap(int[] nums, int i, int j) {
-        int temp = nums[i];
+        int tmp = nums[i];
         nums[i] = nums[j];
-        nums[j] = temp;
+        nums[j] = tmp;
     }
 }
 ```

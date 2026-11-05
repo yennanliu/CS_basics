@@ -27,54 +27,64 @@ patterns, the five-step interview method and the chooser table; this file keeps 
 ```python
 # LC 146 LRU Cache (Least Recently Used (LRU) cache)
 # V0
-# IDEA : ARRAY + LRU (implement LRU via array)
+# IDEA : HASH MAP + DOUBLY LINKED LIST
+#   map: key -> node, so a lookup is O(1)
+#   list: most recent at the tail, least recent right after the head sentinel,
+#   so "move to the end" and "evict the oldest" are both O(1) pointer splices
+# time = O(1) per get / put, space = O(capacity)
+class Node(object):
+    def __init__(self, key=0, val=0):
+        self.key = key
+        self.val = val
+        self.prev = None
+        self.next = None
+
 class LRUCache(object):
 
     def __init__(self, capacity):
         self.capacity = capacity
-        self._cache = []   
-        self._cache_look_up = {}
+        self.map = {}
+        # sentinels: head.next is the LRU node, tail.prev the MRU node
+        self.head = Node()
+        self.tail = Node()
+        self.head.next = self.tail
+        self.tail.prev = self.head
+
+    def _remove(self, node):
+        node.prev.next = node.next
+        node.next.prev = node.prev
+
+    def _append(self, node):
+        # insert just before the tail = mark as most recently used
+        node.prev = self.tail.prev
+        node.next = self.tail
+        self.tail.prev.next = node
+        self.tail.prev = node
 
     def get(self, key):
-        if key not in self._cache_look_up:
+        if key not in self.map:
             return -1
-
-        self._cache.remove(key)
-        self._cache.append(key)
-
-        return self._cache_look_up[key]
+        node = self.map[key]
+        self._remove(node)
+        self._append(node)
+        return node.val
 
     def put(self, key, value):
-        # case 1) key in cache
-        if key in self._cache_look_up:
-            self._cache_look_up[key] = value
-
-            """
-            NOTE !!! below trick
-                In [14]: x = [1,2,3]
-                In [15]: x.remove(2)
-                In [16]: x
-                Out[16]: [1, 3]
-                In [17]: x.append(2)
-                In [18]: x
-                Out[18]: [1, 3, 2]
-            """
-            
-            self._cache.remove(key)
-            self._cache.append(key)
+        if key in self.map:
+            # case 1) key in cache: update and mark as most recent
+            node = self.map[key]
+            node.val = value
+            self._remove(node)
+            self._append(node)
             return
-
-        # case 2) key NOT in cache
-        else:
-            # case 2-1) len(cache) == capacity -> need to clear cache with LRU
-            if len(self._cache) == self.capacity:
-                del_key = self._cache[0]
-                self._cache = self._cache[1:]
-                del self._cache_look_up[del_key]
-
-            # case 2-2) len(cache) < capacity
-            self._cache.append(key)
-            self._cache_look_up[key] = value
+        # case 2) key NOT in cache: evict the LRU node first if full
+        if len(self.map) == self.capacity:
+            lru = self.head.next
+            self._remove(lru)
+            del self.map[lru.key]
+        node = Node(key, value)
+        self.map[key] = node
+        self._append(node)
 
 # V1
 # IDEA : Ordered dictionary

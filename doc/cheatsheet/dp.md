@@ -151,22 +151,24 @@ def dp_solution(input_data):
 ### Template 1: 1-D Linear DP ⭐⭐⭐⭐⭐ — LC 53
 
 ```python
+# LC 53 - Maximum Subarray
+# IDEA: dp[i] = best sum of a subarray that ENDS at i: extend the previous run or restart at i
+# time = O(n), space = O(n)
 def linear_dp(nums):
-    """Classic 1D DP for sequence problems"""
     n = len(nums)
     if n == 0:
         return 0
 
-    # State: dp[i] = optimal value at position i
+    # State: dp[i] = max sum of a subarray ending exactly at index i
     dp = [0] * n
     dp[0] = nums[0]
 
     for i in range(1, n):
-        # Transition: current vs previous
-        dp[i] = max(dp[i-1], nums[i])
-        # Or with skip: dp[i] = max(dp[i-1], dp[i-2] + nums[i])
+        # Transition: extend the run ending at i-1, or start a new run at i
+        dp[i] = max(nums[i], dp[i - 1] + nums[i])
 
-    return dp[n-1]
+    # The answer can end anywhere, so it is the best dp[i], not dp[n-1]
+    return max(dp)
 ```
 
 #### Recurrence catalogue (1-D)

@@ -220,7 +220,7 @@ class Solution(object):
         left, right = 0, num
         while left <= right:
             ### NOTE : there is NO mid * mid == num condition
-            mid = (left + right) / 2
+            mid = (left + right) // 2
             if mid * mid >= num:
                 right = mid - 1
             else:
@@ -296,7 +296,7 @@ class Solution:
         left, right = 0, size
         bestAns = 0
         while left <= right:
-            mid = (left + right) / 2
+            mid = (left + right) // 2
             if self.solve(mid, s, nums):
                 bestAns = mid
                 right = mid - 1
@@ -1019,7 +1019,7 @@ def maxEnvelopes(envelopes):
 // IDEA: sort (w asc, h desc), then LIS on the heights array (reuse lengthOfLIS above)
 // time = O(n log n), space = O(n)
 public int maxEnvelopes(int[][] envelopes) {
-    Arrays.sort(envelopes, (a, b) -> a[0] == b[0] ? b[1] - a[1] : a[0] - b[0]);
+    Arrays.sort(envelopes, (a, b) -> a[0] == b[0] ? Integer.compare(b[1], a[1]) : Integer.compare(a[0], b[0]));
     int[] heights = new int[envelopes.length];
     for (int i = 0; i < envelopes.length; i++) heights[i] = envelopes[i][1];
     return lengthOfLIS(heights);

@@ -87,7 +87,7 @@ Working notes per shape — the mnemonic for the loop body, and the gotcha.
     - [代碼隨想錄 - 0078.子集](https://github.com/youngyangyang04/leetcode-master/blob/master/problems/0078.%E5%AD%90%E9%9B%86.md)
     - (for loop call help func) +  start_idx + for loop + pop(-1)
     - backtrack. find minumum case. transform the problem to `tree-problem`. via `start` remove already used numbers and return all cases
-    - Need `!cur.contains(nums[i])` -> to NOT add duplicated element
+    - No `contains` check: `start_idx` already uses each element at most once (`contains` is the permutations idiom)
 - `Subsets II`
     - LC 90
     - start idx + backtrack + dedup (seen)
@@ -244,11 +244,13 @@ next start index** — `i` (reuse the current element) or `i + 1` (move past it)
 
 | Pass | Meaning | Analogy | Examples |
 | ---- | ------- | ------- | -------- |
-| `i`     | Reuse the **same element again** | **Unbounded knapsack** (infinite supply) | LC 39 (Combination Sum), LC 518 (Coin Change II), LC 377 |
+| `i`     | Reuse the **same element again** | **Unbounded knapsack** (infinite supply) | LC 39 (Combination Sum), LC 518 (Coin Change II) |
 | `i + 1` | Use **each element at most once** | **0/1 knapsack**, subsets | LC 40 (Combination Sum II), LC 78/90 (Subsets), LC 131, LC 494 |
 
 > Permutations use neither — they revisit earlier elements, so they track a `visited[]`
 > array / `contains` check instead of a `start_idx` (see [Problem Categories](#problem-categories)).
+> LC 377 (Combination Sum IV) is the same: order matters there, so every call loops from 0,
+> and since it only counts, it is a DP rather than a backtrack.
 
 ```java
 // time = O(n^(T/M + 1)), space = O(T/M)   T = target, M = smallest candidate

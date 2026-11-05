@@ -958,28 +958,49 @@ def lca(u, v, parent, depth, LOG):
 ### Re-rooting DP — Answer for Every Root
 
 ```python
-# LC 310 Minimum Height Trees — find roots minimizing tree height
-# Equivalent: find centroid(s) of tree
-def findMinHeightTrees(n, edges):
-    if n == 1: return [0]
-    from collections import defaultdict, deque
-    graph = defaultdict(set)
+# LC 834 Sum of Distances in Tree - the answer for EVERY node as root
+# IDEA: DFS 1 (post-order) roots the tree at 0: size[u] = nodes in u's subtree, ans[0] = sum of depths.
+#       DFS 2 (pre-order) moves the root across edge u -> v: the size[v] nodes under v get 1 closer,
+#       the other n - size[v] get 1 farther, so ans[v] = ans[u] - size[v] + (n - size[v]).
+# time = O(n), space = O(n)
+# (LC 310 Minimum Height Trees looks similar but is leaf-trimming / topological peeling,
+#  see topology_sorting.md - it never needs a per-root value.)
+def sumOfDistancesInTree(n, edges):
+    from collections import defaultdict
+    graph = defaultdict(list)
     for u, v in edges:
-        graph[u].add(v); graph[v].add(u)
+        graph[u].append(v)
+        graph[v].append(u)
 
-    leaves = deque(i for i in range(n) if len(graph[i]) == 1)
-    remaining = n
-    while remaining > 2:
-        remaining -= len(leaves)
-        new_leaves = deque()
-        while leaves:
-            leaf = leaves.popleft()
-            neighbor = next(iter(graph[leaf]))
-            graph[neighbor].remove(leaf)
-            if len(graph[neighbor]) == 1:
-                new_leaves.append(neighbor)
-        leaves = new_leaves
-    return list(leaves)
+    size = [1] * n
+    ans = [0] * n
+
+    # iterative DFS order from root 0, with parents (avoids recursion limits)
+    order, parent = [], [-1] * n
+    stack, seen = [0], [False] * n
+    seen[0] = True
+    while stack:
+        u = stack.pop()
+        order.append(u)
+        for v in graph[u]:
+            if not seen[v]:
+                seen[v] = True
+                parent[v] = u
+                stack.append(v)
+
+    # DFS 1: children before parents
+    for u in reversed(order):
+        for v in graph[u]:
+            if v != parent[u]:
+                size[u] += size[v]
+                ans[u] += ans[v] + size[v]   # each node under v is 1 deeper from u
+
+    # DFS 2: parents before children - re-root from u to v
+    for u in order:
+        for v in graph[u]:
+            if v != parent[u]:
+                ans[v] = ans[u] - size[v] + (n - size[v])
+    return ans
 ```
 
 ### Tree Serialization / Deserialization — LC 297
