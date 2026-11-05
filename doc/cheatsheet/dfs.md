@@ -1,7 +1,7 @@
 # DFS (Depth-First Search)
 
 > **Scope** — The main DFS reference: the ten core depth-first templates — tree traversal, grid flood fill, path finding, backtracking, tree modification, post-order aggregation, boundary elimination, shape signatures and weighted-edge traversal — with the recognition table that picks between them.
-> **See also** — *deep dives split out of this file*: [dfs_advanced.md](./dfs_advanced.md) — Euler paths (Hierholzer), Tarjan bridges, trie + wildcard DFS, depth-indexed stack DFS, distance-bucket leaf pairing, N-ary and `parent[]` rollups; [dfs_examples.md](./dfs_examples.md) — the worked-solution archive and the full problem index by pattern and difficulty.
+> **See also** — *deep dives split out of this file*: [dfs_advanced.md](./dfs_advanced.md) — two-grid validation, edge-direction flags, cross-component pair counting, trie + wildcard DFS, depth-indexed stack DFS, distance-bucket leaf pairing, N-ary and `parent[]` rollups; [graph_advanced.md](./graph_advanced.md) — Euler paths (Hierholzer) and Tarjan low-link; [dfs_examples.md](./dfs_examples.md) — the classic problems, grouped by this sheet's templates, with an index.
 > *Neighbouring sheets*: [bfs.md](./bfs.md) — the breadth-first counterpart and how to choose; [backtrack.md](./backtrack.md) — DFS that undoes state on the way back up; [graph.md](./graph.md) — representation; [tree.md](./tree.md) — DFS on trees.
 
 ## LeetCode Problem Lists
@@ -33,7 +33,7 @@ before you code.
 
 | Signal in the statement | Constraint cue | Reach for | Not this if |
 |---|---|---|---|
-| "inorder / preorder / postorder", "visit all", "serialize", "is it a mirror", "are two trees the same" | nodes ≤ 10⁴ | [Template 1](#template-1-tree-traversal--lc-94-) — tree traversal; two trees → its [paired-DFS variation](#variation-paired-dual-pointer-dfs--lc-101-symmetric-tree) | level by level → [bfs.md § Template 1](./bfs.md#template-1-level-order-bfs--lc-102-) |
+| "inorder / preorder / postorder", "visit all", "serialize", "is it a mirror", "are two trees the same" | nodes ≤ 10⁴ | [Template 1](#template-1-tree-traversal--lc-94-) — tree traversal; two trees → its [paired-DFS variation](#symmetric-tree--lc-101) | level by level → [bfs.md § Template 1](./bfs.md#template-1-level-order-bfs--lc-102-) |
 | "number of islands", "connected regions", "flood fill", "clone the graph" | grid ≤ 300 × 300 | [Template 2](#template-2-graph--grid-dfs-flood-fill--lc-200-) — flood fill, count launches | the shortest route between two cells → [bfs.md § Template 3](./bfs.md#template-3-grid-bfs-with-a-direction-array--lc-1091-) |
 | "root-to-leaf path with sum", "does a path exist", "all paths" | nodes ≤ 5,000 | [Template 3](#template-3-path-finding--lc-112-) — state passed down, early return | the path may start below the root → prefix sum on the path (LC 437) |
 | "all permutations / combinations / subsets" | n ≤ 10 (n!) or n ≤ 20 (2ⁿ) | [Template 4](#template-4-backtracking--lc-46) — choose, recurse, un-choose | only the count, with repeated states → DP |
@@ -45,11 +45,12 @@ before you code.
 | "evaluate division", "exchange rates", "transitive ratios" | variables ≤ 40 | [Template 10](#template-10-weighted-graph-dfs-divisionratio-queries--lc-399) — weighted DFS, multiply along the path | many queries on a fixed graph → weighted union-find |
 
 **Not on this sheet** — these live in [dfs_advanced.md](./dfs_advanced.md): two-grid validation (LC 1905),
-edge-direction tracking (LC 1466), component pair counting (LC 2316), Euler paths (LC 332, 753), Tarjan
-bridges (LC 1192), trie + wildcard DFS (LC 211, 676), depth-indexed stack DFS (LC 388, 1233),
-distance-bucket leaf pairing (LC 1530), N-ary post-order rollup (LC 3965), tree ⟷ string codecs
-(LC 606, 536) and `parent[]`-array depth climbs (LC 4015). The full problem list by pattern and by
-difficulty is in [dfs_examples.md → Problems by Pattern](./dfs_examples.md#problems-by-pattern).
+edge-direction tracking (LC 1466), component pair counting (LC 2316), trie + wildcard DFS (LC 211,
+676), depth-indexed stack DFS (LC 388, 1233), distance-bucket leaf pairing (LC 1530), N-ary
+post-order rollup (LC 3965) and `parent[]`-array depth climbs (LC 4015). Euler paths (LC 332, 753)
+and Tarjan bridges (LC 1192) are in [graph_advanced.md](./graph_advanced.md); tree ⟷ string codecs
+(LC 606, 536) in [tree_codec.md](./tree_codec.md). The problems, grouped by template, are
+in [dfs_examples.md → Index](./dfs_examples.md#index).
 
 ## Templates & Algorithms
 
@@ -152,27 +153,21 @@ predicate needs two nodes at once → the paired-DFS variation below.
 LC 100 ⭐ *(paired DFS)* · LC 101 *(paired DFS, mirrored: below)* · LC 297 ⭐ *(preorder with null
 markers)*
 
-#### Variation: paired (dual-pointer) DFS — LC 101 Symmetric Tree
+#### Symmetric Tree — LC 101
 
-> Source: [`symmetric-tree.py`](../../leetcode_python/Stack/symmetric-tree.py)
+> **Key point** — a tree is symmetric iff its two subtrees are **mirrors** of each other, so the
+> DFS carries **two cursors** `(a, b)` and checks a relation between them: equal values, then the
+> **outer** pair `(a.left, b.right)` and the **inner** pair `(a.right, b.left)`. The pairing you
+> recurse on *is* the problem: the straight pairing `(a.left, b.left)` + `(a.right, b.right)` is
+> LC 100 Same Tree.
 
-- **Description**: DFS that carries **two cursors** instead of one. The recursion no longer computes a
-  value *from* a node — it checks a **relation** *between* a pair of nodes, and recurses on the paired
-  children.
-- **Recognition**: "is it a mirror of itself", "are these two trees the same", "symmetric around its
-  centre", "same shape and same values" — anything whose predicate needs two nodes to even be stated.
-- **Key Technique**: the helper takes `(a, b)`, not `node`. Which **pairing** you recurse on *is* the
-  problem:
-  - `(a.left, b.left)` + `(a.right, b.right)` → *straight* pairing = "identical trees" (LC 100)
-  - `(a.left, b.right)` + `(a.right, b.left)` → *mirror* pairing = "symmetric" (LC 101)
-- **Core Idea**:
-  1. A single tree is symmetric iff its **two subtrees are mirrors of each other**, so the launch is
-     `helper(root.left, root.right)` — the root itself is never compared to anything.
-  2. Three base cases, **in this order**: both `None` → `True`; exactly one `None` → `False`; values
-     differ → `False`. Only then descend.
-  3. Descend on the mirror pairing and `and` the two results: the **outer** pair
-     (`a.left` ↔ `b.right`) and the **inner** pair (`a.right` ↔ `b.left`).
-  4. `and` short-circuits, so the first mismatch anywhere aborts the whole traversal.
+**Reduces to**: [Template 1](#template-1-tree-traversal--lc-94-) — a pre-order walk over a
+*pair* of nodes instead of one. Source:
+[`symmetric-tree.py`](../../leetcode_python/Stack/symmetric-tree.py).
+
+The launch is `helper(root.left, root.right)`; the root itself is never compared to anything. Three
+base cases, in this order: both `None` → `True`; exactly one `None` → `False`; values differ →
+`False`. Only then descend, and let `and` short-circuit on the first mismatch.
 
 ```text
 LC 101 trace — root = [1,2,2,null,3,null,3]     helper(a, b) pairs  a.left <-> b.right
@@ -185,9 +180,8 @@ LC 101 trace — root = [1,2,2,null,3,null,3]     helper(a, b) pairs  a.left <->
    a.right  b.right     <- both 3's are RIGHT children, so they are not mirror partners
 ```
 
-- **The one bug worth memorising**: recursing on the *straight* pairing here does not "almost work" —
-  it answers a different question ("is the left subtree equal to the right subtree?") and is wrong in
-  **both** directions:
+**Traps** — recursing on the *straight* pairing does not "almost work": it answers a different
+question ("is the left subtree equal to the right subtree?") and is wrong in **both** directions:
 
 ```text
 straight pairing (a.left<->b.left, a.right<->b.right) on the same two inputs:
@@ -205,7 +199,7 @@ class Solution:
     def isSymmetric(self, root):
         if not root:
             return True
-        # NOTE: the helper takes TWO nodes -> the root is never compared to anything
+        # the helper takes TWO nodes -> the root is never compared to anything
         return self.helper(root.left, root.right)
 
     def helper(self, left, right):
@@ -264,7 +258,7 @@ def isSymmetric(root):
         return True
     stack = [root.left, root.right]
     while stack:
-        p, q = stack.pop(), stack.pop()          # NOTE: pops ONE pair
+        p, q = stack.pop(), stack.pop()          # pops ONE pair
         if not p and not q:
             continue
         if not p or not q or p.val != q.val:
@@ -287,7 +281,7 @@ def isSymmetric(root):
 - **A pair queue works identically** — swap the stack for a `deque` and `popleft()` twice; the order of
   comparison changes, the answer does not. See the LC 101 row in [bfs.md](./bfs.md).
 
-- **Similar Classic LC Problems**:
+**Similar**:
   - LC 100 - Same Tree (the same skeleton on the *straight* pairing)
   - LC 951 - Flip Equivalent Binary Trees (try **both** pairings and `or` them)
   - LC 572 - Subtree of Another Tree (LC 100's paired DFS relaunched at every node)
@@ -386,12 +380,16 @@ a time → union-find.
 LC 133 ⭐ *(visited is the `{original: copy}` map)* · LC 417 ⭐ *(flood inward from each ocean,
 then intersect)* · LC 419 *(no DFS at all: the variation below)*
 
-#### Variation: count components **without** flood fill — LC 419 Battleships in a Board
+#### Battleships in a Board — LC 419
 
-**Twist**: when every component is guaranteed to be a straight 1×k / k×1 line, you don't need DFS at
-all — count only the cells that are the **top-left end** of a ship, which makes it `O(1)` extra space
-(no `visited` set, no in-place mutation). Good answer to the classic follow-up *"can you do it in one
-pass, O(1) space, without modifying the board?"* on top of the LC 200 flood-fill baseline.
+> **Key point** — every ship is a straight 1×k or k×1 line, so each one has exactly one **top-left
+> end**: an `'X'` with no `'X'` above it and none to its left. Count those cells and you have
+> counted the ships — one pass, O(1) extra space, no `visited` set, the board untouched.
+
+**Reduces to**: [Template 2](#template-2-graph--grid-dfs-flood-fill--lc-200-) — counting
+components, where the straight-line guarantee lets you count each component's first cell instead
+of flooding it. That is the stated follow-up (*one pass, O(1) space, without modifying the board*)
+on top of the LC 200 flood fill.
 
 ```python
 # python
@@ -431,7 +429,9 @@ public int countBattleships(char[][] board) {
 }
 ```
 
-> If the "ships are straight lines" guarantee is dropped, fall back to the plain LC 200 grid DFS above.
+**Traps**
+- The trick depends on the guarantee. Drop "ships are straight lines" and an L-shaped ship has two
+  top-left-looking cells; fall back to the LC 200 flood fill above.
 
 ### Template 3: Path Finding — LC 112 ⭐⭐⭐⭐⭐
 
@@ -840,116 +840,21 @@ LCA is post-order in disguise: the answer is the first node, on the way up, that
   (parent pointers: two-pointer walk up), LC 1676 (many targets). The worked solutions are in
   [tree_lca_distance.md](./tree_lca_distance.md).
 
-#### Global-accumulator form — LC 124 Binary Tree Maximum Path Sum
+#### Binary Tree Maximum Path Sum — LC 124
 
-> Source: [`binary-tree-maximum-path-sum.py`](../../leetcode_python/Tree/binary-tree-maximum-path-sum.py)
+> **Key point** — Template 6 with values: return the best one-sided path, and update the answer with the two-sided bend at each node.
 
-- **Key Idea**: a node computes **two different values**, and confusing them is the whole difficulty of
-  the problem:
-  1. **The answer candidate** (`left + right + node.val`) — the path that *turns* at this node, using
-     **both** children. It is recorded into a global max and **never returned**.
-  2. **The value returned to the parent** (`max(left, right) + node.val`) — a path continuing upward
-     can only use **one** child, because a path is a sequence of nodes, not a fork.
-- **Recognition**: "path does not need to pass through the root", "path may turn at some node",
-  "maximise over all paths" — anything where the best local answer is *not* the value the parent needs.
-- **Why `max(0, ...)`**: a child subtree whose best downward sum is negative is simply **dropped** —
-  attaching it can only make the path worse. Clamping to `0` is how "drop it" is spelled.
-- **Why `float('-inf')` and not `0`**: the path must be non-empty, so an all-negative tree
-  (`[-3]` → `-3`) must be allowed to win. Seeding at `0` silently returns `0` there.
-- **Do not return `left + right + node.val`** upward. That is the single most common bug: it hands the
-  parent a forked path, which the parent then forks again, producing a shape that is not a path at all.
+**Reduces to**: [tree_lca_distance.md § LC 124](./tree_lca_distance.md#binary-tree-maximum-path-sum--lc-124), where it is worked; this is a pointer.
 
-```python
-# python
-# LC 124 - Binary Tree Maximum Path Sum
-# IDEA: post-order DFS; record the `turning` path globally, return the best `straight` path upward
-# time = O(n), space = O(h)   # h = tree height, worst O(n)
-class Solution:
-    def maxPathSum(self, root):
-        self.max_sum = float('-inf')
+#### Distribute Coins in Binary Tree — LC 979
 
-        def dfs(node):
-            if not node:
-                return 0
-            left = max(0, dfs(node.left))       # drop a negative subtree
-            right = max(0, dfs(node.right))     # drop a negative subtree
-            # (1) candidate: path TURNS here, uses BOTH children -> global only
-            self.max_sum = max(self.max_sum, left + right + node.val)
-            # (2) upward: path CONTINUES, so only ONE child may be kept
-            return max(left, right) + node.val
+> **Key point** — every tree edge is a bridge: cutting the edge above a subtree leaves exactly two
+> sides, so the coins that must cross it are `|balance(subtree)|`, where
+> `balance = node.val - 1 + balance(left) + balance(right)` (keep one coin, push the rest up). The
+> traffic is forced; the answer is the sum of `|balance|` over every edge, with nothing to search.
 
-        dfs(root)
-        return self.max_sum
-```
-
-```java
-// java
-// LC 124 - Binary Tree Maximum Path Sum
-// IDEA: post-order DFS; record the `turning` path globally, return the best `straight` path upward
-// time = O(n), space = O(h)
-private int maxSum = Integer.MIN_VALUE;
-
-public int maxPathSum(TreeNode root) {
-    maxSum = Integer.MIN_VALUE;
-    dfs(root);
-    return maxSum;
-}
-
-private int dfs(TreeNode node) {
-    if (node == null) {
-        return 0;
-    }
-    int left = Math.max(0, dfs(node.left));    // drop a negative subtree
-    int right = Math.max(0, dfs(node.right));  // drop a negative subtree
-    maxSum = Math.max(maxSum, left + right + node.val);  // turns here
-    return Math.max(left, right) + node.val;             // continues upward
-}
-```
-
-##### Variant: no clamp — carry the node into the negative branch instead
-
-Equivalent form that appears in the wild: rather than clamping a negative child to `0`, restart the
-branch at `node.val`. The two branch values then each **already include** `node.val`, so the turning
-candidate has to subtract it back out once.
-
-```python
-# python
-# LC 124 - Binary Tree Maximum Path Sum (no-clamp variant)
-# IDEA: a negative branch restarts at root.val, so both sides carry root.val -> subtract one copy
-# time = O(n), space = O(h)
-def dfs(node):
-    if not node:
-        return 0
-    l_max, r_max = dfs(node.left), dfs(node.right)
-    l_max = node.val if l_max < 0 else l_max + node.val
-    r_max = node.val if r_max < 0 else r_max + node.val
-    self.maximum = max(self.maximum, l_max + r_max - node.val)   # NOTE: `- node.val`
-    return max(l_max, r_max)
-```
-
-> Prefer the `max(0, ...)` form. It is shorter, the `- node.val` correction is easy to forget, and the
-> clamp reads directly as the invariant *"a negative subtree is never worth attaching"*.
-
-#### Variation: post-order **balance / flow** accumulation — LC 979 Distribute Coins in Binary Tree
-
-- **Description**: Post-order DFS where each node returns its subtree's **surplus/deficit** (`balance`), while a global counter accumulates `|balance|` across every edge
-- **Recognition**: "move one unit between **adjacent** nodes", "minimum number of moves", "make every node have exactly one X", "total supply equals total demand"
-- **Key Technique**: The answer is a sum over **edges**, not over nodes. Every tree edge is a **bridge**: cutting the edge above a subtree splits the tree into exactly two components, so the coins crossing it can only be `|balance(subtree)|`. The traffic is *forced* — there is nothing to search or optimise, only to count.
-- **Examples**: LC 979 (Distribute Coins in Binary Tree)
-- **Core Idea**:
-  1. `balance(node) = node.val - 1 + balance(left) + balance(right)` — the node keeps 1 coin, and the rest of the subtree's net excess (`> 0`) or shortfall (`< 0`) is pushed up to the parent.
-  2. Every coin crossing an edge is **one move**, so the edge above a subtree costs `|balance(subtree)|` moves → `moves += |balance|`.
-  3. **Only the magnitude matters**: a coin flowing up and a coin flowing down cost the same, which is why `abs()` is taken at accumulation time.
-  4. `balance(root) == 0` always (the problem guarantees `Σ node.val == n`) — that invariant is what makes the greedy edge count optimal.
-- **Two equivalent accumulation spots** (both appear in the wild, same total):
-  - **Charge from the parent**: `self.moves += abs(left) + abs(right)` before returning — each non-root node is charged once, as somebody's child.
-  - **Charge from the node**: `self.moves += abs(current_balance)` after computing it — each node pays for its own edge to its parent; the root adds `|0| = 0`.
-- **Important Notes**:
-  - Return the **signed** balance but accumulate the **absolute** one. Returning `abs(...)` upward is the classic bug: a `-2` deficit has to stay negative so it can cancel a sibling's `+2` surplus at their parent.
-  - `node.val - 1` is the whole trick — "every node keeps exactly one coin" turns a distribution problem into a flow-conservation problem.
-  - Do **not** short-circuit on `node.val == 1`; a locally balanced node is still a conduit for its subtrees' traffic.
-  - Do **not** flatten the tree into an undirected adjacency list and diffuse coins with BFS — the common wrong first instinct. A BFS frontier is *local*: it cannot see that the left subtree is short 3 coins while the right subtree has 3 spare, and therefore cannot know those 3 must travel **up through the root and back down**. It ends up shuffling coins along non-optimal paths (or looping) because it has no notion of a subtree's net demand.
-  - What the post-order rollup supplies is exactly the missing **global** view: `balance(subtree)` is the net surplus/deficit of a whole component, and it only exists bottom-up. Re-modelling the tree as a graph discards the cut structure above (every edge a bridge) that makes each edge's cost a closed form rather than a search.
+**Reduces to**: [Template 6](#template-6-bottom-up-post-order-dfs--lc-543-) — return a signed
+value upward (the balance), accumulate a different one globally (its absolute value).
 
 ```text
 LC 979 trace — root = [0, 3, 0]        balance = val - 1 + left + right
@@ -977,7 +882,7 @@ class Solution:
             right = dfs(node.right)               # net surplus/deficit of right subtree
             balance = node.val - 1 + left + right # keep 1 coin, push the rest up
             self.moves += abs(balance)            # this subtree's edge to its parent
-            return balance                        # NOTE: signed, never abs()
+            return balance                        # signed, never abs()
 
         dfs(root)
         return self.moves
@@ -1004,11 +909,19 @@ private int dfs(TreeNode node) {
     int right = dfs(node.right);
     int balance = node.val - 1 + left + right;  // keep 1 coin, push the rest up
     moves += Math.abs(balance);                 // this subtree's edge to its parent
-    return balance;                             // NOTE: signed, never Math.abs()
+    return balance;                             // signed, never Math.abs()
 }
 ```
 
-- **Similar Classic LC Problems**:
+**Traps**
+- Return the **signed** balance and accumulate the absolute one. Returning `abs(...)` upward is the
+  classic bug: a `-2` deficit must stay negative to cancel a sibling's `+2` at their parent.
+- Do not skip a node because `node.val == 1`: a locally balanced node still carries its subtrees'
+  traffic.
+- Do not diffuse coins with a BFS over an adjacency list. A frontier cannot see that the left
+  subtree is 3 short and the right has 3 spare; only the bottom-up balance gives that global view.
+
+**Similar**:
   - LC 979 - Distribute Coins in Binary Tree (canonical post-order balance/flow)
   - LC 2477 - Minimum Fuel Cost to Report to the Capital (same edge-flow count, but `ceil(people / seats)` per edge)
   - LC 1443 - Minimum Time to Collect All Apples in a Tree (post-order, charge 2 per useful edge)
@@ -1017,31 +930,64 @@ private int dfs(TreeNode node) {
   - LC 124 - Binary Tree Maximum Path Sum (return one value up, aggregate a different one globally)
   - LC 2049 - Count Nodes With the Highest Score (subtree size rollup — see the variation below)
 
-#### Variation: subtree size aggregation (remove-node scoring) — LC 2049
-- **Description**: Post-order DFS that returns each node's **subtree size**, while simultaneously computing a per-node value (score) derived from the sizes of the components formed when that node is removed
-- **Recognition**: "remove node and edges → tree splits into subtrees", "product/sum of component sizes", "score of a node", "tree given as `parents[]` array"
-- **Key Technique**: One DFS returns `subtree_size = 1 + Σ child_subtree_size`. When node is removed, the components are (a) each child's subtree, and (b) the **parent side** = `n - subtree_size`. Aggregate these on the fly.
-- **Examples**: LC 2049 (Count Nodes With the Highest Score)
-- **Core Idea**:
-  - Removing node `x` cuts it into `len(children[x])` child components **plus** the "above" component (everything outside x's subtree).
-  - `child component size` = subtree size of each child (returned by DFS).
-  - `parent / above component size` = `n - subtree_size(x)` (only counts if `> 0`, i.e. x is not the root).
-  - `score(x) = Π(child subtree sizes) × max(1, n - subtree_size(x))` — every subtree size is computed exactly **once**, giving O(n) time / O(n) space (needed since n ≤ 10^5).
-- **Build the tree from `parents[]`**: `children[parents[i]].append(i)` for `i != root`; root is the index where `parents[i] == -1` (usually node 0).
-- **Pattern variants**:
-  - **One-pass DFS** (return size + multiply/track max inline) — most concise
-  - **Two-pass** (pass 1: precompute `subtree_size[]` array; pass 2: iterate nodes computing scores) — decouples size calc from scoring, easier to reason about
-- **Important Notes**:
-  - Guard the parent component with `max(1, ...)` or `if remaining > 0` — root has no "above" component.
-  - Use a `Counter`/dict keyed by score to count how many nodes hit the max, or track `(max_score, count)` running maxima.
-  - Generalizes beyond binary trees — the same DFS works for any tree given via `parents[]`/adjacency list.
-- **Similar Classic LC Problems**:
-  - LC 2049 - Count Nodes With the Highest Score (canonical remove-node scoring)
-  - LC 1519 - Number of Nodes in the Sub-Tree With the Same Label (subtree aggregation via DFS)
-  - LC 508 - Most Frequent Subtree Sum (per-subtree value + frequency count)
-  - LC 543 - Diameter of Binary Tree (bottom-up subtree metric)
-  - LC 124 - Binary Tree Maximum Path Sum (return subtree value, aggregate global max)
-  - LC 834 - Sum of Distances in Tree (subtree size + reroot DP, advanced follow-up)
+#### Count Nodes With the Highest Score — LC 2049
+
+> **Key point** — removing node `x` leaves each child's subtree as one component, plus everything
+> **above** `x`, of size `n - size(x)`. One post-order pass that returns subtree sizes therefore
+> scores every node: `score(x) = Π size(child) × (n - size(x))`, the last factor dropped at the
+> root.
+
+**Reduces to**: [Template 6](#template-6-bottom-up-post-order-dfs--lc-543-) — return the subtree
+size upward, aggregate the score (and how many nodes reach the best one) on the way.
+
+```python
+# python
+# IDEA: sizes come children-first (reverse BFS order); removing x leaves its child subtrees + n - size(x)
+# time = O(n), space = O(n)
+# Iterative on purpose: n is up to 10^5 and a chain would overflow Python's recursion limit.
+# LC 2049 - Count Nodes With the Highest Score
+from collections import deque
+
+def countHighestScoreNodes(parents):
+    n = len(parents)
+    children = [[] for _ in range(n)]
+    for node in range(1, n):                 # parents[0] == -1: node 0 is the root
+        children[parents[node]].append(node)
+
+    order = []                               # BFS order from the root
+    queue = deque([0])
+    while queue:
+        node = queue.popleft()
+        order.append(node)
+        queue.extend(children[node])
+
+    size = [1] * n
+    best_score = 0
+    best_count = 0
+    for node in reversed(order):             # every child is finished before its parent
+        score = 1
+        for child in children[node]:
+            score *= size[child]             # each child's subtree is one component
+            size[node] += size[child]
+        above = n - size[node]               # everything outside this subtree
+        if above > 0:                        # the root has nothing above it
+            score *= above
+        if score > best_score:
+            best_score, best_count = score, 1
+        elif score == best_score:
+            best_count += 1
+    return best_count
+```
+
+**Traps**
+- The root has no component above it: `n - size(root) == 0` would zero every root score. Skip the
+  factor when it is 0.
+- n ≤ 10⁵ and the tree can be a chain, so a recursive post-order overflows Python's default
+  limit; the reverse-BFS loop above gets the same children-first order without recursion.
+- The product of three components of ~3·10⁴ nodes is ~2.7·10¹³: in Java it needs `long`.
+
+**Similar** — LC 1519 *(subtree aggregation by label)* · LC 508 *(subtree sum + frequency)* ·
+LC 834 *(subtree size, then re-rooting)*
 
 ### Template 7: 2-Pass DFS (Boundary Elimination) — LC 1254
 
@@ -1640,7 +1586,7 @@ DFS Problem Analysis Flowchart:
 - **Bottom-up aggregation**: If answer depends on processing children first, use Template 6
 - **Try all possibilities**: If problem asks for "all" solutions/combinations, use Template 4 (Backtracking)
 - **Overlapping paths from many starts**: mark, recurse, then **restore** — Template 9
-- **Two nodes in the predicate**: if the question cannot be *stated* about one node ("mirror", "same tree"), carry a **pair** through the recursion — Template 1's [paired-DFS variation](#variation-paired-dual-pointer-dfs--lc-101-symmetric-tree)
+- **Two nodes in the predicate**: if the question cannot be *stated* about one node ("mirror", "same tree"), carry a **pair** through the recursion — Template 1's [paired-DFS variation](#symmetric-tree--lc-101)
 - **Anything that does not fit**: check [dfs_advanced.md](./dfs_advanced.md) before inventing a pattern
 
 ### Related Topics

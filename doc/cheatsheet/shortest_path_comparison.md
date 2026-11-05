@@ -1,6 +1,6 @@
 # Shortest Path Algorithms — When to Use Which
 
-> **Scope** — **Decision doc only** — which shortest-path algorithm for which problem shape, and where the naive choice is wrong. No full implementations.
+> **Scope** — **Decision doc only, and the one home of the shortest-path comparison** — which shortest-path algorithm for which problem shape, and where the naive choice is wrong; [Dijkstra.md](./Dijkstra.md), [Bellman-Ford.md](./Bellman-Ford.md) and [Floyd-Warshall.md](./Floyd-Warshall.md) point here instead of keeping their own comparison tables. No full implementations.
 > **See also**: [Dijkstra.md](./Dijkstra.md); [Bellman-Ford.md](./Bellman-Ford.md); [Floyd-Warshall.md](./Floyd-Warshall.md); [bfs.md](./bfs.md) — unweighted / 0-1 weights; [graph.md](./graph.md) — everything else about graphs.
 
 ## LeetCode Problem Lists
@@ -15,7 +15,7 @@
 | Non-negative weights, single source? | **Dijkstra** O((V+E) log V) |
 | Negative weights allowed, single source? | **Bellman-Ford** O(V·E) |
 | Need to detect negative cycles? | **Bellman-Ford** O(V·E) |
-| At most K edges/stops? | **Bellman-Ford** (K iterations) |
+| At most K edges / K stops? | **Bellman-Ford** (K passes for edges, K + 1 for stops) |
 | All-pairs shortest path? | **Floyd-Warshall** O(V³) |
 | Transitive closure (reachability)? | **Floyd-Warshall** (boolean) |
 | Unweighted graph? | **BFS** O(V+E) |
@@ -35,7 +35,32 @@
 | **Negative cycle detect** | No | No | Yes | Yes |
 | **Graph type** | Unweighted | Weighted (≥0) | Any | Any |
 | **Approach** | Queue | Greedy + heap | Relaxation ×(V-1) | DP |
+| **Data structure** | Queue + `dist[]` | Min-heap + `dist[]` | Edge list + `dist[]` | V × V matrix |
+| **What one step relaxes** | Edges of the node just dequeued | Edges of the cheapest node popped | **Every** edge, each pass | Every pair `(i, j)` through one more intermediate `k` |
+| **Order matters?** | FIFO order = distance order | Yes — greedy pop order is the proof | No — any edge order within a pass | Yes — `k` must be the **outermost** loop |
+| **Early exit** | Stop when the target is dequeued | Stop when the target is **popped** | Stop after a pass that relaxes nothing | None — all three loops run |
+| **Path reconstruction** | `parent[]` on enqueue | `parent[]` on relax | `parent[]` on relax | `next[i][j]` matrix |
 | **Implementation** | Simple | Medium | Simple | Simple |
+| **Best for** | Every edge costs the same | Large sparse graph, weights ≥ 0 | Negative weights, a hop limit, or cycle detection | V ≤ ~400 and every pair is asked |
+
+## Scenario → Algorithm
+
+The situations the three algorithm sheets used to tabulate separately, in one place. Where those
+tables disagreed, the row below is the resolved answer.
+
+| Situation | Choose | Why |
+|---|---|---|
+| Road network / GPS, one source to one target | **Dijkstra** (A* with a heuristic) | Non-negative weights, sparse, can stop at the target |
+| Network delay time, one source to every node | **Dijkstra** | Non-negative, single source ([LC 743](./Dijkstra.md)) |
+| Currency arbitrage / "is there a negative cycle?" | **Bellman-Ford** | One extra pass detects a cycle reachable from a virtual source in O(V·E); Floyd-Warshall also works (a negative `dist[i][i]`) but only pays off when n is small and all pairs are needed anyway |
+| "At most K edges" | **Bellman-Ford with K passes**, copying `dist` each pass | A hop limit is a pass limit |
+| "At most K stops" | **Bellman-Ford with K + 1 passes**, copying `dist` each pass | K stops is K + 1 edges: with K = 0 a direct flight still counts ([LC 787](./Bellman-Ford.md)) |
+| Every pair, small n (≈ 400 or less) | **Floyd-Warshall** | O(V³) fits, three loops, handles negative weights |
+| Every pair, large sparse graph | **Dijkstra from every node** (Johnson's if weights can be negative) | V · (V + E) log V beats V³ when E ≪ V² |
+| Reachability between every pair (prerequisite chains) | **Floyd-Warshall, boolean** | Transitive closure is the same triple loop ([LC 1462](./Floyd-Warshall.md)) |
+| Unweighted graph, "degrees of separation" | **BFS** | Level = distance |
+| Weights are only 0 or 1 | **0-1 BFS** | See [Variant: 0-1 BFS](#variant-0-1-bfs) |
+| Connect everything at minimum total cost | **MST (Prim / Kruskal)**, not a shortest path | See [C. Prim vs. Dijkstra](#c-prim-vs-dijkstra--one-term-apart--lc-1584) |
 
 ## Decision Flowchart
 

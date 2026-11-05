@@ -30,7 +30,7 @@
 
 <p align="center"><img src="../pic/graph_processing_problem.png"></p>
 
-<!-- 168c44d0c962 -->
+<!-- 642739d9c8dc -->
 ## Recognition
 
 先在題目敘述裡找第一欄的字眼，再拿限制條件對照[限制條件尺規](./complexity_cheatsheet.md#6-interview-decision-guide)。
@@ -40,17 +40,17 @@
 |---|---|---|---|
 | 「有幾個省份／群組／連通分量」 | V + E ≤ 10⁵ | [Template 1](#template-1-connected-components-by-traversal--lc-547-) — 每個連通分量一次走訪 | 輸入是網格 → [dfs.md § Template 2](./dfs.md#template-2-graph--grid-dfs-flood-fill--lc-200-) |
 | 「能不能進到每個房間」、「a 到 b 有沒有路徑」 | V + E ≤ 10⁵ | [Template 2](#template-2-dfs-reachability--lc-841-) — DFS 可達性 | 「最少步數」 → [bfs.md](./bfs.md) |
-| 「回傳從 0 到 n − 1 的每一條路徑」 | n ≤ 15 | [Template 2 的 LC 797 變形](#variation-enumerate-all-paths-backtracking-no-visited-set--lc-797) — 回溯，不共用 `visited` | 圖裡有環 → 另外維護一份「在路徑上」的集合 |
+| 「回傳從 0 到 n − 1 的每一條路徑」 | n ≤ 15 | [Template 2 的 LC 797 變形](#all-paths-from-source-to-target--lc-797) — 回溯，不共用 `visited` | 圖裡有環 → 另外維護一份「在路徑上」的集合 |
 | 「多餘的連線」、「邊一條一條加進來」、「因為共用 email／同一列而相連」 | n ≤ 10⁵ | [Template 3](#template-3-union-find-with-path-compression--lc-684-) — 併查集（LC 721、947：把共用的屬性當成節點） | 要的是路徑或它的長度 → BFS / DFS |
 | 「先修條件」、「任務的順序」、「外星字典」 | 有向，V + E ≤ 10⁵ | [Template 4](#template-4-topological-sort-kahns-bfs--lc-207-) — Kahn 的 BFS | 無向圖 → 根本沒有順序可找 |
 | 「有向圖裡的環」、「死結」、「最終安全的節點」 | 有向，V ≤ 10⁴ | [Template 5](#template-5-three-state-dfs-cycle-detection--lc-802-) — 三態 DFS | 無向圖 → 併查集 |
 | 「分成兩組」、「是不是二分圖」、「彼此討厭」 | n ≤ 2,000 | [Template 6](#template-6-bipartite-check-2-coloring--lc-785-) — 2-著色 | 三組以上 → 回溯著色 |
 | 帶權的「最短路徑」、「網路延遲」、「最便宜的航班」 | E ≤ 10⁵ | [Dijkstra.md](./Dijkstra.md)、[Bellman-Ford.md](./Bellman-Ford.md)、[Floyd-Warshall.md](./Floyd-Warshall.md) | 每條邊成本都是 1 → BFS |
 | 「比值」、「匯率」、「計算 a / b」 | V ≤ 40 | [dfs.md § Template 10](./dfs.md#template-10-weighted-graph-dfs-divisionratio-queries--lc-399) — 帶權 DFS | 同一張圖上有大量查詢 → 帶權併查集 |
-| 「最長路徑，每一步都嚴格遞增」 | 網格 ≤ 200 × 200 | 隱式 DAG，DFS + memo（[graph_examples.md](./graph_examples.md#2-10-longest-increasing-path-in-a-matrix--lc-329)） | 可以往下走 → 不是 DAG，不能 memo |
+| 「最長路徑，每一步都嚴格遞增」 | 網格 ≤ 200 × 200 | 隱式 DAG，DFS + memo（[topology_sorting.md § Template 9](./topology_sorting.md#template-9-topological-sort--dp-on-an-implicit-dag-)） | 可以往下走 → 不是 DAG，不能 memo |
 | 「用最小總成本把所有節點連起來」 | V ≤ 1,000 | [minimum_spanning_tree.md](./minimum_spanning_tree.md) | 要的是兩點間的路徑而不是一棵樹 → 最短路徑 |
 | 「拿掉這條邊／這個點會讓圖不連通」、「關鍵連線」 | V ≤ 10⁵ | Tarjan low-link（[graph_advanced.md](./graph_advanced.md#template-1-tarjans-low-link-dfs--scc-bridges-articulation-points--lc-1192-)） | 只問拿掉前後的連通性 → 併查集 |
-| 「每條邊／每張機票恰好用一次」 | E ≤ 300 | 尤拉路徑，Hierholzer（[graph_advanced.md](./graph_advanced.md#template-2-euler-path--circuit-hierholzer--lc-753-)） | 每個**節點**走一次 → 哈密頓路徑，bitmask DP |
+| 「每條邊／每張機票恰好用一次」 | E ≤ 300 | 尤拉路徑，Hierholzer（[graph_advanced.md](./graph_advanced.md#template-2-euler-path--circuit-hierholzer--lc-332-)） | 每個**節點**走一次 → 哈密頓路徑，bitmask DP |
 | 「最大流」、「二分圖匹配」 | V 很小 | Ford-Fulkerson / Edmonds-Karp（[graph_advanced.md](./graph_advanced.md)） | 只問能不能分成兩組 → Template 6 |
 
 <!-- ddc7f484e4af -->
@@ -228,16 +228,23 @@ LC 261 ⭐ *（樹 = 一個分量且恰好 n − 1 條邊）* · LC 1319 *（分
 **練習** — LC 841 · LC 1971 *（邊列表，兩個方向）* · LC 797 *（所有路徑：回溯）*
 · LC 133 ⭐ *（visited 就是 `{original: copy}` 對照表）* · LC 417 ⭐ *（從兩個大洋各自反向求可達性）*
 
-<!-- 27fd4fcf40b1 -->
-#### 變形：列舉**所有**路徑（回溯，不用 `visited` 集合） — LC 797
+<!-- 75917e3e09eb -->
+#### All Paths From Source to Target — LC 797
 
-*變化點*：這張圖是 **DAG**，所以根本沒有環要防 — 整個拿掉 `visited` 集合，改成推入／彈出目前的路徑（經典回溯）。在這裡用共用的 `visited` 集合是**錯的**：它會讓一個節點無法出現在多條路徑裡。
+> **關鍵** — 這張圖是 **DAG**，任何走法都不會繞回來：拿掉 `visited` 集合，改為維護目前的路徑，
+> 往下時推入、往上時彈出。每次抵達 `n - 1` 就是一條路徑，複製出來。
+
+**歸約到**：[Template 2](#template-2-dfs-reachability--lc-841-) — 用回溯取代共用的 `visited` 集合
+（[dfs.md § Template 4](./dfs.md#template-4-backtracking--lc-46)）。
 
 <!--CODE-->
 
 <!--CODE-->
 
-**經驗法則**：*數節點／判可達* → 用 `visited` 集合（每個節點一次）。*列舉路徑* → 回溯，往下走時標記、**往回走時取消標記**。
+**陷阱**
+- 共用的 `visited` 集合在這裡是**錯的**：它會擋住一個節點出現在第二條路徑裡。*數／到達*一個節點
+  → `visited`；*列舉路徑* → 回溯，往上時取消標記。
+- 沒複製就 `res.append(path)`，存的是同一個串列，之後的 pop 會把它清空。
 
 <!-- 30ca3f8cd54e -->
 ### Template 3：帶路徑壓縮的併查集 — LC 684 ⭐⭐⭐⭐
@@ -309,6 +316,16 @@ LC 947 *（每一列、每一行各是一個節點）*。帶權併查集、回�
 **練習** — LC 207 ⭐ · LC 210 *（回傳順序）* · LC 1136 *（BFS 的層 = 學期）* ·
 LC 269 ⭐ *（邊來自相鄰的單字）* · LC 329 ⭐ *（在遞增格子構成的隱式 DAG 上跑 Kahn）*
 
+<!-- b4a8e3947d85 -->
+#### 第二種解法：三狀態 DFS
+
+Kahn 演算法是一直剝掉沒有未滿足先修課的課程；DFS 寫法則是把環當成一條**回邊**找出來 —— 走到一個
+仍在目前路徑上的節點。同樣 O(V + E)，不需要入度陣列，但遞迴深度可達 V。它就是把
+[Template 5](#template-5-three-state-dfs-cycle-detection--lc-802-) 的不變量套用到 LC 207；面試官要
+DFS 版本時就給這個。
+
+<!--CODE-->
+
 <!-- bca99e257c92 -->
 ### Template 5：三態 DFS 環偵測 — LC 802 ⭐⭐⭐⭐
 
@@ -342,6 +359,15 @@ LC 269 ⭐ *（邊來自相鄰的單字）* · LC 329 ⭐ *（在遞增格子構
 
 **練習** — LC 802 · LC 207 ⭐ *（有環代表課修不完）* · LC 1059 *（每條路都停在
 目的地）* · LC 2360 *（出度 ≤ 1 時的最長環）*
+
+<!-- 8b2b70359c86 -->
+#### 第二種解法：在反向圖上跑 Kahn
+
+不用遞迴：把每條邊反過來，從終點節點往回剝。一個節點的所有出邊都通往安全節點時（出度歸零）它就
+是安全的；在環上或通往環的節點永遠到不了 0。同樣 O(V + E)，在很長的鏈上也沒有遞迴深度的風險 ——
+V 很大時偏好它的理由。
+
+<!--CODE-->
 
 <!-- 7674f542b285 -->
 ### Template 6：二分圖判定（2-著色） — LC 785 ⭐⭐⭐⭐
@@ -416,7 +442,7 @@ LC 269 ⭐ *（邊來自相鄰的單字）* · LC 329 ⭐ *（在遞增格子構
 <!-- cd45b05eef8f -->
 ### 依模式分類的題目
 
-<!-- b7febb271cea -->
+<!-- 21f54b4e73d1 -->
 #### **圖走訪類題目**
 | 題目 | LC # | 關鍵技巧 | 難度 |
 |---------|------|---------------|------------|
@@ -426,8 +452,8 @@ LC 269 ⭐ *（邊來自相鄰的單字）* · LC 329 ⭐ *（在遞增格子構
 | Pacific Atlantic Water | 417 | 多源 DFS | Medium |
 | Word Ladder | 127 | BFS 求最短路徑 | Hard |
 | Surrounded Regions | 130 | 從邊界出發的 DFS | Medium |
-| Evaluate Division | 399 | 帶權 DFS（比值圖） — [graph_examples.md](./graph_examples.md#2-9-evaluate-division--lc-399) | Medium |
-| Longest Increasing Path in Matrix | 329 | 隱式 DAG 上的 DFS + 記憶化 — [graph_examples.md](./graph_examples.md#2-10-longest-increasing-path-in-a-matrix--lc-329) | Hard |
+| Evaluate Division | 399 | 帶權 DFS（比值圖） — [dfs.md § Template 10](./dfs.md#template-10-weighted-graph-dfs-divisionratio-queries--lc-399) | Medium |
+| Longest Increasing Path in Matrix | 329 | 隱式 DAG 上的 DFS + 記憶化 — [topology_sorting.md § Template 9](./topology_sorting.md#template-9-topological-sort--dp-on-an-implicit-dag-) | Hard |
 | All Paths From Source to Target | 797 | DAG 上的 DFS 回溯 | Medium |
 | Keys and Rooms | 841 | 從節點 0 出發的單純 DFS/BFS 可達性 | Medium |
 | Find if Path Exists in Graph | 1971 | BFS/DFS 或併查集判連通 | Easy |
@@ -443,7 +469,7 @@ LC 269 ⭐ *（邊來自相鄰的單字）* · LC 329 ⭐ *（在遞增格子構
 | Bus Routes | 815 | 在路線上做 BFS | Hard |
 | Shortest Path Binary Matrix | 1091 | BFS | Medium |
 
-<!-- b23c9af4432c -->
+<!-- 4470e0b0b6f2 -->
 #### **併查集類題目**
 | 題目 | LC # | 關鍵技巧 | 難度 |
 |---------|------|---------------|------------|
@@ -452,7 +478,7 @@ LC 269 ⭐ *（邊來自相鄰的單字）* · LC 329 ⭐ *（在遞增格子構
 | Accounts Merge | 721 | 併查集搭配對照表 | Medium |
 | Number of Provinces | 547 | 併查集或 DFS | Medium |
 | Satisfiability of Equality | 990 | 併查集 | Medium |
-| Most Stones Removed | 947 | 對共用的列／行屬性做 DSU — [graph_examples.md](./graph_examples.md#2-11-most-stones-removed-with-same-row-or-column--lc-947) | Medium |
+| Most Stones Removed | 947 | 對共用的列／行屬性做 DSU — [graph_examples.md](./graph_examples.md#most-stones-removed-with-same-row-or-column--lc-947) | Medium |
 | Make Network Connected | 1319 | DSU：連通分量 + 多餘的邊 | Medium |
 
 <!-- 57d0ed8252b7 -->
@@ -473,14 +499,14 @@ LC 269 ⭐ *（邊來自相鄰的單字）* · LC 329 ⭐ *（在遞增格子構
 | Possible Bipartition | 886 | DFS 著色 | Medium |
 | Flower Planting With No Adjacent | 1042 | 貪婪 k-著色（分支度 < k） | Medium |
 
-<!-- 1eb3b94c1c3b -->
+<!-- cf78233b9408 -->
 #### **進階圖論題目**
 | 題目 | LC # | 關鍵技巧 | 難度 |
 |---------|------|---------------|------------|
 | Critical Connections | 1192 | Tarjan 找橋 — [graph_advanced.md](./graph_advanced.md#template-1-tarjans-low-link-dfs--scc-bridges-articulation-points--lc-1192-) | Hard |
 | Find Eventual Safe States | 802 | 偵測環 | Medium |
 | Reconstruct Itinerary | 332 | Hierholzer 演算法 | Hard |
-| Cracking the Safe | 753 | de Bruijn 圖 + 尤拉迴路 — [graph_advanced.md](./graph_advanced.md#template-2-euler-path--circuit-hierholzer--lc-753-) | Hard |
+| Cracking the Safe | 753 | de Bruijn 圖 + 尤拉迴路 — [graph_advanced.md](./graph_advanced.md#cracking-the-safe--lc-753) | Hard |
 | Minimum Spanning Tree | 1135 | Kruskal ／ Prim — [minimum_spanning_tree.md](./minimum_spanning_tree.md) | Medium |
 
 <!-- f6b226141d1f -->

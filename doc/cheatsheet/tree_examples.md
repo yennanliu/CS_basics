@@ -596,7 +596,7 @@ left subtree's rightmost node to the right child without recursion.
 > 100 on two subtrees with the pairing crossed: outer with outer (`a.left`, `b.right`), inner with
 > inner (`a.right`, `b.left`).
 
-**Reduces to**: [binary_tree § Template 12](./binary_tree.md#template-12-two-trees-in-lockstep--lc-100) — one tree compared with itself, children paired crosswise. It is worked in one place, recursive and iterative, with a trace and the straight-pairing bug: [dfs.md § LC 101](./dfs.md#variation-paired-dual-pointer-dfs--lc-101-symmetric-tree).
+**Reduces to**: [binary_tree § Template 12](./binary_tree.md#template-12-two-trees-in-lockstep--lc-100) — one tree compared with itself, children paired crosswise. It is worked in one place, recursive and iterative, with a trace and the straight-pairing bug: [dfs.md § LC 101](./dfs.md#symmetric-tree--lc-101).
 
 **Traps**
 - Comparing values level by level and checking each level is a palindrome misses the shape:

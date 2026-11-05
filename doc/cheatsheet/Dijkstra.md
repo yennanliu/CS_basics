@@ -689,111 +689,12 @@ Dijkstra Algorithm Selection Flowchart:
 
 **0-1 BFS special case**: If edges are weighted 0 or 1 only, use a **deque** — push weight-0 edges to front, weight-1 edges to back. O(V+E) like BFS, handles two weights correctly. Example: LC 2290 Minimum Obstacle Removal.
 
-### When to Use Dijkstra vs Other Algorithms
-
-| Scenario | Use Dijkstra | Use Alternative | Alternative Algorithm |
-|----------|--------------|-----------------|---------------------|
-| Negative weights | ❌ | ✅ | Bellman-Ford |
-| Unweighted graph | ❌ | ✅ | BFS |
-| All-pairs shortest path | ❌ | ✅ | Floyd-Warshall |
-| Single source, non-negative | ✅ | ❌ | - |
-| Need path reconstruction | ✅ | - | Track parent nodes |
-| Dense graphs | ⚠️ | Consider | Bellman-Ford |
-| Sparse graphs | ✅ | ❌ | - |
-
 ## Algorithm Comparison: Dijkstra vs Floyd-Warshall vs Bellman-Ford
 
-### Comprehensive Comparison Table
-
-| Feature | Dijkstra | Floyd-Warshall | Bellman-Ford |
-|---------|----------|----------------|--------------|
-| **Problem Type** | Single-source shortest path | All-pairs shortest path | Single-source shortest path |
-| **Time Complexity** | O((V+E) log V) with heap | O(V³) | O(V·E) |
-| **Space Complexity** | O(V) | O(V²) | O(V) |
-| **Negative Weights** | ❌ No | ✅ Yes | ✅ Yes |
-| **Negative Cycles** | N/A | Detects | Detects |
-| **Implementation** | Moderate (priority queue) | Very simple (3 loops) | Simple (2 loops) |
-| **Data Structure** | Min-heap/Priority Queue | 2D matrix | Edge list + distance array |
-| **Graph Type** | Best for sparse graphs | Best for dense graphs | Works with any |
-| **Output** | Distances from one source | All-pairs distances | Distances from one source |
-| **Early Termination** | ✅ Can stop at target | ❌ Must complete | ❌ Must run V-1 iterations |
-| **Best Use Case** | Large sparse graphs, single-source | Small complete graphs, all-pairs | Negative weights, cycle detection |
-| **Worst Case Graph** | Dense graphs | Very large graphs | Dense graphs with many edges |
-
-### When to Use Each Algorithm
-
-```text
-Shortest Path Algorithm Selection:
-
-1. What type of problem?
-   ├── All-pairs shortest path? → Continue to 2
-   │   ├── Small graph (V ≤ 400)? → Use Floyd-Warshall
-   │   └── Large graph? → Run Dijkstra V times (or Johnson's algorithm)
-   │
-   └── Single-source shortest path? → Continue to 3
-
-2. Are edge weights non-negative?
-   ├── YES → Use Dijkstra (most efficient)
-   │   ├── Sparse graph? → Dijkstra with binary heap: O((V+E) log V)
-   │   └── Dense graph? → Consider array-based: O(V²)
-   │
-   └── NO (has negative weights) → Use Bellman-Ford
-       └── Need cycle detection? → Bellman-Ford explicitly detects
-
-3. Special cases:
-   ├── Unweighted graph? → Use BFS: O(V+E)
-   ├── Tree structure? → Use DFS/BFS: O(V)
-   ├── Grid-based? → Dijkstra on implicit graph
-   └── Transitive closure? → Floyd-Warshall (boolean variant)
-```
-
-### Practical Comparison Examples
-
-**Example 1: Social Network (1000 users, 5000 friendships)**
-- **Single-source (find distances from one user):**
-  - Dijkstra: ~5000 × log(1000) ≈ 50,000 operations ⚡ **Best choice**
-  - Bellman-Ford: 1000 × 5000 = 5,000,000 operations
-  - Floyd-Warshall: 1000³ = 1,000,000,000 operations
-
-- **All-pairs (distances between all users):**
-  - Dijkstra × V: 50,000 × 1000 = 50,000,000 operations ⚡ **Best choice**
-  - Floyd-Warshall: 1,000,000,000 operations (simpler code)
-
-**Example 2: Small Complete Graph (50 nodes, fully connected)**
-- **All-pairs shortest paths:**
-  - Floyd-Warshall: 50³ = 125,000 operations ⚡ **Best choice** (simplest)
-  - Dijkstra × V: ~2500 × log(50) × 50 = ~500,000 operations
-
-**Example 3: Currency Exchange with Arbitrage Detection**
-- **Detect negative cycles (arbitrage opportunities):**
-  - Bellman-Ford: O(V·E) ⚡ **Best choice** (explicitly detects)
-  - Floyd-Warshall: O(V³), checks diagonal (works for all-pairs)
-  - Dijkstra: ❌ Cannot handle negative weights
-
-### Performance Benchmarks
-
-| Graph Size | Edges | Dijkstra (single) | Dijkstra (all-pairs) | Floyd-Warshall | Bellman-Ford |
-|------------|-------|-------------------|----------------------|----------------|--------------|
-| V=100, Sparse | 500 | 0.01ms | 1ms | 10ms ⚡ | 5ms |
-| V=100, Dense | 5000 | 0.1ms | 10ms ⚡ | 10ms | 50ms |
-| V=500, Sparse | 2500 | 0.05ms | 25ms ⚡ | 1.25s | 125ms |
-| V=500, Dense | 125K | 2ms | 1s | 1.25s ⚡ | 6.25s |
-| V=1000, Sparse | 5000 | 0.1ms | 100ms ⚡ | 10s | 500ms |
-
-*(Times are approximate, assuming optimized implementations)*
-
-### Algorithm Selection Matrix
-
-| Your Situation | Recommended Algorithm | Why |
-|----------------|----------------------|-----|
-| Need shortest path from A to B in road network | **Dijkstra** | Single-source, non-negative, can stop early |
-| Find center of small network (≤300 nodes) | **Floyd-Warshall** | Need all-pairs, small graph, simple code |
-| Route planning in city with traffic (dynamic costs) | **Dijkstra** (re-run) | Real-time updates, single-source |
-| Check if prerequisite chain exists | **Floyd-Warshall** | Transitive closure, small graph |
-| Currency arbitrage detection | **Bellman-Ford** | Negative cycle detection needed |
-| Social network - degrees of separation | **BFS** (if unweighted) | Unweighted, single-source |
-| Minimum spanning tree | **Prim's/Kruskal's** | Different problem entirely |
-| Game pathfinding on grid | **Dijkstra** or **A*** | Sparse grid, heuristic available |
+The comparison with the other shortest-path algorithms — complexity, negative weights, early exit,
+path reconstruction, and which one a given situation calls for — lives in one place:
+[shortest_path_comparison.md § Side-by-Side Comparison](./shortest_path_comparison.md#side-by-side-comparison)
+and [§ Scenario → Algorithm](./shortest_path_comparison.md#scenario--algorithm). The one-line version for this sheet: Dijkstra is the default for a single source with non-negative weights; a negative weight or a hop limit sends you to Bellman-Ford, every pair on a small graph to Floyd-Warshall, and equal weights to BFS (above).
 
 ## Summary & Quick Reference
 

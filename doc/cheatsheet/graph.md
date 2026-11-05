@@ -35,17 +35,17 @@ out of this sheet: that is the right answer when the problem is weighted, ordere
 |---|---|---|---|
 | "how many provinces / groups / connected components" | V + E ≤ 10⁵ | [Template 1](#template-1-connected-components-by-traversal--lc-547-) — one traversal per component | the input is a grid → [dfs.md § Template 2](./dfs.md#template-2-graph--grid-dfs-flood-fill--lc-200-) |
 | "can every room be visited", "is there a path from a to b" | V + E ≤ 10⁵ | [Template 2](#template-2-dfs-reachability--lc-841-) — DFS reachability | "minimum steps" → [bfs.md](./bfs.md) |
-| "return every path from 0 to n − 1" | n ≤ 15 | [Template 2's LC 797 variation](#variation-enumerate-all-paths-backtracking-no-visited-set--lc-797) — backtracking, no shared `visited` | the graph has cycles → keep an on-path set |
+| "return every path from 0 to n − 1" | n ≤ 15 | [Template 2's LC 797 variation](#all-paths-from-source-to-target--lc-797) — backtracking, no shared `visited` | the graph has cycles → keep an on-path set |
 | "redundant connection", "edges added one at a time", "connected because they share an email / row" | n ≤ 10⁵ | [Template 3](#template-3-union-find-with-path-compression--lc-684-) — union-find (LC 721, 947: the shared attribute is a node) | a path or its length is wanted → BFS / DFS |
 | "prerequisites", "order of tasks", "alien dictionary" | directed, V + E ≤ 10⁵ | [Template 4](#template-4-topological-sort-kahns-bfs--lc-207-) — Kahn's BFS | undirected → there is no order to find |
 | "cycle in a directed graph", "deadlock", "eventual safe nodes" | directed, V ≤ 10⁴ | [Template 5](#template-5-three-state-dfs-cycle-detection--lc-802-) — three-state DFS | undirected → union-find |
 | "split into two groups", "is it bipartite", "dislike each other" | n ≤ 2,000 | [Template 6](#template-6-bipartite-check-2-coloring--lc-785-) — 2-colouring | three or more groups → backtracking colouring |
 | "shortest path" with weights, "network delay", "cheapest flight" | E ≤ 10⁵ | [Dijkstra.md](./Dijkstra.md), [Bellman-Ford.md](./Bellman-Ford.md), [Floyd-Warshall.md](./Floyd-Warshall.md) | every edge costs 1 → BFS |
 | "ratios", "exchange rates", "evaluate a / b" | V ≤ 40 | [dfs.md § Template 10](./dfs.md#template-10-weighted-graph-dfs-divisionratio-queries--lc-399) — weighted DFS | many queries on a fixed graph → weighted union-find |
-| "longest path, moves strictly increasing" | grid ≤ 200 × 200 | implicit DAG, DFS + memo ([graph_examples.md](./graph_examples.md#2-10-longest-increasing-path-in-a-matrix--lc-329)) | moves may decrease → not a DAG, no memo |
+| "longest path, moves strictly increasing" | grid ≤ 200 × 200 | implicit DAG, DFS + memo ([topology_sorting.md § Template 9](./topology_sorting.md#template-9-topological-sort--dp-on-an-implicit-dag-)) | moves may decrease → not a DAG, no memo |
 | "connect every node at minimum total cost" | V ≤ 1,000 | [minimum_spanning_tree.md](./minimum_spanning_tree.md) | a path between two nodes, not a tree → shortest path |
 | "removing this edge / node disconnects the graph", "critical connections" | V ≤ 10⁵ | Tarjan low-link ([graph_advanced.md](./graph_advanced.md#template-1-tarjans-low-link-dfs--scc-bridges-articulation-points--lc-1192-)) | only connectivity before / after → union-find |
-| "use every edge / ticket exactly once" | E ≤ 300 | Euler path, Hierholzer ([graph_advanced.md](./graph_advanced.md#template-2-euler-path--circuit-hierholzer--lc-753-)) | visit every **node** once → Hamiltonian, bitmask DP |
+| "use every edge / ticket exactly once" | E ≤ 300 | Euler path, Hierholzer ([graph_advanced.md](./graph_advanced.md#template-2-euler-path--circuit-hierholzer--lc-332-)) | visit every **node** once → Hamiltonian, bitmask DP |
 | "max flow", "bipartite matching" | small V | Ford-Fulkerson / Edmonds-Karp ([graph_advanced.md](./graph_advanced.md)) | only a yes/no two-group split → Template 6 |
 
 ## Templates & Algorithms
@@ -364,9 +364,14 @@ variation below, which drops the shared `visited` set.
 · LC 133 ⭐ *(visited is the `{original: copy}` map)* · LC 417 ⭐ *(reachability backwards from
 each ocean)*
 
-#### Variation: enumerate ALL paths (backtracking, no `visited` set) — LC 797
+#### All Paths From Source to Target — LC 797
 
-*Twist*: the graph is a **DAG**, so there is no cycle to guard against — drop the `visited` set entirely and instead push/pop the current path (classic backtracking). A shared `visited` set would be **wrong** here: it would block a node from appearing in more than one path.
+> **Key point** — the graph is a **DAG**, so no walk can loop: drop the `visited` set and keep the
+> current path instead, pushed on the way down and popped on the way up. Every arrival at
+> `n - 1` is one path, copied out.
+
+**Reduces to**: [Template 2](#template-2-dfs-reachability--lc-841-) — with backtracking in place of
+the shared `visited` set ([dfs.md § Template 4](./dfs.md#template-4-backtracking--lc-46)).
 
 ```python
 # python
@@ -424,7 +429,10 @@ public class Solution {
 }
 ```
 
-**Rule of thumb**: *count / reach* a node → `visited` set (each node once). *Enumerate paths* → backtracking, mark on the way down and **unmark on the way up**.
+**Traps**
+- A shared `visited` set is **wrong** here: it blocks a node from appearing in a second path. *Count
+  / reach* a node → `visited`; *enumerate paths* → backtracking, unmark on the way up.
+- `res.append(path)` without the copy stores one list that the pops later empty.
 
 ### Template 3: Union-Find with Path Compression — LC 684 ⭐⭐⭐⭐
 
@@ -664,6 +672,39 @@ lexicographically smallest order is wanted → a min-heap replaces the queue
 LC 269 ⭐ *(edges come from adjacent words)* · LC 329 ⭐ *(Kahn on the implicit DAG of
 increasing cells)*
 
+#### Second solution: three-state DFS
+
+Kahn's peels courses with no unmet prerequisite; the DFS form instead finds the cycle as a **back
+edge** — a node met while it is still on the current path. Same O(V + E), no in-degree array, but
+recursion as deep as V. It is the [Template 5](#template-5-three-state-dfs-cycle-detection--lc-802-)
+invariant applied to LC 207; give it when the interviewer asks for the DFS version.
+
+```python
+# python
+# LC 207 - Course Schedule (three-state DFS)
+# IDEA: a cycle exists iff the DFS meets a node that is still on the current path (state 1)
+# time = O(V + E), space = O(V + E)
+from collections import defaultdict
+
+def canFinish(numCourses, prerequisites):
+    graph = defaultdict(list)
+    for course, pre in prerequisites:
+        graph[course].append(pre)          # course -> what it needs
+    state = [0] * numCourses               # 0 = unseen, 1 = on the current path, 2 = done
+    def dfs(node):
+        if state[node] == 1:
+            return False                   # back edge: a cycle
+        if state[node] == 2:
+            return True
+        state[node] = 1
+        for nxt in graph[node]:
+            if not dfs(nxt):
+                return False
+        state[node] = 2
+        return True
+    return all(dfs(c) for c in range(numCourses))
+```
+
 ### Template 5: Three-State DFS Cycle Detection — LC 802 ⭐⭐⭐⭐
 
 **Recognise** — "does this directed graph have a cycle", "deadlock", "eventual safe nodes",
@@ -758,6 +799,40 @@ prerequisites → Kahn ([Template 4](#template-4-topological-sort-kahns-bfs--lc-
 
 **Drill** — LC 802 · LC 207 ⭐ *(a cycle means the courses cannot be finished)* · LC 1059 *(every
 path ends at the destination)* · LC 2360 *(longest cycle when out-degree ≤ 1)*
+
+#### Second solution: Kahn's on the reversed graph
+
+No recursion: reverse every edge and peel backwards from the terminal nodes. A node becomes safe
+once all of its out-edges lead to safe nodes (its out-degree reaches 0); nodes on or leading into a
+cycle never get there. Same O(V + E), no recursion-depth risk on a long chain — the reason to
+prefer it when V is large.
+
+```python
+# python
+# LC 802 - Find Eventual Safe States (Kahn on the reversed graph)
+# IDEA: terminals are safe; a node is safe once every out-edge leads to a safe node -> peel backwards
+# time = O(V + E), space = O(V + E)
+from collections import deque
+
+def eventualSafeNodes(graph):
+    n = len(graph)
+    reverse = [[] for _ in range(n)]
+    out_degree = [0] * n
+    for node in range(n):
+        out_degree[node] = len(graph[node])
+        for nxt in graph[node]:
+            reverse[nxt].append(node)      # edge flipped: nxt -> node
+    queue = deque(node for node in range(n) if out_degree[node] == 0)  # terminals are safe
+    safe = [False] * n
+    while queue:
+        node = queue.popleft()
+        safe[node] = True
+        for prev in reverse[node]:
+            out_degree[prev] -= 1          # one more of prev's edges leads somewhere safe
+            if out_degree[prev] == 0:
+                queue.append(prev)
+    return [node for node in range(n) if safe[node]]
+```
 
 ### Template 6: Bipartite Check (2-Coloring) — LC 785 ⭐⭐⭐⭐
 
@@ -943,8 +1018,8 @@ Graph Algorithm Selection Flowchart:
 | Pacific Atlantic Water | 417 | Multi-source DFS | Medium |
 | Word Ladder | 127 | BFS shortest path | Hard |
 | Surrounded Regions | 130 | DFS from boundary | Medium |
-| Evaluate Division | 399 | Weighted DFS (ratio graph) — [graph_examples.md](./graph_examples.md#2-9-evaluate-division--lc-399) | Medium |
-| Longest Increasing Path in Matrix | 329 | DFS + memo on implicit DAG — [graph_examples.md](./graph_examples.md#2-10-longest-increasing-path-in-a-matrix--lc-329) | Hard |
+| Evaluate Division | 399 | Weighted DFS (ratio graph) — [dfs.md § Template 10](./dfs.md#template-10-weighted-graph-dfs-divisionratio-queries--lc-399) | Medium |
+| Longest Increasing Path in Matrix | 329 | DFS + memo on implicit DAG — [topology_sorting.md § Template 9](./topology_sorting.md#template-9-topological-sort--dp-on-an-implicit-dag-) | Hard |
 | All Paths From Source to Target | 797 | DFS backtracking on a DAG | Medium |
 | Keys and Rooms | 841 | Plain DFS/BFS reachability from node 0 | Medium |
 | Find if Path Exists in Graph | 1971 | BFS/DFS or Union-Find connectivity | Easy |
@@ -967,7 +1042,7 @@ Graph Algorithm Selection Flowchart:
 | Accounts Merge | 721 | Union-Find with map | Medium |
 | Number of Provinces | 547 | Union-Find or DFS | Medium |
 | Satisfiability of Equality | 990 | Union-Find | Medium |
-| Most Stones Removed | 947 | DSU on shared row/col attribute — [graph_examples.md](./graph_examples.md#2-11-most-stones-removed-with-same-row-or-column--lc-947) | Medium |
+| Most Stones Removed | 947 | DSU on shared row/col attribute — [graph_examples.md](./graph_examples.md#most-stones-removed-with-same-row-or-column--lc-947) | Medium |
 | Make Network Connected | 1319 | DSU: components + spare edges | Medium |
 
 #### **Topological Sort Problems**
@@ -992,7 +1067,7 @@ Graph Algorithm Selection Flowchart:
 | Critical Connections | 1192 | Tarjan bridges — [graph_advanced.md](./graph_advanced.md#template-1-tarjans-low-link-dfs--scc-bridges-articulation-points--lc-1192-) | Hard |
 | Find Eventual Safe States | 802 | Cycle detection | Medium |
 | Reconstruct Itinerary | 332 | Hierholzer's algorithm | Hard |
-| Cracking the Safe | 753 | de Bruijn graph + Euler circuit — [graph_advanced.md](./graph_advanced.md#template-2-euler-path--circuit-hierholzer--lc-753-) | Hard |
+| Cracking the Safe | 753 | de Bruijn graph + Euler circuit — [graph_advanced.md](./graph_advanced.md#cracking-the-safe--lc-753) | Hard |
 | Minimum Spanning Tree | 1135 | Kruskal / Prim — [minimum_spanning_tree.md](./minimum_spanning_tree.md) | Medium |
 
 ### Problem-Solving Steps

@@ -1,8 +1,8 @@
-<!-- 9072714a3b2f -->
+<!-- d1596b4372de -->
 # BFS（廣度優先搜尋）
 
 > **範圍** — BFS 的主要參考文件：佇列模板、逐層展開、格子與多源 BFS，以及為什麼在無權圖上「第一次拜訪」就等於最短路徑；較重的變形與大量解題範例則各自放在自己的文件裡。
-> **另見** — *從本文拆分出去的深入探討*：[bfs_advanced.md](./bfs_advanced.md) — 雙向 BFS、搭配 deque 的 0-1 BFS、狀態空間／隱式圖 BFS、DAG 上所有最短路徑的列舉，以及多源與各自獨立執行的差別；[bfs_examples.md](./bfs_examples.md) — 完整解題彙整（LC 130 / 207 / 279 / 286 / 310 / 417 / 623 / 742 / 752 / 909 / 116-117 …）以及 LC 994 的計時逐步說明。
+> **另見** — *從本文拆分出去的深入探討*：[bfs_advanced.md](./bfs_advanced.md) — 雙向 BFS、搭配 deque 的 0-1 BFS、狀態空間／隱式圖 BFS、DAG 上所有最短路徑的列舉，以及多源與各自獨立執行的差別；[bfs_examples.md](./bfs_examples.md) — 經典題目（LC 116-117 / 130 / 279 / 286 / 623 / 662 / 742 / 752 / 773 / 909 / 958），依本文的模板分組。
 > *相鄰文件*：[dfs.md](./dfs.md) — 深度優先的對照組，以及該怎麼選；[graph.md](./graph.md) — 圖的表示法與題型總覽；[Dijkstra.md](./Dijkstra.md) — 一旦邊有了權重就看這裡；[topology_sorting.md](./topology_sorting.md) — Kahn 演算法本質上就是 BFS。
 
 <!-- c78b67f28ffa -->
@@ -60,7 +60,7 @@
 | 完備性 | ✅ 是 | ❌ 否（無限空間時） |
 | 使用時機 | 最短路徑、逐層走訪 | 探索所有路徑、拓撲排序、偵測環 |
 
-<!-- 1abc065642bd -->
+<!-- d2e7264bf49d -->
 ## 辨識
 
 BFS 的訊號是**成本相同的移動，求最少次數**，或任何「一層一層」的說法。
@@ -75,7 +75,7 @@ BFS 是 O(V + E)，所以大約 10⁶ 格以內的圖或格子都裝得下。
 | 「腐爛」、「從每個來源同時擴散」、「到最近的 0／門的距離」 | 格子 ≤ 10⁵ 格 | [Template 4](#template-4-multi-source-bfs--lc-994-) — 多源 BFS | 每個來源的距離要**加總** → 各自獨立的 BFS（LC 317，[bfs_advanced.md](./bfs_advanced.md)） |
 | 「把一個單字／鎖的狀態轉成另一個，每步只改一處」 | L ≤ 10、N ≤ 5,000 | [Template 5](#template-5-word-ladder-bfs-over-generated-neighbours--lc-127-) — 對即時產生的鄰居做 BFS | 要找出所有最短序列 → BFS + DFS（LC 126） |
 | 「距離 `target` 為 k 的節點」、「從 `start` 感染整棵樹要多久」 | 節點 ≤ 10⁵ | [Template 6](#template-6-parent-map--bfs-radiating-from-a-target--lc-863-) — 父節點表，再 BFS | 距離是從**根**算 → Template 1 |
-| 「分成兩組」、「是否為二分圖」 | n ≤ 100 | [Template 7](#template-7-bfs-2-colouring-bipartite-check--lc-785-) — BFS 二著色 | 三組以上 → 回溯著色 |
+| 「分成兩組」、「是否為二分圖」 | n ≤ 100 | [graph.md § Template 6](./graph.md#template-6-bipartite-check-2-coloring--lc-785-) — BFS 二著色 | 三組以上 → 回溯著色 |
 | 「最多移除 k 個障礙物的最短路徑」、「收集所有鑰匙」 | 狀態 ≤ 10⁶ | 在 `(cell, resource)` 狀態上跑 Template 2（[bfs_advanced.md](./bfs_advanced.md) Pattern 16） | 資源無上限 → 一般格子 BFS |
 
 <!-- d748cff22ef8 -->
@@ -146,10 +146,10 @@ BFS 的時間複雜度取決於圖的表示法：
 
 <!--CODE-->
 
-<!-- f0b90f3a45f9 -->
+<!-- bea51ad8cdb5 -->
 ## 實作模式
 
-> 兩份衛星文件各自保留自己的 `Pattern N` 編號：**Pattern 4.5、4.6、6、8、8.5、9、10、12、14、15 與 16** 是深入探討，放在 [bfs_advanced.md](./bfs_advanced.md)；`§2-N` 的解題範例放在 [bfs_examples.md](./bfs_examples.md)。當這兩份文件引用住在這裡的模式時，用的是本文件的舊編號：
+> 兩份衛星文件各自保留自己的 `Pattern N` 編號：**Pattern 4.5、4.6、6、8、8.5、9、12、15 與 16** 是深入探討，放在 [bfs_advanced.md](./bfs_advanced.md)；解題範例放在 [bfs_examples.md](./bfs_examples.md)，依下面的模板分組。當這兩份文件引用住在這裡的模式時，用的是本文件的舊編號：
 >
 > | 舊名稱 | 本頁對應的卡片 |
 > |---|---|
@@ -159,7 +159,7 @@ BFS 的時間複雜度取決於圖的表示法：
 > | Pattern 4（多源） | [Template 4](#template-4-multi-source-bfs--lc-994-) |
 > | Pattern 7（word ladder） | [Template 5](#template-5-word-ladder-bfs-over-generated-neighbours--lc-127-) |
 > | Pattern 11（父節點表，從目標向外輻射） | [Template 6](#template-6-parent-map--bfs-radiating-from-a-target--lc-863-) |
-> | Pattern 13（二著色） | [Template 7](#template-7-bfs-2-colouring-bipartite-check--lc-785-) |
+> | Pattern 13（二著色） | [graph.md § Template 6](./graph.md#template-6-bipartite-check-2-coloring--lc-785-) |
 
 <!-- b0b1253b8bed -->
 ### Template 1：層序 BFS — LC 102 ⭐⭐⭐⭐⭐
@@ -190,15 +190,22 @@ BFS 的時間複雜度取決於圖的表示法：
 
 **練習** — LC 102 ⭐ · LC 111 *（在第一個葉節點就回傳：見下方變形）* · LC 199 *（保留每層最後一個節點）* · LC 103 *（每隔一層反轉）* · LC 662 *（攜帶堆積索引）*
 
-<!-- 04ef0ef993e1 -->
-#### 變形：**彈出第一個葉節點時就回傳** — LC 111 (Minimum Depth of Binary Tree)
+<!-- 4ec4f3debe77 -->
+#### Minimum Depth of Binary Tree — LC 111
 
-> **關鍵** — 不必走完整棵樹：BFS 會最先抵達最淺的葉節點，所以一旦出列的節點沒有子節點就立刻回傳。在一條長長的左歪斜脊上，DFS 會拜訪每個節點；BFS 在第一個葉節點就收工。（對照 LC 104 Maximum Depth：那題你*必須*看過每一層，所以 DFS 遞迴才是更俐落的工具。）
+> **關鍵** — 佇列是依深度順序吐出每一層的，所以**第一個出隊的葉節點就是最淺的葉節點**：
+> 當場回傳它的深度。DFS 必須走完每個節點才知道最小值；BFS 在第一個葉節點就停下來。
 
-**歸約到**：[Template 1](#template-1-level-order-bfs--lc-102-)，在第一個葉節點提早回傳。
+**歸約到**：[Template 1](#template-1-level-order-bfs--lc-102-) — 在第一個沒有子節點的節點處提前回傳。
+
 只在一個地方解，連同陷阱：[tree_examples.md § LC 111](./tree_examples.md#minimum-depth-of-binary-tree--lc-111)。
 
-> 另外兩個逐層 BFS 的變形——攜帶 **heap index**（LC 662）以及**把 `null` 子節點也入列**（LC 958）——放在 [bfs_examples.md](./bfs_examples.md)。
+**陷阱**
+- 只有一個子節點的節點**不是**葉節點：`[1, 2]` 的最小深度是 2，不是 1。判斷條件是
+  「沒有左子**而且**沒有右子」。
+- LC 104 Maximum Depth 正好相反：每一層都必須看過，所以用遞迴比較短。
+
+> 另外兩個層序 BFS 的變形 —— 帶著**堆積索引**（LC 662），以及**把 `null` 子節點也入隊**（LC 958）—— 在 [bfs_examples.md](./bfs_examples.md)。
 
 <!-- 2b2495e4336b -->
 ### Template 2：圖 BFS，入列時標記 — LC 1971 ⭐⭐⭐⭐⭐
@@ -270,7 +277,7 @@ BFS 的時間複雜度取決於圖的表示法：
 
 **練習** — LC 1091 · LC 1926 *（最近的出口，4 個方向）* · LC 1730 *（到食物的最短路徑）* · LC 490 *（球一路滾到牆：鄰居是停下來的格子）* · LC 1293 *（狀態多了剩餘可消除數）*
 
-<!-- b3aed019c5cf -->
+<!-- 03336acbf621 -->
 ### Template 4：多源 BFS — LC 994 ⭐⭐⭐⭐⭐
 
 **辨識** — 「橘子腐爛」、「到最近的 0／門／陸地的距離」、「火或感染從每個來源同時擴散」、「最少要幾分鐘」。格子 ≤ 10⁵ 格 → 一次 O(m·n) 的 BFS，絕不是每個來源各跑一次。
@@ -290,7 +297,7 @@ BFS 的時間複雜度取決於圖的表示法：
 <!--CODE-->
 
 **陷阱**
-- 在一層開頭做 `minutes += 1`，`while` 條件就必須有 `fresh > 0`：少了它，最後那層（什麼也沒腐爛）會多加一分鐘，上面的例子會回傳 5。在一層結尾遞增的寫法也有同樣的差一錯誤；完整說明在 [bfs_examples.md](./bfs_examples.md) → *When to Increment Time/Distance*。
+- 在一層開頭做 `minutes += 1`，`while` 條件就必須有 `fresh > 0`：少了它，最後那層（什麼也沒腐爛）會多加一分鐘，上面的例子會回傳 5。另一種正確寫法是在一層**結尾**遞增，而且只在這一層真的有東西腐爛時才加（一個 `rotted_this_minute` 旗標）。兩種混用，或兩種都沒做，就會把最後那個空層也算進去。
 - 完全沒有新鮮橘子：`[[0,2]]` 回傳 0 而不是 -1 — `while` 根本不會執行。
 - 每顆腐爛橘子各跑一次 BFS 再取最小值，數字是對的但慢 k 倍，來源一多就逾時。
 - 在彈出時才讓它腐爛：同一層的兩個腐爛鄰居都會把它入列，`fresh` 變負數（[Template 2](#template-2-graph-bfs-mark-on-enqueue--lc-1971-)）。
@@ -299,26 +306,26 @@ BFS 的時間複雜度取決於圖的表示法：
 
 **練習** — LC 994 ⭐ · LC 542 *（下方的距離變形）* · LC 286 · LC 1162 · LC 417 ⭐ *（每個海洋各一次多源 BFS，再取交集）* · LC 934 *（先 DFS 一座島，再從整座島 BFS）*
 
-<!-- 7f001f2530a9 -->
-#### 距離變形：01 Matrix — 到最近來源的距離
-> 從所有 0 的格子同時開始 BFS；距離會向外傳播。
+<!-- f4ae23ea1309 -->
+#### 01 Matrix — LC 542
+
+> **關鍵** — 「每個 1 到最近的 0 有多遠」等同於「每個 0 能擴散多遠」：把**所有** 0 格以距離 0
+> 一起放進佇列，跑一次 BFS。一個格子第一次被走到時的值就是它的距離，所以每格只寫一次 ——
+> O(m·n)，而不是每個 1 格各跑一次 BFS。
+
+**歸約到**：[Template 4](#template-4-multi-source-bfs--lc-994-) — 用 `dist` 格子取代分鐘計數器：
+距離是逐格寫入，而不是逐層。
 
 <!--CODE-->
 
 <!--CODE-->
 
-**這個模式為什麼有效：**
-1. **同步擴張**：所有來源以相同速率擴張 → 一層一層推進
-2. **第一次拜訪 = 最短**：在無權 BFS 中，第一次抵達即保證是最短路徑
-3. **不需回溯**：一格被拜訪過，就代表已找到它的最短距離
-4. **線性時間**：每一格恰好拜訪一次 → 總計 O(m×n)
+**陷阱**
+- 每個 1 格各跑一次 BFS 是 O((m·n)²)：m·n = 10⁴ 時就會超時。把方向反過來，從 0 出發。
+- 格子要在**入隊時**標記（`dist[nr][nc] == -1` → 寫入），而不是出隊時，否則同一格會被好幾個
+  鄰居重複放進佇列。
 
-**關鍵洞見 — 為什麼從 0 開始而不是從 1 開始？**
-- ❌ 從每個 1 開始 → O(m×n) 次 BFS 呼叫 → 總時間 O(m²×n²)
-- ✅ 從所有 0 一起開始 → 單趟 BFS → 總時間 O(m×n)
-- **原則**：把問題翻轉過來——與其問「這個 1 離任一個 0 有多遠？」，改問「所有 0 能擴散到多遠？」
-
-<!-- 0907165b544c -->
+<!-- 24eedc89b09a -->
 ### Template 5：對即時產生的鄰居做 Word Ladder BFS — LC 127 ⭐⭐⭐⭐⭐
 
 **辨識** — 「一次改一個字母，把一個單字轉成另一個」、「打開鎖的最少步數」、「每一步只改一個位置」，並給一份合法狀態的字典或 `deadends` 清單。字長 L ≤ 10、單字數 N ≤ 5,000 → 產生一個字的 26·L 個鄰居，而不是比較全部 N² 對。
@@ -343,9 +350,7 @@ BFS 的時間複雜度取決於圖的表示法：
 
 **練習** — LC 127 ⭐ · LC 433 *（4 種字母、8 個位置）* · LC 752 *（一把鎖：每個轉輪 ±1，deadends 是牆）* · LC 126 *（所有最短序列）* · LC 854 *（鄰居由交換兩個字母產生）*
 
-> 這個模板的逐行解說——執行追蹤、為什麼還原那一步是必要的，以及它與其他 BFS 形狀的比較——在 [bfs_advanced.md](./bfs_advanced.md)。
-
-<!-- 942b0720e2ba -->
+<!-- c4e1ecd47f02 -->
 ### Template 6：父節點表 + 從目標向外輻射的 BFS — LC 863 ⭐⭐⭐⭐⭐
 
 **辨識** — 「距離 `target` 為 k 的所有節點」、「感染從節點 `start` 擴散所需時間」、「離節點 k 最近的葉節點」：距離是從一個**不是根**的節點量起，答案可能包含祖先或兄弟子樹裡的節點。節點 ≤ 500（LC 863）到 10⁵（LC 2385）。
@@ -377,7 +382,7 @@ BFS 的時間複雜度取決於圖的表示法：
 - LC 863 給你的 `target` 是**節點**；LC 2385 給你的 `start` 是**值**。在 BFS 開始前，先在建父節點表的 DFS 中找到那個節點。
 - `k = 0` 回傳 `[target.val]`：目標以 `dist == 0` 被彈出，任何展開之前就收集了。
 
-**不適用時** — 距離是從**根**算 → 一般的層序 BFS（[Template 1](#template-1-level-order-bfs--lc-102-)）。DFS 替代解（「距離滲透」）是用後序 DFS 回傳 `target` 在各子樹中的深度；在目標上方 `d` 條邊的節點，往*另一個*子節點收集往下 `k - d` 層的節點。同樣是 O(n)，但寫錯的機率高得多 — BFS + 父節點表才是面試上穩妥的答案。節點是值而不是 `TreeNode` 物件時，改建完整的鄰接表（[bfs_advanced.md](./bfs_advanced.md) Pattern 10）：
+**不適用時** — 距離是從**根**算 → 一般的層序 BFS（[Template 1](#template-1-level-order-bfs--lc-102-)）。DFS 替代解（「距離滲透」）是用後序 DFS 回傳 `target` 在各子樹中的深度；在目標上方 `d` 條邊的節點，往*另一個*子節點收集往下 `k - d` 層的節點。同樣是 O(n)，但寫錯的機率高得多 — BFS + 父節點表才是面試上穩妥的答案。節點是值而不是 `TreeNode` 物件時，改建完整的鄰接表（LC 1530 就需要；它的標準解是 [dfs_advanced.md](./dfs_advanced.md) 的後序分桶 DFS）：
 
 | | 父節點表 `{node: parent}` | 鄰接表 `{node: [neighbors]}` |
 |---|---|---|
@@ -392,15 +397,23 @@ BFS 的時間複雜度取決於圖的表示法：
 |---------|------|----------------------|
 | All Nodes Distance K in Binary Tree | 863 | **標準題** — 父節點表 + 向外 BFS `k` 步 |
 | Amount of Time for Binary Tree to Be Infected | 2385 | 同一套父節點表 BFS；答案 = **最大**距離（最後一層 BFS） |
-| Closest Leaf in a Binary Tree | 742 | 從目標向外 BFS，在彈出**第一個葉節點**時停止（§2-15） |
+| Closest Leaf in a Binary Tree | 742 | 從目標向外 BFS，在彈出**第一個葉節點**時停止（[bfs_examples.md](./bfs_examples.md)） |
 | Find Distance in a Binary Tree | 1740 | 兩節點間的距離 = 從其中一個 BFS 直到另一個被彈出（或用 LCA） |
-| Number of Good Leaf Nodes Pairs | 1530 | bfs_advanced Pattern 10 — 從*每個*葉節點向外做有界 BFS |
+| Number of Good Leaf Nodes Pairs | 1530 | 每個葉節點各做一次有界 BFS 可行，但標準解是 [dfs_advanced.md](./dfs_advanced.md) 的後序距離分桶 |
 | Step-By-Step Directions From a Binary Tree Node | 2096 | 同樣的先上後下洞見，但重建的是路徑而非距離 |
 | Cousins in Binary Tree | 993 | 每個節點需要 `parent` + `depth` — 只要父節點表，不需向外輻射 BFS |
 | Lowest Common Ancestor of a Binary Tree | 236 | LCA 就是先上後下路徑的「轉折點」 |
-| Minimum Height Trees | 310 | 無向樹的 BFS，是往內修剪而非往外輻射（§2-10） |
+| Minimum Height Trees | 310 | 無向樹的 BFS，是往內修剪而非往外輻射（[topology_sorting_examples.md](./topology_sorting_examples.md)） |
 
-**變形：做 `k` 次逐層 BFS，然後把佇列倒出來** — tuple 裡不放 `dist`；展開 `k` 次之後，佇列*本身*就是答案集合。完整程式碼、A vs B 比較與陷阱表：[bfs_examples.md](./bfs_examples.md) §2-18。
+<!-- 14a209cad3a7 -->
+#### 第二種解法：剛好展開 `k` 層，佇列就是答案
+
+佇列項目裡不放 `dist`：做 `k` 次完整的逐層展開（先記下 `len(q)`），佇列裡剩下的就恰好是距離 `k`
+的集合。同樣 O(n)；`k = 0` 回傳 `[target]`，`k` 比樹還大時佇列會清空成 `[]`，都不需要特判。若同時
+也需要各個距離，就用上面 `(node, dist)` 的寫法。
+
+<!--CODE-->
+
 
 > **模式重點**：一旦某題樹的問題是**從根以外的節點**去量測某件事，就別再想「樹的遞迴」，
 > 改想**「無向圖」**——補上父連結（`{node: parent}` 對照表，或 `node.par` 標註），
@@ -408,28 +421,14 @@ BFS 的時間複雜度取決於圖的表示法：
 
 ---
 
-<!-- ad67d13fc5ba -->
-### Template 7：BFS 二著色（二分圖檢查） — LC 785 ⭐⭐⭐⭐
+<!-- 5343958f1000 -->
+### 二分圖檢查（二著色）— 放在 graph.md
 
-**辨識** — 「能否把節點分成兩組，讓每條邊都橫跨兩組」、「圖是否為二分圖」、「互相討厭的人」。n ≤ 100（LC 785）→ O(V + E)。
-
-**關鍵** — BFS 不一定要攜帶距離；它也可以攜帶**標籤**。把起點塗成 `0`，每個鄰居塗成相反的顏色（`color ^ 1`）：每個節點都和塗它的那個節點顏色不同，所以兩端同色的邊會封閉出一個奇數環，圖就不是二分圖。
-
-<!--CODE-->
-
-<!--CODE-->
-
-**複雜度**
-- **時間 O(V + E)**：每個節點上色並入列一次，`for nxt in graph[cur]` 每個鄰接串列只讀一次。
-- **空間 O(V)**：`color` 與佇列。
-
-**陷阱**
-- **不連通的圖** — 一次 BFS 只涵蓋一個連通元件。要用 `for s in range(n)` 迴圈，對每個尚未上色的節點重開一次 BFS，否則 `[[],[2,3],[1,3],[1,2]]`（孤立的節點 0 加上一個三角形）會回傳 True。
-- **不要另外用 `visited` 布林值** — 以 `-1 = 未拜訪` 的 `color` 同時是已拜訪標記*也是*答案；兩個陣列可能不一致。
-
-**不適用時** — 配對以清單給出（「把互相討厭的人分開」，LC 886）→ 先建鄰接串列，這段程式碼原封不動就能跑。三組以上 → k 著色（[graph_advanced.md](./graph_advanced.md)）。DFS 寫法與完整說明在 [graph.md § Template 6](./graph.md#template-6-bipartite-check-2-coloring--lc-785-)。
-
-**練習** — LC 785 ⭐ · LC 886 *（由討厭配對建邊）* · LC 1042 *（四種顏色，貪心）* · LC 2493 *（先檢查二分圖，再對每個元件找最長的 BFS）*
+BFS 不一定要帶著距離；它也可以帶著一個**標籤**。最經典的例子就是二著色：把每個鄰居塗成相反的
+顏色，一條兩端同色的邊就是奇數環。這張卡片 —— BFS 與 DFS 兩種寫法、Python 與 Java、不連通圖與
+自環的陷阱 —— 在
+[graph.md § Template 6](./graph.md#template-6-bipartite-check-2-coloring--lc-785-)，那裡是 LC 785
+唯一的家；LC 886 的解題在 [graph_examples.md](./graph_examples.md)。
 
 <!-- 772b64cd5d29 -->
 ## 練習路徑
@@ -442,7 +441,7 @@ BFS 的時間複雜度取決於圖的表示法：
 
 ---
 
-<!-- 5898009bd2df -->
+<!-- a3a2093b7a82 -->
 ## 總結與速查
 
 > 下方的 `Pattern 4.5 / 4.6 / 6 / 8 / 8.5 / 9 / 10 / 12 / 14 / 15 / 16` 放在 [bfs_advanced.md](./bfs_advanced.md)；`§2-N` 的參照放在 [bfs_examples.md](./bfs_examples.md)。
@@ -551,16 +550,16 @@ BFS 的時間複雜度取決於圖的表示法：
 - **Letter Case Permutation (LC 784)** — 每個字元 1 或 2 個選項的群組
 - **Generalized Abbreviation (LC 320)** — 每個字元「保留或跳過」的群組
 
-<!-- 9c5580299a6e -->
+<!-- 05f421f1748c -->
 ### 關鍵 LeetCode 題目
 | 難度 | 題目 | 關鍵概念 | 核心模式 |
 |------------|---------|-------------|--------------|
 | Easy | LC 102 | 層序走訪 | Template 1（逐層） |
 | **Medium** | **LC 127** | **最短路徑轉換 - Word Ladder** | **Template 5（無權最短路徑）** |
 | Medium | LC 200 | 連通元件 | Template 2（圖 BFS） |
-| Medium | LC 742 | 最近的葉節點（樹 → 無向圖） | `bfs_examples.md` §2-15（樹 → 圖 + BFS） |
-| Medium | LC 863 | 距離**目標節點** `k`（父節點表、3 個鄰居） | Template 6（向外輻射）；`bfs_examples.md` §2-18 中的形狀 B |
-| Medium | LC 623 | 逐層 BFS 到 `depth - 1`，再重接子節點指標 | `bfs_examples.md` §2-17（Add One Row to Tree） |
+| Medium | LC 742 | 最近的葉節點（樹 → 無向圖） | [bfs_examples.md](./bfs_examples.md#closest-leaf-in-a-binary-tree--lc-742)（樹 → 圖 + BFS） |
+| Medium | LC 863 | 距離**目標節點** `k`（父節點表、3 個鄰居） | Template 6（向外輻射），兩種寫法 |
+| Medium | LC 623 | 逐層 BFS 到 `depth - 1`，再重接子節點指標 | [bfs_examples.md](./bfs_examples.md#add-one-row-to-tree--lc-623) |
 | **Medium** | **LC 542** | **同步多源 - 01 Matrix** | **Template 4（同步多源）** |
 | Medium | LC 934 | DFS + 多源 BFS（島嶼擴張） | Pattern 4.5（DFS + 多源） |
 | Medium | LC 1162 | As Far from Land as Possible | Template 4（同步多源） |
@@ -568,17 +567,17 @@ BFS 的時間複雜度取決於圖的表示法：
 | Hard | LC 286 | Walls and Gates | Template 4（同步多源） |
 | **Hard** | **LC 317** | **各自獨立的 BFS（距離總和）** | **Pattern 4.6（獨立 BFS）** |
 | Hard | LC 675 | 排序 + 重複 BFS（依序處理目標） | Pattern 6（排序 + 重複 BFS） |
-| **Hard** | **LC 752** | **在狀態空間上做 BFS - Open the Lock** | **Template 5（無權最短路徑）；解題見 `bfs_examples.md` §2-6** |
+| **Hard** | **LC 752** | **在狀態空間上做 BFS - Open the Lock** | **Template 5（無權最短路徑）；解題見 [bfs_examples.md](./bfs_examples.md#open-the-lock--lc-752)** |
 | **Hard** | **LC 815** | **以路線為層的 BFS（最少公車數）** | **Pattern 8（路線層 BFS）** |
 | Hard | LC 864 | 帶狀態的 BFS（收集鑰匙） | Template 2 + 狀態（[bfs_advanced.md](./bfs_advanced.md) Pattern 16） |
 | Hard | LC 1293 | 帶狀態的 BFS（消除障礙物） | Template 2 + 狀態（[bfs_advanced.md](./bfs_advanced.md) Pattern 16） |
 
-<!-- 499ed6826317 -->
+<!-- 1b108a513cba -->
 ### 也常被問到（沒有新模板——它們重用上面的模板）
 
 | LC | 題目 | 重用了哪個模板 |
 |----|---------|--------------------------|
-| 297 / 449 | Serialize and Deserialize Binary Tree / BST | Template 1 逐層 BFS 並寫入 `null` 標記；反序列化 = 同一個佇列讀回來（見 [bfs_examples.md](./bfs_examples.md) 中的 Variation C） |
+| 297 / 449 | Serialize and Deserialize Binary Tree / BST | Template 1 逐層 BFS 並寫入 `null` 標記；反序列化 = 同一個佇列讀回來（見 [bfs_examples.md 的 LC 958](./bfs_examples.md#check-completeness-of-a-binary-tree--lc-958)） |
 | 104 | Maximum Depth of Binary Tree | Template 1 — 數層數；這題 DFS 遞迴更短，BFS 只在 LC 111 才佔優勢 |
 | 101 | Symmetric Tree | Template 1 搭配**成對佇列** — 鏡像地入列 `(left, right)`，彈出時比較 |
 | 637 / 515 | Average of Levels / Largest Value in Each Tree Row | Template 1 — 把「蒐集這一層」換成「彙總這一層」（平均／最大） |

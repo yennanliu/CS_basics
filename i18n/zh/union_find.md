@@ -259,7 +259,7 @@
 ### 路徑壓縮實際運作
 <!--CODE-->
 
-<!-- 63e4641c8cfb -->
+<!-- d783a7167a52 -->
 ## 3) 技巧與陷阱 ⭐⭐⭐⭐
 
 **常見錯誤：**
@@ -298,7 +298,7 @@
 
 **什麼時候「不要」用併查集：**
 - 靜態的圖，DFS/BFS 就夠了
-- **本來就已經是一棵樹的 `parent[]` 陣列**（例如 `parent[0] = -1`，LC 4015 Weighted Sum of a Tree）。它*看起來*像 DSU 陣列，但沒有 `union()` 就沒有東西要合併——直接記憶化 `depth[x] = depth[parent[x]] + 1` 然後往上爬就好。走法跟帶路徑壓縮的 `find()` 一樣，但完全不用那些簿記。見 [dfs_advanced.md → Template 11](./dfs_advanced.md#template-11-parent-array-tree--memoized-upward-depth--lc-4015)。
+- **本來就已經是一棵樹的 `parent[]` 陣列**（例如 `parent[0] = -1`，LC 4015 Weighted Sum of a Tree）。它*看起來*像 DSU 陣列，但沒有 `union()` 就沒有東西要合併——直接記憶化 `depth[x] = depth[parent[x]] + 1` 然後往上爬就好。走法跟帶路徑壓縮的 `find()` 一樣，但完全不用那些簿記。見 [dfs_advanced.md → Template 8](./dfs_advanced.md#template-8-memoized-climb-on-a-parent-array--lc-4015)。
 - 要求最短路徑（改用 Dijkstra／Floyd-Warshall）
 - 有向圖的強連通元件（改用 Tarjan）
 - 圖很小，直接查鄰接關係就夠了

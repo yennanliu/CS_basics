@@ -855,6 +855,70 @@ before all nodes are popped, there is a cycle → return `-1`.
 
 ---
 
+#### Second solution: memoised DFS
+
+Top-down instead of peeling: "move only to a strictly larger value" makes the grid a DAG, so
+`memo[cell]` (the longest path starting there) is computed once, and no `visited` set is needed —
+the strict inequality already forbids walking back onto the current path. This is the version most
+interviewers expect first; the Kahn's version above avoids recursion as deep as m·n.
+
+```python
+# python
+# LC 329 - Longest Increasing Path in a Matrix (memoised DFS)
+# IDEA: implicit DAG (edges only go to strictly larger values) + memoised DFS
+# time = O(m * n), space = O(m * n)
+def longestIncreasingPath(matrix):
+    m, n = len(matrix), len(matrix[0])
+    memo = [[0] * n for _ in range(m)]      # 0 = not computed yet
+    def dfs(i, j):
+        if memo[i][j]:
+            return memo[i][j]
+        best = 1                            # the cell itself
+        for di, dj in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            x, y = i + di, j + dj
+            if 0 <= x < m and 0 <= y < n and matrix[x][y] > matrix[i][j]:
+                best = max(best, 1 + dfs(x, y))
+        memo[i][j] = best
+        return best
+    return max(dfs(i, j) for i in range(m) for j in range(n))
+```
+
+```java
+// java
+// LC 329 - Longest Increasing Path in a Matrix (memoised DFS)
+// IDEA: the "move only to a bigger value" rule makes the grid a DAG, so DFS + memo computes each cell once
+// time = O(m * n), space = O(m * n)
+class Solution {
+    private static final int[][] DIRS = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+
+    public int longestIncreasingPath(int[][] matrix) {
+        int m = matrix.length, n = matrix[0].length, best = 0;
+        int[][] memo = new int[m][n];   // 0 = not computed yet
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                best = Math.max(best, dfs(matrix, i, j, memo));
+            }
+        }
+        return best;
+    }
+
+    private int dfs(int[][] mat, int i, int j, int[][] memo) {
+        if (memo[i][j] != 0) {
+            return memo[i][j];
+        }
+        int best = 1;
+        for (int[] d : DIRS) {
+            int x = i + d[0], y = j + d[1];
+            if (x >= 0 && x < mat.length && y >= 0 && y < mat[0].length && mat[x][y] > mat[i][j]) {
+                best = Math.max(best, 1 + dfs(mat, x, y, memo));
+            }
+        }
+        memo[i][j] = best;
+        return best;
+    }
+}
+```
+
 ### Template 10: In-Degree Signature (answer read straight off the degrees) ⭐⭐⭐⭐
 
 **Key Idea**: some "graph" problems never need the traversal at all — the answer is fully
@@ -1405,22 +1469,26 @@ START: Topological Sort Problem
 └── DEFAULT → Use Template 1 (BFS Kahn's Algorithm)
 ```
 
-> The `UnionFind` class above is the template; LC 547 applies it three ways —
-> union-find, DFS and BFS — in
-> [topology_sorting_examples.md](./topology_sorting_examples.md#8-number-of-provinces--lc-547).
+> The `UnionFind` class above is the template; LC 547 itself is worked by traversal in
+> [graph.md § Template 1](./graph.md#template-1-connected-components-by-traversal--lc-547-), and
+> by union-find in [union_find_examples.md](./union_find_examples.md).
 
 
 ## Worked Examples
 
-Eight problems, grouped by the shape of the dependency they encode, live in
-**[topology_sorting_examples.md](./topology_sorting_examples.md)**:
+The classic problems live in **[topology_sorting_examples.md](./topology_sorting_examples.md)**,
+grouped by the template they exercise:
 
 | Group | Problems | The template they exercise |
 |---|---|---|
-| [Course scheduling & ordering](./topology_sorting_examples.md#course-scheduling--ordering) | LC 210, 207, 269, 444 | Kahn's (T1), three-colour DFS (T2), lexicographical (T4) |
-| [Layering & parallel scheduling](./topology_sorting_examples.md#layering--parallel-scheduling) | LC 1136 | parallel task scheduling (T6) |
-| [Cycle detection & safe states](./topology_sorting_examples.md#cycle-detection--safe-states) | LC 802 | three-colour DFS (T2) |
-| [Undirected graphs — components & centroids](./topology_sorting_examples.md#undirected-graphs--components--centroids) | LC 310, 547 | leaf trimming (T7), union find (T8) |
+| [Kahn's algorithm](./topology_sorting_examples.md#kahns-algorithm-examples) | LC 210, 444, 269 | Kahn's (T1) |
+| [Parallel task scheduling](./topology_sorting_examples.md#parallel-task-scheduling-examples) | LC 1136 | parallel task scheduling (T6) |
+| [Leaf trimming](./topology_sorting_examples.md#leaf-trimming-examples) | LC 310 | leaf trimming (T7) |
+
+LC 207 and LC 802 are the anchor problems of
+[graph.md § Template 4](./graph.md#template-4-topological-sort-kahns-bfs--lc-207-) and
+[§ Template 5](./graph.md#template-5-three-state-dfs-cycle-detection--lc-802-); LC 329 is worked on
+[Template 9](#template-9-topological-sort--dp-on-an-implicit-dag-) above.
 
 
 ## Summary & Interview Tips
