@@ -317,9 +317,9 @@ subarray min/max sums, and the greedy-removal variants) is
 
 ```python
 # python
-# LC 739 - Daily Temperatures (next greater element, as a distance)
 # IDEA: the stack holds indices still waiting for a warmer day; a warmer `val` answers every one it pops
 # time = O(n), space = O(n)
+# LC 739 - Daily Temperatures (next greater element, as a distance)
 def daily_temperatures(temperatures):
     n = len(temperatures)
     res = [0] * n                 # 0 = no warmer day ahead
@@ -334,9 +334,9 @@ def daily_temperatures(temperatures):
 
 ```java
 // java
-// LC 739 - Daily Temperatures (next greater element, as a distance)
 // IDEA: the stack holds indices still waiting for a warmer day; a warmer value answers every one it pops
 // time = O(n), space = O(n)
+// LC 739 - Daily Temperatures (next greater element, as a distance)
 public int[] dailyTemperatures(int[] temperatures) {
     int n = temperatures.length;
     int[] res = new int[n];                    // 0 = no warmer day ahead
