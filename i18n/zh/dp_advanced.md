@@ -91,13 +91,13 @@
    - 第二趟（前序）：用數學公式把根從父節點換到子節點
    - 範例：LC 834（Sum of Distances in Tree）、LC 2581（Count Number of Possible Root Nodes）
 
-<!-- 4b63d0bae9dd -->
+<!-- 047730cc2ac9 -->
 ### Sum of Distances in Tree — LC 834
 
 > **關鍵** — 兩趟：後序那趟算出子樹大小與根的總距離；前序那趟把根沿每條邊移過去：`v` 底下的 `size[v]` 個節點近了一步，
 > 其餘 `n - size[v]` 個遠了一步。
 
-**歸約到**：[tree.md § Re-rooting DP](./tree.md#re-rooting-dp--answer-for-every-root)，Python 與 Java 都在那裡。LC 2581 用同樣方式換根計數。
+**歸約到**：[tree.md § Template 3](./tree.md#template-3-re-rooting-dp--lc-834)，Python 與 Java 都在那裡。LC 2581 用同樣方式換根計數。
 
 <!-- 0db598d281b3 -->
 #### 換根 DP —— 什麼時候用、怎麼用

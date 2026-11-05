@@ -113,7 +113,7 @@ public boolean predictTheWinner(int[] nums) {
 > and a pre-order one moves the root across each edge: the `size[v]` nodes under `v` get one closer,
 > the other `n - size[v]` one farther.
 
-**Reduces to**: [tree.md § Re-rooting DP](./tree.md#re-rooting-dp--answer-for-every-root), where it
+**Reduces to**: [tree.md § Template 3](./tree.md#template-3-re-rooting-dp--lc-834), where it
 is worked in Python and Java. LC 2581 re-roots a guess count the same way.
 
 #### Re-rooting DP — When and How
