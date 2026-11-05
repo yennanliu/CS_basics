@@ -53,6 +53,8 @@ boolean hasCycle(ListNode head){
 #### 1-1-2 : return the "ring start point" of circular linked list 
 ```java
 // java
+// IDEA: Floyd: the pointers meet inside the cycle; restart one at head, step both by one -> cycle start
+// time = O(n), space = O(1)
 // LC 142 - Linked List Cycle II
 ListNode detectCycle(ListNode head){
     ListNode fast, slow;

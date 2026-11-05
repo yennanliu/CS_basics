@@ -171,9 +171,9 @@ so it is `max(dp)`, not `dp[n-1]`.
 
 ```python
 # python
-# LC 53 - Maximum Subarray
 # IDEA: dp[i] = best sum of a subarray that ENDS at i: extend the previous run or restart at i
 # time = O(n), space = O(n)
+# LC 53 - Maximum Subarray
 def maxSubArray(nums):
     n = len(nums)
     if n == 0:
