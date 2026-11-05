@@ -823,8 +823,8 @@ r=5  v=1  window {3,2}    addend: 2 and 2+1=3 -> drop 3         -> [2,1]      le
 valid *and* a valid one invalid, `left` is not monotone and this loop is unsound ("sum equals k"
 over negatives, LC 560) → [prefix_sum.md](./prefix_sum.md).
 
-**Drill** — LC 3 *(the pair rule "no two equal", tested on the newcomer by a set)* · LC 1695
-*(same, scoring a sum)* · LC 4067
+**Drill** — LC 4067 · LC 3 *(the pair rule "no two equal", tested on the newcomer by a set)* · LC 1695
+*(same, scoring a sum)*
 
 ## Drill Path
 
