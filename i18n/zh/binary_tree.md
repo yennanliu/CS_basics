@@ -35,7 +35,7 @@
 - [Wikipedia - Binary Tree](https://en.wikipedia.org/wiki/Binary_tree)
 - [Binary Tree - 演算法筆記](https://web.ntnu.edu.tw/~algo/BinaryTree.html)
 
-<!-- 3fd2776dfc4b -->
+<!-- affd4ebe6c3f -->
 ## 辨識
 
 限制條件的線索出自 [complexity_cheatsheet.md](./complexity_cheatsheet.md) 裡的那把尺。
@@ -45,9 +45,9 @@
 | 「回傳中序／前序／後序走訪」 | n ≤ 100 | [模板 1](#template-1-recursive-pre--in--post-order-traversal--lc-94) 遞迴，`append` 的位置決定順序 | 「不用遞迴」、樹很深 → [模板 2](#template-2-iterative-traversal--stack-in-order-and-queue-level-order--lc-102) 的堆疊 |
 | 「一層一層」、「右視圖」、「每個深度」 | n ≤ 2000 | [模板 2](#template-2-iterative-traversal--stack-in-order-and-queue-level-order--lc-102) 佇列長度快照 | 節點之間的空隙也要算 → [模板 11](#template-11-bfs-with-positional-index--lc-662-) |
 | 「由前序與中序建出這棵樹」 | n ≤ 3000，值不重複 | [模板 3](#template-3-build-from-preorder--inorder--lc-105) 索引 map | 給的是一條帶 null 標記的字串 → [tree_codec.md](./tree_codec.md) |
-| 「所有總和 = target 的根到葉路徑」 | n ≤ 5000 | [模板 4](#template-4-root-to-leaf-path-with-backtracking--lc-113) append / pop | 路徑可以從任何地方開始 → 樹上的前綴和，[tree_lca_distance.md](./tree_lca_distance.md) |
+| 「所有總和 = target 的根到葉路徑」 | n ≤ 5000 | [模板 4](./tree_lca_distance.md#template-4-root-to-leaf-path-with-backtracking--lc-113) append / pop | 路徑可以從任何地方開始 → 樹上的前綴和，[tree_lca_distance.md](./tree_lca_distance.md) |
 | 「直徑」、「任兩節點間的最長路徑」、「是否平衡」 | n ≤ 10⁴ | [模板 5](#template-5-height-up-answer-in-a-global--lc-543) 高度往上回傳，轉彎的路徑記在全域變數 | 需要的值來自上方（深度、目前為止的最大值）→ 往下傳，[§0-5](#0-5-depth-vs-height--the-two-numbers-a-tree-dfs-computes-) |
-| 「最低共同祖先」，有 root、兩個節點都存在 | n ≤ 10⁵ | [模板 6](#template-6-lca-by-returned-presence--lc-236) 用回傳值表示找到了沒 | 是 BST → 依值往下走（[bst.md](./bst.md)）；沒有 root、只有 `parent` 指標 → [tree_lca_distance.md](./tree_lca_distance.md) |
+| 「最低共同祖先」，有 root、兩個節點都存在 | n ≤ 10⁵ | [模板 6](./tree_lca_distance.md#template-1-lca-by-returned-presence--lc-236) 用回傳值表示找到了沒 | 是 BST → 依值往下走（[bst.md](./bst.md)）；沒有 root、只有 `parent` 指標 → [tree_lca_distance.md](./tree_lca_distance.md) |
 | 「用少於 O(n) 的時間數出**完全**二元樹的節點數」 | n ≤ 5 · 10⁴ | [模板 7](#template-7-count-nodes-of-a-complete-tree--lc-222) 比較左側脊 | 不是完全樹 → O(n) 走訪 |
 | 「填好每個 `next` 指標」、「常數額外空間」 | n ≤ 6000 | [模板 8](#template-8-level-linking-with-o1-space--lc-117-) 虛擬頭 + 尾指標 | 允許 O(n) 空間 → [模板 2](#template-2-iterative-traversal--stack-in-order-and-queue-level-order--lc-102) |
 | 「不能同時選父節點和它的子節點」、「覆蓋每個節點」 | n ≤ 10⁴ | [模板 9](#template-9-tree-dp--return-multiple-states--lc-337-) 回傳一組狀態 | 每棵子樹一個數字就夠 → [模板 5](#template-5-height-up-answer-in-a-global--lc-543) |
@@ -391,10 +391,14 @@ A vs B 這個問題只對**由上而下**的題目有意義：也就是一個節
 
 **練習** — LC 105 ⭐ · LC 106 *（後序：從尾端取根、先建右）* · LC 889 *（前序 + 後序，左子樹的根是 `preorder[1]`）* · LC 1008 *（只靠前序建 BST：用上下界取代 map）*
 
-<!-- 397ce247e2d1 -->
-### 模板 4：帶回溯的根到葉路徑 — LC 113
+<!-- 196697377614 -->
+### Path Sum II，根到葉路徑 — LC 113
 
-這張卡片的家在 [tree_lca_distance.md § Template 4](./tree_lca_distance.md#template-4-root-to-leaf-path-with-backtracking--lc-113)，那份表單負責整個根到葉路徑家族（LC 112 / 113 / 129 / 257 / 437）：同一份前序 append / pop 的 Python 與 Java 程式碼，連同試跑與陷阱。編號留在這裡，後面的模板才不用重新編號。
+> **關鍵** — 前序 DFS：進入節點時 append、離開時 pop，所以 `path` 永遠是根到目前節點的路徑，
+> 兄弟節點不會看到彼此的節點。
+
+**歸約到**：[tree_lca_distance.md § Template 4](./tree_lca_distance.md#template-4-root-to-leaf-path-with-backtracking--lc-113)，那份表單負責整個根到葉路徑家族
+（LC 112 / 113 / 129 / 257 / 437），Python 與 Java、試跑和陷阱都在那裡。這份表單不留副本，下面的模板編號維持不變。
 
 <!-- d9eb97e0caef -->
 ### 模板 5：高度往上回傳、答案記在全域變數 — LC 543
@@ -421,10 +425,12 @@ A vs B 這個問題只對**由上而下**的題目有意義：也就是一個節
 
 **練習** — LC 543 ⭐ · LC 104 ⭐ · LC 110 ⭐ · LC 687 · LC 124 ⭐
 
-<!-- 7f5abcf6def5 -->
-### 模板 6：用回傳值表示找到了沒的 LCA — LC 236
+<!-- 6111bc45daf4 -->
+### Lowest Common Ancestor of a Binary Tree — LC 236
 
-這張卡片的家在 [tree_lca_distance.md § Template 1](./tree_lca_distance.md#template-1-lca-by-returned-presence--lc-236)，那份表單負責整個 LCA 家族：後序「回傳我找到的東西」的 Python 與 Java 程式碼、一次試跑，以及各改一個前提的變形（BST 上的 LC 235、目標可能不存在的 LC 1644、有父指標的 LC 1650、目標是一個集合的 LC 1676）。編號留在這裡，後面的模板才不用重新編號。
+> **關鍵** — 後序：每次呼叫回傳它找到的目標（或 LCA，或什麼都沒有）；第一個左右子都回傳東西的節點就是分岔點，也就是 LCA。
+
+**歸約到**：[tree_lca_distance.md § Template 1](./tree_lca_distance.md#template-1-lca-by-returned-presence--lc-236)，那份表單負責整個 LCA 家族：Python 與 Java 程式碼、一次試跑，以及各改一個前提的變形（BST 上的 LC 235、目標可能不存在的 LC 1644、有 parent 指標的 LC 1650、一組目標的 LC 1676）。
 
 <!-- 7eebc80428cf -->
 ### 模板 7：數完全樹的節點 — LC 222
