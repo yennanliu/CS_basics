@@ -614,8 +614,11 @@ heading that opens with `> **Key point** —` and has `**Reduces to**:` before i
 added line is held to the line rules (no `NOTE !!!`), a new sheet to the sheet rules (no
 `1-1)` numbering), and an `_examples` sheet may hold no pattern card and no
 `## Other Examples`. `.github/workflows/cheatsheet-cards.yml` runs it on every change to
-`doc/cheatsheet/`. Its tests run the two sample cards in `00_template.md` through it, so the
-template and the checker cannot disagree. **Fix the section, never the checker**; `--all
+`doc/cheatsheet/`, and a project hook in `.claude/settings.json`
+(`.claude/hooks/check_cheatsheet_cards.py`, PostToolUse on `Edit|Write|MultiEdit`) runs it the
+moment Claude Code edits a sheet, handing that file's problems straight back to the agent, so a
+section is fixed in the turn it was written rather than after a red CI run. Its tests run the
+two sample cards in `00_template.md` through it, so the template and the checker cannot disagree. **Fix the section, never the checker**; `--all
 <file>` audits a whole sheet before a P2-style rewrite.
 
 `site/pages/lc-cheatsheet.html` is its page on the site — the three ways an edit rots, the

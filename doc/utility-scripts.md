@@ -633,6 +633,12 @@ excuse the wrong things. `--all heap_examples.md` alone reports 95 problems.
 | every **added line** | no `NOTE !!!` |
 | a **new sheet** | no `1-1)`-style numbered headings |
 
+**The hook.** `.claude/settings.json` registers `.claude/hooks/check_cheatsheet_cards.py` as a
+`PostToolUse` hook on `Edit|Write|MultiEdit`. After Claude Code edits `doc/cheatsheet/<sheet>.md`
+it runs this checker and, if that file has problems, exits 2 with them on stderr, which Claude
+Code feeds back to the agent. Every other file, `00_template.md`, and a missing base ref pass
+silently: CI stays the gate, the hook is the early warning. Disable it in `/hooks`.
+
 Retitling a heading is how a rewrite is detected, so a retitled section must pass in full; a
 body-only fix to an old section is held to the line rules only. The tests run the two sample
 cards in `00_template.md` through the checker, so the template and the gate cannot drift, and

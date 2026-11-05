@@ -270,7 +270,9 @@ A build failure on a new sheet is usually the missing `cheatsheet_meta.json` ent
 `e2e-check` failure after a heading edit is usually step 5. A `check_cheatsheet_cards.py`
 failure names the section and the missing or misplaced slot; fix the section, never the
 checker. `.github/workflows/cheatsheet-cards.yml` runs it on every change to
-`doc/cheatsheet/`, so a section that is not card-shaped does not merge.
+`doc/cheatsheet/`, so a section that is not card-shaped does not merge. In Claude Code the
+project hook in `.claude/settings.json` also runs it after every edit to a sheet; its message
+is this checker's output for that file, and it means the same thing.
 
 ### 9. Report what was assumed
 
