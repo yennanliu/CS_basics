@@ -20,7 +20,7 @@
 
 一個模式一列。**Card** 欄連到解錨定題的那個模板；題目本身放在該 cheatsheet 的 examples 裡。
 
-<!-- 06d77f9866d9 -->
+<!-- 1a877c4599c9 -->
 ### 陣列與字串
 
 | 敘述裡的訊號 | 限制提示 | 模式 | Card | 長得像，其實不是 |
@@ -28,7 +28,7 @@
 | 「最長／最短的連續子陣列或子字串」、「最多 k 種相異元素」 | n ≤ 10⁵ | 可變長度滑動視窗 | [sliding_window § Template 3](./sliding_window.md#template-3-longest-window-satisfying-p--lc-3-)（最長）、[Template 4](./sliding_window.md#template-4-shortest-window-satisfying-p--lc-209-)（最短） | 要剛好的總和 `sum == k`、而且值可能是負的 → 前綴和 + 雜湊表（LC 560） |
 | 「包含 t 所有字元的最短子字串」、在 s 裡找 t 的 anagram／排列 | n ≤ 10⁵，字母表 26–128 | 字元計數視窗 | [sliding_window § Template 5](./sliding_window.md#template-5-char-count-window-with-the-haveneed-counter--lc-76-) | 要的是子序列、不是子字串 → 雙指標（LC 392） |
 | 「剛好 k 個 … 的子陣列有幾個」 | n ≤ 10⁵ | 剛好 k = 最多 k − 最多 (k−1) | [sliding_window § Template 6](./sliding_window.md#template-6-exactly-k-via-at-most-subtraction--lc-992-) | 「剛好 k」是**總和**（`sum == k`）而且值可能是負的 → 前綴和 + 雜湊表；*相異*值的剛好個數仍用這裡，計數器不在乎正負 |
-| 「總和為 k／可被 k 整除的子陣列有幾個」 | n ≤ 10⁵，允許負數 | 前綴和 + 計數 map | [prefix_sum § Template 2](./prefix_sum.md#template-2-hashmap--prefix-sum-subarray-target-sum--lc-560) | 值全部是正的、要最長／最短 → 滑動視窗 |
+| 「總和為 k／可被 k 整除的子陣列有幾個」 | n ≤ 10⁵，允許負數 | 前綴和 + 計數 map | [prefix_sum § Template 2](./prefix_sum.md#template-2-hashmap--prefix-sum-subarray-target-sum--lc-560)（總和）、[Template 3](./prefix_sum.md#template-3-modulo-prefix-sum-divisibility-problems--lc-974)（整除：數相同的餘數） | 值全部是正的、要最長／最短 → 滑動視窗 |
 | 「大量的區間和查詢」 | q ≤ 10⁵ | 前綴和陣列 | [prefix_sum § Template 1](./prefix_sum.md#template-1-basic-prefix-sum-range-queries--lc-303) | 查詢之間陣列會變 → Fenwick／線段樹（LC 307） |
 | 「把 [l, r] 每個元素加上 v」，做很多次 | n、更新次數 ≤ 10⁵ | 差分陣列 | [difference_array § Template 1](./difference_array.md#template-1-basic-difference-array) | 每次更新後都要讀最大值 → 帶 lazy propagation 的線段樹 |
 | **已排序**陣列上「和為 target 的一對／三元組」、「盛水容器」、「回文檢查」 | n ≤ 10⁵ | 相向雙指標 | [2_pointers § Template 2](./2_pointers.md#template-2-converging-pointers-from-both-ends--lc-11-) | 沒排序、而且要回傳索引 → 雜湊表（LC 1） |
@@ -72,7 +72,7 @@
 | 「由前序與中序建樹」 | 節點 ≤ 3,000 | 分治 + 索引 map | [binary_tree § Template 3](./binary_tree.md#template-3-build-from-preorder--inorder--lc-105) | 序列化／反序列化 → 帶 null 標記的前序（[tree_codec](./tree_codec.md)） |
 | 「前綴搜尋」、「支援 `.` 的單字字典」、「網格裡找很多個字」 | 單字 ≤ 3·10⁴ | trie | [trie](./trie.md#templates--algorithms) | 一次只拿一個字比對一個集合 → hash set 就夠 |
 
-<!-- 4c97412b277d -->
+<!-- bf377faa31c6 -->
 ### 圖
 
 | 敘述裡的訊號 | 限制提示 | 模式 | Card | 長得像，其實不是 |
@@ -80,7 +80,7 @@
 | 「島嶼數量」、「連通區域」、「flood fill」 | 網格 ≤ 300 × 300 | 網格 DFS／BFS，標記已走過 | [dfs § Template 2](./dfs.md#template-2-graph--grid-dfs-flood-fill--lc-200-) | 邊一條一條進來、要問連通性 → 併查集 |
 | 「最短路徑／最少步數」，每一步成本都是 1 | V + E ≤ 10⁵ | BFS（入隊時就標記） | [bfs § Template 2](./bfs.md#template-2-graph-bfs-mark-on-enqueue--lc-1971-) | 每一步成本不同 → Dijkstra；成本只有 0 或 1 → [0-1 BFS](./shortest_path_comparison.md#variant-0-1-bfs) |
 | 「橘子腐爛」、「到最近的 0／門的距離」 | 網格 ≤ 10⁵ 格 | 多源 BFS | [bfs § Template 4](./bfs.md#template-4-multi-source-bfs--lc-994-) | 只要從一個源點出發的距離 → 一般 BFS |
-| 「帶權最短路徑」、「網路延遲」、「最小體力路徑」 | E ≤ 10⁵，權重 ≥ 0 | Dijkstra | [Dijkstra § Template 1](./Dijkstra.md#template-1-basic-dijkstra) | 有負權重或「最多 k 站」 → [Bellman-Ford](./Bellman-Ford.md)（LC 787）；全點對且 n ≤ 400 → [Floyd-Warshall](./Floyd-Warshall.md) |
+| 「帶權最短路徑」、「網路延遲」、「最小體力路徑」 | E ≤ 10⁵，權重 ≥ 0 | Dijkstra | [Dijkstra § Template 1](./Dijkstra.md#template-1-basic-dijkstra)（成本相加）、[§ LC 1631](./Dijkstra.md#1-is-the-cost-additive-and-can-you-order-the-cells--lc-64-vs-lc-1631-)（體力：取路徑上最大的邊，不是相加） | 有負權重或「最多 k 站」 → [Bellman-Ford](./Bellman-Ford.md)（LC 787）；全點對且 n ≤ 400 → [Floyd-Warshall](./Floyd-Warshall.md) |
 | 「課程表」、「有先修條件的任務順序」、「外星字典」 | V + E ≤ 10⁵ | 拓撲排序（Kahn 的 BFS） | [topology_sorting § Template 1](./topology_sorting.md#template-1-bfs-kahns-algorithm-) | 無向圖 → 根本沒有順序；用併查集檢查環 |
 | 「多餘的連線」、「省份數量」、「合併帳號」 | n ≤ 10⁵ | 併查集 | [union_find § 0-3](./union_find.md#0-3-algorithm-pattern--template-) | 還需要路徑長度 → BFS／DFS |
 | 「能不能分成兩組」、「是不是二分圖」 | n ≤ 100 | BFS 二著色 | [graph § Template 6](./graph.md#template-6-bipartite-check-2-coloring--lc-785-) | 三組以上 → 用回溯著色 |
@@ -122,12 +122,12 @@
 | 「帶冷卻的任務排程」、「重排字串讓相同字元不相鄰」 | n ≤ 10⁴，26 種 | 對最頻繁的那個做貪婪 | [greedy § Template 2](./greedy.md#template-2-cooldown-windows-with-a-max-heap--lc-621-)、[Template 5](./greedy.md#template-5-string-reorganization--lc-767-) | 必須保持輸入順序 → 用佇列模擬 |
 | 「能不能跳到終點」、「最少跳幾次」 | n ≤ 10⁴ | 貪婪：最遠可達 | [greedy § Template 4](./greedy.md#template-4-jump-game-pattern--lc-55-) | 每一跳有成本 → DP 或 Dijkstra |
 
-<!-- 059777f22c86 -->
+<!-- 013af8cae993 -->
 ### 堆疊與設計
 
 | 敘述裡的訊號 | 限制提示 | 模式 | Card | 長得像，其實不是 |
 |---|---|---|---|---|
-| 「合法括號」、「解碼字串」、「簡化路徑」 | n ≤ 10⁴ | 放未關閉項目的堆疊 | [stack § Template 2](./stack.md#template-2-bracket-matching--lc-20-) | 只有一種括號 → 一個計數器就夠 |
+| 「合法括號」、「解碼字串」、「簡化路徑」 | n ≤ 10⁴ | 放未關閉項目的堆疊 | [stack § Template 2](./stack.md#template-2-bracket-matching--lc-20-)（括號）、[stack_expression_parsing § 3](./stack_expression_parsing.md#3-decode-string--lc-394-)（解碼字串）、[stack § Template 6](./stack.md#template-6-scope--context-ledger--lc-388-lc-636-)（簡化路徑） | 只有一種括號 → 一個計數器就夠 |
 | 「下一個更大／更暖的一天」、「股票跨度」 | n ≤ 10⁵ | 單調堆疊 | [stack § Template 3](./stack.md#template-3-monotonic-stack--next-greater--smaller--lc-739-) | 每個大小為 k 的視窗的最大值 → 單調雙端佇列（LC 239） |
 | 「直方圖中最大的矩形」、「最大矩形」 | n ≤ 10⁵ | 單調堆疊，找左右邊界 | [monotonic_stack § Template 3](./monotonic_stack.md#template-3-largest-rectangle-in-histogram--lc-84) | 接雨水 → 雙指標比較簡單（LC 42） |
 | 「每個大小為 k 的視窗的最大／最小值」 | n ≤ 10⁵ | 單調雙端佇列 | [monotonic_queue § Template 1](./monotonic_queue.md#template-1-sliding-window-maximum-decreasing-deque--lc-239) | 要的是總和、不是最大值 → 一般滑動視窗 |
