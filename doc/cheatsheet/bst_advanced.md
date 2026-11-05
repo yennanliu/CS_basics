@@ -742,39 +742,12 @@ def numTrees(n):
 
 ### Maximum Difference Between Node and Ancestor — LC 1026
 
-> **Key point** — the largest `|ancestor − descendant|` on a path is the path's max minus its min,
-> so carry those two numbers down and read `high − low` when the path ends. No pair is ever
-> compared, and no BST order is used.
+> **Key point** — carry the path's min and max down and read `high − low` at the end of a path; it
+> needs no BST order and no technique from this sheet.
 
-**Reduces to**: [bst § Template 4](./bst.md#template-4-validate-with-bounds--lc-98) — the same
-two values carried down, widened instead of checked.
-
-```python
-# python
-# LC 1026 - Maximum Difference Between Node and Ancestor
-# IDEA: carry the path's min and max down; at the end of a path the answer is max - min
-# time = O(n), space = O(h)
-def maxAncestorDiff(root):
-    def dfs(node, low, high):
-        if not node:
-            return high - low                    # the path ended: its widest spread
-        low = min(low, node.val)
-        high = max(high, node.val)
-        return max(dfs(node.left, low, high), dfs(node.right, low, high))
-
-    return dfs(root, root.val, root.val)
-```
-
-**Traps**
-- Comparing each node only with its parent: LC 1026's example 1,
-  `[8,3,10,1,6,null,14,null,null,4,7,13]`, returns 5 (8 − 3) instead of 7 (8 − 1, two edges
-  apart).
-
-| | Validate (LC 98) | Max ancestor diff (LC 1026) |
-|---|---|---|
-| carried down | the legal interval | the path's min and max |
-| at a node outside it | return false | widen it |
-| children combine with | `and` | `max` |
+**Reduces to**: [bst § Template 4](./bst.md#template-4-validate-with-bounds--lc-98) — the same two values carried down, widened instead of
+checked. It is worked, with its trap and the comparison with LC 98, in
+[tree_examples.md § LC 1026](./tree_examples.md#maximum-difference-between-node-and-ancestor--lc-1026).
 
 ## When Not to Use
 
