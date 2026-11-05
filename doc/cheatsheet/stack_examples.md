@@ -45,7 +45,7 @@ step its problem adds to that template. A problem worked in another sheet is a r
 | 144 | Binary Tree Preorder Traversal | [stack § Template 5](./stack.md#template-5-explicit-stack--iterative-traversal--lc-144-lc-145-) | Easy | anchor, worked in stack.md |
 | 145 | Binary Tree Postorder Traversal | [stack § Template 5](./stack.md#template-5-explicit-stack--iterative-traversal--lc-144-lc-145-) | Easy | anchor, worked in stack.md |
 | 232 | Implement Queue using Stacks | [queue § Template 5](./queue.md#template-5-queue-using-stacks-pattern--lc-232-) | Easy | worked in queue.md |
-| 173 | Binary Search Tree Iterator | [bst_advanced § Template 5b](./bst_advanced.md#template-5b-bst-lazy-traversal-iterator-pattern) | Medium | worked in bst_advanced.md |
+| 173 | Binary Search Tree Iterator | [bst_advanced § Template 5b](./bst_advanced.md#template-1-lazy-in-order-iterator--lc-173-) | Medium | worked in bst_advanced.md |
 | 341 | Flatten Nested List Iterator | [iterator § 2-2](./iterator.md#2-2-flatten-nested-list-iterator--lc-341) | Medium | worked in iterator.md |
 | 445 | Add Two Numbers II | [stack § Template 5](./stack.md#template-5-explicit-stack--iterative-traversal--lc-144-lc-145-) | Medium | [card](#add-two-numbers-ii--lc-445) |
 | 71 | Simplify Path | [string § Variation 6.1](./string.md#variation-61-token-stack--lc-71-simplify-path) | Medium | worked in string.md |
@@ -613,7 +613,7 @@ form is [stack § Template 3](./stack.md#template-3-monotonic-stack--next-greate
 |---|---|---|
 | 144 · 145 | Binary Tree Preorder / Postorder Traversal | [stack § Template 5](./stack.md#template-5-explicit-stack--iterative-traversal--lc-144-lc-145-) — the anchors |
 | 232 | Implement Queue using Stacks | [queue § Template 5](./queue.md#template-5-queue-using-stacks-pattern--lc-232-) |
-| 173 | Binary Search Tree Iterator | [bst_advanced § Template 5b](./bst_advanced.md#template-5b-bst-lazy-traversal-iterator-pattern) — the paused in-order traversal |
+| 173 | Binary Search Tree Iterator | [bst_advanced § Template 5b](./bst_advanced.md#template-1-lazy-in-order-iterator--lc-173-) — the paused in-order traversal |
 | 341 | Flatten Nested List Iterator | [iterator § 2-2](./iterator.md#2-2-flatten-nested-list-iterator--lc-341) — children pushed in reverse, expanded in `hasNext()` |
 
 ### Add Two Numbers II — LC 445

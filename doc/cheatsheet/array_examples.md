@@ -214,5 +214,5 @@ def maximumSwap(num):
   interviewer is looking for.
 
 **Second approach** — a `{digit: last index}` map and a left-to-right scan, in
-[hash_map_examples.md](./hash_map_examples.md#2-17-maximum-swap-lc-670). Same O(d); it asks "is
+[hash_map_examples.md](./hash_map_examples.md#maximum-swap--lc-670). Same O(d); it asks "is
 there a larger digit later?" instead of carrying the maximum.

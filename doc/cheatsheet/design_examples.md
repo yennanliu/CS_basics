@@ -551,7 +551,7 @@ class FreqStack {
 > **Key point** — `set` is called with strictly increasing timestamps, so each key's list is
 > **already sorted by time**; `get` is a binary search for the last entry with time ≤ t.
 
-**Reduces to**: [design § Pattern 8](./design.md#pattern-8-sorted-map--time-index) — a hash map to a time-sorted list; the "floor" query is `bisect_right - 1`. The Java binary-search form is in [binary_search_examples.md](./binary_search_examples.md#13-time-based-key-value-store-lc-981).
+**Reduces to**: [design § Pattern 8](./design.md#pattern-8-sorted-map--time-index) — a hash map to a time-sorted list; the "floor" query is `bisect_right - 1`. The Java binary-search form is in [binary_search_examples.md](./binary_search_examples.md).
 
 ```python
 # python

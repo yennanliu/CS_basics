@@ -15,7 +15,7 @@
 
 這份是 [hash_map.md](./hash_map.md) 的題目集：模板在那邊，這裡的每一題都是一張卡，寫明它歸約到哪個模板、以及多加了哪一步。各個 `##` 章節依核心文件十個模板的順序排列。最好的詳解放在別份文件的題目，在這裡只留一列指標，所以 [Index](#index) 仍然列出整組題目。
 
-<!-- 1e1193d3f9a0 -->
+<!-- 0918574e97f3 -->
 ## 索引
 
 | LC | 題目 | 歸約到 | 難度 | 詳解在 |
@@ -41,7 +41,7 @@
 | 1248 | Count Number of Nice Subarrays | [hash_map § Template 4](./hash_map.md#template-4-prefix-sum-count-map--lc-560-) | 中等 | [prefix_sum.md § Template 6](./prefix_sum.md#template-6-transform-and-count--lc-1248) |
 | 438 | Find All Anagrams in a String | [hash_map § Template 5](./hash_map.md#template-5-fixed-window-character-counts--lc-438) | 中等 | hash_map.md（錨點題） |
 | 3 | Longest Substring Without Repeating Characters | [sliding_window § Template 3](./sliding_window.md#template-3-longest-window-satisfying-p--lc-3-) | 中等 | sliding_window.md |
-| 424 | Longest Repeating Character Replacement | [sliding_window § Template 3](./sliding_window.md#template-3-longest-window-satisfying-p--lc-3-) | 中等 | [sliding_window_examples.md § 5](./sliding_window_examples.md#5-longest-repeating-character-replacement--lc-424-) |
+| 424 | Longest Repeating Character Replacement | [sliding_window § Template 3](./sliding_window.md#template-3-longest-window-satisfying-p--lc-3-) | 中等 | [sliding_window_examples.md § 5](./sliding_window_examples.md#longest-repeating-character-replacement--lc-424-) |
 | 953 | Verifying an Alien Dictionary | [hash_map § Template 6](./hash_map.md#template-6-rank-map--value-to-position--lc-953-) | 簡單 | hash_map.md（錨點題） |
 | 670 | Maximum Swap | [hash_map § Template 6](./hash_map.md#template-6-rank-map--value-to-position--lc-953-) | 中等 | [下方](#maximum-swap--lc-670) |
 | 2471 | Minimum Number of Operations to Sort a Binary Tree by Level | [hash_map § Template 6](./hash_map.md#template-6-rank-map--value-to-position--lc-953-) | 中等 | [下方](#minimum-number-of-operations-to-sort-a-binary-tree-by-level--lc-2471) |
@@ -218,7 +218,7 @@
 | LC 974 | Subarray Sums Divisible by K | [prefix_sum.md § Template 3](./prefix_sum.md#template-3-modulo-prefix-sum-divisibility-problems--lc-974) | 中等 |
 | LC 1248 | Count Number of Nice Subarrays | [prefix_sum.md § Template 6](./prefix_sum.md#template-6-transform-and-count--lc-1248) | 中等 |
 
-<!-- 60c974be00b0 -->
+<!-- f218672fbf72 -->
 ## 固定視窗字元計數的例題
 
 錨點題在核心文件裡詳解；長度可變、同樣維護計數表的視窗，在滑動視窗的文件裡詳解。
@@ -227,17 +227,17 @@
 |---|---|---|---|
 | LC 438 | Find All Anagrams in a String | [hash_map § Template 5](./hash_map.md#template-5-fixed-window-character-counts--lc-438) | 中等 |
 | LC 3 | Longest Substring Without Repeating Characters | [sliding_window § Template 3](./sliding_window.md#template-3-longest-window-satisfying-p--lc-3-) | 中等 |
-| LC 424 | Longest Repeating Character Replacement | [sliding_window_examples.md § 5](./sliding_window_examples.md#5-longest-repeating-character-replacement--lc-424-) | 中等 |
+| LC 424 | Longest Repeating Character Replacement | [sliding_window_examples.md § 5](./sliding_window_examples.md#longest-repeating-character-replacement--lc-424-) | 中等 |
 
 <!-- 221a8291db33 -->
 ## 排名表的例題
 
-<!-- b88f9ffab153 -->
+<!-- 9f3b49a500d7 -->
 ### Maximum Swap — LC 670
 
 > **關鍵** — `last[d]` 是數字 `d` 最右邊的索引。第一個「後面還有更大數字」的位置 `i`，是一次交換唯一能把最高位數字變大的地方，而最好的交換對象是這些數字裡**最大**的那個、取它的**最後**一個位置。
 
-**歸約到**：[hash_map § Template 6](./hash_map.md#template-6-rank-map--value-to-position--lc-953-) — 一次建好的值 → 位置 map，所以「我右邊有沒有更大的數字、在哪裡？」最多只要 9 次查找。不用 map 的三指標掃描在 [array_examples.md § 4](./array_examples.md#4-maximum-swap--lc-670)。
+**歸約到**：[hash_map § Template 6](./hash_map.md#template-6-rank-map--value-to-position--lc-953-) — 一次建好的值 → 位置 map，所以「我右邊有沒有更大的數字、在哪裡？」最多只要 9 次查找。不用 map 的三指標掃描在 [array_examples.md § 4](./array_examples.md#maximum-swap--lc-670)。
 
 <!--CODE-->
 

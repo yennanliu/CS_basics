@@ -16,7 +16,7 @@
 
 [stack.md](./stack.md) 放六份模板；這份表是套用它們的題目。底下每個 `##` 小節對應一份模板，順序和核心表相同，每張卡片都寫出該題在模板之上多加的那一步。已經在別份表裡解出的題目，在[索引](#index)（以及所屬小節的指標表）裡只佔一列，不另抄一份。
 
-<!-- bab4143aecce -->
+<!-- 4295ce62b678 -->
 ## 索引
 
 | LC | 題目 | 歸約到 | 難度 | 在哪裡 |
@@ -46,7 +46,7 @@
 | 144 | Binary Tree Preorder Traversal | [stack § Template 5](./stack.md#template-5-explicit-stack--iterative-traversal--lc-144-lc-145-) | Easy | 錨點題，完整解在 stack.md |
 | 145 | Binary Tree Postorder Traversal | [stack § Template 5](./stack.md#template-5-explicit-stack--iterative-traversal--lc-144-lc-145-) | Easy | 錨點題，完整解在 stack.md |
 | 232 | Implement Queue using Stacks | [queue § Template 5](./queue.md#template-5-queue-using-stacks-pattern--lc-232-) | Easy | 完整解在 queue.md |
-| 173 | Binary Search Tree Iterator | [bst_advanced § Template 5b](./bst_advanced.md#template-5b-bst-lazy-traversal-iterator-pattern) | Medium | 完整解在 bst_advanced.md |
+| 173 | Binary Search Tree Iterator | [bst_advanced § Template 5b](./bst_advanced.md#template-1-lazy-in-order-iterator--lc-173-) | Medium | 完整解在 bst_advanced.md |
 | 341 | Flatten Nested List Iterator | [iterator § 2-2](./iterator.md#2-2-flatten-nested-list-iterator--lc-341) | Medium | 完整解在 iterator.md |
 | 445 | Add Two Numbers II | [stack § Template 5](./stack.md#template-5-explicit-stack--iterative-traversal--lc-144-lc-145-) | Medium | [卡片](#add-two-numbers-ii--lc-445) |
 | 71 | Simplify Path | [string § Variation 6.1](./string.md#variation-61-token-stack--lc-71-simplify-path) | Medium | 完整解在 string.md |
@@ -220,14 +220,14 @@
 |---|---|---|
 | 155 | Min Stack | [stack § 模板 4](./stack.md#template-4-min-stack--o1-getmin--lc-155-) — 錨點題，附只存最小值的省空間第二個堆疊 |
 
-<!-- 8a6d96f5c41e -->
+<!-- 85355253cd85 -->
 ## 顯式堆疊的題目
 
 | LC | 題目 | 完整解在哪裡 |
 |---|---|---|
 | 144 · 145 | Binary Tree Preorder / Postorder Traversal | [stack § 模板 5](./stack.md#template-5-explicit-stack--iterative-traversal--lc-144-lc-145-) — 錨點題 |
 | 232 | Implement Queue using Stacks | [queue § 模板 5](./queue.md#template-5-queue-using-stacks-pattern--lc-232-) |
-| 173 | Binary Search Tree Iterator | [bst_advanced § 模板 5b](./bst_advanced.md#template-5b-bst-lazy-traversal-iterator-pattern) — 暫停式的中序走訪 |
+| 173 | Binary Search Tree Iterator | [bst_advanced § 模板 5b](./bst_advanced.md#template-1-lazy-in-order-iterator--lc-173-) — 暫停式的中序走訪 |
 | 341 | Flatten Nested List Iterator | [iterator § 2-2](./iterator.md#2-2-flatten-nested-list-iterator--lc-341) — 子元素倒序 push，在 `hasNext()` 裡展開 |
 
 <!-- c4909b7141ad -->

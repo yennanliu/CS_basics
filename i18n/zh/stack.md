@@ -362,14 +362,14 @@ LC 239 的 deque 寫法在
 
 ---
 
-<!-- 445f631197d0 -->
+<!-- 20a01e67af67 -->
 ### 模板 5：顯式堆疊 —— 迭代式走訪 —— LC 144, LC 145 ⭐⭐⭐⭐
 
 **辨識** —— 「迭代地」、「不用遞迴」、「follow-up：遞迴解很簡單，你能用迭代做嗎？」，或樹／串列深到（歪斜的樹 n 可達 10⁵）會讓呼叫堆疊溢位。
 
 **關鍵** —— 堆疊存的是還沒做的工作，而堆疊吐出工作的順序與放入時相反：先 push `right` 再 push `left`，`left` 就會先被處理。後序就是以 `root → right → left` 跑的前序，再反轉。
 
-同一個堆疊的*暫停*版本 —— 必須在元素之間停下來的迭代器 —— 是 [bst_advanced.md § 模板 5b](./bst_advanced.md#template-5b-bst-lazy-traversal-iterator-pattern) 的 LC 173，以及 [iterator.md § 2-2](./iterator.md#2-2-flatten-nested-list-iterator--lc-341) 的 LC 341，更完整的家族在 [iterator.md](./iterator.md)。
+同一個堆疊的*暫停*版本 —— 必須在元素之間停下來的迭代器 —— 是 [bst_advanced.md § 模板 5b](./bst_advanced.md#template-1-lazy-in-order-iterator--lc-173-) 的 LC 173，以及 [iterator.md § 2-2](./iterator.md#2-2-flatten-nested-list-iterator--lc-341) 的 LC 341，更完整的家族在 [iterator.md](./iterator.md)。
 
 <!--CODE-->
 

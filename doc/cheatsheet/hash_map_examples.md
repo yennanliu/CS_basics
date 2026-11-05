@@ -37,7 +37,7 @@ This sheet is the problem set for [hash_map.md](./hash_map.md): the templates li
 | 1248 | Count Number of Nice Subarrays | [hash_map § Template 4](./hash_map.md#template-4-prefix-sum-count-map--lc-560-) | Medium | [prefix_sum.md § Template 6](./prefix_sum.md#template-6-transform-and-count--lc-1248) |
 | 438 | Find All Anagrams in a String | [hash_map § Template 5](./hash_map.md#template-5-fixed-window-character-counts--lc-438) | Medium | hash_map.md (the anchor) |
 | 3 | Longest Substring Without Repeating Characters | [sliding_window § Template 3](./sliding_window.md#template-3-longest-window-satisfying-p--lc-3-) | Medium | sliding_window.md |
-| 424 | Longest Repeating Character Replacement | [sliding_window § Template 3](./sliding_window.md#template-3-longest-window-satisfying-p--lc-3-) | Medium | [sliding_window_examples.md § 5](./sliding_window_examples.md#5-longest-repeating-character-replacement--lc-424-) |
+| 424 | Longest Repeating Character Replacement | [sliding_window § Template 3](./sliding_window.md#template-3-longest-window-satisfying-p--lc-3-) | Medium | [sliding_window_examples.md § 5](./sliding_window_examples.md#longest-repeating-character-replacement--lc-424-) |
 | 953 | Verifying an Alien Dictionary | [hash_map § Template 6](./hash_map.md#template-6-rank-map--value-to-position--lc-953-) | Easy | hash_map.md (the anchor) |
 | 670 | Maximum Swap | [hash_map § Template 6](./hash_map.md#template-6-rank-map--value-to-position--lc-953-) | Medium | [below](#maximum-swap--lc-670) |
 | 2471 | Minimum Number of Operations to Sort a Binary Tree by Level | [hash_map § Template 6](./hash_map.md#template-6-rank-map--value-to-position--lc-953-) | Medium | [below](#minimum-number-of-operations-to-sort-a-binary-tree-by-level--lc-2471) |
@@ -389,7 +389,7 @@ The anchor is worked in the core sheet; the variable-length windows that keep a 
 |---|---|---|---|
 | LC 438 | Find All Anagrams in a String | [hash_map § Template 5](./hash_map.md#template-5-fixed-window-character-counts--lc-438) | Medium |
 | LC 3 | Longest Substring Without Repeating Characters | [sliding_window § Template 3](./sliding_window.md#template-3-longest-window-satisfying-p--lc-3-) | Medium |
-| LC 424 | Longest Repeating Character Replacement | [sliding_window_examples.md § 5](./sliding_window_examples.md#5-longest-repeating-character-replacement--lc-424-) | Medium |
+| LC 424 | Longest Repeating Character Replacement | [sliding_window_examples.md § 5](./sliding_window_examples.md#longest-repeating-character-replacement--lc-424-) | Medium |
 
 ## Rank Map Examples
 
@@ -397,7 +397,7 @@ The anchor is worked in the core sheet; the variable-length windows that keep a 
 
 > **Key point** — `last[d]` is the rightmost index of digit `d`. The first position `i` that has a larger digit somewhere after it is the only place one swap can raise the most significant digit, and the best partner is the **largest** such digit at its **last** index.
 
-**Reduces to**: [hash_map § Template 6](./hash_map.md#template-6-rank-map--value-to-position--lc-953-) — a value → position map built once, so "is there a larger digit to my right, and where?" is at most 9 lookups. The three-pointer scan without a map is in [array_examples.md § 4](./array_examples.md#4-maximum-swap--lc-670).
+**Reduces to**: [hash_map § Template 6](./hash_map.md#template-6-rank-map--value-to-position--lc-953-) — a value → position map built once, so "is there a larger digit to my right, and where?" is at most 9 lookups. The three-pointer scan without a map is in [array_examples.md § 4](./array_examples.md#maximum-swap--lc-670).
 
 ```python
 # python

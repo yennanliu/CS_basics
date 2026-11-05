@@ -198,7 +198,7 @@
 
 <!--CODE-->
 
-<!-- 0a6ea772c8c6 -->
+<!-- d1ce7960923b -->
 ### 2-8) 經典題一覽
 
 **直接用掃描解決**（有時要先刻意排序）：
@@ -215,7 +215,7 @@
 | **1671** | Minimum Number of Removals to Make Mountain Array | 掃描正向、反向各跑一次 |
 | **1713** | Minimum Operations to Make a Subsequence | 一邊互異的 LCS → 對映射後索引做 LIS |
 
-**近親** — 同樣是「對你維護的結構做二分搜尋」，但存的值是 DP 結果而不是 tail：LC 1235（Maximum Profit in Job Scheduling）、LC 1751（Maximum Number of Events That Can Be Attended II）、列在 [binary_search.md § Template 5](./binary_search.md#template-5-lower-bound-on-a-maintained-tails-array--lc-300-)；LC 981 在 [design_examples.md](./design_examples.md#9-time-based-key-value-store--lc-981)；LC 528 在 [math.md](./math.md#1-1-11-randomized-sampling-templates-)。
+**近親** — 同樣是「對你維護的結構做二分搜尋」，但存的值是 DP 結果而不是 tail：LC 1235（Maximum Profit in Job Scheduling）、LC 1751（Maximum Number of Events That Can Be Attended II）、列在 [binary_search.md § Template 5](./binary_search.md#template-5-lower-bound-on-a-maintained-tails-array--lc-300-)；LC 981 在 [design_examples.md](./design_examples.md#time-based-key-value-store--lc-981)；LC 528 在 [math.md](./math.md#1-1-11-randomized-sampling-templates-)。
 
 **陷阱** — 長得像 LIS，但不是這個演算法：
 

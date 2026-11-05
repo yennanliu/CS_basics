@@ -161,7 +161,7 @@ class KthLargest {
 - Heapifying `nums` and then popping down to k mutates the caller's list; build your own heap.
 
 **Similar** — the order-statistic BST answers the same query for *any* rank:
-[bst_advanced.md](./bst_advanced.md#bst-vs-min-heap-for-lc-703).
+[bst_advanced.md](./bst_advanced.md#template-3-size-augmented-order-statistic-bst--lc-703-).
 
 ### Minimum Cost to Connect Sticks — LC 1167
 
@@ -286,7 +286,7 @@ public int[][] kClosest(int[][] points, int k) {
 - Comparing `Math.sqrt` distances adds float error for nothing; squared distances order the same.
 
 **Similar** — the O(n) average answer for one static query is quickselect:
-[2_pointers_quickselect § Template 2](./2_pointers_quickselect.md#template-2-k-closest-points-to-origin--lc-973-).
+[quickselect § Template 2](./quickselect.md#template-2-quickselect-on-a-derived-key--lc-973-).
 The heap wins when points stream in or memory must stay O(k).
 
 | LC | Problem | Home | Why it is not here |

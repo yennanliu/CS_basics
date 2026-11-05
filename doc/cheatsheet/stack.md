@@ -749,7 +749,7 @@ order of arrival: push `right` before `left` and `left` is processed first. Post
 preorder run as `root → right → left`, reversed.
 
 The *paused* form of the same stack — an iterator that must stop between elements — is
-LC 173 in [bst_advanced.md § Template 5b](./bst_advanced.md#template-5b-bst-lazy-traversal-iterator-pattern)
+LC 173 in [bst_advanced.md § Template 5b](./bst_advanced.md#template-1-lazy-in-order-iterator--lc-173-)
 and LC 341 in [iterator.md § 2-2](./iterator.md#2-2-flatten-nested-list-iterator--lc-341), and the
 wider family is [iterator.md](./iterator.md).
 

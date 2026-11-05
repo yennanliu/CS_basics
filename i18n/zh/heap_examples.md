@@ -68,7 +68,7 @@
 - 兩顆一樣重時還 push 一個 0，會留下一顆之後「免費」相撞的 `0` 石頭 — 不影響答案，
   但是白做一次 push；直接略過。
 
-<!-- eb79ca3fcb80 -->
+<!-- 0f2f964743ef -->
 ### Kth Largest Element in a Stream — LC 703 ⭐⭐⭐⭐
 
 > **關鍵** — 大小為 k 的 min-heap 會**跨呼叫保留**：`add` 先 push，超過 k 就驅逐最小的，
@@ -86,7 +86,7 @@
 - 先 heapify `nums` 再 pop 到剩 k 個，會改動呼叫端的串列；請自己建一個堆積。
 
 **類似** — 順序統計 BST 對*任意*名次都能回答同樣的查詢：
-[bst_advanced.md](./bst_advanced.md#bst-vs-min-heap-for-lc-703)。
+[bst_advanced.md](./bst_advanced.md#template-3-size-augmented-order-statistic-bst--lc-703-)。
 
 <!-- 256c21e794e4 -->
 ### Minimum Cost to Connect Sticks — LC 1167
@@ -121,7 +121,7 @@
 - 不用堆積的話，小因數本來就依序出現、大因數則反序出現 — 用兩個串列就是 O(√n) 時間。
   被問到更好的解法時就說這個。
 
-<!-- b805bdb561ab -->
+<!-- 64df7ba40aad -->
 ### K Closest Points to Origin — LC 973 ⭐⭐⭐⭐
 
 > **關鍵** — 「最近的 k 個」就是「依距離最小的 k 個」：用大小為 k、以距離平方為 key 的
@@ -138,7 +138,7 @@
 - 比較 `Math.sqrt` 距離只會平白多出浮點誤差；距離平方的大小順序完全一樣。
 
 **類似** — 單次查詢、靜態資料時，O(n) 平均的答案是 quickselect：
-[2_pointers_quickselect § 模板 2](./2_pointers_quickselect.md#template-2-k-closest-points-to-origin--lc-973-)。
+[quickselect § 模板 2](./quickselect.md#template-2-quickselect-on-a-derived-key--lc-973-)。
 點是串流進來、或記憶體必須維持 O(k) 時，堆積勝出。
 
 | LC | 題目 | 所在 | 為什麼不在這裡 |

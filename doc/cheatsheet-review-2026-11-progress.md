@@ -22,7 +22,7 @@
 | 6b | **P3 + P4** graph 家族 | 最短路徑比較去重；`bfs_examples`、`dfs_examples`、`graph_examples`、`topology_sorting_examples` 改 C，`bfs_advanced`、`dfs_advanced`、`graph_advanced` 改 D | [#312](https://github.com/yennanliu/CS_basics/pull/312) | 🔄 |
 | 6c | **P3 + P4** arrays / strings 家族 | quickselect、KMP / rolling hash 去重；`array_examples`、`string_examples`、`2_pointers_examples`、`sliding_window_examples`、`binary_search_examples` 改 C，`sliding_window_advanced` 改 D | [#313](https://github.com/yennanliu/CS_basics/pull/313) | 🔄 |
 | 6d | **P3 + P4** dp 家族 | 0/1 knapsack 去重；`dp_examples`、`backtrack_examples` 改 C，`dp_advanced`、`backtrack_advanced` 改 D | [#314](https://github.com/yennanliu/CS_basics/pull/314) | 🔄 |
-| 6e | **P3 + P4** hashing / stacks 家族 | `monotonic_stack` vs `stack_examples`；`hash_map_examples`、`stack_examples`、`linked_list_examples`、`heap_examples`、`design_examples` 改 C，`heap_advanced` 改 D | | ⬜ |
+| 6e | **P3 + P4** hashing / stacks 家族 | `monotonic_stack` vs `stack_examples`；`hash_map_examples`、`stack_examples`、`linked_list_examples`、`heap_examples`、`design_examples` 改 C，`heap_advanced` 改 D | PR_N | 🔄 |
 | 7a | **P5** 第二階段 | `build-site.js` 在 Drill Path 旁標出 `progress.txt` 的 verdict | | ⬜ |
 | 7b | **P6** 雜訊與語言 | Python 優先、IPython transcript、行內中文、檔名修正 | | ⬜ |
 
@@ -80,7 +80,9 @@ P2 的 24 份 tier 5 cheatsheet 裡有 4 份不在 5a–5e：`lc_pattern` 由 P1
 - [ ] （P6）`string`、`2_pointers`、`binary_search_on_answer` 的 Summary 決策表與新的 Recognition / Drill Path 部分重複
 - [x] （6d，P3）LC 416 同時在 `dp` T4 與 `knapsack` T1；LC 216、526 是 `backtrack` 的錨定題，也在 `backtrack_examples` 解過
 - [x] （6d，P4）標題含 LC 編號、但還不是 problem card 的段落（如 `dp`「Worked table — LC 516」、`backtrack` 的 LC 1219）
-- [ ] （6e，P3）LC 560 同時是 `hash_map` T4 與 `prefix_sum` T2 的錨定題；LC 146 在 `hash_map`、`linked_list`、`design_examples` 三處
+- [x] （6e，P3）LC 560 同時是 `hash_map` T4 與 `prefix_sum` T2 的錨定題；LC 146 在 `hash_map`、`linked_list`、`design_examples` 三處
+- [ ] （6e 之後）`hash_map` Summary 決策表仍有幾題用舊的模板編號；`monotonic_stack` 除了範例段落外還不是 card
+- [ ] （6e 之後，跨家族）同一題在多處：LC 621 / 767（`greedy`）、402 / 316（`greedy_examples`）、735（`advanced_simulation`）、388（`string`）、729 / 731 / 715（`intervals`、`scanning_line`、`segment_tree`）、21 / 24 / 25（`recursion` 的遞迴版）；不同解法刻意保留的：LC 703、378、373、973、981、670、1249、445
 - [ ] （P6）`hash_map` Overview 的 IPython 與 `NOTE !!!`、blog 連結；`stack` Summary 的空泛 Common Traps；`heap` Summary 決策表沒連到 card
 - [ ] （跨 PR）中文 card 標籤：graph 家族用了 辨識 / 關鍵 / 複雜度 / 試跑 / 陷阱 / 不適用時 / 練習，其他家族不一定一致；P6 統一
 
@@ -101,3 +103,4 @@ P2 的 24 份 tier 5 cheatsheet 裡有 4 份不在 5a–5e：`lc_pattern` 由 P1
 | 2026-11-05 | 6b | P3+P4 graph：最短路徑比較歸 `shortest_path_comparison`（新增 Scenario → Algorithm 表，修正 arbitrage 應為 Bellman-Ford）；LC 785 歸 `graph` T6；`dfs_examples` 2,414→~520、`graph_examples`、`topology_sorting_examples`、`bfs_examples` 改 C，三份 `_advanced` 改 D；修 LC 742、269、753、1905 / 934 / 675 的錯誤答案、深遞迴改顯式 stack；與 6a 疊合時 LC 124、742 改成指向 `tree_lca_distance` |
 | 2026-11-05 | 6c | P3+P4 arrays / strings：新 `quickselect.md`（`2_pointers_quickselect` 變 stub）；KMP / rolling hash 歸 `string_matching_kmp_rolling_hash`；LC 88 / 251 / 1004 / 567 / 438 / 162 / 300 / 1095 / 209 等各一個家；5 份 `_examples` 改 C、`sliding_window_advanced` 改 D；修 LC 1044、LC 1838 Java、LC 658 O(n²)、LC 80、LC 1283 溢位 |
 | 2026-11-05 | 6d | P3+P4 dp：0/1 knapsack 歸 `knapsack.md`（2-D 推導與 top-down LC 416 移入 Template 1）；`dp_advanced` 中文速記改成指向 `knapsack_01_zh` 的一行；`backtrack_examples`、`dp_examples` 改 C，兩份 `_advanced` 改 D；LC 72 / 1143 rolling-row 補進 `dp` T8 / T9 |
+| 2026-11-05 | 6e | P3+P4 hashing / stacks：LC 146 / 460 歸 `linked_list` T7；LC 560 歸 `hash_map` T4；單調堆疊題歸 `monotonic_stack`；五份 `_examples` 改 C、`heap_advanced` 改 D；`design.md` 新增 Pattern 6–10；修 LC 1963、`heap_advanced` §9、LC 588、LC 24 / 25 / 1171 的 trap 敘述；疊合時修 12 條跨家族連結 |
