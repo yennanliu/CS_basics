@@ -825,7 +825,7 @@ private void dfs(TreeNode node, int remaining, List<Integer> path, List<List<Int
 on the tree; the whole path family (LC 112 / 113 / 257 / 437) is owned by
 [tree_lca_distance.md](./tree_lca_distance.md).
 
-**Drill** — LC 112 · LC 257 *(strings are immutable: no pop needed)* · LC 113 · LC 129 · LC 437
+**Drill** — LC 113 · LC 112 · LC 257 *(strings are immutable: no pop needed)* · LC 129 · LC 437
 
 ### Template 5: Height Up, Answer in a Global — LC 543
 
@@ -900,7 +900,7 @@ private int height(TreeNode node) {
 LC 1448): pass it down as an argument instead — see
 [§0-5](#0-5-depth-vs-height--the-two-numbers-a-tree-dfs-computes-).
 
-**Drill** — LC 104 ⭐ · LC 110 ⭐ · LC 543 ⭐ · LC 687 · LC 124 ⭐
+**Drill** — LC 543 ⭐ · LC 104 ⭐ · LC 110 ⭐ · LC 687 · LC 124 ⭐
 
 ### Template 6: LCA by Returned Presence — LC 236
 
@@ -971,7 +971,7 @@ variant breaks one of those, and that decides the shape:
 there is no root, only `parent` pointers (LC 1650). The whole LCA family, with 1650 traced step by
 step and code for 1644 / 1676 / 235, lives in [tree_lca_distance.md](./tree_lca_distance.md).
 
-**Drill** — LC 235 ⭐ · LC 236 · LC 1644 · LC 1650 · LC 1676 · LC 865
+**Drill** — LC 236 · LC 235 ⭐ · LC 1644 · LC 1650 · LC 1676 · LC 865
 
 ### Template 7: Count Nodes of a Complete Tree — LC 222
 
@@ -1123,7 +1123,7 @@ public Node connect(Node root) {
 **Not this if** — the problem allows O(n) space or wants a list per level: plain
 [Template 2](#template-2-iterative-traversal--stack-in-order-and-queue-level-order--lc-102).
 
-**Drill** — LC 116 *(perfect tree: the same code works unchanged)* · LC 117 · LC 199
+**Drill** — LC 117 · LC 116 *(perfect tree: the same code works unchanged)* · LC 199
 
 ---
 
@@ -1512,7 +1512,7 @@ public TreeNode pruneTree(TreeNode root) {
 **Not this if** — the tree is a BST and nodes are removed by a **value range** (LC 669) or a
 single key (LC 450): the ordering lets you discard a whole side at once, see [bst.md](./bst.md).
 
-**Drill** — LC 226 ⭐ *(return the swapped subtree)* · LC 814 · LC 1325 · LC 1110 · LC 114
+**Drill** — LC 1110 · LC 226 ⭐ *(return the swapped subtree)* · LC 814 · LC 1325 · LC 114
 
 ---
 
