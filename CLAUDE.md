@@ -114,10 +114,10 @@ source for `lc-review-plan.html`. `build-review-plan.js` compiles it to
 It is also, since Sep 2026, **the source of every progress display on the site**: the
 roadmap's done state (`build-roadmap.js` stamps each problem's latest verdict through
 `readLogVerdicts`, and `roadmap.js` counts an `ok` as solved and badges an `again`) and
-the landing page's progress sentence (`build-site.js` calls `buildPayload` directly).
+the landing page's progress sentence (`build-site.js` calls `buildPayload` directly). Since Nov 2026 the cheatsheets read it too: every `LC <n>` in a sheet's `## Drill Path` gets a badge with the log's latest verdict (`ok` / `again` / not tried), stamped at build time by `build-lib.js`'s `stampDrillVerdicts` from the same `readLogVerdicts` the roadmap uses, on the English and 中文 pages alike.
 README's `OK`/`AGAIN` column is hand-kept and lags the log by months, so nothing reads
 progress from it any more; browser `localStorage` on the roadmap is only for ticks the
-log has not judged. `e2e-check.js` asserts, id by id, that the roadmap's verdicts are
+log has not judged. `e2e-check.js` asserts, id by id, that the roadmap's verdicts — and every Drill Path badge — are
 the ones `progress.json` carries.
 
 **Never paste practice data into the page.** It was a `const RAW` template literal

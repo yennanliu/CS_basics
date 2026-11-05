@@ -11,8 +11,17 @@ const {
   ensureHeadingIds, groupByCategory, buildPrevNext, buildIndexGrid,
   buildCheatsheetIndex, splitLeadingH1, buildPageContent, extractScope,
   titleCaseFromFile, summariseDoc,
-  isoDate
+  isoDate,
+  stampDrillVerdicts,
 } = require('./build-lib');
+
+// The practice log's latest verdict per problem, for the Drill Path badges on the
+// cheatsheet pages — the same reading the roadmap renders, so the two never
+// disagree about whether a problem is done. Required here rather than with the
+// other build-roadmap import below, because the cheatsheets render first.
+const drillVerdicts = fs.existsSync('data/progress.txt')
+  ? require('./build-roadmap').readLogVerdicts(fs.readFileSync('data/progress.txt', 'utf8'))
+  : new Map();
 const { compose, parseStore, docs: zhDocs, orphanStores } = require('./i18n');
 
 // A commit that only retouches a header or fixes a link is not a content update.
@@ -370,7 +379,7 @@ if (cheatsheetFiles.length > 0) {
     const enHeadingIds = headingIds(htmlContent);
     const { title: h1Title, titleId, html: bodyHtml } = splitLeadingH1(htmlContent);
     const { html: annotated, hasPriority } = annotatePriorityHeadings(bodyHtml);
-    htmlContent = annotated;
+    htmlContent = stampDrillVerdicts(annotated, drillVerdicts);
 
     // Preference order: explicit override → the file's own H1 → the filename.
     const title = sheetMeta.title || h1Title || titleCaseFromFile(baseName);
@@ -532,7 +541,7 @@ function composeZhPages({ corpus, pages, outDir, indexHref, indexLabel, type, de
     });
     const { title: h1Title, titleId, html: bodyHtml } = splitLeadingH1(htmlContent);
     const { html: annotated, hasPriority } = annotatePriorityHeadings(bodyHtml, 'zh');
-    htmlContent = annotated;
+    htmlContent = corpus === 'cheatsheet' ? stampDrillVerdicts(annotated, drillVerdicts, 'zh') : annotated;
     const title = h1Title || page.title;
     const headings = extractHeadings(htmlContent);
     const description = describe(raw, headings) || page.description;
