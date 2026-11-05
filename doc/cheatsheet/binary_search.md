@@ -1517,8 +1517,9 @@ value range, [binary_search_on_answer.md](./binary_search_on_answer.md))*
 ### Template 7: Peak Finding by Slope — LC 162 ⭐⭐⭐⭐
 
 **Recognise** — "find **a** peak element", "mountain array", "`nums[i] != nums[i + 1]`",
-"`nums[-1] = nums[n] = -∞`", with O(log n) required. The array is not sorted, but the
-**slope** at `mid` is: comparing `nums[mid]` with `nums[mid + 1]` says which side a peak is on.
+"`nums[-1] = nums[n] = -∞`", with O(log n) required. Neither the array nor its slopes are sorted
+(`[1, 2, 1, 3, 5, 6, 4]` rises, falls, then rises), but comparing `nums[mid]` with `nums[mid + 1]`
+names a half that is guaranteed to contain a peak.
 
 **Key point** — if `nums[mid] < nums[mid + 1]` the slope rises, and walking uphill from
 `mid + 1` must reach a peak before the `-∞` edge, so a peak is in `[mid + 1, right]`;
