@@ -358,12 +358,60 @@ class Solution(object):
 ```
 
 ### 5) Convert BST to Greater Tree — LC 538
-Use **reverse inorder** (right → root → left) with a running sum. See the
-[Reverse Inorder for Descending](./bst.md#pattern-reverse-inorder-for-descending) pattern in `bst.md` for the implementation.
+
+> **Key point** — right → node → left visits values in descending order, so a running sum turns
+> each node into the sum of every value greater than or equal to it.
+
+**Reduces to**: [bst.md § Template 5](./bst.md#template-5-in-order-walk-is-sorted--lc-230), reversed ([Reverse Inorder for Descending](./bst.md#pattern-reverse-inorder-for-descending)).
+
+```python
+# python
+# IDEA: reverse in-order (right, node, left) with a running sum of the values seen so far
+# time = O(n), space = O(h)
+# LC 538 - Convert BST to Greater Tree
+class Solution(object):
+    def convertBST(self, root):
+        self.running = 0
+
+        def reverse_inorder(node):
+            if not node:
+                return
+            reverse_inorder(node.right)   # larger values first
+            self.running += node.val
+            node.val = self.running
+            reverse_inorder(node.left)
+
+        reverse_inorder(root)
+        return root
+```
 
 ### 6) Binary Search Tree to Greater Sum Tree — LC 1038
 Identical to LC 538 — reverse inorder traversal accumulating a running sum.
 See the [Reverse Inorder for Descending](./bst.md#pattern-reverse-inorder-for-descending) pattern in `bst.md`.
+
+### 7) Range Sum of BST — LC 938
+
+> **Key point** — the same three-way pruning as `trimBST`: an out-of-range root rules out a whole
+> side, so only the combine step changes, from reattaching children to adding values.
+
+**Reduces to**: [bst.md § Template 3b](./bst.md#template-3b-trim-to-a-range--lc-669-) — sum instead of restructure.
+
+```python
+# python
+# IDEA: Template 3b's pruning; add the in-range values instead of reattaching them
+# time = O(n), space = O(h)
+# LC 938 - Range Sum of BST
+def rangeSumBST(root, low, high):
+    if not root:
+        return 0
+    if root.val < low:                    # nothing on the left can be in range
+        return rangeSumBST(root.right, low, high)
+    if root.val > high:                   # nothing on the right can be in range
+        return rangeSumBST(root.left, low, high)
+    return (root.val
+            + rangeSumBST(root.left, low, high)
+            + rangeSumBST(root.right, low, high))
+```
 
 ## Root-to-Leaf & Node-to-Node Paths
 
